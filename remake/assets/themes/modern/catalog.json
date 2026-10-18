@@ -14413,6 +14413,83 @@
         "asset:modern.map0.foreground279.hd.master",
         "docs/data/fd2-modern-hd-battlefield-20261019.json"
       ]
+    },
+    {
+      "asset_id": "modern.map0.roof_object.hd.master",
+      "role": "terrain_hd_master",
+      "status": "concept",
+      "file": "map00-roof-object-hd-v1-master.png",
+      "width": 887,
+      "height": 1774,
+      "sha256": "b23ff8b6e621c63a98f29fe90f14de9a9e69bbfa691edc2e2e6684a252811a98",
+      "source_refs": [
+        "docs/data/fd2-modern-hd-battlefield-20261019.json",
+        "asset:modern.ch01.battlefield.style_a"
+      ]
+    },
+    {
+      "asset_id": "modern.map0.roof_object.native_hd",
+      "role": "native_terrain_hd_set",
+      "status": "runtime_candidate",
+      "consumer_contract": "fdshap_native_hd_sparse_v1",
+      "map_id": 0,
+      "width": 144,
+      "height": 144,
+      "frame_count": 10,
+      "frame_ids": [
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        272,
+        273
+      ],
+      "files": [
+        "map00-frame0028-hd.png",
+        "map00-frame0029-hd.png",
+        "map00-frame0030-hd.png",
+        "map00-frame0031-hd.png",
+        "map00-frame0032-hd.png",
+        "map00-frame0033-hd.png",
+        "map00-frame0034-hd.png",
+        "map00-frame0035-hd.png",
+        "map00-frame0272-hd.png",
+        "map00-frame0273-hd.png"
+      ],
+      "frame_sha256": [
+        "0a7f67f36f5d397286afd2e4f7713014ff4a842ea468a525ea5a5bbf37788d54",
+        "278810180a12da0e433816f484aa250a6bac893956d2f83fbe63a4661ec30ebf",
+        "7bf12812cc17a5811dab18e2ef24ac576a30d6a8511068d41bca0854eae85d89",
+        "a8c401f2c1b35c7dc6dd377f124674be79cab455fca3c5e865a5f648b9350606",
+        "ee33b74453f8934215839663722b3821299d284415ea9fc49f52f1768521b468",
+        "cf478145496510211d90b17ae9b42b8d918424e46909861d483d1ce08c5234a9",
+        "b7362bad6515c2b78120531ef7e55c061962a4a7191c0e6d4a2d25e332f82203",
+        "73c936d5b3fe7014604f0df68e8d665c0826cd213f4ec70c0f793ee094e4a468",
+        "f6da27804345163d0fd22c880907ada3178d29208fc570dfeb8fb33efbe6365b",
+        "20f661065b8d5b610228bb8b6ce009a99a7d115dca8aa1f4f640d6310fbc83b8"
+      ],
+      "semantics": [
+        "terrain",
+        "foreground",
+        "terrain",
+        "foreground",
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain"
+      ],
+      "alpha_contract": "native_mask_nearest_6",
+      "cycle_policy": "native_selector",
+      "source_refs": [
+        "asset:modern.map0.roof_object.hd.master",
+        "docs/data/fd2-modern-hd-battlefield-20261019.json"
+      ]
     }
   ]
 }

@@ -57,7 +57,7 @@ func (g *Game) recordInputAuditState() {
 		r["hd_world_frame"] = g.modernHDMapPresentedFrame
 		units := make([]map[string]any, 0, len(g.modernHDMapPresented.Units))
 		for _, unit := range g.modernHDMapPresented.Units {
-			units = append(units, map[string]any{"group": unit.Group, "frame": unit.Frame, "rect": []int{unit.Rect.Min.X, unit.Rect.Min.Y, unit.Rect.Max.X, unit.Rect.Max.Y}, "work_offset": unit.WorkOffset})
+			units = append(units, map[string]any{"group": unit.Group, "frame": unit.Frame, "rect": []int{unit.Rect.Min.X, unit.Rect.Min.Y, unit.Rect.Max.X, unit.Rect.Max.Y}, "work_offset": unit.WorkOffset, "palette_band": unit.PaletteBand})
 		}
 		r["hd_world_units"] = units
 		terrain := make([]map[string]any, 0, len(g.modernHDMapPresented.Terrain))
@@ -69,12 +69,18 @@ func (g *Game) recordInputAuditState() {
 		}
 		r["hd_world_terrain"] = terrain
 		foreground := 0
+		foregroundDraws := make([]map[string]any, 0)
 		for _, layer := range g.modernHDMapPresented.Foreground {
 			if layer.HDImage != nil {
 				foreground++
+				hash := sha256.Sum256(layer.HDImage.Pix)
+				foregroundDraws = append(foregroundDraws, map[string]any{"frame": layer.SourceFrame,
+					"rect":        []int{layer.Rect.Min.X, layer.Rect.Min.Y, layer.Rect.Max.X, layer.Rect.Max.Y},
+					"rgba_sha256": fmt.Sprintf("%x", hash)})
 			}
 		}
 		r["hd_world_terrain_foreground"] = foreground
+		r["hd_world_terrain_foreground_draws"] = foregroundDraws
 	}
 	r["locale"] = g.localeID
 	r["gold"] = g.gold
@@ -179,6 +185,7 @@ func (g *Game) recordInputAuditState() {
 		r["system_info_frame"] = s.frame
 	}
 	r["next_player_index"] = g.nativeNextPlayerIndex
+	r["system_end_turn_confirm"] = g.nativeSystemEndTurnConfirm
 	r["player_focus"] = g.nativePlayerFocus
 	if s := g.nativeSystemEndTurnUI; s != nil && s.treasure != nil {
 		r["treasure_prompt"] = true

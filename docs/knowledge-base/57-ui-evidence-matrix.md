@@ -1,7 +1,13 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
+四回合普通移動／待機／END已抵達屋後，前景279的opaque覆寫與一張可比相位的人物透明處核心通過；
+第二張人物相位不可比，未當成通過。新褐頂物件的八張底圖在正常GPU全部相符。
+屋後階段後的F9腳本失敗與獨立正常保存冷讀PASS分列；不冒稱單次長流程全通。
+完整來源與拒收測試見[58](58-fd2-exe-re-coverage.md)及
+[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`house_occlusion_and_roof_followup_20261019`。
+
 第一章房屋144圖已接正式世界。正常首章移鏡頭與F2抽驗的兩張GPU，完整可見底圖RGB與發布圖源相符；
-保存／來源bytes、新程序標題LOAD保持。前景與上移限部件E1，未增加原版oracle或整章E2。
+保存／來源bytes、新程序標題LOAD保持。該次前景與上移限部件E1，未增加原版oracle或整章E2。
 來源、失敗分類與可重跑入口見[58](58-fd2-exe-re-coverage.md)及
 [主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`house_runtime_followup_20261019`。
 

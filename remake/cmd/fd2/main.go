@@ -7318,7 +7318,7 @@ func dirToward(ax, ay, tx, ty int) int {
 
 // confirm 處理 Enter/Space:選取我方單位顯示移動範圍,或移動到可達格 / 原地待機。
 func (g *Game) confirm() {
-	if g.st == nil || g.walk != nil {
+	if g.st == nil || g.walk != nil || g.aiBusy {
 		return
 	}
 	g.playSFX(sfxConfirm)
@@ -8829,6 +8829,11 @@ func (g *Game) Update() error {
 		return nil // PAN/delay/dialogue sequence blocks battle input and repeated end-turn
 	}
 	if g.campInput() { // campaign 節點(story/choice/ending/勝敗轉場)攔截輸入
+		return nil
+	}
+	// 0x1A30B is synchronous: map input resumes only after the AI phase.
+	// Dialogue input still belongs to its existing owner below.
+	if g.aiBusy && len(g.dialog) == 0 {
 		return nil
 	}
 	if g.nativePlayerStatus != nil {

@@ -23,7 +23,7 @@ def main():
     receipt = json.loads(args.receipt.read_text())
     if receipt["status"] != "PASS":
         raise ValueError("正常GUI流程尚未通過")
-    names = [name for name in receipt["screenshots"] if name.startswith("terrain-hd-house")]
+    names = [name for name in receipt["screenshots"] if name.startswith(("terrain-hd-house", "terrain-hd-roof-object"))]
     if len(names) < 2:
         raise ValueError("缺少正常移鏡頭與F2返回的房屋畫面")
     samples = []
@@ -57,7 +57,7 @@ def main():
                         "matched_pixels": len(matched)*144*144,
                         "not_compared_tiles": different,
                         "limits": "只驗完整可見且未被UI／人物／前景蓋住的相符圖塊；其他候選不當成通過"})
-    faithful = args.receipt.parent / "terrain-faithful-house.png"
+    faithful = args.receipt.parent / ("terrain-faithful-roof-object.png" if names[0].startswith('terrain-hd-roof-object') else "terrain-faithful-house.png")
     reference = Image.open(faithful).convert("RGBA")
     first = Image.open(args.receipt.parent/names[0]).convert("RGBA")
     difference = sum(a != b for a, b in zip(first.getdata(), reference.getdata()))

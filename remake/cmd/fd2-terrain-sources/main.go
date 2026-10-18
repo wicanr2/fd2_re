@@ -274,36 +274,40 @@ func writeSources(root string, manifest *artManifest, loaded []loadedMap, palett
 	}
 	// This is an unremapped art reference, not a captured game state. It uses
 	// connected cells so a building can be repainted whole before slicing.
-	house := image.NewNRGBA(image.Rect(0, 0, 144, 96))
 	source := loaded[0]
-	object := artObject{ID: "map00-house", Map: 0, X: 9, Y: 8, Width: 6, Height: 4}
-	for row := 0; row < 4; row++ {
-		for column := 0; column < 6; column++ {
-			word := source.Data.Tiles[(row+8)*source.Data.Width+column+9]
-			tile := int(word & 0x3ff)
-			frame, err := fdicon.NativeTerrainFrameIndex(tile, source.Data.Controls[tile*4], 0, 0)
-			if err != nil {
-				return err
+	for _, object := range []artObject{
+		{ID: "map00-house", Map: 0, X: 9, Y: 8, Width: 6, Height: 4},
+		{ID: "map00-roof-object", Map: 0, X: 11, Y: 4, Width: 2, Height: 4},
+	} {
+		picture := image.NewNRGBA(image.Rect(0, 0, object.Width*24, object.Height*24))
+		for row := 0; row < object.Height; row++ {
+			for column := 0; column < object.Width; column++ {
+				word := source.Data.Tiles[(row+object.Y)*source.Data.Width+column+object.X]
+				tile := int(word & 0x3ff)
+				frame, err := fdicon.NativeTerrainFrameIndex(tile, source.Data.Controls[tile*4], 0, 0)
+				if err != nil {
+					return err
+				}
+				artCell(picture, source.Bank.Sprites[frame], column*24, row*24, palette)
+				cell := objectCell{X: column, Y: row, TileWord: word, Frame: frame}
+				foreground, present, err := fdicon.NativeForegroundFrameIndex(tile, source.Data.Controls[tile*4], 0)
+				if err != nil {
+					return err
+				}
+				if present {
+					cell.Foreground = &foreground
+				}
+				object.Cells = append(object.Cells, cell)
 			}
-			artCell(house, source.Bank.Sprites[frame], column*24, row*24, palette)
-			cell := objectCell{X: column, Y: row, TileWord: word, Frame: frame}
-			foreground, present, err := fdicon.NativeForegroundFrameIndex(tile, source.Data.Controls[tile*4], 0)
-			if err != nil {
-				return err
-			}
-			if present {
-				cell.Foreground = &foreground
-			}
-			object.Cells = append(object.Cells, cell)
 		}
+		preview, err := savePNG(root, object.ID+"-art-reference.png", picture)
+		if err != nil {
+			return err
+		}
+		manifest.Previews = append(manifest.Previews, preview)
+		object.Reference = preview
+		manifest.Objects = append(manifest.Objects, object)
 	}
-	preview, err := savePNG(root, "map00-house-art-reference.png", house)
-	if err != nil {
-		return err
-	}
-	manifest.Previews = append(manifest.Previews, preview)
-	object.Reference = preview
-	manifest.Objects = append(manifest.Objects, object)
 	file, err := os.OpenFile(filepath.Join(root, "manifest.json"), os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0o644)
 	if err != nil {
 		return err

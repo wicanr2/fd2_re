@@ -9,22 +9,23 @@
     "native_viewport": "CONFORMED-SCOPED：正式1920世界沿原生(4,4)、312×192窗格；正常F2同view與960地形樣本一致。",
     "hd_sprite_data": "DATA-READY：完整125組1455張HD及31組372張新增24父項已登錄；舊1083張父項及HD bytes保持。",
     "hd_world_renderer": "CONFORMED-SCOPED：144人物已接Game.Draw；首章34張正常GPU、4張實際走行、兩次物理攻擊及保存／新程序LOAD通過。",
-    "private_assets": "完整catalog allow-list 3239檔已同步、逐檔驗證及推送指定私人庫；runtime-only 3040檔。",
+    "private_assets": "catalog allow-list 3250檔已同步、逐檔驗證及推送私人庫；runtime-only白名單3050檔。",
     "quickload_battle_owner": "CONFORMED-SCOPED：成功JSON LOAD丟棄舊經驗owner與移動計畫；拒收保留。",
     "timed_dialogue": "CONFORMED-SCOPED-RUNTIME-E1：計時FFEC開收框保留HD世界，EXP99普通鍵盤／F2與保存冷讀通過；其他caller未驗。",
-    "hd_terrain": "CONFORMED-SCOPED：首章房屋30槽已接清冊與Game.Draw；24底圖正常GPU已驗，6前景與上移限部件E1，其他地形未完成。"
+    "hd_terrain": "CONFORMED-SCOPED：map0兩物件40槽；新8底圖正常GPU全部相符，前景279普通四回合及F2已驗，其餘前景／地形仍待完成。",
+    "ai_player_input_lock": "CONFORMED-SCOPED：AI換手期間拒絕玩家地圖輸入重入；普通END／增援對話及相關／完整Go回歸通過。"
   },
   "runtime_source": {
-    "binary_sha256": "920edd0cba020909bf9990ddfdc8a62fa50d29d8716cf38e30fd8b3ac8dbb84c",
+    "binary_sha256": "d0f2a24d03297ecca7bb0f02b265d82a981b298344f6baaf6d491ec16688e5b1",
     "binary_removed_after_validation": true,
     "go_snapshot": {
-      "file": "work/promo-cadence-20261018/hd-fonts/house-runtime-go-source-final.json",
-      "sha256": "5ba4ace676b4c27ddbd3073d9b39b8ead6c93db9deb6dd695e83604265950d3e"
+      "file": "work/promo-cadence-20261018/hd-fonts/house-occlusion-go-source-final.json",
+      "sha256": "9d1ed09214981c8534613673f1d24de02568a9960d3f61fac9bb5e4f1479a745"
     },
-    "go_file_count": 992,
+    "go_file_count": 993,
     "gui_tool": {
       "file": "tools/verify_fd2_hd_fonts_gui.py",
-      "sha256": "46a2a464fc514d71bc879f1a598aacf33897db223cfd5e6e7172c778298db5b2"
+      "sha256": "e8f3212a6be3aa76d5228eb59a33aba178edc5a565982ce46975ccc9d2cc59e5"
     }
   },
   "f2_conflict": {
@@ -2958,6 +2959,369 @@
     },
     "source_commit": "0eb9cf6ee9d466e359736fd89419900273001640",
     "source_remote_verified": true,
+    "unexpected_fd2_containers": 0
+  },
+  "historical_runtime_source_before_occlusion": {
+    "binary_sha256": "920edd0cba020909bf9990ddfdc8a62fa50d29d8716cf38e30fd8b3ac8dbb84c",
+    "binary_removed_after_validation": true,
+    "go_snapshot": {
+      "file": "work/promo-cadence-20261018/hd-fonts/house-runtime-go-source-final.json",
+      "sha256": "5ba4ace676b4c27ddbd3073d9b39b8ead6c93db9deb6dd695e83604265950d3e"
+    },
+    "go_file_count": 992,
+    "gui_tool": {
+      "file": "tools/verify_fd2_hd_fonts_gui.py",
+      "sha256": "46a2a464fc514d71bc879f1a598aacf33897db223cfd5e6e7172c778298db5b2"
+    }
+  },
+  "house_occlusion_and_roof_followup_20261019": {
+    "status": "CONFORMED-SCOPED; segmented evidence, not one continuous GUI pass",
+    "base_commit": "8fdba3e309b6cb234b15ef68fb89f8a2dfcc0d57",
+    "full_hd_complete": false,
+    "original_oracle_rerun": false,
+    "matching_rerun": false,
+    "new_chapter_e2": false,
+    "catalog": {
+      "file": "remake/assets/themes/modern/catalog.json",
+      "sha256": "db9f2cb2cc5930a2877a963882a95a5574665af80a63c494edcfda265807a7de"
+    },
+    "catalog_assets": 356,
+    "protected_prior_catalog_entries_unchanged": 354,
+    "source_binding": {
+      "file": "work/promo-cadence-20261018/hd-fonts/house-occlusion-go-source-final.json",
+      "sha256": "9d1ed09214981c8534613673f1d24de02568a9960d3f61fac9bb5e4f1479a745"
+    },
+    "go_file_count": 993,
+    "binary_sha256": "d0f2a24d03297ecca7bb0f02b265d82a981b298344f6baaf6d491ec16688e5b1",
+    "source_art": {
+      "manifest": {
+        "file": "work/promo-cadence-20261018/hd-fonts/native-terrain-sources-r4/manifest.json",
+        "sha256": "c472f63db36f176af0925da3b738650c1a011e4c07f6c5911007768df9f49543"
+      },
+      "independent_verification": {
+        "file": "work/promo-cadence-20261018/hd-fonts/native-roof-object-source-verification-r1.json",
+        "sha256": "3c1e36c2eab5714096b0e7ddc8b2cac07dbce746a91bbee3f91d74a5f1660779"
+      },
+      "object_reference_pixels": 18432,
+      "objects": 2,
+      "purpose_semantics": "unknown; neutral roof-object identity",
+      "whole_master": {
+        "file": "work/promo-cadence-20261018/hd-fonts/map00-roof-object-hd-v1-master.png",
+        "sha256": "b23ff8b6e621c63a98f29fe90f14de9a9e69bbfa691edc2e2e6684a252811a98"
+      },
+      "generation": {
+        "mode": "built-in image_gen",
+        "prompt": "Use case: style-transfer\nAsset type: opaque high-resolution whole-object master for a 2D hand-painted tactical RPG terrain set, portrait 1:2 aspect ratio, preferably 1024x2048.\nImage 1 is ONLY the exact original geometry and colour-layout reference. Image 2 is ONLY the already accepted fine hand-painted brushwork/material/detail/soft daylight style. Do not copy image 2's blue roof, openings or building layout.\nCompletely repaint the narrow brown-roofed object shown in image 1 with crisp new hand-painted detail. Preserve its exact full framing, shallow orthographic camera, silhouette, very tall triangular ridge, roof plane boundary, proportions, wall and grey stone footing. The ridge tip is near x50%, y3%; the bright roof plane is on the right and the dark roof plane on the left. Preserve the two original brown/tan roof planes and their existing boundary: do not change them into blue tiles, add a new roof style or invent new structure. The dark peaked wooden end-wall starts around y55% and extends to the original grey footing at y96%. Keep its original narrow vertical timber appearance and existing dark gaps; do not invent a labelled door or window. Maintain the original footprint almost flush to both side edges, and the original olive-green grass only where the reference already shows ground, around the narrow silhouette.\nUse coherent fine straw/thatch-like roof strokes consistent with the visible brown roofing, restrained warm wood grain, fine muted grey stone texture and softly painted grass. Keep the exact left-dark/right-light division and its original proportions. Entire object is in frame, fills the same proportions, not centered with extra margins. No coarse pixel blocks, pixel-noise overlays, giant brush blobs, black outlines, mosaic, characters, tools, trees, flower patches, signs, ornaments, chimney, extra openings, terrain grid, labels, text, border or watermark.\nThis continuous painting will be split into an unmarked 2-column by4-row original grid. Do not draw grid lines or gutters. It must be one continuous object, not a set of individual cards. Output fully opaque.",
+        "generated_source": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-629cbff1-67b7-44da-b99b-f5dfaf9d6920.png",
+        "saved_master": "work/promo-cadence-20261018/hd-fonts/map00-roof-object-hd-v1-master.png",
+        "sha256": "b23ff8b6e621c63a98f29fe90f14de9a9e69bbfa691edc2e2e6684a252811a98",
+        "input_roles": [
+          "原生位置／造型參照，非GPU",
+          "已接受手繪房屋風格參照"
+        ],
+        "rights": "private project assets; not published in fd2_re",
+        "references": [
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/map00-roof-object-reference-x8.png",
+            "sha256": "19300ed92ac6b6a4deac2a03a937f57df1e097e75b6e67ed87e9f958ebdfbe16"
+          },
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/house-style-reference-preview.png",
+            "sha256": "4fa2fa36b3bbb0376715804a54ed8bd66c664a346cb7ba1040acfd184e11e8f0"
+          }
+        ]
+      },
+      "recipe": {
+        "file": "remake/assets/themes/modern/terrain-roof-object-map0.recipe.json",
+        "sha256": "1ee8d7dbc070ae7c15e5528d7c624e4e0c16a88a3f404597fed5f8690825dae6"
+      },
+      "candidate": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hd-roof-object-r1/manifest.json",
+        "sha256": "a54cba060a997eb2764337f8340ad03e2474249506d5f948ce062811bcbee6d1"
+      },
+      "frames": {
+        "terrain": 8,
+        "foreground": 2,
+        "size": [
+          144,
+          144
+        ]
+      },
+      "alpha_pixels_checked": 207360,
+      "alpha_differences": 0,
+      "cut_reconstruction_difference_bytes": 0,
+      "foreground_shared_sources": [
+        29,
+        31
+      ]
+    },
+    "normal_house_route": {
+      "route": {
+        "file": "work/promo-cadence-20261018/hd-fonts/house-occlusion-gui-r4/terrain-route.json",
+        "sha256": "08b9c868ffb1d1316cff26fe30b845d98458ed855dd08ce305456bc6f5f993a0"
+      },
+      "observation": {
+        "file": "work/promo-cadence-20261018/hd-fonts/house-occlusion-gui-r4/terrain-observation.json",
+        "sha256": "588e2e4fed876cbdf4f3bcfe7273be30cd46e7d18188d467dfa913a7eb0fcf35"
+      },
+      "source_script_at_launch": {
+        "file": "work/promo-cadence-20261018/hd-fonts/house-occlusion-gui-r4-source.py",
+        "sha256": "ddfee5fe32f80b106d080f2604cb62c53ab444b37360161dfda927f6404a3e00"
+      },
+      "steps": [
+        {
+          "round": 1,
+          "from": [
+            7,
+            20
+          ],
+          "to": [
+            7,
+            16
+          ]
+        },
+        {
+          "round": 2,
+          "from": [
+            7,
+            16
+          ],
+          "to": [
+            7,
+            12
+          ]
+        },
+        {
+          "round": 3,
+          "from": [
+            7,
+            12
+          ],
+          "to": [
+            7,
+            8
+          ]
+        },
+        {
+          "round": 4,
+          "from": [
+            7,
+            8
+          ],
+          "to": [
+            10,
+            8
+          ]
+        }
+      ],
+      "state_injection": false,
+      "hp_lock": false,
+      "boosted_roster": false,
+      "normal_end_turns": 3,
+      "reinforcement_dialogue_observed": true,
+      "scope": "普通標題LOAD、正式可達集合、待機／END、四回合屋後及F2；章內不改狀態。",
+      "whole_run_status": "FAIL after completed house phase: F9 checker used retained banner text",
+      "foreground_gpu": {
+        "file": "work/promo-cadence-20261018/hd-fonts/house-occlusion-gpu-r4.json",
+        "sha256": "5666ec0a951872cf3eaaa53e462cda4fed54e4bc64c1714e181c30ef01e71235"
+      },
+      "foreground_opaque_pixels_each": [
+        16632,
+        16632
+      ],
+      "foreground_opaque_differences_each": [
+        0,
+        0
+      ],
+      "visible_unit_core": {
+        "first_image_pixels": 2752,
+        "gpu_rgb_tolerance": 1,
+        "differences_over_tolerance": 0,
+        "second_image": "NOT-COMPARABLE: metadata phase differs; differences preserved"
+      },
+      "negative_verification": {
+        "file": "work/promo-cadence-20261018/hd-fonts/house-occlusion-negative-r1.json",
+        "sha256": "c4dd8fe87661b1698d44794ac16c0ba590143d869d263b5a01768b288f7ac97c"
+      },
+      "normal_mid_step_gpu_pixels_verified": false
+    },
+    "ai_input_lock": {
+      "issue": 262,
+      "status": "fixed; close after verified source commit",
+      "existing_contract": "docs/knowledge-base/56-fd2-remake-sdd.md existing synchronous turn order; no new binary claim",
+      "reference_inputs": {
+        "file": "docs/data/fd2-reference-files.json",
+        "sha256": "9946b7506620069ce9b7bb8e4b1f7fed36e7a9389b634ef62064727d89579c5e"
+      },
+      "before": {
+        "operations": {
+          "file": "work/promo-cadence-20261018/hd-fonts/house-occlusion-gui-r3/operations.json",
+          "sha256": "770814dcee4f0b22798c98be5b16d2586d11ee597ca9faa0b5fea788f591827e"
+        },
+        "binary_sha256": "6c183b3a55311bb75094541ad58515feca80ecca78eab9c16b9052afea196285",
+        "main_source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/house-occlusion-before-fix-main.go",
+          "sha256": "39a1bf996f7973a27afc058875cc61dea829c05ba5accfe1812102cd5d876389"
+        },
+        "first_bad_key_index": 221,
+        "before_release_frame": 4699,
+        "bad_confirm_frame": 4703,
+        "cause": "Return crossed reinforcement dialogue completion into player map input while ai_busy=true"
+      },
+      "fix": [
+        "Update blocks map inputs during aiBusy without blocking dialogue owners",
+        "confirm rejects aiBusy reentry"
+      ],
+      "audit": {
+        "file": "work/promo-cadence-20261018/hd-fonts/house-occlusion-gui-r4/input-audit.jsonl",
+        "sha256": "220b476cf3fe4a04c80e10d7c2016f1867ddd01abfa0f4abf2b63b339172bfa4"
+      },
+      "audit_rows": 4709,
+      "ai_move_preview_rows": 0
+    },
+    "normal_roof_and_save": {
+      "status": "PASS",
+      "gui": {
+        "file": "work/promo-cadence-20261018/hd-fonts/house-roof-gui-r5/receipt.json",
+        "sha256": "97f025f6112f69b475b36d1f1aa2664ee3a4ff8c0240b42283654e3fd065b43f"
+      },
+      "screenshots": 37,
+      "gpu": {
+        "file": "work/promo-cadence-20261018/hd-fonts/roof-object-gpu-r5.json",
+        "sha256": "8c912d304024a840387b16dfeed9985d39da655bf02d79e7e5aacad91b31eacd"
+      },
+      "all_eight_new_base_frames_verified_in_both_images": true,
+      "source_save_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "saved_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "theme_and_source_save_bytes_equal": true,
+      "new_process_title_load": true,
+      "scope": "same binary, independent ordinary LOAD/F2/walk/ring/cancel/two attacks/Home/F5/new-process LOAD; not a continuous continuation of the four-turn route"
+    },
+    "seed": {
+      "remake": "FD2_SEED=1 before each startup; no reroll selection",
+      "original": null
+    },
+    "regression": {
+      "scoped": {
+        "file": "work/promo-cadence-20261018/hd-fonts/house-occlusion-regression-r2.log",
+        "sha256": "e9f5fe92b57c6ab338e800cc708c44fb04f9d21fcfd857a76e6bde8771d0dc78"
+      },
+      "scoped_main_seconds": 20.34,
+      "full": {
+        "file": "work/promo-cadence-20261018/hd-fonts/house-occlusion-full-tests-r1.log",
+        "sha256": "c5d70dddc26e525820abbeba4894b4c26cfdb7282bcd98b5870b6566c1f5a206"
+      },
+      "full_status": "PASS",
+      "main_package_seconds": 248.48,
+      "catalog_tests": {
+        "status": "PASS",
+        "assets": 356,
+        "tests": 9
+      },
+      "inventory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/house-occlusion-string-inventory-r2.json",
+        "sha256": "45bcfe20ef39edac038ef5f527cff37ecf77eddf86672d2ae44dc7ca5e09354e"
+      },
+      "review_migration": "official migration; all signatures and review decisions preserved"
+    },
+    "private_assets": {
+      "status": "PASS",
+      "private": true,
+      "file_count": 3250,
+      "runtime_file_count": 3050,
+      "catalog_sha256": "db9f2cb2cc5930a2877a963882a95a5574665af80a63c494edcfda265807a7de",
+      "manifest_sha256": "476260e567cd8276ac96b75fb85569a3fe795553691e3f9b040c69d7d0168ab9",
+      "files_checked": 3250,
+      "owner": "1000:1000",
+      "repo": "wicanr2/fd2-assets-private",
+      "remote_head": "4be2f35a4856dd377846692acabf7e8cbacb8175",
+      "remote_verified": true,
+      "report": {
+        "file": "work/promo-cadence-20261018/hd-fonts/roof-object-private-verification-r1.json",
+        "sha256": "ea6737ed0c824abd1d6bf3971840982acc5a2a55293a39f0e2554d860386cabc"
+      }
+    },
+    "failed_runs": {
+      "r1": "tool waited for old turn value; interrupted after verified wrong wait",
+      "r2": "tool waited for retained banner text; deadline; actual banner_t=0",
+      "r3": "180s deadline during still-progressing AI; independently exposed input lock defect; not proof of game hang",
+      "r4": "house/F2 phase completed; later F9 checker still used banner text. Whole run remains failed",
+      "r5": "all five corresponding GUI waits use banner_t; independent normal world/save flow PASS",
+      "occlusion_first_verifier": "second PNG had different character phase; opaque results retained, character marked not-comparable; no whole-frame parity claim"
+    },
+    "review": {
+      "runtime_roof_and_occlusion_images_inspected": true,
+      "external_grass_style_mixture_visible": true,
+      "internal_tile_cut_gaps_observed": false,
+      "remaining_house_foreground_frames": [
+        277,
+        281,
+        283,
+        285,
+        287
+      ],
+      "new_roof_foreground_normal_gpu_pending": [
+        29,
+        31
+      ],
+      "upstep_gpu_pending": true,
+      "public_images_added": false,
+      "recording_created": false
+    },
+    "reproduction": {
+      "go_image": "fd2-go-test-local:latest",
+      "pillow_image": "fd2-assets-local:20260829-sfx",
+      "gui_image": "fd2-promo:20261017-r1",
+      "user": "1000:1000",
+      "network": "none",
+      "gui_route_flags": "--battle-status --terrain --terrain-roof-view --terrain-occlusion --world",
+      "gui_save_flags": "--battle-status --terrain --terrain-roof-view --world",
+      "gui_common": "tools/verify_fd2_hd_fonts_gui.py --binary <current build> --assets /repo/remake --original-pack /pack --modern-pack <catalog pack> --town-save <ordinary ch01 JSON> --out <new output>",
+      "occlusion": "tools/verify_fd2_hd_terrain_occlusion.py --observation <terrain-observation.json> --route <terrain-route.json> --catalog <catalog.json> --pack <modern pack> --report <new file>",
+      "source": "go run ./cmd/fd2-terrain-sources -pack /pack -maps /src/remake/assets/maps -out <new local source directory>",
+      "art": "tools/build_fd2_hd_terrain_object.py --pack /pack --maps <maps> --sources <native source> --recipe <roof-object recipe> --master <saved master> --out <new local candidate>",
+      "register": "tools/register_fd2_hd_terrain.py --object roof-object --candidate <candidate> --catalog <catalog> --asset-root <modern pack> --master-root <saved master parent>",
+      "full_tests": "with-xvfb go test -p 2 ./... -count=1; FD2_ASSET_PACK and FD2_TEST_MODERN_PACK set, 8g RAM,4 CPUs,/tmp exec tmpfs 3g"
+    },
+    "release_unchanged": "v.1.0.0-20261017 -> d8c361a8324cb19b5a0738897e15c151500a8de8",
+    "next_gate": "擴展其他真正HD地形與完整HUD；其餘前景及早中晚期／平台另驗。",
+    "final_checks": {
+      "local_links": 2758,
+      "broken_local_links": [],
+      "index_positive_control": true,
+      "readme_culture_and_locales_preserved": true,
+      "go_source_sha_unchanged": 993,
+      "new_output_owner": "1000:1000",
+      "ownership_findings": [],
+      "protected_private_records_unchanged": 3239,
+      "cleanup": {
+        "removed": [
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/fd2-house-occlusion-r1",
+            "bytes": 19174488
+          },
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/fd2-house-occlusion-r2",
+            "bytes": 19174456
+          },
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/house-occlusion-go-cache",
+            "bytes": 272808903
+          },
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/native-terrain-sources-r3",
+            "bytes": 10344741
+          }
+        ],
+        "bytes_freed": 321502588,
+        "recording_created": false,
+        "final_source_and_receipts_retained": true
+      }
+    },
+    "lessons": {
+      "total": 249,
+      "guards": 130
+    },
     "unexpected_fd2_containers": 0
   }
 }

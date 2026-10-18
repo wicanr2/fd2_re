@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 20 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 21 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -108,19 +108,17 @@ FDFIELD回合事件由完整具型別處理器降成正式劇本，保留增援�
 
 `modern-theme-player-asset-coverage` · 工作 · [#201](https://github.com/wicanr2/fd2_re/issues/201) · 仍未完成 · 要人判
 
-第一章房屋已登錄24底圖及6前景的144×144稀疏原生HD集合，接入正式Game.Draw。沿既有selector、原生視圖及一次時鐘交易，range另疊在HD地形上；新RGB的調色盤映射明示為現代插值近似，alpha、玩法與保存保持。
+屋後前景279已由普通首章JSON標題LOAD，以正式移動、待機／END及增援對話在四回合抵達，不改槽或章內狀態。seed=1在啟動前固定，保留受傷。兩張前景各16632像素完全相符；第一張2752個透明處人物核心通過，第二張人物相位不同而保留不可比。
 
-正常首章標題LOAD後，以普通方向鍵移到房屋，F2切忠實模式再切回。37張主要GUI另含走行、指令環、取消、兩次物理攻擊、Home狀態／命令及新程序標題LOAD；兩張房屋GPU各有22／24個完整可比格與發布RGB逐像素相符。保存與來源完整bytes相同，seed=1啟動前固定，沒有章內狀態注入。
+褐頂物件新增八底圖與兩前景的144集合；新母稿以內建imagegen重畫，再依明示UV配方與原生遮罩切片。兩張正常GPU均包含全部八底圖，來源RGB相符。356項清冊及9項工具測試通過，原354項清冊內容保持；私人包3250檔已逐檔驗證並推送4be2f35a4856dd377846692acabf7e8cbacb8175，runtime-only白名單3050檔。
 
-房屋外緣與切片接縫已目視審查。前景正常遮擋、房屋在鏡頭內的走行與第12章上移GPU仍待補；既有部件E1不提升為正常GPU。首輪按鍵工具100ms輪詢造成多移一格，改5ms後同一binary乾淨重跑通過，未改遊戲輸入規則。
+普通END與增援對話發現#262，依既有同步順序修復AI期間玩家地圖輸入重入。修復後4709筆路徑觀測沒有AI期間move_preview，相關回歸與完整Go通過，主程式248.480秒。沒有新原版oracle、matching或整章E2。
 
-完整Go命令的主程式258秒與其餘遊戲／資料套件通過；只有字串清冊舊來源SHA失敗。官方遷移核對99筆審查ID與決定不變，重綁後該套件通過；原整套命令的FAIL保留。354項清冊及9項工具測試通過。
+長流程的屋後／F2階段已完成，但後續F9檢查仍把保留的banner文字當成播放中，整輪失敗保留。修正工具後以同份binary獨立重跑普通LOAD、F2、走行、指令環、取消、兩次攻擊、Home狀態／命令、F5及新程序冷讀通過，完整保存與來源相同。分段證據不包裝成單次長流程PASS。
 
-私人包3239檔逐檔核對並推送2d1460d1eaedbd7e62678e4e4ff8ba3c556ca4b6，runtime-only白名單3040檔。原生製圖來源#261保持已結案；既有世界與計時對話證據保持。未新增公開圖、錄影、原版oracle、matching、整章E2或Release。
+唯一現況與完整提示、來源、SHA、拒收及重跑入口在58／61、WORKLOG與docs/data/fd2-modern-hd-battlefield-20261019.json的house_occlusion_and_roof_followup_20261019。較早來源／房屋／世界／計時對話批次仍保留。未新增公開圖、錄影或Release。
 
-唯一現況及重跑入口在58／61、WORKLOG與docs/data/fd2-modern-hd-battlefield-20261019.json的house_runtime_followup_20261019。較早來源、世界與計時對話批次保留在同份主收據的各followup，不當成目前尚未接線。
-
-本項保持開啟：房屋底圖正常GPU已驗；6前景正常遮擋、其他地形、完整HUD及其他consumer素材仍未完成。下一步先補正常前景遮擋與相鄰地形，不重開matching。
+本項保持開啟：map0兩物件已接40槽；其餘地形、前景、完整HUD與其他consumer素材仍未完成。未知身分不猜補。
 
 怎樣算做完：受版控需求盤點可重跑，列出來源與consumer；既有已核准現代替換範圍零非預期缺件，其他畫面各有明示分類與決策；缺件拒收與原子切換回歸通過，私人包雜湊及遠端HEAD可核對。
 
@@ -152,21 +150,29 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 `modern-theme-highres-prototype` · 工作 · [#204](https://github.com/wicanr2/fd2_re/issues/204) · 仍未完成 · 要人判
 
-第一章房屋已登錄24底圖及6前景的144×144稀疏原生HD集合，接入正式Game.Draw。沿既有selector、原生視圖及一次時鐘交易，range另疊在HD地形上；新RGB的調色盤映射明示為現代插值近似，alpha、玩法與保存保持。
+屋後前景279已由普通首章JSON標題LOAD，以正式移動、待機／END及增援對話在四回合抵達，不改槽或章內狀態。seed=1在啟動前固定，保留受傷。兩張前景各16632像素完全相符；第一張2752個透明處人物核心通過，第二張人物相位不同而保留不可比。
 
-正常首章標題LOAD後，以普通方向鍵移到房屋，F2切忠實模式再切回。37張主要GUI另含走行、指令環、取消、兩次物理攻擊、Home狀態／命令及新程序標題LOAD；兩張房屋GPU各有22／24個完整可比格與發布RGB逐像素相符。保存與來源完整bytes相同，seed=1啟動前固定，沒有章內狀態注入。
+褐頂物件新增八底圖與兩前景的144集合；新母稿以內建imagegen重畫，再依明示UV配方與原生遮罩切片。兩張正常GPU均包含全部八底圖，來源RGB相符。356項清冊及9項工具測試通過，原354項清冊內容保持；私人包3250檔已逐檔驗證並推送4be2f35a4856dd377846692acabf7e8cbacb8175，runtime-only白名單3050檔。
 
-房屋外緣與切片接縫已目視審查。前景正常遮擋、房屋在鏡頭內的走行與第12章上移GPU仍待補；既有部件E1不提升為正常GPU。首輪按鍵工具100ms輪詢造成多移一格，改5ms後同一binary乾淨重跑通過，未改遊戲輸入規則。
+普通END與增援對話發現#262，依既有同步順序修復AI期間玩家地圖輸入重入。修復後4709筆路徑觀測沒有AI期間move_preview，相關回歸與完整Go通過，主程式248.480秒。沒有新原版oracle、matching或整章E2。
 
-完整Go命令的主程式258秒與其餘遊戲／資料套件通過；只有字串清冊舊來源SHA失敗。官方遷移核對99筆審查ID與決定不變，重綁後該套件通過；原整套命令的FAIL保留。354項清冊及9項工具測試通過。
+長流程的屋後／F2階段已完成，但後續F9檢查仍把保留的banner文字當成播放中，整輪失敗保留。修正工具後以同份binary獨立重跑普通LOAD、F2、走行、指令環、取消、兩次攻擊、Home狀態／命令、F5及新程序冷讀通過，完整保存與來源相同。分段證據不包裝成單次長流程PASS。
 
-私人包3239檔逐檔核對並推送2d1460d1eaedbd7e62678e4e4ff8ba3c556ca4b6，runtime-only白名單3040檔。原生製圖來源#261保持已結案；既有世界與計時對話證據保持。未新增公開圖、錄影、原版oracle、matching、整章E2或Release。
+唯一現況與完整提示、來源、SHA、拒收及重跑入口在58／61、WORKLOG與docs/data/fd2-modern-hd-battlefield-20261019.json的house_occlusion_and_roof_followup_20261019。較早來源／房屋／世界／計時對話批次仍保留。未新增公開圖、錄影或Release。
 
-唯一現況及重跑入口在58／61、WORKLOG與docs/data/fd2-modern-hd-battlefield-20261019.json的house_runtime_followup_20261019。較早來源、世界與計時對話批次保留在同份主收據的各followup，不當成目前尚未接線。
-
-本項保持開啟：1920×1200黑體、480頭像、144人物與首章房屋已有正式切片；其他地形、完整HUD／固定字樣、索引演出、跨平台效能與實機驗收仍待完成。
+本項保持開啟：1920×1200字型／頭像／人物與map0兩物件已有正式切片；其餘地形、完整HUD／固定字樣、索引演出及跨平台效能／實機仍待完成。
 
 怎樣算做完：既有HD頭像／黑體／穩定頁／整備問句／金幣／角色物品轉場及首章角色狀態覆蓋已抽驗。接續其他設施轉場、成功演出、圖示與未列畫面，再完成角色／地形真正高解析素材、戰場交界及跨平台HD效能；完整HD仍未完成。
+
+### P1 換手期間阻止玩家選人／移動輸入重入
+
+`ai-phase-player-input-lock` · 缺陷 · [#262](https://github.com/wicanr2/fd2_re/issues/262) · 仍未完成 · 要人判
+
+首章普通標題LOAD、移動／待機／END及增援對話後，實際audit同時有ai_busy=true、selected及move_preview，選中的我方角色為(11,13)。Update推進AI後仍走玩家地圖鍵盤，confirm入口也未拒收。
+
+依56既有已證實0x1A30B同步順序修復，不開新matching。來源與失敗保留在work/promo-cadence-20261018/hd-fonts/house-occlusion-gui-r3/terrain-route.json及operations.json。該輪另因180秒工具期限在AI持續行動時結束，不能把逾時歸因於本缺陷，也不宣稱遊戲卡死。
+
+怎樣算做完：AI期間地圖輸入拒收，對話與F2／F9保持；正常首章END及增援對話後不產生玩家move_preview，離開AI後可正常選人；回歸與正常GPU抽樣通過。
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
@@ -212,19 +218,17 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 `modern-theme-normal-player-validation` · 工作 · [#202](https://github.com/wicanr2/fd2_re/issues/202) · 仍未完成 · 要人判
 
-第一章房屋已登錄24底圖及6前景的144×144稀疏原生HD集合，接入正式Game.Draw。沿既有selector、原生視圖及一次時鐘交易，range另疊在HD地形上；新RGB的調色盤映射明示為現代插值近似，alpha、玩法與保存保持。
+屋後前景279已由普通首章JSON標題LOAD，以正式移動、待機／END及增援對話在四回合抵達，不改槽或章內狀態。seed=1在啟動前固定，保留受傷。兩張前景各16632像素完全相符；第一張2752個透明處人物核心通過，第二張人物相位不同而保留不可比。
 
-正常首章標題LOAD後，以普通方向鍵移到房屋，F2切忠實模式再切回。37張主要GUI另含走行、指令環、取消、兩次物理攻擊、Home狀態／命令及新程序標題LOAD；兩張房屋GPU各有22／24個完整可比格與發布RGB逐像素相符。保存與來源完整bytes相同，seed=1啟動前固定，沒有章內狀態注入。
+褐頂物件新增八底圖與兩前景的144集合；新母稿以內建imagegen重畫，再依明示UV配方與原生遮罩切片。兩張正常GPU均包含全部八底圖，來源RGB相符。356項清冊及9項工具測試通過，原354項清冊內容保持；私人包3250檔已逐檔驗證並推送4be2f35a4856dd377846692acabf7e8cbacb8175，runtime-only白名單3050檔。
 
-房屋外緣與切片接縫已目視審查。前景正常遮擋、房屋在鏡頭內的走行與第12章上移GPU仍待補；既有部件E1不提升為正常GPU。首輪按鍵工具100ms輪詢造成多移一格，改5ms後同一binary乾淨重跑通過，未改遊戲輸入規則。
+普通END與增援對話發現#262，依既有同步順序修復AI期間玩家地圖輸入重入。修復後4709筆路徑觀測沒有AI期間move_preview，相關回歸與完整Go通過，主程式248.480秒。沒有新原版oracle、matching或整章E2。
 
-完整Go命令的主程式258秒與其餘遊戲／資料套件通過；只有字串清冊舊來源SHA失敗。官方遷移核對99筆審查ID與決定不變，重綁後該套件通過；原整套命令的FAIL保留。354項清冊及9項工具測試通過。
+長流程的屋後／F2階段已完成，但後續F9檢查仍把保留的banner文字當成播放中，整輪失敗保留。修正工具後以同份binary獨立重跑普通LOAD、F2、走行、指令環、取消、兩次攻擊、Home狀態／命令、F5及新程序冷讀通過，完整保存與來源相同。分段證據不包裝成單次長流程PASS。
 
-私人包3239檔逐檔核對並推送2d1460d1eaedbd7e62678e4e4ff8ba3c556ca4b6，runtime-only白名單3040檔。原生製圖來源#261保持已結案；既有世界與計時對話證據保持。未新增公開圖、錄影、原版oracle、matching、整章E2或Release。
+唯一現況與完整提示、來源、SHA、拒收及重跑入口在58／61、WORKLOG與docs/data/fd2-modern-hd-battlefield-20261019.json的house_occlusion_and_roof_followup_20261019。較早來源／房屋／世界／計時對話批次仍保留。未新增公開圖、錄影或Release。
 
-唯一現況及重跑入口在58／61、WORKLOG與docs/data/fd2-modern-hd-battlefield-20261019.json的house_runtime_followup_20261019。較早來源、世界與計時對話批次保留在同份主收據的各followup，不當成目前尚未接線。
-
-本項保持開啟：首章房屋移鏡頭與F2、既有普通走行／攻擊／保存冷讀已驗。仍待房屋可見時走行與前景、正常END／AI、早中晚期、故事／法術／死亡及平台抽驗。
+本項保持開啟：首章四回合及屋後／F2、獨立普通操作與保存冷讀已驗；其他前景、上移、早中晚期、故事／法術／死亡與平台仍待抽驗。
 
 怎樣算做完：受版控計畫及目前正式runtime的正常鍵盤／GPU收據涵蓋早中晚期與上述主要交界；存檔可冷讀回，忠實主題抽樣回歸通過；已登錄素材顯示與catalog一致，未驗範圍明示。
 

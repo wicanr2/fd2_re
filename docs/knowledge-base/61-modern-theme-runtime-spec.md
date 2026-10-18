@@ -793,7 +793,7 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
 - [拒收工具](../../tools/test_fd2_hd_terrain_sources.py)使用實際分離素材，驗末張圖庫錯誤、缺獨立前景及既有輸出保護。
   候選與原始母稿留本機；通過清冊及執行期驗證前，不同步私人正式主題包。
 
-第一章房屋正式接線（底圖切片CONFORMED；前景正常GPU仍待驗，限已製成的30槽）：
+第一章房屋正式接線（底圖與前景279切片CONFORMED；其餘前景／上移GPU待驗，限已製成的30槽）：
 
 - 清冊使用可選`native_terrain_hd_set`，既有`files`、`frame_sha256`、`frame_count`及`semantics`配合
   `frame_ids`整數陣列，明示map及terrain／foreground角色。每圖144×144，`native_mask_nearest_6`。
@@ -825,6 +825,26 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
 普通走行／攻擊在首章其他區域抽驗；不外推房屋在視野內的走行、六張前景遮擋與第12章上移GPU。
 外緣與切片接縫已目視審查，原版草地與HD房屋混合美術仍可辨識。
 收據、來源與重跑命令見[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`house_runtime_followup_20261019`。
+
+屋後遮擋抽樣（CONFORMED-SCOPED）：沿既有普通首章JSON標題LOAD，不改槽或章內狀態。
+以正式移動可達集合決定目的地，最多六個玩家回合，普通待機與空格系統面板Down→END推進；
+seed在啟動前固定，失敗保留，不重擲。`turn`與`native_round`均為遞增計數，橫幅播放以`banner_t`判定，
+不把保留的`banner`標籤當成仍在播放。目標是原生房屋第8列可走格，既有`NativeForegroundRedrawCells`
+會排程該格及上格。觀測器只附加實際已發布前景的frame／rect／RGBA雜湊及人物palette-band。
+實際GPU核對來源opaque覆蓋與透明跳過，F2維持同一隊伍／view；最後F9回來源再驗保存冷讀。
+未抵達、跨相位或未顯示前景均不能宣稱遮擋通過。此抽樣不更改既有遊戲規則，也不新增原版oracle。
+
+相鄰褐頂物件（CONFORMED：八底圖正式GPU；兩前景限E1）：map0的(11,4)起2×4格，基準幀28／30、272／273、32／33、34／35。
+沿同一Go來源匯出器及正式selector保存整體參照，不推定物件用途。兩個前景29／31的opaque索引與各自base相同，
+可共用對應新RGB；仍逐像素核對遮罩。八個base均須全opaque且無remap，才適用既有144稀疏集合。
+新母稿沿既有手繪風格完整重畫，再以明示UV錨點切片；接縫、清冊、正常GPU及私人同步通過後才列正式切片。
+[褐頂物件配方](../../remake/assets/themes/modern/terrain-roof-object-map0.recipe.json)保留人工錨點與來源限制。
+屋後普通路徑使用[正常移動／END工具](../../tools/verify_fd2_hd_terrain_walk.py)，
+實際opaque覆寫與透明處人物核心使用[GPU遮擋核對](../../tools/verify_fd2_hd_terrain_occlusion.py)。
+兩張前景279圖片各核對16632個opaque像素；人物核心只取相位可比的第一張，第二張保留不可比。
+[拒收回歸](../../tools/test_fd2_hd_terrain_occlusion.py)另驗錯hash、錯一個opaque像素、錯透明處人物核心及缺前景。
+長流程後續F9等待腳本失敗保留，同一binary的獨立正常操作／保存冷讀通過；範圍不合併成單次長流程PASS。
+完整新圖源、提示、SHA、普通路徑及限制沿主收據的`house_occlusion_and_roof_followup_20261019`。
 
 草地母稿以內建image_gen產生，完整提示與SHA保存在
 [主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`terrain_source_followup_20261019`。

@@ -11,6 +11,7 @@ import time
 from verify_fd2_hd_gui import digest, latest
 from verify_fd2_hd_panel_transitions import PanelTransitionProbe
 from verify_fd2_hd_timed_dialogue import TimedDialogueProbe
+from verify_fd2_hd_terrain_walk import walk_behind_house
 
 
 def main():
@@ -31,11 +32,15 @@ def main():
     parser.add_argument('--gold-roll-theme', choices=['hd','faithful'], default='hd', help='金幣買賣的主題對照')
     parser.add_argument('--world', action='store_true', help='加驗正式HD世界、普通走行、指令環、取消與物理戰鬥返回')
     parser.add_argument('--terrain', action='store_true', help='普通方向鍵移鏡頭至首章房屋，抽驗HD地形與F2；需--battle-status')
+    parser.add_argument('--terrain-occlusion', action='store_true', help='最多六個普通回合抵達屋後，抽驗前景；需--terrain與--world')
+    parser.add_argument('--terrain-roof-view', action='store_true', help='另以普通游標取景褐頂物件全部八個底圖；需--terrain')
     parser.add_argument('--timed-dialogue', action='store_true', help='加驗計時對話開收框、穩定HD文字與F2；需--world與明示章前EXP校準槽')
     args = parser.parse_args()
     tool_source_sha256=digest(Path(__file__))
     assert not args.world or args.battle_status
     assert not args.terrain or args.battle_status
+    assert not args.terrain_occlusion or args.terrain and args.world
+    assert not args.terrain_roof_view or args.terrain
     assert not args.timed_dialogue or args.world
     assert not args.transition_frames or args.preparation
     assert not args.panel_transitions or args.status or args.items
@@ -151,7 +156,7 @@ def main():
             state=latest(audit)
             if state.get('error'):raise RuntimeError(state['error'])
             if predicate(state):return state
-            if time.monotonic()-started>660:raise TimeoutError('整輪逾時')
+            if time.monotonic()-started>(1200 if args.terrain_occlusion else 660):raise TimeoutError('整輪逾時')
             time.sleep(.1)
         raise TimeoutError(str(latest(audit)))
 
@@ -237,7 +242,7 @@ def main():
             wait(lambda s:s.get('frame',0)>=loaded_frame+20)
             for _ in range(120):
                 state=latest(audit)
-                if not state.get('dialogues') and not state.get('banner'):break
+                if not state.get('dialogues') and not state.get('banner_t'):break
                 key('Return')
             else:raise TimeoutError('冷讀首章對話未結束')
         shot(name)
@@ -367,10 +372,10 @@ def main():
             wait(lambda s:not s.get('title_phase') and s.get('node')=='battle_ch01')
             for _ in range(120):
                 state=latest(audit)
-                if not state.get('dialogues') and not state.get('banner'):break
+                if not state.get('dialogues') and not state.get('banner_t'):break
                 key('Return')
             else:raise TimeoutError('首章LOAD對話未結束')
-            wait(lambda s:not s.get('dialogues') and not s.get('banner'))
+            wait(lambda s:not s.get('dialogues') and not s.get('banner_t'))
             shot('battle-hd-field')
             if args.terrain:
                 wait(lambda s:not s.get('player_focus') and s.get('hd_world') is True)
@@ -383,21 +388,30 @@ def main():
                         else:direction='Down' if current[1]<destination[1] else 'Up'
                         key(direction)
                     raise AssertionError(('普通游標未抵達房屋觀測位置',latest(audit)['cursor'],destination))
-                pan_to([15,5]);pan_to([10,5])
-                wait(lambda s:len(s.get('hd_world_terrain',[]))>=18)
+                view_y=2 if args.terrain_roof_view else 5
+                pan_to([15,view_y]);pan_to([10,view_y])
+                required={28,30,32,33,34,35,272,273} if args.terrain_roof_view else set()
+                def terrain_visible(s):
+                    return (len(s.get('hd_world_terrain',[])) >= (8 if args.terrain_roof_view else 18)
+                            and required.issubset({t['frame'] for t in s.get('hd_world_terrain',[])}))
+                wait(terrain_visible)
                 assert latest(audit)['units']==before_pan['units'],'單純移鏡頭改變單位'
-                shot('terrain-hd-house')
+                label='roof-object' if args.terrain_roof_view else 'house'
+                shot('terrain-hd-'+label)
                 house=latest(audit)
                 key('F2');wait(lambda s:s.get('hd_theme') is False and not s.get('hd_world'))
-                shot('terrain-faithful-house')
+                shot('terrain-faithful-'+label)
                 assert latest(audit)['units']==house['units'] and latest(audit)['view']==house['view']
-                key('F2');wait(lambda s:s.get('hd_world') is True and len(s.get('hd_world_terrain',[]))>=18)
-                shot('terrain-hd-house-restored')
+                key('F2');wait(lambda s:s.get('hd_world') is True and terrain_visible(s))
+                shot('terrain-hd-'+label+'-restored')
                 assert latest(audit)['units']==house['units'] and latest(audit)['view']==house['view']
+                if args.terrain_occlusion:
+                    walk_behind_house(key,wait,shot,lambda:latest(audit),
+                                      args.assets/'assets/maps/map0/map.json',args.out)
                 key('F9');wait(lambda s:s.get('node')=='battle_ch01')
                 for _ in range(120):
                     state=latest(audit)
-                    if not state.get('dialogues') and not state.get('banner'):break
+                    if not state.get('dialogues') and not state.get('banner_t'):break
                     key('Return')
                 else:raise TimeoutError('房屋抽驗後普通F9未返回戰場')
                 wait(lambda s:not s.get('player_focus') and s.get('hd_world') is True)
@@ -411,7 +425,7 @@ def main():
                         state=latest(audit)
                         if state.get('level_up_dialogue') and state.get('dialogue_native') is False:
                             raise AssertionError('LOAD後經驗對話owner仍佔有新的非原生章首對話')
-                        if not state.get('battle_event') and not state.get('dialogues') and not state.get('banner'):
+                        if not state.get('battle_event') and not state.get('dialogues') and not state.get('banner_t'):
                             return
                         key('Return')
                     raise TimeoutError('普通LOAD戰場對話尚未結束')
@@ -1018,6 +1032,11 @@ def main():
                 {'accepted':transition_shots,'rejected':transition_rejected,'errors':transition_errors,
                  'gpu_validation_performed':transition_gpu_validated},
                 ensure_ascii=False,indent=2)+'\n')
+        if args.terrain:
+            (args.out/'terrain-observation.json').write_text(json.dumps(
+                {'screenshots':shots,'gui_tool_sha256':tool_source_sha256,
+                 'tool_source_unchanged':digest(Path(__file__))==tool_source_sha256,
+                 'recording_created':False},ensure_ascii=False,indent=2)+'\n')
         (args.out/'operations.json').write_text(json.dumps(operations,ensure_ascii=False,indent=2)+'\n')
         for proc in reversed(processes):
             if proc.poll() is None:proc.terminate()

@@ -2900,6 +2900,36 @@
       "rule": "普通鍵盤GUI驗證以短間隔查看按下收據並立即放開，再核對放開後的游標；單次按下ACK不代表只移動一格。入口tools/verify_fd2_hd_fonts_gui.py。",
       "why": "房屋接線首輪工具100ms輪詢時，左鍵按下ACK後在放開前又移一格，造成第二次攻擊重播失敗。改5ms輪詢，同一binary乾淨重跑通過，沒有修改遊戲輸入規則。",
       "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json"
+    },
+    {
+      "id": "ai-phase-lock-after-dialogue-owner",
+      "area": "回合輸入",
+      "date": "2026-10-19",
+      "rule": "劇情owner釋放後，地圖輸入入口再次檢查AI換手鎖，confirm也拒絕重入。既有同步順序入口為56的0x1A30B段與remake/cmd/fd2/main.go。",
+      "why": "屋後普通路徑r3的Return在frame4703已ai_busy=true且建立我方move_preview；前一放鍵frame4699還是增援對話。舊Update在AI推進後仍走玩家輸入。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/main.go"
+        ],
+        "pattern": "if g.aiBusy && len\\(g.dialog\\) == 0"
+      }
+    },
+    {
+      "id": "gui-round-counter-and-active-banner",
+      "area": "GUI驗證",
+      "date": "2026-10-19",
+      "rule": "等待回合接續時依遞增turn／native_round與banner_t判定，不用turn比對陣營，也不用保留的banner文字當播放狀態。入口tools/verify_fd2_hd_terrain_walk.py。",
+      "why": "前兩輪工具分別因等待舊turn與PLAYER PHASE標籤而未識別已回玩家回合；實際banner_t已為零。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_hd_terrain_walk.py"
+        ],
+        "pattern": "banner_t"
+      }
     }
   ]
 }

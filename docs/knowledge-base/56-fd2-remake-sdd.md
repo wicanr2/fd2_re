@@ -1,8 +1,21 @@
 # 56 — FD2 remake 系統設計規格（SDD，2026-08-09）
 
+AI期間的玩家地圖輸入鎖（CONFORMED-SCOPED，既有同步順序修復）：沿本檔已證實的`0x1A30B`換手序列，
+玩家控制器在敵方AI、回合事件及回合加一之後才重新取得輸入。
+首章屋後普通路徑觀測到`ai_busy=true`且已選中新增我方角色、建立move_preview；
+`Update`在推進AI後仍落到玩家地圖鍵盤，`confirm`也沒有AI鎖。
+修復只在`aiBusy`且沒有待處理對話時阻止地圖／指令環／選人輸入，並在`confirm`入口拒絕AI期間重入。
+既有對話、F2／F9、繪製、AI推進、原生時鐘與規則保持。回歸驗AI拒收、離開AI後可選人，
+再以同seed普通END／增援對話重跑。這是恢復既有同步契約，不新增原版RE或matching結論。
+實際Return收據frame4703首次選中我方且ai_busy=true，前一放鍵frame4699仍有增援對話。
+修復後普通四回合抵達屋後，AI期間move_preview為零；完整Go與後續保存冷讀通過。
+
+房屋前景279正常遮擋與相鄰褐頂物件已補正式切片；唯一現況依[58](58-fd2-exe-re-coverage.md)，
+來源與分段驗證限制見[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`house_occlusion_and_roof_followup_20261019`。
+
 第一章房屋30張144圖已登錄稀疏原生HD集合並接正式Game.Draw；alpha保持原生遮罩，
 不同RGB的前景槽使用獨立母稿。底圖有正常首章移鏡頭與F2的實際GPU證據，
-前景及上移限部件E1，完整地形仍未完成。原生時鐘、規則與保存bytes保持。
+其餘前景及上移限部件E1，完整地形仍未完成。原生時鐘、規則與保存bytes保持。
 唯一現況依[58](58-fd2-exe-re-coverage.md)，來源及重跑入口見
 [主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`house_runtime_followup_20261019`與[61](61-modern-theme-runtime-spec.md)。
 

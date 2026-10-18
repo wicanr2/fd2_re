@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "kind": "hd_terrain_object_art_recipe",
+  "object": "map00-roof-object",
+  "status": "prototype",
+  "scale": 6,
+  "painted_master_size": [887, 1774],
+  "native_reference_size": [48, 96],
+  "painted_x_anchors": [0, 443, 887],
+  "native_x_anchors": [0, 24, 48],
+  "painted_y_anchors": [0, 64, 950, 1640, 1712, 1774],
+  "native_y_anchors": [0, 3, 54, 90, 94, 96],
+  "anchor_evidence": "人工製圖校準，對齊頂尖、木質區尖端、牆腳與灰色基座；不推定物件用途，不宣稱原版RGB或二進位語意。",
+  "alpha_policy": "逐幀沿原生opaque mask最近鄰六倍；前景29／31保持mode3透明。",
+  "rgb_policy": "全部RGB取自新手繪母稿；明示分段UV取樣，不混入舊像素RGB。",
+  "foreground_overrides": {},
+  "runtime_integrated": false
+}

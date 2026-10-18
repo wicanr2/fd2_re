@@ -83,10 +83,43 @@ def verify(pack, maps, sources):
         raise ValueError("去重統計不符")
     for entry in manifest["previews"]:
         check_binding(sources, entry)
+    object_pixels = 0
+    object_ids = set()
+    for obj in manifest['objects']:
+        if obj['id'] in object_ids or obj['map'] not in range(33):
+            raise ValueError('物件識別重複或map越界')
+        object_ids.add(obj['id'])
+        item = manifest['maps'][obj['map']]
+        data = json.loads(check_binding(maps,item['map_data']).read_text())
+        bank = json.loads(check_binding(pack,item['bank']).read_text())
+        width,height = obj['width'],obj['height']
+        if (width<=0 or height<=0 or obj['x']<0 or obj['y']<0
+                or obj['x']+width>data['w'] or obj['y']+height>data['h']
+                or len(obj['cells'])!=width*height
+                or {(c['x'],c['y']) for c in obj['cells']}!={(x,y) for y in range(height) for x in range(width)}):
+            raise ValueError('物件格子不完整或越界')
+        atlas = Image.open(check_binding(sources,next(e for e in item['outputs'] if e['file'].endswith('-rgba.png')))).convert('RGBA')
+        canvas = Image.new('RGBA',(width*24,height*24))
+        for cell in obj['cells']:
+            word=data['tiles'][(obj['y']+cell['y'])*data['w']+obj['x']+cell['x']]
+            tile=word&1023
+            flag=bank['controls'][tile*4]
+            if flag&0x1c:
+                raise ValueError('物件參照只核對靜態selector，不省略動畫契約')
+            if (cell['tile_word']!=word or cell['frame']!=tile
+                    or cell.get('foreground_frame')!=(tile+1 if flag&0x80 else None)):
+                raise ValueError('物件格子與原生靜態selector不符')
+            rect=(tile%16*24,tile//16*24,(tile%16+1)*24,(tile//16+1)*24)
+            canvas.paste(atlas.crop(rect),(cell['x']*24,cell['y']*24))
+        reference=Image.open(check_binding(sources,obj['reference'])).convert('RGBA')
+        if reference.size!=canvas.size or reference.tobytes()!=canvas.tobytes():
+            raise ValueError('物件參照與原生格子RGBA不同')
+        object_pixels+=width*height*576
     return {"status": "PASS", "banks": 33, "frames": frames, "pixels_per_layer": pixels,
             "unique_native_frames": len(unique), "native_selector_checks": selectors,
             "destination_remap_pixels_preserved": remapped,
             "manifest_sha256": sha(sources / "manifest.json"),
+            "objects": len(object_ids), "object_reference_pixels": object_pixels,
             "scope": "逐像素圖源回讀，非HD美術／GPU／正常玩家／原版對拍"}
 
 
