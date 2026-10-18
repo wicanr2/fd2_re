@@ -19,6 +19,8 @@ def main():
     facility.add_argument('--church', action='store_true', help='抽驗教會即時文字、四語名冊、取消與保存')
     facility.add_argument('--status', action='store_true', help='加驗教會角色狀態與命令穩定面板')
     facility.add_argument('--items', action='store_true', help='抽驗商店裝備物品面板、選取、F2與保存')
+    facility.add_argument('--preparation', action='store_true', help='抽驗標題 LOAD、整備穩定文字及 F2')
+    parser.add_argument('--native-save', type=Path, help='整備抽樣的既有原生槽，複製後才可寫入')
     args = parser.parse_args()
     assert Path('/.dockerenv').is_file() and args.binary.is_file()
     assert (args.original_pack/'manifest.json').is_file()
@@ -40,6 +42,14 @@ def main():
     for key in ['FD2_TITLE','FD2_CAMPAIGN','FD2_CAMP_NODE','FD2_SHOT','FD2_SHOT_FRAME',
                 'FD2_NATIVE_SAVE','FD2_SAVE_CURRENT','FD2_ENDING_PREFIX']:
         env.pop(key,None)
+    native_saved = None
+    native_source_hash = None
+    if args.native_save:
+        assert args.preparation and args.native_save.is_file()
+        native_source_hash = digest(args.native_save)
+        native_saved = args.out/'FD2.SAV'
+        native_saved.write_bytes(args.native_save.read_bytes())
+        env['FD2_NATIVE_SAVE'] = str(native_saved)
     Path(env['XDG_RUNTIME_DIR']).mkdir(mode=0o700)
     Path(env['XDG_CONFIG_HOME']).mkdir()
     Path(env['XDG_CACHE_HOME']).mkdir()
@@ -110,10 +120,15 @@ def main():
 
     def shot(name):
         # Wait for subsequent GPU presentation, independently of the input ACK.
+        if args.preparation and 'resized' in name:
+            before = latest(audit).get('frame', 0)
+            command('xdotool','windowfocus',window)
+            wait(lambda s:s.get('frame',0)>=before+20, timeout=120)
         time.sleep(1)
         path=args.out/(name+'.png')
         command('import','-window',window,str(path))
-        shots[path.name]={'sha256':digest(path),'state':latest(audit)}
+        shots[path.name]={'sha256':digest(path),'state':latest(audit),
+                          'window_geometry':command('xdotool','getwindowgeometry','--shell',window)}
         print('CAPTURE '+path.name,flush=True)
 
     def settled_dialogue():
@@ -128,7 +143,12 @@ def main():
         raise TimeoutError('逐字顯示未穩定')
 
     try:
-        start(['Xvfb',':97','-screen','0','1920x1200x24','-nolisten','tcp'],'xvfb.log')
+        xvfb=start(['Xvfb',':97','-screen','0','1920x1200x24','-nolisten','tcp'],'xvfb.log')
+        for _ in range(100):
+            try:command('xdotool','getdisplaygeometry');break
+            except subprocess.CalledProcessError:time.sleep(.1)
+            if xvfb.poll() is not None:raise RuntimeError('Xvfb啟動失敗')
+        else:raise TimeoutError('Xvfb尚未就緒')
         pulse=start(['pulseaudio','--daemonize=no','--exit-idle-time=-1','--use-pid-file=no'],'pulse.log')
         for _ in range(100):
             try:command('pactl','info');break
@@ -149,6 +169,81 @@ def main():
             if latest(audit).get('title_phase')=='menu':break
             key('Escape')
         else:raise TimeoutError('標題未就緒')
+        if args.preparation:
+            key('Down');key('Return')
+            wait(lambda s:s.get('title_phase')=='loadslots' and s.get('title_slot')==0)
+            shot('title-load-slots')
+            key('F2');wait(lambda s:s.get('hd_theme') is False);shot('faithful-title-load-slots')
+            key('F2');wait(lambda s:s.get('hd_theme') is True);shot('hd-title-load-slots-restored')
+            for slot in range(1,4):
+                key('Down');wait(lambda s:s.get('title_slot')==slot);shot('title-slot-'+str(slot))
+            key('Down');wait(lambda s:s.get('title_slot')==3)
+            key('Escape');wait(lambda s:s.get('title_phase')=='menu')
+            key('Return');wait(lambda s:s.get('title_phase')=='loadslots')
+            key('Return');wait(lambda s:not s.get('title_phase'))
+            def prep(**values):
+                return wait(lambda s:s.get('node','').startswith('preparation_')
+                            and not s.get('preparation_ui_busy')
+                            and all(s.get(k)==v for k,v in values.items()))
+            if native_saved:
+                prep(preparation_selecting=False,preparation_slots=False,preparation_confirm=False)
+                shot('preparation-record-question')
+                assert digest(native_saved)==digest(args.native_save),'LOAD改寫來源複本'
+                key('Return');prep(preparation_slots=True);shot('preparation-record-slots')
+                key('Down');prep(preparation_slot=1)
+                key('Return');prep(preparation_slots=True)
+                hd_saved=native_saved.read_bytes();shot('preparation-record-saved')
+                key('F2');wait(lambda s:s.get('hd_theme') is False)
+                key('Return');prep(preparation_slots=True)
+                assert native_saved.read_bytes()==hd_saved,'兩主題原生保存不同'
+                key('F2');wait(lambda s:s.get('hd_theme') is True)
+                key('Escape');prep(preparation_selecting=True,preparation_slots=False)
+                shot('preparation-roster')
+                key('F2');wait(lambda s:s.get('hd_theme') is False);shot('faithful-preparation-roster')
+                key('F2');wait(lambda s:s.get('hd_theme') is True);shot('hd-preparation-roster-restored')
+                command('xdotool','windowsize',window,'1600','1000');shot('preparation-resized')
+                command('xdotool','windowsize',window,'1920','1200')
+                key('F1');wait(lambda s:s.get('help_visible') is True);shot('preparation-help')
+                key('Escape');wait(lambda s:s.get('help_visible') is False)
+                key('Right');prep(preparation_selection=1);shot('preparation-next-unit')
+                key('Left');prep(preparation_selection=0)
+                for _ in range(latest(audit)['preparation_limit']):
+                    key('Return')
+                prep(preparation_selecting=False)
+                shot('preparation-final-question')
+                key('Escape');prep(preparation_selecting=True);shot('preparation-returned-roster')
+                assert native_saved.read_bytes()==hd_saved,'選人或取消改寫原生存檔'
+                assert digest(args.native_save)==native_source_hash,'原始槽被改寫'
+                saved_hash=digest(native_saved)
+                scope='正常標題LOAD既有第24章原生槽；祖先為攻略建構政策與清敵續玩，並非自然難度。保存槽1、選人、確認或必選訊息與取消均走普通鍵盤；不宣稱連續戰役或原版對拍。'
+            else:
+                wait(lambda s:s.get('node')=='hotel_ch02')
+                key('Escape');wait(lambda s:s.get('node')=='town_ch02')
+                key('Left');key('Left');key('Return')
+                prep(preparation_selecting=False);shot('preparation-departure-question')
+                key('F2');wait(lambda s:s.get('hd_theme') is False);shot('faithful-preparation-question')
+                key('F2');wait(lambda s:s.get('hd_theme') is True);shot('hd-preparation-question-restored')
+                key('Right');prep(preparation_choice=1);shot('preparation-departure-no')
+                key('Return');wait(lambda s:s.get('node')=='town_ch02')
+                key('Right');key('Right');key('Return')
+                wait(lambda s:s.get('node')=='hotel_ch02' and s.get('hotel_mode')=='menu')
+                key('F5');hd_saved=saved.read_bytes()
+                key('F2');wait(lambda s:s.get('hd_theme') is False)
+                key('F5');assert saved.read_bytes()==hd_saved,'兩主題JSON保存不同'
+                key('F9');wait(lambda s:s.get('node')=='hotel_ch02')
+                shot('faithful-hotel-after-preparation-load')
+                assert digest(saved)==digest(args.town_save),'出發取消改變來源狀態'
+                saved_hash=digest(saved)
+                scope='正常標題LOAD既有hotel_ch02 JSON槽，城鎮整備出發問句選NO返回，旅館F5／F9；非連續全戰役，不宣稱原版對拍。'
+            assert shots['title-load-slots.png']['sha256']==shots['hd-title-load-slots-restored.png']['sha256'],'標題F2往返圖不同'
+            report={'schema':'fd2-hd-preparation-font-gui-v1','status':'PASS',
+                    'binary_sha256':digest(args.binary),'town_save_sha256':digest(args.town_save),
+                    'native_source_sha256':digest(args.native_save) if args.native_save else None,
+                    'saved_sha256':saved_hash,'theme_save_bytes_equal':True,
+                    'screenshots':shots,'operations':operations,'recording_created':False,
+                    'scope':scope,'elapsed_seconds':time.monotonic()-started}
+            (args.out/'receipt.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+            return
         key('Return')
         wait(lambda s:not s.get('title_phase') and s.get('dialogue_native') is True, timeout=180)
         if args.items:

@@ -56,6 +56,17 @@ func (g *Game) recordInputAuditState() {
 	r["dialogue_phase"] = g.dlgPhase
 	r["title_phase"] = g.titlePhase
 	r["title_selection"] = g.titleSel
+	r["title_slot"] = g.titleSlotSel
+	r["preparation_selecting"] = g.prepSelecting
+	r["preparation_confirm"] = g.prepConfirm
+	r["preparation_required"] = g.prepRequiredMissing
+	r["preparation_choice"] = g.prepConfirmSel
+	r["preparation_slots"] = g.prepRecordSlots
+	r["preparation_slot"] = g.prepRecordSlotSel
+	r["preparation_selection"] = g.prepSel
+	r["preparation_selected"] = g.preparationSelected()
+	r["preparation_limit"] = g.prepLimit
+	r["preparation_ui_busy"] = g.nativeClassUIJob != nil
 	r["help_visible"] = g.helpVisible
 	if len(g.dialog) != 0 {
 		r["dialogue_speaker"] = g.dialog[len(g.dialog)-1].Speaker

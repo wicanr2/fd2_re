@@ -17,6 +17,35 @@ production已接啟動時480×480故事頭像，範圍與限制見下節；其�
 
 ## 範圍
 
+### 整備與標題讀檔穩定畫面（CONFORMED，限已列GUI與fixture範圍）
+
+沿用已核准的 A 黑體、1920×1200 與既有座標。資料鏈為
+`nativePreparationUIAssets.status` 的字模／數字素材與正式名冊，經既有整備合成器
+進入 `drawNativePreparation`；標題四槽由已驗證的存檔 metadata 經
+`ComposeNativeLoadSlotsFrame` 進入 `drawNativeLoadSlots`。不新增原版語意。
+
+- 整備只在穩定 Draw 暫時複製資產、包裝字模與已驗證的數字 bank；繪製後還原。
+  包含選人狀態、確認／必選角色訊息、城鎮出發／非城鎮保存問句及四槽。
+- 標題讀檔使用自己的 palette 與字模擷取文字；完整索引畫面替換時清除先前 HD 文字。
+  未知、歧義或字型缺字沿用像素。原生四槽與 JSON 後備路徑保持既有邊界。
+- 預建開收框仍用原像素快取。不得將 Draw 包裝帶入 Update、變更部署規則、
+  存檔 bytes、checksum 或交易驗證。圖示、烘焙標籤與頭像不在本輪字型範圍。
+- 驗收包含穩定畫面文字、資產還原、原像素 bytes 不變、空槽／選取色與拒絕路徑，
+  相關整備／讀檔回歸及實際視窗普通鍵盤操作。GUI 收據明示存檔來源與續玩邊界；
+  非城鎮建構 fixture 不提升為正常玩家路徑。F2 往返及保存／讀取逐筆核對。
+  不錄影，不修改正式發行包或私人美術。
+
+正常標題 LOAD 既有 JSON 槽後，城鎮出發選 NO、返回旅館 F5／F9 通過，
+完整保存與來源相同，限 PLAYER-E2-LIMITED。既有第24章原生槽另驗普通標題 LOAD、
+保存第二槽、選人15筆、確認取消、F2、說明與縮放。它有攻略建構與清敵祖先，來源明示，
+不提升自然難度或整章 PLAYER-E2；必選訊息等其他分支限 RUNTIME-E1。
+最終28張實際視窗已審查，兩種主題保存各自相同，未錄影。
+初輪縮放擷取仍為舊 viewport，不能列通過；沿同一建置等待後續 Update，
+並確認 X11 幾何後重跑，完整畫面通過。Xvfb 就緒競態另保留環境失敗日誌。
+來源與勘誤見[字型主收據](../data/fd2-modern-hd-fonts-20261018.json)的 `preparation_followup`。
+沿[GUI工具](../../tools/verify_fd2_hd_fonts_gui.py)加 `--preparation` 重跑；
+原生晚期樣本另加 `--native-save <既有SAV>`，工具只寫複本。
+
 ### 物品操作與商店裝備穩定面板（CONFORMED，限商店PLAYER-E2／其他caller相關回歸）
 
 沿用A黑體、1920×1200及原版版面。已證實的重製端資料鏈為

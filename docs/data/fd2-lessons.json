@@ -2674,6 +2674,36 @@
         ],
         "pattern": "frames\\ =\\ append\\(frames,\\ append\\(\\[\\]byte\\(nil\\),\\ next\\.\\.\\.\\)\\)"
       }
+    },
+    {
+      "id": "gui-x11-display-ready-before-process",
+      "area": "驗證",
+      "date": "2026-10-18",
+      "rule": "啟動Xvfb後，以tools/verify_fd2_hd_fonts_gui.py的getdisplaygeometry有界確認顯示器就緒，再啟動GUI。音訊伺服器就緒不能代替X11就緒。",
+      "why": "單獨重跑native r2時PulseAudio先就緒，GLFW在Xvfb完成前啟動，導致Failed to open display。相同建置加顯示器就緒檢查後native r3通過。",
+      "evidence": "docs/data/fd2-modern-hd-fonts-20261018.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_hd_fonts_gui.py"
+        ],
+        "pattern": "getdisplaygeometry"
+      }
+    },
+    {
+      "id": "gui-resize-waits-presented-updates",
+      "area": "驗證",
+      "date": "2026-10-18",
+      "rule": "外部縮放視窗後，沿tools/verify_fd2_hd_fonts_gui.py等待多個實際Update並記錄getwindowgeometry，再擷取與審查完整邊界。固定延遲與輸入PASS不能證明GPU已重繪。",
+      "why": "native r1縮放1600×1000後只隔4個Update即擷取，舊1920 viewport遭裁切。r3等待20個後續Update，實際相隔30幀，完整HUD正常；縮放上方HUD誤差由0.189337降至0.003671。",
+      "evidence": "docs/data/fd2-modern-hd-fonts-20261018.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_hd_fonts_gui.py"
+        ],
+        "pattern": "getwindowgeometry"
+      }
     }
   ]
 }

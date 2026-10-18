@@ -410,37 +410,33 @@ func (g *Game) drawNativePreparation(screen *ebiten.Image) bool {
 	if g.drawNativeClassUIJob(screen) {
 		return true
 	}
-	if g.prepRecordSlots {
-		frame, ok := g.composeNativePreparationRecordSlotsFrame()
-		if !ok {
-			g.loadErr = "preparation record slot assets unavailable"
-			return false
-		}
-		g.presentNativeClassFrame(screen, frame)
-		return true
-	}
-	if g.nativePreparationPromptActive() {
-		frame, ok := g.composeNativePreparationPromptFrame()
-		if !ok {
-			return false
-		}
-		g.presentNativeClassFrame(screen, frame)
-		return true
-	}
-	var (
-		frame []byte
-		ok    bool
-	)
-	if g.prepConfirm {
-		frame, ok = g.composeNativePreparationConfirmationFrame()
-	} else {
-		frame, ok = g.composeNativePreparationFrame()
-	}
+	capture, restore := g.beginModernHDPreparationText()
+	defer restore()
+	frame, ok := g.composeNativePreparationStableFrame()
 	if !ok {
+		if g.prepRecordSlots {
+			g.loadErr = "preparation record slot assets unavailable"
+		}
 		return false
 	}
 	g.presentNativeClassFrame(screen, frame)
+	if capture != nil {
+		g.modernHDText.runs = append(g.modernHDText.runs, capture.runs...)
+	}
 	return true
+}
+
+func (g *Game) composeNativePreparationStableFrame() ([]byte, bool) {
+	if g.prepRecordSlots {
+		return g.composeNativePreparationRecordSlotsFrame()
+	}
+	if g.nativePreparationPromptActive() {
+		return g.composeNativePreparationPromptFrame()
+	}
+	if g.prepConfirm {
+		return g.composeNativePreparationConfirmationFrame()
+	}
+	return g.composeNativePreparationFrame()
 }
 
 // #127：0x30550 保存黑色caller；非城鎮槽列表不帶酒店頭像或保存訊息。

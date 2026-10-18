@@ -155,10 +155,10 @@
     "原生物品操作穩定頁與商店裝備選取／刷新，區域遮蔽與快照還原；範圍見item_followup"
   ],
   "remaining": [
-    "原生整備／原生標題LOAD等其餘固定索引面板；預建轉場與圖示仍未接入",
+    "未列入收據的原生固定畫面及全戰役特殊字模fallback盤點",
     "預建原生轉場job中的文字與金幣滾動",
-    "圖示內HP／貨幣等點陣字樣",
-    "全戰役特殊字模fallback盤點與跨平台效能"
+    "圖示內HP／貨幣／出戰人數等點陣字樣",
+    "完整介面／戰場與跨平台效能"
   ],
   "gui": {
     "file": "work/promo-cadence-20261018/hd-fonts/gui-r6/receipt.json",
@@ -7268,5 +7268,1366 @@
       "fd2_containers_remaining_after_validation": 0
     },
     "source_commit": "316f3a18a7781082c2eb307959a2b77d5e0bd378"
+  },
+  "preparation_followup": {
+    "status": "CONFORMED-SCOPED",
+    "full_hd_fonts_complete": false,
+    "base_commit": "02933ee7c79219308d136c690596741c685b80e3",
+    "source": {
+      "snapshot": {
+        "file": "work/promo-cadence-20261018/hd-fonts/preparation-source-final.json",
+        "sha256": "be7681c441f95723b3e7e9764e51e94b40d17abba0b869bf172c4e61671d7d8c"
+      },
+      "snapshot_taken_before_final_build_and_regression": true,
+      "method": "SHA256 of sorted relative path, NUL, content SHA256 hex, LF",
+      "go_files_count": 965,
+      "production_go_tree_sha256": "5df74bd6cac8fd9cb490eca19a902983c4b61aae349caee2434ab234588057ef",
+      "test_go_tree_sha256": "a9a845f751ab83982bbc4766efb404d5ee0daa73747ff2be06095eed23197a5c",
+      "gui_tool_initial_sha256": "51c89c013b414a067ec22b6cc150f081e9e0e2c3043ce0f13e681748b3250d03",
+      "gui_tool_final": {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "bb65644ecab141f957887ac2b9f43c4c1d44efa76511c4dcc76fabd5629d3a7f"
+      },
+      "note": "最終Go未再改動。JSON r1與native r1沿初版工具；native r3沿最終工具，修正Xvfb就緒與縮放擷取等待，使用同份binary。"
+    },
+    "runtime_scope": [
+      "整備穩定選人狀態、確認／必選訊息、出發／保存問句與四槽，僅Draw暫時包裝字模及已驗數字bank並還原。",
+      "標題原生四槽使用自身palette提交HD字模，完整畫面清除被覆蓋文字；JSON後備、checksum與實際還原交易保持。",
+      "預建動畫保持原像素cache；未知／歧義字形保留像素，圖示與烘焙標籤未重繪。"
+    ],
+    "supersedes_limits": [
+      "item_followup.limits[0]中整備與原生標題LOAD穩定畫面待接入的部分；其他限制與歷史來源保持。"
+    ],
+    "gui": {
+      "json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/preparation-gui-json-r1/receipt.json",
+        "sha256": "3fdb5600f9269a107f144d057bcb0c8624e1105cda8e6ee6603a48634086d1d5",
+        "status": "PASS",
+        "evidence_level": "PLAYER-E2-LIMITED",
+        "scope": "正常標題LOAD既有hotel_ch02 JSON槽，城鎮整備出發問句選NO返回，旅館F5／F9；非連續全戰役，不宣稱原版對拍。",
+        "elapsed_seconds": 84.20623910985887,
+        "screenshots": {
+          "title-load-slots.png": {
+            "sha256": "615c2d298925b376d616370648431f925dfec2c297f142689c919f2cb98b49bd",
+            "state": {
+              "error": "",
+              "frame": 264,
+              "gold": 0,
+              "hd_text_runs": 86,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "story_ch00_handler",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 0,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "loadslots",
+              "title_slot": 0
+            }
+          },
+          "faithful-title-load-slots.png": {
+            "sha256": "238c7d69641699f603b332c031c271fdb6c8eea9f6f17f4cd0f7c20960239dce",
+            "state": {
+              "error": "",
+              "frame": 356,
+              "gold": 0,
+              "hd_theme": false,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "story_ch00_handler",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 0,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "loadslots",
+              "title_slot": 0
+            }
+          },
+          "hd-title-load-slots-restored.png": {
+            "sha256": "615c2d298925b376d616370648431f925dfec2c297f142689c919f2cb98b49bd",
+            "state": {
+              "error": "",
+              "frame": 378,
+              "gold": 0,
+              "hd_text_runs": 86,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "story_ch00_handler",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 0,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "loadslots",
+              "title_slot": 0
+            }
+          },
+          "title-slot-1.png": {
+            "sha256": "235da6dd4cb432e25c46125c6c4ef2f2d0c89ed75e1d562a87fa21c9e39c605d",
+            "state": {
+              "error": "",
+              "frame": 394,
+              "gold": 0,
+              "hd_text_runs": 86,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "story_ch00_handler",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 0,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "loadslots",
+              "title_slot": 1
+            }
+          },
+          "title-slot-2.png": {
+            "sha256": "c2cade0be9297d9de407918126588a59a8e70fcbed5d5e6fb34161c3670728c1",
+            "state": {
+              "error": "",
+              "frame": 410,
+              "gold": 0,
+              "hd_text_runs": 86,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "story_ch00_handler",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 0,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "loadslots",
+              "title_slot": 2
+            }
+          },
+          "title-slot-3.png": {
+            "sha256": "308f68340dccafcce5ef0425e8ac4ebe96c208246ad77b0589b157b3039b6bc7",
+            "state": {
+              "error": "",
+              "frame": 430,
+              "gold": 0,
+              "hd_text_runs": 86,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "story_ch00_handler",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 0,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "loadslots",
+              "title_slot": 3
+            }
+          },
+          "preparation-departure-question.png": {
+            "sha256": "738050045d07bdf7b7e4111bb9e5ac3599459a643c97267afc4b308fa2754a08",
+            "state": {
+              "error": "",
+              "frame": 548,
+              "gold": 1000,
+              "hd_text_runs": 14,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "preparation_ch02",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 15,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "",
+              "title_slot": 0
+            }
+          },
+          "faithful-preparation-question.png": {
+            "sha256": "333c228aa675a28c4f8ba73efd02df468f34915bceb5365cef3c73aa23e0cf39",
+            "state": {
+              "error": "",
+              "frame": 570,
+              "gold": 1000,
+              "hd_theme": false,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "preparation_ch02",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 15,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "",
+              "title_slot": 0
+            }
+          },
+          "hd-preparation-question-restored.png": {
+            "sha256": "b99807a9a1c647b9a8b482b2e534882be448c2b4f4936a298b14faf86b2d1b9b",
+            "state": {
+              "error": "",
+              "frame": 588,
+              "gold": 1000,
+              "hd_text_runs": 14,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "preparation_ch02",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 15,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "",
+              "title_slot": 0
+            }
+          },
+          "preparation-departure-no.png": {
+            "sha256": "e8d8805bee11ef43471b9014f9759b707887be21cbc81abde4cb6361c0b80387",
+            "state": {
+              "error": "",
+              "frame": 598,
+              "gold": 1000,
+              "hd_text_runs": 14,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "preparation_ch02",
+              "preparation_choice": 1,
+              "preparation_confirm": false,
+              "preparation_limit": 15,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "",
+              "title_slot": 0
+            }
+          },
+          "faithful-hotel-after-preparation-load.png": {
+            "sha256": "376fd3663ec95f259fb502b7f1ef1a351711a26f4e5571348df0b6c707f6a60c",
+            "state": {
+              "error": "",
+              "frame": 696,
+              "gold": 1000,
+              "hd_theme": false,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "hotel_ch02",
+              "preparation_choice": 1,
+              "preparation_confirm": false,
+              "preparation_limit": 15,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "",
+              "title_slot": 0
+            }
+          }
+        },
+        "operations": [
+          {
+            "key": "Escape",
+            "press_frame": 5,
+            "release_frame": 7
+          },
+          {
+            "key": "Escape",
+            "press_frame": 15,
+            "release_frame": 20
+          },
+          {
+            "key": "Escape",
+            "press_frame": 34,
+            "release_frame": 42
+          },
+          {
+            "key": "Escape",
+            "press_frame": 60,
+            "release_frame": 68
+          },
+          {
+            "key": "Escape",
+            "press_frame": 79,
+            "release_frame": 91
+          },
+          {
+            "key": "Escape",
+            "press_frame": 107,
+            "release_frame": 117
+          },
+          {
+            "key": "Escape",
+            "press_frame": 123,
+            "release_frame": 129
+          },
+          {
+            "key": "Escape",
+            "press_frame": 136,
+            "release_frame": 147
+          },
+          {
+            "key": "Escape",
+            "press_frame": 157,
+            "release_frame": 165
+          },
+          {
+            "key": "Escape",
+            "press_frame": 181,
+            "release_frame": 195
+          },
+          {
+            "key": "Down",
+            "press_frame": 210,
+            "release_frame": 224
+          },
+          {
+            "key": "Return",
+            "press_frame": 231,
+            "release_frame": 237
+          },
+          {
+            "key": "F2",
+            "press_frame": 266,
+            "release_frame": 269
+          },
+          {
+            "key": "F2",
+            "press_frame": 358,
+            "release_frame": 361
+          },
+          {
+            "key": "Down",
+            "press_frame": 379,
+            "release_frame": 381
+          },
+          {
+            "key": "Down",
+            "press_frame": 396,
+            "release_frame": 398
+          },
+          {
+            "key": "Down",
+            "press_frame": 412,
+            "release_frame": 414
+          },
+          {
+            "key": "Down",
+            "press_frame": 431,
+            "release_frame": 433
+          },
+          {
+            "key": "Escape",
+            "press_frame": 437,
+            "release_frame": 439
+          },
+          {
+            "key": "Return",
+            "press_frame": 446,
+            "release_frame": 451
+          },
+          {
+            "key": "Return",
+            "press_frame": 474,
+            "release_frame": 476
+          },
+          {
+            "key": "Escape",
+            "press_frame": 479,
+            "release_frame": 481
+          },
+          {
+            "key": "Left",
+            "press_frame": 487,
+            "release_frame": 491
+          },
+          {
+            "key": "Left",
+            "press_frame": 503,
+            "release_frame": 513
+          },
+          {
+            "key": "Return",
+            "press_frame": 520,
+            "release_frame": 522
+          },
+          {
+            "key": "F2",
+            "press_frame": 549,
+            "release_frame": 552
+          },
+          {
+            "key": "F2",
+            "press_frame": 572,
+            "release_frame": 578
+          },
+          {
+            "key": "Right",
+            "press_frame": 590,
+            "release_frame": 592
+          },
+          {
+            "key": "Return",
+            "press_frame": 600,
+            "release_frame": 602
+          },
+          {
+            "key": "Right",
+            "press_frame": 614,
+            "release_frame": 616
+          },
+          {
+            "key": "Right",
+            "press_frame": 619,
+            "release_frame": 621
+          },
+          {
+            "key": "Return",
+            "press_frame": 625,
+            "release_frame": 627
+          },
+          {
+            "key": "F5",
+            "press_frame": 631,
+            "release_frame": 633
+          },
+          {
+            "key": "F2",
+            "press_frame": 637,
+            "release_frame": 640
+          },
+          {
+            "key": "F5",
+            "press_frame": 653,
+            "release_frame": 662
+          },
+          {
+            "key": "F9",
+            "press_frame": 667,
+            "release_frame": 669
+          }
+        ],
+        "all_releases_observed": true,
+        "theme_save_bytes_equal": true,
+        "saved_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456"
+      },
+      "native": {
+        "file": "work/promo-cadence-20261018/hd-fonts/preparation-gui-native-r3/receipt.json",
+        "sha256": "4f4824a39209aaa5f280dfd2e8a590e752aa87562c5f360c8402038a511c7381",
+        "status": "PASS",
+        "evidence_level": "RUNTIME-E1",
+        "scope": "正常標題LOAD既有第24章原生槽；祖先為攻略建構政策與清敵續玩，並非自然難度。保存槽1、選人、確認或必選訊息與取消均走普通鍵盤；不宣稱連續戰役或原版對拍。",
+        "elapsed_seconds": 85.34229152603075,
+        "screenshots": {
+          "title-load-slots.png": {
+            "sha256": "bf1956f7481c0c9a57be16a4b27a3e7b7369bff250497f4ced058f5c083405eb",
+            "state": {
+              "error": "",
+              "frame": 260,
+              "gold": 0,
+              "hd_text_runs": 92,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "story_ch00_handler",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 0,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "loadslots",
+              "title_slot": 0
+            },
+            "window_geometry": "WINDOW=2097166\nX=0\nY=0\nWIDTH=1920\nHEIGHT=1200\nSCREEN=0\n"
+          },
+          "faithful-title-load-slots.png": {
+            "sha256": "7d90f8fa606778224db8b44c1d1d9849f976d6a52dbd0e39a5e7ab71bc3e178d",
+            "state": {
+              "error": "",
+              "frame": 314,
+              "gold": 0,
+              "hd_theme": false,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "story_ch00_handler",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 0,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "loadslots",
+              "title_slot": 0
+            },
+            "window_geometry": "WINDOW=2097166\nX=0\nY=0\nWIDTH=1280\nHEIGHT=800\nSCREEN=0\n"
+          },
+          "hd-title-load-slots-restored.png": {
+            "sha256": "bf1956f7481c0c9a57be16a4b27a3e7b7369bff250497f4ced058f5c083405eb",
+            "state": {
+              "error": "",
+              "frame": 330,
+              "gold": 0,
+              "hd_text_runs": 92,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "story_ch00_handler",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 0,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "loadslots",
+              "title_slot": 0
+            },
+            "window_geometry": "WINDOW=2097166\nX=0\nY=0\nWIDTH=1920\nHEIGHT=1200\nSCREEN=0\n"
+          },
+          "title-slot-1.png": {
+            "sha256": "8674d5818c72b4b594c0bae93b7fd23a602d2061b927bcc56b75c390d3cd3ddd",
+            "state": {
+              "error": "",
+              "frame": 344,
+              "gold": 0,
+              "hd_text_runs": 92,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "story_ch00_handler",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 0,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "loadslots",
+              "title_slot": 1
+            },
+            "window_geometry": "WINDOW=2097166\nX=0\nY=0\nWIDTH=1920\nHEIGHT=1200\nSCREEN=0\n"
+          },
+          "title-slot-2.png": {
+            "sha256": "d2bd93c96efbc75b53f66be7084eb7fa045542656bea3f39cf898ef42deae312",
+            "state": {
+              "error": "",
+              "frame": 356,
+              "gold": 0,
+              "hd_text_runs": 92,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "story_ch00_handler",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 0,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "loadslots",
+              "title_slot": 2
+            },
+            "window_geometry": "WINDOW=2097166\nX=0\nY=0\nWIDTH=1920\nHEIGHT=1200\nSCREEN=0\n"
+          },
+          "title-slot-3.png": {
+            "sha256": "a2c4936a227394e83e9fe00aba9f01e34035bba623926bf966b82c7cffef0f34",
+            "state": {
+              "error": "",
+              "frame": 368,
+              "gold": 0,
+              "hd_text_runs": 92,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "story_ch00_handler",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 0,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "loadslots",
+              "title_slot": 3
+            },
+            "window_geometry": "WINDOW=2097166\nX=0\nY=0\nWIDTH=1920\nHEIGHT=1200\nSCREEN=0\n"
+          },
+          "preparation-record-question.png": {
+            "sha256": "6f88e16def44d599697ee017a2cac6bd577ded6ef440c981dc123f9577f39078",
+            "state": {
+              "error": "",
+              "frame": 426,
+              "gold": 2009,
+              "hd_text_runs": 14,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "preparation_ch24",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 15,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "",
+              "title_slot": 0
+            },
+            "window_geometry": "WINDOW=2097166\nX=0\nY=0\nWIDTH=1920\nHEIGHT=1200\nSCREEN=0\n"
+          },
+          "preparation-record-slots.png": {
+            "sha256": "bf1956f7481c0c9a57be16a4b27a3e7b7369bff250497f4ced058f5c083405eb",
+            "state": {
+              "error": "",
+              "frame": 456,
+              "gold": 2009,
+              "hd_text_runs": 92,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "preparation_ch24",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 15,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": true,
+              "preparation_ui_busy": false,
+              "title_phase": "",
+              "title_slot": 0
+            },
+            "window_geometry": "WINDOW=2097166\nX=0\nY=0\nWIDTH=1920\nHEIGHT=1200\nSCREEN=0\n"
+          },
+          "preparation-record-saved.png": {
+            "sha256": "b25c0e493e9118d7e5174128fe04f128b02d4442e5a937a4e1e8136735ab9d1e",
+            "state": {
+              "error": "",
+              "frame": 476,
+              "gold": 2009,
+              "hd_text_runs": 96,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "preparation_ch24",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 15,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 1,
+              "preparation_slots": true,
+              "preparation_ui_busy": false,
+              "title_phase": "",
+              "title_slot": 0
+            },
+            "window_geometry": "WINDOW=2097166\nX=0\nY=0\nWIDTH=1920\nHEIGHT=1200\nSCREEN=0\n"
+          },
+          "preparation-roster.png": {
+            "sha256": "f2593b01634627357facc86c4663eeb42e3fa3a562cbb7af2103f79a3f415c5e",
+            "state": {
+              "error": "",
+              "frame": 524,
+              "gold": 2009,
+              "hd_text_runs": 47,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "preparation_ch24",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 15,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": true,
+              "preparation_selection": 0,
+              "preparation_slot": 1,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "",
+              "title_slot": 0
+            },
+            "window_geometry": "WINDOW=2097166\nX=0\nY=0\nWIDTH=1920\nHEIGHT=1200\nSCREEN=0\n"
+          },
+          "faithful-preparation-roster.png": {
+            "sha256": "664b2c45ffe0734ed14f83541f1aba3a51dc774edc77b9686c6c69296599ce34",
+            "state": {
+              "error": "",
+              "frame": 590,
+              "gold": 2009,
+              "hd_theme": false,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "preparation_ch24",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 15,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": true,
+              "preparation_selection": 0,
+              "preparation_slot": 1,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "",
+              "title_slot": 0
+            },
+            "window_geometry": "WINDOW=2097166\nX=0\nY=0\nWIDTH=1280\nHEIGHT=800\nSCREEN=0\n"
+          },
+          "hd-preparation-roster-restored.png": {
+            "sha256": "f2593b01634627357facc86c4663eeb42e3fa3a562cbb7af2103f79a3f415c5e",
+            "state": {
+              "error": "",
+              "frame": 608,
+              "gold": 2009,
+              "hd_text_runs": 47,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "preparation_ch24",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 15,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": true,
+              "preparation_selection": 0,
+              "preparation_slot": 1,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "",
+              "title_slot": 0
+            },
+            "window_geometry": "WINDOW=2097166\nX=0\nY=0\nWIDTH=1920\nHEIGHT=1200\nSCREEN=0\n"
+          },
+          "preparation-resized.png": {
+            "sha256": "cb7b7cfe1658a0e51e133e22ae11237f3775eef7f9075c4fed5d5f5ced3fea0d",
+            "state": {
+              "error": "",
+              "frame": 638,
+              "gold": 2009,
+              "hd_text_runs": 47,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "preparation_ch24",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 15,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": true,
+              "preparation_selection": 0,
+              "preparation_slot": 1,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "",
+              "title_slot": 0
+            },
+            "window_geometry": "WINDOW=2097166\nX=0\nY=0\nWIDTH=1600\nHEIGHT=1000\nSCREEN=0\n"
+          },
+          "preparation-help.png": {
+            "sha256": "302cacca008a1f65de1a241689c443c2c703d9ad551efb27d5dfbd0b4c52f9ac",
+            "state": {
+              "error": "",
+              "frame": 678,
+              "gold": 2009,
+              "hd_text_runs": 10,
+              "hd_theme": true,
+              "help_visible": true,
+              "locale": "zh-Hant",
+              "node": "preparation_ch24",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 15,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": true,
+              "preparation_selection": 0,
+              "preparation_slot": 1,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "",
+              "title_slot": 0
+            },
+            "window_geometry": "WINDOW=2097166\nX=0\nY=0\nWIDTH=1920\nHEIGHT=1200\nSCREEN=0\n"
+          },
+          "preparation-next-unit.png": {
+            "sha256": "9fc710ac6a41c9b995f4e42812b2a75d38652f836e6cfe77432c6c06180a455f",
+            "state": {
+              "error": "",
+              "frame": 740,
+              "gold": 2009,
+              "hd_text_runs": 45,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "preparation_ch24",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 15,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": true,
+              "preparation_selection": 1,
+              "preparation_slot": 1,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "",
+              "title_slot": 0
+            },
+            "window_geometry": "WINDOW=2097166\nX=0\nY=0\nWIDTH=1920\nHEIGHT=1200\nSCREEN=0\n"
+          },
+          "preparation-final-question.png": {
+            "sha256": "fb403fb5c8c434bf0c853c78e6f6f3d76793a66f7f04fb9df034dc39ea3527ca",
+            "state": {
+              "error": "",
+              "frame": 1040,
+              "gold": 2009,
+              "hd_text_runs": 18,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "preparation_ch24",
+              "preparation_choice": 0,
+              "preparation_confirm": true,
+              "preparation_limit": 15,
+              "preparation_required": null,
+              "preparation_selected": 15,
+              "preparation_selecting": false,
+              "preparation_selection": 14,
+              "preparation_slot": 1,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "",
+              "title_slot": 0
+            },
+            "window_geometry": "WINDOW=2097166\nX=0\nY=0\nWIDTH=1920\nHEIGHT=1200\nSCREEN=0\n"
+          },
+          "preparation-returned-roster.png": {
+            "sha256": "6ebc02206e09c02ef3ca9d16758240c5a3e86bb9a9af2eb99e69fdc7b1118160",
+            "state": {
+              "error": "",
+              "frame": 1098,
+              "gold": 2009,
+              "hd_text_runs": 43,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "preparation_ch24",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 15,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": true,
+              "preparation_selection": 14,
+              "preparation_slot": 1,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "",
+              "title_slot": 0
+            },
+            "window_geometry": "WINDOW=2097166\nX=0\nY=0\nWIDTH=1920\nHEIGHT=1200\nSCREEN=0\n"
+          }
+        },
+        "operations": [
+          {
+            "key": "Escape",
+            "press_frame": 4,
+            "release_frame": 9
+          },
+          {
+            "key": "Escape",
+            "press_frame": 18,
+            "release_frame": 23
+          },
+          {
+            "key": "Escape",
+            "press_frame": 35,
+            "release_frame": 45
+          },
+          {
+            "key": "Escape",
+            "press_frame": 55,
+            "release_frame": 61
+          },
+          {
+            "key": "Escape",
+            "press_frame": 71,
+            "release_frame": 74
+          },
+          {
+            "key": "Escape",
+            "press_frame": 82,
+            "release_frame": 94
+          },
+          {
+            "key": "Escape",
+            "press_frame": 105,
+            "release_frame": 114
+          },
+          {
+            "key": "Escape",
+            "press_frame": 127,
+            "release_frame": 136
+          },
+          {
+            "key": "Escape",
+            "press_frame": 148,
+            "release_frame": 158
+          },
+          {
+            "key": "Escape",
+            "press_frame": 164,
+            "release_frame": 175
+          },
+          {
+            "key": "Escape",
+            "press_frame": 180,
+            "release_frame": 189
+          },
+          {
+            "key": "Escape",
+            "press_frame": 201,
+            "release_frame": 209
+          },
+          {
+            "key": "Down",
+            "press_frame": 219,
+            "release_frame": 224
+          },
+          {
+            "key": "Return",
+            "press_frame": 230,
+            "release_frame": 237
+          },
+          {
+            "key": "F2",
+            "press_frame": 262,
+            "release_frame": 265
+          },
+          {
+            "key": "F2",
+            "press_frame": 317,
+            "release_frame": 321
+          },
+          {
+            "key": "Down",
+            "press_frame": 332,
+            "release_frame": 334
+          },
+          {
+            "key": "Down",
+            "press_frame": 346,
+            "release_frame": 348
+          },
+          {
+            "key": "Down",
+            "press_frame": 357,
+            "release_frame": 359
+          },
+          {
+            "key": "Down",
+            "press_frame": 370,
+            "release_frame": 372
+          },
+          {
+            "key": "Escape",
+            "press_frame": 375,
+            "release_frame": 377
+          },
+          {
+            "key": "Return",
+            "press_frame": 385,
+            "release_frame": 387
+          },
+          {
+            "key": "Return",
+            "press_frame": 409,
+            "release_frame": 414
+          },
+          {
+            "key": "Return",
+            "press_frame": 429,
+            "release_frame": 431
+          },
+          {
+            "key": "Down",
+            "press_frame": 457,
+            "release_frame": 459
+          },
+          {
+            "key": "Return",
+            "press_frame": 463,
+            "release_frame": 465
+          },
+          {
+            "key": "F2",
+            "press_frame": 477,
+            "release_frame": 480
+          },
+          {
+            "key": "Return",
+            "press_frame": 489,
+            "release_frame": 494
+          },
+          {
+            "key": "F2",
+            "press_frame": 502,
+            "release_frame": 507
+          },
+          {
+            "key": "Escape",
+            "press_frame": 511,
+            "release_frame": 513
+          },
+          {
+            "key": "F2",
+            "press_frame": 526,
+            "release_frame": 529
+          },
+          {
+            "key": "F2",
+            "press_frame": 594,
+            "release_frame": 600
+          },
+          {
+            "key": "F1",
+            "press_frame": 640,
+            "release_frame": 642
+          },
+          {
+            "key": "Escape",
+            "press_frame": 681,
+            "release_frame": 686
+          },
+          {
+            "key": "Right",
+            "press_frame": 700,
+            "release_frame": 707
+          },
+          {
+            "key": "Left",
+            "press_frame": 741,
+            "release_frame": 749
+          },
+          {
+            "key": "Return",
+            "press_frame": 763,
+            "release_frame": 771
+          },
+          {
+            "key": "Return",
+            "press_frame": 778,
+            "release_frame": 786
+          },
+          {
+            "key": "Return",
+            "press_frame": 798,
+            "release_frame": 808
+          },
+          {
+            "key": "Return",
+            "press_frame": 813,
+            "release_frame": 824
+          },
+          {
+            "key": "Return",
+            "press_frame": 829,
+            "release_frame": 833
+          },
+          {
+            "key": "Return",
+            "press_frame": 841,
+            "release_frame": 849
+          },
+          {
+            "key": "Return",
+            "press_frame": 864,
+            "release_frame": 866
+          },
+          {
+            "key": "Return",
+            "press_frame": 877,
+            "release_frame": 882
+          },
+          {
+            "key": "Return",
+            "press_frame": 890,
+            "release_frame": 895
+          },
+          {
+            "key": "Return",
+            "press_frame": 900,
+            "release_frame": 902
+          },
+          {
+            "key": "Return",
+            "press_frame": 910,
+            "release_frame": 915
+          },
+          {
+            "key": "Return",
+            "press_frame": 924,
+            "release_frame": 928
+          },
+          {
+            "key": "Return",
+            "press_frame": 937,
+            "release_frame": 947
+          },
+          {
+            "key": "Return",
+            "press_frame": 955,
+            "release_frame": 960
+          },
+          {
+            "key": "Return",
+            "press_frame": 967,
+            "release_frame": 969
+          },
+          {
+            "key": "Escape",
+            "press_frame": 1042,
+            "release_frame": 1044
+          }
+        ],
+        "all_releases_observed": true,
+        "theme_save_bytes_equal": true,
+        "saved_sha256": "d5f39666ae53f7b55438a1d4658d38b47a301e434c8aaed65c5ed6fac73fae09"
+      }
+    },
+    "gpu_review": "最終28張實際視窗以總覽及原尺寸重點審查；四槽選取色、問句、選人狀態與數字保持版面，說明遮罩正確。native r3縮放完整，上方靜態HUD診斷另列；native r1裁切不得作縮放通過證據。",
+    "save": {
+      "json_source": "work/ch01-flow-20261017/remake-full-r10/hotel-save.json",
+      "json_source_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+      "json_saved_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+      "json_source_bytes_equal": true,
+      "native_source": "work/remake-recovery-20261015/ch24-slot/FD2.SAV",
+      "native_source_sha256": "22bd63070189e0e6703e14d4bd4db8dc1f66452a21128dd5154579171ecbea63",
+      "native_source_manifest": {
+        "file": "work/remake-recovery-20261015/ch24-slot/manifest.json",
+        "sha256": "9b5289fa99a62c76b49ca4513a1589ce928b9b7a511363ea0c9fe187c2122738"
+      },
+      "native_source_audit": {
+        "file": "work/promo-cadence-20261018/hd-fonts/preparation-native-source-audit.json",
+        "sha256": "3972c7a01b2112e093bae3329aa52dfbf18a6de0475f625cbfc8d5703165d7da"
+      },
+      "native_saved_sha256": "d5f39666ae53f7b55438a1d4658d38b47a301e434c8aaed65c5ed6fac73fae09",
+      "native_save_change": "普通保存第二槽（raw slot 1）的預期寫入；不宣稱與來源bytes相同。HD／忠實重存相同，後續選人與取消不再改寫存檔。",
+      "native_provenance": "沿原版oracle第23章正式SAV接續第24章，祖先為攻略建構強化與清敵；本輪未新增注入，不提升自然難度或連續全戰役驗收。",
+      "theme_save_bytes_equal": true,
+      "original_sources_unchanged": true
+    },
+    "regression": {
+      "cmd_ui": {
+        "file": "work/promo-cadence-20261018/hd-fonts/preparation-ui-regression-r1.log",
+        "sha256": "d697d4366eafc64b6cb7b341ae79ec2f3040e8555539697920492c18f62e6775",
+        "status": "PASS",
+        "seconds": 53.889,
+        "run_pattern": "Test(ModernHD|NativePreparation|ComposeNativePreparation|NativeLoad|Title|.*JSON|.*SaveSlot|.*Locale|NativeTown|NativeHotel|NativeClass)",
+        "scope": "相關介面／保存回歸，非完整cmd/fd2測試。"
+      },
+      "data_inventory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/preparation-data-regression-r1.log",
+        "sha256": "a45cd1b4fcfaa10a738f1e736d37c44569b0c8db34e475d4a244cb2cfae4fce8",
+        "status": "PASS",
+        "seconds": {
+          "campaign": 11.9,
+          "fdtxt": 1.133,
+          "fdother": 20.849,
+          "localization": 1.441,
+          "fd2-string-inventory": 2.248
+        }
+      },
+      "e1_scope": "必選訊息、錯誤metadata／selector、素材還原、原像素bytes保持、預建轉場及保存拒絕路徑；不新增原版對拍。"
+    },
+    "localization": {
+      "entries_per_locale": 5107,
+      "locales": [
+        "zh-Hant",
+        "zh-Hans",
+        "ja",
+        "en"
+      ],
+      "text_status_variables_identity_equal_base": true,
+      "migration": {
+        "by_id": 5106,
+        "by_signature": 1,
+        "by_text": 0,
+        "new": 0
+      }
+    },
+    "diagnostics": [
+      {
+        "run": "preparation-focused-r1",
+        "status": "TEST-FIXTURE-FAIL",
+        "evidence": {
+          "file": "work/promo-cadence-20261018/hd-fonts/preparation-focused-r1.log",
+          "sha256": "6c5b96cd72fdafff6fffe4a18fae3ba1d4b8c929eba53e8f0b3e83c9f8cbf289"
+        },
+        "reason": "required identity=0不合法；依既有1..31契約改為1，r2及最終相關回歸通過。"
+      },
+      {
+        "run": "preparation-inventory",
+        "status": "REBOUND",
+        "reason": "原錯誤訊息移出Draw造成少一條；保留原入口並由修改前基底重綁，四語各5107筆逐筆保持。"
+      },
+      {
+        "run": "preparation-gui-native-r1",
+        "status": "INPUT-PASS-GPU-RESIZE-FAIL",
+        "evidence": {
+          "file": "work/promo-cadence-20261018/hd-fonts/preparation-gui-native-r1/receipt.json",
+          "sha256": "69e205b106be4997b8ef33c4d99e0309d18fbce5245b6e6fc8bcebd000e6ff50"
+        },
+        "reason": "固定1秒不足以等到外部resize後重繪，截圖仍舊viewport而裁切。r3等待20個後續Update並記錄X11幾何，乾淨重跑通過。"
+      },
+      {
+        "run": "preparation-gui-native-r2",
+        "status": "ENVIRONMENT-FAIL",
+        "evidence": {
+          "file": "work/promo-cadence-20261018/hd-fonts/preparation-gui-native-r2/game.log",
+          "sha256": "202727d39fd78209a28b64f33eb69a0a247f7d672bed7118968595f43054d7fe"
+        },
+        "reason": "GLFW在Xvfb尚未就緒時啟動，Failed to open display :97；加入getdisplaygeometry就緒檢查後同份binary重跑通過。"
+      }
+    ],
+    "resize_diagnostic": {
+      "file": "work/promo-cadence-20261018/hd-fonts/preparation-resize-diagnostic.json",
+      "sha256": "6c4ab849d3c2413baef4038ac661071ba0555a4c63938b59fba9f1fec14e1994",
+      "method": "同狀態上方靜態HUD，1920 PNG BILINEAR縮至1600後RGB平均正規化誤差；字型重新柵格化會有差異，非原版對拍。",
+      "normalized_mae": {
+        "preparation-gui-native-r1": 0.18933652048633073,
+        "preparation-gui-native-r3": 0.003670705952631949
+      },
+      "source": "hd-preparation-roster-restored.png",
+      "roi": [
+        0,
+        0,
+        1600,
+        465
+      ]
+    },
+    "readme_figures": [
+      {
+        "file": "docs/figures/hd-preparation-roster.png",
+        "sha256": "f2593b01634627357facc86c4663eeb42e3fa3a562cbb7af2103f79a3f415c5e",
+        "source": "work/promo-cadence-20261018/hd-fonts/preparation-gui-native-r3/preparation-roster.png",
+        "kind": "1920×1200實際重製視窗；動態文字／數字HD，背景、頭像、圖示及烘焙標籤保留像素。"
+      },
+      {
+        "file": "docs/figures/hd-title-load-slots.png",
+        "sha256": "615c2d298925b376d616370648431f925dfec2c297f142689c919f2cb98b49bd",
+        "source": "work/promo-cadence-20261018/hd-fonts/preparation-gui-json-r1/title-load-slots.png",
+        "kind": "1920×1200實際重製視窗；動態文字／數字HD，背景、頭像、圖示及烘焙標籤保留像素。"
+      }
+    ],
+    "limits": [
+      "未列入收據的原生固定畫面、預建轉場／金幣滾動及圖示內文字仍待接入。",
+      "正常JSON城鎮路徑與晚期既有槽GUI分列；後者有建構祖先，不提升自然難度或整章PLAYER-E2。",
+      "非完整HD／字型完成、原版視覺對拍、穩定60fps或跨平台驗收。"
+    ],
+    "recordings_created": false,
+    "new_artwork": false,
+    "matching_decompilation": "paused",
+    "release_modified": false,
+    "rebuild": "沿主收據rebuild建置；GUI工具加--preparation跑JSON路徑，加--native-save <既有SAV>跑原生槽複本。原始資料唯讀，輸出獨立可寫。",
+    "cleanup": {
+      "status": "DERIVED-BINARY-REMOVED",
+      "removed_binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/fd2-hd-preparation",
+        "sha256": "efed90975acf0ecd87d03ef5caebed34c6a52ef304b46697e97f6a9d05aec081",
+        "bytes": 18990448
+      },
+      "bytes_freed": 18990448,
+      "recordings_created": false,
+      "png_and_receipts_retained": true,
+      "fd2_containers_remaining_after_validation": 0
+    }
   }
 }

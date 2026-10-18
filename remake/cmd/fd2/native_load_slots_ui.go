@@ -310,14 +310,21 @@ func (g *Game) drawNativeLoadSlots(screen *ebiten.Image) bool {
 	if !ok {
 		return false
 	}
+	var capture *modernHDIndexedText
+	font := assets.font
+	if g.modernHDText != nil && g.font != nil {
+		capture = &modernHDIndexedText{palette: assets.palette}
+		font = g.modernHDFacilityFont(font, capture)
+	}
 	frame, err := campaign.ComposeNativeLoadSlotsFrame(
 		make([]byte, campaign.NativeLoadSlotWidth*campaign.NativeLoadSlotHeight),
-		assets.dialogueBox, assets.strings, assets.font,
+		assets.dialogueBox, assets.strings, font,
 		slots, g.titleSlotSel,
 	)
 	if err != nil {
 		return false
 	}
+	g.clearModernHDText()
 	paletted := image.NewPaletted(
 		image.Rect(
 			0, 0,
@@ -330,5 +337,8 @@ func (g *Game) drawNativeLoadSlots(screen *ebiten.Image) bool {
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Scale(2, 2)
 	screen.DrawImage(native, op)
+	if capture != nil {
+		g.modernHDText.runs = append(g.modernHDText.runs, capture.runs...)
+	}
 	return true
 }

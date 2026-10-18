@@ -99,3 +99,26 @@ func (g *Game) modernHDChurchItemAssets(assets battle.NativeItemPanelDataAssets)
 	}
 	return assets
 }
+
+// Preparation owns a separate status font and decimal bank. Adapt value copies
+// only during a stable Draw; its prebuilt transition frames keep native ink.
+func (g *Game) beginModernHDPreparationText() (*modernHDIndexedText, func()) {
+	if g.nativePreparationUI == nil {
+		return nil, func() {}
+	}
+	capture, restoreClass := g.beginModernHDFacilityText()
+	if capture == nil {
+		return nil, restoreClass
+	}
+	previous := g.font.indexedHD
+	g.font.indexedHD = capture
+	original := g.nativePreparationUI
+	copy := *original
+	copy.status = g.modernHDChurchItemAssets(original.status)
+	g.nativePreparationUI = &copy
+	return capture, func() {
+		g.nativePreparationUI = original
+		g.font.indexedHD = previous
+		restoreClass()
+	}
+}
