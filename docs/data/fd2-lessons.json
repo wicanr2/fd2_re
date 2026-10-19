@@ -3096,6 +3096,36 @@
       "date": "2026-10-19",
       "rule": "Go測試的GOTMPDIR若放在Docker tmpfs，掛載明示exec；沿tools/docker/fd2-go-test.Dockerfile建置的fd2-go-test-local執行go test，不因permission denied重建映像或退回主機。",
       "why": "非共背景HD首輪的/go-cache預設noexec，CPU測試二進位已產出但無法執行；同映像加入exec後原生測試通過。"
+    },
+    {
+      "id": "figani-empty-frame-needs-complete-native-proof",
+      "date": "2026-10-20",
+      "area": "HD動畫來源",
+      "rule": "FIGANI的全透明HD幀只接受固定來源Mask長度完整且全部0的對應幀。沿remake/cmd/fd2/modern_hd_battle_assets.go的nativeEmpty檢查與tools/audit_fd2_battle_hd_coverage.py的Mask SHA稽核；缺Mask、非空來源及alpha1墨跡均拒收，空白present仍保留排程與圖源。",
+      "why": "希莉亞FIGANI25/14本來就是320×200透明幀；舊的255核心規則把合法空白視為缺圖，但直接放寬所有透明圖也會掩蓋資料遺失。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/modern_hd_battle_assets.go"
+        ],
+        "pattern": "adds ink to empty native frame"
+      }
+    },
+    {
+      "id": "save-gui-checks-obey-node-boundary-contract",
+      "date": "2026-10-20",
+      "area": "保存與GUI驗證",
+      "rule": "F5保存抽驗先讀remake/cmd/fd2/save.go的章節邊界契約。tools/verify_fd2_hd_fonts_gui.py以F9重建結果對新程序LOAD核對，另留戰後即時狀態；不要求保存格式未承諾的戰中位置、Acted或敵方HP。正常F5可同步獨立原生存檔複本，來源原檔SHA仍須不變。",
+      "why": "新戰後抽驗原先拿warm戰場全部單位對冷讀比較，會把既定的重建戰場語意誤判成缺陷，甚至誘導無關的存檔格式修改。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_hd_fonts_gui.py"
+        ],
+        "pattern": "node_boundary_save_checked"
+      }
     }
   ]
 }

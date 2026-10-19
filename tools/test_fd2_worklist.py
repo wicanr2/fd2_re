@@ -174,6 +174,13 @@ class VerifyKinds(unittest.TestCase):
         write(self.root / "data.json", json.dumps({"rows": [1, 2, 3]}))
         self.assertFalse(tool.still_open(tool.load()["items"][0])[0])
 
+    def test_packaging_outputs_do_not_supply_build_capability(self):
+        write(self.root / 'remake/packaging/dist/old-package/build.json', 'ebitenmobile')
+        tool = self.build([self.item({'kind':'absent', 'paths':['remake/packaging'], 'pattern':'ebitenmobile'})])
+        self.assertTrue(tool.still_open(tool.load()['items'][0])[0])
+        write(self.root / 'remake/packaging/build-android.sh', 'ebitenmobile bind')
+        self.assertFalse(tool.still_open(tool.load()['items'][0])[0])
+
     def test_schema_rejects_duplicate_ids(self):
         verify = {"kind": "manual", "note": ""}
         tool = self.build([self.item(verify, "same"), self.item(verify, "same")])

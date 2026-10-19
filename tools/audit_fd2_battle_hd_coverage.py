@@ -12,7 +12,7 @@ from validate_modern_theme_catalog import ROOT, validate
 FIELDS = ['x', 'y', 'width', 'height', 'delay_native', 'raw_byte_4', 'raw_byte_5', 'raw_byte_7']
 
 
-def check_pngs(asset, source, full_masks=None):
+def check_pngs(asset, source, full_masks=None, empty_masks=None):
     for index, (name, sha, frame) in enumerate(zip(asset['files'], asset['frame_sha256'], asset['native_frames'])):
         path = source/name
         if digest(path) != sha: raise ValueError('已登錄成品SHA不同')
@@ -21,7 +21,10 @@ def check_pngs(asset, source, full_masks=None):
                 raise ValueError('已登錄成品形狀或alpha不同')
             low, high = im.getchannel('A').getextrema()
             full_mask = asset['source_archive'] == 'FDOTHER.DAT' and full_masks is not None and full_masks[index]
-            if high != 255 or low != 0 and not full_mask:
+            native_empty = asset['source_archive'] == 'FIGANI.DAT' and empty_masks is not None and empty_masks[index]
+            if native_empty and high != 0:
+                raise ValueError('原生空白幀新增了墨跡')
+            if not native_empty and (high != 255 or low != 0 and not full_mask):
                 raise ValueError('已登錄成品缺少透明背景或不透明核心')
 
 
@@ -42,6 +45,7 @@ def main():
     rows = []
     for row in inventory['resources']:
         resource = row['resource']; asset = registered.get(resource)
+        empty_frames = []
         if asset is not None:
             if row['status'] != 'decoded' or asset['source_metadata_sha256'] != row['metadata_sha256']:
                 raise SystemExit('已登錄資源不在原始解碼盤點或metadata不同')
@@ -51,11 +55,22 @@ def main():
             expected = [{key: frame[key] for key in FIELDS} for frame in row['frames']]
             if asset['native_frames'] != expected or asset['frame_count'] != len(expected) or asset['native_header'] != [row['native_header'][k] for k in ['byte_1', 'byte_2', 'byte_4']]:
                 raise SystemExit('已登錄描述子或header不同')
-            check_pngs(asset, args.source)
+            doc = json.loads(metadata.read_text()); masks = []
+            for index, frame in enumerate(doc['frames']):
+                path = metadata.parent/frame['mask_path']
+                if digest(path) != row['frames'][index]['mask_sha256']:
+                    raise SystemExit('FIGANI原生遮罩SHA不同')
+                with Image.open(path) as im:
+                    if im.size != (frame['width'], frame['height']): raise SystemExit('FIGANI原生遮罩形狀不同')
+                    empty = im.convert('L').getextrema() == (0, 0)
+                masks.append(empty)
+                if empty: empty_frames.append({'frame': index, 'mask_sha256': digest(path)})
+            check_pngs(asset, args.source, empty_masks=masks)
         rows.append({'resource': resource, 'source_status': row['status'], 'native_frames': len(row['frames']),
             'registered_hd_frames': asset['frame_count'] if asset else 0,
             'asset_status': ('REGISTERED-ASSET' if stage == 'registered-worktree' else 'CATALOG-CANDIDATE') if asset else 'NOT-REGISTERED' if row['status'] == 'decoded' else 'SOURCE-EMPTY' if not row['frames'] and row['status'].startswith('empty') else 'SOURCE-BLOCKED',
             'common_background_header_eligible': row.get('native_header', {}).get('byte_1') == 0,
+            'verified_empty_source_frames': empty_frames,
             'runtime_caller_status': 'NOT-INFERRED-FROM-ASSETS'})
     effects = []
     for asset in catalog['assets']:
@@ -83,7 +98,7 @@ def main():
             'remaining_decoded_resources': [r['resource'] for r in decoded if not r['registered_hd_frames']],
             'source_blocked_resources': [r['resource'] for r in rows if r['asset_status'] == 'SOURCE-BLOCKED'], 'resources': rows},
         'registered_fdother_effects': effects,
-        'opaque_effect_contract': '沿modern_hd_battle_assets.go：僅FDOTHER原生Mask每個像素均有來源寫入時，容許成品沒有透明像素；FIGANI仍須透明背景及255核心。',
+        'opaque_effect_contract': '沿modern_hd_battle_assets.go：FDOTHER原生Mask每像素寫入時可無透明像素。FIGANI完整原生Mask全0時只能全透明，其他幀仍須透明背景及255核心；不以成品自承空白。',
         'scope': '完整FIGANI來源盤點對正式catalog、原版metadata及實際HD PNG的資料覆蓋；非原版oracle。'
                  'header資格不等於caller已接線，FDOTHER只核已登錄效果，不假定四種效果涵蓋全部共同效果。'
                  '一般玩家、所有caller、其他法術／死亡／背景、效能與平台須另有證據。',

@@ -63,9 +63,25 @@ def main():
             if path.name == 'animation.json': (folder/path.name).write_bytes(path.read_bytes()+b'\n')
             else: (folder/path.name).symlink_to(path)
     check('wrong-original-metadata', lambda d:None, '原始動畫未解碼或metadata不同', pack=shadow)
+    # 獨立核對空白圖源的稽核門檻；alpha=1也不能混入墨跡。
+    from PIL import Image
+    from audit_fd2_battle_hd_coverage import check_pngs
+    blank_cases = [('native-empty', 0, [True], True), ('missing-proof', 0, None, False),
+                   ('nonempty-source', 0, [False], False), ('soft-ink', 1, [True], False),
+                   ('opaque-ink', 255, [True], False)]
+    for name, alpha, masks, accepted in blank_cases:
+        path = out/(name+'.png'); Image.new('RGBA', (6,6), (20,30,40,alpha)).save(path)
+        asset = {'files':[path.name], 'frame_sha256':[hashlib.sha256(path.read_bytes()).hexdigest()],
+                 'native_frames':[{'width':1,'height':1}], 'source_archive':'FIGANI.DAT'}
+        error = None
+        try: check_pngs(asset, out, empty_masks=masks)
+        except ValueError as exc: error = str(exc)
+        if (error is None) != accepted: raise AssertionError((name, error))
+        checks.append({'case':'empty-audit-'+name, 'status':'PASS-ACCEPTED' if accepted else 'PASS-REJECTED',
+                       'reason':error or '已證實空白來源只接受全透明成品', 'output_published':False})
     report = {'status': 'PASS-CHARACTER-COMPILER-GUARDS', 'compiler_sha256': hashlib.sha256(compiler.read_bytes()).hexdigest(),
         'baseline_sha256': hashlib.sha256(args.baseline.read_bytes()).hexdigest(), 'checks': checks,
-        'scope': '十一種實檔錯配方／來源fixture全部拒收且不建立候選；不代表遊戲玩家驗證。'}
+        'scope': '十一種實檔錯配方／來源fixture及五種空白幀稽核條件；不代表遊戲玩家驗證。'}
     (out/'guards.json').write_text(json.dumps(report, ensure_ascii=False, indent=2)+'\n')
     print(json.dumps({'status': report['status'], 'guards': len(checks)}))
 

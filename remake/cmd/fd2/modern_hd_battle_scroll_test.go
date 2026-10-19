@@ -17,11 +17,15 @@ import (
 // Explicit graphics fixture: original archer25 and bandit288/289, two shots
 // and a counter. No rule, normal-player or original-executable claim.
 func modernScrollSceneFixture(t *testing.T, side byte) (*Game, *nativePhysicalScene, *battle.Unit, *battle.Unit) {
+	return modernScrollTargetSceneFixture(t, side, 96)
+}
+
+func modernScrollTargetSceneFixture(t *testing.T, side byte, targetFigure int) (*Game, *nativePhysicalScene, *battle.Unit, *battle.Unit) {
 	t.Helper()
 	g, actor, target := physicalSceneTestGame(t)
 	g.m.NativeTerrainControl = append(g.m.NativeTerrainControl, 0, 0, 5, 0)
 	g.m.Tiles[1] = 1 // two real BG55/5 inputs, not merely a header toggle.
-	actor.BattleFig, target.BattleFig = 8, 96
+	actor.BattleFig, target.BattleFig = 8, targetFigure
 	actor.NativeRecordByte6, target.NativeRecordByte6 = side, 2
 	if side != 0 {
 		target.NativeRecordByte6 = 0

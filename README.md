@@ -81,8 +81,15 @@
 ![非共背景戰鬥的HD人物捲入](docs/figures/hd-physical-scroll.png)
 
 非共背景物理演出已接 HD 人物，包含左右捲動、連射與反擊。以上是修改測試場景的最終 GPU 截圖，
-顯示人物捲入途中；背景與介面仍用像素素材。這部分完成引擎驗證，一般玩家抽驗另列，
+顯示人物捲入途中；背景與介面仍用像素素材。這部分另已抽驗下方希莉亞的正常射擊流程，
 範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
+
+![希莉亞HD普通射擊](docs/figures/hd-silia-physical-attack.png)
+
+希莉亞的待機、上弦、瞄準、射擊與飛矢，以及敵方劍盾兵，已接入手繪HD圖源。
+上圖是第三章普通讀檔、移動待機接敵後的實際射擊畫面。兩次射擊、F2與章節邊界保存冷讀已抽驗；
+接敵時的敵方回合使用忠實模式，背景與面板仍為像素素材。來源槽祖先的清敵政策、共享姿勢與驗證範圍見
+[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
 
 ## 遊戲介紹
 

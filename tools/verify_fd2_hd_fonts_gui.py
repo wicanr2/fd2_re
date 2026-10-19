@@ -28,8 +28,9 @@ def terrain_frame_ids(value):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    for name in ['binary', 'assets', 'original-pack', 'modern-pack', 'town-save', 'out']:
+    for name in ['binary', 'assets', 'original-pack', 'modern-pack', 'out']:
         parser.add_argument('--'+name, type=Path, required=True)
+    parser.add_argument('--town-save', type=Path, help='既有JSON來源槽；原生槽轉普通F5時不需指定')
     facility = parser.add_mutually_exclusive_group()
     facility.add_argument('--hotel', action='store_true', help='只抽驗旅館固定文字、四槽及保存讀取')
     facility.add_argument('--church', action='store_true', help='抽驗教會即時文字、四語名冊、取消與保存')
@@ -45,10 +46,15 @@ def main():
     parser.add_argument('--world', action='store_true', help='加驗正式HD世界、普通走行、指令環、取消與物理戰鬥返回')
     parser.add_argument('--battle-hd', action='store_true', help='要求兩次普通攻擊確實使用可選HD戰鬥繪製層；需--world')
     parser.add_argument('--battle-art', action='store_true', help='另擷取兩次普通攻擊的有界PNG序列供實際圖源核對；需--battle-hd')
+    parser.add_argument('--battle-node', default='battle_ch01', help='來源槽的正式戰場節點，預設首章')
+    parser.add_argument('--battle-only', action='store_true', help='抽驗普通攻防、F2及保存冷讀，略過已另驗的狀態／命令字型；需--battle-hd')
+    parser.add_argument('--capture-native-battle-save', action='store_true', help='正常原生標題LOAD、出發及F5建立JSON來源槽；需--native-save與--battle-status')
+    parser.add_argument('--startup-timeout', type=int, choices=[60,120,180], default=60,
+                        help='明示等待真實視窗的上限，主流程與新程序冷讀共用')
     parser.add_argument('--battle-own-index', type=int, default=2,
                         help='普通攻擊時以Z選取的在場我方序號，預設2為既有亞雷斯；需--world')
-    parser.add_argument('--battle-approach-rounds', type=int, choices=[0,1], default=0,
-                        help='沒有可達攻擊位置時，最多一次普通END等待敵人接近；需--world')
+    parser.add_argument('--battle-approach-rounds', type=int, choices=[0,1,2,3], default=0,
+                        help='沒有可達攻擊位置時，明示有界普通END次數；需--world')
     parser.add_argument('--gaia', action='store_true', help='首章普通選取蓋亞、北移／取消、F2與新程序LOAD；需--battle-status')
     parser.add_argument('--terrain', action='store_true', help='普通方向鍵移鏡頭至首章房屋，抽驗HD地形與F2；需--battle-status')
     parser.add_argument('--terrain-occlusion', action='store_true', help='最多六個普通回合抵達屋後，抽驗前景；需--terrain與--world')
@@ -57,7 +63,18 @@ def main():
     parser.add_argument('--terrain-frames', type=terrain_frame_ids, default=set(), help='明示本次取景必須包含的frame；需--terrain與--terrain-label')
     parser.add_argument('--terrain-label', help='本次取景的ASCII標籤；需--terrain-frames')
     parser.add_argument('--timed-dialogue', action='store_true', help='加驗計時對話開收框、穩定HD文字與F2；需--world與明示章前EXP校準槽')
+    parser.add_argument('--battle-advance', action='store_true', help='無射程目標時沿正式可達集合前進並待機，再正常END')
+    parser.add_argument('--faithful-approach', action='store_true', help='正常END期間以F2使用忠實模式，回玩家回合再切HD')
     args = parser.parse_args()
+    assert not (args.battle_advance or args.faithful_approach) or args.battle_only
+    if not re.fullmatch(r'battle_ch(?:0[1-9]|[12][0-9]|30)', args.battle_node):
+        parser.error('戰場節點須為battle_ch01..battle_ch30')
+    if args.capture_native_battle_save:
+        assert args.native_save and args.battle_status and not args.world
+    else:
+        assert args.town_save and args.town_save.is_file()
+    assert not args.battle_only or args.battle_hd
+    assert not (args.gaia or args.terrain) or args.battle_node=='battle_ch01'
     if bool(args.terrain_frames)!=bool(args.terrain_label):
         parser.error('--terrain-frames與--terrain-label須同時指定')
     if args.terrain_label and not re.fullmatch(r'[a-z][a-z0-9-]{0,39}',args.terrain_label):
@@ -81,13 +98,15 @@ def main():
     assert not args.panel_transitions or args.status or args.items
     assert Path('/.dockerenv').is_file() and args.binary.is_file()
     assert (args.original_pack/'manifest.json').is_file()
-    assert json.loads(args.town_save.read_text())['node'] == ('battle_ch01' if args.battle_status else 'hotel_ch02')
+    if not args.capture_native_battle_save:
+        assert json.loads(args.town_save.read_text())['node'] == (args.battle_node if args.battle_status else 'hotel_ch02')
     assert not args.out.exists()
     args.out.mkdir()
     audit = args.out/'input-audit.jsonl'
     saved = args.out/'user-data/fd2_re/fd2_save.json'
     saved.parent.mkdir(parents=True)
-    saved.write_bytes(args.town_save.read_bytes())
+    if not args.capture_native_battle_save:
+        saved.write_bytes(args.town_save.read_bytes())
     env = dict(os.environ, DISPLAY=':97', XDG_RUNTIME_DIR='/tmp/fd2-hd-font-pulse',
                XDG_DATA_HOME=str(args.out/'user-data'), XDG_CONFIG_HOME=str(args.out/'config'),
                XDG_CACHE_HOME=str(args.out/'cache'), LIBGL_ALWAYS_SOFTWARE='1',
@@ -102,7 +121,7 @@ def main():
     native_saved = None
     native_source_hash = None
     if args.native_save:
-        assert args.preparation and args.native_save.is_file()
+        assert (args.preparation or args.capture_native_battle_save) and args.native_save.is_file()
         native_source_hash = digest(args.native_save)
         native_saved = args.out/'FD2.SAV'
         native_saved.write_bytes(args.native_save.read_bytes())
@@ -116,6 +135,7 @@ def main():
     processes,streams,shots,operations=[],[],{},[]
     battle_hd_scenes=[]
     battle_art_samples=[]
+    battle_attack_choices=[]
     started=time.monotonic()
     window=None
     audit_epoch=0
@@ -193,7 +213,8 @@ def main():
             state=latest(audit)
             if state.get('error'):raise RuntimeError(state['error'])
             if predicate(state):return state
-            if time.monotonic()-started>(1200 if args.terrain_occlusion or args.battle_approach_rounds else 660):raise TimeoutError('整輪逾時')
+            limit=1800 if args.battle_advance else 1200 if args.terrain_occlusion or args.battle_approach_rounds else 660
+            if time.monotonic()-started>limit:raise TimeoutError('整輪逾時')
             time.sleep(.1)
         raise TimeoutError(str(latest(audit)))
 
@@ -261,7 +282,7 @@ def main():
         audit_epoch=1
         game=start([str(args.binary)],'game-cold-load.log',args.assets)
         window=None
-        for _ in range(600):
+        for _ in range(args.startup_timeout*10):
             if game.poll() is not None:raise RuntimeError('冷讀程序提前退出')
             try:window=command('xdotool','search','--name','炎龍騎士團').splitlines()[0];break
             except (subprocess.CalledProcessError,IndexError):time.sleep(.1)
@@ -391,7 +412,7 @@ def main():
         command('pactl','load-module','module-null-sink','sink_name=fd2_hd_fonts','rate=44100','channels=2')
         command('pactl','set-default-sink','fd2_hd_fonts')
         game=start([str(args.binary)],'game.log',args.assets)
-        for _ in range(600):
+        for _ in range(args.startup_timeout*10):
             if game.poll() is not None:raise RuntimeError('遊戲提前退出')
             try:window=command('xdotool','search','--name','炎龍騎士團').splitlines()[0];break
             except (subprocess.CalledProcessError,IndexError):time.sleep(.1)
@@ -402,11 +423,54 @@ def main():
             if latest(audit).get('title_phase')=='menu':break
             key('Escape')
         else:raise TimeoutError('標題未就緒')
+        if args.capture_native_battle_save:
+            town_node=args.battle_node.replace('battle_', 'town_', 1)
+            prep_node=args.battle_node.replace('battle_', 'preparation_', 1)
+            key('Down');key('Return');wait(lambda s:s.get('title_phase')=='loadslots')
+            shot('native-title-load');key('Return')
+            wait(lambda s:not s.get('title_phase') and s.get('node')==town_node)
+            shot('native-town-loaded')
+            # 沿ch03-startup-r1已驗鍵序；其他章須另外明示來源驗證。
+            assert args.battle_node=='battle_ch03', '此原生出發鍵序目前只驗第三章'
+            key('Left');key('Left');key('Return')
+            wait(lambda s:s.get('node')==prep_node and not s.get('preparation_ui_busy'))
+            shot('native-departure-prompt');key('Return')
+            # 章首包含長距離鏡頭移動；軟體繪圖時仍須走完原有虛擬幀。
+            deadline=time.monotonic()+480
+            while time.monotonic()<deadline:
+                state=latest(audit)
+                if state.get('error'):raise RuntimeError(state['error'])
+                if state.get('node')==args.battle_node:break
+                assert state.get('node') in (prep_node,args.battle_node.replace('battle_','story_',1)), '原生出發到達非預期節點'
+                # story即使對話已清空，也由普通確認鍵呼叫advanceStoryNode。
+                # handleNativeStoryInput在fade／storyWalk期間自行拒絕提前推進。
+                if state.get('node')==args.battle_node.replace('battle_','story_',1) or state.get('dialogues'):
+                    key('Return')
+                else:time.sleep(.05)
+            else:raise TimeoutError('原生出發章首劇情尚未結束')
+            for _ in range(120):
+                state=latest(audit)
+                if not state.get('dialogues') and not state.get('banner_t') and not state.get('battle_event'):break
+                key('Return')
+            else:raise TimeoutError('原生LOAD章首對話尚未結束')
+            before=latest(audit);key('F5');wait(lambda s:s.get('frame',0)>before['frame'])
+            assert saved.is_file() and json.loads(saved.read_text())['node']==args.battle_node
+            assert digest(args.native_save)==native_source_hash, '唯讀原始槽被修改'
+            shot('native-battle-f5')
+            report={'schema':'fd2-native-battle-source-gui-v1','status':'PASS',
+                    'binary_sha256':digest(args.binary),'gui_tool_sha256':tool_source_sha256,
+                    'native_source_sha256':native_source_hash,'saved_sha256':digest(saved),
+                    'native_writable_copy_after_f5_sha256':digest(native_saved),
+                    'saved_file':str(saved),'node':args.battle_node,'state_injection':False,
+                    'screenshots':shots,'operations':operations,'recording_created':False,
+                    'scope':'正常原生標題LOAD、城鎮出發、章首及F5。來源槽祖先依原manifest另揭露，不升格自然難度或整章E2。'}
+            (args.out/'receipt.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+            return
         if args.battle_status:
             key('Down');key('Return')
             wait(lambda s:s.get('title_phase')=='loadslots');shot('battle-title-load')
             key('Return')
-            wait(lambda s:not s.get('title_phase') and s.get('node')=='battle_ch01')
+            wait(lambda s:not s.get('title_phase') and s.get('node')==args.battle_node)
             for _ in range(120):
                 state=latest(audit)
                 if not state.get('dialogues') and not state.get('banner_t'):break
@@ -419,7 +483,7 @@ def main():
                 assert roster['NativeIdentity']==30 and roster['Fig']==30 and roster['BattleFig']==30
                 gaia=sample_gaia(key,wait,shot,lambda:latest(audit))
                 assert saved.read_bytes()==args.town_save.read_bytes()
-                restart_title_load('battle_ch01',latest(audit)['gold'],'gaia-cold-title-load')
+                restart_title_load(args.battle_node,latest(audit)['gold'],'gaia-cold-title-load')
                 cold=focus_gaia(key,wait,shot,lambda:latest(audit),'gaia-hd-cold-focused')
                 assert cold['units']==gaia['baseline']['units']
                 assert saved.read_bytes()==args.town_save.read_bytes()
@@ -468,7 +532,7 @@ def main():
                 if args.terrain_occlusion:
                     walk_behind_house(key,wait,shot,lambda:latest(audit),
                                       args.assets/'assets/maps/map0/map.json',args.out)
-                key('F9');wait(lambda s:s.get('node')=='battle_ch01')
+                key('F9');wait(lambda s:s.get('node')==args.battle_node)
                 for _ in range(120):
                     state=latest(audit)
                     if not state.get('dialogues') and not state.get('banner_t'):break
@@ -503,7 +567,18 @@ def main():
                 key('Return');wait(lambda s:s.get('move_preview') is True)
                 shot('world-hd-move-preview')
                 origin=latest(audit)['cursor']
-                for _ in range(3):key('Right')
+                if args.battle_only:
+                    state=latest(audit)
+                    occupied={(u['x'],u['y']) for u in state['units'] if u['on_field'] and u['hp']>0}
+                    candidates=[cell for cell in state['move_reachable'] if tuple(cell) not in occupied
+                                and 2<=abs(cell[0]-origin[0])+abs(cell[1]-origin[1])<=3]
+                    assert candidates,'正式可達集合沒有短走行抽驗位置'
+                    destination=min(candidates,key=lambda cell:(cell!=[origin[0]+3,origin[1]],cell[1],cell[0]))
+                    for _ in range(abs(destination[0]-origin[0])):key('Right' if destination[0]>origin[0] else 'Left')
+                    current=latest(audit)['cursor']
+                    for _ in range(abs(destination[1]-current[1])):key('Down' if destination[1]>current[1] else 'Up')
+                else:
+                    for _ in range(3):key('Right')
                 destination=latest(audit)['cursor']
                 assert destination in latest(audit).get('move_reachable',[]),'普通走行目的地不在正式可達集合'
                 shot('world-hd-move-destination')
@@ -521,7 +596,7 @@ def main():
                 shot('world-hd-move-cancelled')
                 world_stop.set();world_thread.join(timeout=15)
                 assert not world_thread.is_alive() and world_shots,'未取得有效實際走行GPU'
-                key('F9');wait(lambda s:s.get('node')=='battle_ch01' and not s.get('ring') and not s.get('move_preview'))
+                key('F9');wait(lambda s:s.get('node')==args.battle_node and not s.get('ring') and not s.get('move_preview'))
                 settle_world_battle()
                 def ordinary_physical_attack(prefix):
                     def move_cursor(destination):
@@ -537,15 +612,39 @@ def main():
                         state=latest(audit)
                         occupied={(u['x'],u['y']) for u in state['units'] if u['on_field'] and u['hp']>0}
                         enemies=[u for u in state['units'] if u['camp']==2 and u['on_field'] and u['hp']>0]
+                        attacker=next(u for u in state['units'] if u['camp']==0 and u['on_field'] and u['hp']>0
+                                      and [u['x'],u['y']]==state['cursor'])
+                        # 與battle.State.InAttackRange相同的已載入欄位及零值政策；不改正式規則。
+                        minimum,maximum=attacker.get('attack_min',0) or 1,attacker.get('attack_max',0) or 1
+                        assert 1<=minimum<=maximum,'目前觀測的正式射程無效'
                         choices=[]
                         for target in enemies:
                             for cell in state.get('move_reachable',[]):
-                                if tuple(cell) not in occupied and abs(cell[0]-target['x'])+abs(cell[1]-target['y'])==1:
+                                if tuple(cell) not in occupied and minimum<=abs(cell[0]-target['x'])+abs(cell[1]-target['y'])<=maximum:
                                     choices.append((abs(cell[0]-state['cursor'][0])+abs(cell[1]-state['cursor'][1]),cell,target))
                         if choices:break
-                        assert approach<args.battle_approach_rounds,'正式可達集合沒有相鄰敵人的安全測試位置'
-                        key('Escape');wait(lambda s:not s.get('move_preview'))
-                        grid=json.loads((args.assets/'assets/maps/map0/map.json').read_text())
+                        assert approach<args.battle_approach_rounds,'正式可達集合沒有符合目前射程的測試位置'
+                        advance_cell=None
+                        if args.battle_advance:
+                            def enemy_distance(cell):
+                                return min(abs(cell[0]-enemy['x'])+abs(cell[1]-enemy['y']) for enemy in enemies)
+                            cells=[cell for cell in state.get('move_reachable',[]) if tuple(cell) not in occupied]
+                            assert cells,'沒有可用的正常前進格'
+                            advance_cell=min(cells,key=lambda cell:(enemy_distance(cell),cell[1],cell[0]))
+                            assert enemy_distance(advance_cell)<enemy_distance(state['cursor']),'正常可達集合無法縮短接敵距離'
+                            move_cursor(advance_cell);key('Return')
+                            wait(lambda s:s.get('ring') and not s.get('walking') and s.get('ring_phase')=='open')
+                            key('Down');key('Return')
+                            wait(lambda s:not s.get('ring') and not s.get('class_ui_job') and not s.get('move_preview'))
+                            advanced=latest(audit)
+                            unit=next(u for u in advanced['units'] if u['camp']==0 and u['native_identity']==attacker['native_identity'])
+                            assert [unit['x'],unit['y']]==advance_cell and unit['acted'],'正常移動待機未提交'
+                        else:
+                            key('Escape');wait(lambda s:not s.get('move_preview'))
+                        if args.faithful_approach:
+                            key('F2');wait(lambda s:s.get('hd_theme') is False)
+                        occupied={(u['x'],u['y']) for u in latest(audit)['units'] if u['on_field'] and u['hp']>0}
+                        grid=json.loads((args.assets/f'assets/maps/map{int(args.battle_node[-2:])-1}/map.json').read_text())
                         empty=min(([x,y] for y in range(grid['h']) for x in range(grid['w']) if (x,y) not in occupied),
                                   key=lambda p:(abs(p[0]-state['cursor'][0])+abs(p[1]-state['cursor'][1]),p))
                         move_cursor(empty)
@@ -553,7 +652,7 @@ def main():
                         key('Down');key('Return')
                         wait(lambda s:s.get('system_end_turn_confirm') and not s.get('class_ui_job'))
                         key('Return')
-                        deadline=time.monotonic()+300
+                        deadline=time.monotonic()+(600 if args.battle_advance else 300)
                         while time.monotonic()<deadline:
                             current=latest(audit)
                             if current.get('error'):raise RuntimeError(current['error'])
@@ -565,10 +664,16 @@ def main():
                         else:raise TimeoutError('普通END未回玩家回合')
                         own_before=[u for u in state['units'] if u['camp']==0 and u['on_field'] and u['hp']>0]
                         own_after=[u for u in current['units'] if u['camp']==0 and u['on_field'] and u['hp']>0]
-                        assert len(own_after)==len(own_before),'普通END有我方離場，停止抽驗'
-                        battle_approach_steps.append({'scene':prefix,'before':state,'after':current,'state_injection':False})
+                        survivors={(u['native_identity'],u['name']) for u in own_after}
+                        assert all((u['native_identity'],u['name']) in survivors for u in own_before),'普通END有我方離場，停止抽驗'
+                        if args.faithful_approach:
+                            key('F2');wait(lambda s:s.get('hd_theme') is True and s.get('hd_world'))
+                        battle_approach_steps.append({'scene':prefix,'before':state,'after':current,
+                            'advance_cell':advance_cell,'end_in_faithful_theme':args.faithful_approach,'state_injection':False})
                         shot(prefix+'-approach-round-return')
                     _,cell,target=min(choices,key=lambda value:(value[0],value[1][1],value[1][0]))
+                    battle_attack_choices.append({'scene':prefix,'attacker':attacker,'range':[minimum,maximum],
+                                                  'cell':cell,'target':target,'state_injection':False})
                     move_cursor(cell);key('Return')
                     wait(lambda s:s.get('ring') and not s.get('walking') and s.get('ring_phase')=='open')
                     shot(prefix+'-attack-ring')
@@ -619,7 +724,7 @@ def main():
                         if not state.get('level_up_dialogue') and not state.get('dialogues'):break
                         key('Return')
                     else:raise TimeoutError('第一筆升級對話尚未結束')
-                key('F9');wait(lambda s:s.get('node')=='battle_ch01' and not s.get('battle_scene'))
+                key('F9');wait(lambda s:s.get('node')==args.battle_node and not s.get('battle_scene'))
                 settle_world_battle()
                 assert not latest(audit).get('level_up_dialogue') and not latest(audit).get('move_preview')
                 shot('world-hd-load-owner-cleared')
@@ -632,11 +737,11 @@ def main():
                 wait(lambda s:s.get('hd_world') and not s.get('battle_scene'))
                 shot('world-hd-physical-return')
                 if timed_probe:timed_result=timed_probe.finish(validate=True)
-                key('F9')
+                if not args.battle_only:key('F9')
                 settle_world_battle()
                 focus_own(0)
                 wait(lambda s:s.get('hd_world') is True)
-                shot('world-hd-source-reloaded')
+                shot('world-hd-postbattle-before-save' if args.battle_only else 'world-hd-source-reloaded')
                 focused=latest(audit)
             key('F2');wait(lambda s:s.get('hd_theme') is False);shot('battle-faithful-focused')
             faithful_focused=latest(audit)
@@ -645,63 +750,74 @@ def main():
             key('F2');wait(lambda s:s.get('hd_theme') is True);shot('battle-hd-focused-restored')
             assert latest(audit)['units']==focused['units'] and latest(audit)['view']==focused['view']
             assert not latest(audit).get('player_status_phase'),'F2返回誤開角色狀態'
-            key('Home');wait(lambda s:s.get('player_status_phase')=='status')
-            shot('battle-hd-status')
-            key('F2');wait(lambda s:s.get('hd_theme') is False);shot('battle-faithful-status')
-            key('F2');wait(lambda s:s.get('hd_theme') is True);shot('battle-hd-status-restored')
-            # Sol has no command IDs. The first confirmation closes his panel.
-            key('Return');wait(lambda s:not s.get('player_status_phase'))
-            shot('battle-hd-returned')
-            returned=latest(audit)
-            assert focused['units']==returned['units']
-            assert focused['cursor']==returned['cursor']
-            key('z');wait(lambda s:not s.get('player_focus'))
-            shot('battle-hd-command-unit-focused')
-            command_focused=latest(audit)
-            key('Home');wait(lambda s:s.get('player_status_phase')=='status')
-            shot('battle-hd-command-unit-status')
-            command('xdotool','windowsize',window,'1600','1000');shot('battle-status-resized')
-            command('xdotool','windowsize',window,'1920','1200')
-            key('F1');wait(lambda s:s.get('help_visible') is True);shot('battle-status-help')
-            key('Escape');wait(lambda s:s.get('help_visible') is False)
-            key('Return');wait(lambda s:s.get('player_status_phase')=='commands')
-            shot('battle-hd-commands')
-            key('Return');wait(lambda s:not s.get('player_status_phase'))
-            shot('battle-hd-command-unit-returned')
-            returned=latest(audit)
-            assert command_focused['units']==returned['units']
-            assert command_focused['cursor']==returned['cursor']
-            assert digest(saved)==digest(args.town_save),'面板操作改寫保存'
             outside=[]
-            status_reference='world-hd-source-reloaded' if args.world else 'battle-hd-focused'
-            for reference, targets in [
-                    (status_reference,['battle-hd-status','battle-hd-status-restored','battle-hd-returned']),
-                    ('battle-hd-command-unit-focused',['battle-hd-command-unit-status','battle-hd-commands','battle-hd-command-unit-returned'])]:
-                for target in targets:
-                    assert shots[reference+'.png']['state']['view']==shots[target+'.png']['state']['view'], '面板外比較鏡頭不同'
-                    # The top five native rows are outside every stable panel.
-                    # This is actual map RGB, not an audit-based Draw assertion.
-                    roi='1800x30+60+0'
-                    result=subprocess.run(['compare','-metric','AE',str(args.out/(reference+'.png'))+'['+roi+']',
-                                           str(args.out/(target+'.png'))+'['+roi+']','null:'],
-                                          env=env,capture_output=True,text=True,check=False)
-                    assert result.returncode in (0,1),result.stderr
-                    difference=float(result.stderr.strip())
-                    outside.append({'reference':reference,'target':target,'crop':roi,'different_pixels':difference})
-                    assert difference==0,('面板外現代地圖被覆蓋',outside[-1])
+            returned=latest(audit)
+            if not args.battle_only:
+                key('Home');wait(lambda s:s.get('player_status_phase')=='status')
+                shot('battle-hd-status')
+                key('F2');wait(lambda s:s.get('hd_theme') is False);shot('battle-faithful-status')
+                key('F2');wait(lambda s:s.get('hd_theme') is True);shot('battle-hd-status-restored')
+                # Sol has no command IDs. The first confirmation closes his panel.
+                key('Return');wait(lambda s:not s.get('player_status_phase'))
+                shot('battle-hd-returned')
+                returned=latest(audit)
+                assert focused['units']==returned['units']
+                assert focused['cursor']==returned['cursor']
+                key('z');wait(lambda s:not s.get('player_focus'))
+                shot('battle-hd-command-unit-focused')
+                command_focused=latest(audit)
+                key('Home');wait(lambda s:s.get('player_status_phase')=='status')
+                shot('battle-hd-command-unit-status')
+                command('xdotool','windowsize',window,'1600','1000');shot('battle-status-resized')
+                command('xdotool','windowsize',window,'1920','1200')
+                key('F1');wait(lambda s:s.get('help_visible') is True);shot('battle-status-help')
+                key('Escape');wait(lambda s:s.get('help_visible') is False)
+                key('Return');wait(lambda s:s.get('player_status_phase')=='commands')
+                shot('battle-hd-commands')
+                key('Return');wait(lambda s:not s.get('player_status_phase'))
+                shot('battle-hd-command-unit-returned')
+                returned=latest(audit)
+                assert command_focused['units']==returned['units']
+                assert command_focused['cursor']==returned['cursor']
+                assert digest(saved)==digest(args.town_save),'面板操作改寫保存'
+                outside=[]
+                status_reference='world-hd-source-reloaded' if args.world else 'battle-hd-focused'
+                for reference, targets in [
+                        (status_reference,['battle-hd-status','battle-hd-status-restored','battle-hd-returned']),
+                        ('battle-hd-command-unit-focused',['battle-hd-command-unit-status','battle-hd-commands','battle-hd-command-unit-returned'])]:
+                    for target in targets:
+                        assert shots[reference+'.png']['state']['view']==shots[target+'.png']['state']['view'], '面板外比較鏡頭不同'
+                        # The top five native rows are outside every stable panel.
+                        # This is actual map RGB, not an audit-based Draw assertion.
+                        roi='1800x30+60+0'
+                        result=subprocess.run(['compare','-metric','AE',str(args.out/(reference+'.png'))+'['+roi+']',
+                                               str(args.out/(target+'.png'))+'['+roi+']','null:'],
+                                              env=env,capture_output=True,text=True,check=False)
+                        assert result.returncode in (0,1),result.stderr
+                        difference=float(result.stderr.strip())
+                        outside.append({'reference':reference,'target':target,'crop':roi,'different_pixels':difference})
+                        assert difference==0,('面板外現代地圖被覆蓋',outside[-1])
             key('F5');wait(lambda s:s.get('frame',0)>returned['frame'])
             hd_saved=saved.read_bytes()
+            persistence_fields=('native_identity','battle_fig','name','x','y','hp','mp','lv','exp','camp','acted','on_field','attack_min','attack_max')
+            def persistence(state):
+                return [{field:unit.get(field) for field in persistence_fields} for unit in state['units']]
+            warm_units=persistence(returned)
             key('F2');wait(lambda s:s.get('hd_theme') is False)
-            key('F9');wait(lambda s:s.get('node')=='battle_ch01')
+            key('F9');wait(lambda s:s.get('node')==args.battle_node)
             faithful_loaded=latest(audit)
             key('F5');assert saved.read_bytes()==hd_saved,'兩主題保存不同'
             key('F2');wait(lambda s:s.get('hd_theme') is True)
-            key('F9');wait(lambda s:s.get('node')=='battle_ch01')
+            key('F9');wait(lambda s:s.get('node')==args.battle_node)
             hd_loaded=latest(audit)
+            loaded_units=persistence(hd_loaded)
             assert faithful_loaded['units']==hd_loaded['units'],'兩主題LOAD結果不同'
             assert saved.read_bytes()==hd_saved
-            restart_title_load('battle_ch01',hd_loaded['gold'],'battle-cold-title-load')
+            restart_title_load(args.battle_node,hd_loaded['gold'],'battle-cold-title-load')
             assert saved.read_bytes()==hd_saved
+            cold_units=persistence(latest(audit))
+            if args.battle_only:
+                assert loaded_units==cold_units,'章節邊界保存／新程序LOAD的重建狀態不同'
             assert digest(Path(__file__))==tool_source_sha256,'GUI工具執行中來源被修改'
             report={'schema':'fd2-hd-battle-status-gui-v1','status':'PASS',
                     'catalog_sha256':digest(args.assets/'assets/themes/modern/catalog.json'),
@@ -709,7 +825,10 @@ def main():
                     'world_runtime_checked':args.world,'world_walk_gpu':world_shots,'world_walk_rejected':world_rejected,
                     'battle_hd_consumer_checked':args.battle_hd,
                     'battle_own_index':args.battle_own_index,
+                    'battle_node':args.battle_node,'battle_only':args.battle_only,
+                    'battle_attack_choices':battle_attack_choices,
                     'battle_approach_rounds_limit':args.battle_approach_rounds,
+                    'battle_advance':args.battle_advance,'faithful_approach':args.faithful_approach,
                     'battle_approach_steps':battle_approach_steps,
                     'battle_source_roster':{
                         ident:{field:unit.get(field) for field in ('NativeIdentity','Fig','BattleFig')}
@@ -724,8 +843,13 @@ def main():
                     'outside_map_gpu':outside,'new_process_title_load':True,
                     'source_save_bytes_equal':saved.read_bytes()==args.town_save.read_bytes(),
                     'theme_save_bytes_equal':True,'loaded_units_equal':True,
+                    'post_battle_save_checked':args.battle_only,
+                    'node_boundary_save_checked':args.battle_only,
+                    'cold_loaded_units_equal':loaded_units==cold_units,
+                    'warm_units':warm_units,'loaded_units':loaded_units,'cold_units':cold_units,
+                    'save_contract':'F5保存章節邊界進度；LOAD重建戰場，不保存戰中位置、Acted或敵方HP。',
                     'recording_created':False,'elapsed_seconds':time.monotonic()-started,
-                    'scope':('正常標題LOAD既有普通START／F5首章JSON，Z聚焦、Home檢視、F2、狀態與命令、返回；'
+                    'scope':(('正常標題LOAD來源JSON，普通走行、兩次攻防、F2及戰後保存／新程序LOAD；來源祖先另見建槽收據。未重驗字型面板。' if args.battle_only else '正常標題LOAD既有普通START／F5首章JSON，Z聚焦、Home檢視、F2、狀態與命令、返回；')
                              + ('含普通走行、指令環、取消、兩次物理攻擊、經驗對話中F9及正常戰場返回。' if args.world else '')
                              + '不注入座標或狀態，不宣稱原版對拍或完整戰役。')}
             if args.terrain_frames:

@@ -173,7 +173,8 @@ func (g *Game) recordInputAuditState() {
 			if u == nil {
 				continue
 			}
-			units = append(units, map[string]any{"name": u.Name, "x": u.X, "y": u.Y, "hp": u.HP, "mp": u.MP, "lv": u.Lv, "exp": u.Exp, "camp": u.Camp, "acted": u.Acted, "on_field": u.OnField, "raw": u.NativeMapPresentation})
+			units = append(units, map[string]any{"name": u.Name, "x": u.X, "y": u.Y, "hp": u.HP, "mp": u.MP, "lv": u.Lv, "exp": u.Exp, "camp": u.Camp, "acted": u.Acted, "on_field": u.OnField, "raw": u.NativeMapPresentation,
+				"native_identity": u.NativeIdentity, "battle_fig": u.BattleFig, "attack_min": u.AtkMin, "attack_max": u.AtkMax})
 		}
 		r["units"] = units
 	}

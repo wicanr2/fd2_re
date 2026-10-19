@@ -242,3 +242,33 @@ func TestModernHDBattleGPUBridge(t *testing.T) {
 	}
 	t.Logf("%d GPU cases: native complete-canvas exact; HD alpha/RGB shade tolerance1; no original-executable or player-path claim", len(cases))
 }
+
+func TestModernHDBattleEmptyFrameGPU(t *testing.T) {
+	if os.Getenv("FD2_HD_BATTLE_EMPTY_GPU") != "1" {
+		t.Skip("dedicated empty-frame GPU process required")
+	}
+	palette := hdBattleCandidatePalette()
+	back := image.NewNRGBA(image.Rect(0, 0, 12, 12))
+	for y := 0; y < 12; y++ {
+		for x := 0; x < 12; x++ {
+			back.SetNRGBA(x, y, color.NRGBA{R: 20, G: 80, B: 220, A: 255})
+		}
+	}
+	want := image.NewRGBA(image.Rect(0, 0, 1920, 1200))
+	draw.Draw(want, want.Bounds(), image.NewUniform(palette[0]), image.Point{}, draw.Src)
+	draw.Draw(want, back.Bounds().Add(image.Pt(40, 60)), back, image.Point{}, draw.Over)
+	plan := modernHDBattlePlan{Base: make([]byte, 64000), Palette: palette, Layers: []modernHDBattleLayer{
+		{HD: back, HDKey: "empty-frame-behind", Rect: back.Bounds().Add(image.Pt(40, 60)), Fill: -1},
+		{HD: image.NewNRGBA(image.Rect(0, 0, 1920, 1200)), HDKey: "verified-native-empty", Rect: image.Rect(0, 0, 1920, 1200), Fill: -1},
+	}}
+	probe := &modernHDBattleGPUProbe{cases: []modernHDBattleGPUCase{{name: "empty-full-frame-keeps-other-layer", plan: plan, want: want}}}
+	ebiten.SetWindowSize(640, 400)
+	ebiten.SetVsyncEnabled(false)
+	if err := ebiten.RunGame(probe); err != nil {
+		t.Fatal(err)
+	}
+	defer probe.gpu.close()
+	if probe.err != nil || probe.index != 1 {
+		t.Fatalf("empty-frame GPU: %v", probe.err)
+	}
+}

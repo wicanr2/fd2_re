@@ -46,8 +46,8 @@ def main():
     rgb = [tuple((v << 2) | (v >> 4) for v in dac[i:i+3]) for i in range(0, 768, 3)]
     base_path = ROOT/'remake/assets/themes/modern/catalog.json'
     base = validate(False, base_path)
-    if any(asset['role'] == 'battle_animation_hd_set' for asset in base['assets']):
-        raise SystemExit('診斷工具只接受尚未登錄動畫的基底')
+    if any(asset['role'] == 'battle_animation_hd_set' and asset['source_resource'] in resources for asset in base['assets']):
+        raise SystemExit('所選診斷動畫已登錄，不覆寫')
     # 全部圖源先驗證，避免失敗時留下一份看似可用的清冊。
     inputs = []
     for resource in resources:

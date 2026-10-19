@@ -9,13 +9,13 @@
     "native_viewport": "CONFORMED-SCOPED：正式1920世界沿原生(4,4)、312×192窗格；正常F2同view與960地形樣本一致。",
     "hd_sprite_data": "DATA-READY：完整125組1455張HD及31組372張新增24父項已登錄；舊1083張父項及HD bytes保持。",
     "hd_world_renderer": "CONFORMED-SCOPED：144人物已接Game.Draw；首章34張正常GPU、4張實際走行、兩次物理攻擊及保存／新程序LOAD通過。",
-    "private_assets": "377項allow-list3415檔及runtime-only3161檔逐筆通過，原3392檔保持，八份悠妮母稿不進執行包。私人af9ca1b953510eeda9c70965da926780e0c87eef已推送，遠端HEAD相同。",
+    "private_assets": "381項allow-list完整3464檔、runtime-only3194檔已核對，原3415檔保持。新增16母稿不進執行包，Go載入及玩家／AI拒收通過；私人45a3a9a0938661dc73e3cfa05aa397c5c9302b5a已推送，遠端HEAD相同且工作樹乾淨。",
     "quickload_battle_owner": "CONFORMED-SCOPED：成功JSON LOAD丟棄舊經驗owner與移動計畫；拒收保留。",
     "timed_dialogue": "CONFORMED-SCOPED-RUNTIME-E1：計時FFEC開收框保留HD世界，EXP99普通鍵盤／F2與保存冷讀通過；其他caller未驗。",
     "hd_terrain": "CONFORMED-SCOPED：map0六組53槽；新增圓頂綠色／褐色雙塊四底圖在兩張正常GPU全部相符，短長組合與保存冷讀通過；草地及其他地形仍待HD化。",
     "ai_player_input_lock": "CONFORMED-SCOPED：AI換手期間拒絕玩家地圖輸入重入；普通END／增援對話及相關／完整Go回歸通過。",
     "gaia_redesign": "CONFORMED-SCOPED：新版頭像與四方向圖組已登錄；正常START／Gaia北移取消／F2／冷讀分段驗證。相位差異與序章尾端失敗明示，非逐幀parity。",
-    "hd_battle_animation": "CONFORMED-SCOPED：377項清冊含四召喚37幀及角色FIGANI八資源61幀；索爾／亞雷斯／悠妮／強盜普通攻防證據保持，四召喚施術者及新增非共背景捲動限RUNTIME-E1。783 GPU案例、雙側兩次射擊／反擊及六階段F2／返回通過；其餘人物／演出、普通法術及非共背景正常玩家與效能仍待，蓋亞占寬待決。"
+    "hd_battle_animation": "CONFORMED-SCOPED：381項清冊，FIGANI12資源94幀與四召喚37幀正式登錄。希莉亞與敵方76新增33幀；第三章兩次正常射擊、F2與章節邊界保存冷讀通過，85張本體PNG相符。敵方九幀揮劍／四飛矢及六階段F2等完整146次呈現限fixture的RUNTIME-E1。END明示忠實模式，NPC鐵諾及其他人物／法術／死亡／普通召喚／平台效能仍待；蓋亞占寬待決。"
   },
   "runtime_source": {
     "binary": {
@@ -27174,5 +27174,1900 @@
       "docker_cleanup": "所有本批建置與GPU容器皆--rm結束；最終docker ps -a另核無FD2殘留。",
       "private_worktree": "本批查核乾淨，HEAD af9ca1b953510eeda9c70965da926780e0c87eef；未改私人可見性設定。"
     }
-  }
+  },
+  "silia_battle_followup_20261019": {
+    "date": "2026-10-19",
+    "status": "CONFORMED-SCOPED：20幀正式登錄，正常射擊／章節邊界冷讀及私人runtime-only通過",
+    "base_source_commit": "cad8d3adae3ebf067cd38b3cff345b202ecc6172",
+    "scope": "BattleFig8希莉亞FIGANI24待機1幀、25攻擊19幀；26原始空header。原生抬弓、蹲射與飛行箭；原矩形、header1=1／header2=14、delay及cue不變。",
+    "full_battle_hd_complete": false,
+    "sources": [
+      {
+        "file": "docs/data/fd2-reference-files.json",
+        "sha256": "9946b7506620069ce9b7bb8e4b1f7fed36e7a9389b634ef62064727d89579c5e"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/battle-animation-hd-inventory-final.json",
+        "sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-native-inputs-r1.json",
+        "sha256": "764d75a78ee5e61551781d435a12e85944d0b7b843dd58795369b88c9f39672c"
+      },
+      {
+        "file": "tools/build_fd2_character_battle_hd.py",
+        "sha256": "fd283cd499e5703cfb1165751e469c75b85e60b3f85727c2e032eac14207b8c0"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_assets.go",
+        "sha256": "6557c0a0c9adc01b145fe1342239735871b93ed8cc300a314066aed3e30c2053"
+      }
+    ],
+    "native_evidence": {
+      "fixed_inputs": [
+        {
+          "file": "FD2.EXE",
+          "size": 357074,
+          "md5": "b97caf2239a27a896069d03549d96e1e",
+          "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+        },
+        {
+          "file": "FIGANI.DAT",
+          "size": 15279582,
+          "md5": "7da21ec0ad9917455459f1acb970bdf4",
+          "sha256": "e909314ce37b70701238fd24febc8f61603bbe8d81a9ecbf8f289c97a5b67a1f"
+        }
+      ],
+      "metadata_and_frames": [
+        {
+          "resource": 24,
+          "status": "decoded",
+          "reason_code": "decoded",
+          "raw_sha256": "af4cdd44329e8d0d8be3f2a70e49a9d7ec3fd8121a4aa8d0ca0bb3a32e324cdb",
+          "status_sha256": "ac958e909f13272a8965a5a52a24415ff6e3bb5f30cffa5cccd49e3e49539884",
+          "frames": [
+            {
+              "frame": 0,
+              "x": 196,
+              "y": 62,
+              "width": 118,
+              "height": 130,
+              "delay_native": 2,
+              "raw_byte_4": 0,
+              "raw_byte_5": 0,
+              "raw_byte_7": 0,
+              "pixels_sha256": "c7ff77a945ce06dc4778b96fe5b2bb47a00f3c5d10a1ec57a7d1046ad39742ae",
+              "mask_sha256": "f4615ada5180fc3a375735b5cbe78dd73ea6112ed7dfcc0757be91d16e078a00"
+            }
+          ],
+          "metadata_sha256": "73db54ed306f05816117312f651986064714fe5e929e7026de485e7d3c900765",
+          "native_header": {
+            "byte_1": 0,
+            "byte_2": 1,
+            "byte_4": 0
+          }
+        },
+        {
+          "resource": 25,
+          "status": "decoded",
+          "reason_code": "decoded",
+          "raw_sha256": "308017e80380bc6ec2587ad73f7234ade16fa07a048bef23acc3d5f3775781c6",
+          "status_sha256": "3a51820e540b3007a315d0d28967f9261b7eda63cd41579e9e34e8689e86da05",
+          "frames": [
+            {
+              "frame": 0,
+              "x": 193,
+              "y": 62,
+              "width": 127,
+              "height": 130,
+              "delay_native": 2,
+              "raw_byte_4": 0,
+              "raw_byte_5": 0,
+              "raw_byte_7": 0,
+              "pixels_sha256": "61eb4456b290df90699ae07b2d7857a063909a480984dd334bde8911280fe71f",
+              "mask_sha256": "ef5bcedb9a1bc7ebceedea6df01ed3fd1b5b1793f48822f32d010a05b5cee8f9"
+            },
+            {
+              "frame": 1,
+              "x": 203,
+              "y": 29,
+              "width": 108,
+              "height": 163,
+              "delay_native": 2,
+              "raw_byte_4": 0,
+              "raw_byte_5": 0,
+              "raw_byte_7": 0,
+              "pixels_sha256": "f5a5acbc66fe8b08fb748c11bf3ab70be3f7af5cb4bba508efee8dea3329a917",
+              "mask_sha256": "0e73291215e5fd176d04352e5a4e7ec5b1206554dcdb90ee0e283e034627b545"
+            },
+            {
+              "frame": 2,
+              "x": 204,
+              "y": 4,
+              "width": 86,
+              "height": 188,
+              "delay_native": 2,
+              "raw_byte_4": 0,
+              "raw_byte_5": 0,
+              "raw_byte_7": 0,
+              "pixels_sha256": "2adf37f7a3b894fe6b38596f23153d12b7bc9e89428eecfadfbd5b5e1094293d",
+              "mask_sha256": "a23872dc5e97f461b2822677928d89d0b85441c907502e49b9f78f538d41b2e0"
+            },
+            {
+              "frame": 3,
+              "x": 208,
+              "y": 14,
+              "width": 65,
+              "height": 178,
+              "delay_native": 4,
+              "raw_byte_4": 0,
+              "raw_byte_5": 0,
+              "raw_byte_7": 0,
+              "pixels_sha256": "71e55bf0b91f5d15cdfbd8814dca96d013256fbaa79b5f09e8588e89f0a975bb",
+              "mask_sha256": "67d5546204e43b295beec2bf6b86c98f54213a7e510b98bd88c85daa7cec20b7"
+            },
+            {
+              "frame": 4,
+              "x": 208,
+              "y": 13,
+              "width": 65,
+              "height": 179,
+              "delay_native": 2,
+              "raw_byte_4": 0,
+              "raw_byte_5": 0,
+              "raw_byte_7": 0,
+              "pixels_sha256": "a1b68e84b788044198f6ee3e7c491788e561949fd5bcdfabcea479c1575eb2d8",
+              "mask_sha256": "7f537d053524c9b8d907a82cb73fa6e2cf4a21e62addd6a1aec3b0f55268287d"
+            },
+            {
+              "frame": 5,
+              "x": 208,
+              "y": 13,
+              "width": 65,
+              "height": 179,
+              "delay_native": 2,
+              "raw_byte_4": 0,
+              "raw_byte_5": 0,
+              "raw_byte_7": 0,
+              "pixels_sha256": "51be0f527e51d7501b71f1ffa4d3a8dec8ba291f62922fbab3e2f7318154a619",
+              "mask_sha256": "4af9b5898a2627ae263c45bfa1619648e1bdd0dbb8817da3e4750fa5e0f77d24"
+            },
+            {
+              "frame": 6,
+              "x": 208,
+              "y": 47,
+              "width": 65,
+              "height": 145,
+              "delay_native": 2,
+              "raw_byte_4": 0,
+              "raw_byte_5": 0,
+              "raw_byte_7": 0,
+              "pixels_sha256": "7e9f1eaeeb84ed9e74a17ad6b8c2d9344c2bb9cae8b64ce59ca5c42c062e203c",
+              "mask_sha256": "bbe8c12736fdc7637fd6dd427374b25b762565192b00df52c23c15901843bf5d"
+            },
+            {
+              "frame": 7,
+              "x": 172,
+              "y": 109,
+              "width": 100,
+              "height": 81,
+              "delay_native": 4,
+              "raw_byte_4": 0,
+              "raw_byte_5": 0,
+              "raw_byte_7": 0,
+              "pixels_sha256": "083ea149737c006f34f92a7f16d43f8775b768529c140875a256263b765b7a02",
+              "mask_sha256": "57ef9788d98a9ce4481ad6e645f057f7dcc8ada89da91c8ea43bccfb0c677d8a"
+            },
+            {
+              "frame": 8,
+              "x": 172,
+              "y": 110,
+              "width": 102,
+              "height": 80,
+              "delay_native": 2,
+              "raw_byte_4": 0,
+              "raw_byte_5": 0,
+              "raw_byte_7": 0,
+              "pixels_sha256": "6f8bc3e2a14fd601295defe3db5153e0938fbfe32c81a592ba95b278164dd088",
+              "mask_sha256": "328e1371ca0a4feb1fc1683872ee255c5084282b69034ea8af377645628e516e"
+            },
+            {
+              "frame": 9,
+              "x": 172,
+              "y": 111,
+              "width": 102,
+              "height": 79,
+              "delay_native": 6,
+              "raw_byte_4": 0,
+              "raw_byte_5": 0,
+              "raw_byte_7": 0,
+              "pixels_sha256": "ba4c1640dc0733e76a448cbad87e00c2fbbb67c0bdbb044d1837d85e77c81420",
+              "mask_sha256": "7bf8773383adfb68708635c5db26423eb133077e91d83145b8aadb7bb0315be1"
+            },
+            {
+              "frame": 10,
+              "x": 0,
+              "y": 111,
+              "width": 277,
+              "height": 79,
+              "delay_native": 2,
+              "raw_byte_4": 0,
+              "raw_byte_5": 2,
+              "raw_byte_7": 0,
+              "pixels_sha256": "6942652bebbcf08fc42969cffe797549abddc2b68f6e81236eb32ffa0e3096cb",
+              "mask_sha256": "15c5f63c36005b613e1be8fa6f97ccfef45c2a2098e99f099756e98bc0ce522f"
+            },
+            {
+              "frame": 11,
+              "x": 180,
+              "y": 111,
+              "width": 95,
+              "height": 79,
+              "delay_native": 2,
+              "raw_byte_4": 0,
+              "raw_byte_5": 0,
+              "raw_byte_7": 0,
+              "pixels_sha256": "7f831dabdedcc16f1718928d34c201098dca8d3165fc121ae5101d622ede96a1",
+              "mask_sha256": "8826e0ddfec7767efa72b63e0cc458740f786670732e1878925c44d82d24aba1"
+            },
+            {
+              "frame": 12,
+              "x": 180,
+              "y": 111,
+              "width": 95,
+              "height": 79,
+              "delay_native": 2,
+              "raw_byte_4": 0,
+              "raw_byte_5": 0,
+              "raw_byte_7": 0,
+              "pixels_sha256": "a89dfa398b3971d81a075b519c9bca69945646fe30981227173acfac858d8940",
+              "mask_sha256": "4e37d908508e31f16e142c65a6d857d0d33aaeb9e4061aa2c4cb458095b3a9ca"
+            },
+            {
+              "frame": 13,
+              "x": 178,
+              "y": 111,
+              "width": 97,
+              "height": 79,
+              "delay_native": 2,
+              "raw_byte_4": 0,
+              "raw_byte_5": 0,
+              "raw_byte_7": 0,
+              "pixels_sha256": "5b0dbe45ba44671a9afedcc7506f30efa6e68c61d4ce238318243a58b7ceec13",
+              "mask_sha256": "86f0cab2d4e73c1900c6b43b365d9f3d669dc092faa81dc8afb19130c3cc070b"
+            },
+            {
+              "frame": 14,
+              "x": 0,
+              "y": 0,
+              "width": 320,
+              "height": 200,
+              "delay_native": 2,
+              "raw_byte_4": 0,
+              "raw_byte_5": 0,
+              "raw_byte_7": 0,
+              "pixels_sha256": "fb35dc5cc3cf62743c8aeb0cbb675d36cd96116db937ce294842632d65bd31b3",
+              "mask_sha256": "47b3592047bc4fd2154578a5615e3235cdce0d0637b01d892a19a241274d2f18"
+            },
+            {
+              "frame": 15,
+              "x": 96,
+              "y": 77,
+              "width": 50,
+              "height": 3,
+              "delay_native": 2,
+              "raw_byte_4": 1,
+              "raw_byte_5": 1,
+              "raw_byte_7": 0,
+              "pixels_sha256": "04a3ddd081e9b9fc94d445ccf9f171084ed6f1b8b7d4e4c1c57a6f11f0dc4960",
+              "mask_sha256": "ca3b54a3315ba637658bc0bb9976d840587c51480e1b75c2cd765187cff983ea"
+            },
+            {
+              "frame": 16,
+              "x": 97,
+              "y": 76,
+              "width": 50,
+              "height": 3,
+              "delay_native": 2,
+              "raw_byte_4": 0,
+              "raw_byte_5": 0,
+              "raw_byte_7": 0,
+              "pixels_sha256": "9cccfe5b1acd1b205df92d26cb8c284140165da3ad295b9662f473d8aace7513",
+              "mask_sha256": "99079cb036479b71f2c22ac02c111033f0957be6fa6a2569c089c2a482cda665"
+            },
+            {
+              "frame": 17,
+              "x": 97,
+              "y": 78,
+              "width": 50,
+              "height": 3,
+              "delay_native": 2,
+              "raw_byte_4": 0,
+              "raw_byte_5": 0,
+              "raw_byte_7": 0,
+              "pixels_sha256": "35ce35421a5ffe21a6500ba27a0f15a7199bfc6580ed8241ed9cc3dd7f99abbf",
+              "mask_sha256": "f322cb4fe83d2e79466b15b9cbd6f8391767cc1d1c54e808803911c0fc9b1dd0"
+            },
+            {
+              "frame": 18,
+              "x": 97,
+              "y": 77,
+              "width": 50,
+              "height": 3,
+              "delay_native": 2,
+              "raw_byte_4": 0,
+              "raw_byte_5": 0,
+              "raw_byte_7": 0,
+              "pixels_sha256": "04a3ddd081e9b9fc94d445ccf9f171084ed6f1b8b7d4e4c1c57a6f11f0dc4960",
+              "mask_sha256": "ca3b54a3315ba637658bc0bb9976d840587c51480e1b75c2cd765187cff983ea"
+            }
+          ],
+          "metadata_sha256": "f8ea420caeae637ac0a69d7cfed5aa2463e1df3deaf267d476578504d8b57150",
+          "native_header": {
+            "byte_1": 1,
+            "byte_2": 14,
+            "byte_4": 3
+          }
+        },
+        {
+          "resource": 26,
+          "status": "empty_header_zero",
+          "reason_code": "zero_header_word",
+          "raw_sha256": "6b25930e91686cee8bb5d4dae8dbed14f63c690c1c97ecb98552d8842e2d9395",
+          "status_sha256": "3e7c3483e7a277ec54417d836ccb3b728d10fd15d82cc89be9de666ac4098089",
+          "frames": []
+        }
+      ],
+      "identity": "native_character_catalog id8希莉亞；ch03正式party native_identity8／fig8／portrait8及Class4。map小人選號不作獨立戰鬥身分證據，原始FIGANI24／25外觀另核。",
+      "appearance": "戰鬥圖背向弓兵，淺褐圓形頭部輪廓、藍色短上衣／長側披布、褐紅腰帶／弓袋／交叉綁帶高靴、裸上臂及長弓。頭像長髮不擴入戰鬥圖原輪廓，服裝與姿勢依大型圖。",
+      "blank": "FIGANI25 frame14為320×200，固定原始Mask全部64000像素為0。frame15..18為50×3飛行箭，必須分開新畫，不把人物母稿填進去。"
+    },
+    "blank_frame_contract": [
+      "不改正式catalog、recipe或存檔格式。由原始FIGANI Mask長度等於w*h且每像素0導出native empty。",
+      "原始空白幀只接受成品每像素alpha0；不得接受半透明或不透明新墨。其他FIGANI仍須透明背景與不透明核心，不能以nil／長度不足Mask當空白。",
+      "編製器沿原有配方，但當原始frame alpha全0時輸出相同6倍空白PNG，逐筆明示母稿未使用；不改排程或略過frame。",
+      "來源稽核讀固定manifest盤點的Mask SHA，導出空白資格；不能由catalog自承、成品空白或固定frame索引放行。",
+      "完整資源與主題預載維持原子發布；blank仍有可驗雜湊及non-nil圖片，不能被當缺件fallback。"
+    ],
+    "art_contract": [
+      "沿核准手繪及原矩形乘六；母稿共享與原錨點／裁切逐幀揭露。空白及飛行箭與人物分開。",
+      "內建image_gen透明RGBA，所有母稿目視審查後進隔離候選；不得只留生成目錄。"
+    ],
+    "acceptance": [
+      "空白資格／殘留墨／缺Mask／非空來源被清空的正負向測試，失敗不得部分發布。既有FIGANI及FDOTHER alpha契約保持。",
+      "完整20幀乾淨編製、拒收、正式清冊／來源預檢與CPU／GPU空白呈現。",
+      "正式Draw雙側非共背景及F2；正常玩家從含希莉亞的合法章槽攻擊／返回／保存冷讀，修改來源須明示，不能稱未修改整章E2。",
+      "實際GPU核對人物與飛行箭，blank只依同來源完整透明幾何驗證；通過才登錄及私人同步。"
+    ],
+    "limits": [
+      "本輪先解來源已證實的空白幀閘門，不為美術填入未知像素。",
+      "蓋亞占寬仍待決；其他人物／法術／死亡／普通召喚及代表性平台繼續，完整Goal不縮小。"
+    ],
+    "generation": {
+      "tool": "built-in image_gen",
+      "jobs": [
+        {
+          "key": "idle",
+          "prompt": "Use case: stylized-concept. Asset: ONE transparent full-body HD battle illustration for an existing 1990s fantasy strategy game remake. Image1 is the exact original battle pose, silhouette and clothing reference. Image2 is only the already accepted hand-painted rendering style; do not copy its man, polearm, colors or costume. Repaint image1 faithfully as detailed clean hand-painted game art. An adult female archer viewed entirely from behind, facing a little upper-left. Keep the original smooth light-tan/brown rounded close-fitting head silhouette and low rounded lower edge, no long flowing hair or added helmet ornaments, face hidden. Slim athletic adult proportions. Bare upper arms, small reddish brown shoulder guard on screen-left, teal grey folded scarf across upper back, fitted deep blue sleeveless top and short blue skirt/tunic, wide russet waist belt, long grey-teal side cloth hanging down screen-right thigh, a brown leather pouch/bow case at screen-left hip, russet forearm guards and tall reddish leather boots with dark crossed straps and one visible bare knee. Upright relaxed idle stance, feet a little apart, screen-left hand loosely open down-left, screen-right hand down-right gripping the middle of ONE long slender dark teal and brown recurved bow angled diagonally DOWN RIGHT, bow tips and pale thin string as in image1. Do not aim or draw the bow. No arrow in flight. Preserve the original rear view and low bow placement, not a front-facing pinup. Rich painted fabric folds, modest metal accents, precise clean contour ink, practical leather. Entire head, fingers, bow tips and both boots inside the canvas with generous transparent margins. Genuine transparent RGBA background, no ground, cast shadow, platform, scene, checkerboard, text, watermark, shield, second weapon or extra character.",
+          "references": [
+            "work/promo-cadence-20261018/hd-fonts/silia-ref-024-00.png",
+            "remake/generated-assets/modern-theme-prototypes/figani-012-hd6-v1-f00.png"
+          ],
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-b25ff64a-eb0a-4493-8f53-04c9f420663b.png",
+          "workspace_path": "work/promo-cadence-20261018/hd-fonts/silia-idle-master-r1.png",
+          "sha256": "1c5a1c14e8ea88cda110315dbbf9d35dc9578a8178cb5f5d584c43824cf84c07",
+          "size": [
+            1194,
+            1317
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "alpha_bbox": [
+            25,
+            0,
+            1186,
+            1317
+          ]
+        },
+        {
+          "key": "bow-out",
+          "prompt": "Use case: stylized-concept. Asset: ONE full-body transparent HD battle pose of the SAME female archer. Image1 is the exact original pose and silhouette reference, image2 is the same character's new idle illustration and locks costume, proportions, bow design, head and hand-painted rendering. Preserve image2's adult female build, rounded light-tan/brown head silhouette, teal grey scarf and side cloth, deep blue sleeveless short tunic, russet shoulder guard on screen-left, waist belt, forearm guards, pouch and crisscross tall leather boots. Rear view, face hidden. POSE: copy image1 exactly: still standing upright with both boots on ground, left arm slightly spread down-left with relaxed open hand, RIGHT upper arm extended horizontally toward screen-right; right hand holds ONE long dark teal/brown recurve bow almost HORIZONTAL to the right at waist/chest level, string below bow, NOT drawn, bow tips stay right of the character. Do not raise it overhead, crouch, aim or turn toward viewer. Full body and entire bow inside canvas with clear margins. Clean detailed painted fantasy game art, matching image2, not pixelated. Genuine transparent RGBA background, no ground shadow or checkerboard, no scenery, text, watermark, arrow in flight, shield, second bow or extra person.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/silia-ref-025-00.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/silia-idle-master-r1.png"
+          ],
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-1a861ef8-e530-4f24-b0ae-b0e2ca0a2695.png",
+          "workspace_path": "work/promo-cadence-20261018/hd-fonts/silia-bow-out-master-r1.png",
+          "sha256": "939bbb72197b65ee2ff04085030dc4962510032830cbb633882f5a9f77022803",
+          "size": [
+            1239,
+            1269
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "alpha_bbox": [
+            0,
+            0,
+            1239,
+            1269
+          ]
+        },
+        {
+          "key": "bow-rise",
+          "prompt": "Use case: stylized-concept. Asset: ONE transparent full-body battle pose, same adult female archer as image2. Image1 is the EXACT original pose and proportions reference. Image2 locks the accepted detailed hand-painted character, rear head, scarf, russet leather, blue tunic, boots and dark teal/brown bow. Repaint image1 using image2's art and costume. Rear view, no face. POSE: upright standing with feet apart, screen-left elbow bent and hand lifted near shoulder, screen-RIGHT elbow lifted out sideways, right forearm bent up, right hand grips the middle of ONE long recurved bow angled diagonally UP-RIGHT at about 45 degrees, bow reaches above the head on the right. Bow not drawn and no arrow. Follow original arm angles; keep bow away from face and do not put both hands on it. Preserve light-tan/brown rounded close-fitting head silhouette without long hair, teal-grey shoulder scarf and long side cloth, deep blue short sleeveless tunic, russet left shoulder guard, waist wrap, hip pouch, bracers, crossed-strap knee-high boots and bare knee. Same natural athletic adult anatomy, clean painted fabric folds and leather as image2. Entire head, both boots and full bow tips visible with transparent margins. Genuine transparent RGBA, no ground, shadow, scenery, text, watermark, checkerboard, cape, shield, second weapon or extra person.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/silia-ref-025-01.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/silia-idle-master-r1.png"
+          ],
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-db9bda35-24a3-46d7-a177-e649516b67f5.png",
+          "workspace_path": "work/promo-cadence-20261018/hd-fonts/silia-bow-rise-master-r1.png",
+          "sha256": "4d8dd2ba62195c4077e091793585f99356414635d98c80214437db9ba05e99a5",
+          "size": [
+            1020,
+            1541
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "alpha_bbox": [
+            0,
+            0,
+            1020,
+            1541
+          ]
+        },
+        {
+          "key": "bow-high",
+          "prompt": "Use case: stylized-concept. Asset: ONE transparent full-body HD battle pose of the same adult female archer. Image1 is the exact original pose. Image2 locks hand-painted costume and character. Repaint image1 accurately as image2 quality, viewed from behind with face hidden. Standing feet apart, left arm bent with clenched hand beside the left side of the head, right elbow raised to the right, right forearm vertical and hand above head level. The right hand grips the stock/middle of ONE long dark teal and brown crossbow-like bow held VERTICALLY UPWARD above the right shoulder, bow/stock pointing straight up, curved transverse limbs and pale thin string following the original. It is the same weapon as image2, rotated upright; no added weapons or arrow. Keep original raised arm geometry, not both hands on the bow. Rounded light-tan/brown head silhouette, teal-grey scarf at upper back and long side cloth, deep blue sleeveless short tunic, russet left shoulder guard, waist wrap, hip pouch, forearm guards, tall russet boots with dark crossed straps and bare knee. Same adult female proportions and practical leather/fabric details. Full head, both boots and entire tall bow tip in frame, generous transparent margins, crisp contour ink, rich hand-painted game illustration. Genuine transparent RGBA background. No ground shadow, platform, scenery, checkerboard, text, watermark, cape, shield or extra character.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/silia-ref-025-02.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/silia-idle-master-r1.png"
+          ],
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-4a47b26d-7b63-4cdc-8687-bb3b638989c3.png",
+          "workspace_path": "work/promo-cadence-20261018/hd-fonts/silia-bow-high-master-r1.png",
+          "sha256": "e118092521966f44a4d14df99a5e4d26bafa1ce770d55608e816604e93d7cfd6",
+          "size": [
+            929,
+            1692
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "alpha_bbox": [
+            27,
+            1,
+            901,
+            1692
+          ]
+        },
+        {
+          "key": "bow-center",
+          "prompt": "Use case: stylized-concept. Asset: ONE full-body transparent HD battle loading pose of the SAME adult female archer. Image1 is the EXACT original pose reference. Image2 is only costume and painting identity. Repaint image1 accurately with image2's detailed hand-painted game art. Rear view, head and torso still face away. POSE: stand with feet apart, both arms bent up closely beside the head, hands lifted to the bow grip/stock just ABOVE the crown. Hold ONE dark teal and brown crossbow vertically UPRIGHT directly in line with the CENTER of the head, long stock pointing straight up, symmetric curved bow limbs and thin pale string above the head as in image1. This is the centered loading position, do not keep the bow off to the right or use the raised-right-arm pose from image2. Keep hands close to head and shoulders compact. Preserve the original narrow upright silhouette. Rounded tan/brown head shape, deep blue sleeveless short tunic, teal-grey scarf and long side hanging cloth, russet left shoulder guard, waist wrap, hip pouch, forearm guards and crisscross tall reddish boots, bare knee. Slim athletic adult proportions and exact same outfit/bow design as image2. Entire tall weapon, head, hands and both boots visible with transparent margins. True transparent RGBA, crisp contour ink and rich painted leather/fabric. No ground, cast shadow, scene, checkerboard, text, watermarks, separate arrow, shield, extra weapon or extra person.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/silia-ref-025-03.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/silia-idle-master-r1.png"
+          ],
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-4dc53918-0c18-478f-8d0e-333793e88918.png",
+          "workspace_path": "work/promo-cadence-20261018/hd-fonts/silia-bow-center-master-r1.png",
+          "sha256": "6ac2c60dd24337d75b7d8faefa6cdffd0d929575565d8626151c7d7ae5cde40f",
+          "size": [
+            758,
+            2075
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "alpha_bbox": [
+            0,
+            0,
+            739,
+            2075
+          ]
+        },
+        {
+          "key": "bow-lower",
+          "prompt": "Use case: stylized-concept. Asset: ONE full-body transparent HD battle pose of the SAME adult female archer. Image1 is the exact original next pose, image2 fixes the same costume, head, adult proportions and detailed hand-painted art. Repaint image1, rear three-quarter view with only a tiny side sliver of face, mostly hidden. POSE: she begins to crouch with knees flexed and legs spread wider, torso turning slightly screen-left. Both arms bent up close to left side of head, left forearm/hand near left eye and the right hand holding ONE long dark teal/brown crossbow-like bow in front of head, weapon angled diagonally UP-LEFT. The long stock/barrel points upper-left, transverse curved bow limbs and pale string remain attached as in original. Weapon is coming down from overhead, NOT aiming horizontally yet, NOT a vertical right-arm-raised pose. Follow the original lower body compression and left-side weapon placement. Keep tan/brown rounded head silhouette, teal-grey scarf at shoulders and long side cloth, blue sleeveless short tunic, russet left shoulder guard, waist wrap, hip pouch, bracers and tall crossed-strap boots with bare knee, identical materials and design to image2. Entire weapon, head, hands, boots visible with transparent margins. Clean contour ink, rich painted leather/fabric. Genuine transparent RGBA background, no ground or shadow, scenery, checkerboard, text, watermark, shield, separate flying arrow, extra weapon or person.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/silia-ref-025-06.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/silia-idle-master-r1.png"
+          ],
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-18c7e0c7-0c53-46b1-9155-4aa9b0426910.png",
+          "workspace_path": "work/promo-cadence-20261018/hd-fonts/silia-bow-lower-master-r1.png",
+          "status": "rejected",
+          "alpha_review": "預覽RGB有漸層，實際背景抽樣alpha0..2、身體核心250..254；保持生成alpha，尚待編製及實際GPU驗收，不把預覽色底當不透明背景。",
+          "rejection": "高覆蓋輪廓1007×1508比原65×145寬，會使整組縮小約三成；保留來源與alpha，不進配方。",
+          "sha256": "0560a1652e5b26c016dc41d5566e0c8c048e98a09b79a5205643752dad9e9695",
+          "size": [
+            1024,
+            1536
+          ],
+          "alpha_extrema": [
+            0,
+            254
+          ],
+          "alpha_bbox": [
+            0,
+            0,
+            1024,
+            1536
+          ]
+        },
+        {
+          "key": "kneel-aim",
+          "prompt": "Use case: stylized-concept. Asset: ONE full-body transparent HD battle pose of the SAME adult female archer. Image1 is the exact original crouching aim pose, image2 locks costume, head, proportions and hand-painted rendering. Repaint image1 faithfully. Rear three-quarter view from behind and right, face mostly hidden looking screen-left. POSE: very LOW kneeling firing stance, right knee on the ground close under the body at screen-right, right boot tucked behind, left thigh spread diagonally down-left with left boot planted far to screen-left. Torso upright above hips and turning left. Both hands hold ONE long dark teal/brown CROSSBOW horizontally at shoulder height aimed straight LEFT. Right hand at trigger and stock braced by right shoulder, left hand supports the fore-stock; curved bow limbs and thin pale string at the muzzle/front on screen-left. A single loaded thin bolt points left along the top of the stock, no free flying arrow or discharge glow. Copy the original low, wide crouching silhouette, not a standing pose or regular vertical longbow. Same rounded tan/brown head silhouette, teal-grey scarf and side cloth, deep blue short sleeveless tunic, russet left shoulder guard, waist wrap, hip pouch, bracers and tall cross-laced russet boots. Slim athletic adult female anatomy. Crisp ink contours, detailed painted leather and folds like image2. Entire crossbow, head, hands, BOTH boots and legs inside canvas with generous TRANSPARENT margins. Genuine transparent RGBA background with zero-alpha empty space, no colored matte, lighting gradient, glow, ground shadow, scenery, checkerboard, text, watermark, shield, second weapon or person.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/silia-ref-025-09.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/silia-idle-master-r1.png"
+          ],
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-f4e53dde-bb84-4dba-a1f1-75636bfeb2ef.png",
+          "workspace_path": "work/promo-cadence-20261018/hd-fonts/silia-kneel-aim-master-r1.png",
+          "sha256": "9827ef58ff25eb04d47319a1304c1fb1c4fe1203804066c3a62dec845f4cc0fb",
+          "size": [
+            1425,
+            1104
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "alpha_bbox": [
+            0,
+            0,
+            1425,
+            1080
+          ]
+        },
+        {
+          "key": "kneel-release",
+          "prompt": "Use case: stylized-concept. Asset: ONE full-body transparent HD battle release pose of the SAME adult female archer. Image1 is the exact original release pose, image2 is the same woman's new kneeling aim illustration and fixes costume, anatomy, rear view, crossbow design and pose. Repaint image1 in image2's detailed clean hand-painted style. Preserve the low kneeling stance exactly: right knee down at screen-right, right boot tucked back with sole partly visible, left thigh spread down-left and left boot planted far screen-left. Same back three-quarter view, gaze LEFT, face mostly hidden. Both hands still hold ONE dark teal/brown CROSSBOW horizontally at shoulder height aimed LEFT, right hand on trigger/stock, left hand below fore-stock. RELEASE PHASE: the loaded bolt has ALREADY LEFT the crossbow, so remove the long arrow projecting beyond the left muzzle. The crossbow's pale string is now relaxed/snapped forward close to its front curved limbs, a small pale beige string after-vibration as seen in image1. No muzzle flash, magic glow or loose flying projectile in this image. Keep original body silhouette and every costume feature from image2: rounded tan/brown head, grey-teal scarf and side cloth, blue sleeveless short tunic, russet shoulder guard, broad belt, hip bolt pouch, bracers and tall crossed leather boots. Detailed painted folds/leather, crisp contours, same adult female athletic proportions. Entire head, crossbow, hands, legs and BOTH boots visible, generous empty transparent margins. True transparent RGBA; no ground, cast shadow, colored matte or gradient, scene, checkerboard, text, watermark, shield, second weapon or extra person.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/silia-ref-025-11.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/silia-kneel-aim-master-r1.png"
+          ],
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-cd17e925-7244-4945-a683-332b49df3051.png",
+          "workspace_path": "work/promo-cadence-20261018/hd-fonts/silia-kneel-release-master-r1.png",
+          "sha256": "665a63df57607337e470b5489807f29e366d99ac7484781e748d9c1e499cfed5",
+          "size": [
+            1424,
+            1104
+          ],
+          "alpha_extrema": [
+            0,
+            254
+          ],
+          "alpha_bbox": [
+            0,
+            1,
+            1424,
+            1104
+          ]
+        },
+        {
+          "key": "kneel-shot",
+          "prompt": "Use case: stylized-concept. Asset: ONE very WIDE transparent HD battle frame with a kneeling female archer on the far RIGHT and her ONE flying bolt far LEFT. Image1 is the exact original full-frame layout. Image2 locks the same archer's hand-painted identity, outfit, kneeling pose and crossbow. Repaint image1 faithfully at image2 quality. COMPOSITION is critical: a panoramic 3.5:1 arrangement, the complete kneeling archer occupies only the RIGHTMOST THIRD; a single detached thin horizontal bolt occupies the LEFT quarter, with a large empty transparent gap between bolt and woman. Bolt is already in flight toward LEFT: tiny pale metal point at its left end, long russet-red thin shaft, pale grey narrow fletching on the right, no trail. The bolt centerline is at about 17 percent of the full character height from the top, level with the crossbow. Woman remains in LOW rear three-quarter kneeling stance exactly as image2, facing left: right knee on ground at screen-right, right boot tucked behind, left boot far down-left. Both hands still hold the crossbow horizontally aimed left. She has just fired: no loaded bolt projecting from crossbow, only a small pale beige string vibration at front limbs. Same rounded tan/brown head, grey-teal scarf and side cloth, blue sleeveless tunic, russet shoulder guard, belt, bolt pouch, bracers, crossed boots. Face mostly hidden. Keep full bow and both boots visible. Preserve original two-separated-objects layout, do NOT center or enlarge the woman, do NOT put the detached bolt next to the muzzle. Clean detailed painted fantasy game art. True zero-alpha TRANSPARENT background across the huge gap and around both objects. No floor, ground shadow, colored matte, gradient, glow, scenery, checkerboard, text, watermark or extra person/projectile.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/silia-ref-025-10.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/silia-kneel-release-master-r1.png"
+          ],
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-8302b3c5-5336-4610-9fec-a5943ea9214d.png",
+          "workspace_path": "work/promo-cadence-20261018/hd-fonts/silia-kneel-shot-master-r1.png",
+          "sha256": "f3b5a9d71e8261a0d01e7604ae352f8461558e054ae54c4ebed28d73a35f7da3",
+          "size": [
+            2172,
+            724
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "alpha_bbox": [
+            19,
+            26,
+            2172,
+            704
+          ]
+        },
+        {
+          "key": "flying-bolt",
+          "prompt": "Use case: stylized-concept. Asset: ONE isolated very thin HORIZONTAL flying crossbow bolt for a transparent HD game sprite. Image1 is the original tiny 50x3-pixel bolt and controls its straight, extremely narrow silhouette. Image2 is only the accepted hand-painted rendering and color style; copy the detached bolt at its far LEFT, not the woman or crossbow. Draw ONLY ONE straight bolt pointing LEFT. Tiny pale iron pointed tip on the LEFT, very long thin dark russet-red wooden shaft, small narrow pale grey feather fletching at the RIGHT rear. The silhouette must be extremely slender, approximately 17 units wide to 1 unit high including all fletching, so it can remain readable in a 300x18-pixel game slot. Keep the feathers short and low, no oversized broad arrowhead or decorative fins. Detailed painted metal tip, red wood and subtle feather lines matching the detached bolt in image2, sharp clean edges. Perfectly horizontal, no diagonal tilt or curvature, no motion trail, aura or glow. Complete tip and feather ends inside image with TRANSPARENT margins. Genuine zero-alpha transparent RGBA background with no colored matte, gradient, shadow, scene, checkerboard, text, watermark, person, crossbow, extra arrows or extra objects.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/silia-ref-025-15.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/silia-kneel-shot-master-r1.png"
+          ],
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-cb8085bd-3a3d-41fb-974c-5e999f007732.png",
+          "workspace_path": "work/promo-cadence-20261018/hd-fonts/silia-flying-bolt-master-r1.png",
+          "sha256": "32a37c9ba771439eb2f5b2b1260b9cf89a6951d6dc6f244fcda9ad699f886881",
+          "size": [
+            2172,
+            724
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "alpha_bbox": [
+            42,
+            193,
+            2122,
+            527
+          ]
+        },
+        {
+          "key": "bow-lower-v2",
+          "prompt": "Use case: stylized-concept. Asset: ONE full-body transparent HD battle transitional pose of the SAME female archer. Image1 is the EXACT original pose, especially its TALL NARROW proportions; image2 fixes the same hand-painted costume, head and identity. Repaint image1 faithfully. IMPORTANT: the complete body AND weapon silhouette is only about 65 units wide for 145 units tall, so keep a VERY COMPACT NEARLY UPRIGHT STANCE. Both boots stay roughly beneath the hips, only a shallow bend of the knees and small outward step. NO broad squat, wide-spread legs, lunging, or exaggerated twist. Rear three-quarter view, face almost hidden. Hold ONE dark teal/brown crossbow close in front of the head with both bent arms raised, right hand near cheek/stock and left hand supporting above. Long crossbow stock points UP-LEFT but remains CLOSE TO VERTICAL, about 20 degrees left of upright. Keep curved limbs and thin pale string as in image1, no extra bolt. Head rounded light tan/brown, grey-teal shoulder scarf and long side cloth, deep blue sleeveless short tunic, russet left shoulder guard, broad belt, hip pouch, bracers and tall crossed leather boots, one bare knee. Exact costume and detailed clean hand-painted rendering of image2, adult athletic female proportions. Original narrow silhouette is more important than dramatic posing. Entire head, weapon and both boots inside canvas with transparent margins. Genuine zero-alpha transparent RGBA; no floor or cast shadow, matte, colored lighting gradient, glow, scenery, checkerboard, text, watermark, second weapon or character.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/silia-ref-025-06.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/silia-idle-master-r1.png"
+          ],
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-0e5ed50c-2849-417e-b13c-e76bdeb1b4e7.png",
+          "workspace_path": "work/promo-cadence-20261018/hd-fonts/silia-bow-lower-master-r2.png",
+          "sha256": "00b5c5b79bc75bca65f5e2060d5617734a9df36948cab9aba1d72bddd672b08b",
+          "size": [
+            840,
+            1873
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "alpha_bbox": [
+            0,
+            0,
+            830,
+            1849
+          ]
+        }
+      ]
+    },
+    "recipe": {
+      "file": "work/promo-cadence-20261018/hd-fonts/silia-battle-recipe-r1.json",
+      "sha256": "e37ef6fb7ab7ee588412691a40001a16e74172e5373887a18bf4bea87f8770ac"
+    },
+    "art_retargeting": [
+      "原動作3／4／5共用置中上弦稿；7／8／9共用蹲射稿；11／12／13共用收勢稿，微小原版形變不逐格重繪。",
+      "15與18原始PNG／Mask同SHA，16／17有差異；四張新箭共用一稿，保留各自原始位移及節拍。",
+      "25/14依原始Mask輸出全透明PNG，配方idle母稿未使用。",
+      "25/10的母稿含分離箭與人物；人物高覆蓋輪廓對原生(183,0)..(277,79)，箭相對位置另量，不宣稱新圖逐像素或原版組件完全相同。",
+      "下降初稿輪廓過寬，拒收並重畫，沒有為讓配方通過而擴張原矩形。"
+    ],
+    "date_continued": "2026-10-20",
+    "compiled_candidate": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-battle-candidate-r1/compiled.json",
+        "sha256": "151e65a2c742eddf49fe3a4e93199dc32ed41e41ff21c8b69b92243a74dde3f5"
+      },
+      "catalog": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-battle-candidate-r1/catalog.json",
+        "sha256": "8c6edef59e1d033b36c496c1c6a4045887890533edfefeba3be9545d86aa9a6e"
+      },
+      "review": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-battle-candidate-r1/review.png",
+        "sha256": "dfb1cf233950c329d4332c5321d75915ff8ec204a3cdfe2edb5ca164f76028a3"
+      },
+      "recipe": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-battle-recipe-r1.json",
+        "sha256": "e37ef6fb7ab7ee588412691a40001a16e74172e5373887a18bf4bea87f8770ac"
+      },
+      "guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-compiler-guards-r1/guards.json",
+        "sha256": "ad723441c3d240f1f8d3fb90189bfec6fbb96e3c7cb5508135df5766c87743ff"
+      },
+      "frames": 20,
+      "masters_selected": 10,
+      "master_rejected": 1,
+      "scale_groups": {
+        "standing": 0.9831441782261453,
+        "kneeling": 0.9139010654090581,
+        "blank": 1,
+        "bolt": 0.8233810826761092
+      },
+      "formal_catalog_unchanged": true,
+      "all_20_frames_clipped_high_coverage_pixels": 0
+    },
+    "verification_in_progress": {
+      "empty_unit": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-empty-unit-r1.log",
+        "sha256": "aca829bb8ce003c3537015bf0af04ff47438f468ae1f1eb6517b4fbbfa8175b5"
+      },
+      "empty_gpu": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-empty-gpu-r1.log",
+        "sha256": "f94d40f30bd30a91654a63d5d33f64371aac456e3913c6fda6f7ac7e0c399086"
+      },
+      "actual_source_loader": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-source-gates-r1.log",
+        "sha256": "d1321fcdf47fed5a976cc080c886889c3dfdac58bc7c05eaadb962364abc100c"
+      },
+      "actual_source_audit": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-source-audit-r1.json",
+        "sha256": "7a2f4c78f322af16d0d68cd94985cf9d335e6556fb31af02601c66135dd1e95b"
+      },
+      "candidate_lifecycle": [
+        {
+          "receipt": {
+            "file": "work/promo-cadence-20261018/hd-fonts/silia-candidate-side0-r1/receipt.json",
+            "sha256": "ece698e4746e3092f0cf6351dfe686b3db9896f1f95d6821d114111e4182ba3b"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/silia-candidate-side0-r1.log",
+            "sha256": "fcbc6bb1b2e5a9fb1fb11c48a19332e9869cba56fde9d008bce7f3bc48bfd349"
+          }
+        },
+        {
+          "receipt": {
+            "file": "work/promo-cadence-20261018/hd-fonts/silia-candidate-side2-r1/receipt.json",
+            "sha256": "6b912b06cf720b712f3f41f30b0fea03125b1808b2a46fc74a922c9f8cfee5f9"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/silia-candidate-side2-r1.log",
+            "sha256": "22264b9066716294301d0b9454b5f78438cd3b750dd42aee1e4ee1d77f9ecca0"
+          }
+        }
+      ],
+      "scope": "原圖投影與新手繪候選分開。兩側139／140 presents、六階段F2及返回通過，修改fixture，不是普通玩家。",
+      "compiler_and_empty_audit_guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-compiler-guards-r2/guards.json",
+        "sha256": "a2c3e30ed0fe977c081b5fd3e0f682bb8d11332a239124f36461bf999e532474",
+        "checks": 16
+      },
+      "four_projectile_gpu": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-bolts-gpu-r1.json",
+        "sha256": "612154dca12e7c7bb6530e5ee541f7ae6d8ae9cdd5decbcef9852a049d936d45"
+      },
+      "projectile_lifecycle": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-bolts-side2-r1/receipt.json",
+        "sha256": "325d49debb69c6666b22d17e001e284e4d92bbb7a43d3f1c47469e4541a88ed9"
+      },
+      "preflight_current_pass": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-preflight-r5.log",
+        "sha256": "c42e17eeeba29a83d1cf7eabfa7bcc1be9a5e433a82de82e15271480f43745a0"
+      },
+      "source_native_gui": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-source-gui-r5/receipt.json",
+        "sha256": "77194b5cae3b307c2cf933b7499c98e5d8b0207eda35eef2da8458790e76aee4"
+      },
+      "old_thor_verifier_regression": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-verifier-thor-regression-r1.json",
+        "sha256": "05b20ddd62ddabd8e0cd1ea8e9ec9b08deea9b5cf3584e5de2073fb2ba8862a2"
+      },
+      "current_status": "已收尾；歷史進行中證據保留，最新formal_verification為準"
+    },
+    "normal_player_source": {
+      "manifest": {
+        "file": "docs/data/parity-slots/ch03-manifest.json",
+        "sha256": "44031da4db94536b2981c4c6eb1eedafeb4f9ed863f93bf57860a4c62d6cfafe"
+      },
+      "native_save": {
+        "file": "work/ch03-flow-20261017/input/FD2.SAV",
+        "sha256": "d8d534d5692d3e81ffafacb9a2c31e74ed7f3297583fcb0bec95715df488fe6b"
+      },
+      "source_level": "第2章實際酒店SAV；祖先兩章依111抽樣後清敵，依原manifest揭露。希莉亞原槽存活，普通標題LOAD及出發。",
+      "gui_contract": "capture-native-battle-save沿原生標題LOAD、城鎮Left／Left／Enter出發及正常章首對話，F5生成JSON來源。source原檔只讀；F5可合法改寫獨立FD2.SAV複本，不把同步保存當來源污染。",
+      "range_observer": "input_audit_trace只讀unit.AtkMin／AtkMax、NativeIdentity與BattleFig。GUI依battle.State.InAttackRange同一欄位及零值=1政策選正式可達位置；不改正式規則。",
+      "save_contract": "save.go明定F5保存campaign節點邊界與持續名冊，LOAD重建戰場。戰後F5的驗收是兩主題相同bytes及新程序冷讀同一節點／已保存名冊，不要求戰中座標、Acted與敵方HP原地持續。",
+      "status": "PASS：原生標題LOAD／出發／F5，再正常JSON LOAD兩次射擊及保存冷讀；不升格整章E2"
+    },
+    "environment_observations": [
+      "冷建置r2達240秒上限，log沒有編譯錯誤；同映像r3明示360秒後測試程式及遊戲均產出。",
+      "原生來源GUI r1在60秒視窗等待停止，未送按鍵；r2改明示180秒，同程式成功出現視窗並LOAD至town_ch03。",
+      "r2在story_ch03等待對話確認，原生出發工具漏送章首按鍵而逾時；遊戲error為空。修正驅動後r3進行中，不當產品缺陷。",
+      "章首r3／r4並非鏡頭時長缺口。native_story_input.go的story分支在對話清空後仍由確認鍵呼叫advanceStoryNode；工具只在dialogues>0按鍵，遂停story_ch03。r4在定位後有界停止，修正普通Return驅動後r5乾淨重跑。未改正式規則。",
+      "silia-assets-r3的RealCandidate與空白門檻通過，但整組在mode11前置拒收期間外層逾時；不是完整通過。沿r1已通過證據，最新程式須補驗。",
+      "preflight-r4誤用FD2_TEST_MODERN_BATTLE_FIG，測試沿預設figure30而缺銀行；以正式FD2_TEST_MODERN_BATTLE_FIGURE=8重跑r5，player／mode11兩項通過。未修改產品。"
+    ],
+    "normal_player_verification": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-normal-gui-r1/receipt.json",
+        "sha256": "4483bf55e36d9459a69d484487b352d79e8b990457bc23eb9e47fd75e2ec66a3"
+      },
+      "body_gpu": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-normal-body-gpu-r1.json",
+        "sha256": "a89849ad5668eae994a202112b50cf688c11f1980a90354f2d5ff7f4fc633401"
+      },
+      "negative_guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-normal-body-guards-r1/guards.json",
+        "sha256": "dea112ca2f68c383b9662d4c47caf79ee8d9cb51d882e73ab21bfbb5d933ab5a"
+      },
+      "screenshots": 28,
+      "battle_pngs": 128,
+      "input_operations": 211,
+      "walk_pngs": 4,
+      "matched_body_pngs": 85,
+      "approach_steps": 4,
+      "range": [
+        2,
+        3
+      ],
+      "attacker_native_identity": 8,
+      "attacker_battle_fig": 8,
+      "target_battle_fig": 76,
+      "end_in_faithful_theme": true,
+      "source_save_bytes_equal": true,
+      "theme_save_bytes_equal": true,
+      "node_boundary_cold_load_equal": true,
+      "elapsed_seconds": 1237.1779267615639,
+      "scope": "普通鍵盤與實際GPU抽樣，來源祖先111清敵例外另揭露；F5為章節邊界，無戰中HP原地持續聲明。兩場距離3，不宣稱正常敵方揮劍。擷取耗時不是平台效能。"
+    },
+    "formal_verification": {
+      "registration": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-assassin76-registration-r1.json",
+        "sha256": "2ecbd5fa5c758108acc17ffbf1982583bb477f0385a2dae5edaa3c6ee2ddce9a"
+      },
+      "formal_catalog_tests": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-formal-catalog-tests-r2.log",
+        "sha256": "dd693e2f8af0d7fa837b8a7c0634b08d7fcd8970ac1be0a7c31249483b9d95bb"
+      },
+      "formal_source_audit": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-formal-source-audit-r1.json",
+        "sha256": "568545efdea5b92556266905d60782cf847c725263e2beba6e93165190c1eb53"
+      },
+      "clean_rebuild": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-assassin76-rebuild-r1.json",
+        "sha256": "d878dfaba7237085159a8cdf939044d581e78898678d11934b7dd76fff3db489"
+      },
+      "private_sync": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-private-sync-r1.json",
+        "sha256": "eccb22f92cd45c953438cab6c04b2771dbdd7e36a6668954008ade19598d2735"
+      },
+      "runtime_manifest": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-runtime-only-manifest-r1.json",
+        "sha256": "9feac70a1c3ed7d9e146b3bf955ce7fd37f43d5e633e3983490f0d19c96ef493"
+      },
+      "private_runtime_go": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-private-runtime-tests-r1.log",
+        "sha256": "f2ac4342c9cfddada772a065995a0697c414e81dc1298d80212ab5cbe4bd2544"
+      },
+      "portable_private_master_rebuild": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-assassin76-portable-rebuild-r1.json",
+        "sha256": "4d638eb0fc0af35c8e56c4d322cf696972dd22f1205702532bdcae17e9f6125d"
+      }
+    },
+    "tool_images": {
+      "go": "sha256:e4a805c52a3ad5d8c22cf23f2bcf51c6924e5ad6b99554f1b02761903c725433",
+      "assets": "sha256:e59237a31d4b5f7a62c59ac37b780bd93f17c99fda97be8f5ca0c53978b878bc",
+      "gui": "sha256:f299cf5e25b4ba172941399b3ed177c78b3a951de35d666d78af3f00e30d7f0d"
+    },
+    "reproduction_recipe": {
+      "schema_version": 1,
+      "figure": 8,
+      "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+      "sources": {
+        "idle": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-008-idle-battle-hd6-master-v1.png",
+          "sha256": "1c5a1c14e8ea88cda110315dbbf9d35dc9578a8178cb5f5d584c43824cf84c07",
+          "anchor": [
+            57,
+            5,
+            1182,
+            1293
+          ]
+        },
+        "bow-out": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-008-bow-out-battle-hd6-master-v1.png",
+          "sha256": "939bbb72197b65ee2ff04085030dc4962510032830cbb633882f5a9f77022803",
+          "anchor": [
+            13,
+            7,
+            1233,
+            1238
+          ]
+        },
+        "bow-rise": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-008-bow-rise-battle-hd6-master-v1.png",
+          "sha256": "4d8dd2ba62195c4077e091793585f99356414635d98c80214437db9ba05e99a5",
+          "anchor": [
+            13,
+            8,
+            1013,
+            1524
+          ]
+        },
+        "bow-high": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-008-bow-high-battle-hd6-master-v1.png",
+          "sha256": "e118092521966f44a4d14df99a5e4d26bafa1ce770d55608e816604e93d7cfd6",
+          "anchor": [
+            134,
+            5,
+            839,
+            1661
+          ]
+        },
+        "bow-center": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-008-bow-center-battle-hd6-master-v1.png",
+          "sha256": "6ac2c60dd24337d75b7d8faefa6cdffd0d929575565d8626151c7d7ae5cde40f",
+          "anchor": [
+            57,
+            6,
+            732,
+            2006
+          ]
+        },
+        "kneel-aim": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-008-kneel-aim-battle-hd6-master-v1.png",
+          "sha256": "9827ef58ff25eb04d47319a1304c1fb1c4fe1203804066c3a62dec845f4cc0fb",
+          "anchor": [
+            7,
+            12,
+            1418,
+            1060
+          ]
+        },
+        "kneel-release": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-008-kneel-release-battle-hd6-master-v1.png",
+          "sha256": "665a63df57607337e470b5489807f29e366d99ac7484781e748d9c1e499cfed5",
+          "anchor": [
+            167,
+            12,
+            1421,
+            1071
+          ]
+        },
+        "kneel-shot": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-008-kneel-shot-battle-hd6-master-v1.png",
+          "sha256": "f3b5a9d71e8261a0d01e7604ae352f8461558e054ae54c4ebed28d73a35f7da3",
+          "anchor": [
+            1389,
+            31,
+            2162,
+            696
+          ]
+        },
+        "flying-bolt": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-008-flying-bolt-battle-hd6-master-v1.png",
+          "sha256": "32a37c9ba771439eb2f5b2b1260b9cf89a6951d6dc6f244fcda9ad699f886881",
+          "anchor": [
+            46,
+            305,
+            2117,
+            408
+          ]
+        },
+        "bow-lower-v2": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-008-bow-lower-v2-battle-hd6-master-v1.png",
+          "sha256": "00b5c5b79bc75bca65f5e2060d5617734a9df36948cab9aba1d72bddd672b08b",
+          "anchor": [
+            71,
+            2,
+            825,
+            1839
+          ]
+        }
+      },
+      "resources": {
+        "24": [
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              118,
+              130
+            ],
+            "scale_group": "standing"
+          }
+        ],
+        "25": [
+          {
+            "pose": "bow-out",
+            "anchor": [
+              0,
+              0,
+              127,
+              130
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "bow-rise",
+            "anchor": [
+              0,
+              0,
+              108,
+              163
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "bow-high",
+            "anchor": [
+              0,
+              0,
+              86,
+              188
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "bow-center",
+            "anchor": [
+              0,
+              0,
+              65,
+              178
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "bow-center",
+            "anchor": [
+              0,
+              0,
+              65,
+              179
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "bow-center",
+            "anchor": [
+              0,
+              0,
+              65,
+              179
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "bow-lower-v2",
+            "anchor": [
+              0,
+              0,
+              65,
+              145
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "kneel-aim",
+            "anchor": [
+              0,
+              0,
+              100,
+              81
+            ],
+            "scale_group": "kneeling"
+          },
+          {
+            "pose": "kneel-aim",
+            "anchor": [
+              0,
+              0,
+              102,
+              80
+            ],
+            "scale_group": "kneeling"
+          },
+          {
+            "pose": "kneel-aim",
+            "anchor": [
+              0,
+              0,
+              102,
+              79
+            ],
+            "scale_group": "kneeling"
+          },
+          {
+            "pose": "kneel-shot",
+            "anchor": [
+              183,
+              0,
+              277,
+              79
+            ],
+            "scale_group": "kneeling"
+          },
+          {
+            "pose": "kneel-release",
+            "anchor": [
+              0,
+              0,
+              95,
+              79
+            ],
+            "scale_group": "kneeling"
+          },
+          {
+            "pose": "kneel-release",
+            "anchor": [
+              0,
+              0,
+              95,
+              79
+            ],
+            "scale_group": "kneeling"
+          },
+          {
+            "pose": "kneel-release",
+            "anchor": [
+              0,
+              0,
+              97,
+              79
+            ],
+            "scale_group": "kneeling"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              320,
+              200
+            ],
+            "scale_group": "blank"
+          },
+          {
+            "pose": "flying-bolt",
+            "anchor": [
+              0,
+              0,
+              50,
+              3
+            ],
+            "scale_group": "bolt"
+          },
+          {
+            "pose": "flying-bolt",
+            "anchor": [
+              0,
+              0,
+              50,
+              3
+            ],
+            "scale_group": "bolt"
+          },
+          {
+            "pose": "flying-bolt",
+            "anchor": [
+              0,
+              0,
+              50,
+              3
+            ],
+            "scale_group": "bolt"
+          },
+          {
+            "pose": "flying-bolt",
+            "anchor": [
+              0,
+              0,
+              50,
+              3
+            ],
+            "scale_group": "bolt"
+          }
+        ]
+      }
+    },
+    "portable_inventory": {
+      "file": "docs/data/fd2-battle-hd-source-inventory-20261019.json",
+      "sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+      "scope": "固定來源輸入快照；focus／catalog_sha256／registered_assets為原盤點當批狀態，不作目前HD覆蓋。"
+    },
+    "production_sources": [
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_assets.go",
+        "sha256": "749fb9b25d608b3960ca85c147c34a253ab503d2db5a5def2df97e93652ab21c"
+      },
+      {
+        "file": "remake/cmd/fd2/input_audit_trace.go",
+        "sha256": "66bebe1842fb5fe3439371e4c76737746233b17ca1fa2088adbaeeb69e70c2d4"
+      },
+      {
+        "file": "remake/cmd/fd2/save.go",
+        "sha256": "0120b50a742193786a503dc78062b490ee9457836a8801a055fbaa1d800998b1"
+      }
+    ],
+    "final_checks": {
+      "doc_links_and_owners": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-final-doc-review-r1.json",
+        "sha256": "cde48ac67304fdc9afc04734c2b4ed8bf2c0dd8f7d850fae8239890777f0fb39"
+      },
+      "worklist": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-worklist-verify-final.log",
+        "sha256": "2f54f61dfa7fb4ccd6a11f9d46d47654d86d30b5df19bc8b0330be3d7a4888eb"
+      },
+      "worklist_tests": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-worklist-tests-r1.log",
+        "sha256": "ee884daa830060184696241de973347454e17688a8411ca200b579da4f662b09"
+      },
+      "lessons": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-lessons-check-r2.log",
+        "sha256": "562c04c1c9397c682c27377d8f71f5f830886567189e86d598d1fb1dc129c7ac"
+      },
+      "cleanup_initial": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-old-binaries-cleanup-r1.json",
+        "sha256": "60c24acae1d9750225d8c43160fe79a85aee0356ac32ba13d21696cab39f8ce6"
+      },
+      "cleanup_final": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-final-binaries-cleanup-r1.json",
+        "sha256": "6a89f23a6fb75bd490f415816ee574b2f68abac6e9a0017209d026d553359eb3"
+      },
+      "released_binary_bytes": 143964136,
+      "recording_created": false,
+      "docker_cleanup": "本輪fd2-silia命名容器均已--rm退出；提交前及推送後再核對。",
+      "public_commit_reference": "本批Git提交與GitHub issue263驗證留言為準；未移動tag或Release。"
+    }
+  },
+  "assassin76_battle_followup_20261020": {
+    "status": "CONFORMED-SCOPED：13幀正式登錄，正常受射擊及九幀fixture揮劍通過",
+    "scope": "第三章敵方BattleFig76完整FIGANI228四幀與229九幀，230空來源。依source原矩形／header／節拍與原生層序；無規則或保存格式變更。",
+    "full_battle_hd_complete": false,
+    "evidence_level": "原始檔與來源SHA／已證實資料，實際第三章F5收據units的battle_fig76消費端；不新增IDA語意或原版oracle。",
+    "source_inventory": {
+      "file": "work/promo-cadence-20261018/hd-fonts/battle-animation-hd-inventory-final.json",
+      "sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51"
+    },
+    "native_inputs": {
+      "file": "work/promo-cadence-20261018/hd-fonts/assassin76-native-inputs-r1.json",
+      "sha256": "5f8fd24a440fe78883ea25cc137f4e0e94656d372823f8b6c0f9a57103cd3dbd"
+    },
+    "generation": {
+      "schema_version": 1,
+      "mode": "built-in image_gen",
+      "jobs": [
+        {
+          "key": "idle",
+          "prompt": "Use case: stylized-concept. Asset: ONE full-body transparent hand-painted HD battle sprite for an existing fantasy tactical RPG remake. Image1 is exact native appearance and pose reference sheet; depict ONLY 228/00 at top left: guarded wide stance, sword extends left diagonally, large rectangular shield on viewer right, both feet planted. Image2 supplies hand-painted rendering style only, do not copy its female archer or costume. Preserve image1's stocky adult armored swordsman: rounded low dark blue-grey helmet leaving orange-tan face slit, no hair/plume/horns; dark blue-grey shoulder plates, breast and rounded knee guards, steel-blue trousers and boots; forearms have brown leather/brass bands and small orange-tan exposed gaps. Long pale grey-green loincloth from waist between knees. A broad plain rectangular dark slate green shield with thin muted bronze rim in LEFT hand on viewer RIGHT. A straight slender pale steel sword with simple dark hilt in RIGHT hand on viewer LEFT. Front three-quarter stance facing slightly left as exact reference, entire head, sword tip, shield and boots in frame. Illustration with crisp controlled dark outlines, painted metal volume and subtle fabric texture, same coherent style as image2; no photorealism, no pixelation. Pose: 228/00 at top left: guarded wide stance, sword extends left diagonally, large rectangular shield on viewer right, both feet planted. No extra weapons, heraldry, extra equipment, text, scenery, ground plane, shadow ellipse or border. Transparent background, native clean antialiased alpha, generous clear margins. Single figure.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/assassin76-original-frames-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/silia-idle-master-r1.png"
+          ],
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-4b9435f3-c5a9-41be-9888-21c980ae5407.png",
+          "workspace_path": "work/promo-cadence-20261018/hd-fonts/assassin76-idle-master-r1.png",
+          "sha256": "9d5bb0d512bfd270e07c1e4a80684e44ab6845d276c5658a2668585e1ad82ec1",
+          "high_coverage_bbox": [
+            51,
+            23,
+            1428,
+            1009
+          ],
+          "size": [
+            1536,
+            1024
+          ],
+          "alpha_extrema": [
+            0,
+            254
+          ],
+          "selection": "REJECTED-SILHOUETTE-R1"
+        },
+        {
+          "key": "raise-diagonal",
+          "prompt": "Use case: stylized-concept. Asset: ONE full-body transparent hand-painted HD battle sprite for an existing fantasy tactical RPG remake. Image1 is exact native appearance and pose reference sheet; depict ONLY 229/03, second row fourth panel: right sword arm raised diagonally toward upper left, left shield forward on viewer right, wide planted legs. Image2 supplies hand-painted rendering style only, do not copy its female archer or costume. Preserve image1's stocky adult armored swordsman: rounded low dark blue-grey helmet leaving orange-tan face slit, no hair/plume/horns; dark blue-grey shoulder plates, breast and rounded knee guards, steel-blue trousers and boots; forearms have brown leather/brass bands and small orange-tan exposed gaps. Long pale grey-green loincloth from waist between knees. A broad plain rectangular dark slate green shield with thin muted bronze rim in LEFT hand on viewer RIGHT. A straight slender pale steel sword with simple dark hilt in RIGHT hand on viewer LEFT. Front three-quarter stance facing slightly left as exact reference, entire head, sword tip, shield and boots in frame. Illustration with crisp controlled dark outlines, painted metal volume and subtle fabric texture, same coherent style as image2; no photorealism, no pixelation. Pose: 229/03, second row fourth panel: right sword arm raised diagonally toward upper left, left shield forward on viewer right, wide planted legs. No extra weapons, heraldry, extra equipment, text, scenery, ground plane, shadow ellipse or border. Transparent background, native clean antialiased alpha, generous clear margins. Single figure. Image3 is the accepted appearance reference: preserve identical helmet, armor, cloth, sword and shield while changing only pose. The native reference pose has priority over the idle stance. No background pixels or cast shadow.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/assassin76-original-frames-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/silia-idle-master-r1.png",
+            "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-4b9435f3-c5a9-41be-9888-21c980ae5407.png"
+          ],
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-5977862f-1166-447f-abd3-91dec41aaf51.png",
+          "workspace_path": "work/promo-cadence-20261018/hd-fonts/assassin76-raise-diagonal-master-r1.png",
+          "sha256": "64cd9d18735bc58e622c1a518027bf4af698d6c93777d9c19afb4e0cd52129ff",
+          "high_coverage_bbox": [
+            18,
+            16,
+            1368,
+            1135
+          ],
+          "size": [
+            1374,
+            1145
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "selection": "REJECTED-SILHOUETTE-R1"
+        },
+        {
+          "key": "raise-vertical",
+          "prompt": "Use case: stylized-concept. Asset: ONE full-body transparent hand-painted HD battle sprite for an existing fantasy tactical RPG remake. Image1 is exact native appearance and pose reference sheet; depict ONLY 229/04, third row first panel: sword hand at upper left and blade nearly vertical overhead. Shield forward at viewer right. Wide planted legs. Image2 supplies hand-painted rendering style only, do not copy its female archer or costume. Preserve image1's stocky adult armored swordsman: rounded low dark blue-grey helmet leaving orange-tan face slit, no hair/plume/horns; dark blue-grey shoulder plates, breast and rounded knee guards, steel-blue trousers and boots; forearms have brown leather/brass bands and small orange-tan exposed gaps. Long pale grey-green loincloth from waist between knees. A broad plain rectangular dark slate green shield with thin muted bronze rim in LEFT hand on viewer RIGHT. A straight slender pale steel sword with simple dark hilt in RIGHT hand on viewer LEFT. Front three-quarter stance facing slightly left as exact reference, entire head, sword tip, shield and boots in frame. Illustration with crisp controlled dark outlines, painted metal volume and subtle fabric texture, same coherent style as image2; no photorealism, no pixelation. Pose: 229/04, third row first panel: sword hand at upper left and blade nearly vertical overhead. Shield forward at viewer right. Wide planted legs. No extra weapons, heraldry, extra equipment, text, scenery, ground plane, shadow ellipse or border. Transparent background, native clean antialiased alpha, generous clear margins. Single figure. Image3 is the accepted appearance reference: preserve identical helmet, armor, cloth, sword and shield while changing only pose. The native reference pose has priority over the idle stance. No background pixels or cast shadow.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/assassin76-original-frames-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/silia-idle-master-r1.png",
+            "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-4b9435f3-c5a9-41be-9888-21c980ae5407.png"
+          ],
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-c66a6cee-a0ea-4a83-86e7-55af9f31a4c4.png",
+          "workspace_path": "work/promo-cadence-20261018/hd-fonts/assassin76-raise-vertical-master-r1.png",
+          "sha256": "96e37b7cb6a8d656c5f70018067a26e821015656299ccac9e42ba0c92598d828",
+          "high_coverage_bbox": [
+            187,
+            13,
+            1071,
+            1347
+          ],
+          "size": [
+            1145,
+            1374
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "selection": "SELECTED"
+        },
+        {
+          "key": "slash-long",
+          "prompt": "Use case: stylized-concept. Asset: ONE full-body transparent hand-painted HD battle sprite for an existing fantasy tactical RPG remake. Image1 is exact native appearance and pose reference sheet; depict ONLY 229/06, third row third panel: crouching diagonal downward slash, sword near lower center, very long white-yellow slash flame extending upward-left. Left arm shield on viewer right. Image2 supplies hand-painted rendering style only, do not copy its female archer or costume. Preserve image1's stocky adult armored swordsman: rounded low dark blue-grey helmet leaving orange-tan face slit, no hair/plume/horns; dark blue-grey shoulder plates, breast and rounded knee guards, steel-blue trousers and boots; forearms have brown leather/brass bands and small orange-tan exposed gaps. Long pale grey-green loincloth from waist between knees. A broad plain rectangular dark slate green shield with thin muted bronze rim in LEFT hand on viewer RIGHT. A straight slender pale steel sword with simple dark hilt in RIGHT hand on viewer LEFT. Front three-quarter stance facing slightly left as exact reference, entire head, sword tip, shield and boots in frame. Illustration with crisp controlled dark outlines, painted metal volume and subtle fabric texture, same coherent style as image2; no photorealism, no pixelation. Pose: 229/06, third row third panel: crouching diagonal downward slash, sword near lower center, very long white-yellow slash flame extending upward-left. Left arm shield on viewer right. No extra weapons, heraldry, extra equipment, text, scenery, ground plane, shadow ellipse or border. Transparent background, native clean antialiased alpha, generous clear margins. Single figure. Image3 is the accepted appearance reference: preserve identical helmet, armor, cloth, sword and shield while changing only pose. The native reference pose has priority over the idle stance. No background pixels or cast shadow.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/assassin76-original-frames-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/silia-idle-master-r1.png",
+            "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-4b9435f3-c5a9-41be-9888-21c980ae5407.png"
+          ],
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-9b599958-1b90-4ca7-981a-22a6f5ac5e14.png",
+          "workspace_path": "work/promo-cadence-20261018/hd-fonts/assassin76-slash-long-master-r1.png",
+          "sha256": "5bf9d016e3d21b49f749949f9933a9b3777aa68d63623455524e7685d145e340",
+          "high_coverage_bbox": [
+            29,
+            17,
+            1294,
+            1177
+          ],
+          "size": [
+            1312,
+            1199
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "selection": "REJECTED-SILHOUETTE-R1"
+        },
+        {
+          "key": "slash-short",
+          "prompt": "Use case: stylized-concept. Asset: ONE full-body transparent hand-painted HD battle sprite for an existing fantasy tactical RPG remake. Image1 is exact native appearance and pose reference sheet; depict ONLY 229/07, third row fourth panel: deep crouch/lunge, sword near lower center with short white-yellow impact slash streak, shield tilted up to right. Image2 supplies hand-painted rendering style only, do not copy its female archer or costume. Preserve image1's stocky adult armored swordsman: rounded low dark blue-grey helmet leaving orange-tan face slit, no hair/plume/horns; dark blue-grey shoulder plates, breast and rounded knee guards, steel-blue trousers and boots; forearms have brown leather/brass bands and small orange-tan exposed gaps. Long pale grey-green loincloth from waist between knees. A broad plain rectangular dark slate green shield with thin muted bronze rim in LEFT hand on viewer RIGHT. A straight slender pale steel sword with simple dark hilt in RIGHT hand on viewer LEFT. Front three-quarter stance facing slightly left as exact reference, entire head, sword tip, shield and boots in frame. Illustration with crisp controlled dark outlines, painted metal volume and subtle fabric texture, same coherent style as image2; no photorealism, no pixelation. Pose: 229/07, third row fourth panel: deep crouch/lunge, sword near lower center with short white-yellow impact slash streak, shield tilted up to right. No extra weapons, heraldry, extra equipment, text, scenery, ground plane, shadow ellipse or border. Transparent background, native clean antialiased alpha, generous clear margins. Single figure. Image3 is the accepted appearance reference: preserve identical helmet, armor, cloth, sword and shield while changing only pose. The native reference pose has priority over the idle stance. No background pixels or cast shadow.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/assassin76-original-frames-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/silia-idle-master-r1.png",
+            "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-4b9435f3-c5a9-41be-9888-21c980ae5407.png"
+          ],
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-12399d6d-3fe9-46ab-a6ee-b7ce3df3e04b.png",
+          "workspace_path": "work/promo-cadence-20261018/hd-fonts/assassin76-slash-short-master-r1.png",
+          "sha256": "0aa017e19c7e9884a1463cf940d6423efa492c30ae9d46af104ee020b091eda0",
+          "high_coverage_bbox": [
+            263,
+            98,
+            1367,
+            1065
+          ],
+          "size": [
+            1448,
+            1086
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "selection": "SELECTED"
+        },
+        {
+          "key": "recover-low",
+          "prompt": "Use case: stylized-concept. Asset: ONE full-body transparent hand-painted HD battle sprite for an existing fantasy tactical RPG remake. Image1 is exact native appearance and pose reference sheet; depict ONLY 229/08, fourth row first panel: deep wide crouch, torso leaning forward, right sword hand close across chest, blade points down, shield tilted up on viewer right, NO slash flame. Image2 supplies hand-painted rendering style only, do not copy its female archer or costume. Preserve image1's stocky adult armored swordsman: rounded low dark blue-grey helmet leaving orange-tan face slit, no hair/plume/horns; dark blue-grey shoulder plates, breast and rounded knee guards, steel-blue trousers and boots; forearms have brown leather/brass bands and small orange-tan exposed gaps. Long pale grey-green loincloth from waist between knees. A broad plain rectangular dark slate green shield with thin muted bronze rim in LEFT hand on viewer RIGHT. A straight slender pale steel sword with simple dark hilt in RIGHT hand on viewer LEFT. Front three-quarter stance facing slightly left as exact reference, entire head, sword tip, shield and boots in frame. Illustration with crisp controlled dark outlines, painted metal volume and subtle fabric texture, same coherent style as image2; no photorealism, no pixelation. Pose: 229/08, fourth row first panel: deep wide crouch, torso leaning forward, right sword hand close across chest, blade points down, shield tilted up on viewer right, NO slash flame. No extra weapons, heraldry, extra equipment, text, scenery, ground plane, shadow ellipse or border. Transparent background, native clean antialiased alpha, generous clear margins. Single figure. Image3 is the accepted appearance reference: preserve identical helmet, armor, cloth, sword and shield while changing only pose. The native reference pose has priority over the idle stance. No background pixels or cast shadow.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/assassin76-original-frames-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/silia-idle-master-r1.png",
+            "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-4b9435f3-c5a9-41be-9888-21c980ae5407.png"
+          ],
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-786f8e1e-b881-4bf7-b2b0-a91f9a84ccb8.png",
+          "workspace_path": "work/promo-cadence-20261018/hd-fonts/assassin76-recover-low-master-r1.png",
+          "sha256": "478a699737e2f8af94d801f727b90caea9fb881481d42497dbf0fa540de7d909",
+          "high_coverage_bbox": [
+            325,
+            51,
+            1339,
+            986
+          ],
+          "size": [
+            1536,
+            1024
+          ],
+          "alpha_extrema": [
+            0,
+            254
+          ],
+          "selection": "SELECTED"
+        }
+      ]
+    },
+    "recipe": {
+      "file": "work/promo-cadence-20261018/hd-fonts/assassin76-battle-recipe-r2.json",
+      "sha256": "855e14a0c9cc159e9bef0aa6f3522849e80f14d77833e81279961acbb74546ae"
+    },
+    "art_contract": "保留深藍灰盔甲、低圓盔、灰綠長腰布、方盾、直劍與白黃揮斬。六母稿共享待機四幀與前三拍預備、兩拍直立抬劍；明示缺少原版微幅pose差異，不宣稱逐像素相同。透明生成alpha保持；只有既有配方幾何縮放與原矩形裁切。",
+    "acceptance": [
+      "完整13幀來源／配方／清冊與實際Draw驗證，拒收不部分發布。",
+      "與希莉亞同候選普通攻防、F2、返回及章節邊界F5／冷讀，再登錄與私人同步。"
+    ],
+    "limits": "正式377項清冊及私人HEAD不變。NPC鐵諾fig2及其他尚未重繪角色不可冒稱HD；普通END可用正常F2選忠實模式，需逐段揭露。",
+    "generation_revisions": {
+      "schema_version": 1,
+      "mode": "built-in image_gen",
+      "jobs": [
+        {
+          "key": "idle",
+          "prompt": "Use case: stylized-concept. One transparent full-body hand-painted game battle sprite. Image1 is EXACT original pose, silhouette and proportions. Repaint it in the illustrated HD style and SAME CHARACTER as image2. Preserve image1 geometry as closely as possible. Guarded idle with a SHORT straight arming sword pointing upper-left; bent right elbow keeps sword hand close to hip, sword blade about ONE THIRD of body height. Wide knees and substantial torso. This silhouette including sword must be slightly wider than tall, width:height about 1.12, matching image1 exactly. Character: stocky adult man in dark blue-grey rounded simple helmet without ornaments, dark slate steel armor and rounded knee plates, blue trousers/boots with dark wraps, brown/brass forearm bands, orange-tan visible face and arm gaps, pale grey-green LONG loincloth. Plain dark slate-green rectangular shield with narrow dull bronze rim in left hand on viewer RIGHT; SHORT slender straight sword in right hand on viewer LEFT. Keep the original chunky body scale, no stretched weapon. Complete weapon tip and both feet in frame with modest clear margin. Crisp clean dark contour, softly painted volumetric metal and cloth. Preserve pose and equipment side. Transparent background with clean alpha. NO ground shadow, checkerboard, scenery, text or border. Ignore the ground checker/shadow in original input. ONE figure.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/assassin76-ref-228-00.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/assassin76-idle-master-r1.png"
+          ],
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-9b1258f1-cd35-4dd5-8112-32c2472c993e.png",
+          "workspace_path": "work/promo-cadence-20261018/hd-fonts/assassin76-idle-master-r2.png",
+          "sha256": "2685ba1e5634aed0dc5a6583526568b97ba1e0728e701bf9a3c98d412e029a48",
+          "high_coverage_bbox": [
+            8,
+            7,
+            1323,
+            1177
+          ],
+          "size": [
+            1328,
+            1184
+          ],
+          "alpha_extrema": [
+            0,
+            254
+          ],
+          "selection": "SELECTED"
+        },
+        {
+          "key": "raise-diagonal",
+          "prompt": "Use case: stylized-concept. One transparent full-body hand-painted game battle sprite. Image1 is EXACT original pose, silhouette and proportions. Repaint it in the illustrated HD style and SAME CHARACTER as image2. Preserve image1 geometry as closely as possible. Raised diagonal preparation: SHORT arming sword toward upper-left; bent elbow keeps sword hand only moderately left of the head. Wide legs, substantial torso and shield. Whole silhouette width:height about 0.96, match image1. Do not extend right arm fully horizontally. Character: stocky adult man in dark blue-grey rounded simple helmet without ornaments, dark slate steel armor and rounded knee plates, blue trousers/boots with dark wraps, brown/brass forearm bands, orange-tan visible face and arm gaps, pale grey-green LONG loincloth. Plain dark slate-green rectangular shield with narrow dull bronze rim in left hand on viewer RIGHT; SHORT slender straight sword in right hand on viewer LEFT. Keep the original chunky body scale, no stretched weapon. Complete weapon tip and both feet in frame with modest clear margin. Crisp clean dark contour, softly painted volumetric metal and cloth. Preserve pose and equipment side. Transparent background with clean alpha. NO ground shadow, checkerboard, scenery, text or border. Ignore the ground checker/shadow in original input. ONE figure.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/assassin76-ref-229-03.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/assassin76-idle-master-r1.png"
+          ],
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-699a0698-2195-423c-8621-2605af1b0ad4.png",
+          "workspace_path": "work/promo-cadence-20261018/hd-fonts/assassin76-raise-diagonal-master-r2.png",
+          "sha256": "51b3c7c1f5006e385074de239dbb0aa37532e8140e4c5225a62fdd76e0a3dea4",
+          "high_coverage_bbox": [
+            6,
+            9,
+            1226,
+            1270
+          ],
+          "size": [
+            1229,
+            1280
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "selection": "SELECTED"
+        },
+        {
+          "key": "slash-long",
+          "prompt": "Use case: stylized-concept. One transparent full-body hand-painted game battle sprite. Image1 is EXACT original pose, silhouette and proportions. Repaint it in the illustrated HD style and SAME CHARACTER as image2. Preserve image1 geometry as closely as possible. Deep crouching downward cut. The blade's huge yellow-white slash extends from sword hand near lower center up to the TOP LEFT, on a steep nearly VERTICAL diagonal, obscuring much of torso exactly as image1. Crouched body occupies LOWER HALF, large shield on viewer right. Whole silhouette width:height about 0.73, PORTRAIT composition. The slash must be tall and narrow, NOT wide lateral flame. Character: stocky adult man in dark blue-grey rounded simple helmet without ornaments, dark slate steel armor and rounded knee plates, blue trousers/boots with dark wraps, brown/brass forearm bands, orange-tan visible face and arm gaps, pale grey-green LONG loincloth. Plain dark slate-green rectangular shield with narrow dull bronze rim in left hand on viewer RIGHT; SHORT slender straight sword in right hand on viewer LEFT. Keep the original chunky body scale, no stretched weapon. Complete weapon tip and both feet in frame with modest clear margin. Crisp clean dark contour, softly painted volumetric metal and cloth. Preserve pose and equipment side. Transparent background with clean alpha. NO ground shadow, checkerboard, scenery, text or border. Ignore the ground checker/shadow in original input. ONE figure.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/assassin76-ref-229-06.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/assassin76-idle-master-r1.png"
+          ],
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-f203330d-d908-4cc5-a339-e2c613ec15f6.png",
+          "workspace_path": "work/promo-cadence-20261018/hd-fonts/assassin76-slash-long-master-r2.png",
+          "sha256": "5aa4fbaefa6dec816c16abd1b96def344dff7858c0773fc05cf4b77039a18db9",
+          "high_coverage_bbox": [
+            28,
+            4,
+            1033,
+            1399
+          ],
+          "size": [
+            1072,
+            1467
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "selection": "SELECTED"
+        }
+      ]
+    },
+    "rejected_r1_poses": {
+      "keys": [
+        "idle",
+        "raise-diagonal",
+        "slash-long"
+      ],
+      "reason": "原畫武器／揮斬太寬，站姿縮放0.785、長揮斬0.668令人物縮小；重新生成符合原始比例的三母稿，沒有用alpha修剪掩飾。"
+    },
+    "selected_pose_sources": {
+      "idle": {
+        "file": "work/promo-cadence-20261018/hd-fonts/assassin76-idle-master-r2.png",
+        "sha256": "2685ba1e5634aed0dc5a6583526568b97ba1e0728e701bf9a3c98d412e029a48",
+        "anchor": [
+          8,
+          7,
+          1323,
+          1177
+        ]
+      },
+      "raise-diagonal": {
+        "file": "work/promo-cadence-20261018/hd-fonts/assassin76-raise-diagonal-master-r2.png",
+        "sha256": "51b3c7c1f5006e385074de239dbb0aa37532e8140e4c5225a62fdd76e0a3dea4",
+        "anchor": [
+          6,
+          9,
+          1226,
+          1270
+        ]
+      },
+      "raise-vertical": {
+        "file": "work/promo-cadence-20261018/hd-fonts/assassin76-raise-vertical-master-r1.png",
+        "sha256": "96e37b7cb6a8d656c5f70018067a26e821015656299ccac9e42ba0c92598d828",
+        "anchor": [
+          187,
+          13,
+          1071,
+          1347
+        ]
+      },
+      "slash-long": {
+        "file": "work/promo-cadence-20261018/hd-fonts/assassin76-slash-long-master-r2.png",
+        "sha256": "5aa4fbaefa6dec816c16abd1b96def344dff7858c0773fc05cf4b77039a18db9",
+        "anchor": [
+          28,
+          4,
+          1033,
+          1399
+        ]
+      },
+      "slash-short": {
+        "file": "work/promo-cadence-20261018/hd-fonts/assassin76-slash-short-master-r1.png",
+        "sha256": "0aa017e19c7e9884a1463cf940d6423efa492c30ae9d46af104ee020b091eda0",
+        "anchor": [
+          263,
+          98,
+          1367,
+          1065
+        ]
+      },
+      "recover-low": {
+        "file": "work/promo-cadence-20261018/hd-fonts/assassin76-recover-low-master-r1.png",
+        "sha256": "478a699737e2f8af94d801f727b90caea9fb881481d42497dbf0fa540de7d909",
+        "anchor": [
+          325,
+          51,
+          1339,
+          986
+        ]
+      }
+    },
+    "compiled_candidate": {
+      "file": "work/promo-cadence-20261018/hd-fonts/silia-assassin76-candidate-r2/compiled.json",
+      "sha256": "ea72de70dd7348f8f82fb2d9dc34ce2285515fe82277768ec7c6d8900ed0167b",
+      "catalog_assets": 381,
+      "new_frames": 13,
+      "combined_new_frames": 33,
+      "formal_catalog_assets_unchanged": 377,
+      "scale_groups": {
+        "standing": 0.9760110611821639,
+        "slash-long": 1,
+        "slash-short": 1,
+        "recover-low": 1
+      },
+      "clipped_high_coverage_pixels": 0,
+      "formal_catalog_assets_now": 381
+    },
+    "verification": {
+      "go_loader": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-assassin-assets-r1.log",
+        "sha256": "7378bfbcdb53c0a132ddc96901731304b6257aa5d281c5c072934e6b7b8fb6b1"
+      },
+      "compiler_guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/assassin76-compiler-guards-r1/guards.json",
+        "sha256": "51a382065ef4a00a951891b88766f098cee2680640a955e22cdcc768d8b7034e"
+      }
+    },
+    "normal_approach_policy": "GUI --battle-advance沿正式可達集合移動／下方待機，--faithful-approach只在普通END用F2忠實主題，回玩家回合再F2。用既有範圍欄位2..3選射擊，未注入狀態。來源祖先依ch03-manifest與原生r5收據揭露。NPC鐵諾的HD與原版對拍不在此通過範圍。",
+    "formal_verification": {
+      "registration": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-assassin76-registration-r1.json",
+        "sha256": "2ecbd5fa5c758108acc17ffbf1982583bb477f0385a2dae5edaa3c6ee2ddce9a"
+      },
+      "formal_catalog_tests": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-formal-catalog-tests-r2.log",
+        "sha256": "dd693e2f8af0d7fa837b8a7c0634b08d7fcd8970ac1be0a7c31249483b9d95bb"
+      },
+      "formal_source_audit": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-formal-source-audit-r1.json",
+        "sha256": "568545efdea5b92556266905d60782cf847c725263e2beba6e93165190c1eb53"
+      },
+      "clean_rebuild": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-assassin76-rebuild-r1.json",
+        "sha256": "d878dfaba7237085159a8cdf939044d581e78898678d11934b7dd76fff3db489"
+      },
+      "private_sync": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-private-sync-r1.json",
+        "sha256": "eccb22f92cd45c953438cab6c04b2771dbdd7e36a6668954008ade19598d2735"
+      },
+      "runtime_manifest": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-runtime-only-manifest-r1.json",
+        "sha256": "9feac70a1c3ed7d9e146b3bf955ce7fd37f43d5e633e3983490f0d19c96ef493"
+      },
+      "private_runtime_go": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-private-runtime-tests-r1.log",
+        "sha256": "f2ac4342c9cfddada772a065995a0697c414e81dc1298d80212ab5cbe4bd2544"
+      },
+      "portable_private_master_rebuild": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-assassin76-portable-rebuild-r1.json",
+        "sha256": "4d638eb0fc0af35c8e56c4d322cf696972dd22f1205702532bdcae17e9f6125d"
+      }
+    },
+    "full_fixture_gpu": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-assassin-full-gpu-r1/receipt.json",
+        "sha256": "f9d091777bb37cb587a96a5d51c37421361ee56465665a5bec86d11fe542347b"
+      },
+      "match": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-assassin-full-gpu-match-r1.json",
+        "sha256": "a1e9b4363c469272f2f4ca2a243ddcec8b1c3441a697c808711ce6a244fac02f"
+      },
+      "guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-assassin-full-gpu-guards-r1/guards.json",
+        "sha256": "b4adf5ee6b77d1190478ea9ca3c86e634b83ec05db8bd2152c6a6c074ee68d62"
+      },
+      "presentations": 146,
+      "target_frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "projectile_frames": [
+        15,
+        16,
+        17,
+        18
+      ],
+      "matched_layers": 18,
+      "negative_cases": 6,
+      "scope": "真實FIGANI25／228／229與BG55／5，強制雙射／反擊計畫fixture，九幀只核服裝核心；非正常敵方主動攻擊、完整武器光效或新原版oracle。"
+    },
+    "remaining": [
+      "NPC鐵諾圖組及普通END的完整HD",
+      "其他人物、法術／死亡／共同效果與普通施法",
+      "代表性平台與效能",
+      "蓋亞大型戰鬥占寬待決"
+    ],
+    "private_delivery": {
+      "file_count": 3464,
+      "runtime_only_file_count": 3194,
+      "old_files_preserved": 3415,
+      "new_files": 49,
+      "new_frames": 33,
+      "new_masters": 16,
+      "commit_pending": false,
+      "visibility_policy": "永遠私人；未修改可見性設定或Release",
+      "commit": "45a3a9a0938661dc73e3cfa05aa397c5c9302b5a",
+      "remote_head_verified": true
+    },
+    "environment_observations": [
+      "正式catalog測試r1誤用缺Pillow的promo映像，唯一錯誤是ModuleNotFoundError。改既有fd2-assets-local:20260829-sfx，同11測試乾淨通過。",
+      "worklist初始30秒逾時，180秒同程式通過；定位packaging/dist舊封包掃描，改為只排除此中間產物根後11正反測試及30秒verify均通過。",
+      "冷啟動階段audit暫時不存在屬正常重建，外部觀測未據此中斷GUI。"
+    ],
+    "reproduction_recipe": {
+      "schema_version": 1,
+      "figure": 76,
+      "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+      "sources": {
+        "idle": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-076-idle-battle-hd6-master-v1.png",
+          "sha256": "2685ba1e5634aed0dc5a6583526568b97ba1e0728e701bf9a3c98d412e029a48",
+          "anchor": [
+            8,
+            7,
+            1323,
+            1177
+          ]
+        },
+        "raise-diagonal": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-076-raise-diagonal-battle-hd6-master-v1.png",
+          "sha256": "51b3c7c1f5006e385074de239dbb0aa37532e8140e4c5225a62fdd76e0a3dea4",
+          "anchor": [
+            6,
+            9,
+            1226,
+            1270
+          ]
+        },
+        "raise-vertical": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-076-raise-vertical-battle-hd6-master-v1.png",
+          "sha256": "96e37b7cb6a8d656c5f70018067a26e821015656299ccac9e42ba0c92598d828",
+          "anchor": [
+            187,
+            13,
+            1071,
+            1347
+          ]
+        },
+        "slash-long": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-076-slash-long-battle-hd6-master-v1.png",
+          "sha256": "5aa4fbaefa6dec816c16abd1b96def344dff7858c0773fc05cf4b77039a18db9",
+          "anchor": [
+            28,
+            4,
+            1033,
+            1399
+          ]
+        },
+        "slash-short": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-076-slash-short-battle-hd6-master-v1.png",
+          "sha256": "0aa017e19c7e9884a1463cf940d6423efa492c30ae9d46af104ee020b091eda0",
+          "anchor": [
+            263,
+            98,
+            1367,
+            1065
+          ]
+        },
+        "recover-low": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-076-recover-low-battle-hd6-master-v1.png",
+          "sha256": "478a699737e2f8af94d801f727b90caea9fb881481d42497dbf0fa540de7d909",
+          "anchor": [
+            325,
+            51,
+            1339,
+            986
+          ]
+        }
+      },
+      "resources": {
+        "228": [
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              121,
+              108
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              121,
+              107
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              121,
+              106
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              121,
+              107
+            ],
+            "scale_group": "standing"
+          }
+        ],
+        "229": [
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              121,
+              108
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              121,
+              109
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              121,
+              110
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "raise-diagonal",
+            "anchor": [
+              0,
+              0,
+              121,
+              126
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "raise-vertical",
+            "anchor": [
+              0,
+              0,
+              101,
+              144
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "raise-vertical",
+            "anchor": [
+              0,
+              0,
+              101,
+              144
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "slash-long",
+            "anchor": [
+              0,
+              0,
+              106,
+              145
+            ],
+            "scale_group": "slash-long"
+          },
+          {
+            "pose": "slash-short",
+            "anchor": [
+              0,
+              0,
+              105,
+              90
+            ],
+            "scale_group": "slash-short"
+          },
+          {
+            "pose": "recover-low",
+            "anchor": [
+              0,
+              0,
+              105,
+              90
+            ],
+            "scale_group": "recover-low"
+          }
+        ]
+      }
+    },
+    "portable_inventory": {
+      "file": "docs/data/fd2-battle-hd-source-inventory-20261019.json",
+      "sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+      "scope": "固定來源輸入快照；focus／catalog_sha256／registered_assets為原盤點當批狀態，不作目前HD覆蓋。"
+    },
+    "date": "2026-10-20"
+  },
+  "current_state_date": "2026-10-20"
 }

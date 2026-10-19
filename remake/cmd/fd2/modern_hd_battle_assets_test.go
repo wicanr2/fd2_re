@@ -160,6 +160,74 @@ func TestModernHDBattleAssetsLazySetAtomic(t *testing.T) {
 	}
 }
 
+func TestModernHDBattleEmptyFrameRequiresCompleteNativeMask(t *testing.T) {
+	for _, kind := range []string{"native-empty", "missing-mask", "short-mask", "nonempty-native", "opaque-ink", "soft-ink", "other-archive"} {
+		t.Run(kind, func(t *testing.T) {
+			a, native, root := battleHDAssetFixture(t)
+			native.Frames[1].Mask = make([]byte, 4)
+			picture := image.NewNRGBA(image.Rect(0, 0, 12, 12))
+			switch kind {
+			case "missing-mask":
+				native.Frames[1].Mask = nil
+			case "short-mask":
+				native.Frames[1].Mask = make([]byte, 3)
+			case "nonempty-native":
+				native.Frames[1].Mask[3] = 1
+			case "opaque-ink":
+				picture.SetNRGBA(1, 1, color.NRGBA{R: 255, A: 255})
+			case "soft-ink":
+				picture.SetNRGBA(1, 1, color.NRGBA{R: 255, A: 1})
+			case "other-archive":
+				a.Role, a.SourceArchive, a.SourceResource = "battle_effect_hd_set", "FDOTHER.DAT", 65
+				a.ConsumerContract, a.CyclePolicy, a.LayoutPolicy = "native_fdother_compound_rgba_hd6_v1", "native_compound_frames", "native_descriptor_hd6"
+			}
+			path := filepath.Join(root, a.Files[1])
+			file, err := os.Create(path)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if err := png.Encode(file, picture); err != nil {
+				t.Fatal(err)
+			}
+			if err := file.Close(); err != nil {
+				t.Fatal(err)
+			}
+			raw, err := os.ReadFile(path)
+			if err != nil {
+				t.Fatal(err)
+			}
+			digest := sha256.Sum256(raw)
+			a.FrameSHA256[1] = hex.EncodeToString(digest[:])
+			set := &modernStoryPortraitSet{}
+			err = loadModernBattleHDAssetWithNative(set, a, root, native)
+			if kind != "native-empty" {
+				if err == nil || len(set.battleAnimations) != 0 || len(set.battleEffects) != 0 {
+					t.Fatal("invalid empty frame published")
+				}
+				return
+			}
+			if err != nil {
+				t.Fatal(err)
+			}
+			if err := set.prepareBattleHDResources(91); err != nil {
+				t.Fatal(err)
+			}
+			blank, err := set.battleHDFrame(91, 1)
+			if err != nil || blank == nil {
+				t.Fatal("empty frame treated as missing", err)
+			}
+			for y := 0; y < 12; y++ {
+				for x := 0; x < 12; x++ {
+					_, _, _, a := blank.At(x, y).RGBA()
+					if a != 0 {
+						t.Fatal("empty frame gained ink")
+					}
+				}
+			}
+		})
+	}
+}
+
 func modernBattleCandidateFigure(t *testing.T) int {
 	t.Helper()
 	value := os.Getenv("FD2_TEST_MODERN_BATTLE_FIGURE")

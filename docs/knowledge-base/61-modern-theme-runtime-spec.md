@@ -160,6 +160,74 @@ FDOTHER68的前八幀共用15649個身體像素，最後幀下移一原生像素
 
 ### 大型戰鬥動畫 HD 起始切片（2026-10-19，READY-CANDIDATE）
 
+#### 希莉亞與原始空白幀（CONFORMED-SCOPED）
+
+FIGANI24一張待機與25十九張攻擊保留原矩形、header與節拍；26空header。
+固定盤點與原始Mask確認25/14為320×200且全部透明，15..18為50×3飛行箭。
+由原始Mask完整長度及全0導出空白資格，只接受alpha全部0的對應HD圖；
+其他FIGANI的透明背景／不透明核心及FDOTHER既有全幅契約保持。
+不新增catalog、recipe或保存欄位，不跳過空白幀，也不以固定索引或缺Mask放行。
+編製器沿原配方但原生空白時直接建立六倍空白PNG，逐筆揭露未使用母稿；
+來源稽核沿固定Mask SHA判定，不由新圖自承資格。完整預載仍共同發布，空白圖仍是non-nil圖源。
+原圖姿勢、服裝、箭與空白分開編製，沿已核准手繪與原矩形，先隔離候選再驗正式Draw及正常操作。
+主契約、正負向驗收與限制見[戰鬥HD現況](../data/fd2-modern-hd-battlefield-20261019.json)的
+`silia_battle_followup_20261019`，編製入口仍為
+[`build_fd2_character_battle_hd.py`](../../tools/build_fd2_character_battle_hd.py)，
+載入入口為[`modern_hd_battle_assets.go`](../../remake/cmd/fd2/modern_hd_battle_assets.go)，
+來源稽核為[`audit_fd2_battle_hd_coverage.py`](../../tools/audit_fd2_battle_hd_coverage.py)。
+空白來源、七種正負向、GPU透明合成與完整20幀已通過並正式登錄。
+一般玩家抽驗沿[`GUI工具`](../../tools/verify_fd2_hd_fonts_gui.py)的`--capture-native-battle-save`、
+`--native-save`及`--battle-node battle_ch03`，先由可追溯原生槽普通LOAD／出發／F5建立JSON來源。
+再以`--battle-only --battle-hd --battle-art --world --battle-status`抽驗弓兵，
+`--battle-approach-rounds`明示0..3次正常END，`--startup-timeout`明示60／120／180秒視窗等待。
+射程讀取正式unit.AtkMin／AtkMax，零值沿既有InAttackRange取1；不猜相鄰或改規則。
+F5沿save.go的章節邊界語意，新程序LOAD重建戰場，不把戰中位置／Acted／敵方HP當持續契約。
+原生覆蓋層可被正常F5同步保存，唯讀來源SHA保持；槽祖先清敵政策完整揭露。
+人物、空白、飛行箭與普通玩家證據分層；85張正常射擊PNG符合明示本體核心，
+兩次射擊、返回、F2及章節邊界保存／冷讀通過。共享微幅姿勢保持揭露，完整戰鬥HD仍未完成。
+
+#### 第三章劍盾兵與希莉亞（CONFORMED-SCOPED）
+
+第三章實際原生LOAD的敵人使用BattleFig76，不能以已登錄的強盜96取代。
+FIGANI228四幀待機、229九幀攻擊沿原矩形、header、層序與節拍，230為零header空來源。
+原始來源與消費端、六母稿及三份比例修訂見同主收據的
+`assassin76_battle_followup_20261020`。四張待機與部分預備拍明示共享母稿，
+不宣稱逐幀視覺相同。與希莉亞合併後正式清冊為381項；候選到正式僅修改素材根路徑，
+asset清單及逐檔PNG保持相同，沒有改寫普通GUI收據的清冊指紋。
+正常GUI的`--battle-advance`依正式可達集合移動、下方待機再END；
+`--faithful-approach`明示在END期間以普通F2選忠實主題，返回玩家回合再切HD。
+NPC鐵諾的圖組仍未重繪，不能把這段忠實模式計入HD驗證。
+
+希莉亞雙側完整Draw與四張飛矢PNG核對通過。新增敵方76號完整146次呈現，
+九張攻擊幀與四飛矢的實際PNG核心相符，六階段F2、64／65 DAC與一次續行保持。
+敵方主動揮劍限強制反擊計畫fixture的RUNTIME-E1；正常第三章為距離3的弓箭射擊，
+不能拿它宣稱已驗正常敵方揮劍或NPC鐵諾HD。
+飛矢核對入口為[`verify_fd2_scroll_battle_gpu.py`](../../tools/verify_fd2_scroll_battle_gpu.py)
+的`--projectiles`，沿原描述子位置及alpha混合容差逐張比對來源核心。
+`--target-figure 76 --target-frames`另核對敵方九張攻擊幀的服裝核心，未比較全部武器／光效像素。
+反例入口為[`test_fd2_scroll_battle_gpu.py`](../../tools/test_fd2_scroll_battle_gpu.py)，
+要求當前正向報告，再以缺幀、錯幀、錯位置、原生PNG替身、錯人物與缺敵方攻擊幀驗證拒收。
+正常操作、章節邊界保存冷讀、33幀乾淨重建、正式來源稽核及私人同步均通過。
+私人完整3464檔與runtime-only3194檔逐筆核對，原3415檔保持；16新母稿不進執行包。
+runtime-only正式Go載入及玩家／AI結算前拒收通過，不新增原版oracle、整章E2或跨平台效能聲明。
+
+重建輸入使用受版控的[固定來源盤點](../data/fd2-battle-hd-source-inventory-20261019.json)，
+SHA為`d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51`。
+其中focus、catalog與登錄清單屬盤點當批快照，不能用來判定目前HD進度。
+主收據兩個人物區塊的`reproduction_recipe`保存完整配方，母稿路徑改指正式allow-list檔名。
+先以`sync_modern_theme_private.py --catalog remake/assets/themes/modern/catalog.json
+--source <私人現代包> --destination remake/generated-assets/modern-theme-prototypes`在素材容器恢復檔案；
+再將配方另存工作區JSON，交給`build_fd2_character_battle_hd.py`。
+登錄後的`--base-catalog`須用正式清冊複本，僅移除待重建人物的idle／attack兩個asset，
+其餘內容及private_root保持。原始包唯讀掛為`/original`；完整argv與33幀重建結果見主收據，
+不依賴Codex生成目錄或未追蹤的原始母稿。
+
+完整演出使用`modern_hd_battle_scroll_lifecycle_test.go`的`TestModernHDScrollRuntimeGPU`，
+在維護中的Go測試容器明示`FD2_HD_SCROLL_SIDE=2`、`FD2_HD_SCROLL_REAL=1`、
+`FD2_HD_SCROLL_TARGET=76`、`FD2_HD_SCROLL_TARGET_FRAMES=1`及`FD2_HD_SCROLL_PROJECTILES=1`。
+`FD2_TEST_MODERN_BATTLE_CATALOG`與`FD2_TEST_MODERN_BATTLE_PACK`指定清冊／素材根，
+`FD2_TEST_HD_SCROLL_OUT`指定新輸出目錄；此入口只產生fixture的RUNTIME-E1證據。
+
 #### 非共背景物理演出（CONFORMED-SCOPED／RUNTIME-E1）
 
 沿[已閉合主證據](../data/ida/fd2_physical_background_selection_20261004.json)的IDA LE
@@ -312,7 +380,8 @@ FIGANI288待機4幀及289攻擊8幀。290的原始header為零，不新增動作
 - 先核manifest、metadata、全部原始PNG與描述子，再按錨點高度等比例LANCZOS取樣，
   對齊水平中心與下緣。若同群組任一錨點超出舊畫布，採全群組均可容納的
   共同內縮倍率，逐幀保存倍率、原點與裁切量。不採蓋亞待決的較寬幾何。
-  不改原圖alpha以遷就守衛；成品仍須通過既有透明背景與不透明核心契約。
+  不改原圖alpha以遷就守衛；有來源像素的成品仍須通過透明背景與不透明核心契約。
+  已證實原生全空白的FIGANI例外只沿本檔希莉亞契約處理。
 - 本批八母稿供十二幀：四相待機及攻擊首幀沿同一待機稿，其餘七幀各有獨立攻擊稿。
   原版三個收勢尾幀仍有少量非金色像素差異，沒有把它們稱為完全相同的身體。
   明示美化重定向不升格為逐幀原版視覺相同，全部姿勢、比例與武器／光效須目視審查。
@@ -343,7 +412,8 @@ F2限戰場操作，相容圖源不升格為唯一動畫相位；武器／光效
 全來源稽核為409位置、264已解碼資源、2118原幀，目前正式FIGANI四資源31幀；
 FDOTHER四效果37幀完整，但不推定其他效果的總量或caller覆蓋。408來源仍阻擋。
 稽核透明度契約沿正式loader：只有FDOTHER原生mask全非零的全幅寫入允許無透明點，
-FIGANI仍須透明背景及255核心。完整來源、命令及限制見
+該批FIGANI皆非空，要求透明背景及255核心；後續希莉亞的原生空白例外見本檔上節。
+完整來源、命令及限制見
 [主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`bandit_battle_followup_20261019`。
 
 #### 亞雷斯物理戰鬥編製（CONFORMED-SCOPED，限首章普通攻擊）

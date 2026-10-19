@@ -107,12 +107,18 @@ def main():
         if actual[0] < -1 or actual[1] < -1 or actual[2] > size[0]+1 or actual[3] > size[1]+1:
             raise SystemExit('取樣後錨點越界，停止審查')
         canvas = Image.new('RGBA', size); canvas.alpha_composite(fitted, tuple(origin))
-        if canvas.getchannel('A').getextrema() != (0, 255): raise SystemExit('成品缺少透明背景或不透明核心')
+        native_empty = original.getchannel('A').getbbox() is None
+        if native_empty:
+            # 原始Mask已由load_native核SHA；空白present仍保留完整PNG與排程。
+            canvas = Image.new('RGBA', size)
+        elif canvas.getchannel('A').getextrema() != (0, 255):
+            raise SystemExit('成品缺少透明背景或不透明核心')
         visible = fitted.getchannel('A').crop((-origin[0], -origin[1], size[0]-origin[0], size[1]-origin[1]))
-        clipped = sum(a >= 192 for a in fitted.getchannel('A').getdata())-sum(a >= 192 for a in visible.getdata())
+        clipped = 0 if native_empty else sum(a >= 192 for a in fitted.getchannel('A').getdata())-sum(a >= 192 for a in visible.getdata())
         record = {'resource': resource, 'frame': index, 'pose': key, 'native_anchor': target, 'source_anchor': anchor,
             'fit_size': list(fitted.size), 'origin': origin, 'scale_xy': [sx, sy], 'scale_group': group,
             'phase_scale': groups[group], 'fitted_anchor': actual, 'clipped_high_coverage_pixels': clipped,
+            'native_empty_source': native_empty, 'pose_used': not native_empty,
             'native_descriptor': {k: frame[k] for k in DESCRIPTOR}}
         prepared.append((record, canvas, original))
     private = ROOT/base['private_root']; old_names = names(base)

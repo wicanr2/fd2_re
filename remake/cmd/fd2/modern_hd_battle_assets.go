@@ -113,19 +113,24 @@ func loadModernBattleHDAssetWithNative(set *modernStoryPortraitSet, asset modern
 		if err != nil {
 			return err
 		}
-		transparent, opaque := false, false
+		transparent, opaque, visible := false, false, false
 		for y := picture.Bounds().Min.Y; y < picture.Bounds().Max.Y; y++ {
 			for x := picture.Bounds().Min.X; x < picture.Bounds().Max.X; x++ {
 				_, _, _, a := picture.At(x, y).RGBA()
 				transparent = transparent || a == 0
 				opaque = opaque || a == 0xffff
+				visible = visible || a != 0
 			}
 		}
 		fullMask := asset.SourceArchive == "FDOTHER.DAT" && len(frame.Mask) == frame.Width*frame.Height
 		for _, value := range frame.Mask {
 			fullMask = fullMask && value != 0
 		}
-		if (!transparent && !fullMask) || !opaque {
+		nativeEmpty := asset.SourceArchive == "FIGANI.DAT" && len(frame.Mask) == frame.Width*frame.Height && bytes.Count(frame.Mask, []byte{0}) == len(frame.Mask)
+		if nativeEmpty && visible {
+			return fmt.Errorf("modern HD battle: frame %d adds ink to empty native frame", index)
+		}
+		if !nativeEmpty && ((!transparent && !fullMask) || !opaque) {
 			return fmt.Errorf("modern HD battle: frame %d lacks transparent background or opaque core", index)
 		}
 		paths[index] = filepath.Join(root, name)

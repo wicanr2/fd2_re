@@ -24,7 +24,14 @@ func TestModernHDScrollRuntimeGPU(t *testing.T) {
 	side, _ := strconv.Atoi(value)
 	requirePhysicalScenePack(t)
 	t.Setenv("FD2_MUTE", "1")
-	g, scene, actor, target := modernScrollSceneFixture(t, byte(side))
+	targetFigure := 96
+	if value := os.Getenv("FD2_HD_SCROLL_TARGET"); value != "" {
+		if value != "76" && value != "96" {
+			t.Fatal("dedicated scroll target must be 76 or 96")
+		}
+		targetFigure, _ = strconv.Atoi(value)
+	}
+	g, scene, actor, target := modernScrollTargetSceneFixture(t, byte(side), targetFigure)
 	set := diagnosticModernBattleSet(t, g, scene)
 	real := os.Getenv("FD2_HD_SCROLL_REAL") == "1"
 	if real {
@@ -78,7 +85,7 @@ func TestModernHDScrollRuntimeGPU(t *testing.T) {
 	}()
 	probe.presentation = &modernHDPresentation{Game: g}
 	probe.capture = func(screen *ebiten.Image, phase string) {
-		if out == "" || g.modernStoryPortraits == nil || !g.modernHDBattleVisible || probe.phaseF2[phase] == 0 || shots[phase] != nil {
+		if out == "" || g.modernStoryPortraits == nil || !g.modernHDBattleVisible || probe.phaseF2[phase] == 0 {
 			return
 		}
 		var sources *modernHDBattleSources
@@ -89,6 +96,24 @@ func TestModernHDScrollRuntimeGPU(t *testing.T) {
 			sources = scene.body.jobs[index].hdSources
 		}
 		if sources == nil {
+			return
+		}
+		shotKey := phase
+		if os.Getenv("FD2_HD_SCROLL_PROJECTILES") == "1" {
+			for _, s := range sources.Layers {
+				if s.Resource == 25 && s.Index >= 15 && s.Index <= 18 && s.Fill == -1 {
+					shotKey = fmt.Sprintf("%s-bolt-%02d", phase, s.Index)
+				}
+			}
+		}
+		if os.Getenv("FD2_HD_SCROLL_TARGET_FRAMES") == "1" {
+			for _, s := range sources.Layers {
+				if s.Resource == targetFigure*3+1 && s.Index > 0 && s.Fill == -1 {
+					shotKey = fmt.Sprintf("%s-target-%02d", phase, s.Index)
+				}
+			}
+		}
+		if shots[shotKey] != nil {
 			return
 		}
 		visible := false
@@ -111,7 +136,7 @@ func TestModernHDScrollRuntimeGPU(t *testing.T) {
 		geometry.Scale(3, 3)
 		probe.presentation.DrawFinalScreen(readback, screen, geometry)
 		readback.ReadPixels(pixels)
-		name := fmt.Sprintf("%s-job-%03d.png", phase, index)
+		name := fmt.Sprintf("%s-job-%03d.png", shotKey, index)
 		file, err := os.Create(filepath.Join(out, name))
 		if err != nil {
 			probe.err = err
@@ -126,7 +151,7 @@ func TestModernHDScrollRuntimeGPU(t *testing.T) {
 			probe.err = err
 			return
 		}
-		shots[phase] = map[string]any{"file": name, "layers": layers, "job": index}
+		shots[shotKey] = map[string]any{"file": name, "layers": layers, "job": index}
 	}
 	ebiten.SetWindowSize(640, 400)
 	ebiten.SetVsyncEnabled(false)
@@ -160,6 +185,20 @@ func TestModernHDScrollRuntimeGPU(t *testing.T) {
 			t.Fatalf("battle DAC%d skipped", i)
 		}
 	}
+	if os.Getenv("FD2_HD_SCROLL_PROJECTILES") == "1" {
+		for frame := 15; frame <= 18; frame++ {
+			if shots[fmt.Sprintf("body-bolt-%02d", frame)] == nil {
+				t.Fatalf("projectile frame%d missing GPU capture", frame)
+			}
+		}
+	}
+	if os.Getenv("FD2_HD_SCROLL_TARGET_FRAMES") == "1" {
+		for frame := 1; frame < len(scene.bodyResources.counter.Frames); frame++ {
+			if shots[fmt.Sprintf("counter-target-%02d", frame)] == nil {
+				t.Fatalf("target attack frame%d missing GPU capture", frame)
+			}
+		}
+	}
 	for i, seen := range probe.mapRampSeen {
 		if !seen {
 			t.Fatalf("map DAC%d skipped", i)
@@ -176,6 +215,9 @@ func TestModernHDScrollRuntimeGPU(t *testing.T) {
 		t.Fatal("scroll retained GPU textures")
 	}
 	report := map[string]any{"status": "PASS-SCOPED-RUNTIME-E1", "side": side, "real_registered_battle_bank": real, "phase_hd_draws": probe.phaseDraws, "phase_f2": probe.phaseF2, "presents": len(probe.seen), "hd_draws": probe.hdDraws, "faithful_draws": probe.faithfulDraws, "final_draws": probe.finals, "continuations": callbacks, "battle_dac_steps": len(probe.rampSeen), "map_dac_steps": len(probe.mapRampSeen), "source_shots": shots, "scope": "真實FIGANI25／288／289與BG55／5的修改fixture；兩次射擊及反擊的正式Game.Draw。非普通玩家或新原版oracle。real只換正式battle銀行，地圖返回沿既有native fixture；F2切換的測試tick停一次以要求同present兩主題Draw。"}
+	report["target_figure"] = targetFigure
+	report["target_attack_frames_captured"] = os.Getenv("FD2_HD_SCROLL_TARGET_FRAMES") == "1"
+	report["scope"] = fmt.Sprintf("真實FIGANI25／%d／%d與BG55／5的修改fixture；兩次射擊及強制反擊計畫的正式Game.Draw。非普通玩家或新原版oracle；地圖返回沿native fixture，六階段F2測試tick停一次以要求同present兩主題Draw。", targetFigure*3, targetFigure*3+1)
 	if out != "" {
 		raw, _ := json.MarshalIndent(report, "", "  ")
 		if err := os.WriteFile(filepath.Join(out, "receipt.json"), append(raw, '\n'), 0644); err != nil {

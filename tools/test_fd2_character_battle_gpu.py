@@ -17,6 +17,7 @@ def main():
     p.add_argument('--other-figure', type=int, required=True)
     p.add_argument('--core-profile', choices=['blue', 'gold'], default='blue')
     p.add_argument('--other-core-profile', choices=['blue', 'gold'], default='blue')
+    p.add_argument('--body-frames')
     for name in ['receipt', 'catalog', 'source', 'baseline', 'negative-receipt', 'out']:
         p.add_argument('--'+name, type=Path, required=True)
     args = p.parse_args()
@@ -42,6 +43,7 @@ def main():
                 '--core-profile', args.core_profile if figure is None else args.other_core_profile,
                 '--receipt', str(path), '--catalog', str(args.catalog),
                 '--source', str(source or args.source), '--report', str(report)]
+        if args.body_frames and figure is None: argv += ['--body-frames', args.body_frames]
         result = subprocess.run(argv, capture_output=True, text=True, timeout=90)
         output = result.stdout+result.stderr
         if result.returncode == 0 or report.exists() or expected not in output:
@@ -51,7 +53,13 @@ def main():
 
     wrong = copy.deepcopy(receipt); wrong['catalog_sha256'] = '0'*64
     path = args.out/'wrong-receipt.json'; path.write_text(json.dumps(wrong))
-    check('wrong-receipt', path, '需要同份普通首章完整GUI收據及清冊')
+    check('wrong-receipt', path, '需要同份普通攻防完整GUI收據及清冊')
+    if receipt.get('node_boundary_save_checked'):
+        wrong = copy.deepcopy(receipt)
+        wrong['source_save_bytes_equal'] = False
+        wrong['cold_units'] = []
+        path = args.out/'wrong-boundary-save.json'; path.write_text(json.dumps(wrong))
+        check('wrong-boundary-save', path, '需要同份普通攻防完整GUI收據及清冊')
     check('wrong-figure', args.receipt, '未在普通攻防GPU核對到所選人物的攻擊動作', figure=args.other_figure)
     shadow = args.out/'wrong-source'; shadow.mkdir()
     names = {name for a in catalog['assets'] if a['role'] == 'battle_animation_hd_set' for name in a['files']}
@@ -75,7 +83,7 @@ def main():
     report = {'status': 'PASS-CHARACTER-GPU-GUARDS', 'core_profile': args.core_profile,
               'other_core_profile': args.other_core_profile, 'baseline_sha256': digest(args.baseline),
               'tool_sha256': digest(Path(__file__)), 'checks': checks,
-              'scope': '四種明示負向fixture，舊擷取只證拒收；不新增原版或普通玩家收據。'}
+              'scope': '錯收據、人物、圖源、舊擷取及適用的章節邊界保存負向fixture；不新增原版或普通玩家收據。'}
     (args.out/'guards.json').write_text(json.dumps(report, ensure_ascii=False, indent=2)+'\n')
     print(json.dumps({'status': report['status'], 'guards': len(checks)}))
 

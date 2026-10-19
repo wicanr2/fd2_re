@@ -46,12 +46,26 @@ def scannable(path):
     return True
 
 
+def source_files(candidate):
+    # packaging/dist是舊封包的展開結果；Android建置的來源入口在同層腳本。
+    excluded = ROOT / 'remake/packaging/dist'
+    if candidate.is_relative_to(excluded):
+        return
+    if not candidate.is_dir():
+        yield candidate
+        return
+    for folder, dirs, files in os.walk(candidate):
+        base = Path(folder)
+        dirs[:] = sorted(name for name in dirs if base/name != excluded)
+        for name in sorted(files):
+            yield base/name
+
+
 def first_hit(verify):
     expression = re.compile(verify["pattern"])
     for target in verify["paths"]:
         candidate = ROOT / target
-        files = sorted(candidate.rglob("*")) if candidate.is_dir() else [candidate]
-        for path in files:
+        for path in source_files(candidate):
             if not scannable(path):
                 continue
             if expression.search(path.read_text(encoding="utf-8", errors="ignore")):
