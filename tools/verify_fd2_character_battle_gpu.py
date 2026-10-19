@@ -22,6 +22,15 @@ def main():
     args = p.parse_args()
     if not 0 <= args.figure <= 135 or args.report.exists(): raise SystemExit('人物越界或報告已存在')
     receipt = json.loads(args.receipt.read_text())
+    scene_names=['world-hd','world-hd-replay']
+    repetitions=receipt.get('battle_repetitions',2)
+    if args.sample_group in ('attack','end') and repetitions!=2:
+        if (repetitions!=1 or receipt.get('battle_only') is not True
+            or receipt.get('post_battle_save_checked') is not True
+            or receipt.get('natural_attack_return_checked') is not True
+            or [s.get('name') for s in receipt.get('battle_hd_scenes',[])]!=['world-hd']):
+            raise SystemExit('單場須有完整自然返回與保存收據')
+        scene_names=['world-hd']
     boundary_save = (receipt.get('node_boundary_save_checked') is True
         and receipt.get('cold_loaded_units_equal') is True
         and bool(receipt.get('loaded_units'))
@@ -83,7 +92,7 @@ def main():
     samples = list(receipt.get('battle_end_art_samples' if args.sample_group=='end' else 'battle_art_samples', []))
     if args.sample_group=='fixture':samples=list(receipt.get('source_shots',{}).values())
     if args.sample_group=='attack':
-        for scene in ['world-hd', 'world-hd-replay']:
+        for scene in scene_names:
             name = scene+'-physical-scene.png'; shot = receipt['screenshots'][name]
             samples.append({'scene': scene, 'file': name, 'sha256': shot['sha256'], 'before': shot['gpu_before'], 'after': shot['state']})
     found, rejected = [], []
@@ -127,7 +136,7 @@ def main():
                             'resource': resource, 'frame': index, 'source_file': name, 'source_sha256': sha,
                             'checked_pixels': len(visible), 'eligible_pixels': total,
                             'world_origin': [x,y],'clip':clip})
-    for scene in ([] if args.sample_group=='fixture' else ['world-hd', 'world-hd-replay']):
+    for scene in ([] if args.sample_group=='fixture' else scene_names):
         if not any(x['scene'] == scene and x['resource'] == resources[1] and x['frame'] > 0 for x in found):
             raise SystemExit(('未在普通END GPU核對到所選人物的攻擊動作：' if args.sample_group=='end' else '未在普通攻防GPU核對到所選人物的攻擊動作：')+scene)
         if args.sample_group=='end' and not any(x['scene']==scene and x['resource']==resources[0] for x in found):
@@ -147,7 +156,7 @@ def main():
         'verifier_sha256': digest(Path(__file__)), 'pixel_matcher_sha256': digest(Path(__file__).with_name('verify_fd2_ares_battle_gpu.py')),
         'matches': found, 'sample_count': len(samples), 'rejected_boundary_samples': rejected,
         'ambiguous_source_candidates': {name: values for name, values in groups.items() if len(values) > 1},
-        'scope': '普通兩次攻防、明示END或修改fixture分組的實際PNG與所選人物明示本體幀指定色域的高覆蓋服裝核心；fixture只屬RUNTIME-E1。'
+        'scope': '普通攻防、明示END或修改fixture分組的實際PNG與所選人物明示本體幀指定色域的高覆蓋服裝核心；fixture只屬RUNTIME-E1。'
                  'trace另重驗原始按鍵與保存資料，只核對已落地的演出樣本，不補造原GUI或指定END通過。'
                  'attack沿原描述子；end只從同圖庫的預期job取caller位移及裁切，再由實際PNG找姿勢，避免把觀測索引當呈現相位；fixture仍在同次Draw逐幀核對。'
                  'alpha255一量化值，250..254依未知背景混合界限。多候選保留相容集合，不判定唯一相位；'

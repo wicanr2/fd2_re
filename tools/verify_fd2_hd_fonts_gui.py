@@ -49,6 +49,12 @@ def main():
     parser.add_argument('--battle-node', default='battle_ch01', help='來源槽的正式戰場節點，預設首章')
     parser.add_argument('--battle-only', action='store_true', help='抽驗普通攻防、F2及保存冷讀，略過已另驗的狀態／命令字型；需--battle-hd')
     parser.add_argument('--capture-native-battle-save', action='store_true', help='正常原生標題LOAD、出發及F5建立JSON來源槽；需--native-save與--battle-status')
+    parser.add_argument('--revive-before-departure', type=int, choices=[1],
+                        help='第二／三章原生來源出發前，經正常教會服務復活哈諾；需--capture-native-battle-save')
+    parser.add_argument('--battle-repetitions', type=int, choices=[1,2], default=2,
+                        help='普通攻防場數；一場模式仍完整自然返回與保存冷讀，需--battle-only')
+    parser.add_argument('--battle-art-samples', type=int, choices=[32,64], default=64,
+                        help='每場實際演出PNG取樣上限；完整逐幀Draw另驗')
     parser.add_argument('--startup-timeout', type=int, choices=[60,120,180], default=60,
                         help='明示等待真實視窗的上限，主流程與新程序冷讀共用')
     parser.add_argument('--battle-own-index', type=int, default=2,
@@ -68,6 +74,8 @@ def main():
     parser.add_argument('--battle-end-art', action='store_true', help='正常END期間有界擷取明示人物的HD圖層')
     parser.add_argument('--battle-end-figure',type=int,default=2)
     args = parser.parse_args()
+    assert args.revive_before_departure is None or args.capture_native_battle_save
+    assert args.battle_repetitions==2 or (args.battle_only and not args.timed_dialogue)
     assert 0<=args.battle_end_figure<=135
     assert not args.battle_end_art or (args.battle_only and args.battle_hd and args.battle_approach_rounds>0 and not args.faithful_approach)
     assert not (args.battle_advance or args.faithful_approach) or args.battle_only
@@ -219,7 +227,7 @@ def main():
             state=latest(audit)
             if state.get('error'):raise RuntimeError(state['error'])
             if predicate(state):return state
-            limit=2400 if args.battle_end_art else 1800 if args.battle_advance else 1200 if args.terrain_occlusion or args.battle_approach_rounds else 660
+            limit=2400 if args.battle_end_art else 1800 if args.battle_advance else 1200 if args.terrain_occlusion or args.battle_approach_rounds or args.revive_before_departure is not None else 660
             if time.monotonic()-started>limit:raise TimeoutError('整輪逾時')
             time.sleep(.1)
         raise TimeoutError(str(latest(audit)))
@@ -436,9 +444,58 @@ def main():
             shot('native-title-load');key('Return')
             wait(lambda s:not s.get('title_phase') and s.get('node')==town_node)
             shot('native-town-loaded')
-            # 沿ch03-startup-r1已驗鍵序；其他章須另外明示來源驗證。
-            assert args.battle_node=='battle_ch03', '此原生出發鍵序目前只驗第三章'
-            key('Left');key('Left');key('Return')
+            # 兩章沿authored選項0／2／4與同一native town selector。
+            assert args.battle_node in ('battle_ch02','battle_ch03'), '此原生出發鍵序只支援已明示的第二／三章'
+            nodes=json.loads((args.assets/'assets/scenarios/campaign_full.json').read_text())['nodes']
+            story_node=nodes[prep_node]['next']
+            assert nodes[story_node]['type']=='cutscene' and nodes[story_node]['next']==args.battle_node
+            revival = None
+            if args.revive_before_departure is not None:
+                before=latest(audit);key('F5');wait(lambda s:s.get('frame',0)>before['frame'])
+                assert saved.is_file(), '城鎮F5未建立名冊來源'
+                baseline=json.loads(saved.read_text());assert baseline['node']==town_node
+                (args.out/'revive-before.json').write_bytes(saved.read_bytes())
+                ident=args.revive_before_departure;unit=baseline['party_roster'][str(ident)]
+                candidates=[i for i in baseline['party_join_order']
+                            if baseline['party_roster'][str(i)].get('has_native_record_byte5')
+                            and baseline['party_roster'][str(i)].get('native_record_byte5',0)&1]
+                assert ident in candidates and unit['HP']==0 and unit['MaxHP']>0
+                assert unit['HasNativeRecordClass']
+                rates=json.loads((args.assets/'assets/data/revive_fee_rates.json').read_text())['rates']
+                raw_class=unit['NativeRecordClass'];assert 0<=raw_class<len(rates)
+                fee=rates[raw_class]*unit['Lv'];assert 0<=fee<=0xffff and baseline['gold']>=fee
+                for _ in range(4):key('Left')
+                key('Return')
+                def church(mode):
+                    return wait(lambda s:s.get('node')==args.battle_node.replace('battle_','church_',1) and s.get('church_mode')==mode
+                                and not s.get('church_ui_busy'))
+                church('menu');shot('native-revive-church')
+                key('Right');key('Right');key('Return');church('revive')
+                for _ in range(candidates.index(ident)):key('Down')
+                church('revive');shot('native-revive-selected')
+                key('Return');church('revive_confirm');shot('native-revive-confirm')
+                key('Return');church('revive')
+                assert latest(audit)['gold']==baseline['gold']-fee
+                shot('native-revive-complete')
+                key('Escape');church('menu');key('Escape');wait(lambda s:s.get('node')==town_node)
+                key('F5');after=json.loads(saved.read_text())
+                (args.out/'revive-after.json').write_bytes(saved.read_bytes())
+                expected=dict(unit,HP=unit['MaxHP'],OnField=True)
+                restored=unit['native_record_byte5']&~1
+                if restored:expected['native_record_byte5']=restored
+                else:expected.pop('native_record_byte5',None) # Go json omitempty
+                assert after['party_roster'][str(ident)]==expected, '復活寫回不符既有正式契約'
+                assert after['party_join_order']==baseline['party_join_order'] and after['gold']==baseline['gold']-fee
+                assert all(after['party_roster'][k]==v for k,v in baseline['party_roster'].items() if k!=str(ident))
+                revival={'identity':ident,'candidates':candidates,'selection':candidates.index(ident),'raw_class':raw_class,
+                         'fee':fee,'gold_before':baseline['gold'],'gold_after':after['gold'],
+                         'hp_before':unit['HP'],'hp_after':expected['HP'],
+                         'before_sha256':digest(args.out/'revive-before.json'),
+                         'after_sha256':digest(args.out/'revive-after.json'),'state_injection':False}
+                key('Right');key('Right')
+            else:
+                key('Left');key('Left')
+            key('Return')
             wait(lambda s:s.get('node')==prep_node and not s.get('preparation_ui_busy'))
             shot('native-departure-prompt');key('Return')
             # 章首包含長距離鏡頭移動；軟體繪圖時仍須走完原有虛擬幀。
@@ -447,10 +504,10 @@ def main():
                 state=latest(audit)
                 if state.get('error'):raise RuntimeError(state['error'])
                 if state.get('node')==args.battle_node:break
-                assert state.get('node') in (prep_node,args.battle_node.replace('battle_','story_',1)), '原生出發到達非預期節點'
+                assert state.get('node') in (prep_node,story_node), '原生出發到達非預期節點'
                 # story即使對話已清空，也由普通確認鍵呼叫advanceStoryNode。
                 # handleNativeStoryInput在fade／storyWalk期間自行拒絕提前推進。
-                if state.get('node')==args.battle_node.replace('battle_','story_',1) or state.get('dialogues'):
+                if state.get('node')==story_node or state.get('dialogues'):
                     key('Return')
                 else:time.sleep(.05)
             else:raise TimeoutError('原生出發章首劇情尚未結束')
@@ -466,6 +523,7 @@ def main():
             report={'schema':'fd2-native-battle-source-gui-v1','status':'PASS',
                     'binary_sha256':digest(args.binary),'gui_tool_sha256':tool_source_sha256,
                     'native_source_sha256':native_source_hash,'saved_sha256':digest(saved),
+                    'revival':revival,
                     'native_writable_copy_after_f5_sha256':digest(native_saved),
                     'saved_file':str(saved),'node':args.battle_node,'state_injection':False,
                     'screenshots':shots,'operations':operations,'recording_created':False,
@@ -717,7 +775,7 @@ def main():
                         assert shots[prefix+'-physical-scene.png']['state'].get('hd_battle'), '未擷取到HD戰鬥繪製層'
                     if args.battle_art:
                         # 只讀實際視窗，不暫停、改寫或推進遊戲狀態。
-                        for index in range(64):
+                        for index in range(args.battle_art_samples):
                             before=latest(audit)
                             if not before.get('battle_scene'):break
                             if before.get('hd_battle'):
@@ -753,11 +811,12 @@ def main():
                         if not state.get('level_up_dialogue') and not state.get('dialogues'):break
                         key('Return')
                     else:raise TimeoutError('第一筆升級對話尚未結束')
-                key('F9');wait(lambda s:s.get('node')==args.battle_node and not s.get('battle_scene'))
-                settle_world_battle()
-                assert not latest(audit).get('level_up_dialogue') and not latest(audit).get('move_preview')
-                shot('world-hd-load-owner-cleared')
-                ordinary_physical_attack('world-hd-replay')
+                if args.battle_repetitions==2:
+                    key('F9');wait(lambda s:s.get('node')==args.battle_node and not s.get('battle_scene'))
+                    settle_world_battle()
+                    assert not latest(audit).get('level_up_dialogue') and not latest(audit).get('move_preview')
+                    shot('world-hd-load-owner-cleared')
+                    ordinary_physical_attack('world-hd-replay')
                 for _ in range(120):
                     state=latest(audit)
                     if not state.get('level_up_dialogue') and not state.get('dialogues') and not state.get('battle_event'):break
@@ -865,13 +924,15 @@ def main():
             if args.battle_only:
                 assert loaded_units==cold_units,'章節邊界保存／新程序LOAD的重建狀態不同'
             if args.battle_end_art:
-                assert all(any(s['scene']==name for s in battle_end_art_samples) for name in ('world-hd','world-hd-replay')),'未取得兩輪普通END圖源樣本'
+                assert all(any(s['scene']==name for s in battle_end_art_samples) for name in ('world-hd','world-hd-replay')[:args.battle_repetitions]),'未取得明示場數的普通END圖源樣本'
             assert digest(Path(__file__))==tool_source_sha256,'GUI工具執行中來源被修改'
             report={'schema':'fd2-hd-battle-status-gui-v1','status':'PASS',
                     'catalog_sha256':digest(args.assets/'assets/themes/modern/catalog.json'),
                     'gui_tool_sha256':tool_source_sha256,
                     'world_runtime_checked':args.world,'world_walk_gpu':world_shots,'world_walk_rejected':world_rejected,
                     'battle_hd_consumer_checked':args.battle_hd,
+                    'battle_repetitions':args.battle_repetitions,'battle_art_sample_limit':args.battle_art_samples,
+                    'natural_attack_return_checked':args.battle_only,
                     'battle_own_index':args.battle_own_index,
                     'battle_node':args.battle_node,'battle_only':args.battle_only,
                     'battle_attack_choices':battle_attack_choices,
@@ -900,8 +961,8 @@ def main():
                     'warm_units':warm_units,'loaded_units':loaded_units,'cold_units':cold_units,
                     'save_contract':'F5保存章節邊界進度；LOAD重建戰場，不保存戰中位置、Acted或敵方HP。',
                     'recording_created':False,'elapsed_seconds':time.monotonic()-started,
-                    'scope':(('正常標題LOAD來源JSON，普通走行、兩次攻防、F2及戰後保存／新程序LOAD；來源祖先另見建槽收據。未重驗字型面板。' if args.battle_only else '正常標題LOAD既有普通START／F5首章JSON，Z聚焦、Home檢視、F2、狀態與命令、返回；')
-                             + ('含普通走行、指令環、取消、兩次物理攻擊、經驗對話中F9及正常戰場返回。' if args.world else '')
+                    'scope':((f'正常標題LOAD來源JSON，普通走行、{args.battle_repetitions}場攻防、F2及戰後保存／新程序LOAD；來源祖先另見建槽收據。未重驗字型面板。' if args.battle_only else '正常標題LOAD既有普通START／F5首章JSON，Z聚焦、Home檢視、F2、狀態與命令、返回；')
+                             + (f'含普通走行、指令環、取消、{args.battle_repetitions}場物理攻擊與正常戰場返回。'+('含經驗對話中F9。' if args.battle_repetitions==2 else '') if args.world else '')
                              + '不注入座標或狀態，不宣稱原版對拍或完整戰役。')}
             if args.terrain_frames:
                 report['terrain_expectation']={'label':args.terrain_label,'frames':sorted(args.terrain_frames),'view_y':8}

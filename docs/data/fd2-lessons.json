@@ -3194,6 +3194,21 @@
       "rule": "合成圖源測試先在清冊複本移除相同來源及resource的正式項目，再加入fixture；不依賴某個號碼尚未正式登錄。入口tools/test_modern_theme_catalog.py的test_battle_animation_resource_requires_complete_safe_descriptors，正式validator的重複來源拒收保持。",
       "why": "蓋亞90正式登錄後，既有合成90與它撞號，11測試中的一項正確被validator拒收。只隔離測試清冊後，同命令11項乾淨通過，不放寬正式驗證器。",
       "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json"
+    },
+    {
+      "id": "native-save-json-tags-and-omitempty-drive-gui-revival-check",
+      "area": "GUI來源保存",
+      "date": "2026-10-20",
+      "rule": "GUI保存比對依remake/cmd/fd2/save.go與Unit的JSON標籤讀取實際鍵；tools/verify_fd2_hd_fonts_gui.py以has_native_record_byte5及native_record_byte5判復活候選，清零時依omitempty移除鍵，不把不存在的CamelCase欄位或HP當候選依據。",
+      "why": "教會來源首跑把Go欄位名稱當JSON鍵，得到空候選；後續清零位元的鍵實際省略。依實際序列化與正式CanRevive規則後，正常付150、HP0→36及其餘名冊比對通過。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_hd_fonts_gui.py"
+        ],
+        "pattern": "has_native_record_byte5"
+      }
     }
   ]
 }

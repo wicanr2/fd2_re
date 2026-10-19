@@ -9,13 +9,13 @@
     "native_viewport": "CONFORMED-SCOPED：正式1920世界沿原生(4,4)、312×192窗格；正常F2同view與960地形樣本一致。",
     "hd_sprite_data": "DATA-READY：完整125組1455張HD及31組372張新增24父項已登錄；舊1083張父項及HD bytes保持。",
     "hd_world_renderer": "CONFORMED-SCOPED：144人物已接Game.Draw；首章34張正常GPU、4張實際走行、兩次物理攻擊及保存／新程序LOAD通過。",
-    "private_assets": "385項清冊、3503檔完整allow-list與3223檔runtime-only已核，原3483保持；Go真實載入與玩家／AI前置拒收通過。私人1910e36765aba56b4e6fc00eec84c42ada0dfcc1已推送，遠端HEAD相同，仍private。",
+    "private_assets": "391項清冊、3526檔完整allow-list與3238檔runtime-only已核，原3503檔SHA保持；新增八母稿不進執行包。Go正式載入／前置拒收／完整HD頭像通過。私人fc1931722cb43cb36d7421a28df9b14d22e7ea7e已推送，遠端HEAD相同，仍private。",
     "quickload_battle_owner": "CONFORMED-SCOPED：成功JSON LOAD丟棄舊經驗owner與移動計畫；拒收保留。",
     "timed_dialogue": "CONFORMED-SCOPED-RUNTIME-E1：計時FFEC開收框保留HD世界，EXP99普通鍵盤／F2與保存冷讀通過；其他caller未驗。",
     "hd_terrain": "CONFORMED-SCOPED：map0六組53槽；新增圓頂綠色／褐色雙塊四底圖在兩張正常GPU全部相符，短長組合與保存冷讀通過；草地及其他地形仍待HD化。",
     "ai_player_input_lock": "CONFORMED-SCOPED：AI換手期間拒絕玩家地圖輸入重入；普通END／增援對話及相關／完整Go回歸通過。",
     "gaia_redesign": "CONFORMED-SCOPED：新版頭像與四方向圖組已登錄；正常START／Gaia北移取消／F2／冷讀分段驗證。相位差異與序章尾端失敗明示，非逐幀parity。",
-    "hd_battle_animation": "CONFORMED-SCOPED：正式FIGANI16資源123幀及四召喚37幀。蓋亞新增原框15幀，普通兩次攻防／受擊、F2與保存冷讀獨立追蹤通過，92／98張PNG與雙方核心相符，87張同圖。原GUI指定Gaia END樣本0仍失敗，不補造完整PASS。哈諾11幀完整fixture保持隔離；其他人物／法術／死亡／普通召喚及效能／平台仍待。"
+    "hd_battle_animation": "CONFORMED-SCOPED：正式FIGANI18資源134幀及四召喚37幀。哈諾11幀與第二章133／134表情正式登錄；教會復活後章前HP+1000槽，三次END、單場攻防／自然返回、F2與保存冷讀完整GUI通過，10張符合核心，九項拒收。非自然難度或新章E2。蓋亞兩場獨立追蹤及原GUI指定END失敗保持；其餘人物／法術／死亡／普通召喚與效能／平台仍待。"
   },
   "runtime_source": {
     "binary": {
@@ -29988,7 +29988,7 @@
   },
   "hano_battle_followup_20261020": {
     "date": "2026-10-20",
-    "status": "DATA-READY-CANDIDATE：六母稿及11幀編製／來源反例通過；執行期與普通玩家尚待",
+    "status": "CONFORMED-SCOPED：11幀正式登錄；章前HP1000槽普通鍵盤攻防、返回、F2與保存冷讀通過。",
     "scope": "FIGANI3四待機、4七攻擊、5零header；角色表identity1哈諾。沿既有共背景character recipe與HD6原矩形，原節拍及正式規則保持。",
     "full_battle_hd_complete": false,
     "source_inventory": {
@@ -30009,7 +30009,7 @@
       "正式loader與完整Game.Draw／F2／一次返回，fixture分級明示",
       "至少一條正常哈諾攻防、返回及保存冷讀後才正式登錄與私人同步"
     ],
-    "limits": "章節來源及正常可達性待驗；不把第三章既有哈諾HP0來源當作一般攻防。385僅為隔離候選清冊，不以本預備工作擴稱正式覆蓋。",
+    "limits": "本批使用明示章前HP／MaxHP+1000建構槽；章內無狀態注入。非自然能力、存活、傷害、AI選目標、新原版oracle或整章E2。共享姿勢與微小餘光重定向保持揭露；武器／FX未做全部像素核對。",
     "generation": {
       "schema_version": 1,
       "mode": "built-in image_gen",
@@ -30374,7 +30374,8 @@
       "clipped_high_coverage_pixels": 0,
       "catalog_assets": 385,
       "base_dependency": "隔離Tino383候選；385不是正式清冊數",
-      "runtime_registered": false
+      "runtime_registered": false,
+      "historical_pre_registration": true
     },
     "verification": {
       "compiler_guards": {
@@ -30386,10 +30387,11 @@
         "sha256": "be418b66f35b20eaebcf6307c958ddc1af16efb783d0880b42e595b4d58688db"
       }
     },
-    "next_gate": "先核對存活哈諾的既有合法章節來源；亦可正常城鎮教會復活後建立來源。不能把第三章HP0改寫成普通玩家證據。完整Draw、F2、普通攻防／返回及保存冷讀通過後再登錄。",
+    "next_gate": "哈諾本批來源、Draw、普通鍵盤攻防與私人同步門檻已關閉；依58及#263選其餘人物／施術者、法術／死亡／共同效果、普通召喚、效能與平台垂直切片，不重開本批已驗項。",
     "normal_source_review": {
       "file": "docs/data/parity-slots/ch02-manifest.json",
-      "finding": "第1章939點實際酒店SAV，seed4；哈諾、悠妮與亞雷斯HP0已逐筆揭露。第三章承接同一祖先，不能把其中哈諾當作可操作來源；正常教會復活或其他已驗存活來源待接。"
+      "finding": "第1章939點實際酒店SAV，seed4；哈諾、悠妮與亞雷斯HP0已逐筆揭露。第三章承接同一祖先，不能把其中哈諾當作可操作來源；正常教會復活或其他已驗存活來源待接。",
+      "current_resolution": "正常教會付150復活，原36HP來源在第三回合陣亡；另以既有boost-only工具章前HP+1000建槽，再以正常LOAD／章首／F5及普通鍵盤驗證。原失敗不改判。"
     },
     "toolchain": {
       "asset_image": {
@@ -30429,6 +30431,614 @@
       "scope": "physicalSceneTestGame只換BattleFig1／76，姓名與其餘fixture規則保持；非正常哈諾玩家流程或原版傷害對拍。",
       "remaining": "來源哈諾HP0，需正常教會復活或可回查存活來源。正式登錄前依最新正式清冊重編／逐幀核對，不能用此舊385候選覆蓋後續資產。",
       "pixel_verifier_base_commit": "1d36b507aab6023e7fecbe8b8d66a5add5d3ca2c"
+    },
+    "normal_source_followup_20261020": {
+      "status": "PASS-NORMAL-REVIVAL-AND-CH02-SOURCE",
+      "original_source": {
+        "file": "work/ch02-flow-20261017/input/FD2.SAV",
+        "sha256": "540c3bc156ba94b2f0dd06ca83f6a0d8c6c6dd48c49621c73add3f839bfc118b"
+      },
+      "ancestry": "docs/data/parity-slots/ch02-manifest.json；前章酒店939點，原版seed4，含111 T7清敵祖先。此輪remake seed1，不新增原版對拍。",
+      "revival": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hano-revival-data-r2.json",
+        "sha256": "5387eddbbe6fae62d353bc843548675346953544093c05ad81bda760bba298e4"
+      },
+      "revival_result": {
+        "identity": 1,
+        "candidate_order": [
+          9,
+          4,
+          1
+        ],
+        "raw_class": 2,
+        "fee": 150,
+        "gold_before": 1000,
+        "gold_after": 850,
+        "hp_before": 0,
+        "hp_after": 36,
+        "other_roster_equal": true,
+        "state_injection": false
+      },
+      "revived_native_save": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hano-revive-source-gui-r2/FD2.SAV",
+        "sha256": "6bc17cdb731ab1df9848bcd5d87daebd65c5e06337b7aac51887242044287bf3"
+      },
+      "source_gui": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hano-revived-battle-source-gui-r4/receipt.json",
+        "sha256": "b17026b2e85739cea708163bd1e7cb94faf92e285ca10e57956c5f0935bfadef"
+      },
+      "source_json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hano-revived-battle-source-gui-r4/user-data/fd2_re/fd2_save.json",
+        "sha256": "e1d0faafda2763d8b2e8f9d39e127c23fec3ace7e83051bff29e13a690fabe7f"
+      },
+      "failures_retained": [
+        {
+          "run": "hano-revive-source-gui-r1",
+          "cause": "驗證器誤用Go欄位名，實際JSON有snake_case標籤。未進教會。"
+        },
+        {
+          "run": "hano-revive-source-gui-r2",
+          "cause": "教會正常付費復活與F5完成；尾端假設story_ch02，實際authored節點是story_ch02_pre。原GUI未通過，獨立復活資料核對不補造完整PASS。"
+        },
+        {
+          "run": "hano-revived-battle-source-gui-r3",
+          "cause": "正常章首缺少speaker134 HD頭像，保留真實缺件拒收；未用像素切換繞過。"
+        }
+      ],
+      "chapter_path": "preparation_ch02 → story_ch02_pre → battle_ch02；由campaign_full.json讀取，不猜章名。",
+      "portrait134": {
+        "generation": {
+          "mode": "built-in image_gen",
+          "prompt": "Use case: style-transfer. Create one square HD dialogue portrait for a classic fantasy tactical RPG remake. Image 1 is the authoritative native DATO_134_m0 expression/composition reference. Image 2 is an existing approved remake portrait and supplies only painting style, face rendering and navy/red-brown palette consistency. Preserve Image 1's facing LEFT, eyes closed with a slightly skeptical or resigned calm expression, closed mouth, short reddish brown hair swept over the forehead and cropped at the top, dark navy cloth headband, tan skin, strong jaw, visible ear at the RIGHT edge, and small navy-clothed shoulder at the bottom. Match Image 1's close-up head placement and silhouette; do not copy Image 2's facing-right pose, open eye, long ponytail or gold trim. Render clean hand-painted anime fantasy illustration with smooth painted planes and crisp restrained contours, not enlarged pixels. Uniform deep royal/navy blue opaque background matching the established portraits; no vignette, text, border, extra accessories or extra people. Entire image opaque. Square, at least 1024x1024.",
+          "master": "work/promo-cadence-20261018/hd-fonts/dato-134-expression.png",
+          "master_sha256": "e397fa113fb6d8977fa3374195449880c075f4cf554422cd70a81a0ae0f85baa",
+          "reference": "remake/assets/portraits/DATO_134_m0.png",
+          "reference_sha256": "31a30594f2218c3785e71e1238579baf132da0d9d2e7059e8e684e66bbea576b",
+          "style_reference": "remake/generated-assets/modern-theme-prototypes/hano-portrait-style-a-v1-master.png",
+          "visual_review": "朝左閉眼、紅褐髮、深藍束帶、閉嘴與全不透明背景保留；靜態表情，非四嘴形動畫"
+        },
+        "compile": {
+          "file": "work/promo-cadence-20261018/hd-fonts/portrait134-compiled-r3.json",
+          "sha256": "8497ec1206d5714ca71e25c48412547b96256c9c5f2b4345335baa9afc3ecee4"
+        },
+        "scope": "沿DATO_134_m0閉眼朝左表情補圖；speaker134不推定為某命名人物，與FDICON134分離。80／480全不透明靜態圖，未宣稱四嘴形。正常章首已越過缺圖錯誤，未另作此頭像GPU逐像素核對。"
+      },
+      "normal_attack": "PASS-ORDINARY-KEYBOARD-FROM-HP1000-CONSTRUCTED-SLOT；詳normal_result。",
+      "normal_attack_first_attempt": {
+        "status": "FAILED-MISSING-PORTRAIT-133",
+        "operations": {
+          "file": "work/promo-cadence-20261018/hd-fonts/hano-native-normal-gui-r1/operations.json",
+          "sha256": "41966ecb27637561e9e5756e4b420175d20ba97d6a7c0df6fefcdccd4afec43c"
+        },
+        "observations": {
+          "file": "work/promo-cadence-20261018/hd-fonts/hano-native-normal-gui-r1/world-observation.json",
+          "sha256": "99309661d8e13910ff8c07d43fe11546b1e4264114b18e2d21858f493eb7ea4b"
+        },
+        "last_frame": 2934,
+        "native_round": 3,
+        "hano_hp": 36,
+        "hano_position": [
+          14,
+          14
+        ],
+        "cause": "第三回合事件呼叫speaker133，已登錄圖缺件拒收。原GUI沒有完整PASS，未發生普通攻擊；不改事件或鎖HP。"
+      },
+      "portrait133": {
+        "generation": {
+          "mode": "built-in image_gen",
+          "prompt": "Use case: style-transfer. One square HD dialogue portrait for a classic fantasy tactical RPG remake. Image 1 is the authoritative native DATO_133_m0 reference: preserve the young female subject, front-facing three-quarter-neutral head placement, gentle small CLOSED-mouth smile, large warm reddish brown eyes, straight ash/olive-brown shoulder-length hair with full blunt bangs and short separated bang locks, and small pale green collar at the bottom. Match the native framing: head fits with a small margin above the hair and shoulders cropped at the bottom. Image 2 supplies only the already approved hand-painted remake rendering style, crisp restrained contours, smooth painted planes and deep royal/navy blue opaque background. Do not copy its adult male face, headband, red hair, closed eyes, profile or navy outfit. Preserve Image 1's character, gentle expression and costume. Clean hand-painted fantasy anime illustration, no enlarged pixels, no photorealism. No text, border, vignette, extra accessories or people. Entire image opaque, square at least 1024x1024.",
+          "master": "work/promo-cadence-20261018/hd-fonts/dato-133-expression.png",
+          "master_sha256": "2cbd88d44370e8740f7eedae13e64cfed68ea19b354fdf35cb3c749ae03d538b",
+          "reference": "remake/assets/portraits/DATO_133_m0.png",
+          "reference_sha256": "a1ac6f6a38991b1a970add9ac6aedca6b37036c11e945ab86aae47f4ae923d31",
+          "style_reference": "work/promo-cadence-20261018/hd-fonts/dato-134-expression.png",
+          "visual_review": "少女灰褐直髮、齊瀏海、紅褐眼與淺綠衣領；靜態閉嘴微笑。母稿上緣髮部貼邊、細紅褐髮帶為手繪重定向，不宣稱原版逐像素或四嘴形。"
+        },
+        "compile": {
+          "file": "work/promo-cadence-20261018/hd-fonts/portrait133-compiled-r1.json",
+          "sha256": "6004e73d93a55511f285c9aba46f98cf5ccd4b3661604a9a91b49ee80114d91d"
+        },
+        "scope": "133／134為分開的portrait角色，不以FDICON同號推定身分；採既有不透明80／480靜態契約。"
+      },
+      "combined_preflight": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hano-combined-preflight-r1.json",
+        "sha256": "f3be42b042948089f77569f677edce94c64bf79a99da1e3d1efea4beb5ffd30a"
+      },
+      "normal_attack_second_attempt": {
+        "status": "FAILED-HANO-DEFEATED-NO-GUI-PASS",
+        "observations_sha256": "3f77c6f6b6efe7e1d8ed691c98273445a9224f6d8ba55db348f328169dce521c",
+        "operations_sha256": "e62c8e75ba667912176c286345078804a5842981eca6e19988e8aa5a000744b7",
+        "last_frame": 7706,
+        "native_round": 4,
+        "hano_hp": 0,
+        "scope": "133已越過缺圖點並完成事件；第三回合AI使哈諾陣亡，正式存活斷言拒收。未改章內狀態。"
+      },
+      "hp_policy_followup": {
+        "manifest": {
+          "file": "work/promo-cadence-20261018/hd-fonts/hano-hp1000-slot-r1/manifest.json",
+          "sha256": "c2de975f445c1636606ad94593550e364a9702a3cca8defa3d06c1b67de8a76d"
+        },
+        "audit": {
+          "file": "work/promo-cadence-20261018/hd-fonts/hano-hp1000-policy-audit-r1.json",
+          "sha256": "d28cae06189249ca7be540d8cdffc358718bb39fac3650f54dfd87a93caffe6e"
+        },
+        "policy": {
+          "status": "PASS-HP-ONLY-CONSTRUCTED-SLOT",
+          "source_sha256": "6bc17cdb731ab1df9848bcd5d87daebd65c5e06337b7aac51887242044287bf3",
+          "output_sha256": "da46dad308e5d7616add109408b9d79a1d8b5a563be47526b23c3ddee8794dbf",
+          "manifest_sha256": "c2de975f445c1636606ad94593550e364a9702a3cca8defa3d06c1b67de8a76d",
+          "builder_sha256": "aa02533c4173a13346b7f64ac6d35f6b543ee15d5920a29a585a1727eaf13cba",
+          "decoder_sha256": "b8d78c1a8631107f48ff3f781084c87d34b4380cd3735afafd159ca819923d54",
+          "address_space": "decoded FD2.SAV file offsets；非FD2.EXE或IDA位址",
+          "delta": 1000,
+          "records": [
+            {
+              "roster": 0,
+              "identity": 0,
+              "hp_before": 42,
+              "hp_after": 1042,
+              "max_hp_before": 42,
+              "max_hp_after": 1042
+            },
+            {
+              "roster": 1,
+              "identity": 9,
+              "hp_before": 0,
+              "hp_after": 0,
+              "max_hp_before": 28,
+              "max_hp_after": 1028
+            },
+            {
+              "roster": 2,
+              "identity": 4,
+              "hp_before": 0,
+              "hp_after": 0,
+              "max_hp_before": 48,
+              "max_hp_after": 1048
+            },
+            {
+              "roster": 3,
+              "identity": 30,
+              "hp_before": 60,
+              "hp_after": 1060,
+              "max_hp_before": 60,
+              "max_hp_after": 1060
+            },
+            {
+              "roster": 4,
+              "identity": 1,
+              "hp_before": 36,
+              "hp_after": 1036,
+              "max_hp_before": 36,
+              "max_hp_after": 1036
+            }
+          ],
+          "changed_bytes": [
+            {
+              "decoded_save_file_offset": 12651,
+              "before": 42,
+              "after": 18
+            },
+            {
+              "decoded_save_file_offset": 12652,
+              "before": 0,
+              "after": 4
+            },
+            {
+              "decoded_save_file_offset": 12653,
+              "before": 42,
+              "after": 18
+            },
+            {
+              "decoded_save_file_offset": 12654,
+              "before": 0,
+              "after": 4
+            },
+            {
+              "decoded_save_file_offset": 12733,
+              "before": 28,
+              "after": 4
+            },
+            {
+              "decoded_save_file_offset": 12734,
+              "before": 0,
+              "after": 4
+            },
+            {
+              "decoded_save_file_offset": 12813,
+              "before": 48,
+              "after": 24
+            },
+            {
+              "decoded_save_file_offset": 12814,
+              "before": 0,
+              "after": 4
+            },
+            {
+              "decoded_save_file_offset": 12891,
+              "before": 60,
+              "after": 36
+            },
+            {
+              "decoded_save_file_offset": 12892,
+              "before": 0,
+              "after": 4
+            },
+            {
+              "decoded_save_file_offset": 12893,
+              "before": 60,
+              "after": 36
+            },
+            {
+              "decoded_save_file_offset": 12894,
+              "before": 0,
+              "after": 4
+            },
+            {
+              "decoded_save_file_offset": 12971,
+              "before": 36,
+              "after": 12
+            },
+            {
+              "decoded_save_file_offset": 12972,
+              "before": 0,
+              "after": 4
+            },
+            {
+              "decoded_save_file_offset": 12973,
+              "before": 36,
+              "after": 12
+            },
+            {
+              "decoded_save_file_offset": 12974,
+              "before": 0,
+              "after": 4
+            },
+            {
+              "decoded_save_file_offset": 22983,
+              "before": 138,
+              "after": 234
+            },
+            {
+              "decoded_save_file_offset": 22984,
+              "before": 142,
+              "after": 141
+            }
+          ],
+          "other_bytes_equal": true,
+          "in_chapter_state_writes": false,
+          "scope": "章前作弊流程／美術槽；不證明原版能力、存活、傷害、AI選目標或新章E2。"
+        },
+        "authorization": "沿使用者先前明確允許作弊過關、只要求流程一致；不擴張為自然能力或整章E2。",
+        "source_status": "PASS-NATIVE-LOAD-STORY-F5",
+        "source_gui": {
+          "file": "work/promo-cadence-20261018/hd-fonts/hano-hp1000-source-gui-r1/receipt.json",
+          "sha256": "55491ead7b3f09acf7b0267b1515e7d9e9570bf1715c527615c120e8c1177a5b"
+        },
+        "source_json": {
+          "file": "work/promo-cadence-20261018/hd-fonts/hano-hp1000-source-gui-r1/user-data/fd2_re/fd2_save.json",
+          "sha256": "2b9570cd6b5156ce330b2a8d91fe29015008f34dfc5689b516e81caabf895f29"
+        }
+      }
+    },
+    "rebase_followup_20261020": {
+      "proof": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hano-rebase-r2.json",
+        "sha256": "ca48560e9144d7bcd00cf2e069abdcb79e4ad6851e3a8c2a483d9f0f7bfda711"
+      },
+      "scope": "依最新385正式項重編387候選，11張人物PNG保持；另補134頭像兩項成389隔離候選。候選private_root回復儲存庫相對路徑。",
+      "runtime_fixture": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hano-battle-lifecycle-r2/receipt.json",
+        "sha256": "25f1146405cfd2f3a32d0a2a0bd512049e7b236ee704d698a6131b046fdae447"
+      },
+      "runtime_fixture_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hano-current-fixture-r2.log",
+        "sha256": "9936cb956cfe32d1af51b7b7e1da4287caca239aa7eeb6e1602ee5123d21bc7f"
+      },
+      "pixels": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hano-fixture-pixels-r3.json",
+        "sha256": "07444a4b64a11bd1f2965b9052522a0d53c1a2a677ff585f7642a585e1b16abf"
+      },
+      "guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hano-fixture-guards-r3/guards.json",
+        "sha256": "c6e6ba3f82eba46c6db24de50d9c08cf75c95bcee762cd66b3ede0d10a337886"
+      },
+      "legacy_two_attack_pixels": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hano-legacy-two-pixels-r2.json",
+        "sha256": "d90f2a74abd714ae785f7d3d50d189918ab48916d2504bb126503d222ecaf784"
+      },
+      "scope_limit": "完整11幀仍是只換BattleFig1／76的修改fixture；238HD／3忠實／322最終Draw，三階段F2、64／65 DAC及一次續行。舊兩場希莉亞85圖保持，不把此回歸當作新普通玩家。"
+    },
+    "formal_registered": true,
+    "private_synced": true,
+    "runtime_code_base_commit": "ddbe7d64d3bbecaaed817c4d6cf5de248d4e6e9a",
+    "normal_result": {
+      "status": "PASS-ORDINARY-KEYBOARD-FROM-HP1000-CONSTRUCTED-SLOT",
+      "gui": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hano-hp1000-normal-gui-r1/receipt.json",
+        "sha256": "943d59bee10970efee8728429daefa36aed06076c558df06e99131b63bc6c389"
+      },
+      "pixels": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hano-hp1000-normal-pixels-r1.json",
+        "sha256": "fdc9834ad59ecca1c5ff6d575c5974af1eb1356c2032dec7fa06e111260916b6"
+      },
+      "guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hano-hp1000-normal-guards-r1/guards.json",
+        "sha256": "b55cd45c1f76e921045975ce314983f7add92e2fe05c31edbcac9c95f16ff0bc"
+      },
+      "gui_tool": {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "ee1587d59444967e45a997117dc56aa1e60ccf756c35fdd2d4b119742bd6de5c"
+      },
+      "pixel_tool": {
+        "file": "tools/verify_fd2_character_battle_gpu.py",
+        "sha256": "178ad0b34323dfe52ae964c5bb2b2df8c2d62b418c973a1a366146c7a9906d34"
+      },
+      "negative_tool": {
+        "file": "tools/test_fd2_character_battle_gpu.py",
+        "sha256": "33041f9f025e1d44178f7f25f24a7b740283c343f3ebea354210d00221c8e2da"
+      },
+      "seed": 1,
+      "node": "battle_ch02",
+      "ordinary_keyboard": true,
+      "constructed_source": true,
+      "initial_hp_policy": 1000,
+      "in_chapter_state_writes": false,
+      "natural_difficulty_verified": false,
+      "original_oracle": false,
+      "new_player_e2_claim": false,
+      "attacker_identity": 1,
+      "attacker_battle_fig": 1,
+      "attack_repetitions": 1,
+      "approach_end_turns": 3,
+      "main_pngs": 21,
+      "art_pngs": 29,
+      "walk_pngs": 4,
+      "input_operations": 197,
+      "matched_pngs": 10,
+      "negative_guards": 9,
+      "elapsed_seconds": 607.4996054251678,
+      "elapsed_scope": "軟體繪製與視窗擷取耗時，不是平台FPS或效能驗收。",
+      "warm_hano": {
+        "hp": 966,
+        "level": 2
+      },
+      "cold_hano": {
+        "hp": 1036,
+        "level": 1
+      },
+      "source_and_two_theme_save_bytes_equal": true,
+      "cold_loaded_units_equal": true,
+      "save_scope": "F5保存章節邊界，LOAD重建來源；不持續戰中位置、HP、Acted或該次升級。",
+      "render_scope": "10張實際PNG符合明示服裝核心，保留相近姿勢相容集合；完整11幀另以同次Draw fixture核對。"
+    },
+    "formal_registration": {
+      "status": "REGISTERED-VALIDATED",
+      "old_assets": 385,
+      "assets": 391,
+      "added_files": [
+        {
+          "file": "dato-133-expression-portrait-style-a-v1-480.png",
+          "sha256": "89dc93ba37a87e7f3ec20be3110ccbdfb67c782f01e1317f3e824fc0159f4dbf",
+          "size": 395786
+        },
+        {
+          "file": "dato-133-expression-portrait-style-a-v1-80.png",
+          "sha256": "736912791b689bd455ac1c9469757e386b192d0ea1bf072c2408b709d5e387dc",
+          "size": 14890
+        },
+        {
+          "file": "dato-133-expression-portrait-style-a-v1-master.png",
+          "sha256": "2cbd88d44370e8740f7eedae13e64cfed68ea19b354fdf35cb3c749ae03d538b",
+          "size": 2311771
+        },
+        {
+          "file": "dato-134-expression-portrait-style-a-v1-480.png",
+          "sha256": "fb0bf94595eb531596bd975f8e67091ab7de06118a8899177a986fc84921dbad",
+          "size": 327137
+        },
+        {
+          "file": "dato-134-expression-portrait-style-a-v1-80.png",
+          "sha256": "da1abb927b2d49c2796b7570445eaca0aa33829ef9514ba4a9a2739c0ea106b4",
+          "size": 12872
+        },
+        {
+          "file": "dato-134-expression-portrait-style-a-v1-master.png",
+          "sha256": "e397fa113fb6d8977fa3374195449880c075f4cf554422cd70a81a0ae0f85baa",
+          "size": 1833731
+        },
+        {
+          "file": "figani-003-hd6-v1-f00.png",
+          "sha256": "fbf69bdf34287c6d24c55741045ded5b3c8a2b10500db4def430cffe7e274507",
+          "size": 407092
+        },
+        {
+          "file": "figani-003-hd6-v1-f01.png",
+          "sha256": "7c13a441f943a18c0a83038dde91ea21e84a31eb55193b88ed4b6de2f4035615",
+          "size": 400553
+        },
+        {
+          "file": "figani-003-hd6-v1-f02.png",
+          "sha256": "a210319e059e034119f9bb85aae5fe38d8c1564da9e93a2178634f0ac8fc1ae6",
+          "size": 393909
+        },
+        {
+          "file": "figani-003-hd6-v1-f03.png",
+          "sha256": "7c13a441f943a18c0a83038dde91ea21e84a31eb55193b88ed4b6de2f4035615",
+          "size": 400553
+        },
+        {
+          "file": "figani-004-hd6-v1-f00.png",
+          "sha256": "fbf69bdf34287c6d24c55741045ded5b3c8a2b10500db4def430cffe7e274507",
+          "size": 407092
+        },
+        {
+          "file": "figani-004-hd6-v1-f01.png",
+          "sha256": "960526f922476c0e335c202a14cc115c9fd4ad5ed696bc50b7a7597b143fdd12",
+          "size": 426684
+        },
+        {
+          "file": "figani-004-hd6-v1-f02.png",
+          "sha256": "5426c99576289295c22a0cc2b87c86a66adb144f65019aad5078fcbce48571cb",
+          "size": 656578
+        },
+        {
+          "file": "figani-004-hd6-v1-f03.png",
+          "sha256": "33e8760cdc0f04cb752490590013a8d901b307b0455b5f45a5155e02ae8571ab",
+          "size": 430999
+        },
+        {
+          "file": "figani-004-hd6-v1-f04.png",
+          "sha256": "d3e1c6e5f80070718b7357598690e256ecafdbed4e21f8aeadf50ad3d2a35195",
+          "size": 307549
+        },
+        {
+          "file": "figani-004-hd6-v1-f05.png",
+          "sha256": "0e624f1ac87242720586ba8abd491695902b58d8fe94a4ab6eeee9e4cc652c50",
+          "size": 312702
+        },
+        {
+          "file": "figani-004-hd6-v1-f06.png",
+          "sha256": "0e624f1ac87242720586ba8abd491695902b58d8fe94a4ab6eeee9e4cc652c50",
+          "size": 312702
+        },
+        {
+          "file": "figure-001-burst-battle-hd6-master-v1.png",
+          "sha256": "f71a42c7bbf6857ebe61e7595f4ad899767df8e5160a8cd45c3e9b9f40d3991b",
+          "size": 1519036
+        },
+        {
+          "file": "figure-001-idle-battle-hd6-master-v1.png",
+          "sha256": "39dad9d910b7570606736f6d2426f5d83d2d1666af4108c11698583fe3924300",
+          "size": 1359351
+        },
+        {
+          "file": "figure-001-raise-battle-hd6-master-v1.png",
+          "sha256": "72d164efc1e5f082e82048b98bd157d8ad1add1aaa74e0bf374800a39c8c5955",
+          "size": 1078724
+        },
+        {
+          "file": "figure-001-recover-battle-hd6-master-v1.png",
+          "sha256": "fdf0e522fafb5ef22c08be2dfc949c704211397cae49f3b5ec2fa1d3bf1cafc1",
+          "size": 1555725
+        },
+        {
+          "file": "figure-001-slash-wide-battle-hd6-master-v1.png",
+          "sha256": "d1285485dce530c0b31a1314928be3799007071c953fca4bcb26b0ff1068c854",
+          "size": 1075976
+        },
+        {
+          "file": "figure-001-tail-battle-hd6-master-v1.png",
+          "sha256": "aa140f5f2b5e1a34f4ea0e036c1644d499c1e51e55bdbfd3f93e8386a9e8d293",
+          "size": 1507015
+        }
+      ],
+      "candidate_catalog_sha256": "fc1f4864d2ccf75521efb8edd8adf68a8e027aa2ee9040cccede0be8347f63f2",
+      "formal_catalog_sha256": "f73d8d79d0efb6dd21f513b7bdbf5432240500d857beaa70c6450139b6687c6a",
+      "candidate_entries_equal_formal": true,
+      "old_385_entries_preserved": true,
+      "figani_resources": 18,
+      "figani_frames": 134,
+      "fdother_frames": 37,
+      "screenshot": {
+        "file": "docs/figures/hd-hano-physical-attack.png",
+        "sha256": "3fa50e2b971354d3a9b95e3a5779967bd7c0120fe7bdf46556f188750c8ffd5d",
+        "unmodified_source": "work/promo-cadence-20261018/hd-fonts/hano-hp1000-normal-gui-r1/world-hd-physical-scene.png"
+      },
+      "scope": "哈諾11幀及133／134靜態頭像；HP+1000章前槽普通按鍵驗證，無新原版對拍、自然難度或整章E2。"
+    },
+    "formal_coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/hano-formal-coverage-r1.json",
+      "sha256": "5427f7036007dd8f7595b60b2e9419005bacec447b8f56df113ebe5151e7127f"
+    },
+    "private_delivery": {
+      "report": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hano-private-sync-r1.json",
+        "sha256": "ef0192165e479381a89860ecd9fbeb45aade1afbc361345198ef81da5e1d5f21"
+      },
+      "commit": "fc1931722cb43cb36d7421a28df9b14d22e7ea7e",
+      "remote_head_verified": true,
+      "visibility": "PRIVATE",
+      "file_count": 3526,
+      "runtime_only_count": 3238,
+      "retained_unchanged": 3503,
+      "go_top_tests": 3,
+      "go_subtests": 2,
+      "skipped": 0,
+      "runtime_go_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hano-formal-runtime-go-r1.log",
+        "sha256": "34f73869cdbf783bbea15a6873bc3a34444418e0d48f3f7ca9e4f273643a474e"
+      },
+      "formal_catalog_tests": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hano-formal-catalog-tests-r1.log",
+        "sha256": "d57cf3dff94dfc3ac802252b84251737b0372a82120d6b8d47f35373ee62181a"
+      }
+    },
+    "readme_screenshot": {
+      "file": "docs/figures/hd-hano-physical-attack.png",
+      "sha256": "3fa50e2b971354d3a9b95e3a5779967bd7c0120fe7bdf46556f188750c8ffd5d",
+      "unmodified_source": "work/promo-cadence-20261018/hd-fonts/hano-hp1000-normal-gui-r1/world-hd-physical-scene.png"
+    },
+    "cleanup": {
+      "report": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hano-native-cleanup-r1.json",
+        "sha256": "36fee9be138abc3a1636c73f0d007e44a4a6e9e414ad2f53d2acdda6a9ea4c57"
+      },
+      "removed_file_bytes": 253142683,
+      "deduplicated_file_bytes": 69520216,
+      "retained_runtime_manifest": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hano-native-runtime-only-manifest-r1.json",
+        "sha256": "d1cb131dd404b028bf56759b5d95ae7688279477ed8b229c495e09e0993f9e43",
+        "bytes": 526018
+      },
+      "pixels_after_cleanup": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hano-normal-pixels-after-cleanup-r1.json",
+        "sha256": "fdc9834ad59ecca1c5ff6d575c5974af1eb1356c2032dec7fa06e111260916b6"
+      },
+      "recording_created": false,
+      "key_capture_files_retained": true
+    },
+    "github_body": {
+      "file": "work/promo-cadence-20261018/hd-fonts/hano-issue263-body-r1.md",
+      "sha256": "44ae4964bcfe7e1279281f8b542230f3a1b2374e1153f4e9e64895224f37a84b"
+    },
+    "github_asset_coverage_body": {
+      "file": "work/promo-cadence-20261018/hd-fonts/hano-issue201-body-r1.md",
+      "sha256": "5c37d45b4c5972d171902841b9fd24ebf2d183eab8f5b80352d1b432fc7abd63"
+    },
+    "final_checks": {
+      "local_review": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hano-final-review-r1.json",
+        "sha256": "e0f5f170dc40f9355843acbeac998bb6d0ed6f64c773b3782f4b40b08992aca7"
+      },
+      "worklist": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hano-final-worklist-r2.log",
+        "sha256": "1e863af52470bc6bb577b495e1f88bb902b54c75c89734c15448b98afddddbb5"
+      },
+      "lessons": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hano-final-lessons-r1.log",
+        "sha256": "bb2159a1d8746cdd69a180966edecfe12c521fc9e9c71500c1f0abb4de5bc240"
+      },
+      "portrait_compiler": {
+        "file": "tools/register_modern_intro_portraits.py",
+        "sha256": "db8b2e6bd163f32646798451f45353d4601163a98e2eaf3e976fd6a16500a4ac"
+      },
+      "files_uid_gid_1000": 16,
+      "local_links": 2048,
+      "readme_positive_controls": 3,
+      "python_ast": 4,
+      "json_parsed": 4,
+      "open_worklist": 21,
+      "manual_worklist": 14,
+      "possibly_done": 0,
+      "lessons_count": 269,
+      "guards_count": 147,
+      "runtime_go_top_tests": 3,
+      "runtime_go_subtests": 2,
+      "skipped": 0,
+      "private_remote_head_verified": true,
+      "private_visibility": "PRIVATE",
+      "game_go_sources_changed": false
     }
   },
   "gaia_native_battle_followup_20261020": {

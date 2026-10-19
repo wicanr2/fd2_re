@@ -57,6 +57,16 @@ def main():
     wrong = copy.deepcopy(receipt); wrong['catalog_sha256'] = '0'*64
     path = args.out/'wrong-receipt.json'; path.write_text(json.dumps(wrong))
     check('wrong-receipt', path, '需要完整人物Game.Draw測試收據' if args.sample_group=='fixture' else '需要同份普通攻防完整GUI收據及清冊')
+    if args.sample_group in ('attack', 'end') and receipt.get('battle_repetitions') == 1:
+        for name, updates in [
+                ('missing-natural-return', {'natural_attack_return_checked': False}),
+                ('missing-single-save', {'post_battle_save_checked': False}),
+                ('extra-single-scene', {'battle_hd_scenes': receipt['battle_hd_scenes']+
+                                       [{'name': 'world-hd-replay'}]}),
+                ('invalid-repetitions', {'battle_repetitions': 3})]:
+            wrong = copy.deepcopy(receipt); wrong.update(updates)
+            path = args.out/(name+'.json'); path.write_text(json.dumps(wrong))
+            check(name, path, '單場須有完整自然返回與保存收據')
     if receipt.get('node_boundary_save_checked'):
         wrong = copy.deepcopy(receipt)
         wrong['source_save_bytes_equal'] = False
