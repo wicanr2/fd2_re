@@ -280,6 +280,8 @@ func writeSources(root string, manifest *artManifest, loaded []loadedMap, palett
 		{ID: "map00-roof-object", Map: 0, X: 11, Y: 4, Width: 2, Height: 4},
 		{ID: "map00-tall-green", Map: 0, X: 7, Y: 8, Width: 1, Height: 3},
 		{ID: "map00-brown-group", Map: 0, X: 7, Y: 6, Width: 3, Height: 2},
+		{ID: "map00-rounded-green", Map: 0, X: 13, Y: 3, Width: 1, Height: 3},
+		{ID: "map00-brown-pair", Map: 0, X: 9, Y: 12, Width: 1, Height: 1},
 	} {
 		picture := image.NewNRGBA(image.Rect(0, 0, object.Width*24, object.Height*24))
 		for row := 0; row < object.Height; row++ {

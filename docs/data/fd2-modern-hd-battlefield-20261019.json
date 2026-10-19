@@ -9,17 +9,17 @@
     "native_viewport": "CONFORMED-SCOPED：正式1920世界沿原生(4,4)、312×192窗格；正常F2同view與960地形樣本一致。",
     "hd_sprite_data": "DATA-READY：完整125組1455張HD及31組372張新增24父項已登錄；舊1083張父項及HD bytes保持。",
     "hd_world_renderer": "CONFORMED-SCOPED：144人物已接Game.Draw；首章34張正常GPU、4張實際走行、兩次物理攻擊及保存／新程序LOAD通過。",
-    "private_assets": "catalog allow-list 3261檔已逐檔驗證並推送私人庫；runtime-only白名單3059檔。",
+    "private_assets": "catalog allow-list 3267檔已逐檔驗證並推送私人庫；runtime-only白名單3063檔。",
     "quickload_battle_owner": "CONFORMED-SCOPED：成功JSON LOAD丟棄舊經驗owner與移動計畫；拒收保留。",
     "timed_dialogue": "CONFORMED-SCOPED-RUNTIME-E1：計時FFEC開收框保留HD世界，EXP99普通鍵盤／F2與保存冷讀通過；其他caller未驗。",
-    "hd_terrain": "CONFORMED-SCOPED：map0四組49槽；新增九底圖在兩張正常GPU全部相符，短長綠色物件與保存冷讀通過；相鄰變體、草地及其他地形仍待HD化。",
+    "hd_terrain": "CONFORMED-SCOPED：map0六組53槽；新增圓頂綠色／褐色雙塊四底圖在兩張正常GPU全部相符，短長組合與保存冷讀通過；草地及其他地形仍待HD化。",
     "ai_player_input_lock": "CONFORMED-SCOPED：AI換手期間拒絕玩家地圖輸入重入；普通END／增援對話及相關／完整Go回歸通過。"
   },
   "runtime_source": {
-    "binary_sha256": "d8b817cfdbe4d112db8ba09f467dd413a442c46fa4faf512d9055ebf6952edd6",
+    "binary_sha256": "6b187527f78c7acd96a3450b17fa3c8b04acf879d478da97dd79f996098f7257",
     "go_snapshot": {
-      "file": "work/promo-cadence-20261018/hd-fonts/props-go-source-final.json",
-      "sha256": "5a447e73a86120f105bc856d402ded579d7b52be20d33ac2908624f834bf0a2d"
+      "file": "work/promo-cadence-20261018/hd-fonts/variants-go-source-final.json",
+      "sha256": "c8582d367661ee1f9f22220e1a73346d9a5ff080ca0f2670332c8ade46ee6a8f"
     },
     "go_file_count": 993,
     "go_files_unchanged": 992,
@@ -29,11 +29,11 @@
     "game_runtime_go_changes": 0,
     "exporter": {
       "file": "remake/cmd/fd2-terrain-sources/main.go",
-      "sha256": "dc0b09c670ec57eb2b4b71e972e96766e16b7a8c2c155077411c282e35517f67"
+      "sha256": "b9b826551dc726459a0e6166fd9036d487f9af1dd70be7157326c61af93e5e68"
     },
     "gui_tool": {
       "file": "tools/verify_fd2_hd_fonts_gui.py",
-      "sha256": "1b6048d139312cce606017c18756d408a5897532736209c13e4471e37b523c38"
+      "sha256": "2b85a83ec9c45e8e1c7c7b9c64639144440bdc43b644479de2652088b58d34c1"
     },
     "binary_removed_after_validation": true
   },
@@ -3809,5 +3809,428 @@
     }
   },
   "historical_source_commit_before_green_and_brown": "bccba29b9192ce377f7f8d1f4fcc5368d646ec6b",
-  "source_remote_verified": true
+  "source_remote_verified": true,
+  "rounded_green_and_pair_followup_20261019": {
+    "status": "CONFORMED-SCOPED-RUNTIME-E1",
+    "base_commit": "f96aabea302cbdb9adfc59e4d5fff1b126d85ecc",
+    "branch": "hd-terrain-tree-variants-20261019",
+    "full_hd_complete": false,
+    "scope": "追加map0圓頂綠色44/47/46及褐色雙塊48共四張144底圖；遊戲runtime、規則、原生時鐘及保存不改。",
+    "original_oracle_run": false,
+    "matching_run": false,
+    "new_chapter_e2": false,
+    "generation": {
+      "method": "built-in image_gen.imagegen",
+      "original_prompts": {
+        "method": "built-in image_gen.imagegen",
+        "rounded_green": "Use case: style-transfer\nAsset type: fully opaque vertical hand-painted terrain object master for a 2D tactical RPG, portrait 1:3 ratio.\nImage1 is the exact original layout and silhouette reference. Image2 supplies ONLY the already accepted foliage brushwork, muted green palette and soft daylight style. Do not copy its pointed apex or change image1 into that shape.\nRepaint exactly the ONE tall rounded green foliage mass in image1. Keep its rounded domed top, narrow full-canvas column footprint, layered rounded broad foliage body, darker left-facing green side, the same very short reddish-brown base near the bottom, and the same olive-grass surround. This is a different rounded variant from image2: NO pointed top. Preserve the original shallow orthographic viewing angle, complete framing, widths, top/bottom positions and brown base footprint. Do not infer a species or add branches, flowers, fruit or props. Fine coherent NEW painted foliage strokes and restrained depth; remove original pixel blocks.\nThe output will be fitted into three equal vertical terrain cells: rounded upper section, repeating middle body, and rounded lower section with short brown base. Middle third must have matching foliage width, shadow and grass at its top and bottom so it can extend vertically; exactly one dome at the top and one base at the bottom, no second crown or visible trunk in the middle. Keep the body vertically continuous. Fill canvas, no added margin, no text, borders, grid, gutters, people, buildings, mosaic, pixel-noise or voxel blocks. Opaque background matching the original olive grass. Keep the complete object unobscured.",
+        "brown_pair": "Use case: style-transfer\nAsset type: fully opaque square hand-painted single terrain-cell master for a 2D tactical RPG.\nImage1 fixes the exact geometry, count, positions and colours. Image2 supplies ONLY the accepted fine foliage/grass brushwork and soft light; do not copy its tall foliage object.\nRepaint exactly TWO separate small rounded angular brown forms on olive-green grass, precisely as image1: larger form at upper left around x18%..54%,y11%..48%; smaller form at lower right around x59%..87%,y60%..87%. Preserve their original silhouettes, irregular tan upper/front facets, darker brown right face, dark reddish-brown contact at lower left, spacing, relative size and shallow orthographic view. Use new fine coherent hand-painted surface strokes and soft worn highlights without inventing their purpose. Keep their discrete low rounded angular shape; no circular cut log ends, blue bindings, boxes, sacks, added symbols, foliage growing out of them, people or extra objects. The grass is fully opaque, detailed but restrained, muted olive as the reference and consistent with image2. No grid, edges, margins, text, watermark, pixel blocks, mosaic or pixel-noise. Fill square canvas, preserve exact layout.",
+        "references": {
+          "rounded_green": [
+            "map00-rounded-green-reference-x8.png",
+            "map00-tall-green-hd-v2-master.png"
+          ],
+          "brown_pair": [
+            "map00-brown-pair-reference-x16.png",
+            "map00-tall-green-hd-v2-master.png"
+          ]
+        },
+        "generated_sources": [
+          "exec-4a842cf0-988a-434f-8cd6-a2a32e92d4ef.png",
+          "exec-160e17e6-0024-46ac-82a1-400e6ff4df93.png"
+        ],
+        "status": "candidates; UV and runtime verification pending"
+      },
+      "brown_pair_revision": {
+        "method": "built-in image_gen.imagegen",
+        "prompt": "Use case: precise-object-edit\nImage1 is the target square painted image. Image2 is the exact original geometry reference. Preserve image1's painted brushwork, muted olive grass, light direction and the upper-left brown form.\nCorrect ONLY the lower-right brown form: it was painted too large and too far left. Reduce this lower form to about 65 percent of its current width and height, reposition it so its ENTIRE silhouette including contact shadow fits x59%..87% and y60%..87% of the canvas, exactly as image2. Its center is at x73%,y74%. It must visibly be smaller than the upper-left form and separated to its right; the upper-left form's complete footprint is x18%..54%,y11%..48%. Paint matching continuous grass where the old lower form was removed. Keep exactly two low brown forms, no added props or foliage growing from them.\nKeep the forms solid: dark reddish-brown at the lower-left edges is a flat shaded contact face, NOT a hollow cavity or cut log opening. Do not add a hole, circular wood rings, stumps or a guessed purpose. Preserve tan top, dark right face and original irregular low rounded silhouette. Fully opaque square, no text, borders or grid.",
+        "target": "map00-brown-pair-hd-v1-master.png",
+        "geometry_reference": "map00-brown-pair-reference-x16.png",
+        "selected": "map00-brown-pair-hd-v2-master.png",
+        "generated_source": "exec-f69946b9-1edf-47b3-941e-62825112502f.png",
+        "rejected_v1_reason": "右下形體相對原版太大且偏左；定向編修縮小並恢復間隔。"
+      },
+      "reference_inputs": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/map00-rounded-green-reference-x8.png",
+          "sha256": "5998b0de6e1a9ca20fc729b19553e1da3a4f25ff9d514170c63527916ddf8ec1",
+          "role": "原生44/47/46幾何，非執行期畫面"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/map00-brown-pair-reference-x16.png",
+          "sha256": "08f35173846e73e0e89f8cb8e9345e9824ad40f2b9b4a328ac32200d278ac6c6",
+          "role": "原生48幾何，非執行期畫面"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/map00-tall-green-hd-v2-master.png",
+          "sha256": "aed8a284fb3287b0bb5fedf91c5d0d0a90625b1ea96b74acbc67c44ead1984e2",
+          "role": "已採用的手繪筆觸與光線；不作新物件幾何"
+        }
+      ],
+      "rejected_brown_pair_v1": {
+        "file": "work/promo-cadence-20261018/hd-fonts/map00-brown-pair-hd-v1-master.png",
+        "sha256": "529ccc0dc118d472c93da8c90531fdc04fbd926293e61943f4bcbc539e9c6e6f",
+        "reason": "右下形體過大且偏左；定向編修縮小並恢復間隔，拒收稿不登錄或同步"
+      },
+      "semantic_limit": "只描述可見形體，不推定樹種或褐色形體用途"
+    },
+    "objects": [
+      {
+        "id": "map00-rounded-green",
+        "master": {
+          "file": "work/promo-cadence-20261018/hd-fonts/map00-rounded-green-hd-v1-master.png",
+          "sha256": "049896bde12b5c12c06b78fe856ce5fbdb28633f4b2b13a0293134fca9820035"
+        },
+        "candidate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/hd-rounded-green-r1/manifest.json",
+          "sha256": "2bf4d72fd0b224769b1d8c3ab4cf02a837c40dfc22ac6ae8d6e6e9224697c662"
+        },
+        "recipe": {
+          "file": "remake/assets/themes/modern/terrain-rounded-green-map0.recipe.json",
+          "sha256": "eecb3634415f686dc1073159c972213c85b2e36c3f9cd5d233bcf9704ce607e9"
+        },
+        "source_verification": {
+          "status": "PASS",
+          "banks": 33,
+          "frames": 8256,
+          "pixels_per_layer": 4755456,
+          "unique_native_frames": 2985,
+          "native_selector_checks": 349872,
+          "destination_remap_pixels_preserved": 199848,
+          "manifest_sha256": "e7f9be9422db1d58ca9747581182de32f6dae6e1177ff7f254011264b03d441d",
+          "objects": 6,
+          "object_reference_pixels": 25920,
+          "scope": "逐像素圖源回讀，非HD美術／GPU／正常玩家／原版對拍"
+        },
+        "frames": [
+          {
+            "map": 0,
+            "frame": 44,
+            "role": "terrain",
+            "file": "map00-frame0044-hd.png",
+            "native_content_sha256": "17cca0fdf1f9335ad8db6122ee68c4ac72537d98097055a22efc7b0f5206fa1c",
+            "object_cell": [
+              0,
+              0
+            ],
+            "width": 144,
+            "height": 144,
+            "sha256": "73b26f1a68014e1d015ded469bc6ab59d2f6332f334e0f1ba7029d53a3f19571"
+          },
+          {
+            "map": 0,
+            "frame": 47,
+            "role": "terrain",
+            "file": "map00-frame0047-hd.png",
+            "native_content_sha256": "74856446bfb511902e43800fbf3458b62e72650fdfa19a4bcbcad6e85ad9f4ec",
+            "object_cell": [
+              0,
+              1
+            ],
+            "width": 144,
+            "height": 144,
+            "sha256": "d13e0ce7c970520448cfc9db6a2b7ddaf9c4f3afb0e842b0dd354f338130e5f8"
+          },
+          {
+            "map": 0,
+            "frame": 46,
+            "role": "terrain",
+            "file": "map00-frame0046-hd.png",
+            "native_content_sha256": "90bd9c94c6236c91fdf0c77dee21f919b6ead22bd5cc877b8ae86a8e100690bd",
+            "object_cell": [
+              0,
+              2
+            ],
+            "width": 144,
+            "height": 144,
+            "sha256": "4c3fc656c2861c74f43a8f839eeb571556287f83fa31221c4a01118d9ad577ef"
+          }
+        ],
+        "verification": {
+          "native_alpha": "PASS",
+          "foreground_source_consistency": "PASS",
+          "cut_reconstruction_difference_bytes": 0,
+          "external_terrain_seams_verified": false,
+          "gpu_verified": false,
+          "reconstruction_basis": "post-UV, post-repeat-edge calibration canvas"
+        },
+        "repeat_calibration": [
+          {
+            "frame": 47,
+            "affected_frames": [
+              44,
+              47,
+              46
+            ],
+            "axis": "y",
+            "blend_rows": 3,
+            "changed_pixels": 1714,
+            "repeat_and_neighbour_edges_equal": true,
+            "before_canvas_rgba_sha256": "bc51452ddd0a87585abc18e69485ced39412b6764e3bbfbc246d539278d8a6d0",
+            "after_canvas_rgba_sha256": "6f77303072ba60df7404ca7f3b5671a424f1571cf61e5c45324817b7de42e314",
+            "rgb_source": "painted master only; no original RGB mixed"
+          }
+        ]
+      },
+      {
+        "id": "map00-brown-pair",
+        "master": {
+          "file": "work/promo-cadence-20261018/hd-fonts/map00-brown-pair-hd-v2-master.png",
+          "sha256": "1ce64d19ed4797d6185b09a8308fe8d2ff96724dcfb33f5210c7ba230009a75b"
+        },
+        "candidate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/hd-brown-pair-r1/manifest.json",
+          "sha256": "61870b58fdee6dc832d6c354df7f6ff7795b57cb481c7beb5db71eceb95807e6"
+        },
+        "recipe": {
+          "file": "remake/assets/themes/modern/terrain-brown-pair-map0.recipe.json",
+          "sha256": "d1083167331ca8502e3668ee4484f11a7877474d8db70afb9dad55e3a90fcc82"
+        },
+        "source_verification": {
+          "status": "PASS",
+          "banks": 33,
+          "frames": 8256,
+          "pixels_per_layer": 4755456,
+          "unique_native_frames": 2985,
+          "native_selector_checks": 349872,
+          "destination_remap_pixels_preserved": 199848,
+          "manifest_sha256": "e7f9be9422db1d58ca9747581182de32f6dae6e1177ff7f254011264b03d441d",
+          "objects": 6,
+          "object_reference_pixels": 25920,
+          "scope": "逐像素圖源回讀，非HD美術／GPU／正常玩家／原版對拍"
+        },
+        "frames": [
+          {
+            "map": 0,
+            "frame": 48,
+            "role": "terrain",
+            "file": "map00-frame0048-hd.png",
+            "native_content_sha256": "bde0c17512e4d70c299b1eae554bef62d5869f87e889d260689a32505e9cc204",
+            "object_cell": [
+              0,
+              0
+            ],
+            "width": 144,
+            "height": 144,
+            "sha256": "4649c4f57a9812121195bf453d325226989687d474c4516c936b0d32f43dec04"
+          }
+        ],
+        "verification": {
+          "native_alpha": "PASS",
+          "foreground_source_consistency": "PASS",
+          "cut_reconstruction_difference_bytes": 0,
+          "external_terrain_seams_verified": false,
+          "gpu_verified": false
+        },
+        "repeat_calibration": []
+      }
+    ],
+    "source_and_repeat_verification": {
+      "file": "work/promo-cadence-20261018/hd-fonts/variants-source-and-repeat-verification.json",
+      "sha256": "67b8c512cd6ff2df7b533c085a73b9a3f7f13aa18e0f2365eb9b59b56484f11c"
+    },
+    "catalog": {
+      "file": "remake/assets/themes/modern/catalog.json",
+      "sha256": "8518b2aac610dbc50b055cec737f1f6b2a55120c4d19ee4d09c450cc67413c0e",
+      "entries": 364,
+      "protected_previous_entries": 360,
+      "native_hd_slots": 53,
+      "new_base_slots": 4,
+      "new_foreground_slots": 0
+    },
+    "normal_gui": {
+      "status": "PASS",
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/variants-gui-r1/receipt.json",
+        "sha256": "4524ef7c036bef4752fec829c6508a7066f0a9bee51d24888fd1e3c9843030b2"
+      },
+      "screenshots": 37,
+      "gpu": {
+        "file": "work/promo-cadence-20261018/hd-fonts/variants-gpu-r1.json",
+        "sha256": "ee2cdc334db1e546b37adc862355605bcbf0f12eb7b22fd463aa28450f7abd09"
+      },
+      "terrain_expectation": {
+        "label": "variants",
+        "frames": [
+          44,
+          46,
+          47,
+          48
+        ],
+        "view_y": 8
+      },
+      "matching_full_tiles_each": [
+        72,
+        74
+      ],
+      "all_four_new_frames_gpu_verified_each": true,
+      "source_save_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "saved_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "new_process_title_load": true,
+      "source_and_theme_save_bytes_equal": true,
+      "recording_created": false,
+      "state_injection": false,
+      "hp_lock": false,
+      "boosted_roster": false,
+      "remake_seed": "FD2_SEED=1 before each startup; no reroll selection",
+      "scope": "正常標題LOAD既有普通START／F5首章JSON，Z聚焦、Home檢視、F2、狀態與命令、返回；含普通走行、指令環、取消、兩次物理攻擊、經驗對話中F9及正常戰場返回。不注入座標或狀態，不宣稱原版對拍或完整戰役。"
+    },
+    "runtime_source": {
+      "binary_sha256": "6b187527f78c7acd96a3450b17fa3c8b04acf879d478da97dd79f996098f7257",
+      "go_snapshot": {
+        "file": "work/promo-cadence-20261018/hd-fonts/variants-go-source-final.json",
+        "sha256": "c8582d367661ee1f9f22220e1a73346d9a5ff080ca0f2670332c8ade46ee6a8f"
+      },
+      "go_file_count": 993,
+      "go_files_unchanged": 992,
+      "changed_go_files": [
+        "remake/cmd/fd2-terrain-sources/main.go"
+      ],
+      "game_runtime_go_changes": 0,
+      "exporter": {
+        "file": "remake/cmd/fd2-terrain-sources/main.go",
+        "sha256": "b9b826551dc726459a0e6166fd9036d487f9af1dd70be7157326c61af93e5e68"
+      },
+      "gui_tool": {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "2b85a83ec9c45e8e1c7c7b9c64639144440bdc43b644479de2652088b58d34c1"
+      },
+      "binary_removed_after_validation": true
+    },
+    "regression": {
+      "scoped_go": {
+        "file": "work/promo-cadence-20261018/hd-fonts/variants-go-final-tests.log",
+        "sha256": "1e05c7ce473218b82516984806f23b09d8cdaaa90f9bcc52eb63605b0c7df650"
+      },
+      "status": "PASS",
+      "main_package_seconds": 33.739,
+      "filter": "NativeTerrain|NativeHD|ModernTheme|HDWorld|HDMap",
+      "catalog_at_final_run": 364,
+      "pre_registration_go": {
+        "file": "work/promo-cadence-20261018/hd-fonts/variants-go-tests.log",
+        "sha256": "0fa2e5526439af81c2800a086f75eddfb0e45a3fda3b5124de1a2e5092db5fc7"
+      },
+      "pre_registration_main_seconds": 40.323,
+      "exporter_test": {
+        "file": "work/promo-cadence-20261018/hd-fonts/variants-source-tests.log",
+        "sha256": "168b68a1360cc3c3c4bd09edc29bac36fedd11165d851da1b0717cd3342577c7"
+      },
+      "full_go_rerun": false,
+      "catalog_tests": {
+        "tests": 9,
+        "status": "PASS",
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/variants-catalog-tests.log",
+          "sha256": "3e7710214efa0029c1bf2bde76a3dadedb51ae4104568c9c91ddfebd51be9a13"
+        }
+      },
+      "gpu_negative_tests": {
+        "file": "work/promo-cadence-20261018/hd-fonts/variants-gpu-negative-verification-final.json",
+        "sha256": "c39d159acb3165907c9a568f3e34a45b89428071475007f5d5e94ed2250a7a6d"
+      },
+      "legacy_props_gpu": {
+        "file": "work/promo-cadence-20261018/hd-fonts/variants-legacy-props-gpu.json",
+        "sha256": "7f77415ab44bde47722f6deea13f4b06317bc443c4e28b081d82159c739a6afd"
+      },
+      "frame_list_parser": {
+        "positive": "44,46,47,48",
+        "invalid_cases": [
+          "empty",
+          "duplicate",
+          "negative",
+          "out-of-range",
+          "non-integer"
+        ],
+        "status": "PASS"
+      },
+      "string_inventory": "only cmd/fd2 is inventoried; this branch changes only cmd/fd2-terrain-sources Go file, so no review migration"
+    },
+    "private_assets": {
+      "status": "PASS",
+      "private": true,
+      "file_count": 3267,
+      "runtime_file_count": 3063,
+      "protected_old_files": 3261,
+      "new_files": 6,
+      "manifest_sha256": "6121b019884330d01e608705d63471d23fd3343ce059022abde2b848c832027f",
+      "catalog_sha256": "8518b2aac610dbc50b055cec737f1f6b2a55120c4d19ee4d09c450cc67413c0e",
+      "all_file_hashes_and_owners_checked": true,
+      "allowlist_exact": true,
+      "repo": "wicanr2/fd2-assets-private",
+      "remote_head": "b0ddae470a9e6957f82ec3258484df308e3cfaec",
+      "remote_verified": true
+    },
+    "review": {
+      "short_and_long_repeat_lengths": [
+        3,
+        4,
+        5
+      ],
+      "internal_repeat_edges_equal": true,
+      "normal_gpu_images_inspected": true,
+      "external_grass_and_other_props_still_native": true,
+      "public_images_added": false,
+      "species_or_purpose_inferred": false
+    },
+    "reproduction": {
+      "images": [
+        "fd2-assets-local:20260829-sfx",
+        "fd2-go-test-local:latest",
+        "fd2-promo:20261017-r1"
+      ],
+      "user": "1000:1000",
+      "network": "none",
+      "gui_flags": "--battle-status --terrain --terrain-frames 44,46,47,48 --terrain-label variants --world",
+      "art": "tools/build_fd2_hd_terrain_object.py --pack <pack> --maps <maps> --sources <native-terrain-sources-r6> --recipe <registered recipe> --master <saved master> --out <new output>",
+      "register": "tools/register_fd2_hd_terrain.py --object rounded-green|brown-pair --candidate <candidate> --catalog <catalog> --asset-root <modern pack> --master-root <master parent>",
+      "gpu_negative_tests": "tools.test_fd2_hd_terrain_sources.verify_gpu_expectations(<ordinary props receipt>, <temporary output parent>)"
+    },
+    "remaining": "其他原生地形、前景、完整HUD及索引演出、早中晚期與跨平台HD效能／實機。",
+    "release_unchanged": "v.1.0.0-20261017 -> d8c361a8324cb19b5a0738897e15c151500a8de8",
+    "final_checks": {
+      "links_and_ownership": {
+        "file": "work/promo-cadence-20261018/hd-fonts/variants-final-links-and-ownership.json",
+        "sha256": "b6e671210d2b69159bed6dce3dd5033ee6f16b5c592a9bcd47b9347dd1027b3a"
+      },
+      "new_broken_links": [],
+      "historical_unchanged_findings": 9,
+      "worklist": {
+        "open": 20,
+        "manual": 13,
+        "possibly_complete": 0
+      },
+      "lessons": {
+        "total": 250,
+        "guards": 131
+      },
+      "cleanup": {
+        "verified_binary_removed_bytes": 19174456,
+        "recording_created": false,
+        "masters_sources_and_receipts_preserved": true
+      },
+      "unexpected_fd2_containers": 0
+    }
+  },
+  "historical_runtime_source_before_rounded_green_and_pair": {
+    "binary_sha256": "d8b817cfdbe4d112db8ba09f467dd413a442c46fa4faf512d9055ebf6952edd6",
+    "go_snapshot": {
+      "file": "work/promo-cadence-20261018/hd-fonts/props-go-source-final.json",
+      "sha256": "5a447e73a86120f105bc856d402ded579d7b52be20d33ac2908624f834bf0a2d"
+    },
+    "go_file_count": 993,
+    "go_files_unchanged": 992,
+    "changed_go_files": [
+      "remake/cmd/fd2-terrain-sources/main.go"
+    ],
+    "game_runtime_go_changes": 0,
+    "exporter": {
+      "file": "remake/cmd/fd2-terrain-sources/main.go",
+      "sha256": "dc0b09c670ec57eb2b4b71e972e96766e16b7a8c2c155077411c282e35517f67"
+    },
+    "gui_tool": {
+      "file": "tools/verify_fd2_hd_fonts_gui.py",
+      "sha256": "1b6048d139312cce606017c18756d408a5897532736209c13e4471e37b523c38"
+    },
+    "binary_removed_after_validation": true
+  }
 }

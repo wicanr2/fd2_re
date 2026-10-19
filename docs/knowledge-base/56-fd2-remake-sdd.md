@@ -1,5 +1,9 @@
 # 56 — FD2 remake 系統設計規格（SDD，2026-08-09）
 
+相鄰圓頂綠色與褐色雙塊物件亦沿既有原生稀疏集合接線，遊戲runtime與保存保持。
+GUI明示範圍與GPU逐圖驗證、拒收條件見[61](61-modern-theme-runtime-spec.md)；唯一現況依[58](58-fd2-exe-re-coverage.md)，
+完整提示與證據在[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`rounded_green_and_pair_followup_20261019`。
+
 首章尖頂綠色與褐色成組物件沿既有原生稀疏HD契約接線，未改遊戲繪製架構、規則、時鐘或存檔。
 重複中段的製圖校準只用新手繪RGB，原生遮罩保持；正式規格與限定驗收見[61](61-modern-theme-runtime-spec.md)。
 唯一現況依[58](58-fd2-exe-re-coverage.md)，來源與實際GPU見

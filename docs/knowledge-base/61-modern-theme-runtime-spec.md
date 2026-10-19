@@ -860,7 +860,24 @@ RGB來自獨立新手繪母稿，沿明示UV錨點切片。原生地圖會連續
 `tools/verify_fd2_hd_fonts_gui.py --battle-status --terrain --terrain-props-view --world`以普通游標取景，
 `tools/verify_fd2_hd_terrain_gpu.py`要求兩份實際PNG均包含全部新槽的相符完整圖塊。
 接縫測試由`tools/test_fd2_hd_terrain_sources.py`的`verify_repeat_calibration`驗不改核心與六項不安全政策拒收。
-相鄰樹形變體與草地仍用原版。圖源、提示、SHA及私人同步見主收據的`green_and_brown_followup_20261019`。
+該批當時未補的相鄰圓頂變體見下段，草地仍用原版。圖源、提示、SHA及私人同步見主收據的`green_and_brown_followup_20261019`。
+
+圓頂綠色及褐色雙塊物件（CONFORMED-SCOPED-RUNTIME-E1，先READY後實作）：沿相同144稀疏原生集合，只追加map0的44／47／46及48。
+前者取map0(13,3)的1×3格，後者取(9,12)單格；只描述可見外形，不推定樹種或用途。
+原生static、全opaque且無remap／額外前景，仍以正式匯出器及獨立回讀核對。
+兩份新母稿沿既有手繪風格與原生幾何，明示UV錨點；frame47可沿既有3列`repeat_edges`政策，
+驗短版及加長版，重組相對校準後畫布。既有九槽及更早素材保持，遊戲runtime／規則／保存不改。
+GUI觀測工具可用明示的預期frame清單與取景標籤，保存於收據；GPU驗證要求每份相同取景PNG
+均實際包含所有預期frame的完整相符圖塊。舊旗標及舊收據仍保留驗證方法，不削弱原有九槽門檻。
+正式驗收仍須正常首章LOAD、方向鍵取景、F2、走行／攻擊／戰場返回、F5／新程序LOAD及私人同步。
+以上閘門均已通過。配方入口為[圓頂綠色物件](../../remake/assets/themes/modern/terrain-rounded-green-map0.recipe.json)及
+[褐色雙塊物件](../../remake/assets/themes/modern/terrain-brown-pair-map0.recipe.json)。
+重跑GUI使用`--battle-status --terrain --terrain-frames 44,46,47,48 --terrain-label variants --world`；
+範圍寫入`terrain_expectation`，GPU驗證器逐張要求完整相符圖塊。
+`tools/test_fd2_hd_terrain_sources.py`的`verify_gpu_expectations`以真實舊PNG及合成損壞metadata，
+驗缺frame、重複frame及錯標籤均拒收、不發布報告，也不改原始收據；`--gpu-receipt`可加入既有CLI回歸。
+明示frame參數拒收空值、重複、負數、越界與非整數；既有props九槽門檻及舊收據驗證保持。
+來源、完整提示、拒收初稿與私人同步沿主收據的`rounded_green_and_pair_followup_20261019`。
 
 草地母稿以內建image_gen產生，完整提示與SHA保存在
 [主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`terrain_source_followup_20261019`。

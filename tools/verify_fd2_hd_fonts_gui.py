@@ -3,6 +3,7 @@
 import argparse
 import json
 import os
+import re
 from pathlib import Path
 import subprocess
 import threading
@@ -12,6 +13,16 @@ from verify_fd2_hd_gui import digest, latest
 from verify_fd2_hd_panel_transitions import PanelTransitionProbe
 from verify_fd2_hd_timed_dialogue import TimedDialogueProbe
 from verify_fd2_hd_terrain_walk import walk_behind_house
+
+
+def terrain_frame_ids(value):
+    parts=value.split(',')
+    if not parts or any(not re.fullmatch(r'[0-9]+',part) for part in parts):
+        raise argparse.ArgumentTypeError('地形frame須為逗號分隔的非負整數')
+    frames=[int(part) for part in parts]
+    if len(set(frames))!=len(frames) or any(frame>65535 for frame in frames):
+        raise argparse.ArgumentTypeError('地形frame重複或越界')
+    return set(frames)
 
 
 def main():
@@ -35,14 +46,21 @@ def main():
     parser.add_argument('--terrain-occlusion', action='store_true', help='最多六個普通回合抵達屋後，抽驗前景；需--terrain與--world')
     parser.add_argument('--terrain-roof-view', action='store_true', help='另以普通游標取景褐頂物件全部八個底圖；需--terrain')
     parser.add_argument('--terrain-props-view', action='store_true', help='普通游標取景綠色與褐色物件九個底圖；需--terrain')
+    parser.add_argument('--terrain-frames', type=terrain_frame_ids, default=set(), help='明示本次取景必須包含的frame；需--terrain與--terrain-label')
+    parser.add_argument('--terrain-label', help='本次取景的ASCII標籤；需--terrain-frames')
     parser.add_argument('--timed-dialogue', action='store_true', help='加驗計時對話開收框、穩定HD文字與F2；需--world與明示章前EXP校準槽')
     args = parser.parse_args()
+    if bool(args.terrain_frames)!=bool(args.terrain_label):
+        parser.error('--terrain-frames與--terrain-label須同時指定')
+    if args.terrain_label and not re.fullmatch(r'[a-z][a-z0-9-]{0,39}',args.terrain_label):
+        parser.error('取景標籤只能使用小寫ASCII字母、數字與連字號')
     tool_source_sha256=digest(Path(__file__))
     assert not args.world or args.battle_status
     assert not args.terrain or args.battle_status
     assert not args.terrain_occlusion or args.terrain and args.world
     assert not args.terrain_roof_view or args.terrain
     assert not args.terrain_props_view or args.terrain and not args.terrain_roof_view
+    assert not args.terrain_frames or args.terrain and not (args.terrain_roof_view or args.terrain_props_view)
     assert not args.timed_dialogue or args.world
     assert not args.transition_frames or args.preparation
     assert not args.panel_transitions or args.status or args.items
@@ -390,16 +408,17 @@ def main():
                         else:direction='Down' if current[1]<destination[1] else 'Up'
                         key(direction)
                     raise AssertionError(('普通游標未抵達房屋觀測位置',latest(audit)['cursor'],destination))
-                view_y=8 if args.terrain_props_view else (2 if args.terrain_roof_view else 5)
+                view_y=8 if args.terrain_frames or args.terrain_props_view else (2 if args.terrain_roof_view else 5)
                 pan_to([15,view_y]);pan_to([10,view_y])
-                required=({40,42,43,203,204,205,206,207,208} if args.terrain_props_view else
+                required=(args.terrain_frames if args.terrain_frames else
+                          {40,42,43,203,204,205,206,207,208} if args.terrain_props_view else
                           ({28,30,32,33,34,35,272,273} if args.terrain_roof_view else set()))
                 def terrain_visible(s):
-                    return (len(s.get('hd_world_terrain',[])) >= (8 if args.terrain_roof_view else 18)
+                    return (len(s.get('hd_world_terrain',[])) >= (len(required) if args.terrain_frames else 8 if args.terrain_roof_view else 18)
                             and required.issubset({t['frame'] for t in s.get('hd_world_terrain',[])}))
                 wait(terrain_visible)
                 assert latest(audit)['units']==before_pan['units'],'單純移鏡頭改變單位'
-                label='props' if args.terrain_props_view else ('roof-object' if args.terrain_roof_view else 'house')
+                label=args.terrain_label or ('props' if args.terrain_props_view else ('roof-object' if args.terrain_roof_view else 'house'))
                 shot('terrain-hd-'+label)
                 house=latest(audit)
                 key('F2');wait(lambda s:s.get('hd_theme') is False and not s.get('hd_world'))
@@ -612,6 +631,8 @@ def main():
                     'scope':('正常標題LOAD既有普通START／F5首章JSON，Z聚焦、Home檢視、F2、狀態與命令、返回；'
                              + ('含普通走行、指令環、取消、兩次物理攻擊、經驗對話中F9及正常戰場返回。' if args.world else '')
                              + '不注入座標或狀態，不宣稱原版對拍或完整戰役。')}
+            if args.terrain_frames:
+                report['terrain_expectation']={'label':args.terrain_label,'frames':sorted(args.terrain_frames),'view_y':8}
             (args.out/'receipt.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
             return
         if args.preparation:

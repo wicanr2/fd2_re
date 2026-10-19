@@ -19,7 +19,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ["candidate", "catalog", "asset-root", "master-root"]:
         parser.add_argument("--" + name, type=Path, required=True)
-    parser.add_argument('--object', choices=['house','roof-object','tall-green','brown-group'], default='house')
+    parser.add_argument('--object', choices=['house','roof-object','tall-green','brown-group','rounded-green','brown-pair'], default='house')
     args = parser.parse_args()
     data = json.loads((args.candidate / "manifest.json").read_text())
     if data["verification"]["native_alpha"] != "PASS" or data["verification"]["cut_reconstruction_difference_bytes"] != 0:
@@ -30,6 +30,8 @@ def main():
         'roof-object': (10,8,'modern.map0.roof_object',{28,29,30,31,32,33,34,35,272,273},'map00-roof-object-hd-v1-master.png'),
         'tall-green': (3,3,'modern.map0.tall_green',{40,42,43},'map00-tall-green-hd-v2-master.png'),
         'brown-group': (6,6,'modern.map0.brown_group',set(range(203,209)),'map00-brown-group-hd-v1-master.png'),
+        'rounded-green': (3,3,'modern.map0.rounded_green',{44,46,47},'map00-rounded-green-hd-v1-master.png'),
+        'brown-pair': (1,1,'modern.map0.brown_pair',{48},'map00-brown-pair-hd-v2-master.png'),
     }
     count, terrain_count, identity, expected_frames, master_name = specs[args.object]
     if (len(frames) != count or sum(entry["role"] == "terrain" for entry in frames) != terrain_count

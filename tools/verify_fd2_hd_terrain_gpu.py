@@ -23,9 +23,20 @@ def main():
     receipt = json.loads(args.receipt.read_text())
     if receipt["status"] != "PASS":
         raise ValueError("正常GUI流程尚未通過")
-    names = [name for name in receipt["screenshots"] if name.startswith(("terrain-hd-house", "terrain-hd-roof-object", "terrain-hd-props"))]
+    names = [name for name in receipt["screenshots"] if name.startswith("terrain-hd-")]
     if len(names) < 2:
         raise ValueError("缺少正常移鏡頭與F2返回的房屋畫面")
+    label=names[0].removeprefix('terrain-hd-').removesuffix('.png').removesuffix('-restored')
+    expectation=receipt.get('terrain_expectation')
+    required=set()
+    if expectation:
+        frames=expectation.get('frames',[])
+        if (expectation.get('label')!=label or not frames or any(type(frame) is not int or not 0<=frame<=65535 for frame in frames)
+                or len(set(frames))!=len(frames)):
+            raise ValueError('明示地形取景範圍不完整或與圖名不符')
+        required=set(frames)
+    elif label not in {'house','roof-object','props'}:
+        raise ValueError('新取景標籤缺少明示frame清單')
     samples = []
     for name in names:
         item = receipt["screenshots"][name]
@@ -55,11 +66,12 @@ def main():
             raise ValueError(f"{name}只有{len(matched)}個完整圖塊可比；保留失敗，不推定來源")
         if name.startswith('terrain-hd-props') and not {40,42,43,203,204,205,206,207,208}.issubset({t['frame'] for t in matched}):
             raise ValueError(f"{name}缺少九張新物件的完整GPU相符圖塊")
+        if required and not required.issubset({t['frame'] for t in matched}):
+            raise ValueError(f'{name}缺少明示範圍的完整GPU相符圖塊')
         samples.append({"file": name, "status": "PASS", "matching_tiles": matched,
                         "matched_pixels": len(matched)*144*144,
                         "not_compared_tiles": different,
                         "limits": "只驗完整可見且未被UI／人物／前景蓋住的相符圖塊；其他候選不當成通過"})
-    label = 'props' if names[0].startswith('terrain-hd-props') else ('roof-object' if names[0].startswith('terrain-hd-roof-object') else 'house')
     faithful = args.receipt.parent / ('terrain-faithful-'+label+'.png')
     reference = Image.open(faithful).convert("RGBA")
     first = Image.open(args.receipt.parent/names[0]).convert("RGBA")
@@ -71,6 +83,8 @@ def main():
               "gui_receipt_sha256": digest(args.receipt.read_bytes()),
               "tool_sha256": digest(Path(__file__).read_bytes()),
               "scope": "正常首章移鏡頭與F2、實際GPU呈現所選新RGB；不新增原版oracle或整章E2。"}
+    if expectation:
+        report['terrain_expectation']=expectation
     args.report.write_text(json.dumps(report, ensure_ascii=False, indent=2)+"\n")
     print(json.dumps({"status": "PASS", "images": len(samples),
                       "matching_tiles": [len(sample["matching_tiles"]) for sample in samples]}, ensure_ascii=False))

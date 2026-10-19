@@ -1,7 +1,12 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
+相鄰圓頂綠色／褐色雙塊物件亦通過正常取景、F2、走行、攻擊與保存／新程序LOAD。
+GPU每張圖必須涵蓋全部明示frame，缺件及損壞範圍測試會拒收；其他地形與前景仍待完成。
+數量與限制依[58](58-fd2-exe-re-coverage.md)，來源與提示見
+[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`rounded_green_and_pair_followup_20261019`。
+
 首章尖頂綠色及褐色成組物件的新增底圖已在正常移鏡頭／F2畫面逐圖核對GPU。
-普通走行、指令環、取消、兩次物理攻擊、Home及完整保存／新程序LOAD通過；相鄰變體與草地仍混合原版。
+普通走行、指令環、取消、兩次物理攻擊、Home及完整保存／新程序LOAD通過；該批當時未補的圓頂變體見上段，草地仍混合原版。
 不新增原版oracle或整章E2。數量與限制依[58](58-fd2-exe-re-coverage.md)，證據見
 [主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`green_and_brown_followup_20261019`。
 

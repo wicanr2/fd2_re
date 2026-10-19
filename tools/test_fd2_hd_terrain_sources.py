@@ -48,14 +48,46 @@ def verify_repeat_calibration():
             {"case":"repeat-policy-six-rejections","status":"PASS"}]
 
 
+def verify_gpu_expectations(receipt, parent):
+    """真實舊PNG仍相符時，明示範圍缺件或損壞仍須拒收。"""
+    receipt=receipt.resolve()
+    original_hash=sha(receipt)
+    source=json.loads(receipt.read_text())
+    assert source['status']=='PASS' and 'terrain-hd-props.png' in source['screenshots']
+    results=[]
+    with tempfile.TemporaryDirectory(prefix='terrain-gpu-contract-',dir=parent) as temporary:
+        root=Path(temporary)
+        for name in source['screenshots']:
+            if name.startswith('terrain-'):
+                assert Path(name).name==name
+                (root/name).symlink_to(receipt.parent/name)
+        cases=[('missing-requested-frame',{'label':'props','frames':[40,42,43,203,204,205,206,207,208,65535]},'明示範圍'),
+               ('duplicate-requested-frame',{'label':'props','frames':[40,40]},'明示地形取景範圍'),
+               ('mismatched-view-label',{'label':'variants','frames':[40]},'明示地形取景範圍')]
+        for name,expectation,message in cases:
+            data=dict(source,terrain_expectation=expectation)
+            changed=root/(name+'.json'); changed.write_text(json.dumps(data))
+            report=root/(name+'-report.json')
+            run=subprocess.run(['python3',str(Path(__file__).with_name('verify_fd2_hd_terrain_gpu.py')),
+                                '--receipt',str(changed),'--report',str(report)],capture_output=True,text=True,timeout=30)
+            assert run.returncode!=0 and message in run.stderr,(name,run.stdout,run.stderr)
+            assert not report.exists(),'拒收不得發布GPU收據'
+            results.append({'case':name,'status':'PASS','published':False})
+    assert sha(receipt)==original_hash,'拒收測試改寫原收據'
+    return results
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ["binary", "pack", "maps", "sources", "recipe", "master", "report"]:
         parser.add_argument("--" + name, type=Path, required=True)
+    parser.add_argument('--gpu-receipt',type=Path,help='既有props正常收據；選用GPU範圍拒收回歸')
     args = parser.parse_args()
     if args.report.exists():
         raise ValueError("不得覆寫既有拒收收據")
     results = verify_repeat_calibration()
+    if args.gpu_receipt:
+        results.extend(verify_gpu_expectations(args.gpu_receipt,args.report.parent))
     original_mask = args.pack / "tilesets/fdshap/map_32/tile_0000/mask.png"
     original_hash = sha(original_mask)
     with tempfile.TemporaryDirectory(prefix="terrain-contract-", dir=args.report.parent) as temporary:

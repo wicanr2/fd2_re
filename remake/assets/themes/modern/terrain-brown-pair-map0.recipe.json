@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "kind": "hd_terrain_object_art_recipe",
+  "object": "map00-brown-pair",
+  "status": "prototype",
+  "scale": 6,
+  "painted_master_size": [1254, 1254],
+  "native_reference_size": [24, 24],
+  "painted_x_anchors": [0, 1254],
+  "native_x_anchors": [0, 24],
+  "painted_y_anchors": [0, 1254],
+  "native_y_anchors": [0, 24],
+  "anchor_evidence": "原生左上較大、右下較小的兩個褐色形體；定向編修後保持相對大小與間隔，不推定用途",
+  "alpha_policy": "native_mask_nearest_6",
+  "rgb_policy": "new painted master only",
+  "foreground_overrides": {},
+  "runtime_integrated": false
+}

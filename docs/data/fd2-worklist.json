@@ -247,12 +247,12 @@
       "layer": "data",
       "category": "工作",
       "title": "P1 HD素材覆蓋：由正式玩家consumer列出缺件並補齊",
-      "body": "首章尖頂綠色及褐色成組物件新增九張144底圖，原356項清冊保持，現360項。原生圖源及alpha、UV／接縫校準後重組、3／4／5格長短組合通過。frame43的12列校準有條紋而拒收，採3列且只用新繪圖RGB；不推定樹種或物件用途。\n\n兩張正常GPU均包含全部九個新槽，完整相符圖塊56／57個。普通標題LOAD、方向鍵取景、F2、走行／指令環／取消、兩次攻擊、Home、F5及新程序LOAD通過，來源與完整保存bytes相同。沒有注入狀態、鎖血或新原版oracle、matching、整章E2。相關Go回歸與清冊9項、接縫／核心及六項拒收檢查通過；遊戲runtime未改。\n\nmap0目前四組49槽；相鄰樹形變體與草地仍使用原版，混合美術保留，不能稱整張地圖或完整物件家族已HD化。先前屋後279的普通四回合／F2與AI輸入鎖修復證據仍有效，跨相位不可比及分段流程限制保持。\n\n私人包3261檔逐檔核對，原3250檔保持，runtime-only白名單3059檔。已推送私人庫dbeff6216594ce59cd1c97a1d3f25045aeffa4f1，真正遠端相同且保持private。沒有新增公開逐幀素材、錄影或Release。\n\n唯一現況見58，契約見61，完整提示、來源、SHA與重跑入口見docs/data/fd2-modern-hd-battlefield-20261019.json的green_and_brown_followup_20261019及WORKLOG。\n\n本項保持開啟：其他地形、前景、完整HUD與其他consumer素材仍待HD化，未知身分不猜補。",
+      "body": "圓頂綠色44／47／46及褐色雙塊48再新增四張144底圖，map0目前六組53槽。兩張正常GPU均驗到全部四張，完整相符圖塊72／74個；長短綠色物件及F2通過。雙塊初稿的右下形體過大且偏左，已定向編修縮小並恢復間隔；拒收稿不登錄或同步，不推定物件用途。\n\n正常首章37張GUI包含標題LOAD、方向鍵取景、走行／指令環／取消、兩次攻擊、Home、F5及新程序LOAD，來源與完整保存bytes相同。364項清冊的相關Go回歸33.739秒、清冊9項測試通過；只有來源匯出器Go檔變動，遊戲runtime未改。\n\nGUI以明示frame清單與標籤記錄範圍，GPU驗每張圖完整包含全部frame。缺指定frame、重複frame與標籤不符均拒收且不發布報告，frame參數另拒收五類不合法輸入；舊props九槽門檻保持，既有收據以新驗證器仍通過。前批九槽與更早屋後279／AI輸入鎖證據保留，跨相位不可比及分段流程限制保持。\n\n私人包3267檔逐檔核對，原3261檔保持，runtime-only白名單3063檔。私人提交b0ddae470a9e6957f82ec3258484df308e3cfaec已推送，真正遠端相同且保持private。草地與其他地形仍使用原版，未宣稱整張地圖或完整HD完成。\n\n唯一現況依58，契約見61，完整提示、母稿、SHA與重跑入口在docs/data/fd2-modern-hd-battlefield-20261019.json的rounded_green_and_pair_followup_20261019及WORKLOG。沒有錄影、公開逐幀素材、狀態注入、新oracle、matching、整章E2或Release。\n\n本項保持開啟：其他地形、前景、完整HUD與其他consumer素材仍待HD化，未知身分不猜補。",
       "acceptance": "受版控需求盤點可重跑，列出來源與consumer；既有已核准現代替換範圍零非預期缺件，其他畫面各有明示分類與決策；缺件拒收與原子切換回歸通過，私人包雜湊及遠端HEAD可核對。",
       "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
       "verify": {
         "kind": "manual",
-        "note": "其他地形、前景、完整HUD與其他consumer素材仍待HD化，未知身分不猜補。 已驗範圍依green_and_brown_followup_20261019。"
+        "note": "其他地形、前景、完整HUD與其他consumer素材仍待HD化，未知身分不猜補。 已驗範圍依rounded_green_and_pair_followup_20261019。"
       },
       "issue": 201
     },
@@ -261,12 +261,12 @@
       "layer": "player",
       "category": "工作",
       "title": "P1 HD正常路徑：早中晚期操作、戰場返回與存讀檔",
-      "body": "首章尖頂綠色及褐色成組物件新增九張144底圖，原356項清冊保持，現360項。原生圖源及alpha、UV／接縫校準後重組、3／4／5格長短組合通過。frame43的12列校準有條紋而拒收，採3列且只用新繪圖RGB；不推定樹種或物件用途。\n\n兩張正常GPU均包含全部九個新槽，完整相符圖塊56／57個。普通標題LOAD、方向鍵取景、F2、走行／指令環／取消、兩次攻擊、Home、F5及新程序LOAD通過，來源與完整保存bytes相同。沒有注入狀態、鎖血或新原版oracle、matching、整章E2。相關Go回歸與清冊9項、接縫／核心及六項拒收檢查通過；遊戲runtime未改。\n\nmap0目前四組49槽；相鄰樹形變體與草地仍使用原版，混合美術保留，不能稱整張地圖或完整物件家族已HD化。先前屋後279的普通四回合／F2與AI輸入鎖修復證據仍有效，跨相位不可比及分段流程限制保持。\n\n私人包3261檔逐檔核對，原3250檔保持，runtime-only白名單3059檔。已推送私人庫dbeff6216594ce59cd1c97a1d3f25045aeffa4f1，真正遠端相同且保持private。沒有新增公開逐幀素材、錄影或Release。\n\n唯一現況見58，契約見61，完整提示、來源、SHA與重跑入口見docs/data/fd2-modern-hd-battlefield-20261019.json的green_and_brown_followup_20261019及WORKLOG。\n\n本項保持開啟：其他前景、上移、早中晚期、故事／法術／死亡與跨平台仍待正常玩家抽驗。",
+      "body": "圓頂綠色44／47／46及褐色雙塊48再新增四張144底圖，map0目前六組53槽。兩張正常GPU均驗到全部四張，完整相符圖塊72／74個；長短綠色物件及F2通過。雙塊初稿的右下形體過大且偏左，已定向編修縮小並恢復間隔；拒收稿不登錄或同步，不推定物件用途。\n\n正常首章37張GUI包含標題LOAD、方向鍵取景、走行／指令環／取消、兩次攻擊、Home、F5及新程序LOAD，來源與完整保存bytes相同。364項清冊的相關Go回歸33.739秒、清冊9項測試通過；只有來源匯出器Go檔變動，遊戲runtime未改。\n\nGUI以明示frame清單與標籤記錄範圍，GPU驗每張圖完整包含全部frame。缺指定frame、重複frame與標籤不符均拒收且不發布報告，frame參數另拒收五類不合法輸入；舊props九槽門檻保持，既有收據以新驗證器仍通過。前批九槽與更早屋後279／AI輸入鎖證據保留，跨相位不可比及分段流程限制保持。\n\n私人包3267檔逐檔核對，原3261檔保持，runtime-only白名單3063檔。私人提交b0ddae470a9e6957f82ec3258484df308e3cfaec已推送，真正遠端相同且保持private。草地與其他地形仍使用原版，未宣稱整張地圖或完整HD完成。\n\n唯一現況依58，契約見61，完整提示、母稿、SHA與重跑入口在docs/data/fd2-modern-hd-battlefield-20261019.json的rounded_green_and_pair_followup_20261019及WORKLOG。沒有錄影、公開逐幀素材、狀態注入、新oracle、matching、整章E2或Release。\n\n本項保持開啟：其他前景、上移、早中晚期、故事／法術／死亡與跨平台仍待正常玩家抽驗。",
       "acceptance": "受版控計畫及目前正式runtime的正常鍵盤／GPU收據涵蓋早中晚期與上述主要交界；存檔可冷讀回，忠實主題抽樣回歸通過；已登錄素材顯示與catalog一致，未驗範圍明示。",
       "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
       "verify": {
         "kind": "manual",
-        "note": "其他前景、上移、早中晚期、故事／法術／死亡與跨平台仍待正常玩家抽驗。 已驗範圍依green_and_brown_followup_20261019。"
+        "note": "其他前景、上移、早中晚期、故事／法術／死亡與跨平台仍待正常玩家抽驗。 已驗範圍依rounded_green_and_pair_followup_20261019。"
       },
       "issue": 202
     },
@@ -275,12 +275,12 @@
       "layer": "runtime",
       "category": "工作",
       "title": "P1 HD高解析呈現：原生面板字型、介面、戰場與平台驗收",
-      "body": "首章尖頂綠色及褐色成組物件新增九張144底圖，原356項清冊保持，現360項。原生圖源及alpha、UV／接縫校準後重組、3／4／5格長短組合通過。frame43的12列校準有條紋而拒收，採3列且只用新繪圖RGB；不推定樹種或物件用途。\n\n兩張正常GPU均包含全部九個新槽，完整相符圖塊56／57個。普通標題LOAD、方向鍵取景、F2、走行／指令環／取消、兩次攻擊、Home、F5及新程序LOAD通過，來源與完整保存bytes相同。沒有注入狀態、鎖血或新原版oracle、matching、整章E2。相關Go回歸與清冊9項、接縫／核心及六項拒收檢查通過；遊戲runtime未改。\n\nmap0目前四組49槽；相鄰樹形變體與草地仍使用原版，混合美術保留，不能稱整張地圖或完整物件家族已HD化。先前屋後279的普通四回合／F2與AI輸入鎖修復證據仍有效，跨相位不可比及分段流程限制保持。\n\n私人包3261檔逐檔核對，原3250檔保持，runtime-only白名單3059檔。已推送私人庫dbeff6216594ce59cd1c97a1d3f25045aeffa4f1，真正遠端相同且保持private。沒有新增公開逐幀素材、錄影或Release。\n\n唯一現況見58，契約見61，完整提示、來源、SHA與重跑入口見docs/data/fd2-modern-hd-battlefield-20261019.json的green_and_brown_followup_20261019及WORKLOG。\n\n本項保持開啟：其餘地形、完整HUD／固定字樣、索引演出及跨平台HD效能／實機仍待完成。",
+      "body": "圓頂綠色44／47／46及褐色雙塊48再新增四張144底圖，map0目前六組53槽。兩張正常GPU均驗到全部四張，完整相符圖塊72／74個；長短綠色物件及F2通過。雙塊初稿的右下形體過大且偏左，已定向編修縮小並恢復間隔；拒收稿不登錄或同步，不推定物件用途。\n\n正常首章37張GUI包含標題LOAD、方向鍵取景、走行／指令環／取消、兩次攻擊、Home、F5及新程序LOAD，來源與完整保存bytes相同。364項清冊的相關Go回歸33.739秒、清冊9項測試通過；只有來源匯出器Go檔變動，遊戲runtime未改。\n\nGUI以明示frame清單與標籤記錄範圍，GPU驗每張圖完整包含全部frame。缺指定frame、重複frame與標籤不符均拒收且不發布報告，frame參數另拒收五類不合法輸入；舊props九槽門檻保持，既有收據以新驗證器仍通過。前批九槽與更早屋後279／AI輸入鎖證據保留，跨相位不可比及分段流程限制保持。\n\n私人包3267檔逐檔核對，原3261檔保持，runtime-only白名單3063檔。私人提交b0ddae470a9e6957f82ec3258484df308e3cfaec已推送，真正遠端相同且保持private。草地與其他地形仍使用原版，未宣稱整張地圖或完整HD完成。\n\n唯一現況依58，契約見61，完整提示、母稿、SHA與重跑入口在docs/data/fd2-modern-hd-battlefield-20261019.json的rounded_green_and_pair_followup_20261019及WORKLOG。沒有錄影、公開逐幀素材、狀態注入、新oracle、matching、整章E2或Release。\n\n本項保持開啟：其餘地形、完整HUD／固定字樣、索引演出及跨平台HD效能／實機仍待完成。",
       "acceptance": "既有HD頭像／黑體／穩定頁／整備問句／金幣／角色物品轉場及首章角色狀態覆蓋已抽驗。接續其他設施轉場、成功演出、圖示與未列畫面，再完成角色／地形真正高解析素材、戰場交界及跨平台HD效能；完整HD仍未完成。",
       "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
       "verify": {
         "kind": "manual",
-        "note": "其餘地形、完整HUD／固定字樣、索引演出及跨平台HD效能／實機仍待完成。 已驗範圍依green_and_brown_followup_20261019。"
+        "note": "其餘地形、完整HUD／固定字樣、索引演出及跨平台HD效能／實機仍待完成。 已驗範圍依rounded_green_and_pair_followup_20261019。"
       },
       "issue": 204
     },
