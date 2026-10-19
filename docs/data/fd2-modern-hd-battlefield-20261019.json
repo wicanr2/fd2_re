@@ -9,13 +9,13 @@
     "native_viewport": "CONFORMED-SCOPED：正式1920世界沿原生(4,4)、312×192窗格；正常F2同view與960地形樣本一致。",
     "hd_sprite_data": "DATA-READY：完整125組1455張HD及31組372張新增24父項已登錄；舊1083張父項及HD bytes保持。",
     "hd_world_renderer": "CONFORMED-SCOPED：144人物已接Game.Draw；首章34張正常GPU、4張實際走行、兩次物理攻擊及保存／新程序LOAD通過。",
-    "private_assets": "391項清冊、3526檔完整allow-list與3238檔runtime-only已核，原3503檔SHA保持；新增八母稿不進執行包。Go正式載入／前置拒收／完整HD頭像通過。私人fc1931722cb43cb36d7421a28df9b14d22e7ea7e已推送，遠端HEAD相同，仍private。",
+    "private_assets": "393項清冊、3536檔完整allow-list與3246檔runtime-only已核，原3526檔SHA保持；新增兩母稿不進執行包。Go真實載入／前置拒收／完整HD頭像三項加兩子項通過，零SKIP。私人d072ebc4c61359480424ab60292a9abe536a8119已推送，實際遠端HEAD相同，仍private。",
     "quickload_battle_owner": "CONFORMED-SCOPED：成功JSON LOAD丟棄舊經驗owner與移動計畫；拒收保留。",
     "timed_dialogue": "CONFORMED-SCOPED-RUNTIME-E1：計時FFEC開收框保留HD世界，EXP99普通鍵盤／F2與保存冷讀通過；其他caller未驗。",
     "hd_terrain": "CONFORMED-SCOPED：map0六組53槽；新增圓頂綠色／褐色雙塊四底圖在兩張正常GPU全部相符，短長組合與保存冷讀通過；草地及其他地形仍待HD化。",
     "ai_player_input_lock": "CONFORMED-SCOPED：AI換手期間拒絕玩家地圖輸入重入；普通END／增援對話及相關／完整Go回歸通過。",
     "gaia_redesign": "CONFORMED-SCOPED：新版頭像與四方向圖組已登錄；正常START／Gaia北移取消／F2／冷讀分段驗證。相位差異與序章尾端失敗明示，非逐幀parity。",
-    "hd_battle_animation": "CONFORMED-SCOPED：正式FIGANI18資源134幀及四召喚37幀。哈諾11幀與第二章133／134表情正式登錄；教會復活後章前HP+1000槽，三次END、單場攻防／自然返回、F2與保存冷讀完整GUI通過，10張符合核心，九項拒收。非自然難度或新章E2。蓋亞兩場獨立追蹤及原GUI指定END失敗保持；其餘人物／法術／死亡／普通召喚與效能／平台仍待。"
+    "hd_battle_animation": "CONFORMED-SCOPED：正式FIGANI20資源142幀及四召喚37幀。第二章村民399／402各四幀待機登錄，兩項空攻擊／施術來源不造動作；完整Draw及普通三次END、哈諾一場攻防／自然返回、F2及章節邊界保存冷讀通過，章前HP+1000作弊來源明示。村民正常END各3／2張符合核心，fixture完整各4張、12／14／20項拒收。哈諾、鐵諾與希莉亞既有範圍保持。蓋亞獨立追蹤與原GUI指定END失敗仍保留；其他人物／施術者／法術／死亡／普通召喚與效能／平台仍待。"
   },
   "runtime_source": {
     "binary": {
@@ -31739,6 +31739,897 @@
       ],
       "lessons": 268,
       "guards": 146
+    }
+  },
+  "villager_idle_battle_followup_20261020": {
+    "date": "2026-10-20",
+    "status": "CONFORMED-SCOPED",
+    "base_source_commit": "f109692ffdbffe8ade93afba46001648e8c6ec56",
+    "full_battle_hd_complete": false,
+    "formal_registered": true,
+    "private_synced": true,
+    "scope": "FIGANI399／402各四待機；400／401／403／404零header，不補攻擊或施術。BattleFig133／134只作圖源定位，不推定姓名。",
+    "native_inputs": {
+      "file": "work/promo-cadence-20261018/hd-fonts/villager-native-inputs-r1.json",
+      "sha256": "15fde37d104fa7026c40a04142d895d47eba5191fcd0f1791105b4dba693d587"
+    },
+    "inventory": {
+      "file": "docs/data/fd2-battle-hd-source-inventory-20261019.json",
+      "sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51"
+    },
+    "resources": [
+      {
+        "resource": 399,
+        "status": "decoded",
+        "resource_status_sha256": "ac6e21b264f8bb0bf6fc9673e9487335eb7cf8243b1aca4beb3924ce9bcf831d",
+        "raw_sha256": "b47b207f39182ae9bd185271c7e7eb85b9c4a16bdc815faa71530dfc9b4fc5b5",
+        "resource_status": {
+          "raw_size": 16410,
+          "raw_prefix_hex": "0400040000000000180000001b100000",
+          "status": "decoded",
+          "reason_code": "decoded",
+          "evidence": "confirmed",
+          "header_word_le": 4,
+          "frame_count": 4,
+          "schema_version": 1,
+          "document_id": "animation-resource/figani_399",
+          "kind": "animation_resource_status",
+          "resource_id": "animation-resource/figani_399",
+          "source": {
+            "file": "FIGANI.DAT",
+            "resource": 399
+          },
+          "extensions": {}
+        },
+        "metadata_sha256": "8b82225d54671bfa65fd1792b5ff74d056e0b5beba5f828bbbed8761f3064f7a",
+        "native_frames": [
+          {
+            "frame": 0,
+            "x": 200,
+            "y": 59,
+            "width": 68,
+            "height": 131,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0,
+            "pixels_sha256": "ef9b61524da59ef7d5166fa8f53686b19baa47ca2b5c557cf48b5b19f6ad0ee2",
+            "mask_sha256": "727b2809cd52bc4c2253a1d1b6728d36f86587608d318b95fce70e1de5094e2d"
+          },
+          {
+            "frame": 1,
+            "x": 200,
+            "y": 58,
+            "width": 68,
+            "height": 132,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0,
+            "pixels_sha256": "5ff43adf711ce6a19f6b7d0affffb27e64988fa30b9a65b1d673a5d491188b8a",
+            "mask_sha256": "aca209105f6347d9ee8db07a89c85533ee4216a5f5263ad05048fffcb98867c6"
+          },
+          {
+            "frame": 2,
+            "x": 200,
+            "y": 57,
+            "width": 68,
+            "height": 133,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0,
+            "pixels_sha256": "9d15ed33354c88de16e17f45fbf7db7535371cdb4b0bc3ca1227be3391a83c15",
+            "mask_sha256": "6247bac59e65a1044ba87ad8bd47cf20707df451a7b7efbae86cccca9b6fa3e3"
+          },
+          {
+            "frame": 3,
+            "x": 200,
+            "y": 57,
+            "width": 68,
+            "height": 133,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0,
+            "pixels_sha256": "9d15ed33354c88de16e17f45fbf7db7535371cdb4b0bc3ca1227be3391a83c15",
+            "mask_sha256": "6247bac59e65a1044ba87ad8bd47cf20707df451a7b7efbae86cccca9b6fa3e3"
+          }
+        ]
+      },
+      {
+        "resource": 400,
+        "status": "empty_header_zero",
+        "resource_status_sha256": "90358829f9db4d8fc65cb4fe76f601ecd83db893edcef09e8d6c6e8b26a0c55b",
+        "raw_sha256": "6b25930e91686cee8bb5d4dae8dbed14f63c690c1c97ecb98552d8842e2d9395",
+        "resource_status": {
+          "raw_size": 3,
+          "raw_prefix_hex": "00000a",
+          "status": "empty_header_zero",
+          "reason_code": "zero_header_word",
+          "evidence": "confirmed",
+          "header_word_le": 0,
+          "schema_version": 1,
+          "document_id": "animation-resource/figani_400",
+          "kind": "animation_resource_status",
+          "resource_id": "animation-resource/figani_400",
+          "source": {
+            "file": "FIGANI.DAT",
+            "resource": 400
+          },
+          "extensions": {}
+        }
+      },
+      {
+        "resource": 401,
+        "status": "empty_header_zero",
+        "resource_status_sha256": "732dd4a981e51650aa98d78077e778bdee3f5a670308b82ecc294985c2bcde9b",
+        "raw_sha256": "6b25930e91686cee8bb5d4dae8dbed14f63c690c1c97ecb98552d8842e2d9395",
+        "resource_status": {
+          "raw_size": 3,
+          "raw_prefix_hex": "00000a",
+          "status": "empty_header_zero",
+          "reason_code": "zero_header_word",
+          "evidence": "confirmed",
+          "header_word_le": 0,
+          "schema_version": 1,
+          "document_id": "animation-resource/figani_401",
+          "kind": "animation_resource_status",
+          "resource_id": "animation-resource/figani_401",
+          "source": {
+            "file": "FIGANI.DAT",
+            "resource": 401
+          },
+          "extensions": {}
+        }
+      },
+      {
+        "resource": 402,
+        "status": "decoded",
+        "resource_status_sha256": "999cccf162c17a2f8294084ff71157998ee9781375c556cce8e58c9c39c85c5a",
+        "raw_sha256": "c3324bd063f7d587a82f94a95a7e6f45b3936848732a0102311144e51e22ec37",
+        "resource_status": {
+          "raw_size": 17590,
+          "raw_prefix_hex": "04000400000000001800000051110000",
+          "status": "decoded",
+          "reason_code": "decoded",
+          "evidence": "confirmed",
+          "header_word_le": 4,
+          "frame_count": 4,
+          "schema_version": 1,
+          "document_id": "animation-resource/figani_402",
+          "kind": "animation_resource_status",
+          "resource_id": "animation-resource/figani_402",
+          "source": {
+            "file": "FIGANI.DAT",
+            "resource": 402
+          },
+          "extensions": {}
+        },
+        "metadata_sha256": "9b15210e731700e1e3014abefb8a0168cca2f4326ad91c4ff358c853e5a6b049",
+        "native_frames": [
+          {
+            "frame": 0,
+            "x": 204,
+            "y": 69,
+            "width": 91,
+            "height": 119,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0,
+            "pixels_sha256": "99a9d3c6b1db18f8fb3abf6328187fd8cccefbb8ea42fb0be49543183493f843",
+            "mask_sha256": "d075824230aab236c8ac05cb567395e82b769c5ea3638092cd39dec89a066084"
+          },
+          {
+            "frame": 1,
+            "x": 204,
+            "y": 70,
+            "width": 91,
+            "height": 118,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0,
+            "pixels_sha256": "bf54b44a73659cc8f8a8990a2fdd6c3584a2f5cdf66d553d3bc534c459d91cb9",
+            "mask_sha256": "4e0a7c8f63cb7800c88fe2ba5b395076d00fe09af3472d7fcc854be306eb697b"
+          },
+          {
+            "frame": 2,
+            "x": 204,
+            "y": 71,
+            "width": 91,
+            "height": 117,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0,
+            "pixels_sha256": "f7f9e7b4a3b4f6d8cd4cb0659846af337d05f0a859f2fcda197604e9d85313ac",
+            "mask_sha256": "0856a96a7544b70729b5f002009a44026fe4381a524883a8e01f189ff8b11560"
+          },
+          {
+            "frame": 3,
+            "x": 204,
+            "y": 70,
+            "width": 91,
+            "height": 118,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0,
+            "pixels_sha256": "bf54b44a73659cc8f8a8990a2fdd6c3584a2f5cdf66d553d3bc534c459d91cb9",
+            "mask_sha256": "4e0a7c8f63cb7800c88fe2ba5b395076d00fe09af3472d7fcc854be306eb697b"
+          }
+        ]
+      },
+      {
+        "resource": 403,
+        "status": "empty_header_zero",
+        "resource_status_sha256": "6dd5e79a7c4851d1e724095d9a1c5d4cd3c65614c5d9481dd925311e66f9e1b4",
+        "raw_sha256": "6b25930e91686cee8bb5d4dae8dbed14f63c690c1c97ecb98552d8842e2d9395",
+        "resource_status": {
+          "raw_size": 3,
+          "raw_prefix_hex": "00000a",
+          "status": "empty_header_zero",
+          "reason_code": "zero_header_word",
+          "evidence": "confirmed",
+          "header_word_le": 0,
+          "schema_version": 1,
+          "document_id": "animation-resource/figani_403",
+          "kind": "animation_resource_status",
+          "resource_id": "animation-resource/figani_403",
+          "source": {
+            "file": "FIGANI.DAT",
+            "resource": 403
+          },
+          "extensions": {}
+        }
+      },
+      {
+        "resource": 404,
+        "status": "empty_header_zero",
+        "resource_status_sha256": "e3033ac0efa44731c362a0968bfde5271932a5406b3a60608cf99fc92e714bcf",
+        "raw_sha256": "6b25930e91686cee8bb5d4dae8dbed14f63c690c1c97ecb98552d8842e2d9395",
+        "resource_status": {
+          "raw_size": 3,
+          "raw_prefix_hex": "00000a",
+          "status": "empty_header_zero",
+          "reason_code": "zero_header_word",
+          "evidence": "confirmed",
+          "header_word_le": 0,
+          "schema_version": 1,
+          "document_id": "animation-resource/figani_404",
+          "kind": "animation_resource_status",
+          "resource_id": "animation-resource/figani_404",
+          "source": {
+            "file": "FIGANI.DAT",
+            "resource": 404
+          },
+          "extensions": {}
+        }
+      }
+    ],
+    "contract": "docs/knowledge-base/61-modern-theme-runtime-spec.md#第二章村民受擊待機ready",
+    "next_gate": "其他人物、施術者、法術／死亡／共同效果、普通召喚及效能／平台。完整戰鬥HD Goal保持active。",
+    "generation": {
+      "mode": "built-in image_gen",
+      "scope": "BattleFig133／134只按原版身形與衣著繪製，不由同號頭像推定姓名。",
+      "jobs": [
+        {
+          "key": "figure133-idle",
+          "prompt": "Use case: stylized-concept. Create ONE complete full-body HD battle idle sprite for a fantasy tactical RPG remake on a truly transparent background. Image 1 is the exact native FIGANI399/0 pose, proportions, clothing and palette reference and takes priority. Image 2 is only the approved hand-painted rendering style: do not copy its muscular body, axe, scarf, red clothing or pose. Preserve Image 1's slender civilian seen entirely from BEHIND, straight ash-brown shoulder-length hair hiding the face, narrow shoulders, grey sage-green short-sleeved cloth tunic with brown edging at sleeves and hem, simple brown waist belt and small tied fabric ends at the hip, loose dusty blue trousers gathered into dark grey-green calf wrappings, brown simple open sandals and visible toes. Both arms hang slightly out to the sides, hands lightly closed, empty and unarmed. Keep the slim native silhouette and the exact planted foot angles and stance; no gender-specific embellishment, armor, headband, jewelry, cape, weapons or extra accessories. Smooth detailed painted fabric folds, restrained crisp dark contours and soft volume in the established style; no pixel blocks, photorealism or exaggerated cartoon proportions. The whole head, both hands and both sandals fit in the image with modest transparent margins. Omit the original dotted ground-shadow strip. No ground plane, cast shadow, pedestal, scenery, text, labels, border or vignette. One isolated full figure, rear view, actual antialiased transparent alpha.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/villager-ref-399-00.png",
+            "/home/anr2/cht/fd2/remake/generated-assets/modern-theme-prototypes/figure-001-idle-battle-hd6-master-v1.png"
+          ],
+          "transparent_background": true,
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-aed5dd52-8995-4305-93be-7fbcedb8931e.png",
+          "workspace_file": "work/promo-cadence-20261018/hd-fonts/villager-133-idle-master-r1.png",
+          "selection": "CANDIDATE-NOT-REGISTERED",
+          "workspace_sha256": "6a9dffcf86b38a2a99dd0a93f292e86f00cc9b6a611015905f98c7d2b26ad86a"
+        },
+        {
+          "key": "figure134-idle",
+          "prompt": "Use case: stylized-concept. Create ONE complete full-body HD battle idle sprite for a fantasy tactical RPG remake on a truly transparent background. Image 1 is the authoritative native FIGANI402/0 pose, silhouette, clothing and palette reference. Image 2 supplies only the already approved hand-painted rendering style and cloth/skin detail, not its axe, red tunic, long blue tail panels or character equipment. Preserve Image 1's compact broad muscular civilian viewed entirely from BEHIND, small reddish brown hair tuft, head bowed and mostly hidden behind a broad dark navy shoulder cloth, grey slate/sage-green sleeveless vest back, simple broad brown belt, a single long rust-red/brown triangular back skirt panel falling from the waist, loose dark sage/slate-green trousers, small blue cloth side folds, dark grey-brown ankle boots. The bare muscular forearms are raised and bent sideways in the exact original tense guarded stance, with EMPTY hands. Wide planted bent-knee legs and the exact original boot directions. Match the native stocky proportions and rear view. Do not add any axe, sword, shield, weapon, plate armor, helmet, extra belt pouches, gold trim or extra accessories. Smooth hand-painted fantasy fabric/leather/skin volume and restrained crisp dark contours, not enlarged pixels or photorealism. Whole body, head, fingers and boots visible with modest transparent margins. No ground-shadow ellipse, dotted shadow strip, scenery, ground plane, pedestal, text, labels, border or vignette. One isolated figure with actual antialiased transparent alpha.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/villager-ref-402-00.png",
+            "/home/anr2/cht/fd2/remake/generated-assets/modern-theme-prototypes/figure-001-idle-battle-hd6-master-v1.png"
+          ],
+          "transparent_background": true,
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-8ae24d47-0324-4b37-9152-6b24a1aa14b9.png",
+          "workspace_file": "work/promo-cadence-20261018/hd-fonts/villager-134-idle-master-r1.png",
+          "selection": "REJECTED-WIDE-ASPECT-1.154",
+          "workspace_sha256": "d54aa6816d14fb7f5330da8674704c6770f4571b795854fc964b171e6f21c200"
+        },
+        {
+          "key": "figure134-idle-r2",
+          "prompt": "Use case: precise-object-edit. Edit Image 1, the hand-painted transparent battle sprite, to match the body proportions and pose of authoritative native Image 2 much more closely. Keep the same character clothing, colors, rear view, reddish hair tuft, navy shoulder cloth, sage/slate-green vest and trousers, brown belt, single rust-red/brown long back panel, bare muscular arms, empty hands and dark boots. Image 1 is currently much too WIDE and squat. Repose it with a substantially NARROWER leg span and elbows held closer to the upper torso, as in Image 2, and a naturally taller torso-to-foot silhouette. Target full visible figure width approximately 0.76 of its height, matching Image 2, while retaining compact strong anatomy without stretching or squeezing body parts. The original stance is tense and bent-kneed, not a wide squat. Do not introduce an axe, weapon, armor, extra accessories, red shirt, or new clothing. Preserve the painted detail and opaque body coverage from Image 1; whole fingers, both boots and hair fit comfortably inside the canvas. One rear-view full-body figure on actual transparent background, no shadows, ground, labels, border or scenery. Change pose/proportions only; keep character design and palette.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/villager-134-idle-master-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/villager-ref-402-00.png"
+          ],
+          "transparent_background": true,
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-98c5e57c-9f4d-4627-866d-ccddf0424875.png",
+          "workspace_file": "work/promo-cadence-20261018/hd-fonts/villager-134-idle-master-r2.png",
+          "selection": "CANDIDATE-NOT-REGISTERED",
+          "workspace_sha256": "41351eda848d7c09faaa1f00a9136f4479b3f0fcc28ffd1b412a9cae8740e5df"
+        }
+      ],
+      "selected_art": [
+        {
+          "figure": 133,
+          "file": "work/promo-cadence-20261018/hd-fonts/villager-133-idle-master-r1.png",
+          "sha256": "6a9dffcf86b38a2a99dd0a93f292e86f00cc9b6a611015905f98c7d2b26ad86a",
+          "size": [
+            904,
+            1740
+          ],
+          "anchor": [
+            74,
+            11,
+            844,
+            1709
+          ],
+          "ratio": 0.4534746760895171
+        },
+        {
+          "figure": 134,
+          "file": "work/promo-cadence-20261018/hd-fonts/villager-134-idle-master-r2.png",
+          "sha256": "41351eda848d7c09faaa1f00a9136f4479b3f0fcc28ffd1b412a9cae8740e5df",
+          "size": [
+            1096,
+            1435
+          ],
+          "anchor": [
+            98,
+            77,
+            1027,
+            1388
+          ],
+          "ratio": 0.7086193745232647
+        }
+      ],
+      "art_differences": "各四相位共享母稿，沿原始y／height保留呼吸幾何與重複相位；不宣稱原版身體變形逐像素相同。134初稿過寬拒收，r2收窄站距與手臂後再編製；衣摺及頭髮沿手繪重定向。"
+    },
+    "generation_file": {
+      "file": "work/promo-cadence-20261018/hd-fonts/villager-generation-r1.json",
+      "sha256": "90cebf5c207f37b2314b30fa82dafda43c2629ac2757d54f02d68323161fb788"
+    },
+    "recipes": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/villager-133-recipe-r1.json",
+        "sha256": "8f217f720da7aec6b54b98aab3344d82cdc3d69b9f0b8b9d79c1e1be40aa3290"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/villager-134-recipe-r1.json",
+        "sha256": "002239681ce44dcecb9b8fcea00bd78a418d7cb51c5a7a49d85e8a2b4bc5101c"
+      }
+    ],
+    "recipe_133_padding_followup": {
+      "rejected_candidate": "villager-133-battle-candidate-r1",
+      "high_coverage_clipped_pixels": 2,
+      "reason": "高覆蓋bbox緊貼邊界，Lanczos取樣及round使phase1有兩個邊緣像素裁切；母稿不變，取樣錨點各邊加4個母稿像素緩衝。",
+      "recipe": {
+        "file": "work/promo-cadence-20261018/hd-fonts/villager-133-recipe-r2.json",
+        "sha256": "22f9da10a2e80aab4ef1770b768c6569a607014298da8d8b3bae441ecb288de6"
+      },
+      "anchor": [
+        70,
+        7,
+        848,
+        1713
+      ]
+    },
+    "fixture_r1_overlap": {
+      "runtime_status": "PASS-IDLE-TARGET-FIXTURE-RUNTIME-E1",
+      "pixel_status": "REJECTED-OCCLUDED-FIXTURE",
+      "scope": "兩組各4張同次Draw；185／183 HD、兩階段F2、64／65 DAC與一次續行通過，但全服裝核心被索爾圖源遮擋，不能宣稱完整圖源已驗。",
+      "reason": "索爾原描述子x167..270與村民x200..268同在右側；新fixture改用所有右界<=132的既有劍盾兵76，保持原矩形與像素容差。",
+      "receipts": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/villager-133-lifecycle-r1/receipt.json",
+          "sha256": "80cebfb3f3f47d488b70209e329821e5059cf76f1ac976090094fd9eb76fff85"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/villager-134-lifecycle-r1/receipt.json",
+          "sha256": "2d1b035b3d9c282afdb53b4b8736d24a3970e6e83b3384368c0aedaa30590fb6"
+        }
+      ]
+    },
+    "normal_capture_contract_correction": {
+      "source": "work/promo-cadence-20261018/hd-fonts/hano-hp1000-normal-gui-r1/input-audit-first-process.jsonl",
+      "sha256": "ef0485791b6529ff0e199fb3e127137ee2967ce4f6461e1e9bf6dd35f4f2bf99",
+      "round1_rows": 572,
+      "round2_rows": 486,
+      "physical_rows_in_round1_and2": 0,
+      "scope": "普通換手可以沒有戰鬥。只有實際scene逐場驗HD，整份收據仍需END圖源；不改正式遊戲。"
+    },
+    "formal_registration": {
+      "assets": 393,
+      "old_391_entries_preserved": true,
+      "candidate_entries_equal_formal": true,
+      "catalog_sha256": "90c97d310630142683192a5cfdfdcf39312e763f5be4ae0740cef57befadb854",
+      "figani_resources": 20,
+      "figani_frames": 142,
+      "added_files": [
+        {
+          "file": "figani-399-hd6-v1-f00.png",
+          "sha256": "2087d6de79dd8af5575d623c228fe358d8775469fa49826a991d4cb2d1ccc0a9",
+          "size": 315815
+        },
+        {
+          "file": "figani-399-hd6-v1-f01.png",
+          "sha256": "c143e297e384cbe02c842c6075c9be05b38f223230e5577e70a41b6639b01622",
+          "size": 320575
+        },
+        {
+          "file": "figani-399-hd6-v1-f02.png",
+          "sha256": "c2268520415abd481e67143d960195f095f1b2ec7f326d891afd65993da35bee",
+          "size": 325154
+        },
+        {
+          "file": "figani-399-hd6-v1-f03.png",
+          "sha256": "c2268520415abd481e67143d960195f095f1b2ec7f326d891afd65993da35bee",
+          "size": 325154
+        },
+        {
+          "file": "figure-133-idle-battle-hd6-master-v1.png",
+          "sha256": "6a9dffcf86b38a2a99dd0a93f292e86f00cc9b6a611015905f98c7d2b26ad86a",
+          "size": 1415009
+        },
+        {
+          "file": "figani-402-hd6-v1-f00.png",
+          "sha256": "fb11654ece3c424d398184ceda79b6979f18270f7cabc76feef3873abb7281f2",
+          "size": 372191
+        },
+        {
+          "file": "figani-402-hd6-v1-f01.png",
+          "sha256": "5649a9ad925125a6494ef2a21348c94bce9609125c09a0932d83c2d20208799c",
+          "size": 366106
+        },
+        {
+          "file": "figani-402-hd6-v1-f02.png",
+          "sha256": "4a4f03983c04abe4d60ded57ebf71546a7805b49fa2f0ce374bb4aa967735ba2",
+          "size": 360569
+        },
+        {
+          "file": "figani-402-hd6-v1-f03.png",
+          "sha256": "5649a9ad925125a6494ef2a21348c94bce9609125c09a0932d83c2d20208799c",
+          "size": 366106
+        },
+        {
+          "file": "figure-134-idle-battle-hd6-master-v1.png",
+          "sha256": "41351eda848d7c09faaa1f00a9136f4479b3f0fcc28ffd1b412a9cae8740e5df",
+          "size": 1218779
+        }
+      ],
+      "screenshots": [
+        {
+          "file": "docs/figures/hd-villager-133-physical-idle.png",
+          "sha256": "823cda07441e9e91ed2b435ca530b950dba6f891806c7973f87826601796f0dc",
+          "unmodified_source": "work/promo-cadence-20261018/hd-fonts/villager-normal-gui-r1/world-hd-end-2-399-00.png"
+        },
+        {
+          "file": "docs/figures/hd-villager-134-physical-idle.png",
+          "sha256": "36639e796ae866bdaefd1d02d99aa031731ee60c2ad31f9948bc1e8670c9fe85",
+          "unmodified_source": "work/promo-cadence-20261018/hd-fonts/villager-normal-gui-r1/world-hd-end-2-402-00.png"
+        }
+      ]
+    },
+    "reproduction_recipes": [
+      {
+        "schema_version": 1,
+        "figure": 133,
+        "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+        "sources": {
+          "idle": {
+            "file": "work/promo-cadence-20261018/hd-fonts/villager-133-idle-master-r1.png",
+            "sha256": "6a9dffcf86b38a2a99dd0a93f292e86f00cc9b6a611015905f98c7d2b26ad86a",
+            "anchor": [
+              70,
+              7,
+              848,
+              1713
+            ]
+          }
+        },
+        "resources": {
+          "399": [
+            {
+              "pose": "idle",
+              "anchor": [
+                0,
+                0,
+                68,
+                131
+              ],
+              "scale_group": "standing"
+            },
+            {
+              "pose": "idle",
+              "anchor": [
+                0,
+                0,
+                68,
+                132
+              ],
+              "scale_group": "standing"
+            },
+            {
+              "pose": "idle",
+              "anchor": [
+                0,
+                0,
+                68,
+                133
+              ],
+              "scale_group": "standing"
+            },
+            {
+              "pose": "idle",
+              "anchor": [
+                0,
+                0,
+                68,
+                133
+              ],
+              "scale_group": "standing"
+            }
+          ]
+        }
+      },
+      {
+        "schema_version": 1,
+        "figure": 134,
+        "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+        "sources": {
+          "idle": {
+            "file": "work/promo-cadence-20261018/hd-fonts/villager-134-idle-master-r2.png",
+            "sha256": "41351eda848d7c09faaa1f00a9136f4479b3f0fcc28ffd1b412a9cae8740e5df",
+            "anchor": [
+              98,
+              77,
+              1027,
+              1388
+            ]
+          }
+        },
+        "resources": {
+          "402": [
+            {
+              "pose": "idle",
+              "anchor": [
+                0,
+                0,
+                91,
+                119
+              ],
+              "scale_group": "standing"
+            },
+            {
+              "pose": "idle",
+              "anchor": [
+                0,
+                0,
+                91,
+                118
+              ],
+              "scale_group": "standing"
+            },
+            {
+              "pose": "idle",
+              "anchor": [
+                0,
+                0,
+                91,
+                117
+              ],
+              "scale_group": "standing"
+            },
+            {
+              "pose": "idle",
+              "anchor": [
+                0,
+                0,
+                91,
+                118
+              ],
+              "scale_group": "standing"
+            }
+          ]
+        }
+      }
+    ],
+    "verification": {
+      "villager-normal-gui-r1/receipt.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/villager-normal-gui-r1/receipt.json",
+        "sha256": "8b15cdecc08558f953cc518d9af3b0878c5cc2b21e0671d73eb5ed58b434fa0a",
+        "status": "PASS"
+      },
+      "villager-133-lifecycle-r2/receipt.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/villager-133-lifecycle-r2/receipt.json",
+        "sha256": "8bc894e4baf9ebc686df42e65d0ea05ca4779773647e50d9ddda0a59b9bf3676",
+        "status": "PASS-IDLE-TARGET-FIXTURE-RUNTIME-E1",
+        "figure": 133,
+        "phase_f2": {
+          "body": 1,
+          "prelude": 1
+        },
+        "phase_hd_draws": {
+          "body": 90,
+          "fade": 64,
+          "prelude": 10,
+          "restore": 21
+        },
+        "continuations": 1,
+        "battle_dac_steps": 64,
+        "map_dac_steps": 65
+      },
+      "villager-134-lifecycle-r2/receipt.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/villager-134-lifecycle-r2/receipt.json",
+        "sha256": "0a683dd712e71c4eadb5ce522859b0e89fd634108e4e6f06b04ad19ac6d23929",
+        "status": "PASS-IDLE-TARGET-FIXTURE-RUNTIME-E1",
+        "figure": 134,
+        "phase_f2": {
+          "body": 1,
+          "prelude": 1
+        },
+        "phase_hd_draws": {
+          "body": 90,
+          "fade": 64,
+          "prelude": 10,
+          "restore": 21
+        },
+        "continuations": 1,
+        "battle_dac_steps": 64,
+        "map_dac_steps": 65
+      },
+      "villager-legacy-hano-lifecycle-r1/receipt.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/villager-legacy-hano-lifecycle-r1/receipt.json",
+        "sha256": "a56db841f97cb117e2977a57edbbd6b1ea25960808a0db3ddcf01b3e79f42631",
+        "status": "PASS-CHARACTER-FIXTURE-RUNTIME-E1",
+        "figure": 1,
+        "phase_f2": {
+          "body": 1,
+          "counter": 1,
+          "prelude": 1
+        },
+        "phase_hd_draws": {
+          "body": 75,
+          "counter": 73,
+          "fade": 64,
+          "prelude": 10,
+          "restore": 21
+        },
+        "continuations": 1,
+        "battle_dac_steps": 64,
+        "map_dac_steps": 65
+      },
+      "villager-133-fixture-pixels-r2.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/villager-133-fixture-pixels-r2.json",
+        "sha256": "a595a5878668c4d417690d9cb6d05fbf086902a3de9ac49ddb2dfff020baeeb4",
+        "status": "PASS-IDLE-TARGET-FIXTURE-GPU",
+        "figure": 133,
+        "sample_group": "idle-fixture",
+        "matched_pngs": 4
+      },
+      "villager-134-fixture-pixels-r2.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/villager-134-fixture-pixels-r2.json",
+        "sha256": "a9af92532886270d0691e1dedeb61b47756b743ad6639fb985c99b0159ac4f69",
+        "status": "PASS-IDLE-TARGET-FIXTURE-GPU",
+        "figure": 134,
+        "sample_group": "idle-fixture",
+        "matched_pngs": 4
+      },
+      "villager-133-normal-pixels-r1.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/villager-133-normal-pixels-r1.json",
+        "sha256": "95227df164fbe09d36747cf7069c24d5acbc56ce2d6c7b8f4caaad00b187eafe",
+        "status": "PASS-CHARACTER-NORMAL-IDLE-GPU",
+        "figure": 133,
+        "sample_group": "idle-end",
+        "matched_pngs": 3
+      },
+      "villager-134-normal-pixels-r1.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/villager-134-normal-pixels-r1.json",
+        "sha256": "66c0baadd3a88e355c58d2538ec382f1b2b95a02bf35af72354b14ac41c30b67",
+        "status": "PASS-CHARACTER-NORMAL-IDLE-GPU",
+        "figure": 134,
+        "sample_group": "idle-end",
+        "matched_pngs": 2
+      },
+      "villager-hano-normal-pixels-r1.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/villager-hano-normal-pixels-r1.json",
+        "sha256": "0784d5afefb215bb3b89c423d7e472e944b31634bffd25945def1337be8317f8",
+        "status": "PASS-CHARACTER-NORMAL-ATTACK-GPU",
+        "figure": 1,
+        "sample_group": "attack",
+        "matched_pngs": 27
+      },
+      "villager-133-compiler-guards-r1/guards.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/villager-133-compiler-guards-r1/guards.json",
+        "sha256": "d02d86a43a554866a77f76d0fe27dc8adab7534013abe8421941bec10a68fac9",
+        "status": "PASS-CHARACTER-COMPILER-GUARDS",
+        "guard_count": 20
+      },
+      "villager-134-compiler-guards-r1/guards.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/villager-134-compiler-guards-r1/guards.json",
+        "sha256": "59fb7be0d25cf0f2313bf9b3aab2bb10634ae5d62be5282cf282afa0ab1161e1",
+        "status": "PASS-CHARACTER-COMPILER-GUARDS",
+        "guard_count": 20
+      },
+      "villager-legacy-hano-compiler-guards-r1/guards.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/villager-legacy-hano-compiler-guards-r1/guards.json",
+        "sha256": "813ce0a57c04475c3edf7b7ee73bfe2f4299292628b91ee413303775dc907e4c",
+        "status": "PASS-CHARACTER-COMPILER-GUARDS",
+        "guard_count": 16
+      },
+      "villager-133-fixture-r2-guards/guards.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/villager-133-fixture-r2-guards/guards.json",
+        "sha256": "6b39706f818eefee499643faddbdc8c3d72d8a1e9b5590a0274220c356b1fd07",
+        "status": "PASS-CHARACTER-GPU-GUARDS",
+        "sample_group": "idle-fixture",
+        "guard_count": 12
+      },
+      "villager-134-fixture-r2-guards/guards.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/villager-134-fixture-r2-guards/guards.json",
+        "sha256": "55245096175a2f1f4b7ec6e5946e624855b4a440483a8d62050e0238d1c056b6",
+        "status": "PASS-CHARACTER-GPU-GUARDS",
+        "sample_group": "idle-fixture",
+        "guard_count": 12
+      },
+      "villager-133-normal-r2-guards/guards.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/villager-133-normal-r2-guards/guards.json",
+        "sha256": "2197b9e77326a88102c80bdda5b317ff28339db391aca02af54e010d10708db8",
+        "status": "PASS-CHARACTER-GPU-GUARDS",
+        "guard_count": 14
+      },
+      "villager-134-normal-r2-guards/guards.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/villager-134-normal-r2-guards/guards.json",
+        "sha256": "5a2b0b14c602b5dd53d38e81c2885054b1d5b6d3e0e1957ec90a720a97a25586",
+        "status": "PASS-CHARACTER-GPU-GUARDS",
+        "guard_count": 14
+      },
+      "villager-legacy-compile-equivalence-r1.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/villager-legacy-compile-equivalence-r1.json",
+        "sha256": "7617bd6aa8d97338c3a9c773bdbb4c107fb41455604ba79ea4b5e1521643df62",
+        "status": "PASS-LEGACY-PAIRED-RECIPE",
+        "figure": 1
+      },
+      "villager-legacy-hano-normal-pixels-r1.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/villager-legacy-hano-normal-pixels-r1.json",
+        "sha256": "54d102aaa8389b1fbac15714eb8be45393fa86b886cd820e020b9731d701d7b3",
+        "status": "PASS-CHARACTER-NORMAL-ATTACK-GPU",
+        "figure": 1,
+        "sample_group": "attack",
+        "matched_pngs": 10
+      },
+      "villager-legacy-silia-normal-pixels-r1.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/villager-legacy-silia-normal-pixels-r1.json",
+        "sha256": "9d877878e999a3f859e5709c5a46e20fb3ad09775858ac75467048a501b6ae23",
+        "status": "PASS-CHARACTER-NORMAL-ATTACK-GPU",
+        "figure": 8,
+        "sample_group": "attack",
+        "matched_pngs": 85
+      }
+    },
+    "normal_result": {
+      "status": "PASS",
+      "end_samples": 8,
+      "declared_figures": [
+        133,
+        134
+      ],
+      "ordinary_attack_samples": 32,
+      "main_screenshots": 21,
+      "operations": 229,
+      "approach_rounds": 3,
+      "attack_repetitions": 1,
+      "natural_return": true,
+      "new_process_load": true,
+      "source_save_bytes_equal": true,
+      "theme_save_bytes_equal": true,
+      "cold_loaded_units_equal": true,
+      "source_save_sha256": "2b9570cd6b5156ce330b2a8d91fe29015008f34dfc5689b516e81caabf895f29",
+      "save_contract": "F5保存章節邊界進度；LOAD重建戰場，不保存戰中位置、Acted或敵方HP。",
+      "scope": "教會復活後章前全員MaxHP／HP+1000的既有槽；普通按鍵、三次END、哈諾一場攻防。村民未鎖血或注入位置。章節邊界保存；非自然難度、傷害／AI或新增原版E2。"
+    },
+    "string_review_correction": {
+      "old_inventory_sha256": "9ce6ddfa4df1e56ca04cc82c2bb324e92b93ce5422882abead33afdd542b3714",
+      "current_inventory_sha256": "902609017f55f6398afdbb5b154a742e74183f450d8f85030716020405525eae",
+      "reviewed_99_entries_byte_equal": true,
+      "reason": "舊綁定後正式Go新增四條繪製診斷字串並有行號位移；本輪只改_test.go，既有99筆go_review處置完整相同。command_labels私有衍生資料38筆使乾淨git archive與工作區總盤點不同，未據此刪除。",
+      "regression_log": "work/promo-cadence-20261018/hd-fonts/villager-string-review-test-r1.log",
+      "regression_sha256": "fd147e80da7046b1b929077a49b64b8296373dc44350bc46972acfb53784364d"
+    },
+    "verification_environment_correction": "第一次普通負向測試指向不存在silia-normal-gui-r2，沒有通過收據；改用既有silia-normal-gui-r1後乾淨重跑r2各14項通過。",
+    "formal_coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/villager-formal-coverage-r1.json",
+      "sha256": "911f81f07577adaffd645d96b4703499e3f27c6601d5dae81657b80db3e73649"
+    },
+    "private_delivery": {
+      "commit": "d072ebc4c61359480424ab60292a9abe536a8119",
+      "remote_head_verified": true,
+      "visibility": "PRIVATE",
+      "file_count": 3536,
+      "runtime_only_count": 3246,
+      "retained_unchanged": 3526,
+      "report": {
+        "file": "work/promo-cadence-20261018/hd-fonts/villager-private-sync-r1.json",
+        "sha256": "377dc03f2ee8bed0e165d4fc6acd67d951e6f014ce3da11641fc444b601fbeef"
+      },
+      "runtime_go_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/villager-formal-runtime-go-r1.log",
+        "sha256": "7369b8460429228d1686b3d86265ef330bedbd3c20417e48b79d16943f26e05d"
+      },
+      "formal_catalog_tests": {
+        "file": "work/promo-cadence-20261018/hd-fonts/villager-formal-catalog-tests-r1.log",
+        "sha256": "26b6b72ad23767cfb5fd79737e8a09f5349e85b5ae9312834e50e2768c3339df"
+      },
+      "go_top_tests": 3,
+      "go_subtests": 2,
+      "skipped": 0
+    },
+    "cleanup": {
+      "report": {
+        "file": "work/promo-cadence-20261018/hd-fonts/villager-cleanup-r1.json",
+        "sha256": "123cdd5a847fe42ed0f986214c128c06f741570a28df66b0d37f5c437d8ddc37"
+      },
+      "removed_file_bytes": 277797769,
+      "deduplicated_file_bytes": 17937698,
+      "recording_created": false,
+      "retained_runtime_manifest": {
+        "file": "work/promo-cadence-20261018/hd-fonts/villager-formal-runtime-only-manifest-r1.json",
+        "sha256": "bd9658f3e232e40038482600e4a663a289d95725d4fd3eabd5314a986612a9ad"
+      },
+      "pixels_after_cleanup": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/villager-133-after-cleanup-pixels-r1.json",
+          "sha256": "95227df164fbe09d36747cf7069c24d5acbc56ce2d6c7b8f4caaad00b187eafe"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/villager-134-after-cleanup-pixels-r1.json",
+          "sha256": "66c0baadd3a88e355c58d2538ec382f1b2b95a02bf35af72354b14ac41c30b67"
+        }
+      ],
+      "unexpected_fd2_containers": 0
+    },
+    "reproduction_steps": [
+      "以61 READY契約及固定inventory，從私人庫取得兩母稿；先取本批base_catalog_sha256所指391項前綴清冊。",
+      "Docker依reproduction_recipes先編製figure133再用該392項清冊編製figure134；核對原391項、8PNG及零header，tools/test_fd2_character_battle_hd.py兩組各20項，舊哈諾16項。",
+      "Docker Go編譯cmd/fd2測試；FD2_ASSET_PACK=<原版包> FD2_HD_BATTLE_LIFECYCLE_GPU=1 FD2_HD_BATTLE_REAL=1 FD2_HD_BATTLE_IDLE_TARGET=1 FD2_TEST_MODERN_BATTLE_FIGURE=133或134，明示catalog／pack／OUT，分程序with-xvfb執行TestModernHDBattleRuntimeGPU；核對器sample-group idle-fixture，反例各12項。",
+      "正式GUI以既有章前HP+1000來源、seed1，battle_ch02、battle-only／battle-status／world／battle-hd／battle-art，own-index2、approach-rounds3、advance、repetitions1、art-samples32、end-art及end-figures133,134；完整命令與實錄沿normal_result及GUI工具。",
+      "以同GUI receipt、candidate／正式catalog和pack分別核對figure133／134 sample-group idle-end及figure1 attack；村民各14項反例，完整GUI／F5／F9／冷讀保持。",
+      "正式allow-list同步私人庫、重建runtime-only後跑三項正式Go與兩子項、11項清冊測試及coverage；清理後重驗END像素。"
+    ],
+    "toolchain": {
+      "asset_image": "fd2-assets-local:20260829-sfx",
+      "go_image": "fd2-go-test-local:latest",
+      "gui_image": "fd2-promo:20261017-r1",
+      "go": "1.22.12",
+      "ebiten": "2.6.6",
+      "python": "3.12",
+      "pillow": "11.3",
+      "seed": 1,
+      "production_go_files_changed": 0
+    },
+    "github_issue263_body_sha256": "a8799e8de52c0f95b4cb1372e105a76ec2acce0908a2ed5cc44d4fbf4304d352",
+    "github_issue201_body_sha256": "2ab91ce4d09f6895a53229b5302df308c243edc6e6ee21a7aaef33b7cbc22eb3",
+    "base_catalog_391_sha256": "f73d8d79d0efb6dd21f513b7bdbf5432240500d857beaa70c6450139b6687c6a",
+    "final_checks": {
+      "linked_documents": 5,
+      "local_targets_checked": 1948,
+      "broken_targets": 0,
+      "readme_positive_controls": 6,
+      "changed_files_uid_gid_1000": 20,
+      "python_syntax_files": 5,
+      "json_parsed_files": 5,
+      "worklist_open": 21,
+      "worklist_manual": 14,
+      "possibly_completed": 0,
+      "lessons": 269,
+      "guards": 147,
+      "private_remote_head_verified": true,
+      "public_remote_head_verified": false
     }
   }
 }

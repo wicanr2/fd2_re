@@ -368,6 +368,51 @@ F2、保存與新程序LOAD完整GUI通過。21張主要GPU、29張戰鬥取樣�
 私人提交與遠端核對、完整來源／共享稿及拒收見主收據`hano_battle_followup_20261020`。
 其他人物、施術者、法術／死亡／共同效果、普通召喚與平台仍待，完整Goal及#263保持開啟。
 
+#### 第二章村民受擊待機（CONFORMED-SCOPED）
+
+本節在實作前為READY。399／402各四幀已正式登錄；同次最終1920回讀各四張完整核對。
+普通第二章三次END、事件與哈諾攻防、自然返回、F2及章節邊界保存冷讀完整GUI通過。
+兩位村民的實際END截圖分別三張／兩張符合高覆蓋服裝核心，不判定唯一相位。
+修改fixture各十二項、普通END各十四項及編製器各二十項反例拒收；
+既有哈諾完整十一幀、三階段F2與雙資源編製十六項拒收保持。
+普通圖源與完整fixture分開記錄；此切片不新增原版oracle、整章E2或平台效能聲明。
+目前數量與私人保存依[58](58-fd2-exe-re-coverage.md)，完整提示、配方、來源與實檔SHA沿
+[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`villager_idle_battle_followup_20261020`。
+
+固定盤點的FIGANI399／402各4幀，原矩形、位置、delay與遮罩SHA均已解碼。
+400／401／403／404的`resource.json`同原始盤點狀態SHA，明示`empty_header_zero`、
+`zero_header_word`及`header_word_le:0`，不補造攻擊或施術圖。
+本節只以BattleFig133／134定位圖源；不從與DATO／FDICON同號推定人物姓名或合併身分。
+沿核准手繪風格，399保留背向灰褐長髮、灰綠短袖上衣與褐色滾邊、藍色寬褲及纏腿涼鞋；
+402保留背向短紅褐髮、深藍披布、灰綠衣褲、褐帶／紅褐長後擺、外露粗壯前臂與深靴，雙手無武器。
+不畫原始地面網點影，生成alpha保持；呼吸相位按原圖審查，允許明示共享相近姿勢，不把靜態重用當逐幀原版一致。
+
+編製沿[`build_fd2_character_battle_hd.py`](../../tools/build_fd2_character_battle_hd.py)既有schema1與逐資源清冊格式。
+新增合法集合僅`resources:{idle:四幀配方}`，且同一figure的attack／cast兩項皆須核對固定盤點及實檔零header；
+decoded、未知、缺件、錯SHA或非零header都拒收。既有完整idle／attack配方與拒收保持，沒有新的正式資料格式或Go呈現路徑。
+空圖庫證據只寫編製收據，不登錄假空白PNG或改規則；正式角色仍是既有`battle_animation_hd_set`。
+
+完整Game.Draw測試新增明示`idle-target`範圍：既有劍盾兵76圖源攻擊無武器的村民目標，
+沿既有`NativePhysicalCounterattackEligible`確認不反擊，只建立一次主動呈現計畫。
+本場景是修改fixture的RUNTIME-E1，不把只換BattleFig的目標視為原版村民規則對拍。
+核對4張同次最終1920回讀、prelude／body兩階段F2、64／65 DAC、一次返回、HP及兩種RNG保持，
+並斷言沒有counter或空圖庫的HD圖層。舊attack fixture的三階段與完整圖源要求保持。
+首跑誤用同在右側的索爾圖源，167..270與村民200..268重疊，完整繪製通過但服裝核心被遮住而拒收。
+依原描述子改用左側劍盾兵，全部228／229圖源的右界不超過132；不改正式renderer或放寬像素容差。
+入口仍是`TestModernHDBattleRuntimeGPU`，新增`FD2_HD_BATTLE_IDLE_TARGET=1`且必須搭配既有REAL及明示figure／catalog／pack。
+[`verify_fd2_character_battle_gpu.py`](../../tools/verify_fd2_character_battle_gpu.py)的`--sample-group idle-fixture`
+核對獨立狀態`PASS-IDLE-TARGET-FIXTURE-RUNTIME-E1`及固定盤點兩項零header；不得拿它取代三階段攻擊驗收。
+
+普通玩家抽樣沿已驗第二章章前HP+1000來源與seed1，正常LOAD、移動／END、事件、哈諾攻防、F2及章節邊界保存冷讀。
+GUI可明示複數`--battle-end-figures 133,134`，只增加只讀PNG擷取；舊單數參數與預設行為保持。
+既有同來源實錄中，第一／二回合各572／486筆觀測皆無物理場景，第三回合才接戰。
+換手可只有走行；不要求每回合生出戰鬥，所有實際物理場景仍須有HD呈現，整份GUI及圖源收據仍須實際END樣本。
+新`idle-end`核對器必須有完整GUI／保存、所選figure的END來源圖層及實際idle服裝核心，
+不要求或宣稱原版不存在的攻擊幀；完整4幀仍另由fixture驗證。新範圍不能套用既有attack／end的通過名稱。
+錯圖源、錯人物、錯範圍、空header證據、缺F2／保存及黑圖反例須拒收；舊哈諾、希莉亞與三階段fixture回歸保持。
+兩圖組通過後才登錄並以allow-list同步私人庫，原391項與3526檔SHA保持；其他戰鬥HD與平台仍待。
+原始來源、完整提示、配方、差異與重跑入口集中主收據`villager_idle_battle_followup_20261020`。
+
 #### 非共背景物理演出（CONFORMED-SCOPED／RUNTIME-E1）
 
 沿[已閉合主證據](../data/ida/fd2_physical_background_selection_20261004.json)的IDA LE

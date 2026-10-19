@@ -16,15 +16,21 @@ def main():
     p.add_argument('--core-profile', choices=['blue', 'gold'], default='blue',
                    help='已知圖源服裝的取樣色域；只影響驗證，不影響遊戲')
     p.add_argument('--body-frames', help='只核對明示本體幀，格式為24:0,25:0-13；空白與投射物另驗')
-    p.add_argument('--sample-group',choices=['attack','end','fixture','trace'],default='attack')
+    p.add_argument('--sample-group',choices=['attack','end','fixture','trace','idle-end','idle-fixture'],default='attack')
+    p.add_argument('--inventory', type=Path, default=Path(__file__).resolve().parents[1]/
+                   'docs/data/fd2-battle-hd-source-inventory-20261019.json',
+                   help='idle-only範圍需固定原始盤點，核對attack／cast兩項零header')
     for name in ['receipt', 'catalog', 'source', 'report']:
         p.add_argument('--'+name, type=Path, required=True)
     args = p.parse_args()
     if not 0 <= args.figure <= 135 or args.report.exists(): raise SystemExit('人物越界或報告已存在')
     receipt = json.loads(args.receipt.read_text())
+    idle_only=args.sample_group in ('idle-end','idle-fixture')
+    end_group=args.sample_group in ('end','idle-end')
+    fixture_group=args.sample_group in ('fixture','idle-fixture')
     scene_names=['world-hd','world-hd-replay']
     repetitions=receipt.get('battle_repetitions',2)
-    if args.sample_group in ('attack','end') and repetitions!=2:
+    if args.sample_group in ('attack','end','idle-end') and repetitions!=2:
         if (repetitions!=1 or receipt.get('battle_only') is not True
             or receipt.get('post_battle_save_checked') is not True
             or receipt.get('natural_attack_return_checked') is not True
@@ -41,23 +47,53 @@ def main():
             validate_receipt(receipt, args.receipt, args.catalog)
         except (ValueError, KeyError, OSError) as error:
             raise SystemExit('需要可重驗的普通攻防／保存追蹤收據：'+str(error))
-    elif args.sample_group=='fixture':
-        phases=['prelude','body','counter']
-        if (receipt.get('status')!='PASS-CHARACTER-FIXTURE-RUNTIME-E1' or receipt.get('figure')!=args.figure
+    elif fixture_group:
+        phases=['prelude','body'] if idle_only else ['prelude','body','counter']
+        expected='PASS-IDLE-TARGET-FIXTURE-RUNTIME-E1' if idle_only else 'PASS-CHARACTER-FIXTURE-RUNTIME-E1'
+        if (receipt.get('status')!=expected or receipt.get('figure')!=args.figure
             or receipt.get('continuations')!=1 or receipt.get('battle_dac_steps')!=64 or receipt.get('map_dac_steps')!=65
             or digest(args.catalog)!=receipt.get('catalog_sha256')
             or any(receipt.get('phase_f2',{}).get(k)!=1 or receipt.get('phase_hd_draws',{}).get(k,0)<=0 for k in phases)):
-            raise SystemExit('需要完整人物Game.Draw測試收據')
+            raise SystemExit('需要完整目標待機Game.Draw測試收據' if idle_only else '需要完整人物Game.Draw測試收據')
+        if idle_only and (receipt.get('role')!='idle-target' or receipt.get('counter_present') is not False
+            or receipt.get('selected_resources')!=[args.figure*3] or receipt.get('expected_phases')!=phases
+            or receipt.get('phase_f2',{}).get('counter',0)!=0 or receipt.get('phase_hd_draws',{}).get('counter',0)!=0):
+            raise SystemExit('idle-target不得冒用攻擊／反擊測試範圍')
     elif (receipt.get('schema') != 'fd2-hd-battle-status-gui-v1' or receipt.get('status') != 'PASS'
         or not receipt.get('battle_hd_consumer_checked') or not receipt.get('new_process_title_load')
         or not (receipt.get('source_save_bytes_equal') or boundary_save) or not receipt.get('theme_save_bytes_equal')
         or digest(args.catalog) != receipt.get('catalog_sha256')):
         raise SystemExit('需要同份普通攻防完整GUI收據及清冊')
-    catalog = validate(False, args.catalog); resources = [args.figure*3, args.figure*3+1]
-    if args.sample_group=='end' and receipt.get('battle_end_art_checked') is not True:
+    catalog = validate(False, args.catalog); resources = [args.figure*3] if idle_only else [args.figure*3, args.figure*3+1]
+    if end_group and receipt.get('battle_end_art_checked') is not True:
         raise SystemExit('需要明示普通END擷取收據')
+    if args.sample_group=='idle-end' and args.figure not in receipt.get('battle_end_figures',[]):
+        raise SystemExit('需要明示待機目標的普通END擷取範圍')
     entries = [a for a in catalog['assets'] if a['role'] == 'battle_animation_hd_set' and a['source_resource'] in resources]
-    if sorted(a['source_resource'] for a in entries) != resources: raise SystemExit('需要完整待機及攻擊圖源')
+    if sorted(a['source_resource'] for a in entries) != resources:
+        raise SystemExit('需要完整待機圖源' if idle_only else '需要完整待機及攻擊圖源')
+    idle_proof=None
+    if idle_only:
+        inventory=json.loads(args.inventory.read_text())
+        rows={r['resource']:r for r in inventory.get('resources',[])}
+        empty=[rows.get(args.figure*3+i,{}) for i in (1,2)]
+        if (inventory.get('status')!='PASS-SOURCE-INVENTORY'
+            or inventory.get('archive_reconstruction',{}).get('matches_pinned_original') is not True
+            or rows.get(args.figure*3,{}).get('metadata_sha256')!=entries[0]['source_metadata_sha256']
+            or any(r.get('status')!='empty_header_zero' or r.get('reason_code')!='zero_header_word' for r in empty)):
+            raise SystemExit('需要原版僅待機及兩項固定零header證據')
+        if any(a['role']=='battle_animation_hd_set' and a['source_resource'] in [args.figure*3+1,args.figure*3+2]
+               for a in catalog['assets']):
+            raise SystemExit('idle-only清冊不可登錄原版空圖庫')
+        idle_proof={'file':str(args.inventory),'sha256':digest(args.inventory),
+                    'empty_resources':[{k:r[k] for k in ['resource','status','reason_code','raw_sha256','status_sha256']} for r in empty]}
+        if fixture_group:
+            for sample in receipt.get('source_shots',{}).values():
+                for state in (sample.get('before',{}),sample.get('after',{})):
+                    if any(layer['resource'] in [args.figure*3+1,args.figure*3+2]
+                           and layer.get('archive','') in ('','FIGANI.DAT')
+                           for layer in state.get('battle_source_layers') or []):
+                        raise SystemExit('idle-target收據包含原版空圖庫的呈現圖層')
     by_resource={a['source_resource']:a for a in entries}
     body_frames = None
     if args.body_frames:
@@ -89,8 +125,8 @@ def main():
             if len(points) < 1000: raise SystemExit('高覆蓋服裝核心像素不足')
             total = len(points); points = points[::max(1, total//2500)]
             candidates.append((asset['source_resource'], index, name, sha, frame, points, total))
-    samples = list(receipt.get('battle_end_art_samples' if args.sample_group=='end' else 'battle_art_samples', []))
-    if args.sample_group=='fixture':samples=list(receipt.get('source_shots',{}).values())
+    samples = list(receipt.get('battle_end_art_samples' if end_group else 'battle_art_samples', []))
+    if fixture_group:samples=list(receipt.get('source_shots',{}).values())
     if args.sample_group=='attack':
         for scene in scene_names:
             name = scene+'-physical-scene.png'; shot = receipt['screenshots'][name]
@@ -106,13 +142,13 @@ def main():
             rgb = im.convert('RGB').load()
             for resource, index, name, sha, frame, points, total in candidates:
                 positions=[(frame['x']*6,frame['y']*6,None)]
-                if args.sample_group in ('end','fixture'):
+                if end_group or fixture_group:
                     positions=[]
                     for state in (sample['before'],sample['after']):
                         for layer in state.get('battle_source_layers') or []:
                             if (layer['resource']!=resource or layer['fill']!=-1
                                     or layer.get('archive','') not in ('','FIGANI.DAT')):continue
-                            if args.sample_group=='fixture' and layer['frame']!=index:continue
+                            if fixture_group and layer['frame']!=index:continue
                             observed=layer['frame']
                             frames=by_resource[resource]['native_frames']
                             if not isinstance(observed,int) or not 0<=observed<len(frames):
@@ -136,18 +172,24 @@ def main():
                             'resource': resource, 'frame': index, 'source_file': name, 'source_sha256': sha,
                             'checked_pixels': len(visible), 'eligible_pixels': total,
                             'world_origin': [x,y],'clip':clip})
-    for scene in ([] if args.sample_group=='fixture' else scene_names):
+    for scene in ([] if fixture_group else scene_names):
+        if idle_only:
+            if not any(x['scene']==scene and x['resource']==resources[0] for x in found):
+                raise SystemExit('未在普通END GPU核對到所選目標的待機：'+scene)
+            continue
         if not any(x['scene'] == scene and x['resource'] == resources[1] and x['frame'] > 0 for x in found):
             raise SystemExit(('未在普通END GPU核對到所選人物的攻擊動作：' if args.sample_group=='end' else '未在普通攻防GPU核對到所選人物的攻擊動作：')+scene)
         if args.sample_group=='end' and not any(x['scene']==scene and x['resource']==resources[0] for x in found):
             raise SystemExit('未在普通END GPU核對到所選人物的待機：'+scene)
-    if args.sample_group=='fixture':
+    if fixture_group:
         for resource,index,*_ in candidates:
             if not any(x['resource']==resource and x['frame']==index for x in found):
                 raise SystemExit(f'未核對到實際人物GPU圖源：{resource}/{index}')
     groups = {}
     for match in found: groups.setdefault(match['file'], []).append({'resource': match['resource'], 'frame': match['frame']})
-    report = {'status': 'PASS-CHARACTER-FIXTURE-GPU' if args.sample_group=='fixture' else 'PASS-CHARACTER-NORMAL-ATTACK-GPU', 'figure': args.figure,
+    status=('PASS-IDLE-TARGET-FIXTURE-GPU' if fixture_group else 'PASS-CHARACTER-NORMAL-IDLE-GPU') if idle_only else (
+        'PASS-CHARACTER-FIXTURE-GPU' if fixture_group else 'PASS-CHARACTER-NORMAL-ATTACK-GPU')
+    report = {'status': status, 'figure': args.figure,
         'core_profile': args.core_profile,
         'body_frames': sorted(body_frames) if body_frames is not None else None,
         'sample_group':args.sample_group,
@@ -161,6 +203,9 @@ def main():
                  'attack沿原描述子；end只從同圖庫的預期job取caller位移及裁切，再由實際PNG找姿勢，避免把觀測索引當呈現相位；fixture仍在同次Draw逐幀核對。'
                  'alpha255一量化值，250..254依未知背景混合界限。多候選保留相容集合，不判定唯一相位；'
                  '未比較服裝核心以外的武器／FX，不宣稱全部幀GPU或原版對拍。'}
+    if idle_only:
+        report['idle_only_inventory']=idle_proof
+        report['scope']='idle-end／idle-fixture只驗目標待機，不要求或宣稱不存在的攻擊／反擊。'+report['scope']
     args.report.write_text(json.dumps(report, ensure_ascii=False, indent=2)+'\n')
     print(json.dumps({'status': report['status'], 'figure': args.figure, 'matched_pngs': len({x['file'] for x in found})}))
 

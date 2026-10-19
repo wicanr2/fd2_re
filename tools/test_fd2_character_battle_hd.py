@@ -17,6 +17,7 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     for name in ['pack', 'inventory', 'recipe', 'baseline', 'out']:
         p.add_argument('--'+name, required=True, type=Path)
+    p.add_argument('--base-catalog',type=Path,help='省略時沿基底收據旁的base-catalog.json，不拿後續正式登錄干擾舊配方')
     args = p.parse_args(); out = args.out.resolve(); compiler = Path(__file__).with_name('build_fd2_character_battle_hd.py')
     if not Path('/.dockerenv').exists() or out.exists() or not out.is_relative_to(ROOT) or out.parent.stat().st_uid != os.getuid():
         raise SystemExit('在Docker使用本人擁有的工作區新測試目錄')
@@ -25,15 +26,18 @@ def main():
         raise SystemExit('需要目前編製器已通過的實檔候選')
     if baseline['recipe_sha256'] != hashlib.sha256(args.recipe.read_bytes()).hexdigest():
         raise SystemExit('基底與配方不同')
-    out.mkdir(); resources = list(recipe['resources']); first = resources[0]; attack = resources[1]; source = next(iter(recipe['sources']))
+    out.mkdir(); resources = list(recipe['resources']); first = resources[0]; attack = resources[-1]; source = next(iter(recipe['sources']))
+    idle_only=len(resources)==1
+    base_catalog=args.base_catalog or args.baseline.parent/'base-catalog.json'
+    if not base_catalog.is_file():raise SystemExit('需要同次編製的基底清冊快照')
     checks = []
 
-    def check(name, mutate, expected, pack=None, base=None):
+    def check(name, mutate, expected, pack=None, base=None, inventory=None):
         doc = copy.deepcopy(recipe); mutate(doc); path = out/(name+'.json'); path.write_text(json.dumps(doc))
         target = out/(name+'-candidate')
-        command = [sys.executable, str(compiler), '--pack', str(pack or args.pack), '--inventory', str(args.inventory),
+        command = [sys.executable, str(compiler), '--pack', str(pack or args.pack), '--inventory', str(inventory or args.inventory),
                    '--recipe', str(path), '--out', str(target)]
-        if base is not None: command += ['--base-catalog', str(base)]
+        command += ['--base-catalog', str(base or base_catalog)]
         result = subprocess.run(command, capture_output=True, text=True, timeout=60)
         output = result.stdout+result.stderr
         if result.returncode == 0 or target.exists() or expected not in output:
@@ -62,7 +66,36 @@ def main():
         for path in original.iterdir():
             if path.name == 'animation.json': (folder/path.name).write_bytes(path.read_bytes()+b'\n')
             else: (folder/path.name).symlink_to(path)
+    if idle_only:
+        for resource in [int(first)+1,int(first)+2]:
+            (shadow/'animations'/f'FIGANI_{resource:03d}').symlink_to(
+                args.pack.resolve()/'animations'/f'FIGANI_{resource:03d}',target_is_directory=True)
     check('wrong-original-metadata', lambda d:None, '原始動畫未解碼或metadata不同', pack=shadow)
+    if idle_only:
+        empty=int(first)+1
+        missing=out/'missing-empty-proof';(missing/'animations').mkdir(parents=True)
+        (missing/'manifest.json').symlink_to(args.pack.resolve()/'manifest.json')
+        (missing/'animations'/f'FIGANI_{int(first):03d}').symlink_to(
+            args.pack.resolve()/'animations'/f'FIGANI_{int(first):03d}',target_is_directory=True)
+        (missing/'animations'/f'FIGANI_{int(first)+2:03d}').symlink_to(
+            args.pack.resolve()/'animations'/f'FIGANI_{int(first)+2:03d}',target_is_directory=True)
+        check('missing-empty-proof',lambda d:None,'idle-only須有兩項固定零header證據',pack=missing)
+        changed=out/'changed-empty-proof';(changed/'animations').mkdir(parents=True)
+        (changed/'manifest.json').symlink_to(args.pack.resolve()/'manifest.json')
+        for resource in [int(first),empty,empty+1]:
+            folder=changed/'animations'/f'FIGANI_{resource:03d}'
+            original=args.pack.resolve()/'animations'/folder.name
+            if resource!=empty:folder.symlink_to(original,target_is_directory=True)
+            else:
+                folder.mkdir();(folder/'resource.json').write_bytes((original/'resource.json').read_bytes()+b'\n')
+        check('changed-empty-proof',lambda d:None,'idle-only須有兩項固定零header證據',pack=changed)
+        proof=json.loads(args.inventory.read_text())
+        next(r for r in proof['resources'] if r['resource']==empty)['status']='decoded'
+        path=out/'nonempty-source-inventory.json';path.write_text(json.dumps(proof))
+        check('nonempty-attack',lambda d:d.update(inventory_sha256=hashlib.sha256(path.read_bytes()).hexdigest()),
+              'idle-only須有兩項固定零header證據',inventory=path)
+        check('invented-empty-attack',lambda d:d['resources'].update({str(empty):[]}),
+              '原始動畫未解碼或metadata不同')
     # 獨立核對空白圖源的稽核門檻；alpha=1也不能混入墨跡。
     from PIL import Image
     from audit_fd2_battle_hd_coverage import check_pngs
@@ -81,7 +114,7 @@ def main():
                        'reason':error or '已證實空白來源只接受全透明成品', 'output_published':False})
     report = {'status': 'PASS-CHARACTER-COMPILER-GUARDS', 'compiler_sha256': hashlib.sha256(compiler.read_bytes()).hexdigest(),
         'baseline_sha256': hashlib.sha256(args.baseline.read_bytes()).hexdigest(), 'checks': checks,
-        'scope': '十一種實檔錯配方／來源fixture及五種空白幀稽核條件；不代表遊戲玩家驗證。'}
+        'scope': '實檔錯配方／來源、適用的idle-only零header證據與五種空白幀稽核條件；不代表遊戲玩家驗證。'}
     (out/'guards.json').write_text(json.dumps(report, ensure_ascii=False, indent=2)+'\n')
     print(json.dumps({'status': report['status'], 'guards': len(checks)}))
 

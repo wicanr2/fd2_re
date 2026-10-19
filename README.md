@@ -110,6 +110,15 @@
 攻防返回、F2與章節邊界保存冷讀已驗證；此測試槽不代表自然難度。
 來源、完整提示與共享姿勢見[驗證紀錄](docs/data/fd2-modern-hd-battlefield-20261019.json)的`hano_battle_followup_20261020`。
 
+| 女村民HD受擊待機 | 男村民HD受擊待機 |
+| --- | --- |
+| ![女村民HD受擊待機](docs/figures/hd-villager-133-physical-idle.png) | ![男村民HD受擊待機](docs/figures/hd-villager-134-physical-idle.png) |
+
+兩張取自第二章普通按鍵換手時的實際遊戲視窗，沿用上述章前HP校準槽。
+村民各四幀待機已接入HD圖組；原版攻擊與施術圖庫為空，不另造動作。
+背景與面板仍含像素素材，呼吸相位共享母稿；來源與驗證範圍見
+[驗證紀錄](docs/data/fd2-modern-hd-battlefield-20261019.json)的`villager_idle_battle_followup_20261020`。
+
 ## 遊戲介紹
 
 《炎龍騎士團 2》是 1990 年代華文單機戰略角色扮演遊戲（SRPG）的代表作之一。

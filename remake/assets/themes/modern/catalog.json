@@ -2,7 +2,7 @@
   "schema_version": 1,
   "theme_id": "modern-handpainted-a",
   "status": "prototype",
-  "private_root": "remake/generated-assets/modern-theme-prototypes",
+  "private_root": "work/promo-cadence-20261018/hd-fonts/villager-134-battle-candidate-r2/pack",
   "assets": [
     {
       "asset_id": "modern.sol.portrait.style_a",
@@ -17757,6 +17757,174 @@
       "speaker_id": 133,
       "frame": 0,
       "mouth_state": "closed"
+    },
+    {
+      "asset_id": "modern.figani.399.hd6.v1",
+      "role": "battle_animation_hd_set",
+      "status": "runtime_candidate",
+      "files": [
+        "figani-399-hd6-v1-f00.png",
+        "figani-399-hd6-v1-f01.png",
+        "figani-399-hd6-v1-f02.png",
+        "figani-399-hd6-v1-f03.png"
+      ],
+      "width": 1920,
+      "height": 1200,
+      "frame_count": 4,
+      "frame_sha256": [
+        "2087d6de79dd8af5575d623c228fe358d8775469fa49826a991d4cb2d1ccc0a9",
+        "c143e297e384cbe02c842c6075c9be05b38f223230e5577e70a41b6639b01622",
+        "c2268520415abd481e67143d960195f095f1b2ec7f326d891afd65993da35bee",
+        "c2268520415abd481e67143d960195f095f1b2ec7f326d891afd65993da35bee"
+      ],
+      "consumer_contract": "native_figani_rgba_hd6_v1",
+      "alpha_contract": "coverage",
+      "source_refs": [
+        "asset:FIGANI_399",
+        "docs/data/fd2-reference-files.json"
+      ],
+      "source_archive": "FIGANI.DAT",
+      "source_resource": 399,
+      "source_metadata_sha256": "8b82225d54671bfa65fd1792b5ff74d056e0b5beba5f828bbbed8761f3064f7a",
+      "native_header": [
+        0,
+        4,
+        0
+      ],
+      "native_frames": [
+        {
+          "x": 200,
+          "y": 59,
+          "width": 68,
+          "height": 131,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 200,
+          "y": 58,
+          "width": 68,
+          "height": 132,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 200,
+          "y": 57,
+          "width": 68,
+          "height": 133,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 200,
+          "y": 57,
+          "width": 68,
+          "height": 133,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        }
+      ],
+      "cycle_policy": "native_descriptor_key_poses",
+      "layout_policy": "contain_native_descriptor_hd6_candidate",
+      "source_files": [
+        "figure-133-idle-battle-hd6-master-v1.png"
+      ],
+      "source_sha256": [
+        "6a9dffcf86b38a2a99dd0a93f292e86f00cc9b6a611015905f98c7d2b26ad86a"
+      ]
+    },
+    {
+      "asset_id": "modern.figani.402.hd6.v1",
+      "role": "battle_animation_hd_set",
+      "status": "runtime_candidate",
+      "files": [
+        "figani-402-hd6-v1-f00.png",
+        "figani-402-hd6-v1-f01.png",
+        "figani-402-hd6-v1-f02.png",
+        "figani-402-hd6-v1-f03.png"
+      ],
+      "width": 1920,
+      "height": 1200,
+      "frame_count": 4,
+      "frame_sha256": [
+        "fb11654ece3c424d398184ceda79b6979f18270f7cabc76feef3873abb7281f2",
+        "5649a9ad925125a6494ef2a21348c94bce9609125c09a0932d83c2d20208799c",
+        "4a4f03983c04abe4d60ded57ebf71546a7805b49fa2f0ce374bb4aa967735ba2",
+        "5649a9ad925125a6494ef2a21348c94bce9609125c09a0932d83c2d20208799c"
+      ],
+      "consumer_contract": "native_figani_rgba_hd6_v1",
+      "alpha_contract": "coverage",
+      "source_refs": [
+        "asset:FIGANI_402",
+        "docs/data/fd2-reference-files.json"
+      ],
+      "source_archive": "FIGANI.DAT",
+      "source_resource": 402,
+      "source_metadata_sha256": "9b15210e731700e1e3014abefb8a0168cca2f4326ad91c4ff358c853e5a6b049",
+      "native_header": [
+        0,
+        4,
+        0
+      ],
+      "native_frames": [
+        {
+          "x": 204,
+          "y": 69,
+          "width": 91,
+          "height": 119,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 204,
+          "y": 70,
+          "width": 91,
+          "height": 118,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 204,
+          "y": 71,
+          "width": 91,
+          "height": 117,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 204,
+          "y": 70,
+          "width": 91,
+          "height": 118,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        }
+      ],
+      "cycle_policy": "native_descriptor_key_poses",
+      "layout_policy": "contain_native_descriptor_hd6_candidate",
+      "source_files": [
+        "figure-134-idle-battle-hd6-master-v1.png"
+      ],
+      "source_sha256": [
+        "41351eda848d7c09faaa1f00a9136f4479b3f0fcc28ffd1b412a9cae8740e5df"
+      ]
     }
   ]
 }

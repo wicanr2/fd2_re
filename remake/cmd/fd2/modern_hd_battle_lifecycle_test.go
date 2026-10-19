@@ -244,25 +244,42 @@ func TestModernHDBattleRuntimeGPU(t *testing.T) {
 	t.Setenv("FD2_MUTE", "1")
 	g, actor, target := physicalSceneTestGame(t)
 	real := os.Getenv("FD2_HD_BATTLE_REAL") == "1"
+	idleTarget := os.Getenv("FD2_HD_BATTLE_IDLE_TARGET") == "1"
+	if idleTarget && !real {
+		t.Fatal("idle-target requires explicit real candidate")
+	}
 	figure := 0
 	if real {
 		figure = modernBattleCandidateFigure(t)
-		actor.BattleFig, target.BattleFig = figure, 76
+		if idleTarget {
+			// 既有前向劍盾兵在x0..132；後向村民在x200之後，避免兩個右側描述子重疊。
+			actor.BattleFig, target.BattleFig = 76, figure
+			if g.st.NativePhysicalCounterattackEligible(actor, target) {
+				t.Fatal("unarmed idle target unexpectedly has counterattack")
+			}
+		} else {
+			actor.BattleFig, target.BattleFig = figure, 76
+		}
 	}
 	scene, err := g.prepareNativePhysicalScene(actor, target)
 	if err != nil {
 		t.Fatal(err)
 	}
-	scene.bodyResources.counter, err = figani.LoadSeparatedResource(separatedAssetPath("animations"), target.BattleFig*3+1)
-	if err != nil {
-		t.Fatal(err)
+	result := battle.NativePhysicalAttackResult{AttackStrikes: []battle.NativePhysicalStrike{{Roll: battle.NativePhysicalRollResult{Damage: 7, Crit: true, Status: true}, DefenderHP: 73}}}
+	if !idleTarget {
+		scene.bodyResources.counter, err = figani.LoadSeparatedResource(separatedAssetPath("animations"), target.BattleFig*3+1)
+		if err != nil {
+			t.Fatal(err)
+		}
+		scene.bodyResources.counterSounds, err = g.nativePhysicalSoundBank(scene.bodyResources.counter)
+		if err != nil {
+			t.Fatal(err)
+		}
+		result.Counter = &battle.AttackResult{}
+		result.CounterStrikes = []battle.NativePhysicalStrike{{Roll: battle.NativePhysicalRollResult{Damage: 9}, DefenderHP: 71}}
+	} else if scene.bodyResources.counter != nil {
+		t.Fatal("idle target loaded an attack bank")
 	}
-	scene.bodyResources.counterSounds, err = g.nativePhysicalSoundBank(scene.bodyResources.counter)
-	if err != nil {
-		t.Fatal(err)
-	}
-	result := battle.NativePhysicalAttackResult{AttackStrikes: []battle.NativePhysicalStrike{{Roll: battle.NativePhysicalRollResult{Damage: 7, Crit: true, Status: true}, DefenderHP: 73}},
-		Counter: &battle.AttackResult{}, CounterStrikes: []battle.NativePhysicalStrike{{Roll: battle.NativePhysicalRollResult{Damage: 9}, DefenderHP: 71}}}
 	if err := g.attachNativePhysicalBody(scene, result); err != nil {
 		t.Fatal(err)
 	}
@@ -273,6 +290,24 @@ func TestModernHDBattleRuntimeGPU(t *testing.T) {
 			t.Fatal(err)
 		}
 		set = &modernStoryPortraitSet{hasHD: true, battleAnimations: full.battleAnimations}
+	}
+	selectedResources := map[int]*figani.Animation{figure * 3: scene.bodyResources.actorIdle, figure*3 + 1: scene.bodyResources.attack}
+	phases := []string{"prelude", "body", "counter"}
+	if idleTarget {
+		selectedResources = map[int]*figani.Animation{figure * 3: scene.bodyResources.targetIdle}
+		phases = []string{"prelude", "body"}
+		for _, job := range scene.body.jobs {
+			if job.hdPhase == "counter" {
+				t.Fatal("idle-target fixture fabricated counter phase")
+			}
+			if job.hdSources != nil {
+				for _, source := range job.hdSources.Layers {
+					if source.Resource == figure*3+1 || source.Resource == figure*3+2 {
+						t.Fatal("idle-target fixture references empty attack/cast bank")
+					}
+				}
+			}
+		}
 	}
 	// 沿既有完整地圖fixture測返回composer，戰鬥圖源仍為上面的真正分離資源。
 	assets, field, state := completeNativeMapFrameFixture(t)
@@ -326,7 +361,7 @@ func TestModernHDBattleRuntimeGPU(t *testing.T) {
 				return
 			}
 			for _, source := range scene.body.jobs[index].hdSources.Layers {
-				if (source.Resource != figure*3 && source.Resource != figure*3+1) || source.Fill != -1 {
+				if _, selected := selectedResources[source.Resource]; !selected || source.Fill != -1 {
 					continue
 				}
 				key := fmt.Sprintf("%03d-%02d", source.Resource, source.Index)
@@ -410,12 +445,12 @@ func TestModernHDBattleRuntimeGPU(t *testing.T) {
 		t.Fatal("completed scene retained old GPU sources")
 	}
 	if real && out != "" {
-		for _, phase := range []string{"prelude", "body", "counter"} {
+		for _, phase := range phases {
 			if probe.phaseDraws[phase] == 0 || probe.phaseF2[phase] != 1 {
 				t.Fatalf("phase%s missing HD/F2", phase)
 			}
 		}
-		for resource, animation := range map[int]*figani.Animation{figure * 3: scene.bodyResources.actorIdle, figure*3 + 1: scene.bodyResources.attack} {
+		for resource, animation := range selectedResources {
 			for index := range animation.Frames {
 				if shots[fmt.Sprintf("%03d-%02d", resource, index)] == nil {
 					t.Fatalf("selected source%d/%d missing GPU capture", resource, index)
@@ -427,6 +462,11 @@ func TestModernHDBattleRuntimeGPU(t *testing.T) {
 			t.Fatal(err)
 		}
 		report := map[string]any{"status": "PASS-CHARACTER-FIXTURE-RUNTIME-E1", "figure": figure, "catalog_sha256": fmt.Sprintf("%x", sha256.Sum256(catalog)), "phase_f2": probe.phaseF2, "phase_hd_draws": probe.phaseDraws, "continuations": callbacks, "battle_dac_steps": len(probe.rampSeen), "map_dac_steps": len(probe.mapRampSeen), "source_shots": shots, "scope": "真實FIGANI、強制一次攻擊與反擊計畫及native地圖fixture；Game.Draw最終1920回讀。非普通玩家或原版oracle。"}
+		if idleTarget {
+			report["status"], report["role"] = "PASS-IDLE-TARGET-FIXTURE-RUNTIME-E1", "idle-target"
+			report["selected_resources"], report["expected_phases"], report["counter_present"] = []int{figure * 3}, phases, false
+			report["scope"] = "真實FIGANI與無武器修改目標，只有主動呈現計畫；四待機幀Game.Draw最終1920回讀、兩階段F2與完整返回。非原版村民規則、普通玩家或原版oracle。"
+		}
 		raw, err := json.MarshalIndent(report, "", "  ")
 		if err == nil {
 			err = os.WriteFile(filepath.Join(out, "receipt.json"), append(raw, '\n'), 0644)

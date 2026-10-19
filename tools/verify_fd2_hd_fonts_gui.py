@@ -73,10 +73,15 @@ def main():
     parser.add_argument('--faithful-approach', action='store_true', help='正常END期間以F2使用忠實模式，回玩家回合再切HD')
     parser.add_argument('--battle-end-art', action='store_true', help='正常END期間有界擷取明示人物的HD圖層')
     parser.add_argument('--battle-end-figure',type=int,default=2)
+    parser.add_argument('--battle-end-figures',type=terrain_frame_ids,default=set(),
+                        help='同一普通END擷取多個明示figure，例如133,134；省略時維持單數參數')
     args = parser.parse_args()
     assert args.revive_before_departure is None or args.capture_native_battle_save
     assert args.battle_repetitions==2 or (args.battle_only and not args.timed_dialogue)
     assert 0<=args.battle_end_figure<=135
+    end_figures=sorted(args.battle_end_figures or {args.battle_end_figure})
+    assert all(0<=figure<=135 for figure in end_figures)
+    assert not args.battle_end_figures or args.battle_end_art
     assert not args.battle_end_art or (args.battle_only and args.battle_hd and args.battle_approach_rounds>0 and not args.faithful_approach)
     assert not (args.battle_advance or args.faithful_approach) or args.battle_only
     if not re.fullmatch(r'battle_ch(?:0[1-9]|[12][0-9]|30)', args.battle_node):
@@ -732,7 +737,7 @@ def main():
                                 if current.get('battle_scene') and current.get('hd_battle') and current.get('battle_phase') in ('body','counter'):
                                     for layer in current.get('battle_source_layers') or []:
                                         resource,index=layer['resource'],layer['frame']
-                                        if (resource not in (args.battle_end_figure*3,args.battle_end_figure*3+1)
+                                        if (resource not in {figure*3+kind for figure in end_figures for kind in (0,1)}
                                                 or layer['fill']!=-1 or (resource,index) in end_seen):continue
                                         end_seen.add((resource,index))
                                         path=args.out/f'{prefix}-end-{approach}-{resource:03d}-{index:02d}.png'
@@ -747,7 +752,8 @@ def main():
                             else:time.sleep(.05)
                         else:raise TimeoutError('普通END未回玩家回合')
                         if args.battle_end_art:
-                            assert end_scenes and all(s['hd_draw_seen'] for s in end_scenes.values()),'END有物理場景沒有HD呈現證據'
+                            # 換手可以只有走行；實際戰鬥仍逐場驗HD，整份收據另要求END樣本。
+                            assert all(s['hd_draw_seen'] for s in end_scenes.values()),'END有物理場景沒有HD呈現證據'
                         own_before=[u for u in state['units'] if u['camp']==0 and u['on_field'] and u['hp']>0]
                         own_after=[u for u in current['units'] if u['camp']==0 and u['on_field'] and u['hp']>0]
                         survivors={(u['native_identity'],u['name']) for u in own_after}
@@ -932,6 +938,7 @@ def main():
                     'world_runtime_checked':args.world,'world_walk_gpu':world_shots,'world_walk_rejected':world_rejected,
                     'battle_hd_consumer_checked':args.battle_hd,
                     'battle_repetitions':args.battle_repetitions,'battle_art_sample_limit':args.battle_art_samples,
+                    'battle_end_figures':end_figures,
                     'natural_attack_return_checked':args.battle_only,
                     'battle_own_index':args.battle_own_index,
                     'battle_node':args.battle_node,'battle_only':args.battle_only,

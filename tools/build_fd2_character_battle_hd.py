@@ -61,7 +61,28 @@ def main():
     figure = recipe['figure']
     if type(figure) is not int or not 0 <= figure <= 135: raise SystemExit('人物資源範圍不符')
     resources = [figure*3, figure*3+1]
-    if set(recipe['resources']) != {str(r) for r in resources}: raise SystemExit('配方須涵蓋完整待機及攻擊資源')
+    empty_headers = []
+    if set(recipe['resources']) == {str(figure*3)}:
+        # 只有原版attack與cast均為已核零header，才接受完整idle-only圖組。
+        # 不以清冊少一項、來源未解碼或PNG空白猜測角色沒有動作。
+        for resource in [figure*3+1, figure*3+2]:
+            row = next((r for r in inventory['resources'] if r['resource'] == resource), None)
+            status_path = args.pack/'animations'/f'FIGANI_{resource:03d}'/'resource.json'
+            if (row is None or row['status'] != 'empty_header_zero' or not status_path.is_file()
+                or digest(status_path) != row['status_sha256']):
+                raise SystemExit('配方須涵蓋完整待機及攻擊資源；idle-only須有兩項固定零header證據')
+            status = json.loads(status_path.read_text())
+            if (status.get('source') != {'file': 'FIGANI.DAT', 'resource': resource}
+                or status.get('status') != 'empty_header_zero'
+                or status.get('reason_code') != 'zero_header_word'
+                or status.get('header_word_le') != 0
+                or bytes.fromhex(status.get('raw_prefix_hex', ''))[:2] != b'\x00\x00'):
+                raise SystemExit('idle-only原始零header實檔不符')
+            empty_headers.append({'resource': resource, 'raw_sha256': row['raw_sha256'],
+                                  'status_sha256': digest(status_path), 'status': status})
+        resources = [figure*3]
+    elif set(recipe['resources']) != {str(r) for r in resources}:
+        raise SystemExit('配方須涵蓋完整待機及攻擊資源')
     base = validate(False, args.base_catalog)
     if any(a['role'] == 'battle_animation_hd_set' and a['source_resource'] in resources for a in base['assets']):
         raise SystemExit('所選圖源已登錄，不覆寫')
@@ -162,6 +183,8 @@ def main():
         'inventory_sha256': digest(args.inventory), 'recipe_sha256': digest(args.recipe), 'sources': source_records,
         'frames': records, 'scale_groups': groups, 'review_sha256': digest(out/'review.png'),
         'scope': '明示錨點與姿勢重定向的完整候選，不代表正常GUI或原版逐幀視覺相同。'}
+    if empty_headers:
+        report['idle_only_empty_headers'] = empty_headers
     (out/'compiled.json').write_text(json.dumps(report, ensure_ascii=False, indent=2)+'\n')
     print(json.dumps({'status': report['status'], 'figure': figure, 'frames': len(records), 'catalog_assets': len(candidate['assets'])}))
 
