@@ -298,7 +298,7 @@
       }
     ]
   },
-  "source_commit": "bccba29b9192ce377f7f8d1f4fcc5368d646ec6b",
+  "source_commit": "538ea592717b1df8168d41d8f2ff2e95e49d8e23",
   "component_audit": {
     "manifest": {
       "file": "work/promo-cadence-20261018/hd-fonts/hd-sprite-components-audit-r3/hd-map-sprites.json",
@@ -3791,7 +3791,9 @@
         "source_masters_and_receipts_preserved": true
       },
       "unexpected_fd2_containers": 0
-    }
+    },
+    "source_commit": "538ea592717b1df8168d41d8f2ff2e95e49d8e23",
+    "source_remote_verified": true
   },
   "historical_runtime_source_before_green_and_brown": {
     "binary_sha256": "d0f2a24d03297ecca7bb0f02b265d82a981b298344f6baaf6d491ec16688e5b1",
@@ -3805,5 +3807,7 @@
       "file": "tools/verify_fd2_hd_fonts_gui.py",
       "sha256": "e8f3212a6be3aa76d5228eb59a33aba178edc5a565982ce46975ccc9d2cc59e5"
     }
-  }
+  },
+  "historical_source_commit_before_green_and_brown": "bccba29b9192ce377f7f8d1f4fcc5368d646ec6b",
+  "source_remote_verified": true
 }
