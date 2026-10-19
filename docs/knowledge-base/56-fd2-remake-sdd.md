@@ -1,5 +1,10 @@
 # 56 — FD2 remake 系統設計規格（SDD，2026-08-09）
 
+蓋亞大型戰鬥圖沿既有原矩形及已核准厚甲造型正式登錄，沒有擴框或變更Go規則／保存。
+普通第三章的攻防、F2與章節邊界保存由完整按鍵及PNG追蹤獨立核對；原控制器指定END樣本不足仍保留失敗，
+不把獨立範圍提升為完整GUI或原版E2。來源與拒收契約見[61](61-modern-theme-runtime-spec.md)，
+目前覆蓋及私人同步仍以[58](58-fd2-exe-re-coverage.md)為準。
+
 相鄰圓頂綠色與褐色雙塊物件亦沿既有原生稀疏集合接線，遊戲runtime與保存保持。
 GUI明示範圍與GPU逐圖驗證、拒收條件見[61](61-modern-theme-runtime-spec.md)；唯一現況依[58](58-fd2-exe-re-coverage.md)，
 完整提示與證據在[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`rounded_green_and_pair_followup_20261019`。

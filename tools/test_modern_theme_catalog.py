@@ -25,7 +25,11 @@ class ModernThemeCatalogTests(unittest.TestCase):
                  'source_files':['test-master.png'],'source_sha256':['0'*64],'source_refs':['docs/data/fd2-reference-files.json']}
         with tempfile.TemporaryDirectory() as tmp:
             path=Path(tmp)/'catalog.json'
-            good=copy.deepcopy(base);good['assets'].append(asset)
+            good=copy.deepcopy(base)
+            # 合成fixture先隔離同一來源，不依賴該號碼尚未正式登錄。
+            good['assets']=[a for a in good['assets'] if not (
+                a['role']=='battle_animation_hd_set' and a['source_resource']==asset['source_resource'])]
+            good['assets'].append(asset)
             path.write_text(json.dumps(good));validator.validate(False,path)
             for key in ['missing','delay','path','header','duplicate','alpha']:
                 bad=copy.deepcopy(good);entry=bad['assets'][-1]

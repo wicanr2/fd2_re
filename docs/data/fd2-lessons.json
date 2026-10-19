@@ -3171,6 +3171,29 @@
         ],
         "pattern": "job只提供同圖庫的caller位移"
       }
+    },
+    {
+      "id": "battle-end-target-and-attack-trace-scopes",
+      "date": "2026-10-20",
+      "area": "GUI抽樣範圍",
+      "rule": "設定--battle-end-figure前，先由既有END觀測確認該人物確實參戰；它與我方主動攻擊角色可以不同。tools/verify_fd2_battle_attack_trace.py只用--run等明示來源核對第三章蓋亞攻防與保存，--sample-group trace另驗實際PNG，不取代指定END圖源或原控制器PASS。契約見docs/knowledge-base/61-modern-theme-runtime-spec.md。",
+      "why": "蓋亞兩次攻防、F2及冷讀已走完，但四次END只見鐵諾／士兵，指定蓋亞的END樣本為零。原控制器最後門檻失敗保留；175筆ACK與128張PNG另經獨立驗證及12項拒收，不重跑整場來補不相干的抽樣。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_battle_attack_trace.py"
+        ],
+        "pattern": "battle_end_art_checked.{3}False"
+      }
+    },
+    {
+      "id": "synthetic-battle-catalog-isolates-real-resource",
+      "date": "2026-10-20",
+      "area": "測試清冊隔離",
+      "rule": "合成圖源測試先在清冊複本移除相同來源及resource的正式項目，再加入fixture；不依賴某個號碼尚未正式登錄。入口tools/test_modern_theme_catalog.py的test_battle_animation_resource_requires_complete_safe_descriptors，正式validator的重複來源拒收保持。",
+      "why": "蓋亞90正式登錄後，既有合成90與它撞號，11測試中的一項正確被validator拒收。只隔離測試清冊後，同命令11項乾淨通過，不放寬正式驗證器。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json"
     }
   ]
 }

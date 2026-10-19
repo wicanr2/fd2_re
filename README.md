@@ -91,11 +91,14 @@
 這份截圖來源的接敵回合使用忠實模式，背景與面板仍為像素素材。來源槽祖先的清敵政策、共享姿勢與驗證範圍見
 [現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
 
-![鐵諾HD普通END攻防](docs/figures/hd-tino-physical-attack.png)
+| 鐵諾HD普通END攻防 | 蓋亞HD普通攻防 |
+| --- | --- |
+| ![鐵諾HD普通END攻防](docs/figures/hd-tino-physical-attack.png) | ![蓋亞HD普通攻防](docs/figures/hd-gaia-physical-attack.png) |
 
-鐵諾的待機、蓄力、三段斬光與收勢已接入手繪HD圖源。
-上圖是第三章正常結束回合時，鐵諾對劍盾兵攻擊的實際遊戲視窗；背景與面板仍含像素素材。
-接敵回合維持HD主題，兩次射擊、F2與章節邊界保存冷讀通過；範圍見
+兩張皆為第三章普通操作的實際遊戲視窗，背景與面板仍含像素素材。
+左圖是鐵諾在END時攻擊；右圖是依原版厚甲機器人造型重畫的蓋亞，沿原框保留待機、蓄力與出拳。
+蓋亞的兩次普通攻防、F2與章節邊界保存冷讀已有逐筆追蹤驗證；蓋亞在END參戰另待抽樣。
+來源槽祖先、共享稿及驗證範圍見
 [現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
 
 ## 遊戲介紹

@@ -16,7 +16,7 @@ def main():
     p.add_argument('--core-profile', choices=['blue', 'gold'], default='blue',
                    help='已知圖源服裝的取樣色域；只影響驗證，不影響遊戲')
     p.add_argument('--body-frames', help='只核對明示本體幀，格式為24:0,25:0-13；空白與投射物另驗')
-    p.add_argument('--sample-group',choices=['attack','end','fixture'],default='attack')
+    p.add_argument('--sample-group',choices=['attack','end','fixture','trace'],default='attack')
     for name in ['receipt', 'catalog', 'source', 'report']:
         p.add_argument('--'+name, type=Path, required=True)
     args = p.parse_args()
@@ -26,7 +26,13 @@ def main():
         and receipt.get('cold_loaded_units_equal') is True
         and bool(receipt.get('loaded_units'))
         and receipt['loaded_units'] == receipt.get('cold_units'))
-    if args.sample_group=='fixture':
+    if args.sample_group=='trace':
+        from verify_fd2_battle_attack_trace import validate_receipt
+        try:
+            validate_receipt(receipt, args.receipt, args.catalog)
+        except (ValueError, KeyError, OSError) as error:
+            raise SystemExit('需要可重驗的普通攻防／保存追蹤收據：'+str(error))
+    elif args.sample_group=='fixture':
         phases=['prelude','body','counter']
         if (receipt.get('status')!='PASS-CHARACTER-FIXTURE-RUNTIME-E1' or receipt.get('figure')!=args.figure
             or receipt.get('continuations')!=1 or receipt.get('battle_dac_steps')!=64 or receipt.get('map_dac_steps')!=65
@@ -142,6 +148,7 @@ def main():
         'matches': found, 'sample_count': len(samples), 'rejected_boundary_samples': rejected,
         'ambiguous_source_candidates': {name: values for name, values in groups.items() if len(values) > 1},
         'scope': '普通兩次攻防、明示END或修改fixture分組的實際PNG與所選人物明示本體幀指定色域的高覆蓋服裝核心；fixture只屬RUNTIME-E1。'
+                 'trace另重驗原始按鍵與保存資料，只核對已落地的演出樣本，不補造原GUI或指定END通過。'
                  'attack沿原描述子；end只從同圖庫的預期job取caller位移及裁切，再由實際PNG找姿勢，避免把觀測索引當呈現相位；fixture仍在同次Draw逐幀核對。'
                  'alpha255一量化值，250..254依未知背景混合界限。多候選保留相容集合，不判定唯一相位；'
                  '未比較服裝核心以外的武器／FX，不宣稱全部幀GPU或原版對拍。'}

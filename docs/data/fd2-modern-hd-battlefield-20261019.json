@@ -9,13 +9,13 @@
     "native_viewport": "CONFORMED-SCOPED：正式1920世界沿原生(4,4)、312×192窗格；正常F2同view與960地形樣本一致。",
     "hd_sprite_data": "DATA-READY：完整125組1455張HD及31組372張新增24父項已登錄；舊1083張父項及HD bytes保持。",
     "hd_world_renderer": "CONFORMED-SCOPED：144人物已接Game.Draw；首章34張正常GPU、4張實際走行、兩次物理攻擊及保存／新程序LOAD通過。",
-    "private_assets": "383項清冊，3483檔完整allow-list及3208檔runtime-only逐筆驗證，原3464保持；五母稿不進執行包。正式Go及玩家／AI拒收通過，私人132b2014ff213e3c11608575a82213aac874e406已推送，實際遠端HEAD相同。",
+    "private_assets": "385項清冊、3503檔完整allow-list與3223檔runtime-only已核，原3483保持；Go真實載入與玩家／AI前置拒收通過。私人1910e36765aba56b4e6fc00eec84c42ada0dfcc1已推送，遠端HEAD相同，仍private。",
     "quickload_battle_owner": "CONFORMED-SCOPED：成功JSON LOAD丟棄舊經驗owner與移動計畫；拒收保留。",
     "timed_dialogue": "CONFORMED-SCOPED-RUNTIME-E1：計時FFEC開收框保留HD世界，EXP99普通鍵盤／F2與保存冷讀通過；其他caller未驗。",
     "hd_terrain": "CONFORMED-SCOPED：map0六組53槽；新增圓頂綠色／褐色雙塊四底圖在兩張正常GPU全部相符，短長組合與保存冷讀通過；草地及其他地形仍待HD化。",
     "ai_player_input_lock": "CONFORMED-SCOPED：AI換手期間拒絕玩家地圖輸入重入；普通END／增援對話及相關／完整Go回歸通過。",
     "gaia_redesign": "CONFORMED-SCOPED：新版頭像與四方向圖組已登錄；正常START／Gaia北移取消／F2／冷讀分段驗證。相位差異與序章尾端失敗明示，非逐幀parity。",
-    "hd_battle_animation": "CONFORMED-SCOPED：正式383項，FIGANI14資源108幀與四召喚37幀。鐵諾新增14幀；第三章四次HD END、兩場射擊、F2與章節邊界保存冷讀通過，51張鐵諾與73張希莉亞 PNG符合核心。完整14幀fixture／三階段F2／64及65 DAC保持。哈諾11幀僅候選，其他人物／法術／死亡／普通召喚及效能／平台仍待；蓋亞占寬未改。"
+    "hd_battle_animation": "CONFORMED-SCOPED：正式FIGANI16資源123幀及四召喚37幀。蓋亞新增原框15幀，普通兩次攻防／受擊、F2與保存冷讀獨立追蹤通過，92／98張PNG與雙方核心相符，87張同圖。原GUI指定Gaia END樣本0仍失敗，不補造完整PASS。哈諾11幀完整fixture保持隔離；其他人物／法術／死亡／普通召喚及效能／平台仍待。"
   },
   "runtime_source": {
     "binary": {
@@ -5023,7 +5023,8 @@
     "compiled_pose_input_inventory": {
       "file": "work/promo-cadence-20261018/hd-fonts/battle-animation-hd-inventory.json",
       "sha256": "eebe3e7a3afffd6fee216ee25de328181d99c68a401e84205fec53fce6344674"
-    }
+    },
+    "original_geometry_redraw_followup": "gaia_native_battle_followup_20261020"
   },
   "battle_animation_bank_followup_20261019": {
     "date": "2026-10-19",
@@ -5249,7 +5250,8 @@
       "new_player_e2": false,
       "source_commit_push": false,
       "output_ownership_checked": true
-    }
+    },
+    "original_geometry_redraw_followup": "gaia_native_battle_followup_20261020"
   },
   "battle_animation_gpu_followup_20261019": {
     "status": "RUNTIME-E1-SCOPED",
@@ -30396,6 +30398,737 @@
         "pillow": "11.3.0"
       },
       "generation": "built-in image_gen；原始RGBA SHA保存，重建沿固定PNG與Pillow"
+    },
+    "runtime_followup_20261020": {
+      "status": "PASS-RUNTIME-E1-ISOLATED-CANDIDATE",
+      "fixture": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hano-battle-lifecycle-r1/receipt.json",
+        "sha256": "f26e65a13bb5d4fc383c3345ae14bb8bb0adc5630200fb41b2093f69005351f9"
+      },
+      "pixels": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hano-fixture-pixels-r1.json",
+        "sha256": "fb827bfe5a6391f9769dc850388146601e5f6332a4389855495b23a4b7cef1d2"
+      },
+      "negative_guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hano-fixture-guards-r1/guards.json",
+        "sha256": "de3ffd9ff399d8b15a415e9fba42ae65de121c6e49f5af41d7f11713f63c8d31"
+      },
+      "source_pngs": 11,
+      "matched_pngs": 11,
+      "hd_draws": 244,
+      "faithful_draws": 3,
+      "final_draws": 313,
+      "phase_f2": 3,
+      "battle_dac_steps": 64,
+      "map_dac_steps": 65,
+      "continuations": 1,
+      "seconds": 175.84,
+      "normal_player_pass": false,
+      "formal_registered": false,
+      "private_synced": false,
+      "scope": "physicalSceneTestGame只換BattleFig1／76，姓名與其餘fixture規則保持；非正常哈諾玩家流程或原版傷害對拍。",
+      "remaining": "來源哈諾HP0，需正常教會復活或可回查存活來源。正式登錄前依最新正式清冊重編／逐幀核對，不能用此舊385候選覆蓋後續資產。",
+      "pixel_verifier_base_commit": "1d36b507aab6023e7fecbe8b8d66a5add5d3ca2c"
+    }
+  },
+  "gaia_native_battle_followup_20261020": {
+    "date": "2026-10-20",
+    "status": "CONFORMED-SCOPED",
+    "issue": 263,
+    "base_source_commit": "1d36b507aab6023e7fecbe8b8d66a5add5d3ca2c",
+    "full_battle_hd_complete": false,
+    "formal_registered": true,
+    "scope": "蓋亞FIGANI90／91完整4／11幀，原矩形朝左的側身待機及蓄力重繪；不採用先前擴框方案。",
+    "approved_design": "f5b53ec12ecd73f104a79044985dc383a6bdc0a4c0df0df7daf1c38ef9900463",
+    "geometry": "保留原始矩形、等比縮放與腳底／中心錨點；standing群組1.0，punch群組0.9809905264420193，未擴框。",
+    "art_sources": [
+      {
+        "pose": "idle",
+        "size": [
+          1070,
+          1470
+        ],
+        "anchor": [
+          80,
+          71,
+          1050,
+          1438
+        ],
+        "ratio": 0.709583028529627,
+        "sha256": "45e4e7fbe7908cb3a7e536227fa9cef52cc6365af5e492d3747e71e19e5dd6a4"
+      },
+      {
+        "pose": "charge",
+        "size": [
+          1070,
+          1470
+        ],
+        "anchor": [
+          77,
+          67,
+          1053,
+          1435
+        ],
+        "ratio": 0.7134502923976608,
+        "sha256": "1a7485d97d41670e6bcc32523425db10f07ae6adf686d504dbe51cdcfba05339"
+      },
+      {
+        "pose": "impact",
+        "size": [
+          1402,
+          1122
+        ],
+        "anchor": [
+          25,
+          56,
+          1370,
+          1112
+        ],
+        "ratio": 1.2736742424242424,
+        "sha256": "3998832bbd78c390e75597290353d87224d52fb30a86ce6eee8fe50b7d2f2ed8"
+      },
+      {
+        "pose": "flare",
+        "size": [
+          1254,
+          1254
+        ],
+        "anchor": [
+          17,
+          24,
+          1240,
+          1226
+        ],
+        "ratio": 1.0174708818635607,
+        "sha256": "80d1341f4a972c9ba33a394606c98d37cfe5a812453846fd1075efb5e312f6db"
+      },
+      {
+        "pose": "follow",
+        "size": [
+          1254,
+          1254
+        ],
+        "anchor": [
+          28,
+          24,
+          1239,
+          1226
+        ],
+        "ratio": 1.0074875207986689,
+        "sha256": "49fcecb304be23861ca1e21a5e534460d3e62467ea758c631d0a95b1b03c42e7"
+      }
+    ],
+    "generation": {
+      "schema_version": 1,
+      "status": "CANDIDATE-NOT-REGISTERED",
+      "tool": "built-in image_gen",
+      "generations": [
+        {
+          "pose": "idle",
+          "prompt": "Use case: identity-preserve / animation key-frame. Asset type: single transparent production master of Gaia robot's IDLE battle stance for a 1995 tactical RPG HD remake. Reference image1 is the ORIGINAL idle frame and is the authority for pose, camera, direction, limb arrangement and silhouette. Reference image2 is the USER-APPROVED Gaia design, authority for metal armor, helmet, colors and painting. Reference image3 is the adjacent attack follow-through, authority for facing direction. Produce ONE complete full-body robot, no text, no panels, no shadows, transparent alpha and generous empty margins. Portrait composition.\nCRITICAL POSE: faithfully redraw image1, NOT the wide frontal standing pose of image2. Robot faces SCREEN LEFT, camera sees its right side and some rear shoulder shell, deep three-quarter side view. Head points LEFT. Big foreground rounded shoulder on upper RIGHT of body; layered side/rear torso armor visible. Bent guard arm held compactly across torso, rear arm kept close to body. One foot lower right and the farther foot behind left, both fully visible, feet much closer together than the approved full-body concept. Compact grounded fighter ready stance, slightly bent knees. Keep the original head-to-foot silhouette ratio about 104 wide to143 high (0.72). Heavy robot volume comes from deep massive torso, thick shoulder caps and thick limbs, NOT a wide sumo stance or extra width. Overall body tall enough to fill its original narrow battle rectangle without shrinking height. No movement streak or glow.\nIdentity MUST retain overlapping slanted pale sage-gray HARD METAL helmet shell, narrow dark blue visor, short armored neck, cobalt-blue bands and navy joints, massive rigid sage-gray plates and rounded shoulder caps, mechanical thick fists, huge armored calves and broad wedge toes. No cloth, wrappings, scarf, stone, human face, mouth, sword, axe, cannon, antenna or added backpack. Exactly2arms2legs. Match approved hand-painted 1990s fantasy RPG style, clear thick armor planes, restrained brushed textures, crisp readable silhouette, no pixel art or photoreal3D. Entire robot contained in image, native transparent background. Do not mirror the original facing.",
+          "generated_source": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-960e9a74-9299-464e-a7a0-320c110295d6.png",
+          "file": "work/promo-cadence-20261018/hd-fonts/gaia-battle-idle-native-r1.png",
+          "references": [
+            {
+              "file": "remake/assets/figani/FIGANI_090_f00.png",
+              "sha256": "9ff3d2bbbc7df359111a1840c62aa5462f918635bec3a5acaaeaf63c60a016bf"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/gaia-original-based-hd-v2-concept.png",
+              "sha256": "f5b53ec12ecd73f104a79044985dc383a6bdc0a4c0df0df7daf1c38ef9900463"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/gaia-battle-follow-through-r3.png",
+              "sha256": "49fcecb304be23861ca1e21a5e534460d3e62467ea758c631d0a95b1b03c42e7"
+            }
+          ],
+          "sha256": "45e4e7fbe7908cb3a7e536227fa9cef52cc6365af5e492d3747e71e19e5dd6a4"
+        },
+        {
+          "pose": "charge",
+          "prompt": "Use case: identity-preserve. Asset type: one transparent production animation CHARGE key pose for Gaia HD battle. Image1 is the new approved-design original-geometry IDLE master, lock its exact robot identity, camera, LEFT facing direction, head shell, sage-gray rigid plates/cobalt joints, chunky heavy proportions and narrow stance. Image2 is original game's CHARGE frame, authority for the tiny pose adjustment. Create ONE closely adjacent charge pose of exactly the same robot. Keep feet, legs, hips, helmet and torso almost unchanged and in same locations, bring compact bent guard forearm slightly higher across chest and draw upper torso a little back preparing to punch LEFT. No flare or glow yet. This is a subtle next animation key, not another character design or broad action. Deep side three-quarter view, bulky foreground shoulder RIGHT, helmet visor toward LEFT. Silhouette width/height about0.72, completebody and twofeet, portrait canvas generous empty margins. Match existing hand-painted crisp HD sprite, all thick hard metal, no fabric, bandages, weapons, cannon, antenna, ground/shadow/text/frame or extra limbs. Keep original transparent alpha. Exactly ONE figure.",
+          "generated_source": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-250f08e3-d352-4b6b-b71e-240d36b96227.png",
+          "file": "work/promo-cadence-20261018/hd-fonts/gaia-battle-charge-native-r1.png",
+          "references": [
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/gaia-battle-idle-native-r1.png",
+              "sha256": "45e4e7fbe7908cb3a7e536227fa9cef52cc6365af5e492d3747e71e19e5dd6a4"
+            },
+            {
+              "file": "remake/assets/figani/FIGANI_091_f02.png",
+              "sha256": "b915da2c4824dec1269f8bdc009adb3fc7fc6c5f0bb7dd39af953940e2b162f8"
+            }
+          ],
+          "sha256": "1a7485d97d41670e6bcc32523425db10f07ae6adf686d504dbe51cdcfba05339"
+        }
+      ]
+    },
+    "reuse": "impact、flare、follow沿battle_animation_bank_followup_20261019及battle_animation_followup_20261019，原稿與提示保留。",
+    "recipe": {
+      "file": "work/promo-cadence-20261018/hd-fonts/gaia-native-recipe-r1.json",
+      "sha256": "fdae428f8210904d54a62cd5133a3ff01f9c822831c10db0e28f347e7dd77263"
+    },
+    "compiled": {
+      "file": "work/promo-cadence-20261018/hd-fonts/gaia-native-candidate-r1/compiled.json",
+      "sha256": "7c6186745c100d24ee19b6e696e36a22d35bc7e20a03489ef5982c5e3cd0c5cd"
+    },
+    "candidate_catalog": {
+      "file": "work/promo-cadence-20261018/hd-fonts/gaia-native-candidate-r1/catalog.json",
+      "sha256": "23d8c3793d7058513bf1d85a634ec8499ca632a998641bbdaa99ae5e7cd3d337"
+    },
+    "inventory": {
+      "file": "docs/data/fd2-battle-hd-source-inventory-20261019.json",
+      "sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51"
+    },
+    "native_inputs": [
+      {
+        "resource": 90,
+        "raw_sha256": "8c6e80f7b84180c89369599397891f2bc461b7c75558b20ea3c9d3e2adeb016f",
+        "metadata_sha256": "ba5ef943e8140327bb56709c47c149cb7d71dcd91ff2f05c12620d10047aa344",
+        "native_header": {
+          "byte_1": 0,
+          "byte_2": 4,
+          "byte_4": 0
+        }
+      },
+      {
+        "resource": 91,
+        "raw_sha256": "0391bdbbe171ca226e8c435ab83ee3b77a5b0de58629f4221c2b42eeaa60dbff",
+        "metadata_sha256": "aee35c8590fa5b2eec1bfe0b5f4902a4b950721386dfee29ea3d03e1ff8797b1",
+        "native_header": {
+          "byte_1": 0,
+          "byte_2": 11,
+          "byte_4": 6
+        }
+      }
+    ],
+    "limits": [
+      "五份母稿姿勢重定向，不是十五份獨立繪畫或原版逐幀相同。",
+      "原91/6衝擊光比原生圖柔化且未填滿原生外框；編製裁去4個高覆蓋像素，其他十四幀為零。原圖本身光邊已觸原始矩形。",
+      "待機四拍及蓄力五拍明示共享母稿；極小充能亮點不另繪逐拍差異。",
+      "原控制器因指定Gaia END樣本0而失敗。新獨立追蹤只核對普通攻防與保存；指定END圖源及原GUI完整PASS仍不成立。",
+      "哈諾11幀僅隔離RUNTIME-E1；其餘人物、法術／死亡／普通召喚、完整HD地形與平台效能仍待。"
+    ],
+    "acceptance": [
+      "完整15幀source／descriptor／alpha及清冊驗證；共享群組保持原框身高。",
+      "完整Game.Draw十五幀、三階段F2、64／65 DAC、一次續行與失敗預載保持HP／RNG。",
+      "同第三章來源seed1正常蓋亞選人、走行／待機／END、兩次攻防返回、F2及章節邊界保存新程序LOAD。",
+      "通過後才正式登錄、私人allow-list同步及正常截圖更新。"
+    ],
+    "verification": {
+      "source_coverage": {
+        "file": "work/promo-cadence-20261018/hd-fonts/gaia-native-coverage-r1.json",
+        "sha256": "2d9446940b2918e78aedabf933c82d4c871dbec2c84498847be38aede28a2cc4"
+      },
+      "compiler_guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/gaia-native-compiler-guards-r1/guards.json",
+        "sha256": "71891f6d2b54c8cc1bc6de10d0336974188bd182ff408fab86e7d9b8f36f3b49"
+      },
+      "fixture": {
+        "file": "work/promo-cadence-20261018/hd-fonts/gaia-native-lifecycle-r1/receipt.json",
+        "sha256": "a91ea618358a1fe893681183344b5ffdc2e2bd982e68b733afa71500962e76ae"
+      },
+      "fixture_pixels": {
+        "file": "work/promo-cadence-20261018/hd-fonts/gaia-native-fixture-pixels-r2.json",
+        "sha256": "ba93775b20d925ec8d6aa32fee6e6106c40ea45718352af3fbc96e7623ebe063"
+      },
+      "fixture_guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/gaia-native-fixture-guards-r2/guards.json",
+        "sha256": "9bd95c01b65751418b7d499d2400283cf38e715289a9d4b020e88828fbb7c6ce"
+      },
+      "normal_trace": {
+        "file": "work/promo-cadence-20261018/hd-fonts/gaia-native-normal-gui-r1/attack-save-trace-r2.json",
+        "sha256": "d6697130faa9ade865bb0d06784042e52796ac610bf35b30d90062ef22ce2b63"
+      },
+      "normal_pixels": {
+        "file": "work/promo-cadence-20261018/hd-fonts/gaia-native-normal-pixels-r1.json",
+        "sha256": "9c6bd74b4499404b060b5ef6d955e6ff8de5a7dc7d9b7e0b6e6c839d38a26aac"
+      },
+      "normal_enemy_pixels": {
+        "file": "work/promo-cadence-20261018/hd-fonts/gaia-native-normal-enemy-pixels-r1.json",
+        "sha256": "b17e1d2db14c1d15841d7953500a0a802868a82b7e588256fa1f9a2c0060516f"
+      },
+      "trace_guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/gaia-native-trace-guards-r1/guards.json",
+        "sha256": "75665647222001f825103512db659f5d834f1e04d23f0197753de28061be4455"
+      },
+      "formal_catalog_tests": {
+        "file": "work/promo-cadence-20261018/hd-fonts/gaia-native-formal-catalog-tests-r2.log",
+        "sha256": "aa66c9e034051b9f7604d3d1951f51450c08528ad6d2d22bd4a6eaac713f9f29"
+      },
+      "formal_coverage": {
+        "file": "work/promo-cadence-20261018/hd-fonts/gaia-native-formal-coverage-r1.json",
+        "sha256": "baf8d4afa44b2a8411dce90690dad8cbbb8c83f56cb5a33e0af4121ece6a78be"
+      },
+      "runtime_only_go": {
+        "file": "work/promo-cadence-20261018/hd-fonts/gaia-native-runtime-only-go-r1.log",
+        "sha256": "b2fd8e339827f095e888408ffc8565080d31b5092de7cca33a5ead61aa8201bd"
+      },
+      "lessons": {
+        "file": "work/promo-cadence-20261018/hd-fonts/gaia-native-lessons-final-r2.log",
+        "sha256": "0a4e4fb971287eb796dba7635e48aeab30e2d1365c0bcbc40589488d42fef2c6"
+      },
+      "worklist": {
+        "file": "work/promo-cadence-20261018/hd-fonts/gaia-native-worklist-final-r1.log",
+        "sha256": "2f54f61dfa7fb4ccd6a11f9d46d47654d86d30b5df19bc8b0330be3d7a4888eb"
+      }
+    },
+    "fixture_result": {
+      "status": "PASS",
+      "scope": "RUNTIME-E1，physicalSceneTestGame僅換actor.BattleFig30及target76，名稱／其餘fixture狀態保持。不是普通蓋亞存檔或傷害對拍。",
+      "source_pngs": 15,
+      "matched_pngs": 15,
+      "phase_f2": 3,
+      "battle_dac_steps": 64,
+      "map_dac_steps": 65,
+      "hd_draws": 258,
+      "faithful_draws": 3,
+      "final_draws": 326,
+      "continuations": 1,
+      "seconds": 199.51,
+      "hp_and_rng_preserved": true
+    },
+    "registration_plan": {
+      "file": "work/promo-cadence-20261018/hd-fonts/gaia-native-registration-plan-r1.json",
+      "sha256": "7a1a8f3448daa50b16f6ebf9f3acc065b589ba3ef48e4327df8118f595f36a69"
+    },
+    "allowlist_rebuild": {
+      "verification": {
+        "file": "work/promo-cadence-20261018/hd-fonts/gaia-native-allowlist-rebuild-verification-r1.json",
+        "sha256": "fd7a0506de3b1e5af31f2404434714344a804502d08cd23a2669b389933e1a3d"
+      },
+      "compiled": {
+        "file": "work/promo-cadence-20261018/hd-fonts/gaia-native-allowlist-rebuild-compiled-r1.json",
+        "sha256": "71afb3e958b7f325c72fa20d0b838036090aa17581242a9233cbcce2a410997a"
+      },
+      "status": "PASS-20-FILES-BYTE-EXACT",
+      "temporary_output_deleted": true
+    },
+    "reproduction_recipe": {
+      "schema_version": 1,
+      "figure": 30,
+      "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+      "sources": {
+        "idle": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-030-idle-battle-hd6-master-v1.png",
+          "sha256": "45e4e7fbe7908cb3a7e536227fa9cef52cc6365af5e492d3747e71e19e5dd6a4",
+          "anchor": [
+            80,
+            71,
+            1050,
+            1438
+          ]
+        },
+        "charge": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-030-charge-battle-hd6-master-v1.png",
+          "sha256": "1a7485d97d41670e6bcc32523425db10f07ae6adf686d504dbe51cdcfba05339",
+          "anchor": [
+            77,
+            67,
+            1053,
+            1435
+          ]
+        },
+        "impact": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-030-impact-battle-hd6-master-v1.png",
+          "sha256": "3998832bbd78c390e75597290353d87224d52fb30a86ce6eee8fe50b7d2f2ed8",
+          "anchor": [
+            25,
+            56,
+            1370,
+            1112
+          ]
+        },
+        "flare": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-030-flare-battle-hd6-master-v1.png",
+          "sha256": "80d1341f4a972c9ba33a394606c98d37cfe5a812453846fd1075efb5e312f6db",
+          "anchor": [
+            17,
+            24,
+            1240,
+            1226
+          ]
+        },
+        "follow": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-030-follow-battle-hd6-master-v1.png",
+          "sha256": "49fcecb304be23861ca1e21a5e534460d3e62467ea758c631d0a95b1b03c42e7",
+          "anchor": [
+            28,
+            24,
+            1239,
+            1226
+          ]
+        }
+      },
+      "resources": {
+        "90": [
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              104,
+              143
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              104,
+              142
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              104,
+              141
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              104,
+              142
+            ],
+            "scale_group": "standing"
+          }
+        ],
+        "91": [
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              104,
+              143
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "charge",
+            "anchor": [
+              0,
+              0,
+              110,
+              143
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "charge",
+            "anchor": [
+              0,
+              0,
+              111,
+              143
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "charge",
+            "anchor": [
+              0,
+              0,
+              111,
+              143
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "charge",
+            "anchor": [
+              0,
+              0,
+              111,
+              143
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "charge",
+            "anchor": [
+              0,
+              0,
+              104,
+              143
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "impact",
+            "anchor": [
+              0,
+              0,
+              194,
+              155
+            ],
+            "scale_group": "punch"
+          },
+          {
+            "pose": "flare",
+            "anchor": [
+              0,
+              0,
+              151,
+              146
+            ],
+            "scale_group": "punch"
+          },
+          {
+            "pose": "flare",
+            "anchor": [
+              0,
+              0,
+              150,
+              147
+            ],
+            "scale_group": "punch"
+          },
+          {
+            "pose": "follow",
+            "anchor": [
+              0,
+              0,
+              149,
+              147
+            ],
+            "scale_group": "punch"
+          },
+          {
+            "pose": "follow",
+            "anchor": [
+              0,
+              0,
+              149,
+              147
+            ],
+            "scale_group": "punch"
+          }
+        ]
+      }
+    },
+    "reproduction_steps": [
+      "以sync_modern_theme_private.py依正式catalog恢復完整私人allow-list到private_root。",
+      "將本reproduction_recipe另存工作JSON。複製正式catalog只移除modern.figani.090.hd6.v1及091兩項，保留其餘清冊。",
+      "在資產Docker中執行build_fd2_character_battle_hd.py，傳入唯讀原版包、固定inventory、此recipe及上述base-catalog。",
+      "15張PNG與五母稿SHA須與本批來源／正式frame_sha256相同。乾淨allow-list重建已驗20檔逐位元組相同。"
+    ],
+    "normal_environment": {
+      "image": "fd2-promo:20261017-r1",
+      "initial_cpus": 2,
+      "cpus_after_other_checks_completed": 3,
+      "memory_bytes": 3221225472,
+      "pids_limit": 256,
+      "network": "none",
+      "outer_timeout_seconds": 2460,
+      "gui_limit_seconds": 2400,
+      "software_rendering": true,
+      "scope": "只調整容器CPU配額，未改遊戲、GUI來源、輸入、期限或驗收條件；耗時不作平台效能。"
+    },
+    "private_synced": true,
+    "original_gui_pass": false,
+    "selected_end_art_pass": false,
+    "normal_result": {
+      "status": "PASS-SCOPED-ATTACK-SAVE-TRACE-AND-PIXELS",
+      "original_gui_status": "FAILED-END-SAMPLE-GATE",
+      "original_gui_failure": {
+        "line": 868,
+        "message": "未取得兩輪普通END圖源樣本",
+        "observation": {
+          "file": "work/promo-cadence-20261018/hd-fonts/gaia-native-normal-gui-r1/battle-observation.json",
+          "sha256": "06ca730c14f293278cd61890bc654e256ccac1453ecc4ac198e5b9641211e5aa"
+        },
+        "operations": {
+          "file": "work/promo-cadence-20261018/hd-fonts/gaia-native-normal-gui-r1/operations.json",
+          "sha256": "d2f48b566cf12083873e37be9b40c32ec71b49be202cb9bc5cc041a1048ec4e8"
+        },
+        "source_controller_sha256": "229ca398a3c14aaeb913829d3486825dde1c27ee8010a094528889bb36264755"
+      },
+      "scoped_trace_status": "PASS-NORMAL-ATTACK-SAVE-TRACE",
+      "operations": 175,
+      "attack_pngs": 128,
+      "matched_gaia_pngs": 92,
+      "matched_enemy_pngs": 98,
+      "matched_same_pngs": 87,
+      "normal_end_steps": 4,
+      "observed_hd_scene_groups": [
+        4,
+        3,
+        4,
+        3
+      ],
+      "selected_gaia_end_pngs": 0,
+      "selected_gaia_end_art_pass": false,
+      "new_process_title_load": true,
+      "source_and_theme_save_bytes_equal": true,
+      "node_boundary_units_equal": true,
+      "state_injection": false,
+      "hp_lock": false,
+      "go_runtime_changes": 0,
+      "warm_gaia_hp": 62,
+      "cold_gaia_hp": 68,
+      "save_contract": "F5保存章節邊界；LOAD重建，不持續戰中HP、位置或Acted。",
+      "scope": "普通攻防／受擊／返回、F9、F2及保存冷讀逐筆驗證；不補造原GUI或指定END圖源通過。",
+      "negative_guards": 12
+    },
+    "normal_source": {
+      "json_source": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-source-gui-r5/user-data/fd2_re/fd2_save.json",
+        "sha256": "ef72ec09a170233645b71869a6441a80656f9a2fa20944e27c85f13a2e4a5d80"
+      },
+      "native_ancestor_manifest": "docs/data/parity-slots/ch03-manifest.json",
+      "native_ancestor_sha256": "d8d534d5692d3e81ffafacb9a2c31e74ed7f3297583fcb0bec95715df488fe6b",
+      "seed_env": {
+        "FD2_SEED": 1
+      },
+      "limits": "祖先111章抽樣後force-enemy-clear照舊揭露；本輪章內無HP／位置／規則注入，不新增整章E2或原版oracle。"
+    },
+    "formal_registration": {
+      "report": {
+        "file": "work/promo-cadence-20261018/hd-fonts/gaia-native-registration-r1.json",
+        "sha256": "c363a13a7fa0cb58afe93f40a46630c7405a52a03374126a7013d725f5869261"
+      },
+      "catalog_sha256": "23386e429fba94a872dd2542558dde1cef03dc6610d7d7826bb30616f05f1612",
+      "assets": 385,
+      "figani_resources": 16,
+      "figani_frames": 123,
+      "new_files": 20,
+      "masters": 5
+    },
+    "private_delivery": {
+      "report": {
+        "file": "work/promo-cadence-20261018/hd-fonts/gaia-native-private-sync-r1.json",
+        "sha256": "0e9708d3058be24b7cceb1c37a823ff27a6096c098ce23cbc2c022c075fcfa18"
+      },
+      "commit": "1910e36765aba56b4e6fc00eec84c42ada0dfcc1",
+      "remote_head_verified": true,
+      "visibility": "PRIVATE",
+      "file_count": 3503,
+      "runtime_only_count": 3223,
+      "retained_unchanged": 3483,
+      "runtime_only_go_tests": 2,
+      "runtime_only_go_subtests": 2,
+      "skipped": 0
+    },
+    "readme_screenshot": {
+      "file": "docs/figures/hd-gaia-physical-attack.png",
+      "sha256": "a74b6c8fd0a877a5a51c76b6819e46b56d7da0c1a1d23452a0a286e792ca55e5",
+      "source": "gaia-native-normal-gui-r1/world-hd-art-20.png",
+      "byte_exact": true,
+      "compatible_poses": [
+        [
+          91,
+          9
+        ],
+        [
+          91,
+          10
+        ]
+      ],
+      "scope": "正常第三章普通攻擊視窗；不判唯一相位，背景與面板仍含像素素材。"
+    },
+    "catalog_fixture_correction": {
+      "failed_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/gaia-native-formal-catalog-tests-r1.log",
+        "sha256": "52712c0c4b4da9c65e5c69ddf9b0bd3cd1fbd9024e79b21a8ac3d62ded8ddc54"
+      },
+      "passed_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/gaia-native-formal-catalog-tests-r2.log",
+        "sha256": "aa66c9e034051b9f7604d3d1951f51450c08528ad6d2d22bd4a6eaac713f9f29"
+      },
+      "reason": "合成resource90與新正式90撞號，validator正確拒收。測試先隔離同來源的正式項目，保留重複來源反例與正式拒收規則。",
+      "tests": 11
+    },
+    "toolchain": {
+      "go_image": {
+        "tag": "fd2-go-test-local:latest",
+        "id": "sha256:e4a805c52a3ad5d8c22cf23f2bcf51c6924e5ad6b99554f1b02761903c725433",
+        "go": "1.22.12",
+        "ebiten": "2.6.6",
+        "platform": "linux/amd64"
+      },
+      "asset_image": {
+        "tag": "fd2-assets-local:20260829-sfx",
+        "id": "sha256:e59237a31d4b5f7a62c59ac37b780bd93f17c99fda97be8f5ca0c53978b878bc",
+        "pillow": "11.3.0"
+      },
+      "gui_image": {
+        "tag": "fd2-promo:20261017-r1",
+        "id": "sha256:f299cf5e25b4ba172941399b3ed177c78b3a951de35d666d78af3f00e30d7f0d"
+      },
+      "scope": "軟體GPU與本機fixture，非跨平台實機效能"
+    },
+    "cleanup": {
+      "report": {
+        "file": "work/promo-cadence-20261018/hd-fonts/gaia-native-cleanup-r1.json",
+        "sha256": "62f7874cf6145c611e631b00856db9082801c82be89d68e40bcd194d6376bf17"
+      },
+      "total_file_bytes": 317429542,
+      "recording_created": false,
+      "runtime_manifest": {
+        "file": "work/promo-cadence-20261018/hd-fonts/gaia-native-runtime-only-manifest-r1.json",
+        "sha256": "f9f39022218648986f13198cebe17121b1be72964a0104966905dc9daac5eca8"
+      },
+      "trace_after_cleanup": {
+        "file": "work/promo-cadence-20261018/hd-fonts/gaia-native-trace-after-cleanup-r1.json",
+        "sha256": "861375166e4e9f3e6de3972873cc7506e7f9737f40c4868bd315c1fb31f5f135"
+      },
+      "key_capture_files_retained": true
+    },
+    "github_body": {
+      "file": "work/promo-cadence-20261018/hd-fonts/gaia-issue263-body-r1.md",
+      "sha256": "a916c71b33ab9cf8f38135ff5b9899caf94c2ab96b68a0d69e1865646193156e"
+    },
+    "source_files": [
+      {
+        "file": "tools/verify_fd2_battle_attack_trace.py",
+        "sha256": "dacc5406a8379fc0b972df4bcc666339df2df51c8f4d3b9065df114e10498a7d"
+      },
+      {
+        "file": "tools/test_fd2_battle_attack_trace.py",
+        "sha256": "e1c7e652d2be78c3d2b2816ee0c99cfa43cea6b49e4e6d6995ac3057c5a76840"
+      },
+      {
+        "file": "tools/verify_fd2_character_battle_gpu.py",
+        "sha256": "b9ada30190d409c600a24413bf128ff6bc14415d172cba883985ad723fc16868"
+      },
+      {
+        "file": "tools/test_modern_theme_catalog.py",
+        "sha256": "08be04568b995305efb3e2857ae6d90b9cdcec31ffb39f558021e58c6e819882"
+      },
+      {
+        "file": "tools/build_fd2_character_battle_hd.py",
+        "sha256": "e4a046f5b94db0870d929d2d620b920a2650dfe9b6092cfc0ec3791095a6828c"
+      }
+    ],
+    "trace_reproduction": [
+      "在fd2-assets-local:20260829-sfx、user1000、network none執行tools/verify_fd2_battle_attack_trace.py --run <原GUI輸出> --binary <當次程式> --catalog <當次候選catalog> --source-save <原JSON> --figure 30 --report <原GUI目錄的新追蹤JSON>。",
+      "原GUI以verify_fd2_hd_fonts_gui.py的第三章battle-only/world/battle-hd/battle-art、own-index1、approach-rounds3、battle-advance、battle-end-art、battle-end-figure30執行；本輪原END樣本門檻失敗是可重現結果，不稱原GUI PASS。",
+      "另以verify_fd2_character_battle_gpu.py --sample-group trace --figure 30及76核對128張實際演出PNG；test_fd2_battle_attack_trace.py沿相同來源與baseline產生新out做12項拒收。",
+      "trace分組只核對攻防／保存，不接受為指定END圖源；原OBSERVATION-ONLY及operations/audit保留。刪除已驗binary後仍可重驗既有追蹤，其SHA須與原觀測相同，初次驗證仍必須有實檔。"
+    ],
+    "final_checks": {
+      "file": "work/promo-cadence-20261018/hd-fonts/gaia-native-final-checks-r1.json",
+      "sha256": "d20ef877852469d0fec7e1ba1980b37bb9e5ce3381a976d20c9ed9a250d75690",
+      "local_links": 2042,
+      "positive_controls": 3,
+      "changed_files": 16,
+      "owners": [
+        1000,
+        1000
+      ],
+      "lessons": 268,
+      "guards": 146
     }
   }
 }
