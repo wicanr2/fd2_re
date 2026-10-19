@@ -165,20 +165,27 @@ func TestModernHDBattleAssetsRealCandidate(t *testing.T) {
 		t.Skip("requires explicit candidate catalog/pack and legal original pack")
 	}
 	t.Setenv("FD2_ASSET_PACK", original)
+	figure, idleCount, attackCount := 30, 4, 11
+	if os.Getenv("FD2_TEST_MODERN_BATTLE_FIGURE") == "4" {
+		figure, attackCount = 4, 15
+	} else if value := os.Getenv("FD2_TEST_MODERN_BATTLE_FIGURE"); value != "" && value != "30" {
+		t.Fatal("explicit candidate figure must be 4 or 30")
+	}
+	idle, attack := figure*3, figure*3+1
 	set, err := loadModernStoryPortraitSet(catalog, pack)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(set.battleAnimations) != 2 || len(set.battleAnimations[90].Frames) != 4 || len(set.battleAnimations[91].Frames) != 11 {
-		t.Fatal("Gaia animation bank incomplete")
+	if set.battleAnimations[idle] == nil || set.battleAnimations[attack] == nil || len(set.battleAnimations[idle].Frames) != idleCount || len(set.battleAnimations[attack].Frames) != attackCount {
+		t.Fatal("selected character animation bank incomplete")
 	}
-	if set.battleAnimations[90].Frames[0] != nil || set.battleAnimations[91].Frames[0] != nil {
+	if set.battleAnimations[idle].Frames[0] != nil || set.battleAnimations[attack].Frames[0] != nil {
 		t.Fatal("real animation bank eagerly retained all RGBA frames")
 	}
-	if err := set.prepareBattleHDResources(90, 91); err != nil {
+	if err := set.prepareBattleHDResources(idle, attack); err != nil {
 		t.Fatal(err)
 	}
-	if set.battleAnimations[90].Frames[0] == nil || set.battleAnimations[91].Frames[10] == nil {
+	if set.battleAnimations[idle].Frames[0] == nil || set.battleAnimations[attack].Frames[attackCount-1] == nil {
 		t.Fatal("complete active animations not preloaded")
 	}
 	raw, err := os.ReadFile(catalog)
@@ -202,25 +209,35 @@ func TestModernHDBattleAssetsRealCandidate(t *testing.T) {
 			t.Fatal("wrong-source resource published")
 		}
 	}
-	t.Log("complete existing theme + Gaia resources90/91 loaded; wrong source rejected; no Game.Draw claim")
+	t.Logf("complete existing theme + figure%d resources%d/%d loaded; wrong source rejected; no Game.Draw claim", figure, idle, attack)
 }
 
-// 明示fixture：只換BattleFig以命中蓋亞圖源，不當成一般玩家路徑。
+// 明示fixture：只換BattleFig以命中所選圖源，不當成一般玩家路徑。
 func TestNativePhysicalHDPreflightStopsBeforeSettlement(t *testing.T) {
 	catalog, pack := os.Getenv("FD2_TEST_MODERN_BATTLE_CATALOG"), os.Getenv("FD2_TEST_MODERN_BATTLE_PACK")
 	if catalog == "" || pack == "" {
 		t.Skip("requires explicit HD candidate")
 	}
 	requirePhysicalScenePack(t)
+	figure := 30
+	if os.Getenv("FD2_TEST_MODERN_BATTLE_FIGURE") == "4" {
+		figure = 4
+	} else if value := os.Getenv("FD2_TEST_MODERN_BATTLE_FIGURE"); value != "" && value != "30" {
+		t.Fatal("explicit candidate figure must be 4 or 30")
+	}
+	idle, attack := figure*3, figure*3+1
 	for _, owner := range []string{"player", "mode11"} {
 		t.Run(owner, func(t *testing.T) {
 			set, err := loadModernStoryPortraitSet(catalog, pack)
 			if err != nil {
 				t.Fatal(err)
 			}
-			set.battleAnimations[90].paths[0] = filepath.Join(t.TempDir(), "missing-hd-frame.png")
+			if set.battleAnimations[idle] == nil || set.battleAnimations[attack] == nil {
+				t.Fatal("selected candidate bank missing")
+			}
+			set.battleAnimations[idle].paths[0] = filepath.Join(t.TempDir(), "missing-hd-frame.png")
 			g, actor, target := physicalSceneTestGame(t)
-			actor.BattleFig = 30
+			actor.BattleFig = figure
 			g.modernStoryPortraits = set
 			beforeActor, beforeTarget := *actor, *target
 			if owner == "player" {
@@ -236,7 +253,7 @@ func TestNativePhysicalHDPreflightStopsBeforeSettlement(t *testing.T) {
 			if g.rng.Int63() != rand.New(rand.NewSource(73)).Int63() {
 				t.Fatal("HD failure consumed Go RNG")
 			}
-			if set.battleAnimations[90].Frames[0] != nil || set.battleAnimations[91].Frames[0] != nil {
+			if set.battleAnimations[idle].Frames[0] != nil || set.battleAnimations[attack].Frames[0] != nil {
 				t.Fatal("HD failure published a partial bank")
 			}
 		})

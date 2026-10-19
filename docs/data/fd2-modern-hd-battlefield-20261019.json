@@ -9,33 +9,33 @@
     "native_viewport": "CONFORMED-SCOPED：正式1920世界沿原生(4,4)、312×192窗格；正常F2同view與960地形樣本一致。",
     "hd_sprite_data": "DATA-READY：完整125組1455張HD及31組372張新增24父項已登錄；舊1083張父項及HD bytes保持。",
     "hd_world_renderer": "CONFORMED-SCOPED：144人物已接Game.Draw；首章34張正常GPU、4張實際走行、兩次物理攻擊及保存／新程序LOAD通過。",
-    "private_assets": "catalog allow-list3316檔已逐檔驗證並推送私人庫abb43855；runtime-only3100檔，新增八母稿排除於執行包。",
+    "private_assets": "catalog allow-list3350檔與runtime-only3119檔逐檔通過，原3316檔保持；亞雷斯15母稿排除執行包，私人提交91c5751e。",
     "quickload_battle_owner": "CONFORMED-SCOPED：成功JSON LOAD丟棄舊經驗owner與移動計畫；拒收保留。",
     "timed_dialogue": "CONFORMED-SCOPED-RUNTIME-E1：計時FFEC開收框保留HD世界，EXP99普通鍵盤／F2與保存冷讀通過；其他caller未驗。",
     "hd_terrain": "CONFORMED-SCOPED：map0六組53槽；新增圓頂綠色／褐色雙塊四底圖在兩張正常GPU全部相符，短長組合與保存冷讀通過；草地及其他地形仍待HD化。",
     "ai_player_input_lock": "CONFORMED-SCOPED：AI換手期間拒絕玩家地圖輸入重入；普通END／增援對話及相關／完整Go回歸通過。",
     "gaia_redesign": "CONFORMED-SCOPED：新版頭像與四方向圖組已登錄；正常START／Gaia北移取消／F2／冷讀分段驗證。相位差異與序章尾端失敗明示，非逐幀parity。",
-    "hd_battle_animation": "CONFORMED-SCOPED／RUNTIME-E1：共背景物理及四種共用召喚consumer已接，正式369項含FDOTHER65..68共37幀。完整Draw與F2／拒收通過，跨段Draw確認已修正；FIGANI人物、其他演出與普通召喚仍待完成，蓋亞占寬待決。"
+    "hd_battle_animation": "CONFORMED-SCOPED：正式371項含共同召喚37幀及亞雷斯FIGANI12／13共19幀。亞雷斯普通首章兩次攻擊／返回、F2、保存冷讀及GPU藍衣核心通過；相近圖源只列相容集合。其他人物／演出、普通召喚及效能未完成，蓋亞占寬待決。"
   },
   "runtime_source": {
-    "binary_sha256": "07d48b2972a8dea4a5a3b67753b3e6126788cda0930a541e475b41f53e4713cb",
-    "go_snapshot": {
-      "file": "work/promo-cadence-20261018/hd-fonts/gaia-go-source-final.json",
-      "sha256": "c8582d367661ee1f9f22220e1a73346d9a5ff080ca0f2670332c8ade46ee6a8f"
+    "binary": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ares-hd-game",
+      "sha256": "36e919172958d08b4d8ed7013d8a21a1fdb14708fae19017b7146f83a55bbb43",
+      "removed_after_validation": true
     },
-    "go_file_count": 993,
-    "go_files_unchanged": 993,
-    "changed_go_files": [],
-    "game_runtime_go_changes": 0,
-    "exporter": {
-      "file": "remake/cmd/fd2-terrain-sources/main.go",
-      "sha256": "b9b826551dc726459a0e6166fd9036d487f9af1dd70be7157326c61af93e5e68"
+    "runtime_go_snapshot": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ares-runtime-go-snapshot.json",
+      "sha256": "cbbbc1f9a0d35b749271ffdc225adbcfcde5cdc9672c0afbd154841866efe372"
     },
+    "runtime_go_files": 488,
+    "production_go_changes": 0,
+    "changed_go_tests": [
+      "remake/cmd/fd2/modern_hd_battle_assets_test.go"
+    ],
     "gui_tool": {
       "file": "tools/verify_fd2_hd_fonts_gui.py",
-      "sha256": "9b6ddc877cc10946d8ae77a2248124ab6daf5ce59a76c62ec4b6351a0edbdb55"
-    },
-    "binary_removed_after_validation": true
+      "sha256": "4d84af4fdb88beaa421eaf52fee3bae6c8b3ef788156ec1c25540d63f42c256b"
+    }
   },
   "f2_conflict": {
     "issue": 257,
@@ -8001,5 +8001,2105 @@
     "source_commit": "adf79819d50db78afc30e96bc54b4dc86d3308e3",
     "defect_issue_status": "closed",
     "worklist_filter_observation": "結案後第一次open清單仍含state=CLOSED的264，官方build_snapshot本可排除；不以回應中出現即判定仍開啟。直接Issue狀態核對後，第二次清單21筆。"
+  },
+  "ares_battle_followup_20261019": {
+    "date": "2026-10-19",
+    "status": "CONFORMED-SCOPED",
+    "scope": "亞雷斯身分4的FIGANI12待機4幀及13攻擊15幀，普通首章攻擊、F2與保存冷讀；非完整戰鬥HD或原版逐幀對拍。",
+    "base_source_commit": "8f9b73e648aa08dbe966c0800e40d309d27d60bb",
+    "source_inputs_postcheck": [
+      {
+        "file": "FD2.EXE",
+        "size": 357074,
+        "md5": "b97caf2239a27a896069d03549d96e1e",
+        "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+      },
+      {
+        "file": "FIGANI.DAT",
+        "size": 15279582,
+        "md5": "7da21ec0ad9917455459f1acb970bdf4",
+        "sha256": "e909314ce37b70701238fd24febc8f61603bbe8d81a9ecbf8f289c97a5b67a1f"
+      }
+    ],
+    "inventory": {
+      "file": "work/promo-cadence-20261018/hd-fonts/battle-animation-hd-inventory-final.json",
+      "sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51"
+    },
+    "source_png_hash_basis": "pixels_sha256及mask_sha256是PNG檔案bytes的SHA，不是解碼buffer。",
+    "original_resources": [
+      {
+        "resource": 12,
+        "raw_sha256": "5686f4919d28f3da8f6ba43d7639001600786c7618086aa85b34ca324fb196ba",
+        "metadata_sha256": "d96aedd87d7d67591a00e289c0a19aad23ee7f8422f20d9499f5ba32b46c8b45",
+        "native_header": {
+          "byte_1": 0,
+          "byte_2": 4,
+          "byte_4": 0
+        }
+      },
+      {
+        "resource": 13,
+        "raw_sha256": "211aeae0930a98bf305a50dea527b8383ddbfeac95e5b5bfdd579c707d3547ca",
+        "metadata_sha256": "e3ea842d9e3b87163471655a7d877c9db2edbca23bc0448bdf028c9db7054dff",
+        "native_header": {
+          "byte_1": 0,
+          "byte_2": 15,
+          "byte_4": 2
+        }
+      }
+    ],
+    "empty_resource": 14,
+    "generation": {
+      "schema_version": 1,
+      "tool": "built-in image_gen",
+      "idle": {
+        "prompt": "Use case: background-extraction. Edit target: the provided Ares idle sprite. Change ONLY background/transparency. Remove ALL blurred background, colored haze, aura, glow and shadow outside the exact character-and-poleaxe silhouette. Produce a clean isolated animation cutout on genuine completely transparent empty pixels. Keep the existing cap, scarf, blue outfit, body, hands, weapon, pose, proportions, colors, camera, canvas layout and every shape exactly unchanged. Skin, cloth, boots and steel are solid FULLY OPAQUE surfaces, with natural anti-aliased coverage only on the outside edges. Do not make the entire object semi-transparent. No background colors should remain between the weapon shaft and body or inside the open gaps. No ground, cast shadow, particle, text or added element. Keep the ENTIRE poleaxe tip, blade, right shaft end, scarf ends and both boots as in the target, without clipping or zooming. Keep the same wide composition. Transparent RGBA asset for direct in-game compositing.",
+        "initial_prompt": "Use case: stylized-concept. Asset type: transparent HD battle animation key pose for the existing tactical RPG remake. Reference image1 is the exact pose, silhouette, costume, weapon and camera authority: original FIGANI012 frame0, Ares, seen from behind. Reference image2 supplies ONLY established project hand-painted rendering quality, not its angel subject. Reference image3 is Ares's registered portrait, used only for the blue cap with green band and short reddish-brown hair identity. Create exactly one full-body adult Ares matching reference1: rear / slightly rear-three-quarter view, low bent-knee braced stance, dark cobalt-blue tunic/long coat with hanging center back cloth, blue trousers and boots, muted gray belt, muscular bare tan forearms. A broad grey-green folded scarf/mantle-like silhouette streams across the upper back exactly as in reference1, tied ends pointing toward screen-left; a small blue soft cap with green band sits above it. Hold the very long green-gray shaft of his crescent-bladed poleaxe diagonally across and behind the shoulders, both hands gripping the shaft. Poleaxe head is at far upper screen-left, with curved silver crescent blade below the shaft and a slim pointed spear tip extending upper-left. Long shaft continues toward lower screen-right. Preserve the exact original silhouette, relative placement and ratio between the large wide poleaxe and compact crouching character. Character is in the RIGHT portion of the complete isolated sprite, not centered independently of the axe. Keep the whole weapon, ribbon ends and both feet inside frame with a small transparent margin. Human adult proportions, no chibi. Rich hand-painted classic RPG sprite, refined folds and steel surfaces, crisp restrained dark contours and readable highlights, matching reference2. No angel elements, shield, sword, new armor, extra limbs, green hair, helmet horns, aura, energy trail, ground, cast shadow, background, text or border. True transparent background. Wide near 3:2 composition like reference1. This is the idle/base pose, not an attack.",
+        "file": "ares-battle-idle-r2.png"
+      },
+      "jobs": [
+        {
+          "frame": 1,
+          "prompt": "Use case: style-transfer. Asset type: one transparent HD battle animation keyframe for the tactical RPG remake. Input1 is the EXACT original pose, framing, costume silhouette, weapon angle, motion-ribbon shape, relative figure/FX size and layout authority: FIGANI013 frame1. Input2 is the approved-style Ares idle rendering, used ONLY to keep his same identity, costume, materials, adult anatomy and painterly finish; do NOT reuse its idle pose. Repaint input1 faithfully as a high-resolution hand-painted classic RPG animation sprite. The poleaxe is raised with both hands over the head, rotating; preserve the pale mint-green motion ribbon in the upper part exactly as the source. Character: adult Ares, rear/rear-three-quarter view, small navy-blue cap with green band, short reddish-brown hair, broad grey-green scarf/mantle blowing across the upper back to screen-left, dark cobalt tunic and hanging back cloth, blue trousers/boots, grey belt, bare tan forearms and blue wristguards. Crescent silver poleaxe and muted green-grey long shaft as in input1. No shield, sword or added armor. Keep the SAME rear camera, proportions, bent-knee stance and original framing. Preserve source body position and original ratio between the character and broad energy/weapon footprint, including empty transparent margins; do not zoom the figure to fill the frame. Match the full input1 crop's aspect ratio and placement. The original clips parts of the extended weapon/FX at some canvas edges: preserve those same limits, do not shrink the body to fit an invented full weapon. Crisp restrained dark contours, rich fine cloth/steel brush detail, same colors and design as input2. Original pale mint-white wind ribbons and ivory-gold impact colors; no blue lightning, red flames, stars, new symbols or unrequested aura. True transparent background, fully solid cloth/skin/steel with edge antialiasing; no floor, cast shadow, checkerboard, scenery, lettering, border or additional figures. This is frame1 in a single consistent animation, not a concept redesign.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/figani-013-native-01.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ares-battle-idle-r2.png"
+          ]
+        },
+        {
+          "frame": 2,
+          "prompt": "Use case: style-transfer. Asset type: one transparent HD battle animation keyframe for the tactical RPG remake. Input1 is the EXACT original pose, framing, costume silhouette, weapon angle, motion-ribbon shape, relative figure/FX size and layout authority: FIGANI013 frame2. Input2 is the approved-style Ares idle rendering, used ONLY to keep his same identity, costume, materials, adult anatomy and painterly finish; do NOT reuse its idle pose. Repaint input1 faithfully as a high-resolution hand-painted classic RPG animation sprite. Continue the overhead poleaxe rotation, with the long pale mint ribbon curling on the upper side exactly as in the source. Character: adult Ares, rear/rear-three-quarter view, small navy-blue cap with green band, short reddish-brown hair, broad grey-green scarf/mantle blowing across the upper back to screen-left, dark cobalt tunic and hanging back cloth, blue trousers/boots, grey belt, bare tan forearms and blue wristguards. Crescent silver poleaxe and muted green-grey long shaft as in input1. No shield, sword or added armor. Keep the SAME rear camera, proportions, bent-knee stance and original framing. Preserve source body position and original ratio between the character and broad energy/weapon footprint, including empty transparent margins; do not zoom the figure to fill the frame. Match the full input1 crop's aspect ratio and placement. The original clips parts of the extended weapon/FX at some canvas edges: preserve those same limits, do not shrink the body to fit an invented full weapon. Crisp restrained dark contours, rich fine cloth/steel brush detail, same colors and design as input2. Original pale mint-white wind ribbons and ivory-gold impact colors; no blue lightning, red flames, stars, new symbols or unrequested aura. True transparent background, fully solid cloth/skin/steel with edge antialiasing; no floor, cast shadow, checkerboard, scenery, lettering, border or additional figures. This is frame2 in a single consistent animation, not a concept redesign.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/figani-013-native-02.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ares-battle-idle-r2.png"
+          ]
+        },
+        {
+          "frame": 3,
+          "prompt": "Use case: style-transfer. Asset type: one transparent HD battle animation keyframe for the tactical RPG remake. Input1 is the EXACT original pose, framing, costume silhouette, weapon angle, motion-ribbon shape, relative figure/FX size and layout authority: FIGANI013 frame3. Input2 is the approved-style Ares idle rendering, used ONLY to keep his same identity, costume, materials, adult anatomy and painterly finish; do NOT reuse its idle pose. Repaint input1 faithfully as a high-resolution hand-painted classic RPG animation sprite. Continue the overhead poleaxe rotation; this frame has the large mint ribbon extending far toward screen-left across the upper part. Character: adult Ares, rear/rear-three-quarter view, small navy-blue cap with green band, short reddish-brown hair, broad grey-green scarf/mantle blowing across the upper back to screen-left, dark cobalt tunic and hanging back cloth, blue trousers/boots, grey belt, bare tan forearms and blue wristguards. Crescent silver poleaxe and muted green-grey long shaft as in input1. No shield, sword or added armor. Keep the SAME rear camera, proportions, bent-knee stance and original framing. Preserve source body position and original ratio between the character and broad energy/weapon footprint, including empty transparent margins; do not zoom the figure to fill the frame. Match the full input1 crop's aspect ratio and placement. The original clips parts of the extended weapon/FX at some canvas edges: preserve those same limits, do not shrink the body to fit an invented full weapon. Crisp restrained dark contours, rich fine cloth/steel brush detail, same colors and design as input2. Original pale mint-white wind ribbons and ivory-gold impact colors; no blue lightning, red flames, stars, new symbols or unrequested aura. True transparent background, fully solid cloth/skin/steel with edge antialiasing; no floor, cast shadow, checkerboard, scenery, lettering, border or additional figures. This is frame3 in a single consistent animation, not a concept redesign.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/figani-013-native-03.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ares-battle-idle-r2.png"
+          ]
+        },
+        {
+          "frame": 4,
+          "prompt": "Use case: style-transfer. Asset type: one transparent HD battle animation keyframe for the tactical RPG remake. Input1 is the EXACT original pose, framing, costume silhouette, weapon angle, motion-ribbon shape, relative figure/FX size and layout authority: FIGANI013 frame4. Input2 is the approved-style Ares idle rendering, used ONLY to keep his same identity, costume, materials, adult anatomy and painterly finish; do NOT reuse its idle pose. Repaint input1 faithfully as a high-resolution hand-painted classic RPG animation sprite. Continue the overhead poleaxe rotation; preserve the smaller upper-right mint arc and the original weapon angle. Character: adult Ares, rear/rear-three-quarter view, small navy-blue cap with green band, short reddish-brown hair, broad grey-green scarf/mantle blowing across the upper back to screen-left, dark cobalt tunic and hanging back cloth, blue trousers/boots, grey belt, bare tan forearms and blue wristguards. Crescent silver poleaxe and muted green-grey long shaft as in input1. No shield, sword or added armor. Keep the SAME rear camera, proportions, bent-knee stance and original framing. Preserve source body position and original ratio between the character and broad energy/weapon footprint, including empty transparent margins; do not zoom the figure to fill the frame. Match the full input1 crop's aspect ratio and placement. The original clips parts of the extended weapon/FX at some canvas edges: preserve those same limits, do not shrink the body to fit an invented full weapon. Crisp restrained dark contours, rich fine cloth/steel brush detail, same colors and design as input2. Original pale mint-white wind ribbons and ivory-gold impact colors; no blue lightning, red flames, stars, new symbols or unrequested aura. True transparent background, fully solid cloth/skin/steel with edge antialiasing; no floor, cast shadow, checkerboard, scenery, lettering, border or additional figures. This is frame4 in a single consistent animation, not a concept redesign.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/figani-013-native-04.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ares-battle-idle-r2.png"
+          ]
+        },
+        {
+          "frame": 5,
+          "prompt": "Use case: style-transfer. Asset type: one transparent HD battle animation keyframe for the tactical RPG remake. Input1 is the EXACT original pose, framing, costume silhouette, weapon angle, motion-ribbon shape, relative figure/FX size and layout authority: FIGANI013 frame5. Input2 is the approved-style Ares idle rendering, used ONLY to keep his same identity, costume, materials, adult anatomy and painterly finish; do NOT reuse its idle pose. Repaint input1 faithfully as a high-resolution hand-painted classic RPG animation sprite. Continue overhead rotation with the broad mint ribbon toward upper-left, preserving the exact source arc and weapon angle. Character: adult Ares, rear/rear-three-quarter view, small navy-blue cap with green band, short reddish-brown hair, broad grey-green scarf/mantle blowing across the upper back to screen-left, dark cobalt tunic and hanging back cloth, blue trousers/boots, grey belt, bare tan forearms and blue wristguards. Crescent silver poleaxe and muted green-grey long shaft as in input1. No shield, sword or added armor. Keep the SAME rear camera, proportions, bent-knee stance and original framing. Preserve source body position and original ratio between the character and broad energy/weapon footprint, including empty transparent margins; do not zoom the figure to fill the frame. Match the full input1 crop's aspect ratio and placement. The original clips parts of the extended weapon/FX at some canvas edges: preserve those same limits, do not shrink the body to fit an invented full weapon. Crisp restrained dark contours, rich fine cloth/steel brush detail, same colors and design as input2. Original pale mint-white wind ribbons and ivory-gold impact colors; no blue lightning, red flames, stars, new symbols or unrequested aura. True transparent background, fully solid cloth/skin/steel with edge antialiasing; no floor, cast shadow, checkerboard, scenery, lettering, border or additional figures. This is frame5 in a single consistent animation, not a concept redesign.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/figani-013-native-05.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ares-battle-idle-r2.png"
+          ]
+        },
+        {
+          "frame": 6,
+          "prompt": "Use case: style-transfer. Asset type: one transparent HD battle animation keyframe for the tactical RPG remake. Input1 is the EXACT original pose, framing, costume silhouette, weapon angle, motion-ribbon shape, relative figure/FX size and layout authority: FIGANI013 frame6. Input2 is the approved-style Ares idle rendering, used ONLY to keep his same identity, costume, materials, adult anatomy and painterly finish; do NOT reuse its idle pose. Repaint input1 faithfully as a high-resolution hand-painted classic RPG animation sprite. Continue overhead rotation with the mint ribbon sweeping across upper-left and toward the hands, as in the source. Character: adult Ares, rear/rear-three-quarter view, small navy-blue cap with green band, short reddish-brown hair, broad grey-green scarf/mantle blowing across the upper back to screen-left, dark cobalt tunic and hanging back cloth, blue trousers/boots, grey belt, bare tan forearms and blue wristguards. Crescent silver poleaxe and muted green-grey long shaft as in input1. No shield, sword or added armor. Keep the SAME rear camera, proportions, bent-knee stance and original framing. Preserve source body position and original ratio between the character and broad energy/weapon footprint, including empty transparent margins; do not zoom the figure to fill the frame. Match the full input1 crop's aspect ratio and placement. The original clips parts of the extended weapon/FX at some canvas edges: preserve those same limits, do not shrink the body to fit an invented full weapon. Crisp restrained dark contours, rich fine cloth/steel brush detail, same colors and design as input2. Original pale mint-white wind ribbons and ivory-gold impact colors; no blue lightning, red flames, stars, new symbols or unrequested aura. True transparent background, fully solid cloth/skin/steel with edge antialiasing; no floor, cast shadow, checkerboard, scenery, lettering, border or additional figures. This is frame6 in a single consistent animation, not a concept redesign.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/figani-013-native-06.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ares-battle-idle-r2.png"
+          ]
+        },
+        {
+          "frame": 7,
+          "prompt": "Use case: style-transfer. Asset type: one transparent HD battle animation keyframe for the tactical RPG remake. Input1 is the EXACT original pose, framing, costume silhouette, weapon angle, motion-ribbon shape, relative figure/FX size and layout authority: FIGANI013 frame7. Input2 is the approved-style Ares idle rendering, used ONLY to keep his same identity, costume, materials, adult anatomy and painterly finish; do NOT reuse its idle pose. Repaint input1 faithfully as a high-resolution hand-painted classic RPG animation sprite. Continue overhead rotation with the curved mint ribbon at upper-right; preserve the exact weapon angle and arc silhouette. Character: adult Ares, rear/rear-three-quarter view, small navy-blue cap with green band, short reddish-brown hair, broad grey-green scarf/mantle blowing across the upper back to screen-left, dark cobalt tunic and hanging back cloth, blue trousers/boots, grey belt, bare tan forearms and blue wristguards. Crescent silver poleaxe and muted green-grey long shaft as in input1. No shield, sword or added armor. Keep the SAME rear camera, proportions, bent-knee stance and original framing. Preserve source body position and original ratio between the character and broad energy/weapon footprint, including empty transparent margins; do not zoom the figure to fill the frame. Match the full input1 crop's aspect ratio and placement. The original clips parts of the extended weapon/FX at some canvas edges: preserve those same limits, do not shrink the body to fit an invented full weapon. Crisp restrained dark contours, rich fine cloth/steel brush detail, same colors and design as input2. Original pale mint-white wind ribbons and ivory-gold impact colors; no blue lightning, red flames, stars, new symbols or unrequested aura. True transparent background, fully solid cloth/skin/steel with edge antialiasing; no floor, cast shadow, checkerboard, scenery, lettering, border or additional figures. This is frame7 in a single consistent animation, not a concept redesign.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/figani-013-native-07.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ares-battle-idle-r2.png"
+          ]
+        },
+        {
+          "frame": 8,
+          "prompt": "Use case: style-transfer. Asset type: one transparent HD battle animation keyframe for the tactical RPG remake. Input1 is the EXACT original pose, framing, costume silhouette, weapon angle, motion-ribbon shape, relative figure/FX size and layout authority: FIGANI013 frame8. Input2 is the approved-style Ares idle rendering, used ONLY to keep his same identity, costume, materials, adult anatomy and painterly finish; do NOT reuse its idle pose. Repaint input1 faithfully as a high-resolution hand-painted classic RPG animation sprite. Last broad overhead rotation arc; preserve the wide mint ribbon across the upper area and all original relative sizes. Character: adult Ares, rear/rear-three-quarter view, small navy-blue cap with green band, short reddish-brown hair, broad grey-green scarf/mantle blowing across the upper back to screen-left, dark cobalt tunic and hanging back cloth, blue trousers/boots, grey belt, bare tan forearms and blue wristguards. Crescent silver poleaxe and muted green-grey long shaft as in input1. No shield, sword or added armor. Keep the SAME rear camera, proportions, bent-knee stance and original framing. Preserve source body position and original ratio between the character and broad energy/weapon footprint, including empty transparent margins; do not zoom the figure to fill the frame. Match the full input1 crop's aspect ratio and placement. The original clips parts of the extended weapon/FX at some canvas edges: preserve those same limits, do not shrink the body to fit an invented full weapon. Crisp restrained dark contours, rich fine cloth/steel brush detail, same colors and design as input2. Original pale mint-white wind ribbons and ivory-gold impact colors; no blue lightning, red flames, stars, new symbols or unrequested aura. True transparent background, fully solid cloth/skin/steel with edge antialiasing; no floor, cast shadow, checkerboard, scenery, lettering, border or additional figures. This is frame8 in a single consistent animation, not a concept redesign.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/figani-013-native-08.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ares-battle-idle-r2.png"
+          ]
+        },
+        {
+          "frame": 9,
+          "prompt": "Use case: style-transfer. Asset type: one transparent HD battle animation keyframe for the tactical RPG remake. Input1 is the EXACT original pose, framing, costume silhouette, weapon angle, motion-ribbon shape, relative figure/FX size and layout authority: FIGANI013 frame9. Input2 is the approved-style Ares idle rendering, used ONLY to keep his same identity, costume, materials, adult anatomy and painterly finish; do NOT reuse its idle pose. Repaint input1 faithfully as a high-resolution hand-painted classic RPG animation sprite. Hold the poleaxe raised overhead; only the small remnant of the mint motion ribbon is visible at upper-right. Preserve the original weapon clipping at the top/right canvas edge. Character: adult Ares, rear/rear-three-quarter view, small navy-blue cap with green band, short reddish-brown hair, broad grey-green scarf/mantle blowing across the upper back to screen-left, dark cobalt tunic and hanging back cloth, blue trousers/boots, grey belt, bare tan forearms and blue wristguards. Crescent silver poleaxe and muted green-grey long shaft as in input1. No shield, sword or added armor. Keep the SAME rear camera, proportions, bent-knee stance and original framing. Preserve source body position and original ratio between the character and broad energy/weapon footprint, including empty transparent margins; do not zoom the figure to fill the frame. Match the full input1 crop's aspect ratio and placement. The original clips parts of the extended weapon/FX at some canvas edges: preserve those same limits, do not shrink the body to fit an invented full weapon. Crisp restrained dark contours, rich fine cloth/steel brush detail, same colors and design as input2. Original pale mint-white wind ribbons and ivory-gold impact colors; no blue lightning, red flames, stars, new symbols or unrequested aura. True transparent background, fully solid cloth/skin/steel with edge antialiasing; no floor, cast shadow, checkerboard, scenery, lettering, border or additional figures. This is frame9 in a single consistent animation, not a concept redesign.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/figani-013-native-09.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ares-battle-idle-r2.png"
+          ]
+        },
+        {
+          "frame": 10,
+          "prompt": "Use case: style-transfer. Asset type: one transparent HD battle animation keyframe for the tactical RPG remake. Input1 is the EXACT original pose, framing, costume silhouette, weapon angle, motion-ribbon shape, relative figure/FX size and layout authority: FIGANI013 frame10. Input2 is the approved-style Ares idle rendering, used ONLY to keep his same identity, costume, materials, adult anatomy and painterly finish; do NOT reuse its idle pose. Repaint input1 faithfully as a high-resolution hand-painted classic RPG animation sprite. Same final raised hold phase; retain only the source's small fading mint remnant at upper-right. Do not invent a large arc. Character: adult Ares, rear/rear-three-quarter view, small navy-blue cap with green band, short reddish-brown hair, broad grey-green scarf/mantle blowing across the upper back to screen-left, dark cobalt tunic and hanging back cloth, blue trousers/boots, grey belt, bare tan forearms and blue wristguards. Crescent silver poleaxe and muted green-grey long shaft as in input1. No shield, sword or added armor. Keep the SAME rear camera, proportions, bent-knee stance and original framing. Preserve source body position and original ratio between the character and broad energy/weapon footprint, including empty transparent margins; do not zoom the figure to fill the frame. Match the full input1 crop's aspect ratio and placement. The original clips parts of the extended weapon/FX at some canvas edges: preserve those same limits, do not shrink the body to fit an invented full weapon. Crisp restrained dark contours, rich fine cloth/steel brush detail, same colors and design as input2. Original pale mint-white wind ribbons and ivory-gold impact colors; no blue lightning, red flames, stars, new symbols or unrequested aura. True transparent background, fully solid cloth/skin/steel with edge antialiasing; no floor, cast shadow, checkerboard, scenery, lettering, border or additional figures. This is frame10 in a single consistent animation, not a concept redesign.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/figani-013-native-10.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ares-battle-idle-r2.png"
+          ]
+        },
+        {
+          "frame": 11,
+          "prompt": "Use case: style-transfer. Asset type: one transparent HD battle animation keyframe for the tactical RPG remake. Input1 is the EXACT original pose, framing, costume silhouette, weapon angle, motion-ribbon shape, relative figure/FX size and layout authority: FIGANI013 frame11. Input2 is the approved-style Ares idle rendering, used ONLY to keep his same identity, costume, materials, adult anatomy and painterly finish; do NOT reuse its idle pose. Repaint input1 faithfully as a high-resolution hand-painted classic RPG animation sprite. The downward strike and impact: preserve the huge luminous ivory-yellow/gold slash arc across the upper-left, the smaller crouched Ares at lower-right, and the original diagonal poleaxe. The source's large bright impact occupies most of the upper canvas. Character: adult Ares, rear/rear-three-quarter view, small navy-blue cap with green band, short reddish-brown hair, broad grey-green scarf/mantle blowing across the upper back to screen-left, dark cobalt tunic and hanging back cloth, blue trousers/boots, grey belt, bare tan forearms and blue wristguards. Crescent silver poleaxe and muted green-grey long shaft as in input1. No shield, sword or added armor. Keep the SAME rear camera, proportions, bent-knee stance and original framing. Preserve source body position and original ratio between the character and broad energy/weapon footprint, including empty transparent margins; do not zoom the figure to fill the frame. Match the full input1 crop's aspect ratio and placement. The original clips parts of the extended weapon/FX at some canvas edges: preserve those same limits, do not shrink the body to fit an invented full weapon. Crisp restrained dark contours, rich fine cloth/steel brush detail, same colors and design as input2. Original pale mint-white wind ribbons and ivory-gold impact colors; no blue lightning, red flames, stars, new symbols or unrequested aura. True transparent background, fully solid cloth/skin/steel with edge antialiasing; no floor, cast shadow, checkerboard, scenery, lettering, border or additional figures. This is frame11 in a single consistent animation, not a concept redesign.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/figani-013-native-11.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ares-battle-idle-r2.png"
+          ]
+        },
+        {
+          "frame": 12,
+          "prompt": "Use case: style-transfer. Asset type: one transparent HD battle animation keyframe for the tactical RPG remake. Input1 is the EXACT original pose, framing, costume silhouette, weapon angle, motion-ribbon shape, relative figure/FX size and layout authority: FIGANI013 frame12. Input2 is the approved-style Ares idle rendering, used ONLY to keep his same identity, costume, materials, adult anatomy and painterly finish; do NOT reuse its idle pose. Repaint input1 faithfully as a high-resolution hand-painted classic RPG animation sprite. The after-strike crouching follow-through: preserve the diagonal poleaxe toward upper-left and the source's tiny gold remnant at the blade tip. No large impact arc. Character: adult Ares, rear/rear-three-quarter view, small navy-blue cap with green band, short reddish-brown hair, broad grey-green scarf/mantle blowing across the upper back to screen-left, dark cobalt tunic and hanging back cloth, blue trousers/boots, grey belt, bare tan forearms and blue wristguards. Crescent silver poleaxe and muted green-grey long shaft as in input1. No shield, sword or added armor. Keep the SAME rear camera, proportions, bent-knee stance and original framing. Preserve source body position and original ratio between the character and broad energy/weapon footprint, including empty transparent margins; do not zoom the figure to fill the frame. Match the full input1 crop's aspect ratio and placement. The original clips parts of the extended weapon/FX at some canvas edges: preserve those same limits, do not shrink the body to fit an invented full weapon. Crisp restrained dark contours, rich fine cloth/steel brush detail, same colors and design as input2. Original pale mint-white wind ribbons and ivory-gold impact colors; no blue lightning, red flames, stars, new symbols or unrequested aura. True transparent background, fully solid cloth/skin/steel with edge antialiasing; no floor, cast shadow, checkerboard, scenery, lettering, border or additional figures. This is frame12 in a single consistent animation, not a concept redesign.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/figani-013-native-12.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ares-battle-idle-r2.png"
+          ]
+        },
+        {
+          "frame": 13,
+          "prompt": "Use case: style-transfer. Asset type: one transparent HD battle animation keyframe for the tactical RPG remake. Input1 is the EXACT original pose, framing, costume silhouette, weapon angle, motion-ribbon shape, relative figure/FX size and layout authority: FIGANI013 frame13. Input2 is the approved-style Ares idle rendering, used ONLY to keep his same identity, costume, materials, adult anatomy and painterly finish; do NOT reuse its idle pose. Repaint input1 faithfully as a high-resolution hand-painted classic RPG animation sprite. Continue the low crouching follow-through with the poleaxe angle and tiny remaining tip flare exactly as the source. No large magic arc. Character: adult Ares, rear/rear-three-quarter view, small navy-blue cap with green band, short reddish-brown hair, broad grey-green scarf/mantle blowing across the upper back to screen-left, dark cobalt tunic and hanging back cloth, blue trousers/boots, grey belt, bare tan forearms and blue wristguards. Crescent silver poleaxe and muted green-grey long shaft as in input1. No shield, sword or added armor. Keep the SAME rear camera, proportions, bent-knee stance and original framing. Preserve source body position and original ratio between the character and broad energy/weapon footprint, including empty transparent margins; do not zoom the figure to fill the frame. Match the full input1 crop's aspect ratio and placement. The original clips parts of the extended weapon/FX at some canvas edges: preserve those same limits, do not shrink the body to fit an invented full weapon. Crisp restrained dark contours, rich fine cloth/steel brush detail, same colors and design as input2. Original pale mint-white wind ribbons and ivory-gold impact colors; no blue lightning, red flames, stars, new symbols or unrequested aura. True transparent background, fully solid cloth/skin/steel with edge antialiasing; no floor, cast shadow, checkerboard, scenery, lettering, border or additional figures. This is frame13 in a single consistent animation, not a concept redesign.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/figani-013-native-13.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ares-battle-idle-r2.png"
+          ]
+        },
+        {
+          "frame": 14,
+          "prompt": "Use case: style-transfer. Asset type: one transparent HD battle animation keyframe for the tactical RPG remake. Input1 is the EXACT original pose, framing, costume silhouette, weapon angle, motion-ribbon shape, relative figure/FX size and layout authority: FIGANI013 frame14. Input2 is the approved-style Ares idle rendering, used ONLY to keep his same identity, costume, materials, adult anatomy and painterly finish; do NOT reuse its idle pose. Repaint input1 faithfully as a high-resolution hand-painted classic RPG animation sprite. Final low crouched follow-through recovery, holding the long poleaxe diagonally toward upper-left exactly as the original. No energy arc or flare. Character: adult Ares, rear/rear-three-quarter view, small navy-blue cap with green band, short reddish-brown hair, broad grey-green scarf/mantle blowing across the upper back to screen-left, dark cobalt tunic and hanging back cloth, blue trousers/boots, grey belt, bare tan forearms and blue wristguards. Crescent silver poleaxe and muted green-grey long shaft as in input1. No shield, sword or added armor. Keep the SAME rear camera, proportions, bent-knee stance and original framing. Preserve source body position and original ratio between the character and broad energy/weapon footprint, including empty transparent margins; do not zoom the figure to fill the frame. Match the full input1 crop's aspect ratio and placement. The original clips parts of the extended weapon/FX at some canvas edges: preserve those same limits, do not shrink the body to fit an invented full weapon. Crisp restrained dark contours, rich fine cloth/steel brush detail, same colors and design as input2. Original pale mint-white wind ribbons and ivory-gold impact colors; no blue lightning, red flames, stars, new symbols or unrequested aura. True transparent background, fully solid cloth/skin/steel with edge antialiasing; no floor, cast shadow, checkerboard, scenery, lettering, border or additional figures. This is frame14 in a single consistent animation, not a concept redesign.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/figani-013-native-14.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ares-battle-idle-r2.png"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "frame": 1,
+          "prompt": "Use case: style-transfer. Asset type: one transparent HD battle animation keyframe for the tactical RPG remake. Input1 is the EXACT original pose, framing, costume silhouette, weapon angle, motion-ribbon shape, relative figure/FX size and layout authority: FIGANI013 frame1. Input2 is the approved-style Ares idle rendering, used ONLY to keep his same identity, costume, materials, adult anatomy and painterly finish; do NOT reuse its idle pose. Repaint input1 faithfully as a high-resolution hand-painted classic RPG animation sprite. The poleaxe is raised with both hands over the head, rotating; preserve the pale mint-green motion ribbon in the upper part exactly as the source. Character: adult Ares, rear/rear-three-quarter view, small navy-blue cap with green band, short reddish-brown hair, broad grey-green scarf/mantle blowing across the upper back to screen-left, dark cobalt tunic and hanging back cloth, blue trousers/boots, grey belt, bare tan forearms and blue wristguards. Crescent silver poleaxe and muted green-grey long shaft as in input1. No shield, sword or added armor. Keep the SAME rear camera, proportions, bent-knee stance and original framing. Preserve source body position and original ratio between the character and broad energy/weapon footprint, including empty transparent margins; do not zoom the figure to fill the frame. Match the full input1 crop's aspect ratio and placement. The original clips parts of the extended weapon/FX at some canvas edges: preserve those same limits, do not shrink the body to fit an invented full weapon. Crisp restrained dark contours, rich fine cloth/steel brush detail, same colors and design as input2. Original pale mint-white wind ribbons and ivory-gold impact colors; no blue lightning, red flames, stars, new symbols or unrequested aura. True transparent background, fully solid cloth/skin/steel with edge antialiasing; no floor, cast shadow, checkerboard, scenery, lettering, border or additional figures. This is frame1 in a single consistent animation, not a concept redesign.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/figani-013-native-01.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ares-battle-idle-r2.png"
+          ],
+          "generated_source": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-3c8187a4-608b-4c62-af07-d3193bc452e2.png"
+        },
+        {
+          "frame": 2,
+          "prompt": "Use case: style-transfer. Asset type: one transparent HD battle animation keyframe for the tactical RPG remake. Input1 is the EXACT original pose, framing, costume silhouette, weapon angle, motion-ribbon shape, relative figure/FX size and layout authority: FIGANI013 frame2. Input2 is the approved-style Ares idle rendering, used ONLY to keep his same identity, costume, materials, adult anatomy and painterly finish; do NOT reuse its idle pose. Repaint input1 faithfully as a high-resolution hand-painted classic RPG animation sprite. Continue the overhead poleaxe rotation, with the long pale mint ribbon curling on the upper side exactly as in the source. Character: adult Ares, rear/rear-three-quarter view, small navy-blue cap with green band, short reddish-brown hair, broad grey-green scarf/mantle blowing across the upper back to screen-left, dark cobalt tunic and hanging back cloth, blue trousers/boots, grey belt, bare tan forearms and blue wristguards. Crescent silver poleaxe and muted green-grey long shaft as in input1. No shield, sword or added armor. Keep the SAME rear camera, proportions, bent-knee stance and original framing. Preserve source body position and original ratio between the character and broad energy/weapon footprint, including empty transparent margins; do not zoom the figure to fill the frame. Match the full input1 crop's aspect ratio and placement. The original clips parts of the extended weapon/FX at some canvas edges: preserve those same limits, do not shrink the body to fit an invented full weapon. Crisp restrained dark contours, rich fine cloth/steel brush detail, same colors and design as input2. Original pale mint-white wind ribbons and ivory-gold impact colors; no blue lightning, red flames, stars, new symbols or unrequested aura. True transparent background, fully solid cloth/skin/steel with edge antialiasing; no floor, cast shadow, checkerboard, scenery, lettering, border or additional figures. This is frame2 in a single consistent animation, not a concept redesign.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/figani-013-native-02.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ares-battle-idle-r2.png"
+          ],
+          "generated_source": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-ddf3d6a6-c9ca-4b33-abe8-f121d190f894.png"
+        },
+        {
+          "frame": 3,
+          "prompt": "Use case: style-transfer. Asset type: one transparent HD battle animation keyframe for the tactical RPG remake. Input1 is the EXACT original pose, framing, costume silhouette, weapon angle, motion-ribbon shape, relative figure/FX size and layout authority: FIGANI013 frame3. Input2 is the approved-style Ares idle rendering, used ONLY to keep his same identity, costume, materials, adult anatomy and painterly finish; do NOT reuse its idle pose. Repaint input1 faithfully as a high-resolution hand-painted classic RPG animation sprite. Continue the overhead poleaxe rotation; this frame has the large mint ribbon extending far toward screen-left across the upper part. Character: adult Ares, rear/rear-three-quarter view, small navy-blue cap with green band, short reddish-brown hair, broad grey-green scarf/mantle blowing across the upper back to screen-left, dark cobalt tunic and hanging back cloth, blue trousers/boots, grey belt, bare tan forearms and blue wristguards. Crescent silver poleaxe and muted green-grey long shaft as in input1. No shield, sword or added armor. Keep the SAME rear camera, proportions, bent-knee stance and original framing. Preserve source body position and original ratio between the character and broad energy/weapon footprint, including empty transparent margins; do not zoom the figure to fill the frame. Match the full input1 crop's aspect ratio and placement. The original clips parts of the extended weapon/FX at some canvas edges: preserve those same limits, do not shrink the body to fit an invented full weapon. Crisp restrained dark contours, rich fine cloth/steel brush detail, same colors and design as input2. Original pale mint-white wind ribbons and ivory-gold impact colors; no blue lightning, red flames, stars, new symbols or unrequested aura. True transparent background, fully solid cloth/skin/steel with edge antialiasing; no floor, cast shadow, checkerboard, scenery, lettering, border or additional figures. This is frame3 in a single consistent animation, not a concept redesign.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/figani-013-native-03.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ares-battle-idle-r2.png"
+          ],
+          "generated_source": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-401f8c60-cc97-44d6-a289-1cd8ae6b67b3.png"
+        },
+        {
+          "frame": 4,
+          "prompt": "Use case: style-transfer. Asset type: one transparent HD battle animation keyframe for the tactical RPG remake. Input1 is the EXACT original pose, framing, costume silhouette, weapon angle, motion-ribbon shape, relative figure/FX size and layout authority: FIGANI013 frame4. Input2 is the approved-style Ares idle rendering, used ONLY to keep his same identity, costume, materials, adult anatomy and painterly finish; do NOT reuse its idle pose. Repaint input1 faithfully as a high-resolution hand-painted classic RPG animation sprite. Continue the overhead poleaxe rotation; preserve the smaller upper-right mint arc and the original weapon angle. Character: adult Ares, rear/rear-three-quarter view, small navy-blue cap with green band, short reddish-brown hair, broad grey-green scarf/mantle blowing across the upper back to screen-left, dark cobalt tunic and hanging back cloth, blue trousers/boots, grey belt, bare tan forearms and blue wristguards. Crescent silver poleaxe and muted green-grey long shaft as in input1. No shield, sword or added armor. Keep the SAME rear camera, proportions, bent-knee stance and original framing. Preserve source body position and original ratio between the character and broad energy/weapon footprint, including empty transparent margins; do not zoom the figure to fill the frame. Match the full input1 crop's aspect ratio and placement. The original clips parts of the extended weapon/FX at some canvas edges: preserve those same limits, do not shrink the body to fit an invented full weapon. Crisp restrained dark contours, rich fine cloth/steel brush detail, same colors and design as input2. Original pale mint-white wind ribbons and ivory-gold impact colors; no blue lightning, red flames, stars, new symbols or unrequested aura. True transparent background, fully solid cloth/skin/steel with edge antialiasing; no floor, cast shadow, checkerboard, scenery, lettering, border or additional figures. This is frame4 in a single consistent animation, not a concept redesign.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/figani-013-native-04.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ares-battle-idle-r2.png"
+          ],
+          "generated_source": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-8115fd99-8cc4-42a0-be0f-56fb55f36968.png"
+        },
+        {
+          "frame": 5,
+          "prompt": "Use case: style-transfer. Asset type: one transparent HD battle animation keyframe for the tactical RPG remake. Input1 is the EXACT original pose, framing, costume silhouette, weapon angle, motion-ribbon shape, relative figure/FX size and layout authority: FIGANI013 frame5. Input2 is the approved-style Ares idle rendering, used ONLY to keep his same identity, costume, materials, adult anatomy and painterly finish; do NOT reuse its idle pose. Repaint input1 faithfully as a high-resolution hand-painted classic RPG animation sprite. Continue overhead rotation with the broad mint ribbon toward upper-left, preserving the exact source arc and weapon angle. Character: adult Ares, rear/rear-three-quarter view, small navy-blue cap with green band, short reddish-brown hair, broad grey-green scarf/mantle blowing across the upper back to screen-left, dark cobalt tunic and hanging back cloth, blue trousers/boots, grey belt, bare tan forearms and blue wristguards. Crescent silver poleaxe and muted green-grey long shaft as in input1. No shield, sword or added armor. Keep the SAME rear camera, proportions, bent-knee stance and original framing. Preserve source body position and original ratio between the character and broad energy/weapon footprint, including empty transparent margins; do not zoom the figure to fill the frame. Match the full input1 crop's aspect ratio and placement. The original clips parts of the extended weapon/FX at some canvas edges: preserve those same limits, do not shrink the body to fit an invented full weapon. Crisp restrained dark contours, rich fine cloth/steel brush detail, same colors and design as input2. Original pale mint-white wind ribbons and ivory-gold impact colors; no blue lightning, red flames, stars, new symbols or unrequested aura. True transparent background, fully solid cloth/skin/steel with edge antialiasing; no floor, cast shadow, checkerboard, scenery, lettering, border or additional figures. This is frame5 in a single consistent animation, not a concept redesign.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/figani-013-native-05.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ares-battle-idle-r2.png"
+          ],
+          "generated_source": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-6846974b-2117-4e00-b5ea-a5734664338a.png"
+        },
+        {
+          "frame": 6,
+          "prompt": "Use case: style-transfer. Asset type: one transparent HD battle animation keyframe for the tactical RPG remake. Input1 is the EXACT original pose, framing, costume silhouette, weapon angle, motion-ribbon shape, relative figure/FX size and layout authority: FIGANI013 frame6. Input2 is the approved-style Ares idle rendering, used ONLY to keep his same identity, costume, materials, adult anatomy and painterly finish; do NOT reuse its idle pose. Repaint input1 faithfully as a high-resolution hand-painted classic RPG animation sprite. Continue overhead rotation with the mint ribbon sweeping across upper-left and toward the hands, as in the source. Character: adult Ares, rear/rear-three-quarter view, small navy-blue cap with green band, short reddish-brown hair, broad grey-green scarf/mantle blowing across the upper back to screen-left, dark cobalt tunic and hanging back cloth, blue trousers/boots, grey belt, bare tan forearms and blue wristguards. Crescent silver poleaxe and muted green-grey long shaft as in input1. No shield, sword or added armor. Keep the SAME rear camera, proportions, bent-knee stance and original framing. Preserve source body position and original ratio between the character and broad energy/weapon footprint, including empty transparent margins; do not zoom the figure to fill the frame. Match the full input1 crop's aspect ratio and placement. The original clips parts of the extended weapon/FX at some canvas edges: preserve those same limits, do not shrink the body to fit an invented full weapon. Crisp restrained dark contours, rich fine cloth/steel brush detail, same colors and design as input2. Original pale mint-white wind ribbons and ivory-gold impact colors; no blue lightning, red flames, stars, new symbols or unrequested aura. True transparent background, fully solid cloth/skin/steel with edge antialiasing; no floor, cast shadow, checkerboard, scenery, lettering, border or additional figures. This is frame6 in a single consistent animation, not a concept redesign.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/figani-013-native-06.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ares-battle-idle-r2.png"
+          ],
+          "generated_source": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-65103d63-680a-4e34-a82c-5c14b7dbf7e5.png"
+        },
+        {
+          "frame": 7,
+          "prompt": "Use case: style-transfer. Asset type: one transparent HD battle animation keyframe for the tactical RPG remake. Input1 is the EXACT original pose, framing, costume silhouette, weapon angle, motion-ribbon shape, relative figure/FX size and layout authority: FIGANI013 frame7. Input2 is the approved-style Ares idle rendering, used ONLY to keep his same identity, costume, materials, adult anatomy and painterly finish; do NOT reuse its idle pose. Repaint input1 faithfully as a high-resolution hand-painted classic RPG animation sprite. Continue overhead rotation with the curved mint ribbon at upper-right; preserve the exact weapon angle and arc silhouette. Character: adult Ares, rear/rear-three-quarter view, small navy-blue cap with green band, short reddish-brown hair, broad grey-green scarf/mantle blowing across the upper back to screen-left, dark cobalt tunic and hanging back cloth, blue trousers/boots, grey belt, bare tan forearms and blue wristguards. Crescent silver poleaxe and muted green-grey long shaft as in input1. No shield, sword or added armor. Keep the SAME rear camera, proportions, bent-knee stance and original framing. Preserve source body position and original ratio between the character and broad energy/weapon footprint, including empty transparent margins; do not zoom the figure to fill the frame. Match the full input1 crop's aspect ratio and placement. The original clips parts of the extended weapon/FX at some canvas edges: preserve those same limits, do not shrink the body to fit an invented full weapon. Crisp restrained dark contours, rich fine cloth/steel brush detail, same colors and design as input2. Original pale mint-white wind ribbons and ivory-gold impact colors; no blue lightning, red flames, stars, new symbols or unrequested aura. True transparent background, fully solid cloth/skin/steel with edge antialiasing; no floor, cast shadow, checkerboard, scenery, lettering, border or additional figures. This is frame7 in a single consistent animation, not a concept redesign.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/figani-013-native-07.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ares-battle-idle-r2.png"
+          ],
+          "generated_source": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-d35c1d01-b7e3-4208-9a73-2ed0698488f4.png"
+        },
+        {
+          "frame": 8,
+          "prompt": "Use case: style-transfer. Asset type: one transparent HD battle animation keyframe for the tactical RPG remake. Input1 is the EXACT original pose, framing, costume silhouette, weapon angle, motion-ribbon shape, relative figure/FX size and layout authority: FIGANI013 frame8. Input2 is the approved-style Ares idle rendering, used ONLY to keep his same identity, costume, materials, adult anatomy and painterly finish; do NOT reuse its idle pose. Repaint input1 faithfully as a high-resolution hand-painted classic RPG animation sprite. Last broad overhead rotation arc; preserve the wide mint ribbon across the upper area and all original relative sizes. Character: adult Ares, rear/rear-three-quarter view, small navy-blue cap with green band, short reddish-brown hair, broad grey-green scarf/mantle blowing across the upper back to screen-left, dark cobalt tunic and hanging back cloth, blue trousers/boots, grey belt, bare tan forearms and blue wristguards. Crescent silver poleaxe and muted green-grey long shaft as in input1. No shield, sword or added armor. Keep the SAME rear camera, proportions, bent-knee stance and original framing. Preserve source body position and original ratio between the character and broad energy/weapon footprint, including empty transparent margins; do not zoom the figure to fill the frame. Match the full input1 crop's aspect ratio and placement. The original clips parts of the extended weapon/FX at some canvas edges: preserve those same limits, do not shrink the body to fit an invented full weapon. Crisp restrained dark contours, rich fine cloth/steel brush detail, same colors and design as input2. Original pale mint-white wind ribbons and ivory-gold impact colors; no blue lightning, red flames, stars, new symbols or unrequested aura. True transparent background, fully solid cloth/skin/steel with edge antialiasing; no floor, cast shadow, checkerboard, scenery, lettering, border or additional figures. This is frame8 in a single consistent animation, not a concept redesign.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/figani-013-native-08.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ares-battle-idle-r2.png"
+          ],
+          "generated_source": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-dcf076ad-fa68-4a16-b9ab-e621c54da128.png"
+        },
+        {
+          "frame": 9,
+          "prompt": "Use case: style-transfer. Asset type: one transparent HD battle animation keyframe for the tactical RPG remake. Input1 is the EXACT original pose, framing, costume silhouette, weapon angle, motion-ribbon shape, relative figure/FX size and layout authority: FIGANI013 frame9. Input2 is the approved-style Ares idle rendering, used ONLY to keep his same identity, costume, materials, adult anatomy and painterly finish; do NOT reuse its idle pose. Repaint input1 faithfully as a high-resolution hand-painted classic RPG animation sprite. Hold the poleaxe raised overhead; only the small remnant of the mint motion ribbon is visible at upper-right. Preserve the original weapon clipping at the top/right canvas edge. Character: adult Ares, rear/rear-three-quarter view, small navy-blue cap with green band, short reddish-brown hair, broad grey-green scarf/mantle blowing across the upper back to screen-left, dark cobalt tunic and hanging back cloth, blue trousers/boots, grey belt, bare tan forearms and blue wristguards. Crescent silver poleaxe and muted green-grey long shaft as in input1. No shield, sword or added armor. Keep the SAME rear camera, proportions, bent-knee stance and original framing. Preserve source body position and original ratio between the character and broad energy/weapon footprint, including empty transparent margins; do not zoom the figure to fill the frame. Match the full input1 crop's aspect ratio and placement. The original clips parts of the extended weapon/FX at some canvas edges: preserve those same limits, do not shrink the body to fit an invented full weapon. Crisp restrained dark contours, rich fine cloth/steel brush detail, same colors and design as input2. Original pale mint-white wind ribbons and ivory-gold impact colors; no blue lightning, red flames, stars, new symbols or unrequested aura. True transparent background, fully solid cloth/skin/steel with edge antialiasing; no floor, cast shadow, checkerboard, scenery, lettering, border or additional figures. This is frame9 in a single consistent animation, not a concept redesign.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/figani-013-native-09.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ares-battle-idle-r2.png"
+          ],
+          "generated_source": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-7ac1464f-fed1-4201-9aa0-cd49c3563926.png"
+        },
+        {
+          "frame": 10,
+          "prompt": "Use case: style-transfer. Asset type: one transparent HD battle animation keyframe for the tactical RPG remake. Input1 is the EXACT original pose, framing, costume silhouette, weapon angle, motion-ribbon shape, relative figure/FX size and layout authority: FIGANI013 frame10. Input2 is the approved-style Ares idle rendering, used ONLY to keep his same identity, costume, materials, adult anatomy and painterly finish; do NOT reuse its idle pose. Repaint input1 faithfully as a high-resolution hand-painted classic RPG animation sprite. Same final raised hold phase; retain only the source's small fading mint remnant at upper-right. Do not invent a large arc. Character: adult Ares, rear/rear-three-quarter view, small navy-blue cap with green band, short reddish-brown hair, broad grey-green scarf/mantle blowing across the upper back to screen-left, dark cobalt tunic and hanging back cloth, blue trousers/boots, grey belt, bare tan forearms and blue wristguards. Crescent silver poleaxe and muted green-grey long shaft as in input1. No shield, sword or added armor. Keep the SAME rear camera, proportions, bent-knee stance and original framing. Preserve source body position and original ratio between the character and broad energy/weapon footprint, including empty transparent margins; do not zoom the figure to fill the frame. Match the full input1 crop's aspect ratio and placement. The original clips parts of the extended weapon/FX at some canvas edges: preserve those same limits, do not shrink the body to fit an invented full weapon. Crisp restrained dark contours, rich fine cloth/steel brush detail, same colors and design as input2. Original pale mint-white wind ribbons and ivory-gold impact colors; no blue lightning, red flames, stars, new symbols or unrequested aura. True transparent background, fully solid cloth/skin/steel with edge antialiasing; no floor, cast shadow, checkerboard, scenery, lettering, border or additional figures. This is frame10 in a single consistent animation, not a concept redesign.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/figani-013-native-10.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ares-battle-idle-r2.png"
+          ],
+          "generated_source": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-3137802f-c6dc-4cee-91ea-675179797634.png"
+        },
+        {
+          "frame": 11,
+          "prompt": "Use case: style-transfer. Asset type: one transparent HD battle animation keyframe for the tactical RPG remake. Input1 is the EXACT original pose, framing, costume silhouette, weapon angle, motion-ribbon shape, relative figure/FX size and layout authority: FIGANI013 frame11. Input2 is the approved-style Ares idle rendering, used ONLY to keep his same identity, costume, materials, adult anatomy and painterly finish; do NOT reuse its idle pose. Repaint input1 faithfully as a high-resolution hand-painted classic RPG animation sprite. The downward strike and impact: preserve the huge luminous ivory-yellow/gold slash arc across the upper-left, the smaller crouched Ares at lower-right, and the original diagonal poleaxe. The source's large bright impact occupies most of the upper canvas. Character: adult Ares, rear/rear-three-quarter view, small navy-blue cap with green band, short reddish-brown hair, broad grey-green scarf/mantle blowing across the upper back to screen-left, dark cobalt tunic and hanging back cloth, blue trousers/boots, grey belt, bare tan forearms and blue wristguards. Crescent silver poleaxe and muted green-grey long shaft as in input1. No shield, sword or added armor. Keep the SAME rear camera, proportions, bent-knee stance and original framing. Preserve source body position and original ratio between the character and broad energy/weapon footprint, including empty transparent margins; do not zoom the figure to fill the frame. Match the full input1 crop's aspect ratio and placement. The original clips parts of the extended weapon/FX at some canvas edges: preserve those same limits, do not shrink the body to fit an invented full weapon. Crisp restrained dark contours, rich fine cloth/steel brush detail, same colors and design as input2. Original pale mint-white wind ribbons and ivory-gold impact colors; no blue lightning, red flames, stars, new symbols or unrequested aura. True transparent background, fully solid cloth/skin/steel with edge antialiasing; no floor, cast shadow, checkerboard, scenery, lettering, border or additional figures. This is frame11 in a single consistent animation, not a concept redesign.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/figani-013-native-11.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ares-battle-idle-r2.png"
+          ],
+          "generated_source": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-9d7b5e6f-dbe7-4b12-ae90-b2dd61df7530.png"
+        },
+        {
+          "frame": 12,
+          "prompt": "Use case: style-transfer. Asset type: one transparent HD battle animation keyframe for the tactical RPG remake. Input1 is the EXACT original pose, framing, costume silhouette, weapon angle, motion-ribbon shape, relative figure/FX size and layout authority: FIGANI013 frame12. Input2 is the approved-style Ares idle rendering, used ONLY to keep his same identity, costume, materials, adult anatomy and painterly finish; do NOT reuse its idle pose. Repaint input1 faithfully as a high-resolution hand-painted classic RPG animation sprite. The after-strike crouching follow-through: preserve the diagonal poleaxe toward upper-left and the source's tiny gold remnant at the blade tip. No large impact arc. Character: adult Ares, rear/rear-three-quarter view, small navy-blue cap with green band, short reddish-brown hair, broad grey-green scarf/mantle blowing across the upper back to screen-left, dark cobalt tunic and hanging back cloth, blue trousers/boots, grey belt, bare tan forearms and blue wristguards. Crescent silver poleaxe and muted green-grey long shaft as in input1. No shield, sword or added armor. Keep the SAME rear camera, proportions, bent-knee stance and original framing. Preserve source body position and original ratio between the character and broad energy/weapon footprint, including empty transparent margins; do not zoom the figure to fill the frame. Match the full input1 crop's aspect ratio and placement. The original clips parts of the extended weapon/FX at some canvas edges: preserve those same limits, do not shrink the body to fit an invented full weapon. Crisp restrained dark contours, rich fine cloth/steel brush detail, same colors and design as input2. Original pale mint-white wind ribbons and ivory-gold impact colors; no blue lightning, red flames, stars, new symbols or unrequested aura. True transparent background, fully solid cloth/skin/steel with edge antialiasing; no floor, cast shadow, checkerboard, scenery, lettering, border or additional figures. This is frame12 in a single consistent animation, not a concept redesign.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/figani-013-native-12.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ares-battle-idle-r2.png"
+          ],
+          "generated_source": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-8757a275-6aa6-452f-b712-6014f09b6e98.png"
+        },
+        {
+          "frame": 13,
+          "prompt": "Use case: style-transfer. Asset type: one transparent HD battle animation keyframe for the tactical RPG remake. Input1 is the EXACT original pose, framing, costume silhouette, weapon angle, motion-ribbon shape, relative figure/FX size and layout authority: FIGANI013 frame13. Input2 is the approved-style Ares idle rendering, used ONLY to keep his same identity, costume, materials, adult anatomy and painterly finish; do NOT reuse its idle pose. Repaint input1 faithfully as a high-resolution hand-painted classic RPG animation sprite. Continue the low crouching follow-through with the poleaxe angle and tiny remaining tip flare exactly as the source. No large magic arc. Character: adult Ares, rear/rear-three-quarter view, small navy-blue cap with green band, short reddish-brown hair, broad grey-green scarf/mantle blowing across the upper back to screen-left, dark cobalt tunic and hanging back cloth, blue trousers/boots, grey belt, bare tan forearms and blue wristguards. Crescent silver poleaxe and muted green-grey long shaft as in input1. No shield, sword or added armor. Keep the SAME rear camera, proportions, bent-knee stance and original framing. Preserve source body position and original ratio between the character and broad energy/weapon footprint, including empty transparent margins; do not zoom the figure to fill the frame. Match the full input1 crop's aspect ratio and placement. The original clips parts of the extended weapon/FX at some canvas edges: preserve those same limits, do not shrink the body to fit an invented full weapon. Crisp restrained dark contours, rich fine cloth/steel brush detail, same colors and design as input2. Original pale mint-white wind ribbons and ivory-gold impact colors; no blue lightning, red flames, stars, new symbols or unrequested aura. True transparent background, fully solid cloth/skin/steel with edge antialiasing; no floor, cast shadow, checkerboard, scenery, lettering, border or additional figures. This is frame13 in a single consistent animation, not a concept redesign.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/figani-013-native-13.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ares-battle-idle-r2.png"
+          ],
+          "generated_source": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-88018be1-3286-48db-9861-5266308fdce2.png"
+        },
+        {
+          "frame": 14,
+          "prompt": "Use case: style-transfer. Asset type: one transparent HD battle animation keyframe for the tactical RPG remake. Input1 is the EXACT original pose, framing, costume silhouette, weapon angle, motion-ribbon shape, relative figure/FX size and layout authority: FIGANI013 frame14. Input2 is the approved-style Ares idle rendering, used ONLY to keep his same identity, costume, materials, adult anatomy and painterly finish; do NOT reuse its idle pose. Repaint input1 faithfully as a high-resolution hand-painted classic RPG animation sprite. Final low crouched follow-through recovery, holding the long poleaxe diagonally toward upper-left exactly as the original. No energy arc or flare. Character: adult Ares, rear/rear-three-quarter view, small navy-blue cap with green band, short reddish-brown hair, broad grey-green scarf/mantle blowing across the upper back to screen-left, dark cobalt tunic and hanging back cloth, blue trousers/boots, grey belt, bare tan forearms and blue wristguards. Crescent silver poleaxe and muted green-grey long shaft as in input1. No shield, sword or added armor. Keep the SAME rear camera, proportions, bent-knee stance and original framing. Preserve source body position and original ratio between the character and broad energy/weapon footprint, including empty transparent margins; do not zoom the figure to fill the frame. Match the full input1 crop's aspect ratio and placement. The original clips parts of the extended weapon/FX at some canvas edges: preserve those same limits, do not shrink the body to fit an invented full weapon. Crisp restrained dark contours, rich fine cloth/steel brush detail, same colors and design as input2. Original pale mint-white wind ribbons and ivory-gold impact colors; no blue lightning, red flames, stars, new symbols or unrequested aura. True transparent background, fully solid cloth/skin/steel with edge antialiasing; no floor, cast shadow, checkerboard, scenery, lettering, border or additional figures. This is frame14 in a single consistent animation, not a concept redesign.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/figani-013-native-14.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ares-battle-idle-r2.png"
+          ],
+          "generated_source": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-a31cbfb1-0abf-4137-bfe9-e0401f06e6f1.png"
+        }
+      ],
+      "corrections": [
+        {
+          "frame": 5,
+          "prompt": "Use case: style-transfer. Asset type: one transparent HD battle animation keyframe for the tactical RPG remake. Input1 is the EXACT original pose, framing, costume silhouette, weapon angle, motion-ribbon shape, relative figure/FX size and layout authority: FIGANI013 frame5. Input2 is the approved-style Ares idle rendering, used ONLY to keep his same identity, costume, materials, adult anatomy and painterly finish; do NOT reuse its idle pose. Repaint input1 faithfully as a high-resolution hand-painted classic RPG animation sprite. Continue overhead rotation with the broad mint ribbon toward upper-left, preserving the exact source arc and weapon angle. Character: adult Ares, rear/rear-three-quarter view, small navy-blue cap with green band, short reddish-brown hair, broad grey-green scarf/mantle blowing across the upper back to screen-left, dark cobalt tunic and hanging back cloth, blue trousers/boots, grey belt, bare tan forearms and blue wristguards. Crescent silver poleaxe and muted green-grey long shaft as in input1. No shield, sword or added armor. Keep the SAME rear camera, proportions, bent-knee stance and original framing. Preserve source body position and original ratio between the character and broad energy/weapon footprint, including empty transparent margins; do not zoom the figure to fill the frame. Match the full input1 crop's aspect ratio and placement. The original clips parts of the extended weapon/FX at some canvas edges: preserve those same limits, do not shrink the body to fit an invented full weapon. Crisp restrained dark contours, rich fine cloth/steel brush detail, same colors and design as input2. Original pale mint-white wind ribbons and ivory-gold impact colors; no blue lightning, red flames, stars, new symbols or unrequested aura. True transparent background, fully solid cloth/skin/steel with edge antialiasing; no floor, cast shadow, checkerboard, scenery, lettering, border or additional figures. This is frame5 in a single consistent animation, not a concept redesign.\nCRITICAL POSE CORRECTION: BOTH HANDS must be clearly ABOVE the top of his blue cap. BOTH forearms are raised upward, elbows around head height; the poleaxe shaft is held over his head. Do NOT rest poleaxe on shoulder or lower either hand. Reference 3 is the correct overhead arm pose; preserve that overhead stance while matching the exact mint wind layout in reference 1.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/figani-013-native-05.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ares-battle-idle-r2.png",
+            "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-3c8187a4-608b-4c62-af07-d3193bc452e2.png"
+          ],
+          "generated_source": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-aa778776-77b5-4b25-94ad-c590c0dafe52.png"
+        },
+        {
+          "frame": 6,
+          "prompt": "Use case: style-transfer. Asset type: one transparent HD battle animation keyframe for the tactical RPG remake. Input1 is the EXACT original pose, framing, costume silhouette, weapon angle, motion-ribbon shape, relative figure/FX size and layout authority: FIGANI013 frame6. Input2 is the approved-style Ares idle rendering, used ONLY to keep his same identity, costume, materials, adult anatomy and painterly finish; do NOT reuse its idle pose. Repaint input1 faithfully as a high-resolution hand-painted classic RPG animation sprite. Continue overhead rotation with the mint ribbon sweeping across upper-left and toward the hands, as in the source. Character: adult Ares, rear/rear-three-quarter view, small navy-blue cap with green band, short reddish-brown hair, broad grey-green scarf/mantle blowing across the upper back to screen-left, dark cobalt tunic and hanging back cloth, blue trousers/boots, grey belt, bare tan forearms and blue wristguards. Crescent silver poleaxe and muted green-grey long shaft as in input1. No shield, sword or added armor. Keep the SAME rear camera, proportions, bent-knee stance and original framing. Preserve source body position and original ratio between the character and broad energy/weapon footprint, including empty transparent margins; do not zoom the figure to fill the frame. Match the full input1 crop's aspect ratio and placement. The original clips parts of the extended weapon/FX at some canvas edges: preserve those same limits, do not shrink the body to fit an invented full weapon. Crisp restrained dark contours, rich fine cloth/steel brush detail, same colors and design as input2. Original pale mint-white wind ribbons and ivory-gold impact colors; no blue lightning, red flames, stars, new symbols or unrequested aura. True transparent background, fully solid cloth/skin/steel with edge antialiasing; no floor, cast shadow, checkerboard, scenery, lettering, border or additional figures. This is frame6 in a single consistent animation, not a concept redesign.\nCRITICAL POSE CORRECTION: BOTH HANDS must be clearly ABOVE the top of his blue cap. BOTH forearms are raised upward, elbows around head height; the poleaxe shaft is held over his head. Do NOT rest poleaxe on shoulder or lower either hand. Reference 3 is the correct overhead arm pose; preserve that overhead stance while matching the exact mint wind layout in reference 1.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/figani-013-native-06.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ares-battle-idle-r2.png",
+            "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-3c8187a4-608b-4c62-af07-d3193bc452e2.png"
+          ],
+          "generated_source": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-1affe840-2cd0-4d3a-a94d-22cb74db8d89.png"
+        }
+      ],
+      "follow_corrections": [
+        {
+          "frame": 11,
+          "prompt": "Use case: style-transfer. Asset type: one transparent HD battle animation keyframe for the tactical RPG remake. Input1 is the EXACT original pose, framing, costume silhouette, weapon angle, motion-ribbon shape, relative figure/FX size and layout authority: FIGANI013 frame11. Input2 is the approved-style Ares idle rendering, used ONLY to keep his same identity, costume, materials, adult anatomy and painterly finish; do NOT reuse its idle pose. Repaint input1 faithfully as a high-resolution hand-painted classic RPG animation sprite. The downward strike and impact: preserve the huge luminous ivory-yellow/gold slash arc across the upper-left, the smaller crouched Ares at lower-right, and the original diagonal poleaxe. The source's large bright impact occupies most of the upper canvas. Character: adult Ares, rear/rear-three-quarter view, small navy-blue cap with green band, short reddish-brown hair, broad grey-green scarf/mantle blowing across the upper back to screen-left, dark cobalt tunic and hanging back cloth, blue trousers/boots, grey belt, bare tan forearms and blue wristguards. Crescent silver poleaxe and muted green-grey long shaft as in input1. No shield, sword or added armor. Keep the SAME rear camera, proportions, bent-knee stance and original framing. Preserve source body position and original ratio between the character and broad energy/weapon footprint, including empty transparent margins; do not zoom the figure to fill the frame. Match the full input1 crop's aspect ratio and placement. The original clips parts of the extended weapon/FX at some canvas edges: preserve those same limits, do not shrink the body to fit an invented full weapon. Crisp restrained dark contours, rich fine cloth/steel brush detail, same colors and design as input2. Original pale mint-white wind ribbons and ivory-gold impact colors; no blue lightning, red flames, stars, new symbols or unrequested aura. True transparent background, fully solid cloth/skin/steel with edge antialiasing; no floor, cast shadow, checkerboard, scenery, lettering, border or additional figures. This is frame11 in a single consistent animation, not a concept redesign.\nCRITICAL SILHOUETTE: Match the VERY NARROW HUNCHED standing follow-through body of the original pixel reference. Both boots are close together beneath the hips, legs nearly together, knees only slightly bent. He is NOT kneeling, NOT lunging, NOT in a wide-legged stance. The clothed body from blue cap to boot soles must be approximately 2.4 times as tall as it is wide. Keep shoulders turned left, cloak draped tightly around back, the body is a narrow vertical silhouette at the extreme right of the composition. The long weapon projects diagonally far to the upper left. Do not enlarge the body to fill empty canvas.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/figani-013-native-11.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ares-battle-idle-r2.png"
+          ],
+          "generated_source": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-43789a76-4cdf-4c74-9e60-9c7fc12523a9.png"
+        },
+        {
+          "frame": 13,
+          "prompt": "Use case: style-transfer. Asset type: one transparent HD battle animation keyframe for the tactical RPG remake. Input1 is the EXACT original pose, framing, costume silhouette, weapon angle, motion-ribbon shape, relative figure/FX size and layout authority: FIGANI013 frame13. Input2 is the approved-style Ares idle rendering, used ONLY to keep his same identity, costume, materials, adult anatomy and painterly finish; do NOT reuse its idle pose. Repaint input1 faithfully as a high-resolution hand-painted classic RPG animation sprite. Continue the low crouching follow-through with the poleaxe angle and tiny remaining tip flare exactly as the source. No large magic arc. Character: adult Ares, rear/rear-three-quarter view, small navy-blue cap with green band, short reddish-brown hair, broad grey-green scarf/mantle blowing across the upper back to screen-left, dark cobalt tunic and hanging back cloth, blue trousers/boots, grey belt, bare tan forearms and blue wristguards. Crescent silver poleaxe and muted green-grey long shaft as in input1. No shield, sword or added armor. Keep the SAME rear camera, proportions, bent-knee stance and original framing. Preserve source body position and original ratio between the character and broad energy/weapon footprint, including empty transparent margins; do not zoom the figure to fill the frame. Match the full input1 crop's aspect ratio and placement. The original clips parts of the extended weapon/FX at some canvas edges: preserve those same limits, do not shrink the body to fit an invented full weapon. Crisp restrained dark contours, rich fine cloth/steel brush detail, same colors and design as input2. Original pale mint-white wind ribbons and ivory-gold impact colors; no blue lightning, red flames, stars, new symbols or unrequested aura. True transparent background, fully solid cloth/skin/steel with edge antialiasing; no floor, cast shadow, checkerboard, scenery, lettering, border or additional figures. This is frame13 in a single consistent animation, not a concept redesign.\nCRITICAL SILHOUETTE: Match the VERY NARROW HUNCHED standing follow-through body of the original pixel reference. Both boots are close together beneath the hips, legs nearly together, knees only slightly bent. He is NOT kneeling, NOT lunging, NOT in a wide-legged stance. The clothed body from blue cap to boot soles must be approximately 2.4 times as tall as it is wide. Keep shoulders turned left, cloak draped tightly around back, the body is a narrow vertical silhouette at the extreme right of the composition. The long weapon projects diagonally far to the upper left. Do not enlarge the body to fill empty canvas.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/figani-013-native-13.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ares-battle-idle-r2.png"
+          ],
+          "generated_source": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-80c324f2-684b-453b-ae62-162d5c524447.png"
+        },
+        {
+          "frame": 14,
+          "prompt": "Use case: style-transfer. Asset type: one transparent HD battle animation keyframe for the tactical RPG remake. Input1 is the EXACT original pose, framing, costume silhouette, weapon angle, motion-ribbon shape, relative figure/FX size and layout authority: FIGANI013 frame14. Input2 is the approved-style Ares idle rendering, used ONLY to keep his same identity, costume, materials, adult anatomy and painterly finish; do NOT reuse its idle pose. Repaint input1 faithfully as a high-resolution hand-painted classic RPG animation sprite. Final low crouched follow-through recovery, holding the long poleaxe diagonally toward upper-left exactly as the original. No energy arc or flare. Character: adult Ares, rear/rear-three-quarter view, small navy-blue cap with green band, short reddish-brown hair, broad grey-green scarf/mantle blowing across the upper back to screen-left, dark cobalt tunic and hanging back cloth, blue trousers/boots, grey belt, bare tan forearms and blue wristguards. Crescent silver poleaxe and muted green-grey long shaft as in input1. No shield, sword or added armor. Keep the SAME rear camera, proportions, bent-knee stance and original framing. Preserve source body position and original ratio between the character and broad energy/weapon footprint, including empty transparent margins; do not zoom the figure to fill the frame. Match the full input1 crop's aspect ratio and placement. The original clips parts of the extended weapon/FX at some canvas edges: preserve those same limits, do not shrink the body to fit an invented full weapon. Crisp restrained dark contours, rich fine cloth/steel brush detail, same colors and design as input2. Original pale mint-white wind ribbons and ivory-gold impact colors; no blue lightning, red flames, stars, new symbols or unrequested aura. True transparent background, fully solid cloth/skin/steel with edge antialiasing; no floor, cast shadow, checkerboard, scenery, lettering, border or additional figures. This is frame14 in a single consistent animation, not a concept redesign.\nCRITICAL SILHOUETTE: Match the VERY NARROW HUNCHED standing follow-through body of the original pixel reference. Both boots are close together beneath the hips, legs nearly together, knees only slightly bent. He is NOT kneeling, NOT lunging, NOT in a wide-legged stance. The clothed body from blue cap to boot soles must be approximately 2.4 times as tall as it is wide. Keep shoulders turned left, cloak draped tightly around back, the body is a narrow vertical silhouette at the extreme right of the composition. The long weapon projects diagonally far to the upper left. Do not enlarge the body to fill empty canvas.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/figani-013-native-14.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ares-battle-idle-r2.png"
+          ],
+          "generated_source": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-6c6315d9-58b1-48d1-855d-68a09152c939.png"
+        },
+        {
+          "frame": 12,
+          "prompt": "Use case: style-transfer. Asset type: one transparent HD battle animation keyframe for the tactical RPG remake. Input1 is the EXACT original pose, framing, costume silhouette, weapon angle, motion-ribbon shape, relative figure/FX size and layout authority: FIGANI013 frame12. Input2 is the approved-style Ares idle rendering, used ONLY to keep his same identity, costume, materials, adult anatomy and painterly finish; do NOT reuse its idle pose. Repaint input1 faithfully as a high-resolution hand-painted classic RPG animation sprite. The after-strike crouching follow-through: preserve the diagonal poleaxe toward upper-left and the source's tiny gold remnant at the blade tip. No large impact arc. Character: adult Ares, rear/rear-three-quarter view, small navy-blue cap with green band, short reddish-brown hair, broad grey-green scarf/mantle blowing across the upper back to screen-left, dark cobalt tunic and hanging back cloth, blue trousers/boots, grey belt, bare tan forearms and blue wristguards. Crescent silver poleaxe and muted green-grey long shaft as in input1. No shield, sword or added armor. Keep the SAME rear camera, proportions, bent-knee stance and original framing. Preserve source body position and original ratio between the character and broad energy/weapon footprint, including empty transparent margins; do not zoom the figure to fill the frame. Match the full input1 crop's aspect ratio and placement. The original clips parts of the extended weapon/FX at some canvas edges: preserve those same limits, do not shrink the body to fit an invented full weapon. Crisp restrained dark contours, rich fine cloth/steel brush detail, same colors and design as input2. Original pale mint-white wind ribbons and ivory-gold impact colors; no blue lightning, red flames, stars, new symbols or unrequested aura. True transparent background, fully solid cloth/skin/steel with edge antialiasing; no floor, cast shadow, checkerboard, scenery, lettering, border or additional figures. This is frame12 in a single consistent animation, not a concept redesign.\nCRITICAL SILHOUETTE: Match the VERY NARROW HUNCHED standing follow-through body of the original pixel reference. Both boots are close together beneath the hips, legs nearly together, knees only slightly bent. He is NOT kneeling, NOT lunging, NOT in a wide-legged stance. The clothed body from blue cap to boot soles must be approximately 2.4 times as tall as it is wide. Keep shoulders turned left, cloak draped tightly around back, the body is a narrow vertical silhouette at the extreme right of the composition. The long weapon projects diagonally far to the upper left. Do not enlarge the body to fill empty canvas.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/figani-013-native-12.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ares-battle-idle-r2.png"
+          ],
+          "generated_source": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-9818aab3-21e8-44e7-b8b1-189b63508dd1.png"
+        }
+      ]
+    },
+    "final_follow_edit": {
+      "prompt": "Use case: precise-object-edit. Edit target: the attached completed rear-view Ares poleaxe follow-through sprite. Remove ONLY the small gold flare at the far upper-left weapon tip and all pale mint trailing wind around the axe blade. Replace removed effects with true transparency. Preserve the entire character, his narrow hunched standing pose, both close-together boots, blue cap/green band, grey-green cloak, blue clothing, arms, weapon shaft, metal axe head, silhouette, exact proportions and placement. Do not spread legs, raise arms, enlarge body, recenter, zoom, or change canvas framing. This is the final settle frame of the same action, with zero magical glow. Keep all weapon and character surfaces fully painted; transparent background, no shadow, no text.",
+      "generated_source": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-a5d9cf95-103e-4d16-be8a-8a31d167c2f0.png",
+      "references": [
+        "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-80c324f2-684b-453b-ae62-162d5c524447.png"
+      ]
+    },
+    "accepted_master_mapping": {
+      "idle": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ares-battle-idle-r2.png",
+        "sha256": "7eeb2c0cefa2cced85fa9fe23654f83c22a155f568454512423d2e9dc9299490",
+        "blue_anchor": [
+          720,
+          180,
+          1283,
+          982
+        ]
+      },
+      "f01": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ares-attack-f01-r1.png",
+        "sha256": "3fae2991d824924c4068b473aeecbb7a761c7c7d295cdf70ba80e4563df62b32",
+        "blue_anchor": [
+          491,
+          364,
+          1020,
+          1222
+        ]
+      },
+      "f02": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ares-attack-f02-r1.png",
+        "sha256": "84906661e379ad6dd520171732bc31210990b1caf915027ca022f357d3554625",
+        "blue_anchor": [
+          398,
+          379,
+          983,
+          1333
+        ]
+      },
+      "f03": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ares-attack-f03-r1.png",
+        "sha256": "41390b905134fb4363bd32b1636721915ae0a497db403cf45ae7853b130e3371",
+        "blue_anchor": [
+          555,
+          380,
+          1095,
+          1207
+        ]
+      },
+      "f04": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ares-attack-f04-r1.png",
+        "sha256": "bc8164941139482747f6cba98b46293215ca41f0529f5246aee883817848115b",
+        "blue_anchor": [
+          266,
+          418,
+          890,
+          1408
+        ]
+      },
+      "f05": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ares-attack-f05-r2.png",
+        "sha256": "66f1fc7017bacc4a547fd289230290da4505753893096a4ea264b7e102c929ad",
+        "blue_anchor": [
+          494,
+          352,
+          1044,
+          1198
+        ]
+      },
+      "f06": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ares-attack-f06-r2.png",
+        "sha256": "b7bc34ee041f962e390defd16857daa19dbd12751f977c38390b55741941084e",
+        "blue_anchor": [
+          576,
+          294,
+          1148,
+          1174
+        ]
+      },
+      "f07": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ares-attack-f07-r1.png",
+        "sha256": "dcc76e4f1bd776f06f4448cddf541235a2b4f195c1ae75d11dbf2d937659b186",
+        "blue_anchor": [
+          546,
+          377,
+          1054,
+          1204
+        ]
+      },
+      "f08": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ares-attack-f08-r1.png",
+        "sha256": "61f8a7d37dffac666c38af04f1bbacda6a67eee37f717518d0c9e884894e7d72",
+        "blue_anchor": [
+          609,
+          396,
+          1174,
+          1175
+        ]
+      },
+      "f09": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ares-attack-f09-r1.png",
+        "sha256": "61d75705e8d288fac64dccb7bf054612a700b173810cb8743de85d2571960835",
+        "blue_anchor": [
+          295,
+          407,
+          907,
+          1415
+        ]
+      },
+      "f10": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ares-attack-f10-r1.png",
+        "sha256": "adc217e59b4a6fad10a315a294b9e54f7af9ad688b90322f4e0b8bcf9a855a42",
+        "blue_anchor": [
+          325,
+          426,
+          883,
+          1418
+        ]
+      },
+      "f11": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ares-attack-f11-r2.png",
+        "sha256": "c7c4b16e9c26d1372c3932b0b58df78f947f5d84cba88cac1fec63b84944ac54",
+        "blue_anchor": [
+          728,
+          599,
+          1008,
+          1120
+        ]
+      },
+      "f12": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ares-attack-f12-r2.png",
+        "sha256": "a320ced2a28888705bb165cfb7a3c029f3b3c0293a60074124dd91f380ddafce",
+        "blue_anchor": [
+          887,
+          425,
+          1283,
+          1160
+        ]
+      },
+      "f13": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ares-attack-f13-r2.png",
+        "sha256": "77c6b3be297f1a68ecf0f008cbd69c71156ec66e0c35be2d9455b296d74ee17e",
+        "blue_anchor": [
+          937,
+          396,
+          1300,
+          1125
+        ]
+      },
+      "f14": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ares-attack-f14-r3.png",
+        "sha256": "9b4421c35e13e1da8e49a4bfd2a1682120049c6907ab2238ba2d68745d518989",
+        "blue_anchor": [
+          937,
+          394,
+          1301,
+          1126
+        ]
+      }
+    },
+    "compiler": {
+      "file": "tools/build_fd2_ares_battle_hd.py",
+      "sha256": "6d2fb2a4af791bf99e21f0ecb79e72f263b086ceefc7094c3c7f3a9c805054cc"
+    },
+    "compiled": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ares-candidate-r2/compiled.json",
+      "sha256": "a26f0776f4d81ba523388c9be4972c11cf56956c5226c783ce00c2f410800e12"
+    },
+    "compile_record": {
+      "schema_version": 1,
+      "status": "PASS-COMPILED-ARES-CANDIDATE",
+      "runtime_registered": false,
+      "scope": "15母稿重定向完整4／15幀；未驗GUI，非原版逐幀視覺對拍。",
+      "base_catalog_sha256": "39f84e28fc310043e0621ed586df598311503ef59ff7e57b38ba4ad7e36e18d4",
+      "catalog_sha256": "368170f596c15060920ed1108462f5e52efdeeb2aefcef4e8df2909ee373ab62",
+      "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+      "pack_manifest_sha256": "5eec2ecacc4fe97c4d0f27838e7dbecf18d1cf4b309b35800d50afd173cacca5",
+      "compiler_sha256": "6d2fb2a4af791bf99e21f0ecb79e72f263b086ceefc7094c3c7f3a9c805054cc",
+      "blue_anchor_predicate": "alpha>=192; B>=70; B*100>=R*175; B*100>=G*145; four-connected components>=1000 source pixels",
+      "sampling": "LANCZOS; uniform height fit; blue anchor center and bottom; shared contain scale for follow frames11..14; native descriptor clip",
+      "follow_phase_scale": 0.9217171717171717,
+      "sources": {
+        "idle": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ares-battle-idle-r2.png",
+          "sha256": "7eeb2c0cefa2cced85fa9fe23654f83c22a155f568454512423d2e9dc9299490",
+          "blue_anchor": [
+            720,
+            180,
+            1283,
+            982
+          ]
+        },
+        "f01": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ares-attack-f01-r1.png",
+          "sha256": "3fae2991d824924c4068b473aeecbb7a761c7c7d295cdf70ba80e4563df62b32",
+          "blue_anchor": [
+            491,
+            364,
+            1020,
+            1222
+          ]
+        },
+        "f02": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ares-attack-f02-r1.png",
+          "sha256": "84906661e379ad6dd520171732bc31210990b1caf915027ca022f357d3554625",
+          "blue_anchor": [
+            398,
+            379,
+            983,
+            1333
+          ]
+        },
+        "f03": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ares-attack-f03-r1.png",
+          "sha256": "41390b905134fb4363bd32b1636721915ae0a497db403cf45ae7853b130e3371",
+          "blue_anchor": [
+            555,
+            380,
+            1095,
+            1207
+          ]
+        },
+        "f04": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ares-attack-f04-r1.png",
+          "sha256": "bc8164941139482747f6cba98b46293215ca41f0529f5246aee883817848115b",
+          "blue_anchor": [
+            266,
+            418,
+            890,
+            1408
+          ]
+        },
+        "f05": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ares-attack-f05-r2.png",
+          "sha256": "66f1fc7017bacc4a547fd289230290da4505753893096a4ea264b7e102c929ad",
+          "blue_anchor": [
+            494,
+            352,
+            1044,
+            1198
+          ]
+        },
+        "f06": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ares-attack-f06-r2.png",
+          "sha256": "b7bc34ee041f962e390defd16857daa19dbd12751f977c38390b55741941084e",
+          "blue_anchor": [
+            576,
+            294,
+            1148,
+            1174
+          ]
+        },
+        "f07": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ares-attack-f07-r1.png",
+          "sha256": "dcc76e4f1bd776f06f4448cddf541235a2b4f195c1ae75d11dbf2d937659b186",
+          "blue_anchor": [
+            546,
+            377,
+            1054,
+            1204
+          ]
+        },
+        "f08": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ares-attack-f08-r1.png",
+          "sha256": "61f8a7d37dffac666c38af04f1bbacda6a67eee37f717518d0c9e884894e7d72",
+          "blue_anchor": [
+            609,
+            396,
+            1174,
+            1175
+          ]
+        },
+        "f09": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ares-attack-f09-r1.png",
+          "sha256": "61d75705e8d288fac64dccb7bf054612a700b173810cb8743de85d2571960835",
+          "blue_anchor": [
+            295,
+            407,
+            907,
+            1415
+          ]
+        },
+        "f10": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ares-attack-f10-r1.png",
+          "sha256": "adc217e59b4a6fad10a315a294b9e54f7af9ad688b90322f4e0b8bcf9a855a42",
+          "blue_anchor": [
+            325,
+            426,
+            883,
+            1418
+          ]
+        },
+        "f11": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ares-attack-f11-r2.png",
+          "sha256": "c7c4b16e9c26d1372c3932b0b58df78f947f5d84cba88cac1fec63b84944ac54",
+          "blue_anchor": [
+            728,
+            599,
+            1008,
+            1120
+          ]
+        },
+        "f12": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ares-attack-f12-r2.png",
+          "sha256": "a320ced2a28888705bb165cfb7a3c029f3b3c0293a60074124dd91f380ddafce",
+          "blue_anchor": [
+            887,
+            425,
+            1283,
+            1160
+          ]
+        },
+        "f13": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ares-attack-f13-r2.png",
+          "sha256": "77c6b3be297f1a68ecf0f008cbd69c71156ec66e0c35be2d9455b296d74ee17e",
+          "blue_anchor": [
+            937,
+            396,
+            1300,
+            1125
+          ]
+        },
+        "f14": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ares-attack-f14-r3.png",
+          "sha256": "9b4421c35e13e1da8e49a4bfd2a1682120049c6907ab2238ba2d68745d518989",
+          "blue_anchor": [
+            937,
+            394,
+            1301,
+            1126
+          ]
+        }
+      },
+      "frames": [
+        {
+          "resource": 12,
+          "frame": 0,
+          "pose": "idle",
+          "file": "figani-012-hd6-v1-f00.png",
+          "sha256": "e9e307419c4f4a42e896a6a5966d464d2045652e869cb2f9da4fbcc02c70b7b8",
+          "native_blue_anchor": [
+            87,
+            20,
+            153,
+            128
+          ],
+          "native_descriptor": {
+            "x": 124,
+            "y": 61,
+            "width": 193,
+            "height": 131,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0
+          },
+          "fit_size": [
+            1241,
+            827
+          ],
+          "origin": [
+            -89,
+            -25
+          ],
+          "scale_xy": [
+            0.8079427083333334,
+            0.8076171875
+          ],
+          "phase_scale": 1,
+          "fitted_blue_anchor": [
+            492.71875,
+            120.37109375,
+            947.5904947916667,
+            768.080078125
+          ],
+          "clipped_high_coverage_pixels": 4796
+        },
+        {
+          "resource": 12,
+          "frame": 1,
+          "pose": "idle",
+          "file": "figani-012-hd6-v1-f01.png",
+          "sha256": "407db8606cc87ec6662f7cb3761692e7250e1c8c98f233bfbcc61cfcc8e417ea",
+          "native_blue_anchor": [
+            87,
+            20,
+            153,
+            127
+          ],
+          "native_descriptor": {
+            "x": 124,
+            "y": 62,
+            "width": 193,
+            "height": 130,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0
+          },
+          "fit_size": [
+            1230,
+            820
+          ],
+          "origin": [
+            -82,
+            -24
+          ],
+          "scale_xy": [
+            0.80078125,
+            0.80078125
+          ],
+          "phase_scale": 1,
+          "fitted_blue_anchor": [
+            494.5625,
+            120.140625,
+            945.40234375,
+            762.3671875
+          ],
+          "clipped_high_coverage_pixels": 4026
+        },
+        {
+          "resource": 12,
+          "frame": 2,
+          "pose": "idle",
+          "file": "figani-012-hd6-v1-f02.png",
+          "sha256": "be97710d0e8624339f8db4b72c68ad7e31234eaed69f3c13e5547343381a3fbe",
+          "native_blue_anchor": [
+            87,
+            20,
+            153,
+            126
+          ],
+          "native_descriptor": {
+            "x": 124,
+            "y": 63,
+            "width": 193,
+            "height": 129,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0
+          },
+          "fit_size": [
+            1218,
+            812
+          ],
+          "origin": [
+            -74,
+            -23
+          ],
+          "scale_xy": [
+            0.79296875,
+            0.79296875
+          ],
+          "phase_scale": 1,
+          "fitted_blue_anchor": [
+            496.9375,
+            119.734375,
+            943.37890625,
+            755.6953125
+          ],
+          "clipped_high_coverage_pixels": 3158
+        },
+        {
+          "resource": 12,
+          "frame": 3,
+          "pose": "idle",
+          "file": "figani-012-hd6-v1-f03.png",
+          "sha256": "407db8606cc87ec6662f7cb3761692e7250e1c8c98f233bfbcc61cfcc8e417ea",
+          "native_blue_anchor": [
+            87,
+            20,
+            153,
+            127
+          ],
+          "native_descriptor": {
+            "x": 124,
+            "y": 62,
+            "width": 193,
+            "height": 130,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0
+          },
+          "fit_size": [
+            1230,
+            820
+          ],
+          "origin": [
+            -82,
+            -24
+          ],
+          "scale_xy": [
+            0.80078125,
+            0.80078125
+          ],
+          "phase_scale": 1,
+          "fitted_blue_anchor": [
+            494.5625,
+            120.140625,
+            945.40234375,
+            762.3671875
+          ],
+          "clipped_high_coverage_pixels": 4026
+        },
+        {
+          "resource": 13,
+          "frame": 0,
+          "pose": "idle",
+          "file": "figani-013-hd6-v1-f00.png",
+          "sha256": "e9e307419c4f4a42e896a6a5966d464d2045652e869cb2f9da4fbcc02c70b7b8",
+          "native_blue_anchor": [
+            87,
+            20,
+            153,
+            128
+          ],
+          "native_descriptor": {
+            "x": 124,
+            "y": 61,
+            "width": 193,
+            "height": 131,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0
+          },
+          "fit_size": [
+            1241,
+            827
+          ],
+          "origin": [
+            -89,
+            -25
+          ],
+          "scale_xy": [
+            0.8079427083333334,
+            0.8076171875
+          ],
+          "phase_scale": 1,
+          "fitted_blue_anchor": [
+            492.71875,
+            120.37109375,
+            947.5904947916667,
+            768.080078125
+          ],
+          "clipped_high_coverage_pixels": 4796
+        },
+        {
+          "resource": 13,
+          "frame": 1,
+          "pose": "f01",
+          "file": "figani-013-hd6-v1-f01.png",
+          "sha256": "79fe38d3d6cb882800b2f9545423985bccd19ede24d5999e8305b0487658f7e3",
+          "native_blue_anchor": [
+            70,
+            53,
+            130,
+            186
+          ],
+          "native_descriptor": {
+            "x": 141,
+            "y": 3,
+            "width": 179,
+            "height": 189,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 2,
+            "raw_byte_7": 0
+          },
+          "fit_size": [
+            1173,
+            1160
+          ],
+          "origin": [
+            -103,
+            -21
+          ],
+          "scale_xy": [
+            0.9302141157811261,
+            0.9302325581395349
+          ],
+          "phase_scale": 1,
+          "fitted_blue_anchor": [
+            353.73513084853295,
+            317.6046511627907,
+            845.8183980967486,
+            1115.7441860465117
+          ],
+          "clipped_high_coverage_pixels": 316
+        },
+        {
+          "resource": 13,
+          "frame": 2,
+          "pose": "f02",
+          "file": "figani-013-hd6-v1-f02.png",
+          "sha256": "2b3251e684d33b3ae689f2c30d2ddfcdde1d9ce63587b81c1aca6bad0ad83c63",
+          "native_blue_anchor": [
+            49,
+            54,
+            109,
+            185
+          ],
+          "native_descriptor": {
+            "x": 162,
+            "y": 4,
+            "width": 158,
+            "height": 188,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0
+          },
+          "fit_size": [
+            947,
+            1127
+          ],
+          "origin": [
+            -95,
+            12
+          ],
+          "scale_xy": [
+            0.8234782608695652,
+            0.8238304093567251
+          ],
+          "phase_scale": 1,
+          "fitted_blue_anchor": [
+            232.74434782608694,
+            324.2317251461988,
+            714.4791304347826,
+            1110.1659356725147
+          ],
+          "clipped_high_coverage_pixels": 1508
+        },
+        {
+          "resource": 13,
+          "frame": 3,
+          "pose": "f03",
+          "file": "figani-013-hd6-v1-f03.png",
+          "sha256": "d20b2eb092aca075e84b1247d165c68130283113be4cdb73c01f1db7cab8243a",
+          "native_blue_anchor": [
+            88,
+            56,
+            148,
+            189
+          ],
+          "native_descriptor": {
+            "x": 123,
+            "y": 0,
+            "width": 197,
+            "height": 192,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 2,
+            "raw_byte_7": 0
+          },
+          "fit_size": [
+            1225,
+            1196
+          ],
+          "origin": [
+            -88,
+            -31
+          ],
+          "scale_xy": [
+            0.9645669291338582,
+            0.9652945924132365
+          ],
+          "phase_scale": 1,
+          "fitted_blue_anchor": [
+            447.33464566929126,
+            335.81194511702984,
+            968.2007874015746,
+            1134.1105730427764
+          ],
+          "clipped_high_coverage_pixels": 18754
+        },
+        {
+          "resource": 13,
+          "frame": 4,
+          "pose": "f04",
+          "file": "figani-013-hd6-v1-f04.png",
+          "sha256": "5acbcdda4d4b97bcfc2c298abf998e604e6693374ffacb3ea3c59a60c9c05689",
+          "native_blue_anchor": [
+            32,
+            55,
+            93,
+            185
+          ],
+          "native_descriptor": {
+            "x": 178,
+            "y": 4,
+            "width": 142,
+            "height": 188,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0
+          },
+          "fit_size": [
+            859,
+            1137
+          ],
+          "origin": [
+            -81,
+            1
+          ],
+          "scale_xy": [
+            0.7880733944954128,
+            0.7879417879417879
+          ],
+          "phase_scale": 1,
+          "fitted_blue_anchor": [
+            128.6275229357798,
+            330.35966735966736,
+            620.3853211009174,
+            1110.4220374220374
+          ],
+          "clipped_high_coverage_pixels": 4308
+        },
+        {
+          "resource": 13,
+          "frame": 5,
+          "pose": "f05",
+          "file": "figani-013-hd6-v1-f05.png",
+          "sha256": "7c02448f2e67d5646aed970aaa6d8e22db5fade2052ffb08b482f6e3bde141d4",
+          "native_blue_anchor": [
+            74,
+            56,
+            134,
+            189
+          ],
+          "native_descriptor": {
+            "x": 137,
+            "y": 0,
+            "width": 183,
+            "height": 192,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 2,
+            "raw_byte_7": 0
+          },
+          "fit_size": [
+            1211,
+            1155
+          ],
+          "origin": [
+            -101,
+            4
+          ],
+          "scale_xy": [
+            0.9431464174454829,
+            0.9428571428571428
+          ],
+          "phase_scale": 1,
+          "fitted_blue_anchor": [
+            364.9143302180685,
+            335.8857142857143,
+            883.6448598130842,
+            1133.5428571428572
+          ],
+          "clipped_high_coverage_pixels": 5435
+        },
+        {
+          "resource": 13,
+          "frame": 6,
+          "pose": "f06",
+          "file": "figani-013-hd6-v1-f06.png",
+          "sha256": "d953e4bb2e8d221d337ba4a11c860774092040439c5a302127137deaf6487e19",
+          "native_blue_anchor": [
+            94,
+            44,
+            154,
+            175
+          ],
+          "native_descriptor": {
+            "x": 117,
+            "y": 14,
+            "width": 197,
+            "height": 178,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0
+          },
+          "fit_size": [
+            1178,
+            1065
+          ],
+          "origin": [
+            -26,
+            1
+          ],
+          "scale_xy": [
+            0.8931008339651251,
+            0.8934563758389261
+          ],
+          "phase_scale": 1,
+          "fitted_blue_anchor": [
+            488.4260803639121,
+            263.6761744966443,
+            999.2797573919636,
+            1049.9177852348992
+          ],
+          "clipped_high_coverage_pixels": 1083
+        },
+        {
+          "resource": 13,
+          "frame": 7,
+          "pose": "f07",
+          "file": "figani-013-hd6-v1-f07.png",
+          "sha256": "9a85b51961984e445dc081edca8c133fb438ae9ed12a70498848c89e1fa2f55d",
+          "native_blue_anchor": [
+            80,
+            56,
+            140,
+            189
+          ],
+          "native_descriptor": {
+            "x": 131,
+            "y": 0,
+            "width": 189,
+            "height": 192,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 2,
+            "raw_byte_7": 0
+          },
+          "fit_size": [
+            1220,
+            1200
+          ],
+          "origin": [
+            -112,
+            -27
+          ],
+          "scale_xy": [
+            0.9651898734177216,
+            0.9646302250803859
+          ],
+          "phase_scale": 1,
+          "fitted_blue_anchor": [
+            414.99367088607596,
+            336.66559485530547,
+            905.3101265822785,
+            1134.4147909967846
+          ],
+          "clipped_high_coverage_pixels": 12905
+        },
+        {
+          "resource": 13,
+          "frame": 8,
+          "pose": "f08",
+          "file": "figani-013-hd6-v1-f08.png",
+          "sha256": "f427bc295d04fae8922dec8b0bbf23a62703d6813b71108f7cc084dfc275d596",
+          "native_blue_anchor": [
+            93,
+            55,
+            154,
+            185
+          ],
+          "native_descriptor": {
+            "x": 117,
+            "y": 4,
+            "width": 203,
+            "height": 188,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0
+          },
+          "fit_size": [
+            1305,
+            1209
+          ],
+          "origin": [
+            -152,
+            -67
+          ],
+          "scale_xy": [
+            1.0015349194167307,
+            1.0016570008285004
+          ],
+          "phase_scale": 1,
+          "fitted_blue_anchor": [
+            457.93476592478896,
+            329.65617232808614,
+            1023.8019953952419,
+            1109.946975973488
+          ],
+          "clipped_high_coverage_pixels": 74251
+        },
+        {
+          "resource": 13,
+          "frame": 9,
+          "pose": "f09",
+          "file": "figani-013-hd6-v1-f09.png",
+          "sha256": "34476689a94b3409daa5d1cb2538af73b045f8beb31a2ea5744f732dd9d79243",
+          "native_blue_anchor": [
+            33,
+            58,
+            93,
+            189
+          ],
+          "native_descriptor": {
+            "x": 178,
+            "y": 0,
+            "width": 142,
+            "height": 192,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0
+          },
+          "fit_size": [
+            841,
+            1138
+          ],
+          "origin": [
+            -91,
+            30
+          ],
+          "scale_xy": [
+            0.7801484230055659,
+            0.7799862919808088
+          ],
+          "phase_scale": 1,
+          "fitted_blue_anchor": [
+            139.14378478664193,
+            347.4544208361892,
+            616.5946196660483,
+            1133.6806031528445
+          ],
+          "clipped_high_coverage_pixels": 5392
+        },
+        {
+          "resource": 13,
+          "frame": 10,
+          "pose": "f10",
+          "file": "figani-013-hd6-v1-f10.png",
+          "sha256": "42d1cdf003bdd369d7ee30e7c23abf1f548f5143953b65f0f9315f3169fe9cd6",
+          "native_blue_anchor": [
+            33,
+            56,
+            93,
+            189
+          ],
+          "native_descriptor": {
+            "x": 178,
+            "y": 0,
+            "width": 142,
+            "height": 192,
+            "delay_native": 4,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0
+          },
+          "fit_size": [
+            867,
+            1174
+          ],
+          "origin": [
+            -108,
+            -7
+          ],
+          "scale_xy": [
+            0.8042671614100185,
+            0.8046607265250172
+          ],
+          "phase_scale": 1,
+          "fitted_blue_anchor": [
+            153.386827458256,
+            335.7854694996573,
+            602.1679035250463,
+            1134.0089102124743
+          ],
+          "clipped_high_coverage_pixels": 10053
+        },
+        {
+          "resource": 13,
+          "frame": 11,
+          "pose": "f11",
+          "file": "figani-013-hd6-v1-f11.png",
+          "sha256": "2324ffd7230d5ad30d3b1a6468f58cb543529244901b8f22e2a5ff7a1f8efb05",
+          "native_blue_anchor": [
+            124,
+            91,
+            165,
+            189
+          ],
+          "native_descriptor": {
+            "x": 89,
+            "y": 0,
+            "width": 231,
+            "height": 192,
+            "delay_native": 2,
+            "raw_byte_4": 1,
+            "raw_byte_5": 4,
+            "raw_byte_7": 0
+          },
+          "fit_size": [
+            1431,
+            1189
+          ],
+          "origin": [
+            -36,
+            -31
+          ],
+          "scale_xy": [
+            1.0399709302325582,
+            1.0402449693788276
+          ],
+          "phase_scale": 0.9217171717171717,
+          "fitted_blue_anchor": [
+            721.0988372093024,
+            592.1067366579177,
+            1012.2906976744187,
+            1134.074365704287
+          ],
+          "clipped_high_coverage_pixels": 35431
+        },
+        {
+          "resource": 13,
+          "frame": 12,
+          "pose": "f12",
+          "file": "figani-013-hd6-v1-f12.png",
+          "sha256": "d4ae859d8c84326323c530c71466f8ed63120635bf25b095d04b69ff030ee8ec",
+          "native_blue_anchor": [
+            124,
+            53,
+            165,
+            151
+          ],
+          "native_descriptor": {
+            "x": 89,
+            "y": 38,
+            "width": 169,
+            "height": 154,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0
+          },
+          "fit_size": [
+            969,
+            883
+          ],
+          "origin": [
+            67,
+            50
+          ],
+          "scale_xy": [
+            0.7374429223744292,
+            0.7376775271512114
+          ],
+          "phase_scale": 0.9217171717171717,
+          "fitted_blue_anchor": [
+            721.1118721461187,
+            363.5129490392648,
+            1013.1392694063927,
+            905.7059314954053
+          ],
+          "clipped_high_coverage_pixels": 361
+        },
+        {
+          "resource": 13,
+          "frame": 13,
+          "pose": "f13",
+          "file": "figani-013-hd6-v1-f13.png",
+          "sha256": "8daad6e27d1d2cd4560b6001a7fbd2dd0546b6eaaa35db50a31b3c5e256d2e25",
+          "native_blue_anchor": [
+            124,
+            47,
+            165,
+            145
+          ],
+          "native_descriptor": {
+            "x": 89,
+            "y": 44,
+            "width": 169,
+            "height": 148,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0
+          },
+          "fit_size": [
+            996,
+            873
+          ],
+          "origin": [
+            36,
+            33
+          ],
+          "scale_xy": [
+            0.7432835820895523,
+            0.7436115843270868
+          ],
+          "phase_scale": 0.9217171717171717,
+          "fitted_blue_anchor": [
+            732.4567164179105,
+            327.4701873935264,
+            1002.2686567164179,
+            869.5630323679727
+          ],
+          "clipped_high_coverage_pixels": 254
+        },
+        {
+          "resource": 13,
+          "frame": 14,
+          "pose": "f14",
+          "file": "figani-013-hd6-v1-f14.png",
+          "sha256": "5d733a3b9f3c7bbe73782af18250c4946439ed034d19bb454bbe6d2706bbddb1",
+          "native_blue_anchor": [
+            124,
+            28,
+            165,
+            126
+          ],
+          "native_descriptor": {
+            "x": 89,
+            "y": 63,
+            "width": 169,
+            "height": 129,
+            "delay_native": 6,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0
+          },
+          "fit_size": [
+            992,
+            869
+          ],
+          "origin": [
+            39,
+            -77
+          ],
+          "scale_xy": [
+            0.7402985074626866,
+            0.7402044293015332
+          ],
+          "phase_scale": 0.9217171717171717,
+          "fitted_blue_anchor": [
+            732.6597014925374,
+            214.6405451448041,
+            1002.1283582089552,
+            756.4701873935263
+          ],
+          "clipped_high_coverage_pixels": 264
+        }
+      ],
+      "review_sha256": "7e4f200d5c451faf52adc45558277bc51c59a293815e53411e0a122c39c3b73e"
+    },
+    "clean_rebuild": {
+      "status": "PASS-ARES-CLEAN-REBUILD",
+      "old_assets_preserved": 369,
+      "new_resources": [
+        12,
+        13
+      ],
+      "frames": 19,
+      "source_masters": 15,
+      "follow_phase_scale": 0.9217171717171717,
+      "frame_records_equal": true,
+      "catalog_equal_except_private_root": true,
+      "compiler_sha256": "6d2fb2a4af791bf99e21f0ecb79e72f263b086ceefc7094c3c7f3a9c805054cc",
+      "compiled_sha256": "a26f0776f4d81ba523388c9be4972c11cf56956c5226c783ce00c2f410800e12"
+    },
+    "art_review": {
+      "status": "PASS-ARES-ART-REVIEW",
+      "source": "ares-candidate-r2/review.png",
+      "frames": 19,
+      "reviewed": [
+        "完整原版參照與19幀候選接觸表",
+        "實際普通攻擊入場、斬擊與反擊時的待機PNG",
+        "藍帽／綠帶、灰綠披巾、藍衣及長柄斧",
+        "腳底、原矩形內縮及收勢轉場"
+      ],
+      "differences": [
+        "沿原描述子裁切，部分旋轉武器／光效在邊界裁切",
+        "姿勢與光效為美化重定向，不宣稱原版逐幀視覺一致",
+        "收勢四幀共用0.9217171717171717倍率，腳底與中心保持"
+      ],
+      "gaia_wider_geometry_adopted": false,
+      "accepted_source_masters": 15
+    },
+    "registration": {
+      "status": "PASS-ARES-REGISTERED",
+      "catalog_assets": 371,
+      "old_assets_preserved": 369,
+      "new_files": [
+        {
+          "file": "ares-battle-f01-hd6-master-v1.png",
+          "sha256": "3fae2991d824924c4068b473aeecbb7a761c7c7d295cdf70ba80e4563df62b32",
+          "size": 1311436
+        },
+        {
+          "file": "ares-battle-f02-hd6-master-v1.png",
+          "sha256": "84906661e379ad6dd520171732bc31210990b1caf915027ca022f357d3554625",
+          "size": 1509612
+        },
+        {
+          "file": "ares-battle-f03-hd6-master-v1.png",
+          "sha256": "41390b905134fb4363bd32b1636721915ae0a497db403cf45ae7853b130e3371",
+          "size": 1316647
+        },
+        {
+          "file": "ares-battle-f04-hd6-master-v1.png",
+          "sha256": "bc8164941139482747f6cba98b46293215ca41f0529f5246aee883817848115b",
+          "size": 1438386
+        },
+        {
+          "file": "ares-battle-f05-hd6-master-v1.png",
+          "sha256": "66f1fc7017bacc4a547fd289230290da4505753893096a4ea264b7e102c929ad",
+          "size": 1357856
+        },
+        {
+          "file": "ares-battle-f06-hd6-master-v1.png",
+          "sha256": "b7bc34ee041f962e390defd16857daa19dbd12751f977c38390b55741941084e",
+          "size": 1275906
+        },
+        {
+          "file": "ares-battle-f07-hd6-master-v1.png",
+          "sha256": "dcc76e4f1bd776f06f4448cddf541235a2b4f195c1ae75d11dbf2d937659b186",
+          "size": 1144855
+        },
+        {
+          "file": "ares-battle-f08-hd6-master-v1.png",
+          "sha256": "61f8a7d37dffac666c38af04f1bbacda6a67eee37f717518d0c9e884894e7d72",
+          "size": 1258958
+        },
+        {
+          "file": "ares-battle-f09-hd6-master-v1.png",
+          "sha256": "61d75705e8d288fac64dccb7bf054612a700b173810cb8743de85d2571960835",
+          "size": 1161194
+        },
+        {
+          "file": "ares-battle-f10-hd6-master-v1.png",
+          "sha256": "adc217e59b4a6fad10a315a294b9e54f7af9ad688b90322f4e0b8bcf9a855a42",
+          "size": 1044007
+        },
+        {
+          "file": "ares-battle-f11-hd6-master-v1.png",
+          "sha256": "c7c4b16e9c26d1372c3932b0b58df78f947f5d84cba88cac1fec63b84944ac54",
+          "size": 1165779
+        },
+        {
+          "file": "ares-battle-f12-hd6-master-v1.png",
+          "sha256": "a320ced2a28888705bb165cfb7a3c029f3b3c0293a60074124dd91f380ddafce",
+          "size": 683973
+        },
+        {
+          "file": "ares-battle-f13-hd6-master-v1.png",
+          "sha256": "77c6b3be297f1a68ecf0f008cbd69c71156ec66e0c35be2d9455b296d74ee17e",
+          "size": 701809
+        },
+        {
+          "file": "ares-battle-f14-hd6-master-v1.png",
+          "sha256": "9b4421c35e13e1da8e49a4bfd2a1682120049c6907ab2238ba2d68745d518989",
+          "size": 624912
+        },
+        {
+          "file": "ares-battle-idle-hd6-master-v1.png",
+          "sha256": "7eeb2c0cefa2cced85fa9fe23654f83c22a155f568454512423d2e9dc9299490",
+          "size": 1693542
+        },
+        {
+          "file": "figani-012-hd6-v1-f00.png",
+          "sha256": "e9e307419c4f4a42e896a6a5966d464d2045652e869cb2f9da4fbcc02c70b7b8",
+          "size": 610884
+        },
+        {
+          "file": "figani-012-hd6-v1-f01.png",
+          "sha256": "407db8606cc87ec6662f7cb3761692e7250e1c8c98f233bfbcc61cfcc8e417ea",
+          "size": 603427
+        },
+        {
+          "file": "figani-012-hd6-v1-f02.png",
+          "sha256": "be97710d0e8624339f8db4b72c68ad7e31234eaed69f3c13e5547343381a3fbe",
+          "size": 595110
+        },
+        {
+          "file": "figani-012-hd6-v1-f03.png",
+          "sha256": "407db8606cc87ec6662f7cb3761692e7250e1c8c98f233bfbcc61cfcc8e417ea",
+          "size": 603427
+        },
+        {
+          "file": "figani-013-hd6-v1-f00.png",
+          "sha256": "e9e307419c4f4a42e896a6a5966d464d2045652e869cb2f9da4fbcc02c70b7b8",
+          "size": 610884
+        },
+        {
+          "file": "figani-013-hd6-v1-f01.png",
+          "sha256": "79fe38d3d6cb882800b2f9545423985bccd19ede24d5999e8305b0487658f7e3",
+          "size": 1117951
+        },
+        {
+          "file": "figani-013-hd6-v1-f02.png",
+          "sha256": "2b3251e684d33b3ae689f2c30d2ddfcdde1d9ce63587b81c1aca6bad0ad83c63",
+          "size": 1034070
+        },
+        {
+          "file": "figani-013-hd6-v1-f03.png",
+          "sha256": "d20b2eb092aca075e84b1247d165c68130283113be4cdb73c01f1db7cab8243a",
+          "size": 1166049
+        },
+        {
+          "file": "figani-013-hd6-v1-f04.png",
+          "sha256": "5acbcdda4d4b97bcfc2c298abf998e604e6693374ffacb3ea3c59a60c9c05689",
+          "size": 893613
+        },
+        {
+          "file": "figani-013-hd6-v1-f05.png",
+          "sha256": "7c02448f2e67d5646aed970aaa6d8e22db5fade2052ffb08b482f6e3bde141d4",
+          "size": 1176538
+        },
+        {
+          "file": "figani-013-hd6-v1-f06.png",
+          "sha256": "d953e4bb2e8d221d337ba4a11c860774092040439c5a302127137deaf6487e19",
+          "size": 1022800
+        },
+        {
+          "file": "figani-013-hd6-v1-f07.png",
+          "sha256": "9a85b51961984e445dc081edca8c133fb438ae9ed12a70498848c89e1fa2f55d",
+          "size": 1024049
+        },
+        {
+          "file": "figani-013-hd6-v1-f08.png",
+          "sha256": "f427bc295d04fae8922dec8b0bbf23a62703d6813b71108f7cc084dfc275d596",
+          "size": 1091760
+        },
+        {
+          "file": "figani-013-hd6-v1-f09.png",
+          "sha256": "34476689a94b3409daa5d1cb2538af73b045f8beb31a2ea5744f732dd9d79243",
+          "size": 710241
+        },
+        {
+          "file": "figani-013-hd6-v1-f10.png",
+          "sha256": "42d1cdf003bdd369d7ee30e7c23abf1f548f5143953b65f0f9315f3169fe9cd6",
+          "size": 662034
+        },
+        {
+          "file": "figani-013-hd6-v1-f11.png",
+          "sha256": "2324ffd7230d5ad30d3b1a6468f58cb543529244901b8f22e2a5ff7a1f8efb05",
+          "size": 1140633
+        },
+        {
+          "file": "figani-013-hd6-v1-f12.png",
+          "sha256": "d4ae859d8c84326323c530c71466f8ed63120635bf25b095d04b69ff030ee8ec",
+          "size": 381266
+        },
+        {
+          "file": "figani-013-hd6-v1-f13.png",
+          "sha256": "8daad6e27d1d2cd4560b6001a7fbd2dd0546b6eaaa35db50a31b3c5e256d2e25",
+          "size": 391983
+        },
+        {
+          "file": "figani-013-hd6-v1-f14.png",
+          "sha256": "5d733a3b9f3c7bbe73782af18250c4946439ed034d19bb454bbe6d2706bbddb1",
+          "size": 353813
+        }
+      ],
+      "catalog_sha256": "c6aabf5e2e98111bd202f04413ba274b9a9b5112eccfa709deb431143fc16099",
+      "candidate_compiled_sha256": "a26f0776f4d81ba523388c9be4972c11cf56956c5226c783ce00c2f410800e12",
+      "gui_receipt_sha256": "0730c4a74d42febcb7e5d45a2b582e9532dc075bfbcb80068ab9714ff06c6699",
+      "gpu_report_sha256": "b76f2d3b17726df4b4b5e8b0f199c2714cf0d72f617b702831f9586201a636c9",
+      "art_review_sha256": "20c654aafb040383c97325e13dd452a510dfaf3be494ffcdec534ff8f57dce33",
+      "private_synced": false,
+      "ownership": "1000:1000"
+    },
+    "normal_gui": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ares-normal-gui-r1/receipt.json",
+        "sha256": "0730c4a74d42febcb7e5d45a2b582e9532dc075bfbcb80068ab9714ff06c6699"
+      },
+      "status": "PASS",
+      "main_screenshots": 34,
+      "battle_pngs": 115,
+      "walk_pngs": 4,
+      "ordinary_key_operations": 102,
+      "source_save_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "saved_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "source_save_bytes_equal": true,
+      "theme_save_bytes_equal": true,
+      "new_process_title_load": true,
+      "loaded_units_equal": true,
+      "elapsed_seconds": 423.76828263280913,
+      "scene_elapsed_seconds": [
+        {
+          "name": "world-hd",
+          "elapsed_seconds": 111.47394071426243,
+          "scope": "軟體GPU與視窗擷取的牆鐘時間，不是正式平台效能驗收"
+        },
+        {
+          "name": "world-hd-replay",
+          "elapsed_seconds": 29.824676561634988,
+          "scope": "軟體GPU與視窗擷取的牆鐘時間，不是正式平台效能驗收"
+        }
+      ],
+      "scope": "既有普通START/F5首章槽，兩次正常移動與攻擊；未改隊伍、章內狀態或按鍵路徑。軟體GPU及擷取牆鐘時間不是正式平台效能。"
+    },
+    "gpu_verification": {
+      "report": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ares-normal-gpu-r2.json",
+        "sha256": "b76f2d3b17726df4b4b5e8b0f199c2714cf0d72f617b702831f9586201a636c9"
+      },
+      "verifier": {
+        "file": "tools/verify_fd2_ares_battle_gpu.py",
+        "sha256": "42e6aaada773d05997d5c3648925087c4e87a3b0c176be413349253467b292e9"
+      },
+      "core_match_records": 114,
+      "matched_pngs": 89,
+      "ambiguous_pngs": 25,
+      "matched_by_scene": {
+        "world-hd": 57,
+        "world-hd-replay": 32
+      },
+      "scope": "兩次普通首章攻擊的實際PNG與新增圖源高覆蓋藍衣像素；按原描述子放置。alpha255精確至一量化值，250..254按未知背景混合界限。多個候選相符時只列相容集合，不判定唯一相位；不比較非藍衣的武器與光效。非全部19幀GPU或原版對拍。"
+    },
+    "rejection_guards": {
+      "status": "PASS-ARES-GPU-REJECTION-GUARDS",
+      "cases": [
+        {
+          "case": "wrong-receipt",
+          "status": "PASS-REJECTED",
+          "reason": "需要同份普通首章完整GUI收據及清冊",
+          "report_published": false
+        },
+        {
+          "case": "wrong-source",
+          "status": "PASS-REJECTED",
+          "reason": "圖源雜湊不同",
+          "report_published": false
+        },
+        {
+          "case": "old-native-art",
+          "status": "PASS-REJECTED",
+          "reason": "未在普通攻擊GPU中核對到新增攻擊動作：world-hd",
+          "report_published": false
+        }
+      ],
+      "scope": "明示偽造／錯圖負向fixture，不是普通遊戲或原版收據"
+    },
+    "go_checks": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ares-formal-tests-r1.log",
+        "sha256": "87273dcebda28ab0a98d1beb554a4a8a09bb9ecbc62721666451a99aa7af78f9"
+      },
+      "counts": {
+        "PASS": {
+          "top_level": 11,
+          "subtests": 8
+        },
+        "SKIP": {
+          "top_level": 1,
+          "subtests": 0
+        },
+        "FAIL": {
+          "top_level": 0,
+          "subtests": 0
+        }
+      },
+      "scope": "正式371項清冊與私人包；完整資源載入、錯metadata、玩家與AI缺幀時HP／RNG及部分發布拒收，相關主題。未跑全專案。"
+    },
+    "catalog_tests": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ares-formal-catalog-tests.log",
+        "sha256": "9c9db9c797b2bad19664bed283deaa282030e2f3d99c18aa04bca40b0c44333d"
+      },
+      "passed": 11
+    },
+    "lessons": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ares-lessons-final.log",
+        "sha256": "5d1c4d2da26e724b7f887b809fbd5b3c81d9d5ebf20f52ad34314e4078c9b207"
+      },
+      "count": 256,
+      "guards": 137
+    },
+    "private_assets": {
+      "status": "PASS-ARES-PRIVATE-SYNC",
+      "private_files": 3350,
+      "runtime_files": 3119,
+      "old_files_preserved": 3316,
+      "new_files": [
+        "ares-battle-f01-hd6-master-v1.png",
+        "ares-battle-f02-hd6-master-v1.png",
+        "ares-battle-f03-hd6-master-v1.png",
+        "ares-battle-f04-hd6-master-v1.png",
+        "ares-battle-f05-hd6-master-v1.png",
+        "ares-battle-f06-hd6-master-v1.png",
+        "ares-battle-f07-hd6-master-v1.png",
+        "ares-battle-f08-hd6-master-v1.png",
+        "ares-battle-f09-hd6-master-v1.png",
+        "ares-battle-f10-hd6-master-v1.png",
+        "ares-battle-f11-hd6-master-v1.png",
+        "ares-battle-f12-hd6-master-v1.png",
+        "ares-battle-f13-hd6-master-v1.png",
+        "ares-battle-f14-hd6-master-v1.png",
+        "ares-battle-idle-hd6-master-v1.png",
+        "figani-012-hd6-v1-f00.png",
+        "figani-012-hd6-v1-f01.png",
+        "figani-012-hd6-v1-f02.png",
+        "figani-012-hd6-v1-f03.png",
+        "figani-013-hd6-v1-f00.png",
+        "figani-013-hd6-v1-f01.png",
+        "figani-013-hd6-v1-f02.png",
+        "figani-013-hd6-v1-f03.png",
+        "figani-013-hd6-v1-f04.png",
+        "figani-013-hd6-v1-f05.png",
+        "figani-013-hd6-v1-f06.png",
+        "figani-013-hd6-v1-f07.png",
+        "figani-013-hd6-v1-f08.png",
+        "figani-013-hd6-v1-f09.png",
+        "figani-013-hd6-v1-f10.png",
+        "figani-013-hd6-v1-f11.png",
+        "figani-013-hd6-v1-f12.png",
+        "figani-013-hd6-v1-f13.png",
+        "figani-013-hd6-v1-f14.png"
+      ],
+      "masters_excluded_from_runtime": [
+        "ares-battle-f01-hd6-master-v1.png",
+        "ares-battle-f02-hd6-master-v1.png",
+        "ares-battle-f03-hd6-master-v1.png",
+        "ares-battle-f04-hd6-master-v1.png",
+        "ares-battle-f05-hd6-master-v1.png",
+        "ares-battle-f06-hd6-master-v1.png",
+        "ares-battle-f07-hd6-master-v1.png",
+        "ares-battle-f08-hd6-master-v1.png",
+        "ares-battle-f09-hd6-master-v1.png",
+        "ares-battle-f10-hd6-master-v1.png",
+        "ares-battle-f11-hd6-master-v1.png",
+        "ares-battle-f12-hd6-master-v1.png",
+        "ares-battle-f13-hd6-master-v1.png",
+        "ares-battle-f14-hd6-master-v1.png",
+        "ares-battle-idle-hd6-master-v1.png"
+      ],
+      "private_manifest_sha256": "eeff5c1ba7d44250be5168e3cbe0d3c0a3fac26366c20658f2518c38cc2d89ac",
+      "runtime_manifest_sha256": "4fcc1a4856c2035c649b9cb960c12face05faa27bcca4bb44da423678e65a4cc",
+      "catalog_sha256": "c6aabf5e2e98111bd202f04413ba274b9a9b5112eccfa709deb431143fc16099",
+      "ownership": "1000:1000",
+      "runtime_copy_location": "容器tmpfs，退出即釋放，manifest保留",
+      "repository": "https://github.com/wicanr2/fd2-assets-private",
+      "commit": "91c5751e53562d10465a0addde9aab04e243b79a",
+      "visibility_policy": "沿既有private保存庫，這輪未改可見性設定；遠端HEAD另核對。",
+      "remote_head_verified": true
+    },
+    "overview": {
+      "file": "docs/figures/hd-ares-physical-attack.png",
+      "sha256": "b3897605264015701b0565adc50fa69ad1a6f6865004a93711fcf78aa10d8c32",
+      "size": [
+        1280,
+        400
+      ],
+      "source_images": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ares-normal-gui-r1/world-hd-art-05.png",
+          "sha256": "89648e1daa7e92e2af8e0a7c53f76a5162f50c706cdf8571c90f00f25d758739"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ares-normal-gui-r1/world-hd-art-30.png",
+          "sha256": "b6a157c387ebfb354e2a10b0c4333bd719fcbb1e640312369715172f85481423"
+        }
+      ],
+      "scope": "正常首章普通攻擊的實際視窗PNG，等比例縮成兩格；未修改隊伍或章內狀態。非原版對拍。"
+    },
+    "runtime_source": {
+      "binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ares-hd-game",
+        "sha256": "36e919172958d08b4d8ed7013d8a21a1fdb14708fae19017b7146f83a55bbb43",
+        "removed_after_validation": true
+      },
+      "runtime_go_snapshot": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ares-runtime-go-snapshot.json",
+        "sha256": "cbbbc1f9a0d35b749271ffdc225adbcfcde5cdc9672c0afbd154841866efe372"
+      },
+      "runtime_go_files": 488,
+      "production_go_changes": 0,
+      "changed_go_tests": [
+        "remake/cmd/fd2/modern_hd_battle_assets_test.go"
+      ],
+      "gui_tool": {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "4d84af4fdb88beaa421eaf52fee3bae6c8b3ef788156ec1c25540d63f42c256b"
+      }
+    },
+    "reproduce": {
+      "input_roots": {
+        "original_pack": "fd2-assets-private/packs/fd2-original-b97caf22",
+        "accepted_art": "fd2-assets-private/packs/fd2-modern-handpainted-a",
+        "workspace": "work/promo-cadence-20261018/hd-fonts"
+      },
+      "commands": [
+        "python3 tools/build_fd2_ares_battle_hd.py --pack <原版包> --inventory <固定盤點> --sources <15母稿映射> --base-catalog <ares-candidate-r2/base-catalog.json> --out <新候選>",
+        "python3 tools/verify_fd2_hd_fonts_gui.py --binary <建置程式> --assets <候選runtime> --original-pack <原版包> --modern-pack <候選pack> --town-save <SHA089b077b的普通首章槽> --out <新輸出> --battle-status --world --battle-hd --battle-art",
+        "python3 tools/verify_fd2_ares_battle_gpu.py --receipt <GUI收據> --catalog <同份清冊> --source <候選pack> --report <新報告>",
+        "FD2_TEST_MODERN_BATTLE_FIGURE=4 FD2_TEST_MODERN_BATTLE_CATALOG=<catalog> FD2_TEST_MODERN_BATTLE_PACK=<pack> FD2_ASSET_PACK=<原版包> FD2_TEST_ORIGINAL_PACK=<原版包> with-xvfb go test ./cmd/fd2 -count=1 -v -run ^TestModernHDBattleAssetsRealCandidate$"
+      ],
+      "environment": [
+        "fd2-assets-local:20260829-sfx／Python3.12／Pillow11.3",
+        "fd2-go-test-local:latest／Go1.22.12／Ebiten2.6.6",
+        "fd2-promo:20261017-r1／Xvfb及llvmpipe",
+        "--rm、user1000、network none、有界CPU／記憶體／PID與timeout；原版包及org_game唯讀；獨立test binary cwd為remake/cmd/fd2"
+      ]
+    },
+    "limitations": [
+      "蓋亞4／11候選與加寬選項維持待決，未採用",
+      "重畫姿勢及光效不是原版每幀相同；部分武器／光效仍按舊描述子裁切",
+      "藍衣比對不辨識相近身體的唯一相位，也未自動比對非藍衣FX",
+      "其他FIGANI、施法者、非共背景、其他法術／死亡／共同效果、普通召喚、代表性效能及平台仍待完成",
+      "不新增原版oracle、matching、整章PLAYER-E2或Release"
+    ],
+    "rejected_and_exploratory": [
+      "初版5／6雙手降至肩部，拒收後補繪過頭持斧",
+      "初版收勢腿距過寬，補成窄身；第二版14仍寬，改編13相同身體僅移除殘光",
+      "初始藍色bbox納入金屬反光，改用本批明示衣色與連通核心；兩次邊界拒收後回讀規格，沒有放寬正式loader",
+      "收勢四幀使用0.9217171717171717共同內縮保持腳底／中心，已目視審查",
+      "source alpha0下有RGB且最大alpha254；實際透明合成乾淨，LANCZOS後成品有255核心；沒有更動alpha守衛",
+      "探索固定身體去重不適用全部旋斧幀，沒有接入正式編製"
+    ],
+    "cleanup": {
+      "recording_created": false,
+      "temporary_binaries_removed": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ares-hd-game",
+          "sha256": "36e919172958d08b4d8ed7013d8a21a1fdb14708fae19017b7146f83a55bbb43",
+          "size": 19258168,
+          "removed": true
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ares-hd-tests",
+          "sha256": "0c391f8c51eb34000a24e33886863b042f7b2c470e964652f8c473e264cb0608",
+          "size": 26162552,
+          "removed": true
+        }
+      ],
+      "candidate_duplicates_replaced_by_allowlist_links": {
+        "files": 68,
+        "released_bytes": 65758808,
+        "content_hashes_preserved": true
+      },
+      "runtime_only_copy": "容器tmpfs，已退出釋放；manifest保留"
+    },
+    "full_battle_hd_complete": false,
+    "worklist": {
+      "open": 21,
+      "full_hd_issue": 263,
+      "full_hd_issue_open": true,
+      "snapshot_source": "host gh issue list，Docker呼叫官方build_snapshot／write_snapshot及render／verify"
+    },
+    "final_checks": {
+      "local_links_in_changed_documents": 1410,
+      "broken_links_in_changed_documents": 0,
+      "tracked_links_scanned": 4186,
+      "legacy_broken_or_parser_matches": [
+        {
+          "file": "docs/knowledge-base/110-death-effects-and-level-cap-20260911.md",
+          "line": 69,
+          "target": "擊殺者索引",
+          "changed_file": false
+        },
+        {
+          "file": "docs/knowledge-base/92-opening-ch01-input-audit.md",
+          "line": 33,
+          "target": "../../dist-all/v.1.0.9-20260907/full/FD2-v.1.0.9-20260907-linux-x86_64-full.AppImage",
+          "changed_file": false
+        },
+        {
+          "file": "docs/knowledge-base/92-opening-ch01-input-audit.md",
+          "line": 35,
+          "target": "../../dist-all/v.1.0.9-20260907/full/input-audit/index.html",
+          "changed_file": false
+        },
+        {
+          "file": "docs/knowledge-base/93-dialogue-cause-20260908.md",
+          "line": 13,
+          "target": "../../dist-all/v.1.0.13-20260908/full/FD2-v.1.0.13-20260908-linux-x86_64-full.AppImage",
+          "changed_file": false
+        },
+        {
+          "file": "docs/knowledge-base/93-dialogue-cause-20260908.md",
+          "line": 15,
+          "target": "../../dist-all/v.1.0.13-20260908/full/dialogue-review/index.html",
+          "changed_file": false
+        },
+        {
+          "file": "docs/knowledge-base/93-dialogue-cause-20260908.md",
+          "line": 101,
+          "target": "../../dist-all/v.1.0.10-20260908/full/FD2-v.1.0.10-20260908-linux-x86_64-full.AppImage",
+          "changed_file": false
+        },
+        {
+          "file": "docs/knowledge-base/93-dialogue-cause-20260908.md",
+          "line": 103,
+          "target": "../../dist-all/v.1.0.10-20260908/full/dialogue-review/index.html",
+          "changed_file": false
+        },
+        {
+          "file": "docs/knowledge-base/SESSION-HANDOFF-2026-07-06.md",
+          "line": 8558,
+          "target": "../../dist-all/v.1.0.13-20260908/full/FD2-v.1.0.13-20260908-linux-x86_64-full.AppImage",
+          "changed_file": false
+        },
+        {
+          "file": "docs/knowledge-base/SESSION-HANDOFF-2026-07-06.md",
+          "line": 8560,
+          "target": "../../dist-all/v.1.0.13-20260908/full/dialogue-review/index.html",
+          "changed_file": false
+        }
+      ],
+      "legacy_scope": "四份未修改歷史文件：八個已清理的舊dist-all產物，一個程式記法被正則誤判。",
+      "ownership_paths_checked": 7172,
+      "ownership": "1000:1000",
+      "root_owned_or_md_directories_in_checked_outputs": 0,
+      "ownership_scope": "本輪全部變更檔、ares／figani輸出根與34份正式新圖；整個工作樹rglob曾達90秒界限，未宣稱全庫掃描完成。",
+      "worklist_open": 21,
+      "manual_worklist": 14,
+      "possibly_complete": 0,
+      "docker_cleanup": "所有本批容器均--rm；最終交接再以Docker控制面核對",
+      "runtime_copy_removed_with_tmpfs": true
+    }
+  },
+  "historical_runtime_source_before_ares": {
+    "binary_sha256": "07d48b2972a8dea4a5a3b67753b3e6126788cda0930a541e475b41f53e4713cb",
+    "go_snapshot": {
+      "file": "work/promo-cadence-20261018/hd-fonts/gaia-go-source-final.json",
+      "sha256": "c8582d367661ee1f9f22220e1a73346d9a5ff080ca0f2670332c8ade46ee6a8f"
+    },
+    "go_file_count": 993,
+    "go_files_unchanged": 993,
+    "changed_go_files": [],
+    "game_runtime_go_changes": 0,
+    "exporter": {
+      "file": "remake/cmd/fd2-terrain-sources/main.go",
+      "sha256": "b9b826551dc726459a0e6166fd9036d487f9af1dd70be7157326c61af93e5e68"
+    },
+    "gui_tool": {
+      "file": "tools/verify_fd2_hd_fonts_gui.py",
+      "sha256": "9b6ddc877cc10946d8ae77a2248124ab6daf5ce59a76c62ec4b6351a0edbdb55"
+    },
+    "binary_removed_after_validation": true
   }
 }

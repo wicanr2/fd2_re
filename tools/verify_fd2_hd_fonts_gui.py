@@ -44,6 +44,7 @@ def main():
     parser.add_argument('--gold-roll-theme', choices=['hd','faithful'], default='hd', help='金幣買賣的主題對照')
     parser.add_argument('--world', action='store_true', help='加驗正式HD世界、普通走行、指令環、取消與物理戰鬥返回')
     parser.add_argument('--battle-hd', action='store_true', help='要求兩次普通攻擊確實使用可選HD戰鬥繪製層；需--world')
+    parser.add_argument('--battle-art', action='store_true', help='另擷取兩次普通攻擊的有界PNG序列供實際圖源核對；需--battle-hd')
     parser.add_argument('--gaia', action='store_true', help='首章普通選取蓋亞、北移／取消、F2與新程序LOAD；需--battle-status')
     parser.add_argument('--terrain', action='store_true', help='普通方向鍵移鏡頭至首章房屋，抽驗HD地形與F2；需--battle-status')
     parser.add_argument('--terrain-occlusion', action='store_true', help='最多六個普通回合抵達屋後，抽驗前景；需--terrain與--world')
@@ -60,6 +61,7 @@ def main():
     tool_source_sha256=digest(Path(__file__))
     assert not args.world or args.battle_status
     assert not args.battle_hd or args.world
+    assert not args.battle_art or args.battle_hd
     assert not args.gaia or args.battle_status and not args.world and not args.terrain
     assert not args.terrain or args.battle_status
     assert not args.terrain_occlusion or args.terrain and args.world
@@ -105,6 +107,7 @@ def main():
     env['ALSA_CONFIG_PATH']=str(alsa)
     processes,streams,shots,operations=[],[],{},[]
     battle_hd_scenes=[]
+    battle_art_samples=[]
     started=time.monotonic()
     window=None
     audit_epoch=0
@@ -544,6 +547,17 @@ def main():
                     shot(prefix+'-physical-scene')
                     if args.battle_hd:
                         assert shots[prefix+'-physical-scene.png']['state'].get('hd_battle'), '未擷取到HD戰鬥繪製層'
+                    if args.battle_art:
+                        # 只讀實際視窗，不暫停、改寫或推進遊戲狀態。
+                        for index in range(64):
+                            before=latest(audit)
+                            if not before.get('battle_scene'):break
+                            if before.get('hd_battle'):
+                                path=args.out/f'{prefix}-art-{index:02d}.png'
+                                command('import','-window',window,str(path))
+                                battle_art_samples.append({'scene':prefix,'file':path.name,'sha256':digest(path),
+                                                           'before':before,'after':latest(audit)})
+                            time.sleep(.04)
                     returned_scene=wait(lambda s:not s.get('battle_scene') and not s.get('walking') and s.get('hd_world'),
                                         timeout=180 if args.battle_hd else 60)
                     if args.battle_hd:
@@ -661,6 +675,7 @@ def main():
                     'world_runtime_checked':args.world,'world_walk_gpu':world_shots,'world_walk_rejected':world_rejected,
                     'battle_hd_consumer_checked':args.battle_hd,
                     'battle_hd_scenes':battle_hd_scenes,
+                    'battle_art_samples':battle_art_samples,
                     'timed_dialogue_gpu':timed_result,
                     'binary_sha256':digest(args.binary),'source_save_sha256':digest(args.town_save),
                     'saved_sha256':digest(saved),'screenshots':shots,'operations':operations,

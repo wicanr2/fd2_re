@@ -1,5 +1,12 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
+亞雷斯待機與攻擊FIGANI12／13已正式使用手繪HD。正常首章LOAD、兩次普通攻擊及返回、
+F2、保存與新程序冷讀通過。GPU核對新增圖源的藍衣高覆蓋像素，多個相近圖源符合時保留
+相容集合，不宣稱唯一相位；武器、光效及完整19幀另經接觸表與實際畫面目視審查。
+README兩格圖取自這次正常操作視窗。範圍、完整來源與拒收守衛見
+[58](58-fd2-exe-re-coverage.md)及[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的
+`ares_battle_followup_20261019`。其他人物、普通召喚、效能與平台仍待完成。
+
 四種共用召喚圖庫37幀均已登錄。新增風妖精、破壞神與暗邪鬼的完整Draw分別通過156／241／255次呈現，
 原delay與hold保持；多段等待結束時重設Draw確認，修正#264的跨段首幀跳過。
 README四格圖是修改fixture的GPU回讀縮圖，只列RUNTIME-E1；普通玩家召喚、保存冷讀、
@@ -15,8 +22,8 @@ FIGANI施術者與專屬地圖尾段另驗。現況及分級依[58](58-fd2-exe-r
 
 可選共背景物理戰鬥GPU已接正式Draw。原生全畫布回讀、主動／反擊及返回DAC生命週期通過；
 原版像素六倍診斷包的普通標題LOAD、兩次攻擊、F2、保存及新程序冷讀亦通過。
-此證據限consumer整合，沒有新增正式HD動畫美術、原版oracle或整章E2。
-人物占寬仍待使用者決定，其餘FIGANI／共同效果未完成。來源沿
+這份較早證據限consumer整合；後續亞雷斯美術見本頁首段，沒有新增原版oracle或整章E2。
+蓋亞人物占寬仍待使用者決定，其餘FIGANI／共同效果未完成。來源沿
 [58](58-fd2-exe-re-coverage.md)及[主收據](../data/fd2-modern-hd-battlefield-20261019.json)
 的`battle_animation_gpu_followup_20261019`，可重跑入口見[61](61-modern-theme-runtime-spec.md)。
 
