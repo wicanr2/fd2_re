@@ -9,13 +9,13 @@
     "native_viewport": "CONFORMED-SCOPED：正式1920世界沿原生(4,4)、312×192窗格；正常F2同view與960地形樣本一致。",
     "hd_sprite_data": "DATA-READY：完整125組1455張HD及31組372張新增24父項已登錄；舊1083張父項及HD bytes保持。",
     "hd_world_renderer": "CONFORMED-SCOPED：144人物已接Game.Draw；首章34張正常GPU、4張實際走行、兩次物理攻擊及保存／新程序LOAD通過。",
-    "private_assets": "381項allow-list完整3464檔、runtime-only3194檔已核對，原3415檔保持。新增16母稿不進執行包，Go載入及玩家／AI拒收通過；私人45a3a9a0938661dc73e3cfa05aa397c5c9302b5a已推送，遠端HEAD相同且工作樹乾淨。",
+    "private_assets": "383項清冊，3483檔完整allow-list及3208檔runtime-only逐筆驗證，原3464保持；五母稿不進執行包。正式Go及玩家／AI拒收通過，私人132b2014ff213e3c11608575a82213aac874e406已推送，實際遠端HEAD相同。",
     "quickload_battle_owner": "CONFORMED-SCOPED：成功JSON LOAD丟棄舊經驗owner與移動計畫；拒收保留。",
     "timed_dialogue": "CONFORMED-SCOPED-RUNTIME-E1：計時FFEC開收框保留HD世界，EXP99普通鍵盤／F2與保存冷讀通過；其他caller未驗。",
     "hd_terrain": "CONFORMED-SCOPED：map0六組53槽；新增圓頂綠色／褐色雙塊四底圖在兩張正常GPU全部相符，短長組合與保存冷讀通過；草地及其他地形仍待HD化。",
     "ai_player_input_lock": "CONFORMED-SCOPED：AI換手期間拒絕玩家地圖輸入重入；普通END／增援對話及相關／完整Go回歸通過。",
     "gaia_redesign": "CONFORMED-SCOPED：新版頭像與四方向圖組已登錄；正常START／Gaia北移取消／F2／冷讀分段驗證。相位差異與序章尾端失敗明示，非逐幀parity。",
-    "hd_battle_animation": "CONFORMED-SCOPED：381項清冊，FIGANI12資源94幀與四召喚37幀正式登錄。希莉亞與敵方76新增33幀；第三章兩次正常射擊、F2與章節邊界保存冷讀通過，85張本體PNG相符。敵方九幀揮劍／四飛矢及六階段F2等完整146次呈現限fixture的RUNTIME-E1。END明示忠實模式，NPC鐵諾及其他人物／法術／死亡／普通召喚／平台效能仍待；蓋亞占寬待決。"
+    "hd_battle_animation": "CONFORMED-SCOPED：正式383項，FIGANI14資源108幀與四召喚37幀。鐵諾新增14幀；第三章四次HD END、兩場射擊、F2與章節邊界保存冷讀通過，51張鐵諾與73張希莉亞 PNG符合核心。完整14幀fixture／三階段F2／64及65 DAC保持。哈諾11幀僅候選，其他人物／法術／死亡／普通召喚及效能／平台仍待；蓋亞占寬未改。"
   },
   "runtime_source": {
     "binary": {
@@ -28394,7 +28394,8 @@
       "recording_created": false,
       "docker_cleanup": "本輪fd2-silia命名容器均已--rm退出；提交前及推送後再核對。",
       "public_commit_reference": "本批Git提交與GitHub issue263驗證留言為準；未移動tag或Release。"
-    }
+    },
+    "modern_asset_resolution_followup": "本區塊的清冊數及忠實END限制屬當批收據，原始證據保持。鐵諾FIGANI6／7已於tino_battle_followup_20261020正式登錄，最新四次HD END、F2與保存冷讀通過；目前真相以current_state及58為準。"
   },
   "assassin76_battle_followup_20261020": {
     "status": "CONFORMED-SCOPED：13幀正式登錄，正常受射擊及九幀fixture揮劍通過",
@@ -29067,7 +29068,1334 @@
       "sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
       "scope": "固定來源輸入快照；focus／catalog_sha256／registered_assets為原盤點當批狀態，不作目前HD覆蓋。"
     },
-    "date": "2026-10-20"
+    "date": "2026-10-20",
+    "modern_asset_resolution_followup": "本區塊的清冊數及忠實END限制屬當批收據，原始證據保持。鐵諾FIGANI6／7已於tino_battle_followup_20261020正式登錄，最新四次HD END、F2與保存冷讀通過；目前真相以current_state及58為準。"
   },
-  "current_state_date": "2026-10-20"
+  "current_state_date": "2026-10-20",
+  "tino_battle_followup_20261020": {
+    "date": "2026-10-20",
+    "status": "CONFORMED-SCOPED：14幀正式登錄、普通HD END／射擊／F2／章節邊界保存冷讀及私人包通過",
+    "base_source_commit": "01aece4bb46b9c8b202c581d6715a07ea460eafd",
+    "full_battle_hd_complete": false,
+    "scope": "FIGANI6四幀待機與7十幀攻擊，8零header。第三章NPC實際BattleFig2與native_character_catalog身份2鐵諾關聯；原生NPC的NativeIdentity欄位仍為0，不以該佔位值推定身份。",
+    "source_inventory": {
+      "file": "docs/data/fd2-battle-hd-source-inventory-20261019.json",
+      "sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51"
+    },
+    "native_inputs": {
+      "file": "work/promo-cadence-20261018/hd-fonts/tino-native-inputs-r1.json",
+      "sha256": "f8bcdbd2f3ab51432cda09d05a0da1cebe5426c29542450cf74ead5be582346c"
+    },
+    "identity_sources": [
+      {
+        "file": "remake/assets/data/native_character_catalog.json",
+        "sha256": "c4328becf91b89b188d7a2359d46432e6168a838d38c2106cc63876da7028885"
+      },
+      {
+        "file": "remake/assets/maps/map2/map2_units.json",
+        "sha256": "34255b1005b4af6d9b97c94dee907e6f48207caa3c91be6039365ad0f33928b2"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-normal-gui-r1/receipt.json",
+        "sha256": "4483bf55e36d9459a69d484487b352d79e8b990457bc23eb9e47fd75e2ec66a3"
+      }
+    ],
+    "actual_npc": {
+      "acted": false,
+      "attack_max": 0,
+      "attack_min": 0,
+      "battle_fig": 2,
+      "camp": 1,
+      "exp": 255,
+      "hp": 61,
+      "lv": 4,
+      "mp": 0,
+      "name": "",
+      "native_identity": 0,
+      "on_field": true,
+      "raw": {
+        "X": 8,
+        "Y": 5,
+        "Pose": 0,
+        "Motion": 0
+      },
+      "x": 8,
+      "y": 5
+    },
+    "art_contract": "保留背向銀白長髮束、深藍長披風、裸露前臂、灰綠護腕、橄欖灰長褲及直劍；不從頭像增添盾或全身板甲。四待機與部分預備／收勢可明示共享稿；光帶三拍分開重畫。原矩形與layer／delay／hit／cue保持，不擴張幾何或改生成alpha。",
+    "trace_contract": "input_audit_trace只讀當前physical body job的resource／frame／DX／DY／fill及prelude狀態，欄位只表示當前預期圖層，不能自稱GPU已呈現。GUI --battle-end-art僅在正常END、HD繪製及明示figure2圖層時擷取；每回合每resource／frame最多一張，實際PNG另以圖源核心核對。 失敗時battle-observation.json保留實際樣本、輸入及環境指紋，status只標OBSERVATION-ONLY，不能作為完整GUI通過收據。",
+    "acceptance": [
+      "完整14幀原矩形編製、來源與負向拒收、可重建配方及正式loader預檢。",
+      "完整14幀Game.Draw、F2、缺件原子拒收及一次續行，scope限fixture。",
+      "同一第三章來源槽與seed1，正常移動／待機／END全程HD，至少實際核對NPC待機及攻擊；兩次希莉亞射擊／返回、F2及章節邊界保存冷讀保持。",
+      "通過才正式登錄、私人同步與README現況更新；未到達的角色或NPC分支繼續明示。"
+    ],
+    "limits": "未新增原版oracle、matching、完整章E2、規則或存檔格式。蓋亞大圖占寬仍待定，不藉本批更改。",
+    "generation": {
+      "schema_version": 1,
+      "mode": "built-in image_gen",
+      "jobs": [
+        {
+          "key": "idle",
+          "prompt": "Use case: stylized-concept. ONE transparent full-body hand-painted battle sprite for an existing fantasy tactical RPG remake. Image1 is EXACT native silhouette, pose and costume. Image2 is only the approved rendering style, not character or outfit. Repaint image1 as crisp high-resolution illustrated game art. A mature broad-shouldered male swordsman seen entirely from behind, facing slightly upper-right. Thick long SILVER-WHITE hair gathered in one broad smooth loose hair-tail down the middle of the upper back to shoulderblade level, two subtle pointed tufts at crown, face fully hidden. Large plain deep navy-blue cloak covering back and legs, pronounced folded collar and loose short blue sleeves, cloak hem just above dark boots, center hem shallow upward notch and two draped lower corners. Orange-tan bare forearms, dark grey-green segmented wristguards, olive-grey trousers glimpse at right hip, dark blue boots. Right hand on viewer RIGHT near hip holds ONE simple straight pale steel sword diagonally up toward top-right, narrow blade about two-thirds torso height, muted dark hilt and tiny red wrap. Left arm loosely bent outward to viewer left. Preserve original slightly hunched wide-shoulder stance, compact feet and thick clothing, proportions width:height about1.02 including sword, whole body contained. Clean dark contour, softly painted fabric volume and restrained highlights, match image2 craftsmanship. No extra armor, shield, belt gadgets, ornaments, invented face, beard, cape emblem or magical glow. No scenery, ground shadow, checkerboard, text or border. Truly transparent background, preserve clean generated antialiased alpha. Modest clear margins.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/tino-ref-006-00.png",
+            "/home/anr2/cht/fd2/remake/generated-assets/modern-theme-prototypes/figure-008-idle-battle-hd6-master-v1.png"
+          ],
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-1be18711-861c-4279-b862-dca238dd634f.png",
+          "workspace_path": "work/promo-cadence-20261018/hd-fonts/tino-idle-master-r1.png",
+          "sha256": "776384ec85f68f92b903ba57cd9e54726d3d6aa4bd8050f181fc8806ffc7ee43",
+          "high_coverage_bbox": [
+            84,
+            18,
+            1254,
+            1221
+          ],
+          "size": [
+            1266,
+            1242
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ]
+        },
+        {
+          "key": "windup",
+          "prompt": "Use case: stylized-concept. ONE transparent full-body hand-painted RPG battle sprite, with only the explicit slash effect when requested. Image1 is EXACT native pose, silhouette, equipment and effect placement. Image2 is the same character's approved high-resolution idle appearance: keep his navy cloak, thick SILVER-WHITE long hair-tail, tan forearms, dark grey-green wristguards, olive-grey trousers, dark boots, straight pale steel sword with dark hilt and small red wrap. Preserve same painted outline and fabric style, not pixelated or photoreal. Change pose to match image1: Both arms raised sideways to shoulder height, elbows bent. Right sword hand at viewer RIGHT shoulder, straight steel blade nearly horizontal across the upper back pointing LEFT behind the white hair. Left fist at viewer LEFT. White hair hangs vertically down central upper back. Heavy plain blue cloak, rear view, balanced grounded stance. No glow or motion effects. Whole silhouette width:height about0.92. Keep entirely rear view, face hidden, no shield, chest armor, ornaments or new equipment. Keep cloak near ankles and original compact proportion. No checkerboard ground, cast shadow, scenery, text or border. Truly transparent background with clean native antialias alpha, modest clear margins. The explicit effect is a flat sword SLASH, never wings or a magical aura.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/tino-ref-007-01.png",
+            "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-1be18711-861c-4279-b862-dca238dd634f.png"
+          ],
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-cc66160b-cf53-405e-b63e-23bc700154aa.png",
+          "workspace_path": "work/promo-cadence-20261018/hd-fonts/tino-windup-master-r1.png",
+          "sha256": "a3345314601d04e356c0c26132f94765435c15df33aef78b62ecff0cf35f26d2",
+          "high_coverage_bbox": [
+            76,
+            14,
+            1249,
+            1194
+          ],
+          "size": [
+            1305,
+            1205
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ]
+        },
+        {
+          "key": "slash-wide",
+          "prompt": "Use case: stylized-concept. ONE transparent full-body hand-painted RPG battle sprite, with only the explicit slash effect when requested. Image1 is EXACT native pose, silhouette, equipment and effect placement. Image2 is the same character's approved high-resolution idle appearance: keep his navy cloak, thick SILVER-WHITE long hair-tail, tan forearms, dark grey-green wristguards, olive-grey trousers, dark boots, straight pale steel sword with dark hilt and small red wrap. Preserve same painted outline and fabric style, not pixelated or photoreal. Change pose to match image1: Wide landscape2:1 canvas. Rear three-quarter swordsman on RIGHT HALF, hunched forward and twisting toward LEFT, silver-white hair-tail tilted diagonally down-right along back. Grey wristguard and orange forearm visible along body's left edge. One straight sword blade extends horizontally left beside upper shoulders. A SINGLE broad flat triangular yellow-white slash ribbon BEHIND upper shoulders: a SHARP POINT at far UPPER LEFT, widens toward far right, top edge slopes slightly downward-right and lower edge slopes more steeply downward-right. White center and narrow warm gold outline, clean painted edge. Exactly the large upper ribbon shown in image1. No flame plume, extra trails or particles. Body remains large, occupies right approximately45 percent of width; whole silhouette width:height about1.98. Keep entirely rear view, face hidden, no shield, chest armor, ornaments or new equipment. Keep cloak near ankles and original compact proportion. No checkerboard ground, cast shadow, scenery, text or border. Truly transparent background with clean native antialias alpha, modest clear margins. The explicit effect is a flat sword SLASH, never wings or a magical aura.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/tino-ref-007-03.png",
+            "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-1be18711-861c-4279-b862-dca238dd634f.png"
+          ],
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-3a1714f1-aad6-47be-b099-02c637b331be.png",
+          "workspace_path": "work/promo-cadence-20261018/hd-fonts/tino-slash-wide-master-r1.png",
+          "sha256": "3f004e9f6b3e7bbfca0bcbc5b06e117532bdddcd330cd1ff9646e4cbe54fa050",
+          "high_coverage_bbox": [
+            2,
+            5,
+            1774,
+            883
+          ],
+          "size": [
+            1774,
+            887
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ]
+        },
+        {
+          "key": "slash-mid",
+          "prompt": "Use case: stylized-concept. ONE transparent full-body hand-painted RPG battle sprite, with only the explicit slash effect when requested. Image1 is EXACT native pose, silhouette, equipment and effect placement. Image2 is the same character's approved high-resolution idle appearance: keep his navy cloak, thick SILVER-WHITE long hair-tail, tan forearms, dark grey-green wristguards, olive-grey trousers, dark boots, straight pale steel sword with dark hilt and small red wrap. Preserve same painted outline and fabric style, not pixelated or photoreal. Change pose to match image1: Wide landscape1.93:1 canvas. Same rear three-quarter leaning swordsman body on RIGHT HALF, twisting left, silver-white hair-tail diagonally down-right and heavy blue cape. Thin straight sword blade extends horizontally LEFT by shoulder. In the FAR UPPER LEFT, one separate tapered thin white-yellow diagonal slash streak, roughly40 percent canvas width, long narrow pointed shape descending gently toward right. A clear transparent gap separates this little streak from the figure. NO broad ribbon or fire plume. Body fills about45 percent of full width, whole silhouette width:height about1.93, exactly image1. Keep entirely rear view, face hidden, no shield, chest armor, ornaments or new equipment. Keep cloak near ankles and original compact proportion. No checkerboard ground, cast shadow, scenery, text or border. Truly transparent background with clean native antialias alpha, modest clear margins. The explicit effect is a flat sword SLASH, never wings or a magical aura.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/tino-ref-007-04.png",
+            "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-1be18711-861c-4279-b862-dca238dd634f.png"
+          ],
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-9c57b900-88f1-403f-9a4c-d738299e9583.png",
+          "workspace_path": "work/promo-cadence-20261018/hd-fonts/tino-slash-mid-master-r1.png",
+          "sha256": "77849626903b1632af86572049b0f0183a03ad17d44bd090234c0ae0e7b3c33a",
+          "high_coverage_bbox": [
+            15,
+            14,
+            1732,
+            897
+          ],
+          "size": [
+            1740,
+            904
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ]
+        },
+        {
+          "key": "slash-tail",
+          "prompt": "Use case: stylized-concept. ONE transparent full-body hand-painted RPG battle sprite, with only the explicit slash effect when requested. Image1 is EXACT native pose, silhouette, equipment and effect placement. Image2 is the same character's approved high-resolution idle appearance: keep his navy cloak, thick SILVER-WHITE long hair-tail, tan forearms, dark grey-green wristguards, olive-grey trousers, dark boots, straight pale steel sword with dark hilt and small red wrap. Preserve same painted outline and fabric style, not pixelated or photoreal. Change pose to match image1: Wide landscape2:1 canvas. Same rear three-quarter leaning swordsman body on RIGHT HALF twisting left with diagonal white hair-tail and blue cape. Straight sword blade extends horizontal left by shoulder. In FAR UPPER LEFT, one TINY detached slender white-gold tapered slash remnant, about15 percent canvas width, descending slightly right. Most left half is transparent. NO broad beam, fire, particles or long extra streak. Body fills about43 percent canvas width. Match image1 exact placement and posture. Keep entirely rear view, face hidden, no shield, chest armor, ornaments or new equipment. Keep cloak near ankles and original compact proportion. No checkerboard ground, cast shadow, scenery, text or border. Truly transparent background with clean native antialias alpha, modest clear margins. The explicit effect is a flat sword SLASH, never wings or a magical aura.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/tino-ref-007-05.png",
+            "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-1be18711-861c-4279-b862-dca238dd634f.png"
+          ],
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-930b1161-5183-48b8-af8d-11dbf23aa345.png",
+          "workspace_path": "work/promo-cadence-20261018/hd-fonts/tino-slash-tail-master-r1.png",
+          "sha256": "08f8a1a7d405418a750d1a69bb238d9bf1d56d29166d1da15982d0c8a310f1ad",
+          "high_coverage_bbox": [
+            12,
+            14,
+            1771,
+            881
+          ],
+          "size": [
+            1774,
+            887
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    "recipe": {
+      "schema_version": 1,
+      "figure": 2,
+      "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+      "sources": {
+        "idle": {
+          "file": "work/promo-cadence-20261018/hd-fonts/tino-idle-master-r1.png",
+          "sha256": "776384ec85f68f92b903ba57cd9e54726d3d6aa4bd8050f181fc8806ffc7ee43",
+          "anchor": [
+            84,
+            18,
+            1254,
+            1221
+          ]
+        },
+        "windup": {
+          "file": "work/promo-cadence-20261018/hd-fonts/tino-windup-master-r1.png",
+          "sha256": "a3345314601d04e356c0c26132f94765435c15df33aef78b62ecff0cf35f26d2",
+          "anchor": [
+            76,
+            14,
+            1249,
+            1194
+          ]
+        },
+        "slash-wide": {
+          "file": "work/promo-cadence-20261018/hd-fonts/tino-slash-wide-master-r1.png",
+          "sha256": "3f004e9f6b3e7bbfca0bcbc5b06e117532bdddcd330cd1ff9646e4cbe54fa050",
+          "anchor": [
+            2,
+            5,
+            1774,
+            883
+          ]
+        },
+        "slash-mid": {
+          "file": "work/promo-cadence-20261018/hd-fonts/tino-slash-mid-master-r1.png",
+          "sha256": "77849626903b1632af86572049b0f0183a03ad17d44bd090234c0ae0e7b3c33a",
+          "anchor": [
+            15,
+            14,
+            1732,
+            897
+          ]
+        },
+        "slash-tail": {
+          "file": "work/promo-cadence-20261018/hd-fonts/tino-slash-tail-master-r1.png",
+          "sha256": "08f8a1a7d405418a750d1a69bb238d9bf1d56d29166d1da15982d0c8a310f1ad",
+          "anchor": [
+            12,
+            14,
+            1771,
+            881
+          ]
+        }
+      },
+      "resources": {
+        "6": [
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              134,
+              131
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              134,
+              130
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              134,
+              129
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              134,
+              130
+            ],
+            "scale_group": "standing"
+          }
+        ],
+        "7": [
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              134,
+              131
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "windup",
+            "anchor": [
+              0,
+              0,
+              120,
+              130
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "windup",
+            "anchor": [
+              0,
+              0,
+              121,
+              130
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "slash-wide",
+            "anchor": [
+              0,
+              0,
+              262,
+              132
+            ],
+            "scale_group": "slash"
+          },
+          {
+            "pose": "slash-mid",
+            "anchor": [
+              0,
+              0,
+              264,
+              137
+            ],
+            "scale_group": "slash"
+          },
+          {
+            "pose": "slash-tail",
+            "anchor": [
+              0,
+              0,
+              284,
+              142
+            ],
+            "scale_group": "slash"
+          },
+          {
+            "pose": "windup",
+            "anchor": [
+              0,
+              0,
+              120,
+              130
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "windup",
+            "anchor": [
+              0,
+              0,
+              121,
+              130
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "windup",
+            "anchor": [
+              0,
+              0,
+              122,
+              130
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "windup",
+            "anchor": [
+              0,
+              0,
+              123,
+              130
+            ],
+            "scale_group": "standing"
+          }
+        ]
+      }
+    },
+    "compiled_candidate": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/tino-battle-candidate-r1/compiled.json",
+        "sha256": "a969cf63608d25b75a70a86b06fa2e6340865f84e50dc5b08dd7fde2e5169bee"
+      },
+      "frames": 14,
+      "scale_groups": {
+        "standing": 0.9260060769012175,
+        "slash": 0.9822120756093669
+      },
+      "clipped_high_coverage_pixels": 0,
+      "catalog_assets": 383,
+      "runtime_registered": false
+    },
+    "verification": {
+      "compiler_guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/tino-compiler-guards-r1/guards.json",
+        "sha256": "89ace8220afb8a2460d526964035067ad70531c00f445f93e186e1b2b53f51ba"
+      },
+      "candidate_source_audit": {
+        "file": "work/promo-cadence-20261018/hd-fonts/tino-candidate-coverage-r1.json",
+        "sha256": "f37443d04aa63ebf9724224da3a442bc8e9b37dc9982b46d932d3cd838042e2a"
+      },
+      "candidate_go": {
+        "file": "work/promo-cadence-20261018/hd-fonts/tino-candidate-loader-r1.log",
+        "sha256": "a584b2ed06bd015a04b4d2f5527e35ff205406a452dfe70a4a7793fa8fcea17d"
+      },
+      "lifecycle": {
+        "file": "work/promo-cadence-20261018/hd-fonts/tino-lifecycle-r2/receipt.json",
+        "sha256": "26a5a1a0e75baa34e69ac6ca4a973cf1950e6d95bac8d57cbf0834c21536c736"
+      },
+      "lifecycle_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/tino-lifecycle-r2.log",
+        "sha256": "d301cea610af0b4275a0f13518d6f6f4497c4b5262e702c458d34c814aa8bede"
+      },
+      "fixture_pixels": {
+        "file": "work/promo-cadence-20261018/hd-fonts/tino-fixture-pixels-r2.json",
+        "sha256": "5af5bdc5b4ddbaa2239df90b9b89756a7bde85b3d8dcc7b757490eb494bf555c"
+      },
+      "prior_silia_pixels": {
+        "file": "work/promo-cadence-20261018/hd-fonts/tino-verifier-silia-regression-r2.json",
+        "sha256": "af353cd72e994b11058afd096388ec070ed552ea23ba3fab7b705c8b7466f178"
+      },
+      "fixture_guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/tino-fixture-guards-r2/guards.json",
+        "sha256": "fc5a966e3a611a59dffd9e28d86d9b910f76010dbe81a2136c5b2312f6108fbf"
+      },
+      "default_lifecycle_regression": {
+        "file": "work/promo-cadence-20261018/hd-fonts/tino-default-lifecycle-r1.log",
+        "sha256": "efa74b5854ce9d986ad783d70ef21ece4235aef2b5eaea2b974da3d56eb43533"
+      },
+      "lessons": {
+        "file": "work/promo-cadence-20261018/hd-fonts/tino-lessons-final-r3.log",
+        "sha256": "215697c60f889e965c88d63baf77d9cd6902a9ef864bafc5be867d65fc1684c7"
+      },
+      "allowlist_clean_rebuild": {
+        "file": "work/promo-cadence-20261018/hd-fonts/tino-allowlist-rebuild-verification-r1.json",
+        "sha256": "4ab9d03d70affd1addfd460d45ed805bb94bae1a7ee93d220597ab0a4c53294a"
+      },
+      "normal_gui": {
+        "file": "work/promo-cadence-20261018/hd-fonts/tino-normal-gui-r3/receipt.json",
+        "sha256": "0be05be0f5a1785e53a1bd04cbdce60f46328a55b501bb49e74483736d7b7ba3"
+      },
+      "normal_end_pixels": {
+        "file": "work/promo-cadence-20261018/hd-fonts/tino-normal-end-pixels-r1.json",
+        "sha256": "63b54a99e4ead0065c977df1c4d4d0dd987ccbda1021a62b38799dbfb5ae5d47"
+      },
+      "normal_silia_pixels": {
+        "file": "work/promo-cadence-20261018/hd-fonts/tino-normal-silia-pixels-r1.json",
+        "sha256": "697c76d2d949f7b0fd8c1722ed177b1cc06f36cec12bdd47b7bc2c9d2f193408"
+      },
+      "final_checks": {
+        "file": "work/promo-cadence-20261018/hd-fonts/tino-final-checks-r1.json",
+        "sha256": "b60c5930215a9fc3dd89ffaa9d22a6de3ca468ad1aa6cc756ef27cd175f33cb2"
+      },
+      "worklist": {
+        "file": "work/promo-cadence-20261018/hd-fonts/tino-worklist-final-r1.log",
+        "sha256": "47b7859489dfc17648fe1d1b9bb320b66320ad7f7f69f59af92b00cf48ec2558"
+      },
+      "final_staged_checks": {
+        "file": "work/promo-cadence-20261018/hd-fonts/tino-final-checks-r2.json",
+        "sha256": "200097b63c687a2b7830cd06b08abc10b5c4cd9e55f18ca507ce5a75799fefd7"
+      }
+    },
+    "environment_observations": [
+      {
+        "case": "lifecycle-r1",
+        "classification": "test-fixture",
+        "result": "首次在Game.Draw之前因缺圖反例仍綁定figure0，實際figure2沒有用到該資源而未拒收。改為actor.BattleFig*3後重建測試；沒有更動遊戲規則。"
+      },
+      {
+        "case": "guard-output-and-scanner",
+        "classification": "verification-configuration",
+        "result": "圖片反例首次掛唯讀工作樹，建立目錄前即被拒；改掛明確工作輸出子樹可寫後五項通過。教訓掃描器排除測試來源檔，改以61中對應的正式測試入口作守衛，264條／143守衛通過。未更動產品。"
+      },
+      {
+        "case": "normal-gui-r1",
+        "classification": "verification-input-sequencing",
+        "result": "四次普通END及兩場射擊已返回，最後focus_own失敗，沒有PASS收據。audit12192仍有level-up dialogue，12193最後Enter後轉player_status_phase=opening，Z在status面板被消費，無法選人。native_player_input.go的advanceNativePlayerStatus以Escape可正常逐頁關閉；GUI先關狀態／命令與選取後再Z，同一來源與命令以r2乾淨重跑。遊戲binary不變。",
+        "audit_file": "work/promo-cadence-20261018/hd-fonts/tino-normal-gui-r1/input-audit.jsonl",
+        "audit_sha256": "3352b3ba31f918192ea14ab7d3a9230a71b2e26e8d9b968fee315e8fef3d778f"
+      },
+      {
+        "case": "normal-gui-r2",
+        "classification": "verification-state-classification",
+        "result": "四次END及兩場射擊再次返回，狀態面板已關。工具錯把nativeMovePlan指標當作活動面板，八次Escape其實正常循環索爾／蓋亞，因而在保存前誤敗。main.go只有g.sel非nil才沿Escape清選取；audit的move_preview只是nativeMovePlan非nil。移除該錯誤門檻，保留正常狀態／命令頁及ring關閉，再同輸入r3乾淨重跑。遊戲binary不變。",
+        "observation": {
+          "file": "work/promo-cadence-20261018/hd-fonts/tino-normal-gui-r2/battle-observation.json",
+          "sha256": "555cf26cc42906a4065c1a18d74f37472546579636bd6d223ad24f544a7dee46"
+        },
+        "status": "OBSERVATION-ONLY",
+        "correction": "八筆cleanup的player_status_phase前後皆nil；該輪沒有實際演出關頁。『已關』只表示當時沒有面板。r3亦無需額外清理輸入，直接Z、F2、保存冷讀完整通過。"
+      }
+    ],
+    "fixture_result": {
+      "frames_captured": 14,
+      "frames_pixel_matched": 14,
+      "hd_draws": 256,
+      "faithful_draws": 3,
+      "final_draws": 325,
+      "phase_f2": [
+        "prelude",
+        "body",
+        "counter"
+      ],
+      "battle_dac_steps": 64,
+      "map_dac_steps": 65,
+      "continuations": 1,
+      "hp_rng_preserved": true,
+      "scope": "強制一次攻擊與反擊計畫、native地圖fixture；RUNTIME-E1。log末尾沿用舊projection字樣，正式圖源由清冊SHA及14張實際PNG核對證實；後續程式只訂正該log字樣，無功能變更。"
+    },
+    "binary_cleanup": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/tino-hd-tests-r1",
+        "sha256": "45fc856e280c8f5290de9fc4b49c2bdfe8925cad5196ab2d1a7c4bae55fc268d",
+        "bytes": 26360104,
+        "reason": "載入回歸已驗；完整演出改用r2測試程式，r1不再使用"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/tino-hd-tests-r2",
+        "sha256": "85733e6bf2746d852b949fb0b82d2ed9979b6e5dbd9a38ef1c621bcc30761f69",
+        "bytes": 26360104,
+        "reason": "完整及runtime-only驗證已通過，移除測試程式"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/tino-hd-game-r1",
+        "sha256": "fa6e9ddb3d0b00126792916a9c05b2759d1ba57c14205500dfbae12d76582ced",
+        "bytes": 19316768,
+        "reason": "完整及runtime-only驗證已通過，移除測試程式"
+      }
+    ],
+    "registration_plan": {
+      "file": "work/promo-cadence-20261018/hd-fonts/tino-registration-plan-r1.json",
+      "sha256": "14ba511ad13b08a4b63a8552eb20de21f938844639052d21d103e685b18432e9",
+      "status": "PREPARED-NOT-REGISTERED"
+    },
+    "end_frame_observation_diagnostic": {
+      "file": "work/promo-cadence-20261018/hd-fonts/tino-end-frame-lag-diagnostic-r1.json",
+      "sha256": "da5b324c19ac69a06b281a65f31d9d4527474e54300e02235fe45c05792fe768",
+      "finding": "七張實際r1 PNG沿原位置核心核對，檔名007-01實際符合6/0或7/0，007-02符合7/1或7/6，007-03符合7/2或7/7，007-04符合7/3，007-05符合7/4，007-09符合7/8；006-00仍為7/9。觀測frame與已呈現PNG相差一拍，不能把job當GPU相位。",
+      "correction": "END只從同圖庫當前job取已驗描述子的caller DX/DY與clip，再依各候選原描述子獨立核對PNG。容差不變，保留相容集合，增加錯caller位移反例。fixture在同次Draw回讀，仍精確核每索引；GUI工具與game binary不變。",
+      "input_directory": "work/promo-cadence-20261018/hd-fonts/tino-normal-gui-r1"
+    },
+    "failed_capture_cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/tino-failed-r1-capture-cleanup.json",
+      "sha256": "5a8bca5ecd42983dba5ba53a3c13c1a5e680fb01f019915178671c27ff8b583f",
+      "pngs": 200,
+      "bytes": 82379675,
+      "kept": 8
+    },
+    "r2_end_diagnostic": {
+      "file": "work/promo-cadence-20261018/hd-fonts/tino-r2-end-pixels-diagnostic.json",
+      "sha256": "c3667d2fedf7542f55a51c54300a83d5d954cbb654aba97f72c8b5d9dfd472f7",
+      "matched_pngs": 50,
+      "status": "DIAGNOSTIC-OBSERVATION-ONLY"
+    },
+    "toolchain": {
+      "go_image": {
+        "tag": "fd2-go-test-local:latest",
+        "id": "sha256:e4a805c52a3ad5d8c22cf23f2bcf51c6924e5ad6b99554f1b02761903c725433",
+        "go": "1.22.12",
+        "ebiten": "2.6.6",
+        "platform": "linux/amd64"
+      },
+      "asset_image": {
+        "tag": "fd2-assets-local:20260829-sfx",
+        "id": "sha256:e59237a31d4b5f7a62c59ac37b780bd93f17c99fda97be8f5ca0c53978b878bc",
+        "pillow": "11.3.0"
+      },
+      "gui_image": {
+        "tag": "fd2-promo:20261017-r1",
+        "id": "sha256:f299cf5e25b4ba172941399b3ed177c78b3a951de35d666d78af3f00e30d7f0d"
+      },
+      "scope": "軟體GPU與本機fixture，非跨平台實機效能"
+    },
+    "normal_result": {
+      "status": "PASS",
+      "screenshots": 28,
+      "attack_pngs": 128,
+      "end_pngs": 56,
+      "walk_pngs": 4,
+      "inputs": 180,
+      "end_steps": 4,
+      "end_hd_owner_groups": [
+        4,
+        4,
+        4,
+        5
+      ],
+      "tino_matching_pngs": 51,
+      "silia_matching_pngs": 73,
+      "node_boundary_save_checked": true,
+      "source_save_bytes_equal": true,
+      "theme_save_bytes_equal": true,
+      "cold_loaded_units_equal": true,
+      "new_process_title_load": true,
+      "modal_cleanup_inputs": 0,
+      "elapsed_seconds": 1437.0723335300572,
+      "scope": "普通LOAD、兩次各兩輪移動／待機／END、兩場射擊、F2及章節邊界保存冷讀；軟體擷取耗時不是平台效能。觀測group不宣稱唯一scene實例或每frame相位。"
+    },
+    "normal_source": {
+      "json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-source-gui-r5/user-data/fd2_re/fd2_save.json",
+        "sha256": "ef72ec09a170233645b71869a6441a80656f9a2fa20944e27c85f13a2e4a5d80"
+      },
+      "creation_receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/silia-source-gui-r5/receipt.json",
+        "sha256": "77194b5cae3b307c2cf933b7499c98e5d8b0207eda35eef2da8458790e76aee4"
+      },
+      "native_ancestor": {
+        "file": "work/ch03-flow-20261017/input/FD2.SAV",
+        "sha256": "d8d534d5692d3e81ffafacb9a2c31e74ed7f3297583fcb0bec95715df488fe6b"
+      },
+      "native_manifest": {
+        "file": "docs/data/parity-slots/ch03-manifest.json",
+        "sha256": "44031da4db94536b2981c4c6eb1eedafeb4f9ed863f93bf57860a4c62d6cfafe"
+      },
+      "policy": "祖先111抽樣後清敵照舊揭露；本輪章內無HP、座標或狀態注入，seed1。"
+    },
+    "readme_screenshot": {
+      "file": "docs/figures/hd-tino-physical-attack.png",
+      "sha256": "04e674ef4bf1f37d6ab56a02165968cb719a6e73e20035ec3a1a2a05731007f5",
+      "source_file": "work/promo-cadence-20261018/hd-fonts/tino-normal-gui-r3/world-hd-end-0-007-04.png",
+      "scope": "未編輯的第三章普通END實際PNG；藍衣核心符合FIGANI7/3，名稱7/4僅為擷取時預期job。"
+    },
+    "formal_verification": {
+      "registration": {
+        "file": "work/promo-cadence-20261018/hd-fonts/tino-registration-r1.json",
+        "sha256": "9876fcb875b10ee62be50a01cb3dfd541264c967ffdc23be8c5c28c33aa0d333"
+      },
+      "catalog_tests": {
+        "file": "work/promo-cadence-20261018/hd-fonts/tino-formal-catalog-r1.log",
+        "sha256": "0bbb83bff033e4dfce3eecedde6aa17c736a33c772837ba5d20a93af2d5d4f3a"
+      },
+      "source_audit": {
+        "file": "work/promo-cadence-20261018/hd-fonts/tino-formal-coverage-r1.json",
+        "sha256": "edae8b96689de355ddf53d27213d3228f8e62fa8e4fa9a38450b6b9769b5bb43"
+      },
+      "private_sync": {
+        "file": "work/promo-cadence-20261018/hd-fonts/tino-private-sync-r1.json",
+        "sha256": "da96e99f4f41ffe48a465a54fe8ca11ddc7830aa6144743d2455f1db1a753b0c"
+      },
+      "runtime_manifest": {
+        "file": "work/promo-cadence-20261018/hd-fonts/tino-runtime-only-manifest-r1.json",
+        "sha256": "a8a7362543fbc2dd32b5780ff8f9640f34a47fc72ff1e9f39dda1469cb56b4a9"
+      },
+      "runtime_go": {
+        "file": "work/promo-cadence-20261018/hd-fonts/tino-private-runtime-go-r1.log",
+        "sha256": "7b7fafb8e2039d2ed2a1c3b94b75994543ecc796492c1a84b99f8644001bdff7"
+      }
+    },
+    "private_delivery": {
+      "file_count": 3483,
+      "runtime_only_file_count": 3208,
+      "old_files_preserved": 3464,
+      "new_frames": 14,
+      "new_masters": 5,
+      "new_files": 19,
+      "commit_pending": false,
+      "visibility": "private",
+      "commit": "132b2014ff213e3c11608575a82213aac874e406",
+      "remote_head_verified": true,
+      "worktree_clean_verified": true
+    },
+    "reproduction_recipe": {
+      "schema_version": 1,
+      "figure": 2,
+      "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+      "sources": {
+        "idle": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-002-idle-battle-hd6-master-v1.png",
+          "sha256": "776384ec85f68f92b903ba57cd9e54726d3d6aa4bd8050f181fc8806ffc7ee43",
+          "anchor": [
+            84,
+            18,
+            1254,
+            1221
+          ]
+        },
+        "windup": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-002-windup-battle-hd6-master-v1.png",
+          "sha256": "a3345314601d04e356c0c26132f94765435c15df33aef78b62ecff0cf35f26d2",
+          "anchor": [
+            76,
+            14,
+            1249,
+            1194
+          ]
+        },
+        "slash-wide": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-002-slash-wide-battle-hd6-master-v1.png",
+          "sha256": "3f004e9f6b3e7bbfca0bcbc5b06e117532bdddcd330cd1ff9646e4cbe54fa050",
+          "anchor": [
+            2,
+            5,
+            1774,
+            883
+          ]
+        },
+        "slash-mid": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-002-slash-mid-battle-hd6-master-v1.png",
+          "sha256": "77849626903b1632af86572049b0f0183a03ad17d44bd090234c0ae0e7b3c33a",
+          "anchor": [
+            15,
+            14,
+            1732,
+            897
+          ]
+        },
+        "slash-tail": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-002-slash-tail-battle-hd6-master-v1.png",
+          "sha256": "08f8a1a7d405418a750d1a69bb238d9bf1d56d29166d1da15982d0c8a310f1ad",
+          "anchor": [
+            12,
+            14,
+            1771,
+            881
+          ]
+        }
+      },
+      "resources": {
+        "6": [
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              134,
+              131
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              134,
+              130
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              134,
+              129
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              134,
+              130
+            ],
+            "scale_group": "standing"
+          }
+        ],
+        "7": [
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              134,
+              131
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "windup",
+            "anchor": [
+              0,
+              0,
+              120,
+              130
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "windup",
+            "anchor": [
+              0,
+              0,
+              121,
+              130
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "slash-wide",
+            "anchor": [
+              0,
+              0,
+              262,
+              132
+            ],
+            "scale_group": "slash"
+          },
+          {
+            "pose": "slash-mid",
+            "anchor": [
+              0,
+              0,
+              264,
+              137
+            ],
+            "scale_group": "slash"
+          },
+          {
+            "pose": "slash-tail",
+            "anchor": [
+              0,
+              0,
+              284,
+              142
+            ],
+            "scale_group": "slash"
+          },
+          {
+            "pose": "windup",
+            "anchor": [
+              0,
+              0,
+              120,
+              130
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "windup",
+            "anchor": [
+              0,
+              0,
+              121,
+              130
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "windup",
+            "anchor": [
+              0,
+              0,
+              122,
+              130
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "windup",
+            "anchor": [
+              0,
+              0,
+              123,
+              130
+            ],
+            "scale_group": "standing"
+          }
+        ]
+      }
+    },
+    "reproduction_steps": [
+      "以sync_modern_theme_private.py將私人完整包依正式catalog恢復到private_root。",
+      "將本reproduction_recipe另存工作區JSON；使用固定inventory與唯讀原版包。",
+      "建立正式catalog複本，僅移除modern.figani.006.hd6.v1及007兩項，再以--base-catalog交給build_fd2_character_battle_hd.py。",
+      "十四張PNG必須與正式frame_sha256一致；五母稿維持原始RGBA。allow-list乾淨重建已驗19檔相同，僅來源路徑移到正式private_root。"
+    ],
+    "runtime_only_cleanup": {
+      "bytes": 187139049,
+      "manifest_retained": "work/promo-cadence-20261018/hd-fonts/tino-runtime-only-manifest-r1.json",
+      "go_log_retained": "work/promo-cadence-20261018/hd-fonts/tino-private-runtime-go-r1.log",
+      "reason": "本批驗證副本已由私人完整包可重生，移除重複3208檔"
+    },
+    "github_body": {
+      "file": "work/promo-cadence-20261018/hd-fonts/tino-issue263-body.md",
+      "sha256": "1b523d03b8defd5c2cfeb36690840ee654972fab0a6cbad1ac9dc3e0fba5f2e9",
+      "issue": 263
+    },
+    "modern_asset_registration": {
+      "catalog_assets": 383,
+      "figani_resources": 14,
+      "figani_frames": 108,
+      "fdother_frames": 37,
+      "full_battle_hd_complete": false
+    },
+    "cleanup_summary": {
+      "deleted_bytes": 356147854,
+      "recording_created": false,
+      "no_unexpected_fd2_containers": true,
+      "root_owned_output_candidates": 0,
+      "markdown_directories": 0
+    }
+  },
+  "hano_battle_followup_20261020": {
+    "date": "2026-10-20",
+    "status": "DATA-READY-CANDIDATE：六母稿及11幀編製／來源反例通過；執行期與普通玩家尚待",
+    "scope": "FIGANI3四待機、4七攻擊、5零header；角色表identity1哈諾。沿既有共背景character recipe與HD6原矩形，原節拍及正式規則保持。",
+    "full_battle_hd_complete": false,
+    "source_inventory": {
+      "file": "docs/data/fd2-battle-hd-source-inventory-20261019.json",
+      "sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51"
+    },
+    "native_inputs": {
+      "file": "work/promo-cadence-20261018/hd-fonts/hano-native-inputs-r1.json",
+      "sha256": "e9b9f37bb0ca53acac2a0bdabe801625355ada0a117985a42e8c84b4b7a7fb40"
+    },
+    "identity_source": {
+      "file": "remake/assets/data/native_character_catalog.json",
+      "sha256": "c4328becf91b89b188d7a2359d46432e6168a838d38c2106cc63876da7028885"
+    },
+    "art_contract": "保留背向深棕髮、紅褐束帶／背心、深藍披布、灰綠寬褲、紅褐纏腿及短柄單刃斧；原4/2上方大斬光、4/3星芒、4/4餘光及4/5..6收勢分開描繪。待機可明示共享。無盾、頭盔或板甲。原矩形與layer、delay、hit、cue保持；生成alpha不修補。",
+    "acceptance": [
+      "完整11幀來源／配方與負向拒收",
+      "正式loader與完整Game.Draw／F2／一次返回，fixture分級明示",
+      "至少一條正常哈諾攻防、返回及保存冷讀後才正式登錄與私人同步"
+    ],
+    "limits": "章節來源及正常可達性待驗；不把第三章既有哈諾HP0來源當作一般攻防。385僅為隔離候選清冊，不以本預備工作擴稱正式覆蓋。",
+    "generation": {
+      "schema_version": 1,
+      "mode": "built-in image_gen",
+      "jobs": [
+        {
+          "key": "idle",
+          "prompt": "Use case: stylized-concept. Create ONE full-body hand-painted HD battle sprite on transparent background for an existing fantasy tactical RPG remake. Image1 is the exact native pose and appearance reference and has priority. Image2 supplies painted rendering style only: do NOT copy its white hair, long hair-tail, sword or costume. Preserve the original compact, muscular adult male axe fighter seen from behind: short dark reddish-brown hair tuft, red-brown sleeveless tunic/vest, deep navy blue wrap/scarf draped broadly around shoulders and upper back with long blue back sash panels, exposed tan muscular arms, dark wrist bands/guards, loose grey-green trousers, reddish-brown crisscross calf bindings, dark blue-brown shoes. A single SHORT wooden-handled broad pale-steel single-edge curved hatchet, exactly the reference weapon size and hand placement. No helmet, shield, plate armor, horns, extra weapons or added equipment. Crisp controlled dark outlines, painted fabric/leather/metal volume; no pixels, photorealism or cartoon exaggeration. Preserve the rear view, broad compact body proportions, original head angle and exact silhouette. Whole body, feet and axe fit in frame with modest clear margins. No text, labels, scenery, ground plane, shadow ellipse, border or lighting vignette. Transparent background with native antialiased alpha. Pose: match image1. Wide planted bent-knee stance, back slightly leaned forward, axe hand raised beside the right side of the head with blade above shoulder, opposite hand extended low to viewer left. Keep shoulder wrap low and compact around the hidden head as shown; no visible face. Image1's grey checker strip is a legacy shadow: omit that strip and any ground shadow. Single isolated figure.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/hano-ref-003-00.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/tino-idle-master-r1.png"
+          ],
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-c32fd442-7b55-418b-9821-a69be880483a.png",
+          "workspace_path": "work/promo-cadence-20261018/hd-fonts/hano-idle-master-r1.png",
+          "selection": "CANDIDATE-NOT-REGISTERED",
+          "sha256": "39dad9d910b7570606736f6d2426f5d83d2d1666af4108c11698583fe3924300",
+          "size": [
+            1261,
+            1247
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "high_coverage_bbox": [
+            11,
+            13,
+            1256,
+            1229
+          ]
+        },
+        {
+          "key": "recover",
+          "prompt": "Use case: stylized-concept. Create ONE full-body hand-painted HD battle sprite on transparent background for an existing fantasy tactical RPG remake. Image1 is the exact native pose and appearance reference and has priority. Image2 supplies painted rendering style only: do NOT copy its white hair, long hair-tail, sword or costume. Preserve the original compact, muscular adult male axe fighter seen from behind: short dark reddish-brown hair tuft, red-brown sleeveless tunic/vest, deep navy blue wrap/scarf draped broadly around shoulders and upper back with long blue back sash panels, exposed tan muscular arms, dark wrist bands/guards, loose grey-green trousers, reddish-brown crisscross calf bindings, dark blue-brown shoes. A single SHORT wooden-handled broad pale-steel single-edge curved hatchet, exactly the reference weapon size and hand placement. No helmet, shield, plate armor, horns, extra weapons or added equipment. Crisp controlled dark outlines, painted fabric/leather/metal volume; no pixels, photorealism or cartoon exaggeration. Preserve the rear view, broad compact body proportions, original head angle and exact silhouette. Whole body, feet and axe fit in frame with modest clear margins. No text, labels, scenery, ground plane, shadow ellipse, border or lighting vignette. Transparent background with native antialiased alpha. Pose: match image1's low compressed forward crouch after a downward axe strike. Head tucked forward under the blue shoulder wrap, back rounded on viewer right, near knee bent and planted at lower left, one single axe held near the left edge with blade pointing left. Match the original overlapping hands and forearms rather than inventing a different attack. NO yellow spark or glow, no slash trail. Grey checker strip is a legacy shadow: omit it and any ground shadow. Single isolated figure.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/hano-ref-004-05.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/tino-idle-master-r1.png"
+          ],
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-50790257-b4b4-40c1-b1df-35879e49eb7d.png",
+          "workspace_path": "work/promo-cadence-20261018/hd-fonts/hano-recover-master-r1.png",
+          "selection": "CANDIDATE-NOT-REGISTERED",
+          "sha256": "fdf0e522fafb5ef22c08be2dfc949c704211397cae49f3b5ec2fa1d3bf1cafc1",
+          "size": [
+            1233,
+            1276
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "high_coverage_bbox": [
+            11,
+            17,
+            1228,
+            1240
+          ]
+        },
+        {
+          "key": "raise",
+          "prompt": "Use case: stylized-concept. ONE transparent hand-painted HD battle sprite for a classic fantasy tactical RPG remake. Image1 is the exact native pose, silhouette and effect reference and has priority. Image2 is the accepted HD appearance: match this same muscular compact axe fighter, red-brown sleeveless vest and short reddish-brown hair, thick deep navy shoulder wrap/scarf and blue long back sash panels, exposed tan arms, dark wrist wraps, baggy grey-green trousers, red-brown calf bindings, dark shoes, short wooden-handled broad pale-steel single-edge hatchet. Rear view, hidden face. Preserve original compact broad body, clothing and weapon size and hand placement. No helmet, armor plates, shield, extra weapon or equipment. Crisp dark controlled outlines, painted fabric/leather/metal volumes; no pixelation or photorealism. Whole source pose/effect in frame with modest clear margins. Grey native checker strip is a legacy ground shadow: omit it and all ground shadows. No text, border, landscape, ground, decorative aura or vignette. Native antialiased transparent alpha. Pose: match native raised-axe windup exactly. Same wide planted bent-knee stance as the idle figure, one bare arm reaches diagonally upward to viewer right, holding the short axe above the head; other arm extends low to viewer left. Blue shoulder wrap hides the bowed head. Entire raised hand and axe visible, no slash effect.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/hano-ref-004-01.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/hano-idle-master-r1.png"
+          ],
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-1a3cd3f3-f156-455e-a18a-0a4075bf07d3.png",
+          "workspace_path": "work/promo-cadence-20261018/hd-fonts/hano-raise-master-r1.png",
+          "selection": "CANDIDATE-NOT-REGISTERED",
+          "sha256": "72d164efc1e5f082e82048b98bd157d8ad1add1aaa74e0bf374800a39c8c5955",
+          "size": [
+            1115,
+            1411
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "high_coverage_bbox": [
+            19,
+            16,
+            1101,
+            1396
+          ]
+        },
+        {
+          "key": "slash-wide",
+          "prompt": "Use case: stylized-concept. ONE transparent hand-painted HD battle sprite for a classic fantasy tactical RPG remake. Image1 is the exact native pose, silhouette and effect reference and has priority. Image2 is the accepted HD appearance: match this same muscular compact axe fighter, red-brown sleeveless vest and short reddish-brown hair, thick deep navy shoulder wrap/scarf and blue long back sash panels, exposed tan arms, dark wrist wraps, baggy grey-green trousers, red-brown calf bindings, dark shoes, short wooden-handled broad pale-steel single-edge hatchet. Rear view, hidden face. Preserve original compact broad body, clothing and weapon size and hand placement. No helmet, armor plates, shield, extra weapon or equipment. Crisp dark controlled outlines, painted fabric/leather/metal volumes; no pixelation or photorealism. Whole source pose/effect in frame with modest clear margins. Grey native checker strip is a legacy ground shadow: omit it and all ground shadows. No text, border, landscape, ground, decorative aura or vignette. Native antialiased transparent alpha. Pose/effect: match image1's compressed low forward crouch, body in LOWER LEFT half with hatchet head at mid-left. A HUGE FLAT pale ivory-yellow triangular axe slash begins at axe blade near left-middle, widens steeply upward-right, and dominates the UPPER half and right side, with thin gold edge and two small amber tapered cut streaks inside near upper-right as reference. This is one angular flat wedge, NOT a curved arc, fireball, soft glow, lightning or round aura. The fighter body must keep the native proportional size relative to the full frame: approx 87/135 frame width and lower 90/191 frame height. Keep clear transparent background around the subject. No ground shadow.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/hano-ref-004-02.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/hano-recover-master-r1.png"
+          ],
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-5b964be6-03ee-42dd-85fd-2d990cd0ed20.png",
+          "workspace_path": "work/promo-cadence-20261018/hd-fonts/hano-slash-wide-master-r1.png",
+          "selection": "CANDIDATE-NOT-REGISTERED",
+          "sha256": "d1285485dce530c0b31a1314928be3799007071c953fca4bcb26b0ff1068c854",
+          "size": [
+            1054,
+            1492
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "high_coverage_bbox": [
+            6,
+            4,
+            1051,
+            1487
+          ]
+        },
+        {
+          "key": "burst",
+          "prompt": "Use case: stylized-concept. ONE transparent hand-painted HD battle sprite for a classic fantasy tactical RPG remake. Image1 is the exact native pose, silhouette and effect reference and has priority. Image2 is the accepted HD appearance: match this same muscular compact axe fighter, red-brown sleeveless vest and short reddish-brown hair, thick deep navy shoulder wrap/scarf and blue long back sash panels, exposed tan arms, dark wrist wraps, baggy grey-green trousers, red-brown calf bindings, dark shoes, short wooden-handled broad pale-steel single-edge hatchet. Rear view, hidden face. Preserve original compact broad body, clothing and weapon size and hand placement. No helmet, armor plates, shield, extra weapon or equipment. Crisp dark controlled outlines, painted fabric/leather/metal volumes; no pixelation or photorealism. Whole source pose/effect in frame with modest clear margins. Grey native checker strip is a legacy ground shadow: omit it and all ground shadows. No text, border, landscape, ground, decorative aura or vignette. Native antialiased transparent alpha. Pose/effect: match native low forward crouch, hatchet held at viewer left. Behind and just above hatchet blade a sharp compact ivory/gold STARBURST flares UPWARD with several long thin amber rays to upper-right above the bowed head. Same body pose and size as image2; frame height accommodates the burst above it, native body occupies approximately lower 90/133 of frame height. No broad wedge or curved slash; only this sharp burst as native reference. Keep effects separate from the transparent outer background.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/hano-ref-004-03.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/hano-recover-master-r1.png"
+          ],
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-67038cf4-9b80-4d0a-b1d0-bb6d2bd5a439.png",
+          "workspace_path": "work/promo-cadence-20261018/hd-fonts/hano-burst-master-r1.png",
+          "selection": "CANDIDATE-NOT-REGISTERED",
+          "sha256": "f71a42c7bbf6857ebe61e7595f4ad899767df8e5160a8cd45c3e9b9f40d3991b",
+          "size": [
+            1014,
+            1551
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "high_coverage_bbox": [
+            6,
+            14,
+            1012,
+            1541
+          ]
+        },
+        {
+          "key": "tail",
+          "prompt": "Use case: stylized-concept. ONE transparent hand-painted HD battle sprite for a classic fantasy tactical RPG remake. Image1 is the exact native pose, silhouette and effect reference and has priority. Image2 is the accepted HD appearance: match this same muscular compact axe fighter, red-brown sleeveless vest and short reddish-brown hair, thick deep navy shoulder wrap/scarf and blue long back sash panels, exposed tan arms, dark wrist wraps, baggy grey-green trousers, red-brown calf bindings, dark shoes, short wooden-handled broad pale-steel single-edge hatchet. Rear view, hidden face. Preserve original compact broad body, clothing and weapon size and hand placement. No helmet, armor plates, shield, extra weapon or equipment. Crisp dark controlled outlines, painted fabric/leather/metal volumes; no pixelation or photorealism. Whole source pose/effect in frame with modest clear margins. Grey native checker strip is a legacy ground shadow: omit it and all ground shadows. No text, border, landscape, ground, decorative aura or vignette. Native antialiased transparent alpha. Pose/effect: match native low forward crouch exactly, keeping same body, clothing, hands and hatchet as image2. Add ONLY a TINY sharp pale-yellow triangular remnant spark directly above the hatchet blade at viewer left, approx 15 percent of figure height; same reference placement. This is the fading residue, no starburst rays, no large slash, no fire or glow cloud. Compact full-body frame as native image1.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/hano-ref-004-04.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/hano-recover-master-r1.png"
+          ],
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-c05df33c-ebe6-41d1-9dd8-c02488b3af1c.png",
+          "workspace_path": "work/promo-cadence-20261018/hd-fonts/hano-tail-master-r1.png",
+          "selection": "CANDIDATE-NOT-REGISTERED",
+          "sha256": "aa140f5f2b5e1a34f4ea0e036c1644d499c1e51e55bdbfd3f93e8386a9e8d293",
+          "size": [
+            1233,
+            1276
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "high_coverage_bbox": [
+            13,
+            20,
+            1229,
+            1247
+          ]
+        }
+      ]
+    },
+    "recipe": {
+      "schema_version": 1,
+      "figure": 1,
+      "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+      "sources": {
+        "idle": {
+          "file": "work/promo-cadence-20261018/hd-fonts/hano-idle-master-r1.png",
+          "sha256": "39dad9d910b7570606736f6d2426f5d83d2d1666af4108c11698583fe3924300",
+          "anchor": [
+            11,
+            13,
+            1256,
+            1229
+          ]
+        },
+        "recover": {
+          "file": "work/promo-cadence-20261018/hd-fonts/hano-recover-master-r1.png",
+          "sha256": "fdf0e522fafb5ef22c08be2dfc949c704211397cae49f3b5ec2fa1d3bf1cafc1",
+          "anchor": [
+            11,
+            17,
+            1228,
+            1240
+          ]
+        },
+        "raise": {
+          "file": "work/promo-cadence-20261018/hd-fonts/hano-raise-master-r1.png",
+          "sha256": "72d164efc1e5f082e82048b98bd157d8ad1add1aaa74e0bf374800a39c8c5955",
+          "anchor": [
+            19,
+            16,
+            1101,
+            1396
+          ]
+        },
+        "slash-wide": {
+          "file": "work/promo-cadence-20261018/hd-fonts/hano-slash-wide-master-r1.png",
+          "sha256": "d1285485dce530c0b31a1314928be3799007071c953fca4bcb26b0ff1068c854",
+          "anchor": [
+            6,
+            4,
+            1051,
+            1487
+          ]
+        },
+        "burst": {
+          "file": "work/promo-cadence-20261018/hd-fonts/hano-burst-master-r1.png",
+          "sha256": "f71a42c7bbf6857ebe61e7595f4ad899767df8e5160a8cd45c3e9b9f40d3991b",
+          "anchor": [
+            6,
+            14,
+            1012,
+            1541
+          ]
+        },
+        "tail": {
+          "file": "work/promo-cadence-20261018/hd-fonts/hano-tail-master-r1.png",
+          "sha256": "aa140f5f2b5e1a34f4ea0e036c1644d499c1e51e55bdbfd3f93e8386a9e8d293",
+          "anchor": [
+            13,
+            20,
+            1229,
+            1247
+          ]
+        }
+      },
+      "resources": {
+        "3": [
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              112,
+              111
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              112,
+              110
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              112,
+              109
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              112,
+              110
+            ],
+            "scale_group": "standing"
+          }
+        ],
+        "4": [
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              112,
+              111
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "raise",
+            "anchor": [
+              0,
+              0,
+              113,
+              143
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "slash-wide",
+            "anchor": [
+              0,
+              0,
+              135,
+              191
+            ],
+            "scale_group": "wide"
+          },
+          {
+            "pose": "burst",
+            "anchor": [
+              0,
+              0,
+              87,
+              133
+            ],
+            "scale_group": "recovery"
+          },
+          {
+            "pose": "tail",
+            "anchor": [
+              0,
+              0,
+              87,
+              90
+            ],
+            "scale_group": "recovery"
+          },
+          {
+            "pose": "recover",
+            "anchor": [
+              0,
+              0,
+              87,
+              90
+            ],
+            "scale_group": "recovery"
+          },
+          {
+            "pose": "recover",
+            "anchor": [
+              0,
+              0,
+              87,
+              90
+            ],
+            "scale_group": "recovery"
+          }
+        ]
+      }
+    },
+    "generation_file": {
+      "file": "work/promo-cadence-20261018/hd-fonts/hano-generation-r1.json",
+      "sha256": "b31130ff7b671c34ebcabf3d7dfa861ba728e50b1e12f755ed80dcff26284a14"
+    },
+    "art_differences": "四待機及攻擊起始共享站姿，末兩幀共享無光收勢；原4/5極小餘光不逐像素重畫。各幅布摺與手部沿手繪重定向，藍色／灰色護腕按姿勢參照原稿；不宣稱原版像素一致。",
+    "compiled_candidate": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hano-battle-candidate-r1/compiled.json",
+        "sha256": "9b1a323e9dfd9072f3af491ed7fc6b069266c1e656024d47203fc5a41fd2fe16"
+      },
+      "frames": 11,
+      "scale_groups": {
+        "standing": 0.9825729343801634,
+        "wide": 1,
+        "recovery": 0.967710520709699
+      },
+      "clipped_high_coverage_pixels": 0,
+      "catalog_assets": 385,
+      "base_dependency": "隔離Tino383候選；385不是正式清冊數",
+      "runtime_registered": false
+    },
+    "verification": {
+      "compiler_guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hano-compiler-guards-r1/guards.json",
+        "sha256": "b80edfdab73d5240e6062d549911a46e2a3cbe7764d65531912029bdf35cd2e8"
+      },
+      "candidate_source_audit": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hano-candidate-coverage-r1.json",
+        "sha256": "be418b66f35b20eaebcf6307c958ddc1af16efb783d0880b42e595b4d58688db"
+      }
+    },
+    "next_gate": "先核對存活哈諾的既有合法章節來源；亦可正常城鎮教會復活後建立來源。不能把第三章HP0改寫成普通玩家證據。完整Draw、F2、普通攻防／返回及保存冷讀通過後再登錄。",
+    "normal_source_review": {
+      "file": "docs/data/parity-slots/ch02-manifest.json",
+      "finding": "第1章939點實際酒店SAV，seed4；哈諾、悠妮與亞雷斯HP0已逐筆揭露。第三章承接同一祖先，不能把其中哈諾當作可操作來源；正常教會復活或其他已驗存活來源待接。"
+    },
+    "toolchain": {
+      "asset_image": {
+        "tag": "fd2-assets-local:20260829-sfx",
+        "id": "sha256:e59237a31d4b5f7a62c59ac37b780bd93f17c99fda97be8f5ca0c53978b878bc",
+        "pillow": "11.3.0"
+      },
+      "generation": "built-in image_gen；原始RGBA SHA保存，重建沿固定PNG與Pillow"
+    }
+  }
 }

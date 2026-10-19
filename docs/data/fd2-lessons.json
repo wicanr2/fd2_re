@@ -3126,6 +3126,51 @@
         ],
         "pattern": "node_boundary_save_checked"
       }
+    },
+    {
+      "id": "parameterized-battle-rejection-uses-selected-bank",
+      "date": "2026-10-20",
+      "area": "HD演出驗證",
+      "rule": "參數化人物的缺圖反例綁定實際actor.BattleFig*3銀行，再核對拒收不發布主題或推進演出。入口為remake/cmd/fd2/modern_hd_battle_lifecycle_test.go的TestModernHDBattleRuntimeGPU；不能沿用其他人物的固定資源索引。",
+      "why": "鐵諾完整演出首次反例仍用索爾0號圖庫，正式預載只讀當前人物，未使用的壞圖源不會被讀取，因此該測試不能要求拒收。改成所選銀行後完整演出通過。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+        ],
+        "pattern": "FD2_HD_BATTLE_REAL=1"
+      }
+    },
+    {
+      "id": "postbattle-gui-closes-inspection-before-cycle",
+      "date": "2026-10-20",
+      "area": "GUI輸入時序",
+      "rule": "戰後Z選人前先觀測player_status_phase，只以正常Escape關狀態／命令頁或ring。入口tools/verify_fd2_hd_fonts_gui.py的battle_post_dialogue_cleanup。move_preview只表示nativeMovePlan仍在，不能當成活動選單；g.sel=nil時Escape已是正常循環選人。失敗觀測只標OBSERVATION-ONLY。",
+      "why": "鐵諾正常HD抽驗已完成四次END及兩場射擊，但最後Enter落在經驗對話關閉之後，開出狀態面板，Z無法選人。完整流程需修正GUI按鍵邊界後乾淨重跑，不能假造保存成功。 第二次誤把留下的nativeMovePlan視為面板，造成八次Escape一直循環選人；原始輸入分支已證明應移除此假門檻。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_hd_fonts_gui.py"
+        ],
+        "pattern": "battle_post_dialogue_cleanup"
+      }
+    },
+    {
+      "id": "battle-end-gpu-uses-caller-offset-not-job-phase",
+      "date": "2026-10-20",
+      "area": "實際GPU圖源核對",
+      "rule": "END的X11截圖與只讀job觀測分開。tools/verify_fd2_character_battle_gpu.py的end分組只從同圖庫job取caller位移與clip，再以原描述子及實際PNG核對姿勢；不把觀測索引當已呈現相位。fixture在同次Draw回讀，仍逐索引核對；錯位移反例須拒收。",
+      "why": "七張鐵諾實際PNG證實常比當前預期job慢一拍，待機首張甚至仍顯示上一拍收勢。沿job索引篩選會拒收確實存在的HD；caller位移加實際像素保留嚴格幾何與核心容差，並保留多候選。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_character_battle_gpu.py"
+        ],
+        "pattern": "job只提供同圖庫的caller位移"
+      }
     }
   ]
 }

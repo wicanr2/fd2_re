@@ -55,6 +55,41 @@ func battleHDAssetFixture(t *testing.T) (modernThemeAsset, *figani.Animation, st
 	return a, native, root
 }
 
+func TestPhysicalBattleAuditSourcesReadOnly(t *testing.T) {
+	frame := figani.Frame{X: 32, Y: 40, Width: 120, Height: 130}
+	scene := &nativePhysicalScene{body: &nativePhysicalBodyPlayback{jobs: []nativePhysicalBodyJob{{hdPhase: "counter",
+		hdSources: &modernHDBattleSources{Layers: []modernHDBattleSource{{Frame: frame, Resource: 7, Index: 3, DX: 4, DY: 5, Fill: -1}}}}}}}
+	index, phase, rows := physicalBattleAuditSources(scene)
+	if index != 0 || phase != "counter" || len(rows) != 1 || rows[0]["resource"] != 7 || rows[0]["frame"] != 3 || rows[0]["x"] != 36 || rows[0]["y"] != 45 {
+		t.Fatalf("unexpected audit sources: %d %s %v", index, phase, rows)
+	}
+	rows[0]["resource"] = 99
+	if scene.body.index != 0 || scene.body.jobs[0].hdSources.Layers[0].Resource != 7 || !reflect.DeepEqual(scene.body.jobs[0].hdSources.Layers[0].Frame, frame) {
+		t.Fatal("audit mutated playback or source")
+	}
+	for _, state := range []string{"nil", "prelude", "past-end", "cue-only"} {
+		t.Run(state, func(t *testing.T) {
+			copyScene := *scene
+			copyBody := *scene.body
+			copyScene.body = &copyBody
+			switch state {
+			case "nil":
+				copyScene.body = nil
+			case "prelude":
+				copyScene.preludeImages = append(copyScene.preludeImages, nil)
+			case "past-end":
+				copyBody.index = len(copyBody.jobs)
+			case "cue-only":
+				copyBody.jobs = []nativePhysicalBodyJob{{}}
+			}
+			_, _, layers := physicalBattleAuditSources(&copyScene)
+			if len(layers) != 0 {
+				t.Fatalf("non-present state emitted sources: %v", layers)
+			}
+		})
+	}
+}
+
 func TestModernHDBattleAssetsCompleteAndAtomic(t *testing.T) {
 	a, native, root := battleHDAssetFixture(t)
 	set := &modernStoryPortraitSet{}

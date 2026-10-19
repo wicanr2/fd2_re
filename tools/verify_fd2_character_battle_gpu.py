@@ -16,6 +16,7 @@ def main():
     p.add_argument('--core-profile', choices=['blue', 'gold'], default='blue',
                    help='已知圖源服裝的取樣色域；只影響驗證，不影響遊戲')
     p.add_argument('--body-frames', help='只核對明示本體幀，格式為24:0,25:0-13；空白與投射物另驗')
+    p.add_argument('--sample-group',choices=['attack','end','fixture'],default='attack')
     for name in ['receipt', 'catalog', 'source', 'report']:
         p.add_argument('--'+name, type=Path, required=True)
     args = p.parse_args()
@@ -25,14 +26,24 @@ def main():
         and receipt.get('cold_loaded_units_equal') is True
         and bool(receipt.get('loaded_units'))
         and receipt['loaded_units'] == receipt.get('cold_units'))
-    if (receipt.get('schema') != 'fd2-hd-battle-status-gui-v1' or receipt.get('status') != 'PASS'
+    if args.sample_group=='fixture':
+        phases=['prelude','body','counter']
+        if (receipt.get('status')!='PASS-CHARACTER-FIXTURE-RUNTIME-E1' or receipt.get('figure')!=args.figure
+            or receipt.get('continuations')!=1 or receipt.get('battle_dac_steps')!=64 or receipt.get('map_dac_steps')!=65
+            or digest(args.catalog)!=receipt.get('catalog_sha256')
+            or any(receipt.get('phase_f2',{}).get(k)!=1 or receipt.get('phase_hd_draws',{}).get(k,0)<=0 for k in phases)):
+            raise SystemExit('需要完整人物Game.Draw測試收據')
+    elif (receipt.get('schema') != 'fd2-hd-battle-status-gui-v1' or receipt.get('status') != 'PASS'
         or not receipt.get('battle_hd_consumer_checked') or not receipt.get('new_process_title_load')
         or not (receipt.get('source_save_bytes_equal') or boundary_save) or not receipt.get('theme_save_bytes_equal')
         or digest(args.catalog) != receipt.get('catalog_sha256')):
         raise SystemExit('需要同份普通攻防完整GUI收據及清冊')
     catalog = validate(False, args.catalog); resources = [args.figure*3, args.figure*3+1]
+    if args.sample_group=='end' and receipt.get('battle_end_art_checked') is not True:
+        raise SystemExit('需要明示普通END擷取收據')
     entries = [a for a in catalog['assets'] if a['role'] == 'battle_animation_hd_set' and a['source_resource'] in resources]
     if sorted(a['source_resource'] for a in entries) != resources: raise SystemExit('需要完整待機及攻擊圖源')
+    by_resource={a['source_resource']:a for a in entries}
     body_frames = None
     if args.body_frames:
         import re
@@ -63,10 +74,12 @@ def main():
             if len(points) < 1000: raise SystemExit('高覆蓋服裝核心像素不足')
             total = len(points); points = points[::max(1, total//2500)]
             candidates.append((asset['source_resource'], index, name, sha, frame, points, total))
-    samples = list(receipt.get('battle_art_samples', []))
-    for scene in ['world-hd', 'world-hd-replay']:
-        name = scene+'-physical-scene.png'; shot = receipt['screenshots'][name]
-        samples.append({'scene': scene, 'file': name, 'sha256': shot['sha256'], 'before': shot['gpu_before'], 'after': shot['state']})
+    samples = list(receipt.get('battle_end_art_samples' if args.sample_group=='end' else 'battle_art_samples', []))
+    if args.sample_group=='fixture':samples=list(receipt.get('source_shots',{}).values())
+    if args.sample_group=='attack':
+        for scene in ['world-hd', 'world-hd-replay']:
+            name = scene+'-physical-scene.png'; shot = receipt['screenshots'][name]
+            samples.append({'scene': scene, 'file': name, 'sha256': shot['sha256'], 'before': shot['gpu_before'], 'after': shot['state']})
     found, rejected = [], []
     for sample in samples:
         path = args.receipt.parent/sample['file']
@@ -77,25 +90,59 @@ def main():
             if im.size != (1920, 1200): raise SystemExit('需要1920×1200視窗PNG')
             rgb = im.convert('RGB').load()
             for resource, index, name, sha, frame, points, total in candidates:
-                if matches(rgb, points, frame['x']*6, frame['y']*6, 1920, 1200):
-                    found.append({'scene': sample['scene'], 'file': path.name, 'sha256': sample['sha256'],
-                        'resource': resource, 'frame': index, 'source_file': name, 'source_sha256': sha,
-                        'checked_pixels': len(points), 'eligible_pixels': total,
-                        'world_origin': [frame['x']*6, frame['y']*6]})
-    for scene in ['world-hd', 'world-hd-replay']:
+                positions=[(frame['x']*6,frame['y']*6,None)]
+                if args.sample_group in ('end','fixture'):
+                    positions=[]
+                    for state in (sample['before'],sample['after']):
+                        for layer in state.get('battle_source_layers') or []:
+                            if (layer['resource']!=resource or layer['fill']!=-1
+                                    or layer.get('archive','') not in ('','FIGANI.DAT')):continue
+                            if args.sample_group=='fixture' and layer['frame']!=index:continue
+                            observed=layer['frame']
+                            frames=by_resource[resource]['native_frames']
+                            if not isinstance(observed,int) or not 0<=observed<len(frames):
+                                raise SystemExit('END預期圖層幀越界')
+                            current_frame=frames[observed]
+                            if (layer['width'],layer['height'])!=(current_frame['width'],current_frame['height']):
+                                raise SystemExit('END圖層原始尺寸不同')
+                            # X11擷取可落在前一個已呈現幀；job只提供同圖庫的caller位移。
+                            # fixture在同一次Draw回讀，仍要求精確索引。實際姿勢都由PNG核對。
+                            dx,dy=layer['x']-current_frame['x'],layer['y']-current_frame['y']
+                            position=((frame['x']+dx)*6,(frame['y']+dy)*6,layer['clip'])
+                            if position not in positions:positions.append(position)
+                for x,y,clip in positions:
+                    visible=points
+                    if clip:
+                        visible=[p for p in points if clip['Min']['X']*6<=p[0]+x<clip['Max']['X']*6
+                                 and clip['Min']['Y']*6<=p[1]+y<clip['Max']['Y']*6]
+                    if len(visible)<1000:continue
+                    if matches(rgb, visible, x, y, 1920, 1200):
+                        found.append({'scene': sample['scene'], 'file': path.name, 'sha256': sample['sha256'],
+                            'resource': resource, 'frame': index, 'source_file': name, 'source_sha256': sha,
+                            'checked_pixels': len(visible), 'eligible_pixels': total,
+                            'world_origin': [x,y],'clip':clip})
+    for scene in ([] if args.sample_group=='fixture' else ['world-hd', 'world-hd-replay']):
         if not any(x['scene'] == scene and x['resource'] == resources[1] and x['frame'] > 0 for x in found):
-            raise SystemExit('未在普通攻防GPU核對到所選人物的攻擊動作：'+scene)
+            raise SystemExit(('未在普通END GPU核對到所選人物的攻擊動作：' if args.sample_group=='end' else '未在普通攻防GPU核對到所選人物的攻擊動作：')+scene)
+        if args.sample_group=='end' and not any(x['scene']==scene and x['resource']==resources[0] for x in found):
+            raise SystemExit('未在普通END GPU核對到所選人物的待機：'+scene)
+    if args.sample_group=='fixture':
+        for resource,index,*_ in candidates:
+            if not any(x['resource']==resource and x['frame']==index for x in found):
+                raise SystemExit(f'未核對到實際人物GPU圖源：{resource}/{index}')
     groups = {}
     for match in found: groups.setdefault(match['file'], []).append({'resource': match['resource'], 'frame': match['frame']})
-    report = {'status': 'PASS-CHARACTER-NORMAL-ATTACK-GPU', 'figure': args.figure,
+    report = {'status': 'PASS-CHARACTER-FIXTURE-GPU' if args.sample_group=='fixture' else 'PASS-CHARACTER-NORMAL-ATTACK-GPU', 'figure': args.figure,
         'core_profile': args.core_profile,
         'body_frames': sorted(body_frames) if body_frames is not None else None,
+        'sample_group':args.sample_group,
         'node_boundary_save_checked': boundary_save,
         'receipt_sha256': digest(args.receipt), 'catalog_sha256': digest(args.catalog),
         'verifier_sha256': digest(Path(__file__)), 'pixel_matcher_sha256': digest(Path(__file__).with_name('verify_fd2_ares_battle_gpu.py')),
         'matches': found, 'sample_count': len(samples), 'rejected_boundary_samples': rejected,
         'ambiguous_source_candidates': {name: values for name, values in groups.items() if len(values) > 1},
-        'scope': '普通兩次攻防的實際PNG與所選人物明示本體幀指定色域的高覆蓋服裝核心；原描述子位置。'
+        'scope': '普通兩次攻防、明示END或修改fixture分組的實際PNG與所選人物明示本體幀指定色域的高覆蓋服裝核心；fixture只屬RUNTIME-E1。'
+                 'attack沿原描述子；end只從同圖庫的預期job取caller位移及裁切，再由實際PNG找姿勢，避免把觀測索引當呈現相位；fixture仍在同次Draw逐幀核對。'
                  'alpha255一量化值，250..254依未知背景混合界限。多候選保留相容集合，不判定唯一相位；'
                  '未比較服裝核心以外的武器／FX，不宣稱全部幀GPU或原版對拍。'}
     args.report.write_text(json.dumps(report, ensure_ascii=False, indent=2)+'\n')

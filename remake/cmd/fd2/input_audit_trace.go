@@ -53,6 +53,15 @@ func (g *Game) recordInputAuditState() {
 		r["move_reachable"] = cells
 	}
 	r["hd_battle"] = g.modernHDBattleVisible && g.modernHDBattleGPU != nil && g.modernHDBattleGPU.theme == g.modernStoryPortraits
+	if g.atk != nil && g.atk.nativeScene != nil && g.nativePaletteRamp == nil {
+		scene := g.atk.nativeScene
+		r["battle_owner"] = fmt.Sprintf("%p", scene)
+		job, phase, layers := physicalBattleAuditSources(scene)
+		r["battle_actor_fig"], r["battle_target_fig"] = scene.actorBattleFig, scene.targetBattleFig
+		if job >= 0 {
+			r["battle_body_job"], r["battle_phase"], r["battle_source_layers"] = job, phase, layers
+		}
+	}
 	r["hd_world"] = g.modernHDWorldVisible && g.modernHDMapGPU != nil && g.modernHDMapGPU.Theme == g.modernStoryPortraits
 	if r["hd_world"] == true && g.modernHDMapPresented != nil {
 		r["hd_world_frame"] = g.modernHDMapPresentedFrame
@@ -203,4 +212,23 @@ func (g *Game) recordInputAuditState() {
 	}
 	defer f.Close()
 	_ = json.NewEncoder(f).Encode(r)
+}
+
+// physicalBattleAuditSources只讀當前job，不表示GPU已呈現，也不推進時鐘或預載圖源。
+func physicalBattleAuditSources(scene *nativePhysicalScene) (int, string, []map[string]any) {
+	if scene == nil || scene.body == nil || scene.preludeFrame < len(scene.preludeImages) ||
+		scene.body.index < 0 || scene.body.index >= len(scene.body.jobs) {
+		return -1, "", nil
+	}
+	job := scene.body.jobs[scene.body.index]
+	if job.hdSources == nil {
+		return scene.body.index, job.hdPhase, nil
+	}
+	layers := make([]map[string]any, 0, len(job.hdSources.Layers))
+	for _, layer := range job.hdSources.Layers {
+		layers = append(layers, map[string]any{"archive": layer.Archive, "resource": layer.Resource, "frame": layer.Index,
+			"x": layer.Frame.X + layer.DX, "y": layer.Frame.Y + layer.DY,
+			"width": layer.Frame.Width, "height": layer.Frame.Height, "fill": layer.Fill, "clip": layer.Clip})
+	}
+	return scene.body.index, job.hdPhase, layers
 }

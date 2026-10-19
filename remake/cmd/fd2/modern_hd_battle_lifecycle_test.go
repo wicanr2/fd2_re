@@ -3,10 +3,13 @@ package main
 import (
 	"bytes"
 	"crypto/sha256"
+	"encoding/json"
 	"fmt"
 	"image"
+	"image/png"
 	"math/rand"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -240,6 +243,12 @@ func TestModernHDBattleRuntimeGPU(t *testing.T) {
 	requirePhysicalScenePack(t)
 	t.Setenv("FD2_MUTE", "1")
 	g, actor, target := physicalSceneTestGame(t)
+	real := os.Getenv("FD2_HD_BATTLE_REAL") == "1"
+	figure := 0
+	if real {
+		figure = modernBattleCandidateFigure(t)
+		actor.BattleFig, target.BattleFig = figure, 76
+	}
 	scene, err := g.prepareNativePhysicalScene(actor, target)
 	if err != nil {
 		t.Fatal(err)
@@ -258,6 +267,13 @@ func TestModernHDBattleRuntimeGPU(t *testing.T) {
 		t.Fatal(err)
 	}
 	set := diagnosticModernBattleSet(t, g, scene)
+	if real {
+		full, err := loadModernStoryPortraitSet(os.Getenv("FD2_TEST_MODERN_BATTLE_CATALOG"), os.Getenv("FD2_TEST_MODERN_BATTLE_PACK"))
+		if err != nil {
+			t.Fatal(err)
+		}
+		set = &modernStoryPortraitSet{hasHD: true, battleAnimations: full.battleAnimations}
+	}
 	// 沿既有完整地圖fixture測返回composer，戰鬥圖源仍為上面的真正分離資源。
 	assets, field, state := completeNativeMapFrameFixture(t)
 	dac, palette, err := loadNativeBattlePalette()
@@ -269,12 +285,16 @@ func TestModernHDBattleRuntimeGPU(t *testing.T) {
 	g.nativeMapDAC = append([]byte(nil), dac...)
 	g.baseMapTileset = image.NewRGBA(image.Rect(0, 0, 24, 24))
 	probe := &modernHDBattleLifecycleProbe{g: g, scene: scene, actor: actor, target: target, seen: make([]bool, len(scene.preludeImages)+len(scene.body.jobs))}
-	g.atk = &atkAnim{nativeScene: scene, fpt: 1, after: func() { probe.finished = true }}
+	if real {
+		probe.everyPhase, probe.phaseDraws, probe.phaseF2 = true, make(map[string]int), make(map[string]int)
+	}
+	callbacks := 0
+	g.atk = &atkAnim{nativeScene: scene, fpt: 1, after: func() { callbacks++; probe.finished = true }}
 	if err := g.applyTheme(set); err != nil {
 		t.Fatal(err)
 	}
 	// 主題切換的壞圖源不能發布，也不能推進演出。
-	bad := &modernStoryPortraitSet{hasHD: true, battleAnimations: map[int]*modernBattleHDResource{0: {Frames: make([]image.Image, 1), paths: []string{"missing-frame.png"}, hashes: []string{""}, sizes: []image.Rectangle{image.Rect(0, 0, 6, 6)}}}}
+	bad := &modernStoryPortraitSet{hasHD: true, battleAnimations: map[int]*modernBattleHDResource{actor.BattleFig * 3: {Frames: make([]image.Image, 1), paths: []string{"missing-frame.png"}, hashes: []string{""}, sizes: []image.Rectangle{image.Rect(0, 0, 6, 6)}}}}
 	before := probe.stable()
 	if err := g.applyTheme(bad); err == nil || g.modernStoryPortraits != set || probe.stable() != before {
 		t.Fatal("failed theme preflight changed live state")
@@ -288,6 +308,62 @@ func TestModernHDBattleRuntimeGPU(t *testing.T) {
 		t.Fatal("owner advanced without Draw")
 	}
 	probe.presentation = &modernHDPresentation{Game: g}
+	out := os.Getenv("FD2_TEST_HD_BATTLE_OUT")
+	shots := make(map[string]any)
+	if real && out != "" {
+		if err := os.Mkdir(out, 0755); err != nil {
+			t.Fatal(err)
+		}
+		readback := ebiten.NewImage(1920, 1200)
+		defer readback.Dispose()
+		pixels := make([]byte, 1920*1200*4)
+		probe.capture = func(screen *ebiten.Image, phase string) {
+			if g.modernStoryPortraits == nil || !g.modernHDBattleVisible || (phase != "body" && phase != "counter") {
+				return
+			}
+			index := scene.body.index
+			if index < 0 || index >= len(scene.body.jobs) || scene.body.jobs[index].hdSources == nil {
+				return
+			}
+			for _, source := range scene.body.jobs[index].hdSources.Layers {
+				if (source.Resource != figure*3 && source.Resource != figure*3+1) || source.Fill != -1 {
+					continue
+				}
+				key := fmt.Sprintf("%03d-%02d", source.Resource, source.Index)
+				if shots[key] != nil {
+					continue
+				}
+				_, _, layers := physicalBattleAuditSources(scene)
+				readback.Clear()
+				var geometry ebiten.GeoM
+				geometry.Scale(3, 3)
+				probe.presentation.DrawFinalScreen(readback, screen, geometry)
+				readback.ReadPixels(pixels)
+				name := key + ".png"
+				file, err := os.Create(filepath.Join(out, name))
+				if err != nil {
+					probe.err = err
+					return
+				}
+				err = png.Encode(file, &image.RGBA{Pix: pixels, Stride: 1920 * 4, Rect: image.Rect(0, 0, 1920, 1200)})
+				closeErr := file.Close()
+				if err == nil {
+					err = closeErr
+				}
+				if err != nil {
+					probe.err = err
+					return
+				}
+				raw, err := os.ReadFile(filepath.Join(out, name))
+				if err != nil {
+					probe.err = err
+					return
+				}
+				state := map[string]any{"battle_scene": true, "hd_battle": true, "battle_source_layers": layers}
+				shots[key] = map[string]any{"scene": "fixture", "file": name, "sha256": fmt.Sprintf("%x", sha256.Sum256(raw)), "before": state, "after": state, "job": index}
+			}
+		}
+	}
 	ebiten.SetWindowSize(1920, 1200)
 	ebiten.SetVsyncEnabled(false)
 	if err := ebiten.RunGame(probe); err != nil {
@@ -296,7 +372,7 @@ func TestModernHDBattleRuntimeGPU(t *testing.T) {
 	if g.modernHDBattleGPU != nil {
 		defer g.modernHDBattleGPU.close()
 	}
-	if probe.err != nil || !probe.finished || g.atk != nil || g.loadErr != "" {
+	if probe.err != nil || !probe.finished || callbacks != 1 || g.atk != nil || g.loadErr != "" {
 		t.Fatalf("runtime lifecycle: %v finished%v error%s", probe.err, probe.finished, g.loadErr)
 	}
 	for i, seen := range probe.seen {
@@ -333,5 +409,31 @@ func TestModernHDBattleRuntimeGPU(t *testing.T) {
 	if len(g.modernHDBattleGPU.sources) != 0 || g.modernHDBattleGPU.owner != nil {
 		t.Fatal("completed scene retained old GPU sources")
 	}
-	t.Logf("Game.Draw + final1920 layer: %d HD / %d faithful / %d final draws; all presents, 64 battle fade and 65 map return DAC stages; F2 and failed preflight preserve HP/RNG; source-exact projection fixture only", probe.hdDraws, probe.faithfulDraws, probe.finals)
+	if real && out != "" {
+		for _, phase := range []string{"prelude", "body", "counter"} {
+			if probe.phaseDraws[phase] == 0 || probe.phaseF2[phase] != 1 {
+				t.Fatalf("phase%s missing HD/F2", phase)
+			}
+		}
+		for resource, animation := range map[int]*figani.Animation{figure * 3: scene.bodyResources.actorIdle, figure*3 + 1: scene.bodyResources.attack} {
+			for index := range animation.Frames {
+				if shots[fmt.Sprintf("%03d-%02d", resource, index)] == nil {
+					t.Fatalf("selected source%d/%d missing GPU capture", resource, index)
+				}
+			}
+		}
+		catalog, err := os.ReadFile(os.Getenv("FD2_TEST_MODERN_BATTLE_CATALOG"))
+		if err != nil {
+			t.Fatal(err)
+		}
+		report := map[string]any{"status": "PASS-CHARACTER-FIXTURE-RUNTIME-E1", "figure": figure, "catalog_sha256": fmt.Sprintf("%x", sha256.Sum256(catalog)), "phase_f2": probe.phaseF2, "phase_hd_draws": probe.phaseDraws, "continuations": callbacks, "battle_dac_steps": len(probe.rampSeen), "map_dac_steps": len(probe.mapRampSeen), "source_shots": shots, "scope": "真實FIGANI、強制一次攻擊與反擊計畫及native地圖fixture；Game.Draw最終1920回讀。非普通玩家或原版oracle。"}
+		raw, err := json.MarshalIndent(report, "", "  ")
+		if err == nil {
+			err = os.WriteFile(filepath.Join(out, "receipt.json"), append(raw, '\n'), 0644)
+		}
+		if err != nil {
+			t.Fatal(err)
+		}
+	}
+	t.Logf("Game.Draw + final1920 layer: %d HD / %d faithful / %d final draws; all presents, 64 battle fade and 65 map return DAC stages; F2 and failed preflight preserve HP/RNG; realArt%v figure%d; fixture only", probe.hdDraws, probe.faithfulDraws, probe.finals, real, figure)
 }

@@ -65,7 +65,11 @@ def main():
     parser.add_argument('--timed-dialogue', action='store_true', help='加驗計時對話開收框、穩定HD文字與F2；需--world與明示章前EXP校準槽')
     parser.add_argument('--battle-advance', action='store_true', help='無射程目標時沿正式可達集合前進並待機，再正常END')
     parser.add_argument('--faithful-approach', action='store_true', help='正常END期間以F2使用忠實模式，回玩家回合再切HD')
+    parser.add_argument('--battle-end-art', action='store_true', help='正常END期間有界擷取明示人物的HD圖層')
+    parser.add_argument('--battle-end-figure',type=int,default=2)
     args = parser.parse_args()
+    assert 0<=args.battle_end_figure<=135
+    assert not args.battle_end_art or (args.battle_only and args.battle_hd and args.battle_approach_rounds>0 and not args.faithful_approach)
     assert not (args.battle_advance or args.faithful_approach) or args.battle_only
     if not re.fullmatch(r'battle_ch(?:0[1-9]|[12][0-9]|30)', args.battle_node):
         parser.error('戰場節點須為battle_ch01..battle_ch30')
@@ -135,6 +139,8 @@ def main():
     processes,streams,shots,operations=[],[],{},[]
     battle_hd_scenes=[]
     battle_art_samples=[]
+    battle_end_art_samples=[]
+    battle_post_dialogue_cleanup=[]
     battle_attack_choices=[]
     started=time.monotonic()
     window=None
@@ -213,7 +219,7 @@ def main():
             state=latest(audit)
             if state.get('error'):raise RuntimeError(state['error'])
             if predicate(state):return state
-            limit=1800 if args.battle_advance else 1200 if args.terrain_occlusion or args.battle_approach_rounds else 660
+            limit=2400 if args.battle_end_art else 1800 if args.battle_advance else 1200 if args.terrain_occlusion or args.battle_approach_rounds else 660
             if time.monotonic()-started>limit:raise TimeoutError('整輪逾時')
             time.sleep(.1)
         raise TimeoutError(str(latest(audit)))
@@ -652,16 +658,38 @@ def main():
                         key('Down');key('Return')
                         wait(lambda s:s.get('system_end_turn_confirm') and not s.get('class_ui_job'))
                         key('Return')
-                        deadline=time.monotonic()+(600 if args.battle_advance else 300)
+                        deadline=time.monotonic()+(900 if args.battle_end_art else 600 if args.battle_advance else 300)
+                        end_seen=set();end_scenes={}
                         while time.monotonic()<deadline:
                             current=latest(audit)
                             if current.get('error'):raise RuntimeError(current['error'])
+                            if args.battle_end_art:
+                                assert current.get('hd_theme') is True,'正常END意外退出HD主題'
+                                owner=current.get('battle_owner')
+                                if current.get('battle_scene') and owner:
+                                    token=(owner,current.get('battle_actor_fig'),current.get('battle_target_fig'))
+                                    stats=end_scenes.setdefault(token,{'owner':owner,'actor_fig':token[1],'target_fig':token[2],
+                                        'first_frame':current['frame'],'last_frame':current['frame'],'hd_draw_seen':False})
+                                    stats['last_frame']=current['frame'];stats['hd_draw_seen']|=current.get('hd_battle') is True
+                                if current.get('battle_scene') and current.get('hd_battle') and current.get('battle_phase') in ('body','counter'):
+                                    for layer in current.get('battle_source_layers') or []:
+                                        resource,index=layer['resource'],layer['frame']
+                                        if (resource not in (args.battle_end_figure*3,args.battle_end_figure*3+1)
+                                                or layer['fill']!=-1 or (resource,index) in end_seen):continue
+                                        end_seen.add((resource,index))
+                                        path=args.out/f'{prefix}-end-{approach}-{resource:03d}-{index:02d}.png'
+                                        command('import','-window',window,str(path))
+                                        battle_end_art_samples.append({'scene':prefix,'approach':approach,'file':path.name,
+                                            'sha256':digest(path),'before':current,'after':latest(audit),
+                                            'scope':'當前job只用於定位；是否真的呈現由PNG另驗'})
                             if (current['native_round']>state['native_round'] and current['turn']>state['turn']
                                     and not any(current.get(k) for k in ['ai_busy','battle_event','dialogues','banner_t',
                                                                        'battle_scene','class_ui_job','system_end_turn_confirm'])):break
                             if current.get('dialogues'):key('Return')
                             else:time.sleep(.05)
                         else:raise TimeoutError('普通END未回玩家回合')
+                        if args.battle_end_art:
+                            assert end_scenes and all(s['hd_draw_seen'] for s in end_scenes.values()),'END有物理場景沒有HD呈現證據'
                         own_before=[u for u in state['units'] if u['camp']==0 and u['on_field'] and u['hp']>0]
                         own_after=[u for u in current['units'] if u['camp']==0 and u['on_field'] and u['hp']>0]
                         survivors={(u['native_identity'],u['name']) for u in own_after}
@@ -669,7 +697,8 @@ def main():
                         if args.faithful_approach:
                             key('F2');wait(lambda s:s.get('hd_theme') is True and s.get('hd_world'))
                         battle_approach_steps.append({'scene':prefix,'before':state,'after':current,
-                            'advance_cell':advance_cell,'end_in_faithful_theme':args.faithful_approach,'state_injection':False})
+                            'advance_cell':advance_cell,'end_in_faithful_theme':args.faithful_approach,
+                            'physical_scenes':list(end_scenes.values()),'state_injection':False})
                         shot(prefix+'-approach-round-return')
                     _,cell,target=min(choices,key=lambda value:(value[0],value[1][1],value[1][0]))
                     battle_attack_choices.append({'scene':prefix,'attacker':attacker,'range':[minimum,maximum],
@@ -739,6 +768,23 @@ def main():
                 if timed_probe:timed_result=timed_probe.finish(validate=True)
                 if not args.battle_only:key('F9')
                 settle_world_battle()
+                # 最後一次翻頁可能剛好落在自動關框後，正常開出狀態面板。
+                # 沿正式Escape先關狀態／命令頁，再用Z選人。
+                # nativeMovePlan可在g.sel=nil後保留；它本身不是開著的輸入面板。
+                for _ in range(8):
+                    state=latest(audit)
+                    phase=state.get('player_status_phase')
+                    if phase:
+                        state=wait(lambda s:s.get('player_status_phase') in (None,'status','commands'))
+                        phase=state.get('player_status_phase')
+                        if not phase:continue
+                        key('Escape')
+                        wait(lambda s:s.get('player_status_phase') in (None,'status','commands') and s.get('player_status_phase')!=phase)
+                    elif state.get('ring'):
+                        key('Escape')
+                    else:break
+                    battle_post_dialogue_cleanup.append({'before':state,'after':latest(audit),'key':'Escape','state_injection':False})
+                else:raise AssertionError('普通戰後狀態面板或選取尚未取消')
                 focus_own(0)
                 wait(lambda s:s.get('hd_world') is True)
                 shot('world-hd-postbattle-before-save' if args.battle_only else 'world-hd-source-reloaded')
@@ -818,6 +864,8 @@ def main():
             cold_units=persistence(latest(audit))
             if args.battle_only:
                 assert loaded_units==cold_units,'章節邊界保存／新程序LOAD的重建狀態不同'
+            if args.battle_end_art:
+                assert all(any(s['scene']==name for s in battle_end_art_samples) for name in ('world-hd','world-hd-replay')),'未取得兩輪普通END圖源樣本'
             assert digest(Path(__file__))==tool_source_sha256,'GUI工具執行中來源被修改'
             report={'schema':'fd2-hd-battle-status-gui-v1','status':'PASS',
                     'catalog_sha256':digest(args.assets/'assets/themes/modern/catalog.json'),
@@ -836,6 +884,9 @@ def main():
                     },
                     'battle_hd_scenes':battle_hd_scenes,
                     'battle_art_samples':battle_art_samples,
+                    'battle_end_art_checked':args.battle_end_art,'battle_end_figure':args.battle_end_figure,
+                    'battle_end_art_samples':battle_end_art_samples,
+                    'battle_post_dialogue_cleanup':battle_post_dialogue_cleanup,
                     'timed_dialogue_gpu':timed_result,
                     'binary_sha256':digest(args.binary),'source_save_sha256':digest(args.town_save),
                     'saved_sha256':digest(saved),'screenshots':shots,'operations':operations,
@@ -1260,6 +1311,14 @@ def main():
         world_stop.set()
         if world_thread and world_thread.ident is not None:world_thread.join(timeout=15)
         if args.world:
+            (args.out/'battle-observation.json').write_text(json.dumps(
+                {'status':'OBSERVATION-ONLY','battle_hd_scenes':battle_hd_scenes,
+                 'battle_art_samples':battle_art_samples,'battle_end_art_samples':battle_end_art_samples,
+                 'battle_approach_steps':battle_approach_steps,'battle_post_dialogue_cleanup':battle_post_dialogue_cleanup,
+                 'catalog_sha256':digest(args.assets/'assets/themes/modern/catalog.json'),
+                 'binary_sha256':digest(args.binary),'source_save_sha256':digest(args.town_save),
+                 'gui_tool_sha256':tool_source_sha256,'tool_source_unchanged':digest(Path(__file__))==tool_source_sha256,
+                 'recording_created':False},ensure_ascii=False,indent=2)+'\n')
             (args.out/'world-observation.json').write_text(json.dumps(
                 {'accepted_walk_gpu':world_shots,'rejected_walk_gpu':world_rejected,
                  'gui_tool_sha256':tool_source_sha256,'tool_source_unchanged':digest(Path(__file__))==tool_source_sha256,

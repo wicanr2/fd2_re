@@ -196,7 +196,7 @@ FIGANI228四幀待機、229九幀攻擊沿原矩形、header、層序與節拍�
 asset清單及逐檔PNG保持相同，沒有改寫普通GUI收據的清冊指紋。
 正常GUI的`--battle-advance`依正式可達集合移動、下方待機再END；
 `--faithful-approach`明示在END期間以普通F2選忠實主題，返回玩家回合再切HD。
-NPC鐵諾的圖組仍未重繪，不能把這段忠實模式計入HD驗證。
+當時NPC鐵諾圖組尚未重繪，該段忠實模式不能計入HD；最新鐵諾及普通HD END見下節。
 
 希莉亞雙側完整Draw與四張飛矢PNG核對通過。新增敵方76號完整146次呈現，
 九張攻擊幀與四飛矢的實際PNG核心相符，六階段F2、64／65 DAC與一次續行保持。
@@ -227,6 +227,53 @@ SHA為`d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51`。
 `FD2_HD_SCROLL_TARGET=76`、`FD2_HD_SCROLL_TARGET_FRAMES=1`及`FD2_HD_SCROLL_PROJECTILES=1`。
 `FD2_TEST_MODERN_BATTLE_CATALOG`與`FD2_TEST_MODERN_BATTLE_PACK`指定清冊／素材根，
 `FD2_TEST_HD_SCROLL_OUT`指定新輸出目錄；此入口只產生fixture的RUNTIME-E1證據。
+
+#### 鐵諾與正常END觀測（CONFORMED-SCOPED）
+
+FIGANI6四幀待機、7十幀攻擊與8零header沿固定來源盤點；第三章NPC實際BattleFig2，
+身份依角色表及map2型別資料定位，不把NPC的NativeIdentity=0佔位值當作索爾。
+重畫保留銀白長髮、深藍披風、灰綠護腕與直劍，三拍光帶各有對應稿。
+沿既有character配方、原矩形及節拍，無規則、幾何或保存格式變更。
+來源、共享姿勢及驗收見主收據的`tino_battle_followup_20261020`。
+
+[`input_audit_trace.go`](../../remake/cmd/fd2/input_audit_trace.go)可只讀當前physical body job
+的圖層索引與原位移。這是預期資料，不能當成GPU已呈現的證據。
+[`GUI工具`](../../tools/verify_fd2_hd_fonts_gui.py)的`--battle-end-art`沿正常END觀測明示figure2，
+每回合每resource／frame最多一張，再以實際PNG核對圖源核心。
+[`完整繪製測試`](../../remake/cmd/fd2/modern_hd_battle_lifecycle_test.go)沿既有共背景fixture，
+以`FD2_HD_BATTLE_LIFECYCLE_GPU=1`、`FD2_HD_BATTLE_REAL=1`及`FD2_TEST_MODERN_BATTLE_FIGURE=2`
+選真實人物銀行；清冊／素材根沿既有`FD2_TEST_MODERN_BATTLE_CATALOG`與`FD2_TEST_MODERN_BATTLE_PACK`，
+`FD2_TEST_HD_BATTLE_OUT`指定新輸出目錄。這是強制一次攻擊／反擊計畫的RUNTIME-E1。
+[`圖源核對器`](../../tools/verify_fd2_character_battle_gpu.py)的`--sample-group fixture`
+要求完整14幀實際PNG、三階段F2、64／65 DAC與一次續行；`--sample-group end`另核普通END。
+兩者都核來源SHA及高覆蓋核心；[`反例`](../../tools/test_fd2_character_battle_gpu.py)另拒絕保留觀測欄位的黑圖。
+實際X11取樣已證實可比當前job慢一幀，甚至跨待機／收勢邊界。
+END因此只從同圖庫的預期job取caller位移與裁切，依各原描述子逐一核對實際PNG；
+不把觀測索引當作已呈現相位。錯caller位移須拒收，色域／像素容差保持。
+同次Draw回讀的fixture仍要求精確索引，不降低14幀驗收。
+戰後最後一次Enter可能跨過自動關框而開出狀態面板；GUI沿`player_status_phase`
+以正常Escape逐頁關閉，再Z選人。nativeMovePlan可在g.sel=nil後保留，不能把move_preview當成活動面板；遊戲程式保持。
+失敗時`battle-observation.json`保存樣本及工具／清冊指紋，只標`OBSERVATION-ONLY`；
+完整保存冷讀未完成時不產生PASS收據。
+正式已新增14幀與五母稿，清冊383項，FIGANI14資源108幀。14幀完整Draw與原子拒收通過，
+三階段F2、64／65 DAC及一次續行保持；五項fixture反例與舊希莉亞85圖回歸通過。
+正常第三章四次HD END與兩次希莉亞射擊、返回、F2及章節邊界保存冷讀通過；
+51張END符合鐵諾核心、73張射擊符合希莉亞核心，六種錯收據／人物／來源／位移／舊圖／保存反例拒收。
+r1及r2在保存前的失敗分別是額外狀態頁與plan假門檻，不是產品缺陷；r3無額外清理輸入而完整通過。
+五母稿allow-list另乾淨重建，14幀及清冊項目逐位元組相同，重建暫存已刪。
+來源槽、清敵祖先、共享姿勢、取樣界線、1437秒軟體擷取耗時與私人同步見主收據。
+私人allow-list3483檔與runtime-only3208檔已建立，原3464檔SHA保持；遠端提交及正式Go收尾由主收據記錄。
+不新增原版oracle、整章E2、傷害或平台效能聲明。
+
+#### 哈諾後續候選（READY／DATA-READY-CANDIDATE）
+
+FIGANI3四待機、4七攻擊與5零header沿同一固定盤點；角色表identity1為哈諾。
+六母稿編製11幀，保留短柄斧、紅褐背心、深藍披布、灰綠長褲與纏腿；
+大斬光、星芒與餘光分開，末兩格收勢共享，極小餘光差異明示。
+仍沿原矩形與既有character配方，無新正式繪製路徑。
+來源、完整提示、配方、零高覆蓋裁切與16項拒收見主收據的`hano_battle_followup_20261020`。
+385項是以鐵諾隔離候選為基底的候選清冊，不能當成正式登錄數。
+下一閘門為存活哈諾的正常來源、完整Draw／F2、攻防返回與保存冷讀；未驗前不登錄或私人發布。
 
 #### 非共背景物理演出（CONFORMED-SCOPED／RUNTIME-E1）
 
