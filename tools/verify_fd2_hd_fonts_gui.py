@@ -45,6 +45,10 @@ def main():
     parser.add_argument('--world', action='store_true', help='加驗正式HD世界、普通走行、指令環、取消與物理戰鬥返回')
     parser.add_argument('--battle-hd', action='store_true', help='要求兩次普通攻擊確實使用可選HD戰鬥繪製層；需--world')
     parser.add_argument('--battle-art', action='store_true', help='另擷取兩次普通攻擊的有界PNG序列供實際圖源核對；需--battle-hd')
+    parser.add_argument('--battle-own-index', type=int, default=2,
+                        help='普通攻擊時以Z選取的在場我方序號，預設2為既有亞雷斯；需--world')
+    parser.add_argument('--battle-approach-rounds', type=int, choices=[0,1], default=0,
+                        help='沒有可達攻擊位置時，最多一次普通END等待敵人接近；需--world')
     parser.add_argument('--gaia', action='store_true', help='首章普通選取蓋亞、北移／取消、F2與新程序LOAD；需--battle-status')
     parser.add_argument('--terrain', action='store_true', help='普通方向鍵移鏡頭至首章房屋，抽驗HD地形與F2；需--battle-status')
     parser.add_argument('--terrain-occlusion', action='store_true', help='最多六個普通回合抵達屋後，抽驗前景；需--terrain與--world')
@@ -62,6 +66,10 @@ def main():
     assert not args.world or args.battle_status
     assert not args.battle_hd or args.world
     assert not args.battle_art or args.battle_hd
+    assert 0 <= args.battle_own_index < 128
+    assert args.battle_own_index == 2 or args.world
+    assert not args.battle_approach_rounds or args.world
+    battle_approach_steps=[]
     assert not args.gaia or args.battle_status and not args.world and not args.terrain
     assert not args.terrain or args.battle_status
     assert not args.terrain_occlusion or args.terrain and args.world
@@ -185,7 +193,7 @@ def main():
             state=latest(audit)
             if state.get('error'):raise RuntimeError(state['error'])
             if predicate(state):return state
-            if time.monotonic()-started>(1200 if args.terrain_occlusion else 660):raise TimeoutError('整輪逾時')
+            if time.monotonic()-started>(1200 if args.terrain_occlusion or args.battle_approach_rounds else 660):raise TimeoutError('整輪逾時')
             time.sleep(.1)
         raise TimeoutError(str(latest(audit)))
 
@@ -484,6 +492,7 @@ def main():
                 def focus_own(index):
                     state=latest(audit)
                     own=[u for u in state['units'] if u['camp']==0 and u['on_field'] and u['hp']>0]
+                    assert index < len(own), '指定我方序號不在目前正常在場名冊'
                     target=[own[index]['x'],own[index]['y']]
                     for _ in range(len(own)+1):
                         key('z');wait(lambda s:not s.get('player_focus'))
@@ -515,26 +524,51 @@ def main():
                 key('F9');wait(lambda s:s.get('node')=='battle_ch01' and not s.get('ring') and not s.get('move_preview'))
                 settle_world_battle()
                 def ordinary_physical_attack(prefix):
-                    focus_own(2)
-                    attacker=latest(audit)
-                    shot(prefix+'-attacker-focused')
-                    key('Return');wait(lambda s:s.get('move_preview') is True)
-                    state=latest(audit)
-                    occupied={(u['x'],u['y']) for u in state['units'] if u['on_field'] and u['hp']>0}
-                    enemies=[u for u in state['units'] if u['camp']==2 and u['on_field'] and u['hp']>0]
-                    choices=[]
-                    for target in enemies:
-                        for cell in state.get('move_reachable',[]):
-                            if tuple(cell) not in occupied and abs(cell[0]-target['x'])+abs(cell[1]-target['y'])==1:
-                                choices.append((abs(cell[0]-state['cursor'][0])+abs(cell[1]-state['cursor'][1]),cell,target))
-                    assert choices,'正式可達集合沒有相鄰敵人的安全測試位置'
-                    _,cell,target=min(choices,key=lambda value:(value[0],value[1][1],value[1][0]))
                     def move_cursor(destination):
                         current=latest(audit)['cursor']
                         for _ in range(abs(destination[0]-current[0])):key('Right' if destination[0]>current[0] else 'Left')
                         current=latest(audit)['cursor']
                         for _ in range(abs(destination[1]-current[1])):key('Down' if destination[1]>current[1] else 'Up')
                         assert latest(audit)['cursor']==destination
+                    for approach in range(args.battle_approach_rounds+1):
+                        focus_own(args.battle_own_index)
+                        shot(prefix+('-attacker-focused' if approach==0 else '-approached-attacker-focused'))
+                        key('Return');wait(lambda s:s.get('move_preview') is True)
+                        state=latest(audit)
+                        occupied={(u['x'],u['y']) for u in state['units'] if u['on_field'] and u['hp']>0}
+                        enemies=[u for u in state['units'] if u['camp']==2 and u['on_field'] and u['hp']>0]
+                        choices=[]
+                        for target in enemies:
+                            for cell in state.get('move_reachable',[]):
+                                if tuple(cell) not in occupied and abs(cell[0]-target['x'])+abs(cell[1]-target['y'])==1:
+                                    choices.append((abs(cell[0]-state['cursor'][0])+abs(cell[1]-state['cursor'][1]),cell,target))
+                        if choices:break
+                        assert approach<args.battle_approach_rounds,'正式可達集合沒有相鄰敵人的安全測試位置'
+                        key('Escape');wait(lambda s:not s.get('move_preview'))
+                        grid=json.loads((args.assets/'assets/maps/map0/map.json').read_text())
+                        empty=min(([x,y] for y in range(grid['h']) for x in range(grid['w']) if (x,y) not in occupied),
+                                  key=lambda p:(abs(p[0]-state['cursor'][0])+abs(p[1]-state['cursor'][1]),p))
+                        move_cursor(empty)
+                        key('Return');wait(lambda s:s.get('ring') and s.get('ring_phase')=='open')
+                        key('Down');key('Return')
+                        wait(lambda s:s.get('system_end_turn_confirm') and not s.get('class_ui_job'))
+                        key('Return')
+                        deadline=time.monotonic()+300
+                        while time.monotonic()<deadline:
+                            current=latest(audit)
+                            if current.get('error'):raise RuntimeError(current['error'])
+                            if (current['native_round']>state['native_round'] and current['turn']>state['turn']
+                                    and not any(current.get(k) for k in ['ai_busy','battle_event','dialogues','banner_t',
+                                                                       'battle_scene','class_ui_job','system_end_turn_confirm'])):break
+                            if current.get('dialogues'):key('Return')
+                            else:time.sleep(.05)
+                        else:raise TimeoutError('普通END未回玩家回合')
+                        own_before=[u for u in state['units'] if u['camp']==0 and u['on_field'] and u['hp']>0]
+                        own_after=[u for u in current['units'] if u['camp']==0 and u['on_field'] and u['hp']>0]
+                        assert len(own_after)==len(own_before),'普通END有我方離場，停止抽驗'
+                        battle_approach_steps.append({'scene':prefix,'before':state,'after':current,'state_injection':False})
+                        shot(prefix+'-approach-round-return')
+                    _,cell,target=min(choices,key=lambda value:(value[0],value[1][1],value[1][0]))
                     move_cursor(cell);key('Return')
                     wait(lambda s:s.get('ring') and not s.get('walking') and s.get('ring_phase')=='open')
                     shot(prefix+'-attack-ring')
@@ -674,6 +708,13 @@ def main():
                     'gui_tool_sha256':tool_source_sha256,
                     'world_runtime_checked':args.world,'world_walk_gpu':world_shots,'world_walk_rejected':world_rejected,
                     'battle_hd_consumer_checked':args.battle_hd,
+                    'battle_own_index':args.battle_own_index,
+                    'battle_approach_rounds_limit':args.battle_approach_rounds,
+                    'battle_approach_steps':battle_approach_steps,
+                    'battle_source_roster':{
+                        ident:{field:unit.get(field) for field in ('NativeIdentity','Fig','BattleFig')}
+                        for ident,unit in json.loads(args.town_save.read_text())['party_roster'].items()
+                    },
                     'battle_hd_scenes':battle_hd_scenes,
                     'battle_art_samples':battle_art_samples,
                     'timed_dialogue_gpu':timed_result,

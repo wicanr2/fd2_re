@@ -3051,6 +3051,21 @@
         ],
         "pattern": "FDOTHER.DAT"
       }
+    },
+    {
+      "id": "normal-character-art-capture-requires-reachable-attack",
+      "date": "2026-10-19",
+      "area": "正常玩家HD抽驗",
+      "rule": "角色戰鬥圖源抽驗以當前正式move_reachable選相鄰敵格，不沿用其他角色的可達性假設。沒有可達位置時，只走明示有界的普通END接敵，記錄換手與存活；仍無路就保留失敗，不改移動力或注入位置。入口tools/verify_fd2_hd_fonts_gui.py的--battle-own-index及--battle-approach-rounds。",
+      "why": "首章亞雷斯可直接接戰，換索爾後同槽的正式可達集合沒有相鄰敵格。保留首輪失敗，按既有系統環END契約換手一次後索爾正常進入攻擊；沒有改存檔隊伍或座標。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_hd_fonts_gui.py"
+        ],
+        "pattern": "battle_approach_rounds"
+      }
     }
   ]
 }

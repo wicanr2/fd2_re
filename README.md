@@ -59,6 +59,12 @@
 背景與戰鬥面板仍含像素素材。操作、保存冷讀及圖源核對範圍見
 [現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
 
+![索爾HD普通攻防](docs/figures/hd-sol-physical-attack.png)
+
+索爾的待機、蓄力、斬擊與收勢也已接入手繪HD圖源。以上是首章正常END接敵後，
+索爾收勢與強盜反擊的實際視窗；沒有改寫隊伍、血量或移動力。背景與面板仍含像素素材，
+驗證範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
+
 ## 遊戲介紹
 
 《炎龍騎士團 2》是 1990 年代華文單機戰略角色扮演遊戲（SRPG）的代表作之一。

@@ -9,39 +9,41 @@
     "native_viewport": "CONFORMED-SCOPED：正式1920世界沿原生(4,4)、312×192窗格；正常F2同view與960地形樣本一致。",
     "hd_sprite_data": "DATA-READY：完整125組1455張HD及31組372張新增24父項已登錄；舊1083張父項及HD bytes保持。",
     "hd_world_renderer": "CONFORMED-SCOPED：144人物已接Game.Draw；首章34張正常GPU、4張實際走行、兩次物理攻擊及保存／新程序LOAD通過。",
-    "private_assets": "catalog allow-list3370檔與runtime-only3131檔逐檔通過，原3350檔保持；本批強盜8母稿排除執行包。 私人提交54318cd9已推送，遠端HEAD相同。",
+    "private_assets": "375項清冊allow-list3392檔及runtime-only3146檔通過，原3370檔保持，七份索爾母稿不進執行包。 私人提交b64bc057已推送，遠端HEAD相同。",
     "quickload_battle_owner": "CONFORMED-SCOPED：成功JSON LOAD丟棄舊經驗owner與移動計畫；拒收保留。",
     "timed_dialogue": "CONFORMED-SCOPED-RUNTIME-E1：計時FFEC開收框保留HD世界，EXP99普通鍵盤／F2與保存冷讀通過；其他caller未驗。",
     "hd_terrain": "CONFORMED-SCOPED：map0六組53槽；新增圓頂綠色／褐色雙塊四底圖在兩張正常GPU全部相符，短長組合與保存冷讀通過；草地及其他地形仍待HD化。",
     "ai_player_input_lock": "CONFORMED-SCOPED：AI換手期間拒絕玩家地圖輸入重入；普通END／增援對話及相關／完整Go回歸通過。",
     "gaia_redesign": "CONFORMED-SCOPED：新版頭像與四方向圖組已登錄；正常START／Gaia北移取消／F2／冷讀分段驗證。相位差異與序章尾端失敗明示，非逐幀parity。",
-    "hd_battle_animation": "CONFORMED-SCOPED：正式373項含共同召喚37幀與角色FIGANI四資源31幀。首章強盜／亞雷斯普通兩次攻防、返回、F2、保存冷讀及雙方核心通過；相近圖源只列相容集合。全來源409位置／264已解碼／2118原幀不等於完整HD。其餘人物／演出、普通召喚與效能未完成，蓋亞占寬待決。"
+    "hd_battle_animation": "CONFORMED-SCOPED：正式375項含共同召喚37幀與角色FIGANI六資源46幀。索爾正常首章兩次END接敵／攻防、返回、F2、保存冷讀與雙方核心通過，較早亞雷斯／強盜證據保持。其餘人物／施法者／演出、普通召喚與效能未完成，蓋亞占寬待決。"
   },
   "runtime_source": {
     "binary": {
-      "file": "work/promo-cadence-20261018/hd-fonts/bandit-hd-game",
-      "sha256": "93c49317382e76c2e84f9151f431bdeda2eec3a83f6098d6ec1d52b4e832b406",
+      "file": "work/promo-cadence-20261018/hd-fonts/thor-hd-game",
+      "sha256": "f6fb55cf23ae2dcecb84787ff5f5ae499ffe646d6f3c1d4c8a896d61e428fe09",
       "size": 19258168,
       "removed_after_validation": true
     },
     "test_binary": {
-      "file": "work/promo-cadence-20261018/hd-fonts/bandit-hd-tests",
+      "file": "work/promo-cadence-20261018/hd-fonts/thor-hd-tests",
       "sha256": "a427db4b8823a7c2e67756f7cd43cf2fe7b68645c3766444742d69420eac1ba9",
       "size": 26166976,
       "removed_after_validation": true
     },
     "runtime_go_snapshot": {
-      "file": "work/promo-cadence-20261018/hd-fonts/bandit-runtime-go-snapshot.json",
-      "sha256": "a19253ab944aaea2f4da357a662e88e0252d1ad5222c71a02a76f67d5dbead33"
+      "file": "work/promo-cadence-20261018/hd-fonts/thor-runtime-go-snapshot.json",
+      "sha256": "b6029f4fe49aa3136407a0d365719850ae8cd603fd2ed39e5b8e3bd3961e3d3c"
     },
     "runtime_go_files": 488,
     "production_go_changes": 0,
-    "changed_go_tests": [
-      "remake/cmd/fd2/modern_hd_battle_assets_test.go"
-    ],
+    "changed_go_tests": [],
     "gui_tool": {
       "file": "tools/verify_fd2_hd_fonts_gui.py",
-      "sha256": "4d84af4fdb88beaa421eaf52fee3bae6c8b3ef788156ec1c25540d63f42c256b"
+      "sha256": "d55818cd17c6df9f9c6065280d940847e248b13a27b146811312dafaf941a069"
+    },
+    "gpu_guard_tool": {
+      "file": "tools/test_fd2_character_battle_gpu.py",
+      "sha256": "151ea3fcb389daf9a96eb1e010aa16e80085753a4415738a334681b2c5143589"
     }
   },
   "f2_conflict": {
@@ -19995,6 +19997,4567 @@
       "unexpected_owners_or_md_directories": [],
       "scope": "本批變更文件、所有bandit輸出根及20份正式新圖；不遍歷整份歷史work。全庫舊九項缺件沿前批紀錄，未宣稱全庫通過。",
       "docker_leftovers": "提交前docker ps -a按本專案掛載篩選為空；提交後再核對。"
+    }
+  },
+  "historical_runtime_source_before_thor": {
+    "binary": {
+      "file": "work/promo-cadence-20261018/hd-fonts/bandit-hd-game",
+      "sha256": "93c49317382e76c2e84f9151f431bdeda2eec3a83f6098d6ec1d52b4e832b406",
+      "size": 19258168,
+      "removed_after_validation": true
+    },
+    "test_binary": {
+      "file": "work/promo-cadence-20261018/hd-fonts/bandit-hd-tests",
+      "sha256": "a427db4b8823a7c2e67756f7cd43cf2fe7b68645c3766444742d69420eac1ba9",
+      "size": 26166976,
+      "removed_after_validation": true
+    },
+    "runtime_go_snapshot": {
+      "file": "work/promo-cadence-20261018/hd-fonts/bandit-runtime-go-snapshot.json",
+      "sha256": "a19253ab944aaea2f4da357a662e88e0252d1ad5222c71a02a76f67d5dbead33"
+    },
+    "runtime_go_files": 488,
+    "production_go_changes": 0,
+    "changed_go_tests": [
+      "remake/cmd/fd2/modern_hd_battle_assets_test.go"
+    ],
+    "gui_tool": {
+      "file": "tools/verify_fd2_hd_fonts_gui.py",
+      "sha256": "4d84af4fdb88beaa421eaf52fee3bae6c8b3ef788156ec1c25540d63f42c256b"
+    }
+  },
+  "thor_battle_followup_20261019": {
+    "date": "2026-10-19",
+    "status": "CONFORMED-SCOPED",
+    "base_source_commit": "a9026731ca67778a9e794617d3c2395356c1c876",
+    "scope": "BattleFig0的FIGANI0四幀待機及1十一幀物理攻擊，2為原始空header；原矩形美化重定向。",
+    "inventory": {
+      "file": "work/promo-cadence-20261018/hd-fonts/battle-animation-hd-inventory-final.json",
+      "sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51"
+    },
+    "generation": {
+      "schema_version": 1,
+      "tool": "built-in image_gen",
+      "idle": {
+        "prompt": "Use case: stylized-concept. Asset: transparent HD battle character illustration for the FD2 remake, one full-body isolated male swordsman, no sheet, no letters. Image 1 is the exact original pose/identity reference; Image 2 is only the already accepted hand-painted rendering style, do NOT copy that bandit's clothing or front view. Repaint image1 faithfully into detailed clean hand-painted 1990s fantasy game art. This is Sol/Thor, viewed from behind in a three-quarter back view, facing upper-left, his face entirely hidden behind the high shoulder line. Short dark-blue hair and blue headband tails, oversized rounded grey-green steel pauldrons and articulated upper back armor, fitted royal-blue long-sleeve undersuit, blue gloves and boots, grey-green baggy trousers, broad brown belt, red triangular hip sash hanging behind to his right thigh, gold cord loops at hip, plain sheathed sword diagonally from left waist to right hip. In his LEFT-visible hand at screen-left a single straight silver sword points diagonally up-left, arm low in a relaxed ready guard. Match the original compact, near-upright stance and leg overlap, rear boot planted and other knee bent. Natural adult athletic proportions, broad shoulders, NO helmet, no cloak, no shield, no extra weapon, no front portrait. Entire sword tip, headband and boots inside canvas with generous transparent margins. Fine ink contours, rich material texture and painted shading consistent with style reference. Genuine transparent background, no ground, no cast shadow, no glow or scene.",
+        "references": [
+          "work/promo-cadence-20261018/hd-fonts/thor-native-000-00-4x.png",
+          "remake/generated-assets/modern-theme-prototypes/figure-096-idle-battle-hd6-master-v1.png"
+        ],
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-adfaa320-fc0e-4720-8780-f840ab61553b.png",
+        "workspace_file": "work/promo-cadence-20261018/hd-fonts/thor-idle-master-r1.png"
+      },
+      "jobs": [
+        {
+          "key": "windup",
+          "frame": 1,
+          "pose": "Narrow upright windup, sword gripped in his screen-left hand at upper chest/head level, straight blade rises diagonally across above his head to the upper RIGHT, left elbow tucked and raised. Entire torso three-quarter BACK, one cheek only may show at screen-right beneath pauldron. Boots stay compact and overlapped below. Both hands close to body. No light effects.",
+          "prompt": "Use case: stylized-concept. Transparent HD battle character master, ONE full-body male swordsman Sol/Thor for FD2 remake. Input1 exact original silhouette/pose reference; input2 accepted new character identity and painterly rendering. Paint this new pose using the same character/armor/materials as input2. Preserve the original back view, compact steel armor, short dark blue hair and blue/red headband, huge rounded grey-green pauldrons and segmented upper back plate, fitted royal-blue torso, long blue gloves/forearm guards with exposed upper arms where original shows skin, grey-green trousers, blue boots, brown belt, bright red triangular waist sash and long red hip cloth, gold cord loops and diagonal sheathed sword at hip. Face hidden by upper back/pauldrons except where original shows sliver. Full clean hand-painted fantasy game art, fine ink edges, detailed cloth/metal. All limbs, sword tip and any explicit effects entirely inside generous transparent margins. No helmet, shield, cape, frontal portrait, scene, typography, platform, or opaque background. Genuine RGBA transparency. Pose: Narrow upright windup, sword gripped in his screen-left hand at upper chest/head level, straight blade rises diagonally across above his head to the upper RIGHT, left elbow tucked and raised. Entire torso three-quarter BACK, one cheek only may show at screen-right beneath pauldron. Boots stay compact and overlapped below. Both hands close to body. No light effects.",
+          "refs": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/thor-native-001-01-4x.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/thor-idle-master-r1.png"
+          ]
+        },
+        {
+          "key": "strike",
+          "frame": 6,
+          "pose": "Exact wide forward slash follow-through of original pose, BACK toward viewer, torso pitched slightly forward. Screen-left arm extends outward toward left and down from left pauldron with fist at waist height. Screen-right arm stretches right at shoulder height, sword grip at far right, straight silver blade angled back across ABOVE shoulders toward upper-left. Wide lunge legs: screen-left leg fully extended diagonally down-left with blue boot on far-left ground line, screen-right knee raised and bent toward right with boot behind red sash. Add a single long thin white-hot gold horizontal slash streak trailing LEFT from above his shoulders, occupying left half of image, NOT a giant vertical crescent. Small gold dust swish at extended boot.",
+          "prompt": "Use case: stylized-concept. Transparent HD battle character master, ONE full-body male swordsman Sol/Thor for FD2 remake. Input1 exact original silhouette/pose reference; input2 accepted new character identity and painterly rendering. Paint this new pose using the same character/armor/materials as input2. Preserve the original back view, compact steel armor, short dark blue hair and blue/red headband, huge rounded grey-green pauldrons and segmented upper back plate, fitted royal-blue torso, long blue gloves/forearm guards with exposed upper arms where original shows skin, grey-green trousers, blue boots, brown belt, bright red triangular waist sash and long red hip cloth, gold cord loops and diagonal sheathed sword at hip. Face hidden by upper back/pauldrons except where original shows sliver. Full clean hand-painted fantasy game art, fine ink edges, detailed cloth/metal. All limbs, sword tip and any explicit effects entirely inside generous transparent margins. No helmet, shield, cape, frontal portrait, scene, typography, platform, or opaque background. Genuine RGBA transparency. Pose: Exact wide forward slash follow-through of original pose, BACK toward viewer, torso pitched slightly forward. Screen-left arm extends outward toward left and down from left pauldron with fist at waist height. Screen-right arm stretches right at shoulder height, sword grip at far right, straight silver blade angled back across ABOVE shoulders toward upper-left. Wide lunge legs: screen-left leg fully extended diagonally down-left with blue boot on far-left ground line, screen-right knee raised and bent toward right with boot behind red sash. Add a single long thin white-hot gold horizontal slash streak trailing LEFT from above his shoulders, occupying left half of image, NOT a giant vertical crescent. Small gold dust swish at extended boot.",
+          "refs": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/thor-native-001-06-4x.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/thor-idle-master-r1.png"
+          ]
+        },
+        {
+          "key": "settle1",
+          "frame": 7,
+          "pose": "First recovery after horizontal slash, three-quarter BACK view. Same broad lunging stance as original with left boot extended down-left and right knee bent up-right. Screen-left arm down-out from shoulder, screen-right hand stretched right holding sword at shoulder height, blade runs diagonally up-left above back. A SHORT narrow white-gold residual streak follows blade just above shoulders, no long leftward beam. Small gold dust loop by extended boot.",
+          "prompt": "Use case: stylized-concept. Transparent HD battle character master, ONE full-body male swordsman Sol/Thor for FD2 remake. Input1 exact original silhouette/pose reference; input2 accepted new character identity and painterly rendering. Paint this new pose using the same character/armor/materials as input2. Preserve the original back view, compact steel armor, short dark blue hair and blue/red headband, huge rounded grey-green pauldrons and segmented upper back plate, fitted royal-blue torso, long blue gloves/forearm guards with exposed upper arms where original shows skin, grey-green trousers, blue boots, brown belt, bright red triangular waist sash and long red hip cloth, gold cord loops and diagonal sheathed sword at hip. Face hidden by upper back/pauldrons except where original shows sliver. Full clean hand-painted fantasy game art, fine ink edges, detailed cloth/metal. All limbs, sword tip and any explicit effects entirely inside generous transparent margins. No helmet, shield, cape, frontal portrait, scene, typography, platform, or opaque background. Genuine RGBA transparency. Pose: First recovery after horizontal slash, three-quarter BACK view. Same broad lunging stance as original with left boot extended down-left and right knee bent up-right. Screen-left arm down-out from shoulder, screen-right hand stretched right holding sword at shoulder height, blade runs diagonally up-left above back. A SHORT narrow white-gold residual streak follows blade just above shoulders, no long leftward beam. Small gold dust loop by extended boot.",
+          "refs": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/thor-native-001-07-4x.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/thor-idle-master-r1.png"
+          ]
+        },
+        {
+          "key": "settle2",
+          "frame": 8,
+          "pose": "Second slash recovery, three-quarter BACK. Wide left leg extended down-left, right leg bent and knee raised to screen-right. Screen-left fist low-out from left shoulder; screen-right arm reaches horizontally right at shoulder height holding sword whose blade extends diagonally up-left over upper back. Only a TINY gold glint at the sword tip above left shoulder, no other weapon trail. Small fading dust curl near extended left boot.",
+          "prompt": "Use case: stylized-concept. Transparent HD battle character master, ONE full-body male swordsman Sol/Thor for FD2 remake. Input1 exact original silhouette/pose reference; input2 accepted new character identity and painterly rendering. Paint this new pose using the same character/armor/materials as input2. Preserve the original back view, compact steel armor, short dark blue hair and blue/red headband, huge rounded grey-green pauldrons and segmented upper back plate, fitted royal-blue torso, long blue gloves/forearm guards with exposed upper arms where original shows skin, grey-green trousers, blue boots, brown belt, bright red triangular waist sash and long red hip cloth, gold cord loops and diagonal sheathed sword at hip. Face hidden by upper back/pauldrons except where original shows sliver. Full clean hand-painted fantasy game art, fine ink edges, detailed cloth/metal. All limbs, sword tip and any explicit effects entirely inside generous transparent margins. No helmet, shield, cape, frontal portrait, scene, typography, platform, or opaque background. Genuine RGBA transparency. Pose: Second slash recovery, three-quarter BACK. Wide left leg extended down-left, right leg bent and knee raised to screen-right. Screen-left fist low-out from left shoulder; screen-right arm reaches horizontally right at shoulder height holding sword whose blade extends diagonally up-left over upper back. Only a TINY gold glint at the sword tip above left shoulder, no other weapon trail. Small fading dust curl near extended left boot.",
+          "refs": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/thor-native-001-08-4x.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/thor-idle-master-r1.png"
+          ]
+        },
+        {
+          "key": "settle3",
+          "frame": 9,
+          "pose": "Third recovery easing upward from lunge, back toward viewer, broad back and grey-green shoulders. Extended left boot down-left, right knee bent to screen-right. Screen-left fist low left; right arm reaches right at shoulder height holding straight sword diagonally up-left across top of back. NO luminous weapon trail, a few tiny gold settling dust flecks at left boot. Match original posture rather than standing idle.",
+          "prompt": "Use case: stylized-concept. Transparent HD battle character master, ONE full-body male swordsman Sol/Thor for FD2 remake. Input1 exact original silhouette/pose reference; input2 accepted new character identity and painterly rendering. Paint this new pose using the same character/armor/materials as input2. Preserve the original back view, compact steel armor, short dark blue hair and blue/red headband, huge rounded grey-green pauldrons and segmented upper back plate, fitted royal-blue torso, long blue gloves/forearm guards with exposed upper arms where original shows skin, grey-green trousers, blue boots, brown belt, bright red triangular waist sash and long red hip cloth, gold cord loops and diagonal sheathed sword at hip. Face hidden by upper back/pauldrons except where original shows sliver. Full clean hand-painted fantasy game art, fine ink edges, detailed cloth/metal. All limbs, sword tip and any explicit effects entirely inside generous transparent margins. No helmet, shield, cape, frontal portrait, scene, typography, platform, or opaque background. Genuine RGBA transparency. Pose: Third recovery easing upward from lunge, back toward viewer, broad back and grey-green shoulders. Extended left boot down-left, right knee bent to screen-right. Screen-left fist low left; right arm reaches right at shoulder height holding straight sword diagonally up-left across top of back. NO luminous weapon trail, a few tiny gold settling dust flecks at left boot. Match original posture rather than standing idle.",
+          "refs": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/thor-native-001-09-4x.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/thor-idle-master-r1.png"
+          ]
+        },
+        {
+          "key": "settle4",
+          "frame": 10,
+          "pose": "Last recovery, back toward viewer, torso a little more upright than initial lunge, shoulders broad. Screen-left leg extends down-left, screen-right knee raised to right with blue boot bent behind red hip sash. Screen-left fist low outward; right arm extends right at shoulder height holding a straight silver sword diagonally up-left above shoulder line. NO glowing blade trail, NO dust, no contact shadow. Keep the full extended pose, not a closed-leg idle.",
+          "prompt": "Use case: stylized-concept. Transparent HD battle character master, ONE full-body male swordsman Sol/Thor for FD2 remake. Input1 exact original silhouette/pose reference; input2 accepted new character identity and painterly rendering. Paint this new pose using the same character/armor/materials as input2. Preserve the original back view, compact steel armor, short dark blue hair and blue/red headband, huge rounded grey-green pauldrons and segmented upper back plate, fitted royal-blue torso, long blue gloves/forearm guards with exposed upper arms where original shows skin, grey-green trousers, blue boots, brown belt, bright red triangular waist sash and long red hip cloth, gold cord loops and diagonal sheathed sword at hip. Face hidden by upper back/pauldrons except where original shows sliver. Full clean hand-painted fantasy game art, fine ink edges, detailed cloth/metal. All limbs, sword tip and any explicit effects entirely inside generous transparent margins. No helmet, shield, cape, frontal portrait, scene, typography, platform, or opaque background. Genuine RGBA transparency. Pose: Last recovery, back toward viewer, torso a little more upright than initial lunge, shoulders broad. Screen-left leg extends down-left, screen-right knee raised to right with blue boot bent behind red hip sash. Screen-left fist low outward; right arm extends right at shoulder height holding a straight silver sword diagonally up-left above shoulder line. NO glowing blade trail, NO dust, no contact shadow. Keep the full extended pose, not a closed-leg idle.",
+          "refs": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/thor-native-001-10-4x.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/thor-idle-master-r1.png"
+          ]
+        }
+      ],
+      "results": {
+        "windup": {
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-71db0757-8940-46de-997a-d9f3b43040e6.png",
+          "workspace_file": "work/promo-cadence-20261018/hd-fonts/thor-windup-master-r1.png"
+        },
+        "strike": {
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-750a318d-2081-4a9b-a9f0-0b6e64ecf447.png",
+          "workspace_file": "work/promo-cadence-20261018/hd-fonts/thor-strike-master-r1.png"
+        },
+        "settle1": {
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-b9c27885-cdcb-4844-8fa2-003bac9c0046.png",
+          "workspace_file": "work/promo-cadence-20261018/hd-fonts/thor-settle1-master-r1.png"
+        },
+        "settle2": {
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-08b3e54c-5a36-4bdc-8fe5-14444b4ca5c0.png",
+          "workspace_file": "work/promo-cadence-20261018/hd-fonts/thor-settle2-master-r1.png"
+        },
+        "settle3": {
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-717ebaa1-857c-429e-9934-46d1e89ba363.png",
+          "workspace_file": "work/promo-cadence-20261018/hd-fonts/thor-settle3-master-r1.png"
+        },
+        "settle4": {
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-f7c29737-6a80-48e6-b2ca-1987d6608d81.png",
+          "workspace_file": "work/promo-cadence-20261018/hd-fonts/thor-settle4-master-r1.png"
+        }
+      }
+    },
+    "recipe": {
+      "file": "work/promo-cadence-20261018/hd-fonts/thor-recipe-r1.json",
+      "sha256": "b2794c2db61e93dff13216e5244d6c8868dc3df906106186a216fe39d9b846de",
+      "data": {
+        "schema_version": 1,
+        "figure": 0,
+        "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+        "sources": {
+          "idle": {
+            "file": "work/promo-cadence-20261018/hd-fonts/thor-idle-master-r1.png",
+            "sha256": "dade1f07d7782cd87fcbee9af0c144fdb17e739163c68d3eb8ee570476f6084c",
+            "anchor": [
+              438,
+              335,
+              1080,
+              1302
+            ]
+          },
+          "windup": {
+            "file": "work/promo-cadence-20261018/hd-fonts/thor-windup-master-r1.png",
+            "sha256": "d852f03ad71df2778371c1dad8f3779f6fbc54104c4dbf6ea2caa82172de8b04",
+            "anchor": [
+              154,
+              567,
+              694,
+              1708
+            ]
+          },
+          "strike": {
+            "file": "work/promo-cadence-20261018/hd-fonts/thor-strike-master-r1.png",
+            "sha256": "8b719d17097d7a86df258a3533d360a0560ac505279bf9931f8aa5b45fdc9270",
+            "anchor": [
+              625,
+              282,
+              1536,
+              891
+            ]
+          },
+          "settle1": {
+            "file": "work/promo-cadence-20261018/hd-fonts/thor-settle1-master-r1.png",
+            "sha256": "1dac99b9e6474641b3b59633924606841657158ba7d57dc555b1b4f6ee56a3ca",
+            "anchor": [
+              174,
+              316,
+              1047,
+              1136
+            ]
+          },
+          "settle2": {
+            "file": "work/promo-cadence-20261018/hd-fonts/thor-settle2-master-r1.png",
+            "sha256": "a662c8a8f1451ff047cc7b7cfc24410cd879ad1ffc375fa7e8ba3df542ee0b42",
+            "anchor": [
+              162,
+              329,
+              1097,
+              1129
+            ]
+          },
+          "settle3": {
+            "file": "work/promo-cadence-20261018/hd-fonts/thor-settle3-master-r1.png",
+            "sha256": "0a79df3b1c4490335ddf2e2a03afebdb01116853e3f98ce2e127ce928dff0dc2",
+            "anchor": [
+              175,
+              286,
+              1103,
+              1123
+            ]
+          },
+          "settle4": {
+            "file": "work/promo-cadence-20261018/hd-fonts/thor-settle4-master-r1.png",
+            "sha256": "28e1bd753246c4252688dd278b36f83013970d674dfda9d09e584bdc7a52751b",
+            "anchor": [
+              167,
+              347,
+              1099,
+              1131
+            ]
+          }
+        },
+        "resources": {
+          "0": [
+            {
+              "pose": "idle",
+              "anchor": [
+                36,
+                26,
+                101,
+                113
+              ],
+              "scale_group": "idle"
+            },
+            {
+              "pose": "idle",
+              "anchor": [
+                36,
+                26,
+                101,
+                113
+              ],
+              "scale_group": "idle"
+            },
+            {
+              "pose": "idle",
+              "anchor": [
+                36,
+                28,
+                101,
+                115
+              ],
+              "scale_group": "idle"
+            },
+            {
+              "pose": "idle",
+              "anchor": [
+                36,
+                26,
+                101,
+                113
+              ],
+              "scale_group": "idle"
+            }
+          ],
+          "1": [
+            {
+              "pose": "idle",
+              "anchor": [
+                36,
+                26,
+                101,
+                113
+              ],
+              "scale_group": "idle"
+            },
+            {
+              "pose": "windup",
+              "anchor": [
+                12,
+                47,
+                66,
+                139
+              ],
+              "scale_group": "windup"
+            },
+            {
+              "pose": "windup",
+              "anchor": [
+                12,
+                48,
+                65,
+                140
+              ],
+              "scale_group": "windup"
+            },
+            {
+              "pose": "windup",
+              "anchor": [
+                12,
+                49,
+                64,
+                141
+              ],
+              "scale_group": "windup"
+            },
+            {
+              "pose": "windup",
+              "anchor": [
+                12,
+                50,
+                63,
+                142
+              ],
+              "scale_group": "windup"
+            },
+            {
+              "pose": "windup",
+              "anchor": [
+                12,
+                51,
+                62,
+                143
+              ],
+              "scale_group": "windup"
+            },
+            {
+              "pose": "strike",
+              "anchor": [
+                109,
+                31,
+                189,
+                117
+              ],
+              "scale_group": "lunge"
+            },
+            {
+              "pose": "settle1",
+              "anchor": [
+                22,
+                29,
+                102,
+                115
+              ],
+              "scale_group": "lunge"
+            },
+            {
+              "pose": "settle2",
+              "anchor": [
+                23,
+                27,
+                103,
+                113
+              ],
+              "scale_group": "lunge"
+            },
+            {
+              "pose": "settle3",
+              "anchor": [
+                23,
+                25,
+                103,
+                111
+              ],
+              "scale_group": "lunge"
+            },
+            {
+              "pose": "settle4",
+              "anchor": [
+                21,
+                25,
+                101,
+                111
+              ],
+              "scale_group": "lunge"
+            }
+          ]
+        }
+      }
+    },
+    "native_body_review": {
+      "scope": "只核相同trim RGBA，不把肉眼相似叫完全相同",
+      "frames": [
+        {
+          "frame": 0,
+          "bbox": [
+            0,
+            0,
+            103,
+            117
+          ],
+          "trim_size": [
+            103,
+            117
+          ],
+          "trim_rgba_sha256": "95562b583aec68433c9c81ea9f5821b18f9529fc09bdbd7e44c782f7f21ea6ff"
+        },
+        {
+          "frame": 1,
+          "bbox": [
+            0,
+            0,
+            73,
+            143
+          ],
+          "trim_size": [
+            73,
+            143
+          ],
+          "trim_rgba_sha256": "cbdbad348bbf72152c48ae70bda858874d7dabad31b703629765c8199a84b532"
+        },
+        {
+          "frame": 2,
+          "bbox": [
+            0,
+            0,
+            73,
+            144
+          ],
+          "trim_size": [
+            73,
+            144
+          ],
+          "trim_rgba_sha256": "449a70dd676bb34ce8e6af661ba97cb6e54010214d392427c88bb320340f9e5a"
+        },
+        {
+          "frame": 3,
+          "bbox": [
+            0,
+            0,
+            73,
+            145
+          ],
+          "trim_size": [
+            73,
+            145
+          ],
+          "trim_rgba_sha256": "158f49d7bf2838f7f9039ae46ab3e0fb33ee9e14b1454e83fe27b7b9719b704d"
+        },
+        {
+          "frame": 4,
+          "bbox": [
+            0,
+            0,
+            73,
+            146
+          ],
+          "trim_size": [
+            73,
+            146
+          ],
+          "trim_rgba_sha256": "f995ded7f3d9e56167a8828b81d4fbb77d55f7b9579137e3ceb0808de96d4f97"
+        },
+        {
+          "frame": 5,
+          "bbox": [
+            0,
+            0,
+            73,
+            147
+          ],
+          "trim_size": [
+            73,
+            147
+          ],
+          "trim_rgba_sha256": "e04e634ac27bfd962b867e1a278f359e3182c98ce162e72aa35a9782b0098925"
+        },
+        {
+          "frame": 6,
+          "bbox": [
+            0,
+            0,
+            227,
+            121
+          ],
+          "trim_size": [
+            227,
+            121
+          ],
+          "trim_rgba_sha256": "63ac1495e1eb3bc6e0aee0ea268a2efafc02d951f35429e6973dda487b9ee2af"
+        },
+        {
+          "frame": 7,
+          "bbox": [
+            0,
+            0,
+            139,
+            119
+          ],
+          "trim_size": [
+            139,
+            119
+          ],
+          "trim_rgba_sha256": "4ba2ba2010b6810026e7c394983e471efab413ae5c753991d1dba70212e21855"
+        },
+        {
+          "frame": 8,
+          "bbox": [
+            0,
+            0,
+            140,
+            117
+          ],
+          "trim_size": [
+            140,
+            117
+          ],
+          "trim_rgba_sha256": "6e41c282f7faf26892a1569b9ba9afff3ea7b234ae94af6e8fcfd841cf1d7084"
+        },
+        {
+          "frame": 9,
+          "bbox": [
+            0,
+            0,
+            140,
+            115
+          ],
+          "trim_size": [
+            140,
+            115
+          ],
+          "trim_rgba_sha256": "40f28a98df70dc67508e59cde2196dcb5f49c2cdf16f286041067d7085c13386"
+        },
+        {
+          "frame": 10,
+          "bbox": [
+            0,
+            0,
+            138,
+            115
+          ],
+          "trim_size": [
+            138,
+            115
+          ],
+          "trim_rgba_sha256": "452c30bee85378da07c4fc9737c7dfbf60faf3d7e8a1689a1cd6930047de26f4"
+        }
+      ]
+    },
+    "anchor_evidence": {
+      "file": "work/promo-cadence-20261018/hd-fonts/thor-anchor-evidence-r1.json",
+      "sha256": "b9ff7cb7ac698f763e42c51d16dba3195b9021584668d78647da4744a471358f"
+    },
+    "compiler": {
+      "file": "tools/build_fd2_character_battle_hd.py",
+      "sha256": "fd283cd499e5703cfb1165751e469c75b85e60b3f85727c2e032eac14207b8c0"
+    },
+    "compiled": {
+      "file": "work/promo-cadence-20261018/hd-fonts/thor-candidate-r2/compiled.json",
+      "sha256": "fcaafd57042bf8485f459547afc5039a4cdc407bc8639948920b17f4bc5cc2c8"
+    },
+    "compile_record": {
+      "status": "PASS-COMPILED-CHARACTER-CANDIDATE",
+      "runtime_registered": false,
+      "figure": 0,
+      "base_catalog_sha256": "69d6eae91cf4487e790e75e394e52e0980a0b4efc003ecb4a9d5ef02ca3d908c",
+      "catalog_sha256": "a1c152cb4ab59f2126d555eb761e0013f2e93ca746f102aee787ef59bf92c338",
+      "compiler_sha256": "fd283cd499e5703cfb1165751e469c75b85e60b3f85727c2e032eac14207b8c0",
+      "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+      "recipe_sha256": "b2794c2db61e93dff13216e5244d6c8868dc3df906106186a216fe39d9b846de",
+      "sources": {
+        "idle": {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-idle-master-r1.png",
+          "sha256": "dade1f07d7782cd87fcbee9af0c144fdb17e739163c68d3eb8ee570476f6084c",
+          "anchor": [
+            438,
+            335,
+            1080,
+            1302
+          ]
+        },
+        "windup": {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-windup-master-r1.png",
+          "sha256": "d852f03ad71df2778371c1dad8f3779f6fbc54104c4dbf6ea2caa82172de8b04",
+          "anchor": [
+            154,
+            567,
+            694,
+            1708
+          ]
+        },
+        "strike": {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-strike-master-r1.png",
+          "sha256": "8b719d17097d7a86df258a3533d360a0560ac505279bf9931f8aa5b45fdc9270",
+          "anchor": [
+            625,
+            282,
+            1536,
+            891
+          ]
+        },
+        "settle1": {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-settle1-master-r1.png",
+          "sha256": "1dac99b9e6474641b3b59633924606841657158ba7d57dc555b1b4f6ee56a3ca",
+          "anchor": [
+            174,
+            316,
+            1047,
+            1136
+          ]
+        },
+        "settle2": {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-settle2-master-r1.png",
+          "sha256": "a662c8a8f1451ff047cc7b7cfc24410cd879ad1ffc375fa7e8ba3df542ee0b42",
+          "anchor": [
+            162,
+            329,
+            1097,
+            1129
+          ]
+        },
+        "settle3": {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-settle3-master-r1.png",
+          "sha256": "0a79df3b1c4490335ddf2e2a03afebdb01116853e3f98ce2e127ce928dff0dc2",
+          "anchor": [
+            175,
+            286,
+            1103,
+            1123
+          ]
+        },
+        "settle4": {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-settle4-master-r1.png",
+          "sha256": "28e1bd753246c4252688dd278b36f83013970d674dfda9d09e584bdc7a52751b",
+          "anchor": [
+            167,
+            347,
+            1099,
+            1131
+          ]
+        }
+      },
+      "frames": [
+        {
+          "resource": 0,
+          "frame": 0,
+          "pose": "idle",
+          "native_anchor": [
+            36,
+            26,
+            101,
+            113
+          ],
+          "source_anchor": [
+            438,
+            335,
+            1080,
+            1302
+          ],
+          "fit_size": [
+            635,
+            722
+          ],
+          "origin": [
+            2,
+            -25
+          ],
+          "scale_xy": [
+            0.5395072217502124,
+            0.5400149588631264
+          ],
+          "scale_group": "idle",
+          "phase_scale": 1,
+          "fitted_anchor": [
+            238.304163126593,
+            155.90501121914735,
+            584.6677994902294,
+            678.0994764397907
+          ],
+          "clipped_high_coverage_pixels": 723,
+          "native_descriptor": {
+            "x": 167,
+            "y": 75,
+            "width": 103,
+            "height": 117,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0
+          },
+          "file": "figani-000-hd6-v1-f00.png",
+          "sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395"
+        },
+        {
+          "resource": 0,
+          "frame": 1,
+          "pose": "idle",
+          "native_anchor": [
+            36,
+            26,
+            101,
+            113
+          ],
+          "source_anchor": [
+            438,
+            335,
+            1080,
+            1302
+          ],
+          "fit_size": [
+            635,
+            722
+          ],
+          "origin": [
+            2,
+            -25
+          ],
+          "scale_xy": [
+            0.5395072217502124,
+            0.5400149588631264
+          ],
+          "scale_group": "idle",
+          "phase_scale": 1,
+          "fitted_anchor": [
+            238.304163126593,
+            155.90501121914735,
+            584.6677994902294,
+            678.0994764397907
+          ],
+          "clipped_high_coverage_pixels": 723,
+          "native_descriptor": {
+            "x": 167,
+            "y": 75,
+            "width": 103,
+            "height": 117,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0
+          },
+          "file": "figani-000-hd6-v1-f01.png",
+          "sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395"
+        },
+        {
+          "resource": 0,
+          "frame": 2,
+          "pose": "idle",
+          "native_anchor": [
+            36,
+            28,
+            101,
+            115
+          ],
+          "source_anchor": [
+            438,
+            335,
+            1080,
+            1302
+          ],
+          "fit_size": [
+            635,
+            722
+          ],
+          "origin": [
+            2,
+            -13
+          ],
+          "scale_xy": [
+            0.5395072217502124,
+            0.5400149588631264
+          ],
+          "scale_group": "idle",
+          "phase_scale": 1,
+          "fitted_anchor": [
+            238.304163126593,
+            167.90501121914735,
+            584.6677994902294,
+            690.0994764397907
+          ],
+          "clipped_high_coverage_pixels": 327,
+          "native_descriptor": {
+            "x": 167,
+            "y": 73,
+            "width": 103,
+            "height": 119,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0
+          },
+          "file": "figani-000-hd6-v1-f02.png",
+          "sha256": "6eeb3e69efcf4bcc4cc706629a5433c68d0b9f8dd0db2f8fbb1252506087d6df"
+        },
+        {
+          "resource": 0,
+          "frame": 3,
+          "pose": "idle",
+          "native_anchor": [
+            36,
+            26,
+            101,
+            113
+          ],
+          "source_anchor": [
+            438,
+            335,
+            1080,
+            1302
+          ],
+          "fit_size": [
+            635,
+            722
+          ],
+          "origin": [
+            2,
+            -25
+          ],
+          "scale_xy": [
+            0.5395072217502124,
+            0.5400149588631264
+          ],
+          "scale_group": "idle",
+          "phase_scale": 1,
+          "fitted_anchor": [
+            238.304163126593,
+            155.90501121914735,
+            584.6677994902294,
+            678.0994764397907
+          ],
+          "clipped_high_coverage_pixels": 723,
+          "native_descriptor": {
+            "x": 167,
+            "y": 75,
+            "width": 103,
+            "height": 117,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0
+          },
+          "file": "figani-000-hd6-v1-f03.png",
+          "sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395"
+        },
+        {
+          "resource": 1,
+          "frame": 0,
+          "pose": "idle",
+          "native_anchor": [
+            36,
+            26,
+            101,
+            113
+          ],
+          "source_anchor": [
+            438,
+            335,
+            1080,
+            1302
+          ],
+          "fit_size": [
+            635,
+            722
+          ],
+          "origin": [
+            2,
+            -25
+          ],
+          "scale_xy": [
+            0.5395072217502124,
+            0.5400149588631264
+          ],
+          "scale_group": "idle",
+          "phase_scale": 1,
+          "fitted_anchor": [
+            238.304163126593,
+            155.90501121914735,
+            584.6677994902294,
+            678.0994764397907
+          ],
+          "clipped_high_coverage_pixels": 723,
+          "native_descriptor": {
+            "x": 167,
+            "y": 75,
+            "width": 103,
+            "height": 117,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0
+          },
+          "file": "figani-001-hd6-v1-f00.png",
+          "sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395"
+        },
+        {
+          "resource": 1,
+          "frame": 1,
+          "pose": "windup",
+          "native_anchor": [
+            12,
+            47,
+            66,
+            139
+          ],
+          "source_anchor": [
+            154,
+            567,
+            694,
+            1708
+          ],
+          "fit_size": [
+            433,
+            850
+          ],
+          "origin": [
+            29,
+            7
+          ],
+          "scale_xy": [
+            0.48379888268156424,
+            0.48405466970387245
+          ],
+          "scale_group": "windup",
+          "phase_scale": 1,
+          "fitted_anchor": [
+            103.50502793296089,
+            281.45899772209566,
+            364.7564245810056,
+            833.7653758542142
+          ],
+          "clipped_high_coverage_pixels": 85,
+          "native_descriptor": {
+            "x": 202,
+            "y": 49,
+            "width": 73,
+            "height": 143,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0
+          },
+          "file": "figani-001-hd6-v1-f01.png",
+          "sha256": "5d6f074cf30bba9f53b2880bf334e51e42a880412ca1f658f31778ab82612364"
+        },
+        {
+          "resource": 1,
+          "frame": 2,
+          "pose": "windup",
+          "native_anchor": [
+            12,
+            48,
+            65,
+            140
+          ],
+          "source_anchor": [
+            154,
+            567,
+            694,
+            1708
+          ],
+          "fit_size": [
+            433,
+            850
+          ],
+          "origin": [
+            26,
+            13
+          ],
+          "scale_xy": [
+            0.48379888268156424,
+            0.48405466970387245
+          ],
+          "scale_group": "windup",
+          "phase_scale": 1,
+          "fitted_anchor": [
+            100.50502793296089,
+            287.45899772209566,
+            361.7564245810056,
+            839.7653758542142
+          ],
+          "clipped_high_coverage_pixels": 53,
+          "native_descriptor": {
+            "x": 203,
+            "y": 48,
+            "width": 73,
+            "height": 144,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0
+          },
+          "file": "figani-001-hd6-v1-f02.png",
+          "sha256": "123b5f315e9e83738e22ee576618002617a44df6af675818156582742aaf5dbb"
+        },
+        {
+          "resource": 1,
+          "frame": 3,
+          "pose": "windup",
+          "native_anchor": [
+            12,
+            49,
+            64,
+            141
+          ],
+          "source_anchor": [
+            154,
+            567,
+            694,
+            1708
+          ],
+          "fit_size": [
+            433,
+            850
+          ],
+          "origin": [
+            23,
+            19
+          ],
+          "scale_xy": [
+            0.48379888268156424,
+            0.48405466970387245
+          ],
+          "scale_group": "windup",
+          "phase_scale": 1,
+          "fitted_anchor": [
+            97.50502793296089,
+            293.45899772209566,
+            358.7564245810056,
+            845.7653758542142
+          ],
+          "clipped_high_coverage_pixels": 26,
+          "native_descriptor": {
+            "x": 204,
+            "y": 47,
+            "width": 73,
+            "height": 145,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0
+          },
+          "file": "figani-001-hd6-v1-f03.png",
+          "sha256": "4b2929322904c8725b996c0535c8a87eaa6ab50a765d05dba0fa23d3b103c052"
+        },
+        {
+          "resource": 1,
+          "frame": 4,
+          "pose": "windup",
+          "native_anchor": [
+            12,
+            50,
+            63,
+            142
+          ],
+          "source_anchor": [
+            154,
+            567,
+            694,
+            1708
+          ],
+          "fit_size": [
+            433,
+            850
+          ],
+          "origin": [
+            20,
+            25
+          ],
+          "scale_xy": [
+            0.48379888268156424,
+            0.48405466970387245
+          ],
+          "scale_group": "windup",
+          "phase_scale": 1,
+          "fitted_anchor": [
+            94.50502793296089,
+            299.45899772209566,
+            355.7564245810056,
+            851.7653758542142
+          ],
+          "clipped_high_coverage_pixels": 8,
+          "native_descriptor": {
+            "x": 205,
+            "y": 46,
+            "width": 73,
+            "height": 146,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0
+          },
+          "file": "figani-001-hd6-v1-f04.png",
+          "sha256": "9c1683230288eca5aed0b83a2a58947f33be8dbd6a35cbb89b5925104bbb0c8e"
+        },
+        {
+          "resource": 1,
+          "frame": 5,
+          "pose": "windup",
+          "native_anchor": [
+            12,
+            51,
+            62,
+            143
+          ],
+          "source_anchor": [
+            154,
+            567,
+            694,
+            1708
+          ],
+          "fit_size": [
+            433,
+            850
+          ],
+          "origin": [
+            17,
+            31
+          ],
+          "scale_xy": [
+            0.48379888268156424,
+            0.48405466970387245
+          ],
+          "scale_group": "windup",
+          "phase_scale": 1,
+          "fitted_anchor": [
+            91.50502793296089,
+            305.45899772209566,
+            352.7564245810056,
+            857.7653758542142
+          ],
+          "clipped_high_coverage_pixels": 0,
+          "native_descriptor": {
+            "x": 206,
+            "y": 45,
+            "width": 73,
+            "height": 147,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0
+          },
+          "file": "figani-001-hd6-v1-f05.png",
+          "sha256": "995cc9e6fdacf7d1c6a4cac45c7bd0845987fc07a3b7e783cf67a4f68d3658ee"
+        },
+        {
+          "resource": 1,
+          "frame": 6,
+          "pose": "strike",
+          "native_anchor": [
+            109,
+            31,
+            189,
+            117
+          ],
+          "source_anchor": [
+            625,
+            282,
+            1536,
+            891
+          ],
+          "fit_size": [
+            1456,
+            775
+          ],
+          "origin": [
+            -21,
+            -53
+          ],
+          "scale_xy": [
+            0.8470040721349622,
+            0.8469945355191257
+          ],
+          "scale_group": "lunge",
+          "phase_scale": 1,
+          "fitted_anchor": [
+            508.37754508435137,
+            185.85245901639345,
+            1279.998254799302,
+            701.672131147541
+          ],
+          "clipped_high_coverage_pixels": 6262,
+          "native_descriptor": {
+            "x": 85,
+            "y": 70,
+            "width": 227,
+            "height": 121,
+            "delay_native": 2,
+            "raw_byte_4": 1,
+            "raw_byte_5": 3,
+            "raw_byte_7": 0
+          },
+          "file": "figani-001-hd6-v1-f06.png",
+          "sha256": "5bf21f4cdad0deb1495339e5c4781b62789d05fc23e6cf1907c0e7d3aabf0138"
+        },
+        {
+          "resource": 1,
+          "frame": 7,
+          "pose": "settle1",
+          "native_anchor": [
+            22,
+            29,
+            102,
+            115
+          ],
+          "source_anchor": [
+            174,
+            316,
+            1047,
+            1136
+          ],
+          "fit_size": [
+            853,
+            730
+          ],
+          "origin": [
+            -12,
+            -25
+          ],
+          "scale_xy": [
+            0.6290560471976401,
+            0.6293103448275862
+          ],
+          "scale_group": "lunge",
+          "phase_scale": 1,
+          "fitted_anchor": [
+            97.45575221238937,
+            173.86206896551724,
+            646.6216814159292,
+            689.8965517241379
+          ],
+          "clipped_high_coverage_pixels": 521,
+          "native_descriptor": {
+            "x": 172,
+            "y": 72,
+            "width": 139,
+            "height": 119,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0
+          },
+          "file": "figani-001-hd6-v1-f07.png",
+          "sha256": "0830902bfcbcc398a4d418e5c9105fe64d63903cb5035747fe76129890ef2aba"
+        },
+        {
+          "resource": 1,
+          "frame": 8,
+          "pose": "settle2",
+          "native_anchor": [
+            23,
+            27,
+            103,
+            113
+          ],
+          "source_anchor": [
+            162,
+            329,
+            1097,
+            1129
+          ],
+          "fit_size": [
+            886,
+            739
+          ],
+          "origin": [
+            -28,
+            -50
+          ],
+          "scale_xy": [
+            0.6453022578295703,
+            0.6448516579406631
+          ],
+          "scale_group": "lunge",
+          "phase_scale": 1,
+          "fitted_anchor": [
+            76.53896576839038,
+            162.15619546247817,
+            679.8965768390386,
+            678.0375218150086
+          ],
+          "clipped_high_coverage_pixels": 2498,
+          "native_descriptor": {
+            "x": 171,
+            "y": 74,
+            "width": 140,
+            "height": 117,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0
+          },
+          "file": "figani-001-hd6-v1-f08.png",
+          "sha256": "00f532c673e42a8dbe63067393d9885c86e5aee5591d8065e3cfb563fb253d3c"
+        },
+        {
+          "resource": 1,
+          "frame": 9,
+          "pose": "settle3",
+          "native_anchor": [
+            23,
+            25,
+            103,
+            111
+          ],
+          "source_anchor": [
+            175,
+            286,
+            1103,
+            1123
+          ],
+          "fit_size": [
+            853,
+            700
+          ],
+          "origin": [
+            -16,
+            -26
+          ],
+          "scale_xy": [
+            0.6163294797687862,
+            0.6161971830985915
+          ],
+          "scale_group": "lunge",
+          "phase_scale": 1,
+          "fitted_anchor": [
+            91.85765895953757,
+            150.23239436619718,
+            663.8114161849711,
+            665.9894366197183
+          ],
+          "clipped_high_coverage_pixels": 919,
+          "native_descriptor": {
+            "x": 171,
+            "y": 76,
+            "width": 140,
+            "height": 115,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0
+          },
+          "file": "figani-001-hd6-v1-f09.png",
+          "sha256": "623eb3e9529c9992afcf5be5d16f818e88e0b6e07c5899df502565c0ff095b18"
+        },
+        {
+          "resource": 1,
+          "frame": 10,
+          "pose": "settle4",
+          "native_anchor": [
+            21,
+            25,
+            101,
+            111
+          ],
+          "source_anchor": [
+            167,
+            347,
+            1099,
+            1131
+          ],
+          "fit_size": [
+            904,
+            754
+          ],
+          "origin": [
+            -50,
+            -79
+          ],
+          "scale_xy": [
+            0.6579330422125182,
+            0.6585152838427948
+          ],
+          "scale_group": "lunge",
+          "phase_scale": 1,
+          "fitted_anchor": [
+            59.87481804949054,
+            149.5048034934498,
+            673.0684133915576,
+            665.7807860262009
+          ],
+          "clipped_high_coverage_pixels": 6700,
+          "native_descriptor": {
+            "x": 173,
+            "y": 76,
+            "width": 138,
+            "height": 115,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0
+          },
+          "file": "figani-001-hd6-v1-f10.png",
+          "sha256": "0e3119a17aef8f5d8daf5c7f0f49f03e08517c096daa016d89b603fe15a81bff"
+        }
+      ],
+      "scale_groups": {
+        "idle": 1,
+        "windup": 1,
+        "lunge": 1
+      },
+      "review_sha256": "cb5b325f47bf35cf83d5c9bdccbf0f25e19ac0553ca46bf2122d113311d4272e",
+      "scope": "明示錨點與姿勢重定向的完整候選，不代表正常GUI或原版逐幀視覺相同。"
+    },
+    "clean_rebuild": {
+      "status": "PASS-CHARACTER-CLEAN-REBUILD",
+      "frames": 15,
+      "source_masters": 7,
+      "old_assets_preserved": 373,
+      "frames_equal": true,
+      "catalog_equal_except_private_root": true,
+      "compiler_sha256": "fd283cd499e5703cfb1165751e469c75b85e60b3f85727c2e032eac14207b8c0",
+      "compiled_sha256": "fcaafd57042bf8485f459547afc5039a4cdc407bc8639948920b17f4bc5cc2c8",
+      "scale_groups": {
+        "idle": 1,
+        "windup": 1,
+        "lunge": 1
+      }
+    },
+    "art_review": {
+      "status": "PASS-THOR-ART-REVIEW",
+      "review_sha256": "cb5b325f47bf35cf83d5c9bdccbf0f25e19ac0553ca46bf2122d113311d4272e",
+      "frames": 15,
+      "source_masters": 7,
+      "scale_groups": {
+        "idle": 1,
+        "windup": 1,
+        "lunge": 1
+      },
+      "scope": "原版身分與姿勢參照的美化重定向，所有幀與母稿已目視檢查；非原版逐幀視覺相同。",
+      "notes": [
+        "灰綠厚肩甲、藍色內衣／護腿、紅腰布、背向視角、單手劍與原生尺寸保持。",
+        "四格待機及攻擊首格共用idle；五格蓄力共用windup，保留逐幀描述子／明示錨點與節拍，未逐格重繪原版細小頭帶／手臂變化。",
+        "斬擊與四格收勢分別有獨立母稿，劍光由長至短及消退。",
+        "部分劍尖、頭帶或衣緣沿舊矩形裁切；未放寬透明度或採蓋亞待決加寬。",
+        "藍衣連通錨點只作美術定位，排除頭帶小塊與金色劍光，不命名成原版ABI欄位。",
+        "正式登錄仍須兩次普通攻防、保存冷讀、GPU圖源及載入拒收通過。"
+      ]
+    },
+    "registration": {
+      "status": "PASS-THOR-REGISTERED",
+      "catalog_assets": 375,
+      "old_assets_preserved": 373,
+      "new_files": [
+        {
+          "file": "figani-000-hd6-v1-f00.png",
+          "size": 476902,
+          "sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395"
+        },
+        {
+          "file": "figani-000-hd6-v1-f01.png",
+          "size": 476902,
+          "sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395"
+        },
+        {
+          "file": "figani-000-hd6-v1-f02.png",
+          "size": 478636,
+          "sha256": "6eeb3e69efcf4bcc4cc706629a5433c68d0b9f8dd0db2f8fbb1252506087d6df"
+        },
+        {
+          "file": "figani-000-hd6-v1-f03.png",
+          "size": 476902,
+          "sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395"
+        },
+        {
+          "file": "figani-001-hd6-v1-f00.png",
+          "size": 476902,
+          "sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395"
+        },
+        {
+          "file": "figani-001-hd6-v1-f01.png",
+          "size": 401390,
+          "sha256": "5d6f074cf30bba9f53b2880bf334e51e42a880412ca1f658f31778ab82612364"
+        },
+        {
+          "file": "figani-001-hd6-v1-f02.png",
+          "size": 401616,
+          "sha256": "123b5f315e9e83738e22ee576618002617a44df6af675818156582742aaf5dbb"
+        },
+        {
+          "file": "figani-001-hd6-v1-f03.png",
+          "size": 401805,
+          "sha256": "4b2929322904c8725b996c0535c8a87eaa6ab50a765d05dba0fa23d3b103c052"
+        },
+        {
+          "file": "figani-001-hd6-v1-f04.png",
+          "size": 402022,
+          "sha256": "9c1683230288eca5aed0b83a2a58947f33be8dbd6a35cbb89b5925104bbb0c8e"
+        },
+        {
+          "file": "figani-001-hd6-v1-f05.png",
+          "size": 402143,
+          "sha256": "995cc9e6fdacf7d1c6a4cac45c7bd0845987fc07a3b7e783cf67a4f68d3658ee"
+        },
+        {
+          "file": "figani-001-hd6-v1-f06.png",
+          "size": 967893,
+          "sha256": "5bf21f4cdad0deb1495339e5c4781b62789d05fc23e6cf1907c0e7d3aabf0138"
+        },
+        {
+          "file": "figani-001-hd6-v1-f07.png",
+          "size": 616108,
+          "sha256": "0830902bfcbcc398a4d418e5c9105fe64d63903cb5035747fe76129890ef2aba"
+        },
+        {
+          "file": "figani-001-hd6-v1-f08.png",
+          "size": 637147,
+          "sha256": "00f532c673e42a8dbe63067393d9885c86e5aee5591d8065e3cfb563fb253d3c"
+        },
+        {
+          "file": "figani-001-hd6-v1-f09.png",
+          "size": 601158,
+          "sha256": "623eb3e9529c9992afcf5be5d16f818e88e0b6e07c5899df502565c0ff095b18"
+        },
+        {
+          "file": "figani-001-hd6-v1-f10.png",
+          "size": 624110,
+          "sha256": "0e3119a17aef8f5d8daf5c7f0f49f03e08517c096daa016d89b603fe15a81bff"
+        },
+        {
+          "file": "figure-000-idle-battle-hd6-master-v1.png",
+          "size": 1546921,
+          "sha256": "dade1f07d7782cd87fcbee9af0c144fdb17e739163c68d3eb8ee570476f6084c"
+        },
+        {
+          "file": "figure-000-settle1-battle-hd6-master-v1.png",
+          "size": 1500931,
+          "sha256": "1dac99b9e6474641b3b59633924606841657158ba7d57dc555b1b4f6ee56a3ca"
+        },
+        {
+          "file": "figure-000-settle2-battle-hd6-master-v1.png",
+          "size": 1498517,
+          "sha256": "a662c8a8f1451ff047cc7b7cfc24410cd879ad1ffc375fa7e8ba3df542ee0b42"
+        },
+        {
+          "file": "figure-000-settle3-battle-hd6-master-v1.png",
+          "size": 1525531,
+          "sha256": "0a79df3b1c4490335ddf2e2a03afebdb01116853e3f98ce2e127ce928dff0dc2"
+        },
+        {
+          "file": "figure-000-settle4-battle-hd6-master-v1.png",
+          "size": 1446243,
+          "sha256": "28e1bd753246c4252688dd278b36f83013970d674dfda9d09e584bdc7a52751b"
+        },
+        {
+          "file": "figure-000-strike-battle-hd6-master-v1.png",
+          "size": 1408256,
+          "sha256": "8b719d17097d7a86df258a3533d360a0560ac505279bf9931f8aa5b45fdc9270"
+        },
+        {
+          "file": "figure-000-windup-battle-hd6-master-v1.png",
+          "size": 1583898,
+          "sha256": "d852f03ad71df2778371c1dad8f3779f6fbc54104c4dbf6ea2caa82172de8b04"
+        }
+      ],
+      "catalog_sha256": "39d808f209059c7f4714bf1f02026708434badff53da7cdb9719deff6ca80782",
+      "compiled_sha256": "fcaafd57042bf8485f459547afc5039a4cdc407bc8639948920b17f4bc5cc2c8",
+      "gui_receipt_sha256": "0d3e0a51b2eeba29f744fcac60c56adb2a6dc4a8ba9ff9f300f4a76c4dc7b995",
+      "thor_gpu_sha256": "467251791d4c90862996bd4e850d7bcb56562e86be59da696b668fc0277da59d",
+      "bandit_gpu_sha256": "1d226ea0c1c43d0a6caea970ab2f4bdd2cd34dedd0f78aa335f7298a086a5323",
+      "art_review_sha256": "48167571d0203866cc911fb620d1cab54d514d5a0eab0900370036c07378ff1e",
+      "ownership": "1000:1000"
+    },
+    "normal_gui": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/thor-normal-gui-r2/receipt.json",
+        "sha256": "0d3e0a51b2eeba29f744fcac60c56adb2a6dc4a8ba9ff9f300f4a76c4dc7b995"
+      },
+      "status": "PASS",
+      "catalog_sha256": "72dbea87fe4caa4b0109e9dda79fa7f475657071bcedeb7e026fcbd8b3652576",
+      "gui_tool_sha256": "d55818cd17c6df9f9c6065280d940847e248b13a27b146811312dafaf941a069",
+      "binary_sha256": "f6fb55cf23ae2dcecb84787ff5f5ae499ffe646d6f3c1d4c8a896d61e428fe09",
+      "source_save_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "saved_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "source_save_bytes_equal": true,
+      "theme_save_bytes_equal": true,
+      "new_process_title_load": true,
+      "loaded_units_equal": true,
+      "recording_created": false,
+      "elapsed_seconds": 752.0951894028112,
+      "battle_own_index": 0,
+      "battle_source_roster": {
+        "0": {
+          "NativeIdentity": 0,
+          "Fig": 0,
+          "BattleFig": 0
+        },
+        "30": {
+          "NativeIdentity": 30,
+          "Fig": 30,
+          "BattleFig": 30
+        },
+        "4": {
+          "NativeIdentity": 4,
+          "Fig": 4,
+          "BattleFig": 4
+        },
+        "9": {
+          "NativeIdentity": 9,
+          "Fig": 9,
+          "BattleFig": 9
+        }
+      },
+      "battle_approach_rounds_limit": 1,
+      "main_pngs": 38,
+      "battle_pngs": 100,
+      "walk_pngs": 4,
+      "input_operations": 126,
+      "normal_end_steps": [
+        {
+          "scene": "world-hd",
+          "round_before": 1,
+          "round_after": 2,
+          "own_hp_after": [
+            42,
+            28,
+            31,
+            50
+          ],
+          "state_injection": false
+        },
+        {
+          "scene": "world-hd-replay",
+          "round_before": 1,
+          "round_after": 2,
+          "own_hp_after": [
+            42,
+            28,
+            31,
+            50
+          ],
+          "state_injection": false
+        }
+      ],
+      "scope": "普通START/F5首章來源槽的標題LOAD、Z選索爾、兩次各最多一次正常END接敵與攻防、返回、F2、F5及新程序LOAD。經驗對話F9及最後F9先回來源再F5，所以保存bytes相同不證明受傷後HP持續。沒有改隊伍／座標／血量／移動力。"
+    },
+    "gpu_verification": {
+      "thor": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-normal-gpu-r1.json",
+          "sha256": "467251791d4c90862996bd4e850d7bcb56562e86be59da696b668fc0277da59d"
+        },
+        "status": "PASS-CHARACTER-NORMAL-ATTACK-GPU",
+        "figure": 0,
+        "verifier_sha256": "a250a665e6106ac1552f683e37747cec14bbee93fccd94f4177bb2c7a890ca3e",
+        "pixel_matcher_sha256": "42e6aaada773d05997d5c3648925087c4e87a3b0c176be413349253467b292e9",
+        "matched_pngs": 57,
+        "compatible_sources_by_png": {
+          "world-hd-art-00.png": [
+            {
+              "resource": 1,
+              "frame": 1,
+              "source_file": "figani-001-hd6-v1-f01.png",
+              "source_sha256": "5d6f074cf30bba9f53b2880bf334e51e42a880412ca1f658f31778ab82612364",
+              "checked_pixels": 2602,
+              "eligible_pixels": 20816
+            }
+          ],
+          "world-hd-art-01.png": [
+            {
+              "resource": 1,
+              "frame": 2,
+              "source_file": "figani-001-hd6-v1-f02.png",
+              "source_sha256": "123b5f315e9e83738e22ee576618002617a44df6af675818156582742aaf5dbb",
+              "checked_pixels": 2602,
+              "eligible_pixels": 20816
+            }
+          ],
+          "world-hd-art-02.png": [
+            {
+              "resource": 1,
+              "frame": 2,
+              "source_file": "figani-001-hd6-v1-f02.png",
+              "source_sha256": "123b5f315e9e83738e22ee576618002617a44df6af675818156582742aaf5dbb",
+              "checked_pixels": 2602,
+              "eligible_pixels": 20816
+            }
+          ],
+          "world-hd-art-03.png": [
+            {
+              "resource": 1,
+              "frame": 3,
+              "source_file": "figani-001-hd6-v1-f03.png",
+              "source_sha256": "4b2929322904c8725b996c0535c8a87eaa6ab50a765d05dba0fa23d3b103c052",
+              "checked_pixels": 2602,
+              "eligible_pixels": 20816
+            }
+          ],
+          "world-hd-art-04.png": [
+            {
+              "resource": 1,
+              "frame": 3,
+              "source_file": "figani-001-hd6-v1-f03.png",
+              "source_sha256": "4b2929322904c8725b996c0535c8a87eaa6ab50a765d05dba0fa23d3b103c052",
+              "checked_pixels": 2602,
+              "eligible_pixels": 20816
+            }
+          ],
+          "world-hd-art-05.png": [
+            {
+              "resource": 1,
+              "frame": 4,
+              "source_file": "figani-001-hd6-v1-f04.png",
+              "source_sha256": "9c1683230288eca5aed0b83a2a58947f33be8dbd6a35cbb89b5925104bbb0c8e",
+              "checked_pixels": 2602,
+              "eligible_pixels": 20816
+            }
+          ],
+          "world-hd-art-06.png": [
+            {
+              "resource": 1,
+              "frame": 5,
+              "source_file": "figani-001-hd6-v1-f05.png",
+              "source_sha256": "995cc9e6fdacf7d1c6a4cac45c7bd0845987fc07a3b7e783cf67a4f68d3658ee",
+              "checked_pixels": 2602,
+              "eligible_pixels": 20816
+            }
+          ],
+          "world-hd-art-07.png": [
+            {
+              "resource": 1,
+              "frame": 5,
+              "source_file": "figani-001-hd6-v1-f05.png",
+              "source_sha256": "995cc9e6fdacf7d1c6a4cac45c7bd0845987fc07a3b7e783cf67a4f68d3658ee",
+              "checked_pixels": 2602,
+              "eligible_pixels": 20816
+            }
+          ],
+          "world-hd-art-08.png": [
+            {
+              "resource": 1,
+              "frame": 6,
+              "source_file": "figani-001-hd6-v1-f06.png",
+              "source_sha256": "5bf21f4cdad0deb1495339e5c4781b62789d05fc23e6cf1907c0e7d3aabf0138",
+              "checked_pixels": 2509,
+              "eligible_pixels": 37629
+            }
+          ],
+          "world-hd-art-09.png": [
+            {
+              "resource": 1,
+              "frame": 6,
+              "source_file": "figani-001-hd6-v1-f06.png",
+              "source_sha256": "5bf21f4cdad0deb1495339e5c4781b62789d05fc23e6cf1907c0e7d3aabf0138",
+              "checked_pixels": 2509,
+              "eligible_pixels": 37629
+            }
+          ],
+          "world-hd-art-10.png": [
+            {
+              "resource": 1,
+              "frame": 7,
+              "source_file": "figani-001-hd6-v1-f07.png",
+              "source_sha256": "0830902bfcbcc398a4d418e5c9105fe64d63903cb5035747fe76129890ef2aba",
+              "checked_pixels": 2698,
+              "eligible_pixels": 32366
+            }
+          ],
+          "world-hd-art-11.png": [
+            {
+              "resource": 1,
+              "frame": 7,
+              "source_file": "figani-001-hd6-v1-f07.png",
+              "source_sha256": "0830902bfcbcc398a4d418e5c9105fe64d63903cb5035747fe76129890ef2aba",
+              "checked_pixels": 2698,
+              "eligible_pixels": 32366
+            }
+          ],
+          "world-hd-art-12.png": [
+            {
+              "resource": 1,
+              "frame": 8,
+              "source_file": "figani-001-hd6-v1-f08.png",
+              "source_sha256": "00f532c673e42a8dbe63067393d9885c86e5aee5591d8065e3cfb563fb253d3c",
+              "checked_pixels": 2683,
+              "eligible_pixels": 32191
+            }
+          ],
+          "world-hd-art-13.png": [
+            {
+              "resource": 1,
+              "frame": 8,
+              "source_file": "figani-001-hd6-v1-f08.png",
+              "source_sha256": "00f532c673e42a8dbe63067393d9885c86e5aee5591d8065e3cfb563fb253d3c",
+              "checked_pixels": 2683,
+              "eligible_pixels": 32191
+            }
+          ],
+          "world-hd-art-14.png": [
+            {
+              "resource": 1,
+              "frame": 8,
+              "source_file": "figani-001-hd6-v1-f08.png",
+              "source_sha256": "00f532c673e42a8dbe63067393d9885c86e5aee5591d8065e3cfb563fb253d3c",
+              "checked_pixels": 2683,
+              "eligible_pixels": 32191
+            }
+          ],
+          "world-hd-art-15.png": [
+            {
+              "resource": 1,
+              "frame": 9,
+              "source_file": "figani-001-hd6-v1-f09.png",
+              "source_sha256": "623eb3e9529c9992afcf5be5d16f818e88e0b6e07c5899df502565c0ff095b18",
+              "checked_pixels": 2689,
+              "eligible_pixels": 34952
+            }
+          ],
+          "world-hd-art-16.png": [
+            {
+              "resource": 1,
+              "frame": 10,
+              "source_file": "figani-001-hd6-v1-f10.png",
+              "source_sha256": "0e3119a17aef8f5d8daf5c7f0f49f03e08517c096daa016d89b603fe15a81bff",
+              "checked_pixels": 2665,
+              "eligible_pixels": 37297
+            }
+          ],
+          "world-hd-art-17.png": [
+            {
+              "resource": 1,
+              "frame": 10,
+              "source_file": "figani-001-hd6-v1-f10.png",
+              "source_sha256": "0e3119a17aef8f5d8daf5c7f0f49f03e08517c096daa016d89b603fe15a81bff",
+              "checked_pixels": 2665,
+              "eligible_pixels": 37297
+            }
+          ],
+          "world-hd-art-18.png": [
+            {
+              "resource": 1,
+              "frame": 10,
+              "source_file": "figani-001-hd6-v1-f10.png",
+              "source_sha256": "0e3119a17aef8f5d8daf5c7f0f49f03e08517c096daa016d89b603fe15a81bff",
+              "checked_pixels": 2665,
+              "eligible_pixels": 37297
+            }
+          ],
+          "world-hd-art-19.png": [
+            {
+              "resource": 0,
+              "frame": 0,
+              "source_file": "figani-000-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 1,
+              "source_file": "figani-000-hd6-v1-f01.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 3,
+              "source_file": "figani-000-hd6-v1-f03.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 1,
+              "frame": 0,
+              "source_file": "figani-001-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            }
+          ],
+          "world-hd-art-20.png": [
+            {
+              "resource": 0,
+              "frame": 0,
+              "source_file": "figani-000-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 1,
+              "source_file": "figani-000-hd6-v1-f01.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 3,
+              "source_file": "figani-000-hd6-v1-f03.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 1,
+              "frame": 0,
+              "source_file": "figani-001-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            }
+          ],
+          "world-hd-art-21.png": [
+            {
+              "resource": 0,
+              "frame": 0,
+              "source_file": "figani-000-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 1,
+              "source_file": "figani-000-hd6-v1-f01.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 3,
+              "source_file": "figani-000-hd6-v1-f03.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 1,
+              "frame": 0,
+              "source_file": "figani-001-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            }
+          ],
+          "world-hd-art-22.png": [
+            {
+              "resource": 0,
+              "frame": 0,
+              "source_file": "figani-000-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 1,
+              "source_file": "figani-000-hd6-v1-f01.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 3,
+              "source_file": "figani-000-hd6-v1-f03.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 1,
+              "frame": 0,
+              "source_file": "figani-001-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            }
+          ],
+          "world-hd-art-23.png": [
+            {
+              "resource": 0,
+              "frame": 0,
+              "source_file": "figani-000-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 1,
+              "source_file": "figani-000-hd6-v1-f01.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 2,
+              "source_file": "figani-000-hd6-v1-f02.png",
+              "source_sha256": "6eeb3e69efcf4bcc4cc706629a5433c68d0b9f8dd0db2f8fbb1252506087d6df",
+              "checked_pixels": 2516,
+              "eligible_pixels": 25155
+            },
+            {
+              "resource": 0,
+              "frame": 3,
+              "source_file": "figani-000-hd6-v1-f03.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 1,
+              "frame": 0,
+              "source_file": "figani-001-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            }
+          ],
+          "world-hd-art-24.png": [
+            {
+              "resource": 0,
+              "frame": 0,
+              "source_file": "figani-000-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 1,
+              "source_file": "figani-000-hd6-v1-f01.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 2,
+              "source_file": "figani-000-hd6-v1-f02.png",
+              "source_sha256": "6eeb3e69efcf4bcc4cc706629a5433c68d0b9f8dd0db2f8fbb1252506087d6df",
+              "checked_pixels": 2516,
+              "eligible_pixels": 25155
+            },
+            {
+              "resource": 0,
+              "frame": 3,
+              "source_file": "figani-000-hd6-v1-f03.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 1,
+              "frame": 0,
+              "source_file": "figani-001-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            }
+          ],
+          "world-hd-art-25.png": [
+            {
+              "resource": 0,
+              "frame": 0,
+              "source_file": "figani-000-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 1,
+              "source_file": "figani-000-hd6-v1-f01.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 3,
+              "source_file": "figani-000-hd6-v1-f03.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 1,
+              "frame": 0,
+              "source_file": "figani-001-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            }
+          ],
+          "world-hd-art-26.png": [
+            {
+              "resource": 0,
+              "frame": 0,
+              "source_file": "figani-000-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 1,
+              "source_file": "figani-000-hd6-v1-f01.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 3,
+              "source_file": "figani-000-hd6-v1-f03.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 1,
+              "frame": 0,
+              "source_file": "figani-001-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            }
+          ],
+          "world-hd-art-32.png": [
+            {
+              "resource": 0,
+              "frame": 0,
+              "source_file": "figani-000-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 1,
+              "source_file": "figani-000-hd6-v1-f01.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 2,
+              "source_file": "figani-000-hd6-v1-f02.png",
+              "source_sha256": "6eeb3e69efcf4bcc4cc706629a5433c68d0b9f8dd0db2f8fbb1252506087d6df",
+              "checked_pixels": 2516,
+              "eligible_pixels": 25155
+            },
+            {
+              "resource": 0,
+              "frame": 3,
+              "source_file": "figani-000-hd6-v1-f03.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 1,
+              "frame": 0,
+              "source_file": "figani-001-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            }
+          ],
+          "world-hd-art-33.png": [
+            {
+              "resource": 0,
+              "frame": 0,
+              "source_file": "figani-000-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 1,
+              "source_file": "figani-000-hd6-v1-f01.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 3,
+              "source_file": "figani-000-hd6-v1-f03.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 1,
+              "frame": 0,
+              "source_file": "figani-001-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            }
+          ],
+          "world-hd-art-34.png": [
+            {
+              "resource": 0,
+              "frame": 0,
+              "source_file": "figani-000-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 1,
+              "source_file": "figani-000-hd6-v1-f01.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 3,
+              "source_file": "figani-000-hd6-v1-f03.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 1,
+              "frame": 0,
+              "source_file": "figani-001-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            }
+          ],
+          "world-hd-art-35.png": [
+            {
+              "resource": 0,
+              "frame": 0,
+              "source_file": "figani-000-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 1,
+              "source_file": "figani-000-hd6-v1-f01.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 3,
+              "source_file": "figani-000-hd6-v1-f03.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 1,
+              "frame": 0,
+              "source_file": "figani-001-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            }
+          ],
+          "world-hd-art-36.png": [
+            {
+              "resource": 0,
+              "frame": 0,
+              "source_file": "figani-000-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 1,
+              "source_file": "figani-000-hd6-v1-f01.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 3,
+              "source_file": "figani-000-hd6-v1-f03.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 1,
+              "frame": 0,
+              "source_file": "figani-001-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            }
+          ],
+          "world-hd-art-37.png": [
+            {
+              "resource": 0,
+              "frame": 0,
+              "source_file": "figani-000-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 1,
+              "source_file": "figani-000-hd6-v1-f01.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 3,
+              "source_file": "figani-000-hd6-v1-f03.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 1,
+              "frame": 0,
+              "source_file": "figani-001-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            }
+          ],
+          "world-hd-art-38.png": [
+            {
+              "resource": 0,
+              "frame": 0,
+              "source_file": "figani-000-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 1,
+              "source_file": "figani-000-hd6-v1-f01.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 3,
+              "source_file": "figani-000-hd6-v1-f03.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 1,
+              "frame": 0,
+              "source_file": "figani-001-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            }
+          ],
+          "world-hd-art-39.png": [
+            {
+              "resource": 0,
+              "frame": 0,
+              "source_file": "figani-000-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 1,
+              "source_file": "figani-000-hd6-v1-f01.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 3,
+              "source_file": "figani-000-hd6-v1-f03.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 1,
+              "frame": 0,
+              "source_file": "figani-001-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            }
+          ],
+          "world-hd-art-40.png": [
+            {
+              "resource": 0,
+              "frame": 0,
+              "source_file": "figani-000-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 1,
+              "source_file": "figani-000-hd6-v1-f01.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 3,
+              "source_file": "figani-000-hd6-v1-f03.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 1,
+              "frame": 0,
+              "source_file": "figani-001-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            }
+          ],
+          "world-hd-art-41.png": [
+            {
+              "resource": 0,
+              "frame": 0,
+              "source_file": "figani-000-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 1,
+              "source_file": "figani-000-hd6-v1-f01.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 3,
+              "source_file": "figani-000-hd6-v1-f03.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 1,
+              "frame": 0,
+              "source_file": "figani-001-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            }
+          ],
+          "world-hd-physical-scene.png": [
+            {
+              "resource": 0,
+              "frame": 0,
+              "source_file": "figani-000-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 1,
+              "source_file": "figani-000-hd6-v1-f01.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 3,
+              "source_file": "figani-000-hd6-v1-f03.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 1,
+              "frame": 0,
+              "source_file": "figani-001-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            }
+          ],
+          "world-hd-replay-art-00.png": [
+            {
+              "resource": 1,
+              "frame": 3,
+              "source_file": "figani-001-hd6-v1-f03.png",
+              "source_sha256": "4b2929322904c8725b996c0535c8a87eaa6ab50a765d05dba0fa23d3b103c052",
+              "checked_pixels": 2602,
+              "eligible_pixels": 20816
+            }
+          ],
+          "world-hd-replay-art-01.png": [
+            {
+              "resource": 1,
+              "frame": 4,
+              "source_file": "figani-001-hd6-v1-f04.png",
+              "source_sha256": "9c1683230288eca5aed0b83a2a58947f33be8dbd6a35cbb89b5925104bbb0c8e",
+              "checked_pixels": 2602,
+              "eligible_pixels": 20816
+            }
+          ],
+          "world-hd-replay-art-02.png": [
+            {
+              "resource": 1,
+              "frame": 5,
+              "source_file": "figani-001-hd6-v1-f05.png",
+              "source_sha256": "995cc9e6fdacf7d1c6a4cac45c7bd0845987fc07a3b7e783cf67a4f68d3658ee",
+              "checked_pixels": 2602,
+              "eligible_pixels": 20816
+            }
+          ],
+          "world-hd-replay-art-03.png": [
+            {
+              "resource": 1,
+              "frame": 6,
+              "source_file": "figani-001-hd6-v1-f06.png",
+              "source_sha256": "5bf21f4cdad0deb1495339e5c4781b62789d05fc23e6cf1907c0e7d3aabf0138",
+              "checked_pixels": 2509,
+              "eligible_pixels": 37629
+            }
+          ],
+          "world-hd-replay-art-04.png": [
+            {
+              "resource": 1,
+              "frame": 6,
+              "source_file": "figani-001-hd6-v1-f06.png",
+              "source_sha256": "5bf21f4cdad0deb1495339e5c4781b62789d05fc23e6cf1907c0e7d3aabf0138",
+              "checked_pixels": 2509,
+              "eligible_pixels": 37629
+            }
+          ],
+          "world-hd-replay-art-05.png": [
+            {
+              "resource": 1,
+              "frame": 8,
+              "source_file": "figani-001-hd6-v1-f08.png",
+              "source_sha256": "00f532c673e42a8dbe63067393d9885c86e5aee5591d8065e3cfb563fb253d3c",
+              "checked_pixels": 2683,
+              "eligible_pixels": 32191
+            }
+          ],
+          "world-hd-replay-art-06.png": [
+            {
+              "resource": 1,
+              "frame": 8,
+              "source_file": "figani-001-hd6-v1-f08.png",
+              "source_sha256": "00f532c673e42a8dbe63067393d9885c86e5aee5591d8065e3cfb563fb253d3c",
+              "checked_pixels": 2683,
+              "eligible_pixels": 32191
+            }
+          ],
+          "world-hd-replay-art-07.png": [
+            {
+              "resource": 1,
+              "frame": 9,
+              "source_file": "figani-001-hd6-v1-f09.png",
+              "source_sha256": "623eb3e9529c9992afcf5be5d16f818e88e0b6e07c5899df502565c0ff095b18",
+              "checked_pixels": 2689,
+              "eligible_pixels": 34952
+            }
+          ],
+          "world-hd-replay-art-08.png": [
+            {
+              "resource": 1,
+              "frame": 10,
+              "source_file": "figani-001-hd6-v1-f10.png",
+              "source_sha256": "0e3119a17aef8f5d8daf5c7f0f49f03e08517c096daa016d89b603fe15a81bff",
+              "checked_pixels": 2665,
+              "eligible_pixels": 37297
+            }
+          ],
+          "world-hd-replay-art-09.png": [
+            {
+              "resource": 1,
+              "frame": 10,
+              "source_file": "figani-001-hd6-v1-f10.png",
+              "source_sha256": "0e3119a17aef8f5d8daf5c7f0f49f03e08517c096daa016d89b603fe15a81bff",
+              "checked_pixels": 2665,
+              "eligible_pixels": 37297
+            }
+          ],
+          "world-hd-replay-art-10.png": [
+            {
+              "resource": 0,
+              "frame": 0,
+              "source_file": "figani-000-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 1,
+              "source_file": "figani-000-hd6-v1-f01.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 3,
+              "source_file": "figani-000-hd6-v1-f03.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 1,
+              "frame": 0,
+              "source_file": "figani-001-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            }
+          ],
+          "world-hd-replay-art-11.png": [
+            {
+              "resource": 0,
+              "frame": 0,
+              "source_file": "figani-000-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 1,
+              "source_file": "figani-000-hd6-v1-f01.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 3,
+              "source_file": "figani-000-hd6-v1-f03.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 1,
+              "frame": 0,
+              "source_file": "figani-001-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            }
+          ],
+          "world-hd-replay-art-12.png": [
+            {
+              "resource": 0,
+              "frame": 0,
+              "source_file": "figani-000-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 1,
+              "source_file": "figani-000-hd6-v1-f01.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 2,
+              "source_file": "figani-000-hd6-v1-f02.png",
+              "source_sha256": "6eeb3e69efcf4bcc4cc706629a5433c68d0b9f8dd0db2f8fbb1252506087d6df",
+              "checked_pixels": 2516,
+              "eligible_pixels": 25155
+            },
+            {
+              "resource": 0,
+              "frame": 3,
+              "source_file": "figani-000-hd6-v1-f03.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 1,
+              "frame": 0,
+              "source_file": "figani-001-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            }
+          ],
+          "world-hd-replay-art-13.png": [
+            {
+              "resource": 0,
+              "frame": 0,
+              "source_file": "figani-000-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 1,
+              "source_file": "figani-000-hd6-v1-f01.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 3,
+              "source_file": "figani-000-hd6-v1-f03.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 1,
+              "frame": 0,
+              "source_file": "figani-001-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            }
+          ],
+          "world-hd-replay-art-18.png": [
+            {
+              "resource": 0,
+              "frame": 0,
+              "source_file": "figani-000-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 1,
+              "source_file": "figani-000-hd6-v1-f01.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 3,
+              "source_file": "figani-000-hd6-v1-f03.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 1,
+              "frame": 0,
+              "source_file": "figani-001-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            }
+          ],
+          "world-hd-replay-art-19.png": [
+            {
+              "resource": 0,
+              "frame": 0,
+              "source_file": "figani-000-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 1,
+              "source_file": "figani-000-hd6-v1-f01.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 3,
+              "source_file": "figani-000-hd6-v1-f03.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 1,
+              "frame": 0,
+              "source_file": "figani-001-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            }
+          ],
+          "world-hd-replay-art-20.png": [
+            {
+              "resource": 0,
+              "frame": 0,
+              "source_file": "figani-000-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 1,
+              "source_file": "figani-000-hd6-v1-f01.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 3,
+              "source_file": "figani-000-hd6-v1-f03.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 1,
+              "frame": 0,
+              "source_file": "figani-001-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            }
+          ],
+          "world-hd-replay-art-21.png": [
+            {
+              "resource": 0,
+              "frame": 0,
+              "source_file": "figani-000-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 1,
+              "source_file": "figani-000-hd6-v1-f01.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 0,
+              "frame": 3,
+              "source_file": "figani-000-hd6-v1-f03.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            },
+            {
+              "resource": 1,
+              "frame": 0,
+              "source_file": "figani-001-hd6-v1-f00.png",
+              "source_sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395",
+              "checked_pixels": 2770,
+              "eligible_pixels": 24924
+            }
+          ],
+          "world-hd-replay-physical-scene.png": [
+            {
+              "resource": 1,
+              "frame": 3,
+              "source_file": "figani-001-hd6-v1-f03.png",
+              "source_sha256": "4b2929322904c8725b996c0535c8a87eaa6ab50a765d05dba0fa23d3b103c052",
+              "checked_pixels": 2602,
+              "eligible_pixels": 20816
+            }
+          ]
+        },
+        "scope": "普通首章兩次攻防的實際PNG與所選人物高覆蓋藍衣／褲核心；原描述子位置。alpha255一量化值，250..254依未知背景混合界限。多候選保留相容集合，不判定唯一相位；未比較非藍衣的武器／FX，不宣稱全部幀GPU或原版對拍。"
+      },
+      "bandit": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-bandit-normal-gpu-r1.json",
+          "sha256": "1d226ea0c1c43d0a6caea970ab2f4bdd2cd34dedd0f78aa335f7298a086a5323"
+        },
+        "status": "PASS-CHARACTER-NORMAL-ATTACK-GPU",
+        "figure": 96,
+        "verifier_sha256": "a250a665e6106ac1552f683e37747cec14bbee93fccd94f4177bb2c7a890ca3e",
+        "pixel_matcher_sha256": "42e6aaada773d05997d5c3648925087c4e87a3b0c176be413349253467b292e9",
+        "matched_pngs": 58,
+        "compatible_sources_by_png": {
+          "world-hd-art-00.png": [
+            {
+              "resource": 288,
+              "frame": 1,
+              "source_file": "figani-288-hd6-v1-f01.png",
+              "source_sha256": "a9d620f1a99d724acf83f1d3870148c7eae097fae78fa80864bc57c9363085a1",
+              "checked_pixels": 2664,
+              "eligible_pixels": 31964
+            },
+            {
+              "resource": 288,
+              "frame": 3,
+              "source_file": "figani-288-hd6-v1-f03.png",
+              "source_sha256": "a9d620f1a99d724acf83f1d3870148c7eae097fae78fa80864bc57c9363085a1",
+              "checked_pixels": 2664,
+              "eligible_pixels": 31964
+            }
+          ],
+          "world-hd-art-01.png": [
+            {
+              "resource": 288,
+              "frame": 2,
+              "source_file": "figani-288-hd6-v1-f02.png",
+              "source_sha256": "58de7a6830bc06b6a38fcfcfba53c5808293b3ba63ee8478a1b89dfc43fba2fc",
+              "checked_pixels": 2619,
+              "eligible_pixels": 31425
+            }
+          ],
+          "world-hd-art-02.png": [
+            {
+              "resource": 288,
+              "frame": 2,
+              "source_file": "figani-288-hd6-v1-f02.png",
+              "source_sha256": "58de7a6830bc06b6a38fcfcfba53c5808293b3ba63ee8478a1b89dfc43fba2fc",
+              "checked_pixels": 2619,
+              "eligible_pixels": 31425
+            }
+          ],
+          "world-hd-art-03.png": [
+            {
+              "resource": 288,
+              "frame": 1,
+              "source_file": "figani-288-hd6-v1-f01.png",
+              "source_sha256": "a9d620f1a99d724acf83f1d3870148c7eae097fae78fa80864bc57c9363085a1",
+              "checked_pixels": 2664,
+              "eligible_pixels": 31964
+            },
+            {
+              "resource": 288,
+              "frame": 3,
+              "source_file": "figani-288-hd6-v1-f03.png",
+              "source_sha256": "a9d620f1a99d724acf83f1d3870148c7eae097fae78fa80864bc57c9363085a1",
+              "checked_pixels": 2664,
+              "eligible_pixels": 31964
+            }
+          ],
+          "world-hd-art-04.png": [
+            {
+              "resource": 288,
+              "frame": 1,
+              "source_file": "figani-288-hd6-v1-f01.png",
+              "source_sha256": "a9d620f1a99d724acf83f1d3870148c7eae097fae78fa80864bc57c9363085a1",
+              "checked_pixels": 2664,
+              "eligible_pixels": 31964
+            },
+            {
+              "resource": 288,
+              "frame": 3,
+              "source_file": "figani-288-hd6-v1-f03.png",
+              "source_sha256": "a9d620f1a99d724acf83f1d3870148c7eae097fae78fa80864bc57c9363085a1",
+              "checked_pixels": 2664,
+              "eligible_pixels": 31964
+            }
+          ],
+          "world-hd-art-05.png": [
+            {
+              "resource": 288,
+              "frame": 0,
+              "source_file": "figani-288-hd6-v1-f00.png",
+              "source_sha256": "7c3349cb4bfbe927ac2b07da0659817b930145f271bfc89cb3a218f1732b45b2",
+              "checked_pixels": 2511,
+              "eligible_pixels": 32631
+            },
+            {
+              "resource": 289,
+              "frame": 0,
+              "source_file": "figani-289-hd6-v1-f00.png",
+              "source_sha256": "ce5f46122d34f82985826a002c6650d8a144b5dd4c7873e309a8d9d15545103a",
+              "checked_pixels": 2511,
+              "eligible_pixels": 32631
+            }
+          ],
+          "world-hd-art-06.png": [
+            {
+              "resource": 288,
+              "frame": 1,
+              "source_file": "figani-288-hd6-v1-f01.png",
+              "source_sha256": "a9d620f1a99d724acf83f1d3870148c7eae097fae78fa80864bc57c9363085a1",
+              "checked_pixels": 2664,
+              "eligible_pixels": 31964
+            },
+            {
+              "resource": 288,
+              "frame": 3,
+              "source_file": "figani-288-hd6-v1-f03.png",
+              "source_sha256": "a9d620f1a99d724acf83f1d3870148c7eae097fae78fa80864bc57c9363085a1",
+              "checked_pixels": 2664,
+              "eligible_pixels": 31964
+            }
+          ],
+          "world-hd-art-07.png": [
+            {
+              "resource": 288,
+              "frame": 1,
+              "source_file": "figani-288-hd6-v1-f01.png",
+              "source_sha256": "a9d620f1a99d724acf83f1d3870148c7eae097fae78fa80864bc57c9363085a1",
+              "checked_pixels": 2664,
+              "eligible_pixels": 31964
+            },
+            {
+              "resource": 288,
+              "frame": 3,
+              "source_file": "figani-288-hd6-v1-f03.png",
+              "source_sha256": "a9d620f1a99d724acf83f1d3870148c7eae097fae78fa80864bc57c9363085a1",
+              "checked_pixels": 2664,
+              "eligible_pixels": 31964
+            }
+          ],
+          "world-hd-art-13.png": [
+            {
+              "resource": 288,
+              "frame": 0,
+              "source_file": "figani-288-hd6-v1-f00.png",
+              "source_sha256": "7c3349cb4bfbe927ac2b07da0659817b930145f271bfc89cb3a218f1732b45b2",
+              "checked_pixels": 2511,
+              "eligible_pixels": 32631
+            },
+            {
+              "resource": 289,
+              "frame": 0,
+              "source_file": "figani-289-hd6-v1-f00.png",
+              "source_sha256": "ce5f46122d34f82985826a002c6650d8a144b5dd4c7873e309a8d9d15545103a",
+              "checked_pixels": 2511,
+              "eligible_pixels": 32631
+            }
+          ],
+          "world-hd-art-14.png": [
+            {
+              "resource": 288,
+              "frame": 0,
+              "source_file": "figani-288-hd6-v1-f00.png",
+              "source_sha256": "7c3349cb4bfbe927ac2b07da0659817b930145f271bfc89cb3a218f1732b45b2",
+              "checked_pixels": 2511,
+              "eligible_pixels": 32631
+            },
+            {
+              "resource": 289,
+              "frame": 0,
+              "source_file": "figani-289-hd6-v1-f00.png",
+              "source_sha256": "ce5f46122d34f82985826a002c6650d8a144b5dd4c7873e309a8d9d15545103a",
+              "checked_pixels": 2511,
+              "eligible_pixels": 32631
+            }
+          ],
+          "world-hd-art-15.png": [
+            {
+              "resource": 288,
+              "frame": 1,
+              "source_file": "figani-288-hd6-v1-f01.png",
+              "source_sha256": "a9d620f1a99d724acf83f1d3870148c7eae097fae78fa80864bc57c9363085a1",
+              "checked_pixels": 2664,
+              "eligible_pixels": 31964
+            },
+            {
+              "resource": 288,
+              "frame": 3,
+              "source_file": "figani-288-hd6-v1-f03.png",
+              "source_sha256": "a9d620f1a99d724acf83f1d3870148c7eae097fae78fa80864bc57c9363085a1",
+              "checked_pixels": 2664,
+              "eligible_pixels": 31964
+            }
+          ],
+          "world-hd-art-16.png": [
+            {
+              "resource": 288,
+              "frame": 2,
+              "source_file": "figani-288-hd6-v1-f02.png",
+              "source_sha256": "58de7a6830bc06b6a38fcfcfba53c5808293b3ba63ee8478a1b89dfc43fba2fc",
+              "checked_pixels": 2619,
+              "eligible_pixels": 31425
+            }
+          ],
+          "world-hd-art-17.png": [
+            {
+              "resource": 288,
+              "frame": 2,
+              "source_file": "figani-288-hd6-v1-f02.png",
+              "source_sha256": "58de7a6830bc06b6a38fcfcfba53c5808293b3ba63ee8478a1b89dfc43fba2fc",
+              "checked_pixels": 2619,
+              "eligible_pixels": 31425
+            }
+          ],
+          "world-hd-art-18.png": [
+            {
+              "resource": 288,
+              "frame": 2,
+              "source_file": "figani-288-hd6-v1-f02.png",
+              "source_sha256": "58de7a6830bc06b6a38fcfcfba53c5808293b3ba63ee8478a1b89dfc43fba2fc",
+              "checked_pixels": 2619,
+              "eligible_pixels": 31425
+            }
+          ],
+          "world-hd-art-19.png": [
+            {
+              "resource": 288,
+              "frame": 0,
+              "source_file": "figani-288-hd6-v1-f00.png",
+              "source_sha256": "7c3349cb4bfbe927ac2b07da0659817b930145f271bfc89cb3a218f1732b45b2",
+              "checked_pixels": 2511,
+              "eligible_pixels": 32631
+            },
+            {
+              "resource": 289,
+              "frame": 0,
+              "source_file": "figani-289-hd6-v1-f00.png",
+              "source_sha256": "ce5f46122d34f82985826a002c6650d8a144b5dd4c7873e309a8d9d15545103a",
+              "checked_pixels": 2511,
+              "eligible_pixels": 32631
+            }
+          ],
+          "world-hd-art-20.png": [
+            {
+              "resource": 288,
+              "frame": 0,
+              "source_file": "figani-288-hd6-v1-f00.png",
+              "source_sha256": "7c3349cb4bfbe927ac2b07da0659817b930145f271bfc89cb3a218f1732b45b2",
+              "checked_pixels": 2511,
+              "eligible_pixels": 32631
+            },
+            {
+              "resource": 289,
+              "frame": 0,
+              "source_file": "figani-289-hd6-v1-f00.png",
+              "source_sha256": "ce5f46122d34f82985826a002c6650d8a144b5dd4c7873e309a8d9d15545103a",
+              "checked_pixels": 2511,
+              "eligible_pixels": 32631
+            }
+          ],
+          "world-hd-art-21.png": [
+            {
+              "resource": 289,
+              "frame": 1,
+              "source_file": "figani-289-hd6-v1-f01.png",
+              "source_sha256": "c7b1ec68ad237be4f6b82575b4d6cae4929156b2ea9e0f11bb5ec8d470785a99",
+              "checked_pixels": 2645,
+              "eligible_pixels": 39670
+            }
+          ],
+          "world-hd-art-22.png": [
+            {
+              "resource": 289,
+              "frame": 1,
+              "source_file": "figani-289-hd6-v1-f01.png",
+              "source_sha256": "c7b1ec68ad237be4f6b82575b4d6cae4929156b2ea9e0f11bb5ec8d470785a99",
+              "checked_pixels": 2645,
+              "eligible_pixels": 39670
+            }
+          ],
+          "world-hd-art-23.png": [
+            {
+              "resource": 289,
+              "frame": 2,
+              "source_file": "figani-289-hd6-v1-f02.png",
+              "source_sha256": "94f6df8fda22740944b416cd487afb6d70d8c95719dd6719f0fb2b962e565e60",
+              "checked_pixels": 2562,
+              "eligible_pixels": 43546
+            }
+          ],
+          "world-hd-art-24.png": [
+            {
+              "resource": 289,
+              "frame": 2,
+              "source_file": "figani-289-hd6-v1-f02.png",
+              "source_sha256": "94f6df8fda22740944b416cd487afb6d70d8c95719dd6719f0fb2b962e565e60",
+              "checked_pixels": 2562,
+              "eligible_pixels": 43546
+            }
+          ],
+          "world-hd-art-25.png": [
+            {
+              "resource": 289,
+              "frame": 3,
+              "source_file": "figani-289-hd6-v1-f03.png",
+              "source_sha256": "d0becb1bf949853981b0c14da118fdb3771753232154e9654e35cb6db617e488",
+              "checked_pixels": 2661,
+              "eligible_pixels": 39913
+            }
+          ],
+          "world-hd-art-26.png": [
+            {
+              "resource": 289,
+              "frame": 3,
+              "source_file": "figani-289-hd6-v1-f03.png",
+              "source_sha256": "d0becb1bf949853981b0c14da118fdb3771753232154e9654e35cb6db617e488",
+              "checked_pixels": 2661,
+              "eligible_pixels": 39913
+            }
+          ],
+          "world-hd-art-27.png": [
+            {
+              "resource": 289,
+              "frame": 4,
+              "source_file": "figani-289-hd6-v1-f04.png",
+              "source_sha256": "cdf7011e556b85c615ddba19e912b54159c55031f168320cb76a199161722424",
+              "checked_pixels": 2573,
+              "eligible_pixels": 30873
+            }
+          ],
+          "world-hd-art-28.png": [
+            {
+              "resource": 289,
+              "frame": 4,
+              "source_file": "figani-289-hd6-v1-f04.png",
+              "source_sha256": "cdf7011e556b85c615ddba19e912b54159c55031f168320cb76a199161722424",
+              "checked_pixels": 2573,
+              "eligible_pixels": 30873
+            }
+          ],
+          "world-hd-art-29.png": [
+            {
+              "resource": 289,
+              "frame": 5,
+              "source_file": "figani-289-hd6-v1-f05.png",
+              "source_sha256": "f0a6d9a2f5ffdd850b1a40e65fec804b7c490ecccf5a66b90bbb6d34e1a72db0",
+              "checked_pixels": 2503,
+              "eligible_pixels": 47544
+            }
+          ],
+          "world-hd-art-30.png": [
+            {
+              "resource": 289,
+              "frame": 5,
+              "source_file": "figani-289-hd6-v1-f05.png",
+              "source_sha256": "f0a6d9a2f5ffdd850b1a40e65fec804b7c490ecccf5a66b90bbb6d34e1a72db0",
+              "checked_pixels": 2503,
+              "eligible_pixels": 47544
+            }
+          ],
+          "world-hd-art-31.png": [
+            {
+              "resource": 289,
+              "frame": 6,
+              "source_file": "figani-289-hd6-v1-f06.png",
+              "source_sha256": "f3cbe8eadf917b0f65a272eb42e621e91b38eaeb11e905b83970b50b9f915c54",
+              "checked_pixels": 2509,
+              "eligible_pixels": 50180
+            }
+          ],
+          "world-hd-art-32.png": [
+            {
+              "resource": 289,
+              "frame": 6,
+              "source_file": "figani-289-hd6-v1-f06.png",
+              "source_sha256": "f3cbe8eadf917b0f65a272eb42e621e91b38eaeb11e905b83970b50b9f915c54",
+              "checked_pixels": 2509,
+              "eligible_pixels": 50180
+            }
+          ],
+          "world-hd-art-33.png": [
+            {
+              "resource": 289,
+              "frame": 7,
+              "source_file": "figani-289-hd6-v1-f07.png",
+              "source_sha256": "b831c7ee5c9a768ccb429a285aa69952a71e45e1decb1dd6c14d4b0c8ede1a13",
+              "checked_pixels": 2509,
+              "eligible_pixels": 45157
+            }
+          ],
+          "world-hd-art-34.png": [
+            {
+              "resource": 289,
+              "frame": 7,
+              "source_file": "figani-289-hd6-v1-f07.png",
+              "source_sha256": "b831c7ee5c9a768ccb429a285aa69952a71e45e1decb1dd6c14d4b0c8ede1a13",
+              "checked_pixels": 2509,
+              "eligible_pixels": 45157
+            }
+          ],
+          "world-hd-art-35.png": [
+            {
+              "resource": 289,
+              "frame": 7,
+              "source_file": "figani-289-hd6-v1-f07.png",
+              "source_sha256": "b831c7ee5c9a768ccb429a285aa69952a71e45e1decb1dd6c14d4b0c8ede1a13",
+              "checked_pixels": 2509,
+              "eligible_pixels": 45157
+            }
+          ],
+          "world-hd-art-36.png": [
+            {
+              "resource": 288,
+              "frame": 0,
+              "source_file": "figani-288-hd6-v1-f00.png",
+              "source_sha256": "7c3349cb4bfbe927ac2b07da0659817b930145f271bfc89cb3a218f1732b45b2",
+              "checked_pixels": 2511,
+              "eligible_pixels": 32631
+            },
+            {
+              "resource": 289,
+              "frame": 0,
+              "source_file": "figani-289-hd6-v1-f00.png",
+              "source_sha256": "ce5f46122d34f82985826a002c6650d8a144b5dd4c7873e309a8d9d15545103a",
+              "checked_pixels": 2511,
+              "eligible_pixels": 32631
+            }
+          ],
+          "world-hd-art-37.png": [
+            {
+              "resource": 288,
+              "frame": 0,
+              "source_file": "figani-288-hd6-v1-f00.png",
+              "source_sha256": "7c3349cb4bfbe927ac2b07da0659817b930145f271bfc89cb3a218f1732b45b2",
+              "checked_pixels": 2511,
+              "eligible_pixels": 32631
+            },
+            {
+              "resource": 289,
+              "frame": 0,
+              "source_file": "figani-289-hd6-v1-f00.png",
+              "source_sha256": "ce5f46122d34f82985826a002c6650d8a144b5dd4c7873e309a8d9d15545103a",
+              "checked_pixels": 2511,
+              "eligible_pixels": 32631
+            }
+          ],
+          "world-hd-art-38.png": [
+            {
+              "resource": 288,
+              "frame": 0,
+              "source_file": "figani-288-hd6-v1-f00.png",
+              "source_sha256": "7c3349cb4bfbe927ac2b07da0659817b930145f271bfc89cb3a218f1732b45b2",
+              "checked_pixels": 2511,
+              "eligible_pixels": 32631
+            },
+            {
+              "resource": 289,
+              "frame": 0,
+              "source_file": "figani-289-hd6-v1-f00.png",
+              "source_sha256": "ce5f46122d34f82985826a002c6650d8a144b5dd4c7873e309a8d9d15545103a",
+              "checked_pixels": 2511,
+              "eligible_pixels": 32631
+            }
+          ],
+          "world-hd-art-39.png": [
+            {
+              "resource": 288,
+              "frame": 0,
+              "source_file": "figani-288-hd6-v1-f00.png",
+              "source_sha256": "7c3349cb4bfbe927ac2b07da0659817b930145f271bfc89cb3a218f1732b45b2",
+              "checked_pixels": 2511,
+              "eligible_pixels": 32631
+            },
+            {
+              "resource": 289,
+              "frame": 0,
+              "source_file": "figani-289-hd6-v1-f00.png",
+              "source_sha256": "ce5f46122d34f82985826a002c6650d8a144b5dd4c7873e309a8d9d15545103a",
+              "checked_pixels": 2511,
+              "eligible_pixels": 32631
+            }
+          ],
+          "world-hd-art-40.png": [
+            {
+              "resource": 288,
+              "frame": 0,
+              "source_file": "figani-288-hd6-v1-f00.png",
+              "source_sha256": "7c3349cb4bfbe927ac2b07da0659817b930145f271bfc89cb3a218f1732b45b2",
+              "checked_pixels": 2511,
+              "eligible_pixels": 32631
+            },
+            {
+              "resource": 289,
+              "frame": 0,
+              "source_file": "figani-289-hd6-v1-f00.png",
+              "source_sha256": "ce5f46122d34f82985826a002c6650d8a144b5dd4c7873e309a8d9d15545103a",
+              "checked_pixels": 2511,
+              "eligible_pixels": 32631
+            }
+          ],
+          "world-hd-art-41.png": [
+            {
+              "resource": 288,
+              "frame": 0,
+              "source_file": "figani-288-hd6-v1-f00.png",
+              "source_sha256": "7c3349cb4bfbe927ac2b07da0659817b930145f271bfc89cb3a218f1732b45b2",
+              "checked_pixels": 2511,
+              "eligible_pixels": 32631
+            },
+            {
+              "resource": 289,
+              "frame": 0,
+              "source_file": "figani-289-hd6-v1-f00.png",
+              "source_sha256": "ce5f46122d34f82985826a002c6650d8a144b5dd4c7873e309a8d9d15545103a",
+              "checked_pixels": 2511,
+              "eligible_pixels": 32631
+            }
+          ],
+          "world-hd-physical-scene.png": [
+            {
+              "resource": 288,
+              "frame": 0,
+              "source_file": "figani-288-hd6-v1-f00.png",
+              "source_sha256": "7c3349cb4bfbe927ac2b07da0659817b930145f271bfc89cb3a218f1732b45b2",
+              "checked_pixels": 2511,
+              "eligible_pixels": 32631
+            },
+            {
+              "resource": 289,
+              "frame": 0,
+              "source_file": "figani-289-hd6-v1-f00.png",
+              "source_sha256": "ce5f46122d34f82985826a002c6650d8a144b5dd4c7873e309a8d9d15545103a",
+              "checked_pixels": 2511,
+              "eligible_pixels": 32631
+            }
+          ],
+          "world-hd-replay-art-00.png": [
+            {
+              "resource": 288,
+              "frame": 1,
+              "source_file": "figani-288-hd6-v1-f01.png",
+              "source_sha256": "a9d620f1a99d724acf83f1d3870148c7eae097fae78fa80864bc57c9363085a1",
+              "checked_pixels": 2664,
+              "eligible_pixels": 31964
+            },
+            {
+              "resource": 288,
+              "frame": 3,
+              "source_file": "figani-288-hd6-v1-f03.png",
+              "source_sha256": "a9d620f1a99d724acf83f1d3870148c7eae097fae78fa80864bc57c9363085a1",
+              "checked_pixels": 2664,
+              "eligible_pixels": 31964
+            }
+          ],
+          "world-hd-replay-art-01.png": [
+            {
+              "resource": 288,
+              "frame": 0,
+              "source_file": "figani-288-hd6-v1-f00.png",
+              "source_sha256": "7c3349cb4bfbe927ac2b07da0659817b930145f271bfc89cb3a218f1732b45b2",
+              "checked_pixels": 2511,
+              "eligible_pixels": 32631
+            },
+            {
+              "resource": 289,
+              "frame": 0,
+              "source_file": "figani-289-hd6-v1-f00.png",
+              "source_sha256": "ce5f46122d34f82985826a002c6650d8a144b5dd4c7873e309a8d9d15545103a",
+              "checked_pixels": 2511,
+              "eligible_pixels": 32631
+            }
+          ],
+          "world-hd-replay-art-02.png": [
+            {
+              "resource": 288,
+              "frame": 1,
+              "source_file": "figani-288-hd6-v1-f01.png",
+              "source_sha256": "a9d620f1a99d724acf83f1d3870148c7eae097fae78fa80864bc57c9363085a1",
+              "checked_pixels": 2664,
+              "eligible_pixels": 31964
+            },
+            {
+              "resource": 288,
+              "frame": 3,
+              "source_file": "figani-288-hd6-v1-f03.png",
+              "source_sha256": "a9d620f1a99d724acf83f1d3870148c7eae097fae78fa80864bc57c9363085a1",
+              "checked_pixels": 2664,
+              "eligible_pixels": 31964
+            }
+          ],
+          "world-hd-replay-art-06.png": [
+            {
+              "resource": 288,
+              "frame": 0,
+              "source_file": "figani-288-hd6-v1-f00.png",
+              "source_sha256": "7c3349cb4bfbe927ac2b07da0659817b930145f271bfc89cb3a218f1732b45b2",
+              "checked_pixels": 2511,
+              "eligible_pixels": 32631
+            },
+            {
+              "resource": 289,
+              "frame": 0,
+              "source_file": "figani-289-hd6-v1-f00.png",
+              "source_sha256": "ce5f46122d34f82985826a002c6650d8a144b5dd4c7873e309a8d9d15545103a",
+              "checked_pixels": 2511,
+              "eligible_pixels": 32631
+            }
+          ],
+          "world-hd-replay-art-07.png": [
+            {
+              "resource": 288,
+              "frame": 1,
+              "source_file": "figani-288-hd6-v1-f01.png",
+              "source_sha256": "a9d620f1a99d724acf83f1d3870148c7eae097fae78fa80864bc57c9363085a1",
+              "checked_pixels": 2664,
+              "eligible_pixels": 31964
+            },
+            {
+              "resource": 288,
+              "frame": 3,
+              "source_file": "figani-288-hd6-v1-f03.png",
+              "source_sha256": "a9d620f1a99d724acf83f1d3870148c7eae097fae78fa80864bc57c9363085a1",
+              "checked_pixels": 2664,
+              "eligible_pixels": 31964
+            }
+          ],
+          "world-hd-replay-art-08.png": [
+            {
+              "resource": 288,
+              "frame": 2,
+              "source_file": "figani-288-hd6-v1-f02.png",
+              "source_sha256": "58de7a6830bc06b6a38fcfcfba53c5808293b3ba63ee8478a1b89dfc43fba2fc",
+              "checked_pixels": 2619,
+              "eligible_pixels": 31425
+            }
+          ],
+          "world-hd-replay-art-09.png": [
+            {
+              "resource": 288,
+              "frame": 2,
+              "source_file": "figani-288-hd6-v1-f02.png",
+              "source_sha256": "58de7a6830bc06b6a38fcfcfba53c5808293b3ba63ee8478a1b89dfc43fba2fc",
+              "checked_pixels": 2619,
+              "eligible_pixels": 31425
+            }
+          ],
+          "world-hd-replay-art-10.png": [
+            {
+              "resource": 288,
+              "frame": 0,
+              "source_file": "figani-288-hd6-v1-f00.png",
+              "source_sha256": "7c3349cb4bfbe927ac2b07da0659817b930145f271bfc89cb3a218f1732b45b2",
+              "checked_pixels": 2511,
+              "eligible_pixels": 32631
+            },
+            {
+              "resource": 289,
+              "frame": 0,
+              "source_file": "figani-289-hd6-v1-f00.png",
+              "source_sha256": "ce5f46122d34f82985826a002c6650d8a144b5dd4c7873e309a8d9d15545103a",
+              "checked_pixels": 2511,
+              "eligible_pixels": 32631
+            }
+          ],
+          "world-hd-replay-art-11.png": [
+            {
+              "resource": 289,
+              "frame": 1,
+              "source_file": "figani-289-hd6-v1-f01.png",
+              "source_sha256": "c7b1ec68ad237be4f6b82575b4d6cae4929156b2ea9e0f11bb5ec8d470785a99",
+              "checked_pixels": 2645,
+              "eligible_pixels": 39670
+            }
+          ],
+          "world-hd-replay-art-12.png": [
+            {
+              "resource": 289,
+              "frame": 2,
+              "source_file": "figani-289-hd6-v1-f02.png",
+              "source_sha256": "94f6df8fda22740944b416cd487afb6d70d8c95719dd6719f0fb2b962e565e60",
+              "checked_pixels": 2562,
+              "eligible_pixels": 43546
+            }
+          ],
+          "world-hd-replay-art-13.png": [
+            {
+              "resource": 289,
+              "frame": 3,
+              "source_file": "figani-289-hd6-v1-f03.png",
+              "source_sha256": "d0becb1bf949853981b0c14da118fdb3771753232154e9654e35cb6db617e488",
+              "checked_pixels": 2661,
+              "eligible_pixels": 39913
+            }
+          ],
+          "world-hd-replay-art-14.png": [
+            {
+              "resource": 289,
+              "frame": 4,
+              "source_file": "figani-289-hd6-v1-f04.png",
+              "source_sha256": "cdf7011e556b85c615ddba19e912b54159c55031f168320cb76a199161722424",
+              "checked_pixels": 2573,
+              "eligible_pixels": 30873
+            }
+          ],
+          "world-hd-replay-art-15.png": [
+            {
+              "resource": 289,
+              "frame": 5,
+              "source_file": "figani-289-hd6-v1-f05.png",
+              "source_sha256": "f0a6d9a2f5ffdd850b1a40e65fec804b7c490ecccf5a66b90bbb6d34e1a72db0",
+              "checked_pixels": 2503,
+              "eligible_pixels": 47544
+            }
+          ],
+          "world-hd-replay-art-16.png": [
+            {
+              "resource": 289,
+              "frame": 5,
+              "source_file": "figani-289-hd6-v1-f05.png",
+              "source_sha256": "f0a6d9a2f5ffdd850b1a40e65fec804b7c490ecccf5a66b90bbb6d34e1a72db0",
+              "checked_pixels": 2503,
+              "eligible_pixels": 47544
+            }
+          ],
+          "world-hd-replay-art-17.png": [
+            {
+              "resource": 289,
+              "frame": 6,
+              "source_file": "figani-289-hd6-v1-f06.png",
+              "source_sha256": "f3cbe8eadf917b0f65a272eb42e621e91b38eaeb11e905b83970b50b9f915c54",
+              "checked_pixels": 2509,
+              "eligible_pixels": 50180
+            }
+          ],
+          "world-hd-replay-art-18.png": [
+            {
+              "resource": 289,
+              "frame": 7,
+              "source_file": "figani-289-hd6-v1-f07.png",
+              "source_sha256": "b831c7ee5c9a768ccb429a285aa69952a71e45e1decb1dd6c14d4b0c8ede1a13",
+              "checked_pixels": 2509,
+              "eligible_pixels": 45157
+            }
+          ],
+          "world-hd-replay-art-19.png": [
+            {
+              "resource": 289,
+              "frame": 7,
+              "source_file": "figani-289-hd6-v1-f07.png",
+              "source_sha256": "b831c7ee5c9a768ccb429a285aa69952a71e45e1decb1dd6c14d4b0c8ede1a13",
+              "checked_pixels": 2509,
+              "eligible_pixels": 45157
+            }
+          ],
+          "world-hd-replay-art-20.png": [
+            {
+              "resource": 288,
+              "frame": 0,
+              "source_file": "figani-288-hd6-v1-f00.png",
+              "source_sha256": "7c3349cb4bfbe927ac2b07da0659817b930145f271bfc89cb3a218f1732b45b2",
+              "checked_pixels": 2511,
+              "eligible_pixels": 32631
+            },
+            {
+              "resource": 289,
+              "frame": 0,
+              "source_file": "figani-289-hd6-v1-f00.png",
+              "source_sha256": "ce5f46122d34f82985826a002c6650d8a144b5dd4c7873e309a8d9d15545103a",
+              "checked_pixels": 2511,
+              "eligible_pixels": 32631
+            }
+          ],
+          "world-hd-replay-art-21.png": [
+            {
+              "resource": 288,
+              "frame": 0,
+              "source_file": "figani-288-hd6-v1-f00.png",
+              "source_sha256": "7c3349cb4bfbe927ac2b07da0659817b930145f271bfc89cb3a218f1732b45b2",
+              "checked_pixels": 2511,
+              "eligible_pixels": 32631
+            },
+            {
+              "resource": 289,
+              "frame": 0,
+              "source_file": "figani-289-hd6-v1-f00.png",
+              "source_sha256": "ce5f46122d34f82985826a002c6650d8a144b5dd4c7873e309a8d9d15545103a",
+              "checked_pixels": 2511,
+              "eligible_pixels": 32631
+            }
+          ],
+          "world-hd-replay-physical-scene.png": [
+            {
+              "resource": 288,
+              "frame": 1,
+              "source_file": "figani-288-hd6-v1-f01.png",
+              "source_sha256": "a9d620f1a99d724acf83f1d3870148c7eae097fae78fa80864bc57c9363085a1",
+              "checked_pixels": 2664,
+              "eligible_pixels": 31964
+            },
+            {
+              "resource": 288,
+              "frame": 3,
+              "source_file": "figani-288-hd6-v1-f03.png",
+              "source_sha256": "a9d620f1a99d724acf83f1d3870148c7eae097fae78fa80864bc57c9363085a1",
+              "checked_pixels": 2664,
+              "eligible_pixels": 31964
+            }
+          ]
+        },
+        "scope": "普通首章兩次攻防的實際PNG與所選人物高覆蓋藍衣／褲核心；原描述子位置。alpha255一量化值，250..254依未知背景混合界限。多候選保留相容集合，不判定唯一相位；未比較非藍衣的武器／FX，不宣稱全部幀GPU或原版對拍。"
+      }
+    },
+    "both_sides": {
+      "status": "PASS-BOTH-CHARACTERS-SAME-CAPTURE",
+      "shared_pngs_by_scene": {
+        "world-hd": [
+          "world-hd-art-00.png",
+          "world-hd-art-01.png",
+          "world-hd-art-02.png",
+          "world-hd-art-03.png",
+          "world-hd-art-04.png",
+          "world-hd-art-05.png",
+          "world-hd-art-06.png",
+          "world-hd-art-07.png",
+          "world-hd-art-13.png",
+          "world-hd-art-14.png",
+          "world-hd-art-15.png",
+          "world-hd-art-16.png",
+          "world-hd-art-17.png",
+          "world-hd-art-18.png",
+          "world-hd-art-19.png",
+          "world-hd-art-20.png",
+          "world-hd-art-21.png",
+          "world-hd-art-22.png",
+          "world-hd-art-23.png",
+          "world-hd-art-24.png",
+          "world-hd-art-25.png",
+          "world-hd-art-26.png",
+          "world-hd-art-32.png",
+          "world-hd-art-33.png",
+          "world-hd-art-34.png",
+          "world-hd-art-35.png",
+          "world-hd-art-36.png",
+          "world-hd-art-37.png",
+          "world-hd-art-38.png",
+          "world-hd-art-39.png",
+          "world-hd-art-40.png",
+          "world-hd-art-41.png",
+          "world-hd-physical-scene.png"
+        ],
+        "world-hd-replay": [
+          "world-hd-replay-art-00.png",
+          "world-hd-replay-art-01.png",
+          "world-hd-replay-art-02.png",
+          "world-hd-replay-art-06.png",
+          "world-hd-replay-art-07.png",
+          "world-hd-replay-art-08.png",
+          "world-hd-replay-art-09.png",
+          "world-hd-replay-art-10.png",
+          "world-hd-replay-art-11.png",
+          "world-hd-replay-art-12.png",
+          "world-hd-replay-art-13.png",
+          "world-hd-replay-art-18.png",
+          "world-hd-replay-art-19.png",
+          "world-hd-replay-art-20.png",
+          "world-hd-replay-art-21.png",
+          "world-hd-replay-physical-scene.png"
+        ]
+      },
+      "scope": "相同PNG中的雙方高覆蓋藍衣核心；保留相容圖源集合，不宣稱唯一相位或全部武器／光效。"
+    },
+    "rejection_guards": {
+      "compiler": {
+        "status": "PASS-CHARACTER-COMPILER-GUARDS",
+        "compiler_sha256": "fd283cd499e5703cfb1165751e469c75b85e60b3f85727c2e032eac14207b8c0",
+        "baseline_sha256": "1ece092c8314150393c9a496ea89e06821099a3f4b0b101941b974fe055757b0",
+        "checks": [
+          {
+            "case": "schema",
+            "status": "PASS-REJECTED",
+            "reason": "未知配方版本或欄位",
+            "output_published": false
+          },
+          {
+            "case": "inventory-sha",
+            "status": "PASS-REJECTED",
+            "reason": "盤點、配方或原版包指紋不符",
+            "output_published": false
+          },
+          {
+            "case": "source-sha",
+            "status": "PASS-REJECTED",
+            "reason": "母稿路徑、擁有權或SHA不符",
+            "output_published": false
+          },
+          {
+            "case": "source-anchor",
+            "status": "PASS-REJECTED",
+            "reason": "ValueError: 錨點須是畫布內的非空整數矩形",
+            "output_published": false
+          },
+          {
+            "case": "native-anchor",
+            "status": "PASS-REJECTED",
+            "reason": "ValueError: 錨點須是畫布內的非空整數矩形",
+            "output_published": false
+          },
+          {
+            "case": "missing-frame",
+            "status": "PASS-REJECTED",
+            "reason": "配方影格不完整",
+            "output_published": false
+          },
+          {
+            "case": "missing-resource",
+            "status": "PASS-REJECTED",
+            "reason": "配方須涵蓋完整待機及攻擊資源",
+            "output_published": false
+          },
+          {
+            "case": "unknown-pose",
+            "status": "PASS-REJECTED",
+            "reason": "未知母稿、群組或配方欄位",
+            "output_published": false
+          },
+          {
+            "case": "unknown-field",
+            "status": "PASS-REJECTED",
+            "reason": "未知母稿、群組或配方欄位",
+            "output_published": false
+          },
+          {
+            "case": "already-registered",
+            "status": "PASS-REJECTED",
+            "reason": "所選圖源已登錄，不覆寫",
+            "output_published": false
+          },
+          {
+            "case": "wrong-original-metadata",
+            "status": "PASS-REJECTED",
+            "reason": "ValueError: 原始動畫未解碼或metadata不同",
+            "output_published": false
+          }
+        ],
+        "scope": "十一種實檔錯配方／來源fixture全部拒收且不建立候選；不代表遊戲玩家驗證。"
+      },
+      "gpu": {
+        "status": "PASS-CHARACTER-GPU-GUARDS",
+        "baseline_sha256": "467251791d4c90862996bd4e850d7bcb56562e86be59da696b668fc0277da59d",
+        "tool_sha256": "151ea3fcb389daf9a96eb1e010aa16e80085753a4415738a334681b2c5143589",
+        "checks": [
+          {
+            "case": "wrong-receipt",
+            "argv": [
+              "/usr/local/bin/python3",
+              "/repo/tools/verify_fd2_character_battle_gpu.py",
+              "--figure",
+              "0",
+              "--receipt",
+              "/repo/work/promo-cadence-20261018/hd-fonts/thor-gpu-guards-r1/wrong-receipt.json",
+              "--catalog",
+              "/repo/work/promo-cadence-20261018/hd-fonts/thor-candidate-r1/catalog.json",
+              "--source",
+              "/repo/work/promo-cadence-20261018/hd-fonts/thor-candidate-r1/pack",
+              "--report",
+              "/repo/work/promo-cadence-20261018/hd-fonts/thor-gpu-guards-r1/wrong-receipt-report.json"
+            ],
+            "status": "PASS-REJECTED",
+            "reason": "需要同份普通首章完整GUI收據及清冊",
+            "output_published": false
+          },
+          {
+            "case": "wrong-figure",
+            "argv": [
+              "/usr/local/bin/python3",
+              "/repo/tools/verify_fd2_character_battle_gpu.py",
+              "--figure",
+              "4",
+              "--receipt",
+              "/repo/work/promo-cadence-20261018/hd-fonts/thor-normal-gui-r2/receipt.json",
+              "--catalog",
+              "/repo/work/promo-cadence-20261018/hd-fonts/thor-candidate-r1/catalog.json",
+              "--source",
+              "/repo/work/promo-cadence-20261018/hd-fonts/thor-candidate-r1/pack",
+              "--report",
+              "/repo/work/promo-cadence-20261018/hd-fonts/thor-gpu-guards-r1/wrong-figure-report.json"
+            ],
+            "status": "PASS-REJECTED",
+            "reason": "未在普通攻防GPU核對到所選人物的攻擊動作：world-hd",
+            "output_published": false
+          },
+          {
+            "case": "wrong-source",
+            "argv": [
+              "/usr/local/bin/python3",
+              "/repo/tools/verify_fd2_character_battle_gpu.py",
+              "--figure",
+              "0",
+              "--receipt",
+              "/repo/work/promo-cadence-20261018/hd-fonts/thor-normal-gui-r2/receipt.json",
+              "--catalog",
+              "/repo/work/promo-cadence-20261018/hd-fonts/thor-candidate-r1/catalog.json",
+              "--source",
+              "/repo/work/promo-cadence-20261018/hd-fonts/thor-gpu-guards-r1/wrong-source",
+              "--report",
+              "/repo/work/promo-cadence-20261018/hd-fonts/thor-gpu-guards-r1/wrong-source-report.json"
+            ],
+            "status": "PASS-REJECTED",
+            "reason": "圖源雜湊不同",
+            "output_published": false
+          },
+          {
+            "case": "old-capture",
+            "argv": [
+              "/usr/local/bin/python3",
+              "/repo/tools/verify_fd2_character_battle_gpu.py",
+              "--figure",
+              "0",
+              "--receipt",
+              "/repo/work/promo-cadence-20261018/hd-fonts/thor-gpu-guards-r1/old-capture-fixture/receipt.json",
+              "--catalog",
+              "/repo/work/promo-cadence-20261018/hd-fonts/thor-candidate-r1/catalog.json",
+              "--source",
+              "/repo/work/promo-cadence-20261018/hd-fonts/thor-candidate-r1/pack",
+              "--report",
+              "/repo/work/promo-cadence-20261018/hd-fonts/thor-gpu-guards-r1/old-capture-report.json"
+            ],
+            "status": "PASS-REJECTED",
+            "reason": "未在普通攻防GPU核對到所選人物的攻擊動作：world-hd",
+            "output_published": false
+          }
+        ],
+        "scope": "四種明示負向fixture，舊擷取只證拒收；不新增原版或普通玩家收據。"
+      }
+    },
+    "coverage": {
+      "report": {
+        "file": "work/promo-cadence-20261018/hd-fonts/thor-formal-coverage-r1.json",
+        "sha256": "89e906d14c225028a6927962eb0f6ed410e35a1e0e5c5325a3784fbf9beb195f"
+      },
+      "status": "PASS-BATTLE-HD-ASSET-COVERAGE",
+      "catalog_stage": "registered-worktree",
+      "catalog_assets": 375,
+      "figani": {
+        "resource_positions": 409,
+        "decoded_resources": 264,
+        "native_frames": 2118,
+        "registered_resources": 6,
+        "registered_hd_frames": 46,
+        "source_blocked_resources": [
+          408
+        ]
+      },
+      "registered_figani_resources": [
+        {
+          "resource": 0,
+          "source_status": "decoded",
+          "native_frames": 4,
+          "registered_hd_frames": 4,
+          "asset_status": "REGISTERED-ASSET",
+          "common_background_header_eligible": true,
+          "runtime_caller_status": "NOT-INFERRED-FROM-ASSETS"
+        },
+        {
+          "resource": 1,
+          "source_status": "decoded",
+          "native_frames": 11,
+          "registered_hd_frames": 11,
+          "asset_status": "REGISTERED-ASSET",
+          "common_background_header_eligible": true,
+          "runtime_caller_status": "NOT-INFERRED-FROM-ASSETS"
+        },
+        {
+          "resource": 12,
+          "source_status": "decoded",
+          "native_frames": 4,
+          "registered_hd_frames": 4,
+          "asset_status": "REGISTERED-ASSET",
+          "common_background_header_eligible": true,
+          "runtime_caller_status": "NOT-INFERRED-FROM-ASSETS"
+        },
+        {
+          "resource": 13,
+          "source_status": "decoded",
+          "native_frames": 15,
+          "registered_hd_frames": 15,
+          "asset_status": "REGISTERED-ASSET",
+          "common_background_header_eligible": true,
+          "runtime_caller_status": "NOT-INFERRED-FROM-ASSETS"
+        },
+        {
+          "resource": 288,
+          "source_status": "decoded",
+          "native_frames": 4,
+          "registered_hd_frames": 4,
+          "asset_status": "REGISTERED-ASSET",
+          "common_background_header_eligible": true,
+          "runtime_caller_status": "NOT-INFERRED-FROM-ASSETS"
+        },
+        {
+          "resource": 289,
+          "source_status": "decoded",
+          "native_frames": 8,
+          "registered_hd_frames": 8,
+          "asset_status": "REGISTERED-ASSET",
+          "common_background_header_eligible": true,
+          "runtime_caller_status": "NOT-INFERRED-FROM-ASSETS"
+        }
+      ],
+      "fdother_effects": [
+        {
+          "resource": 65,
+          "registered_hd_frames": 5,
+          "asset_status": "REGISTERED-ASSET",
+          "native_masks": [
+            {
+              "sha256": "cbc85784def0295880332a90006ade4ac1405e1c12722850060b5bd6fa1cd5f3",
+              "full_source_mask": false
+            },
+            {
+              "sha256": "9f350c03d5becdbc4a434e10c5152db5521685cacbb1138f3cd447655456e7d9",
+              "full_source_mask": false
+            },
+            {
+              "sha256": "c0dcff5ecfa8783ec402111dad28f1aa0c1e478b830b8610d21333d688ed14a5",
+              "full_source_mask": false
+            },
+            {
+              "sha256": "744438d9669d809c02750d6db7078b0d9e71d7f4dfb473286e3165896af4bf70",
+              "full_source_mask": false
+            },
+            {
+              "sha256": "0eb1de61245381cb7d6324966305930dd71b5435a5bbd3dfdfa747b3312944c6",
+              "full_source_mask": false
+            }
+          ]
+        },
+        {
+          "resource": 66,
+          "registered_hd_frames": 14,
+          "asset_status": "REGISTERED-ASSET",
+          "native_masks": [
+            {
+              "sha256": "cda378f930f8a5bfa709b76d0a5f817040ee60fe5a9dd5c256038d97ac880681",
+              "full_source_mask": false
+            },
+            {
+              "sha256": "8a87c2e7c6c92e4685acb0adc46ca64dbcf7a2cd80928dd31a4f047ac8964777",
+              "full_source_mask": false
+            },
+            {
+              "sha256": "8a87c2e7c6c92e4685acb0adc46ca64dbcf7a2cd80928dd31a4f047ac8964777",
+              "full_source_mask": false
+            },
+            {
+              "sha256": "8a87c2e7c6c92e4685acb0adc46ca64dbcf7a2cd80928dd31a4f047ac8964777",
+              "full_source_mask": false
+            },
+            {
+              "sha256": "d6c1dad07a04fcc61050cf1aa9a0474fafbdb0cce1c7043e907a81ccf0ac32ba",
+              "full_source_mask": false
+            },
+            {
+              "sha256": "8745f6cc5f9bb507eb49f86d85ce2ccc8ccd9ca45ce9675d12e1c4bd1667eadb",
+              "full_source_mask": false
+            },
+            {
+              "sha256": "7ce969a4366c66f5b60336ebdf4a04c77bf506a5b0d5b6181b3701fa405c959e",
+              "full_source_mask": false
+            },
+            {
+              "sha256": "4d2bdcad5b9684823cf015a037342eade3cd81a536feb0eccada32c4ea5b740e",
+              "full_source_mask": false
+            },
+            {
+              "sha256": "237b7a7c6b068e725f184ff417b018471260be5f24c931db219914001f169ccf",
+              "full_source_mask": false
+            },
+            {
+              "sha256": "ebea7f628b27d26b9909b5a82c7c3b69ca524563118e6d5719c1d8d17ed84ac8",
+              "full_source_mask": false
+            },
+            {
+              "sha256": "7a62fe33d8d1aa2579f0816c4473b8f7f809673b08ffc8d9177b3d2b0764be37",
+              "full_source_mask": false
+            },
+            {
+              "sha256": "4940b244aa345b9c81b97a512dc7e938874009e56d9984c98621637d714a02dc",
+              "full_source_mask": false
+            },
+            {
+              "sha256": "ea7c4b1768504db80266125edc8b850ac0a42472d9ee02bfb90833ad5f1026b0",
+              "full_source_mask": false
+            },
+            {
+              "sha256": "6e4d91c749e53a67244f9abc0b54e021b8c96621c8dabde6e1957cd66fe1e382",
+              "full_source_mask": false
+            }
+          ]
+        },
+        {
+          "resource": 67,
+          "registered_hd_frames": 9,
+          "asset_status": "REGISTERED-ASSET",
+          "native_masks": [
+            {
+              "sha256": "b10d6d983ad69dfa1a4e2041fa4ca0042141e9030e49b6ed644e3046332d98d3",
+              "full_source_mask": false
+            },
+            {
+              "sha256": "7eba00bb5b59c56108ca111e28d15f8ebd3fd4163e288502435182bd0553de68",
+              "full_source_mask": false
+            },
+            {
+              "sha256": "f0d674e405e080f057159e7c2ab32e37c89e3a28be52ee01465b8dfdc638633c",
+              "full_source_mask": false
+            },
+            {
+              "sha256": "b72fce43f705890464171abdea12207eba5151e126792d3f63c18e026dc3faf0",
+              "full_source_mask": false
+            },
+            {
+              "sha256": "aae8c9f58483ed3e170ebf6c5aef622855bb09e29c895187d286ecbb4690c4b0",
+              "full_source_mask": false
+            },
+            {
+              "sha256": "1ab9a5571d17da8d9d811b35f3ab7e3ade2cdeab22d609ce771e7f23e3a1441a",
+              "full_source_mask": false
+            },
+            {
+              "sha256": "82e7f6ee3daf712df6c37254ac45c9c82446d2ac751ecf656c6fb830dc2f522b",
+              "full_source_mask": false
+            },
+            {
+              "sha256": "7c5491e82c210351117ee3e9b66e34032ebf773133e14926f5608c695414b226",
+              "full_source_mask": false
+            },
+            {
+              "sha256": "c4cd8b8106b8602a4614c8884e7b1f892ae05c4e8f52668def24784149d34eb7",
+              "full_source_mask": true
+            }
+          ]
+        },
+        {
+          "resource": 68,
+          "registered_hd_frames": 9,
+          "asset_status": "REGISTERED-ASSET",
+          "native_masks": [
+            {
+              "sha256": "73edb7b7b80ae7e11eccd8761e6faab2c754326c42d721f0e0c8422400223242",
+              "full_source_mask": false
+            },
+            {
+              "sha256": "f111f388b0e049492b4dec7a244cad249d4740ab0ff7f7b7c5c9c9f6515e6c75",
+              "full_source_mask": false
+            },
+            {
+              "sha256": "4523782c13b7a4039af7ac4e8522676b180da7184acabea158ec4aa1ece13ed3",
+              "full_source_mask": false
+            },
+            {
+              "sha256": "78d6875ba13453f5d7ee4c2babbd159dcd7af47c927ba650013a76737bd7c58b",
+              "full_source_mask": false
+            },
+            {
+              "sha256": "52d5568787440fdfa8202bd279b0181a0ca6f7834ff28c5b14cd1149e9f3b852",
+              "full_source_mask": false
+            },
+            {
+              "sha256": "3db83d88484a704844cf3374b22648d3073166156ed9c49e9450380acd010a22",
+              "full_source_mask": false
+            },
+            {
+              "sha256": "146a6cf89ffad1e5c35573d7af12ab74b5010a171840ad5a0df69c8f93a2d2e7",
+              "full_source_mask": false
+            },
+            {
+              "sha256": "e73a789f7fae54edfd57a43a969ff0ed7ac7c996ad64f40760a65b2bf4c1f720",
+              "full_source_mask": false
+            },
+            {
+              "sha256": "b97d2d1df9e6f18e89780250d1088624da2a060e32fffa0b117ea0e2e3db074e",
+              "full_source_mask": false
+            }
+          ]
+        }
+      ],
+      "scope": "完整FIGANI來源盤點對正式catalog、原版metadata及實際HD PNG的資料覆蓋；非原版oracle。header資格不等於caller已接線，FDOTHER只核已登錄效果，不假定四種效果涵蓋全部共同效果。一般玩家、所有caller、其他法術／死亡／背景、效能與平台須另有證據。"
+    },
+    "go_checks": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/thor-formal-tests-r1.log",
+        "sha256": "cfa3daad8c89ba20ec6723ac4e7e6fb0779d294f84488721406e3f63cc393b24"
+      },
+      "passed_top_level": 11,
+      "passed_subtests": 8,
+      "skipped": [
+        "TestModernHDBattleCandidateGaiaPosePreview"
+      ],
+      "scope": "指定HD載入／原子拒收及主題回歸，未跑全專案。"
+    },
+    "catalog_tests": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/thor-formal-catalog-tests.log",
+        "sha256": "6404a7d508e63948352eefad86ab8868332eae670acde60717ef95ee907b8b29"
+      },
+      "passed": 11
+    },
+    "lessons": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/thor-lessons-check.log",
+        "sha256": "5780eaae28d9633d81bb96d2736fa6aebc72109efad088bfc61b54edd79213dd"
+      },
+      "total": 258,
+      "guards": 139
+    },
+    "private_assets": {
+      "status": "PASS-THOR-PRIVATE-SYNC",
+      "private_files": 3392,
+      "runtime_files": 3146,
+      "old_files_preserved": 3370,
+      "new_files": [
+        "figani-000-hd6-v1-f00.png",
+        "figani-000-hd6-v1-f01.png",
+        "figani-000-hd6-v1-f02.png",
+        "figani-000-hd6-v1-f03.png",
+        "figani-001-hd6-v1-f00.png",
+        "figani-001-hd6-v1-f01.png",
+        "figani-001-hd6-v1-f02.png",
+        "figani-001-hd6-v1-f03.png",
+        "figani-001-hd6-v1-f04.png",
+        "figani-001-hd6-v1-f05.png",
+        "figani-001-hd6-v1-f06.png",
+        "figani-001-hd6-v1-f07.png",
+        "figani-001-hd6-v1-f08.png",
+        "figani-001-hd6-v1-f09.png",
+        "figani-001-hd6-v1-f10.png",
+        "figure-000-idle-battle-hd6-master-v1.png",
+        "figure-000-settle1-battle-hd6-master-v1.png",
+        "figure-000-settle2-battle-hd6-master-v1.png",
+        "figure-000-settle3-battle-hd6-master-v1.png",
+        "figure-000-settle4-battle-hd6-master-v1.png",
+        "figure-000-strike-battle-hd6-master-v1.png",
+        "figure-000-windup-battle-hd6-master-v1.png"
+      ],
+      "masters_excluded_from_runtime": [
+        "figure-000-idle-battle-hd6-master-v1.png",
+        "figure-000-settle1-battle-hd6-master-v1.png",
+        "figure-000-settle2-battle-hd6-master-v1.png",
+        "figure-000-settle3-battle-hd6-master-v1.png",
+        "figure-000-settle4-battle-hd6-master-v1.png",
+        "figure-000-strike-battle-hd6-master-v1.png",
+        "figure-000-windup-battle-hd6-master-v1.png"
+      ],
+      "private_manifest_sha256": "79c4ddd0a9b18f4bdfbd70857ef6d34b9104603de6b9c7123145e5bba1ae988d",
+      "runtime_manifest_sha256": "c9f435306c2a05a5114540a966f23f067091796f16b7a744bfdd57785da32df0",
+      "catalog_sha256": "39d808f209059c7f4714bf1f02026708434badff53da7cdb9719deff6ca80782",
+      "ownership": "1000:1000",
+      "runtime_copy_location": "容器tmpfs，退出即釋放，manifest保留",
+      "source_commit": "b64bc057f76afcb4fe320d9ffccc279f0dae0729",
+      "remote_head_verified": true,
+      "visibility_setting_changed": false,
+      "live_visibility_rechecked": false
+    },
+    "overview": {
+      "file": "docs/figures/hd-sol-physical-attack.png",
+      "sha256": "9ee779b2c79de89896b1cfa5e39d12fd40f5f8f0cd3044a4fe86c29bac8d5f24",
+      "size": [
+        1280,
+        400
+      ],
+      "source_images": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-normal-gui-r2/world-hd-art-13.png",
+          "sha256": "bbf02d6639531a6040d688b48648ee7769cc8c48cea84e17b91f9218a49ee7e3"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-normal-gui-r2/world-hd-art-32.png",
+          "sha256": "8b54677ceb22e2f4db50a0009855c4d850130015abe8486642391377f798c5e2"
+        }
+      ],
+      "scope": "正常首章END接敵後的索爾收勢與強盜反擊，兩張實際PNG均符合雙方HD核心；縮圖不代表原版對拍。"
+    },
+    "runtime_source": {
+      "binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/thor-hd-game",
+        "sha256": "f6fb55cf23ae2dcecb84787ff5f5ae499ffe646d6f3c1d4c8a896d61e428fe09",
+        "size": 19258168,
+        "removed_after_validation": true
+      },
+      "test_binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/thor-hd-tests",
+        "sha256": "a427db4b8823a7c2e67756f7cd43cf2fe7b68645c3766444742d69420eac1ba9",
+        "size": 26166976,
+        "removed_after_validation": true
+      },
+      "runtime_go_snapshot": {
+        "file": "work/promo-cadence-20261018/hd-fonts/thor-runtime-go-snapshot.json",
+        "sha256": "b6029f4fe49aa3136407a0d365719850ae8cd603fd2ed39e5b8e3bd3961e3d3c"
+      },
+      "runtime_go_files": 488,
+      "production_go_changes": 0,
+      "changed_go_tests": [],
+      "gui_tool": {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "d55818cd17c6df9f9c6065280d940847e248b13a27b146811312dafaf941a069"
+      },
+      "gpu_guard_tool": {
+        "file": "tools/test_fd2_character_battle_gpu.py",
+        "sha256": "151ea3fcb389daf9a96eb1e010aa16e80085753a4415738a334681b2c5143589"
+      }
+    },
+    "reproduce": {
+      "input_roots": {
+        "original_pack": "fd2-assets-private/packs/fd2-original-b97caf22",
+        "accepted_art": "fd2-assets-private/packs/fd2-modern-handpainted-a",
+        "workspace": "work/promo-cadence-20261018/hd-fonts"
+      },
+      "commands": [
+        "python3 tools/build_fd2_character_battle_hd.py --pack <原版包> --inventory <固定盤點> --recipe <thor-recipe-r1.json> --base-catalog <thor-candidate-r2/base-catalog.json> --out <新候選>",
+        "python3 tools/verify_fd2_hd_fonts_gui.py --binary <建置程式> --assets <候選runtime> --original-pack <原版包> --modern-pack <候選pack> --town-save <SHA089b077b普通首章槽> --out <新輸出> --battle-status --world --battle-hd --battle-art --battle-own-index 0 --battle-approach-rounds 1",
+        "python3 tools/verify_fd2_character_battle_gpu.py --figure 0 --receipt <GUI收據> --catalog <同份清冊> --source <圖源包> --report <新報告>",
+        "python3 tools/test_fd2_character_battle_gpu.py --figure 0 --other-figure 4 --receipt <GUI收據> --catalog <同份清冊> --source <圖源包> --baseline <正向報告> --negative-receipt <較早亞雷斯普通擷取> --out <新守衛輸出>"
+      ],
+      "environment": [
+        "fd2-assets-local:20260829-sfx／Python3.12／Pillow11.3",
+        "fd2-go-test-local:latest／Go1.22.12／Ebiten2.6.6",
+        "fd2-promo:20261017-r1／Xvfb及llvmpipe",
+        "Docker --rm、user1000、network none、有界資源及timeout。原版包唯讀，runtime-only複本於tmpfs。"
+      ]
+    },
+    "rejected_and_exploratory": {
+      "first_normal_attempt": {
+        "folder": "work/promo-cadence-20261018/hd-fonts/thor-normal-gui-r1",
+        "reason": "正式可達集合無相鄰敵人，在攻擊前停止；中途GUI版本未另存，不聲稱該版本逐位元組可重播。",
+        "current_reproduction": "同一來源槽以--battle-own-index 0及--battle-approach-rounds 0仍明示拒收；不作正常通過收據。"
+      },
+      "diagnostic_error": "一次讀取近期audit時把標題狀態當戰場而KeyError units，修正診斷腳本後同一GUI工作繼續，非遊戲缺陷。"
+    },
+    "limitations": [
+      "共享待機及蓄力母稿未逐格重繪原版微小頭帶／手臂變化；保留原描述子及節拍。",
+      "相近藍衣核心只列相容圖源，不判定唯一動畫相位，武器／FX另目視審查。",
+      "部分劍尖／頭帶／衣緣沿舊矩形裁切，未採蓋亞加寬。",
+      "F2抽驗位於戰場／狀態面板，本批不新增戰鬥中F2或普通召喚保存冷讀。",
+      "背景與HUD仍像素，其他人物／施法者／演出及效能／平台未完成。",
+      "軟體GPU擷取耗時非代表性效能，不新增原版oracle／matching／整章PLAYER-E2或Release。"
+    ],
+    "cleanup": {
+      "status": "PASS-VALIDATED-OUTPUT-CLEANUP",
+      "removed_binaries": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-hd-game",
+          "sha256": "f6fb55cf23ae2dcecb84787ff5f5ae499ffe646d6f3c1d4c8a896d61e428fe09",
+          "size": 19258168,
+          "removed_after_validation": true
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-hd-tests",
+          "sha256": "a427db4b8823a7c2e67756f7cd43cf2fe7b68645c3766444742d69420eac1ba9",
+          "size": 26166976,
+          "removed_after_validation": true
+        }
+      ],
+      "same_hash_symlinks": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-candidate-r1/pack/figani-000-hd6-v1-f00.png",
+          "sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-candidate-r1/pack/figani-000-hd6-v1-f01.png",
+          "sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-candidate-r1/pack/figani-000-hd6-v1-f02.png",
+          "sha256": "6eeb3e69efcf4bcc4cc706629a5433c68d0b9f8dd0db2f8fbb1252506087d6df"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-candidate-r1/pack/figani-000-hd6-v1-f03.png",
+          "sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-candidate-r1/pack/figani-001-hd6-v1-f00.png",
+          "sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-candidate-r1/pack/figani-001-hd6-v1-f01.png",
+          "sha256": "5d6f074cf30bba9f53b2880bf334e51e42a880412ca1f658f31778ab82612364"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-candidate-r1/pack/figani-001-hd6-v1-f02.png",
+          "sha256": "123b5f315e9e83738e22ee576618002617a44df6af675818156582742aaf5dbb"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-candidate-r1/pack/figani-001-hd6-v1-f03.png",
+          "sha256": "4b2929322904c8725b996c0535c8a87eaa6ab50a765d05dba0fa23d3b103c052"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-candidate-r1/pack/figani-001-hd6-v1-f04.png",
+          "sha256": "9c1683230288eca5aed0b83a2a58947f33be8dbd6a35cbb89b5925104bbb0c8e"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-candidate-r1/pack/figani-001-hd6-v1-f05.png",
+          "sha256": "995cc9e6fdacf7d1c6a4cac45c7bd0845987fc07a3b7e783cf67a4f68d3658ee"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-candidate-r1/pack/figani-001-hd6-v1-f06.png",
+          "sha256": "5bf21f4cdad0deb1495339e5c4781b62789d05fc23e6cf1907c0e7d3aabf0138"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-candidate-r1/pack/figani-001-hd6-v1-f07.png",
+          "sha256": "0830902bfcbcc398a4d418e5c9105fe64d63903cb5035747fe76129890ef2aba"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-candidate-r1/pack/figani-001-hd6-v1-f08.png",
+          "sha256": "00f532c673e42a8dbe63067393d9885c86e5aee5591d8065e3cfb563fb253d3c"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-candidate-r1/pack/figani-001-hd6-v1-f09.png",
+          "sha256": "623eb3e9529c9992afcf5be5d16f818e88e0b6e07c5899df502565c0ff095b18"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-candidate-r1/pack/figani-001-hd6-v1-f10.png",
+          "sha256": "0e3119a17aef8f5d8daf5c7f0f49f03e08517c096daa016d89b603fe15a81bff"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-candidate-r1/pack/figure-000-idle-battle-hd6-master-v1.png",
+          "sha256": "dade1f07d7782cd87fcbee9af0c144fdb17e739163c68d3eb8ee570476f6084c"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-candidate-r1/pack/figure-000-settle1-battle-hd6-master-v1.png",
+          "sha256": "1dac99b9e6474641b3b59633924606841657158ba7d57dc555b1b4f6ee56a3ca"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-candidate-r1/pack/figure-000-settle2-battle-hd6-master-v1.png",
+          "sha256": "a662c8a8f1451ff047cc7b7cfc24410cd879ad1ffc375fa7e8ba3df542ee0b42"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-candidate-r1/pack/figure-000-settle3-battle-hd6-master-v1.png",
+          "sha256": "0a79df3b1c4490335ddf2e2a03afebdb01116853e3f98ce2e127ce928dff0dc2"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-candidate-r1/pack/figure-000-settle4-battle-hd6-master-v1.png",
+          "sha256": "28e1bd753246c4252688dd278b36f83013970d674dfda9d09e584bdc7a52751b"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-candidate-r1/pack/figure-000-strike-battle-hd6-master-v1.png",
+          "sha256": "8b719d17097d7a86df258a3533d360a0560ac505279bf9931f8aa5b45fdc9270"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-candidate-r1/pack/figure-000-windup-battle-hd6-master-v1.png",
+          "sha256": "d852f03ad71df2778371c1dad8f3779f6fbc54104c4dbf6ea2caa82172de8b04"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-candidate-r2/pack/figani-000-hd6-v1-f00.png",
+          "sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-candidate-r2/pack/figani-000-hd6-v1-f01.png",
+          "sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-candidate-r2/pack/figani-000-hd6-v1-f02.png",
+          "sha256": "6eeb3e69efcf4bcc4cc706629a5433c68d0b9f8dd0db2f8fbb1252506087d6df"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-candidate-r2/pack/figani-000-hd6-v1-f03.png",
+          "sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-candidate-r2/pack/figani-001-hd6-v1-f00.png",
+          "sha256": "9e1ebe14bce9843e8e08a8909fb34eff15c9205dfa3bcfdd6bd147ecb3393395"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-candidate-r2/pack/figani-001-hd6-v1-f01.png",
+          "sha256": "5d6f074cf30bba9f53b2880bf334e51e42a880412ca1f658f31778ab82612364"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-candidate-r2/pack/figani-001-hd6-v1-f02.png",
+          "sha256": "123b5f315e9e83738e22ee576618002617a44df6af675818156582742aaf5dbb"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-candidate-r2/pack/figani-001-hd6-v1-f03.png",
+          "sha256": "4b2929322904c8725b996c0535c8a87eaa6ab50a765d05dba0fa23d3b103c052"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-candidate-r2/pack/figani-001-hd6-v1-f04.png",
+          "sha256": "9c1683230288eca5aed0b83a2a58947f33be8dbd6a35cbb89b5925104bbb0c8e"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-candidate-r2/pack/figani-001-hd6-v1-f05.png",
+          "sha256": "995cc9e6fdacf7d1c6a4cac45c7bd0845987fc07a3b7e783cf67a4f68d3658ee"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-candidate-r2/pack/figani-001-hd6-v1-f06.png",
+          "sha256": "5bf21f4cdad0deb1495339e5c4781b62789d05fc23e6cf1907c0e7d3aabf0138"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-candidate-r2/pack/figani-001-hd6-v1-f07.png",
+          "sha256": "0830902bfcbcc398a4d418e5c9105fe64d63903cb5035747fe76129890ef2aba"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-candidate-r2/pack/figani-001-hd6-v1-f08.png",
+          "sha256": "00f532c673e42a8dbe63067393d9885c86e5aee5591d8065e3cfb563fb253d3c"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-candidate-r2/pack/figani-001-hd6-v1-f09.png",
+          "sha256": "623eb3e9529c9992afcf5be5d16f818e88e0b6e07c5899df502565c0ff095b18"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-candidate-r2/pack/figani-001-hd6-v1-f10.png",
+          "sha256": "0e3119a17aef8f5d8daf5c7f0f49f03e08517c096daa016d89b603fe15a81bff"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-candidate-r2/pack/figure-000-idle-battle-hd6-master-v1.png",
+          "sha256": "dade1f07d7782cd87fcbee9af0c144fdb17e739163c68d3eb8ee570476f6084c"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-candidate-r2/pack/figure-000-settle1-battle-hd6-master-v1.png",
+          "sha256": "1dac99b9e6474641b3b59633924606841657158ba7d57dc555b1b4f6ee56a3ca"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-candidate-r2/pack/figure-000-settle2-battle-hd6-master-v1.png",
+          "sha256": "a662c8a8f1451ff047cc7b7cfc24410cd879ad1ffc375fa7e8ba3df542ee0b42"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-candidate-r2/pack/figure-000-settle3-battle-hd6-master-v1.png",
+          "sha256": "0a79df3b1c4490335ddf2e2a03afebdb01116853e3f98ce2e127ce928dff0dc2"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-candidate-r2/pack/figure-000-settle4-battle-hd6-master-v1.png",
+          "sha256": "28e1bd753246c4252688dd278b36f83013970d674dfda9d09e584bdc7a52751b"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-candidate-r2/pack/figure-000-strike-battle-hd6-master-v1.png",
+          "sha256": "8b719d17097d7a86df258a3533d360a0560ac505279bf9931f8aa5b45fdc9270"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/thor-candidate-r2/pack/figure-000-windup-battle-hd6-master-v1.png",
+          "sha256": "d852f03ad71df2778371c1dad8f3779f6fbc54104c4dbf6ea2caa82172de8b04"
+        }
+      ],
+      "freed_bytes": 82129010,
+      "recordings_created": false
+    },
+    "full_battle_hd_complete": false,
+    "worklist": {
+      "issue": 263,
+      "state": "OPEN",
+      "goal": "完成 fd2 戰鬥動畫hd",
+      "open_items": 21,
+      "manual_items": 14,
+      "possibly_complete": 0,
+      "verify_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/thor-worklist-final-verify.log",
+        "sha256": "2f54f61dfa7fb4ccd6a11f9d46d47654d86d30b5df19bc8b0330be3d7a4888eb"
+      }
+    },
+    "final_checks": {
+      "status": "PASS-THOR-FINAL-CHECKS",
+      "changed_markdown_local_targets": 1421,
+      "broken_targets": [],
+      "route_positive_controls": [
+        {
+          "file": "README.md",
+          "target": "docs/figures/hd-sol-physical-attack.png",
+          "exists": true
+        },
+        {
+          "file": "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+          "target": "../../tools/test_fd2_character_battle_gpu.py",
+          "exists": true
+        }
+      ],
+      "ownership_checked_paths": 7415,
+      "unexpected_owners_or_md_directories": [],
+      "scope": "本輪變更文件、全部thor輸出根及22份正式新圖；不掃全部歷史work。全庫舊九項連結限制沿前批紀錄。",
+      "docker_leftovers": "由外部docker ps -a於提交前後另核對。"
     }
   }
 }
