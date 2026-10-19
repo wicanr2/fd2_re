@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "kind": "hd_terrain_object_art_recipe",
+  "object": "map00-brown-group",
+  "status": "prototype",
+  "scale": 6,
+  "painted_master_size": [1536, 1024],
+  "native_reference_size": [72, 48],
+  "painted_x_anchors": [0, 1536],
+  "native_x_anchors": [0, 72],
+  "painted_y_anchors": [0, 236, 562, 948, 1024],
+  "native_y_anchors": [0, 11, 26, 45, 48],
+  "anchor_evidence": "人工製圖校準，保持五個褐色橫向輪廓、遮擋次序、藍灰窄帶與地面接觸；不推定物件用途。",
+  "alpha_policy": "每幀保持原生全opaque遮罩，最近鄰六倍。",
+  "rgb_policy": "全部RGB取自新手繪母稿，不混入舊像素。",
+  "foreground_overrides": {},
+  "runtime_integrated": false
+}

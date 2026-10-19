@@ -34,6 +34,7 @@ def main():
     parser.add_argument('--terrain', action='store_true', help='普通方向鍵移鏡頭至首章房屋，抽驗HD地形與F2；需--battle-status')
     parser.add_argument('--terrain-occlusion', action='store_true', help='最多六個普通回合抵達屋後，抽驗前景；需--terrain與--world')
     parser.add_argument('--terrain-roof-view', action='store_true', help='另以普通游標取景褐頂物件全部八個底圖；需--terrain')
+    parser.add_argument('--terrain-props-view', action='store_true', help='普通游標取景綠色與褐色物件九個底圖；需--terrain')
     parser.add_argument('--timed-dialogue', action='store_true', help='加驗計時對話開收框、穩定HD文字與F2；需--world與明示章前EXP校準槽')
     args = parser.parse_args()
     tool_source_sha256=digest(Path(__file__))
@@ -41,6 +42,7 @@ def main():
     assert not args.terrain or args.battle_status
     assert not args.terrain_occlusion or args.terrain and args.world
     assert not args.terrain_roof_view or args.terrain
+    assert not args.terrain_props_view or args.terrain and not args.terrain_roof_view
     assert not args.timed_dialogue or args.world
     assert not args.transition_frames or args.preparation
     assert not args.panel_transitions or args.status or args.items
@@ -388,15 +390,16 @@ def main():
                         else:direction='Down' if current[1]<destination[1] else 'Up'
                         key(direction)
                     raise AssertionError(('普通游標未抵達房屋觀測位置',latest(audit)['cursor'],destination))
-                view_y=2 if args.terrain_roof_view else 5
+                view_y=8 if args.terrain_props_view else (2 if args.terrain_roof_view else 5)
                 pan_to([15,view_y]);pan_to([10,view_y])
-                required={28,30,32,33,34,35,272,273} if args.terrain_roof_view else set()
+                required=({40,42,43,203,204,205,206,207,208} if args.terrain_props_view else
+                          ({28,30,32,33,34,35,272,273} if args.terrain_roof_view else set()))
                 def terrain_visible(s):
                     return (len(s.get('hd_world_terrain',[])) >= (8 if args.terrain_roof_view else 18)
                             and required.issubset({t['frame'] for t in s.get('hd_world_terrain',[])}))
                 wait(terrain_visible)
                 assert latest(audit)['units']==before_pan['units'],'單純移鏡頭改變單位'
-                label='roof-object' if args.terrain_roof_view else 'house'
+                label='props' if args.terrain_props_view else ('roof-object' if args.terrain_roof_view else 'house')
                 shot('terrain-hd-'+label)
                 house=latest(audit)
                 key('F2');wait(lambda s:s.get('hd_theme') is False and not s.get('hd_world'))

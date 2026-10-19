@@ -1,5 +1,10 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
+首章尖頂綠色及褐色成組物件的新增底圖已在正常移鏡頭／F2畫面逐圖核對GPU。
+普通走行、指令環、取消、兩次物理攻擊、Home及完整保存／新程序LOAD通過；相鄰變體與草地仍混合原版。
+不新增原版oracle或整章E2。數量與限制依[58](58-fd2-exe-re-coverage.md)，證據見
+[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`green_and_brown_followup_20261019`。
+
 四回合普通移動／待機／END已抵達屋後，前景279的opaque覆寫與一張可比相位的人物透明處核心通過；
 第二張人物相位不可比，未當成通過。新褐頂物件的八張底圖在正常GPU全部相符。
 屋後階段後的F9腳本失敗與獨立正常保存冷讀PASS分列；不冒稱單次長流程全通。

@@ -23,7 +23,7 @@ def main():
     receipt = json.loads(args.receipt.read_text())
     if receipt["status"] != "PASS":
         raise ValueError("正常GUI流程尚未通過")
-    names = [name for name in receipt["screenshots"] if name.startswith(("terrain-hd-house", "terrain-hd-roof-object"))]
+    names = [name for name in receipt["screenshots"] if name.startswith(("terrain-hd-house", "terrain-hd-roof-object", "terrain-hd-props"))]
     if len(names) < 2:
         raise ValueError("缺少正常移鏡頭與F2返回的房屋畫面")
     samples = []
@@ -53,11 +53,14 @@ def main():
             (matched if actual == expected else different).append(target)
         if len(matched) < 8:
             raise ValueError(f"{name}只有{len(matched)}個完整圖塊可比；保留失敗，不推定來源")
+        if name.startswith('terrain-hd-props') and not {40,42,43,203,204,205,206,207,208}.issubset({t['frame'] for t in matched}):
+            raise ValueError(f"{name}缺少九張新物件的完整GPU相符圖塊")
         samples.append({"file": name, "status": "PASS", "matching_tiles": matched,
                         "matched_pixels": len(matched)*144*144,
                         "not_compared_tiles": different,
                         "limits": "只驗完整可見且未被UI／人物／前景蓋住的相符圖塊；其他候選不當成通過"})
-    faithful = args.receipt.parent / ("terrain-faithful-roof-object.png" if names[0].startswith('terrain-hd-roof-object') else "terrain-faithful-house.png")
+    label = 'props' if names[0].startswith('terrain-hd-props') else ('roof-object' if names[0].startswith('terrain-hd-roof-object') else 'house')
+    faithful = args.receipt.parent / ('terrain-faithful-'+label+'.png')
     reference = Image.open(faithful).convert("RGBA")
     first = Image.open(args.receipt.parent/names[0]).convert("RGBA")
     difference = sum(a != b for a, b in zip(first.getdata(), reference.getdata()))

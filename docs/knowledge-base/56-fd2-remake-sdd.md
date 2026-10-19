@@ -1,5 +1,10 @@
 # 56 — FD2 remake 系統設計規格（SDD，2026-08-09）
 
+首章尖頂綠色與褐色成組物件沿既有原生稀疏HD契約接線，未改遊戲繪製架構、規則、時鐘或存檔。
+重複中段的製圖校準只用新手繪RGB，原生遮罩保持；正式規格與限定驗收見[61](61-modern-theme-runtime-spec.md)。
+唯一現況依[58](58-fd2-exe-re-coverage.md)，來源與實際GPU見
+[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`green_and_brown_followup_20261019`。
+
 AI期間的玩家地圖輸入鎖（CONFORMED-SCOPED，既有同步順序修復）：沿本檔已證實的`0x1A30B`換手序列，
 玩家控制器在敵方AI、回合事件及回合加一之後才重新取得輸入。
 首章屋後普通路徑觀測到`ai_busy=true`且已選中新增我方角色、建立move_preview；

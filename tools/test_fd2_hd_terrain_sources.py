@@ -10,8 +10,42 @@ from pathlib import Path
 
 from PIL import Image
 
-from build_fd2_hd_terrain_object import build
+from build_fd2_hd_terrain_object import build, calibrate_repeat_edges
 from verify_fd2_terrain_sources import sha
+
+
+def verify_repeat_calibration():
+    obj = {"cells": [{"x":0,"y":y,"frame":frame} for y,frame in enumerate([40,43,42])]}
+    source = Image.new("RGBA", (24,72))
+    source.putdata([(x*7,y*3,(x+y)*2,255) for y in range(72) for x in range(24)])
+    canvas = source.copy()
+    result = calibrate_repeat_edges(canvas,obj,{"43":{"axis":"y","blend_rows":3}},1)
+    assert result[0]["repeat_and_neighbour_edges_equal"]
+    for y in range(72):
+        for x in range(24):
+            if y not in set(range(21,27)) | set(range(45,51)):
+                assert source.getpixel((x,y)) == canvas.getpixel((x,y))
+            assert canvas.getpixel((x,y))[3] == 255
+    for x in range(24):
+        assert len({canvas.getpixel((x,y)) for y in [23,24,47,48]}) == 1
+    untouched=source.copy()
+    assert calibrate_repeat_edges(untouched,obj,{},1)==[] and untouched.tobytes()==source.tobytes()
+    invalid=[({"43":{"axis":"x","blend_rows":3}},obj,source),
+             ({"43":{"axis":"y","blend_rows":7}},obj,source),
+             ({"43":{"axis":"y","blend_rows":True}},obj,source),
+             ({"99":{"axis":"y","blend_rows":3}},obj,source),
+             ({"43":{"axis":"y","blend_rows":3}},{"cells":obj["cells"][:2]},source),
+             ({"43":{"axis":"y","blend_rows":3}},obj,Image.new("RGBA",(24,72)))]
+    for policy,fixture,image in invalid:
+        canvas=image.copy()
+        try:
+            calibrate_repeat_edges(canvas,fixture,policy,1)
+        except ValueError:
+            assert canvas.tobytes()==image.tobytes(),"拒收不得改寫畫布"
+        else:
+            raise AssertionError("不安全的接縫政策未被拒收")
+    return [{"case":"repeat-edges-and-unchanged-core","status":"PASS"},
+            {"case":"repeat-policy-six-rejections","status":"PASS"}]
 
 
 def main():
@@ -21,7 +55,7 @@ def main():
     args = parser.parse_args()
     if args.report.exists():
         raise ValueError("不得覆寫既有拒收收據")
-    results = []
+    results = verify_repeat_calibration()
     original_mask = args.pack / "tilesets/fdshap/map_32/tile_0000/mask.png"
     original_hash = sha(original_mask)
     with tempfile.TemporaryDirectory(prefix="terrain-contract-", dir=args.report.parent) as temporary:

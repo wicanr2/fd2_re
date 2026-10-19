@@ -846,6 +846,22 @@ seed在啟動前固定，失敗保留，不重擲。`turn`與`native_round`均�
 長流程後續F9等待腳本失敗保留，同一binary的獨立正常操作／保存冷讀通過；範圍不合併成單次長流程PASS。
 完整新圖源、提示、SHA、普通路徑及限制沿主收據的`house_occlusion_and_roof_followup_20261019`。
 
+尖頂綠色物件與褐色成組物件（CONFORMED-SCOPED-RUNTIME-E1，先READY後實作）：沿相同原生來源／144稀疏集合，不改碰撞、格子、時鐘或存檔。
+前者取map0(7,8)的1×3格，frame40／43／42；後者取(7,6)的3×2格，frame203..208。
+全部static、全opaque且無remap，沒有額外前景。名稱只描述可見外形，不推定樹種或褐色物件用途。
+RGB來自獨立新手繪母稿，沿明示UV錨點切片。原生地圖會連續重用frame43，故可在製圖配方使用
+可選`repeat_edges`，只對全opaque的terrain幀，以新繪圖自身上下邊平均作3列線性漸變校準；
+同一畫布緊鄰上／下幀的交界3列也對齊相同平均邊界，只限這三張全opaque幀。
+不混入原版RGB，不改alpha，不改其他幀。校準在切片前回填製圖畫布，重組零差異須明示為校準後畫布。
+驗收包括原生來源、既有40槽保持、新9槽預檢、長短綠色物件的重複中段接縫、正常GPU與F2、保存冷讀及私人同步。
+配方入口為[尖頂綠色物件](../../remake/assets/themes/modern/terrain-tall-green-map0.recipe.json)與
+[褐色成組物件](../../remake/assets/themes/modern/terrain-brown-group-map0.recipe.json)。
+來源／遮罩／校準後重組、短長物件、正常GPU／F2及保存冷讀均通過；詳細數量與未驗範圍依[58](58-fd2-exe-re-coverage.md)。
+`tools/verify_fd2_hd_fonts_gui.py --battle-status --terrain --terrain-props-view --world`以普通游標取景，
+`tools/verify_fd2_hd_terrain_gpu.py`要求兩份實際PNG均包含全部新槽的相符完整圖塊。
+接縫測試由`tools/test_fd2_hd_terrain_sources.py`的`verify_repeat_calibration`驗不改核心與六項不安全政策拒收。
+相鄰樹形變體與草地仍用原版。圖源、提示、SHA及私人同步見主收據的`green_and_brown_followup_20261019`。
+
 草地母稿以內建image_gen產生，完整提示與SHA保存在
 [主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`terrain_source_followup_20261019`。
 工具產生的比較圖僅以固定首章資料排版，不含人物、遊戲狀態、動畫或GPU擷取。

@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "kind": "hd_terrain_object_art_recipe",
+  "object": "map00-tall-green",
+  "status": "prototype",
+  "scale": 6,
+  "painted_master_size": [
+    725,
+    2169
+  ],
+  "native_reference_size": [
+    24,
+    72
+  ],
+  "painted_x_anchors": [
+    0,
+    725
+  ],
+  "native_x_anchors": [
+    0,
+    24
+  ],
+  "painted_y_anchors": [
+    0,
+    85,
+    723,
+    1446,
+    1885,
+    2113,
+    2169
+  ],
+  "native_y_anchors": [
+    0,
+    2,
+    24,
+    48,
+    62,
+    70,
+    72
+  ],
+  "anchor_evidence": "人工製圖校準，保持單一尖頂、連續綠色輪廓與短褐色基部；樹種與用途不推定。",
+  "alpha_policy": "每幀保持原生全opaque遮罩，最近鄰六倍。",
+  "rgb_policy": "全部RGB來自新手繪母稿；重複中段及相鄰交界只在新繪色彩間平均與漸變。",
+  "repeat_edges": {
+    "43": {
+      "axis": "y",
+      "blend_rows": 3
+    }
+  },
+  "foreground_overrides": {},
+  "runtime_integrated": false
+}

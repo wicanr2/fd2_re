@@ -2,6 +2,7 @@
 """將整棟手繪母稿依明示UV校準切回原生格子，保存原生遮罩；僅製圖候選。"""
 
 import argparse
+import hashlib
 import json
 import os
 import shutil
@@ -36,6 +37,51 @@ def fit(master, recipe):
     return master.transform((width * scale, height * scale), Image.Transform.MESH, mesh, Image.Resampling.BICUBIC)
 
 
+def calibrate_repeat_edges(canvas, obj, policies, scale):
+    if not policies:
+        return []
+    if not isinstance(policies, dict) or len(policies) != 1:
+        raise ValueError("本階段只接受一個重複中段")
+    name, policy = next(iter(policies.items()))
+    if not isinstance(policy, dict) or set(policy) != {"axis", "blend_rows"} or policy["axis"] != "y":
+        raise ValueError("重複中段只接受垂直交界校準")
+    size = 24 * scale
+    rows = policy["blend_rows"]
+    if type(rows) is not int or not 1 <= rows <= size // 4:
+        raise ValueError("交界校準列數越界")
+    selected = [cell for cell in obj["cells"] if str(cell["frame"]) == name]
+    if len(selected) != 1:
+        raise ValueError("缺少唯一的重複中段")
+    cell = selected[0]
+    neighbours = [next((c for c in obj["cells"] if c["x"] == cell["x"] and c["y"] == y), None)
+                  for y in (cell["y"]-1, cell["y"]+1)]
+    if any(c is None for c in neighbours) or len({c["frame"] for c in [cell]+neighbours}) != 3:
+        raise ValueError("重複中段需要上下兩張獨立的相鄰幀")
+    x0, y0 = cell["x"]*size, cell["y"]*size
+    if canvas.crop((x0,y0-size,x0+size,y0+size*2)).getextrema()[3] != (255,255):
+        raise ValueError("交界校準只接受全opaque製圖")
+    original = canvas.copy()
+    before = hashlib.sha256(original.tobytes()).hexdigest()
+    changed = 0
+    for x in range(x0,x0+size):
+        top, bottom = original.getpixel((x,y0)), original.getpixel((x,y0+size-1))
+        target = tuple(round((a+b)/2) for a,b in zip(top[:3],bottom[:3]))
+        for offset in range(rows):
+            weight = (rows-offset)/rows
+            for y in (y0+offset,y0-1-offset,y0+size-1-offset,y0+size+offset):
+                old = original.getpixel((x,y))
+                value = tuple(round(a*(1-weight)+b*weight) for a,b in zip(old[:3],target))+(255,)
+                changed += value != old
+                canvas.putpixel((x,y),value)
+    for x in range(x0,x0+size):
+        if len({canvas.getpixel((x,y)) for y in (y0-1,y0,y0+size-1,y0+size)}) != 1:
+            raise ValueError("重複中段交界仍不相同")
+    return [{"frame":cell["frame"],"affected_frames":[c["frame"] for c in neighbours[:1]+[cell]+neighbours[1:]],
+             "axis":"y","blend_rows":rows,"changed_pixels":changed,"repeat_and_neighbour_edges_equal":True,
+             "before_canvas_rgba_sha256":before,"after_canvas_rgba_sha256":hashlib.sha256(canvas.tobytes()).hexdigest(),
+             "rgb_source":"painted master only; no original RGB mixed"}]
+
+
 def build(pack, maps, sources, recipe_path, master_path, out):
     if os.path.lexists(out) or not out.parent.is_dir():
         raise ValueError("輸出須為既有父目錄下的新目錄")
@@ -63,6 +109,7 @@ def build(pack, maps, sources, recipe_path, master_path, out):
     opaque = Image.open(sources / f"map{obj['map']:02d}-mask.png")
     remap = Image.open(sources / f"map{obj['map']:02d}-remap.png")
     canvas = fit(master, recipe)
+    repeat_calibration = calibrate_repeat_edges(canvas, obj, recipe.get("repeat_edges", {}), recipe["scale"])
     entries = []
     pictures = {}
     foreground_sources = []
@@ -156,6 +203,9 @@ def build(pack, maps, sources, recipe_path, master_path, out):
                   "assembled_sha256": sha(stage / "object-assembled.png"),
                   "comparison_sha256": sha(stage / "object-comparison.png"),
                   "tool_sha256": sha(Path(__file__))}
+        if repeat_calibration:
+            result["repeat_calibration"] = repeat_calibration
+            result["verification"]["reconstruction_basis"] = "post-UV, post-repeat-edge calibration canvas"
         (stage / "manifest.json").write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n")
         if os.path.lexists(out):
             raise ValueError("輸出在製作期間出現，保留既有內容")

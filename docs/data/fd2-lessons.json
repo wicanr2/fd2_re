@@ -2930,6 +2930,21 @@
         ],
         "pattern": "banner_t"
       }
+    },
+    {
+      "id": "hd-repeat-tile-boundary-calibration",
+      "area": "HD製圖",
+      "date": "2026-10-19",
+      "rule": "可重複地形中段先依實際地圖組成短版與加長版，再檢視接縫校準寬度及未修改核心；重組零差異明示校準後畫布。入口tools/build_fd2_hd_terrain_object.py、tools/test_fd2_hd_terrain_sources.py與61。",
+      "why": "frame43會連續重用；12列平均邊界漸變拉出條紋，縮為3列後以3／4／5格及正常GPU檢視，保留新手繪RGB與原生alpha。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/build_fd2_hd_terrain_object.py"
+        ],
+        "pattern": "def calibrate_repeat_edges"
+      }
     }
   ]
 }
