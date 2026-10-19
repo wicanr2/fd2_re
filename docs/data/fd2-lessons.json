@@ -3005,6 +3005,37 @@
         ],
         "pattern": "body_source_proof"
       }
+    },
+    {
+      "id": "compound-hold-requires-new-frame-draw-ack",
+      "date": "2026-10-19",
+      "area": "呈現生命週期",
+      "rule": "等待結束若把owner切到下一張影格，清除舊drawn，要求該幀自己的Draw確認；回歸涵蓋多次Update／單次Draw及實際RunGame，不能只用一Update一Draw。入口為remake/cmd/fd2/native_command34_presentation.go及native_command35_presentation.go的holdStage退出分支，邊界測試為modern_hd_staged_summon_lifecycle_test.go的TestNativeCompoundStageHoldRequiresNewDraw。",
+      "why": "兩個多段召喚在hold期間繪製舊圖而留下drawn=true，換frame時沿用舊確認；完整GPU分別跳過152及164。只清除換frame處的確認即恢復完整241／255次呈現，等待值與規則保持。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/native_command34_presentation.go",
+          "remake/cmd/fd2/native_command35_presentation.go"
+        ],
+        "pattern": "j\\.frame = j\\.stageEnd\\[j\\.holdStage\\]\\s+j\\.drawn = false"
+      }
+    },
+    {
+      "id": "tight-effect-mask-preserves-transparent-corners",
+      "date": "2026-10-19",
+      "area": "HD素材編製",
+      "rule": "HD特效須在實際描述子裁切後檢查alpha極值，原生非全不透明的mask仍須留全透明背景。不要用放寬loader處理Gaussian外溢；球體可直接抗鋸齒取樣原始世界mask，再裁切。入口tools/build_fd2_staged_summon_hd.py的fx_sampling，正式拒收在remake/cmd/fd2/modern_hd_battle_assets.go。",
+      "why": "11×11破壞神小球的透明角落經0.65 Gaussian後最低alpha1，Python尺寸／hash驗證雖通過，Go正式載入仍拒收。直接Lanczos保留332個透明輸出像素，最後真正全不透明原幀仍為255。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/build_fd2_staged_summon_hd.py"
+        ],
+        "pattern": "fx_sampling"
+      }
     }
   ]
 }

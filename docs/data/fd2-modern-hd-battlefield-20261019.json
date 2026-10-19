@@ -9,13 +9,13 @@
     "native_viewport": "CONFORMED-SCOPED：正式1920世界沿原生(4,4)、312×192窗格；正常F2同view與960地形樣本一致。",
     "hd_sprite_data": "DATA-READY：完整125組1455張HD及31組372張新增24父項已登錄；舊1083張父項及HD bytes保持。",
     "hd_world_renderer": "CONFORMED-SCOPED：144人物已接Game.Draw；首章34張正常GPU、4張實際走行、兩次物理攻擊及保存／新程序LOAD通過。",
-    "private_assets": "catalog allow-list 3276檔逐檔驗證並推送私人庫3914bab0；runtime-only3068檔，三份新母稿排除於執行包。",
+    "private_assets": "catalog allow-list3316檔已逐檔驗證並推送私人庫abb43855；runtime-only3100檔，新增八母稿排除於執行包。",
     "quickload_battle_owner": "CONFORMED-SCOPED：成功JSON LOAD丟棄舊經驗owner與移動計畫；拒收保留。",
     "timed_dialogue": "CONFORMED-SCOPED-RUNTIME-E1：計時FFEC開收框保留HD世界，EXP99普通鍵盤／F2與保存冷讀通過；其他caller未驗。",
     "hd_terrain": "CONFORMED-SCOPED：map0六組53槽；新增圓頂綠色／褐色雙塊四底圖在兩張正常GPU全部相符，短長組合與保存冷讀通過；草地及其他地形仍待HD化。",
     "ai_player_input_lock": "CONFORMED-SCOPED：AI換手期間拒絕玩家地圖輸入重入；普通END／增援對話及相關／完整Go回歸通過。",
     "gaia_redesign": "CONFORMED-SCOPED：新版頭像與四方向圖組已登錄；正常START／Gaia北移取消／F2／冷讀分段驗證。相位差異與序章尾端失敗明示，非逐幀parity。",
-    "hd_battle_animation": "CONFORMED-SCOPED／RUNTIME-E1：共背景物理及四種FDOTHER召喚consumer已接；正式366項含熾天使五幀。273GPU、158 presents及F2／拒收通過；普通召喚、其餘美術與FIGANI人物未完成，蓋亞占寬待決。"
+    "hd_battle_animation": "CONFORMED-SCOPED／RUNTIME-E1：共背景物理及四種共用召喚consumer已接，正式369項含FDOTHER65..68共37幀。完整Draw與F2／拒收通過，跨段Draw確認已修正；FIGANI人物、其他演出與普通召喚仍待完成，蓋亞占寬待決。"
   },
   "runtime_source": {
     "binary_sha256": "07d48b2972a8dea4a5a3b67753b3e6126788cda0930a541e475b41f53e4713cb",
@@ -5806,7 +5806,8 @@
         "scope": "原始／分離FDOTHER四資源37幀",
         "package_seconds": 0.038,
         "top_level_passes": 1,
-        "top_level_skips": 0
+        "top_level_skips": 0,
+        "subtest_passes": 0
       },
       {
         "file": "work/promo-cadence-20261018/hd-fonts/battle-effects-gpu-r1.log",
@@ -5814,7 +5815,8 @@
         "scope": "273個GPU回讀，原生整張相同，HD誤差上限1",
         "package_seconds": 21.514,
         "top_level_passes": 1,
-        "top_level_skips": 0
+        "top_level_skips": 0,
+        "subtest_passes": 0
       },
       {
         "file": "work/promo-cadence-20261018/hd-fonts/battle-effects-runtime-gpu-final.log",
@@ -5822,15 +5824,17 @@
         "scope": "候選r3正式Draw及最終合成器，158 presents、41 HD／1原版",
         "package_seconds": 48.095,
         "top_level_passes": 1,
-        "top_level_skips": 0
+        "top_level_skips": 0,
+        "subtest_passes": 0
       },
       {
         "file": "work/promo-cadence-20261018/hd-fonts/battle-effects-related-final.log",
         "sha256": "1ae688cf438c3ee8e2bf9f5abd784c7874bebeecb53d92beebf7274b6c450308",
         "scope": "相關回歸55個頂層PASS、17個條件SKIP",
         "package_seconds": 7.266,
-        "top_level_passes": 55,
-        "top_level_skips": 17
+        "top_level_passes": 35,
+        "top_level_skips": 17,
+        "subtest_passes": 20
       },
       {
         "file": "work/promo-cadence-20261018/hd-fonts/battle-effects-physical-lifecycle-regression.log",
@@ -5838,7 +5842,8 @@
         "scope": "既有物理完整Draw／64與65階DAC返回回歸",
         "package_seconds": 11.775,
         "top_level_passes": 1,
-        "top_level_skips": 0
+        "top_level_skips": 0,
+        "subtest_passes": 0
       },
       {
         "file": "work/promo-cadence-20261018/hd-fonts/battle-effects-string-review-final.log",
@@ -5846,7 +5851,8 @@
         "scope": "99筆字串審查重綁後回歸",
         "package_seconds": 0.363,
         "top_level_passes": 8,
-        "top_level_skips": 0
+        "top_level_skips": 0,
+        "subtest_passes": 0
       },
       {
         "file": "work/promo-cadence-20261018/hd-fonts/battle-effects-formal-runtime-go.log",
@@ -5854,7 +5860,8 @@
         "scope": "正式清冊及正式素材根，158 presents、39 HD／1原版",
         "package_seconds": 32.996,
         "top_level_passes": 1,
-        "top_level_skips": 0
+        "top_level_skips": 0,
+        "subtest_passes": 0
       },
       {
         "file": "work/promo-cadence-20261018/hd-fonts/battle-effects-formal-catalog.log",
@@ -5862,7 +5869,8 @@
         "scope": "正式366項逐檔驗證",
         "package_seconds": null,
         "top_level_passes": 0,
-        "top_level_skips": 0
+        "top_level_skips": 0,
+        "subtest_passes": 0
       },
       {
         "file": "work/promo-cadence-20261018/hd-fonts/battle-effects-catalog-tests.log",
@@ -5870,7 +5878,8 @@
         "scope": "11項Python清冊回歸",
         "package_seconds": 4.79,
         "top_level_passes": 0,
-        "top_level_skips": 0
+        "top_level_skips": 0,
+        "subtest_passes": 0
       }
     ],
     "runtime_fixture": {
@@ -6055,6 +6064,1932 @@
       "source_hashes": 18,
       "ownership": "1000:1000",
       "root_owned_or_md_directories": 0
+    }
+  },
+  "battle_summon_bank_followup_20261019": {
+    "status": "CONFORMED-SCOPED-RUNTIME-E1",
+    "base_commit": "eb257fe672cdc65468780706b591a98b95000f80",
+    "branch": "hd-summon-fairy",
+    "goal": "完成fd2戰鬥動畫HD",
+    "issue": 263,
+    "defect_issue": 264,
+    "full_battle_animation_hd_complete": false,
+    "new_player_e2": false,
+    "new_oracle": false,
+    "new_matching": false,
+    "formal_release_changed": false,
+    "scope": "新增FDOTHER66風妖精14幀、67破壞神9幀、68暗邪鬼9幀；固定幾何及分層的現代手繪重定向，FIGANI施術者與地圖尾段保持原生。",
+    "original_source": {
+      "file": "work/promo-cadence-20261018/hd-fonts/battle-compound-source-inventory.json",
+      "sha256": "54eec2a5fcc9e901e7779669bfa035887d7564db1595b40b12da07c5b68d8886",
+      "authority": "既有FDOTHER65..68固定容器、raw／分離解析與0x27FC9排程；不新增函式語意或原版執行收據"
+    },
+    "baseline_catalog": {
+      "file": "work/promo-cadence-20261018/hd-fonts/compound-base-catalog-366.json",
+      "sha256": "34c8db142ab418a2fff7fde7c6a1eefb974887f6dc9d6a92b96a09cf90b139cc"
+    },
+    "generation": [
+      {
+        "tool": "built-in image_gen",
+        "prompts": {
+          "base": "Use case: stylized-concept. Asset type: transparent HD battle summon sprite for an existing tactical RPG remake. Input image 1 is the exact subject, pose, proportions, costume and rear-view authority, FDOTHER066 frame0 original wind fairy. Image 2 is only established project hand-painted rendering style, not the subject. Create exactly one full-body ADULT wind fairy matching image1: rear view, long flowing ice-blue hair curving down toward screen-left to below the knee and hiding the head, neck and shoulders; four long narrow translucent dragonfly wings, two per side, with very fine pale-lilac and jade veins, not butterfly wings. Back and waist partly exposed exactly as the source, cobalt-blue fitted leggings and pointed boots, gold waist bands and dark-blue clothing visible around her waist. One leg straight down with toe pointing down, other leg bent back to screen-right. Pose hovering upright. IMPORTANT this is an animation base layer, not a complete posed character: no visible arms, forearms, hands, fingers or detached pieces; hair occludes the shoulders and arms are added separately by the existing animation. Keep the source silhouette and relative wing positions. Delicate painterly classic RPG brushwork, refined hair strands, cloth folds, restrained crisp outlines, consistent with image2. True transparent background, whole wings, hair tips and feet inside frame with small margin, tall portrait composition. No floor, halo, glow, magic, particles, text, borders, weapon, crown, scenery, or additional figures. Do not copy the source pixel grid. Adult proportions.",
+          "raised": "Use case: stylized-concept. Asset type: one transparent animation overlay layer, not a complete character. Image1 is the exact pixel-pose/layout authority for the wind fairy's raised hands, FDOTHER066 frame1, and image2 gives ONLY the modern blue/gold fabric rendering and skin style of the same adult fairy. Repaint image1 in high-resolution hand-painted classic RPG style, retaining its exact spatial proportions and disconnected parts: on the LEFT, two slim bent forearms close together rise vertically, long cobalt-blue fingerless gloves with gold bands, one pointed blue glove reaching highest and the other slightly lower/right, a small warm skin-colored elbow bend at the bottom; on the FAR RIGHT, a very small separate patch of fingers peeking around the occluded body, exactly where the original has it. Keep the left group and tiny right group separate, the empty gap between them, their relative sizes, and the exact vertical alignment of image1. No torso, head, hair, wings, legs, shoulder, magic or other objects: only the visible arm fragments from image1. The original dark pixels within each glove are painted cloth contours, NOT a black background. Refined painterly blue folds, restrained dark edges and gold trim consistent with image2. Real transparent background. Match the 59:46 aspect of the source layout, with minimal even transparent margins, everything fully inside the canvas. No words, labels, border or extra limbs.",
+          "outstretched": "Use case: stylized-concept. Asset type: transparent animation overlay containing ONLY one adult fairy's visible outstretched arm plus tiny far hand. Reference1 is the exact pose/layout authority FDOTHER066 frame4; reference2 is the established HD fairy for the blue/gold cloth and warm skin painting style, NOT a request for a whole figure. Repaint reference1 as a crisp hand-painted RPG animation layer. On the LEFT: a slim bent elbow and forearm extending toward screen-left, long cobalt blue glove, gold bands at upper arm and wrist, gloved palm pointing left and slightly up, fingers together, a small warm skin patch at the rightward elbow end; keep the exact long shallow diagonal silhouette of the source. On the FAR RIGHT: the source's tiny disconnected warm-skin hand with a small hint of blue cuff. Preserve the enormous empty transparent gap between the two source fragments, their tiny-versus-large size ratio, and the same vertical alignment. Only those two separated body fragments, no connecting tissue across the gap. Do not add a second large arm, torso, head, hair, wings, legs, staff or magic. Fine painterly cloth folds, soft skin shading, restrained dark contours and polished narrow gold trim consistent with image2. Fully transparent background, wide shallow 93:30 composition with minimal transparent margins. No text, black rectangle, scenery or border. Keep the whole glove fingers and both ends visible.",
+          "wind": "Use case: stylized-concept. Asset type: full-bleed opaque magic material texture for an existing hand-painted tactical RPG wind summon, later masked by the original expanding sphere. Paint a luminous pale ice-blue and white rushing wind vortex, soft spiraling air currents and fine wispy brush strokes, flowing clockwise around a broad softly luminous center. Fill the ENTIRE rectangular canvas edge-to-edge with the light wind material, bright icy cyan and pearl-white with subtle lavender accents, no dark or black regions, no empty margins. Painterly refined classic RPG spell finish consistent with a delicate blue-haired dragonfly fairy. This is a material sheet, NOT a finished circle or an illustration of a fairy. No hard circle border, objects, character, wings, lightning bolts, earth, smoke, text, labels, lens flares, stars, frame or vignette. Keep broad readable flow and fine hand-painted detail, mostly high-key pale blue and white, landscape 16:10. Completely opaque background, no transparency."
+        },
+        "generated_sources": {
+          "base": "exec-12d73112-0b40-4ece-ae0f-99d05725de93.png",
+          "raised": "exec-d62f2007-65ca-4ba6-903a-30dd36acc515.png",
+          "outstretched": "exec-495d4b33-671c-42fa-817a-09f0737fcf36.png",
+          "wind": "exec-f649ad44-50be-4159-b6ce-4e903bb2fc89.png"
+        }
+      },
+      {
+        "tool": "built-in image_gen",
+        "prompts": {
+          "demon_body": "Use case: stylized-concept. Asset type: transparent HD summon sprite, original tactical RPG remake. Image1 is the exact subject/pose/silhouette/camera authority FDOTHER068 frame0, the Dark Demon summon. Image2 supplies only project painterly rendering quality, not its angel subject. Repaint exactly the original single stocky blue demon seen from behind: very broad rounded heavy pear-shaped body, pale periwinkle-blue skin with mottled darker blue belly/back spots, small bald head partly hidden between huge shoulders, bent outstretched arms reaching up and outward, long pointed claw fingers splayed at both hands, two short powerful legs with clawed feet, long slim blue tail curling down and to screen-right with a triangular arrowhead at the tip. Preserve original relative proportions and asymmetrical arm bends, rear view and exact raised-hands gesture. Small head, massive broad back, NO human face visible. Smooth muscular upper back over a plump round lower body, anatomically readable joints, original recognizable silhouette. Rich hand-painted classic RPG sprite, crisp restrained dark contours, subtle brushwork and cool highlights consistent with image2. True transparent background. Entire claw fingers, feet and pointed tail tip completely visible, small transparent margin. No clothing, armor, weapon, wings, fire, lightning, aura, background, floor, shadows, text, borders or additional figures. This is the uncharged body-only animation base.",
+          "demon_energy": "Use case: stylized-concept. Asset type: opaque full-bleed electric magic material for the Dark Demon summon in a hand-painted RPG. Paint bright acidic chartreuse, yellow-green and lime-white crackling electric plasma with broad branching energy streaks, painterly luminous cores and soft green interior brush texture. Fill the entire 16:10 rectangular canvas edge-to-edge with the colored material, no black, no empty regions, no separate composition. This will be masked by the original per-frame lightning shape, so it must be a material sheet, not a finished silhouette. Preserve a predominantly yellow-green character like vintage lime magical lightning. No character, hands, demon, circle border, objects, text, symbols, labels, dark background, frame or photographic effects. Rich hand-painted classic RPG effects style, opaque everywhere, bright readable coarse flow with fine surface detail.",
+          "destroyer_body": "Use case: stylized-concept. Asset type: transparent HD battle summon sprite for original tactical RPG remake. Reference1 is the exact pose, subject anatomy, silhouette, costume, weapon and camera authority FDOTHER067 frame0, the Destroyer summon. Reference2 supplies ONLY the project's polished hand-painted classic RPG sprite style, not its angel subject. Repaint exactly the original mounted armored knight on rearing dark navy-blue horse, viewed from behind and rear-three-quarter: horse faces screen-left, both front legs lifted and bent toward screen-left, hind legs bend down toward screen-right; flowing long white tail at screen-right. The rider is seen from the back above the horse's shoulders, red segmented plate armor, white fur collar, small dark crown-like helmet details, rich golden ochre cloak falling over the horse's back. A very long thin silver polearm runs diagonally from the upper center-left down toward lower screen-right, silver multi-pronged blade at upper end. Preserve exact original knight/horse arrangement, all four equine legs, navy horse head at upper left, the back-facing rider and long cape. Original source is the anatomy authority; do not invent a centaur or extra rider. Rich painterly shading, readable red armor plates, gold cloak folds, restrained crisp dark outlines and detailed silver weapon. True transparent background, entire blade, long shaft, hooves and tail all visible with small transparent margin. No energy, fire, glow, motion trails, ground, cast shadow, backdrop, lettering, frame or additional figures. One isolated sprite, nearly square composition. Do not change the camera or turn the knight toward the viewer.",
+          "destroyer_energy": "Use case: stylized-concept. Asset type: completely opaque full-bleed red magic material texture for a mounted Destroyer summon in a hand-painted tactical RPG. Paint a powerful crimson-red and vermilion magical pressure vortex, broad swirling red brush currents and fine glowing ruby surface filaments, a vivid red luminous center, deeper wine-red folds toward corners, with restrained orange-red highlights. The original effect is a solid red expanding sphere, so the result must remain overwhelmingly RED and readable, not orange or yellow fire. Fill the entire 16:10 rectangle edge-to-edge with the red material, no black, transparency, empty margin, separate sphere boundary, character, weapon, horse, scenery, smoke, particles, sparks outside a contour, text, symbols, labels or frame. This is an internal material sheet which will be masked to the exact original expanding sphere shape. Rich hand-painted classic RPG magic finish, fine texture but clear large red flow."
+        },
+        "generated_sources": {
+          "demon_body": "exec-1dbefadc-e41e-4f4c-a8ff-99658b5074ab.png",
+          "demon_energy": "exec-c49ce715-b4e3-4027-a5c1-4963f73dbeb4.png",
+          "destroyer_body": "exec-1004cb78-dba7-41c9-8101-933a4af97cb3.png",
+          "destroyer_energy": "exec-e108aca5-5851-47cf-8b44-6d96309563f7.png"
+        }
+      }
+    ],
+    "compilers": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/fairy-battle-bank-r1/compiled.json",
+        "sha256": "10013c48bd5206bd94db92fcfb1878cb0222c8ff7a7faf6912c29ff46023ce46",
+        "report": {
+          "status": "PASS-COMPILED-FAIRY-CANDIDATE",
+          "runtime_registered": false,
+          "scope": "四母稿重定向14個原始圖層；伸手4／5共用母稿，非14張獨立畫作，非GUI或原版執行收據。",
+          "base_catalog_sha256": "34c8db142ab418a2fff7fde7c6a1eefb974887f6dc9d6a92b96a09cf90b139cc",
+          "catalog_sha256": "c2c945ecbc17095b282dd1af78805c7a6c337ff36cc8a84fcc9e118d8f51033d",
+          "inventory_sha256": "54eec2a5fcc9e901e7779669bfa035887d7564db1595b40b12da07c5b68d8886",
+          "compiler_sha256": "4de70c1245949fa7ecc8dc2aede003cd028bf71212a614c8f53c0368329b6a75",
+          "source_sha256": {
+            "fairy-body-hd6-master-v1.png": "78a75c41cbf4498b25c188d1a0a7a36035f98c1624d82a3e4c24d081e7bf6cc5",
+            "fairy-raised-hd6-master-v1.png": "c37db5df24967036a11e3ec4c8079ebc3c718aa43a1fa8f8ddbc7c75c2e472cb",
+            "fairy-open-hd6-master-v1.png": "8f6f1b8f23358550fa75ae2c4d7965f98b07761d188ef025b1f2b002b646f784",
+            "fairy-wind-hd6-master-v1.png": "de9f055c1e08f69b1a42984fc209d0151123d4ecdc7374eb09c0848454f91396"
+          },
+          "arm_source_proof": [
+            {
+              "frame": 6,
+              "visible_arm_pixels": 487,
+              "wind_pixels": 37
+            },
+            {
+              "frame": 7,
+              "visible_arm_pixels": 487,
+              "wind_pixels": 97
+            },
+            {
+              "frame": 8,
+              "visible_arm_pixels": 479,
+              "wind_pixels": 221
+            },
+            {
+              "frame": 9,
+              "visible_arm_pixels": 432,
+              "wind_pixels": 421
+            },
+            {
+              "frame": 10,
+              "visible_arm_pixels": 357,
+              "wind_pixels": 861
+            },
+            {
+              "frame": 11,
+              "visible_arm_pixels": 25,
+              "wind_pixels": 11513
+            },
+            {
+              "frame": 12,
+              "visible_arm_pixels": 0,
+              "wind_pixels": 35001
+            },
+            {
+              "frame": 13,
+              "visible_arm_pixels": 0,
+              "wind_pixels": 62776
+            }
+          ],
+          "frames": [
+            {
+              "frame": 0,
+              "source": "body",
+              "hd_origin": [
+                652,
+                30
+              ],
+              "hd_size": [
+                766,
+                1158
+              ],
+              "file": "fdother-066-hd6-v1-f00.png",
+              "sha256": "9964ef3b982bcb8766e4170b3d3ef3da0545aa3fa8f38416a446f2443212c000"
+            },
+            {
+              "frame": 1,
+              "pose": 1,
+              "source": "raised",
+              "parts": [
+                {
+                  "source_box": [
+                    59,
+                    22,
+                    505,
+                    1070
+                  ],
+                  "native_box": [
+                    136,
+                    18,
+                    161,
+                    64
+                  ],
+                  "hd_origin": [
+                    832,
+                    108
+                  ],
+                  "hd_size": [
+                    117,
+                    276
+                  ]
+                },
+                {
+                  "source_box": [
+                    1262,
+                    790,
+                    1391,
+                    955
+                  ],
+                  "native_box": [
+                    190,
+                    51,
+                    195,
+                    61
+                  ],
+                  "hd_origin": [
+                    1140,
+                    317
+                  ],
+                  "hd_size": [
+                    30,
+                    38
+                  ]
+                }
+              ],
+              "wind_native_pixels": 0,
+              "file": "fdother-066-hd6-v1-f01.png",
+              "sha256": "f5305bf965bf77a97afa353cd65a2aaf865a817e07001ad788ff12dc5058e08d"
+            },
+            {
+              "frame": 2,
+              "pose": 1,
+              "source": "raised",
+              "parts": [
+                {
+                  "source_box": [
+                    59,
+                    22,
+                    505,
+                    1070
+                  ],
+                  "native_box": [
+                    136,
+                    18,
+                    161,
+                    64
+                  ],
+                  "hd_origin": [
+                    832,
+                    108
+                  ],
+                  "hd_size": [
+                    117,
+                    276
+                  ]
+                },
+                {
+                  "source_box": [
+                    1262,
+                    790,
+                    1391,
+                    955
+                  ],
+                  "native_box": [
+                    190,
+                    51,
+                    195,
+                    61
+                  ],
+                  "hd_origin": [
+                    1140,
+                    317
+                  ],
+                  "hd_size": [
+                    30,
+                    38
+                  ]
+                }
+              ],
+              "wind_native_pixels": 0,
+              "file": "fdother-066-hd6-v1-f02.png",
+              "sha256": "f5305bf965bf77a97afa353cd65a2aaf865a817e07001ad788ff12dc5058e08d"
+            },
+            {
+              "frame": 3,
+              "pose": 1,
+              "source": "raised",
+              "parts": [
+                {
+                  "source_box": [
+                    59,
+                    22,
+                    505,
+                    1070
+                  ],
+                  "native_box": [
+                    136,
+                    18,
+                    161,
+                    64
+                  ],
+                  "hd_origin": [
+                    832,
+                    108
+                  ],
+                  "hd_size": [
+                    117,
+                    276
+                  ]
+                },
+                {
+                  "source_box": [
+                    1262,
+                    790,
+                    1391,
+                    955
+                  ],
+                  "native_box": [
+                    190,
+                    51,
+                    195,
+                    61
+                  ],
+                  "hd_origin": [
+                    1140,
+                    317
+                  ],
+                  "hd_size": [
+                    30,
+                    38
+                  ]
+                }
+              ],
+              "wind_native_pixels": 0,
+              "file": "fdother-066-hd6-v1-f03.png",
+              "sha256": "f5305bf965bf77a97afa353cd65a2aaf865a817e07001ad788ff12dc5058e08d"
+            },
+            {
+              "frame": 4,
+              "pose": 4,
+              "source": "open",
+              "parts": [
+                {
+                  "source_box": [
+                    21,
+                    183,
+                    1150,
+                    570
+                  ],
+                  "native_box": [
+                    104,
+                    53,
+                    159,
+                    79
+                  ],
+                  "hd_origin": [
+                    624,
+                    339
+                  ],
+                  "hd_size": [
+                    330,
+                    113
+                  ]
+                },
+                {
+                  "source_box": [
+                    2097,
+                    252,
+                    2202,
+                    358
+                  ],
+                  "native_box": [
+                    190,
+                    49,
+                    197,
+                    64
+                  ],
+                  "hd_origin": [
+                    1140,
+                    318
+                  ],
+                  "hd_size": [
+                    42,
+                    42
+                  ]
+                }
+              ],
+              "wind_native_pixels": 0,
+              "file": "fdother-066-hd6-v1-f04.png",
+              "sha256": "bc54a2f194fe35d369ecd667a1e3c2e54963fd72eea5051bfcc9bce2fe23053d"
+            },
+            {
+              "frame": 5,
+              "pose": 5,
+              "source": "open",
+              "parts": [
+                {
+                  "source_box": [
+                    21,
+                    183,
+                    1150,
+                    570
+                  ],
+                  "native_box": [
+                    104,
+                    53,
+                    159,
+                    78
+                  ],
+                  "hd_origin": [
+                    624,
+                    336
+                  ],
+                  "hd_size": [
+                    330,
+                    113
+                  ]
+                },
+                {
+                  "source_box": [
+                    2097,
+                    252,
+                    2202,
+                    358
+                  ],
+                  "native_box": [
+                    190,
+                    51,
+                    196,
+                    63
+                  ],
+                  "hd_origin": [
+                    1140,
+                    324
+                  ],
+                  "hd_size": [
+                    36,
+                    36
+                  ]
+                }
+              ],
+              "wind_native_pixels": 0,
+              "file": "fdother-066-hd6-v1-f05.png",
+              "sha256": "0bb5dfcda0cc2a6327c38d6785eeee79e1ac4d305392024f07cc8216827e7e85"
+            },
+            {
+              "frame": 6,
+              "pose": 5,
+              "source": "open",
+              "parts": [
+                {
+                  "source_box": [
+                    21,
+                    183,
+                    1150,
+                    570
+                  ],
+                  "native_box": [
+                    104,
+                    53,
+                    159,
+                    78
+                  ],
+                  "hd_origin": [
+                    624,
+                    336
+                  ],
+                  "hd_size": [
+                    330,
+                    113
+                  ]
+                },
+                {
+                  "source_box": [
+                    2097,
+                    252,
+                    2202,
+                    358
+                  ],
+                  "native_box": [
+                    190,
+                    51,
+                    196,
+                    63
+                  ],
+                  "hd_origin": [
+                    1140,
+                    324
+                  ],
+                  "hd_size": [
+                    36,
+                    36
+                  ]
+                }
+              ],
+              "wind_native_pixels": 37,
+              "file": "fdother-066-hd6-v1-f06.png",
+              "sha256": "67dcc31434a6ba85c34695f378a541cbc3442118ed01522fa3f2c762905087bf"
+            },
+            {
+              "frame": 7,
+              "pose": 5,
+              "source": "open",
+              "parts": [
+                {
+                  "source_box": [
+                    21,
+                    183,
+                    1150,
+                    570
+                  ],
+                  "native_box": [
+                    104,
+                    53,
+                    159,
+                    78
+                  ],
+                  "hd_origin": [
+                    624,
+                    336
+                  ],
+                  "hd_size": [
+                    330,
+                    113
+                  ]
+                },
+                {
+                  "source_box": [
+                    2097,
+                    252,
+                    2202,
+                    358
+                  ],
+                  "native_box": [
+                    190,
+                    51,
+                    196,
+                    63
+                  ],
+                  "hd_origin": [
+                    1140,
+                    324
+                  ],
+                  "hd_size": [
+                    36,
+                    36
+                  ]
+                }
+              ],
+              "wind_native_pixels": 97,
+              "file": "fdother-066-hd6-v1-f07.png",
+              "sha256": "391d109e710537e0be56c89d466f81f247c076c1db6239be5205ae0e791b96f2"
+            },
+            {
+              "frame": 8,
+              "pose": 5,
+              "source": "open",
+              "parts": [
+                {
+                  "source_box": [
+                    21,
+                    183,
+                    1150,
+                    570
+                  ],
+                  "native_box": [
+                    104,
+                    53,
+                    159,
+                    78
+                  ],
+                  "hd_origin": [
+                    624,
+                    336
+                  ],
+                  "hd_size": [
+                    330,
+                    113
+                  ]
+                },
+                {
+                  "source_box": [
+                    2097,
+                    252,
+                    2202,
+                    358
+                  ],
+                  "native_box": [
+                    190,
+                    51,
+                    196,
+                    63
+                  ],
+                  "hd_origin": [
+                    1140,
+                    324
+                  ],
+                  "hd_size": [
+                    36,
+                    36
+                  ]
+                }
+              ],
+              "wind_native_pixels": 221,
+              "file": "fdother-066-hd6-v1-f08.png",
+              "sha256": "79a50c9854cd4ee7fb1149b934b22b78e2f3e3db535862d273b3feccb34241a3"
+            },
+            {
+              "frame": 9,
+              "pose": 5,
+              "source": "open",
+              "parts": [
+                {
+                  "source_box": [
+                    21,
+                    183,
+                    1150,
+                    570
+                  ],
+                  "native_box": [
+                    104,
+                    53,
+                    159,
+                    78
+                  ],
+                  "hd_origin": [
+                    624,
+                    336
+                  ],
+                  "hd_size": [
+                    330,
+                    113
+                  ]
+                },
+                {
+                  "source_box": [
+                    2097,
+                    252,
+                    2202,
+                    358
+                  ],
+                  "native_box": [
+                    190,
+                    51,
+                    196,
+                    63
+                  ],
+                  "hd_origin": [
+                    1140,
+                    324
+                  ],
+                  "hd_size": [
+                    36,
+                    36
+                  ]
+                }
+              ],
+              "wind_native_pixels": 421,
+              "file": "fdother-066-hd6-v1-f09.png",
+              "sha256": "c59d769d95c703731ee36a3e09f284e0d3b9d55abbe112440fd3009ec6d2316f"
+            },
+            {
+              "frame": 10,
+              "pose": 5,
+              "source": "open",
+              "parts": [
+                {
+                  "source_box": [
+                    21,
+                    183,
+                    1150,
+                    570
+                  ],
+                  "native_box": [
+                    104,
+                    53,
+                    159,
+                    78
+                  ],
+                  "hd_origin": [
+                    624,
+                    336
+                  ],
+                  "hd_size": [
+                    330,
+                    113
+                  ]
+                },
+                {
+                  "source_box": [
+                    2097,
+                    252,
+                    2202,
+                    358
+                  ],
+                  "native_box": [
+                    190,
+                    51,
+                    196,
+                    63
+                  ],
+                  "hd_origin": [
+                    1140,
+                    324
+                  ],
+                  "hd_size": [
+                    36,
+                    36
+                  ]
+                }
+              ],
+              "wind_native_pixels": 861,
+              "file": "fdother-066-hd6-v1-f10.png",
+              "sha256": "b22a1b15b2533e97c1fad5dd12f3600718100281c5fd630b66cd5752782947aa"
+            },
+            {
+              "frame": 11,
+              "pose": 5,
+              "source": "open",
+              "parts": [
+                {
+                  "source_box": [
+                    21,
+                    183,
+                    1150,
+                    570
+                  ],
+                  "native_box": [
+                    104,
+                    53,
+                    159,
+                    78
+                  ],
+                  "hd_origin": [
+                    624,
+                    336
+                  ],
+                  "hd_size": [
+                    330,
+                    113
+                  ]
+                },
+                {
+                  "source_box": [
+                    2097,
+                    252,
+                    2202,
+                    358
+                  ],
+                  "native_box": [
+                    190,
+                    51,
+                    196,
+                    63
+                  ],
+                  "hd_origin": [
+                    1140,
+                    324
+                  ],
+                  "hd_size": [
+                    36,
+                    36
+                  ]
+                }
+              ],
+              "wind_native_pixels": 11513,
+              "file": "fdother-066-hd6-v1-f11.png",
+              "sha256": "1cbbf15b5b15030124ff8b92e0126c23b3a3698026ea0d667c1ef932622d348f"
+            },
+            {
+              "frame": 12,
+              "pose": 5,
+              "source": "open",
+              "parts": [
+                {
+                  "source_box": [
+                    21,
+                    183,
+                    1150,
+                    570
+                  ],
+                  "native_box": [
+                    104,
+                    53,
+                    159,
+                    78
+                  ],
+                  "hd_origin": [
+                    624,
+                    336
+                  ],
+                  "hd_size": [
+                    330,
+                    113
+                  ]
+                },
+                {
+                  "source_box": [
+                    2097,
+                    252,
+                    2202,
+                    358
+                  ],
+                  "native_box": [
+                    190,
+                    51,
+                    196,
+                    63
+                  ],
+                  "hd_origin": [
+                    1140,
+                    324
+                  ],
+                  "hd_size": [
+                    36,
+                    36
+                  ]
+                }
+              ],
+              "wind_native_pixels": 35001,
+              "file": "fdother-066-hd6-v1-f12.png",
+              "sha256": "d096489efaa5ef627e55d1855d96045b4584c8f9282be59da5514aac549596c1"
+            },
+            {
+              "frame": 13,
+              "pose": 5,
+              "source": "open",
+              "parts": [
+                {
+                  "source_box": [
+                    21,
+                    183,
+                    1150,
+                    570
+                  ],
+                  "native_box": [
+                    104,
+                    53,
+                    159,
+                    78
+                  ],
+                  "hd_origin": [
+                    624,
+                    336
+                  ],
+                  "hd_size": [
+                    330,
+                    113
+                  ]
+                },
+                {
+                  "source_box": [
+                    2097,
+                    252,
+                    2202,
+                    358
+                  ],
+                  "native_box": [
+                    190,
+                    51,
+                    196,
+                    63
+                  ],
+                  "hd_origin": [
+                    1140,
+                    324
+                  ],
+                  "hd_size": [
+                    36,
+                    36
+                  ]
+                }
+              ],
+              "wind_native_pixels": 62776,
+              "file": "fdother-066-hd6-v1-f13.png",
+              "sha256": "b3912e9790224b27ebac3181924780a394361a3911afe1272c45561862ae212a"
+            }
+          ],
+          "review_sha256": "0a67ce33a385740994e0282d5bb99ab6690fbfb5a6b40e46acfecf98dbfbd031",
+          "fx_edge_softness_native": 0.65,
+          "instance_core_alpha": 128,
+          "coverage_edge_radius": 3,
+          "source_alpha_preserved_within_selected_contour": true
+        }
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/destroyer-battle-bank-r2/compiled.json",
+        "sha256": "6a4085ad8524fbecce727784fa783431e5de6bf6ceee41ce300ed356eb160c61",
+        "report": {
+          "status": "PASS-COMPILED-STAGED-SUMMON",
+          "runtime_registered": false,
+          "resource": 67,
+          "scope": "兩母稿與原始遮罩的九幀重定向，非九張獨立繪畫或GUI。",
+          "base_catalog_sha256": "c2c945ecbc17095b282dd1af78805c7a6c337ff36cc8a84fcc9e118d8f51033d",
+          "catalog_sha256": "acdc25c9765e067b7111d6f599df0941f8f4f07deecd64208ec247dce5c4f39a",
+          "inventory_sha256": "54eec2a5fcc9e901e7779669bfa035887d7564db1595b40b12da07c5b68d8886",
+          "compiler_sha256": "b3388c87410b589d18dbba3768a8f3061aa1949a1b203bc07b6d35951a30e0e1",
+          "source_sha256": {
+            "destroyer-body-hd6-master-v1.png": "dc2bbf1f4a7ff64c1659a1c6ccb2ad723128968d0c3311705028dac3fa72fb5c",
+            "destroyer-energy-hd6-master-v1.png": "ba5a5c0d7687bcc7df716fe982a8b6d7e0a15a03e5ad23c0bcdd62aa5e3439ab"
+          },
+          "source_proof": [
+            {
+              "frame": 1,
+              "effect_index": 32,
+              "effect_pixels": 97
+            },
+            {
+              "frame": 2,
+              "effect_index": 32,
+              "effect_pixels": 177
+            },
+            {
+              "frame": 3,
+              "effect_index": 32,
+              "effect_pixels": 293
+            },
+            {
+              "frame": 4,
+              "effect_index": 32,
+              "effect_pixels": 421
+            },
+            {
+              "frame": 5,
+              "effect_index": 32,
+              "effect_pixels": 3745
+            },
+            {
+              "frame": 6,
+              "effect_index": 32,
+              "effect_pixels": 19869
+            },
+            {
+              "frame": 7,
+              "effect_index": 32,
+              "effect_pixels": 60993
+            },
+            {
+              "frame": 8,
+              "effect_index": 32,
+              "effect_pixels": 64000
+            }
+          ],
+          "body_size_hd": [
+            1319,
+            1194
+          ],
+          "frames": [
+            {
+              "frame": 0,
+              "dy_native": 0,
+              "body_origin_hd": [
+                540,
+                0
+              ],
+              "fx_native_pixels": 0,
+              "file": "fdother-067-hd6-v1-f00.png",
+              "sha256": "c838401efc0135fb688d780bc70a1df252496874f8a78814194f6dc5d26ff86b"
+            },
+            {
+              "frame": 1,
+              "dy_native": 0,
+              "body_origin_hd": null,
+              "fx_native_pixels": 97,
+              "file": "fdother-067-hd6-v1-f01.png",
+              "sha256": "d5647934b64e401cd27c58a3586b4e51cfa9f50bcca5c7092632bc7690fb0b28"
+            },
+            {
+              "frame": 2,
+              "dy_native": 0,
+              "body_origin_hd": null,
+              "fx_native_pixels": 177,
+              "file": "fdother-067-hd6-v1-f02.png",
+              "sha256": "3de864ce51ff587550d980e6e4acc15b4277c11fa32e12c79c469941bc500c22"
+            },
+            {
+              "frame": 3,
+              "dy_native": 0,
+              "body_origin_hd": null,
+              "fx_native_pixels": 293,
+              "file": "fdother-067-hd6-v1-f03.png",
+              "sha256": "606b92c0261d30be0b1c19462e2bb3ec6783c94869585991b80992cc4da64da0"
+            },
+            {
+              "frame": 4,
+              "dy_native": 0,
+              "body_origin_hd": null,
+              "fx_native_pixels": 421,
+              "file": "fdother-067-hd6-v1-f04.png",
+              "sha256": "17a5740562ac3c471f6d33dd361f16295471c9442c91cffcffbfa6eca7d04571"
+            },
+            {
+              "frame": 5,
+              "dy_native": 0,
+              "body_origin_hd": null,
+              "fx_native_pixels": 3745,
+              "file": "fdother-067-hd6-v1-f05.png",
+              "sha256": "3c8dee1cf25ea40a90ffca646b0b4a785811392ddc7b715b4e30d57fea3e7968"
+            },
+            {
+              "frame": 6,
+              "dy_native": 0,
+              "body_origin_hd": null,
+              "fx_native_pixels": 19869,
+              "file": "fdother-067-hd6-v1-f06.png",
+              "sha256": "bd3369ea225dd1e381357a4a40620d800c9aedc4f2906f1167908161a1bf89a7"
+            },
+            {
+              "frame": 7,
+              "dy_native": 0,
+              "body_origin_hd": null,
+              "fx_native_pixels": 60993,
+              "file": "fdother-067-hd6-v1-f07.png",
+              "sha256": "c8623d4c156073ed898306e4942c71123835627ebddbfcd449276b3ac21a64af"
+            },
+            {
+              "frame": 8,
+              "dy_native": 0,
+              "body_origin_hd": null,
+              "fx_native_pixels": 64000,
+              "file": "fdother-067-hd6-v1-f08.png",
+              "sha256": "40a219c220c82ea43b7346b2e822e508a897ee776b10775dcc0d1d94f55e5169"
+            }
+          ],
+          "review_sha256": "b4fb71df4fb1de7594257e3331edf84b2d019c1215677232fd8249989173b0a2",
+          "fx_edge_softness_native": 0,
+          "fx_sampling": "native_world_mask_lanczos6"
+        }
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/compound-complete-bank-r2/compiled.json",
+        "sha256": "1fde261a5ce4bf3052f12ee5014f362974f6511336ef9cea6a5a15f3118a4812",
+        "report": {
+          "status": "PASS-COMPILED-STAGED-SUMMON",
+          "runtime_registered": false,
+          "resource": 68,
+          "scope": "兩母稿與原始遮罩的九幀重定向，非九張獨立繪畫或GUI。",
+          "base_catalog_sha256": "acdc25c9765e067b7111d6f599df0941f8f4f07deecd64208ec247dce5c4f39a",
+          "catalog_sha256": "5a8cd764b423ddb8c5a24138d8f48f7271edfafd0ab94c5bbcd86f88cb3e060c",
+          "inventory_sha256": "54eec2a5fcc9e901e7779669bfa035887d7564db1595b40b12da07c5b68d8886",
+          "compiler_sha256": "b3388c87410b589d18dbba3768a8f3061aa1949a1b203bc07b6d35951a30e0e1",
+          "source_sha256": {
+            "demon-body-hd6-master-v1.png": "d24f4b4d4430f52d1b6b990aa914dc248a6246817c1909678ee17e2ae3073445",
+            "demon-energy-hd6-master-v1.png": "fb98abd2269d9db07775a348d9d130ab71ee68e8c89ba198036d58a313dbbf71"
+          },
+          "source_proof": [
+            {
+              "frame": 0,
+              "dy_native": 0,
+              "matched_body_pixels": 15649,
+              "clipped_body_pixels": 0
+            },
+            {
+              "frame": 1,
+              "dy_native": 0,
+              "matched_body_pixels": 15649,
+              "clipped_body_pixels": 0
+            },
+            {
+              "frame": 2,
+              "dy_native": 0,
+              "matched_body_pixels": 15649,
+              "clipped_body_pixels": 0
+            },
+            {
+              "frame": 3,
+              "dy_native": 0,
+              "matched_body_pixels": 15649,
+              "clipped_body_pixels": 0
+            },
+            {
+              "frame": 4,
+              "dy_native": 0,
+              "matched_body_pixels": 15649,
+              "clipped_body_pixels": 0
+            },
+            {
+              "frame": 5,
+              "dy_native": 0,
+              "matched_body_pixels": 15649,
+              "clipped_body_pixels": 0
+            },
+            {
+              "frame": 6,
+              "dy_native": 0,
+              "matched_body_pixels": 15649,
+              "clipped_body_pixels": 0
+            },
+            {
+              "frame": 7,
+              "dy_native": 0,
+              "matched_body_pixels": 15649,
+              "clipped_body_pixels": 0
+            },
+            {
+              "frame": 8,
+              "dy_native": 1,
+              "matched_body_pixels": 15647,
+              "clipped_body_pixels": 2
+            }
+          ],
+          "body_size_hd": [
+            1089,
+            1032
+          ],
+          "frames": [
+            {
+              "frame": 0,
+              "dy_native": 0,
+              "body_origin_hd": [
+                619,
+                168
+              ],
+              "fx_native_pixels": 0,
+              "file": "fdother-068-hd6-v1-f00.png",
+              "sha256": "7b8ab8feb0fd7aa2c724ed3f89f9e11f6bab6a83cfde2c534b4f049a409221b7"
+            },
+            {
+              "frame": 1,
+              "dy_native": 0,
+              "body_origin_hd": [
+                619,
+                168
+              ],
+              "fx_native_pixels": 2204,
+              "file": "fdother-068-hd6-v1-f01.png",
+              "sha256": "2dd581a823fb1c1eb587b6078dabd3a7be26adfc4c0419f0ca338441deb7f6f7"
+            },
+            {
+              "frame": 2,
+              "dy_native": 0,
+              "body_origin_hd": [
+                619,
+                168
+              ],
+              "fx_native_pixels": 2493,
+              "file": "fdother-068-hd6-v1-f02.png",
+              "sha256": "8fbbb036081600b4fea46af365e3e468c789bee9cb8190ae21ed559b454c7707"
+            },
+            {
+              "frame": 3,
+              "dy_native": 0,
+              "body_origin_hd": [
+                619,
+                168
+              ],
+              "fx_native_pixels": 3862,
+              "file": "fdother-068-hd6-v1-f03.png",
+              "sha256": "94c935f45704ba1230f0c1b2b544a19bf0abc3501c53516a033583206c42cd0b"
+            },
+            {
+              "frame": 4,
+              "dy_native": 0,
+              "body_origin_hd": [
+                619,
+                168
+              ],
+              "fx_native_pixels": 6226,
+              "file": "fdother-068-hd6-v1-f04.png",
+              "sha256": "45f844b6bfcd2850e8095fb7386380e13fefe7e05560b161a56d9679bb1d6288"
+            },
+            {
+              "frame": 5,
+              "dy_native": 0,
+              "body_origin_hd": [
+                619,
+                168
+              ],
+              "fx_native_pixels": 13035,
+              "file": "fdother-068-hd6-v1-f05.png",
+              "sha256": "07803567650aa3e62a9dccbf185a09f9c2e4d93a65ddead0076361448d1abb6a"
+            },
+            {
+              "frame": 6,
+              "dy_native": 0,
+              "body_origin_hd": [
+                619,
+                168
+              ],
+              "fx_native_pixels": 10613,
+              "file": "fdother-068-hd6-v1-f06.png",
+              "sha256": "4ed3b6be7572b82e5f6000e1b91e40bb91cdb800e9e30f39bad8db323fdc7833"
+            },
+            {
+              "frame": 7,
+              "dy_native": 0,
+              "body_origin_hd": [
+                619,
+                168
+              ],
+              "fx_native_pixels": 15526,
+              "file": "fdother-068-hd6-v1-f07.png",
+              "sha256": "ea93a820838b291f6c2cefa3b5f72cc6994e921f6e9de34c6859594eb749d747"
+            },
+            {
+              "frame": 8,
+              "dy_native": 1,
+              "body_origin_hd": [
+                619,
+                174
+              ],
+              "fx_native_pixels": 11134,
+              "file": "fdother-068-hd6-v1-f08.png",
+              "sha256": "184a516503002aff465832a76e7d06b560c1e84248598d3aeb743cb752c94e0f"
+            }
+          ],
+          "review_sha256": "d9cbe48e84f5aaffa243085ca4a36d97f2faad1bb942cdb37604fd15b301f593",
+          "fx_edge_softness_native": 0.65,
+          "fx_sampling": "native_world_mask_lanczos6"
+        }
+      }
+    ],
+    "provenance": "四份風妖精母稿及每種兩份其他召喚母稿，共八份；非32張獨立繪畫。frame1..3重複保持，風妖精frame4／5共用伸手稿並依各自原框定位；暗邪鬼最後幀dy1，原始15647像素相同、兩像素裁出底界。",
+    "failures_preserved": [
+      {
+        "kind": "compiler",
+        "cause": "原生手臂mask在320世界內，間距門檻誤以全畫布為分母；改按有效跨度。隨後生成母稿淡alpha橋接，沿既有核心128／柔邊3契約分離，原母稿不變。"
+      },
+      {
+        "kind": "environment",
+        "cause": "登入shell重設Go PATH；改同映像非登入shell。/tmp tmpfs noexec造成測試二進位不可執行；改快取專用tmpfs，/tmp保留原容器設定，未建立另一映像。"
+      },
+      {
+        "kind": "asset",
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/destroyer-runtime-go-r1.log",
+          "sha256": "cee23046996ec29a0a5ea2e3495f524c7625a4cb3fdd3b51771dbe3253662dda"
+        },
+        "cause": "0.65 Gaussian令11×11球體裁切的透明角落最低alpha1。原始mask Lanczos直接取樣保留332個透明輸出像素；改編製器，不放寬Go載入器。r1保留拒收。"
+      },
+      {
+        "kind": "runtime",
+        "logs": [
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/destroyer-runtime-go-r2.log",
+            "sha256": "d0d3f5c4c93b33907cde252f8e14df49567eb59aa89ebc33386007a26df84377"
+          },
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/demon-runtime-go-r1.log",
+            "sha256": "224ca9bcf09aea2ad0a033afd42255b20ae27ecf6dadcf3fd268c704edc15b44"
+          }
+        ],
+        "cause": "中間hold結束換frame時沿用舊drawn，RunGame的多Update／單Draw跳過34的152與35的164。兩個owner只在該換frame處清除drawn，原hold、交易、RNG保持；#264追蹤。"
+      },
+      {
+        "kind": "environment",
+        "logs": [
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/compound-formal-runtime-go.log",
+            "sha256": "c283ecbbb497bb42faafea95b4eb63335582aedec53d01985bb7a61351d02c79"
+          },
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/compound-related-after-ack.log",
+            "sha256": "599410d0481b9f41266d71cda1c24ee2394d7eb720e970869d14810dde0049e3"
+          }
+        ],
+        "cause": "獨立測試binary從module根執行，fixture的相對原始路徑錯而SKIP。改到/repo/remake/cmd/fd2以同一binary與素材重跑正式完整255 presents通過；首次SKIP不計通過。"
+      },
+      {
+        "kind": "verification-entry",
+        "cause": "清冊回歸檔名誤用test_validate_modern_theme_catalog.py，未執行；核對實檔後改test_modern_theme_catalog.py，11項通過。"
+      }
+    ],
+    "previous_verified": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/fairy-runtime-go-r1.log",
+        "sha256": "daa1cb16ea982e61c7c6799290ce22d296e35c16de13e209af7046fd65a79687",
+        "scope": "156個原生present、F2、拒收與續行，修改fixture的RUNTIME-E1"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/fairy-seraph-regression-go.log",
+        "sha256": "b5c7db1a071bd77dc70b289456f222b46943a7c61938974cc818fdb0b42f7254",
+        "scope": "158 presents既有熾天使，未改演出時鐘"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/compound-related-final-go.log",
+        "sha256": "fce456f37f37e65ebfbe08e815883f115d615e7bf0e7f2808da7dfaae787289e",
+        "scope": "含四個原素材end-to-end與交易／物理回歸；原生時序專用GPU另驗"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/compound-string-review-final.log",
+        "sha256": "df4d6ee31af7e85c85f83db1e0a8d2c974329b670bed67791d444a5536ecaa75",
+        "scope": "八項盤點測試與99筆既有審查保持"
+      }
+    ],
+    "limits": [
+      "正式FIGANI人物仍0組，蓋亞占寬待使用者回答",
+      "普通玩家召喚／保存冷讀、其餘法術／死亡、非共背景演出、代表性效能與平台仍未完成",
+      "資料／RunGame修改fixture只列RUNTIME-E1，不當作原版oracle、一般玩家或自然難度證據",
+      "全戰鬥HD目標及#263驗收保持完整"
+    ],
+    "validation": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/fairy-runtime-go-r1.log",
+        "sha256": "daa1cb16ea982e61c7c6799290ce22d296e35c16de13e209af7046fd65a79687",
+        "top_level_passes": 1,
+        "subtest_passes": 0,
+        "top_level_skips": 0,
+        "sum_top_level_test_seconds": 44.51
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/fairy-seraph-regression-go.log",
+        "sha256": "b5c7db1a071bd77dc70b289456f222b46943a7c61938974cc818fdb0b42f7254",
+        "top_level_passes": 1,
+        "subtest_passes": 0,
+        "top_level_skips": 0,
+        "sum_top_level_test_seconds": 27.19
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/destroyer-runtime-go-r3.log",
+        "sha256": "bec7f6441052cbc281983938dff11bd8047e2eb5ffde55ef703497033a51365a",
+        "top_level_passes": 1,
+        "subtest_passes": 0,
+        "top_level_skips": 0,
+        "sum_top_level_test_seconds": 108.92
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/demon-runtime-go-r2.log",
+        "sha256": "1aa6d2db1d7f327c07bb28e0de14d2e9a0e2a46b02b623285d7bc305407d8493",
+        "top_level_passes": 1,
+        "subtest_passes": 0,
+        "top_level_skips": 0,
+        "sum_top_level_test_seconds": 138.6
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/compound-hold-ack-regression.log",
+        "sha256": "440b41a1ef8186414084ce03481f14bc49c25a95c90ac3203a5268b2bfc6289e",
+        "top_level_passes": 1,
+        "subtest_passes": 2,
+        "top_level_skips": 0,
+        "sum_top_level_test_seconds": 0.0
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/compound-string-review-after-ack.log",
+        "sha256": "3cdec254b3730077860101ead08ca3acc9b953c54f7a101435a2c22a1c1ed23b",
+        "top_level_passes": 8,
+        "subtest_passes": 0,
+        "top_level_skips": 0,
+        "sum_top_level_test_seconds": 1.6
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/compound-formal-runtime-go-r2.log",
+        "sha256": "b4e1169aca12201faa01771cfbd5ea8ee3bef8c51c99f26952d6c3bb5a454f91",
+        "top_level_passes": 1,
+        "subtest_passes": 0,
+        "top_level_skips": 0,
+        "sum_top_level_test_seconds": 70.64
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/compound-related-after-ack-r2.log",
+        "sha256": "1bc8615f591095db4ac1d437851f275119b6e8d666b6698928546d00d49def08",
+        "top_level_passes": 40,
+        "subtest_passes": 22,
+        "top_level_skips": 17,
+        "sum_top_level_test_seconds": 40.15
+      }
+    ],
+    "runtime_receipts": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/fairy-gpu-lifecycle-r1/receipt.json",
+        "sha256": "4caea61272db0313d593db11869ddf3a23c10eab46345e407306bbb9ee37f932",
+        "receipt": {
+          "actor_hp": 100,
+          "continuations": 1,
+          "faithful_draws": 1,
+          "final_draws": 975,
+          "go_rng_unchanged": true,
+          "hd_draws": 37,
+          "mp": 60,
+          "native_rng": 34688,
+          "present_count": 156,
+          "scope": "既有command33 class19／BattleFig4修改fixture；原生delay及hold保持，非一般玩家、自然存檔或原版oracle。",
+          "screenshots": {
+            "frame-0-mix-0.0": true,
+            "frame-1-mix-0.0": true,
+            "frame-10-mix-0.0": true,
+            "frame-11-mix-0.0": true,
+            "frame-12-mix-0.0": true,
+            "frame-13-mix-0.0": true,
+            "frame-2-mix-0.0": true,
+            "frame-3-mix-0.0": true,
+            "frame-4-mix-0.0": true,
+            "frame-5-mix-0.0": true,
+            "frame-6-mix-0.0": true,
+            "frame-7-mix-0.0": true,
+            "frame-8-mix-0.0": true,
+            "frame-9-mix-0.0": true
+          },
+          "status": "PASS-SCOPED-RUNTIME-E1",
+          "target_hp": 90
+        }
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/destroyer-gpu-lifecycle-r3/receipt.json",
+        "sha256": "7f6e131345c3e29e3aae009d018cbd8ab8f23bbcde35d77b999aa9d55f9cfdd2",
+        "receipt": {
+          "actor_hp": 42,
+          "command": 34,
+          "continuations": 1,
+          "faithful_draws": 1,
+          "final_draws": 647,
+          "go_rng_unchanged": true,
+          "hd_draws": 24,
+          "mp": 60,
+          "native_rng": 61017,
+          "present_count": 241,
+          "scope": "既有class19／BattleFig4修改fixture，保留原始delay及三段hold，非普通玩家或原版oracle。",
+          "screenshots": {
+            "frame-0-mix-0.0": true,
+            "frame-1-mix-0.0": true,
+            "frame-2-mix-0.0": true,
+            "frame-3-mix-0.0": true,
+            "frame-4-mix-0.0": true,
+            "frame-5-mix-0.0": true,
+            "frame-6-mix-0.0": true,
+            "frame-7-mix-0.0": true,
+            "frame-8-mix-0.0": true
+          },
+          "stages": [
+            true,
+            true,
+            true
+          ],
+          "status": "PASS-SCOPED-RUNTIME-E1",
+          "target_hp": 28
+        }
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/demon-gpu-lifecycle-r2/receipt.json",
+        "sha256": "49236c43b697aeb98759200eb0be745796d79e50c3bc55d4b2719666bfb9596e",
+        "receipt": {
+          "actor_hp": 73,
+          "command": 35,
+          "continuations": 1,
+          "faithful_draws": 1,
+          "final_draws": 528,
+          "go_rng_unchanged": true,
+          "hd_draws": 47,
+          "mp": 40,
+          "native_rng": 21825,
+          "present_count": 255,
+          "scope": "既有class19／BattleFig4修改fixture，保留原始delay及三段hold，非普通玩家或原版oracle。",
+          "screenshots": {
+            "frame-0-mix-0.0": true,
+            "frame-1-mix-0.0": true,
+            "frame-2-mix-0.0": true,
+            "frame-3-mix-0.0": true,
+            "frame-4-mix-0.0": true,
+            "frame-5-mix-0.0": true,
+            "frame-6-mix-0.0": true,
+            "frame-7-mix-0.0": true,
+            "frame-7-mix-0.2": true,
+            "frame-7-mix-0.4": true,
+            "frame-7-mix-0.6": true,
+            "frame-7-mix-0.8": true,
+            "frame-7-mix-1.0": true,
+            "frame-8-mix-0.0": true,
+            "frame-8-mix-0.1": true,
+            "frame-8-mix-0.3": true,
+            "frame-8-mix-0.5": true,
+            "frame-8-mix-0.7": true,
+            "frame-8-mix-0.9": true
+          },
+          "stages": [
+            true,
+            true,
+            true
+          ],
+          "status": "PASS-SCOPED-RUNTIME-E1",
+          "target_hp": 63
+        }
+      }
+    ],
+    "registration": {
+      "status": "PASS-REGISTERED-SCOPED-E1",
+      "catalog_assets": 369,
+      "old_assets_preserved": 366,
+      "effect_resources": [
+        65,
+        66,
+        67,
+        68
+      ],
+      "effect_frames": 37,
+      "new_files": [
+        {
+          "file": "demon-body-hd6-master-v1.png",
+          "size": 1463623,
+          "sha256": "d24f4b4d4430f52d1b6b990aa914dc248a6246817c1909678ee17e2ae3073445"
+        },
+        {
+          "file": "demon-energy-hd6-master-v1.png",
+          "size": 2480621,
+          "sha256": "fb98abd2269d9db07775a348d9d130ab71ee68e8c89ba198036d58a313dbbf71"
+        },
+        {
+          "file": "destroyer-body-hd6-master-v1.png",
+          "size": 1344321,
+          "sha256": "dc2bbf1f4a7ff64c1659a1c6ccb2ad723128968d0c3311705028dac3fa72fb5c"
+        },
+        {
+          "file": "destroyer-energy-hd6-master-v1.png",
+          "size": 2373935,
+          "sha256": "ba5a5c0d7687bcc7df716fe982a8b6d7e0a15a03e5ad23c0bcdd62aa5e3439ab"
+        },
+        {
+          "file": "fairy-body-hd6-master-v1.png",
+          "size": 1622507,
+          "sha256": "78a75c41cbf4498b25c188d1a0a7a36035f98c1624d82a3e4c24d081e7bf6cc5"
+        },
+        {
+          "file": "fairy-open-hd6-master-v1.png",
+          "size": 346525,
+          "sha256": "8f6f1b8f23358550fa75ae2c4d7965f98b07761d188ef025b1f2b002b646f784"
+        },
+        {
+          "file": "fairy-raised-hd6-master-v1.png",
+          "size": 566552,
+          "sha256": "c37db5df24967036a11e3ec4c8079ebc3c718aa43a1fa8f8ddbc7c75c2e472cb"
+        },
+        {
+          "file": "fairy-wind-hd6-master-v1.png",
+          "size": 2012525,
+          "sha256": "de9f055c1e08f69b1a42984fc209d0151123d4ecdc7374eb09c0848454f91396"
+        },
+        {
+          "file": "fdother-066-hd6-v1-f00.png",
+          "size": 959001,
+          "sha256": "9964ef3b982bcb8766e4170b3d3ef3da0545aa3fa8f38416a446f2443212c000"
+        },
+        {
+          "file": "fdother-066-hd6-v1-f01.png",
+          "size": 51096,
+          "sha256": "f5305bf965bf77a97afa353cd65a2aaf865a817e07001ad788ff12dc5058e08d"
+        },
+        {
+          "file": "fdother-066-hd6-v1-f02.png",
+          "size": 51096,
+          "sha256": "f5305bf965bf77a97afa353cd65a2aaf865a817e07001ad788ff12dc5058e08d"
+        },
+        {
+          "file": "fdother-066-hd6-v1-f03.png",
+          "size": 51096,
+          "sha256": "f5305bf965bf77a97afa353cd65a2aaf865a817e07001ad788ff12dc5058e08d"
+        },
+        {
+          "file": "fdother-066-hd6-v1-f04.png",
+          "size": 39361,
+          "sha256": "bc54a2f194fe35d369ecd667a1e3c2e54963fd72eea5051bfcc9bce2fe23053d"
+        },
+        {
+          "file": "fdother-066-hd6-v1-f05.png",
+          "size": 38337,
+          "sha256": "0bb5dfcda0cc2a6327c38d6785eeee79e1ac4d305392024f07cc8216827e7e85"
+        },
+        {
+          "file": "fdother-066-hd6-v1-f06.png",
+          "size": 42361,
+          "sha256": "67dcc31434a6ba85c34695f378a541cbc3442118ed01522fa3f2c762905087bf"
+        },
+        {
+          "file": "fdother-066-hd6-v1-f07.png",
+          "size": 45763,
+          "sha256": "391d109e710537e0be56c89d466f81f247c076c1db6239be5205ae0e791b96f2"
+        },
+        {
+          "file": "fdother-066-hd6-v1-f08.png",
+          "size": 52538,
+          "sha256": "79a50c9854cd4ee7fb1149b934b22b78e2f3e3db535862d273b3feccb34241a3"
+        },
+        {
+          "file": "fdother-066-hd6-v1-f09.png",
+          "size": 61965,
+          "sha256": "c59d769d95c703731ee36a3e09f284e0d3b9d55abbe112440fd3009ec6d2316f"
+        },
+        {
+          "file": "fdother-066-hd6-v1-f10.png",
+          "size": 83231,
+          "sha256": "b22a1b15b2533e97c1fad5dd12f3600718100281c5fd630b66cd5752782947aa"
+        },
+        {
+          "file": "fdother-066-hd6-v1-f11.png",
+          "size": 618216,
+          "sha256": "1cbbf15b5b15030124ff8b92e0126c23b3a3698026ea0d667c1ef932622d348f"
+        },
+        {
+          "file": "fdother-066-hd6-v1-f12.png",
+          "size": 1704306,
+          "sha256": "d096489efaa5ef627e55d1855d96045b4584c8f9282be59da5514aac549596c1"
+        },
+        {
+          "file": "fdother-066-hd6-v1-f13.png",
+          "size": 2966222,
+          "sha256": "b3912e9790224b27ebac3181924780a394361a3911afe1272c45561862ae212a"
+        },
+        {
+          "file": "fdother-067-hd6-v1-f00.png",
+          "size": 3050134,
+          "sha256": "c838401efc0135fb688d780bc70a1df252496874f8a78814194f6dc5d26ff86b"
+        },
+        {
+          "file": "fdother-067-hd6-v1-f01.png",
+          "size": 8351,
+          "sha256": "d5647934b64e401cd27c58a3586b4e51cfa9f50bcca5c7092632bc7690fb0b28"
+        },
+        {
+          "file": "fdother-067-hd6-v1-f02.png",
+          "size": 15024,
+          "sha256": "3de864ce51ff587550d980e6e4acc15b4277c11fa32e12c79c469941bc500c22"
+        },
+        {
+          "file": "fdother-067-hd6-v1-f03.png",
+          "size": 23636,
+          "sha256": "606b92c0261d30be0b1c19462e2bb3ec6783c94869585991b80992cc4da64da0"
+        },
+        {
+          "file": "fdother-067-hd6-v1-f04.png",
+          "size": 34585,
+          "sha256": "17a5740562ac3c471f6d33dd361f16295471c9442c91cffcffbfa6eca7d04571"
+        },
+        {
+          "file": "fdother-067-hd6-v1-f05.png",
+          "size": 307084,
+          "sha256": "3c8dee1cf25ea40a90ffca646b0b4a785811392ddc7b715b4e30d57fea3e7968"
+        },
+        {
+          "file": "fdother-067-hd6-v1-f06.png",
+          "size": 1566791,
+          "sha256": "bd3369ea225dd1e381357a4a40620d800c9aedc4f2906f1167908161a1bf89a7"
+        },
+        {
+          "file": "fdother-067-hd6-v1-f07.png",
+          "size": 3676083,
+          "sha256": "c8623d4c156073ed898306e4942c71123835627ebddbfcd449276b3ac21a64af"
+        },
+        {
+          "file": "fdother-067-hd6-v1-f08.png",
+          "size": 3705848,
+          "sha256": "40a219c220c82ea43b7346b2e822e508a897ee776b10775dcc0d1d94f55e5169"
+        },
+        {
+          "file": "fdother-068-hd6-v1-f00.png",
+          "size": 2106303,
+          "sha256": "7b8ab8feb0fd7aa2c724ed3f89f9e11f6bab6a83cfde2c534b4f049a409221b7"
+        },
+        {
+          "file": "fdother-068-hd6-v1-f01.png",
+          "size": 2448013,
+          "sha256": "2dd581a823fb1c1eb587b6078dabd3a7be26adfc4c0419f0ca338441deb7f6f7"
+        },
+        {
+          "file": "fdother-068-hd6-v1-f02.png",
+          "size": 2743431,
+          "sha256": "8fbbb036081600b4fea46af365e3e468c789bee9cb8190ae21ed559b454c7707"
+        },
+        {
+          "file": "fdother-068-hd6-v1-f03.png",
+          "size": 3109011,
+          "sha256": "94c935f45704ba1230f0c1b2b544a19bf0abc3501c53516a033583206c42cd0b"
+        },
+        {
+          "file": "fdother-068-hd6-v1-f04.png",
+          "size": 3149944,
+          "sha256": "45f844b6bfcd2850e8095fb7386380e13fefe7e05560b161a56d9679bb1d6288"
+        },
+        {
+          "file": "fdother-068-hd6-v1-f05.png",
+          "size": 3846970,
+          "sha256": "07803567650aa3e62a9dccbf185a09f9c2e4d93a65ddead0076361448d1abb6a"
+        },
+        {
+          "file": "fdother-068-hd6-v1-f06.png",
+          "size": 4172596,
+          "sha256": "4ed3b6be7572b82e5f6000e1b91e40bb91cdb800e9e30f39bad8db323fdc7833"
+        },
+        {
+          "file": "fdother-068-hd6-v1-f07.png",
+          "size": 4143416,
+          "sha256": "ea93a820838b291f6c2cefa3b5f72cc6994e921f6e9de34c6859594eb749d747"
+        },
+        {
+          "file": "fdother-068-hd6-v1-f08.png",
+          "size": 4178814,
+          "sha256": "184a516503002aff465832a76e7d06b560c1e84248598d3aeb743cb752c94e0f"
+        }
+      ],
+      "new_frames": 32,
+      "new_masters": 8,
+      "catalog_sha256": "39f84e28fc310043e0621ed586df598311503ef59ff7e57b38ba4ad7e36e18d4",
+      "overview": {
+        "file": "docs/figures/hd-common-summons.png",
+        "sha256": "10ae58377c12c7045408f0e781116b19625c8cf645f8b0861344a08b61c2528a",
+        "size": [
+          1280,
+          800
+        ],
+        "source_images": [
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/seraph-gpu-lifecycle-r2/frame-1-mix-0.0.png",
+            "sha256": "2e193cb1a35a6453827afd37d3fce8bd215e33b49ef8d0ea77f528e83b1b4a14"
+          },
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/fairy-gpu-lifecycle-r1/frame-8-mix-0.0.png",
+            "sha256": "ccd9a775d215acd26c41c1ba39f855251d7b73fef49bb5c28e72d0f74f37c487"
+          },
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/destroyer-gpu-lifecycle-r3/frame-0-mix-0.0.png",
+            "sha256": "403e9aaaec77877fb4e6d9b5de9c841b858f93f53446dc381b12b5163cefdc9b"
+          },
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/demon-gpu-lifecycle-r2/frame-4-mix-0.0.png",
+            "sha256": "385bb2698fa3924ab79a981113b2443412316f2ba86c08308d2d3011589f3225"
+          }
+        ],
+        "scope": "四個修改fixture的RunGame正式Draw／最終合成器GPU回讀縮圖；非普通玩家或原版oracle。"
+      },
+      "normal_player_e2": false,
+      "full_battle_hd_complete": false
+    },
+    "private_assets": {
+      "status": "PASS",
+      "catalog_assets": 369,
+      "private_files": 3316,
+      "runtime_files": 3100,
+      "old_private_files_preserved": 3276,
+      "new_files": [
+        "demon-body-hd6-master-v1.png",
+        "demon-energy-hd6-master-v1.png",
+        "destroyer-body-hd6-master-v1.png",
+        "destroyer-energy-hd6-master-v1.png",
+        "fairy-body-hd6-master-v1.png",
+        "fairy-open-hd6-master-v1.png",
+        "fairy-raised-hd6-master-v1.png",
+        "fairy-wind-hd6-master-v1.png",
+        "fdother-066-hd6-v1-f00.png",
+        "fdother-066-hd6-v1-f01.png",
+        "fdother-066-hd6-v1-f02.png",
+        "fdother-066-hd6-v1-f03.png",
+        "fdother-066-hd6-v1-f04.png",
+        "fdother-066-hd6-v1-f05.png",
+        "fdother-066-hd6-v1-f06.png",
+        "fdother-066-hd6-v1-f07.png",
+        "fdother-066-hd6-v1-f08.png",
+        "fdother-066-hd6-v1-f09.png",
+        "fdother-066-hd6-v1-f10.png",
+        "fdother-066-hd6-v1-f11.png",
+        "fdother-066-hd6-v1-f12.png",
+        "fdother-066-hd6-v1-f13.png",
+        "fdother-067-hd6-v1-f00.png",
+        "fdother-067-hd6-v1-f01.png",
+        "fdother-067-hd6-v1-f02.png",
+        "fdother-067-hd6-v1-f03.png",
+        "fdother-067-hd6-v1-f04.png",
+        "fdother-067-hd6-v1-f05.png",
+        "fdother-067-hd6-v1-f06.png",
+        "fdother-067-hd6-v1-f07.png",
+        "fdother-067-hd6-v1-f08.png",
+        "fdother-068-hd6-v1-f00.png",
+        "fdother-068-hd6-v1-f01.png",
+        "fdother-068-hd6-v1-f02.png",
+        "fdother-068-hd6-v1-f03.png",
+        "fdother-068-hd6-v1-f04.png",
+        "fdother-068-hd6-v1-f05.png",
+        "fdother-068-hd6-v1-f06.png",
+        "fdother-068-hd6-v1-f07.png",
+        "fdother-068-hd6-v1-f08.png"
+      ],
+      "source_masters_excluded_from_runtime": [
+        "demon-body-hd6-master-v1.png",
+        "demon-energy-hd6-master-v1.png",
+        "destroyer-body-hd6-master-v1.png",
+        "destroyer-energy-hd6-master-v1.png",
+        "fairy-body-hd6-master-v1.png",
+        "fairy-open-hd6-master-v1.png",
+        "fairy-raised-hd6-master-v1.png",
+        "fairy-wind-hd6-master-v1.png"
+      ],
+      "private_manifest_sha256": "9c2c6f77a2ce298e9214e90698048f3fc124b7da33132a371b68ebfe3a0574a7",
+      "runtime_manifest_sha256": "a645b220c5306bc6121a785c151ecc7fa30d1e6a85f05cc094be70af3beca9ae",
+      "catalog_sha256": "39f84e28fc310043e0621ed586df598311503ef59ff7e57b38ba4ad7e36e18d4",
+      "ownership": "1000:1000",
+      "repository": "https://github.com/wicanr2/fd2-assets-private",
+      "private": true,
+      "commit": "abb438556d4a516b6dd87eb7b4da56c04ddedb06",
+      "remote_head_verified": true
+    },
+    "catalog_validation": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/compound-formal-catalog.log",
+        "sha256": "7892ec98dc9d48a87893263cc41b0109db720745a607acf628e9dde3ac54bfdb"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/compound-catalog-tests-r2.log",
+        "sha256": "95f2534b84db9d97b09e70b90e4468686c35858acfbee70627746188cf106c07"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/compound-lessons-final.log",
+        "sha256": "5d1c4d2da26e724b7f887b809fbd5b3c81d9d5ebf20f52ad34314e4078c9b207"
+      }
+    ],
+    "source_files": [
+      {
+        "file": "remake/cmd/fd2/modern_hd_compound_lifecycle_test.go",
+        "sha256": "5cdda4d2af4707ee2f231b5cd707eaa9916de7eb18aa9dd6b0267fa3d6b42c87"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_fairy_lifecycle_test.go",
+        "sha256": "93cdb833e455ab81766a631dddfe35f649e56cac9086d0e7fd05a9455790e6d8"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_staged_summon_lifecycle_test.go",
+        "sha256": "6a37bf0ecdfa31f9b17af26fb9965965a0b7368b92816bc2e5a3c1135cba084c"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command33_presentation_test.go",
+        "sha256": "eb176c7402ad88034aa9a4ff0358c6041f8557d98a8ac54c277a204152496175"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command34_presentation.go",
+        "sha256": "204e1eda02c6f3c3fe44a1eb33aff3f08c2a1ce20cf0f52eaf9d6f7f917d5ce9"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command34_presentation_test.go",
+        "sha256": "0b0e5d5a8e14e36dc083911319502a3e1fd3efec20ecf6e7e8d12c0be254129a"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command35_presentation.go",
+        "sha256": "99a3b0678d11b90e5fc61b468d74cfe2ef476351d4aefc1009f61d279ee6cffa"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command35_presentation_test.go",
+        "sha256": "8ca4be10dfa3d20401bdcf6963f9090a7506a54a5dfb6546ef0021fa8043f96d"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_compound.go",
+        "sha256": "679f3baca8cff34902a26f86e848c1b977646d651cb209b569d630fcb9980df4"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_assets.go",
+        "sha256": "bed18361aa3fb17a192708483ab4631259e7d8718b8c7c71f3489816c7e91974"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_gpu.go",
+        "sha256": "cb4d51b2fc63e982798f57e04272a60ced41faea82a94ee83e12aa8441bb2f6a"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_runtime.go",
+        "sha256": "40ba8b4d67a6356bc2419575f33b484da681dea0ad2953f49750049787ae03d7"
+      },
+      {
+        "file": "tools/build_fd2_fairy_battle_hd.py",
+        "sha256": "4de70c1245949fa7ecc8dc2aede003cd028bf71212a614c8f53c0368329b6a75"
+      },
+      {
+        "file": "tools/build_fd2_staged_summon_hd.py",
+        "sha256": "b3388c87410b589d18dbba3768a8f3061aa1949a1b203bc07b6d35951a30e0e1"
+      },
+      {
+        "file": "remake/assets/themes/modern/catalog.json",
+        "sha256": "39f84e28fc310043e0621ed586df598311503ef59ff7e57b38ba4ad7e36e18d4"
+      }
+    ],
+    "reproduce": {
+      "environment": [
+        "fd2-go-test-local:latest：Go1.22.12／Ebiten2.6.6；維護中的with-xvfb，uid1000，有界CPU／記憶體／PID，--network none及--rm",
+        "fd2-assets-local:20260829-sfx：Python3.12／Pillow11.3，--entrypoint timeout；合法原版包唯讀",
+        "所有候選保留/repo標準路徑；Go命令從/repo/remake，獨立test binary則從/repo/remake/cmd/fd2執行"
+      ],
+      "commands": [
+        "python3 tools/build_fd2_fairy_battle_hd.py --pack <原版包> --inventory <已驗盤點> --body <fairy-body> --raised <fairy-raised> --open <fairy-open> --wind <fairy-wind> --base-catalog <eb257fe6的366項清冊> --out <新候選>",
+        "python3 tools/build_fd2_staged_summon_hd.py --resource 67 --pack <原版包> --inventory <已驗盤點> --body <destroyer-body> --energy <destroyer-energy> --base-catalog <風妖精候選清冊> --out <新候選>",
+        "python3 tools/build_fd2_staged_summon_hd.py --resource 68 --pack <原版包> --inventory <已驗盤點> --body <demon-body> --energy <demon-energy> --base-catalog <破壞神候選清冊> --out <新候選>",
+        "FD2_HD_FAIRY_GPU=1 FD2_TEST_MODERN_EFFECT_CATALOG=<catalog> FD2_TEST_MODERN_EFFECT_PACK=<pack> with-xvfb go test ./cmd/fd2 -run ^TestModernHDFairyRuntimeGPU$ -count=1 -v",
+        "FD2_HD_STAGED_COMMAND=34 FD2_TEST_MODERN_EFFECT_CATALOG=<catalog> FD2_TEST_MODERN_EFFECT_PACK=<pack> with-xvfb go test ./cmd/fd2 -run ^TestModernHDStagedSummonRuntimeGPU$ -count=1 -v",
+        "FD2_HD_STAGED_COMMAND=35 FD2_TEST_MODERN_EFFECT_CATALOG=<catalog> FD2_TEST_MODERN_EFFECT_PACK=<pack> with-xvfb go test ./cmd/fd2 -run ^TestModernHDStagedSummonRuntimeGPU$ -count=1 -v",
+        "with-xvfb go test ./cmd/fd2 -run ^TestNativeCompoundStageHoldRequiresNewDraw$ -count=1 -v"
+      ],
+      "notes": "明示合法FD2_ASSET_PACK及FD2_TEST_ORIGINAL_PACK。只有FD2_TEST_MODERN_EFFECT_OUT指定新目錄時輸出GPU圖與收據。每個Ebiten GPU testcase獨立程序。",
+      "image_ids": {
+        "fd2-go-test-local:latest": "sha256:e4a805c52a3ad5d8c22cf23f2bcf51c6924e5ad6b99554f1b02761903c725433",
+        "fd2-assets-local:20260829-sfx": "sha256:e59237a31d4b5f7a62c59ac37b780bd93f17c99fda97be8f5ca0c53978b878bc"
+      }
+    },
+    "counter_erratum": {
+      "scope": "前一批related的55是35頂層加20子項，只修正統計標籤；原始logs、SHA及通過／SKIP狀態保持。",
+      "corrections": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/battle-effects-related-final.log",
+          "previous_mislabeled_top_level_passes": 55,
+          "correct_top_level_passes": 35,
+          "subtest_passes": 20
+        }
+      ]
+    },
+    "cleanup": {
+      "temporary_test_binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/compound-validation-20261019.test",
+        "sha256": "ae39720d057f516b186e2f67d08703498bc7ee19c1160e59fa5a434c64a13392",
+        "size": 26162128,
+        "removed": true
+      },
+      "recording_created": false,
+      "go_cache": "已退出且移除的fd2-fairy-dev容器tmpfs",
+      "unexpected_fd2_containers": 0,
+      "runtime_only_duplicate": {
+        "removed": true,
+        "files": 3102,
+        "bytes": 132308334,
+        "manifest_preserved": "work/promo-cadence-20261018/hd-fonts/compound-runtime-only-manifest.json",
+        "reproduce": "tools/sync_modern_theme_private.py --runtime-only，從正式清冊與私人完整包重生。"
+      }
+    },
+    "source_revision_tracking": "逐檔SHA綁本輪實作；提交完成後於#263／#264登錄來源revision。",
+    "result_counter": "以Go PASS／SKIP完整標記與測試名中的子項斜線分類；容許ALSA stderr接在同一行，不依行首推斷層級。",
+    "final_checks": {
+      "local_links": 1402,
+      "source_hashes": 15,
+      "ownership": "1000:1000",
+      "root_owned_or_md_directories": 0,
+      "lessons": 256,
+      "lesson_guards": 137,
+      "precommit_worklist": {
+        "open": 22,
+        "manual": 15,
+        "possibly_complete": 0,
+        "defect_issue": 264,
+        "scope": "修正已驗，待提交後以實際commit結案"
+      }
+    },
+    "original_inputs_postcheck": {
+      "status": "PASS",
+      "files": [
+        {
+          "file": "FD2.EXE",
+          "size": 357074,
+          "md5": "b97caf2239a27a896069d03549d96e1e",
+          "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+        },
+        {
+          "file": "BG.DAT",
+          "size": 624564,
+          "md5": "4b5414c92b40ef25ba0ee10c80f9e149",
+          "sha256": "b9fc21d019d6256a4bb7e6da1cefcb0bfe331d8ff74a52a8201570afc98b56de"
+        },
+        {
+          "file": "FDOTHER.DAT",
+          "size": 3382481,
+          "md5": "22f56e5027edc7c766ad34ca4e5aca93",
+          "sha256": "a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce"
+        },
+        {
+          "file": "FDTXT.DAT",
+          "size": 120502,
+          "md5": "fe5c487ce4313485f1da9d48d35b05f9",
+          "sha256": "a4555f8a0e61e884b4f504d56a8bdde11672583bbbbc6506281ae10dcdfb1f69"
+        },
+        {
+          "file": "FIGANI.DAT",
+          "size": 15279582,
+          "md5": "7da21ec0ad9917455459f1acb970bdf4",
+          "sha256": "e909314ce37b70701238fd24febc8f61603bbe8d81a9ecbf8f289c97a5b67a1f"
+        },
+        {
+          "file": "TAI.DAT",
+          "size": 94917,
+          "md5": "7cfe4b9ad2cbff44b2ebd7ab2f94e4aa",
+          "sha256": "d56fea9c43f8bb59aad89ad76698885d7e07f380d12a4547888a0b60ea5e0410"
+        }
+      ],
+      "scope": "本輪fixture使用的五份原始archive及固定EXE的事後size／MD5／SHA核對；分離包一直唯讀掛載，正式驗證整個repo唯讀。開發容器工作樹可寫，後續亦應將其中org_game另掛唯讀。"
     }
   }
 }

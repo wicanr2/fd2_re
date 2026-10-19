@@ -20,28 +20,55 @@ type modernHDCompoundProbe struct {
 	owner                         *nativeCommand32PresentationJob
 	presentation                  *modernHDPresentation
 	target                        *battle.Unit
+	actor                         *battle.Unit
+	command                       int
+	before                        [4]int
 	out                           string
 	seen                          []bool
 	off, on, finished             bool
 	faithful, hd, finals, updates int
 	shots                         map[string]bool
 	err                           error
+	check                         func() error
 }
 
 func (p *modernHDCompoundProbe) stable() [6]int {
-	return [6]int{p.owner.frame, p.owner.repeat, int(p.g.nativeRNGState), p.owner.actor.HP, p.owner.actor.MP, p.target.HP}
+	index, repeat, _, _, _ := p.current()
+	return [6]int{index, repeat, int(p.g.nativeRNGState), p.actor.HP, p.actor.MP, p.target.HP}
+}
+func (p *modernHDCompoundProbe) current() (int, int, bool, *nativeCompoundPresentedFrame, *bool) {
+	if p.command == 33 {
+		if j := p.g.nativeCmd33Presentation; j != nil && j.frame >= 0 && j.frame < len(j.frames) {
+			return j.frame, j.repeat, j.published, &j.frames[j.frame], &j.drawn
+		}
+	} else if p.command == 34 {
+		if j := p.g.nativeCmd34Presentation; j != nil && j.frame >= 0 && j.frame < len(j.frames) {
+			return j.frame, j.repeat, j.published != 0, &j.frames[j.frame], &j.drawn
+		}
+	} else if p.command == 35 {
+		if j := p.g.nativeCmd35Presentation; j != nil && j.frame >= 0 && j.frame < len(j.frames) {
+			return j.frame, j.repeat, j.published != 0, &j.frames[j.frame], &j.drawn
+		}
+	} else if j := p.g.nativeCmd32Presentation; j != nil && j.frame >= 0 && j.frame < len(j.frames) {
+		return j.frame, j.repeat, j.published, &j.frames[j.frame], &j.drawn
+	}
+	return 0, 0, false, nil, nil
 }
 func (p *modernHDCompoundProbe) Update() error {
 	p.updates++
 	if p.err != nil || p.finished {
 		return ebiten.Termination
 	}
-	if p.updates > 2400 {
+	bound := 2400
+	if p.command >= 34 {
+		bound = 3600
+	}
+	if p.updates > bound {
 		p.err = fmt.Errorf("compound lifecycle exceeded bound")
 		return ebiten.Termination
 	}
-	j := p.g.nativeCmd32Presentation
-	if j == nil {
+	_, _, published, frame, _ := p.current()
+	if frame == nil {
 		p.err = fmt.Errorf("owner disappeared before continuation")
 		return ebiten.Termination
 	}
@@ -58,11 +85,25 @@ func (p *modernHDCompoundProbe) Update() error {
 			return ebiten.Termination
 		}
 	}
-	if !j.published && (p.target.HP != 100 || p.owner.actor.MP != 80 || p.g.nativeRNGState != 7) {
+	if !published && p.before != [4]int{int(p.g.nativeRNGState), p.actor.HP, p.actor.MP, p.target.HP} {
 		p.err = fmt.Errorf("transaction published before original boundary")
 		return ebiten.Termination
 	}
-	p.g.stepNativeCommand32Presentation()
+	if p.check != nil {
+		if err := p.check(); err != nil {
+			p.err = err
+			return ebiten.Termination
+		}
+	}
+	if p.command == 33 {
+		p.g.stepNativeCommand33Presentation()
+	} else if p.command == 34 {
+		p.g.stepNativeCommand34Presentation()
+	} else if p.command == 35 {
+		p.g.stepNativeCommand35Presentation()
+	} else {
+		p.g.stepNativeCommand32Presentation()
+	}
 	return nil
 }
 func (p *modernHDCompoundProbe) Layout(int, int) (int, int) { return 640, 400 }
@@ -74,22 +115,20 @@ func (p *modernHDCompoundProbe) Draw(screen *ebiten.Image) {
 	if p.err != nil || p.finished {
 		return
 	}
-	j := p.g.nativeCmd32Presentation
-	if j == nil {
+	index, _, _, f, acknowledged := p.current()
+	if f == nil {
 		return
 	}
-	index := j.frame
 	p.g.Draw(screen)
 	if p.g.loadErr != "" {
 		p.err = fmt.Errorf("Game.Draw: %s", p.g.loadErr)
 		return
 	}
-	if !j.drawn {
+	if !*acknowledged {
 		p.err = fmt.Errorf("present %d was not acknowledged", index)
 		return
 	}
 	p.seen[index] = true
-	f := &j.frames[index]
 	if f.hdSources == nil {
 		if p.g.modernHDBattleVisible {
 			p.err = fmt.Errorf("HD battle leaked into native phase")
@@ -164,7 +203,9 @@ func TestModernHDCompoundRuntimeGPU(t *testing.T) {
 		t.Fatal("missing HD preflight partially published transaction or frame")
 	}
 	entry.paths[3] = saved
-	probe := &modernHDCompoundProbe{g: g, target: target, out: os.Getenv("FD2_TEST_MODERN_EFFECT_OUT"), shots: make(map[string]bool)}
+	probe := &modernHDCompoundProbe{g: g, actor: actor, target: target, command: 32,
+		before: [4]int{int(g.nativeRNGState), actor.HP, actor.MP, target.HP},
+		out:    os.Getenv("FD2_TEST_MODERN_EFFECT_OUT"), shots: make(map[string]bool)}
 	if probe.out != "" {
 		if err := os.Mkdir(probe.out, 0755); err != nil {
 			t.Fatal(err)

@@ -28,7 +28,8 @@ func nativeCommand34PlanFixture(t *testing.T) (*battle.NativeCompoundCommand34Pl
 	return plan, actor, target
 }
 
-func TestStartNativeCommand34PresentationUsesOriginalAssetsEndToEnd(t *testing.T) {
+func nativeCommand34PresentationFixture(t *testing.T) (*Game, *battle.Unit, *battle.Unit) {
+	t.Helper()
 	base := filepath.Clean("../../../org_game/炎龍騎士團/FLAME2")
 	paths := map[string]string{"FD2_ORIGINAL_FIGANI": filepath.Join(base, "FIGANI.DAT"), "FD2_ORIGINAL_FDOTHER": filepath.Join(base, "FDOTHER.DAT"), "FD2_ORIGINAL_FDTXT": filepath.Join(base, "FDTXT.DAT"), "FD2_ORIGINAL_BG": filepath.Join(base, "BG.DAT"), "FD2_ORIGINAL_TAI": filepath.Join(base, "TAI.DAT")}
 	for key, path := range paths {
@@ -79,6 +80,11 @@ func TestStartNativeCommand34PresentationUsesOriginalAssetsEndToEnd(t *testing.T
 		t.Fatal(err)
 	}
 	g.nativeRNGState = 7
+	return g, actor, target
+}
+
+func TestStartNativeCommand34PresentationUsesOriginalAssetsEndToEnd(t *testing.T) {
+	g, actor, target := nativeCommand34PresentationFixture(t)
 	done := 0
 	if err := g.startNativeCommand34Presentation(actor, target, func(result battle.NativeCompoundCommand34Result) {
 		if len(result.StageStates) != 3 {

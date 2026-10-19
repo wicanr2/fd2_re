@@ -72,6 +72,51 @@ FD2_TEST_MODERN_EFFECT_OUT=<新輸出目錄> with-xvfb go test ./cmd/fd2 -run '^
 此測試沿既有class19／BattleFig4 fixture並修改隊伍與command32輸入，維持原frame delay與hold；
 只能證明正式caller的RUNTIME-E1，不是普通玩家、自然存檔或整章E2。
 
+#### 風妖精分層圖源（CONFORMED-SCOPED／RUNTIME-E1，普通玩家另驗）
+
+FDOTHER66的原始14幀採frame0固定身體及frame1～13差分，正式command33先疊frame0。
+frame1～3的PNG與mask完全相同；後段原始風球採索引200。編製前逐筆核對固定來源，
+驗證frame6～13所有未被風球蓋住的像素沿frame5手勢，不能把差分當完整人物。
+沿已核准手繪風格，以固定身體、抬手、伸手及風材質四母稿編製14幀。
+身體只縮放一次；手勢的主要手臂及遠端小手分別對齊原生可見區域，避免透明間距影響縮放。
+手勢母稿沿既有`master_components`的核心128及三像素柔邊輪廓分離，排除淡像素橋接，
+選中輪廓的原始覆蓋alpha保持，不以二值核心當輸出。
+frame4與5共用伸手母稿，按各自原生外框定位，明示為姿勢重定向，非逐幀獨立繪畫。
+風球以原始逐幀索引200遮罩搭配新風材質，半徑0.65原生像素抗鋸齒；身體、手勢、風球層序保持。
+不改原始時鐘、delay、hold、音效、HP／MP、RNG、存檔或像素模式。
+先輸出隔離清冊，通過正式command33完整Draw、F2及原子拒收後才登錄與私人同步。
+重跑入口為[`風妖精編製器`](../../tools/build_fd2_fairy_battle_hd.py)，介面為
+`--pack <分離原版包> --inventory <已驗盤點> --body <身體> --raised <抬手>
+--open <伸手> --wind <風材質> --out <新候選目錄>`，可加`--base-catalog <清冊>`重生。
+
+#### 破壞神與暗邪鬼（CONFORMED-SCOPED／RUNTIME-E1，普通玩家另驗）
+
+兩者各有九幀。FDOTHER67由固定騎士身體frame0與索引32的八張擴張球體差分組成，
+command34先疊frame0；新的紅色風暴材質依原生逐幀球體遮罩繪製，最後全畫面不透明幀保留。
+FDOTHER68的前八幀共用15649個身體像素，最後幀下移一原生像素，15647個可見像素相同，
+另兩個裁出底界。固定身體只縮放一次，原版綠色FX依差異遮罩編製，身體最後疊回。
+每種兩份母稿，均為明示姿勢／材質重定向，原始位置、分層、delay、hold與交易保持。
+暗邪鬼沿0.65像素FX柔邊政策；破壞神球體直接以Lanczos重取樣原始遮罩，
+保留11×11首幀的透明角落，避免額外模糊把裁切區全變成非零alpha。
+新RGB材質沿同一世界座標，不把原生單色球體最近鄰放大當作新HD美術。
+隔離編製入口為[`剩餘兩召喚編製器`](../../tools/build_fd2_staged_summon_hd.py)，
+介面為`--resource 67|68 --pack <原版包> --inventory <盤點> --body <身體>
+--energy <材質> --out <新候選目錄>`，可用`--base-catalog`組合已驗候選。
+各自通過正式command34／35的完整Draw、三段發布、F2與缺件原子拒收後才登錄與私人同步。
+
+分階段owner結束中間hold而轉到`stageEnd`時，必須清除上一幀的`drawn`，
+下一張影格取得自己的Draw確認前不能推進。兩個caller沿同一規則，等待值、交易邊界與RNG保持。
+完整測試須容許多次Update才一次Draw，不能靠每次Update前強制Draw掩蓋旗標重用。
+
+本批正式登錄三種圖源，完整來源、生成提示、失敗勘誤、逐檔驗證與剩餘範圍沿
+[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`battle_summon_bank_followup_20261019`。
+[`風妖精完整Draw`](../../remake/cmd/fd2/modern_hd_fairy_lifecycle_test.go)使用
+`FD2_HD_FAIRY_GPU=1`及`TestModernHDFairyRuntimeGPU`；
+[`兩種分階段完整Draw`](../../remake/cmd/fd2/modern_hd_staged_summon_lifecycle_test.go)分別使用
+`FD2_HD_STAGED_COMMAND=34`或`35`及`TestModernHDStagedSummonRuntimeGPU`，素材參數沿前節。
+每個Ebiten測試獨立程序；同檔`TestNativeCompoundStageHoldRequiresNewDraw`驗多Update的交界拒絕前進。
+這些仍是修改class19／BattleFig4的RUNTIME-E1，普通玩家召喚、保存冷讀及FIGANI施術者另驗。
+
 ### 大型戰鬥動畫 HD 起始切片（2026-10-19，READY-CANDIDATE）
 
 #### 物理戰鬥GPU合成器（CONFORMED-SCOPED／RUNTIME-E1，人物占寬另驗）

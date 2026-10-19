@@ -405,6 +405,7 @@ func (g *Game) stepNativeCommand34Presentation() {
 		j.holding = false
 		if j.holdStage < 2 {
 			j.frame = j.stageEnd[j.holdStage]
+			j.drawn = false
 			return
 		}
 		if err := battle.CompleteNativeCompoundCommand34(j.plan); err != nil {

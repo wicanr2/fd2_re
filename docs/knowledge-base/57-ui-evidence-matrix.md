@@ -1,9 +1,15 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
+四種共用召喚圖庫37幀均已登錄。新增風妖精、破壞神與暗邪鬼的完整Draw分別通過156／241／255次呈現，
+原delay與hold保持；多段等待結束時重設Draw確認，修正#264的跨段首幀跳過。
+README四格圖是修改fixture的GPU回讀縮圖，只列RUNTIME-E1；普通玩家召喚、保存冷讀、
+FIGANI施術者與專屬地圖尾段另驗。現況及分級依[58](58-fd2-exe-re-coverage.md)，
+本輪完整來源沿[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`battle_summon_bank_followup_20261019`。
+
 熾天使五幀已登錄共用效果HD。四個caller的GPU原生回讀，以及熾天使的完整交易呈現通過。
 圖片是既有class19／BattleFig4建構fixture的正式Draw及最終合成器回讀，保留原始delay與hold；
 隊伍、指令輸入經修改，只列RUNTIME-E1，沒有新增普通玩家、整章E2或原版oracle。
-施法者及專屬地圖尾段、另外三個召喚圖庫仍待HD化。現況依
+此段是先前熾天使切片；另外三個圖庫的後續成果見上段。施法者及專屬地圖尾段仍待HD化。現況依
 [58](58-fd2-exe-re-coverage.md)，來源沿[主收據](../data/fd2-modern-hd-battlefield-20261019.json)
 的`battle_effects_followup_20261019`，重跑入口見[61](61-modern-theme-runtime-spec.md)。
 

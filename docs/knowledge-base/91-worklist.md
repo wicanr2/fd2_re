@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 21 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 22 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -172,21 +172,35 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 `modern-battle-animation-hd` · 工作 · [#263](https://github.com/wicanr2/fd2_re/issues/263) · 仍未完成 · 要人判
 
-使用者Goal仍為完成FD2戰鬥動畫HD，涵蓋人物、共同效果、正常呈現與私人同步。沿用1920×1200、手繪與原版像素模式並存，完整Goal尚未完成。
+使用者Goal仍為完成FD2戰鬥動畫HD，涵蓋全部可達人物、共同效果、正常呈現、效能／平台及私人同步。沿用1920×1200、手繪與原版像素模式並存，完整Goal尚未完成。
 
-共背景物理演出已接可選GPU，原版NN6診斷包的普通兩次攻擊／返回、F2、保存冷讀已通過。這是consumer整合，不是新HD美術或原版oracle。其他捲動背景整場保持原生。
+共背景物理GPU已接，原版NN6診斷包的普通兩次攻擊／返回、F2、保存冷讀保持。這是consumer整合，其他背景捲動仍用原版。
 
-本輪新增FDOTHER65..68四種召喚slide／main／tail GPU consumer，四資源37幀核同原始解碼。正式清冊366項新增熾天使65五幀，原365項保持。三母稿明示重定向五幀，身體固定縮放，保留最後幀下移1原生像素，電光現代重繪。其餘三召喚尚未重繪，施術者FIGANI及地圖尾段維持原生。
+四種共用召喚FDOTHER65..68的37幀均正式登錄，清冊369項，本輪新增風妖精14、破壞神9、暗邪鬼9幀，原366項逐筆保持。新增八母稿的明示姿勢／材質重定向，不稱32張獨立繪畫。原版分層、幾何、delay、hold與音效保持。施術者FIGANI與各指令地圖尾段仍為原生。
 
-273個GPU回讀通過，正式清冊與圖源的完整Draw生命週期通過158 presents，涵蓋F2、缺件原子拒收、HP／MP／兩種RNG發布邊界、一次續行及快取釋放。原生delay、hold、音效保持。此為既有class19／BattleFig4修改fixture的RUNTIME-E1，尚非普通玩家召喚或PLAYER-E2。相關回歸55個頂層PASS、17個條件SKIP；完整物理Draw／DAC返回與清冊11項另通過，未宣稱全專案測試通過。
+三個新caller完整RunGame／Game.Draw／最終GPU分別156／241／255次原生呈現通過。F2、最後幀缺件原子拒收、HP／MP／兩種RNG、三段發布及一次續行均驗；正式清冊與正式圖源再驗command35完整255次通過。全部限既有class19／BattleFig4修改fixture的RUNTIME-E1，尚非普通玩家召喚或PLAYER-E2。
 
-五幀與三母稿已同步私人庫3914bab035acd5e1ebee846b5c7511ada6b81524，逐檔驗證3276份、runtime-only3068份，母稿不進執行包；遠端HEAD相同且仍private。公開只加README最終GPU總覽並明示fixture。
+新增完整測試發現#264：中間hold換frame時沿用舊drawn，可能跳過跨段首幀。兩個owner只在換frame處清除drawn，原hold與規則保持，專用邊界及完整三段驗證已通過。小球Gaussian外溢則修編製器取樣，未放寬正式載入器。前批55個PASS實為35頂層加20子項，統計標籤已勘誤，原始收據不變。
 
-正式FIGANI人物HD仍0項，蓋亞4／11幀隔離候選保持，人物身高／占寬A／B尚待回答，不將B寫入正式幾何。仍須其餘FIGANI、非共背景演出、法術／死亡及共同效果完整覆蓋、普通召喚／F2／保存冷讀、效能及平台。完整驗收條件保持，不因單一召喚完成而結案。
+新增40份圖／母稿已推送私人庫abb438556d4a516b6dd87eb7b4da56c04ddedb06，3316份及runtime-only3100份逐檔驗證，舊3276份保持，八母稿不進執行包，repository仍private。README四格圖是已通過fixture的最終GPU縮圖。
 
-主證據docs/data/fd2-modern-hd-battlefield-20261019.json的battle_effects_followup_20261019；舊共背景證據保留於battle_animation_gpu_followup_20261019。現況58、介面57、契約61。關聯#201／#202／#204。
+正式FIGANI人物HD仍0項，蓋亞4／11幀隔離候選與待決占寬保持。其餘FIGANI、施術者、非共背景演出、其他法術／死亡／共同效果、普通召喚／F2／保存冷讀、代表性效能與平台仍須完成，不能以四種共同圖庫替代完整Goal。
+
+主證據docs/data/fd2-modern-hd-battlefield-20261019.json的battle_summon_bank_followup_20261019，舊共背景及熾天使收據保留。現況58、介面57、契約61，關聯#201／#202／#204。
 
 怎樣算做完：建立由正式consumer到FIGANI人物及共同效果的可重跑覆蓋清冊；完成可達戰鬥動畫HD素材、原始位置／層序／節拍／命中與音效標記的正式呈現，缺件明示；正常玩家抽驗攻擊、受擊／反擊、法術／效果、死亡與戰場返回，F2、保存冷讀與代表性效能通過；已登錄素材同步私人庫，保留原版像素模式。資料測試及離線PNG不能取代正式GUI。
+
+證據：`docs/data/fd2-modern-hd-battlefield-20261019.json`
+
+### P1 多段召喚等待結束重用舊Draw確認，可能跳過下一段首幀
+
+`compound-stage-hold-draw-ack` · 缺陷 · [#264](https://github.com/wicanr2/fd2_re/issues/264) · 仍未完成 · 要人判
+
+新增召喚HD完整RunGame測試發現原有的繪製確認重用問題。中間hold期間Draw把drawn設true，等待結束改frame到stageEnd時未清除，Ebiten連續Update可在新Draw前消費下一張影格。這是兩個原生owner共有的缺陷，不是HD素材缺件或原版oracle差異。
+
+修正只在hold退出換frame時清除drawn，依既有Draw ACK契約等待新畫面確認。補單獨邊界回歸與完整三段GPU測試，保留等待值、交易、原生像素模式及一次續行。來源與失敗紀錄併入本輪battle_summon_bank_followup_20261019。
+
+怎樣算做完：command34／35中間hold結束後，新的stageEnd影格須取得自己的Draw確認才可推進；多次Update／單次Draw回歸與完整三段召喚GPU測試通過，原等待長度、HP／MP／RNG與一次續行保持。
 
 證據：`docs/data/fd2-modern-hd-battlefield-20261019.json`
 
