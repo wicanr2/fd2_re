@@ -3036,6 +3036,21 @@
         ],
         "pattern": "fx_sampling"
       }
+    },
+    {
+      "id": "battle-coverage-follows-native-mask-opacity",
+      "date": "2026-10-19",
+      "area": "HD素材稽核",
+      "rule": "戰鬥HD稽核沿正式loader的來源mask契約。只有FDOTHER.DAT原生Mask全非零的全幅寫入可缺透明點，FIGANI仍須透明背景及255核心。入口tools/audit_fd2_battle_hd_coverage.py，正式契約見remake/cmd/fd2/modern_hd_battle_assets.go。",
+      "why": "新增覆蓋稽核最初一律要求alpha0而誤拒既有全幅召喚幀。回查正式Go後只修稽核，另用全不透明FIGANI負向案例確認沒有放寬人物契約。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/audit_fd2_battle_hd_coverage.py"
+        ],
+        "pattern": "FDOTHER.DAT"
+      }
     }
   ]
 }

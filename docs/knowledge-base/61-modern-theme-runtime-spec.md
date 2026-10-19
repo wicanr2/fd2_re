@@ -160,6 +160,61 @@ GPU合成器見[`modern_hd_battle_gpu.go`](../../remake/cmd/fd2/modern_hd_battle
 `--assets`指向診斷包`runtime`、`--modern-pack`指向其`pack`；其他必要參數沿工具`--help`。
 此包只把原版像素最近鄰放大六倍，不是新增HD美術；清冊與產物僅限本機。
 
+#### 首章敵方人物與明示錨點配方（CONFORMED-SCOPED，限首章普通攻防）
+
+沿既有共背景物理consumer、手繪主題與原描述子乘六，補BattleFig96的
+FIGANI288待機4幀及289攻擊8幀。290的原始header為零，不新增動作。
+資料來源沿固定FIGANI.DAT及已通過盤點的分離metadata／PNG，原始資源、
+每幀原點、大小、delay及raw byte保持。角色造型以原版戰鬥圖為主，保留
+紅頭巾、灰綠單肩甲、褐衣、灰綠前垂布、藍色寬褲及彎刀；既有現代地圖圖組
+只供身分與色彩參照，不把其頭身比例套入大型戰鬥。
+
+編製入口為[`build_fd2_character_battle_hd.py`](../../tools/build_fd2_character_battle_hd.py)，
+在既有素材Docker執行`--pack <原版包> --inventory <已驗盤點> --recipe <配方.json>
+--out <新候選>`；登錄後重生另用`--base-catalog <保存的基底清冊>`。
+這是離線美術配方，正式catalog及存檔格式不變。
+
+- 配方綁定inventory SHA、figure、每份母稿的路徑／SHA／錨點矩形，以及
+  兩個資源全部影格的母稿選擇、原生錨點矩形與共同縮放群組。
+  錨點是明示的美術定位範圍，從參照圖與新稿逐項審查，不命名成原版結構欄位。
+  來源及原生矩形均須在各自畫布內，禁止缺項、未知母稿或錯資源。
+- 先核manifest、metadata、全部原始PNG與描述子，再按錨點高度等比例LANCZOS取樣，
+  對齊水平中心與下緣。若同群組任一錨點超出舊畫布，採全群組均可容納的
+  共同內縮倍率，逐幀保存倍率、原點與裁切量。不採蓋亞待決的較寬幾何。
+  不改原圖alpha以遷就守衛；成品仍須通過既有透明背景與不透明核心契約。
+- 本批八母稿供十二幀：四相待機及攻擊首幀沿同一待機稿，其餘七幀各有獨立攻擊稿。
+  原版三個收勢尾幀仍有少量非金色像素差異，沒有把它們稱為完全相同的身體。
+  明示美化重定向不升格為逐幀原版視覺相同，全部姿勢、比例與武器／光效須目視審查。
+- 完整新資源只加入隔離清冊。先驗圖源完整性、錯metadata及玩家／AI缺件時不結算，
+  再沿普通首章存檔驗兩次攻擊、敵方反擊、返回、F2與保存／新程序LOAD。
+  GPU須核對新敵方圖源，不能只驗`hd_battle`布林或沿用亞雷斯的通過收據。
+  通過後才登錄與同步私人allow-list，既有371項逐筆保持。
+
+圖源核對入口為[`verify_fd2_character_battle_gpu.py`](../../tools/verify_fd2_character_battle_gpu.py)，
+接受`--figure 96 --receipt <普通GUI收據> --catalog <同份清冊> --source <圖源包>
+--report <新報告>`。沿原矩形及高覆蓋藍衣／褲像素的混合界限，兩場均需有
+289非零攻擊幀的相容圖源。相近身體保留候選集合，不判定唯一相位；武器與光效另作目視審查。
+其他人物、其他演出、全戰役及平台效能仍由#263追蹤。
+
+整體圖源覆蓋由[`audit_fd2_battle_hd_coverage.py`](../../tools/audit_fd2_battle_hd_coverage.py)
+接受`--inventory --original-pack --catalog --source --report`重跑，逐個核對409個來源位置、
+已登錄描述子／header及實際PNG。輸出分開列資料登錄、未登錄來源與來源阻擋；
+不以資料數量推定caller、普通玩家、所有共同效果或完整戰鬥HD已完成。
+配方拒收由[`test_fd2_character_battle_hd.py`](../../tools/test_fd2_character_battle_hd.py)接受
+`--pack --inventory --recipe --baseline <已通過的compiled.json> --out <新目錄>`驗證，
+覆蓋錯版本／SHA、越界錨點、缺幀、錯資源、未知欄位、覆寫已登錄資源及原版metadata變動；
+每項須在建立輸出前拒收，不能以一般環境失敗冒充通過。
+
+本批正式373項已登錄FIGANI288／289完整十二幀，八母稿均有生成提示與SHA。
+乾淨重建與十一項編製拒收、五項圖源核對拒收通過。普通首章兩次攻防、返回、F2、
+保存／新程序LOAD通過；兩場20／44張同圖同時核對亞雷斯與強盜核心。
+F2限戰場操作，相容圖源不升格為唯一動畫相位；武器／光效另作目視審查。
+全來源稽核為409位置、264已解碼資源、2118原幀，目前正式FIGANI四資源31幀；
+FDOTHER四效果37幀完整，但不推定其他效果的總量或caller覆蓋。408來源仍阻擋。
+稽核透明度契約沿正式loader：只有FDOTHER原生mask全非零的全幅寫入允許無透明點，
+FIGANI仍須透明背景及255核心。完整來源、命令及限制見
+[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`bandit_battle_followup_20261019`。
+
 #### 亞雷斯物理戰鬥編製（CONFORMED-SCOPED，限首章普通攻擊）
 
 沿已核准手繪主題及1920×1200目標，先補首章普通攻擊實際使用的

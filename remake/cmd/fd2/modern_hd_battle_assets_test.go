@@ -11,6 +11,7 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
+	"strconv"
 	"strings"
 	"testing"
 
@@ -159,19 +160,36 @@ func TestModernHDBattleAssetsLazySetAtomic(t *testing.T) {
 	}
 }
 
+func modernBattleCandidateFigure(t *testing.T) int {
+	t.Helper()
+	value := os.Getenv("FD2_TEST_MODERN_BATTLE_FIGURE")
+	if value == "" {
+		return 30 // 保留較早蓋亞候選的明示測試入口。
+	}
+	figure, err := strconv.Atoi(value)
+	if err != nil || figure < 0 || figure > 135 {
+		t.Fatal("candidate figure must have a valid FIGANI idle/attack pair")
+	}
+	return figure
+}
+
 func TestModernHDBattleAssetsRealCandidate(t *testing.T) {
 	catalog, pack, original := os.Getenv("FD2_TEST_MODERN_BATTLE_CATALOG"), os.Getenv("FD2_TEST_MODERN_BATTLE_PACK"), os.Getenv("FD2_TEST_ORIGINAL_PACK")
 	if catalog == "" || pack == "" || original == "" {
 		t.Skip("requires explicit candidate catalog/pack and legal original pack")
 	}
 	t.Setenv("FD2_ASSET_PACK", original)
-	figure, idleCount, attackCount := 30, 4, 11
-	if os.Getenv("FD2_TEST_MODERN_BATTLE_FIGURE") == "4" {
-		figure, attackCount = 4, 15
-	} else if value := os.Getenv("FD2_TEST_MODERN_BATTLE_FIGURE"); value != "" && value != "30" {
-		t.Fatal("explicit candidate figure must be 4 or 30")
-	}
+	figure := modernBattleCandidateFigure(t)
 	idle, attack := figure*3, figure*3+1
+	originalIdle, err := figani.LoadSeparatedResource(filepath.Join(original, "animations"), idle)
+	if err != nil {
+		t.Fatal(err)
+	}
+	originalAttack, err := figani.LoadSeparatedResource(filepath.Join(original, "animations"), attack)
+	if err != nil {
+		t.Fatal(err)
+	}
+	idleCount, attackCount := len(originalIdle.Frames), len(originalAttack.Frames)
 	set, err := loadModernStoryPortraitSet(catalog, pack)
 	if err != nil {
 		t.Fatal(err)
@@ -219,12 +237,7 @@ func TestNativePhysicalHDPreflightStopsBeforeSettlement(t *testing.T) {
 		t.Skip("requires explicit HD candidate")
 	}
 	requirePhysicalScenePack(t)
-	figure := 30
-	if os.Getenv("FD2_TEST_MODERN_BATTLE_FIGURE") == "4" {
-		figure = 4
-	} else if value := os.Getenv("FD2_TEST_MODERN_BATTLE_FIGURE"); value != "" && value != "30" {
-		t.Fatal("explicit candidate figure must be 4 or 30")
-	}
+	figure := modernBattleCandidateFigure(t)
 	idle, attack := figure*3, figure*3+1
 	for _, owner := range []string{"player", "mode11"} {
 		t.Run(owner, func(t *testing.T) {
