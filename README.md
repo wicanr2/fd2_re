@@ -78,6 +78,12 @@
 以上取自首章正常選取悠妮攻擊的實際視窗，左為展臂，右為收勢；背景與戰鬥面板仍含像素素材。
 操作、圖源與已知裁切範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
 
+![非共背景戰鬥的HD人物捲入](docs/figures/hd-physical-scroll.png)
+
+非共背景物理演出已接 HD 人物，包含左右捲動、連射與反擊。以上是修改測試場景的最終 GPU 截圖，
+顯示人物捲入途中；背景與介面仍用像素素材。這部分完成引擎驗證，一般玩家抽驗另列，
+範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
+
 ## 遊戲介紹
 
 《炎龍騎士團 2》是 1990 年代華文單機戰略角色扮演遊戲（SRPG）的代表作之一。

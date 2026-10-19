@@ -40,6 +40,9 @@ func diagnosticModernBattleSet(t *testing.T, g *Game, scene *nativePhysicalScene
 			continue
 		}
 		for _, source := range job.hdSources.Layers {
+			if source.Resource < 0 {
+				continue
+			}
 			animation := animations[source.Resource]
 			if animation == nil || source.Index < 0 || source.Index >= len(animation.Frames) || !reflect.DeepEqual(source.Frame, animation.Frames[source.Index]) {
 				t.Fatalf("job source binding differs: %d/%d", source.Resource, source.Index)
@@ -61,10 +64,35 @@ type modernHDBattleLifecycleProbe struct {
 	steps, draws, finals, hdDraws, faithfulDraws, returnDraws int
 	finished                                                  bool
 	err                                                       error
+	everyPhase                                                bool
+	phaseDraws, phaseF2                                       map[string]int
+	pendingPhase                                              string
+	pendingFaithful                                           int
+	capture                                                   func(*ebiten.Image, string)
 }
 
-func (p *modernHDBattleLifecycleProbe) stable() [5]int {
-	return [5]int{p.scene.preludeFrame, p.scene.body.index, int(p.g.nativeRNGState), p.actor.HP, p.target.HP}
+func (p *modernHDBattleLifecycleProbe) stable() [7]int {
+	return [7]int{p.scene.preludeFrame, p.scene.body.index, int(p.g.nativeRNGState), p.actor.HP, p.target.HP, p.actor.MP, p.target.MP}
+}
+
+func (p *modernHDBattleLifecycleProbe) phase() string {
+	if ramp := p.g.nativePaletteRamp; ramp != nil {
+		if ramp.hdBattleSources != nil {
+			return "fade"
+		}
+		return "map-fade"
+	}
+	if p.scene.preludeFrame < len(p.scene.preludeImages) {
+		return "prelude"
+	}
+	i := p.scene.body.index
+	if i == len(p.scene.body.jobs) {
+		i = p.scene.body.lastPresent
+	}
+	if i >= 0 && i < len(p.scene.body.jobs) {
+		return p.scene.body.jobs[i].hdPhase
+	}
+	return ""
 }
 
 func (p *modernHDBattleLifecycleProbe) Update() error {
@@ -77,7 +105,31 @@ func (p *modernHDBattleLifecycleProbe) Update() error {
 		return ebiten.Termination
 	}
 	// F2同一路徑切出及切回；每次切換不改演出游標或已結算狀態。
-	if (!p.offDone && p.draws >= 3) || (p.offDone && !p.onDone && p.faithfulDraws > 0) {
+	if p.everyPhase {
+		phase := p.phase()
+		restore := p.pendingPhase != "" && p.faithfulDraws > p.pendingFaithful
+		eligible := phase == "prelude" || phase == "departure" || phase == "scroll-out" || phase == "scroll-in" || phase == "body" || phase == "counter"
+		start := p.pendingPhase == "" && eligible && p.phaseDraws[phase] > 0 && p.phaseF2[phase] == 0
+		if restore || start {
+			before, elapsed, timer, accum := p.stable(), p.scene.body.elapsedMillis, p.g.atk.timer, p.g.atk.accumMillis
+			p.g.cycleTheme()
+			if p.stable() != before || p.scene.body.elapsedMillis != elapsed || p.g.atk.timer != timer || p.g.atk.accumMillis != accum {
+				p.err = fmt.Errorf("phase F2 changed state")
+				return ebiten.Termination
+			}
+			if restore {
+				p.phaseF2[p.pendingPhase]++
+				p.pendingPhase = ""
+			} else {
+				p.pendingPhase = phase
+				p.pendingFaithful = p.faithfulDraws
+			}
+			return nil // explicit test clock pause; allow Draw of this same present.
+		}
+		if p.pendingPhase != "" {
+			return nil
+		}
+	} else if (!p.offDone && p.draws >= 3) || (p.offDone && !p.onDone && p.faithfulDraws > 0) {
 		before := p.stable()
 		p.g.cycleTheme()
 		if !p.offDone {
@@ -127,12 +179,18 @@ func (p *modernHDBattleLifecycleProbe) Draw(screen *ebiten.Image) {
 			return
 		}
 		p.hdDraws++
+		if p.everyPhase {
+			p.phaseDraws[p.phase()]++
+		}
 	} else {
 		if p.g.modernHDBattleVisible {
 			p.err = fmt.Errorf("faithful theme retained HD layer")
 			return
 		}
 		p.faithfulDraws++
+	}
+	if p.capture != nil {
+		p.capture(screen, p.phase())
 	}
 	if ramp := p.g.nativePaletteRamp; ramp != nil {
 		limit := len(p.rampSeen)

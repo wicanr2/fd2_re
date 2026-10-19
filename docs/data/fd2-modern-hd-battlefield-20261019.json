@@ -15,7 +15,7 @@
     "hd_terrain": "CONFORMED-SCOPED：map0六組53槽；新增圓頂綠色／褐色雙塊四底圖在兩張正常GPU全部相符，短長組合與保存冷讀通過；草地及其他地形仍待HD化。",
     "ai_player_input_lock": "CONFORMED-SCOPED：AI換手期間拒絕玩家地圖輸入重入；普通END／增援對話及相關／完整Go回歸通過。",
     "gaia_redesign": "CONFORMED-SCOPED：新版頭像與四方向圖組已登錄；正常START／Gaia北移取消／F2／冷讀分段驗證。相位差異與序章尾端失敗明示，非逐幀parity。",
-    "hd_battle_animation": "CONFORMED-SCOPED：377項清冊含共同召喚37幀及角色FIGANI八資源61幀；新增悠妮普通首章兩次END接敵／攻防、返回、F2、保存冷讀與雙方核心通過，既有索爾／亞雷斯／強盜與四召喚施術者證據保持。其餘人物／演出、普通法術與效能未完成，蓋亞占寬待決。"
+    "hd_battle_animation": "CONFORMED-SCOPED：377項清冊含四召喚37幀及角色FIGANI八資源61幀；索爾／亞雷斯／悠妮／強盜普通攻防證據保持，四召喚施術者及新增非共背景捲動限RUNTIME-E1。783 GPU案例、雙側兩次射擊／反擊及六階段F2／返回通過；其餘人物／演出、普通法術及非共背景正常玩家與效能仍待，蓋亞占寬待決。"
   },
   "runtime_source": {
     "binary": {
@@ -26643,6 +26643,536 @@
       "unexpected_owners_or_md_directories": [],
       "scope": "變更文件、全部yuni命名輸出根及23份正式新圖；不掃全部歷史work。全庫舊九項連結限制沿前批紀錄。",
       "docker_cleanup": "本批有界檢查退出後，提交前後另以docker ps -a核對。"
+    }
+  },
+  "physical_scroll_followup_20261019": {
+    "date": "2026-10-19",
+    "status": "CONFORMED-SCOPED／RUNTIME-E1",
+    "base_source_commit": "860a189b26a9b535129ed22e1209e7203103c163",
+    "sources_before_implementation": [
+      {
+        "file": "docs/data/fd2-reference-files.json",
+        "sha256": "9946b7506620069ce9b7bb8e4b1f7fed36e7a9389b634ef62064727d89579c5e"
+      },
+      {
+        "file": "docs/data/ida/fd2_physical_background_selection_20261004.json",
+        "sha256": "baa1dbbc78513796e21767ae10b73a79a2184c04fe0dfd7057d303efd515f71a"
+      },
+      {
+        "file": "remake/internal/battlepresent/native_command24_background.go",
+        "sha256": "67bd22a72092fa4ff85b4a5e9ab671911a996846b0fe6637406cff32e5909714"
+      },
+      {
+        "file": "remake/cmd/fd2/native_physical_scene.go",
+        "sha256": "abbe3578027eea515a42d5edcd8e1960219fc8886d8f8833b1e2ef79341002d8"
+      },
+      {
+        "file": "remake/cmd/fd2/native_physical_body.go",
+        "sha256": "f5ee0c4532df223bf03f9ded0664757055c33f93a0c8dec36381a4d393f26a54"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_runtime.go",
+        "sha256": "40ba8b4d67a6356bc2419575f33b484da681dea0ad2953f49750049787ae03d7"
+      }
+    ],
+    "input": {
+      "input": "FD2.EXE",
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "original_address_space": "IDA Pro9.4 LE linear，sub_28A6C／sub_29164／sub_29C90／sub_29DED，沿既有閉合主證據，不重開RE。",
+    "evidence_level": "既有原生排程已證實；HD接線通過CPU／GPU及修改fixture正式Draw驗證。不是新原版oracle或普通玩家。",
+    "scope": "物理非零header的mode1入場、departure、兩段背景scroll、重複射擊／反擊、返回等待及DAC，沿原生producer輸出typed phase／viewport／BG history。無新美術、主題清冊、正式規則或存檔格式。",
+    "render_contract": [
+      "Source先限原320畫布再移入640工作半面；TargetIdle直接沿原640 work範圍，BG覆蓋順序保持。",
+      "從乾淨base及typed actor／idle建可選HD層；BG history原生透明mask最後覆蓋，不從烘焙圖清人物。",
+      "source clip先跟著viewport平移再取1920世界交集；nil表示全畫布，空交集不畫，錯誤幾何拒收。",
+      "FDOTHER分離indexed／mask直接消費；legacy RLE沿既有透明blitter在0／255兩背景解出相同像素與mask，不把index0當透明。",
+      "原19／20張、左右不對稱、所有delay／cue／HP／RNG／Draw ACK及正式owner保持；缺已登錄圖源或錯計畫不部分發布。",
+      "TargetIdle的linear base跨列按現有CPU API投影，合成邊界測試通過；不提升為新EXE逐像素對拍。"
+    ],
+    "acceptance": [
+      "原CPU舊測試保持；新typed metadata重新合成GPU與原CPU完整畫布exact，左右19／20、source／target、越界／遮擋及mode1 prelude均驗。",
+      "HD裁切及透明度對CPU reference比較；既有395 GPU案例不退化。",
+      "正式Game.Draw／DrawFinalScreen完整演出，包含重複射擊、反擊、每階段F2、拒收、64／65 DAC及一次續行；實圖源另抽。"
+    ],
+    "limits": [
+      "目前已登錄角色的attack header皆0；真實非零header範例FIGANI25，其本身仍像素，已登錄敵方／目標可使用HD。",
+      "測試fixture改BattleFig／計畫須明示RUNTIME-E1，不能冒稱普通玩家或新原版oracle。",
+      "原生既有counter BG缺口／未知caller仍失敗即關閉；不在HD接線猜補。",
+      "蓋亞占寬仍待決；本批不改角色矩形或登錄候選。"
+    ],
+    "full_battle_hd_complete": false,
+    "implementation_fingerprints": [
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_gpu.go",
+        "sha256": "eaa3b813916503910aefbd899b534f8783334db572561ff952b399d15354b0d2"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_gpu_test.go",
+        "sha256": "10902e0c306e29a617654c3a0b575c6be8d1cdcdb32207388f1f8245fdf28e56"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_runtime.go",
+        "sha256": "f26d7c1deda657b69669a6ecf4c364f78101e338878b3079039475b3e0b44e9e"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_scroll.go",
+        "sha256": "9e25e5f07fff3567cad0cb4f45aa8f317ebbab5b486e8624cd7c5c49d2d4bd9e"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_scroll_test.go",
+        "sha256": "5de4ebaafea3bd05b6051e83349d622644a7ea318933992cc8fd1e5a3e7dd5ad"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_scroll_lifecycle_test.go",
+        "sha256": "ba462b199ff7d41179b0093d2b8b19a5ddf5557b912689d70b32ed2c722e265c"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_lifecycle_test.go",
+        "sha256": "af7c0aa666f58ade29908836cd6c7475b1750b3ee45af1e417834fda70d7c172"
+      },
+      {
+        "file": "remake/cmd/fd2/native_physical_scene.go",
+        "sha256": "1009c5a1ad8e0b28c8aa895c864ce6172872507d5b9343d10c9826ae40dd3876"
+      },
+      {
+        "file": "remake/cmd/fd2/native_physical_body.go",
+        "sha256": "d97cb4d71018cc0587be051f33c84b6a75df453b0bac5ef78f6683fb1fbd1cb0"
+      },
+      {
+        "file": "remake/internal/battlepresent/native_command24_background.go",
+        "sha256": "a8042b31364f1e2980f3341f4fe155f9d4f5c324fa7318fdcbd0a37ac5b8e4b4"
+      },
+      {
+        "file": "remake/internal/battlepresent/native_command24_background_test.go",
+        "sha256": "2e44d12b45f8c1584e7638a3f2fa43a88e0b095b76480fb4dc8d3c3ba37447d8"
+      },
+      {
+        "file": "tools/verify_fd2_scroll_battle_gpu.py",
+        "sha256": "b467a846ab25336280f2a3b1156410fd4a3ee69767b221380e1f7d747c5cd196"
+      }
+    ],
+    "reproduction": {
+      "build_image": "fd2-go-test-local:latest",
+      "assets_image": "fd2-assets-local:20260829-sfx",
+      "runtime": "Go1.22.12／Ebiten2.6.6／Linux llvmpipe Xvfb",
+      "build": "沿tools/docker/fd2-go-test.Dockerfile的fd2-go-test-local:latest；Docker user1000:1000 networknone cpus2 memory3g pids256，repo掛/repo，cwd /repo/remake。/go-cache tmpfs rw,exec,uid1000,gid1000,size1400m；GOCACHE=/go-cache/build GOTMPDIR=/go-cache/tmp GOPROXY=off GOMAXPROCS=2，先mkdir -p /go-cache/tmp。timeout 240 go test -c -o ../work/promo-cadence-20261018/hd-fonts/scroll-hd-tests-r3 ./cmd/fd2。完成驗證記SHA後刪除。",
+      "gpu": "FD2_ASSET_PACK及FD2_TEST_ORIGINAL_PACK指合法原包；cwd remake/cmd/fd2；with-xvfb <test-binary> -test.run ^TestModernHDBattleGPUBridge$ -test.v，FD2_HD_BATTLE_GPU=1。",
+      "lifecycle": "每側／每圖源各一個有界程序，with-xvfb <test-binary> -test.run ^TestModernHDScrollRuntimeGPU$ -test.v；FD2_HD_SCROLL_SIDE=0|2；正式圖源加FD2_HD_SCROLL_REAL=1與FD2_TEST_MODERN_BATTLE_CATALOG／PACK，FD2_TEST_HD_SCROLL_OUT為新目錄。",
+      "core": "python3 tools/verify_fd2_scroll_battle_gpu.py --receipt <life/receipt.json> --catalog remake/assets/themes/modern/catalog.json --source remake/generated-assets/modern-theme-prototypes --report <新報告>",
+      "producer": "同Go容器中 timeout 180 go test ./internal/battlepresent -run Test(BuildNativeCommand24Background|Native.*Background) -count=1 -v，正則須以shell引號包住。"
+    },
+    "verification": {
+      "producer": {
+        "tests": 4,
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/scroll-producer-r3.log",
+          "sha256": "95e2df47547b15e510ccbacc78768626d9ba73f716f798cc8b09613f458c920a"
+        }
+      },
+      "gpu": {
+        "cases": 783,
+        "baseline_cases": 395,
+        "new_cases": 388,
+        "native": "完整1920×1200逐像素相同",
+        "hd": "三種裁切與既有alpha／shade容差1",
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/scroll-gpu-r3.log",
+          "sha256": "a0a788d06f64e3895964b7830bdac6ee59876bb507abf6270a9896f0d4b7a535"
+        }
+      },
+      "unit": {
+        "top_pass": 17,
+        "sub_pass": 20,
+        "conditional_skips": [
+          "HD候選參數未設，已在正式圖源回歸補驗",
+          "six BIOS wait需另指定原版收據，本批不新跑；既有完整生命週期及64／65 DAC通過"
+        ],
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/scroll-unit-r3.log",
+          "sha256": "852c68d7b8e627d504c987c137f4ff207529f4f3057edf764d545485b9a809bb"
+        }
+      },
+      "formal_bank": {
+        "figure": 96,
+        "top_pass": 2,
+        "sub_pass": 2,
+        "skips": 0,
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/scroll-formal-bank-r3.log",
+          "sha256": "579376fb281557ced5a32809d1c70d8690941914f7a0ec1b7c7af523648d3ac7"
+        }
+      },
+      "common_lifecycle": {
+        "hd_draws": 257,
+        "faithful_draws": 1,
+        "final_draws": 324,
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/scroll-common-r3.log",
+          "sha256": "118a728abe28ab7bb2650353a4092709969baabc95ffee0c6c247e119b0b0d7f"
+        }
+      },
+      "scroll_lifecycle": [
+        {
+          "receipt": {
+            "file": "work/promo-cadence-20261018/hd-fonts/scroll-side0-r3/receipt.json",
+            "sha256": "ad8725f3e2b32f8a56eec0bb55aa1de885fbf1b5023e2a78a2236a7796b773af"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/scroll-side0-r3.log",
+            "sha256": "cfe2d576c77ecb1c810f9b281ae5cec632f21dfde48ad6fa3d10521b44ce21a7"
+          },
+          "result": {
+            "battle_dac_steps": 64,
+            "continuations": 1,
+            "faithful_draws": 6,
+            "final_draws": 474,
+            "hd_draws": 401,
+            "map_dac_steps": 65,
+            "phase_f2": {
+              "body": 1,
+              "counter": 1,
+              "departure": 1,
+              "prelude": 1,
+              "scroll-in": 1,
+              "scroll-out": 1
+            },
+            "phase_hd_draws": {
+              "body": 58,
+              "counter": 40,
+              "departure": 169,
+              "fade": 64,
+              "prelude": 10,
+              "scroll-in": 31,
+              "scroll-out": 29
+            },
+            "presents": 139,
+            "real_registered_battle_bank": false,
+            "scope": "真實FIGANI25／288／289與BG55／5的修改fixture；兩次射擊及反擊的正式Game.Draw。非普通玩家或新原版oracle。real只換正式battle銀行，地圖返回沿既有native fixture；F2切換的測試tick停一次以要求同present兩主題Draw。",
+            "side": 0,
+            "status": "PASS-SCOPED-RUNTIME-E1"
+          },
+          "pngs": [
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/scroll-side0-r3/body-job-033.png",
+              "sha256": "74292f4ed65392ae40429d1911dcd1c5ddf49ad7bc2b433884fea43ae7802853"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/scroll-side0-r3/counter-job-114.png",
+              "sha256": "075fd4cc168244dac5854adbcf9106ce2b678136baacd994913398648497e050"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/scroll-side0-r3/departure-job-000.png",
+              "sha256": "11d577bb675f7851b879def2340dbbbc7e1ee3de998bdc3ae37977d1c6e791e9"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/scroll-side0-r3/prelude-job-000.png",
+              "sha256": "058366f64c0c08477ef81f539196224f6f97f574d250965787fe4616f3ce0b2c"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/scroll-side0-r3/scroll-in-job-027.png",
+              "sha256": "3fc2d3e50d6b7468b24e3aed7e0458a28cfb1629c6848ab407617af1ec7c8abc"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/scroll-side0-r3/scroll-out-job-014.png",
+              "sha256": "01107a857973a7568ed7404fa7f5497f4b5e36ec43515aa767bce74c2d92ff4f"
+            }
+          ]
+        },
+        {
+          "receipt": {
+            "file": "work/promo-cadence-20261018/hd-fonts/scroll-side0-real-r3/receipt.json",
+            "sha256": "02da19872fe50c6ac560d5a233ad08025ecc9cfb6fef0c0beba7a6eb2819bcf2"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/scroll-side0-real-r3.log",
+            "sha256": "53709faf183c85ab448e66c3c24e2ce6bca8c3f6df1498f6c5f9ea11dc363f0f"
+          },
+          "result": {
+            "battle_dac_steps": 64,
+            "continuations": 1,
+            "faithful_draws": 6,
+            "final_draws": 599,
+            "hd_draws": 528,
+            "map_dac_steps": 65,
+            "phase_f2": {
+              "body": 1,
+              "counter": 1,
+              "departure": 1,
+              "prelude": 1,
+              "scroll-in": 1,
+              "scroll-out": 1
+            },
+            "phase_hd_draws": {
+              "body": 82,
+              "counter": 73,
+              "departure": 239,
+              "fade": 64,
+              "prelude": 10,
+              "scroll-in": 31,
+              "scroll-out": 29
+            },
+            "presents": 139,
+            "real_registered_battle_bank": true,
+            "scope": "真實FIGANI25／288／289與BG55／5的修改fixture；兩次射擊及反擊的正式Game.Draw。非普通玩家或新原版oracle。real只換正式battle銀行，地圖返回沿既有native fixture；F2切換的測試tick停一次以要求同present兩主題Draw。",
+            "side": 0,
+            "status": "PASS-SCOPED-RUNTIME-E1"
+          },
+          "pngs": [
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/scroll-side0-real-r3/body-job-033.png",
+              "sha256": "5b40c47a5d30773048ba746802dbef3d422b97dd7bbe64784078c92a099e4a83"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/scroll-side0-real-r3/counter-job-114.png",
+              "sha256": "5e78aa0bd803162bb4f1b2853cb8b269284f50a9039b9c3d9a5b2812c3484a05"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/scroll-side0-real-r3/scroll-in-job-027.png",
+              "sha256": "e30f979633c3f3b9e58276e9e42a757a3bfbe7b541a94196e740dc871fdd1b3c"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/scroll-side0-real-r3/scroll-out-job-051.png",
+              "sha256": "ca445b4fc537f370350fb5827975bbcfae6ee8122ae9c1fbc6817095aa9ef0b0"
+            }
+          ]
+        },
+        {
+          "receipt": {
+            "file": "work/promo-cadence-20261018/hd-fonts/scroll-side2-real-r3/receipt.json",
+            "sha256": "4a8782989571c71205dd436be1998a7c60d2228f264b1426f97d96bf6d7b7a83"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/scroll-side2-real-r3.log",
+            "sha256": "faf4d6fac1d6eecc4e335f48d95d96bfe053ba653b31812a36291a4d9baa2975"
+          },
+          "result": {
+            "battle_dac_steps": 64,
+            "continuations": 1,
+            "faithful_draws": 6,
+            "final_draws": 602,
+            "hd_draws": 531,
+            "map_dac_steps": 65,
+            "phase_f2": {
+              "body": 1,
+              "counter": 1,
+              "departure": 1,
+              "prelude": 1,
+              "scroll-in": 1,
+              "scroll-out": 1
+            },
+            "phase_hd_draws": {
+              "body": 83,
+              "counter": 74,
+              "departure": 239,
+              "fade": 64,
+              "prelude": 10,
+              "scroll-in": 31,
+              "scroll-out": 30
+            },
+            "presents": 140,
+            "real_registered_battle_bank": true,
+            "scope": "真實FIGANI25／288／289與BG55／5的修改fixture；兩次射擊及反擊的正式Game.Draw。非普通玩家或新原版oracle。real只換正式battle銀行，地圖返回沿既有native fixture；F2切換的測試tick停一次以要求同present兩主題Draw。",
+            "side": 2,
+            "status": "PASS-SCOPED-RUNTIME-E1"
+          },
+          "pngs": [
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/scroll-side2-real-r3/body-job-034.png",
+              "sha256": "edd2a02e9d43b74d9e43f07b8176e57d9cc94730b753b8764fffd30a3d9db864"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/scroll-side2-real-r3/counter-job-115.png",
+              "sha256": "13c9dc513f6b62be9a79a24020bc55b829b124a0dc45036c14ccbefff0354a79"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/scroll-side2-real-r3/scroll-in-job-033.png",
+              "sha256": "edd2a02e9d43b74d9e43f07b8176e57d9cc94730b753b8764fffd30a3d9db864"
+            }
+          ]
+        }
+      ],
+      "negative": {
+        "file": "work/promo-cadence-20261018/hd-fonts/scroll-core-negative-r3/receipt.json",
+        "sha256": "9ad4135b74fc40e0d80796addc22cc70fd8f305908f0b39093f30c27cdf89a64"
+      },
+      "core": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/scroll-side0-core-r3.json",
+          "sha256": "43e286986fb4272356aa1950a704f1a7ee5515685925debba5c9c7daa2168722"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/scroll-side2-core-r3.json",
+          "sha256": "21e3b812771bbf1f5638747934ed6afae07979032ffa0d2951570c41820a825e"
+        }
+      ],
+      "registered_core_matches": 7,
+      "scope": "真實FIGANI24／25與288／289、BG55／5，修改BattleFig與兩次主攻＋反擊計畫；原生幾何、delay、cue、面板與owner。正式圖源僅換battle銀行，地圖返回為既有native fixture。六階段F2的測試tick暫停同present一次，HP／MP／RNG不變；Draw數依軟體擷取環境變動。"
+    },
+    "memory": [
+      {
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/scroll-common-r3-memory.log",
+          "sha256": "d1bd3dd395508d3cf28585ddb52300e44489bb17d6ed335998a29009ae9006df"
+        },
+        "peak_bytes": 804786176,
+        "oom_kill": 0
+      },
+      {
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/scroll-formal-bank-r3-memory.log",
+          "sha256": "030a5e5783f72d688339b1c13e70fcb50fbfc390bb7ce60a2bd3fc4c35d449da"
+        },
+        "peak_bytes": 561803264,
+        "oom_kill": 0
+      },
+      {
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/scroll-gpu-r3-memory.log",
+          "sha256": "18c58b36129c1fae541e2975077fcf01607502d39d05a14cfa314b66dc7504f0"
+        },
+        "peak_bytes": 1160224768,
+        "oom_kill": 0
+      },
+      {
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/scroll-side0-r3-memory.log",
+          "sha256": "c5cdb5970bbb4a8fc435a0d584c41db3aa4acd3e42a21b0962c09d91ec2337b0"
+        },
+        "peak_bytes": 968945664,
+        "oom_kill": 0
+      },
+      {
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/scroll-side0-real-r3-memory.log",
+          "sha256": "ad32603575493d348b553365c89b8fb5ee824dbea9a1924d0a2134ac2b46cbaf"
+        },
+        "peak_bytes": 707715072,
+        "oom_kill": 0
+      },
+      {
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/scroll-side2-real-r3-memory.log",
+          "sha256": "4acbb34dade40b63e28677e5645426d87698dc7ff85de1ff97629c46d117b101"
+        },
+        "peak_bytes": 762073088,
+        "oom_kill": 0
+      },
+      {
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/scroll-unit-r3-memory.log",
+          "sha256": "84c5c9395cfe2c2e0a589a1ac8047c6326f7124be35c5046b73f5283709a67a5"
+        },
+        "peak_bytes": 81862656,
+        "oom_kill": 0
+      }
+    ],
+    "environment_corrections": [
+      {
+        "classification": "環境",
+        "detail": "r1 tmpfs預設noexec導致測試程式permission denied；同映像加入exec後四producer測試通過。",
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/scroll-producer-r1.log",
+          "sha256": "82358ef09186540218fea14b83f4cf3941cf3af7ff106e9e59e1be826618c795"
+        }
+      },
+      {
+        "classification": "測試工具",
+        "detail": "r2引用不存在的scene.preludeTicks，編譯拒絕；改核atk.timer／accumMillis後r3乾淨編譯通過，正式時序未改。",
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/scroll-build-r2.log",
+          "sha256": "e9ce685a432070972694b99db801605b4158feaec3497cf14b117363f78f2d7a"
+        }
+      }
+    ],
+    "catalog_and_private": {
+      "catalog": {
+        "file": "remake/assets/themes/modern/catalog.json",
+        "sha256": "6779aff511776f29c2dfb9b0ec968d9891daa2b3636d872120600a9b938dbe86"
+      },
+      "assets": 377,
+      "new_assets": 0,
+      "figani_resources": 8,
+      "figani_frames": 61,
+      "fdother_resources": 4,
+      "fdother_frames": 37,
+      "private_commit": "af9ca1b953510eeda9c70965da926780e0c87eef",
+      "scope": "清冊與圖源本批未改，沒有新私人同步。"
+    },
+    "readme_screenshot": {
+      "file": "docs/figures/hd-physical-scroll.png",
+      "sha256": "e30f979633c3f3b9e58276e9e42a757a3bfbe7b541a94196e740dc871fdd1b3c",
+      "source": {
+        "file": "work/promo-cadence-20261018/hd-fonts/scroll-side0-real-r3/scroll-in-job-027.png",
+        "sha256": "e30f979633c3f3b9e58276e9e42a757a3bfbe7b541a94196e740dc871fdd1b3c"
+      },
+      "method": "原1920×1200最終GPU PNG逐byte複製，沒有裁切或改圖。修改fixture，右向捲入中；原生背景及面板並非HD。"
+    },
+    "cleanup": {
+      "deleted": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/scroll-hd-tests-r3",
+          "sha256": "bd91acc2ca3a5c61ebced353e6525e81e786186d3294117b1b0ef11ca426060e",
+          "size_bytes": 26319248
+        }
+      ],
+      "freed_bytes": 26319248,
+      "recordings_created": false,
+      "scope": "只刪已驗本輪測試二進位；原圖、配方及收據保留，未掃其他專案或歷史work。"
+    },
+    "worklist": {
+      "issue": 263,
+      "state": "OPEN",
+      "goal": "完成 fd2 戰鬥動畫hd",
+      "open_items": 21,
+      "manual_items": 14,
+      "possibly_complete": 0,
+      "render_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/scroll-worklist-render.log",
+        "sha256": "c702c8cb103ec7a01ca34730434d08b71a670ba0eed8d5ea193f3224314c63fd"
+      },
+      "verify_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/scroll-worklist-verify.log",
+        "sha256": "2f54f61dfa7fb4ccd6a11f9d46d47654d86d30b5df19bc8b0330be3d7a4888eb"
+      }
+    },
+    "lessons": {
+      "count": 261,
+      "guards": 140,
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/scroll-lessons-final.log",
+        "sha256": "288b53947719dc5484b9977230a3c910e41ddd9758289fd94b3120f1718bdb9b"
+      }
+    },
+    "final_checks": {
+      "status": "PASS-SCROLL-FINAL-CHECKS",
+      "changed_markdown_targets": 1440,
+      "broken_targets": [],
+      "positive_controls": [
+        [
+          "README.md",
+          "docs/figures/hd-physical-scroll.png"
+        ],
+        [
+          "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+          "../../tools/verify_fd2_scroll_battle_gpu.py"
+        ],
+        [
+          "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+          "../../remake/cmd/fd2/modern_hd_battle_scroll_lifecycle_test.go"
+        ]
+      ],
+      "ownership_checked_paths": 78,
+      "unexpected_owners_or_md_directories": [],
+      "scope": "本輪22個變更檔及scroll命名輸出根，不掃全部歷史work；全庫舊九項連結限制不新增完成聲明。",
+      "report": {
+        "file": "work/promo-cadence-20261018/hd-fonts/scroll-final-checks.json",
+        "sha256": "07252508b04827b3126d90bf8dea5b77feab5a3818eab5790e99f7b38452e4b0"
+      },
+      "docker_cleanup": "所有本批建置與GPU容器皆--rm結束；最終docker ps -a另核無FD2殘留。",
+      "private_worktree": "本批查核乾淨，HEAD af9ca1b953510eeda9c70965da926780e0c87eef；未改私人可見性設定。"
     }
   }
 }

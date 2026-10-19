@@ -160,14 +160,49 @@ FDOTHER68的前八幀共用15649個身體像素，最後幀下移一原生像素
 
 ### 大型戰鬥動畫 HD 起始切片（2026-10-19，READY-CANDIDATE）
 
+#### 非共背景物理演出（CONFORMED-SCOPED／RUNTIME-E1）
+
+沿[已閉合主證據](../data/ida/fd2_physical_background_selection_20261004.json)的IDA LE
+`sub_28A6C`、`sub_29164`、`sub_29C90`及`sub_29DED`，延伸既有非零header呈現。
+FIGANI25為真實非零header例；目前已登錄人物attack的header均0，不能把fixture冒稱自然出場。
+原生兩段左右捲動保持20／19張與BG循環。producer附加phase、ContentX、BGX、ViewportX與BG history，
+原[][]byte介面沿同一pixels。由乾淨base、actor／idle來源與透明BG覆蓋構成HD，
+Source先限原320畫布再放入640半面，TargetIdle沿原640 work；不得從烘焙CPU圖清掉人物。
+HD source增加可選目的裁切，沿viewport平移再與1920世界取交集。nil為全畫布，空交集不畫，
+無效幾何在清除舊GPU前拒收。legacy FDOTHER RLE沿原blitter在0／255兩背景取正確mask，
+不把原生index0當透明；分離PNG仍直接用indexed／mask。
+mode1只呈現該側人物／台座；departure、重複射擊與反擊的每次scroll皆保留typed來源。
+所有原delay、cue、HP、兩種RNG、Draw確認、64／65 DAC、F2交易及續行保持，不改主題清冊或保存格式。
+驗左右完整GPU／CPU畫布、遮擋與跨半面裁切、HD alpha／shade及既有395案例；
+再驗正式Game.Draw／最終GPU全演出、每階段F2／拒收與一次續行。原生未知counter BG不猜補。
+來源及驗收由[戰鬥HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的
+`physical_scroll_followup_20261019`承載。實作入口為
+[`modern_hd_battle_scroll.go`](../../remake/cmd/fd2/modern_hd_battle_scroll.go)，
+驗證入口為[`捲動圖層測試`](../../remake/cmd/fd2/modern_hd_battle_scroll_test.go)、
+[`雙側生命週期`](../../remake/cmd/fd2/modern_hd_battle_scroll_lifecycle_test.go)及
+[`最終GPU圖源核對`](../../tools/verify_fd2_scroll_battle_gpu.py)。
+生命週期以`FD2_HD_SCROLL_SIDE=0`或`2`分程序執行`TestModernHDScrollRuntimeGPU`，
+`FD2_HD_SCROLL_REAL=1`時沿`FD2_TEST_MODERN_BATTLE_CATALOG`與`FD2_TEST_MODERN_BATTLE_PACK`
+載入正式戰鬥圖組，`FD2_TEST_HD_SCROLL_OUT`指定尚不存在的截圖目錄。
+核對器接受`--receipt --catalog --source --report`，只驗明示fixture的敵方服裝核心。
+合成邊界另含原生640工作面的線性base跨列測試，僅證明現有CPU／GPU等價，不新增EXE對拍聲明。
+783組GPU比對通過，包含既有395組與新增388組；原生完整畫布一致，HD透明度容差1。
+四項producer、17頂層加20子項回歸及正式圖源2頂層加2子項通過。
+雙側正式圖源139／140次呈現、六階段F2、兩次射擊與反擊、64／65 DAC及一次續行通過；
+共背景完整流程保持。七張最終GPU符合敵方服裝核心，三種錯範圍／原生PNG替身／錯幀拒收。
+所有本批2GB執行容器無OOM，不把擷取時間或Draw次數當平台效能。
+單元首跑兩項條件SKIP：HD缺參數已在正式圖源補驗，six-BIOS-wait另需原版收據未重跑。
+範圍仍限修改fixture；沒有新的普通玩家、保存冷讀或原版oracle。正式圖源只交換battle圖組，
+地圖返回沿native fixture。較早「只支援共背景」的現況限制由本節有限範圍取代。
+
 #### 物理戰鬥GPU合成器（CONFORMED-SCOPED／RUNTIME-E1，人物占寬另驗）
 
 沿既有`ComposeNativePhysicalBodyPresent`及`BuildNativeCommandPreludeFrames`建立
 可選GPU呈現。來源仍綁原始資源與frame；通用圖層接受明示目的矩形，原生橋接先按
 既有描述子乘六，不因此採用待決的較寬人物方案。首批亞雷斯FIGANI12／13見下節，共用效果見前節。
 
-- 第一接線只接受原生共背景物理演出，沒有背景捲動的前置／反擊。其他caller整場沿
-  既有原版呈現，不混用猜測轉場。主動與反擊都使用同一圖層合成順序。
+- 第一接線驗證原生共背景物理演出；非共背景延伸與限制見前節。
+  主動與反擊都使用同一圖層合成順序，原生未知counter BG仍拒收。
 - 入場九個stage保留原生base、平台、人物平移及DAC；主動／受擊保留rawSide、
   RawByte7層序、DX／DY及fill33；結束restore保留雙方當前HP面板和原定idle幀。
   不改job、delay、音效、HP、RNG或Draw acknowledgment。
@@ -382,7 +417,7 @@ X／Y／寬／高／delay／raw byte4、5、7。`files`、`frame_sha256` 與
 只保存路徑、指紋與描述子，不常駐所有解碼圖。物理戰鬥在結算前按攻守方資源預載；
 全部所需資源通過才一次發布，成功後釋放其他戰鬥資源。預載失敗保持舊集合與既有圖，
 不在Draw才補讀、吞錯或靜默改用不完整HD。原始清冊沒有此role時不新增讀檔。
-目前可選繪製層已接共背景物理演出；首批亞雷斯FIGANI12／13已按上節登錄，其餘人物另驗。
+目前可選繪製層已接共背景物理演出與前述有限非共背景捲動；首批亞雷斯FIGANI12／13已按上節登錄，其餘人物另驗。
 
 蓋亞候選以待機、蓄力、大閃光、小閃光及收勢母稿，按明示逐幀配方編製
 完整4／11幀；屬美化姿勢重定向，沒有聲稱15張獨立重畫或逐幀原版視覺一致。

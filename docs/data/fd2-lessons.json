@@ -3089,6 +3089,13 @@
         ],
         "pattern": "os.path.relpath\\(private/name, pack\\)"
       }
+    },
+    {
+      "id": "go-tmpfs-test-binaries-need-exec",
+      "area": "Docker工具鏈",
+      "date": "2026-10-19",
+      "rule": "Go測試的GOTMPDIR若放在Docker tmpfs，掛載明示exec；沿tools/docker/fd2-go-test.Dockerfile建置的fd2-go-test-local執行go test，不因permission denied重建映像或退回主機。",
+      "why": "非共背景HD首輪的/go-cache預設noexec，CPU測試二進位已產出但無法執行；同映像加入exec後原生測試通過。"
     }
   ]
 }

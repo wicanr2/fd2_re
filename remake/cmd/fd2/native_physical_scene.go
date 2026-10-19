@@ -36,6 +36,7 @@ type nativePhysicalScene struct {
 	departure                       [][]byte
 	transition                      [][]byte
 	leadImages                      []*ebiten.Image
+	leadSources                     []*modernHDBattleSources
 	leadDelays                      []int
 	leadFrame, leadTicks            int
 	leadDrawn                       bool
@@ -315,6 +316,7 @@ func (g *Game) prepareNativePhysicalDeparture(scene *nativePhysicalScene, actor 
 		}
 	}
 	source := make([]byte, 320*200) // 2952A 明確清除 work；header2=0 時保持零。
+	sourceLayers := &modernHDBattleSources{Base: source}
 	for i := 0; i < scene.attackStart; i++ {
 		frame := attack.Frames[i]
 		pixels := append([]byte(nil), base...)
@@ -322,18 +324,24 @@ func (g *Game) prepareNativePhysicalDeparture(scene *nativePhysicalScene, actor 
 			return err
 		}
 		scene.departure = append(scene.departure, pixels)
+		sourceLayers = &modernHDBattleSources{Base: base, Layers: []modernHDBattleSource{{Frame: frame, Resource: scene.actorBattleFig*3 + 1, Index: i, Fill: -1}}}
+		scene.leadSources = append(scene.leadSources, sourceLayers)
 		scene.leadDelays = append(scene.leadDelays, frame.Delay)
 		source = pixels
 	}
 	in := battlepresent.NativeCommand24BackgroundInputs{Layers: layers, Source: source, Target: targetBase, TargetIdle: targetIdle.Frames[0]}
-	if scene.rawSide == 0 {
-		scene.transition, err = battlepresent.BuildNativePhysicalRightBackgroundFrames(in)
-	} else {
-		scene.transition, err = battlepresent.BuildNativeCommand24BackgroundFrames(in)
-	}
+	presents, err := nativePhysicalBackgroundPresents(in, scene.rawSide == 0)
 	if err != nil {
 		return err
 	}
+	bound, err := modernHDBattleScrollSources(presents, sourceLayers, targetBase, targetIdle.Frames[0], scene.targetBattleFig*3, layers)
+	if err != nil {
+		return err
+	}
+	for _, present := range presents {
+		scene.transition = append(scene.transition, present.Pixels)
+	}
+	scene.leadSources = append(scene.leadSources, bound...)
 	for range scene.transition {
 		scene.leadDelays = append(scene.leadDelays, 0)
 	}
@@ -363,6 +371,18 @@ func (g *Game) drawNativePhysicalPrelude(screen *ebiten.Image) bool {
 			if err := g.drawNativePhysicalBody(screen, scene); err != nil {
 				g.loadErr = "native physical body: " + err.Error()
 			}
+			return true
+		}
+		if g.modernHDBattleWanted(scene) {
+			if len(scene.leadSources) != len(scene.leadImages) {
+				g.loadErr = "native physical HD lead sources unavailable"
+				return true
+			}
+			if err := g.publishModernHDBattle(screen, scene.leadSources[scene.leadFrame], g.nativeUIPalette, 0); err != nil {
+				g.loadErr = "native physical HD lead: " + err.Error()
+				return true
+			}
+			scene.leadDrawn = true
 			return true
 		}
 		img = scene.leadImages[scene.leadFrame]

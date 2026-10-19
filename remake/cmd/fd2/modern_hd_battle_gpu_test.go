@@ -88,6 +88,19 @@ func (p *modernHDBattleGPUProbe) Draw(screen *ebiten.Image) {
 			p.err = fmt.Errorf("invalid plan changed previous world")
 			return
 		}
+		bad = c.plan
+		bad.Layers = append([]modernHDBattleLayer(nil), bad.Layers...)
+		invalidClip := image.Rectangle{Min: image.Pt(10, 0), Max: image.Pt(5, 20)}
+		bad.Layers[0].Clip = &invalidClip
+		if err := p.gpu.draw(bad); err == nil {
+			p.err = fmt.Errorf("invalid clip accepted")
+			return
+		}
+		p.gpu.World.ReadPixels(p.pixels)
+		if !bytes.Equal(before, p.pixels) {
+			p.err = fmt.Errorf("invalid clip changed previous world")
+			return
+		}
 	}
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Scale(1.0/3, 1.0/3)
@@ -216,6 +229,7 @@ func TestModernHDBattleGPUBridge(t *testing.T) {
 	}
 	cases = appendModernCompoundGPUCases(t, cases, palette)
 	cases = appendModernCompoundActorGPUCases(t, cases)
+	cases = appendModernScrollGPUCases(t, cases)
 	probe := &modernHDBattleGPUProbe{cases: cases}
 	ebiten.SetWindowSize(640, 400)
 	ebiten.SetVsyncEnabled(false)

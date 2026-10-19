@@ -1743,3 +1743,35 @@ modern_hd_battle_runtime.go的非零header背景守衛，沿既有nativePhysical
 私人af9ca1b953510eeda9c70965da926780e0c87eef已推送並核對遠端HEAD相同，工作樹乾淨，未改可見性設定。
 260條教訓／140守衛通過；官方worklist為21項開啟、14項人工、可能完成0。
 F2普通抽樣在戰場／指令環與面板，沒有新增物理演出中F2證據。
+
+## 2026-10-19 非共背景物理戰鬥HD捲動
+
+從main 860a189b建立hd-scroll-battle，沿既有IDA主證據與READY契約實作。
+原生producer附phase、ContentX／BGX／ViewportX及不可變BG歷史；舊pixels介面沿同一排程。
+GPU由乾淨base及明示人物圖層組成，Source先限320畫布，TargetIdle保留640工作面／線性base跨列。
+透明BG依原順序最後覆蓋，opaque index0保持。目的裁切先驗後發布；錯幾何不清上一張世界。
+mode1入場、departure、連射之間返回、反擊、DAC及F2沿原owner；未知counter BG仍拒收。
+
+四producer測試及783 GPU案例通過，含既有395與新增388；原生全畫布exact，HD alpha容差1。
+相關回歸17頂層加20子項通過，首跑2條件SKIP。明示人物96及正式清冊後，
+HD完整性／玩家及AI結算前拒收再驗2頂層加2子項且零SKIP；six-BIOS-wait需指定原版收據，本輪不重跑。
+既有共背景完整Draw回歸通過。非共背景side0診斷139次及正式雙側139／140次呈現通過，
+每場六階段F2、兩次射擊及反擊、64／65 DAC、一次續行、HP／MP／RNG與GPU釋放保持。
+正式兩側528／531次HD Draw，Draw數隨軟體擷取變動，不當作frame或平台效能。
+七張實際最終PNG核對敵方藍褲核心；錯範圍、原生PNG替身與錯幀均拒收，不發布通過報告。
+
+本批是修改BattleFig／攻擊計畫fixture的RUNTIME-E1。FIGANI24／25仍原生，僅已登錄敵方使用HD；
+地圖返回沿既有native fixture。沒有新增普通玩家、保存冷讀、原版oracle、matching或PLAYER-E2。
+既有不同背景RE不重開。377項清冊及私人af9ca1b9保持，沒有新增資產或同步。
+蓋亞占寬仍待決，完整Goal與#263保持開啟。其餘人物、法術／死亡、普通施法與非共背景正常路徑及效能／平台繼續。
+
+r1 tmpfs noexec令測試二進位permission denied，改exec後同映像通過；新增可重用教訓。
+r2測試誤用不存在的preludeTicks，改核atk.timer／accumMillis後r3乾淨編譯通過。
+七個2GB驗證容器均無OOM，最大峰值1160224768 bytes，不宣稱平台驗收。
+README新圖逐byte複製真正捲入中PNG，未改圖；58／57／61與主收據physical_scroll_followup_20261019同步。
+沒有錄影或Release操作。已驗二進位清理、工作清單與最終連結／擁有權／容器檢查另記主收據。
+
+官方worklist為21項開啟、14項人工、可能完成0。261條教訓／140守衛通過。
+1440個本地連結與三項正對照通過；78個本批路徑UID／GID均1000，無root-owned或.md目錄。
+只查變更及scroll輸出根，全庫舊九項連結限制保持。唯一已驗測試程式記SHA後刪除，釋出26319248 bytes。
+私人工作樹乾淨、HEAD仍af9ca1b9，沒有新增素材同步。

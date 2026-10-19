@@ -20,6 +20,7 @@ type modernHDBattleLayer struct {
 	HDKey  string
 	Rect   image.Rectangle
 	Fill   int
+	Clip   *image.Rectangle
 }
 
 type modernHDBattlePlan struct {
@@ -128,6 +129,9 @@ func (r *modernHDBattleGPU) draw(plan modernHDBattlePlan) error {
 			layer.Rect.Max.X > 1<<20 || layer.Rect.Max.Y > 1<<20 || (layer.Fill != -1 && layer.Fill != 33) {
 			return errors.New("modern HD battle: invalid layer rectangle or fill")
 		}
+		if c := layer.Clip; c != nil && (c.Min.X > c.Max.X || c.Min.Y > c.Max.Y || c.Min.X < -1<<20 || c.Min.Y < -1<<20 || c.Max.X > 1<<20 || c.Max.Y > 1<<20) {
+			return errors.New("modern HD battle: invalid layer clip")
+		}
 		if layer.HD == nil {
 			if f.Width <= 0 || f.Height <= 0 || f.Width > 1024 || f.Height > 1024 || len(f.Pixels) != f.Width*f.Height || len(f.Mask) != len(f.Pixels) {
 				return errors.New("modern HD battle: native layer unavailable")
@@ -160,6 +164,14 @@ func (r *modernHDBattleGPU) draw(plan modernHDBattlePlan) error {
 	op.GeoM.Scale(6, 6)
 	r.World.DrawImage(r.base, op)
 	for _, layer := range plan.Layers {
+		destination := r.World
+		if layer.Clip != nil {
+			clip := r.World.Bounds().Intersect(*layer.Clip)
+			if clip.Empty() {
+				continue
+			}
+			destination = r.World.SubImage(clip).(*ebiten.Image)
+		}
 		var picture image.Image
 		key := "hd/" + layer.HDKey
 		if layer.HD != nil {
@@ -199,7 +211,7 @@ func (r *modernHDBattleGPU) draw(plan modernHDBattlePlan) error {
 			mix = plan.HDMix
 		}
 		draw.Uniforms = map[string]interface{}{"FillColor": fill, "Subtract": subtract, "Tint": plan.HDTarget[:], "Mix": mix}
-		r.World.DrawRectShader(texture.Bounds().Dx(), texture.Bounds().Dy(), r.shader, draw)
+		destination.DrawRectShader(texture.Bounds().Dx(), texture.Bounds().Dy(), r.shader, draw)
 	}
 	return nil
 }

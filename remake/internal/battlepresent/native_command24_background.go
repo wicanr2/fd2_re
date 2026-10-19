@@ -24,10 +24,36 @@ type NativeCommand24BackgroundInputs struct {
 	TargetIdle figani.Frame
 }
 
+// NativeCommand24BackgroundPresent retains the work-buffer composition at a
+// viewport boundary. BGLayers is the ordered write history in the other half;
+// transparent BG pixels can retain an earlier layer in that history.
+type NativeCommand24BackgroundPresent struct {
+	Pixels                   []byte
+	Incoming                 bool
+	ContentX, BGX, ViewportX int
+	BGLayers                 []int
+}
+
+func backgroundPixels(presents []NativeCommand24BackgroundPresent) [][]byte {
+	frames := make([][]byte, len(presents))
+	for i, present := range presents {
+		frames[i] = present.Pixels
+	}
+	return frames
+}
+
 // BuildNativeCommand24BackgroundFrames reproduces the two sub_29C90 viewport
 // loops. It returns no partial frames when an input or transparent blit is
 // invalid, so a presentation owner can remain fail-closed before mutation.
 func BuildNativeCommand24BackgroundFrames(in NativeCommand24BackgroundInputs) ([][]byte, error) {
+	presents, err := BuildNativeCommand24BackgroundPresents(in)
+	if err != nil {
+		return nil, err
+	}
+	return backgroundPixels(presents), nil
+}
+
+func BuildNativeCommand24BackgroundPresents(in NativeCommand24BackgroundInputs) ([]NativeCommand24BackgroundPresent, error) {
 	const frameBytes = NativeCommand24BackgroundWidth * NativeCommand24BackgroundHeight
 	if len(in.Source) != frameBytes || len(in.Target) != frameBytes {
 		return nil, errors.New("battlepresent: command24 background bases must be 320x200")
@@ -43,12 +69,14 @@ func BuildNativeCommand24BackgroundFrames(in NativeCommand24BackgroundInputs) ([
 	for y := 0; y < NativeCommand24BackgroundHeight; y++ {
 		copy(work[y*nativeCommand24WorkStride+320:], in.Source[y*320:(y+1)*320])
 	}
-	frames := make([][]byte, 0, 20)
+	frames := make([]NativeCommand24BackgroundPresent, 0, 20)
+	var history []int
 	for i := 9; i >= 0; i-- {
 		if err := in.Layers[i%3].BlitAt(work, nativeCommand24WorkStride, 0, -1); err != nil {
 			return nil, err
 		}
-		frames = append(frames, nativeCommand24Viewport(work, 32*i))
+		history = append(history, i%3)
+		frames = append(frames, NativeCommand24BackgroundPresent{Pixels: nativeCommand24Viewport(work, 32*i), ContentX: 320, BGX: 0, ViewportX: 32 * i, BGLayers: append([]int(nil), history...)})
 	}
 
 	clear(work)
@@ -58,11 +86,13 @@ func BuildNativeCommand24BackgroundFrames(in NativeCommand24BackgroundInputs) ([
 	if err := in.TargetIdle.BlitAt(work, nativeCommand24WorkStride); err != nil {
 		return nil, err
 	}
+	history = nil
 	for j := 9; j >= 0; j-- {
 		if err := in.Layers[(j+2)%3].BlitAt(work, nativeCommand24WorkStride, 320, -1); err != nil {
 			return nil, err
 		}
-		frames = append(frames, nativeCommand24Viewport(work, 32*j))
+		history = append(history, (j+2)%3)
+		frames = append(frames, NativeCommand24BackgroundPresent{Pixels: nativeCommand24Viewport(work, 32*j), Incoming: true, ContentX: 0, BGX: 320, ViewportX: 32 * j, BGLayers: append([]int(nil), history...)})
 	}
 	return frames, nil
 }
@@ -72,6 +102,14 @@ func BuildNativeCommand24BackgroundFrames(in NativeCommand24BackgroundInputs) ([
 // 建立；0x29DED 的明確 memset 後才複製到右半。兩段共 9+10 presents。
 // 證據與 READY 契約：docs/data/ida/fd2_physical_background_selection_20261004.json。
 func BuildNativePhysicalRightBackgroundFrames(in NativeCommand24BackgroundInputs) ([][]byte, error) {
+	presents, err := BuildNativePhysicalRightBackgroundPresents(in)
+	if err != nil {
+		return nil, err
+	}
+	return backgroundPixels(presents), nil
+}
+
+func BuildNativePhysicalRightBackgroundPresents(in NativeCommand24BackgroundInputs) ([]NativeCommand24BackgroundPresent, error) {
 	const frameBytes = NativeCommand24BackgroundWidth * NativeCommand24BackgroundHeight
 	if len(in.Source) != frameBytes || len(in.Target) != frameBytes {
 		return nil, errors.New("battlepresent: physical background bases must be 320x200")
@@ -87,12 +125,14 @@ func BuildNativePhysicalRightBackgroundFrames(in NativeCommand24BackgroundInputs
 	for y := 0; y < NativeCommand24BackgroundHeight; y++ {
 		copy(work[y*nativeCommand24WorkStride:], in.Source[y*320:(y+1)*320])
 	}
-	frames := make([][]byte, 0, 19)
+	frames := make([]NativeCommand24BackgroundPresent, 0, 19)
+	var history []int
 	for i := 1; i < 10; i++ {
 		if err := in.Layers[i%3].BlitAt(work, nativeCommand24WorkStride, 320, -1); err != nil {
 			return nil, err
 		}
-		frames = append(frames, nativeCommand24Viewport(work, 32*i))
+		history = append(history, i%3)
+		frames = append(frames, NativeCommand24BackgroundPresent{Pixels: nativeCommand24Viewport(work, 32*i), ContentX: 0, BGX: 320, ViewportX: 32 * i, BGLayers: append([]int(nil), history...)})
 	}
 	clear(work)
 	for y := 0; y < NativeCommand24BackgroundHeight; y++ {
@@ -101,11 +141,13 @@ func BuildNativePhysicalRightBackgroundFrames(in NativeCommand24BackgroundInputs
 	if err := in.TargetIdle.BlitAtBase(work, nativeCommand24WorkStride, 320); err != nil {
 		return nil, err
 	}
+	history = nil
 	for i := 1; i <= 10; i++ {
 		if err := in.Layers[(i+1)%3].BlitAt(work, nativeCommand24WorkStride, 0, -1); err != nil {
 			return nil, err
 		}
-		frames = append(frames, nativeCommand24Viewport(work, 32*i))
+		history = append(history, (i+1)%3)
+		frames = append(frames, NativeCommand24BackgroundPresent{Pixels: nativeCommand24Viewport(work, 32*i), Incoming: true, ContentX: 320, BGX: 0, ViewportX: 32 * i, BGLayers: append([]int(nil), history...)})
 	}
 	return frames, nil
 }

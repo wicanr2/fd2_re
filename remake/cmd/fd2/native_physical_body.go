@@ -31,6 +31,7 @@ type nativePhysicalBodyResources struct {
 // body項目共用不可變的panel base，不為每個idle tick建立GPU貼圖。
 type nativePhysicalBodyJob struct {
 	hdSources    *modernHDBattleSources
+	hdPhase      string
 	pixels       []byte
 	base         []byte
 	attack, idle figani.Frame
@@ -175,7 +176,7 @@ func (g *Game) nativePhysicalSoundBank(animation *figani.Animation) (map[int][]b
 	return bank, nil
 }
 
-func (g *Game) nativePhysicalScroll(scene *nativePhysicalScene, source []byte, background fdother.Frame, record []byte, index int, idle figani.Frame, right bool) ([]byte, [][]byte, error) {
+func (g *Game) nativePhysicalScroll(scene *nativePhysicalScene, source []byte, background fdother.Frame, record []byte, index int, idle figani.Frame, right bool) ([]byte, []battlepresent.NativeCommand24BackgroundPresent, error) {
 	base := make([]byte, 64000) // 29C90／29DED 的明確 base memset。
 	background.X, background.Y = 0, 50
 	if err := background.Blit(base, 320, -1); err != nil {
@@ -192,13 +193,7 @@ func (g *Game) nativePhysicalScroll(scene *nativePhysicalScene, source []byte, b
 		return nil, nil, err
 	}
 	in := battlepresent.NativeCommand24BackgroundInputs{Layers: scene.bodyResources.layers, Source: source, Target: base, TargetIdle: idle}
-	var frames [][]byte
-	var err error
-	if right {
-		frames, err = battlepresent.BuildNativePhysicalRightBackgroundFrames(in)
-	} else {
-		frames, err = battlepresent.BuildNativeCommand24BackgroundFrames(in)
-	}
+	frames, err := nativePhysicalBackgroundPresents(in, right)
 	return base, frames, err
 }
 
@@ -213,12 +208,26 @@ func (g *Game) attachNativePhysicalBody(scene *nativePhysicalScene, result battl
 	p := &nativePhysicalBodyPlayback{lastPresent: -1, returnWaitMillis: 6 * indexedmap.PhaseBannerStepMillis}
 	base := r.base
 	actorRecord, targetRecord := append([]byte(nil), scene.actorRecord...), append([]byte(nil), scene.targetRecord...)
-	appendPixels := func(frames [][]byte) {
-		for _, pixels := range frames {
-			p.jobs = append(p.jobs, nativePhysicalBodyJob{pixels: pixels, cue: -1})
+	appendScroll := func(source []byte, sourceLayers *modernHDBattleSources, background fdother.Frame, record []byte, index int, idle figani.Frame, idleResource int, right bool) error {
+		nextBase, presents, err := g.nativePhysicalScroll(scene, source, background, record, index, idle, right)
+		if err != nil {
+			return err
 		}
+		bound, err := modernHDBattleScrollSources(presents, sourceLayers, nextBase, idle, idleResource, r.layers)
+		if err != nil {
+			return err
+		}
+		for i, present := range presents {
+			phase := "scroll-out"
+			if present.Incoming {
+				phase = "scroll-in"
+			}
+			p.jobs = append(p.jobs, nativePhysicalBodyJob{pixels: present.Pixels, hdSources: bound[i], hdPhase: phase, cue: -1})
+		}
+		base = nextBase
+		return nil
 	}
-	appendStage := func(attack, idle *figani.Animation, side byte, strikes []battle.NativePhysicalStrike, currentActor, currentTarget []byte, actorIndex, targetIndex int, sounds map[int][]byte, attackResource, idleResource int) error {
+	appendStage := func(attack, idle *figani.Animation, side byte, strikes []battle.NativePhysicalStrike, currentActor, currentTarget []byte, actorIndex, targetIndex int, sounds map[int][]byte, attackResource, idleResource int, bodyPhase string) error {
 		if attack == nil {
 			return errors.New("native physical counter was not preflighted")
 		}
@@ -230,6 +239,7 @@ func (g *Game) attachNativePhysicalBody(scene *nativePhysicalScene, result battl
 		for si := range strikes {
 			if attack.HeaderByte1 != 0 {
 				source := make([]byte, 64000) // 2952A明確work清除，header2=0時仍為零。
+				sourceLayers := &modernHDBattleSources{Base: source}
 				for fi := 0; fi < int(attack.HeaderByte2); fi++ {
 					f := attack.Frames[fi]
 					source = append([]byte(nil), base...)
@@ -240,14 +250,12 @@ func (g *Game) attachNativePhysicalBody(scene *nativePhysicalScene, result battl
 					if f.RawByte5 != 0 {
 						cue = int(f.RawByte5)
 					}
-					p.jobs = append(p.jobs, nativePhysicalBodyJob{pixels: source, waitMillis: float64(f.Delay) * indexedmap.PhaseBannerStepMillis, cue: cue, sounds: sounds})
+					sourceLayers = &modernHDBattleSources{Base: base, Layers: []modernHDBattleSource{{Frame: f, Resource: attackResource, Index: fi, Fill: -1}}}
+					p.jobs = append(p.jobs, nativePhysicalBodyJob{pixels: source, hdSources: sourceLayers, hdPhase: "departure", waitMillis: float64(f.Delay) * indexedmap.PhaseBannerStepMillis, cue: cue, sounds: sounds})
 				}
-				var frames [][]byte
-				base, frames, err = g.nativePhysicalScroll(scene, source, r.targetBG, currentTarget, targetIndex, idle.Frames[0], side == 0)
-				if err != nil {
+				if err := appendScroll(source, sourceLayers, r.targetBG, currentTarget, targetIndex, idle.Frames[0], idleResource, side == 0); err != nil {
 					return err
 				}
-				appendPixels(frames)
 			}
 			for planCursor < len(plan) && plan[planCursor].Strike == si {
 				f := plan[planCursor]
@@ -264,7 +272,7 @@ func (g *Game) attachNativePhysicalBody(scene *nativePhysicalScene, result battl
 				}
 				for inner, present := range f.Presents {
 					present := present
-					job := nativePhysicalBodyJob{base: base, attack: attack.Frames[f.Frame], idle: idle.Frames[present.IdleFrame], rawSide: side, present: &present, cue: -1, sounds: sounds}
+					job := nativePhysicalBodyJob{base: base, attack: attack.Frames[f.Frame], idle: idle.Frames[present.IdleFrame], rawSide: side, present: &present, cue: -1, sounds: sounds, hdPhase: bodyPhase}
 					job.hdSources = modernHDBattleBodySources(base, job.attack, job.idle, side, present, attackResource, f.Frame, idleResource, present.IdleFrame)
 					if inner == 0 {
 						job.cue = f.Cue
@@ -302,21 +310,19 @@ func (g *Game) attachNativePhysicalBody(scene *nativePhysicalScene, result battl
 				if err := idle.Frames[0].BlitAt(source, 320); err != nil {
 					return err
 				}
-				var frames [][]byte
-				base, frames, err = g.nativePhysicalScroll(scene, source, r.actorBG, currentActor, actorIndex, attack.Frames[0], side != 0)
-				if err != nil {
+				sourceLayers := &modernHDBattleSources{Base: base, Layers: []modernHDBattleSource{{Frame: idle.Frames[0], Resource: idleResource, Index: 0, Fill: -1}}}
+				if err := appendScroll(source, sourceLayers, r.actorBG, currentActor, actorIndex, attack.Frames[0], attackResource, side != 0); err != nil {
 					return err
 				}
-				appendPixels(frames)
 			}
 		}
 		return nil
 	}
-	if err := appendStage(r.attack, r.targetIdle, r.actorSide, result.AttackStrikes, actorRecord, targetRecord, scene.actorIndex, scene.targetIndex, r.mainSounds, scene.actorBattleFig*3+1, scene.targetBattleFig*3); err != nil {
+	if err := appendStage(r.attack, r.targetIdle, r.actorSide, result.AttackStrikes, actorRecord, targetRecord, scene.actorIndex, scene.targetIndex, r.mainSounds, scene.actorBattleFig*3+1, scene.targetBattleFig*3, "body"); err != nil {
 		return err
 	}
 	if result.Counter != nil {
-		if err := appendStage(r.counter, r.actorIdle, r.targetSide, result.CounterStrikes, targetRecord, actorRecord, scene.targetIndex, scene.actorIndex, r.counterSounds, scene.targetBattleFig*3+1, scene.actorBattleFig*3); err != nil {
+		if err := appendStage(r.counter, r.actorIdle, r.targetSide, result.CounterStrikes, targetRecord, actorRecord, scene.targetIndex, scene.actorIndex, r.counterSounds, scene.targetBattleFig*3+1, scene.actorBattleFig*3, "counter"); err != nil {
 			return err
 		}
 	}
@@ -337,7 +343,7 @@ func (g *Game) attachNativePhysicalBody(scene *nativePhysicalScene, result battl
 		if err := r.actorIdle.Frames[0].BlitAt(pixels, 320); err != nil {
 			return err
 		}
-		p.jobs = append(p.jobs, nativePhysicalBodyJob{pixels: pixels, cue: -1, hdSources: hdRestore}) // 28F4D..28FD6的final restore。
+		p.jobs = append(p.jobs, nativePhysicalBodyJob{pixels: pixels, cue: -1, hdSources: hdRestore, hdPhase: "restore"}) // 28F4D..28FD6的final restore。
 	}
 	for i := range p.jobs {
 		if len(p.jobs[i].pixels) != 0 || p.jobs[i].present != nil {

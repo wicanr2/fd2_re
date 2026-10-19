@@ -1,12 +1,59 @@
 package battlepresent
 
 import (
+	"bytes"
 	"encoding/binary"
 	"testing"
 
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 	"github.com/wicanr2/fd2_re/remake/internal/figani"
 )
+
+func TestNativeBackgroundPresentsKeepMetadataAndImmutableHistory(t *testing.T) {
+	in := NativeCommand24BackgroundInputs{
+		Layers: [3]fdother.Frame{solidNativeCommand24Layer(10), solidNativeCommand24Layer(20), solidNativeCommand24Layer(30)},
+		Source: make([]byte, 64000), Target: make([]byte, 64000),
+		TargetIdle: figani.Frame{Width: 1, Height: 1, Pixels: []byte{99}, Mask: []byte{1}},
+	}
+	for _, right := range []bool{false, true} {
+		build := BuildNativeCommand24BackgroundPresents
+		legacy := BuildNativeCommand24BackgroundFrames
+		first, content := 10, 320
+		if right {
+			build, legacy, first, content = BuildNativePhysicalRightBackgroundPresents, BuildNativePhysicalRightBackgroundFrames, 9, 0
+		}
+		presents, err := build(in)
+		if err != nil {
+			t.Fatal(err)
+		}
+		frames, err := legacy(in)
+		if err != nil || len(presents) != first+10 || len(frames) != len(presents) {
+			t.Fatalf("counts: %v", err)
+		}
+		for i, present := range presents {
+			incoming := i >= first
+			step, cx, viewport, layer := i, content, 32*(9-i), (9-i)%3
+			if right {
+				viewport, layer = 32*(i+1), (i+1)%3
+			}
+			if incoming {
+				step, cx = i-first, 320-content
+				viewport, layer = 32*(9-step), (11-step)%3
+				if right {
+					viewport, layer = 32*(step+1), (step+2)%3
+				}
+			}
+			if present.Incoming != incoming || present.ContentX != cx || present.BGX != 320-cx || present.ViewportX != viewport || len(present.BGLayers) != step+1 || present.BGLayers[step] != layer || !bytes.Equal(frames[i], present.Pixels) {
+				t.Fatalf("right%v present%d metadata differs", right, i)
+			}
+		}
+		presents[0].BGLayers[0] = 99
+		presents[0].Pixels[0] = 99
+		if presents[1].BGLayers[0] == 99 || presents[1].Pixels[0] == 99 {
+			t.Fatal("present history or pixels alias")
+		}
+	}
+}
 
 func solidNativeCommand24Layer(value byte) fdother.Frame {
 	pixels := make([]byte, 4, 4+100*10)

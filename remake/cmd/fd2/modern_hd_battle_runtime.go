@@ -15,6 +15,7 @@ type modernHDBattleSource struct {
 	Archive                       string
 	Frame                         figani.Frame
 	Resource, Index, DX, DY, Fill int
+	Clip                          *image.Rectangle
 }
 
 type modernHDBattleSources struct {
@@ -46,8 +47,7 @@ func (scene *nativePhysicalScene) modernResources() []int {
 
 func (g *Game) modernHDBattleWanted(scene *nativePhysicalScene) bool {
 	set := g.modernStoryPortraits
-	if set == nil || !set.hasHD || scene == nil || scene.bodyResources == nil || scene.bodyResources.attack == nil || scene.selection.HasSeparateBackgrounds ||
-		scene.bodyResources.attack.HeaderByte1 != 0 || (scene.bodyResources.counter != nil && scene.bodyResources.counter.HeaderByte1 != 0) {
+	if set == nil || !set.hasHD || scene == nil || scene.bodyResources == nil || scene.bodyResources.attack == nil {
 		return false
 	}
 	for _, resource := range scene.modernResources() {
@@ -116,7 +116,16 @@ func (g *Game) modernHDBattlePlan(sources *modernHDBattleSources, palette color.
 		}
 		f := source.Frame
 		rect := image.Rect((f.X+source.DX)*6, (f.Y+source.DY)*6, (f.X+source.DX+f.Width)*6, (f.Y+source.DY+f.Height)*6)
-		plan.Layers = append(plan.Layers, modernHDBattleLayer{Native: f, HD: picture, HDKey: key, Rect: rect, Fill: source.Fill})
+		var clip *image.Rectangle
+		if source.Clip != nil {
+			c := source.Clip
+			if c.Min.X > c.Max.X || c.Min.Y > c.Max.Y || c.Min.X < -(1<<20)/6 || c.Min.Y < -(1<<20)/6 || c.Max.X > (1<<20)/6 || c.Max.Y > (1<<20)/6 {
+				return modernHDBattlePlan{}, fmt.Errorf("modern HD battle: invalid source clip")
+			}
+			value := image.Rectangle{Min: c.Min.Mul(6), Max: c.Max.Mul(6)}
+			clip = &value
+		}
+		plan.Layers = append(plan.Layers, modernHDBattleLayer{Native: f, HD: picture, HDKey: key, Rect: rect, Fill: source.Fill, Clip: clip})
 	}
 	return plan, nil
 }
@@ -143,7 +152,7 @@ func (g *Game) publishModernHDBattlePlan(screen *ebiten.Image, plan modernHDBatt
 }
 
 func (g *Game) modernHDBattlePreludeSources(scene *nativePhysicalScene, stage int) (*modernHDBattleSources, error) {
-	if scene == nil || scene.bodyResources == nil || stage < 0 || stage > 8 || len(scene.preludeBase) != 64000 || scene.selection.HasSeparateBackgrounds {
+	if scene == nil || scene.bodyResources == nil || stage < 0 || stage > 8 || len(scene.preludeBase) != 64000 {
 		return nil, fmt.Errorf("modern HD battle: prelude sources unavailable")
 	}
 	r := scene.bodyResources
@@ -151,18 +160,26 @@ func (g *Game) modernHDBattlePreludeSources(scene *nativePhysicalScene, stage in
 	a := modernHDBattleSource{Frame: r.actorIdle.Frames[0], Resource: scene.actorBattleFig * 3, Fill: -1}
 	b := modernHDBattleSource{Frame: r.targetIdle.Frames[0], Resource: scene.targetBattleFig * 3, Fill: -1}
 	if r.actorSide == 0 {
-		platform := r.platform
-		platform.X, platform.Y = 164, 157
-		if err := platform.Blit(base, 320, -1); err != nil {
-			return nil, err
+		if !scene.selection.HasSeparateBackgrounds {
+			platform := r.platform
+			platform.X, platform.Y = 164, 157
+			if err := platform.Blit(base, 320, -1); err != nil {
+				return nil, err
+			}
 		}
 		a.DX = -stage * 10
+		if scene.selection.HasSeparateBackgrounds {
+			return &modernHDBattleSources{Base: base, Layers: []modernHDBattleSource{a}}, nil
+		}
 		return &modernHDBattleSources{Base: base, Layers: []modernHDBattleSource{a, b}}, nil
 	}
 	platform := r.platform
 	p := modernHDBattleSource{Frame: figani.Frame{X: 164, Y: 157, Width: platform.Width, Height: platform.Height,
 		Pixels: platform.Indexed, Mask: platform.Mask}, Resource: -1, DX: stage * 10, Fill: -1}
 	a.DX = stage * 10
+	if scene.selection.HasSeparateBackgrounds {
+		return &modernHDBattleSources{Base: base, Layers: []modernHDBattleSource{p, a}}, nil
+	}
 	return &modernHDBattleSources{Base: base, Layers: []modernHDBattleSource{b, p, a}}, nil
 }
 
