@@ -106,6 +106,9 @@ func (g *Game) startNativeCommand35Presentation(actor, confirmed *battle.Unit, t
 	if err != nil || !commonSchedule.TailEnabled || commonSchedule.MixerSample2Frame != 1 {
 		return errors.New("native command35 common schedule unavailable")
 	}
+	if err := g.modernStoryPortraits.prepareBattleHDEffects(68); err != nil {
+		return err
+	}
 	tailSchedule, err := fdother.BuildNativeCommand35TailSchedule()
 	if err != nil {
 		return err
@@ -320,13 +323,22 @@ func (g *Game) startNativeCommand35Presentation(actor, confirmed *battle.Unit, t
 	if frames, err = appendNativeCompoundFrames(frames, effectSlide, 1); err != nil {
 		return err
 	}
+	if err := bindModernHDCompoundFrames(frames[len(frames)-len(effectSlide):], actorBase, commonEffect, commonSchedule, "slide", paletteDAC); err != nil {
+		return err
+	}
 	mainStart := len(frames)
 	if frames, err = appendNativeCompoundFrames(frames, mainImages, commonSchedule.MainDelayTicks); err != nil {
+		return err
+	}
+	if err := bindModernHDCompoundFrames(frames[mainStart:], actorBase, commonEffect, commonSchedule, "main", paletteDAC); err != nil {
 		return err
 	}
 	frames[mainStart].sound = g.separatedCommandSound(94, 2)
 	tailStart := len(frames)
 	if frames, err = appendNativeCompoundFrames(frames, commonTailImages, commonSchedule.MainDelayTicks); err != nil {
+		return err
+	}
+	if err := bindModernHDCompoundFrames(frames[tailStart:], actorBase, commonEffect, commonSchedule, "tail", paletteDAC); err != nil {
 		return err
 	}
 	commonSample1 := g.separatedCommandSound(94, 1)
@@ -471,6 +483,13 @@ func (g *Game) drawNativeCommand35Presentation(screen *ebiten.Image) bool {
 	j := g.nativeCmd35Presentation
 	if j == nil || j.frame < 0 || j.frame >= len(j.frames) || j.frames[j.frame].image == nil {
 		return false
+	}
+	if drawn, err := g.drawModernHDCompoundFrame(screen, &j.frames[j.frame]); err != nil {
+		g.failNativeCommand35Presentation(err)
+		return true
+	} else if drawn {
+		j.drawn = true
+		return true
 	}
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Scale(2, 2)

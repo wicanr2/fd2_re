@@ -21,7 +21,8 @@ func nativeCommand32PresentationPlan(t *testing.T) (*battle.NativeCompoundComman
 	return plan, actor, target
 }
 
-func TestStartNativeCommand32PresentationUsesOriginalAssetsEndToEnd(t *testing.T) {
+func nativeCommand32PresentationFixture(t *testing.T) (*Game, *battle.Unit, *battle.Unit) {
+	t.Helper()
 	base := filepath.Clean("../../../org_game/炎龍騎士團/FLAME2")
 	paths := map[string]string{
 		"FD2_ORIGINAL_FDOTHER": filepath.Join(base, "FDOTHER.DAT"),
@@ -79,6 +80,11 @@ func TestStartNativeCommand32PresentationUsesOriginalAssetsEndToEnd(t *testing.T
 		t.Fatal(err)
 	}
 	g.nativeRNGState = 7
+	return g, actor, target
+}
+
+func TestStartNativeCommand32PresentationUsesOriginalAssetsEndToEnd(t *testing.T) {
+	g, actor, target := nativeCommand32PresentationFixture(t)
 	done := 0
 	if err := g.startNativeCommand32Presentation(actor, target, func(result battle.NativeCompoundCommand32Result) {
 		if len(result.Targets) != 1 {

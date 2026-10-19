@@ -48,6 +48,11 @@ func (g *Game) cycleTheme() {
 // applyTheme validates the current typed speaker before publishing any resource.
 // Rebinding only the portrait preserves the active dialogue's pages and progress.
 func (g *Game) applyTheme(set *modernStoryPortraitSet) error {
+	if resource := g.modernCompoundEffectResource(); set != nil && resource >= 0 {
+		if err := set.prepareBattleHDEffects(resource); err != nil {
+			return err
+		}
+	}
 	if set != nil && g.atk != nil && g.atk.nativeScene != nil {
 		if err := set.prepareBattleHDResources(g.atk.nativeScene.modernResources()...); err != nil {
 			return err

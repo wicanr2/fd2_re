@@ -9,13 +9,13 @@
     "native_viewport": "CONFORMED-SCOPED：正式1920世界沿原生(4,4)、312×192窗格；正常F2同view與960地形樣本一致。",
     "hd_sprite_data": "DATA-READY：完整125組1455張HD及31組372張新增24父項已登錄；舊1083張父項及HD bytes保持。",
     "hd_world_renderer": "CONFORMED-SCOPED：144人物已接Game.Draw；首章34張正常GPU、4張實際走行、兩次物理攻擊及保存／新程序LOAD通過。",
-    "private_assets": "catalog allow-list 3268檔已逐檔驗證並推送私人庫；runtime-only3063檔；核准蓋亞原稿已保存。",
+    "private_assets": "catalog allow-list 3276檔逐檔驗證並推送私人庫3914bab0；runtime-only3068檔，三份新母稿排除於執行包。",
     "quickload_battle_owner": "CONFORMED-SCOPED：成功JSON LOAD丟棄舊經驗owner與移動計畫；拒收保留。",
     "timed_dialogue": "CONFORMED-SCOPED-RUNTIME-E1：計時FFEC開收框保留HD世界，EXP99普通鍵盤／F2與保存冷讀通過；其他caller未驗。",
     "hd_terrain": "CONFORMED-SCOPED：map0六組53槽；新增圓頂綠色／褐色雙塊四底圖在兩張正常GPU全部相符，短長組合與保存冷讀通過；草地及其他地形仍待HD化。",
     "ai_player_input_lock": "CONFORMED-SCOPED：AI換手期間拒絕玩家地圖輸入重入；普通END／增援對話及相關／完整Go回歸通過。",
     "gaia_redesign": "CONFORMED-SCOPED：新版頭像與四方向圖組已登錄；正常START／Gaia北移取消／F2／冷讀分段驗證。相位差異與序章尾端失敗明示，非逐幀parity。",
-    "hd_battle_animation": "RUNTIME-E1-SCOPED：共背景可選GPU呈現與170回讀／完整Draw生命週期通過；正式清冊仍無HD動畫，人物占寬待決，其餘FIGANI／共同效果未完成。"
+    "hd_battle_animation": "CONFORMED-SCOPED／RUNTIME-E1：共背景物理及四種FDOTHER召喚consumer已接；正式366項含熾天使五幀。273GPU、158 presents及F2／拒收通過；普通召喚、其餘美術與FIGANI人物未完成，蓋亞占寬待決。"
   },
   "runtime_source": {
     "binary_sha256": "07d48b2972a8dea4a5a3b67753b3e6126788cda0930a541e475b41f53e4713cb",
@@ -5458,5 +5458,603 @@
     "official_issue": "https://github.com/wicanr2/fd2_re/issues/263",
     "commit_push_at_receipt_capture": false,
     "source_revision_tracking": "14份來源SHA固定驗證版本；提交與真正遠端HEAD沿Git歷史及#263。"
+  },
+  "battle_effects_followup_20261019": {
+    "status": "CONFORMED-SCOPED-RUNTIME-E1",
+    "date": "2026-10-19",
+    "goal": "完成fd2戰鬥動畫HD",
+    "issue": 263,
+    "base_commit": "232921a1864bb1687b10514e28586d0799dc7db9",
+    "branch": "hd-battle-effects",
+    "full_battle_animation_hd_complete": false,
+    "new_oracle": false,
+    "new_matching": false,
+    "new_player_e2": false,
+    "formal_release_changed": false,
+    "scope": "FDOTHER65..68共同召喚slide／main／tail可選GPU；新美術僅65熾天使五幀。施術者FIGANI、actorSlide與command-specific地圖尾段保持原生。",
+    "original_authority": {
+      "evidence": "docs/data/ida/fd2_command32_35_presentation_ida.txt",
+      "address_space": "既有IDA線性位址0x27FC9的已閉合排程，無新增反組譯結論",
+      "source_inputs": [
+        {
+          "file": "FD2.EXE",
+          "size": 357074,
+          "md5": "b97caf2239a27a896069d03549d96e1e",
+          "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+        },
+        {
+          "file": "FDOTHER.DAT",
+          "size": 3382481,
+          "md5": "22f56e5027edc7c766ad34ca4e5aca93",
+          "sha256": "a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce"
+        }
+      ],
+      "archive_reconstruction": {
+        "resources": 104,
+        "size": 3382481,
+        "sha256": "a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce",
+        "md5": "22f56e5027edc7c766ad34ca4e5aca93"
+      },
+      "inventory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/battle-compound-source-inventory.json",
+        "sha256": "54eec2a5fcc9e901e7779669bfa035887d7564db1595b40b12da07c5b68d8886"
+      },
+      "resource_count": 4,
+      "frame_count": 37,
+      "verified_manifest_assets": 182,
+      "scope": "固定原版raw／分離PNG／mask／descriptor相同，來源驗證而非原版執行收據"
+    },
+    "runtime_contract": {
+      "archive_namespace": "FIGANI與FDOTHER各自載入、預載、釋放，數字65不互相覆蓋",
+      "role": "battle_effect_hd_set",
+      "consumer_contract": "native_fdother_compound_rgba_hd6_v1",
+      "timing": "保留原生delay、hold、Draw acknowledgment、音效與一次續行",
+      "preflight": "結算或F2發布前原子預載，失敗保持舊集合及HP／MP／兩種RNG；Draw不補讀",
+      "fallback": "未登錄整項沿原生，已登錄卻缺件或未預載則拒收",
+      "gpu": "原生沿真DAC；HD tail以RGB向目標色混合的現代近似，coverage alpha保持，非原版逐色parity"
+    },
+    "art": {
+      "generation": {
+        "base": {
+          "prompt": "Use case: stylized-concept. Asset type: transparent HD battle summon sprite for an existing 1995 Taiwanese tactical RPG remake. Reference image 1 is the exact pose, silhouette, costume, camera, and composition authority: FDOTHER 065 frame 0, the original Seraph summon. Reference image 2, the robot, is ONLY the established project brushwork/rendering-quality reference, never the subject. Create exactly ONE full-body Seraph matching reference 1: rear / rear-three-quarter view of a blond-orange-haired humanoid angel rising with both arms raised, two broad white feathered wings on either side, long flowing white robe with cool gray folds, gold-orange sash and two long ribbon ends looping across the waist, one lower leg straight down and the other knee bent under the robe. Preserve the exact arrangement and relative footprint of the original angel. Head is small, viewed from behind, do not invent a front-facing face. Two wings only, feet and fingertips fully visible. Match the original's wing tips and gold ribbon silhouette closely. Rich hand-painted classic RPG sprite, fine individually painted feather groups and cloth folds, crisp restrained dark outlines and readable highlights, matching the project's painterly sprite finish. Do not make a 3D render. No halo, crown, armor, weapon, staff, background, floor, shadow, lettering, borders or other figures. No lightning or glow yet; this is the uncharged base pose. True transparent background, 5 percent transparent margin around the complete figure. Do not reproduce the black rectangle of the pixel reference. Preserve the whole body and all ribbon tips without cropping. Single isolated sprite, near-square composition.",
+          "references": [
+            "battle-seraph-native-frame-00.png",
+            "gaia-battle-idle-r5.png"
+          ],
+          "tool": "built-in image_gen",
+          "generated_source": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-e884248f-264a-4023-9eae-6484a40ad71d.png"
+        },
+        "energy": {
+          "prompt": "Use case: stylized-concept. Asset type: seamless-looking luminous plasma material used ONLY inside separately supplied lightning silhouettes in a hand-painted HD tactical RPG battle animation. Create a full-bleed opaque rectangular white and ice-blue electrical energy texture, landscape 16:10. Dense silky white-hot filaments and short branching blue-white veins flowing horizontally across the entire frame, soft icy cyan depth between threads, a few finely painted bright white glints, crisp painterly detail matching classic hand-painted RPG effects. Every part of the rectangle must remain bright, at least pale blue; do not leave dark or empty areas. This is a material swatch, not a scene and not a complete isolated bolt. No black background, no vignette, no transparency, no border, no objects, no angel, no robot, no character, no words, no symbols. Nearly white, luminous cool-blue palette, fine visible painted detail at high resolution, restrained organic brushwork instead of a photo or 3D render. Fill the entire canvas to all four edges. The game will apply the original animation's exact moving alpha masks separately.",
+          "tool": "built-in image_gen",
+          "generated_source": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-d8b1b171-5f40-4c37-9a95-da6899c423e7.png"
+        },
+        "charge": {
+          "prompt": "Use case: precise-object-edit. EDIT TARGET is image 1: the existing HD Seraph already placed on a 1920x1200 transparent game-world canvas, with empty space on the left. Image 2 is ONLY the original pixel charged frame, as evidence for the white/ice-blue energy color and attached-corona concept. Change ONLY this: add a crisp luminous white and ice-blue branching electrical corona immediately hugging the OUTER contour of the existing HD wings, raised hands, robe hem, ribbons and feet. The corona must follow the HD feather silhouette tightly and fill tiny gaps between the HD feathers and an outer electric rim, with short uneven branching sparks. A bright white core and cool blue outer edge, hand-painted RPG energy detail. Keep the glow within roughly 25 to 60 pixels of the existing figure at 1920x1200 scale. The left third remains empty and transparent. No broad horizontal lightning beams yet. Keep the entire Seraph's body, outfit, face direction, wing shape, arms, ribbons, feet, size and EXACT world position unchanged. Do not center the figure, shift it, scale it, crop the canvas or add margin. Keep the original 16:10 canvas composition. Exactly one angel, same back view and pose, no halo, no weapons, no ground, no shadows, no lettering, no extra characters. Real transparent background outside the angel and its added attached energy. The original HD figure should remain unchanged; only the attached electric corona is new.",
+          "tool": "built-in image_gen",
+          "generated_source": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-d46b59f3-0ad4-4821-885f-d6daf8a92ab8.png",
+          "reference_images": [
+            "battle-seraph-world-edit-target.png",
+            "battle-seraph-world-native-01.png"
+          ]
+        }
+      },
+      "compiled": {
+        "file": "work/promo-cadence-20261018/hd-fonts/seraph-battle-bank-r3/compiled.json",
+        "sha256": "4f7a5dfa66567908a5550669e1e96260e3ca1cf3160c69873bca69141d6932cc",
+        "report": {
+          "status": "PASS-COMPILED-SERAPH-CANDIDATE",
+          "scope": "明示母稿＋原始FX遮罩，身體縮放一次並保留最後一幀dy1；不是五張獨立繪畫或GUI。",
+          "runtime_registered": false,
+          "base_catalog_sha256": "ec30c5f70966b43fc33055115bedc24a79b7be91fac201e90107779e9fdeb9bc",
+          "catalog_sha256": "789adb4917d68bc6cf5e7b1564140384b6e6476d7efb7967de4338ff7e97041e",
+          "inventory_sha256": "54eec2a5fcc9e901e7779669bfa035887d7564db1595b40b12da07c5b68d8886",
+          "body_source_sha256": "69f5651707124c8855f5e669229f850ae40f1f481f6a7d51e815c79041fb2715",
+          "energy_source_sha256": "50815a8d8f6304fc3dd2b5c15646a1f77e03926949bcbefb5507c528a595a416",
+          "palette_sha256": "404db1ca72ffc19fa7404fbc59bde98cdf239f63fe3375ec248a8142073a28bf",
+          "body_source_proof": [
+            {
+              "frame": 0,
+              "dy_native": 0,
+              "matched_body_pixels": 25827,
+              "clipped_body_pixels": 0
+            },
+            {
+              "frame": 1,
+              "dy_native": 0,
+              "matched_body_pixels": 25827,
+              "clipped_body_pixels": 0
+            },
+            {
+              "frame": 2,
+              "dy_native": 0,
+              "matched_body_pixels": 25827,
+              "clipped_body_pixels": 0
+            },
+            {
+              "frame": 3,
+              "dy_native": 0,
+              "matched_body_pixels": 25827,
+              "clipped_body_pixels": 0
+            },
+            {
+              "frame": 4,
+              "dy_native": 1,
+              "matched_body_pixels": 25816,
+              "clipped_body_pixels": 11
+            }
+          ],
+          "frames": [
+            {
+              "frame": 0,
+              "dy_native": 0,
+              "body_origin_hd": [
+                642,
+                1
+              ],
+              "body_size_hd": [
+                1278,
+                1199
+              ],
+              "fx_native_pixels": 0,
+              "descriptor": {
+                "frame": 0,
+                "x": 107,
+                "y": 0,
+                "width": 213,
+                "height": 200,
+                "delay_native": 0,
+                "raw_byte_4": 0,
+                "raw_byte_5": 0,
+                "raw_byte_7": 0,
+                "pixels_png_sha256": "92a551390ada54a86904a15c04889bd1ab0f0aa15dff99af2905294258cbec08",
+                "mask_png_sha256": "cbc85784def0295880332a90006ade4ac1405e1c12722850060b5bd6fa1cd5f3"
+              },
+              "file": "fdother-065-hd6-v1-f00.png",
+              "sha256": "6a14d8aebffefbe669f4ef4ad9d767a895439bd875801a752c349e82b0b17f83"
+            },
+            {
+              "frame": 1,
+              "dy_native": 0,
+              "body_origin_hd": [
+                642,
+                1
+              ],
+              "body_size_hd": [
+                1278,
+                1199
+              ],
+              "fx_native_pixels": 9269,
+              "descriptor": {
+                "frame": 1,
+                "x": 88,
+                "y": 0,
+                "width": 232,
+                "height": 200,
+                "delay_native": 0,
+                "raw_byte_4": 0,
+                "raw_byte_5": 0,
+                "raw_byte_7": 0,
+                "pixels_png_sha256": "3cf604a45296d78ac8a232cc30c879e3f0f9e5c6a6e18a4a698357e43f19c712",
+                "mask_png_sha256": "9f350c03d5becdbc4a434e10c5152db5521685cacbb1138f3cd447655456e7d9"
+              },
+              "file": "fdother-065-hd6-v1-f01.png",
+              "sha256": "469375f02b6553b191223ecb2880ddfcce1fdf1b0b3d81b92c0e985e0b8e4d96"
+            },
+            {
+              "frame": 2,
+              "dy_native": 0,
+              "body_origin_hd": [
+                642,
+                1
+              ],
+              "body_size_hd": [
+                1278,
+                1199
+              ],
+              "fx_native_pixels": 8739,
+              "descriptor": {
+                "frame": 2,
+                "x": 94,
+                "y": 0,
+                "width": 226,
+                "height": 200,
+                "delay_native": 0,
+                "raw_byte_4": 0,
+                "raw_byte_5": 0,
+                "raw_byte_7": 0,
+                "pixels_png_sha256": "cc8990d0e6e6b05a2f5e15bad09212ab91ac01e97c940a97f7b92d5067311411",
+                "mask_png_sha256": "c0dcff5ecfa8783ec402111dad28f1aa0c1e478b830b8610d21333d688ed14a5"
+              },
+              "file": "fdother-065-hd6-v1-f02.png",
+              "sha256": "3343d0df92ea5235029c9b94836bad2255ce1d752cfb1a8ba7817a18e1c0234f"
+            },
+            {
+              "frame": 3,
+              "dy_native": 0,
+              "body_origin_hd": [
+                642,
+                1
+              ],
+              "body_size_hd": [
+                1278,
+                1199
+              ],
+              "fx_native_pixels": 19931,
+              "descriptor": {
+                "frame": 3,
+                "x": 0,
+                "y": 0,
+                "width": 320,
+                "height": 200,
+                "delay_native": 0,
+                "raw_byte_4": 0,
+                "raw_byte_5": 0,
+                "raw_byte_7": 0,
+                "pixels_png_sha256": "3d5b8fcb5ff1e19ae8fecefa6e1ccc42fb64068887d4a8c3860c0d9fd4852ca6",
+                "mask_png_sha256": "744438d9669d809c02750d6db7078b0d9e71d7f4dfb473286e3165896af4bf70"
+              },
+              "file": "fdother-065-hd6-v1-f03.png",
+              "sha256": "06ad46c4cf2f6fa3726f9ea5e3d4f49692eb90f9dc477ceecf5f881a6f08e736"
+            },
+            {
+              "frame": 4,
+              "dy_native": 1,
+              "body_origin_hd": [
+                642,
+                7
+              ],
+              "body_size_hd": [
+                1278,
+                1199
+              ],
+              "fx_native_pixels": 18919,
+              "descriptor": {
+                "frame": 4,
+                "x": 0,
+                "y": 0,
+                "width": 320,
+                "height": 200,
+                "delay_native": 0,
+                "raw_byte_4": 0,
+                "raw_byte_5": 0,
+                "raw_byte_7": 0,
+                "pixels_png_sha256": "020ae8284f54071144821a729100bc7e9614d5cfdeee3290c301286a378d1273",
+                "mask_png_sha256": "0eb1de61245381cb7d6324966305930dd71b5435a5bbd3dfdfa747b3312944c6"
+              },
+              "file": "fdother-065-hd6-v1-f04.png",
+              "sha256": "16b4c6ea029b2906bc8db201941ccb9097c5330fbee34b243bef7870ccfb264a"
+            }
+          ],
+          "compiler_sha256": "85c1941a3aa4c17283c5d92692e0184e98df8b924520854a6b275012fd692790",
+          "review_sha256": "ebfa6598c11d1a6f535dfc579314a8bde007cf9e52a70e70a715247a55f925cc",
+          "fx_edge_softness_native": 0.65,
+          "native_fx_colors": false,
+          "charge_source_sha256": "8e8d5686d8febb789707336645ee5f7ad3a7da71353bf5ac98d56aaa7ca79f6f"
+        }
+      },
+      "registration": {
+        "status": "PASS-REGISTERED-SCOPED-E1",
+        "formal_catalog_sha256": "34c8db142ab418a2fff7fde7c6a1eefb974887f6dc9d6a92b96a09cf90b139cc",
+        "old_catalog_sha256": "ec30c5f70966b43fc33055115bedc24a79b7be91fac201e90107779e9fdeb9bc",
+        "old_assets_preserved": 365,
+        "new_catalog_assets": 366,
+        "new_files": [
+          {
+            "file": "fdother-065-hd6-v1-f00.png",
+            "sha256": "6a14d8aebffefbe669f4ef4ad9d767a895439bd875801a752c349e82b0b17f83"
+          },
+          {
+            "file": "fdother-065-hd6-v1-f01.png",
+            "sha256": "469375f02b6553b191223ecb2880ddfcce1fdf1b0b3d81b92c0e985e0b8e4d96"
+          },
+          {
+            "file": "fdother-065-hd6-v1-f02.png",
+            "sha256": "3343d0df92ea5235029c9b94836bad2255ce1d752cfb1a8ba7817a18e1c0234f"
+          },
+          {
+            "file": "fdother-065-hd6-v1-f03.png",
+            "sha256": "06ad46c4cf2f6fa3726f9ea5e3d4f49692eb90f9dc477ceecf5f881a6f08e736"
+          },
+          {
+            "file": "fdother-065-hd6-v1-f04.png",
+            "sha256": "16b4c6ea029b2906bc8db201941ccb9097c5330fbee34b243bef7870ccfb264a"
+          },
+          {
+            "file": "seraph-body-hd6-master-v1.png",
+            "sha256": "69f5651707124c8855f5e669229f850ae40f1f481f6a7d51e815c79041fb2715"
+          },
+          {
+            "file": "seraph-electric-hd6-master-v1.png",
+            "sha256": "50815a8d8f6304fc3dd2b5c15646a1f77e03926949bcbefb5507c528a595a416"
+          },
+          {
+            "file": "seraph-charge-world-hd6-master-v1.png",
+            "sha256": "8e8d5686d8febb789707336645ee5f7ad3a7da71353bf5ac98d56aaa7ca79f6f"
+          }
+        ],
+        "runtime_receipt_sha256": "a22c73d71db2d0b8bf843cd9bbdd780024cf30728c7752094dccd945063fdaa2",
+        "overview": {
+          "file": "docs/figures/hd-seraph-battle.png",
+          "sha256": "0c0be743ee5dd3d4ff7fbf017800c2d518f7a6c2ef7cde0b753c81bc909b27e9",
+          "source_sha256": "2e193cb1a35a6453827afd37d3fce8bd215e33b49ef8d0ea77f528e83b1b4a14",
+          "scope": "RunGame正式Draw及最終合成器GPU回讀；class19／BattleFig4建構fixture，非正常玩家或新原版對拍。"
+        },
+        "source_master_count": 3,
+        "frame_count": 5,
+        "normal_player_e2": false,
+        "full_battle_hd_complete": false
+      },
+      "recipe": "三母稿重定向五幀，非五張獨立繪畫。身體縮放一次，最後幀按原始來源下移1 native像素；FX沿原始輪廓，以新RGB材質及0.65 native像素柔邊編製。",
+      "earlier_candidates": [
+        {
+          "candidate": "r1",
+          "accepted": false,
+          "reason": "新羽毛與原FX間留空，增加固定世界近身電光"
+        },
+        {
+          "candidate": "r2",
+          "accepted": false,
+          "reason": "原色相乘留下深色像素邊，改用新RGB材質與alpha柔邊；原生時序保持"
+        }
+      ]
+    },
+    "validation": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/battle-effects-source-go.log",
+        "sha256": "01ba4abc3150e50dba9760a3221399c374ea2682ca0ec4ac57de7b8da742af33",
+        "scope": "原始／分離FDOTHER四資源37幀",
+        "package_seconds": 0.038,
+        "top_level_passes": 1,
+        "top_level_skips": 0
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/battle-effects-gpu-r1.log",
+        "sha256": "267252a0911be317d45aab74b1a32762f5bc77d6f36f0bfe84883bb20512e434",
+        "scope": "273個GPU回讀，原生整張相同，HD誤差上限1",
+        "package_seconds": 21.514,
+        "top_level_passes": 1,
+        "top_level_skips": 0
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/battle-effects-runtime-gpu-final.log",
+        "sha256": "afd37b6301f0f7961cab86e5ddd279277502b23d51a75f3ea0a8b5ede47713df",
+        "scope": "候選r3正式Draw及最終合成器，158 presents、41 HD／1原版",
+        "package_seconds": 48.095,
+        "top_level_passes": 1,
+        "top_level_skips": 0
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/battle-effects-related-final.log",
+        "sha256": "1ae688cf438c3ee8e2bf9f5abd784c7874bebeecb53d92beebf7274b6c450308",
+        "scope": "相關回歸55個頂層PASS、17個條件SKIP",
+        "package_seconds": 7.266,
+        "top_level_passes": 55,
+        "top_level_skips": 17
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/battle-effects-physical-lifecycle-regression.log",
+        "sha256": "b4e8bf6c25e424336b34e6e1298e2f1eb4624244cc929b7acaaef09e650600f5",
+        "scope": "既有物理完整Draw／64與65階DAC返回回歸",
+        "package_seconds": 11.775,
+        "top_level_passes": 1,
+        "top_level_skips": 0
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/battle-effects-string-review-final.log",
+        "sha256": "319ba07d3cbebe673a92d91caa343c5ced7db3a61c8054ff4bfd0bb58634423b",
+        "scope": "99筆字串審查重綁後回歸",
+        "package_seconds": 0.363,
+        "top_level_passes": 8,
+        "top_level_skips": 0
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/battle-effects-formal-runtime-go.log",
+        "sha256": "b067ff5ea787c3b3ff40f8cbcd42a89868e6df2b96dfdba065c560b7e49d6965",
+        "scope": "正式清冊及正式素材根，158 presents、39 HD／1原版",
+        "package_seconds": 32.996,
+        "top_level_passes": 1,
+        "top_level_skips": 0
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/battle-effects-formal-catalog.log",
+        "sha256": "b06c8bce72319610aa41516f3d56985582a7dba4ce0f7444770132ecf9f26be9",
+        "scope": "正式366項逐檔驗證",
+        "package_seconds": null,
+        "top_level_passes": 0,
+        "top_level_skips": 0
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/battle-effects-catalog-tests.log",
+        "sha256": "0ce99ea447471cfb53d8f7416135bc42d2b427b9336b18d015a112e82b2384e5",
+        "scope": "11項Python清冊回歸",
+        "package_seconds": 4.79,
+        "top_level_passes": 0,
+        "top_level_skips": 0
+      }
+    ],
+    "runtime_fixture": {
+      "continuations": 1,
+      "faithful_draws": 1,
+      "final_draws": 1021,
+      "go_rng_unchanged": true,
+      "hd_draws": 41,
+      "hp": 51,
+      "mp": 80,
+      "native_rng": 34688,
+      "present_count": 158,
+      "scope": "原始分離素材的既有class19／BattleFig4 fixture；修改隊伍位置與command32資料，非一般玩家、建構槽章收據或新oracle。保留原始frame delays及hold。",
+      "screenshots": {
+        "frame-0-mix-0.0": true,
+        "frame-1-mix-0.0": true,
+        "frame-2-mix-0.0": true,
+        "frame-3-mix-0.0": true,
+        "frame-3-mix-0.2": true,
+        "frame-3-mix-0.4": true,
+        "frame-3-mix-0.6": true,
+        "frame-3-mix-0.8": true,
+        "frame-3-mix-1.0": true,
+        "frame-4-mix-0.0": true,
+        "frame-4-mix-0.1": true,
+        "frame-4-mix-0.3": true,
+        "frame-4-mix-0.5": true,
+        "frame-4-mix-0.7": true,
+        "frame-4-mix-0.9": true
+      },
+      "status": "PASS-SCOPED-RUNTIME-E1"
+    },
+    "private_assets": {
+      "status": "PASS",
+      "catalog_assets": 366,
+      "private_files": 3276,
+      "runtime_files": 3068,
+      "old_private_files_preserved": 3268,
+      "new_files": [
+        "fdother-065-hd6-v1-f00.png",
+        "fdother-065-hd6-v1-f01.png",
+        "fdother-065-hd6-v1-f02.png",
+        "fdother-065-hd6-v1-f03.png",
+        "fdother-065-hd6-v1-f04.png",
+        "seraph-body-hd6-master-v1.png",
+        "seraph-charge-world-hd6-master-v1.png",
+        "seraph-electric-hd6-master-v1.png"
+      ],
+      "private_manifest_sha256": "9fd35c3fc4dfe8f736448ccb9c63777ae5432dede03418c4d94208e36b3a825c",
+      "runtime_manifest_sha256": "9ba15d85e3d1a85cba353c9d1b1b06c69c146b64b35a569ddb79670a181ed778",
+      "formal_catalog_sha256": "34c8db142ab418a2fff7fde7c6a1eefb974887f6dc9d6a92b96a09cf90b139cc",
+      "source_masters_excluded_from_runtime": true,
+      "ownership": "1000:1000",
+      "repository": "https://github.com/wicanr2/fd2-assets-private",
+      "private": true,
+      "commit": "3914bab035acd5e1ebee846b5c7511ada6b81524",
+      "remote_head_verified": true,
+      "manifest": "packs/fd2-modern-handpainted-a/private-manifest.json"
+    },
+    "source_files": [
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_assets.go",
+        "sha256": "bed18361aa3fb17a192708483ab4631259e7d8718b8c7c71f3489816c7e91974"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_gpu.go",
+        "sha256": "cb4d51b2fc63e982798f57e04272a60ced41faea82a94ee83e12aa8441bb2f6a"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_runtime.go",
+        "sha256": "40ba8b4d67a6356bc2419575f33b484da681dea0ad2953f49750049787ae03d7"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_compound.go",
+        "sha256": "679f3baca8cff34902a26f86e848c1b977646d651cb209b569d630fcb9980df4"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_compound_test.go",
+        "sha256": "0376613ef3256faad61d5a52b618fd624d91e31640cdc92aade6d238d914f58e"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_compound_lifecycle_test.go",
+        "sha256": "6246ee2fac163f3f8165e91b814e72876763f97f9c317b1f5410e827d5883ea3"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_gpu_test.go",
+        "sha256": "54551b8cbd235fce8fa46dd868bb179ca9b3a7b9f14b1d563078ad725e63fb1f"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_story_portrait.go",
+        "sha256": "388a47822ba5fe1671a5f3533a9c25a8858cc389541181aa8f1263204360a969"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command32_presentation.go",
+        "sha256": "3e4f803038388f72eb38f85af1d6c2034242b27fc5a1ef10841ded864478b945"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command32_presentation_test.go",
+        "sha256": "d5d54f0fb75bf720d4c621cb909a2c0ea201465b38eb951771181f8ee3062d5c"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command33_presentation.go",
+        "sha256": "77db3c5638e3f2530abb06a5327b4ac0acbb8ff74262f6be35840c60f7acbd60"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command34_presentation.go",
+        "sha256": "217158b5a66bdce964fee4cf8021eddcbd6fb178bf136fcb8cad0d595c3a73d9"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command35_presentation.go",
+        "sha256": "2cc187c22d4f36921d45459f60261cccdbfc1dc04ff68c00ea9640baeb90db2a"
+      },
+      {
+        "file": "remake/cmd/fd2/player_shortcuts.go",
+        "sha256": "839e14302c0dbb114c971f8505d7478dad2a55177948ab2dd3ee45486f7c062e"
+      },
+      {
+        "file": "remake/internal/figani/separated_original_pack_test.go",
+        "sha256": "454d87e3807d34fe3379ef6cf768a1e1a719d1d5259e34cc6625ab7196956621"
+      },
+      {
+        "file": "tools/validate_modern_theme_catalog.py",
+        "sha256": "4808f4f37dcc0c8d517b6e8d2bb4d3a0681d0f0d509dc2c946ee4e6032fe9033"
+      },
+      {
+        "file": "tools/audit_fd2_compound_hd.py",
+        "sha256": "18b7893ea35922ad349f437411e8b85e93110c555d876601a51978968b3e2609"
+      },
+      {
+        "file": "tools/build_fd2_seraph_battle_hd.py",
+        "sha256": "85c1941a3aa4c17283c5d92692e0184e98df8b924520854a6b275012fd692790"
+      }
+    ],
+    "reproduce": {
+      "environment": [
+        "fd2-go-test-local:latest：Go1.22.12、Ebiten2.6.6、with-xvfb；每項GPU獨立程序",
+        "fd2-assets-local:20260829-sfx：Python3.12／Pillow11.3；--entrypoint timeout，uid1000，--network none，--rm，有界CPU／記憶體／PID",
+        "明示合法FD2_ASSET_PACK及FD2_TEST_ORIGINAL_PACK，專案掛/repo標準路徑，Go命令從/repo/remake執行"
+      ],
+      "commands": [
+        "python3 tools/audit_fd2_compound_hd.py --pack <原版分離包> --out <inventory.json>",
+        "python3 tools/build_fd2_seraph_battle_hd.py --pack <原版分離包> --inventory <inventory.json> --body <seraph-body-hd6-master-v1.png> --energy <seraph-electric-hd6-master-v1.png> --charge <seraph-charge-world-hd6-master-v1.png> --base-catalog <清冊> --out <新候選目錄>",
+        "with-xvfb go test ./internal/figani -run TestSeparatedOriginalCompoundFDOTHERFrames -count=1 -v",
+        "FD2_HD_BATTLE_GPU=1 with-xvfb go test ./cmd/fd2 -run ^TestModernHDBattleGPUBridge$ -count=1 -v",
+        "FD2_HD_COMPOUND_GPU=1 FD2_TEST_MODERN_EFFECT_CATALOG=/repo/remake/assets/themes/modern/catalog.json FD2_TEST_MODERN_EFFECT_PACK=/repo/remake/generated-assets/modern-theme-prototypes with-xvfb go test ./cmd/fd2 -run ^TestModernHDCompoundRuntimeGPU$ -count=1 -v",
+        "FD2_HD_BATTLE_LIFECYCLE_GPU=1 with-xvfb go test ./cmd/fd2 -run ^TestModernHDBattleRuntimeGPU$ -count=1 -v",
+        "with-xvfb go test ./cmd/fd2 -run 'TestModernHDCompoundAssets|TestModernHDBattleAssets|TestNativeCommand3[2-5]|TestNativePhysical|TestNativePaletteRamp' -count=1 -v"
+      ]
+    },
+    "failures_preserved": [
+      "充電母稿alpha最大254保持，編製圖由原身體作255核心；未放寬正式載入器",
+      "有界開發容器最終外層124，但各獨立測試先前皆result0且PASS；非全套通過或產品失敗",
+      "fixture修改位置、職業、BattleFig及command輸入，只列RUNTIME-E1"
+    ],
+    "limits": [
+      "其餘三召喚美術未繪製",
+      "正式FIGANI人物HD仍0項，蓋亞占寬待回答，隔離15幀不登錄",
+      "其他可達法術／死亡／非共背景演出、普通玩家F2／保存冷讀、代表性效能及平台待驗",
+      "本輪僅相關回歸，非全專案測試",
+      "沒有新dosgolem原版oracle、matching或硬體時序研究"
+    ],
+    "cleanup": {
+      "recording_created": false,
+      "temporary_game_binary_created": false,
+      "go_cache": "已退出的容器tmpfs，隨--rm清除",
+      "unexpected_fd2_containers": 0
+    },
+    "source_revision_tracking": "逐檔SHA綁本輪實作，提交後於#263登錄來源revision；歷史followup保持。",
+    "final_checks": {
+      "worklist": {
+        "open": 21,
+        "manual": 14,
+        "possibly_complete": 0,
+        "log": "work/promo-cadence-20261018/hd-fonts/battle-effects-worklist-final.log"
+      },
+      "lessons": {
+        "count": 254,
+        "guards": 135,
+        "log": "work/promo-cadence-20261018/hd-fonts/battle-effects-lessons-final.log"
+      },
+      "local_links": 1385,
+      "source_hashes": 18,
+      "ownership": "1000:1000",
+      "root_owned_or_md_directories": 0
+    }
   }
 }

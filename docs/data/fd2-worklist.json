@@ -330,12 +330,12 @@
       "layer": "runtime",
       "category": "工作",
       "title": "P1 大型戰鬥動畫HD：人物、效果與正常玩家呈現",
-      "body": "使用者Goal仍為完成FD2戰鬥動畫HD，涵蓋人物、共同效果、正常呈現與私人同步。沿用1920×1200、手繪與原版像素模式並存，完整Goal尚未完成。\n\n共背景物理演出已接可選GPU consumer：入場、主動／反擊、受擊填色、restore及64階戰鬥淡出，地圖沿原有65階淡入後續行。其他捲動背景整場保留原版；HP、兩種RNG、聲音標記及節拍不變。170個GPU回讀通過；實際Draw／F2／拒收／返回及快取生命週期另通過。\n\n正常標題LOAD既有START/F5保存，以資源12/13原版像素六倍診斷包完成走行、指令環、取消、兩次攻擊與返回、Home、F2、F5/F9及新程序LOAD。保存完整bytes相同，200.665秒。這是consumer整合，不能算新增HD美術或原版oracle／整章E2。最初60秒返回等待逾時保留；相同binary、保存與圖包在有界180秒觀測乾淨重跑通過，沒有改產品時序。\n\n廣泛回歸因舊loadGame反覆解碼原有OGG而為取堆疊中斷；另一次乾淨Git樹缺生成素材，兩次均不列通過。字串審查已用相同生成資料重綁來源行號，99筆分類保持。最終相關回歸及限制見主收據。\n\n蓋亞五母稿4/11幀隔離候選仍在，正式365項清冊和私人素材保持。人物身高／占寬A/B選擇尚待回答，不將B寫入正式幾何。仍須其餘FIGANI、非共背景演出、法術／死亡及FDOTHER效果、正式素材、效能與私人同步。\n\n主證據docs/data/fd2-modern-hd-battlefield-20261019.json的battle_animation_gpu_followup_20261019；現況58、介面57、契約61。關聯#201／#202／#204。",
+      "body": "使用者Goal仍為完成FD2戰鬥動畫HD，涵蓋人物、共同效果、正常呈現與私人同步。沿用1920×1200、手繪與原版像素模式並存，完整Goal尚未完成。\n\n共背景物理演出已接可選GPU，原版NN6診斷包的普通兩次攻擊／返回、F2、保存冷讀已通過。這是consumer整合，不是新HD美術或原版oracle。其他捲動背景整場保持原生。\n\n本輪新增FDOTHER65..68四種召喚slide／main／tail GPU consumer，四資源37幀核同原始解碼。正式清冊366項新增熾天使65五幀，原365項保持。三母稿明示重定向五幀，身體固定縮放，保留最後幀下移1原生像素，電光現代重繪。其餘三召喚尚未重繪，施術者FIGANI及地圖尾段維持原生。\n\n273個GPU回讀通過，正式清冊與圖源的完整Draw生命週期通過158 presents，涵蓋F2、缺件原子拒收、HP／MP／兩種RNG發布邊界、一次續行及快取釋放。原生delay、hold、音效保持。此為既有class19／BattleFig4修改fixture的RUNTIME-E1，尚非普通玩家召喚或PLAYER-E2。相關回歸55個頂層PASS、17個條件SKIP；完整物理Draw／DAC返回與清冊11項另通過，未宣稱全專案測試通過。\n\n五幀與三母稿已同步私人庫3914bab035acd5e1ebee846b5c7511ada6b81524，逐檔驗證3276份、runtime-only3068份，母稿不進執行包；遠端HEAD相同且仍private。公開只加README最終GPU總覽並明示fixture。\n\n正式FIGANI人物HD仍0項，蓋亞4／11幀隔離候選保持，人物身高／占寬A／B尚待回答，不將B寫入正式幾何。仍須其餘FIGANI、非共背景演出、法術／死亡及共同效果完整覆蓋、普通召喚／F2／保存冷讀、效能及平台。完整驗收條件保持，不因單一召喚完成而結案。\n\n主證據docs/data/fd2-modern-hd-battlefield-20261019.json的battle_effects_followup_20261019；舊共背景證據保留於battle_animation_gpu_followup_20261019。現況58、介面57、契約61。關聯#201／#202／#204。",
       "acceptance": "建立由正式consumer到FIGANI人物及共同效果的可重跑覆蓋清冊；完成可達戰鬥動畫HD素材、原始位置／層序／節拍／命中與音效標記的正式呈現，缺件明示；正常玩家抽驗攻擊、受擊／反擊、法術／效果、死亡與戰場返回，F2、保存冷讀與代表性效能通過；已登錄素材同步私人庫，保留原版像素模式。資料測試及離線PNG不能取代正式GUI。",
       "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
       "verify": {
         "kind": "manual",
-        "note": "已有蓋亞隔離15幀及預載；共背景GPU已接Game.Draw，170回讀、完整Draw生命週期及原版NN6診斷包的普通兩次攻擊／F2／保存冷讀通過。正式365項清冊無HD動畫；人物占寬、其他FIGANI／共同效果、效能與私人同步仍未完成。"
+        "note": "共背景物理已驗普通NN6兩次攻擊／返回與保存冷讀；四種FDOTHER召喚consumer及熾天使五幀正式登錄，273GPU與158 presents修改fixture通過RUNTIME-E1，私人3276檔驗證推送。普通召喚、FIGANI人物、其餘效果、效能／平台未完成，蓋亞占寬待決。"
       },
       "issue": 263
     }

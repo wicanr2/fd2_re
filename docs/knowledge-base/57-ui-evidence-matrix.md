@@ -1,5 +1,12 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
+熾天使五幀已登錄共用效果HD。四個caller的GPU原生回讀，以及熾天使的完整交易呈現通過。
+圖片是既有class19／BattleFig4建構fixture的正式Draw及最終合成器回讀，保留原始delay與hold；
+隊伍、指令輸入經修改，只列RUNTIME-E1，沒有新增普通玩家、整章E2或原版oracle。
+施法者及專屬地圖尾段、另外三個召喚圖庫仍待HD化。現況依
+[58](58-fd2-exe-re-coverage.md)，來源沿[主收據](../data/fd2-modern-hd-battlefield-20261019.json)
+的`battle_effects_followup_20261019`，重跑入口見[61](61-modern-theme-runtime-spec.md)。
+
 可選共背景物理戰鬥GPU已接正式Draw。原生全畫布回讀、主動／反擊及返回DAC生命週期通過；
 原版像素六倍診斷包的普通標題LOAD、兩次攻擊、F2、保存及新程序冷讀亦通過。
 此證據限consumer整合，沒有新增正式HD動畫美術、原版oracle或整章E2。

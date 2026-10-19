@@ -27,13 +27,15 @@ type modernHDBattlePlan struct {
 	Palette    color.Palette
 	Layers     []modernHDBattleLayer
 	HDSubtract float32
+	HDMix      float32
+	HDTarget   [3]float32
 }
 
 type modernHDBattleGPU struct {
 	World, base *ebiten.Image
 	shader      *ebiten.Shader
 	sources     map[string]*ebiten.Image
-	owner       *nativePhysicalScene
+	owner       any
 	theme       *modernStoryPortraitSet
 }
 
@@ -41,12 +43,15 @@ const modernHDBattleShader = `//kage:unit pixels
 package main
 var FillColor vec4
 var Subtract float
+var Tint vec3
+var Mix float
 func Fragment(position vec4, texCoord vec2, color vec4) vec4 {
     src:=imageSrc0At(texCoord)
     if src.a==0 { return vec4(0) }
     rgb:=src.rgb/src.a
     if FillColor.a>0 { rgb=FillColor.rgb }
     rgb=max(rgb-vec3(Subtract),vec3(0))
+    rgb=mix(rgb,Tint,Mix)
     return vec4(rgb*src.a,src.a)*color
 }`
 
@@ -107,8 +112,14 @@ func (r *modernHDBattleGPU) draw(plan modernHDBattlePlan) error {
 	if err != nil {
 		return err
 	}
-	if len(plan.Base) != 64000 || plan.HDSubtract < 0 || plan.HDSubtract > 1 || math.IsNaN(float64(plan.HDSubtract)) {
+	if len(plan.Base) != 64000 || plan.HDSubtract < 0 || plan.HDSubtract > 1 || math.IsNaN(float64(plan.HDSubtract)) ||
+		plan.HDMix < 0 || plan.HDMix > 1 || math.IsNaN(float64(plan.HDMix)) {
 		return errors.New("modern HD battle: invalid base or shade")
+	}
+	for _, value := range plan.HDTarget {
+		if value < 0 || value > 1 || math.IsNaN(float64(value)) {
+			return errors.New("modern HD battle: invalid tint")
+		}
 	}
 	// 先驗完整計畫；錯誤不清除上一張世界。
 	for _, layer := range plan.Layers {
@@ -182,10 +193,12 @@ func (r *modernHDBattleGPU) draw(plan modernHDBattlePlan) error {
 			fill = []float32{float32(palette[132]) / 255, float32(palette[133]) / 255, float32(palette[134]) / 255, 1}
 		}
 		subtract := float32(0)
+		mix := float32(0)
 		if layer.HD != nil {
 			subtract = plan.HDSubtract
+			mix = plan.HDMix
 		}
-		draw.Uniforms = map[string]interface{}{"FillColor": fill, "Subtract": subtract}
+		draw.Uniforms = map[string]interface{}{"FillColor": fill, "Subtract": subtract, "Tint": plan.HDTarget[:], "Mix": mix}
 		r.World.DrawRectShader(texture.Bounds().Dx(), texture.Bounds().Dy(), r.shader, draw)
 	}
 	return nil

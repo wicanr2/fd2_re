@@ -46,3 +46,33 @@ func TestSeparatedOriginalPackAllFIGANIFrames(t *testing.T) {
 	}
 	t.Logf("%d resources / %d frames: raw decoder equals separated pixels, masks and descriptors", resources, frames)
 }
+
+func TestSeparatedOriginalCompoundFDOTHERFrames(t *testing.T) {
+	pack := os.Getenv("FD2_TEST_ORIGINAL_PACK")
+	if pack == "" {
+		t.Skip("requires an explicit legal original pack")
+	}
+	frames := 0
+	for resource := 65; resource <= 68; resource++ {
+		raw, err := os.ReadFile(filepath.Join(pack, "raw", "FDOTHER", fmt.Sprintf("FDOTHER_%03d.bin", resource)))
+		if err != nil {
+			t.Fatal(err)
+		}
+		original, err := Parse(raw)
+		if err != nil {
+			t.Fatal(err)
+		}
+		separated, err := LoadSeparatedArchiveResource(filepath.Join(pack, "animations"), "FDOTHER.DAT", resource)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !reflect.DeepEqual(original, separated) {
+			t.Fatalf("FDOTHER%d: raw and separated pixels/mask/descriptor differ", resource)
+		}
+		frames += len(original.Frames)
+	}
+	if frames != 37 {
+		t.Fatalf("fixed compound source frame count differs: %d", frames)
+	}
+	t.Logf("4 FDOTHER resources / %d frames: original parser equals separated sources", frames)
+}

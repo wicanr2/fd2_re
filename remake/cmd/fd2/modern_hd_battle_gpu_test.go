@@ -214,6 +214,7 @@ func TestModernHDBattleGPUBridge(t *testing.T) {
 			}
 		}
 	}
+	cases = appendModernCompoundGPUCases(t, cases, palette)
 	probe := &modernHDBattleGPUProbe{cases: cases}
 	ebiten.SetWindowSize(640, 400)
 	ebiten.SetVsyncEnabled(false)

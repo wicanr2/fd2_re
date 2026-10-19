@@ -2975,6 +2975,36 @@
         ],
         "pattern": "inventory_sha256"
       }
+    },
+    {
+      "id": "battle-hd-archive-resource-namespace",
+      "date": "2026-10-19",
+      "area": "HD圖源載入",
+      "rule": "戰鬥圖源以archive與resource共同識別，FIGANI及FDOTHER使用獨立集合與原子預載，不能只用數字ID。入口為remake/cmd/fd2/modern_hd_battle_assets.go的modernBattleHDContract，命名空間及拒收測試在modern_hd_compound_test.go。",
+      "why": "共同召喚從FDOTHER65開始，FIGANI亦有65。共用map會讓不同原版來源互相覆蓋，正式loader因此分開來源、consumer及快取。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/modern_hd_battle_assets.go"
+        ],
+        "pattern": "set\\.battleEffects"
+      }
+    },
+    {
+      "id": "battle-hd-body-anchor-independent-fx-bounds",
+      "date": "2026-10-19",
+      "area": "HD動畫編製",
+      "rule": "編製共用身體的HD效果前，先核對原始各幀身體的相同像素、位移及裁切；身體只縮放一次，FX另按原始世界座標編製，不隨電光外框縮放人物。入口為tools/build_fd2_seraph_battle_hd.py的body_source_proof與逐幀配方。",
+      "why": "熾天使前三次充電擴大FX範圍但身體保持，最後一幀身體下移1原生像素並裁掉11像素。若各幀按外框fit或假設身體完全不動，會製造大小跳動或抹掉已知位移。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/build_fd2_seraph_battle_hd.py"
+        ],
+        "pattern": "body_source_proof"
+      }
     }
   ]
 }

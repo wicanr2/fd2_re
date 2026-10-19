@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"image/color"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
@@ -13,6 +14,11 @@ import (
 )
 
 type nativeCompoundPresentedFrame struct {
+	hdSources   *modernHDBattleSources
+	hdPalette   color.Palette
+	hdResource  int
+	hdMix       float32
+	hdTarget    [3]float32
 	image       *ebiten.Image
 	delay       int
 	sound       []byte
@@ -144,6 +150,9 @@ func (g *Game) startNativeCommand32Presentation(actor, confirmed *battle.Unit, t
 	}
 	commonSchedule, err := figani.BuildNativeCompoundPresentationSchedule(32, commonEffect)
 	if err != nil {
+		return err
+	}
+	if err := g.modernStoryPortraits.prepareBattleHDEffects(65); err != nil {
 		return err
 	}
 	tailSchedule, err := fdother.BuildNativeCommand32TailSchedule(g.nativeMapAssets.FDOTHER6, g.nativeMapAssets.CommandHealDigits)
@@ -315,13 +324,22 @@ func (g *Game) startNativeCommand32Presentation(actor, confirmed *battle.Unit, t
 	if frames, err = appendNativeCompoundFrames(frames, effectSlide, 1); err != nil {
 		return err
 	}
+	if err := bindModernHDCompoundFrames(frames[len(frames)-len(effectSlide):], actorBase, commonEffect, commonSchedule, "slide", paletteDAC); err != nil {
+		return err
+	}
 	mainStart := len(frames)
 	if frames, err = appendNativeCompoundFrames(frames, mainImages, commonSchedule.MainDelayTicks); err != nil {
+		return err
+	}
+	if err := bindModernHDCompoundFrames(frames[mainStart:], actorBase, commonEffect, commonSchedule, "main", paletteDAC); err != nil {
 		return err
 	}
 	frames[mainStart].sound = g.separatedCommandSound(91, 2)
 	tailStart := len(frames)
 	if frames, err = appendNativeCompoundFrames(frames, commonTailImages, commonSchedule.MainDelayTicks); err != nil {
+		return err
+	}
+	if err := bindModernHDCompoundFrames(frames[tailStart:], actorBase, commonEffect, commonSchedule, "tail", paletteDAC); err != nil {
 		return err
 	}
 	commonSample1 := g.separatedCommandSound(91, 1)
@@ -439,6 +457,13 @@ func (g *Game) drawNativeCommand32Presentation(screen *ebiten.Image) bool {
 	j := g.nativeCmd32Presentation
 	if j == nil || j.frame < 0 || j.frame >= len(j.frames) || j.frames[j.frame].image == nil {
 		return false
+	}
+	if drawn, err := g.drawModernHDCompoundFrame(screen, &j.frames[j.frame]); err != nil {
+		g.failNativeCommand32Presentation(err)
+		return true
+	} else if drawn {
+		j.drawn = true
+		return true
 	}
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Scale(2, 2)

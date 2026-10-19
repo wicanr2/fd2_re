@@ -12,6 +12,7 @@ import (
 )
 
 type modernHDBattleSource struct {
+	Archive                       string
 	Frame                         figani.Frame
 	Resource, Index, DX, DY, Fill int
 }
@@ -61,9 +62,19 @@ func (g *Game) syncModernHDBattleOwner() {
 	if g.modernHDBattleGPU == nil {
 		return
 	}
-	var owner *nativePhysicalScene
+	var owner any
 	if g.atk != nil {
 		owner = g.atk.nativeScene
+	}
+	switch {
+	case g.nativeCmd32Presentation != nil:
+		owner = g.nativeCmd32Presentation
+	case g.nativeCmd33Presentation != nil:
+		owner = g.nativeCmd33Presentation
+	case g.nativeCmd34Presentation != nil:
+		owner = g.nativeCmd34Presentation
+	case g.nativeCmd35Presentation != nil:
+		owner = g.nativeCmd35Presentation
 	}
 	r := g.modernHDBattleGPU
 	if r.owner != owner || r.theme != g.modernStoryPortraits {
@@ -82,12 +93,25 @@ func (g *Game) modernHDBattlePlan(sources *modernHDBattleSources, palette color.
 		var key string
 		if source.Resource >= 0 {
 			var err error
-			picture, err = g.modernStoryPortraits.battleHDFrame(source.Resource, source.Index)
+			var entries map[int]*modernBattleHDResource
+			if g.modernStoryPortraits != nil {
+				entries = g.modernStoryPortraits.battleAnimations
+			}
+			switch source.Archive {
+			case "", "FIGANI.DAT":
+			case "FDOTHER.DAT":
+				if g.modernStoryPortraits != nil {
+					entries = g.modernStoryPortraits.battleEffects
+				}
+			default:
+				return modernHDBattlePlan{}, fmt.Errorf("modern HD battle: unsupported source archive")
+			}
+			picture, err = modernBattleHDFrame(entries, source.Resource, source.Index)
 			if err != nil {
 				return modernHDBattlePlan{}, err
 			}
 			if picture != nil {
-				key = g.modernStoryPortraits.battleAnimations[source.Resource].hashes[source.Index]
+				key = entries[source.Resource].hashes[source.Index]
 			}
 		}
 		f := source.Frame
@@ -102,6 +126,10 @@ func (g *Game) publishModernHDBattle(screen *ebiten.Image, sources *modernHDBatt
 	if err != nil {
 		return err
 	}
+	return g.publishModernHDBattlePlan(screen, plan)
+}
+
+func (g *Game) publishModernHDBattlePlan(screen *ebiten.Image, plan modernHDBattlePlan) error {
 	if g.modernHDBattleGPU == nil {
 		g.modernHDBattleGPU = &modernHDBattleGPU{}
 	}

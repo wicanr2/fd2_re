@@ -104,6 +104,9 @@ func (g *Game) startNativeCommand33Presentation(actor, confirmed *battle.Unit, t
 	if err != nil || commonSchedule.TailEnabled || commonSchedule.Sample1Frame != 6 {
 		return errors.New("native command33 common schedule unavailable")
 	}
+	if err := g.modernStoryPortraits.prepareBattleHDEffects(66); err != nil {
+		return err
+	}
 	tailSchedule, err := fdother.BuildNativeCommand33TailSchedule()
 	if err != nil {
 		return err
@@ -297,8 +300,14 @@ func (g *Game) startNativeCommand33Presentation(actor, confirmed *battle.Unit, t
 	if frames, err = appendNativeCompoundFrames(frames, effectSlide, 1); err != nil {
 		return err
 	}
+	if err := bindModernHDCompoundFrames(frames[len(frames)-len(effectSlide):], actorBase, commonEffect, commonSchedule, "slide", paletteDAC); err != nil {
+		return err
+	}
 	mainStart := len(frames)
 	if frames, err = appendNativeCompoundFrames(frames, mainImages, commonSchedule.MainDelayTicks); err != nil {
+		return err
+	}
+	if err := bindModernHDCompoundFrames(frames[mainStart:], actorBase, commonEffect, commonSchedule, "main", paletteDAC); err != nil {
 		return err
 	}
 	frames[mainStart+commonSchedule.Sample1Frame-1].sound = g.separatedCommandSound(92, 1)
@@ -412,6 +421,13 @@ func (g *Game) drawNativeCommand33Presentation(screen *ebiten.Image) bool {
 	j := g.nativeCmd33Presentation
 	if j == nil || j.frame < 0 || j.frame >= len(j.frames) || j.frames[j.frame].image == nil {
 		return false
+	}
+	if drawn, err := g.drawModernHDCompoundFrame(screen, &j.frames[j.frame]); err != nil {
+		g.failNativeCommand33Presentation(err)
+		return true
+	} else if drawn {
+		j.drawn = true
+		return true
 	}
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Scale(2, 2)

@@ -35,6 +35,7 @@ type modernStoryPortraitSet struct {
 	battleHUDPanel    image.Image
 	battleActionIcons []image.Image
 	battleAnimations  map[int]*modernBattleHDResource
+	battleEffects     map[int]*modernBattleHDResource
 }
 
 type modernThemeAsset struct {
@@ -97,10 +98,11 @@ func loadModernStoryPortraitSet(catalogPath, packRoot string) (*modernStoryPortr
 	}
 	hdPortraits := make(map[int]image.Image)
 	for _, asset := range catalog.Assets {
-		if asset.Role == "battle_animation_hd_set" {
+		if asset.Role == "battle_animation_hd_set" || asset.Role == "battle_effect_hd_set" {
 			if err := loadModernBattleHDAsset(set, asset, packRoot); err != nil {
 				return nil, err
 			}
+			set.hasHD = true
 			continue
 		}
 		if asset.Role == "native_terrain_hd_set" {

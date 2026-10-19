@@ -14707,6 +14707,106 @@
         "asset:FDICON.B24.group_030",
         "docs/data/fd2-modern-hd-battlefield-20261019.json"
       ]
+    },
+    {
+      "asset_id": "modern.fdother.065.hd6.v1",
+      "role": "battle_effect_hd_set",
+      "status": "runtime_candidate",
+      "files": [
+        "fdother-065-hd6-v1-f00.png",
+        "fdother-065-hd6-v1-f01.png",
+        "fdother-065-hd6-v1-f02.png",
+        "fdother-065-hd6-v1-f03.png",
+        "fdother-065-hd6-v1-f04.png"
+      ],
+      "width": 1920,
+      "height": 1200,
+      "frame_count": 5,
+      "frame_sha256": [
+        "6a14d8aebffefbe669f4ef4ad9d767a895439bd875801a752c349e82b0b17f83",
+        "469375f02b6553b191223ecb2880ddfcce1fdf1b0b3d81b92c0e985e0b8e4d96",
+        "3343d0df92ea5235029c9b94836bad2255ce1d752cfb1a8ba7817a18e1c0234f",
+        "06ad46c4cf2f6fa3726f9ea5e3d4f49692eb90f9dc477ceecf5f881a6f08e736",
+        "16b4c6ea029b2906bc8db201941ccb9097c5330fbee34b243bef7870ccfb264a"
+      ],
+      "consumer_contract": "native_fdother_compound_rgba_hd6_v1",
+      "alpha_contract": "coverage",
+      "source_refs": [
+        "asset:FDOTHER_065",
+        "docs/data/fd2-reference-files.json"
+      ],
+      "source_archive": "FDOTHER.DAT",
+      "source_resource": 65,
+      "source_metadata_sha256": "eac75034865f19bab2ff2581e5043fec6630dd63aecddc49c97bb5b96eaca14b",
+      "native_header": [
+        0,
+        5,
+        0
+      ],
+      "native_frames": [
+        {
+          "x": 107,
+          "y": 0,
+          "width": 213,
+          "height": 200,
+          "delay_native": 0,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 88,
+          "y": 0,
+          "width": 232,
+          "height": 200,
+          "delay_native": 0,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 94,
+          "y": 0,
+          "width": 226,
+          "height": 200,
+          "delay_native": 0,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 200,
+          "delay_native": 0,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 200,
+          "delay_native": 0,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        }
+      ],
+      "cycle_policy": "native_compound_frames",
+      "layout_policy": "native_descriptor_hd6",
+      "source_files": [
+        "seraph-body-hd6-master-v1.png",
+        "seraph-electric-hd6-master-v1.png",
+        "seraph-charge-world-hd6-master-v1.png"
+      ],
+      "source_sha256": [
+        "69f5651707124c8855f5e669229f850ae40f1f481f6a7d51e815c79041fb2715",
+        "50815a8d8f6304fc3dd2b5c15646a1f77e03926949bcbefb5507c528a595a416",
+        "8e8d5686d8febb789707336645ee5f7ad3a7da71353bf5ac98d56aaa7ca79f6f"
+      ]
     }
   ]
 }
