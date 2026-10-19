@@ -106,7 +106,8 @@ func (g *Game) startNativeCommand35Presentation(actor, confirmed *battle.Unit, t
 	if err != nil || !commonSchedule.TailEnabled || commonSchedule.MixerSample2Frame != 1 {
 		return errors.New("native command35 common schedule unavailable")
 	}
-	if err := g.modernStoryPortraits.prepareBattleHDEffects(68); err != nil {
+	publishHD, err := g.modernStoryPortraits.stageBattleHDBanks([]int{actor.BattleFig * 3, actor.BattleFig*3 + 1, firstTarget.BattleFig * 3}, []int{68})
+	if err != nil {
 		return err
 	}
 	tailSchedule, err := fdother.BuildNativeCommand35TailSchedule()
@@ -171,9 +172,13 @@ func (g *Game) startNativeCommand35Presentation(actor, confirmed *battle.Unit, t
 	if err != nil {
 		return err
 	}
-	actorPixels, err := battlepresent.BuildNativeCompoundActorFrames(actorBase, actorEffect, targetIdle, actor.NativeRecordByte6)
+	actorPresents, err := battlepresent.BuildNativeCompoundActorPresents(actorBase, actorEffect, targetIdle, actor.NativeRecordByte6)
 	if err != nil {
 		return err
+	}
+	actorPixels := make([][]byte, len(actorPresents))
+	for index, present := range actorPresents {
+		actorPixels[index] = present.Pixels
 	}
 	actorImages, err := nativeCommand24IndexedImages(actorPixels, battlePalette)
 	if err != nil {
@@ -313,11 +318,24 @@ func (g *Game) startNativeCommand35Presentation(actor, confirmed *battle.Unit, t
 	if frames, err = appendNativeCompoundFrames(frames, preludeImages, 1); err != nil {
 		return err
 	}
+	if err := bindModernHDCompoundPrelude(frames, prelude, battlepresent.NativeCommandPreludeInput{
+		Base: preludeBase, ActorIdle: actorIdle.Frames[0], Platform: platform, RawSide: actor.NativeRecordByte6, Mode: 1, BaselineDAC: paletteDAC,
+	}, actor.BattleFig*3); err != nil {
+		return err
+	}
+	actorStart := len(frames)
 	if frames, err = appendNativeCompoundFrames(frames, actorImages, 1); err != nil {
 		return err
 	}
+	if err := bindModernHDCompoundActor(frames[actorStart:], actorPresents, actorBase, actorEffect, targetIdle, actor.NativeRecordByte6, actor.BattleFig*3+1, firstTarget.BattleFig*3, paletteDAC); err != nil {
+		return err
+	}
 	frames[len(frames)-1].delay += commonSchedule.PreludeHoldTicks
+	actorSlideStart := len(frames)
 	if frames, err = appendNativeCompoundFrames(frames, actorSlide, 1); err != nil {
+		return err
+	}
+	if err := bindModernHDCompoundActorSlide(frames[actorSlideStart:], actorBase, actorEffect.Frames[0], actor.BattleFig*3+1, commonSchedule, paletteDAC); err != nil {
 		return err
 	}
 	if frames, err = appendNativeCompoundFrames(frames, effectSlide, 1); err != nil {
@@ -384,6 +402,7 @@ func (g *Game) startNativeCommand35Presentation(actor, confirmed *battle.Unit, t
 			}
 		}
 	}
+	publishHD()
 	g.nativeCmd35Presentation = &nativeCommand35PresentationJob{
 		actor: actor, plan: plan, frames: frames, publishAt: publishAt, stageEnd: stageEnd,
 		rngBefore: g.nativeRNGState, baselineWork: baselineWork, baselineVGA: baselineVGA,

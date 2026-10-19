@@ -51,7 +51,14 @@
 
 ![四種HD召喚演出](docs/figures/hd-common-summons.png)
 
-由左上順時針為熾天使、風妖精、暗邪鬼、破壞神，新圖已接入正式繪製層。總覽由修改隊伍與指令資料的建構測試取得，是最終合成器 GPU 回讀的縮圖，尚不代表一般玩家流程驗收。施法者、背景與介面仍含像素素材。來源及驗證範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
+由左上順時針為熾天使、風妖精、暗邪鬼、破壞神，新圖已接入正式繪製層。總覽由修改隊伍與指令資料的建構測試取得，是最終合成器 GPU 回讀的縮圖，尚不代表一般玩家流程驗收。此圖擷取時的施法者、背景與介面仍含像素素材。來源及驗證範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
+
+![召喚演出的HD施術者](docs/figures/hd-summon-caster-phases.png)
+
+四種召喚的入場、施術動作與退場已接入已登錄的角色HD圖源，保留原有節拍與F2切換。
+此圖取自修改class19／BattleFig4測試隊伍的最終GPU，面板仍顯示來源角色名稱；
+不代表亞雷斯可在正常流程施放召喚。其他施術者、背景與介面仍待補齊。
+驗證範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
 
 ![首章雙方HD普通攻防](docs/figures/hd-ch01-physical-attack.png)
 

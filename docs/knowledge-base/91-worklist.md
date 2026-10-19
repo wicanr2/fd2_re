@@ -184,9 +184,11 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 本批11項編製、4項實檔圖源拒收、正式Go 11頂層加8子項及清冊11項通過；蓋亞預覽一項條件SKIP。私人完整3392檔與runtime-only3146檔逐筆核對，原3370檔保持，七份索爾母稿不進執行包。README新增實際索爾收勢／強盜反擊畫面。
 
-蓋亞4／11幀仍為隔離候選，占寬待使用者決定。其餘FIGANI、施術者、非共背景演出、其他法術／死亡／共同效果、普通召喚／戰鬥中F2／保存冷讀、代表性效能與平台仍須完成。完整Goal與本議題保持開啟。
+蓋亞4／11幀仍為隔離候選，占寬待使用者決定。其餘FIGANI、其他施術者、非共背景演出、其他法術／死亡／共同效果、普通召喚／戰鬥中F2／保存冷讀、代表性效能與平台仍須完成。完整Goal與本議題保持開啟。
 
-主證據docs/data/fd2-modern-hd-battlefield-20261019.json，最新thor_battle_followup_20261019；較早bandit、ares、battle_summon_bank與共背景收據保持。現況58、介面57、契約61，關聯#201／#202／#204。這批不新增原版oracle、matching、整章E2或Release。
+主證據docs/data/fd2-modern-hd-battlefield-20261019.json，最新compound_caster_followup_20261019，前批thor_battle_followup_20261019；較早bandit、ares、battle_summon_bank與共背景收據保持。現況58、介面57、契約61，關聯#201／#202／#204。這批不新增原版oracle、matching、整章E2或Release。
+
+四召喚施術者新進度：prelude／actor／actor-slide使用已登錄FIGANI圖源，角色／效果先驗證、原生演出建構成功才共同發布；F2預載整場來源。395組GPU回歸、四caller完整158／156／241／255呈現與各階段F2、一次續行通過；148張最終GPU核對HD核心，三種圖源替身／錯人物／損壞來源均拒收。15頂層加14子項回歸通過，無條件SKIP。限修改class19／BattleFig4的RUNTIME-E1，沒有新資產或普通玩家法術驗收。2GB容器重用回讀及提前拒收後四流程無oom_kill，峰值仍達上限，效能／平台未完成。README新增實際施術者GPU圖。
 
 怎樣算做完：建立由正式consumer到FIGANI人物及共同效果的可重跑覆蓋清冊；完成可達戰鬥動畫HD素材、原始位置／層序／節拍／命中與音效標記的正式呈現，缺件明示；正常玩家抽驗攻擊、受擊／反擊、法術／效果、死亡與戰場返回，F2、保存冷讀與代表性效能通過；已登錄素材同步私人庫，保留原版像素模式。資料測試及離線PNG不能取代正式GUI。
 

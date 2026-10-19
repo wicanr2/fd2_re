@@ -15,7 +15,7 @@
     "hd_terrain": "CONFORMED-SCOPED：map0六組53槽；新增圓頂綠色／褐色雙塊四底圖在兩張正常GPU全部相符，短長組合與保存冷讀通過；草地及其他地形仍待HD化。",
     "ai_player_input_lock": "CONFORMED-SCOPED：AI換手期間拒絕玩家地圖輸入重入；普通END／增援對話及相關／完整Go回歸通過。",
     "gaia_redesign": "CONFORMED-SCOPED：新版頭像與四方向圖組已登錄；正常START／Gaia北移取消／F2／冷讀分段驗證。相位差異與序章尾端失敗明示，非逐幀parity。",
-    "hd_battle_animation": "CONFORMED-SCOPED：正式375項含共同召喚37幀與角色FIGANI六資源46幀。索爾正常首章兩次END接敵／攻防、返回、F2、保存冷讀與雙方核心通過，較早亞雷斯／強盜證據保持。其餘人物／施法者／演出、普通召喚與效能未完成，蓋亞占寬待決。"
+    "hd_battle_animation": "CONFORMED-SCOPED：正式375項含共同召喚37幀與角色FIGANI六資源46幀。索爾正常首章兩次END接敵／攻防、返回、F2、保存冷讀與雙方核心通過，較早亞雷斯／強盜證據保持。其餘人物／施法者／演出、普通召喚與效能未完成，蓋亞占寬待決。 四召喚施術者三階段已接正式圖源，395回歸及四完整fixture通過；普通法術與其他施術者仍待。"
   },
   "runtime_source": {
     "binary": {
@@ -24558,6 +24558,1250 @@
       "unexpected_owners_or_md_directories": [],
       "scope": "本輪變更文件、全部thor輸出根及22份正式新圖；不掃全部歷史work。全庫舊九項連結限制沿前批紀錄。",
       "docker_leftovers": "由外部docker ps -a於提交前後另核對。"
+    }
+  },
+  "compound_caster_followup_20261019": {
+    "date": "2026-10-19",
+    "status": "CONFORMED-SCOPED-RUNTIME-E1",
+    "base_source_commit": "98899bef25002e5d589c289bd164cb05121784f3",
+    "evidence_level": "既有RE沿用；正式Game.Draw及最終GPU的修改fixture驗證，非PLAYER-E2",
+    "original_address_space": "IDA Pro9.4 linear address，image base0；0x27FC9／0x28024..0x28189／0x29164，固定EXE雜湊依主證據。",
+    "scope": "四召喚prelude／actor／actor slide既有呈現鏈與FIGANI圖源，無新資產或正式規則／存檔變更。",
+    "limitations": [
+      "首章悠妮Class5且native_command_mask僅指令0，FIGANI29空header；不能假設是首章施法者。",
+      "完整GPU測試使用既有class19／BattleFig4修改fixture，不能冒稱普通玩家或新oracle。",
+      "最終GPU測試仍用原有位置／class19／BattleFig4建構fixture；部分指令首目標是施術者自身，兩圖層重疊依原生producer，非未解釋殘影。",
+      "來源核心可與多個相近原幀相容，不聲稱唯一相位或武器／FX全部像素通過。",
+      "沒有新普通玩家召喚、保存冷讀、原版oracle、matching、整章E2或Release。"
+    ],
+    "full_battle_hd_complete": false,
+    "sources_before_implementation": [
+      {
+        "file": "docs/data/fd2-reference-files.json",
+        "sha256": "9946b7506620069ce9b7bb8e4b1f7fed36e7a9389b634ef62064727d89579c5e"
+      },
+      {
+        "file": "docs/data/ida/fd2_command32_35_presentation_ida.txt",
+        "sha256": "591f03a0c7f12460259bf76274bb030e868f2cda97d6fed8c902fa77c57d75e4"
+      },
+      {
+        "file": "remake/internal/battlepresent/native_command_compound.go",
+        "sha256": "f85e3f89a55c2d2017fd68b73738c75e66c290006cd044c40c0757e571379c91"
+      },
+      {
+        "file": "remake/internal/battlepresent/native_command24_prelude.go",
+        "sha256": "d8a6f8833606d0d1e3a857280e7bbb606734f905a4b4dfa1e7c359f4c80c61a3"
+      }
+    ],
+    "sources_after_implementation": [
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_assets.go",
+        "sha256": "6557c0a0c9adc01b145fe1342239735871b93ed8cc300a314066aed3e30c2053"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_gpu_test.go",
+        "sha256": "38997265140893bdece8aefcae38b22d43e8967b31a85d2b929f28aa825ad51a"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_compound.go",
+        "sha256": "b2930d7bebb789a845cde52eb4b92c7b159ccdab02323596fc78987005f2ed30"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_compound_lifecycle_test.go",
+        "sha256": "f28bcab25eea0158d46148473f62c5fb6420712c8f7c5f75dd0c290a02151682"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_fairy_lifecycle_test.go",
+        "sha256": "0465d61b58649bb58545294e0fdaccaf844d58ef585a5b11267a1cd83ec26250"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_staged_summon_lifecycle_test.go",
+        "sha256": "ab0508a787abdc86d1a4e2c58b5eddc9eb96c7460cea9f70751e271cd6dbc898"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command32_presentation.go",
+        "sha256": "671b4eeeeb96ed919d1fb4d8d386c5d42e16734719a950422c0856a068ec913a"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command33_presentation.go",
+        "sha256": "27bd9e3cdd4639bb32e355b8041b82f8055e95bd46e8e33a8e2f1e0f0731c9e1"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command34_presentation.go",
+        "sha256": "60ebc335dafbb1ea5282ab565d9243dc47506c216e461ab4f5319e2c49e3e040"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command35_presentation.go",
+        "sha256": "abeb59a56360dbe216cc1f841292fe6ecffaff5b57251194e21325c9d35501b5"
+      },
+      {
+        "file": "remake/cmd/fd2/player_shortcuts.go",
+        "sha256": "2c0ca0c262abba62299e29148718febd20163a0f35ec9e856227c605edc3c1bb"
+      },
+      {
+        "file": "remake/internal/battlepresent/native_command_compound.go",
+        "sha256": "869a26312eeb8c5fe1e36b47f61163dd467d83e03c03554965d0101650051faf"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_compound_actor_test.go",
+        "sha256": "73cbac1c18ebc273a0872d1bf5712607fb8541f56b83272641b10802f9de1e1f"
+      },
+      {
+        "file": "tools/verify_fd2_compound_caster_gpu.py",
+        "sha256": "cd3057fe3b578df248f3a3537082c94cb8b7c47af4aa20eb2ab905efcd1a2215"
+      }
+    ],
+    "runtime_source_patch": {
+      "file": "work/promo-cadence-20261018/hd-fonts/caster-runtime-r3-source.patch",
+      "sha256": "faff2fb567cec0d933273a551abe88942983f06b301975acf30ea3e9837a70fe"
+    },
+    "build_logs": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/caster-build-r1.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/caster-build-r2.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/caster-build-r3.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/caster-build-r4.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "game_binary_before_cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/caster-hd-game-r3",
+      "sha256": "b8277a4f599352e5b38f49848b5337d46d71fb6162298f4275d8f8859ce5231b",
+      "size_bytes": 19285656
+    },
+    "final_test_binary_before_cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/caster-hd-tests-r4",
+      "sha256": "077dbbfb64477988619ccc4345878b47866597c3d1801ccbb31d0a154f972a38",
+      "size_bytes": 26235600
+    },
+    "verification": {
+      "gpu_bridge": {
+        "cases": 395,
+        "old_cases": 273,
+        "new_cases": 122,
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/caster-gpu-bridge-r3.log",
+          "sha256": "701dd794294fd193935f5d6c97194bdc31311021edcd803f22cb30cd02b77939"
+        },
+        "scope": "雙rawSide的整幅native GPU／CPU exact；HD alpha／RGB tolerance1，非原版EXE。"
+      },
+      "regression": {
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/caster-unit-r4.log",
+          "sha256": "4224ae7e57a5ff5273e6ffb4c89d7bfc1c078ea382d3caa5001a69c6213cfc12"
+        },
+        "top_pass": 15,
+        "sub_pass": 14,
+        "skips": 0
+      },
+      "existing_producer_tests": {
+        "file": "work/promo-cadence-20261018/hd-fonts/caster-present-tests-r2.log",
+        "sha256": "a26dd382ca23d6ee7f28eeda39e9f4623e8e6fca8b5c458521c0038a36f3466e"
+      },
+      "caller_lifecycles": [
+        {
+          "command": 32,
+          "receipt": {
+            "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/receipt.json",
+            "sha256": "27d86c7386a33d773b82250705fd4c1e3ffbd0d617c4eac1a95ef2ed109f9461"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4.log",
+            "sha256": "7db12ee9cc3b3d4868af838ff7551e0762f08b7bf40a71d415d80c2bed83256b"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4-memory.log",
+            "sha256": "e5ddb38243d570a83d19e315c5ddbfa36f767be10889fd0ab9589ff9292505bc"
+          },
+          "present_count": 158,
+          "hd_draws": 94,
+          "faithful_draws": 6,
+          "phase_f2_switches": {
+            "actor": true,
+            "actor-slide": true,
+            "effect-main": true,
+            "effect-slide": true,
+            "effect-tail": true,
+            "prelude": true
+          },
+          "continuations": 1,
+          "pngs": [
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/actor-present-009.png",
+              "sha256": "3aec43690959e04d96a7d25f5f89eec537dfa0f316168050f4bf6e270c06d95b"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/actor-present-011.png",
+              "sha256": "dc4a3a060eb6b96260cafaee1d4aa67b3e78bca27c51ac781505e80bd28ea9be"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/actor-present-012.png",
+              "sha256": "dc4a3a060eb6b96260cafaee1d4aa67b3e78bca27c51ac781505e80bd28ea9be"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/actor-present-013.png",
+              "sha256": "f8d1859f3d15aa8eb77e6e4b4a04b826a25fd3f56015933876c2a49f0540f77d"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/actor-present-014.png",
+              "sha256": "f8d1859f3d15aa8eb77e6e4b4a04b826a25fd3f56015933876c2a49f0540f77d"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/actor-present-015.png",
+              "sha256": "e0ce39e378aaaa6f59a0ea30b4dc1e5d0a7f9ab43da7f951d44f55255933c7d5"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/actor-present-016.png",
+              "sha256": "e0ce39e378aaaa6f59a0ea30b4dc1e5d0a7f9ab43da7f951d44f55255933c7d5"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/actor-present-017.png",
+              "sha256": "5369432f181efe3a78cadbb0064587bff576d90422c9f08e6f7ad064d20f1ea0"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/actor-present-018.png",
+              "sha256": "5369432f181efe3a78cadbb0064587bff576d90422c9f08e6f7ad064d20f1ea0"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/actor-present-019.png",
+              "sha256": "f4bd91ce154fd09e93aec5461a41936fe6213f2f770a802527374c39d4b991e0"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/actor-present-020.png",
+              "sha256": "f4bd91ce154fd09e93aec5461a41936fe6213f2f770a802527374c39d4b991e0"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/actor-present-021.png",
+              "sha256": "b0544b5c7f7389fe8de817af1b72503872fa1dda44aaae5722646e6f2e0c8466"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/actor-present-022.png",
+              "sha256": "b0544b5c7f7389fe8de817af1b72503872fa1dda44aaae5722646e6f2e0c8466"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/actor-present-023.png",
+              "sha256": "f9339b1ab9e1ad350bb1f83e8c72c8fc778c3cdefed91464332475805b256b80"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/actor-present-024.png",
+              "sha256": "f9339b1ab9e1ad350bb1f83e8c72c8fc778c3cdefed91464332475805b256b80"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/actor-present-025.png",
+              "sha256": "583fd9efd7d85fe63cb707da545cf78d40f5a5a827450274d1283e25459c9762"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/actor-present-026.png",
+              "sha256": "583fd9efd7d85fe63cb707da545cf78d40f5a5a827450274d1283e25459c9762"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/actor-present-027.png",
+              "sha256": "7c187c405bb6776cf6e6abc96da2f8b4fff82eb35ad35177e0b43f40d737704a"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/actor-present-028.png",
+              "sha256": "7c187c405bb6776cf6e6abc96da2f8b4fff82eb35ad35177e0b43f40d737704a"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/actor-present-029.png",
+              "sha256": "229c299a7a075b7a91a93685fba34ed2772a2699dfbbbe9611a1f348399c3d0e"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/actor-present-030.png",
+              "sha256": "229c299a7a075b7a91a93685fba34ed2772a2699dfbbbe9611a1f348399c3d0e"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/actor-present-031.png",
+              "sha256": "09176457491b5283be48d69f05cf98e8dd53704fdfd50a8f02d41c4d5daa3eb1"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/actor-present-032.png",
+              "sha256": "09176457491b5283be48d69f05cf98e8dd53704fdfd50a8f02d41c4d5daa3eb1"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/actor-present-033.png",
+              "sha256": "8264393f4be69e99dc2cb684e51e9d7f2932a2694ce92e7d87e6036e34aa038a"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/actor-present-034.png",
+              "sha256": "8264393f4be69e99dc2cb684e51e9d7f2932a2694ce92e7d87e6036e34aa038a"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/actor-present-035.png",
+              "sha256": "dfd9833d62ed1a22e2febb6865cfe81951ece9920a0ded6fa2ffcbbb2e875395"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/actor-present-036.png",
+              "sha256": "dfd9833d62ed1a22e2febb6865cfe81951ece9920a0ded6fa2ffcbbb2e875395"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/actor-present-037.png",
+              "sha256": "369cea9d77c2a264320bb549583c0e2324697599ae771fb1006ca25880ab0867"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/actor-present-038.png",
+              "sha256": "369cea9d77c2a264320bb549583c0e2324697599ae771fb1006ca25880ab0867"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/actor-present-039.png",
+              "sha256": "aac736d7c6412cafc63c29aef5b18117e5f74ab629999a0f3447a68e4c6ccd40"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/actor-present-040.png",
+              "sha256": "aac736d7c6412cafc63c29aef5b18117e5f74ab629999a0f3447a68e4c6ccd40"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/actor-present-041.png",
+              "sha256": "2e639642d0ef2df853b4c9611cd8c22ccc2dfbcc8caadbe1500dd4e7185b83d9"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/actor-present-042.png",
+              "sha256": "2e639642d0ef2df853b4c9611cd8c22ccc2dfbcc8caadbe1500dd4e7185b83d9"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/actor-present-043.png",
+              "sha256": "db29984ee2e43721400f2e115192fd124fb34fb723ad896f23e439a963901d14"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/actor-present-044.png",
+              "sha256": "db29984ee2e43721400f2e115192fd124fb34fb723ad896f23e439a963901d14"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/actor-slide-present-045.png",
+              "sha256": "e467ea84870451aa8d9ced01f1038da476a2eb57e6b7079bafc638e93bbe4594"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/effect-main-present-062.png",
+              "sha256": "2e193cb1a35a6453827afd37d3fce8bd215e33b49ef8d0ea77f528e83b1b4a14"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/effect-main-present-063.png",
+              "sha256": "e7e862cc69ec453e6d148781621e2285486667b7aadd1ec89d4e8f4f352c1b28"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/effect-main-present-064.png",
+              "sha256": "70f5849509575c370b266f4f3bed6354c7bfa440e93be8d752f65dcabc83cecb"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/effect-main-present-065.png",
+              "sha256": "58c9591344803740cca369e500b7822959558267455277fa32ac248a05097d1d"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/effect-slide-present-061.png",
+              "sha256": "9a90c6a9f3d7e8270bfd05019c08bc97ef552aaf2e8c29a85432ddb194a23076"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/effect-tail-present-066.png",
+              "sha256": "70f5849509575c370b266f4f3bed6354c7bfa440e93be8d752f65dcabc83cecb"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/effect-tail-present-067.png",
+              "sha256": "8f035a6829111023d8dd446da42354dd6be00e9eddb746813983834298103f25"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/effect-tail-present-068.png",
+              "sha256": "1074263f589f1e5820d7b6a18d2491f975027f2f83a204c8b0aa96f30c632a47"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/effect-tail-present-069.png",
+              "sha256": "5b86e72b5c10af5866b52bb1541a5c66c2c4e5f6161300a211cd2f0ec50be6cc"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/effect-tail-present-070.png",
+              "sha256": "b6061a57925274996d7fbf5ce59cf6edaa4a6a990067bc2e75ce58cea12e140f"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/effect-tail-present-071.png",
+              "sha256": "22827c19d7a8afa17799bf379fdf77cf72ec98ab9a9fc6cfa1b45ae8ac8fe0a1"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/effect-tail-present-072.png",
+              "sha256": "cc08e978a12303b202f6d36ea44ea2fe05aa4096f2afd25d27b23e7907eb0a04"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/effect-tail-present-073.png",
+              "sha256": "152006105946e2e15ae6bd53c044c9cc92238d7c426ef082dfe0ba861667e5d8"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/effect-tail-present-074.png",
+              "sha256": "7b77dc716e18e7008e8e81461ebcfb27045add3036c734a0df08b0465dee3b2a"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/effect-tail-present-075.png",
+              "sha256": "d9505714c3d473bda0ab915c6f4545a77407b3f5581a9181969f83a288e857c7"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/effect-tail-present-076.png",
+              "sha256": "de4d4e05b1ab2dfd6a4086beed6bc6879776148863be27f78056488d8a17bb5e"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r4/prelude-present-008.png",
+              "sha256": "e467ea84870451aa8d9ced01f1038da476a2eb57e6b7079bafc638e93bbe4594"
+            }
+          ]
+        },
+        {
+          "command": 33,
+          "receipt": {
+            "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/receipt.json",
+            "sha256": "1721d5eab2c957274fe8a258ce58d4e1bf2e1a25f66c05bc0485939bd552635e"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2.log",
+            "sha256": "4f844843fec8be86ee515ca3c0f38e62a0a598ed6f2106acd1cbce444640cc82"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2-memory.log",
+            "sha256": "8815cd6f8f8d1f403dde5b0ffe9bd781431e7a81df9285105910f8ad681d47ad"
+          },
+          "present_count": 156,
+          "hd_draws": 90,
+          "faithful_draws": 5,
+          "phase_f2_switches": {
+            "actor": true,
+            "actor-slide": true,
+            "effect-main": true,
+            "effect-slide": true,
+            "prelude": true
+          },
+          "continuations": 1,
+          "pngs": [
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/actor-present-009.png",
+              "sha256": "ceeb1e88b733d557a5167fdba62540ab0982b4be220e7e8cb6a49c198e77a3af"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/actor-present-011.png",
+              "sha256": "6d6da9f4fb2f11dd2899f45752ff1b17fb179c042555b43fd5404dc7d21e9d16"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/actor-present-012.png",
+              "sha256": "6d6da9f4fb2f11dd2899f45752ff1b17fb179c042555b43fd5404dc7d21e9d16"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/actor-present-013.png",
+              "sha256": "a423768bb983311a56dbd42bd4aeb09f80c163d885c69d4fa83a17ba37cd48b8"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/actor-present-014.png",
+              "sha256": "a423768bb983311a56dbd42bd4aeb09f80c163d885c69d4fa83a17ba37cd48b8"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/actor-present-015.png",
+              "sha256": "a79350966f8631f0403ae2f2eff4f56610b28e8b963ce97ecb057a122fb9a491"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/actor-present-016.png",
+              "sha256": "a79350966f8631f0403ae2f2eff4f56610b28e8b963ce97ecb057a122fb9a491"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/actor-present-017.png",
+              "sha256": "faa873c79abdc704f96ecf4af32560176c057fd90f3def169ddd47bd3243f142"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/actor-present-018.png",
+              "sha256": "faa873c79abdc704f96ecf4af32560176c057fd90f3def169ddd47bd3243f142"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/actor-present-019.png",
+              "sha256": "b05c7aceebfce6c3869bef1dd490457cd81e8b92ac23c983b610d1576b1f91be"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/actor-present-020.png",
+              "sha256": "b05c7aceebfce6c3869bef1dd490457cd81e8b92ac23c983b610d1576b1f91be"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/actor-present-021.png",
+              "sha256": "68e1f7599b2d7e7628e32f7296cf13fbd2f591e34fa6757d38d2a2c0ee6fb27a"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/actor-present-022.png",
+              "sha256": "68e1f7599b2d7e7628e32f7296cf13fbd2f591e34fa6757d38d2a2c0ee6fb27a"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/actor-present-023.png",
+              "sha256": "d8ee3495137c0283ff18c20aa942f824de318b5164abd024eb0ca2af4b3e8ddd"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/actor-present-024.png",
+              "sha256": "d8ee3495137c0283ff18c20aa942f824de318b5164abd024eb0ca2af4b3e8ddd"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/actor-present-025.png",
+              "sha256": "0afd222e18a1e102f909dd0146e3179d7fb434b84fbf7dfbd0041811f7443309"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/actor-present-026.png",
+              "sha256": "0afd222e18a1e102f909dd0146e3179d7fb434b84fbf7dfbd0041811f7443309"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/actor-present-027.png",
+              "sha256": "209b2dc05bae9c03f67fdb404f61de1e41d42d3996495a6c5d21335a6382e5bc"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/actor-present-028.png",
+              "sha256": "209b2dc05bae9c03f67fdb404f61de1e41d42d3996495a6c5d21335a6382e5bc"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/actor-present-029.png",
+              "sha256": "3cc305087d50a01ad03439e940a12dfad56881e1b11b77ca3b9397809081461a"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/actor-present-030.png",
+              "sha256": "3cc305087d50a01ad03439e940a12dfad56881e1b11b77ca3b9397809081461a"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/actor-present-031.png",
+              "sha256": "654ebea150f0751dd54881ac5e8ec95e20bc3245abff52f2630079233d485e7c"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/actor-present-032.png",
+              "sha256": "654ebea150f0751dd54881ac5e8ec95e20bc3245abff52f2630079233d485e7c"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/actor-present-033.png",
+              "sha256": "f467a29578272cd2d32da09c00c634020df0cf28960e01b1f0fa3563110b997a"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/actor-present-034.png",
+              "sha256": "f467a29578272cd2d32da09c00c634020df0cf28960e01b1f0fa3563110b997a"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/actor-present-035.png",
+              "sha256": "6e173495fa4e5ba148c8ace77b0100248ceaa572a3812ffe7d7853e220f401b5"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/actor-present-036.png",
+              "sha256": "6e173495fa4e5ba148c8ace77b0100248ceaa572a3812ffe7d7853e220f401b5"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/actor-present-037.png",
+              "sha256": "b3f86c2c5b14d5a3f0842d8c7f13fd6f98745ec938cf37d58392fb28ab285a2d"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/actor-present-038.png",
+              "sha256": "b3f86c2c5b14d5a3f0842d8c7f13fd6f98745ec938cf37d58392fb28ab285a2d"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/actor-present-039.png",
+              "sha256": "1ab9dbfbf767534eefb717b70ef6754289d0d9a1f8d8c61ef9134f9825e2efdf"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/actor-present-040.png",
+              "sha256": "1ab9dbfbf767534eefb717b70ef6754289d0d9a1f8d8c61ef9134f9825e2efdf"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/actor-present-041.png",
+              "sha256": "a9408a9331485343a98816b3980705e6a71ec7c1f9dc4bcf1817734507051b4b"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/actor-present-042.png",
+              "sha256": "a9408a9331485343a98816b3980705e6a71ec7c1f9dc4bcf1817734507051b4b"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/actor-present-043.png",
+              "sha256": "1ab9dbfbf767534eefb717b70ef6754289d0d9a1f8d8c61ef9134f9825e2efdf"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/actor-present-044.png",
+              "sha256": "1ab9dbfbf767534eefb717b70ef6754289d0d9a1f8d8c61ef9134f9825e2efdf"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/actor-slide-present-045.png",
+              "sha256": "bb75c0490aa6ee8d654300696863f89afd08d27768e70d1474da9840d7fc92bf"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/effect-main-present-062.png",
+              "sha256": "2e296dde9d18ddd660d2b6c6aaa84ec1b22791cf39c23c846acc1ca693313a69"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/effect-main-present-063.png",
+              "sha256": "2e296dde9d18ddd660d2b6c6aaa84ec1b22791cf39c23c846acc1ca693313a69"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/effect-main-present-064.png",
+              "sha256": "2e296dde9d18ddd660d2b6c6aaa84ec1b22791cf39c23c846acc1ca693313a69"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/effect-main-present-065.png",
+              "sha256": "188644770e5a42536e2511aa90f0b90716839efbc7168272a571690b8ae7e9bc"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/effect-main-present-066.png",
+              "sha256": "733e81c309b56f8e4a7ca1db268d13b68b118e194b64fcbf55dc419caa481fc1"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/effect-main-present-067.png",
+              "sha256": "3e8d5a559ccb16cf8df9eca484833c77d108943cdde785db508de7ef9482e86a"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/effect-main-present-068.png",
+              "sha256": "502a314e9980685b9674af84762de287286b4981c6facdb64214d9198ba3f634"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/effect-main-present-069.png",
+              "sha256": "ccd9a775d215acd26c41c1ba39f855251d7b73fef49bb5c28e72d0f74f37c487"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/effect-main-present-070.png",
+              "sha256": "5b56cf29deaa7c21148017a1f9e9ccb004e0b9a45578afc3ff45e1100ada9c5e"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/effect-main-present-071.png",
+              "sha256": "78a730e90c6ed3284f16150a7cbdc15f303dc7f74873a54ab76e3ceb16a64b05"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/effect-main-present-072.png",
+              "sha256": "95b6b9d9afec7b39de5610b5e67b424b17b1bb1ffaa05bd9fe2850a56d9b8f29"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/effect-main-present-073.png",
+              "sha256": "328f0b9c7c430270b3b102dc7b95e5da3ee8278d9b138c15c8fc0c6c7afe6d16"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/effect-main-present-074.png",
+              "sha256": "a90a79a7a05904236cdd47e5f1c1f945ee42aaf0fffaf6c7e357b0b88d9cbd5a"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/effect-slide-present-061.png",
+              "sha256": "4f2ab8129e7277b01784637cd9c0b2820ffccf2f9c2f3257a715b6fa3c3f69ec"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command33-r2/prelude-present-008.png",
+              "sha256": "bb75c0490aa6ee8d654300696863f89afd08d27768e70d1474da9840d7fc92bf"
+            }
+          ]
+        },
+        {
+          "command": 34,
+          "receipt": {
+            "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/receipt.json",
+            "sha256": "19a6e8ed94def355eca1be55809dba6ae580bdc35851bd65b028abfcab18917e"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3.log",
+            "sha256": "1dcf48b5530732231a6eac151df9a8843abba73fabe05c6c35d79692ac18859e"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3-memory.log",
+            "sha256": "b336608537a07051703197f32cbc30eac985b29fb51c93ad9a267cbe06f2cc55"
+          },
+          "present_count": 241,
+          "hd_draws": 80,
+          "faithful_draws": 5,
+          "phase_f2_switches": {
+            "actor": true,
+            "actor-slide": true,
+            "effect-main": true,
+            "effect-slide": true,
+            "prelude": true
+          },
+          "continuations": 1,
+          "pngs": [
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/actor-present-009.png",
+              "sha256": "6df4a5b350219c3f0d31894ed1728a36a560f71d7487bf2fd852fe97f39d68d3"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/actor-present-011.png",
+              "sha256": "f7ba44c99d7d1cb743bf411a1bb5bdee397b0830a31603a445615eb311224170"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/actor-present-012.png",
+              "sha256": "f7ba44c99d7d1cb743bf411a1bb5bdee397b0830a31603a445615eb311224170"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/actor-present-013.png",
+              "sha256": "267625b5d76410a147d63c8337018e89db4ee8fe7618987f3654c782b38db754"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/actor-present-014.png",
+              "sha256": "267625b5d76410a147d63c8337018e89db4ee8fe7618987f3654c782b38db754"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/actor-present-015.png",
+              "sha256": "6b8c3d862e3cb93fa03003a91f5ba2921ed8c811f6242c7b05e054dc1b1f8e48"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/actor-present-016.png",
+              "sha256": "6b8c3d862e3cb93fa03003a91f5ba2921ed8c811f6242c7b05e054dc1b1f8e48"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/actor-present-017.png",
+              "sha256": "46943d0a6893c206232b304bcb7eeaa5dbbaf46d5b15780b77b97b679398b1cc"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/actor-present-018.png",
+              "sha256": "46943d0a6893c206232b304bcb7eeaa5dbbaf46d5b15780b77b97b679398b1cc"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/actor-present-019.png",
+              "sha256": "a4e06919caf900164b009a046b1819a99b97ba4761d6d17c34fe6ec2f2286c8f"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/actor-present-020.png",
+              "sha256": "a4e06919caf900164b009a046b1819a99b97ba4761d6d17c34fe6ec2f2286c8f"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/actor-present-021.png",
+              "sha256": "2275049f78325cf84d941439f9fd1523291b211703421f888e122dacc24767c6"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/actor-present-022.png",
+              "sha256": "2275049f78325cf84d941439f9fd1523291b211703421f888e122dacc24767c6"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/actor-present-023.png",
+              "sha256": "163cc59ed716beff8f1a3455dd731584ef1376b007a4a62a6a73d951feed9d7d"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/actor-present-024.png",
+              "sha256": "163cc59ed716beff8f1a3455dd731584ef1376b007a4a62a6a73d951feed9d7d"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/actor-present-025.png",
+              "sha256": "9d54af679aa993454f64327da13060dd3667859f071ff0672a7919eea0bdf144"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/actor-present-026.png",
+              "sha256": "9d54af679aa993454f64327da13060dd3667859f071ff0672a7919eea0bdf144"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/actor-present-027.png",
+              "sha256": "fde7273f924465403cfc149dbc1fc60ea95799c2cd686e8e0b005c732b2c6565"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/actor-present-028.png",
+              "sha256": "fde7273f924465403cfc149dbc1fc60ea95799c2cd686e8e0b005c732b2c6565"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/actor-present-029.png",
+              "sha256": "6a465892236ef30711759bdf99caa9b4c48c505fbf6318011b5741a73592c2fe"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/actor-present-030.png",
+              "sha256": "6a465892236ef30711759bdf99caa9b4c48c505fbf6318011b5741a73592c2fe"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/actor-present-031.png",
+              "sha256": "9e88586230abccb152ec3b8405909c7937f0b93c6840f6747c9e88d95969fd4a"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/actor-present-032.png",
+              "sha256": "9e88586230abccb152ec3b8405909c7937f0b93c6840f6747c9e88d95969fd4a"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/actor-present-033.png",
+              "sha256": "60f56c638441be2f936b507049ad9437fbb1c14d3d5b0ee8ea5d0fed0f020263"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/actor-present-034.png",
+              "sha256": "60f56c638441be2f936b507049ad9437fbb1c14d3d5b0ee8ea5d0fed0f020263"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/actor-present-035.png",
+              "sha256": "a7d95c3f81211e45f9d8cb4374e903bd81cf1358854cd2e0e94f06d8cfe5eb23"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/actor-present-036.png",
+              "sha256": "a7d95c3f81211e45f9d8cb4374e903bd81cf1358854cd2e0e94f06d8cfe5eb23"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/actor-present-037.png",
+              "sha256": "fb774deb475cd0da5361bea0a880ff53c47f36b35ab44215903e2b520b4eb5bc"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/actor-present-038.png",
+              "sha256": "fb774deb475cd0da5361bea0a880ff53c47f36b35ab44215903e2b520b4eb5bc"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/actor-present-039.png",
+              "sha256": "cb59ba0fa61178072b4596d5c720cab0ab58d49c2ff32e57c4a1fb0af905f7ac"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/actor-present-040.png",
+              "sha256": "cb59ba0fa61178072b4596d5c720cab0ab58d49c2ff32e57c4a1fb0af905f7ac"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/actor-present-041.png",
+              "sha256": "bdbf12750c87e09065b7262ce1f2ef6ba898ce98d2855d8007c261a80ad50b76"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/actor-present-042.png",
+              "sha256": "bdbf12750c87e09065b7262ce1f2ef6ba898ce98d2855d8007c261a80ad50b76"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/actor-present-043.png",
+              "sha256": "cb59ba0fa61178072b4596d5c720cab0ab58d49c2ff32e57c4a1fb0af905f7ac"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/actor-present-044.png",
+              "sha256": "cb59ba0fa61178072b4596d5c720cab0ab58d49c2ff32e57c4a1fb0af905f7ac"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/actor-slide-present-045.png",
+              "sha256": "975e9cac0cc62eaf9fc8e2bf2a3ea75248953720d9a97564dfbb8dce68279a11"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/effect-main-present-062.png",
+              "sha256": "941a594d492cf8475364cab23ab6c1a9ebf39269b282e5905fd4936c85b676a5"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/effect-main-present-063.png",
+              "sha256": "2dbe2ee03069d931b486b8bd844b8e8fe37609e69fb9d6883ac827839cc5ec5a"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/effect-main-present-064.png",
+              "sha256": "1a9c2abded727637d4e9dde262fac497707bb610c9200c7380a003eacaab0bf4"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/effect-main-present-065.png",
+              "sha256": "b3cdd81676e77bd33d49f17220d9b389d0792cf15592122db014924067a7daa4"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/effect-main-present-066.png",
+              "sha256": "9e463aeefeda26bb0b5c68252c768ffef592fea15b4350a56e4bb9b94a71a580"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/effect-main-present-067.png",
+              "sha256": "8a9fc7c9a26ccd4aa281d289d8eac6a6810c423a733beb4d3b0c94cee4af7c72"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/effect-main-present-068.png",
+              "sha256": "cb8793ebc34072865ff49956b6affe4c159f303ddd745a480c8bc55df2638654"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/effect-main-present-069.png",
+              "sha256": "ecd91b1828c6b14dddf150c44242c4d79d58a22200094e79bf57c9ea790766c7"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/effect-slide-present-061.png",
+              "sha256": "403e9aaaec77877fb4e6d9b5de9c841b858f93f53446dc381b12b5163cefdc9b"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/prelude-present-008.png",
+              "sha256": "975e9cac0cc62eaf9fc8e2bf2a3ea75248953720d9a97564dfbb8dce68279a11"
+            }
+          ]
+        },
+        {
+          "command": 35,
+          "receipt": {
+            "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/receipt.json",
+            "sha256": "2bc1af5c8978f3e801ff2fa326b42cb5e7a5ff84981e334bb3a7f177a0d8b716"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3.log",
+            "sha256": "0cc17053d47af5042a5ab4f839e7b7b488d38c38969156d1612d5d67551295d2"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3-memory.log",
+            "sha256": "60ffe1974d5e35b6568ec666ebf9ff691bce973bb898dbee6f496f46232a89b8"
+          },
+          "present_count": 255,
+          "hd_draws": 101,
+          "faithful_draws": 6,
+          "phase_f2_switches": {
+            "actor": true,
+            "actor-slide": true,
+            "effect-main": true,
+            "effect-slide": true,
+            "effect-tail": true,
+            "prelude": true
+          },
+          "continuations": 1,
+          "pngs": [
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/actor-present-009.png",
+              "sha256": "80f139c7bb36aea97531b5d1ed4cdd885398c5492bbde0b8690aebfc5afe73c5"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/actor-present-011.png",
+              "sha256": "f1839e4fedb6b166e1f90979009f3844276ae4c71a0b5a61794a306acf1fd659"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/actor-present-012.png",
+              "sha256": "f1839e4fedb6b166e1f90979009f3844276ae4c71a0b5a61794a306acf1fd659"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/actor-present-013.png",
+              "sha256": "106279f2096d0604ea4b565cd5d8fa65c3dc7c359c2d8aedb9cbbc62b90e9a95"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/actor-present-014.png",
+              "sha256": "106279f2096d0604ea4b565cd5d8fa65c3dc7c359c2d8aedb9cbbc62b90e9a95"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/actor-present-015.png",
+              "sha256": "444fa00d71dab4491fb804deceb6e7ff10f6411522030e9744040da640d5c284"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/actor-present-016.png",
+              "sha256": "444fa00d71dab4491fb804deceb6e7ff10f6411522030e9744040da640d5c284"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/actor-present-017.png",
+              "sha256": "071787ddbf56dd87843b26348fb7a73c5672912d4a7ce1809dc166d85ab62ba0"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/actor-present-018.png",
+              "sha256": "071787ddbf56dd87843b26348fb7a73c5672912d4a7ce1809dc166d85ab62ba0"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/actor-present-019.png",
+              "sha256": "db4c0d3ff9b8518668a79e556c4481ae72f76d505ae77bd1f64ca9cbe2e4cb89"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/actor-present-020.png",
+              "sha256": "db4c0d3ff9b8518668a79e556c4481ae72f76d505ae77bd1f64ca9cbe2e4cb89"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/actor-present-021.png",
+              "sha256": "c76cdff0d62dd5ad3ef8eb3d88eb164f83f51ff6b2f80f67c57df13b2335f64b"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/actor-present-022.png",
+              "sha256": "c76cdff0d62dd5ad3ef8eb3d88eb164f83f51ff6b2f80f67c57df13b2335f64b"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/actor-present-023.png",
+              "sha256": "4cd94bb8019f6777edc183930ed8243844238016d4c53dca5da0909eb8020201"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/actor-present-024.png",
+              "sha256": "4cd94bb8019f6777edc183930ed8243844238016d4c53dca5da0909eb8020201"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/actor-present-025.png",
+              "sha256": "3594c1ae00f9c2d73f3bdf0edadb36d0c90121e9cd84bcfee2dde98712a6158d"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/actor-present-026.png",
+              "sha256": "3594c1ae00f9c2d73f3bdf0edadb36d0c90121e9cd84bcfee2dde98712a6158d"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/actor-present-027.png",
+              "sha256": "7aa99e8e468dea9fea5a9fd3755b02de3e1b112be5ed19216f0e007e4b0750c0"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/actor-present-028.png",
+              "sha256": "7aa99e8e468dea9fea5a9fd3755b02de3e1b112be5ed19216f0e007e4b0750c0"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/actor-present-029.png",
+              "sha256": "a5e4994080cc0cc16455f8b1871e181f16d6485c02d9cf9601a57a0b45ce8396"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/actor-present-030.png",
+              "sha256": "a5e4994080cc0cc16455f8b1871e181f16d6485c02d9cf9601a57a0b45ce8396"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/actor-present-031.png",
+              "sha256": "cba21f30c8a4ff957d55b52b80c766131b6b575c62b455f53cba83c4e9cc6c20"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/actor-present-032.png",
+              "sha256": "cba21f30c8a4ff957d55b52b80c766131b6b575c62b455f53cba83c4e9cc6c20"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/actor-present-033.png",
+              "sha256": "b12d30c10f92d5a4eec760ab73b6a75312ccb430f77cbc5865e8fc55b6e90fb2"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/actor-present-034.png",
+              "sha256": "b12d30c10f92d5a4eec760ab73b6a75312ccb430f77cbc5865e8fc55b6e90fb2"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/actor-present-035.png",
+              "sha256": "972a86ddd5a222eef5c1350e082d82d77e7142ca38a1e4dcb4d75cf6e14b6318"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/actor-present-036.png",
+              "sha256": "972a86ddd5a222eef5c1350e082d82d77e7142ca38a1e4dcb4d75cf6e14b6318"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/actor-present-037.png",
+              "sha256": "05fc002f74c193bac77a154d21a326c1e3b9a025f57e76fb5ac0d9172f542295"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/actor-present-038.png",
+              "sha256": "05fc002f74c193bac77a154d21a326c1e3b9a025f57e76fb5ac0d9172f542295"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/actor-present-039.png",
+              "sha256": "deeb0e85cd7c90a30d181c49661075331c0af69c877da418cbb99c1aba791ecd"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/actor-present-040.png",
+              "sha256": "deeb0e85cd7c90a30d181c49661075331c0af69c877da418cbb99c1aba791ecd"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/actor-present-041.png",
+              "sha256": "bfd57ff8ea2dd31bb461e118eefee68eb787b4bb49badad34554e2dcf66d66c4"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/actor-present-042.png",
+              "sha256": "bfd57ff8ea2dd31bb461e118eefee68eb787b4bb49badad34554e2dcf66d66c4"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/actor-present-043.png",
+              "sha256": "deeb0e85cd7c90a30d181c49661075331c0af69c877da418cbb99c1aba791ecd"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/actor-present-044.png",
+              "sha256": "deeb0e85cd7c90a30d181c49661075331c0af69c877da418cbb99c1aba791ecd"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/actor-slide-present-045.png",
+              "sha256": "a1c87a5bb66e5423c5c5352e3a8088e24a4f924a757617b60735b77513662861"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/effect-main-present-062.png",
+              "sha256": "04cba9451f5b84c71b2f66550fafa8247cf86edee10b09d60db24b3fe930d718"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/effect-main-present-063.png",
+              "sha256": "aae9f9febbc635111da25e6acc5fdd92277e7865fef82ad61bc654e9b3acc0b3"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/effect-main-present-064.png",
+              "sha256": "6c40af3cd5bbae7dda5575651b23857c588ce1c06dacd56a2614a45082d19450"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/effect-main-present-065.png",
+              "sha256": "385bb2698fa3924ab79a981113b2443412316f2ba86c08308d2d3011589f3225"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/effect-main-present-066.png",
+              "sha256": "76244d823753100ffaa03260175c4697aa910187b421a110a00fceb74e21b269"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/effect-main-present-067.png",
+              "sha256": "e8a5705f3b276599de9b7f700d362d3519efea19743c49079def989a10fec33f"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/effect-main-present-068.png",
+              "sha256": "4663165f8ba2ca232d9d91eb2bd4fd11708fbd22e67f368b0fb3a25d4b1619e5"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/effect-main-present-069.png",
+              "sha256": "56bb58a5db9d5e6e9d62c0cf61a3b6cb445450820bda9716b025decee85796a3"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/effect-slide-present-061.png",
+              "sha256": "66cf0a61c5f0993e68ac7acc33d90bd19ec180049d98ad7690faef09fb683e60"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/effect-tail-present-070.png",
+              "sha256": "4663165f8ba2ca232d9d91eb2bd4fd11708fbd22e67f368b0fb3a25d4b1619e5"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/effect-tail-present-071.png",
+              "sha256": "39591abd10bd4ecdefb24f06073a30e82b2dab6056a7e9d6c11698992b2aa18d"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/effect-tail-present-072.png",
+              "sha256": "f5e0fc95b00fbcb27243357a61ebf66fcadfb262dccbda55fae55773091858f3"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/effect-tail-present-073.png",
+              "sha256": "2e32ef80379a50979704c34fee61bd4803cf4fbe554102f928ac2e626e764ae6"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/effect-tail-present-074.png",
+              "sha256": "cb3b1d9561ef867ffe656de008c4ecc8f777e7a8eb38edb01308645ca05b9ad8"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/effect-tail-present-075.png",
+              "sha256": "8a9f63af2bd06a8f7054ec193e5d6eeb8f3133c7ab4dbe70ef3612e6bb436776"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/effect-tail-present-076.png",
+              "sha256": "0fe40e7b47374172756f449140da408f5d478af6261591beead4e792ee582c6d"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/effect-tail-present-077.png",
+              "sha256": "69336f7b666694fab0753bec29cab37daee369ee4a37a558209304eb966c7c1f"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/effect-tail-present-078.png",
+              "sha256": "4313bcc6dc7150ad96b4b0f906adb27471f342f51d47f5b60ab6aab62c271dd3"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/effect-tail-present-079.png",
+              "sha256": "2baa544acd61cd136097501d04c25aa79e8cb3cb24f84c4b84ee0d9bc3f63f9e"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/effect-tail-present-080.png",
+              "sha256": "05d216c7de3a1cf7cf5aece123910d234f47fb40109054c669cf9395fe146b08"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/caster-command35-r3/prelude-present-008.png",
+              "sha256": "a1c87a5bb66e5423c5c5352e3a8088e24a4f924a757617b60735b77513662861"
+            }
+          ]
+        }
+      ],
+      "core_verifier": {
+        "file": "work/promo-cadence-20261018/hd-fonts/caster-core-final-r1.json",
+        "sha256": "d301f2fecba489021ed204d91126e74e23d462f90f376e9d91232ffa98cbc657"
+      },
+      "matched_pngs": 148,
+      "negative_verifier": {
+        "file": "work/promo-cadence-20261018/hd-fonts/caster-verifier-negative-r1/receipt.json",
+        "sha256": "a18516d6094e1f6f434eddcd4e63dc9aafc133ff12138c507a0fddbce6c31555"
+      },
+      "atomicity": "角色／效果任一缺件、圖源驗後原生尾段資料失效及F2缺件，均不發布新圖源或owner；物理戰鬥既有預載回歸保持。"
+    },
+    "memory_corrections": {
+      "original_termination": "command32-r1 exit137，當輪沒有memory.events，不單獨斷言原因。",
+      "confirmed_oom": [
+        {
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r2.log",
+            "sha256": "859e335a924394731df470d88c2c9888de51c6af0c6e0502bfaa2026f8e48f23"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/caster-command32-r2-memory.log",
+            "sha256": "d7748dcd96cccbb1e97b7f885d1b8d3099e1dec6e1fef85d1b0b228288cbba33"
+          }
+        },
+        {
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r2.log",
+            "sha256": "697f9090a8e4a50cd6082787d7bb7da9b32b734d2d9123e41c98e3da2410835e"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r2-memory.log",
+            "sha256": "667cee59e10053611f0eee88ecf009adf5b24d36df0036cb2e437e38aa999ead"
+          }
+        }
+      ],
+      "first_fix": "完整擷取重用回讀畫布／pixels，測試末Dispose。共同18張PNG SHA相同。",
+      "same_pngs": {
+        "file": "work/promo-cadence-20261018/hd-fonts/caster-readback-common-pngs-r1.json",
+        "sha256": "0645bf82916ced7cb109025e4639321247808afaa641919b1e11d070ab44d45e"
+      },
+      "second_fix": "圖源預載提前、兩組圖源延後至原生建構成功才發布，避免缺件路徑先建整段Ebiten圖片。",
+      "final": "四caller沿2GB、cpus2、網路none，全部oom_kill0；peak仍約2GB，不宣稱代表性效能通過。",
+      "harness_correction": "r3單元測試暫存素材指標後清欄位，無法還原；r4保存及還原FDOTHER6欄位本身。同原測試條件乾淨重跑通過。",
+      "verifier_correction": "第一版沒排前景而拒actor；先按固定原包metadata／mask及HD alpha SHA解釋實際遮擋，再要求至少1000可見核心。原生自我首目標及層序保留。"
+    },
+    "readme_overview": {
+      "file": "docs/figures/hd-summon-caster-phases.png",
+      "sha256": "b2aa72bb57792070cef43ac167cf56020490fe34c38cfda66f38a3f859a5dcad",
+      "sources": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/caster-command34-r3/actor-slide-present-045.png",
+          "sha256": "975e9cac0cc62eaf9fc8e2bf2a3ea75248953720d9a97564dfbb8dce68279a11"
+        }
+      ],
+      "method": "單張最終1920x1200 GPU縮至960x600，無其他修改；施術後退場首張；class19／BattleFig4修改fixture。",
+      "discarded_overview": "入場末張與退場首張SHA相同，改單圖避免重複展示。"
+    },
+    "catalog_and_private": {
+      "catalog": {
+        "file": "remake/assets/themes/modern/catalog.json",
+        "sha256": "39d808f209059c7f4714bf1f02026708434badff53da7cdb9719deff6ca80782"
+      },
+      "assets": 375,
+      "figani_resources": 6,
+      "figani_frames": 46,
+      "fdother_resources": 4,
+      "fdother_frames": 37,
+      "new_assets": 0,
+      "private_commit": "b64bc057f76afcb4fe320d9ffccc279f0dae0729",
+      "private_files": 3392,
+      "runtime_only_files": 3146,
+      "scope": "本批沒有圖源增刪或私人同步；數量沿前批已驗結果，私人工作樹本批查核乾淨。"
+    },
+    "cleanup": {
+      "deleted": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/caster-hd-game",
+          "sha256": "85ec25f96bbce85e96953e77e086c1e3a3fa811ccc92e4a56a3fbb253a71755c",
+          "size_bytes": 19284632
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/caster-hd-tests",
+          "sha256": "8effd6b31f2e26807d66f37dc3f9ef5ce8145653188fd029a9b773545d8a74bc",
+          "size_bytes": 26229952
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/caster-hd-tests-r2",
+          "sha256": "d78d15f93a29b50474de2e9fbc668ea872306a46ee8456f4bdac15062a940d65",
+          "size_bytes": 26230264
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/caster-hd-game-r3",
+          "sha256": "b8277a4f599352e5b38f49848b5337d46d71fb6162298f4275d8f8859ce5231b",
+          "size_bytes": 19285656
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/caster-hd-tests-r3",
+          "sha256": "2d795ef4e4a0ddb3a070edc7d54e4a77f4dc399a8d4c3f676b309bd83d23765d",
+          "size_bytes": 26235720
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/caster-hd-tests-r4",
+          "sha256": "077dbbfb64477988619ccc4345878b47866597c3d1801ccbb31d0a154f972a38",
+          "size_bytes": 26235600
+        }
+      ],
+      "freed_bytes": 143501824,
+      "recordings_created": false
+    },
+    "worklist": {
+      "issue": 263,
+      "state": "OPEN",
+      "goal": "完成 fd2 戰鬥動畫hd",
+      "open_items": 21,
+      "manual_items": 14,
+      "possibly_complete": 0,
+      "render_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/caster-worklist-render.log",
+        "sha256": "c702c8cb103ec7a01ca34730434d08b71a670ba0eed8d5ea193f3224314c63fd"
+      },
+      "verify_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/caster-worklist-verify.log",
+        "sha256": "2f54f61dfa7fb4ccd6a11f9d46d47654d86d30b5df19bc8b0330be3d7a4888eb"
+      }
+    },
+    "lessons": {
+      "count": 259,
+      "guards": 139,
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/caster-lessons-final.log",
+        "sha256": "8dce65e242b5c899c7514a84ebb86a9156a50bc1d53429a18afdfde1f572862d"
+      }
+    },
+    "final_checks": {
+      "status": "PASS-CASTER-FINAL-CHECKS",
+      "changed_markdown_targets": 1427,
+      "broken_targets": [],
+      "positive_controls": [
+        {
+          "file": "README.md",
+          "target": "docs/figures/hd-summon-caster-phases.png"
+        },
+        {
+          "file": "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+          "target": "../../tools/verify_fd2_compound_caster_gpu.py"
+        }
+      ],
+      "ownership_checked_paths": 3979,
+      "unexpected_owners_or_md_directories": [],
+      "scope": "本輪變更與所有caster命名輸出根；不掃全部歷史work。全庫舊九項連結限制沿前批紀錄。",
+      "docker_cleanup": "提交前核對只剩本次有界檢查容器，完成後另以docker ps -a確認無FD2容器。"
     }
   }
 }

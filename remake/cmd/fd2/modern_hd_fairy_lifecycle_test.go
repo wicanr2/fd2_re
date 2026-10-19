@@ -67,6 +67,11 @@ func TestModernHDFairyRuntimeGPU(t *testing.T) {
 	if owner.frame != 0 || owner.repeat != 0 || owner.published {
 		t.Fatal("fairy advanced without Draw")
 	}
+	defer func() {
+		if probe.readback != nil {
+			probe.readback.Dispose()
+		}
+	}()
 	ebiten.SetWindowSize(640, 400)
 	ebiten.SetVsyncEnabled(false)
 	if err := ebiten.RunGame(probe); err != nil {
@@ -88,6 +93,9 @@ func TestModernHDFairyRuntimeGPU(t *testing.T) {
 		g.nativeRNGState != owner.plan.Result.Restore.RNGState || g.rng.Int63() != rand.New(rand.NewSource(33)).Int63() {
 		t.Fatal("fairy transaction, transient reset or RNG differs")
 	}
+	if err := probe.requireCasterPhases(); err != nil {
+		t.Fatal(err)
+	}
 	if probe.hd == 0 || probe.faithful == 0 || !probe.on || probe.finals == 0 {
 		t.Fatal("missing fairy HD/F2/final presentation")
 	}
@@ -97,7 +105,7 @@ func TestModernHDFairyRuntimeGPU(t *testing.T) {
 	}
 	report := map[string]any{"status": "PASS-SCOPED-RUNTIME-E1", "scope": "既有command33 class19／BattleFig4修改fixture；原生delay及hold保持，非一般玩家、自然存檔或原版oracle。",
 		"present_count": len(probe.seen), "hd_draws": probe.hd, "faithful_draws": probe.faithful, "final_draws": probe.finals,
-		"continuations": callbacks, "screenshots": probe.shots, "actor_hp": actor.HP, "target_hp": target.HP, "mp": actor.MP,
+		"continuations": callbacks, "screenshots": probe.shots, "hd_phase_draws": probe.phaseDraws, "phase_f2_switches": probe.phaseSwitches, "source_shots": probe.sourceShots, "actor_hp": actor.HP, "target_hp": target.HP, "mp": actor.MP,
 		"native_rng": g.nativeRNGState, "go_rng_unchanged": true}
 	if probe.out != "" {
 		raw, _ := json.MarshalIndent(report, "", "  ")

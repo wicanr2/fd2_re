@@ -3066,6 +3066,14 @@
         ],
         "pattern": "battle_approach_rounds"
       }
+    },
+    {
+      "id": "gpu-capture-reuses-readback-target-and-buffer",
+      "date": "2026-10-19",
+      "area": "GPU驗證擷取",
+      "rule": "多張最終GPU擷取重用同一回讀畫布與像素緩衝，在測試結束明確Dispose。保留全部呈現與圖片，用共同PNG雜湊、memory.events與memory.peak驗證變更，不以提高上限或減少驗收取代修正。入口remake/cmd/fd2/modern_hd_compound_lifecycle_test.go的readbackPixels。",
+      "why": "新增施術者逐階段擷取後，熾天使兩輪於18張PNG被終止；單獨重跑證實2GB上限的oom_kill=1。回讀畫布重用後同2GB完成158次呈現，oom_kill=0，共同18張PNG逐檔相同；峰值仍達2GB，不宣稱平台效能合格。 破壞神仍觸及上限，改為先驗角色／效果圖源、原生演出成功後才共同發布，最終四caller同上限皆無oom_kill。教訓工具排除測試檔，因此本條不掛不會生效的production guard。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json"
     }
   ]
 }

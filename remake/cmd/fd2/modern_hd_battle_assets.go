@@ -178,6 +178,49 @@ func (set *modernStoryPortraitSet) prepareBattleHDEffects(resources ...int) erro
 }
 
 func prepareModernBattleHDResources(entries map[int]*modernBattleHDResource, resources ...int) error {
+	pending, err := stageModernBattleHDResources(entries, resources...)
+	if err != nil {
+		return err
+	}
+	pending.publish()
+	return nil
+}
+
+type modernBattleHDPending struct {
+	entries   map[int]*modernBattleHDResource
+	requested map[int]bool
+	frames    map[int][]image.Image
+}
+
+// prepareBattleHDBanks commits both archive families only after every requested
+// registered source has decoded. A failure retains both prior frame banks.
+func (set *modernStoryPortraitSet) prepareBattleHDBanks(figures, effects []int) error {
+	publish, err := set.stageBattleHDBanks(figures, effects)
+	if err != nil {
+		return err
+	}
+	publish()
+	return nil
+}
+
+// Validate/decode before constructing expensive presentation images, but keep
+// both banks unpublished until all native frame construction has succeeded.
+func (set *modernStoryPortraitSet) stageBattleHDBanks(figures, effects []int) (func(), error) {
+	if set == nil {
+		return func() {}, nil
+	}
+	a, err := stageModernBattleHDResources(set.battleAnimations, figures...)
+	if err != nil {
+		return nil, err
+	}
+	b, err := stageModernBattleHDResources(set.battleEffects, effects...)
+	if err != nil {
+		return nil, err
+	}
+	return func() { a.publish(); b.publish() }, nil
+}
+
+func stageModernBattleHDResources(entries map[int]*modernBattleHDResource, resources ...int) (*modernBattleHDPending, error) {
 	requested := make(map[int]bool)
 	pending := make(map[int][]image.Image)
 	for _, resource := range resources {
@@ -190,7 +233,7 @@ func prepareModernBattleHDResources(entries map[int]*modernBattleHDResource, res
 			continue
 		}
 		if len(entry.Frames) == 0 {
-			return errors.New("modern HD battle: empty registered resource")
+			return nil, errors.New("modern HD battle: empty registered resource")
 		}
 		if entry.Frames[0] != nil {
 			continue
@@ -199,27 +242,30 @@ func prepareModernBattleHDResources(entries map[int]*modernBattleHDResource, res
 		for index, path := range entry.paths {
 			raw, err := os.ReadFile(path)
 			if err != nil {
-				return err
+				return nil, err
 			}
 			digest := sha256.Sum256(raw)
 			if hex.EncodeToString(digest[:]) != entry.hashes[index] {
-				return fmt.Errorf("modern HD battle: resource %d frame %d changed before preflight", resource, index)
+				return nil, fmt.Errorf("modern HD battle: resource %d frame %d changed before preflight", resource, index)
 			}
 			picture, _, err := image.Decode(bytes.NewReader(raw))
 			if err != nil || picture.Bounds() != entry.sizes[index] {
-				return fmt.Errorf("modern HD battle: resource %d frame %d cannot be preloaded", resource, index)
+				return nil, fmt.Errorf("modern HD battle: resource %d frame %d cannot be preloaded", resource, index)
 			}
 			frames[index] = picture
 		}
 		pending[resource] = frames
 	}
-	for resource, frames := range pending {
-		entries[resource].Frames = frames
+	return &modernBattleHDPending{entries: entries, requested: requested, frames: pending}, nil
+}
+
+func (pending *modernBattleHDPending) publish() {
+	for resource, frames := range pending.frames {
+		pending.entries[resource].Frames = frames
 	}
-	for resource, entry := range entries {
-		if !requested[resource] {
+	for resource, entry := range pending.entries {
+		if !pending.requested[resource] {
 			entry.Frames = make([]image.Image, len(entry.paths))
 		}
 	}
-	return nil
 }

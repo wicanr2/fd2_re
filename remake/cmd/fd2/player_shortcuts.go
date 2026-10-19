@@ -49,7 +49,7 @@ func (g *Game) cycleTheme() {
 // Rebinding only the portrait preserves the active dialogue's pages and progress.
 func (g *Game) applyTheme(set *modernStoryPortraitSet) error {
 	if resource := g.modernCompoundEffectResource(); set != nil && resource >= 0 {
-		if err := set.prepareBattleHDEffects(resource); err != nil {
+		if err := set.prepareBattleHDBanks(g.modernCompoundFigureResources(), []int{resource}); err != nil {
 			return err
 		}
 	}

@@ -29,7 +29,23 @@ type modernHDCompoundProbe struct {
 	faithful, hd, finals, updates int
 	shots                         map[string]bool
 	err                           error
+	phaseDraws                    map[string]int
+	phaseSwitches                 map[string]bool
+	pendingTheme                  string
+	faithfulAtSwitch              int
+	sourceShots                   map[string]any
+	readback                      *ebiten.Image
+	readbackPixels                []byte
 	check                         func() error
+}
+
+func (p *modernHDCompoundProbe) requireCasterPhases() error {
+	for _, phase := range []string{"prelude", "actor", "actor-slide", "effect-slide", "effect-main"} {
+		if p.phaseDraws[phase] == 0 || !p.phaseSwitches[phase] {
+			return fmt.Errorf("missing HD/F2 in %s", phase)
+		}
+	}
+	return nil
 }
 
 func (p *modernHDCompoundProbe) stable() [6]int {
@@ -72,13 +88,19 @@ func (p *modernHDCompoundProbe) Update() error {
 		p.err = fmt.Errorf("owner disappeared before continuation")
 		return ebiten.Termination
 	}
-	if (!p.off && p.hd > 2) || (p.off && !p.on && p.faithful > 0) {
+	if p.phaseDraws == nil {
+		p.phaseDraws = make(map[string]int)
+		p.phaseSwitches = make(map[string]bool)
+	}
+	turnOff := p.pendingTheme == "" && frame.hdPhase != "" && p.phaseDraws[frame.hdPhase] > 0 && !p.phaseSwitches[frame.hdPhase]
+	turnOn := p.pendingTheme != "" && p.faithful > p.faithfulAtSwitch
+	if turnOff || turnOn {
 		before := p.stable()
 		p.g.cycleTheme()
-		if !p.off {
-			p.off = true
+		if turnOff {
+			p.off, p.pendingTheme, p.faithfulAtSwitch = true, frame.hdPhase, p.faithful
 		} else {
-			p.on = true
+			p.on, p.phaseSwitches[p.pendingTheme], p.pendingTheme = true, true, ""
 		}
 		if p.stable() != before {
 			p.err = fmt.Errorf("F2 changed transaction or cursor")
@@ -147,18 +169,23 @@ func (p *modernHDCompoundProbe) Draw(screen *ebiten.Image) {
 		return
 	}
 	p.hd++
+	p.phaseDraws[f.hdPhase]++
 	last := f.hdSources.Layers[len(f.hdSources.Layers)-1]
-	label := fmt.Sprintf("frame-%d-mix-%.1f", last.Index, f.hdMix)
+	label := fmt.Sprintf("%s-present-%03d", f.hdPhase, index)
 	if last.DX != 0 || p.shots[label] || p.out == "" {
 		return
 	}
 	// 真正RunGame內呼叫正式最終合成器並回讀1920 GPU；不是X11或一般玩家收據。
-	final := ebiten.NewImage(1920, 1200)
-	defer final.Dispose()
+	if p.readback == nil {
+		p.readback = ebiten.NewImage(1920, 1200)
+		p.readbackPixels = make([]byte, 1920*1200*4)
+	}
+	final := p.readback
+	final.Clear()
 	var geometry ebiten.GeoM
 	geometry.Scale(3, 3)
 	p.presentation.DrawFinalScreen(final, screen, geometry)
-	pixels := make([]byte, 1920*1200*4)
+	pixels := p.readbackPixels
 	final.ReadPixels(pixels)
 	file, err := os.Create(filepath.Join(p.out, label+".png"))
 	if err != nil {
@@ -174,6 +201,15 @@ func (p *modernHDCompoundProbe) Draw(screen *ebiten.Image) {
 		p.err = err
 		return
 	}
+	if p.sourceShots == nil {
+		p.sourceShots = make(map[string]any)
+	}
+	layers := make([]map[string]any, 0, len(f.hdSources.Layers))
+	for _, source := range f.hdSources.Layers {
+		layers = append(layers, map[string]any{"archive": source.Archive, "resource": source.Resource, "frame": source.Index,
+			"x": source.Frame.X + source.DX, "y": source.Frame.Y + source.DY, "width": source.Frame.Width, "height": source.Frame.Height})
+	}
+	p.sourceShots[label+".png"] = map[string]any{"phase": f.hdPhase, "subtract": f.hdSubtract, "mix": f.hdMix, "layers": layers}
 	p.shots[label] = true
 }
 
@@ -224,6 +260,11 @@ func TestModernHDCompoundRuntimeGPU(t *testing.T) {
 	if probe.owner.frame != 0 || probe.owner.repeat != 0 || probe.owner.published {
 		t.Fatal("owner advanced without Draw")
 	}
+	defer func() {
+		if probe.readback != nil {
+			probe.readback.Dispose()
+		}
+	}()
 	ebiten.SetWindowSize(640, 400)
 	ebiten.SetVsyncEnabled(false)
 	if err := ebiten.RunGame(probe); err != nil {
@@ -243,6 +284,9 @@ func TestModernHDCompoundRuntimeGPU(t *testing.T) {
 	if target.HP != probe.owner.plan.Result.Targets[0].HPAfter || actor.MP != 80 || !actor.Acted || g.nativeRNGState != probe.owner.plan.Result.RNGState || g.rng.Int63() != rand.New(rand.NewSource(32)).Int63() {
 		t.Fatal("final transaction or Go RNG differs")
 	}
+	if err := probe.requireCasterPhases(); err != nil {
+		t.Fatal(err)
+	}
 	if probe.hd == 0 || probe.faithful == 0 || !probe.on || probe.finals == 0 {
 		t.Fatal("missing HD/F2/final presentation")
 	}
@@ -251,7 +295,7 @@ func TestModernHDCompoundRuntimeGPU(t *testing.T) {
 		t.Fatal("completed compound retained GPU textures")
 	}
 	report := map[string]any{"status": "PASS-SCOPED-RUNTIME-E1", "scope": "原始分離素材的既有class19／BattleFig4 fixture；修改隊伍位置與command32資料，非一般玩家、建構槽章收據或新oracle。保留原始frame delays及hold。",
-		"present_count": len(probe.seen), "hd_draws": probe.hd, "faithful_draws": probe.faithful, "final_draws": probe.finals, "continuations": callbacks, "screenshots": probe.shots, "hp": target.HP, "mp": actor.MP, "native_rng": g.nativeRNGState, "go_rng_unchanged": true}
+		"present_count": len(probe.seen), "hd_draws": probe.hd, "faithful_draws": probe.faithful, "final_draws": probe.finals, "continuations": callbacks, "screenshots": probe.shots, "hd_phase_draws": probe.phaseDraws, "phase_f2_switches": probe.phaseSwitches, "source_shots": probe.sourceShots, "hp": target.HP, "mp": actor.MP, "native_rng": g.nativeRNGState, "go_rng_unchanged": true}
 	if probe.out != "" {
 		raw, _ := json.MarshalIndent(report, "", "  ")
 		if err := os.WriteFile(filepath.Join(probe.out, "receipt.json"), append(raw, '\n'), 0644); err != nil {

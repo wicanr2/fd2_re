@@ -1,5 +1,14 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
+四召喚施術者延伸已達有限CONFORMED-SCOPED／RUNTIME-E1：原生producer明示每張人物索引，
+prelude／actor／actor-slide沿正式Game.Draw消費既有HD圖源，角色與FDOTHER共同預載／發布。
+395組GPU／CPU回歸及四caller完整158／156／241／255次呈現通過，每階段F2與一次續行保持。
+148張最終GPU符合高覆蓋藍衣核心；只排除已核SHA前景遮罩實際遮住的部分，不據此判唯一動作。
+修改class19／BattleFig4 fixture可能以施術者本身為首目標，兩個人物圖層沿原生計畫保留。
+普通玩家法術、其他施術者、尾段地圖HD與保存冷讀另驗；不新增原版oracle或PLAYER-E2。
+來源、三種圖源拒收與兩次記憶體修正見[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的
+`compound_caster_followup_20261019`。以下較早施術者缺口是當批狀態，以上述新範圍為準。
+
 索爾FIGANI0／1完整4／11幀已正式登錄。普通首章Z選索爾，兩次各一回合END接敵後
 進行攻防。END後四人存活且索爾42HP，後續攻防會正常受傷；兩次返回、F2、保存及新程序LOAD通過。
 57張索爾與58張強盜PNG符合相容圖源，兩場33／16張同圖核對雙方核心。

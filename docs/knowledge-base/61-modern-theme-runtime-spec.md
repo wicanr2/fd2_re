@@ -72,6 +72,47 @@ FD2_TEST_MODERN_EFFECT_OUT=<新輸出目錄> with-xvfb go test ./cmd/fd2 -run '^
 此測試沿既有class19／BattleFig4 fixture並修改隊伍與command32輸入，維持原frame delay與hold；
 只能證明正式caller的RUNTIME-E1，不是普通玩家、自然存檔或整章E2。
 
+#### 四召喚施術者階段（CONFORMED-SCOPED／RUNTIME-E1，原生排程及既有圖源延伸）
+
+依`fd2_command32_35_presentation_ida.txt`已證實的0x28024..0x28189、0x27FC9及
+0x29164，延伸command32～35的prelude、actor animation與actor slide。
+原版來源仍綁`fd2-reference-files.json`，不重新解傷害、MP、RNG、音效或原始tick。
+使用既有FIGANI角色HD集合，不增加資產role、存檔欄位、矩形或手繪範圍。
+
+- 原生actor builder另輸出ActorIndex／TargetIndex，保留原CPU像素與每個delay tick的
+  目標idle進位。既有[][]byte介面沿同一producer輸出，不改呈現張數。
+- prelude沿原九階、rawSide及TAI定位，原生底圖用當幀DAC；HD RGB沿既有
+  stage*6/63扣色近似。actor層序沿rawSide，slide沿frame0與20*i共八張。
+  原生fallback、缺整項圖源及Draw ACK／hold／交易發布位置保持。
+- 角色待機／演出／首目標待機與FDOTHER效果採跨家族原子預載。
+  先驗證圖源，原生演出建構全部成功才發布兩個集合；
+  原生建構失敗或任一缺件保持舊圖、owner、主題及HP／MP／兩種RNG。
+  F2切入預載整場來源，Draw不補讀，其他家族不互用相同數字資源。
+- 四個正式caller共用綁定器，不從烘焙CPU圖片反查人物或清除人物像素。
+  Game.Draw對本階段只有已登錄角色圖源時才使用HD，沒有任何登錄來源則沿原畫面。
+- 驗證兩側原生prelude／actor／slide的整幅GPU回讀與獨立CPU合成，
+  再驗四caller完整RunGame／最終GPU、F2、各階段與一次續行。
+  角色缺件、效果缺件、已開演後F2缺件均須拒收且不部分發布。
+  既有273個GPU案例及物理戰鬥預載回歸保持。
+- 首章四人沒有可用召喚，不改悠妮或隊伍來冒稱普通玩家驗收。
+  本批以既有class19／BattleFig4修改fixture驗正式caller，明示RUNTIME-E1。
+  普通玩家法術、保存冷讀、其他施法者及完整戰鬥HD Goal仍待完成。
+
+來源、輸入與重跑驗證沿[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的
+`compound_caster_followup_20261019`。實際圖源核對由
+[`verify_fd2_compound_caster_gpu.py`](../../tools/verify_fd2_compound_caster_gpu.py)接受
+`--receipt <各caller收據，可重複> --figure 4 --catalog <同份清冊> --source <圖源包>
+--original-pack <固定原版包> --inventory <全來源盤點> --report <新報告>`，
+限具有足夠高覆蓋藍衣核心的施術者；其他配色須另驗。執行期入口仍為
+[`modern_hd_compound.go`](../../remake/cmd/fd2/modern_hd_compound.go)。
+
+本批四caller完整158／156／241／255次呈現、395組GPU／CPU回歸及角色／效果／F2拒收通過。
+148張最終GPU符合圖源核心，前景原生mask或HD alpha均先核SHA，再排除確實遮住的像素，
+剩餘須至少1000個核心。三種負向實驗拒收，不只核對收據旗標。
+完整擷取共用回讀畫布與像素緩衝，測試結束Dispose；缺件圖源檢查提前，兩個集合延後共同發布。
+最終四流程的2GB容器均無oom_kill；峰值仍觸及上限，不宣稱平台效能通過。
+本批沒有新圖源，清冊仍375項，私人3392／runtime-only3146檔沿前批已驗結果。
+
 #### 風妖精分層圖源（CONFORMED-SCOPED／RUNTIME-E1，普通玩家另驗）
 
 FDOTHER66的原始14幀採frame0固定身體及frame1～13差分，正式command33先疊frame0。
@@ -115,7 +156,7 @@ FDOTHER68的前八幀共用15649個身體像素，最後幀下移一原生像素
 [`兩種分階段完整Draw`](../../remake/cmd/fd2/modern_hd_staged_summon_lifecycle_test.go)分別使用
 `FD2_HD_STAGED_COMMAND=34`或`35`及`TestModernHDStagedSummonRuntimeGPU`，素材參數沿前節。
 每個Ebiten測試獨立程序；同檔`TestNativeCompoundStageHoldRequiresNewDraw`驗多Update的交界拒絕前進。
-這些仍是修改class19／BattleFig4的RUNTIME-E1，普通玩家召喚、保存冷讀及FIGANI施術者另驗。
+這些仍是修改class19／BattleFig4的RUNTIME-E1；施術者延伸依上節，普通玩家召喚、保存冷讀與其他FIGANI施術者另驗。
 
 ### 大型戰鬥動畫 HD 起始切片（2026-10-19，READY-CANDIDATE）
 

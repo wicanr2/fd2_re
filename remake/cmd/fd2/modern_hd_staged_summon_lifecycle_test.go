@@ -174,6 +174,11 @@ func TestModernHDStagedSummonRuntimeGPU(t *testing.T) {
 	if index != 0 || repeat != 0 || published {
 		t.Fatal("staged summon advanced without Draw")
 	}
+	defer func() {
+		if probe.readback != nil {
+			probe.readback.Dispose()
+		}
+	}()
 	ebiten.SetWindowSize(640, 400)
 	ebiten.SetVsyncEnabled(false)
 	if err := ebiten.RunGame(probe); err != nil {
@@ -194,6 +199,9 @@ func TestModernHDStagedSummonRuntimeGPU(t *testing.T) {
 		g.rng.Int63() != rand.New(rand.NewSource(int64(command))).Int63() {
 		t.Fatal("missing stage or final action/MP/Go RNG differs")
 	}
+	if err := probe.requireCasterPhases(); err != nil {
+		t.Fatal(err)
+	}
 	if probe.hd == 0 || probe.faithful == 0 || !probe.on || probe.finals == 0 {
 		t.Fatal("missing staged summon HD/F2/final presentation")
 	}
@@ -203,7 +211,7 @@ func TestModernHDStagedSummonRuntimeGPU(t *testing.T) {
 	}
 	report := map[string]any{"status": "PASS-SCOPED-RUNTIME-E1", "command": command, "scope": "既有class19／BattleFig4修改fixture，保留原始delay及三段hold，非普通玩家或原版oracle。",
 		"present_count": count, "hd_draws": probe.hd, "faithful_draws": probe.faithful, "final_draws": probe.finals, "continuations": callbacks,
-		"stages": seenStages, "screenshots": probe.shots, "actor_hp": actor.HP, "target_hp": target.HP, "mp": actor.MP, "native_rng": g.nativeRNGState, "go_rng_unchanged": true}
+		"stages": seenStages, "screenshots": probe.shots, "hd_phase_draws": probe.phaseDraws, "phase_f2_switches": probe.phaseSwitches, "source_shots": probe.sourceShots, "actor_hp": actor.HP, "target_hp": target.HP, "mp": actor.MP, "native_rng": g.nativeRNGState, "go_rng_unchanged": true}
 	if probe.out != "" {
 		raw, _ := json.MarshalIndent(report, "", "  ")
 		if err := os.WriteFile(filepath.Join(probe.out, "receipt.json"), append(raw, '\n'), 0644); err != nil {

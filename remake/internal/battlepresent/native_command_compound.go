@@ -14,10 +14,29 @@ type NativeCompoundCommonFrames struct {
 	Tail        [][]byte
 }
 
+type NativeCompoundActorPresent struct {
+	Pixels                  []byte
+	ActorIndex, TargetIndex int
+}
+
 // BuildNativeCompoundActorFrames preserves the no-MP-marker class19 branch of
 // sub_2B659. Each FIGANI delay tick becomes one frame and target idle timing
 // advances across the complete actor phase.
 func BuildNativeCompoundActorFrames(base []byte, actorEffect, firstTargetIdle *figani.Animation, rawSide byte) ([][]byte, error) {
+	presents, err := BuildNativeCompoundActorPresents(base, actorEffect, firstTargetIdle, rawSide)
+	if err != nil {
+		return nil, err
+	}
+	frames := make([][]byte, len(presents))
+	for index, present := range presents {
+		frames[index] = present.Pixels
+	}
+	return frames, nil
+}
+
+// BuildNativeCompoundActorPresents retains the original source indices at each
+// present boundary; the indexed renderer and optional HD renderer share timing.
+func BuildNativeCompoundActorPresents(base []byte, actorEffect, firstTargetIdle *figani.Animation, rawSide byte) ([]NativeCompoundActorPresent, error) {
 	const frameBytes = 320 * 200
 	if len(base) != frameBytes || actorEffect == nil || len(actorEffect.Frames) == 0 ||
 		firstTargetIdle == nil || len(firstTargetIdle.Frames) == 0 || actorEffect.HeaderByte4 == 1 {
@@ -29,7 +48,7 @@ func BuildNativeCompoundActorFrames(base []byte, actorEffect, firstTargetIdle *f
 		}
 	}
 	targetFrame, targetRepeat := 0, 0
-	frames := make([][]byte, 0)
+	frames := make([]NativeCompoundActorPresent, 0)
 	for index, actor := range actorEffect.Frames {
 		if actor.Delay <= 0 || actor.Width <= 0 || actor.Height <= 0 || len(actor.Pixels) != actor.Width*actor.Height || len(actor.Mask) != len(actor.Pixels) {
 			return nil, fmt.Errorf("battlepresent: compound actor frame %d malformed", index)
@@ -53,7 +72,7 @@ func BuildNativeCompoundActorFrames(base []byte, actorEffect, firstTargetIdle *f
 					return nil, err
 				}
 			}
-			frames = append(frames, pixels)
+			frames = append(frames, NativeCompoundActorPresent{Pixels: pixels, ActorIndex: index, TargetIndex: targetFrame})
 			targetRepeat++
 			if targetRepeat >= firstTargetIdle.Frames[targetFrame].Delay {
 				targetRepeat = 0
