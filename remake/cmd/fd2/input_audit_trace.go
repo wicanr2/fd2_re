@@ -52,6 +52,7 @@ func (g *Game) recordInputAuditState() {
 		}
 		r["move_reachable"] = cells
 	}
+	r["hd_battle"] = g.modernHDBattleVisible && g.modernHDBattleGPU != nil && g.modernHDBattleGPU.theme == g.modernStoryPortraits
 	r["hd_world"] = g.modernHDWorldVisible && g.modernHDMapGPU != nil && g.modernHDMapGPU.Theme == g.modernStoryPortraits
 	if r["hd_world"] == true && g.modernHDMapPresented != nil {
 		r["hd_world_frame"] = g.modernHDMapPresentedFrame

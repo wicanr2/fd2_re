@@ -34,33 +34,39 @@ type modernStoryPortraitSet struct {
 	terrainHDBanks    map[int]*fdicon.Bank
 	battleHUDPanel    image.Image
 	battleActionIcons []image.Image
+	battleAnimations  map[int]*modernBattleHDResource
 }
 
 type modernThemeAsset struct {
-	Role             string   `json:"role"`
-	Status           string   `json:"status"`
-	File             string   `json:"file"`
-	Width            int      `json:"width"`
-	Height           int      `json:"height"`
-	SHA256           string   `json:"sha256"`
-	ConsumerContract string   `json:"consumer_contract"`
-	SpeakerID        int      `json:"speaker_id"`
-	Frame            int      `json:"frame"`
-	MouthState       string   `json:"mouth_state"`
-	Files            []string `json:"files"`
-	FrameSHA256      []string `json:"frame_sha256"`
-	FrameCount       int      `json:"frame_count"`
-	SourceGroup      int      `json:"source_group"`
-	AlphaContract    string   `json:"alpha_contract"`
-	CyclePolicy      string   `json:"cycle_policy"`
-	MapID            int      `json:"map_id"`
-	TileWidth        int      `json:"tile_width"`
-	TileHeight       int      `json:"tile_height"`
-	Columns          int      `json:"columns"`
-	TileCount        int      `json:"tile_count"`
-	Semantics        []string `json:"semantics"`
-	LayoutPolicy     string   `json:"layout_policy"`
-	FrameIDs         []int    `json:"frame_ids"`
+	Role                 string                     `json:"role"`
+	Status               string                     `json:"status"`
+	File                 string                     `json:"file"`
+	Width                int                        `json:"width"`
+	Height               int                        `json:"height"`
+	SHA256               string                     `json:"sha256"`
+	ConsumerContract     string                     `json:"consumer_contract"`
+	SpeakerID            int                        `json:"speaker_id"`
+	Frame                int                        `json:"frame"`
+	MouthState           string                     `json:"mouth_state"`
+	Files                []string                   `json:"files"`
+	FrameSHA256          []string                   `json:"frame_sha256"`
+	FrameCount           int                        `json:"frame_count"`
+	SourceGroup          int                        `json:"source_group"`
+	AlphaContract        string                     `json:"alpha_contract"`
+	CyclePolicy          string                     `json:"cycle_policy"`
+	MapID                int                        `json:"map_id"`
+	TileWidth            int                        `json:"tile_width"`
+	TileHeight           int                        `json:"tile_height"`
+	Columns              int                        `json:"columns"`
+	TileCount            int                        `json:"tile_count"`
+	Semantics            []string                   `json:"semantics"`
+	LayoutPolicy         string                     `json:"layout_policy"`
+	FrameIDs             []int                      `json:"frame_ids"`
+	SourceArchive        string                     `json:"source_archive"`
+	SourceResource       int                        `json:"source_resource"`
+	SourceMetadataSHA256 string                     `json:"source_metadata_sha256"`
+	NativeHeader         []int                      `json:"native_header"`
+	NativeFrames         []modernBattleHDDescriptor `json:"native_frames"`
 }
 
 type modernThemeCatalog struct {
@@ -91,6 +97,12 @@ func loadModernStoryPortraitSet(catalogPath, packRoot string) (*modernStoryPortr
 	}
 	hdPortraits := make(map[int]image.Image)
 	for _, asset := range catalog.Assets {
+		if asset.Role == "battle_animation_hd_set" {
+			if err := loadModernBattleHDAsset(set, asset, packRoot); err != nil {
+				return nil, err
+			}
+			continue
+		}
 		if asset.Role == "native_terrain_hd_set" {
 			if err := loadModernTerrainHDAsset(set, asset, packRoot); err != nil {
 				return nil, err

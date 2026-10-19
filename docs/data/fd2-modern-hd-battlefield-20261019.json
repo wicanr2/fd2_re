@@ -14,7 +14,8 @@
     "timed_dialogue": "CONFORMED-SCOPED-RUNTIME-E1：計時FFEC開收框保留HD世界，EXP99普通鍵盤／F2與保存冷讀通過；其他caller未驗。",
     "hd_terrain": "CONFORMED-SCOPED：map0六組53槽；新增圓頂綠色／褐色雙塊四底圖在兩張正常GPU全部相符，短長組合與保存冷讀通過；草地及其他地形仍待HD化。",
     "ai_player_input_lock": "CONFORMED-SCOPED：AI換手期間拒絕玩家地圖輸入重入；普通END／增援對話及相關／完整Go回歸通過。",
-    "gaia_redesign": "CONFORMED-SCOPED：新版頭像與四方向圖組已登錄；正常START／Gaia北移取消／F2／冷讀分段驗證。相位差異與序章尾端失敗明示，非逐幀parity。"
+    "gaia_redesign": "CONFORMED-SCOPED：新版頭像與四方向圖組已登錄；正常START／Gaia北移取消／F2／冷讀分段驗證。相位差異與序章尾端失敗明示，非逐幀parity。",
+    "hd_battle_animation": "RUNTIME-E1-SCOPED：共背景可選GPU呈現與170回讀／完整Draw生命週期通過；正式清冊仍無HD動畫，人物占寬待決，其餘FIGANI／共同效果未完成。"
   },
   "runtime_source": {
     "binary_sha256": "07d48b2972a8dea4a5a3b67753b3e6126788cda0930a541e475b41f53e4713cb",
@@ -4550,5 +4551,912 @@
     },
     "source_commit": "27afc55c1321d7c6021299df03b2173e1cac503f",
     "source_remote_verified": true
+  },
+  "battle_animation_followup_20261019": {
+    "date": "2026-10-19",
+    "goal": "完成fd2戰鬥動畫HD",
+    "status": "SOURCE-VERIFIED-CANDIDATE-ONLY",
+    "branch": "hd-battle-animation",
+    "base_commit": "b676984dbbf49a3d67ad4ccd45d3579a1aa40df8",
+    "issue": 263,
+    "full_battle_animation_hd_complete": false,
+    "production_draw_enabled": false,
+    "catalog_unchanged_sha256": "ec30c5f70966b43fc33055115bedc24a79b7be91fac201e90107779e9fdeb9bc",
+    "private_pack_changed": false,
+    "formal_release_changed": false,
+    "new_original_oracle": false,
+    "new_matching": false,
+    "new_player_e2": false,
+    "current_state": {
+      "remake_completed": "本輪沒有新增正式戰鬥HD；既有頭像、FDICON與地形成果保持。",
+      "original_source": "全部FIGANI raw重組雜湊相同；全部已解碼PNG／mask／描述子與既有Go原始解碼器相同。",
+      "candidate": "離線合成器通過72組幾何與新圖定位，單張出拳後候選尚非正式動畫。",
+      "optional_polish": "本輪不處理草地、HUD或平台。"
+    },
+    "inventory": {
+      "source_inputs": [
+        {
+          "file": "FD2.EXE",
+          "size": 357074,
+          "md5": "b97caf2239a27a896069d03549d96e1e",
+          "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+        },
+        {
+          "file": "FIGANI.DAT",
+          "size": 15279582,
+          "md5": "7da21ec0ad9917455459f1acb970bdf4",
+          "sha256": "e909314ce37b70701238fd24febc8f61603bbe8d81a9ecbf8f289c97a5b67a1f"
+        }
+      ],
+      "archive_reconstruction": {
+        "contract": "LLLLLL + little-endian u32 offsets + raw entries",
+        "size": 15279582,
+        "sha256": "e909314ce37b70701238fd24febc8f61603bbe8d81a9ecbf8f289c97a5b67a1f",
+        "md5": "7da21ec0ad9917455459f1acb970bdf4",
+        "matches_pinned_original": true
+      },
+      "resource_count": 409,
+      "resource_status_counts": {
+        "decoded": 264,
+        "empty_header_zero": 144,
+        "blocked": 1
+      },
+      "decoded_frame_count": 2118,
+      "verified_manifest_assets": 5355,
+      "descriptor_asset_id_aliases": 4236,
+      "frame_resolution": "依正式 loader 的 path/mask_path；檔案必須同時列在 manifest 及本資源 output_asset_ids，逐檔 SHA-256 相符",
+      "registered_hd_animation_assets": [],
+      "focus": {
+        "battle_fig": 30,
+        "idle_resource": 90,
+        "attack_resource": 91,
+        "third_resource_status": "empty_header_zero"
+      }
+    },
+    "inventory_report": {
+      "file": "work/promo-cadence-20261018/hd-fonts/battle-animation-hd-inventory-final.json",
+      "sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51"
+    },
+    "focus_native_frames": [
+      {
+        "resource": 90,
+        "status": "decoded",
+        "reason_code": "decoded",
+        "raw_sha256": "8c6e80f7b84180c89369599397891f2bc461b7c75558b20ea3c9d3e2adeb016f",
+        "status_sha256": "cd419d9d5d0dcff8b57d1ab8c716eea5be8ebb37e9e31acabed34549d549ed82",
+        "frames": [
+          {
+            "frame": 0,
+            "x": 189,
+            "y": 49,
+            "width": 104,
+            "height": 143,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0,
+            "pixels_sha256": "df489aee03352fb6ac490334edfb7580c504c07e433fcdc94664532aed4c77ef",
+            "mask_sha256": "35985f7f54c3d5a6904e7d92dfea4088e95cce943f88b41bdb4d317ea26449b4"
+          },
+          {
+            "frame": 1,
+            "x": 189,
+            "y": 50,
+            "width": 104,
+            "height": 142,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0,
+            "pixels_sha256": "c208d59d0ae58d30aa4d3660a9a01609fbe4bafb2903af05c3192b057fc65b5e",
+            "mask_sha256": "859ded6741136d7cfb9e9b0c73713470e426638e9b20f8efaea2855fd9e1252d"
+          },
+          {
+            "frame": 2,
+            "x": 189,
+            "y": 51,
+            "width": 104,
+            "height": 141,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0,
+            "pixels_sha256": "f2ea35db469363590c27b1f67182315863b128ba97a287f6c027068ebc553242",
+            "mask_sha256": "6aeb6d6a375b7c6084161f375997caddf461330c5ca34dcd05a89a7922ccbf3f"
+          },
+          {
+            "frame": 3,
+            "x": 189,
+            "y": 50,
+            "width": 104,
+            "height": 142,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0,
+            "pixels_sha256": "c208d59d0ae58d30aa4d3660a9a01609fbe4bafb2903af05c3192b057fc65b5e",
+            "mask_sha256": "859ded6741136d7cfb9e9b0c73713470e426638e9b20f8efaea2855fd9e1252d"
+          }
+        ],
+        "metadata_sha256": "ba5ef943e8140327bb56709c47c149cb7d71dcd91ff2f05c12620d10047aa344",
+        "native_header": {
+          "byte_1": 0,
+          "byte_2": 4,
+          "byte_4": 0
+        }
+      },
+      {
+        "resource": 91,
+        "status": "decoded",
+        "reason_code": "decoded",
+        "raw_sha256": "0391bdbbe171ca226e8c435ab83ee3b77a5b0de58629f4221c2b42eeaa60dbff",
+        "status_sha256": "73e88a9ff114a6b3865b157f213954e979203c346ec8cd8b0765f36723d5f589",
+        "frames": [
+          {
+            "frame": 0,
+            "x": 189,
+            "y": 49,
+            "width": 104,
+            "height": 143,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0,
+            "pixels_sha256": "df489aee03352fb6ac490334edfb7580c504c07e433fcdc94664532aed4c77ef",
+            "mask_sha256": "35985f7f54c3d5a6904e7d92dfea4088e95cce943f88b41bdb4d317ea26449b4"
+          },
+          {
+            "frame": 1,
+            "x": 189,
+            "y": 49,
+            "width": 110,
+            "height": 143,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 3,
+            "raw_byte_7": 0,
+            "pixels_sha256": "428b29ab763dbbc9948441a1b2c0cd2acfd83a5e8319bfcbf7a5c64d29a9579d",
+            "mask_sha256": "c8599d11b73c5915859a6f1a646ea46db73bd38bdeafa6e96908d7d390ae6f69"
+          },
+          {
+            "frame": 2,
+            "x": 189,
+            "y": 49,
+            "width": 111,
+            "height": 143,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0,
+            "pixels_sha256": "7487e269e39341d2769711b2a29c9b6351733360ecf9a096c485fd288777942a",
+            "mask_sha256": "6720fe038708bc53a0a8822521fafacbbdf977366253c83e14a32281873b62b9"
+          },
+          {
+            "frame": 3,
+            "x": 189,
+            "y": 49,
+            "width": 111,
+            "height": 143,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0,
+            "pixels_sha256": "5a124b361530b2c5bb9023bd2e0ca3502143baf2b783b7880731385fd76955e9",
+            "mask_sha256": "9b9139f935e7dd014e3feb68ad225f78e51f24e28412781060e4a03cebef8ca1"
+          },
+          {
+            "frame": 4,
+            "x": 189,
+            "y": 49,
+            "width": 111,
+            "height": 143,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0,
+            "pixels_sha256": "43f4255a5da00e66b65901df90c8d9b4416e8c67abb8a8a1fc64cf03e795fba7",
+            "mask_sha256": "5f117642d77df8f7cd5b6322f1b0105df9095f0aee3fad0a1f49c4d866ac358e"
+          },
+          {
+            "frame": 5,
+            "x": 189,
+            "y": 49,
+            "width": 104,
+            "height": 143,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0,
+            "pixels_sha256": "c0c78310a53e5e742e2692fdc42e3362bea1fca5dffb94c9f56619a541ec25b6",
+            "mask_sha256": "35985f7f54c3d5a6904e7d92dfea4088e95cce943f88b41bdb4d317ea26449b4"
+          },
+          {
+            "frame": 6,
+            "x": 126,
+            "y": 45,
+            "width": 194,
+            "height": 155,
+            "delay_native": 2,
+            "raw_byte_4": 1,
+            "raw_byte_5": 2,
+            "raw_byte_7": 0,
+            "pixels_sha256": "12a048acb662bdaa9e40cde366dd3d6f4874d49fc73b9ef4b31e6902c7999d73",
+            "mask_sha256": "03f7970e2ca9913002e3556fbd5cab60cc7f6b4a5d6eae4923ec5a2d8d753c6e"
+          },
+          {
+            "frame": 7,
+            "x": 129,
+            "y": 46,
+            "width": 151,
+            "height": 146,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0,
+            "pixels_sha256": "889278d0fd470ce4abc8f27071fdc32de6994a0ee3788f90bcb17d7bc5e7cc86",
+            "mask_sha256": "526b244e89cf6f7ae44c34b8d7935e1697efd591a6edcb4b06a8a31257897a2d"
+          },
+          {
+            "frame": 8,
+            "x": 130,
+            "y": 45,
+            "width": 150,
+            "height": 147,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0,
+            "pixels_sha256": "44cb3261d720a0d6f00e8a780398e22ce67d791b938ebbd82a0c63a269e8039f",
+            "mask_sha256": "6248179db908daa8aceccd4fbe4516ec7fcb28eaf089cebb8910090821eb3116"
+          },
+          {
+            "frame": 9,
+            "x": 131,
+            "y": 45,
+            "width": 149,
+            "height": 147,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0,
+            "pixels_sha256": "df78f36c70c5d3f5be97013c40b2ef61e73dd268e6dc1f3dcb628c8eff056bb9",
+            "mask_sha256": "be640dae1e9981eaa80487d66e318f32a881e9c30f371fe02f71f0bc5fc81307"
+          },
+          {
+            "frame": 10,
+            "x": 131,
+            "y": 45,
+            "width": 149,
+            "height": 147,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0,
+            "pixels_sha256": "65d8bce9ccef26be074d747c09db088bef337f75a81073097c0818457f0577ac",
+            "mask_sha256": "4752bc1a12dd9a21d967fb85841741d309976bcc7716d11f580cd8ac7d8b8847"
+          }
+        ],
+        "metadata_sha256": "aee35c8590fa5b2eec1bfe0b5f4902a4b950721386dfee29ea3d03e1ff8797b1",
+        "native_header": {
+          "byte_1": 0,
+          "byte_2": 11,
+          "byte_4": 6
+        }
+      },
+      {
+        "resource": 92,
+        "status": "empty_header_zero",
+        "reason_code": "zero_header_word",
+        "raw_sha256": "6b25930e91686cee8bb5d4dae8dbed14f63c690c1c97ecb98552d8842e2d9395",
+        "status_sha256": "fcaebf49f2c80f204028c35eeec534fe208934e7c3adca6b66f9331dea843d94",
+        "frames": []
+      }
+    ],
+    "reference_sheet": {
+      "file": "work/promo-cadence-20261018/hd-fonts/gaia-battle-original-frames-reproduced-final.png",
+      "sha256": "9d99b4a590a4a27dab5e440e50e0e39a10f46642ade7b5a633f5175f24ec1c64"
+    },
+    "source_reference": "decoded-assets-only；不是原版執行期畫面或same-state收據",
+    "generation": [
+      {
+        "id": "r1",
+        "file": "work/promo-cadence-20261018/hd-fonts/gaia-battle-sheet-r1.png",
+        "sha256": "ca6358ef9cb8e89adf510a9e2a52b355bb82cebed8618354046f0bacf64025d4",
+        "status": "rejected_sheet",
+        "review": "出拳後姿勢頭部未朝出拳方向；三個姿勢間距不足，不能直接切成正式動畫。",
+        "tool": "built-in image_gen",
+        "generated_source": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-ede54e1f-e616-4f5f-adee-e71b35482dbe.png",
+        "prompt": "Create a disposable HD battle-sprite pose prototype for Flame Dragon Knights 2, using the attached images. Image 1 is the already APPROVED Gaia identity and painterly art style: extremely bulky short-necked pale sage-gray armored robot, cobalt/navy structural joints, low angular layered helmet with narrow blue visor, massive chest shoulders and limbs. Preserve that identity exactly. Image 2 is the ORIGINAL game's enlarged pixel battle reference, arranged 2 by 2: top-left idle, top-right wind-up with forearm held across chest, bottom-left impact flash, bottom-right extended-arm follow-through. These are the action and camera authority. Make a wide TRANSPARENT sprite sheet with THREE full-body poses in ONE ROW, equal cells, plenty of transparent gutter, same character height and fixed feet baseline in all cells. All figures face SCREEN LEFT in original side/three-quarter combat camera. Left cell idle braced stance matching original top-left, right arm bent horizontally across chest, opposite arm down. Middle cell charging/wind-up matching original top-right, the bent forearm raised slightly higher, tiny amber indicator only as original. Right cell follow-through matching original bottom-right: twist torso toward left, extend the near arm diagonally up-left, wide planted legs; empty clenched armored fist / tapered forearm matching original, NO handheld weapons, no invented spear, no sword, no rifle. Keep the small original circular mechanical fitting behind/top of helmet subtle. Do not add an attack effect or beam in this sheet: the original yellow-white impact wedge will remain a separately preserved effect for later integration. No giant new glowing core, no fabric, no wrappings, no human facial features, no extra limbs. Not chibi, retain powerful heavy proportions. Clean hand-painted detailed game illustration, controlled dark outlines, cool pale armor and blue mechanical gaps, consistent directional lighting and exact same armor topology between poses. Complete feet, hands and helmet within every cell, no cropping. Transparent background, no floor shadows outside the characters, no backdrop, no labels, no text, no borders. This is a pose-review prototype only, not a screenshot and not yet the final in-game animation."
+      },
+      {
+        "id": "r2",
+        "file": "work/promo-cadence-20261018/hd-fonts/gaia-battle-sheet-r2.png",
+        "sha256": "8edfb0c6f6164a9fecfa8f2718b98aabe85b90cfe96dee20650bebd10f9b5030",
+        "status": "rejected_sheet",
+        "review": "定向編修仍未修正出拳後頭部朝向；錯誤要求所有姿勢朝左已撤回，原版待機朝右、出拳後朝左。",
+        "tool": "built-in image_gen",
+        "generated_source": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-92dad12e-48b6-4177-a73b-89475f5f342d.png",
+        "prompt": "Revise the attached Gaia battle pose prototype, image 1. This is a disposable pose-review sprite sheet for a 1920x1200 remake. Preserve the approved robot's exact PALE SAGE-GRAY THICK ARMOR, COBALT JOINTS, wide shoulders, powerful bulky proportions and clean hand-painted style. Reference image 2 is the ORIGINAL game's action and orientation authority. Fix these specific defects in image 1: (1) the HELMET AND VISOR MUST FACE SCREEN LEFT in ALL THREE poses, matching the original game, not screen right; (2) no figure may be clipped or touch outer canvas edges, especially the rightmost foot; (3) no green edge artifacts; (4) each pose occupies its own equal width cell, no overlap. Make a generous wide transparent canvas, exactly THREE full-body figures in one horizontal row. Use 10 percent outer padding and generous gutters, all feet aligned at common baseline, equal body height. Pose 1 idle: head clearly facing left with left-pointing layered brow and visor opening, forearm held across chest and other arm down, wide braced feet. Pose 2 wind-up: same camera and left-facing helmet, bent forearm drawn up across chest slightly higher than idle, no glowing core, torso only mildly turned. Pose 3 follow-through: punch with near armored forearm and fist extended DIAGONALLY UP LEFT, head looking LEFT along that arm, torso turned left, both massive boots visible, other arm bent DOWN by waist as original. These must be credible connected poses of the SAME armor design, NOT three different robots. NO weapon, NO beam, NO action swoosh, NO extra new decorations; the original yellow-white impact shape will be a separate retained effect later. No text, no grid lines, no ground/background, no shadows outside the cutouts. True transparent background. This is not a game screenshot. The original references are pixel art, but new output must have richly detailed HD hand-painted edges and metal shading."
+      },
+      {
+        "id": "r3",
+        "file": "work/promo-cadence-20261018/hd-fonts/gaia-battle-follow-through-r3.png",
+        "sha256": "49fcecb304be23861ca1e21a5e534460d3e62467ea758c631d0a95b1b03c42e7",
+        "status": "pose_candidate_only",
+        "review": "出拳後頭部方向已修正；只供單姿勢定位，未畫原版白黃閃光，不能當完整第7幀或整套動畫。",
+        "tool": "built-in image_gen",
+        "generated_source": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-5bf95ec5-e2eb-4046-803b-ff485dbe5fd1.png",
+        "prompt": "Render ONE full-body HD battle animation FOLLOW-THROUGH pose faithfully tracing the silhouette, limb positions and camera in reference image 1 (the original Gaia battle frame). Reference image 2 supplies ONLY the approved materials, armor design and paint style, NOT its pose or head orientation. Critical: copy the HEAD FACING LEFT and the torso facing LEFT of the PIXEL frame in image 1. Helmet nose/brow/visor front must point LEFT toward the attacking forearm, with back of helmet on RIGHT, not the opposite. The extended armored forearm is at the LEFT upper part of silhouette, diagonally up-left; short thick neck, enormously broad chest, huge sage-gray pale green metal armor over cobalt blue joints, very stocky powerful robot, no human face or wrappings. Feet match the original staggered braced stance, one foot at lower left and the other at lower right, toes and soles completely inside canvas. Tapered armored punch fist, no handheld weapon, no invented blade, no beam; leave out the yellow-white flash so it can be independently composed later. One single figure, full head to feet, transparent background, generous margin 8 percent on all sides, 1024 by 1024 or larger. Clean hand-painted detailed 1990s fantasy RPG HD illustration, defined thick armor panels with subtle brush texture and heavy shape, consistent approved colors. Not a multi-panel sheet, not three figures, no text, no border, no floor, no added shadows outside cutout. Prior attempt incorrectly kept the head pointing screen RIGHT while the attacking arm points LEFT. Resolve that exact anatomical error. The visor/front brow should now be at the LEFT side of the head, as in the original frame."
+      },
+      {
+        "id": "r4",
+        "file": "work/promo-cadence-20261018/hd-fonts/gaia-battle-idle-r4.png",
+        "sha256": "6c12b84372702926e7266b8d5da45136013f153fb5ebc2f96897b5643b1e0806",
+        "status": "rejected_pose",
+        "review": "單張待機的屈臂左右關係與原版不同，不能因頭部方向正確就接入。",
+        "tool": "built-in image_gen",
+        "generated_source": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-60443f71-86a8-45f5-9593-e45c5298a2e6.png",
+        "prompt": "Use case: style-transfer. Asset: ONE complete Gaia battle idle sprite, transparent. Reference image 1 is the ORIGINAL FD2 battle idle pose and camera authority. Reference image 2 is the already user-APPROVED robot identity and hand-painted materials. Recreate exactly the battle stance of image 1 with the robot design of image 2. ONE stocky bulky full-body robot, 3/4 battle view, helmet/front mask faces SCREEN RIGHT as in ORIGINAL IDLE, low short neck, deep chest and very wide massive shoulders, thick limbs. The near forearm is bent horizontally across the chest, forearm pointing left, elbow right; the other arm down. Staggered wide feet match original. Pale sage-gray thick metal plates with cobalt blue structural joints. Angular overlapping helmet brow, narrow blue visor, no human mouth or skin, no bandages or fabric, no thin limbs. Retain the small circular mechanical fixture behind helmet seen in original. No new weapons, no giant glowing core, no effects, no flash. Consistent painterly fantasy RPG illustration with clean dark contour, subtle brush texture, high detail. Important framing: figure is only 75 percent of canvas height, centered with AT LEAST 12 percent truly transparent margin on EVERY side. Complete feet and helmet well within image edges. One figure only. 1024x1536 or square high resolution. No text, no floor, no background, no ground shadow. Transparent alpha. This will be compiled into a native-descriptor-aligned battle sprite; do not draw a game screen."
+      }
+    ],
+    "compiled_pose_receipt": {
+      "file": "work/promo-cadence-20261018/hd-fonts/gaia-battle-091-f07-hd-candidate-r1.json",
+      "sha256": "e654d94848bc36eb2fe85d8abf472f5a380d5c7af8ea59eb33234fe1b3676729"
+    },
+    "compiled_pose": {
+      "file": "work/promo-cadence-20261018/hd-fonts/gaia-battle-091-f07-hd-candidate-r1.png",
+      "sha256": "dfdbf414621ce71e3af0fdee0299cd409f7c32c3ac0c2dea0302bb239fd8143a"
+    },
+    "native_layout": {
+      "file": "work/promo-cadence-20261018/hd-fonts/gaia-battle-native-layout.png",
+      "sha256": "51870a8fa7c501189ce6ef6a86f72d99f25a7da4b124e0dd9c327dae8a37ffca"
+    },
+    "hd_layout": {
+      "file": "work/promo-cadence-20261018/hd-fonts/gaia-battle-hd-layout.png",
+      "sha256": "1900257cd5d0562d5424fa9067440191fc46179254307910d7eefa797142207f"
+    },
+    "layout_scope": "離線320×200零底圖經6倍合成；僅核對位置，不是遊戲截圖；原生閃光尚未重繪。",
+    "validation": {
+      "source_guard": "PASS：錯固定來源、錯PNG雜湊、raw竄改並重簽manifest仍拒收。3 tests / 9.036s。",
+      "source_decoder": {
+        "file": "work/promo-cadence-20261018/hd-fonts/battle-hd-source-decoder-tests.log",
+        "sha256": "6d80c38606a35c072d0baee883ab70bec4265d86c33185873aefc61f41d1cd41"
+      },
+      "source_decoder_result": "PASS：264 resources / 2118 frames / 5.86s。",
+      "candidate_and_physical": {
+        "file": "work/promo-cadence-20261018/hd-fonts/battle-hd-candidate-go-final-tests.log",
+        "sha256": "b9e9d1ed9cd600747cd3312ce8951c65fbfe5d0108b4f1347239708be0e5fa53"
+      },
+      "candidate_and_physical_result": {
+        "passed": 12,
+        "skipped": 24,
+        "seconds": 10.034,
+        "scope": "只宣稱實際PASS的12項；24項需另給正式pack/oracle/GPU條件而跳過，不算完成。"
+      },
+      "opaque_pose_check": [
+        "modern_hd_battle_candidate_test.go:176: offline resource91/frame7: 1956 opaque HD pixels retain descriptor position; no GUI/parity claim"
+      ],
+      "worklist": {
+        "open": 21,
+        "manual": 14,
+        "possibly_complete": 0,
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/battle-hd-worklist-verify.log",
+          "sha256": "2f54f61dfa7fb4ccd6a11f9d46d47654d86d30b5df19bc8b0330be3d7a4888eb"
+        }
+      },
+      "lessons": {
+        "lessons": 250,
+        "guards": 131,
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/battle-hd-lessons-check.log",
+          "sha256": "93f065678da7505395d515fd4baf32a100f61c03c3f9fd860fa8a9b212fc0ddf"
+        }
+      },
+      "links_and_ownership": {
+        "file": "work/promo-cadence-20261018/hd-fonts/battle-hd-final-links-ownership.json",
+        "sha256": "1c8cd39c8a3059a251fa021062b6de3b55a2b0598ab10eda3c5698fbdcf9e7f4"
+      }
+    },
+    "failed_attempts": {
+      "candidate_go_r1": "缺少既有/repo符號連結來源掛載，屬環境；補掛載後相同命令乾淨重跑PASS。",
+      "source_guard_r1": "隔離fixture漏連images資料夾；補齊全部既有頂層連結後3項PASS，不改原包。"
+    },
+    "source_files": [
+      {
+        "file": "tools/audit_fd2_battle_animation_hd.py",
+        "sha256": "8d3562435bf5add95d7ea4a46a50d3eecc80e6e387679696e679afde6bfdd1b1"
+      },
+      {
+        "file": "tools/test_audit_fd2_battle_animation_hd.py",
+        "sha256": "386384f230fcf5ded2130c441e745adb375c8a8dd20c2bad0f44bab33eb7071a"
+      },
+      {
+        "file": "tools/compile_fd2_battle_pose_candidate.py",
+        "sha256": "265d0e85e37b78ecdf2d7ec1c1170c4421bf5874fe8e3eb5ae20b189956ce076"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_candidate.go",
+        "sha256": "e3e2655a7017f6dc1882724ddf4f64772ebca5af021995bcbd6d7ec4ee043c29"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_candidate_test.go",
+        "sha256": "a3c16f02a409d8ec07eaeba11599d73fb3347870764db18122095dc5840bfd94"
+      },
+      {
+        "file": "remake/internal/figani/separated_original_pack_test.go",
+        "sha256": "ff28e226accde2dd7e5594def9aec8f7928d4b042a2d82f18cd448b42d4bcc56"
+      }
+    ],
+    "reproduce": {
+      "inventory": "python3 tools/audit_fd2_battle_animation_hd.py --pack <合法分離包> --out <新盤點.json> --reference-sheet <新參照板.png>",
+      "source_guard": "FD2_TEST_ORIGINAL_PACK=<合法分離包> python3 tools/test_audit_fd2_battle_animation_hd.py -v",
+      "source_decoder": "FD2_TEST_ORIGINAL_PACK=<合法分離包> go test ./internal/figani -run TestSeparatedOriginalPackAllFIGANIFrames -count=1 -v",
+      "candidate": "FD2_TEST_ORIGINAL_PACK=<合法分離包> FD2_TEST_BATTLE_POSE=<已編製906x876候選.png> FD2_TEST_BATTLE_OUT=<新輸出目錄> with-xvfb go test ./cmd/fd2 -run \"TestModernHDBattleCandidate|TestNativePhysical\" -count=1 -v",
+      "compile": "python3 tools/compile_fd2_battle_pose_candidate.py --inventory <盤點.json> --resource 91 --frame 7 --master <r3母稿.png> --out <新候選.png> --receipt <新收據.json>",
+      "execution": "以上均在既有Docker，來源包唯讀、user1000:1000、network none、有界資源及timeout。pack的既有/repo來源符號連結須另掛repo，不改動來源。"
+    },
+    "next": [
+      "完成蓋亞原版導向待機、蓄力、命中與出拳後圖；不得直接接受屈臂方向錯誤母稿。",
+      "接原始前後景／位移與完整入場、受擊／反擊、返回，再用普通鍵盤抽驗。",
+      "建立正式consumer對人物、法術及共用效果的需求映射，完成清冊覆蓋後同步私人保存庫。"
+    ],
+    "cleanup": {
+      "recording_created": false,
+      "private_sync_performed": false,
+      "temporary_go_cache": "容器/tmpfs，退出即清除",
+      "commit_push": "尚未提交；候選與資料驗證不冒稱正式垂直玩家切片。",
+      "fd2_containers_remaining": 0,
+      "work_root_root_owned_or_md_directory_matches": 0,
+      "private_worktree": "clean main...origin/main",
+      "verified_recordings_remaining_from_this_batch": 0
+    },
+    "compiled_pose_input_inventory": {
+      "file": "work/promo-cadence-20261018/hd-fonts/battle-animation-hd-inventory.json",
+      "sha256": "eebe3e7a3afffd6fee216ee25de328181d99c68a401e84205fec53fce6344674"
+    }
+  },
+  "battle_animation_bank_followup_20261019": {
+    "date": "2026-10-19",
+    "status": "DATA-READY-AND-PREFLIGHT-FIXTURE-PASS",
+    "issue": 263,
+    "goal": "完成fd2戰鬥動畫HD",
+    "full_battle_animation_hd_complete": false,
+    "production_hd_draw_enabled": false,
+    "formal_catalog_sha256": "ec30c5f70966b43fc33055115bedc24a79b7be91fac201e90107779e9fdeb9bc",
+    "formal_catalog_asset_count": 365,
+    "candidate_catalog_asset_count": 367,
+    "candidate_resource_frames": {
+      "90": 4,
+      "91": 11
+    },
+    "bank_compiled": {
+      "file": "work/promo-cadence-20261018/hd-fonts/gaia-battle-bank-r1/compiled.json",
+      "sha256": "89fc40643813e213d57063b0eb3143a4ed0011f3bda6bdc1a89783def8d71b87"
+    },
+    "bank_catalog": {
+      "file": "work/promo-cadence-20261018/hd-fonts/gaia-battle-bank-r1/catalog.json",
+      "sha256": "abffc42676f0c7254d796c115c6d1d795a5eac834c28d74ad15f1033ff5924ce"
+    },
+    "bank_review": {
+      "file": "work/promo-cadence-20261018/hd-fonts/gaia-battle-bank-r1/review.png",
+      "sha256": "782644261e5ff7e44eea2033d5664263d9f11f1fb44faabf6eafb6903a625bb1"
+    },
+    "generation": [
+      {
+        "pose": "idle",
+        "file": "work/promo-cadence-20261018/hd-fonts/gaia-battle-idle-r5.png",
+        "sha256": "6286c558211ba4230ba0a071cf5ac8e081205482c8e76cc9ae1670c9876802ed",
+        "prompt": "Use case: precise-object-edit. Edit target: attached transparent three-robot sheet. Extract ONLY THE LEFTMOST ROBOT into a new separate high-resolution transparent image. The leftmost robot is the correct battle idle pose. Preserve its exact armor design, colors, pose, orientation and which arm is bent; ONLY increase clean rendering detail and transparent canvas margins. Important: the armored elbow of the bent arm is on SCREEN RIGHT, while its CLOSED FIST is on SCREEN LEFT across its chest. Keep that exact leftmost robot arm arrangement. The other arm hangs on SCREEN LEFT. Do NOT mirror the bent arm, do NOT make the fist point to the right, do NOT use the middle or rightmost figure. Helmet visor faces screen right, as the leftmost figure. Keep enormous pale sage-gray metal shoulders and thick limbs, cobalt blue joints, low head/short neck, narrow visor, no human face, no cloth, no bandages. Preserve the staggered broad feet and their exact orientation. One complete full-body robot, no additional characters, no props/effects, no shadow outside silhouette, no text. Expand the composition so all toes, helmet and fists fit well within the image: 10 percent transparent margins all around. High detail hand-painted game sprite. Real transparent background. Output a single portrait-oriented or square image, character occupies at most 80 percent of canvas height.",
+        "generated_source": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-086c084a-b08d-4404-a31a-71f90f3a72ca.png",
+        "tool": "built-in image_gen",
+        "status": "candidate_not_registered",
+        "reference_images": [
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/gaia-battle-sheet-r1.png",
+            "sha256": "ca6358ef9cb8e89adf510a9e2a52b355bb82cebed8618354046f0bacf64025d4"
+          }
+        ]
+      },
+      {
+        "pose": "charge",
+        "file": "work/promo-cadence-20261018/hd-fonts/gaia-battle-charge-r1.png",
+        "sha256": "0bd0ba506bba3d5e2904c4df7b567da280377fe8dfd591168c57491827d97fce",
+        "prompt": "Use case: precise-object-edit. Edit target: attached SINGLE Gaia idle battle sprite. Change ONLY the bent arm's wind-up pose: raise the bent forearm and CLOSED FIST approximately 5 percent of character height toward upper chest, keep elbow on SCREEN RIGHT and fist on SCREEN LEFT, as if preparing a powerful backhand/punch. The rest of the figure MUST remain visually identical: same head facing screen right, same layered helmet narrow visor, same pale sage thick armor and cobalt joints, exact broad shoulders, torso and braced legs/feet, same hanging arm on screen left, same view and scale, same hand-painted shading. This is the charge pose directly before a leftward attack. A tiny amber indicator dot may appear at the center of chest, very subtle, not a glowing reactor. Do not add any weapons, effects, text, props, floor, background or extra limbs. ONE complete robot, no cropping, transparent alpha, retain generous margins. Make this a closely related adjacent animation key pose, not a redesign.",
+        "generated_source": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-559b7fc4-11a1-477b-86f4-6640924b3e1d.png",
+        "tool": "built-in image_gen",
+        "status": "candidate_not_registered",
+        "reference_images": [
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/gaia-battle-idle-r5.png",
+            "sha256": "6286c558211ba4230ba0a071cf5ac8e081205482c8e76cc9ae1670c9876802ed"
+          }
+        ]
+      },
+      {
+        "pose": "impact",
+        "file": "work/promo-cadence-20261018/hd-fonts/gaia-battle-impact-r1.png",
+        "sha256": "3998832bbd78c390e75597290353d87224d52fb30a86ce6eee8fe50b7d2f2ed8",
+        "prompt": "Use case: style-transfer / animation key-frame. Reference image 1 is the ORIGINAL Gaia attack IMPACT frame; its composition, yellow-white wedge placement, body orientation, silhouette and extent are authoritative. Reference image 2 is the approved modern Gaia armor identity, and the third image is the already painted left-facing follow-through pose. Make ONE HD transparent battle sprite for the original impact moment: the very bulky pale sage-gray thick-armored robot twists SCREEN LEFT, its armored arm attacking up-left, legs braced as original. The VERY LARGE warm-white / pale-yellow curved wedge flash of the original sweeps from the upper left to lower right across foreground, covering much of the torso and reaching the lower right. Preserve the original broad fan/wedge silhouette and its position relative to robot, with a restrained amber edge, NOT a sword, NOT a laser rifle, NOT a circular explosion, no extra sparks cloud. You can see the helmet and upper shoulder behind the broad slash and portions of the braced legs below/behind it; match original frame as closely as possible. Keep heavy cobalt/navy mechanical joints, low angular overlapping helmet, head facing LEFT at this attack stage, no human features, no cloth/bandages. Clean detailed hand-painted RPG sprite. Exactly ONE robot and its attack flash only. Complete full composition and all visible extremities inside canvas, 8 percent transparent outer margin. No text, borders, ground/floor, scenery or shadows outside the silhouette. Real transparent background. The small original pixel image is the pose/layout authority, do not substitute the right-facing idle pose.",
+        "generated_source": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-c2ec8488-4b8b-40df-8feb-2c86d17bfdb7.png",
+        "tool": "built-in image_gen",
+        "status": "candidate_not_registered",
+        "reference_images": [
+          {
+            "file": "remake/assets/figani/FIGANI_091_f06.png",
+            "sha256": "852df93a96f9d18763d370be3f737ee836356b5d8524a2e6a0a0a6cba09bbd2d"
+          },
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/gaia-original-based-hd-v2-concept.png",
+            "sha256": "f5b53ec12ecd73f104a79044985dc383a6bdc0a4c0df0df7daf1c38ef9900463"
+          },
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/gaia-battle-follow-through-r3.png",
+            "sha256": "49fcecb304be23861ca1e21a5e534460d3e62467ea758c631d0a95b1b03c42e7"
+          }
+        ]
+      },
+      {
+        "pose": "flare",
+        "file": "work/promo-cadence-20261018/hd-fonts/gaia-battle-flare-r1.png",
+        "sha256": "80d1341f4a972c9ba33a394606c98d37cfe5a812453846fd1075efb5e312f6db",
+        "prompt": "Use case: precise-object-edit. Edit target: attached LEFT-FACING Gaia follow-through battle pose. Preserve this exact robot, armor, head facing LEFT, forearm/fist up-left, braced legs, materials, scale and camera. Change ONLY one thing: add a small warm-white / pale-yellow crescent contact flash hugging the very LEFT FRONT EDGE of the raised armored fist. It must be a small narrow amber-rimmed flare, about 8 percent of the total character height, not a giant beam or wave. This is the brief fading flash right after the large impact wedge. Do not alter any armor, anatomy, pose, direction or other colors. Keep the whole robot within frame with transparent margins. ONE robot and its small fist flash, true transparent background, no floor, no added shadows, no text or props.",
+        "generated_source": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-f3855697-ec5e-44e8-bdbd-56fa112826ad.png",
+        "tool": "built-in image_gen",
+        "status": "candidate_not_registered",
+        "reference_images": [
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/gaia-battle-follow-through-r3.png",
+            "sha256": "49fcecb304be23861ca1e21a5e534460d3e62467ea758c631d0a95b1b03c42e7"
+          }
+        ]
+      }
+    ],
+    "reused_follow_pose": "battle_animation_followup_20261019.generation.r3",
+    "rejected_stance_pair": {
+      "file": "work/promo-cadence-20261018/hd-fonts/gaia-battle-stance-pair-generation-prompt.json",
+      "sha256": "b580ecd77abd25750c4fdabc09f9499a02faf3a51fe85ffe1fb43aff19a770d5"
+    },
+    "bounds_prototype": {
+      "file": "work/promo-cadence-20261018/hd-fonts/gaia-battle-bounds-review.png",
+      "sha256": "bb2072f2ad0ddceae3727d54393c5068fea0e18aa68c93c999ea61dd7fe2ba1d"
+    },
+    "bounds_geometry": {
+      "file": "work/promo-cadence-20261018/hd-fonts/gaia-battle-bounds-review.json",
+      "sha256": "a2f0598b10ce0d93b04f7cc40609b8ba4f9f148fba7bc2313e840974f124c339"
+    },
+    "design_frontier": {
+      "status": "awaiting_user_choice",
+      "options": [
+        "B：沿原版身高與腳底／中心，允許超出舊矩形",
+        "維持原框並重畫較窄站姿"
+      ],
+      "recommended": "B",
+      "scope": "只比較排版；同一未修改母稿。未將B寫入正式幾何或清冊。",
+      "reason": "待機母稿較寬，contain到原生框後高度不足，與收勢姿勢產生大小跳動。"
+    },
+    "source_and_memory": {
+      "native_pixel_count": 47769069,
+      "all_hd6_rgba_bytes": 6878745936,
+      "full_stage_hd6_rgba_bytes": 19519488000,
+      "runtime_policy": "主題逐檔驗證後只存來源索引；結算前原子預載攻守方資源，成功後釋放其餘常駐圖。初始預檢仍會逐張解碼檢查alpha，完整圖庫啟動時間尚未量測。"
+    },
+    "validation": {
+      "catalog_python": {
+        "status": "PASS",
+        "tests": 11,
+        "seconds": 20.224
+      },
+      "loader_before_lazy": {
+        "file": "work/promo-cadence-20261018/hd-fonts/gaia-battle-bank-go-final-tests.log",
+        "sha256": "1a4ae576a88b69cb561e6770ca3cdb351382530ca5c33ecefd61b99432032f29"
+      },
+      "lazy_loader": {
+        "file": "work/promo-cadence-20261018/hd-fonts/gaia-battle-bank-lazy-go-tests.log",
+        "sha256": "536e0e8a5e98f8f3b0dec30575f9aceef0665da0d5a9cee6cda97e874fe081af"
+      },
+      "settlement": {
+        "file": "work/promo-cadence-20261018/hd-fonts/gaia-battle-bank-settlement-go-tests.log",
+        "sha256": "219b074d16ad93c237c3b329044234e35c4f2db56a0184921cb3054cd507c617"
+      },
+      "settlement_result": {
+        "status": "PASS",
+        "top_level_tests": 10,
+        "all_tests_and_subtests": 20,
+        "skipped": 0,
+        "seconds": 30.521,
+        "scope": "合法原版分離包的fixture。只換BattleFig為30以命中蓋亞HD；玩家confirm與AI mode11缺件均在HP、方向及RNG改變前停止。另驗多擊、反擊及狀態／暴擊閃光。不代表一般玩家或HD實際GPU。"
+      },
+      "worklist": {
+        "file": "work/promo-cadence-20261018/hd-fonts/gaia-battle-bank-worklist-verify.log",
+        "sha256": "2f54f61dfa7fb4ccd6a11f9d46d47654d86d30b5df19bc8b0330be3d7a4888eb"
+      },
+      "lessons": {
+        "file": "work/promo-cadence-20261018/hd-fonts/gaia-battle-bank-lessons-check.log",
+        "sha256": "93f065678da7505395d515fd4baf32a100f61c03c3f9fd860fa8a9b212fc0ddf"
+      },
+      "links_ownership": {
+        "file": "work/promo-cadence-20261018/hd-fonts/gaia-battle-bank-final-validation.json",
+        "sha256": "14c1db4b984fd31f689c14173031ecd641a488d71d557e0be6e363d1db8c9442"
+      }
+    },
+    "failures_preserved": {
+      "initial_go_bank": "/out別名改變候選包相對連結根；改用同一包的/repo標準路徑，乾淨重跑通過。不是產品缺陷。",
+      "art": "窄站姿雙圖改變核准頭盔並加入光暈，拒收；較寬的既有母稿僅保留候選。"
+    },
+    "source_files": [
+      {
+        "file": "tools/build_fd2_gaia_battle_hd.py",
+        "sha256": "8eb8fe604fc5fe96f03a1f512c6104550316fd68cee8aa87b32e4127899e0ef6"
+      },
+      {
+        "file": "tools/preview_fd2_hd_battle_bounds.py",
+        "sha256": "1938cb229ff5101f6d55ef96f92f33b144bacdf1ba23583dfcaaaa27a267d323"
+      },
+      {
+        "file": "tools/validate_modern_theme_catalog.py",
+        "sha256": "6a55660a6d6097aaa719ffba8766a91f490f82a4d3484dac15bcd624461fea80"
+      },
+      {
+        "file": "tools/test_modern_theme_catalog.py",
+        "sha256": "31c6197517f96ce12ae9e7c3792a48fa81c9c501e3e8e75272407079f60986a2"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_assets.go",
+        "sha256": "37042de360fa5af755d7d524f2cc15597c9737a7e66d5ca81001ce803c71ebaa"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_assets_test.go",
+        "sha256": "05d7314f767e3d7943aad8099b87c7529397f15ce4b3661e5162131555b6f6f6"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_story_portrait.go",
+        "sha256": "d593efa2bb10c6911e091b2855decda2add3a6cdd6039d1de32b0c9f4a19052f"
+      },
+      {
+        "file": "remake/cmd/fd2/native_physical_body.go",
+        "sha256": "e2b71736efd066d5c5f1bf1d8e3758f488812e56b0bb10eae4d8a1f4ed6f4692"
+      }
+    ],
+    "reproduce": {
+      "bank": "python3 tools/build_fd2_gaia_battle_hd.py --inventory <固定圖源盤點> --sources <五母稿路徑JSON> --out <儲存庫內新候選目錄>",
+      "bounds": "python3 tools/preview_fd2_hd_battle_bounds.py --pack <合法原版分離包> --master <idle-r5母稿> --out <新比較.png>",
+      "go": "FD2_ASSET_PACK=<合法原版包> FD2_TEST_ORIGINAL_PACK=<合法原版包> FD2_TEST_MODERN_PACK=<既有現代素材> FD2_TEST_MODERN_BATTLE_CATALOG=<候選catalog> FD2_TEST_MODERN_BATTLE_PACK=<候選pack> with-xvfb go test ./cmd/fd2 -run \"TestModernHDBattleAssets|TestModernTheme|TestNativePhysicalHDPreflight|TestNativePhysicalBodyMultiStrikeCounterAndPulse|TestNativePhysicalBodyMissingSound\" -count=1 -v",
+      "python": "python3 tools/test_modern_theme_catalog.py -v",
+      "execution": "Docker既有資產／Go映像檔；user1000、network none、有界timeout與tmpfs。候選使用標準/repo路徑，不用/out別名解析相對連結。"
+    },
+    "remaining_full_goal": [
+      "定案人物身高／寬度，修訂相應幾何契約及圖源",
+      "正式HD物理入場、攻擊、受擊／反擊與返回，普通鍵盤及GPU抽驗",
+      "其餘FIGANI及法術、死亡、共同效果的完整consumer覆蓋",
+      "FDOTHER 65..68等共用效果仍為原版，不能由兩個蓋亞資源外推",
+      "清冊正式登錄、私人保存庫同步、保存冷讀與代表性效能"
+    ],
+    "cleanup": {
+      "recording_created": false,
+      "formal_private_sync": false,
+      "new_oracle": false,
+      "matching_started": false,
+      "new_player_e2": false,
+      "source_commit_push": false,
+      "output_ownership_checked": true
+    }
+  },
+  "battle_animation_gpu_followup_20261019": {
+    "status": "RUNTIME-E1-SCOPED",
+    "scope": "可選共背景物理戰鬥consumer；正式清冊仍沒有HD動畫，蓋亞較寬排版待回答。",
+    "base_commit": "b676984dbbf49a3d67ad4ccd45d3579a1aa40df8",
+    "formal_catalog": {
+      "file": "remake/assets/themes/modern/catalog.json",
+      "sha256": "ec30c5f70966b43fc33055115bedc24a79b7be91fac201e90107779e9fdeb9bc"
+    },
+    "production_hook": "Game.Draw入場／主動與反擊／受擊fill33／final restore／64階戰鬥淡出；重建地圖沿既有65階淡入，續行一次。",
+    "supported": "共背景且主動／反擊header.byte1均為0；其他整場原生呈現。",
+    "geometry": "既有原始描述子乘六；未採用待決B方案。",
+    "color_approximation": "HD RGB逐通道減去delta/63；不是原版調色盤parity。原生fallback保留當幀DAC。",
+    "gpu_validation": {
+      "status": "PASS",
+      "cases": 170,
+      "seconds": 23.49,
+      "native": "完整1920畫布與CPU原生合成相同",
+      "hd": "合成RGB／alpha允許1階量化誤差；含填色、裁切與透明索引0",
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/battle-hd-gpu-bridge-final.log",
+        "sha256": "ed277859bea5f7162d968ec4c911c53a56551470e640c43e959c057295cd7138"
+      }
+    },
+    "lifecycle_validation": {
+      "status": "PASS",
+      "seconds": 32.44,
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/battle-hd-runtime-gpu-r4.log",
+        "sha256": "c98a87eb9618ebe6a20772132f308fcdb55c273f0a0ca1630ca69c7df4bd5152"
+      },
+      "scope": "Game.Draw及1920最終呈現；來源映射、全部present、caller wait、64戰鬥與65地圖DAC、F2、拒收不發布、HP／native與Go RNG保持及快取釋放。固定Roll及原版NN6圖源的fixture，不是正常玩家或新美術。"
+    },
+    "return_authority": "docs/data/ida/fd2_physical_background_selection_20261004.json#physical_owner_return_dac_spec",
+    "failures_preserved": {
+      "lifecycle_r1_r3": "測試把64階戰鬥淡出與65階重建地圖淡入視為同一段；另以Draw次數驅動F2會因Update/Draw非一對一重複切換。依既有CONFORMED證據分開，改為一次性切換，不改產品時序、續行或規則。",
+      "diagnostic_compiler": "盤點pixels_sha256／mask_sha256是PNG檔案雜湊；首輪錯拿解碼buffer核對，在輸出建立前拒收。依既有盤點欄位修正後通過。",
+      "normal_gui_r1": "第一場確實繪出HD診斷圖層，返回等待60秒逾時，最新觀測仍在演出且無loadErr；同時執行廣泛音效回歸。相同binary/保存/圖包在有界180秒觀測重跑全部通過；不調整產品節拍，不宣稱已證明唯一效能根因。",
+      "broad_regression": "工作樹完整回歸在原有OGG解碼耗時，為取堆疊中斷，不能列通過。僅Git來源的第二次回歸又缺少既有生成素材，亦未通過；屬驗證輸入問題，沒有據此改動遊戲。相關完整素材回歸另驗。"
+    },
+    "diagnostic_bank": {
+      "file": "work/promo-cadence-20261018/hd-fonts/battle-diagnostic-bank-r1/diagnostic.json",
+      "sha256": "661bd2c3301faa5bf80621fbd6b4608e9a8ca9412e24a3bf9e348c6b3c678ec2"
+    },
+    "source_files": [
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_gpu.go",
+        "sha256": "0051b5d8f62f9d537a2037c3bbe133ca6b9ae63b4ed70f3e516998a270703fda"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_runtime.go",
+        "sha256": "d9446a47dee789ee007c5b61f372b8f71b8c67f51dcc84459a58664c7e67a6f6"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_gpu_test.go",
+        "sha256": "9a9770b639a64debdedaa0d5f8625f97760e70489d71c3e1c1dd3ea8fab84dc3"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_lifecycle_test.go",
+        "sha256": "37878f98edbd8d404710744a8298cddcef2eeb5bc738f7c55f1c3149cf23d83c"
+      },
+      {
+        "file": "remake/cmd/fd2/main.go",
+        "sha256": "132614f97be89667642e1967be94a48b49ffe9e39dc4603a31aec03035d4b69b"
+      },
+      {
+        "file": "remake/cmd/fd2/native_physical_scene.go",
+        "sha256": "abbe3578027eea515a42d5edcd8e1960219fc8886d8f8833b1e2ef79341002d8"
+      },
+      {
+        "file": "remake/cmd/fd2/native_physical_body.go",
+        "sha256": "f5ee0c4532df223bf03f9ded0664757055c33f93a0c8dec36381a4d393f26a54"
+      },
+      {
+        "file": "remake/cmd/fd2/native_palette_ramp.go",
+        "sha256": "53bdc5e9cb86fef6b08746ac032970f738ed7b8baecee55a0ec49c784bfffd7f"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_presentation.go",
+        "sha256": "fcc8ca456478af934c552a5b8e8bd440b9f0de6b091b142eea4f1e4189690c5b"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_map_gpu.go",
+        "sha256": "dfa9b1161cd29b0dfc5cc409904916155d9f01d2f276f261378e2f7e9bf3b479"
+      },
+      {
+        "file": "remake/cmd/fd2/player_shortcuts.go",
+        "sha256": "2d6ee0c376904c5fd02cd88d79c720c83e86e02506b270c3e6615d81e37828b7"
+      },
+      {
+        "file": "remake/cmd/fd2/input_audit_trace.go",
+        "sha256": "a530b84ad28c2a81ea0a5d4ea11aec7c55ec3dd753b9192f6f7ed10b8aa63377"
+      },
+      {
+        "file": "tools/build_fd2_battle_diagnostic_hd.py",
+        "sha256": "d5a66a41d668dd708ca6a507392ddaab5127b8f4ef73d9201f8a5b8d729267de"
+      },
+      {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "1c3a98ca60437589b9e2a5c77ebd9ec17ce3b59054a1370bdc7dcf7a0be747f6"
+      }
+    ],
+    "reproduce": {
+      "gpu": "FD2_ASSET_PACK=<合法原版包> FD2_HD_BATTLE_GPU=1 with-xvfb go test ./cmd/fd2 -run ^TestModernHDBattleGPUBridge$ -count=1 -v",
+      "lifecycle": "FD2_ASSET_PACK=<合法原版包> FD2_HD_BATTLE_LIFECYCLE_GPU=1 with-xvfb go test ./cmd/fd2 -run ^TestModernHDBattleRuntimeGPU$ -count=1 -v",
+      "normal_gui": "診斷包資源12,13；tools/verify_fd2_hd_fonts_gui.py --battle-status --world --battle-hd，完整必要參數見61。",
+      "environment": "fd2-go-test-local:latest Go1.22.12/Ebiten2.6.6、fd2-assets-local:20260829-sfx、fd2-promo:20261017-r1；user1000、network none、有界timeout，標準/repo來源掛載。"
+    },
+    "remaining_full_goal": [
+      "人物身高／占寬使用者定案及正式美術登錄",
+      "非共背景物理演出與其餘FIGANI完整consumer／HD素材",
+      "法術、死亡及FDOTHER共同效果",
+      "正常GPU、保存冷讀、代表性效能與私人同步"
+    ],
+    "recording_created": false,
+    "new_oracle": false,
+    "new_player_e2": false,
+    "private_sync": false,
+    "normal_player_consumer": {
+      "status": "PASS-SCOPED-RUNTIME-E1",
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/battle-hd-normal-gui-r2/receipt.json",
+        "sha256": "d6c0810c7824b9531a9e71b9b4cd6e1b5a8635a90cc2e1a6b07770b1b093732e"
+      },
+      "seconds": 200.66478627640754,
+      "screenshots": 34,
+      "walking_screenshots": 4,
+      "attacks": 2,
+      "source_save_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "saved_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "source_and_theme_save_bytes_equal": true,
+      "cold_title_load": true,
+      "binary_sha256": "e09f95d87fe2f6f2bb91b4f79304acb7822f40d20eed1c32079b7d073595afdd",
+      "binary_bytes": 19227648,
+      "scene_wall_seconds": [
+        13.085380114149302,
+        18.78683268511668
+      ],
+      "scope": "正常標題LOAD既有START/F5保存；普通走行、指令環、取消、兩次攻擊／返回、Home、F2、F5/F9及新程序LOAD。圖源為原版NN6診斷圖，未注入狀態；不計新HD美術、原版oracle或整章E2。"
+    },
+    "broad_regression_interrupted": {
+      "file": "work/promo-cadence-20261018/hd-fonts/battle-hd-full-go-final.log",
+      "sha256": "24f7a51f60cb570b62a7a0d196d9ad78a7f36e9e390fe04e8c0903a5e03a821a"
+    },
+    "clean_tree_missing_inputs": {
+      "file": "work/promo-cadence-20261018/hd-fonts/battle-hd-clean-full-go-r1.log",
+      "sha256": "eeaf2771db338ecefe67eaa3f38aa1fec33fce3dd186b35b2d4a62a3fd5df069"
+    },
+    "string_review_migration": {
+      "old_inventory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/battle-hd-strings-old.json",
+        "sha256": "45bcfe20ef39edac038ef5f527cff37ecf77eddf86672d2ae44dc7ca5e09354e"
+      },
+      "new_inventory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/battle-hd-strings-new.json",
+        "sha256": "361fba60e419b6de6aa2523b2a0445bff1919471773322a85516a6f5aa44094e"
+      },
+      "review_sha256": "f68c8f811783397700cdcd10c886a0975ff7ee9fe576ac86270d9472f6e83dcc",
+      "dispositions_preserved": 99,
+      "generated_input": {
+        "file": "remake/assets/data/command_labels.json",
+        "sha256": "326a0ec1dd71e601f5352d1cd6b7ea28dbd22e321814dd9e6124f86f0b1820e0"
+      },
+      "scope": "同一生成資料補入基底後舊SHA完全符合；沿官方遷移器只搬行號。",
+      "regression": {
+        "status": "PASS",
+        "seconds": 1.476,
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/battle-hd-string-review-final.log",
+          "sha256": "29333f08eafe1be5c8adaff0ff493233e3affb61dfb51a0cdec470f20ce59368"
+        }
+      }
+    },
+    "catalog_regression": {
+      "status": "PASS",
+      "tests": 11,
+      "seconds": 11.757,
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/battle-hd-catalog-final.log",
+        "sha256": "24cb59bde70032818f22ac2e784f6627a56cf0546ec468a1ba50dd646cdc7423"
+      }
+    },
+    "related_go_regression": {
+      "status": "PASS",
+      "seconds": 52.942,
+      "passed_tests_and_subtests": 119,
+      "skipped_tests_and_subtests": 19,
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/battle-hd-relevant-go-final.log",
+        "sha256": "641e1daf74b71d497f520079e48a45865f3e777213c893157c32df3c03ed33c1"
+      },
+      "scope": "明示完整合法原版／現代／蓋亞候選包；TestModernHD、TestModernTheme、TestNativePhysical及TestNativePaletteRamp。GPU專項各獨立RunGame收據。不是全專案無skip宣稱。"
+    },
+    "cleanup": {
+      "recording_created": false,
+      "temporary_binary_removed": true,
+      "binary_bytes_removed": 19227648,
+      "source_file_owners": "1000:1000",
+      "root_owned_in_output": 0,
+      "markdown_directories_in_output": 0,
+      "private_assets_unchanged": true
+    },
+    "validation_final": {
+      "file": "work/promo-cadence-20261018/hd-fonts/battle-hd-gpu-final-validation.json",
+      "sha256": "fb251c5f273e4d6fc9cf303acc35a8f2939912769846ddafe751691860e27d81"
+    },
+    "worklist": {
+      "file": "work/promo-cadence-20261018/hd-fonts/battle-hd-gpu-worklist-final.log",
+      "sha256": "1e863af52470bc6bb577b495e1f88bb902b54c75c89734c15448b98afddddbb5"
+    },
+    "lessons": {
+      "file": "work/promo-cadence-20261018/hd-fonts/battle-hd-gpu-lessons-final.log",
+      "sha256": "5dc5da682e34d4b3ff78cb6c6daf6040f7f5493aa7799536ff8e082a181646cf"
+    },
+    "official_issue": "https://github.com/wicanr2/fd2_re/issues/263",
+    "commit_push_at_receipt_capture": false,
+    "source_revision_tracking": "14份來源SHA固定驗證版本；提交與真正遠端HEAD沿Git歷史及#263。"
   }
 }

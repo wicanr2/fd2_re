@@ -1,5 +1,12 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
+可選共背景物理戰鬥GPU已接正式Draw。原生全畫布回讀、主動／反擊及返回DAC生命週期通過；
+原版像素六倍診斷包的普通標題LOAD、兩次攻擊、F2、保存及新程序冷讀亦通過。
+此證據限consumer整合，沒有新增正式HD動畫美術、原版oracle或整章E2。
+人物占寬仍待使用者決定，其餘FIGANI／共同效果未完成。來源沿
+[58](58-fd2-exe-re-coverage.md)及[主收據](../data/fd2-modern-hd-battlefield-20261019.json)
+的`battle_animation_gpu_followup_20261019`，可重跑入口見[61](61-modern-theme-runtime-spec.md)。
+
 蓋亞核准造型已替換故事頭像與四方向地圖圖組。正常START的97拍與七名頭像GPU另行核對，
 序章尾端F9失敗保持，不冒稱同次長流程全通；完整戰場保存冷讀與蓋亞專屬普通選角／北移／取消分別通過。
 角色畫面只確認同方向已登錄步態的圖源身分；相位不同與不可比逐筆揭露，不新增相同幀證據。

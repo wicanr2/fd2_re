@@ -18,6 +18,134 @@
 
 ## 範圍
 
+### 大型戰鬥動畫 HD 起始切片（2026-10-19，READY-CANDIDATE）
+
+#### 物理戰鬥GPU合成器（CONFORMED-SCOPED／RUNTIME-E1，人物占寬另驗）
+
+沿既有`ComposeNativePhysicalBodyPresent`及`BuildNativeCommandPreludeFrames`建立
+可選GPU呈現。來源仍綁原始資源與frame；通用圖層接受明示目的矩形，原生橋接先按
+既有描述子乘六，不因此採用待決的較寬人物方案。正式清冊未新增動畫素材。
+
+- 第一接線只接受原生共背景物理演出，沒有背景捲動的前置／反擊。其他caller整場沿
+  既有原版呈現，不混用猜測轉場。主動與反擊都使用同一圖層合成順序。
+- 入場九個stage保留原生base、平台、人物平移及DAC；主動／受擊保留rawSide、
+  RawByte7層序、DX／DY及fill33；結束restore保留雙方當前HP面板和原定idle幀。
+  不改job、delay、音效、HP、RNG或Draw acknowledgment。
+- 物理owner最後以同一份restore圖源通過既有64階DAC淡出，才交回原地圖composer。
+  重建地圖再沿原有65階DAC淡入，之後才呼叫續行一次。地圖淡入不保留戰鬥圖層。
+  順序沿既有`fd2_physical_background_selection_20261004.json`的
+  `physical_owner_return_dac_spec`。HD RGB是明示的逐通道減色近似。
+- 原生圖使用當幀palette和獨立mask；index0仍可不透明。HD圖保留coverage alpha，
+  fill33只換RGB不換alpha。入場HD色彩以RGB逐通道減去`stage*6/63`作現代近似，
+  不宣稱新圖逐像素等於原版palette。原生fallback仍使用真正的當幀DAC色盤。
+- GPU快取只屬於目前scene與theme；更換scene或theme釋放舊人物貼圖。背景為
+  320×200即時上傳，1920×1200世界在最終畫布層呈現，原有白／黑DAC與說明畫面維持覆蓋順序。
+- F2切入含動畫的主題前先預載當場所需資源；失敗不發布主題、不補讀Draw或重播結算。
+  缺少整項HD圖可原生呈現，已登錄但未預載或錯幀則拒絕。
+- 驗證先以未修改的原生圖，對照CPU原生合成的完整GPU輸出，涵蓋入場兩側九階段、
+  層序、位移、裁切、fill33、透明索引0與HD細節／alpha。這是引擎橋接驗證，
+  不取代正常玩家路徑、新美術驗收或原版oracle。較寬人物仍等待使用者選擇。
+
+呈現入口為[`modern_hd_battle_runtime.go`](../../remake/cmd/fd2/modern_hd_battle_runtime.go)，
+GPU合成器見[`modern_hd_battle_gpu.go`](../../remake/cmd/fd2/modern_hd_battle_gpu.go)。
+[`GPU回讀`](../../remake/cmd/fd2/modern_hd_battle_gpu_test.go)以
+`FD2_HD_BATTLE_GPU=1 with-xvfb go test ./cmd/fd2 -run '^TestModernHDBattleGPUBridge$' -count=1 -v`
+單獨執行；[`實際Draw生命週期`](../../remake/cmd/fd2/modern_hd_battle_lifecycle_test.go)
+改用`FD2_HD_BATTLE_LIFECYCLE_GPU=1`與`TestModernHDBattleRuntimeGPU`。
+兩者各啟一個Ebiten程序，在既有Go Docker映像檔中執行並明示合法`FD2_ASSET_PACK`。
+
+正常鍵盤抽驗可用[`build_fd2_battle_diagnostic_hd.py`](../../tools/build_fd2_battle_diagnostic_hd.py)
+在素材Docker內執行`--pack <原版分離包> --inventory <已驗盤點> --resources 12,13 --out <新診斷目錄>`，
+再以[`verify_fd2_hd_fonts_gui.py`](../../tools/verify_fd2_hd_fonts_gui.py)的
+`--battle-status --world --battle-hd`驗兩次攻擊確實使用可選GPU圖層。
+`--assets`指向診斷包`runtime`、`--modern-pack`指向其`pack`；其他必要參數沿工具`--help`。
+此包只把原版像素最近鄰放大六倍，不是新增HD美術；清冊與產物僅限本機。
+
+#### 可選物理戰鬥圖源與載入（READY，正式美術登錄另驗）
+
+沿已核准手繪主題，新增可選 `battle_animation_hd_set`，使用
+`native_figani_rgba_hd6_v1`。每項固定一個 `FIGANI.DAT` 資源，完整保存
+`source_resource`、原始 metadata SHA-256、三個 native header 值與每幀
+X／Y／寬／高／delay／raw byte4、5、7。`files`、`frame_sha256` 與
+`native_frames` 必須涵蓋該資源全部影格。PNG 尺寸為對應原始寬高乘六，
+保留 coverage alpha，不以重複序列冒稱額外原版證據。
+
+載入時先核對原版分離 metadata 雜湊，再逐欄核對實際 `figani.Animation`，
+最後核對完整新圖 SHA、尺寸及透明背景／不透明核心，整項通過才發布。
+重複資源、缺幀、錯來源、錯欄位或錯 PNG 全部拒收。沒有此 role 的舊清冊
+行為保持；缺少整項圖源可沿原版呈現，不能把不完整項目當成正常 fallback。
+不改存檔、原始 animation、傷害、RNG 或音效標記。
+
+完整2118幀依原始矩形乘六的RGBA大小為6,878,745,936 bytes，因此主題預檢逐檔驗證後
+只保存路徑、指紋與描述子，不常駐所有解碼圖。物理戰鬥在結算前按攻守方資源預載；
+全部所需資源通過才一次發布，成功後釋放其他戰鬥資源。預載失敗保持舊集合與既有圖，
+不在Draw才補讀、吞錯或靜默改用不完整HD。原始清冊沒有此role時不新增讀檔。
+目前可選繪製層已接共背景物理演出；正式清冊尚未登錄動畫素材。
+
+蓋亞候選以待機、蓄力、大閃光、小閃光及收勢母稿，按明示逐幀配方編製
+完整4／11幀；屬美化姿勢重定向，沒有聲稱15張獨立重畫或逐幀原版視覺一致。
+蓋亞美術尚須檢查姿勢間人物比例及正常呈現；共背景consumer的接線見前節。
+此載入契約不等於候選美術已登錄，正式清冊目前保持。
+
+編製入口為 [`build_fd2_gaia_battle_hd.py`](../../tools/build_fd2_gaia_battle_hd.py)，
+使用 `--inventory <已通過盤點.json> --sources <五母稿路徑表.json> --out <新候選目錄>`。
+產物保留每幀母稿選擇、原始描述子、尺寸、配方與雜湊，既有清冊素材只依allow-list
+連結進隔離包，不包含未登錄草稿。候選使用儲存庫內的標準路徑讀取，避免 `/out`
+別名改變相對符號連結的根。清冊驗證及
+[`modern_hd_battle_assets.go`](../../remake/cmd/fd2/modern_hd_battle_assets.go)
+接受完整候選；來源錯誤與原子拒收見
+[`modern_hd_battle_assets_test.go`](../../remake/cmd/fd2/modern_hd_battle_assets_test.go)。
+
+身高排版仍待使用者決定。縮進舊外框會使較寬的待機母稿縮矮；對齊原版身高及腳底
+可保留厚甲比例，但會超出舊外框。兩者用同一未修改母稿的可重跑比較入口為
+[`preview_fd2_hd_battle_bounds.py`](../../tools/preview_fd2_hd_battle_bounds.py)，
+使用 `--pack <合法分離包> --master <待機母稿.png> --out <比較.png>`，
+僅比較排版，不是GUI或原版對拍。確認前不將較寬方案寫入正式幾何或清冊。
+
+使用者目前目標為完成戰鬥動畫 HD。本節先規範可撤回的物理戰鬥呈現候選，
+共背景consumer已接入 `Game.Draw`，不代表正式動畫或全戰役 HD 完成。沿用已核准的
+1920×1200、手繪主題與蓋亞第二版厚甲造型。原始圖庫範圍、工具與來源指紋見
+[主收據的戰鬥動畫切片](../data/fd2-modern-hd-battlefield-20261019.json#battle_animation_followup_20261019)。
+盤點入口為 [`audit_fd2_battle_animation_hd.py`](../../tools/audit_fd2_battle_animation_hd.py)，
+在既有素材 Docker 映像檔執行 `--pack <分離原版包> --out <報告.json>`；
+另加 `--reference-sheet <PNG>` 可重生身分30的原始動作參照板。
+
+- 證據使用既有 `figani.Frame` 與
+  `battlepresent.ComposeNativePhysicalBodyPresent`，主證據保持
+  `docs/data/ida/fd2_physical_background_selection_20261004.json`。
+  不重新推導傷害、音效、反擊、原始描述子或播放時鐘。
+- 320×200 原生座標統一乘六。每張 HD 圖的畫布必須是該原始幀的
+  `Width*6 × Height*6`，仍從原始 `X,Y` 放置，不用圖像的非透明邊界重算位置。
+  缺少候選圖時依原始索引色與獨立 mask 建立最近鄰參照，palette index0
+  仍可為不透明色。已提供的候選圖若尺寸錯誤則拒絕，不靜默退回原圖。
+- 攻守方順序直接沿用 `rawSide` 與攻擊幀 `RawByte7&1` 的既有條件。
+  `DX,DY` 僅移動待機中的受擊方，裁切範圍固定為1920×1200。
+  `OpaqueFill=33` 將受擊方當幀的 alpha 輪廓填成該索引色；`-1` 保留圖像。
+  候選不額外鏡像、不加過渡幀、不更動 delay、RNG、HP 或存檔。
+- 首批驗證為離線繪圖：以原生圖源放大後的候選逐格對照現有索引合成器，
+  涵蓋兩側、前後景、位移、邊界裁切、填色及透明索引0；再用蓋亞單幀新圖
+  核對位置。這些結果只屬候選幾何，不能提升為正常 GUI 或原版執行收據。
+- 正式接線前仍須補齊整套待機與攻擊圖，核對入場、攻擊、受擊／反擊與返回，
+  通過清冊及正常玩家路徑後再同步私人包。三姿勢草稿有朝向與裁切問題，
+  維持拒收；單張出拳後姿勢仍是待審候選，不能當作15幀動畫已完成。
+
+單姿勢編製入口為
+[`compile_fd2_battle_pose_candidate.py`](../../tools/compile_fd2_battle_pose_candidate.py)，
+使用 `--inventory <盤點.json> --resource 91 --frame 7 --master <母稿.png>
+--out <候選.png> --receipt <收據.json>`。只裁掉全透明外圍，以等比例縮放、
+水平置中及底部對齊放進原描述子畫布，不改世界座標、不去除低覆蓋邊緣。
+這項編製政策尚未成為正式素材契約。
+
+離線合成器與測試為
+[`modern_hd_battle_candidate.go`](../../remake/cmd/fd2/modern_hd_battle_candidate.go)及
+[`modern_hd_battle_candidate_test.go`](../../remake/cmd/fd2/modern_hd_battle_candidate_test.go)。
+真實素材預覽測試需明示 `FD2_TEST_ORIGINAL_PACK`、`FD2_TEST_BATTLE_POSE`、
+`FD2_TEST_BATTLE_OUT`。圖源完整回讀另走
+[`separated_original_pack_test.go`](../../remake/internal/figani/separated_original_pack_test.go)，
+來源拒收測試走
+[`test_audit_fd2_battle_animation_hd.py`](../../tools/test_audit_fd2_battle_animation_hd.py)。
+全部測試與編製均在既有 Docker 工具鏈執行；沒有連接正式播放時鐘或更動存檔。
+
 ### 蓋亞造型修訂（2026-10-19，CONFORMED-SCOPED）
 
 使用者確認原版導向的第二版造型，要求繼續製作頭像與四方向動作。

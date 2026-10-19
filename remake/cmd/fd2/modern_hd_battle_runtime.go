@@ -1,0 +1,172 @@
+package main
+
+import (
+	"fmt"
+	"image"
+	"image/color"
+
+	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/wicanr2/fd2_re/remake/internal/battlepresent"
+	"github.com/wicanr2/fd2_re/remake/internal/fdother"
+	"github.com/wicanr2/fd2_re/remake/internal/figani"
+)
+
+type modernHDBattleSource struct {
+	Frame                         figani.Frame
+	Resource, Index, DX, DY, Fill int
+}
+
+type modernHDBattleSources struct {
+	Base   []byte
+	Layers []modernHDBattleSource
+}
+
+func modernHDBattleBodySources(base []byte, attack, idle figani.Frame, side byte,
+	present battlepresent.NativePhysicalBodyPresent, attackResource, attackFrame, idleResource, idleFrame int) *modernHDBattleSources {
+	a := modernHDBattleSource{Frame: attack, Resource: attackResource, Index: attackFrame, Fill: -1}
+	b := modernHDBattleSource{Frame: idle, Resource: idleResource, Index: idleFrame, DX: present.DX, DY: present.DY, Fill: present.OpaqueFill}
+	layers := []modernHDBattleSource{b, a}
+	if (side == 0 && attack.RawByte7&1 == 0) || (side != 0 && attack.RawByte7&1 != 0) {
+		layers = []modernHDBattleSource{a, b}
+	}
+	return &modernHDBattleSources{Base: base, Layers: layers}
+}
+
+func (scene *nativePhysicalScene) modernResources() []int {
+	if scene == nil {
+		return nil
+	}
+	resources := []int{scene.actorBattleFig * 3, scene.actorBattleFig*3 + 1, scene.targetBattleFig * 3}
+	if scene.bodyResources != nil && scene.bodyResources.counter != nil {
+		resources = append(resources, scene.targetBattleFig*3+1)
+	}
+	return resources
+}
+
+func (g *Game) modernHDBattleWanted(scene *nativePhysicalScene) bool {
+	set := g.modernStoryPortraits
+	if set == nil || !set.hasHD || scene == nil || scene.bodyResources == nil || scene.bodyResources.attack == nil || scene.selection.HasSeparateBackgrounds ||
+		scene.bodyResources.attack.HeaderByte1 != 0 || (scene.bodyResources.counter != nil && scene.bodyResources.counter.HeaderByte1 != 0) {
+		return false
+	}
+	for _, resource := range scene.modernResources() {
+		if set.battleAnimations[resource] != nil {
+			return true
+		}
+	}
+	return false
+}
+
+func (g *Game) syncModernHDBattleOwner() {
+	if g.modernHDBattleGPU == nil {
+		return
+	}
+	var owner *nativePhysicalScene
+	if g.atk != nil {
+		owner = g.atk.nativeScene
+	}
+	r := g.modernHDBattleGPU
+	if r.owner != owner || r.theme != g.modernStoryPortraits {
+		r.resetSources()
+		r.owner, r.theme = owner, g.modernStoryPortraits
+	}
+}
+
+func (g *Game) modernHDBattlePlan(sources *modernHDBattleSources, palette color.Palette, subtract float32) (modernHDBattlePlan, error) {
+	if sources == nil {
+		return modernHDBattlePlan{}, fmt.Errorf("modern HD battle: sources unavailable")
+	}
+	plan := modernHDBattlePlan{Base: sources.Base, Palette: palette, HDSubtract: subtract}
+	for _, source := range sources.Layers {
+		var picture image.Image
+		var key string
+		if source.Resource >= 0 {
+			var err error
+			picture, err = g.modernStoryPortraits.battleHDFrame(source.Resource, source.Index)
+			if err != nil {
+				return modernHDBattlePlan{}, err
+			}
+			if picture != nil {
+				key = g.modernStoryPortraits.battleAnimations[source.Resource].hashes[source.Index]
+			}
+		}
+		f := source.Frame
+		rect := image.Rect((f.X+source.DX)*6, (f.Y+source.DY)*6, (f.X+source.DX+f.Width)*6, (f.Y+source.DY+f.Height)*6)
+		plan.Layers = append(plan.Layers, modernHDBattleLayer{Native: f, HD: picture, HDKey: key, Rect: rect, Fill: source.Fill})
+	}
+	return plan, nil
+}
+
+func (g *Game) publishModernHDBattle(screen *ebiten.Image, sources *modernHDBattleSources, palette color.Palette, subtract float32) error {
+	plan, err := g.modernHDBattlePlan(sources, palette, subtract)
+	if err != nil {
+		return err
+	}
+	if g.modernHDBattleGPU == nil {
+		g.modernHDBattleGPU = &modernHDBattleGPU{}
+	}
+	g.syncModernHDBattleOwner()
+	if err := g.modernHDBattleGPU.draw(plan); err != nil {
+		return err
+	}
+	screen.Clear()
+	g.modernHDBattleVisible = true
+	return nil
+}
+
+func (g *Game) modernHDBattlePreludeSources(scene *nativePhysicalScene, stage int) (*modernHDBattleSources, error) {
+	if scene == nil || scene.bodyResources == nil || stage < 0 || stage > 8 || len(scene.preludeBase) != 64000 || scene.selection.HasSeparateBackgrounds {
+		return nil, fmt.Errorf("modern HD battle: prelude sources unavailable")
+	}
+	r := scene.bodyResources
+	base := append([]byte(nil), scene.preludeBase...)
+	a := modernHDBattleSource{Frame: r.actorIdle.Frames[0], Resource: scene.actorBattleFig * 3, Fill: -1}
+	b := modernHDBattleSource{Frame: r.targetIdle.Frames[0], Resource: scene.targetBattleFig * 3, Fill: -1}
+	if r.actorSide == 0 {
+		platform := r.platform
+		platform.X, platform.Y = 164, 157
+		if err := platform.Blit(base, 320, -1); err != nil {
+			return nil, err
+		}
+		a.DX = -stage * 10
+		return &modernHDBattleSources{Base: base, Layers: []modernHDBattleSource{a, b}}, nil
+	}
+	platform := r.platform
+	p := modernHDBattleSource{Frame: figani.Frame{X: 164, Y: 157, Width: platform.Width, Height: platform.Height,
+		Pixels: platform.Indexed, Mask: platform.Mask}, Resource: -1, DX: stage * 10, Fill: -1}
+	a.DX = stage * 10
+	return &modernHDBattleSources{Base: base, Layers: []modernHDBattleSource{b, p, a}}, nil
+}
+
+func (g *Game) drawModernHDBattlePrelude(screen *ebiten.Image, scene *nativePhysicalScene) (bool, error) {
+	if !g.modernHDBattleWanted(scene) {
+		return false, nil
+	}
+	frame := scene.prelude[scene.preludeFrame]
+	sources, err := g.modernHDBattlePreludeSources(scene, frame.Stage)
+	if err != nil {
+		return false, err
+	}
+	palette, err := fdother.ParseVGAPalette(frame.DAC)
+	if err != nil {
+		return false, err
+	}
+	if err := g.publishModernHDBattle(screen, sources, palette, float32(frame.Stage*6)/63); err != nil {
+		return false, err
+	}
+	return true, nil
+}
+
+func (g *Game) drawModernHDBattleBody(screen *ebiten.Image, scene *nativePhysicalScene, job *nativePhysicalBodyJob) (bool, error) {
+	if !g.modernHDBattleWanted(scene) || job.hdSources == nil {
+		return false, nil
+	}
+	palette := append(color.Palette(nil), g.nativeUIPalette...)
+	if job.palette0 != nil {
+		palette[0] = *job.palette0
+	}
+	if err := g.publishModernHDBattle(screen, job.hdSources, palette, 0); err != nil {
+		return false, err
+	}
+	return true, nil
+}

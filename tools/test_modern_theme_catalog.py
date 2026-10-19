@@ -13,6 +13,32 @@ import validate_modern_theme_catalog as validator
 
 
 class ModernThemeCatalogTests(unittest.TestCase):
+    def test_battle_animation_resource_requires_complete_safe_descriptors(self):
+        base = validator.validate(False)
+        asset = {'asset_id':'modern.test.figani.hd6','role':'battle_animation_hd_set','status':'runtime_candidate',
+                 'files':['test0.png'],'width':1920,'height':1200,'frame_count':1,'frame_sha256':['0'*64],
+                 'source_archive':'FIGANI.DAT','source_resource':90,'source_metadata_sha256':'0'*64,
+                 'native_header':[0,1,0],'native_frames':[{'x':1,'y':2,'width':2,'height':2,'delay_native':2,
+                    'raw_byte_4':0,'raw_byte_5':0,'raw_byte_7':0}],
+                 'consumer_contract':'native_figani_rgba_hd6_v1','alpha_contract':'coverage',
+                 'cycle_policy':'native_descriptor_key_poses','layout_policy':'contain_native_descriptor_hd6_candidate',
+                 'source_files':['test-master.png'],'source_sha256':['0'*64],'source_refs':['docs/data/fd2-reference-files.json']}
+        with tempfile.TemporaryDirectory() as tmp:
+            path=Path(tmp)/'catalog.json'
+            good=copy.deepcopy(base);good['assets'].append(asset)
+            path.write_text(json.dumps(good));validator.validate(False,path)
+            for key in ['missing','delay','path','header','duplicate','alpha']:
+                bad=copy.deepcopy(good);entry=bad['assets'][-1]
+                if key=='missing':entry['native_frames']=[]
+                if key=='delay':entry['native_frames'][0]['delay_native']=256
+                if key=='path':entry['files']=['../test0.png']
+                if key=='header':entry['native_header']=[1,2,0]
+                if key=='duplicate':
+                    clone=copy.deepcopy(entry);clone['asset_id']='modern.test.figani.duplicate';bad['assets'].append(clone)
+                if key=='alpha':entry['alpha_contract']='binary'
+                path.write_text(json.dumps(bad))
+                with self.subTest(key=key), self.assertRaises(ValueError):validator.validate(False,path)
+
     def test_distinct_character_concepts_preserve_existing_design_and_reject_duplicate_id(self):
         catalog = validator.validate(False)
         original = next(a for a in catalog['assets'] if a['role'] == 'portrait_concept')

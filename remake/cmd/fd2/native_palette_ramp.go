@@ -18,15 +18,16 @@ import (
 // intentionally stretches sub-frame DOS waits on a 60Hz host rather than
 // collapsing the complete effect into one unobservable update.
 type nativePaletteRampJob struct {
-	deltas   []int
-	delayMs  int
-	step     int
-	vga      []byte
-	dac      []byte
-	baseline []byte
-	palette  color.Palette
-	drawn    bool
-	then     func()
+	hdBattleSources *modernHDBattleSources
+	deltas          []int
+	delayMs         int
+	step            int
+	vga             []byte
+	dac             []byte
+	baseline        []byte
+	palette         color.Palette
+	drawn           bool
+	then            func()
 }
 
 func buildInclusivePaletteDeltas(start, end int) ([]int, error) {
@@ -164,6 +165,18 @@ func (g *Game) drawNativePaletteRamp(screen *ebiten.Image) bool {
 	j := g.nativePaletteRamp
 	if j == nil || len(j.vga) != indexedmap.NativeMapVGASize || len(j.palette) != 256 {
 		return false
+	}
+	if j.hdBattleSources != nil && g.atk != nil && g.modernHDBattleWanted(g.atk.nativeScene) {
+		delta := j.deltas[j.step]
+		if delta > 63 {
+			delta = 63
+		}
+		if err := g.publishModernHDBattle(screen, j.hdBattleSources, j.palette, float32(delta)/63); err != nil {
+			g.loadErr = "native physical HD return DAC: " + err.Error()
+			return false
+		}
+		j.drawn = true
+		return true
 	}
 	img := image.NewPaletted(image.Rect(0, 0, 320, 200), j.palette)
 	copy(img.Pix, j.vga)

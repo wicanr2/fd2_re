@@ -2945,6 +2945,36 @@
         ],
         "pattern": "def calibrate_repeat_edges"
       }
+    },
+    {
+      "id": "physical-return-dac-owner-boundaries",
+      "date": "2026-10-19",
+      "area": "HD戰鬥驗證",
+      "rule": "物理戰鬥返回的DAC驗證依owner邊界分開：戰鬥restore淡出、重建地圖淡入、續行各驗一次，不因atk仍存在就要求HD戰鬥圖層。入口docs/data/ida/fd2_physical_background_selection_20261004.json的physical_owner_return_dac_spec；實際Draw測試為remake/cmd/fd2/modern_hd_battle_lifecycle_test.go。",
+      "why": "HD生命周期測試把64階戰鬥淡出及65階地圖淡入當成同一段，錯把合法的地圖呈現判成HD消失。依已有CONFORMED證據修正測試，產品返回順序沒有改動。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/native_palette_ramp.go"
+        ],
+        "pattern": "hdBattleSources"
+      }
+    },
+    {
+      "id": "string-review-baseline-needs-generated-input-parity",
+      "date": "2026-10-19",
+      "area": "字串來源遷移",
+      "rule": "遷移字串審查前，以相同生成JSON輸入重生新舊盤點，先確認舊SHA符合docs/data/fd2-string-review.json的inventory_sha256，再搬座標。Git工作樹不包含忽略檔，需核對remake/assets/data/command_labels.json等原有輸入。Docker內用remake/cmd/fd2-string-inventory重生，再用tools/migrate_string_review.py搬移；各處置的文字、數量及理由保持。",
+      "why": "基底工作樹缺少既有command_labels.json，舊盤點少38筆而不能核同審查SHA。補入同一份生成資料後完全相同，99筆既有處置才安全搬移。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/migrate_string_review.py"
+        ],
+        "pattern": "inventory_sha256"
+      }
     }
   ]
 }

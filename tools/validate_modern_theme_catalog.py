@@ -18,7 +18,7 @@ PROTOTYPE_ROLES = {"portrait_concept", "battlefield_concept", "battle_hud_concep
 ROLES = PROTOTYPE_ROLES | {
     "story_portrait_frame", "story_portrait_hd_frame", "map_sprite_set", "map_tileset_set",
     "map_sprite_hd_set", "battlefield_tileset_concept", "battle_hud_panel", "battle_action_icon_set",
-    "native_terrain_hd_set", "terrain_hd_master",
+    "native_terrain_hd_set", "terrain_hd_master", "battle_animation_hd_set",
 }
 STATUSES = {"prototype", "concept", "approved", "runtime_candidate", "runtime_ready"}
 # Fixed FDICON.B24 source-write inventory, independently checked by
@@ -27,7 +27,7 @@ NATIVE_FDICON_GROUP_COUNT = 140
 NO_SOURCE_WRITE_SELECTORS = {39, 57, 104, 105, 121, 127, 128, 129, 130, 131, 132, 136, 137, 138, 139}
 VISIBLE_FDICON_GROUPS = set(range(NATIVE_FDICON_GROUP_COUNT)) - NO_SOURCE_WRITE_SELECTORS
 SPRITE_ROLES = {"map_sprite_set", "map_sprite_hd_set"}
-MULTI_FILE_ROLES = SPRITE_ROLES | {"battle_action_icon_set", "native_terrain_hd_set"}
+MULTI_FILE_ROLES = SPRITE_ROLES | {"battle_action_icon_set", "native_terrain_hd_set", "battle_animation_hd_set"}
 
 
 def png_size(path: Path) -> tuple[int, int]:
@@ -56,6 +56,7 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
     portrait_speakers, hd_speakers = set(), set()
     parent_sprites, hd_sprites = {}, {}
     terrain_frames = set()
+    battle_resources = set()
     for entry in assets:
         required = {"asset_id", "role", "status", "file", "width", "height", "sha256", "source_refs"}
         candidate = {"master_file", "consumer_contract", "speaker_id", "frame", "mouth_state"}
@@ -88,6 +89,9 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
             expected = action_icons
         elif entry.get("role") == "native_terrain_hd_set":
             expected = sprite_set - {"source_group"} | {"map_id", "frame_ids", "semantics"}
+        elif entry.get("role") == "battle_animation_hd_set":
+            expected = sprite_set - {"source_group"} | {"source_archive", "source_resource", "source_metadata_sha256",
+                "native_header", "native_frames", "layout_policy", "source_files", "source_sha256"}
         else:
             expected = required
         if set(entry) != expected:
@@ -168,6 +172,46 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
                     or not isinstance(hashes, list) or len(hashes) != count
                     or any(not isinstance(value, str) or not SHA_RE.fullmatch(value) for value in hashes)):
                 raise ValueError(f"invalid native HD terrain files: {asset_id}")
+            file_paths = [Path(value) for value in files]
+        elif entry["role"] == "battle_animation_hd_set":
+            resource, count = entry['source_resource'], entry['frame_count']
+            if (entry['status'] not in {'runtime_candidate', 'runtime_ready'} or
+                    entry['consumer_contract'] != 'native_figani_rgba_hd6_v1' or
+                    entry['source_archive'] != 'FIGANI.DAT' or type(resource) is not int or resource not in range(409) or
+                    resource in battle_resources or entry['alpha_contract'] != 'coverage' or
+                    entry['cycle_policy'] != 'native_descriptor_key_poses' or
+                    entry['layout_policy'] != 'contain_native_descriptor_hd6_candidate' or
+                    (entry['width'], entry['height']) != (1920, 1200) or
+                    type(count) is not int or count not in range(1, 256) or
+                    not isinstance(entry['source_metadata_sha256'], str) or not SHA_RE.fullmatch(entry['source_metadata_sha256'])):
+                raise ValueError(f'invalid HD battle resource: {asset_id}')
+            battle_resources.add(resource)
+            header, frames = entry['native_header'], entry['native_frames']
+            if (not isinstance(header, list) or len(header) != 3 or any(type(x) is not int or x not in range(256) for x in header)
+                    or (header[0] != 0 and header[1] > count) or not isinstance(frames, list) or len(frames) != count):
+                raise ValueError(f'invalid HD battle descriptors: {asset_id}')
+            for frame in frames:
+                if (not isinstance(frame, dict) or set(frame) != {'x','y','width','height','delay_native','raw_byte_4','raw_byte_5','raw_byte_7'}
+                        or any(type(v) is not int for v in frame.values()) or
+                        frame['x'] not in range(-32768,32768) or frame['y'] not in range(-32768,32768) or
+                        frame['width'] not in range(1,1025) or frame['height'] not in range(1,1025) or
+                        any(frame[k] not in range(256) for k in ['delay_native','raw_byte_4','raw_byte_5','raw_byte_7'])):
+                    raise ValueError(f'invalid HD battle frame: {asset_id}')
+            files, hashes = entry['files'], entry['frame_sha256']
+            if (not isinstance(files,list) or len(files)!=count or len(set(files))!=count or
+                    not isinstance(hashes,list) or len(hashes)!=count or
+                    any(not isinstance(h,str) or not SHA_RE.fullmatch(h) for h in hashes)):
+                raise ValueError(f'invalid HD battle files: {asset_id}')
+            sources, source_hashes = entry['source_files'], entry['source_sha256']
+            if (not isinstance(sources,list) or not sources or len(set(sources))!=len(sources) or
+                    not isinstance(source_hashes,list) or len(source_hashes)!=len(sources)):
+                raise ValueError(f'invalid HD battle masters: {asset_id}')
+            for name, expected_hash in zip(sources,source_hashes):
+                if (not isinstance(name,str) or Path(name).name!=name or Path(name).suffix!='.png' or
+                        not isinstance(expected_hash,str) or not SHA_RE.fullmatch(expected_hash)):
+                    raise ValueError(f'unsafe HD battle master: {asset_id}')
+                if verify_private and hashlib.sha256((ROOT/private_root/name).read_bytes()).hexdigest()!=expected_hash:
+                    raise ValueError(f'HD battle master sha256 mismatch: {asset_id}')
             file_paths = [Path(value) for value in files]
         elif entry["role"] in SPRITE_ROLES | {"battle_action_icon_set"}:
             is_sprite = entry["role"] in SPRITE_ROLES
@@ -272,11 +316,13 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
                 raise ValueError(f"invalid source_ref for {asset_id}: {ref!r}")
         if verify_private:
             expected_hashes = entry["frame_sha256"] if entry["role"] in MULTI_FILE_ROLES else [entry["sha256"]]
-            for file_path, expected_hash in zip(file_paths, expected_hashes):
+            for frame_index, (file_path, expected_hash) in enumerate(zip(file_paths, expected_hashes)):
                 private_path = ROOT / private_root / file_path
                 if not private_path.is_file():
                     raise ValueError(f"private asset missing: {private_path}")
-                if png_size(private_path) != (entry["width"], entry["height"]):
+                expected_size = ((entry['native_frames'][frame_index]['width']*6, entry['native_frames'][frame_index]['height']*6)
+                                 if entry['role']=='battle_animation_hd_set' else (entry["width"],entry["height"]))
+                if png_size(private_path) != expected_size:
                     raise ValueError(f"dimension mismatch: {asset_id}/{file_path.name}")
                 digest = hashlib.sha256(private_path.read_bytes()).hexdigest()
                 if digest != expected_hash:

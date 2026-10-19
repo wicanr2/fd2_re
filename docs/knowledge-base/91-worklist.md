@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 20 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 21 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -165,6 +165,26 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 本項保持開啟：其餘地形、完整HUD／固定字樣、索引演出及跨平台HD效能／實機仍待完成。
 
 怎樣算做完：既有HD頭像／黑體／穩定頁／整備問句／金幣／角色物品轉場及首章角色狀態覆蓋已抽驗。接續其他設施轉場、成功演出、圖示與未列畫面，再完成角色／地形真正高解析素材、戰場交界及跨平台HD效能；完整HD仍未完成。
+
+證據：`docs/data/fd2-modern-hd-battlefield-20261019.json`
+
+### P1 大型戰鬥動畫HD：人物、效果與正常玩家呈現
+
+`modern-battle-animation-hd` · 工作 · [#263](https://github.com/wicanr2/fd2_re/issues/263) · 仍未完成 · 要人判
+
+使用者Goal仍為完成FD2戰鬥動畫HD，涵蓋人物、共同效果、正常呈現與私人同步。沿用1920×1200、手繪與原版像素模式並存，完整Goal尚未完成。
+
+共背景物理演出已接可選GPU consumer：入場、主動／反擊、受擊填色、restore及64階戰鬥淡出，地圖沿原有65階淡入後續行。其他捲動背景整場保留原版；HP、兩種RNG、聲音標記及節拍不變。170個GPU回讀通過；實際Draw／F2／拒收／返回及快取生命週期另通過。
+
+正常標題LOAD既有START/F5保存，以資源12/13原版像素六倍診斷包完成走行、指令環、取消、兩次攻擊與返回、Home、F2、F5/F9及新程序LOAD。保存完整bytes相同，200.665秒。這是consumer整合，不能算新增HD美術或原版oracle／整章E2。最初60秒返回等待逾時保留；相同binary、保存與圖包在有界180秒觀測乾淨重跑通過，沒有改產品時序。
+
+廣泛回歸因舊loadGame反覆解碼原有OGG而為取堆疊中斷；另一次乾淨Git樹缺生成素材，兩次均不列通過。字串審查已用相同生成資料重綁來源行號，99筆分類保持。最終相關回歸及限制見主收據。
+
+蓋亞五母稿4/11幀隔離候選仍在，正式365項清冊和私人素材保持。人物身高／占寬A/B選擇尚待回答，不將B寫入正式幾何。仍須其餘FIGANI、非共背景演出、法術／死亡及FDOTHER效果、正式素材、效能與私人同步。
+
+主證據docs/data/fd2-modern-hd-battlefield-20261019.json的battle_animation_gpu_followup_20261019；現況58、介面57、契約61。關聯#201／#202／#204。
+
+怎樣算做完：建立由正式consumer到FIGANI人物及共同效果的可重跑覆蓋清冊；完成可達戰鬥動畫HD素材、原始位置／層序／節拍／命中與音效標記的正式呈現，缺件明示；正常玩家抽驗攻擊、受擊／反擊、法術／效果、死亡與戰場返回，F2、保存冷讀與代表性效能通過；已登錄素材同步私人庫，保留原版像素模式。資料測試及離線PNG不能取代正式GUI。
 
 證據：`docs/data/fd2-modern-hd-battlefield-20261019.json`
 

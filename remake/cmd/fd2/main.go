@@ -89,6 +89,8 @@ type Game struct {
 	nativeMapVGA                 []byte           // persistent 320x200 indexed VGA surface
 	modernHDMapFrame             *modernHDMapFrame
 	modernHDMapGPU               *modernHDMapGPU
+	modernHDBattleGPU            *modernHDBattleGPU
+	modernHDBattleVisible        bool
 	modernHDWorldVisible         bool
 	modernHDMapComposing         bool
 	modernHDMapPresentedFrame    int
@@ -9158,6 +9160,8 @@ func (g *Game) nativeMapFrameAdmission(legacyViewport, campaignBattleView bool) 
 
 func (g *Game) Draw(screen *ebiten.Image) {
 	g.modernHDOverlay = nil
+	g.modernHDBattleVisible = false
+	g.syncModernHDBattleOwner()
 	g.modernHDWorldVisible = false
 	g.modernHDTimedDialogueVisible = false
 	if g.modernHDMapGPU != nil && g.bannerT <= 0 {

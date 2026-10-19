@@ -18,32 +18,34 @@ import (
 // READY 子規格見 docs/data/ida/fd2_physical_background_selection_20261004.json。
 // 首次非零 header departure／scroll 已接線；完整 DAC 與尾段仍屬 E1。
 type nativePhysicalScene struct {
-	selection                 battle.NativePhysicalSceneSelection
-	background, pedestal      *ebiten.Image
-	backgroundFrame           fdother.Frame
-	panelAssets               battle.NativeItemPanelDataAssets
-	actorRecord, targetRecord []byte
-	actorIndex, targetIndex   int
-	prelude                   []battlepresent.NativeCommand24PreludeFrame
-	preludeImages             []*ebiten.Image
-	preludeFrame              int
-	preludeDrawn              bool
-	counterActive             bool
-	baseImage                 *ebiten.Image
-	baseActorHP, baseTargetHP int
-	departure                 [][]byte
-	transition                [][]byte
-	leadImages                []*ebiten.Image
-	leadDelays                []int
-	leadFrame, leadTicks      int
-	leadDrawn                 bool
-	leadBodyTicks             int
-	attackStart               int
-	targetBackground          fdother.Frame
-	platformFrame             fdother.Frame
-	rawSide                   byte
-	bodyResources             *nativePhysicalBodyResources
-	body                      *nativePhysicalBodyPlayback
+	actorBattleFig, targetBattleFig int
+	preludeBase                     []byte
+	selection                       battle.NativePhysicalSceneSelection
+	background, pedestal            *ebiten.Image
+	backgroundFrame                 fdother.Frame
+	panelAssets                     battle.NativeItemPanelDataAssets
+	actorRecord, targetRecord       []byte
+	actorIndex, targetIndex         int
+	prelude                         []battlepresent.NativeCommand24PreludeFrame
+	preludeImages                   []*ebiten.Image
+	preludeFrame                    int
+	preludeDrawn                    bool
+	counterActive                   bool
+	baseImage                       *ebiten.Image
+	baseActorHP, baseTargetHP       int
+	departure                       [][]byte
+	transition                      [][]byte
+	leadImages                      []*ebiten.Image
+	leadDelays                      []int
+	leadFrame, leadTicks            int
+	leadDrawn                       bool
+	leadBodyTicks                   int
+	attackStart                     int
+	targetBackground                fdother.Frame
+	platformFrame                   fdother.Frame
+	rawSide                         byte
+	bodyResources                   *nativePhysicalBodyResources
+	body                            *nativePhysicalBodyPlayback
 }
 
 func (g *Game) nativePhysicalTerrainControl(unit *battle.Unit) ([4]byte, error) {
@@ -155,7 +157,8 @@ func (g *Game) prepareNativePhysicalScene(actor, target *battle.Unit) (*nativePh
 	if err != nil {
 		return nil, err
 	}
-	scene := &nativePhysicalScene{selection: selection, background: background, pedestal: pedestal}
+	scene := &nativePhysicalScene{selection: selection, background: background, pedestal: pedestal,
+		actorBattleFig: actor.BattleFig, targetBattleFig: target.BattleFig}
 	if err := g.prepareNativePhysicalPrelude(scene, actor, target, animation, bg, tai); err != nil {
 		return nil, err
 	}
@@ -253,6 +256,7 @@ func (g *Game) prepareNativePhysicalPrelude(scene *nativePhysicalScene, actor, t
 		Base: base, ActorIdle: actorIdle.Frames[0], FirstTargetIdle: targetIdle.Frames[0],
 		Platform: &tai, RawSide: actor.NativeRecordByte6, Mode: mode, BaselineDAC: dac,
 	})
+	scene.preludeBase = base
 	if err != nil {
 		return err
 	}
@@ -345,6 +349,13 @@ func (g *Game) drawNativePhysicalPrelude(screen *ebiten.Image) bool {
 	scene := g.atk.nativeScene
 	var img *ebiten.Image
 	if scene.preludeFrame < len(scene.preludeImages) {
+		if drawn, err := g.drawModernHDBattlePrelude(screen, scene); err != nil {
+			g.loadErr = "native physical HD prelude: " + err.Error()
+			return true
+		} else if drawn {
+			scene.preludeDrawn = true
+			return true
+		}
 		img = scene.preludeImages[scene.preludeFrame]
 		scene.preludeDrawn = true
 	} else if scene.leadFrame < len(scene.leadImages) {

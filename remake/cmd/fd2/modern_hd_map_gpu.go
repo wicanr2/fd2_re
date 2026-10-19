@@ -286,13 +286,19 @@ func (g *Game) drawModernHDMapRing() error {
 }
 
 func (g *Game) modernHDMapLogicalImage(screen *ebiten.Image) *ebiten.Image {
-	if !g.modernHDWorldVisible || g.modernHDMapGPU == nil {
+	var world *ebiten.Image
+	if g.modernHDBattleVisible && g.modernHDBattleGPU != nil {
+		world = g.modernHDBattleGPU.World
+	} else if g.modernHDWorldVisible && g.modernHDMapGPU != nil {
+		world = g.modernHDMapGPU.World
+	}
+	if world == nil {
 		return screen
 	}
 	result := ebiten.NewImage(logicalW, logicalH)
 	op := &ebiten.DrawImageOptions{Filter: ebiten.FilterLinear}
 	op.GeoM.Scale(1.0/3, 1.0/3)
-	result.DrawImage(g.modernHDMapGPU.World, op)
+	result.DrawImage(world, op)
 	result.DrawImage(screen, nil)
 	return result
 }
