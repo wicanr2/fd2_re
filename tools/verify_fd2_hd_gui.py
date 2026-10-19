@@ -48,7 +48,7 @@ def main():
     args.out.mkdir()
     assert args.out.stat().st_uid == os.getuid()
     audit = args.out/'input-audit.jsonl'
-    catalog_path = ROOT/'remake/assets/themes/modern/catalog.json'
+    catalog_path = args.assets/'assets/themes/modern/catalog.json'
     catalog = json.loads(catalog_path.read_text())
     hd = {a['speaker_id']: a for a in catalog['assets'] if a['role']=='story_portrait_hd_frame'}
     coverage = json.loads((ROOT/'docs/data/fd2-modern-intro-coverage-20261018.json').read_text())
@@ -167,13 +167,17 @@ def main():
                     # portrait/font preparation finishes. Wait for live frames
                     # and fully revealed text before testing an unrelated key.
                     stable = None
-                    for _ in range(30):
-                        time.sleep(1)
+                    stable_frame = None
+                    stable_deadline = time.monotonic()+90
+                    while time.monotonic() < stable_deadline:
+                        time.sleep(.2)
                         current = latest(audit)
-                        if (stable and current.get('frame') != stable.get('frame')
-                                and current.get('dialogue_speaker') == 48
-                                and current.get('dialogue_progress',-1) >= 0
-                                and current.get('dialogue_progress') == stable.get('dialogue_progress')):
+                        same = (stable and current.get('dialogue_speaker') == 48
+                                and current.get('dialogue_progress', -1) >= 0
+                                and current.get('dialogue_progress') == stable.get('dialogue_progress'))
+                        if not same:
+                            stable_frame = current.get('frame', 0)
+                        if same and current.get('frame', 0)-stable_frame >= 60:
                             break
                         stable = current
                     else: raise TimeoutError('父王對話尚未進入穩定輸入等待')

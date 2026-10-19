@@ -1137,14 +1137,15 @@
       "asset_id": "modern.gaia.portrait.style_a.frame0",
       "role": "story_portrait_frame",
       "status": "runtime_candidate",
-      "file": "gaia-portrait-style-a-v1-80.png",
-      "master_file": "gaia-portrait-style-a-v1-master.png",
+      "file": "gaia-portrait-style-a-v2-80.png",
+      "master_file": "gaia-portrait-style-a-v2-master.png",
       "width": 80,
       "height": 80,
-      "sha256": "bc5a12b1e6e0d61dcdf0b48fee2061ad7ca7fba3f81f7bfaaa144257ae390398",
+      "sha256": "c5b78cc66f098d232099364c29f5fce2303ccf26cceb42db637e1be81c54c613",
       "source_refs": [
         "asset:DATO_030_m0",
-        "asset:modern.saint-colas.portrait.style_a.frame0"
+        "asset:modern.gaia.design.style_a.v2",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
       ],
       "consumer_contract": "native_story_dialogue_rgba_overlay_v1",
       "speaker_id": 30,
@@ -2639,37 +2640,37 @@
       "asset_id": "modern.fdicon.group_030.style_a",
       "role": "map_sprite_set",
       "status": "runtime_candidate",
-      "master_file": "fdicon-030-style-a-v1-master.png",
+      "master_file": "fdicon-030-style-a-v2-master.png",
       "files": [
-        "fdicon-030-style-a-f00.png",
-        "fdicon-030-style-a-f01.png",
-        "fdicon-030-style-a-f02.png",
-        "fdicon-030-style-a-f03.png",
-        "fdicon-030-style-a-f04.png",
-        "fdicon-030-style-a-f05.png",
-        "fdicon-030-style-a-f06.png",
-        "fdicon-030-style-a-f07.png",
-        "fdicon-030-style-a-f08.png",
-        "fdicon-030-style-a-f09.png",
-        "fdicon-030-style-a-f10.png",
-        "fdicon-030-style-a-f11.png"
+        "fdicon-030-style-a-v2-f00.png",
+        "fdicon-030-style-a-v2-f01.png",
+        "fdicon-030-style-a-v2-f02.png",
+        "fdicon-030-style-a-v2-f03.png",
+        "fdicon-030-style-a-v2-f04.png",
+        "fdicon-030-style-a-v2-f05.png",
+        "fdicon-030-style-a-v2-f06.png",
+        "fdicon-030-style-a-v2-f07.png",
+        "fdicon-030-style-a-v2-f08.png",
+        "fdicon-030-style-a-v2-f09.png",
+        "fdicon-030-style-a-v2-f10.png",
+        "fdicon-030-style-a-v2-f11.png"
       ],
       "width": 24,
       "height": 24,
       "frame_count": 12,
       "frame_sha256": [
-        "deed6d1b3449e980dadb73b5b9cf78423db8a499de80642ed20cebd856ae3843",
-        "4b87c47ab9316974d5b320c21d484a9d8dbb993e13fbee89db082b297c4e61f1",
-        "553db6dbb29704d5a7edd4ee5c1cad906bb964a5e359aa7f475cc1a60771b97d",
-        "b321c3a7190c32feff91b07fb5f239d08dfd35a8be682a10f6b8b0e0eb4fe451",
-        "7ff2b5246ccd11607a070cf7c5886874b75fb7b221f99f82e5721097333fa6cd",
-        "2ff1c93155ff9819dd7032e8c2f9686550fc403f62f8a581fe7c78738fb44d4a",
-        "b8215c5baf9c28d8b84e0c5d46e091eab7aa7b9b22b976bcb93fd28f68b444ef",
-        "e41e1020adb3c091d2a7ee4666712038b6c5710eee8ed4b3bc82d5c9f22b4df9",
-        "2c07317e8561b3e94857009f67bb43d7c17eec8b8adb6e5a13495e85d28f7ee5",
-        "8b07139171df100458abc017c5442129fd75d3313cf901262a969a826c572240",
-        "63c5989488f0f5c58f6ee017419cce0ce5954139ace4d64f28ae4bf6e16bd922",
-        "0a7c0bb7f0d4d86f15d60ae9ae0cc4a283c833f7dd2b1a5b56dfd66c2acf1bc6"
+        "57955db9445a372f40c7a449378b6833f2e1d93007260e22ba0286cb82e56a6a",
+        "7102fe5427bcc1b4400434ca1b77223488bdad54b461a9453b36dc1ff087b7ef",
+        "b9f1a684337349aef71a787e2f77d8d9cee8c26911f3f2fd00c21aebd15e44f6",
+        "7ba6d87d1e491a33161df7da58a4d95f03a49446116f92e857d3dc7dc4ffd2ba",
+        "700ce42a5927856ab21b62cb0134ac9a8be9d744492cd227ae8a60258d3bd05f",
+        "1b30a890d2da2bc7a9fe9ce3da12e66c823fe3b3ca8fa31c556005ce38fe94a3",
+        "df71875e7cab0d22bd906873cc3c932c5ab72b60133729b186df97a9fec94358",
+        "1c7f0dcc5ddf4c766d2e581c343ba3bf726b2188005cf5058b282f5b8c436677",
+        "4408484cd8a5abdbd1e57658fe329efc268adb2ab373fcf6adf28fdbf7da46c2",
+        "8ac98be7b3da0e39d2bc672384b1c57b2063f31d964d6a44d1001751156d971e",
+        "23e68c75ca402a32f45211f6d7a82711291aeb4967080ce45d6ff57662bc0073",
+        "156a325926299ff3eb86200c53be8d1c9d69d53c8633a01ce7a997de82866b1e"
       ],
       "source_group": 30,
       "consumer_contract": "fdicon_map_sprite_12x24_v1",
@@ -2677,7 +2678,8 @@
       "cycle_policy": "three_distinct_cycles",
       "source_refs": [
         "asset:FDICON.B24.group_030",
-        "remake/assets/sprites/fig_030_f00.png"
+        "docs/data/fd2-modern-hd-battlefield-20261019.json",
+        "asset:modern.gaia.design.style_a.v2"
       ]
     },
     {
@@ -6045,14 +6047,14 @@
       "asset_id": "modern.gaia.portrait.style_a.hd6.frame0",
       "role": "story_portrait_hd_frame",
       "status": "runtime_candidate",
-      "file": "gaia-portrait-style-a-v1-480.png",
-      "master_file": "gaia-portrait-style-a-v1-master.png",
+      "file": "gaia-portrait-style-a-v2-480.png",
+      "master_file": "gaia-portrait-style-a-v2-master.png",
       "width": 480,
       "height": 480,
-      "sha256": "e51c38730f40f718dc40f44c3afb3cab77f0fa82d18f74a34d591310a1d928db",
+      "sha256": "0b207fc23361c696c0135122e3a80c39fe77191e4ab48af97820f6c082c2e0a1",
       "source_refs": [
         "asset:DATO_030_m0",
-        "asset:modern.saint-colas.portrait.style_a.frame0",
+        "asset:modern.gaia.design.style_a.v2",
         "docs/knowledge-base/61-modern-theme-runtime-spec.md"
       ],
       "consumer_contract": "native_story_dialogue_rgba_overlay_hd6_v1",
@@ -9189,35 +9191,35 @@
       "role": "map_sprite_hd_set",
       "status": "runtime_candidate",
       "files": [
-        "fdicon-030-style-a-hd6-f00.png",
-        "fdicon-030-style-a-hd6-f01.png",
-        "fdicon-030-style-a-hd6-f02.png",
-        "fdicon-030-style-a-hd6-f03.png",
-        "fdicon-030-style-a-hd6-f04.png",
-        "fdicon-030-style-a-hd6-f05.png",
-        "fdicon-030-style-a-hd6-f06.png",
-        "fdicon-030-style-a-hd6-f07.png",
-        "fdicon-030-style-a-hd6-f08.png",
-        "fdicon-030-style-a-hd6-f09.png",
-        "fdicon-030-style-a-hd6-f10.png",
-        "fdicon-030-style-a-hd6-f11.png"
+        "fdicon-030-style-a-v2-hd6-f00.png",
+        "fdicon-030-style-a-v2-hd6-f01.png",
+        "fdicon-030-style-a-v2-hd6-f02.png",
+        "fdicon-030-style-a-v2-hd6-f03.png",
+        "fdicon-030-style-a-v2-hd6-f04.png",
+        "fdicon-030-style-a-v2-hd6-f05.png",
+        "fdicon-030-style-a-v2-hd6-f06.png",
+        "fdicon-030-style-a-v2-hd6-f07.png",
+        "fdicon-030-style-a-v2-hd6-f08.png",
+        "fdicon-030-style-a-v2-hd6-f09.png",
+        "fdicon-030-style-a-v2-hd6-f10.png",
+        "fdicon-030-style-a-v2-hd6-f11.png"
       ],
       "width": 144,
       "height": 144,
       "frame_count": 12,
       "frame_sha256": [
-        "dfd5e298c25d641915c4270d5383288a29f17f9bb19e2bb5a037e94a6783b9c9",
-        "2678536091f0a17bccb3c2a2a24ac8fc82a6cf137b23dce03685c3fe390ca3f2",
-        "bfd6a0444d8f39d2d3e37a6db8cc5566a2729827c503a64c016c2da6bca721ef",
-        "66e5c5820eea9ad9506e81858c037eeae4ab339e0a79436085c1eed07142ef60",
-        "274d7ea6992129d40b0b4d34c4cb521bfd8761f6616603c4f68c382ec858c006",
-        "7f72b071c9776bdbe75858fc092afd85800560c2576dc30aa01c6ecc30e3056b",
-        "e3a0036b543cdfaf8e593aa1ab3366c82a79a363475842b7eca434e585ec23e7",
-        "713da67f893ebad5eaabe4296965d88432bed2c94a85511c4b8ab9fa4bdeccfc",
-        "8e72ce5ed7a90b4a2b4c209555b73b98114a8a8b8ef04c15cbe88fc627b298c9",
-        "b339f011cae6f3cebda873ec0accedb52eb525c82f85bca80f6100f556218064",
-        "1d736623a919867a90c1f3b9fe5d0fc0f534312509c15c27719b5d4162cbbba6",
-        "820fa7cce5bc4c5dc9f8a6f2550bd9b423226d544f64049fcba1928d6b693738"
+        "5786b7ab4ed5e6c012703de211d0200df1ef78cdaa7c46d09ea34a70c63149bf",
+        "700f2d5e4b2f44ca238d315ca4d016766d1cde6ab9e91aa374ca3a915d283b33",
+        "334931dd1a9fcccff5766470ecae0626f75d3bea45a2468ab73b1dd33347267c",
+        "171f3235af28ab35ebcdfa141a9031081e32169ad02edf39ca467d69c4f88dc8",
+        "fa14d6b3d30fd453e0911f1a8cbb2ffc808a07e8f182b8d79c65fe5908b5c2c3",
+        "f1e3eed3c48e544b55c3b0cc14c653bfbcf9f56f810923166ec3eaf8443cc5b7",
+        "3325565602631868c110ec29e2be8a77adf5137a8b766f6694821d1933a02f0d",
+        "5401ca4eec3cb885da9c33464e653d2efc131bddb14cbcfabd50791b86bb5c9a",
+        "48363f45475769152f37fff16d9bc5c50c78b967ef3fc7bb1b7fb0226be8fbb2",
+        "87f9d6b3ed21fd1d6863d69991cba9cb3d2559cf3e9de07382273f173d40f4e4",
+        "349d5ed274232ef9de0c6129c7b77a77164721b4fc7f400611233244587b2b27",
+        "067ccce6f6fb63bc17ea0c98f52eba25088eef8f29596b628aa0978e57f14ce1"
       ],
       "source_group": 30,
       "consumer_contract": "fdicon_hd_map_sprite_12x144_v1",
@@ -9225,16 +9227,17 @@
       "cycle_policy": "three_distinct_cycles",
       "source_refs": [
         "asset:FDICON.B24.group_030",
-        "remake/assets/sprites/fig_030_f00.png"
+        "docs/data/fd2-modern-hd-battlefield-20261019.json",
+        "asset:modern.gaia.design.style_a.v2"
       ],
       "layout_policy": "contain_22px_cell_feet_v1",
-      "master_file": "fdicon-030-style-a-v1-master.png",
+      "master_file": "fdicon-030-style-a-v2-master.png",
       "frame_overrides": {},
       "source_files": [
-        "fdicon-030-style-a-v1-master.png"
+        "fdicon-030-style-a-v2-master.png"
       ],
       "source_sha256": [
-        "726560f9b6cbf18888c978dd25edcde35600042ba9c565046606b65ceafb9ed4"
+        "d64d3c1d3884af77fce3371e408681ec25e0350b2cfa6c5129fa98c493801eee"
       ]
     },
     {
@@ -14688,6 +14691,20 @@
       "cycle_policy": "native_selector",
       "source_refs": [
         "asset:modern.map0.brown_pair.hd.master",
+        "docs/data/fd2-modern-hd-battlefield-20261019.json"
+      ]
+    },
+    {
+      "asset_id": "modern.gaia.design.style_a.v2",
+      "role": "portrait_concept",
+      "status": "concept",
+      "file": "gaia-original-based-hd-v2-concept.png",
+      "width": 1536,
+      "height": 1024,
+      "sha256": "f5b53ec12ecd73f104a79044985dc383a6bdc0a4c0df0df7daf1c38ef9900463",
+      "source_refs": [
+        "asset:DATO_030_m0",
+        "asset:FDICON.B24.group_030",
         "docs/data/fd2-modern-hd-battlefield-20261019.json"
       ]
     }

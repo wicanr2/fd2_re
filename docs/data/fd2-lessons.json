@@ -2604,8 +2604,8 @@
       "id": "gui-theme-switch-waits-completed-input-audit",
       "area": "驗證",
       "date": "2026-10-18",
-      "rule": "GUI測試先等正式對話進入輸入等待，再送主題或LOAD鍵；tools/verify_fd2_hd_gui.py以新frame且含對應keys的完成收據判定，不以固定延遲當完成。",
-      "why": "cutscene日誌早於同步素材建構完成；F2首次整包解碼也跨過固定等待。兩輪工具分別漏送鍵或讀到舊收據，不能據此判定遊戲切換失敗。",
+      "rule": "GUI測試先等正式對話進入輸入等待，再送主題或LOAD鍵；tools/verify_fd2_hd_gui.py以新frame且含對應keys的完成收據判定，不以固定延遲當完成。 文字停止須跨連續實際幀觀察；兩次牆鐘取樣相同不足以證明。",
+      "why": "cutscene日誌早於同步素材建構完成；F2首次整包解碼也跨過固定等待。兩輪工具分別漏送鍵或讀到舊收據，不能據此判定遊戲切換失敗。 2026-10-19 蓋亞序章r1在兩次進度15取樣後仍繼續到24；改由60個實際幀的進度穩定窗再做F2，保留r1失敗樣本。",
       "evidence": "tools/verify_fd2_hd_gui.py",
       "guard": {
         "kind": "present",

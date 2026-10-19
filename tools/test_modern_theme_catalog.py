@@ -13,6 +13,21 @@ import validate_modern_theme_catalog as validator
 
 
 class ModernThemeCatalogTests(unittest.TestCase):
+    def test_distinct_character_concepts_preserve_existing_design_and_reject_duplicate_id(self):
+        catalog = validator.validate(False)
+        original = next(a for a in catalog['assets'] if a['role'] == 'portrait_concept')
+        added = copy.deepcopy(original)
+        added['asset_id'] = 'modern.test.character.design'
+        catalog['assets'].append(added)
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp)/'catalog.json'
+            path.write_text(json.dumps(catalog))
+            self.assertEqual(validator.validate(False, path)['assets'][0], original)
+            catalog['assets'].append(copy.deepcopy(added))
+            path.write_text(json.dumps(catalog))
+            with self.assertRaisesRegex(ValueError, 'duplicate asset_id'):
+                validator.validate(False, path)
+
     def test_tracked_catalog_and_private_files_are_consistent(self):
         catalog = validator.validate(verify_private=True)
         self.assertEqual(catalog["theme_id"], "modern-handpainted-a")

@@ -96,7 +96,9 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
         if not isinstance(asset_id, str) or not ID_RE.fullmatch(asset_id) or asset_id in ids:
             raise ValueError(f"invalid or duplicate asset_id: {asset_id!r}")
         ids.add(asset_id)
-        if entry["role"] not in ROLES or (entry["role"] in PROTOTYPE_ROLES and entry["role"] in roles):
+        # Character designs have distinct asset IDs. Keep approved character
+        # sheets alongside the original Sol concept without replacing it.
+        if entry["role"] not in ROLES or (entry["role"] in PROTOTYPE_ROLES - {"portrait_concept"} and entry["role"] in roles):
             raise ValueError(f"invalid or duplicate role: {entry['role']!r}")
         roles.add(entry["role"])
         if entry["status"] not in STATUSES:

@@ -13,6 +13,7 @@ from verify_fd2_hd_gui import digest, latest
 from verify_fd2_hd_panel_transitions import PanelTransitionProbe
 from verify_fd2_hd_timed_dialogue import TimedDialogueProbe
 from verify_fd2_hd_terrain_walk import walk_behind_house
+from verify_fd2_gaia_focus import focus_gaia, sample_gaia
 
 
 def terrain_frame_ids(value):
@@ -42,6 +43,7 @@ def main():
     parser.add_argument('--panel-transitions', action='store_true', help='以實際移動文字區抽驗狀態／物品轉場')
     parser.add_argument('--gold-roll-theme', choices=['hd','faithful'], default='hd', help='金幣買賣的主題對照')
     parser.add_argument('--world', action='store_true', help='加驗正式HD世界、普通走行、指令環、取消與物理戰鬥返回')
+    parser.add_argument('--gaia', action='store_true', help='首章普通選取蓋亞、北移／取消、F2與新程序LOAD；需--battle-status')
     parser.add_argument('--terrain', action='store_true', help='普通方向鍵移鏡頭至首章房屋，抽驗HD地形與F2；需--battle-status')
     parser.add_argument('--terrain-occlusion', action='store_true', help='最多六個普通回合抵達屋後，抽驗前景；需--terrain與--world')
     parser.add_argument('--terrain-roof-view', action='store_true', help='另以普通游標取景褐頂物件全部八個底圖；需--terrain')
@@ -56,6 +58,7 @@ def main():
         parser.error('取景標籤只能使用小寫ASCII字母、數字與連字號')
     tool_source_sha256=digest(Path(__file__))
     assert not args.world or args.battle_status
+    assert not args.gaia or args.battle_status and not args.world and not args.terrain
     assert not args.terrain or args.battle_status
     assert not args.terrain_occlusion or args.terrain and args.world
     assert not args.terrain_roof_view or args.terrain
@@ -397,6 +400,27 @@ def main():
             else:raise TimeoutError('首章LOAD對話未結束')
             wait(lambda s:not s.get('dialogues') and not s.get('banner_t'))
             shot('battle-hd-field')
+            if args.gaia:
+                roster=json.loads(args.town_save.read_text())['party_roster']['30']
+                assert roster['NativeIdentity']==30 and roster['Fig']==30 and roster['BattleFig']==30
+                gaia=sample_gaia(key,wait,shot,lambda:latest(audit))
+                assert saved.read_bytes()==args.town_save.read_bytes()
+                restart_title_load('battle_ch01',latest(audit)['gold'],'gaia-cold-title-load')
+                cold=focus_gaia(key,wait,shot,lambda:latest(audit),'gaia-hd-cold-focused')
+                assert cold['units']==gaia['baseline']['units']
+                assert saved.read_bytes()==args.town_save.read_bytes()
+                assert digest(Path(__file__))==tool_source_sha256
+                report={'schema':'fd2-hd-gaia-focus-gui-v1','status':'PASS',
+                        'catalog_sha256':digest(args.assets/'assets/themes/modern/catalog.json'),
+                        'binary_sha256':digest(args.binary),'gui_tool_sha256':tool_source_sha256,
+                        'focus_tool_sha256':digest(Path(__file__).with_name('verify_fd2_gaia_focus.py')),
+                        'source_save_sha256':digest(args.town_save),'saved_sha256':digest(saved),
+                        'source_save_bytes_equal':True,'new_process_title_load':True,
+                        'world_runtime_checked':True,'screenshots':shots,'operations':operations,
+                        'gaia':gaia,'cold':cold,'recording_created':False,
+                        'scope':'正常標題LOAD既有普通START/F5首章槽；Z選蓋亞、北移三格／取消、F2及新程序LOAD。四方向十二幀另作圖源審查，非原版對拍。'}
+                (args.out/'receipt.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+                return
             if args.terrain:
                 wait(lambda s:not s.get('player_focus') and s.get('hd_world') is True)
                 before_pan=latest(audit)
@@ -618,6 +642,7 @@ def main():
             assert saved.read_bytes()==hd_saved
             assert digest(Path(__file__))==tool_source_sha256,'GUI工具執行中來源被修改'
             report={'schema':'fd2-hd-battle-status-gui-v1','status':'PASS',
+                    'catalog_sha256':digest(args.assets/'assets/themes/modern/catalog.json'),
                     'gui_tool_sha256':tool_source_sha256,
                     'world_runtime_checked':args.world,'world_walk_gpu':world_shots,'world_walk_rejected':world_rejected,
                     'timed_dialogue_gpu':timed_result,

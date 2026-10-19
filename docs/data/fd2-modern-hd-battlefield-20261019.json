@@ -9,23 +9,22 @@
     "native_viewport": "CONFORMED-SCOPED：正式1920世界沿原生(4,4)、312×192窗格；正常F2同view與960地形樣本一致。",
     "hd_sprite_data": "DATA-READY：完整125組1455張HD及31組372張新增24父項已登錄；舊1083張父項及HD bytes保持。",
     "hd_world_renderer": "CONFORMED-SCOPED：144人物已接Game.Draw；首章34張正常GPU、4張實際走行、兩次物理攻擊及保存／新程序LOAD通過。",
-    "private_assets": "catalog allow-list 3267檔已逐檔驗證並推送私人庫；runtime-only白名單3063檔。",
+    "private_assets": "catalog allow-list 3268檔已逐檔驗證並推送私人庫；runtime-only3063檔；核准蓋亞原稿已保存。",
     "quickload_battle_owner": "CONFORMED-SCOPED：成功JSON LOAD丟棄舊經驗owner與移動計畫；拒收保留。",
     "timed_dialogue": "CONFORMED-SCOPED-RUNTIME-E1：計時FFEC開收框保留HD世界，EXP99普通鍵盤／F2與保存冷讀通過；其他caller未驗。",
     "hd_terrain": "CONFORMED-SCOPED：map0六組53槽；新增圓頂綠色／褐色雙塊四底圖在兩張正常GPU全部相符，短長組合與保存冷讀通過；草地及其他地形仍待HD化。",
-    "ai_player_input_lock": "CONFORMED-SCOPED：AI換手期間拒絕玩家地圖輸入重入；普通END／增援對話及相關／完整Go回歸通過。"
+    "ai_player_input_lock": "CONFORMED-SCOPED：AI換手期間拒絕玩家地圖輸入重入；普通END／增援對話及相關／完整Go回歸通過。",
+    "gaia_redesign": "CONFORMED-SCOPED：新版頭像與四方向圖組已登錄；正常START／Gaia北移取消／F2／冷讀分段驗證。相位差異與序章尾端失敗明示，非逐幀parity。"
   },
   "runtime_source": {
-    "binary_sha256": "6b187527f78c7acd96a3450b17fa3c8b04acf879d478da97dd79f996098f7257",
+    "binary_sha256": "07d48b2972a8dea4a5a3b67753b3e6126788cda0930a541e475b41f53e4713cb",
     "go_snapshot": {
-      "file": "work/promo-cadence-20261018/hd-fonts/variants-go-source-final.json",
+      "file": "work/promo-cadence-20261018/hd-fonts/gaia-go-source-final.json",
       "sha256": "c8582d367661ee1f9f22220e1a73346d9a5ff080ca0f2670332c8ade46ee6a8f"
     },
     "go_file_count": 993,
-    "go_files_unchanged": 992,
-    "changed_go_files": [
-      "remake/cmd/fd2-terrain-sources/main.go"
-    ],
+    "go_files_unchanged": 993,
+    "changed_go_files": [],
     "game_runtime_go_changes": 0,
     "exporter": {
       "file": "remake/cmd/fd2-terrain-sources/main.go",
@@ -33,7 +32,7 @@
     },
     "gui_tool": {
       "file": "tools/verify_fd2_hd_fonts_gui.py",
-      "sha256": "2b85a83ec9c45e8e1c7c7b9c64639144440bdc43b644479de2652088b58d34c1"
+      "sha256": "9b6ddc877cc10946d8ae77a2248124ab6daf5ce59a76c62ec4b6351a0edbdb55"
     },
     "binary_removed_after_validation": true
   },
@@ -4235,5 +4234,319 @@
     },
     "binary_removed_after_validation": true
   },
-  "historical_source_commit_before_rounded_green_and_pair": "538ea592717b1df8168d41d8f2ff2e95e49d8e23"
+  "historical_source_commit_before_rounded_green_and_pair": "538ea592717b1df8168d41d8f2ff2e95e49d8e23",
+  "gaia_redesign_followup_20261019": {
+    "status": "CONFORMED-SCOPED",
+    "user_decision": "同意採用原版導向第二版造型，繼續頭像與四方向動作。",
+    "approved_design_sha256": "f5b53ec12ecd73f104a79044985dc383a6bdc0a4c0df0df7daf1c38ef9900463",
+    "source_receipt": "work/promo-cadence-20261018/hd-fonts/gaia-redesign-sources.json",
+    "source_receipt_sha256": "4ab4f8a0c9a98889bff134a23fdf3514c9119f027797ce878571159b2487ea2f",
+    "approved_source_private_only": true,
+    "scope": "蓋亞身分30的80/480靜態頭像與第30組24/144四方向十二幀；大型FIGANI未HD化。",
+    "formal_catalog_registered": true,
+    "normal_gui_verified": true,
+    "private_remote_synced": true,
+    "full_hd_complete": false,
+    "base_commit": "71a8e473eab83e662b56946796eed30130c1481f",
+    "generation": {
+      "status": "prototype_pending_review",
+      "native_identity": 30,
+      "source_mapping": "characters.json sprite_group/face_portrait 30; ordinary START/F5 saved party_roster30 BattleFig=30; formal consumer BattleFig*3 idle, +1 attack",
+      "reference_only_not_runtime_capture": true,
+      "files": [
+        {
+          "file": "remake/assets/portraits/DATO_030_m0.png",
+          "sha256": "8bdd25f987ececb013146abff48c8a4840c8e30892e84443c6749157853c6ea0",
+          "width": 80,
+          "height": 80
+        },
+        {
+          "file": "remake/assets/figani/FIGANI_090_f00.png",
+          "sha256": "9ff3d2bbbc7df359111a1840c62aa5462f918635bec3a5acaaeaf63c60a016bf",
+          "width": 104,
+          "height": 143
+        },
+        {
+          "file": "remake/assets/figani/FIGANI_090_f01.png",
+          "sha256": "5e823e004f7a4968d0963d668e309a46ebfad7ddc3694f044f5cf9cf4869699d",
+          "width": 104,
+          "height": 142
+        },
+        {
+          "file": "remake/assets/figani/FIGANI_091_f00.png",
+          "sha256": "9ff3d2bbbc7df359111a1840c62aa5462f918635bec3a5acaaeaf63c60a016bf",
+          "width": 104,
+          "height": 143
+        },
+        {
+          "file": "remake/assets/sprites/fig_030_f00.png",
+          "sha256": "d76250f76db9887b3a3809a82361b444c0e73d4f5b86b744a9db8a1a6c0bd44f",
+          "width": 24,
+          "height": 24
+        },
+        {
+          "file": "remake/assets/sprites/fig_030_f03.png",
+          "sha256": "0d9b9f81459d996d14e56565ba689575b08f14c87f2933fd2dfe0342270a609c",
+          "width": 24,
+          "height": 24
+        },
+        {
+          "file": "remake/assets/sprites/fig_030_f06.png",
+          "sha256": "83a08324e9c568ef74ecdec92457514a2278147427c2f303f733f0b1b8287329",
+          "width": 24,
+          "height": 24
+        },
+        {
+          "file": "remake/assets/sprites/fig_030_f09.png",
+          "sha256": "1556683fe6469c0836943e930d34f79e4c596f42ce49aa73cc2ad52b5558339e",
+          "width": 24,
+          "height": 24
+        }
+      ],
+      "user_direction": "基於蓋亞原版重新設計，恢復壯碩機器人體型。",
+      "generator": "built-in image_gen",
+      "prompt": "Use case: identity-preserve / stylized-concept. Asset type: HD character redesign concept sheet for Gaia (蓋亞), the heavy robot from Flame Dragon Knights 2. Rebuild the character based directly and faithfully on the attached ORIGINAL GAME reference board, portrait, and large battle sprite. The original designs are the identity authority. This is a corrective redesign of a previous inaccurate HD version.\nMake a polished landscape 1536x1024 hand-painted game character model sheet: left two-thirds ONE complete full-body robot in a neutral sturdy three-quarter stance, right one-third ONE close-up bust portrait of the SAME robot turned toward the right, cropped square in spirit. Dark muted navy background, no lettering, no logos, no frame ornaments. Show hands and feet completely on full-body panel. Do not draw any pixel reference inset.\nIdentity invariants visible in original images: very bulky, stocky, wide shoulders and deep barrel-like armored torso; substantial mechanical forearms and hands, heavy articulated thigh and shin armor, grounded broad feet. Head sits LOW into the shoulders with a short armored neck. Smooth broad pale gray-green rigid metal helmet plates with the distinctive broad slanted, overlapping shell geometry from the original head portrait, narrow dark navy horizontal visor with muted blue optics. Angular lower face guard, NEVER a human mouth. Blue/cobalt solid inset armor bands and navy joints, pale sage-gray shell panels. Original battle silhouette has a rounded massive shoulder cap with cobalt rim, layered thick chest armor and heavy limbs; use the references to retain this heavy industrial personality. Keep silhouette immediately recognizable as original Gaia, not a generic slim humanoid robot. Full body proportions closer to the original large battle illustration than the super-deformed 24px map sprite. Calm reliable mechanical guardian stance, no weapon added, no new antenna/cannon/backpack/wings or ornament.\nMaterial and style: richly painted Taiwanese/Japanese 1990s fantasy RPG HD illustration, confident clean shape design, restrained brush textures, solid metal thickness and clear plate edges, subtle wear only. Pale armor is solid rigid metal, NO cloth, bandages, wrappings, scarf, turban, mummy, robe, skirt or fabric. No cracked stone-golem material. No long exposed thin cable neck. No giant glowing sci-fi energy core, no new red accents, no neon effects. Preserve original colors and mechanical forms, no futuristic sports-car plating. Crisp readable illustration fit for a 1920x1200 game, not pixel art and not photographic 3D.",
+      "generated_original": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-d5b33e65-6964-4ce1-bb1e-5240b19262e4.png",
+      "candidate": {
+        "file": "work/promo-cadence-20261018/hd-fonts/gaia-original-based-hd-v2-concept.png",
+        "sha256": "f5b53ec12ecd73f104a79044985dc383a6bdc0a4c0df0df7daf1c38ef9900463",
+        "width": 1536,
+        "height": 1024
+      },
+      "source_board": {
+        "file": "work/promo-cadence-20261018/hd-fonts/gaia-original-reference-board.png",
+        "sha256": "0d15224648b72b0cfa756fedb1751760ee7b7ccc4e4bc0c822900ea78e5306b5"
+      },
+      "review": {
+        "status": "user_approved",
+        "full_body_and_portrait_same_design": true,
+        "candidate_not_runtime": true,
+        "formal_catalog_unchanged": true,
+        "private_allowlist_unchanged": true,
+        "prior_problem": "現有地圖母稿為布條纏繞造型；原版是厚重硬質金屬裝甲。現有HD頭像臉頸較長。",
+        "limits": [
+          "概念稿尚非480頭像或144圖組成品。",
+          "未替換正式素材，也未宣稱遊戲內驗證。",
+          "原版參考板是解碼素材整理，非原版執行期截圖。"
+        ],
+        "user_reply": "同意 繼續囉",
+        "approved_design_sha256": "f5b53ec12ecd73f104a79044985dc383a6bdc0a4c0df0df7daf1c38ef9900463"
+      },
+      "walk_generation": {
+        "generator": "built-in image_gen",
+        "prompt": "Use case: identity-preserve. Asset type: production master sprite sheet for HD strategy RPG Gaia robot. Image 1 is the USER-APPROVED Gaia full-body/portrait design. Keep EXACT character identity, silhouette, head shell geometry, proportions, sage-gray rigid metal plates, cobalt/navy structure, short armored neck and extremely bulky shoulders, chest, forearms and legs. Make ONE TRANSPARENT-BACKGROUND sprite sheet at approximately 1536x2048, exactly 3 columns and 4 rows, 12 separate complete figures in equally spaced cells. No writing, labels, frame borders, floor shadows or other objects. Gaps between all figures and all image edges. Entire feet, fingers and armor contained within each cell; crisp antialiased silhouette.\nCamera: orthographic slightly elevated 3/4 tactical game viewpoint. Use compact stocky map-character proportions with the approved design's solid massive armored body; head not huge, never skinny, never bandages or fabric. ALL three figures within a row face the exact same cardinal direction. Row1 FRONT facing viewer (south). Row2 LEFT PROFILE facing screen-left (west). Row3 BACK facing away (north), show rear armor with NO face or visor on the back. Row4 RIGHT PROFILE facing screen-right (east). Each row is a readable 3-phase WALK cycle: column1 left foot steps forward with right arm counter-swing; column2 planted centered passing/neutral stance; column3 right foot steps forward with left arm counter-swing. Feet and arm positions must be distinctly different across all 3 columns, but robot design and armor details remain the same. Rear and side views should follow coherent anatomy for exactly TWO arms and TWO legs. Preserve original lack of held weapon, no added cloth, no scarf, no loincloth, no new backpack, no wings, no cannon. Deep chest and broad shoulders, heavy fists and wide armored feet, knees mechanically articulate. Very restrained motion appropriate to a heavy robot.\nStyle: precisely match approved hand-painted 1990s fantasy RPG HD artwork, clear hard armor planes and clean sparse linework readable at 144px and24px. Avoid extra tiny greebles. No pixel art, no checkerboard drawn into pixels, REAL transparent alpha. Original's slanted helmet is rigid armor, not mummy wrappings. All12 bodies should have equal height and volume, wide weighty stance. Reference image2 provides ORIGINAL four map directions and battle silhouette for orientation only; use image1 for finished character appearance.",
+        "references": [
+          "gaia-original-based-hd-v2-concept.png",
+          "gaia-original-reference-board.png"
+        ],
+        "generated_original": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-372ac7dd-1c0e-4b09-8baa-1814eb1d73a5.png",
+        "candidate_file": "work/promo-cadence-20261018/hd-fonts/gaia-walk-v2-r1-master.png",
+        "candidate_sha256": "d64d3c1d3884af77fce3371e408681ec25e0350b2cfa6c5129fa98c493801eee",
+        "directions": [
+          "south",
+          "west",
+          "north",
+          "east"
+        ],
+        "phase_count_per_direction": 3,
+        "transparent_background": true,
+        "inspection": "12完整連通輪廓，未碰影像邊界；硬甲、厚重四肢、背面無面罩。"
+      }
+    },
+    "original_reference_file": "docs/data/fd2-reference-files.json",
+    "fixed_inputs": [
+      {
+        "file": "FD2.EXE",
+        "size": 357074,
+        "md5": "b97caf2239a27a896069d03549d96e1e",
+        "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+      },
+      {
+        "file": "DATO.DAT",
+        "size": 1979029,
+        "md5": "f15093e5bff4e5f3334a076ab2a7d130",
+        "sha256": "dff859783606ee95d9811e1e564bcb230ef53c4df9130e8b6d42ad37bc8c27bd"
+      },
+      {
+        "file": "FDICON.B24",
+        "size": 624010,
+        "md5": "46f793540209a063ea73a5373ca14bf4",
+        "sha256": "7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44"
+      },
+      {
+        "file": "FIGANI.DAT",
+        "size": 15279582,
+        "md5": "7da21ec0ad9917455459f1acb970bdf4",
+        "sha256": "e909314ce37b70701238fd24febc8f61603bbe8d81a9ecbf8f289c97a5b67a1f"
+      }
+    ],
+    "candidate": {
+      "file": "work/promo-cadence-20261018/hd-fonts/gaia-v2-candidate-r1/pack/catalog.json",
+      "sha256": "ed2cdee8b90c87ca20e7659e292835ca93d4c922e935de316bba3687b95bde29"
+    },
+    "data": {
+      "file": "work/promo-cadence-20261018/hd-fonts/gaia-v2-candidate-r1/data-verification.json",
+      "sha256": "cb8a888acafa4b76dabf91b6038b2b0f8a237e966c3c39dde7b53ba617498033"
+    },
+    "registration": {
+      "file": "work/promo-cadence-20261018/hd-fonts/gaia-v2-candidate-r1/registered.json",
+      "sha256": "700b89164ab5d061981c70c997f2716fae28db26a9d0dffc134e41286c76d776"
+    },
+    "intro": {
+      "file": "work/promo-cadence-20261018/hd-fonts/gaia-intro-start-scope-r2.json",
+      "sha256": "574f1126f8b6c5db5f5d4a86ab217e2c51d2e3be52207291766ee496311f4c40"
+    },
+    "world": {
+      "file": "work/promo-cadence-20261018/hd-fonts/gaia-world-gui-r1/receipt.json",
+      "sha256": "98507dc40ede221365ee333ab89d3e3b32d3f6907592801e67954ec696ab5f50"
+    },
+    "gaia_focus": {
+      "file": "work/promo-cadence-20261018/hd-fonts/gaia-focus-gui-r1/receipt.json",
+      "sha256": "f6718904633a148e72f9a4ff1da76a8733d10068fcca234de4adc7f3a2f6cfda"
+    },
+    "gpu": {
+      "file": "work/promo-cadence-20261018/hd-fonts/gaia-focus-gpu-r1.json",
+      "sha256": "410fc9b6af6390571bfc20c44cdf5d95933b734bbec244896032561f88f4e50d"
+    },
+    "gpu_negative": {
+      "file": "work/promo-cadence-20261018/hd-fonts/gaia-gpu-negative-final.json",
+      "sha256": "4d90f7219f556b0798b5174a5f007e11f76f2a438cca9f9f5957f0dcbe8f844f"
+    },
+    "source_save_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+    "seed": 1,
+    "state_injection": false,
+    "hp_lock": false,
+    "go_files_unchanged": 993,
+    "go_runtime_changes": 0,
+    "tests": {
+      "before_registration": {
+        "file": "work/promo-cadence-20261018/hd-fonts/gaia-go-tests.log",
+        "sha256": "75ad0b8ad8dedee597b115b515f16d326766e9c8e7089d8b5ff8f7dea7d14271"
+      },
+      "after_registration": {
+        "file": "work/promo-cadence-20261018/hd-fonts/gaia-go-final-tests.log",
+        "sha256": "58388b5d557d83bfa3049c1f4e62142dab206e0b80dc34b31eb0cd179b923bd4"
+      },
+      "go_after_seconds": 48.429,
+      "catalog": {
+        "file": "work/promo-cadence-20261018/hd-fonts/gaia-catalog-registered-tests.log",
+        "sha256": "1d3da6df850dd268adfc8946daa6c22d4e75640aae5ed76d63b0cea0c354dec1"
+      },
+      "catalog_tests": 10,
+      "guard": {
+        "file": "work/promo-cadence-20261018/hd-fonts/gaia-lessons-final-check.log",
+        "sha256": "93f065678da7505395d515fd4baf32a100f61c03c3f9fd860fa8a9b212fc0ddf"
+      },
+      "lessons": 250,
+      "guards": 131
+    },
+    "private": {
+      "verification": {
+        "file": "work/promo-cadence-20261018/hd-fonts/gaia-private-verification.json",
+        "sha256": "1c5040b7382968afefbf691ab161831a10a6e57c37f2e7866528f04b0cae7cc0"
+      },
+      "commit": "984b284bda84023462785b6260c1bca7dee53117",
+      "remote_head_verified": true,
+      "visibility": "PRIVATE",
+      "file_count": 3268,
+      "retained_unchanged": 3239,
+      "added": 29,
+      "superseded_from_current_pack": 28,
+      "old_version_commit": "b0ddae470a9e6957f82ec3258484df308e3cfaec",
+      "runtime_only_count": 3063,
+      "approved_original_preserved_byte_exact": true
+    },
+    "catalog_entries": 365,
+    "replay": {
+      "prepare": "python3 tools/revise_fd2_gaia_assets.py prepare --base-catalog <recorded-base-catalog.json> --design <approved-concept> --walk-master <12-frame-master> --out <new-candidate>; recorded original private files required",
+      "intro_scope": "python3 tools/recover_fd2_hd_intro_receipt.py --run <gaia-intro-gui-r2> --binary <validated-binary> --catalog <candidate>/pack/catalog.json --source <candidate>/pack --report <new-report>",
+      "focus": "python3 tools/verify_fd2_hd_fonts_gui.py --battle-status --gaia <common GUI args>",
+      "gpu": "python3 tools/verify_fd2_hd_world_images.py --group 30 --gaia-focus --receipt <focus>/receipt.json --catalog <candidate>/pack/catalog.json --source <candidate>/pack --report <new-report>",
+      "register": "python3 tools/revise_fd2_gaia_assets.py register --candidate <candidate> --gui-intro <intro-start-scope> --gui-world <world>/receipt.json --gui-gaia <focus>/receipt.json --gpu-gaia <gpu-report>"
+    },
+    "tools": [
+      {
+        "file": "tools/revise_fd2_gaia_assets.py",
+        "sha256": "25f13cb2e40e64b132804ca80a1d053162dd4aa310462bd272915402d8d26b69"
+      },
+      {
+        "file": "tools/verify_fd2_gaia_focus.py",
+        "sha256": "06576ee4290f917054cff8d6987194f5c7b08bfe471b44952ea3457330f1ea2d"
+      },
+      {
+        "file": "tools/recover_fd2_hd_intro_receipt.py",
+        "sha256": "f636b1288d14eaeec1342f22b8138426c204165c2d455adc2428b60327d35f24"
+      },
+      {
+        "file": "tools/verify_fd2_hd_gui.py",
+        "sha256": "ade8a9a9e5c6918b7d2f30f00a93be21e56f75d3aca7f6ebb380fcc5350fa0b9"
+      },
+      {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "9b6ddc877cc10946d8ae77a2248124ab6daf5ce59a76c62ec4b6351a0edbdb55"
+      },
+      {
+        "file": "tools/verify_fd2_hd_world_images.py",
+        "sha256": "aa742f3c60993d2d6bdb21f7733036050cf9affdacb446dfad877bb214626763"
+      },
+      {
+        "file": "tools/test_fd2_gaia_gpu.py",
+        "sha256": "0baa34f67724b9a2343a37ae7149e8bd05f770aa94a983d67b90331aa087e91e"
+      }
+    ],
+    "limits": [
+      "正常START已到首章97拍，七名480頭像GPU相同；尾端F9未取得ACK，原執行器r2失敗。分段驗證器只證明START範圍，保存冷讀另由完整34張戰場GUI通過，不冒稱同次長流程全通。",
+      "r1對話穩定判斷過早；改用60個實際幀穩定窗後F2通過。r1失敗與r2尾端失敗保留。",
+      "Gaia兩張穩定圖實際分別屬frame0及2，收據都報1；第三張擷取前後相位不同列不可比。只核對同方向三步態的唯一圖源，原因未知，沒有修改遊戲時序或宣稱相同幀。",
+      "兩張分別330/329個alpha255像素RGB精確相同，8157/8053個alpha250..254像素在source-over界限內；低覆蓋邊緣不作聲明。",
+      "Gaia普通北移三格與取消已驗；四方向十二幀全部作圖源審查，未宣稱全部方向皆有正常GUI行走取樣。",
+      "大型FIGANI、完整HUD、其他地形與平台尚未HD化；未新增原版oracle、matching、整章PLAYER-E2或Release。"
+    ],
+    "recordings_created": false,
+    "new_public_images": false,
+    "generation_snapshot_note": "generation.review的formal_catalog_unchanged等欄位是原型階段快照；目前正式登錄狀態見同層formal_catalog_registered。",
+    "authoring_toolchain": {
+      "image": "fd2-assets-local:20260829-sfx",
+      "python": "3.12.15",
+      "pillow": "11.3.0"
+    },
+    "cleanup": {
+      "binary_removed": true,
+      "binary_size": 19174456,
+      "recordings_created": false,
+      "private_remote_clean": true,
+      "fd2_containers_remaining": 0
+    },
+    "final_review": {
+      "file": "work/promo-cadence-20261018/hd-fonts/gaia-final-links-and-ownership-r2.json",
+      "sha256": "2a3e52174c3ac0c72af8787ee5b2b4b22bf3a14d16c01cfa80dbd0e725c13e28",
+      "scope": "修改文件1359個本地連結有效；本輪19檔UID/GID1000:1000。51個歷史root-owned檔與Git索引bytes相同且未修改。"
+    },
+    "worklist": {
+      "issues": [
+        201,
+        202,
+        204
+      ],
+      "state": "OPEN",
+      "total_open": 20,
+      "manual": 13,
+      "possibly_complete": 0
+    },
+    "docker_images": {
+      "assets": "sha256:e59237a31d4b5f7a62c59ac37b780bd93f17c99fda97be8f5ca0c53978b878bc",
+      "go": "sha256:e4a805c52a3ad5d8c22cf23f2bcf51c6924e5ad6b99554f1b02761903c725433",
+      "gui": "sha256:f299cf5e25b4ba172941399b3ed177c78b3a951de35d666d78af3f00e30d7f0d"
+    },
+    "registration_tool_version_before_replay_option": {
+      "file": "tools/revise_fd2_gaia_assets.py",
+      "sha256": "42daad87217c8bbe31c5a761e936dc9c1cb6b381214c016fd1b3ef8186dc76cb"
+    },
+    "reproducibility": {
+      "file": "work/promo-cadence-20261018/hd-fonts/gaia-reproduction-verification.json",
+      "sha256": "aabe4b00edd0ccd494dcf1393fce1cbc864c7e328e48ca35a823c408ff54b507",
+      "new_files_identical": 29,
+      "catalog_entries_identical": 365
+    }
+  }
 }
