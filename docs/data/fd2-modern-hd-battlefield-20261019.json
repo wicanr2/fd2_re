@@ -9,13 +9,13 @@
     "native_viewport": "CONFORMED-SCOPED：正式1920世界沿原生(4,4)、312×192窗格；正常F2同view與960地形樣本一致。",
     "hd_sprite_data": "DATA-READY：完整125組1455張HD及31組372張新增24父項已登錄；舊1083張父項及HD bytes保持。",
     "hd_world_renderer": "CONFORMED-SCOPED：144人物已接Game.Draw；首章34張正常GPU、4張實際走行、兩次物理攻擊及保存／新程序LOAD通過。",
-    "private_assets": "375項清冊allow-list3392檔及runtime-only3146檔通過，原3370檔保持，七份索爾母稿不進執行包。 私人提交b64bc057已推送，遠端HEAD相同。",
+    "private_assets": "377項allow-list3415檔及runtime-only3161檔逐筆通過，原3392檔保持，八份悠妮母稿不進執行包。私人af9ca1b953510eeda9c70965da926780e0c87eef已推送，遠端HEAD相同。",
     "quickload_battle_owner": "CONFORMED-SCOPED：成功JSON LOAD丟棄舊經驗owner與移動計畫；拒收保留。",
     "timed_dialogue": "CONFORMED-SCOPED-RUNTIME-E1：計時FFEC開收框保留HD世界，EXP99普通鍵盤／F2與保存冷讀通過；其他caller未驗。",
     "hd_terrain": "CONFORMED-SCOPED：map0六組53槽；新增圓頂綠色／褐色雙塊四底圖在兩張正常GPU全部相符，短長組合與保存冷讀通過；草地及其他地形仍待HD化。",
     "ai_player_input_lock": "CONFORMED-SCOPED：AI換手期間拒絕玩家地圖輸入重入；普通END／增援對話及相關／完整Go回歸通過。",
     "gaia_redesign": "CONFORMED-SCOPED：新版頭像與四方向圖組已登錄；正常START／Gaia北移取消／F2／冷讀分段驗證。相位差異與序章尾端失敗明示，非逐幀parity。",
-    "hd_battle_animation": "CONFORMED-SCOPED：正式375項含共同召喚37幀與角色FIGANI六資源46幀。索爾正常首章兩次END接敵／攻防、返回、F2、保存冷讀與雙方核心通過，較早亞雷斯／強盜證據保持。其餘人物／施法者／演出、普通召喚與效能未完成，蓋亞占寬待決。 四召喚施術者三階段已接正式圖源，395回歸及四完整fixture通過；普通法術與其他施術者仍待。"
+    "hd_battle_animation": "CONFORMED-SCOPED：377項清冊含共同召喚37幀及角色FIGANI八資源61幀；新增悠妮普通首章兩次END接敵／攻防、返回、F2、保存冷讀與雙方核心通過，既有索爾／亞雷斯／強盜與四召喚施術者證據保持。其餘人物／演出、普通法術與效能未完成，蓋亞占寬待決。"
   },
   "runtime_source": {
     "binary": {
@@ -25802,6 +25802,847 @@
       "unexpected_owners_or_md_directories": [],
       "scope": "本輪變更與所有caster命名輸出根；不掃全部歷史work。全庫舊九項連結限制沿前批紀錄。",
       "docker_cleanup": "提交前核對只剩本次有界檢查容器，完成後另以docker ps -a確認無FD2容器。"
+    }
+  },
+  "yuni_battle_followup_20261019": {
+    "date": "2026-10-19",
+    "status": "CONFORMED-SCOPED",
+    "base_source_commit": "8e64173a9c7676ee268c04eaa80b486b8d663e87",
+    "scope": "BattleFig9的FIGANI27待機4／28普通攻擊11；29原始空header。原矩形與節拍，手繪姿勢重定向，無規則或存檔變更。",
+    "sources": [
+      {
+        "file": "docs/data/fd2-reference-files.json",
+        "sha256": "9946b7506620069ce9b7bb8e4b1f7fed36e7a9389b634ef62064727d89579c5e"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/battle-animation-hd-inventory-final.json",
+        "sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/yuni-native-inputs-r1.json",
+        "sha256": "426bb0f831ccd88a56a3b1c3ba902cceb595a4ec6a0fc8bd3bf8b01c298532a4"
+      },
+      {
+        "file": "tools/build_fd2_character_battle_hd.py",
+        "sha256": "fd283cd499e5703cfb1165751e469c75b85e60b3f85727c2e032eac14207b8c0"
+      }
+    ],
+    "native_appearance": "固定原始PNG及正式色盤：紅色長髮、紫灰肩甲／護具與高靴、裸露上臂、金黃長披布／飄帶、單一短杖。先核原始圖，不以小人或職業名猜戰鬥裝。",
+    "evidence_level": "DATA-READY／RUNTIME-E1與正常首章操作抽驗；非新原版oracle或PLAYER-E2",
+    "acceptance": [
+      "完整4／11幀依母稿及明示錨點重建，清冊預檢及拒收測試。",
+      "候選正式Game.Draw通過；正常首章選悠妮、攻防／返回、F2、保存及新程序LOAD。",
+      "實際GPU核對足夠高覆蓋身體核心，錯圖源／錯人物／舊PNG拒收；不能僅查hd_battle旗標。",
+      "通過才登錄清冊並同步私人allow-list；私人母稿不進公開庫。"
+    ],
+    "limitations": [
+      "原始微小身體／布料變化採明示母稿共享，不宣稱原版逐幀視覺相同。",
+      "蓋亞加寬待決；本批沿既有矩形，完整戰鬥HD仍未完成。",
+      "八母稿保留生成alpha，部分最高254；編製與正式loader的透明／高覆蓋核心檢查通過，沒有改寫原始alpha。",
+      "右側與少數底邊裁切數及色域逐幀記錄。核心核對不掩蓋這些像素，也不當作整張美術逐像素通過。",
+      "兩次普通攻防的新保存均先回來源；不以相同bytes宣稱受傷後HP持續。",
+      "本批沒有普通法術／死亡、原版oracle、matching、整章E2或Release。",
+      "F2普通抽樣位於戰場／指令環與面板；本批沒有新的物理演出中切換證據。"
+    ],
+    "full_battle_hd_complete": false,
+    "generation": {
+      "schema_version": 1,
+      "tool": "built-in image_gen",
+      "jobs": [
+        {
+          "key": "idle",
+          "prompt": "Use case: stylized-concept. Asset: ONE full-body transparent HD battle illustration for a 1990s fantasy strategy game remake. Image1 is the exact original character pose and costume reference. Image2 is only the already accepted hand-painted rendering style; do NOT copy its male bandit, colors or clothing. Image3 is the same woman's accepted face/hair identity reference; follow image1's battle outfit, not portrait clothing. Repaint image1 as detailed clean hand-painted game art. An adult red-haired woman seen entirely from BEHIND, facing slightly upper-left, face mostly hidden. Long deep red hair tied high and hanging to upper back. Small rounded purple-grey shoulder plates, bare upper arms with dark teal bands, purple-grey forearm guards, exposed narrow mid-back, dark teal belt, red waist/hip cloth, tall violet boots with dark criss-cross greaves. Two VERY LONG golden yellow split cape panels hang from the shoulders to ankles down both sides of her back, opening at the center to show waist/legs, thin golden hanging cords at the outer edges. NO blue dress. Her arms relaxed at sides; in her screen-right hand a short dark ornamental rod with tiny pale green/grey top points slightly up-right, only as shown in original; screen-left hand relaxed with long thin golden cord. Upright compact idle stance, close overlapping boots, natural athletic adult proportions. Fine contour ink, rich gold cloth folds, painted metal and leather, faithful silhouette. Entire head, cape panels, small rod and boots inside canvas with generous transparent margins. No ground shadow, platform, scene, text, watermarks, hat, wings, sword, shield, extra weapon or decorative symbols. Genuine transparent RGBA background.",
+          "references": [
+            "work/promo-cadence-20261018/hd-fonts/yuni-native-027-00-4x.png",
+            "remake/generated-assets/modern-theme-prototypes/figure-096-idle-battle-hd6-master-v1.png",
+            "remake/generated-assets/modern-theme-prototypes/yuni-portrait-style-a-v1-480.png"
+          ],
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-3c606b94-c62b-41bd-a5dc-55d14f288dee.png",
+          "workspace_file": "work/promo-cadence-20261018/hd-fonts/yuni-idle-master-r1.png"
+        },
+        {
+          "key": "open",
+          "frame": 0,
+          "prompt": "Use case: stylized-concept. Asset: ONE full-body transparent HD battle character pose. Image1 exact original pose/costume reference; image2 accepted character identity, costume and hand-painted rendering. Depict SAME adult red-haired woman as image2, matching the pose and viewing direction of image1. High deep-red ponytail, rounded purple-grey shoulder armor, bare upper arms with dark teal bands, purple forearm guards, exposed narrow mid-back, dark teal waist belt, red hip cloth and high-cut red shorts, violet knee-high boots with dark lacing. TWO long GOLD YELLOW split cape panels from shoulders to ankles, slim golden cloth cords at wrists, one short dark rod tipped with small pale grey-green stone in screen-right hand only. Fine contour ink, detailed cloth and metal, faithful clean hand-painted 1990s fantasy game art. Natural adult proportions. No hat, sword, shield, wings, extra weapon, platform, scenery, typography, watermark, shadows on ground. Full head, weapon, boots and entire cape/cords stay inside canvas with GENEROUS TRANSPARENT MARGIN above and on all sides. Genuine transparent RGBA. Pose: Back view, both arms opened outward near waist level, elbows slightly bent, palms turned upward; her screen-right hand grips the short jewel-tipped dark rod held diagonally upward. Both gold cape panels fall almost straight behind legs and gold cords curve outward from both wrists. Upright close boots.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/yuni-native-028-00-4x.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/yuni-idle-master-r1.png"
+          ],
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-3b1458c0-0a92-4797-bd5f-15fe1ca7ceb4.png",
+          "workspace_file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/yuni-open-master-r1.png"
+        },
+        {
+          "key": "raise",
+          "frame": 2,
+          "prompt": "Use case: stylized-concept. Asset: ONE full-body transparent HD battle character pose. Image1 exact original pose/costume reference; image2 accepted character identity, costume and hand-painted rendering. Depict SAME adult red-haired woman as image2, matching the pose and viewing direction of image1. High deep-red ponytail, rounded purple-grey shoulder armor, bare upper arms with dark teal bands, purple forearm guards, exposed narrow mid-back, dark teal waist belt, red hip cloth and high-cut red shorts, violet knee-high boots with dark lacing. TWO long GOLD YELLOW split cape panels from shoulders to ankles, slim golden cloth cords at wrists, one short dark rod tipped with small pale grey-green stone in screen-right hand only. Fine contour ink, detailed cloth and metal, faithful clean hand-painted 1990s fantasy game art. Natural adult proportions. No hat, sword, shield, wings, extra weapon, platform, scenery, typography, watermark, shadows on ground. Full head, weapon, boots and entire cape/cords stay inside canvas with GENEROUS TRANSPARENT MARGIN above and on all sides. Genuine transparent RGBA. Pose: Back view, both elbows raised outward; screen-left hand beside her forehead, screen-right arm higher above head gripping the little jewel-tipped dark rod. Body nearly vertical, close boots, two golden cape panels hang behind legs; narrow gold cords swing outward as small curved lines.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/yuni-native-028-02-4x.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/yuni-idle-master-r1.png"
+          ],
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-8f8744c2-5d69-4a44-ac8a-2165a25bd7a0.png",
+          "workspace_file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/yuni-raise-master-r1.png"
+        },
+        {
+          "key": "wide",
+          "frame": 4,
+          "prompt": "Use case: stylized-concept. Asset: ONE full-body transparent HD battle character pose. Image1 exact original pose/costume reference; image2 accepted character identity, costume and hand-painted rendering. Depict SAME adult red-haired woman as image2, matching the pose and viewing direction of image1. High deep-red ponytail, rounded purple-grey shoulder armor, bare upper arms with dark teal bands, purple forearm guards, exposed narrow mid-back, dark teal waist belt, red hip cloth and high-cut red shorts, violet knee-high boots with dark lacing. TWO long GOLD YELLOW split cape panels from shoulders to ankles, slim golden cloth cords at wrists, one short dark rod tipped with small pale grey-green stone in screen-right hand only. Fine contour ink, detailed cloth and metal, faithful clean hand-painted 1990s fantasy game art. Natural adult proportions. No hat, sword, shield, wings, extra weapon, platform, scenery, typography, watermark, shadows on ground. Full head, weapon, boots and entire cape/cords stay inside canvas with GENEROUS TRANSPARENT MARGIN above and on all sides. Genuine transparent RGBA. Pose: Back view, upper body upright, screen-left elbow opened widely with left hand near left side of forehead, screen-right arm extended diagonally high-right holding the small dark jewel rod. Both thin GOLD FABRIC cords billow far outward to either side as long gentle arcs, cape split panels hang down behind legs. No magic effects, orbs or beams.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/yuni-native-028-04-4x.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/yuni-idle-master-r1.png"
+          ],
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-6e42101a-4199-4748-8d8d-67ef141e1217.png",
+          "workspace_file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/yuni-wide-master-r1.png"
+        },
+        {
+          "key": "cast",
+          "frame": 6,
+          "prompt": "Use case: stylized-concept. Asset: ONE full-body transparent HD battle character pose. Image1 exact original pose/costume reference; image2 accepted character identity, costume and hand-painted rendering. Depict SAME adult red-haired woman as image2, matching the pose and viewing direction of image1. High deep-red ponytail, rounded purple-grey shoulder armor, bare upper arms with dark teal bands, purple forearm guards, exposed narrow mid-back, dark teal waist belt, red hip cloth and high-cut red shorts, violet knee-high boots with dark lacing. TWO long GOLD YELLOW split cape panels from shoulders to ankles, slim golden cloth cords at wrists, one short dark rod tipped with small pale grey-green stone in screen-right hand only. Fine contour ink, detailed cloth and metal, faithful clean hand-painted 1990s fantasy game art. Natural adult proportions. No hat, sword, shield, wings, extra weapon, platform, scenery, typography, watermark, shadows on ground. Full head, weapon, boots and entire cape/cords stay inside canvas with GENEROUS TRANSPARENT MARGIN above and on all sides. Genuine transparent RGBA. Pose: Dynamic three-quarter BACK / left side view as original, facing left. She turns torso toward LEFT in a low forward lunge, screen-left/front knee bent, other leg stretched diagonally to right. Her rod-bearing RIGHT arm points forward and diagonally up-LEFT, weapon held high at shoulder level, with full dark rod visible down below grip. Left elbow bent lower in front of her stomach, open palm facing LEFT. Red ponytail swings to screen-right. BOTH gold cape strips whip out to screen-RIGHT, curling backward with one broad S-shaped loop. Thin gold cords trail to LEFT. Preserve bare left thigh, purple thigh guards and dark laced violet boots. No magic glows, beams, blasts or particles.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/yuni-native-028-06-4x.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/yuni-idle-master-r1.png"
+          ],
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-b91e5572-a496-4a5f-ad07-f638a12e7637.png",
+          "workspace_file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/yuni-cast-master-r1.png"
+        },
+        {
+          "key": "settle1",
+          "frame": 7,
+          "prompt": "Use case: stylized-concept. Asset: ONE full-body transparent HD battle character pose. Image1 exact original pose/costume reference; image2 accepted character identity, costume and hand-painted rendering. Depict SAME adult red-haired woman as image2, matching the pose and viewing direction of image1. High deep-red ponytail, rounded purple-grey shoulder armor, bare upper arms with dark teal bands, purple forearm guards, exposed narrow mid-back, dark teal waist belt, red hip cloth and high-cut red shorts, violet knee-high boots with dark lacing. TWO long GOLD YELLOW split cape panels from shoulders to ankles, slim golden cloth cords at wrists, one short dark rod tipped with small pale grey-green stone in screen-right hand only. Fine contour ink, detailed cloth and metal, faithful clean hand-painted 1990s fantasy game art. Natural adult proportions. No hat, sword, shield, wings, extra weapon, platform, scenery, typography, watermark, shadows on ground. Full head, weapon, boots and entire cape/cords stay inside canvas with GENEROUS TRANSPARENT MARGIN above and on all sides. Genuine transparent RGBA. Pose: Three-quarter BACK / left side view facing LEFT. Slight forward crouch, broad planted stance. RIGHT rod-bearing arm still reaches diagonally up-LEFT, little pale stone tip high-left and dark rod below grip. LEFT hand open near waist and reaching screen-left. Red high ponytail streams slightly behind to right. GOLD shoulder cape strips billow backward and outward to screen-RIGHT, then curl down with a full round lower fold, long thin gold cords trailing left. Modest exact red hip shorts, exposed thigh, violet armor and laced boots. No additional FX.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/yuni-native-028-07-4x.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/yuni-idle-master-r1.png"
+          ],
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-0f85d478-bac5-4c24-972c-8c73455ce361.png",
+          "workspace_file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/yuni-settle1-master-r1.png"
+        },
+        {
+          "key": "settle2",
+          "frame": 9,
+          "prompt": "Use case: stylized-concept. Asset: ONE full-body transparent HD battle character pose. Image1 exact original pose/costume reference; image2 accepted character identity, costume and hand-painted rendering. Depict SAME adult red-haired woman as image2, matching the pose and viewing direction of image1. High deep-red ponytail, rounded purple-grey shoulder armor, bare upper arms with dark teal bands, purple forearm guards, exposed narrow mid-back, dark teal waist belt, red hip cloth and high-cut red shorts, violet knee-high boots with dark lacing. TWO long GOLD YELLOW split cape panels from shoulders to ankles, slim golden cloth cords at wrists, one short dark rod tipped with small pale grey-green stone in screen-right hand only. Fine contour ink, detailed cloth and metal, faithful clean hand-painted 1990s fantasy game art. Natural adult proportions. No hat, sword, shield, wings, extra weapon, platform, scenery, typography, watermark, shadows on ground. Full head, weapon, boots and entire cape/cords stay inside canvas with GENEROUS TRANSPARENT MARGIN above and on all sides. Genuine transparent RGBA. Pose: Three-quarter BACK / left side view facing LEFT. Coming upright from low lunge, front leg nearly straight and rear foot behind to right, narrower stance than attack. RIGHT arm remains extended diagonally high-LEFT holding the dark pale-stone-tipped rod, left palm open low before waist toward left. Gold cape panels now settle nearly vertically toward screen-RIGHT, a narrow upper fold follows back and long hem gently curls right near ankle. Ponytail swept mildly right, not flying horizontal. Keep exact costume. No FX or glow.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/yuni-native-028-09-4x.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/yuni-idle-master-r1.png"
+          ],
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-c0f36cdf-c3cd-4054-8a6f-64fd45674a40.png",
+          "workspace_file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/yuni-settle2-master-r1.png"
+        },
+        {
+          "key": "settle3",
+          "frame": 10,
+          "prompt": "Use case: stylized-concept. Asset: ONE full-body transparent HD battle character pose. Image1 exact original pose/costume reference; image2 accepted character identity, costume and hand-painted rendering. Depict SAME adult red-haired woman as image2, matching the pose and viewing direction of image1. High deep-red ponytail, rounded purple-grey shoulder armor, bare upper arms with dark teal bands, purple forearm guards, exposed narrow mid-back, dark teal waist belt, red hip cloth and high-cut red shorts, violet knee-high boots with dark lacing. TWO long GOLD YELLOW split cape panels from shoulders to ankles, slim golden cloth cords at wrists, one short dark rod tipped with small pale grey-green stone in screen-right hand only. Fine contour ink, detailed cloth and metal, faithful clean hand-painted 1990s fantasy game art. Natural adult proportions. No hat, sword, shield, wings, extra weapon, platform, scenery, typography, watermark, shadows on ground. Full head, weapon, boots and entire cape/cords stay inside canvas with GENEROUS TRANSPARENT MARGIN above and on all sides. Genuine transparent RGBA. Pose: Final follow-through pose matching original: three-quarter BACK / left side, facing LEFT, torso almost upright and legs close with left/front knee relaxed, right/rear foot behind to right. RIGHT arm extended diagonally high-LEFT with the small dark jewel-tipped rod; LEFT hand open palm up at waist toward left. Gold cape panels hang down nearly straight behind her at RIGHT, slightly narrower and calmer than previous settle, last small outward curl near ankle. Ponytail lowered against upper back, narrow red hip cloth visible. No FX or glow.",
+          "references": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/yuni-native-028-10-4x.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/yuni-idle-master-r1.png"
+          ],
+          "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-d3882fab-162c-45f2-a657-17254dff96d2.png",
+          "workspace_file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/yuni-settle3-master-r1.png"
+        }
+      ]
+    },
+    "recipe": {
+      "file": "work/promo-cadence-20261018/hd-fonts/yuni-recipe-r1.json",
+      "sha256": "78d3293053b82a742a939a3e1d2cda65a88cbc56e68fd5c360164ac4ecdd37a6"
+    },
+    "next_runtime_slice": {
+      "scope": "不同背景及headerByte1非零的正式HD呈現，原生producer已有scroll，先擴大共用consumer再接更多人物。",
+      "guard": "remake/cmd/fd2/modern_hd_battle_runtime.go:50",
+      "producer": "remake/cmd/fd2/native_physical_body.go 的nativePhysicalScroll及attachNativePhysicalBody",
+      "state": "尚未實作；沿既有原生捲動與typed來源證據另立READY，不把目前GPU綠色測試外推。"
+    },
+    "compiled": {
+      "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r1/compiled.json",
+      "sha256": "d3ef724c5c564833170a6fa5c86f793d1e628e274632b98fb0470bc2a9999e12"
+    },
+    "clean_rebuild": {
+      "file": "work/promo-cadence-20261018/hd-fonts/yuni-rebuild-and-clipping-r1.json",
+      "sha256": "68dd083506aad6d9c205cb8c94156410a693e6347ead783452b5bf2a8ba98246"
+    },
+    "alpha_and_body_review": {
+      "file": "work/promo-cadence-20261018/hd-fonts/yuni-alpha-and-hair-r2.json",
+      "sha256": "9aa6218781b7bd5ed36fee40a5cdd9f919f17c42c81e5fc890e5dc49cba55f83"
+    },
+    "hair_components": {
+      "file": "work/promo-cadence-20261018/hd-fonts/yuni-hair-components-r1.json",
+      "sha256": "5ffa62ac6347c8e0f48bca1b9f9246ad11cc8eed06634962df9af4ff17091831"
+    },
+    "compiler_guards": {
+      "file": "work/promo-cadence-20261018/hd-fonts/yuni-compiler-guards-r1/guards.json",
+      "sha256": "d6725f6a9d8ba165c5f2544445610806c91889ef5f0f8243b097e84952ae00f1"
+    },
+    "registration": {
+      "status": "PASS-YUNI-REGISTERED",
+      "catalog_assets": 377,
+      "old_assets_preserved": 375,
+      "catalog_sha256": "6779aff511776f29c2dfb9b0ec968d9891daa2b3636d872120600a9b938dbe86",
+      "new_files": [
+        {
+          "file": "figani-027-hd6-v1-f00.png",
+          "size": 410156,
+          "sha256": "2305b65d31e5c1263cc811aa68d0ae2c83930b02b7a1de425a88f84832ff8166"
+        },
+        {
+          "file": "figani-027-hd6-v1-f01.png",
+          "size": 415184,
+          "sha256": "ecdcfdddbac77fdb972d664cb4be2298c11d0c079b8355020225799833261039"
+        },
+        {
+          "file": "figani-027-hd6-v1-f02.png",
+          "size": 419524,
+          "sha256": "c881f5b8b6e36c820235b43e842d8ea7fd2462bbcd83ee52b5802c3a140e74fd"
+        },
+        {
+          "file": "figani-027-hd6-v1-f03.png",
+          "size": 415184,
+          "sha256": "ecdcfdddbac77fdb972d664cb4be2298c11d0c079b8355020225799833261039"
+        },
+        {
+          "file": "figani-028-hd6-v1-f00.png",
+          "size": 468401,
+          "sha256": "8d219f4c03a9cc01d314ed5df55fb67600fc98cc15bbfbd7368d881923378316"
+        },
+        {
+          "file": "figani-028-hd6-v1-f01.png",
+          "size": 470484,
+          "sha256": "75d26485c54a25a48b3f4b52874f0b165367f294daac29aadd289685c0042b7d"
+        },
+        {
+          "file": "figani-028-hd6-v1-f02.png",
+          "size": 481058,
+          "sha256": "469abadc2369a08035f2ae024a4249aba23e63f20ffaf93676c46825cb8e1c88"
+        },
+        {
+          "file": "figani-028-hd6-v1-f03.png",
+          "size": 482967,
+          "sha256": "c58556f0bc371e0d2018af3d42e5f3f9ddc58d695ebaa858fe9f0196e9aababf"
+        },
+        {
+          "file": "figani-028-hd6-v1-f04.png",
+          "size": 516198,
+          "sha256": "471767cab492fd7f0b2d13b6619609c7d68e8171c443067d18e0cae0456452be"
+        },
+        {
+          "file": "figani-028-hd6-v1-f05.png",
+          "size": 517051,
+          "sha256": "d5f7cc762ed3b22c045d2c934cd2f908e6121c3191fbc2d617264bbc5beab6c2"
+        },
+        {
+          "file": "figani-028-hd6-v1-f06.png",
+          "size": 618571,
+          "sha256": "c76dfd5199e2d9e035945d671d9785d31d651e60d5e529d09a2e885fe59cda35"
+        },
+        {
+          "file": "figani-028-hd6-v1-f07.png",
+          "size": 597358,
+          "sha256": "fa7f9a46c9a0cd3c9a995d64fcbe5ca31eea190c0b70bed02a5f10cf9f090646"
+        },
+        {
+          "file": "figani-028-hd6-v1-f08.png",
+          "size": 597358,
+          "sha256": "fa7f9a46c9a0cd3c9a995d64fcbe5ca31eea190c0b70bed02a5f10cf9f090646"
+        },
+        {
+          "file": "figani-028-hd6-v1-f09.png",
+          "size": 486617,
+          "sha256": "96c12c156ebe62ec1e26c3a60dc88073220793558f9d9a75b0636f1eff373f79"
+        },
+        {
+          "file": "figani-028-hd6-v1-f10.png",
+          "size": 446750,
+          "sha256": "acc577bafc8d58222425a513bdce98a2e5d3823d636e3b22577b0bec01798783"
+        },
+        {
+          "file": "figure-009-cast-battle-hd6-master-v1.png",
+          "size": 1225584,
+          "sha256": "c56251c9f88b1a1b0c74bfa8675587db9b53a01494ee3566776e744ffc936be4"
+        },
+        {
+          "file": "figure-009-idle-battle-hd6-master-v1.png",
+          "size": 1894923,
+          "sha256": "f3a3f97c627d451bcfe0ef02b8892c1cced3a970bb69e5f56fa6dbe86b7b5fb8"
+        },
+        {
+          "file": "figure-009-open-battle-hd6-master-v1.png",
+          "size": 2210178,
+          "sha256": "677ca286efc48b9412d0de6fd5cb46f564b56fea4d6df2e04ec53f8d3612c3f9"
+        },
+        {
+          "file": "figure-009-raise-battle-hd6-master-v1.png",
+          "size": 2116353,
+          "sha256": "9958773aef6e2c8e4c07c5f2772ff5b80fe999b316cab6239b57864a57c92ef1"
+        },
+        {
+          "file": "figure-009-settle1-battle-hd6-master-v1.png",
+          "size": 1319328,
+          "sha256": "9becbbbe3e54e6b38d5b9d2fc006652d5964a50c83316f1d7947dc7e746e5f5e"
+        },
+        {
+          "file": "figure-009-settle2-battle-hd6-master-v1.png",
+          "size": 1309817,
+          "sha256": "8bb1e28d97da8bbd5b4be7a2fd106d5bdca252d5ffe643f4fa3c981da751238e"
+        },
+        {
+          "file": "figure-009-settle3-battle-hd6-master-v1.png",
+          "size": 2000324,
+          "sha256": "a7bc655680157f7f7a9768a332898c31d427213040bf5424abd54e78f74d531d"
+        },
+        {
+          "file": "figure-009-wide-battle-hd6-master-v1.png",
+          "size": 2102407,
+          "sha256": "e272c95cba3b62f9a2f0bbeba54ef29f12dce1727489da4bb926b6b6f88e010f"
+        }
+      ],
+      "scope": "通過正常GUI、GPU圖源及拒收後登錄；舊375項逐筆保持，八母稿不進公開Git。"
+    },
+    "normal_gui": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/yuni-normal-gui-r1/receipt.json",
+        "sha256": "7cd394635ec76e5693b86280afb898dff93772e32cb83645bb3aff7c4caef2d1"
+      },
+      "status": "PASS",
+      "binary_sha256": "2297c82e6b2d281d3247daadc26c4d66f44862c08bb9291084038b7d097af9de",
+      "gui_tool_sha256": "d55818cd17c6df9f9c6065280d940847e248b13a27b146811312dafaf941a069",
+      "catalog_sha256": "04cb64ee47458ef08850057d5cf2b7194df21d38205f9bb34134119efa851f8c",
+      "source_save_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "saved_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "source_save_bytes_equal": true,
+      "theme_save_bytes_equal": true,
+      "new_process_title_load": true,
+      "battle_own_index": 1,
+      "elapsed_seconds": 649.3410107800737,
+      "main_pngs": 38,
+      "battle_pngs": 118,
+      "walk_pngs": 4,
+      "input_operations": 132,
+      "normal_end_steps": [
+        {
+          "scene": "world-hd",
+          "round_before": 1,
+          "round_after": 2,
+          "own_hp_after": [
+            42,
+            28,
+            31,
+            50
+          ],
+          "state_injection": false
+        },
+        {
+          "scene": "world-hd-replay",
+          "round_before": 1,
+          "round_after": 2,
+          "own_hp_after": [
+            42,
+            28,
+            31,
+            50
+          ],
+          "state_injection": false
+        }
+      ],
+      "scope": "同SHA089b077b普通首章來源槽正常LOAD，Z選悠妮，兩次各一次END接敵與攻防、返回、F2、F5及新程序LOAD。沒有章內注入。F9先回來源再F5，不聲稱受傷後狀態持續。"
+    },
+    "gpu_verification": {
+      "yuni": {
+        "file": "work/promo-cadence-20261018/hd-fonts/yuni-normal-gpu-r1.json",
+        "sha256": "1abbd4d80e5194f9e7c25f9f04c732643e8fcfedbbc06dbd86b7b25d867a76d3"
+      },
+      "bandit": {
+        "file": "work/promo-cadence-20261018/hd-fonts/yuni-bandit-gpu-r1.json",
+        "sha256": "4d795a09f9fb37a97b108946ddb03e870ed6b2d5eb8b1f2eddfba9fbd951a956"
+      },
+      "both_sides": {
+        "file": "work/promo-cadence-20261018/hd-fonts/yuni-both-sides-r1.json",
+        "sha256": "fe773e2cf65dab0817e03b30c02bd0f06363f111f4c91b49046371c20d354a4c"
+      },
+      "rejections": {
+        "file": "work/promo-cadence-20261018/hd-fonts/yuni-gpu-guards-r1/guards.json",
+        "sha256": "0932ab4a723bee1757783194a0214bde85df350e72b31785ef260b882f85f5ac"
+      },
+      "default_blue_regression": {
+        "file": "work/promo-cadence-20261018/hd-fonts/yuni-verifier-blue-regression-r1.json",
+        "sha256": "796e61756c6cac78e3bd613924141eadd20b0016575b5324b1101b3b3e33cc3c"
+      },
+      "matches": {
+        "yuni": 81,
+        "bandit": 74,
+        "both_scenes": [
+          39,
+          32
+        ]
+      },
+      "scope": "指定服裝色域選樣，仍逐點核RGB／alpha界限；多候選不唯一判相位，武器／FX及裁切另審。"
+    },
+    "coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/yuni-coverage-formal-r1.json",
+      "sha256": "e87290bfc6cd5c2ba59e4ba416b84583d34e1175d4740084ee8e788182867270"
+    },
+    "source_reuse_audit": {
+      "file": "work/promo-cadence-20261018/hd-fonts/yuni-remaining-source-reuse-audit-r1.json",
+      "sha256": "5fd23e0339f52f640dc0922ec3aa5e5967ffeae0bbf9278b45806a1f8f114551"
+    },
+    "go_checks": {
+      "candidate": {
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-go-candidate-r2.log",
+          "sha256": "b46110fd19413ea8ec276a05c026113d5c470f6294aea86bc7664499bf97719d"
+        },
+        "top_pass": 4,
+        "sub_pass": 8,
+        "skips": 0
+      },
+      "formal_runtime_only": {
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-go-formal-runtime-r1.log",
+          "sha256": "15301c9ed37bba6412a6defcf536eedbc115740584068dc5fbe8e5394d6476b7"
+        },
+        "top_pass": 4,
+        "sub_pass": 8,
+        "skips": 0
+      }
+    },
+    "catalog_tests": {
+      "tests": 11,
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/yuni-catalog-tests-r1.log",
+        "sha256": "cb06358f4a5d72dc5fa559a540f3e341aae2e69fe26579559e3d746910b89fa8"
+      }
+    },
+    "private_assets": {
+      "status": "PASS-PRIVATE-AND-RUNTIME-ONLY",
+      "private_files": 3415,
+      "runtime_only_files": 3161,
+      "old_files_preserved": 3392,
+      "private_manifest_sha256": "c622e2b65dc4e9cf707eaf2b07b920648481bb97d3eb9774528b35d329a3636c",
+      "runtime_manifest_sha256": "efa0e78cd1f69d15cf467cd2570755519cdf9f2a0fb1e93d30e35b486ae05832",
+      "scope": "逐檔SHA、完整allow-list及UID1000；八母稿不進runtime-only。runtime複本只在容器tmpfs。 私人庫沒有新AGENTS；本批不改可見性設定，也未另外查詢live private欄位。",
+      "git_status": "PUSHED-REMOTE-HEAD-VERIFIED",
+      "commit": "af9ca1b953510eeda9c70965da926780e0c87eef",
+      "remote_head": "af9ca1b953510eeda9c70965da926780e0c87eef",
+      "clean_tree": true
+    },
+    "overview": {
+      "file": "docs/figures/hd-yuni-physical-attack.png",
+      "sha256": "aaa0598388cdb14784393494f17ae63c9e290d195b2f9232016c7cb60d4cb44a",
+      "sources": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-normal-gui-r1/world-hd-physical-scene.png",
+          "sha256": "0a001220413f6c5e34550f53eefbf2e8f075871e40624a7d1fda94a24a2d678e"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-normal-gui-r1/world-hd-art-20.png",
+          "sha256": "330514896dab481ccd22aef85962d07ec153bfd1c5b0229f20265a7f0d70de52"
+        }
+      ],
+      "method": "兩張實際1920x1200 X11遊戲視窗縮至640x400並排，未裁切、遮蔽或改寫像素；左展臂、右收勢。完整GUI及圖源核對已通過，範圍依主收據。"
+    },
+    "runtime_source": {
+      "file": "work/promo-cadence-20261018/hd-fonts/yuni-runtime-source-r1.json",
+      "sha256": "e28177b7ce0d23fa091f3dccc297ec7d16972acea2bdcf934fa23bb2b2dc5115"
+    },
+    "cleanup": {
+      "status": "PASS-VERIFIED-TEMP-CLEANUP",
+      "deleted_binaries": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-hd-game",
+          "sha256": "2297c82e6b2d281d3247daadc26c4d66f44862c08bb9291084038b7d097af9de",
+          "size_bytes": 19285656
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-hd-tests",
+          "sha256": "077dbbfb64477988619ccc4345878b47866597c3d1801ccbb31d0a154f972a38",
+          "size_bytes": 26235600
+        }
+      ],
+      "relinked_identical_images": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-idle-master-r1.png",
+          "sha256": "f3a3f97c627d451bcfe0ef02b8892c1cced3a970bb69e5f56fa6dbe86b7b5fb8",
+          "size_bytes": 1894923,
+          "target": "remake/generated-assets/modern-theme-prototypes/figure-009-idle-battle-hd6-master-v1.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-open-master-r1.png",
+          "sha256": "677ca286efc48b9412d0de6fd5cb46f564b56fea4d6df2e04ec53f8d3612c3f9",
+          "size_bytes": 2210178,
+          "target": "remake/generated-assets/modern-theme-prototypes/figure-009-open-battle-hd6-master-v1.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-raise-master-r1.png",
+          "sha256": "9958773aef6e2c8e4c07c5f2772ff5b80fe999b316cab6239b57864a57c92ef1",
+          "size_bytes": 2116353,
+          "target": "remake/generated-assets/modern-theme-prototypes/figure-009-raise-battle-hd6-master-v1.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-wide-master-r1.png",
+          "sha256": "e272c95cba3b62f9a2f0bbeba54ef29f12dce1727489da4bb926b6b6f88e010f",
+          "size_bytes": 2102407,
+          "target": "remake/generated-assets/modern-theme-prototypes/figure-009-wide-battle-hd6-master-v1.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-cast-master-r1.png",
+          "sha256": "c56251c9f88b1a1b0c74bfa8675587db9b53a01494ee3566776e744ffc936be4",
+          "size_bytes": 1225584,
+          "target": "remake/generated-assets/modern-theme-prototypes/figure-009-cast-battle-hd6-master-v1.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-settle1-master-r1.png",
+          "sha256": "9becbbbe3e54e6b38d5b9d2fc006652d5964a50c83316f1d7947dc7e746e5f5e",
+          "size_bytes": 1319328,
+          "target": "remake/generated-assets/modern-theme-prototypes/figure-009-settle1-battle-hd6-master-v1.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-settle2-master-r1.png",
+          "sha256": "8bb1e28d97da8bbd5b4be7a2fd106d5bdca252d5ffe643f4fa3c981da751238e",
+          "size_bytes": 1309817,
+          "target": "remake/generated-assets/modern-theme-prototypes/figure-009-settle2-battle-hd6-master-v1.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-settle3-master-r1.png",
+          "sha256": "a7bc655680157f7f7a9768a332898c31d427213040bf5424abd54e78f74d531d",
+          "size_bytes": 2000324,
+          "target": "remake/generated-assets/modern-theme-prototypes/figure-009-settle3-battle-hd6-master-v1.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r1/pack/figure-009-idle-battle-hd6-master-v1.png",
+          "sha256": "f3a3f97c627d451bcfe0ef02b8892c1cced3a970bb69e5f56fa6dbe86b7b5fb8",
+          "size_bytes": 1894923,
+          "target": "remake/generated-assets/modern-theme-prototypes/figure-009-idle-battle-hd6-master-v1.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r1/pack/figure-009-open-battle-hd6-master-v1.png",
+          "sha256": "677ca286efc48b9412d0de6fd5cb46f564b56fea4d6df2e04ec53f8d3612c3f9",
+          "size_bytes": 2210178,
+          "target": "remake/generated-assets/modern-theme-prototypes/figure-009-open-battle-hd6-master-v1.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r1/pack/figure-009-raise-battle-hd6-master-v1.png",
+          "sha256": "9958773aef6e2c8e4c07c5f2772ff5b80fe999b316cab6239b57864a57c92ef1",
+          "size_bytes": 2116353,
+          "target": "remake/generated-assets/modern-theme-prototypes/figure-009-raise-battle-hd6-master-v1.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r1/pack/figure-009-wide-battle-hd6-master-v1.png",
+          "sha256": "e272c95cba3b62f9a2f0bbeba54ef29f12dce1727489da4bb926b6b6f88e010f",
+          "size_bytes": 2102407,
+          "target": "remake/generated-assets/modern-theme-prototypes/figure-009-wide-battle-hd6-master-v1.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r1/pack/figure-009-cast-battle-hd6-master-v1.png",
+          "sha256": "c56251c9f88b1a1b0c74bfa8675587db9b53a01494ee3566776e744ffc936be4",
+          "size_bytes": 1225584,
+          "target": "remake/generated-assets/modern-theme-prototypes/figure-009-cast-battle-hd6-master-v1.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r1/pack/figure-009-settle1-battle-hd6-master-v1.png",
+          "sha256": "9becbbbe3e54e6b38d5b9d2fc006652d5964a50c83316f1d7947dc7e746e5f5e",
+          "size_bytes": 1319328,
+          "target": "remake/generated-assets/modern-theme-prototypes/figure-009-settle1-battle-hd6-master-v1.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r1/pack/figure-009-settle2-battle-hd6-master-v1.png",
+          "sha256": "8bb1e28d97da8bbd5b4be7a2fd106d5bdca252d5ffe643f4fa3c981da751238e",
+          "size_bytes": 1309817,
+          "target": "remake/generated-assets/modern-theme-prototypes/figure-009-settle2-battle-hd6-master-v1.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r1/pack/figure-009-settle3-battle-hd6-master-v1.png",
+          "sha256": "a7bc655680157f7f7a9768a332898c31d427213040bf5424abd54e78f74d531d",
+          "size_bytes": 2000324,
+          "target": "remake/generated-assets/modern-theme-prototypes/figure-009-settle3-battle-hd6-master-v1.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r1/pack/figani-027-hd6-v1-f00.png",
+          "sha256": "2305b65d31e5c1263cc811aa68d0ae2c83930b02b7a1de425a88f84832ff8166",
+          "size_bytes": 410156,
+          "target": "remake/generated-assets/modern-theme-prototypes/figani-027-hd6-v1-f00.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r1/pack/figani-027-hd6-v1-f01.png",
+          "sha256": "ecdcfdddbac77fdb972d664cb4be2298c11d0c079b8355020225799833261039",
+          "size_bytes": 415184,
+          "target": "remake/generated-assets/modern-theme-prototypes/figani-027-hd6-v1-f01.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r1/pack/figani-027-hd6-v1-f02.png",
+          "sha256": "c881f5b8b6e36c820235b43e842d8ea7fd2462bbcd83ee52b5802c3a140e74fd",
+          "size_bytes": 419524,
+          "target": "remake/generated-assets/modern-theme-prototypes/figani-027-hd6-v1-f02.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r1/pack/figani-027-hd6-v1-f03.png",
+          "sha256": "ecdcfdddbac77fdb972d664cb4be2298c11d0c079b8355020225799833261039",
+          "size_bytes": 415184,
+          "target": "remake/generated-assets/modern-theme-prototypes/figani-027-hd6-v1-f03.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r1/pack/figani-028-hd6-v1-f00.png",
+          "sha256": "8d219f4c03a9cc01d314ed5df55fb67600fc98cc15bbfbd7368d881923378316",
+          "size_bytes": 468401,
+          "target": "remake/generated-assets/modern-theme-prototypes/figani-028-hd6-v1-f00.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r1/pack/figani-028-hd6-v1-f01.png",
+          "sha256": "75d26485c54a25a48b3f4b52874f0b165367f294daac29aadd289685c0042b7d",
+          "size_bytes": 470484,
+          "target": "remake/generated-assets/modern-theme-prototypes/figani-028-hd6-v1-f01.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r1/pack/figani-028-hd6-v1-f02.png",
+          "sha256": "469abadc2369a08035f2ae024a4249aba23e63f20ffaf93676c46825cb8e1c88",
+          "size_bytes": 481058,
+          "target": "remake/generated-assets/modern-theme-prototypes/figani-028-hd6-v1-f02.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r1/pack/figani-028-hd6-v1-f03.png",
+          "sha256": "c58556f0bc371e0d2018af3d42e5f3f9ddc58d695ebaa858fe9f0196e9aababf",
+          "size_bytes": 482967,
+          "target": "remake/generated-assets/modern-theme-prototypes/figani-028-hd6-v1-f03.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r1/pack/figani-028-hd6-v1-f04.png",
+          "sha256": "471767cab492fd7f0b2d13b6619609c7d68e8171c443067d18e0cae0456452be",
+          "size_bytes": 516198,
+          "target": "remake/generated-assets/modern-theme-prototypes/figani-028-hd6-v1-f04.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r1/pack/figani-028-hd6-v1-f05.png",
+          "sha256": "d5f7cc762ed3b22c045d2c934cd2f908e6121c3191fbc2d617264bbc5beab6c2",
+          "size_bytes": 517051,
+          "target": "remake/generated-assets/modern-theme-prototypes/figani-028-hd6-v1-f05.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r1/pack/figani-028-hd6-v1-f06.png",
+          "sha256": "c76dfd5199e2d9e035945d671d9785d31d651e60d5e529d09a2e885fe59cda35",
+          "size_bytes": 618571,
+          "target": "remake/generated-assets/modern-theme-prototypes/figani-028-hd6-v1-f06.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r1/pack/figani-028-hd6-v1-f07.png",
+          "sha256": "fa7f9a46c9a0cd3c9a995d64fcbe5ca31eea190c0b70bed02a5f10cf9f090646",
+          "size_bytes": 597358,
+          "target": "remake/generated-assets/modern-theme-prototypes/figani-028-hd6-v1-f07.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r1/pack/figani-028-hd6-v1-f08.png",
+          "sha256": "fa7f9a46c9a0cd3c9a995d64fcbe5ca31eea190c0b70bed02a5f10cf9f090646",
+          "size_bytes": 597358,
+          "target": "remake/generated-assets/modern-theme-prototypes/figani-028-hd6-v1-f08.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r1/pack/figani-028-hd6-v1-f09.png",
+          "sha256": "96c12c156ebe62ec1e26c3a60dc88073220793558f9d9a75b0636f1eff373f79",
+          "size_bytes": 486617,
+          "target": "remake/generated-assets/modern-theme-prototypes/figani-028-hd6-v1-f09.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r1/pack/figani-028-hd6-v1-f10.png",
+          "sha256": "acc577bafc8d58222425a513bdce98a2e5d3823d636e3b22577b0bec01798783",
+          "size_bytes": 446750,
+          "target": "remake/generated-assets/modern-theme-prototypes/figani-028-hd6-v1-f10.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r2/pack/figure-009-idle-battle-hd6-master-v1.png",
+          "sha256": "f3a3f97c627d451bcfe0ef02b8892c1cced3a970bb69e5f56fa6dbe86b7b5fb8",
+          "size_bytes": 1894923,
+          "target": "remake/generated-assets/modern-theme-prototypes/figure-009-idle-battle-hd6-master-v1.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r2/pack/figure-009-open-battle-hd6-master-v1.png",
+          "sha256": "677ca286efc48b9412d0de6fd5cb46f564b56fea4d6df2e04ec53f8d3612c3f9",
+          "size_bytes": 2210178,
+          "target": "remake/generated-assets/modern-theme-prototypes/figure-009-open-battle-hd6-master-v1.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r2/pack/figure-009-raise-battle-hd6-master-v1.png",
+          "sha256": "9958773aef6e2c8e4c07c5f2772ff5b80fe999b316cab6239b57864a57c92ef1",
+          "size_bytes": 2116353,
+          "target": "remake/generated-assets/modern-theme-prototypes/figure-009-raise-battle-hd6-master-v1.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r2/pack/figure-009-wide-battle-hd6-master-v1.png",
+          "sha256": "e272c95cba3b62f9a2f0bbeba54ef29f12dce1727489da4bb926b6b6f88e010f",
+          "size_bytes": 2102407,
+          "target": "remake/generated-assets/modern-theme-prototypes/figure-009-wide-battle-hd6-master-v1.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r2/pack/figure-009-cast-battle-hd6-master-v1.png",
+          "sha256": "c56251c9f88b1a1b0c74bfa8675587db9b53a01494ee3566776e744ffc936be4",
+          "size_bytes": 1225584,
+          "target": "remake/generated-assets/modern-theme-prototypes/figure-009-cast-battle-hd6-master-v1.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r2/pack/figure-009-settle1-battle-hd6-master-v1.png",
+          "sha256": "9becbbbe3e54e6b38d5b9d2fc006652d5964a50c83316f1d7947dc7e746e5f5e",
+          "size_bytes": 1319328,
+          "target": "remake/generated-assets/modern-theme-prototypes/figure-009-settle1-battle-hd6-master-v1.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r2/pack/figure-009-settle2-battle-hd6-master-v1.png",
+          "sha256": "8bb1e28d97da8bbd5b4be7a2fd106d5bdca252d5ffe643f4fa3c981da751238e",
+          "size_bytes": 1309817,
+          "target": "remake/generated-assets/modern-theme-prototypes/figure-009-settle2-battle-hd6-master-v1.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r2/pack/figure-009-settle3-battle-hd6-master-v1.png",
+          "sha256": "a7bc655680157f7f7a9768a332898c31d427213040bf5424abd54e78f74d531d",
+          "size_bytes": 2000324,
+          "target": "remake/generated-assets/modern-theme-prototypes/figure-009-settle3-battle-hd6-master-v1.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r2/pack/figani-027-hd6-v1-f00.png",
+          "sha256": "2305b65d31e5c1263cc811aa68d0ae2c83930b02b7a1de425a88f84832ff8166",
+          "size_bytes": 410156,
+          "target": "remake/generated-assets/modern-theme-prototypes/figani-027-hd6-v1-f00.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r2/pack/figani-027-hd6-v1-f01.png",
+          "sha256": "ecdcfdddbac77fdb972d664cb4be2298c11d0c079b8355020225799833261039",
+          "size_bytes": 415184,
+          "target": "remake/generated-assets/modern-theme-prototypes/figani-027-hd6-v1-f01.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r2/pack/figani-027-hd6-v1-f02.png",
+          "sha256": "c881f5b8b6e36c820235b43e842d8ea7fd2462bbcd83ee52b5802c3a140e74fd",
+          "size_bytes": 419524,
+          "target": "remake/generated-assets/modern-theme-prototypes/figani-027-hd6-v1-f02.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r2/pack/figani-027-hd6-v1-f03.png",
+          "sha256": "ecdcfdddbac77fdb972d664cb4be2298c11d0c079b8355020225799833261039",
+          "size_bytes": 415184,
+          "target": "remake/generated-assets/modern-theme-prototypes/figani-027-hd6-v1-f03.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r2/pack/figani-028-hd6-v1-f00.png",
+          "sha256": "8d219f4c03a9cc01d314ed5df55fb67600fc98cc15bbfbd7368d881923378316",
+          "size_bytes": 468401,
+          "target": "remake/generated-assets/modern-theme-prototypes/figani-028-hd6-v1-f00.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r2/pack/figani-028-hd6-v1-f01.png",
+          "sha256": "75d26485c54a25a48b3f4b52874f0b165367f294daac29aadd289685c0042b7d",
+          "size_bytes": 470484,
+          "target": "remake/generated-assets/modern-theme-prototypes/figani-028-hd6-v1-f01.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r2/pack/figani-028-hd6-v1-f02.png",
+          "sha256": "469abadc2369a08035f2ae024a4249aba23e63f20ffaf93676c46825cb8e1c88",
+          "size_bytes": 481058,
+          "target": "remake/generated-assets/modern-theme-prototypes/figani-028-hd6-v1-f02.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r2/pack/figani-028-hd6-v1-f03.png",
+          "sha256": "c58556f0bc371e0d2018af3d42e5f3f9ddc58d695ebaa858fe9f0196e9aababf",
+          "size_bytes": 482967,
+          "target": "remake/generated-assets/modern-theme-prototypes/figani-028-hd6-v1-f03.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r2/pack/figani-028-hd6-v1-f04.png",
+          "sha256": "471767cab492fd7f0b2d13b6619609c7d68e8171c443067d18e0cae0456452be",
+          "size_bytes": 516198,
+          "target": "remake/generated-assets/modern-theme-prototypes/figani-028-hd6-v1-f04.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r2/pack/figani-028-hd6-v1-f05.png",
+          "sha256": "d5f7cc762ed3b22c045d2c934cd2f908e6121c3191fbc2d617264bbc5beab6c2",
+          "size_bytes": 517051,
+          "target": "remake/generated-assets/modern-theme-prototypes/figani-028-hd6-v1-f05.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r2/pack/figani-028-hd6-v1-f06.png",
+          "sha256": "c76dfd5199e2d9e035945d671d9785d31d651e60d5e529d09a2e885fe59cda35",
+          "size_bytes": 618571,
+          "target": "remake/generated-assets/modern-theme-prototypes/figani-028-hd6-v1-f06.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r2/pack/figani-028-hd6-v1-f07.png",
+          "sha256": "fa7f9a46c9a0cd3c9a995d64fcbe5ca31eea190c0b70bed02a5f10cf9f090646",
+          "size_bytes": 597358,
+          "target": "remake/generated-assets/modern-theme-prototypes/figani-028-hd6-v1-f07.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r2/pack/figani-028-hd6-v1-f08.png",
+          "sha256": "fa7f9a46c9a0cd3c9a995d64fcbe5ca31eea190c0b70bed02a5f10cf9f090646",
+          "size_bytes": 597358,
+          "target": "remake/generated-assets/modern-theme-prototypes/figani-028-hd6-v1-f08.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r2/pack/figani-028-hd6-v1-f09.png",
+          "sha256": "96c12c156ebe62ec1e26c3a60dc88073220793558f9d9a75b0636f1eff373f79",
+          "size_bytes": 486617,
+          "target": "remake/generated-assets/modern-theme-prototypes/figani-028-hd6-v1-f09.png"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-candidate-r2/pack/figani-028-hd6-v1-f10.png",
+          "sha256": "acc577bafc8d58222425a513bdce98a2e5d3823d636e3b22577b0bec01798783",
+          "size_bytes": 446750,
+          "target": "remake/generated-assets/modern-theme-prototypes/figani-028-hd6-v1-f10.png"
+        }
+      ],
+      "freed_bytes": 102743720,
+      "recordings_created": false,
+      "scope": "保留八個原始生成來源、配方、圖源與全部收據；同hash複本改鏈向正式allow-list，沒有刪除其他work。"
+    },
+    "reproduce": {
+      "compiler": "python3 tools/build_fd2_character_battle_hd.py --pack <固定原版包> --inventory <固定盤點> --recipe <yuni-recipe-r1.json> --base-catalog <yuni-candidate-r1/base-catalog.json> --out <新候選>",
+      "normal_gui": "python3 tools/verify_fd2_hd_fonts_gui.py --binary <建置程式> --assets </repo下候選runtime> --original-pack <原版包> --modern-pack </repo下候選pack> --town-save <SHA089b077b來源槽> --out <新輸出> --battle-status --world --battle-hd --battle-art --battle-own-index 1 --battle-approach-rounds 1",
+      "gpu": "python3 tools/verify_fd2_character_battle_gpu.py --figure 9 --core-profile gold --receipt <GUI收據> --catalog <同份候選清冊> --source <圖源包> --report <新報告>",
+      "guards": "python3 tools/test_fd2_character_battle_gpu.py --figure 9 --core-profile gold --other-figure 4 --other-core-profile blue --receipt <GUI收據> --catalog <同份清冊> --source <圖源包> --baseline <正向報告> --negative-receipt <先前索爾GUI> --out <新守衛輸出>",
+      "environment": [
+        "fd2-assets-local:20260829-sfx／Python3.12／Pillow11.3",
+        "fd2-go-test-local:latest／Go1.22.12／Ebiten2.6.6",
+        "fd2-promo:20261017-r1／python3／Xvfb與llvmpipe",
+        "Docker --rm、user1000、network none、資源／timeout有界；原版與來源唯讀，runtime-only複本在容器tmpfs。"
+      ]
+    },
+    "environment_corrections": [
+      "Go首次從/out別名讀相對symlink而錯缺既有頭像；改同一映像原/repo層級後同測試通過。",
+      "GUI映像沒有python，改既有python3入口後開始；沒有新建重複映像或回退主機。",
+      "舊藍衣回歸先用了正式／r2清冊，與舊GUI SHA不符而拒收；逐欄定位實際r1後通過57張，不放寬收據條件。",
+      "診斷把來源路徑相對於work輸出而ValueError，另一次冷啟動時讀暫時不存在的audit；只修診斷／等待同一程序，沒有重跑GUI或當產品缺陷。"
+    ],
+    "worklist": {
+      "issue": 263,
+      "state": "OPEN",
+      "goal": "完成 fd2 戰鬥動畫hd",
+      "open_items": 21,
+      "manual_items": 14,
+      "possibly_complete": 0,
+      "render_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/yuni-worklist-render.log",
+        "sha256": "c702c8cb103ec7a01ca34730434d08b71a670ba0eed8d5ea193f3224314c63fd"
+      },
+      "verify_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/yuni-worklist-verify.log",
+        "sha256": "2f54f61dfa7fb4ccd6a11f9d46d47654d86d30b5df19bc8b0330be3d7a4888eb"
+      }
+    },
+    "lessons": {
+      "count": 260,
+      "guards": 140,
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/yuni-lessons-final.log",
+        "sha256": "42d1086e0c426bd01861572bcbe94acb7ddb3429a76473259d63401eff4999f6"
+      }
+    },
+    "final_checks": {
+      "status": "PASS-YUNI-FINAL-CHECKS",
+      "changed_markdown_local_targets": 1431,
+      "broken_targets": [],
+      "positive_controls": [
+        {
+          "file": "README.md",
+          "target": "docs/figures/hd-yuni-physical-attack.png"
+        },
+        {
+          "file": "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+          "target": "../../tools/test_fd2_character_battle_gpu.py"
+        }
+      ],
+      "ownership_checked_paths": 7420,
+      "unexpected_owners_or_md_directories": [],
+      "scope": "變更文件、全部yuni命名輸出根及23份正式新圖；不掃全部歷史work。全庫舊九項連結限制沿前批紀錄。",
+      "docker_cleanup": "本批有界檢查退出後，提交前後另以docker ps -a核對。"
     }
   }
 }

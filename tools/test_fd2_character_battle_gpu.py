@@ -15,6 +15,8 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--figure', type=int, required=True)
     p.add_argument('--other-figure', type=int, required=True)
+    p.add_argument('--core-profile', choices=['blue', 'gold'], default='blue')
+    p.add_argument('--other-core-profile', choices=['blue', 'gold'], default='blue')
     for name in ['receipt', 'catalog', 'source', 'baseline', 'negative-receipt', 'out']:
         p.add_argument('--'+name, type=Path, required=True)
     args = p.parse_args()
@@ -22,6 +24,7 @@ def main():
     baseline = json.loads(args.baseline.read_text())
     if (baseline.get('status') != 'PASS-CHARACTER-NORMAL-ATTACK-GPU'
             or baseline.get('figure') != args.figure
+            or baseline.get('core_profile', 'blue') != args.core_profile
             or baseline.get('receipt_sha256') != digest(args.receipt)
             or baseline.get('catalog_sha256') != digest(args.catalog)
             or baseline.get('verifier_sha256') != digest(verifier)):
@@ -36,6 +39,7 @@ def main():
     def check(name, path, expected, figure=None, source=None):
         report = args.out/(name+'-report.json')
         argv = [sys.executable, str(verifier), '--figure', str(args.figure if figure is None else figure),
+                '--core-profile', args.core_profile if figure is None else args.other_core_profile,
                 '--receipt', str(path), '--catalog', str(args.catalog),
                 '--source', str(source or args.source), '--report', str(report)]
         result = subprocess.run(argv, capture_output=True, text=True, timeout=90)
@@ -68,7 +72,8 @@ def main():
         if Path(name).name != name: raise SystemExit('負向圖片路徑越界')
         (folder/name).symlink_to((args.negative_receipt.parent/name).resolve())
     check('old-capture', path, '未在普通攻防GPU核對到所選人物的攻擊動作')
-    report = {'status': 'PASS-CHARACTER-GPU-GUARDS', 'baseline_sha256': digest(args.baseline),
+    report = {'status': 'PASS-CHARACTER-GPU-GUARDS', 'core_profile': args.core_profile,
+              'other_core_profile': args.other_core_profile, 'baseline_sha256': digest(args.baseline),
               'tool_sha256': digest(Path(__file__)), 'checks': checks,
               'scope': '四種明示負向fixture，舊擷取只證拒收；不新增原版或普通玩家收據。'}
     (args.out/'guards.json').write_text(json.dumps(report, ensure_ascii=False, indent=2)+'\n')

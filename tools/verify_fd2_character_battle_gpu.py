@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""以普通攻防視窗PNG核對所選人物圖源的高覆蓋藍衣／褲核心。"""
+"""以普通攻防視窗PNG核對所選人物圖源的高覆蓋服裝核心。"""
 import argparse
 import json
 from pathlib import Path
@@ -13,6 +13,8 @@ from verify_fd2_ares_battle_gpu import matches
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--figure', type=int, required=True)
+    p.add_argument('--core-profile', choices=['blue', 'gold'], default='blue',
+                   help='已知圖源服裝的取樣色域；只影響驗證，不影響遊戲')
     for name in ['receipt', 'catalog', 'source', 'report']:
         p.add_argument('--'+name, type=Path, required=True)
     args = p.parse_args()
@@ -33,10 +35,14 @@ def main():
             if digest(path) != sha: raise SystemExit('圖源雜湊不同')
             with Image.open(path) as im:
                 if im.mode != 'RGBA' or im.size != (frame['width']*6, frame['height']*6): raise SystemExit('圖源形狀不同')
+                def selected(r, g, b, a):
+                    if a < 250: return False
+                    if args.core_profile == 'blue':
+                        return b >= 70 and b*100 >= r*150 and b*100 >= g*130
+                    return r >= 100 and g >= 70 and r >= g and g*100 >= b*150 and r*100 >= b*180
                 points = [(i % im.width, i // im.width, r, g, b, a)
-                          for i, (r, g, b, a) in enumerate(im.getdata())
-                          if a >= 250 and b >= 70 and b*100 >= r*150 and b*100 >= g*130]
-            if len(points) < 1000: raise SystemExit('高覆蓋藍衣／褲像素不足')
+                          for i, (r, g, b, a) in enumerate(im.getdata()) if selected(r, g, b, a)]
+            if len(points) < 1000: raise SystemExit('高覆蓋服裝核心像素不足')
             total = len(points); points = points[::max(1, total//2500)]
             candidates.append((asset['source_resource'], index, name, sha, frame, points, total))
     samples = list(receipt.get('battle_art_samples', []))
@@ -64,13 +70,14 @@ def main():
     groups = {}
     for match in found: groups.setdefault(match['file'], []).append({'resource': match['resource'], 'frame': match['frame']})
     report = {'status': 'PASS-CHARACTER-NORMAL-ATTACK-GPU', 'figure': args.figure,
+        'core_profile': args.core_profile,
         'receipt_sha256': digest(args.receipt), 'catalog_sha256': digest(args.catalog),
         'verifier_sha256': digest(Path(__file__)), 'pixel_matcher_sha256': digest(Path(__file__).with_name('verify_fd2_ares_battle_gpu.py')),
         'matches': found, 'sample_count': len(samples), 'rejected_boundary_samples': rejected,
         'ambiguous_source_candidates': {name: values for name, values in groups.items() if len(values) > 1},
-        'scope': '普通首章兩次攻防的實際PNG與所選人物高覆蓋藍衣／褲核心；原描述子位置。'
+        'scope': '普通首章兩次攻防的實際PNG與所選人物指定色域的高覆蓋服裝核心；原描述子位置。'
                  'alpha255一量化值，250..254依未知背景混合界限。多候選保留相容集合，不判定唯一相位；'
-                 '未比較非藍衣的武器／FX，不宣稱全部幀GPU或原版對拍。'}
+                 '未比較服裝核心以外的武器／FX，不宣稱全部幀GPU或原版對拍。'}
     args.report.write_text(json.dumps(report, ensure_ascii=False, indent=2)+'\n')
     print(json.dumps({'status': report['status'], 'figure': args.figure, 'matched_pngs': len({x['file'] for x in found})}))
 

@@ -1,5 +1,14 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
+悠妮FIGANI27／28已新增完整4／11幀，依原版紅長髮、紫灰護具及金色披布編製八母稿。
+正常首章選悠妮，兩次各一次普通END接敵後攻防、返回、F2、保存與新程序標題LOAD通過。
+81張實際PNG符合悠妮金色服裝核心，74張符合強盜藍褲；兩場39／32張同圖符合雙方。
+相近相位只列相容集合，武器／飄帶及原矩形裁切另審；不新增原版oracle或PLAYER-E2。
+最後先F9回來源再保存，bytes相同不證明受傷後HP持續。正式Go與保存格式未變。
+377項清冊、私人3415檔及runtime-only3161檔已核對，舊3392檔保持；八母稿不進執行包。
+完整來源、提示及環境勘誤見[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的
+`yuni_battle_followup_20261019`。其他人物、不同背景、法術／死亡及平台仍待。
+
 四召喚施術者延伸已達有限CONFORMED-SCOPED／RUNTIME-E1：原生producer明示每張人物索引，
 prelude／actor／actor-slide沿正式Game.Draw消費既有HD圖源，角色與FDOTHER共同預載／發布。
 395組GPU／CPU回歸及四caller完整158／156／241／255次呈現通過，每階段F2與一次續行保持。
