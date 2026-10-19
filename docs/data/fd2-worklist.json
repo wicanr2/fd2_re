@@ -338,20 +338,6 @@
         "note": "四種共同召喚37幀已登錄，三個新caller完整156／241／255次Draw及F2／拒收通過RUNTIME-E1，正式路徑再驗255次；#264跨段確認已修驗，私人3316檔已推送。FIGANI人物、施術者、其餘法術／死亡、普通召喚與保存冷讀、效能／平台未完成，蓋亞占寬待決。"
       },
       "issue": 263
-    },
-    {
-      "id": "compound-stage-hold-draw-ack",
-      "layer": "runtime",
-      "category": "缺陷",
-      "title": "P1 多段召喚等待結束重用舊Draw確認，可能跳過下一段首幀",
-      "body": "新增召喚HD完整RunGame測試發現原有的繪製確認重用問題。中間hold期間Draw把drawn設true，等待結束改frame到stageEnd時未清除，Ebiten連續Update可在新Draw前消費下一張影格。這是兩個原生owner共有的缺陷，不是HD素材缺件或原版oracle差異。\n\n修正只在hold退出換frame時清除drawn，依既有Draw ACK契約等待新畫面確認。補單獨邊界回歸與完整三段GPU測試，保留等待值、交易、原生像素模式及一次續行。來源與失敗紀錄併入本輪battle_summon_bank_followup_20261019。",
-      "acceptance": "command34／35中間hold結束後，新的stageEnd影格須取得自己的Draw確認才可推進；多次Update／單次Draw回歸與完整三段召喚GPU測試通過，原等待長度、HP／MP／RNG與一次續行保持。",
-      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
-      "verify": {
-        "kind": "manual",
-        "note": "完整RunGame發現command34跳過152、command35跳過164；hold退出換frame卻未清除上一幀drawn。修正與專用回歸進行中。"
-      },
-      "issue": 264
     }
   ]
 }

@@ -7947,6 +7947,13 @@
         "possibly_complete": 0,
         "defect_issue": 264,
         "scope": "修正已驗，待提交後以實際commit結案"
+      },
+      "final_worklist": {
+        "open": 21,
+        "manual": 14,
+        "possibly_complete": 0,
+        "closed": 264,
+        "full_hd_issue_open": 263
       }
     },
     "original_inputs_postcheck": {
@@ -7990,6 +7997,9 @@
         }
       ],
       "scope": "本輪fixture使用的五份原始archive及固定EXE的事後size／MD5／SHA核對；分離包一直唯讀掛載，正式驗證整個repo唯讀。開發容器工作樹可寫，後續亦應將其中org_game另掛唯讀。"
-    }
+    },
+    "source_commit": "adf79819d50db78afc30e96bc54b4dc86d3308e3",
+    "defect_issue_status": "closed",
+    "worklist_filter_observation": "結案後第一次open清單仍含state=CLOSED的264，官方build_snapshot本可排除；不以回應中出現即判定仍開啟。直接Issue狀態核對後，第二次清單21筆。"
   }
 }

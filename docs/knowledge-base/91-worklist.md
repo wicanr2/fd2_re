@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 22 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 21 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -189,18 +189,6 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 主證據docs/data/fd2-modern-hd-battlefield-20261019.json的battle_summon_bank_followup_20261019，舊共背景及熾天使收據保留。現況58、介面57、契約61，關聯#201／#202／#204。
 
 怎樣算做完：建立由正式consumer到FIGANI人物及共同效果的可重跑覆蓋清冊；完成可達戰鬥動畫HD素材、原始位置／層序／節拍／命中與音效標記的正式呈現，缺件明示；正常玩家抽驗攻擊、受擊／反擊、法術／效果、死亡與戰場返回，F2、保存冷讀與代表性效能通過；已登錄素材同步私人庫，保留原版像素模式。資料測試及離線PNG不能取代正式GUI。
-
-證據：`docs/data/fd2-modern-hd-battlefield-20261019.json`
-
-### P1 多段召喚等待結束重用舊Draw確認，可能跳過下一段首幀
-
-`compound-stage-hold-draw-ack` · 缺陷 · [#264](https://github.com/wicanr2/fd2_re/issues/264) · 仍未完成 · 要人判
-
-新增召喚HD完整RunGame測試發現原有的繪製確認重用問題。中間hold期間Draw把drawn設true，等待結束改frame到stageEnd時未清除，Ebiten連續Update可在新Draw前消費下一張影格。這是兩個原生owner共有的缺陷，不是HD素材缺件或原版oracle差異。
-
-修正只在hold退出換frame時清除drawn，依既有Draw ACK契約等待新畫面確認。補單獨邊界回歸與完整三段GPU測試，保留等待值、交易、原生像素模式及一次續行。來源與失敗紀錄併入本輪battle_summon_bank_followup_20261019。
-
-怎樣算做完：command34／35中間hold結束後，新的stageEnd影格須取得自己的Draw確認才可推進；多次Update／單次Draw回歸與完整三段召喚GPU測試通過，原等待長度、HP／MP／RNG與一次續行保持。
 
 證據：`docs/data/fd2-modern-hd-battlefield-20261019.json`
 
