@@ -1,8 +1,16 @@
 # 56 — FD2 remake 系統設計規格（SDD，2026-08-09）
 
+魔法師BattleFig90的270／271／272三組人物圖已沿原描述子正式登錄。普通指令4／5追加同次呈現的來源，
+沿既有owner、層序、DAC與Draw確認，不改MP／HP／RNG或正式保存規則。
+完整物理／施術Game.Draw與F2、缺件原子性，以及正常章9三次前進END、指令5施法、希莉亞射擊、
+返回、F2及章節邊界冷讀通過。正常施法及受擊核心由同份收據分別核對；背景／法術仍可為像素。
+來源見[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的caster90_battle_followup_20261020，
+唯一數量與剩餘範圍依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)。
+章前HP強化、七母稿共用與原型拒收保持揭露，不宣稱自然難度、原版parity或整章E2。
+
 普通指令0的人物HD已接入既有前導、施術、目標與尾段，沿原始marker、DAC與Draw確認，不改正式數值規則。
 完整階段／F2、缺件原子性及首章普通原地施法、取消、返回與章節邊界冷讀通過；普通特效仍是像素。
-F5／LOAD重建章節入口，不保存本次魔力消耗或敵方血量。90號新圖、其他普通指令與完整HD保持待驗。
+F5／LOAD重建章節入口，不保存本次魔力消耗或敵方血量。90及普通4／5已由上列後續驗證補上，其他普通指令與完整HD仍待。
 來源見[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的ordinary_command0_followup_20261020，
 驗證數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)。
 

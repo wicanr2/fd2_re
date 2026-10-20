@@ -10,6 +10,44 @@ from validate_modern_theme_catalog import validate
 from verify_fd2_ares_battle_gpu import matches
 
 
+def make_native_occlusion_test(entries, source, original_pack, inventory):
+    native_masks = {}
+
+    def occluded(x, y, layers):
+        for layer in layers:
+            ox, oy = x-layer['x']*6, y-layer['y']*6
+            if not (0 <= ox < layer['width']*6 and 0 <= oy < layer['height']*6): continue
+            if layer['resource'] < 0 or layer['archive'] not in ['', 'FIGANI.DAT']:
+                raise SystemExit('不能解釋的前景圖層遮擋')
+            clip=layer.get('clip')
+            if clip and not (clip['Min']['X']*6<=x<clip['Max']['X']*6 and clip['Min']['Y']*6<=y<clip['Max']['Y']*6):continue
+            key = (layer['resource'], layer['frame'])
+            if key not in native_masks:
+                resource, index = key
+                asset = entries.get(resource)
+                if asset is not None:
+                    path = source/asset['files'][index]
+                    if digest(path) != asset['frame_sha256'][index]: raise SystemExit('前景HD圖源SHA不同')
+                    with Image.open(path) as im: mask = im.getchannel('A').copy()
+                    native_masks[key] = (mask, True)
+                else:
+                    row = inventory['resources'][resource]
+                    folder = original_pack/'animations'/f'FIGANI_{resource:03d}'
+                    metadata = folder/'animation.json'
+                    if row['resource'] != resource or digest(metadata) != row['metadata_sha256']: raise SystemExit('原生前景metadata不同')
+                    frame = json.loads(metadata.read_text())['frames'][index]
+                    path = folder/frame['mask_path']
+                    if digest(path) != row['frames'][index]['mask_sha256']: raise SystemExit('原生前景mask SHA不同')
+                    with Image.open(path) as im: mask = im.convert('L')
+                    native_masks[key] = (mask, False)
+            mask, hd = native_masks[key]
+            if mask.size != (layer['width']*(6 if hd else 1), layer['height']*(6 if hd else 1)):
+                raise SystemExit('前景遮罩形狀不同')
+            if mask.getpixel((ox, oy) if hd else (ox//6, oy//6)) != 0: return True
+        return False
+    return occluded
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--receipt', type=Path, action='append', required=True)
@@ -17,13 +55,19 @@ def main():
     p.add_argument('--core-profile', choices=['blue','gold'], default='blue', help='沿既有人物核對的服裝色域；alpha與RGB門檻不變')
     p.add_argument('--normal-command0', action='store_true', help='核對普通標題LOAD的指令0施法、自然返回與保存冷讀；不冒充fixture')
     p.add_argument('--command0', action='store_true', help='核對普通指令0的前導、施術與尾段；不套四召喚的滑出契約')
+    p.add_argument('--command5', action='store_true', help='核對普通指令5的完整交易、F2及施術來源')
+    p.add_argument('--normal-end-command', type=int, choices=[0,4,5], help='核對正常END實際施法及完整返回／保存冷讀')
+    p.add_argument('--all-cast-frames', action='store_true', help='明示要求每張施術來源都有actor階段最終GPU核心，不將非零相位抽樣冒充全幀')
     for name in ['catalog', 'source', 'report']:
         p.add_argument('--'+name, type=Path, required=True)
     p.add_argument('--original-pack', type=Path, required=True)
     p.add_argument('--inventory', type=Path, required=True)
     args = p.parse_args()
-    if args.command0 and args.normal_command0:raise SystemExit('fixture與普通玩家模式不可混用')
-    ordinary=args.command0 or args.normal_command0
+    if sum([args.command0,args.command5,args.normal_command0,args.normal_end_command is not None])>1:
+        raise SystemExit('fixture與普通玩家模式不可混用')
+    normal=args.normal_command0 or args.normal_end_command is not None
+    command_id=args.normal_end_command if args.normal_end_command is not None else 5 if args.command5 else 0
+    ordinary=args.command0 or args.command5 or normal
     if args.report.exists(): raise SystemExit('不覆寫既有報告')
     catalog = validate(False, args.catalog)
     inventory = json.loads(args.inventory.read_text())
@@ -34,6 +78,7 @@ def main():
     phases=['prelude','actor','actor-slide']
     if ordinary:
         phases=['prelude','actor','tail']
+        if args.normal_end_command is not None:phases.append('target-idle')
         actor=args.figure*3+2
         row=inventory['resources'][actor]
         if row['resource']!=actor:raise SystemExit('盤點位置不符')
@@ -60,47 +105,20 @@ def main():
                              else (r>=100 and g>=70 and r>=g and g*100>=b*150 and r*100>=b*180))]
             if len(points) < 1000: raise SystemExit('本圖源不適用指定色域核心核對')
             core[(resource, index)] = (name, sha, points, frame)
-    native_masks = {}
-
-    def occluded(x, y, layers):
-        for layer in layers:
-            ox, oy = x-layer['x']*6, y-layer['y']*6
-            if not (0 <= ox < layer['width']*6 and 0 <= oy < layer['height']*6): continue
-            if layer['resource'] < 0 or layer['archive'] not in ['', 'FIGANI.DAT']:
-                raise SystemExit('不能解釋的前景圖層遮擋')
-            key = (layer['resource'], layer['frame'])
-            if key not in native_masks:
-                resource, index = key
-                asset = entries.get(resource)
-                if asset is not None:
-                    path = args.source/asset['files'][index]
-                    if digest(path) != asset['frame_sha256'][index]: raise SystemExit('前景HD圖源SHA不同')
-                    with Image.open(path) as im: mask = im.getchannel('A').copy()
-                    native_masks[key] = (mask, True)
-                else:
-                    row = inventory['resources'][resource]
-                    folder = args.original_pack/'animations'/f'FIGANI_{resource:03d}'
-                    metadata = folder/'animation.json'
-                    if row['resource'] != resource or digest(metadata) != row['metadata_sha256']: raise SystemExit('原生前景metadata不同')
-                    frame = json.loads(metadata.read_text())['frames'][index]
-                    path = folder/frame['mask_path']
-                    if digest(path) != row['frames'][index]['mask_sha256']: raise SystemExit('原生前景mask SHA不同')
-                    with Image.open(path) as im: mask = im.convert('L')
-                    native_masks[key] = (mask, False)
-            mask, hd = native_masks[key]
-            if mask.size != (layer['width']*(6 if hd else 1), layer['height']*(6 if hd else 1)):
-                raise SystemExit('前景遮罩形狀不同')
-            if mask.getpixel((ox, oy) if hd else (ox//6, oy//6)) != 0: return True
-        return False
+    occluded=make_native_occlusion_test(entries,args.source,args.original_pack,inventory)
     reports = []
     for receipt in args.receipt:
         d = json.loads(receipt.read_text())
-        if not args.normal_command0 and (not d.get('status', '').startswith('PASS') or d.get('continuations') != 1 or not d.get('go_rng_unchanged')):
+        if not normal and (not d.get('status', '').startswith('PASS') or d.get('continuations') != 1 or not d.get('go_rng_unchanged')):
             raise SystemExit('需要完整RunGame交易收據')
         if args.command0 and (d.get('status')!='PASS-ORDINARY-COMMAND0-FIXTURE-RUNTIME-E1' or d.get('command_id')!=0
             or d.get('mp_publications')!=1 or d.get('hp_publications')!=7
             or any(d.get('phase_f2_switches',{}).get(phase)!=1 for phase in ['prelude','actor','actor-pulse','target','tail'])):
             raise SystemExit('需要完整普通指令0交易／F2收據')
+        if args.command5 and (d.get('status')!='PASS-ORDINARY-COMMAND5-FIXTURE-RUNTIME-E1' or d.get('command_id')!=5
+            or d.get('mp_publications')!=1 or d.get('hp_publications')!=6
+            or any(d.get('phase_f2_switches',{}).get(phase)!=1 for phase in ['prelude','actor','actor-pulse','handler-front','target','handler-tail','tail'])):
+            raise SystemExit('需要完整普通指令5交易／F2收據')
         samples=d.get('source_shots', {})
         if args.normal_command0:
             if (d.get('status')!='PASS' or d.get('schema')!='fd2-hd-battle-status-gui-v1'
@@ -122,6 +140,34 @@ def main():
                     phase=state.get('command_phase')
                     if phase not in ['actor','tail'] and not (phase=='prelude' and state.get('command_frame')==8):continue
                     samples[(name,n)]={'file':name,'phase':phase,'subtract':0,'mix':0,'layers':state.get('command_source_layers',[])}
+        if args.normal_end_command is not None:
+            if (d.get('status')!='PASS' or d.get('schema')!='fd2-hd-battle-status-gui-v1'
+                or command_id not in d.get('battle_end_commands',[])
+                or not all(d.get(k) for k in ['natural_attack_return_checked','post_battle_save_checked',
+                    'new_process_title_load','theme_save_bytes_equal','node_boundary_save_checked','cold_loaded_units_equal'])
+                or not d.get('loaded_units') or d['loaded_units']!=d.get('cold_units')
+                or d.get('catalog_sha256')!=digest(args.catalog)):
+                raise SystemExit('需要完整普通END施法及邊界保存收據')
+            samples={}
+            for row in d.get('battle_end_command_samples',[]):
+                name=row['file']
+                if Path(name).name!=name or digest(receipt.parent/name)!=row['sha256']:raise SystemExit('普通GPU圖片路徑或SHA不同')
+                before,after=row['before'],row['after']
+                if not all(q.get('command_scene') and q.get('command_id')==command_id and q.get('hd_battle') for q in [before,after]):continue
+                if before.get('command_owner')!=after.get('command_owner'):continue
+                for n,state in enumerate([before,after]):
+                    phase=state.get('command_phase')
+                    if phase not in ['actor','tail']:continue
+                    samples[(name,n)]={'file':name,'phase':phase,'subtract':0,'mix':0,'layers':state.get('command_source_layers',[])}
+            for row in d.get('battle_art_samples',[]):
+                name=row['file']
+                if Path(name).name!=name or digest(receipt.parent/name)!=row['sha256']:raise SystemExit('普通GPU圖片路徑或SHA不同')
+                before,after=row['before'],row['after']
+                if not all(q.get('battle_scene') and q.get('hd_battle') and q.get('battle_target_fig')==args.figure for q in [before,after]):continue
+                if before.get('battle_owner')!=after.get('battle_owner'):continue
+                for n,state in enumerate([before,after]):
+                    samples[(name,'target',n)]={'file':name,'phase':'target-idle','subtract':0,'mix':0,
+                        'layers':state.get('battle_source_layers',[])}
         found = []
         for sample_name, sample in samples.items():
             name=sample.get('file',sample_name)
@@ -147,19 +193,31 @@ def main():
                                       'source_sha256': sha, 'checked_pixels': len(points),
                                       'visible_eligible_pixels': visible_count, 'source_eligible_pixels': len(all_points),
                                       'excluded_by_source_occlusion': len(all_points)-visible_count})
-        for phase in (['actor'] if args.normal_command0 else phases):
-            if (not args.normal_command0 and not d.get('phase_f2_switches', {}).get(phase)) or not any(x['phase'] == phase for x in found):
+        required=(['actor','target-idle'] if args.normal_end_command is not None else ['actor'] if normal else phases)
+        for phase in required:
+            if (not normal and not d.get('phase_f2_switches', {}).get(phase)) or not any(x['phase'] == phase for x in found):
                 raise SystemExit('缺少必要施術者階段的實際HD核心或指定F2：'+phase)
+        if args.normal_end_command is not None and not any(x['phase']=='target-idle' and x['resource']==idle for x in found):
+            raise SystemExit('沒有核對到同份正常流程的受擊待機')
         if not any(x['phase'] == 'actor' and x['resource'] == actor and x['frame'] > 0 for x in found):
             raise SystemExit('沒有核對到非零施術者動作')
+        if args.all_cast_frames:
+            expected=set(range(entries[actor]['frame_count']))
+            actual={x['frame'] for x in found if x['phase']=='actor' and x['resource']==actor}
+            if actual!=expected:raise SystemExit('施術來源全幀GPU核心不完整')
         reports.append({'receipt': str(receipt), 'receipt_sha256': digest(receipt), 'matches': found})
-    report = {'status': 'PASS-ORDINARY-COMMAND0-NORMAL-CASTER-GPU' if args.normal_command0 else 'PASS-ORDINARY-COMMAND0-CASTER-GPU' if args.command0 else 'PASS-COMPOUND-CASTER-GPU', 'figure': args.figure,
-              'command_id':0 if ordinary else None,
-              'core_profile':args.core_profile, 'actor_resource':actor, 'expected_phases':['actor'] if args.normal_command0 else phases,
+    status=(f'PASS-ORDINARY-COMMAND{command_id}-NORMAL-END-CASTER-GPU' if args.normal_end_command is not None else
+            'PASS-ORDINARY-COMMAND5-CASTER-GPU' if args.command5 else
+            'PASS-ORDINARY-COMMAND0-NORMAL-CASTER-GPU' if args.normal_command0 else
+            'PASS-ORDINARY-COMMAND0-CASTER-GPU' if args.command0 else 'PASS-COMPOUND-CASTER-GPU')
+    report = {'status':status, 'figure': args.figure,
+              'command_id':command_id if ordinary else None,
+              'core_profile':args.core_profile, 'actor_resource':actor, 'expected_phases':['actor','target-idle'] if args.normal_end_command is not None else ['actor'] if normal else phases,
               'catalog_sha256': digest(args.catalog), 'verifier_sha256': digest(Path(__file__)),
               'pixel_matcher_sha256': digest(Path(__file__).with_name('verify_fd2_ares_battle_gpu.py')),
               'occlusion_inventory_sha256': digest(args.inventory),
-              'reports': reports, 'scope': ('普通標題LOAD指令0實際視窗的施術者核心，含自然返回／邊界保存冷讀，完整階段另見fixture。' if args.normal_command0 else '普通指令0最終GPU的prelude／actor／tail高覆蓋服裝核心，限明示fixture。' if args.command0 else '正式RunGame最終GPU的prelude／actor／actor-slide高覆蓋服裝核心，限明示fixture。')+
+              'all_cast_frames_required':args.all_cast_frames,
+              'reports': reports, 'scope': (f'普通標題LOAD及END指令{command_id}實際視窗的施術者核心，含自然返回／邊界保存冷讀，完整階段另見fixture。' if normal else f'普通指令{command_id}最終GPU的prelude／actor／tail高覆蓋服裝核心，限明示fixture。' if ordinary else '正式RunGame最終GPU的prelude／actor／actor-slide高覆蓋服裝核心，限明示fixture。')+
               '只排除已核SHA的前景原生mask或HD alpha實際遮住的像素，剩餘須至少1000個核心。'
               '相近圖源不判唯一相位，武器／FX及其他施法者另驗；不宣稱原版oracle或整章E2。fixture不當普通玩家證據。'}
     args.report.write_text(json.dumps(report, ensure_ascii=False, indent=2)+'\n')

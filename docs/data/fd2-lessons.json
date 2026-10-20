@@ -3308,6 +3308,21 @@
       "why": "指令0一次反例命令誤傳不存在的inventory，舊harness把六次共同FileNotFound當通過。該輪已撤回，加入正對照與原因比對後重跑十二項。",
       "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#ordinary_command0_followup_20261020；tools/test_fd2_command0_hd_gpu.py",
       "guard_limitation": "現行fd2_lessons.scannable刻意略過test_檔案；本條由含正對照的實際fixture／普通反例收據驗證，不另繞過排除契約。"
+    },
+    {
+      "id": "normal-gui-explicit-observation-gates-approach-exit",
+      "date": "2026-10-20",
+      "area": "正常GUI事件取樣",
+      "rule": "正常GUI取樣的停止條件包含明示要驗的玩家事件與指定actor；已有可達射擊格不代替敵方施法已發生。沿既有正式可達格移動／待機並保留原END上限。入口tools/verify_fd2_hd_fonts_gui.py的--battle-end-commands與command_sampled；實際PNG及完整返回／冷讀另驗。",
+      "why": "90號原地END不接敵；前進兩輪後控制器一找到希莉亞射程便出手，射擊／冷讀雖完成仍缺施法而拒收。加入指定actor樣本停止條件後，同源seed1與min2／max4實際三輪取得指令5，章內沒有注入。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#caster90_battle_followup_20261020",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_hd_fonts_gui.py"
+        ],
+        "pattern": "if choices and approach>=args.battle_min_approach_rounds and command_sampled:break"
+      }
     }
   ]
 }

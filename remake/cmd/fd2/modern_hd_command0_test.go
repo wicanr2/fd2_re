@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
+	"strconv"
 	"strings"
 	"testing"
 
@@ -123,6 +124,13 @@ func ordinaryCommand0HDTestGame(t *testing.T) (*Game, *battle.Unit, *battle.Unit
 	t.Helper()
 	g, actor, target := nativeCommand32PresentationFixture(t)
 	actor.BattleFig, target.BattleFig = 9, 0
+	if value := os.Getenv("FD2_TEST_COMMAND_ACTOR_FIGURE"); value != "" {
+		figure, err := strconv.Atoi(value)
+		if err != nil || figure < 0 || figure > 135 {
+			t.Fatal("invalid explicit command actor figure")
+		}
+		actor.BattleFig = figure
+	}
 	g.st.NativeCommandBook[0] = battle.NativeCommandRecord{ID: 0, Damage: 50, Hit: 100, SelectionMode: 5, EffectMode: 0, MPCost: 2, TargetCode: 0}
 	var err error
 	g.nativeCommandScene, err = battle.LoadNativeCommandSceneTable("../../assets/data/native_command_scene.json")
@@ -150,9 +158,13 @@ func TestModernHDCommand0PreflightAndF2Atomic(t *testing.T) {
 	set := cloneModernHDBanksForTest(template)
 	g.modernStoryPortraits = set
 	a, b, seed := *actor, *target, g.nativeRNGState
-	entry := set.battleAnimations[28]
+	_, actual, err := figani.LoadSeparatedResourceWithZeroHeaderFallbackSource(separatedAssetPath("animations"), actor.BattleFig*3+2)
+	if err != nil {
+		t.Fatal(err)
+	}
+	entry := set.battleAnimations[actual]
 	if entry == nil {
-		t.Fatal("registered Yuni fallback required")
+		t.Fatal("registered actual cast source required")
 	}
 	last := len(entry.paths) - 1
 	saved := entry.paths[last]
@@ -166,16 +178,16 @@ func TestModernHDCommand0PreflightAndF2Atomic(t *testing.T) {
 		t.Fatal(err)
 	}
 	j := g.nativeCmd0Presentation
-	if !reflect.DeepEqual(j.hd.resources(), []int{0, 27, 28}) {
+	if !reflect.DeepEqual(j.hd.resources(), []int{0, actor.BattleFig * 3, actual}) {
 		t.Fatalf("wrong fallback sources: %v", j.hd.resources())
 	}
 	if err := g.applyTheme(nil); err != nil {
 		t.Fatal(err)
 	}
 	reload := cloneModernHDBanksForTest(template)
-	reload.battleAnimations[28].paths[last] = filepath.Join(t.TempDir(), "missing-f2.png")
+	reload.battleAnimations[actual].paths[last] = filepath.Join(t.TempDir(), "missing-f2.png")
 	if err := g.applyTheme(reload); err == nil || g.modernStoryPortraits != nil || g.nativeCmd0Presentation != j ||
-		reload.battleAnimations[27].Frames[0] != nil || reload.battleAnimations[0].Frames[0] != nil ||
+		reload.battleAnimations[actor.BattleFig*3].Frames[0] != nil || reload.battleAnimations[0].Frames[0] != nil ||
 		!reflect.DeepEqual(a, *actor) || !reflect.DeepEqual(b, *target) || seed != g.nativeRNGState {
 		t.Fatal("failed F2 changed owner, state or partial bank")
 	}

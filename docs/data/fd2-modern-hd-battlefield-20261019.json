@@ -48301,5 +48301,1043 @@
       "file": "work/promo-cadence-20261018/hd-fonts/command0-final-source-checks-r1.json",
       "sha256": "baf2d4adaf2038fe271414f70342f5c690d5dd0b008fbe85fb2b922e3ea25a1a"
     }
+  },
+  "caster90_battle_followup_20261020": {
+    "status": "CONFORMED-SCOPED",
+    "base_commit": "602098b7619fc9f70b5d9120e8e51ac68c1a2bb2",
+    "formal_registered": true,
+    "private_synced": true,
+    "full_battle_hd_complete": false,
+    "production_rules_changed": false,
+    "current_state": {
+      "remake_complete": "90三組23幀與普通4／5人物HD已正式登錄；完整Draw、正常5／受擊、F2／邊界冷讀、拒收及私人遠端同步完成。",
+      "remake_remaining": "93及其他人物、其餘普通指令、HD法術／死亡／共同效果、普通召喚及平台效能仍待。",
+      "original_oracle_unknown": "本批沒有新增原版逐幀、音訊、傷害、自然難度或整章E2證據。",
+      "optional_polish": "平滑過渡與額外光影尚無新決策，本批維持原始排程。"
+    },
+    "source_inventory": {
+      "file": "docs/data/fd2-battle-hd-source-inventory-20261019.json",
+      "sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51"
+    },
+    "original_resources": [
+      {
+        "resource": 270,
+        "status": "decoded",
+        "raw_sha256": "a4cbb1fa4d03598cf091c152e058351abb3f4546fc9445e295f7c17031a7f54f",
+        "status_sha256": "86f5c79eac735628faf0c9b74508b729100ac4e3dd52fdfca3db99b2faed75c0",
+        "metadata_sha256": "d355a93730f2a99a7aacca9b448940d221a6a7d0e36818e6730fa432db5317dd",
+        "native_header": {
+          "byte_1": 0,
+          "byte_2": 1,
+          "byte_4": 0
+        }
+      },
+      {
+        "resource": 271,
+        "status": "decoded",
+        "raw_sha256": "a759a6b8306060f3064426a0597fbf70edf0c8c9efe9a2b7cd1b0ec3a73dc5b8",
+        "status_sha256": "8fd0fdc1d3ee90c6ff879f4a832dd470c53da95aaa8bfe9a199bde76ac04a7f9",
+        "metadata_sha256": "fc5b2dcbe191a0db3cfa44a2dcd3e755ae9a2e509b8b74adc94beb44f4a51a17",
+        "native_header": {
+          "byte_1": 0,
+          "byte_2": 11,
+          "byte_4": 6
+        }
+      },
+      {
+        "resource": 272,
+        "status": "decoded",
+        "raw_sha256": "ad6713f0dc83dc9ca3c0feff8604444683ec1dd22586f0724d6c2972b7d6a03d",
+        "status_sha256": "19eda2850c98c7c8cdf5fe7fd02c26cd3bce2435c05c276d48934d993b233a34",
+        "metadata_sha256": "2b30f88a1920048a0fb8a5e5d636a743a7ca8fe0c2e2e6e6c9ca07c690ae78af",
+        "native_header": {
+          "byte_1": 0,
+          "byte_2": 11,
+          "byte_4": 0
+        }
+      }
+    ],
+    "design_contract": {
+      "appearance": "原版270:0確認紅色尖兜帽、完全暗面與兩個黃亮眼、深藍肩衣／寬袖、紅袍、灰色腰帶垂帶與膝下前布、棕色小腰包與低矮棕鞋；左手低持黃褐鉤頭杖，右掌張開朝右。不猜姓名、職業或種族。",
+      "poses": "idle與前三個attack/cast來源近似，明示共用；cast3..8抬杖／開臂及杖端金色火花，9..10只留鉤杖。attack3..9另有右側火球由底端升高／消退，必須保留可見變化。",
+      "geometry": "保留270／271／272共23項矩形、header、delay及raw markers；透明alpha由內建imagegen保留。姿勢按原身體錨點重定向，超框裁切逐筆揭露。",
+      "compiler": "已加入明示--with-cast及有序分層配方；production清冊與loader格式不變，舊兩組與已證零header idle-only均已回歸。"
+    },
+    "acceptance": {
+      "fixture": "物理完整12幀及普通指令0實際272全11幀、Game.Draw及最終1920 PNG、F2與MP／HP／RNG發布邊界；不得只驗物理12幀冒稱23。",
+      "normal": "沿固定章9正常F5來源、seed1，有界正常END取得90普通施法／物理呈現與我方射擊90受擊待機，返回／F2／章節邊界保存及新程序LOAD。來源祖先強化政策照實揭露，章內無注入。",
+      "admission": "完成來源、全幀、正常GUI與錯圖／缺件拒收後才登錄清冊與私人allow-list；其他角色及普通法術不由此放行。"
+    },
+    "prototype_review": {
+      "idle_file": "work/promo-cadence-20261018/hd-fonts/caster90-idle-master-r1.png",
+      "sha256": "9d949fed657995372b1b58ca7f2f8a68b5b5657c066d1f807b4b3f97bfcfa0b5",
+      "size": [
+        1384,
+        1136
+      ],
+      "alpha_bbox": [
+        12,
+        11,
+        1369,
+        1109
+      ],
+      "conclusion": "原版輪廓與既有風格相符，保留短寬紅袍、暗面雙黃眼、藍肩寬袖、灰垂帶、棕包與低持左鉤杖。原始alpha不改。其餘姿勢仍須逐張及完整排版檢視，通過才正式登錄。",
+      "cast_r2": {
+        "file": "work/promo-cadence-20261018/hd-fonts/caster90-cast-full-master-r2.png",
+        "sha256": "dc14fd40476bf90481e823a52053e5aa5b2e7bb9a2c0221a31895143aa6b6a17",
+        "conclusion": "依原全幅比例重畫，最終身體錨點與成品裁切仍需編製後審查。"
+      },
+      "final_review": {
+        "result": "七份母稿通過，R3全部23幀核心裁切0；正常5施法與受擊核心已驗。",
+        "review": {
+          "file": "work/promo-cadence-20261018/hd-fonts/caster90-candidate-r3/review.png",
+          "sha256": "bfa54f5e2398a6c952b12118f2f0141d7a73abf787e1f0bc8a6a33b5ef8ff464"
+        }
+      }
+    },
+    "compiler_ready": {
+      "flag": "--with-cast",
+      "required_resources": [
+        270,
+        271,
+        272
+      ],
+      "frame_counts": [
+        1,
+        11,
+        11
+      ],
+      "rule": "顯式選三組才接受；三組均decoded並核metadata／PNG／mask指紋。兩組預設及有兩項固定零header的idle-only保持。配方資料schema1及production清冊形狀不變。",
+      "guards": "新三組實檔候選、缺施術／缺attack／漏flag／錯來源等拒收；舊兩組與idle-only重跑既有守衛。"
+    },
+    "rejected_candidates": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/caster90-cast-full-master-r1.png",
+        "reason": "抬杖後原稿寬1384而hood-to-foot約800；展幅相對身體過大，按原身體高度重定向會裁到手指，且金光觸及母稿上／左邊。不以縮小全體身體掩蓋，改按原140:149外框重畫。",
+        "preserved": true,
+        "sha256": "eaa7e4c842dee7aab43950aaae66dfd229dc2d0eacbe0485adbae0e35746e964"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/caster90-attack-seed-master-r1.png",
+        "sha256": "443721c44dce0ba9b2c9aa9f31a4faaaf3c36f27ab6b0120990bc59cd9f12f91",
+        "preserved": true,
+        "reason": "獨立火種靠近鞋底，原始271:3／4的bbox在173..180而人物基準約150；一個仿射錨點無法同時對準。"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/caster90-attack-seed-master-r2.png",
+        "sha256": "c2ea7bac1297aa0958d391f57843d8a02582a7c517b9328c50c9228f11cdebf8",
+        "preserved": true,
+        "reason": "明示下移後仍靠近鞋底；完整畫面生成無法可靠固定獨立元件，改採分離母稿與已核原座標。"
+      }
+    ],
+    "mechanical_layer_compilation": {
+      "status": "CONFORMED-SCOPED",
+      "trigger": "完整場景生成兩次仍把271:3火種放在腳底附近；固定原Mask證實原位y173..180，而人物底部約150，不能以全圖縮放同時對準兩個元件。",
+      "decision": "屬已核准原始幾何與手繪圖源範圍內的可逆編製實作；生成母稿保持原始alpha與bytes。人物及VFX各自由imagegen產生，編製器以獨立native anchors按順序組合，不改遊戲規則／正式loader或catalog格式。",
+      "recipe_extension": "schema1的單幀assignment可為既有單項dict，或非空list的同型dict。list只在--with-cast明示啟用，每項仍只含pose、anchor、scale_group；每幀合成一張原矩形RGBA。舊單項輸出維持。",
+      "source_geometry": "271:3/4右側mask原bbox=[235,173,247,180]；5=[234,173,248,180]；6=[233,128,249,180]；7=[233,87,249,134]；8=[233,67,249,110]；9=[233,49,249,84]；10無獨立火球。像素bbox已證實，名稱只作美術導覽。",
+      "admission": "身體及特效用不同scale_group，保留每層transform／clipping與來源SHA；空list、未知欄位、幀缺件、漏with-cast均拒收。最終23幀、一般玩家與反例驗收仍必須。"
+    },
+    "recipe": {
+      "schema_version": 1,
+      "figure": 90,
+      "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+      "sources": {
+        "idle": {
+          "file": "work/promo-cadence-20261018/hd-fonts/caster90-idle-master-r1.png",
+          "sha256": "9d949fed657995372b1b58ca7f2f8a68b5b5657c066d1f807b4b3f97bfcfa0b5",
+          "anchor": [
+            510,
+            14,
+            1205,
+            1106
+          ]
+        },
+        "cast_full": {
+          "file": "work/promo-cadence-20261018/hd-fonts/caster90-cast-full-master-r2.png",
+          "sha256": "dc14fd40476bf90481e823a52053e5aa5b2e7bb9a2c0221a31895143aa6b6a17",
+          "anchor": [
+            384,
+            320,
+            1018,
+            1224
+          ]
+        },
+        "cast_fade": {
+          "file": "work/promo-cadence-20261018/hd-fonts/caster90-cast-fade-master-r1.png",
+          "sha256": "5eac21b482b6f51138cf1d479cd3dc290940cd09c4601cfcf8daba2b7842da14",
+          "anchor": [
+            384,
+            320,
+            1018,
+            1224
+          ]
+        },
+        "cast_plain": {
+          "file": "work/promo-cadence-20261018/hd-fonts/caster90-cast-plain-master-r1.png",
+          "sha256": "ddaf5fc74b8802510a4ea75d9000558b06e68956fd67df470529194715080266",
+          "anchor": [
+            384,
+            320,
+            1018,
+            1224
+          ]
+        },
+        "seed": {
+          "file": "work/promo-cadence-20261018/hd-fonts/caster90-seed-master-r1.png",
+          "sha256": "8f5a3d11d51ae07bdeb723dcf5f8c5f120ce0350ec7f6373c337cc9f45f9b6f7",
+          "anchor": [
+            348,
+            258,
+            1300,
+            672
+          ]
+        },
+        "flame": {
+          "file": "work/promo-cadence-20261018/hd-fonts/caster90-flame-master-r1.png",
+          "sha256": "2cead5b3aea00d88f9720f3d8cc4aafb5c9fec41279630dc9bc7eae91fc7792b",
+          "anchor": [
+            84,
+            39,
+            662,
+            2074
+          ]
+        },
+        "wisps": {
+          "file": "work/promo-cadence-20261018/hd-fonts/caster90-wisps-master-r1.png",
+          "sha256": "dd5e56f1c577a6418a716a3b2769096c5313fc60d66bacb42790ea272de2782f",
+          "anchor": [
+            138,
+            128,
+            745,
+            1574
+          ]
+        }
+      },
+      "resources": {
+        "270": [
+          {
+            "pose": "idle",
+            "anchor": [
+              51,
+              4,
+              106,
+              100
+            ],
+            "scale_group": "body"
+          }
+        ],
+        "271": [
+          {
+            "pose": "idle",
+            "anchor": [
+              50,
+              4,
+              105,
+              100
+            ],
+            "scale_group": "body"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              50,
+              4,
+              105,
+              100
+            ],
+            "scale_group": "body"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              49,
+              4,
+              104,
+              100
+            ],
+            "scale_group": "body"
+          },
+          [
+            {
+              "pose": "cast_full",
+              "anchor": [
+                50,
+                36,
+                105,
+                132
+              ],
+              "scale_group": "body"
+            },
+            {
+              "pose": "seed",
+              "anchor": [
+                232,
+                161,
+                244,
+                168
+              ],
+              "scale_group": "seed"
+            }
+          ],
+          [
+            {
+              "pose": "cast_full",
+              "anchor": [
+                49,
+                42,
+                104,
+                138
+              ],
+              "scale_group": "body"
+            },
+            {
+              "pose": "seed",
+              "anchor": [
+                231,
+                167,
+                243,
+                174
+              ],
+              "scale_group": "seed"
+            }
+          ],
+          [
+            {
+              "pose": "cast_full",
+              "anchor": [
+                48,
+                41,
+                103,
+                137
+              ],
+              "scale_group": "body"
+            },
+            {
+              "pose": "seed",
+              "anchor": [
+                229,
+                166,
+                243,
+                173
+              ],
+              "scale_group": "seed"
+            }
+          ],
+          [
+            {
+              "pose": "cast_full",
+              "anchor": [
+                47,
+                47,
+                102,
+                143
+              ],
+              "scale_group": "body"
+            },
+            {
+              "pose": "flame",
+              "anchor": [
+                227,
+                127,
+                243,
+                179
+              ],
+              "scale_group": "flame"
+            }
+          ],
+          [
+            {
+              "pose": "cast_fade",
+              "anchor": [
+                48,
+                45,
+                103,
+                141
+              ],
+              "scale_group": "body"
+            },
+            {
+              "pose": "flame",
+              "anchor": [
+                228,
+                84,
+                244,
+                131
+              ],
+              "scale_group": "flame"
+            }
+          ],
+          [
+            {
+              "pose": "cast_fade",
+              "anchor": [
+                46,
+                41,
+                101,
+                137
+              ],
+              "scale_group": "body"
+            },
+            {
+              "pose": "flame",
+              "anchor": [
+                226,
+                60,
+                242,
+                103
+              ],
+              "scale_group": "flame"
+            }
+          ],
+          [
+            {
+              "pose": "cast_plain",
+              "anchor": [
+                46,
+                14,
+                101,
+                110
+              ],
+              "scale_group": "body"
+            },
+            {
+              "pose": "wisps",
+              "anchor": [
+                226,
+                15,
+                242,
+                50
+              ],
+              "scale_group": "wisps"
+            }
+          ],
+          {
+            "pose": "cast_plain",
+            "anchor": [
+              46,
+              14,
+              101,
+              110
+            ],
+            "scale_group": "body"
+          }
+        ],
+        "272": [
+          {
+            "pose": "idle",
+            "anchor": [
+              50,
+              4,
+              105,
+              100
+            ],
+            "scale_group": "body"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              50,
+              4,
+              105,
+              100
+            ],
+            "scale_group": "body"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              49,
+              4,
+              104,
+              100
+            ],
+            "scale_group": "body"
+          },
+          {
+            "pose": "cast_full",
+            "anchor": [
+              50,
+              36,
+              105,
+              132
+            ],
+            "scale_group": "body"
+          },
+          {
+            "pose": "cast_full",
+            "anchor": [
+              49,
+              42,
+              104,
+              138
+            ],
+            "scale_group": "body"
+          },
+          {
+            "pose": "cast_full",
+            "anchor": [
+              48,
+              41,
+              103,
+              137
+            ],
+            "scale_group": "body"
+          },
+          {
+            "pose": "cast_full",
+            "anchor": [
+              47,
+              47,
+              102,
+              143
+            ],
+            "scale_group": "body"
+          },
+          {
+            "pose": "cast_fade",
+            "anchor": [
+              48,
+              45,
+              103,
+              141
+            ],
+            "scale_group": "body"
+          },
+          {
+            "pose": "cast_fade",
+            "anchor": [
+              46,
+              41,
+              101,
+              137
+            ],
+            "scale_group": "body"
+          },
+          {
+            "pose": "cast_plain",
+            "anchor": [
+              46,
+              14,
+              101,
+              110
+            ],
+            "scale_group": "body"
+          },
+          {
+            "pose": "cast_plain",
+            "anchor": [
+              46,
+              14,
+              101,
+              110
+            ],
+            "scale_group": "body"
+          }
+        ]
+      }
+    },
+    "recipe_file": {
+      "file": "work/promo-cadence-20261018/hd-fonts/caster90-recipe-r3.json",
+      "sha256": "e23dd1ce83483e35a6bd8087ab05431ff9d714860676d4653825b8fb026f5e41"
+    },
+    "compiled": {
+      "file": "work/promo-cadence-20261018/hd-fonts/caster90-candidate-r3/compiled.json",
+      "sha256": "e0a6157d1fd7031299fa6380bf3d96a0622d5d3d40ffbb775e46c90b35d7e6e0"
+    },
+    "review": {
+      "file": "work/promo-cadence-20261018/hd-fonts/caster90-candidate-r3/review.png",
+      "sha256": "bfa54f5e2398a6c952b12118f2f0141d7a73abf787e1f0bc8a6a33b5ef8ff464"
+    },
+    "clipping": {
+      "high_coverage_pixels": 0,
+      "frames": 23,
+      "alpha_source_bytes_preserved": true,
+      "policy": "七份接受母稿以原始RGBA編製；人物錨點與原始右側VFX各自重定向，不塗改母稿。R1／R2裁切保留，R3所有層的>=192核心裁切皆為0。"
+    },
+    "generation": {
+      "tool": "built-in image_gen",
+      "prompt_sets": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/caster90-prompts-r1.json",
+          "sha256": "b89b5d7f8c5517be8311611a689a608ecb55dfe27b353f51d8f4bf7412288776"
+        }
+      ],
+      "prompts": {
+        "cast_fade": "Use case: stylized-concept. Edit ONLY the magical sparks in reference1, the accepted compact red-hood casting sprite. Reference2 is native FIGANI272 frame7: it shows the SAME pose and costume but the magical flare is fading. Preserve reference1's entire body, hood, eyes, hands, staff, sleeves, belt, pouch, shoes, body-to-arm width, and placements. Do not widen the pose or shrink the body. Keep the simple raised crook in the upper left. Replace the continuous bright magical loop with just a few THIN, broken ivory-gold wisps and separated small upward spark fragments above the crook, like reference2. The hook itself retains a small warm golden highlight. Most of the bright halo around the staff must disappear. No new effects, no fireball, no rune, no orb. Same detailed painted style, same short broad body, same whole-sprite proportions and portrait canvas framing as reference1, feet on the same baseline. One complete isolated full-body sprite, genuine transparent background with preserved alpha, clear transparent margins. No text, no background, no floor, no grid.",
+        "cast_plain": "Use case: stylized-concept. Edit only the external magical glow in this accepted compact red-hood casting sprite. Preserve the SAME exact full character, pose and proportions: short broad red robe, pointed red hood with entirely black face and two tiny yellow eyes, navy shawl and blue-lined sleeves, gray belt and two hanging ties, brown pouch, gray front knee patch, low brown shoes on the same baseline. Keep the raised crooked staff at upper left and the right arm extended open at shoulder level, same hand and cloth positions as the reference. REMOVE ALL floating sparks, trails, halo and light outside the staff. The simple yellow-brown crook itself may retain a thin natural warm gold/ivory highlight along its upper edge, but there is no emitted magical effect, no floating particle, no beam and no fireball. The underlying wooden/burnished crook shape and red grip binding must stay exactly recognizable. Same detailed painted folds, dark contour and portrait composition; no extra objects, changes of costume, or background. One isolated complete full-body game sprite, genuine transparent alpha with empty space where the old glow was, clear margins on every edge, no text, no grid, no floor.",
+        "attack_seed_r1": "Use case: stylized-concept. Paint ONE HD battle-animation frame on genuine transparent alpha. Reference1 supplies the accepted red-hood caster's exact identity, painted style, costume and compact proportions. Reference2 is the STRICT entire scene composition and pose of original FIGANI271 frame3: retain the caster on the LEFT and the one very small gold fire seed at the FAR LOWER RIGHT. Overall content rectangle has width:height about 244:168. Hooded BODY excluding raised staff is 106/168 of this height, hood at native y44 and shoes at y150. Raised crooked staff with thin ivory/gold spark loops is at the upper LEFT; right open palm at native x140/y65. Caster body and raised staff occupy only native x3..143 of the 244-wide scene. Leave a wide completely transparent gap between the palm and the remote fire seed. The ONE fire seed is a tiny bright ivory-yellow oval at native x241/y177, near the far-right bottom, about 5 pixels wide by 3 high relative to a 106-pixel body, well below the shoes. It is NOT a big fireball or a flame column. Preserve the source's unusual detached lower-right effect placement. Do not put fire in the palm, on the ground under the caster, or between the caster and the seed. Same red pointed hood, black face/two small yellow eyes, navy shawl and huge navy-lined sleeves, red robe, gray belt and hanging ties, brown pouch, gray front knee panel, small brown shoes. Match reference1's painting rather than copying pixel blocks. One complete character and one tiny detached fire seed only; no floor, shadow rectangle, text, grid, border, arrows or background. Keep all edges within transparent margins. Landscape orientation and native scene proportions, no shrinking the body relative to reference2.",
+        "attack_seed_r2": "Edit target reference1 only to correct the detached fire seed placement, keeping the painted caster and pose exactly unchanged. Native reference2 is the strict placement guide. The tiny fire seed in reference1 is incorrectly almost level with the shoes. MOVE that one tiny fire seed distinctly DOWN and a little RIGHT. Its center must be below the caster's shoe baseline by 0.27 times the caster's BODY height measured hood-tip-to-shoes. This is a visible gap, roughly 180 pixels for the current approximately 690-pixel-tall body, not a few pixels. It must also be much farther right than the open palm: horizontal hood-center-to-seed distance about 1.6 times that body height. Expand the transparent canvas toward the bottom and right as needed; do NOT rescale or move the caster, and do not fill the new empty space with anything. Keep the caster's feet around 76 percent down the final image and the seed around 94 percent down. The tiny ivory/gold seed stays a small oval around 1/15 of body width, no large flare. Keep the entire raised crook, thin upper-left sparks, short broad red hooded body, dark face/two yellow eyes, navy sleeves, gray ties, pouch and brown shoes unchanged. One complete caster plus exactly one remote tiny lower-right seed; no extra sparkle in the empty gap. Genuine transparent background and preserved alpha, no text, floor, border or grid.",
+        "flame": "Use case: stylized-concept. Asset: ONE isolated transparent hand-painted fantasy battle fire effect, based strictly on this mechanically enlarged native FIGANI271 frame6 detached fire column. Repaint only the effect, no character. Shape is a very narrow upward vertical sheaf with three long tapered flame tongues, brilliant pale-ivory cores, golden-yellow middle, amber/orange outer edges, a small darker amber rounded lower base. Maintain the original tall narrow shape, visible opaque-color core width about 16 units versus height52 units (width roughly 0.30 of height). Tongues have unequal heights; the central/right tall tongue rises highest. The flame is travelling UPWARD, so pointed tips face UP, never sideways or down. Painted flowing edges and delicate soft alpha glow at perimeter, detailed smooth strokes, not pixel blocks. No face, staff, fireball sphere, explosion, impact star, smoke cloud, ground, sparks sprayed far sideways, letters or scenery. One flame sheaf only centered with generous empty transparent margins on every edge. Genuine transparent background and preserved alpha, no black rectangle. Portrait orientation.",
+        "seed": "Use case: stylized-concept. One isolated transparent HD magic fire SEED based on the native reference image. Repaint the small flat pale-ivory energy oval with a narrow bright yellow-gold rim and a very small amber outer edge. Its compact shape is about 12 units WIDE by 7 units HIGH: a flattened softly diamond/oval silhouette, centered, with a solid bright creamy-white core. Keep this proportion. No large pointed star rays, no ring, no comet tail, no flame column, no sparks sprayed far away, no staff or character. Smooth refined painted light and a delicate soft alpha edge, not enlarged pixel blocks. A single compact oval energy seed only, generous empty transparent margin, genuine transparent background and preserved alpha, no dark backdrop, no letters, grid, frame or scenery. Landscape orientation.",
+        "wisps": "Use case: stylized-concept. ONE isolated transparent HD late-phase fire effect from the native reference FIGANI271 frame9. Repaint its THREE narrow separated vertical fire streaks as fading upward amber-gold flame wisps, pale golden/ivory bright fragments in their upper middle, orange and dark amber edges fading into transparent alpha toward each lower end. Unequal heights, pointed tops facing UP. This is a late fading remnant, not a solid fireball: preserve the big transparent gaps between three thin strands, NO joined round base or thick horizontal bridge. Overall group is about 16 units wide by35 high, width approximately0.45 of total height. Painterly flowing flame detail and clean thin core shapes suitable for a fantasy RPG battle sprite, not enlarged pixels. Do not draw a figure, staff, orb, impact star, smoke cloud, ring, sparks outside the narrow group, floor or any text. One small group of three upward fire wisps only on a genuinely transparent background, preserve alpha, ample transparent margin around the complete effect, portrait orientation.",
+        "cast_full_r1": "Use case: stylized-concept. Edit reference image1, the approved transparent red-hood idle battle master, into ONE CASTING pose. Preserve exactly this same short broad character, red pointed hood and robe, black face with two small yellow eyes, dark navy shawl and blue-lined enormous sleeves, plain gray belt and hanging gray ties, brown pouch at viewer-left waist, gray knee-front patch and low brown shoes. Reference image2 is the strict native FIGANI272 frame3 pose and magic shape, not a pixel texture. Both arms now extend outward around shoulder level, viewer-right hand open and palm up at the far right, viewer-left hand lifts the same plain crooked yellow-brown staff diagonally toward the UPPER LEFT. The hook and its shaft must match reference2's direction. Draw a thin bright ivory/gold loop of magical sparks curling above the raised crook, like reference2, NOT a big flame, lightning bolt, orb or rune. Body, hood, legs and feet remain compact and upright at the same height and baseline as image1. Staff tip and sparks reach about 1.4 times the body height; do not make the body smaller to fit an enormous staff. Keep the pose and visible equipment of native reference2. Paint it in image1's detailed clean hand-painted style with visible fabric folds and dark contour. No other character, text, labels, scenery, cast shadow block, grid, border or additional effects. One isolated complete full-body sprite with every finger, shoe, staff hook and small spark trails visible. Genuine transparent background and preserve alpha. Clear transparent margin on every edge.",
+        "cast_full_r2": "Use case: stylized-concept. Make ONE transparent hand-painted casting sprite of exactly reference1's red-hood figure, using reference2 as a strict silhouette and pose blueprint. Ref1 supplies identity, brushwork, costume and materials; ref2 supplies ALL proportions and limb/staff placement. IMPORTANT GEOMETRY: use an approximately 140:149 portrait bounding rectangle. In that rectangle the hooded BODY from hood tip to shoe soles is 106 units tall; the raised staff and thin sparks add only 43 units above it. Overall sprite width is 140 units, only 1.32 times BODY height. Do not make a very wide T pose with a tiny body. Preserve the short, BROAD red-robed torso and large hood. Shoes at the bottom on one baseline. The hood tip starts about 43/149 down from the top. Staff-holding hand is around x24,y63; open right palm around x137,y64. Hood face at about x75,y68. Raise the simple curved brown/yellow crook staff toward upper left, its hook near x12,y29 and thin ivory-gold curling sparks near x8,y10. The far-right open palm stays near shoulder height, no huge extended forearm. Follow reference2's compact stance and all proportions. Plain red pointed hood, completely black face and two small yellow eyes, deep navy shawl and navy-lined huge sleeves, red robe, gray belt with hanging gray cloth ties, brown waist pouch on viewer-left, gray front knee patch, blue lower hem, two low brown shoes. Match reference1's clean painted folds and dark linework. No changes of identity, no human face/hair/beard, no armor, no orb, no runes, no extra equipment, no floor. The gold magic is a FEW THIN bright looped sparks over the crook, not a thick broad halo. Entire character and staff on genuinely transparent alpha, generous transparent margin around the complete sprite on every edge. Portrait orientation, one figure, no text, no grid, no border, no scenery.",
+        "idle": "Use case: stylized-concept. Asset: one transparent hand-painted HD battle sprite master for the Flame Dragon Knights 2 remake. Reference image 1 is the strict original identity and IDLE pose, mechanically enlarged native FIGANI270 frame0. Reference image 2 supplies ONLY the established detailed hand-painted brushwork, dark clean contour, cloth material and shading treatment; do not borrow her body, costume, staff, hair, colors, or identity. Repaint the exact short broad hooded figure in reference1: pointed deep-red hood and red robe, entirely black face opening with precisely two small yellow light eyes, dark navy-blue shoulder shawl and enormous blue-lined sleeves, plain dark-gray belt with two narrow hanging gray ties, small dull brown pouch on viewer-left waist, gray front knee patch beneath robe, blue lower hem, two low brown shoes. No visible human face or hair, no beard, no skull, no horns, no extra armor or symbols. Keep the original squat compact body and broad robe proportions, not a tall realistic wizard. Figure turned three-quarters to the RIGHT. Viewer-right arm raised with open palm near shoulder height, viewer-left hand holds a thin plain yellow-brown shepherd-crook staff LOW by the waist, shaft points diagonally down to the FAR LEFT and the curved hook end is low, as in reference1. Do not turn it into a vertical staff or add an orb. Both shoes on one baseline, full silhouette, broad sleeves and every finger visible, entire hooked staff visible. Crisp refined painted folds, warm crimson and cool navy, restrained warm yellow eyes, readable at game scale. Transparent background with genuine preserved alpha, no scenery, no rectangle, no labels, no letters, no grid, no extra poses, no extra objects. One isolated sprite centered with clear transparent margins on all sides. Preserve the source's simple equipment and pose, provide modern painted detail rather than enlarged pixel blocks."
+      },
+      "outputs": {
+        "cast_full_r2": {
+          "generated": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-b5469d6c-d3d6-4b83-bd07-2b697105fb8c.png",
+          "workspace": "work/promo-cadence-20261018/hd-fonts/caster90-cast-full-master-r2.png",
+          "accepted_for_compilation": true,
+          "sha256": "dc14fd40476bf90481e823a52053e5aa5b2e7bb9a2c0221a31895143aa6b6a17"
+        },
+        "cast_fade": {
+          "generated": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-392b0d46-81ee-4985-93e7-3ec0305e7869.png",
+          "workspace": "work/promo-cadence-20261018/hd-fonts/caster90-cast-fade-master-r1.png",
+          "accepted_for_compilation": true,
+          "sha256": "5eac21b482b6f51138cf1d479cd3dc290940cd09c4601cfcf8daba2b7842da14"
+        },
+        "cast_plain": {
+          "generated": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-ebef8b34-fbf2-4e07-ae7d-4fef225b2c31.png",
+          "workspace": "work/promo-cadence-20261018/hd-fonts/caster90-cast-plain-master-r1.png",
+          "accepted_for_compilation": true,
+          "sha256": "ddaf5fc74b8802510a4ea75d9000558b06e68956fd67df470529194715080266"
+        },
+        "attack_seed_r1": {
+          "generated": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-06c50007-8676-4987-8ee6-3bda980f2429.png",
+          "workspace": "work/promo-cadence-20261018/hd-fonts/caster90-attack-seed-master-r1.png",
+          "accepted_for_compilation": false,
+          "sha256": "443721c44dce0ba9b2c9aa9f31a4faaaf3c36f27ab6b0120990bc59cd9f12f91"
+        },
+        "attack_seed_r2": {
+          "generated": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-6aa6a699-a4eb-4e62-9dc4-885642b479dd.png",
+          "workspace": "work/promo-cadence-20261018/hd-fonts/caster90-attack-seed-master-r2.png",
+          "accepted_for_compilation": false,
+          "sha256": "c2ea7bac1297aa0958d391f57843d8a02582a7c517b9328c50c9228f11cdebf8"
+        },
+        "flame": {
+          "generated": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-a014f637-8599-4f70-b981-a02c4f54333f.png",
+          "workspace": "work/promo-cadence-20261018/hd-fonts/caster90-flame-master-r1.png",
+          "accepted_for_compilation": true,
+          "sha256": "2cead5b3aea00d88f9720f3d8cc4aafb5c9fec41279630dc9bc7eae91fc7792b"
+        },
+        "seed": {
+          "generated": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-84617414-bebd-4c24-ab9c-330973961d96.png",
+          "workspace": "work/promo-cadence-20261018/hd-fonts/caster90-seed-master-r1.png",
+          "accepted_for_compilation": true,
+          "sha256": "8f5a3d11d51ae07bdeb723dcf5f8c5f120ce0350ec7f6373c337cc9f45f9b6f7"
+        },
+        "wisps": {
+          "generated": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-20f089e9-a55e-4b49-a287-58c63d8a4faf.png",
+          "workspace": "work/promo-cadence-20261018/hd-fonts/caster90-wisps-master-r1.png",
+          "accepted_for_compilation": true,
+          "sha256": "dd5e56f1c577a6418a716a3b2769096c5313fc60d66bacb42790ea272de2782f"
+        },
+        "idle": {
+          "generated": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-d51ce7ef-ab5c-4509-b8a8-eb392a1643ee.png",
+          "workspace": "work/promo-cadence-20261018/hd-fonts/caster90-idle-master-r1.png",
+          "sha256": "9d949fed657995372b1b58ca7f2f8a68b5b5657c066d1f807b4b3f97bfcfa0b5"
+        },
+        "cast_full_r1": {
+          "generated": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-309cdb20-13a3-4420-9f7c-ab26c074cb4b.png",
+          "workspace": "work/promo-cadence-20261018/hd-fonts/caster90-cast-full-master-r1.png",
+          "accepted_for_compilation": false,
+          "sha256": "eaa7e4c842dee7aab43950aaae66dfd229dc2d0eacbe0485adbae0e35746e964"
+        }
+      }
+    },
+    "compiler_guards": {
+      "file": "work/promo-cadence-20261018/hd-fonts/caster90-compiler-guards-r1/guards.json",
+      "sha256": "c9f5f140ff65cbff9ca0d3c9af91637046621f39a09cde1389ce4091401bde43"
+    },
+    "legacy_reproduction": [
+      {
+        "figure": 83,
+        "old": {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-battle-candidate-r2/compiled.json",
+          "sha256": "73ba895f52e1f4b05c6ebb86bae28393b53d0742073351f3344d97093f48b342"
+        },
+        "rebuilt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/caster90-legacy83-rebuild-r1/compiled.json",
+          "sha256": "74363519147635f1eef48f7899c67f79313b77ee3648610ca64b8e56f2d154fd"
+        },
+        "all_frame_records_equal": true,
+        "guards": {
+          "file": "work/promo-cadence-20261018/hd-fonts/caster90-legacy83-guards-r1/guards.json",
+          "sha256": "823d9d090d7b162754d9b3b78c15bb1df83f6af86f41188fc0bba30aa0e72a37"
+        }
+      },
+      {
+        "figure": 133,
+        "old": {
+          "file": "work/promo-cadence-20261018/hd-fonts/villager-133-battle-candidate-r2/compiled.json",
+          "sha256": "70946bbd7cacbbe08b8723ccabc0011103305155d767e53a57e2b7204919f927"
+        },
+        "rebuilt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/caster90-legacy133-rebuild-r1/compiled.json",
+          "sha256": "675c6bbcae513f58be35b2d12a48daf3f97ff7f1da1eccb083e2928ad356c7f0"
+        },
+        "all_frame_records_equal": true,
+        "guards": {
+          "file": "work/promo-cadence-20261018/hd-fonts/caster90-legacy133-guards-r1/guards.json",
+          "sha256": "bafad6a293c97b5281b27973f78204c3ac98b90575631ded768bdd0899b4b592"
+        }
+      },
+      {
+        "figure": 134,
+        "old": {
+          "file": "work/promo-cadence-20261018/hd-fonts/villager-134-battle-candidate-r1/compiled.json",
+          "sha256": "2db038f41a87fa4a3b43ea3741c313723afddc2e9b1167ca285ab8d7e0c8f2f7"
+        },
+        "rebuilt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/caster90-legacy134-rebuild-r1/compiled.json",
+          "sha256": "8bb7db506a52aa95715ef4bd7fb7d1aa3e217378403479f2c7e494438d8c5982"
+        },
+        "all_frame_records_equal": true
+      }
+    ],
+    "fixture": {
+      "scope": "RUNTIME-E1，明示fixture，不當原版oracle、普通玩家或整章E2。",
+      "gpu_bridge": {
+        "status": "PASS",
+        "cases": 1123,
+        "elapsed_seconds": 327.49,
+        "test": "TestModernHDBattleGPUBridge",
+        "basis": "兩側及指令4／5多目標boundary的完整indexed畫布；HD alpha／RGB shade沿原門檻。"
+      },
+      "command0": {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/caster90-command0-lifecycle-r1/receipt.json",
+          "sha256": "0592f2650fddc7cbbed86a20e774030c8b3e2f6b9048b1e8396819782a5f8977"
+        },
+        "pixels": {
+          "file": "work/promo-cadence-20261018/hd-fonts/caster90-command0-guards-final-r1/positive-control.json",
+          "sha256": "31e7149acc4ee8996282cc6b214066b9c2a5da621e734f1f9a0c7466b36aeb6d"
+        },
+        "hd_draws": 74,
+        "mp_publications": 1,
+        "hp_publications": 7,
+        "guards": {
+          "file": "work/promo-cadence-20261018/hd-fonts/caster90-command0-guards-final-r1/report.json",
+          "sha256": "0ab9af0e10cb577ee982ad20d103555eb34bd230d5deb1c541bbff9144015f2a"
+        }
+      },
+      "command5": {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/caster90-command5-lifecycle-r1/receipt.json",
+          "sha256": "b825fbb03115f2b4cc39876d8d6476687fbf70d52f05f48b9173fa3384f3f0d2"
+        },
+        "pixels": {
+          "file": "work/promo-cadence-20261018/hd-fonts/caster90-command5-guards-final-r1/positive-control.json",
+          "sha256": "90424ea1c58439e6d46c754a8c083d73dd440e41f905fa7859e37e7f17de714c"
+        },
+        "hd_draws": 69,
+        "mp_publications": 1,
+        "hp_publications": 6,
+        "guards": {
+          "file": "work/promo-cadence-20261018/hd-fonts/caster90-command5-guards-final-r1/report.json",
+          "sha256": "2e960454408d4b3f529055cafcd1458a589fc44bfc3f9882e6d223ccab199f16"
+        }
+      },
+      "atomic_preflight": {
+        "status": "PASS",
+        "tests": [
+          "TestModernHDCommand0PreflightAndF2Atomic",
+          "TestModernHDCommand5PreflightAndF2Atomic"
+        ],
+        "figure": 90
+      },
+      "physical": {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/caster90-physical-lifecycle-r1/receipt.json",
+          "sha256": "d9256caf1a259177883085091037767987ed4b57f89403975a947800eb7a974b"
+        },
+        "pixels": {
+          "file": "work/promo-cadence-20261018/hd-fonts/caster90-physical-gpu-r4.json",
+          "sha256": "652987615892d06be8d4acf0be314283dea408562459f03320c133ed8290af92"
+        },
+        "guards": {
+          "file": "work/promo-cadence-20261018/hd-fonts/caster90-physical-guards-r3/guards.json",
+          "sha256": "412d1a716d38e04535e21521b60e69cb669d3381b58a124baf1972eebe525081"
+        },
+        "hd_draws": 221,
+        "final_draws": 289,
+        "complete_frames": 12,
+        "battle_dac_steps": 64,
+        "map_dac_steps": 65,
+        "occlusion_correction": "首版未排除前景228:0遮住271:4藍袖；沿同份PNG及既有施法核對器的已核SHA前景alpha排除，仍至少1000可見核心，十二張全過。未移動fixture角色或改遊戲。錯前景反例首輪改到不被消費的背層，改由正向報告實際排除的幀取來源後八項均拒收，原嘗試保留。"
+      }
+    },
+    "reproduction": {
+      "base_catalog_commit": "602098b7619fc9f70b5d9120e8e51ac68c1a2bb2",
+      "compiler": "tools/build_fd2_character_battle_hd.py",
+      "recipe": "caster90_battle_followup_20261020.recipe",
+      "compiler_arguments": [
+        "--with-cast"
+      ],
+      "gui_tool": "tools/verify_fd2_hd_fonts_gui.py",
+      "normal_source": {
+        "file": "work/promo-cadence-20261018/hd-fonts/bekwei-bow-source-gui-r3/user-data/fd2_re/fd2_save.json",
+        "sha256": "f4da9acebb3444a9b618c1b108996abee2d2832902e2cad86940d91c33fc0c66"
+      },
+      "source_ancestor": "沿archer87／knight83既有第9章正常F5來源，祖先為章前HP+1000及既有高等級建構槽，constructor seed8、game seed1。章內無注入，不談自然難度／傷害parity。",
+      "normal_arguments": [
+        "--battle-status",
+        "--world",
+        "--battle-hd",
+        "--battle-art",
+        "--battle-only",
+        "--battle-node",
+        "battle_ch09",
+        "--battle-own-index",
+        "5",
+        "--battle-target-figure",
+        "90",
+        "--battle-approach-rounds",
+        "4",
+        "--battle-min-approach-rounds",
+        "2",
+        "--battle-repetitions",
+        "1",
+        "--battle-end-art",
+        "--battle-end-figures",
+        "90",
+        "--battle-end-commands",
+        "0,4,5",
+        "--battle-end-samples-per-frame",
+        "2",
+        "--startup-timeout",
+        "120",
+        "--battle-advance"
+      ],
+      "candidate_paths": "caster90-candidate-r3/runtime供--assets；pack供--modern-pack。基底清冊沿602098b7，正式private_root不變。七份母稿依recipe與source_files的SHA從私人allow-list回填。",
+      "images": {
+        "assets": "fd2-assets-local:20260829-sfx",
+        "go": "fd2-go-test-local:latest",
+        "gui": "fd2-promo:20261017-r1"
+      },
+      "isolation": "Docker user1000:1000、network none、相稱memory／CPU／pids、外層timeout；原版唯讀，Go /tmp為exec tmpfs。",
+      "normal_output": "work/promo-cadence-20261018/hd-fonts/caster90-normal-gui-r4",
+      "go_full_command": "with-xvfb go test ./... -count=1 -timeout=18m，FD2_ASSET_PACK為原版加repo/locales的唯讀symlink overlay，Go既有image、8GB／4CPU／512pids、外層1200秒。原始固定20檔SHA保持。",
+      "toolchain_images": {
+        "file": "work/promo-cadence-20261018/hd-fonts/caster90-toolchain-images-r1.json",
+        "sha256": "832fae4132458dd9e622b134d1abca006fce5a23cdab7eae00ff09c62ac060d7"
+      },
+      "binary_buildinfo": {
+        "file": "work/promo-cadence-20261018/hd-fonts/caster90-binary-buildinfo-r1.txt",
+        "sha256": "f2f4097e9c152cce5347f37ce31eae7d5804ef2a965c1844d6d559a8bd266541"
+      },
+      "runtime_source_fingerprints": {
+        "remake/cmd/fd2/modern_hd_command0.go": "1786807f03387a395dde2b42f876d8def7627ce5d6b72735852ba4d5718a4b80",
+        "remake/cmd/fd2/modern_hd_command5.go": "bb116f8e3d4b8fc1475fedc7bfcf9a80d3e8f8d71ade98190201547014d8299e",
+        "remake/cmd/fd2/native_command5_presentation.go": "e63e6f8619f567211909128b56e28d1121c67b269c345831efbe91e9c57077f4",
+        "remake/cmd/fd2/modern_hd_battle_runtime.go": "55cac066f21bfde594377eb6629ac77f8520c806036c61d8d082c399746f30dc",
+        "remake/cmd/fd2/player_shortcuts.go": "c20af4a435283afb688d733ddf3c9cc228d9d3c8ff69589cf7857096b1061066",
+        "remake/cmd/fd2/input_audit_trace.go": "0a0db8228b5110aa1b23c315eff2fd3229233146a7793e644c5d8d859cc5334d",
+        "remake/internal/battlepresent/native_command5_sequence.go": "36326082158903d751fa1693a51d972cfc78d215d2cba6b377b549cf3763b429"
+      },
+      "binary_rebuild": "以本批main的Go來源與既有Go image建置 ./remake/cmd/fd2，原GUI binary SHA與提交前VCS資訊保存於收據／buildinfo；重跑先核本段來源指紋，不將新build ID當玩法差異。"
+    },
+    "normal_sampling": {
+      "status": "PASS",
+      "output": "work/promo-cadence-20261018/hd-fonts/caster90-normal-gui-r4",
+      "r1_stop": "在戰鬥前停止。觀測器原收尾只接受物理END樣本，與新施法抽樣不相容；補獨立施法門檻後用同源／seed乾淨重跑。不是產品缺陷。",
+      "r1_preserved": true,
+      "recording_created": false,
+      "r2_stop": "三次普通END後90號仍在原始座標且MP55，沒有接敵。停止無效等待，沿相同來源與seed1改用既有battle-advance正常可達格前進／待機；不是產品缺陷。",
+      "r2_preserved": true,
+      "r3_status": "REJECTED-OBSERVATION-ONLY",
+      "r3_reason": "正常兩次前進END後停在12,26，已有可達射擊格就離開接敵迴圈，90號尚未施法。正常射擊、返回、F2及F5／新程序LOAD雖走完，仍因缺指定END施法整份拒收。",
+      "r3_observation": {
+        "file": "work/promo-cadence-20261018/hd-fonts/caster90-normal-gui-r3/battle-observation.json",
+        "sha256": "479dc0afe35515b07a91210a656fcab783d691051c339164dadc1e2e8a959f7d"
+      },
+      "r4_policy": "在原min2／max4範圍內，取得指定figure作actor的真實command樣本後才允許進我方射擊。未取得時沿正式可達集合移動／待機；同源seed1，章內無注入。"
+    },
+    "ordinary_command45_consumer": {
+      "status": "CONFORMED-SCOPED",
+      "rules_changed": false,
+      "source_metadata": "從既有BuildNativeCommand5EffectSequence同一次迴圈記錄base／actor-last／target／effect layers，不增RNG或目標解析。",
+      "runtime_files": [
+        "remake/cmd/fd2/modern_hd_command5.go",
+        "remake/cmd/fd2/native_command5_presentation.go",
+        "remake/internal/battlepresent/native_command5_sequence.go"
+      ],
+      "test_files": [
+        "remake/cmd/fd2/modern_hd_command5_test.go",
+        "remake/cmd/fd2/modern_hd_command5_lifecycle_test.go"
+      ],
+      "scope": "4兩側多目標與boundary為純畫布fixture；5另有完整Game.Draw及正常第9章90施法。只替已登錄FIGANI繪HD，未登錄FDOTHER仍indexed。"
+    },
+    "candidate_coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/caster90-candidate-coverage-r1.json",
+      "sha256": "e5d20c842a46aabae263664a82ffa1743c74d9dd501edd47e7912705db00f3f0"
+    },
+    "string_review": {
+      "review": {
+        "file": "docs/data/fd2-string-review.json",
+        "sha256": "1f9d2fd9166bc6dadd205cb19fb9c957a329ae3d5953557d24ad12077c5efef8"
+      },
+      "inventory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/caster90-string-inventory-r1.json",
+        "sha256": "db514556e3537a7a8c6af43626d86aca092c1c41c396237922e1d98c67b55bd0"
+      },
+      "reviewed_candidates": 99,
+      "dispositions_changed": false
+    },
+    "regressions": {
+      "legacy83_gpu": {
+        "file": "work/promo-cadence-20261018/hd-fonts/caster90-legacy83-gpu-r1.json",
+        "sha256": "0fe8eb6f1f0f635fad5f6941e65b2cdd432012fbf31fb33eadffcff3389fc9bd"
+      },
+      "legacy_command0_normal_guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/caster90-legacy-command0-normal-guards-r1/report.json",
+        "sha256": "4b027b9d92f1618014d69f6b2a97e6f008879efd2b117ad37b6bab1849951d2b"
+      }
+    },
+    "normal_battle_gui": {
+      "file": "work/promo-cadence-20261018/hd-fonts/caster90-normal-gui-r4/receipt.json",
+      "sha256": "5045b9202fc917580336e038d0c3dc1dfa92d0289aa0a33fa4316a990e5ca252"
+    },
+    "normal_pixels": {
+      "file": "work/promo-cadence-20261018/hd-fonts/caster90-normal-gpu-r1.json",
+      "sha256": "a4ead0c1186ef69b42a9da0d9cbbd49fcebbb149d809797ba797d18684011fa1"
+    },
+    "normal_guards": {
+      "file": "work/promo-cadence-20261018/hd-fonts/caster90-normal-guards-r1/report.json",
+      "sha256": "876fcbd8be2a6cb32de090d16398bafb72d1b8c15dd0a5347d8f4d775f510be5"
+    },
+    "normal_summary": {
+      "end_rounds": 3,
+      "advance_cells": [
+        [
+          12,
+          30
+        ],
+        [
+          12,
+          26
+        ],
+        [
+          10,
+          25
+        ]
+      ],
+      "actual_command_id": 5,
+      "actor_figure": 90,
+      "target_figure": 8,
+      "actor_mp_before": 55,
+      "actor_mp_after": 40,
+      "matched_pngs": 13,
+      "matched_cast_pngs": 4,
+      "matched_target_idle_pngs": 9,
+      "guard_count": 7,
+      "elapsed_seconds": 615.7032096153125,
+      "recording_created": false,
+      "state_injection": false,
+      "source_ancestor_disclosed": true,
+      "save_scope": "來源及F5／兩主題bytes相同；新程序LOAD重建章節入口，單位與原入口相同。不是戰中HP／MP／位置／戰利品持續。"
+    },
+    "observed_ui_name": {
+      "value": "魔法師",
+      "basis": "正常指令5實際視窗下方文字；只作UI名稱，不延伸原始欄位ABI語意。"
+    },
+    "formal_registration": {
+      "file": "work/promo-cadence-20261018/hd-fonts/caster90-formal-admission-r1.json",
+      "sha256": "a914d8130d7e103ad9bfeef4bda5b35f5cbee878905263f4252bf54ee989035e"
+    },
+    "formal_coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/caster90-formal-coverage-r1.json",
+      "sha256": "5fc3a36f5d58cd0814daf411ab906b1fcdda7acdd851bccf2545fbe38be174fc"
+    },
+    "private_delivery": {
+      "full_verification": {
+        "file": "work/promo-cadence-20261018/hd-fonts/caster90-private-sync-r1.json",
+        "sha256": "f76b9566bf93e9fb623b2562c6121accd4c90b29a2ec3ea4905e6d5ecc2e2a7f"
+      },
+      "remote_proof": {
+        "file": "work/promo-cadence-20261018/hd-fonts/caster90-private-git-proof-r1.json",
+        "sha256": "95ce1da6ae85a26ecf26f08e3ff3bde7665b9cd8115f79cb168009d947f3da68"
+      },
+      "full_files": 3696,
+      "runtime_only_files": 3364,
+      "prior_files_unchanged": 3666,
+      "new_masters_excluded_from_runtime": 7,
+      "runtime_only_go": {
+        "file": "work/promo-cadence-20261018/hd-fonts/caster90-runtime-only-go-r1.log",
+        "sha256": "ca1a5167c7ffc6953b896ba1392fbab47c859c945a26b1e2097a00f1454a58cf"
+      },
+      "runtime_tests": 4,
+      "runtime_skips": 0,
+      "remote_head_verified": true,
+      "private_repository_verified": true
+    },
+    "go_regression": {
+      "status": "PASS",
+      "packages": 20,
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/caster90-full-go-r1.log",
+        "sha256": "48136814e7aa2515c5b423c85b31f948338754c9e2a3b33e7cb0f28bb2727f81"
+      },
+      "scope": "標準Go回歸；昂貴HD專用案例另列，不把skip當通過。"
+    },
+    "formal_go": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/caster90-formal-go-r1.log",
+        "sha256": "50962b123044ae408c99421889dd94c59bb7c4b9404a655939b4778af0361ad0"
+      },
+      "all_maps_retry": {
+        "file": "work/promo-cadence-20261018/hd-fonts/caster90-formal-allmaps-r1.log",
+        "sha256": "be8fd0da71f0f32cd660cb78dc4d90023772957551be276bedf80e20aca397e7"
+      },
+      "tests": 5,
+      "subtests": 2,
+      "all_required_tests_passed": true,
+      "scope": "首輪4個實測通過，全地圖因缺FD2_TEST_MODERN_PACK而SKIP；補變數後只重跑該項通過。另用runtime-only完整重驗4項，零SKIP，不把初次skip列為通過。"
+    },
+    "formal_catalog_tests": {
+      "status": "PASS",
+      "tests": 11,
+      "elapsed_seconds": 9.985
+    },
+    "original_files_unchanged": {
+      "file": "work/promo-cadence-20261018/hd-fonts/caster90-original-files-unchanged-r1.json",
+      "sha256": "c5e7c87d899df488cf3472fa9fb7a258a5070c1f51e9e24b5b790c11d37cae15"
+    },
+    "readme_figures": [
+      {
+        "file": "docs/figures/hd-mage90-cast.png",
+        "source": "work/promo-cadence-20261018/hd-fonts/caster90-normal-gui-r4/world-hd-end-2-cmd5-272-06.png",
+        "sha256": "a54c00b9a685094fa1df1c4a9ee96207a3d9f53d9d1ac261a94b815ac4d6fefe",
+        "edited": false
+      }
+    ],
+    "worklist": {
+      "open": 22,
+      "manual": 14,
+      "possibly_done": 0,
+      "issues_updated": [
+        201,
+        263
+      ],
+      "acceptance_unchanged": true
+    },
+    "cleanup": {
+      "report": {
+        "file": "work/promo-cadence-20261018/hd-fonts/caster90-cleanup-r1.json",
+        "sha256": "5f58c1919d6fc95f6cf4dc88a5e5ef2fdd611075e3f18a450f80413d79cabc47"
+      },
+      "removed_bytes": 504763222,
+      "deduplicated_bytes": 64260738,
+      "recording_created": false
+    },
+    "kylie_gif_unchanged": {
+      "file": "docs/figures/hd-kylie-original-vs-hd.gif",
+      "sha256": "c0af386348ad84574a3041d2af5ebc60ff9a930b04e6a9099d6a9ca7c0023ce2",
+      "head_blob_verified": true
+    },
+    "lessons": {
+      "total": 277,
+      "guards": 154,
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/caster90-lessons-check-r2.log",
+        "sha256": "bcd2a769f7442e8102b3c73dbd3781a09c4d424f86f1d075f8775b44624c12e9"
+      }
+    },
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/caster90-final-validation-r1.json",
+      "sha256": "675c62ac3716e26f6d7386f2173bf2cd6804059333497488c2ed331c25e87953"
+    }
   }
 }

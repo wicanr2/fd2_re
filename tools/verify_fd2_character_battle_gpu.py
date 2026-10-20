@@ -22,7 +22,18 @@ def main():
                    help='idle-only範圍需固定原始盤點，核對attack／cast兩項零header')
     for name in ['receipt', 'catalog', 'source', 'report']:
         p.add_argument('--'+name, type=Path, required=True)
+    p.add_argument('--proven-occlusion',action='store_true',help='沿固定來源SHA排除真實前景mask／alpha，仍要求至少1000個可見核心')
+    p.add_argument('--original-pack',type=Path)
     args = p.parse_args()
+    occluded=None
+    if args.proven_occlusion:
+        if args.original_pack is None or args.inventory is None:raise SystemExit('遮擋排除需要原始包及固定盤點')
+        from verify_fd2_compound_caster_gpu import make_native_occlusion_test
+        proof=json.loads(args.inventory.read_text())
+        if (proof.get('status')!='PASS-SOURCE-INVENTORY'
+            or digest(args.original_pack/'manifest.json')!=proof.get('pack_manifest_sha256')):
+            raise SystemExit('遮擋來源包指紋不同')
+
     if not 0 <= args.figure <= 135 or args.report.exists(): raise SystemExit('人物越界或報告已存在')
     receipt = json.loads(args.receipt.read_text())
     idle_only=args.sample_group in ('idle-end','idle-fixture')
@@ -104,6 +115,10 @@ def main():
                            for layer in state.get('battle_source_layers') or []):
                         raise SystemExit('idle-target收據包含原版空圖庫的呈現圖層')
     by_resource={a['source_resource']:a for a in entries}
+    if args.proven_occlusion:
+        all_entries={a['source_resource']:a for a in catalog['assets'] if a['role']=='battle_animation_hd_set'}
+        occluded=make_native_occlusion_test(all_entries,args.source,args.original_pack,proof)
+
     body_frames = None
     if args.body_frames:
         import re
@@ -140,7 +155,8 @@ def main():
                 points = [(i % im.width, i // im.width, r, g, b, a)
                           for i, (r, g, b, a) in enumerate(im.getdata()) if selected(r, g, b, a)]
             if len(points) < 1000: raise SystemExit('高覆蓋服裝核心像素不足')
-            total = len(points); points = points[::max(1, total//2500)]
+            total = len(points)
+            if not args.proven_occlusion:points = points[::max(1, total//2500)]
             candidates.append((asset['source_resource'], index, name, sha, frame, points, total))
     samples = list(receipt.get('battle_end_art_samples' if end_group else 'battle_art_samples', []))
     if flow_group:
@@ -161,11 +177,12 @@ def main():
             if im.size != (1920, 1200): raise SystemExit('需要1920×1200視窗PNG')
             rgb = im.convert('RGB').load()
             for resource, index, name, sha, frame, points, total in candidates:
-                positions=[(frame['x']*6,frame['y']*6,None)]
+                positions=[(frame['x']*6,frame['y']*6,None,[])]
                 if end_group or fixture_group:
                     positions=[]
                     for state in (sample['before'],sample['after']):
-                        for layer in state.get('battle_source_layers') or []:
+                        source_layers=state.get('battle_source_layers') or []
+                        for layer_index,layer in enumerate(source_layers):
                             if (layer['resource']!=resource or layer['fill']!=-1
                                     or layer.get('archive','') not in ('','FIGANI.DAT')):continue
                             if fixture_group and layer['frame']!=index:continue
@@ -179,20 +196,24 @@ def main():
                             # X11擷取可落在前一個已呈現幀；job只提供同圖庫的caller位移。
                             # fixture在同一次Draw回讀，仍要求精確索引。實際姿勢都由PNG核對。
                             dx,dy=layer['x']-current_frame['x'],layer['y']-current_frame['y']
-                            position=((frame['x']+dx)*6,(frame['y']+dy)*6,layer['clip'])
+                            position=((frame['x']+dx)*6,(frame['y']+dy)*6,layer['clip'],source_layers[layer_index+1:])
                             if position not in positions:positions.append(position)
-                for x,y,clip in positions:
+                for x,y,clip,foreground in positions:
                     visible=points
                     if clip:
                         visible=[p for p in points if clip['Min']['X']*6<=p[0]+x<clip['Max']['X']*6
                                  and clip['Min']['Y']*6<=p[1]+y<clip['Max']['Y']*6]
+                    if occluded is not None:
+                        visible=[p for p in visible if not occluded(p[0]+x,p[1]+y,foreground)]
                     if len(visible)<1000:continue
+                    visible_count=len(visible)
+                    if occluded is not None:visible=visible[::max(1,visible_count//2500)]
                     if matches(rgb, visible, x, y, 1920, 1200):
                         found.append({'scene': sample['scene'], 'file': path.name, 'sha256': sample['sha256'],
                             'sample_origin':sample.get('sample_origin',args.sample_group),
                             'resource': resource, 'frame': index, 'source_file': name, 'source_sha256': sha,
                             'checked_pixels': len(visible), 'eligible_pixels': total,
-                            'world_origin': [x,y],'clip':clip})
+                            'world_origin': [x,y],'clip':clip,'visible_eligible_pixels':visible_count})
     for scene in ([] if fixture_group else scene_names):
         if flow_group:
             if not any(x['scene']==scene and x['sample_origin']=='end' and x['resource']==resources[1] and x['frame']>0 for x in found):
@@ -212,6 +233,8 @@ def main():
         for resource,index,*_ in candidates:
             if not any(x['resource']==resource and x['frame']==index for x in found):
                 raise SystemExit(f'未核對到實際人物GPU圖源：{resource}/{index}')
+    if args.proven_occlusion and not fixture_group:
+        raise SystemExit('來源遮擋排除目前只接受精確索引fixture')
     groups = {}
     for match in found: groups.setdefault(match['file'], []).append({'resource': match['resource'], 'frame': match['frame']})
     status=('PASS-IDLE-TARGET-FIXTURE-GPU' if fixture_group else 'PASS-CHARACTER-NORMAL-IDLE-GPU') if idle_only else (
@@ -233,6 +256,12 @@ def main():
     if idle_only:
         report['idle_only_inventory']=idle_proof
         report['scope']='idle-end／idle-fixture只驗目標待機，不要求或宣稱不存在的攻擊／反擊。'+report['scope']
+    if args.proven_occlusion:
+        report['source_occlusion']={'enabled':True,'inventory_sha256':digest(args.inventory),
+            'original_manifest_sha256':digest(args.original_pack/'manifest.json'),
+            'helper_sha256':digest(Path(__file__).with_name('verify_fd2_compound_caster_gpu.py')),
+            'minimum_visible_core_pixels':1000,'source_sha_and_clip_verified':True}
+        report['scope']='明示fixture沿固定來源排除前景alpha／mask實際遮住的點；可見核心至少1000，RGB門檻保持。'+report['scope']
     args.report.write_text(json.dumps(report, ensure_ascii=False, indent=2)+'\n')
     print(json.dumps({'status': report['status'], 'figure': args.figure, 'matched_pngs': len({x['file'] for x in found})}))
 

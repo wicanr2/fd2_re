@@ -18,6 +18,9 @@ def main():
     p.add_argument('--core-profile', choices=['blue', 'gold', 'purple', 'warm', 'sage'], default='blue')
     p.add_argument('--other-core-profile', choices=['blue', 'gold', 'purple', 'warm', 'sage'], default='blue')
     p.add_argument('--body-frames')
+    p.add_argument('--proven-occlusion',action='store_true')
+    p.add_argument('--original-pack',type=Path)
+    p.add_argument('--inventory',type=Path)
     p.add_argument('--sample-group',choices=['attack','end','flow','fixture','idle-end','idle-fixture'],default='attack')
     for name in ['receipt', 'catalog', 'source', 'baseline', 'negative-receipt', 'out']:
         p.add_argument('--'+name, type=Path, required=True)
@@ -38,6 +41,9 @@ def main():
             or baseline.get('catalog_sha256') != digest(args.catalog)
             or baseline.get('verifier_sha256') != digest(verifier)):
         raise SystemExit('需要目前核對器的實檔正向報告')
+    if (args.proven_occlusion and baseline.get('source_occlusion',{}).get('helper_sha256')
+            !=digest(Path(__file__).with_name('verify_fd2_compound_caster_gpu.py'))):
+        raise SystemExit('需要目前共用遮擋核對器的正向報告')
     if args.out.exists() or not args.out.resolve().is_relative_to(ROOT):
         raise SystemExit('使用工作區新守衛目錄')
     args.out.mkdir()
@@ -52,7 +58,10 @@ def main():
                 '--receipt', str(path), '--catalog', str(args.catalog),
                 '--source', str(source or args.source), '--report', str(report)]
         argv += ['--sample-group',args.sample_group]
-        if inventory is not None:argv += ['--inventory',str(inventory)]
+        if inventory is not None or args.inventory is not None:argv += ['--inventory',str(inventory or args.inventory)]
+        if args.proven_occlusion:
+            argv += ['--proven-occlusion']
+            if args.original_pack is not None:argv += ['--original-pack',str(args.original_pack)]
         if args.body_frames and figure is None: argv += ['--body-frames', args.body_frames]
         result = subprocess.run(argv, capture_output=True, text=True, timeout=90)
         output = result.stdout+result.stderr
@@ -176,6 +185,31 @@ def main():
         path=folder/'receipt.json'; path.write_text(json.dumps(wrong))
         check('wrong-end-translation',path,attack_error)
     if fixture_group:
+        if args.proven_occlusion:
+            proof=json.loads(args.inventory.read_text());proof['pack_manifest_sha256']='0'*64
+            path=args.out/'wrong-occlusion-proof.json';path.write_text(json.dumps(proof))
+            check('wrong-occlusion-proof',args.receipt,'遮擋來源包指紋不同',inventory=path)
+            folder=args.out/'unknown-foreground';folder.mkdir()
+            wrong=copy.deepcopy(receipt)
+            for shot in wrong['source_shots'].values():
+                (folder/shot['file']).symlink_to((args.receipt.parent/shot['file']).resolve())
+                for state in [shot['before'],shot['after']]:
+                    state['battle_source_layers'].append({'resource':1,'frame':0,'archive':'UNKNOWN',
+                        'fill':-1,'x':0,'y':0,'width':320,'height':200,'clip':None})
+            path=folder/'receipt.json';path.write_text(json.dumps(wrong))
+            check('unknown-foreground',path,'不能解釋的前景圖層遮擋')
+            covered=next(m for m in baseline['matches'] if m['visible_eligible_pixels']<m['eligible_pixels'])
+            shot=next(s for s in receipt['source_shots'].values() if s['file']==covered['file'])
+            layers=shot['before']['battle_source_layers']
+            position=next(i for i,l in enumerate(layers) if l['resource']==covered['resource'] and l['frame']==covered['frame'])
+            layer=next(l for l in layers[position+1:] if l['resource'] not in [args.figure*3,args.figure*3+1]
+                       and l.get('archive','') in ('','FIGANI.DAT'))
+            foreground=next(a for a in catalog['assets'] if a['role']=='battle_animation_hd_set' and a['source_resource']==layer['resource'])
+            first=foreground['files'][layer['frame']]
+            shadow=args.out/'wrong-foreground-source';shadow.mkdir()
+            other=next(n for n in sorted(names) if digest(args.source/n)!=digest(args.source/first))
+            for name in sorted(names):(shadow/name).symlink_to((args.source/(other if name==first else name)).resolve())
+            check('wrong-foreground-source',args.receipt,'前景HD圖源SHA不同',source=shadow)
         # 保留完整觀測圖層，但把實際PNG全部改成黑圖。
         # 回讀像素必須拒絕，不能只相信來源欄位與HD布林。
         from PIL import Image

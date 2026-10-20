@@ -210,9 +210,10 @@ func TestModernHDCommand0RuntimeGPU(t *testing.T) {
 		t.Fatal("completed command0 retained textures")
 	}
 	report := map[string]any{"status": "PASS-ORDINARY-COMMAND0-FIXTURE-RUNTIME-E1", "command_id": 0, "continuations": probe.callbacks, "go_rng_unchanged": true,
+		"actor_figure": actor.BattleFig, "target_figure": target.BattleFig,
 		"hd_draws": probe.draws, "final_draws": probe.finals, "hd_phase_draws": probe.phases, "phase_f2_switches": probe.switches, "source_shots": probe.sourceShots,
 		"mp_publications": probe.mpChanges, "hp_publications": probe.hpChanges, "rng": g.nativeRNGState,
-		"scope": "沿既有原始素材建構BattleFig9／0、raw placement與command0資料的完整Game.Draw fixture；非正常玩家、原版oracle或PLAYER-E2。"}
+		"scope": "沿既有原始素材及明示BattleFig建構raw placement與command0資料的完整Game.Draw fixture；非正常玩家、原版oracle或PLAYER-E2。"}
 	if probe.out != "" {
 		raw, _ := json.MarshalIndent(report, "", "  ")
 		if err := os.WriteFile(filepath.Join(probe.out, "receipt.json"), append(raw, '\n'), 0644); err != nil {

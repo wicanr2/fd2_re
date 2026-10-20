@@ -28,16 +28,19 @@ def main():
         raise SystemExit('基底與配方不同')
     out.mkdir(); resources = list(recipe['resources']); first = resources[0]; attack = resources[-1]; source = next(iter(recipe['sources']))
     idle_only=len(resources)==1
+    with_cast=baseline.get('with_cast') is True
     base_catalog=args.base_catalog or args.baseline.parent/'base-catalog.json'
     if not base_catalog.is_file():raise SystemExit('需要同次編製的基底清冊快照')
     checks = []
 
-    def check(name, mutate, expected, pack=None, base=None, inventory=None):
+    def check(name, mutate, expected, pack=None, base=None, inventory=None, cast_flag=None):
         doc = copy.deepcopy(recipe); mutate(doc); path = out/(name+'.json'); path.write_text(json.dumps(doc))
         target = out/(name+'-candidate')
         command = [sys.executable, str(compiler), '--pack', str(pack or args.pack), '--inventory', str(inventory or args.inventory),
                    '--recipe', str(path), '--out', str(target)]
         command += ['--base-catalog', str(base or base_catalog)]
+        if (with_cast if cast_flag is None else cast_flag):
+            command.append('--with-cast')
         result = subprocess.run(command, capture_output=True, text=True, timeout=60)
         output = result.stdout+result.stderr
         if result.returncode == 0 or target.exists() or expected not in output:
@@ -48,12 +51,27 @@ def main():
     check('inventory-sha', lambda d:d.update(inventory_sha256='0'*64), '盤點、配方或原版包指紋不符')
     check('source-sha', lambda d:d['sources'][source].update(sha256='0'*64), '母稿路徑、擁有權或SHA不符')
     check('source-anchor', lambda d:d['sources'][source].update(anchor=[0,0,1000000,1000000]), '錨點須是畫布內')
-    check('native-anchor', lambda d:d['resources'][first][0].update(anchor=[0,0,1000000,1000000]), '錨點須是畫布內')
+    def layer(d, resource, index=0):
+        value = d['resources'][resource][index]
+        return value[0] if isinstance(value, list) else value
+
+    check('native-anchor', lambda d:layer(d,first).update(anchor=[0,0,1000000,1000000]), '錨點須是畫布內')
     check('missing-frame', lambda d:d['resources'][attack].pop(), '配方影格不完整')
     check('missing-resource', lambda d:d['resources'].pop(attack), '配方須涵蓋完整待機及攻擊資源')
-    check('unknown-pose', lambda d:d['resources'][attack][0].update(pose='unknown'), '未知母稿、群組或配方欄位')
-    check('unknown-field', lambda d:d['resources'][attack][0].update(mystery=True), '未知母稿、群組或配方欄位')
+    check('unknown-pose', lambda d:layer(d,attack).update(pose='unknown'), '未知母稿、群組或配方欄位')
+    check('unknown-field', lambda d:layer(d,attack).update(mystery=True), '未知母稿、群組或配方欄位')
     check('already-registered', lambda d:None, '所選圖源已登錄', base=args.baseline.parent/'catalog.json')
+    if with_cast:
+        check('empty-layers',lambda d:d['resources'][first].__setitem__(0,[]),'分層配方須明示三組模式並含非空圖層')
+        check('invalid-layer',lambda d:d['resources'][first].__setitem__(0,[None]),'未知母稿、群組或配方欄位')
+        check('missing-attack', lambda d:d['resources'].pop(resources[1]), '配方須涵蓋完整待機及攻擊資源')
+        check('missing-with-cast-flag', lambda d:None, '配方須涵蓋完整待機及攻擊資源', cast_flag=False)
+        proof=json.loads(args.inventory.read_text())
+        cast_id=int(resources[-1])
+        next(r for r in proof['resources'] if r['resource']==cast_id)['status']='empty_header_zero'
+        path=out/'nondecoded-cast-inventory.json';path.write_text(json.dumps(proof))
+        check('nondecoded-cast',lambda d:d.update(inventory_sha256=hashlib.sha256(path.read_bytes()).hexdigest()),
+              '三組配方必須全部已解碼',inventory=path)
     # 只在複本陰影層改metadata末尾換行，不改唯讀原版檔案。
     shadow = out/'wrong-original'; (shadow/'animations').mkdir(parents=True)
     (shadow/'manifest.json').symlink_to(args.pack.resolve()/'manifest.json')

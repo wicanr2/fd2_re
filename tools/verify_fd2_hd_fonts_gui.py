@@ -79,6 +79,8 @@ def main():
     parser.add_argument('--battle-advance', action='store_true', help='無射程目標時沿正式可達集合前進並待機，再正常END')
     parser.add_argument('--faithful-approach', action='store_true', help='正常END期間以F2使用忠實模式，回玩家回合再切HD')
     parser.add_argument('--battle-end-art', action='store_true', help='正常END期間有界擷取明示人物的HD圖層')
+    parser.add_argument('--battle-end-commands', type=terrain_frame_ids, default=set(),
+                        help='另擷取正常END實際指令0／4／5的圖源，與物理收據分列')
     parser.add_argument('--battle-end-samples-per-frame', type=int, choices=[1,2], default=1,
                         help='每個END圖源幀的有界視窗取樣數；第二張另存，不由job推定已呈現')
     parser.add_argument('--battle-end-figure',type=int,default=2)
@@ -96,6 +98,7 @@ def main():
     assert all(0<=figure<=135 for figure in end_figures)
     assert not args.battle_end_figures or args.battle_end_art
     assert not args.battle_end_art or (args.battle_only and args.battle_hd and args.battle_approach_rounds>0 and not args.faithful_approach)
+    assert not args.battle_end_commands or (args.battle_end_art and args.battle_end_commands <= {0,4,5})
     assert args.battle_end_samples_per_frame==1 or args.battle_end_art
     assert not (args.battle_advance or args.faithful_approach) or args.battle_only
     if not re.fullmatch(r'battle_ch(?:0[1-9]|[12][0-9]|30)', args.battle_node):
@@ -169,6 +172,7 @@ def main():
     battle_hd_scenes=[]
     battle_art_samples=[]
     battle_end_art_samples=[]
+    battle_end_command_samples=[]
     battle_post_dialogue_cleanup=[]
     battle_attack_choices=[]
     started=time.monotonic()
@@ -794,7 +798,11 @@ def main():
                             origin=state['cursor']
                             choices=[(0,origin,target) for target in targets
                                      if minimum<=abs(origin[0]-target['x'])+abs(origin[1]-target['y'])<=maximum]
-                        if choices and approach>=args.battle_min_approach_rounds:break
+                        command_sampled=(not args.battle_end_commands or any(
+                            sample['before'].get('command_actor_fig') in end_figures
+                            and sample['before'].get('command_id') in args.battle_end_commands
+                            for sample in battle_end_command_samples if sample['scene']==prefix))
+                        if choices and approach>=args.battle_min_approach_rounds and command_sampled:break
                         assert approach<args.battle_approach_rounds,'正式可達集合沒有符合目前射程的測試位置'
                         advance_cell=None
                         if args.battle_advance:
@@ -829,7 +837,7 @@ def main():
                         wait(lambda s:s.get('system_end_turn_confirm') and not s.get('class_ui_job'))
                         key('Return')
                         deadline=time.monotonic()+(900 if args.battle_end_art else 600 if args.battle_advance else 300)
-                        end_seen={};end_scenes={}
+                        end_seen={};end_scenes={};command_seen={};command_scenes={}
                         while time.monotonic()<deadline:
                             current=latest(audit)
                             if current.get('error'):raise RuntimeError(current['error'])
@@ -854,15 +862,38 @@ def main():
                                         battle_end_art_samples.append({'scene':prefix,'approach':approach,'file':path.name,
                                             'sha256':digest(path),'before':current,'after':latest(audit),
                                             'scope':'當前job只用於定位；是否真的呈現由PNG另驗'})
+                                if current.get('command_scene') and current.get('command_id') in args.battle_end_commands:
+                                    owner=current.get('command_owner')
+                                    assert owner,'施法場景缺少正式owner'
+                                    stats=command_scenes.setdefault(owner,{'owner':owner,'command_id':current['command_id'],
+                                        'actor_fig':current.get('command_actor_fig'),'target_fig':current.get('command_target_fig'),
+                                        'first_frame':current['frame'],'hd_draw_seen':False})
+                                    stats['last_frame']=current['frame'];stats['hd_draw_seen']|=current.get('hd_battle') is True
+                                    if current.get('hd_battle') and current.get('command_phase') in ('actor','tail','handler-front','handler-tail'):
+                                        for layer in current.get('command_source_layers') or []:
+                                            resource,index=layer['resource'],layer['frame']
+                                            token=(current['command_id'],resource,index)
+                                            count=command_seen.get(token,0)
+                                            if (layer['archive'] not in ('','FIGANI.DAT') or resource not in
+                                                {figure*3+kind for figure in end_figures for kind in (0,2)}
+                                                or layer['fill']!=-1 or count>=args.battle_end_samples_per_frame):continue
+                                            command_seen[token]=count+1
+                                            suffix='' if count==0 else f'-sample{count+1}'
+                                            path=args.out/f'{prefix}-end-{approach}-cmd{current["command_id"]}-{resource:03d}-{index:02d}{suffix}.png'
+                                            command('import','-window',window,str(path))
+                                            battle_end_command_samples.append({'scene':prefix,'approach':approach,'file':path.name,
+                                                'sha256':digest(path),'before':current,'after':latest(audit),
+                                                'scope':'正常END的實際施法；job定位與PNG呈現分開核對'})
                             if (current['native_round']>state['native_round'] and current['turn']>state['turn']
                                     and not any(current.get(k) for k in ['ai_busy','battle_event','dialogues','banner_t',
-                                                                       'battle_scene','class_ui_job','system_end_turn_confirm'])):break
+                                                                       'battle_scene','command_scene','class_ui_job','system_end_turn_confirm'])):break
                             if current.get('dialogues'):key('Return')
                             else:time.sleep(.05)
                         else:raise TimeoutError('普通END未回玩家回合')
                         if args.battle_end_art:
                             # 換手可以只有走行；實際戰鬥仍逐場驗HD，整份收據另要求END樣本。
                             assert all(s['hd_draw_seen'] for s in end_scenes.values()),'END有物理場景沒有HD呈現證據'
+                            assert all(s['hd_draw_seen'] for s in command_scenes.values()),'END有明示施法場景沒有HD呈現證據'
                         own_before=[u for u in state['units'] if u['camp']==0 and u['on_field'] and u['hp']>0]
                         own_after=[u for u in current['units'] if u['camp']==0 and u['on_field'] and u['hp']>0]
                         survivors={(u['native_identity'],u['name']) for u in own_after}
@@ -871,7 +902,7 @@ def main():
                             key('F2');wait(lambda s:s.get('hd_theme') is True and s.get('hd_world'))
                         battle_approach_steps.append({'scene':prefix,'before':state,'after':current,
                             'advance_cell':advance_cell,'end_in_faithful_theme':args.faithful_approach,
-                            'physical_scenes':list(end_scenes.values()),'state_injection':False})
+                            'physical_scenes':list(end_scenes.values()),'command_scenes':list(command_scenes.values()),'state_injection':False})
                         shot(prefix+'-approach-round-return')
                     _,cell,target=min(choices,key=lambda value:(value[0],value[1][1],value[1][0]))
                     battle_attack_choices.append({'scene':prefix,'attacker':attacker,'range':[minimum,maximum],
@@ -1051,7 +1082,10 @@ def main():
             if args.battle_only:
                 assert loaded_units==cold_units,'章節邊界保存／新程序LOAD的重建狀態不同'
             if args.battle_end_art:
-                assert all(any(s['scene']==name for s in battle_end_art_samples) for name in ('world-hd','world-hd-replay')[:args.battle_repetitions]),'未取得明示場數的普通END圖源樣本'
+                end_samples=battle_end_art_samples+battle_end_command_samples if args.battle_end_commands else battle_end_art_samples
+                assert all(any(s['scene']==name for s in end_samples) for name in ('world-hd','world-hd-replay')[:args.battle_repetitions]),'未取得明示場數的普通END圖源樣本'
+                if args.battle_end_commands:
+                    assert battle_end_command_samples,'未取得明示指令的普通END施法樣本'
             assert digest(Path(__file__))==tool_source_sha256,'GUI工具執行中來源被修改'
             report={'schema':'fd2-hd-battle-status-gui-v1','status':'PASS',
                     'catalog_sha256':digest(args.assets/'assets/themes/modern/catalog.json'),
@@ -1080,6 +1114,8 @@ def main():
                     'battle_end_art_checked':args.battle_end_art,'battle_end_figure':args.battle_end_figure,
                     'battle_end_samples_per_frame':args.battle_end_samples_per_frame,
                     'battle_end_art_samples':battle_end_art_samples,
+                    'battle_end_commands':sorted(args.battle_end_commands),
+                    'battle_end_command_samples':battle_end_command_samples,
                     'battle_post_dialogue_cleanup':battle_post_dialogue_cleanup,
                     'timed_dialogue_gpu':timed_result,
                     'binary_sha256':digest(args.binary),'source_save_sha256':digest(args.town_save),
@@ -1508,6 +1544,7 @@ def main():
             (args.out/'battle-observation.json').write_text(json.dumps(
                 {'status':'OBSERVATION-ONLY','battle_hd_scenes':battle_hd_scenes,
                  'battle_art_samples':battle_art_samples,'battle_end_art_samples':battle_end_art_samples,
+                 'battle_end_command_samples':battle_end_command_samples,
                  'battle_approach_steps':battle_approach_steps,'battle_post_dialogue_cleanup':battle_post_dialogue_cleanup,
                  'catalog_sha256':digest(args.assets/'assets/themes/modern/catalog.json'),
                  'binary_sha256':digest(args.binary),'source_save_sha256':digest(args.town_save),

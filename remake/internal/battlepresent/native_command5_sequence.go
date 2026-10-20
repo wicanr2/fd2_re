@@ -7,7 +7,18 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/figani"
 )
 
+// NativeCommand5Sources records the inputs already consumed by this present.
+// It never replays the RNG walk or resolves another target.
+type NativeCommand5Sources struct {
+	Base                                    []byte
+	ActorFrame                              int
+	TargetIndex, TargetFrame, TargetOffsetX int
+	Layers                                  []figani.NativeCommand5Layer
+	Phase                                   string
+}
+
 type NativeCommand5RenderedFrame struct {
+	Sources       NativeCommand5Sources
 	Pixels        []byte
 	HPStage       int
 	PlayPrimary   bool
@@ -78,7 +89,9 @@ func BuildNativeCommand5EffectSequence(in NativeCommand5EffectInput) (NativeComm
 		if err != nil {
 			return NativeCommand5EffectSequence{}, err
 		}
-		out.Front = append(out.Front, NativeCommand5RenderedFrame{Pixels: frontPixels, PlayPrimary: front.PlayPrimary, PlaySecondary: front.PlaySecondary})
+		out.Front = append(out.Front, NativeCommand5RenderedFrame{Pixels: frontPixels, PlayPrimary: front.PlayPrimary, PlaySecondary: front.PlaySecondary,
+			Sources: NativeCommand5Sources{Base: in.FrontBase, ActorFrame: len(in.ActorEffect.Frames) - 1, TargetIndex: 0,
+				Layers: append([]figani.NativeCommand5Layer(nil), front.Layers...), Phase: "handler-front"}})
 		state = front.Next
 	}
 
@@ -107,6 +120,8 @@ func BuildNativeCommand5EffectSequence(in NativeCommand5EffectInput) (NativeComm
 			}
 			out.Targets[targetIndex] = append(out.Targets[targetIndex], NativeCommand5RenderedFrame{
 				Pixels: pixels, HPStage: frame.HPStage, PlayPrimary: frame.PlayPrimary, PlaySecondary: frame.PlaySecondary,
+				Sources: NativeCommand5Sources{Base: in.TargetBases[targetIndex][hpStage], ActorFrame: -1,
+					TargetIndex: targetIndex, TargetFrame: idleFrame, Layers: append([]figani.NativeCommand5Layer(nil), frame.Layers...), Phase: "target"},
 			})
 			if idle.Frames[idleFrame].Delay <= 0 {
 				return NativeCommand5EffectSequence{}, fmt.Errorf("battlepresent: command5 target %d idle delay unavailable", targetIndex)
@@ -135,7 +150,13 @@ func BuildNativeCommand5EffectSequence(in NativeCommand5EffectInput) (NativeComm
 				if err != nil {
 					return NativeCommand5EffectSequence{}, fmt.Errorf("battlepresent: command5 transition %d frame %d: %w", targetIndex, frameIndex, err)
 				}
-				frames = append(frames, NativeCommand5RenderedFrame{Pixels: pixels, PlayPrimary: frame.PlayPrimary, PlaySecondary: frame.PlaySecondary})
+				which := targetIndex
+				if frame.UseNextTarget {
+					which++
+				}
+				frames = append(frames, NativeCommand5RenderedFrame{Pixels: pixels, PlayPrimary: frame.PlayPrimary, PlaySecondary: frame.PlaySecondary,
+					Sources: NativeCommand5Sources{Base: in.TransitionBases[targetIndex], ActorFrame: len(in.ActorEffect.Frames) - 1,
+						TargetIndex: which, TargetOffsetX: frame.TargetOffsetX, Layers: append([]figani.NativeCommand5Layer(nil), frame.Layers...), Phase: "transition"}})
 			}
 			out.Transitions = append(out.Transitions, frames)
 			state = after
@@ -153,7 +174,9 @@ func BuildNativeCommand5EffectSequence(in NativeCommand5EffectInput) (NativeComm
 		if err != nil {
 			return NativeCommand5EffectSequence{}, fmt.Errorf("battlepresent: command5 tail frame %d: %w", frameIndex, err)
 		}
-		out.Tail = append(out.Tail, NativeCommand5RenderedFrame{Pixels: pixels, PlayPrimary: frame.PlayPrimary, PlaySecondary: frame.PlaySecondary})
+		out.Tail = append(out.Tail, NativeCommand5RenderedFrame{Pixels: pixels, PlayPrimary: frame.PlayPrimary, PlaySecondary: frame.PlaySecondary,
+			Sources: NativeCommand5Sources{Base: in.TailBase, ActorFrame: len(in.ActorEffect.Frames) - 1,
+				TargetIndex: len(in.TargetIdle) - 1, TargetFrame: lastIdleFrame, Layers: append([]figani.NativeCommand5Layer(nil), frame.Layers...), Phase: "handler-tail"}})
 		if lastIdle.Frames[lastIdleFrame].Delay <= 0 {
 			return NativeCommand5EffectSequence{}, errors.New("battlepresent: command5 tail idle delay unavailable")
 		}

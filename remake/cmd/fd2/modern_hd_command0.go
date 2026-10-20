@@ -31,31 +31,42 @@ type modernHDCommand0Input struct {
 	palette, pulse color.Palette
 }
 
-func bindModernHDCommand0(in modernHDCommand0Input) (*modernHDCommand0Frames, error) {
+func modernHDCommandFrame(base []byte, layers []modernHDBattleSource, palette color.Palette, phase string) nativeCompoundPresentedFrame {
+	return nativeCompoundPresentedFrame{hdSources: &modernHDBattleSources{Base: base, Layers: layers}, hdPalette: palette, hdPhase: phase}
+}
+func modernHDCommandFigure(animation *figani.Animation, resource, index int) modernHDBattleSource {
+	return modernHDBattleSource{Frame: animation.Frames[index], Resource: resource, Index: index, Fill: -1}
+}
+func modernHDCommandShade(base []byte, bg, tai fdother.Frame, lut []byte) ([]byte, error) {
+	out := append([]byte(nil), base...)
+	bg.X, bg.Y, tai.X, tai.Y = 0, 50, 164, 157
+	if lut == nil {
+		if err := bg.Blit(out, 320, -1); err != nil {
+			return nil, err
+		}
+		if err := tai.Blit(out, 320, -1); err != nil {
+			return nil, err
+		}
+	} else {
+		if err := bg.BlitLUTAt(out, 320, 0, lut); err != nil {
+			return nil, err
+		}
+		if err := tai.BlitLUTAt(out, 320, 0, lut); err != nil {
+			return nil, err
+		}
+	}
+	return out, nil
+}
+func bindModernHDCommandOpening(in modernHDCommand0Input) (*modernHDCommand0Frames, error) {
 	if in.prelude.Mode != 0 || len(in.preludeFrames) != 9 || in.prelude.Platform == nil ||
 		len(in.prelude.Base) != 64000 || len(in.actor.BaseBefore) != 64000 || len(in.actor.BaseAfter) != 64000 ||
 		in.actor.ActorEffect == nil || len(in.actor.ActorEffect.Frames) == 0 ||
 		in.actor.FirstTargetIdle == nil || len(in.actor.FirstTargetIdle.Frames) == 0 ||
-		len(in.actorFrames) == 0 || len(in.bases) != 8 || len(in.luts) <= 14 ||
+		len(in.actorFrames) == 0 ||
 		len(in.actor.LUT) != 256 || len(in.palette) != 256 || len(in.pulse) != 256 {
 		return nil, fmt.Errorf("modern HD command0: sources unavailable")
 	}
-	want, err := figani.BuildNativeCommand0PresentationSchedule(in.prelude.RawSide, in.effect)
-	if err != nil || want != in.schedule {
-		return nil, fmt.Errorf("modern HD command0: target schedule differs")
-	}
-	for _, base := range in.bases {
-		if len(base) != 64000 {
-			return nil, fmt.Errorf("modern HD command0: base unavailable")
-		}
-	}
 	frames := &modernHDCommand0Frames{}
-	makeFrame := func(base []byte, layers []modernHDBattleSource, palette color.Palette, phase string) nativeCompoundPresentedFrame {
-		return nativeCompoundPresentedFrame{hdSources: &modernHDBattleSources{Base: base, Layers: layers}, hdPalette: palette, hdPhase: phase}
-	}
-	figure := func(animation *figani.Animation, resource, index int) modernHDBattleSource {
-		return modernHDBattleSource{Frame: animation.Frames[index], Resource: resource, Index: index, Fill: -1}
-	}
 	platform := *in.prelude.Platform
 	platform.X, platform.Y = 164, 157
 	platformLayer := modernHDBattleSource{Resource: -1, Fill: -1,
@@ -82,32 +93,11 @@ func bindModernHDCommand0(in modernHDCommand0Input) (*modernHDCommand0Frames, er
 			p.DX, a.DX = original.Stage*10, original.Stage*10
 			layers = []modernHDBattleSource{b, p, a}
 		}
-		f := makeFrame(preludeBase, layers, palette, "prelude")
+		f := modernHDCommandFrame(preludeBase, layers, palette, "prelude")
 		f.hdSubtract = float32(original.Stage*6) / 63
 		frames.prelude = append(frames.prelude, f)
 	}
-	shade := func(base []byte, lut []byte) ([]byte, error) {
-		out := append([]byte(nil), base...)
-		bg, tai := in.actor.Background, in.actor.Platform
-		bg.X, bg.Y, tai.X, tai.Y = 0, 50, 164, 157
-		if lut == nil {
-			if err := bg.Blit(out, 320, -1); err != nil {
-				return nil, err
-			}
-			if err := tai.Blit(out, 320, -1); err != nil {
-				return nil, err
-			}
-		} else {
-			if err := bg.BlitLUTAt(out, 320, 0, lut); err != nil {
-				return nil, err
-			}
-			if err := tai.BlitLUTAt(out, 320, 0, lut); err != nil {
-				return nil, err
-			}
-		}
-		return out, nil
-	}
-	after, err := shade(in.actor.BaseAfter, in.actor.LUT)
+	after, err := modernHDCommandShade(in.actor.BaseAfter, in.actor.Background, in.actor.Platform, in.actor.LUT)
 	if err != nil {
 		return nil, err
 	}
@@ -122,14 +112,34 @@ func bindModernHDCommand0(in modernHDCommand0Input) (*modernHDCommand0Frames, er
 		if published {
 			base = after
 		}
-		a := figure(in.actor.ActorEffect, in.actorEffectID, present.EffectFrame)
-		b := figure(in.actor.FirstTargetIdle, in.targetIdleID, present.TargetIdleFrame)
+		a := modernHDCommandFigure(in.actor.ActorEffect, in.actorEffectID, present.EffectFrame)
+		b := modernHDCommandFigure(in.actor.FirstTargetIdle, in.targetIdleID, present.TargetIdleFrame)
 		layers := []modernHDBattleSource{a, b}
 		if in.actor.RawSide == 0 {
 			layers = []modernHDBattleSource{b, a}
 		}
-		frames.actor = append(frames.actor, makeFrame(base, layers, in.palette, "actor"))
-		frames.pulse = append(frames.pulse, makeFrame(base, layers, in.pulse, "actor-pulse"))
+		frames.actor = append(frames.actor, modernHDCommandFrame(base, layers, in.palette, "actor"))
+		frames.pulse = append(frames.pulse, modernHDCommandFrame(base, layers, in.pulse, "actor-pulse"))
+	}
+	return frames, nil
+}
+
+func bindModernHDCommand0(in modernHDCommand0Input) (*modernHDCommand0Frames, error) {
+	if len(in.bases) != 8 || len(in.luts) <= 14 {
+		return nil, fmt.Errorf("modern HD command0: target bases unavailable")
+	}
+	want, err := figani.BuildNativeCommand0PresentationSchedule(in.prelude.RawSide, in.effect)
+	if err != nil || want != in.schedule {
+		return nil, fmt.Errorf("modern HD command0: target schedule differs")
+	}
+	for _, base := range in.bases {
+		if len(base) != 64000 {
+			return nil, fmt.Errorf("modern HD command0: base unavailable")
+		}
+	}
+	frames, err := bindModernHDCommandOpening(in)
+	if err != nil {
+		return nil, err
 	}
 	targetIndex, repeat, stage := 0, 0, 0
 	advanceTarget := func() {
@@ -153,9 +163,9 @@ func bindModernHDCommand0(in modernHDCommand0Input) (*modernHDCommand0Frames, er
 			}
 		}
 		appendEffects(1)
-		layers = append(layers, figure(in.actor.FirstTargetIdle, in.targetIdleID, targetIndex))
+		layers = append(layers, modernHDCommandFigure(in.actor.FirstTargetIdle, in.targetIdleID, targetIndex))
 		appendEffects(0)
-		frames.target = append(frames.target, makeFrame(in.bases[stage], layers, in.palette, "target"))
+		frames.target = append(frames.target, modernHDCommandFrame(in.bases[stage], layers, in.palette, "target"))
 		impact := false
 		for layer := 0; layer < 7; layer++ {
 			impact = impact || figani.NativeCommand0Impact(step, layer)
@@ -168,18 +178,40 @@ func bindModernHDCommand0(in modernHDCommand0Input) (*modernHDCommand0Frames, er
 	if stage != figani.NativeCommand0DamageStages {
 		return nil, fmt.Errorf("modern HD command0: impact stages differ")
 	}
+	frames.tail, err = bindModernHDCommandTail(in.bases[7], in.actor.Background, in.actor.Platform, in.luts,
+		in.actor.ActorEffect, in.actorEffectID, in.actor.FirstTargetIdle, in.targetIdleID, targetIndex, repeat, in.palette)
+	if err != nil {
+		return nil, err
+	}
+	return frames, nil
+}
+
+func bindModernHDCommandTail(base []byte, bg, tai fdother.Frame, luts [][]byte, actor *figani.Animation,
+	actorID int, target *figani.Animation, targetID, targetIndex, repeat int, palette color.Palette) ([]nativeCompoundPresentedFrame, error) {
+	if len(base) != 64000 || len(luts) <= 14 || actor == nil || len(actor.Frames) == 0 ||
+		target == nil || targetIndex < 0 || targetIndex >= len(target.Frames) || len(palette) != 256 {
+		return nil, fmt.Errorf("modern HD command tail: sources unavailable")
+	}
+	var frames []nativeCompoundPresentedFrame
 	for pass := 0; pass < 4; pass++ {
 		var lut []byte
 		if pass < 3 {
-			lut = in.luts[12+pass]
+			lut = luts[12+pass]
 		}
-		base, err := shade(in.bases[7], lut)
+		shaded, err := modernHDCommandShade(base, bg, tai, lut)
 		if err != nil {
 			return nil, err
 		}
-		layers := []modernHDBattleSource{figure(in.actor.ActorEffect, in.actorEffectID, 0), figure(in.actor.FirstTargetIdle, in.targetIdleID, targetIndex)}
-		frames.tail = append(frames.tail, makeFrame(base, layers, in.palette, "tail"))
-		advanceTarget()
+		layers := []modernHDBattleSource{modernHDCommandFigure(actor, actorID, 0), modernHDCommandFigure(target, targetID, targetIndex)}
+		frames = append(frames, modernHDCommandFrame(shaded, layers, palette, "tail"))
+		if target.Frames[targetIndex].Delay <= 0 {
+			return nil, fmt.Errorf("modern HD command tail: idle delay unavailable")
+		}
+		repeat++
+		if repeat >= target.Frames[targetIndex].Delay {
+			repeat = 0
+			targetIndex = (targetIndex + 1) % len(target.Frames)
+		}
 	}
 	return frames, nil
 }

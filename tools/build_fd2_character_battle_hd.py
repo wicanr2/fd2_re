@@ -48,6 +48,7 @@ def main():
     for name in ['pack', 'inventory', 'recipe', 'out']:
         p.add_argument('--'+name, required=True, type=Path)
     p.add_argument('--base-catalog', type=Path, default=ROOT/'remake/assets/themes/modern/catalog.json')
+    p.add_argument('--with-cast', action='store_true', help='明示編製完整待機、攻擊及已解碼施術三組，不猜零header回退')
     args = p.parse_args(); out = args.out.resolve()
     if out.exists() or not out.is_relative_to(ROOT) or out.parent.stat().st_uid != os.getuid():
         raise SystemExit('使用本人擁有的工作區新候選目錄')
@@ -62,7 +63,14 @@ def main():
     if type(figure) is not int or not 0 <= figure <= 135: raise SystemExit('人物資源範圍不符')
     resources = [figure*3, figure*3+1]
     empty_headers = []
-    if set(recipe['resources']) == {str(figure*3)}:
+    if args.with_cast:
+        resources.append(figure*3+2)
+        if set(recipe['resources']) != {str(r) for r in resources}:
+            raise SystemExit('配方須涵蓋完整待機及攻擊資源與已解碼施術資源')
+        if any(next((r for r in inventory['resources'] if r['resource'] == resource), {}).get('status') != 'decoded'
+               for resource in resources):
+            raise SystemExit('三組配方必須全部已解碼；零header不得補造施術')
+    elif set(recipe['resources']) == {str(figure*3)}:
         # 只有原版attack與cast均為已核零header，才接受完整idle-only圖組。
         # 不以清冊少一項、來源未解碼或PNG空白猜測角色沒有動作。
         for resource in [figure*3+1, figure*3+2]:
@@ -99,25 +107,33 @@ def main():
         anchor = rectangle(value['anchor'], picture.size); art[key] = (picture, anchor)
         source_records[key] = {'file': str(path.relative_to(ROOT)), 'sha256': digest(path), 'anchor': anchor}
     natives, pending, used = {}, [], set()
+    layered_frames = set()
     for resource in resources:
         row, originals = load_native(args.pack, inventory, resource); natives[resource] = row
         assignments = recipe['resources'][str(resource)]
         if len(assignments) != len(row['frames']): raise SystemExit('配方影格不完整')
         for index, (frame, assignment, original) in enumerate(zip(row['frames'], assignments, originals)):
-            if set(assignment) != {'pose', 'anchor', 'scale_group'} or assignment['pose'] not in art or not KEY.fullmatch(assignment['scale_group']):
-                raise SystemExit('未知母稿、群組或配方欄位')
-            key = assignment['pose']; used.add(key); picture, anchor = art[key]
-            target = rectangle(assignment['anchor'], (frame['width'], frame['height']))
-            scale = (target[3]-target[1])*6/(anchor[3]-anchor[1])
-            center = (target[0]+target[2])*3
-            available = min(center, frame['width']*6-center)*2-2
-            limit = min(1, available/((anchor[2]-anchor[0])*scale))
-            if limit <= 0: raise SystemExit('無法在原矩形容納錨點')
-            pending.append((resource, index, key, frame, original, picture, anchor, target, scale, assignment['scale_group'], limit))
+            layers = assignment if isinstance(assignment, list) else [assignment]
+            if isinstance(assignment, list):
+                if not args.with_cast or not layers: raise SystemExit('分層配方須明示三組模式並含非空圖層')
+                layered_frames.add((resource, index))
+            for layer in layers:
+                if (not isinstance(layer, dict) or set(layer) != {'pose', 'anchor', 'scale_group'}
+                    or layer['pose'] not in art or not KEY.fullmatch(layer['scale_group'])):
+                    raise SystemExit('未知母稿、群組或配方欄位')
+                key = layer['pose']; used.add(key); picture, anchor = art[key]
+                target = rectangle(layer['anchor'], (frame['width'], frame['height']))
+                scale = (target[3]-target[1])*6/(anchor[3]-anchor[1])
+                center = (target[0]+target[2])*3
+                available = min(center, frame['width']*6-center)*2-2
+                limit = min(1, available/((anchor[2]-anchor[0])*scale))
+                if limit <= 0: raise SystemExit('無法在原矩形容納錨點')
+                pending.append((resource, index, key, frame, original, picture, anchor, target, scale, layer['scale_group'], limit))
     if used != set(art): raise SystemExit('配方含未使用母稿')
     groups = {}
     for item in pending: groups[item[9]] = min(groups.get(item[9], 1), item[10])
     prepared = []
+    composed = {}
     for resource, index, key, frame, original, picture, anchor, target, scale, group, _ in pending:
         scale *= groups[group]
         fitted = picture.resize((max(1, round(picture.width*scale)), max(1, round(picture.height*scale))), Image.Resampling.LANCZOS)
@@ -141,7 +157,20 @@ def main():
             'phase_scale': groups[group], 'fitted_anchor': actual, 'clipped_high_coverage_pixels': clipped,
             'native_empty_source': native_empty, 'pose_used': not native_empty,
             'native_descriptor': {k: frame[k] for k in DESCRIPTOR}}
-        prepared.append((record, canvas, original))
+        frame_key = (resource, index)
+        if frame_key in layered_frames:
+            if frame_key not in composed:
+                composite_record = copy.deepcopy(record)
+                composite_record['layers'] = []
+                composite_record['clipped_high_coverage_pixels'] = 0
+                composed[frame_key] = (composite_record, Image.new('RGBA', size), original)
+                prepared.append(composed[frame_key])
+            composite_record, composite, _ = composed[frame_key]
+            composite_record['layers'].append(record)
+            composite_record['clipped_high_coverage_pixels'] += clipped
+            composite.alpha_composite(canvas)
+        else:
+            prepared.append((record, canvas, original))
     private = ROOT/base['private_root']; old_names = names(base)
     if any(Path(n).name != n or not (private/n).is_file() for n in old_names): raise SystemExit('基底清冊缺件')
     out.mkdir(); pack = out/'pack'; pack.mkdir(); shutil.copyfile(args.base_catalog, out/'base-catalog.json')
@@ -162,7 +191,8 @@ def main():
             draw.text((x+4, y+dy+4), f'{resource:03d}/{index:02d} {label}', fill='white')
     candidate = copy.deepcopy(base); candidate['private_root'] = str(pack.relative_to(ROOT))
     for resource in resources:
-        row = natives[resource]; selected = [r for r in records if r['resource'] == resource]; keys = sorted({r['pose'] for r in selected})
+        row = natives[resource]; selected = [r for r in records if r['resource'] == resource]
+        keys = sorted({layer['pose'] for r in selected for layer in r.get('layers', [r])})
         candidate['assets'].append({'asset_id': f'modern.figani.{resource:03d}.hd6.v1', 'role': 'battle_animation_hd_set',
             'status': 'runtime_candidate', 'files': [r['file'] for r in selected], 'width': 1920, 'height': 1200,
             'frame_count': len(selected), 'frame_sha256': [r['sha256'] for r in selected],
@@ -185,6 +215,8 @@ def main():
         'scope': '明示錨點與姿勢重定向的完整候選，不代表正常GUI或原版逐幀視覺相同。'}
     if empty_headers:
         report['idle_only_empty_headers'] = empty_headers
+    if args.with_cast:
+        report['with_cast'] = True
     (out/'compiled.json').write_text(json.dumps(report, ensure_ascii=False, indent=2)+'\n')
     print(json.dumps({'status': report['status'], 'figure': figure, 'frames': len(records), 'catalog_assets': len(candidate['assets'])}))
 

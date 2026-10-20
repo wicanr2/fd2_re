@@ -38,6 +38,7 @@ type nativeCommand5PresentationJob struct {
 	actorSpecs             []battlepresent.NativeCommand0ActorFrame
 	handler                []nativeCommand5HandlerFrame
 	tail                   []*ebiten.Image
+	hd                     *modernHDCommand5Frames
 	phase                  nativeCommand5PresentationPhase
 	frame                  int
 	pulseBlack             bool
@@ -193,7 +194,10 @@ func (g *Game) startNativeCommand45Presentation(actor, confirmed *battle.Unit, c
 	if err != nil {
 		return err
 	}
-	actorEffect, err := nativeCommand6ActorEffect(separatedAssetPath("animations"), actor.BattleFig)
+	if actor.BattleFig < 0 || actor.BattleFig > 0xff {
+		return errors.New("native command6 actor FIGANI selector unavailable")
+	}
+	actorEffect, actorEffectID, err := figani.LoadSeparatedResourceWithZeroHeaderFallbackSource(separatedAssetPath("animations"), actor.BattleFig*3+2)
 	if err != nil {
 		return err
 	}
@@ -276,10 +280,11 @@ func (g *Game) startNativeCommand45Presentation(actor, confirmed *battle.Unit, c
 	if err != nil {
 		return err
 	}
-	prelude, err := battlepresent.BuildNativeCommandPreludeFrames(battlepresent.NativeCommandPreludeInput{
+	preludeInput := battlepresent.NativeCommandPreludeInput{
 		Base: preludeBase, ActorIdle: actorIdle.Frames[0], FirstTargetIdle: targetIdle[0].Frames[0],
 		Platform: &platform, RawSide: actor.NativeRecordByte6, Mode: 0, BaselineDAC: dac,
-	})
+	}
+	prelude, err := battlepresent.BuildNativeCommandPreludeFrames(preludeInput)
 	if err != nil {
 		return err
 	}
@@ -287,11 +292,12 @@ func (g *Game) startNativeCommand45Presentation(actor, confirmed *battle.Unit, c
 	if err != nil {
 		return err
 	}
-	actorSpecs, err := battlepresent.BuildNativeCommand0ActorFrames(battlepresent.NativeCommand0ActorInput{
+	actorInput := battlepresent.NativeCommand0ActorInput{
 		BaseBefore: actorBaseBefore, BaseAfter: targetBases[0][0], ActorEffect: actorEffect,
 		FirstTargetIdle: targetIdle[0], RawSide: actor.NativeRecordByte6,
 		Background: background, Platform: platform, LUT: g.nativeMapAssets.LUTs[11],
-	})
+	}
+	actorSpecs, err := battlepresent.BuildNativeCommand0ActorFrames(actorInput)
 	if err != nil {
 		return err
 	}
@@ -328,8 +334,25 @@ func (g *Game) startNativeCommand45Presentation(actor, confirmed *battle.Unit, c
 	if effectSequence.VisualRNG != plan.RNGAfter {
 		return fmt.Errorf("native command%d RNG walk %d disagrees with rendered sequence %d", commandID, plan.RNGAfter, effectSequence.VisualRNG)
 	}
+	opening, err := bindModernHDCommandOpening(modernHDCommand0Input{
+		prelude: preludeInput, preludeFrames: prelude, actor: actorInput, actorFrames: actorSpecs,
+		actorIdleID: actor.BattleFig * 3, actorEffectID: actorEffectID, targetIdleID: plan.Results[0].Target.BattleFig * 3,
+		palette: g.nativeUIPalette, pulse: pulsePalette})
+	if err != nil {
+		return err
+	}
+	hd := &modernHDCommand5Frames{opening: opening}
+	targetIDs := make([]int, len(plan.Results))
+	for i, result := range plan.Results {
+		targetIDs[i] = result.Target.BattleFig * 3
+	}
 	handler := make([]nativeCommand5HandlerFrame, 0)
 	appendFrames := func(frames []battlepresent.NativeCommand5RenderedFrame, targetIndex int) error {
+		bound, err := bindModernHDCommand5Handler(frames, actorEffect, actorEffectID, targetIdle, targetIDs, effect, schedule.EffectResource, g.nativeUIPalette)
+		if err != nil {
+			return err
+		}
+		hd.handler = append(hd.handler, bound...)
 		for _, rendered := range frames {
 			images, err := nativeCommand0Images([][]byte{rendered.Pixels}, g.nativeUIPalette)
 			if err != nil {
@@ -372,7 +395,19 @@ func (g *Game) startNativeCommand45Presentation(actor, confirmed *battle.Unit, c
 	if len(handler) == 0 {
 		return errors.New("native command5 handler frames unavailable")
 	}
+	hd.tail, err = bindModernHDCommandTail(targetBases[len(targetBases)-1][figani.NativeCommand5DamageStages],
+		background, platform, g.nativeMapAssets.LUTs, actorEffect, actorEffectID, targetIdle[len(targetIdle)-1],
+		targetIDs[len(targetIDs)-1], effectSequence.NextIdleFrame, effectSequence.NextIdleRepeat, g.nativeUIPalette)
+	if err != nil {
+		return err
+	}
+	if g.modernStoryPortraits != nil {
+		if err := g.modernStoryPortraits.prepareBattleHDResources(hd.resources()...); err != nil {
+			return err
+		}
+	}
 	g.nativeCmd5Presentation = &nativeCommand5PresentationJob{
+		hd:        hd,
 		commandID: commandID, actor: actor, plan: plan, prelude: preludeImages, actorBlack: actorBlack, actorPulse: actorPulse,
 		actorSpecs: actorSpecs, handler: handler, tail: commonTail, actorMPBefore: actor.MP, actorActedBefore: actor.Acted,
 		targetHPBefore: make([]int, len(plan.Results)), actorSFX: actorSFX, targetSFX: targetSFX, then: then,
@@ -519,6 +554,15 @@ func (g *Game) drawNativeCommand5Presentation(screen *ebiten.Image) bool {
 	}
 	if frame == nil {
 		return false
+	}
+	if hd := j.modernFrame(); hd != nil {
+		if drawn, err := g.drawModernHDCompoundFrame(screen, hd); err != nil {
+			g.failNativeCommand5Presentation(err)
+			return true
+		} else if drawn {
+			j.drawn = true
+			return true
+		}
 	}
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Scale(2, 2)

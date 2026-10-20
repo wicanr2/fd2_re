@@ -2744,3 +2744,44 @@ settle_world_battle必須等待class_ui_job正常繪製完成，接續以Return�
 普通指令0控制器修訂READY：首輪物理腳本先移動，悠妮依既有原版規則不能移動後施法而拒收。新輪固定同來源與seed1，只原地開環；以固定dist5預篩，再由正式目標格接納。至多一次正常END，不改遊戲狀態；先前拒收收據保留。
 
 原地控制器修訂與普通指令0本切片已達CONFORMED-SCOPED。普通特效維持原索引、無新圖源；原版逐幀／音訊、其他指令、90／93新圖與完整HD仍待。保存只證章節邊界冷讀，戰中MP與敵HP不持續。所有結果及拒收來源集中於主收據ordinary_command0_followup_20261020。
+
+
+### BattleFig90 三組戰鬥圖源
+
+狀態：CONFORMED-SCOPED。原始23幀、七份接受母稿、完整繪製及正常指令5／受擊已驗收，並已正式登錄；初始DRAFT／READY與拒收原型的歷程保留於WORKLOG及主收據。原版FIGANI270待機一幀、271攻擊十一幀、272施術十一幀已核固定盤點與原始metadata。來源及目前狀態表見HD戰場主收據caster90_battle_followup_20261020。沿既有核准手繪風格，保留紅兜帽、暗面雙黃眼、深藍袖、紅袍、灰腰垂帶／前布、棕腰包與鉤頭杖；不猜人物身分。
+
+母稿先經可丟棄姿勢／錨點審查。施術抬杖火花與物理攻擊右側火球的升高／消退需分開表達；原描述子、header、delay及raw標記保持。編製器顯式--with-cast收完整三組，既有兩組與idle-only預設保持，正式清冊格式不變。
+
+驗收須物理十二張與實際施術272十一張，不以兩組物理測試代替完整23張。正常章9沿既有F5來源與seed1，有界END抽90施法及受擊待機、自然返回、F2及章節邊界冷讀；章前強化政策明示，章內無注入。原版逐幀、傷害／自然難度、整章E2與完整HD不由本切片推定。
+
+90號編製契約（已驗證）：--with-cast明示要求完整270／271／272、1／11／11張且三組均decoded。未選該旗標沿既有兩組／固定零header idle-only政策，不改schema1形狀或正式loader。缺施術／缺攻擊／缺flag／來源不符均拒收，舊兩組及idle-only回歸必要。本批母稿與成品已在完整23張及普通GUI通過後正式登錄；其他新圖組保持相同閘門。
+
+90號元件編製補充（已驗證）：原始右側Mask的火球依序在y173..180、128..180、87..134、67..110與49..84，最後消失。兩次全景生成仍放得太靠近腳底，拒收保留。將人物與獨立VFX母稿分開生成，既有編製器按原始位置有序組合，原始母稿不改。
+
+只在--with-cast下接受schema1單幀assignment為非空list，內容沿既有pose／anchor／scale_group三欄；單項dict舊路徑保持。每層保留來源、transform及clipping，身體／特效獨立群組，輸出仍為原矩形的一張RGBA，不改正式清冊或loader。空list、未知欄位、缺件及漏flag均拒收；完整23張與普通流程閘門保持。這是已核准圖源契約內的可逆編製實作，沒有新玩法或正式資料格式取捨。
+### BattleFig90 所需普通指令4／5人物層（CONFORMED-SCOPED）
+
+沿用 `docs/data/ida/fd2_command5_presentation_ida.txt` 與 `58` 已閉合的原始 caller／consumer。
+此處只擴充 HD 繪製與唯讀觀測，不新增原版規則、傷害、輸入或 RNG 解釋。
+基底 `602098b7` 的 `battlepresent/native_command5.go` SHA-256 為
+`91d151ea5e13736f304964042c77d89bbbd91a1fc77c8a8823b87229668f6a81`，
+`native_command5_sequence.go` 為 `345f3aacc4ee573a6b5da736b22b946573964a500a4516f99c0f0b883e8af572`，
+`cmd/fd2/native_command5_presentation.go` 為 `045b14256aa218cd5361a543e0d55cddc786f9232fb9896c27e48706dfe2c091`。
+
+- 已證實的 typed compositor 輸入依序為 orbit 的 actor-last／target／effect、target 的 target／effect、boundary 的 actor-last／移位 target／effect。預建序列在原有迴圈附加相同 base、索引及 effect layers；不再走一次亂數與目標解析。
+- 共通前導、actor／pulse、四張 LUT tail 與指令0共用純繪製綁定。每個呈現都須保留可回查的原始圖源、索引、座標、層序、色盤與 base。fallback 必須採原始零 header 解析器回傳的實際資源編號。
+- owner、Draw acknowledgment、MP／HP／Acted／RNG 發布及單次 continuation 保持既有路徑。HD 缺件預檢須在 owner 發布前原子失敗；F2 失敗不得切換主題、改動 owner 或部分載入。
+- 驗收包含兩側及多目標 boundary 的全畫布 indexed 重建、完整 Game.Draw／1920 PNG、各相位 F2、發布次數及錯來源拒收。正常玩家抽樣須記錄實際 command ID，不把指令0 fixture 當成指令5通過。
+- 未登錄效果仍由原始 indexed 圖層繪製；本切片只讓已登錄人物可在普通指令4／5全流程以 HD 呈現。新 HD 法術美術、其他普通指令與原版 oracle parity 仍未由此完成。
+
+90號物理 PNG 核對補充（已驗證）：既有 fixture 的前景 FIGANI228:0 與271:4在左側重疊，來源層序與實際圖片一致，藍袖被遮住。可明示啟用與施法核對相同的來源遮擋排除。前景須沿完整清冊／原始包及盤點核SHA，只排除其alpha／mask實際覆蓋且落在clip內的點。排除前不先縮減核心，排除後仍須至少1000點，再依既有RGB門檻抽樣。缺少證據包／盤點、未知前景與不符尺寸均拒收；舊預設及全部幀要求保持。這只修正驗證器，不改遊戲與fixture。
+
+正常施法取樣停止條件（已驗證）：第三輪正常進軍兩次END後，希莉亞停在12,26，90號仍守原位且MP55；控制器已有普通射擊可達格便直接出手，射擊、返回及冷讀完成但缺END施法，整份收據拒收。明示 `--battle-end-commands` 時，必須另有指定人物作為actor的真實施法樣本才可離開接敵迴圈。未取得時沿既有 `--battle-advance` 在正式可達格移動／待機，仍受原 `--battle-approach-rounds` 限制；max4、min2、同源與seed1保持。沒有該選項的舊流程不變。不改遊戲射程、AI、規則、章內狀態或保存，最終PNG仍獨立核對，不能只信取樣布林。
+
+90三組圖源與普通4／5人物consumer現為CONFORMED-SCOPED／RUNTIME-E1。270／271／272全部23項原描述子保留，
+七份接受母稿維持原始RGBA；正式entries與正常候選完全相同，只將private_root還原為既有prototypes。
+完整Draw、兩側／多目標GPU、原子預檢、正常章9指令5及受擊、F2／保存冷讀與拒收均有主收據。
+第四輪以相同min2／max4、來源與seed1，實際三次前進END取得90指令5，MP55至40，再正常射擊／返回及冷讀。
+四張施法與九張受擊待機的核心獨立通過；同份正常核對必須兩組都存在，缺任一組拒收。
+先前三輪停止／拒收及物理前景核對修訂保留。原版逐幀／音訊parity、普通90指令0／4、其他人物與完整HD不由此推定。
+唯一數量依[58](58-fd2-exe-re-coverage.md)，完整來源、提示、配方與收據見[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的caster90_battle_followup_20261020。
