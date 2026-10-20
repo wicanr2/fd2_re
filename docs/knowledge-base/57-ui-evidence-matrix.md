@@ -1,5 +1,9 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
+BattleFig111的333／334沿原14幀正式登錄，335固定零header不補造。完整Draw、三階段F2、返回與一次續行通過；完整／不含母稿執行包的最終PNG bytes相同。
+普通第23章固定seed1、四次END後由蓋亞攻擊上方111，目標待機、自然返回、F2及章節邊界冷讀通過；主動開砲未取得普通END樣本，完整開砲限RUNTIME-E1。
+章前強化、共享母稿、前景遮擋及原框光束裁切明示，遊戲規則與保存格式保持。來源見[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的mechanical111_battle_followup_20261021，唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)。
+
 共用章節／clear_hp_from死亡事件已接入HD人物與FDOTHER5項68..79煙霧。
 完整13＋6＋6＋steady繪製、A累積／B重置、F2與一次續行沿原typed producer，未修改像素路徑、死亡規則或保存格式。
 前25拍現行事件viewport從0,0開始，最後steady才回4,4；這是現行程式對照，非新DOS原版目的位址證明。

@@ -66,6 +66,8 @@ def main():
                         help='明示等待真實視窗的上限，主流程與新程序冷讀共用')
     parser.add_argument('--battle-target-figure', type=int,
                         help='只以普通鍵盤選擇指定敵方圖組；省略時維持最近目標')
+    parser.add_argument('--battle-target-row-max', type=int,
+                        help='只篩選目前Y不大於此值的同圖組目標，不改遊戲狀態')
     parser.add_argument('--battle-min-approach-rounds', type=int, choices=[0,1,2,3,4,5,6], default=0,
                         help='普通進軍／待機至少幾次END後才出手，不改遊戲狀態')
     parser.add_argument('--battle-own-index', type=int, default=2,
@@ -124,6 +126,7 @@ def main():
     assert 0 <= args.battle_own_index < 128
     assert 0 <= args.battle_min_approach_rounds <= args.battle_approach_rounds
     assert args.battle_target_figure is None or (args.battle_only and 0<=args.battle_target_figure<=135)
+    assert args.battle_target_row_max is None or (args.battle_target_figure is not None and 0<=args.battle_target_row_max<=65535)
     assert args.battle_own_index == 2 or args.world
     assert not args.battle_approach_rounds or args.world
     battle_approach_steps=[]
@@ -718,6 +721,9 @@ def main():
                         if state.get('class_ui_job'):
                             wait(lambda s:not s.get('class_ui_job'))
                             continue
+                        if state.get('unit_death_scene'):
+                            wait(lambda s:not s.get('unit_death_scene'), timeout=180)
+                            continue
                         if state.get('death_reward_ui'):
                             raise AssertionError('普通流程遇到未涵蓋的滿背包掉落互動，停止抽驗')
                         if state.get('death_reward_message'):
@@ -790,6 +796,9 @@ def main():
                         occupied={(u['x'],u['y']) for u in state['units'] if u['on_field'] and u['hp']>0}
                         enemies=[u for u in state['units'] if u['camp']==2 and u['on_field'] and u['hp']>0]
                         targets=[u for u in enemies if args.battle_target_figure is None or u['battle_fig']==args.battle_target_figure]
+                        if args.battle_target_row_max is not None:
+                            targets=[u for u in targets if u['y']<=args.battle_target_row_max]
+                            assert targets, '目前指定列範圍沒有活躍目標'
                         attacker=next(u for u in state['units'] if u['camp']==0 and u['on_field'] and u['hp']>0
                                       and [u['x'],u['y']]==state['cursor'])
                         # 與battle.State.InAttackRange相同的已載入欄位及零值政策；不改正式規則。
@@ -898,7 +907,7 @@ def main():
                                                 'scope':'正常END的實際施法；job定位與PNG呈現分開核對'})
                             if (current['native_round']>state['native_round'] and current['turn']>state['turn']
                                     and not any(current.get(k) for k in ['ai_busy','battle_event','dialogues','banner_t',
-                                                                       'battle_scene','command_scene','class_ui_job','system_end_turn_confirm'])):break
+                                                                       'battle_scene','command_scene','unit_death_scene','class_ui_job','system_end_turn_confirm'])):break
                             if current.get('dialogues'):key('Return')
                             else:time.sleep(.05)
                         else:raise TimeoutError('普通END未回玩家回合')
@@ -953,7 +962,7 @@ def main():
                                 battle_art_samples.append({'scene':prefix,'file':path.name,'sha256':digest(path),
                                                            'before':before,'after':latest(audit)})
                             time.sleep(.04)
-                    returned_scene=wait(lambda s:not s.get(scene_key) and not s.get('walking') and s.get('hd_world'),
+                    returned_scene=wait(lambda s:not s.get(scene_key) and not s.get('unit_death_scene') and not s.get('walking') and s.get('hd_world'),
                                         timeout=180 if args.battle_hd else 60)
                     if args.battle_hd:
                         battle_hd_scenes.append({'name':prefix,'elapsed_seconds':time.monotonic()-scene_started,
@@ -1111,6 +1120,7 @@ def main():
                     'natural_attack_return_checked':args.battle_only,
                     'battle_own_index':args.battle_own_index,
                     'battle_target_figure':args.battle_target_figure,
+                    'battle_target_row_max':args.battle_target_row_max,
                     'battle_min_approach_rounds':args.battle_min_approach_rounds,
                     'battle_node':args.battle_node,'battle_only':args.battle_only,
                     'battle_attack_choices':battle_attack_choices,

@@ -9,15 +9,15 @@
     "native_viewport": "CONFORMED-SCOPED：穩定1920世界沿原生(4,4)、312×192窗格；死亡事件前25拍依既有producer從VGA0,0開始，最後steady回4,4。不同caller分列，不新增DOS位址parity。",
     "hd_sprite_data": "DATA-READY：完整125組1455張HD及31組372張新增24父項已登錄；舊1083張父項及HD bytes保持。",
     "hd_world_renderer": "CONFORMED-SCOPED：144人物已接Game.Draw；首章34張正常GPU、4張實際走行、兩次物理攻擊及保存／新程序LOAD通過。",
-    "private_assets": "正式清冊、完整／runtime-only私人allow-list已核SHA及UID；原檔保持，新母稿排除執行包。目前數量與遠端驗證依58及shared_death_followup_20261020。",
+    "private_assets": "正式清冊、完整／runtime-only allow-list已核SHA及UID；舊檔保持，新母稿不進執行包。數量與遠端核對依58及mechanical111_battle_followup_20261021。",
     "quickload_battle_owner": "CONFORMED-SCOPED：成功JSON LOAD丟棄舊經驗owner與移動計畫；拒收保留。",
     "timed_dialogue": "CONFORMED-SCOPED-RUNTIME-E1：計時FFEC開收框保留HD世界，EXP99普通鍵盤／F2與保存冷讀通過；其他caller未驗。",
     "hd_terrain": "CONFORMED-SCOPED：map0六組53槽；新增圓頂綠色／褐色雙塊四底圖在兩張正常GPU全部相符，短長組合與保存冷讀通過；草地及其他地形仍待HD化。",
     "ai_player_input_lock": "CONFORMED-SCOPED：AI換手期間拒絕玩家地圖輸入重入；普通END／增援對話及相關／完整Go回歸通過。",
     "gaia_redesign": "CONFORMED-SCOPED：新版頭像與四方向圖組已登錄；正常START／Gaia北移取消／F2／冷讀分段驗證。相位差異與序章尾端失敗明示，非逐幀parity。",
-    "hd_battle_animation": "洛娜5號完整待機／旋槍／前刺及弧光已登錄；完整Draw與普通章9兩次END、原地攻防／返回／F2／邊界冷讀通過。共享姿勢與鞋底裁切明示；其餘缺口與唯一數量依58。",
+    "hd_battle_animation": "BattleFig111待機／開砲及光束原14幀已登錄；完整Draw／F2與runtime-only通過。普通章23四次END後受擊待機、返回及邊界冷讀通過，普通開砲未取得；其餘缺口與唯一數量依58。",
     "native_purchase_equip": "CONFORMED-SCOPED：#266原生購買立即裝備保留ignored原始格，29項商店回歸與正常購弓F5／章首射程通過；不改格式或數值規則。",
-    "hd_event_death": "CONFORMED-SCOPED／RUNTIME-E1：共用事件死亡HD已接入，26拍、F2及完整回歸通過。正常章節事件與普通擊殺／狀態致死consumer仍待。"
+    "hd_event_death": "共用事件、普通行動與狀態致死已接HD；三種26拍／F2通過。正常章23事件與普通擊殺已抽驗，狀態致死正常GUI仍待；來源依death_consumers_followup_20261021。"
   },
   "runtime_source": {
     "binary": {
@@ -52316,5 +52316,642 @@
       "recordings_created": 0,
       "retained": "所有正常／拒收／完整GPU PNG、收據、輸入／操作、來源槽及日誌；同SHA PNG僅於本批work內hardlink去重。"
     }
-  }
+  },
+  "mechanical111_battle_followup_20261021": {
+    "status": "CONFORMED-SCOPED",
+    "base_commit": "d36339a4959b30a5f6d7da741028507f73e1cec7",
+    "full_battle_hd_complete": false,
+    "figure": 111,
+    "resources": [
+      333,
+      334
+    ],
+    "frame_count": 14,
+    "empty_cast": 335,
+    "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+    "native_contact": {
+      "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/native-contact.png",
+      "sha256": "fdeae34acd2dca5b96080ca8e236bff07cfedeba33967b74361cd491b90f4fd1"
+    },
+    "native_review": {
+      "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/native-frame-review.json",
+      "sha256": "620bfb2e1f4d4943da91e5338e624d6f28881e4bf9278f2467d9fcb03dc02903"
+    },
+    "current_state": {
+      "remake_complete": "111雙銀行正式登錄、完整14幀Draw／F2與runtime-only回歸，普通章23受擊待機、返回與邊界冷讀已驗。",
+      "remake_remaining": "普通111主動開砲、其他人物／指令／效果及平台效能仍待，完整戰鬥HD未完成。",
+      "original_oracle_unknown": "本批不新增原版逐幀、傷害、音訊或整章E2。",
+      "optional_polish": "不插幀；共用母稿與光束原框裁切如實揭露。"
+    },
+    "formal_registered": true,
+    "private_synced": true,
+    "production_rules_changed": false,
+    "original_resources": [
+      {
+        "resource": 333,
+        "status": "decoded",
+        "reason_code": "decoded",
+        "raw_sha256": "290252e6affc1e1fedd57ff7fde7d40ec63abe673f08eb5618928440cd65624f",
+        "status_sha256": "29a2d9c58f71c7ea4ff4df5fee43fd0aa25610cafae0722c481d69c971b25f83",
+        "metadata_sha256": "4894763b4484d7a005d0db85e6d0686ffafb0fbeeccb360a17f8c2cd0de79618",
+        "native_header": {
+          "byte_1": 0,
+          "byte_2": 4,
+          "byte_4": 0
+        }
+      },
+      {
+        "resource": 334,
+        "status": "decoded",
+        "reason_code": "decoded",
+        "raw_sha256": "518c531f9b41bf6cae3e77c3ed4ee4508bac7484df34c232e0b1b010d1f04590",
+        "status_sha256": "31b46b2580fd987e3f7f20a4dd82379af93ae9eaae39cc39d3e99b2931419c67",
+        "metadata_sha256": "08a54bbf39274058bda78ef1402c12dab5542df353e1f924d9dd3ae09b1b5411",
+        "native_header": {
+          "byte_1": 0,
+          "byte_2": 10,
+          "byte_4": 4
+        }
+      },
+      {
+        "resource": 335,
+        "status": "empty_header_zero",
+        "reason_code": "zero_header_word",
+        "raw_sha256": "6b25930e91686cee8bb5d4dae8dbed14f63c690c1c97ecb98552d8842e2d9395",
+        "status_sha256": "eef8112e2b07a84a2ac015b5fc576fbd48a9ea7c598e00b84623a17fae8a62a8"
+      }
+    ],
+    "generation": {
+      "method": "built-in image_gen",
+      "prompts": {
+        "open_v2": "Use case: precise-object-edit. Image1 is painted robot EDIT TARGET. Image2 is original pixel pose shape guide. Make ONE targeted correction to image1: shorten the forward forearm cannon assembly and move the circular muzzle LEFT so its center sits at approximately 59 percent of the whole robot's full visible width, directly in front of the center of waist, rather than at the far-right edge. In original image2 final frame9, the round muzzle is near the middle of the body width; long raised overhead armor extends much further right than muzzle. Match that relationship. Keep opened pointed fins around round dark bore, shorten their lateral reach too. Keep the rest of robot exactly: same low helmet, olive/blue palette, raised overhead armor and arm pose, same torso, broad shoulders, blue cloth, lunging legs/feet, handpainted materials, right-facing stance, full body, transparent background, clear margins, no beam. Muzzle faces diagonally down-right. Do not change character identity, render style, head/legs/raised arm, or add objects. No text.",
+        "idle": "Use case: stylized-concept. Asset type: isolated HD battle sprite master for a faithful 1995 tactical RPG remake. Input image is the ORIGINAL PIXEL ART SHAPE REFERENCE, not a montage to reproduce. Draw ONE full-body robot based exactly on the STANDING IDLE robot in the first row, facing screen RIGHT in three-quarter view. Preserve its very bulky olive gray-green rounded armor, low flattened curved helmet with projecting brow and small dark face slit, navy blue exposed ribbed joints, long deep-blue groin cloth, asymmetric large pauldrons, broad articulated claw feet. Near forearm held horizontally across chest toward right, a long tapered oval armored cannon casing with dark blue rim, closed. Far arm has a fist held slightly forward at waist. Small red light above back shoulder. All mechanical, no human face. Preserve original squat broad silhouette and pose. Medium: richly painted 2D fantasy mechanical game illustration, crisp ink contours, subtle painterly metal highlights and wear, strong readable shapes, compatible with handpainted HD character sprites. Full body, both feet completely visible, generous transparent margins all sides. One character only. Genuinely TRANSPARENT RGBA background. No ground plane, no cast shadow, no text, no labels, no panels, no effects, no beam. Do not replace with a cylindrical-headed robot or tall humanoid knight.",
+        "open": "Use case: identity-preserve. Asset type: HD battle sprite master, second pose of the SAME robot as image 2. Image 1 is original pixel reference; use ONLY its last row RIGHT pose FIGANI334 frame9 as exact action/silhouette guide, not the montage layout. Image 2 is the accepted painted robot identity/material style; keep its olive armor, deep blue joints and long blue tabard, low flattened helmet, broad mechanical proportions, red shoulder light. Draw ONE full-body robot facing RIGHT, braced shooting stance exactly like original last-row frame9: near arm cannon casing opens into large pointed dark-blue/olive fins around a dark circular cannon muzzle at forward waist height, muzzle faces diagonally down-right. Other arm raised up/back and long horizontal armor section extends right above the head. Leftmost leg extends diagonally back-left; other leg planted beneath torso, powerful bent knees, both broad claw feet visible. Body leans right and twists; preserve squat mass, armor plates and navy ribbing. Important: cannon at waist, NOT near chest; do not just reuse idle pose. No beam or glow, dark round bore only. Rich handpainted 2D tactical RPG sprite, crisp contours, consistent painterly highlights with image2. One character on genuinely transparent RGBA background; include full body with 8 percent clear margin around every part, no ground, no shadow, no text, no grid, no montage.",
+        "beam": "Use case: stylized-concept. Asset type: single isolated 2D game cannon beam special effect layer, transparent RGBA. Reference image is original motion timeline, use ONLY FIGANI334 frame6 bright cone geometry. Do not draw any robot. Draw ONE large tapered cone of brilliant ivory-white energy with a thin golden-yellow/orange edge, originating at upper left and expanding toward lower right. Cone axis slopes about 26 degrees down toward right. Narrow round muzzle origin at x approximately 10%,y10%; huge broad far end at right and bottom. Cream hot center nearly opaque, sparse warm gold brush strokes along perimeter, subtle painterly texture, clean sharp readable silhouette suitable for handpainted RPG sprite. No blue magic, no lightning, no smoke, no circle or gun, no robot or background. Landscape composition with a complete wedge and generous 5% transparent margin, whole effect in canvas, no lettering, no contact sheet.",
+        "decay": "Use case: stylized-concept. Asset type: single isolated 2D game cannon beam decay effect layer, actual transparent RGBA. Reference is original timeline; use ONLY FIGANI334 frame7 effect shape, and no robot. One consistent effect across wide landscape canvas: at upper-left a short bright ivory/gold tapered muzzle flare pointing diagonally down-right; then a LARGE TRANSPARENT GAP in middle; at lower-right a detached expanding cone's jagged remnant formed of long parallel sharp ivory/gold streaks fanning toward bottom right. Near origin about (8%,10%), small flare stops at (32%,36%); detached far remnants begin around (65%,60%) and fan to (95%,94%). Same cream-white core and thin warm orange/gold perimeter as a powerful cannon, painterly texture, sharp readable directional streaks. Background genuinely transparent including gap. No smoke, no blue, no robot, no weapon, no ground, no text, no panels. Keep all streaks inside 4% margin. This is ONE effect layer, not multiple sprites or a contact sheet.",
+        "afterglow": "Use case: stylized-concept. Asset type: single isolated 2D game cannon final afterglow layer, real transparent RGBA. Reference shows original battle timeline; recreate ONLY the sparse gold/cream effect of FIGANI334 frame8, the bottom-left original panel, WITHOUT robot. It has a TINY muzzle spark at upper-left and a few detached small diagonal ivory/gold streaks far at bottom-right, with almost all canvas empty transparent. Landscape composition: tiny round ivory spark at (10%,10%), short very thin taper extending to (23%,24%); at (80%,84%) to (96%,96%) only FOUR or FIVE thin short gold-edged ivory slashes pointing diagonally down-right. The middle 60% must be totally transparent. Same warm cream/golden-orange palette, handpainted crisp game effect. No broad cone, no large flare, no continuous trail, no haze, no smoke, no robot, no weapon, no ground, no text, no grid. Keep every stroke fully inside canvas with clear margin."
+      }
+    },
+    "recipe": {
+      "schema_version": 1,
+      "figure": 111,
+      "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+      "sources": {
+        "idle": {
+          "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/idle-master-v1.png",
+          "sha256": "b5080c60721fbf04b218928d4ec1a291019609528de6932ee6c8af0076155ce6",
+          "anchor": [
+            155,
+            59,
+            1262,
+            1154
+          ]
+        },
+        "open": {
+          "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/open-master-v2.png",
+          "sha256": "cd6c7ba2931b19478c464f5a5c9251555a826eb73a6655d67e4a68a6b855e2a3",
+          "anchor": [
+            40,
+            114,
+            1272,
+            1147
+          ]
+        },
+        "beam": {
+          "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/beam-master-v1.png",
+          "sha256": "264b2ffdf2c1d4c6b42fad4c8a60d208234b65ff8b4464c736034252598d1be0",
+          "anchor": [
+            55,
+            70,
+            125,
+            140
+          ]
+        },
+        "decay": {
+          "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/decay-master-v1.png",
+          "sha256": "02a8a8e95faec9b0ca23518712cfbf68a02a8d59e21fa48744b855f526b49468",
+          "anchor": [
+            60,
+            75,
+            130,
+            145
+          ]
+        },
+        "afterglow": {
+          "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/afterglow-master-v1.png",
+          "sha256": "6be09fc25978ce16d8d2c13a6232d83cf5b593270685eb9e830416fa07440da2",
+          "anchor": [
+            120,
+            115,
+            190,
+            185
+          ]
+        }
+      },
+      "resources": {
+        "333": [
+          {
+            "pose": "idle",
+            "anchor": [
+              1,
+              0,
+              153,
+              139
+            ],
+            "scale_group": "idle"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              1,
+              0,
+              153,
+              138
+            ],
+            "scale_group": "idle"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              1,
+              0,
+              153,
+              137
+            ],
+            "scale_group": "idle"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              1,
+              0,
+              153,
+              138
+            ],
+            "scale_group": "idle"
+          }
+        ],
+        "334": [
+          {
+            "pose": "idle",
+            "anchor": [
+              1,
+              0,
+              153,
+              139
+            ],
+            "scale_group": "idle"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              1,
+              0,
+              152,
+              139
+            ],
+            "scale_group": "idle"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              1,
+              0,
+              151,
+              139
+            ],
+            "scale_group": "idle"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              1,
+              0,
+              150,
+              139
+            ],
+            "scale_group": "idle"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              1,
+              0,
+              149,
+              139
+            ],
+            "scale_group": "idle"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              1,
+              0,
+              148,
+              139
+            ],
+            "scale_group": "idle"
+          },
+          [
+            {
+              "pose": "open",
+              "anchor": [
+                1,
+                0,
+                167,
+                143
+              ],
+              "scale_group": "open"
+            },
+            {
+              "pose": "beam",
+              "anchor": [
+                106,
+                57,
+                116,
+                67
+              ],
+              "scale_group": "effect6"
+            }
+          ],
+          [
+            {
+              "pose": "open",
+              "anchor": [
+                1,
+                0,
+                167,
+                143
+              ],
+              "scale_group": "open"
+            },
+            {
+              "pose": "decay",
+              "anchor": [
+                106,
+                57,
+                116,
+                67
+              ],
+              "scale_group": "effect7"
+            }
+          ],
+          [
+            {
+              "pose": "open",
+              "anchor": [
+                1,
+                0,
+                167,
+                143
+              ],
+              "scale_group": "open"
+            },
+            {
+              "pose": "afterglow",
+              "anchor": [
+                106,
+                57,
+                116,
+                67
+              ],
+              "scale_group": "effect8"
+            }
+          ],
+          [
+            {
+              "pose": "open",
+              "anchor": [
+                1,
+                0,
+                167,
+                143
+              ],
+              "scale_group": "open"
+            }
+          ]
+        ]
+      }
+    },
+    "recipe_file": {
+      "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/recipe-r1.json",
+      "sha256": "aa95c33c164e18c1b7f24dea6e526764717e487dff8761af3b6a9726926840ca"
+    },
+    "compiled": {
+      "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/candidate-r1/compiled.json",
+      "sha256": "4b5ecd94a627410e3b15b2d1882626707eeec0c48c9a3dc3a22806056291d7aa"
+    },
+    "review": {
+      "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/candidate-r1/review.png",
+      "sha256": "b8d99e5107132331da0c14dd9167672304ea8904a2531b700ed35d6b5a3fe6fb"
+    },
+    "compiler_guards": {
+      "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/compiler-guards-r1/guards.json",
+      "sha256": "4a9e0f0e4d0928817ac537b720393410c91443a8fdc923ac4834ab2a0cdcfd49"
+    },
+    "candidate_coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/candidate-coverage.json",
+      "sha256": "16901e1f77c328080f826785cd3687d17f7cd6fc4c321f948ca6e81716583bb8"
+    },
+    "design_contract": {
+      "shape_authority": "原FIGANI333／334大型機兵：灰綠重甲、深藍關節及長垂布、低扁頭盔、橫向閉合前臂砲與開砲支撐姿態。未以FDICON111圓柱頭造型代替，不猜專名。",
+      "sharing": "333四張與334前六張共用idle母稿，334末四張共用修訂open母稿；三張beam／decay／afterglow獨立原始RGBA分層，保留原描述子與時序，未新增插幀。",
+      "clipping": "機體高覆蓋核心零裁切；334:6／7光束依原右邊界截斷，分別裁42791／23545高覆蓋像素，保留來源與明示錨點，不宣稱零裁切。",
+      "approximation": "手繪重設計保留原可見姿勢及方向；不宣稱輪廓、機體與光束逐像素相同。"
+    },
+    "rejected_candidates": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/open-master-v1.png",
+        "sha256": "2e4dd5efa9d46549ca217f4a35281ca04e1aea6b4835a576ff49e385dbe1c63e",
+        "reason": "前臂砲口過於靠右；v2縮短至腰前，保留其餘身份與姿態。",
+        "preserved": true
+      }
+    ],
+    "fixture": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/gpu-r1/receipt.json",
+        "sha256": "781a2f663d3bd7934a9ba843d91ee50e01496c15df718ec94ebd1806e98349b2"
+      },
+      "blue_pixels": {
+        "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/gpu-blue-r2.json",
+        "sha256": "cd7869d6cc58f71ff51c1c63c29cdc52eeca6a91555b2a3e9cfc48cbc44af0fb"
+      },
+      "warm_pixels": {
+        "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/gpu-warm-r2.json",
+        "sha256": "932b693ddbe2b70f5c83990e60976324da2d4e1a4a7a402ff7ffe5ca9dd67b3f"
+      },
+      "blue_guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/gpu-blue-guards-r3/guards.json",
+        "sha256": "537a780040995c0312869f7be053d1ab3141accaefbd55700512717626ed2eeb"
+      },
+      "warm_guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/gpu-warm-guards-r3/guards.json",
+        "sha256": "640c357b6129f33a6d4cb373d6397c6e6f963b622b57768585f49b1d98d88244"
+      },
+      "complete_frames": 14,
+      "hd_draws": 216,
+      "final_draws": 334,
+      "battle_dac_steps": 64,
+      "map_dac_steps": 65,
+      "continuations": 1,
+      "scope": "強制攻擊／反擊及地圖fixture，僅RUNTIME-E1；藍色核心14張與暖亮核心334:6..8三張實際PNG逐點符合。真實前景228的填色受擊者遮擋部分機體，由來源SHA及mask排除，仍至少1000個可見點，原RGB門檻保持。",
+      "warm_effect_points": {
+        "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/warm-effect-point-scope.json",
+        "sha256": "f57fef77eb707de9d0e0896d0f0f1a65cc6e833cf7442dc41c888a023a9002d6"
+      }
+    },
+    "failed_validation_attempts": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/gpu-blue.log",
+        "reason": "首輪未排除真正受擊者前景mask，334:6被遮住的藍色點因此拒收。",
+        "classification": "fixture前景遮擋，非圖源缺陷"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/gpu-blue-guards-r2.log",
+        "reason": "呼叫負向工具漏傳--inventory，NoneType停止；r3補齊既有必要參數，8項拒收通過。",
+        "classification": "驗證呼叫錯誤，未修改工具或門檻"
+      }
+    ],
+    "original_files_unchanged": {
+      "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/original-files-unchanged.json",
+      "sha256": "d0ecf8862174be44debbb93332636fb49e3753e64279562fbbbf1a7bb2de4f91"
+    },
+    "runtime_only": {
+      "manifest": {
+        "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/runtime-only-r1/private-manifest.json",
+        "sha256": "681117480721d0b8793d176ded0f3efcc3239de521af33b472fef838cfffbc02"
+      },
+      "go_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/runtime-go-r1.log",
+        "sha256": "c7810095d0d38fae40cf4340eead2753c653e10f83fdb5d19e2977a57fa821cb"
+      },
+      "gpu_receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/gpu-runtime-r1/receipt.json",
+        "sha256": "c79032bde282183d83ef1cd3ef9313e4a72347e5f61f10a472e975f287b48ab7"
+      },
+      "png_byte_regression": {
+        "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/runtime-png-byte-regression.json",
+        "sha256": "4472eb4d11e4cee4c855682f5c1a8385849d29beffa6cee7d39ea66705cd2ac4"
+      },
+      "files": 3417,
+      "masters_present": false,
+      "tests": 3,
+      "subtests": 2,
+      "skips": 0,
+      "output_files_removed_after_validation": true
+    },
+    "normal_battle_gui": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/normal-gui-r3/receipt.json",
+        "sha256": "aca322d880682cf80a649b0d81b41ef45e194beaa7d1f857f84a805fde8fdb63"
+      },
+      "pixels": {
+        "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/normal-target.json",
+        "sha256": "0dbf80cbb1b7a8beb03b0bb9a9845630a9c79728e8e48dc236fd2c78735c1812"
+      },
+      "guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/normal-target-guards/guards.json",
+        "sha256": "92afcbb50c70e2663802bbc0e9c3b9ce502a7654866090c7dbe471e69d678d7a"
+      },
+      "end_rounds": 4,
+      "approach_cells": [
+        [
+          20,
+          32
+        ],
+        [
+          20,
+          28
+        ],
+        [
+          20,
+          24
+        ],
+        [
+          20,
+          23
+        ]
+      ],
+      "attack_cell": [
+        20,
+        23
+      ],
+      "target_figure": 111,
+      "matched_pngs": 6,
+      "new_process_title_load": true,
+      "cold_loaded_units_equal": true,
+      "node_boundary_save_checked": true,
+      "source_save_bytes_equal": true,
+      "theme_save_bytes_equal": true,
+      "source_save_sha256": "5d64f3a0bf9aa56f7e77f51e8cfe45fe8c14ab78f2703b966fbc0e142e7bd871",
+      "gui_tool_sha256": "5726ad2f34ad33c33e8ecbb8e5b015d48d220103f1c641a9477d7aaa6d7cbc81",
+      "binary_sha256": "bf4f60d1d803d0526d427629ecd78bb54dc1b72960a50576240d0185ca528606",
+      "elapsed_seconds": 377.864259198308,
+      "recording_created": false,
+      "scope": "既有章23F5來源，章前AP+5000／DP+300／DX+60／MaxHP+1000及原傷亡保持；game seed1，正常四次END與蓋亞攻擊上方111，章內無注入。只驗正常目標待機，開砲限fixture。F5重建章節邊界，不保存本次戰中HP／位置；不宣稱自然難度、新原版parity或整章E2。",
+      "negative_checks": 12
+    },
+    "failed_normal_runs": [
+      {
+        "directory": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/normal-gui-r1",
+        "classification": "最近目標不可達",
+        "reason": "兩次END後蓋亞19,29，近側111在17,29；正式可達集合沒有合法相鄰格，單調距離停止。",
+        "fix": "明示row-max25選上方同圖組，不改移動力或位置。"
+      },
+      {
+        "directory": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/normal-gui-r2",
+        "classification": "缺明示END樣本",
+        "reason": "同來源seed1四次END後完成攻擊／返回／F2及新程序LOAD，未取得111 END圖源，原控制器拒收保持。",
+        "fix": "r3同源同seed與min4/max6，以既有target範圍驗受擊待機，未放行普通開砲或補造r2 PASS。"
+      }
+    ],
+    "formal_admission": {
+      "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/formal-admission.json",
+      "sha256": "99757cf924d757b1b267049bece4f3d4b76f2296faaeabd243e021703f46bc5c"
+    },
+    "formal_coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/formal-coverage.json",
+      "sha256": "c77589adbc03e13e52cf7bc59f0a341612bfdd85961dc54e7b22a08b18f79bf2"
+    },
+    "private_sync": {
+      "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/private-sync-verification.json",
+      "sha256": "d3cc20b7600ebb2e8351cb88b99eded8cfdde531cce3db7a2eb78c8752509207"
+    },
+    "go_sources_unchanged": {
+      "scope": "本批未改Go來源、規則或保存格式；候選／runtime-only各三項加兩子項及完整GPU、正式兩項加兩子項均零SKIP。完整20套件沿d36339a4的death_consumers_followup_20261021，不冒稱本批重跑。字串處置99項與既有來源盤點保持。"
+    },
+    "runtime_source": {
+      "binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/fd2-r1",
+        "sha256": "bf4f60d1d803d0526d427629ecd78bb54dc1b72960a50576240d0185ca528606",
+        "size": 19445480,
+        "removed_after_validation": true
+      },
+      "gui_tool": {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "5726ad2f34ad33c33e8ecbb8e5b015d48d220103f1c641a9477d7aaa6d7cbc81"
+      },
+      "go_base_commit": "d36339a4959b30a5f6d7da741028507f73e1cec7",
+      "production_go_changes": 0,
+      "candidate_catalog": {
+        "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/candidate-r1/catalog.json",
+        "sha256": "ed8e298dd689a39ebb0344ca81d42d5d87973c12d9a0583ae5dcbe337278f8c8"
+      },
+      "formal_catalog": {
+        "file": "remake/assets/themes/modern/catalog.json",
+        "sha256": "28021a402dc08f710f339abd118af65ee32d8d5795a3931b54f23d660ee820a2"
+      },
+      "buildinfo": {
+        "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/binary-buildinfo.txt",
+        "sha256": "002bb823d28fb50dcd506a0197f0d79500a46632e1a0529f91452ab548c5f589"
+      }
+    },
+    "public_git_proof_file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/public-git-proof.json",
+    "private_git_proof_file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/private-git-proof.json",
+    "readme_screenshot": {
+      "file": "docs/figures/hd-mechanical111-normal.png",
+      "sha256": "b6938b9e2b0b6a98e25200f7586106779a6afec3daac23c37380f5ed481215cc",
+      "source": {
+        "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/normal-gui-r3/world-hd-art-00.png",
+        "sha256": "b6938b9e2b0b6a98e25200f7586106779a6afec3daac23c37380f5ed481215cc"
+      },
+      "classification": "普通章23實際視窗，未編修；圖源核心驗受擊待機，不代表普通開砲或唯一相位。"
+    },
+    "identity": {
+      "classification": "confirmed normal UI label",
+      "battle_figure": 111,
+      "observed_class_label": "機甲兵",
+      "source": {
+        "file": "docs/figures/hd-mechanical111-normal.png",
+        "sha256": "b6938b9e2b0b6a98e25200f7586106779a6afec3daac23c37380f5ed481215cc",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/normal-gui-r3/world-hd-art-00.png",
+          "sha256": "b6938b9e2b0b6a98e25200f7586106779a6afec3daac23c37380f5ed481215cc"
+        },
+        "classification": "普通章23實際視窗，未編修；圖源核心驗受擊待機，不代表普通開砲或唯一相位。"
+      },
+      "scope": "原始LOAD名冊name為空；此處只依普通戰鬥HUD辨識職業標籤，不猜角色identity或ClassID數字。"
+    },
+    "formal_go": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/formal-go.log",
+        "sha256": "6af1c2ab30ba671f05500747c9019b3493e5c22a157128b1365dc499e0160a5c"
+      },
+      "tests": 2,
+      "subtests": 2,
+      "skips": 0,
+      "status": "PASS"
+    },
+    "candidate_go": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/candidate-go-r1.log",
+        "sha256": "b30916ad1b67a573520d522af169186a5ffa4b4d24a1e2f4b7b1a83263d07e78"
+      },
+      "tests": 3,
+      "subtests": 2,
+      "skips": 0,
+      "status": "PASS"
+    },
+    "catalog_tests": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/catalog-tests.log",
+        "sha256": "01b2fb923ed7b70fd69a206c631375284d84a16a4f7b7ef8cea32b35b15bbc39"
+      },
+      "tests": 12,
+      "status": "PASS"
+    },
+    "lessons": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/lessons-check.log",
+        "sha256": "8fa22d06e18ac912bb749e12fbabf86eddcde043c080af9caf715a473c19195c"
+      },
+      "lessons": 284,
+      "guards": 159,
+      "status": "PASS"
+    },
+    "private_git_proof": {
+      "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/private-git-proof.json",
+      "sha256": "4af8ed0dab7cc6dd02a34299b596a9447e5e7c1d72847c98180acd89b9b5b9c6"
+    },
+    "worklist": {
+      "issues": [
+        201,
+        263
+      ],
+      "state": "OPEN",
+      "open_items": 22,
+      "manual_items": 14,
+      "possibly_done": 0,
+      "acceptance_preserved": true,
+      "source": "host gh actual fetch; existing build_snapshot/write_snapshot/render/verify pure functions; state labels unchanged",
+      "verify_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/worklist-verify.log",
+        "sha256": "86a705d5f4e3a2e4f08ef650f29d426c2c5c17cfa54544b6333b324e92c391d1"
+      }
+    },
+    "reproduce": {
+      "image_generation": "內建image_gen，完整提示見generation；原始RGBA母稿SHA與輸出檔名見recipe及正式catalog.source_files。重生成不承諾相同像素，以私人保存的固定母稿重編製。",
+      "compile": "Docker fd2-assets-local:20260829-sfx, python3 tools/build_fd2_character_battle_hd.py --pack /original --inventory docs/data/fd2-battle-hd-source-inventory-20261019.json --recipe work/promo-cadence-20261018/hd-fonts/mechanical111-r1/recipe-r1.json --out <new-candidate-dir> --base-catalog work/promo-cadence-20261018/hd-fonts/mechanical111-r1/candidate-r1/base-catalog.json --layered",
+      "gpu": "Docker fd2-go-test-local:latest, with-xvfb go test ./cmd/fd2 -run ^TestModernHDBattleRuntimeGPU$ -count=1 -v; FD2_HD_BATTLE_LIFECYCLE_GPU=1 FD2_HD_BATTLE_REAL=1 FD2_TEST_MODERN_BATTLE_FIGURE=111, FD2_ASSET_PACK=/original, FD2_TEST_MODERN_BATTLE_CATALOG=<candidate/catalog.json> FD2_TEST_MODERN_BATTLE_PACK=<candidate/pack> FD2_TEST_HD_BATTLE_OUT=<new-output>。來源pack與工作樹掛載如專案Docker-only契約，所有可寫輸出UID/GID1000。",
+      "normal": "Docker fd2-promo:20261017-r1, python3 tools/verify_fd2_hd_fonts_gui.py --binary <rebuilt-fd2> --assets <candidate/runtime> --original-pack /original --modern-pack <candidate/pack> --out <new-gui-dir> --town-save work/promo-cadence-20261018/hd-fonts/shared-death-player-ch23-r1/source-gui-r2/user-data/fd2_re/fd2_save.json --battle-status --world --battle-hd --battle-art --battle-only --battle-repetitions 1 --battle-art-samples 64 --battle-node battle_ch23 --battle-own-index 3 --battle-target-figure 111 --battle-target-row-max 25 --battle-approach-rounds 6 --battle-min-approach-rounds 4 --battle-advance。world固定FD2_SEED=1；GUI自管Xvfb／Pulse生命週期。",
+      "pixel_verification": "python3 tools/verify_fd2_character_battle_gpu.py --figure 111 --sample-group target --receipt <normal/receipt.json> --catalog <candidate/catalog.json> --source <candidate/pack> --report <new-report>。完整fixture加--sample-group fixture --proven-occlusion --original-pack /original --inventory docs/data/fd2-battle-hd-source-inventory-20261019.json；光束另加--core-profile warm --body-frames 334:6-8。",
+      "scope": "不跑本批原版oracle；這些是HD呈現及正常受擊目標抽驗，不新增逐幀／傷害／音訊或整章E2。"
+    },
+    "cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/cleanup.json",
+      "sha256": "e16fe02a147f1dc73eeae7100d400c07a80759e138e171c7f286165a9f9a5043"
+    },
+    "private_ownership": {
+      "files": 3772,
+      "uid": 1000,
+      "gid": 1000,
+      "all_files_checked": true,
+      "scope": "私人提交前逐檔stat及SHA；含catalog/manifest，沒有遞迴chown。"
+    },
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/final-validation.json",
+      "sha256": "2cf0835fefcb321ed5f191cbed82c8831f5536908b103d707489cec0c4af2971"
+    }
+  },
+  "runtime_source_scope": "頂層runtime_source及source_commit保留索爾階段的歷史來源；本輪現行來源見mechanical111_battle_followup_20261021.runtime_source，Go規則沿d36339a4，新增圖源及工具的發布HEAD見該段Git核對檔。"
 }

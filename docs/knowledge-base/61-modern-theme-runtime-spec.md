@@ -2965,3 +2965,30 @@ status GPU使用明示typed phase建構，正式扣血訊息caller另由native_a
 普通GUI沿上節控制器另加--death-kind action，預設script仍抽章節事件，並要求--world固定seed。
 唯讀unit_death_kind明示來源，兩類不混報；[完整核對器](../../tools/verify_fd2_hd_death_gpu.py)與
 [普通核對器](../../tools/verify_fd2_hd_death_normal.py)新增未知或錯類型的拒收，均各九項反例通過。
+
+### BattleFig111 待機／前臂砲射擊
+
+狀態：CONFORMED-SCOPED。基底d36339a4。沿既有來源盤點的FIGANI333四幀及334十幀，335為固定零header，不補造施術。
+來源、metadata／PNG／mask SHA、原矩形與raw marker集中於[HD戰場主收據](../data/fd2-modern-hd-battlefield-20261019.json)的mechanical111_battle_followup_20261021。
+本批只新增已核准手繪風格的圖源，不改戰鬥規則、矩形、delay、hit／sample marker、保存格式或原版像素模式。
+
+- 以原大型戰鬥圖為造型主證據，保留灰綠重甲、深藍關節與垂布、低扁頭盔、長形前臂護殼及開砲姿態。
+  不以相同數字的FDICON圖組猜成相同形狀，不使用圓柱頭地圖母稿覆蓋原大型造型。
+- 原待機四幀及攻擊前六幀的相近姿態可明示共用母稿；334:6..9依原開砲姿態及光束衰減分層。
+  機體與光束獨立錨定，保留原完整框與視口裁切，不靠拉伸人體或更改原描述子遮掩尺寸。
+- 母稿原始RGBA與提示保留；既有--layered編製器只作明示縮放／定位與合成。
+  先候選及裁切審查，再完整14張Game.Draw／F2／返回DAC／一次續行；不因圖片存在就登錄。
+- 普通GUI沿章23來源、固定seed與有界正常移動／END攻擊111，實圖核對該圖源、自然返回、F2及邊界保存冷讀。
+  一般world控制器須等待新unit_death_scene完成，避免把戰鬥scene結束當作行動全部收尾。
+  章前強化與樣本時點差異明示；不新增自然難度、唯一相位、原版parity或整章E2。
+- 正式兩項新增前保持原413項entries與成品SHA；通過清冊與runtime-only驗證後依allow-list同步私人庫。
+- 普通首輪的最近111位於17,29，蓋亞抵19,29後，正式可達集合沒有相鄰攻擊格，單調距離控制器停止。
+  改以明示的`--battle-target-row-max 25`只篩選上方同圖組；有界六END與正常可達格、來源seed1保持。
+  這只約束測試選目標，不修改單位、地形或AI；普通攻擊與END實圖分開核對，未取得的相位不放行。
+- 上方路徑四次END未取得111主動開砲，r2因此保留原GUI拒收，不從觀測補造PASS。
+  同來源、seed1、row-max25、min4／max6以既有target驗收正常受擊待機、自然返回及冷讀；
+  不再要求未取得的END樣本，開砲／光束全部原幀仍限完整Draw的RUNTIME-E1，不冒稱普通開砲驗收。
+
+驗收：完整14張最終GPU、三階段F2、64／65 DAC及一次續行通過；五母稿與原描述子保持。完整／runtime-only最終PNG bytes相同。
+普通章23四次END後受擊待機、返回、F2及邊界冷讀已驗；未取得的普通主動開砲仍待，不以fixture補成PLAYER-E2。
+來源、兩輪普通拒收與原子性驗證見主收據的mechanical111_battle_followup_20261021；數量依58。

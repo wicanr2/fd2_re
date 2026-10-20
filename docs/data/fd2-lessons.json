@@ -3056,8 +3056,8 @@
       "id": "normal-character-art-capture-requires-reachable-attack",
       "date": "2026-10-19",
       "area": "正常玩家HD抽驗",
-      "rule": "角色戰鬥圖源抽驗以當前正式move_reachable選相鄰敵格，不沿用其他角色的可達性假設。沒有可達位置時，只走明示有界的普通END接敵，記錄換手與存活；仍無路就保留失敗，不改移動力或注入位置。入口tools/verify_fd2_hd_fonts_gui.py的--battle-own-index及--battle-approach-rounds。 遠方目標按實際普通進軍位置選有界END範圍；tools/verify_fd2_hd_fonts_gui.py明示0..6，預設0，超過所選上限仍拒收。先記錄不足輪次的觀測，不以只看直接進場或改移動力補可達性。",
-      "why": "首章亞雷斯可直接接戰，換索爾後同槽的正式可達集合沒有相鄰敵格。保留首輪失敗，按既有系統環END契約換手一次後索爾正常進入攻擊；沒有改存檔隊伍或座標。 83號在北側，三次END後希莉亞仍停(10,24)，射程2..3未達；依實際位置擴明示輪數，不改章內狀態。",
+      "rule": "角色戰鬥圖源抽驗以當前正式move_reachable選相鄰敵格，不沿用其他角色的可達性假設。沒有可達位置時，只走明示有界的普通END接敵，記錄換手與存活；仍無路就保留失敗，不改移動力或注入位置。入口tools/verify_fd2_hd_fonts_gui.py的--battle-own-index及--battle-approach-rounds。 遠方目標按實際普通進軍位置選有界END範圍；tools/verify_fd2_hd_fonts_gui.py明示0..6，預設0，超過所選上限仍拒收。先記錄不足輪次的觀測，不以只看直接進場或改移動力補可達性。 同圖組的最近目標不可達時，保留停止收據，透過tools/verify_fd2_hd_fonts_gui.py的--battle-target-row-max明示另一區域；只篩選目標，不改正式可達集合或單位狀態。",
+      "why": "首章亞雷斯可直接接戰，換索爾後同槽的正式可達集合沒有相鄰敵格。保留首輪失敗，按既有系統環END契約換手一次後索爾正常進入攻擊；沒有改存檔隊伍或座標。 83號在北側，三次END後希莉亞仍停(10,24)，射程2..3未達；依實際位置擴明示輪數，不改章內狀態。 第23章111近側17,29無相鄰可達格，改row-max25沿上方通道完成；四次END未取到主動開砲，與正常受擊待機分開驗收。",
       "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
       "guard": {
         "kind": "present",

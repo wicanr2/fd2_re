@@ -195,6 +195,12 @@ HD 背景、敵方與面板仍含像素素材。來源與可重跑方式見
 第九章正常進軍後的魔法師施法視窗，未編修。人物為HD，背景、戰鬥面板與法術特效保留像素素材。
 抽樣使用章前加血來源，章內沒有狀態注入；施法、受擊、返回與保存冷讀見[驗證範圍](docs/knowledge-base/58-fd2-exe-re-coverage.md)。
 
+![第23章機甲兵HD受擊待機](docs/figures/hd-mechanical111-normal.png)
+
+上圖是蓋亞普通攻擊機甲兵時的實際遊戲視窗，未編修。機甲兵保留原版灰綠重甲、深藍關節與前臂砲造型。
+受擊待機、返回、F2及保存冷讀已抽驗；開砲與光束完整繪製另由測試場景驗證，普通開砲仍待。
+測試使用章前強化槽，背景與面板仍含像素素材；來源見[驗證紀錄](docs/data/fd2-modern-hd-battlefield-20261019.json)的`mechanical111_battle_followup_20261021`。
+
 普通擊殺與章節事件的死亡演出已接入 HD 煙霧，保留人物轉向、效果累積與消散。
 
 ![第23章普通擊殺的HD死亡演出](docs/figures/hd-action-death-normal.png)

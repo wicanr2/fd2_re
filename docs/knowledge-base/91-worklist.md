@@ -126,21 +126,17 @@ FDFIELD回合事件由完整具型別處理器降成正式劇本，保留增援�
 
 `modern-theme-player-asset-coverage` · 工作 · [#201](https://github.com/wicanr2/fd2_re/issues/201) · 仍未完成 · 要人判
 
-完整HD尚未完成，本項保持開啟。唯一覆蓋數量與剩餘缺口依[58現況矩陣](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)，戰鬥範圍見 #263。
+完整HD尚未完成，本項保持開啟。唯一覆蓋數量與剩餘缺口依[58現況矩陣](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)，來源與限制集中於[HD戰場主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-battlefield-20261019.json)。
 
-普通行動與狀態致死已接既有共用死亡HD。物理入口及ApplyHPDamage的正值→0邊界保留實際原+5，私有演出使用該來源，保留正式State／Unit指標、HP／RNG／獎勵。兩個Unit私有欄位不序列化，正常復活及收尾清除；JSON bytes不變。無可見新死亡不增加空演出。
+BattleFig111「機甲兵」的FIGANI333／334原14幀已正式登錄，335固定零header不補造。灰綠重甲、深藍關節／垂布、低扁頭盔及前臂砲沿原大型圖造型；五份原始RGBA母稿分開機體與光束，不用FDICON同號圖組猜造型。相近姿勢共用與右邊界光束裁切均明示，不改原矩形、delay、命中／音效標記、遊戲規則或保存格式。
 
-狀態phase在扣血訊息後、到期提示前接共同26拍，不建立killer或死亡獎勵。私有預檢先沿原單格游標step走完扣血聚焦，view／HUD／work／VGA與正式focus一致，不發正式trace或改live狀態；缺件在HP交易前拒收。普通行動預檢位於已結算邊界，不聲稱回滾此前HP／RNG。
+完整14張最終Game.Draw、三階段F2、64／65返回DAC與一次續行通過。本體14張及光束三張暖亮核心分別核對，真實受擊者前景只按固定來源SHA／mask排除；兩組各八項拒收與編製器21項守衛通過。不含母稿的執行包14張PNG與完整包bytes相同。舊413項entries及私人舊3753檔保持，新增素材只按catalog allow-list同步私人庫，拒收稿與原版擷取不混入。
 
-action／status／script各26張完整Game.Draw、四階段F2與一次續行通過。最終78張PNG及收據和各自獨立來源重組基底bytes相同，原事件26拍亦與前批保持。GPU與正常PNG核對器各九項錯誤拒收，包含錯consumer。最終20套件Go通過，99項字串處置只重綁座標。AI指令10實際走完後接死亡owner，驗續行一次及不追加RNG；手工fixture明示靜音，不代替人耳確認。
+普通章23沿既有F5來源與固定seed1，章前AP+5000／DP+300／DX+60／MaxHP+1000且保留原傷亡，章內無注入。近側111不可達的首輪保留停止；明示row-max25選上方同圖組後，四次正常END、蓋亞攻擊111、自然返回、F2及章節邊界保存／新程序LOAD通過。六張視窗符合目標待機核心，十二項普通拒收通過。四次END沒有取得111主動開砲，該輪原GUI拒收保持；正常開砲仍待，完整開砲只屬RUNTIME-E1。F5不保存本次戰中HP／位置，不新增自然難度、原版parity或整章PLAYER-E2聲明。
 
-正常GUI沿既有第23章F5來源，固定seed1，章前AP+5000／DP+300／DX+60／MaxHP+1000並保留原傷亡。蓋亞七次普通END、一次清障攻擊後擊倒隊長，抽第一次action死亡，再正常走文字5／事件53、勝利確認與戰後至第24章整備。十五張取樣有三張A／B不透明來源核心符合；三份其他效果候選跨拍或不足100點仍拒收，人物／透明尾段不由此方法證明。F2前後F5 bytes相同及新程序標題LOAD通過，章內無注入。
+普通行動／狀態致死沿上一批共用26拍與三種consumer驗證；正常章23擊殺及事件／戰後／章24整備已抽驗，狀態致死正常GUI仍待。本批Go來源未改，完整20套件沿d36339a4既有證據；本批另實跑候選／正式／runtime-only載入、缺件原子性及完整GPU，沒有把繼承全套冒稱新跑。
 
-README改用未編修的普通擊殺視窗，舊事件圖與凱麗原版vsHD GIF保持。沒有新素材或錄影，原413項catalog SHA保持，私人素材沿18b0af20，沒有另做私人庫提交。狀態GPU採明示typed phase建構，正式扣血訊息caller另驗；狀態正常GUI、其他人物／指令／效果、普通召喚與平台效能仍待，不宣稱自然難度、新DOS逐拍raw或整章PLAYER-E2。來源408及#265限制保持。
-
-完整來源、已知差異與重跑入口見[主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-battlefield-20261019.json)的death_consumers_followup_20261021、[61](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/61-modern-theme-runtime-spec.md)及[WORKLOG](https://github.com/wicanr2/fd2_re/blob/main/WORKLOG.md)。既有角色與章節事件成果保留於同一主收據。
-
-_原驗收條件保持。_
+README加入未編修普通機甲兵視窗，凱麗原版vsHD GIF與文化保存入口保持。其他人物、指令、法術／地圖回復、共同效果、普通召喚及平台效能繼續追蹤；不關閉本項。
 
 怎樣算做完：受版控需求盤點可重跑，列出來源與consumer；既有已核准現代替換範圍零非預期缺件，其他畫面各有明示分類與決策；缺件拒收與原子切換回歸通過，私人包雜湊及遠端HEAD可核對。
 
@@ -192,21 +188,17 @@ HD高解析呈現仍未完成。目前穩定文字、高解析故事頭像、戰
 
 `modern-battle-animation-hd` · 工作 · [#263](https://github.com/wicanr2/fd2_re/issues/263) · 仍未完成 · 要人判
 
-完整HD尚未完成，本項保持開啟。唯一覆蓋數量與剩餘缺口依[58現況矩陣](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)，戰鬥範圍見 #263。
+完整HD尚未完成，本項保持開啟。唯一覆蓋數量與剩餘缺口依[58現況矩陣](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)，來源與限制集中於[HD戰場主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-battlefield-20261019.json)。
 
-普通行動與狀態致死已接既有共用死亡HD。物理入口及ApplyHPDamage的正值→0邊界保留實際原+5，私有演出使用該來源，保留正式State／Unit指標、HP／RNG／獎勵。兩個Unit私有欄位不序列化，正常復活及收尾清除；JSON bytes不變。無可見新死亡不增加空演出。
+BattleFig111「機甲兵」的FIGANI333／334原14幀已正式登錄，335固定零header不補造。灰綠重甲、深藍關節／垂布、低扁頭盔及前臂砲沿原大型圖造型；五份原始RGBA母稿分開機體與光束，不用FDICON同號圖組猜造型。相近姿勢共用與右邊界光束裁切均明示，不改原矩形、delay、命中／音效標記、遊戲規則或保存格式。
 
-狀態phase在扣血訊息後、到期提示前接共同26拍，不建立killer或死亡獎勵。私有預檢先沿原單格游標step走完扣血聚焦，view／HUD／work／VGA與正式focus一致，不發正式trace或改live狀態；缺件在HP交易前拒收。普通行動預檢位於已結算邊界，不聲稱回滾此前HP／RNG。
+完整14張最終Game.Draw、三階段F2、64／65返回DAC與一次續行通過。本體14張及光束三張暖亮核心分別核對，真實受擊者前景只按固定來源SHA／mask排除；兩組各八項拒收與編製器21項守衛通過。不含母稿的執行包14張PNG與完整包bytes相同。舊413項entries及私人舊3753檔保持，新增素材只按catalog allow-list同步私人庫，拒收稿與原版擷取不混入。
 
-action／status／script各26張完整Game.Draw、四階段F2與一次續行通過。最終78張PNG及收據和各自獨立來源重組基底bytes相同，原事件26拍亦與前批保持。GPU與正常PNG核對器各九項錯誤拒收，包含錯consumer。最終20套件Go通過，99項字串處置只重綁座標。AI指令10實際走完後接死亡owner，驗續行一次及不追加RNG；手工fixture明示靜音，不代替人耳確認。
+普通章23沿既有F5來源與固定seed1，章前AP+5000／DP+300／DX+60／MaxHP+1000且保留原傷亡，章內無注入。近側111不可達的首輪保留停止；明示row-max25選上方同圖組後，四次正常END、蓋亞攻擊111、自然返回、F2及章節邊界保存／新程序LOAD通過。六張視窗符合目標待機核心，十二項普通拒收通過。四次END沒有取得111主動開砲，該輪原GUI拒收保持；正常開砲仍待，完整開砲只屬RUNTIME-E1。F5不保存本次戰中HP／位置，不新增自然難度、原版parity或整章PLAYER-E2聲明。
 
-正常GUI沿既有第23章F5來源，固定seed1，章前AP+5000／DP+300／DX+60／MaxHP+1000並保留原傷亡。蓋亞七次普通END、一次清障攻擊後擊倒隊長，抽第一次action死亡，再正常走文字5／事件53、勝利確認與戰後至第24章整備。十五張取樣有三張A／B不透明來源核心符合；三份其他效果候選跨拍或不足100點仍拒收，人物／透明尾段不由此方法證明。F2前後F5 bytes相同及新程序標題LOAD通過，章內無注入。
+普通行動／狀態致死沿上一批共用26拍與三種consumer驗證；正常章23擊殺及事件／戰後／章24整備已抽驗，狀態致死正常GUI仍待。本批Go來源未改，完整20套件沿d36339a4既有證據；本批另實跑候選／正式／runtime-only載入、缺件原子性及完整GPU，沒有把繼承全套冒稱新跑。
 
-README改用未編修的普通擊殺視窗，舊事件圖與凱麗原版vsHD GIF保持。沒有新素材或錄影，原413項catalog SHA保持，私人素材沿18b0af20，沒有另做私人庫提交。狀態GPU採明示typed phase建構，正式扣血訊息caller另驗；狀態正常GUI、其他人物／指令／效果、普通召喚與平台效能仍待，不宣稱自然難度、新DOS逐拍raw或整章PLAYER-E2。來源408及#265限制保持。
-
-完整來源、已知差異與重跑入口見[主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-battlefield-20261019.json)的death_consumers_followup_20261021、[61](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/61-modern-theme-runtime-spec.md)及[WORKLOG](https://github.com/wicanr2/fd2_re/blob/main/WORKLOG.md)。既有角色與章節事件成果保留於同一主收據。
-
-_原驗收條件保持。_
+README加入未編修普通機甲兵視窗，凱麗原版vsHD GIF與文化保存入口保持。其他人物、指令、法術／地圖回復、共同效果、普通召喚及平台效能繼續追蹤；不關閉本項。
 
 怎樣算做完：建立由正式consumer到FIGANI人物及共同效果的可重跑覆蓋清冊；完成可達戰鬥動畫HD素材、原始位置／層序／節拍／命中與音效標記的正式呈現，缺件明示；正常玩家抽驗攻擊、受擊／反擊、法術／效果、死亡與戰場返回，F2、保存冷讀與代表性效能通過；已登錄素材同步私人庫，保留原版像素模式。資料測試及離線PNG不能取代正式GUI。
 
