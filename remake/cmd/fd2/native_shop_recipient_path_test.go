@@ -224,6 +224,44 @@ func TestNativeShopEquipmentRecipientProductionInputFullIsAtomic(
 	}
 }
 
+func TestNativeShopPurchaseEquipPreservesIgnoredRawCells(t *testing.T) {
+	g, screen := newNativeShopRecipientPathGame(t)
+	unit := cloneNativeShopUnit(g.partyRoster[0])
+	unit.Inventory = []int{1, 132}
+	unit.Equipped = []bool{true, true}
+	unit.InventorySlots = []int{1, 132, 0xff, 0xff, 0xff, 0xff, 0, 0}
+	unit.NativeInventoryFlags = []int{0x40, 0x40, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80}
+	g.partyRoster[0] = unit
+	g.shopItemStats[1] = campaign.ItemStats{Type: 0, AP: 10}
+	g.shopItemStats[132] = campaign.ItemStats{Type: 21, DP: 5}
+	wantOther := cloneNativeShopUnit(g.partyRoster[1])
+	enterNativeShopEquipmentRecipients(t, g, screen)
+	g.handleNativeShopRecipientInput(nativeShopRecipientInput{enter: true})
+	drainNativeShopProductionJobs(t, g, screen)
+	if g.nativeShopMode != "equip_confirm" {
+		t.Fatalf("purchase did not reach equip confirmation: %q", g.nativeShopMode)
+	}
+	g.handleNativeShopInput(true)
+	drainNativeShopProductionJobs(t, g, screen)
+	got := g.partyRoster[0]
+	if g.nativeShopMode != "purchase" || g.gold != 1134 || g.nativeShopHasPendingUnit {
+		t.Fatalf("purchase did not commit once: mode=%q gold=%d pending=%v",
+			g.nativeShopMode, g.gold, g.nativeShopHasPendingUnit)
+	}
+	if !reflect.DeepEqual(got.Inventory, []int{1, 132, 0}) ||
+		!reflect.DeepEqual(got.Equipped, []bool{false, true, true}) {
+		t.Fatalf("purchase equipment=%v flags=%v", got.Inventory, got.Equipped)
+	}
+	if !reflect.DeepEqual(got.InventorySlots, []int{1, 132, 0, 0xff, 0xff, 0xff, 0, 0}) ||
+		!reflect.DeepEqual(got.NativeInventoryFlags, []int{0, 0x40, 0x40, 0x80, 0x80, 0x80, 0x80, 0x80}) {
+		t.Fatalf("purchase activated ignored raw cells: items=%v flags=%v",
+			got.InventorySlots, got.NativeInventoryFlags)
+	}
+	if !reflect.DeepEqual(g.partyRoster[1], wantOther) || got.HP != unit.HP {
+		t.Fatal("purchase changed another recipient or HP")
+	}
+}
+
 func TestNativeShopNoEligibleRecipientProductionInputIsAtomic(t *testing.T) {
 	g, screen := newNativeShopRecipientPathGame(t)
 	g.shopEquipTypes = map[int][]int{1: {1, 2, 3, 4, 5, 6}}

@@ -1,5 +1,10 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
+原生第九章正常購買黑暗弓並立即裝備貝克威，2000→200金、射程1→2～4，HP與其他名冊保持。
+F5及正常出發／章首通過；未使用原始格6／7的0x80旗標保持，修正前F5毀損與回歸失敗均保留。
+29項商店回歸零SKIP。這是正常UI及保存修正，不新增原版parity或自然難度；
+來源見主收據`bekwei_battle_followup_20261020`，契約見[61](61-modern-theme-runtime-spec.md)。
+
 README已新增凱麗原版／HD並排攻擊GIF。左側由固定dosgolem提交正常LOAD、出發、兩次END及攻擊取得，
 右側沿已驗第九章實際HD視窗；21幀、2.17秒、完整解碼與四動作目視審查通過。
 兩側章前HP+1000，章內不鎖血；血量、亂數與到達格不同，僅比較相近戰況的美術與流程。
@@ -11,8 +16,10 @@ README已新增凱麗原版／HD並排攻擊GIF。左側由固定dosgolem提交�
 第九章正常LOAD、普通進軍及三次／兩次END、各一場攻擊自然返回、F2及章節邊界保存／冷讀通過。
 分別21／33張實際PNG符合圖源核心，兩份普通收據各九項反例拒收。
 GUI使用399項隔離候選，正式只登錄上述兩人；對應entries與35成品／9母稿逐筆相同。
-貝克威39／40的21幀僅通過修改fixture，15張本體／5張光束核心符合，末幀沿原Mask透明。
-普通第九章反擊遇既有caller BG拒收，仍為候選，缺口見[#265](https://github.com/wicanr2/fd2_re/issues/265)。
+貝克威39／40後續已正式登錄，完整21幀fixture保持；普通購弓後一次END與射程4炮擊、
+自然返回、F2及章節邊界保存／新程序冷讀通過，實際本體14張與光束4張相符，九項錯配反例拒收。
+前批帶短劍來源的caller BG拒收保留；一般混合header能力仍見[#265](https://github.com/wicanr2/fd2_re/issues/265)，
+後續來源與修正見主收據`bekwei_battle_followup_20261020`。
 第八章前方NPC死亡的三份GUI失敗保留；新來源只加章前HP，不鎖章內狀態。
 不新增自然難度、整章E2或原版逐幀聲明；正式數量與私人同步依[58](58-fd2-exe-re-coverage.md)，
 契約及完整提示沿[61](61-modern-theme-runtime-spec.md)與主收據`early_party_battle_followup_20261020`。

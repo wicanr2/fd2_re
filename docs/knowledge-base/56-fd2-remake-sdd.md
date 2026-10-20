@@ -1,10 +1,16 @@
 # 56 — FD2 remake 系統設計規格（SDD，2026-08-09）
 
+原生商店購買後立即裝備，現沿既有`EquipNativeCompactSlot`保留未使用原始格的旗標與殘留值。
+修正前普通購弓F5及正式生命週期回歸均證實兩個0x80旗標被清零；修正後29項商店回歸、
+同源正常購弓／立即裝備／F5／出發與射程通過。pending候選與原子拒收保持，格式及數值規則不變。
+來源及前後保存見主收據`bekwei_battle_followup_20261020`，契約見[61](61-modern-theme-runtime-spec.md)。
+
 瑪琳與凱麗沿既有FIGANI原框圖源契約接入HD，正式規則、繪製路徑與保存格式保持。
 完整修改fixture與第九章章前HP校準來源的普通攻防、返回、F2及邊界冷讀分組驗證。
 測試擷取補收既有departure工作；非零header必須有離場F2，不能只靠body樣本通過。
-貝克威仍為候選：修改fixture通過，普通反擊遇既有背景拒收，沿[#265](https://github.com/wicanr2/fd2_re/issues/265)查證。
-此建構槽含預設裝備，不推定該組合的未修改原版可達性。契約見[61](61-modern-theme-runtime-spec.md)，
+貝克威後續已正常購弓、出發及炮擊，返回／F2／保存冷讀與實際圖源通過，21幀正式登錄。
+前批背景拒收源於帶短劍的建構槽；一般混合header能力仍沿[#265](https://github.com/wicanr2/fd2_re/issues/265)查證，
+不推定原版可達性。契約見[61](61-modern-theme-runtime-spec.md)，
 唯一正式現況仍依[58](58-fd2-exe-re-coverage.md)。
 
 第二章村民FIGANI399／402的待機圖已沿原描述子正式登錄，攻擊及施術的零header來源保持為空。

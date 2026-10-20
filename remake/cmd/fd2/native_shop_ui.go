@@ -1857,7 +1857,8 @@ func (g *Game) handleNativeShopInputState(input nativeShopTransferInput) bool {
 		if cancel || enter {
 			if enter && !cancel {
 				staged := cloneNativeShopUnit(g.nativeShopPendingUnit)
-				if err := campaign.EquipItem(
+				// 原生購買沿0x1c142，只更新有效格；保留ignored格的旗標與殘留值。
+				if err := campaign.EquipNativeCompactSlot(
 					&staged, g.shopEquipSlot, g.shopItemStats,
 				); err != nil {
 					g.nativeShopHasPendingUnit = false

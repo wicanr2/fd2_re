@@ -9,13 +9,14 @@
     "native_viewport": "CONFORMED-SCOPED：正式1920世界沿原生(4,4)、312×192窗格；正常F2同view與960地形樣本一致。",
     "hd_sprite_data": "DATA-READY：完整125組1455張HD及31組372張新增24父項已登錄；舊1083張父項及HD bytes保持。",
     "hd_world_renderer": "CONFORMED-SCOPED：144人物已接Game.Draw；首章34張正常GPU、4張實際走行、兩次物理攻擊及保存／新程序LOAD通過。",
-    "private_assets": "397項清冊、3580檔完整allow-list與3281檔runtime-only逐筆SHA／UID核對，原3536檔保持；新增九母稿不進執行包。正式Go及遠端核對見early_party_battle_followup_20261020。正式Go三項及兩子項通過，零SKIP。私人已推送，實際遠端HEAD一致且保存庫仍private。",
+    "private_assets": "399項清冊、3609檔完整allow-list與3302檔runtime-only逐筆SHA／UID核對，原3580檔保持；新增八母稿不進執行包。正式Go三項及兩子項通過，零SKIP；私人已推送，實際遠端HEAD一致且仍private。見bekwei_battle_followup_20261020。",
     "quickload_battle_owner": "CONFORMED-SCOPED：成功JSON LOAD丟棄舊經驗owner與移動計畫；拒收保留。",
     "timed_dialogue": "CONFORMED-SCOPED-RUNTIME-E1：計時FFEC開收框保留HD世界，EXP99普通鍵盤／F2與保存冷讀通過；其他caller未驗。",
     "hd_terrain": "CONFORMED-SCOPED：map0六組53槽；新增圓頂綠色／褐色雙塊四底圖在兩張正常GPU全部相符，短長組合與保存冷讀通過；草地及其他地形仍待HD化。",
     "ai_player_input_lock": "CONFORMED-SCOPED：AI換手期間拒絕玩家地圖輸入重入；普通END／增援對話及相關／完整Go回歸通過。",
     "gaia_redesign": "CONFORMED-SCOPED：新版頭像與四方向圖組已登錄；正常START／Gaia北移取消／F2／冷讀分段驗證。相位差異與序章尾端失敗明示，非逐幀parity。",
-    "hd_battle_animation": "CONFORMED-SCOPED：正式FIGANI24資源177幀及四召喚37幀。瑪琳／凱麗35幀正式登錄，第九章章前HP+1000來源的正常攻防／返回／F2／邊界保存冷讀通過，21／33張核心符合。完整fixture15／20幀及各九項普通拒收通過。貝克威21幀修改fixture通過，正常混合背景反擊遇既有拒收，仍候選，見#265。舊村民／哈諾／鐵諾／希莉亞與蓋亞追蹤範圍保持；其他人物／法術／死亡／普通召喚與平台仍待。"
+    "hd_battle_animation": "CONFORMED-SCOPED：正式FIGANI26資源198幀及四召喚37幀。新增貝克威21幀，章前HP+1000來源正常購弓、出發、一次END及射程4炮擊／返回／F2／邊界保存冷讀通過，14張本體與4張光束核心符合、九項拒收。原瑪琳／凱麗等範圍保持；一般混合header限制見#265，其他人物／法術／死亡／普通召喚與平台仍待。",
+    "native_purchase_equip": "CONFORMED-SCOPED：#266原生購買立即裝備保留ignored原始格，29項商店回歸與正常購弓F5／章首射程通過；不改格式或數值規則。"
   },
   "runtime_source": {
     "binary": {
@@ -44195,7 +44196,8 @@
         "file": "work/promo-cadence-20261018/hd-fonts/early-kylie-normal-pixels-after-cleanup-r1.json",
         "sha256": "920b1cbe3ba211c34cefb618b3f2b2044c095e423a3de13018f6b20c50fbf1f9"
       }
-    }
+    },
+    "bekwei_candidate_superseded_by": "bekwei_battle_followup_20261020"
   },
   "kylie_readme_animation_20261020": {
     "schema": "fd2-readme-attack-gif-v1",
@@ -44688,6 +44690,721 @@
       "recording_created": false,
       "requested_gif_retained": true,
       "raw_screenshots_and_receipts_retained": true
+    }
+  },
+  "bekwei_battle_followup_20261020": {
+    "status": "CONFORMED-SCOPED",
+    "base_commit": "de98f4a7e66ed3f681691b0fb5182f9581c3e256",
+    "full_battle_hd_complete": false,
+    "production_rules_changed": false,
+    "source_ancestor": {
+      "file": "work/promo-cadence-20261018/hd-fonts/early-party-ch09-hp1000-slot-r1/FD2.SAV",
+      "sha256": "9fb33896c82640c896b00b63e0a64fa9443c9656f6e46d67e8ce87b3a0b346fd"
+    },
+    "policy": {
+      "hp_bonus": 1000,
+      "normal_purchase": {
+        "item": 46,
+        "identity": 13,
+        "price": 1800
+      },
+      "in_chapter_hp_lock": false,
+      "in_chapter_position_injection": false,
+      "item_or_gold_injection": false
+    },
+    "diagnosis": {
+      "level": "confirmed-remake-consumer-and-input",
+      "source_inventory": [
+        0,
+        129
+      ],
+      "source_equipped": [
+        true,
+        true
+      ],
+      "source_class": 4,
+      "short_sword_type": 1,
+      "short_sword_range": [
+        1,
+        1
+      ],
+      "class4_allowed_weapon_type": 5,
+      "bow46_type": 5,
+      "bow46_range": [
+        2,
+        4
+      ],
+      "original_unmodified_combo_reachability": "unknown",
+      "counter_rule": "NativeCounterattackEligible requires adjacent, alive, no +0x26 transient, weapon reach 1; nativeEquippedWeapon reads item row +11",
+      "guard_preserved": "native physical counter requires unavailable caller BG layers",
+      "evidence": [
+        {
+          "file": "remake/assets/data/item.json",
+          "sha256": "49297042903130af5e979ba1b6826621c9d5966c3f0e6ac8ebfcdbd55442a69b"
+        },
+        {
+          "file": "remake/assets/data/class_equip_types.json",
+          "sha256": "051754a91964fb57deae9bdd65644cd3426906eb05c0e0f0b6f624785ab29420"
+        },
+        {
+          "file": "remake/assets/data/native_item_effect_rows.json",
+          "sha256": "1092f6ebb722dd5b89e4738bd10bd6ddd91a9e6d23fdfce24adcf641ef601048"
+        },
+        {
+          "file": "remake/internal/battle/native_physical_damage.go",
+          "sha256": "f9fa4f24f861e72243a536735fc1b186d01765a8402a6407d2e3040aaee091aa"
+        },
+        {
+          "file": "remake/internal/battle/native_physical_attack.go",
+          "sha256": "6bc587288f8581451c0decb6fdf3aa85b3dfded58598449395cd592747833deb"
+        },
+        {
+          "file": "docs/data/ida/fd2_physical_background_selection_20261004.json",
+          "sha256": "baa1dbbc78513796e21767ae10b73a79a2184c04fe0dfd7057d303efd515f71a"
+        }
+      ]
+    },
+    "existing_fixture": "early_party_battle_followup_20261020.fixture_validation.bekwei",
+    "normal_source_gui": {
+      "tool": {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "22f16f0599b622d89f5846c8efe31e68642c4383c2c2124b35eae9f5a8464ad4"
+      },
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/bekwei-bow-source-gui-r3/receipt.json",
+        "sha256": "866d3bcf83928855685a1efddadbbb5333f5487d1ca9643284af28e51eace34d"
+      },
+      "json_save": {
+        "file": "work/promo-cadence-20261018/hd-fonts/bekwei-bow-source-gui-r3/user-data/fd2_re/fd2_save.json",
+        "sha256": "f4da9acebb3444a9b618c1b108996abee2d2832902e2cad86940d91c33fc0c66"
+      },
+      "native_save": {
+        "file": "work/promo-cadence-20261018/hd-fonts/bekwei-bow-source-gui-r3/FD2.SAV",
+        "sha256": "0af091fc889ef054a686fbc64ffdc51831be94c3ea5fd1b3ca37440a461daca7"
+      },
+      "purchase_before": {
+        "file": "work/promo-cadence-20261018/hd-fonts/bekwei-bow-source-gui-r3/purchase-before.json",
+        "sha256": "f89399ef80d0ce0fc4b59d90871279f23a0089d91eb4240e25129e36285d99f5"
+      },
+      "purchase_after": {
+        "file": "work/promo-cadence-20261018/hd-fonts/bekwei-bow-source-gui-r3/purchase-after.json",
+        "sha256": "22bf70de81b0bc64f08de3be06cd2bfdc8d4c0d5d69f85eb2e416ba261534214"
+      },
+      "purchase": {
+        "identity": 13,
+        "item": 46,
+        "price": 1800,
+        "eligible_recipients": [
+          8,
+          13
+        ],
+        "gold_before": 2000,
+        "gold_after": 200,
+        "range_before": [
+          1,
+          1
+        ],
+        "range_after": [
+          2,
+          4
+        ],
+        "changed_unit_fields": [
+          "AP",
+          "AtkMax",
+          "AtkMin",
+          "Equipped",
+          "HIT",
+          "Inventory",
+          "InventorySlots",
+          "NativeInventoryFlags"
+        ],
+        "other_roster_unchanged": true,
+        "hp_unchanged": true,
+        "before_sha256": "f89399ef80d0ce0fc4b59d90871279f23a0089d91eb4240e25129e36285d99f5",
+        "after_sha256": "22bf70de81b0bc64f08de3be06cd2bfdc8d4c0d5d69f85eb2e416ba261534214",
+        "state_injection": false,
+        "battle_range": [
+          2,
+          4
+        ],
+        "battle_hp": 1123
+      },
+      "status": "PASS"
+    },
+    "limits": [
+      "來源含章前作弊與加入時預設裝備；本輪不修正式JOIN規則或猜補背景。",
+      "普通購物修正抽樣來源不證明所有混合header組合不可達，未知caller仍拒收。",
+      "不新增原版oracle、傷害／AI對拍、自然難度或整章E2。"
+    ],
+    "failed_source_runs": [
+      {
+        "run": "r1",
+        "classification": "test-controller",
+        "cause": "雙欄商品Down跨兩項，首輪誤選4000金裝備；Right逐項後改正。",
+        "observation": "work/promo-cadence-20261018/hd-fonts/bekwei-bow-source-gui-r1/operations.json"
+      },
+      {
+        "run": "r2",
+        "classification": "confirmed-remake-save-defect",
+        "issue": 266,
+        "before": {
+          "file": "work/promo-cadence-20261018/hd-fonts/bekwei-bow-source-gui-r2/purchase-before.json",
+          "sha256": "f89399ef80d0ce0fc4b59d90871279f23a0089d91eb4240e25129e36285d99f5"
+        },
+        "after": {
+          "file": "work/promo-cadence-20261018/hd-fonts/bekwei-bow-source-gui-r2/purchase-after.json",
+          "sha256": "a23a833722acd8c0576e76bd7b550b918d886f9484b09c660a8cd0dd689a60c5"
+        },
+        "flags_before": [
+          64,
+          64,
+          128,
+          128,
+          128,
+          128,
+          128,
+          128
+        ],
+        "flags_after": [
+          0,
+          64,
+          64,
+          128,
+          128,
+          128,
+          0,
+          0
+        ],
+        "gold_after": 200,
+        "hp_after": 1123
+      }
+    ],
+    "purchase_equip_fix_spec": {
+      "status": "CONFORMED-SCOPED-NORMAL-GUI",
+      "existing_helper": "campaign.EquipNativeCompactSlot",
+      "existing_original_scope": "0x1c142 occupied-cell writes; ignored raw cells preserved",
+      "existing_e2": {
+        "file": "docs/data/ui-traces/shop-standalone-equip-ch02-e2.json",
+        "sha256": "675c7ca72ed832818f508fecd23da7cfd65084f8a018a0fccd814c1c461c6d41"
+      },
+      "source": {
+        "file": "remake/internal/campaign/equipment.go",
+        "sha256": "f7f2f668dec4a58222aa15f65e8fcc0e3e067627c59f598154e9c72f522cc79e"
+      },
+      "scope": "只改原生購買確認consumer，沿既有pending候選與原子拒收；不改通用EquipItem或數值／格式。",
+      "acceptance": "正式recipient/equip-confirm生命週期、原非FF ignored cells保持，正常購物F5與章首射程。",
+      "runtime_changed": true,
+      "regression": {
+        "red": {
+          "file": "work/promo-cadence-20261018/hd-fonts/bekwei-shop-red-r3.log",
+          "sha256": "f7163fc7eb9b34afd89d2447c9d6ac46d7fe40d5ff857b801184998e80942b93"
+        },
+        "green": {
+          "file": "work/promo-cadence-20261018/hd-fonts/bekwei-shop-green-r1.log",
+          "sha256": "33c962b60c3d55f74fdc6bb1b12fc5993043a5cd965fc36daca3dc3228d088c7"
+        },
+        "tests": 29,
+        "skips": 0,
+        "old_binary": {
+          "file": "work/promo-cadence-20261018/hd-fonts/bekwei-normal-game-r1",
+          "sha256": "d4ace0c20307ebb30c40a482a6df541c340235a2f901e2afd68744734d5fb0ab"
+        },
+        "fixed_binary": {
+          "file": "work/promo-cadence-20261018/hd-fonts/bekwei-normal-game-r2",
+          "sha256": "17602fda7230463a942d77ff0850fdb25a4c11bb5bfe33b06c68349944cce786"
+        },
+        "runtime_source": {
+          "file": "remake/cmd/fd2/native_shop_ui.go",
+          "sha256": "8705eae3209b101abf7a20ad8938fa1d91f01bd77b97f954337f878874e4cc83"
+        },
+        "test_source": {
+          "file": "remake/cmd/fd2/native_shop_recipient_path_test.go",
+          "sha256": "6bb76ac7dc63333b8528895e2dd74d823830915a8682171276ecb2adf78f9bfb"
+        },
+        "environment_attempts": [
+          "red-r1: /tmp tmpfs noexec，未執行測試。",
+          "red-r2: 未設FD2_ASSET_PACK，缺分離教會metadata，未走到購買。",
+          "red-r3: exec及同源原版分離包完整，正式購買命中ignored格旗標毀損。"
+        ]
+      }
+    },
+    "normal_battle_gui": {
+      "status": "PASS",
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/bekwei-bow-normal-gui-r1/receipt.json",
+        "sha256": "861360d0b45972bf707f0cc9b328f0c8c55401a34a920b5b9df0209d69cf4b01"
+      },
+      "body_pixels": {
+        "file": "work/promo-cadence-20261018/hd-fonts/bekwei-normal-body-pixels-r1.json",
+        "sha256": "7c79d82dc5829fa28246f2f8ca09dc1e909c367f9931b0bb905f60b1e2e3551d"
+      },
+      "beam_pixels": {
+        "file": "work/promo-cadence-20261018/hd-fonts/bekwei-normal-beam-pixels-r1.json",
+        "sha256": "3df6e6322523813526645de851d0bc02bb4559eb6b53dc8da6a5161869f96884"
+      },
+      "guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/bekwei-normal-guards-r1/guards.json",
+        "sha256": "0dc667a514a5906f5849cfba7fc8eb07d6103ea9a94f19c9814a5899ba3ab304"
+      },
+      "matched_body_pngs": 14,
+      "matched_beam_pngs": 4,
+      "guards_count": 9,
+      "end_turns": 1,
+      "attack_choices": [
+        {
+          "scene": "world-hd",
+          "attacker": {
+            "acted": false,
+            "attack_max": 4,
+            "attack_min": 2,
+            "battle_fig": 13,
+            "camp": 0,
+            "exp": 0,
+            "hp": 1123,
+            "lv": 14,
+            "mp": 0,
+            "name": "貝克威",
+            "native_identity": 13,
+            "on_field": true,
+            "raw": {
+              "X": 11,
+              "Y": 31,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 11,
+            "y": 31
+          },
+          "range": [
+            2,
+            4
+          ],
+          "cell": [
+            11,
+            27
+          ],
+          "target": {
+            "acted": false,
+            "attack_max": 0,
+            "attack_min": 0,
+            "battle_fig": 78,
+            "camp": 2,
+            "exp": 255,
+            "hp": 184,
+            "lv": 8,
+            "mp": 0,
+            "name": "",
+            "native_identity": 0,
+            "on_field": true,
+            "raw": {
+              "X": 11,
+              "Y": 23,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 11,
+            "y": 23
+          },
+          "state_injection": false
+        }
+      ],
+      "new_process_title_load": true,
+      "cold_loaded_units_equal": true,
+      "node_boundary_save_checked": true,
+      "theme_save_bytes_equal": true,
+      "source_save_bytes_equal": true,
+      "elapsed_seconds": 195.17742248205468,
+      "recording_created": false
+    },
+    "formal_registration": {
+      "catalog": {
+        "file": "remake/assets/themes/modern/catalog.json",
+        "sha256": "41f6fc11b7ab360c31ee6ecfcf0720f4605a5a5515317b3847adcafdaba91a8a"
+      },
+      "base_catalog": {
+        "file": "work/promo-cadence-20261018/hd-fonts/bekwei-formal-base-catalog-r1.json",
+        "sha256": "c3ff9d6026204e3452ca9d36f37dcf25a948578bdaa6a6cc7c36ecedee18270a"
+      },
+      "assets": 399,
+      "resources": [
+        39,
+        40
+      ],
+      "frames": 21,
+      "files": [
+        "figani-039-hd6-v1-f00.png",
+        "figure-013-idle-battle-hd6-master-v1.png",
+        "figani-040-hd6-v1-f00.png",
+        "figani-040-hd6-v1-f01.png",
+        "figani-040-hd6-v1-f02.png",
+        "figani-040-hd6-v1-f03.png",
+        "figani-040-hd6-v1-f04.png",
+        "figani-040-hd6-v1-f05.png",
+        "figani-040-hd6-v1-f06.png",
+        "figani-040-hd6-v1-f07.png",
+        "figani-040-hd6-v1-f08.png",
+        "figani-040-hd6-v1-f09.png",
+        "figani-040-hd6-v1-f10.png",
+        "figani-040-hd6-v1-f11.png",
+        "figani-040-hd6-v1-f12.png",
+        "figani-040-hd6-v1-f13.png",
+        "figani-040-hd6-v1-f14.png",
+        "figani-040-hd6-v1-f15.png",
+        "figani-040-hd6-v1-f16.png",
+        "figani-040-hd6-v1-f17.png",
+        "figani-040-hd6-v1-f18.png",
+        "figani-040-hd6-v1-f19.png",
+        "figure-013-aim-battle-hd6-master-v1.png",
+        "figure-013-beam-cap-battle-hd6-master-v1.png",
+        "figure-013-beam-double-battle-hd6-master-v1.png",
+        "figure-013-beam-tip-battle-hd6-master-v1.png",
+        "figure-013-beam-triple-battle-hd6-master-v1.png",
+        "figure-013-cool-battle-hd6-master-v1.png",
+        "figure-013-fire-battle-hd6-master-v1.png"
+      ],
+      "prior_assets_unchanged": 397,
+      "candidate_asset_entries_equal": true
+    },
+    "readme_figures": [
+      {
+        "file": "docs/figures/hd-bekwei-cannon-ready.png",
+        "source": "work/promo-cadence-20261018/hd-fonts/bekwei-bow-normal-gui-r1/world-hd-art-05.png",
+        "sha256": "c56c8d9555e063ad3ee8b724dcfd78db375d46b5e280f79a0afcfeee2777ed8f",
+        "edited": false
+      },
+      {
+        "file": "docs/figures/hd-bekwei-physical-attack.png",
+        "source": "work/promo-cadence-20261018/hd-fonts/bekwei-bow-normal-gui-r1/world-hd-art-24.png",
+        "sha256": "5357368996b19e25229a48828ab7cc9715afe7a3beb9e488c10f8af8be36f4c1",
+        "edited": false
+      }
+    ],
+    "formal_go": {
+      "file": "work/promo-cadence-20261018/hd-fonts/bekwei-formal-go-r1.log",
+      "sha256": "267e16d6520b2f13cc990e49bd7988a395801f5228e62851a1795e8ecb1022b4",
+      "tests": 3,
+      "subtests": 2,
+      "skips": 0
+    },
+    "formal_coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/bekwei-formal-coverage-r1.json",
+      "sha256": "1670f7b50050b9325536bb97ec32e32d3946c7e88b3212fb3a9907df01cb9063"
+    },
+    "formal_catalog_tests": {
+      "tests": 11,
+      "status": "PASS"
+    },
+    "private_delivery": {
+      "full_manifest_files": 3609,
+      "runtime_only_files": 3302,
+      "prior_files_unchanged": 3580,
+      "new_masters_excluded_from_runtime": 8,
+      "full_verification": {
+        "file": "work/promo-cadence-20261018/hd-fonts/bekwei-private-sync-r1.json",
+        "sha256": "b1e14a620eaf52bf57c61b36f75f1cb7d69ff16e4c6504ea9c509979ac50d69d"
+      },
+      "runtime_only_verification": {
+        "file": "work/promo-cadence-20261018/hd-fonts/bekwei-runtime-only-verification-r1.json",
+        "sha256": "1839c555030313d58f5e408ad4aa48a27997d6792b1ca8c9a40a2754f7e822cd"
+      },
+      "remote_head_verified": true,
+      "private_repository_verified": true
+    },
+    "formal_registered": true,
+    "private_synced": true,
+    "fixture_validation_reused": "既有完整21張Draw、離場F2、DAC及一次續行保留；本批正式renderer與排程未改，GUI重新走普通炮擊。",
+    "reproduction": {
+      "tool": "tools/verify_fd2_hd_fonts_gui.py",
+      "docker_images": {
+        "go": "fd2-go-test-local:latest",
+        "gui": "fd2-promo:20261017-r1",
+        "pixels": "fd2-assets-local:20260829-sfx"
+      },
+      "source_arguments": [
+        "--binary",
+        "<由本提交Go build建立的fd2>",
+        "--assets",
+        "work/promo-cadence-20261018/hd-fonts/early-bekwei-battle-candidate-r2/runtime",
+        "--original-pack",
+        "<固定原版分離包唯讀>",
+        "--modern-pack",
+        "work/promo-cadence-20261018/hd-fonts/early-bekwei-battle-candidate-r2/pack",
+        "--out",
+        "<新的工作子目錄>",
+        "--battle-status",
+        "--native-save",
+        "work/promo-cadence-20261018/hd-fonts/early-party-ch09-hp1000-slot-r1/FD2.SAV",
+        "--capture-native-battle-save",
+        "--battle-node",
+        "battle_ch09",
+        "--buy-bekwei-bow",
+        "--startup-timeout",
+        "180"
+      ],
+      "normal_arguments": [
+        "--town-save",
+        "<source GUI的user-data/fd2_re/fd2_save.json>",
+        "--battle-status",
+        "--world",
+        "--battle-hd",
+        "--battle-art",
+        "--battle-only",
+        "--battle-repetitions",
+        "1",
+        "--battle-art-samples",
+        "64",
+        "--battle-node",
+        "battle_ch09",
+        "--battle-own-index",
+        "8",
+        "--battle-approach-rounds",
+        "3",
+        "--battle-advance",
+        "--startup-timeout",
+        "180"
+      ],
+      "normal_other_paths": "binary/assets/original-pack/modern-pack/out沿source同一候選及固定來源；out用新工作子目錄。工具固定FD2_SEED=1；原始槽不可變。",
+      "pixels": "tools/verify_fd2_character_battle_gpu.py --figure 13 --body-frames 39:0,40:0-13 --core-profile blue --sample-group attack；光束改 --body-frames 40:14-18 --core-profile warm。receipt/catalog/source依normal_battle_gui，report用新工作檔；於Pillow Docker執行。",
+      "formal_go_environment": {
+        "FD2_TEST_MODERN_BATTLE_FIGURE": "13",
+        "FD2_TEST_MODERN_BATTLE_CATALOG": "remake/assets/themes/modern/catalog.json",
+        "FD2_TEST_MODERN_BATTLE_PACK": "<已同步私人現代包唯讀>",
+        "FD2_TEST_MODERN_PACK": "<同一私人包>",
+        "FD2_TEST_ORIGINAL_PACK": "<原版分離包唯讀>",
+        "FD2_ASSET_PACK": "<同原版分離包>"
+      },
+      "isolation": "全部工作在Docker、network none、user1000:1000、memory1～3g、cpus1～2、pids64～256與外層timeout；所有bind先核存在。Go測試/tmp tmpfs須exec並沿with-xvfb。原版包唯讀；來源槽只操作複本並核SHA，重跑時另作唯讀bind。報告寫指定工作目錄。"
+    },
+    "cleanup": {
+      "removed": [
+        {
+          "path": "work/promo-cadence-20261018/hd-fonts/bekwei-normal-game-r1",
+          "bytes": 19316768,
+          "sha256": "d4ace0c20307ebb30c40a482a6df541c340235a2f901e2afd68744734d5fb0ab"
+        },
+        {
+          "path": "work/promo-cadence-20261018/hd-fonts/bekwei-normal-game-r2",
+          "bytes": 19316768,
+          "sha256": "17602fda7230463a942d77ff0850fdb25a4c11bb5bfe33b06c68349944cce786"
+        },
+        {
+          "path": "work/promo-cadence-20261018/hd-fonts/bekwei-runtime-only-r1",
+          "bytes": 227089665,
+          "files": 3302,
+          "manifest_retained": true
+        },
+        {
+          "path": "work/promo-cadence-20261018/hd-fonts/bekwei-go-cache-r1",
+          "bytes": 224761413,
+          "files": 1893
+        },
+        {
+          "path": "work/promo-cadence-20261018/hd-fonts/bekwei-string-cache-r1",
+          "bytes": 43853695,
+          "files": 727
+        }
+      ],
+      "removed_bytes": 534338309,
+      "deduplicated": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/early-bekwei-battle-candidate-r2/pack/figani-039-hd6-v1-f00.png",
+          "bytes": 570257,
+          "sha256": "a03e2dd6b7bd34fe0b29edab1197e882282c73fa41e1d9d65ca2fb9b8e05954b"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/early-bekwei-battle-candidate-r2/pack/figure-013-idle-battle-hd6-master-v1.png",
+          "bytes": 1697727,
+          "sha256": "027565156abf16b7179b1688222b4cb589e0d8ac410be91a24a881bade300388"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/early-bekwei-battle-candidate-r2/pack/figani-040-hd6-v1-f00.png",
+          "bytes": 640970,
+          "sha256": "fec340117305467dad7dd23e7ea226f2ce5fe6070e9b578e42528cbff4cd6b46"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/early-bekwei-battle-candidate-r2/pack/figani-040-hd6-v1-f01.png",
+          "bytes": 632138,
+          "sha256": "d4dcefd45a242909b1fb9976736dfcc5891f4422827d4e5cdc161de480481f98"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/early-bekwei-battle-candidate-r2/pack/figani-040-hd6-v1-f02.png",
+          "bytes": 640970,
+          "sha256": "fec340117305467dad7dd23e7ea226f2ce5fe6070e9b578e42528cbff4cd6b46"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/early-bekwei-battle-candidate-r2/pack/figani-040-hd6-v1-f03.png",
+          "bytes": 640970,
+          "sha256": "fec340117305467dad7dd23e7ea226f2ce5fe6070e9b578e42528cbff4cd6b46"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/early-bekwei-battle-candidate-r2/pack/figani-040-hd6-v1-f04.png",
+          "bytes": 641283,
+          "sha256": "b4c66e4165459e158f8f911011ef6fdad64642696ac761026300fb5360891c31"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/early-bekwei-battle-candidate-r2/pack/figani-040-hd6-v1-f05.png",
+          "bytes": 641533,
+          "sha256": "59393bfec01fb7ac930cb5c6d07fa7c5568cf09f399fc1e0d2d13a540e25481a"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/early-bekwei-battle-candidate-r2/pack/figani-040-hd6-v1-f06.png",
+          "bytes": 641773,
+          "sha256": "888eb08f745b804544f72b462a7e72a37b95972fe45baf42abfbf9b8788e713b"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/early-bekwei-battle-candidate-r2/pack/figani-040-hd6-v1-f07.png",
+          "bytes": 768893,
+          "sha256": "027c9ef2a507a5fccf279c31054bec905f794a9f689415d43e1a309458dc7f98"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/early-bekwei-battle-candidate-r2/pack/figani-040-hd6-v1-f08.png",
+          "bytes": 654458,
+          "sha256": "345d05d3b691d3afc3f536cfbea0c3bbc41e426ec5f90b1b95df78f50759e6d5"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/early-bekwei-battle-candidate-r2/pack/figani-040-hd6-v1-f09.png",
+          "bytes": 768893,
+          "sha256": "027c9ef2a507a5fccf279c31054bec905f794a9f689415d43e1a309458dc7f98"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/early-bekwei-battle-candidate-r2/pack/figani-040-hd6-v1-f10.png",
+          "bytes": 654458,
+          "sha256": "345d05d3b691d3afc3f536cfbea0c3bbc41e426ec5f90b1b95df78f50759e6d5"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/early-bekwei-battle-candidate-r2/pack/figani-040-hd6-v1-f11.png",
+          "bytes": 768893,
+          "sha256": "027c9ef2a507a5fccf279c31054bec905f794a9f689415d43e1a309458dc7f98"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/early-bekwei-battle-candidate-r2/pack/figani-040-hd6-v1-f12.png",
+          "bytes": 654458,
+          "sha256": "345d05d3b691d3afc3f536cfbea0c3bbc41e426ec5f90b1b95df78f50759e6d5"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/early-bekwei-battle-candidate-r2/pack/figani-040-hd6-v1-f13.png",
+          "bytes": 624100,
+          "sha256": "e660f3365342c92b76e9db4138303625c79bd2b1543ec481d2619943e18bb15f"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/early-bekwei-battle-candidate-r2/pack/figani-040-hd6-v1-f14.png",
+          "bytes": 26065,
+          "sha256": "5bc4707a1d77a96c2fc3278393ff304ebb40158a78a444270f34f705a3df084c"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/early-bekwei-battle-candidate-r2/pack/figani-040-hd6-v1-f15.png",
+          "bytes": 180326,
+          "sha256": "7299ad761faa703fdc035d1fe7fed5e58829d3ff5968f1baf27c2bbbf499247e"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/early-bekwei-battle-candidate-r2/pack/figani-040-hd6-v1-f16.png",
+          "bytes": 214840,
+          "sha256": "9c37264d04beeb2b6be8d5bf0bd3e460cb9af2b0723ca99f63468086885a2b4c"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/early-bekwei-battle-candidate-r2/pack/figani-040-hd6-v1-f17.png",
+          "bytes": 214840,
+          "sha256": "9c37264d04beeb2b6be8d5bf0bd3e460cb9af2b0723ca99f63468086885a2b4c"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/early-bekwei-battle-candidate-r2/pack/figani-040-hd6-v1-f18.png",
+          "bytes": 29191,
+          "sha256": "9ccede051968212f20a352f76999412dd10e4df38f639a1ba5d01fd8c7adbf0b"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/early-bekwei-battle-candidate-r2/pack/figani-040-hd6-v1-f19.png",
+          "bytes": 9024,
+          "sha256": "4307258131382f9bb0e15c7dcaaa5c3f81d05b3622dc6e47f8701954108ea8f2"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/early-bekwei-battle-candidate-r2/pack/figure-013-aim-battle-hd6-master-v1.png",
+          "bytes": 1556995,
+          "sha256": "cb17a970a351f17a2cfdab6b0deabbb083a3ba3d5335a7d71e4c89d32ff16b14"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/early-bekwei-battle-candidate-r2/pack/figure-013-beam-cap-battle-hd6-master-v1.png",
+          "bytes": 289136,
+          "sha256": "d974653a5e7bf3f4903e1e84ad8dea86779a1c77b2fc0779a09d84f42a9228f8"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/early-bekwei-battle-candidate-r2/pack/figure-013-beam-double-battle-hd6-master-v1.png",
+          "bytes": 306876,
+          "sha256": "c91e3519c1e3b1207b195909db1a12a312ec33586ebad98f68d0c15f8cdf1ba7"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/early-bekwei-battle-candidate-r2/pack/figure-013-beam-tip-battle-hd6-master-v1.png",
+          "bytes": 303976,
+          "sha256": "a95d2a052a1f3b5e7c522021596ed742e24607927955ce79cd2bfd8c18bd1a98"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/early-bekwei-battle-candidate-r2/pack/figure-013-beam-triple-battle-hd6-master-v1.png",
+          "bytes": 332191,
+          "sha256": "8e53eb8b843e8575de0d93bf17a3ca997e46f655aa21ee3a59a1206bcff91b8b"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/early-bekwei-battle-candidate-r2/pack/figure-013-cool-battle-hd6-master-v1.png",
+          "bytes": 782906,
+          "sha256": "05b3a8e69ac597cca591b747cd6d5406422a19f63249a70e812e4178dda9a62b"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/early-bekwei-battle-candidate-r2/pack/figure-013-fire-battle-hd6-master-v1.png",
+          "bytes": 876489,
+          "sha256": "49e850b55f4d84ec5451c927b36770898e37650ea826b17bbc6a97ed8dd75aad"
+        }
+      ],
+      "deduplicated_bytes": 16764629,
+      "recordings_created": false,
+      "screenshots_and_receipts_retained": true
+    },
+    "string_review": {
+      "old_inventory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/villager-string-inventory-current-r1.json",
+        "sha256": "902609017f55f6398afdbb5b154a742e74183f450d8f85030716020405525eae"
+      },
+      "new_inventory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/bekwei-string-inventory-r1.json",
+        "sha256": "f0c580bb4ce35f2fce135abe8e0d8e45a056c47dd859963e34328ad6dcd35ac1"
+      },
+      "review": {
+        "file": "docs/data/fd2-string-review.json",
+        "sha256": "46c7c1403e7d573b45ca769063b2ccd4290b82eb3242596222cf9659b88ad2ab"
+      },
+      "summary": {
+        "file": "docs/data/fd2-string-inventory-summary.json",
+        "sha256": "569be9b9603aaa809fcd191a73d0de6085b1854f08977be49683e4f4d55d0c9e"
+      },
+      "tests": {
+        "file": "work/promo-cadence-20261018/hd-fonts/bekwei-string-tests-r1.log",
+        "sha256": "bc8a311cda013ae9d29afcc63daeecf3e55f0ae583bce63d1ce34394a17a56fb"
+      },
+      "test_count": 8,
+      "reviewed_ids": 99,
+      "all_texts_unchanged": true,
+      "all_disposition_counts_unchanged": true
+    },
+    "after_cleanup_pixels": {
+      "body": {
+        "file": "work/promo-cadence-20261018/hd-fonts/bekwei-after-clean-body-r1.json",
+        "sha256": "7c79d82dc5829fa28246f2f8ca09dc1e909c367f9931b0bb905f60b1e2e3551d"
+      },
+      "beam": {
+        "file": "work/promo-cadence-20261018/hd-fonts/bekwei-after-clean-beam-r1.json",
+        "sha256": "3df6e6322523813526645de851d0bc02bb4559eb6b53dc8da6a5161869f96884"
+      },
+      "matched_body_pngs": 14,
+      "matched_beam_pngs": 4
+    },
+    "final_checks": {
+      "markdown_local_links": 2082,
+      "readme_preservation_controls": 6,
+      "worklist_open": 22,
+      "worklist_manual": 14,
+      "worklist_possibly_done": 0,
+      "lessons": 273,
+      "lesson_guards": 151,
+      "source_slot_and_original_exe_sha_unchanged": true,
+      "kylie_gif_sha_unchanged": true,
+      "docker_expected_containers": 0
     }
   }
 }

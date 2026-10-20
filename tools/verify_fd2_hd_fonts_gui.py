@@ -51,6 +51,8 @@ def main():
     parser.add_argument('--capture-native-battle-save', action='store_true', help='正常原生標題LOAD、出發及F5建立JSON來源槽；需--native-save與--battle-status')
     parser.add_argument('--revive-before-departure', type=int, choices=[1],
                         help='第二／三章原生來源出發前，經正常教會服務復活哈諾；需--capture-native-battle-save')
+    parser.add_argument('--buy-bekwei-bow', action='store_true',
+                        help='原生第九章出發前，普通購買黑暗弓並立即裝備貝克威')
     parser.add_argument('--battle-repetitions', type=int, choices=[1,2], default=2,
                         help='普通攻防場數；一場模式仍完整自然返回與保存冷讀，需--battle-only')
     parser.add_argument('--battle-art-samples', type=int, choices=[32,64], default=64,
@@ -77,6 +79,8 @@ def main():
                         help='同一普通END擷取多個明示figure，例如133,134；省略時維持單數參數')
     args = parser.parse_args()
     assert args.revive_before_departure is None or args.capture_native_battle_save
+    assert not args.buy_bekwei_bow or (args.capture_native_battle_save
+           and args.battle_node=='battle_ch09' and args.revive_before_departure is None)
     assert args.battle_repetitions==2 or (args.battle_only and not args.timed_dialogue)
     assert 0<=args.battle_end_figure<=135
     end_figures=sorted(args.battle_end_figures or {args.battle_end_figure})
@@ -459,6 +463,61 @@ def main():
             story_node=nodes[prep_node]['next']
             assert nodes[story_node]['type']=='cutscene' and nodes[story_node]['next']==args.battle_node
             revival = None
+            purchase = None
+            if args.buy_bekwei_bow:
+                before=latest(audit);key('F5');wait(lambda s:s.get('frame',0)>before['frame'])
+                baseline=json.loads(saved.read_text());assert baseline['node']==town_node
+                (args.out/'purchase-before.json').write_bytes(saved.read_bytes())
+                unit=baseline['party_roster']['13']
+                assert unit['NativeRecordClass']==4 and unit['NativeIdentity']==13
+                assert unit['Inventory']==[0,129] and unit['Equipped']==[True,True]
+                goods=nodes['shop_ch09_weapon']['goods']
+                good=next(g for g in goods if g['id']==46)
+                assert good['price']==1800 and baseline['gold']>=good['price']
+                item=next(i for i in json.loads((args.assets/'assets/data/item.json').read_text()) if i['id']==46)
+                assert item['type']==5 and item['range']==[2,4]
+                types={row['cls']:row['types'] for row in json.loads(
+                    (args.assets/'assets/data/class_equip_types.json').read_text())}
+                recipients=[ident for ident in baseline['party_join_order']
+                            if item['type'] in types[baseline['party_roster'][str(ident)]['NativeRecordClass']]]
+                assert 13 in recipients
+                def shop(mode):
+                    return wait(lambda s:s.get('node')=='shop_ch09_weapon'
+                                and s.get('shop_mode')==mode and not s.get('shop_ui_busy'))
+                key('Left');key('Return');shop('menu');shot('native-bow-shop')
+                key('Return');shop('purchase')
+                # 商品是雙欄列表，Right逐項，Down跨兩項。
+                for _ in range(goods.index(good)):key('Right')
+                shot('native-bow-selected');key('Return');shop('confirm')
+                key('Return');shop('recipient_equipment')
+                for _ in range(recipients.index(13)):key('Down')
+                shot('native-bow-recipient');key('Return');shop('equip_confirm')
+                shot('native-bow-equip-confirm');key('Return');shop('purchase')
+                assert latest(audit)['gold']==baseline['gold']-good['price']
+                shot('native-bow-purchased')
+                key('Escape');shop('menu');key('Escape');wait(lambda s:s.get('node')==town_node)
+                key('F5');after=json.loads(saved.read_text())
+                (args.out/'purchase-after.json').write_bytes(saved.read_bytes())
+                equipped=after['party_roster']['13']
+                assert equipped['Inventory']==[0,129,46] and equipped['Equipped']==[False,True,True]
+                assert equipped['InventorySlots']==[0,129,46,255,255,255,0,0]
+                assert equipped['NativeInventoryFlags']==[0,64,64,128,128,128,128,128]
+                assert [equipped['AtkMin'],equipped['AtkMax']]==[2,4]
+                changed=[k for k in set(unit)|set(equipped) if unit.get(k)!=equipped.get(k)]
+                assert set(changed)<=set(['AP','HIT','AtkMin','AtkMax','Inventory','Equipped',
+                                          'InventorySlots','NativeInventoryFlags']), changed
+                assert all(after['party_roster'][k]==v for k,v in baseline['party_roster'].items() if k!='13')
+                assert after['party_join_order']==baseline['party_join_order']
+                assert after['gold']==baseline['gold']-1800
+                purchase={'identity':13,'item':46,'price':1800,'eligible_recipients':recipients,
+                          'gold_before':baseline['gold'],'gold_after':after['gold'],
+                          'range_before':[unit['AtkMin'],unit['AtkMax']],'range_after':[2,4],
+                          'changed_unit_fields':sorted(changed),'other_roster_unchanged':True,
+                          'hp_unchanged':equipped['HP']==unit['HP'],
+                          'before_sha256':digest(args.out/'purchase-before.json'),
+                          'after_sha256':digest(args.out/'purchase-after.json'),'state_injection':False}
+                assert purchase['hp_unchanged']
+                key('Right') # 武器店回城仍在選項1，恢復旅館選項0再沿既有出發鍵序。
             if args.revive_before_departure is not None:
                 before=latest(audit);key('F5');wait(lambda s:s.get('frame',0)>before['frame'])
                 assert saved.is_file(), '城鎮F5未建立名冊來源'
@@ -528,11 +587,17 @@ def main():
             before=latest(audit);key('F5');wait(lambda s:s.get('frame',0)>before['frame'])
             assert saved.is_file() and json.loads(saved.read_text())['node']==args.battle_node
             assert digest(args.native_save)==native_source_hash, '唯讀原始槽被修改'
+            if purchase is not None:
+                actor=next(u for u in latest(audit)['units'] if u.get('native_identity')==13)
+                assert actor['battle_fig']==13 and actor['on_field']
+                assert [actor['attack_min'],actor['attack_max']]==[2,4]
+                purchase['battle_range']=[actor['attack_min'],actor['attack_max']]
+                purchase['battle_hp']=actor['hp']
             shot('native-battle-f5')
             report={'schema':'fd2-native-battle-source-gui-v1','status':'PASS',
                     'binary_sha256':digest(args.binary),'gui_tool_sha256':tool_source_sha256,
                     'native_source_sha256':native_source_hash,'saved_sha256':digest(saved),
-                    'revival':revival,
+                    'revival':revival,'purchase':purchase,
                     'native_writable_copy_after_f5_sha256':digest(native_saved),
                     'saved_file':str(saved),'node':args.battle_node,'state_injection':False,
                     'screenshots':shots,'operations':operations,'recording_created':False,

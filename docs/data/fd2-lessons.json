@@ -3254,6 +3254,21 @@
         ],
         "pattern": "dosgolem_commit.*original_commit"
       }
+    },
+    {
+      "id": "native-purchase-equip-preserves-ignored-inventory-cells",
+      "date": "2026-10-20",
+      "area": "原生購買與保存",
+      "rule": "原生商店立即裝備沿remake/internal/campaign/equipment.go的EquipNativeCompactSlot，以compact索引預檢八原始格與投影，保留ignored旗標及殘留值；不要在原生購買分支直接用正規化EquipItem。入口remake/cmd/fd2/native_shop_ui.go的equip_confirm；以TestNativeShopPurchaseEquipPreservesIgnoredRawCells及正常購弓F5驗證，範圍只涵蓋原生名冊。",
+      "why": "貝克威普通購弓後，通用EquipItem把格6／7內未清除的item0當成占用格，將0x80清零。既有獨立裝備helper保留這些原始格；購買接同一helper後29項商店回歸及正常GUI購弓／F5／出發通過。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/native_shop_ui.go"
+        ],
+        "pattern": "campaign\\.EquipNativeCompactSlot\\("
+      }
     }
   ]
 }

@@ -127,7 +127,7 @@
 瑪琳的揮杖與凱麗的掌擊、旋身已接HD圖組；背景、敵方與面板仍含像素素材。
 攻防返回、F2及章節邊界保存冷讀已驗證；共享姿勢、來源政策與驗證範圍見
 [驗證紀錄](docs/data/fd2-modern-hd-battlefield-20261019.json)的`early_party_battle_followup_20261020`。
-貝克威的炮擊圖組仍為候選，正常反擊路徑的背景缺口由[#265](https://github.com/wicanr2/fd2_re/issues/265)追蹤。
+貝克威的端炮與光束也已正式登錄；混合背景反擊的一般能力限制仍由[#265](https://github.com/wicanr2/fd2_re/issues/265)追蹤。
 
 ![凱麗攻擊動畫：原版 DOS 與 HD 重製並排](docs/figures/hd-kylie-original-vs-hd.gif)
 
@@ -135,6 +135,15 @@
 兩側沿用上述章前加血槽，屬相近戰況；動畫依動作順序剪輯，血量與亂數不同，不代表逐幀一致。
 HD 背景、敵方與面板仍含像素素材。來源與可重跑方式見
 [動畫驗證紀錄](docs/data/fd2-modern-hd-battlefield-20261019.json)的`kylie_readme_animation_20261020`。
+
+| 貝克威HD端炮 | 貝克威HD光束 |
+| --- | --- |
+| ![貝克威HD端炮](docs/figures/hd-bekwei-cannon-ready.png) | ![貝克威HD光束](docs/figures/hd-bekwei-physical-attack.png) |
+
+兩張取自第九章同一場普通攻擊的實際視窗，使用章前加血槽，再正常購弓、立即裝備與出發。
+端炮、離場與光束沿原版演出；背景、敵方及面板仍含像素素材。
+普通攻擊返回、F2及保存冷讀已抽驗，來源與驗證範圍見
+[驗證紀錄](docs/data/fd2-modern-hd-battlefield-20261019.json)的`bekwei_battle_followup_20261020`。
 
 ## 遊戲介紹
 
