@@ -43,6 +43,8 @@ func (g *Game) recordInputAuditState() {
 		r["timed_dialogue_wait"] = g.nativeLevelUpDialogueAtWait()
 	}
 	r["death_reward_ui"] = g.nativeDeathRewardUI != nil
+	r["death_reward_message"] = g.nativeSystemEndTurnUI != nil && g.nativeSystemEndTurnUI.rewardMessage != nil
+	r["death_reward_message_wait"] = g.nativeDeathRewardMessageAwaitingKey()
 	r["transient_ui"] = g.transientUI
 	r["class_ui_job"] = g.nativeClassUIJob != nil
 	if g.nativeMovePlan != nil {

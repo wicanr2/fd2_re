@@ -3101,8 +3101,8 @@
       "id": "figani-empty-frame-needs-complete-native-proof",
       "date": "2026-10-20",
       "area": "HD動畫來源",
-      "rule": "FIGANI的全透明HD幀只接受固定來源Mask長度完整且全部0的對應幀。沿remake/cmd/fd2/modern_hd_battle_assets.go的nativeEmpty檢查與tools/audit_fd2_battle_hd_coverage.py的Mask SHA稽核；缺Mask、非空來源及alpha1墨跡均拒收，空白present仍保留排程與圖源。",
-      "why": "希莉亞FIGANI25/14本來就是320×200透明幀；舊的255核心規則把合法空白視為缺圖，但直接放寬所有透明圖也會掩蓋資料遺失。",
+      "rule": "FIGANI的全透明HD幀只接受固定來源Mask長度完整且全部0的對應幀。沿remake/cmd/fd2/modern_hd_battle_assets.go的nativeEmpty檢查與tools/audit_fd2_battle_hd_coverage.py的Mask SHA稽核；缺Mask、非空來源及alpha1墨跡均拒收，空白present仍保留排程與圖源。 編製配方的全空白幀使用獨立native-empty群組，不以320×200空矩形壓縮可見薄飛矢；入口tools/build_fd2_character_battle_hd.py的scale_group及主收據archer87配方。",
+      "why": "希莉亞FIGANI25/14本來就是320×200透明幀；舊的255核心規則把合法空白視為缺圖，但直接放寬所有透明圖也會掩蓋資料遺失。 弓手262:9與67×6飛矢共組時縮小飛矢，分組後原空白與薄飛矢均保持。",
       "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
       "guard": {
         "kind": "present",
@@ -3214,8 +3214,8 @@
       "id": "battle-fixture-captures-departure-before-body",
       "date": "2026-10-20",
       "area": "完整戰鬥GPU擷取",
-      "rule": "完整FIGANI擷取涵蓋native_physical_body.go依HeaderByte1／HeaderByte2產生的departure工作。入口remake/cmd/fd2/modern_hd_battle_lifecycle_test.go的TestModernHDBattleRuntimeGPU；tools/verify_fd2_character_battle_gpu.py另要求非零header的離場F2，全部selected source仍須同次最終Draw回讀。",
-      "why": "貝克威40/0..13屬departure，舊測試只收body／counter而漏14張；正式呈現原已具備，只擴實際job擷取後完整21張通過。",
+      "rule": "完整FIGANI擷取涵蓋native_physical_body.go依HeaderByte1／HeaderByte2產生的departure工作。入口remake/cmd/fd2/modern_hd_battle_lifecycle_test.go的TestModernHDBattleRuntimeGPU；tools/verify_fd2_character_battle_gpu.py另要求非零header的離場F2，全部selected source仍須同次最終Draw回讀。 普通END的tools/verify_fd2_hd_fonts_gui.py亦涵蓋departure；同一flow分開要求END攻擊與我方攻擊時的目標待機，不以END沒有的待機相位冒充通過。",
+      "why": "貝克威40/0..13屬departure，舊測試只收body／counter而漏14張；正式呈現原已具備，只擴實際job擷取後完整21張通過。 弓手262:0..8在departure，261待機只在我方射擊時出現。",
       "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
       "guard": {
         "kind": "present",
@@ -3268,6 +3268,21 @@
           "remake/cmd/fd2/native_shop_ui.go"
         ],
         "pattern": "campaign\\.EquipNativeCompactSlot\\("
+      }
+    },
+    {
+      "id": "gui-reward-message-owner-before-cycle",
+      "date": "2026-10-20",
+      "area": "GUI輸入時序",
+      "rule": "戰後選人先依nativeSystemEndTurnUI.rewardMessage的唯讀death_reward_message／death_reward_message_wait觀測等待開關框並以Return正常ACK；入口remake/cmd/fd2/input_audit_trace.go與tools/verify_fd2_hd_fonts_gui.py的settle_world_battle。class_ui_job或death_reward_ui為false不代表成功掉落訊息已結束，未涵蓋滿背包互動即停止。",
+      "why": "弓手兩輪抽驗在隱藏的速度藥水ACK與後續經驗對話耗盡12次Z；補足真實owner觀測後同源完整GUI通過，無需改遊戲或加重試。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#archer87_battle_followup_20261020",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/input_audit_trace.go"
+        ],
+        "pattern": "death_reward_message_wait"
       }
     }
   ]

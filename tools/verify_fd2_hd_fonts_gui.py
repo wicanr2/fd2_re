@@ -59,6 +59,10 @@ def main():
                         help='每場實際演出PNG取樣上限；完整逐幀Draw另驗')
     parser.add_argument('--startup-timeout', type=int, choices=[60,120,180], default=60,
                         help='明示等待真實視窗的上限，主流程與新程序冷讀共用')
+    parser.add_argument('--battle-target-figure', type=int,
+                        help='只以普通鍵盤選擇指定敵方圖組；省略時維持最近目標')
+    parser.add_argument('--battle-min-approach-rounds', type=int, choices=[0,1,2,3], default=0,
+                        help='普通進軍／待機至少幾次END後才出手，不改遊戲狀態')
     parser.add_argument('--battle-own-index', type=int, default=2,
                         help='普通攻擊時以Z選取的在場我方序號，預設2為既有亞雷斯；需--world')
     parser.add_argument('--battle-approach-rounds', type=int, choices=[0,1,2,3], default=0,
@@ -108,6 +112,8 @@ def main():
     assert not args.battle_hd or args.world
     assert not args.battle_art or args.battle_hd
     assert 0 <= args.battle_own_index < 128
+    assert 0 <= args.battle_min_approach_rounds <= args.battle_approach_rounds
+    assert args.battle_target_figure is None or (args.battle_only and 0<=args.battle_target_figure<=135)
     assert args.battle_own_index == 2 or args.world
     assert not args.battle_approach_rounds or args.world
     battle_approach_steps=[]
@@ -690,7 +696,18 @@ def main():
                         state=latest(audit)
                         if state.get('level_up_dialogue') and state.get('dialogue_native') is False:
                             raise AssertionError('LOAD後經驗對話owner仍佔有新的非原生章首對話')
-                        if not state.get('battle_event') and not state.get('dialogues') and not state.get('banner_t'):
+                        if state.get('class_ui_job'):
+                            wait(lambda s:not s.get('class_ui_job'))
+                            continue
+                        if state.get('death_reward_ui'):
+                            raise AssertionError('普通流程遇到未涵蓋的滿背包掉落互動，停止抽驗')
+                        if state.get('death_reward_message'):
+                            if state.get('death_reward_message_wait'):
+                                key('Return')
+                            else:
+                                wait(lambda s:not s.get('death_reward_message') or s.get('death_reward_message_wait') or s.get('class_ui_job'))
+                            continue
+                        if not any(state.get(k) for k in ['battle_event','dialogues','banner_t','level_up_dialogue']):
                             return
                         key('Return')
                     raise TimeoutError('普通LOAD戰場對話尚未結束')
@@ -753,26 +770,31 @@ def main():
                         state=latest(audit)
                         occupied={(u['x'],u['y']) for u in state['units'] if u['on_field'] and u['hp']>0}
                         enemies=[u for u in state['units'] if u['camp']==2 and u['on_field'] and u['hp']>0]
+                        targets=[u for u in enemies if args.battle_target_figure is None or u['battle_fig']==args.battle_target_figure]
                         attacker=next(u for u in state['units'] if u['camp']==0 and u['on_field'] and u['hp']>0
                                       and [u['x'],u['y']]==state['cursor'])
                         # 與battle.State.InAttackRange相同的已載入欄位及零值政策；不改正式規則。
                         minimum,maximum=attacker.get('attack_min',0) or 1,attacker.get('attack_max',0) or 1
                         assert 1<=minimum<=maximum,'目前觀測的正式射程無效'
                         choices=[]
-                        for target in enemies:
+                        for target in targets:
                             for cell in state.get('move_reachable',[]):
                                 if tuple(cell) not in occupied and minimum<=abs(cell[0]-target['x'])+abs(cell[1]-target['y'])<=maximum:
                                     choices.append((abs(cell[0]-state['cursor'][0])+abs(cell[1]-state['cursor'][1]),cell,target))
-                        if choices:break
+                        if choices and approach>=args.battle_min_approach_rounds:break
                         assert approach<args.battle_approach_rounds,'正式可達集合沒有符合目前射程的測試位置'
                         advance_cell=None
                         if args.battle_advance:
                             def enemy_distance(cell):
-                                return min(abs(cell[0]-enemy['x'])+abs(cell[1]-enemy['y']) for enemy in enemies)
+                                return min(abs(cell[0]-enemy['x'])+abs(cell[1]-enemy['y']) for enemy in targets or enemies)
                             cells=[cell for cell in state.get('move_reachable',[]) if tuple(cell) not in occupied]
                             assert cells,'沒有可用的正常前進格'
-                            advance_cell=min(cells,key=lambda cell:(enemy_distance(cell),cell[1],cell[0]))
-                            assert enemy_distance(advance_cell)<enemy_distance(state['cursor']),'正常可達集合無法縮短接敵距離'
+                            if choices:
+                                # 已有合法射程時，正常移動到該格待機，保留明示的END抽樣輪數。
+                                advance_cell=min(choices,key=lambda value:(value[0],value[1][1],value[1][0]))[1]
+                            else:
+                                advance_cell=min(cells,key=lambda cell:(enemy_distance(cell),cell[1],cell[0]))
+                                assert enemy_distance(advance_cell)<enemy_distance(state['cursor']),'正常可達集合無法縮短接敵距離'
                             move_cursor(advance_cell);key('Return')
                             wait(lambda s:s.get('ring') and not s.get('walking') and s.get('ring_phase')=='open')
                             key('Down');key('Return')
@@ -806,7 +828,7 @@ def main():
                                     stats=end_scenes.setdefault(token,{'owner':owner,'actor_fig':token[1],'target_fig':token[2],
                                         'first_frame':current['frame'],'last_frame':current['frame'],'hd_draw_seen':False})
                                     stats['last_frame']=current['frame'];stats['hd_draw_seen']|=current.get('hd_battle') is True
-                                if current.get('battle_scene') and current.get('hd_battle') and current.get('battle_phase') in ('body','counter'):
+                                if current.get('battle_scene') and current.get('hd_battle') and current.get('battle_phase') in ('body','counter','departure'):
                                     for layer in current.get('battle_source_layers') or []:
                                         resource,index=layer['resource'],layer['frame']
                                         count=end_seen.get((resource,index),0)
@@ -902,6 +924,7 @@ def main():
                     if not state.get('level_up_dialogue') and not state.get('dialogues') and not state.get('battle_event'):break
                     key('Return')
                 else:raise TimeoutError('普通戰鬥經驗對話尚未結束')
+                settle_world_battle()
                 wait(lambda s:s.get('hd_world') and not s.get('battle_scene'))
                 shot('world-hd-physical-return')
                 if timed_probe:timed_result=timed_probe.finish(validate=True)
@@ -1015,6 +1038,8 @@ def main():
                     'battle_end_figures':end_figures,
                     'natural_attack_return_checked':args.battle_only,
                     'battle_own_index':args.battle_own_index,
+                    'battle_target_figure':args.battle_target_figure,
+                    'battle_min_approach_rounds':args.battle_min_approach_rounds,
                     'battle_node':args.battle_node,'battle_only':args.battle_only,
                     'battle_attack_choices':battle_attack_choices,
                     'battle_approach_rounds_limit':args.battle_approach_rounds,

@@ -154,6 +154,15 @@ HD 背景、敵方與面板仍含像素素材。來源與可重跑方式見
 普通攻擊、反擊、F2及保存冷讀已抽驗，共享姿勢與抬劍裁切見
 [驗證紀錄](docs/data/fd2-modern-hd-battlefield-20261019.json)的`heavyknight_battle_followup_20261020`。
 
+| 弓箭手HD瞄準 | HD飛矢抵達希莉亞 |
+| --- | --- |
+| ![弓箭手HD瞄準](docs/figures/hd-archer87-aim.png) | ![HD飛矢抵達希莉亞](docs/figures/hd-archer87-arrow.png) |
+
+兩張取自第九章普通敵方回合的實際遊戲視窗，沿用章前加血槽，沒有編修畫面。
+蒙面弓手的搭箭、滿弓、放箭與飛矢沿原版姿勢重繪；背景與面板仍含像素素材。
+普通敵方射擊、我方射擊弓手、掉落訊息、F2及章節邊界保存冷讀已抽驗，範圍見
+[驗證紀錄](docs/data/fd2-modern-hd-battlefield-20261019.json)的`archer87_battle_followup_20261020`。
+
 ## 遊戲介紹
 
 《炎龍騎士團 2》是 1990 年代華文單機戰略角色扮演遊戲（SRPG）的代表作之一。

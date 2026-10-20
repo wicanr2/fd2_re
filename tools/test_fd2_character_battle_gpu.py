@@ -15,20 +15,21 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--figure', type=int, required=True)
     p.add_argument('--other-figure', type=int, required=True)
-    p.add_argument('--core-profile', choices=['blue', 'gold', 'purple', 'warm'], default='blue')
-    p.add_argument('--other-core-profile', choices=['blue', 'gold', 'purple', 'warm'], default='blue')
+    p.add_argument('--core-profile', choices=['blue', 'gold', 'purple', 'warm', 'sage'], default='blue')
+    p.add_argument('--other-core-profile', choices=['blue', 'gold', 'purple', 'warm', 'sage'], default='blue')
     p.add_argument('--body-frames')
-    p.add_argument('--sample-group',choices=['attack','end','fixture','idle-end','idle-fixture'],default='attack')
+    p.add_argument('--sample-group',choices=['attack','end','flow','fixture','idle-end','idle-fixture'],default='attack')
     for name in ['receipt', 'catalog', 'source', 'baseline', 'negative-receipt', 'out']:
         p.add_argument('--'+name, type=Path, required=True)
     args = p.parse_args()
     idle_only=args.sample_group in ('idle-end','idle-fixture')
     fixture_group=args.sample_group in ('fixture','idle-fixture')
-    end_group=args.sample_group in ('end','idle-end')
+    flow_group=args.sample_group=='flow'
+    end_group=args.sample_group in ('end','idle-end','flow')
     verifier = Path(__file__).with_name('verify_fd2_character_battle_gpu.py')
     baseline = json.loads(args.baseline.read_text())
     expected_status=('PASS-IDLE-TARGET-FIXTURE-GPU' if fixture_group else 'PASS-CHARACTER-NORMAL-IDLE-GPU') if idle_only else (
-        'PASS-CHARACTER-FIXTURE-GPU' if fixture_group else 'PASS-CHARACTER-NORMAL-ATTACK-GPU')
+        'PASS-CHARACTER-FIXTURE-GPU' if fixture_group else 'PASS-CHARACTER-NORMAL-FLOW-GPU' if flow_group else 'PASS-CHARACTER-NORMAL-ATTACK-GPU')
     if (baseline.get('status') != expected_status
             or baseline.get('figure') != args.figure
             or baseline.get('core_profile', 'blue') != args.core_profile
@@ -69,7 +70,7 @@ def main():
         wrong['phase_f2']['departure'] = 0
         path = args.out/'missing-departure.json'; path.write_text(json.dumps(wrong))
         check('missing-departure', path, '非零header需要完整離場Game.Draw與F2收據')
-    if args.sample_group in ('attack', 'end', 'idle-end') and receipt.get('battle_repetitions') == 1:
+    if args.sample_group in ('attack', 'end', 'idle-end', 'flow') and receipt.get('battle_repetitions') == 1:
         for name, updates in [
                 ('missing-natural-return', {'natural_attack_return_checked': False}),
                 ('missing-single-save', {'post_battle_save_checked': False}),
@@ -86,6 +87,7 @@ def main():
         path = args.out/'wrong-boundary-save.json'; path.write_text(json.dumps(wrong))
         check('wrong-boundary-save', path, '需要同份普通攻防完整GUI收據及清冊')
     attack_error='未在普通END GPU核對到所選目標的待機' if idle_only else (
+        '未在普通流程END GPU核對到所選人物的攻擊動作' if flow_group else
         '未在普通END GPU核對到所選人物的攻擊動作' if end_group else '未在普通攻防GPU核對到所選人物的攻擊動作')
     check('wrong-figure', args.receipt, fixture_error if fixture_group else (
         '需要明示待機目標的普通END擷取範圍' if idle_only else attack_error), figure=args.other_figure)
@@ -97,6 +99,31 @@ def main():
     for name in sorted(names):
         (shadow/name).symlink_to((args.source/(other if name == first else name)).resolve())
     check('wrong-source', args.receipt, '圖源雜湊不同', source=shadow)
+    if flow_group:
+        for key in ['battle_end_art_samples','battle_art_samples']:
+            wrong=copy.deepcopy(receipt);wrong[key]=[]
+            path=args.out/('missing-'+key+'.json');path.write_text(json.dumps(wrong))
+            check('missing-'+key,path,'需要同份流程的END及我方攻擊取樣')
+        wrong=copy.deepcopy(receipt);wrong['battle_end_art_checked']=False
+        path=args.out/'missing-end-contract.json';path.write_text(json.dumps(wrong))
+        check('missing-end-contract',path,'需要明示普通END擷取收據')
+        folder=args.out/'swapped-flow-groups';folder.mkdir()
+        wrong=copy.deepcopy(receipt)
+        wrong['battle_end_art_samples'],wrong['battle_art_samples']=wrong['battle_art_samples'],wrong['battle_end_art_samples']
+        for sample in wrong['battle_end_art_samples']+wrong['battle_art_samples']:
+            name=sample['file']
+            if Path(name).name!=name:raise SystemExit('負向圖片路徑越界')
+            if not (folder/name).exists():(folder/name).symlink_to((args.receipt.parent/name).resolve())
+        path=folder/'receipt.json';path.write_text(json.dumps(wrong))
+        check('swapped-flow-groups',path,attack_error)
+        from PIL import Image
+        folder=args.out/'black-flow-pixels';folder.mkdir()
+        wrong=copy.deepcopy(receipt)
+        for sample in wrong['battle_end_art_samples']+wrong['battle_art_samples']:
+            path=folder/sample['file'];Image.new('RGBA',(1920,1200),(0,0,0,255)).save(path)
+            sample['sha256']=digest(path)
+        path=folder/'receipt.json';path.write_text(json.dumps(wrong))
+        check('black-flow-pixels',path,attack_error)
     if idle_only:
         inventory_path=ROOT/'docs/data/fd2-battle-hd-source-inventory-20261019.json'
         inventory=json.loads(inventory_path.read_text())
@@ -141,7 +168,9 @@ def main():
             for state in [sample['before'],sample['after']]:
                 for layer in state.get('battle_source_layers') or []:
                     if layer['resource'] in [args.figure*3,args.figure*3+1]:layer['x']+=37
-        for name in {s['file'] for s in wrong['battle_end_art_samples']}:
+        names={s['file'] for s in wrong['battle_end_art_samples']}
+        if flow_group:names.update(s['file'] for s in wrong['battle_art_samples'])
+        for name in names:
             if Path(name).name!=name:raise SystemExit('負向圖片路徑越界')
             (folder/name).symlink_to((args.receipt.parent/name).resolve())
         path=folder/'receipt.json'; path.write_text(json.dumps(wrong))

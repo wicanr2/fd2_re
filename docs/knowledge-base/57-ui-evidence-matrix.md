@@ -1,5 +1,13 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
+弓手FIGANI261／262共19幀已沿原框正式登錄。完整同次Draw、離場F2、64／65 DAC與一次續行通過。
+第九章普通兩次END敵方射擊、希莉亞射擊87、正常掉落ACK、返回、F2及章節邊界新程序LOAD通過。
+本體22張含17張END／5張受擊待機，灰綠組14張含9張飛矢／5張待機；15項錯配反例拒收。
+來源有章前HP強化，章內無注入；七母稿共用、原空白262:9與兩個待機各1像素裁切明示。
+成功掉落訊息另有rewardMessage owner，唯讀audit補兩欄位，GUI依owner正常ACK；不改規則、排程或保存。
+來源與限制見[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的archer87_battle_followup_20261020，
+唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)。
+
 鎧甲武士FIGANI234／235共8幀已沿原框正式登錄。第九章普通兩次END、敵方攻擊／反擊、自然返回、F2及保存冷讀通過。
 完整Draw八張及三階段F2保持；END14張、反擊47張、劍光3張符合核心，十項錯配反例拒收。
 四母稿共享姿勢與抬劍頂邊裁切明示，數值規則及保存格式不變。首輪END待機擷取落後被拒收，

@@ -2687,3 +2687,30 @@ GUI觀測工具可用明示的預期frame清單與取景標籤，保存於收據
 沿既有 X11 與 job 不同步契約，新增明示的每幀取樣上限 1／2，預設仍為 1。
 選 2 時每個來源／幀最多保留兩張實際視窗，保留各自前後觀測與 SHA，不改遊戲時序或狀態，
 不覆寫第一張，也不由 job 索引推定畫面。同來源、seed及等價玩家流程重跑，完整 END 待機／攻擊門檻保持。開場跳過與戰後關框ACK依觀測而異，不宣稱逐鍵或逐幀相同。
+
+### 弓手 BattleFig87 戰鬥圖源切片
+
+狀態：CONFORMED-SCOPED。實作前為READY；完整19張Draw及普通章9兩次END、敵方射擊／受擊待機、正常掉落ACK、F2與邊界冷讀通過。沿用已核准手繪風格、1920×1200、原始描述子及透明覆蓋契約。來源定位為FIGANI261待機4幀、262攻擊15幀、263零header；主證據沿HD戰場主收據的archer87_battle_followup_20261020。
+
+- 保留深藍綠帽盔與蒙面、無袖長衣、棕色披風、露出的肌肉手臂、護腕、箭袋與灰綠長弓，面向右側；不改成騎士或希莉亞。
+- 七張透明母稿：待機、搭箭、低弓、滿弓、放箭含同幀長飛矢、放箭回收、獨立短飛矢。261:0..3共用待機；262:0搭箭、1低弓、2..4滿弓、5放箭含飛矢、6..8放箭回收、10..14共用短飛矢。262:9原Mask全零，保留全透明成品與present，不補造人物。
+- 262:5保留本體與飛矢同幀的構成；原本體高覆蓋範圍約x2..112/y0..148，飛矢主要分離元件x185..305/y46..53。262:10..14的67×6薄飛矢需獨立繪製，依原圖方向與描述子重定向，不從名稱推定鏡像。
+- 編製器固定核inventory與原版manifest、metadata、PNG／mask SHA，保留19項原描述子、header、delay、hit與cue；不放寬缺件、空白、透明或幾何守衛。七母稿共用明示，不宣稱19張獨立原畫或逐幀原版視覺一致。
+- 驗收包括完整Game.Draw 19張、body／counter／departure及F2、64／65 DAC與一次續行；本體與薄飛矢核心分開核對。非零header離場不能由body替代。空白幀須核原始全零Mask。
+- 普通章9沿前批正常購弓F5來源，祖先全11人章前HP+1000，seed1；正常希莉亞進軍／兩次END讓87實際射擊，保留所有敵方場景HD、自然返回、F2及章節邊界保存／新程序LOAD。不以fixture替代普通END；章內不注入HP、位置或狀態。若主動近戰挑到87而觸發既有#265拒收，保持守衛，另選已實測同源正常輸入，不猜補BG。
+- 通過才登錄正式清冊與私人allow-list。規則、保存格式、忠實像素模式保持；其他人物、法術／死亡／普通召喚及平台效能不由本切片放行。
+
+弓手配方補充READY：原空白262:9使用獨立native-empty縮放群組，不能用其320×200矩形壓縮可見飛矢；空白成品及原始Mask核對保持。release及shot須依原窄姿勢維持相鄰人物身高，視覺跳變的首稿保留為拒收。
+
+弓手正常流程驗證補充READY：既有章9實際audit證實87的262:0..8屬departure、9..14屬body，沒有261待機層；因此END單獨不能宣稱待機已驗。擷取器補收departure。新增可選battle-target-figure與battle-min-approach-rounds，只控制普通鍵盤選擇，預設不變；本次固定希莉亞own-index5、target87、至少兩次END，再以正式射程普通射擊87，沒有注入狀態。
+
+新增flow像素分組：只讀同一完整GUI收據的END與我方普通攻擊PNG，各保留來源標籤；要求END實際攻擊圖庫與我方攻擊時目標待機圖庫都核對成功。caller位移、clip、SHA、alpha>=250、至少1000點及RGB容差保持。既有end門檻不變，flow不冒稱END單獨有待機；缺任一組、互換組別、錯位移、黑圖、錯來源與冷讀不符均拒收。
+飛矢原色為灰綠中性，既有四色域不適用；新增sage色域r>=40/g>=70/b>=40、g對r與b均介於95%與150%。只選高覆蓋源色，點數與比對門檻不變；目前薄飛矢有2794個適用高覆蓋點，暖色域僅653點。用完整fixture與錯圖反例驗證，不以放寬容差通過。
+
+弓手戰後等待修訂READY：首輪攻防後獲得速度藥水。實際audit先class_ui_job=true，再level_up_dialogue=true/dialogues=1；death_reward_ui一直false，屬既有一般原生訊息的開框回交，非滿背包掉落問句。選人器12次Z有10次落在開框／訊息期間而未選人，整份GUI失敗保留。
+settle_world_battle必須等待class_ui_job正常繪製完成，接續以Return完成既有原生訊息，再交給普通關框與Z選人；不改遊戲owner、背包、隊伍或保存，不跳過掉落。若出現未涵蓋的滿背包互動則停止抽樣，不猜選項。用同一來源及希莉亞／87輸入政策完整重跑，F2及冷讀仍是必要閘門。
+
+戰後等待勘誤及READY：僅等class_ui_job不足。現行native_death_reward_message.go的成功掉落訊息在nativeSystemEndTurnUI.rewardMessage內等ACK；此時class_ui_job、death_reward_ui、dialogues與level_up_dialogue均可為false。Z會被當成掉落ACK，關框後才串接經驗對話，先前等待修訂無法辨識這個owner，第二輪同樣失敗。
+加入唯讀audit欄位death_reward_message及death_reward_message_wait，直接讀既有rewardMessage與nativeDeathRewardMessageAwaitingKey，不確認或推進訊息。GUI依真實owner：開關框只等繪製，awaitAck以Return正常完成，再接續經驗對話與選人。遊戲規則、owner鏈、排程、背包及保存不改。原失敗與前一修訂保留；回歸見[唯讀觀測回歸](../../remake/cmd/fd2/input_audit_trace_test.go)，驗nil、無reward的其他modal、開框、等ACK、關框及釋放，並核對觀察不改owner與awaitAck。最後再用同源普通流程完整驗F2及冷讀。
+
+弓手切片與最後的owner修訂已達CONFORMED-SCOPED。前兩輪失敗保持，原class_ui_job等待方案由明示rewardMessage owner取代。第三輪16筆owner觀測中8筆等ACK，攻擊後六次Z均無掉落／class UI／經驗訊息佔用，完整GUI及冷讀通過。來源為章前強化槽，保存只重建章節邊界，不宣稱戰中戰利品持續。普通本體22張與灰綠組14張包含各5張目標待機，flow十五項反例拒收；完整19張仍由同次fixture核對。正式清冊／私人同步與重跑入口依主收據archer87_battle_followup_20261020。速度藥水獲得訊息與頭像仍是像素，沿#204繼續。

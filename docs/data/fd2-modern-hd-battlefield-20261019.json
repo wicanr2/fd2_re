@@ -9,13 +9,13 @@
     "native_viewport": "CONFORMED-SCOPED：正式1920世界沿原生(4,4)、312×192窗格；正常F2同view與960地形樣本一致。",
     "hd_sprite_data": "DATA-READY：完整125組1455張HD及31組372張新增24父項已登錄；舊1083張父項及HD bytes保持。",
     "hd_world_renderer": "CONFORMED-SCOPED：144人物已接Game.Draw；首章34張正常GPU、4張實際走行、兩次物理攻擊及保存／新程序LOAD通過。",
-    "private_assets": "401項清冊、3621檔完整allow-list與3310檔runtime-only逐筆SHA／UID核對，原3609檔保持；新增四母稿不進執行包。私人遠端核對狀態見heavyknight_battle_followup_20261020。",
+    "private_assets": "403項清冊、3647檔完整allow-list與3329檔runtime-only逐筆SHA／UID核對，原3621檔保持；新增七母稿不進執行包。私人遠端核對見archer87_battle_followup_20261020。",
     "quickload_battle_owner": "CONFORMED-SCOPED：成功JSON LOAD丟棄舊經驗owner與移動計畫；拒收保留。",
     "timed_dialogue": "CONFORMED-SCOPED-RUNTIME-E1：計時FFEC開收框保留HD世界，EXP99普通鍵盤／F2與保存冷讀通過；其他caller未驗。",
     "hd_terrain": "CONFORMED-SCOPED：map0六組53槽；新增圓頂綠色／褐色雙塊四底圖在兩張正常GPU全部相符，短長組合與保存冷讀通過；草地及其他地形仍待HD化。",
     "ai_player_input_lock": "CONFORMED-SCOPED：AI換手期間拒絕玩家地圖輸入重入；普通END／增援對話及相關／完整Go回歸通過。",
     "gaia_redesign": "CONFORMED-SCOPED：新版頭像與四方向圖組已登錄；正常START／Gaia北移取消／F2／冷讀分段驗證。相位差異與序章尾端失敗明示，非逐幀parity。",
-    "hd_battle_animation": "CONFORMED-SCOPED：正式FIGANI28資源206幀及四召喚37幀。新增鎧甲武士8幀，完整Draw與普通第九章兩次END、敵方攻擊／反擊、F2及保存冷讀通過；END14張、反擊47張、劍光3張相符，十項拒收。章前HP校準與共享稿／抬劍裁切明示；其他人物、法術／死亡、普通召喚與平台仍待。",
+    "hd_battle_animation": "CONFORMED-SCOPED：正式FIGANI30資源225幀及四召喚37幀。新增弓手87的19幀，完整Draw及普通章9兩次END敵方射擊、希莉亞射擊87、掉落ACK／返回／F2及章節邊界冷讀通過。本體22張含17 END／5待機，sage14張含9飛矢／5待機；15項反例拒收。章前HP校準、共享稿及兩個1像素裁切明示；其他人物、施術／死亡、普通召喚與平台仍待。",
     "native_purchase_equip": "CONFORMED-SCOPED：#266原生購買立即裝備保留ignored原始格，29項商店回歸與正常購弓F5／章首射程通過；不改格式或數值規則。"
   },
   "runtime_source": {
@@ -46026,6 +46026,1022 @@
       },
       "root_owned_or_md_directory_anomalies": 0,
       "nonexpected_fd2_containers": 0
+    }
+  },
+  "archer87_battle_followup_20261020": {
+    "status": "CONFORMED-SCOPED",
+    "base_commit": "5983b085fbfb20f235611956a8ba8154591923a4",
+    "full_battle_hd_complete": false,
+    "formal_registered": true,
+    "private_synced": true,
+    "production_rules_changed": false,
+    "figure": 87,
+    "resources": {
+      "261": 4,
+      "262": 15
+    },
+    "cast_resource": 263,
+    "cast_status": "empty_header_zero",
+    "source_inventory": {
+      "file": "docs/data/fd2-battle-hd-source-inventory-20261019.json",
+      "sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51"
+    },
+    "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md#弓手-battlefig87-戰鬥圖源切片",
+    "pose_policy": {
+      "idle": [
+        "261:0-3"
+      ],
+      "nock": [
+        "262:0"
+      ],
+      "lower": [
+        "262:1"
+      ],
+      "aim": [
+        "262:2-4"
+      ],
+      "shot": [
+        "262:5"
+      ],
+      "release": [
+        "262:6-8"
+      ],
+      "native_empty": [
+        "262:9"
+      ],
+      "bolt": [
+        "262:10-14"
+      ]
+    },
+    "limits": [
+      "只沿既有圖源與正常consumer，不新增原版parity或整章E2。",
+      "普通來源章前加血明示，章內不注入；不把美術抽樣用於自然難度、傷害或AI選目標。"
+    ],
+    "candidate_r1_review": {
+      "status": "REJECTED-VISUAL",
+      "path": "work/promo-cadence-20261018/hd-fonts/archer87-battle-candidate-r1",
+      "reason": [
+        "原空白262:9錯與bolt同scale_group，其320×200錨點污染薄飛矢縮放；改明示native-empty群組。",
+        "release母稿過寬，原112×150容納後身高下降，shot／release視覺跳變；依原姿勢重畫窄母稿。"
+      ],
+      "production_registered": false
+    },
+    "verification_contract": {
+      "status": "READY",
+      "runtime_observation": "heavyknight-normal-gui-r2實際87：262:0..8 departure，9..14 body，無261。",
+      "normal_input": {
+        "own_index": 5,
+        "target_figure": 87,
+        "minimum_end_rounds": 2,
+        "maximum_end_rounds": 3,
+        "seed": 1,
+        "state_injection": false
+      },
+      "flow": "同一完整GUI的END攻擊與我方射擊目標待機分組核對；不稱END有待機，既有END門檻不變。",
+      "sage_profile": {
+        "r_min": 40,
+        "g_min": 70,
+        "b_min": 40,
+        "g_over_r_and_b_percent": [
+          95,
+          150
+        ],
+        "eligible_pixels": 2794,
+        "warm_eligible_pixels": 653,
+        "alpha_min": 250,
+        "minimum_points_unchanged": 1000,
+        "rgb_tolerance_changed": false
+      },
+      "production_game_changed": false
+    },
+    "generation": {
+      "tool": "built-in image_gen",
+      "initial_prompts": {
+        "tool": "built-in image_gen",
+        "initial_idle_adopted_as_aim": "Use case: style-transfer. Asset type: one transparent HD RPG battle sprite master. Reference1 is ORIGINAL BattleFig87 pose and identity sheet; redraw its FIRST idle cell faithfully in high resolution. Reference2 is hand-painted STYLE ONLY; do not copy knight armor, sword or shield. One full-body adult male masked longbow archer, frontal three-quarter facing screen RIGHT, planted wide feet. Original identity: dark blue-green pointed cap/low helmet and matching scarf mask covering nose/mouth, shadowed small eyes; sleeveless dark teal long tunic with center split down legs, loose dark teal trousers; bare muscular tan upper arms, warm brown leather wrist guards, rust-orange belt and ankle bindings, navy boots. Long plain olive-brown cape hangs behind shoulders to ankles, quiver with pale gray-green fletching over screen-left shoulder. Hands at mid torso holding a tall thin gray-green recurved longbow tilted from upper LEFT across torso to lower RIGHT, a nocked arrow pointing diagonally upper right, copy original idle arm/bow arrangement. Clean dark ink outlines, brushed hand-painted materials and restrained highlights matching style2. Human archer proportions, no plate pauldrons, no sword/shield, no magic effects, no face exposed below mask, no ground, no aura or cast shadow, no text or panels. Genuine transparent RGBA background. Entire cape, feet, bow tips and arrow visible with transparent margin.",
+        "idle": "Use case: identity-preserve. Correct ONLY pose of reference1 to ORIGINAL reference2 first-row idle stance. Keep same masked teal male archer identity, clothing, brown ankle-length cape, quiver, tan muscular arms, bracers, boots, painting. Critical idle pose: BOTH ELBOWS BENT, BOTH HANDS LOW and CLOSE TO BODY at BELT/WAIST height. NO arm extended sideways. Bow is RESTING LOWERED DIAGONALLY ACROSS BODY, upper limb goes toward upper-left shoulder and lower limb points down-right past the right hip. Nocked arrow slants from left waist toward upper RIGHT, NOT horizontally aimed. This is a relaxed READY/IDLE stance before raising bow, not a shooting or aiming stance. Copy ORIGINAL first row silhouette, front three-quarter facing right with wide planted feet. Full body, bow tips and arrow fully within transparent margin. Exactly one character, clean dark contour hand-painted style. No armor, sword, shield, aura, floor, shadow, text or panels. Truly transparent RGBA background.",
+        "nock": "Use case: identity-preserve. Transparent HD battle sprite. Keep the exact masked teal archer identity, brown cape, quiver, muscular tan arms, rust belt/ankle wraps, bracers and boots of reference1. Change pose to reference2 FIGANI262 frame000, the FIRST attack cell in second row. This is NOCKING/RAISING: bow still diagonal from upper-left to lower-right; screen-right bow-gripping hand moves outward only a little, elbow remains bent near lower chest. Screen-left string hand moves upward across chest toward the arrow nock, elbow out left. Nocked arrow points diagonally up-right above shoulder, no full sideways extension or full upright bow yet. Feet planted same wide stance; copy original silhouette. Full-body clean dark outlined brushed hand-painted game art, one isolated character with whole bow/arrow/quiver/cape/feet visible and margins. No sword/shield/plate armor, no background floor aura shadow text. Genuine transparent RGBA.",
+        "lower": "Use case: identity-preserve. One transparent full-body HD battle sprite of SAME archer in reference1. Keep identity, teal cap/scarf mask and sleeveless tunic, muscular tan arms, brown cape/quiver/bracers, rust wraps, navy boots exactly. Pose target: ORIGINAL reference2 FIGANI262 frame001, second attack cell in second row. Transitional LOW BOW EXTENSION: screen-right hand and arm extend toward right at LOWER CHEST level, bow grip below shoulder, bow remains tilted diagonally forward/right with upper tip above grip near torso and lower tip far lower-right; not upright full aim. Screen-left pulling hand close to chest, arrow now almost HORIZONTAL pointing right at lower chest. Same planted feet, front three-quarter right-facing. Match source arm and bow transition between nock and full-height aim. Complete character, cape, feet, bow and arrow visible with transparent margins. Brushed hand painting, dark contours, no armor/sword/shield, no glow, floor, cast shadow or text. Real transparent RGBA background.",
+        "release": "Use case: identity-preserve. One transparent full-body HD game sprite. Keep SAME masked teal archer of reference1: all clothing, cape, boots, quiver, bracers, human body proportions and front three-quarter RIGHT view. Change ONLY pose to ORIGINAL reference2 FIGANI262 frame006/007/008, post-release stance. Screen-right bow arm extended horizontally to right at SHOULDER height gripping a vertical gray-green recurve longbow. Screen-left string hand has RELEASED and recoiled to beside/behind the left cheek/ear, elbow points out left, fingers relaxed slightly open. NO arrow on bow or bowstring. Bowstring is now relaxed nearly straight between tips, not drawn back to pulling hand. Both feet same wide planted stance, long cape hangs still. Clean dark outlined hand-painted textures matching reference1. Entire body, bow and feet uncut with transparent margin; single character only. No flying arrows, effects, floor, cast shadow, text, armor/sword/shield. Genuinely transparent RGBA background.",
+        "shot": "Use case: identity-preserve. Asset type: ONE wide transparent HD battle-frame master, landscape 2:1 composition. Reference1 is the exact archer POST-RELEASE pose and identity to preserve. Reference2 ORIGINAL FIGANI262 frame005 determines arrangement: full archer on far LEFT occupies about 37 percent of total width, height almost fills frame; a SEPARATE very thin long gray-green arrow and subtle straight gray-green speed streak is already flying far to the RIGHT at about 32 percent of frame height, its visible span from 60 percent to 97 percent of canvas width. Transparent gap between bow/body and flying arrow. Copy original frame005 composition, not a portrait. Archer keeps same right-facing planted stance, brown cape, teal tunic/mask/cap, muscular tan arms and quiver. Screen-right arm holds upright empty bow; screen-left released hand beside ear. Keep body and bow as reference1; do not nock another arrow. Reference3 top detail is the ORIGINAL launched arrow: long muted gray-green straight shaft, pale green vanes near its left section, small pointed/dark leading end at far right, short faint straight trailing streaks. No large magical swoosh, curved trail or glowing beam. Entire character, cape, boots, bow and whole arrow visible inside generous margins, true transparent RGBA, no floor/shadow/aura/text. Same clean hand-painted dark contours. Keep archer full height on left; do not center him in the wide frame.",
+        "bolt": "Use case: style-transfer. Asset type: one thin transparent HD game projectile master. Repaint ONLY the bottom short flying bolt in reference image, FIGANI262 frame010, into clean high-resolution hand-painted game art. Preserve its exact left-right orientation and silhouette: a small forked pale gray/sage-ivory triangular feather-like cluster at the LEFT end, a long extremely thin straight muted gray-green shaft extends to the RIGHT ending simply; do not add an extra arrowhead at the right, bow, character, extra arrows or invented flame. Original aspect about 67 wide to6 high; retain long thin horizontal silhouette. Use softly brushed steel/wood detail, continuous smooth outline and fine vane striations, pale warm sage-ivory highlights on the left cluster and shaft. NOT pixel art, no blocky enlarged source pixels. No halo, smoke, glow, ground, shadow, text or labels. Single isolated short bolt centered on genuinely transparent RGBA, ample transparent margins, all parts uncut."
+      },
+      "compact_prompts": {
+        "release": "Use case: identity-preserve. Correct ONLY silhouette/proportions/pose of reference1 archer to match reference2 ORIGINAL cropped post-release FIGANI262 frame006. Preserve same HD masked teal archer identity, brown cape, quiver, bracers, rust wraps, boots, painting. Critical framing: TALL NARROW full-body sprite, total painted width INCLUDING BOW is no more than THREE QUARTERS of total painted height, matching original112x150. Bring feet much closer, directly below hips in modest stance: distance between boots about HALF body height, NOT very wide martial-arts split. Bow hand closer to torso, arm foreshortened toward screen right, upper arm remains raised at shoulder but shortened in perspective, NOT long horizontal side extension. Hold tall slim upright recurve bow close to right shoulder side. Released other hand beside ear, fingers relaxed; NO nocked arrow, string nearly straight upright. Helmet/scarf mask and cape same. Front three-quarter right-facing. Entire character and bow tips uncut within margin on a PORTRAIT 2:3 transparent canvas. This must fit the original tall narrow rectangle without shrinking figure height. No floor/shadow/glow/text. True transparent RGBA background.",
+        "shot": "Use case: compositing. One wide transparent hand-painted game battle-frame master, landscape2:1. Reference1 is the corrected TALL NARROW archer pose: preserve it EXACTLY, with close feet below hips, foreshortened bow arm and upright empty bow, released hand beside ear, teal clothing/mask, brown cape/quiver. Do not widen his stance or stretch his arms again. Place this full-height character on far LEFT, painted width about37 percent canvas width, all bow and boots visible. Add a separate long thin gray-green arrow at RIGHT, spanning60 to97 percent of canvas width, centered at32 percent of canvas height. Transparent gap between actor and arrow. Reference2 ORIGINAL FIGANI262 frame005 sets actor/arrow composition; reference3 TOP original detail gives long arrow direction: pale sage vanes on left portion, thin straight shaft to small pointed end RIGHT with subtle short straight wake behind. Repaint arrow smoothly with hand-painted fine vanes and steel, NOT blocky nearest-neighbor enlarged pixels. No extra nocked arrow, no magic glow/beam, no background haze, halo, floor, cast shadow, labels or panels. True transparent RGBA. Entire actor and arrow uncut with small clear margins. Maintain reference1 original narrow proportions and height."
+      },
+      "alpha_preserved": true,
+      "initial_idle_reclassified_as_aim": "第一張為滿弓姿勢，另繪雙手近腰的正確idle；沒有將滿弓冒充idle。",
+      "rejected": [
+        "archer87-release-master-r1.png",
+        "archer87-shot-master-r1.png"
+      ],
+      "source_references": [
+        "work/promo-cadence-20261018/hd-fonts/heavyknight-source-review-r1/figure-087-native.png",
+        "work/promo-cadence-20261018/hd-fonts/heavyknight-source-review-r1/figure-087-arrows.png",
+        "remake/generated-assets/modern-theme-prototypes/figure-076-idle-battle-hd6-master-v1.png"
+      ]
+    },
+    "recipe": {
+      "schema_version": 1,
+      "figure": 87,
+      "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+      "sources": {
+        "idle": {
+          "file": "work/promo-cadence-20261018/hd-fonts/archer87-idle-master-r1.png",
+          "sha256": "7d42c4593773b1462ee9e3715f8d513e8df80181b7189aa5582cea3c3c9eb67a",
+          "anchor": [
+            190,
+            91,
+            1087,
+            1197
+          ]
+        },
+        "aim": {
+          "file": "work/promo-cadence-20261018/hd-fonts/archer87-aim-master-r1.png",
+          "sha256": "fb954b5a88019eeac0b82a5470679ad9418bd2ec9e897cd23acdc71ec8149a57",
+          "anchor": [
+            160,
+            0,
+            1267,
+            1213
+          ]
+        },
+        "nock": {
+          "file": "work/promo-cadence-20261018/hd-fonts/archer87-nock-master-r1.png",
+          "sha256": "9a572876aa5f84e301054fb6243d884a8a8cd1476e616dd31b2eaf6ef4852e17",
+          "anchor": [
+            150,
+            67,
+            1229,
+            1186
+          ]
+        },
+        "lower": {
+          "file": "work/promo-cadence-20261018/hd-fonts/archer87-lower-master-r1.png",
+          "sha256": "b862ef3f408547300b237a771fb8b805173318985d5d2306bfbd0e7db93bba15",
+          "anchor": [
+            107,
+            83,
+            1257,
+            1176
+          ]
+        },
+        "release": {
+          "file": "work/promo-cadence-20261018/hd-fonts/archer87-release-master-r2.png",
+          "sha256": "6dd1cbfc0e535ff3f6239624cd7fbc594d09914988a8f1f50a7d38b1277861d7",
+          "anchor": [
+            140,
+            11,
+            938,
+            1491
+          ]
+        },
+        "shot": {
+          "file": "work/promo-cadence-20261018/hd-fonts/archer87-shot-master-r2.png",
+          "sha256": "5277666249bebd921bcf68351bd56a0677dad9887f30122d8461ae5dbcb44dfe",
+          "anchor": [
+            74,
+            14,
+            1708,
+            876
+          ]
+        },
+        "bolt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/archer87-bolt-master-r1.png",
+          "sha256": "29f849d64ab7d2da8d62c02e255fe96a3117eb878035891ff4706b14b11069b9",
+          "anchor": [
+            57,
+            535,
+            1270,
+            644
+          ]
+        }
+      },
+      "resources": {
+        "261": [
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              129,
+              140
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              132,
+              139
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              134,
+              138
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              132,
+              139
+            ],
+            "scale_group": "stance"
+          }
+        ],
+        "262": [
+          {
+            "pose": "nock",
+            "anchor": [
+              0,
+              0,
+              135,
+              130
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "lower",
+            "anchor": [
+              0,
+              0,
+              146,
+              130
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "aim",
+            "anchor": [
+              0,
+              0,
+              147,
+              150
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "aim",
+            "anchor": [
+              0,
+              0,
+              147,
+              150
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "aim",
+            "anchor": [
+              0,
+              0,
+              146,
+              150
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "shot",
+            "anchor": [
+              0,
+              0,
+              305,
+              150
+            ],
+            "scale_group": "shot"
+          },
+          {
+            "pose": "release",
+            "anchor": [
+              0,
+              0,
+              112,
+              150
+            ],
+            "scale_group": "release"
+          },
+          {
+            "pose": "release",
+            "anchor": [
+              0,
+              0,
+              112,
+              150
+            ],
+            "scale_group": "release"
+          },
+          {
+            "pose": "release",
+            "anchor": [
+              0,
+              0,
+              112,
+              150
+            ],
+            "scale_group": "release"
+          },
+          {
+            "pose": "bolt",
+            "anchor": [
+              0,
+              0,
+              320,
+              200
+            ],
+            "scale_group": "native-empty"
+          },
+          {
+            "pose": "bolt",
+            "anchor": [
+              0,
+              0,
+              67,
+              6
+            ],
+            "scale_group": "bolt"
+          },
+          {
+            "pose": "bolt",
+            "anchor": [
+              0,
+              0,
+              67,
+              6
+            ],
+            "scale_group": "bolt"
+          },
+          {
+            "pose": "bolt",
+            "anchor": [
+              0,
+              0,
+              67,
+              6
+            ],
+            "scale_group": "bolt"
+          },
+          {
+            "pose": "bolt",
+            "anchor": [
+              0,
+              0,
+              67,
+              6
+            ],
+            "scale_group": "bolt"
+          },
+          {
+            "pose": "bolt",
+            "anchor": [
+              0,
+              0,
+              67,
+              6
+            ],
+            "scale_group": "bolt"
+          }
+        ]
+      }
+    },
+    "compiled": {
+      "file": "work/promo-cadence-20261018/hd-fonts/archer87-battle-candidate-r2/compiled.json",
+      "sha256": "15dd684c0ba7015fad1a57bd8c1f6775ea31ec4c8177b65d40dcd7aed7f6762b"
+    },
+    "clipping": [
+      {
+        "resource": 261,
+        "frame": 1,
+        "high_coverage_pixels": 1
+      },
+      {
+        "resource": 261,
+        "frame": 3,
+        "high_coverage_pixels": 1
+      }
+    ],
+    "clipping_policy": "兩個idle各1高覆蓋像素為等比採樣取整邊界；其餘17幀0。來源完整alpha保持，不裁改母稿。",
+    "empty_frame": {
+      "resource": 262,
+      "frame": 9,
+      "native_empty_source": true,
+      "scale_group": "native-empty",
+      "artifact_alpha_zero": true,
+      "scope": "原Mask SHA與編製器逐筆核對；空白present保持。"
+    },
+    "prior_verifier_regression": {
+      "file": "work/promo-cadence-20261018/hd-fonts/archer87-prior-heavyknight-regression-r1.json",
+      "sha256": "25f0ac6e3b3d89fd1c92abc1f4cb40f29390fdfa8c34647a410deb4bbbd11dde",
+      "matched_pngs": 14
+    },
+    "fixture": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/archer87-lifecycle-r2/receipt.json",
+        "sha256": "0ffd47b14e851f7b0a1c3cb1148f2c64856613421957e075fd635b699371255c"
+      },
+      "body_pixels": {
+        "file": "work/promo-cadence-20261018/hd-fonts/archer87-fixture-body-pixels-r2.json",
+        "sha256": "13e22a1182a0e2d9e80be5a55d8cff5fc940514972c14a80e58ea2dc2f47bb3d"
+      },
+      "body_source_images": 13,
+      "bolt_pixels": {
+        "file": "work/promo-cadence-20261018/hd-fonts/archer87-fixture-bolt-pixels-r2.json",
+        "sha256": "78752ef220be5c02b1309bbfeda26dca4b6c093e0ac90a7f294b9d8522ac192c"
+      },
+      "bolt_source_images": 5,
+      "native_empty_images": 1,
+      "body_guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/archer87-fixture-body-guards-r2/guards.json",
+        "sha256": "a5687417ab7f6c6b1b1fbddc4e213b4393a7d0dfe35b61dba589274d405e4b03"
+      },
+      "bolt_guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/archer87-fixture-bolt-guards-r2/guards.json",
+        "sha256": "2eeabeff55778022668925872192be6668413e231b4f146edfa4d569bda30eea"
+      },
+      "gpu_guards": 12,
+      "compiler_guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/archer87-compiler-guards-r2/guards.json",
+        "sha256": "5fae3b390c41f3db0822ed7d3b455655cd9b1981a955dda40023a66206806a7b"
+      },
+      "compiler_guard_count": 16,
+      "scope": "人工一次攻擊／反擊的RUNTIME-E1；完整19張同次Draw、四階段F2含departure、64戰鬥／65地圖DAC及一次續行，非普通玩家或原版parity。"
+    },
+    "reproduction": {
+      "work_root": "work/promo-cadence-20261018/hd-fonts",
+      "compiler": "tools/build_fd2_character_battle_hd.py",
+      "recipe": "archer87_battle_followup_20261020.recipe",
+      "base_catalog_commit": "5983b085fbfb20f235611956a8ba8154591923a4",
+      "gui_tool": "tools/verify_fd2_hd_fonts_gui.py",
+      "normal_arguments": [
+        "--town-save",
+        "work/promo-cadence-20261018/hd-fonts/bekwei-bow-source-gui-r3/user-data/fd2_re/fd2_save.json",
+        "--battle-status",
+        "--world",
+        "--battle-hd",
+        "--battle-art",
+        "--battle-only",
+        "--battle-repetitions",
+        "1",
+        "--battle-art-samples",
+        "64",
+        "--battle-node",
+        "battle_ch09",
+        "--battle-own-index",
+        "5",
+        "--battle-target-figure",
+        "87",
+        "--battle-min-approach-rounds",
+        "2",
+        "--battle-approach-rounds",
+        "3",
+        "--battle-advance",
+        "--battle-end-art",
+        "--battle-end-figure",
+        "87",
+        "--battle-end-samples-per-frame",
+        "2",
+        "--startup-timeout",
+        "180"
+      ],
+      "other_paths": "binary由同提交Go build；assets指archer87-battle-candidate-r2/runtime，modern-pack指同候選pack，original-pack固定原版分離包唯讀，out新工作子目錄。",
+      "source_policy": "來源沿貝克威正常購弓／立即裝備／出發／F5槽；祖先為章前11人HP+1000，不宣稱自然難度或傷害／AI選目標，章內無狀態注入。固定seed1，不重擲。",
+      "pixel_body": "tools/verify_fd2_character_battle_gpu.py --figure 87 --core-profile blue --body-frames 261:0-3,262:0-8 --sample-group flow|fixture",
+      "pixel_bolt": "fixture用--core-profile sage --body-frames 262:10-14；普通flow用261:0-3,262:10-14，以同份流程分別證明普通受擊待機與END飛矢。",
+      "isolation": "Docker user1000:1000、network none、memory512m..3g、cpus1..2、pids64..256與外層timeout；Go /tmp tmpfs exec，沿with-xvfb。原版唯讀，所有bind先核存在，只有指定工作輸出可寫。",
+      "images": {
+        "assets": "fd2-assets-local:20260829-sfx",
+        "go": "fd2-go-test-local:latest",
+        "gui": "fd2-promo:20261017-r1"
+      },
+      "master_remap": "recipe.sources SHA對照正式261／262 source_files及source_sha256；從私人allow-list同步回正式prototypes，再依SHA還原工作來源。基底清冊沿5983b085fbfb20f235611956a8ba8154591923a4，不以已登錄清冊重編相同資源。"
+    },
+    "failed_normal_runs": [
+      {
+        "run": "work/promo-cadence-20261018/hd-fonts/archer87-normal-gui-r1",
+        "status": "OBSERVATION-ONLY-GUI-FAILED",
+        "stage": "post-attack focus_own(0)",
+        "reason": "成功掉落訊息等ACK時缺觀測欄位；首筆Z確認訊息，後續Z被關框及經驗對話接收，未作選人，12次上限耗盡。",
+        "evidence": "operations.json的最後12筆Z：class_ui_job2筆、level_up_dialogue／dialogues8筆、普通選人2筆；death_reward_ui全false。",
+        "production_game_defect": false,
+        "source_not_replaced": true,
+        "earlier_diagnosis": "掉落速度藥水開框class_ui_job及原生訊息尚未完成便開始Z選人，12次中10次不作用而耗盡選人上限；未完成F2及保存冷讀，不發布完整PASS。"
+      },
+      {
+        "run": "work/promo-cadence-20261018/hd-fonts/archer87-normal-gui-r2",
+        "status": "OBSERVATION-ONLY-GUI-FAILED",
+        "stage": "post-attack focus_own(0)",
+        "reason": "成功掉落訊息awaitAck時既有audit未顯示owner，wait提前返回；第一次Z關掉掉落後才串接class UI與經驗訊息，12次選人再次耗盡。",
+        "production_game_defect": false,
+        "source_not_replaced": true
+      }
+    ],
+    "postbattle_owner_fix": {
+      "status": "SUPERSEDED-BY-EXPLICIT-REWARD-OWNER",
+      "tool": "tools/verify_fd2_hd_fonts_gui.py",
+      "rules_changed": false,
+      "method": "先等class_ui_job正常結束，再以普通Return完成原生訊息；掉落正常保留，最後普通關框及Z選人。滿背包互動未涵蓋就停止。",
+      "correction": "成功掉落訊息另在nativeSystemEndTurnUI.rewardMessage等ACK，class_ui_job只是其開關框；原觀測欄位缺漏使等待提前返回。"
+    },
+    "loot_dialogue_observation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/archer87-normal-gui-r1/world-hd-physical-return.png",
+      "sha256": "85ee95087deb13a3560d24d3ca99cd4b91228b88210580a8c0c0b3bf911b48e6",
+      "kind": "actual_gpu_window_unedited",
+      "hd_theme_active": true,
+      "observed": "速度藥水掉落訊息與頭像仍為像素呈現。",
+      "remake_status": "PIXEL-UI-REMAINS",
+      "tracking_issue": 204,
+      "scope": "只證明這份實際視窗，不宣稱其他獲得訊息、滿背包問句或原版parity。"
+    },
+    "candidate_coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/archer87-candidate-coverage-r2.json",
+      "sha256": "77010582737113675a04d286e804aa735b66ce00ebb101fe06fee11f1094eeee",
+      "resources": 30,
+      "frames": 225,
+      "formal_registered": true
+    },
+    "reward_owner_audit_spec": {
+      "status": "CONFORMED-SCOPED",
+      "source": "remake/cmd/fd2/input_audit_trace.go",
+      "producer": "nativeSystemEndTurnUI.rewardMessage",
+      "wait_reader": "nativeDeathRewardMessageAwaitingKey",
+      "fields": [
+        "death_reward_message",
+        "death_reward_message_wait"
+      ],
+      "test": "remake/cmd/fd2/input_audit_trace_test.go",
+      "read_only": true,
+      "game_rules_schedule_or_save_changed": false,
+      "red": {
+        "file": "work/promo-cadence-20261018/hd-fonts/archer87-audit-red-r1.log",
+        "sha256": "d6aa86b83c569b3cf6c804ede4fabc96163ba7aefe8ae0171adf55ea63a138d4",
+        "reason": "未實作時兩欄位不存在，nil狀態亦未明示false，回歸失敗。"
+      },
+      "green": {
+        "file": "work/promo-cadence-20261018/hd-fonts/archer87-audit-green-r1.log",
+        "sha256": "5b0a7dfc25522ade2897a10f7ce82ef3dd01688310f1716b795171b0507508ff",
+        "states": 6,
+        "status": "PASS"
+      }
+    },
+    "string_review": {
+      "inventory_file": "work/promo-cadence-20261018/hd-fonts/archer87-string-inventory-r1.json",
+      "previous_inventory_sha256": "f0c580bb4ce35f2fce135abe8e0d8e45a056c47dd859963e34328ad6dcd35ac1",
+      "inventory_sha256": "f0c580bb4ce35f2fce135abe8e0d8e45a056c47dd859963e34328ad6dcd35ac1",
+      "entries": 5205,
+      "text_signatures_equal": true,
+      "reviewed_ids": 99,
+      "disposition_counts_unchanged": true
+    },
+    "source_ancestor": {
+      "file": "work/promo-cadence-20261018/hd-fonts/early-party-ch09-hp1000-slot-r1/FD2.SAV",
+      "sha256": "9fb33896c82640c896b00b63e0a64fa9443c9656f6e46d67e8ce87b3a0b346fd",
+      "manifest": "work/promo-cadence-20261018/hd-fonts/early-party-ch09-hp1000-slot-r1/manifest.json",
+      "manifest_sha256": "3e10276e723751ea04800954c5330abad7f66aa178bca91af85a23c4052115ee",
+      "base_save": "/repo/work/parity-slot-ch08/FD2.SAV",
+      "base_sha256": "768a561e8a713cd4f7f6fa6f36e553c7330bd60cc122bca03d8654a037d723a0",
+      "level_policy": "levels-per-chapter=0 overrides=（政策，非原版證據；升級寫入依 0x1E292／0x1E529／0x1B750）",
+      "constructor_seed": 8,
+      "assumptions": [
+        {
+          "chapter": 8,
+          "kind": "boost_hp",
+          "detail": "章前HP／MaxHP +1000（使用者已允許作弊通關；非原版能力，不證明傷害、存活或敵方選目標；章內不鎖HP）：roster0 id8=0 HP/MaxHP 341/341→1341/1341；roster1 id8=9 HP/MaxHP 207/207→1207/1207；roster2 id8=4 HP/MaxHP 341/341→1341/1341；roster3 id8=30 HP/MaxHP 394/394→1394/1394；roster4 id8=1 HP/MaxHP 387/387→1387/1387；roster5 id8=8 HP/MaxHP 250/250→1250/1250；roster6 id8=2 HP/MaxHP 279/279→1279/1279；roster7 id8=10 HP/MaxHP 131/131→1131/1131；roster8 id8=13 HP/MaxHP 123/123→1123/1123；roster9 id8=12 HP/MaxHP 151/151→1151/1151；roster10 id8=5 HP/MaxHP 114/114→1114/1114"
+        }
+      ],
+      "test_seed": 1,
+      "source_policy": "保留基底的高等級與既有能力；本輪沒有追加能力改寫。建構及HP強化都不是自然難度證據。"
+    },
+    "formal_registration": {
+      "assets": 403,
+      "prior_assets_unchanged": 401,
+      "new_files": [
+        "figani-261-hd6-v1-f00.png",
+        "figani-261-hd6-v1-f01.png",
+        "figani-261-hd6-v1-f02.png",
+        "figani-261-hd6-v1-f03.png",
+        "figani-262-hd6-v1-f00.png",
+        "figani-262-hd6-v1-f01.png",
+        "figani-262-hd6-v1-f02.png",
+        "figani-262-hd6-v1-f03.png",
+        "figani-262-hd6-v1-f04.png",
+        "figani-262-hd6-v1-f05.png",
+        "figani-262-hd6-v1-f06.png",
+        "figani-262-hd6-v1-f07.png",
+        "figani-262-hd6-v1-f08.png",
+        "figani-262-hd6-v1-f09.png",
+        "figani-262-hd6-v1-f10.png",
+        "figani-262-hd6-v1-f11.png",
+        "figani-262-hd6-v1-f12.png",
+        "figani-262-hd6-v1-f13.png",
+        "figani-262-hd6-v1-f14.png",
+        "figure-087-aim-battle-hd6-master-v1.png",
+        "figure-087-bolt-battle-hd6-master-v1.png",
+        "figure-087-idle-battle-hd6-master-v1.png",
+        "figure-087-lower-battle-hd6-master-v1.png",
+        "figure-087-nock-battle-hd6-master-v1.png",
+        "figure-087-release-battle-hd6-master-v1.png",
+        "figure-087-shot-battle-hd6-master-v1.png"
+      ],
+      "frames": 19,
+      "catalog_sha256": "68b5fb0137fe5deb812721bc9875a01ef25cf16d0a107c3d1eada7363e0bb19c",
+      "candidate_asset_entries_equal": true,
+      "private_root": "remake/generated-assets/modern-theme-prototypes"
+    },
+    "normal_battle_gui": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/archer87-normal-gui-r3/receipt.json",
+        "sha256": "65750383e7a62ca44a4b917725cc5b8024e99d2ca04188261c005defff2ea6e4"
+      },
+      "binary_sha256": "2bf4a13c7d39a6c69961e4175c07584af4aa620bfa19a7aedc5bd3326430fbdc",
+      "catalog_sha256": "a2bc60ba5382827a8d9672a7424e8db0defef9dc075e5f4e703cbdac274f564c",
+      "gui_tool_sha256": "f5a433512251b9b0995ac496a34f509cd1a90c6688e9a97f9bedb6b43165b526",
+      "source_save_sha256": "f4da9acebb3444a9b618c1b108996abee2d2832902e2cad86940d91c33fc0c66",
+      "battle_attack_choices": [
+        {
+          "scene": "world-hd",
+          "attacker": {
+            "acted": false,
+            "attack_max": 3,
+            "attack_min": 2,
+            "battle_fig": 8,
+            "camp": 0,
+            "exp": 0,
+            "hp": 1214,
+            "lv": 33,
+            "mp": 0,
+            "name": "希莉亞",
+            "native_identity": 8,
+            "on_field": true,
+            "raw": {
+              "X": 12,
+              "Y": 26,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 12,
+            "y": 26
+          },
+          "range": [
+            2,
+            3
+          ],
+          "cell": [
+            11,
+            26
+          ],
+          "target": {
+            "acted": false,
+            "attack_max": 0,
+            "attack_min": 0,
+            "battle_fig": 87,
+            "camp": 2,
+            "exp": 255,
+            "hp": 144,
+            "lv": 12,
+            "mp": 0,
+            "name": "",
+            "native_identity": 0,
+            "on_field": true,
+            "raw": {
+              "X": 11,
+              "Y": 23,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 11,
+            "y": 23
+          },
+          "state_injection": false
+        }
+      ],
+      "new_process_title_load": true,
+      "cold_loaded_units_equal": true,
+      "source_save_bytes_equal": true,
+      "theme_save_bytes_equal": true,
+      "node_boundary_save_checked": true,
+      "recording_created": false,
+      "elapsed_seconds": 641.1615442489274,
+      "save_contract": "F5保存章節邊界進度；LOAD重建戰場，不保存戰中位置、Acted或敵方HP。",
+      "end_rounds": 2,
+      "end_physical_scenes": [
+        0,
+        4
+      ],
+      "battle_end_art_samples": 30,
+      "battle_art_samples": 64,
+      "state_injection": false,
+      "scope": "同源章前HP強化槽；普通兩次END讓敵方87射擊，希莉亞正式射程射擊87，正常掉落訊息ACK／返回／F2與章節邊界新程序LOAD。不宣稱87普通反擊、自然難度、傷害／AI選目標、唯一相位或原版parity。"
+    },
+    "normal_pixels": {
+      "body": {
+        "file": "work/promo-cadence-20261018/hd-fonts/archer87-normal-body-pixels-r3.json",
+        "sha256": "36e3a1bd7f7c637ed3e089023e7ffc83992107ed921e5ab78a7d0cf9f7c46553"
+      },
+      "body_matched_pngs": 22,
+      "body_end_pngs": 17,
+      "body_target_idle_pngs": 5,
+      "sage": {
+        "file": "work/promo-cadence-20261018/hd-fonts/archer87-normal-bolt-pixels-r3.json",
+        "sha256": "a4b873db36eab2f36d5b3f5682f32c83b4202b22f51d7170389cc1b285a15eff"
+      },
+      "sage_matched_pngs": 14,
+      "sage_end_bolt_pngs": 9,
+      "sage_target_idle_pngs": 5,
+      "guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/archer87-normal-flow-guards-r4/guards.json",
+        "sha256": "d11e8c1d41488dd4010eff52fac2d3d262b11bf26abf3133a462d3bce01789c1"
+      },
+      "guard_count": 15,
+      "unique_phase_claim": false,
+      "policy": "同一flow的END攻擊及我方普通攻擊時的敵方待機分組必須各自通過。14張sage組含5張待機，非14張純飛矢；完整19張仍依fixture。"
+    },
+    "reward_owner_flow_observation": {
+      "audit": {
+        "file": "work/promo-cadence-20261018/hd-fonts/archer87-normal-gui-r3/input-audit-first-process.jsonl",
+        "sha256": "8301e0deaca01f19a0d00178072bfd5f5b59cca114952bfb518e7e947fb47f86"
+      },
+      "operations": {
+        "file": "work/promo-cadence-20261018/hd-fonts/archer87-normal-gui-r3/operations.json",
+        "sha256": "d126830f4947d790d6abe6121eac2140202834c85638462b365181ca7a41115b"
+      },
+      "reward_owner_rows": 16,
+      "reward_await_ack_rows": 8,
+      "post_attack_z": 6,
+      "z_during_reward_class_or_exp": 0,
+      "returned_cursor": [
+        9,
+        33
+      ],
+      "read_only": true
+    },
+    "private_delivery": {
+      "full_verification": {
+        "file": "work/promo-cadence-20261018/hd-fonts/archer87-private-sync-r1.json",
+        "sha256": "76b4bc1164279b550d393b5ab8f0cfb3a6da9257a38bf893326f809752ffd62f"
+      },
+      "runtime_only_verification": {
+        "file": "work/promo-cadence-20261018/hd-fonts/archer87-runtime-only-verification-r1.json",
+        "sha256": "b61dd9614926c1286de060f081b2880dddf5a907fcb04f7e3817d9eb7f3640c3"
+      },
+      "full_manifest_files": 3647,
+      "runtime_only_files": 3329,
+      "prior_files_unchanged": 3621,
+      "new_masters_excluded_from_runtime": 7,
+      "remote_head_verified": true,
+      "private_repository_verified": "主機gh確認isPrivate=true；私人獨立提交已推送，實際遠端HEAD與本機相同。"
+    },
+    "formal_coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/archer87-formal-coverage-r1.json",
+      "sha256": "f53c6eeb9ae04bfecd43d68bd92532e190fc58a4145d6cf3e603e80c83feb354"
+    },
+    "formal_catalog_tests": {
+      "status": "PASS",
+      "tests": 11
+    },
+    "readme_figures": [
+      {
+        "file": "docs/figures/hd-archer87-aim.png",
+        "source": "work/promo-cadence-20261018/hd-fonts/archer87-normal-gui-r3/world-hd-end-1-262-02-sample2.png",
+        "sha256": "b753c40d2690fc05b4ddbb0bd93e43c335c6b7b79a757207e9ddbc4ca7ac3313",
+        "edited": false
+      },
+      {
+        "file": "docs/figures/hd-archer87-arrow.png",
+        "source": "work/promo-cadence-20261018/hd-fonts/archer87-normal-gui-r3/world-hd-end-1-262-10-sample2.png",
+        "sha256": "0b2c403fb35dcc399520e4876671c8d5ac1afd49da048b5e8c5e65c6cdf01069",
+        "edited": false
+      }
+    ],
+    "formal_go": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/archer87-formal-go-r1.log",
+        "sha256": "12287d3adc602e81433c0566dfab56a5d0d1236fd9a64c003eb4906c9d2ba1d8"
+      },
+      "tests": 4,
+      "subtests": 2,
+      "audit_states": 6,
+      "skips": 0
+    },
+    "cleanup": {
+      "removed": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/archer87-game-r1",
+          "sha256": "e09ab7ea28ca1df9bdcd716ae3291b4bf5ef5ce2432607357647bc7e485cad52",
+          "bytes": 19316768
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/archer87-game-r2",
+          "sha256": "2bf4a13c7d39a6c69961e4175c07584af4aa620bfa19a7aedc5bd3326430fbdc",
+          "bytes": 19316872
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/archer87-go-cache-r1",
+          "bytes": 279239061,
+          "files": 1931
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/archer87-runtime-only-r1",
+          "files": 3329,
+          "bytes": 243448598,
+          "manifest_retained": true
+        }
+      ],
+      "removed_bytes": 561321299,
+      "deduplicated": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/archer87-battle-candidate-r2/pack/figani-261-hd6-v1-f00.png",
+          "sha256": "01fd98d56cbbfd9f46e79e7f5087ccaf41e929d24a3ae062b7c98bb0cc1f980c",
+          "bytes": 718379
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/archer87-battle-candidate-r2/pack/figani-261-hd6-v1-f01.png",
+          "sha256": "ae389d692572fc932c2a830369936b52149b65ce5e0e6fda7801e2f7ab8dc437",
+          "bytes": 709352
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/archer87-battle-candidate-r2/pack/figani-261-hd6-v1-f02.png",
+          "sha256": "93bf54462789ca305c9492b98b89d8d33a0c1532594f9d415ccc4c195c604856",
+          "bytes": 700467
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/archer87-battle-candidate-r2/pack/figani-261-hd6-v1-f03.png",
+          "sha256": "ae389d692572fc932c2a830369936b52149b65ce5e0e6fda7801e2f7ab8dc437",
+          "bytes": 709352
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/archer87-battle-candidate-r2/pack/figani-262-hd6-v1-f00.png",
+          "sha256": "0a42e89481731fd2215aec9c61e4e5385ffbb9ce5fc3ee39cc3a87103b0d0c60",
+          "bytes": 679985
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/archer87-battle-candidate-r2/pack/figani-262-hd6-v1-f01.png",
+          "sha256": "2f4b59ebb7628f0282f66fb2e2f859f66e6086e81fccb5d7cd0f4aa83a5fded9",
+          "bytes": 690289
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/archer87-battle-candidate-r2/pack/figani-262-hd6-v1-f02.png",
+          "sha256": "853b270f7802581aac1aadb9cb2ca8d6c5f91ea0a723d4955f4bae0886211bf3",
+          "bytes": 755068
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/archer87-battle-candidate-r2/pack/figani-262-hd6-v1-f03.png",
+          "sha256": "853b270f7802581aac1aadb9cb2ca8d6c5f91ea0a723d4955f4bae0886211bf3",
+          "bytes": 755068
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/archer87-battle-candidate-r2/pack/figani-262-hd6-v1-f04.png",
+          "sha256": "9537d93388402e66773d37f9e36081cc9bd7cf5017128b779b5677940cdf3f0e",
+          "bytes": 754838
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/archer87-battle-candidate-r2/pack/figani-262-hd6-v1-f05.png",
+          "sha256": "1ee77aaa2e345560b510a511d928afba6181e4da72e8b2bcae1261ea66960767",
+          "bytes": 647821
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/archer87-battle-candidate-r2/pack/figani-262-hd6-v1-f06.png",
+          "sha256": "84c83a64da10dcd0909544e52b5c12811e39467162d5770d44dd03e3c845b2a7",
+          "bytes": 557210
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/archer87-battle-candidate-r2/pack/figani-262-hd6-v1-f07.png",
+          "sha256": "84c83a64da10dcd0909544e52b5c12811e39467162d5770d44dd03e3c845b2a7",
+          "bytes": 557210
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/archer87-battle-candidate-r2/pack/figani-262-hd6-v1-f08.png",
+          "sha256": "84c83a64da10dcd0909544e52b5c12811e39467162d5770d44dd03e3c845b2a7",
+          "bytes": 557210
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/archer87-battle-candidate-r2/pack/figani-262-hd6-v1-f09.png",
+          "sha256": "4307258131382f9bb0e15c7dcaaa5c3f81d05b3622dc6e47f8701954108ea8f2",
+          "bytes": 9024
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/archer87-battle-candidate-r2/pack/figani-262-hd6-v1-f10.png",
+          "sha256": "481e61061f536596155035d1d3713deae4b09b9e50d5fc06723ae40c34541d21",
+          "bytes": 12207
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/archer87-battle-candidate-r2/pack/figani-262-hd6-v1-f11.png",
+          "sha256": "481e61061f536596155035d1d3713deae4b09b9e50d5fc06723ae40c34541d21",
+          "bytes": 12207
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/archer87-battle-candidate-r2/pack/figani-262-hd6-v1-f12.png",
+          "sha256": "481e61061f536596155035d1d3713deae4b09b9e50d5fc06723ae40c34541d21",
+          "bytes": 12207
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/archer87-battle-candidate-r2/pack/figani-262-hd6-v1-f13.png",
+          "sha256": "481e61061f536596155035d1d3713deae4b09b9e50d5fc06723ae40c34541d21",
+          "bytes": 12207
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/archer87-battle-candidate-r2/pack/figani-262-hd6-v1-f14.png",
+          "sha256": "481e61061f536596155035d1d3713deae4b09b9e50d5fc06723ae40c34541d21",
+          "bytes": 12207
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/archer87-battle-candidate-r2/pack/figure-087-aim-battle-hd6-master-v1.png",
+          "sha256": "fb954b5a88019eeac0b82a5470679ad9418bd2ec9e897cd23acdc71ec8149a57",
+          "bytes": 1377928
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/archer87-battle-candidate-r2/pack/figure-087-bolt-battle-hd6-master-v1.png",
+          "sha256": "29f849d64ab7d2da8d62c02e255fe96a3117eb878035891ff4706b14b11069b9",
+          "bytes": 150124
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/archer87-battle-candidate-r2/pack/figure-087-idle-battle-hd6-master-v1.png",
+          "sha256": "7d42c4593773b1462ee9e3715f8d513e8df80181b7189aa5582cea3c3c9eb67a",
+          "bytes": 1261396
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/archer87-battle-candidate-r2/pack/figure-087-lower-battle-hd6-master-v1.png",
+          "sha256": "b862ef3f408547300b237a771fb8b805173318985d5d2306bfbd0e7db93bba15",
+          "bytes": 1324499
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/archer87-battle-candidate-r2/pack/figure-087-nock-battle-hd6-master-v1.png",
+          "sha256": "9a572876aa5f84e301054fb6243d884a8a8cd1476e616dd31b2eaf6ef4852e17",
+          "bytes": 1378164
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/archer87-battle-candidate-r2/pack/figure-087-release-battle-hd6-master-v1.png",
+          "sha256": "6dd1cbfc0e535ff3f6239624cd7fbc594d09914988a8f1f50a7d38b1277861d7",
+          "bytes": 2037303
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/archer87-battle-candidate-r2/pack/figure-087-shot-battle-hd6-master-v1.png",
+          "sha256": "5277666249bebd921bcf68351bd56a0677dad9887f30122d8461ae5dbcb44dfe",
+          "bytes": 632145
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/archer87-idle-master-r1.png",
+          "sha256": "7d42c4593773b1462ee9e3715f8d513e8df80181b7189aa5582cea3c3c9eb67a",
+          "bytes": 1261396
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/archer87-aim-master-r1.png",
+          "sha256": "fb954b5a88019eeac0b82a5470679ad9418bd2ec9e897cd23acdc71ec8149a57",
+          "bytes": 1377928
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/archer87-nock-master-r1.png",
+          "sha256": "9a572876aa5f84e301054fb6243d884a8a8cd1476e616dd31b2eaf6ef4852e17",
+          "bytes": 1378164
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/archer87-lower-master-r1.png",
+          "sha256": "b862ef3f408547300b237a771fb8b805173318985d5d2306bfbd0e7db93bba15",
+          "bytes": 1324499
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/archer87-release-master-r2.png",
+          "sha256": "6dd1cbfc0e535ff3f6239624cd7fbc594d09914988a8f1f50a7d38b1277861d7",
+          "bytes": 2037303
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/archer87-shot-master-r2.png",
+          "sha256": "5277666249bebd921bcf68351bd56a0677dad9887f30122d8461ae5dbcb44dfe",
+          "bytes": 632145
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/archer87-bolt-master-r1.png",
+          "sha256": "29f849d64ab7d2da8d62c02e255fe96a3117eb878035891ff4706b14b11069b9",
+          "bytes": 150124
+        }
+      ],
+      "deduplicated_bytes": 25185426,
+      "recording_created": false,
+      "screenshots_logs_receipts_rejected_prototypes_retained": true
+    },
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/archer87-final-validation-r1.json",
+      "sha256": "2fd469d7a457edb2487f523d09483e89a13ad6ea20f94ed0384c4082b2b54ede"
+    },
+    "worklist": {
+      "open": 22,
+      "manual": 14,
+      "possibly_done": 0,
+      "issues_updated": [
+        201,
+        204,
+        263
+      ]
     }
   }
 }
