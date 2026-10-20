@@ -13,7 +13,7 @@ from verify_fd2_ares_battle_gpu import matches
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--figure', type=int, required=True)
-    p.add_argument('--core-profile', choices=['blue', 'gold', 'purple', 'warm', 'sage'], default='blue',
+    p.add_argument('--core-profile', choices=['blue', 'gold', 'purple', 'warm', 'sage', 'opaque'], default='blue',
                    help='已知圖源服裝的取樣色域；只影響驗證，不影響遊戲')
     p.add_argument('--body-frames', help='只核對明示本體幀，格式為24:0,25:0-13；空白與投射物另驗')
     p.add_argument('--sample-group',choices=['attack','target','end','flow','fixture','trace','idle-end','idle-fixture'],default='attack')
@@ -146,6 +146,7 @@ def main():
                 if im.mode != 'RGBA' or im.size != (frame['width']*6, frame['height']*6): raise SystemExit('圖源形狀不同')
                 def selected(r, g, b, a):
                     if a < 250: return False
+                    if args.core_profile == 'opaque': return True
                     if args.core_profile == 'blue':
                         return b >= 70 and b*100 >= r*150 and b*100 >= g*130
                     if args.core_profile == 'purple':
@@ -161,7 +162,7 @@ def main():
                           for i, (r, g, b, a) in enumerate(im.getdata()) if selected(r, g, b, a)]
             if len(points) < 1000: raise SystemExit('高覆蓋服裝核心像素不足')
             total = len(points)
-            if not args.proven_occlusion:points = points[::max(1, total//2500)]
+            if not args.proven_occlusion and args.core_profile!='opaque':points = points[::max(1, total//2500)]
             candidates.append((asset['source_resource'], index, name, sha, frame, points, total))
     samples = list(receipt.get('battle_end_art_samples' if end_group else 'battle_art_samples', []))
     if flow_group:
@@ -212,7 +213,7 @@ def main():
                         visible=[p for p in visible if not occluded(p[0]+x,p[1]+y,foreground)]
                     if len(visible)<1000:continue
                     visible_count=len(visible)
-                    if occluded is not None:visible=visible[::max(1,visible_count//2500)]
+                    if occluded is not None and args.core_profile!='opaque':visible=visible[::max(1,visible_count//2500)]
                     if matches(rgb, visible, x, y, 1920, 1200):
                         found.append({'scene': sample['scene'], 'file': path.name, 'sha256': sample['sha256'],
                             'sample_origin':sample.get('sample_origin',args.sample_group),

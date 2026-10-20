@@ -9,11 +9,32 @@ from verify_fd2_hd_gui import digest, latest
 def run_ch23_death_event(args,audit,key,wait,shot,saved,command,window,restart,operations,shots,tool_hash):
     assert args.death_event==53 and args.battle_node=='battle_ch23' and args.town_save and args.world
     source_hash=digest(args.town_save)
-    progress=[]; samples=[]
+    progress=[]; samples=[]; commander_samples=[]; portrait_samples=[]; commander_seen=set()
+    commander_hd=args.death_commander_hd
     command('xdotool','windowsize',window,'1920','1200')
     def checkpoint():
         (args.out/'death-observation.json').write_text(json.dumps(dict(
-            progress=progress,samples=samples,state=latest(audit),state_injection=False),ensure_ascii=False,indent=2)+'\n')
+            progress=progress,samples=samples,commander_samples=commander_samples,
+            portrait_samples=portrait_samples,state=latest(audit),state_injection=False),ensure_ascii=False,indent=2)+'\n')
+    def sample_commander(s):
+        layers=[l for l in s.get('battle_source_layers') or []
+                if l.get('archive','') in ('','FIGANI.DAT') and l['resource']==348 and l['fill']==-1]
+        signature=(s.get('battle_owner'),s.get('battle_phase'),tuple((l['x'],l['y']) for l in layers))
+        if (not commander_hd or not s.get('battle_scene') or not s.get('hd_battle')
+                or not layers or signature in commander_seen or len(commander_samples)>=16):return
+        commander_seen.add(signature);path=args.out/f'commander116-target-{len(commander_samples):02d}.png'
+        command('import','-window',window,str(path))
+        commander_samples.append(dict(file=path.name,sha256=digest(path),before=s,after=latest(audit)));checkpoint()
+    def sample_portrait(s):
+        if (not commander_hd or portrait_samples or s.get('dialogue_speaker')!=116
+                or not s.get('hd_theme') or s.get('hd_overlay_rect') is None):return
+        before=wait(lambda v:v.get('frame',0)>s['frame']+4 and v.get('dialogue_speaker')==116
+                    and v.get('hd_theme') and v.get('hd_overlay_rect') is not None)
+        path=args.out/'commander116-story-hd.png';command('import','-window',window,str(path))
+        portrait_samples.append(dict(file=path.name,sha256=digest(path),before=before,after=latest(audit)))
+        key('F2');wait(lambda v:not v.get('hd_theme'));shot('commander116-story-faithful')
+        key('F2');wait(lambda v:v.get('hd_theme') and v.get('dialogue_speaker')==116 and v.get('hd_overlay_rect') is not None)
+        shot('commander116-story-hd-restored');checkpoint()
     def clean(s):
         return not any(s.get(k) for k in ('dialogues','battle_scene','command_scene','battle_event','banner_t','walking','class_ui_job','unit_death_scene','ai_busy','system_end_turn_confirm'))
     def move(cell):
@@ -54,6 +75,8 @@ def run_ch23_death_event(args,audit,key,wait,shot,saved,command,window,restart,o
         legal=[p for p in cells if 1<=distance(p)<=1]
         if legal:
             cell=min(legal,key=lambda p:(abs(p[0]-gaia['x'])+abs(p[1]-gaia['y']),p))
+            if commander_hd:
+                key('F2');wait(lambda v:v.get('hd_theme'))
             attack(cell,target)
             progress.append(dict(action='normal-attack-commander',before=s,cell=cell));checkpoint()
             break
@@ -82,10 +105,13 @@ def run_ch23_death_event(args,audit,key,wait,shot,saved,command,window,restart,o
     while time.monotonic()<deadline:
         s=latest(audit)
         if s.get('error'):raise RuntimeError(s['error'])
+        sample_commander(s);sample_portrait(s)
         if s.get('unit_death_scene') and s.get('unit_death_kind')==args.death_kind:
             event_seen=True
             if not hd_on:
-                key('F2');wait(lambda s:s.get('hd_theme'));hd_on=True;continue
+                if not s.get('hd_theme'):
+                    key('F2');wait(lambda s:s.get('hd_theme'))
+                hd_on=True;continue
             frame=s.get('unit_death_presented_frame',-1)
             if s.get('unit_death_presented_hd') and frame not in seen and not tail:
                 seen.add(frame);path=args.out/f'death23-event-{frame:02d}.png'
@@ -94,8 +120,8 @@ def run_ch23_death_event(args,audit,key,wait,shot,saved,command,window,restart,o
             if frame>=22 and not tail:
                 key('F2');wait(lambda s:not s.get('hd_theme'));tail=True
         elif event_seen:
-            if latest(audit).get('hd_theme'):
-                key('F2');wait(lambda s:not s.get('hd_theme'))
+            if bool(latest(audit).get('hd_theme'))!=commander_hd:
+                key('F2');wait(lambda s:bool(s.get('hd_theme'))==commander_hd)
             break
         elif s.get('dialogues') and not s.get('battle_scene'):key('Return')
         else:time.sleep(.005)
@@ -106,6 +132,7 @@ def run_ch23_death_event(args,audit,key,wait,shot,saved,command,window,restart,o
     while time.monotonic()<deadline:
         s=latest(audit)
         if s.get('error'):raise RuntimeError(s['error'])
+        sample_portrait(s)
         if s.get('node')=='preparation_ch24' and not s.get('preparation_ui_busy'):break
         if (not victory_ack and s.get('node')=='battle_ch23' and clean(s)
                 and not any(u['camp']==2 and u['hp']>0 and u['on_field'] for u in s['units'])):
@@ -114,6 +141,8 @@ def run_ch23_death_event(args,audit,key,wait,shot,saved,command,window,restart,o
         elif s.get('dialogues') or s.get('node','').startswith('story_'):key('Return')
         else:time.sleep(.03)
     else:raise TimeoutError('死亡演出後未進入第24章整備')
+    if latest(audit).get('hd_theme'):
+        key('F2');wait(lambda s:not s.get('hd_theme'))
     shot('death23-returned-preparation-faithful')
     latest_frame=latest(audit)['frame']
     key('F5');wait(lambda s:s.get('frame',0)>latest_frame+2)
@@ -126,12 +155,16 @@ def run_ch23_death_event(args,audit,key,wait,shot,saved,command,window,restart,o
     before=latest(audit)
     restart('preparation_ch24',before['gold'],'death23-cold-load-preparation')
     assert digest(args.town_save)==source_hash
+    if commander_hd:
+        assert commander_samples and len(portrait_samples)==1,'隊長待機或116故事頭像未取得正常視窗樣本'
     checkpoint()
     (args.out/'receipt.json').write_text(json.dumps(dict(
         schema='fd2-shared-death-normal-gui-v1',status='PASS',binary_sha256=digest(args.binary),
         gui_tool_sha256=tool_hash,helper_sha256=digest(Path(__file__)),source_sha256=source_hash,
         source_file=str(args.town_save),saved_sha256=faithful_hash,samples=samples,progress=progress,
         operations=operations,screenshots=shots,event_id=53,death_kind=args.death_kind,state_injection=False,recording_created=False,
+        commander_hd=commander_hd,commander_samples=commander_samples,portrait_samples=portrait_samples,
+        catalog_sha256=digest(args.assets/'assets/themes/modern/catalog.json'),
         final_node=latest(audit)['node'],scope='章前強化來源；正常移動、END、攻擊隊長與死亡事件抽樣、自然戰後、整備F2和保存冷讀。非自然難度、整章E2或新原版對拍。'),ensure_ascii=False,indent=2)+'\n')
 
 

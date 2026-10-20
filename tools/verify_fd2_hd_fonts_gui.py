@@ -53,6 +53,8 @@ def main():
     parser.add_argument('--native-entry-theme', choices=['hd','faithful'], default='hd', help='原生來源擷取的起始主題；第23章獨立整備目前明示使用faithful')
     parser.add_argument('--death-event', type=int, choices=[53], help='第23章普通進軍擊倒隊長，唯讀抽樣共用死亡HD；需--town-save')
     parser.add_argument('--death-kind', choices=['script','action'], default='script', help='抽樣章節事件或普通擊殺的共用死亡；需--death-event與--world固定seed')
+    parser.add_argument('--death-commander-hd', action='store_true',
+                        help='同一第23章正常路徑加驗隊長待機及116故事HD頭像；不改來源或規則')
     parser.add_argument('--revive-before-departure', type=int, choices=[1],
                         help='第二／三章原生來源出發前，經正常教會服務復活哈諾；需--capture-native-battle-save')
     parser.add_argument('--buy-bekwei-bow', action='store_true',
@@ -94,6 +96,7 @@ def main():
     parser.add_argument('--battle-end-figures',type=terrain_frame_ids,default=set(),
                         help='同一普通END擷取多個明示figure，例如133,134；省略時維持單數參數')
     args = parser.parse_args()
+    assert not args.death_commander_hd or (args.death_event==53 and args.world and args.battle_hd)
     assert args.revive_before_departure is None or args.capture_native_battle_save
     assert not args.buy_bekwei_bow or (args.capture_native_battle_save
            and args.battle_node=='battle_ch09' and args.revive_before_departure is None)

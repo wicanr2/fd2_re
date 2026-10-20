@@ -202,7 +202,13 @@ HD 背景、敵方與面板仍含像素素材。來源與可重跑方式見
 上圖是兩位角色正常移動接敵後的實際攻擊視窗，未編修。寬袍、披領與揮杖順序依原圖重繪。
 接敵路線、章前強化與驗證範圍見[驗證紀錄](docs/data/fd2-modern-hd-battlefield-20261019.json)的`cleric_party_battle_followup_20261021`。
 
-正常換手曾遇偶發黑畫面，仍由[#267](https://github.com/wicanr2/fd2_re/issues/267)追查；本組畫面不代表完整HD已完成。
+本組畫面只涵蓋已驗證的近戰圖組；完整 HD 仍在製作。
+
+| 機甲隊長受擊時的 HD 待機 | 機甲隊長戰後 HD 頭像 |
+| --- | --- |
+| ![機甲隊長HD待機](docs/figures/hd-captain116-target.png) | ![機甲隊長HD故事頭像](docs/figures/hd-captain116-story.png) |
+
+兩張皆為正常鍵盤流程的重製視窗，使用明示章前強化槽。戰鬥圖組沿原版十一幀與雙刃節拍重繪，戰後自然接入下一章整備；隊長主動攻擊的正常流程尚未抽驗。詳見[HD 驗證紀錄](docs/data/fd2-modern-hd-battlefield-20261019.json)的 `captain116_battle_followup_20261021`。
 
 ![珊HD普通揮杖攻擊](docs/figures/hd-shan-physical-attack.png)
 

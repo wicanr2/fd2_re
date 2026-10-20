@@ -3437,6 +3437,14 @@
       "rule": "接敵抽樣沒有回玩家回合時，先擷取實際視窗辨識勝利、敗北或訊息終態，再判定續行缺陷。需要保留指定主動攻擊時，先核合法路線並明示有界鍵盤路徑；入口tools/verify_fd2_hd_fonts_gui.py的--battle-advance-column，只限定END前的正式可達進軍格，最終攻擊仍由正式目標環裁決，不修改HP或移動規則。",
       "why": "希爾法章23第三次END先遇116缺頭像；切像素交叉驗證後已顯示勝利，首領在敵回合被反擊擊倒。普通END迴圈等下一回合不能證明遊戲卡住，沒有因此修改死亡續行或遊戲規則。",
       "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#cleric_party_battle_followup_20261021"
+    },
+    {
+      "id": "ui-job-snapshot-follow-recorded-progress",
+      "date": "2026-10-21",
+      "area": "正常GUI失敗分類",
+      "rule": "從中途黑圖或job=true推定卡死前，核對同一run的後續釋放、回合與實際終態。入口tools/audit_fd2_ui_job_progress.py以原JSONL及日誌SHA驗證單調幀序、job=false、後續回合和RuntimeError；缺項即拒收，不以沒有綁定frame的黑PNG定位owner。",
+      "why": "第23章R3已進第5回合並因116頭像缺圖停止，上一輪仍將frame7636的瞬間job誤稱持續卡死。保留舊證據並追加勘誤，未修改遊戲。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#ui_black267_correction_20261021"
     }
   ]
 }

@@ -3041,4 +3041,32 @@ status GPU使用明示typed phase建構，正式扣血訊息caller另由native_a
 低AP路線勘誤READY：第五輪不限目標列，重走已知17,29側翼不可近戰的死路，控制器在19,29嚴格停止，未通過。
 第六輪恢復原row-max25，只選上方111；同一低AP槽、seed1與六END上限，不再校準數值，也不加進軍縱列或章內注入。
 
+### 第23章黑畫面紀錄勘誤
+
+狀態：READY（證據稽核，不改遊戲路由）。679be580登記的#267須以原第三輪完整audit及程序log重新審查。
+原frame7636的class_ui_job為true，7638已為false，8734已進第5回合，最後10078的錯誤為116故事頭像缺件。
+原黑圖沒有與這些frame綁定的收據，不能從單張黑圖及中途busy欄位宣稱持續卡死；原紀錄與雜湊保留，追加勘誤。
+
+稽核工具只讀完整JSONL／log，以明示snapshot-frame要求當時job存在，核對後續明示釋放、回合前進及最後錯誤與log一致。
+缺任一證據、非遞增frame或截斷輸入均拒收，不輸出通過報告。報告保存輸入SHA、原始欄位、frame及推論範圍；不宣稱新原版parity、通用生命週期修復或該輪成功通關。
+原#267的卡死說法若被反證，修正現行矩陣／README／Issue，歷史WORKLOG只追加更正，不重寫舊歷程。
+
+### 第23章隊長 BattleFig116 與故事頭像116
+
+狀態：READY。來源與固定SHA集中於[HD戰場主收據](../data/fd2-modern-hd-battlefield-20261019.json)的captain116_battle_followup_20261021。
+正常章23名冊投影確認camp2、BattleFig116、HP2200、20,17；死亡劇情實際要求speaker116。兩個數字各由consumer核對，不外推其他素材編號相同即同一角色。
+348待機一幀／349攻擊十幀已核原metadata／PNG／mask，350固定零header。DATO116四張原頭像亦保留來源，現代模式沿既有靜態閉嘴80／480契約，不改原版四張嘴形播放。
+
+- 保留正面灰綠重甲、藍色肩甲／關節、細長平面頭盔、肩後上翹裝甲片、綠色前垂布、褐色褲與金屬靴；原交叉前臂、雙刃伸展及低身橫斬依原姿勢重繪。
+- 349:5..8的亮色斬光與機體分層錨定，349:9已無斬光；母稿RGBA不改。保留原矩形、header、delay與raw音效／命中標記，不新增350或改武器／傷害。
+- 頭像保留狹長灰綠面罩、水平細縫、深藍邊框與綠褐服裝；沿已核准手繪風格及實際原圖，不另取推測姓名。
+- 完整11張Draw／F2／DAC／一次續行、來源核心與缺件拒收、清冊及runtime-only須驗；正常第23章既有受版控GUI取得隊長實圖／死亡劇情、返回及章節邊界保存冷讀後才准入。只驗到的正常動作才列證明。
+- 不加章內狀態注入，章前來源與seed明示。舊421項entries保持，通過後沿allow-list同步私人庫；不新增自然難度、原版逐幀／音訊或整章E2聲明。
+
 驗收：兩人原17張完整Game.Draw／F2、返回DAC與一次續行、清冊及runtime-only通過，兩包最終PNG bytes相同。正常章23近戰與保存冷讀分別通過；希爾法首輪缺116頭像、第二輪提早勝利均保留；第六輪沿第五輪AP+0槽、恢復row-max25後正常HD近戰通過；116故事頭像與#267仍待。來源與實圖核對依主收據cleric_party_battle_followup_20261021，數量依58。
+
+勘誤驗證：[`audit_fd2_ui_job_progress.py`](../../tools/audit_fd2_ui_job_progress.py)及[七項拒收／正向測試](../../tools/test_audit_fd2_ui_job_progress.py)已驗同一R3原檔SHA。結論與重跑命令依主收據`ui_black267_correction_20261021`，原黑圖與失敗日誌保持。此項限紀錄分類，未修改引擎所有權或提升舊run。
+
+隊長驗證補充 READY：同一人物核對器新增 `opaque` 色域，核對每個 alpha≥250 的來源像素，不抽稀、不降低原至少1000點門檻；用於本體與小型斬光的合成實圖。正常死亡路徑以 `--death-commander-hd` 在接敵後切HD，另存348待機及speaker116穩定頭像的前後觀測。頭像按既有觀測矩形核對完整480×480來源，RGB差容許1，需正常戰後、F2保存相同及新程序LOAD；不從fixture提升正常攻擊範圍。獨立核對入口為[`verify_fd2_commander_normal.py`](../../tools/verify_fd2_commander_normal.py)，拒收案例由[`test_verify_fd2_commander_normal.py`](../../tools/test_verify_fd2_commander_normal.py)以同份實檔收據重驗。
+
+隊長驗收 CONFORMED-SCOPED／RUNTIME-E1：348／349十一幀及116靜態80／480已正式登錄。完整與runtime-only十一張最終PNG bytes相同；每張全部alpha≥250來源像素通過，無前景排除，21項編製與5項錯圖守衛通過。正常七次END後蓋亞攻擊隊長，348目標待機2546點、116頭像完整230400點RGB差0，十項正常收據拒收通過。自然戰後整備、F2保存與新程序LOAD通過。隊長主動攻擊正常GUI仍待；Go遊戲程式、規則、保存與原版像素模式保持。私人完整／runtime-only及遠端HEAD已核，明示近似姿勢／斬光分層、章前強化與原傷亡。完整HD未完成，主收據`captain116_battle_followup_20261021`含精確提示、配方、來源與重跑入口。

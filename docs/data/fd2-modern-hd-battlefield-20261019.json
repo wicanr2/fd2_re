@@ -9,13 +9,13 @@
     "native_viewport": "CONFORMED-SCOPED：穩定1920世界沿原生(4,4)、312×192窗格；死亡事件前25拍依既有producer從VGA0,0開始，最後steady回4,4。不同caller分列，不新增DOS位址parity。",
     "hd_sprite_data": "DATA-READY：完整125組1455張HD及31組372張新增24父項已登錄；舊1083張父項及HD bytes保持。",
     "hd_world_renderer": "CONFORMED-SCOPED：144人物已接Game.Draw；首章34張正常GPU、4張實際走行、兩次物理攻擊及保存／新程序LOAD通過。",
-    "private_assets": "正式清冊及完整／runtime-only allow-list已核SHA及UID；舊檔保持，新母稿不進執行包。數量與遠端核對依58及shan14_battle_followup_20261021。",
+    "private_assets": "正式清冊及完整／runtime-only allow-list已核SHA及UID；舊檔保持，母稿不進執行包。數量與遠端核對依58及captain116_battle_followup_20261021。",
     "quickload_battle_owner": "CONFORMED-SCOPED：成功JSON LOAD丟棄舊經驗owner與移動計畫；拒收保留。",
     "timed_dialogue": "CONFORMED-SCOPED-RUNTIME-E1：計時FFEC開收框保留HD世界，EXP99普通鍵盤／F2與保存冷讀通過；其他caller未驗。",
     "hd_terrain": "CONFORMED-SCOPED：map0六組53槽；新增圓頂綠色／褐色雙塊四底圖在兩張正常GPU全部相符，短長組合與保存冷讀通過；草地及其他地形仍待HD化。",
     "ai_player_input_lock": "CONFORMED-SCOPED：AI換手期間拒絕玩家地圖輸入重入；普通END／增援對話及相關／完整Go回歸通過。",
     "gaia_redesign": "CONFORMED-SCOPED：新版頭像與四方向圖組已登錄；正常START／Gaia北移取消／F2／冷讀分段驗證。相位差異與序章尾端失敗明示，非逐幀parity。",
-    "hd_battle_animation": "珊14號待機／抬杖／前揮原14幀已登錄；完整Draw／F2及runtime-only通過，普通章23兩次END後攻擊、五張人物核心、返回及邊界冷讀通過。其他缺口與唯一數量依58。",
+    "hd_battle_animation": "本批116原11幀與80／480故事頭像已登錄；完整Draw/F2、全部不透明核心與runtime-only通過，正常目標待機／故事／戰後／保存冷讀通過。隊長主動攻擊正常GUI未提升，其餘缺口與唯一數量依58及captain116_battle_followup_20261021。",
     "native_purchase_equip": "CONFORMED-SCOPED：#266原生購買立即裝備保留ignored原始格，29項商店回歸與正常購弓F5／章首射程通過；不改格式或數值規則。",
     "hd_event_death": "共用事件、普通行動與狀態致死已接HD；三種26拍／F2通過。正常章23事件與普通擊殺已抽驗，狀態致死正常GUI仍待；來源依death_consumers_followup_20261021。"
   },
@@ -55136,7 +55136,7 @@
     "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
     "current_state": {
       "remake_complete": "兩人原17幀、完整Draw/F2、runtime-only bytes一致、正常HD物理攻擊／返回及章節邊界保存冷讀已驗。",
-      "remake_remaining": "#267偶發黑畫面、116號故事頭像、其餘人物／指令／人物外特效、普通召喚與平台效能。",
+      "remake_remaining": "其餘人物／指令／人物外特效、普通召喚與平台效能。116頭像由captain116_battle_followup_20261021接續補齊；#267誤判依ui_black267_correction_20261021撤回。",
       "original_oracle_unknown": "本批沒有新原版逐幀、傷害、音訊或整章E2。",
       "optional_polish": "不插幀，原矩形、規則與保存格式保持。"
     },
@@ -55352,7 +55352,7 @@
       "review": "原圖輪廓及生成母稿逐張目視，原RGBA不裁切、不量化；alpha192邊界未碰畫布四側。近似姿態共用及等比收縮見compiled。無拒收母稿。"
     },
     "ui_black_diagnosis": {
-      "status": "OPEN-INTERMITTENT-DEFECT",
+      "status": "SUPERSEDED-MISCLASSIFIED",
       "observation": {
         "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/black-ui-r3-observation.json",
         "sha256": "343a4988a81ba71b5698b403039204e80715eece38b2da4521ac19a1852f75f7"
@@ -55365,7 +55365,7 @@
         "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/audit-go.log",
         "sha256": "3961c9478f49c10724029c2159ff4a3e853cd7acafcbd98cfab80ecc972bb7d4"
       },
-      "cause": "第五輪改章前AP政策；第六輪恢復既有目標區域，本輪通過不等於重現或修復；保留第三輪黑畫面與第四輪觀測，#267繼續OPEN。",
+      "cause": "R3原始紀錄已在7638釋放job、8734進第5回合，10078才因116故事頭像缺圖停止。原觀測檔末尾也已記錄job=false及相同error；上一輪錯讀為持續卡死／逾時。未綁frame的黑PNG不能定位其來源。",
       "issue": 267,
       "same_policy_observer_run": {
         "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/black-ui-r4-observation.json",
@@ -55374,7 +55374,10 @@
       "latest_run": {
         "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/normal-24-r6/receipt.json",
         "sha256": "ada454486c0111e1053708c1367cb31050509bbafdf68f2b47efafe8325db9ee"
-      }
+      },
+      "previous_status": "OPEN-INTERMITTENT-DEFECT",
+      "previous_cause": "第五輪改章前AP政策；第六輪恢復既有目標區域，本輪通過不等於重現或修復；保留第三輪黑畫面與第四輪觀測，#267繼續OPEN。",
+      "resolution": "ui_black267_correction_20261021"
     },
     "formal_registered": true,
     "private_synced": true,
@@ -55519,7 +55522,9 @@
           "sha256": "b58e3c35f8593db24d8fcb073155fad7eed87547c68b1aed0a78cedf9e481d7c"
         },
         "status": "NOT-PASS",
-        "reason": "黑畫面及class UI持續，普通END逾時"
+        "reason": "116故事頭像缺圖；job已釋放且已進第5回合，原黑畫面／逾時分類撤回",
+        "previous_reason": "黑畫面及class UI持續，普通END逾時",
+        "resolution": "ui_black267_correction_20261021"
       },
       {
         "run": 4,
@@ -55650,5 +55655,2812 @@
       "sha256": "4d22bf02f024fe6ca99ef5b2a4611975905b68c92d0989c2119fd9966d818495"
     },
     "normal_source_scope": "normal_source供約拿；希爾法依normal24_source，兩種章前AP政策分開，不稱同一數值初始狀態。"
+  },
+  "captain116_battle_followup_20261021": {
+    "status": "CONFORMED-SCOPED-RUNTIME-E1-WITH-NORMAL-TARGET-AND-STORY",
+    "base_commit": "679be580fd022854759a37db9f3e73cdf28acfb6",
+    "full_battle_hd_complete": false,
+    "figure": 116,
+    "resources": [
+      348,
+      349
+    ],
+    "frames": 11,
+    "empty_cast": 350,
+    "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+    "native_contact": {
+      "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/native-contact.png",
+      "sha256": "4ba32d3dea9b32bbbee3a5b9d5d7338ff49c7c1d7f6a2934ab3c97440dcac705"
+    },
+    "native_review": {
+      "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/native-review.json",
+      "sha256": "282a3881f50eca2fc8c194c079dd8d91998e1ac30791b38e5f007830767a87f8"
+    },
+    "portrait_sources": [
+      {
+        "frame": 0,
+        "file": "remake/assets/portraits/DATO_116_m0.png",
+        "sha256": "f04f82bffa1221e656cd9f647b7aca5e40962885cf0d9032111ca92891a9e159",
+        "pixel_sha256": "d455ac941d301dec9e5837d6e5f65ef03df0d235ddd37a495645514f895fd9b6"
+      },
+      {
+        "frame": 1,
+        "file": "remake/assets/portraits/DATO_116_m1.png",
+        "sha256": "3081f6ae2430950d10ea5229c349214ea13f47ef0ba9242cffacb3fe65f98a84",
+        "pixel_sha256": "3bc23ebdd1ab5421f90d7e974838e2441051dfabafb830aefc73da7c9ec9a59b"
+      },
+      {
+        "frame": 2,
+        "file": "remake/assets/portraits/DATO_116_m2.png",
+        "sha256": "ec8e6a32e75d22aa5274d64e17421e25d89f95490980fdc005b236134d179668",
+        "pixel_sha256": "6baa745f7a800645cbc26a3ac2190b73ac15c5111d5556390cc2eba8ce0a46aa"
+      },
+      {
+        "frame": 3,
+        "file": "remake/assets/portraits/DATO_116_m3.png",
+        "sha256": "39e02d99725ae2e002ea4e8cd6bec7060887d1ebecfcb7a096c4b787a517d947",
+        "pixel_sha256": "562d23eaa4b1b01914c1a0e3a2e97c1cafa61012f6f59a20e83b8a6abe5bb8f8"
+      }
+    ],
+    "identity_scope": "正常章23來源中camp2 BattleFig116/HP2200位於20,17；同章死亡劇情直接要求speaker116。沿原始圖像，不由相同數字推定其他角色或素材命名。",
+    "current_state": {
+      "remake_complete": "原11幀、靜態80／480頭像、完整Draw/F2、全部不透明核心、runtime-only bytes與正常目標待機／116故事／戰後／保存冷讀通過。",
+      "remake_remaining": "隊長主動攻擊正常GUI、其餘人物／指令／人物外特效、普通召喚、狀態致死正常GUI與平台效能。",
+      "original_oracle_unknown": "沒有新原版逐幀、傷害、音訊或整章E2。",
+      "optional_polish": "近似姿勢共用與明示等比錨點；無插幀、規則／保存／速度變更。"
+    },
+    "date": "2026-10-21",
+    "image_generation": {
+      "mode": "built-in image_gen",
+      "prompt_set": {
+        "idle": "Generate ONE full-body transparent HD battle sprite, faithful high-resolution redraw of reference image 1 (original FIGANI348 mechanical commander). Reference image 2 supplies ONLY painterly fantasy ink finish and material detail, never its helmet, cannon arms, cloth, proportions or feet. Exactly frontal standing pose, full silhouette. Tall narrow vertical sage metal faceplate with tiny dark horizontal slit near top, mouthless and no visible human face; dark cobalt segmented neck. Heavy sage grey-green chest plate, round cobalt blue shoulder armor, two paired upward swept metal fins BEHIND shoulders with tiny red tip accents; not horns on helmet. Grey-green elbows and armored forearms with blue hand guards and small retracted forearm blade details, both hands lowered symmetrically. Green long central tabard with diagonal folds; large loose dark brown trousers on both sides. Segmented silver-sage shin plates over blue joints and simple pointed metal armored boots, NO claw feet. Preserve compact broad muscular torso and narrow waist from original, not a cannon robot. Bright neutral lighting, rich hand-painted material shading with thin clean ink lines. Subject and all fins, hands and boot tips entirely inside canvas with transparent margins. Real RGBA transparency, no ground, no cast shadow, no glow, no text, no sheet. One sprite only.",
+        "portrait": "Generate ONE SQUARE 1024x1024 opaque game dialogue portrait, faithful HD handpainted redraw of original reference image 1. Reference 2 supplies ONLY established painted fantasy portrait finish; do NOT copy its round head, eyes, armor or face design. Mechanical commander with an extremely long flat sage grey-green faceplate, cropped at the very top as original. A single very thin dark horizontal slit near the upper third; lower face a solid long tapered rectangular metal plate with NO mouth, NO human eyes or skin. Broad angular brow rim, small raised rectangular metal patch on left brow, dark cobalt blue rim and dark blue flat cap behind, blue neck edge at right. Brown coat/shoulder fabric with green folds and rust-red lining visible at lower right, small sage metal shoulder at lower left. Match original three-quarter orientation facing LEFT and original tight head/shoulder crop. Preserve original proportions rather than adding a humanoid face. Subtle worn matte metal and crisp ink outlines. Plain muted royal-blue background filling the entire square; fully opaque image, no transparency, no glow, no text, no extra weapons or emblems.",
+        "poses": [
+          {
+            "key": "ready",
+            "ref": "native-349-1.png",
+            "prompt": "Use case: stylized-concept. Production game animation asset, hand-painted fantasy mechanical armored captain. Preserve the identity, armor shapes and materials of image 1 (accepted HD idle): very long plain sage-grey faceplate with tiny black horizontal slit, cobalt blue round shoulder plates and joint rings, two upswept grey fins behind each shoulder with tiny red tips, long green tabard, baggy dark brown trousers, sage segmented shin armor, simple pointed metal boots. Match original pose from image 2 precisely. One full-body figure only on real transparent background, complete silhouette with generous transparent margins on every side. No ground, no shadow, no text, no border, no motion trails or effects. Pose: upright frontal stance with both armored forearms crossed tightly into an X before the chest, short retracted wrist blades near fists. Keep legs straight and feet close, do not add long swords. The original image 2 is primary pose evidence; image1 supplies faithful identity and painterly quality."
+          },
+          {
+            "key": "cross",
+            "ref": "native-349-3.png",
+            "prompt": "Use case: stylized-concept. Production game animation asset, hand-painted fantasy mechanical armored captain. Preserve the identity, armor shapes and materials of image 1 (accepted HD idle): very long plain sage-grey faceplate with tiny black horizontal slit, cobalt blue round shoulder plates and joint rings, two upswept grey fins behind each shoulder with tiny red tips, long green tabard, baggy dark brown trousers, sage segmented shin armor, simple pointed metal boots. Match original pose from image 2 precisely. One full-body figure only on real transparent background, complete silhouette with generous transparent margins on every side. No ground, no shadow, no text, no border, no motion trails or effects. Pose: upright frontal, arms crossed X at chest, TWO long straight silver blades extending from the forearms upward outwards, one to upper-left and one to upper-right. Tips of both blades fully inside canvas with generous margin. Legs nearly straight, feet close. Blade length and X silhouette match original image2. Do not turn blades into hand-held swords."
+          },
+          {
+            "key": "lunge",
+            "ref": "native-349-9.png",
+            "prompt": "Use case: stylized-concept. Production game animation asset, hand-painted fantasy mechanical armored captain. Preserve the identity, armor shapes and materials of image 1 (accepted HD idle): very long plain sage-grey faceplate with tiny black horizontal slit, cobalt blue round shoulder plates and joint rings, two upswept grey fins behind each shoulder with tiny red tips, long green tabard, baggy dark brown trousers, sage segmented shin armor, simple pointed metal boots. Match original pose from image 2 precisely. One full-body figure only on real transparent background, complete silhouette with generous transparent margins on every side. No ground, no shadow, no text, no border, no motion trails or effects. Pose: strong three-quarter side view leaning left, knees bent in very wide grounded lunge, left knee bent forward, right leg extended to lower-right. Both arms extended to the sides, twin long silver forearm blades project diagonally down-left and down-right across a low horizontal sweeping slash. Head turns left and tilts down with torso. Green tabard sweeps down-left and brown trousers show bent legs. Follow image2's asymmetrical pose and camera; NOT frontal symmetrical standing. No slash effects, only body and blades."
+          }
+        ],
+        "more": [
+          {
+            "key": "cross2",
+            "paths": [
+              "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/captain116-r1/cross-v1.png"
+            ],
+            "prompt": "Use case: background-extraction. Edit the attached image. Remove ALL of the dark cloudy grey background and its halo completely. Preserve exactly the full armored figure, crossed arms, both long silver blades, green tabard, trousers, boots, blue armor, faceplate, pose, colors and existing painted detail. Output the identical isolated figure and two blades on a truly transparent RGBA background. Body and metal must remain fully opaque, including an opaque alpha255 core; only silhouette edge anti-aliasing may be partly transparent. No glow, ground, shadow, checkerboard pattern, extra elements or text."
+          },
+          {
+            "key": "fan",
+            "paths": [
+              "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/captain116-r1/native-349-5.png"
+            ],
+            "prompt": "Use case: stylized-concept. Production game VFX layer only, transparent background. Image1 is pose and shape reference: reproduce ONLY the bright ivory/golden slash fan, remove the robot completely. One broad horizontal triangular sword slash directed toward the RIGHT: very wide tall open tail on left edge, sharp concentrated tip at right center. Solid opaque pale ivory core with short layered warm gold rim and a few painterly streaks along top/bottom, same silhouette as image1. Fine clean hand-painted fantasy game style. No character, body, weapon, floor, shadow, background, text or rectangular panel. Entire slash is inside canvas with transparent margins. No all-over bloom; mostly opaque core and restrained edge light. Landscape composition."
+          },
+          {
+            "key": "trail",
+            "paths": [
+              "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/captain116-r1/native-349-6.png"
+            ],
+            "prompt": "Use case: stylized-concept. Production hand-painted game VFX layer only, true transparent background. Image1 supplies ONLY the ivory/golden slash trail shape. Remove robot entirely. One right-pointing horizontal slash remnant: bright sharp tip at right-center, several short pale ivory tapered triangular streaks flare out LEFT and up/down, warm golden thin edges. Tail is broken into pointed streaks, unlike a solid broad fan. Match reference visible VFX silhouette. Mostly opaque ivory core, restrained edge light. Complete isolated VFX inside canvas with transparent margins. No body, character, blade, ground, shadow, black/cloudy background, text, panels or checkerboard."
+          }
+        ],
+        "cross3": "Use case: precise-object-edit. Edit image1, which already has correct truly transparent background. Change ONLY the wrist blades: extend two long straight silver forearm blades diagonally outward upwards, matching pose reference image2. One blade runs from chest center to upper-left, the other from chest center to upper-right, crossing into a wide X. Make room by expanding transparent canvas width, fit both tips fully inside. Keep the existing robot faceplate, shoulder fins, torso, crossed arms, tabard, trousers, boots, hand-painted style, colors and identity unchanged. Everything outside the isolated body and two blades must be alpha zero. Body and blades have fully opaque solid alpha255 interiors. No painted backdrop, smoky clouds, gray halo, rim glow, floor, vignette, shadow or text.",
+        "files": {
+          "cross2": "exec-173efe85-6bfa-48a3-a229-6506efc2b21c.png",
+          "cross3": "exec-ea8a41c9-1059-4869-9dde-1146650c834a.png",
+          "fan": "exec-bbb5fdc6-82e2-414a-9a71-973aff90e4f6.png",
+          "trail": "exec-2c1bad51-5fd5-429f-9079-82052ee11805.png"
+        },
+        "cross4": {
+          "prompt": "Use case: precise-object-edit. Edit image1. Change only the TWO silver forearm blades: make them substantially shorter and point them diagonally upward more steeply, tips just above helmet level. The total silhouette width INCLUDING blade tips must be about 1.5 times the width of the robot's blue shoulders, matching pose and proportion image2. Both blades cross at the chest in an X; tips stop at upper left/right near shoulder fin height. Keep body, faceplate, crossed forearms, materials, tabard, trousers, boots unchanged and full sized, not miniature. Preserve true transparent alpha0 background, fully opaque painted body and blade interiors, complete silhouette. No shadows or cloudy halo.",
+          "file": "exec-565e13f3-3cac-4749-9fb8-d8fc7a8c367e.png"
+        },
+        "cross5": {
+          "prompt": "Edit image1, a transparent game sprite. Change ONLY the two silver crossed forearm blades. LENGTHEN each blade moderately so each tip reaches horizontally 140 pixels beyond the outer blue shoulder armor. Current sprite canvas is 1536x1024: put left blade tip at x=320,y=25 and right blade tip at x=1216,y=25. Current crossed wrists remain near x=768,y=270. Keep both blades straight and sharp; long X shape extends to each side beyond shoulder fins. Preserve all other body pixels/style/pose/identity/proportions, complete boots. Reference image2 shows required long-blade silhouette. Preserve truly transparent background, opaque body, no glow or shadow.",
+          "file": "exec-a8bb4c9e-8132-4aa2-b267-a3ef0394e590.png"
+        }
+      },
+      "prompt_file": {
+        "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/prompts.json",
+        "sha256": "638d17fbd85b5db28bee2d9d3c6b680a928cc771531a9147ad34b9030c03e901"
+      },
+      "accepted_battle_masters": {
+        "idle": {
+          "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/idle-v1.png",
+          "sha256": "269b26b24ec4a0a8c5bd1a7818fa513b6adfd07da7fb41e5d472ce3d57f48207",
+          "anchor": [
+            35,
+            2,
+            1024,
+            1466
+          ]
+        },
+        "ready": {
+          "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/ready-v1.png",
+          "sha256": "a4f03d5f3643e94256b4ef2fb26806f544136496262185d3140b4d6cc9e54fd1",
+          "anchor": [
+            76,
+            9,
+            959,
+            1524
+          ]
+        },
+        "cross": {
+          "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/cross5-v1.png",
+          "sha256": "ff22e2fc3fb3900d0ad0153b66644dd12d2d2142a9909494236d4a8a9c0c9509",
+          "anchor": [
+            287,
+            16,
+            1231,
+            1021
+          ]
+        },
+        "lunge": {
+          "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/lunge-v1.png",
+          "sha256": "169aef51b8255135898a8663a58545ec407f673ebdfe98ec3447d269777422c2",
+          "anchor": [
+            15,
+            8,
+            1594,
+            968
+          ]
+        },
+        "fan": {
+          "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/fan-v1.png",
+          "sha256": "faf086ab1630f906088fd7e5b21f0da929a8361e9005c9cf13220d56e6991561",
+          "anchor": [
+            18,
+            88,
+            1961,
+            760
+          ]
+        },
+        "trail": {
+          "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/trail-v1.png",
+          "sha256": "c968983b4d9fd4feb349f9eddbf00e67a19f4aee041e27ab3b6fb096f7f70a1f",
+          "anchor": [
+            345,
+            176,
+            1513,
+            851
+          ]
+        }
+      },
+      "portrait_master": {
+        "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/portrait116-v1.png",
+        "sha256": "574603f8ab7b21cf2696d34ef82aa8e03c3de70d73f9d7efa927a4f161f99175"
+      },
+      "rgba_policy": "接受母稿原始RGBA不改；只依明示錨點等比編製，靜態頭像沿既有Lanczos80／480契約。",
+      "appearance": "依原版長直面甲、窄黑視縫、藍球肩／頸環、成對背鰭紅端、灰綠裝甲、綠垂布、褐寬褲與雙前臂刃；不與蓋亞體型合併。"
+    },
+    "recipe": {
+      "schema_version": 1,
+      "figure": 116,
+      "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+      "sources": {
+        "idle": {
+          "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/idle-v1.png",
+          "sha256": "269b26b24ec4a0a8c5bd1a7818fa513b6adfd07da7fb41e5d472ce3d57f48207",
+          "anchor": [
+            35,
+            2,
+            1024,
+            1466
+          ]
+        },
+        "ready": {
+          "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/ready-v1.png",
+          "sha256": "a4f03d5f3643e94256b4ef2fb26806f544136496262185d3140b4d6cc9e54fd1",
+          "anchor": [
+            76,
+            9,
+            959,
+            1524
+          ]
+        },
+        "cross": {
+          "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/cross5-v1.png",
+          "sha256": "ff22e2fc3fb3900d0ad0153b66644dd12d2d2142a9909494236d4a8a9c0c9509",
+          "anchor": [
+            287,
+            16,
+            1231,
+            1021
+          ]
+        },
+        "lunge": {
+          "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/lunge-v1.png",
+          "sha256": "169aef51b8255135898a8663a58545ec407f673ebdfe98ec3447d269777422c2",
+          "anchor": [
+            15,
+            8,
+            1594,
+            968
+          ]
+        },
+        "fan": {
+          "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/fan-v1.png",
+          "sha256": "faf086ab1630f906088fd7e5b21f0da929a8361e9005c9cf13220d56e6991561",
+          "anchor": [
+            18,
+            88,
+            1961,
+            760
+          ]
+        },
+        "trail": {
+          "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/trail-v1.png",
+          "sha256": "c968983b4d9fd4feb349f9eddbf00e67a19f4aee041e27ab3b6fb096f7f70a1f",
+          "anchor": [
+            345,
+            176,
+            1513,
+            851
+          ]
+        }
+      },
+      "resources": {
+        "348": [
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              106,
+              149
+            ],
+            "scale_group": "idle"
+          }
+        ],
+        "349": [
+          {
+            "pose": "ready",
+            "anchor": [
+              0,
+              0,
+              97,
+              149
+            ],
+            "scale_group": "ready"
+          },
+          {
+            "pose": "ready",
+            "anchor": [
+              0,
+              0,
+              98,
+              149
+            ],
+            "scale_group": "ready"
+          },
+          {
+            "pose": "ready",
+            "anchor": [
+              0,
+              0,
+              98,
+              149
+            ],
+            "scale_group": "ready"
+          },
+          {
+            "pose": "cross",
+            "anchor": [
+              0,
+              0,
+              140,
+              150
+            ],
+            "scale_group": "cross"
+          },
+          {
+            "pose": "cross",
+            "anchor": [
+              0,
+              0,
+              139,
+              149
+            ],
+            "scale_group": "cross"
+          },
+          [
+            {
+              "pose": "lunge",
+              "anchor": [
+                17,
+                0,
+                238,
+                134
+              ],
+              "scale_group": "lunge"
+            },
+            {
+              "pose": "fan",
+              "anchor": [
+                0,
+                59,
+                238,
+                152
+              ],
+              "scale_group": "fx5"
+            }
+          ],
+          [
+            {
+              "pose": "lunge",
+              "anchor": [
+                0,
+                0,
+                221,
+                134
+              ],
+              "scale_group": "lunge"
+            },
+            {
+              "pose": "trail",
+              "anchor": [
+                131,
+                60,
+                220,
+                101
+              ],
+              "scale_group": "fx6"
+            }
+          ],
+          [
+            {
+              "pose": "lunge",
+              "anchor": [
+                0,
+                0,
+                221,
+                134
+              ],
+              "scale_group": "lunge"
+            },
+            {
+              "pose": "trail",
+              "anchor": [
+                188,
+                75,
+                220,
+                90
+              ],
+              "scale_group": "fx7"
+            }
+          ],
+          [
+            {
+              "pose": "lunge",
+              "anchor": [
+                0,
+                0,
+                221,
+                134
+              ],
+              "scale_group": "lunge"
+            },
+            {
+              "pose": "trail",
+              "anchor": [
+                213,
+                82,
+                218,
+                85
+              ],
+              "scale_group": "fx8"
+            }
+          ],
+          [
+            {
+              "pose": "lunge",
+              "anchor": [
+                0,
+                0,
+                221,
+                134
+              ],
+              "scale_group": "lunge"
+            }
+          ]
+        ]
+      }
+    },
+    "recipe_file": {
+      "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/recipe-r2.json",
+      "sha256": "6b2cfe58bf281184adf2fc7212b5f40236c3260de97dee59ab4e3fe1fae1f0a3"
+    },
+    "compiled": {
+      "status": "PASS-COMPILED-CHARACTER-CANDIDATE",
+      "runtime_registered": false,
+      "figure": 116,
+      "base_catalog_sha256": "3f893c41308dfbfd41d69c91248dedad304df502bd9f3492f9b4578fff39e839",
+      "catalog_sha256": "b69194989b4350163ea87ee2a661c2400b6f16ef7bd0e200045047f910a8bb9b",
+      "compiler_sha256": "d0cca3bc3f7708d8de07be36286e21916851d194c9d9f307aedcc7813fa20a10",
+      "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+      "recipe_sha256": "6b2cfe58bf281184adf2fc7212b5f40236c3260de97dee59ab4e3fe1fae1f0a3",
+      "sources": {
+        "idle": {
+          "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/idle-v1.png",
+          "sha256": "269b26b24ec4a0a8c5bd1a7818fa513b6adfd07da7fb41e5d472ce3d57f48207",
+          "anchor": [
+            35,
+            2,
+            1024,
+            1466
+          ]
+        },
+        "ready": {
+          "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/ready-v1.png",
+          "sha256": "a4f03d5f3643e94256b4ef2fb26806f544136496262185d3140b4d6cc9e54fd1",
+          "anchor": [
+            76,
+            9,
+            959,
+            1524
+          ]
+        },
+        "cross": {
+          "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/cross5-v1.png",
+          "sha256": "ff22e2fc3fb3900d0ad0153b66644dd12d2d2142a9909494236d4a8a9c0c9509",
+          "anchor": [
+            287,
+            16,
+            1231,
+            1021
+          ]
+        },
+        "lunge": {
+          "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/lunge-v1.png",
+          "sha256": "169aef51b8255135898a8663a58545ec407f673ebdfe98ec3447d269777422c2",
+          "anchor": [
+            15,
+            8,
+            1594,
+            968
+          ]
+        },
+        "fan": {
+          "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/fan-v1.png",
+          "sha256": "faf086ab1630f906088fd7e5b21f0da929a8361e9005c9cf13220d56e6991561",
+          "anchor": [
+            18,
+            88,
+            1961,
+            760
+          ]
+        },
+        "trail": {
+          "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/trail-v1.png",
+          "sha256": "c968983b4d9fd4feb349f9eddbf00e67a19f4aee041e27ab3b6fb096f7f70a1f",
+          "anchor": [
+            345,
+            176,
+            1513,
+            851
+          ]
+        }
+      },
+      "frames": [
+        {
+          "resource": 348,
+          "frame": 0,
+          "pose": "idle",
+          "native_anchor": [
+            0,
+            0,
+            106,
+            149
+          ],
+          "source_anchor": [
+            35,
+            2,
+            1024,
+            1466
+          ],
+          "fit_size": [
+            646,
+            908
+          ],
+          "origin": [
+            -5,
+            -1
+          ],
+          "scale_xy": [
+            0.610586011342155,
+            0.6106254203093476
+          ],
+          "scale_group": "idle",
+          "phase_scale": 1,
+          "fitted_anchor": [
+            16.370510396975423,
+            0.22125084061869527,
+            620.2400756143667,
+            894.1768661735036
+          ],
+          "clipped_high_coverage_pixels": 0,
+          "native_empty_source": false,
+          "pose_used": true,
+          "native_descriptor": {
+            "x": 13,
+            "y": 1,
+            "width": 106,
+            "height": 149,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0
+          },
+          "file": "figani-348-hd6-v1-f00.png",
+          "sha256": "64b78fadb47e23f0fda7856d4c1a8a64ec9633712ae7980a6c463688199ecd1d"
+        },
+        {
+          "resource": 349,
+          "frame": 0,
+          "pose": "ready",
+          "native_anchor": [
+            0,
+            0,
+            97,
+            149
+          ],
+          "source_anchor": [
+            76,
+            9,
+            959,
+            1524
+          ],
+          "fit_size": [
+            600,
+            913
+          ],
+          "origin": [
+            -14,
+            -5
+          ],
+          "scale_xy": [
+            0.5899705014749262,
+            0.590174531351002
+          ],
+          "scale_group": "ready",
+          "phase_scale": 1,
+          "fitted_anchor": [
+            30.83775811209439,
+            0.31157078215901723,
+            551.7817109144543,
+            894.4259857789269
+          ],
+          "clipped_high_coverage_pixels": 0,
+          "native_empty_source": false,
+          "pose_used": true,
+          "native_descriptor": {
+            "x": 16,
+            "y": 1,
+            "width": 97,
+            "height": 149,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0
+          },
+          "file": "figani-349-hd6-v1-f00.png",
+          "sha256": "6026b52e9925aba0e8fae80d28e58a77198790bfa4270acd092083343828072a"
+        },
+        {
+          "resource": 349,
+          "frame": 1,
+          "pose": "ready",
+          "native_anchor": [
+            0,
+            0,
+            98,
+            149
+          ],
+          "source_anchor": [
+            76,
+            9,
+            959,
+            1524
+          ],
+          "fit_size": [
+            600,
+            913
+          ],
+          "origin": [
+            -11,
+            -5
+          ],
+          "scale_xy": [
+            0.5899705014749262,
+            0.590174531351002
+          ],
+          "scale_group": "ready",
+          "phase_scale": 1,
+          "fitted_anchor": [
+            33.83775811209439,
+            0.31157078215901723,
+            554.7817109144543,
+            894.4259857789269
+          ],
+          "clipped_high_coverage_pixels": 0,
+          "native_empty_source": false,
+          "pose_used": true,
+          "native_descriptor": {
+            "x": 15,
+            "y": 1,
+            "width": 98,
+            "height": 149,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0
+          },
+          "file": "figani-349-hd6-v1-f01.png",
+          "sha256": "f4d3d7be55dc6223e36c77b1c6d2b0938670175c9887828f1e3ff6683a4dbc9e"
+        },
+        {
+          "resource": 349,
+          "frame": 2,
+          "pose": "ready",
+          "native_anchor": [
+            0,
+            0,
+            98,
+            149
+          ],
+          "source_anchor": [
+            76,
+            9,
+            959,
+            1524
+          ],
+          "fit_size": [
+            600,
+            913
+          ],
+          "origin": [
+            -11,
+            -5
+          ],
+          "scale_xy": [
+            0.5899705014749262,
+            0.590174531351002
+          ],
+          "scale_group": "ready",
+          "phase_scale": 1,
+          "fitted_anchor": [
+            33.83775811209439,
+            0.31157078215901723,
+            554.7817109144543,
+            894.4259857789269
+          ],
+          "clipped_high_coverage_pixels": 0,
+          "native_empty_source": false,
+          "pose_used": true,
+          "native_descriptor": {
+            "x": 15,
+            "y": 1,
+            "width": 98,
+            "height": 149,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 5,
+            "raw_byte_7": 0
+          },
+          "file": "figani-349-hd6-v1-f02.png",
+          "sha256": "f4d3d7be55dc6223e36c77b1c6d2b0938670175c9887828f1e3ff6683a4dbc9e"
+        },
+        {
+          "resource": 349,
+          "frame": 3,
+          "pose": "cross",
+          "native_anchor": [
+            0,
+            0,
+            140,
+            150
+          ],
+          "source_anchor": [
+            287,
+            16,
+            1231,
+            1021
+          ],
+          "fit_size": [
+            1347,
+            919
+          ],
+          "origin": [
+            -254,
+            -6
+          ],
+          "scale_xy": [
+            0.8873517786561265,
+            0.887065637065637
+          ],
+          "scale_group": "cross",
+          "phase_scale": 0.9907860311682403,
+          "fitted_anchor": [
+            0.669960474308283,
+            8.193050193050192,
+            838.3300395256917,
+            899.6940154440153
+          ],
+          "clipped_high_coverage_pixels": 0,
+          "native_empty_source": false,
+          "pose_used": true,
+          "native_descriptor": {
+            "x": 0,
+            "y": 0,
+            "width": 140,
+            "height": 150,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0
+          },
+          "file": "figani-349-hd6-v1-f03.png",
+          "sha256": "433396ad0b47ff78edffcfdf3c424f67c08b0ec71982f895e87374978c639698"
+        },
+        {
+          "resource": 349,
+          "frame": 4,
+          "pose": "cross",
+          "native_anchor": [
+            0,
+            0,
+            139,
+            149
+          ],
+          "source_anchor": [
+            287,
+            16,
+            1231,
+            1021
+          ],
+          "fit_size": [
+            1338,
+            913
+          ],
+          "origin": [
+            -252,
+            -6
+          ],
+          "scale_xy": [
+            0.8814229249011858,
+            0.8812741312741312
+          ],
+          "scale_group": "cross",
+          "phase_scale": 0.9907860311682403,
+          "fitted_anchor": [
+            0.9683794466403128,
+            8.1003861003861,
+            833.0316205533597,
+            893.780888030888
+          ],
+          "clipped_high_coverage_pixels": 0,
+          "native_empty_source": false,
+          "pose_used": true,
+          "native_descriptor": {
+            "x": 0,
+            "y": 1,
+            "width": 139,
+            "height": 149,
+            "delay_native": 8,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0
+          },
+          "file": "figani-349-hd6-v1-f04.png",
+          "sha256": "709e5b12854a726d64eb332bbcbb86a4647dc53ba93827b6df769d8067cff357"
+        },
+        {
+          "resource": 349,
+          "frame": 5,
+          "pose": "lunge",
+          "native_anchor": [
+            17,
+            0,
+            238,
+            134
+          ],
+          "source_anchor": [
+            15,
+            8,
+            1594,
+            968
+          ],
+          "fit_size": [
+            1348,
+            818
+          ],
+          "origin": [
+            91,
+            -6
+          ],
+          "scale_xy": [
+            0.8372670807453416,
+            0.8372569089048106
+          ],
+          "scale_group": "lunge",
+          "phase_scale": 1,
+          "fitted_anchor": [
+            103.55900621118012,
+            0.6980552712384851,
+            1425.6037267080746,
+            804.4646878198567
+          ],
+          "clipped_high_coverage_pixels": 0,
+          "native_empty_source": false,
+          "pose_used": true,
+          "native_descriptor": {
+            "x": 0,
+            "y": 16,
+            "width": 239,
+            "height": 152,
+            "delay_native": 2,
+            "raw_byte_4": 1,
+            "raw_byte_5": 3,
+            "raw_byte_7": 0
+          },
+          "layers": [
+            {
+              "resource": 349,
+              "frame": 5,
+              "pose": "lunge",
+              "native_anchor": [
+                17,
+                0,
+                238,
+                134
+              ],
+              "source_anchor": [
+                15,
+                8,
+                1594,
+                968
+              ],
+              "fit_size": [
+                1348,
+                818
+              ],
+              "origin": [
+                91,
+                -6
+              ],
+              "scale_xy": [
+                0.8372670807453416,
+                0.8372569089048106
+              ],
+              "scale_group": "lunge",
+              "phase_scale": 1,
+              "fitted_anchor": [
+                103.55900621118012,
+                0.6980552712384851,
+                1425.6037267080746,
+                804.4646878198567
+              ],
+              "clipped_high_coverage_pixels": 0,
+              "native_empty_source": false,
+              "pose_used": true,
+              "native_descriptor": {
+                "x": 0,
+                "y": 16,
+                "width": 239,
+                "height": 152,
+                "delay_native": 2,
+                "raw_byte_4": 1,
+                "raw_byte_5": 3,
+                "raw_byte_7": 0
+              }
+            },
+            {
+              "resource": 349,
+              "frame": 5,
+              "pose": "fan",
+              "native_anchor": [
+                0,
+                59,
+                238,
+                152
+              ],
+              "source_anchor": [
+                18,
+                88,
+                1961,
+                760
+              ],
+              "fit_size": [
+                1455,
+                582
+              ],
+              "origin": [
+                -12,
+                354
+              ],
+              "scale_xy": [
+                0.7337367624810892,
+                0.733921815889029
+              ],
+              "scale_group": "fx5",
+              "phase_scale": 0.8838565791731,
+              "fitted_anchor": [
+                1.207261724659606,
+                418.5851197982346,
+                1426.857791225416,
+                911.7805800756621
+              ],
+              "clipped_high_coverage_pixels": 0,
+              "native_empty_source": false,
+              "pose_used": true,
+              "native_descriptor": {
+                "x": 0,
+                "y": 16,
+                "width": 239,
+                "height": 152,
+                "delay_native": 2,
+                "raw_byte_4": 1,
+                "raw_byte_5": 3,
+                "raw_byte_7": 0
+              }
+            }
+          ],
+          "file": "figani-349-hd6-v1-f05.png",
+          "sha256": "8b446192547da50452244cd5c80cc2f04417c890d8510885a040f89277380f07"
+        },
+        {
+          "resource": 349,
+          "frame": 6,
+          "pose": "lunge",
+          "native_anchor": [
+            0,
+            0,
+            221,
+            134
+          ],
+          "source_anchor": [
+            15,
+            8,
+            1594,
+            968
+          ],
+          "fit_size": [
+            1348,
+            818
+          ],
+          "origin": [
+            -11,
+            -6
+          ],
+          "scale_xy": [
+            0.8372670807453416,
+            0.8372569089048106
+          ],
+          "scale_group": "lunge",
+          "phase_scale": 1,
+          "fitted_anchor": [
+            1.5590062111801242,
+            0.6980552712384851,
+            1323.6037267080746,
+            804.4646878198567
+          ],
+          "clipped_high_coverage_pixels": 0,
+          "native_empty_source": false,
+          "pose_used": true,
+          "native_descriptor": {
+            "x": 17,
+            "y": 16,
+            "width": 221,
+            "height": 134,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0
+          },
+          "layers": [
+            {
+              "resource": 349,
+              "frame": 6,
+              "pose": "lunge",
+              "native_anchor": [
+                0,
+                0,
+                221,
+                134
+              ],
+              "source_anchor": [
+                15,
+                8,
+                1594,
+                968
+              ],
+              "fit_size": [
+                1348,
+                818
+              ],
+              "origin": [
+                -11,
+                -6
+              ],
+              "scale_xy": [
+                0.8372670807453416,
+                0.8372569089048106
+              ],
+              "scale_group": "lunge",
+              "phase_scale": 1,
+              "fitted_anchor": [
+                1.5590062111801242,
+                0.6980552712384851,
+                1323.6037267080746,
+                804.4646878198567
+              ],
+              "clipped_high_coverage_pixels": 0,
+              "native_empty_source": false,
+              "pose_used": true,
+              "native_descriptor": {
+                "x": 17,
+                "y": 16,
+                "width": 221,
+                "height": 134,
+                "delay_native": 2,
+                "raw_byte_4": 0,
+                "raw_byte_5": 0,
+                "raw_byte_7": 0
+              }
+            },
+            {
+              "resource": 349,
+              "frame": 6,
+              "pose": "trail",
+              "native_anchor": [
+                131,
+                60,
+                220,
+                101
+              ],
+              "source_anchor": [
+                345,
+                176,
+                1513,
+                851
+              ],
+              "fit_size": [
+                587,
+                356
+              ],
+              "origin": [
+                714,
+                296
+              ],
+              "scale_xy": [
+                0.36459627329192545,
+                0.36438075742067555
+              ],
+              "scale_group": "fx6",
+              "phase_scale": 1,
+              "fitted_anchor": [
+                839.7857142857142,
+                360.1310133060389,
+                1265.6341614906833,
+                606.0880245649948
+              ],
+              "clipped_high_coverage_pixels": 0,
+              "native_empty_source": false,
+              "pose_used": true,
+              "native_descriptor": {
+                "x": 17,
+                "y": 16,
+                "width": 221,
+                "height": 134,
+                "delay_native": 2,
+                "raw_byte_4": 0,
+                "raw_byte_5": 0,
+                "raw_byte_7": 0
+              }
+            }
+          ],
+          "file": "figani-349-hd6-v1-f06.png",
+          "sha256": "b48017f179e8e5dc0801b0f4ad2717a064393a991709786a82bede4cdc49c88c"
+        },
+        {
+          "resource": 349,
+          "frame": 7,
+          "pose": "lunge",
+          "native_anchor": [
+            0,
+            0,
+            221,
+            134
+          ],
+          "source_anchor": [
+            15,
+            8,
+            1594,
+            968
+          ],
+          "fit_size": [
+            1348,
+            818
+          ],
+          "origin": [
+            -11,
+            -6
+          ],
+          "scale_xy": [
+            0.8372670807453416,
+            0.8372569089048106
+          ],
+          "scale_group": "lunge",
+          "phase_scale": 1,
+          "fitted_anchor": [
+            1.5590062111801242,
+            0.6980552712384851,
+            1323.6037267080746,
+            804.4646878198567
+          ],
+          "clipped_high_coverage_pixels": 0,
+          "native_empty_source": false,
+          "pose_used": true,
+          "native_descriptor": {
+            "x": 17,
+            "y": 16,
+            "width": 221,
+            "height": 134,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0
+          },
+          "layers": [
+            {
+              "resource": 349,
+              "frame": 7,
+              "pose": "lunge",
+              "native_anchor": [
+                0,
+                0,
+                221,
+                134
+              ],
+              "source_anchor": [
+                15,
+                8,
+                1594,
+                968
+              ],
+              "fit_size": [
+                1348,
+                818
+              ],
+              "origin": [
+                -11,
+                -6
+              ],
+              "scale_xy": [
+                0.8372670807453416,
+                0.8372569089048106
+              ],
+              "scale_group": "lunge",
+              "phase_scale": 1,
+              "fitted_anchor": [
+                1.5590062111801242,
+                0.6980552712384851,
+                1323.6037267080746,
+                804.4646878198567
+              ],
+              "clipped_high_coverage_pixels": 0,
+              "native_empty_source": false,
+              "pose_used": true,
+              "native_descriptor": {
+                "x": 17,
+                "y": 16,
+                "width": 221,
+                "height": 134,
+                "delay_native": 2,
+                "raw_byte_4": 0,
+                "raw_byte_5": 0,
+                "raw_byte_7": 0
+              }
+            },
+            {
+              "resource": 349,
+              "frame": 7,
+              "pose": "trail",
+              "native_anchor": [
+                188,
+                75,
+                220,
+                90
+              ],
+              "source_anchor": [
+                345,
+                176,
+                1513,
+                851
+              ],
+              "fit_size": [
+                215,
+                130
+              ],
+              "origin": [
+                1100,
+                427
+              ],
+              "scale_xy": [
+                0.13354037267080746,
+                0.1330603889457523
+              ],
+              "scale_group": "fx7",
+              "phase_scale": 1,
+              "fitted_anchor": [
+                1146.0714285714287,
+                450.4186284544524,
+                1302.0465838509317,
+                540.2343909928352
+              ],
+              "clipped_high_coverage_pixels": 0,
+              "native_empty_source": false,
+              "pose_used": true,
+              "native_descriptor": {
+                "x": 17,
+                "y": 16,
+                "width": 221,
+                "height": 134,
+                "delay_native": 2,
+                "raw_byte_4": 0,
+                "raw_byte_5": 0,
+                "raw_byte_7": 0
+              }
+            }
+          ],
+          "file": "figani-349-hd6-v1-f07.png",
+          "sha256": "c9abda6d845d9c4bfeb4a1a81b69a47d5c19ecb5c5d088022cc78e8829437efa"
+        },
+        {
+          "resource": 349,
+          "frame": 8,
+          "pose": "lunge",
+          "native_anchor": [
+            0,
+            0,
+            221,
+            134
+          ],
+          "source_anchor": [
+            15,
+            8,
+            1594,
+            968
+          ],
+          "fit_size": [
+            1348,
+            818
+          ],
+          "origin": [
+            -11,
+            -6
+          ],
+          "scale_xy": [
+            0.8372670807453416,
+            0.8372569089048106
+          ],
+          "scale_group": "lunge",
+          "phase_scale": 1,
+          "fitted_anchor": [
+            1.5590062111801242,
+            0.6980552712384851,
+            1323.6037267080746,
+            804.4646878198567
+          ],
+          "clipped_high_coverage_pixels": 0,
+          "native_empty_source": false,
+          "pose_used": true,
+          "native_descriptor": {
+            "x": 17,
+            "y": 16,
+            "width": 221,
+            "height": 134,
+            "delay_native": 2,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0
+          },
+          "layers": [
+            {
+              "resource": 349,
+              "frame": 8,
+              "pose": "lunge",
+              "native_anchor": [
+                0,
+                0,
+                221,
+                134
+              ],
+              "source_anchor": [
+                15,
+                8,
+                1594,
+                968
+              ],
+              "fit_size": [
+                1348,
+                818
+              ],
+              "origin": [
+                -11,
+                -6
+              ],
+              "scale_xy": [
+                0.8372670807453416,
+                0.8372569089048106
+              ],
+              "scale_group": "lunge",
+              "phase_scale": 1,
+              "fitted_anchor": [
+                1.5590062111801242,
+                0.6980552712384851,
+                1323.6037267080746,
+                804.4646878198567
+              ],
+              "clipped_high_coverage_pixels": 0,
+              "native_empty_source": false,
+              "pose_used": true,
+              "native_descriptor": {
+                "x": 17,
+                "y": 16,
+                "width": 221,
+                "height": 134,
+                "delay_native": 2,
+                "raw_byte_4": 0,
+                "raw_byte_5": 0,
+                "raw_byte_7": 0
+              }
+            },
+            {
+              "resource": 349,
+              "frame": 8,
+              "pose": "trail",
+              "native_anchor": [
+                213,
+                82,
+                218,
+                85
+              ],
+              "source_anchor": [
+                345,
+                176,
+                1513,
+                851
+              ],
+              "fit_size": [
+                43,
+                26
+              ],
+              "origin": [
+                1268,
+                487
+              ],
+              "scale_xy": [
+                0.02670807453416149,
+                0.02661207778915046
+              ],
+              "scale_group": "fx8",
+              "phase_scale": 1,
+              "fitted_anchor": [
+                1277.2142857142858,
+                491.68372569089047,
+                1308.4093167701863,
+                509.64687819856704
+              ],
+              "clipped_high_coverage_pixels": 0,
+              "native_empty_source": false,
+              "pose_used": true,
+              "native_descriptor": {
+                "x": 17,
+                "y": 16,
+                "width": 221,
+                "height": 134,
+                "delay_native": 2,
+                "raw_byte_4": 0,
+                "raw_byte_5": 0,
+                "raw_byte_7": 0
+              }
+            }
+          ],
+          "file": "figani-349-hd6-v1-f08.png",
+          "sha256": "5ace43880b4ae219b9ec40470b4f130eb22b1ed5b49dfdc78329b4dd3077df6b"
+        },
+        {
+          "resource": 349,
+          "frame": 9,
+          "pose": "lunge",
+          "native_anchor": [
+            0,
+            0,
+            221,
+            134
+          ],
+          "source_anchor": [
+            15,
+            8,
+            1594,
+            968
+          ],
+          "fit_size": [
+            1348,
+            818
+          ],
+          "origin": [
+            -11,
+            -6
+          ],
+          "scale_xy": [
+            0.8372670807453416,
+            0.8372569089048106
+          ],
+          "scale_group": "lunge",
+          "phase_scale": 1,
+          "fitted_anchor": [
+            1.5590062111801242,
+            0.6980552712384851,
+            1323.6037267080746,
+            804.4646878198567
+          ],
+          "clipped_high_coverage_pixels": 0,
+          "native_empty_source": false,
+          "pose_used": true,
+          "native_descriptor": {
+            "x": 17,
+            "y": 16,
+            "width": 221,
+            "height": 134,
+            "delay_native": 4,
+            "raw_byte_4": 0,
+            "raw_byte_5": 0,
+            "raw_byte_7": 0
+          },
+          "layers": [
+            {
+              "resource": 349,
+              "frame": 9,
+              "pose": "lunge",
+              "native_anchor": [
+                0,
+                0,
+                221,
+                134
+              ],
+              "source_anchor": [
+                15,
+                8,
+                1594,
+                968
+              ],
+              "fit_size": [
+                1348,
+                818
+              ],
+              "origin": [
+                -11,
+                -6
+              ],
+              "scale_xy": [
+                0.8372670807453416,
+                0.8372569089048106
+              ],
+              "scale_group": "lunge",
+              "phase_scale": 1,
+              "fitted_anchor": [
+                1.5590062111801242,
+                0.6980552712384851,
+                1323.6037267080746,
+                804.4646878198567
+              ],
+              "clipped_high_coverage_pixels": 0,
+              "native_empty_source": false,
+              "pose_used": true,
+              "native_descriptor": {
+                "x": 17,
+                "y": 16,
+                "width": 221,
+                "height": 134,
+                "delay_native": 4,
+                "raw_byte_4": 0,
+                "raw_byte_5": 0,
+                "raw_byte_7": 0
+              }
+            }
+          ],
+          "file": "figani-349-hd6-v1-f09.png",
+          "sha256": "56e6f213305d364afa991aeb17a8605a937d9117830c749eacade0f22b3a9e54"
+        }
+      ],
+      "scale_groups": {
+        "idle": 1,
+        "ready": 1,
+        "cross": 0.9907860311682403,
+        "lunge": 1,
+        "fx5": 0.8838565791731,
+        "fx6": 1,
+        "fx7": 1,
+        "fx8": 1
+      },
+      "review_sha256": "a04d484f358548fbae0b3b929aa0471f85c7180168ec95b7da33c42026a18702",
+      "scope": "明示錨點與姿勢重定向的完整候選，不代表正常GUI或原版逐幀視覺相同。",
+      "layered": true
+    },
+    "compiled_file": {
+      "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/candidate-r2/compiled.json",
+      "sha256": "59d876112c433ce08a4b877a9b5a303cdbb99574b4c20a6d7a3a8f79dafe57a7"
+    },
+    "fx_source_anchors": [
+      {
+        "frame": 5,
+        "native_anchor": [
+          0,
+          59,
+          238,
+          152
+        ],
+        "mask_sha256": "7496694f863d34161cd04e402ac4682eec8a8ec3dbd2980e646bfe56edbdf172",
+        "pixels": 12947,
+        "predicate": "alpha>0 and R>=220 and G>=180 and B<220"
+      },
+      {
+        "frame": 6,
+        "native_anchor": [
+          131,
+          60,
+          220,
+          101
+        ],
+        "mask_sha256": "53a9915cd720e6b969e0c84a193bc0aff56ee4b93e0867b56faa85a7b9b5d2e7",
+        "pixels": 846,
+        "predicate": "alpha>0 and R>=220 and G>=180 and B<220"
+      },
+      {
+        "frame": 7,
+        "native_anchor": [
+          188,
+          75,
+          220,
+          90
+        ],
+        "mask_sha256": "532b978ed51ab4d684733f60d34a23e7161291790a7b3dc0d371e4f16b312b3e",
+        "pixels": 140,
+        "predicate": "alpha>0 and R>=220 and G>=180 and B<220"
+      },
+      {
+        "frame": 8,
+        "native_anchor": [
+          213,
+          82,
+          218,
+          85
+        ],
+        "mask_sha256": "61cea7a6157e9c2c94d19167a52eca5e374992b72abe2bfbe082643fa92c17af",
+        "pixels": 8,
+        "predicate": "alpha>0 and R>=220 and G>=180 and B<220"
+      }
+    ],
+    "portrait_registration": {
+      "schema_version": 1,
+      "status": "DATA-READY",
+      "scope": "61已核准的靜態頭像補圖；正式呈現另須正常玩家驗證。",
+      "hd": true,
+      "user_decision": "2026-10-18採用父王原型手繪風格，先完成序章頭像，再接高解析呈現；忠實模式保留。",
+      "pillow_version": "11.3.0",
+      "resize": "80x80 and 480x480 Lanczos; RGBA opaque",
+      "catalog_sha256": "d4682edf8273c3ac1ebe9273f17caffb34765fd6f807057bebbe54f92763c885",
+      "assets": [
+        {
+          "speaker_id": 116,
+          "asset_id": "modern.captain116.portrait.style_a.frame0",
+          "master_file": "captain116-portrait-style-a-v1-master.png",
+          "master_size": [
+            1254,
+            1254
+          ],
+          "master_sha256": "574603f8ab7b21cf2696d34ef82aa8e03c3de70d73f9d7efa927a4f161f99175",
+          "runtime_file": "captain116-portrait-style-a-v1-80.png",
+          "runtime_sha256": "0abba8100492b9ad6da2080aa50d4aa5067a656ce27f7656aa88cdc6ca3d17d8",
+          "hd_file": "captain116-portrait-style-a-v1-480.png",
+          "hd_sha256": "b1106818f8e4c251b931ffa32b01e81ad444cb47407084b67d5dfd43df124413"
+        }
+      ],
+      "normal_start_passed": false,
+      "private_remote_synced": false,
+      "public_art_distribution": false
+    },
+    "formal_admission": {
+      "status": "PASS-FORMAL-ADMISSION",
+      "old_entries": 421,
+      "new_entries": 4,
+      "total_entries": 425,
+      "old_files": 3815,
+      "new_files": [
+        {
+          "file": "captain116-portrait-style-a-v1-480.png",
+          "sha256": "b1106818f8e4c251b931ffa32b01e81ad444cb47407084b67d5dfd43df124413"
+        },
+        {
+          "file": "captain116-portrait-style-a-v1-80.png",
+          "sha256": "0abba8100492b9ad6da2080aa50d4aa5067a656ce27f7656aa88cdc6ca3d17d8"
+        },
+        {
+          "file": "captain116-portrait-style-a-v1-master.png",
+          "sha256": "574603f8ab7b21cf2696d34ef82aa8e03c3de70d73f9d7efa927a4f161f99175"
+        },
+        {
+          "file": "figani-348-hd6-v1-f00.png",
+          "sha256": "64b78fadb47e23f0fda7856d4c1a8a64ec9633712ae7980a6c463688199ecd1d"
+        },
+        {
+          "file": "figani-349-hd6-v1-f00.png",
+          "sha256": "6026b52e9925aba0e8fae80d28e58a77198790bfa4270acd092083343828072a"
+        },
+        {
+          "file": "figani-349-hd6-v1-f01.png",
+          "sha256": "f4d3d7be55dc6223e36c77b1c6d2b0938670175c9887828f1e3ff6683a4dbc9e"
+        },
+        {
+          "file": "figani-349-hd6-v1-f02.png",
+          "sha256": "f4d3d7be55dc6223e36c77b1c6d2b0938670175c9887828f1e3ff6683a4dbc9e"
+        },
+        {
+          "file": "figani-349-hd6-v1-f03.png",
+          "sha256": "433396ad0b47ff78edffcfdf3c424f67c08b0ec71982f895e87374978c639698"
+        },
+        {
+          "file": "figani-349-hd6-v1-f04.png",
+          "sha256": "709e5b12854a726d64eb332bbcbb86a4647dc53ba93827b6df769d8067cff357"
+        },
+        {
+          "file": "figani-349-hd6-v1-f05.png",
+          "sha256": "8b446192547da50452244cd5c80cc2f04417c890d8510885a040f89277380f07"
+        },
+        {
+          "file": "figani-349-hd6-v1-f06.png",
+          "sha256": "b48017f179e8e5dc0801b0f4ad2717a064393a991709786a82bede4cdc49c88c"
+        },
+        {
+          "file": "figani-349-hd6-v1-f07.png",
+          "sha256": "c9abda6d845d9c4bfeb4a1a81b69a47d5c19ecb5c5d088022cc78e8829437efa"
+        },
+        {
+          "file": "figani-349-hd6-v1-f08.png",
+          "sha256": "5ace43880b4ae219b9ec40470b4f130eb22b1ed5b49dfdc78329b4dd3077df6b"
+        },
+        {
+          "file": "figani-349-hd6-v1-f09.png",
+          "sha256": "56e6f213305d364afa991aeb17a8605a937d9117830c749eacade0f22b3a9e54"
+        },
+        {
+          "file": "figure-116-cross-battle-hd6-master-v1.png",
+          "sha256": "ff22e2fc3fb3900d0ad0153b66644dd12d2d2142a9909494236d4a8a9c0c9509"
+        },
+        {
+          "file": "figure-116-fan-battle-hd6-master-v1.png",
+          "sha256": "faf086ab1630f906088fd7e5b21f0da929a8361e9005c9cf13220d56e6991561"
+        },
+        {
+          "file": "figure-116-idle-battle-hd6-master-v1.png",
+          "sha256": "269b26b24ec4a0a8c5bd1a7818fa513b6adfd07da7fb41e5d472ce3d57f48207"
+        },
+        {
+          "file": "figure-116-lunge-battle-hd6-master-v1.png",
+          "sha256": "169aef51b8255135898a8663a58545ec407f673ebdfe98ec3447d269777422c2"
+        },
+        {
+          "file": "figure-116-ready-battle-hd6-master-v1.png",
+          "sha256": "a4f03d5f3643e94256b4ef2fb26806f544136496262185d3140b4d6cc9e54fd1"
+        },
+        {
+          "file": "figure-116-trail-battle-hd6-master-v1.png",
+          "sha256": "c968983b4d9fd4feb349f9eddbf00e67a19f4aee041e27ab3b6fb096f7f70a1f"
+        }
+      ],
+      "old_files_unchanged": true,
+      "candidate_catalog_sha256": "d4682edf8273c3ac1ebe9273f17caffb34765fd6f807057bebbe54f92763c885",
+      "formal_catalog_sha256": "7e55d4f5ed87f54050d895b4aaf0b4deaa6932b7a1cada8f853d3e08c1e6f142",
+      "runtime_identical_frames": 11
+    },
+    "art_rejections": [
+      {
+        "file": {
+          "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/cross-v1.png",
+          "sha256": "ca6556b77935ddf2216657e10f01ba55f78b7ea137795b0436d82ad72a021a9e"
+        },
+        "reason": "灰色背景光暈且alpha最高254，拒收"
+      },
+      {
+        "file": {
+          "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/cross2-v1.png",
+          "sha256": "119931aa2e1d1b379af262c288349dc8179e02d65d6a83c7a615056c35c0f038"
+        },
+        "reason": "去背景重試仍有光暈且最高254，拒收"
+      },
+      {
+        "file": {
+          "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/cross3-v1.png",
+          "sha256": "fac7dbff3bf0cfc5b88ba126893c805476c1a6254ea8c4bdfc76a5894b0f7607"
+        },
+        "reason": "雙刃相對本體過長，拒收"
+      },
+      {
+        "file": {
+          "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/cross4-v1.png",
+          "sha256": "94c3633c72766e89cdfae1a8be72d95ac55f66454419f36063b4a2c3e22fd3d8"
+        },
+        "reason": "雙刃相對本體過短，拒收"
+      }
+    ],
+    "rejected_compilation": {
+      "report": {
+        "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/candidate-r1/compiled.json",
+        "sha256": "777cde4e43a1e756e80a24e6f2f68d6786e42847e468958797a3c9169d9af47a"
+      },
+      "status": "NOT-ADMITTED",
+      "reason": "39個alpha>=192邊緣像素裁切；r2只擴錨點，原母稿不改，全11幀零高覆蓋裁切。"
+    },
+    "gpu": {
+      "full": {
+        "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/gpu-r1/receipt.json",
+        "sha256": "8a80e43b39cf9efb3662d9b2b370617c7f9a5da39c6fb7166a7de4d8236dc667"
+      },
+      "full_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/gpu-r1.log",
+        "sha256": "36a1246e0fed3a83f61a8b2c957a76e3122fd3ec5060848c0f4c2f98d19a9998"
+      },
+      "runtime": {
+        "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/gpu-runtime-r1/receipt.json",
+        "sha256": "78b4dc9d3dddaa8223206058dfc9fcf2d2f7c56e0b8ea2f5d978161c56f03a95"
+      },
+      "runtime_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/gpu-runtime-r1.log",
+        "sha256": "eb55ebd6344154cc0cfcb65860093c9ec7e7115f416e00c6601dcddbc361476d"
+      },
+      "frames": 11,
+      "f2": [
+        "prelude",
+        "body",
+        "counter"
+      ],
+      "battle_dac_steps": 64,
+      "map_dac_steps": 65,
+      "continuations": 1,
+      "independent_pixels": {
+        "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/gpu-opaque-r1.json",
+        "sha256": "aec4905950afacd29c1368590b4da95af1f80a7181c2acda545df86134903353"
+      },
+      "pixel_results": {
+        "status": "PASS-CHARACTER-FIXTURE-GPU",
+        "figure": 116,
+        "core_profile": "opaque",
+        "body_frames": null,
+        "sample_group": "fixture",
+        "node_boundary_save_checked": false,
+        "receipt_sha256": "8a80e43b39cf9efb3662d9b2b370617c7f9a5da39c6fb7166a7de4d8236dc667",
+        "catalog_sha256": "d4682edf8273c3ac1ebe9273f17caffb34765fd6f807057bebbe54f92763c885",
+        "verifier_sha256": "9febf066352d872a086341cd53d0948f174a81db2d39939e2193c8eab2d6c17e",
+        "pixel_matcher_sha256": "42e6aaada773d05997d5c3648925087c4e87a3b0c176be413349253467b292e9",
+        "matches": [
+          {
+            "scene": "fixture",
+            "file": "348-00.png",
+            "sha256": "a5ede4d3ecf51b8beacf47e5aff719349e1bc10c019f39392385a07abf23e24f",
+            "sample_origin": "fixture",
+            "resource": 348,
+            "frame": 0,
+            "source_file": "figani-348-hd6-v1-f00.png",
+            "source_sha256": "64b78fadb47e23f0fda7856d4c1a8a64ec9633712ae7980a6c463688199ecd1d",
+            "checked_pixels": 271138,
+            "eligible_pixels": 271138,
+            "world_origin": [
+              78,
+              6
+            ],
+            "clip": null,
+            "visible_eligible_pixels": 271138
+          },
+          {
+            "scene": "fixture",
+            "file": "349-00.png",
+            "sha256": "12218a531d425d374f86a02608cb8b198b86e913d23612903dc8c8c29cfd67ce",
+            "sample_origin": "fixture",
+            "resource": 349,
+            "frame": 0,
+            "source_file": "figani-349-hd6-v1-f00.png",
+            "source_sha256": "6026b52e9925aba0e8fae80d28e58a77198790bfa4270acd092083343828072a",
+            "checked_pixels": 223053,
+            "eligible_pixels": 223053,
+            "world_origin": [
+              96,
+              6
+            ],
+            "clip": null,
+            "visible_eligible_pixels": 223053
+          },
+          {
+            "scene": "fixture",
+            "file": "349-01.png",
+            "sha256": "be5903741d9e7ae1fe248be0b1b8e899b518cdb62377e9b337344d4e08e6a7e2",
+            "sample_origin": "fixture",
+            "resource": 349,
+            "frame": 1,
+            "source_file": "figani-349-hd6-v1-f01.png",
+            "source_sha256": "f4d3d7be55dc6223e36c77b1c6d2b0938670175c9887828f1e3ff6683a4dbc9e",
+            "checked_pixels": 223053,
+            "eligible_pixels": 223053,
+            "world_origin": [
+              90,
+              6
+            ],
+            "clip": null,
+            "visible_eligible_pixels": 223053
+          },
+          {
+            "scene": "fixture",
+            "file": "349-02.png",
+            "sha256": "5118f6c91a89ec6691e79c7a62770f835551100cfe19a88c5e7cf72899d37890",
+            "sample_origin": "fixture",
+            "resource": 349,
+            "frame": 2,
+            "source_file": "figani-349-hd6-v1-f02.png",
+            "source_sha256": "f4d3d7be55dc6223e36c77b1c6d2b0938670175c9887828f1e3ff6683a4dbc9e",
+            "checked_pixels": 223053,
+            "eligible_pixels": 223053,
+            "world_origin": [
+              90,
+              6
+            ],
+            "clip": null,
+            "visible_eligible_pixels": 223053
+          },
+          {
+            "scene": "fixture",
+            "file": "349-03.png",
+            "sha256": "676f0060350895182f76546b54acb6f2cd5735454b1f290e0b0e911a6f9aa90c",
+            "sample_origin": "fixture",
+            "resource": 349,
+            "frame": 3,
+            "source_file": "figani-349-hd6-v1-f03.png",
+            "source_sha256": "433396ad0b47ff78edffcfdf3c424f67c08b0ec71982f895e87374978c639698",
+            "checked_pixels": 246034,
+            "eligible_pixels": 246034,
+            "world_origin": [
+              0,
+              0
+            ],
+            "clip": null,
+            "visible_eligible_pixels": 246034
+          },
+          {
+            "scene": "fixture",
+            "file": "349-04.png",
+            "sha256": "db66dd28cee6c417120a3192241d5a691144fdd789adc406deb055d598c876b2",
+            "sample_origin": "fixture",
+            "resource": 349,
+            "frame": 4,
+            "source_file": "figani-349-hd6-v1-f04.png",
+            "source_sha256": "709e5b12854a726d64eb332bbcbb86a4647dc53ba93827b6df769d8067cff357",
+            "checked_pixels": 242590,
+            "eligible_pixels": 242590,
+            "world_origin": [
+              0,
+              6
+            ],
+            "clip": null,
+            "visible_eligible_pixels": 242590
+          },
+          {
+            "scene": "fixture",
+            "file": "349-05.png",
+            "sha256": "b80a6dbbf66267979e919ae2209c63499f44f5651457012a24e484e52b6812d3",
+            "sample_origin": "fixture",
+            "resource": 349,
+            "frame": 5,
+            "source_file": "figani-349-hd6-v1-f05.png",
+            "source_sha256": "8b446192547da50452244cd5c80cc2f04417c890d8510885a040f89277380f07",
+            "checked_pixels": 510587,
+            "eligible_pixels": 510587,
+            "world_origin": [
+              0,
+              96
+            ],
+            "clip": null,
+            "visible_eligible_pixels": 510587
+          },
+          {
+            "scene": "fixture",
+            "file": "349-06.png",
+            "sha256": "5d99243822c024d631a1529123ba36aa7e0b0f8d4a01d882e18f5581fd7a4af2",
+            "sample_origin": "fixture",
+            "resource": 349,
+            "frame": 6,
+            "source_file": "figani-349-hd6-v1-f06.png",
+            "source_sha256": "b48017f179e8e5dc0801b0f4ad2717a064393a991709786a82bede4cdc49c88c",
+            "checked_pixels": 314020,
+            "eligible_pixels": 314020,
+            "world_origin": [
+              102,
+              96
+            ],
+            "clip": null,
+            "visible_eligible_pixels": 314020
+          },
+          {
+            "scene": "fixture",
+            "file": "349-07.png",
+            "sha256": "8ce2a1a0e76061d20d834eea3e2b66b00548f3ae743686fb0e3bca4954ee7946",
+            "sample_origin": "fixture",
+            "resource": 349,
+            "frame": 7,
+            "source_file": "figani-349-hd6-v1-f07.png",
+            "source_sha256": "c9abda6d845d9c4bfeb4a1a81b69a47d5c19ecb5c5d088022cc78e8829437efa",
+            "checked_pixels": 304379,
+            "eligible_pixels": 304379,
+            "world_origin": [
+              102,
+              96
+            ],
+            "clip": null,
+            "visible_eligible_pixels": 304379
+          },
+          {
+            "scene": "fixture",
+            "file": "349-08.png",
+            "sha256": "062948b9dbda89943b3794131c5b252e154922547863a9df006ba068686c8b9d",
+            "sample_origin": "fixture",
+            "resource": 349,
+            "frame": 8,
+            "source_file": "figani-349-hd6-v1-f08.png",
+            "source_sha256": "5ace43880b4ae219b9ec40470b4f130eb22b1ed5b49dfdc78329b4dd3077df6b",
+            "checked_pixels": 302488,
+            "eligible_pixels": 302488,
+            "world_origin": [
+              102,
+              96
+            ],
+            "clip": null,
+            "visible_eligible_pixels": 302488
+          },
+          {
+            "scene": "fixture",
+            "file": "349-09.png",
+            "sha256": "89ddec550f624231c1fa483fc01658fd8e0b98fa5edcbd3b91802ac73553f2ef",
+            "sample_origin": "fixture",
+            "resource": 349,
+            "frame": 9,
+            "source_file": "figani-349-hd6-v1-f09.png",
+            "source_sha256": "56e6f213305d364afa991aeb17a8605a937d9117830c749eacade0f22b3a9e54",
+            "checked_pixels": 302443,
+            "eligible_pixels": 302443,
+            "world_origin": [
+              102,
+              96
+            ],
+            "clip": null,
+            "visible_eligible_pixels": 302443
+          }
+        ],
+        "sample_count": 11,
+        "rejected_boundary_samples": [],
+        "ambiguous_source_candidates": {},
+        "scope": "普通攻防、明示END或修改fixture分組的實際PNG與所選人物明示本體幀指定色域的高覆蓋服裝核心；fixture只屬RUNTIME-E1。trace另重驗原始按鍵與保存資料，只核對已落地的演出樣本，不補造原GUI或指定END通過。attack沿原描述子；end只從同圖庫的預期job取caller位移及裁切，再由實際PNG找姿勢，避免把觀測索引當呈現相位；fixture仍在同次Draw逐幀核對。alpha255一量化值，250..254依未知背景混合界限。多候選保留相容集合，不判定唯一相位；未比較服裝核心以外的武器／FX，不宣稱全部幀GPU或原版對拍。"
+      },
+      "pixel_scope": "全部alpha>=250的來源像素，非抽稀；每幀仍至少1000點，RGB沿既有容許1及預乘alpha契約，無前景排除。",
+      "negative": {
+        "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/gpu-negative-r1.log",
+        "sha256": "2a7e08f63d1e69e541b662e2222f44d809bb33a68f406e2dbadaac6a108f259e"
+      },
+      "negative_guards": 5,
+      "compiler_negative": {
+        "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/compiler-negative-r1.log",
+        "sha256": "e87f4692c0b119b45efb31465ebc3bcaa28d4282ea424f7a007e9b5910d15b5e"
+      },
+      "compiler_guards": 21
+    },
+    "runtime_byte_regression": {
+      "status": "PASS",
+      "frames": [
+        {
+          "frame": "348-00",
+          "sha256": "a5ede4d3ecf51b8beacf47e5aff719349e1bc10c019f39392385a07abf23e24f"
+        },
+        {
+          "frame": "349-00",
+          "sha256": "12218a531d425d374f86a02608cb8b198b86e913d23612903dc8c8c29cfd67ce"
+        },
+        {
+          "frame": "349-01",
+          "sha256": "be5903741d9e7ae1fe248be0b1b8e899b518cdb62377e9b337344d4e08e6a7e2"
+        },
+        {
+          "frame": "349-02",
+          "sha256": "5118f6c91a89ec6691e79c7a62770f835551100cfe19a88c5e7cf72899d37890"
+        },
+        {
+          "frame": "349-03",
+          "sha256": "676f0060350895182f76546b54acb6f2cd5735454b1f290e0b0e911a6f9aa90c"
+        },
+        {
+          "frame": "349-04",
+          "sha256": "db66dd28cee6c417120a3192241d5a691144fdd789adc406deb055d598c876b2"
+        },
+        {
+          "frame": "349-05",
+          "sha256": "b80a6dbbf66267979e919ae2209c63499f44f5651457012a24e484e52b6812d3"
+        },
+        {
+          "frame": "349-06",
+          "sha256": "5d99243822c024d631a1529123ba36aa7e0b0f8d4a01d882e18f5581fd7a4af2"
+        },
+        {
+          "frame": "349-07",
+          "sha256": "8ce2a1a0e76061d20d834eea3e2b66b00548f3ae743686fb0e3bca4954ee7946"
+        },
+        {
+          "frame": "349-08",
+          "sha256": "062948b9dbda89943b3794131c5b252e154922547863a9df006ba068686c8b9d"
+        },
+        {
+          "frame": "349-09",
+          "sha256": "89ddec550f624231c1fa483fc01658fd8e0b98fa5edcbd3b91802ac73553f2ef"
+        }
+      ]
+    },
+    "normal_gui": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/normal-r1/receipt.json",
+        "sha256": "cc4ade2b6e4b59f3f3f50f4906e3407d5190b44e94ea6dfadd2bfa8175856bb7"
+      },
+      "pixels": {
+        "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/normal-pixels-r1.json",
+        "sha256": "e45cb015c5d9d8ce353a670f58b617a1bbb2efc9c3151448851e2f3f31ad0923"
+      },
+      "pixel_results": {
+        "status": "PASS-COMMANDER-NORMAL-TARGET-AND-PORTRAIT",
+        "receipt_sha256": "cc4ade2b6e4b59f3f3f50f4906e3407d5190b44e94ea6dfadd2bfa8175856bb7",
+        "catalog_sha256": "d4682edf8273c3ac1ebe9273f17caffb34765fd6f807057bebbe54f92763c885",
+        "verifier_sha256": "4ee0fe4afaf5cb2a74d24fda858763f47ba4bfe22f5bfc0c8e29c05953fbae40",
+        "idle": [
+          {
+            "file": "commander116-target-02.png",
+            "checked_pixels": 2546,
+            "origin": [
+              78,
+              6
+            ]
+          }
+        ],
+        "portraits": [
+          {
+            "file": "commander116-story-hd.png",
+            "pixels": 230400,
+            "maximum_rgb_error": 0,
+            "rect": [
+              1392,
+              30,
+              480,
+              480
+            ]
+          }
+        ],
+        "scope": "章前強化槽、正常進軍與蓋亞攻擊的目標待機、戰後116頭像、F2保存及新程序LOAD。非隊長主動攻擊、自然難度、原版parity或整章E2。"
+      },
+      "negative": {
+        "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/normal-negative-r1.json",
+        "sha256": "1cf9d1d79c018b71a5a648f4dcab954ec545dc3be971b00b7f101df0df426a25"
+      },
+      "negative_guards": 10,
+      "seed": 1,
+      "seed_method": "既有GUI --world在啟動前固定FD2_SEED=1。",
+      "source": {
+        "file": "work/promo-cadence-20261018/hd-fonts/shared-death-player-ch23-r1/source-gui-r2/user-data/fd2_re/fd2_save.json",
+        "sha256": "5d64f3a0bf9aa56f7e77f51e8cfe45fe8c14ab78f2703b966fbc0e142e7bd871"
+      },
+      "constructor_policy": {
+        "AP": 5000,
+        "DP": 300,
+        "DX": 60,
+        "MaxHP": 1000,
+        "casualties": "既有來源傷亡保持"
+      },
+      "normal_end_count": 7,
+      "blocker_attacks": 1,
+      "commander_target_samples": 3,
+      "accepted_target_samples": 1,
+      "portrait_pixels": 230400,
+      "portrait_maximum_rgb_error": 0,
+      "final_node": "preparation_ch24",
+      "state_injection": false,
+      "f2_f5_bytes_equal": true,
+      "new_process_title_load": true,
+      "scope": "只驗正常目標348待機與116故事頭像；完整攻擊十一幀為fixture，不提升隊長主動攻擊正常GUI、自然難度、傷害或E2。"
+    },
+    "formal_tests": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/formal-go-r2.log",
+        "sha256": "faf7da0656c0ff894b400657fa358c7c8366f3ce0eb4977940385009ce0947a3"
+      },
+      "tests": 2,
+      "subtests": 2,
+      "skipped": 0,
+      "prior_environment_skip": {
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/formal-go-r1.log",
+          "sha256": "4e6b09d0460bd0b5a5a4a1c014d576504c6f7de6fa8fd6e44f3602033febc163"
+        },
+        "reason": "命令漏FD2_ASSET_PACK，原生preflight環境前置SKIP；同image補正後r2兩項及子項全跑，非產品缺陷。"
+      },
+      "catalog_tests": {
+        "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/catalog-tests-r1.log",
+        "sha256": "a014a09b0e9a59701768e7ed0b61d47f207803f0a8f089a1948ef9f198854f3a"
+      },
+      "catalog_test_count": 12,
+      "catalog_validation": {
+        "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/formal-catalog.log",
+        "sha256": "eaef877a4aaf28b63d25fe13a8d071ed203ea3b95e2794da5bcb30dd6e7f82e3"
+      },
+      "production_go_changes": 0
+    },
+    "formal_coverage": {
+      "report": {
+        "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/formal-coverage.json",
+        "sha256": "3893f0a19a97144d8b5d6af08b221cbecefc7567c85a93e549d8477695d22bc7"
+      },
+      "results": {
+        "status": "PASS-BATTLE-HD-ASSET-COVERAGE",
+        "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+        "catalog_sha256": "7e55d4f5ed87f54050d895b4aaf0b4deaa6932b7a1cada8f853d3e08c1e6f142",
+        "catalog_stage": "registered-worktree",
+        "tool_sha256": "2ccbdb94f8b6a3114532c1ff92664ffbbf851141b0eb97bfde493c2deddd905b",
+        "catalog_assets": 425,
+        "figani": {
+          "resource_positions": 409,
+          "decoded_resources": 264,
+          "native_frames": 2118,
+          "registered_resources": 49,
+          "registered_hd_frames": 343,
+          "remaining_decoded_resources": [
+            9,
+            10,
+            18,
+            19,
+            21,
+            22,
+            33,
+            34,
+            45,
+            46,
+            48,
+            49,
+            51,
+            52,
+            54,
+            55,
+            56,
+            57,
+            58,
+            59,
+            60,
+            61,
+            66,
+            67,
+            69,
+            70,
+            75,
+            76,
+            77,
+            78,
+            79,
+            81,
+            82,
+            84,
+            85,
+            87,
+            88,
+            93,
+            94,
+            96,
+            97,
+            98,
+            99,
+            100,
+            102,
+            103,
+            104,
+            105,
+            106,
+            108,
+            109,
+            111,
+            112,
+            114,
+            115,
+            117,
+            118,
+            120,
+            121,
+            123,
+            124,
+            126,
+            127,
+            129,
+            130,
+            132,
+            133,
+            135,
+            136,
+            138,
+            139,
+            141,
+            142,
+            147,
+            148,
+            150,
+            151,
+            152,
+            153,
+            154,
+            156,
+            157,
+            159,
+            160,
+            162,
+            163,
+            165,
+            166,
+            168,
+            169,
+            174,
+            175,
+            177,
+            178,
+            180,
+            181,
+            183,
+            184,
+            186,
+            187,
+            189,
+            190,
+            192,
+            193,
+            195,
+            196,
+            204,
+            205,
+            207,
+            208,
+            210,
+            211,
+            213,
+            214,
+            216,
+            217,
+            219,
+            220,
+            231,
+            232,
+            237,
+            238,
+            240,
+            241,
+            243,
+            244,
+            246,
+            247,
+            252,
+            253,
+            255,
+            256,
+            258,
+            259,
+            264,
+            265,
+            267,
+            268,
+            273,
+            274,
+            275,
+            276,
+            277,
+            278,
+            282,
+            283,
+            285,
+            286,
+            291,
+            292,
+            294,
+            295,
+            297,
+            298,
+            300,
+            301,
+            303,
+            304,
+            306,
+            307,
+            309,
+            310,
+            312,
+            313,
+            314,
+            315,
+            316,
+            317,
+            318,
+            319,
+            321,
+            322,
+            323,
+            324,
+            325,
+            327,
+            328,
+            330,
+            331,
+            332,
+            336,
+            337,
+            339,
+            340,
+            342,
+            343,
+            345,
+            346,
+            351,
+            352,
+            354,
+            355,
+            357,
+            358,
+            360,
+            361,
+            363,
+            364,
+            366,
+            367,
+            369,
+            370,
+            372,
+            373,
+            374,
+            375,
+            376,
+            377,
+            378,
+            379,
+            380,
+            381,
+            382,
+            383,
+            405
+          ],
+          "source_blocked_resources": [
+            408
+          ]
+        },
+        "registered_fdother_effects": [
+          {
+            "resource": 65,
+            "registered_hd_frames": 5,
+            "asset_status": "REGISTERED-ASSET",
+            "native_masks": [
+              {
+                "sha256": "cbc85784def0295880332a90006ade4ac1405e1c12722850060b5bd6fa1cd5f3",
+                "full_source_mask": false
+              },
+              {
+                "sha256": "9f350c03d5becdbc4a434e10c5152db5521685cacbb1138f3cd447655456e7d9",
+                "full_source_mask": false
+              },
+              {
+                "sha256": "c0dcff5ecfa8783ec402111dad28f1aa0c1e478b830b8610d21333d688ed14a5",
+                "full_source_mask": false
+              },
+              {
+                "sha256": "744438d9669d809c02750d6db7078b0d9e71d7f4dfb473286e3165896af4bf70",
+                "full_source_mask": false
+              },
+              {
+                "sha256": "0eb1de61245381cb7d6324966305930dd71b5435a5bbd3dfdfa747b3312944c6",
+                "full_source_mask": false
+              }
+            ]
+          },
+          {
+            "resource": 66,
+            "registered_hd_frames": 14,
+            "asset_status": "REGISTERED-ASSET",
+            "native_masks": [
+              {
+                "sha256": "cda378f930f8a5bfa709b76d0a5f817040ee60fe5a9dd5c256038d97ac880681",
+                "full_source_mask": false
+              },
+              {
+                "sha256": "8a87c2e7c6c92e4685acb0adc46ca64dbcf7a2cd80928dd31a4f047ac8964777",
+                "full_source_mask": false
+              },
+              {
+                "sha256": "8a87c2e7c6c92e4685acb0adc46ca64dbcf7a2cd80928dd31a4f047ac8964777",
+                "full_source_mask": false
+              },
+              {
+                "sha256": "8a87c2e7c6c92e4685acb0adc46ca64dbcf7a2cd80928dd31a4f047ac8964777",
+                "full_source_mask": false
+              },
+              {
+                "sha256": "d6c1dad07a04fcc61050cf1aa9a0474fafbdb0cce1c7043e907a81ccf0ac32ba",
+                "full_source_mask": false
+              },
+              {
+                "sha256": "8745f6cc5f9bb507eb49f86d85ce2ccc8ccd9ca45ce9675d12e1c4bd1667eadb",
+                "full_source_mask": false
+              },
+              {
+                "sha256": "7ce969a4366c66f5b60336ebdf4a04c77bf506a5b0d5b6181b3701fa405c959e",
+                "full_source_mask": false
+              },
+              {
+                "sha256": "4d2bdcad5b9684823cf015a037342eade3cd81a536feb0eccada32c4ea5b740e",
+                "full_source_mask": false
+              },
+              {
+                "sha256": "237b7a7c6b068e725f184ff417b018471260be5f24c931db219914001f169ccf",
+                "full_source_mask": false
+              },
+              {
+                "sha256": "ebea7f628b27d26b9909b5a82c7c3b69ca524563118e6d5719c1d8d17ed84ac8",
+                "full_source_mask": false
+              },
+              {
+                "sha256": "7a62fe33d8d1aa2579f0816c4473b8f7f809673b08ffc8d9177b3d2b0764be37",
+                "full_source_mask": false
+              },
+              {
+                "sha256": "4940b244aa345b9c81b97a512dc7e938874009e56d9984c98621637d714a02dc",
+                "full_source_mask": false
+              },
+              {
+                "sha256": "ea7c4b1768504db80266125edc8b850ac0a42472d9ee02bfb90833ad5f1026b0",
+                "full_source_mask": false
+              },
+              {
+                "sha256": "6e4d91c749e53a67244f9abc0b54e021b8c96621c8dabde6e1957cd66fe1e382",
+                "full_source_mask": false
+              }
+            ]
+          },
+          {
+            "resource": 67,
+            "registered_hd_frames": 9,
+            "asset_status": "REGISTERED-ASSET",
+            "native_masks": [
+              {
+                "sha256": "b10d6d983ad69dfa1a4e2041fa4ca0042141e9030e49b6ed644e3046332d98d3",
+                "full_source_mask": false
+              },
+              {
+                "sha256": "7eba00bb5b59c56108ca111e28d15f8ebd3fd4163e288502435182bd0553de68",
+                "full_source_mask": false
+              },
+              {
+                "sha256": "f0d674e405e080f057159e7c2ab32e37c89e3a28be52ee01465b8dfdc638633c",
+                "full_source_mask": false
+              },
+              {
+                "sha256": "b72fce43f705890464171abdea12207eba5151e126792d3f63c18e026dc3faf0",
+                "full_source_mask": false
+              },
+              {
+                "sha256": "aae8c9f58483ed3e170ebf6c5aef622855bb09e29c895187d286ecbb4690c4b0",
+                "full_source_mask": false
+              },
+              {
+                "sha256": "1ab9a5571d17da8d9d811b35f3ab7e3ade2cdeab22d609ce771e7f23e3a1441a",
+                "full_source_mask": false
+              },
+              {
+                "sha256": "82e7f6ee3daf712df6c37254ac45c9c82446d2ac751ecf656c6fb830dc2f522b",
+                "full_source_mask": false
+              },
+              {
+                "sha256": "7c5491e82c210351117ee3e9b66e34032ebf773133e14926f5608c695414b226",
+                "full_source_mask": false
+              },
+              {
+                "sha256": "c4cd8b8106b8602a4614c8884e7b1f892ae05c4e8f52668def24784149d34eb7",
+                "full_source_mask": true
+              }
+            ]
+          },
+          {
+            "resource": 68,
+            "registered_hd_frames": 9,
+            "asset_status": "REGISTERED-ASSET",
+            "native_masks": [
+              {
+                "sha256": "73edb7b7b80ae7e11eccd8761e6faab2c754326c42d721f0e0c8422400223242",
+                "full_source_mask": false
+              },
+              {
+                "sha256": "f111f388b0e049492b4dec7a244cad249d4740ab0ff7f7b7c5c9c9f6515e6c75",
+                "full_source_mask": false
+              },
+              {
+                "sha256": "4523782c13b7a4039af7ac4e8522676b180da7184acabea158ec4aa1ece13ed3",
+                "full_source_mask": false
+              },
+              {
+                "sha256": "78d6875ba13453f5d7ee4c2babbd159dcd7af47c927ba650013a76737bd7c58b",
+                "full_source_mask": false
+              },
+              {
+                "sha256": "52d5568787440fdfa8202bd279b0181a0ca6f7834ff28c5b14cd1149e9f3b852",
+                "full_source_mask": false
+              },
+              {
+                "sha256": "3db83d88484a704844cf3374b22648d3073166156ed9c49e9450380acd010a22",
+                "full_source_mask": false
+              },
+              {
+                "sha256": "146a6cf89ffad1e5c35573d7af12ab74b5010a171840ad5a0df69c8f93a2d2e7",
+                "full_source_mask": false
+              },
+              {
+                "sha256": "e73a789f7fae54edfd57a43a969ff0ed7ac7c996ad64f40760a65b2bf4c1f720",
+                "full_source_mask": false
+              },
+              {
+                "sha256": "b97d2d1df9e6f18e89780250d1088624da2a060e32fffa0b117ea0e2e3db074e",
+                "full_source_mask": false
+              }
+            ]
+          }
+        ],
+        "opaque_effect_contract": "沿modern_hd_battle_assets.go：FDOTHER原生Mask每像素寫入時可無透明像素。FIGANI完整原生Mask全0時只能全透明，其他幀仍須透明背景及255核心；不以成品自承空白。",
+        "scope": "完整FIGANI來源盤點對正式catalog、原版metadata及實際HD PNG的資料覆蓋；非原版oracle。header資格不等於caller已接線，FDOTHER只核已登錄效果，不假定四種效果涵蓋全部共同效果。一般玩家、所有caller、其他法術／死亡／背景、效能與平台須另有證據。",
+        "full_battle_hd_complete": false
+      },
+      "command": "python tools/audit_fd2_battle_hd_coverage.py --inventory docs/data/fd2-battle-hd-source-inventory-20261019.json --original-pack /original --catalog remake/assets/themes/modern/catalog.json --source remake/generated-assets/modern-theme-prototypes --report <新工作區JSON>",
+      "resource_detail_scope": "完整409列留在同項report SHA所綁的可重跑報告；固定來源逐列資料依已受版控inventory，不在每輪主收據重複同一盤點。本文保留計數、剩餘資源及來源阻擋。"
+    },
+    "private_sync": {
+      "status": "PASS-PRIVATE-ALLOWLIST",
+      "old_files": 3815,
+      "files": 3835,
+      "unchanged_old_files": true,
+      "new_files": [
+        "captain116-portrait-style-a-v1-480.png",
+        "captain116-portrait-style-a-v1-80.png",
+        "captain116-portrait-style-a-v1-master.png",
+        "figani-348-hd6-v1-f00.png",
+        "figani-349-hd6-v1-f00.png",
+        "figani-349-hd6-v1-f01.png",
+        "figani-349-hd6-v1-f02.png",
+        "figani-349-hd6-v1-f03.png",
+        "figani-349-hd6-v1-f04.png",
+        "figani-349-hd6-v1-f05.png",
+        "figani-349-hd6-v1-f06.png",
+        "figani-349-hd6-v1-f07.png",
+        "figani-349-hd6-v1-f08.png",
+        "figani-349-hd6-v1-f09.png",
+        "figure-116-cross-battle-hd6-master-v1.png",
+        "figure-116-fan-battle-hd6-master-v1.png",
+        "figure-116-idle-battle-hd6-master-v1.png",
+        "figure-116-lunge-battle-hd6-master-v1.png",
+        "figure-116-ready-battle-hd6-master-v1.png",
+        "figure-116-trail-battle-hd6-master-v1.png"
+      ],
+      "catalog_sha256": "7e55d4f5ed87f54050d895b4aaf0b4deaa6932b7a1cada8f853d3e08c1e6f142",
+      "manifest_sha256": "422dc3da28c2a526740a17e0a95c2842cadf492c290cc3141a217ae884e199bc",
+      "uid": 1000,
+      "gid": 1000
+    },
+    "private_remote": {
+      "local_head": "cdb9373897942ce74e422fad989bf2d037eea709",
+      "actual_remote_main": "cdb9373897942ce74e422fad989bf2d037eea709",
+      "remote_checked": true,
+      "visibility_changed": false
+    },
+    "runtime_only_files": 3461,
+    "source_files": [
+      {
+        "file": "tools/build_fd2_character_battle_hd.py",
+        "sha256": "d0cca3bc3f7708d8de07be36286e21916851d194c9d9f307aedcc7813fa20a10"
+      },
+      {
+        "file": "tools/register_modern_intro_portraits.py",
+        "sha256": "db8b2e6bd163f32646798451f45353d4601163a98e2eaf3e976fd6a16500a4ac"
+      },
+      {
+        "file": "tools/fd2_hd_death_gui.py",
+        "sha256": "e43617d03f6bcdcc33c23882f29160cfdb23cb9c2d7a1824d47a7db5e6c7f1b3"
+      },
+      {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "1baacbf5386b02bc4f103b022b283dec3e8f98330d6fe9bb43ae84009fe49fc4"
+      },
+      {
+        "file": "tools/verify_fd2_character_battle_gpu.py",
+        "sha256": "9febf066352d872a086341cd53d0948f174a81db2d39939e2193c8eab2d6c17e"
+      },
+      {
+        "file": "tools/test_fd2_character_battle_gpu.py",
+        "sha256": "f3b3bb7c7ac44d35456a9bd776b31a60bd2535c5d194ee0ea4507153795e77d2"
+      },
+      {
+        "file": "tools/verify_fd2_commander_normal.py",
+        "sha256": "4ee0fe4afaf5cb2a74d24fda858763f47ba4bfe22f5bfc0c8e29c05953fbae40"
+      },
+      {
+        "file": "tools/test_verify_fd2_commander_normal.py",
+        "sha256": "3daed84bb6e1cf0d8354a5a03ce4ae4707a1032edb406608c4deb6651161d532"
+      }
+    ],
+    "reproduction": {
+      "images": [
+        "fd2-assets-local:20260829-sfx",
+        "fd2-go-test-local:latest",
+        "fd2-promo:20261017-r1"
+      ],
+      "compiler": "tools/build_fd2_character_battle_hd.py --layered；配方已嵌入本項，依相同母稿SHA編製完整348／349；350不登錄。",
+      "gpu": "TestModernHDBattleAssetsRealCandidate|TestNativePhysicalHDPreflightStopsBeforeSettlement|TestModernHDBattleRuntimeGPU，FD2_TEST_MODERN_BATTLE_FIGURE=116；固定原版包及完整／runtime-only各獨立程序。",
+      "normal_arguments": [
+        "--battle-status",
+        "--world",
+        "--battle-hd",
+        "--battle-node",
+        "battle_ch23",
+        "--death-event",
+        "53",
+        "--death-kind",
+        "action",
+        "--death-commander-hd",
+        "--startup-timeout",
+        "180"
+      ],
+      "normal_verifier": "tools/verify_fd2_commander_normal.py --receipt <正常收據> --catalog <同候選清冊> --source <同包> --report <新JSON>"
+    },
+    "readme_figures": [
+      {
+        "file": "docs/figures/hd-captain116-target.png",
+        "sha256": "bdb58d84550c566c2e9258e3f652c3fdfcce54b8d0903a643f67ca1fa974cba8",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/normal-r1/commander116-target-02.png",
+          "sha256": "bdb58d84550c566c2e9258e3f652c3fdfcce54b8d0903a643f67ca1fa974cba8"
+        },
+        "scope": "未編修重製正常GUI視窗，章前強化明示；不是原版畫面。"
+      },
+      {
+        "file": "docs/figures/hd-captain116-story.png",
+        "sha256": "0fde019428706c23f474a393d44b2f515f1dfd60efe16d7bb2aa73c3e92df794",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/normal-r1/commander116-story-hd.png",
+          "sha256": "0fde019428706c23f474a393d44b2f515f1dfd60efe16d7bb2aa73c3e92df794"
+        },
+        "scope": "未編修重製正常GUI視窗，章前強化明示；不是原版畫面。"
+      }
+    ],
+    "black_issue_resolution": "ui_black267_correction_20261021",
+    "cleanup": {
+      "report": {
+        "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/final-validation.json",
+        "sha256": "4481ff3f16a1ad440299b443636cd52e2583e940026f76d109007e9098ba4369"
+      },
+      "removed_logical_bytes": 529777535,
+      "deduplicated_logical_bytes": 39288369,
+      "recordings_created": 0,
+      "preserved": "原始母稿、來源／配方、PNG、收據及失敗日誌保留；僅移除已驗binary、Go cache與runtime複本。"
+    },
+    "binary_before_cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/fd2-r1",
+      "sha256": "2eef2bc4ff11b320bd9d1723cbc7b90437c5c76b9638105074786504c91d24e8",
+      "size": 19445632,
+      "removed_after_validation": true
+    },
+    "toolchain": {
+      "images": {
+        "fd2-assets-local:20260829-sfx": "sha256:e59237a31d4b5f7a62c59ac37b780bd93f17c99fda97be8f5ca0c53978b878bc",
+        "fd2-go-test-local:latest": "sha256:e4a805c52a3ad5d8c22cf23f2bcf51c6924e5ad6b99554f1b02761903c725433",
+        "fd2-promo:20261017-r1": "sha256:f299cf5e25b4ba172941399b3ed177c78b3a951de35d666d78af3f00e30d7f0d"
+      },
+      "go": "1.22.12",
+      "pillow": "11.3.0",
+      "image_generation": "built-in image_gen；原始選用輸出已保存私人母稿，重播以固定SHA為準，不宣稱模型再次生成相同bytes。"
+    }
+  },
+  "ui_black267_correction_20261021": {
+    "status": "CONFIRMED-MISCLASSIFICATION",
+    "date": "2026-10-21",
+    "issue": 267,
+    "base_commit": "679be580fd022854759a37db9f3e73cdf28acfb6",
+    "audit": {
+      "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/black267-progress-audit.json",
+      "sha256": "abc69bb622ef0c003812732d74864dabe48fd661c7ce091116ac2b1712c647cf"
+    },
+    "auditor": {
+      "file": "tools/audit_fd2_ui_job_progress.py",
+      "sha256": "c6a504e67918ea2818b3d747103358365268aa39a2339963433f163a81755111"
+    },
+    "tests": {
+      "file": "tools/test_audit_fd2_ui_job_progress.py",
+      "sha256": "f45adcd191ba33383587bdef054e756f8590fd14fa5327bcd2af6bea189f8809"
+    },
+    "test_log": {
+      "file": "work/promo-cadence-20261018/hd-fonts/captain116-r1/progress-audit-tests.log",
+      "sha256": "634c3ccd8ea0c95fe74e41d0a76165c53c178151ec5606574dd1b756dc9a3d41"
+    },
+    "test_count": 7,
+    "original_observation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/black-ui-r3-observation.json",
+      "sha256": "343a4988a81ba71b5698b403039204e80715eece38b2da4521ac19a1852f75f7"
+    },
+    "raw_audit": {
+      "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/normal-24-r3/input-audit.jsonl",
+      "sha256": "c9e8bab8cec6be5db0fc8792b1dbf1d8900afb2155b17c5d2d0dc1eb86c1ca6c",
+      "rows": 5183
+    },
+    "raw_log": {
+      "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/normal-24-r3.log",
+      "sha256": "b58e3c35f8593db24d8fcb073155fad7eed87547c68b1aed0a78cedf9e481d7c"
+    },
+    "timeline": {
+      "snapshot": {
+        "frame": 7636,
+        "native_round": 4,
+        "turn": 4,
+        "class_ui_job": true,
+        "transient_ui": false,
+        "ai_busy": false,
+        "error": ""
+      },
+      "first_released": {
+        "frame": 7638,
+        "native_round": 4,
+        "turn": 4,
+        "class_ui_job": false,
+        "transient_ui": false,
+        "ai_busy": false,
+        "error": ""
+      },
+      "later_round": {
+        "frame": 8734,
+        "native_round": 5,
+        "turn": 5,
+        "class_ui_job": false,
+        "transient_ui": false,
+        "ai_busy": false,
+        "error": ""
+      },
+      "final_record": {
+        "frame": 10078,
+        "native_round": 5,
+        "turn": 5,
+        "class_ui_job": false,
+        "transient_ui": false,
+        "ai_busy": true,
+        "error": "native story dialogue: native story dialogue: modern portrait for speaker 116 is unavailable"
+      }
+    },
+    "conclusion": "R3原始紀錄已在7638釋放job、8734進第5回合，10078才因116故事頭像缺圖停止。原觀測檔末尾也已記錄job=false及相同error；上一輪錯讀為持續卡死／逾時。未綁frame的黑PNG不能定位其來源。",
+    "scope": "只更正同一保存run的錯誤分類。保留原圖、原日誌、SHA及舊觀測，不宣稱修復通用owner、改變遊戲程式、原版parity或該run通過。#267按誤判撤回，不以履行原修復驗收結案。",
+    "rerun": "python tools/audit_fd2_ui_job_progress.py --audit work/promo-cadence-20261018/hd-fonts/cleric-party-r1/normal-24-r3/input-audit.jsonl --log work/promo-cadence-20261018/hd-fonts/cleric-party-r1/normal-24-r3.log --snapshot-frame 7636 --report <本人擁有且不存在的工作區JSON>",
+    "issue_state": "CLOSED-NOT-PLANNED-MISCLASSIFICATION"
   }
 }

@@ -337,6 +337,8 @@ acknowledgement 回歸，列 `RUNTIME-E1`；尚無未修改原版同狀態畫面
 F2動態入口已由忠實START走完整97拍，雙向切換、視窗還原、縮放／黑邊／遮罩及兩種主題LOAD同份節點存檔通過；[限定F2收據](../data/fd2-modern-hd-f2-20261018.json)。[非原生對話收據](../data/fd2-modern-hd-dialogue-20261018.json)通過首章下框兩個新程序START後F9冷讀、F2往返與GPU核對，存檔SHA不變；上框幾何僅E1，其餘玩家路徑沿#202接續。其後已修正[#252](https://github.com/wicanr2/fd2_re/issues/252)，[獨立標題冷讀收據](../data/fd2-json-title-load-20261018.json)通過忠實／HD與重新F5後第三次讀取，完整保存bytes相同；F1文字間距列[#251](https://github.com/wicanr2/fd2_re/issues/251)。
 F9讀酒店時殘留戰場人物資訊層已修正，成功LOAD清除、拒收時原狀保持；[GPU與回歸收據](../data/fd2-quickload-20261018.json)為RUNTIME-E1，不宣稱新原版對拍。
 
+機甲隊長116追加現況：原十一幀與80／480靜態故事頭像沿61既有契約接入；完整Draw/F2與runtime-only通過。正常章23蓋亞攻擊的目標待機、116故事、自然戰後及保存新程序LOAD通過；隊長主動攻擊正常GUI仍待，不提升原版對拍或E2。#267依同R3原始後續釋放／第5回合／116缺圖終態撤回誤判，未修改Go演出所有權。來源與重跑命令見[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`captain116_battle_followup_20261021`及`ui_black267_correction_20261021`；唯一覆蓋數量依[58](58-fd2-exe-re-coverage.md)。
+
 ## 2026-07-28 visual-parity audit
 
 這一節回答的是「玩家目前看到的操作畫面與原版相差多少」，不能與
