@@ -52953,7 +52953,7 @@
       "sha256": "2cf0835fefcb321ed5f191cbed82c8831f5536908b103d707489cec0c4af2971"
     }
   },
-  "runtime_source_scope": "頂層runtime_source及source_commit保留索爾階段歷史來源；本輪現行來源見shan14_battle_followup_20261021.runtime_source，Go規則未改，發布HEAD見該段Git核對檔。",
+  "runtime_source_scope": "頂層runtime_source及source_commit保留索爾階段歷史來源；現行來源見cleric_party_battle_followup_20261021.runtime_source，只增唯讀audit，Go規則未改，發布HEAD見該段Git核對檔。",
   "shan14_battle_followup_20261021": {
     "status": "CONFORMED-SCOPED",
     "base_commit": "2400e21ce463822d52872df69bc11fc523bf35d5",
@@ -53554,5 +53554,2101 @@
       "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/final-validation.json",
       "sha256": "3537949742f25db5e250212dce47eb3e6b02980fe38a638748ec4cf559bf3b5e"
     }
+  },
+  "cleric_party_battle_followup_20261021": {
+    "status": "CONFORMED-SCOPED / RUNTIME-E1",
+    "base_commit": "6d905f4d3644d70d8be3041d1ed258a729c38119",
+    "full_battle_hd_complete": false,
+    "actors": [
+      {
+        "figure": 21,
+        "name": "約拿",
+        "resources": [
+          63,
+          64
+        ],
+        "frames": 10,
+        "empty_cast": 65,
+        "identity_source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/normal-gui-r1/receipt.json",
+          "sha256": "3912ef39f918257c168aeec47c9a469e1b48bbd3269bab6cb973c6ea078e68ef"
+        },
+        "native_contact": {
+          "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/21/native-contact.png",
+          "sha256": "19b8b3cfbfe37828447e4133f083487faa07b6853c983efb6d2e0c9c568ecd32"
+        },
+        "native_review": {
+          "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/21/native-review.json",
+          "sha256": "c61851e740456f1a007a9eef665f4c37fe64e166e7b646d6a4fe9c99ff83931c"
+        },
+        "recipe": {
+          "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/21/recipe-r1.json",
+          "sha256": "3219d09ef82fac102bf2d72ce043028e67546f1d3079ce0f1271e9e902b68a8f"
+        },
+        "compiled": {
+          "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/candidate-21/compiled.json",
+          "sha256": "d2457d89d3585acd1cac72d00310e015d7c08700a24d355d4cdc18b456c1237c"
+        },
+        "review": {
+          "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/candidate-21/review.png",
+          "sha256": "d795fdadb7736d038509b7f30d947b2d5d977e8c66484d6930ee3dbe04e34532"
+        },
+        "scale_groups": {
+          "idle": 1,
+          "ready": 1,
+          "high": 0.9105219815025972,
+          "swing": 0.930494609675497
+        },
+        "compiler_guards": {
+          "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/compiler-guards-21/guards.json",
+          "sha256": "4a43cfdd462c92402f8e4cce4cbe2c20190ac6d0ce95510d3d7dc5daa971d838"
+        },
+        "fixture": {
+          "receipt": {
+            "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/gpu-21-r1/receipt.json",
+            "sha256": "655fbb1b2728d80fd096aa1ede97f08f709b894a6c12b53a9b9e705b9663e08b"
+          },
+          "pixels": {
+            "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/fixture-pixels-21.json",
+            "sha256": "83c9f55a960ba7024173ca7d24365888214bb0cd2acf82efe6922fdd20618d05"
+          },
+          "guards": {
+            "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/fixture-guards-21/guards.json",
+            "sha256": "e180ad095c012d3775c0d069eee1d463b0be25a67c78be480df6316c0e09cef1"
+          },
+          "scope": "強制攻防fixture及最終1920回讀，僅RUNTIME-E1；不是正常玩家或原版oracle。灰綠／金衣核心通過不擴張為武器或半透明全像素證明。",
+          "complete_frames": 10,
+          "phase_f2": {
+            "body": 1,
+            "counter": 1,
+            "prelude": 1
+          },
+          "phase_hd_draws": {
+            "body": 54,
+            "counter": 50,
+            "fade": 64,
+            "prelude": 10,
+            "restore": 12
+          },
+          "battle_dac_steps": 64,
+          "map_dac_steps": 65,
+          "continuations": 1
+        },
+        "recipe_data": {
+          "schema_version": 1,
+          "figure": 21,
+          "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+          "sources": {
+            "idle": {
+              "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/21/idle-v1.png",
+              "sha256": "fa2d0a315d6dfa4e9ead09db43dee430361f4122df2eeaeb47ce2f840f27b4ee",
+              "anchor": [
+                77,
+                47,
+                1029,
+                1392
+              ]
+            },
+            "ready": {
+              "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/21/ready-v1.png",
+              "sha256": "5ae313049dbc4894ac4e9b02eac226cb22d104900ca5dd65cc72cf502cab1275",
+              "anchor": [
+                34,
+                23,
+                1074,
+                1420
+              ]
+            },
+            "high": {
+              "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/21/high-v1.png",
+              "sha256": "0d5cb066c8086ddeeb4358f8a20af84cdf6f91f8e61508ccc87b3f976615f75a",
+              "anchor": [
+                151,
+                9,
+                1028,
+                1433
+              ]
+            },
+            "swing": {
+              "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/21/swing-v1.png",
+              "sha256": "32c762977b4355f9158a5039788f4568bf7abc3d6cc78c36080ce963e0a55370",
+              "anchor": [
+                32,
+                29,
+                1204,
+                1245
+              ]
+            }
+          },
+          "resources": {
+            "63": [
+              {
+                "pose": "idle",
+                "anchor": [
+                  0,
+                  0,
+                  104,
+                  141
+                ],
+                "scale_group": "idle"
+              },
+              {
+                "pose": "idle",
+                "anchor": [
+                  0,
+                  0,
+                  104,
+                  140
+                ],
+                "scale_group": "idle"
+              },
+              {
+                "pose": "idle",
+                "anchor": [
+                  0,
+                  0,
+                  104,
+                  139
+                ],
+                "scale_group": "idle"
+              },
+              {
+                "pose": "idle",
+                "anchor": [
+                  0,
+                  0,
+                  104,
+                  140
+                ],
+                "scale_group": "idle"
+              }
+            ],
+            "64": [
+              {
+                "pose": "idle",
+                "anchor": [
+                  0,
+                  0,
+                  104,
+                  141
+                ],
+                "scale_group": "idle"
+              },
+              {
+                "pose": "ready",
+                "anchor": [
+                  0,
+                  0,
+                  125,
+                  155
+                ],
+                "scale_group": "ready"
+              },
+              {
+                "pose": "high",
+                "anchor": [
+                  0,
+                  0,
+                  123,
+                  177
+                ],
+                "scale_group": "high"
+              },
+              {
+                "pose": "high",
+                "anchor": [
+                  0,
+                  0,
+                  108,
+                  192
+                ],
+                "scale_group": "high"
+              },
+              {
+                "pose": "swing",
+                "anchor": [
+                  0,
+                  0,
+                  153,
+                  167
+                ],
+                "scale_group": "swing"
+              },
+              {
+                "pose": "swing",
+                "anchor": [
+                  0,
+                  0,
+                  151,
+                  168
+                ],
+                "scale_group": "swing"
+              }
+            ]
+          }
+        },
+        "compiled_data": {
+          "status": "PASS-COMPILED-CHARACTER-CANDIDATE",
+          "runtime_registered": false,
+          "figure": 21,
+          "base_catalog_sha256": "2d489aeb7b2b2f229d0fd0b8e0c2679dffa7fad810dc6b985f1745f16c2853a9",
+          "catalog_sha256": "3d18c1c6846a9478996680d793fe1d4ea5061c90270093f36ffe09f18584ef66",
+          "compiler_sha256": "d0cca3bc3f7708d8de07be36286e21916851d194c9d9f307aedcc7813fa20a10",
+          "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+          "recipe_sha256": "3219d09ef82fac102bf2d72ce043028e67546f1d3079ce0f1271e9e902b68a8f",
+          "sources": {
+            "idle": {
+              "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/21/idle-v1.png",
+              "sha256": "fa2d0a315d6dfa4e9ead09db43dee430361f4122df2eeaeb47ce2f840f27b4ee",
+              "anchor": [
+                77,
+                47,
+                1029,
+                1392
+              ]
+            },
+            "ready": {
+              "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/21/ready-v1.png",
+              "sha256": "5ae313049dbc4894ac4e9b02eac226cb22d104900ca5dd65cc72cf502cab1275",
+              "anchor": [
+                34,
+                23,
+                1074,
+                1420
+              ]
+            },
+            "high": {
+              "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/21/high-v1.png",
+              "sha256": "0d5cb066c8086ddeeb4358f8a20af84cdf6f91f8e61508ccc87b3f976615f75a",
+              "anchor": [
+                151,
+                9,
+                1028,
+                1433
+              ]
+            },
+            "swing": {
+              "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/21/swing-v1.png",
+              "sha256": "32c762977b4355f9158a5039788f4568bf7abc3d6cc78c36080ce963e0a55370",
+              "anchor": [
+                32,
+                29,
+                1204,
+                1245
+              ]
+            }
+          },
+          "frames": [
+            {
+              "resource": 63,
+              "frame": 0,
+              "pose": "idle",
+              "native_anchor": [
+                0,
+                0,
+                104,
+                141
+              ],
+              "source_anchor": [
+                77,
+                47,
+                1029,
+                1392
+              ],
+              "fit_size": [
+                687,
+                905
+              ],
+              "origin": [
+                -36,
+                -29
+              ],
+              "scale_xy": [
+                0.6285452881976212,
+                0.6289089645587214
+              ],
+              "scale_group": "idle",
+              "phase_scale": 1,
+              "fitted_anchor": [
+                12.397987191216835,
+                0.5587213342599036,
+                610.7731015553522,
+                846.4412786657401
+              ],
+              "clipped_high_coverage_pixels": 0,
+              "native_empty_source": false,
+              "pose_used": true,
+              "native_descriptor": {
+                "x": 187,
+                "y": 51,
+                "width": 104,
+                "height": 141,
+                "delay_native": 2,
+                "raw_byte_4": 0,
+                "raw_byte_5": 0,
+                "raw_byte_7": 0
+              },
+              "file": "figani-063-hd6-v1-f00.png",
+              "sha256": "0ca9046de4f19d8bde14f8291088e35f86fee15b2b3dc9b504128ec9fce09f50"
+            },
+            {
+              "resource": 63,
+              "frame": 1,
+              "pose": "idle",
+              "native_anchor": [
+                0,
+                0,
+                104,
+                140
+              ],
+              "source_anchor": [
+                77,
+                47,
+                1029,
+                1392
+              ],
+              "fit_size": [
+                683,
+                899
+              ],
+              "origin": [
+                -34,
+                -30
+              ],
+              "scale_xy": [
+                0.6248856358645929,
+                0.6247394023627519
+              ],
+              "scale_group": "idle",
+              "phase_scale": 1,
+              "fitted_anchor": [
+                14.11619396157365,
+                -0.6372480889506598,
+                609.0073193046661,
+                839.6372480889507
+              ],
+              "clipped_high_coverage_pixels": 0,
+              "native_empty_source": false,
+              "pose_used": true,
+              "native_descriptor": {
+                "x": 187,
+                "y": 52,
+                "width": 104,
+                "height": 140,
+                "delay_native": 2,
+                "raw_byte_4": 0,
+                "raw_byte_5": 0,
+                "raw_byte_7": 0
+              },
+              "file": "figani-063-hd6-v1-f01.png",
+              "sha256": "16a98457828a6768381fca7ae888c66fc6bd713c5c266c8ba3bc8832b6e21cf5"
+            },
+            {
+              "resource": 63,
+              "frame": 2,
+              "pose": "idle",
+              "native_anchor": [
+                0,
+                0,
+                104,
+                139
+              ],
+              "source_anchor": [
+                77,
+                47,
+                1029,
+                1392
+              ],
+              "fit_size": [
+                678,
+                892
+              ],
+              "origin": [
+                -31,
+                -29
+              ],
+              "scale_xy": [
+                0.6203110704483074,
+                0.6198749131341209
+              ],
+              "scale_group": "idle",
+              "phase_scale": 1,
+              "fitted_anchor": [
+                16.763952424519665,
+                0.13412091730368303,
+                607.3000914913083,
+                833.8658790826963
+              ],
+              "clipped_high_coverage_pixels": 0,
+              "native_empty_source": false,
+              "pose_used": true,
+              "native_descriptor": {
+                "x": 187,
+                "y": 53,
+                "width": 104,
+                "height": 139,
+                "delay_native": 2,
+                "raw_byte_4": 0,
+                "raw_byte_5": 0,
+                "raw_byte_7": 0
+              },
+              "file": "figani-063-hd6-v1-f02.png",
+              "sha256": "bec40800a5dc8f29c826034bf3e23cf4c039d0f68370085f8ca2c0c651718716"
+            },
+            {
+              "resource": 63,
+              "frame": 3,
+              "pose": "idle",
+              "native_anchor": [
+                0,
+                0,
+                104,
+                140
+              ],
+              "source_anchor": [
+                77,
+                47,
+                1029,
+                1392
+              ],
+              "fit_size": [
+                683,
+                899
+              ],
+              "origin": [
+                -34,
+                -30
+              ],
+              "scale_xy": [
+                0.6248856358645929,
+                0.6247394023627519
+              ],
+              "scale_group": "idle",
+              "phase_scale": 1,
+              "fitted_anchor": [
+                14.11619396157365,
+                -0.6372480889506598,
+                609.0073193046661,
+                839.6372480889507
+              ],
+              "clipped_high_coverage_pixels": 0,
+              "native_empty_source": false,
+              "pose_used": true,
+              "native_descriptor": {
+                "x": 187,
+                "y": 52,
+                "width": 104,
+                "height": 140,
+                "delay_native": 2,
+                "raw_byte_4": 0,
+                "raw_byte_5": 0,
+                "raw_byte_7": 0
+              },
+              "file": "figani-063-hd6-v1-f03.png",
+              "sha256": "16a98457828a6768381fca7ae888c66fc6bd713c5c266c8ba3bc8832b6e21cf5"
+            },
+            {
+              "resource": 64,
+              "frame": 0,
+              "pose": "idle",
+              "native_anchor": [
+                0,
+                0,
+                104,
+                141
+              ],
+              "source_anchor": [
+                77,
+                47,
+                1029,
+                1392
+              ],
+              "fit_size": [
+                687,
+                905
+              ],
+              "origin": [
+                -36,
+                -29
+              ],
+              "scale_xy": [
+                0.6285452881976212,
+                0.6289089645587214
+              ],
+              "scale_group": "idle",
+              "phase_scale": 1,
+              "fitted_anchor": [
+                12.397987191216835,
+                0.5587213342599036,
+                610.7731015553522,
+                846.4412786657401
+              ],
+              "clipped_high_coverage_pixels": 0,
+              "native_empty_source": false,
+              "pose_used": true,
+              "native_descriptor": {
+                "x": 187,
+                "y": 51,
+                "width": 104,
+                "height": 141,
+                "delay_native": 2,
+                "raw_byte_4": 0,
+                "raw_byte_5": 0,
+                "raw_byte_7": 0
+              },
+              "file": "figani-064-hd6-v1-f00.png",
+              "sha256": "0ca9046de4f19d8bde14f8291088e35f86fee15b2b3dc9b504128ec9fce09f50"
+            },
+            {
+              "resource": 64,
+              "frame": 1,
+              "pose": "ready",
+              "native_anchor": [
+                0,
+                0,
+                125,
+                155
+              ],
+              "source_anchor": [
+                34,
+                23,
+                1074,
+                1420
+              ],
+              "fit_size": [
+                728,
+                958
+              ],
+              "origin": [
+                6,
+                -15
+              ],
+              "scale_xy": [
+                0.6660567246111619,
+                0.6657400972897846
+              ],
+              "scale_group": "ready",
+              "phase_scale": 1,
+              "fitted_anchor": [
+                28.645928636779505,
+                0.31202223766504567,
+                721.344922232388,
+                930.3509381514941
+              ],
+              "clipped_high_coverage_pixels": 0,
+              "native_empty_source": false,
+              "pose_used": true,
+              "native_descriptor": {
+                "x": 172,
+                "y": 37,
+                "width": 125,
+                "height": 155,
+                "delay_native": 2,
+                "raw_byte_4": 0,
+                "raw_byte_5": 0,
+                "raw_byte_7": 0
+              },
+              "file": "figani-064-hd6-v1-f01.png",
+              "sha256": "b01698edeb6e478f00b8ddc5caeb5b2001943190b5db02dd1637d97619e795f6"
+            },
+            {
+              "resource": 64,
+              "frame": 2,
+              "pose": "high",
+              "native_anchor": [
+                0,
+                0,
+                123,
+                177
+              ],
+              "source_anchor": [
+                151,
+                9,
+                1028,
+                1433
+              ],
+              "fit_size": [
+                742,
+                977
+              ],
+              "origin": [
+                -31,
+                89
+              ],
+              "scale_xy": [
+                0.6788655077767612,
+                0.6789437109103544
+              ],
+              "scale_group": "high",
+              "phase_scale": 0.9105219815025972,
+              "fitted_anchor": [
+                71.50869167429094,
+                95.11049339819319,
+                666.8737419945105,
+                1061.9263377345378
+              ],
+              "clipped_high_coverage_pixels": 0,
+              "native_empty_source": false,
+              "pose_used": true,
+              "native_descriptor": {
+                "x": 168,
+                "y": 15,
+                "width": 123,
+                "height": 177,
+                "delay_native": 2,
+                "raw_byte_4": 0,
+                "raw_byte_5": 0,
+                "raw_byte_7": 0
+              },
+              "file": "figani-064-hd6-v1-f02.png",
+              "sha256": "6cef8fc62fdf645c868ecda4e1cc952385fcc291f853fc924d8d01cbd2e165bd"
+            },
+            {
+              "resource": 64,
+              "frame": 3,
+              "pose": "high",
+              "native_anchor": [
+                0,
+                0,
+                108,
+                192
+              ],
+              "source_anchor": [
+                151,
+                9,
+                1028,
+                1433
+              ],
+              "fit_size": [
+                805,
+                1060
+              ],
+              "origin": [
+                -110,
+                96
+              ],
+              "scale_xy": [
+                0.7365050320219579,
+                0.7366226546212647
+              ],
+              "scale_group": "high",
+              "phase_scale": 0.9105219815025972,
+              "fitted_anchor": [
+                1.212259835315649,
+                102.62960389159139,
+                647.1271729185728,
+                1151.5802640722725
+              ],
+              "clipped_high_coverage_pixels": 0,
+              "native_empty_source": false,
+              "pose_used": true,
+              "native_descriptor": {
+                "x": 177,
+                "y": 0,
+                "width": 108,
+                "height": 192,
+                "delay_native": 8,
+                "raw_byte_4": 0,
+                "raw_byte_5": 0,
+                "raw_byte_7": 0
+              },
+              "file": "figani-064-hd6-v1-f03.png",
+              "sha256": "9a4eaaac85566fb45af6d4670f90101fa37c51c1f3231e2a4a0e69c14c773a1b"
+            },
+            {
+              "resource": 64,
+              "frame": 4,
+              "pose": "swing",
+              "native_anchor": [
+                0,
+                0,
+                153,
+                167
+              ],
+              "source_anchor": [
+                32,
+                29,
+                1204,
+                1245
+              ],
+              "fit_size": [
+                924,
+                1001
+              ],
+              "origin": [
+                -15,
+                48
+              ],
+              "scale_xy": [
+                0.7668049792531121,
+                0.7664624808575804
+              ],
+              "scale_group": "swing",
+              "phase_scale": 0.930494609675497,
+              "fitted_anchor": [
+                9.537759336099587,
+                70.22741194486983,
+                908.233195020747,
+                1002.2457886676876
+              ],
+              "clipped_high_coverage_pixels": 0,
+              "native_empty_source": false,
+              "pose_used": true,
+              "native_descriptor": {
+                "x": 155,
+                "y": 25,
+                "width": 153,
+                "height": 167,
+                "delay_native": 2,
+                "raw_byte_4": 1,
+                "raw_byte_5": 1,
+                "raw_byte_7": 0
+              },
+              "file": "figani-064-hd6-v1-f04.png",
+              "sha256": "3f22eda2a8d4d773d5e1662a81c6cd0219e1ca92543fc063b099879eb048b002"
+            },
+            {
+              "resource": 64,
+              "frame": 5,
+              "pose": "swing",
+              "native_anchor": [
+                0,
+                0,
+                151,
+                168
+              ],
+              "source_anchor": [
+                32,
+                29,
+                1204,
+                1245
+              ],
+              "fit_size": [
+                929,
+                1007
+              ],
+              "origin": [
+                -23,
+                48
+              ],
+              "scale_xy": [
+                0.7709543568464731,
+                0.7710566615620215
+              ],
+              "scale_group": "swing",
+              "phase_scale": 0.930494609675497,
+              "fitted_anchor": [
+                1.670539419087138,
+                70.36064318529863,
+                905.2290456431535,
+                1007.9655436447167
+              ],
+              "clipped_high_coverage_pixels": 0,
+              "native_empty_source": false,
+              "pose_used": true,
+              "native_descriptor": {
+                "x": 157,
+                "y": 24,
+                "width": 151,
+                "height": 168,
+                "delay_native": 4,
+                "raw_byte_4": 0,
+                "raw_byte_5": 0,
+                "raw_byte_7": 0
+              },
+              "file": "figani-064-hd6-v1-f05.png",
+              "sha256": "906abc91d2583c1689d88cee7dfef394949afa5ff27c226d14df18f80b86c336"
+            }
+          ],
+          "scale_groups": {
+            "idle": 1,
+            "ready": 1,
+            "high": 0.9105219815025972,
+            "swing": 0.930494609675497
+          },
+          "review_sha256": "d795fdadb7736d038509b7f30d947b2d5d977e8c66484d6930ee3dbe04e34532",
+          "scope": "明示錨點與姿勢重定向的完整候選，不代表正常GUI或原版逐幀視覺相同。"
+        },
+        "normal": {
+          "receipt": {
+            "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/normal-21-r1/receipt.json",
+            "sha256": "0face40028fe4a81fd63557f5b13343ae160ddd786bf93017e7231022ac4271d"
+          },
+          "pixels": {
+            "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/attack-pixels-21.json",
+            "sha256": "01d5b8e71a0a7161e14bcabb74f1d114980af105243507e3c385f126e9697437"
+          },
+          "guards": {
+            "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/attack-guards-21/guards.json",
+            "sha256": "fa3fd4929a242b1f8bbcf6cc8c03cd7d5314163715987f7421dd0f5aa4a1a206"
+          },
+          "end_rounds": 3,
+          "approach_cells": [
+            [
+              21,
+              31
+            ],
+            [
+              21,
+              27
+            ],
+            [
+              21,
+              23
+            ]
+          ],
+          "faithful_approach": false,
+          "matched_pngs": 4,
+          "screenshot": {
+            "file": "docs/figures/hd-jonah-physical-attack.png",
+            "sha256": "bb1fdd188291d299a2e9e5c49240b06762e2a052892a3eb19f113b44fa8c132a"
+          },
+          "gui_tool": {
+            "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/gui-tool-before.py",
+            "sha256": "5726ad2f34ad33c33e8ecbb8e5b015d48d220103f1c641a9477d7aaa6d7cbc81"
+          },
+          "scope": "正常LOAD／移動／END／HD近戰／自然返回／F2／章節邊界新程序LOAD；共享姿勢僅列相容集合，不判唯一相位。章前作弊來源不證自然難度、傷害或原版parity。",
+          "source_json_file": "work/promo-cadence-20261018/hd-fonts/shared-death-player-ch23-r1/source-gui-r2/user-data/fd2_re/fd2_save.json",
+          "source_save_sha256": "5d64f3a0bf9aa56f7e77f51e8cfe45fe8c14ab78f2703b966fbc0e142e7bd871",
+          "ap_bonus": 5000,
+          "battle_target_row_max": 25,
+          "battle_advance_column": null,
+          "state_injection": false
+        },
+        "runtime_only": {
+          "go_log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/runtime-go-21.log",
+            "sha256": "6edc337b86e4b7302eb11304605697a50701742f190a494a3897807f367329be"
+          },
+          "gpu_receipt": {
+            "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/gpu-runtime-21/receipt.json",
+            "sha256": "942cf821f174fdbac4ca5dfb5d6d7dbada44fdff54d364752dfc6a8002acd82f"
+          },
+          "png_byte_regression": {
+            "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/runtime-png-21.json",
+            "sha256": "8c015232ed778145f4513bb13115b645a6f44d70e008066cad018828087a7707"
+          }
+        },
+        "go_tests": {
+          "candidate-go": {
+            "log": {
+              "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/candidate-go-21.log",
+              "sha256": "4eebe0c082db04d08b8c0b3e2d1c687200de1031c4a3f5c92c740294c3a1bf7f"
+            },
+            "tests": 3,
+            "subtests": 2,
+            "skips": 0
+          },
+          "formal-go": {
+            "log": {
+              "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/formal-go-21.log",
+              "sha256": "6e12a11524eabd5bc17f88e0ab5c20b7a5f82964904ba28db47af1ad52ac584d"
+            },
+            "tests": 2,
+            "subtests": 2,
+            "skips": 0
+          }
+        }
+      },
+      {
+        "figure": 24,
+        "name": "希爾法",
+        "resources": [
+          72,
+          73
+        ],
+        "frames": 7,
+        "empty_cast": 74,
+        "identity_source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/normal-gui-r1/receipt.json",
+          "sha256": "3912ef39f918257c168aeec47c9a469e1b48bbd3269bab6cb973c6ea078e68ef"
+        },
+        "native_contact": {
+          "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/24/native-contact.png",
+          "sha256": "7237ab926d9332c8c56e093c4ea64ce7407597cc2114678b3f3510bb3afcec20"
+        },
+        "native_review": {
+          "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/24/native-review.json",
+          "sha256": "ef2a21fb12d0d6e25367d5d75834f261f7f839488d2434ed5dc906275f5a465c"
+        },
+        "recipe": {
+          "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/24/recipe-r1.json",
+          "sha256": "4637d5d3d0a6fde3f87a6d7891e3b5e4e77e91596bf40ee2dcbf938357b4e837"
+        },
+        "compiled": {
+          "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/candidate-24/compiled.json",
+          "sha256": "ed4acf86cef3dc1c26e3f2dc44c56bc22ee430ab8e76399aa05db6b008b11c55"
+        },
+        "review": {
+          "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/candidate-24/review.png",
+          "sha256": "f82c0de3f25929ea833459fd304fcf81d7c2e812ae4b5bf641b544095e639b82"
+        },
+        "scale_groups": {
+          "idle": 1,
+          "ready": 1,
+          "swing": 0.9867899798551933
+        },
+        "compiler_guards": {
+          "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/compiler-guards-24/guards.json",
+          "sha256": "4a7c8503193b79cd25d1072cf2d024929ad89ff8e84e2606b59577c75a58798b"
+        },
+        "fixture": {
+          "receipt": {
+            "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/gpu-24-r1/receipt.json",
+            "sha256": "4133eb0bf6145b26a6f67822f7885a57d204553a3415eaf6c657114b361ea0c8"
+          },
+          "pixels": {
+            "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/fixture-pixels-24.json",
+            "sha256": "8d3793903f3ea5d973a91f42a2a14dde1635de92d6cd9cf546836112c1be2f5e"
+          },
+          "guards": {
+            "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/fixture-guards-24/guards.json",
+            "sha256": "131fa89f27d089208f3617b50dbb4f047d1ab7ce60ab6bcae293d9b25182f8c9"
+          },
+          "scope": "強制攻防fixture及最終1920回讀，僅RUNTIME-E1；不是正常玩家或原版oracle。灰綠／金衣核心通過不擴張為武器或半透明全像素證明。",
+          "complete_frames": 7,
+          "phase_f2": {
+            "body": 1,
+            "counter": 1,
+            "prelude": 1
+          },
+          "phase_hd_draws": {
+            "body": 78,
+            "counter": 46,
+            "fade": 64,
+            "prelude": 10,
+            "restore": 10
+          },
+          "battle_dac_steps": 64,
+          "map_dac_steps": 65,
+          "continuations": 1
+        },
+        "recipe_data": {
+          "schema_version": 1,
+          "figure": 24,
+          "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+          "sources": {
+            "idle": {
+              "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/24/idle-v1.png",
+              "sha256": "102aee712a8428bff89c435b32b4ca416f1d6b83a5fbfba0d3a195d9aab1734f",
+              "anchor": [
+                40,
+                13,
+                1138,
+                1324
+              ]
+            },
+            "ready": {
+              "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/24/ready-v1.png",
+              "sha256": "a071c7e0aa2468692ad6ab96a094b0e51cb5894c8d8bb9835501b5241a1d91ac",
+              "anchor": [
+                137,
+                37,
+                1064,
+                1400
+              ]
+            },
+            "swing": {
+              "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/24/swing-v1.png",
+              "sha256": "ae18790adacda7d5ee3796ac2d306dfa98a4e70358d8a70b7bdf609b2c374ea0",
+              "anchor": [
+                41,
+                22,
+                1155,
+                1305
+              ]
+            }
+          },
+          "resources": {
+            "72": [
+              {
+                "pose": "idle",
+                "anchor": [
+                  0,
+                  0,
+                  130,
+                  151
+                ],
+                "scale_group": "idle"
+              }
+            ],
+            "73": [
+              {
+                "pose": "idle",
+                "anchor": [
+                  0,
+                  0,
+                  130,
+                  151
+                ],
+                "scale_group": "idle"
+              },
+              {
+                "pose": "ready",
+                "anchor": [
+                  0,
+                  0,
+                  123,
+                  154
+                ],
+                "scale_group": "ready"
+              },
+              {
+                "pose": "ready",
+                "anchor": [
+                  0,
+                  0,
+                  117,
+                  154
+                ],
+                "scale_group": "ready"
+              },
+              {
+                "pose": "ready",
+                "anchor": [
+                  0,
+                  0,
+                  113,
+                  155
+                ],
+                "scale_group": "ready"
+              },
+              {
+                "pose": "swing",
+                "anchor": [
+                  0,
+                  0,
+                  122,
+                  142
+                ],
+                "scale_group": "swing"
+              },
+              {
+                "pose": "swing",
+                "anchor": [
+                  0,
+                  0,
+                  122,
+                  141
+                ],
+                "scale_group": "swing"
+              }
+            ]
+          }
+        },
+        "compiled_data": {
+          "status": "PASS-COMPILED-CHARACTER-CANDIDATE",
+          "runtime_registered": false,
+          "figure": 24,
+          "base_catalog_sha256": "3d18c1c6846a9478996680d793fe1d4ea5061c90270093f36ffe09f18584ef66",
+          "catalog_sha256": "5b96ff4d66dce460119b62784ab4c836b915095e633405eec3d1225b1b7a5bcf",
+          "compiler_sha256": "d0cca3bc3f7708d8de07be36286e21916851d194c9d9f307aedcc7813fa20a10",
+          "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+          "recipe_sha256": "4637d5d3d0a6fde3f87a6d7891e3b5e4e77e91596bf40ee2dcbf938357b4e837",
+          "sources": {
+            "idle": {
+              "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/24/idle-v1.png",
+              "sha256": "102aee712a8428bff89c435b32b4ca416f1d6b83a5fbfba0d3a195d9aab1734f",
+              "anchor": [
+                40,
+                13,
+                1138,
+                1324
+              ]
+            },
+            "ready": {
+              "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/24/ready-v1.png",
+              "sha256": "a071c7e0aa2468692ad6ab96a094b0e51cb5894c8d8bb9835501b5241a1d91ac",
+              "anchor": [
+                137,
+                37,
+                1064,
+                1400
+              ]
+            },
+            "swing": {
+              "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/24/swing-v1.png",
+              "sha256": "ae18790adacda7d5ee3796ac2d306dfa98a4e70358d8a70b7bdf609b2c374ea0",
+              "anchor": [
+                41,
+                22,
+                1155,
+                1305
+              ]
+            }
+          },
+          "frames": [
+            {
+              "resource": 72,
+              "frame": 0,
+              "pose": "idle",
+              "native_anchor": [
+                0,
+                0,
+                130,
+                151
+              ],
+              "source_anchor": [
+                40,
+                13,
+                1138,
+                1324
+              ],
+              "fit_size": [
+                809,
+                928
+              ],
+              "origin": [
+                -17,
+                -9
+              ],
+              "scale_xy": [
+                0.6908625106746371,
+                0.6909903201787044
+              ],
+              "scale_group": "idle",
+              "phase_scale": 1,
+              "fitted_anchor": [
+                10.634500426985483,
+                -0.017125837676841726,
+                769.201537147737,
+                905.8711839166047
+              ],
+              "clipped_high_coverage_pixels": 0,
+              "native_empty_source": false,
+              "pose_used": true,
+              "native_descriptor": {
+                "x": 183,
+                "y": 41,
+                "width": 130,
+                "height": 151,
+                "delay_native": 2,
+                "raw_byte_4": 0,
+                "raw_byte_5": 0,
+                "raw_byte_7": 0
+              },
+              "file": "figani-072-hd6-v1-f00.png",
+              "sha256": "89c6f1fa9f6ee3bc0469d0fcb819623fa2e47fa8a1b89d6bbffeaf0d5a0d3003"
+            },
+            {
+              "resource": 73,
+              "frame": 0,
+              "pose": "idle",
+              "native_anchor": [
+                0,
+                0,
+                130,
+                151
+              ],
+              "source_anchor": [
+                40,
+                13,
+                1138,
+                1324
+              ],
+              "fit_size": [
+                809,
+                928
+              ],
+              "origin": [
+                -17,
+                -9
+              ],
+              "scale_xy": [
+                0.6908625106746371,
+                0.6909903201787044
+              ],
+              "scale_group": "idle",
+              "phase_scale": 1,
+              "fitted_anchor": [
+                10.634500426985483,
+                -0.017125837676841726,
+                769.201537147737,
+                905.8711839166047
+              ],
+              "clipped_high_coverage_pixels": 0,
+              "native_empty_source": false,
+              "pose_used": true,
+              "native_descriptor": {
+                "x": 183,
+                "y": 41,
+                "width": 130,
+                "height": 151,
+                "delay_native": 2,
+                "raw_byte_4": 0,
+                "raw_byte_5": 0,
+                "raw_byte_7": 0
+              },
+              "file": "figani-073-hd6-v1-f00.png",
+              "sha256": "89c6f1fa9f6ee3bc0469d0fcb819623fa2e47fa8a1b89d6bbffeaf0d5a0d3003"
+            },
+            {
+              "resource": 73,
+              "frame": 1,
+              "pose": "ready",
+              "native_anchor": [
+                0,
+                0,
+                123,
+                154
+              ],
+              "source_anchor": [
+                137,
+                37,
+                1064,
+                1400
+              ],
+              "fit_size": [
+                736,
+                982
+              ],
+              "origin": [
+                -38,
+                -25
+              ],
+              "scale_xy": [
+                0.6777163904235728,
+                0.6781767955801105
+              ],
+              "scale_group": "ready",
+              "phase_scale": 1,
+              "fitted_anchor": [
+                54.84714548802947,
+                0.09254143646408863,
+                683.0902394106814,
+                924.4475138121546
+              ],
+              "clipped_high_coverage_pixels": 0,
+              "native_empty_source": false,
+              "pose_used": true,
+              "native_descriptor": {
+                "x": 183,
+                "y": 38,
+                "width": 123,
+                "height": 154,
+                "delay_native": 2,
+                "raw_byte_4": 0,
+                "raw_byte_5": 0,
+                "raw_byte_7": 0
+              },
+              "file": "figani-073-hd6-v1-f01.png",
+              "sha256": "5d87087d92e3a7311438fdaba8d988be13b3104295eec2f47a1117cf75c6e7c8"
+            },
+            {
+              "resource": 73,
+              "frame": 2,
+              "pose": "ready",
+              "native_anchor": [
+                0,
+                0,
+                117,
+                154
+              ],
+              "source_anchor": [
+                137,
+                37,
+                1064,
+                1400
+              ],
+              "fit_size": [
+                736,
+                982
+              ],
+              "origin": [
+                -56,
+                -25
+              ],
+              "scale_xy": [
+                0.6777163904235728,
+                0.6781767955801105
+              ],
+              "scale_group": "ready",
+              "phase_scale": 1,
+              "fitted_anchor": [
+                36.84714548802947,
+                0.09254143646408863,
+                665.0902394106814,
+                924.4475138121546
+              ],
+              "clipped_high_coverage_pixels": 0,
+              "native_empty_source": false,
+              "pose_used": true,
+              "native_descriptor": {
+                "x": 183,
+                "y": 38,
+                "width": 117,
+                "height": 154,
+                "delay_native": 2,
+                "raw_byte_4": 0,
+                "raw_byte_5": 0,
+                "raw_byte_7": 0
+              },
+              "file": "figani-073-hd6-v1-f02.png",
+              "sha256": "0bf7af502aae51099458050ddcfc2c53d5793474924dc305569d71b6d9885109"
+            },
+            {
+              "resource": 73,
+              "frame": 3,
+              "pose": "ready",
+              "native_anchor": [
+                0,
+                0,
+                113,
+                155
+              ],
+              "source_anchor": [
+                137,
+                37,
+                1064,
+                1400
+              ],
+              "fit_size": [
+                741,
+                988
+              ],
+              "origin": [
+                -71,
+                -25
+              ],
+              "scale_xy": [
+                0.6823204419889503,
+                0.6823204419889503
+              ],
+              "scale_group": "ready",
+              "phase_scale": 1,
+              "fitted_anchor": [
+                22.47790055248619,
+                0.24585635359115798,
+                654.988950276243,
+                930.2486187845303
+              ],
+              "clipped_high_coverage_pixels": 0,
+              "native_empty_source": false,
+              "pose_used": true,
+              "native_descriptor": {
+                "x": 183,
+                "y": 37,
+                "width": 113,
+                "height": 155,
+                "delay_native": 4,
+                "raw_byte_4": 0,
+                "raw_byte_5": 0,
+                "raw_byte_7": 0
+              },
+              "file": "figani-073-hd6-v1-f03.png",
+              "sha256": "28c5e6bec03e1fca0e6d266f482c5a25e5f20d2815de51c5045e7f2519ade8dd"
+            },
+            {
+              "resource": 73,
+              "frame": 4,
+              "pose": "swing",
+              "native_anchor": [
+                0,
+                0,
+                122,
+                142
+              ],
+              "source_anchor": [
+                41,
+                22,
+                1155,
+                1305
+              ],
+              "fit_size": [
+                767,
+                880
+              ],
+              "origin": [
+                -26,
+                -3
+              ],
+              "scale_xy": [
+                0.6549957301451751,
+                0.6552494415487714
+              ],
+              "scale_group": "swing",
+              "phase_scale": 0.9867899798551933,
+              "fitted_anchor": [
+                0.8548249359521805,
+                11.41548771407297,
+                730.5200683176772,
+                852.1005212211467
+              ],
+              "clipped_high_coverage_pixels": 0,
+              "native_empty_source": false,
+              "pose_used": true,
+              "native_descriptor": {
+                "x": 172,
+                "y": 50,
+                "width": 122,
+                "height": 142,
+                "delay_native": 4,
+                "raw_byte_4": 1,
+                "raw_byte_5": 1,
+                "raw_byte_7": 0
+              },
+              "file": "figani-073-hd6-v1-f04.png",
+              "sha256": "e429632055d28629e8dbf6e0c287c7508a40a6d8c22810537455842124450aa9"
+            },
+            {
+              "resource": 73,
+              "frame": 5,
+              "pose": "swing",
+              "native_anchor": [
+                0,
+                0,
+                122,
+                141
+              ],
+              "source_anchor": [
+                41,
+                22,
+                1155,
+                1305
+              ],
+              "fit_size": [
+                762,
+                874
+              ],
+              "origin": [
+                -23,
+                -3
+              ],
+              "scale_xy": [
+                0.6507258753202391,
+                0.6507818317200298
+              ],
+              "scale_group": "swing",
+              "phase_scale": 0.9867899798551933,
+              "fitted_anchor": [
+                3.6797608881298025,
+                11.317200297840655,
+                728.5883859948761,
+                846.2702903946389
+              ],
+              "clipped_high_coverage_pixels": 0,
+              "native_empty_source": false,
+              "pose_used": true,
+              "native_descriptor": {
+                "x": 172,
+                "y": 51,
+                "width": 122,
+                "height": 141,
+                "delay_native": 6,
+                "raw_byte_4": 0,
+                "raw_byte_5": 0,
+                "raw_byte_7": 0
+              },
+              "file": "figani-073-hd6-v1-f05.png",
+              "sha256": "c20c39ffdc2044a5000f1d7d2b8cbfd0fbb713d7ab4c9fac46e0165ca13bd2dd"
+            }
+          ],
+          "scale_groups": {
+            "idle": 1,
+            "ready": 1,
+            "swing": 0.9867899798551933
+          },
+          "review_sha256": "f82c0de3f25929ea833459fd304fcf81d7c2e812ae4b5bf641b544095e639b82",
+          "scope": "明示錨點與姿勢重定向的完整候選，不代表正常GUI或原版逐幀視覺相同。"
+        },
+        "normal": {
+          "receipt": {
+            "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/normal-24-r6/receipt.json",
+            "sha256": "ada454486c0111e1053708c1367cb31050509bbafdf68f2b47efafe8325db9ee"
+          },
+          "pixels": {
+            "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/attack-pixels-24.json",
+            "sha256": "061d7f692e72b761f4b1adfedc1cd72fcc65590acbcd27bf5a6b7a3231c02d83"
+          },
+          "guards": {
+            "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/attack-guards-24/guards.json",
+            "sha256": "1986db590c2ce764153aa7c0338d285790755e44c62b0733141c0a009268c1eb"
+          },
+          "end_rounds": 3,
+          "approach_cells": [
+            [
+              20,
+              31
+            ],
+            [
+              20,
+              27
+            ],
+            [
+              18,
+              25
+            ]
+          ],
+          "faithful_approach": false,
+          "matched_pngs": 9,
+          "screenshot": {
+            "file": "docs/figures/hd-silfar-physical-attack.png",
+            "sha256": "1d7fc74e2d170169f54e0b44bb1eea27bb41e45343bee79d8327597a476a0da5"
+          },
+          "gui_tool": {
+            "file": "tools/verify_fd2_hd_fonts_gui.py",
+            "sha256": "6aa53e94d0b87c2d88c80d9f0d4a1140c092845a24945cac3a4199bb7af2f819"
+          },
+          "scope": "正常LOAD／移動／END／HD近戰／自然返回／F2／章節邊界新程序LOAD；共享姿勢僅列相容集合，不判唯一相位。章前作弊來源不證自然難度、傷害或原版parity。",
+          "source_json_file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/low-ap-source-gui/user-data/fd2_re/fd2_save.json",
+          "source_save_sha256": "9fc8b8537640c7b17bf04828518769d5b3050bf6a07a613bd3608af599a8f664",
+          "ap_bonus": 0,
+          "battle_target_row_max": 25,
+          "battle_advance_column": null,
+          "state_injection": false
+        },
+        "runtime_only": {
+          "go_log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/runtime-go-24.log",
+            "sha256": "cfa124aac0a92422d8a782d4149547a0f70302ff704ce0e774087a46188aadbc"
+          },
+          "gpu_receipt": {
+            "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/gpu-runtime-24/receipt.json",
+            "sha256": "7eca3895bad156e61aab35df4da7d048f7dbd0cb66db19702c8d02148e967f75"
+          },
+          "png_byte_regression": {
+            "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/runtime-png-24.json",
+            "sha256": "c065ba7bbb893cf905b48a931d5c9fa905285483b83dc344be6f6b74cb836587"
+          }
+        },
+        "go_tests": {
+          "candidate-go": {
+            "log": {
+              "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/candidate-go-24.log",
+              "sha256": "d0f7a2c1d1608238ffc3767c93b2c6734028ea687cacc03c335e9ac45e62d1c7"
+            },
+            "tests": 3,
+            "subtests": 2,
+            "skips": 0
+          },
+          "formal-go": {
+            "log": {
+              "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/formal-go-24.log",
+              "sha256": "39802310a6e2ab5f6fb2917652f05ca66ae5aafc794f1cc80641d6f48702cdee"
+            },
+            "tests": 2,
+            "subtests": 2,
+            "skips": 0
+          }
+        }
+      }
+    ],
+    "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+    "current_state": {
+      "remake_complete": "兩人原17幀、完整Draw/F2、runtime-only bytes一致、正常HD物理攻擊／返回及章節邊界保存冷讀已驗。",
+      "remake_remaining": "#267偶發黑畫面、116號故事頭像、其餘人物／指令／人物外特效、普通召喚與平台效能。",
+      "original_oracle_unknown": "本批沒有新原版逐幀、傷害、音訊或整章E2。",
+      "optional_polish": "不插幀，原矩形、規則與保存格式保持。"
+    },
+    "design_contract": {
+      "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md#約拿-battlefig21-與希爾法-battlefig24-待機揮杖",
+      "ready_before_generation": true,
+      "prompts": {
+        "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/prompts-r1.json",
+        "sha256": "bc23679e0a3ee3dbace75f1ed579dda1cebab00dd16083415805e12143272291"
+      },
+      "shared_poses": "21: 63:0..3/64:0 idle,64:1 ready,64:2..3 high,64:4..5 swing;24:72:0/73:0 idle,73:1..3 ready,73:4..5 swing",
+      "native_descriptors_unchanged": true,
+      "no_gameplay_or_save_changes": true,
+      "go_changes": "只增input audit唯讀欄位及不改owner測試；沒有產品行為修法。"
+    },
+    "generation": {
+      "tool": "built-in image_gen",
+      "background": "transparent",
+      "prompts": {
+        "idle": {
+          "21": "Create ONE transparent full-body HD battle sprite of Jonah, a robed elderly male sage, faithfully reconstructing reference 1 (original idle sprite). Reference 2 provides ONLY painterly inked fantasy finish, not clothing, anatomy, weapon, or hair. Three-quarter REAR view facing LEFT; face barely visible. Preserve exact compact elderly silhouette: pale icy-white head covering/white hair mass and beard edge around tiny peach nose, brown hood/cowl draped across shoulders, tan-brown floor-length robe with huge loose sleeves. Gray olive long rectangular embroidered panels down back with dark linear geometric motifs; dark charcoal central back panel. Left hand relaxed just outside left sleeve. Right arm down at right holding a thin dark gray-green staff angled down and right, with head largely hidden behind the shoulder; match original placement. Heavy robe hem pools slightly, no visible shoes. Rich hand-painted cloth folds and crisp fine outlines, subdued brown/olive palette, neutral lighting. Full silhouette INCLUDING entire staff, hands and hem inside frame with modest transparent margin. Actual RGBA transparency, no floor, no cast shadow, no glow, no particles, no text, no other figures. Keep original pose and proportions, not a front-facing portrait. One image, no sheet.",
+          "24": "Create ONE transparent full-body HD battle sprite of Silfar, a very broad stocky bald adult male cleric, faithfully reconstructing reference 1 (original idle sprite). Reference 2 provides ONLY painterly inked fantasy finish, not anatomy, clothes or weapon. Three-quarter REAR view facing LEFT, tiny bald crown above high collar, face hidden. Preserve massive gold/yellow shoulder mantle, black jagged triangular edge pattern, thin gold lower edging, gray sage-green pointed hanging feather-shaped strips. Deep crimson voluminous floor-length robe, broad loose sleeves, dark navy blue sleeve cuffs and sweeping hem with thin gold piping and small angular red hem tips. Broad shoulders and width must match original rather than slender wizard. Left hand slightly extended left; right hand holds thin dark staff behind right shoulder; staff slopes up-left above head, red wrapped upper shaft, small dark blue open ring/crook head with tiny purple inset and gold joint. Neutral handpainted cloth shading, crisp thin ink contours, vivid red/gold. Entire silhouette, staff top and hem fit with transparent margins. Actual RGBA transparency, no floor, no shadow, no glow, no particles, no text, no extra figures. One image, no sheet."
+        },
+        "poses": [
+          {
+            "id": 21,
+            "key": "ready",
+            "n": 1,
+            "prompt": "Edit image 1 (accepted HD idle of this character) into ONE new full-body transparent battle sprite. Image 2 is the ORIGINAL required action pose and silhouette authority. Preserve SAME character, rear three-quarter LEFT viewpoint, clothing, head shape, colors, embroidery, weapon identity, painterly finish and limb proportions from image 1. Change ONLY pose: Raise and spread both arms to the sides; open left palm at shoulder height on LEFT. Right hand raises the thin staff beside right shoulder; circular gray-teal three-spoke open ring staff head fully visible above right shoulder. Torso upright, robe hanging straight. Match original arms, staff and robe exactly. Keep all staff parts, fingers and full hem in frame with transparent margins. True RGBA transparency, no floor or shadow, no glow, no particles, no text or other characters. Do not enlarge head or shrink torso to fit staff. No animation sheet; one pose."
+          },
+          {
+            "id": 21,
+            "key": "high",
+            "n": 3,
+            "prompt": "Edit image 1 (accepted HD idle of this character) into ONE new full-body transparent battle sprite. Image 2 is the ORIGINAL required action pose and silhouette authority. Preserve SAME character, rear three-quarter LEFT viewpoint, clothing, head shape, colors, embroidery, weapon identity, painterly finish and limb proportions from image 1. Change ONLY pose: Both elbows raised high; open left hand above LEFT shoulder, right hand over head gripping upright tall staff; the ring head is far ABOVE HEAD near top center-right. Torso upright, sleeve billows wide, robe hangs straight. Staff head a gray teal ring with three dark triangular openings / three spokes, no jewel. Match original high raised pose. Keep all staff parts, fingers and full hem in frame with transparent margins. True RGBA transparency, no floor or shadow, no glow, no particles, no text or other characters. Do not enlarge head or shrink torso to fit staff. No animation sheet; one pose."
+          },
+          {
+            "id": 21,
+            "key": "swing",
+            "n": 4,
+            "prompt": "Edit image 1 (accepted HD idle of this character) into ONE new full-body transparent battle sprite. Image 2 is the ORIGINAL required action pose and silhouette authority. Preserve SAME character, rear three-quarter LEFT viewpoint, clothing, head shape, colors, embroidery, weapon identity, painterly finish and limb proportions from image 1. Change ONLY pose: Lean and lunge LEFT with both forearms reaching left. Right hand grips thin staff angled up-left, three-spoke gray teal circular ring head far upperLEFT. Left hand open forward near staff hand. Right/back robe panels billow out to RIGHT, brown sleeve droops at LEFT, robe feet rooted. Match original deep leftward lean, staff and body landmarks. Keep all staff parts, fingers and full hem in frame with transparent margins. True RGBA transparency, no floor or shadow, no glow, no particles, no text or other characters. Do not enlarge head or shrink torso to fit staff. No animation sheet; one pose."
+          },
+          {
+            "id": 24,
+            "key": "ready",
+            "n": 3,
+            "prompt": "Edit image 1 (accepted HD idle of this character) into ONE new full-body transparent battle sprite. Image 2 is the ORIGINAL required action pose and silhouette authority. Preserve SAME character, rear three-quarter LEFT viewpoint, clothing, head shape, colors, embroidery, weapon identity, painterly finish and limb proportions from image 1. Change ONLY pose: Twist shoulders slightly toward LEFT while pulling arms in and lifting staff a little; silhouette narrower than idle, weight upright, bald crown still visible, huge gold shoulder mantle still broad, red robe folds gathered, left fingers visible beside left shoulder, blue ring staff head above near head angled up-left. Match original pose with restrained motion, not arms over head. Keep all staff parts, fingers and full hem in frame with transparent margins. True RGBA transparency, no floor or shadow, no glow, no particles, no text or other characters. Do not enlarge head or shrink torso to fit staff. No animation sheet; one pose."
+          },
+          {
+            "id": 24,
+            "key": "swing",
+            "n": 4,
+            "prompt": "Edit image 1 (accepted HD idle of this character) into ONE new full-body transparent battle sprite. Image 2 is the ORIGINAL required action pose and silhouette authority. Preserve SAME character, rear three-quarter LEFT viewpoint, clothing, head shape, colors, embroidery, weapon identity, painterly finish and limb proportions from image 1. Change ONLY pose: Bend and lunge torso toward LEFT; bald head lowered nearly hidden behind high gold collar; gold mantle slants downward LEFT, back of red robe billows outward RIGHT. Left fingers raised slightly beside left shoulder. Ring-headed staff tilted toward upperLEFT, right hand near left/front shoulder. Match original bent pose, full robe and sleeve shape. Keep all staff parts, fingers and full hem in frame with transparent margins. True RGBA transparency, no floor or shadow, no glow, no particles, no text or other characters. Do not enlarge head or shrink torso to fit staff. No animation sheet; one pose."
+          }
+        ]
+      },
+      "accepted_sources": [
+        {
+          "figure": 21,
+          "pose": "high",
+          "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/21/high-v1.png",
+          "sha256": "0d5cb066c8086ddeeb4358f8a20af84cdf6f91f8e61508ccc87b3f976615f75a",
+          "mode": "RGBA",
+          "size": [
+            1093,
+            1439
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "alpha192_bbox": [
+            153,
+            11,
+            1026,
+            1431
+          ],
+          "private_master_file": "figure-021-high-battle-hd6-master-v1.png"
+        },
+        {
+          "figure": 21,
+          "pose": "idle",
+          "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/21/idle-v1.png",
+          "sha256": "fa2d0a315d6dfa4e9ead09db43dee430361f4122df2eeaeb47ce2f840f27b4ee",
+          "mode": "RGBA",
+          "size": [
+            1093,
+            1439
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "alpha192_bbox": [
+            79,
+            49,
+            1027,
+            1390
+          ],
+          "private_master_file": "figure-021-idle-battle-hd6-master-v1.png"
+        },
+        {
+          "figure": 21,
+          "pose": "ready",
+          "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/21/ready-v1.png",
+          "sha256": "5ae313049dbc4894ac4e9b02eac226cb22d104900ca5dd65cc72cf502cab1275",
+          "mode": "RGBA",
+          "size": [
+            1093,
+            1439
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "alpha192_bbox": [
+            36,
+            25,
+            1072,
+            1418
+          ],
+          "private_master_file": "figure-021-ready-battle-hd6-master-v1.png"
+        },
+        {
+          "figure": 21,
+          "pose": "swing",
+          "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/21/swing-v1.png",
+          "sha256": "32c762977b4355f9158a5039788f4568bf7abc3d6cc78c36080ce963e0a55370",
+          "mode": "RGBA",
+          "size": [
+            1205,
+            1306
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "alpha192_bbox": [
+            34,
+            31,
+            1202,
+            1243
+          ],
+          "private_master_file": "figure-021-swing-battle-hd6-master-v1.png"
+        },
+        {
+          "figure": 24,
+          "pose": "idle",
+          "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/24/idle-v1.png",
+          "sha256": "102aee712a8428bff89c435b32b4ca416f1d6b83a5fbfba0d3a195d9aab1734f",
+          "mode": "RGBA",
+          "size": [
+            1171,
+            1343
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "alpha192_bbox": [
+            42,
+            15,
+            1136,
+            1322
+          ],
+          "private_master_file": "figure-024-idle-battle-hd6-master-v1.png"
+        },
+        {
+          "figure": 24,
+          "pose": "ready",
+          "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/24/ready-v1.png",
+          "sha256": "a071c7e0aa2468692ad6ab96a094b0e51cb5894c8d8bb9835501b5241a1d91ac",
+          "mode": "RGBA",
+          "size": [
+            1086,
+            1448
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "alpha192_bbox": [
+            139,
+            39,
+            1062,
+            1398
+          ],
+          "private_master_file": "figure-024-ready-battle-hd6-master-v1.png"
+        },
+        {
+          "figure": 24,
+          "pose": "swing",
+          "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/24/swing-v1.png",
+          "sha256": "ae18790adacda7d5ee3796ac2d306dfa98a4e70358d8a70b7bdf609b2c374ea0",
+          "mode": "RGBA",
+          "size": [
+            1171,
+            1343
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "alpha192_bbox": [
+            43,
+            24,
+            1153,
+            1303
+          ],
+          "private_master_file": "figure-024-swing-battle-hd6-master-v1.png"
+        }
+      ],
+      "review": "原圖輪廓及生成母稿逐張目視，原RGBA不裁切、不量化；alpha192邊界未碰畫布四側。近似姿態共用及等比收縮見compiled。無拒收母稿。"
+    },
+    "ui_black_diagnosis": {
+      "status": "OPEN-INTERMITTENT-DEFECT",
+      "observation": {
+        "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/black-ui-r3-observation.json",
+        "sha256": "343a4988a81ba71b5698b403039204e80715eece38b2da4521ac19a1852f75f7"
+      },
+      "read_only_observer_source": {
+        "file": "remake/cmd/fd2/input_audit_trace.go",
+        "sha256": "041d0514155442e21fdde7ddb00ce3400eb80409a982c473e5ca6cfff717a114"
+      },
+      "read_only_test_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/audit-go.log",
+        "sha256": "3961c9478f49c10724029c2159ff4a3e853cd7acafcbd98cfab80ecc972bb7d4"
+      },
+      "cause": "第五輪改章前AP政策；第六輪恢復既有目標區域，本輪通過不等於重現或修復；保留第三輪黑畫面與第四輪觀測，#267繼續OPEN。",
+      "issue": 267,
+      "same_policy_observer_run": {
+        "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/black-ui-r4-observation.json",
+        "sha256": "398cf59eec80708f5bef980590b4ee75fa2f5f8f52ca006092e55ab101ab690e"
+      },
+      "latest_run": {
+        "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/normal-24-r6/receipt.json",
+        "sha256": "ada454486c0111e1053708c1367cb31050509bbafdf68f2b47efafe8325db9ee"
+      }
+    },
+    "formal_registered": true,
+    "private_synced": true,
+    "production_rules_changed": false,
+    "formal_admission": {
+      "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/formal-admission.json",
+      "sha256": "e6850ee16307aff7b65577c6a89918c9df0a472f26ea73e0837625b424303534"
+    },
+    "formal_coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/formal-coverage.json",
+      "sha256": "924d08723a090ed85ed04b984cd577382c47c86034405fedf07f2c98b645a401"
+    },
+    "private_sync": {
+      "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/private-sync-verification.json",
+      "sha256": "67ddf2940193adbc531fc83ade4d71fa553addce88ecf2984260bcd4a20dd5e6"
+    },
+    "original_files_unchanged": {
+      "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/original-files-unchanged.json",
+      "sha256": "d0ecf8862174be44debbb93332636fb49e3753e64279562fbbbf1a7bb2de4f91"
+    },
+    "runtime_source": {
+      "binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/fd2-audit-r1",
+        "sha256": "6fbdc900fc33a7c1d80443402b23d02abce3b2dc7655f53dadf42beb7de2ee90",
+        "size": 19445632,
+        "removed_after_validation": true
+      },
+      "prior_fixture_binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/fd2-r1",
+        "sha256": "6df6baff7848bc4fd507d62b6b364c5064e8022d59516264fae45030e0ecc269",
+        "size": 19445480,
+        "removed_after_validation": true
+      },
+      "buildinfo": {
+        "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/binary-audit-buildinfo.txt",
+        "sha256": "013fc910c8808f53fb985a33412e27172185715551bc7a952434e30b850903f2"
+      },
+      "prior_fixture_buildinfo": {
+        "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/binary-buildinfo.txt",
+        "sha256": "b766d9f0666870ba960928347758788fcd75cbb16195e221582abe58d25b4c66"
+      },
+      "gui_tool": {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "6aa53e94d0b87c2d88c80d9f0d4a1140c092845a24945cac3a4199bb7af2f819"
+      },
+      "prior_gui_tool": {
+        "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/gui-tool-before.py",
+        "sha256": "5726ad2f34ad33c33e8ecbb8e5b015d48d220103f1c641a9477d7aaa6d7cbc81"
+      },
+      "go_base_commit": "6d905f4d3644d70d8be3041d1ed258a729c38119",
+      "read_only_observer": {
+        "file": "remake/cmd/fd2/input_audit_trace.go",
+        "sha256": "041d0514155442e21fdde7ddb00ce3400eb80409a982c473e5ca6cfff717a114"
+      },
+      "observer_test": {
+        "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/audit-go.log",
+        "sha256": "3961c9478f49c10724029c2159ff4a3e853cd7acafcbd98cfab80ecc972bb7d4"
+      },
+      "production_go_changes": 1,
+      "go_change_scope": "僅input_audit_trace.go唯讀觀測與對應測試，不改遊戲規則、Draw或路由；黑畫面#267仍未修復。",
+      "full_20_packages": {
+        "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/full-go.log",
+        "sha256": "972e826dcf74c03324c64775f8cb0e3f64414d276263ce0773f58bc2a0789b3b"
+      },
+      "candidate_catalog": {
+        "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/candidate-24/catalog.json",
+        "sha256": "5b96ff4d66dce460119b62784ab4c836b915095e633405eec3d1225b1b7a5bcf"
+      },
+      "formal_catalog": {
+        "file": "remake/assets/themes/modern/catalog.json",
+        "sha256": "3f893c41308dfbfd41d69c91248dedad304df502bd9f3492f9b4578fff39e839"
+      }
+    },
+    "runtime_only": {
+      "manifest": {
+        "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/runtime-only-r1/private-manifest.json",
+        "sha256": "49490b0d60c9765d5ca246d32b47a26ad7a6a01b3626dbac42077f73df4c58f4"
+      },
+      "files": 3448,
+      "masters_present": false,
+      "scope": "兩人各三Go測試／兩子項、完整17張與完整包最終PNG bytes相同。",
+      "output_files_removed_after_validation": true
+    },
+    "normal_source": {
+      "file": "work/promo-cadence-20261018/hd-fonts/shared-death-player-ch23-r1/source-gui-r2/user-data/fd2_re/fd2_save.json",
+      "sha256": "5d64f3a0bf9aa56f7e77f51e8cfe45fe8c14ab78f2703b966fbc0e142e7bd871",
+      "seed": 1,
+      "construction_policy": "AP+5000 DP+300 DX+60 MaxHP+1000，原傷亡保持；章內無狀態注入。",
+      "save_scope": "F5／新程序LOAD重建章節邊界，不持續本次戰中HP／位置。"
+    },
+    "known_gap_116": {
+      "status": "OPEN-ASSET-GAP",
+      "issue": 201,
+      "normal_24_first_run_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/normal-24-r1.log",
+        "sha256": "5a5e45cb387edbc715faa030933485d0b9656dca8043172d73a977bc19d71225"
+      },
+      "first_error_frame": 3630,
+      "error": "native story dialogue: native story dialogue: modern portrait for speaker 116 is unavailable",
+      "native_original": "remake/assets/portraits/DATO_116_m0.png",
+      "classification": "已證實現行modernStoryPortraits查表缺件；無新二進位RE。",
+      "second_run": "既有--faithful-approach通過該段劇情後已顯示勝利；首領在敵回合被反擊擊倒，沒有取得指定我方攻擊，人工停止等待並保留PNG。",
+      "second_run_diagnostic": {
+        "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/normal24-r2-diagnostic.png",
+        "sha256": "39c3877700b443c33503d413fda657947aa1b5cf93f7d340c64c2e4ccc0a93c1"
+      },
+      "scoped_recheck": "前四輪不放行。第五輪AP+0槽不限目標列，走入側翼死路而拒收。第六輪同一低AP槽／seed1恢復row-max25，不加進軍縱列；普通HD近戰及保存另驗，不稱116頭像或#267修復。"
+    },
+    "readme_screenshots": [
+      {
+        "file": "docs/figures/hd-jonah-physical-attack.png",
+        "sha256": "bb1fdd188291d299a2e9e5c49240b06762e2a052892a3eb19f113b44fa8c132a"
+      },
+      {
+        "file": "docs/figures/hd-silfar-physical-attack.png",
+        "sha256": "1d7fc74e2d170169f54e0b44bb1eea27bb41e45343bee79d8327597a476a0da5"
+      }
+    ],
+    "normal24_rejected_runs": [
+      {
+        "run": 1,
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/normal-24-r1.log",
+          "sha256": "5a5e45cb387edbc715faa030933485d0b9656dca8043172d73a977bc19d71225"
+        },
+        "status": "NOT-PASS",
+        "reason": "116缺頭像"
+      },
+      {
+        "run": 2,
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/normal-24-r2.log",
+          "sha256": "3457d73d28e8ce5f93e9f8522a128b33d191360f5b17a96faeb99b3124b36184"
+        },
+        "status": "NOT-PASS",
+        "reason": "敵回合提早勝利，人工停止普通END等待"
+      },
+      {
+        "run": 3,
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/normal-24-r3.log",
+          "sha256": "b58e3c35f8593db24d8fcb073155fad7eed87547c68b1aed0a78cedf9e481d7c"
+        },
+        "status": "NOT-PASS",
+        "reason": "黑畫面及class UI持續，普通END逾時"
+      },
+      {
+        "run": 4,
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/normal-24-r4.log",
+          "sha256": "b58e3c35f8593db24d8fcb073155fad7eed87547c68b1aed0a78cedf9e481d7c"
+        },
+        "status": "NOT-PASS",
+        "reason": "唯讀版本跨過黑畫面點，後續116缺頭像"
+      },
+      {
+        "run": 5,
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/normal-24-r5.log",
+          "sha256": "495fab4c923c188eca67bc31a6151e74f5133f55575f86e731f33e66d23527c5"
+        },
+        "status": "NOT-PASS",
+        "reason": "低AP槽不限目標列，側翼死路拒收"
+      }
+    ],
+    "normal24_source": {
+      "policy": "AP+0 DP+300 DX+60 MaxHP+1000，章內無注入；只做一次低AP建構。",
+      "constructor_seed": 8,
+      "game_seed": 1,
+      "manifest": {
+        "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/low-ap-slot/manifest.json",
+        "sha256": "e7dec6e97e50de8d4605083c5c7b14a18cdedd2648861fea8fcd0a95b77dfa04"
+      },
+      "native_slot": {
+        "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/low-ap-slot/FD2.SAV",
+        "sha256": "5f55f2a043edbeda2b63a80349dda5a7d5f86060699b19794bf1a52ad4ba2ca3"
+      },
+      "policy_check": {
+        "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/low-ap-policy-check.json",
+        "sha256": "d4792a1f25361a1b147732d037fa341053432d7fe04550275bcdc95724c62146"
+      },
+      "normal_source_gui": {
+        "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/low-ap-source-gui/receipt.json",
+        "sha256": "d25680f2f6694190661db630884651e2cf19179a4c89920f44aad90968db2a5e"
+      },
+      "json_policy_check": {
+        "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/low-ap-json-policy-check.json",
+        "sha256": "af365154159e2a66c32c2b92c6b1d1b306e68be0d817cf800fb432322259a3b1"
+      },
+      "json_save": {
+        "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/low-ap-source-gui/user-data/fd2_re/fd2_save.json",
+        "sha256": "9fc8b8537640c7b17bf04828518769d5b3050bf6a07a613bd3608af599a8f664"
+      },
+      "scope": "同一祖先槽，26筆只有BaseAP/AP減5000，其餘JSON及原生紀錄欄位／傷亡相同。正常native LOAD／整備必選24／出發／F5來源，非章內修改。",
+      "raw_policy_check": {
+        "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/low-ap-raw-policy-check.json",
+        "sha256": "d3acdd26bad4f2097b7e78b903ace6a510a70f4201b90852d290efdc5cc39706"
+      }
+    },
+    "gui_controller_change": {
+      "source": {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "6aa53e94d0b87c2d88c80d9f0d4a1140c092845a24945cac3a4199bb7af2f819"
+      },
+      "prior_source": {
+        "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/gui-tool-before.py",
+        "sha256": "5726ad2f34ad33c33e8ecbb8e5b015d48d220103f1c641a9477d7aaa6d7cbc81"
+      },
+      "route_guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/route-guards.json",
+        "sha256": "ad464d80affacc4c548a967ad49fa12a1f259c435fe851bca74f8573af223351"
+      },
+      "scope": "可選進軍縱列只篩END前正常可達格，無候選拒收；預設／最終攻擊集合／遊戲規則保持。"
+    },
+    "reproduce": {
+      "compile": "Docker fd2-assets-local:20260829-sfx，從私人allow-list母稿依actors.recipe_data.sources.file與sha恢復固定來源，將recipe_data另存後呼叫tools/build_fd2_character_battle_hd.py，--pack /original --inventory docs/data/fd2-battle-hd-source-inventory-20261019.json --recipe <recipe> --out <new-candidate> --base-catalog <各candidate的base-catalog.json>；先21後24合併。",
+      "gpu": "Docker fd2-go-test-local:latest，with-xvfb go test ./cmd/fd2 -run ^(TestModernHDBattleAssetsRealCandidate|TestNativePhysicalHDPreflightStopsBeforeSettlement|TestModernHDBattleRuntimeGPU)$ -count=1 -v；FD2_HD_BATTLE_LIFECYCLE_GPU=1 FD2_HD_BATTLE_REAL=1 FD2_TEST_MODERN_BATTLE_FIGURE=21或24 FD2_ASSET_PACK=/original FD2_TEST_ORIGINAL_PACK=/original FD2_TEST_MODERN_BATTLE_CATALOG=<union catalog> FD2_TEST_MODERN_BATTLE_PACK=<pack> FD2_TEST_HD_BATTLE_OUT=<new-output>。",
+      "normal": "Docker fd2-promo:20261017-r1，tools/verify_fd2_hd_fonts_gui.py --binary <rebuilt> --assets <candidate-24/runtime> --original-pack /original --modern-pack <candidate-24/pack> --out <new> --town-save <normal_source.file> --battle-status --world --battle-hd --battle-art --battle-only --battle-repetitions 1 --battle-art-samples 64 --battle-node battle_ch23 --battle-own-index 2或1 --battle-target-figure 111 --battle-target-row-max 25 --battle-approach-rounds 6 --battle-advance；24改用normal24_source.json_save，仍用--battle-target-row-max 25、不加--battle-advance-column；前五輪見失敗紀錄。world固定seed1，GUI自管Xvfb/Pulse，Docker使用RO原檔、UID/GID1000、有界資源與逾時。",
+      "pixels": "tools/verify_fd2_character_battle_gpu.py --figure 21或24 --core-profile sage或gold --sample-group fixture或attack --receipt <same-run receipt> --catalog <union catalog> --source <pack> --report <new-report>；不排除前景，不放寬RGB／alpha門檻。"
+    },
+    "private_git_proof": {
+      "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/private-git-proof.json",
+      "sha256": "db8f7be23f80f56e9fe95fe0f1e76648436cf444040fbca4bf00179cd26a5fa0"
+    },
+    "public_git_proof_file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/public-git-proof.json",
+    "private_ownership": {
+      "files": 3815,
+      "uid": 1000,
+      "gid": 1000,
+      "all_files_sha_uid_gid_checked": true
+    },
+    "worklist": {
+      "issues": [
+        201,
+        263,
+        267
+      ],
+      "state": "OPEN",
+      "open_items": 23,
+      "manual_items": 15,
+      "possibly_done": 0,
+      "acceptance_preserved": true,
+      "verify_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/worklist-verify.log",
+        "sha256": "9dd65f2b339f3c1e8b73d1186879839c294ac3390b2e20364f4ed9b9ce372369"
+      }
+    },
+    "catalog_tests": {
+      "tests": 12,
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/catalog-tests.log",
+        "sha256": "39c891ffe49c1e8b828b60d518d243bf8ffbf92100e11a146aacd84e4df3b9c3"
+      },
+      "private_validation_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/catalog-private.log",
+        "sha256": "bd1bc475c60d1c7610c72d1067423de683b356ff8598e08f6c830e1096dcd8a6"
+      }
+    },
+    "lessons": {
+      "lessons": 286,
+      "guards": 160,
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/lessons-check.log",
+        "sha256": "cfb8ca57d25bc743a14bab108f0d0cd70e52898fcb8a6183614933d706c98671"
+      }
+    },
+    "cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/cleanup.json",
+      "sha256": "69733b45dae851effd937a5977b0259a3642a735091508ef932d517ff8097177"
+    },
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/cleric-party-r1/final-validation.json",
+      "sha256": "4d22bf02f024fe6ca99ef5b2a4611975905b68c92d0989c2119fd9966d818495"
+    },
+    "normal_source_scope": "normal_source供約拿；希爾法依normal24_source，兩種章前AP政策分開，不稱同一數值初始狀態。"
   }
 }

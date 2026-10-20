@@ -1,5 +1,9 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
+約拿BattleFig21與希爾法BattleFig24沿原17幀正式登錄，65／74零header不補造。完整Draw／三階段F2／返回DAC及runtime-only最終PNG bytes一致；正常章23近戰、返回與章節邊界保存冷讀通過。希爾法使用已核對的章前AP+0強化槽，避免在抽樣前把目標反擊清除；116號故事HD頭像仍缺，該段劇情HD未驗。原矩形、marker、規則與保存格式保持；原版逐幀及整章E2不由此推定。
+來源見[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的cleric_party_battle_followup_20261021，唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)。
+
+
 珊BattleFig14的42／43沿原14幀正式登錄，44零header不補造。完整Draw、三階段F2及返回通過；完整／runtime-only最終PNG bytes相同。
 普通章23固定seed1與明示章前強化槽，兩次移動／END後正常攻擊111、五張人物核心、自然返回、F2與邊界保存冷讀通過。姿勢共享與等比縮放明示，不判唯一相位；人物外效果及其他命令仍待，不新增原版對拍或整章E2。
 來源見[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的shan14_battle_followup_20261021，唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)。

@@ -195,6 +195,15 @@ HD 背景、敵方與面板仍含像素素材。來源與可重跑方式見
 第九章正常進軍後的魔法師施法視窗，未編修。人物為HD，背景、戰鬥面板與法術特效保留像素素材。
 抽樣使用章前加血來源，章內沒有狀態注入；施法、受擊、返回與保存冷讀見[驗證範圍](docs/knowledge-base/58-fd2-exe-re-coverage.md)。
 
+| 約拿 HD 近戰 | 希爾法 HD 近戰 |
+|---|---|
+| ![約拿HD近戰](docs/figures/hd-jonah-physical-attack.png) | ![希爾法HD近戰](docs/figures/hd-silfar-physical-attack.png) |
+
+上圖是兩位角色正常移動接敵後的實際攻擊視窗，未編修。寬袍、披領與揮杖順序依原圖重繪。
+接敵路線、章前強化與驗證範圍見[驗證紀錄](docs/data/fd2-modern-hd-battlefield-20261019.json)的`cleric_party_battle_followup_20261021`。
+
+正常換手曾遇偶發黑畫面，仍由[#267](https://github.com/wicanr2/fd2_re/issues/267)追查；本組畫面不代表完整HD已完成。
+
 ![珊HD普通揮杖攻擊](docs/figures/hd-shan-physical-attack.png)
 
 上圖是珊正常進軍後揮杖攻擊的實際遊戲視窗，未編修。藍色長髮、抬杖與前揮保留原版造型及動作順序。

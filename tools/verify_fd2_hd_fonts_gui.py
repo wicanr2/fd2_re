@@ -83,6 +83,7 @@ def main():
     parser.add_argument('--terrain-label', help='本次取景的ASCII標籤；需--terrain-frames')
     parser.add_argument('--timed-dialogue', action='store_true', help='加驗計時對話開收框、穩定HD文字與F2；需--world與明示章前EXP校準槽')
     parser.add_argument('--battle-advance', action='store_true', help='無射程目標時沿正式可達集合前進並待機，再正常END')
+    parser.add_argument('--battle-advance-column', type=int, help='只限定正常END前的進軍縱列，最終攻擊仍沿正式可達集合')
     parser.add_argument('--faithful-approach', action='store_true', help='正常END期間以F2使用忠實模式，回玩家回合再切HD')
     parser.add_argument('--battle-end-art', action='store_true', help='正常END期間有界擷取明示人物的HD圖層')
     parser.add_argument('--battle-end-commands', type=terrain_frame_ids, default=set(),
@@ -127,6 +128,7 @@ def main():
     assert 0 <= args.battle_min_approach_rounds <= args.battle_approach_rounds
     assert args.battle_target_figure is None or (args.battle_only and 0<=args.battle_target_figure<=135)
     assert args.battle_target_row_max is None or (args.battle_target_figure is not None and 0<=args.battle_target_row_max<=65535)
+    assert args.battle_advance_column is None or (args.battle_advance and 0<=args.battle_advance_column<=65535)
     assert args.battle_own_index == 2 or args.world
     assert not args.battle_approach_rounds or args.world
     battle_approach_steps=[]
@@ -830,10 +832,14 @@ def main():
                             def enemy_distance(cell):
                                 return min(abs(cell[0]-enemy['x'])+abs(cell[1]-enemy['y']) for enemy in targets or enemies)
                             cells=[cell for cell in state.get('move_reachable',[]) if tuple(cell) not in occupied or cell==state['cursor']]
+                            if args.battle_advance_column is not None:
+                                cells=[cell for cell in cells if cell[0]==args.battle_advance_column]
                             assert cells,'沒有可用的正常前進格'
                             if choices:
                                 # 已有合法射程時，正常移動到該格待機，保留明示的END抽樣輪數。
-                                advance_cell=min(choices,key=lambda value:(value[0],value[1][1],value[1][0]))[1]
+                                advance_choices=[choice for choice in choices if choice[1] in cells]
+                                assert advance_choices,'指定前進縱列沒有正式射程格'
+                                advance_cell=min(advance_choices,key=lambda value:(value[0],value[1][1],value[1][0]))[1]
                             else:
                                 advance_cell=min(cells,key=lambda cell:(enemy_distance(cell),cell[1],cell[0]))
                                 assert enemy_distance(advance_cell)<enemy_distance(state['cursor']),'正常可達集合無法縮短接敵距離'
@@ -1121,6 +1127,7 @@ def main():
                     'battle_own_index':args.battle_own_index,
                     'battle_target_figure':args.battle_target_figure,
                     'battle_target_row_max':args.battle_target_row_max,
+                    'battle_advance_column':args.battle_advance_column,
                     'battle_min_approach_rounds':args.battle_min_approach_rounds,
                     'battle_node':args.battle_node,'battle_only':args.battle_only,
                     'battle_attack_choices':battle_attack_choices,

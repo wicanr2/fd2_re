@@ -82,6 +82,17 @@ func (g *Game) recordInputAuditState() {
 	r["death_reward_message_wait"] = g.nativeDeathRewardMessageAwaitingKey()
 	r["transient_ui"] = g.transientUI
 	r["class_ui_job"] = g.nativeClassUIJob != nil
+	r["system_end_turn_ui"] = g.nativeSystemEndTurnUI != nil
+	r["native_map_dac_black"] = nativeDACIsBlack(g.nativeMapDAC)
+	r["native_full_dac_black"] = g.nativeFullDACBlack
+	if job := g.nativeClassUIJob; job != nil {
+		r["class_ui_frame"] = job.frame
+		r["class_ui_frames"] = len(job.frames)
+		r["class_ui_restore_length"] = len(job.restore)
+		r["class_ui_drawn"] = job.drawn
+		r["class_ui_timeline_steps"] = len(job.timeline)
+		r["class_ui_elapsed_ns"] = int64(job.elapsed)
+	}
 	if g.nativeMovePlan != nil {
 		cells := make([][]int, 0, len(g.reach))
 		for cell := range g.reach {

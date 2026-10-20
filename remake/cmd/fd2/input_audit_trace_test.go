@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+	"time"
 )
 
 func TestInputAuditTracksDeathRewardMessageOwner(t *testing.T) {
@@ -23,7 +24,7 @@ func TestInputAuditTracksDeathRewardMessageOwner(t *testing.T) {
 		{"other-modal", &nativeSystemEndTurnUIState{}, nil, false},
 		{"opening", &nativeSystemEndTurnUIState{rewardMessage: message}, &nativeClassUIJob{}, false},
 		{"await-ack", &nativeSystemEndTurnUIState{rewardMessage: message}, nil, true},
-		{"closing", &nativeSystemEndTurnUIState{rewardMessage: message}, &nativeClassUIJob{}, false},
+		{"closing", &nativeSystemEndTurnUIState{rewardMessage: message}, &nativeClassUIJob{frames: [][]byte{{1}, {2}}, restore: []byte{3}, frame: 1, drawn: true, timeline: []nativeClassUITimelineStep{{}}, elapsed: time.Second}, false},
 		{"released", nil, nil, false},
 	}
 	g := &Game{gold: 200}
@@ -54,6 +55,16 @@ func TestInputAuditTracksDeathRewardMessageOwner(t *testing.T) {
 		if row["death_reward_message"] != active || row["death_reward_message_wait"] != state.wait || row["class_ui_job"] != (state.job != nil) {
 			t.Fatalf("%s: message=%v wait=%v job=%v, want %v/%v/%v", state.name,
 				row["death_reward_message"], row["death_reward_message_wait"], row["class_ui_job"], active, state.wait, state.job != nil)
+		}
+		if row["system_end_turn_ui"] != (state.ui != nil) {
+			t.Fatalf("%s: wrong system owner observation", state.name)
+		}
+		if job := state.job; job != nil {
+			if row["class_ui_frame"] != float64(job.frame) || row["class_ui_frames"] != float64(len(job.frames)) ||
+				row["class_ui_restore_length"] != float64(len(job.restore)) || row["class_ui_drawn"] != job.drawn ||
+				row["class_ui_timeline_steps"] != float64(len(job.timeline)) || row["class_ui_elapsed_ns"] != float64(job.elapsed) {
+				t.Fatalf("%s: wrong class UI observation: %v", state.name, row)
+			}
 		}
 	}
 }

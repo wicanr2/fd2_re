@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 22 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 23 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -126,17 +126,17 @@ FDFIELD回合事件由完整具型別處理器降成正式劇本，保留增援�
 
 `modern-theme-player-asset-coverage` · 工作 · [#201](https://github.com/wicanr2/fd2_re/issues/201) · 仍未完成 · 要人判
 
-完整HD尚未完成，本項保持開啟。唯一覆蓋數量與剩餘缺口依[58現況矩陣](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)，來源與限制集中於[HD戰場主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-battlefield-20261019.json)。
+完整HD尚未完成，本項保持開啟。唯一覆蓋數量與剩餘缺口依[58現況矩陣](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)，來源、生成提示與限制集中於[HD戰場主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-battlefield-20261019.json)的cleric_party_battle_followup_20261021。
 
-珊BattleFig14的FIGANI42／43原14幀已正式登錄，44固定零header不補造。保留背向左視角、藍色長髮與低束髮尾、綠褐服裝、紫頭金飾長杖及抬杖／前揮順序。五份採用RGBA母稿保留來源，近似姿態共用；ready／swing約4.2%／3.2%等比縮放明示，機體及法杖高覆蓋核心零裁切。原矩形、header、delay、命中／音效marker及保存格式保持。Header byte4=6在現行caller用於音效來源選擇，不能命名投射物。
+約拿BattleFig21的63／64共10幀、希爾法BattleFig24的72／73共7幀已正式登錄。七份透明母稿保留原寬袍、背飾／金披領與環首杖；近似姿態共用明示。原矩形、header、delay、命中／音效marker及保存格式保持，65／74固定零header不補造。
 
-完整14張Game.Draw、三階段F2、64／65返回DAC與一次續行通過。藍髮核心14張、五項GPU拒收與編製器16項守衛通過。候選／runtime-only各三項Go加兩子項、正式兩項加兩子項均零SKIP，兩包14張最終PNG bytes相同。Go來源未改，完整20套件沿d36339a4，不冒稱本批全套新跑。
+完整17張Game.Draw、三階段F2、64／65 DAC及一次續行通過；服裝核心與錯來源拒收獨立核對，沒有前景排除或RGB放寬。完整／runtime-only兩包17張最終PNG bytes相同；候選、執行包、正式清冊及20套件Go回歸通過。Go只增唯讀介面job／DAC觀測及不改owner測試，沒有遊戲行為修法。
 
-正常章23沿既有F5來源與固定seed1，章前AP+5000／DP+300／DX+60／MaxHP+1000並保留原傷亡，章內無注入。Z選在場序號6珊，兩次正常移動／END後由21,29以原射程攻擊23,29的111。五張實際視窗符合人物核心，自然返回、F2及章節邊界保存／新程序LOAD通過，九項普通拒收通過。共享姿態只列相容集合，不判唯一相位；F5不保存本次戰中HP／位置，不新增自然難度、DOS parity或整章PLAYER-E2。
+正常章23固定game seed1，約拿3次END、4張實圖核心；希爾法3次END、9張實圖核心，正常近戰、自然返回、F2與章節邊界F5／新程序LOAD通過。約拿沿既有AP+5000／DP+300／DX+60／MaxHP+1000來源；希爾法為保留主動攻擊，另從同一未強化祖先槽建構AP+0，其餘強化與原傷亡保持。26筆原生欄位與JSON只差AP／BaseAP 5000，經正常native LOAD／整備出發／F5建立新來源。章內無注入；F5不保存戰中HP／位置，不稱自然難度、原版parity或整章E2。
 
-本批新增兩項清冊，原415項entries及私人舊3772檔保持；新素材按catalog allow-list同步私人庫，拒收高舉／過寬前揮稿與原版擷取不混入。README新增未編修正常揮杖視窗，凱麗原版vsHD GIF與文化保存內容保持。生成預覽外圍RGB的alpha實測為0，白底合成沒有光暈；原始RGBA不剪除、不量化。
+希爾法前五輪均保留非PASS：116故事HD頭像缺失、敵回合反擊提早勝利、黑畫面、唯讀版後續仍缺116、取消目標區域後走到側翼死路。第六輪沿同一低AP來源恢復既有row-max25後完成，未再校準數值。第三輪黑畫面另列[#267](https://github.com/wicanr2/fd2_re/issues/267)，根因仍未知，後續通過不等於修復。116故事頭像仍屬#201素材缺口。
 
-機甲兵111原14幀及正常受擊待機、普通／狀態／事件共用死亡HD沿既有證據保持。普通111開砲、狀態致死正常GUI、其他人物／指令、人物外效果、普通召喚與平台效能仍待。本項繼續OPEN，原驗收條件不變。
+原417項清冊與私人舊3791檔保持，新圖按allow-list同步私人庫；README加入兩張未編修正常近戰視窗，凱麗原版vsHD GIF及文化保存內容保持。既有珊、機甲兵111、普通／狀態／事件死亡HD成果沿原證據保留。其他人物、場景／頭像、其餘指令與人物外效果、普通召喚、狀態致死正常GUI、普通111開砲與平台效能仍待，本項原驗收條件不變。
 
 怎樣算做完：受版控需求盤點可重跑，列出來源與consumer；既有已核准現代替換範圍零非預期缺件，其他畫面各有明示分類與決策；缺件拒收與原子切換回歸通過，私人包雜湊及遠端HEAD可核對。
 
@@ -188,19 +188,31 @@ HD高解析呈現仍未完成。目前穩定文字、高解析故事頭像、戰
 
 `modern-battle-animation-hd` · 工作 · [#263](https://github.com/wicanr2/fd2_re/issues/263) · 仍未完成 · 要人判
 
-完整HD尚未完成，本項保持開啟。唯一覆蓋數量與剩餘缺口依[58現況矩陣](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)，來源與限制集中於[HD戰場主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-battlefield-20261019.json)。
+完整HD尚未完成，本項保持開啟。唯一覆蓋數量與剩餘缺口依[58現況矩陣](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)，來源、生成提示與限制集中於[HD戰場主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-battlefield-20261019.json)的cleric_party_battle_followup_20261021。
 
-珊BattleFig14的FIGANI42／43原14幀已正式登錄，44固定零header不補造。保留背向左視角、藍色長髮與低束髮尾、綠褐服裝、紫頭金飾長杖及抬杖／前揮順序。五份採用RGBA母稿保留來源，近似姿態共用；ready／swing約4.2%／3.2%等比縮放明示，機體及法杖高覆蓋核心零裁切。原矩形、header、delay、命中／音效marker及保存格式保持。Header byte4=6在現行caller用於音效來源選擇，不能命名投射物。
+約拿BattleFig21的63／64共10幀、希爾法BattleFig24的72／73共7幀已正式登錄。七份透明母稿保留原寬袍、背飾／金披領與環首杖；近似姿態共用明示。原矩形、header、delay、命中／音效marker及保存格式保持，65／74固定零header不補造。
 
-完整14張Game.Draw、三階段F2、64／65返回DAC與一次續行通過。藍髮核心14張、五項GPU拒收與編製器16項守衛通過。候選／runtime-only各三項Go加兩子項、正式兩項加兩子項均零SKIP，兩包14張最終PNG bytes相同。Go來源未改，完整20套件沿d36339a4，不冒稱本批全套新跑。
+完整17張Game.Draw、三階段F2、64／65 DAC及一次續行通過；服裝核心與錯來源拒收獨立核對，沒有前景排除或RGB放寬。完整／runtime-only兩包17張最終PNG bytes相同；候選、執行包、正式清冊及20套件Go回歸通過。Go只增唯讀介面job／DAC觀測及不改owner測試，沒有遊戲行為修法。
 
-正常章23沿既有F5來源與固定seed1，章前AP+5000／DP+300／DX+60／MaxHP+1000並保留原傷亡，章內無注入。Z選在場序號6珊，兩次正常移動／END後由21,29以原射程攻擊23,29的111。五張實際視窗符合人物核心，自然返回、F2及章節邊界保存／新程序LOAD通過，九項普通拒收通過。共享姿態只列相容集合，不判唯一相位；F5不保存本次戰中HP／位置，不新增自然難度、DOS parity或整章PLAYER-E2。
+正常章23固定game seed1，約拿3次END、4張實圖核心；希爾法3次END、9張實圖核心，正常近戰、自然返回、F2與章節邊界F5／新程序LOAD通過。約拿沿既有AP+5000／DP+300／DX+60／MaxHP+1000來源；希爾法為保留主動攻擊，另從同一未強化祖先槽建構AP+0，其餘強化與原傷亡保持。26筆原生欄位與JSON只差AP／BaseAP 5000，經正常native LOAD／整備出發／F5建立新來源。章內無注入；F5不保存戰中HP／位置，不稱自然難度、原版parity或整章E2。
 
-本批新增兩項清冊，原415項entries及私人舊3772檔保持；新素材按catalog allow-list同步私人庫，拒收高舉／過寬前揮稿與原版擷取不混入。README新增未編修正常揮杖視窗，凱麗原版vsHD GIF與文化保存內容保持。生成預覽外圍RGB的alpha實測為0，白底合成沒有光暈；原始RGBA不剪除、不量化。
+希爾法前五輪均保留非PASS：116故事HD頭像缺失、敵回合反擊提早勝利、黑畫面、唯讀版後續仍缺116、取消目標區域後走到側翼死路。第六輪沿同一低AP來源恢復既有row-max25後完成，未再校準數值。第三輪黑畫面另列[#267](https://github.com/wicanr2/fd2_re/issues/267)，根因仍未知，後續通過不等於修復。116故事頭像仍屬#201素材缺口。
 
-機甲兵111原14幀及正常受擊待機、普通／狀態／事件共用死亡HD沿既有證據保持。普通111開砲、狀態致死正常GUI、其他人物／指令、人物外效果、普通召喚與平台效能仍待。本項繼續OPEN，原驗收條件不變。
+原417項清冊與私人舊3791檔保持，新圖按allow-list同步私人庫；README加入兩張未編修正常近戰視窗，凱麗原版vsHD GIF及文化保存內容保持。既有珊、機甲兵111、普通／狀態／事件死亡HD成果沿原證據保留。其他人物、場景／頭像、其餘指令與人物外效果、普通召喚、狀態致死正常GUI、普通111開砲與平台效能仍待，本項原驗收條件不變。
 
 怎樣算做完：建立由正式consumer到FIGANI人物及共同效果的可重跑覆蓋清冊；完成可達戰鬥動畫HD素材、原始位置／層序／節拍／命中與音效標記的正式呈現，缺件明示；正常玩家抽驗攻擊、受擊／反擊、法術／效果、死亡與戰場返回，F2、保存冷讀與代表性效能通過；已登錄素材同步私人庫，保留原版像素模式。資料測試及離線PNG不能取代正式GUI。
+
+證據：`docs/data/fd2-modern-hd-battlefield-20261019.json`
+
+### P1 第23章正常換手後黑畫面，共用介面演出停住
+
+`native-ch23-end-ui-black-owner` · 缺陷 · [#267](https://github.com/wicanr2/fd2_re/issues/267) · 仍未完成 · 要人判
+
+章23既有F5建構來源、固定seed1，希爾法正常走右側21縱列，三次END後進第4回合。實際視窗全黑；class_ui_job持續存在，AI與transient_ui為false，error空白。未取得指定正常我方攻擊，整份GUI拒收。
+
+已補唯讀job幀／Draw確認／DAC觀測並通過不改owner測試，同來源重現中。根因未知，不以清owner、強制Draw確認或修改HP放行。前兩輪另有116頭像缺失與敵回合反擊提早勝利，與本黑畫面分開。原版證據未由重製端測試提升。
+
+怎樣算做完：定位造成停住的現行writer／consumer與演出所有權，依READY規格修正；以同來源seed1與右側21縱列正常END／HD攻擊／返回／F2及保存冷讀重跑，加入對應生命週期回歸，缺件仍拒收且不增加狀態注入。
 
 證據：`docs/data/fd2-modern-hd-battlefield-20261019.json`
 

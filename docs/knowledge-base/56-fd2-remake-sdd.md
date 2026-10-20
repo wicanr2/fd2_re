@@ -1,5 +1,9 @@
 # 56 — FD2 remake 系統設計規格（SDD，2026-08-09）
 
+約拿BattleFig21與希爾法BattleFig24沿原17幀正式登錄，65／74零header不補造。完整Draw／三階段F2／返回DAC及runtime-only最終PNG bytes一致；正常章23近戰、返回與章節邊界保存冷讀通過。希爾法使用已核對的章前AP+0強化槽，避免在抽樣前把目標反擊清除；116號故事HD頭像仍缺，該段劇情HD未驗。原矩形、marker、規則與保存格式保持；原版逐幀及整章E2不由此推定。
+來源見[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的cleric_party_battle_followup_20261021，唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)。
+
+
 洛娜BattleFig5的15／16待機、旋槍／前刺及弧光已沿原21項描述子正式登錄，17固定零header不補造。
 完整Draw／F2及正常第九章兩次移動／END後原地攻防、返回與邊界冷讀通過。驗證控制器允許正式可達集合中的自己原格，遊戲規則不改。
 二銀行分層以--layered明示，中間alpha沿既有來源契約，最終完整PNG仍必須255核心；母稿RGBA保持，鞋底少量裁切明示。

@@ -3429,6 +3429,14 @@
         ],
         "pattern": "resource := 48 \\+ int\\(animation\\.HeaderByte4\\) - 1"
       }
+    },
+    {
+      "id": "normal-art-approach-check-terminal-victory",
+      "date": "2026-10-21",
+      "area": "正常玩家圖源抽驗",
+      "rule": "接敵抽樣沒有回玩家回合時，先擷取實際視窗辨識勝利、敗北或訊息終態，再判定續行缺陷。需要保留指定主動攻擊時，先核合法路線並明示有界鍵盤路徑；入口tools/verify_fd2_hd_fonts_gui.py的--battle-advance-column，只限定END前的正式可達進軍格，最終攻擊仍由正式目標環裁決，不修改HP或移動規則。",
+      "why": "希爾法章23第三次END先遇116缺頭像；切像素交叉驗證後已顯示勝利，首領在敵回合被反擊擊倒。普通END迴圈等下一回合不能證明遊戲卡住，沒有因此修改死亡續行或遊戲規則。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#cleric_party_battle_followup_20261021"
     }
   ]
 }
