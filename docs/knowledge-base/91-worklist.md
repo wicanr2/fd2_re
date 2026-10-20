@@ -126,21 +126,17 @@ FDFIELD回合事件由完整具型別處理器降成正式劇本，保留增援�
 
 `modern-theme-player-asset-coverage` · 工作 · [#201](https://github.com/wicanr2/fd2_re/issues/201) · 仍未完成 · 要人判
 
-正式玩家素材的目前覆蓋與剩餘缺口以[58現況矩陣](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)為準；完整HD尚未完成，本項保持開啟。戰鬥範圍另見 #263。
+完整HD尚未完成，本項保持開啟。唯一覆蓋數量與剩餘缺口依[58現況矩陣](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)，戰鬥範圍見 #263。
 
-洛娜 BattleFig5 的 FIGANI15／16待機、旋槍／前刺與弧光共21幀已正式登錄，17固定零header不補造施術。十一份接受母稿保留原始RGBA，相近姿勢明示共用。16:3／5各有5／6個鞋底重取樣像素被原矩形底緣裁掉，保留揭露，不稱零裁切。
+共用事件死亡HD已沿原FDOTHER5項68..79與13＋6＋6＋steady排程接入。完整26張Game.Draw、A累積／B重置、四階段F2、缺件原子預檢及單次續行通過；正式及runtime-only PNG bytes相同。四母稿與12成品已依清冊同步私人庫18b0af20，私人庫維持private。
 
-既有schema1有序分層另可由明示--layered啟用，不冒造三銀行，也不改正式catalog／loader。碎光原稿maxA254符合既有來源max>=250；只修中間層的不一致，最終所有非空PNG在建立輸出目錄前仍要求0／255。新分層21項守衛含缺最終不透明核心拒收，舊兩銀行、三銀行與idle-only的33張PNG位元組及57項守衛保持。
+正常第23章原生LOAD、獨立整備必選24與出發後F5建立來源，最終控制器重生bytes相同。固定FD2_SEED=1，沿章前AP+5000／DP+300／DX+60／MaxHP+1000建構槽並保留原傷亡，蓋亞七次正常END、一次清障攻擊及擊倒隊長，觸發文字5與事件53。章內無狀態注入。六張A／B效果PNG不透明來源核心符合；一張候選觀測幀錯配拒收，其餘人物及透明尾段不由此方法證明。勝利確認、戰後至第24章整備、F2前後F5 bytes相同及新程序標題LOAD通過。完整20套件Go、八項普通PNG拒收及26拍PNG bytes回歸通過。
 
-完整Game.Draw／最終1920回讀21張、三階段F2、64／65色盤及單次續行通過。本體與前刺暖亮核心分開核對，各五項錯配反例拒收。暖亮範圍包含弧光／碎光與銀甲，不冒稱只驗金光；最終採原始無遮擋排除模式。
+README新增未編修正常事件視窗，凱麗原版vsHD GIF保持，沒有新錄影。本批只加唯讀觀測與正常GUI驗證，不改死亡規則或新增素材；普通擊殺、狀態致死consumer、其他人物／指令／效果、普通召喚及平台效能仍待。不新增自然難度、DOS原版parity或整章PLAYER-E2。
 
-正常第九章沿既有購弓F5來源，祖先章前HP+1000及等級明示，固定seed1，章內無注入。兩次正常移動／END後，在15,22原地攻擊突擊騎兵83，洛娜HP168至54，返回／F2／F5與新程序LOAD通過。本體35張、弧光及碎光各一張核對通過，兩組共18項普通反例拒收。首輪因測試控制器把自己原格排除而停止；補READY後只修候選格，保留同來源、seed1及min2／max4，不改遊戲規則。F5／LOAD重建章節入口，不宣稱戰中HP／位置持續、自然難度、唯一相位、原版parity或整章PLAYER-E2。
+洛娜、僧侶93與魔法師90的已交付結果保持，來源408及#265限制保持。完整來源與重跑入口見[主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-battlefield-20261019.json)的shared_death_followup_20261020及shared_death_player_followup_20261021、[61](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/61-modern-theme-runtime-spec.md)與[WORKLOG](https://github.com/wicanr2/fd2_re/blob/main/WORKLOG.md)。
 
-正式完整與runtime-only包各三項Go載入／33圖／原子拒收測試加兩子項通過，零SKIP；11項清冊契約通過。原3705個私人檔及20個原版固定檔SHA保持，新十一母稿排除執行包。私人庫維持private並已核實際遠端HEAD；README新增未編修普通前刺視窗，凱麗原版vsHD GIF保持，沒有新錄影。本批沒有Go來源或正式規則改動。
-
-僧侶93與魔法師90的上一批驗證保持。其他人物、普通指令／法術／地圖回復／死亡／共同效果、召喚與平台效能仍待，來源408及#265限制保持，本項不關閉。唯一數量依[58現況矩陣](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)；完整來源、提示、配方、失敗分類與重跑入口見[主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-battlefield-20261019.json)的`lorna5_battle_followup_20261020`，契約見[61](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/61-modern-theme-runtime-spec.md)，歷程見[WORKLOG](https://github.com/wicanr2/fd2_re/blob/main/WORKLOG.md)。
-
-_下面區塊由 `tools/fd2_worklist_issues.py` 讀取；原驗收條件保持。_
+_原驗收條件保持。_
 
 怎樣算做完：受版控需求盤點可重跑，列出來源與consumer；既有已核准現代替換範圍零非預期缺件，其他畫面各有明示分類與決策；缺件拒收與原子切換回歸通過，私人包雜湊及遠端HEAD可核對。
 
@@ -192,21 +188,17 @@ HD高解析呈現仍未完成。目前穩定文字、高解析故事頭像、戰
 
 `modern-battle-animation-hd` · 工作 · [#263](https://github.com/wicanr2/fd2_re/issues/263) · 仍未完成 · 要人判
 
-完整目標仍為完成FD2戰鬥動畫HD，保留1920×1200手繪與原版像素模式；本項仍開啟。正式覆蓋數量以[58現況矩陣](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)為準。
+完整HD尚未完成，本項保持開啟。唯一覆蓋數量與剩餘缺口依[58現況矩陣](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)，戰鬥範圍見 #263。
 
-洛娜 BattleFig5 的 FIGANI15／16待機、旋槍／前刺與弧光共21幀已正式登錄，17固定零header不補造施術。十一份接受母稿保留原始RGBA，相近姿勢明示共用。16:3／5各有5／6個鞋底重取樣像素被原矩形底緣裁掉，保留揭露，不稱零裁切。
+共用事件死亡HD已沿原FDOTHER5項68..79與13＋6＋6＋steady排程接入。完整26張Game.Draw、A累積／B重置、四階段F2、缺件原子預檢及單次續行通過；正式及runtime-only PNG bytes相同。四母稿與12成品已依清冊同步私人庫18b0af20，私人庫維持private。
 
-既有schema1有序分層另可由明示--layered啟用，不冒造三銀行，也不改正式catalog／loader。碎光原稿maxA254符合既有來源max>=250；只修中間層的不一致，最終所有非空PNG在建立輸出目錄前仍要求0／255。新分層21項守衛含缺最終不透明核心拒收，舊兩銀行、三銀行與idle-only的33張PNG位元組及57項守衛保持。
+正常第23章原生LOAD、獨立整備必選24與出發後F5建立來源，最終控制器重生bytes相同。固定FD2_SEED=1，沿章前AP+5000／DP+300／DX+60／MaxHP+1000建構槽並保留原傷亡，蓋亞七次正常END、一次清障攻擊及擊倒隊長，觸發文字5與事件53。章內無狀態注入。六張A／B效果PNG不透明來源核心符合；一張候選觀測幀錯配拒收，其餘人物及透明尾段不由此方法證明。勝利確認、戰後至第24章整備、F2前後F5 bytes相同及新程序標題LOAD通過。完整20套件Go、八項普通PNG拒收及26拍PNG bytes回歸通過。
 
-完整Game.Draw／最終1920回讀21張、三階段F2、64／65色盤及單次續行通過。本體與前刺暖亮核心分開核對，各五項錯配反例拒收。暖亮範圍包含弧光／碎光與銀甲，不冒稱只驗金光；最終採原始無遮擋排除模式。
+README新增未編修正常事件視窗，凱麗原版vsHD GIF保持，沒有新錄影。本批只加唯讀觀測與正常GUI驗證，不改死亡規則或新增素材；普通擊殺、狀態致死consumer、其他人物／指令／效果、普通召喚及平台效能仍待。不新增自然難度、DOS原版parity或整章PLAYER-E2。
 
-正常第九章沿既有購弓F5來源，祖先章前HP+1000及等級明示，固定seed1，章內無注入。兩次正常移動／END後，在15,22原地攻擊突擊騎兵83，洛娜HP168至54，返回／F2／F5與新程序LOAD通過。本體35張、弧光及碎光各一張核對通過，兩組共18項普通反例拒收。首輪因測試控制器把自己原格排除而停止；補READY後只修候選格，保留同來源、seed1及min2／max4，不改遊戲規則。F5／LOAD重建章節入口，不宣稱戰中HP／位置持續、自然難度、唯一相位、原版parity或整章PLAYER-E2。
+洛娜、僧侶93與魔法師90的已交付結果保持，來源408及#265限制保持。完整來源與重跑入口見[主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-battlefield-20261019.json)的shared_death_followup_20261020及shared_death_player_followup_20261021、[61](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/61-modern-theme-runtime-spec.md)與[WORKLOG](https://github.com/wicanr2/fd2_re/blob/main/WORKLOG.md)。
 
-正式完整與runtime-only包各三項Go載入／33圖／原子拒收測試加兩子項通過，零SKIP；11項清冊契約通過。原3705個私人檔及20個原版固定檔SHA保持，新十一母稿排除執行包。私人庫維持private並已核實際遠端HEAD；README新增未編修普通前刺視窗，凱麗原版vsHD GIF保持，沒有新錄影。本批沒有Go來源或正式規則改動。
-
-僧侶93與魔法師90的上一批驗證保持。其他人物、普通指令／法術／地圖回復／死亡／共同效果、召喚與平台效能仍待，來源408及#265限制保持，本項不關閉。唯一數量依[58現況矩陣](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)；完整來源、提示、配方、失敗分類與重跑入口見[主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-battlefield-20261019.json)的`lorna5_battle_followup_20261020`，契約見[61](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/61-modern-theme-runtime-spec.md)，歷程見[WORKLOG](https://github.com/wicanr2/fd2_re/blob/main/WORKLOG.md)。
-
-_下面區塊由 `tools/fd2_worklist_issues.py` 讀取；原驗收條件保持。_
+_原驗收條件保持。_
 
 怎樣算做完：建立由正式consumer到FIGANI人物及共同效果的可重跑覆蓋清冊；完成可達戰鬥動畫HD素材、原始位置／層序／節拍／命中與音效標記的正式呈現，缺件明示；正常玩家抽驗攻擊、受擊／反擊、法術／效果、死亡與戰場返回，F2、保存冷讀與代表性效能通過；已登錄素材同步私人庫，保留原版像素模式。資料測試及離線PNG不能取代正式GUI。
 

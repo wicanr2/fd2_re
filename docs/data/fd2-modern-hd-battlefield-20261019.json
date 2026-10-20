@@ -51519,5 +51519,360 @@
       "file": "work/promo-cadence-20261018/hd-fonts/shared-death-final-audit-r1.json",
       "sha256": "f24a13ca94cec31a89cee890588cec7f042a3c30355e0c7a983156a439aa67ca"
     }
+  },
+  "shared_death_player_followup_20261021": {
+    "status": "CONFORMED-SCOPED-NORMAL-GUI",
+    "base_commit": "32166fbf2f0324d3be56b4dd1d98897c1b6a2cbd",
+    "production_rules_changed": false,
+    "full_battle_hd_complete": false,
+    "current_state": {
+      "remake_complete": "事件53正常觸發、A／B圖源抽樣、戰後至章24整備、F2與新程序邊界LOAD通過。",
+      "remake_remaining": "普通擊殺、狀態致死及其他未登錄戰鬥HD；本批不新增素材。",
+      "original_oracle_unknown": "沒有新DOS原版對拍或整章PLAYER-E2；透明全畫面與26拍另沿fixture。",
+      "optional_polish": "平台效能與額外視覺打磨不在本批。"
+    },
+    "inputs": [
+      {
+        "file": "work/parity-slot-ch23/FD2.SAV",
+        "sha256": "3c7298cd30221a4220656f77e7676bc89b9002aa02b793de2cc16e0491585db1"
+      },
+      {
+        "file": "remake/assets/data/native_death_events.json",
+        "sha256": "5ceaf702cfbb815086199da2372f35450a8c0d1d76d15f164b1ff2d2008b2afa"
+      },
+      {
+        "file": "remake/assets/maps/map22/map22_units.json",
+        "sha256": "060dc4ce39e2c8dbc670f6fe334d1d8e511c4ff9f24886c62afcc0329ea06e5a"
+      },
+      {
+        "file": "remake/assets/scenarios/ch23.json",
+        "sha256": "65575e050206b643f80d8ffcbb839b616bc6a36af2cedff48f2351f8ca5c9eb2"
+      },
+      {
+        "file": "remake/assets/scenarios/campaign_full.json",
+        "sha256": "5379211d59ce55cd241f03ebc1a7f8d2e48b2eda5dca935ab529ca88d0cb502e"
+      }
+    ],
+    "slot_policy": {
+      "mode": "boost-only",
+      "target_completed_chapter": 22,
+      "base_ap_plus": 5000,
+      "base_dp_plus": 300,
+      "dx_plus": 60,
+      "max_hp_plus": 1000,
+      "preserve_dead": true,
+      "in_chapter_injection": false
+    },
+    "player_contract": "正常標題LOAD／獨立整備必選24／章首／F5，再正常進軍擊倒map22控制2機甲隊長，文字5與event53的clear_hp_from18啟動現有呈現；具體actor依實際可出戰名冊選擇，不注入位置或事件。",
+    "evidence_scope": "正常X11鍵盤與實際PNG；完整26拍仍沿既有fixture。",
+    "date": "2026-10-21",
+    "boosted_slot": {
+      "file": "work/promo-cadence-20261018/hd-fonts/shared-death-player-ch23-r1/boosted-slot/FD2.SAV",
+      "sha256": "fbe9e8cafb62c206387cd0154fa8482ee8e7df05a053c3f82c7b891a2d345424"
+    },
+    "slot_manifest": {
+      "file": "work/promo-cadence-20261018/hd-fonts/shared-death-player-ch23-r1/boosted-slot/manifest.json",
+      "sha256": "56e41cc9857cee09bd4c5f28f670b9048b3f1ebe432b93fa01d8a1d04f9ed453"
+    },
+    "native_source_gui": {
+      "file": "work/promo-cadence-20261018/hd-fonts/shared-death-player-ch23-r1/source-gui-r2/receipt.json",
+      "sha256": "fa913fb5520e5fa835f453f1f6d1242840a26e8c362b1f47e7c5eeb2fcf11569",
+      "first_prototype": {
+        "file": "work/promo-cadence-20261018/hd-fonts/shared-death-player-ch23-r1/source-gui-r1/receipt.json",
+        "sha256": "325865c610a701e92c93368c992489239f9561b0f681f0d13f0650c3a2011d48"
+      },
+      "same_f5_sha256": "5d64f3a0bf9aa56f7e77f51e8cfe45fe8c14ab78f2703b966fbc0e142e7bd871"
+    },
+    "normal_gui": {
+      "file": "work/promo-cadence-20261018/hd-fonts/shared-death-player-ch23-r1/event-gui-r5/receipt.json",
+      "sha256": "ab9bc2c1fbd97f0332ba13c1e6368e42f24593ad62a727c09644fa39e02ee7a1",
+      "seed": 1,
+      "seed_method": "既有GUI --world設定FD2_SEED=1，程序啟動前固定；原版側本批未執行。",
+      "actor_identity": 30,
+      "normal_end_count": 7,
+      "blocker_attacks": 1,
+      "commander_cell": [
+        20,
+        17
+      ],
+      "actor_cell": [
+        20,
+        18
+      ],
+      "samples": 17,
+      "accepted_core_pngs": 6,
+      "final_node": "preparation_ch24",
+      "theme_save_bytes_equal": true,
+      "new_process_load": true,
+      "chapter_injection": false
+    },
+    "normal_pixels": {
+      "file": "work/promo-cadence-20261018/hd-fonts/shared-death-player-ch23-r1/normal-pixels-r2.json",
+      "sha256": "3b6fad1c1c171c224ecc3705a420791fff79b56f59af4ceb17de83525893505d",
+      "accepted": [
+        {
+          "file": "death23-event-13.png",
+          "matches": [
+            {
+              "frame": 13,
+              "phase": "overlay_a",
+              "compared_pixels": 240,
+              "rgb_errors_gt3": 0
+            },
+            {
+              "frame": 13,
+              "phase": "overlay_a",
+              "compared_pixels": 240,
+              "rgb_errors_gt3": 0
+            }
+          ]
+        },
+        {
+          "file": "death23-event-15.png",
+          "matches": [
+            {
+              "frame": 15,
+              "phase": "overlay_a",
+              "compared_pixels": 1656,
+              "rgb_errors_gt3": 0
+            }
+          ]
+        },
+        {
+          "file": "death23-event-16.png",
+          "matches": [
+            {
+              "frame": 16,
+              "phase": "overlay_a",
+              "compared_pixels": 7938,
+              "rgb_errors_gt3": 0
+            }
+          ]
+        },
+        {
+          "file": "death23-event-17.png",
+          "matches": [
+            {
+              "frame": 17,
+              "phase": "overlay_a",
+              "compared_pixels": 14199,
+              "rgb_errors_gt3": 0
+            }
+          ]
+        },
+        {
+          "file": "death23-event-18.png",
+          "matches": [
+            {
+              "frame": 18,
+              "phase": "overlay_a",
+              "compared_pixels": 38557,
+              "rgb_errors_gt3": 0
+            }
+          ]
+        },
+        {
+          "file": "death23-event-20.png",
+          "matches": [
+            {
+              "frame": 20,
+              "phase": "overlay_b",
+              "compared_pixels": 25535,
+              "rgb_errors_gt3": 0
+            }
+          ]
+        }
+      ],
+      "unmatched_effect_sample": "death23-event-14.png：兩側觀測索引14，PNG核心不符，840/852點超過RGB3。拒收，沒有改圖、遮罩或放寬門檻。",
+      "excluded_scope": "人物階段及半透明尾段不由此不透明核心方法證明。"
+    },
+    "negative_tests": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/shared-death-player-ch23-r1/normal-rejections-r1.log",
+        "sha256": "fbe9ae4475448c0375642f4143c745954a15a808dad7a06e8f2f76192a56c79d"
+      },
+      "cases": [
+        "black",
+        "sha",
+        "missing_b",
+        "origin",
+        "viewport",
+        "source_order",
+        "injection",
+        "continuation"
+      ],
+      "status": "PASS"
+    },
+    "regression": {
+      "full_go": {
+        "file": "work/promo-cadence-20261018/hd-fonts/shared-death-player-ch23-r1/full-go-r1.log",
+        "sha256": "ca9f010b5f62c6804465103fed7e8937bc65b2d2e53646d4206e9ae0c2736e3b"
+      },
+      "passing_packages": 20,
+      "main_package_seconds": 218.443,
+      "string_inventory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/shared-death-player-ch23-r1/string-inventory.json",
+        "sha256": "3d80d42da02b967c5c2597b7933f1d59a0b55ee9aa1c822952ed8b291c044136"
+      },
+      "review_dispositions": 99,
+      "inventory_sha256_unchanged": true,
+      "gpu": {
+        "file": "work/promo-cadence-20261018/hd-fonts/shared-death-player-ch23-r1/gpu-r1/receipt.json",
+        "sha256": "16a3289da5e188674c5220f24fad599ff3f484d33e2059dfdc1e5dcfb8774ab3"
+      },
+      "gpu_pixels": {
+        "file": "work/promo-cadence-20261018/hd-fonts/shared-death-player-ch23-r1/gpu-pixels-r1.json",
+        "sha256": "8e5ff4669d902d0e1783a77babd766907ed713631a8847469c07ed775b520335"
+      },
+      "gpu_byte_regression": {
+        "file": "work/promo-cadence-20261018/hd-fonts/shared-death-player-ch23-r1/gpu-byte-regression.json",
+        "sha256": "29dc853b49d4806d1f0b2a6cefe5f8ad0f3e8a988d50d12bb29ef0b434188f0f"
+      },
+      "original_files": {
+        "file": "work/promo-cadence-20261018/hd-fonts/shared-death-player-ch23-r1/original-files-unchanged.json",
+        "sha256": "7a4da8e51d884aa457af282000c6cff3c21b46e08345e9267cd9311e3c3f5fb4"
+      }
+    },
+    "readme_figure": {
+      "file": "docs/figures/hd-event-death-normal.png",
+      "sha256": "3ccf1697624d20490b3b4ffcb022df92bb8b8e0bd78937e045836661f056974b",
+      "source": {
+        "file": "work/promo-cadence-20261018/hd-fonts/shared-death-player-ch23-r1/event-gui-r5/death23-event-20.png",
+        "sha256": "3ccf1697624d20490b3b4ffcb022df92bb8b8e0bd78937e045836661f056974b"
+      },
+      "scope": "未編修正常X11視窗，章前作弊來源，不是自然難度或DOS原版畫面。"
+    },
+    "failures": [
+      {
+        "run": "event-gui-r1",
+        "classification": "validation controller",
+        "reason": "只追隊長的單調距離路徑被敵軍擋住，未修改遊戲。"
+      },
+      {
+        "run": "event-gui-r2",
+        "classification": "validation bound",
+        "reason": "正常清障後六次END上限仍在距隊長兩格處；依可達集合改有界十次。"
+      },
+      {
+        "run": "event-gui-r3",
+        "classification": "partial observation",
+        "reason": "取得A／B，但控制器未按勝利畫面Return；保留部分收據，停止等待。"
+      },
+      {
+        "run": "event-gui-r4",
+        "classification": "test configuration",
+        "reason": "改固定seed1前主動停止，最終r5啟動前固定。"
+      },
+      {
+        "run": "normal-pixels-r1",
+        "classification": "verification mask",
+        "reason": "來源alpha255為分散點，三／五像素侵蝕均變零；現行整數HD繪製不需另侵蝕。修核對全部不透明點，RGB3與至少100點保持。"
+      }
+    ],
+    "reproduction": {
+      "images": [
+        "fd2-go-test-local:latest",
+        "fd2-assets-local:20260829-sfx",
+        "fd2-promo:20261017-r1"
+      ],
+      "isolation": "Docker user1000:1000、network none、timeout及資源限制；原版唯讀；無錄影。",
+      "source_args": [
+        "--capture-native-battle-save",
+        "--native-entry-theme",
+        "faithful",
+        "--battle-status",
+        "--battle-node",
+        "battle_ch23"
+      ],
+      "normal_args": [
+        "--battle-status",
+        "--world",
+        "--battle-node",
+        "battle_ch23",
+        "--death-event",
+        "53",
+        "--startup-timeout",
+        "180"
+      ],
+      "source_save": "/repo/work/promo-cadence-20261018/hd-fonts/shared-death-player-ch23-r1/source-gui-r1/user-data/fd2_re/fd2_save.json",
+      "slot_policy": {
+        "mode": "boost-only",
+        "target_completed_chapter": 22,
+        "base_ap_plus": 5000,
+        "base_dp_plus": 300,
+        "dx_plus": 60,
+        "max_hp_plus": 1000,
+        "preserve_dead": true,
+        "in_chapter_injection": false
+      },
+      "normal_verifier": "tools/verify_fd2_hd_death_normal.py --catalog <catalog> --pack <modern> --run <event-gui> --out <report>"
+    },
+    "source_files": [
+      {
+        "file": "remake/cmd/fd2/native_death_audit.go",
+        "sha256": "626092634bfab4bec7387bedc9471ba8a9ebcf59ac2005ce8e95cd763d6a8e87"
+      },
+      {
+        "file": "remake/cmd/fd2/native_death_audit_test.go",
+        "sha256": "edb27e0258ce0248342793856ae606be21c0a58b1114c1d709c4ed1c2c253ace"
+      },
+      {
+        "file": "remake/cmd/fd2/native_ch28_post_present.go",
+        "sha256": "e12d6bd1dc50c227ea9e54ab4b161f43ae0a4f55acf2eb1a5e2f9c749464b6dd"
+      },
+      {
+        "file": "remake/cmd/fd2/input_audit_trace.go",
+        "sha256": "8f80850eb3902bcdfbd6c11573333c675cf743e2ed3ef2b9802a09ae4329abb4"
+      },
+      {
+        "file": "tools/fd2_hd_death_gui.py",
+        "sha256": "096dfb2920a0d84a00015609110e697f4e663456c1c83c35506b0062c070e3ef"
+      },
+      {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "702914e7ac08a0d8132a764edd258a40aec880d3841f4d4f6ed744fe1adda1e7"
+      },
+      {
+        "file": "tools/verify_fd2_hd_death_normal.py",
+        "sha256": "8b8387a699874e7448e6ae6daa566cfdd3b6e30103a14916c65e8b10df9e7cc0"
+      },
+      {
+        "file": "tools/test_verify_fd2_hd_death_normal.py",
+        "sha256": "06c41dc8260a1eff027a507beaffa0d2a19f59dae3864da5bdc199fe7541e0f6"
+      }
+    ],
+    "binary_before_cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/shared-death-player-ch23-r1/fd2-r1",
+      "sha256": "3d7508278e3feeff66e4ba1b550721bb970f7450a6454281fd6e37a23bf14939"
+    },
+    "new_assets": 0,
+    "private_delivery": "沿18b0af20，不新增或改動任何私人素材。",
+    "final_audit": {
+      "file": "work/promo-cadence-20261018/hd-fonts/shared-death-player-ch23-r1/final-audit.json",
+      "sha256": "93964ad971769aed8edd9178fccea44f97b0b9229013c35e80f64760f21e007a"
+    },
+    "lessons": {
+      "count": 283,
+      "guards": 158,
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/shared-death-player-ch23-r1/lessons-check.log",
+        "sha256": "13c68ee317eb2df9e283294c17a6605ee2a2fc271052c410226f05021bdb3bcd"
+      }
+    },
+    "worklist": {
+      "open": 22,
+      "manual": 14,
+      "possibly_done": 0,
+      "issue201": "OPEN",
+      "issue263": "OPEN",
+      "acceptance_unchanged": true
+    },
+    "cleanup": {
+      "removed_logical_bytes": 252541478,
+      "removed_allocated_bytes": 251629568,
+      "removed_files": 2283,
+      "recordings_created": 0,
+      "retained": "正常與拒收PNG、章前槽、F5來源、操作／輸入收據、GPU圖源及日誌。只刪本批binary與Go／GUI cache。"
+    }
   }
 }

@@ -31,6 +31,7 @@ func (g *Game) recordInputAuditState() {
 	r["modern_theme"] = g.modernStoryPortraits != nil
 	r["hd_theme"] = g.modernStoryPortraits != nil && g.modernStoryPortraits.hasHD
 	r["battle_scene"] = g.atk != nil
+	g.recordNativeDeathAuditState(r)
 	r["command_scene"] = g.nativeCmd0Presentation != nil || g.nativeCmd5Presentation != nil
 	r["command_targeting"] = g.nativeCommand0Targeting
 	r["command_grid"], r["command_selection"] = g.nativeCommandOpen, g.nativeCommandSel

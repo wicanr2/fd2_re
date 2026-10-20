@@ -16,21 +16,23 @@ import (
 // FDOTHER#5 overlay loops, raw sample index 3, and final 0x11CAC redraw. The
 // address-shaped name avoids inventing a player-facing effect name.
 type nativeCh28PostPresentJob struct {
-	workFrames  [][]byte
-	vgaFrames   [][]byte
-	stateFrames []*battle.State
-	waits       []int
-	palette     color.Palette
-	frame       int
-	wait        int
-	drawn       bool
-	sfxAt       int
-	then        func()
-	rollback    func()
-	hdInputs    []indexedmap.NativeFrameInput
-	hdTargets   []battle.NativeCh28PostOverlayTarget
-	hdFrames    []*modernHDMapFrame
-	hdTheme     *modernStoryPortraitSet
+	workFrames     [][]byte
+	vgaFrames      [][]byte
+	stateFrames    []*battle.State
+	waits          []int
+	palette        color.Palette
+	frame          int
+	wait           int
+	drawn          bool
+	sfxAt          int
+	then           func()
+	rollback       func()
+	hdInputs       []indexedmap.NativeFrameInput
+	hdTargets      []battle.NativeCh28PostOverlayTarget
+	hdFrames       []*modernHDMapFrame
+	hdTheme        *modernStoryPortraitSet
+	presentedFrame int
+	presentedHD    bool
 }
 
 func cloneNativeCh28PostState(source *battle.State) (*battle.State, error) {
@@ -94,10 +96,11 @@ func (g *Game) startNativeUnitDeathPresent(prelude func(*battle.State) error, th
 	}
 
 	job := &nativeCh28PostPresentJob{
-		palette:   append(color.Palette(nil), g.nativeMapAssets.Palette...),
-		sfxAt:     fdother.NativeCh28PostPoseFrames,
-		then:      then,
-		hdTargets: append([]battle.NativeCh28PostOverlayTarget(nil), plan.Targets...),
+		palette:        append(color.Palette(nil), g.nativeMapAssets.Palette...),
+		sfxAt:          fdother.NativeCh28PostPoseFrames,
+		then:           then,
+		hdTargets:      append([]battle.NativeCh28PostOverlayTarget(nil), plan.Targets...),
+		presentedFrame: -1,
 	}
 	if len(g.nativeMapDAC) == 256*3 {
 		if current, paletteErr := fdother.VGAPaletteFromDAC(g.nativeMapDAC); paletteErr == nil {
@@ -288,6 +291,7 @@ func (g *Game) drawNativeCh28PostPresent(screen *ebiten.Image) bool {
 		if !g.drawPreparedModernHDMapFrame(screen, j.hdFrames[j.frame], false) {
 			return false
 		}
+		j.presentedFrame, j.presentedHD = j.frame, true
 		j.drawn = true
 		return true
 	}
@@ -296,6 +300,7 @@ func (g *Game) drawNativeCh28PostPresent(screen *ebiten.Image) bool {
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Scale(2, 2)
 	screen.DrawImage(ebiten.NewImageFromImage(img), op)
+	j.presentedFrame, j.presentedHD = j.frame, false
 	j.drawn = true
 	return true
 }

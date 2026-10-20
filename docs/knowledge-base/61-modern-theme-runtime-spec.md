@@ -2873,7 +2873,7 @@ HD要依該拍的viewport移位及裁切，不能一律套用穩定地圖的四�
 獨立GPU核對器依Go1.22的image/draw.drawNRGBASrc預乘公式重組煙霧，保留RGB誤差門檻；
 原直通alpha重組在多層重疊時的78個誤差像素列為驗證器問題，沒有改畫或放寬門檻。
 正式完整包與runtime-only各走完26拍，實際PNG逐位元組相同；20套件回歸與99項字串處置保持。
-四份原始RGBA母稿及12張成品依catalog allow-list同步私人庫。正常章節事件、普通擊殺／狀態致死consumer、
+四份原始RGBA母稿及12張成品依catalog allow-list同步私人庫。正常章節事件抽樣已由下節補齊；普通擊殺／狀態致死consumer、
 新DOS原版parity與平台效能仍待，不由fixture提升PLAYER-E2。
 
 重跑入口為[編製器](../../tools/build_fd2_lmi_death_hd.py)的--original-pack／--recipe／--out，
@@ -2882,3 +2882,42 @@ HD要依該拍的viewport移位及裁切，不能一律套用穩定地圖的四�
 再提供FD2_TEST_MODERN_BATTLE_CATALOG／PACK與FD2_TEST_HD_DEATH_OUT可產生完整手繪PNG與來源見證。
 [獨立核對器](../../tools/verify_fd2_hd_death_gpu.py)以--catalog／--pack／--run／--out核對該fixture，
 不接受任意遊戲畫面；編製器、清冊及GPU收據均有有效基底與預期拒收測試。
+
+### 第23章事件死亡的正常輸入抽樣
+
+狀態：CONFORMED-SCOPED。基底32166fbf；本批不增美術或改死亡規則。
+來源為既有第23章建構槽、map22控制紀錄2的death=[2,53,0]與
+native_death_events.json的事件53。擊倒機甲隊長後先播原生文字5，再由clear_hp_from(18)
+啟動既有死亡presenter。來源、雜湊與目前狀態存於
+[HD戰場主收據](../data/fd2-modern-hd-battlefield-20261019.json)的shared_death_player_followup_20261021。
+
+- 章前僅沿受版控fd2-chapter-slot的boost-only強化AP／DP／DX／MaxHP；保留原傷勢與陣亡，
+  不改章節、事件旗標、裝備、位置或章內HP。政策值及祖先存檔如實列入manifest。
+- 原生標題LOAD進獨立整備，沿章節資料的必選角色24及正式選人／確認出發，正常劇情至戰場後F5。
+  GUI工具只對已明示的第23章加入該路由，舊第二／三／八／九章鍵序維持。
+- 可用忠實主題完成章首缺HD頭像的段落，再以正常F2切入戰場HD。這是測試控制器的明示選項，
+  不增加遊戲fallback。普通移動／END與攻擊首領全程使用正式鍵盤輸入，受既有有界輪數限制。
+- 唯讀輸入觀測可附加死亡owner、目前／最後實際Draw幀與相位、HD效果來源／矩形及目標。
+  不以Update時的索引冒充已畫出的索引，不暫停事件、改tick、重跑規則或注入狀態。
+- 須取得實際首領擊倒、死亡文字、事件A／B效果與自然返回或下一節點的收據；抽驗F2與保存邊界。
+  PNG另核來源核心與裁切。只驗到的相位才作聲明，完整26拍仍由既有fixture負責。
+  章前作弊來源不證自然難度、傷害、存活或敵方選目標，也不自行增加原版oracle或整章E2。
+
+正常進軍抽樣上限為十次END。前六次實際可達集合顯示敵軍阻擋通道，已正常擊倒一名阻擋者，
+第七回合仍只到達隊長兩格外。此為測試控制器的有界路徑修正，遊戲移動、攻擊與時序保持。
+視窗固定1920×1200，避免縮放濾波混入來源核心比對。
+
+PNG核對修訂READY：十二張煙霧的alpha255像素為分散取樣，項68／71／73／74／75分別為20／554／2175／2237／2258點，
+三像素侵蝕後皆為零。原生HD視窗與既有整數定位不需要另侵蝕來源遮罩；核對全部可見alpha255點，
+保持至少100點及RGB差值大於3即拒收。多層仍按Go預乘公式重組，不排除錯誤像素或改素材。
+
+第23章正常GUI已沿原生LOAD、整備必選24、出發與F5建立來源；最終控制器重生的F5 bytes相同。
+固定FD2_SEED=1，蓋亞七次普通END及一次清障攻擊後，在20,18攻擊20,17隊長，死亡文字與事件53自然觸發。
+十七張視窗取樣中六張A／B不透明來源核心符合，一張候選14的觀測索引與PNG不符而拒收，其餘為人物或透明尾段，不列入核心證明。
+勝利畫面需正常Return確認，之後完成戰後至preparation_ch24、F2／F5 bytes相同及新程序標題LOAD。
+完整26拍GPU回歸與前批PNG bytes全部相同，20套件Go及八項正常PNG拒收通過。
+重跑由[既有GUI控制器](../../tools/verify_fd2_hd_fonts_gui.py)的--death-event 53／--battle-node battle_ch23／--battle-status／--world啟用，
+--world沿既有FD2_SEED=1設定；原生來源路由用--capture-native-battle-save／--native-entry-theme faithful。
+[正常PNG核對器](../../tools/verify_fd2_hd_death_normal.py)使用--catalog／--pack／--run／--out；
+其[拒收測試](../../tools/test_verify_fd2_hd_death_normal.py)沿FD2_TEST_HD_DEATH_CATALOG／PACK／RUN指定同份真實基底。
+兩者只驗此正常GUI切片；完整透明合成與26拍仍用上節fixture核對器，無新DOS或自然難度聲明。

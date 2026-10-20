@@ -14,6 +14,7 @@ from verify_fd2_hd_panel_transitions import PanelTransitionProbe
 from verify_fd2_hd_timed_dialogue import TimedDialogueProbe
 from verify_fd2_hd_terrain_walk import walk_behind_house
 from verify_fd2_gaia_focus import focus_gaia, sample_gaia
+from fd2_hd_death_gui import capture_standalone_ch23_source, run_ch23_death_event
 
 
 def terrain_frame_ids(value):
@@ -49,6 +50,8 @@ def main():
     parser.add_argument('--battle-node', default='battle_ch01', help='來源槽的正式戰場節點，預設首章')
     parser.add_argument('--battle-only', action='store_true', help='抽驗普通攻防、F2及保存冷讀，略過已另驗的狀態／命令字型；需--battle-hd')
     parser.add_argument('--capture-native-battle-save', action='store_true', help='正常原生標題LOAD、出發及F5建立JSON來源槽；需--native-save與--battle-status')
+    parser.add_argument('--native-entry-theme', choices=['hd','faithful'], default='hd', help='原生來源擷取的起始主題；第23章獨立整備目前明示使用faithful')
+    parser.add_argument('--death-event', type=int, choices=[53], help='第23章普通進軍擊倒隊長，唯讀抽樣共用死亡HD；需--town-save')
     parser.add_argument('--revive-before-departure', type=int, choices=[1],
                         help='第二／三章原生來源出發前，經正常教會服務復活哈諾；需--capture-native-battle-save')
     parser.add_argument('--buy-bekwei-bow', action='store_true',
@@ -462,7 +465,15 @@ def main():
             if latest(audit).get('title_phase')=='menu':break
             key('Escape')
         else:raise TimeoutError('標題未就緒')
+        if args.death_event:
+            run_ch23_death_event(args,audit,key,wait,shot,saved,command,window,
+                                restart_title_load,operations,shots,tool_source_sha256)
+            return
         if args.capture_native_battle_save:
+            if args.battle_node=='battle_ch23':
+                capture_standalone_ch23_source(args,audit,key,wait,shot,saved,native_saved,native_source_hash,
+                                              tool_source_sha256,operations,shots)
+                return
             town_node=args.battle_node.replace('battle_', 'town_', 1)
             prep_node=args.battle_node.replace('battle_', 'preparation_', 1)
             key('Down');key('Return');wait(lambda s:s.get('title_phase')=='loadslots')

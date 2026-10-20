@@ -3391,6 +3391,14 @@
         ],
         "pattern": "frame.Viewport = image.Rect\\(0, 0, 312\\*6, 192\\*6\\)"
       }
+    },
+    {
+      "id": "hd-source-mask-retains-isolated-opaque-pixels",
+      "date": "2026-10-21",
+      "area": "HD來源核對",
+      "rule": "核對HD來源前先量alpha255的分布與實際繪製倍率，不以預設侵蝕刪光分散的不透明像素。入口tools/verify_fd2_hd_death_normal.py：原生1920×1200整數定位驗全部可見alpha255點，保留RGB3與至少100點；透明區及完整演出另走tools/verify_fd2_hd_death_gpu.py的fixture重組。",
+      "why": "事件煙霧雖有數千個alpha255點，三／五像素侵蝕後皆為零。修驗證遮罩後六張正常A／B圖通過，一張實際幀錯配仍拒收，沒有修改素材或錯誤門檻。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#shared_death_player_followup_20261021"
     }
   ]
 }

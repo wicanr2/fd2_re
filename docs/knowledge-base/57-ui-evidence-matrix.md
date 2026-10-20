@@ -3,8 +3,8 @@
 共用章節／clear_hp_from死亡事件已接入HD人物與FDOTHER5項68..79煙霧。
 完整13＋6＋6＋steady繪製、A累積／B重置、F2與一次續行沿原typed producer，未修改像素路徑、死亡規則或保存格式。
 前25拍現行事件viewport從0,0開始，最後steady才回4,4；這是現行程式對照，非新DOS原版目的位址證明。
-可見診斷與獨立來源重組已通過；初輪黑DAC及錯位移拒收，正常章節事件抽樣仍待，普通擊殺與狀態致死consumer不在本批。
-來源與限制見[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的shared_death_followup_20261020，數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)。
+可見診斷與獨立來源重組已通過。第23章正常原生LOAD／必選24整備出發，再以固定seed1、蓋亞普通進軍七次END、清除一名阻擋敵軍及擊倒隊長，觸發事件53。六張A／B效果PNG的不透明來源核心符合，勝利確認、戰後、第24章整備、F2及新程序保存冷讀通過。章前強化與既有傷亡明示，章內無注入；一張候選無法對上觀測幀而保留拒收，不冒稱逐幀或整章E2。普通擊殺與狀態致死consumer仍待。
+來源與限制見[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的shared_death_followup_20261020與shared_death_player_followup_20261021，數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)。
 
 洛娜BattleFig5的15／16待機、旋槍／前刺及弧光已沿原21項描述子正式登錄，17固定零header不補造。
 完整Draw／F2及正常第九章兩次移動／END後原地攻防、返回與邊界冷讀通過。驗證控制器允許正式可達集合中的自己原格，遊戲規則不改。

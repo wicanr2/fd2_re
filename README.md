@@ -196,8 +196,12 @@ HD 背景、敵方與面板仍含像素素材。來源與可重跑方式見
 抽樣使用章前加血來源，章內沒有狀態注入；施法、受擊、返回與保存冷讀見[驗證範圍](docs/knowledge-base/58-fd2-exe-re-coverage.md)。
 
 章節事件的共用死亡演出已接入 HD 煙霧，保留人物轉向、效果累積與消散。
-[完整繪製測試畫面](docs/figures/hd-event-death-fixture.png)來自合成測試場景，未編修，並非正常玩家路徑。
-完整演出與 F2 已驗證，正常章節事件抽樣仍待；範圍見[現況矩陣](docs/knowledge-base/58-fd2-exe-re-coverage.md)。
+
+![第23章普通攻擊觸發的HD事件死亡演出](docs/figures/hd-event-death-normal.png)
+
+上圖來自第 23 章正常進軍、擊倒隊長後的實際遊戲視窗，未編修。
+測試使用章前強化存檔，章內沒有狀態注入。A／B 效果抽樣、下一章整備、F2 與保存冷讀已驗證；
+完整 26 拍另由繪製測試核對。範圍見[現況矩陣](docs/knowledge-base/58-fd2-exe-re-coverage.md)。
 
 ## 遊戲介紹
 
