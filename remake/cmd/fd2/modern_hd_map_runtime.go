@@ -24,6 +24,14 @@ type modernHDMapFrame struct {
 	Terrain          []modernHDTerrainDraw
 	Range            *image.RGBA
 	TerrainColourKey [32]byte
+	Overlays         []modernHDMapOverlayDraw
+	Viewport         image.Rectangle
+}
+
+type modernHDMapOverlayDraw struct {
+	Entry int
+	Image *image.RGBA
+	Rect  image.Rectangle
 }
 
 func (g *Game) modernHDMapFrameAdmission(story, battleView bool) bool {
@@ -86,6 +94,10 @@ func modernHDNativeViewportPixels(work []color.RGBA, base int) (*image.RGBA, err
 }
 
 func (g *Game) prepareModernHDMapFrame(in indexedmap.NativeFrameInput, seed []byte, palette color.Palette) (*modernHDMapFrame, error) {
+	return g.prepareModernHDMapFrameMode(in, seed, palette, false)
+}
+
+func (g *Game) prepareModernHDMapFrameMode(in indexedmap.NativeFrameInput, seed []byte, palette color.Palette, event bool) (*modernHDMapFrame, error) {
 	if g.modernStoryPortraits == nil || len(palette) != 256 || len(seed) != indexedmap.NativeUnitPresentWorkSize {
 		return nil, errors.New("modern HD world: incomplete published sources")
 	}
@@ -105,6 +117,9 @@ func (g *Game) prepareModernHDMapFrame(in indexedmap.NativeFrameInput, seed []by
 	}
 	unitY, motion, up := g.nativeCh12UpWalkFrame()
 	step := up || g.walk != nil || g.bannerT > 0
+	if event {
+		unitY, motion, up, step = 0, 0, false, false
+	}
 	var err error
 	terrainBase, terrainCameraY, terrainRows := base, frame.CameraY, 8
 	if up {
@@ -218,7 +233,7 @@ func (g *Game) prepareModernHDMapFrame(in indexedmap.NativeFrameInput, seed []by
 			return nil, err
 		}
 	}
-	if offset, visible := g.phaseBannerSlideOffset(); visible && g.phaseBannerGlyphsAvailable() {
+	if offset, visible := g.phaseBannerSlideOffset(); !event && visible && g.phaseBannerGlyphsAvailable() {
 		pixels, err := modernHDOverwriteLayer(indexedmap.NativeMapVGASize, palette, func(dst []byte) error {
 			g.blitPhaseBannerGlyphs(dst, offset)
 			return nil

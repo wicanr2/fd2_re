@@ -13,6 +13,40 @@ import validate_modern_theme_catalog as validator
 
 
 class ModernThemeCatalogTests(unittest.TestCase):
+    def test_lmi_overlay_bank_requires_ordered_complete_descriptors(self):
+        base = validator.validate(False)
+        base['assets'] = [a for a in base['assets'] if a['role'] != 'map_overlay_hd_set']
+        asset = dict(asset_id='modern.test.lmi.hd6',role='map_overlay_hd_set',status='runtime_candidate',
+                     files=[f'entry-{i}.png' for i in range(12)],width=1920,height=1200,frame_count=12,
+                     frame_sha256=['0'*64]*12,source_archive='FDOTHER.DAT',source_resource=5,
+                     source_metadata_sha256='0'*64,consumer_contract='native_lmi1_rgba_hd6_v1',
+                     alpha_contract='coverage',cycle_policy='native_lmi1_entries',layout_policy='native_lmi1_rect_hd6',
+                     native_lmi_frames=[dict(index=i,width=72,height=71,pixels_sha256='0'*64) for i in range(68,80)],
+                     source_files=['master.png'],source_sha256=['0'*64],source_refs=['tools/build_fd2_lmi_death_hd.py'])
+        with tempfile.TemporaryDirectory() as tmp:
+            path=Path(tmp)/'catalog.json'
+            good=copy.deepcopy(base)
+            good['assets'].append(asset)
+            path.write_text(json.dumps(good))
+            validator.validate(False,path)
+            for name in ['order','geometry','hash','path','missing','source','contract','duplicate']:
+                with self.subTest(name=name):
+                    bad=copy.deepcopy(good)
+                    entry=bad['assets'][-1]
+                    if name=='order': entry['native_lmi_frames'][-1]['index']=68
+                    elif name=='geometry': entry['native_lmi_frames'][-1]['width']=0
+                    elif name=='hash': entry['native_lmi_frames'][-1]['pixels_sha256']='bad'
+                    elif name=='path': entry['files'][-1]='../bad.png'
+                    elif name=='missing': entry['files'].pop()
+                    elif name=='source': entry['source_resource']=6
+                    elif name=='contract': entry['consumer_contract']='native_figani_rgba_hd6_v1'
+                    elif name=='duplicate':
+                        duplicate=copy.deepcopy(entry)
+                        duplicate['asset_id']='modern.test.lmi.duplicate'
+                        bad['assets'].append(duplicate)
+                    path.write_text(json.dumps(bad))
+                    with self.assertRaises(ValueError): validator.validate(False,path)
+
     def test_battle_animation_resource_requires_complete_safe_descriptors(self):
         base = validator.validate(False)
         asset = {'asset_id':'modern.test.figani.hd6','role':'battle_animation_hd_set','status':'runtime_candidate',

@@ -985,6 +985,7 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - [README 四語忠實模式商店截圖與來源](../data/fd2-readme-locales-20261018.json)。
 
 - [HD戰場主收據：F2衝突修正、同狀態取景缺陷與144角色候選](../data/fd2-modern-hd-battlefield-20261019.json)，編製器與正式接線閘門見[61](61-modern-theme-runtime-spec.md)。
+- [共用事件死亡HD編製器](../../tools/build_fd2_lmi_death_hd.py)與[獨立GPU來源重組](../../tools/verify_fd2_hd_death_gpu.py)：FDOTHER5項68..79、逐拍viewport與13＋6＋6＋steady事件呈現；契約依61，來源及拒收輪次見HD戰場主收據的shared_death_followup_20261020。正常章節事件與普通擊殺不由fixture推定。
 - [HD地形圖源核對與草地排版原型](../../tools/prototype_fd2_hd_terrain.py)：逐幀核對原生圖層、正規化alpha及索引色對應；只產生可丟棄排版比較，不接正式GPU。來源與限制見HD戰場主收據的`terrain_source_followup_20261019`。
 - [原生地形製圖來源匯出](../../remake/cmd/fd2-terrain-sources/main.go)、[獨立回讀](../../tools/verify_fd2_terrain_sources.py)、[房屋候選編製](../../tools/build_fd2_hd_terrain_object.py)及[拒收回歸](../../tools/test_fd2_hd_terrain_sources.py)：沿正式載入器與原生遮罩製圖；[可編輯配方](../../remake/assets/themes/modern/terrain-house-map0.recipe.json)只供離線候選。主收據的`native_terrain_source_followup_20261019`保存提示、SHA、來源及未完成GPU閘門。
 - [房屋稀疏HD集合登錄](../../tools/register_fd2_hd_terrain.py)、[正式載入／RGB映射](../../remake/cmd/fd2/modern_hd_terrain.go)、[原生地形定位](../../remake/cmd/fd2/modern_hd_terrain_plan.go)及[實際GPU核對](../../tools/verify_fd2_hd_terrain_gpu.py)：30槽沿61契約接正式世界；正常首章底圖及未驗前景範圍見主收據的`house_runtime_followup_20261019`。

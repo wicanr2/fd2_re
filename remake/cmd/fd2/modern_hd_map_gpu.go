@@ -37,9 +37,13 @@ func (r *modernHDMapGPU) terrainImage(picture *image.RGBA) *ebiten.Image {
 }
 
 func (r *modernHDMapGPU) drawTerrain(picture *image.RGBA, rect image.Rectangle) {
+	r.drawTerrainClipped(picture, rect, modernHDMapViewport())
+}
+
+func (r *modernHDMapGPU) drawTerrainClipped(picture *image.RGBA, rect, clip image.Rectangle) {
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Translate(float64(rect.Min.X), float64(rect.Min.Y))
-	r.World.SubImage(modernHDMapViewport()).(*ebiten.Image).DrawImage(r.terrainImage(picture), op)
+	r.World.SubImage(clip).(*ebiten.Image).DrawImage(r.terrainImage(picture), op)
 }
 
 const modernHDMapMosaicSource = `//kage:unit pixels
@@ -68,12 +72,16 @@ func (r *modernHDMapGPU) unit(group, frame int) *ebiten.Image {
 }
 
 func (r *modernHDMapGPU) drawUnit(unit modernHDMapUnitDraw) {
+	r.drawUnitClipped(unit, modernHDMapViewport())
+}
+
+func (r *modernHDMapGPU) drawUnitClipped(unit modernHDMapUnitDraw, clip image.Rectangle) {
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Translate(float64(unit.Rect.Min.X), float64(unit.Rect.Min.Y))
 	if unit.PaletteBand {
 		op.ColorScale.Scale(0.55, 0.55, 0.6, 1)
 	}
-	r.World.SubImage(modernHDMapViewport()).(*ebiten.Image).DrawImage(r.unit(unit.Group, unit.Frame), op)
+	r.World.SubImage(clip).(*ebiten.Image).DrawImage(r.unit(unit.Group, unit.Frame), op)
 }
 
 func (g *Game) drawModernHDMapFrame(screen *ebiten.Image) bool {
@@ -97,6 +105,20 @@ func (g *Game) drawModernHDMapFrame(screen *ebiten.Image) bool {
 		screen.Clear()
 		return false
 	}
+	return g.drawPreparedModernHDMapFrame(screen, frame, true)
+}
+
+// Event owners supply their immutable frame without composing another native
+// frame, advancing a dialogue, or inheriting the ordinary phase banner.
+func (g *Game) drawPreparedModernHDMapFrame(screen *ebiten.Image, frame *modernHDMapFrame, banner bool) bool {
+	if frame == nil || frame.Background == nil || frame.UI == nil || g.modernStoryPortraits == nil {
+		return false
+	}
+	var err error
+	clip := frame.Viewport
+	if clip.Empty() {
+		clip = modernHDMapViewport()
+	}
 	r := g.modernHDMapGPU
 	if r == nil || r.Theme != g.modernStoryPortraits {
 		r = &modernHDMapGPU{World: ebiten.NewImage(modernHDWidth, modernHDHeight),
@@ -119,7 +141,7 @@ func (g *Game) drawModernHDMapFrame(screen *ebiten.Image) bool {
 	op.GeoM.Scale(6, 6)
 	r.World.DrawImage(r.Background, op)
 	for _, terrain := range frame.Terrain {
-		r.drawTerrain(terrain.Image, terrain.Rect)
+		r.drawTerrainClipped(terrain.Image, terrain.Rect, clip)
 	}
 	if frame.Range != nil {
 		if r.Range == nil {
@@ -129,11 +151,11 @@ func (g *Game) drawModernHDMapFrame(screen *ebiten.Image) bool {
 		r.World.DrawImage(r.Range, op)
 	}
 	for _, unit := range frame.Units {
-		r.drawUnit(unit)
+		r.drawUnitClipped(unit, clip)
 	}
 	for i, foreground := range frame.Foreground {
 		if foreground.HDImage != nil {
-			r.drawTerrain(foreground.HDImage, foreground.Rect)
+			r.drawTerrainClipped(foreground.HDImage, foreground.Rect, clip)
 			continue
 		}
 		for i >= len(r.Foreground) {
@@ -143,9 +165,12 @@ func (g *Game) drawModernHDMapFrame(screen *ebiten.Image) bool {
 		op := &ebiten.DrawImageOptions{}
 		op.GeoM.Scale(6, 6)
 		op.GeoM.Translate(float64(foreground.Rect.Min.X), float64(foreground.Rect.Min.Y))
-		r.World.SubImage(modernHDMapViewport()).(*ebiten.Image).DrawImage(r.Foreground[i], op)
+		r.World.SubImage(clip).(*ebiten.Image).DrawImage(r.Foreground[i], op)
 	}
-	if g.bannerT > 0 && g.banner != "" {
+	for _, overlay := range frame.Overlays {
+		r.drawTerrainClipped(overlay.Image, overlay.Rect, clip)
+	}
+	if banner && g.bannerT > 0 && g.banner != "" {
 		if r.Banner == nil {
 			r.Banner = ebiten.NewImage(modernHDWidth, modernHDHeight)
 		}

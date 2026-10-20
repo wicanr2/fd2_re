@@ -2828,3 +2828,57 @@ settle_world_battle必須等待class_ui_job正常繪製完成，接續以Return�
 洛娜正常控制器補充READY：同來源兩輪後洛娜在15,22，正式move_reachable只有原格，周圍四敵均在射程1；控制器occupied排除自身原格而誤判不可前進。只有已列在正式可達集合且等於所選actor原格時，允許候選格被自己占用。其他佔用格仍排除，正式攻擊目標環仍須接納。原地待機亦可沿原回合上限執行；無射程且無法縮短距離仍拒收。來源、seed1、own10、min2／max4與遊戲規則不變。
 
 洛娜圖源、二銀行分層／alpha與原格控制器修訂已達CONFORMED-SCOPED。完整21張及普通近戰／返回／F2／邊界冷讀通過；本體35張及前刺14／15各一張暖亮核心通過，兩組18項反例拒收。原21項metadata保持，11個鞋底像素裁切明示。新分層21項守衛含最終缺不透明核心拒收；舊三路徑33張PNG位元組與57項守衛保持。私人同步、正式載入與剩餘缺口依主收據及58。
+
+### 共用事件死亡演出的 HD 地圖效果
+
+狀態：CONFORMED-SCOPED／RUNTIME-E1。原READY、失敗與訂正歷程保留於主收據及WORKLOG。基底為5912da2b。原版規則沿用58所索引的
+`fd2_status_death_ida.txt`、`fd2_ch28_post_ida.txt` 與第29章契約，
+不重開已閉合的0x1DB65。來源與驗收集中於既有
+[HD戰場主收據](../data/fd2-modern-hd-battlefield-20261019.json)的shared_death_followup_20261020。
+
+- 輸入是固定原版FDOTHER.DAT第5資源、LMI1項68..79。原檔SHA-256為
+  `a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce`，
+  資源raw SHA-256為`561eb8ca579b13a6f2bc1f36436ad3af7d8d0bf77eab25a4ab6411142a7eb118`。
+  原bank.json、PNG及解碼索引的雜湊另存主收據；索引0透明。原矩形與world origin不改。
+- 已證實的既有排程是13個方向姿態、累積的6張overlay_a、每張還原inactive底圖的6張overlay_b，以及最終steady。
+  前25張只重畫terrain／objects及viewport，沒有HUD或range；最後才更新HUD anchor並完整重畫。
+  A的狀態已inactive，但畫面必須保留第13張姿態，不能按inactive狀態重組底圖。
+- 加入可選catalog角色map_overlay_hd_set，契約native_lmi1_rgba_hd6_v1，12項依序68..79。
+  每項保留width、height及原解碼索引SHA；成品為原矩形六倍的RGBA。來源及PNG雜湊、
+  完整性、透明背景與非空內容都要在登錄時核對。舊catalog可無此角色，仍走既有像素演出。
+  已宣告卻缺件須拒收，不部分發布。
+- 沿既有手繪風格重繪灰白煙霧由小點擴張成環、再消散。母稿原RGBA保存，允許明示共用與縮放，
+  原12個相位不插幀。美術是核准HD差異，不宣稱像素parity。
+- HD幀在同一原版typed producer內預檢，記錄同一輸入與原始work／VGA。F2切換只重建繪圖計畫；
+  不重跑HP、腳本、亂數或計時。預檢與晚期失敗保持既有rollback；Draw ack、wait、sample3及單次續行不改。
+- 本切片只涵蓋已接入的章節／clear_hp_from事件呈現，不把普通攻擊直接移除屍體的路徑改接此動畫。
+  不改正式規則、存檔、死亡獎勵或死亡腳本分派。章節邊界存檔維持既有契約。
+- 驗收要逐張比較原版typed排程與未改producer的indexed buffers，完整26張Game.Draw／1920 PNG，
+  A累積／B重置、視窗邊界、多目標順序、F2各相位、Draw ack、原子拒收及一次續行。
+  正常GUI只對實際觸發的事件範圍作聲明；fixture不提升為PLAYER-E2或新原版oracle收據。
+  素材依allow-list留私人庫，公開README只放使用者已授權的總覽圖。
+
+座標契約勘誤READY（2026-10-21）：直接核對既有受版控
+`indexedmap.CopyNativeUnitPresentViewport`、`fdother.CopyNativeTransitionViewport`及其測試後，
+前25張的現行VGA目的原點確為(0,0)，保留右8欄及下8列；第26張ComposeNativeFrame才使用(4,4)。
+HD要依該拍的viewport移位及裁切，不能一律套用穩定地圖的四像素框。
+這是本切片對現行indexed producer的已證實對照，不新增DOS原版目的位址或同狀態parity聲明，
+也不修改原有indexed路徑。先前「保留四像素border」的HD實作與黑DAC測試收據拒收，保留追溯。
+
+輔助底圖邊界READY（2026-10-21）：既有nativeTransitionInput沒有ChapterAux，事件前25拍只保留先前seed，
+最後steady才可再次呼叫該writer。HD event模式必須排除額外的ChapterAux重畫，普通穩定畫面的writer保持。
+以事件保留seed、最後steady仍拒收壞宣告的對照測試驗證；此修訂只作用於事件前25拍。
+
+本切片已通過可見色盤下的完整26張Draw、A保留人物與累積／B還原inactive底圖、四階段F2、原子預檢與單次續行。
+獨立GPU核對器依Go1.22的image/draw.drawNRGBASrc預乘公式重組煙霧，保留RGB誤差門檻；
+原直通alpha重組在多層重疊時的78個誤差像素列為驗證器問題，沒有改畫或放寬門檻。
+正式完整包與runtime-only各走完26拍，實際PNG逐位元組相同；20套件回歸與99項字串處置保持。
+四份原始RGBA母稿及12張成品依catalog allow-list同步私人庫。正常章節事件、普通擊殺／狀態致死consumer、
+新DOS原版parity與平台效能仍待，不由fixture提升PLAYER-E2。
+
+重跑入口為[編製器](../../tools/build_fd2_lmi_death_hd.py)的--original-pack／--recipe／--out，
+配方與四份來源SHA集中於主收據；使用既有Docker映像，原版唯讀掛載。
+完整繪製為modern_hd_death_test.go的TestModernHDDeathRuntimeGPU，明示FD2_TEST_HD_DEATH_GPU=1；
+再提供FD2_TEST_MODERN_BATTLE_CATALOG／PACK與FD2_TEST_HD_DEATH_OUT可產生完整手繪PNG與來源見證。
+[獨立核對器](../../tools/verify_fd2_hd_death_gpu.py)以--catalog／--pack／--run／--out核對該fixture，
+不接受任意遊戲畫面；編製器、清冊及GPU收據均有有效基底與預期拒收測試。

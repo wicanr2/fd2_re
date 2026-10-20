@@ -6,17 +6,18 @@
   "full_hd_complete": false,
   "current_state": {
     "f2_battle_input": "CONFORMED-SCOPED：全域F2不再觸發戰場檢視，Home保持；正常GUI與保存驗證通過。",
-    "native_viewport": "CONFORMED-SCOPED：正式1920世界沿原生(4,4)、312×192窗格；正常F2同view與960地形樣本一致。",
+    "native_viewport": "CONFORMED-SCOPED：穩定1920世界沿原生(4,4)、312×192窗格；死亡事件前25拍依既有producer從VGA0,0開始，最後steady回4,4。不同caller分列，不新增DOS位址parity。",
     "hd_sprite_data": "DATA-READY：完整125組1455張HD及31組372張新增24父項已登錄；舊1083張父項及HD bytes保持。",
     "hd_world_renderer": "CONFORMED-SCOPED：144人物已接Game.Draw；首章34張正常GPU、4張實際走行、兩次物理攻擊及保存／新程序LOAD通過。",
-    "private_assets": "正式清冊與完整／runtime-only私人allow-list均已核SHA及UID；原檔保持，新母稿排除執行包。目前數量及遠端驗證依58與sage93_battle_followup_20261020。",
+    "private_assets": "正式清冊、完整／runtime-only私人allow-list已核SHA及UID；原檔保持，新母稿排除執行包。目前數量與遠端驗證依58及shared_death_followup_20261020。",
     "quickload_battle_owner": "CONFORMED-SCOPED：成功JSON LOAD丟棄舊經驗owner與移動計畫；拒收保留。",
     "timed_dialogue": "CONFORMED-SCOPED-RUNTIME-E1：計時FFEC開收框保留HD世界，EXP99普通鍵盤／F2與保存冷讀通過；其他caller未驗。",
     "hd_terrain": "CONFORMED-SCOPED：map0六組53槽；新增圓頂綠色／褐色雙塊四底圖在兩張正常GPU全部相符，短長組合與保存冷讀通過；草地及其他地形仍待HD化。",
     "ai_player_input_lock": "CONFORMED-SCOPED：AI換手期間拒絕玩家地圖輸入重入；普通END／增援對話及相關／完整Go回歸通過。",
     "gaia_redesign": "CONFORMED-SCOPED：新版頭像與四方向圖組已登錄；正常START／Gaia北移取消／F2／冷讀分段驗證。相位差異與序章尾端失敗明示，非逐幀parity。",
     "hd_battle_animation": "洛娜5號完整待機／旋槍／前刺及弧光已登錄；完整Draw與普通章9兩次END、原地攻防／返回／F2／邊界冷讀通過。共享姿勢與鞋底裁切明示；其餘缺口與唯一數量依58。",
-    "native_purchase_equip": "CONFORMED-SCOPED：#266原生購買立即裝備保留ignored原始格，29項商店回歸與正常購弓F5／章首射程通過；不改格式或數值規則。"
+    "native_purchase_equip": "CONFORMED-SCOPED：#266原生購買立即裝備保留ignored原始格，29項商店回歸與正常購弓F5／章首射程通過；不改格式或數值規則。",
+    "hd_event_death": "CONFORMED-SCOPED／RUNTIME-E1：共用事件死亡HD已接入，26拍、F2及完整回歸通過。正常章節事件與普通擊殺／狀態致死consumer仍待。"
   },
   "runtime_source": {
     "binary": {
@@ -29074,7 +29075,7 @@
     "date": "2026-10-20",
     "modern_asset_resolution_followup": "本區塊的清冊數及忠實END限制屬當批收據，原始證據保持。鐵諾FIGANI6／7已於tino_battle_followup_20261020正式登錄，最新四次HD END、F2與保存冷讀通過；目前真相以current_state及58為準。"
   },
-  "current_state_date": "2026-10-20",
+  "current_state_date": "2026-10-21",
   "tino_battle_followup_20261020": {
     "date": "2026-10-20",
     "status": "CONFORMED-SCOPED：14幀正式登錄、普通HD END／射擊／F2／章節邊界保存冷讀及私人包通過",
@@ -50684,6 +50685,839 @@
     "final_validation": {
       "file": "work/promo-cadence-20261018/hd-fonts/lorna5-final-validation-r1.json",
       "sha256": "5537b80dce6b186be0f59e6025b4bc51989128700bf3e4926e93da29d0a5c4bd"
+    }
+  },
+  "shared_death_followup_20261020": {
+    "status": "CONFORMED-SCOPED",
+    "base_commit": "5912da2bc74b71c6e89c747b2b6536349aef022d",
+    "formal_registered": true,
+    "private_synced": true,
+    "production_rules_changed": false,
+    "full_battle_hd_complete": false,
+    "current_state": {
+      "remake_complete": "共用章節／clear_hp_from死亡事件的HD人物與12張煙霧正式接線；26拍、F2、原子預檢及一次續行通過。",
+      "remake_remaining": "普通擊殺及狀態致死的動畫consumer、正常章節事件抽樣、其他人物／指令／回復／法術與平台效能。",
+      "original_oracle_unknown": "不新增DOS目的位址、逐幀／音訊parity或PLAYER-E2；indexed producer保持。",
+      "optional_polish": "沿核准灰白手繪風格，四稿共用與消散透明度明示，不插幀。"
+    },
+    "source": {
+      "archive": "FDOTHER.DAT",
+      "sha256": "a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce",
+      "resource": 5,
+      "raw_sha256": "561eb8ca579b13a6f2bc1f36436ad3af7d8d0bf77eab25a4ab6411142a7eb118",
+      "bank_sha256": "ada6bd6712a1f958f0b12dbb6a4b7dee8d71d428ae7746b599b83010e6c19822",
+      "entries": [
+        {
+          "index": 68,
+          "width": 37,
+          "height": 37,
+          "bbox": [
+            32,
+            32,
+            37,
+            37
+          ],
+          "index_sha256": "b03ae68c2a9005ff9d8743365f93b513c19b920e45f395671541cb1c9b3ecdb5",
+          "png_sha256": "1ac4da2ad649509f72defc944e1b25e0c2048d46b5934d147ba64e9aa09b4060"
+        },
+        {
+          "index": 69,
+          "width": 40,
+          "height": 38,
+          "bbox": [
+            31,
+            31,
+            40,
+            38
+          ],
+          "index_sha256": "9a7553df121151c50be89f3c4f5f2cee0bd33862942ca5d2c8c0a52700f5143b",
+          "png_sha256": "2b9053d8f2e4f5d4e1e4f17f334dc710fde98c9e31f89c6c88066f0754d9b4af"
+        },
+        {
+          "index": 70,
+          "width": 41,
+          "height": 40,
+          "bbox": [
+            30,
+            30,
+            41,
+            40
+          ],
+          "index_sha256": "e4ce3729804848042cfc168689b9be4e4d49fbb65a78bcad8167d52c40c5db7c",
+          "png_sha256": "6da8227ae6c35e1a79409da388341cc60e15743419d47af8231142dcf3026440"
+        },
+        {
+          "index": 71,
+          "width": 63,
+          "height": 60,
+          "bbox": [
+            12,
+            10,
+            63,
+            60
+          ],
+          "index_sha256": "d588c341fdcc53031cc900148d62ee3ce0afc2910f98916c4e2a2978b18d75c1",
+          "png_sha256": "fb34dcbf657fe9b34ddc7d707e78eeb8132447f8320d170306ebdae8ef53e3c8"
+        },
+        {
+          "index": 72,
+          "width": 64,
+          "height": 61,
+          "bbox": [
+            11,
+            8,
+            64,
+            61
+          ],
+          "index_sha256": "99b806eaa42bd9e429b6aa132e9f2b85eddcaeea4664075618a3974eeae87380",
+          "png_sha256": "6a906fcf5623a79b8673e8fcbe6d2fcdc8073c27e65077a353224cb6e48bbc81"
+        },
+        {
+          "index": 73,
+          "width": 68,
+          "height": 65,
+          "bbox": [
+            7,
+            5,
+            68,
+            65
+          ],
+          "index_sha256": "ce329d4632f1c35edf4bcd70895ed8e0045073c792121ccc29b7bdeba1cf7abf",
+          "png_sha256": "8ee0178e0f2a71106346084cc9855daa187f6fbdb221537d8310a9f2fe1c4c93"
+        },
+        {
+          "index": 74,
+          "width": 70,
+          "height": 66,
+          "bbox": [
+            6,
+            4,
+            70,
+            66
+          ],
+          "index_sha256": "a624fd5d17b694ee8d3b864d6fbaf1f74aed2dc668b70f0bd0b642c048c30c3b",
+          "png_sha256": "44189afd50ac3ba0fe591ac95fb33a471723198a35fb71477f9211f28a9ad484"
+        },
+        {
+          "index": 75,
+          "width": 71,
+          "height": 68,
+          "bbox": [
+            4,
+            3,
+            71,
+            68
+          ],
+          "index_sha256": "d1b4050995986b1253c1cdfcc75e789d95139c78ec7ed75781a132f9acc019db",
+          "png_sha256": "aaedd95e23aa9baa39b97625162e27e66f5fb420a58c9e6bee08baaa462ac26e"
+        },
+        {
+          "index": 76,
+          "width": 72,
+          "height": 71,
+          "bbox": [
+            0,
+            0,
+            72,
+            71
+          ],
+          "index_sha256": "87574cac544a9ade0455f29a8cc61006478036bd8780579f367d88441ec34c5c",
+          "png_sha256": "664b359370180a7e3d01e1e4c2590d7cd0bb5601c31a508742d74ab903e3de34"
+        },
+        {
+          "index": 77,
+          "width": 72,
+          "height": 71,
+          "bbox": [
+            0,
+            0,
+            72,
+            71
+          ],
+          "index_sha256": "fc1156d457784cd4717f5f644f29f1ff7a2a23542d93c64827386f44aa2831bd",
+          "png_sha256": "e199e7b0c90a8fa5541132d51b0f9eb5b0eeb9506fc7d81006a252d7c934d71a"
+        },
+        {
+          "index": 78,
+          "width": 72,
+          "height": 71,
+          "bbox": [
+            0,
+            0,
+            72,
+            71
+          ],
+          "index_sha256": "8f6c58e0150f72c7ac7553c734de84a1ea71b9e020d071bde76f0f84424bbd19",
+          "png_sha256": "9286bda52acef8334771c0add503562fed254ce245fe28552876dc91852407f7"
+        },
+        {
+          "index": 79,
+          "width": 72,
+          "height": 71,
+          "bbox": [
+            0,
+            0,
+            72,
+            71
+          ],
+          "index_sha256": "c5e6aa4f582799ffdaa4700452ea810c0c8cb43ae8f13fdc2ec076db44d88c02",
+          "png_sha256": "78d8b3b9fc48cdcef0f61f351402e3252aeb9e5957c4b94503f5582c806b20f6"
+        }
+      ]
+    },
+    "baseline_files": [
+      {
+        "file": "remake/cmd/fd2/native_ch28_post_present.go",
+        "sha256": "537ca532b220885f131e0d1f8a4af790af9a18f0d5617584065f878102ff2705"
+      },
+      {
+        "file": "remake/internal/battle/native_ch28_post_present.go",
+        "sha256": "38e6910cd5117891a6da87085dc7bb92484fba4fffe642a32e31fb756b68ba3a"
+      },
+      {
+        "file": "remake/internal/fdother/ch28_post_present.go",
+        "sha256": "ff85e7c6f6a9c1c59732b16f8dc76bbb93c21d237c713364ee89e4779c742286"
+      },
+      {
+        "file": "remake/internal/fdother/lmi1.go",
+        "sha256": "4b75bee6e0264ecf844340a0113df690d4e4d005fde057c125c25757a3ec75ba"
+      },
+      {
+        "file": "docs/data/ida/fd2_status_death_ida.txt",
+        "sha256": "2cc69cc89b89805af566106dbe74f68280b10747114b5390058641fedb5019d1"
+      },
+      {
+        "file": "docs/data/ida/fd2_ch28_post_ida.txt",
+        "sha256": "e8f1669a85a06412c51450ce9d2fc761981fc2d793b3fc6fca3421eb98cc5e3a"
+      }
+    ],
+    "contract": "61-modern-theme-runtime-spec.md 共用事件死亡演出的HD地圖效果READY；13 pose / A累積6 / B每張還原inactive底圖6 / steady。RGBA原稿與原矩形／origin保持；不改規則。",
+    "verification": {
+      "diagnostic": {
+        "log": "work/promo-cadence-20261018/hd-fonts/shared-death-diagnostic-r5.log",
+        "frames": 26,
+        "visible_palette": true,
+        "result": "PASS",
+        "scope": "現行indexed producer的六倍投影GPU比對；steady的既有UI過濾支撐區另排除，非新DOS oracle。"
+      },
+      "gpu": {
+        "file": "work/promo-cadence-20261018/hd-fonts/shared-death-gpu-verified-r4.json",
+        "sha256": "67b59440388328c3bbfafed1f07eaae102c74c894cf10ced11bce930a4525661",
+        "receipt": "work/promo-cadence-20261018/hd-fonts/shared-death-art-gpu-r4/receipt.json",
+        "png_frames": 26
+      },
+      "full_go": {
+        "file": "work/promo-cadence-20261018/hd-fonts/shared-death-full-go-r2.log",
+        "sha256": "53e1541994d5fa57f3ea3f9a6304eeb293234a8941fa25b7be444abd1da80190",
+        "packages_passed": 20,
+        "cmd_fd2_seconds": 204.823
+      },
+      "formal_gpu": {
+        "log": "work/promo-cadence-20261018/hd-fonts/shared-death-formal-go-r1.log",
+        "frames": 26,
+        "skips": 0
+      },
+      "runtime_only_gpu": {
+        "log": "work/promo-cadence-20261018/hd-fonts/shared-death-runtime-go-r1.log",
+        "frames": 26,
+        "skips": 0,
+        "png_bytes_equal": 26
+      },
+      "python": {
+        "log": "work/promo-cadence-20261018/hd-fonts/shared-death-formal-python-r1.log",
+        "tests": 13,
+        "compiler_rejections": 8,
+        "catalog_rejections": 8
+      },
+      "gpu_rejections": {
+        "log": "work/promo-cadence-20261018/hd-fonts/shared-death-gpu-guards-r1.log",
+        "tests": 1,
+        "rejections": 8
+      },
+      "string_review": {
+        "inventory": "work/promo-cadence-20261018/hd-fonts/shared-death-string-inventory-r4.json",
+        "reviewed": 99,
+        "sha256": "3d80d42da02b967c5c2597b7933f1d59a0b55ee9aa1c822952ed8b291c044136"
+      },
+      "gpu_rounding": {
+        "evidence": "fd2-go-test-local:latest的Go1.22.12 /usr/local/go/src/image/draw/draw.go，drawNRGBASrc直接原碼。",
+        "formula": "premultiplied8 = ((channel8 * alpha8 * 257 / 255) / 256)，整數除法；GPU SourceOver混色後8-bit量化。",
+        "scope": "僅獨立驗證器修正來源預乘契約；不改PNG、母稿、runtime或RGB>3拒收門檻。",
+        "superseded": "Pillow直通alpha在frame21的78個重疊點超門檻；修公式後全部26張通過。"
+      },
+      "full_go_before_auxiliary_boundary": {
+        "log": "work/promo-cadence-20261018/hd-fonts/shared-death-full-go-r1.log",
+        "packages_passed": 20,
+        "cmd_fd2_seconds": 248.249
+      },
+      "auxiliary_boundary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/shared-death-auxiliary-boundary-r2.log",
+        "sha256": "c2952c4443b5f7d8189ecaee5c344d46250a113d979e7da1138271941a1cfdf0",
+        "scope": "前25拍不重畫ChapterAux，最後steady仍預檢writer；不改普通地圖與indexed路徑。",
+        "status": "PASS",
+        "interim_probe": "r1的通用helper對照已被r2完整26拍邊界對照取代。"
+      },
+      "final_gpu": {
+        "file": "work/promo-cadence-20261018/hd-fonts/shared-death-final-gpu-r1/receipt.json",
+        "sha256": "16a3289da5e188674c5220f24fad599ff3f484d33e2059dfdc1e5dcfb8774ab3",
+        "log": "work/promo-cadence-20261018/hd-fonts/shared-death-final-gpu-r1.log",
+        "all_26_png_bytes_equal_to_independently_verified_run": true,
+        "skips": 0
+      }
+    },
+    "generation": {
+      "tool": "built-in imagegen",
+      "masters": {
+        "puff": {
+          "prompt": "Create one isolated hand-painted 2D visual-effects sprite for the approved hand-painted HD remake of a 1995 Taiwanese tactical RPG. Transparent RGBA background. Front-facing flat game-plane VFX, no perspective floor, no text, no characters, no scenery, no border. Neutral gray and ivory smoke only, with charcoal shading; no orange fire, no magic runes, no colored light. Soft watercolor/gouache painted edges with crisp readable opaque smoke cores, retain genuine semitransparent wisps. Center the entire silhouette within a square canvas, generous transparent margin. This is one single animation key pose, not a sprite sheet. A tiny compact round impact puff, a dense ivory gray central knot with 4-6 short irregular charcoal-gray wisps. Nearly circular, early stage before any ring opens.",
+          "source": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-f13a9cd5-d16a-4214-8386-6fa160bb29d6.png",
+          "file": "work/promo-cadence-20261018/hd-fonts/shared-death-source-r1/puff-master-r1.png",
+          "sha256": "1350317da144d00da4359fc4fc3e043a30fccaa5405c105e805b7dc6d224196c",
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "bbox": [
+            23,
+            21,
+            1232,
+            1254
+          ]
+        },
+        "burst": {
+          "prompt": "Create one isolated hand-painted 2D visual-effects sprite for the approved hand-painted HD remake of a 1995 Taiwanese tactical RPG. Transparent RGBA background. Front-facing flat game-plane VFX, no perspective floor, no text, no characters, no scenery, no border. Neutral gray and ivory smoke only, with charcoal shading; no orange fire, no magic runes, no colored light. Soft watercolor/gouache painted edges with crisp readable opaque smoke cores, retain genuine semitransparent wisps. Center the entire silhouette within a square canvas, generous transparent margin. This is one single animation key pose, not a sprite sheet. A fully expanded dense round smoke burst. A bright irregular ivory center, radial pale gray torn streaks and darker scalloped cloudy outer lobes. Center filled with smoke, no hole. Shape roughly square-round, width and height comparable.",
+          "source": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-9e36f5a3-4557-472c-985f-a1e97b8f4f29.png",
+          "file": "work/promo-cadence-20261018/hd-fonts/shared-death-source-r1/burst-master-r1.png",
+          "sha256": "bbd0c11846b7027bbfa1e0ec6620a4496731cb3af19481b159f60307470c7a21",
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "bbox": [
+            0,
+            4,
+            1238,
+            1254
+          ]
+        },
+        "ring": {
+          "prompt": "Create one isolated hand-painted 2D visual-effects sprite for the approved hand-painted HD remake of a 1995 Taiwanese tactical RPG. Transparent RGBA background. Front-facing flat game-plane VFX, no perspective floor, no text, no characters, no scenery, no border. Neutral gray and ivory smoke only, with charcoal shading; no orange fire, no magic runes, no colored light. Soft watercolor/gouache painted edges with crisp readable opaque smoke cores, retain genuine semitransparent wisps. Center the entire silhouette within a square canvas, generous transparent margin. This is one single animation key pose, not a sprite sheet. A broad irregular smoke ring viewed straight on. Large completely transparent jagged starburst-shaped central hole, surrounded by a thick ring of gray and ivory cloudy lobes. Thin inward spikes point toward center. Silhouette roughly square-round, width and height comparable.",
+          "source": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-3966c667-4f9c-48e8-8a36-2d65713f07b5.png",
+          "file": "work/promo-cadence-20261018/hd-fonts/shared-death-source-r1/ring-master-r1.png",
+          "sha256": "f72e8b29561e842f05319bab7318b0c44f6b303affde792002b3c6e1803b4b5f",
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "bbox": [
+            0,
+            15,
+            1244,
+            1254
+          ]
+        },
+        "wisps": {
+          "prompt": "Create one isolated hand-painted 2D visual-effects sprite for the approved hand-painted HD remake of a 1995 Taiwanese tactical RPG. Transparent RGBA background. Front-facing flat game-plane VFX, no perspective floor, no text, no characters, no scenery, no border. Neutral gray and ivory smoke only, with charcoal shading; no orange fire, no magic runes, no colored light. Soft watercolor/gouache painted edges with crisp readable opaque smoke cores, retain genuine semitransparent wisps. Center the entire silhouette within a square canvas, generous transparent margin. This is one single animation key pose, not a sprite sheet. A dissipating smoke ring viewed straight on. A huge completely transparent open center and eight disconnected thin charcoal-gray wisps distributed around a roughly circular perimeter. Most of the canvas is transparent. No dense central cloud. Very sparse, uneven lacy smoke fragments, fine painted edges.",
+          "source": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-d1d24df7-2182-4309-b658-a40faebdddcb.png",
+          "file": "work/promo-cadence-20261018/hd-fonts/shared-death-source-r1/wisps-master-r1.png",
+          "sha256": "00e0183d6c18141030ba35125230d9b10c0bb42452137892e477e3a177fdba92",
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "bbox": [
+            0,
+            13,
+            1238,
+            1228
+          ]
+        }
+      }
+    },
+    "coordinate_correction_20261021": {
+      "status": "READY",
+      "event_frames_0_to_24": {
+        "vga_origin": [
+          0,
+          0
+        ],
+        "viewport_size": [
+          312,
+          192
+        ],
+        "retained": "右8欄與下8列"
+      },
+      "steady_frame_25": {
+        "vga_origin": [
+          4,
+          4
+        ],
+        "viewport_size": [
+          312,
+          192
+        ]
+      },
+      "evidence": [
+        {
+          "file": "remake/internal/indexedmap/frame.go",
+          "sha256": "a7f21d5703b4ac3db2e55948c13dab8e0cf96bb42d31ad2b3e9191adbb2a0aab"
+        },
+        {
+          "file": "remake/internal/fdother/indexed_transition_buffer.go",
+          "sha256": "b77142bee83cf9bfec73253afa34f219ee48bf77bccf4270277aaf67ac3a7185"
+        },
+        {
+          "file": "remake/internal/indexedmap/frame_test.go",
+          "sha256": "1bc3c361da825bf80a4bb8b3004ceee84907d29d049b22917a120f3bbaeb2ad4"
+        }
+      ],
+      "scope": "現行indexed producer已證實契約；不重解1DB65，不改原像素路徑，也不新增DOS原版目的位址或oracle parity聲明。"
+    },
+    "failed_validation_attempts": [
+      {
+        "run": "shared-death-diagnostic-r1",
+        "reason": "RunGame後同程序接其他GPU測試停住；F2未等待忠實Draw，faithful僅3。測試容器已停止。",
+        "classification": "validation harness"
+      },
+      {
+        "run": "shared-death-diagnostic-r2 / shared-death-art-gpu-r1 / shared-death-art-gpu-r2",
+        "reason": "fixture的黑色DAC遮罩掩蓋畫面，流程flag通過但實際PNG全黑；獨立重組拒收，不算有效GPU證據。",
+        "classification": "validation fixture"
+      },
+      {
+        "run": "shared-death-diagnostic-r3 / shared-death-diagnostic-r4",
+        "reason": "移除黑屏後首幀原生點264,114不符；追查既有CopyNativeUnitPresentViewport確為VGA0原點，HD誤用穩定地圖4像素框。",
+        "classification": "HD coordinate defect"
+      },
+      {
+        "run": "shared-death-art-gpu-r3",
+        "reason": "與座標修正前同源，雖正常輸出色彩，不能取代最終r4獨立核對；不計驗收。",
+        "classification": "superseded capture"
+      }
+    ],
+    "recipe": {
+      "schema_version": 1,
+      "bank_sha256": "ada6bd6712a1f958f0b12dbb6a4b7dee8d71d428ae7746b599b83010e6c19822",
+      "sources": {
+        "puff": {
+          "file": "puff-master-r1.png",
+          "sha256": "1350317da144d00da4359fc4fc3e043a30fccaa5405c105e805b7dc6d224196c"
+        },
+        "burst": {
+          "file": "burst-master-r1.png",
+          "sha256": "bbd0c11846b7027bbfa1e0ec6620a4496731cb3af19481b159f60307470c7a21"
+        },
+        "ring": {
+          "file": "ring-master-r1.png",
+          "sha256": "f72e8b29561e842f05319bab7318b0c44f6b303affde792002b3c6e1803b4b5f"
+        },
+        "wisps": {
+          "file": "wisps-master-r1.png",
+          "sha256": "00e0183d6c18141030ba35125230d9b10c0bb42452137892e477e3a177fdba92"
+        }
+      },
+      "entries": {
+        "68": {
+          "source": "puff",
+          "opacity": 1
+        },
+        "69": {
+          "source": "puff",
+          "opacity": 1
+        },
+        "70": {
+          "source": "puff",
+          "opacity": 1
+        },
+        "71": {
+          "source": "burst",
+          "opacity": 1
+        },
+        "72": {
+          "source": "burst",
+          "opacity": 1
+        },
+        "73": {
+          "source": "ring",
+          "opacity": 1
+        },
+        "74": {
+          "source": "ring",
+          "opacity": 1
+        },
+        "75": {
+          "source": "ring",
+          "opacity": 1
+        },
+        "76": {
+          "source": "wisps",
+          "opacity": 0.55
+        },
+        "77": {
+          "source": "wisps",
+          "opacity": 0.28
+        },
+        "78": {
+          "source": "wisps",
+          "opacity": 0.14
+        },
+        "79": {
+          "source": "wisps",
+          "opacity": 0.06
+        }
+      }
+    },
+    "art_transform": "4份imagegen原始RGBA不改；各原非零索引bbox六倍縮放。68..70共puff，71..72共burst，73..75共ring，76..79共wisps並以0.55／0.28／0.14／0.06透明度消散。屬明示HD美術近似，不稱原版alpha一致。",
+    "formal_registration": {
+      "catalog": "remake/assets/themes/modern/catalog.json",
+      "catalog_sha256": "945bb4be1925ed016e66b97d3427677588ac993fccdf5ce2af3ab58d804b1600",
+      "previous_assets_unchanged": 412,
+      "added_assets": 1,
+      "files": [
+        {
+          "file": "remake/generated-assets/modern-theme-prototypes/death-fdother005-068-hd6.png",
+          "sha256": "898a60e08876b41b601eb4a07eafd2886a65cf3d9b7ab969dc5196cd6373c211"
+        },
+        {
+          "file": "remake/generated-assets/modern-theme-prototypes/death-fdother005-069-hd6.png",
+          "sha256": "ddac432b1906bab2cdd6f255d694ed704c4ba728b13d3c4b037d1340210af92e"
+        },
+        {
+          "file": "remake/generated-assets/modern-theme-prototypes/death-fdother005-070-hd6.png",
+          "sha256": "28e8c7f46c1a4810ed384c430c8f7b01a35b9b027131a8591ab4017ef47e0f59"
+        },
+        {
+          "file": "remake/generated-assets/modern-theme-prototypes/death-fdother005-071-hd6.png",
+          "sha256": "80eca021472841545b561e9f494da30461305d62d1798aa41a565faf38bcc50e"
+        },
+        {
+          "file": "remake/generated-assets/modern-theme-prototypes/death-fdother005-072-hd6.png",
+          "sha256": "3c7aa64c4138b011436ef2bd125e5fe1ebe10a54ae3ad5c67dd650c996a469ab"
+        },
+        {
+          "file": "remake/generated-assets/modern-theme-prototypes/death-fdother005-073-hd6.png",
+          "sha256": "e58f4c592eff795d525ffb470ce2cb26d6cd69805fd9a99bdef7d83e76520b47"
+        },
+        {
+          "file": "remake/generated-assets/modern-theme-prototypes/death-fdother005-074-hd6.png",
+          "sha256": "0483cd9ef2222a53a198ad8ddf1be22dc95b20d6ae644e07ae7e5e4d4eab6daa"
+        },
+        {
+          "file": "remake/generated-assets/modern-theme-prototypes/death-fdother005-075-hd6.png",
+          "sha256": "13fee648b191880ee3e80e3f70d6cf0b0d1fb91565c3fa8a18f0530211f46091"
+        },
+        {
+          "file": "remake/generated-assets/modern-theme-prototypes/death-fdother005-076-hd6.png",
+          "sha256": "d631197811b098bafead99d613135758cb90fce482d1a985183f613de65f9037"
+        },
+        {
+          "file": "remake/generated-assets/modern-theme-prototypes/death-fdother005-077-hd6.png",
+          "sha256": "ab8439b0b61ae4be5d12827e7f53c7ba3325fe1e43d9f9d465028c3bfeffbeb0"
+        },
+        {
+          "file": "remake/generated-assets/modern-theme-prototypes/death-fdother005-078-hd6.png",
+          "sha256": "92acbaf8fcbca6279e2b021a34fd8bde7df6c35b5dc7ba886e59c3d715746ca2"
+        },
+        {
+          "file": "remake/generated-assets/modern-theme-prototypes/death-fdother005-079-hd6.png",
+          "sha256": "f1119202bc604c0c2c9fcc116b762e60794dcdddb58ff4406e566a4ca62b668b"
+        },
+        {
+          "file": "remake/generated-assets/modern-theme-prototypes/puff-master-r1.png",
+          "sha256": "1350317da144d00da4359fc4fc3e043a30fccaa5405c105e805b7dc6d224196c"
+        },
+        {
+          "file": "remake/generated-assets/modern-theme-prototypes/burst-master-r1.png",
+          "sha256": "bbd0c11846b7027bbfa1e0ec6620a4496731cb3af19481b159f60307470c7a21"
+        },
+        {
+          "file": "remake/generated-assets/modern-theme-prototypes/ring-master-r1.png",
+          "sha256": "f72e8b29561e842f05319bab7318b0c44f6b303affde792002b3c6e1803b4b5f"
+        },
+        {
+          "file": "remake/generated-assets/modern-theme-prototypes/wisps-master-r1.png",
+          "sha256": "00e0183d6c18141030ba35125230d9b10c0bb42452137892e477e3a177fdba92"
+        }
+      ],
+      "scope": "事件死亡presenter的RUNTIME-E1；章節事件正常玩家抽樣仍待。不關閉#263。"
+    },
+    "readme_figure": {
+      "file": "docs/figures/hd-event-death-fixture.png",
+      "sha256": "2fafc4be17b3ff7989069068bb57531e9f69b51777e1bbfc22d455ffd2710bce",
+      "source": "work/promo-cadence-20261018/hd-fonts/shared-death-art-gpu-r4/frame-19.png",
+      "scope": "未編修的Game.Draw測試場景，非正常玩家事件。"
+    },
+    "private_delivery": {
+      "status": "PASS",
+      "full_count": 3753,
+      "previous_unchanged": 3737,
+      "added": [
+        "burst-master-r1.png",
+        "death-fdother005-068-hd6.png",
+        "death-fdother005-069-hd6.png",
+        "death-fdother005-070-hd6.png",
+        "death-fdother005-071-hd6.png",
+        "death-fdother005-072-hd6.png",
+        "death-fdother005-073-hd6.png",
+        "death-fdother005-074-hd6.png",
+        "death-fdother005-075-hd6.png",
+        "death-fdother005-076-hd6.png",
+        "death-fdother005-077-hd6.png",
+        "death-fdother005-078-hd6.png",
+        "death-fdother005-079-hd6.png",
+        "puff-master-r1.png",
+        "ring-master-r1.png",
+        "wisps-master-r1.png"
+      ],
+      "runtime_only_count": 3403,
+      "all_sha_uid_gid": true,
+      "private_manifest_sha256": "16389fe3ff46d7e2fa9d08d72525957b27b7aa18b7c540039003aa80caa55621",
+      "commit": "18b0af2063962641570a24018d77cdf0bbd1cd44",
+      "actual_remote_main": "18b0af2063962641570a24018d77cdf0bbd1cd44",
+      "is_private": true,
+      "remote_verified": true
+    },
+    "completed_date": "2026-10-21",
+    "normal_regression": {
+      "file": "work/promo-cadence-20261018/hd-fonts/shared-death-world-gui-r2/receipt.json",
+      "sha256": "c3d2aab18a404652dd1e62e29a5b4f2cef78d4328af4871ec08c8db1ff024238",
+      "source_save_sha256": "f4da9acebb3444a9b618c1b108996abee2d2832902e2cad86940d91c33fc0c66",
+      "seed": 1,
+      "own_index": 10,
+      "min_approach_rounds": 2,
+      "max_approach_rounds": 4,
+      "actual_end_count": 2,
+      "chapter_preboost": "沿既有第9章F5來源與章前HP+1000祖先；無章內注入。",
+      "scope": "正常近戰、世界、F2及邊界冷讀回歸；沒有觸發章節死亡事件，不能替代該事件E2。",
+      "blue": {
+        "file": "work/promo-cadence-20261018/hd-fonts/shared-death-normal-blue-r1.json",
+        "sha256": "b5d7ab6bd9479ebf95e3fb2bff05baeeb703bd78ac5622ab04c4a9efbbeeb579"
+      },
+      "warm": {
+        "file": "work/promo-cadence-20261018/hd-fonts/shared-death-normal-warm-r1.json",
+        "sha256": "b1bb41df771a0458f56aa603277428b92ce3886fca1fa7d184d6e6bcbcc7c667"
+      },
+      "blue_pngs": 42,
+      "warm_matches": [
+        {
+          "resource": 16,
+          "frame": 14,
+          "file": "world-hd-art-22.png"
+        }
+      ],
+      "auxiliary_followup_scope": "正常GUI在事件限定輔助底圖修訂前取得；該GUI未進此事件owner。最終修訂只作用於事件前25拍，普通地圖路徑保持。"
+    },
+    "failed_normal_runs": [
+      {
+        "run": "shared-death-world-gui-r1",
+        "reason": "一般world回歸旗標仍會進攻擊；未提供有界進軍參數，預設0輪無可達射程。改用前批已驗證own10／min2／max4／advance，沒有修改控制器或遊戲。",
+        "classification": "validation configuration"
+      }
+    ],
+    "original_files_unchanged": {
+      "file": "work/promo-cadence-20261018/hd-fonts/shared-death-original-files-unchanged-r1.json",
+      "sha256": "7c9d0a0e690aff0f69aa177fd631b6a93d692720263dc575bc57f099e91059a0"
+    },
+    "formal_coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/shared-death-formal-coverage-r1.json",
+      "sha256": "188ae6d50794996aabce32f3d84dc29b734e3e2d045d4f51a108d59a82d3ae23"
+    },
+    "coverage_counts": {
+      "catalog_assets": 413,
+      "figani_resources": 39,
+      "figani_frames": 287,
+      "summon_resources": 4,
+      "summon_frames": 37,
+      "lmi_resources": 1,
+      "lmi_frames": 12
+    },
+    "worklist": {
+      "open": 22,
+      "manual": 14,
+      "possibly_done": 0,
+      "issue263": "OPEN",
+      "issue201": "OPEN",
+      "acceptance_unchanged": true
+    },
+    "lessons": {
+      "count": 282,
+      "guards": 158,
+      "log": "work/promo-cadence-20261018/hd-fonts/shared-death-lessons-r1.log"
+    },
+    "reproduction": {
+      "compiler": "tools/build_fd2_lmi_death_hd.py --original-pack /original --recipe <由本收據recipe與四份私人母稿還原> --out <候選目錄>",
+      "recipe": {
+        "schema_version": 1,
+        "bank_sha256": "ada6bd6712a1f958f0b12dbb6a4b7dee8d71d428ae7746b599b83010e6c19822",
+        "sources": {
+          "puff": {
+            "file": "puff-master-r1.png",
+            "sha256": "1350317da144d00da4359fc4fc3e043a30fccaa5405c105e805b7dc6d224196c"
+          },
+          "burst": {
+            "file": "burst-master-r1.png",
+            "sha256": "bbd0c11846b7027bbfa1e0ec6620a4496731cb3af19481b159f60307470c7a21"
+          },
+          "ring": {
+            "file": "ring-master-r1.png",
+            "sha256": "f72e8b29561e842f05319bab7318b0c44f6b303affde792002b3c6e1803b4b5f"
+          },
+          "wisps": {
+            "file": "wisps-master-r1.png",
+            "sha256": "00e0183d6c18141030ba35125230d9b10c0bb42452137892e477e3a177fdba92"
+          }
+        },
+        "entries": {
+          "68": {
+            "source": "puff",
+            "opacity": 1
+          },
+          "69": {
+            "source": "puff",
+            "opacity": 1
+          },
+          "70": {
+            "source": "puff",
+            "opacity": 1
+          },
+          "71": {
+            "source": "burst",
+            "opacity": 1
+          },
+          "72": {
+            "source": "burst",
+            "opacity": 1
+          },
+          "73": {
+            "source": "ring",
+            "opacity": 1
+          },
+          "74": {
+            "source": "ring",
+            "opacity": 1
+          },
+          "75": {
+            "source": "ring",
+            "opacity": 1
+          },
+          "76": {
+            "source": "wisps",
+            "opacity": 0.55
+          },
+          "77": {
+            "source": "wisps",
+            "opacity": 0.28
+          },
+          "78": {
+            "source": "wisps",
+            "opacity": 0.14
+          },
+          "79": {
+            "source": "wisps",
+            "opacity": 0.06
+          }
+        }
+      },
+      "gpu_test": "TestModernHDDeathRuntimeGPU，FD2_TEST_HD_DEATH_GPU=1及61所列catalog／pack／out環境變數；每次RunGame獨立程序。",
+      "gpu_verifier": "tools/verify_fd2_hd_death_gpu.py --catalog <清冊> --pack <包> --run <GPU輸出> --out <報告>",
+      "normal_tool": "tools/verify_fd2_hd_fonts_gui.py",
+      "normal_arguments": [
+        "--battle-status",
+        "--world",
+        "--battle-hd",
+        "--battle-art",
+        "--battle-only",
+        "--battle-repetitions",
+        "1",
+        "--battle-art-samples",
+        "64",
+        "--battle-node",
+        "battle_ch09",
+        "--battle-own-index",
+        "10",
+        "--battle-min-approach-rounds",
+        "2",
+        "--battle-approach-rounds",
+        "4",
+        "--battle-advance",
+        "--startup-timeout",
+        "180"
+      ],
+      "normal_source": "bekwei-bow-source-gui-r3/user-data/fd2_re/fd2_save.json；既有固定SHA f4da9acebb3444a9b618c1b108996abee2d2832902e2cad86940d91c33fc0c66",
+      "images": [
+        "fd2-assets-local:20260829-sfx",
+        "fd2-go-test-local:latest",
+        "fd2-promo:20261017-r1"
+      ],
+      "isolation": "Docker user1000:1000、network none、資源限制與timeout；原版唯讀；GUI不錄影。"
+    },
+    "runtime_source_files": [
+      {
+        "file": "remake/cmd/fd2/modern_hd_death_runtime.go",
+        "sha256": "575e3a3f2f9d0bddc8943bdc9b33cb9e3dd91f03025db84c7f6e4187dba8a1a1"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_map_overlay_assets.go",
+        "sha256": "de8e40c351d9efb3ca4d07e161787eecc7a3d4cd316a4d3ccf1fa35c4dee0fbc"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_map_gpu.go",
+        "sha256": "07d50ad49dc0c7fcd77e2f75335c3e8e771d7467a4ae4c9c48ab29473b03e292"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_map_runtime.go",
+        "sha256": "aa15ac29b7f7b2bbe87664fb72c76758e6c9e230b4b32424238962a637f737a6"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_story_portrait.go",
+        "sha256": "305fe8e3b1740110e17e0bd5d4fa2a08e3530346e09c478ebf49156e0383a618"
+      },
+      {
+        "file": "remake/cmd/fd2/native_ch28_post_present.go",
+        "sha256": "9dcd3d5eb614e884095e16f0e5d91042b7369c1dd0d2fbe2c7c98db65cc3bb8d"
+      },
+      {
+        "file": "remake/cmd/fd2/player_shortcuts.go",
+        "sha256": "5c71198d45834a9477ce75b5ca60714beaed3744225720579c0ba148531ff9d2"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_death_test.go",
+        "sha256": "66b52981b95627ced69ae822e3c474ed1383eb32cf498bcf64a6c3882018aec8"
+      },
+      {
+        "file": "tools/build_fd2_lmi_death_hd.py",
+        "sha256": "2ad2bed17a411c713ff637a840e3269b355ba8ca08af6dc686c8b6d4cc97aa26"
+      },
+      {
+        "file": "tools/verify_fd2_hd_death_gpu.py",
+        "sha256": "08ea2a84d55265d7685cfe29eff39cc752fa057b364cf528f58e56bce8b82207"
+      }
+    ],
+    "kylie_gif_unchanged": {
+      "file": "docs/figures/hd-kylie-original-vs-hd.gif",
+      "sha256": "c0af386348ad84574a3041d2af5ebc60ff9a930b04e6a9099d6a9ca7c0023ce2"
+    },
+    "binary_before_cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/shared-death-fd2-r1",
+      "sha256": "1e7bc05d89dcb9b99ea8dce107c5b81542285d9586c9ef01a8c764eb7dd5cd2f"
+    },
+    "cleanup": {
+      "removed_logical_bytes": 986997831,
+      "removed_allocated_bytes": 1008787456,
+      "deduplicated_logical_bytes": 12236840,
+      "removed_files": 7870,
+      "new_recordings": 0,
+      "retained": "完整／拒收PNG、收據、原始槽、generation／recipe、runtime-only清冊；正式母稿及成品在私人庫。",
+      "reconstruct": "Go執行檔與cache可重建；runtime-only由tools/sync_modern_theme_private.py --runtime-only重建。",
+      "final_cache_after_auxiliary_regression": {
+        "logical_bytes": 242032330,
+        "allocated_bytes": 249806848,
+        "files": 2187
+      }
+    },
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/shared-death-final-audit-r1.json",
+      "sha256": "f24a13ca94cec31a89cee890588cec7f042a3c30355e0c7a983156a439aa67ca"
     }
   }
 }

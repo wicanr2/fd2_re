@@ -27,6 +27,10 @@ type nativeCh28PostPresentJob struct {
 	sfxAt       int
 	then        func()
 	rollback    func()
+	hdInputs    []indexedmap.NativeFrameInput
+	hdTargets   []battle.NativeCh28PostOverlayTarget
+	hdFrames    []*modernHDMapFrame
+	hdTheme     *modernStoryPortraitSet
 }
 
 func cloneNativeCh28PostState(source *battle.State) (*battle.State, error) {
@@ -90,16 +94,17 @@ func (g *Game) startNativeUnitDeathPresent(prelude func(*battle.State) error, th
 	}
 
 	job := &nativeCh28PostPresentJob{
-		palette: append(color.Palette(nil), g.nativeMapAssets.Palette...),
-		sfxAt:   fdother.NativeCh28PostPoseFrames,
-		then:    then,
+		palette:   append(color.Palette(nil), g.nativeMapAssets.Palette...),
+		sfxAt:     fdother.NativeCh28PostPoseFrames,
+		then:      then,
+		hdTargets: append([]battle.NativeCh28PostOverlayTarget(nil), plan.Targets...),
 	}
 	if len(g.nativeMapDAC) == 256*3 {
 		if current, paletteErr := fdother.VGAPaletteFromDAC(g.nativeMapDAC); paletteErr == nil {
 			job.palette = current
 		}
 	}
-	appendFrame := func(work, vga []byte, state *battle.State, wait int) error {
+	appendFrame := func(work, vga []byte, state *battle.State, wait int, input indexedmap.NativeFrameInput) error {
 		snapshot, cloneErr := cloneNativeCh28PostState(state)
 		if cloneErr != nil {
 			return cloneErr
@@ -107,6 +112,7 @@ func (g *Game) startNativeUnitDeathPresent(prelude func(*battle.State) error, th
 		job.workFrames = append(job.workFrames, append([]byte(nil), work...))
 		job.vgaFrames = append(job.vgaFrames, append([]byte(nil), vga...))
 		job.stateFrames = append(job.stateFrames, snapshot)
+		job.hdInputs = append(job.hdInputs, input)
 		if wait < 1 {
 			wait = 1
 		}
@@ -116,6 +122,7 @@ func (g *Game) startNativeUnitDeathPresent(prelude func(*battle.State) error, th
 
 	work := append([]byte(nil), g.nativeMapWork...)
 	vga := append([]byte(nil), g.nativeMapVGA...)
+	var lastPoseInput indexedmap.NativeFrameInput
 	for frame := 0; frame < fdother.NativeCh28PostPoseFrames; frame++ {
 		if err := battle.ApplyNativeCh28PostPoseFrame(candidate, frame); err != nil {
 			return err
@@ -134,7 +141,8 @@ func (g *Game) startNativeUnitDeathPresent(prelude func(*battle.State) error, th
 		if err := indexedmap.CopyNativeUnitPresentViewport(vga, work); err != nil {
 			return fmt.Errorf("native 0x1DB65 pose frame %d viewport: %w", frame, err)
 		}
-		if err := appendFrame(work, vga, candidate, 3); err != nil {
+		lastPoseInput = in
+		if err := appendFrame(work, vga, candidate, 3, in); err != nil {
 			return err
 		}
 	}
@@ -167,7 +175,11 @@ func (g *Game) startNativeUnitDeathPresent(prelude func(*battle.State) error, th
 		if err := indexedmap.CopyNativeUnitPresentViewport(vga, work); err != nil {
 			return fmt.Errorf("native 0x1DB65 overlay frame %d viewport: %w", index, err)
 		}
-		if err := appendFrame(work, vga, candidate, 3); err != nil {
+		hdInput := afterInput
+		if frame.Phase == "overlay_a" {
+			hdInput = lastPoseInput
+		}
+		if err := appendFrame(work, vga, candidate, 3, hdInput); err != nil {
 			return err
 		}
 	}
@@ -184,12 +196,19 @@ func (g *Game) startNativeUnitDeathPresent(prelude func(*battle.State) error, th
 	if err := indexedmap.ComposeNativeFrame(steadyWork, steadyVGA, afterInput); err != nil {
 		return fmt.Errorf("native 0x1DB65 final steady redraw: %w", err)
 	}
-	if err := appendFrame(steadyWork, steadyVGA, candidate, 1); err != nil {
+	if err := appendFrame(steadyWork, steadyVGA, candidate, 1, afterInput); err != nil {
 		return err
 	}
 	if len(job.vgaFrames) != 26 || len(job.workFrames) != len(job.vgaFrames) ||
 		len(job.stateFrames) != len(job.vgaFrames) || len(job.waits) != len(job.vgaFrames) {
 		return errors.New("native 0x1DB65 preflight produced an invalid 13+6+6+steady schedule")
+	}
+	if g.modernStoryPortraits != nil && g.modernStoryPortraits.mapOverlays != nil {
+		frames, err := g.prepareModernHDDeathFrames(job, g.modernStoryPortraits)
+		if err != nil {
+			return err
+		}
+		job.hdFrames, job.hdTheme = frames, g.modernStoryPortraits
 	}
 
 	beforeState, err := cloneNativeCh28PostState(g.st)
@@ -261,6 +280,16 @@ func (g *Game) drawNativeCh28PostPresent(screen *ebiten.Image) bool {
 	j := g.nativeCh28PostPresent
 	if j == nil || len(j.palette) != 256 || len(g.nativeMapVGA) != indexedmap.NativeMapVGASize {
 		return false
+	}
+	if g.modernStoryPortraits != nil && g.modernStoryPortraits.mapOverlays != nil {
+		if j.hdTheme != g.modernStoryPortraits || len(j.hdFrames) != 26 || j.frame >= len(j.hdFrames) {
+			return false
+		}
+		if !g.drawPreparedModernHDMapFrame(screen, j.hdFrames[j.frame], false) {
+			return false
+		}
+		j.drawn = true
+		return true
 	}
 	img := image.NewPaletted(image.Rect(0, 0, 320, 200), j.palette)
 	copy(img.Pix, g.nativeMapVGA)

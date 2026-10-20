@@ -18,7 +18,7 @@ PROTOTYPE_ROLES = {"portrait_concept", "battlefield_concept", "battle_hud_concep
 ROLES = PROTOTYPE_ROLES | {
     "story_portrait_frame", "story_portrait_hd_frame", "map_sprite_set", "map_tileset_set",
     "map_sprite_hd_set", "battlefield_tileset_concept", "battle_hud_panel", "battle_action_icon_set",
-    "native_terrain_hd_set", "terrain_hd_master", "battle_animation_hd_set", "battle_effect_hd_set",
+    "native_terrain_hd_set", "terrain_hd_master", "battle_animation_hd_set", "battle_effect_hd_set", "map_overlay_hd_set",
 }
 STATUSES = {"prototype", "concept", "approved", "runtime_candidate", "runtime_ready"}
 # Fixed FDICON.B24 source-write inventory, independently checked by
@@ -27,7 +27,7 @@ NATIVE_FDICON_GROUP_COUNT = 140
 NO_SOURCE_WRITE_SELECTORS = {39, 57, 104, 105, 121, 127, 128, 129, 130, 131, 132, 136, 137, 138, 139}
 VISIBLE_FDICON_GROUPS = set(range(NATIVE_FDICON_GROUP_COUNT)) - NO_SOURCE_WRITE_SELECTORS
 SPRITE_ROLES = {"map_sprite_set", "map_sprite_hd_set"}
-MULTI_FILE_ROLES = SPRITE_ROLES | {"battle_action_icon_set", "native_terrain_hd_set", "battle_animation_hd_set", "battle_effect_hd_set"}
+MULTI_FILE_ROLES = SPRITE_ROLES | {"battle_action_icon_set", "native_terrain_hd_set", "battle_animation_hd_set", "battle_effect_hd_set", "map_overlay_hd_set"}
 
 
 def png_size(path: Path) -> tuple[int, int]:
@@ -92,6 +92,9 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
         elif entry.get("role") in {"battle_animation_hd_set", "battle_effect_hd_set"}:
             expected = sprite_set - {"source_group"} | {"source_archive", "source_resource", "source_metadata_sha256",
                 "native_header", "native_frames", "layout_policy", "source_files", "source_sha256"}
+        elif entry.get("role") == "map_overlay_hd_set":
+            expected = sprite_set - {"source_group"} | {"source_archive", "source_resource", "source_metadata_sha256",
+                "native_lmi_frames", "layout_policy", "source_files", "source_sha256"}
         else:
             expected = required
         if set(entry) != expected:
@@ -173,6 +176,39 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
                     or any(not isinstance(value, str) or not SHA_RE.fullmatch(value) for value in hashes)):
                 raise ValueError(f"invalid native HD terrain files: {asset_id}")
             file_paths = [Path(value) for value in files]
+        elif entry["role"] == "map_overlay_hd_set":
+            if (entry['status'] not in {'runtime_candidate', 'runtime_ready'} or
+                    entry['consumer_contract'] != 'native_lmi1_rgba_hd6_v1' or entry['source_archive'] != 'FDOTHER.DAT' or
+                    type(entry['source_resource']) is not int or entry['source_resource'] != 5 or ('LMI1',5) in battle_resources or
+                    entry['alpha_contract'] != 'coverage' or entry['cycle_policy'] != 'native_lmi1_entries' or
+                    entry['layout_policy'] != 'native_lmi1_rect_hd6' or (entry['width'],entry['height']) != (1920,1200) or
+                    type(entry['frame_count']) is not int or entry['frame_count'] != 12 or
+                    not isinstance(entry['source_metadata_sha256'],str) or not SHA_RE.fullmatch(entry['source_metadata_sha256'])):
+                raise ValueError(f'invalid HD LMI bank: {asset_id}')
+            battle_resources.add(('LMI1',5))
+            frames = entry['native_lmi_frames']
+            if not isinstance(frames,list) or len(frames)!=12:
+                raise ValueError(f'invalid HD LMI descriptors: {asset_id}')
+            for index, frame in enumerate(frames,68):
+                if (not isinstance(frame,dict) or set(frame)!={'index','width','height','pixels_sha256'} or
+                        type(frame['index']) is not int or frame['index']!=index or
+                        any(type(frame[k]) is not int or frame[k] not in range(1,129) for k in ['width','height']) or
+                        not isinstance(frame['pixels_sha256'],str) or not SHA_RE.fullmatch(frame['pixels_sha256'])):
+                    raise ValueError(f'invalid HD LMI descriptor: {asset_id}')
+            files, hashes = entry['files'], entry['frame_sha256']
+            sources, source_hashes = entry['source_files'], entry['source_sha256']
+            for names, digests, count in [(files,hashes,12),(sources,source_hashes,None)]:
+                if (not isinstance(names,list) or not names or any(not isinstance(v,str) for v in names) or
+                        len(set(names))!=len(names) or (count is not None and len(names)!=count) or
+                        not isinstance(digests,list) or len(digests)!=len(names) or
+                        any(not isinstance(v,str) or not SHA_RE.fullmatch(v) for v in digests)):
+                    raise ValueError(f'invalid HD LMI files: {asset_id}')
+                for name, digest in zip(names,digests):
+                    if Path(name).name!=name or Path(name).suffix!='.png':
+                        raise ValueError(f'unsafe HD LMI path: {asset_id}')
+                    if verify_private and hashlib.sha256((ROOT/private_root/name).read_bytes()).hexdigest()!=digest:
+                        raise ValueError(f'HD LMI sha256 mismatch: {asset_id}')
+            file_paths = [Path(v) for v in files]
         elif entry["role"] in {"battle_animation_hd_set", "battle_effect_hd_set"}:
             resource, count = entry['source_resource'], entry['frame_count']
             effect = entry['role'] == 'battle_effect_hd_set'
@@ -326,6 +362,9 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
                     raise ValueError(f"private asset missing: {private_path}")
                 expected_size = ((entry['native_frames'][frame_index]['width']*6, entry['native_frames'][frame_index]['height']*6)
                                  if entry['role'] in {'battle_animation_hd_set','battle_effect_hd_set'} else (entry["width"],entry["height"]))
+                if entry['role']=='map_overlay_hd_set':
+                    frame=entry['native_lmi_frames'][frame_index]
+                    expected_size=(frame['width']*6,frame['height']*6)
                 if png_size(private_path) != expected_size:
                     raise ValueError(f"dimension mismatch: {asset_id}/{file_path.name}")
                 digest = hashlib.sha256(private_path.read_bytes()).hexdigest()
@@ -336,6 +375,11 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
                     alpha = Image.open(private_path).convert("RGBA").getchannel("A")
                     if not set(alpha.getdata()).issubset({0, 255}):
                         raise ValueError(f"non-binary alpha: {asset_id}/{file_path.name}")
+                elif entry['role'] == 'map_overlay_hd_set':
+                    from PIL import Image
+                    low, high = Image.open(private_path).convert('RGBA').getchannel('A').getextrema()
+                    if low != 0 or high == 0:
+                        raise ValueError(f'invalid HD LMI alpha: {asset_id}/{file_path.name}')
                 elif entry['role'] == 'map_sprite_hd_set':
                     from PIL import Image
                     with Image.open(private_path) as image:

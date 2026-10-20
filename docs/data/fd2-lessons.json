@@ -3361,6 +3361,36 @@
         ],
         "pattern": "or cell==state\\[.cursor.\\]"
       }
+    },
+    {
+      "id": "hd-gpu-probe-visible-dac-and-image-witness",
+      "date": "2026-10-21",
+      "area": "GPU驗證",
+      "rule": "HD GPU fixture先設定可見的色盤，再用來源圖片獨立核對最終PNG；owner旗標與Draw次數不能排除黑色DAC遮罩。入口remake/cmd/fd2/modern_hd_death_test.go與tools/verify_fd2_hd_death_gpu.py，後者只驗明示事件fixture，不作原版oracle聲明。",
+      "why": "共用事件死亡的初輪保留fixture黑DAC，二十六拍流程皆過卻輸出全黑；獨立來源重組拒收，修色盤後才找到真正的24 HD像素位移。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#shared_death_followup_20261020",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_hd_death_gpu.py"
+        ],
+        "pattern": "RGB errors out of"
+      }
+    },
+    {
+      "id": "hd-event-viewport-is-caller-owned",
+      "date": "2026-10-21",
+      "area": "HD事件呈現",
+      "rule": "事件HD逐拍保留typed producer的VGA目的原點、複製寬高與未覆寫區，不能沿用穩定地圖邊框。入口remake/cmd/fd2/modern_hd_death_runtime.go；現行死亡事件前25拍為0,0的312×192，第26拍才回4,4，不由此推定DOS原版位址parity。",
+      "why": "同一死亡owner的事件搬移與最後steady使用不同目的原點，統一加四像素導致人物與原索引不符。按既有搬移函式明示viewport後，可見診斷與獨立重組通過。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#shared_death_followup_20261020",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/modern_hd_death_runtime.go"
+        ],
+        "pattern": "frame.Viewport = image.Rect\\(0, 0, 312\\*6, 192\\*6\\)"
+      }
     }
   ]
 }

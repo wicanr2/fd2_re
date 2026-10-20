@@ -36,6 +36,7 @@ type modernStoryPortraitSet struct {
 	battleActionIcons []image.Image
 	battleAnimations  map[int]*modernBattleHDResource
 	battleEffects     map[int]*modernBattleHDResource
+	mapOverlays       *modernMapOverlayHDResource
 }
 
 type modernThemeAsset struct {
@@ -68,6 +69,7 @@ type modernThemeAsset struct {
 	SourceMetadataSHA256 string                     `json:"source_metadata_sha256"`
 	NativeHeader         []int                      `json:"native_header"`
 	NativeFrames         []modernBattleHDDescriptor `json:"native_frames"`
+	NativeLMIFrames      []modernLMIHDDescriptor    `json:"native_lmi_frames"`
 }
 
 type modernThemeCatalog struct {
@@ -98,6 +100,13 @@ func loadModernStoryPortraitSet(catalogPath, packRoot string) (*modernStoryPortr
 	}
 	hdPortraits := make(map[int]image.Image)
 	for _, asset := range catalog.Assets {
+		if asset.Role == "map_overlay_hd_set" {
+			if err := loadModernMapOverlayHDAsset(set, asset, packRoot); err != nil {
+				return nil, err
+			}
+			set.hasHD = true
+			continue
+		}
 		if asset.Role == "battle_animation_hd_set" || asset.Role == "battle_effect_hd_set" {
 			if err := loadModernBattleHDAsset(set, asset, packRoot); err != nil {
 				return nil, err

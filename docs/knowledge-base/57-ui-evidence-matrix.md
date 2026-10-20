@@ -1,5 +1,11 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
+共用章節／clear_hp_from死亡事件已接入HD人物與FDOTHER5項68..79煙霧。
+完整13＋6＋6＋steady繪製、A累積／B重置、F2與一次續行沿原typed producer，未修改像素路徑、死亡規則或保存格式。
+前25拍現行事件viewport從0,0開始，最後steady才回4,4；這是現行程式對照，非新DOS原版目的位址證明。
+可見診斷與獨立來源重組已通過；初輪黑DAC及錯位移拒收，正常章節事件抽樣仍待，普通擊殺與狀態致死consumer不在本批。
+來源與限制見[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的shared_death_followup_20261020，數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)。
+
 洛娜BattleFig5的15／16待機、旋槍／前刺及弧光已沿原21項描述子正式登錄，17固定零header不補造。
 完整Draw／F2及正常第九章兩次移動／END後原地攻防、返回與邊界冷讀通過。驗證控制器允許正式可達集合中的自己原格，遊戲規則不改。
 二銀行分層以--layered明示，中間alpha沿既有來源契約，最終完整PNG仍必須255核心；母稿RGBA保持，鞋底少量裁切明示。
