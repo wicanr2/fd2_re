@@ -31,6 +31,28 @@ func (g *Game) recordInputAuditState() {
 	r["modern_theme"] = g.modernStoryPortraits != nil
 	r["hd_theme"] = g.modernStoryPortraits != nil && g.modernStoryPortraits.hasHD
 	r["battle_scene"] = g.atk != nil
+	r["command_scene"] = g.nativeCmd0Presentation != nil
+	r["command_targeting"] = g.nativeCommand0Targeting
+	r["command_grid"], r["command_selection"] = g.nativeCommandOpen, g.nativeCommandSel
+	r["command_target_id"] = g.nativeCommandTargetID
+	if g.nativeCommand0Targeting && g.st != nil && g.st.W > 0 {
+		cells := make([][]int, 0)
+		for index, value := range g.st.NativeTileBlitModes {
+			if value != 0xff {
+				cells = append(cells, []int{index % g.st.W, index / g.st.W})
+			}
+		}
+		r["command_target_cells"] = cells
+	}
+	if j := g.nativeCmd0Presentation; j != nil {
+		r["command_id"], r["command_owner"] = 0, fmt.Sprintf("%p", j)
+		r["command_actor_fig"], r["command_target_fig"] = j.actor.BattleFig, j.target.BattleFig
+		r["command_frame"], r["command_pulse_black"] = j.frame, j.pulseBlack
+		if frame := j.modernFrame(); frame != nil {
+			r["command_phase"] = frame.hdPhase
+			r["command_source_layers"] = modernBattleAuditLayers(frame.hdSources)
+		}
+	}
 	r["battle_event"] = g.battleEvent != nil
 	r["level_up_dialogue"] = g.nativeLevelUpDialogue != nil
 	r["hd_timed_dialogue"] = g.modernHDTimedDialogueVisible
@@ -185,7 +207,8 @@ func (g *Game) recordInputAuditState() {
 				continue
 			}
 			units = append(units, map[string]any{"name": u.Name, "x": u.X, "y": u.Y, "hp": u.HP, "mp": u.MP, "lv": u.Lv, "exp": u.Exp, "camp": u.Camp, "acted": u.Acted, "on_field": u.OnField, "raw": u.NativeMapPresentation,
-				"native_identity": u.NativeIdentity, "battle_fig": u.BattleFig, "attack_min": u.AtkMin, "attack_max": u.AtkMax})
+				"native_identity": u.NativeIdentity, "battle_fig": u.BattleFig, "attack_min": u.AtkMin, "attack_max": u.AtkMax,
+				"command_ids": u.NativeCommandIDs()})
 		}
 		r["units"] = units
 	}
@@ -226,11 +249,18 @@ func physicalBattleAuditSources(scene *nativePhysicalScene) (int, string, []map[
 	if job.hdSources == nil {
 		return scene.body.index, job.hdPhase, nil
 	}
-	layers := make([]map[string]any, 0, len(job.hdSources.Layers))
-	for _, layer := range job.hdSources.Layers {
+	return scene.body.index, job.hdPhase, modernBattleAuditLayers(job.hdSources)
+}
+
+func modernBattleAuditLayers(sources *modernHDBattleSources) []map[string]any {
+	if sources == nil {
+		return nil
+	}
+	layers := make([]map[string]any, 0, len(sources.Layers))
+	for _, layer := range sources.Layers {
 		layers = append(layers, map[string]any{"archive": layer.Archive, "resource": layer.Resource, "frame": layer.Index,
 			"x": layer.Frame.X + layer.DX, "y": layer.Frame.Y + layer.DY,
 			"width": layer.Frame.Width, "height": layer.Frame.Height, "fill": layer.Fill, "clip": layer.Clip})
 	}
-	return scene.body.index, job.hdPhase, layers
+	return layers
 }

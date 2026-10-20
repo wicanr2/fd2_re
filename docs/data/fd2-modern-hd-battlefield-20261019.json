@@ -48019,5 +48019,287 @@
       "manual": 14,
       "possibly_done": 0
     }
+  },
+  "ordinary_command0_followup_20261020": {
+    "status": "CONFORMED-SCOPED-RUNTIME-E1",
+    "base_commit": "41222e5be4cd011bd11761d749db0187bbb6b27d",
+    "formal_registered": true,
+    "full_battle_hd_complete": false,
+    "production_rules_changed": false,
+    "scope": "普通指令0的既有prelude、actor、target與tail附加可選HD圖層；未登錄人物與普通FDOTHER特效保持原索引繪製。90號三組新圖與其他普通指令另續。",
+    "current_state": {
+      "remake_complete": "指令0人物HD的完整階段、五階段F2、缺件原子性、普通首章施法／返回／章節邊界冷讀及一般Go回歸通過。",
+      "original_oracle_unknown": "本輪不新增原版執行、逐幀／音訊對拍或整章PLAYER-E2。",
+      "optional_polish": "90／93等人物圖組、其他普通指令、法術／死亡／共同效果、普通召喚及平台效能仍待。"
+    },
+    "sources_before_implementation": [
+      {
+        "file": "docs/data/fd2-reference-files.json",
+        "sha256": "9946b7506620069ce9b7bb8e4b1f7fed36e7a9389b634ef62064727d89579c5e"
+      },
+      {
+        "file": "docs/data/ida/fd2_command0_presentation_ida.txt",
+        "sha256": "2941361ffb544938c4ed5350904ccee193e7c8b0dedf7ab42042bb6f42753ba0"
+      },
+      {
+        "file": "remake/internal/battlepresent/native_command0.go",
+        "sha256": "82c9b165c1ac5845d6a7a440723c4720a7d6bbdde5aadbf577a829ff48c693c0"
+      },
+      {
+        "file": "remake/internal/battlepresent/native_command0_actor.go",
+        "sha256": "d4df4349a74302532dcafa59984eee10f72933ea9ebc0a93f616b3802fee8716"
+      },
+      {
+        "file": "remake/internal/battlepresent/native_command24_prelude.go",
+        "sha256": "d8a6f8833606d0d1e3a857280e7bbb606734f905a4b4dfa1e7c359f4c80c61a3"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command0_presentation.go",
+        "sha256": "93286c2742cf7475cf338526e53517d4adc8d69c8fb544a35188caf74565217d"
+      }
+    ],
+    "address_space": "沿既有IDA Pro9.4 linear、image base0；固定EXE指紋依fd2-reference-files.json及既有command0主證據，不重開RE。",
+    "design_contract": {
+      "source_identity": "actor idle=selector*3；effect=selector*3+2，僅由固定zero_header_word證據退到前一組；target idle=selector*3。",
+      "composition": "mode0前導保持raw side的雙人物與平台順序；actor按既有MP marker、LUT11及DAC0 pulse；target保持七層前後遮擋與28幀／七次傷害；tail保持LUT12..14與普通背景，不推進排程。",
+      "admission": "所有原生驗證與HD銀行完整准入後才發布owner；F2原子載入。已登錄但缺件／錯SHA不得靜默像素回退。",
+      "acceptance": "兩側完整indexed GPU零差；真實Game.Draw HD階段／F2與失敗原子性；普通標題LOAD、指令0選取／取消／施法／自然返回及保存冷讀；fixture明示不當E2。",
+      "limits": "本輪只提升指令0人物呈現；不宣稱其他普通指令、90號新圖、HD VFX、唯一相位、原版逐幀parity、自然難度或完整HD。"
+    },
+    "normal_gui_correction": {
+      "status": "READY",
+      "rejected": "work/promo-cadence-20261018/hd-fonts/command0-normal-gui-r1",
+      "reason": "沿物理腳本先移動再開法術，BattleFig9依既有0x18A5F..0x18A70的已證規則禁止移動後施法，Left正確被忽略。非產品缺陷。",
+      "source": "remake/cmd/fd2/main.go:actionOverlayAvailability及nativeCommandAllowedAfterMove，原始定位與證據沿既有56。",
+      "policy": "指令0抽樣只在當回合原地開環；以固定spells.json的dist5作曼哈頓預篩，再要求正式command_target_cells接納，不把預篩當正式射程。無候選只正常END，最多一輪；不改座標、規則、槽、seed或血量。"
+    },
+    "private_synced": true,
+    "sources_after_implementation": [
+      {
+        "file": "remake/cmd/fd2/modern_hd_command0.go",
+        "sha256": "c640cc2aa780aa44d705ff13dfd4ce07d7c1d9d8b78a9f4bffed5e9c52b9ad01"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command0_presentation.go",
+        "sha256": "8fd01d952fc446c501d27464b3c6e776977eafcd214d15fa66c6a582dccf4a5d"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_runtime.go",
+        "sha256": "35f3b360b9d60b70bb05c7dddb8d6d415ac61f228809d2c55ca446babbf2cf80"
+      },
+      {
+        "file": "remake/cmd/fd2/player_shortcuts.go",
+        "sha256": "0604f476ab5d528acb8d0be541e4678871c73240bdf0650b808d347129bb378b"
+      },
+      {
+        "file": "remake/cmd/fd2/input_audit_trace.go",
+        "sha256": "480c9a56ad3ca4637a68d6f876fb57a0cdb57b96c43de1d6f8afdf080f4f9223"
+      },
+      {
+        "file": "remake/internal/figani/separated.go",
+        "sha256": "6a6528e2d0cefdabf48917561ba7323b6d711a516441214201b653baee10eea4"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_command0_test.go",
+        "sha256": "874c66ef3f1390838e4002c3a9ecdbdad36f5cd0ce5e421074d8b2ed2af285f3"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_command0_lifecycle_test.go",
+        "sha256": "bda9477e30b81550d9e4edbc3c4d96f0b932ca9729f77ff61b8029cc62b65bc1"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_gpu_test.go",
+        "sha256": "b92f217cf0248691daa1ae7785fe7328fd95cadda1966179463c7f8724e99cef"
+      },
+      {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "26ffa239b8ce569fe54344ab5b543f3eeeab4f40d372c68a92cc4c40b886f74b"
+      },
+      {
+        "file": "tools/verify_fd2_compound_caster_gpu.py",
+        "sha256": "5f53449d7b178ab3a3cc343b6042b2438066e079560a4318d6ae00dac7d4ad34"
+      },
+      {
+        "file": "tools/test_fd2_command0_hd_gpu.py",
+        "sha256": "0778520241e3b4f97e6e06addc192d161c0c76d9ba620a232e84fe94c4be4730"
+      }
+    ],
+    "verification": {
+      "indexed_gpu": {
+        "cases": 953,
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/command0-indexed-gpu-r2.log",
+          "sha256": "36ab51cf678256d77a20fe907f675bd1f526201efbdf48a5d64a9313bf1c5fc6"
+        },
+        "scope": "兩個raw side的原始270／272及目標、完整prelude／actor黑色與pulse／target／tail；整幅native GPU exact，HD alpha／RGB tolerance1，非新原版oracle。"
+      },
+      "atomic_preflight": {
+        "file": "work/promo-cadence-20261018/hd-fonts/command0-atomic-tests-r2.log",
+        "sha256": "3fac442f001644063a07af39d05d199e7fb13b877b7958d51bba15cfc9bf8e3a"
+      },
+      "lifecycle": {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/command0-lifecycle-r1/receipt.json",
+          "sha256": "f0eabd4fb86db36fa7cc7a4d1e674ee16a065fe0de237f44d39cd737fb9f0c93"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/command0-lifecycle-r1.log",
+          "sha256": "b83046851fa145b4a6cbb92df648e14b4bd7fdaedcbd61f49d3b7ff77ad17fdb"
+        },
+        "hd_draws": 74,
+        "pngs": 69,
+        "f2_phases": [
+          "prelude",
+          "actor",
+          "actor-pulse",
+          "target",
+          "tail"
+        ],
+        "mp_publications": 1,
+        "hp_publications": 7,
+        "continuations": 1,
+        "evidence": "修改fixture，RUNTIME-E1，非普通玩家"
+      },
+      "fixture_core": {
+        "file": "work/promo-cadence-20261018/hd-fonts/command0-fixture-core-r3.json",
+        "sha256": "63e566926f1fbe8ab5bfac6caf2528451848597f041c0a8c87dc7aa1be7dc71c"
+      },
+      "normal_gui": {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/command0-normal-gui-r2/receipt.json",
+          "sha256": "d72b8fe9edd7eada23adb419cf526e85bd2185515f95d3dc043a148a4b9a45f0"
+        },
+        "source_save": {
+          "file": "work/promo-cadence-20261018/hd-fonts/yuni-normal-gui-r1/user-data/fd2_re/fd2_save.json",
+          "sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2"
+        },
+        "constructor_policy": "既有普通START／F5首章JSON，沒有本輪強化或章內狀態注入；seed1固定，非新增整章E2。",
+        "elapsed_seconds": 501.43078281218186,
+        "input": "正常LOAD、短走行／取消、一次END、悠妮原地開指令0／取消目標／再確認、自然返回、F2、F5、兩主題F9與新程序標題LOAD。",
+        "normal_source_pngs": 22,
+        "core_pngs": 9,
+        "save_contract": "只驗章節邊界保存及兩主題／新程序重建一致。戰中悠妮MP6，冷讀重建MP8；敵方HP0亦回入口值28。不宣稱本次施法、戰中HP／位置／經驗持續。來源與保存bytes完全相同。",
+        "recording_created": false
+      },
+      "normal_core": {
+        "file": "work/promo-cadence-20261018/hd-fonts/command0-normal-core-r1.json",
+        "sha256": "3b690aed175009e86669027287d9a81171eb8b4f53fbd5bd18ece6a01a79fbee"
+      },
+      "formal_coverage": {
+        "file": "work/promo-cadence-20261018/hd-fonts/command0-formal-coverage-r1.json",
+        "sha256": "8f030841050f118aae80f6da5a3652aba4de1dbe64287baee84848d7f5c19fd3"
+      },
+      "general_go_regression": {
+        "status": "PASS",
+        "prior_incomplete_log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/command0-go-regression-r1.log",
+          "sha256": "45abab2f384ce555d7f929b47f86180d3508fa5a580abf52351f6e2188c04a97"
+        },
+        "reason": "首輪同時開啟昂貴HD可選素材案例，4GB／2CPU在600秒外層時限中止；不得列為完整通過。依既有remake_go_test.sh以8GB／4CPU及locales overlay乾淨重跑一般回歸，HD專用案例另有獨立收據。",
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/command0-go-regression-r2.log",
+          "sha256": "fe3b22841b5f6ec7c04ade5793af23934f322250ec9c38b5b18ba5de7ababf7f"
+        },
+        "packages": 20,
+        "optional_hd_cases": "專用GPU與真實catalog原子性由獨立案例執行，條件SKIP不當驗收。"
+      },
+      "fixture_guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/command0-fixture-guards-r3/report.json",
+        "sha256": "cfe317f17d1447e8dbec3355b39b6b4a4e1c5b48995ddf83b4ea2bb0c4d1bf2f"
+      },
+      "normal_guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/command0-normal-guards-r2/report.json",
+        "sha256": "4b027b9d92f1618014d69f6b2a97e6f008879efd2b117ad37b6bab1849951d2b"
+      },
+      "negative_cases": 12,
+      "negative_positive_controls": true,
+      "compound_verifier_regression": {
+        "file": "work/promo-cadence-20261018/hd-fonts/command0-compound-verifier-regression-r2.json",
+        "sha256": "7098c100b89928176a3ef74947a4791175d0c11065294055d3dc3ae4476d13c0"
+      },
+      "compound_matched_pngs": 148
+    },
+    "rejected_validation": [
+      {
+        "path": "work/promo-cadence-20261018/hd-fonts/command0-fixture-guards-r2",
+        "status": "INVALIDATED-NOT-ACCEPTANCE",
+        "reason": "誤傳不存在的inventory，舊harness未先驗正對照而錯把共同FileNotFound當六項拒收。正式harness已補正對照與逐項預期原因；此輪不列入通過數。"
+      },
+      {
+        "path": "work/promo-cadence-20261018/hd-fonts/command0-fixture-core-r1.json",
+        "status": "NO-REPORT-PROFILE-REJECTED",
+        "reason": "藍衣色域不適用悠妮既有黃色服裝；依既有yuni-normal-gpu-r1改用gold，alpha／1000點／RGB門檻不變。"
+      }
+    ],
+    "readme_screenshot": {
+      "source": {
+        "file": "work/promo-cadence-20261018/hd-fonts/command0-normal-gui-r2/world-hd-art-04.png",
+        "sha256": "149175fdab7915087831b85141ad131f60041f0de8f50d28e1fecd59940054f5"
+      },
+      "published": {
+        "file": "docs/figures/hd-ordinary-command0-yuni.png",
+        "sha256": "149175fdab7915087831b85141ad131f60041f0de8f50d28e1fecd59940054f5"
+      },
+      "edited": false
+    },
+    "catalog": {
+      "sha256": "f3390347509e03c94080296b1d246f421bd396700b5b0cf56c4da09e62ebb9b8",
+      "unchanged": true,
+      "new_assets": 0,
+      "private_root": "remake/generated-assets/modern-theme-prototypes"
+    },
+    "string_review": {
+      "inventory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/command0-string-inventory-r1.json",
+        "sha256": "8f782a98fabdb68c243e0798e5d540d1e6af56c5198a3f09c322ecfbf03696a1"
+      },
+      "entries": 5205,
+      "reviewed": 99,
+      "dispositions_unchanged": true
+    },
+    "private_assets_changed": false,
+    "binary_before_cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/command0-game-r1",
+      "sha256": "5a0e6ab1512595cb866a8cab9ae510346219c9c9643dc6b0630be06c676f17fc",
+      "size": 19348288
+    },
+    "cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/command0-cleanup-r1.json",
+      "sha256": "5b0178f9a692c8933e2221226b7c5867ca8a61ff2a619760149ec469b879ea76",
+      "bytes": 386783527,
+      "no_recordings": true
+    },
+    "final_document_checks": {
+      "file": "work/promo-cadence-20261018/hd-fonts/command0-final-document-checks-r1.json",
+      "sha256": "3b3fceebf26275a4fcfff5984ae33a6024a9fcff3e838850ac0e5acf473d5f98"
+    },
+    "worklist": {
+      "remote_updated": [
+        201,
+        263
+      ],
+      "open": 22,
+      "manual": 14,
+      "possibly_done": 0
+    },
+    "reproduction": {
+      "images": [
+        "fd2-go-test-local:latest",
+        "fd2-assets-local:20260829-sfx",
+        "fd2-promo:20261017-r1"
+      ],
+      "execution": "Docker only，user1000:1000，network none，唯讀original pack；執行器與參數均用受版控工具。",
+      "build": "在/remake以go build -o /repo/work/promo-cadence-20261018/hd-fonts/command0-game-r1 ./cmd/fd2重建。",
+      "indexed_gpu": "FD2_HD_BATTLE_GPU=1 FD2_ASSET_PACK=<original> FD2_TEST_ORIGINAL_PACK=<original> with-xvfb go test ./cmd/fd2 -run ^TestModernHDBattleGPUBridge$ -count=1 -v",
+      "lifecycle": "FD2_HD_COMMAND0_GPU=1；設定FD2_TEST_MODERN_EFFECT_CATALOG=<catalog>、FD2_TEST_MODERN_EFFECT_PACK=<modern>、FD2_TEST_MODERN_EFFECT_OUT=<new-out>；with-xvfb go test ./cmd/fd2 -run ^TestModernHDCommand0RuntimeGPU$ -count=1 -v",
+      "normal_gui": "python3 tools/verify_fd2_hd_fonts_gui.py --binary <rebuilt> --assets /repo/remake --original-pack <original> --modern-pack <modern> --town-save <normal-source> --out <new-out> --battle-status --world --battle-hd --battle-only --battle-command 0 --battle-art --battle-repetitions 1 --battle-own-index 1 --battle-approach-rounds 1 --startup-timeout 180",
+      "core": "tools/verify_fd2_compound_caster_gpu.py選--command0或--normal-command0，--figure 9 --core-profile gold；receipt/catalog/source/original-pack/inventory/report均明示。",
+      "negative": "tools/test_fd2_command0_hd_gpu.py沿相同五項來源參數及新out；普通GUI加--normal。先通過正對照，再核六項原因。",
+      "standard_go": "沿tools/remake_go_test.sh的8GB／4CPU與唯讀original加repo locales overlay，在Go image內with-xvfb go test ./... -count=1 -timeout=18m；需exec /tmp。昂貴HD可選案例另外驗，不用未開啟案例的SKIP當通過。"
+    },
+    "final_source_checks": {
+      "file": "work/promo-cadence-20261018/hd-fonts/command0-final-source-checks-r1.json",
+      "sha256": "baf2d4adaf2038fe271414f70342f5c690d5dd0b008fbe85fb2b922e3ea25a1a"
+    }
   }
 }

@@ -2728,3 +2728,19 @@ settle_world_battle必須等待class_ui_job正常繪製完成，接續以Return�
 83低姿勢補充READY：候選r1的低姿勢雙腿過寬、腳底太低，槍尖與腳底間距不足，完整排版不採用。原250:6..10的雙腿收於軀幹下方，腳底約y150，前端槍尖可至y169／171；需要依這個比例重繪，不以全框縮放或腳底向下移補滿矩形。姿勢與alpha仍由內建imagegen產生，保留未採用稿及原幀單張參考。\n
 83普通進軍上限修訂READY：r2已正常完成三次END，但希莉亞(10,24)距83號(11,15)仍遠，正式可達集合沒有射程2..3的位置。只將GUI控制器的battle-min-approach-rounds及battle-approach-rounds明示選項擴為0..6，預設0與min<=max守衛保持。新輪固定min4／max6、原來源及seed1，普通移動、待機與END，不改部署／移動力／HP／亂數或排程。六次後仍不可達就拒收，不無界重試。這只修抽樣控制範圍，先前三輪拒收保留；完整攻擊、F2及新程序LOAD仍必要。\n
 83切片及有界進軍修訂已達CONFORMED-SCOPED。首版低姿勢與首兩輪GUI拒收保留；第三輪沿同來源seed1、min4／max6，實際五次END完成接戰與我方射擊，章內無注入。本體40張與金光組8張分別包含3／5張目標待機，兩組共30項普通反例拒收；完整12張仍依同次fixture。正式載入三項加兩子項、清冊十一項及固定來源稽核通過，零SKIP。私人同步與完整提示見主收據knight83_battle_followup_20261020；其他角色、法術／死亡／普通召喚與平台不由此放行。
+
+
+### 普通指令0人物HD接點
+
+狀態：CONFORMED-SCOPED／RUNTIME-E1。實作前為READY；完整階段、五階段F2、普通首章施法／返回與章節邊界冷讀已通過。沿既有指令0主證據與typed producer，補prelude、actor、target、tail的可選HD圖層。原版位址、來源SHA與目前狀態表見HD戰場主收據ordinary_command0_followup_20261020；本輪不重解既有函式。
+
+- 保留mode0雙角色、raw side平台順序、actor MP marker／LUT11／DAC0 pulse、七層28幀目標及LUT12..14尾段；只附加來源，不改Draw確認、音效、MP／HP／RNG或存檔。
+- actor effect實際資源ID須追隨已驗的zero-header fallback；不以selector猜測cast永遠存在。未登錄圖源仍用原索引。已登錄缺件維持拒收。
+- 原生預建成功後才原子准入全部HD銀行；F2亦完整預載，失敗不得改owner／主題／交易。兩側完整indexed GPU零差、實際Game.Draw階段與F2、缺件反例及普通LOAD施法返回／保存冷讀均須驗證。
+- 普通特效暫沿原索引。90號新圖、其他普通指令、死亡及效能另續；本切片不代表完整HD、原版逐幀parity或PLAYER-E2。
+
+驗收入口：[完整Game.Draw測試](../../remake/cmd/fd2/modern_hd_command0_lifecycle_test.go)、[人物核心核對](../../tools/verify_fd2_compound_caster_gpu.py)的`--command0`與`--normal-command0`、[錯收據／錯圖反例](../../tools/test_fd2_command0_hd_gpu.py)。後兩者對悠妮沿既有`--core-profile gold`，alpha與RGB門檻保持；普通流程用[GUI工具](../../tools/verify_fd2_hd_fonts_gui.py)的`--battle-command 0`，原地距離預篩只縮小測試候選，正式目標格仍須通過。
+
+普通指令0控制器修訂READY：首輪物理腳本先移動，悠妮依既有原版規則不能移動後施法而拒收。新輪固定同來源與seed1，只原地開環；以固定dist5預篩，再由正式目標格接納。至多一次正常END，不改遊戲狀態；先前拒收收據保留。
+
+原地控制器修訂與普通指令0本切片已達CONFORMED-SCOPED。普通特效維持原索引、無新圖源；原版逐幀／音訊、其他指令、90／93新圖與完整HD仍待。保存只證章節邊界冷讀，戰中MP與敵HP不持續。所有結果及拒收來源集中於主收據ordinary_command0_followup_20261020。

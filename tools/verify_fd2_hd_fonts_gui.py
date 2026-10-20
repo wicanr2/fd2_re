@@ -53,6 +53,7 @@ def main():
                         help='第二／三章原生來源出發前，經正常教會服務復活哈諾；需--capture-native-battle-save')
     parser.add_argument('--buy-bekwei-bow', action='store_true',
                         help='原生第九章出發前，普通購買黑暗弓並立即裝備貝克威')
+    parser.add_argument('--battle-command', type=int, choices=[0], help='改以正常指令0抽樣；原地候選再由正式目標格驗證，需--battle-only')
     parser.add_argument('--battle-repetitions', type=int, choices=[1,2], default=2,
                         help='普通攻防場數；一場模式仍完整自然返回與保存冷讀，需--battle-only')
     parser.add_argument('--battle-art-samples', type=int, choices=[32,64], default=64,
@@ -87,6 +88,8 @@ def main():
     assert args.revive_before_departure is None or args.capture_native_battle_save
     assert not args.buy_bekwei_bow or (args.capture_native_battle_save
            and args.battle_node=='battle_ch09' and args.revive_before_departure is None)
+    assert args.battle_command is None or (args.battle_only and args.battle_hd and not args.battle_end_art and not args.timed_dialogue and not args.battle_advance)
+    action_label='command0' if args.battle_command==0 else 'physical'
     assert args.battle_repetitions==2 or (args.battle_only and not args.timed_dialogue)
     assert 0<=args.battle_end_figure<=135
     end_figures=sorted(args.battle_end_figures or {args.battle_end_figure})
@@ -775,12 +778,22 @@ def main():
                                       and [u['x'],u['y']]==state['cursor'])
                         # 與battle.State.InAttackRange相同的已載入欄位及零值政策；不改正式規則。
                         minimum,maximum=attacker.get('attack_min',0) or 1,attacker.get('attack_max',0) or 1
+                        if args.battle_command==0:
+                            assert 0 in (attacker.get('command_ids') or []) and attacker['mp']>=2,'目前單位不能使用正式指令0'
+                            record=next(r for r in json.loads((args.assets/'assets/spells.json').read_text()) if r['id']==0)
+                            assert record['dist']==5 and record['range']==0 and record['target']==0
+                            minimum,maximum=1,record['dist']  # 僅預篩；正式目標格仍須接納。
                         assert 1<=minimum<=maximum,'目前觀測的正式射程無效'
                         choices=[]
                         for target in targets:
                             for cell in state.get('move_reachable',[]):
                                 if tuple(cell) not in occupied and minimum<=abs(cell[0]-target['x'])+abs(cell[1]-target['y'])<=maximum:
                                     choices.append((abs(cell[0]-state['cursor'][0])+abs(cell[1]-state['cursor'][1]),cell,target))
+                        if args.battle_command==0:
+                            # 沿0x18A5F的移動後禁用規則，只在本回合原地施法。
+                            origin=state['cursor']
+                            choices=[(0,origin,target) for target in targets
+                                     if minimum<=abs(origin[0]-target['x'])+abs(origin[1]-target['y'])<=maximum]
                         if choices and approach>=args.battle_min_approach_rounds:break
                         assert approach<args.battle_approach_rounds,'正式可達集合沒有符合目前射程的測試位置'
                         advance_cell=None
@@ -862,35 +875,46 @@ def main():
                         shot(prefix+'-approach-round-return')
                     _,cell,target=min(choices,key=lambda value:(value[0],value[1][1],value[1][0]))
                     battle_attack_choices.append({'scene':prefix,'attacker':attacker,'range':[minimum,maximum],
-                                                  'cell':cell,'target':target,'state_injection':False})
+                                                  'cell':cell,'target':target,'state_injection':False,
+                                                  'action_kind':action_label,'command_candidate_policy':'stationary_prefilter_then_formal_target_field' if args.battle_command==0 else None})
                     move_cursor(cell);key('Return')
                     wait(lambda s:s.get('ring') and not s.get('walking') and s.get('ring_phase')=='open')
                     shot(prefix+'-attack-ring')
-                    key('Return');wait(lambda s:not s.get('ring'))
+                    if args.battle_command==0:
+                        key('Left');key('Return')
+                        wait(lambda s:s.get('command_grid') and s.get('command_selection')==0)
+                        key('Return');wait(lambda s:s.get('command_targeting') and s.get('command_target_id')==0)
+                        key('Escape');wait(lambda s:s.get('command_grid'))
+                        shot(prefix+'-command0-cancelled-target')
+                        key('Return');wait(lambda s:s.get('command_targeting') and s.get('command_target_id')==0)
+                        assert [target['x'],target['y']] in latest(audit).get('command_target_cells',[]),'正式法術目標格拒收'
+                    else:
+                        key('Return');wait(lambda s:not s.get('ring'))
                     move_cursor([target['x'],target['y']]);shot(prefix+'-attack-target')
                     scene_started=time.monotonic()
-                    key('Return');wait(lambda s:s.get('battle_scene') is True)
+                    scene_key='command_scene' if args.battle_command==0 else 'battle_scene'
+                    key('Return');wait(lambda s:s.get(scene_key) is True)
                     if args.battle_hd:
-                        wait(lambda s:s.get('battle_scene') and s.get('hd_battle'))
-                    shot(prefix+'-physical-scene')
+                        wait(lambda s:s.get(scene_key) and s.get('hd_battle'))
+                    shot(prefix+'-'+action_label+'-scene')
                     if args.battle_hd:
-                        assert shots[prefix+'-physical-scene.png']['state'].get('hd_battle'), '未擷取到HD戰鬥繪製層'
+                        assert shots[prefix+'-'+action_label+'-scene.png']['state'].get('hd_battle'), '未擷取到HD戰鬥繪製層'
                     if args.battle_art:
                         # 只讀實際視窗，不暫停、改寫或推進遊戲狀態。
                         for index in range(args.battle_art_samples):
                             before=latest(audit)
-                            if not before.get('battle_scene'):break
+                            if not before.get(scene_key):break
                             if before.get('hd_battle'):
                                 path=args.out/f'{prefix}-art-{index:02d}.png'
                                 command('import','-window',window,str(path))
                                 battle_art_samples.append({'scene':prefix,'file':path.name,'sha256':digest(path),
                                                            'before':before,'after':latest(audit)})
                             time.sleep(.04)
-                    returned_scene=wait(lambda s:not s.get('battle_scene') and not s.get('walking') and s.get('hd_world'),
+                    returned_scene=wait(lambda s:not s.get(scene_key) and not s.get('walking') and s.get('hd_world'),
                                         timeout=180 if args.battle_hd else 60)
                     if args.battle_hd:
                         battle_hd_scenes.append({'name':prefix,'elapsed_seconds':time.monotonic()-scene_started,
-                                                 'presented':shots[prefix+'-physical-scene.png']['state'],
+                                                 'presented':shots[prefix+'-'+action_label+'-scene.png']['state'],
                                                  'returned':returned_scene,
                                                  'scope':'軟體GPU與視窗擷取的牆鐘時間，不是正式平台效能驗收'})
                 if args.timed_dialogue:
@@ -1034,6 +1058,8 @@ def main():
                     'gui_tool_sha256':tool_source_sha256,
                     'world_runtime_checked':args.world,'world_walk_gpu':world_shots,'world_walk_rejected':world_rejected,
                     'battle_hd_consumer_checked':args.battle_hd,
+                    'battle_command_id':args.battle_command,
+                    'battle_action_kind':action_label,
                     'battle_repetitions':args.battle_repetitions,'battle_art_sample_limit':args.battle_art_samples,
                     'battle_end_figures':end_figures,
                     'natural_attack_return_checked':args.battle_only,
@@ -1069,7 +1095,7 @@ def main():
                     'save_contract':'F5保存章節邊界進度；LOAD重建戰場，不保存戰中位置、Acted或敵方HP。',
                     'recording_created':False,'elapsed_seconds':time.monotonic()-started,
                     'scope':((f'正常標題LOAD來源JSON，普通走行、{args.battle_repetitions}場攻防、F2及戰後保存／新程序LOAD；來源祖先另見建槽收據。未重驗字型面板。' if args.battle_only else '正常標題LOAD既有普通START／F5首章JSON，Z聚焦、Home檢視、F2、狀態與命令、返回；')
-                             + (f'含普通走行、指令環、取消、{args.battle_repetitions}場物理攻擊與正常戰場返回。'+('含經驗對話中F9。' if args.battle_repetitions==2 else '') if args.world else '')
+                             + (f'含普通走行、指令環、取消、{args.battle_repetitions}場{action_label}演出與正常戰場返回。'+('含經驗對話中F9。' if args.battle_repetitions==2 else '') if args.world else '')
                              + '不注入座標或狀態，不宣稱原版對拍或完整戰役。')}
             if args.terrain_frames:
                 report['terrain_expectation']={'label':args.terrain_label,'frames':sorted(args.terrain_frames),'view_y':8}

@@ -469,7 +469,7 @@
       "id": "availability-table-can-be-preset-by-caller",
       "area": "逆向",
       "rule": "wrapper 只清輸出表的一格、其餘格子由呼叫端先寫的情況存在：說「這個旗標只有這幾個寫入端」之前，把呼叫端傳表進來之前的寫入也看一遍。",
-      "why": "2026-09-16 第四章 seq 459：有指令的單位移動後指令格是紅的，0x18D8C 裡找不到原因；答案在呼叫端 0x18A72——走過路的單位除 raw +7 為 0x12／0x13／0x22 外先把表 +4 設 1。",
+      "why": "2026-09-16 第四章 seq 459：有指令的單位移動後指令格是紅的，0x18D8C 裡找不到原因；答案在呼叫端 0x18A72——走過路的單位除 raw +7 為 0x12／0x13／0x22 外先把表 +4 設 1。 2026-10-20 普通指令0 GUI也不能套用先移動後攻擊的腳本；BattleFig9須於當回合原地開法術環，或正常待機換回合。拒收收據與修訂入口見HD戰場主收據ordinary_command0_followup_20261020。",
       "date": "2026-09-16",
       "evidence": "remake/cmd/fd2/main.go nativeCommandAllowedAfterMove；TestActionOverlayCommandDisabledAfterMoveExceptThreeFigs"
     },
@@ -3299,6 +3299,15 @@
         ],
         "pattern": "args\\.assets/'assets/themes/modern/catalog\\.json'"
       }
+    },
+    {
+      "id": "negative-tests-require-positive-control-and-reason",
+      "date": "2026-10-20",
+      "area": "驗證工具",
+      "rule": "反例測試先以同一環境與參數跑有效基底正對照，再逐項核對預期拒收原因。路徑、環境或語法錯誤不列作功能拒收。",
+      "why": "指令0一次反例命令誤傳不存在的inventory，舊harness把六次共同FileNotFound當通過。該輪已撤回，加入正對照與原因比對後重跑十二項。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#ordinary_command0_followup_20261020；tools/test_fd2_command0_hd_gpu.py",
+      "guard_limitation": "現行fd2_lessons.scannable刻意略過test_檔案；本條由含正對照的實際fixture／普通反例收據驗證，不另繞過排除契約。"
     }
   ]
 }

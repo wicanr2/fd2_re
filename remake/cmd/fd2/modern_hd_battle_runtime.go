@@ -67,6 +67,8 @@ func (g *Game) syncModernHDBattleOwner() {
 		owner = g.atk.nativeScene
 	}
 	switch {
+	case g.nativeCmd0Presentation != nil:
+		owner = g.nativeCmd0Presentation
 	case g.nativeCmd32Presentation != nil:
 		owner = g.nativeCmd32Presentation
 	case g.nativeCmd33Presentation != nil:

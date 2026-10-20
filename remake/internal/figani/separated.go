@@ -166,16 +166,28 @@ func separatedResourceHasZeroHeader(animationRoot string, resource int) (bool, e
 // selector*3+2 首 word 為零時退到前一資源規則。缺少或矛盾的狀態文件不可
 // 被誤當成零標頭，亦不可回退讀 FIGANI.DAT。
 func LoadSeparatedResourceWithZeroHeaderFallback(animationRoot string, resource int) (*Animation, error) {
+	animation, _, err := LoadSeparatedResourceWithZeroHeaderFallbackSource(animationRoot, resource)
+	return animation, err
+}
+
+// LoadSeparatedResourceWithZeroHeaderFallbackSource also returns the resource
+// actually admitted. Renderers must bind optional replacement art to that source,
+// including the proven zero-header fallback, rather than the requested selector.
+func LoadSeparatedResourceWithZeroHeaderFallbackSource(animationRoot string, resource int) (*Animation, int, error) {
 	animation, primaryErr := LoadSeparatedResource(animationRoot, resource)
 	if primaryErr == nil {
-		return animation, nil
+		return animation, resource, nil
 	}
 	zero, statusErr := separatedResourceHasZeroHeader(animationRoot, resource)
 	if statusErr != nil {
-		return nil, fmt.Errorf("figani: resource %d unavailable (%v); status: %w", resource, primaryErr, statusErr)
+		return nil, -1, fmt.Errorf("figani: resource %d unavailable (%v); status: %w", resource, primaryErr, statusErr)
 	}
 	if !zero || resource == 0 {
-		return nil, primaryErr
+		return nil, -1, primaryErr
 	}
-	return LoadSeparatedResource(animationRoot, resource-1)
+	animation, err := LoadSeparatedResource(animationRoot, resource-1)
+	if err != nil {
+		return nil, -1, err
+	}
+	return animation, resource - 1, nil
 }

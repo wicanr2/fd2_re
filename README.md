@@ -172,6 +172,13 @@ HD 背景、敵方與面板仍含像素素材。來源與可重跑方式見
 背景與面板仍含像素素材。普通接戰、我方射擊、F2及章節邊界保存冷讀已抽驗，範圍見
 [驗證紀錄](docs/data/fd2-modern-hd-battlefield-20261019.json)的`knight83_battle_followup_20261020`。
 
+### 普通法術的人物HD呈現
+
+![悠妮普通施法的HD人物](docs/figures/hd-ordinary-command0-yuni.png)
+
+取自首章普通LOAD後的實際施法視窗，未編修畫面。指令0已接入HD人物的滑入、施術、目標及收尾呈現，背景、狀態欄與法術特效仍含像素素材。
+正常返回、F2及章節邊界保存冷讀已抽驗；F5／LOAD會重建戰場，未保存本次施法後的魔力與敵方血量。來源與範圍見[驗證紀錄](docs/data/fd2-modern-hd-battlefield-20261019.json)的`ordinary_command0_followup_20261020`。
+
 ## 遊戲介紹
 
 《炎龍騎士團 2》是 1990 年代華文單機戰略角色扮演遊戲（SRPG）的代表作之一。
