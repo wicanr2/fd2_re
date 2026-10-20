@@ -178,6 +178,11 @@ HD 背景、敵方與面板仍含像素素材。來源與可重跑方式見
 待機與揮杖已保留原版六幀節奏；完整攻擊限測試場景，普通流程抽驗受擊、返回、F2及章節邊界冷讀。
 抽樣沿章前加血來源，回復法術的地圖特效仍待HD化，範圍見[現況矩陣](docs/knowledge-base/58-fd2-exe-re-coverage.md)。
 
+![洛娜旋槍前刺的HD弧光](docs/figures/hd-lorna-spear-arc.png)
+
+第九章洛娜原地攻擊突擊騎兵的實際遊戲視窗，未編修。藍披風、銀甲、雙頭槍與弧光已接HD，背景與戰鬥面板仍含像素素材。
+抽樣沿章前加血來源，章內無注入；完整繪製、攻防返回、F2與章節邊界冷讀見[驗證範圍](docs/knowledge-base/58-fd2-exe-re-coverage.md)。
+
 ### 普通法術的人物HD呈現
 
 ![悠妮普通施法的HD人物](docs/figures/hd-ordinary-command0-yuni.png)

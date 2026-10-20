@@ -1,5 +1,11 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
+洛娜BattleFig5的15／16待機、旋槍／前刺及弧光已沿原21項描述子正式登錄，17固定零header不補造。
+完整Draw／F2及正常第九章兩次移動／END後原地攻防、返回與邊界冷讀通過。驗證控制器允許正式可達集合中的自己原格，遊戲規則不改。
+二銀行分層以--layered明示，中間alpha沿既有來源契約，最終完整PNG仍必須255核心；母稿RGBA保持，鞋底少量裁切明示。
+來源與限制見[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的lorna5_battle_followup_20261020；唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)。
+
+
 僧侶BattleFig93的279／280待機／攻擊圖已沿原六幀正式登錄，281固定零header不補造。
 完整Game.Draw、F2及返回色盤通過；第九章三次正常移動／END後射擊93、自然返回、F2與章節邊界冷讀通過。
 普通PNG只證目標待機，完整揮杖限fixture。13／14回復既有caller走地圖transition及FDOTHER5／6，沒有FIGANI人物銀行；

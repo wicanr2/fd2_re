@@ -29,11 +29,12 @@ def main():
     out.mkdir(); resources = list(recipe['resources']); first = resources[0]; attack = resources[-1]; source = next(iter(recipe['sources']))
     idle_only=len(resources)==1
     with_cast=baseline.get('with_cast') is True
+    layered=baseline.get('layered') is True
     base_catalog=args.base_catalog or args.baseline.parent/'base-catalog.json'
     if not base_catalog.is_file():raise SystemExit('需要同次編製的基底清冊快照')
     checks = []
 
-    def check(name, mutate, expected, pack=None, base=None, inventory=None, cast_flag=None):
+    def check(name, mutate, expected, pack=None, base=None, inventory=None, cast_flag=None, layer_flag=None):
         doc = copy.deepcopy(recipe); mutate(doc); path = out/(name+'.json'); path.write_text(json.dumps(doc))
         target = out/(name+'-candidate')
         command = [sys.executable, str(compiler), '--pack', str(pack or args.pack), '--inventory', str(inventory or args.inventory),
@@ -41,6 +42,8 @@ def main():
         command += ['--base-catalog', str(base or base_catalog)]
         if (with_cast if cast_flag is None else cast_flag):
             command.append('--with-cast')
+        if (layered if layer_flag is None else layer_flag):
+            command.append('--layered')
         result = subprocess.run(command, capture_output=True, text=True, timeout=60)
         output = result.stdout+result.stderr
         if result.returncode == 0 or target.exists() or expected not in output:
@@ -72,6 +75,31 @@ def main():
         path=out/'nondecoded-cast-inventory.json';path.write_text(json.dumps(proof))
         check('nondecoded-cast',lambda d:d.update(inventory_sha256=hashlib.sha256(path.read_bytes()).hexdigest()),
               '三組配方必須全部已解碼',inventory=path)
+    if layered and not with_cast:
+        check('empty-layers',lambda d:d['resources'][first].__setitem__(0,[]),'分層配方須明示三組模式並含非空圖層')
+        check('invalid-layer',lambda d:d['resources'][first].__setitem__(0,[None]),'未知母稿、群組或配方欄位')
+        check('missing-layered-flag',lambda d:None,'分層配方須明示三組模式並含非空圖層',layer_flag=False)
+        check('two-banks-not-cast',lambda d:None,'配方須涵蓋完整待機及攻擊資源',cast_flag=True)
+        # 中間層可沿既有母稿契約接受250；完整圖仍必須含真正不透明核心。
+        from PIL import Image
+        import math
+        soft = Image.new('RGBA', (128, 128), (255, 255, 128, 0))
+        alpha = Image.new('L', soft.size)
+        alpha.putdata([round(125*(1-math.cos(math.pi*min(x,y,127-x,127-y,16)/16)))
+                       for y in range(128) for x in range(128)])
+        soft.putalpha(alpha); soft_path = out/'soft-only.png'; soft.save(soft_path)
+        assert alpha.getextrema() == (0, 250)
+        def missing_final_core(d):
+            resource,index = next((key,index) for key,frames in d['resources'].items()
+                                  for index,value in enumerate(frames) if isinstance(value,list))
+            target = layer(d,resource,index)['anchor']
+            d['resources'][resource][index] = [{'pose':'soft_only','anchor':target,'scale_group':'soft_only'}]
+            d['sources']['soft_only'] = {'file':str(soft_path),'sha256':hashlib.sha256(soft_path.read_bytes()).hexdigest(),
+                                        'anchor':[0,0,128,128]}
+            used = {part['pose'] for frames in d['resources'].values() for value in frames
+                    for part in (value if isinstance(value,list) else [value])}
+            d['sources'] = {key:value for key,value in d['sources'].items() if key in used}
+        check('missing-final-opaque-core',missing_final_core,'分層成品缺少透明背景或不透明核心')
     # 只在複本陰影層改metadata末尾換行，不改唯讀原版檔案。
     shadow = out/'wrong-original'; (shadow/'animations').mkdir(parents=True)
     (shadow/'manifest.json').symlink_to(args.pack.resolve()/'manifest.json')

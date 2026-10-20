@@ -15,7 +15,7 @@
     "hd_terrain": "CONFORMED-SCOPED：map0六組53槽；新增圓頂綠色／褐色雙塊四底圖在兩張正常GPU全部相符，短長組合與保存冷讀通過；草地及其他地形仍待HD化。",
     "ai_player_input_lock": "CONFORMED-SCOPED：AI換手期間拒絕玩家地圖輸入重入；普通END／增援對話及相關／完整Go回歸通過。",
     "gaia_redesign": "CONFORMED-SCOPED：新版頭像與四方向圖組已登錄；正常START／Gaia北移取消／F2／冷讀分段驗證。相位差異與序章尾端失敗明示，非逐幀parity。",
-    "hd_battle_animation": "僧侶93的279／280待機／攻擊沿原六幀正式登錄；完整Draw／F2與正常章9受擊／返回／邊界冷讀通過。普通揮杖限fixture，13／14回復屬地圖效果，其他人物／指令／效果及平台仍待。目前數量以58為準。",
+    "hd_battle_animation": "洛娜5號完整待機／旋槍／前刺及弧光已登錄；完整Draw與普通章9兩次END、原地攻防／返回／F2／邊界冷讀通過。共享姿勢與鞋底裁切明示；其餘缺口與唯一數量依58。",
     "native_purchase_equip": "CONFORMED-SCOPED：#266原生購買立即裝備保留ignored原始格，29項商店回歸與正常購弓F5／章首射程通過；不改格式或數值規則。"
   },
   "runtime_source": {
@@ -49812,6 +49812,878 @@
     "final_validation": {
       "file": "work/promo-cadence-20261018/hd-fonts/sage93-final-validation-r1.json",
       "sha256": "50c94ec5cfd22e930ed0fa82bdd6911a5eedda37865f6c567dede7ce2bcb0818"
+    }
+  },
+  "lorna5_battle_followup_20261020": {
+    "status": "CONFORMED-SCOPED",
+    "base_commit": "df2ee6b497cbf0335c60b76817bd228b3e4cf1ae",
+    "formal_registered": true,
+    "private_synced": true,
+    "production_rules_changed": false,
+    "full_battle_hd_complete": false,
+    "current_state": {
+      "remake_complete": "洛娜待機／旋槍／前刺與弧光21幀正式登錄；完整Draw、普通原地攻防、F2及邊界冷讀通過。",
+      "remake_remaining": "其他人物、普通指令／法術／地圖回復／死亡／共同效果、普通召喚與平台效能仍待。",
+      "original_oracle_unknown": "本輪不新增原版逐幀、傷害、音訊或整章E2證據。",
+      "optional_polish": "沿已核准手繪風格與原排程，不新增插幀。"
+    },
+    "identity": {
+      "classification": "confirmed existing normal LOAD",
+      "native_identity": 5,
+      "battle_figure": 5,
+      "observed_name": "洛娜",
+      "source": "sage93-normal-gui-r2/receipt.json的loaded_units及既有party_roster；不是由圖像或暫定工作檔名猜姓名。"
+    },
+    "source_inventory": {
+      "file": "docs/data/fd2-battle-hd-source-inventory-20261019.json",
+      "sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51"
+    },
+    "original_resources": [
+      {
+        "resource": 15,
+        "status": "decoded",
+        "reason_code": "decoded",
+        "raw_sha256": "7e640c9def62c84fbd5f9dfe8e8a385592c14883258d2f8a36bab8a17a294c26",
+        "status_sha256": "ae2f84741fcf637a273f1d3f0a019f4869d388c9a4f70b522ccc3ce19d531928",
+        "metadata_sha256": "04a6c924e7b9d0e5cd34dbc08d1c09210f8e775477441d3e8385f17fc747e9e8",
+        "native_header": {
+          "byte_1": 0,
+          "byte_2": 4,
+          "byte_4": 0
+        }
+      },
+      {
+        "resource": 16,
+        "status": "decoded",
+        "reason_code": "decoded",
+        "raw_sha256": "aed790769995e1194e06ffa894e104c120f09664a6446f15eaa4a1814d6eb91d",
+        "status_sha256": "36442d89c571b2b5f07f2d052b63c897280be4e35307dd23c2d0342052c35b74",
+        "metadata_sha256": "ce1b153353911434b5eeddc6694379ed321baa0af0e10d459f3c03d9817d420d",
+        "native_header": {
+          "byte_1": 0,
+          "byte_2": 17,
+          "byte_4": 2
+        }
+      },
+      {
+        "resource": 17,
+        "status": "empty_header_zero",
+        "reason_code": "zero_header_word",
+        "raw_sha256": "6b25930e91686cee8bb5d4dae8dbed14f63c690c1c97ecb98552d8842e2d9395",
+        "status_sha256": "359c0cdd2e4dfd9380401d0216249b8affe84fba95e78b1b46f37c512320c1fd"
+      }
+    ],
+    "source_review": {
+      "file": "work/promo-cadence-20261018/hd-fonts/lorna5-source-r1/source.json",
+      "sha256": "53ced3a6679164bfadb47699752240a3716316837a182c9b451f5288935b570a"
+    },
+    "design_contract": {
+      "appearance": "原15:0背向三分之二視角，灰綠短束髮、深藍長披風、銀灰肩甲／臂甲／脛甲，右腿露膚；雙頭銀色槍刃與褐色槍身藍纏帶。保留女性比例及原輪廓，不補馬匹或改造服裝。",
+      "poses": "待機四幀按原身體錨點共用母稿；攻擊包含橫持、身側旋槍、頭上旋槍、抬槍、下掃與前刺，保留原可見動作及金色弧光消退。相近姿勢可明示共用，不把原17零header補成施術銀行。",
+      "geometry": "保留15四幀／16十七幀全部原描述子、header、delay與raw marker；母稿原始alpha不改。全圖及分層編製仍輸出每原矩形一張RGBA，不改正式catalog或loader。"
+    },
+    "layer_compilation_ready": {
+      "status": "CONFORMED-SCOPED",
+      "trigger": "16:14..15獨立金色弧光與身體有不同位置及大小，不能用單一body transform同時對準。既有有序圖層只由with-cast啟用，5號17為零header，不能冒造三銀行。",
+      "contract": "既有schema1單幀list型assignment另可由明示--layered啟用。--with-cast舊語意與預設兩組保持；原始來源仍核SHA，空list／未知欄位拒收。compiled記錄layered旗標，source_files只收使用母稿；正式成品與loader不改。",
+      "acceptance": "新二銀行分層正向與漏flag／空層／壞層反例，舊單項兩銀行、零header idle-only及90三銀行分層均重編回歸。"
+    },
+    "acceptance": {
+      "fixture": "原15四張＋16十七張完整Game.Draw／1920 PNG與F2／64、65 DAC／一次續行；本體及金光分開核心核對，不用本體通過代替VFX。",
+      "normal": "固定既有第9章F5來源及seed1，own index10洛娜，正常移動／END後一場攻擊、自然返回、F2與章節邊界新程序LOAD。章前HP+1000來源明示，章內無注入；完整21幀仍由fixture。",
+      "admission": "來源／全幀／普通攻擊及錯配反例通過後才正式登錄並同步私人allow-list。其他人物與完整HD不由此放行。"
+    },
+    "layer_alpha_ready": {
+      "status": "CONFORMED-SCOPED",
+      "source_contract": "既有母稿minA0／maxA>=250保持",
+      "intermediate": "僅有序分層canvas允許minA0／maxA>=250；單圖仍0,255",
+      "final": "所有原非空圖最終合成仍須0,255，在out.mkdir前檢查",
+      "reason": "兩稿maxA254，停止重畫；修來源與中間層契約不一致，不改圖或放寬最終PNG。"
+    },
+    "recipe": {
+      "schema_version": 1,
+      "figure": 5,
+      "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+      "sources": {
+        "idle": {
+          "file": "work/promo-cadence-20261018/hd-fonts/lorna5-idle-master-r1.png",
+          "sha256": "292e6ada76d4e54aabfc7aafc9b1be438f37f1842aae5fa7de7f54dfad428426",
+          "anchor": [
+            45,
+            11,
+            1286,
+            1183
+          ]
+        },
+        "ready": {
+          "file": "work/promo-cadence-20261018/hd-fonts/lorna5-ready-master-r1.png",
+          "sha256": "5e3ad65e92c1e862070366313bf8f87c5f4f1599b7426888c497b65ff25008bb",
+          "anchor": [
+            51,
+            64,
+            1369,
+            1072
+          ]
+        },
+        "side_spin": {
+          "file": "work/promo-cadence-20261018/hd-fonts/lorna5-side_spin-master-r1.png",
+          "sha256": "cb571b79438f7bde687782e9d7093a8c45f8a5b6cafbc8b7780e6ad3fedd2db1",
+          "anchor": [
+            22,
+            2,
+            1241,
+            1232
+          ]
+        },
+        "top_spin": {
+          "file": "work/promo-cadence-20261018/hd-fonts/lorna5-top_spin-master-r1.png",
+          "sha256": "36ce7792d42f7f3b494367806ac9aa5f869a193af4440aae8030055da41c5be5",
+          "anchor": [
+            4,
+            20,
+            1248,
+            1218
+          ]
+        },
+        "raised_curve": {
+          "file": "work/promo-cadence-20261018/hd-fonts/lorna5-raised_curve-master-r1.png",
+          "sha256": "c52bfd5761a5364a5ef50a819d142d222ffc655fddc69324eb83fcb2f1333aaf",
+          "anchor": [
+            54,
+            3,
+            899,
+            1693
+          ]
+        },
+        "raised_plain": {
+          "file": "work/promo-cadence-20261018/hd-fonts/lorna5-raised_plain-master-r1.png",
+          "sha256": "f27e4be53f88a656920e1be2d1b4f2cb04ff4e8f8a583970819ec17e424483ff",
+          "anchor": [
+            128,
+            19,
+            974,
+            1580
+          ]
+        },
+        "lower": {
+          "file": "work/promo-cadence-20261018/hd-fonts/lorna5-lower-master-r1.png",
+          "sha256": "1fb8f0c4ecb7b7b66cd8141fe5f3074db9fa8529be970c4807beb1077b577dcc",
+          "anchor": [
+            12,
+            12,
+            1480,
+            1046
+          ]
+        },
+        "lower_motion": {
+          "file": "work/promo-cadence-20261018/hd-fonts/lorna5-lower_motion-master-r1.png",
+          "sha256": "0f1b00b3bf9a2c97663d02f18067a19dd85afd14316d45cf63c137a7a9b4296f",
+          "anchor": [
+            32,
+            42,
+            1572,
+            960
+          ]
+        },
+        "thrust": {
+          "file": "work/promo-cadence-20261018/hd-fonts/lorna5-thrust-master-r1.png",
+          "sha256": "df05049fa6d4f2f1b800c67c2d69c05fc649a1251055dbec814b16b9512c227d",
+          "anchor": [
+            9,
+            64,
+            1693,
+            906
+          ]
+        },
+        "gold_arc": {
+          "file": "work/promo-cadence-20261018/hd-fonts/lorna5-gold_arc-master-r1.png",
+          "sha256": "26bc93e239a5ae94e30a10c72d75c7b09b4a1b5ad69760a620a38d5bf736ab5f",
+          "anchor": [
+            20,
+            23,
+            2136,
+            582
+          ]
+        },
+        "gold_tail": {
+          "file": "work/promo-cadence-20261018/hd-fonts/lorna5-gold_tail-master-r2.png",
+          "sha256": "d18c322d2889d3fa7ff921e16a8bc82191376e871b84fc80b3a6ebf9b6dc8f6b",
+          "anchor": [
+            35,
+            174,
+            1007,
+            1346
+          ]
+        }
+      },
+      "resources": {
+        "15": [
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              127,
+              119
+            ],
+            "scale_group": "idle"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              127,
+              118
+            ],
+            "scale_group": "idle"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              127,
+              117
+            ],
+            "scale_group": "idle"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              127,
+              118
+            ],
+            "scale_group": "idle"
+          }
+        ],
+        "16": [
+          {
+            "pose": "ready",
+            "anchor": [
+              0,
+              0,
+              147,
+              119
+            ],
+            "scale_group": "ready"
+          },
+          {
+            "pose": "side_spin",
+            "anchor": [
+              0,
+              0,
+              147,
+              147
+            ],
+            "scale_group": "side_spin"
+          },
+          {
+            "pose": "side_spin",
+            "anchor": [
+              0,
+              0,
+              146,
+              146
+            ],
+            "scale_group": "side_spin"
+          },
+          {
+            "pose": "side_spin",
+            "anchor": [
+              0,
+              0,
+              144,
+              145
+            ],
+            "scale_group": "side_spin"
+          },
+          {
+            "pose": "top_spin",
+            "anchor": [
+              0,
+              0,
+              149,
+              149
+            ],
+            "scale_group": "top_spin"
+          },
+          {
+            "pose": "top_spin",
+            "anchor": [
+              0,
+              0,
+              142,
+              151
+            ],
+            "scale_group": "top_spin"
+          },
+          {
+            "pose": "top_spin",
+            "anchor": [
+              0,
+              0,
+              143,
+              150
+            ],
+            "scale_group": "top_spin"
+          },
+          {
+            "pose": "raised_curve",
+            "anchor": [
+              0,
+              0,
+              102,
+              192
+            ],
+            "scale_group": "raised_curve"
+          },
+          {
+            "pose": "raised_plain",
+            "anchor": [
+              0,
+              0,
+              117,
+              192
+            ],
+            "scale_group": "raised_plain"
+          },
+          {
+            "pose": "raised_plain",
+            "anchor": [
+              0,
+              0,
+              117,
+              192
+            ],
+            "scale_group": "raised_plain"
+          },
+          {
+            "pose": "raised_plain",
+            "anchor": [
+              0,
+              0,
+              113,
+              192
+            ],
+            "scale_group": "raised_plain"
+          },
+          {
+            "pose": "raised_plain",
+            "anchor": [
+              0,
+              0,
+              113,
+              192
+            ],
+            "scale_group": "raised_plain"
+          },
+          {
+            "pose": "lower",
+            "anchor": [
+              0,
+              0,
+              175,
+              125
+            ],
+            "scale_group": "lower"
+          },
+          {
+            "pose": "lower_motion",
+            "anchor": [
+              0,
+              0,
+              187,
+              119
+            ],
+            "scale_group": "lower_motion"
+          },
+          [
+            {
+              "pose": "thrust",
+              "anchor": [
+                74,
+                25,
+                249,
+                121
+              ],
+              "scale_group": "thrust"
+            },
+            {
+              "pose": "gold_arc",
+              "anchor": [
+                0,
+                0,
+                249,
+                67
+              ],
+              "scale_group": "gold_arc"
+            }
+          ],
+          [
+            {
+              "pose": "thrust",
+              "anchor": [
+                0,
+                0,
+                175,
+                96
+              ],
+              "scale_group": "thrust"
+            },
+            {
+              "pose": "gold_tail",
+              "anchor": [
+                167,
+                8,
+                175,
+                20
+              ],
+              "scale_group": "gold_tail"
+            }
+          ],
+          {
+            "pose": "thrust",
+            "anchor": [
+              0,
+              0,
+              175,
+              94
+            ],
+            "scale_group": "thrust"
+          }
+        ]
+      }
+    },
+    "generation": {
+      "tool": "built-in image_gen",
+      "transparent_background": true,
+      "prompts_text": {
+        "idle": "Use case: stylized-concept. Create ONE complete isolated hand-painted HD battle sprite faithfully redesigning the original pixel character in reference1. Reference2 is STYLE ONLY, the established detailed painted fantasy game sprite quality, not its red costume or wizard identity. Reference1 is Lorna, a slim athletic female lance fighter shown entirely FROM BEHIND in a three-quarter back view facing upper-left. Preserve that exact stance and silhouette. Ash gray-green hair gathered into a short low ponytail at the neck, no helmet. Large muted dark blue cloak from neck to ankles, broad natural folds, uneven hem. Bright pale blue-silver rounded steel shoulder plates, silver elbow/forearm armor and shin greaves. Small orange-tan strips of bare arm visible, right upper thigh exposed beside the cloak over a very short dark undersuit. Both feet planted wide, right leg extended diagonally right, left foot mostly under the cloak. Left hand hangs loosely at image left; right hand holds a long straight brown wooden DOUBLE-ENDED spear near right hip. BOTH ends have narrow straight pale silver spear blades and dark blue wrapped sockets. The spear runs diagonally from upper-left behind shoulder across her back to bottom-right, matching reference1. It is not a sword, bow, axe or curved halberd. Keep her back to camera; do not show a frontal face. Preserve the compact original full sprite width-to-height near 127:119, do not elongate the legs. Accurate whole body proportions and silver armor, blue cloak remains dominant, with textured hand-painted cloth and steel shading. One figure only, entire spear and both feet fully visible, generous transparent margins around all edges. Genuine RGBA transparency, preserved soft alpha, no background, floor, floor shadow, checkerboard, text or frame. No additional magic, accessories or horse.",
+        "ready": "Use case: stylized-concept. Repose reference1 into the exact low horizontal spear-ready pose of reference2. The SAME Lorna female fighter as reference1: viewed strictly from behind, ash-gray low ponytail, deep blue long cloak, rounded silver shoulder plates and forearm/shin armor, exposed small right thigh, wide planted feet. Use reference2 as exact pose guide. Detailed painterly fantasy sprite matching reference1, not pixel art. Keep whole body and both spear tips fully in frame, transparent margins. Genuine transparent RGBA background and preserved alpha, no ground shadow, no text, no grid, no extra figures. Lower right hand to waist level, hold long double-ended spear almost horizontally across the waist from left to right, shaft slightly tilts down to right. Left arm extends loosely to left, palm open at waist height. The spear shaft passes in front of the blue cloak. Silver straight narrow blades on both tips, brown wood and blue sockets; no magical effect. Full sprite width-to-height approximately147:119; stance body-to-staff proportions as native reference2. Maintain body height, do not make the staff too long.",
+        "side_spin": "Use case: stylized-concept. Repose reference1 into the side-of-body spinning spear pose from reference2. The SAME Lorna female fighter as reference1: viewed strictly from behind, ash-gray low ponytail, deep blue long cloak, rounded silver shoulder plates and forearm/shin armor, exposed small right thigh, wide planted feet. Use reference2 as exact pose guide. Detailed painterly fantasy sprite matching reference1, not pixel art. Keep whole body and both spear tips fully in frame, transparent margins. Genuine transparent RGBA background and preserved alpha, no ground shadow, no text, no grid, no extra figures. Left arm is extended open sideways at shoulder height. Right arm reaches horizontally to the right at shoulder level, right hand gripping the midpoint of a nearly VERTICAL double-ended spear at far right of the body. Spear runs from above her head to near shin level, with silver pointed narrow blades, brown shaft, blue sockets. Add thin gray-silver translucent rotational swishes close to the vertical spear ONLY, as reference2, not broad gold or magic. Figure occupies lower80% of the nearly square full sprite; spear above head makes overall width-to-height about147:147. Body stance remains upright and same height/proportions. This is the hand held spin position, no second weapon.",
+        "top_spin": "Use case: stylized-concept. Repose reference1 into the spinning-spear-above-head pose from reference2. The SAME Lorna female fighter as reference1: viewed strictly from behind, ash-gray low ponytail, deep blue long cloak, rounded silver shoulder plates and forearm/shin armor, exposed small right thigh, wide planted feet. Use reference2 as exact pose guide. Detailed painterly fantasy sprite matching reference1, not pixel art. Keep whole body and both spear tips fully in frame, transparent margins. Genuine transparent RGBA background and preserved alpha, no ground shadow, no text, no grid, no extra figures. Left palm lifted open left at around head height. Right elbow bent, right hand raised above head at right, fingers spinning the midpoint of a nearly HORIZONTAL long double-ended spear overhead. The spear above head spans the full sprite width from upper left to upper right, both narrow silver blades and brown shaft with blue sockets visible. Thin gray-silver translucent rotational swishes hug the spear horizontally only, matching reference2; no gold, no magic. Keep body height approximately80% of total sprite height, feet on common bottom baseline. Nearly square149:149 full sprite. Both arms and hands match reference2, do not leave spear at waist.",
+        "raised_curve": "Use case: stylized-concept. Exactly the same Lorna female fighter as reference1: strictly rear three-quarter view, ash-gray short low ponytail, deep blue ankle-length cloak, round silver shoulder/forearm/shin armor, small exposed right thigh and short dark undersuit. Same feet planted wide, cloak and body proportions. Match reference2 pose and weapon placement. Detailed hand-painted fantasy battle sprite, transparent RGBA and preserved alpha. One figure only, no floor or shadow plane, no text, no grid, no frame, no invented magic. Catch the spinning double-ended spear high above the LEFT side of her head as native reference2. Both elbows bend toward upper left, left hand open near forehead height, right hand higher reaching for the shaft. Long brown spear with blue sockets and silver pointed tips rises nearly vertically above the hands, tilting slightly left, and continues far above the head. A thin curved brown-gray motion echo hugs the upper shaft, as reference2, not a magical aura. Entire composition very tall and narrow, full width-to-height near102:192. Body from crown to feet occupies only bottom62% of sprite height; spear reaches near top left. Preserve this essential body-to-spear ratio. Do not enlarge the body to fill the top empty space. Both feet visible on bottom baseline, clear transparent margins at all edges.",
+        "raised_plain": "Use case: stylized-concept. Exactly the same Lorna female fighter as reference1: strictly rear three-quarter view, ash-gray short low ponytail, deep blue ankle-length cloak, round silver shoulder/forearm/shin armor, small exposed right thigh and short dark undersuit. Same feet planted wide, cloak and body proportions. Match reference2 pose and weapon placement. Detailed hand-painted fantasy battle sprite, transparent RGBA and preserved alpha. One figure only, no floor or shadow plane, no text, no grid, no frame, no invented magic. Hold the now still double-ended spear with BOTH hands above the LEFT side of her head as native reference2. Both elbows bend toward upper left. Hands close together grasp the brown shaft at above-head height. Spear points far upward-left, nearly vertical with a slight leftward lean. Silver pointed upper blade and blue socket, long straight brown shaft; lower spear extends downward behind shoulder and cloak. No rotational trails or afterimages. Entire composition tall and narrow, width-to-height near117:192. Body from crown to feet occupies bottom62% of image height, spear dominates upper38%. Maintain original compact body-to-weapon ratio, do not stretch her torso or put both hands overhead to the right. Entire body and spear with clear transparent margins.",
+        "lower": "Use case: stylized-concept. Exactly the same Lorna female fighter as reference1: strictly rear three-quarter view, ash-gray short low ponytail, deep blue ankle-length cloak, round silver shoulder/forearm/shin armor, small exposed right thigh and short dark undersuit. Same feet planted wide, cloak and body proportions. Match reference2 pose and weapon placement. Detailed hand-painted fantasy battle sprite, transparent RGBA and preserved alpha. One figure only, no floor or shadow plane, no text, no grid, no frame, no invented magic. Lower the double-ended spear diagonally DOWN toward image left, as native reference2. Both hands held close together above her left shoulder, left elbow bent. Brown spear shaft crosses behind the left shoulder from the head region diagonally down-left, long silver lower blade ends far left around lower thigh height. Short opposite tip is visible just above her head. Face stays hidden from rear. Body stays UPRIGHT, cloak hanging down, right leg extended right. Overall sprite width-to-height approximately175:125, with spear extending left and figure on the right, exactly like reference2. No motion blur, no gold. Whole body and both spear ends visible with transparent margins.",
+        "lower_motion": "Use case: stylized-concept. Exactly the same Lorna female fighter as reference1: strictly rear three-quarter view, ash-gray short low ponytail, deep blue ankle-length cloak, round silver shoulder/forearm/shin armor, small exposed right thigh and short dark undersuit. Same feet planted wide, cloak and body proportions. Match reference2 pose and weapon placement. Detailed hand-painted fantasy battle sprite, transparent RGBA and preserved alpha. One figure only, no floor or shadow plane, no text, no grid, no frame, no invented magic. Exact transitional down-left spear sweep of native reference2. Upright back-facing figure on the RIGHT side of the wide composition, both hands grip shaft beside LEFT shoulder at head height. Shaft from shoulder arches visually toward far left, narrow silver spear tip around knee level at far left. Add a narrow brown-gray rotational echo and one translucent silver diagonal afterimage BELOW the left blade, matching native reference2. Keep main spear straight, no curved weapon. No gold or magical effect. Compact body proportions; wide full sprite about187:119, with left half mostly spear and its small afterimage, right half the body. All feet and tips visible, transparent margins.",
+        "thrust": "Use case: stylized-concept. Create the SAME back-view female Lorna lance fighter from reference1, now lunging toward image RIGHT in the exact low forward-thrust stance of native reference2. Preserve ash-gray low ponytail, long dark blue cloak, rounded pale silver shoulder plates, forearm/shin armor and exposed right thigh. Keep face hidden, strictly rear three-quarter view. Torso leans forward-right with deeply bent knees and spread feet. Right shoulder and right hand thrust a straight brown spear shaft horizontally right at waist level. This is the cropped in-action shaft segment of native reference2; the actual right spear tip is outside the scene, do not invent a large blade here. Left arm low to left, left hand partly hidden. Cloak flies strongly toward far LEFT with an irregular trailing hem, ponytail streams left. Match reference2's broad low silhouette, overall width-to-height about175:96, compact bent body. Entire body, cloak and feet visible. No gold arc, no slash, no glow, no afterimages; VFX will be separate. Same detailed hand-painted fantasy sprite texture as reference1. Isolated RGBA sprite on true transparent background, soft alpha preserved, no floor, ground shadow, checkerboard, text or frame.",
+        "gold_arc": "Use case: stylized-concept. Generate ONLY the isolated golden sweeping weapon slash from this original reference, no character, no spear, no armor, no other objects. Faithfully preserve its very WIDE FLAT arc shape: it starts at the far RIGHT as a narrow golden-ivory strip, arches left across the top, curls around a rounded left bend, then tapers into several sharp flame-like short tongues pointing diagonally DOWN-RIGHT at the lower-left end. The large middle and all area below the arc remain empty TRANSPARENT. Outer visible bounding box extremely wide and shallow approximately249:67. Painterly HD battle effect with solid pale ivory core, warm yellow-gold edges and a little orange fringe; retain an opaque core and controlled soft alpha fringe, not a hazy giant halo. No circular ring or complete oval, no lightning, no text, no scene. Genuine transparent RGBA, entire slash with transparent margins. The reference character is contextual pose information only and must not be generated.",
+        "gold_tail": "Use case: stylized-concept. Generate ONLY the tiny trailing golden slash fragment at the UPPER-RIGHT edge of this native reference; omit the character, spear and all other content. A single short dense ivory-yellow flame-shaped stroke curves diagonally from upper-left toward lower-right. Small orange/gold wisps at its upper-left end, broader bright ivory core at lower-right, matching the tiny original remnant. The isolated fragment has visible bounding-box width-to-height approximately8:12, a compact diagonal tapered wedge, not an oval or complete ring and not a whole long slash. Detailed painterly HD battle-effect edge, dense opaque ivory/yellow core with a limited soft orange alpha fringe. No person, weapon, circle, text, background or ground. True RGBA transparency, comfortable margins around the entire tiny effect.",
+        "gold_tail_r2": "Use case: stylized-concept. Edit reference1, the tiny diagonal golden slash fragment, using the opaque painted ivory-gold material from reference2. Keep the same ONE compact diagonal wedge sweeping from upper-left toward lower-right. CRITICAL: make this a SOLID PAINTED sprite with a broad fully opaque white-ivory core, not an additive translucent glow. Remove the large orange haze and nearly all isolated sparks. The central ivory-white stroke must be truly opaque, alpha255, surrounded by a thin opaque yellow/gold rim with only a narrow soft transparent antialias fringe. The entire outside stays truly transparent. No black backdrop. Tiny original fragment proportions approximately8:12; dense compact tapered wedge, brighter and broader at lower-right, short orange taper at upper-left. Only this single isolated VFX stroke, no full arc or ring, no people, weapons, text, floor or other shapes. Preserve true RGBA transparency. Do not make the whole effect a semitransparent glow."
+      },
+      "prompts_file": {
+        "file": "work/promo-cadence-20261018/hd-fonts/lorna5-prompts-r1.json",
+        "sha256": "3c835a96fddeda6efc805989e509e1d4162dd6d0306e95ac77da12bdd7c8fcce"
+      },
+      "accepted_masters": [
+        "work/promo-cadence-20261018/hd-fonts/lorna5-idle-master-r1.png",
+        "work/promo-cadence-20261018/hd-fonts/lorna5-ready-master-r1.png",
+        "work/promo-cadence-20261018/hd-fonts/lorna5-side_spin-master-r1.png",
+        "work/promo-cadence-20261018/hd-fonts/lorna5-top_spin-master-r1.png",
+        "work/promo-cadence-20261018/hd-fonts/lorna5-raised_curve-master-r1.png",
+        "work/promo-cadence-20261018/hd-fonts/lorna5-raised_plain-master-r1.png",
+        "work/promo-cadence-20261018/hd-fonts/lorna5-lower-master-r1.png",
+        "work/promo-cadence-20261018/hd-fonts/lorna5-lower_motion-master-r1.png",
+        "work/promo-cadence-20261018/hd-fonts/lorna5-thrust-master-r1.png",
+        "work/promo-cadence-20261018/hd-fonts/lorna5-gold_arc-master-r1.png",
+        "work/promo-cadence-20261018/hd-fonts/lorna5-gold_tail-master-r2.png"
+      ],
+      "alpha_policy": "原始RGBA／SHA保持；只以核心包圍框定錨點，沒有重繪或變造alpha。"
+    },
+    "native_gold_geometry": {
+      "classification": "confirmed decoded pixels",
+      "palette_rgb": [
+        [
+          255,
+          255,
+          215
+        ],
+        [
+          255,
+          235,
+          130
+        ],
+        [
+          255,
+          170,
+          24
+        ]
+      ],
+      "frame14_local_bbox": [
+        0,
+        0,
+        249,
+        67
+      ],
+      "frame14_pixels": 6684,
+      "frame15_local_bbox": [
+        167,
+        8,
+        175,
+        20
+      ],
+      "frame15_pixels": 35,
+      "scope": "按已核PNG／mask解碼色盤測得，非新原版實機／時序對拍。"
+    },
+    "prototype_review": {
+      "status": "PASS-SCOPED",
+      "note": "完整排版及21張最終GPU通過；相近姿勢共用、11個鞋底重取樣裁切像素明示。母稿alpha不變，中間碎光254、最終21張均有255核心。"
+    },
+    "compiled": {
+      "file": "work/promo-cadence-20261018/hd-fonts/lorna5-candidate-r1/compiled.json",
+      "sha256": "ff3165485f5154528db5f651e3108f5b83285452301cdc7633fbec03e6b340b4"
+    },
+    "review": {
+      "file": "work/promo-cadence-20261018/hd-fonts/lorna5-candidate-r1/review.png",
+      "sha256": "de49a0007c43b71dc774ecb0590260158802bf7684c6a785076d2bc1f479a7c5"
+    },
+    "recipe_file": {
+      "file": "work/promo-cadence-20261018/hd-fonts/lorna5-recipe-r1.json",
+      "sha256": "88ef17f61024e23ab00e0a93b5689cc8cf4c29b1b8e04e606235da5af5494fb4"
+    },
+    "compiler_guards": {
+      "file": "work/promo-cadence-20261018/hd-fonts/lorna5-compiler-guards-r1/guards.json",
+      "sha256": "4b2bb32cae7f3bea96fcc44359f4f4b5ac617464e92c9bf98fa9c64ea559ae26"
+    },
+    "legacy_regression": {
+      "file": "work/promo-cadence-20261018/hd-fonts/lorna5-compiler-legacy-regression-r2.json",
+      "sha256": "ed2bd82344aa160960935fe5487e99bd5ac9985ed5aaf30d7a47ebf19a3a6e87"
+    },
+    "clipping": {
+      "total_high_coverage_pixels": 11,
+      "frames": [
+        {
+          "resource": 16,
+          "frame": 3,
+          "pixels": 5,
+          "location": "local y870 = height145*6，鞋底單列",
+          "pose": "side_spin"
+        },
+        {
+          "resource": 16,
+          "frame": 5,
+          "pixels": 6,
+          "location": "local y906 = height151*6，鞋底單列",
+          "pose": "top_spin"
+        }
+      ],
+      "scope": "保留已核原矩形與原始alpha，明示重取樣邊緣裁切；不宣稱零裁切。"
+    },
+    "rejected_candidates": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/lorna5-gold_tail-master-r1.png",
+        "sha256": "74f1e76abbe6a4847402b46c26a743ffe5cdedb16f52d0f31d0016c3d86a87e2",
+        "reason": "分散火星與大範圍柔光；由r2較實心碎光取代。兩稿maxA均254，舊過嚴中間門檻另修，原alpha不改。",
+        "preserved": true
+      }
+    ],
+    "fixture": {
+      "scope": "強制攻擊／反擊及地圖fixture，只屬RUNTIME-E1，不當原版oracle。",
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/lorna5-physical-lifecycle-r1/receipt.json",
+        "sha256": "687ce10a23b0c807ff8a78cbf060b17c84686e2db752df06be9a4da91e6b2957"
+      },
+      "pixels": {
+        "file": "work/promo-cadence-20261018/hd-fonts/lorna5-physical-gpu-r1.json",
+        "sha256": "efd78d1964a2bbdf712a29ed5d6abb03779bdb800c0e666c4a8278228461a2da"
+      },
+      "body_guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/lorna5-physical-guards-r1/guards.json",
+        "sha256": "dba47c71db9d7340cdf57497a49ae86e9e6ac3286a1e3bf16ae7f88c0f962243"
+      },
+      "warm_pixels": {
+        "file": "work/promo-cadence-20261018/hd-fonts/lorna5-warm-gpu-r2.json",
+        "sha256": "1f29e680eff927607851dd03716a0a8db10816e50a0802ee580c66a8dd212aec"
+      },
+      "warm_guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/lorna5-warm-guards-r2/guards.json",
+        "sha256": "362c95dcb5518b08e44e825cf1645917ce46091c3655932b62a02feaa56dc648"
+      },
+      "warm_scope": "16:14..15暖亮核心包含弧光／碎光及銀甲／膚色，非只驗金色。兩張不排除任何前景點通過；不以proven-occlusion報告替代預設檢查。",
+      "complete_frames": 21,
+      "hd_draws": 278,
+      "final_draws": 377,
+      "battle_dac_steps": 64,
+      "map_dac_steps": 65,
+      "continuations": 1
+    },
+    "failed_validation_attempts": [
+      {
+        "scope": "warm fixture guards r1",
+        "classification": "驗證前提不適用",
+        "reason": "實際沒有任何核心被遮擋，harness嘗試尋找被排除前景點而StopIteration；不列八項通過。改無排除模式warm-gpu-r2／guards-r2，原門檻下兩張及五項反例通過。"
+      }
+    ],
+    "formal_registration": {
+      "status": "PASS-FORMAL-ADMISSION",
+      "prior_assets_unchanged": 410,
+      "assets": 412,
+      "new_files": [
+        "figani-015-hd6-v1-f00.png",
+        "figani-015-hd6-v1-f01.png",
+        "figani-015-hd6-v1-f02.png",
+        "figani-015-hd6-v1-f03.png",
+        "figani-016-hd6-v1-f00.png",
+        "figani-016-hd6-v1-f01.png",
+        "figani-016-hd6-v1-f02.png",
+        "figani-016-hd6-v1-f03.png",
+        "figani-016-hd6-v1-f04.png",
+        "figani-016-hd6-v1-f05.png",
+        "figani-016-hd6-v1-f06.png",
+        "figani-016-hd6-v1-f07.png",
+        "figani-016-hd6-v1-f08.png",
+        "figani-016-hd6-v1-f09.png",
+        "figani-016-hd6-v1-f10.png",
+        "figani-016-hd6-v1-f11.png",
+        "figani-016-hd6-v1-f12.png",
+        "figani-016-hd6-v1-f13.png",
+        "figani-016-hd6-v1-f14.png",
+        "figani-016-hd6-v1-f15.png",
+        "figani-016-hd6-v1-f16.png",
+        "figure-005-gold_arc-battle-hd6-master-v1.png",
+        "figure-005-gold_tail-battle-hd6-master-v1.png",
+        "figure-005-idle-battle-hd6-master-v1.png",
+        "figure-005-lower-battle-hd6-master-v1.png",
+        "figure-005-lower_motion-battle-hd6-master-v1.png",
+        "figure-005-raised_curve-battle-hd6-master-v1.png",
+        "figure-005-raised_plain-battle-hd6-master-v1.png",
+        "figure-005-ready-battle-hd6-master-v1.png",
+        "figure-005-side_spin-battle-hd6-master-v1.png",
+        "figure-005-thrust-battle-hd6-master-v1.png",
+        "figure-005-top_spin-battle-hd6-master-v1.png"
+      ],
+      "frames": 21,
+      "catalog_sha256": "030db7deea8d631cb16608a1607df32b5c0d7eba6760041a6eb86c9964f70359",
+      "candidate_asset_entries_equal": true,
+      "private_root": "remake/generated-assets/modern-theme-prototypes"
+    },
+    "normal_battle_gui": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/lorna5-normal-gui-r2/receipt.json",
+        "sha256": "e335091e9a7e52a0046daadf2313596fe3243d22cf7d2877711a67445118f456"
+      },
+      "end_rounds": 2,
+      "approach_cells": [
+        [
+          15,
+          28
+        ],
+        [
+          15,
+          22
+        ]
+      ],
+      "attack_cell": [
+        15,
+        22
+      ],
+      "target_figure": 83,
+      "actor_hp_before_attack": 168,
+      "actor_hp_after_attack": 54,
+      "ordinary_origin_attack_verified": true,
+      "new_process_title_load": true,
+      "cold_loaded_units_equal": true,
+      "node_boundary_save_checked": true,
+      "source_save_bytes_equal": true,
+      "theme_save_bytes_equal": true,
+      "source_save_sha256": "f4da9acebb3444a9b618c1b108996abee2d2832902e2cad86940d91c33fc0c66",
+      "gui_tool_sha256": "221ac948e65d59991b62daa3cd1ba9b70163e50c188012ecccc4a0a4e8faf12c",
+      "binary_sha256": "292c931e3e7f6c019ece2fa04fa91b2ec7d684394192df8b84ad42feb85d1650",
+      "elapsed_seconds": 349.24960587825626,
+      "recording_created": false,
+      "scope": "固定第9章正常F5來源、constructor seed8／game seed1；祖先章前HP+1000及既有等級，不重擲，章內無注入。兩次移動／END後在原地攻擊83、正常返回／F2／章節邊界冷讀；不宣稱自然難度、原版parity或整章E2。F5／LOAD重建章首，不保存本次戰中HP／位置。"
+    },
+    "normal_pixels": {
+      "body": {
+        "file": "work/promo-cadence-20261018/hd-fonts/lorna5-normal-gpu-r1.json",
+        "sha256": "5ccde158fae64d353a2c73b24aa90be5368595c153a132b35ad270a053976c18"
+      },
+      "warm": {
+        "file": "work/promo-cadence-20261018/hd-fonts/lorna5-normal-warm-gpu-r1.json",
+        "sha256": "fc911e8823dcdb1716a2bdfce8c5c2bf6787518ce094dc8004121897391d8b2f"
+      },
+      "body_pngs": 35,
+      "warm_pngs": 2,
+      "warm_frames": [
+        14,
+        15
+      ],
+      "guards": {
+        "body": {
+          "file": "work/promo-cadence-20261018/hd-fonts/lorna5-normal-blue-guards-r1/guards.json",
+          "sha256": "b22196f0b78625a3494a3c3b1c0faf5de92cd8f068f9c171a9703de7a2776731"
+        },
+        "warm": {
+          "file": "work/promo-cadence-20261018/hd-fonts/lorna5-normal-warm-guards-r1/guards.json",
+          "sha256": "00efb80b3e78d2c14aec4fc01dba7b224b2e0de2f315004f6225751b05034212"
+        }
+      },
+      "scope": "暖亮核心包含弧光／碎光及銀甲，分別核對14及15；不把本體相同當成效果相同。"
+    },
+    "failed_normal_runs": [
+      {
+        "directory": "work/promo-cadence-20261018/hd-fonts/lorna5-normal-gui-r1",
+        "classification": "驗證控制器誤排自身原格",
+        "state": "第三回合15,22，可達只有原格，四周敵在射程1，洛娜HP168。",
+        "fix": "正式可達集合中允許actor自己原格；其他佔用格仍排除。相同來源／seed／min2／max4重跑，實際原地攻擊通過；遊戲規則未改。"
+      }
+    ],
+    "candidate_go": {
+      "file": "work/promo-cadence-20261018/hd-fonts/lorna5-candidate-go-r1.log",
+      "sha256": "120997ddec4125a3ba3ea1c8b33b2727777d55ad27251a8b4125acdb1bb3e52c"
+    },
+    "candidate_coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/lorna5-candidate-coverage-r1.json",
+      "sha256": "22af22316910a593522f6ee2e39174dff4f517a476d600c0f71a2dcf5b0ac4ce"
+    },
+    "original_files_unchanged": {
+      "file": "work/promo-cadence-20261018/hd-fonts/lorna5-original-files-unchanged-r1.json",
+      "sha256": "7c9d0a0e690aff0f69aa177fd631b6a93d692720263dc575bc57f099e91059a0"
+    },
+    "reproduction": {
+      "base_catalog_commit": "df2ee6b497cbf0335c60b76817bd228b3e4cf1ae",
+      "compiler": "tools/build_fd2_character_battle_hd.py",
+      "recipe": "lorna5_battle_followup_20261020.recipe",
+      "compiler_arguments": [
+        "--layered"
+      ],
+      "source_restore": "用私人allow-list的source_files及source_sha256還原十一母稿；基底清冊df2ee6b4，不用已登錄15／16的清冊覆編。",
+      "normal_source": {
+        "file": "work/promo-cadence-20261018/hd-fonts/bekwei-bow-source-gui-r3/user-data/fd2_re/fd2_save.json",
+        "sha256": "f4da9acebb3444a9b618c1b108996abee2d2832902e2cad86940d91c33fc0c66"
+      },
+      "normal_arguments": [
+        "--battle-status",
+        "--world",
+        "--battle-hd",
+        "--battle-art",
+        "--battle-only",
+        "--battle-repetitions",
+        "1",
+        "--battle-art-samples",
+        "64",
+        "--battle-node",
+        "battle_ch09",
+        "--battle-own-index",
+        "10",
+        "--battle-min-approach-rounds",
+        "2",
+        "--battle-approach-rounds",
+        "4",
+        "--battle-advance",
+        "--startup-timeout",
+        "180"
+      ],
+      "paths": "GUI絕對容器路徑；候選lorna5-candidate-r1/runtime供assets，pack供modern-pack，out新工作目錄。",
+      "binary_buildinfo": {
+        "file": "work/promo-cadence-20261018/hd-fonts/lorna5-binary-buildinfo-r1.txt",
+        "sha256": "08cadb1de49ff2189c3481c920f5ecc81f99ae00ffbb275efb05c98bd7ce0c3d"
+      },
+      "images": {
+        "assets": "fd2-assets-local:20260829-sfx",
+        "go": "fd2-go-test-local:latest",
+        "gui": "fd2-promo:20261017-r1"
+      },
+      "isolation": "Docker user1000:1000、network none、memory／CPU／pids及外層timeout；原版唯讀，Go /tmp exec tmpfs。",
+      "verification": "tools/verify_fd2_character_battle_gpu.py，figure5；fixture／attack各跑blue全本體及warm＋body-frames16:14-15，無proven-occlusion。對應test工具分別用other-figure90及other-core-profile blue；normal negative沿sage93-normal-gui-r2/receipt.json。"
+    },
+    "private_delivery": {
+      "full_verification": {
+        "file": "work/promo-cadence-20261018/hd-fonts/lorna5-private-sync-r1.json",
+        "sha256": "33327680ebc6f694bbb3c7ecef229993d8ebcfd1e58bc69ed20a38624f1d03ae"
+      },
+      "runtime_only_verification": {
+        "file": "work/promo-cadence-20261018/hd-fonts/lorna5-runtime-only-verification-r1.json",
+        "sha256": "da9ac07eb8d5cea211cde236343138deb0a807d8f3ecccb1f3ded1a5a0071034"
+      },
+      "full_manifest_files": 3737,
+      "runtime_only_files": 3391,
+      "prior_files_unchanged": 3705,
+      "new_masters_excluded_from_runtime": 11,
+      "remote_head_verified": true,
+      "private_repository_verified": "主機gh確認isPrivate=true；獨立私人提交已推送，實際遠端HEAD與本機相同。"
+    },
+    "formal_coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/lorna5-formal-coverage-r1.json",
+      "sha256": "9e0bc8e1c7072f45721db20e2831aa714ff1f76cd5fa4b4b9f06cf3a74c728d3"
+    },
+    "formal_catalog_tests": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/lorna5-catalog-tests-r1.log",
+        "sha256": "c86073748f81da72fc61c658eb72d09d76c1ab6cf7f97a1301720c5a37e5ea88"
+      },
+      "tests": 11,
+      "status": "PASS"
+    },
+    "readme_figures": [
+      {
+        "file": "docs/figures/hd-lorna-spear-arc.png",
+        "sha256": "67ec97111a9482e6869492293c2078ad7bd73527663e599afa73fd05ab35fdd6",
+        "original_source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/lorna5-normal-gui-r2/world-hd-art-12.png",
+          "sha256": "67ec97111a9482e6869492293c2078ad7bd73527663e599afa73fd05ab35fdd6"
+        },
+        "scope": "正常第九章原地攻擊83，未編修實際遊戲視窗；章前HP強化。"
+      }
+    ],
+    "kylie_gif_unchanged": {
+      "file": "docs/figures/hd-kylie-original-vs-hd.gif",
+      "sha256": "c0af386348ad84574a3041d2af5ebc60ff9a930b04e6a9099d6a9ca7c0023ce2"
+    },
+    "formal_go": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/lorna5-formal-go-r1.log",
+        "sha256": "3b0cb6bd7ee5b4d8cb00440aa65929f79efeef1385b29afcdda2c6bf130c9156"
+      },
+      "tests": 3,
+      "subtests": 2,
+      "status": "PASS",
+      "skips": 0
+    },
+    "runtime_only_go": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/lorna5-runtime-only-go-r1.log",
+        "sha256": "bc9ef0a6496328f2df1b25c41d6b76da55c693202ff49e72a842c0524e808982"
+      },
+      "tests": 3,
+      "subtests": 2,
+      "status": "PASS",
+      "skips": 0
+    },
+    "lessons": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/lorna5-lessons-check-r1.log",
+        "sha256": "da8b366dc89bcc8d45b95b19846245607b80383a1cafdbbe33861836d74a630c"
+      },
+      "lessons": 280,
+      "guards": 156
+    },
+    "go_sources_unchanged": {
+      "scope": "本批無Go來源／規則修改；標準20套件沿ad6b100c既有證據，本批實測完整Draw與候選／正式／runtime-only及缺件拒收，未以繼承全套冒稱新跑。",
+      "string_inventory": "Go字串輸入未變，沿caster90_battle_followup_20261020.string_review。"
+    },
+    "cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/lorna5-cleanup-r1.json",
+      "sha256": "1b3b9afde1f4ea0a5d2801e45a9a88578d07430ad4dd4738189a918714c4ff78"
+    },
+    "worklist": {
+      "issues": [
+        201,
+        263
+      ],
+      "state": "OPEN",
+      "open_items": 22,
+      "manual_items": 14,
+      "possibly_done": 0,
+      "acceptance_preserved": true,
+      "source": "host gh actual fetch; fd2_worklist_issues pure builder, render and verify"
+    },
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/lorna5-final-validation-r1.json",
+      "sha256": "5537b80dce6b186be0f59e6025b4bc51989128700bf3e4926e93da29d0a5c4bd"
     }
   }
 }

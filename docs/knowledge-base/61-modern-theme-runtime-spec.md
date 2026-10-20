@@ -2806,3 +2806,25 @@ settle_world_battle必須等待class_ui_job正常繪製完成，接續以Return�
 原清冊entries保持；新成品與普通候選完全一致，只恢復正式private_root。正常三次移動／END與希莉亞射擊後，
 兩張待機PNG符合核心，十二項普通反例拒收；完整揮杖仍限fixture。正式及runtime-only載入／33圖／原子拒收零SKIP，
 清冊十一項與既有83普通攻防回歸通過。本輪沒有Go或規則修改，沒有新增錄影；私人同步與遠端證據見主收據。
+
+
+### 洛娜 BattleFig5 待機／旋槍／前刺
+
+狀態：CONFORMED-SCOPED；原READY及修訂歷程保留於主收據與WORKLOG。來源與目前狀態集中於[HD戰場主收據](../data/fd2-modern-hd-battlefield-20261019.json)的lorna5_battle_followup_20261020。
+原15四幀、16十七幀已核固定盤點與metadata／PNG／mask SHA，17固定零header不補造施術。
+洛娜姓名及5號映射沿既有正常LOAD，不由圖像猜測。沿核准手繪風格，保留灰綠束髮、背向藍披風、銀甲、雙頭槍及原旋槍／前刺節拍。
+母稿先審查，原始RGBA保持。全部原矩形、header、delay與raw markers不改，僅接既有HD consumer。
+
+分層編製補充READY：16:14..15弧光與人物應獨立對準。既有schema1單幀list可另由明示--layered啟用，
+預設兩銀行及--with-cast三銀行原語意保持；不為使用分層而補造17。每層仍僅pose／anchor／scale_group，
+空list、未知欄位、錯原始SHA及漏flag拒收；compiled另記旗標，正式catalog／loader及每原矩形一張RGBA不變。
+驗新分層反例並重編舊兩銀行、idle-only及90三銀行分層。
+
+完整21張Draw／F2／返回DAC／單次續行、本體與弧光PNG各別核對，普通第九章同來源seed1、own index10的正常攻擊／返回／F2／邊界冷讀後才准入。
+章前HP強化及共享姿勢明示，章內無注入；不新增自然難度、唯一相位、原版parity或整章E2。
+
+洛娜分層alpha補充READY：兩份碎光母稿maxA254，符合既有母稿maxA>=250來源契約，卻被每層255檢查擋下。分層中間canvas允許maxA>=250且minA0；單圖路徑仍要求(0,255)。所有非空原圖的最終合成PNG在建立輸出目錄前仍須(0,255)，不能只靠半透明特效組成沒有不透明核心的完整圖。母稿alpha不改，正式coverage格式與繪製端不變；新增最終核心缺失實檔反例，舊三種路徑重編及PNG SHA回歸。
+
+洛娜正常控制器補充READY：同來源兩輪後洛娜在15,22，正式move_reachable只有原格，周圍四敵均在射程1；控制器occupied排除自身原格而誤判不可前進。只有已列在正式可達集合且等於所選actor原格時，允許候選格被自己占用。其他佔用格仍排除，正式攻擊目標環仍須接納。原地待機亦可沿原回合上限執行；無射程且無法縮短距離仍拒收。來源、seed1、own10、min2／max4與遊戲規則不變。
+
+洛娜圖源、二銀行分層／alpha與原格控制器修訂已達CONFORMED-SCOPED。完整21張及普通近戰／返回／F2／邊界冷讀通過；本體35張及前刺14／15各一張暖亮核心通過，兩組18項反例拒收。原21項metadata保持，11個鞋底像素裁切明示。新分層21項守衛含最終缺不透明核心拒收；舊三路徑33張PNG位元組與57項守衛保持。私人同步、正式載入與剩餘缺口依主收據及58。

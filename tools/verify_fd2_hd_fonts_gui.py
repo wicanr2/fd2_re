@@ -791,7 +791,7 @@ def main():
                         choices=[]
                         for target in targets:
                             for cell in state.get('move_reachable',[]):
-                                if tuple(cell) not in occupied and minimum<=abs(cell[0]-target['x'])+abs(cell[1]-target['y'])<=maximum:
+                                if (tuple(cell) not in occupied or cell==state['cursor']) and minimum<=abs(cell[0]-target['x'])+abs(cell[1]-target['y'])<=maximum:
                                     choices.append((abs(cell[0]-state['cursor'][0])+abs(cell[1]-state['cursor'][1]),cell,target))
                         if args.battle_command==0:
                             # 沿0x18A5F的移動後禁用規則，只在本回合原地施法。
@@ -808,7 +808,7 @@ def main():
                         if args.battle_advance:
                             def enemy_distance(cell):
                                 return min(abs(cell[0]-enemy['x'])+abs(cell[1]-enemy['y']) for enemy in targets or enemies)
-                            cells=[cell for cell in state.get('move_reachable',[]) if tuple(cell) not in occupied]
+                            cells=[cell for cell in state.get('move_reachable',[]) if tuple(cell) not in occupied or cell==state['cursor']]
                             assert cells,'沒有可用的正常前進格'
                             if choices:
                                 # 已有合法射程時，正常移動到該格待機，保留明示的END抽樣輪數。

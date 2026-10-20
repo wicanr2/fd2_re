@@ -49,6 +49,7 @@ def main():
         p.add_argument('--'+name, required=True, type=Path)
     p.add_argument('--base-catalog', type=Path, default=ROOT/'remake/assets/themes/modern/catalog.json')
     p.add_argument('--with-cast', action='store_true', help='明示編製完整待機、攻擊及已解碼施術三組，不猜零header回退')
+    p.add_argument('--layered', action='store_true', help='明示接受既有schema1有序圖層，不增加或補造施術銀行')
     args = p.parse_args(); out = args.out.resolve()
     if out.exists() or not out.is_relative_to(ROOT) or out.parent.stat().st_uid != os.getuid():
         raise SystemExit('使用本人擁有的工作區新候選目錄')
@@ -115,7 +116,8 @@ def main():
         for index, (frame, assignment, original) in enumerate(zip(row['frames'], assignments, originals)):
             layers = assignment if isinstance(assignment, list) else [assignment]
             if isinstance(assignment, list):
-                if not args.with_cast or not layers: raise SystemExit('分層配方須明示三組模式並含非空圖層')
+                if not (args.with_cast or args.layered) or not layers:
+                    raise SystemExit('分層配方須明示三組模式並含非空圖層；兩組可明示--layered')
                 layered_frames.add((resource, index))
             for layer in layers:
                 if (not isinstance(layer, dict) or set(layer) != {'pose', 'anchor', 'scale_group'}
@@ -148,8 +150,11 @@ def main():
         if native_empty:
             # 原始Mask已由load_native核SHA；空白present仍保留完整PNG與排程。
             canvas = Image.new('RGBA', size)
-        elif canvas.getchannel('A').getextrema() != (0, 255):
-            raise SystemExit('成品缺少透明背景或不透明核心')
+        else:
+            extrema = canvas.getchannel('A').getextrema()
+            layered = (resource, index) in layered_frames
+            if extrema != (0, 255) and not (layered and extrema[0] == 0 and extrema[1] >= 250):
+                raise SystemExit('成品缺少透明背景或不透明核心')
         visible = fitted.getchannel('A').crop((-origin[0], -origin[1], size[0]-origin[0], size[1]-origin[1]))
         clipped = 0 if native_empty else sum(a >= 192 for a in fitted.getchannel('A').getdata())-sum(a >= 192 for a in visible.getdata())
         record = {'resource': resource, 'frame': index, 'pose': key, 'native_anchor': target, 'source_anchor': anchor,
@@ -171,6 +176,9 @@ def main():
             composite.alpha_composite(canvas)
         else:
             prepared.append((record, canvas, original))
+    for _, canvas, original in prepared:
+        if original.getchannel('A').getbbox() is not None and canvas.getchannel('A').getextrema() != (0, 255):
+            raise SystemExit('分層成品缺少透明背景或不透明核心')
     private = ROOT/base['private_root']; old_names = names(base)
     if any(Path(n).name != n or not (private/n).is_file() for n in old_names): raise SystemExit('基底清冊缺件')
     out.mkdir(); pack = out/'pack'; pack.mkdir(); shutil.copyfile(args.base_catalog, out/'base-catalog.json')
@@ -217,6 +225,8 @@ def main():
         report['idle_only_empty_headers'] = empty_headers
     if args.with_cast:
         report['with_cast'] = True
+    if args.layered:
+        report['layered'] = True
     (out/'compiled.json').write_text(json.dumps(report, ensure_ascii=False, indent=2)+'\n')
     print(json.dumps({'status': report['status'], 'figure': figure, 'frames': len(records), 'catalog_assets': len(candidate['assets'])}))
 

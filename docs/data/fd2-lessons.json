@@ -3331,6 +3331,36 @@
       "rule": "tools/verify_fd2_hd_fonts_gui.py的binary／assets／modern-pack／town-save／out參數使用絕對容器路徑。PulseAudio從out推導XDG_CONFIG_HOME，不能用相對設定目錄。先讀pulse.log區分環境與產品失敗，修正後沿相同來源與seed乾淨重跑。",
       "why": "93號首輪傳相對out，PulseAudio無法建立secure config目錄且遊戲未啟動；相同映像與輸入改絕對路徑後通過。",
       "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#sage93_battle_followup_20261020"
+    },
+    {
+      "id": "layered-alpha-final-composite-gate",
+      "date": "2026-10-20",
+      "area": "HD資產編製",
+      "rule": "tools/build_fd2_character_battle_hd.py分開驗母稿、中間圖層與最終PNG的alpha契約；分層中間層沿既有max>=250，最終原非空圖在建立out前仍須0／255。保存生成alpha，不為過中間檢查而重畫或量化。",
+      "why": "洛娜兩份碎光maxA254，已符合既有母稿規則；中間層卻用255擋下。最終合成沿身體保有255，新缺最終核心反例與舊33張位元組回歸通過。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#lorna5_battle_followup_20261020",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/build_fd2_character_battle_hd.py"
+        ],
+        "pattern": "分層成品缺少透明背景或不透明核心"
+      }
+    },
+    {
+      "id": "normal-melee-own-origin-is-reachable",
+      "date": "2026-10-20",
+      "area": "正常GUI抽樣",
+      "rule": "tools/verify_fd2_hd_fonts_gui.py以正式move_reachable預篩攻擊／待機時，所選actor自己的原格可被自己占用；其他占用格仍排除。正式目標環另驗，不能把原地近戰誤當無法前進。",
+      "why": "洛娜被四敵包圍，可達只剩15,22原格，舊occupied過濾導致控制器失敗。相同來源seed1重跑，實際原格攻擊／返回及冷讀通過，遊戲規則未改。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#lorna5_battle_followup_20261020",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_hd_fonts_gui.py"
+        ],
+        "pattern": "or cell==state\\[.cursor.\\]"
+      }
     }
   ]
 }
