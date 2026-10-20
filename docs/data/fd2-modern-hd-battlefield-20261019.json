@@ -9,13 +9,13 @@
     "native_viewport": "CONFORMED-SCOPED：正式1920世界沿原生(4,4)、312×192窗格；正常F2同view與960地形樣本一致。",
     "hd_sprite_data": "DATA-READY：完整125組1455張HD及31組372張新增24父項已登錄；舊1083張父項及HD bytes保持。",
     "hd_world_renderer": "CONFORMED-SCOPED：144人物已接Game.Draw；首章34張正常GPU、4張實際走行、兩次物理攻擊及保存／新程序LOAD通過。",
-    "private_assets": "405項清冊、3666檔完整allow-list與3341檔runtime-only逐筆SHA／UID核對，原3647檔保持；新增七母稿不進執行包。私人遠端核對見knight83_battle_followup_20261020。",
+    "private_assets": "正式清冊與完整／runtime-only私人allow-list均已核SHA及UID；原檔保持，新母稿排除執行包。目前數量及遠端驗證依58與sage93_battle_followup_20261020。",
     "quickload_battle_owner": "CONFORMED-SCOPED：成功JSON LOAD丟棄舊經驗owner與移動計畫；拒收保留。",
     "timed_dialogue": "CONFORMED-SCOPED-RUNTIME-E1：計時FFEC開收框保留HD世界，EXP99普通鍵盤／F2與保存冷讀通過；其他caller未驗。",
     "hd_terrain": "CONFORMED-SCOPED：map0六組53槽；新增圓頂綠色／褐色雙塊四底圖在兩張正常GPU全部相符，短長組合與保存冷讀通過；草地及其他地形仍待HD化。",
     "ai_player_input_lock": "CONFORMED-SCOPED：AI換手期間拒絕玩家地圖輸入重入；普通END／增援對話及相關／完整Go回歸通過。",
     "gaia_redesign": "CONFORMED-SCOPED：新版頭像與四方向圖組已登錄；正常START／Gaia北移取消／F2／冷讀分段驗證。相位差異與序章尾端失敗明示，非逐幀parity。",
-    "hd_battle_animation": "CONFORMED-SCOPED：正式FIGANI32資源237幀及四召喚37幀。新增突擊騎兵83的12幀，完整Draw與章9普通五次END敵方攻擊、希莉亞射擊83、返回／F2及章節邊界新程序LOAD通過。本體40張含37 END／3待機，金光8張含3重擊／5待機；兩組30項普通反例拒收。七母稿、章前強化與原姿勢明示；其他人物、施術／死亡／普通召喚與平台仍待。",
+    "hd_battle_animation": "僧侶93的279／280待機／攻擊沿原六幀正式登錄；完整Draw／F2與正常章9受擊／返回／邊界冷讀通過。普通揮杖限fixture，13／14回復屬地圖效果，其他人物／指令／效果及平台仍待。目前數量以58為準。",
     "native_purchase_equip": "CONFORMED-SCOPED：#266原生購買立即裝備保留ignored原始格，29項商店回歸與正常購弓F5／章首射程通過；不改格式或數值規則。"
   },
   "runtime_source": {
@@ -49338,6 +49338,480 @@
     "final_validation": {
       "file": "work/promo-cadence-20261018/hd-fonts/caster90-final-validation-r1.json",
       "sha256": "675c62ac3716e26f6d7386f2173bf2cd6804059333497488c2ed331c25e87953"
+    }
+  },
+  "sage93_battle_followup_20261020": {
+    "status": "CONFORMED-SCOPED",
+    "base_commit": "ad6b100ca03d59ddff2960fc9d1206fb4ed584c3",
+    "formal_registered": true,
+    "private_synced": true,
+    "full_battle_hd_complete": false,
+    "production_rules_changed": false,
+    "current_state": {
+      "remake_complete": "279／280共六幀正式登錄；完整Draw／F2及正常受擊／返回／邊界冷讀通過。",
+      "remake_remaining": "其他人物、其餘普通指令、HD法術／地圖回復／死亡／共同效果、普通召喚與平台效能仍待；93普通敵方揮杖未抽得。",
+      "original_oracle_unknown": "沒有新增原版逐幀、傷害、音訊或整章E2證據。",
+      "optional_polish": "沿既有手繪風格與原排程，沒有新增插幀取捨。"
+    },
+    "source_inventory": {
+      "file": "docs/data/fd2-battle-hd-source-inventory-20261019.json",
+      "sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51"
+    },
+    "original_resources": [
+      {
+        "resource": 279,
+        "status": "decoded",
+        "raw_sha256": "d7b3912ee012bcd2749a11d37bb0377e967ef5b3487f224dadcadc80d99b2c02",
+        "status_sha256": "0f649685edfccd466b87a9129190132fcfc1288921c29c5421088052f86cc9d7",
+        "metadata_sha256": "5786e7934ea38a8855d613028416bb502b691d6147c626edb1bde639aa0f052e",
+        "native_header": {
+          "byte_1": 0,
+          "byte_2": 1,
+          "byte_4": 0
+        }
+      },
+      {
+        "resource": 280,
+        "status": "decoded",
+        "raw_sha256": "bddafc683f7fbb9bf0ab7cde947beb60bbf7d266a7614b8908c33e9ceb16f10f",
+        "status_sha256": "4de171782a1176b253ccb1a6591e7275829415d9c5a2dcff3876e13a44fcd150",
+        "metadata_sha256": "7bf78db89b22c3a04fec6cde41b7bdc40acfd52fed75aeffe89941bd51a6983e",
+        "native_header": {
+          "byte_1": 0,
+          "byte_2": 5,
+          "byte_4": 6
+        }
+      },
+      {
+        "resource": 281,
+        "status": "empty_header_zero",
+        "raw_sha256": "6b25930e91686cee8bb5d4dae8dbed14f63c690c1c97ecb98552d8842e2d9395",
+        "status_sha256": "9b9eabe95a1997f38f1ec0366a7bd9c39550e8bfcec1747096ad8a59f78d3a05"
+      }
+    ],
+    "design_contract": {
+      "appearance": "原279:0為灰橄欖寬袍、頭帶及頂端紅色小結、窄紅眼縫與垂面布、藍腰繩及兩側腰袋／藍鞋；左側持黃褐羽形杖，另一手右伸。不憑名稱猜種族。",
+      "poses": "279:0與280:0共圖；280:1／3／4共圖，280:2為不同的橫掃杖頭。三份透明手繪母稿即可保留全部原相位；原生delay／raw marker及矩形不改。",
+      "geometry": "既有兩組編製器與schema1，保留原始alpha、身體錨點、逐層裁切記錄；不新增插幀。281為已核零header，不補造施術銀行。"
+    },
+    "healing_scope": {
+      "classification": "confirmed existing remake consumer, no new oracle claim",
+      "source": "remake/cmd/fd2/native_command_heal_presentation.go",
+      "sha256": "a84bd75def6bca0e6cc7e0728fca01b30df9b3842b6bbb46685a85e227d8ec42",
+      "caller": "main.go與native_ai_execute.go的13..16分支",
+      "finding": "13／14使用地圖transition與FDOTHER5／6尾段，不讀FIGANI人物銀行。因此不建立人物施術HD owner；回復美術仍屬後續地圖效果範圍。"
+    },
+    "acceptance": {
+      "fixture": "完整待機1＋攻擊5，實際Game.Draw／1920 PNG、F2及交易／續行邊界，保持既有物理consumer。",
+      "normal": "固定既有章9 F5來源與seed1，有界正常移動／END、希莉亞射擊93受擊待機、自然返回／F2／保存邊界冷讀。來源章前HP強化明示，章內不注入。普通敵方揮杖若未取得，明示仍限fixture。",
+      "admission": "來源SHA、完整幀、普通受擊、反例拒收均通過後才登錄catalog及私人allow-list；不由此宣稱回復HD或全遊戲完成。"
+    },
+    "source_review": {
+      "file": "work/promo-cadence-20261018/hd-fonts/sage93-source-r1/source.json",
+      "sha256": "08532d38450cabc5b4f4064b14564c1ff527979f8b500ef80a93493926b0228b"
+    },
+    "recipe": {
+      "schema_version": 1,
+      "figure": 93,
+      "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+      "sources": {
+        "idle": {
+          "file": "work/promo-cadence-20261018/hd-fonts/sage93-idle-master-r1.png",
+          "sha256": "e2925f16368d235f362d76a9ba3e5f0280779c186c919c7812d8584aa94c9826",
+          "anchor": [
+            0,
+            0,
+            1229,
+            1280
+          ]
+        },
+        "sweep": {
+          "file": "work/promo-cadence-20261018/hd-fonts/sage93-sweep-master-r1.png",
+          "sha256": "690294f1be281ab2ec4f97d6e87707074b1de02e380d81d8f123b4919a882e4d",
+          "anchor": [
+            0,
+            0,
+            1265,
+            1243
+          ]
+        },
+        "flutter": {
+          "file": "work/promo-cadence-20261018/hd-fonts/sage93-flutter-master-r1.png",
+          "sha256": "b02e598cef855dd027da11d90d8d1170c33619244431e019bec14207f3d09886",
+          "anchor": [
+            0,
+            0,
+            1265,
+            1243
+          ]
+        }
+      },
+      "resources": {
+        "279": [
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              121,
+              126
+            ],
+            "scale_group": "body"
+          }
+        ],
+        "280": [
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              121,
+              126
+            ],
+            "scale_group": "body"
+          },
+          {
+            "pose": "sweep",
+            "anchor": [
+              0,
+              0,
+              115,
+              113
+            ],
+            "scale_group": "body"
+          },
+          {
+            "pose": "flutter",
+            "anchor": [
+              0,
+              0,
+              115,
+              113
+            ],
+            "scale_group": "body"
+          },
+          {
+            "pose": "sweep",
+            "anchor": [
+              0,
+              0,
+              115,
+              113
+            ],
+            "scale_group": "body"
+          },
+          {
+            "pose": "sweep",
+            "anchor": [
+              0,
+              0,
+              115,
+              113
+            ],
+            "scale_group": "body"
+          }
+        ]
+      }
+    },
+    "generation": {
+      "prompts": {
+        "file": "work/promo-cadence-20261018/hd-fonts/sage93-prompts-r1.json",
+        "sha256": "08cab67138b2bbba1be3ee9cc95e74791275a9caf0e15567adcbecc11be14e2c"
+      },
+      "tool": "built-in image_gen",
+      "transparent_background": true,
+      "accepted_masters": [
+        "work/promo-cadence-20261018/hd-fonts/sage93-idle-master-r1.png",
+        "work/promo-cadence-20261018/hd-fonts/sage93-sweep-master-r1.png",
+        "work/promo-cadence-20261018/hd-fonts/sage93-flutter-master-r1.png"
+      ],
+      "alpha_policy": "原始RGBA與SHA保留，不去背／改色／手繪；既有編製器只機械縮放。",
+      "prompts_text": {
+        "idle": "Use case: stylized-concept. Create ONE isolated full-body HD battle sprite redesign of the ORIGINAL character in reference1, preserving its precise identity and compact broad proportions. Reference2 is STYLE ONLY: adopt its detailed hand-painted 1990s fantasy game illustration quality, NOT its red hood, hooked staff or costume. Reference1 character has a broad heavy olive-gray full-length robe with layered bulky cowl shoulders, wide sleeves, dark inner folds. Squat face completely covered in a pale gray-green long hanging cloth face veil; a narrow horizontal RED eye slit under the gray headband, not a human face. A small RED knot atop the flat headwrap. Blue rope belt, two small dark blue waist pouches, long thin blue ties, low dark-blue shoes. At image left one orange-tan hand grips a long dark wooden rod diagonally, its upper tip a large brown-gold feather or leaf-shaped broad brush fan at upper left. A narrow blue ribbon hangs from the gripping wrist/staff. The other hand extends at image right from a bulky sleeve. Follow the original staff angle and simple feather shape exactly, no orb, no curved crook. Keep the original silhouette: head fairly small above broad rounded shoulders, robe down to shoes, wide but not giant armor. Neutral 3/4 facing right, stance and arm placement as original reference1. Real transparent RGBA background, preserve soft alpha edges, no floor, shadow plane, backdrop, grid, letters or frame. Show the entire figure and entire staff with comfortable transparent margins, no cropped tips. Hand-painted brush texture and dimensional cloth folds. Same palette as reference1, NOT red cloak. No additional magic or invented accessories.",
+        "sweep": "Use case: stylized-concept. Reference1 is the ACCEPTED olive-gray robed character HD idle sprite and defines exact identity, texture, materials and style. Reference2 is the ORIGINAL next attack frame and defines the new pose. Generate ONE new transparent sprite of the SAME character in reference1, now in the compact forward staff-sweep stance of reference2. Face still pale hanging cloth with a narrow red eye slit, gray flat headwrap and small red top knot; same broad olive-gray robe, blue belt/ties/pouches and dark blue shoes. The whole body leans slightly forward and knees flex, shoulders round. Bring the wooden feather-topped staff diagonally ACROSS the upper torso from lower left to upper right. Both hands grip/support it in front of the body. Large brown-gold feather/leaf brush head extends at upper right in front of the shoulder, as ORIGINAL reference2; do not add magic. Blue ribbons trail left and right at waist. Match original reference2's compact width-to-height, full shoes visible, staff head at approximately face level and fully inside the frame. Do NOT keep the idle raised-left feather pose. Entire isolated full body with generous transparent margins on every edge; feather, fingers, ribbons and shoes fully visible. Same detailed hand-painted fantasy game battle sprite as reference1, olive-gray muted palette. Genuine RGBA transparency, no background, no ground shadow, no extra figures, no text, no grid.",
+        "flutter": "Use case: stylized-concept. Edit reference1, the accepted olive-gray robed staff-sweep HD sprite. Reference2 is original FIGANI280 frame2 and defines a very slight next-frame flutter of the large brown feather at upper right. Keep EXACTLY the same body stance, headwrap, cloth veil and red eye slit, hands, diagonal staff shaft, gray robe folds, blue belt/pouches/ribbons and shoes from reference1. Change ONLY the silhouette and internal barbs of the large brown-gold feather brush at upper right to show it flexing: its top edge slightly flatter/lower, outer tips swept back to the right with a few separated wisps as reference2. Keep its overall location and width, the rod and hands remain fixed. No extra feather, no added magic, no new pose, no movement lines. The entire isolated sprite must stay complete, transparent RGBA background and soft preserved alpha, all tips and shoes in frame with clear transparent margins. Same painted quality and muted olive-gray/blue/brown palette as reference1. No text, no ground, no shadow plane, no grid."
+      }
+    },
+    "prototype_review": {
+      "conclusion": "三稿保留原人物、橫掃同姿與羽片不同相位；畫布長寬比吻合原矩形。原稿極低alpha觸邊不稱高核心裁切，成品仍須逐幀實測。"
+    },
+    "observed_ui_name": "僧侶",
+    "recipe_file": {
+      "file": "work/promo-cadence-20261018/hd-fonts/sage93-recipe-r1.json",
+      "sha256": "d25a0773cbbdf01668eca1900881ea96ef7c8c5b87bbb5476938ec6d526ad72d"
+    },
+    "compiled": {
+      "file": "work/promo-cadence-20261018/hd-fonts/sage93-candidate-r1/compiled.json",
+      "sha256": "1b1b9eb15193556c0a81a5644509f518b20dd7eff9a3281332090189d3e3f54a"
+    },
+    "review": {
+      "file": "work/promo-cadence-20261018/hd-fonts/sage93-candidate-r1/review.png",
+      "sha256": "7992f3a57c6f3456b557c63f447b6a51b76bd54b0ed3f42ba719f747e313d52a"
+    },
+    "compiler_guards": {
+      "file": "work/promo-cadence-20261018/hd-fonts/sage93-compiler-guards-r1/guards.json",
+      "sha256": "22243b414f4c9c3fef9eef65d5805e872a06db643c6be4484e98047e0f5693ba"
+    },
+    "candidate_coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/sage93-candidate-coverage-r1.json",
+      "sha256": "920d81afb800cf9f3195710c86e4ccb6685f1817de6b4c292e6c290b3f96a88b"
+    },
+    "formal_registration": {
+      "status": "PASS-FORMAL-ADMISSION",
+      "prior_assets_unchanged": 408,
+      "assets": 410,
+      "frames": 6,
+      "new_files": [
+        "figani-279-hd6-v1-f00.png",
+        "figani-280-hd6-v1-f00.png",
+        "figani-280-hd6-v1-f01.png",
+        "figani-280-hd6-v1-f02.png",
+        "figani-280-hd6-v1-f03.png",
+        "figani-280-hd6-v1-f04.png",
+        "figure-093-flutter-battle-hd6-master-v1.png",
+        "figure-093-idle-battle-hd6-master-v1.png",
+        "figure-093-sweep-battle-hd6-master-v1.png"
+      ],
+      "candidate_asset_entries_equal": true,
+      "private_root": "remake/generated-assets/modern-theme-prototypes",
+      "catalog_sha256": "0ad8efe81c3717629ad0b0cf2eed5016daa10075cbf589c8605cf78604ef38b8"
+    },
+    "clipping": {
+      "frames": 6,
+      "high_coverage_clipped_pixels": 0,
+      "alpha_policy": "三份母稿RGBA未修改；保留編製器Lanczos重取樣與alpha。"
+    },
+    "fixture": {
+      "scope": "完整六幀Game.Draw限RUNTIME-E1；強制攻擊／反擊fixture，不當普通揮杖或原版oracle。",
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/sage93-physical-lifecycle-r1/receipt.json",
+        "sha256": "41e46841431ac11fd23fdb22ce03de5a16d88da4ecb2cae04fb451647a7a5c51"
+      },
+      "pixels": {
+        "file": "work/promo-cadence-20261018/hd-fonts/sage93-physical-gpu-r1.json",
+        "sha256": "5fd93de945b6f9afc6115e24fb641a7405832234b37a33cd3424e50f9b5050ea"
+      },
+      "guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/sage93-physical-guards-r1/guards.json",
+        "sha256": "e493b221826ec2a8c06b5a1b6ffb9341320459aa3ecaa82b4caa774eabb8b1ee"
+      },
+      "go_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/sage93-physical-go-r1.log",
+        "sha256": "8b937b6cc4dd01db51d7cc423b74bd6d280e5914374487fdaf11c6ee48142af5"
+      },
+      "complete_frames": 6,
+      "hd_draws": 202,
+      "final_draws": 308,
+      "battle_dac_steps": 64,
+      "map_dac_steps": 65,
+      "continuations": 1,
+      "phase_f2": {
+        "prelude": 1,
+        "body": 1,
+        "counter": 1
+      }
+    },
+    "normal_battle_gui": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/sage93-normal-gui-r2/receipt.json",
+        "sha256": "2c313a5d9695210af2fb1a7c0e5366af7f9e2c332a0c68a9027ade3ba68200a2"
+      },
+      "scope": "固定章9普通F5來源與seed1，祖先章前HP+1000及既有高等級；三次普通前進／END，希莉亞射擊僧侶93、自然返回、F2及章節邊界冷讀。章內無注入。只證正常受擊待機，不宣稱普通敵方揮杖／回復HD、傷害／自然存活、原版parity、唯一相位或整章E2。",
+      "end_rounds": 3,
+      "approach_cells": [
+        [
+          12,
+          30
+        ],
+        [
+          12,
+          26
+        ],
+        [
+          10,
+          24
+        ]
+      ],
+      "source_save_sha256": "f4da9acebb3444a9b618c1b108996abee2d2832902e2cad86940d91c33fc0c66",
+      "elapsed_seconds": 227.05390170495957,
+      "new_process_title_load": true,
+      "cold_loaded_units_equal": true,
+      "node_boundary_save_checked": true,
+      "recording_created": false,
+      "save_contract": "F5保存章節邊界；LOAD重建戰場，不保存本次HP／MP／位置。",
+      "binary_sha256": "73ee3f6598ad5cbc939eb7ab98e7f6cbd50ed4669cc1a93da37c495cb01341b6",
+      "gui_tool_sha256": "4ae3a09b16faf3f5a233b88b9e7b6d83ba8a6700aac88dbd4b88f87c3e3204e6"
+    },
+    "normal_pixels": {
+      "file": "work/promo-cadence-20261018/hd-fonts/sage93-normal-gpu-r1.json",
+      "sha256": "0dd89613d38c926677b584516bae74641ccd61091a2cecf0513acdd609bbe099"
+    },
+    "normal_guards": {
+      "file": "work/promo-cadence-20261018/hd-fonts/sage93-normal-guards-r1/guards.json",
+      "sha256": "2f0ec48f8a79f1fb542bec96c4289bd0739eebc7e5e86293c0aefd0180e6b287"
+    },
+    "candidate_go": {
+      "file": "work/promo-cadence-20261018/hd-fonts/sage93-candidate-go-r1.log",
+      "sha256": "7d35c3d032d4370774d959abbad44ffc82c281ec361b6ef7fbc78570c41148f2"
+    },
+    "legacy_normal_regression": {
+      "file": "work/promo-cadence-20261018/hd-fonts/sage93-legacy83-normal-gpu-r1.json",
+      "sha256": "b04a5ab5f92dee526f954d42bdb3404b97283c628d70363365423d59c0e22e2e"
+    },
+    "failed_normal_runs": [
+      {
+        "directory": "work/promo-cadence-20261018/hd-fonts/sage93-normal-gui-r1",
+        "classification": "環境／命令路徑",
+        "reason": "相對--out使PulseAudio無法建立secure config目錄，遊戲未啟動；同映像與參數改絕對容器路徑r2通過。不是產品缺陷。"
+      }
+    ],
+    "reproduction": {
+      "base_catalog_commit": "ad6b100ca03d59ddff2960fc9d1206fb4ed584c3",
+      "compiler": "tools/build_fd2_character_battle_hd.py",
+      "recipe": "sage93_battle_followup_20261020.recipe",
+      "compiler_arguments": "預設兩組，不選--with-cast；基底清冊ad6b100c。以私人allow-list的source_files SHA還原三母稿後按recipe重編。",
+      "normal_source": {
+        "file": "work/promo-cadence-20261018/hd-fonts/bekwei-bow-source-gui-r3/user-data/fd2_re/fd2_save.json",
+        "sha256": "f4da9acebb3444a9b618c1b108996abee2d2832902e2cad86940d91c33fc0c66"
+      },
+      "normal_arguments": [
+        "--battle-status",
+        "--world",
+        "--battle-hd",
+        "--battle-art",
+        "--battle-only",
+        "--battle-repetitions",
+        "1",
+        "--battle-art-samples",
+        "64",
+        "--battle-node",
+        "battle_ch09",
+        "--battle-own-index",
+        "5",
+        "--battle-target-figure",
+        "93",
+        "--battle-min-approach-rounds",
+        "2",
+        "--battle-approach-rounds",
+        "4",
+        "--battle-advance",
+        "--startup-timeout",
+        "180"
+      ],
+      "paths": "候選sage93-candidate-r1/runtime供--assets，pack供--modern-pack；所有GUI容器路徑採絕對路徑。out為新工作子目錄。",
+      "images": {
+        "assets": "fd2-assets-local:20260829-sfx",
+        "go": "fd2-go-test-local:latest",
+        "gui": "fd2-promo:20261017-r1"
+      },
+      "isolation": "user1000:1000，network none，相稱memory／CPU／pids與外層timeout；原版唯讀，Go /tmp exec tmpfs。",
+      "binary_buildinfo": {
+        "file": "work/promo-cadence-20261018/hd-fonts/sage93-binary-buildinfo-r1.txt",
+        "sha256": "7d2a52431d5ba69557b498c740aeae53ec0e7c9726b1f8a91a5f9425797515bd"
+      },
+      "verification_commands": {
+        "fixture": "python3 tools/verify_fd2_character_battle_gpu.py --figure 93 --core-profile sage --sample-group fixture --receipt <同次physical-lifecycle/receipt.json> --catalog <候選catalog.json> --source <候選pack> --report <新報告.json>",
+        "normal": "同工具、相同figure／core-profile／catalog／source，改--sample-group target及--receipt <同次normal-gui/receipt.json>；不能用attack或flow範圍冒稱完整普通揮杖。",
+        "guards": "tools/test_fd2_character_battle_gpu.py帶同次baseline、recipe候選catalog／pack及receipt；fixture與target分別重跑，other-figure 90、other-core-profile blue。target的negative-receipt沿knight83-normal-gui-r3/receipt.json。",
+        "formal": "FD2_TEST_MODERN_BATTLE_FIGURE=93，提供完整FD2_TEST_ORIGINAL_PACK、FD2_TEST_MODERN_BATTLE_CATALOG／PACK與FD2_TEST_MODERN_PACK；with-xvfb go test ./cmd/fd2的TestModernHDBattleAssetsRealCandidate、TestNativePhysicalHDPreflightStopsBeforeSettlement及TestModernThemePrivateCatalogAdmitsAllMaps。完整與runtime-only分別跑，不計SKIP。"
+      }
+    },
+    "private_delivery": {
+      "full_verification": {
+        "file": "work/promo-cadence-20261018/hd-fonts/sage93-private-sync-r1.json",
+        "sha256": "88b0512761b610a3222f13ef5854f37c5e05551a0b01b1edfbc9ff4e08451366"
+      },
+      "runtime_only_verification": {
+        "file": "work/promo-cadence-20261018/hd-fonts/sage93-runtime-only-verification-r1.json",
+        "sha256": "d1925f221d410ecb62534bd301dcf219a9706d98168059d176e9746f4980c5f7"
+      },
+      "full_manifest_files": 3705,
+      "runtime_only_files": 3370,
+      "prior_files_unchanged": 3696,
+      "new_masters_excluded_from_runtime": 3,
+      "remote_head_verified": true,
+      "private_repository_verified": "主機gh確認isPrivate=true，私人獨立提交已推送；實際遠端HEAD與本機相同。完整提交值留在本地私人交付證據，不放公開Issue。"
+    },
+    "formal_coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/sage93-formal-coverage-r1.json",
+      "sha256": "388e5451665207ca31ba722b693e46be1449bbc9b8ab08681eebc448c30311f9"
+    },
+    "formal_catalog_tests": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/sage93-catalog-tests-r1.log",
+        "sha256": "8612988dd7d222110871d0c25348427f0d93f96c3ba50533eeba9c33983e5d62"
+      },
+      "tests": 11,
+      "status": "PASS"
+    },
+    "original_files_unchanged": {
+      "file": "work/promo-cadence-20261018/hd-fonts/sage93-original-files-unchanged-r1.json",
+      "sha256": "8515dba005ee54cd62cf12c95379a6edb431f3bb8ed39e8a56c3c9048a35cae5"
+    },
+    "formal_go": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/sage93-formal-go-r1.log",
+        "sha256": "181971250367239c0a67d58291c8701487fe4b4dbbbce7a68bb92a6bec2b7a6a"
+      },
+      "tests": 3,
+      "subtests": 2,
+      "status": "PASS",
+      "skips": 0
+    },
+    "runtime_only_go": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/sage93-runtime-only-go-r1.log",
+        "sha256": "a2822fa9ad4c014e53d890d90db7c5c7fcb1c37398a92e6615ebb237ef22f1a9"
+      },
+      "tests": 3,
+      "subtests": 2,
+      "status": "PASS",
+      "skips": 0
+    },
+    "go_sources_unchanged": {
+      "basis": "本批沒有Go來源或遊戲規則變更；標準20套件沿ad6b100c既有通過。本批實跑完整人物Draw、候選／正式／runtime-only載入及原子拒收，不重跑無關全套。",
+      "string_inventory": "Go輸入來源未改，不需重新綁定字串清單；沿caster90_battle_followup_20261020.string_review與原來源SHA。"
+    },
+    "readme_figures": [
+      {
+        "file": "docs/figures/hd-monk93-idle.png",
+        "sha256": "25d055728905d2b559e9ea377e42adea952f998585350099140c0615661b8e44",
+        "original_source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/sage93-normal-gui-r2/world-hd-art-14.png",
+          "sha256": "25d055728905d2b559e9ea377e42adea952f998585350099140c0615661b8e44"
+        },
+        "scope": "普通章9希莉亞射擊僧侶93時的完整實際視窗，未編修；章前HP強化，僅受擊待機。"
+      }
+    ],
+    "kylie_gif_unchanged": {
+      "file": "docs/figures/hd-kylie-original-vs-hd.gif",
+      "sha256": "c0af386348ad84574a3041d2af5ebc60ff9a930b04e6a9099d6a9ca7c0023ce2"
+    },
+    "cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/sage93-cleanup-r1.json",
+      "sha256": "dd8d9dfe282f3c7914f1e5025232e1aaefed3db4c448afa508f273b6bf4a929e"
+    },
+    "worklist": {
+      "issues": [
+        201,
+        263
+      ],
+      "state": "OPEN",
+      "open_items": 22,
+      "manual_items": 14,
+      "possibly_done": 0,
+      "acceptance_preserved": true,
+      "source": "host gh fetch plus tools.fd2_worklist_issues pure snapshot builder, render and verify"
+    },
+    "lessons": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/sage93-lessons-check-r1.log",
+        "sha256": "c48af986269f655829259bad68ff6e8e712c8c18cd654bef68f57d68bdb89d84"
+      }
+    },
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/sage93-final-validation-r1.json",
+      "sha256": "50c94ec5cfd22e930ed0fa82bdd6911a5eedda37865f6c567dede7ce2bcb0818"
     }
   }
 }

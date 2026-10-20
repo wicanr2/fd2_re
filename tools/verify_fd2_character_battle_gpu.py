@@ -16,7 +16,7 @@ def main():
     p.add_argument('--core-profile', choices=['blue', 'gold', 'purple', 'warm', 'sage'], default='blue',
                    help='已知圖源服裝的取樣色域；只影響驗證，不影響遊戲')
     p.add_argument('--body-frames', help='只核對明示本體幀，格式為24:0,25:0-13；空白與投射物另驗')
-    p.add_argument('--sample-group',choices=['attack','end','flow','fixture','trace','idle-end','idle-fixture'],default='attack')
+    p.add_argument('--sample-group',choices=['attack','target','end','flow','fixture','trace','idle-end','idle-fixture'],default='attack')
     p.add_argument('--inventory', type=Path, default=Path(__file__).resolve().parents[1]/
                    'docs/data/fd2-battle-hd-source-inventory-20261019.json',
                    help='idle-only範圍需固定原始盤點，核對attack／cast兩項零header')
@@ -37,12 +37,13 @@ def main():
     if not 0 <= args.figure <= 135 or args.report.exists(): raise SystemExit('人物越界或報告已存在')
     receipt = json.loads(args.receipt.read_text())
     idle_only=args.sample_group in ('idle-end','idle-fixture')
+    target_group=args.sample_group=='target'
     flow_group=args.sample_group=='flow'
     end_group=args.sample_group in ('end','idle-end','flow')
     fixture_group=args.sample_group in ('fixture','idle-fixture')
     scene_names=['world-hd','world-hd-replay']
     repetitions=receipt.get('battle_repetitions',2)
-    if args.sample_group in ('attack','end','idle-end','flow') and repetitions!=2:
+    if args.sample_group in ('attack','target','end','idle-end','flow') and repetitions!=2:
         if (repetitions!=1 or receipt.get('battle_only') is not True
             or receipt.get('post_battle_save_checked') is not True
             or receipt.get('natural_attack_return_checked') is not True
@@ -81,6 +82,8 @@ def main():
         raise SystemExit('需要明示普通END擷取收據')
     if flow_group and (not receipt.get('battle_end_art_samples') or not receipt.get('battle_art_samples')):
         raise SystemExit('需要同份流程的END及我方攻擊取樣')
+    if target_group and not receipt.get('battle_art_samples'):
+        raise SystemExit('需要普通攻擊的目標待機PNG取樣')
     if args.sample_group=='idle-end' and args.figure not in receipt.get('battle_end_figures',[]):
         raise SystemExit('需要明示待機目標的普通END擷取範圍')
     entries = [a for a in catalog['assets'] if a['role'] == 'battle_animation_hd_set' and a['source_resource'] in resources]
@@ -132,6 +135,8 @@ def main():
             body_frames.update((resource, i) for i in range(first, last+1))
     candidates = []
     for asset in entries:
+        if target_group and asset['source_resource'] != args.figure*3:
+            continue
         for index, (name, sha, frame) in enumerate(zip(asset['files'], asset['frame_sha256'], asset['native_frames'])):
             path = args.source/name
             if digest(path) != sha: raise SystemExit('圖源雜湊不同')
@@ -178,7 +183,7 @@ def main():
             rgb = im.convert('RGB').load()
             for resource, index, name, sha, frame, points, total in candidates:
                 positions=[(frame['x']*6,frame['y']*6,None,[])]
-                if end_group or fixture_group:
+                if end_group or fixture_group or target_group:
                     positions=[]
                     for state in (sample['before'],sample['after']):
                         source_layers=state.get('battle_source_layers') or []
@@ -215,6 +220,10 @@ def main():
                             'checked_pixels': len(visible), 'eligible_pixels': total,
                             'world_origin': [x,y],'clip':clip,'visible_eligible_pixels':visible_count})
     for scene in ([] if fixture_group else scene_names):
+        if target_group:
+            if not any(x['scene']==scene and x['resource']==resources[0] for x in found):
+                raise SystemExit('未在普通攻擊GPU核對到所選目標的待機：'+scene)
+            continue
         if flow_group:
             if not any(x['scene']==scene and x['sample_origin']=='end' and x['resource']==resources[1] and x['frame']>0 for x in found):
                 raise SystemExit('未在普通流程END GPU核對到所選人物的攻擊動作：'+scene)
@@ -238,7 +247,7 @@ def main():
     groups = {}
     for match in found: groups.setdefault(match['file'], []).append({'resource': match['resource'], 'frame': match['frame']})
     status=('PASS-IDLE-TARGET-FIXTURE-GPU' if fixture_group else 'PASS-CHARACTER-NORMAL-IDLE-GPU') if idle_only else (
-        'PASS-CHARACTER-FIXTURE-GPU' if fixture_group else 'PASS-CHARACTER-NORMAL-FLOW-GPU' if flow_group else 'PASS-CHARACTER-NORMAL-ATTACK-GPU')
+        'PASS-CHARACTER-NORMAL-TARGET-GPU' if target_group else 'PASS-CHARACTER-FIXTURE-GPU' if fixture_group else 'PASS-CHARACTER-NORMAL-FLOW-GPU' if flow_group else 'PASS-CHARACTER-NORMAL-ATTACK-GPU')
     report = {'status': status, 'figure': args.figure,
         'core_profile': args.core_profile,
         'body_frames': sorted(body_frames) if body_frames is not None else None,
@@ -256,6 +265,8 @@ def main():
     if idle_only:
         report['idle_only_inventory']=idle_proof
         report['scope']='idle-end／idle-fixture只驗目標待機，不要求或宣稱不存在的攻擊／反擊。'+report['scope']
+    if target_group:
+        report['scope']='target只驗普通攻擊中的目標待機；仍要求完整待機及攻擊清冊，但不宣稱普通揮杖或反擊。'+report['scope']
     if args.proven_occlusion:
         report['source_occlusion']={'enabled':True,'inventory_sha256':digest(args.inventory),
             'original_manifest_sha256':digest(args.original_pack/'manifest.json'),

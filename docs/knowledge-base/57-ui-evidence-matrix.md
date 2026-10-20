@@ -1,5 +1,12 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
+僧侶BattleFig93的279／280待機／攻擊圖已沿原六幀正式登錄，281固定零header不補造。
+完整Game.Draw、F2及返回色盤通過；第九章三次正常移動／END後射擊93、自然返回、F2與章節邊界冷讀通過。
+普通PNG只證目標待機，完整揮杖限fixture。13／14回復既有caller走地圖transition及FDOTHER5／6，沒有FIGANI人物銀行；
+地圖回復特效HD仍待，不新增施術owner。正式Go來源與規則未改，章前強化政策及無章內注入明示。
+來源見[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的sage93_battle_followup_20261020，唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)。
+
+
 魔法師BattleFig90的270／271／272三組人物圖已沿原描述子正式登錄。普通指令4／5追加同次呈現的來源，
 沿既有owner、層序、DAC與Draw確認，不改MP／HP／RNG或正式保存規則。
 完整物理／施術Game.Draw與F2、缺件原子性，以及正常章9三次前進END、指令5施法、希莉亞射擊、

@@ -21,18 +21,19 @@ def main():
     p.add_argument('--proven-occlusion',action='store_true')
     p.add_argument('--original-pack',type=Path)
     p.add_argument('--inventory',type=Path)
-    p.add_argument('--sample-group',choices=['attack','end','flow','fixture','idle-end','idle-fixture'],default='attack')
+    p.add_argument('--sample-group',choices=['attack','target','end','flow','fixture','idle-end','idle-fixture'],default='attack')
     for name in ['receipt', 'catalog', 'source', 'baseline', 'negative-receipt', 'out']:
         p.add_argument('--'+name, type=Path, required=True)
     args = p.parse_args()
     idle_only=args.sample_group in ('idle-end','idle-fixture')
+    target_group=args.sample_group=='target'
     fixture_group=args.sample_group in ('fixture','idle-fixture')
     flow_group=args.sample_group=='flow'
     end_group=args.sample_group in ('end','idle-end','flow')
     verifier = Path(__file__).with_name('verify_fd2_character_battle_gpu.py')
     baseline = json.loads(args.baseline.read_text())
     expected_status=('PASS-IDLE-TARGET-FIXTURE-GPU' if fixture_group else 'PASS-CHARACTER-NORMAL-IDLE-GPU') if idle_only else (
-        'PASS-CHARACTER-FIXTURE-GPU' if fixture_group else 'PASS-CHARACTER-NORMAL-FLOW-GPU' if flow_group else 'PASS-CHARACTER-NORMAL-ATTACK-GPU')
+        'PASS-CHARACTER-NORMAL-TARGET-GPU' if target_group else 'PASS-CHARACTER-FIXTURE-GPU' if fixture_group else 'PASS-CHARACTER-NORMAL-FLOW-GPU' if flow_group else 'PASS-CHARACTER-NORMAL-ATTACK-GPU')
     if (baseline.get('status') != expected_status
             or baseline.get('figure') != args.figure
             or baseline.get('core_profile', 'blue') != args.core_profile
@@ -79,7 +80,7 @@ def main():
         wrong['phase_f2']['departure'] = 0
         path = args.out/'missing-departure.json'; path.write_text(json.dumps(wrong))
         check('missing-departure', path, '非零header需要完整離場Game.Draw與F2收據')
-    if args.sample_group in ('attack', 'end', 'idle-end', 'flow') and receipt.get('battle_repetitions') == 1:
+    if args.sample_group in ('attack', 'target', 'end', 'idle-end', 'flow') and receipt.get('battle_repetitions') == 1:
         for name, updates in [
                 ('missing-natural-return', {'natural_attack_return_checked': False}),
                 ('missing-single-save', {'post_battle_save_checked': False}),
@@ -95,7 +96,7 @@ def main():
         wrong['cold_units'] = []
         path = args.out/'wrong-boundary-save.json'; path.write_text(json.dumps(wrong))
         check('wrong-boundary-save', path, '需要同份普通攻防完整GUI收據及清冊')
-    attack_error='未在普通END GPU核對到所選目標的待機' if idle_only else (
+    attack_error='未在普通攻擊GPU核對到所選目標的待機' if target_group else '未在普通END GPU核對到所選目標的待機' if idle_only else (
         '未在普通流程END GPU核對到所選人物的攻擊動作' if flow_group else
         '未在普通END GPU核對到所選人物的攻擊動作' if end_group else '未在普通攻防GPU核對到所選人物的攻擊動作')
     check('wrong-figure', args.receipt, fixture_error if fixture_group else (
@@ -108,6 +109,26 @@ def main():
     for name in sorted(names):
         (shadow/name).symlink_to((args.source/(other if name == first else name)).resolve())
     check('wrong-source', args.receipt, '圖源雜湊不同', source=shadow)
+    if target_group:
+        wrong=copy.deepcopy(receipt);wrong['battle_art_samples']=[]
+        path=args.out/'missing-target-pixels.json';path.write_text(json.dumps(wrong))
+        check('missing-target-pixels',path,'需要普通攻擊的目標待機PNG取樣')
+        from PIL import Image
+        for variant in ['black-target-pixels','wrong-target-translation']:
+            folder=args.out/variant;folder.mkdir()
+            wrong=copy.deepcopy(receipt)
+            for sample in wrong['battle_art_samples']:
+                path=folder/sample['file']
+                if variant=='black-target-pixels':
+                    Image.new('RGBA',(1920,1200),(0,0,0,255)).save(path)
+                    sample['sha256']=digest(path)
+                else:
+                    path.symlink_to((args.receipt.parent/sample['file']).resolve())
+                    for state in [sample['before'],sample['after']]:
+                        for layer in state.get('battle_source_layers') or []:
+                            if layer['resource']==args.figure*3:layer['x']+=37
+            path=folder/'receipt.json';path.write_text(json.dumps(wrong))
+            check(variant,path,attack_error)
     if flow_group:
         for key in ['battle_end_art_samples','battle_art_samples']:
             wrong=copy.deepcopy(receipt);wrong[key]=[]

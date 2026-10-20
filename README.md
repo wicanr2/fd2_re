@@ -172,6 +172,12 @@ HD 背景、敵方與面板仍含像素素材。來源與可重跑方式見
 背景與面板仍含像素素材。普通接戰、我方射擊、F2及章節邊界保存冷讀已抽驗，範圍見
 [驗證紀錄](docs/data/fd2-modern-hd-battlefield-20261019.json)的`knight83_battle_followup_20261020`。
 
+![僧侶的HD戰鬥待機](docs/figures/hd-monk93-idle.png)
+
+第九章希莉亞射擊僧侶時的實際視窗，未編修。灰袍、面布、藍腰飾與羽形杖依原圖重繪，背景與面板仍含像素素材。
+待機與揮杖已保留原版六幀節奏；完整攻擊限測試場景，普通流程抽驗受擊、返回、F2及章節邊界冷讀。
+抽樣沿章前加血來源，回復法術的地圖特效仍待HD化，範圍見[現況矩陣](docs/knowledge-base/58-fd2-exe-re-coverage.md)。
+
 ### 普通法術的人物HD呈現
 
 ![悠妮普通施法的HD人物](docs/figures/hd-ordinary-command0-yuni.png)

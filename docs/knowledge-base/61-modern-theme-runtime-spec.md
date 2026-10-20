@@ -2785,3 +2785,24 @@ settle_world_battle必須等待class_ui_job正常繪製完成，接續以Return�
 四張施法與九張受擊待機的核心獨立通過；同份正常核對必須兩組都存在，缺任一組拒收。
 先前三輪停止／拒收及物理前景核對修訂保留。原版逐幀／音訊parity、普通90指令0／4、其他人物與完整HD不由此推定。
 唯一數量依[58](58-fd2-exe-re-coverage.md)，完整來源、提示、配方與收據見[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的caster90_battle_followup_20261020。
+
+
+### BattleFig93 待機與揮杖圖源
+
+狀態：CONFORMED-SCOPED；初始READY及編製歷程保留於WORKLOG與主收據。來源與驗收集中於[HD戰場主收據](../data/fd2-modern-hd-battlefield-20261019.json)的sage93_battle_followup_20261020。
+原FIGANI279一幀、280五幀，281為固定零header。279:0與280:0共圖，280:1／3／4共圖，280:2另有杖頭相位。
+沿核准手繪風格與既有兩組schema1編製器，保留灰橄欖寬袍、垂面布／紅眼縫、藍腰繩／腰袋／鞋與黃褐羽形杖。
+原矩形、header、delay與raw marker保持；母稿保留透明alpha，完整六張及裁切先審查再准入。
+
+章9的93號有13／14回復指令；既有main.go／native_ai_execute.go呼叫native_command_heal_presentation.go，
+其演出使用地圖transition及FDOTHER5／6，沒有FIGANI人物銀行。故本切片不新增施術人物owner，也不補造281。
+回復效果HD仍屬後續美術。物理完整Draw、F2、交易邊界及核心拒收須驗；普通章9同來源seed1，以正常移動／END後射擊93，
+驗受擊待機、返回、F2及章節邊界新程序LOAD。敵方完整揮杖若只在fixture取得，明示該範圍。
+章前強化來源與無章內注入需記錄，不新增自然難度、原版parity或整章PLAYER-E2聲明。
+
+93普通待機驗證補充READY：核對器新增明示sample-group target，只接受普通完整GUI、自然返回、F2及保存邊界冷讀。完整待機／攻擊清冊仍必須，但只核對我方攻擊中的目標待機，位置由同圖庫caller與clip提供，實際姿勢由PNG核心辨識。舊模式不變，不以target範圍宣稱普通敵方揮杖；缺取樣、黑圖、錯位移、錯圖源／人物與保存缺件均拒收。
+
+93切片與target驗證範圍已達CONFORMED-SCOPED。完整六張原描述子、透明母稿及Game.Draw通過，
+原清冊entries保持；新成品與普通候選完全一致，只恢復正式private_root。正常三次移動／END與希莉亞射擊後，
+兩張待機PNG符合核心，十二項普通反例拒收；完整揮杖仍限fixture。正式及runtime-only載入／33圖／原子拒收零SKIP，
+清冊十一項與既有83普通攻防回歸通過。本輪沒有Go或規則修改，沒有新增錄影；私人同步與遠端證據見主收據。

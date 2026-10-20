@@ -3323,6 +3323,14 @@
         ],
         "pattern": "if choices and approach>=args.battle_min_approach_rounds and command_sampled:break"
       }
+    },
+    {
+      "id": "gui-pulse-paths-are-absolute",
+      "date": "2026-10-20",
+      "area": "Docker GUI環境",
+      "rule": "tools/verify_fd2_hd_fonts_gui.py的binary／assets／modern-pack／town-save／out參數使用絕對容器路徑。PulseAudio從out推導XDG_CONFIG_HOME，不能用相對設定目錄。先讀pulse.log區分環境與產品失敗，修正後沿相同來源與seed乾淨重跑。",
+      "why": "93號首輪傳相對out，PulseAudio無法建立secure config目錄且遊戲未啟動；相同映像與輸入改絕對路徑後通過。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#sage93_battle_followup_20261020"
     }
   ]
 }

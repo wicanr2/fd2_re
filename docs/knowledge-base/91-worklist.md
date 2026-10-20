@@ -128,17 +128,17 @@ FDFIELD回合事件由完整具型別處理器降成正式劇本，保留增援�
 
 正式玩家素材的目前覆蓋與剩餘缺口以[58現況矩陣](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)為準；完整HD尚未完成，本項保持開啟。戰鬥範圍另見 #263。
 
-魔法師 BattleFig90 的 FIGANI270／271／272已正式登錄，分別為待機1幀、攻擊11幀與真實施術11幀。七份接受母稿保留原始RGBA，人物與獨立火焰依原始座標編製；全部23幀高覆蓋核心裁切為0。共用姿勢、拒收的過寬施術稿與兩份火種位置錯誤原型均有記錄。
+僧侶 BattleFig93 的 FIGANI279／280待機與攻擊已沿原矩形正式登錄，281固定零header不補造施術。三份接受母稿保留原始透明RGBA，原版重複姿勢明示共用；六幀高覆蓋核心裁切均為0。
 
-普通指令4／5的HD人物層已接入既有前導、施術、handler與尾段。圖源取自同次typed producer，不新增亂數、目標解析或改MP／HP／Acted規則。4／5雙側及多目標boundary連同既有案例共1123個完整GPU畫布通過；指令0／5完整Game.Draw、各階段F2、一次MP發布、七／六次HP發布與單次續行通過。兩組全11張施術來源各有最終核心核對與七項拒收案例。
+完整Game.Draw與最終1920×1200回讀六張、三階段F2、64／65段返回色盤及單次續行通過。16項編製守衛、5項完整繪製錯配反例拒收，沒有改Go來源、規則、亂數、層序或存檔格式。
 
-正常第九章沿先前普通購弓F5來源，祖先章前HP+1000與既有高等級明示，固定seed1，章內沒有注入。三次正常前進／END後，魔法師實際施放指令5，MP55至40；接續希莉亞射擊、自然返回、F2、F5及新程序LOAD通過。同份收據核對4張施法與9張受擊待機PNG，七項正常錯配反例拒收。F5／LOAD重建章節入口，不宣稱戰中HP、MP、位置或戰利品持續，也不新增自然難度、傷害／AI、唯一相位或原版parity聲明。
+正常第九章沿既有購弓F5來源，祖先章前HP+1000與高等級明示，固定seed1，章內無注入。三次普通移動／END後，希莉亞射擊(7,22)僧侶93，正常返回、F2、F5及新程序LOAD通過。兩張目標待機PNG核心相符；12項反例包含黑圖、錯位移、錯來源與保存缺件。新增明示target核對模式只證普通受擊待機，完整敵方揮杖仍限fixture；既有83號普通攻防40張回歸通過。
 
-最初原地END沒有接敵，正常前進初版又在可射擊時提早停止；觀測保留並補READY。最終只調整測試控制器：明示施法抽樣時，取得指定人物實際施法後才可進射擊，仍受同一min2／max4上限限制。物理fixture的前景遮擋另以已核SHA的alpha／mask排除，仍至少1000可見核心，12張全過及八項反例拒收；遊戲與fixture未為核對移位。
+13／14回復的現行caller使用地圖transition與FDOTHER5／6，沒有FIGANI人物銀行。本輪不新增不相干的施術owner，也不宣稱地圖回復特效已HD化。F5／LOAD重建章節入口，不把本次戰中HP／MP／位置列為持續保存；不新增自然難度、原版parity、唯一相位或整章PLAYER-E2。
 
-20個標準Go套件、正式素材／結算前拒收／指令0與5原子性、33張地圖完整清冊及11項清冊契約通過。已同步唯一私人素材保存庫並核對實際遠端HEAD，舊檔SHA保持，新增七母稿排除執行包。README新增未編修的正常魔法師施法視窗，凱麗原版vsHD GIF保持，沒有新增錄影。
+正式完整清冊與runtime-only包各三項Go載入／33圖／結算前拒收測試及兩個子項通過，零SKIP；11項清冊契約通過。原3696個私人素材檔及20個原始固定檔SHA保持，新三母稿排除執行包。私人庫維持private並已核實際遠端HEAD，README新增未編修普通僧侶視窗，凱麗原版vsHD GIF保持；沒有新增錄影。
 
-93與其他人物、其餘普通指令、HD法術／死亡／共同效果、普通召喚與平台效能仍待。來源408及 #265 限制保持；本項與完整戰鬥HD目標不關閉。完整來源、提示、配方、拒收與重跑入口見[主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-battlefield-20261019.json)的`caster90_battle_followup_20261020`，契約見[61](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/61-modern-theme-runtime-spec.md)，歷程見[WORKLOG](https://github.com/wicanr2/fd2_re/blob/main/WORKLOG.md)。
+魔法師90與普通4／5人物層的上一批驗證保持，見主收據`caster90_battle_followup_20261020`。其他人物、其餘普通指令、HD法術／地圖回復／死亡／共同效果、普通召喚與平台效能仍待，來源408及#265限制保持，本項不關閉。完整來源、提示、配方、反例與重跑入口見[主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-battlefield-20261019.json)的`sage93_battle_followup_20261020`，契約見[61](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/61-modern-theme-runtime-spec.md)，歷程見[WORKLOG](https://github.com/wicanr2/fd2_re/blob/main/WORKLOG.md)。
 
 _下面區塊由 `tools/fd2_worklist_issues.py` 讀取；原驗收條件保持。_
 
@@ -194,17 +194,17 @@ HD高解析呈現仍未完成。目前穩定文字、高解析故事頭像、戰
 
 完整目標仍為完成FD2戰鬥動畫HD，保留1920×1200手繪與原版像素模式；本項仍開啟。正式覆蓋數量以[58現況矩陣](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)為準。
 
-魔法師 BattleFig90 的 FIGANI270／271／272已正式登錄，分別為待機1幀、攻擊11幀與真實施術11幀。七份接受母稿保留原始RGBA，人物與獨立火焰依原始座標編製；全部23幀高覆蓋核心裁切為0。共用姿勢、拒收的過寬施術稿與兩份火種位置錯誤原型均有記錄。
+僧侶 BattleFig93 的 FIGANI279／280待機與攻擊已沿原矩形正式登錄，281固定零header不補造施術。三份接受母稿保留原始透明RGBA，原版重複姿勢明示共用；六幀高覆蓋核心裁切均為0。
 
-普通指令4／5的HD人物層已接入既有前導、施術、handler與尾段。圖源取自同次typed producer，不新增亂數、目標解析或改MP／HP／Acted規則。4／5雙側及多目標boundary連同既有案例共1123個完整GPU畫布通過；指令0／5完整Game.Draw、各階段F2、一次MP發布、七／六次HP發布與單次續行通過。兩組全11張施術來源各有最終核心核對與七項拒收案例。
+完整Game.Draw與最終1920×1200回讀六張、三階段F2、64／65段返回色盤及單次續行通過。16項編製守衛、5項完整繪製錯配反例拒收，沒有改Go來源、規則、亂數、層序或存檔格式。
 
-正常第九章沿先前普通購弓F5來源，祖先章前HP+1000與既有高等級明示，固定seed1，章內沒有注入。三次正常前進／END後，魔法師實際施放指令5，MP55至40；接續希莉亞射擊、自然返回、F2、F5及新程序LOAD通過。同份收據核對4張施法與9張受擊待機PNG，七項正常錯配反例拒收。F5／LOAD重建章節入口，不宣稱戰中HP、MP、位置或戰利品持續，也不新增自然難度、傷害／AI、唯一相位或原版parity聲明。
+正常第九章沿既有購弓F5來源，祖先章前HP+1000與高等級明示，固定seed1，章內無注入。三次普通移動／END後，希莉亞射擊(7,22)僧侶93，正常返回、F2、F5及新程序LOAD通過。兩張目標待機PNG核心相符；12項反例包含黑圖、錯位移、錯來源與保存缺件。新增明示target核對模式只證普通受擊待機，完整敵方揮杖仍限fixture；既有83號普通攻防40張回歸通過。
 
-最初原地END沒有接敵，正常前進初版又在可射擊時提早停止；觀測保留並補READY。最終只調整測試控制器：明示施法抽樣時，取得指定人物實際施法後才可進射擊，仍受同一min2／max4上限限制。物理fixture的前景遮擋另以已核SHA的alpha／mask排除，仍至少1000可見核心，12張全過及八項反例拒收；遊戲與fixture未為核對移位。
+13／14回復的現行caller使用地圖transition與FDOTHER5／6，沒有FIGANI人物銀行。本輪不新增不相干的施術owner，也不宣稱地圖回復特效已HD化。F5／LOAD重建章節入口，不把本次戰中HP／MP／位置列為持續保存；不新增自然難度、原版parity、唯一相位或整章PLAYER-E2。
 
-20個標準Go套件、正式素材／結算前拒收／指令0與5原子性、33張地圖完整清冊及11項清冊契約通過。已同步唯一私人素材保存庫並核對實際遠端HEAD，舊檔SHA保持，新增七母稿排除執行包。README新增未編修的正常魔法師施法視窗，凱麗原版vsHD GIF保持，沒有新增錄影。
+正式完整清冊與runtime-only包各三項Go載入／33圖／結算前拒收測試及兩個子項通過，零SKIP；11項清冊契約通過。原3696個私人素材檔及20個原始固定檔SHA保持，新三母稿排除執行包。私人庫維持private並已核實際遠端HEAD，README新增未編修普通僧侶視窗，凱麗原版vsHD GIF保持；沒有新增錄影。
 
-93與其他人物、其餘普通指令、HD法術／死亡／共同效果、普通召喚與平台效能仍待。來源408及 #265 限制保持；本項與完整戰鬥HD目標不關閉。完整來源、提示、配方、拒收與重跑入口見[主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-battlefield-20261019.json)的`caster90_battle_followup_20261020`，契約見[61](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/61-modern-theme-runtime-spec.md)，歷程見[WORKLOG](https://github.com/wicanr2/fd2_re/blob/main/WORKLOG.md)。
+魔法師90與普通4／5人物層的上一批驗證保持，見主收據`caster90_battle_followup_20261020`。其他人物、其餘普通指令、HD法術／地圖回復／死亡／共同效果、普通召喚與平台效能仍待，來源408及#265限制保持，本項不關閉。完整來源、提示、配方、反例與重跑入口見[主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-battlefield-20261019.json)的`sage93_battle_followup_20261020`，契約見[61](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/61-modern-theme-runtime-spec.md)，歷程見[WORKLOG](https://github.com/wicanr2/fd2_re/blob/main/WORKLOG.md)。
 
 _下面區塊由 `tools/fd2_worklist_issues.py` 讀取；原驗收條件保持。_
 
