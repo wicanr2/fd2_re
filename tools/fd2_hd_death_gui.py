@@ -7,7 +7,7 @@ from verify_fd2_hd_gui import digest, latest
 
 
 def run_ch23_death_event(args,audit,key,wait,shot,saved,command,window,restart,operations,shots,tool_hash):
-    assert args.death_event==53 and args.battle_node=='battle_ch23' and args.town_save
+    assert args.death_event==53 and args.battle_node=='battle_ch23' and args.town_save and args.world
     source_hash=digest(args.town_save)
     progress=[]; samples=[]
     command('xdotool','windowsize',window,'1920','1200')
@@ -82,7 +82,7 @@ def run_ch23_death_event(args,audit,key,wait,shot,saved,command,window,restart,o
     while time.monotonic()<deadline:
         s=latest(audit)
         if s.get('error'):raise RuntimeError(s['error'])
-        if s.get('unit_death_scene'):
+        if s.get('unit_death_scene') and s.get('unit_death_kind')==args.death_kind:
             event_seen=True
             if not hd_on:
                 key('F2');wait(lambda s:s.get('hd_theme'));hd_on=True;continue
@@ -131,7 +131,7 @@ def run_ch23_death_event(args,audit,key,wait,shot,saved,command,window,restart,o
         schema='fd2-shared-death-normal-gui-v1',status='PASS',binary_sha256=digest(args.binary),
         gui_tool_sha256=tool_hash,helper_sha256=digest(Path(__file__)),source_sha256=source_hash,
         source_file=str(args.town_save),saved_sha256=faithful_hash,samples=samples,progress=progress,
-        operations=operations,screenshots=shots,event_id=53,state_injection=False,recording_created=False,
+        operations=operations,screenshots=shots,event_id=53,death_kind=args.death_kind,state_injection=False,recording_created=False,
         final_node=latest(audit)['node'],scope='章前強化來源；正常移動、END、攻擊隊長與死亡事件抽樣、自然戰後、整備F2和保存冷讀。非自然難度、整章E2或新原版對拍。'),ensure_ascii=False,indent=2)+'\n')
 
 

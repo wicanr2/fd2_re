@@ -33,6 +33,7 @@ func (g *Game) bindNativeDeathPrograms() {
 		return
 	}
 	g.pendingDeathPrograms, g.deathProgramKiller, g.deathProgramRunning, g.deathProgramDead = nil, nil, false, nil
+	g.nativeActionDeathBefore = nil
 	g.pendingNativeDeathRewards, g.nativeDeathRewardUI, g.nativeDeathRewardThen = nil, nil, nil
 	sc := g.sc
 	if sc == nil || len(sc.NativeDeathPrograms) == 0 {

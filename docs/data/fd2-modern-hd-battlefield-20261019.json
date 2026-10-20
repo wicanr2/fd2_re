@@ -51874,5 +51874,447 @@
       "recordings_created": 0,
       "retained": "正常與拒收PNG、章前槽、F5來源、操作／輸入收據、GPU圖源及日誌。只刪本批binary與Go／GUI cache。"
     }
+  },
+  "death_consumers_followup_20261021": {
+    "status": "CONFORMED-SCOPED-RUNTIME-E1-WITH-NORMAL-ACTION-GUI",
+    "base_commit": "a14ebaab93750483242d37726d40cafbacac773b",
+    "full_hd_complete": false,
+    "inputs": [
+      {
+        "file": "docs/data/ida/fd2_status_death_ida.txt",
+        "sha256": "2cc69cc89b89805af566106dbe74f68280b10747114b5390058641fedb5019d1"
+      },
+      {
+        "file": "docs/data/fd2-reference-files.json",
+        "sha256": "9946b7506620069ce9b7bb8e4b1f7fed36e7a9389b634ef62064727d89579c5e"
+      },
+      {
+        "file": "remake/internal/battle/native_ch28_post_present.go",
+        "sha256": "38e6910cd5117891a6da87085dc7bb92484fba4fffe642a32e31fb756b68ba3a"
+      }
+    ],
+    "current_state": {
+      "remake_complete": "普通物理／法術收尾及狀態致死接共同26拍。完整Draw／F2／一次續行、三張正常擊殺A／B核心、戰後及保存冷讀通過。",
+      "remake_remaining": "狀態致死正常GUI、其他尚未重繪人物／指令／效果與平台效能。",
+      "original_oracle_unknown": "沒有新DOS原版、逐拍raw或整章PLAYER-E2。",
+      "optional_polish": "沒有插幀、改畫或正式速度調整。"
+    },
+    "date": "2026-10-21",
+    "new_assets": 0,
+    "runtime_contract": {
+      "schedule": "既有13＋6＋6＋steady與sample3，不重跑傷害或亂數。",
+      "flags": "物理入口與實際ApplyHPDamage正值→0 writer保存原+5；私有演出恢復，正式inactive保持。",
+      "identities": "普通／狀態呈現持有原State與Unit指標，逐拍圖源只讀私有快照。",
+      "serialization": "兩個Unit私有欄位不序列化；Clear及復活清除metadata，JSON bytes不變。",
+      "status": "扣血訊息→死亡owner→到期提示；無killer／死亡獎勵分派。",
+      "status_preflight": "私有State依逐格游標原語推演全部扣血聚焦，view／HUD／work／VGA與正式focus差分相同；無trace／live／RNG副作用。",
+      "failure": "普通行動在已結算邊界拒收，不追加inactive；狀態在HP交易前預檢拒收。未聲稱普通攻擊HP／RNG回滾。",
+      "no_visible": "無可見新死亡不增加空演出，原inactive收尾保持。"
+    },
+    "normal_gui": {
+      "file": "work/promo-cadence-20261018/hd-fonts/death-consumers-r1/action-gui-r1/receipt.json",
+      "sha256": "f7ccc293971fbb377599b00c1aa5c7cf5140bbeda2c0f7dfe14cea807955fd60",
+      "consumer": "action",
+      "seed": 1,
+      "seed_method": "既有GUI --world在程序啟動前設定FD2_SEED=1。",
+      "source": {
+        "file": "work/promo-cadence-20261018/hd-fonts/shared-death-player-ch23-r1/source-gui-r2/user-data/fd2_re/fd2_save.json",
+        "sha256": "5d64f3a0bf9aa56f7e77f51e8cfe45fe8c14ab78f2703b966fbc0e142e7bd871"
+      },
+      "normal_end_count": 7,
+      "blocker_attacks": 1,
+      "actor_identity": 30,
+      "actor_cell": [
+        20,
+        18
+      ],
+      "commander_cell": [
+        20,
+        17
+      ],
+      "samples": 15,
+      "accepted_core_samples": 3,
+      "chapter_injection": false,
+      "final_node": "preparation_ch24",
+      "f2_f5_bytes_equal": true,
+      "new_process_load": true,
+      "scope": "章前AP+5000／DP+300／DX+60／MaxHP+1000來源與既有傷亡。正常普通擊殺先於文字5／事件53；不稱自然難度、原版parity或整章E2。"
+    },
+    "normal_pixels": {
+      "file": "work/promo-cadence-20261018/hd-fonts/death-consumers-r1/normal-action-pixels-r1.json",
+      "sha256": "048b1b3066c62a8b15b8ceaac0d2fde8ab4756e0189ec9004c7ac91ab2a62dd9",
+      "accepted": [
+        {
+          "file": "death23-event-18.png",
+          "candidates": [
+            {
+              "frame": 18,
+              "phase": "overlay_a",
+              "compared_pixels": 3410,
+              "rgb_errors_gt3": 0
+            },
+            {
+              "frame": 18,
+              "phase": "overlay_a",
+              "compared_pixels": 3410,
+              "rgb_errors_gt3": 0
+            }
+          ]
+        },
+        {
+          "file": "death23-event-19.png",
+          "candidates": [
+            {
+              "frame": 19,
+              "phase": "overlay_b",
+              "compared_pixels": 2221,
+              "rgb_errors_gt3": 0
+            }
+          ]
+        },
+        {
+          "file": "death23-event-20.png",
+          "candidates": [
+            {
+              "frame": 20,
+              "phase": "overlay_b",
+              "compared_pixels": 2213,
+              "rgb_errors_gt3": 0
+            }
+          ]
+        }
+      ],
+      "effect_candidates_not_accepted": [
+        {
+          "file": "death23-event-12.png",
+          "candidates": [
+            {
+              "frame": 14,
+              "phase": "overlay_a",
+              "compared_pixels": 71,
+              "rgb_errors_gt3": 70
+            }
+          ]
+        },
+        {
+          "file": "death23-event-14.png",
+          "candidates": [
+            {
+              "frame": 14,
+              "phase": "overlay_a",
+              "compared_pixels": 71,
+              "rgb_errors_gt3": 0
+            },
+            {
+              "frame": 16,
+              "phase": "overlay_a",
+              "compared_pixels": 692,
+              "rgb_errors_gt3": 692
+            }
+          ]
+        },
+        {
+          "file": "death23-event-17.png",
+          "candidates": [
+            {
+              "frame": 17,
+              "phase": "overlay_a",
+              "compared_pixels": 1247,
+              "rgb_errors_gt3": 1052
+            },
+            {
+              "frame": 18,
+              "phase": "overlay_a",
+              "compared_pixels": 3410,
+              "rgb_errors_gt3": 3306
+            }
+          ]
+        }
+      ],
+      "scope": "A18／B19／B20的可見不透明來源核心；時點錯配或不足100點不放行，人物與半透明尾段不由此證明，不判唯一相位。"
+    },
+    "normal_rejections": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/death-consumers-r1/normal-action-rejections-r1.log",
+        "sha256": "32ca4024636e5f0795ee54d0fd7235a921d399a7bdb44aec4c183c5f723672b9"
+      },
+      "cases": 9,
+      "status": "PASS"
+    },
+    "gpu": [
+      {
+        "consumer": "action",
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/death-consumers-r1/gpu-action-r3/receipt.json",
+          "sha256": "dd0356b071b9b0ee727930b8f915f4bda39bfe1222fa999800aef76d56300ae7"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/death-consumers-r1/gpu-action-r3.log",
+          "sha256": "85e681e880be8ec5f9e54749a61da9b52af350351e9784cf8f6a9e3680142450"
+        },
+        "independent_reference_pixels": {
+          "file": "work/promo-cadence-20261018/hd-fonts/death-consumers-r1/gpu-action-pixels-r1.json",
+          "sha256": "03fd5482591333ec20cdfd16fe68526e4c2d8d8fc3c47640fcdfef93177c0625"
+        },
+        "frames": 26,
+        "f2_phases": [
+          "pose",
+          "overlay_a",
+          "overlay_b",
+          "steady"
+        ],
+        "scope": "明示建構HP transition；action經行動收尾，status經typed phase及共同呈現。實際訊息caller另驗；非正常GUI或原版oracle。"
+      },
+      {
+        "consumer": "status",
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/death-consumers-r1/gpu-status-r3/receipt.json",
+          "sha256": "409bdd59bb9abd9f11071316e61f886aec05d3cc6cbd2e5c277e371f53bd9c87"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/death-consumers-r1/gpu-status-r3.log",
+          "sha256": "5f2c711bce4247fccdd1cf505e96539fb100b10307bf998322982591a5601a24"
+        },
+        "independent_reference_pixels": {
+          "file": "work/promo-cadence-20261018/hd-fonts/death-consumers-r1/gpu-status-pixels-r1.json",
+          "sha256": "75231666f8328f364434fb12f89cec5bc3a7279fcef71d2182a6ea68dc2ff2cc"
+        },
+        "frames": 26,
+        "f2_phases": [
+          "pose",
+          "overlay_a",
+          "overlay_b",
+          "steady"
+        ],
+        "scope": "明示建構HP transition；action經行動收尾，status經typed phase及共同呈現。實際訊息caller另驗；非正常GUI或原版oracle。"
+      },
+      {
+        "consumer": "script",
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/death-consumers-r1/gpu-script-r3/receipt.json",
+          "sha256": "457a83cffd51c22fb547544f59760e976587b0f1b02693872990f7437dacaecf"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/death-consumers-r1/gpu-script-r3.log",
+          "sha256": "4739bc42477e0c91e1ece196be710aed3611824fcebc631e7b6c93440994b0cd"
+        },
+        "independent_reference_pixels": {
+          "file": "work/promo-cadence-20261018/hd-fonts/death-consumers-r1/gpu-script-pixels-r1.json",
+          "sha256": "a1706ebdfdd8dfc5425a5257c9815ae9e9b01e558ec6592581f788b8616ab645"
+        },
+        "frames": 26,
+        "f2_phases": [
+          "pose",
+          "overlay_a",
+          "overlay_b",
+          "steady"
+        ],
+        "scope": "既有章節事件fixture；完整Game.Draw與最終1920回讀。不是普通擊殺、正常玩家E2或新原版oracle。"
+      }
+    ],
+    "gpu_byte_regression": {
+      "file": "work/promo-cadence-20261018/hd-fonts/death-consumers-r1/gpu-r3-byte-regression.json",
+      "sha256": "79a6fd6aa2eb9da26b423d29d98d1912f993648cfe6b45a2e3a0e1497fe7782c"
+    },
+    "gpu_rejections": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/death-consumers-r1/gpu-rejections-r3.log",
+        "sha256": "2e6d5dbf27283c37757691e231281a45364722956b7a2839238fcdbbf7d831fa"
+      },
+      "cases": 9,
+      "status": "PASS"
+    },
+    "regression": {
+      "full_go": {
+        "file": "work/promo-cadence-20261018/hd-fonts/death-consumers-r1/full-go-r3.log",
+        "sha256": "5637961e8d001f8b9e689acfd5116eca34b69019ca6c3f72f38089ad20540444"
+      },
+      "passing_packages": 20,
+      "main_package_seconds": 239.264,
+      "caller_tests": {
+        "file": "work/promo-cadence-20261018/hd-fonts/death-consumers-r1/consumer-tests-r3.log",
+        "sha256": "2047013b0a62a1135f7a61a0933c3e737a3fc028fda4152eba1983712d38bd1d"
+      },
+      "writer_tests": {
+        "file": "work/promo-cadence-20261018/hd-fonts/death-consumers-r1/consumer-tests-r2.log",
+        "sha256": "76378c46b1b9a7282cdc1f47712ac4165f8b96084f7008a8d841bdd218ab6c6f"
+      },
+      "string_inventory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/death-consumers-r1/string-inventory-r3.json",
+        "sha256": "0ab8b80997a063f3bfa69b4f10a8f53b01df8638493e4b8ae8e964562f158a6e"
+      },
+      "review_dispositions": 99
+    },
+    "binary_before_cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/death-consumers-r1/fd2-r3",
+      "sha256": "e1db152d0ac742e419a47d9f0337960ffa364402eaf6c64ea045efd6f0ca7d31"
+    },
+    "readme_figure": {
+      "file": "docs/figures/hd-action-death-normal.png",
+      "sha256": "18cb212e854c09fff79ff5798c33f0e4a40d279b47d4284b6c91ef6c01e429c7",
+      "source": {
+        "file": "work/promo-cadence-20261018/hd-fonts/death-consumers-r1/action-gui-r1/death23-event-19.png",
+        "sha256": "18cb212e854c09fff79ff5798c33f0e4a40d279b47d4284b6c91ef6c01e429c7"
+      },
+      "scope": "未編修正常普通擊殺視窗，原LMI矩形在視口上緣裁切；非原版畫面或自然難度。"
+    },
+    "source_files": [
+      {
+        "file": "remake/cmd/fd2/main.go",
+        "sha256": "154650e8fd4206a61d44adcd7dc1f98b2d0a343f40f525b95acc5bd98d39a86f"
+      },
+      {
+        "file": "remake/cmd/fd2/native_action_death_present.go",
+        "sha256": "51c99f8d6fec6b862d626975b93cc448ca0e419e40909137e2dc5b7b17aa1545"
+      },
+      {
+        "file": "remake/cmd/fd2/native_action_death_present_test.go",
+        "sha256": "488eb0c70ca7050faa2588c0db766322e9ef81c8a22a51558571a70f7be2587a"
+      },
+      {
+        "file": "remake/cmd/fd2/native_ch28_post_present.go",
+        "sha256": "c40819718b36eb5d0bf5399423d8cff5469046d2535254fe13997eafbb7d246a"
+      },
+      {
+        "file": "remake/cmd/fd2/native_transient_presentation.go",
+        "sha256": "7e8cc089c92be42ea79671d9426e894d8eb1e8a9c08ad05304b60ef69bbeb0c4"
+      },
+      {
+        "file": "remake/cmd/fd2/native_death_audit.go",
+        "sha256": "2f2dbee6b3f55214ef55d594644c70e364e1354165b4ea0ce6a85861216ac07a"
+      },
+      {
+        "file": "remake/cmd/fd2/native_death_program_runtime.go",
+        "sha256": "01701ace857774dd8143dbdebee6bdc015f2273fc6d10ff54c34a993605d810c"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_death_test.go",
+        "sha256": "6ec20973c91e4040d24e107e9590cc146d8b21ed8a0d4e84857df059c4ed552e"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command10_12_presentation_test.go",
+        "sha256": "aef51c20a266afef78bb6f23c0dfa29f6ad1a0e5d200373281f7ce26289ddae6"
+      },
+      {
+        "file": "remake/internal/battle/model.go",
+        "sha256": "00d2d9722f4dcef02e95145804730bd3bd5b262a8adcf4c5ee3de9bb7999cf0e"
+      },
+      {
+        "file": "remake/internal/battle/native_death_presentation_flag_test.go",
+        "sha256": "1227b51e95e9f48ac40b311814b5664960ee703a0f62cdb67b983f2dfac99072"
+      },
+      {
+        "file": "tools/fd2_hd_death_gui.py",
+        "sha256": "317a870c7362fa3d30aeb4dedf9cafa864d26d668ae1989881f0e64a639105ef"
+      },
+      {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "d2c34dc3d27a9bcbfb24736f8fdec69b2ca0f8290fc8241abdd8f82a08aba6eb"
+      },
+      {
+        "file": "tools/verify_fd2_hd_death_gpu.py",
+        "sha256": "cccfa2da44ac09ba520a733218fd4e3ec0006b90cc20c58c28844d6aa9306c2d"
+      },
+      {
+        "file": "tools/verify_fd2_hd_death_normal.py",
+        "sha256": "29d771eca638c2c8656c074633884b60538201ea1d534841fcfb00413671d9c8"
+      },
+      {
+        "file": "tools/test_verify_fd2_hd_death_gpu.py",
+        "sha256": "4fa550e7bc8b2c3252e9d5548e9e3a40fe767c1f17b9c1d80b2b7bb2ae1965b4"
+      },
+      {
+        "file": "tools/test_verify_fd2_hd_death_normal.py",
+        "sha256": "40dfe1151de80dd1974b2d0ecda66a10a04f00e776d5852c3ffa6d8c4c7aa68c"
+      }
+    ],
+    "reproduction": {
+      "images": [
+        "fd2-go-test-local:latest",
+        "fd2-assets-local:20260829-sfx",
+        "fd2-promo:20261017-r1"
+      ],
+      "gpu": "TestModernHDDeathRuntimeGPU; FD2_TEST_HD_DEATH_GPU=1及FD2_TEST_MODERN_BATTLE_CATALOG／PACK、FD2_TEST_HD_DEATH_OUT；CONSUMER為action／status／script，每次獨立程序。",
+      "normal_arguments": [
+        "--battle-status",
+        "--world",
+        "--battle-node",
+        "battle_ch23",
+        "--death-event",
+        "53",
+        "--death-kind",
+        "action",
+        "--startup-timeout",
+        "180"
+      ],
+      "normal_source": {
+        "file": "work/promo-cadence-20261018/hd-fonts/shared-death-player-ch23-r1/source-gui-r2/user-data/fd2_re/fd2_save.json",
+        "sha256": "5d64f3a0bf9aa56f7e77f51e8cfe45fe8c14ab78f2703b966fbc0e142e7bd871"
+      },
+      "no_recordings": true,
+      "isolation": "Docker user1000:1000、network none、timeout／memory／cpu／pids限制；原版唯讀。"
+    },
+    "failed_or_superseded": {
+      "full_go_r1": {
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/death-consumers-r1/full-go-r1.log",
+          "sha256": "f77754d9a15b977d91766e3c086822316ca37773b9ee30b2c30a98878cb454a3"
+        },
+        "classification": "validation fixture",
+        "reason": "AI指令10手工fixture只處理指令owner，沒有等待新死亡owner及明示靜音。測試補實際Draw、延後續行與RNG不重複檢查；產品未退回空呈現。"
+      },
+      "r2": "共用HP writer補齊後20套件Go通過；其後只補私有聚焦預檢，最終r3再跑20套件與78張GPU。"
+    },
+    "assets": {
+      "catalog": {
+        "file": "remake/assets/themes/modern/catalog.json",
+        "sha256": "945bb4be1925ed016e66b97d3427677588ac993fccdf5ce2af3ab58d804b1600"
+      },
+      "unchanged": true,
+      "private_base": "18b0af2063962641570a24018d77cdf0bbd1cd44",
+      "private_sync_required": false
+    },
+    "final_audit": {
+      "file": "work/promo-cadence-20261018/hd-fonts/death-consumers-r1/final-audit.json",
+      "sha256": "73e41f329ad15d606b861bf00b54afb2cb699681af5fa7824222c5da3dbc5c31"
+    },
+    "original_files_unchanged": {
+      "file": "work/promo-cadence-20261018/hd-fonts/death-consumers-r1/original-files-unchanged.json",
+      "sha256": "7a4da8e51d884aa457af282000c6cff3c21b46e08345e9267cd9311e3c3f5fb4"
+    },
+    "lessons": {
+      "count": 284,
+      "guards": 159,
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/death-consumers-r1/lessons-check.log",
+        "sha256": "8fa22d06e18ac912bb749e12fbabf86eddcde043c080af9caf715a473c19195c"
+      }
+    },
+    "worklist": {
+      "open": 22,
+      "manual": 14,
+      "possibly_done": 0,
+      "issue201": "OPEN",
+      "issue263": "OPEN",
+      "acceptance_unchanged": true,
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/death-consumers-r1/worklist-verify.log",
+        "sha256": "86a705d5f4e3a2e4f08ef650f29d426c2c5c17cfa54544b6333b324e92c391d1"
+      }
+    },
+    "cleanup": {
+      "removed_logical_bytes": 511978682,
+      "removed_allocated_bytes": 519315456,
+      "removed_files": 2404,
+      "binary_hashes": {
+        "fd2-r2": "83bae2c798e80a034e6785920d2507fa9880ce875f7c1076651dfa490afb37d6",
+        "fd2-r3": "e1db152d0ac742e419a47d9f0337960ffa364402eaf6c64ea045efd6f0ca7d31"
+      },
+      "deduplicated_logical_bytes": 44572823,
+      "deduplicated_allocated_bytes": 46530560,
+      "deduplicated_pngs": 666,
+      "recordings_created": 0,
+      "retained": "所有正常／拒收／完整GPU PNG、收據、輸入／操作、來源槽及日誌；同SHA PNG僅於本批work內hardlink去重。"
+    }
   }
 }

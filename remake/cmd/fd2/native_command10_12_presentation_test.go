@@ -12,6 +12,7 @@ import (
 )
 
 func TestExecuteNativeAICommand10UsesOriginalIndexedOwner(t *testing.T) {
+	t.Setenv("FD2_MUTE", "1") // bounded fixture; command sound resources are still explicitly loaded below
 	base := filepath.Clean("../../../org_game/炎龍騎士團/FLAME2")
 	pack := filepath.Clean("../../generated-assets/fd2-original-b97caf22")
 	if !fileExists(filepath.Join(pack, "sfx", "FDOTHER_080", "resource.json")) {
@@ -101,6 +102,20 @@ func TestExecuteNativeAICommand10UsesOriginalIndexedOwner(t *testing.T) {
 		if g.nativeCmd1012 != nil && g.nativeCmd1012.phase == nativeCommand1012Hold {
 			g.nativeCmd1012.hold = 0
 		}
+	}
+	if g.loadErr != "" || g.nativeCh28PostPresent == nil || continued != 0 {
+		t.Fatalf("command10 did not defer continuation to death presentation: %s", g.loadErr)
+	}
+	seed := g.nativeRNGState
+	for steps := 0; g.nativeCh28PostPresent != nil && steps < 26; steps++ {
+		if !g.drawNativeCh28PostPresent(screen) {
+			t.Fatal("command10 death Draw failed")
+		}
+		g.nativeCh28PostPresent.wait = 0
+		g.stepNativeCh28PostPresent()
+	}
+	if g.nativeRNGState != seed || g.nativeCh28PostPresent != nil {
+		t.Fatal("death animation changed RNG or did not finish")
 	}
 	if g.nativeCmd1012 != nil || actor.MP != 10 || !actor.Acted || target.HP >= 403 || continued != 1 {
 		t.Fatalf("AI command10 owner incomplete: actor=%#v target=%#v continued=%d", actor, target, continued)

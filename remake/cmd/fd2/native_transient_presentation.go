@@ -20,16 +20,20 @@ const (
 // （0x1A8D4 [0x51A83]=0 → 0x12D7B 聚焦該記錄 → [0x51A83]=1 → 0x1956B 開框 → 0x1E7 →
 // 0x1E5C0(10) → 0x196CB 關框），再逐筆到期提示（0x1A9AA 同一套聚焦後開框，FDTXT
 // 0x1E1..0x1E6）。所有到期幀的素材與肖像在發布交易前先預檢；缺素材時 HP／狀態交易與
-// 玩家可見回饋都不變。sub_1DB65 的狀態致死動畫仍未由這裡承擔。
+// 玩家可見回饋都不變。扣血訊息後、到期提示前同步呈現 sub_1DB65；不分派死亡效果。
 func (g *Game) beginNativeTransientPhases(selectors []byte, then func()) error {
-	if g == nil || g.nativeClassUIJob != nil || g.transientUI || g.nativeLevelUpDialogue != nil {
+	if g == nil || g.nativeClassUIJob != nil || g.transientUI || g.nativeLevelUpDialogue != nil || g.nativeCh28PostPresent != nil {
 		return errors.New("native transient presentation: another indexed owner is active")
 	}
 	candidate, expired, damage, err := g.buildNativeTransientPhases(selectors...)
 	if err != nil {
 		return err
 	}
-	if len(expired) == 0 && len(damage) == 0 {
+	deathFlags := nativeTransientDeathFlags(g.st, candidate)
+	if err := g.preflightNativeTransientDeath(candidate, deathFlags, damage); err != nil {
+		return err
+	}
+	if len(expired) == 0 && len(damage) == 0 && len(deathFlags) == 0 {
 		g.adoptNativeStateCandidate(candidate)
 		if then != nil {
 			then()
@@ -131,6 +135,17 @@ func (g *Game) beginNativeTransientPhases(selectors []byte, then func()) error {
 	var runDamage func(int)
 	runDamage = func(index int) {
 		if index >= len(damage) {
+			if len(deathFlags) != 0 && g.st.HasNativeMapViewState {
+				g.transientUI = false // the death owner now blocks Update and phase continuation
+				started, err := g.startNativeMapDeathVisual(deathFlags, "status", func() { runExpiry(0) })
+				if err != nil {
+					g.loadErr = "native transient death presentation: " + err.Error()
+					return
+				}
+				if started {
+					return
+				}
+			}
 			runExpiry(0)
 			return
 		}
@@ -156,7 +171,7 @@ func (g *Game) beginNativeTransientPhases(selectors []byte, then func()) error {
 
 // nativeTransientPresentationActive 回報 sub_1A866 的扣血訊息或到期提示還沒播完。
 func (g *Game) nativeTransientPresentationActive() bool {
-	return g != nil && (g.transientUI || g.nativeLevelUpDialogue != nil)
+	return g != nil && (g.transientUI || g.nativeLevelUpDialogue != nil || g.nativeCh28PostPresent != nil)
 }
 
 // focusNativeTransientRecord 是 0x1A8D4／0x1A9AA 的聚焦：[0x51A83]=0 → 0x12D7B(record) →

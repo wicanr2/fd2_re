@@ -2310,3 +2310,19 @@ README僅新增明示合成測試場景的未編修畫面連結，凱麗GIF與�
 README新增未編修正常章23事件PNG，既有凱麗原版／HD GIF與文化內容保持；57／58／61及主收據同步。完整HD仍未完成，普通擊殺／狀態致死consumer及其他人物／指令／效果繼續列待。GitHub工作議題、提交遠端與清理核對於同批收尾記錄。
 
 收尾：遠端#201／#263內文與verify.note同步，原acceptance逐字保持且仍OPEN；主機gh重拉快照為22條／14人工／0可能完成。教訓283條、158守衛通過；7份文件2422個本地連結、29個SHA引用、四份Python語法、六個文化入口及凱麗GIF保持。最終來源工具SHA與兩份正式GUI收據相同，原生來源重生F5 bytes相同。移除本批可重建binary／Go／GUI cache共252541478 bytes，沒有新錄影，PNG、槽、收據與拒收日誌保留。Docker生命週期與公開遠端HEAD另以提交後收據核對。
+
+## 2026-10-21：普通行動與狀態致死HD consumer
+
+基底a14ebaab。先核110與既有IDA9.4固定SHA的1DB65 caller、active／HP0閘門及狀態1A941順序，再於61定READY。普通物理入口及共用ApplyHPDamage正值到0邊界保留實際原+5，供私有呈現恢復；兩個Unit私有欄位不序列化，JSON bytes與原HP／+5 writer保持，復活與收尾清除。原有行動State／Unit指標、HP／RNG／獎勵保持；新增同步呈現前預檢，結束只續行一次。離屏與早已inactive者不插空演出。
+
+狀態phase沿原HP／inactive／倒數交易，在全部扣血訊息後、到期提示前接同一26拍，不建立killer或死亡獎勵。預檢需覆蓋訊息聚焦後的視圖：私有State／緩衝沿原單格游標step推演，不發正式focus trace。與真實focus的view／HUD／work／VGA相同，缺LMI在HP交易前拒收。普通行動的拒收位於已結算邊界，不聲稱回滾此前HP／RNG；原版逐拍raw並未由此補證。
+
+初輪完整Go只剩AI指令10測試失敗：手工fixture只走原指令owner，沒有後接死亡owner及明示靜音。測試補正常Draw與一次續行／RNG檢查，未為通過測試退回空呈現。補共用HP writer後20套件通過；私有聚焦預檢補強後，最終20套件再次通過，主套件239.264秒，99項字串處置只重綁座標。正式caller、法術來源、JSON不變、狀態訊息交接、缺件原子性、指標與無trace差分皆通過。
+
+action／status／script各26張完整Game.Draw、四階段F2及一次續行通過。最終78張PNG與收據和各自獨立重組基底bytes相同，原script26拍亦與前批保持。GPU及正常PNG核對器各九項錯誤拒收，包含錯consumer。status GPU採明示typed phase建構，正式扣血訊息caller另驗，不推定正常玩家路徑。
+
+正常GUI沿既有章23原生LOAD／整備出發所得F5來源，固定seed1、七次普通END及清除一名阻擋敵軍後，蓋亞在20,18攻擊20,17隊長。新增unit_death_kind區分action與script；只抽第一次普通擊殺，再以忠實模式正常走文字5／事件53、勝利確認與戰後至章24整備。十五張取樣三張A18／B19／B20不透明核心符合；三份其他效果候選跨拍或不足100點不放行，人物／透明尾段不由此證明。F2前後F5 bytes相同及新程序標題LOAD通過。章前強化與既有傷亡明示，章內無注入，不新增自然難度、原版oracle或整章E2。
+
+README改用未編修的普通擊殺視窗，舊章節事件圖與凱麗GIF保持；57／58／61／索引與主收據同步。沒有新素材或私人庫提交，原413項catalog SHA保持。剩餘HD、狀態正常GUI及平台效能仍待；GitHub議題、提交與清理於同批收尾核對。
+
+收尾：#201／#263內文及verify.note同步，原acceptance逐字保持且仍OPEN；主機gh重拉22條／14人工／0可能完成。教訓284條、159守衛通過，新守衛以正式main.go作正對照、移除呼叫的私有副本作反對照。七份文件2428個本地連結、六份Python語法、45項SHA引用、20份原版固定檔與99項字串處置語意保持；README標題與文化尾段、凱麗GIF及舊事件圖bytes相同。移除本批可重建binary／Go／GUI cache共511978682 bytes，PNG同SHA去重44572823 bytes；無新錄影，所有PNG路徑、槽、收據與拒收日誌保留。Docker及實際遠端HEAD另於提交後核對。

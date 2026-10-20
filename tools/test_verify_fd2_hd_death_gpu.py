@@ -23,11 +23,12 @@ class DeathGPUVerifierTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root=Path(tmp)
             for path in run.glob('*.png'): (root/path.name).symlink_to(path)
-            for kind in ['frames','f2','origin','viewport','missing_overlay','layer_order','black_image','source_order']:
+            for kind in ['frames','f2','origin','viewport','missing_overlay','layer_order','black_image','source_order','consumer']:
                 with self.subTest(kind=kind):
                     data=copy.deepcopy(receipt)
                     source=json.loads(catalog.read_text())
                     if kind=='frames': data['frames'].pop()
+                    elif kind=='consumer':data['consumer']='unknown'
                     elif kind=='f2': data['faithful_draws']=0
                     elif kind=='origin': data['targets'][0]['Origin']+=1
                     elif kind=='viewport': data['frames'][0]['viewport']['Min']['X']=24

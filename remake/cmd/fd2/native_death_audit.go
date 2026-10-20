@@ -11,6 +11,7 @@ func (g *Game) recordNativeDeathAuditState(result map[string]any) {
 		return
 	}
 	result["unit_death_owner"] = fmt.Sprintf("%p", job)
+	result["unit_death_kind"] = job.kind
 	result["unit_death_frame"] = job.frame
 	result["unit_death_drawn"] = job.drawn
 	result["unit_death_presented_frame"] = job.presentedFrame

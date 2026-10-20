@@ -33,6 +33,8 @@ type nativeCh28PostPresentJob struct {
 	hdTheme        *modernStoryPortraitSet
 	presentedFrame int
 	presentedHD    bool
+	retainedState  *battle.State // ordinary settlement keeps its live State/Unit identities
+	kind           string
 }
 
 func cloneNativeCh28PostState(source *battle.State) (*battle.State, error) {
@@ -60,6 +62,10 @@ func (g *Game) startNativeCh28PostPresent(then func()) error {
 // startNativeUnitDeathPresent 是 0x1DB65 的呈現；prelude 決定哪些記錄的 +0x40
 // 先被清零（第 28 關戰後的 0x35BBA(20)、死亡事件的 clear_hp_from）。
 func (g *Game) startNativeUnitDeathPresent(prelude func(*battle.State) error, then func()) error {
+	return g.startNativeUnitDeathPresentMode(prelude, then, false)
+}
+
+func (g *Game) startNativeUnitDeathPresentMode(prelude func(*battle.State) error, then func(), retainState bool) error {
 	if g == nil || g.nativeCh28PostPresent != nil || g.nativeUnitPresent != nil ||
 		g.native2189A != nil || g.transitionReveal != nil || g.indexedTransition != nil ||
 		g.nativePaletteRamp != nil || g.nativePalettePulse != nil ||
@@ -101,6 +107,10 @@ func (g *Game) startNativeUnitDeathPresent(prelude func(*battle.State) error, th
 		then:           then,
 		hdTargets:      append([]battle.NativeCh28PostOverlayTarget(nil), plan.Targets...),
 		presentedFrame: -1,
+		kind:           "script",
+	}
+	if retainState {
+		job.retainedState = g.st
 	}
 	if len(g.nativeMapDAC) == 256*3 {
 		if current, paletteErr := fdother.VGAPaletteFromDAC(g.nativeMapDAC); paletteErr == nil {
@@ -221,7 +231,12 @@ func (g *Game) startNativeUnitDeathPresent(prelude func(*battle.State) error, th
 	beforeWork := append([]byte(nil), g.nativeMapWork...)
 	beforeVGA := append([]byte(nil), g.nativeMapVGA...)
 	job.rollback = func() {
-		g.st = beforeState
+		if job.retainedState != nil {
+			g.st = job.retainedState
+			g.st.NativeMapHUDState = beforeState.NativeMapHUDState
+		} else {
+			g.st = beforeState
+		}
 		g.nativeMapWork = append(g.nativeMapWork[:0], beforeWork...)
 		g.nativeMapVGA = append(g.nativeMapVGA[:0], beforeVGA...)
 	}
@@ -235,7 +250,14 @@ func (g *Game) publishNativeCh28PostFrame() {
 	if j == nil || j.frame < 0 || j.frame >= len(j.vgaFrames) {
 		return
 	}
-	g.st = j.stateFrames[j.frame]
+	if j.retainedState != nil {
+		g.st = j.retainedState
+		if j.frame == len(j.stateFrames)-1 {
+			g.st.NativeMapHUDState = j.stateFrames[j.frame].NativeMapHUDState
+		}
+	} else {
+		g.st = j.stateFrames[j.frame]
+	}
 	g.nativeMapWork = append(g.nativeMapWork[:0], j.workFrames[j.frame]...)
 	g.nativeMapVGA = append(g.nativeMapVGA[:0], j.vgaFrames[j.frame]...)
 	j.drawn = false

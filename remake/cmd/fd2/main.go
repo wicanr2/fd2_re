@@ -117,6 +117,7 @@ type Game struct {
 	native2189A                  *native2189AJob                    // blocking raw ch22 post 0x2189A ten-pass presentation
 	nativeUnitPresent            *nativeUnitPresentJob              // blocking shared 0x22253 11+6+bridge+10 indexed presentation
 	nativeCh28PostPresent        *nativeCh28PostPresentJob          // blocking 0x1DB65 13+6+6 indexed presentation
+	nativeActionDeathBefore      map[int]byte                       // pre-settlement +5, keyed by stable runtime slot
 	nativeCh22Reload             *nativeCh22ReloadState             // atomic FDFIELD69/FDSHAP46/47/FDOTHER42 tail transaction
 	nativeFDOTHERPalettePhase    int                                // process-lifetime 0x4DFCC phase projection (0..15)
 	nativeMapHUDInputReason      string                             // 最近一次 nativeMapHUDInput 失敗即關閉的原因，只供診斷訊息
@@ -6194,6 +6195,9 @@ func (g *Game) finishSuccessfulUnitAction(actor *battle.Unit, after func()) {
 	if actor == nil {
 		return
 	}
+	if g.beginNativeActionDeathPresentation(actor, after) {
+		return
+	}
 	if g.st != nil {
 		// 0x1DB65：行動結算後把 HP 歸零的記錄標成 +5＝1，指令傷害的擊殺才會從
 		// AI 目標掃描與回合回復裡消失（第四章 r9 收據第 5 回合 0x13 的目標選擇）。
@@ -7224,11 +7228,13 @@ func (g *Game) resolvePhysicalAttackFull(actor, target *battle.Unit) (battle.Nat
 	// 傷害、反擊與原生單位的經驗／升級成長都走原版的全域 `0x627B8`
 	// （g.nativeRNGState）；g.rng 只剩沒有原版 `+6` 的舊可編輯單位在用。
 	initialActedBit := actor.NativeRecordByte5 & 0x80
+	deathBefore := captureNativeActionDeathFlags(actor, target)
 	result, err := g.st.AttackNativePhysicalWithExperience(
 		actor, target, g.nativeRNGState, g.rng)
 	if err != nil {
 		return battle.NativePhysicalAttackResult{}, err
 	}
+	g.queueNativeActionDeathPresentation(deathBefore)
 	// 純結算先標行動完成，正式 UI 則由 0x13512 的既有尾端 owner 發布 bit7。
 	// 保留入口位元直到死亡事件／掉落對話結束，避免 delay 期間重繪提前變灰。
 	if actor == g.sel && !g.aiBusy && actor.HasNativeRecordByte5 {
@@ -8144,6 +8150,9 @@ func (g *Game) checkResult() {
 	}
 	// 死亡程式還沒跑完（例如頭目的死亡台詞）就先不判；跑完的續行會再判一次。
 	if g.nativeDeathProgramsPending() {
+		return
+	}
+	if g.nativeActionDeathPresentationPending() || g.nativeCh28PostPresent != nil {
 		return
 	}
 	if len(g.sc.NativeResultRules) != 0 {

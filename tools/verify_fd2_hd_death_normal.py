@@ -28,6 +28,8 @@ def validate(catalog_path,pack,run):
         if actual.size!=(1920,1200):raise ValueError('native HD window required')
         candidates=[]
         for state in (sample['before'],sample['after']):
+            # Earlier versioned receipts predate explicit action/script metadata.
+            if state.get('unit_death_kind','script')!=receipt.get('death_kind','script'):continue
             index=state.get('unit_death_presented_frame',-1)
             if not state.get('unit_death_presented_hd') or not 13<=index<21:continue
             phase='overlay_a' if index<19 else 'overlay_b'

@@ -2873,7 +2873,7 @@ HD要依該拍的viewport移位及裁切，不能一律套用穩定地圖的四�
 獨立GPU核對器依Go1.22的image/draw.drawNRGBASrc預乘公式重組煙霧，保留RGB誤差門檻；
 原直通alpha重組在多層重疊時的78個誤差像素列為驗證器問題，沒有改畫或放寬門檻。
 正式完整包與runtime-only各走完26拍，實際PNG逐位元組相同；20套件回歸與99項字串處置保持。
-四份原始RGBA母稿及12張成品依catalog allow-list同步私人庫。正常章節事件抽樣已由下節補齊；普通擊殺／狀態致死consumer、
+四份原始RGBA母稿及12張成品依catalog allow-list同步私人庫。正常章節事件抽樣已由下節補齊；普通擊殺／狀態致死consumer已由末節接入；
 新DOS原版parity與平台效能仍待，不由fixture提升PLAYER-E2。
 
 重跑入口為[編製器](../../tools/build_fd2_lmi_death_hd.py)的--original-pack／--recipe／--out，
@@ -2921,3 +2921,47 @@ PNG核對修訂READY：十二張煙霧的alpha255像素為分散取樣，項68�
 [正常PNG核對器](../../tools/verify_fd2_hd_death_normal.py)使用--catalog／--pack／--run／--out；
 其[拒收測試](../../tools/test_verify_fd2_hd_death_normal.py)沿FD2_TEST_HD_DEATH_CATALOG／PACK／RUN指定同份真實基底。
 兩者只驗此正常GUI切片；完整透明合成與26拍仍用上節fixture核對器，無新DOS或自然難度聲明。
+
+### 普通行動及狀態致死的共用死亡呈現
+
+狀態：CONFORMED-SCOPED。基底a14ebaab；範圍是補上既有死亡演出的正式consumer，不改傷害、死亡分派或保存格式。
+原版來源沿固定FD2.EXE SHA及[110第8節](110-death-effects-and-level-cap-20260911.md)與
+其IDA9.4主證據fd2_status_death_ida.txt。0x15643／18FE0／1D497／21062在收集後、分派前呼叫1DB65；
+1A941在狀態扣血訊息後、六byte倒數提示前呼叫同一呈現，沒有killer或死亡獎勵分派。
+現行13方向＋A累積六拍＋B重置六拍＋steady、viewport、sample3及等待沿上節已核契約。
+
+- 普通物理結算入口保存actor／target的原始+5，僅記錄本次從HP正值變0的槽。
+  呈現用私有快照恢復該槽原旗標，避免現行ApplyHPDamage提早寫1令原版active閘門漏掉新死亡。
+  不猜原旗標、不把早已inactive者重新列入。其他行動仍可沿HP0且bit0未設的原版掃描候選。
+- 共用HP writer補充READY：native_command_damage／24／26亦使用ApplyHPDamage，會提早寫1。
+  在該writer的HP正值→0邊界另存實際原+5，供呈現consumer取用；此資料不序列化、不寫SAV，
+  正常復活或完成該次收尾時清除。原HP與+5 writer保持，既有物理入口快照亦保留。
+- 此consumer保留既有正式State及Unit指標、已結算HP／RNG／獎勵。逐拍私有快照只供原生及HD繪圖；
+  成功預檢後正式inactive writer照常執行。輸入與勝負等待同步owner，結束後才執行原行動收尾一次。
+  缺素材或來源矛盾拒收，不重擲、不重跑攻擊、不重複發獎勵。無可見候選只作原inactive收尾。
+- 狀態phase沿既有candidate的扣血／inactive／倒數交易，不加killer或任何獎勵。
+  以該phase開始前原+5及扣血結果選新死亡，在全部扣血訊息後、到期提示前播放同一同步owner。
+  預檢沿既有原子邊界，保留phase繼續／輸入閘門與原Unit指標；沒有可見死亡時不增加空演出。
+- 完整Draw、F2、一次續行、指標／HP／RNG／獎勵不重複、離屏及已inactive、缺素材拒收均須驗證。
+  普通物理擊殺另走固定seed的正常鍵盤路徑與邊界保存冷讀。狀態致死可先以標明建構來源的Game.Draw抽驗，
+  未取得正常GUI前不宣稱其PLAYER-E2。原版逐幀與自然難度不由此新增。
+
+狀態預檢鏡頭補充READY：預檢先在私有State與索引緩衝依扣血名冊順序執行原單格游標step，
+取得全部扣血訊息聚焦後的視圖，再檢查26拍。此推演不觸發正式NativeFocusTraceHook、不改live視圖或亂數；
+與既有focusNativeTransientRecord的實際view／HUD／work／VGA作差分，缺來源仍在HP交易前拒收。
+
+目前狀態與來源集中於[HD戰場主收據](../data/fd2-modern-hd-battlefield-20261019.json)的death_consumers_followup_20261021。
+
+普通行動預檢位於已結算邊界，拒收不追加inactive或新owner，不聲稱回滾此前HP／RNG。
+保留既有提早inactive的正式投影，動畫用實際原旗標的私有快照；不新增原版逐拍raw相同的聲明。
+最終action／status／script各26張完整Draw、四階段F2與單次續行通過，78張PNG及收據與獨立重組基底bytes相同。
+狀態訊息到死亡owner的正式caller、預檢失敗零HP交易、私有聚焦差分與無trace、共用HP writer的法術死亡來源及JSON不變皆通過。
+AI指令10測試在原指令owner完成時驗續行仍為0，再以正式Draw走完死亡owner，驗一次續行及不追加RNG；手工fixture明示靜音。
+最終20套件Go通過，99項字串處置僅重綁座標。固定seed1的章23普通擊殺、三張A／B核心、戰後至章24整備、F2／F5與新程序LOAD通過。
+候選時點錯配或核心少於100點仍拒收，不放寬RGB3；沒有新美術、原版oracle或自然難度聲明。
+
+完整GPU重跑沿上節TestModernHDDeathRuntimeGPU，另以FD2_TEST_HD_DEATH_CONSUMER=action／status／script每次獨立程序執行；
+status GPU使用明示typed phase建構，正式扣血訊息caller另由native_action_death_present_test.go驗證，未推定狀態正常GUI。
+普通GUI沿上節控制器另加--death-kind action，預設script仍抽章節事件，並要求--world固定seed。
+唯讀unit_death_kind明示來源，兩類不混報；[完整核對器](../../tools/verify_fd2_hd_death_gpu.py)與
+[普通核對器](../../tools/verify_fd2_hd_death_normal.py)新增未知或錯類型的拒收，均各九項反例通過。

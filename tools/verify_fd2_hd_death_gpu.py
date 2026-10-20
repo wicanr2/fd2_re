@@ -60,7 +60,9 @@ def validate(catalog_path, pack, root):
         effects[desc['index']]=picture
     units={a['source_group']:a for a in catalog['assets'] if a['role']=='map_sprite_hd_set'}
     report=json.loads((root/'receipt.json').read_text())
-    if (report['status']!='PASS-EVENT-DEATH-FIXTURE-RUNTIME-E1' or report['diagnostic'] or
+    consumer=report.get('consumer','script')
+    expected_status='PASS-EVENT-DEATH-FIXTURE-RUNTIME-E1' if consumer=='script' else 'PASS-DEATH-CONSUMER-FIXTURE-RUNTIME-E1'
+    if (consumer not in ('script','action','status') or report['status']!=expected_status or report['diagnostic'] or
             report['hd_frame_count']!=26 or report['continuations']!=1 or report['faithful_draws']<4 or
             report['f2_phases']!=['pose','overlay_a','overlay_b','steady'] or
             [r['frame'] for r in report['frames']]!=list(range(26))):
@@ -116,7 +118,7 @@ def validate(catalog_path, pack, root):
         if count<1000000 or errors:
             raise ValueError(f'GPU frame{index}: {errors} RGB errors out of {count}')
         results.append(dict(frame=index,compared_pixels=count,rgb_errors_gt3=errors,overlay_layers=len(expected)))
-    return dict(status='PASS-HD-DEATH-GPU-RECONSTRUCTION',frames=results,frame_count=26,
+    return dict(status='PASS-HD-DEATH-GPU-RECONSTRUCTION',consumer=consumer,frames=results,frame_count=26,
                 catalog_sha256=digest(catalog_path),receipt_sha256=digest(root/'receipt.json'),
                 scope='獨立Pillow重組來源PNG、原生origin與實際Game.Draw回讀；非原版oracle或PLAYER-E2。')
 

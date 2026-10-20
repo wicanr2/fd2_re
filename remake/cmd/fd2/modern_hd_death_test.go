@@ -15,6 +15,7 @@ import (
 	"testing"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/fdicon"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 )
@@ -420,8 +421,44 @@ func TestModernHDDeathRuntimeGPU(t *testing.T) {
 	g.baseMapTileset = image.NewRGBA(image.Rect(0, 0, 24, 24))
 	p := &modernHDDeathProbe{g: g, set: set, diagnostic: diagnostic, out: os.Getenv("FD2_TEST_HD_DEATH_OUT")}
 	continued := 0
-	if err := g.startNativeCh28PostPresent(func() { continued++; p.done = true }); err != nil {
-		t.Fatal(err)
+	consumer := os.Getenv("FD2_TEST_HD_DEATH_CONSUMER")
+	if consumer == "" {
+		consumer = "script"
+	}
+	then := func() { continued++; p.done = true }
+	liveState, liveUnits := g.st, append([]*battle.Unit(nil), g.st.Units...)
+	seed, gold := g.nativeRNGState, g.gold
+	switch consumer {
+	case "script":
+		if err := g.startNativeCh28PostPresent(then); err != nil {
+			t.Fatal(err)
+		}
+	case "action":
+		actor, dead := g.st.Units[0], g.st.Units[1]
+		actor.Acted, g.sel = false, actor
+		dead.NativeRecordByte5 = 0x80
+		before := captureNativeActionDeathFlags(actor, dead)
+		dead.ApplyHPDamage(dead.HP)
+		g.queueNativeActionDeathPresentation(before)
+		g.finishSuccessfulUnitAction(actor, then)
+	case "status":
+		for _, unit := range g.st.Units {
+			unit.HasNativeRecordByte6, unit.NativeRecordByte6 = true, 0
+		}
+		dead := g.st.Units[1]
+		dead.HP, dead.MaxHP, dead.NativeRecordByte5, dead.NativeRecordByte6 = 1, 100, 0x80, 2
+		dead.NativeTransient[3] = 2
+		if _, err := g.st.AdvanceNativeTransientPhaseTyped(2); err != nil {
+			t.Fatal(err)
+		}
+		if started, err := g.startNativeMapDeathVisual(map[int]byte{1: 0x80}, "status", then); err != nil || !started {
+			t.Fatalf("status death: %v started%v", err, started)
+		}
+	default:
+		t.Fatalf("unknown death consumer %q", consumer)
+	}
+	if g.nativeCh28PostPresent == nil {
+		t.Fatalf("death consumer did not create a presenter: %s", g.loadErr)
 	}
 	p.job = g.nativeCh28PostPresent
 	p.presentation = &modernHDPresentation{Game: g}
@@ -450,8 +487,17 @@ func TestModernHDDeathRuntimeGPU(t *testing.T) {
 			t.Fatalf("frame%d was never drawn", i)
 		}
 	}
+	if consumer != "script" && (g.st != liveState || !sameNativeDeathUnitPointers(g.st.Units, liveUnits) ||
+		g.nativeRNGState != seed || g.gold != gold || len(g.pendingDeathPrograms) != 0 || len(g.pendingNativeDeathRewards) != 0) {
+		t.Fatal("consumer GPU lifecycle changed live identities, RNG or rewards")
+	}
 	if p.out != "" {
 		report := map[string]any{"status": "PASS-EVENT-DEATH-FIXTURE-RUNTIME-E1", "diagnostic": diagnostic, "frames": p.records, "hd_frame_count": 26, "faithful_draws": p.faithful, "f2_phases": []string{"pose", "overlay_a", "overlay_b", "steady"}, "continuations": continued, "scope": "既有章節事件fixture；完整Game.Draw與最終1920回讀。不是普通擊殺、正常玩家E2或新原版oracle。"}
+		report["consumer"] = consumer
+		if consumer != "script" {
+			report["status"] = "PASS-DEATH-CONSUMER-FIXTURE-RUNTIME-E1"
+			report["scope"] = "明示建構HP transition；action經行動收尾，status經typed phase及共同呈現。實際訊息caller另驗；非正常GUI或原版oracle。"
+		}
 		report["targets"] = p.job.hdTargets
 		raw, err := json.MarshalIndent(report, "", "  ")
 		if err != nil {

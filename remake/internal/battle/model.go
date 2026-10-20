@@ -126,10 +126,12 @@ type Unit struct {
 	// NativeRecordByte5/6 preserve the two raw gate bytes consumed by
 	// 0x1A866. Their gameplay meaning is intentionally unknown; neither is
 	// inferred from Acted, OnField, Alive, or Camp.
-	NativeRecordByte5    byte `json:"native_record_byte5,omitempty"`
-	HasNativeRecordByte5 bool `json:"has_native_record_byte5,omitempty"`
-	NativeRecordByte6    byte `json:"native_record_byte6,omitempty"`
-	HasNativeRecordByte6 bool `json:"has_native_record_byte6,omitempty"`
+	NativeRecordByte5     byte `json:"native_record_byte5,omitempty"`
+	HasNativeRecordByte5  bool `json:"has_native_record_byte5,omitempty"`
+	nativeDeathFlagBefore byte // presentation-only HP transition, never serialized
+	nativeDeathFlagValid  bool
+	NativeRecordByte6     byte `json:"native_record_byte6,omitempty"`
+	HasNativeRecordByte6  bool `json:"has_native_record_byte6,omitempty"`
 	// FDFIELD b17..b19 are copied verbatim by 0x10fb6..0x10fc5 to runtime
 	// +0x34..+0x36. Byte34's low nibble dispatches 0x13a9f, while its high
 	// bits have separate consumers; keep the complete bytes and provenance.
@@ -407,12 +409,29 @@ func (u *Unit) ApplyHPDamage(damage int) {
 	if u == nil || damage <= 0 {
 		return
 	}
+	beforeHP, beforeFlag := u.HP, u.NativeRecordByte5
 	u.HP -= damage
 	if u.HP < 0 {
 		u.HP = 0
 	}
 	if u.HP == 0 && u.HasNativeRecordByte5 {
+		if beforeHP > 0 && beforeFlag&1 == 0 {
+			u.nativeDeathFlagBefore, u.nativeDeathFlagValid = beforeFlag, true
+		}
 		u.NativeRecordByte5 = 1
+	}
+}
+
+func (u *Unit) NativeDeathPresentationFlag() (byte, bool) {
+	if u == nil || u.HP != 0 {
+		return 0, false
+	}
+	return u.nativeDeathFlagBefore, u.nativeDeathFlagValid
+}
+
+func (u *Unit) ClearNativeDeathPresentationFlag() {
+	if u != nil {
+		u.nativeDeathFlagBefore, u.nativeDeathFlagValid = 0, false
 	}
 }
 
@@ -423,6 +442,7 @@ func (u *Unit) RestoreNativeHP() {
 		return
 	}
 	u.HP = u.MaxHP
+	u.ClearNativeDeathPresentationFlag()
 	if u.HasNativeRecordByte5 {
 		u.NativeRecordByte5 &^= 1
 	}

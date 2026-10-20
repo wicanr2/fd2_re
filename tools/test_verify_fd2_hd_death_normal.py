@@ -22,7 +22,7 @@ class NormalDeathVerifierTests(unittest.TestCase):
             root=Path(tmp)
             for path in run.glob('*.png'):(root/path.name).symlink_to(path)
             black=root/'black.png';Image.new('RGB',(1920,1200)).save(black)
-            for kind in ('black','sha','missing_b','origin','viewport','source_order','injection','continuation'):
+            for kind in ('black','sha','missing_b','origin','viewport','source_order','injection','continuation','kind'):
                 with self.subTest(kind=kind):
                     data=copy.deepcopy(receipt);source=json.loads(catalog.read_text())
                     if kind=='injection':data['state_injection']=True
@@ -31,6 +31,10 @@ class NormalDeathVerifierTests(unittest.TestCase):
                         next(a for a in source['assets'] if a['role']=='map_overlay_hd_set')['native_lmi_frames'].reverse()
                     elif kind=='missing_b':
                         data['samples']=[s for s in data['samples'] if all(v.get('unit_death_presented_frame',99)<19 for v in (s['before'],s['after']))]
+                    elif kind=='kind':
+                        for sample in data['samples']:
+                            for state in (sample['before'],sample['after']):
+                                state['unit_death_kind']='action' if data.get('death_kind','script')=='script' else 'script'
                     else:
                         for sample in data['samples']:
                             if kind=='black':sample.update(file=black.name,sha256=verifier.digest(black))

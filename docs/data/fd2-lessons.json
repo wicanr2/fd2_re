@@ -3399,6 +3399,21 @@
       "rule": "核對HD來源前先量alpha255的分布與實際繪製倍率，不以預設侵蝕刪光分散的不透明像素。入口tools/verify_fd2_hd_death_normal.py：原生1920×1200整數定位驗全部可見alpha255點，保留RGB3與至少100點；透明區及完整演出另走tools/verify_fd2_hd_death_gpu.py的fixture重組。",
       "why": "事件煙霧雖有數千個alpha255點，三／五像素侵蝕後皆為零。修驗證遮罩後六張正常A／B圖通過，一張實際幀錯配仍拒收，沒有修改素材或錯誤門檻。",
       "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#shared_death_player_followup_20261021"
+    },
+    {
+      "id": "blocking-consumer-tests-pump-following-owner",
+      "date": "2026-10-21",
+      "area": "串接演出驗證",
+      "rule": "測試串接演出時，不把前一演出結束當作整個行動完成。以正式Draw與步進完成後續演出，再核對一次續行及HP／MP／亂數不重複。入口remake/cmd/fd2/native_command10_12_presentation_test.go的TestExecuteNativeAICommand10UsesOriginalIndexedOwner；手工fixture明示靜音，所需音效來源另驗。",
+      "why": "接死亡consumer後，AI指令10的舊測試只走到指令owner結束便要求續行一次，沒有泵後接死亡owner。補新邊界與實際Draw後，正常延後續行及不追加RNG均通過。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#death_consumers_followup_20261021",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/main.go"
+        ],
+        "pattern": "if g\\.beginNativeActionDeathPresentation\\(actor, after\\)"
+      }
     }
   ]
 }
