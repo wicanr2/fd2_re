@@ -74,6 +74,8 @@ def main():
     parser.add_argument('--battle-advance', action='store_true', help='無射程目標時沿正式可達集合前進並待機，再正常END')
     parser.add_argument('--faithful-approach', action='store_true', help='正常END期間以F2使用忠實模式，回玩家回合再切HD')
     parser.add_argument('--battle-end-art', action='store_true', help='正常END期間有界擷取明示人物的HD圖層')
+    parser.add_argument('--battle-end-samples-per-frame', type=int, choices=[1,2], default=1,
+                        help='每個END圖源幀的有界視窗取樣數；第二張另存，不由job推定已呈現')
     parser.add_argument('--battle-end-figure',type=int,default=2)
     parser.add_argument('--battle-end-figures',type=terrain_frame_ids,default=set(),
                         help='同一普通END擷取多個明示figure，例如133,134；省略時維持單數參數')
@@ -87,6 +89,7 @@ def main():
     assert all(0<=figure<=135 for figure in end_figures)
     assert not args.battle_end_figures or args.battle_end_art
     assert not args.battle_end_art or (args.battle_only and args.battle_hd and args.battle_approach_rounds>0 and not args.faithful_approach)
+    assert args.battle_end_samples_per_frame==1 or args.battle_end_art
     assert not (args.battle_advance or args.faithful_approach) or args.battle_only
     if not re.fullmatch(r'battle_ch(?:0[1-9]|[12][0-9]|30)', args.battle_node):
         parser.error('戰場節點須為battle_ch01..battle_ch30')
@@ -791,7 +794,7 @@ def main():
                         wait(lambda s:s.get('system_end_turn_confirm') and not s.get('class_ui_job'))
                         key('Return')
                         deadline=time.monotonic()+(900 if args.battle_end_art else 600 if args.battle_advance else 300)
-                        end_seen=set();end_scenes={}
+                        end_seen={};end_scenes={}
                         while time.monotonic()<deadline:
                             current=latest(audit)
                             if current.get('error'):raise RuntimeError(current['error'])
@@ -806,10 +809,12 @@ def main():
                                 if current.get('battle_scene') and current.get('hd_battle') and current.get('battle_phase') in ('body','counter'):
                                     for layer in current.get('battle_source_layers') or []:
                                         resource,index=layer['resource'],layer['frame']
+                                        count=end_seen.get((resource,index),0)
                                         if (resource not in {figure*3+kind for figure in end_figures for kind in (0,1)}
-                                                or layer['fill']!=-1 or (resource,index) in end_seen):continue
-                                        end_seen.add((resource,index))
-                                        path=args.out/f'{prefix}-end-{approach}-{resource:03d}-{index:02d}.png'
+                                                or layer['fill']!=-1 or count>=args.battle_end_samples_per_frame):continue
+                                        end_seen[(resource,index)]=count+1
+                                        suffix='' if count==0 else f'-sample{count+1}'
+                                        path=args.out/f'{prefix}-end-{approach}-{resource:03d}-{index:02d}{suffix}.png'
                                         command('import','-window',window,str(path))
                                         battle_end_art_samples.append({'scene':prefix,'approach':approach,'file':path.name,
                                             'sha256':digest(path),'before':current,'after':latest(audit),
@@ -1022,6 +1027,7 @@ def main():
                     'battle_hd_scenes':battle_hd_scenes,
                     'battle_art_samples':battle_art_samples,
                     'battle_end_art_checked':args.battle_end_art,'battle_end_figure':args.battle_end_figure,
+                    'battle_end_samples_per_frame':args.battle_end_samples_per_frame,
                     'battle_end_art_samples':battle_end_art_samples,
                     'battle_post_dialogue_cleanup':battle_post_dialogue_cleanup,
                     'timed_dialogue_gpu':timed_result,

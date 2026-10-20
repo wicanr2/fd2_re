@@ -145,6 +145,15 @@ HD 背景、敵方與面板仍含像素素材。來源與可重跑方式見
 普通攻擊返回、F2及保存冷讀已抽驗，來源與驗證範圍見
 [驗證紀錄](docs/data/fd2-modern-hd-battlefield-20261019.json)的`bekwei_battle_followup_20261020`。
 
+| 鎧甲武士HD待機 | 鎧甲武士HD下劈 |
+| --- | --- |
+| ![鎧甲武士HD待機](docs/figures/hd-heavyknight-idle.png) | ![鎧甲武士HD下劈](docs/figures/hd-heavyknight-physical-attack.png) |
+
+兩張取自第九章普通敵方回合的實際遊戲視窗，沿用章前加血槽，沒有編修畫面。
+厚重尖肩甲、抬劍與下劈沿原版姿勢重繪；背景與面板仍含像素素材。
+普通攻擊、反擊、F2及保存冷讀已抽驗，共享姿勢與抬劍裁切見
+[驗證紀錄](docs/data/fd2-modern-hd-battlefield-20261019.json)的`heavyknight_battle_followup_20261020`。
+
 ## 遊戲介紹
 
 《炎龍騎士團 2》是 1990 年代華文單機戰略角色扮演遊戲（SRPG）的代表作之一。

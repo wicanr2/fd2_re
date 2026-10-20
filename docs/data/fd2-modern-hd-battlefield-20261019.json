@@ -9,13 +9,13 @@
     "native_viewport": "CONFORMED-SCOPED：正式1920世界沿原生(4,4)、312×192窗格；正常F2同view與960地形樣本一致。",
     "hd_sprite_data": "DATA-READY：完整125組1455張HD及31組372張新增24父項已登錄；舊1083張父項及HD bytes保持。",
     "hd_world_renderer": "CONFORMED-SCOPED：144人物已接Game.Draw；首章34張正常GPU、4張實際走行、兩次物理攻擊及保存／新程序LOAD通過。",
-    "private_assets": "399項清冊、3609檔完整allow-list與3302檔runtime-only逐筆SHA／UID核對，原3580檔保持；新增八母稿不進執行包。正式Go三項及兩子項通過，零SKIP；私人已推送，實際遠端HEAD一致且仍private。見bekwei_battle_followup_20261020。",
+    "private_assets": "401項清冊、3621檔完整allow-list與3310檔runtime-only逐筆SHA／UID核對，原3609檔保持；新增四母稿不進執行包。私人遠端核對狀態見heavyknight_battle_followup_20261020。",
     "quickload_battle_owner": "CONFORMED-SCOPED：成功JSON LOAD丟棄舊經驗owner與移動計畫；拒收保留。",
     "timed_dialogue": "CONFORMED-SCOPED-RUNTIME-E1：計時FFEC開收框保留HD世界，EXP99普通鍵盤／F2與保存冷讀通過；其他caller未驗。",
     "hd_terrain": "CONFORMED-SCOPED：map0六組53槽；新增圓頂綠色／褐色雙塊四底圖在兩張正常GPU全部相符，短長組合與保存冷讀通過；草地及其他地形仍待HD化。",
     "ai_player_input_lock": "CONFORMED-SCOPED：AI換手期間拒絕玩家地圖輸入重入；普通END／增援對話及相關／完整Go回歸通過。",
     "gaia_redesign": "CONFORMED-SCOPED：新版頭像與四方向圖組已登錄；正常START／Gaia北移取消／F2／冷讀分段驗證。相位差異與序章尾端失敗明示，非逐幀parity。",
-    "hd_battle_animation": "CONFORMED-SCOPED：正式FIGANI26資源198幀及四召喚37幀。新增貝克威21幀，章前HP+1000來源正常購弓、出發、一次END及射程4炮擊／返回／F2／邊界保存冷讀通過，14張本體與4張光束核心符合、九項拒收。原瑪琳／凱麗等範圍保持；一般混合header限制見#265，其他人物／法術／死亡／普通召喚與平台仍待。",
+    "hd_battle_animation": "CONFORMED-SCOPED：正式FIGANI28資源206幀及四召喚37幀。新增鎧甲武士8幀，完整Draw與普通第九章兩次END、敵方攻擊／反擊、F2及保存冷讀通過；END14張、反擊47張、劍光3張相符，十項拒收。章前HP校準與共享稿／抬劍裁切明示；其他人物、法術／死亡、普通召喚與平台仍待。",
     "native_purchase_equip": "CONFORMED-SCOPED：#266原生購買立即裝備保留ignored原始格，29項商店回歸與正常購弓F5／章首射程通過；不改格式或數值規則。"
   },
   "runtime_source": {
@@ -45405,6 +45405,627 @@
       "source_slot_and_original_exe_sha_unchanged": true,
       "kylie_gif_sha_unchanged": true,
       "docker_expected_containers": 0
+    }
+  },
+  "heavyknight_battle_followup_20261020": {
+    "status": "CONFORMED-SCOPED",
+    "base_commit": "48d1609645acaf274acfd820da45cce7849450dc",
+    "full_battle_hd_complete": false,
+    "formal_registered": true,
+    "private_synced": true,
+    "figure": 78,
+    "resources": {
+      "234": 1,
+      "235": 7
+    },
+    "cast_resource": 236,
+    "cast_status": "empty_header_zero",
+    "inventory": {
+      "file": "docs/data/fd2-battle-hd-source-inventory-20261019.json",
+      "sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51"
+    },
+    "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md#鎧甲武士-battlefig78-戰鬥圖源切片",
+    "pose_policy": {
+      "idle": [
+        "234:0",
+        "235:0",
+        "235:1"
+      ],
+      "raise": [
+        "235:2",
+        "235:3",
+        "235:4"
+      ],
+      "slash": [
+        "235:5"
+      ],
+      "recover": [
+        "235:6"
+      ]
+    },
+    "production_rules_changed": false,
+    "limits": [
+      "四母稿明示共用，不是八張獨立原畫或逐幀parity。",
+      "章前全隊HP+1000來源只驗美術與流程，不宣稱自然難度、傷害、AI選目標或整章E2。",
+      "首輪GUI／反擊像素通過但END待機未過；失敗保留，第二輪固定兩張有界取樣後原門檻通過。",
+      "僅核本次普通章9攻擊／反擊、END及章節邊界保存；87等其他人物、施術／死亡／召喚、完整背景HUD與代表平台效能仍待。"
+    ],
+    "generation": {
+      "tool": "built-in image_gen",
+      "prompts": {
+        "tool": "built-in image_gen",
+        "idle": "Use case: stylized-concept. Asset type: transparent HD battle sprite master for a faithful 1995 tactical RPG remake. Input image1 is the ORIGINAL BattleFig78 pose sheet and identity reference. Input image2 is STYLE ONLY, do not copy its shield, human face or slim soldier proportions. Create ONE full-body heavy armored warrior in the FIRST CELL idle pose of image1. Strongly preserve gigantic broad dark navy-blue layered chest and oversized long-spiked shoulder pauldrons, very tiny recessed fully closed helmet with narrow dark red eye slit, orange-red cloth at neck/armpits, gray-green hanging front tabard, thick fully plated blue gauntlets and massive boots. Character is extremely bulky, almost mechanical, head small compared to shoulders. Frontal three-quarter stance facing screen RIGHT, wide planted feet. Sword hilt held in the screen-LEFT hand at low hip, huge broad straight pale silver steel blade points diagonally DOWN LEFT, entirely within image with margin. Screen-right hand is a closed armored fist at hip. Match source silhouette and asymmetric shoulders. Clean dark ink contours, brushed hand-painted blue steel, restrained highlights, readable at game size, matching reference2 craftsmanship. No shield, no exposed human skin/face, no cape, no new ornaments. Single character only, no text or labels, no ground, no cast shadow/background aura, genuinely transparent RGBA background. Full sword, spikes and feet uncut, generous transparent margin.",
+        "raise": "Use case: identity-preserve. Asset type: transparent HD battle sprite master. Change the pose of reference1 (new HD heavy warrior) to the RAISED SWORD pose in reference2 ORIGINAL BattleFig78 sheet, cells235 frame002/003/004. Keep exactly the same gigantic navy-blue spiked pauldrons, tiny fully closed red-slit helmet, plate shapes, orange neck/armpit cloth, gray-green tabard, boots, brushed hand-painted outlines and bulky almost-mechanical proportions of reference1. Same front three-quarter RIGHT-facing view and wide standing feet. His screen-LEFT armored hand is now raised to upper-left shoulder height gripping sword hilt vertically, broad silver straight blade extends upward beyond the fist, tip ENTIRELY VISIBLE within transparent margin. Screen-right armored fist stays at hip. Do NOT add a shield. Keep sword straight single blade with crossguard. No face, skin, cape, extra limbs, floor, shadow, aura, text, border, panels. Only one full-body character, all spikes sword and feet uncut, genuinely transparent background with preserved RGBA alpha. Match original raised sword silhouette rather than generic overhead two-handed pose.",
+        "slash": "Use case: identity-preserve. Asset type: one transparent hand-painted HD game battle sprite. Reference1 is accepted HD character ID, preserve all its navy steel plate shapes, huge long-spiked pauldrons, tiny closed red-eye-slit helmet, orange-red undersuit and gray-green tabard. Reference2 ORIGINAL source sheet determines POSE: copy cell FIGANI235 frame005, low crouched forward downstroke facing RIGHT. Rear leg bent back left, front knee bent and boot forward right. Torso leans forward, huge shoulders lowered almost level with helmet, single sword arm reaches down-forward right, sword hilt in low screen-right position and huge broad straight silver blade diagonally down-right to near ground. Add the original's ONE tall broad tapering IVORY sword-motion streak with warm golden edge above the descending blade on the right, as seen in frame005; should read as a physical sword swing, not flame or magic beam. Full figure and full streak uncut, generous transparent margin on all sides, wide landscape canvas. Keep source compact bulky low silhouette, no extra arms, no shield, no human face/skin, no cape, no labels, no floor, no aura or background shadow. Same clean dark contour and brushed hand-painted blue metal finish as reference1. Genuine transparent background RGBA.",
+        "recover": "Use case: identity-preserve. Asset type: transparent HD game battle sprite, final RECOVERY frame. Reference1 is the preceding HD downward slash. Preserve its exact same crouched low right-facing pose, plate armor, enormous blue spiked shoulders, tiny closed red slit helmet, orange cloth, gray-green tabard, massive blue boots, sword hand and broad silver blade diagonally down-right. Change ONLY sword-motion streak: remove the enormous tall white/gold wall above blade; replace with a small short tapering ivory/gold trailing crescent immediately above the final screen-right blade tip, matching ORIGINAL reference2 cell FIGANI235 frame006. All other space above the blade is transparent. One full character and complete sword uncut with margin, wide landscape composition, same hand-painted dark contours. No ground, no background, no haze/aura, no shadow behind character, no text, no extra limb or shield. Genuinely transparent RGBA background; preserve transparent alpha."
+      },
+      "source_references": [
+        "work/promo-cadence-20261018/hd-fonts/heavyknight-source-review-r1/figure-078-native.png",
+        "remake/generated-assets/modern-theme-prototypes/figure-076-idle-battle-hd6-master-v1.png"
+      ],
+      "alpha_preserved": true
+    },
+    "recipe": {
+      "schema_version": 1,
+      "figure": 78,
+      "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+      "sources": {
+        "idle": {
+          "file": "work/promo-cadence-20261018/hd-fonts/heavyknight-idle-master-r1.png",
+          "sha256": "521ad621046cb56ff2539ba3021a2731d5388751bfc1574a29a1416dfc20531e",
+          "anchor": [
+            8,
+            19,
+            1294,
+            1171
+          ]
+        },
+        "raise": {
+          "file": "work/promo-cadence-20261018/hd-fonts/heavyknight-raise-master-r1.png",
+          "sha256": "3bc848153bd764e61d7ca55a6264c76dcb82e1be41d9246b113478e0065e82df",
+          "anchor": [
+            276,
+            300,
+            1233,
+            1193
+          ]
+        },
+        "slash": {
+          "file": "work/promo-cadence-20261018/hd-fonts/heavyknight-slash-master-r1.png",
+          "sha256": "b2935cc2a6f1b9e14f8ab7c339c4479694d4fc5204fc20baee8899d0f83d5f1a",
+          "anchor": [
+            18,
+            14,
+            1526,
+            1011
+          ]
+        },
+        "recover": {
+          "file": "work/promo-cadence-20261018/hd-fonts/heavyknight-recover-master-r1.png",
+          "sha256": "33f4dde5c0406c2ad19ff9bf7e47d44c8544d5b471e9f3ac3c87480a38917bda",
+          "anchor": [
+            7,
+            94,
+            1530,
+            969
+          ]
+        }
+      },
+      "resources": {
+        "234": [
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              158,
+              150
+            ],
+            "scale_group": "stance"
+          }
+        ],
+        "235": [
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              158,
+              150
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              158,
+              150
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "raise",
+            "anchor": [
+              0,
+              0,
+              143,
+              150
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "raise",
+            "anchor": [
+              0,
+              0,
+              143,
+              150
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "raise",
+            "anchor": [
+              0,
+              0,
+              143,
+              150
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "slash",
+            "anchor": [
+              0,
+              0,
+              228,
+              155
+            ],
+            "scale_group": "swing"
+          },
+          {
+            "pose": "recover",
+            "anchor": [
+              0,
+              0,
+              228,
+              149
+            ],
+            "scale_group": "swing"
+          }
+        ]
+      }
+    },
+    "compiled": {
+      "file": "work/promo-cadence-20261018/hd-fonts/heavyknight-battle-candidate-r1/compiled.json",
+      "sha256": "0342c7f2f74980a3fd3e076a8da7bdbf0f47d894cfffa1afbf3cf3feff78731c"
+    },
+    "native_crop_policy": "抬劍母稿以身體錨點保持尺度，劍刃沿原版235:2..4頂邊進出畫布；每幀9697個高覆蓋劍刃像素在描述子外，不裁身體。其餘五幀高覆蓋裁切0。此為明示原版矩形重定向，非未裁切完整劍或逐幀parity。",
+    "fixture": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/heavyknight-lifecycle-r1/receipt.json",
+        "sha256": "c1af610baeb39f718ba5095d2f971a885e7b50e3357ac39d45aea7a74e4b4683"
+      },
+      "pixels": {
+        "file": "work/promo-cadence-20261018/hd-fonts/heavyknight-fixture-pixels-r1.json",
+        "sha256": "11b9076db203cbbd5488e90628dd908120c39531760bc166f3a0ea5375739ca0"
+      },
+      "matched_source_images": 8,
+      "pixel_guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/heavyknight-fixture-pixel-guards-r1/guards.json",
+        "sha256": "56b3bca406938b1ef595dc49f506f131645f2f7d22085c26e46107b7b327a765"
+      },
+      "pixel_guard_count": 5,
+      "compiler_guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/heavyknight-compiler-guards-r1/guards.json",
+        "sha256": "872b0b2b465d64ddda6ee5acce69f641c9157ee7de58714defd5faa96d6c9ff4"
+      },
+      "compiler_guard_count": 16,
+      "scope": "RUNTIME-E1人工一次攻擊與反擊，非普通玩家或原版oracle；64戰鬥及65地圖DAC、三階段F2與一次續行通過。",
+      "slash_pixels": {
+        "file": "work/promo-cadence-20261018/hd-fonts/heavyknight-fixture-slash-pixels-r1.json",
+        "sha256": "4b0e67f054ab68d6edbd9be81615d34dbe638da9224fdbe18de7d30477f9d07c"
+      }
+    },
+    "failed_runs": [
+      {
+        "run": "work/promo-cadence-20261018/hd-fonts/heavyknight-normal-gui-r1",
+        "gui_status": "PASS",
+        "end_pixel_status": "FAIL",
+        "reason": "唯一234:0視窗仍呈現235:6回收；不以job相位判畫面，END待機像素門檻未通過。",
+        "source_and_rules_unchanged": true
+      }
+    ],
+    "capture_fix": {
+      "status": "CONFORMED-SCOPED",
+      "tool": "tools/verify_fd2_hd_fonts_gui.py",
+      "argument": "--battle-end-samples-per-frame 2",
+      "default": 1,
+      "bounded_maximum": 2,
+      "verifier_changed": false,
+      "production_game_changed": false,
+      "rerun_comparison": {
+        "source_sha_equal": true,
+        "binary_sha_equal": true,
+        "attack_choices_equal": true,
+        "operation_counts": [
+          139,
+          143
+        ],
+        "exact_key_sequence_equal": false,
+        "input_scope": "同來源、seed1與等價玩家流程；開場Escape重送及戰後關框ACK數不同，完整按鍵與前後狀態保留在各自收據。不宣稱逐鍵或逐幀一致。"
+      }
+    },
+    "first_run_counter_pixels": {
+      "file": "work/promo-cadence-20261018/hd-fonts/heavyknight-normal-counter-pixels-r1.json",
+      "sha256": "dcc8e3d9bc9fbd27d06f64322d225fac95c02a9de6ae75e55c6603a0a3ef4cd0",
+      "matched_pngs": 44,
+      "matched_idle_pngs": 29,
+      "matched_source_frames": 8,
+      "scope": "普通凱麗主動／鎧甲武士反擊；不取代首輪未通過的END待機門檻。",
+      "unique_phase_claim": false
+    },
+    "next_observed_consumer": {
+      "figure": 87,
+      "resources": {
+        "261": 4,
+        "262": 15
+      },
+      "cast_resource": 263,
+      "cast_status": "empty_header_zero",
+      "evidence": "heavyknight-normal-gui-r1/input-audit.jsonl有實際END actor87／target12與262圖層；原始盤點、原始19幀已閱。",
+      "source_design_reference": "work/promo-cadence-20261018/hd-fonts/heavyknight-source-review-r1/figure-087-native.png",
+      "status": "SOURCE-REVIEWED-NOT-HD",
+      "limits": "單純設計來源接觸表，非原版執行期或正常HD證據；不將87加入本批清冊。"
+    },
+    "reproduction": {
+      "compile_tool": "tools/build_fd2_character_battle_hd.py",
+      "recipe": "heavyknight_battle_followup_20261020.recipe",
+      "work_root": "work/promo-cadence-20261018/hd-fonts",
+      "gui_tool": "tools/verify_fd2_hd_fonts_gui.py",
+      "normal_arguments": [
+        "--town-save",
+        "work/promo-cadence-20261018/hd-fonts/bekwei-bow-source-gui-r3/user-data/fd2_re/fd2_save.json",
+        "--battle-status",
+        "--world",
+        "--battle-hd",
+        "--battle-art",
+        "--battle-only",
+        "--battle-repetitions",
+        "1",
+        "--battle-art-samples",
+        "64",
+        "--battle-node",
+        "battle_ch09",
+        "--battle-own-index",
+        "9",
+        "--battle-approach-rounds",
+        "3",
+        "--battle-advance",
+        "--battle-end-art",
+        "--battle-end-figure",
+        "78",
+        "--battle-end-samples-per-frame",
+        "2",
+        "--startup-timeout",
+        "180"
+      ],
+      "source_policy": "沿貝克威正常購弓F5之章9槽，祖先為章前全11人HP+1000建構槽，章內不注入；來源SHA依GUI收據。固定seed1，不重擲。",
+      "other_arguments": "--binary由同提交Go build；--assets候選runtime；--original-pack固定分離包唯讀；--modern-pack候選pack；--out新工作子目錄。編製需固定inventory與原版manifest核SHA，完整命令契約見61。",
+      "images": {
+        "assets": "fd2-assets-local:20260829-sfx",
+        "go": "fd2-go-test-local:latest",
+        "gui": "fd2-promo:20261017-r1"
+      },
+      "isolation": "Docker user1000:1000、network none、memory512m..3g、cpus1..2、pids64..256與外層timeout；Go /tmp tmpfs exec，沿with-xvfb；所有bind先核存在，原版唯讀，僅指定工作輸出可寫。",
+      "gpu_tool": "tools/verify_fd2_character_battle_gpu.py --figure 78 --core-profile blue --sample-group end|attack|fixture；warm劍光另用明示body-frames。receipt、catalog、source與report均明示同一候選及新輸出。",
+      "master_remap": "recipe.sources的SHA可對照正式catalog中234／235的source_files及source_sha256，從私人allow-list同步到remake/generated-assets/modern-theme-prototypes，再依SHA還原配方來源。base catalog沿48d1609645acaf274acfd820da45cce7849450dc，不以後續已登錄清冊重編同一資源。"
+    },
+    "formal_registration": {
+      "assets": 401,
+      "prior_assets_unchanged": 399,
+      "new_files": [
+        "figani-234-hd6-v1-f00.png",
+        "figani-235-hd6-v1-f00.png",
+        "figani-235-hd6-v1-f01.png",
+        "figani-235-hd6-v1-f02.png",
+        "figani-235-hd6-v1-f03.png",
+        "figani-235-hd6-v1-f04.png",
+        "figani-235-hd6-v1-f05.png",
+        "figani-235-hd6-v1-f06.png",
+        "figure-078-idle-battle-hd6-master-v1.png",
+        "figure-078-raise-battle-hd6-master-v1.png",
+        "figure-078-recover-battle-hd6-master-v1.png",
+        "figure-078-slash-battle-hd6-master-v1.png"
+      ],
+      "frames": 8,
+      "catalog_sha256": "78c8d1efa5bb34b515bcf21432fc752c1d483400747ca8c5e3bf756aaa18e750",
+      "candidate_asset_entries_equal": true
+    },
+    "readme_figures": [
+      {
+        "file": "docs/figures/hd-heavyknight-idle.png",
+        "source": "work/promo-cadence-20261018/hd-fonts/heavyknight-normal-gui-r2/world-hd-end-1-234-00-sample2.png",
+        "sha256": "053df9a303516c7322321a7cac72f9adb0232c05006d47de639d1cd60f0fc91d",
+        "edited": false
+      },
+      {
+        "file": "docs/figures/hd-heavyknight-physical-attack.png",
+        "source": "work/promo-cadence-20261018/hd-fonts/heavyknight-normal-gui-r2/world-hd-end-1-235-05-sample2.png",
+        "sha256": "e345b13ea79ef989fa35b232524c9bd10095ac82f5e85322065f83e7cdee5f32",
+        "edited": false
+      }
+    ],
+    "normal_battle_gui": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/heavyknight-normal-gui-r2/receipt.json",
+        "sha256": "4a419411d51264a0d8c0bb832d3b56033bda471fba627df7f1908bd98a7d1262"
+      },
+      "source_save_sha256": "f4da9acebb3444a9b618c1b108996abee2d2832902e2cad86940d91c33fc0c66",
+      "binary_sha256": "a7abe882e6eb4bf938506d50be0d9949716677635c68ab9456750b74c12ea74c",
+      "catalog_sha256": "fdb9f86ce17af101ecf377db2607dca22ad58a08b690fc3a04730a7b3fb411f0",
+      "gui_tool_sha256": "51adf1535142bdfe3414f9a94a20c764d9fe64ed2a3068dd611f8a8f118b4986",
+      "end_rounds": 2,
+      "end_physical_scenes": [
+        0,
+        4
+      ],
+      "battle_end_art_samples": 16,
+      "battle_art_samples": 64,
+      "new_process_title_load": true,
+      "cold_loaded_units_equal": true,
+      "source_save_bytes_equal": true,
+      "theme_save_bytes_equal": true,
+      "node_boundary_save_checked": true,
+      "recording_created": false,
+      "elapsed_seconds": 694.0341272139922,
+      "battle_attack_choices": [
+        {
+          "scene": "world-hd",
+          "attacker": {
+            "acted": false,
+            "attack_max": 1,
+            "attack_min": 1,
+            "battle_fig": 12,
+            "camp": 0,
+            "exp": 7,
+            "hp": 822,
+            "lv": 10,
+            "mp": 0,
+            "name": "凱麗",
+            "native_identity": 12,
+            "on_field": true,
+            "raw": {
+              "X": 13,
+              "Y": 25,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 13,
+            "y": 25
+          },
+          "range": [
+            1,
+            1
+          ],
+          "cell": [
+            14,
+            24
+          ],
+          "target": {
+            "acted": false,
+            "attack_max": 0,
+            "attack_min": 0,
+            "battle_fig": 78,
+            "camp": 2,
+            "exp": 255,
+            "hp": 161,
+            "lv": 8,
+            "mp": 0,
+            "name": "",
+            "native_identity": 0,
+            "on_field": true,
+            "raw": {
+              "X": 13,
+              "Y": 24,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 13,
+            "y": 24
+          },
+          "state_injection": false
+        }
+      ]
+    },
+    "normal_pixels": {
+      "end": {
+        "file": "work/promo-cadence-20261018/hd-fonts/heavyknight-normal-end-pixels-r2.json",
+        "sha256": "a91e7c35ec695f67995a48f11a32c1ee7b3c0d90c5b9ec0cd7ef4e49d5f919c4"
+      },
+      "end_matched_pngs": 14,
+      "counter": {
+        "file": "work/promo-cadence-20261018/hd-fonts/heavyknight-normal-counter-pixels-r2.json",
+        "sha256": "50590edb184f25166d746fb1bffa0ab66c9bb14144f795eaac8489e0b446a09f"
+      },
+      "counter_matched_pngs": 47,
+      "slash": {
+        "file": "work/promo-cadence-20261018/hd-fonts/heavyknight-normal-slash-pixels-r2.json",
+        "sha256": "a0d3bd2b3ba3380f993a4fdc84ccbecb2bfc1fe0bc58f2c16c63063953dd2a7d"
+      },
+      "slash_matched_pngs": 3,
+      "guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/heavyknight-normal-pixel-guards-r2/guards.json",
+        "sha256": "0c56340017f41a4d56b24e4620399fddca5602d1cf62b18a167537bbc7e7662d"
+      },
+      "guard_count": 10,
+      "compatible_source_frames": 8,
+      "unique_phase_claim": false,
+      "matching_policy": "普通PNG符合八幀圖源集合；共享母稿可有多個相容索引，不判唯一相位。完整fixture仍同次Draw逐索引核對。"
+    },
+    "private_delivery": {
+      "full_verification": {
+        "file": "work/promo-cadence-20261018/hd-fonts/heavyknight-private-sync-r1.json",
+        "sha256": "f3b3392f1dfdc53e4978f3eab29b16ea25d709a224e06d6c2a0035846516a2d8"
+      },
+      "runtime_only_verification": {
+        "file": "work/promo-cadence-20261018/hd-fonts/heavyknight-runtime-only-verification-r1.json",
+        "sha256": "5cf1e1f5385f252de1c712aa8304c09a884817586ae0186a86c342dab92b6e3b"
+      },
+      "full_manifest_files": 3621,
+      "runtime_only_files": 3310,
+      "prior_files_unchanged": 3609,
+      "new_masters_excluded_from_runtime": 4,
+      "remote_head_verified": true,
+      "private_repository_verified": "沿本批開始已核private的唯一保存庫，未改倉庫設定；素材提交後實際遠端HEAD相同。"
+    },
+    "formal_go": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/heavyknight-formal-go-r1.log",
+        "sha256": "0fc4976b62030c5022484e62f9245ac81b7f6d3d5d4a50bd305b394eb53e5069"
+      },
+      "tests": 3,
+      "subtests": 2,
+      "skips": 0
+    },
+    "formal_coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/heavyknight-formal-coverage-r1.json",
+      "sha256": "ab61079de311f08879dcf5cbaa0f4d882de60e7939292024ffde8eceadcdb579"
+    },
+    "formal_catalog_tests": {
+      "status": "PASS",
+      "tests": 11
+    },
+    "cleanup": {
+      "removed": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/heavyknight-game-r1",
+          "bytes": 19316768,
+          "sha256": "a7abe882e6eb4bf938506d50be0d9949716677635c68ab9456750b74c12ea74c"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/heavyknight-go-cache-r1",
+          "bytes": 188812414,
+          "files": 1882
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/heavyknight-runtime-only-r1",
+          "bytes": 234586290,
+          "files": 3310,
+          "manifest_retained": true
+        }
+      ],
+      "removed_bytes": 442715472,
+      "deduplicated": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/heavyknight-battle-candidate-r1/pack/figani-234-hd6-v1-f00.png",
+          "bytes": 850562,
+          "sha256": "fc40aba16387ca3e204cec06624378593b18cda898c1a2aefa8974b4f6c178e0"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/heavyknight-battle-candidate-r1/pack/figani-235-hd6-v1-f00.png",
+          "bytes": 850562,
+          "sha256": "fc40aba16387ca3e204cec06624378593b18cda898c1a2aefa8974b4f6c178e0"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/heavyknight-battle-candidate-r1/pack/figani-235-hd6-v1-f01.png",
+          "bytes": 850562,
+          "sha256": "fc40aba16387ca3e204cec06624378593b18cda898c1a2aefa8974b4f6c178e0"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/heavyknight-battle-candidate-r1/pack/figani-235-hd6-v1-f02.png",
+          "bytes": 931813,
+          "sha256": "2c7afcd8474c6954715e9b6900febd61e033c54ef7de0bf02a2ea622fdf95d9c"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/heavyknight-battle-candidate-r1/pack/figani-235-hd6-v1-f03.png",
+          "bytes": 931813,
+          "sha256": "2c7afcd8474c6954715e9b6900febd61e033c54ef7de0bf02a2ea622fdf95d9c"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/heavyknight-battle-candidate-r1/pack/figani-235-hd6-v1-f04.png",
+          "bytes": 931813,
+          "sha256": "2c7afcd8474c6954715e9b6900febd61e033c54ef7de0bf02a2ea622fdf95d9c"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/heavyknight-battle-candidate-r1/pack/figani-235-hd6-v1-f05.png",
+          "bytes": 1149274,
+          "sha256": "eb2512757047e364dea9869694c6e8a9ab9d05f78dcd4700d24f963bbcd389a7"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/heavyknight-battle-candidate-r1/pack/figani-235-hd6-v1-f06.png",
+          "bytes": 1000226,
+          "sha256": "b2422a93222384325f71c963092e9071c2aedf007eb5e2c774db284ec6dd288f"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/heavyknight-battle-candidate-r1/pack/figure-078-idle-battle-hd6-master-v1.png",
+          "bytes": 1700004,
+          "sha256": "521ad621046cb56ff2539ba3021a2731d5388751bfc1574a29a1416dfc20531e"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/heavyknight-battle-candidate-r1/pack/figure-078-raise-battle-hd6-master-v1.png",
+          "bytes": 1212436,
+          "sha256": "3bc848153bd764e61d7ca55a6264c76dcb82e1be41d9246b113478e0065e82df"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/heavyknight-battle-candidate-r1/pack/figure-078-recover-battle-hd6-master-v1.png",
+          "bytes": 1917897,
+          "sha256": "33f4dde5c0406c2ad19ff9bf7e47d44c8544d5b471e9f3ac3c87480a38917bda"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/heavyknight-battle-candidate-r1/pack/figure-078-slash-battle-hd6-master-v1.png",
+          "bytes": 2214906,
+          "sha256": "b2935cc2a6f1b9e14f8ab7c339c4479694d4fc5204fc20baee8899d0f83d5f1a"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/heavyknight-idle-master-r1.png",
+          "bytes": 1700004,
+          "sha256": "521ad621046cb56ff2539ba3021a2731d5388751bfc1574a29a1416dfc20531e"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/heavyknight-raise-master-r1.png",
+          "bytes": 1212436,
+          "sha256": "3bc848153bd764e61d7ca55a6264c76dcb82e1be41d9246b113478e0065e82df"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/heavyknight-slash-master-r1.png",
+          "bytes": 2214906,
+          "sha256": "b2935cc2a6f1b9e14f8ab7c339c4479694d4fc5204fc20baee8899d0f83d5f1a"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/heavyknight-recover-master-r1.png",
+          "bytes": 1917897,
+          "sha256": "33f4dde5c0406c2ad19ff9bf7e47d44c8544d5b471e9f3ac3c87480a38917bda"
+        }
+      ],
+      "deduplicated_bytes": 21587111,
+      "recordings_created": false,
+      "screenshots_and_receipts_retained": true
+    },
+    "final_checks": {
+      "local_link_targets": 2090,
+      "broken_links": 0,
+      "readme_preservation_positive_controls": 6,
+      "syntax_and_json": "PASS",
+      "kylie_gif_unchanged": true,
+      "source_native_and_json_save_unchanged": true,
+      "ownership_uid": 1000,
+      "go_production_sources_changed": false,
+      "string_review_binding_unchanged": "f0c580bb4ce35f2fce135abe8e0d8e45a056c47dd859963e34328ad6dcd35ac1",
+      "worklist": {
+        "open": 22,
+        "manual": 14,
+        "possibly_done": 0
+      },
+      "lessons": {
+        "total": 273,
+        "guards": 151,
+        "status": "PASS"
+      },
+      "root_owned_or_md_directory_anomalies": 0,
+      "nonexpected_fd2_containers": 0
     }
   }
 }

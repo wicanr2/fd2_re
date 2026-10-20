@@ -3161,8 +3161,8 @@
       "id": "battle-end-gpu-uses-caller-offset-not-job-phase",
       "date": "2026-10-20",
       "area": "實際GPU圖源核對",
-      "rule": "END的X11截圖與只讀job觀測分開。tools/verify_fd2_character_battle_gpu.py的end分組只從同圖庫job取caller位移與clip，再以原描述子及實際PNG核對姿勢；不把觀測索引當已呈現相位。fixture在同次Draw回讀，仍逐索引核對；錯位移反例須拒收。",
-      "why": "七張鐵諾實際PNG證實常比當前預期job慢一拍，待機首張甚至仍顯示上一拍收勢。沿job索引篩選會拒收確實存在的HD；caller位移加實際像素保留嚴格幾何與核心容差，並保留多候選。",
+      "rule": "END的X11截圖與只讀job觀測分開。tools/verify_fd2_character_battle_gpu.py的end分組只從同圖庫job取caller位移與clip，再以原描述子及實際PNG核對姿勢；不把觀測索引當已呈現相位。fixture在同次Draw回讀，仍逐索引核對；錯位移反例須拒收。 需要補擷取時，在tools/verify_fd2_hd_fonts_gui.py明示--battle-end-samples-per-frame 2，每幀最多另存第二張，保留首張與原像素門檻，不無界重取直到通過。",
+      "why": "七張鐵諾實際PNG證實常比當前預期job慢一拍，待機首張甚至仍顯示上一拍收勢。沿job索引篩選會拒收確實存在的HD；caller位移加實際像素保留嚴格幾何與核心容差，並保留多候選。 鎧甲武士首輪GUI及反擊像素通過，但END唯一待機圖仍為前一回收；明示每幀兩張重跑後，原END待機／攻擊門檻通過。",
       "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
       "guard": {
         "kind": "present",
