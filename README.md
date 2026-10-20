@@ -129,6 +129,13 @@
 [驗證紀錄](docs/data/fd2-modern-hd-battlefield-20261019.json)的`early_party_battle_followup_20261020`。
 貝克威的炮擊圖組仍為候選，正常反擊路徑的背景缺口由[#265](https://github.com/wicanr2/fd2_re/issues/265)追蹤。
 
+![凱麗攻擊動畫：原版 DOS 與 HD 重製並排](docs/figures/hd-kylie-original-vs-hd.gif)
+
+左側是 dosgolem 執行原版遊戲，右側是 HD 重製的實際遊玩畫面，節錄凱麗的掌擊、旋身與收勢。
+兩側沿用上述章前加血槽，屬相近戰況；動畫依動作順序剪輯，血量與亂數不同，不代表逐幀一致。
+HD 背景、敵方與面板仍含像素素材。來源與可重跑方式見
+[動畫驗證紀錄](docs/data/fd2-modern-hd-battlefield-20261019.json)的`kylie_readme_animation_20261020`。
+
 ## 遊戲介紹
 
 《炎龍騎士團 2》是 1990 年代華文單機戰略角色扮演遊戲（SRPG）的代表作之一。

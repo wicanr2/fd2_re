@@ -25,7 +25,7 @@
 | 圖源／幾何 | 兩張穩定GPU各10678個不透明核心像素零差異；一張跨相位明示不可比。同view的960地形樣本零差異 | 不宣稱原版逐幀或完整畫面parity |
 | 讀檔與保存 | #260舊經驗對話owner清除；成功／拒收回歸、經驗對話中F9、兩主題／來源保存及新程序LOAD通過 | 範圍限實際抽驗暫態 |
 | 私人素材 | 397項清冊、3580檔完整allow-list及3281檔runtime-only逐筆SHA與UID核對，原3536檔保持；新增九母稿不進執行包，貝克威候選不混入 | 正式載入與遠端核對見主收據`early_party_battle_followup_20261020`，保存庫維持private |
-| 原版oracle | 本輪未啟動原版oracle或matching | 不新增整章PLAYER-E2或原版傷害聲明 |
+| 原版oracle／README動畫 | 凱麗第九章建構槽由固定dosgolem 190d944正常LOAD、出發、兩次END、攻擊與返回；原版EXE擷取與既有HD實際PNG並排，21幀／2.17秒GIF已驗 | 相近戰況與剪輯節奏，血量、亂數、到達格不同；不新增整章PLAYER-E2、傷害、逐幀或matching聲明 |
 | 計時對話 | FFEC開收框保留HD世界；37張主要GPU、6張對話及EXP99普通輸入／F2／保存冷讀通過 | 限RUNTIME-E1與明示槽；其他caller仍待驗 |
 | 完整HD | 尚未完成 | HD地形、其他美術、完整索引演出與平台效能沿#201／#202／#204 |
 | HD地形圖源 | DATA-READY：33圖庫／8256幀逐幀索引已重生；2985種原生解碼內容；每層4755456像素回讀一致 | 限製圖來源；舊圖集歷史差異根因未知，不沿用它製作HD |
@@ -53,7 +53,10 @@
 希莉亞20幀與原始空白幀見`silia_battle_followup_20261019`，第三章敵方13幀、正常射擊及私人同步見
 `assassin76_battle_followup_20261020`；鐵諾14幀、普通HD END及私人同步見`tino_battle_followup_20261020`，
 村民八幀、固定零header、普通END及完整繪製證據見`villager_idle_battle_followup_20261020`；
-瑪琳／凱麗35正式幀、貝克威21候選幀、普通攻防及#265限制見`early_party_battle_followup_20261020`；覆蓋重跑使用
+瑪琳／凱麗35正式幀、貝克威21候選幀、普通攻防及#265限制見`early_party_battle_followup_20261020`；
+凱麗README並排GIF、原版正常按鍵計畫、固定提交與逐張SHA見`kylie_readme_animation_20261020`，
+合成入口為[`build_fd2_readme_attack_gif.py`](../../tools/build_fd2_readme_attack_gif.py)，用法在該主收據的`reproduce`。
+此展示不改動正式清冊、規則或保存。覆蓋重跑使用
 `python3 tools/audit_fd2_battle_hd_coverage.py --inventory docs/data/fd2-battle-hd-source-inventory-20261019.json --original-pack <原版分離包> --catalog remake/assets/themes/modern/catalog.json --source remake/generated-assets/modern-theme-prototypes --report <新工作區報告>`，限既有素材Docker映像檔，輸入原版包唯讀。
 2026-10-20的輸入、工具及清冊SHA與結果在主收據的`formal_coverage`，只證明資料覆蓋。
 哈諾11幀、章前HP校準槽普通按鍵攻防及兩張故事表情見`hano_battle_followup_20261020`。蓋亞原框15幀、原控制器失敗及獨立追蹤範圍見

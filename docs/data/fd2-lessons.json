@@ -3239,6 +3239,21 @@
         ],
         "pattern": "\"private_root\": \"remake/generated-assets/modern-theme-prototypes\""
       }
+    },
+    {
+      "id": "oracle-source-preflight-pins-capability-and-cli",
+      "date": "2026-10-20",
+      "area": "原版擷取來源",
+      "rule": "原版擷取前核對所選Git提交同時具備遊戲專用修復與現行入口旗標；不能由main或開發分支名稱推定能力。入口tools/build_fd2_readme_attack_gif.py依主收據original_commit與runner.json核對乾淨提交，原版執行方式及能力範圍見主收據kylie_readme_animation_20261020的reproduce與source_selection。",
+      "why": "音訊開發分支及主線尚無FD2 IRQ7修正，舊951亦不支援heap-profile；固定現有190d944後正常LOAD、兩次END、凱麗攻擊與返回通過。錯誤來源不能列成目前平台缺陷。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/build_fd2_readme_attack_gif.py"
+        ],
+        "pattern": "dosgolem_commit.*original_commit"
+      }
     }
   ]
 }

@@ -1,5 +1,11 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
+README已新增凱麗原版／HD並排攻擊GIF。左側由固定dosgolem提交正常LOAD、出發、兩次END及攻擊取得，
+右側沿已驗第九章實際HD視窗；21幀、2.17秒、完整解碼與四動作目視審查通過。
+兩側章前HP+1000，章內不鎖血；血量、亂數與到達格不同，僅比較相近戰況的美術與流程。
+這份展示不提升整章E2或逐幀聲明；來源、逐張SHA及重跑方式見主收據`kylie_readme_animation_20261020`，
+索引依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)。
+
 瑪琳FIGANI30／31與凱麗36／37共35幀已正式登錄；完整同次Game.Draw各15／20張、
 三階段F2、64／65 DAC、一次續行及HP／兩種RNG保持通過。
 第九章正常LOAD、普通進軍及三次／兩次END、各一場攻擊自然返回、F2及章節邊界保存／冷讀通過。
