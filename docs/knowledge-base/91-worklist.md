@@ -39,10 +39,28 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 21 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 22 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
+
+## re — 原版證據還沒閉合
+
+### P1 混合背景反擊：主動header零、反擊非零的caller圖層待證
+
+`native-physical-mixed-counter-bg` · RE待解 · [#265](https://github.com/wicanr2/fd2_re/issues/265) · 仍未完成 · 自承還在 remake/cmd/fd2/native_physical_body.go
+
+第九章HD抽樣使用明示章前HP+1000建構槽、seed1與普通鍵盤。貝克威接敵時，AI物理攻擊在prepareNativePhysicalBodyResources拒收：native physical counter requires unavailable caller BG layers。
+
+目前程式明確拒絕attack.HeaderByte1==0且counter.HeaderByte1!=0。這項限制同時影響忠實與HD呈現，不先刪除守衛或猜補背景。該建構槽含加入時的預設裝備，尚未證明這種反擊組合在未修改原版玩家流程的可達性，不把它稱為自然難度缺陷。
+
+下一切片先核對名冊裝備及射程，再沿既有原版背景選擇主證據追caller保存的BG資料與反擊consumer；必要時使用dosgolem固定同狀態及有界局部追蹤。既有已閉合位址與原始名稱保留，不重做整個戰鬥子系統。
+
+主收據docs/data/fd2-modern-hd-battlefield-20261019.json的early_party_battle_followup_20261020保存實際失敗；原版主證據docs/data/ida/fd2_physical_background_selection_20261004.json。瑪琳、凱麗的正常抽樣與貝克威21幀修改fixture分開，不用完整Draw冒充正常攻防。
+
+怎樣算做完：確認該組合的原生裝備／射程與可達範圍，補齊固定雜湊、原始位址及caller／consumer證據；依READY規格實作必要背景預載或修正錯誤測試來源，同狀態與普通玩家抽樣通過，缺件仍在結算前拒收。不能只刪守衛或改成無反擊。
+
+證據：`docs/data/fd2-modern-hd-battlefield-20261019.json`
 
 ## data — 可編輯資料還沒就緒
 
@@ -108,19 +126,21 @@ FDFIELD回合事件由完整具型別處理器降成正式劇本，保留增援�
 
 `modern-theme-player-asset-coverage` · 工作 · [#201](https://github.com/wicanr2/fd2_re/issues/201) · 仍未完成 · 要人判
 
-正式consumer素材覆蓋的唯一現況依58，戰鬥範圍另見#263。其他地形、前景、完整HUD及其他consumer仍待，本項保持開啟。
+正式consumer素材覆蓋唯一現況依58，戰鬥範圍另見#263；其他地形、前景、完整HUD及其他consumer仍待，本項保持開啟。
 
-目前正式清冊393項，FIGANI20資源142幀；FDOTHER65..68四召喚37幀。第二章村民399／402各四幀待機已正式登錄，400／401／403／404為固定零header，不補造攻擊或施術。各一母稿共享四個呼吸相位，保留原矩形、delay與相位等價；不宣稱逐幀美術相同。正式Go規則、呈現與保存格式保持。
+目前正式清冊397項，FIGANI24資源177幀；FDOTHER65..68四召喚37幀。新增瑪琳30／31共15幀、凱麗36／37共20幀，原村民、哈諾、鐵諾、希莉亞與蓋亞等範圍保持。原矩形、delay、cue與空白遮罩保留；相近姿勢明示共享，不宣稱逐幀原版一致。
 
-沿既有教會復活後章前HP／MaxHP+1000槽及seed1，正常LOAD、三次END、事件、哈諾一場攻防自然返回、F2與章節邊界保存／新程序標題LOAD完整GUI通過。END八張擷取中，兩位村民各3／2張符合服裝核心，哈諾27張符合核心；完整fixture另各4張同次最終1920回讀、兩階段F2、64／65 DAC、一次續行、HP與兩種RNG保持。章內不鎖血或注入位置，不宣稱自然難度、傷害／AI、新原版oracle或整章E2。
+第九章使用明示章前HP+1000建構槽及seed1，以普通鍵盤完成LOAD、進軍、三次／兩次END、各一場攻擊自然返回、F2、章節邊界保存及新程序LOAD。瑪琳21張、凱麗33張實際PNG符合核心，各九項反例拒收。完整修改fixture各15／20張同次最終1920回讀、三階段F2、64／65 DAC、一次續行及HP／兩種RNG保持；舊哈諾／希莉亞10／85張正常圖源回歸通過。
 
-編製器只有兩項固定空header證據均成立時才接受idle-only；各20項反例通過。待機fixture各12項、普通END各14項拒收；舊哈諾雙資源16項編製、11幀完整三階段Draw，以及既有哈諾／希莉亞10／85張普通PNG保持。第一個fixture因同側索爾遮住村民而像素拒收，改左側既有劍盾兵後完整重驗；沒有放寬像素門檻。普通換手可以只有走行，所有實際戰鬥仍需HD、整份收據仍須END實際樣本。
+貝克威39／40的21幀仍為候選。完整Draw已取得21張，15張本體及5張光束核心符合，末幀依原Mask透明。測試補收既有departure工作，非零header要求離場F2，沒有改正式renderer或放寬逐幀核對。普通第九章接敵遇既有主動header零、反擊非零的caller BG拒收，另見#265；建構槽含預設裝備，尚未證明該組合的未修改原版可達性，不刪守衛或拿fixture冒充普通玩家。
 
-私人3536檔逐筆SHA核對，原3526檔保持；runtime-only3246檔不含新增兩母稿。正式Go真實載入、玩家／AI結算前拒收與完整HD頭像三項加兩子項通過，零SKIP；清冊11項測試及coverage通過。私人d072ebc4c61359480424ab60292a9abe536a8119已推送且實際遠端HEAD相同，保存庫仍private。README新增兩張未改動的實際END視窗並揭露來源。清除277797769 bytes已驗程式／臨時執行包，另將17937698 bytes重複圖檔指向相同SHA正式素材；保留實錄／原失敗與runtime manifest，清理後像素重驗通過，沒有錄影。
+第八章前方NPC死亡的三份GUI失敗亦保留，沒有章內補血或改座標。第九章來源只套既有戰後JOIN及章前HP政策，無額外升級／金幣政策；加血前後解碼差46bytes，限11筆HP／MaxHP及檢查碼。GUI使用同399項隔離候選，正式只登錄瑪琳／凱麗，其四項entries與35成品／9母稿逐筆相同。
 
-完整戰鬥HD Goal及本議題保持開啟。其他人物、施術者、法術／死亡／共同效果、普通召喚與代表性效能／平台仍待，背景與面板仍含像素素材。來源408仍阻擋；資料覆蓋不推定全部caller或玩家覆蓋。蓋亞既有175筆ACK／128張PNG獨立追蹤範圍保持，原GUI指定Gaia END樣本0而失敗及該項未驗保持，未由本批取代。
+正式清冊11項測試、固定原版描述子與PNG覆蓋稽核、正式Go真實載入／結算前拒收／完整主題三項加兩子項通過，零SKIP。README新增未編輯的兩張正常攻擊視窗並揭露來源。正式圖源根已固定，避免依賴歷史候選目錄；私人保存與清理的驗證依58及主收據。
 
-來源、完整提示、可重跑配方與收據在docs/data/fd2-modern-hd-battlefield-20261019.json的villager_idle_battle_followup_20261020；現況58、介面57、契約61。先前哈諾與蓋亞批次的來源及失敗沿原主收據保留。沒有matching、原版oracle或Release操作。
+完整戰鬥HD Goal與#263保持開啟。其他人物、施術者、法術／死亡／共同效果、普通召喚與代表性效能／平台仍待，背景與面板仍含像素素材。來源408阻擋及既有蓋亞指定END失敗保持。沒有新的原版oracle、整章E2、matching或Release聲明。
+
+來源、完整提示、重跑配方與收據在docs/data/fd2-modern-hd-battlefield-20261019.json的early_party_battle_followup_20261020；唯一現況58、介面57、契約61。
 
 _下方區塊維持既有驗收條件。_
 
@@ -178,17 +198,19 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 完整目標仍為完成FD2戰鬥動畫HD，1920×1200手繪與原版像素模式並存。
 
-目前正式清冊393項，FIGANI20資源142幀；FDOTHER65..68四召喚37幀。第二章村民399／402各四幀待機已正式登錄，400／401／403／404為固定零header，不補造攻擊或施術。各一母稿共享四個呼吸相位，保留原矩形、delay與相位等價；不宣稱逐幀美術相同。正式Go規則、呈現與保存格式保持。
+目前正式清冊397項，FIGANI24資源177幀；FDOTHER65..68四召喚37幀。新增瑪琳30／31共15幀、凱麗36／37共20幀，原村民、哈諾、鐵諾、希莉亞與蓋亞等範圍保持。原矩形、delay、cue與空白遮罩保留；相近姿勢明示共享，不宣稱逐幀原版一致。
 
-沿既有教會復活後章前HP／MaxHP+1000槽及seed1，正常LOAD、三次END、事件、哈諾一場攻防自然返回、F2與章節邊界保存／新程序標題LOAD完整GUI通過。END八張擷取中，兩位村民各3／2張符合服裝核心，哈諾27張符合核心；完整fixture另各4張同次最終1920回讀、兩階段F2、64／65 DAC、一次續行、HP與兩種RNG保持。章內不鎖血或注入位置，不宣稱自然難度、傷害／AI、新原版oracle或整章E2。
+第九章使用明示章前HP+1000建構槽及seed1，以普通鍵盤完成LOAD、進軍、三次／兩次END、各一場攻擊自然返回、F2、章節邊界保存及新程序LOAD。瑪琳21張、凱麗33張實際PNG符合核心，各九項反例拒收。完整修改fixture各15／20張同次最終1920回讀、三階段F2、64／65 DAC、一次續行及HP／兩種RNG保持；舊哈諾／希莉亞10／85張正常圖源回歸通過。
 
-編製器只有兩項固定空header證據均成立時才接受idle-only；各20項反例通過。待機fixture各12項、普通END各14項拒收；舊哈諾雙資源16項編製、11幀完整三階段Draw，以及既有哈諾／希莉亞10／85張普通PNG保持。第一個fixture因同側索爾遮住村民而像素拒收，改左側既有劍盾兵後完整重驗；沒有放寬像素門檻。普通換手可以只有走行，所有實際戰鬥仍需HD、整份收據仍須END實際樣本。
+貝克威39／40的21幀仍為候選。完整Draw已取得21張，15張本體及5張光束核心符合，末幀依原Mask透明。測試補收既有departure工作，非零header要求離場F2，沒有改正式renderer或放寬逐幀核對。普通第九章接敵遇既有主動header零、反擊非零的caller BG拒收，另見#265；建構槽含預設裝備，尚未證明該組合的未修改原版可達性，不刪守衛或拿fixture冒充普通玩家。
 
-私人3536檔逐筆SHA核對，原3526檔保持；runtime-only3246檔不含新增兩母稿。正式Go真實載入、玩家／AI結算前拒收與完整HD頭像三項加兩子項通過，零SKIP；清冊11項測試及coverage通過。私人d072ebc4c61359480424ab60292a9abe536a8119已推送且實際遠端HEAD相同，保存庫仍private。README新增兩張未改動的實際END視窗並揭露來源。清除277797769 bytes已驗程式／臨時執行包，另將17937698 bytes重複圖檔指向相同SHA正式素材；保留實錄／原失敗與runtime manifest，清理後像素重驗通過，沒有錄影。
+第八章前方NPC死亡的三份GUI失敗亦保留，沒有章內補血或改座標。第九章來源只套既有戰後JOIN及章前HP政策，無額外升級／金幣政策；加血前後解碼差46bytes，限11筆HP／MaxHP及檢查碼。GUI使用同399項隔離候選，正式只登錄瑪琳／凱麗，其四項entries與35成品／9母稿逐筆相同。
 
-完整戰鬥HD Goal及本議題保持開啟。其他人物、施術者、法術／死亡／共同效果、普通召喚與代表性效能／平台仍待，背景與面板仍含像素素材。來源408仍阻擋；資料覆蓋不推定全部caller或玩家覆蓋。蓋亞既有175筆ACK／128張PNG獨立追蹤範圍保持，原GUI指定Gaia END樣本0而失敗及該項未驗保持，未由本批取代。
+正式清冊11項測試、固定原版描述子與PNG覆蓋稽核、正式Go真實載入／結算前拒收／完整主題三項加兩子項通過，零SKIP。README新增未編輯的兩張正常攻擊視窗並揭露來源。正式圖源根已固定，避免依賴歷史候選目錄；私人保存與清理的驗證依58及主收據。
 
-來源、完整提示、可重跑配方與收據在docs/data/fd2-modern-hd-battlefield-20261019.json的villager_idle_battle_followup_20261020；現況58、介面57、契約61。先前哈諾與蓋亞批次的來源及失敗沿原主收據保留。沒有matching、原版oracle或Release操作。
+完整戰鬥HD Goal與#263保持開啟。其他人物、施術者、法術／死亡／共同效果、普通召喚與代表性效能／平台仍待，背景與面板仍含像素素材。來源408阻擋及既有蓋亞指定END失敗保持。沒有新的原版oracle、整章E2、matching或Release聲明。
+
+來源、完整提示、重跑配方與收據在docs/data/fd2-modern-hd-battlefield-20261019.json的early_party_battle_followup_20261020；唯一現況58、介面57、契約61。
 
 _下方區塊維持既有驗收條件。_
 

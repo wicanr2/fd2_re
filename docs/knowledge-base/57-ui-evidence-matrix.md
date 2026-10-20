@@ -1,5 +1,16 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
+瑪琳FIGANI30／31與凱麗36／37共35幀已正式登錄；完整同次Game.Draw各15／20張、
+三階段F2、64／65 DAC、一次續行及HP／兩種RNG保持通過。
+第九章正常LOAD、普通進軍及三次／兩次END、各一場攻擊自然返回、F2及章節邊界保存／冷讀通過。
+分別21／33張實際PNG符合圖源核心，兩份普通收據各九項反例拒收。
+GUI使用399項隔離候選，正式只登錄上述兩人；對應entries與35成品／9母稿逐筆相同。
+貝克威39／40的21幀僅通過修改fixture，15張本體／5張光束核心符合，末幀沿原Mask透明。
+普通第九章反擊遇既有caller BG拒收，仍為候選，缺口見[#265](https://github.com/wicanr2/fd2_re/issues/265)。
+第八章前方NPC死亡的三份GUI失敗保留；新來源只加章前HP，不鎖章內狀態。
+不新增自然難度、整章E2或原版逐幀聲明；正式數量與私人同步依[58](58-fd2-exe-re-coverage.md)，
+契約及完整提示沿[61](61-modern-theme-runtime-spec.md)與主收據`early_party_battle_followup_20261020`。
+
 第二章村民FIGANI399／402各四幀待機已正式登錄；原攻擊／施術圖庫零header，不補造動作。
 同次Game.Draw完整八張、各兩階段F2、64／65 DAC、一次續行及HP／RNG保持通過。
 沿既有章前HP+1000槽，普通三次END、事件、一場哈諾攻防自然返回、F2與章節邊界保存／新程序LOAD完整GUI通過。

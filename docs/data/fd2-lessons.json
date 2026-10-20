@@ -3209,6 +3209,36 @@
         ],
         "pattern": "has_native_record_byte5"
       }
+    },
+    {
+      "id": "battle-fixture-captures-departure-before-body",
+      "date": "2026-10-20",
+      "area": "完整戰鬥GPU擷取",
+      "rule": "完整FIGANI擷取涵蓋native_physical_body.go依HeaderByte1／HeaderByte2產生的departure工作。入口remake/cmd/fd2/modern_hd_battle_lifecycle_test.go的TestModernHDBattleRuntimeGPU；tools/verify_fd2_character_battle_gpu.py另要求非零header的離場F2，全部selected source仍須同次最終Draw回讀。",
+      "why": "貝克威40/0..13屬departure，舊測試只收body／counter而漏14張；正式呈現原已具備，只擴實際job擷取後完整21張通過。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_character_battle_gpu.py"
+        ],
+        "pattern": "非零header需要完整離場Game.Draw與F2收據"
+      }
+    },
+    {
+      "id": "formal-modern-catalog-uses-stable-asset-root",
+      "date": "2026-10-20",
+      "area": "正式圖源與私人同步",
+      "rule": "同步或稽核前先讀remake/assets/themes/modern/catalog.json的private_root並核實每個允許檔。正式登錄指向remake/generated-assets/modern-theme-prototypes，先從候選逐檔核SHA及補缺件，再用tools/sync_modern_theme_private.py同步；正式Go在同步完成後乾淨執行，不與寫入同時跑。",
+      "why": "前批正式清冊仍指村民候選pack，本批依清冊複製正確，但固定prototypes同步命令找不到新圖；同步未完成即跑Go亦缺件。固定正式根、逐檔補齊並先同步後，所有驗證通過。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/assets/themes/modern/catalog.json"
+        ],
+        "pattern": "\"private_root\": \"remake/generated-assets/modern-theme-prototypes\""
+      }
     }
   ]
 }

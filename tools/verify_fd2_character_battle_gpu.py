@@ -13,7 +13,7 @@ from verify_fd2_ares_battle_gpu import matches
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--figure', type=int, required=True)
-    p.add_argument('--core-profile', choices=['blue', 'gold'], default='blue',
+    p.add_argument('--core-profile', choices=['blue', 'gold', 'purple', 'warm'], default='blue',
                    help='已知圖源服裝的取樣色域；只影響驗證，不影響遊戲')
     p.add_argument('--body-frames', help='只核對明示本體幀，格式為24:0,25:0-13；空白與投射物另驗')
     p.add_argument('--sample-group',choices=['attack','end','fixture','trace','idle-end','idle-fixture'],default='attack')
@@ -72,6 +72,12 @@ def main():
     entries = [a for a in catalog['assets'] if a['role'] == 'battle_animation_hd_set' and a['source_resource'] in resources]
     if sorted(a['source_resource'] for a in entries) != resources:
         raise SystemExit('需要完整待機圖源' if idle_only else '需要完整待機及攻擊圖源')
+    if fixture_group and not idle_only:
+        attack = next(a for a in entries if a['source_resource'] == args.figure*3+1)
+        if attack['native_header'][0] and attack['native_header'][1] and (
+                receipt.get('phase_f2', {}).get('departure') != 1
+                or receipt.get('phase_hd_draws', {}).get('departure', 0) <= 0):
+            raise SystemExit('非零header需要完整離場Game.Draw與F2收據')
     idle_proof=None
     if idle_only:
         inventory=json.loads(args.inventory.read_text())
@@ -119,6 +125,11 @@ def main():
                     if a < 250: return False
                     if args.core_profile == 'blue':
                         return b >= 70 and b*100 >= r*150 and b*100 >= g*130
+                    if args.core_profile == 'purple':
+                        return (r >= 40 and b >= 40 and r*100 >= g*120 and b*100 >= g*120
+                                and b*100 >= r*65 and r*100 >= b*65)
+                    if args.core_profile == 'warm':
+                        return r >= 160 and g >= 100 and r*100 >= g*90 and g*100 >= b*95
                     return r >= 100 and g >= 70 and r >= g and g*100 >= b*150 and r*100 >= b*180
                 points = [(i % im.width, i // im.width, r, g, b, a)
                           for i, (r, g, b, a) in enumerate(im.getdata()) if selected(r, g, b, a)]

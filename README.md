@@ -119,6 +119,16 @@
 背景與面板仍含像素素材，呼吸相位共享母稿；來源與驗證範圍見
 [驗證紀錄](docs/data/fd2-modern-hd-battlefield-20261019.json)的`villager_idle_battle_followup_20261020`。
 
+| 瑪琳HD普通攻防 | 凱麗HD普通攻防 |
+| --- | --- |
+| ![瑪琳HD普通攻防](docs/figures/hd-marlene-physical-attack.png) | ![凱麗HD普通攻防](docs/figures/hd-kylie-physical-attack.png) |
+
+兩張皆為第九章普通按鍵攻擊的實際遊戲視窗，使用明示章前HP+1000的建構槽。
+瑪琳的揮杖與凱麗的掌擊、旋身已接HD圖組；背景、敵方與面板仍含像素素材。
+攻防返回、F2及章節邊界保存冷讀已驗證；共享姿勢、來源政策與驗證範圍見
+[驗證紀錄](docs/data/fd2-modern-hd-battlefield-20261019.json)的`early_party_battle_followup_20261020`。
+貝克威的炮擊圖組仍為候選，正常反擊路徑的背景缺口由[#265](https://github.com/wicanr2/fd2_re/issues/265)追蹤。
+
 ## 遊戲介紹
 
 《炎龍騎士團 2》是 1990 年代華文單機戰略角色扮演遊戲（SRPG）的代表作之一。

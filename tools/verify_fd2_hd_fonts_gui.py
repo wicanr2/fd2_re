@@ -449,9 +449,13 @@ def main():
             shot('native-title-load');key('Return')
             wait(lambda s:not s.get('title_phase') and s.get('node')==town_node)
             shot('native-town-loaded')
-            # 兩章沿authored選項0／2／4與同一native town selector。
-            assert args.battle_node in ('battle_ch02','battle_ch03'), '此原生出發鍵序只支援已明示的第二／三章'
+            # 只接受已核對的城鎮選項與出發路由，不把任意章節套入同一鍵序。
+            assert args.battle_node in ('battle_ch02','battle_ch03','battle_ch08','battle_ch09'), '此原生出發鍵序只支援已明示的第二／三／八／九章'
             nodes=json.loads((args.assets/'assets/scenarios/campaign_full.json').read_text())['nodes']
+            suffix=args.battle_node.removeprefix('battle_')
+            town=nodes[town_node]
+            assert town['native_town_variant']=={'battle_ch02':0,'battle_ch03':2,'battle_ch08':0,'battle_ch09':0}[args.battle_node] and [town['options'][i]['to'] for i in (0,2,4)]==[
+                'hotel_'+suffix,prep_node,'church_'+suffix], '原生城鎮出發選項不同'
             story_node=nodes[prep_node]['next']
             assert nodes[story_node]['type']=='cutscene' and nodes[story_node]['next']==args.battle_node
             revival = None

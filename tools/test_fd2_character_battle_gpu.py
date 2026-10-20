@@ -15,8 +15,8 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--figure', type=int, required=True)
     p.add_argument('--other-figure', type=int, required=True)
-    p.add_argument('--core-profile', choices=['blue', 'gold'], default='blue')
-    p.add_argument('--other-core-profile', choices=['blue', 'gold'], default='blue')
+    p.add_argument('--core-profile', choices=['blue', 'gold', 'purple', 'warm'], default='blue')
+    p.add_argument('--other-core-profile', choices=['blue', 'gold', 'purple', 'warm'], default='blue')
     p.add_argument('--body-frames')
     p.add_argument('--sample-group',choices=['attack','end','fixture','idle-end','idle-fixture'],default='attack')
     for name in ['receipt', 'catalog', 'source', 'baseline', 'negative-receipt', 'out']:
@@ -64,6 +64,11 @@ def main():
     path = args.out/'wrong-receipt.json'; path.write_text(json.dumps(wrong))
     fixture_error='需要完整目標待機Game.Draw測試收據' if idle_only else '需要完整人物Game.Draw測試收據'
     check('wrong-receipt', path, fixture_error if fixture_group else '需要同份普通攻防完整GUI收據及清冊')
+    if fixture_group and not idle_only and receipt.get('phase_f2', {}).get('departure') == 1:
+        wrong = copy.deepcopy(receipt)
+        wrong['phase_f2']['departure'] = 0
+        path = args.out/'missing-departure.json'; path.write_text(json.dumps(wrong))
+        check('missing-departure', path, '非零header需要完整離場Game.Draw與F2收據')
     if args.sample_group in ('attack', 'end', 'idle-end') and receipt.get('battle_repetitions') == 1:
         for name, updates in [
                 ('missing-natural-return', {'natural_attack_return_checked': False}),

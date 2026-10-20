@@ -293,6 +293,9 @@ func TestModernHDBattleRuntimeGPU(t *testing.T) {
 	}
 	selectedResources := map[int]*figani.Animation{figure * 3: scene.bodyResources.actorIdle, figure*3 + 1: scene.bodyResources.attack}
 	phases := []string{"prelude", "body", "counter"}
+	if !idleTarget && scene.bodyResources.attack.HeaderByte1 != 0 && scene.bodyResources.attack.HeaderByte2 != 0 {
+		phases = append(phases, "departure")
+	}
 	if idleTarget {
 		selectedResources = map[int]*figani.Animation{figure * 3: scene.bodyResources.targetIdle}
 		phases = []string{"prelude", "body"}
@@ -353,7 +356,7 @@ func TestModernHDBattleRuntimeGPU(t *testing.T) {
 		defer readback.Dispose()
 		pixels := make([]byte, 1920*1200*4)
 		probe.capture = func(screen *ebiten.Image, phase string) {
-			if g.modernStoryPortraits == nil || !g.modernHDBattleVisible || (phase != "body" && phase != "counter") {
+			if g.modernStoryPortraits == nil || !g.modernHDBattleVisible || (phase != "body" && phase != "counter" && phase != "departure") {
 				return
 			}
 			index := scene.body.index
@@ -395,7 +398,7 @@ func TestModernHDBattleRuntimeGPU(t *testing.T) {
 					return
 				}
 				state := map[string]any{"battle_scene": true, "hd_battle": true, "battle_source_layers": layers}
-				shots[key] = map[string]any{"scene": "fixture", "file": name, "sha256": fmt.Sprintf("%x", sha256.Sum256(raw)), "before": state, "after": state, "job": index}
+				shots[key] = map[string]any{"scene": "fixture", "file": name, "sha256": fmt.Sprintf("%x", sha256.Sum256(raw)), "before": state, "after": state, "job": index, "phase": phase}
 			}
 		}
 	}
