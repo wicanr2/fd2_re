@@ -2714,3 +2714,17 @@ settle_world_battle必須等待class_ui_job正常繪製完成，接續以Return�
 加入唯讀audit欄位death_reward_message及death_reward_message_wait，直接讀既有rewardMessage與nativeDeathRewardMessageAwaitingKey，不確認或推進訊息。GUI依真實owner：開關框只等繪製，awaitAck以Return正常完成，再接續經驗對話與選人。遊戲規則、owner鏈、排程、背包及保存不改。原失敗與前一修訂保留；回歸見[唯讀觀測回歸](../../remake/cmd/fd2/input_audit_trace_test.go)，驗nil、無reward的其他modal、開框、等ACK、關框及釋放，並核對觀察不改owner與awaitAck。最後再用同源普通流程完整驗F2及冷讀。
 
 弓手切片與最後的owner修訂已達CONFORMED-SCOPED。前兩輪失敗保持，原class_ui_job等待方案由明示rewardMessage owner取代。第三輪16筆owner觀測中8筆等ACK，攻擊後六次Z均無掉落／class UI／經驗訊息佔用，完整GUI及冷讀通過。來源為章前強化槽，保存只重建章節邊界，不宣稱戰中戰利品持續。普通本體22張與灰綠組14張包含各5張目標待機，flow十五項反例拒收；完整19張仍由同次fixture核對。正式清冊／私人同步與重跑入口依主收據archer87_battle_followup_20261020。速度藥水獲得訊息與頭像仍是像素，沿#204繼續。
+
+### 突擊騎兵 BattleFig83 戰鬥圖源切片
+
+狀態：CONFORMED-SCOPED。實作前為READY；完整12張Draw及章9普通五次END、敵方攻擊／受擊待機、返回／F2及邊界冷讀通過。沿已核准手繪風格、原描述子與1920×1200圖源契約，補FIGANI249待機1張及250物理攻擊11張；251固定零header，不補造施術。主證據、來源SHA與圖源檢視表見HD戰場主收據的knight83_battle_followup_20261020。名稱依普通重製視窗觀測，不延伸為原始欄位ABI語意。
+
+- 保留藍色圓肩厚甲、金色側盔護片、暗面、橙紅長前布與雙頭錐槍；不共用78尖肩持劍或118灰綠橙羽造型。
+- 七母稿依序為垂直槍待機、斜槍蓄勢、金白爆光重擊、長槍尖殘光、短殘光、微光及無光收勢。250:0..5明示共用蓄勢，其餘分開繪製。保持原武器方向及金光消退，不以一張光效覆蓋全部收勢。
+- 固定盤點／原版manifest／metadata／PNG及Mask SHA，編製器保留12項原始矩形、header、delay、hit與cue。透明alpha由內建imagegen產生並保持；超出原矩形的武器裁切逐筆記錄。缺件、幾何或來源錯誤仍拒收。
+- 完整12張同次最終Draw、既有階段F2、64／65 DAC及一次續行需通過；正常章9沿購弓F5來源，希莉亞own5／target83、固定seed1及至少兩次END，抽實際敵方攻擊與我方射擊時目標待機，完成自然返回、F2、章節邊界保存／新程序LOAD。章內不注入狀態，fixture不取代普通流程。
+- 源槽祖先HP+1000與原有高等級明示；不新增自然難度、傷害／AI、原版parity、唯一相位或整章E2。#265拒收不刪，規則／排程／保存保持。全部驗收通過才登錄正式清冊及私人allow-list。
+
+83低姿勢補充READY：候選r1的低姿勢雙腿過寬、腳底太低，槍尖與腳底間距不足，完整排版不採用。原250:6..10的雙腿收於軀幹下方，腳底約y150，前端槍尖可至y169／171；需要依這個比例重繪，不以全框縮放或腳底向下移補滿矩形。姿勢與alpha仍由內建imagegen產生，保留未採用稿及原幀單張參考。\n
+83普通進軍上限修訂READY：r2已正常完成三次END，但希莉亞(10,24)距83號(11,15)仍遠，正式可達集合沒有射程2..3的位置。只將GUI控制器的battle-min-approach-rounds及battle-approach-rounds明示選項擴為0..6，預設0與min<=max守衛保持。新輪固定min4／max6、原來源及seed1，普通移動、待機與END，不改部署／移動力／HP／亂數或排程。六次後仍不可達就拒收，不無界重試。這只修抽樣控制範圍，先前三輪拒收保留；完整攻擊、F2及新程序LOAD仍必要。\n
+83切片及有界進軍修訂已達CONFORMED-SCOPED。首版低姿勢與首兩輪GUI拒收保留；第三輪沿同來源seed1、min4／max6，實際五次END完成接戰與我方射擊，章內無注入。本體40張與金光組8張分別包含3／5張目標待機，兩組共30項普通反例拒收；完整12張仍依同次fixture。正式載入三項加兩子項、清冊十一項及固定來源稽核通過，零SKIP。私人同步與完整提示見主收據knight83_battle_followup_20261020；其他角色、法術／死亡／普通召喚與平台不由此放行。

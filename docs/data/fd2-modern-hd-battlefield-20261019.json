@@ -9,13 +9,13 @@
     "native_viewport": "CONFORMED-SCOPED：正式1920世界沿原生(4,4)、312×192窗格；正常F2同view與960地形樣本一致。",
     "hd_sprite_data": "DATA-READY：完整125組1455張HD及31組372張新增24父項已登錄；舊1083張父項及HD bytes保持。",
     "hd_world_renderer": "CONFORMED-SCOPED：144人物已接Game.Draw；首章34張正常GPU、4張實際走行、兩次物理攻擊及保存／新程序LOAD通過。",
-    "private_assets": "403項清冊、3647檔完整allow-list與3329檔runtime-only逐筆SHA／UID核對，原3621檔保持；新增七母稿不進執行包。私人遠端核對見archer87_battle_followup_20261020。",
+    "private_assets": "405項清冊、3666檔完整allow-list與3341檔runtime-only逐筆SHA／UID核對，原3647檔保持；新增七母稿不進執行包。私人遠端核對見knight83_battle_followup_20261020。",
     "quickload_battle_owner": "CONFORMED-SCOPED：成功JSON LOAD丟棄舊經驗owner與移動計畫；拒收保留。",
     "timed_dialogue": "CONFORMED-SCOPED-RUNTIME-E1：計時FFEC開收框保留HD世界，EXP99普通鍵盤／F2與保存冷讀通過；其他caller未驗。",
     "hd_terrain": "CONFORMED-SCOPED：map0六組53槽；新增圓頂綠色／褐色雙塊四底圖在兩張正常GPU全部相符，短長組合與保存冷讀通過；草地及其他地形仍待HD化。",
     "ai_player_input_lock": "CONFORMED-SCOPED：AI換手期間拒絕玩家地圖輸入重入；普通END／增援對話及相關／完整Go回歸通過。",
     "gaia_redesign": "CONFORMED-SCOPED：新版頭像與四方向圖組已登錄；正常START／Gaia北移取消／F2／冷讀分段驗證。相位差異與序章尾端失敗明示，非逐幀parity。",
-    "hd_battle_animation": "CONFORMED-SCOPED：正式FIGANI30資源225幀及四召喚37幀。新增弓手87的19幀，完整Draw及普通章9兩次END敵方射擊、希莉亞射擊87、掉落ACK／返回／F2及章節邊界冷讀通過。本體22張含17 END／5待機，sage14張含9飛矢／5待機；15項反例拒收。章前HP校準、共享稿及兩個1像素裁切明示；其他人物、施術／死亡、普通召喚與平台仍待。",
+    "hd_battle_animation": "CONFORMED-SCOPED：正式FIGANI32資源237幀及四召喚37幀。新增突擊騎兵83的12幀，完整Draw與章9普通五次END敵方攻擊、希莉亞射擊83、返回／F2及章節邊界新程序LOAD通過。本體40張含37 END／3待機，金光8張含3重擊／5待機；兩組30項普通反例拒收。七母稿、章前強化與原姿勢明示；其他人物、施術／死亡／普通召喚與平台仍待。",
     "native_purchase_equip": "CONFORMED-SCOPED：#266原生購買立即裝備保留ignored原始格，29項商店回歸與正常購弓F5／章首射程通過；不改格式或數值規則。"
   },
   "runtime_source": {
@@ -47042,6 +47042,982 @@
         204,
         263
       ]
+    }
+  },
+  "knight83_battle_followup_20261020": {
+    "status": "CONFORMED-SCOPED",
+    "base_commit": "fa9593438cd2b29d341953e2d8c615f41bc3cdd9",
+    "formal_registered": true,
+    "private_synced": true,
+    "full_battle_hd_complete": false,
+    "production_rules_changed": false,
+    "scope": "沿已核准手繪風格與原始描述子，補BattleFig83待機1張及物理攻擊11張；251零header不補造施術。角色名稱僅作視覺導覽，非原版職業ABI判定。",
+    "source_inventory": {
+      "file": "docs/data/fd2-battle-hd-source-inventory-20261019.json",
+      "sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51"
+    },
+    "source_archive": {
+      "file": "FIGANI.DAT",
+      "sha256": "e909314ce37b70701238fd24febc8f61603bbe8d81a9ecbf8f289c97a5b67a1f"
+    },
+    "original_resources": [
+      {
+        "resource": 249,
+        "status": "decoded",
+        "reason_code": "decoded",
+        "raw_sha256": "2868f356c6b5c3c806c39f6b0689c49d17f03329f2df3df3377b60bb36b76a9c",
+        "status_sha256": "224558b10d43716ef30ab4f97808a74c52754dda9730b10cdbfdbfada740b960",
+        "metadata_sha256": "8b1749509a7f5f196846ad7fab36d30c39bc7700584eceeca59de71f4ceeb139",
+        "native_header": {
+          "byte_1": 0,
+          "byte_2": 1,
+          "byte_4": 0
+        }
+      },
+      {
+        "resource": 250,
+        "status": "decoded",
+        "reason_code": "decoded",
+        "raw_sha256": "e43fc4db3e4e727bcccdf6cf7347c0a2c903ad2cac35349829f5b03822ea2772",
+        "status_sha256": "e17c49c69f6ae635de2c02b7df5abe61897ba7dbed5333e8456f9f898a8f70de",
+        "metadata_sha256": "015b372bc82143a494e0e46b284470e4e9b1076f598ba535d8200d038c6e7cc0",
+        "native_header": {
+          "byte_1": 0,
+          "byte_2": 11,
+          "byte_4": 2
+        }
+      },
+      {
+        "resource": 251,
+        "status": "empty_header_zero",
+        "reason_code": "zero_header_word",
+        "raw_sha256": "6b25930e91686cee8bb5d4dae8dbed14f63c690c1c97ecb98552d8842e2d9395",
+        "status_sha256": "c1c0f1b959602b32f0ac77537133099b32e4f2043264befc0c249c4098af117c"
+      }
+    ],
+    "source_review": {
+      "file": "work/promo-cadence-20261018/hd-fonts/knight83-source-r1/figure-083-native.png",
+      "sha256": "778bbb6ed15d0cc17217eb1eebb2027ad957a212a91d32bf2b7ec99a9567080c",
+      "kind": "mechanical_original_indexed_decode_reference_not_gameplay",
+      "conclusion_level": "已證實的原始像素／描述子；不新增原版行為parity"
+    },
+    "design_contract": {
+      "appearance": "藍色圓肩厚甲、金色雙側面盔護片、封閉暗面、橙紅長前布、粗壯四肢與藍色雙頭錐槍，向右。不是78號尖肩持劍武士，也不是118灰綠橙羽精英。",
+      "poses": {
+        "idle": "249:0，垂直雙頭錐槍在左",
+        "windup": "250:0..5，左下至右上斜持雙頭錐槍，身體直立",
+        "strike": "250:6，轉身下壓，槍由左上指右下，金白爆光",
+        "recover_long": "250:7，低姿雙錐槍，尖端較長金色殘光",
+        "recover_small": "250:8，減弱槍尖光",
+        "recover_point": "250:9，微弱槍尖亮點",
+        "recover_plain": "250:10，無金光收勢"
+      },
+      "pose_sharing": "250:0..5共用蓄勢母稿；其餘各自繪製，保留來源的光效消退，非12張獨立原畫。",
+      "geometry": "原始FIGANI矩形與錨點不擴張；武器超出原界限的部分按契約裁切並逐筆揭露，母稿alpha不修改。"
+    },
+    "acceptance": {
+      "fixture": "完整12張同次最終Game.Draw、F2階段、64／65 DAC及一次續行；固定圖源核心與錯圖／缺件／錯源反例",
+      "normal": "沿正常購弓F5章9來源，希莉亞own5／target83，seed1，普通進軍與至少兩次END，章內無狀態注入；實際敵方攻擊／受擊待機、自然返回、F2、章節邊界保存與新程序LOAD。遇既有#265拒收保持守衛，先查來源及caller。",
+      "limitations": "章前HP+1000與原有高等級明示；不判自然難度、傷害／AI、唯一相位、原版parity或新整章E2。其他角色、法術／死亡／普通召喚與平台保持待驗。"
+    },
+    "rejected_candidates": [
+      {
+        "path": "work/promo-cadence-20261018/hd-fonts/knight83-battle-candidate-r1",
+        "reason": "完整排版顯示低姿勢左右腳過寬且低於原來源的boot baseline；槍尖與腳底相距太近，全框縮放使角色向下位移。不以編製PASS當視覺驗收。",
+        "status": "VISUAL-REJECTED",
+        "preserved": true
+      }
+    ],
+    "generation": {
+      "tool": "built-in image_gen",
+      "prompt_sets": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-prompts-r1.json",
+          "sha256": "f8ae56a373d610486774507976cafe927741c5e9124f7d0b8e7317fab3592066"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-compact-prompts-r2.json",
+          "sha256": "9d10b5eefb77873fcddde3109a2fb6f45dc98a9d6dc979bf0506ca50f4447b43"
+        }
+      ],
+      "prompts": {
+        "r1": {
+          "idle": "Use case: stylized-concept. Asset type: transparent hand-painted HD battle sprite master for Flame Dragon Knights 2 remake. Input image 1 is the original indexed reference sheet and is the ONLY authority for character identity, silhouette and pose. Input image 2 is STYLE ONLY, do not copy its spiked shoulders, sword, face or costume. Draw ONE full body BattleFig83 blue-armored double-cone polearm knight in the idle pose shown in upper-left 249:0. Three-quarter front view facing screen right. Ordinary compact human head with dark enclosed blue visor and two narrow gold helmet cheek/temple fins, no face skin. Rounded blue plate shoulder pauldrons WITHOUT spikes, shaped cobalt breastplate, thick segmented blue arms, blue armored legs with round knee plates, broad pointed metal boots. Long burnt-orange/rust-red tabard from belt nearly to ankles. The weapon is a single vertical dark shaft in his screen-left hand, with a large faceted long blue steel CONE at EACH END, upper cone points upward and lower cone downward. Not a sword, axe or shield. Free other fist beside hip. Upright torso, wide planted feet, original proportions and weapon/body relationship. Painted fantasy sprite, crisp readable contour, finely shaded worn blue metal and cloth, modest thin gold edging, style consistent with second reference. Fit complete figure AND both weapon cones within a tall portrait composition, roughly 122:150 silhouette ratio; minimal transparent margin. Actual transparent background, no ground or cast shadow, no smoke, no scenery, no text, no sheet, no extra characters or separate weapon studies.",
+          "windup": "Use case: identity-preserve. Asset type: one transparent HD battle sprite master. Reference image 1 is the accepted BattleFig83 idle master: keep exactly this cobalt-blue rounded plate armor, closed helmet with narrow gold cheek/temple fins, broad boots, burnt-orange ankle-length front tabard and the SINGLE two-ended faceted blue-cone polearm. No shoulder spikes, sword, shield, skin face, extra limbs or extra weapons. Reference image 2 is original source pose authority, use only its selected pose, not a sheet. Hand-painted fantasy sprite with crisp contour and detailed blue metal matching image 1. Full figure AND both cones inside tall portrait framing with small transparent margin. Transparent background with original alpha, no ground shadow/scenery/text. Change ONLY pose to original 250:0..5: upright broad stance facing screen right, polearm held diagonally from LOW SCREEN LEFT to HIGH SCREEN RIGHT passing behind/over the shoulder. The long lower cone points down-left in front of the left side of his body, upper cone points up-right behind his head. One armored hand grips the center shaft near his left shoulder, the other fist rests at his right hip. Original body remains almost upright like idle, no lunging. No glow or flash. Show the complete tapered ends.",
+          "strike": "Use case: identity-preserve. Asset type: one transparent HD battle sprite master. Reference image 1 is the accepted BattleFig83 idle master: keep exactly this cobalt-blue rounded plate armor, closed helmet with narrow gold cheek/temple fins, broad boots, burnt-orange ankle-length front tabard and the SINGLE two-ended faceted blue-cone polearm. No shoulder spikes, sword, shield, skin face, extra limbs or extra weapons. Reference image 2 is original source pose authority, use only its selected pose, not a sheet. Hand-painted fantasy sprite with crisp contour and detailed blue metal matching image 1. Full figure AND both cones inside tall portrait framing with small transparent margin. Transparent background with original alpha, no ground shadow/scenery/text. Change ONLY pose to original 250:6 in the second row rightmost cell: forceful low twisting diagonal downward thrust/slam toward SCREEN RIGHT, knees bent and torso turned to right. The single double-cone polearm runs from HIGH SCREEN LEFT behind his shoulder to LOW SCREEN RIGHT in front. Large long blue cone points down-right below the hands; opposite long blue cone points up-left behind him. Add the original prominent concentrated GOLD AND WHITE burst of sharp diagonal rays surrounding the front cone base and extending upward-left toward the shoulder, and a thin brilliant line along the front cone toward the tip. Keep the armored body visibly blue behind the burst, not engulfed in fog. Tall compact silhouette roughly width142:height171, both boots and complete weapon visible. This is the impact frame, not idle or horizontal attack.",
+          "recover_plain": "Use case: precise-object-edit. Asset type: transparent HD battle sprite master for BattleFig83 recovery frame250:10. Image1 is the accepted blue double-cone knight IMPACT master and is the edit target. Image2 is original source pose reference, bottom-right 250:10. Change ONLY the gold-white impact burst and luminous weapon streaks: remove ALL gold/white burst rays and magic streaks, reveal the blue plate armor and dark shaft beneath them, and leave the faceted double-ended blue polearm as normal non-emissive metal. Keep the EXACT downward-right polearm angle, BOTH blue cones, body pose, helmet, gold metal trim, cobalt armor, burnt-orange tabard, both boots, framing and character placement from image1. Do not remove the permanent gold armor trim. No glow at the bottom-right cone tip at all. Same crisp hand-painted rendering and same tall full-body composition, no horizontal swing, no new attack pose. Genuine transparent background, preserve transparency, no shadow or ground, no text.",
+          "recover_long": "Use case: precise-object-edit. Asset type: ONE transparent BattleFig83 recovery sprite. Image1 is the accepted full-body BLUE double-cone knight recovery art and is the EDIT TARGET. Image2 is original indexed sprite reference, bottom row recovery. Preserve EXACTLY the full-body crouched armor pose, helmet, blue/gold metal textures, burnt-orange tabard, complete TWO-ended blue-cone polearm angled high-left to low-right, boots and framing from image1. Do not redraw the pose or change weapon/armor geometry. Change ONLY a tiny localized GOLD-WHITE residual glint at the extreme LOWER-RIGHT weapon tip; this glow is nowhere else. No burst around his hands/chest, no fog, no trail across the whole body. Keep genuine transparent background and all alpha, no scenery/shadow/text.  Target original250:7: add TWO thin golden residual tapered streaks along the lower-rightmost final ~15% of the cone edges, converging into a bright small point just beyond the very tip. This is a narrow V-shaped weapon-tip remnant, maximum streak length about one tenth of the whole character height. Much smaller and fainter than an impact burst.",
+          "recover_small": "Use case: precise-object-edit. Asset type: ONE transparent BattleFig83 recovery sprite. Image1 is the accepted full-body BLUE double-cone knight recovery art and is the EDIT TARGET. Image2 is original indexed sprite reference, bottom row recovery. Preserve EXACTLY the full-body crouched armor pose, helmet, blue/gold metal textures, burnt-orange tabard, complete TWO-ended blue-cone polearm angled high-left to low-right, boots and framing from image1. Do not redraw the pose or change weapon/armor geometry. Change ONLY a tiny localized GOLD-WHITE residual glint at the extreme LOWER-RIGHT weapon tip; this glow is nowhere else. No burst around his hands/chest, no fog, no trail across the whole body. Keep genuine transparent background and all alpha, no scenery/shadow/text.  Target original250:8: add a SMALL weak golden V glint surrounding only the last ~7% of the front cone at lower-right tip, two short fine converging golden slivers and one tiny point. The rest of the large blue metal cone stays plain blue. Residual glint, NOT full-body flash.",
+          "recover_point": "Use case: precise-object-edit. Asset type: ONE transparent BattleFig83 recovery sprite. Image1 is the accepted full-body BLUE double-cone knight recovery art and is the EDIT TARGET. Image2 is original indexed sprite reference, bottom row recovery. Preserve EXACTLY the full-body crouched armor pose, helmet, blue/gold metal textures, burnt-orange tabard, complete TWO-ended blue-cone polearm angled high-left to low-right, boots and framing from image1. Do not redraw the pose or change weapon/armor geometry. Change ONLY a tiny localized GOLD-WHITE residual glint at the extreme LOWER-RIGHT weapon tip; this glow is nowhere else. No burst around his hands/chest, no fog, no trail across the whole body. Keep genuine transparent background and all alpha, no scenery/shadow/text.  Target original250:9: add ONLY a TINY dim warm-gold pinprick glint right at the lower-right cone extreme point, with two exceedingly short flecks no longer than ~2% of the cone length. No long streaks, no stars, no burst. The entire cone stays normal blue apart from this minimal tip speck."
+        },
+        "r2": {
+          "strike": "Use case: precise-object-edit. Asset type: ONE transparent HD BattleFig83 sprite. Image1 is the ACCEPTED COMPACT RECOVERY MASTER and the exact edit target. Image2 is the original250:6 impact reference for spark shape only. KEEP EXACTLY image1's narrow tall composition, compact upright-twisted cobalt armor body, gold-finned helmet, burnt-orange tabard, legs tucked close under torso, one visible boot with sole at88% canvas height and other boot hidden behind cone. Keep gigantic double-ended blue cone polearm at same angle with bottom-right cone tip at99% of canvas height, well below boot. Do not spread legs, lower boots or change identity/pose/weapon geometry. Detailed painted metal and alpha unchanged outside the added light. Transparent background, no ground shadow/scenery/text.  Add the original impact250:6: concentrated bright GOLD-WHITE sharp burst around the hands and BASE of the forward lower-right cone at mid torso, with long angular gold rays reaching upward-left along the shaft toward the shoulder, plus thin bright edge continuing to the front tip. Allow light rays to extend to left of the narrow character, but preserve the exact compact character scale. This is ONE impact frame, not a full aura. Blue torso remains readable through uncovered regions.",
+          "recover_plain": "Use case: identity-preserve. Asset type: ONE transparent hand-painted HD sprite master for BattleFig83 recovery250:10. Image1 is the ORIGINAL PIXEL POSE and the absolute authority for pose/framing; image2 is the accepted HD identity and painting style only. Repaint the exact compact upright-twisted recovery posture in image1 with the cobalt rounded armor, enclosed gold-finned blue helmet, orange-red tabard, and enormous two-ended BLUE CONE polearm from image2. Crucial geometry: NARROW TALL SILHOUETTE width:height about114:169. Legs are tucked closely under the torso; ONE forward left boot is visible at lower left directly below its knee, the other boot is BEHIND THE HUGE FRONT CONE, mostly occluded. NO wide lunge or legs spread apart. Torso remains compact and nearly upright, turned toward screen right. Polearm held at mid torso, runs from upper-left above shoulder to lower-right; gigantic long front cone starts at waist/chest level and EXTENDS WELL BELOW BOTH BOOTS. Boots end at about88% of canvas height, while FRONT CONE TIP ends at99%, roughly one sixth of a body-height below the soles. Helmet top at~16% canvas height. Upper/back blue cone reaches top-left edge; keep whole front cone, body and feet inside frame. Do not copy image2's standing idle pose. No glow or burst at all in this last recovery frame. Crisp contour, detailed blue metal/gold trim and burnt-orange cloth exactly matching image2; no face skin, no shoulder spikes, no sword/shield. Actual transparent background, no ground shadow, no text/scenery.",
+          "recover_long": "Use case: precise-object-edit. Asset type: ONE transparent HD BattleFig83 sprite. Image1 is the ACCEPTED COMPACT RECOVERY MASTER and the exact edit target. Image2 is the original250:6 impact reference for spark shape only. KEEP EXACTLY image1's narrow tall composition, compact upright-twisted cobalt armor body, gold-finned helmet, burnt-orange tabard, legs tucked close under torso, one visible boot with sole at88% canvas height and other boot hidden behind cone. Keep gigantic double-ended blue cone polearm at same angle with bottom-right cone tip at99% of canvas height, well below boot. Do not spread legs, lower boots or change identity/pose/weapon geometry. Detailed painted metal and alpha unchanged outside the added light. Transparent background, no ground shadow/scenery/text.  Add ONLY the original250:7 narrow gold V-shaped residual glint along the final~15% of the front cone near its extreme lower-right tip. Two tapered thin gold streaks converge to a tiny bright point just beyond tip. NO burst at hands or body, no other light. Boots stay far ABOVE the lower-right weapon tip.",
+          "recover_small": "Use case: precise-object-edit. Asset type: ONE transparent HD BattleFig83 recovery sprite. Image1 is the ACCEPTED COMPACT RECOVERY MASTER and exact edit target. Image2 is original pose reference. Preserve image1's exact narrow tall shape, tucked legs with ONE visible boot and other boot occluded, cobalt rounded armor, gold-finned enclosed helmet, orange tabard, full double-cone polearm angled upper-left to lower-right, and boots ending far above front cone tip. Do not redraw or reframe the body/weapon. Change ONLY a small residual warm GOLD glint at the extreme bottom-right cone point. Rest stays normal blue metal with permanent gold trim. No impact burst, hand/chest glow, smoke, background or shadow. Keep actual transparency, no text.  Target250:8: a small V of two fine gold slivers around the final~7% of front cone tip. Faint and concentrated at extreme lower-right, much shorter than a bright weapon-edge effect.",
+          "recover_point": "Use case: precise-object-edit. Asset type: ONE transparent HD BattleFig83 recovery sprite. Image1 is the ACCEPTED COMPACT RECOVERY MASTER and exact edit target. Image2 is original pose reference. Preserve image1's exact narrow tall shape, tucked legs with ONE visible boot and other boot occluded, cobalt rounded armor, gold-finned enclosed helmet, orange tabard, full double-cone polearm angled upper-left to lower-right, and boots ending far above front cone tip. Do not redraw or reframe the body/weapon. Change ONLY a small residual warm GOLD glint at the extreme bottom-right cone point. Rest stays normal blue metal with permanent gold trim. No impact burst, hand/chest glow, smoke, background or shadow. Keep actual transparency, no text.  Target250:9: ONLY a tiny dim warm-gold point at extreme lower-right weapon tip and two extremely short flecks shorter than2% of cone length. No long gold streaks or stars. Do not add glow to the rest of the weapon."
+        }
+      },
+      "accepted_masters": {
+        "idle": {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-idle-master-r1.png",
+          "sha256": "ab161f9877d6a60548eee2b3e2b61b5954cb8682d180ba9ed2504706ca8c7651",
+          "anchor": [
+            0,
+            0,
+            1117,
+            1361
+          ]
+        },
+        "windup": {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-windup-master-r1.png",
+          "sha256": "9571d4029381947302bc1eca19e27a0be90e5d049599b26a1f9c009389313998",
+          "anchor": [
+            25,
+            24,
+            1130,
+            1373
+          ]
+        },
+        "strike": {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-strike-master-r2.png",
+          "sha256": "7b5cd864fef9876af286eb7a17710e3cda2686f01290b024a5652a79a5abd37e",
+          "anchor": [
+            0,
+            0,
+            1014,
+            1527
+          ]
+        },
+        "recover_plain": {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-recover_plain-master-r2.png",
+          "sha256": "135cc68153d39585fa777b896612d878828cffaac47cc9c6aeab80ea39e73701",
+          "anchor": [
+            19,
+            0,
+            1024,
+            1527
+          ]
+        },
+        "recover_long": {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-recover_long-master-r2.png",
+          "sha256": "dca46a9b14618563717eca6b3db1494bf3d85a8a21d6041f5836f8c996cc986e",
+          "anchor": [
+            25,
+            0,
+            1016,
+            1527
+          ]
+        },
+        "recover_small": {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-recover_small-master-r2.png",
+          "sha256": "2d4617a1725e0f8a8bd5c28e175cbe8a1a9561f35a8a27ce9e58c46c46f3138a",
+          "anchor": [
+            0,
+            0,
+            1014,
+            1527
+          ]
+        },
+        "recover_point": {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-recover_point-master-r2.png",
+          "sha256": "a2958f09d977528c80c713454e8b0e1858afce3c9e5ad84e084dc01b0acba675",
+          "anchor": [
+            22,
+            0,
+            1010,
+            1517
+          ]
+        }
+      },
+      "rejected_masters": "r1的strike及四recover母稿未採用，拒收原因見rejected_candidates，未登錄私人庫。",
+      "alpha": "原生工具生成透明alpha保持，沒有後製切背景或修改輪廓。"
+    },
+    "recipe": {
+      "schema_version": 1,
+      "figure": 83,
+      "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+      "sources": {
+        "idle": {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-idle-master-r1.png",
+          "sha256": "ab161f9877d6a60548eee2b3e2b61b5954cb8682d180ba9ed2504706ca8c7651",
+          "anchor": [
+            0,
+            0,
+            1117,
+            1361
+          ]
+        },
+        "windup": {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-windup-master-r1.png",
+          "sha256": "9571d4029381947302bc1eca19e27a0be90e5d049599b26a1f9c009389313998",
+          "anchor": [
+            25,
+            24,
+            1130,
+            1373
+          ]
+        },
+        "strike": {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-strike-master-r2.png",
+          "sha256": "7b5cd864fef9876af286eb7a17710e3cda2686f01290b024a5652a79a5abd37e",
+          "anchor": [
+            0,
+            0,
+            1014,
+            1527
+          ]
+        },
+        "recover_plain": {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-recover_plain-master-r2.png",
+          "sha256": "135cc68153d39585fa777b896612d878828cffaac47cc9c6aeab80ea39e73701",
+          "anchor": [
+            19,
+            0,
+            1024,
+            1527
+          ]
+        },
+        "recover_long": {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-recover_long-master-r2.png",
+          "sha256": "dca46a9b14618563717eca6b3db1494bf3d85a8a21d6041f5836f8c996cc986e",
+          "anchor": [
+            25,
+            0,
+            1016,
+            1527
+          ]
+        },
+        "recover_small": {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-recover_small-master-r2.png",
+          "sha256": "2d4617a1725e0f8a8bd5c28e175cbe8a1a9561f35a8a27ce9e58c46c46f3138a",
+          "anchor": [
+            0,
+            0,
+            1014,
+            1527
+          ]
+        },
+        "recover_point": {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-recover_point-master-r2.png",
+          "sha256": "a2958f09d977528c80c713454e8b0e1858afce3c9e5ad84e084dc01b0acba675",
+          "anchor": [
+            22,
+            0,
+            1010,
+            1517
+          ]
+        }
+      },
+      "resources": {
+        "249": [
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              122,
+              150
+            ],
+            "scale_group": "stance"
+          }
+        ],
+        "250": [
+          {
+            "pose": "windup",
+            "anchor": [
+              0,
+              0,
+              139,
+              150
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "windup",
+            "anchor": [
+              0,
+              0,
+              139,
+              150
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "windup",
+            "anchor": [
+              0,
+              0,
+              139,
+              150
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "windup",
+            "anchor": [
+              0,
+              0,
+              139,
+              150
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "windup",
+            "anchor": [
+              0,
+              0,
+              138,
+              150
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "windup",
+            "anchor": [
+              0,
+              0,
+              138,
+              150
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "strike",
+            "anchor": [
+              0,
+              0,
+              142,
+              171
+            ],
+            "scale_group": "crouch"
+          },
+          {
+            "pose": "recover_long",
+            "anchor": [
+              0,
+              0,
+              114,
+              169
+            ],
+            "scale_group": "crouch"
+          },
+          {
+            "pose": "recover_small",
+            "anchor": [
+              0,
+              0,
+              114,
+              169
+            ],
+            "scale_group": "crouch"
+          },
+          {
+            "pose": "recover_point",
+            "anchor": [
+              0,
+              0,
+              114,
+              169
+            ],
+            "scale_group": "crouch"
+          },
+          {
+            "pose": "recover_plain",
+            "anchor": [
+              0,
+              0,
+              114,
+              169
+            ],
+            "scale_group": "crouch"
+          }
+        ]
+      }
+    },
+    "recipe_file": {
+      "file": "work/promo-cadence-20261018/hd-fonts/knight83-recipe-r2.json",
+      "sha256": "5e78e81256c2d0f4e6b7e66eac77cc535ddf41614d2db5195a9d6e6bf73270ee"
+    },
+    "compiled": {
+      "file": "work/promo-cadence-20261018/hd-fonts/knight83-battle-candidate-r2/compiled.json",
+      "sha256": "73ba895f52e1f4b05c6ebb86bae28393b53d0742073351f3344d97093f48b342"
+    },
+    "clipping": [
+      {
+        "resource": 249,
+        "frame": 0,
+        "high_coverage_pixels": 0
+      },
+      {
+        "resource": 250,
+        "frame": 0,
+        "high_coverage_pixels": 0
+      },
+      {
+        "resource": 250,
+        "frame": 1,
+        "high_coverage_pixels": 0
+      },
+      {
+        "resource": 250,
+        "frame": 2,
+        "high_coverage_pixels": 0
+      },
+      {
+        "resource": 250,
+        "frame": 3,
+        "high_coverage_pixels": 0
+      },
+      {
+        "resource": 250,
+        "frame": 4,
+        "high_coverage_pixels": 0
+      },
+      {
+        "resource": 250,
+        "frame": 5,
+        "high_coverage_pixels": 0
+      },
+      {
+        "resource": 250,
+        "frame": 6,
+        "high_coverage_pixels": 0
+      },
+      {
+        "resource": 250,
+        "frame": 7,
+        "high_coverage_pixels": 0
+      },
+      {
+        "resource": 250,
+        "frame": 8,
+        "high_coverage_pixels": 0
+      },
+      {
+        "resource": 250,
+        "frame": 9,
+        "high_coverage_pixels": 0
+      },
+      {
+        "resource": 250,
+        "frame": 10,
+        "high_coverage_pixels": 0
+      }
+    ],
+    "review": {
+      "file": {
+        "file": "work/promo-cadence-20261018/hd-fonts/knight83-battle-candidate-r2/review.png",
+        "sha256": "1066b87c0551713d13a9d7211713272d60510cb9791cbe3d1afe67e94266295b"
+      },
+      "accepted": true,
+      "notes": "r2收腿與腳底／槍尖比例已恢復；腳底保持約y150，尖端可至169／171。站立兩姿及低姿母稿沿原始矩形縮放，不宣稱原版逐幀視覺一致。全部12幀高覆蓋裁切0。"
+    },
+    "reproduction": {
+      "base_catalog_commit": "fa9593438cd2b29d341953e2d8c615f41bc3cdd9",
+      "compiler": "tools/build_fd2_character_battle_hd.py",
+      "recipe": "knight83_battle_followup_20261020.recipe",
+      "gui_tool": "tools/verify_fd2_hd_fonts_gui.py",
+      "normal_source": "work/promo-cadence-20261018/hd-fonts/bekwei-bow-source-gui-r3/user-data/fd2_re/fd2_save.json",
+      "source_ancestor": "沿archer87_battle_followup_20261020.source_ancestor，同SHA來源；章前HP+1000及既有高等級明示，seed1，不重擲，章內無注入。",
+      "normal_arguments": [
+        "--battle-status",
+        "--world",
+        "--battle-hd",
+        "--battle-art",
+        "--battle-only",
+        "--battle-repetitions",
+        "1",
+        "--battle-art-samples",
+        "64",
+        "--battle-node",
+        "battle_ch09",
+        "--battle-own-index",
+        "5",
+        "--battle-target-figure",
+        "83",
+        "--battle-min-approach-rounds",
+        "4",
+        "--battle-approach-rounds",
+        "6",
+        "--battle-advance",
+        "--battle-end-art",
+        "--battle-end-figure",
+        "83",
+        "--battle-end-samples-per-frame",
+        "2",
+        "--startup-timeout",
+        "180"
+      ],
+      "candidate_paths": "本批knight83-battle-candidate-r2/runtime供--assets，pack供--modern-pack；catalog在runtime/assets/themes/modern/catalog.json。binary由main fa959343建置，out新工作子目錄。",
+      "images": {
+        "assets": "fd2-assets-local:20260829-sfx",
+        "go": "fd2-go-test-local:latest",
+        "gui": "fd2-promo:20261017-r1"
+      },
+      "isolation": "Docker user1000:1000、network none、memory512m..3g、cpus1..2、pids64..256、Go /tmp tmpfs exec與外層timeout。原版唯讀，指定工作輸出可寫，with-xvfb有界。",
+      "master_remap": "recipe.sources SHA對照正式249／250 source_files及source_sha256，從私人allow-list同步回prototypes，再依SHA還原工作來源。基底清冊沿fa9593438cd2b29d341953e2d8c615f41bc3cdd9；不以已登錄清冊重編同資源。"
+    },
+    "failed_normal_runs": [
+      {
+        "run": "work/promo-cadence-20261018/hd-fonts/knight83-normal-gui-r1",
+        "status": "OBSERVATION-ONLY-ENVIRONMENT-FAILED",
+        "reason": "呼叫者誤將--assets指向runtime/assets；工具契約需runtime，讀入assets/maps及清冊時形成assets/assets而失敗。進場及普通選人已執行，未取得完整GUI與保存冷讀。",
+        "product_defect": false,
+        "retry": "同一binary、候選與source／seed，只改--assets工作目錄為runtime，使用新out r2。"
+      },
+      {
+        "run": "work/promo-cadence-20261018/hd-fonts/knight83-normal-gui-r2",
+        "status": "OBSERVATION-ONLY-BOUNDED-APPROACH-FAILED",
+        "reason": "同源正常三次END後，希莉亞(10,24)、83號(11,15)/(13,15)，正式可達集合沒有射程2..3的合法攻擊位置。無產品error，未取得攻擊／保存／冷讀完整收據。",
+        "audit": {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-normal-gui-r2/input-audit.jsonl",
+          "sha256": "a91f164b3e38ecc17a4bd32dfaf217fc8f4d809c2f1dac41a46f43a6585b6b7d"
+        },
+        "product_defect": false
+      }
+    ],
+    "compiler_guards": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/knight83-compiler-guards-r2/guards.json",
+        "sha256": "91aa727bc7ba0f251c5d7afd18f65e5717c2001f20f3bcdaacf11573cbf02bca"
+      },
+      "count": 16
+    },
+    "candidate_coverage": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/knight83-candidate-coverage-r2.json",
+        "sha256": "5149fcc924cfb604fe295d63f8ea43f5c9ba2a1924d7bb0dc20487642b2a03cd"
+      },
+      "resources": 32,
+      "frames": 237,
+      "formal_registered": true
+    },
+    "fixture": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/knight83-lifecycle-r2/receipt.json",
+        "sha256": "b962e1e3ff820a32042c66f08fe1bf8022c87f71be0aa688466828e4f7a7bbb9"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/knight83-lifecycle-r2.log",
+        "sha256": "0b5cbd0a9606eaed89f0ac27f53ee683da3a49c2dbe9593fecc8801785cf981a"
+      },
+      "source_images": 12,
+      "hd_draws": 256,
+      "faithful_draws": 3,
+      "final_draws": 329,
+      "phase_f2": [
+        "prelude",
+        "body",
+        "counter"
+      ],
+      "battle_dac_steps": 64,
+      "map_dac_steps": 65,
+      "continuations": 1,
+      "body_pixels": {
+        "file": "work/promo-cadence-20261018/hd-fonts/knight83-fixture-body-pixels-r2.json",
+        "sha256": "88f779d6c02294cf1e24bbb284c2c48f2c126d90c06c10a11bfe8fde8c16bc47"
+      },
+      "body_matched_pngs": 12,
+      "impact_pixels": {
+        "file": "work/promo-cadence-20261018/hd-fonts/knight83-fixture-impact-pixels-r2.json",
+        "sha256": "739a6dff0d13d1fa1b7d78d62700599c8f60f92cf2899b7635476bab911d65c0"
+      },
+      "impact_matched_pngs": 1,
+      "body_guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/knight83-fixture-body-guards-r2/guards.json",
+        "sha256": "e8614609c2e5bc0165f7fbc9217b0fb8da436947bdb29e8533eb35d10fae36d4"
+      },
+      "impact_guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/knight83-fixture-impact-guards-r2/guards.json",
+        "sha256": "495c7a2c4c264c6c21cf8fb5b9fa9725e1c25481b91b136efdfbcc245db91c8a"
+      },
+      "guard_count": 10,
+      "scope": "強制一次物理攻擊／反擊與重疊雙方的native map fixture，只有RUNTIME-E1。最終Game.Draw核對全部12項來源；不由fixture角色名稱推定BattleFig83職業語意，也不冒稱正常玩家或原版parity。"
+    },
+    "bounded_approach_followup": {
+      "status": "CONFORMED-SCOPED",
+      "scope": "只擴測試控制器明示進軍輪數選項0..3至0..6；預設0與min<=max守衛保持，所有移動／待機／END仍讀正式可達集合並送普通鍵盤。",
+      "evidence": "r2實際位置與正式可達集合已證三輪不足；不變更數值、移動力、部署、HP、亂數或遊戲排程。",
+      "next_policy": {
+        "minimum_end_rounds": 4,
+        "maximum_approach_rounds": 6,
+        "same_source": true,
+        "same_seed": 1,
+        "state_injection": false
+      },
+      "stop": "六次後仍不可達或遇error就拒收，不能無界增加重試。",
+      "actual_end_rounds": 5
+    },
+    "normal_battle_gui": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/knight83-normal-gui-r3/receipt.json",
+        "sha256": "c156857f73e852b81165cfbf593ab04800aebc95bcca7efc3e58bb49d1d159f1"
+      },
+      "end_rounds": 5,
+      "battle_end_art_samples": 40,
+      "battle_art_samples": 64,
+      "end_physical_scenes": [
+        0,
+        4,
+        3,
+        5,
+        6
+      ],
+      "binary_sha256": "3da1d65fe644471dd4f7a45ec3162182afa6dde15ca654f9fda4b9c96d5c52c9",
+      "catalog_sha256": "ba4a0e25a6774d355ceab9c9c14eb9c74721cc52d6631498b57cba78f7a4ad58",
+      "gui_tool_sha256": "62be3921ee1ad5fcb1a3601094354c5648be9fe41341426122ae27817de25786",
+      "source_save_sha256": "f4da9acebb3444a9b618c1b108996abee2d2832902e2cad86940d91c33fc0c66",
+      "battle_attack_choices": [
+        {
+          "scene": "world-hd",
+          "attacker": {
+            "acted": false,
+            "attack_max": 3,
+            "attack_min": 2,
+            "battle_fig": 8,
+            "camp": 0,
+            "exp": 0,
+            "hp": 275,
+            "lv": 33,
+            "mp": 0,
+            "name": "希莉亞",
+            "native_identity": 8,
+            "on_field": true,
+            "raw": {
+              "X": 9,
+              "Y": 21,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 9,
+            "y": 21
+          },
+          "range": [
+            2,
+            3
+          ],
+          "cell": [
+            9,
+            22
+          ],
+          "target": {
+            "acted": false,
+            "attack_max": 0,
+            "attack_min": 0,
+            "battle_fig": 83,
+            "camp": 2,
+            "exp": 255,
+            "hp": 280,
+            "lv": 14,
+            "mp": 0,
+            "name": "",
+            "native_identity": 0,
+            "on_field": true,
+            "raw": {
+              "X": 8,
+              "Y": 20,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 8,
+            "y": 20
+          },
+          "state_injection": false
+        }
+      ],
+      "new_process_title_load": true,
+      "cold_loaded_units_equal": true,
+      "source_save_bytes_equal": true,
+      "theme_save_bytes_equal": true,
+      "node_boundary_save_checked": true,
+      "save_contract": "F5保存章節邊界進度；LOAD重建戰場，不保存戰中位置、Acted或敵方HP。",
+      "recording_created": false,
+      "elapsed_seconds": 1180.6205231631175,
+      "scope": "同來源章前HP強化及既有高等級槽，seed1；五次普通END、83敵方攻擊、希莉亞射擊83、自然返回、F2與章節邊界新程序LOAD。章內無注入；不宣稱自然傷害／存活／AI、原版parity、唯一相位或整章E2。耗時為這份軟體GPU抓圖，不作效能基準。"
+    },
+    "normal_pixels": {
+      "body": {
+        "file": "work/promo-cadence-20261018/hd-fonts/knight83-normal-body-pixels-r3.json",
+        "sha256": "01964ca22fc369e66f324a1376681f0c846829e158c8d57cbf7a075525c838b6"
+      },
+      "body_matched_pngs": 40,
+      "body_end_pngs": 37,
+      "body_target_idle_pngs": 3,
+      "impact": {
+        "file": "work/promo-cadence-20261018/hd-fonts/knight83-normal-impact-pixels-r3.json",
+        "sha256": "2f51c5d81c8d9155fb191112132369cd992f454253c12520a2cd07c0437a80b8"
+      },
+      "impact_matched_pngs": 8,
+      "impact_end_pngs": 3,
+      "impact_target_idle_pngs": 5,
+      "unique_phase_claim": false,
+      "policy": "每組都要求同份流程END攻擊及我方射擊時目標待機。金光8張含5張待機，不當作8張純金光；完整12張仍依同次fixture。",
+      "body_guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/knight83-normal-body-guards-r3/guards.json",
+        "sha256": "818c035e9373438f82448c9061a96dc332bb69d5edde45ac91a0c11af3050d4f"
+      },
+      "impact_guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/knight83-normal-impact-guards-r3/guards.json",
+        "sha256": "d13fe367c0d07aee9219353e98e2083ecbfb7f5a741388d78ec7d169c58b3f88"
+      },
+      "guard_count": 30
+    },
+    "observed_ui_name": {
+      "name": "突擊騎兵",
+      "evidence": {
+        "file": "work/promo-cadence-20261018/hd-fonts/knight83-normal-gui-r3/world-hd-end-3-250-00-sample2.png",
+        "sha256": "a08f5352058af40e314fcec35655a7f5b4ea60b40c1421b134571f7abbad4358"
+      },
+      "scope": "普通重製視窗的玩家可見名稱；不推定原版raw欄位ABI或fixture職業名稱。"
+    },
+    "formal_registration": {
+      "assets": 405,
+      "prior_assets_unchanged": 403,
+      "new_files": [
+        "figani-249-hd6-v1-f00.png",
+        "figani-250-hd6-v1-f00.png",
+        "figani-250-hd6-v1-f01.png",
+        "figani-250-hd6-v1-f02.png",
+        "figani-250-hd6-v1-f03.png",
+        "figani-250-hd6-v1-f04.png",
+        "figani-250-hd6-v1-f05.png",
+        "figani-250-hd6-v1-f06.png",
+        "figani-250-hd6-v1-f07.png",
+        "figani-250-hd6-v1-f08.png",
+        "figani-250-hd6-v1-f09.png",
+        "figani-250-hd6-v1-f10.png",
+        "figure-083-idle-battle-hd6-master-v1.png",
+        "figure-083-recover_long-battle-hd6-master-v1.png",
+        "figure-083-recover_plain-battle-hd6-master-v1.png",
+        "figure-083-recover_point-battle-hd6-master-v1.png",
+        "figure-083-recover_small-battle-hd6-master-v1.png",
+        "figure-083-strike-battle-hd6-master-v1.png",
+        "figure-083-windup-battle-hd6-master-v1.png"
+      ],
+      "frames": 12,
+      "catalog_sha256": "f3390347509e03c94080296b1d246f421bd396700b5b0cf56c4da09e62ebb9b8",
+      "candidate_asset_entries_equal": true,
+      "private_root": "remake/generated-assets/modern-theme-prototypes"
+    },
+    "formal_go": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/knight83-formal-go-r1.log",
+        "sha256": "925a2270b7b93c6960c08963d3eb174cc8343b91d28280d06508a331cb786a91"
+      },
+      "tests": 3,
+      "subtests": 2,
+      "skips": 0
+    },
+    "formal_coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/knight83-formal-coverage-r1.json",
+      "sha256": "8f030841050f118aae80f6da5a3652aba4de1dbe64287baee84848d7f5c19fd3"
+    },
+    "formal_catalog_tests": {
+      "status": "PASS",
+      "tests": 11
+    },
+    "private_delivery": {
+      "full_verification": {
+        "file": "work/promo-cadence-20261018/hd-fonts/knight83-private-sync-r1.json",
+        "sha256": "1d8441381e76c659f0b29adcff45f3aa9cef3be44cb9789b1beb3ba024c59f03"
+      },
+      "runtime_only_verification": {
+        "file": "work/promo-cadence-20261018/hd-fonts/knight83-runtime-only-verification-r1.json",
+        "sha256": "88b9b38ee2078fcc5bba37c80e8382811e4a0ddaa1e0b51ec444724f4c976e7e"
+      },
+      "full_manifest_files": 3666,
+      "runtime_only_files": 3341,
+      "prior_files_unchanged": 3647,
+      "new_masters_excluded_from_runtime": 7,
+      "remote_head_verified": true,
+      "private_repository_verified": "主機gh確認isPrivate=true，私人獨立提交已推送，實際遠端HEAD與本機相同。"
+    },
+    "go_sources_unchanged": true,
+    "string_review": "本批未修改Go來源；沿既有5205項盤點與99項人工處置的綁定，沒有重綁或改字串。",
+    "readme_figures": [
+      {
+        "file": "docs/figures/hd-knight83-windup.png",
+        "source": "work/promo-cadence-20261018/hd-fonts/knight83-normal-gui-r3/world-hd-end-3-250-00-sample2.png",
+        "sha256": "a08f5352058af40e314fcec35655a7f5b4ea60b40c1421b134571f7abbad4358",
+        "edited": false
+      },
+      {
+        "file": "docs/figures/hd-knight83-impact.png",
+        "source": "work/promo-cadence-20261018/hd-fonts/knight83-normal-gui-r3/world-hd-end-3-250-06.png",
+        "sha256": "49c07f48fbfe1659874da37531058bbc78e8a773a827fe235bd2ced95a76e093",
+        "edited": false
+      }
+    ],
+    "cleanup": {
+      "removed": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-game-r1",
+          "sha256": "3da1d65fe644471dd4f7a45ec3162182afa6dde15ca654f9fda4b9c96d5c52c9",
+          "bytes": 19316872
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-go-cache-r1",
+          "bytes": 188844081,
+          "files": 1882
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-runtime-only-r1",
+          "bytes": 251593459,
+          "files": 3341,
+          "manifest_retained": true
+        }
+      ],
+      "removed_bytes": 459754412,
+      "deduplicated": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-battle-candidate-r2/pack/figani-249-hd6-v1-f00.png",
+          "sha256": "b122508bfd0203bc995f7c93d6ef86aa7f3086b0f1b270c065c6e898efac6178",
+          "bytes": 733652
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-battle-candidate-r2/pack/figani-250-hd6-v1-f00.png",
+          "sha256": "907dc3d1f01ad3487ec48059dadf908a157b5e4a4999c3134becae0889342a96",
+          "bytes": 691071
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-battle-candidate-r2/pack/figani-250-hd6-v1-f01.png",
+          "sha256": "907dc3d1f01ad3487ec48059dadf908a157b5e4a4999c3134becae0889342a96",
+          "bytes": 691071
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-battle-candidate-r2/pack/figani-250-hd6-v1-f02.png",
+          "sha256": "907dc3d1f01ad3487ec48059dadf908a157b5e4a4999c3134becae0889342a96",
+          "bytes": 691071
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-battle-candidate-r2/pack/figani-250-hd6-v1-f03.png",
+          "sha256": "907dc3d1f01ad3487ec48059dadf908a157b5e4a4999c3134becae0889342a96",
+          "bytes": 691071
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-battle-candidate-r2/pack/figani-250-hd6-v1-f04.png",
+          "sha256": "a218585b08b33b1eb1a7ee0e8ee32b3cac4060270c7ad9a999b93a081ec2963e",
+          "bytes": 690942
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-battle-candidate-r2/pack/figani-250-hd6-v1-f05.png",
+          "sha256": "a218585b08b33b1eb1a7ee0e8ee32b3cac4060270c7ad9a999b93a081ec2963e",
+          "bytes": 690942
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-battle-candidate-r2/pack/figani-250-hd6-v1-f06.png",
+          "sha256": "ff6f94e746e4d19447f852e1769dd8376f32a7ca9cb9c5b19f4cb5ca64dbeb73",
+          "bytes": 742726
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-battle-candidate-r2/pack/figani-250-hd6-v1-f07.png",
+          "sha256": "b3e7223142d270cbeda36b0c6d40d950f3e901672ebf9012b1d002f6a2858d5b",
+          "bytes": 624233
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-battle-candidate-r2/pack/figani-250-hd6-v1-f08.png",
+          "sha256": "01454abd85446294471569690335a4619a142b3a951c7d8187ae5b56432f7ea1",
+          "bytes": 618511
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-battle-candidate-r2/pack/figani-250-hd6-v1-f09.png",
+          "sha256": "7f34900bad80cc1995941b126deedc70013735fc534d1b4a6008fd86c91ebdd2",
+          "bytes": 627403
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-battle-candidate-r2/pack/figani-250-hd6-v1-f10.png",
+          "sha256": "c06c63f0ceab7cfcd66cd8e06b97d6b0fb3cd31b2e43cc9d131594d1835fb52d",
+          "bytes": 652168
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-battle-candidate-r2/pack/figure-083-idle-battle-hd6-master-v1.png",
+          "sha256": "ab161f9877d6a60548eee2b3e2b61b5954cb8682d180ba9ed2504706ca8c7651",
+          "bytes": 1617713
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-battle-candidate-r2/pack/figure-083-recover_long-battle-hd6-master-v1.png",
+          "sha256": "dca46a9b14618563717eca6b3db1494bf3d85a8a21d6041f5836f8c996cc986e",
+          "bytes": 1290053
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-battle-candidate-r2/pack/figure-083-recover_plain-battle-hd6-master-v1.png",
+          "sha256": "135cc68153d39585fa777b896612d878828cffaac47cc9c6aeab80ea39e73701",
+          "bytes": 1387421
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-battle-candidate-r2/pack/figure-083-recover_point-battle-hd6-master-v1.png",
+          "sha256": "a2958f09d977528c80c713454e8b0e1858afce3c9e5ad84e084dc01b0acba675",
+          "bytes": 1292354
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-battle-candidate-r2/pack/figure-083-recover_small-battle-hd6-master-v1.png",
+          "sha256": "2d4617a1725e0f8a8bd5c28e175cbe8a1a9561f35a8a27ce9e58c46c46f3138a",
+          "bytes": 1281961
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-battle-candidate-r2/pack/figure-083-strike-battle-hd6-master-v1.png",
+          "sha256": "7b5cd864fef9876af286eb7a17710e3cda2686f01290b024a5652a79a5abd37e",
+          "bytes": 1508676
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-battle-candidate-r2/pack/figure-083-windup-battle-hd6-master-v1.png",
+          "sha256": "9571d4029381947302bc1eca19e27a0be90e5d049599b26a1f9c009389313998",
+          "bytes": 1472589
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-idle-master-r1.png",
+          "sha256": "ab161f9877d6a60548eee2b3e2b61b5954cb8682d180ba9ed2504706ca8c7651",
+          "bytes": 1617713
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-windup-master-r1.png",
+          "sha256": "9571d4029381947302bc1eca19e27a0be90e5d049599b26a1f9c009389313998",
+          "bytes": 1472589
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-strike-master-r2.png",
+          "sha256": "7b5cd864fef9876af286eb7a17710e3cda2686f01290b024a5652a79a5abd37e",
+          "bytes": 1508676
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-recover_plain-master-r2.png",
+          "sha256": "135cc68153d39585fa777b896612d878828cffaac47cc9c6aeab80ea39e73701",
+          "bytes": 1387421
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-recover_long-master-r2.png",
+          "sha256": "dca46a9b14618563717eca6b3db1494bf3d85a8a21d6041f5836f8c996cc986e",
+          "bytes": 1290053
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-recover_small-master-r2.png",
+          "sha256": "2d4617a1725e0f8a8bd5c28e175cbe8a1a9561f35a8a27ce9e58c46c46f3138a",
+          "bytes": 1281961
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/knight83-recover_point-master-r2.png",
+          "sha256": "a2958f09d977528c80c713454e8b0e1858afce3c9e5ad84e084dc01b0acba675",
+          "bytes": 1292354
+        }
+      ],
+      "deduplicated_bytes": 27846395,
+      "recording_created": false,
+      "screenshots_logs_receipts_rejected_prototypes_retained": true
+    },
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/knight83-final-validation-r1.json",
+      "sha256": "513b5a48e3a77e584aec6e6a7edb110756bb0ed595b499502efecc6f5497c38e"
+    },
+    "worklist": {
+      "issues_updated": [
+        201,
+        263
+      ],
+      "open": 22,
+      "manual": 14,
+      "possibly_done": 0
     }
   }
 }
