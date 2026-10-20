@@ -490,11 +490,11 @@ def main():
             wait(lambda s:not s.get('title_phase') and s.get('node')==town_node)
             shot('native-town-loaded')
             # 只接受已核對的城鎮選項與出發路由，不把任意章節套入同一鍵序。
-            assert args.battle_node in ('battle_ch02','battle_ch03','battle_ch08','battle_ch09'), '此原生出發鍵序只支援已明示的第二／三／八／九章'
+            assert args.battle_node in ('battle_ch02','battle_ch03','battle_ch08','battle_ch09','battle_ch11','battle_ch12'), '此原生出發鍵序只支援已明示的第二／三／八／九／十一／十二章'
             nodes=json.loads((args.assets/'assets/scenarios/campaign_full.json').read_text())['nodes']
             suffix=args.battle_node.removeprefix('battle_')
             town=nodes[town_node]
-            assert town['native_town_variant']=={'battle_ch02':0,'battle_ch03':2,'battle_ch08':0,'battle_ch09':0}[args.battle_node] and [town['options'][i]['to'] for i in (0,2,4)]==[
+            assert town['native_town_variant']=={'battle_ch02':0,'battle_ch03':2,'battle_ch08':0,'battle_ch09':0,'battle_ch11':2,'battle_ch12':1}[args.battle_node] and [town['options'][i]['to'] for i in (0,2,4)]==[
                 'hotel_'+suffix,prep_node,'church_'+suffix], '原生城鎮出發選項不同'
             story_node=nodes[prep_node]['next']
             assert nodes[story_node]['type']=='cutscene' and nodes[story_node]['next']==args.battle_node
@@ -914,6 +914,8 @@ def main():
                                             battle_end_command_samples.append({'scene':prefix,'approach':approach,'file':path.name,
                                                 'sha256':digest(path),'before':current,'after':latest(audit),
                                                 'scope':'正常END的實際施法；job定位與PNG呈現分開核對'})
+                            if current.get('title_phase'):
+                                raise RuntimeError('普通END已回到標題，不能取得指定攻擊：'+str(current.get('title_phase')))
                             if (current['native_round']>state['native_round'] and current['turn']>state['turn']
                                     and not any(current.get(k) for k in ['ai_busy','battle_event','dialogues','banner_t',
                                                                        'battle_scene','command_scene','unit_death_scene','class_ui_job','system_end_turn_confirm'])):break

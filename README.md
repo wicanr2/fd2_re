@@ -183,6 +183,13 @@ HD 背景、敵方與面板仍含像素素材。來源與可重跑方式見
 第九章洛娜原地攻擊突擊騎兵的實際遊戲視窗，未編修。藍披風、銀甲、雙頭槍與弧光已接HD，背景與戰鬥面板仍含像素素材。
 抽樣沿章前加血來源，章內無注入；完整繪製、攻防返回、F2與章節邊界冷讀見[驗證範圍](docs/knowledge-base/58-fd2-exe-re-coverage.md)。
 
+| 萊汀 HD 斧擊 | 索菲亞 HD 揮杖 |
+| --- | --- |
+| ![萊汀HD斧擊](docs/figures/hd-leitin-axe-sweep.png) | ![索菲亞HD揮杖](docs/figures/hd-sofia-staff-strike.png) |
+
+兩張取自第十一章正常移動接敵後的遊戲視窗，未編修。厚甲、長柄斧、金色馬尾與寶石杖依原造型重繪，背景、面板與敵方仍含像素素材。
+本次使用章前加血的建構槽，章內沒有狀態注入；攻擊返回、F2與章節邊界保存冷讀已抽驗，範圍見[現況矩陣](docs/knowledge-base/58-fd2-exe-re-coverage.md)。
+
 ### 普通法術的人物HD呈現
 
 ![悠妮普通施法的HD人物](docs/figures/hd-ordinary-command0-yuni.png)

@@ -3043,7 +3043,7 @@ status GPU使用明示typed phase建構，正式扣血訊息caller另由native_a
 
 ### 第23章黑畫面紀錄勘誤
 
-狀態：READY（證據稽核，不改遊戲路由）。679be580登記的#267須以原第三輪完整audit及程序log重新審查。
+狀態：CONFORMED-SCOPED（證據稽核，不改遊戲路由；結果見本節末勘誤驗證）。679be580登記的#267須以原第三輪完整audit及程序log重新審查。
 原frame7636的class_ui_job為true，7638已為false，8734已進第5回合，最後10078的錯誤為116故事頭像缺件。
 原黑圖沒有與這些frame綁定的收據，不能從單張黑圖及中途busy欄位宣稱持續卡死；原紀錄與雜湊保留，追加勘誤。
 
@@ -3053,7 +3053,7 @@ status GPU使用明示typed phase建構，正式扣血訊息caller另由native_a
 
 ### 第23章隊長 BattleFig116 與故事頭像116
 
-狀態：READY。來源與固定SHA集中於[HD戰場主收據](../data/fd2-modern-hd-battlefield-20261019.json)的captain116_battle_followup_20261021。
+狀態：CONFORMED-SCOPED（結果與限制見本節末隊長驗收）。來源與固定SHA集中於[HD戰場主收據](../data/fd2-modern-hd-battlefield-20261019.json)的captain116_battle_followup_20261021。
 正常章23名冊投影確認camp2、BattleFig116、HP2200、20,17；死亡劇情實際要求speaker116。兩個數字各由consumer核對，不外推其他素材編號相同即同一角色。
 348待機一幀／349攻擊十幀已核原metadata／PNG／mask，350固定零header。DATO116四張原頭像亦保留來源，現代模式沿既有靜態閉嘴80／480契約，不改原版四張嘴形播放。
 
@@ -3063,10 +3063,31 @@ status GPU使用明示typed phase建構，正式扣血訊息caller另由native_a
 - 完整11張Draw／F2／DAC／一次續行、來源核心與缺件拒收、清冊及runtime-only須驗；正常第23章既有受版控GUI取得隊長實圖／死亡劇情、返回及章節邊界保存冷讀後才准入。只驗到的正常動作才列證明。
 - 不加章內狀態注入，章前來源與seed明示。舊421項entries保持，通過後沿allow-list同步私人庫；不新增自然難度、原版逐幀／音訊或整章E2聲明。
 
-驗收：兩人原17張完整Game.Draw／F2、返回DAC與一次續行、清冊及runtime-only通過，兩包最終PNG bytes相同。正常章23近戰與保存冷讀分別通過；希爾法首輪缺116頭像、第二輪提早勝利均保留；第六輪沿第五輪AP+0槽、恢復row-max25後正常HD近戰通過；116故事頭像與#267仍待。來源與實圖核對依主收據cleric_party_battle_followup_20261021，數量依58。
+約拿／希爾法當輪驗收（歷史快照，116與#267待辦已由本節末隊長驗收及勘誤取代）：兩人原17張完整Game.Draw／F2、返回DAC與一次續行、清冊及runtime-only通過，兩包最終PNG bytes相同。正常章23近戰與保存冷讀分別通過；希爾法首輪缺116頭像、第二輪提早勝利均保留；第六輪沿第五輪AP+0槽、恢復row-max25後正常HD近戰通過。來源與實圖核對依主收據cleric_party_battle_followup_20261021，數量依58。
 
 勘誤驗證：[`audit_fd2_ui_job_progress.py`](../../tools/audit_fd2_ui_job_progress.py)及[七項拒收／正向測試](../../tools/test_audit_fd2_ui_job_progress.py)已驗同一R3原檔SHA。結論與重跑命令依主收據`ui_black267_correction_20261021`，原黑圖與失敗日誌保持。此項限紀錄分類，未修改引擎所有權或提升舊run。
 
 隊長驗證補充 READY：同一人物核對器新增 `opaque` 色域，核對每個 alpha≥250 的來源像素，不抽稀、不降低原至少1000點門檻；用於本體與小型斬光的合成實圖。正常死亡路徑以 `--death-commander-hd` 在接敵後切HD，另存348待機及speaker116穩定頭像的前後觀測。頭像按既有觀測矩形核對完整480×480來源，RGB差容許1，需正常戰後、F2保存相同及新程序LOAD；不從fixture提升正常攻擊範圍。獨立核對入口為[`verify_fd2_commander_normal.py`](../../tools/verify_fd2_commander_normal.py)，拒收案例由[`test_verify_fd2_commander_normal.py`](../../tools/test_verify_fd2_commander_normal.py)以同份實檔收據重驗。
 
 隊長驗收 CONFORMED-SCOPED／RUNTIME-E1：348／349十一幀及116靜態80／480已正式登錄。完整與runtime-only十一張最終PNG bytes相同；每張全部alpha≥250來源像素通過，無前景排除，21項編製與5項錯圖守衛通過。正常七次END後蓋亞攻擊隊長，348目標待機2546點、116頭像完整230400點RGB差0，十項正常收據拒收通過。自然戰後整備、F2保存與新程序LOAD通過。隊長主動攻擊正常GUI仍待；Go遊戲程式、規則、保存與原版像素模式保持。私人完整／runtime-only及遠端HEAD已核，明示近似姿勢／斬光分層、章前強化與原傷亡。完整HD未完成，主收據`captain116_battle_followup_20261021`含精確提示、配方、來源與重跑入口。
+
+### 北山道來源與萊汀／索菲亞圖組
+
+正常來源工具修訂 READY：固定`campaign_full.json`已登錄第12章variant1城鎮，選項0／2／4分別為酒店／整備／教會，整備指向story_ch12再到battle_ch12。既有GUI白名單可增加這一組明示契約，沿正式Left兩次／確認出發，章首以正常確認鍵完成，F5建立JSON來源。使用既有ch12建構槽，只以受版控boost-only加MaxHP／存活HP1000，constructor seed8、game seed1，保留傷亡及其他原始bytes。此項不改城鎮或出發規則；章首若缺HD頭像先明示像素模式建立來源，再另驗戰鬥HD，不冒稱章首全HD。
+
+美術範圍 READY：固定FIGANI18四幀／19十四幀與33四幀／34十一幀已核metadata、PNG及mask；20／35零header不補造。既有章23正常來源亦明示native identity6／11及同號BattleFig，兩人當時HP0；第12章新來源另須確認存活與可操作。原造型與動作以同項native-review及接觸圖為主，不以名字猜服裝。
+
+- 萊汀保留背向鏡頭的灰橄欖厚背甲、肩刺、紅色彎角頭盔、裸露上臂、深紅腰側衣及藍垂布、灰綠腿甲與長柄月牙斧。待機／踏步、雙手高舉、屈膝下劈分列；19:4..8腳邊小塵與9..12的亮色斧弧分層，13無弧光。原描述子已裁去的斧頭／弧光邊界如實保留，不新增畫布。
+- 索菲亞保留背向左的金色長馬尾、紅褐背衣、深藍斜披與護腕、金色肩甲／護膝、灰綠腰布、紫寬褲、深色靴及藍色寶石杖。待機、左掌張開、抬杖、雙手上舉、跨步前揮分列，近似姿態共用明示。
+- 母稿原始RGBA不改，沿既有完整人物編製器及分層契約，保持原矩形、header、delay與raw marker。不新增施術銀行、插幀、音效／傷害規則。候選完整Draw／F2／全部不透明核心、完整／runtime-only一致、正常攻擊返回與保存冷讀、私人同步均須驗，不以離線成品推定正常可達。
+- 兩人正常來源沿同一第12章F5槽與seed1，最多六次普通END，只取正式可達與射程格；未取得動作即拒收，來源加血政策與既有傷亡明示。新四項登錄前保持原425項entries，通過後只依allow-list同步私人素材。
+
+來源、目前狀態與後續完整提示集中於[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`northern_party_battle_followup_20261021`。不新增規則、保存格式、自然難度、原版逐幀或整章E2聲明。
+
+正常來源修訂 READY：第12章兩份來源驗證均在第一次END後，record14友軍HP0並回標題；未取得指定我方攻擊，原KeyError日誌及audit保留為非PASS。第11章沿相同章前HP+1000／seed政策，具體來源依下一段修訂。第11章variant2城鎮的酒店／整備／教會選項及story_ch11→battle_ch11均由現行campaign明示；其scenario未登錄NPC結果記錄閘門，初始group0沒有護送友軍，仍以正常執行結果驗收。正常GUI原白名單增加已核第11章，最多六END與其他驗收不變。END若返回標題，控制器須明確拒收該終態，不以缺少native_round產生含混KeyError；此修訂不修改遊戲或NPC。
+
+第11章來源具體化 READY：舊工單的第11章SAV與基底SHA在現存646份SAV中均無相符檔案，不以manifest的歷史名冊冒稱現存來源。改由已驗第九章抽樣所用`work/parity-slot-ch08/FD2.SAV`，用現行受版控fd2-chapter-slot依8～10章戰後handler建構chapter10槽；每章升6級、constructor seed8、HP+1000，AP／DP／DX不另加值，原有祖先政策與建構假設依新manifest逐項保留。這份新來源不宣稱與舊第11章SAV bytes相同；仍須正常標題LOAD／城鎮出發／F5及兩人實際攻擊驗收。
+
+本切片 CONFORMED-SCOPED／RUNTIME-E1：兩組原33幀、三階段F2、完整Draw及全部不透明核心通過，完整／runtime-only最終PNG bytes相同，高覆蓋裁切全0。原矩形、延遲與音效marker保持；萊汀塵屑及弧光依來源位置分層，小相位共用母稿明示。
+
+第11章新建構槽正常標題LOAD／城鎮出發／F5通過。萊汀兩次END、索菲亞五次END後各自正常攻擊102，返回／F2／兩主題保存與新程序標題LOAD通過；GUI、實際PNG及錯配反例依同項normal_gui。F5重建章節邊界，不保存本次戰中位置與傷害。第12章兩次護送失敗保持非PASS，沒有修改NPC或正式規則。正式登錄四項後同步私人allow-list，現況數量只引用58及可重跑formal_coverage；完整HD、自然難度、原版對拍與整章E2未提升。
