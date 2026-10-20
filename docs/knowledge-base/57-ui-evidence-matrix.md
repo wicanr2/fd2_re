@@ -1,5 +1,9 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
+珊BattleFig14的42／43沿原14幀正式登錄，44零header不補造。完整Draw、三階段F2及返回通過；完整／runtime-only最終PNG bytes相同。
+普通章23固定seed1與明示章前強化槽，兩次移動／END後正常攻擊111、五張人物核心、自然返回、F2與邊界保存冷讀通過。姿勢共享與等比縮放明示，不判唯一相位；人物外效果及其他命令仍待，不新增原版對拍或整章E2。
+來源見[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的shan14_battle_followup_20261021，唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)。
+
 BattleFig111的333／334沿原14幀正式登錄，335固定零header不補造。完整Draw、三階段F2、返回與一次續行通過；完整／不含母稿執行包的最終PNG bytes相同。
 普通第23章固定seed1、四次END後由蓋亞攻擊上方111，目標待機、自然返回、F2及章節邊界冷讀通過；主動開砲未取得普通END樣本，完整開砲限RUNTIME-E1。
 章前強化、共享母稿、前景遮擋及原框光束裁切明示，遊戲規則與保存格式保持。來源見[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的mechanical111_battle_followup_20261021，唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)。

@@ -2807,8 +2807,8 @@
       "id": "hd-opacity-core-is-not-output-coverage",
       "area": "素材",
       "date": "2026-10-19",
-      "rule": "RGBA人物分離異常先按透明度分級查淡像素橋接；識別核心與輸出覆蓋alpha分開，保留原邊緣並拒收不明輪廓。入口tools/build_modern_hd_map_sprites.py的master_components及61透明度核心契約。",
-      "why": "三份新母稿以非零alpha連通都拒收，但64／128／192核心均有12人物；直接把分離失敗當身體相連會重畫錯題，二值化輸出又會破壞柔邊。",
+      "rule": "RGBA人物分離異常先按透明度分級查淡像素橋接；識別核心與輸出覆蓋alpha分開，保留原邊緣並拒收不明輪廓。入口tools/build_modern_hd_map_sprites.py的master_components及61透明度核心契約。 圖像生成預覽的外圍RGB不證明可見光暈；先在Docker的fd2-assets-local:20260829-sfx用Pillow量alpha並以白底合成審查。A0的RGB不參與正式合成，不因此剪掉或重寫來源alpha。",
+      "why": "三份新母稿以非零alpha連通都拒收，但64／128／192核心均有12人物；直接把分離失敗當身體相連會重畫錯題，二值化輸出又會破壞柔邊。 珊待機預覽有彩色外圍，實測四處A0且白底合成無光暈；保留原RGBA並停止依預覽猜測。",
       "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
       "guard": {
         "kind": "present",
@@ -3413,6 +3413,21 @@
           "remake/cmd/fd2/main.go"
         ],
         "pattern": "if g\\.beginNativeActionDeathPresentation\\(actor, after\\)"
+      }
+    },
+    {
+      "id": "figani-header4-sound-consumer-is-not-projectile-id",
+      "date": "2026-10-21",
+      "area": "FIGANI欄位語意",
+      "rule": "解釋FIGANI原始header時，先查特定caller的consumer，不以數字猜投射物編號。入口remake/cmd/fd2/native_physical_body.go的nativePhysicalSoundBank：本路徑按48+HeaderByte4-1選音效來源；其他consumer分開追證，不擴稱通用語意。",
+      "why": "珊43的header byte4=6在未發布候選說明被誤稱投射物；查現行音效consumer後更正，原資料、Go與規則保持。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#shan14_battle_followup_20261021",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/native_physical_body.go"
+        ],
+        "pattern": "resource := 48 \\+ int\\(animation\\.HeaderByte4\\) - 1"
       }
     }
   ]

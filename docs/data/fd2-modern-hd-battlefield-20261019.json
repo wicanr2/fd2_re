@@ -9,13 +9,13 @@
     "native_viewport": "CONFORMED-SCOPED：穩定1920世界沿原生(4,4)、312×192窗格；死亡事件前25拍依既有producer從VGA0,0開始，最後steady回4,4。不同caller分列，不新增DOS位址parity。",
     "hd_sprite_data": "DATA-READY：完整125組1455張HD及31組372張新增24父項已登錄；舊1083張父項及HD bytes保持。",
     "hd_world_renderer": "CONFORMED-SCOPED：144人物已接Game.Draw；首章34張正常GPU、4張實際走行、兩次物理攻擊及保存／新程序LOAD通過。",
-    "private_assets": "正式清冊、完整／runtime-only allow-list已核SHA及UID；舊檔保持，新母稿不進執行包。數量與遠端核對依58及mechanical111_battle_followup_20261021。",
+    "private_assets": "正式清冊及完整／runtime-only allow-list已核SHA及UID；舊檔保持，新母稿不進執行包。數量與遠端核對依58及shan14_battle_followup_20261021。",
     "quickload_battle_owner": "CONFORMED-SCOPED：成功JSON LOAD丟棄舊經驗owner與移動計畫；拒收保留。",
     "timed_dialogue": "CONFORMED-SCOPED-RUNTIME-E1：計時FFEC開收框保留HD世界，EXP99普通鍵盤／F2與保存冷讀通過；其他caller未驗。",
     "hd_terrain": "CONFORMED-SCOPED：map0六組53槽；新增圓頂綠色／褐色雙塊四底圖在兩張正常GPU全部相符，短長組合與保存冷讀通過；草地及其他地形仍待HD化。",
     "ai_player_input_lock": "CONFORMED-SCOPED：AI換手期間拒絕玩家地圖輸入重入；普通END／增援對話及相關／完整Go回歸通過。",
     "gaia_redesign": "CONFORMED-SCOPED：新版頭像與四方向圖組已登錄；正常START／Gaia北移取消／F2／冷讀分段驗證。相位差異與序章尾端失敗明示，非逐幀parity。",
-    "hd_battle_animation": "BattleFig111待機／開砲及光束原14幀已登錄；完整Draw／F2與runtime-only通過。普通章23四次END後受擊待機、返回及邊界冷讀通過，普通開砲未取得；其餘缺口與唯一數量依58。",
+    "hd_battle_animation": "珊14號待機／抬杖／前揮原14幀已登錄；完整Draw／F2及runtime-only通過，普通章23兩次END後攻擊、五張人物核心、返回及邊界冷讀通過。其他缺口與唯一數量依58。",
     "native_purchase_equip": "CONFORMED-SCOPED：#266原生購買立即裝備保留ignored原始格，29項商店回歸與正常購弓F5／章首射程通過；不改格式或數值規則。",
     "hd_event_death": "共用事件、普通行動與狀態致死已接HD；三種26拍／F2通過。正常章23事件與普通擊殺已抽驗，狀態致死正常GUI仍待；來源依death_consumers_followup_20261021。"
   },
@@ -52953,5 +52953,606 @@
       "sha256": "2cf0835fefcb321ed5f191cbed82c8831f5536908b103d707489cec0c4af2971"
     }
   },
-  "runtime_source_scope": "頂層runtime_source及source_commit保留索爾階段的歷史來源；本輪現行來源見mechanical111_battle_followup_20261021.runtime_source，Go規則沿d36339a4，新增圖源及工具的發布HEAD見該段Git核對檔。"
+  "runtime_source_scope": "頂層runtime_source及source_commit保留索爾階段歷史來源；本輪現行來源見shan14_battle_followup_20261021.runtime_source，Go規則未改，發布HEAD見該段Git核對檔。",
+  "shan14_battle_followup_20261021": {
+    "status": "CONFORMED-SCOPED",
+    "base_commit": "2400e21ce463822d52872df69bc11fc523bf35d5",
+    "full_battle_hd_complete": false,
+    "figure": 14,
+    "resources": [
+      42,
+      43
+    ],
+    "frame_count": 14,
+    "empty_cast": 44,
+    "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+    "native_contact": {
+      "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/native-contact.png",
+      "sha256": "4585b50a2ee69b5dda83c86475c9dde0b87589c57fdbb95acb25087988a90c13"
+    },
+    "native_review": {
+      "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/native-frame-review.json",
+      "sha256": "1c9e3e0a48654fe2e7ec2ebe3734e5d41ca85065459740e50988a4d00b5311eb"
+    },
+    "identity": {
+      "classification": "confirmed normal LOAD",
+      "native_identity": 14,
+      "battle_figure": 14,
+      "observed_name": "珊",
+      "source": {
+        "file": "work/promo-cadence-20261018/hd-fonts/mechanical111-r1/normal-gui-r3/receipt.json",
+        "sha256": "aca322d880682cf80a649b0d81b41ef45e194beaa7d1f857f84a805fde8fdb63"
+      }
+    },
+    "current_state": {
+      "remake_complete": "珊42／43原14幀正式登錄；完整Draw／F2與runtime-only回歸、普通章23兩次END後攻擊／返回／邊界冷讀通過。",
+      "remake_remaining": "其他人物、指令與人物外特效、普通111開砲、狀態正常GUI及平台效能仍待，完整HD未完成。",
+      "original_oracle_unknown": "不新增原版逐幀、傷害、音訊或整章E2。",
+      "optional_polish": "不插幀，姿勢共享與4.2%／3.2%等比縮放明示。"
+    },
+    "formal_registered": true,
+    "private_synced": true,
+    "production_rules_changed": false,
+    "generation": {
+      "method": "built-in image_gen",
+      "prompts": {
+        "high_v2": "Use case: identity-preserve. One faithful HD sprite of the ADULT elf mage in image2, but reproduce the EXACT COMPACT HIGH-STAFF POSE of original pixel sprite image1. Image1 sole pose/silhouette authority; image2 style/costume identity only. Full body viewed FROM BEHIND, facing left, upright feet close together. Staff MUST lean diagonally from LOWER LEFT beside left waist up toward UPPER RIGHT BEHIND her blue-haired head; purple cap is on screen RIGHT of head and clearly above hair. It must NOT stand on the left side of her face. Left arm mostly HIDDEN in front of her torso/head, holding staff near left shoulder; do not show huge bent left elbow projecting outward. Right forearm bent close at chest height, right hand slightly raised at right. Match image1 slender tall silhouette, same exact head-foot and staff-tip placements. Preserve cobalt hair cascading down whole back, low purple tie and calf tail, pointy ear, brown sleeveless tunic with sage edging/hip panels, purple sashes, gold arm bands, brown gloves, dark gray knee boots as image2. The top staff cap rises about one head-height above hair. Clear gap/margin above the entire staff. Same crisp rich handpainted game sprite style, no extra items, no beam, no effects, no background, no floor/shadow, genuinely clear transparent RGBA. One character only, all staff and boots in canvas, no text.",
+        "swing_v2": "Use case: identity-preserve. Produce ONE HD full-body sprite of the SAME ADULT elf woman as image2, following EXACT ORIGINAL COMPACT POSE and near-square silhouette of pixel sprite image1. Image1 is sole pose/geometry authority, image2 costume/blue-hair/paint style only. Three-quarter BACK view, facing LEFT, crouching into a narrow forward lunge. Left arm extends forward LEFT and AWAY from camera, foreshortened, holding the staff at its upper third. The thin dark green staff is almost VERTICAL but tilts from purple-and-gold cap at upper-left to gold ferrule at lower-right near left hip, about 65 degrees downward from horizontal, as image1. NOT a wide horizontal spear thrust. Keep left hand fairly close to torso in projection. Compact bent knees, feet about shoulder width, left foot forward, right foot behind; not a very wide split stance. Very long blue hair forms a curved flowing mass CLOSE to her back to screen RIGHT, and low purple tie/tail curves near rear calf, not stretching far horizontally. Overall visible sprite width approximately EQUAL to height; body/hair/boots occupy most of height. Match original head, hand, staff-tip and feet arrangement. Preserve pointed ear, huge blue low-tied hair, brown sleeveless tunic, green hip panels/thigh wraps, purple ribbons, gold bands, brown gloves, charcoal boots, same adult proportions and clothing coverage. Rich crisp handpainted RPG sprite. Clear transparent RGBA background, full body and entire staff with 6 percent clear margins, no ground/shadow, no energy, no glow, no projectile, no text or multiple panels.",
+        "idle": "Use case: stylized-concept. Asset type: faithful handpainted HD battle sprite master for Shan, an ADULT elf woman mage in a classic tactical RPG. Image1 is ORIGINAL PIXEL SHAPE AND COSTUME reference: use ONLY leftmost standing idle pose 42/0. Image2 is rendering style ONLY, not its clothes, weapon or hair. Draw ONE full body adult female elf viewed from BEHIND in three-quarter back view, facing screen LEFT, matching original standing idle silhouette. Extremely long thick cobalt/periwinkle BLUE HAIR covers most of her back, gathered with a purple tie very low at upper thigh; large trailing hair tail reaches calves, a pointed ear and tiny left profile visible. Brown sleeveless fitted tunic with small brown shoulder caps and green edging, modest side opening as original, sage green hip panels/thigh wraps, gold arm bands, purple sash and long ribbons, brown gloves and deep charcoal knee-high boots. No cape: the blue mass is HAIR. Left arm bent, holding a long thin dark green-gray STAFF diagonally down toward lower left; at shoulder height the staff head is a round amethyst-purple cap in a gold collar, bottom is small gold ferrule. Right forearm bent out to right at waist height, relaxed closed hand. Both feet planted close with slight offset, same original posture. Match original outfit and adult proportions, no extra armor or exposed skin. Painterly fantasy game art, crisp ink contours, detailed material shading, consistent with style reference2. Single full body with complete staff and both boots visible, 6 percent clear margin all around. Genuinely transparent RGBA background, no ground or cast shadow, no glow, no effects, no text, no contact sheet.",
+        "idle_v2": "Use case: background-extraction. EDIT image1 only. Preserve exactly this adult elf woman's full body, face, blue hair, clothing, staff, pose, proportions, all painted details and colors. Remove ALL colored haze/halo/backdrop around her, including blue glow around hair and brown/gold glow around staff and boots, so every area outside the character and staff is genuinely clear transparent RGBA. No floor shadow. Character, hair and staff interiors should be fully opaque, with antialiasing only at silhouette edges; no overall translucency. This is a clean production sprite cutout, with no glow or atmospheric lighting behind it. Do not change costume or pose, do not redraw or crop any body part or staff, leave generous transparent margins, no text.",
+        "ready": "Use case: identity-preserve. Asset type: second pose HD battle sprite for the SAME ADULT blue-haired elf mage. Image1 is character identity and painted costume reference; Image2 original pixel timeline defines pose. Draw ONE full-body character, still in three-quarter BACK view facing screen LEFT, matching original 43/1 (second row, second panel). Keep extremely long cobalt blue hair covering back, low purple tie at thigh and calf-length tail; pointed ear, brown sleeveless short tunic, sage green hip/thigh drapes, gold bands, purple waist ribbons, brown gloves, dark charcoal boots, same staff design. Change ONLY right hand from relaxed fist to OPEN outstretched palm to right at waist, elbow bent slightly, in preparation to cast. Left hand still holds staff diagonally DOWN LEFT from shoulder-height amethyst-purple round head/gold collar to small lower gold ferrule. Body stands upright, feet close and planted, same thin adult body proportions and back orientation. Keep compact narrow silhouette, staff close to body. Crisp rich handpainted game sprite. Complete staff and boots, 6 percent transparent margin, single character on actual transparent RGBA, no backdrop, no effects, no floor/shadow, no glow, no text.",
+        "lift": "Use case: identity-preserve. Asset type: raised-staff HD battle sprite master for SAME adult female elf mage. Image1 is identity/costume/painted-style reference; image2 original pixel pose 43/2 (second detail panel) is exact pose target. One full-body character in three-quarter BACK view facing LEFT. Preserve very long cobalt blue hair with very low purple tie and thick calf-length tail, pointed ear, brown sleeveless tunic with small shoulder pads, sage-green hip/thigh cloth, gold arm bands, purple sash/ribbons, brown gloves and charcoal boots. Left elbow bends across front, LEFT hand lifts thin green-gray staff up close beside head, staff crosses BEHIND head/left shoulder so amethyst cap in gold collar is just ABOVE head on image RIGHT of head; bottom gold ferrule near left hip, no staff extending to ground now. Right arm bent, open palm extended at waist to screen right. Torso upright, feet close planted, narrow adult silhouette. Do not hold staff diagonally down-left as idle. Keep full hair and boots complete, modest 8 percent clear margin all around, no front-facing body or face. Crisp detailed handpainted fantasy game sprite on genuinely transparent RGBA; no background, floor, shadow, aura, energy, text or panels.",
+        "high": "Use case: identity-preserve. Asset type: high-raised-staff HD battle sprite, same adult blue-haired female elf mage. Image1 character identity/costume/painted style; image2 exact original pose 43/3 (third detail panel). ONE full body in three-quarter BACK view facing LEFT. Keep all clothing and very long blue hair / low purple tie / calf-length tail exactly consistent. Stand upright with feet close planted. Left hand raises the same long thin green-gray gold-trimmed staff nearly VERTICAL behind the head/left shoulder; its purple round cap rises clearly ABOVE her head by about 15 percent of full visible character height, and small lower gold ferrule is by left waist. Left arm bent compactly, no horizontal staff. Right elbow bent with open palm near chest/shoulder height on screen RIGHT, keep hand fairly close to body, not stretched far out. Narrow tall silhouette faithful to original, adult proportions. Body, boots and entire staff all inside canvas, generous clear margins especially above staff. Detailed handpainted RPG sprite, same blue hair, brown sleeveless tunic, green cloth, purple sashes, gold bands, dark boots. Genuinely clear transparent RGBA background, no floor, shadows, aura, particles, spell effects, labels, text or montage.",
+        "swing": "Use case: identity-preserve. Asset type: full-body forward-swing battle sprite of SAME ADULT female blue-haired elf mage. Image1 establishes exact character/costume/painted style; image2 last detail panel original43/5 is exact pose and silhouette target. One character shown from three-quarter BACK view facing screen LEFT, now lunging and leaning left with front LEFT knee bent and left boot forward, right boot planted back at right. Left arm stretched STRAIGHT OUT toward upper-left at shoulder level holding same long green-gray gold-trim staff angled from upper LEFT purple crystal head to lower RIGHT gold tip, in front of her at far left. Staff held in its middle; staff and left arm project left away from torso. Right arm close near waist/back. Face only a small left profile and pointed ear. Very long cobalt blue hair sweeps diagonally OUT to screen RIGHT behind her in a thick curved mass, low purple tie and large calf-length tail flutter right. Purple waist ribbons also blow sideways. Keep same brown sleeveless tunic, sage green hip/thigh cloth and wraps, gold bands, brown gloves, dark charcoal knee boots, adult body proportions, original costume coverage. Rich crisp handpainted 2D RPG sprite, whole staff/boots/hair inside generous 6% margins, wider braced silhouette matching original, one character only on real transparent RGBA background. No magic beam, no aura, no projectile, no ground, no shadow, no text or panels."
+      }
+    },
+    "recipe": {
+      "schema_version": 1,
+      "figure": 14,
+      "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+      "sources": {
+        "idle": {
+          "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/idle-master-v2.png",
+          "sha256": "2b8af62582b58f27eba6b3529be21a175a5b796d7302acc6a5273d95e33c26de",
+          "anchor": [
+            42,
+            30,
+            949,
+            1498
+          ]
+        },
+        "ready": {
+          "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/ready-master-v1.png",
+          "sha256": "e876306cc917bd1d9f0555e07043120629181402f0dd95c478dabdac916d9293",
+          "anchor": [
+            37,
+            31,
+            1002,
+            1501
+          ]
+        },
+        "lift": {
+          "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/lift-master-v1.png",
+          "sha256": "151319d5a6c091a2abccec82a8d461a20e0b833a86162ab23f55928c692a7291",
+          "anchor": [
+            266,
+            14,
+            991,
+            1505
+          ]
+        },
+        "high": {
+          "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/high-master-v2.png",
+          "sha256": "eed92c4b7e6fbcd92311763bb21bff90fa09a27e6275a44281f822bc7fd44c1a",
+          "anchor": [
+            189,
+            50,
+            787,
+            1758
+          ]
+        },
+        "swing": {
+          "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/swing-master-v2.png",
+          "sha256": "c0951be80ec8dff84f497b88a80b90abd9008896df9334d843414772d11cd31f",
+          "anchor": [
+            78,
+            54,
+            1201,
+            1192
+          ]
+        }
+      },
+      "resources": {
+        "42": [
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              90,
+              133
+            ],
+            "scale_group": "idle"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              90,
+              134
+            ],
+            "scale_group": "idle"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              90,
+              135
+            ],
+            "scale_group": "idle"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              90,
+              134
+            ],
+            "scale_group": "idle"
+          }
+        ],
+        "43": [
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              90,
+              133
+            ],
+            "scale_group": "idle"
+          },
+          {
+            "pose": "ready",
+            "anchor": [
+              0,
+              0,
+              84,
+              133
+            ],
+            "scale_group": "ready"
+          },
+          {
+            "pose": "lift",
+            "anchor": [
+              0,
+              0,
+              71,
+              139
+            ],
+            "scale_group": "lift"
+          },
+          {
+            "pose": "high",
+            "anchor": [
+              0,
+              0,
+              68,
+              152
+            ],
+            "scale_group": "high"
+          },
+          {
+            "pose": "high",
+            "anchor": [
+              0,
+              0,
+              68,
+              152
+            ],
+            "scale_group": "high"
+          },
+          {
+            "pose": "swing",
+            "anchor": [
+              0,
+              0,
+              116,
+              120
+            ],
+            "scale_group": "swing"
+          },
+          {
+            "pose": "swing",
+            "anchor": [
+              0,
+              0,
+              119,
+              120
+            ],
+            "scale_group": "swing"
+          },
+          {
+            "pose": "swing",
+            "anchor": [
+              0,
+              0,
+              124,
+              120
+            ],
+            "scale_group": "swing"
+          },
+          {
+            "pose": "swing",
+            "anchor": [
+              0,
+              0,
+              119,
+              120
+            ],
+            "scale_group": "swing"
+          },
+          {
+            "pose": "swing",
+            "anchor": [
+              0,
+              0,
+              115,
+              120
+            ],
+            "scale_group": "swing"
+          }
+        ]
+      }
+    },
+    "recipe_file": {
+      "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/recipe-r1.json",
+      "sha256": "dbbf70d352bbf97d0cd840aed83911d2c25e283ed3c4fb6c3609693cbc9f4ef9"
+    },
+    "compiled": {
+      "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/candidate-r1/compiled.json",
+      "sha256": "8955e172830ee1050f271d535d897bbc298c9530cf4f4c67987c3510cdd26521"
+    },
+    "review": {
+      "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/candidate-r1/review.png",
+      "sha256": "7412f2e440f6c416787a228b27511d475d0b4531e4c5acc1012c27de70ac22e7"
+    },
+    "compiler_guards": {
+      "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/compiler-guards-r1/guards.json",
+      "sha256": "eb1b5538371463758f6d5f7c2c6e608581bd4ae9b12d70146b9f3c1fb3311326"
+    },
+    "candidate_coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/candidate-coverage.json",
+      "sha256": "a92c8cc40ba481cf394bee8131d4774ff21005fc42109ae4a4751c3eaf08711e"
+    },
+    "original_resources": [
+      {
+        "resource": 42,
+        "status": "decoded",
+        "reason_code": "decoded",
+        "raw_sha256": "86e315e1b61c1c2ce27a24b61e2cfd6773b8127928f7b5a7fdbb7aac713ba490",
+        "status_sha256": "0ff10f26346923d87563b390f68189e451402cb976eed733bdd343ab1d4c8a89",
+        "metadata_sha256": "79cbadd9187526e32f9a5e3232151a528538aa78296cb555a14fbbdc459c749e",
+        "native_header": {
+          "byte_1": 0,
+          "byte_2": 4,
+          "byte_4": 0
+        }
+      },
+      {
+        "resource": 43,
+        "status": "decoded",
+        "reason_code": "decoded",
+        "raw_sha256": "ac449a53f4099d682e4bf728eca812c9dbce42e910e1554c5a9c8d7870921b20",
+        "status_sha256": "4e33b3cc7675e60b743a7b83709bf68ce8d322866506fcda1d3bf2e616bcd6b6",
+        "metadata_sha256": "51e1cfb38a8f1caadb4850a0e77763c8696583b1631d7e90e5a55fc3cd3372b0",
+        "native_header": {
+          "byte_1": 0,
+          "byte_2": 10,
+          "byte_4": 6
+        }
+      },
+      {
+        "resource": 44,
+        "status": "empty_header_zero",
+        "reason_code": "zero_header_word",
+        "raw_sha256": "6b25930e91686cee8bb5d4dae8dbed14f63c690c1c97ecb98552d8842e2d9395",
+        "status_sha256": "b1f5fe04ff9211c6ab47587c707c54a8d97ba9203d3e8dd4a784ebf451de6436"
+      }
+    ],
+    "source_alpha_review": {
+      "scope": "預覽RGB外圍看似光暈，但量測的外圍alpha為0；白底合成確認沒有可見光暈，不以RGB猜透明度。原始RGBA不改，未放寬最終0/255契約。",
+      "idle_v1_candidate": {
+        "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/idle-master-v1.png",
+        "sha256": "f944e7a72cbdeeb7b7ca24db72671df17c2e3a9d644d5adb07efcbdb16d1075c"
+      },
+      "idle_v2_selected": {
+        "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/idle-master-v2.png",
+        "sha256": "2b8af62582b58f27eba6b3529be21a175a5b796d7302acc6a5273d95e33c26de"
+      },
+      "white_review": {
+        "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/idle-master-v2-white-review.png",
+        "sha256": "bccbf5989ba1a1e311463aa4b622ffb513ad774af35549fd51f31193d6241297"
+      },
+      "sample_alpha_0": [
+        [
+          100,
+          200
+        ],
+        [
+          100,
+          800
+        ],
+        [
+          500,
+          20
+        ],
+        [
+          900,
+          1200
+        ]
+      ],
+      "scope_limit": "列出抽樣與白底審查，不宣稱每個半透明邊緣都零色暈。"
+    },
+    "rejected_candidates": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/high-master-v1.png",
+        "sha256": "1324206b69137a2d698a5e548b2127e30b85a2ef244c46fbeb30e0ed69b5eac6",
+        "reason": "杖頭在頭左側，改用v2放到頭後上方右側。",
+        "preserved": true
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/swing-master-v1.png",
+        "sha256": "3fdc0084527864d642015cd394c3a885d35d8d9fa030fb76ed666087461ce4fa",
+        "reason": "前揮過寬、法杖過於水平；v2依單一原圖修成緊湊弓步與陡斜法杖。",
+        "preserved": true
+      }
+    ],
+    "design_contract": {
+      "appearance": "藍色長髮、低束髮尾、尖耳；綠褐服裝、紫色束帶、深灰長靴、紫頭金飾長杖；原背向左三分之二視角。",
+      "sharing": "待機及43:0共用，準備／抬杖／高舉／前揮四姿分列；43:3..4及5..9各共用。",
+      "fit": "原描述子與排程保持，零高覆蓋裁切；ready等比縮0.9582765，swing縮0.968319，屬明示造型重定向，不宣稱輪廓或逐幀相同。",
+      "effects": "保留header byte4=6、原音效及效果節拍；人物外特效與其他命令另驗，不由人物幀通過推定。"
+    },
+    "header_byte4_correction": {
+      "prior_candidate_wording": "曾把6誤稱投射物編號，尚未發布。",
+      "replacement": "現行nativePhysicalSoundBank依48 + header byte4 - 1選音效來源；保留原始6，不將它提升為投射物語意。",
+      "source": "remake/cmd/fd2/native_physical_body.go nativePhysicalSoundBank及其既有docs/data/ida/fd2_command24_presentation_ida.txt引用",
+      "classification": "existing runtime consumer confirmed; no new binary RE or source change"
+    },
+    "fixture": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/gpu-r1/receipt.json",
+        "sha256": "f72c1ecbc5fb6a5c533916a9392078a6080087c7e6c0b41170ff814ec31c5d5b"
+      },
+      "blue_pixels": {
+        "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/gpu-blue.json",
+        "sha256": "4896477cd6c1cd8ef2540d11d4861524e1e22c7f947f6724a1a4afb328878bdf"
+      },
+      "guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/gpu-blue-guards/guards.json",
+        "sha256": "50bd9f87be80cf0d51cd1a949ca3767a6050295fe80f76d72577cd588e73bc27"
+      },
+      "complete_frames": 14,
+      "hd_draws": 225,
+      "final_draws": 336,
+      "phase_f2": [
+        "prelude",
+        "body",
+        "counter"
+      ],
+      "battle_dac_steps": 64,
+      "map_dac_steps": 65,
+      "continuations": 1,
+      "negative_checks": 5,
+      "scope": "強制攻擊／反擊與地圖fixture，僅RUNTIME-E1；14張同次Game.Draw最終1920回讀與所有指定藍髮核心逐點核對。武器／半透明邊緣不由藍髮核對推定。"
+    },
+    "runtime_only": {
+      "manifest": {
+        "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/runtime-only-r1/private-manifest.json",
+        "sha256": "cc47d4847776f226045d9266d58bede08b51a82172837375104160bfa670ae53"
+      },
+      "go_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/runtime-go-r1.log",
+        "sha256": "17c480f173b1dcb30fa97002ac78705061b97a553a5ed3e33c3c2d72c4d38284"
+      },
+      "gpu_receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/gpu-runtime-r1/receipt.json",
+        "sha256": "860e380c5c0bdf6cf28d621b59584ae9ed443ce278a8e7334779dea5959b3c03"
+      },
+      "png_byte_regression": {
+        "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/runtime-png-byte-regression.json",
+        "sha256": "c2c609864293beb6e6d272332546b95bc7a0683b30a8db5e22f4cf2b6cfdb9f2"
+      },
+      "files": 3431,
+      "masters_present": false,
+      "tests": 3,
+      "subtests": 2,
+      "skips": 0,
+      "output_files_removed_after_validation": true
+    },
+    "normal_battle_gui": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/normal-gui-r1/receipt.json",
+        "sha256": "3912ef39f918257c168aeec47c9a469e1b48bbd3269bab6cb973c6ea078e68ef"
+      },
+      "pixels": {
+        "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/normal-attack.json",
+        "sha256": "d16e3f795bd45dc3ee81cec710c1f1726e7dc7bc5203341219ef0b9a8709eb05"
+      },
+      "guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/normal-attack-guards/guards.json",
+        "sha256": "70874896971ffadee5b4066353de481cb5797f10278fd4696d8def80d11da995"
+      },
+      "negative_checks": 9,
+      "end_rounds": 2,
+      "approach_cells": [
+        [
+          21,
+          34
+        ],
+        [
+          21,
+          31
+        ]
+      ],
+      "attack_cell": [
+        21,
+        29
+      ],
+      "target_figure": 111,
+      "matched_pngs": 5,
+      "new_process_title_load": true,
+      "cold_loaded_units_equal": true,
+      "node_boundary_save_checked": true,
+      "source_save_bytes_equal": true,
+      "theme_save_bytes_equal": true,
+      "source_save_sha256": "5d64f3a0bf9aa56f7e77f51e8cfe45fe8c14ab78f2703b966fbc0e142e7bd871",
+      "gui_tool_sha256": "5726ad2f34ad33c33e8ecbb8e5b015d48d220103f1c641a9477d7aaa6d7cbc81",
+      "binary_sha256": "35867bd0d55bcc6d552316f079145e81e59d2638d23ab0166515096fc6dbd903",
+      "elapsed_seconds": 133.32762888632715,
+      "recording_created": false,
+      "scope": "既有章23F5來源，章前AP+5000／DP+300／DX+60／MaxHP+1000且保留原傷亡；game seed1、正常Z選在場序號6珊、兩次移動／END後21,29以原射程攻擊23,29的111，章內無注入。五張實圖符合人物核心；共享姿勢僅列相容集合，未判唯一相位。F5重建章節邊界，不保存本次戰中HP／位置，不談自然難度、新DOS parity或整章E2。"
+    },
+    "formal_admission": {
+      "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/formal-admission.json",
+      "sha256": "b76b629fc43731841907c9ddb9c515a0ace3d05cbf9a66b114ac26665b46dd5a"
+    },
+    "formal_coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/formal-coverage.json",
+      "sha256": "a9301c9dcb24cdbf936a9b9765bec989d6e22724837ef25dc5e049144950745c"
+    },
+    "private_sync": {
+      "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/private-sync-verification.json",
+      "sha256": "d083788b8dd0c1ac1d552e61b3cebfa91f8324fa766063831a790cb042a34e33"
+    },
+    "go_sources_unchanged": {
+      "scope": "本批無Go來源、規則或保存格式修改。候選／runtime-only各三項加兩子項及完整GPU、正式兩項加兩子項另實跑。完整20套件沿d36339a4，99項字串處置保持，不冒稱全套新跑。"
+    },
+    "runtime_source": {
+      "binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/fd2-r1",
+        "sha256": "35867bd0d55bcc6d552316f079145e81e59d2638d23ab0166515096fc6dbd903",
+        "size": 19445480,
+        "removed_after_validation": true
+      },
+      "gui_tool": {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "5726ad2f34ad33c33e8ecbb8e5b015d48d220103f1c641a9477d7aaa6d7cbc81"
+      },
+      "go_base_commit": "2400e21ce463822d52872df69bc11fc523bf35d5",
+      "production_go_changes": 0,
+      "candidate_catalog": {
+        "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/candidate-r1/catalog.json",
+        "sha256": "cc29d70ac8003607b2d1e2536afc5cf0d4f4e56e7efbcae4d087e685629c78ac"
+      },
+      "formal_catalog": {
+        "file": "remake/assets/themes/modern/catalog.json",
+        "sha256": "2d489aeb7b2b2f229d0fd0b8e0c2679dffa7fad810dc6b985f1745f16c2853a9"
+      },
+      "buildinfo": {
+        "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/binary-buildinfo.txt",
+        "sha256": "7759abfa3e608329a705b6cf1b00631f7965806c57c3e9fcd77df303844fc2d8"
+      }
+    },
+    "original_files_unchanged": {
+      "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/original-files-unchanged.json",
+      "sha256": "d0ecf8862174be44debbb93332636fb49e3753e64279562fbbbf1a7bb2de4f91"
+    },
+    "readme_screenshot": {
+      "file": "docs/figures/hd-shan-physical-attack.png",
+      "sha256": "6eb184dbe1b63b1a466d71b93141e0fadf919141f123dddafd2a2be65fe4b04e",
+      "source": {
+        "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/normal-gui-r1/world-hd-art-00.png",
+        "sha256": "6eb184dbe1b63b1a466d71b93141e0fadf919141f123dddafd2a2be65fe4b04e"
+      },
+      "classification": "普通章23實際攻擊視窗，未編修；只辨相容姿態集合，不宣稱唯一相位或原版逐幀。"
+    },
+    "public_git_proof_file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/public-git-proof.json",
+    "private_git_proof_file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/private-git-proof.json",
+    "formal_go": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/formal-go.log",
+        "sha256": "79ddec12d17de0a25e058fbae817cabf4b1fa36344922b98903af672ac30e9b1"
+      },
+      "tests": 2,
+      "subtests": 2,
+      "skips": 0,
+      "status": "PASS"
+    },
+    "candidate_go": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/candidate-go-r1.log",
+        "sha256": "8dc28de1707b2964bf37707437af3a2f27c92c87fa82357b033ccd8be2a1eb26"
+      },
+      "tests": 3,
+      "subtests": 2,
+      "skips": 0,
+      "status": "PASS"
+    },
+    "catalog_tests": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/catalog-tests.log",
+        "sha256": "e486352321f8fe39572cc4ac3e3fb8e48113c5034a3c1ab4e313cea9b0f80057"
+      },
+      "tests": 12,
+      "status": "PASS"
+    },
+    "lessons": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/lessons-check.log",
+        "sha256": "9d6bc935afaa1a0a6fb8644fb9ec7d07c14ba2c83074b902f072f2488a5dac28"
+      },
+      "lessons": 285,
+      "guards": 160,
+      "status": "PASS"
+    },
+    "private_git_proof": {
+      "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/private-git-proof.json",
+      "sha256": "19561335f54689fc941e48bdb25bc40dad457608e18214d28e6d6f21def28533"
+    },
+    "private_ownership": {
+      "files": 3791,
+      "uid": 1000,
+      "gid": 1000,
+      "all_files_checked": true,
+      "scope": "私人提交前逐檔stat及SHA；含catalog/manifest，沒有遞迴chown。"
+    },
+    "worklist": {
+      "issues": [
+        201,
+        263
+      ],
+      "state": "OPEN",
+      "open_items": 22,
+      "manual_items": 14,
+      "possibly_done": 0,
+      "acceptance_preserved": true,
+      "source": "host gh actual fetch; existing build_snapshot/write_snapshot/render/verify pure functions; state labels unchanged",
+      "verify_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/worklist-verify.log",
+        "sha256": "86a705d5f4e3a2e4f08ef650f29d426c2c5c17cfa54544b6333b324e92c391d1"
+      }
+    },
+    "reproduce": {
+      "image_generation": "內建image_gen，完整提示見generation；固定RGBA母稿SHA與成品見recipe／正式catalog.source_files。生成不承諾相同像素，以私人保存的固定母稿重編製。",
+      "compile": "Docker fd2-assets-local:20260829-sfx，python3 tools/build_fd2_character_battle_hd.py --pack /original --inventory docs/data/fd2-battle-hd-source-inventory-20261019.json --recipe work/promo-cadence-20261018/hd-fonts/shan14-r1/recipe-r1.json --out <new-candidate> --base-catalog work/promo-cadence-20261018/hd-fonts/shan14-r1/candidate-r1/base-catalog.json",
+      "gpu": "Docker fd2-go-test-local:latest，with-xvfb go test ./cmd/fd2 -run ^TestModernHDBattleRuntimeGPU$ -count=1 -v；FD2_HD_BATTLE_LIFECYCLE_GPU=1 FD2_HD_BATTLE_REAL=1 FD2_TEST_MODERN_BATTLE_FIGURE=14 FD2_ASSET_PACK=/original FD2_TEST_ORIGINAL_PACK=/original FD2_TEST_MODERN_BATTLE_CATALOG=<catalog> FD2_TEST_MODERN_BATTLE_PACK=<pack> FD2_TEST_HD_BATTLE_OUT=<new-output>。原版pack唯讀、所有寫入UID/GID1000及有界容器依AGENTS。",
+      "normal": "Docker fd2-promo:20261017-r1，python3 tools/verify_fd2_hd_fonts_gui.py --binary <rebuilt-fd2> --assets <candidate/runtime> --original-pack /original --modern-pack <candidate/pack> --out <new-gui> --town-save work/promo-cadence-20261018/hd-fonts/shared-death-player-ch23-r1/source-gui-r2/user-data/fd2_re/fd2_save.json --battle-status --world --battle-hd --battle-art --battle-only --battle-repetitions 1 --battle-art-samples 64 --battle-node battle_ch23 --battle-own-index 6 --battle-target-figure 111 --battle-approach-rounds 6 --battle-advance。world固定FD2_SEED=1，GUI自管Xvfb/Pulse。",
+      "pixels": "python3 tools/verify_fd2_character_battle_gpu.py --figure 14 --sample-group attack --receipt <normal/receipt.json> --catalog <catalog> --source <pack> --report <new-report>；完整14張改用--sample-group fixture及GPU fixture receipt，無前景排除。",
+      "scope": "本批不跑新原版oracle；僅HD呈現及上述正常玩家攻擊抽驗，不新增逐幀、傷害、音訊或整章E2。"
+    },
+    "cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/cleanup.json",
+      "sha256": "7652a436d6b689a43448ac4a7bd5eed39ae02c686feff933a4eb8abb083f1934"
+    },
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/shan14-r1/final-validation.json",
+      "sha256": "3537949742f25db5e250212dce47eb3e6b02980fe38a638748ec4cf559bf3b5e"
+    }
+  }
 }

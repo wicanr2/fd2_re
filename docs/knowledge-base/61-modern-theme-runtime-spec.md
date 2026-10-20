@@ -2992,3 +2992,19 @@ status GPU使用明示typed phase建構，正式扣血訊息caller另由native_a
 驗收：完整14張最終GPU、三階段F2、64／65 DAC及一次續行通過；五母稿與原描述子保持。完整／runtime-only最終PNG bytes相同。
 普通章23四次END後受擊待機、返回、F2及邊界冷讀已驗；未取得的普通主動開砲仍待，不以fixture補成PLAYER-E2。
 來源、兩輪普通拒收與原子性驗證見主收據的mechanical111_battle_followup_20261021；數量依58。
+
+### 珊 BattleFig14 待機／抬杖／前揮
+
+狀態：CONFORMED-SCOPED。基底2400e21c。正常章23 LOAD確認native identity14、BattleFig14及名稱珊；55號裝備為既有type6、射程1..2資料。
+固定盤點42四幀／43十幀與44零header、原始PNG／mask／描述子及身分來源集中於[HD戰場主收據](../data/fd2-modern-hd-battlefield-20261019.json)的shan14_battle_followup_20261021。
+
+- 以原大型圖保留背向左的三分之二視角、藍色長髮及低束髮尾、尖耳、褐色無袖上衣、綠色腿甲／腰布、紫色束帶、深灰長靴與紫頭金飾長杖。不以職業或地圖同號圖組另造服裝。
+- 待機四幀與43:0可共用；43:1張手準備、2抬杖、3..4高舉、5..9前揮弓步分列母稿。相近姿態共用如實揭露，不新增插幀，也不補造44施術圖庫。
+- 沿既有完整人物編製器及RGBA覆蓋契約，原矩形、header、delay、raw marker及音效／效果排程保持。現行`nativePhysicalSoundBank`將header byte4=6用於音效來源選擇，不能據此命名投射物。本批不把人物幀當成特效HD。
+- 原始生成RGBA與完整提示保存。候選完整14張Game.Draw／F2／返回DAC／一次續行與缺件拒收通過後，沿既有章23 F5來源、固定seed1、在場我方序號6珊，正常移動／END及攻擊111、返回、F2與邊界保存冷讀。
+  最多六END；只選正式move_reachable與射程格，不加章內狀態注入。章前強化與原傷亡明示，不談自然難度、原版傷害、逐幀或整章E2。
+- 正式兩項新增前核舊415項entries及來源SHA保持。通過清冊／runtime-only後依allow-list同步私人庫；拒收稿與原版擷取不加入現代包。其他指令家族及人物外特效另驗。
+
+驗收：原14張Game.Draw、三階段F2、64／65 DAC及一次續行通過；藍髮核心14張及五項錯配拒收通過，編製器16項守衛。
+正常章23兩次END後珊由21,29攻擊23,29的111，五張實際人物核心、返回、F2／保存冷讀及九項拒收通過。完整／runtime-only最終14張PNG bytes相同。
+候選說明曾把header byte4=6誤稱投射物編號，已按現行音效consumer更正；未改原資料或提升為新原版語意。來源、採用／拒收母稿與限制依主收據shan14_battle_followup_20261021；數量依58。
