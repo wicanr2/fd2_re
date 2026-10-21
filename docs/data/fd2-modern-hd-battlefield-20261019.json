@@ -76686,7 +76686,7 @@
       "從4b76fc78匯出完整catalog作base，保留460項及其素材；依reproduction_recipe及清冊白名單由私人庫還原來源。",
       "資產Docker執行tools/build_fd2_character_battle_hd.py --layered --pack /original --inventory docs/data/fd2-battle-hd-source-inventory-20261019.json --recipe <reproduction_recipe.json> --base-catalog <base> --out <fresh-candidate>。",
       "編製器產出的67.source_files及source_sha256另附raw_arc_parent，只保存旋轉前原RGBA出處，不變更21張PNG或執行契約。",
-      "編製拒收用tools/test_fd2_character_battle_hd.py，明示--layered及相同pack／inventory／recipe／baseline compiled.json／新out。",
+      "編製拒收用tools/test_fd2_character_battle_hd.py，明示相同pack／inventory／recipe／baseline compiled.json／新out；工具由基底自動採layered，不另外傳--layered。",
       "Game.Draw用FD2_HD_BATTLE_LIFECYCLE_GPU=1 FD2_HD_BATTLE_REAL=1 FD2_TEST_MODERN_BATTLE_FIGURE=22及明示candidate catalog／pack／capture output，with-xvfb go test ./cmd/fd2 -count=1 -timeout=500s -run ^TestModernHDBattleRuntimeGPU$ -v。",
       "像素用tools/verify_fd2_character_battle_gpu.py --figure 22 --core-profile opaque --sample-group fixture --receipt <capture>/receipt.json --catalog <candidate> --source <pack> --original-pack /original --inventory <inventory> --proven-occlusion --report <new-report>。",
       "audit_fd2_battle_hd_coverage.py核正式清冊；sync_modern_theme_private.py --catalog <formal> --source <formal-root> --destination <private>，另以--runtime-only輸出精簡包。",
@@ -76718,6 +76718,1780 @@
         "remake/web/wasm_exec.js",
         "docs/data/command_labels.json"
       ]
+    }
+  },
+  "dragonrider20_battle_followup_20261021": {
+    "status": "CONFORMED-SCOPED-RUNTIME-E1",
+    "base": "ec03a4cf188548e9367b37e58c18703ebb120e0b",
+    "branch": "feat/hd-dragonrider20-battle-source",
+    "issue": 263,
+    "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md#battlefig20騎龍人物圖源",
+    "resources": [
+      60,
+      61
+    ],
+    "frames": 18,
+    "generation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure020-generation-r2.json",
+      "sha256": "63878967a5d31a34a27f27bd5dd46df5ab26616213dc6f7924a6fefd1844a7b2"
+    },
+    "recipe": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure020-recipe-r3.json",
+      "sha256": "678e1d3f87e0b1caf82d66a7d507c34e68be5d3cb703ba29ef8fc6e088ec6078"
+    },
+    "geometry": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure020-geometry-r2.json",
+      "sha256": "bd946aee57ebe645dd7cdc3dbf4ff1b7ea83736e4825e329c527c02df2b2fe60"
+    },
+    "native_crop_proof": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure020-native-crop-proof-r1.json",
+      "sha256": "215f0bcda35c5232cb7c740fb1a59476c79af2d56f33d05a939170d528c2a5b9"
+    },
+    "component_review": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure020-components-review-r2.png",
+      "sha256": "388375679a4386b67d7205e7d3d8c8dd284218410ab70e5366416718e90ad2d9"
+    },
+    "formal_registered": true,
+    "private_synced": true,
+    "full_battle_hd_complete": false,
+    "human_review": "pending-until-all-HD-integrated",
+    "scope": "已閉合FIGANI consumer圖源，六個人體／飛龍姿勢與既有斬光旋轉重定向，不新增EXE語意、規則或保存格式。",
+    "known_art_limits": [
+      "六母稿共用重定向，不是十八張獨立繪畫或原版RGB／alpha相同。",
+      "六個原生裁切與60對應圖RGBA相同；61:3仍差31像素，只採幾何近似。",
+      "source-anchor別名比例映射保留完整原RGBA，部分飛行幀、遠翼／尾及其他高覆蓋裁切須逐筆揭露。",
+      "三十度斬光及小光點沿原生分離矩形，曲線／顏色與原始光束不同，集中人工修正。",
+      "主閃光母稿兩個右段原RGBA裁切對應原生三元件；是寬光帶關鍵形狀近似，裁切與曲線差異集中人工確認。"
+    ],
+    "acceptance": [
+      "固定60四幀／61十四幀及62零header，不新增施術、擴框或插幀；header、描述子、delay與marker保持。",
+      "原六母稿RGBA／斬光衍生與父稿可回查，來源及錯件拒收通過。",
+      "全部十八幀實際Game.Draw核心、F2各適用相位、64／65 DAC、HP／RNG保持及一次續行。",
+      "正式與runtime-only各來源載入及兩子項缺件預檢零SKIP；沿白名單私人保存並核遠端後合併，正常操作與人工最後集中。"
+    ],
+    "source_alias_admission": "編製器別名master複本可按相同SHA折回六張原母稿；spark折回既有figure022 orb，旋轉斬光保留既有figure015 gold父稿索引。只合併相同來源檔名，不改影格PNG或consumer契約。",
+    "main_crops": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure020-main-crops-r1.json",
+      "sha256": "183428ad2c4ec4f78acb480615fd0fd292956f1d669ba1c2305dee134eda5b47"
+    },
+    "empty_cast_source": {
+      "resource": 62,
+      "inventory_status": "empty_header_zero",
+      "raw_sha256": "6b25930e91686cee8bb5d4dae8dbed14f63c690c1c97ecb98552d8842e2d9395",
+      "resource_json_sha256": "2fe5417827807606502829b60483752cd1586088c45fc8b7bc89cf8f882d98ec",
+      "original_path": "animations/FIGANI_062/resource.json",
+      "archive_sha256": "e909314ce37b70701238fd24febc8f61603bbe8d81a9ecbf8f289c97a5b67a1f",
+      "scope": "fixed original source status digest checked; no invented cast bank"
+    },
+    "visual_review_scope": "實際fixture最終1920回讀，面板姓名沿原測試人物；只檢查圖源與呈現，正常玩家及人工批准最後集中。",
+    "ownership_scope": {
+      "task_work_root": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1",
+      "new_assets": "1000:1000 verified",
+      "repository_historical_root_owned": "outside changed set; unchanged and no recursive chown"
+    },
+    "tool_images": {
+      "assets": "sha256:e59237a31d4b5f7a62c59ac37b780bd93f17c99fda97be8f5ca0c53978b878bc",
+      "go": "sha256:e4a805c52a3ad5d8c22cf23f2bcf51c6924e5ad6b99554f1b02761903c725433"
+    },
+    "superseded_candidate_r1": {
+      "status": "ART-REJECTED-NOT-REGISTERED",
+      "reason": "main flash too thin; successful technical checks only apply to old art, not final R2",
+      "compiled": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure020-candidate-r1/compiled.json",
+        "sha256": "9a48630a0df14d1f23d2aca27f22436b267a4f7ab82f915864e1c81df8072afb"
+      },
+      "runtime_gpu": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure020-runtime-r1-capture/receipt.json",
+        "sha256": "e0db7592b8a80859d2ce91e750e0365e29dfe0bf05966e547835e990ac6388d8"
+      },
+      "runtime_memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure020-runtime-r1.memory.json",
+        "sha256": "312bedfd591523818b45eb74dc40c8d2cf80a889dfa47103664ae233f6c02bf8"
+      },
+      "compiler_guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure020-source-guards-r1/guards.json",
+        "sha256": "d06159ec6f95f9dc6370f01207b02c253fc3ffc807eefa37dced889db7df7bea"
+      }
+    },
+    "visual_review_samples": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure020-runtime-r2-capture/060-00.png",
+        "sha256": "417363be799ef917dcda17a5f497f156b35835ad51834ce580c411163b9c4110"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure020-runtime-r2-capture/061-08.png",
+        "sha256": "f7f33978273b1aa5fc28a06f0720cf3fdd77fe2e072c09648c166bd763842591"
+      }
+    ],
+    "private_remote_verified": true,
+    "compiled": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure020-candidate-r2/compiled.json",
+      "sha256": "476ba0b30dd58d670d77f1ea0b1eb5ee1828a7cfcf5f82dedea9d03612584de2"
+    },
+    "compiler_guards": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure020-source-guards-r2/guards.json",
+      "sha256": "49c388113454c25375dcd830677e524da3a34213a889ac7aef945d0f8eb6cbf5"
+    },
+    "runtime_gpu": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure020-runtime-r2-capture/receipt.json",
+      "sha256": "4daaa1d0f4fd16a3de71846c0cedaab892f3401dac09ccdcd7eca8fa9264d308"
+    },
+    "pixel_core": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure020-core-r1.json",
+      "sha256": "001daddbc59051baa5a9a548b3cfff54135627523d3a3007aff848ab1e522d7a"
+    },
+    "runtime_memory": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure020-runtime-r2.memory.json",
+      "sha256": "ed2ef4eb360d0034fb5454e7ace0df4ea57d5e08adf2c168c21b47c5689b9367"
+    },
+    "formal_registration": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure020-formal-registration-r1.json",
+      "sha256": "7217b084dc6bea9b8bbaa98e2db943c4a4ca2a55197025b40a8a5a4871e05fcd"
+    },
+    "private_delivery": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure020-private-delivery-r1.json",
+      "sha256": "1d20b589304f7145cbfce5eb493fd2c93f1789ca74503782f9f0edc69c35f590"
+    },
+    "coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure020-formal-coverage-r1.json",
+      "sha256": "f644eb8b4e5f5b4eebe77985cab13ac2211d096ab55ea8ceb8ed8be8a3c4ddb0"
+    },
+    "package_checks": {
+      "formal_candidate": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure020-formal-candidate-go-r1.memory.json",
+        "sha256": "d799c898ea4415aaf1ef675e8d0280c118e384bb0551c24d44c6dbea932c0dad"
+      },
+      "formal_preflight": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure020-formal-preflight-go-r1.memory.json",
+        "sha256": "2cd734973ad02bab17633cdc3e9dfff58fa71dcebcf511ed5bf2e0cfb7db6187"
+      },
+      "runtime_candidate": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure020-runtime-candidate-go-r1.memory.json",
+        "sha256": "83e62e3a6e84e8de52f020bc2ecfa824813598db5a9a7b3b1452b3a09c0bb2a9"
+      },
+      "runtime_preflight": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure020-runtime-preflight-go-r1.memory.json",
+        "sha256": "4b1f19919ebdb210d8aa71507ca2d58c48aa35f093b2f8240242598b6759e0f4"
+      }
+    },
+    "generation_document": {
+      "mode": "built-in image_gen",
+      "tasks": [
+        {
+          "key": "idle",
+          "args": {
+            "transparent_background": true,
+            "referenced_image_paths": [
+              "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure020-native-reference-r1.png"
+            ],
+            "prompt": "Use case: stylized-concept. Asset type: ONE transparent HD RPG battle sprite faithful to FIGANI60 frame0 in reference, NOT a reference board. Primary request: redraw the entire mounted rider and wyvern as a single key pose in mature hand-painted fantasy RPG style with clean dark contours and painted material planes, not pixel art or glossy 3D. Rear three-quarter view, facing screen LEFT, tall compact upright hovering pose with wings FOLDED UP on either side. Slate blue-gray WYVERN with narrow long neck, horned spiny head reaching highest above rider, two leathery bat wings raised nearly vertical, powerful hind legs bent underneath, clawed feet and thick curled tail making a C near bottom; wyvern has wing-arms and TWO hind legs, no extra front arms. Brown leather saddle and harness. Human rider seated naturally on saddle on its upper back, mostly seen from behind, dark green shoulder-length hair or head covering, narrow red headband, green cloak draped down back, pale gray plate armor and trousers, blue boot joints, tan exposed forearm holding reins near chest, long straight silver sword upright near dragon neck as reference. Keep rider smaller than mount. Exact costume and gray-green palette of native, no red dragon, no unrelated knight design. Full single mount and rider including wing tips and sword contained, portrait composition with generous genuine transparent padding. Opaque figure core. No energy slash yet, no scenery, ground, platform, shadow, labels, panels or additional poses."
+          },
+          "output_hint": "Generated images are saved to /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0 as /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-830809cd-861f-4742-87d8-d18ba899bcea.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+          "generated_file": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-830809cd-861f-4742-87d8-d18ba899bcea.png",
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure020-idle-r1.png",
+          "sha256": "1dbc6056837998756cf616a56098369fa75b1029498c899e34d1126f8334f3d0",
+          "size": [
+            1199,
+            1312
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "anchor": [
+            27,
+            13,
+            1001,
+            1296
+          ],
+          "raw_rgba_unchanged": true,
+          "accepted": true
+        },
+        {
+          "key": "half",
+          "args": {
+            "transparent_background": true,
+            "referenced_image_paths": [
+              "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-830809cd-861f-4742-87d8-d18ba899bcea.png",
+              "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-99c6cdbe-2568-4b0d-9dcc-66dcca7463b7.png",
+              "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure020-native-reference-r1.png"
+            ],
+            "prompt": "Use case: identity-preserve. Create ONE intermediate HALF-OPEN-WINGS key pose between image1 upright folded wings and image2 wide spread wings, native FIGANI60 frame1 in image3 is authority. Keep EXACT same entire slate gray-blue two-legged wyvern and rear three-quarter LEFT-facing green-cloaked pale-gray-armored rider with red headband, upright silver sword, brown saddle/harness, curled C-tail, tucked hind legs and upright long horned neck. ONLY change wing spread: left wing extends partway left, right wing partway right, half as much horizontal spread as image2; tips still held fairly high, more vertical than image2. Full silhouette about0.9 width:height, body/rider stay same size. Preserve same painted contours, materials and colors. Two wings and two hind legs, no front dragon arms, rider two natural arms. Single complete body including horns, sword, wing tips, feet and tail fully contained with genuine transparent padding and opaque core. No energy, ground, shadows, scene, text, panels or extra pose."
+          },
+          "output_hint": "Generated images are saved to /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0 as /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-860f7760-9cd9-478f-bcfc-99961ca3c12f.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+          "generated_file": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-860f7760-9cd9-478f-bcfc-99961ca3c12f.png",
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure020-half-r1.png",
+          "sha256": "a20d94683d02f6ab1ff6df470ec5cf328ac7f9201c7ba994a78f50dd2b243759",
+          "size": [
+            1199,
+            1312
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "anchor": [
+            13,
+            16,
+            1190,
+            1285
+          ],
+          "raw_rgba_unchanged": true,
+          "accepted": true
+        },
+        {
+          "key": "open",
+          "args": {
+            "transparent_background": true,
+            "referenced_image_paths": [
+              "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-830809cd-861f-4742-87d8-d18ba899bcea.png",
+              "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure020-native-reference-r1.png"
+            ],
+            "prompt": "Use case: identity-preserve. Image1 is exact mounted wyvern and rider identity/style, image2 FIGANI60 frame2 is open-wing pose authority. Create ONE adjacent OPEN WINGS hovering key pose, full-body single mount/rider on genuine transparent background. Keep same slate blue-gray TWO-LEGGED wyvern, long upright neck and horned spiny head above rider, brown saddle/harness, powerful tucked hind legs and curled C-shaped tail. Keep same rear three-quarter LEFT-facing rider with red headband, dark-green hair, green back cloak, pale gray plate armor/trousers, tan forearm and upright silver sword. Change only wings from nearly vertical folded to SPREAD WIDE LEFT and RIGHT, bat wing membranes swept outward into a broad shallow V as native frame2; wing tips substantially farther from body, total full silhouette about1.2 times as wide as tall. Rider, head, chest, legs, feet and tail preserve their upright placement/proportions rather than a horizontal flying dragon. Exactly two wings, two hind legs, two rider arms with natural wrists; no front dragon arms. Same hand-painted fantasy RPG contours/material detail, opaque core. Full entire silhouette including wing tips and horns contained with transparent padding. No effect, scenery, ground, shadow, text, panels or second pose."
+          },
+          "output_hint": "Generated images are saved to /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0 as /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-99c6cdbe-2568-4b0d-9dcc-66dcca7463b7.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+          "generated_file": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-99c6cdbe-2568-4b0d-9dcc-66dcca7463b7.png",
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure020-open-r1.png",
+          "sha256": "4cafe2c8663325f8a8e2f0af84a52a1114541f1664023b3d47da31e6e883d262",
+          "size": [
+            1390,
+            1132
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "anchor": [
+            18,
+            36,
+            1376,
+            1096
+          ],
+          "raw_rgba_unchanged": true,
+          "accepted": true
+        },
+        {
+          "key": "attack_open",
+          "args": {
+            "transparent_background": true,
+            "referenced_image_paths": [
+              "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-99c6cdbe-2568-4b0d-9dcc-66dcca7463b7.png",
+              "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure020-native-reference-r1.png"
+            ],
+            "prompt": "Use case: identity-preserve. Image1 locks mounted wyvern/rider identity and hand-painted style. Image2 FIGANI61 frame8 is ATTACK pose authority. Create ONE full-body transparent mounted attack key pose. Keep same slate blue-gray long-necked horned TWO-LEGGED wyvern, curled C-tail, tucked hind legs, brown saddle/harness, rear three-quarter LEFT-facing viewpoint, WIDE OPEN bat wings like image1. Change RIDER into a leftward sword swing follow-through: gray-armored rider twists torso toward screen LEFT, right sword hand crosses in front of chest and silver sword points horizontally LEFT, arm bends naturally with straight wrist; other hand holds reins. Green cloak and dark-green hair/red headband stream to RIGHT from motion. Keep original relative body/rider scale and whole mount upright, not a horizontal dive. Same pale gray armor/trousers and tan forearms. Two rider arms, no extra swords or dragon arms. No slash light yet, no energy or glow, no ground, scene, platform, shadow, text, panel or extra pose. Full horns, tips, sword, feet and tail contained with genuine transparent padding, opaque body core."
+          },
+          "output_hint": "Generated images are saved to /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0 as /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-f2551d08-2569-4f3c-a71d-7dd0796c019a.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+          "generated_file": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-f2551d08-2569-4f3c-a71d-7dd0796c019a.png",
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure020-attack_open-r1.png",
+          "sha256": "a50792e2348466927f2da7787190dbffeb231af37ba3138d06bfd87c0dedc4bb",
+          "size": [
+            1390,
+            1132
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "anchor": [
+            11,
+            11,
+            1378,
+            1104
+          ],
+          "raw_rgba_unchanged": true,
+          "accepted": true
+        },
+        {
+          "key": "attack_half",
+          "args": {
+            "transparent_background": true,
+            "referenced_image_paths": [
+              "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-f2551d08-2569-4f3c-a71d-7dd0796c019a.png",
+              "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-860f7760-9cd9-478f-bcfc-99961ca3c12f.png"
+            ],
+            "prompt": "Use case: identity-preserve. Image1 is edit target, mounted attack key pose. Image2 supplies ONLY wing spread/shape. Create ONE same mounted ATTACK pose with HALF-OPEN wings, intermediate spread as image2; full silhouette about0.95 width:height. Keep entire slate blue-gray two-legged wyvern upright long horned neck, tucked hind legs, brown saddle/harness and curled C-tail, same rider body and relative size. Keep EXACT image1 rider sword follow-through: torso turned LEFT, right forearm across chest, single silver sword blade pointing horizontally RIGHT across right shoulder, left hand on reins, green cloak/hair/red headband streaming right, pale gray armor and trousers. Change ONLY wing fold/spread and leave rider sword stance intact. Preserve hand-painted fantasy RPG style, no new dragon design. Exactly two wings, two hind legs, two natural rider arms, no extra limbs or swords. Single whole body including horns, sword, wing tips, feet and tail contained with genuine transparent padding and opaque core. No energy, slash, ground, shadow, scenery, labels, panels or extra pose."
+          },
+          "output_hint": "Generated images are saved to /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0 as /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-6ce2f529-4033-48b6-bff4-6ad244773a8a.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+          "generated_file": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-6ce2f529-4033-48b6-bff4-6ad244773a8a.png",
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure020-attack_half-r1.png",
+          "sha256": "4eb949466df53cad4e5c15a76e704b4d3c7c98f36f9fa52cc65fef6a7a2d82ac",
+          "size": [
+            1292,
+            1217
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "anchor": [
+            10,
+            6,
+            1281,
+            1158
+          ],
+          "raw_rgba_unchanged": true,
+          "accepted": true
+        },
+        {
+          "key": "attack_closed",
+          "args": {
+            "transparent_background": true,
+            "referenced_image_paths": [
+              "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-f2551d08-2569-4f3c-a71d-7dd0796c019a.png",
+              "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-830809cd-861f-4742-87d8-d18ba899bcea.png"
+            ],
+            "prompt": "Use case: identity-preserve. Image1 is edit target, mounted attack key pose. Image2 supplies ONLY wing spread/shape. Create ONE same mounted ATTACK pose with FOLDED-UP wings held nearly vertical and close beside body as image2; full silhouette about0.8 width:height. Keep entire slate blue-gray two-legged wyvern upright long horned neck, tucked hind legs, brown saddle/harness and curled C-tail, same rider body and relative size. Keep EXACT image1 rider sword follow-through: torso turned LEFT, right forearm across chest, single silver sword blade pointing horizontally RIGHT across right shoulder, left hand on reins, green cloak/hair/red headband streaming right, pale gray armor and trousers. Change ONLY wing fold/spread and leave rider sword stance intact. Preserve hand-painted fantasy RPG style, no new dragon design. Exactly two wings, two hind legs, two natural rider arms, no extra limbs or swords. Single whole body including horns, sword, wing tips, feet and tail contained with genuine transparent padding and opaque core. No energy, slash, ground, shadow, scenery, labels, panels or extra pose."
+          },
+          "output_hint": "Generated images are saved to /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0 as /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-5bff7f94-fc64-4851-82c2-6305a54c4adc.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+          "generated_file": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-5bff7f94-fc64-4851-82c2-6305a54c4adc.png",
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure020-attack_closed-r1.png",
+          "sha256": "ab6a9ac9cc8beca26be1fc58ab7c7f8e71f017e3207acf030b2edfde856418d0",
+          "size": [
+            1122,
+            1402
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "anchor": [
+            158,
+            11,
+            1071,
+            1309
+          ],
+          "raw_rgba_unchanged": true,
+          "accepted": true
+        },
+        {
+          "key": "main",
+          "args": {
+            "transparent_background": true,
+            "referenced_image_paths": [
+              "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure020-components-review-r2.png"
+            ],
+            "prompt": "Use case: stylized-concept. Asset type: ONE isolated transparent broad sword-slash energy ribbon for fantasy RPG. Reference image FIRST panel shows the broad cream-white band BEHIND wyvern/rider; ignore all people/dragon, boxes and later panels. Draw ONLY the isolated massive slash wedge: sharp narrow point at LOWER LEFT, rapidly widening to a very broad blunt fan-like end at UPPER RIGHT, overall diagonal axis about20degrees upward right. Brilliant opaque ivory/very pale yellow core occupies almost entire broad triangular ribbon, crisp warm gold edge and a few slender orange-gold streaks parallel to diagonal. Overall silhouette about2.8 times as wide as high, broad white fan thickness at right about75percent of overall height, not a thin line, not a sparse comet or hollow crescent. Mature clean hand-painted RPG effect with subtle painted edge brushwork and strong solid cream core, restrained glow, not pixel art. Entire shape fully contained with real transparent padding on all sides, opaque core. No dragon, person, sword, ground, scene, shadow, red boxes, diagrams, labels, lettering, panels, secondary effect or black background."
+          },
+          "output_hint": "Generated images are saved to /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0 as /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-2b942530-d3d2-43dd-8f85-0190d5a79b1d.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+          "generated_file": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-2b942530-d3d2-43dd-8f85-0190d5a79b1d.png",
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure020-main-original-r1.png",
+          "sha256": "3a6f279bb6810ca75639006b0fd8a421d1b0918d547037d90e5eb1ca1e24731a",
+          "size": [
+            2098,
+            750
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "raw_rgba_unchanged": true,
+          "accepted": true
+        }
+      ]
+    },
+    "geometry_document": {
+      "status": "PINNED-WARM-ENERGY-GEOMETRY",
+      "native_crop_proof": {
+        "status": "PINNED-NATIVE-CROP-COMPARISON",
+        "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+        "tools": "Pillow11.3.0; existing load_native SHA/descriptor guards",
+        "scope": "Original RGBA crop candidates; nonzero difference is geometry evidence only, not exact reuse.",
+        "frames": [
+          {
+            "resource": 61,
+            "frame": 1,
+            "source_frame": 1,
+            "crop": [
+              0,
+              8,
+              171,
+              197
+            ],
+            "different_pixels": 0,
+            "pixel_count": 32319,
+            "exact_rgba": true
+          },
+          {
+            "resource": 61,
+            "frame": 2,
+            "source_frame": 2,
+            "crop": [
+              0,
+              16,
+              220,
+              195
+            ],
+            "different_pixels": 0,
+            "pixel_count": 39380,
+            "exact_rgba": true
+          },
+          {
+            "resource": 61,
+            "frame": 3,
+            "source_frame": 1,
+            "crop": [
+              0,
+              29,
+              147,
+              197
+            ],
+            "different_pixels": 31,
+            "pixel_count": 24696,
+            "exact_rgba": false
+          },
+          {
+            "resource": 61,
+            "frame": 4,
+            "source_frame": 0,
+            "crop": [
+              0,
+              44,
+              104,
+              199
+            ],
+            "different_pixels": 0,
+            "pixel_count": 16120,
+            "exact_rgba": true
+          },
+          {
+            "resource": 61,
+            "frame": 5,
+            "source_frame": 1,
+            "crop": [
+              0,
+              55,
+              122,
+              197
+            ],
+            "different_pixels": 0,
+            "pixel_count": 17324,
+            "exact_rgba": true
+          },
+          {
+            "resource": 61,
+            "frame": 6,
+            "source_frame": 2,
+            "crop": [
+              0,
+              56,
+              182,
+              195
+            ],
+            "different_pixels": 0,
+            "pixel_count": 25298,
+            "exact_rgba": true
+          },
+          {
+            "resource": 61,
+            "frame": 7,
+            "source_frame": 1,
+            "crop": [
+              0,
+              61,
+              117,
+              197
+            ],
+            "different_pixels": 0,
+            "pixel_count": 15912,
+            "exact_rgba": true
+          }
+        ]
+      },
+      "right_edges": [
+        {
+          "resource": 60,
+          "frame": 0,
+          "right_edge_opaque": 48
+        },
+        {
+          "resource": 60,
+          "frame": 1,
+          "right_edge_opaque": 62
+        },
+        {
+          "resource": 60,
+          "frame": 2,
+          "right_edge_opaque": 66
+        },
+        {
+          "resource": 60,
+          "frame": 3,
+          "right_edge_opaque": 62
+        },
+        {
+          "resource": 61,
+          "frame": 0,
+          "right_edge_opaque": 48
+        },
+        {
+          "resource": 61,
+          "frame": 1,
+          "right_edge_opaque": 78
+        },
+        {
+          "resource": 61,
+          "frame": 2,
+          "right_edge_opaque": 55
+        },
+        {
+          "resource": 61,
+          "frame": 3,
+          "right_edge_opaque": 93
+        },
+        {
+          "resource": 61,
+          "frame": 4,
+          "right_edge_opaque": 149
+        },
+        {
+          "resource": 61,
+          "frame": 5,
+          "right_edge_opaque": 127
+        },
+        {
+          "resource": 61,
+          "frame": 6,
+          "right_edge_opaque": 124
+        },
+        {
+          "resource": 61,
+          "frame": 7,
+          "right_edge_opaque": 120
+        },
+        {
+          "resource": 61,
+          "frame": 8,
+          "right_edge_opaque": 62
+        },
+        {
+          "resource": 61,
+          "frame": 9,
+          "right_edge_opaque": 1
+        },
+        {
+          "resource": 61,
+          "frame": 10,
+          "right_edge_opaque": 13
+        },
+        {
+          "resource": 61,
+          "frame": 11,
+          "right_edge_opaque": 14
+        },
+        {
+          "resource": 61,
+          "frame": 12,
+          "right_edge_opaque": 11
+        },
+        {
+          "resource": 61,
+          "frame": 13,
+          "right_edge_opaque": 14
+        }
+      ],
+      "fx_colors": [
+        [
+          255,
+          170,
+          24
+        ],
+        [
+          255,
+          207,
+          77
+        ],
+        [
+          255,
+          223,
+          105
+        ],
+        [
+          255,
+          255,
+          215
+        ]
+      ],
+      "frames": [
+        {
+          "resource": 60,
+          "frame": 0,
+          "body_pose": "idle",
+          "body_anchor": [
+            0,
+            0,
+            151,
+            199
+          ],
+          "fx": []
+        },
+        {
+          "resource": 60,
+          "frame": 1,
+          "body_pose": "half",
+          "body_anchor": [
+            0,
+            0,
+            182,
+            197
+          ],
+          "fx": []
+        },
+        {
+          "resource": 60,
+          "frame": 2,
+          "body_pose": "open",
+          "body_anchor": [
+            0,
+            0,
+            243,
+            195
+          ],
+          "fx": []
+        },
+        {
+          "resource": 60,
+          "frame": 3,
+          "body_pose": "half",
+          "body_anchor": [
+            0,
+            0,
+            182,
+            197
+          ],
+          "fx": []
+        },
+        {
+          "resource": 61,
+          "frame": 0,
+          "body_pose": "idle",
+          "body_anchor": [
+            0,
+            0,
+            151,
+            199
+          ],
+          "fx": []
+        },
+        {
+          "resource": 61,
+          "frame": 1,
+          "body_pose": "half_crop1",
+          "body_anchor": [
+            0,
+            0,
+            171,
+            189
+          ],
+          "fx": []
+        },
+        {
+          "resource": 61,
+          "frame": 2,
+          "body_pose": "open_crop2",
+          "body_anchor": [
+            0,
+            0,
+            220,
+            179
+          ],
+          "fx": []
+        },
+        {
+          "resource": 61,
+          "frame": 3,
+          "body_pose": "half_crop3",
+          "body_anchor": [
+            0,
+            0,
+            147,
+            168
+          ],
+          "fx": []
+        },
+        {
+          "resource": 61,
+          "frame": 4,
+          "body_pose": "idle_crop4",
+          "body_anchor": [
+            0,
+            0,
+            104,
+            155
+          ],
+          "fx": []
+        },
+        {
+          "resource": 61,
+          "frame": 5,
+          "body_pose": "half_crop5",
+          "body_anchor": [
+            0,
+            0,
+            122,
+            142
+          ],
+          "fx": []
+        },
+        {
+          "resource": 61,
+          "frame": 6,
+          "body_pose": "open_crop6",
+          "body_anchor": [
+            0,
+            0,
+            182,
+            139
+          ],
+          "fx": []
+        },
+        {
+          "resource": 61,
+          "frame": 7,
+          "body_pose": "half_crop7",
+          "body_anchor": [
+            0,
+            0,
+            117,
+            136
+          ],
+          "fx": []
+        },
+        {
+          "resource": 61,
+          "frame": 8,
+          "body_pose": "attack_open",
+          "body_anchor": [
+            0,
+            0,
+            320,
+            190
+          ],
+          "fx": [
+            {
+              "box": [
+                84,
+                0,
+                157,
+                81
+              ],
+              "pixels": 2612
+            },
+            {
+              "box": [
+                157,
+                0,
+                166,
+                10
+              ],
+              "pixels": 44
+            },
+            {
+              "box": [
+                162,
+                0,
+                320,
+                85
+              ],
+              "pixels": 7597
+            }
+          ]
+        },
+        {
+          "resource": 61,
+          "frame": 9,
+          "body_pose": "attack_half",
+          "body_anchor": [
+            0,
+            0,
+            219,
+            193
+          ],
+          "fx": [
+            {
+              "box": [
+                226,
+                4,
+                227,
+                5
+              ],
+              "pixels": 1
+            },
+            {
+              "box": [
+                179,
+                6,
+                223,
+                29
+              ],
+              "pixels": 139
+            },
+            {
+              "box": [
+                197,
+                8,
+                198,
+                9
+              ],
+              "pixels": 1
+            },
+            {
+              "box": [
+                163,
+                10,
+                194,
+                24
+              ],
+              "pixels": 70
+            },
+            {
+              "box": [
+                172,
+                24,
+                178,
+                27
+              ],
+              "pixels": 8
+            },
+            {
+              "box": [
+                211,
+                27,
+                212,
+                28
+              ],
+              "pixels": 1
+            },
+            {
+              "box": [
+                168,
+                29,
+                207,
+                46
+              ],
+              "pixels": 108
+            },
+            {
+              "box": [
+                165,
+                35,
+                166,
+                36
+              ],
+              "pixels": 1
+            },
+            {
+              "box": [
+                163,
+                36,
+                164,
+                37
+              ],
+              "pixels": 1
+            },
+            {
+              "box": [
+                207,
+                40,
+                208,
+                41
+              ],
+              "pixels": 1
+            },
+            {
+              "box": [
+                135,
+                42,
+                152,
+                48
+              ],
+              "pixels": 50
+            },
+            {
+              "box": [
+                172,
+                42,
+                203,
+                53
+              ],
+              "pixels": 91
+            },
+            {
+              "box": [
+                145,
+                49,
+                150,
+                55
+              ],
+              "pixels": 15
+            },
+            {
+              "box": [
+                54,
+                56,
+                82,
+                79
+              ],
+              "pixels": 233
+            },
+            {
+              "box": [
+                126,
+                59,
+                146,
+                72
+              ],
+              "pixels": 93
+            }
+          ]
+        },
+        {
+          "resource": 61,
+          "frame": 10,
+          "body_pose": "attack_closed",
+          "body_anchor": [
+            0,
+            0,
+            181,
+            193
+          ],
+          "fx": [
+            {
+              "box": [
+                63,
+                63,
+                70,
+                74
+              ],
+              "pixels": 33
+            },
+            {
+              "box": [
+                1,
+                82,
+                33,
+                99
+              ],
+              "pixels": 93
+            }
+          ]
+        },
+        {
+          "resource": 61,
+          "frame": 11,
+          "body_pose": "attack_half",
+          "body_anchor": [
+            0,
+            0,
+            219,
+            193
+          ],
+          "fx": []
+        },
+        {
+          "resource": 61,
+          "frame": 12,
+          "body_pose": "open",
+          "body_anchor": [
+            0,
+            0,
+            320,
+            196
+          ],
+          "fx": []
+        },
+        {
+          "resource": 61,
+          "frame": 13,
+          "body_pose": "half",
+          "body_anchor": [
+            0,
+            0,
+            219,
+            192
+          ],
+          "fx": []
+        }
+      ],
+      "gold_derivation": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure020-gold-rot030-r1.png",
+        "sha256": "e1e341a19c5847952452aab7306dcc7624845aed1b864a84190b3b369fee15f8",
+        "source_file": "remake/generated-assets/modern-theme-prototypes/figure-015-gold-battle-hd6-master-v1.png",
+        "source_sha256": "07ed31d12700a8da4ad6ddddda64a9dd67394709804e6fd73320276cb111ddab",
+        "rotation_degrees": 30,
+        "resampling": "Pillow11.3.0 BICUBIC expand=True",
+        "policy": "new hand-painted geometry approximation; native split rectangles fixed"
+      },
+      "scope": "Six body key poses; proportional source-anchor aliases for flight cropping; source RGBA preserved; no original RGB or animation phase equality.",
+      "criteria": "Four exact warm gold/cream RGBs; exclude gray steel and dark green clothing colors that appeared only in attack frames. Pure artwork geometry, not EXE ABI semantics.",
+      "spark_parent": {
+        "file": "remake/generated-assets/modern-theme-prototypes/figure-022-orb-battle-hd6-master-v1.png",
+        "sha256": "ba6722d7552c97051f1936826428cd2aed2817747d5d5c040f7560f9459c464d"
+      }
+    },
+    "main_crop_document": {
+      "status": "PASS-EXACT-RGBA-CROPS",
+      "parent": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure020-main-original-r1.png",
+        "sha256": "3a6f279bb6810ca75639006b0fd8a421d1b0918d547037d90e5eb1ca1e24731a"
+      },
+      "derived": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure020-main_left-crop-r1.png",
+          "sha256": "622c3b036a87d8e5fb030844833a1c35d12a735a32063c9fd1e66650e0da685d",
+          "crop": [
+            1398,
+            0,
+            2098,
+            750
+          ],
+          "source_sha256": "3a6f279bb6810ca75639006b0fd8a421d1b0918d547037d90e5eb1ca1e24731a",
+          "raw_rgba_exact_crop": true
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure020-main_right-crop-r1.png",
+          "sha256": "2cc7f75b8e50767d7269555b5ec13b66d9729cc0f9f8b4b072a9e2a2c6d7d5c4",
+          "crop": [
+            629,
+            0,
+            2098,
+            750
+          ],
+          "source_sha256": "3a6f279bb6810ca75639006b0fd8a421d1b0918d547037d90e5eb1ca1e24731a",
+          "raw_rgba_exact_crop": true
+        }
+      ],
+      "scope": "R1 thin slash candidate rejected; R3 main flash uses two broad fan crops, small trailing light unchanged; native twenty rectangles and timing unchanged. Artwork geometry approximation, not original RGB parity."
+    },
+    "source_alias_mapping": {
+      "figure-020-half_crop1-battle-hd6-master-v1.png": "figure-020-half-battle-hd6-master-v1.png",
+      "figure-020-open_crop2-battle-hd6-master-v1.png": "figure-020-open-battle-hd6-master-v1.png",
+      "figure-020-half_crop3-battle-hd6-master-v1.png": "figure-020-half-battle-hd6-master-v1.png",
+      "figure-020-idle_crop4-battle-hd6-master-v1.png": "figure-020-idle-battle-hd6-master-v1.png",
+      "figure-020-half_crop5-battle-hd6-master-v1.png": "figure-020-half-battle-hd6-master-v1.png",
+      "figure-020-open_crop6-battle-hd6-master-v1.png": "figure-020-open-battle-hd6-master-v1.png",
+      "figure-020-half_crop7-battle-hd6-master-v1.png": "figure-020-half-battle-hd6-master-v1.png",
+      "figure-020-spark-battle-hd6-master-v1.png": "figure-022-orb-battle-hd6-master-v1.png"
+    },
+    "reproduction_recipe": {
+      "schema_version": 1,
+      "figure": 20,
+      "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+      "sources": {
+        "idle": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-020-idle-battle-hd6-master-v1.png",
+          "sha256": "1dbc6056837998756cf616a56098369fa75b1029498c899e34d1126f8334f3d0",
+          "anchor": [
+            27,
+            13,
+            1001,
+            1296
+          ]
+        },
+        "half": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-020-half-battle-hd6-master-v1.png",
+          "sha256": "a20d94683d02f6ab1ff6df470ec5cf328ac7f9201c7ba994a78f50dd2b243759",
+          "anchor": [
+            13,
+            16,
+            1190,
+            1285
+          ]
+        },
+        "open": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-020-open-battle-hd6-master-v1.png",
+          "sha256": "4cafe2c8663325f8a8e2f0af84a52a1114541f1664023b3d47da31e6e883d262",
+          "anchor": [
+            18,
+            36,
+            1376,
+            1096
+          ]
+        },
+        "attack_open": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-020-attack_open-battle-hd6-master-v1.png",
+          "sha256": "a50792e2348466927f2da7787190dbffeb231af37ba3138d06bfd87c0dedc4bb",
+          "anchor": [
+            11,
+            11,
+            1378,
+            1104
+          ]
+        },
+        "attack_half": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-020-attack_half-battle-hd6-master-v1.png",
+          "sha256": "4eb949466df53cad4e5c15a76e704b4d3c7c98f36f9fa52cc65fef6a7a2d82ac",
+          "anchor": [
+            10,
+            6,
+            1281,
+            1158
+          ]
+        },
+        "attack_closed": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-020-attack_closed-battle-hd6-master-v1.png",
+          "sha256": "ab6a9ac9cc8beca26be1fc58ab7c7f8e71f017e3207acf030b2edfde856418d0",
+          "anchor": [
+            158,
+            11,
+            1071,
+            1309
+          ]
+        },
+        "gold": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-020-gold-battle-hd6-master-v1.png",
+          "sha256": "e1e341a19c5847952452aab7306dcc7624845aed1b864a84190b3b369fee15f8",
+          "anchor": [
+            301,
+            226,
+            1922,
+            1396
+          ]
+        },
+        "half_crop1": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-020-half-battle-hd6-master-v1.png",
+          "sha256": "a20d94683d02f6ab1ff6df470ec5cf328ac7f9201c7ba994a78f50dd2b243759",
+          "anchor": [
+            13,
+            68,
+            1119,
+            1285
+          ]
+        },
+        "open_crop2": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-020-open-battle-hd6-master-v1.png",
+          "sha256": "4cafe2c8663325f8a8e2f0af84a52a1114541f1664023b3d47da31e6e883d262",
+          "anchor": [
+            18,
+            123,
+            1247,
+            1096
+          ]
+        },
+        "half_crop3": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-020-half-battle-hd6-master-v1.png",
+          "sha256": "a20d94683d02f6ab1ff6df470ec5cf328ac7f9201c7ba994a78f50dd2b243759",
+          "anchor": [
+            13,
+            203,
+            964,
+            1285
+          ]
+        },
+        "idle_crop4": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-020-idle-battle-hd6-master-v1.png",
+          "sha256": "1dbc6056837998756cf616a56098369fa75b1029498c899e34d1126f8334f3d0",
+          "anchor": [
+            27,
+            297,
+            698,
+            1296
+          ]
+        },
+        "half_crop5": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-020-half-battle-hd6-master-v1.png",
+          "sha256": "a20d94683d02f6ab1ff6df470ec5cf328ac7f9201c7ba994a78f50dd2b243759",
+          "anchor": [
+            13,
+            370,
+            802,
+            1285
+          ]
+        },
+        "open_crop6": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-020-open-battle-hd6-master-v1.png",
+          "sha256": "4cafe2c8663325f8a8e2f0af84a52a1114541f1664023b3d47da31e6e883d262",
+          "anchor": [
+            18,
+            340,
+            1035,
+            1096
+          ]
+        },
+        "half_crop7": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-020-half-battle-hd6-master-v1.png",
+          "sha256": "a20d94683d02f6ab1ff6df470ec5cf328ac7f9201c7ba994a78f50dd2b243759",
+          "anchor": [
+            13,
+            409,
+            770,
+            1285
+          ]
+        },
+        "spark": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-022-orb-battle-hd6-master-v1.png",
+          "sha256": "ba6722d7552c97051f1936826428cd2aed2817747d5d5c040f7560f9459c464d",
+          "anchor": [
+            333,
+            255,
+            996,
+            939
+          ]
+        },
+        "main_left": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-020-main_left-battle-hd6-master-v1.png",
+          "sha256": "622c3b036a87d8e5fb030844833a1c35d12a735a32063c9fd1e66650e0da685d",
+          "anchor": [
+            0,
+            0,
+            700,
+            750
+          ]
+        },
+        "main_right": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-020-main_right-battle-hd6-master-v1.png",
+          "sha256": "2cc7f75b8e50767d7269555b5ec13b66d9729cc0f9f8b4b072a9e2a2c6d7d5c4",
+          "anchor": [
+            0,
+            0,
+            1469,
+            750
+          ]
+        }
+      },
+      "resources": {
+        "60": [
+          [
+            {
+              "pose": "idle",
+              "anchor": [
+                0,
+                0,
+                151,
+                199
+              ],
+              "scale_group": "body_idle"
+            }
+          ],
+          [
+            {
+              "pose": "half",
+              "anchor": [
+                0,
+                0,
+                182,
+                197
+              ],
+              "scale_group": "body_half"
+            }
+          ],
+          [
+            {
+              "pose": "open",
+              "anchor": [
+                0,
+                0,
+                243,
+                195
+              ],
+              "scale_group": "body_open"
+            }
+          ],
+          [
+            {
+              "pose": "half",
+              "anchor": [
+                0,
+                0,
+                182,
+                197
+              ],
+              "scale_group": "body_half"
+            }
+          ]
+        ],
+        "61": [
+          [
+            {
+              "pose": "idle",
+              "anchor": [
+                0,
+                0,
+                151,
+                199
+              ],
+              "scale_group": "body_idle"
+            }
+          ],
+          [
+            {
+              "pose": "half_crop1",
+              "anchor": [
+                0,
+                0,
+                171,
+                189
+              ],
+              "scale_group": "body_half"
+            }
+          ],
+          [
+            {
+              "pose": "open_crop2",
+              "anchor": [
+                0,
+                0,
+                220,
+                179
+              ],
+              "scale_group": "body_open"
+            }
+          ],
+          [
+            {
+              "pose": "half_crop3",
+              "anchor": [
+                0,
+                0,
+                147,
+                168
+              ],
+              "scale_group": "body_half"
+            }
+          ],
+          [
+            {
+              "pose": "idle_crop4",
+              "anchor": [
+                0,
+                0,
+                104,
+                155
+              ],
+              "scale_group": "body_idle"
+            }
+          ],
+          [
+            {
+              "pose": "half_crop5",
+              "anchor": [
+                0,
+                0,
+                122,
+                142
+              ],
+              "scale_group": "body_half"
+            }
+          ],
+          [
+            {
+              "pose": "open_crop6",
+              "anchor": [
+                0,
+                0,
+                182,
+                139
+              ],
+              "scale_group": "body_open"
+            }
+          ],
+          [
+            {
+              "pose": "half_crop7",
+              "anchor": [
+                0,
+                0,
+                117,
+                136
+              ],
+              "scale_group": "body_half"
+            }
+          ],
+          [
+            {
+              "pose": "main_left",
+              "anchor": [
+                84,
+                0,
+                157,
+                81
+              ],
+              "scale_group": "fx8_0"
+            },
+            {
+              "pose": "main_left",
+              "anchor": [
+                157,
+                0,
+                166,
+                10
+              ],
+              "scale_group": "fx8_1"
+            },
+            {
+              "pose": "main_right",
+              "anchor": [
+                162,
+                0,
+                320,
+                85
+              ],
+              "scale_group": "fx8_2"
+            },
+            {
+              "pose": "attack_open",
+              "anchor": [
+                0,
+                0,
+                320,
+                190
+              ],
+              "scale_group": "body_attack_open"
+            }
+          ],
+          [
+            {
+              "pose": "spark",
+              "anchor": [
+                226,
+                4,
+                227,
+                5
+              ],
+              "scale_group": "fx9_0"
+            },
+            {
+              "pose": "gold",
+              "anchor": [
+                179,
+                6,
+                223,
+                29
+              ],
+              "scale_group": "fx9_1"
+            },
+            {
+              "pose": "spark",
+              "anchor": [
+                197,
+                8,
+                198,
+                9
+              ],
+              "scale_group": "fx9_2"
+            },
+            {
+              "pose": "gold",
+              "anchor": [
+                163,
+                10,
+                194,
+                24
+              ],
+              "scale_group": "fx9_3"
+            },
+            {
+              "pose": "spark",
+              "anchor": [
+                172,
+                24,
+                178,
+                27
+              ],
+              "scale_group": "fx9_4"
+            },
+            {
+              "pose": "spark",
+              "anchor": [
+                211,
+                27,
+                212,
+                28
+              ],
+              "scale_group": "fx9_5"
+            },
+            {
+              "pose": "gold",
+              "anchor": [
+                168,
+                29,
+                207,
+                46
+              ],
+              "scale_group": "fx9_6"
+            },
+            {
+              "pose": "spark",
+              "anchor": [
+                165,
+                35,
+                166,
+                36
+              ],
+              "scale_group": "fx9_7"
+            },
+            {
+              "pose": "spark",
+              "anchor": [
+                163,
+                36,
+                164,
+                37
+              ],
+              "scale_group": "fx9_8"
+            },
+            {
+              "pose": "spark",
+              "anchor": [
+                207,
+                40,
+                208,
+                41
+              ],
+              "scale_group": "fx9_9"
+            },
+            {
+              "pose": "gold",
+              "anchor": [
+                135,
+                42,
+                152,
+                48
+              ],
+              "scale_group": "fx9_10"
+            },
+            {
+              "pose": "gold",
+              "anchor": [
+                172,
+                42,
+                203,
+                53
+              ],
+              "scale_group": "fx9_11"
+            },
+            {
+              "pose": "gold",
+              "anchor": [
+                145,
+                49,
+                150,
+                55
+              ],
+              "scale_group": "fx9_12"
+            },
+            {
+              "pose": "gold",
+              "anchor": [
+                54,
+                56,
+                82,
+                79
+              ],
+              "scale_group": "fx9_13"
+            },
+            {
+              "pose": "gold",
+              "anchor": [
+                126,
+                59,
+                146,
+                72
+              ],
+              "scale_group": "fx9_14"
+            },
+            {
+              "pose": "attack_half",
+              "anchor": [
+                0,
+                0,
+                219,
+                193
+              ],
+              "scale_group": "body_attack_half"
+            }
+          ],
+          [
+            {
+              "pose": "gold",
+              "anchor": [
+                63,
+                63,
+                70,
+                74
+              ],
+              "scale_group": "fx10_0"
+            },
+            {
+              "pose": "gold",
+              "anchor": [
+                1,
+                82,
+                33,
+                99
+              ],
+              "scale_group": "fx10_1"
+            },
+            {
+              "pose": "attack_closed",
+              "anchor": [
+                0,
+                0,
+                181,
+                193
+              ],
+              "scale_group": "body_attack_closed"
+            }
+          ],
+          [
+            {
+              "pose": "attack_half",
+              "anchor": [
+                0,
+                0,
+                219,
+                193
+              ],
+              "scale_group": "body_attack_half"
+            }
+          ],
+          [
+            {
+              "pose": "open",
+              "anchor": [
+                0,
+                0,
+                320,
+                196
+              ],
+              "scale_group": "body_open"
+            }
+          ],
+          [
+            {
+              "pose": "half",
+              "anchor": [
+                0,
+                0,
+                219,
+                192
+              ],
+              "scale_group": "body_half"
+            }
+          ]
+        ]
+      }
+    },
+    "known_clipping": [
+      {
+        "resource": 60,
+        "frame": 0,
+        "pose": "idle",
+        "pixels": 52333
+      },
+      {
+        "resource": 60,
+        "frame": 2,
+        "pose": "open",
+        "pixels": 25
+      },
+      {
+        "resource": 61,
+        "frame": 0,
+        "pose": "idle",
+        "pixels": 52333
+      },
+      {
+        "resource": 61,
+        "frame": 1,
+        "pose": "half_crop1",
+        "pixels": 14822
+      },
+      {
+        "resource": 61,
+        "frame": 2,
+        "pose": "open_crop2",
+        "pixels": 26154
+      },
+      {
+        "resource": 61,
+        "frame": 3,
+        "pose": "half_crop3",
+        "pixels": 85489
+      },
+      {
+        "resource": 61,
+        "frame": 4,
+        "pose": "idle_crop4",
+        "pixels": 297262
+      },
+      {
+        "resource": 61,
+        "frame": 5,
+        "pose": "half_crop5",
+        "pixels": 238284
+      },
+      {
+        "resource": 61,
+        "frame": 6,
+        "pose": "open_crop6",
+        "pixels": 164604
+      },
+      {
+        "resource": 61,
+        "frame": 7,
+        "pose": "half_crop7",
+        "pixels": 274716
+      },
+      {
+        "resource": 61,
+        "frame": 12,
+        "pose": "open",
+        "pixels": 19
+      }
+    ],
+    "scale_groups": {
+      "body_idle": 0.9957502043171002,
+      "body_half": 0.992695625145699,
+      "body_open": 0.9713631156930125,
+      "fx8_0": 1,
+      "fx8_1": 1,
+      "fx8_2": 0.9470227846073759,
+      "body_attack_open": 1,
+      "fx9_0": 0.6877828054298643,
+      "fx9_1": 1,
+      "fx9_2": 1,
+      "fx9_3": 1,
+      "fx9_4": 1,
+      "fx9_5": 1,
+      "fx9_6": 1,
+      "fx9_7": 1,
+      "fx9_8": 1,
+      "fx9_9": 1,
+      "fx9_10": 1,
+      "fx9_11": 1,
+      "fx9_12": 1,
+      "fx9_13": 1,
+      "fx9_14": 1,
+      "body_attack_half": 1,
+      "fx10_0": 1,
+      "fx10_1": 1,
+      "body_attack_closed": 1
+    },
+    "raw_main_parent": {
+      "file": "remake/generated-assets/modern-theme-prototypes/figure-020-main-original-battle-hd6-master-v1.png",
+      "sha256": "3a6f279bb6810ca75639006b0fd8a421d1b0918d547037d90e5eb1ca1e24731a"
+    },
+    "reproduce": [
+      "從ec03a4cf匯出完整catalog作base，保留462項；依reproduction_recipe及清冊白名單由私人庫還原來源。",
+      "資產Docker執行tools/build_fd2_character_battle_hd.py --layered --pack /original --inventory docs/data/fd2-battle-hd-source-inventory-20261019.json --recipe <reproduction_recipe.json> --base-catalog <base> --out <fresh-candidate>。",
+      "編製拒收用tools/test_fd2_character_battle_hd.py --pack /original --inventory <inventory> --recipe <recipe> --baseline <candidate>/compiled.json --out <fresh-guards>；工具由基底自動採layered，不另外傳--layered。",
+      "依source_alias_mapping將兩項source_files／source_sha256折回相同SHA的原母稿，去重；在FIGANI61來源清單另附raw_main_parent及既有figure015金光父稿，只保存來源，不改18張PNG或描述子。",
+      "Game.Draw用FD2_HD_BATTLE_LIFECYCLE_GPU=1 FD2_HD_BATTLE_REAL=1 FD2_TEST_MODERN_BATTLE_FIGURE=20及明示catalog／pack／capture output，with-xvfb go test ./cmd/fd2 -count=1 -timeout=500s -run ^TestModernHDBattleRuntimeGPU$ -v。",
+      "核心用tools/verify_fd2_character_battle_gpu.py --figure 20 --core-profile opaque --sample-group fixture --receipt <capture>/receipt.json --catalog <candidate> --source <pack> --original-pack /original --inventory <inventory> --proven-occlusion --report <new-report>。",
+      "audit_fd2_battle_hd_coverage.py核正式清冊；sync_modern_theme_private.py --catalog <formal> --source <formal-root> --destination <private>，另加--runtime-only輸出精簡包。",
+      "正式及runtime-only各以figure20、catalog／pack／original，分別執行TestModernHDBattleAssetsRealCandidate及TestNativePhysicalHDPreflightStopsBeforeSettlement；同8GB／4CPU、Go420／probe450／外層490秒，兩包合計四命令零SKIP。"
+    ],
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure020-final-validation-r1.json",
+      "sha256": "76b66ec05db02752f9a6a10fc88d5b3d32e7f1fcc64be6fc025c2a36a474b520"
+    },
+    "worklist_verify": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure020-fd2_worklist.py-verify-r1.log",
+      "sha256": "26091eea8ab3a41c4223d7a015d21fe3c26a4ad695ae0148921ec6de3bb37265"
+    },
+    "lessons_check": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure020-fd2_lessons.py-check-r1.log",
+      "sha256": "a7fcbba957ef87127dfce8ed9bd6a03b8b146cea1b4d3f9b312581029897487a"
     }
   }
 }
