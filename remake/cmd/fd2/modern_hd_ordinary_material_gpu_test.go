@@ -162,6 +162,13 @@ func TestModernHDShieldRidersAllFramesGPU(t *testing.T) {
 	testModernHDRegisteredFramesGPU(t, "FIGANI.DAT", []int{105, 106, 108, 109, 111, 112}, 47, "PASS-SHIELD-RIDERS-47-SOURCE-GPU")
 }
 
+func TestModernHDRidersArcherAllFramesGPU(t *testing.T) {
+	if os.Getenv("FD2_HD_RIDERS_ARCHER_GPU") != "1" {
+		t.Skip("dedicated registered mounted fighters and archer GPU process required")
+	}
+	testModernHDRegisteredFramesGPU(t, "FIGANI.DAT", []int{114, 115, 117, 118, 120, 121}, 61, "PASS-RIDERS-ARCHER-61-SOURCE-GPU")
+}
+
 func testModernHDRegisteredFramesGPU(t *testing.T, archive string, resources []int, frameCount int, status string) {
 	t.Helper()
 	set, err := loadModernStoryPortraitSet(os.Getenv("FD2_TEST_MODERN_EFFECT_CATALOG"), os.Getenv("FD2_TEST_MODERN_EFFECT_PACK"))

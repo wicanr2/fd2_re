@@ -10,13 +10,17 @@ import sys
 
 from PIL import Image
 from build_fd2_gaia_battle_hd import digest
+from verify_fd2_archer_volley_gpu import PROFILES
 
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--figure', type=int, choices=sorted(PROFILES), default=23)
     for name in ['receipt', 'catalog', 'source', 'original-pack', 'inventory', 'out']:
         p.add_argument('--'+name, type=Path, required=True)
     args = p.parse_args()
+    profile = PROFILES[args.figure]
+    resource, first, last = profile['resource'], profile['first'], profile['frames']
     if not Path('/.dockerenv').exists() or args.out.exists() or args.out.parent.stat().st_uid != os.getuid():
         raise SystemExit('在Docker使用本人擁有的新輸出目錄')
     args.out.mkdir()
@@ -25,7 +29,7 @@ def main():
     checks = []
 
     def run(receipt, report, source=None, catalog=None, inventory=None):
-        return subprocess.run([sys.executable, str(verifier), '--receipt', str(receipt), '--report', str(report),
+        return subprocess.run([sys.executable, str(verifier), '--figure', str(args.figure), '--receipt', str(receipt), '--report', str(report),
             '--source', str(source or args.source), '--catalog', str(catalog or args.catalog),
             '--inventory', str(inventory or args.inventory), '--original-pack', str(args.original_pack)],
             capture_output=True, text=True, timeout=90)
@@ -35,7 +39,7 @@ def main():
     if result.returncode != 0 or not positive.is_file():
         raise AssertionError('有效正對照未通過：'+result.stdout+result.stderr)
     actual = json.loads(positive.read_text())
-    if actual['status'] != 'PASS-PINNED-ARCHER-VOLLEY-GPU' or len(actual['matches']) != 9:
+    if actual['status'] != 'PASS-PINNED-ARCHER-VOLLEY-GPU' or len(actual['matches']) != last-first:
         raise AssertionError('正對照範圍不完整')
 
     def reject(name, doc, expected, folder=None, **kwargs):
@@ -56,7 +60,7 @@ def main():
         reject(name, d, '需要完整弓手')
 
     def contains(sample, index):
-        return any(layer['resource'] == 70 and layer['frame'] == index
+        return any(layer['resource'] == resource and layer['frame'] == index
                    for key in ('before', 'after') for layer in sample.get(key, {}).get('battle_source_layers') or [])
 
     # Valid receipt-relative images are required even in the missing-frame case.
@@ -66,13 +70,13 @@ def main():
             name = sample['file']; target = folder/name
             if not target.exists():target.symlink_to((args.receipt.parent/name).resolve())
 
-    for index in (18, 24):
+    for index in (first+2, last-1):
         d = copy.deepcopy(base); d['source_shots'] = {k:v for k,v in d['source_shots'].items() if not contains(v, index)}
         folder = args.out/f'missing-{index}'; links(folder)
         reject(f'missing-frame-{index}', d, '最終Draw不完整', folder)
 
     folder = args.out/'wrong-pixels'; links(folder)
-    d = copy.deepcopy(base); sample = next(s for s in d['source_shots'].values() if contains(s, 17))
+    d = copy.deepcopy(base); sample = next(s for s in d['source_shots'].values() if contains(s, first+1))
     path = folder/sample['file']; path.unlink(); Image.new('RGB', (1920, 1200), (0, 255, 0)).save(path); sample['sha256'] = digest(path)
     reject('wrong-pixels', d, '最終Draw不完整', folder)
 
@@ -82,12 +86,12 @@ def main():
     wrong_source = args.out/'wrong-source'; wrong_source.mkdir()
     for path in args.source.iterdir():
         if path.is_file():(wrong_source/path.name).symlink_to(path.resolve())
-    catalog = json.loads(args.catalog.read_text()); asset = next(a for a in catalog['assets'] if a.get('role') == 'battle_animation_hd_set' and a['source_resource'] == 70)
-    path = wrong_source/asset['files'][16]; path.unlink(); Image.new('RGBA', (6, 6), (255, 255, 255, 255)).save(path)
+    catalog = json.loads(args.catalog.read_text()); asset = next(a for a in catalog['assets'] if a.get('role') == 'battle_animation_hd_set' and a['source_resource'] == resource)
+    path = wrong_source/asset['files'][first]; path.unlink(); Image.new('RGBA', (6, 6), (255, 255, 255, 255)).save(path)
     reject('wrong-source-sha', copy.deepcopy(base), '飛矢成品SHA不同', source=wrong_source)
-    asset['frame_sha256'][16] = digest(path); wrong_catalog = args.out/'wrong-catalog.json'; wrong_catalog.write_text(json.dumps(catalog)); d = copy.deepcopy(base); d['catalog_sha256'] = digest(wrong_catalog)
+    asset['frame_sha256'][first] = digest(path); wrong_catalog = args.out/'wrong-catalog.json'; wrong_catalog.write_text(json.dumps(catalog)); d = copy.deepcopy(base); d['catalog_sha256'] = digest(wrong_catalog)
     reject('self-consistent-wrong-dimensions', d, '飛矢成品形狀不同', source=wrong_source, catalog=wrong_catalog)
-    report = {'status': 'PASS-ARCHER-VOLLEY-GPU-GUARDS', 'positive_control': digest(positive),
+    report = {'status': 'PASS-ARCHER-VOLLEY-GPU-GUARDS', 'figure': args.figure, 'positive_control': digest(positive),
               'checks': checks, 'scope': '固定飛矢／空拍及真實Draw正對照的拒收；不代表普通玩家或原版parity。'}
     (args.out/'guards.json').write_text(json.dumps(report, ensure_ascii=False, indent=2)+'\n')
     print(json.dumps({'status': report['status'], 'cases': len(checks)}))

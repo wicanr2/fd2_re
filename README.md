@@ -119,6 +119,10 @@
 
 左為斧盾兵劈斬，中為長戟騎兵揚馬後的下劈，右為白馬槍騎兵突刺。圖組包含蓄力、轉槍及收勢，保留原有節拍。上圖是測試場景的實際最終GPU縮圖，面板沿用來源角色名稱；背景及受擊閃色仍含像素素材。馬匹與武器比例、光弧寬度及槍影角度有美術近似，待全部HD接入後集中人工確認。來源與限定驗證見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
 
+![長戟騎兵、投槍騎兵與三連飛矢的HD測試畫面](docs/figures/hd-riders-archer-battle.png)
+
+上排為長戟下劈與投槍後的藍光揮擊，下排為遠射手準備射擊與三連飛矢。這是測試場景的實際最終GPU縮圖，保留原本離場、命中分段與反擊；面板沿用來源角色名稱，背景與受擊閃色仍含像素素材。人物、馬匹與武器比例、握手及光弧外形有美術近似，正常操作與人工造型確認待全部HD接入後集中處理。來源與範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
+
 | 鐵諾HD普通END攻防 | 蓋亞HD普通攻防 |
 | --- | --- |
 | ![鐵諾HD普通END攻防](docs/figures/hd-tino-physical-attack.png) | ![蓋亞HD普通攻防](docs/figures/hd-gaia-physical-attack.png) |
