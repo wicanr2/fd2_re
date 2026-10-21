@@ -3491,6 +3491,29 @@
         ],
         "pattern": "明示進軍格不在當回合正式可達集合"
       }
+    },
+    {
+      "id": "ordinary-area-fixture-full-resistance-target-resources",
+      "date": "2026-10-21",
+      "area": "範圍法術fixture",
+      "rule": "重用單目標fixture驗範圍法術時，先用battle.LoadNativeCommandResistances載入remake/assets/data/native_command_resistances.json正式全表；預期圖組按實際plan.Results完整列出。入口remake/cmd/fd2/modern_hd_ordinary_test.go的ordinaryRemainingHDTestGame及原子預檢，涵蓋2／3／7／8。不移除鄰近目標、不縮小EffectMode，也不憑缺少confirmed以外職業的抗性就判HD預檢有缺陷。",
+      "why": "舊command32 fixture只留下class2抗性；7的完整目標集合會讀到class7，故在HD前拒收。補回正式全表後四命令原子預檢及多目標完整Draw通過，原失敗保留。 現行lessons掃描器刻意排除測試檔，本項由實際原子預檢與完整繪圖測試驗證，不掛無效的測試檔文字guard。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#ordinary_remaining_hd_followup_20261021"
+    },
+    {
+      "id": "go-suite-killed-use-kernel-cgroup-evidence",
+      "date": "2026-10-21",
+      "area": "Go測試資源",
+      "rule": "Go測試出現signal: killed時，先查同時刻核心MEMCG事件與cgroup memory.events，不把沒有斷言失敗當成通過。用tools/fd2_go_test_memory_probe.py在既有Docker Go映像內以--out <既有工作目錄>/<新名稱> --timeout 1260 -- with-xvfb go test ./... -json -count=1 -timeout=1200s保存峰值與原始log；完整套件沿專案8 GB／4 CPU配額，局部較小配額須明示。",
+      "why": "原R1在02:05:26 UTC的fd2.test由核心MEMCG OOM終止，log mtime相差不到一秒；4 GB受控重跑oom_kill=1。8 GB比較輪無OOM但碰650秒總時限，不能把另一種環境失敗當行為缺陷或完整通過。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#ordinary_remaining_hd_followup_20261021",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/fd2_go_test_memory_probe.py"
+        ],
+        "pattern": "memory.events"
+      }
     }
   ]
 }

@@ -18,14 +18,17 @@ def main():
     p.add_argument('--normal', action='store_true')
     p.add_argument('--command5', action='store_true')
     p.add_argument('--command1', action='store_true')
+    p.add_argument('--ordinary-command', type=int, choices=[2,3,7,8])
     p.add_argument('--normal-end-command', type=int, choices=[0,4,5])
     p.add_argument('--figure', type=int, default=9)
-    p.add_argument('--core-profile', choices=['blue','gold'], default='gold')
+    p.add_argument('--core-profile', choices=['blue','gold','opaque'], default='gold')
     p.add_argument('--all-cast-frames', action='store_true')
     args = p.parse_args()
     if args.command1 and (args.command5 or args.normal_end_command is not None):
         raise SystemExit('指令1模式不可與其他指令混用')
-    command_id=args.normal_end_command if args.normal_end_command is not None else 5 if args.command5 else 1 if args.command1 else 0
+    if args.ordinary_command is not None and (args.command1 or args.command5 or args.normal_end_command is not None):
+        raise SystemExit('普通法術模式不可混用')
+    command_id=args.ordinary_command if args.ordinary_command is not None else args.normal_end_command if args.normal_end_command is not None else 5 if args.command5 else 1 if args.command1 else 0
     if not Path('/.dockerenv').exists() or args.out.exists() or args.out.parent.stat().st_uid != os.getuid():
         raise SystemExit('在Docker使用本人擁有的新測試目錄')
     args.out.mkdir()
@@ -35,8 +38,9 @@ def main():
     normal=args.normal or args.normal_end_command is not None
 
     def command_for(receipt_path, report_path):
-        mode=['--normal-end-command',str(args.normal_end_command)] if args.normal_end_command is not None else [
-            f'--normal-command{command_id}' if args.normal else '--command5' if args.command5 else '--command1' if args.command1 else '--command0']
+        mode=(['--normal-ordinary-command' if args.normal else '--ordinary-command',str(command_id)] if args.ordinary_command is not None else
+              ['--normal-end-command',str(args.normal_end_command)] if args.normal_end_command is not None else [
+              f'--normal-command{command_id}' if args.normal else '--command5' if args.command5 else '--command1' if args.command1 else '--command0'])
         return [sys.executable, str(verifier), *mode, *(['--all-cast-frames'] if args.all_cast_frames else []),
                 '--figure', str(args.figure), '--core-profile', args.core_profile, '--receipt', str(receipt_path),
                 '--catalog', str(args.catalog), '--source', str(args.source),
@@ -83,7 +87,7 @@ def main():
 
     reject('wrong-command', lambda d:d.update(battle_end_commands=[]) if args.normal_end_command is not None else d.update(battle_command_id=6) if args.normal else d.update(command_id=6))
     reject('wrong-status', lambda d:d.update(status='OBSERVATION-ONLY'))
-    reject('incomplete-transaction', lambda d:d.update(cold_loaded_units_equal=False) if normal else d.update(hp_publications=5 if args.command5 else 7 if args.command1 else 6))
+    reject('incomplete-transaction', lambda d:d.update(cold_loaded_units_equal=False) if normal else d.update(hp_publications={0:7,1:8,2:6,3:13,5:6,7:5,8:16}[command_id]-1))
     reject('incomplete-f2-or-return', lambda d:d.update(natural_attack_return_checked=False) if normal else d['phase_f2_switches'].update({'command1-target' if args.command1 else 'target':0}))
     reject('blank-gpu', lambda d:None, blank=True)
     if normal:

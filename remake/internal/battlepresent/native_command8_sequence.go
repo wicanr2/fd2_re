@@ -8,6 +8,7 @@ import (
 )
 
 type NativeCommand8RenderedFrame struct {
+	Sources            NativeCommandSources
 	Pixels             []byte
 	HPStage            int
 	PlaySub1, PlaySub2 bool
@@ -61,7 +62,8 @@ func BuildNativeCommand8EffectSequence(in NativeCommand8EffectInput) (NativeComm
 		if err != nil {
 			return NativeCommand8EffectSequence{}, fmt.Errorf("battlepresent: command8 front frame %d: %w", i, err)
 		}
-		out.Front = append(out.Front, NativeCommand8RenderedFrame{Pixels: pixels, PlaySub1: frame.PlaySub1, PlaySub2: frame.PlaySub2})
+		out.Front = append(out.Front, NativeCommand8RenderedFrame{Sources: NativeCommandSources{Base: in.FrontBase, ActorFrame: len(in.ActorEffect.Frames) - 1, TargetIndex: 0, After: nativeCommand8SourceLayers(frame.Layers), Phase: "handler-front"},
+			Pixels: pixels, PlaySub1: frame.PlaySub1, PlaySub2: frame.PlaySub2})
 		state = frame.Next
 	}
 	lastIdleFrame, lastIdleRepeat := 0, 0
@@ -79,7 +81,8 @@ func BuildNativeCommand8EffectSequence(in NativeCommand8EffectInput) (NativeComm
 			if err != nil {
 				return NativeCommand8EffectSequence{}, fmt.Errorf("battlepresent: command8 target %d frame %d: %w", targetIndex, frameIndex, err)
 			}
-			out.Targets[targetIndex] = append(out.Targets[targetIndex], NativeCommand8RenderedFrame{Pixels: pixels, HPStage: frame.HPStage, PlaySub1: frame.PlaySub1, PlaySub2: frame.PlaySub2})
+			out.Targets[targetIndex] = append(out.Targets[targetIndex], NativeCommand8RenderedFrame{Sources: NativeCommandSources{Base: in.TargetBases[targetIndex][hpStage], ActorFrame: -1, TargetIndex: targetIndex, TargetFrame: idleFrame, After: nativeCommand8SourceLayers(frame.Layers), Phase: "target"},
+				Pixels: pixels, HPStage: frame.HPStage, PlaySub1: frame.PlaySub1, PlaySub2: frame.PlaySub2})
 			if idle.Frames[idleFrame].Delay <= 0 {
 				return NativeCommand8EffectSequence{}, fmt.Errorf("battlepresent: command8 target %d idle delay unavailable", targetIndex)
 			}
@@ -106,7 +109,11 @@ func BuildNativeCommand8EffectSequence(in NativeCommand8EffectInput) (NativeComm
 				if err != nil {
 					return NativeCommand8EffectSequence{}, fmt.Errorf("battlepresent: command8 transition %d frame %d: %w", targetIndex, frameIndex, err)
 				}
-				frames = append(frames, NativeCommand8RenderedFrame{Pixels: pixels, PlaySub1: frame.PlaySub1, PlaySub2: frame.PlaySub2})
+				which := targetIndex
+				if frame.UseNextTarget {
+					which++
+				}
+				frames = append(frames, NativeCommand8RenderedFrame{Sources: NativeCommandSources{Base: in.TransitionBases[targetIndex], ActorFrame: len(in.ActorEffect.Frames) - 1, TargetIndex: which, TargetOffsetX: frame.TargetOffsetX, After: nativeCommand8SourceLayers(frame.Layers), Phase: "transition"}, Pixels: pixels, PlaySub1: frame.PlaySub1, PlaySub2: frame.PlaySub2})
 			}
 			out.Transitions = append(out.Transitions, frames)
 			state = after
@@ -123,7 +130,7 @@ func BuildNativeCommand8EffectSequence(in NativeCommand8EffectInput) (NativeComm
 		if err != nil {
 			return NativeCommand8EffectSequence{}, fmt.Errorf("battlepresent: command8 tail frame %d: %w", i, err)
 		}
-		out.Tail = append(out.Tail, NativeCommand8RenderedFrame{Pixels: pixels, PlaySub1: frame.PlaySub1, PlaySub2: frame.PlaySub2})
+		out.Tail = append(out.Tail, NativeCommand8RenderedFrame{Sources: NativeCommandSources{Base: in.TailBase, ActorFrame: len(in.ActorEffect.Frames) - 1, TargetIndex: len(in.TargetIdle) - 1, TargetFrame: lastIdleFrame, After: nativeCommand8SourceLayers(frame.Layers), Phase: "handler-tail"}, Pixels: pixels, PlaySub1: frame.PlaySub1, PlaySub2: frame.PlaySub2})
 		if lastIdle.Frames[lastIdleFrame].Delay <= 0 {
 			return NativeCommand8EffectSequence{}, errors.New("battlepresent: command8 tail idle delay unavailable")
 		}

@@ -71208,5 +71208,336 @@
       "maintained_images_unchanged": true,
       "all_one_shot_containers_removed": true
     }
+  },
+  "ordinary_remaining_hd_followup_20261021": {
+    "status": "CONFORMED-SCOPED-RUNTIME-E1",
+    "base": "04ccee09aa5eab5941a337b3cee27aa6f9562145",
+    "branch": "feat/hd-ordinary-2-3-7-8",
+    "work_root": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1",
+    "current_state": {
+      "remake": "普通2／3／7／8人物HD已接正式producer；完整繪圖及自動回歸通過，正常2／8已有收據，3／7及人工確認集中最後。",
+      "original_oracle": "58現有閉合證據沿用；不新增原版逐幀／音訊或整章E2聲明。",
+      "optional_polish": "本批所用FDOTHER法術特效仍像素；6 packed shader的HD契約另列。"
+    },
+    "command_ids": [
+      2,
+      3,
+      7,
+      8
+    ],
+    "hp_stages": {
+      "2": 6,
+      "3": 13,
+      "7": 5,
+      "8": 16
+    },
+    "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md#普通法術2378的hd人物呈現",
+    "scope": "在同次typed producer記錄實際來源，保留數值／亂數／聲音／Draw發布與保存格式；使用既有HD人物。",
+    "full_battle_hd_complete": false,
+    "next_caster_candidates": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/next-caster-static-candidates.json",
+      "sha256": "cd01d9c0afa5e0c0aecf7908169aa7d0a406d1efa9426bf8d768d7ebd67e3baf"
+    },
+    "signal_killed_diagnosis": {
+      "status": "CONFIRMED-MEMCG-OOM",
+      "original_kernel_event": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/go-all-r1-kernel-oom.json",
+        "sha256": "8f7d223aaae425a8dc78e1d94848a6f87ef0eeacafc16909ebfcd6445c85374f"
+      },
+      "kernel_excerpt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/go-all-r1-kernel-oom.txt",
+        "sha256": "ffb0efc1f1e538a229512afbd729229a9b7e009e2e55e04601f2fd8b8693fed6"
+      },
+      "controlled_4g": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/go-all-memory-r2.memory.json",
+        "sha256": "55e6de171aba84bc223e92aa1ca8e0f161005f5e4d6e216eafc0cfa0bac4e590"
+      },
+      "controlled_4g_oom_kill": 1,
+      "comparison_8g": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/go-all-memory-r3-8g.memory.json",
+        "sha256": "a1e988ca2db763415aa185f2dcbb7f5f21fb0b11ffc19572cb389f6f0cb26a62"
+      },
+      "comparison_8g_oom_kill": 0,
+      "comparison_8g_status": "NO-OOM-BUT-GO-SUITE-650S-TIMEOUT",
+      "main_package_retry": {
+        "status": "PASS",
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/go-main-memory-r4-8g4cpu.memory.json",
+          "sha256": "f4bc5fa64b319b138a108b7735c9e948079f7da62750f005e90cab43f65e65b3"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/go-main-memory-r4-8g4cpu.log",
+          "sha256": "dd37d2e7ad96b51fff151823857ab857ff5888dfe0c712fe41e9aac985d736fc"
+        },
+        "memory_limit_bytes": 8589934592,
+        "cpus": 4,
+        "go_timeout_seconds": 1200,
+        "memory_peak_bytes": 7558815744,
+        "main_top_level_pass": 930,
+        "main_top_level_dedicated_skip": 71
+      },
+      "scope": "測試資源終止根因已證實；不據此宣稱正式遊戲記憶體無問題或整批驗收通過。"
+    },
+    "normal_gui_before_pause": {
+      "command2": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/normal2-r1/receipt.json",
+        "sha256": "a12b40c084d32c52ec265984078cfde0c562a4e1e6a75929656100eb45651844"
+      },
+      "command8": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/normal8-r1/receipt.json",
+        "sha256": "ed50c7759a5bf18960222fe846f1c0f0a6ea24e0c67b7f22eb83c94492699266"
+      },
+      "commands3_7": "pending集中人工確認；不補造指令或章內注入"
+    },
+    "initial_state": {
+      "remake": "普通0／1／4／5人物HD已接；2／3／7／8 indexed RUNTIME-E1，HD未接。",
+      "original_oracle": "58現有閉合證據沿用；不新增原版逐幀／音訊或整章E2聲明。",
+      "optional_polish": "本批所用FDOTHER法術特效仍像素；6 packed shader的HD契約另列。"
+    },
+    "source_bridge": {
+      "new_cases": 626,
+      "total_gpu_canvases": 1891,
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/bridge-r1.log",
+        "sha256": "549da3bdf52c2f8133fe50b816c9cb3537b78df0175305dcc5bd591197add2f7"
+      }
+    },
+    "fixtures": {
+      "2": {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/fixture-2-r1/receipt.json",
+          "sha256": "3b5839a14cac41e82e5e13609d6ef5db29da1c42b51f6c57d42eb03f146470dc"
+        },
+        "core_and_guards": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/fixture2-guards-r1/report.json",
+          "sha256": "ad39728c13594afd6bb54399b2f2c8f2dd674ecc8a0c5d07204f9866dc6e4a62"
+        },
+        "hp_stages": 6
+      },
+      "3": {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/fixture-3-r1/receipt.json",
+          "sha256": "3c0812b49530043d42e50b2e2bf5f677f7ed555f0d2d5dea0cbc6fa364b35940"
+        },
+        "core_and_guards": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/fixture3-guards-r1/report.json",
+          "sha256": "c758735711ff89f51d76e4fdfd14d2cf667ab17351d629868986afddd8f2de2c"
+        },
+        "hp_stages": 13
+      },
+      "7": {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/fixture-7-r1/receipt.json",
+          "sha256": "e2e8174b5eb9d92fda2b19db1a0a8d14a0d364acd9a327ef71f2b40311dedff6"
+        },
+        "core_and_guards": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/fixture7-guards-r1/report.json",
+          "sha256": "b298f1a5c030558aca5703ac0aa93c7f18f956dac279f3877fa81b94c4b8ac99"
+        },
+        "hp_stages": 5
+      },
+      "8": {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/fixture-8-r1/receipt.json",
+          "sha256": "ec48ebb96de67557d9813a89ee732454685b0dedff31194406eefd8354e692fd"
+        },
+        "core_and_guards": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/fixture8-guards-r1/report.json",
+          "sha256": "31377640d363fcf6de5625ce057e66587111d468437898e2fe8fb5df332c67c4"
+        },
+        "hp_stages": 16
+      }
+    },
+    "normal_core_guards": {
+      "2": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/normal2-guards-r1/report.json",
+        "sha256": "3856dc584009f22ec355c049b3ccf564c22b0a694b620504dbf7f54cb796667f"
+      },
+      "8": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/normal8-guards-r1/report.json",
+        "sha256": "f673152d8f443d6d5f5ea0a0f1cca3927b776ce949b3132ad70a3c6f5197d226"
+      }
+    },
+    "regression": {
+      "status": "PASS-AGGREGATED-20-PACKAGES",
+      "other_packages_passed": [
+        "github.com/wicanr2/fd2_re/remake/cmd/fd2-terrain-sources",
+        "github.com/wicanr2/fd2_re/remake/cmd/fd2-save-audit",
+        "github.com/wicanr2/fd2_re/remake/cmd/fd2-chapter-slot",
+        "github.com/wicanr2/fd2_re/remake/cmd/fd2-string-inventory",
+        "github.com/wicanr2/fd2_re/remake/internal/dato",
+        "github.com/wicanr2/fd2_re/remake/internal/fdsave",
+        "github.com/wicanr2/fd2_re/remake/internal/fdtxt",
+        "github.com/wicanr2/fd2_re/remake/internal/editorcanonical",
+        "github.com/wicanr2/fd2_re/remake/internal/battlepresent",
+        "github.com/wicanr2/fd2_re/remake/internal/afm",
+        "github.com/wicanr2/fd2_re/remake/internal/indexedmap",
+        "github.com/wicanr2/fd2_re/remake/internal/localization",
+        "github.com/wicanr2/fd2_re/remake/internal/musiccatalog",
+        "github.com/wicanr2/fd2_re/remake/internal/fdicon",
+        "github.com/wicanr2/fd2_re/remake/internal/battle",
+        "github.com/wicanr2/fd2_re/remake/internal/campaign",
+        "github.com/wicanr2/fd2_re/remake/internal/ending",
+        "github.com/wicanr2/fd2_re/remake/internal/figani",
+        "github.com/wicanr2/fd2_re/remake/internal/fdother"
+      ],
+      "other_packages_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/go-all-memory-r3-8g.log",
+        "sha256": "480d88a69d7b4cd475546ad2aa84250451b87e35c30752f093259f5d344a6748"
+      },
+      "main": {
+        "status": "PASS",
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/go-main-memory-r4-8g4cpu.memory.json",
+          "sha256": "f4bc5fa64b319b138a108b7735c9e948079f7da62750f005e90cab43f65e65b3"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/go-main-memory-r4-8g4cpu.log",
+          "sha256": "dd37d2e7ad96b51fff151823857ab857ff5888dfe0c712fe41e9aac985d736fc"
+        },
+        "memory_limit_bytes": 8589934592,
+        "cpus": 4,
+        "go_timeout_seconds": 1200,
+        "memory_peak_bytes": 7558815744,
+        "main_top_level_pass": 930,
+        "main_top_level_dedicated_skip": 71
+      },
+      "interpretation": "相同Go來源，19套件沿8 GB比較輪，主程式沿4 CPU／8 GB乾淨重跑；不是單一完整命令全部成功。專用GPU略過不當繪圖證據。"
+    },
+    "memory_probe_controls": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/memory-probe-guards-r1.json",
+      "sha256": "d30b05fe71213e56746dd51dd65ffd75f812cf9af9a44c9add8cbf4df76d26d2"
+    },
+    "string_review": {
+      "file": "docs/data/fd2-string-review.json",
+      "sha256": "0e78750b3d6c8d57f948c0c8177e6209d2112a3b3ff11177e41d073722d3970e"
+    },
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/phase-final-validation-r1.json",
+      "sha256": "c82949b864f549fc4ac15fbfdc31e4f35de9ba90223831cb52ec36d227f60eb2"
+    }
+  },
+  "hd_integration_order_20261021": {
+    "status": "READY",
+    "user_decision": "先確認signal killed；全部HD串接上遊戲後，集中人工確認並回報。",
+    "execution_order": [
+      "以cgroup事件及峰值查明全套Go測試被終止原因",
+      "完成正式consumer的HD接線及缺少的手繪素材",
+      "完成必要自動回歸與資料／Game.Draw檢查",
+      "集中正常操作與逐畫面目視，修正問題後回報"
+    ],
+    "scope": "人物／敵人大型戰鬥、普通與特殊法術／共同效果、地形／前景、背景與完整介面；既有核准風格及原版模式保持。",
+    "human_review": "pending-until-all-integrated",
+    "full_hd_complete": false,
+    "technical_checks": "接入保護仍執行；不以自動測試冒充人工確認。",
+    "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md#全部hd接入後集中人工確認",
+    "signal_killed": "CONFIRMED-MEMCG-OOM；標準配額與足夠時限的主程式回歸已通過。",
+    "source_reuse_audit": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/exact-source-reuse-inventory.json",
+      "sha256": "b14872c2798dda8bd1eea15c544bd57ae5f74bfd8cc1d837c47855312a435c10"
+    },
+    "next_native_reference": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/figure003-original-reference.png",
+      "sha256": "e6bed5dc4792327a426050202f99aa9066a4a0a211d9c961467a29ceca69a88f"
+    },
+    "integration_in_progress": true,
+    "worklist": {
+      "open_issues": 22,
+      "possibly_done": 0,
+      "verify": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/worklist-verify-phase-r1.log",
+        "sha256": "86a705d5f4e3a2e4f08ef650f29d426c2c5c17cfa54544b6333b324e92c391d1"
+      },
+      "issue201": "https://github.com/wicanr2/fd2_re/issues/201",
+      "issue263": "https://github.com/wicanr2/fd2_re/issues/263",
+      "order_comment": "https://github.com/wicanr2/fd2_re/issues/4#issuecomment-6308514181"
+    }
+  },
+  "winged110_battle_followup_20261021": {
+    "status": "FORMAL-RUNTIME-E1-HUMAN-REVIEW-PENDING",
+    "formal_registered": true,
+    "private_synced": true,
+    "full_battle_hd_complete": false,
+    "human_review": "pending-until-all-HD-integrated",
+    "generation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/figure110-generation-r1.json",
+      "sha256": "43fee1c686503d4923c2acdd45110fd2881e2487a2cda5c6bc933b81bf2c6868"
+    },
+    "original_reference": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/figure110-original-reference.png",
+      "sha256": "b9184e51e056e9ad0b8d318f7f2529c4ba997dc45af4ecc50935c9b5f4b09156"
+    },
+    "full_source_rgba": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/figure110-six-poses-source-r1.png",
+      "sha256": "4feb0d69590501d03ad110028b56ce123b14de32360977c4e75e366e1ee40e6c"
+    },
+    "crop_proof": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/figure110-source-crops-r3.json",
+      "sha256": "acdc0b0b1d04f30a9943e207d76f87475be52cd4d70b29b8579939902f422901"
+    },
+    "recipe": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/figure110-recipe-r3.json",
+      "sha256": "2d8a01fc523dfd803aaf530c910063c02fdf84570c99792b5919cb06fef043c2"
+    },
+    "compiled": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/figure110-candidate-r3/compiled.json",
+      "sha256": "94d9770d450428139053ec7900b63daa3fcc0163346e8d961f154f61872092e6"
+    },
+    "physical_gpu": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/figure110-runtime-physical-r1/receipt.json",
+      "sha256": "1278d6cc97b8b1cdaca4d2286bff2927b28bd58de9b60a8f2ce82e980c680ba6"
+    },
+    "cast_gpu": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/figure110-runtime-cast-r1/receipt.json",
+      "sha256": "14b6546735adc74e230b957fb4f7d09465cfe8ade082ed34b0054d052ad0680c"
+    },
+    "native_cast_reuse": "332:0..7原始PNG／Mask／尺寸逐項相同於331:0..7",
+    "rejected_attempts": [
+      "R1圖板下排切分490混入鄰圖翼尖，預檢停止；改以透明間隔480切分，RGBA不改。",
+      "R2錯以為332重用330，來源assert拒收；逐項固定SHA證明重用331，先勘誤spec再編製。"
+    ],
+    "clipping_high_coverage_pixels": 12,
+    "pose_sharing": "六張母稿明示共用於原24項描述子；非每幀獨立繪製或原版逐像素parity",
+    "formal_registration": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/figure110-formal-registration-r1.json",
+      "sha256": "53c8cc3d321291509cf7d6c79337c3fb73413412f5d834ae8779a764a077391a"
+    },
+    "formal_coverage": {
+      "report": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/figure110-formal-coverage-r1.json",
+        "sha256": "0fc254709197bcd58154be9746f454d64ba01bd76f2764576b0e0dc91761faa6"
+      }
+    },
+    "private_delivery": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/figure110-private-delivery-r1.json",
+      "sha256": "21e73347faa613ad8ba5d65b6f5ad932226126187c7c40deb81e52bd09f7823a"
+    },
+    "independent_gpu": {
+      "physical": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/figure110-physical-core-r1.json",
+        "sha256": "29956272d02d276906360d1d4749acabac2c59d8da211cf00bade43c5d876948"
+      },
+      "cast": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/figure110-cast-core-r1.json",
+        "sha256": "0a35b0c5e88f1e50c65cd321fa05232663ac6bb5529525d89949a59f79add8d9"
+      }
+    },
+    "formal_go": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/figure110-formal-go-r1.memory.json",
+      "sha256": "c0a7c2a515a66227e95d5e3da2e8281c349175ad6fc40c3c06a6f7b6968a262c"
+    },
+    "runtime_only_go": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/figure110-runtime-go-r1.memory.json",
+      "sha256": "c82cf7c2f2d7a74f05f8a2a41ddf11502b2f3d2d64c5302323d2c61ce4568e73"
+    },
+    "private_git": {
+      "commit": "6cb283ebd99d84471e1ca57e4210cd95a9e1d164",
+      "actual_remote_head": "6cb283ebd99d84471e1ca57e4210cd95a9e1d164",
+      "is_private": true
+    },
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/phase-final-validation-r1.json",
+      "sha256": "c82949b864f549fc4ac15fbfdc31e4f35de9ba90223831cb52ec36d227f60eb2"
+    }
   }
 }

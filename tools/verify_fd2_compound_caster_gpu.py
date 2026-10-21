@@ -52,12 +52,14 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--receipt', type=Path, action='append', required=True)
     p.add_argument('--figure', type=int, default=4)
-    p.add_argument('--core-profile', choices=['blue','gold'], default='blue', help='沿既有人物核對的服裝色域；alpha與RGB門檻不變')
+    p.add_argument('--core-profile', choices=['blue','gold','opaque'], default='blue', help='服裝色域或全部alpha≥250可見核心；RGB與至少1000點門檻不變')
     p.add_argument('--normal-command0', action='store_true', help='核對普通標題LOAD的指令0施法、自然返回與保存冷讀；不冒充fixture')
     p.add_argument('--command0', action='store_true', help='核對普通指令0的前導、施術與尾段；不套四召喚的滑出契約')
     p.add_argument('--command5', action='store_true', help='核對普通指令5的完整交易、F2及施術來源')
     p.add_argument('--command1', action='store_true', help='核對普通指令1的完整交易、F2及施術來源')
     p.add_argument('--normal-command1', action='store_true', help='核對普通標題LOAD的指令1施法、自然返回與保存冷讀')
+    p.add_argument('--ordinary-command', type=int, choices=[2,3,7,8], help='核對指定普通法術的完整交易、F2與施術來源')
+    p.add_argument('--normal-ordinary-command', type=int, choices=[2,3,7,8], help='核對指定普通法術的正常標題LOAD及保存冷讀')
     p.add_argument('--normal-end-command', type=int, choices=[0,4,5], help='核對正常END實際施法及完整返回／保存冷讀')
     p.add_argument('--all-cast-frames', action='store_true', help='明示要求每張施術來源都有actor階段最終GPU核心，不將非零相位抽樣冒充全幀')
     for name in ['catalog', 'source', 'report']:
@@ -65,11 +67,13 @@ def main():
     p.add_argument('--original-pack', type=Path, required=True)
     p.add_argument('--inventory', type=Path, required=True)
     args = p.parse_args()
-    if sum([args.command0,args.command1,args.command5,args.normal_command0,args.normal_command1,args.normal_end_command is not None])>1:
+    if sum([args.command0,args.command1,args.command5,args.normal_command0,args.normal_command1,args.normal_end_command is not None,
+            args.ordinary_command is not None,args.normal_ordinary_command is not None])>1:
         raise SystemExit('fixture與普通玩家模式不可混用')
-    normal=args.normal_command0 or args.normal_command1 or args.normal_end_command is not None
-    command_id=args.normal_end_command if args.normal_end_command is not None else 5 if args.command5 else 1 if args.command1 or args.normal_command1 else 0
-    ordinary=args.command0 or args.command1 or args.command5 or normal
+    normal=args.normal_command0 or args.normal_command1 or args.normal_ordinary_command is not None or args.normal_end_command is not None
+    command_id=(args.normal_end_command if args.normal_end_command is not None else args.ordinary_command if args.ordinary_command is not None
+                else args.normal_ordinary_command if args.normal_ordinary_command is not None else 5 if args.command5 else 1 if args.command1 or args.normal_command1 else 0)
+    ordinary=args.command0 or args.command1 or args.command5 or args.ordinary_command is not None or normal
     if args.report.exists(): raise SystemExit('不覆寫既有報告')
     catalog = validate(False, args.catalog)
     inventory = json.loads(args.inventory.read_text())
@@ -103,8 +107,8 @@ def main():
                 if im.mode != 'RGBA' or im.size != (frame['width']*6, frame['height']*6): raise SystemExit('施術者圖源形狀不同')
                 points = [(i % im.width, i // im.width, r, g, b, alpha)
                           for i, (r, g, b, alpha) in enumerate(im.getdata())
-                          if alpha >= 250 and ((b >= 70 and b*100 >= r*150 and b*100 >= g*130) if args.core_profile=='blue'
-                             else (r>=100 and g>=70 and r>=g and g*100>=b*150 and r*100>=b*180))]
+                           if alpha >= 250 and (args.core_profile=='opaque' or ((b >= 70 and b*100 >= r*150 and b*100 >= g*130) if args.core_profile=='blue'
+                              else (r>=100 and g>=70 and r>=g and g*100>=b*150 and r*100>=b*180)))]
             if len(points) < 1000: raise SystemExit('本圖源不適用指定色域核心核對')
             core[(resource, index)] = (name, sha, points, frame)
     occluded=make_native_occlusion_test(entries,args.source,args.original_pack,inventory)
@@ -125,8 +129,12 @@ def main():
             or d.get('mp_publications')!=1 or d.get('hp_publications')!=8
             or any(d.get('phase_f2_switches',{}).get(phase)!=1 for phase in ['prelude','actor','actor-pulse','command1-target','tail'])):
             raise SystemExit('需要完整普通指令1交易／F2收據')
+        if args.ordinary_command is not None and (d.get('status')!=f'PASS-ORDINARY-COMMAND{command_id}-FIXTURE-RUNTIME-E1' or d.get('command_id')!=command_id
+            or d.get('mp_publications')!=1 or d.get('hp_publications')!={2:6,3:13,7:5,8:16}[command_id]
+            or any(d.get('phase_f2_switches',{}).get(phase)!=1 for phase in ['prelude','actor','actor-pulse','handler-front','target','handler-tail','tail'])):
+            raise SystemExit(f'需要完整普通指令{command_id}交易／F2收據')
         samples=d.get('source_shots', {})
-        if args.normal_command0 or args.normal_command1:
+        if args.normal_command0 or args.normal_command1 or args.normal_ordinary_command is not None:
             if (d.get('status')!='PASS' or d.get('schema')!='fd2-hd-battle-status-gui-v1'
                 or d.get('battle_command_id')!=command_id or d.get('battle_action_kind')!=f'command{command_id}'
                 or not d.get('natural_attack_return_checked') or not d.get('post_battle_save_checked')
@@ -192,7 +200,7 @@ def main():
                     points = [p for p in all_points if not occluded(p[0]+layer['x']*6, p[1]+layer['y']*6, sample['layers'][layer_index+1:])]
                     visible_count = len(points)
                     if visible_count < 1000: continue
-                    points = points[::max(1, visible_count//2500)]
+                    if args.core_profile!='opaque':points = points[::max(1, visible_count//2500)]
                     if matches(rgb, points, layer['x']*6, layer['y']*6, 1920, 1200):
                         found.append({'file': name, 'sha256': digest(path), 'phase': sample['phase'],
                                       'resource': key[0], 'frame': key[1], 'source_file': source,
@@ -213,6 +221,8 @@ def main():
             if actual!=expected:raise SystemExit('施術來源全幀GPU核心不完整')
         reports.append({'receipt': str(receipt), 'receipt_sha256': digest(receipt), 'matches': found})
     status=(f'PASS-ORDINARY-COMMAND{command_id}-NORMAL-END-CASTER-GPU' if args.normal_end_command is not None else
+            f'PASS-ORDINARY-COMMAND{command_id}-NORMAL-CASTER-GPU' if args.normal_ordinary_command is not None else
+            f'PASS-ORDINARY-COMMAND{command_id}-CASTER-GPU' if args.ordinary_command is not None else
             'PASS-ORDINARY-COMMAND5-CASTER-GPU' if args.command5 else
             'PASS-ORDINARY-COMMAND1-CASTER-GPU' if args.command1 else
             f'PASS-ORDINARY-COMMAND{command_id}-NORMAL-CASTER-GPU' if args.normal_command0 or args.normal_command1 else

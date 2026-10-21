@@ -71,6 +71,26 @@ func (g *Game) applyTheme(set *modernStoryPortraitSet) error {
 			return err
 		}
 	}
+	if set != nil && g.nativeCmd2Presentation != nil {
+		if err := set.prepareBattleHDResources(g.nativeCmd2Presentation.hd.resources()...); err != nil {
+			return err
+		}
+	}
+	if set != nil && g.nativeCmd3Presentation != nil {
+		if err := set.prepareBattleHDResources(g.nativeCmd3Presentation.hd.resources()...); err != nil {
+			return err
+		}
+	}
+	if set != nil && g.nativeCmd7Presentation != nil {
+		if err := set.prepareBattleHDResources(g.nativeCmd7Presentation.hd.resources()...); err != nil {
+			return err
+		}
+	}
+	if set != nil && g.nativeCmd8Presentation != nil {
+		if err := set.prepareBattleHDResources(g.nativeCmd8Presentation.hd.resources()...); err != nil {
+			return err
+		}
+	}
 	if resource := g.modernCompoundEffectResource(); set != nil && resource >= 0 {
 		if err := set.prepareBattleHDBanks(g.modernCompoundFigureResources(), []int{resource}); err != nil {
 			return err

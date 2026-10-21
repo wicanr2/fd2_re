@@ -33,6 +33,18 @@ fi
 image=${FD2_GO_TEST_IMAGE:-fd2-go-test-local:latest}
 cache=${FD2_GO_TEST_CACHE:-$(mktemp -d -t fd2-gocache-XXXXXX)}
 baseline=${FD2_REGRESSION_BASELINE:-$repo_root/docs/data/regression-baseline-20260909.json}
+test_timeout=${FD2_GO_TEST_TIMEOUT:-20m}
+wall_timeout=${FD2_GO_TEST_WALL_TIMEOUT:-1260s}
+
+if [ ! -f "$baseline" ]; then
+    echo "找不到回歸基線：$baseline" >&2
+    exit 2
+fi
+if [ ! -d "$cache" ] || [ "$(stat -c %u -- "$cache")" != "$(id -u)" ] || \
+    [ "$(stat -c %g -- "$cache")" != "$(id -g)" ]; then
+    echo "測試快取須是本人 UID/GID 擁有的既有目錄：$cache" >&2
+    exit 2
+fi
 
 # 符號連結根的目標是容器內路徑（/src/…），在主機上解析不了，所以這裡接受
 # dangling symlink：只要那一項存在就算數，真正的可讀性由容器內的測試判定。
@@ -50,12 +62,18 @@ docker run --rm --network none --memory 8g --cpus 4 --pids-limit 512 \
     -e HOME=/tmp/home -e GOCACHE=/gocache -e GOFLAGS=-mod=mod -e FD2_ASSET_PACK=/pack \
     -v "$repo_root:/src" -v "$pack_root:/pack:ro" -v "$cache:/gocache" \
     -w /src/remake "$image" \
-    with-xvfb go test "${packages[@]}" -count=1 > "$log" 2>&1
+    timeout --kill-after=5s "$wall_timeout" \
+    with-xvfb go test "${packages[@]}" -count=1 -timeout="$test_timeout" > "$log" 2>&1
 status=$?
 set -e
 
 echo "log=$log exit=$status"
-python3 - "$baseline" "$log" <<'PY'
+log_parent=$(cd -- "$(dirname -- "$log")" && pwd)
+log_name=$(basename -- "$log")
+docker run --rm --network none --memory 256m --cpus 1 --pids-limit 64 \
+    -u "$(id -u):$(id -g)" -i \
+    -v "$baseline:/input/baseline.json:ro" -v "$log_parent:/logs:ro" \
+    "$image" python3 - /input/baseline.json "/logs/$log_name" <<'PY'
 import json
 import re
 import sys
@@ -71,3 +89,4 @@ print(f"baseline {len(baseline)} now {len(now)}")
 print("新增:", ", ".join(sorted(now - baseline)) or "無")
 print("修復:", ", ".join(sorted(baseline - now)) or "無")
 PY
+exit "$status"

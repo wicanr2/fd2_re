@@ -231,6 +231,7 @@ func TestModernHDBattleGPUBridge(t *testing.T) {
 	cases = appendModernCompoundActorGPUCases(t, cases)
 	cases = appendModernCommand0GPUCases(t, cases)
 	cases = appendModernCommand1GPUCases(t, cases)
+	cases = appendModernOrdinaryRemainingGPUCases(t, cases)
 	cases = appendModernCommand5GPUCases(t, cases)
 	cases = appendModernScrollGPUCases(t, cases)
 	probe := &modernHDBattleGPUProbe{cases: cases}

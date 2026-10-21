@@ -71,6 +71,14 @@ func (g *Game) syncModernHDBattleOwner() {
 		owner = g.nativeCmd0Presentation
 	case g.nativeCmd1Presentation != nil:
 		owner = g.nativeCmd1Presentation
+	case g.nativeCmd2Presentation != nil:
+		owner = g.nativeCmd2Presentation
+	case g.nativeCmd3Presentation != nil:
+		owner = g.nativeCmd3Presentation
+	case g.nativeCmd7Presentation != nil:
+		owner = g.nativeCmd7Presentation
+	case g.nativeCmd8Presentation != nil:
+		owner = g.nativeCmd8Presentation
 	case g.nativeCmd5Presentation != nil:
 		owner = g.nativeCmd5Presentation
 	case g.nativeCmd32Presentation != nil:

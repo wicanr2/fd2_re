@@ -1,5 +1,11 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
+普通2／3／7／8人物HD已有完整繪製、各階段F2與一次結算的自動證據；正常2／8另有操作、
+返回及保存冷讀收據。BattleFig110三組正式圖源亦通過實際繪製與來源核心核對，仍不新增普通玩家或原版parity聲明。
+依使用者2026-10-21新排程，先完成全部HD串接，再集中人工確認與修正；3／7正常操作、其他人物／效果、
+完整介面與平台仍明示待驗。來源見[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的
+ordinary_remaining_hd_followup_20261021、winged110_battle_followup_20261021，唯一覆蓋數量依[58](58-fd2-exe-re-coverage.md)。
+
 約拿BattleFig21與希爾法BattleFig24沿原17幀正式登錄，65／74零header不補造。完整Draw／三階段F2／返回DAC及runtime-only最終PNG bytes一致；正常章23近戰、返回與章節邊界保存冷讀通過。希爾法使用已核對的章前AP+0強化槽，避免在抽樣前把目標反擊清除；116號故事HD頭像及正常劇情已由captain116_battle_followup_20261021補齊；隊長主動攻擊正常GUI仍待。原矩形、marker、規則與保存格式保持；原版逐幀及整章E2不由此推定。
 來源見[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的cleric_party_battle_followup_20261021，唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)。
 

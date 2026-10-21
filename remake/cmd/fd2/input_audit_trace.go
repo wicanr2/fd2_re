@@ -32,7 +32,8 @@ func (g *Game) recordInputAuditState() {
 	r["hd_theme"] = g.modernStoryPortraits != nil && g.modernStoryPortraits.hasHD
 	r["battle_scene"] = g.atk != nil
 	g.recordNativeDeathAuditState(r)
-	r["command_scene"] = g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil || g.nativeCmd5Presentation != nil
+	r["command_scene"] = g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil || g.nativeCmd2Presentation != nil ||
+		g.nativeCmd3Presentation != nil || g.nativeCmd5Presentation != nil || g.nativeCmd7Presentation != nil || g.nativeCmd8Presentation != nil
 	r["command_targeting"] = g.nativeCommand0Targeting
 	r["command_grid"], r["command_selection"] = g.nativeCommandOpen, g.nativeCommandSel
 	r["command_target_id"] = g.nativeCommandTargetID
@@ -66,6 +67,55 @@ func (g *Game) recordInputAuditState() {
 			r["command_source_layers"] = modernBattleAuditLayers(frame.hdSources)
 		}
 	}
+	if j := g.nativeCmd2Presentation; j != nil {
+		r["command_id"], r["command_owner"] = 2, fmt.Sprintf("%p", j)
+		r["command_actor_fig"] = j.actor.BattleFig
+		if j.plan != nil && len(j.plan.Results) > 0 && j.plan.Results[0].Target != nil {
+			r["command_target_fig"] = j.plan.Results[0].Target.BattleFig
+		}
+		r["command_frame"], r["command_pulse_black"] = j.frame, j.pulseBlack
+		if frame := j.modernFrame(); frame != nil {
+			r["command_phase"] = frame.hdPhase
+			r["command_source_layers"] = modernBattleAuditLayers(frame.hdSources)
+		}
+	}
+	if j := g.nativeCmd3Presentation; j != nil {
+		r["command_id"], r["command_owner"] = 3, fmt.Sprintf("%p", j)
+		r["command_actor_fig"] = j.actor.BattleFig
+		if j.plan != nil && len(j.plan.Results) > 0 && j.plan.Results[0].Target != nil {
+			r["command_target_fig"] = j.plan.Results[0].Target.BattleFig
+		}
+		r["command_frame"], r["command_pulse_black"] = j.frame, j.pulseBlack
+		if frame := j.modernFrame(); frame != nil {
+			r["command_phase"] = frame.hdPhase
+			r["command_source_layers"] = modernBattleAuditLayers(frame.hdSources)
+		}
+	}
+	if j := g.nativeCmd7Presentation; j != nil {
+		r["command_id"], r["command_owner"] = 7, fmt.Sprintf("%p", j)
+		r["command_actor_fig"] = j.actor.BattleFig
+		if j.plan != nil && len(j.plan.Results) > 0 && j.plan.Results[0].Target != nil {
+			r["command_target_fig"] = j.plan.Results[0].Target.BattleFig
+		}
+		r["command_frame"], r["command_pulse_black"] = j.frame, j.pulseBlack
+		if frame := j.modernFrame(); frame != nil {
+			r["command_phase"] = frame.hdPhase
+			r["command_source_layers"] = modernBattleAuditLayers(frame.hdSources)
+		}
+	}
+	if j := g.nativeCmd8Presentation; j != nil {
+		r["command_id"], r["command_owner"] = 8, fmt.Sprintf("%p", j)
+		r["command_actor_fig"] = j.actor.BattleFig
+		if j.plan != nil && len(j.plan.Results) > 0 && j.plan.Results[0].Target != nil {
+			r["command_target_fig"] = j.plan.Results[0].Target.BattleFig
+		}
+		r["command_frame"], r["command_pulse_black"] = j.frame, j.pulseBlack
+		if frame := j.modernFrame(); frame != nil {
+			r["command_phase"] = frame.hdPhase
+			r["command_source_layers"] = modernBattleAuditLayers(frame.hdSources)
+		}
+	}
+
 	r["battle_event"] = g.battleEvent != nil
 	if j := g.nativeCmd5Presentation; j != nil {
 		r["command_id"], r["command_owner"] = j.commandID, fmt.Sprintf("%p", j)
