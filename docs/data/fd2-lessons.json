@@ -3468,6 +3468,29 @@
       "rule": "把原始亮點轉成HD圖層時，先以固定來源顏色／Mask分出連通元件，各自保留原生矩形。不要用跨越透明空隙的大外框縮放完整特效；1～2像素亮點使用可保留核心的獨立母稿。入口為61的豹形獸人契約、HD主收據orc_battle_followup_20261021.beam_components與tools/build_fd2_character_battle_hd.py的schema1圖層配方。",
       "why": "307:8／310:7的離散光點與細光被總外框連成亮條；分元件後，細長beam縮成1×1又正確被alpha核心檢查拒收。改用原始spark母稿，保留門檻與原位置。",
       "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#orc_battle_followup_20261021"
+    },
+    {
+      "id": "go-container-user-path-cache-before-run",
+      "date": "2026-10-21",
+      "area": "Docker工具鏈",
+      "rule": "以一般UID手動啟動fd2-go-test-local前，核對映像PATH並將GOCACHE指定到本人擁有的工作目錄；不要用login shell重置PATH。標準入口tools/remake_go_test.sh已提供有界容器、可寫快取與分離素材設定；特殊GPU試驗沿其Docker環境補專用旗標。PATH或快取啟動失敗先歸類工具環境，修正後乾淨重跑同一測試，不列為產品缺陷。",
+      "why": "本次直接bash -lc找不到go／gofmt，改bash -c後又遇到預設/.cache不可寫。顯式指定同一owned工作快取後，普通指令0／1／5原子測試通過；沒有改測試條件讓產品通過。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#command1_hd_followup_20261021"
+    },
+    {
+      "id": "normal-approach-route-formal-cells-before-keys",
+      "date": "2026-10-21",
+      "area": "正常GUI進軍",
+      "rule": "以普通鍵盤接敵時，不把曼哈頓距離每回合嚴格減少當成地形可通過的證據。遇局部最小值先讀實際audit／地形，沿tools/verify_fd2_hd_fonts_gui.py的--battle-advance-route明示繞路；每格先在該回合move_reachable中核對，施法仍等下一回合原地及正式目標格接納。拒收原試驗，保留固定seed、路線與章前政策，不注入位置或降低合法格要求。",
+      "why": "第11章悠妮兩份指令0／1進軍在7,18停下；同一正式集合已有10,19可繞路，直線策略卻要求更近而拒收。新增明示普通鍵盤路線，沒有改遊戲地形或移動規則。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#command1_hd_followup_20261021",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_hd_fonts_gui.py"
+        ],
+        "pattern": "明示進軍格不在當回合正式可達集合"
+      }
     }
   ]
 }

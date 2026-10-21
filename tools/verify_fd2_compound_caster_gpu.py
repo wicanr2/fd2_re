@@ -56,6 +56,8 @@ def main():
     p.add_argument('--normal-command0', action='store_true', help='核對普通標題LOAD的指令0施法、自然返回與保存冷讀；不冒充fixture')
     p.add_argument('--command0', action='store_true', help='核對普通指令0的前導、施術與尾段；不套四召喚的滑出契約')
     p.add_argument('--command5', action='store_true', help='核對普通指令5的完整交易、F2及施術來源')
+    p.add_argument('--command1', action='store_true', help='核對普通指令1的完整交易、F2及施術來源')
+    p.add_argument('--normal-command1', action='store_true', help='核對普通標題LOAD的指令1施法、自然返回與保存冷讀')
     p.add_argument('--normal-end-command', type=int, choices=[0,4,5], help='核對正常END實際施法及完整返回／保存冷讀')
     p.add_argument('--all-cast-frames', action='store_true', help='明示要求每張施術來源都有actor階段最終GPU核心，不將非零相位抽樣冒充全幀')
     for name in ['catalog', 'source', 'report']:
@@ -63,11 +65,11 @@ def main():
     p.add_argument('--original-pack', type=Path, required=True)
     p.add_argument('--inventory', type=Path, required=True)
     args = p.parse_args()
-    if sum([args.command0,args.command5,args.normal_command0,args.normal_end_command is not None])>1:
+    if sum([args.command0,args.command1,args.command5,args.normal_command0,args.normal_command1,args.normal_end_command is not None])>1:
         raise SystemExit('fixture與普通玩家模式不可混用')
-    normal=args.normal_command0 or args.normal_end_command is not None
-    command_id=args.normal_end_command if args.normal_end_command is not None else 5 if args.command5 else 0
-    ordinary=args.command0 or args.command5 or normal
+    normal=args.normal_command0 or args.normal_command1 or args.normal_end_command is not None
+    command_id=args.normal_end_command if args.normal_end_command is not None else 5 if args.command5 else 1 if args.command1 or args.normal_command1 else 0
+    ordinary=args.command0 or args.command1 or args.command5 or normal
     if args.report.exists(): raise SystemExit('不覆寫既有報告')
     catalog = validate(False, args.catalog)
     inventory = json.loads(args.inventory.read_text())
@@ -119,22 +121,26 @@ def main():
             or d.get('mp_publications')!=1 or d.get('hp_publications')!=6
             or any(d.get('phase_f2_switches',{}).get(phase)!=1 for phase in ['prelude','actor','actor-pulse','handler-front','target','handler-tail','tail'])):
             raise SystemExit('需要完整普通指令5交易／F2收據')
+        if args.command1 and (d.get('status')!='PASS-ORDINARY-COMMAND1-FIXTURE-RUNTIME-E1' or d.get('command_id')!=1
+            or d.get('mp_publications')!=1 or d.get('hp_publications')!=8
+            or any(d.get('phase_f2_switches',{}).get(phase)!=1 for phase in ['prelude','actor','actor-pulse','command1-target','tail'])):
+            raise SystemExit('需要完整普通指令1交易／F2收據')
         samples=d.get('source_shots', {})
-        if args.normal_command0:
+        if args.normal_command0 or args.normal_command1:
             if (d.get('status')!='PASS' or d.get('schema')!='fd2-hd-battle-status-gui-v1'
-                or d.get('battle_command_id')!=0 or d.get('battle_action_kind')!='command0'
+                or d.get('battle_command_id')!=command_id or d.get('battle_action_kind')!=f'command{command_id}'
                 or not d.get('natural_attack_return_checked') or not d.get('post_battle_save_checked')
                 or not d.get('new_process_title_load') or not d.get('theme_save_bytes_equal')
                 or not d.get('node_boundary_save_checked') or not d.get('cold_loaded_units_equal')
                 or not d.get('loaded_units') or d['loaded_units']!=d.get('cold_units')
                 or d.get('catalog_sha256')!=digest(args.catalog)):
-                raise SystemExit('需要完整普通指令0及邊界保存收據')
+                raise SystemExit(f'需要完整普通指令{command_id}及邊界保存收據')
             samples={}
             for row in d.get('battle_art_samples',[]):
                 name=row['file']
                 if Path(name).name!=name or digest(receipt.parent/name)!=row['sha256']:raise SystemExit('普通GPU圖片路徑或SHA不同')
                 before,after=row['before'],row['after']
-                if not all(q.get('command_scene') and q.get('command_id')==0 and q.get('hd_battle') for q in [before,after]):continue
+                if not all(q.get('command_scene') and q.get('command_id')==command_id and q.get('hd_battle') for q in [before,after]):continue
                 if before.get('command_owner')!=after.get('command_owner'):continue
                 for n,state in enumerate([before,after]):
                     phase=state.get('command_phase')
@@ -208,7 +214,8 @@ def main():
         reports.append({'receipt': str(receipt), 'receipt_sha256': digest(receipt), 'matches': found})
     status=(f'PASS-ORDINARY-COMMAND{command_id}-NORMAL-END-CASTER-GPU' if args.normal_end_command is not None else
             'PASS-ORDINARY-COMMAND5-CASTER-GPU' if args.command5 else
-            'PASS-ORDINARY-COMMAND0-NORMAL-CASTER-GPU' if args.normal_command0 else
+            'PASS-ORDINARY-COMMAND1-CASTER-GPU' if args.command1 else
+            f'PASS-ORDINARY-COMMAND{command_id}-NORMAL-CASTER-GPU' if args.normal_command0 or args.normal_command1 else
             'PASS-ORDINARY-COMMAND0-CASTER-GPU' if args.command0 else 'PASS-COMPOUND-CASTER-GPU')
     report = {'status':status, 'figure': args.figure,
               'command_id':command_id if ordinary else None,

@@ -70756,5 +70756,457 @@
         "python_pillow": "3.12.15 11.3.0"
       }
     }
+  },
+  "command1_hd_followup_20261021": {
+    "status": "CONFORMED-SCOPED",
+    "base": "4fd467e9d7953def68b56bcf7d918af8fbdfd663",
+    "branch": "feat/hd-command1",
+    "current_state": {
+      "remake": "普通指令1人物來源接線、完整Game.Draw／五階段F2／MP1／HP8／一次續行與缺件原子性通過；第11章正常指令1與指令0回歸、自然返回／保存邊界冷讀及實圖核心通過。",
+      "original_oracle": "existing 58 closed evidence; no new original parity claim",
+      "optional_polish": "FDOTHER19/21 remain pixel effects",
+      "remaining": "FDOTHER19／21仍為像素；其他指令／人物／共同效果、普通召喚、完整戰鬥HUD與平台效能依58及#263。"
+    },
+    "scope": "same typed producer source metadata, HD characters only; no numeric RNG sound save or indexed output changes",
+    "evidence": "docs/knowledge-base/58-fd2-exe-re-coverage.md: 0x2A6BD→0x262EF; corrected 31 frames/eight HP and sample markers",
+    "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md#普通法術1的hd人物呈現",
+    "work_root": "work/promo-cadence-20261018/hd-fonts/command1-hd-r1",
+    "normal_source": "work/promo-cadence-20261018/hd-fonts/northern-party-r1/source11-gui-r1/user-data/fd2_re/fd2_save.json",
+    "game_seed": 1,
+    "chapter_state_injection": false,
+    "verification": {
+      "unit": {
+        "file": "work/promo-cadence-20261018/hd-fonts/command1-hd-r1/unit-r1.log",
+        "sha256": "8cdaa887f38b7775f9f9471f16ed885c725941b7ead07d54de8ff6ddfcbdffcc"
+      },
+      "bridge": {
+        "file": "work/promo-cadence-20261018/hd-fonts/command1-hd-r1/bridge-r1.log",
+        "sha256": "935879b0e403099b726b2ca6768d4b04d957182f4c119900e268d454c56c9ab5"
+      },
+      "lifecycle": {
+        "file": "work/promo-cadence-20261018/hd-fonts/command1-hd-r1/lifecycle-r1/receipt.json",
+        "sha256": "f557df962db14db01ca9540cc61abbe5183e4b819bb0e3b2b781a8daf4d67180"
+      },
+      "fixture_core": {
+        "file": "work/promo-cadence-20261018/hd-fonts/command1-hd-r1/fixture-guards-r1/positive-control.json",
+        "sha256": "0ddce98557c27cfe8f43049b17739c71c7c2d2dfe63ae00c28376eab16f7d07d"
+      },
+      "fixture_guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/command1-hd-r1/fixture-guards-r1/report.json",
+        "sha256": "a2fc498ff06d217a36584a2242fab25ac55473f969353b3d0a06fce9ef72df73"
+      },
+      "go_all": {
+        "file": "work/promo-cadence-20261018/hd-fonts/command1-hd-r1/go-all-r1.log",
+        "sha256": "3ffaf1b120390badaefc7ac449a889a8305fb8dfcc402d1db0d2f77f4c936c7c"
+      },
+      "coverage": {
+        "file": "work/promo-cadence-20261018/hd-fonts/command1-hd-r1/formal-coverage-r1.json",
+        "sha256": "aaeb537c8b04a8b65c5d8d8662f8643fa604f14e3a967b75cd9856a17d71ab0b"
+      },
+      "environment_rejections": {
+        "file": "work/promo-cadence-20261018/hd-fonts/command1-hd-r1/environment-rejections.json",
+        "sha256": "ebf6558fa2fb2390eb4ddf625c4d1a3f9fead8749a75dde7ba09bba2ce5f23b5"
+      },
+      "gpu_cases": 1265,
+      "command1_added_source_cases": 142,
+      "go_packages": 20,
+      "fixture_guard_cases": 7,
+      "all_cast_frames_required": true,
+      "lessons": {
+        "file": "work/promo-cadence-20261018/hd-fonts/command1-hd-r1/lessons-r1.log",
+        "sha256": "76d193095535c63f2e69d4da08d7d0ac85691c9eacc3ba50bdccb44b9d425a6d"
+      }
+    },
+    "normal_rejections": [
+      {
+        "status": "NOT-PASS",
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/command1-hd-r1/normal-r1.log",
+          "sha256": "b235ce026130b6f2276d36d074029a448ff482b800af20fc539ceceaeaeea5ee"
+        },
+        "reason": "舊工具組合限制，遊戲未啟動"
+      },
+      {
+        "status": "NOT-PASS",
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/command1-hd-r1/normal-r2.log",
+          "sha256": "1473c5e7f69170be01e72b74953f779d6996c1daf1c9b04c31e79075fe87a9b8"
+        },
+        "reason": "直線策略在7,18的地形局部最小值停下，未施法；非遊戲錯誤"
+      },
+      {
+        "status": "NOT-PASS",
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/command1-hd-r1/normal0-regression-r1.log",
+          "sha256": "1473c5e7f69170be01e72b74953f779d6996c1daf1c9b04c31e79075fe87a9b8"
+        },
+        "reason": "直線策略在7,18的地形局部最小值停下，未施法；非遊戲錯誤"
+      }
+    ],
+    "normal_plan": {
+      "source_sha256": "0d4c0bd488d7bd20f48366c57a57f88fc7d2a1a61053bc04fa30a7ed059e6e81",
+      "command_ids": [
+        1,
+        0
+      ],
+      "own_index": 1,
+      "target_figure": 102,
+      "advance_route": [
+        [
+          7,
+          15
+        ],
+        [
+          7,
+          18
+        ],
+        [
+          10,
+          19
+        ]
+      ],
+      "max_end_turns": 6,
+      "route_policy": "各次END前只選正式move_reachable接納的目的格；下回合原地施法。明示三格用完才恢復接近策略；先取得合法射程即施法。",
+      "constructor_policy_source": "northern_party_battle_followup_20261021.source_revision",
+      "chapter_state_injection": false
+    },
+    "source_files": [
+      {
+        "file": "remake/cmd/fd2/modern_hd_command1.go",
+        "sha256": "b165c8856fee93cf09b46b40b466be5865c2c3946dc1a4d1a8d6bd53c98626b6"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command1_presentation.go",
+        "sha256": "942ed18f7310777b89c74d44e9eb6b953c77c70290a075a31101b8772c8db82f"
+      },
+      {
+        "file": "remake/internal/battlepresent/native_command1.go",
+        "sha256": "f0111a782066150d1cb21891907675e7dad8b82ea7d67ebffc35d9695eeeaf77"
+      },
+      {
+        "file": "remake/cmd/fd2/player_shortcuts.go",
+        "sha256": "76a1038ba070da49da5f1879ab0616f19adeb93ef9e3eadd96d7356f02bba0e3"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_runtime.go",
+        "sha256": "013d35507f7affdb9c921cc942daadcdd3d4386824581a25a9fc003dc9bcc7fe"
+      },
+      {
+        "file": "remake/cmd/fd2/input_audit_trace.go",
+        "sha256": "056415016a8f2234b805b174786e19e801becc1ec8ad096bec4adca61223b043"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_command1_test.go",
+        "sha256": "672bf2c3457e6f641207a2183b4707315ba4347e36d978705506ec14dfd69d25"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_command1_lifecycle_test.go",
+        "sha256": "3dab7d19a19e960c750f163515fbeaeb01e03ebc11ffb2e49cc103bff3078ae9"
+      },
+      {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "2e9219b3d6907a673dd5f38024aa7e3c18fae7a676a11359c521615173c9d374"
+      },
+      {
+        "file": "tools/verify_fd2_compound_caster_gpu.py",
+        "sha256": "4e6fdbfb5a78bf1798530eaaee3cf2437db43951e4530b0ce9cc72eb9b6d7f16"
+      },
+      {
+        "file": "tools/test_fd2_command0_hd_gpu.py",
+        "sha256": "ccb688d28b5ebbe97d043998b92e771d3e9d670273a58da93e22981294f98d46"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_gpu_test.go",
+        "sha256": "712c6684a88fa08f6aacebd49cc5e95fa9426b630394780f304b4abd2abc7fd4"
+      }
+    ],
+    "binary": {
+      "build_output": "work/promo-cadence-20261018/hd-fonts/command1-hd-r1/fd2-r1",
+      "built_sha256": "410c94b0c9857ee0867554a92cd1c076faafa279e1dbfa0597bdf5bfa18613d7",
+      "removed_after_verification": true,
+      "rebuild_command": [
+        "go",
+        "build",
+        "-o",
+        "work/promo-cadence-20261018/hd-fonts/command1-hd-r1/fd2-r1",
+        "./cmd/fd2"
+      ],
+      "rebuild_cwd": "remake"
+    },
+    "catalog_unchanged": {
+      "file": "remake/assets/themes/modern/catalog.json",
+      "sha256": "d984fdd0c7057bf26a2b7617b82426137a3e522e2deff934e99b2e22691c7636",
+      "assets": 433,
+      "figani_resources": 57,
+      "figani_frames": 411
+    },
+    "string_review": {
+      "before_inventory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/command1-hd-r1/inv-old.json",
+        "sha256": "0ab8b80997a063f3bfa69b4f10a8f53b01df8638493e4b8ae8e964562f158a6e"
+      },
+      "after_inventory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/command1-hd-r1/inv-new.json",
+        "sha256": "0bbf46f300b0f2e2a53d2df08580c0c5d0878ea76696f81e3cf7c164ae4d99c6"
+      },
+      "review": {
+        "file": "docs/data/fd2-string-review.json",
+        "sha256": "e75a41de1ac2cee9d593824faac2e3c9cb3848595c2c4fa28cd36341833f16c6"
+      },
+      "reviewed_candidates": 99,
+      "disposition_counts_unchanged": true
+    },
+    "full_battle_hd_complete": false,
+    "normal_gui": {
+      "1": {
+        "status": "PASS-NORMAL-KEYBOARD-SCOPED",
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/command1-hd-r1/normal-r3/receipt.json",
+          "sha256": "736b7f595eff2afea0df5e37783f7d4eee717616b313c220b0dcf2483702d3b1"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/command1-hd-r1/normal-r3.log",
+          "sha256": "38ba4e49d7802aab84401c53ffdbe04c68f3c11dad91c7d32696fee24817848e"
+        },
+        "core": {
+          "file": "work/promo-cadence-20261018/hd-fonts/command1-hd-r1/normal1-guards-r1/positive-control.json",
+          "sha256": "7757c49e24756721a07f746d18ba1a0615b59f8177c33bc0a4b45fbb4c1d65b2"
+        },
+        "guards": {
+          "file": "work/promo-cadence-20261018/hd-fonts/command1-hd-r1/normal1-guards-r1/report.json",
+          "sha256": "80183115c964a9f5d3a5a1c7dd4e097838fc3dc5ccbcb35d5299ab65eaa0b2e6"
+        },
+        "guard_cases": 6,
+        "matched_pngs": 10,
+        "end_turns": 3,
+        "advance_cells": [
+          [
+            7,
+            15
+          ],
+          [
+            7,
+            18
+          ],
+          [
+            10,
+            19
+          ]
+        ],
+        "actor": {
+          "acted": false,
+          "attack_max": 1,
+          "attack_min": 1,
+          "battle_fig": 9,
+          "camp": 0,
+          "command_ids": [
+            0,
+            1,
+            2,
+            17,
+            26,
+            27
+          ],
+          "exp": 78,
+          "hp": 1259,
+          "lv": 40,
+          "mp": 217,
+          "name": "悠妮",
+          "native_identity": 9,
+          "on_field": true,
+          "raw": {
+            "X": 10,
+            "Y": 19,
+            "Pose": 0,
+            "Motion": 0
+          },
+          "x": 10,
+          "y": 19
+        },
+        "target": {
+          "acted": false,
+          "attack_max": 0,
+          "attack_min": 0,
+          "battle_fig": 102,
+          "camp": 2,
+          "command_ids": [],
+          "exp": 255,
+          "hp": 224,
+          "lv": 14,
+          "mp": 0,
+          "name": "",
+          "native_identity": 0,
+          "on_field": true,
+          "raw": {
+            "X": 10,
+            "Y": 24,
+            "Pose": 0,
+            "Motion": 0
+          },
+          "x": 10,
+          "y": 24
+        },
+        "cast_cell": [
+          10,
+          19
+        ],
+        "cold_load_scope": "F5重建章節邊界；不宣稱本次施法後MP／HP或戰中位置持續。",
+        "readme_screenshot": {
+          "image": {
+            "file": "docs/figures/hd-ordinary-command1-yuni.png",
+            "sha256": "f3aaf20135960522d33cb8b4d39f556449fa6a15c2e4efadfdb992cda8f71474"
+          },
+          "source": {
+            "file": "work/promo-cadence-20261018/hd-fonts/command1-hd-r1/normal-r3/world-hd-art-04.png",
+            "sha256": "f3aaf20135960522d33cb8b4d39f556449fa6a15c2e4efadfdb992cda8f71474"
+          },
+          "selection": {
+            "file": "world-hd-art-04.png",
+            "sha256": "f3aaf20135960522d33cb8b4d39f556449fa6a15c2e4efadfdb992cda8f71474",
+            "phase": "actor",
+            "resource": 28,
+            "frame": 4,
+            "source_file": "figani-028-hd6-v1-f04.png",
+            "source_sha256": "471767cab492fd7f0b2d13b6619609c7d68e8171c443067d18e0cae0456452be",
+            "checked_pixels": 2553,
+            "visible_eligible_pixels": 109778,
+            "source_eligible_pixels": 109778,
+            "excluded_by_source_occlusion": 0
+          },
+          "edited": false
+        }
+      },
+      "0": {
+        "status": "PASS-NORMAL-KEYBOARD-SCOPED",
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/command1-hd-r1/normal0-regression-r2/receipt.json",
+          "sha256": "5a5e0244854b4f7bda9c20bbdcb2074aa2855d1d1af5071bf10e28aeb9e93ec5"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/command1-hd-r1/normal0-regression-r2.log",
+          "sha256": "3fde661d88a156ff6dad51ee423e6e5e9d5d02dfe27c94cb3a7f84c85dd46ce0"
+        },
+        "core": {
+          "file": "work/promo-cadence-20261018/hd-fonts/command1-hd-r1/normal0-guards-r1/positive-control.json",
+          "sha256": "782f9d2db6155d77fe7a883a73fd921ecfeab92321aa8fbf27415215fb85d82e"
+        },
+        "guards": {
+          "file": "work/promo-cadence-20261018/hd-fonts/command1-hd-r1/normal0-guards-r1/report.json",
+          "sha256": "9d835eb180a51378d9c428aeb3f74e10a905164263a29e8958e34017e32ef204"
+        },
+        "guard_cases": 6,
+        "matched_pngs": 4,
+        "end_turns": 3,
+        "advance_cells": [
+          [
+            7,
+            15
+          ],
+          [
+            7,
+            18
+          ],
+          [
+            10,
+            19
+          ]
+        ],
+        "actor": {
+          "acted": false,
+          "attack_max": 1,
+          "attack_min": 1,
+          "battle_fig": 9,
+          "camp": 0,
+          "command_ids": [
+            0,
+            1,
+            2,
+            17,
+            26,
+            27
+          ],
+          "exp": 78,
+          "hp": 1259,
+          "lv": 40,
+          "mp": 217,
+          "name": "悠妮",
+          "native_identity": 9,
+          "on_field": true,
+          "raw": {
+            "X": 10,
+            "Y": 19,
+            "Pose": 0,
+            "Motion": 0
+          },
+          "x": 10,
+          "y": 19
+        },
+        "target": {
+          "acted": false,
+          "attack_max": 0,
+          "attack_min": 0,
+          "battle_fig": 102,
+          "camp": 2,
+          "command_ids": [],
+          "exp": 255,
+          "hp": 224,
+          "lv": 14,
+          "mp": 0,
+          "name": "",
+          "native_identity": 0,
+          "on_field": true,
+          "raw": {
+            "X": 10,
+            "Y": 24,
+            "Pose": 0,
+            "Motion": 0
+          },
+          "x": 10,
+          "y": 24
+        },
+        "cast_cell": [
+          10,
+          19
+        ],
+        "cold_load_scope": "F5重建章節邊界；不宣稱本次施法後MP／HP或戰中位置持續。"
+      }
+    },
+    "toolchain": {
+      "file": "work/promo-cadence-20261018/hd-fonts/command1-hd-r1/toolchain.json",
+      "sha256": "77f5d499bfd1b9c6bd12ed996bfee2c34afafef3056c47a10d5f8c20d44b06df"
+    },
+    "scope_limits": [
+      "沿既有已閉合RE，不新宣稱原版oracle、逐幀／音訊或整章PLAYER-E2。",
+      "正常來源為已明示章前建構／升級／HP+1000與祖先政策，game seed1，章內無注入。",
+      "正常實圖只核取得的施術者核心；不把相近來源圖判成唯一動作相位。",
+      "法術特效及戰鬥面板仍含像素素材，完整HD未完成。"
+    ],
+    "cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/command1-hd-r1/cleanup.json",
+      "sha256": "ac6b3ce511239d26f26c0817164fb7b5a67dd35bfde3d9d7026448e97404e861"
+    },
+    "issues": {
+      "file": "work/promo-cadence-20261018/hd-fonts/command1-hd-r1/issue-proof.json",
+      "sha256": "d341cb467062c1d8f923f1d2a9c7aedd787f882c1ddae7aa692767e54d0e6dcc"
+    },
+    "worklist_verification": {
+      "render": {
+        "file": "work/promo-cadence-20261018/hd-fonts/command1-hd-r1/worklist-render-r1.log",
+        "sha256": "eaa55756fd5fec1a7f534a32908e71367cbf570dea8dfece2b917868372df5c4"
+      },
+      "verify": {
+        "file": "work/promo-cadence-20261018/hd-fonts/command1-hd-r1/worklist-verify-r1.log",
+        "sha256": "86a705d5f4e3a2e4f08ef650f29d426c2c5c17cfa54544b6333b324e92c391d1"
+      }
+    },
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/command1-hd-r1/final-validation.json",
+      "sha256": "9df290c9db1aaf6e364f6d74f76cc12d3923919139a8decb2199cb760ffac85b"
+    },
+    "docker_cleanup": {
+      "unexpected_fd2_containers": 0,
+      "maintained_images_unchanged": true,
+      "all_one_shot_containers_removed": true
+    }
   }
 }

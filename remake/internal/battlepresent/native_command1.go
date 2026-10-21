@@ -12,10 +12,31 @@ import (
 // 0x262EF 直接播放 sample1 的八個畫格。
 type NativeCommand1TargetSequence struct {
 	Frames         [][]byte
+	Sources        []NativeCommand1FrameSources
 	HPStages       []int
 	SampleMarkers  []bool
 	NextIdleFrame  int
 	NextIdleRepeat int
+}
+
+// NativeCommand1FrameSources records the inputs consumed by this same indexed
+// composition. The optional actor precedes mode4, target, then mode5 layers.
+// NextTarget is used only by the nine-frame adjacent-target transition.
+type NativeCommand1FrameSources struct {
+	Base                      []byte
+	ActorFrame, TargetFrame   int
+	TargetOffsetX             int
+	NextTarget                bool
+	BeforeTarget, AfterTarget []NativeCommand1EffectLayer
+}
+
+type NativeCommand1EffectLayer struct {
+	Frame, X, Y int
+}
+
+type NativeCommand1TransitionSequence struct {
+	Frames  [][]byte
+	Sources []NativeCommand1FrameSources
 }
 
 // BuildNativeCommand1TargetSequence 在正式 owner 發布任何狀態前預建完整31張。
@@ -35,7 +56,7 @@ func BuildNativeCommand1TargetSequence(bases [][]byte, targetIdle, effect *figan
 	}
 	hpStage, targetFrame, targetRepeat := 0, 0, 0
 	for step := 0; step < figani.NativeCommand1PresentationFrames; step++ {
-		pixels, err := ComposeNativeCommand1TargetFrame(bases[hpStage], targetIdle.Frames[targetFrame], effect, schedule, step)
+		pixels, sources, err := composeNativeCommand1TargetFrame(bases[hpStage], targetIdle.Frames[targetFrame], effect, schedule, step)
 		if err != nil {
 			return NativeCommand1TargetSequence{}, err
 		}
@@ -51,6 +72,8 @@ func BuildNativeCommand1TargetSequence(bases [][]byte, targetIdle, effect *figan
 			publishedStage = hpStage
 		}
 		sequence.Frames = append(sequence.Frames, pixels)
+		sources.TargetFrame = targetFrame
+		sequence.Sources = append(sequence.Sources, sources)
 		sequence.HPStages = append(sequence.HPStages, publishedStage)
 		sequence.SampleMarkers = append(sequence.SampleMarkers, sample)
 		targetRepeat++
@@ -70,9 +93,14 @@ func BuildNativeCommand1TargetSequence(bases [][]byte, targetIdle, effect *figan
 // 全部離開可繪範圍後的九張相鄰目標轉場。每張仍畫 actor effect 最末幀及目前／
 // 下一目標 idle frame0；command1 的 mode4／5 此時不再產生 effect layer 或 marker。
 func BuildNativeCommand1TransitionFrames(base []byte, actorEffect, currentTarget, nextTarget *figani.Animation, rawSide byte) ([][]byte, error) {
+	sequence, err := BuildNativeCommand1TransitionSequence(base, actorEffect, currentTarget, nextTarget, rawSide)
+	return sequence.Frames, err
+}
+
+func BuildNativeCommand1TransitionSequence(base []byte, actorEffect, currentTarget, nextTarget *figani.Animation, rawSide byte) (NativeCommand1TransitionSequence, error) {
 	if len(base) != nativeCommand0SurfaceSize || actorEffect == nil || len(actorEffect.Frames) == 0 ||
 		currentTarget == nil || len(currentTarget.Frames) == 0 || nextTarget == nil || len(nextTarget.Frames) == 0 {
-		return nil, errors.New("battlepresent: command1 transition inputs unavailable")
+		return NativeCommand1TransitionSequence{}, errors.New("battlepresent: command1 transition inputs unavailable")
 	}
 	direction := -1
 	if rawSide == 0 {
@@ -81,15 +109,16 @@ func BuildNativeCommand1TransitionFrames(base []byte, actorEffect, currentTarget
 	type targetStep struct {
 		animation *figani.Animation
 		offset    int
+		next      bool
 	}
 	steps := make([]targetStep, 0, 9)
 	for step := 1; step <= 4; step++ {
 		steps = append(steps, targetStep{animation: currentTarget, offset: direction * 35 * step})
 	}
 	for step := 4; step >= 0; step-- {
-		steps = append(steps, targetStep{animation: nextTarget, offset: direction * 35 * step})
+		steps = append(steps, targetStep{animation: nextTarget, offset: direction * 35 * step, next: true})
 	}
-	out := make([][]byte, 0, len(steps))
+	out := NativeCommand1TransitionSequence{}
 	for _, step := range steps {
 		work := make([]byte, nativeCommand0WorkStride*nativeCommand0WorkHeight)
 		for y := 0; y < 200; y++ {
@@ -97,17 +126,19 @@ func BuildNativeCommand1TransitionFrames(base []byte, actorEffect, currentTarget
 			copy(work[at:at+320], base[y*320:(y+1)*320])
 		}
 		if err := blitCommand0WorkFrame(work, actorEffect.Frames[len(actorEffect.Frames)-1], 0, 0); err != nil {
-			return nil, fmt.Errorf("battlepresent: command1 transition actor: %w", err)
+			return NativeCommand1TransitionSequence{}, fmt.Errorf("battlepresent: command1 transition actor: %w", err)
 		}
 		if err := blitCommand0WorkFrame(work, step.animation.Frames[0], step.offset, 0); err != nil {
-			return nil, fmt.Errorf("battlepresent: command1 transition target: %w", err)
+			return NativeCommand1TransitionSequence{}, fmt.Errorf("battlepresent: command1 transition target: %w", err)
 		}
 		pixels := make([]byte, nativeCommand0SurfaceSize)
 		for y := 0; y < 200; y++ {
 			at := nativeCommand0ViewportBase + y*nativeCommand0WorkStride
 			copy(pixels[y*320:(y+1)*320], work[at:at+320])
 		}
-		out = append(out, pixels)
+		out.Frames = append(out.Frames, pixels)
+		out.Sources = append(out.Sources, NativeCommand1FrameSources{Base: base,
+			ActorFrame: len(actorEffect.Frames) - 1, TargetFrame: 0, TargetOffsetX: step.offset, NextTarget: step.next})
 	}
 	return out, nil
 }
@@ -115,12 +146,18 @@ func BuildNativeCommand1TransitionFrames(base []byte, actorEffect, currentTarget
 // ComposeNativeCommand1TargetFrame 重現 0x262EF 的 mode4→target→mode5
 // 圖層順序。它只合成 indexed pixels，不發布 MP、HP、音效或行動完成狀態。
 func ComposeNativeCommand1TargetFrame(base []byte, target figani.Frame, effect *figani.Animation, schedule figani.NativeCommand1PresentationSchedule, step int) ([]byte, error) {
+	pixels, _, err := composeNativeCommand1TargetFrame(base, target, effect, schedule, step)
+	return pixels, err
+}
+
+func composeNativeCommand1TargetFrame(base []byte, target figani.Frame, effect *figani.Animation, schedule figani.NativeCommand1PresentationSchedule, step int) ([]byte, NativeCommand1FrameSources, error) {
+	sources := NativeCommand1FrameSources{Base: base, ActorFrame: -1}
 	if len(base) != nativeCommand0SurfaceSize || effect == nil || len(effect.Frames) != figani.NativeCommand1EffectFrameCount {
-		return nil, errors.New("battlepresent: incomplete command1 target frame input")
+		return nil, NativeCommand1FrameSources{}, errors.New("battlepresent: incomplete command1 target frame input")
 	}
 	counters, err := figani.NativeCommand1Counters(step)
 	if err != nil {
-		return nil, err
+		return nil, NativeCommand1FrameSources{}, err
 	}
 	work := make([]byte, nativeCommand0WorkStride*nativeCommand0WorkHeight)
 	for y := 0; y < 200; y++ {
@@ -136,22 +173,28 @@ func ComposeNativeCommand1TargetFrame(base []byte, target figani.Frame, effect *
 			if err := blitCommand0WorkFrame(work, effect.Frames[frame], schedule.AnchorX+schedule.SideXShift+schedule.XOffsets[offset], schedule.YOffsets[offset]); err != nil {
 				return fmt.Errorf("battlepresent: command1 mode%d slot%d: %w", mode, slot, err)
 			}
+			layer := NativeCommand1EffectLayer{Frame: frame, X: schedule.AnchorX + schedule.SideXShift + schedule.XOffsets[offset], Y: schedule.YOffsets[offset]}
+			if mode == 4 {
+				sources.BeforeTarget = append(sources.BeforeTarget, layer)
+			} else {
+				sources.AfterTarget = append(sources.AfterTarget, layer)
+			}
 		}
 		return nil
 	}
 	if err := drawMode(4); err != nil {
-		return nil, err
+		return nil, NativeCommand1FrameSources{}, err
 	}
 	if err := blitCommand0WorkFrame(work, target, 0, 0); err != nil {
-		return nil, fmt.Errorf("battlepresent: command1 target: %w", err)
+		return nil, NativeCommand1FrameSources{}, fmt.Errorf("battlepresent: command1 target: %w", err)
 	}
 	if err := drawMode(5); err != nil {
-		return nil, err
+		return nil, NativeCommand1FrameSources{}, err
 	}
 	out := make([]byte, nativeCommand0SurfaceSize)
 	for y := 0; y < 200; y++ {
 		at := nativeCommand0ViewportBase + y*nativeCommand0WorkStride
 		copy(out[y*320:(y+1)*320], work[at:at+320])
 	}
-	return out, nil
+	return out, sources, nil
 }

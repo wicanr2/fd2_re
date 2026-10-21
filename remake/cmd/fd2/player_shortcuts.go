@@ -66,6 +66,11 @@ func (g *Game) applyTheme(set *modernStoryPortraitSet) error {
 			return err
 		}
 	}
+	if set != nil && g.nativeCmd1Presentation != nil {
+		if err := set.prepareBattleHDResources(g.nativeCmd1Presentation.hd.resources()...); err != nil {
+			return err
+		}
+	}
 	if resource := g.modernCompoundEffectResource(); set != nil && resource >= 0 {
 		if err := set.prepareBattleHDBanks(g.modernCompoundFigureResources(), []int{resource}); err != nil {
 			return err

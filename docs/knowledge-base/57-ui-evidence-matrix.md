@@ -37,6 +37,12 @@ BattleFig111的333／334沿原14幀正式登錄，335固定零header不補造。
 來源見[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的sage93_battle_followup_20261020，唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)。
 
 
+普通指令1的HD人物現沿同次indexed producer保留來源，包含前導、施術、目標／轉場與共同尾段。
+雙側多目標來源重組、完整Game.Draw／五階段F2、MP一次／HP八段／一次續行、缺件原子性及20套件Go通過。
+第11章正常進軍繞路後，悠妮指令1與指令0回歸、取消／原地施法／返回、F2及章節邊界新程序LOAD通過。
+FDOTHER19／21仍為像素，章前建構／加血明示；不提升原版parity、自然難度或整章E2。
+來源與實圖依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的 command1_hd_followup_20261021，數量依[58](58-fd2-exe-re-coverage.md)。
+
 魔法師BattleFig90的270／271／272三組人物圖已沿原描述子正式登錄。普通指令4／5追加同次呈現的來源，
 沿既有owner、層序、DAC與Draw確認，不改MP／HP／RNG或正式保存規則。
 完整物理／施術Game.Draw與F2、缺件原子性，以及正常章9三次前進END、指令5施法、希莉亞射擊、

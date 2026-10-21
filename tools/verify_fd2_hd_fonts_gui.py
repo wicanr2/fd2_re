@@ -27,6 +27,12 @@ def terrain_frame_ids(value):
     return set(frames)
 
 
+def battle_advance_route(value):
+    if not re.fullmatch(r'[0-9]+,[0-9]+(?:;[0-9]+,[0-9]+)*', value):
+        raise argparse.ArgumentTypeError('進軍路線須為x,y;x,y，僅指定正常鍵盤目的格')
+    return [list(map(int, cell.split(','))) for cell in value.split(';')]
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ['binary', 'assets', 'original-pack', 'modern-pack', 'out']:
@@ -59,7 +65,9 @@ def main():
                         help='第二／三章原生來源出發前，經正常教會服務復活哈諾；需--capture-native-battle-save')
     parser.add_argument('--buy-bekwei-bow', action='store_true',
                         help='原生第九章出發前，普通購買黑暗弓並立即裝備貝克威')
-    parser.add_argument('--battle-command', type=int, choices=[0], help='改以正常指令0抽樣；原地候選再由正式目標格驗證，需--battle-only')
+    parser.add_argument('--battle-command', type=int, choices=[0,1], help='改以正常指令0／1抽樣；原地候選再由正式目標格驗證，需--battle-only')
+    parser.add_argument('--battle-advance-route', type=battle_advance_route, default=[],
+                        help='各次END前的明示進軍格，以x,y;x,y指定；每格仍須在當回合正式可達集合')
     parser.add_argument('--battle-repetitions', type=int, choices=[1,2], default=2,
                         help='普通攻防場數；一場模式仍完整自然返回與保存冷讀，需--battle-only')
     parser.add_argument('--battle-art-samples', type=int, choices=[32,64], default=64,
@@ -100,8 +108,8 @@ def main():
     assert args.revive_before_departure is None or args.capture_native_battle_save
     assert not args.buy_bekwei_bow or (args.capture_native_battle_save
            and args.battle_node=='battle_ch09' and args.revive_before_departure is None)
-    assert args.battle_command is None or (args.battle_only and args.battle_hd and not args.battle_end_art and not args.timed_dialogue and not args.battle_advance)
-    action_label='command0' if args.battle_command==0 else 'physical'
+    assert args.battle_command is None or (args.battle_only and args.battle_hd and not args.battle_end_art and not args.timed_dialogue)
+    action_label=f'command{args.battle_command}' if args.battle_command is not None else 'physical'
     assert args.battle_repetitions==2 or (args.battle_only and not args.timed_dialogue)
     assert 0<=args.battle_end_figure<=135
     end_figures=sorted(args.battle_end_figures or {args.battle_end_figure})
@@ -132,6 +140,8 @@ def main():
     assert args.battle_target_figure is None or (args.battle_only and 0<=args.battle_target_figure<=135)
     assert args.battle_target_row_max is None or (args.battle_target_figure is not None and 0<=args.battle_target_row_max<=65535)
     assert args.battle_advance_column is None or (args.battle_advance and 0<=args.battle_advance_column<=65535)
+    assert not args.battle_advance_route or (args.battle_advance and args.battle_only and
+        args.battle_advance_column is None and len(args.battle_advance_route)<=args.battle_approach_rounds)
     assert args.battle_own_index == 2 or args.world
     assert not args.battle_approach_rounds or args.world
     battle_approach_steps=[]
@@ -808,9 +818,10 @@ def main():
                                       and [u['x'],u['y']]==state['cursor'])
                         # 與battle.State.InAttackRange相同的已載入欄位及零值政策；不改正式規則。
                         minimum,maximum=attacker.get('attack_min',0) or 1,attacker.get('attack_max',0) or 1
-                        if args.battle_command==0:
-                            assert 0 in (attacker.get('command_ids') or []) and attacker['mp']>=2,'目前單位不能使用正式指令0'
-                            record=next(r for r in json.loads((args.assets/'assets/spells.json').read_text()) if r['id']==0)
+                        if args.battle_command is not None:
+                            assert args.battle_command in (attacker.get('command_ids') or []),'目前單位沒有指定正式指令'
+                            record=next(r for r in json.loads((args.assets/'assets/spells.json').read_text()) if r['id']==args.battle_command)
+                            assert attacker['mp']>=record['mp'],'目前MP不足'
                             assert record['dist']==5 and record['range']==0 and record['target']==0
                             minimum,maximum=1,record['dist']  # 僅預篩；正式目標格仍須接納。
                         assert 1<=minimum<=maximum,'目前觀測的正式射程無效'
@@ -819,7 +830,7 @@ def main():
                             for cell in state.get('move_reachable',[]):
                                 if (tuple(cell) not in occupied or cell==state['cursor']) and minimum<=abs(cell[0]-target['x'])+abs(cell[1]-target['y'])<=maximum:
                                     choices.append((abs(cell[0]-state['cursor'][0])+abs(cell[1]-state['cursor'][1]),cell,target))
-                        if args.battle_command==0:
+                        if args.battle_command is not None:
                             # 沿0x18A5F的移動後禁用規則，只在本回合原地施法。
                             origin=state['cursor']
                             choices=[(0,origin,target) for target in targets
@@ -838,7 +849,10 @@ def main():
                             if args.battle_advance_column is not None:
                                 cells=[cell for cell in cells if cell[0]==args.battle_advance_column]
                             assert cells,'沒有可用的正常前進格'
-                            if choices:
+                            if approach < len(args.battle_advance_route):
+                                advance_cell=args.battle_advance_route[approach]
+                                assert advance_cell in cells,'明示進軍格不在當回合正式可達集合'
+                            elif choices:
                                 # 已有合法射程時，正常移動到該格待機，保留明示的END抽樣輪數。
                                 advance_choices=[choice for choice in choices if choice[1] in cells]
                                 assert advance_choices,'指定前進縱列沒有正式射程格'
@@ -939,23 +953,26 @@ def main():
                     _,cell,target=min(choices,key=lambda value:(value[0],value[1][1],value[1][0]))
                     battle_attack_choices.append({'scene':prefix,'attacker':attacker,'range':[minimum,maximum],
                                                   'cell':cell,'target':target,'state_injection':False,
-                                                  'action_kind':action_label,'command_candidate_policy':'stationary_prefilter_then_formal_target_field' if args.battle_command==0 else None})
+                                                  'action_kind':action_label,'command_candidate_policy':'stationary_prefilter_then_formal_target_field' if args.battle_command is not None else None})
                     move_cursor(cell);key('Return')
                     wait(lambda s:s.get('ring') and not s.get('walking') and s.get('ring_phase')=='open')
                     shot(prefix+'-attack-ring')
-                    if args.battle_command==0:
+                    if args.battle_command is not None:
                         key('Left');key('Return')
                         wait(lambda s:s.get('command_grid') and s.get('command_selection')==0)
-                        key('Return');wait(lambda s:s.get('command_targeting') and s.get('command_target_id')==0)
+                        command_index=attacker['command_ids'].index(args.battle_command)
+                        for _ in range(command_index):key('Down')
+                        wait(lambda s:s.get('command_grid') and s.get('command_selection')==command_index)
+                        key('Return');wait(lambda s:s.get('command_targeting') and s.get('command_target_id')==args.battle_command)
                         key('Escape');wait(lambda s:s.get('command_grid'))
-                        shot(prefix+'-command0-cancelled-target')
-                        key('Return');wait(lambda s:s.get('command_targeting') and s.get('command_target_id')==0)
+                        shot(prefix+'-'+action_label+'-cancelled-target')
+                        key('Return');wait(lambda s:s.get('command_targeting') and s.get('command_target_id')==args.battle_command)
                         assert [target['x'],target['y']] in latest(audit).get('command_target_cells',[]),'正式法術目標格拒收'
                     else:
                         key('Return');wait(lambda s:not s.get('ring'))
                     move_cursor([target['x'],target['y']]);shot(prefix+'-attack-target')
                     scene_started=time.monotonic()
-                    scene_key='command_scene' if args.battle_command==0 else 'battle_scene'
+                    scene_key='command_scene' if args.battle_command is not None else 'battle_scene'
                     key('Return');wait(lambda s:s.get(scene_key) is True)
                     if args.battle_hd:
                         wait(lambda s:s.get(scene_key) and s.get('hd_battle'))
@@ -1133,6 +1150,7 @@ def main():
                     'battle_target_figure':args.battle_target_figure,
                     'battle_target_row_max':args.battle_target_row_max,
                     'battle_advance_column':args.battle_advance_column,
+                    'battle_advance_route':args.battle_advance_route,
                     'battle_min_approach_rounds':args.battle_min_approach_rounds,
                     'battle_node':args.battle_node,'battle_only':args.battle_only,
                     'battle_attack_choices':battle_attack_choices,
