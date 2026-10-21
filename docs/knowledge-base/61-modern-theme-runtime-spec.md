@@ -3438,6 +3438,24 @@ typed名冊分別見map14與map11的battle_fig，經現有FIGANI loader、physic
 
 兩組龍人正式接入結果：全32張來源、30張非空最終GPU核心及兩張固定mask空拍通過，各21項來源拒收、F2／64及65 DAC／HP與RNG／一次續行通過；正式及runtime-only各figure兩父兩子零SKIP，無OOM。七新原RGBA及兩衍生沿清冊保存，來源別名折回相同SHA，32張PNG不改；私人完整4469／runtime4008檔已同步並核實際遠端，舊4428檔保持。局部飛出、翼形／劍角與光點配色近似及高覆蓋裁切見主收據，集中人工確認仍待。
 
+### BattleFig18與19完整三銀行圖源
+
+狀態：CONFORMED-SCOPED／RUNTIME-E1。圖源準備起點f4d698ed，正式編製基底為960a7693的480項清冊。固定FIGANI54／55／56為4／15／14幀，57／58／59為1／7／19幀，合計60幀。原版manifest、metadata、PNG／mask及描述子由既有load_native與battle-hd-source-inventory逐項核對，原指紋沿fd2-reference-files，不重開EXE。60幀包含完整待機、攻擊與施術；不可只補物理銀行。
+
+沿已核准手繪風格，18保留金髮、紅披風及銀甲，19保留無可見頭部的銀甲／藍布／紅垂布輪廓。姿勢、光效、共用母稿、局部定位與美術近似先留候選。56:13原mask全透明，保留原PNG尺寸、座標、delay與marker，不用插幀或刪空拍補驗證。
+
+施術空拍驗證契約為READY：沿[既有施術核心核對器](../../tools/verify_fd2_compound_caster_gpu.py)，增加明示allow-native-empty-frames旗標，只允許既有普通指令fixture，且需all-cast-frames。原始load_native必須驗固定manifest與inventory、全部metadata／PNG／mask；當原mask確實全空且成品為原框六倍RGBA全透明，才接受為空拍來源。實際actor相位須有相同resource／frame及尺寸的source_shots，圖片存在且為1920最終GPU；收據另列來源及排程證據，不稱空拍具有1000點核心。其餘每張非空圖仍維持至少1000可見核心；缺空拍Draw、偽造空白、錯mask、錯大小及一個非零alpha均拒收。預設核對行為及正常玩家模式保持。
+
+來源反例入口為[實檔空拍守衛](../../tools/test_fd2_caster_native_blank.py)，在資產Docker以--original-pack、--inventory與本人擁有的新--out執行；正對照固定56:13，反例包含非空原幀、alpha=1、RGB、錯尺寸、錯manifest與遭竄改原mask。來源守衛不代替完整施術fixture；後者仍須逐幀核對所有非空來源及空拍Draw排程。
+
+完整配方READY追加：18沿七姿勢，19沿待機、修正版短劍斜舉與揮斬三姿勢；19長直劍V2及帶halo且alpha254的V3不登錄，V4由乾淨揮斬稿重新生成。18兩張V3取代早期alpha254圖，Reach用去halo V2；所有原RGBA保留。原圖本體按相鄰清楚姿勢的全域座標指定ROI，屬美術近似；59:0與58:1完全相同，其他裁切不得稱exact。
+
+光效沿R2固定seed／連通色，R4以實際八鄰接像素集合合併，補明示本體ROI外的細小curl與深色尾光；18完全落本體內的共色glint不另當FX。每個連通元件保留獨立原框，FX先疊、本體後疊。18大藍金C與19藍束兩新原RGBA、既有16金弧及20寬束與22光點共用；五份藍波局部、金弧左側及金／藍束右側七成只作逐像素RGBA裁切，原父稿保留清冊。wave_tail裁切max254沿既有中間層>=250契約，最終非空PNG仍須255，不能量化alpha或降低施術核心門檻。
+
+保留全部六銀行60幀、原header／x／y／尺寸／delay／marker及56:13空拍；無Go遊戲規則或保存格式修改。兩組物理fixture驗Game.Draw、F2、返回、HP／RNG與一次續行；全六銀行另外沿正式來源綁定與GPU合成器逐幀核對完整1920×1200畫布，對獨立CPU Over每通道至多一級，包含全透明56:13。來源拒收、兩包載入及物理預檢原子性、私人白名單及遠端核對通過才正式登錄。唯一來源與配方見HD主收據armored18_19_battle_followup_20261021；普通與人工集中最後，不提升完整HD或PLAYER-E2。
+
+2026-10-22驗證勘誤：固定56的raw_byte_4=1位於4／11兩幀，59位於6..14九幀。普通指令0的BuildNativeCommand0ActorFrames明示要求一個MP標記，因此把這兩種BattleFig硬塞進普通0的fixture會在預檢拒收，尚未進入Game.Draw。第三銀行不能僅憑索引一概推定適用普通魔法。保留兩份失敗收據與全部標記，不修改正式播放或推測合法caller；來源接線以全60幀GPU及物理生命週期驗收，第三銀行的合法玩家caller與完整生命週期仍未知。前段空拍施術旗標為已準備的獨立守衛，未取得適用的完整施術正對照前不宣稱該排程契約CONFORMED。
+
 ### 遊戲外主題工具列
 
 狀態：CONFORMED-SCOPED／RUNTIME-E1。使用者2026-10-21明確要求參考Zeliard，在遊戲上方提供主題工具列並保留快捷鍵。參考來源為`/home/anr2/cht/zeliard/cmd/zeliard-preview/main.go`的`barHeight`、Update按鈕及Draw；只沿用畫面外工具列與選取狀態，不移植其遊戲操作。
@@ -3463,3 +3481,5 @@ typed名冊分別見map14與map11的battle_fig，經現有FIGANI loader、physic
 實作入口為`remake/cmd/fd2/player_toolbar.go`、`modern_hd_facility_scene.go`與`modern_hd_panel_portrait.go`；編製入口為[場景編製器](../../tools/build_fd2_facility_hd.py)。工具列與場景的技術驗證收據寫入既有HD主收據，工作歷程仍只追加WORKLOG。
 
 工具列／設施正式接入結果：114個最終GPU案例通過，含72種城鎮選取／pulse、三種商店主要穩定頁及全部成功時間軸、十二裝備開窗位置；HD背景每例至少1552個來源取樣、既有索爾480頭像及工具列前後完整遊戲區域相同。實際XTest滑鼠與F2產生五次預期切換，點目前主題不重載，F4四語工具列通過。十項載入拒收、十一項相關回歸、十二項Python清冊回歸及完整／runtime-only正式載入通過，記憶體無OOM。新增十八檔與原4469檔逐項保持，私人保存與遠端已核；此為背景／店員／頭像接線，原生選單框、游標及交易效果仍保留原圖樣。普通與人工集中驗收保持待辦，沒有發行新版。
+
+BattleFig18／19正式接線結果：六銀行60幀正式清冊及runtime包的完整GPU畫布對CPU Over通過，含透明56:13；物理19／8張非空Game.Draw核心、F2／64及65 DAC／HP與RNG／一次續行通過，各21項編製拒收及六項固定空拍來源反例通過。八項兩包載入與物理預檢零SKIP，共用340幀效果GPU回歸通過，無OOM。清冊486項、80個FIGANI資源610幀由機器稽核；十二原RGBA沿白名單保存，舊4487檔保持，私人4566／runtime4080檔及實際遠端已核。第三銀行的普通0完整排程未通過，不改標記或補猜規則；合法caller與集中正常／人工確認保持待辦。

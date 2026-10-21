@@ -10,6 +10,26 @@ from validate_modern_theme_catalog import validate
 from verify_fd2_ares_battle_gpu import matches
 
 
+def pinned_native_blank(original_pack, inventory, resource, index, path):
+    """空拍只接受固定原mask及六倍RGBA全零alpha，不能靠候選自己宣告。"""
+    from build_fd2_character_battle_hd import load_native
+    if (inventory.get('status') != 'PASS-SOURCE-INVENTORY'
+        or inventory.get('archive_reconstruction', {}).get('matches_pinned_original') is not True
+        or digest(original_pack/'manifest.json') != inventory['pack_manifest_sha256']):
+        raise ValueError('空拍原始盤點或manifest不同')
+    row, originals = load_native(original_pack, inventory, resource)
+    if not 0 <= index < len(originals) or originals[index].getchannel('A').getbbox() is not None:
+        raise ValueError('原始mask不是空拍')
+    frame = row['frames'][index]
+    with Image.open(path) as im:
+        if (im.mode != 'RGBA' or im.size != (frame['width']*6, frame['height']*6)
+            or im.getchannel('A').getextrema() != (0, 0)):
+            raise ValueError('空拍成品不是原框六倍RGBA全透明')
+    return {'resource': resource, 'frame': index, 'native_mask_sha256': frame['mask_sha256'],
+            'source_sha256': digest(path), 'delay_native': frame['delay_native'],
+            'width': frame['width'], 'height': frame['height']}
+
+
 def make_native_occlusion_test(entries, source, original_pack, inventory, effect_entries=None):
     native_masks = {}
     effect_entries = effect_entries or {}
@@ -88,7 +108,8 @@ def main():
     p.add_argument('--ordinary-command', type=int, choices=[2,3,6,7,8], help='核對指定普通法術的完整交易、F2與施術來源')
     p.add_argument('--normal-ordinary-command', type=int, choices=[2,3,7,8], help='核對指定普通法術的正常標題LOAD及保存冷讀')
     p.add_argument('--normal-end-command', type=int, choices=[0,4,5], help='核對正常END實際施法及完整返回／保存冷讀')
-    p.add_argument('--all-cast-frames', action='store_true', help='明示要求每張施術來源都有actor階段最終GPU核心，不將非零相位抽樣冒充全幀')
+    p.add_argument('--all-cast-frames', action='store_true', help='要求每張施術來源都有actor最終GPU核心；明示原空拍另核來源與排程，不以非零相位抽樣冒充全幀')
+    p.add_argument('--allow-native-empty-frames', action='store_true', help='僅全施術fixture：固定原mask全空者另核透明PNG與同次actor排程，不宣稱空拍核心')
     for name in ['catalog', 'source', 'report']:
         p.add_argument('--'+name, type=Path, required=True)
     p.add_argument('--original-pack', type=Path, required=True)
@@ -101,6 +122,8 @@ def main():
     command_id=(args.normal_end_command if args.normal_end_command is not None else args.ordinary_command if args.ordinary_command is not None
                 else args.normal_ordinary_command if args.normal_ordinary_command is not None else 5 if args.command5 else 1 if args.command1 or args.normal_command1 else 0)
     ordinary=args.command0 or args.command1 or args.command5 or args.ordinary_command is not None or normal
+    if args.allow_native_empty_frames and (normal or not ordinary or not args.all_cast_frames):
+        raise SystemExit('空拍來源另驗只限明示全施術普通指令fixture')
     if args.report.exists(): raise SystemExit('不覆寫既有報告')
     catalog = validate(False, args.catalog)
     inventory = json.loads(args.inventory.read_text())
@@ -124,7 +147,7 @@ def main():
             actor-=1
         elif row['status']!='decoded':raise SystemExit('未閉合的施術圖來源')
     if idle not in entries or actor not in entries: raise SystemExit('缺少完整施術者圖源')
-    core = {}
+    core = {}; blank_sources = {}
     for resource in [idle, actor]:
         a = entries[resource]
         for index, (name, sha, frame) in enumerate(zip(a['files'], a['frame_sha256'], a['native_frames'])):
@@ -136,7 +159,14 @@ def main():
                           for i, (r, g, b, alpha) in enumerate(im.getdata())
                            if alpha >= 250 and (args.core_profile=='opaque' or ((b >= 70 and b*100 >= r*150 and b*100 >= g*130) if args.core_profile=='blue'
                               else (r>=100 and g>=70 and r>=g and g*100>=b*150 and r*100>=b*180)))]
-            if len(points) < 1000: raise SystemExit('本圖源不適用指定色域核心核對')
+            if len(points) < 1000:
+                if args.allow_native_empty_frames and resource == actor:
+                    try:
+                        blank_sources[(resource,index)] = pinned_native_blank(args.original_pack,inventory,resource,index,path)
+                    except (ValueError, OSError) as error:
+                        raise SystemExit('非空核心不足或空拍來源無效：'+str(error))
+                    continue
+                raise SystemExit('本圖源不適用指定色域核心核對')
             core[(resource, index)] = (name, sha, points, frame)
     effects={a['source_resource']:a for a in catalog['assets'] if a['role']=='battle_effect_hd_set'}
     occluded=make_native_occlusion_test(entries,args.source,args.original_pack,inventory,effects)
@@ -213,7 +243,7 @@ def main():
                 for n,state in enumerate([before,after]):
                     samples[(name,'target',n)]={'file':name,'phase':'target-idle','subtract':0,'mix':0,
                         'layers':state.get('battle_source_layers',[])}
-        found = []
+        found = []; blank_draws = []
         for sample_name, sample in samples.items():
             name=sample.get('file',sample_name)
 
@@ -225,6 +255,14 @@ def main():
                 rgb = im.convert('RGB').load()
                 for layer_index, layer in enumerate(sample['layers']):
                     key = (layer['resource'], layer['frame'])
+                    if (layer['archive'] in ['', 'FIGANI.DAT'] and key in blank_sources
+                        and sample['phase']=='actor' and layer.get('fill') == -1):
+                        proof=blank_sources[key]
+                        if (layer['width'],layer['height']) != (proof['width'],proof['height']):
+                            raise SystemExit('空拍GPU來源描述子不同')
+                        blank_draws.append({**proof,'file':name,'sha256':digest(path),'phase':'actor',
+                            'scope':'固定全透明來源與實際Game.Draw圖層排程，非不透明核心'})
+                        continue
                     if layer['archive'] not in ['', 'FIGANI.DAT'] or key not in core: continue
                     source, sha, all_points, frame = core[key]
                     if (layer['width'], layer['height']) != (frame['width'], frame['height']): raise SystemExit('GPU來源描述子不同')
@@ -249,8 +287,10 @@ def main():
         if args.all_cast_frames:
             expected=set(range(entries[actor]['frame_count']))
             actual={x['frame'] for x in found if x['phase']=='actor' and x['resource']==actor}
+            actual.update(x['frame'] for x in blank_draws)
             if actual!=expected:raise SystemExit('施術來源全幀GPU核心不完整')
-        reports.append({'receipt': str(receipt), 'receipt_sha256': digest(receipt), 'matches': found})
+        reports.append({'receipt': str(receipt), 'receipt_sha256': digest(receipt), 'matches': found,
+                        'native_blank_draws': blank_draws})
     status=(f'PASS-ORDINARY-COMMAND{command_id}-NORMAL-END-CASTER-GPU' if args.normal_end_command is not None else
             f'PASS-ORDINARY-COMMAND{command_id}-NORMAL-CASTER-GPU' if args.normal_ordinary_command is not None else
             f'PASS-ORDINARY-COMMAND{command_id}-CASTER-GPU' if args.ordinary_command is not None else
@@ -265,9 +305,12 @@ def main():
               'pixel_matcher_sha256': digest(Path(__file__).with_name('verify_fd2_ares_battle_gpu.py')),
               'occlusion_inventory_sha256': digest(args.inventory),
               'all_cast_frames_required':args.all_cast_frames,
+              'allow_native_empty_frames':args.allow_native_empty_frames,
               'reports': reports, 'scope': (f'普通標題LOAD及END指令{command_id}實際視窗的施術者核心，含自然返回／邊界保存冷讀，完整階段另見fixture。' if normal else f'普通指令{command_id}最終GPU的prelude／actor／tail高覆蓋服裝核心，限明示fixture。' if ordinary else '正式RunGame最終GPU的prelude／actor／actor-slide高覆蓋服裝核心，限明示fixture。')+
               '只排除已核SHA的前景原生mask或HD alpha實際遮住的像素，剩餘須至少1000個核心。'
               '相近圖源不判唯一相位，武器／FX及其他施法者另驗；不宣稱原版oracle或整章E2。fixture不當普通玩家證據。'}
+    if args.allow_native_empty_frames:
+        report['scope'] += '明示原空拍只核固定來源全透明與同次Draw排程，不宣稱空拍具有RGB核心；其餘門檻保持。'
     args.report.write_text(json.dumps(report, ensure_ascii=False, indent=2)+'\n')
     print(json.dumps({'status': report['status'], 'receipts': len(reports), 'matched_pngs': sum(len({x['file'] for x in r['matches']}) for r in reports)}))
 

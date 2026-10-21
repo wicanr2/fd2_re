@@ -3530,6 +3530,21 @@
       "rule": "Docker工作exit143或收據缺失時，先保存docker events --since 15m --until 0s --filter container=<名稱>的首份事件及tools/fd2_go_test_memory_probe.py的log／samples；後查事件歷史可能已空。比對signal、實際存活時間、設定時限及memory.events，再區分外部中止、逾時與OOM。發送者未知即保留未知，未完成的工作不登記PASS；同測項拆成有界短批時仍須逐批完整通過。",
       "why": "武者封包R2在198秒被Docker signal15中止，早於Go420秒與容器960秒時限，最後樣本無OOM，沒有最終memory.json。首次events讀到kill／die／destroy，後續保存查詢已空；首份工具輸出轉錄保留，發送來源仍未知。",
       "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#martial22_battle_followup_20261021"
+    },
+    {
+      "id": "figani-third-bank-is-not-command0",
+      "area": "HD驗證",
+      "date": "2026-10-22",
+      "rule": "FIGANI第三銀行的合法caller依正式消費端及原始標記確認，不單憑figure*3+2推定適用普通魔法。入口remake/internal/battlepresent/native_command0_actor.go明示普通0恰一MP標記；不符時保留拒收，以來源GPU檢查界定素材接線，不能改原標記讓fixture通過。",
+      "why": "BattleFig18／19的第三銀行56／59分別有兩／九個raw_byte_4=1。強套普通0會在Game.Draw前拒收；此為不適用的驗證組合，完整60幀來源GPU通過仍不能證明合法caller與完整生命週期。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "docs/data/fd2-modern-hd-battlefield-20261019.json"
+        ],
+        "pattern": "inapplicable_command0_fixture"
+      }
     }
   ]
 }

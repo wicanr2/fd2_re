@@ -23,6 +23,7 @@ def main():
     p.add_argument('--figure', type=int, default=9)
     p.add_argument('--core-profile', choices=['blue','gold','opaque'], default='gold')
     p.add_argument('--all-cast-frames', action='store_true')
+    p.add_argument('--allow-native-empty-frames', action='store_true')
     args = p.parse_args()
     if args.command1 and (args.command5 or args.normal_end_command is not None):
         raise SystemExit('指令1模式不可與其他指令混用')
@@ -42,6 +43,7 @@ def main():
               ['--normal-end-command',str(args.normal_end_command)] if args.normal_end_command is not None else [
               f'--normal-command{command_id}' if args.normal else '--command5' if args.command5 else '--command1' if args.command1 else '--command0'])
         return [sys.executable, str(verifier), *mode, *(['--all-cast-frames'] if args.all_cast_frames else []),
+                *(['--allow-native-empty-frames'] if args.allow_native_empty_frames else []),
                 '--figure', str(args.figure), '--core-profile', args.core_profile, '--receipt', str(receipt_path),
                 '--catalog', str(args.catalog), '--source', str(args.source),
                 '--original-pack', str(args.original_pack), '--inventory', str(args.inventory),
@@ -108,6 +110,7 @@ def main():
                 if not (v['phase']=='actor' and any(l['resource']==actor and l['frame']==last for l in v['layers']))}))
     report = {'status': f'PASS-COMMAND{command_id}-HD-GPU-GUARDS', 'normal_player_receipt': normal,
               'command_id':command_id,'all_cast_frames_required':args.all_cast_frames,
+              'allow_native_empty_frames':args.allow_native_empty_frames,
               'positive_control_passed': True,
               'checks': checks, 'scope': '保留原RGB／alpha／至少1000點門檻；拒收錯範圍、缺交易／F2或自然返回、錯圖與缺圖。'}
     (args.out/'report.json').write_text(json.dumps(report, ensure_ascii=False, indent=2)+'\n')
