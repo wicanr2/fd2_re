@@ -154,7 +154,7 @@ def main():
             extrema = canvas.getchannel('A').getextrema()
             layered = (resource, index) in layered_frames
             if extrema != (0, 255) and not (layered and extrema[0] == 0 and extrema[1] >= 250):
-                raise SystemExit('成品缺少透明背景或不透明核心')
+                raise SystemExit(f'成品缺少透明背景或不透明核心：resource={resource} frame={index} pose={key} alpha={extrema}')
         visible = fitted.getchannel('A').crop((-origin[0], -origin[1], size[0]-origin[0], size[1]-origin[1]))
         clipped = 0 if native_empty else sum(a >= 192 for a in fitted.getchannel('A').getdata())-sum(a >= 192 for a in visible.getdata())
         record = {'resource': resource, 'frame': index, 'pose': key, 'native_anchor': target, 'source_anchor': anchor,
@@ -176,9 +176,9 @@ def main():
             composite.alpha_composite(canvas)
         else:
             prepared.append((record, canvas, original))
-    for _, canvas, original in prepared:
+    for record, canvas, original in prepared:
         if original.getchannel('A').getbbox() is not None and canvas.getchannel('A').getextrema() != (0, 255):
-            raise SystemExit('分層成品缺少透明背景或不透明核心')
+            raise SystemExit(f'分層成品缺少透明背景或不透明核心：resource={record["resource"]} frame={record["frame"]} alpha={canvas.getchannel("A").getextrema()}')
     private = ROOT/base['private_root']; old_names = names(base)
     if any(Path(n).name != n or not (private/n).is_file() for n in old_names): raise SystemExit('基底清冊缺件')
     out.mkdir(); pack = out/'pack'; pack.mkdir(); shutil.copyfile(args.base_catalog, out/'base-catalog.json')

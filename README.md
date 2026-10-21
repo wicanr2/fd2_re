@@ -95,6 +95,10 @@
 這份截圖來源的接敵回合使用忠實模式，背景與面板仍為像素素材。來源槽祖先的清敵政策、共享姿勢與驗證範圍見
 [現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
 
+![騎乘劍士劍光與弓手放箭的HD測試畫面](docs/figures/hd-mounted-archer-battle.png)
+
+左為騎乘劍士的藍色劍光，右為弓手放箭。圖組也保留原有飛矢與透明停拍。此圖取自明示換用角色圖源的測試場景最終GPU縮圖，面板仍沿用來源角色名稱；背景、面板與受擊閃色保留原圖樣。正常玩家與人工造型確認仍待全部HD接入後集中抽驗，來源與範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
+
 | 鐵諾HD普通END攻防 | 蓋亞HD普通攻防 |
 | --- | --- |
 | ![鐵諾HD普通END攻防](docs/figures/hd-tino-physical-attack.png) | ![蓋亞HD普通攻防](docs/figures/hd-gaia-physical-attack.png) |

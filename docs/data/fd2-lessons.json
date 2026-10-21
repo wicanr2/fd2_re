@@ -3336,8 +3336,8 @@
       "id": "layered-alpha-final-composite-gate",
       "date": "2026-10-20",
       "area": "HD資產編製",
-      "rule": "tools/build_fd2_character_battle_hd.py分開驗母稿、中間圖層與最終PNG的alpha契約；分層中間層沿既有max>=250，最終原非空圖在建立out前仍須0／255。保存生成alpha，不為過中間檢查而重畫或量化。",
-      "why": "洛娜兩份碎光maxA254，已符合既有母稿規則；中間層卻用255擋下。最終合成沿身體保有255，新缺最終核心反例與舊33張位元組回歸通過。",
+      "rule": "tools/build_fd2_character_battle_hd.py分開驗母稿、中間圖層與最終PNG的alpha契約；分層中間層沿既有max>=250，最終原非空圖在建立out前仍須0／255。保存生成alpha，不為過中間檢查而重畫或量化。 原母稿max254不能推定重採樣後仍254；先用同一編製器及配方實測，不量化alpha或用額外材質補值。",
+      "why": "洛娜兩份碎光maxA254，已符合既有母稿規則；中間層卻用255擋下。最終合成沿身體保有255，新缺最終核心反例與舊33張位元組回歸通過。 2026-10-22藍光V2原alpha254，依既有LANCZOS公式及完整編製，八張飛矢均有255核心；金屬箭尖提案未實作即取消。",
       "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#lorna5_battle_followup_20261020",
       "guard": {
         "kind": "present",
@@ -3544,6 +3544,21 @@
           "docs/data/fd2-modern-hd-battlefield-20261019.json"
         ],
         "pattern": "inapplicable_command0_fixture"
+      }
+    },
+    {
+      "id": "native-fx-palette-overlaps-body",
+      "area": "HD圖源定位",
+      "date": "2026-10-22",
+      "rule": "原版FX與角色共用調色盤時，不用角色未出現色的連通bbox代表完整FX；先看原圖全域包絡及實際同框候選，再把本體與FX錨點分開，手工範圍標為美術近似。入口tools/build_fd2_character_battle_hd.py的schema1分層配方與61「BattleFig7騎乘劍士與23弓手圖源」。",
+      "why": "22:13的大C在馬身下方也有與本體共用的顏色；色域分離後bbox太窄，容納邏輯把整道光縮小。原圖全掃光包絡[67,0,320,192]恢復正確高度；22:8細束長寬不適用，改既有寬弧，保持人物比例。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "docs/data/fd2-modern-hd-battlefield-20261019.json"
+        ],
+        "pattern": "22:13:primary_fx"
       }
     }
   ]

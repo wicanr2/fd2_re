@@ -10029,3 +10029,5 @@ BattleFig16／26龍人已依61「BattleFig16與26龍人圖源」接入；唯一�
 遊戲外主題工具列與城鎮／商店已依61接入，限RUNTIME-E1。三種城鎮／三種商店、三位店員及既有隊伍裝備頭像以114個實際Game.Draw案例驗證，完整遊戲區域與無工具列版本逐位元組相同；實際滑鼠／F2／四語及兩包正式載入通過。原生選單框、游標與成功效果保持原圖樣；其他設施、正常玩家及人工依全部HD後集中確認。唯一來源與重跑命令見[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的facility_scene_followup_20261021，數量只依58。
 
 BattleFig18／19依61「BattleFig18與19完整三銀行圖源」接線。唯一證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的armored18_19_battle_followup_20261021。60幀含透明空拍通過完整GPU對CPU Over，兩組物理Game.Draw／F2／返回及兩包缺件原子性通過，限RUNTIME-E1。普通0強套第三銀行因2／9個標記拒收，該caller與完整生命週期未知；集中正常玩家與人工造型待全部HD後確認。
+
+BattleFig7／23已沿61「BattleFig7騎乘劍士與23弓手圖源」接入。唯一證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的mounted7_archer23_followup_20261022。50幀完整來源GPU、41個本體最終核心、八飛矢與一原空拍同次Draw、F2／返回及兩包原子性通過，限RUNTIME-E1。原23／71零header保持；共用姿勢、弧光手工包絡與飛矢亮度近似明示，正常玩家與人工依全部HD後集中確認。
