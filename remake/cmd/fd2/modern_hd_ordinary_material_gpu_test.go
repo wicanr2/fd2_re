@@ -141,6 +141,13 @@ func TestModernHDNinjaWingedAllFramesGPU(t *testing.T) {
 	testModernHDRegisteredFramesGPU(t, "FIGANI.DAT", []int{75, 76, 77, 81, 82}, 44, "PASS-NINJA-WINGED-44-SOURCE-GPU")
 }
 
+func TestModernHDMonksWandAllFramesGPU(t *testing.T) {
+	if os.Getenv("FD2_HD_MONKS_WAND_GPU") != "1" {
+		t.Skip("dedicated registered monks and wand fighter GPU process required")
+	}
+	testModernHDRegisteredFramesGPU(t, "FIGANI.DAT", []int{84, 85, 87, 88, 93, 94}, 44, "PASS-MONKS-WAND-44-SOURCE-GPU")
+}
+
 func testModernHDRegisteredFramesGPU(t *testing.T, archive string, resources []int, frameCount int, status string) {
 	t.Helper()
 	set, err := loadModernStoryPortraitSet(os.Getenv("FD2_TEST_MODERN_EFFECT_CATALOG"), os.Getenv("FD2_TEST_MODERN_EFFECT_PACK"))

@@ -103,6 +103,10 @@
 
 雙刀武者的兩次斬擊與藍色斬光、翼龍槍兵的飛行突刺及透明停拍已接入HD圖源。上圖為測試場景的實際最終GPU縮圖，面板沿用來源角色名稱；背景及受擊閃色仍含像素素材。關鍵姿勢與尾光共用、突刺光寬度等美術近似，保留在全部HD接入後集中人工確認。來源與限定驗證見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
 
+![上勾拳、短杖星芒與迴旋打擊的HD測試畫面](docs/figures/hd-monks-wand-battle.png)
+
+左為深藍拳師上勾拳，中為短杖命中星芒，右為灰綠拳師迴旋打擊。此圖取自明示換用圖源的測試場景最終GPU縮圖，面板仍沿用來源角色名稱；背景及受擊閃色保留原圖樣。共用姿勢、袍身比例、光弧高度與碎光形狀的差異已記錄，待全部HD接入後集中人工確認，範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
+
 | 鐵諾HD普通END攻防 | 蓋亞HD普通攻防 |
 | --- | --- |
 | ![鐵諾HD普通END攻防](docs/figures/hd-tino-physical-attack.png) | ![蓋亞HD普通攻防](docs/figures/hd-gaia-physical-attack.png) |
