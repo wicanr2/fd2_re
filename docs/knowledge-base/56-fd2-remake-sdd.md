@@ -10009,3 +10009,9 @@ battle_ch02原缺view及繼承HUD來源，第一次正常移動遭預檢拒收�
 本段取代較早同批效果仍像素的現況描述；歷史收據保持。4／5共用owner以5代表，未另外提升4的完整Game.Draw。
 來源、公式、獨立核對與重跑命令見[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的ordinary_material_effects_followup_20261021，
 唯一數量與未完成範圍見[58](58-fd2-exe-re-coverage.md)。正常操作及人工畫質依全部HD串接後集中確認，火龍與其他缺項仍待。
+
+普通指令2火龍追加：26／27完整手繪母稿圖源已正式接入。固定36來源、矩陣重生、錯件拒收、全來源GPU及原有304回歸通過。
+同次完整Game.Draw、各相位F2、MP一次／HP六段／RNG／一次續行、全部施術來源核心與代表龍頭特效最終像素通過。
+三原RGBA、27鏡射、9／15共用張口與16／17共用尾焰、刻意原框裁切明示，沒有原版RGB／alpha parity聲明。
+本段取代本檔較早火龍仍像素的現況描述，歷史收據不改。正式及runtime-only缺件／F2原子性與私人同步通過；正常操作及人工美術仍集中全部HD後。
+來源、工具及命令見[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的dragon_effect_followup_20261021；數量與其餘缺項只見[58](58-fd2-exe-re-coverage.md)。

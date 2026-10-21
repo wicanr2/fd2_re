@@ -3132,6 +3132,38 @@ fixture補充：共用舊fixture只留class2抗性，7的完整目標集合還�
 - 技術接入、尚待人工確認及已確認分開記錄；缺素材、未知caller與未驗平台維持明示，
   不因改排程將完整HD或PLAYER-E2提前結案。正式資料的新未知仍回到既有RE／規格閘門。
 
+### 普通法術2火龍HD圖源
+
+狀態：CONFORMED-SCOPED／RUNTIME-E1。基底819275ac，分支feat/hd-dragon-effect。只編製FDOTHER26／27各十八幀，不改既有普通指令2的規則、時序或來源producer。
+原檔FDOTHER.DAT SHA-256為a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce，
+manifest／metadata／PNG／mask／header及描述子沿既有普通效果盤點，兩側全幀技術參考由audit_fd2_dragon_effect_source.py重生。
+本項只消費已閉合圖源與consumer，不新增EXE位址語意或原版執行期聲明。
+
+- 沿已核准手繪風格，保留原版細長龍吻、角、放射狀頰刺／鬚、赤橙鱗與金白腹甲。三張原RGBA為閉口、張口及尾焰。
+  新畫不是原版逐幀RGB；9／15共用張口母稿，16／17共用尾焰，27共用鏡射母稿。原9的半張口與15大張口差別未獨立重畫，留待集中人工修正。
+- 配方schema1含reference_sha256、三母稿的file／sha256／anchor，以及26／27完整十八項pose／size／origin／flip。
+  anchor是來源alpha≥192外框，只作定位，原始RGBA及所有alpha不修改。圖源與來源指紋先驗完整，缺件或錯矩陣拒收。
+  母稿按配方LANCZOS取樣，27作水平鏡射，再依最終origin疊到原width×height的六倍透明畫布。
+  size為1..4096整數，origin為±4096內整數，flip須對應圖庫；不得增加幀、補圖或重設原delay／marker。
+- R3原型把頭部高覆蓋外框映為240×150原生像素的虛擬矩形，貼齊原框下緣；左右分別靠左／右，超出原框刻意裁切。
+  尾焰獨立映入原框並保留2個HD像素邊距。這是明示美術幾何近似，不稱原版頭部座標或alpha完全一致。
+  每項配方保存最終取樣尺寸與原點，可獨立修圖；R1過細的尾焰及低alpha殘點擴張的錨點已由R2／R3訂正。
+  編製列出所有alpha≥192的裁切數，非空幀須有透明背景、255核心及至少1000個alpha≥250像素。
+- 候選沿既有battle_effect_hd_set、native_fdother_ordinary_rgba_hd6_v1、native_ordinary_frames及native_descriptor_hd6，正式資料格式不變。
+  准入前驗全部36項固定來源、矩陣重生及錯件拒收、全部36幀實際GPU與完整指令2 Game.Draw／F2／MP／HP／RNG／一次續行。
+  兩側來源皆核GPU；完整owner以既有raw-side2 fixture代表，未抽的正常玩家與另一側完整演出不提升。
+  通過後沿清冊白名單同步私人庫及runtime-only，舊項目保持。全部HD接齊後再集中正常操作與人工確認。
+
+唯一狀態及來源入口為HD主收據dragon_effect_followup_20261021。火龍已正式登錄，其他人物、回復／地圖尾段、戰場及HUD仍待。
+
+全36矩陣重生與原型PNG相同，十三種錯件不發布輸出；36幀GPU與既有304幀回歸通過。
+完整指令2的99次HD呈現、所有相位F2、MP1／HP6／RNG／一次續行與全部施術來源核心通過。
+最終特效以至少1000個alpha≥250點沿既有合成區間核RGB，錯命令／錯最終RGB拒收；預設七owner仍取255並重跑舊收據通過。
+正式及runtime-only各一父一子零SKIP，缺件／F2原子性通過；原有清冊與素材保持，三原RGBA及全36PNG已依白名單同步私人庫。
+編製入口tools/build_fd2_dragon_effect_hd.py，來源／矩陣守衛tools/test_fd2_dragon_effect_hd.py，
+GPU沿modern_hd_ordinary_material_gpu_test.go的獨立TestModernHDDragonAllFramesGPU，最終像素用verify_fd2_ordinary_effect_gpu.py --dragon。
+各命令與來源SHA集中同欄reproduce；數量只見58。普通玩家、另一側完整owner與人工美術確認仍依全部HD集中排程。
+
 ### 普通法術十六組HD材質重定向
 
 狀態：CONFORMED-SCOPED／RUNTIME-E1。基底762380dc，分支feat/hd-ordinary-effect-materials。沿上一節入口及固定原版包；
@@ -3154,7 +3186,7 @@ fixture補充：共用舊fixture只留class2抗性，7的完整目標集合還�
   原像素來源重組與已閉合原版控制流不重開。缺件／F2沿前批兩銀行原子契約。
   通過後只同步清冊白名單至私人庫，保持原素材；普通GUI與造型人工確認集中最後。
 
-來源及結果集中於HD主收據ordinary_material_effects_followup_20261021；兩組火龍、其他人物／效果、地形與HUD仍待。
+來源及結果集中於HD主收據ordinary_material_effects_followup_20261021；火龍已由上列獨立批次接入；其他人物／效果、地形與HUD仍待。
 
 已正式登錄，完整來源alpha、獨立float64色彩抽樣、損壞來源拒收、全來源GPU與七種owner代表Game.Draw通過。
 每種owner的扣魔、HP節拍、亂數、各相位F2、一次續行及施術全幀核心均通過；正式／runtime-only載入與缺件拒收通過。
@@ -3164,7 +3196,7 @@ fixture補充：共用舊fixture只留class2抗性，7的完整目標集合還�
 原始描述子、delay、命中／聲音標記與正式規則保持；材質重定向是modern-art approximation，正常操作及人工畫質仍待集中確認。
 火龍兩圖庫的全幀技術參考由tools/audit_fd2_dragon_effect_source.py產生：在Python映像用
 `--original-pack <唯讀原版包> --reference <上述普通效果盤點.json> --out <新前綴>`；只支援26／27，輸出原PNG／mask雜湊與參考板。
-火龍的三張生成母稿及完整提示先記於同欄next_dragon_sources，尚未登錄，不算本批完成範圍。
+火龍的三張生成母稿原型及提示保留同欄next_dragon_sources；其後正式接入見獨立dragon_effect_followup_20261021，不回寫本批範圍。
 
 ### BattleFig3 斧兵圖源
 

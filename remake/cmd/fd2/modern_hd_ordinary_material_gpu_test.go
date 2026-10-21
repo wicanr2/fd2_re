@@ -96,12 +96,24 @@ func TestModernHDOrdinaryMaterialAllFramesGPU(t *testing.T) {
 	if os.Getenv("FD2_HD_ORDINARY_MATERIAL_GPU") != "1" {
 		t.Skip("dedicated registered ordinary material GPU process required")
 	}
+	testModernHDOrdinaryFramesGPU(t, []int{18, 19, 20, 21, 22, 23, 24, 25, 28, 30, 32, 33, 37, 38, 39, 43}, 304, "PASS-ORDINARY-MATERIAL-304-SOURCE-GPU")
+}
+
+func TestModernHDDragonAllFramesGPU(t *testing.T) {
+	if os.Getenv("FD2_HD_DRAGON_GPU") != "1" {
+		t.Skip("dedicated registered fire dragon GPU process required")
+	}
+	testModernHDOrdinaryFramesGPU(t, []int{26, 27}, 36, "PASS-DRAGON-36-SOURCE-GPU")
+}
+
+func testModernHDOrdinaryFramesGPU(t *testing.T, resources []int, frameCount int, status string) {
+	t.Helper()
 	set, err := loadModernStoryPortraitSet(os.Getenv("FD2_TEST_MODERN_EFFECT_CATALOG"), os.Getenv("FD2_TEST_MODERN_EFFECT_PACK"))
 	if err != nil {
 		t.Fatal(err)
 	}
 	p := &ordinaryMaterialGPUProbe{g: &Game{modernStoryPortraits: set},
-		resources: []int{18, 19, 20, 21, 22, 23, 24, 25, 28, 30, 32, 33, 37, 38, 39, 43},
+		resources: resources,
 		pixels:    make([]byte, 1920*1200*4), want: image.NewRGBA(image.Rect(0, 0, 1920, 1200))}
 	ebiten.SetWindowSize(640, 400)
 	ebiten.SetVsyncEnabled(false)
@@ -109,18 +121,18 @@ func TestModernHDOrdinaryMaterialAllFramesGPU(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer p.gpu.close()
-	if p.err != nil || p.resource != 16 || len(p.rows) != 304 {
+	if p.err != nil || p.resource != len(resources) || len(p.rows) != frameCount {
 		t.Fatalf("ordinary material GPU: %v resources%d frames%d", p.err, p.resource, len(p.rows))
 	}
 	if out := os.Getenv("FD2_TEST_MODERN_EFFECT_OUT"); out != "" {
 		if err := os.Mkdir(out, 0755); err != nil {
 			t.Fatal(err)
 		}
-		raw, _ := json.MarshalIndent(map[string]any{"status": "PASS-ORDINARY-MATERIAL-304-SOURCE-GPU", "frames": p.rows,
+		raw, _ := json.MarshalIndent(map[string]any{"status": status, "frames": p.rows,
 			"scope": "Registered FDOTHER binding and complete GPU world against independent CPU Over composition; not Game.Draw, original RGB parity or player-path validation."}, "", "  ")
 		if err := os.WriteFile(filepath.Join(out, "receipt.json"), append(raw, '\n'), 0644); err != nil {
 			t.Fatal(err)
 		}
 	}
-	t.Log("304 registered FDOTHER frames: complete GPU world matches CPU Over within one RGBA unit")
+	t.Logf("%d registered FDOTHER frames: complete GPU world matches CPU Over within one RGBA unit", frameCount)
 }

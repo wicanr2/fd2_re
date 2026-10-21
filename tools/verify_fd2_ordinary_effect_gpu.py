@@ -14,6 +14,7 @@ from verify_fd2_compound_caster_gpu import make_native_occlusion_test
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--receipt', type=Path, action='append', required=True)
+    parser.add_argument('--dragon',action='store_true',help='只核普通指令2的26/27手繪龍頭，alpha≥250；預設七owner仍只取255')
     for key in ['catalog','source','original-pack','inventory','report']:
         parser.add_argument('--'+key,type=Path,required=True)
     args = parser.parse_args()
@@ -24,6 +25,8 @@ def main():
     occluded = make_native_occlusion_test(figures,args.source,args.original_pack,
                                          json.loads(args.inventory.read_text()),effects)
     expected = {0:[18,20],1:[19,21],3:[39,43],5:[24,25],6:[32,33],7:[37,38],8:[28,30]}
+    if args.dragon: expected={2:[26,27]}
+    minimum_alpha=250 if args.dragon else 255
     seen, rows = set(), []
     for receipt in args.receipt:
         data = json.loads(receipt.read_text()); command = data.get('command_id')
@@ -46,7 +49,7 @@ def main():
                 source = args.source/asset['files'][index]
                 if digest(source) != asset['frame_sha256'][index]: raise SystemExit('特效來源SHA不同')
                 with Image.open(source) as im:
-                    points = [(i%im.width,i//im.width,r,g,b,a) for i,(r,g,b,a) in enumerate(im.getdata()) if a==255]
+                    points = [(i%im.width,i//im.width,r,g,b,a) for i,(r,g,b,a) in enumerate(im.getdata()) if a>=minimum_alpha]
                 if len(points)<1000: continue
                 selected = points[::max(1,len(points)//8000)]
                 ox,oy = layer['x']*6,layer['y']*6
@@ -61,16 +64,17 @@ def main():
                 if okay:
                     found.append({'file':name,'sha256':digest(path),'phase':shot['phase'],
                                   'resource':layer['resource'],'frame':index,'source_sha256':digest(source),
-                                  'checked_opaque_pixels':len(visible)})
+                                  ('checked_pixels' if args.dragon else 'checked_opaque_pixels'):len(visible),'minimum_alpha':minimum_alpha})
                     break
             if found: break
         if not found: raise SystemExit(f'普通法術{command}未核到實際HD特效核心')
         rows.append({'command':command,'receipt_sha256':digest(receipt),'matches':found})
-    if seen != set(expected): raise SystemExit('七種普通owner不完整')
-    report = {'status':'PASS-SEVEN-ORDINARY-OWNERS-EFFECT-GAME-DRAW','catalog_sha256':digest(args.catalog),
+    if seen != set(expected): raise SystemExit('指定普通owner不完整')
+    report = {'status':'PASS-DRAGON-OWNER-EFFECT-GAME-DRAW' if args.dragon else 'PASS-SEVEN-ORDINARY-OWNERS-EFFECT-GAME-DRAW','catalog_sha256':digest(args.catalog),
               'verifier_sha256':digest(Path(__file__)),'owners':rows,
-              'scope':'七種owner各一張最終Game.Draw特效的至少1000個全不透明抽樣點，依前景來源遮罩排除遮擋。'
-                      '4與5共用owner以5作代表；4的22/23來源另由304幀GPU驗證。非所有相位RGB、正常操作或人工美術驗收。'}
+              'scope':('普通指令2一張最終Game.Draw特效的至少1000個alpha≥250抽樣點，沿未知背景alpha合成區間核RGB；'
+                       if args.dragon else '七種owner各一張最終Game.Draw特效的至少1000個全不透明抽樣點；4與5共用owner以5作代表；4的22/23來源另由304幀GPU驗證。')+
+                      '依前景來源遮罩排除遮擋。非所有相位RGB、正常操作或人工美術驗收。'}
     args.report.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
     print(json.dumps({'status':report['status'],'owners':len(rows)}))
 
