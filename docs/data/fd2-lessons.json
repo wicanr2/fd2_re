@@ -3560,6 +3560,21 @@
         ],
         "pattern": "22:13:primary_fx"
       }
+    },
+    {
+      "id": "partial-flight-pose-geometry",
+      "area": "HD圖源定位",
+      "date": "2026-10-22",
+      "rule": "原框只露出局部肢體時，先以固定原RGBA核對仍可見部位，再建立虛擬全身包絡與source anchor裁切；不把整個人物縮進局部框，也不用只命中少量頭部色點的結果決定位移。入口為61「BattleFig25雙刀武者與27翼龍槍兵圖源」、HD主收據ninja25_winged27_followup_20261022.recipe_inline與tools/build_fd2_character_battle_hd.py。",
+      "why": "翼龍82:12的稀有色取樣忽略可見的下半身，僅匹配236／2435點；改取原圖下半身後為2387／2435點。錯誤幾何僅留DRAFT，不進正式配方；位移與新圖姿勢仍屬美術強推論，不稱原版逐幀相同。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "docs/data/fd2-modern-hd-battlefield-20261019.json"
+        ],
+        "pattern": "ninja25_winged27_followup_20261022"
+      }
     }
   ]
 }

@@ -1,5 +1,7 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
+BattleFig25／27完整圖源已接入；候選及runtime-only來源GPU、兩組物理Game.Draw／F2／返回、原生空拍、來源拒收及兩包缺件原子性通過。姿勢／尾光與光寬近似保留，77第三銀行另通過指令0測試場景全部八幀，不新增原版玩家技能可達性或普通玩家聲明。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的ninja25_winged27_followup_20261022。
+
 普通2／3／7／8人物HD已有完整繪製、各階段F2與一次結算的自動證據；正常2／8另有操作、
 返回及保存冷讀收據。BattleFig110三組正式圖源亦通過實際繪製與來源核心核對，仍不新增普通玩家或原版parity聲明。
 普通6人物、七色近似、完整繪圖／F2及一次結算亦通過，原始特效遮擋依固定mask雜湊核對；
