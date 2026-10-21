@@ -5,10 +5,12 @@
 3／7及剩餘人工範圍留待最後。BattleFig110三組人物也已正式登錄，母稿共用與來源勘誤如實記錄。
 普通6人物與七種packed變色亦已接入，採既有四近鄰RGB色差近似，保留alpha；原indexed與owner規則保持。
 完整繪圖／F2、結算與施術核心自動驗證通過，效果32／33仍像素，正常操作與人工確認待最後。
+普通0～8的十八項FDOTHER效果入口與兩銀行原子預載也已接入；晚期缺件及F2故障注入通過，正式效果美術仍待。
 全套Go的原失敗已由核心MEMCG事件及受控重跑確認為測試容器OOM；標準配額下的主程式回歸通過。
 唯一數量及未完成範圍依[58](58-fd2-exe-re-coverage.md)，規格與執行順序見[61](61-modern-theme-runtime-spec.md)。
 來源集中於[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的ordinary_remaining_hd_followup_20261021、
 winged110_battle_followup_20261021、ordinary6_hd_followup_20261021及hd_integration_order_20261021；自動通過不當作人工或原版parity。
+效果入口結果見同份主收據ordinary_effect_banks_followup_20261021。
 
 約拿BattleFig21與希爾法BattleFig24沿原17幀正式登錄，65／74零header不補造。完整Draw／三階段F2／返回DAC及runtime-only最終PNG bytes一致；正常章23近戰、返回與章節邊界保存冷讀通過。希爾法使用已核對的章前AP+0強化槽，避免在抽樣前把目標反擊清除；116號故事HD頭像及正常劇情已由captain116_battle_followup_20261021補齊；隊長主動攻擊正常GUI仍待。原矩形、marker、規則與保存格式保持；原版逐幀及整章E2不由此推定。
 來源見[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的cleric_party_battle_followup_20261021，唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)。

@@ -368,7 +368,7 @@ func (g *Game) startNativeCommand1Presentation(actor, confirmed *battle.Unit, th
 		return err
 	}
 	if set := g.modernStoryPortraits; set != nil {
-		if err := set.prepareBattleHDResources(hd.resources()...); err != nil {
+		if err := prepareModernHDCommandBanks(set, hd); err != nil {
 			return err
 		}
 	}

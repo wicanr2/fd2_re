@@ -3132,6 +3132,53 @@ fixture補充：共用舊fixture只留class2抗性，7的完整目標集合還�
 - 技術接入、尚待人工確認及已確認分開記錄；缺素材、未知caller與未驗平台維持明示，
   不因改排程將完整HD或PLAYER-E2提前結案。正式資料的新未知仍回到既有RE／規格閘門。
 
+### BattleFig3 斧兵圖源
+
+狀態：READY。固定FIGANI inventory的9／10為4／6幀，11為已核零header，不補造施術。
+原版技術參考圖沿HD主收據hd_integration_order_20261021.next_native_reference，來源PNG／Mask及描述子逐項核對。
+本批只製作圖源，沒有新原版規則、位址語意或戰役E2聲明。
+
+- 沿已核准手繪風格，保留原版背面三分之四視角、壯碩身形、棕色束髮、深藍披布與腰帶、
+  赭色無袖上衣、橄欖色褲、藍色護腕／綁腿、單刃短柄斧。三種身體姿勢為持斧待機、舉斧蓄力、斜向下劈後收勢。
+  金黃大斧芒與小斧尖光分層，母稿可明示共用，不冒充每幀獨立新畫。
+- 依既有schema1圖層及錨點配方，完整編製原十張描述子，header／delay／raw markers保持。
+  不因局部矩形縮成小人；列出高覆蓋裁切。10:5底部細棕線語意未知，不據此創造新武器或效果；
+  母稿及成品的美術差異明示，留待全部HD完成後集中人工確認。
+- 生成原RGBA保存，若圖板裁切，只做矩形原像素切分，不改alpha或修掉內容。
+  正式登錄前核全部描述子、全十幀實際Draw與核心、F2／返回DAC／一次續行及缺件原子性。
+  通過後沿catalog白名單同步私人庫，舊資產保持；普通敵方行動與造型人工確認依集中排程。
+
+來源及結果集中於HD主收據axeman003_battle_followup_20261021，完整HD仍未完成。
+
+### 普通法術HD特效圖源與原子預載
+
+狀態：CONFORMED-SCOPED／RUNTIME-E1。基底80b89acd，分支feat/hd-ordinary-effect-banks。沿既有普通0～8的typed producer、
+同次來源與固定FDOTHER.DAT，不重開規則或原版演出。原版指紋沿58及HD主收據；此項是HD資產准入與預載，
+不新增IDA位址語意或原版oracle。來源與重跑結果集中於主收據ordinary_effect_banks_followup_20261021。
+
+- 普通法術正式loader已選用18／19／20／21／22／23／24／25／26／27／28／30／32／33／37／38／39／43。
+  只對這個集合擴充battle_effect_hd_set，consumer為native_fdother_ordinary_rgba_hd6_v1，
+  cycle為native_ordinary_frames，layout沿native_descriptor_hd6；召喚65～68既有契約保持。
+  清冊欄位、保存格式不變；未知資源仍拒收，不把整個FDOTHER archive一併放行。
+- PNG／metadata雜湊、原header／全部描述子、幀數、透明／coverage與原矩形6倍沿既有嚴格驗證。
+  原始delay、命中／聲音marker及工作區負列契約保持，不補影格或推測新效果。
+- 普通0／1／4／5及2／3／6／7／8在同次來源預建完成後，依全部相位包含pulse的實際Layers，
+  分別收集FIGANI與FDOTHER資源，去重排序。兩銀行共同stage成功後才publish並安裝owner；
+  未登錄效果仍保留原像素呈現。F2同樣以該owner全相位兩銀行一起預檢，不在中途重跑結算。
+- 缺少已登錄效果的晚期PNG時，不發布任何新人物或效果銀行，不安裝owner，不改MP／HP／Acted／RNG。
+  失敗F2保持原主題與owner。成功時只留本次用到的銀行，含全部實際fallback人物及效果。
+- 以正式command fixture驗每種已接普通法術的晚期缺件與F2原子性；測試用HD效果替身只作故障注入，
+  不加入正式清冊、不當作重繪完成。載入器及Python清冊驗證核白名單、錯consumer與原描述子。
+  現有2087張GPU來源不因預載重構而改寫；若繪製邏輯有變再重跑GPU，否則針對銀行／owner做必要回歸。
+
+本項先接圖源入口，不宣稱普通效果美術完成。後續重繪仍須固定原版包來源、完整編製、GPU驗證與私人保存庫同步。
+正常操作及人工確認沿全部HD串接後集中排程。
+
+自動結果：0～8九種完整owner的晚期效果缺件、兩銀行保持、啟動後淘汰舊銀行與F2失敗／成功均通過；
+既有0／1／5、2／3／6／7／8人物預載及32～35召喚回歸通過。
+十八項普通效果契約、錯consumer／描述子及十四項越界資源拒收通過，Python清冊54個准入／拒收案例通過。
+字串盤點SHA保持，99項人工處置及對應測試通過；繪圖器與原版動畫本批未改。
+
 ### 普通法術6的人物與變色呈現
 
 狀態：CONFORMED-SCOPED／RUNTIME-E1。基底90200c36，分支feat/hd-command6-palette。原始FD2.EXE指紋、IDA9.4線性位址

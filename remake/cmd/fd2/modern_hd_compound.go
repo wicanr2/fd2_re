@@ -192,13 +192,25 @@ func bindModernHDCompoundActorSlide(frames []nativeCompoundPresentedFrame, base 
 }
 
 func modernCompoundFigureResources(frames []nativeCompoundPresentedFrame) []int {
+	return modernCompoundArchiveResources(frames, "FIGANI.DAT")
+}
+
+func modernCompoundEffectResources(frames []nativeCompoundPresentedFrame) []int {
+	return modernCompoundArchiveResources(frames, "FDOTHER.DAT")
+}
+
+func modernCompoundArchiveResources(frames []nativeCompoundPresentedFrame, archive string) []int {
 	seen := make(map[int]bool)
 	for _, frame := range frames {
 		if frame.hdSources == nil {
 			continue
 		}
 		for _, layer := range frame.hdSources.Layers {
-			if layer.Resource >= 0 && (layer.Archive == "" || layer.Archive == "FIGANI.DAT") {
+			source := layer.Archive
+			if source == "" {
+				source = "FIGANI.DAT"
+			}
+			if layer.Resource >= 0 && source == archive {
 				seen[layer.Resource] = true
 			}
 		}
@@ -209,6 +221,15 @@ func modernCompoundFigureResources(frames []nativeCompoundPresentedFrame) []int 
 	}
 	sort.Ints(resources)
 	return resources
+}
+
+type modernHDCommandBankSource interface {
+	sourceFrames() []nativeCompoundPresentedFrame
+}
+
+func prepareModernHDCommandBanks(set *modernStoryPortraitSet, source modernHDCommandBankSource) error {
+	frames := source.sourceFrames()
+	return set.prepareBattleHDBanks(modernCompoundFigureResources(frames), modernCompoundEffectResources(frames))
 }
 
 func (g *Game) modernCompoundFigureResources() []int {

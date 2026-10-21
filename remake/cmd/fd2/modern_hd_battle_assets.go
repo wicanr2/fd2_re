@@ -59,7 +59,18 @@ func modernBattleHDContract(asset modernThemeAsset) (prefix, consumer, cycle, la
 	if asset.Role == "battle_effect_hd_set" && asset.SourceArchive == "FDOTHER.DAT" && asset.SourceResource >= 65 && asset.SourceResource <= 68 {
 		return "FDOTHER", "native_fdother_compound_rgba_hd6_v1", "native_compound_frames", "native_descriptor_hd6", true
 	}
+	if asset.Role == "battle_effect_hd_set" && asset.SourceArchive == "FDOTHER.DAT" && modernHDOrdinaryEffectResource(asset.SourceResource) {
+		return "FDOTHER", "native_fdother_ordinary_rgba_hd6_v1", "native_ordinary_frames", "native_descriptor_hd6", true
+	}
 	return "", "", "", "", false
+}
+
+func modernHDOrdinaryEffectResource(resource int) bool {
+	switch resource {
+	case 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 30, 32, 33, 37, 38, 39, 43:
+		return true
+	}
+	return false
 }
 
 // 所有候選圖片先在區域變數完整驗證；失敗不修改已載入的主題集合。

@@ -4,6 +4,8 @@
 返回及保存冷讀收據。BattleFig110三組正式圖源亦通過實際繪製與來源核心核對，仍不新增普通玩家或原版parity聲明。
 普通6人物、七色近似、完整繪圖／F2及一次結算亦通過，原始特效遮擋依固定mask雜湊核對；
 施術全幀核心、八項收據拒收及六項遮擋控制通過，正常操作仍待集中確認。
+普通0～8同次來源的十八項特效入口及兩銀行共同預載通過九種owner缺件／F2原子性；
+只驗接線，未新增效果美術或一般玩家實圖。來源為主收據ordinary_effect_banks_followup_20261021。
 依使用者2026-10-21新排程，先完成全部HD串接，再集中人工確認與修正；3／7正常操作、其他人物／效果、
 完整介面與平台仍明示待驗。來源見[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的
 ordinary_remaining_hd_followup_20261021、winged110_battle_followup_20261021、ordinary6_hd_followup_20261021，唯一覆蓋數量依[58](58-fd2-exe-re-coverage.md)。

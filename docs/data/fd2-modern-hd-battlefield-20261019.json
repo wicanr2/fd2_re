@@ -71601,11 +71601,11 @@
           "file": "work/promo-cadence-20261018/hd-fonts/command6-hd-r1/inv-new.json",
           "sha256": "97e53ddb76e0cd1c2243b30ef3a6a28575a6837964650b123e59afa192183269"
         },
-        "groups": 99,
         "review": {
           "file": "docs/data/fd2-string-review.json",
           "sha256": "cade1604edf820a618ad1d0f8217b592a95ea8eb4ee805ff1ed2015f6c382add"
-        }
+        },
+        "candidates": 99
       },
       "skips": "cpu-owner回歸的兩項需原版槽或正常GUI旗標，未執行；獨立2087 GPU及完整Draw已實際執行。"
     },
@@ -71635,5 +71635,131 @@
       "file": "work/promo-cadence-20261018/hd-fonts/command6-hd-r1/phase-final-validation-r1.json",
       "sha256": "a1cfbd86b0c362ebb7e0da828e9742b48097088173c46e280ae4aee43ba98567"
     }
+  },
+  "ordinary_effect_banks_followup_20261021": {
+    "status": "CONFORMED-SCOPED-RUNTIME-E1",
+    "base": "80b89acdf5b1dd47a44bdbbe697022aea7aad370",
+    "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md#普通法術hd特效圖源與原子預載",
+    "allowed_ordinary_resources": [
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      30,
+      32,
+      33,
+      37,
+      38,
+      39,
+      43
+    ],
+    "evidence": "既有typed loader與同次圖層，非新增原版位址語意或oracle。",
+    "typed_loader_before_sha256": {
+      "remake/cmd/fd2/native_command0_presentation.go": "8fd01d952fc446c501d27464b3c6e776977eafcd214d15fa66c6a582dccf4a5d",
+      "remake/cmd/fd2/native_command1_presentation.go": "942ed18f7310777b89c74d44e9eb6b953c77c70290a075a31101b8772c8db82f",
+      "remake/cmd/fd2/native_command2_presentation.go": "c9416250b5337ae365b2659b1e83aa1c9ab5a708244af4e66df771d8a3f7cb3a",
+      "remake/cmd/fd2/native_command3_presentation.go": "1c066aec5bf5a08a579fbf59c9331e316831d09b309390e511d82703a305a44f",
+      "remake/cmd/fd2/native_command5_presentation.go": "e63e6f8619f567211909128b56e28d1121c67b269c345831efbe91e9c57077f4",
+      "remake/cmd/fd2/native_command6_presentation.go": "5f7ad57fe9e8d4cafdacb14013a6192a0b8c7e48a4cb8ede84fc132a16865d09",
+      "remake/cmd/fd2/native_command7_presentation.go": "648a467549af5b57917c3143775dbdfb622bd536b46ca15f1bbfebc57a63486a",
+      "remake/cmd/fd2/native_command8_presentation.go": "8f5c3c55ef23c48256f2e2caa28f8f70e3d9eb1f5b752713020ede4301b3291c"
+    },
+    "full_battle_hd_complete": false,
+    "human_review": "pending-until-all-HD-integrated",
+    "art": "本項只接入口，普通效果素材尚未正式登錄。",
+    "work_root": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1",
+    "validation": {
+      "go": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/banks-atomic-r1.log",
+        "sha256": "cf74778841a7d7576dfafb79d656ffa597359547164833737a179e48aa60291e"
+      },
+      "go_summary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/go-check-summary-r1.json",
+        "sha256": "45024bee239e5e75c90dd5bfe91135a53b92b30100064f3703acc26f2af384bf"
+      },
+      "python_catalog": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ordinary-effect-catalog-r1.json",
+        "sha256": "fc7b1c9812146e061da1692c5eb7224801ab8477b45694dfc91e9d964ab001cf"
+      },
+      "string_inventory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/inv-new.json",
+        "sha256": "97e53ddb76e0cd1c2243b30ef3a6a28575a6837964650b123e59afa192183269"
+      },
+      "string_review_count": 99,
+      "inventory_changed": false,
+      "string_inventory_test": "go test ./cmd/fd2-string-inventory -count=1 PASS0.218s",
+      "worklist": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/fd2_worklist.py-verify-r1.log",
+        "sha256": "86a705d5f4e3a2e4f08ef650f29d426c2c5c17cfa54544b6333b324e92c391d1"
+      },
+      "lessons": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/fd2_lessons.py-check-r1.log",
+        "sha256": "954bce785b88c0e8c9bd84099bc043e267a30210ace5684ddf70e7b9fda5df76"
+      }
+    },
+    "reproduce": {
+      "go": "Docker fd2-go-test-local:latest, user1000:1000, network none, memory8g,cpus4,pids512; cwd remake; FD2_ASSET_PACK與FD2_TEST_ORIGINAL_PACK指固定原版包唯讀路徑；FD2_TEST_MODERN_EFFECT_CATALOG及FD2_TEST_MODERN_EFFECT_PACK指正式清冊與主題。with-xvfb go test ./cmd/fd2 -count=1 -timeout=500s -run 'ModernHDOrdinaryEffect|ModernHDCommand[015]PreflightAndF2Atomic|ModernHDOrdinaryRemainingPreflightAndF2Atomic|ModernHDCompoundActorPreflightAndF2Atomic|ModernHDBattleAssetsCompleteAndAtomic' -v；外層550秒。",
+      "catalog": "Docker fd2-assets-local:20260829-sfx: python tools/test_fd2_ordinary_effect_catalog.py --catalog remake/assets/themes/modern/catalog.json --report <fresh-json>"
+    },
+    "formal_catalog": {
+      "file": "remake/assets/themes/modern/catalog.json",
+      "sha256": "df744980c22a1e9ae4ba7dbd6a766681804d095894ab95ed8303641d4ffca2c1"
+    },
+    "render_change": false,
+    "new_formal_assets": 0,
+    "go_sources_after_sha256": {
+      "remake/cmd/fd2/modern_hd_battle_assets.go": "0e1ea8184ca0d935fbc4ff704fbb9f273dcd17d56881e764fd26dfc9b86b3d96",
+      "remake/cmd/fd2/modern_hd_command0.go": "c9018157b7355f0a9d6ff3ec83ad9fbd76c63d69a4b94a275e81c4ec2846a66b",
+      "remake/cmd/fd2/modern_hd_command1.go": "f604edef662a5a19a572357b2c5e8e3dc75d0aaadefd23d759fbad0a4d947309",
+      "remake/cmd/fd2/modern_hd_command5.go": "54d20e813cad560ee6769d24aff16c2b98205925641b07f63d2ab3286420c0c6",
+      "remake/cmd/fd2/modern_hd_compound.go": "e48d3fb54a7ede7855dfd3f64f315bfad2c497b229e13aefe16dead5352bb90f",
+      "remake/cmd/fd2/modern_hd_ordinary.go": "bb0d87807754ac060f256e6d149bee3b3586aab632f3aad9f86d322c2812b97e",
+      "remake/cmd/fd2/native_command0_presentation.go": "09f2ecbe09186fea2acc9002edb5def5c29b3f933df01db52aa1276cfd955d54",
+      "remake/cmd/fd2/native_command1_presentation.go": "d86e77d2bb022b326354e88f35394cb85eb61f736ca94544ea28a9d2d9c621b6",
+      "remake/cmd/fd2/native_command2_presentation.go": "9a1a5cdd3fe9951c1915f5d3506af15ba34e33d7bde9b8d73150432bfc5d42ca",
+      "remake/cmd/fd2/native_command3_presentation.go": "92eedccfd4c5c53ad800770c7d26f9f489c6b9cc25d957991ee90e1ddb17b972",
+      "remake/cmd/fd2/native_command5_presentation.go": "9388f966b6294d4c4991e66e0609b43b311bbf08abda51896e28724366e84ed5",
+      "remake/cmd/fd2/native_command6_presentation.go": "9afb5669b00e73d0811db6daeee0d266d4200a7a836efc2a2e43a6f7f1aa8e2d",
+      "remake/cmd/fd2/native_command7_presentation.go": "04040a96a6f75c26e51451d24ab3fb1e3aba9ed226524dba0725bd8905e07d8f",
+      "remake/cmd/fd2/native_command8_presentation.go": "226efd078b6c06977eaef3fc94d9a8cbbb3f0ff6a8f2eb77471d498638d71c88",
+      "remake/cmd/fd2/player_shortcuts.go": "8428955bfc818b001d415d94da02951114ad4861669c327c3cc2e07bd854ed8a"
+    },
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/phase-final-validation-r1.json",
+      "sha256": "0d67ebd9bccced28a01121ee89d9790bad0df4cecb46ff7153ae2c22ef37c2ad"
+    }
+  },
+  "axeman003_battle_followup_20261021": {
+    "status": "SOURCE-CANDIDATE-NOT-REGISTERED",
+    "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md#battlefig3-斧兵圖源",
+    "work_root": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1",
+    "original_reference": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/figure003-original-reference.png",
+      "sha256": "e6bed5dc4792327a426050202f99aa9066a4a0a211d9c961467a29ceca69a88f"
+    },
+    "resources": [
+      9,
+      10
+    ],
+    "empty_header_resource": 11,
+    "human_review": "pending-until-all-HD-integrated",
+    "formal_registered": false,
+    "full_battle_hd_complete": false,
+    "generation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure003-generation-r1.json",
+      "sha256": "38a189f490d2aa3e19642dec97fe2a5ad4a372ec06fb093c8af145619d4969dc"
+    },
+    "source_rgba": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure003-source-board-r1.png",
+      "sha256": "b7f21639e2ae2780042066e2701b5ac5c7e74f66c91cbc14fa39ebe9345ca672"
+    },
+    "next": "先核切分與原矩形的身體／斧芒位置，再編製完整十幀；原RGBA保持。"
   }
 }

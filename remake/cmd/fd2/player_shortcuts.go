@@ -57,42 +57,42 @@ func (g *Game) applyTheme(set *modernStoryPortraitSet) error {
 		}
 	}
 	if set != nil && g.nativeCmd5Presentation != nil {
-		if err := set.prepareBattleHDResources(g.nativeCmd5Presentation.hd.resources()...); err != nil {
+		if err := prepareModernHDCommandBanks(set, g.nativeCmd5Presentation.hd); err != nil {
 			return err
 		}
 	}
 	if set != nil && g.nativeCmd0Presentation != nil {
-		if err := set.prepareBattleHDResources(g.nativeCmd0Presentation.hd.resources()...); err != nil {
+		if err := prepareModernHDCommandBanks(set, g.nativeCmd0Presentation.hd); err != nil {
 			return err
 		}
 	}
 	if set != nil && g.nativeCmd1Presentation != nil {
-		if err := set.prepareBattleHDResources(g.nativeCmd1Presentation.hd.resources()...); err != nil {
+		if err := prepareModernHDCommandBanks(set, g.nativeCmd1Presentation.hd); err != nil {
 			return err
 		}
 	}
 	if set != nil && g.nativeCmd2Presentation != nil {
-		if err := set.prepareBattleHDResources(g.nativeCmd2Presentation.hd.resources()...); err != nil {
+		if err := prepareModernHDCommandBanks(set, g.nativeCmd2Presentation.hd); err != nil {
 			return err
 		}
 	}
 	if set != nil && g.nativeCmd3Presentation != nil {
-		if err := set.prepareBattleHDResources(g.nativeCmd3Presentation.hd.resources()...); err != nil {
+		if err := prepareModernHDCommandBanks(set, g.nativeCmd3Presentation.hd); err != nil {
 			return err
 		}
 	}
 	if set != nil && g.nativeCmd6Presentation != nil {
-		if err := set.prepareBattleHDResources(g.nativeCmd6Presentation.hd.resources()...); err != nil {
+		if err := prepareModernHDCommandBanks(set, g.nativeCmd6Presentation.hd); err != nil {
 			return err
 		}
 	}
 	if set != nil && g.nativeCmd7Presentation != nil {
-		if err := set.prepareBattleHDResources(g.nativeCmd7Presentation.hd.resources()...); err != nil {
+		if err := prepareModernHDCommandBanks(set, g.nativeCmd7Presentation.hd); err != nil {
 			return err
 		}
 	}
 	if set != nil && g.nativeCmd8Presentation != nil {
-		if err := set.prepareBattleHDResources(g.nativeCmd8Presentation.hd.resources()...); err != nil {
+		if err := prepareModernHDCommandBanks(set, g.nativeCmd8Presentation.hd); err != nil {
 			return err
 		}
 	}

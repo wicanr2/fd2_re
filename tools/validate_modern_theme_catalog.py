@@ -28,6 +28,7 @@ NO_SOURCE_WRITE_SELECTORS = {39, 57, 104, 105, 121, 127, 128, 129, 130, 131, 132
 VISIBLE_FDICON_GROUPS = set(range(NATIVE_FDICON_GROUP_COUNT)) - NO_SOURCE_WRITE_SELECTORS
 SPRITE_ROLES = {"map_sprite_set", "map_sprite_hd_set"}
 MULTI_FILE_ROLES = SPRITE_ROLES | {"battle_action_icon_set", "native_terrain_hd_set", "battle_animation_hd_set", "battle_effect_hd_set", "map_overlay_hd_set"}
+ORDINARY_EFFECT_RESOURCES = {18,19,20,21,22,23,24,25,26,27,28,30,32,33,37,38,39,43}
 
 
 def png_size(path: Path) -> tuple[int, int]:
@@ -215,10 +216,12 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
             source = 'FDOTHER.DAT' if effect else 'FIGANI.DAT'
             consumer = 'native_fdother_compound_rgba_hd6_v1' if effect else 'native_figani_rgba_hd6_v1'
             cycle = 'native_compound_frames' if effect else 'native_descriptor_key_poses'
+            if effect and type(resource) is int and resource in ORDINARY_EFFECT_RESOURCES:
+                consumer, cycle = 'native_fdother_ordinary_rgba_hd6_v1', 'native_ordinary_frames'
             layout = 'native_descriptor_hd6' if effect else 'contain_native_descriptor_hd6_candidate'
             if (entry['status'] not in {'runtime_candidate', 'runtime_ready'} or
                     entry['consumer_contract'] != consumer or
-                    entry['source_archive'] != source or type(resource) is not int or resource not in (range(65,69) if effect else range(409)) or
+                    entry['source_archive'] != source or type(resource) is not int or resource not in (ORDINARY_EFFECT_RESOURCES | set(range(65,69)) if effect else range(409)) or
                     (source,resource) in battle_resources or entry['alpha_contract'] != 'coverage' or
                     entry['cycle_policy'] != cycle or entry['layout_policy'] != layout or
                     (entry['width'], entry['height']) != (1920, 1200) or

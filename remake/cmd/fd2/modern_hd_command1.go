@@ -59,14 +59,19 @@ func bindModernHDCommand1Sources(sources []battlepresent.NativeCommand1FrameSour
 }
 
 func (f *modernHDCommand1Frames) resources() []int {
+	return modernCompoundFigureResources(f.sourceFrames())
+}
+
+func (f *modernHDCommand1Frames) sourceFrames() []nativeCompoundPresentedFrame {
 	if f == nil || f.opening == nil {
 		return nil
 	}
 	frames := append([]nativeCompoundPresentedFrame(nil), f.opening.prelude...)
 	frames = append(frames, f.opening.actor...)
+	frames = append(frames, f.opening.pulse...)
 	frames = append(frames, f.targets...)
 	frames = append(frames, f.tail...)
-	return modernCompoundFigureResources(frames)
+	return frames
 }
 
 func (j *nativeCommand1PresentationJob) modernFrame() *nativeCompoundPresentedFrame {

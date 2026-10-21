@@ -217,14 +217,19 @@ func bindModernHDCommandTail(base []byte, bg, tai fdother.Frame, luts [][]byte, 
 }
 
 func (f *modernHDCommand0Frames) resources() []int {
+	return modernCompoundFigureResources(f.sourceFrames())
+}
+
+func (f *modernHDCommand0Frames) sourceFrames() []nativeCompoundPresentedFrame {
 	if f == nil {
 		return nil
 	}
 	frames := append([]nativeCompoundPresentedFrame(nil), f.prelude...)
 	frames = append(frames, f.actor...)
+	frames = append(frames, f.pulse...)
 	frames = append(frames, f.target...)
 	frames = append(frames, f.tail...)
-	return modernCompoundFigureResources(frames)
+	return frames
 }
 
 func (j *nativeCommand0PresentationJob) modernFrame() *nativeCompoundPresentedFrame {

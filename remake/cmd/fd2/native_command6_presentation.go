@@ -358,7 +358,7 @@ func (g *Game) startNativeCommand6PresentationAtCursor(actor *battle.Unit, curso
 		return errors.New("native command6 handler frames unavailable")
 	}
 	if set := g.modernStoryPortraits; set != nil {
-		if err := set.prepareBattleHDResources(hd.resources()...); err != nil {
+		if err := prepareModernHDCommandBanks(set, hd); err != nil {
 			return err
 		}
 	}

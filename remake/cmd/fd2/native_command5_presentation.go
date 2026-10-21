@@ -402,7 +402,7 @@ func (g *Game) startNativeCommand45Presentation(actor, confirmed *battle.Unit, c
 		return err
 	}
 	if g.modernStoryPortraits != nil {
-		if err := g.modernStoryPortraits.prepareBattleHDResources(hd.resources()...); err != nil {
+		if err := prepareModernHDCommandBanks(g.modernStoryPortraits, hd); err != nil {
 			return err
 		}
 	}
