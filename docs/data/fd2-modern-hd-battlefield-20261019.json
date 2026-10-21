@@ -74807,5 +74807,1917 @@
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-arm-fd2_lessons.py-check-r1.log",
       "sha256": "8fd49356321724cf74452b63e747910b261c3eda6e99c45445d9b9dc6aecb8ef"
     }
+  },
+  "martial22_battle_followup_20261021": {
+    "status": "CONFORMED-SCOPED-RUNTIME-E1",
+    "base": "4b76fc7844f093455e2b854c84ec006c84ecdcd7",
+    "branch": "feat/hd-martial22-battle-source",
+    "issue": 263,
+    "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md#battlefig22武者圖源",
+    "resources": [
+      66,
+      67
+    ],
+    "frames": 21,
+    "generation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-generation-r1.json",
+      "sha256": "51a8a37c8559ab9f1e74ca0011959f82346cfe7dece8da19bc445ff0ec15f147"
+    },
+    "recipe": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-recipe-r4.json",
+      "sha256": "fd5688e99f0b3f8aff88da01acba98a839ec4f0335cbf08c78b72ba26e21d318"
+    },
+    "components": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-components-r3.json",
+      "sha256": "5dd0961563917dec3ab2ecc61bf7ee1c3b0f9bc92d9d7c25fe0e4274555a5932"
+    },
+    "component_review": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-components-r3-review.png",
+      "sha256": "b4bfa7dc6374672fcef15ce88e5f7c9115a2de0eb4f2432fe7e578d66fc7ffe8"
+    },
+    "empty_cast": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-empty-cast-r1.json",
+      "sha256": "6d7a84b461c81d9c37797b9e7fc9f4d0f8cb8d3c5bcd2bb3e6315e025271f4c0"
+    },
+    "native_reference": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-native-reference-r1.png",
+      "sha256": "edd39c38499c12052dc41ac88e4d91371fa300e9d7de0a18e13649e41218f150"
+    },
+    "formal_registered": true,
+    "private_synced": true,
+    "full_battle_hd_complete": false,
+    "human_review": "pending-until-all-HD-integrated",
+    "scope": "固定FIGANI圖源的關鍵姿勢與三十五分離特效元件手繪重定向；不新增EXE語意、規則或保存格式。",
+    "known_art_limits": [
+      "待機、聚氣、掌擊各共用母稿；小相位沿orb重定向，弧光沿七個旋轉衍生，不稱逐幀獨立繪畫或原版RGB／alpha相同。",
+      "gather用身體／腳錨點，外側頭帶尾可能沿原框裁切；各pose群組contain可能有比例與局部差異，集中人工修正。",
+      "原生灰色衣物亮部與未接藍色的純白元件不另加FX；原腳下點狀陰影及塵點未逐像素重畫。",
+      "主光束使用原RGBA局部裁切，與原生外框比例接近；末段殘光沿完整母稿，仍非原版每像素形狀。"
+    ],
+    "acceptance": [
+      "原66一幀／67二十幀及68零header固定來源，header／描述子／delay／marker保持，不增加施術或插幀。",
+      "六張已用原RGBA及七個旋轉衍生來源保存，兩份拒收原型不進正式包。來源、錯配方與缺幀拒收。",
+      "全部二十一幀Game.Draw高覆蓋核心、各適用F2／64及65 DAC、HP與RNG保持及一次續行；不是正常玩家或原版oracle。",
+      "正式及runtime-only載入、缺件原子性後合併，舊清冊素材保持，依白名單同步私人庫；人工與正常流程最後集中。"
+    ],
+    "historical_recipe_r3": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-recipe-r3.json",
+      "sha256": "53d6905476d4e300be7541858c679abbaeb6c6a901c3a11d95fef8c8c2e05fb5"
+    },
+    "beam_crop": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-beam-crop-r1.json",
+      "sha256": "89cefcaa9c77be7f2d45779309ca0b51cbc9b394732bc65841d03c440ae00242"
+    },
+    "component_pose_scope": "R3保存原生元件矩形與旋轉；R4只將16的beam映射到beam_tail，原框不變。",
+    "private_remote_verified": true,
+    "compiled": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-candidate-r2/compiled.json",
+      "sha256": "2a0481c6a7e354e52d289d6d2f493daf586e596f3aafc709927812a7848f3d9f"
+    },
+    "compiler_guards": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-source-guards-r2/guards.json",
+      "sha256": "e5b79db7f26f21b8735696ae9dcc01773f03cb40bf8516529b9c0c93d23f6c5a"
+    },
+    "runtime_gpu": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-runtime-r1-capture/receipt.json",
+      "sha256": "47f42b294c59367dd0c11aa409a444909c2b2d0c7cd35bf21d3d0ea0e2e57982"
+    },
+    "pixel_core": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-core-r1.json",
+      "sha256": "c06185e1824cc9a9a12e27b4bdda4404bce63baedf06e31c8e549da7b7b4233a"
+    },
+    "runtime_memory": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-runtime-r1.memory.json",
+      "sha256": "012ac2e02438d1787a91b8dab0b024eedc62ad0255f6a7993ab1e5c3983f13cb"
+    },
+    "formal_registration": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-formal-registration-r1.json",
+      "sha256": "fc3257610118c299fa82b5cb0e43db037d0269514962941fae523e6daab324e3"
+    },
+    "private_delivery": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-private-delivery-r1.json",
+      "sha256": "b021591d10588b706627ab4285765fa42f74a4bee563b636e523c8ef238ebc61"
+    },
+    "coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-formal-coverage-r1.json",
+      "sha256": "2344e5356035844a0e22521d5bf83f1834161440109eac08bcdf2b3d5cf6e5df"
+    },
+    "package_timeout_r1": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-formal-go-r1.memory.json",
+      "sha256": "215c582f5685a5da2c4dadd237c32e917f14a571dcb86a8d025797e13dd02a69"
+    },
+    "package_checks": {
+      "formal_candidate": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-formal-candidate-go-r3.memory.json",
+        "sha256": "f4a1ac2258e953de13743a6a73bd9ef7b704761860e4ac5272c97ec964cd1932"
+      },
+      "formal_preflight": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-formal-preflight-go-r3.memory.json",
+        "sha256": "c200605cd9faf43e28fb4d26885b53fe2953a1285c56c879e275532a5c29f23a"
+      },
+      "runtime_candidate": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-runtime-candidate-go-r3.memory.json",
+        "sha256": "5bd1537d21b1790ed2a4ea09160fe1719c0d1b45889a452621608943623cf732"
+      },
+      "runtime_preflight": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-runtime-preflight-go-r3.memory.json",
+        "sha256": "2d69feb926ffbe09ede3e6c93b6bfee171db1f38a4d59f53bb45c9ce52da96a9"
+      }
+    },
+    "package_interruption_r2": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-package-interruption-r2.json",
+      "sha256": "82f0e5302e79f0b286f17c29e31fb3e894158b9815d4e09cad409d99403d9494"
+    },
+    "generation_document": {
+      "mode": "built-in image_gen",
+      "tasks": [
+        {
+          "key": "figure022-idle-r1",
+          "args": {
+            "transparent_background": true,
+            "referenced_image_paths": [
+              "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-native-reference-r1.png"
+            ],
+            "prompt": "Use case: stylized-concept. Asset type: ONE transparent HD battle sprite, faithful design redraw of native FIGANI66 frame0 in reference. Single muscular male martial artist seen from three-quarter REAR, facing screen LEFT, compact upright fighting stance. Short dark-navy hair with navy headband ties trailing, bare strong tan upper arms, dark navy rounded shoulder armor trimmed GOLD, loose pale gray-green sleeveless martial tunic and baggy gray-green trousers, dark blue waist sash with long tails, navy blue boots with gold ankle trim. A large red Chinese character 武 is painted on center of his BACK as in original. Both arms bent out at shoulder height, fists held ready, one knee bent, compact feet stance. Face mostly hidden by rear camera. Match native silhouette and costume; no hat, sword, staff, cannon or mount. Mature restrained hand-painted fantasy RPG style, clean dark outlines, cloth and armor planes, not pixel art or glossy 3D. Whole single body head-to-toe centered with genuine transparent padding, no ground, shadow pool, scenery, energy effects, panels, labels or extra poses. Opaque core."
+          },
+          "hint": "Generated images are saved to /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0 as /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-657bc792-540d-4068-b58c-44d3741737c9.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-idle-r1.png",
+          "sha256": "60b5f05e45a578813ad6b461e1ee0d4d738b7c1e32a55fb4d6d67523d0fe3c98",
+          "size": [
+            1295,
+            1215
+          ],
+          "anchor": [
+            238,
+            68,
+            1134,
+            1175
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "raw_rgba_unchanged": true,
+          "accepted": true
+        },
+        {
+          "key": "figure022-gather-r1",
+          "args": {
+            "transparent_background": true,
+            "referenced_image_paths": [
+              "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-657bc792-540d-4068-b58c-44d3741737c9.png",
+              "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-native-reference-r1.png"
+            ],
+            "prompt": "Use case: identity-preserve. Edit target image1 is the same male martial artist; image2 native FIGANI67 frames3-8 is motion authority. Create ONE adjacent charging key pose. Keep exact gray-green loose tunic and trousers, navy shoulder caps with gold edges, navy headband with tails, blue boots, red 武 on back, muscular bare arms, same three-quarter REAR LEFT-facing camera. Change upper arms to bring elbows close and hands cupped together toward screen LEFT at chest height, charging a projectile. Torso twists slightly left; face stays mostly hidden by rear camera. Keep original compact upright bent-knee stance and feet, whole character fully contained, no enormous lunge yet. Hands must be natural, five fingers each, wrists aligned, two arms only. Hand-painted mature RPG style identical to image1. NO energy, orb or swirl yet, no beam, weapons, ground, shadows, text labels, panels or extra poses. Genuine transparent background with padding and opaque body core."
+          },
+          "hint": "Generated images are saved to /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0 as /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-de1870d7-4f54-40f0-9ded-c1bf40aa70ab.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-gather-r1.png",
+          "sha256": "c3b06e48f195f03a6fc77145f067312aa2ca7fbcf950817d115f11af2afe8af8",
+          "size": [
+            1295,
+            1215
+          ],
+          "anchor": [
+            257,
+            63,
+            1128,
+            1169
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "raw_rgba_unchanged": true,
+          "accepted": true
+        },
+        {
+          "key": "figure022-thrust-r1",
+          "args": {
+            "transparent_background": true,
+            "referenced_image_paths": [
+              "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-657bc792-540d-4068-b58c-44d3741737c9.png",
+              "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-native-reference-r1.png"
+            ],
+            "prompt": "Use case: identity-preserve. Image1 locks same male martial artist identity/style; image2 native FIGANI67 frames9-19 supplies the attack pose. ONE full-body transparent attack key pose: rear three-quarter view, facing LEFT; body leans into a deep low lunge, front knee bent toward left and rear leg stretched back right; BOTH muscular arms thrust forward screen LEFT with palms open side-by-side as if releasing an energy beam, palms at chest height, wrists straight and fingers naturally spread. Long navy sash and headband tails flow back RIGHT. Keep same navy/gold shoulder armor, gray-green loose tunic/trousers, navy boots with gold trim, dark navy hair, clear red 武 on back. Face mostly hidden, no front-facing portrait. Whole single body and both hands/feet contained with generous transparent padding. Same hand-painted mature RPG contours. No actual beam, orb, glow, extra hands, weapons, ground/shadows, scenery, labels, text panels or extra poses; opaque core and genuine transparency."
+          },
+          "hint": "Generated images are saved to /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0 as /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-cac3095d-db24-4436-baf1-e0158446e4a1.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-thrust-r1.png",
+          "sha256": "cc05bb190600e4fa845b8e8ca648f541ca144fb213f2f35a8773de748885d1f5",
+          "size": [
+            1536,
+            1024
+          ],
+          "anchor": [
+            135,
+            83,
+            1490,
+            975
+          ],
+          "alpha_extrema": [
+            0,
+            254
+          ],
+          "raw_rgba_unchanged": true,
+          "accepted": false
+        },
+        {
+          "key": "figure022-swirl-r1",
+          "args": {
+            "transparent_background": true,
+            "referenced_image_paths": [
+              "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-native-reference-r1.png"
+            ],
+            "prompt": "Use case: stylized-concept. Asset type: ONE transparent fantasy RPG energy-effect sprite, no character. Reference FIGANI67 frame5 shows the shape authority: a vortex of SIX separated curved crescent white / pale blue light strokes rotating around a large EMPTY transparent center, forming an irregular pinwheel halo, each curved stroke tapers into a thin point, all separated by transparent gaps. Hand-painted clean white cores, icy blue edges, dark blue fine trailing wisps, restrained soft glow. Circular overall silhouette with empty center that can overlay a martial artist. Opaque light cores, genuinely transparent background. No person, orb in center, weapon, scene, ground, text, square frame, panels, starburst, filled disc or diffuse huge glow. Entire vortex contained with padding."
+          },
+          "hint": "Generated images are saved to /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0 as /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-650ebf1c-83d8-4802-bcc0-5caad56841aa.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-swirl-r1.png",
+          "sha256": "4165b8599e0c6ff0e878a3af16c17d53489a8a1c32de1eadeb672af1650b99e2",
+          "size": [
+            1254,
+            1254
+          ],
+          "anchor": [
+            64,
+            57,
+            1220,
+            1183
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "raw_rgba_unchanged": true,
+          "accepted": false
+        },
+        {
+          "key": "figure022-orb-r1",
+          "args": {
+            "transparent_background": true,
+            "referenced_image_paths": [
+              "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-native-reference-r1.png"
+            ],
+            "prompt": "Use case: stylized-concept. Asset type: ONE transparent hand-painted fantasy RPG energy orb sprite. Reference FIGANI67 frame9 and10: small brilliant WHITE circular sphere cupped between fighter's palms. Draw only the isolated round luminous sphere, ivory-white opaque core, delicate icy blue rim, a few thin dark-blue/pale-blue curved corona wisps hugging rim. Clean compact round silhouette, restrained tiny halo. Soft painted detail without turning core into dark cloud. No character, hands, beam, weapon, ground, shadow, scenery, text or panels. Genuine transparent background, generous padding. Exactly one round sphere with no other elements."
+          },
+          "hint": "Generated images are saved to /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0 as /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-33930f68-9319-4369-b0dc-181d6d9ee10c.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-orb-r1.png",
+          "sha256": "ba6722d7552c97051f1936826428cd2aed2817747d5d5c040f7560f9459c464d",
+          "size": [
+            1295,
+            1215
+          ],
+          "anchor": [
+            333,
+            255,
+            996,
+            939
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "raw_rgba_unchanged": true,
+          "accepted": true
+        },
+        {
+          "key": "figure022-beam-r1",
+          "args": {
+            "transparent_background": true,
+            "referenced_image_paths": [
+              "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-native-reference-r1.png"
+            ],
+            "prompt": "Use case: stylized-concept. Asset type: ONE isolated transparent HD energy beam battle effect. Reference FIGANI67 frames11-15 is direction/color authority. Draw a long broad cylindrical WHITE beam shooting HORIZONTALLY LEFT from a large round glowing orb at RIGHT end. Beam is straight parallel-edged, slight down-right angle is fine; ivory-white opaque interior, crisp icy pale-blue outlines and delicate darker blue edge brush streaks. Round emitter at RIGHT, beam extends continuously LEFT until canvas crop. Overall 4:1 wide silhouette, orb diameter about beam thickness times1.25. Match restrained mature hand-painted fantasy RPG, not pixel art, no photo. No person, hands, weapon, scene, ground, text, panels, diagonal laser or orange flames. Genuine transparent background and padding above/below; full opacity in white core. Only one connected beam and its right-end orb."
+          },
+          "hint": "Generated images are saved to /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0 as /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-c5039659-5a78-4b45-9c08-9ea31fc0c2aa.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-beam-r1.png",
+          "sha256": "41baa0e8ecea560482246344963827a925640d01dd7a5e582073975229b452e5",
+          "size": [
+            2172,
+            724
+          ],
+          "anchor": [
+            0,
+            140,
+            2145,
+            618
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "raw_rgba_unchanged": true,
+          "accepted": true
+        },
+        {
+          "key": "figure022-thrust-r2",
+          "args": {
+            "transparent_background": true,
+            "referenced_image_paths": [
+              "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-cac3095d-db24-4436-baf1-e0158446e4a1.png",
+              "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-native-reference-r1.png"
+            ],
+            "prompt": "Use case: precise-object-edit / identity-preserve. Image1 is edit target, same gray-green and navy-gold martial artist with red 武 on back; image2 FIGANI67 frame19 is pose/framing authority. Correct pose geometry to fit native compact rectangle: make his attacking stance much MORE UPRIGHT AND NARROW, whole visible body width about equal to height (0.95 to1.05 ratio), NOT a long wide horizontal lunge. Both knees bent and feet remain fairly CLOSE underneath torso, rear foot only slightly back-right, no leg stretched far right. Torso leans left only about20degrees, not almost horizontal. Both open palms project LEFT at chest height close together, forearms extend just in front of chest, not far away; wrists straight, anatomically clear two arms and two hands. Preserve same costume, muscular build, short navy hair/headband tails, rear three-quarter LEFT-facing view, 武 mark and hand-painted RPG style. Keep entire figure with two boots visible in a portrait or square composition with genuine transparent margins. Remove ALL lighting halos and background hues; only body/clothes/hair, no beam/orb/glow, no scenery, ground, shadows, panels or labels. Opaque body core."
+          },
+          "hint": "Generated images are saved to /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0 as /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-5caa1b25-0b1c-424d-99ad-3f5afc3744e6.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-thrust-r2.png",
+          "sha256": "373846aef014eb0b57ffa57dcbeec8082365d39e478cc31930c6b8e3b6b24fe0",
+          "size": [
+            1254,
+            1254
+          ],
+          "anchor": [
+            71,
+            64,
+            1240,
+            1210
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "raw_rgba_unchanged": true,
+          "accepted": true
+        },
+        {
+          "key": "figure022-arc-r1",
+          "args": {
+            "transparent_background": true,
+            "referenced_image_paths": [
+              "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-650ebf1c-83d8-4802-bcc0-5caad56841aa.png"
+            ],
+            "prompt": "Use case: precise-object-edit. Reference image is the energy vortex style authority. Extract/redraw just ONE isolated slender curved crescent stroke of that SAME white and icy-blue energy. A single smooth sweeping arc like the uppermost crescent in reference, curving gently from left-bottom thin tail toward right-top and then down-right pointed tip. Broadest part in middle, narrow/tapered tips. Overall about2:1 width:height. Hand-painted brilliant ivory-white opaque core, pale icy-blue thin edges and a few short dark-blue trailing brush wisps tightly attached to the arc. Exactly ONE arc, no circular ring, no other crescents, no orb, no people, no ground, no text, no panels or halo. Full arc contained with generous genuine transparent padding. This will be rotated by an asset pipeline for a native multi-arc vortex, so do not add detached sparks."
+          },
+          "hint": "Generated images are saved to /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0 as /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-77df2480-56f1-4d5a-ac74-19fb489f45b9.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-arc-r1.png",
+          "sha256": "12c2c2bf8c3a449234c0d26d2d5972ae85e0437569c1d2150957e422e4f1a6c8",
+          "size": [
+            1774,
+            887
+          ],
+          "anchor": [
+            58,
+            151,
+            1729,
+            801
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "raw_rgba_unchanged": true,
+          "accepted": true
+        }
+      ],
+      "rejected_notes": {
+        "figure022-thrust-r1": "姿勢過寬；R2改成接近原版比例。背景RGB含光暈但抽查該區A0，不能只從預覽認定有可見背景。",
+        "figure022-swirl-r1": "完整六弧板只作單弧生成參考；正式按原生分離元件定位，不整板縮成每個相位。"
+      }
+    },
+    "components_document": {
+      "status": "DRAFT-PINNED-COMPONENT-GEOMETRY",
+      "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+      "criteria": "Only phases5..18: selected blue colors absent from idle/attack0..4/attack19, plus exact (255,255,255) connected by eight neighbors to selected blue. Pure-white components without selected blue excluded. R1 removed shared white and split beam; R2 additionally selected gray clothing highlights. Fixed source RGB list and connectivity, before READY.",
+      "colors": [
+        [
+          56,
+          85,
+          154
+        ],
+        [
+          69,
+          97,
+          166
+        ],
+        [
+          85,
+          113,
+          182
+        ],
+        [
+          93,
+          125,
+          190
+        ],
+        [
+          105,
+          138,
+          203
+        ],
+        [
+          117,
+          154,
+          211
+        ],
+        [
+          130,
+          166,
+          223
+        ],
+        [
+          150,
+          186,
+          231
+        ],
+        [
+          174,
+          203,
+          243
+        ],
+        [
+          203,
+          227,
+          255
+        ],
+        [
+          255,
+          255,
+          255
+        ]
+      ],
+      "frames": [
+        {
+          "resource": 66,
+          "frame": 0,
+          "body_anchor": [
+            0,
+            0,
+            120,
+            133
+          ],
+          "components": []
+        },
+        {
+          "resource": 67,
+          "frame": 0,
+          "body_anchor": [
+            0,
+            0,
+            120,
+            133
+          ],
+          "components": []
+        },
+        {
+          "resource": 67,
+          "frame": 1,
+          "body_anchor": [
+            0,
+            0,
+            120,
+            133
+          ],
+          "components": []
+        },
+        {
+          "resource": 67,
+          "frame": 2,
+          "body_anchor": [
+            0,
+            0,
+            112,
+            133
+          ],
+          "components": []
+        },
+        {
+          "resource": 67,
+          "frame": 3,
+          "body_anchor": [
+            0,
+            0,
+            98,
+            133
+          ],
+          "components": []
+        },
+        {
+          "resource": 67,
+          "frame": 4,
+          "body_anchor": [
+            0,
+            0,
+            82,
+            133
+          ],
+          "components": []
+        },
+        {
+          "resource": 67,
+          "frame": 5,
+          "body_anchor": [
+            71,
+            59,
+            153,
+            192
+          ],
+          "components": [
+            {
+              "box": [
+                66,
+                0,
+                134,
+                55
+              ],
+              "pixels": 389,
+              "pose": "arc315"
+            },
+            {
+              "box": [
+                147,
+                0,
+                182,
+                63
+              ],
+              "pixels": 283,
+              "pose": "arc270"
+            },
+            {
+              "box": [
+                13,
+                23,
+                110,
+                43
+              ],
+              "pixels": 394,
+              "pose": "arc000"
+            },
+            {
+              "box": [
+                35,
+                54,
+                102,
+                121
+              ],
+              "pixels": 536,
+              "pose": "arc045"
+            },
+            {
+              "box": [
+                77,
+                74,
+                114,
+                185
+              ],
+              "pixels": 541,
+              "pose": "arc090"
+            },
+            {
+              "box": [
+                130,
+                80,
+                182,
+                108
+              ],
+              "pixels": 353,
+              "pose": "arc000"
+            },
+            {
+              "box": [
+                121,
+                88,
+                182,
+                164
+              ],
+              "pixels": 503,
+              "pose": "arc135"
+            }
+          ]
+        },
+        {
+          "resource": 67,
+          "frame": 6,
+          "body_anchor": [
+            14,
+            41,
+            96,
+            174
+          ],
+          "components": [
+            {
+              "box": [
+                28,
+                4,
+                64,
+                30
+              ],
+              "pixels": 148,
+              "pose": "arc315"
+            },
+            {
+              "box": [
+                72,
+                28,
+                77,
+                45
+              ],
+              "pixels": 39,
+              "pose": "arc270"
+            },
+            {
+              "box": [
+                15,
+                30,
+                56,
+                38
+              ],
+              "pixels": 148,
+              "pose": "arc000"
+            },
+            {
+              "box": [
+                85,
+                35,
+                110,
+                48
+              ],
+              "pixels": 67,
+              "pose": "arc225"
+            },
+            {
+              "box": [
+                57,
+                46,
+                69,
+                50
+              ],
+              "pixels": 23,
+              "pose": "arc000"
+            },
+            {
+              "box": [
+                23,
+                52,
+                55,
+                85
+              ],
+              "pixels": 147,
+              "pose": "arc045"
+            },
+            {
+              "box": [
+                71,
+                64,
+                89,
+                80
+              ],
+              "pixels": 53,
+              "pose": "arc315"
+            },
+            {
+              "box": [
+                56,
+                66,
+                62,
+                95
+              ],
+              "pixels": 99,
+              "pose": "arc090"
+            }
+          ]
+        },
+        {
+          "resource": 67,
+          "frame": 7,
+          "body_anchor": [
+            0,
+            22,
+            82,
+            155
+          ],
+          "components": [
+            {
+              "box": [
+                50,
+                6,
+                57,
+                18
+              ],
+              "pixels": 30,
+              "pose": "arc315"
+            },
+            {
+              "box": [
+                42,
+                16,
+                58,
+                31
+              ],
+              "pixels": 80,
+              "pose": "arc315"
+            },
+            {
+              "box": [
+                59,
+                24,
+                62,
+                27
+              ],
+              "pixels": 5,
+              "pose": "arc045"
+            },
+            {
+              "box": [
+                68,
+                28,
+                78,
+                31
+              ],
+              "pixels": 13,
+              "pose": "arc000"
+            },
+            {
+              "box": [
+                22,
+                31,
+                37,
+                39
+              ],
+              "pixels": 34,
+              "pose": "arc045"
+            },
+            {
+              "box": [
+                40,
+                38,
+                47,
+                49
+              ],
+              "pixels": 26,
+              "pose": "arc045"
+            },
+            {
+              "box": [
+                52,
+                43,
+                59,
+                51
+              ],
+              "pixels": 14,
+              "pose": "arc315"
+            }
+          ]
+        },
+        {
+          "resource": 67,
+          "frame": 8,
+          "body_anchor": [
+            0,
+            0,
+            82,
+            133
+          ],
+          "components": [
+            {
+              "box": [
+                42,
+                2,
+                60,
+                9
+              ],
+              "pixels": 79,
+              "pose": "orb"
+            }
+          ]
+        },
+        {
+          "resource": 67,
+          "frame": 9,
+          "body_anchor": [
+            35,
+            0,
+            174,
+            144
+          ],
+          "components": [
+            {
+              "box": [
+                0,
+                5,
+                62,
+                64
+              ],
+              "pixels": 2289,
+              "pose": "orb"
+            }
+          ]
+        },
+        {
+          "resource": 67,
+          "frame": 10,
+          "body_anchor": [
+            48,
+            0,
+            187,
+            144
+          ],
+          "components": [
+            {
+              "box": [
+                0,
+                0,
+                78,
+                69
+              ],
+              "pixels": 3458,
+              "pose": "orb"
+            }
+          ]
+        },
+        {
+          "resource": 67,
+          "frame": 11,
+          "body_anchor": [
+            179,
+            24,
+            320,
+            169
+          ],
+          "components": [
+            {
+              "box": [
+                0,
+                0,
+                228,
+                100
+              ],
+              "pixels": 14102,
+              "pose": "beam"
+            }
+          ]
+        },
+        {
+          "resource": 67,
+          "frame": 12,
+          "body_anchor": [
+            179,
+            24,
+            320,
+            169
+          ],
+          "components": [
+            {
+              "box": [
+                0,
+                0,
+                226,
+                100
+              ],
+              "pixels": 13989,
+              "pose": "beam"
+            }
+          ]
+        },
+        {
+          "resource": 67,
+          "frame": 13,
+          "body_anchor": [
+            179,
+            24,
+            320,
+            169
+          ],
+          "components": [
+            {
+              "box": [
+                0,
+                0,
+                227,
+                100
+              ],
+              "pixels": 14050,
+              "pose": "beam"
+            }
+          ]
+        },
+        {
+          "resource": 67,
+          "frame": 14,
+          "body_anchor": [
+            179,
+            24,
+            320,
+            169
+          ],
+          "components": [
+            {
+              "box": [
+                0,
+                0,
+                227,
+                100
+              ],
+              "pixels": 14050,
+              "pose": "beam"
+            }
+          ]
+        },
+        {
+          "resource": 67,
+          "frame": 15,
+          "body_anchor": [
+            179,
+            24,
+            320,
+            169
+          ],
+          "components": [
+            {
+              "box": [
+                0,
+                0,
+                227,
+                100
+              ],
+              "pixels": 14050,
+              "pose": "beam"
+            }
+          ]
+        },
+        {
+          "resource": 67,
+          "frame": 16,
+          "body_anchor": [
+            179,
+            7,
+            320,
+            152
+          ],
+          "components": [
+            {
+              "box": [
+                0,
+                0,
+                35,
+                11
+              ],
+              "pixels": 138,
+              "pose": "beam"
+            },
+            {
+              "box": [
+                0,
+                7,
+                41,
+                20
+              ],
+              "pixels": 222,
+              "pose": "beam"
+            },
+            {
+              "box": [
+                172,
+                31,
+                212,
+                58
+              ],
+              "pixels": 349,
+              "pose": "orb"
+            }
+          ]
+        },
+        {
+          "resource": 67,
+          "frame": 17,
+          "body_anchor": [
+            4,
+            0,
+            145,
+            145
+          ],
+          "components": [
+            {
+              "box": [
+                0,
+                26,
+                37,
+                51
+              ],
+              "pixels": 260,
+              "pose": "orb"
+            }
+          ]
+        },
+        {
+          "resource": 67,
+          "frame": 18,
+          "body_anchor": [
+            1,
+            0,
+            142,
+            145
+          ],
+          "components": [
+            {
+              "box": [
+                0,
+                30,
+                7,
+                37
+              ],
+              "pixels": 37,
+              "pose": "orb"
+            }
+          ]
+        },
+        {
+          "resource": 67,
+          "frame": 19,
+          "body_anchor": [
+            0,
+            0,
+            141,
+            145
+          ],
+          "components": []
+        }
+      ],
+      "derived_arcs": {
+        "arc315": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-arc-rot315-r1.png",
+          "sha256": "6104bbc18419d7d759e4ad8b29ec9c2ebc73e4dd08c2c45cb50b2eea64b2f3e8",
+          "rotation_degrees": 315,
+          "resampling": "Pillow BICUBIC, expand=True",
+          "source_sha256": "12c2c2bf8c3a449234c0d26d2d5972ae85e0437569c1d2150957e422e4f1a6c8"
+        },
+        "arc270": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-arc-rot270-r1.png",
+          "sha256": "085610b1a34665eef0e68fae62a5db13c3c9cd78538a2a84fc13b62c84ac21e9",
+          "rotation_degrees": 270,
+          "resampling": "Pillow BICUBIC, expand=True",
+          "source_sha256": "12c2c2bf8c3a449234c0d26d2d5972ae85e0437569c1d2150957e422e4f1a6c8"
+        },
+        "arc000": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-arc-rot000-r1.png",
+          "sha256": "8aaf9a152b5f68121be023344f97d04e2b04ed3975f4b21d20b27dcbb026519a",
+          "rotation_degrees": 0,
+          "resampling": "Pillow BICUBIC, expand=True",
+          "source_sha256": "12c2c2bf8c3a449234c0d26d2d5972ae85e0437569c1d2150957e422e4f1a6c8"
+        },
+        "arc045": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-arc-rot045-r1.png",
+          "sha256": "5ad56687215ce6cd8804069706ad5a185684c190457be0d1f8e73f052ec62cf6",
+          "rotation_degrees": 45,
+          "resampling": "Pillow BICUBIC, expand=True",
+          "source_sha256": "12c2c2bf8c3a449234c0d26d2d5972ae85e0437569c1d2150957e422e4f1a6c8"
+        },
+        "arc090": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-arc-rot090-r1.png",
+          "sha256": "b1595ae9083832fd5086d9ac1d713029788f66def0e848531328e724b8fa543e",
+          "rotation_degrees": 90,
+          "resampling": "Pillow BICUBIC, expand=True",
+          "source_sha256": "12c2c2bf8c3a449234c0d26d2d5972ae85e0437569c1d2150957e422e4f1a6c8"
+        },
+        "arc135": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-arc-rot135-r1.png",
+          "sha256": "fb9316363ab72f7ac0f6156bd2036fd591b76bb5f54538d7089a16b3be9269da",
+          "rotation_degrees": 135,
+          "resampling": "Pillow BICUBIC, expand=True",
+          "source_sha256": "12c2c2bf8c3a449234c0d26d2d5972ae85e0437569c1d2150957e422e4f1a6c8"
+        },
+        "arc225": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-arc-rot225-r1.png",
+          "sha256": "2c9047bee42f106a1abdfd60e0823ee86a9893725c08bf34dd428d343ebb1e5a",
+          "rotation_degrees": 225,
+          "resampling": "Pillow BICUBIC, expand=True",
+          "source_sha256": "12c2c2bf8c3a449234c0d26d2d5972ae85e0437569c1d2150957e422e4f1a6c8"
+        }
+      },
+      "angle_policy": "45-degree PCA major axis; choose 180-degree branch by centroid bend direction; geometry approximation, not original RGB parity",
+      "source_policy": "全原RGBA保持；衍生arc只作明示rotate BICUBIC，不手調alpha；原arc另保存到正式來源清單。",
+      "body_geometry_limits": "gather錨點排除外側頭帶尾，原框裁切與各pose群組contain仍可能有比例／局部偏差，集中人工修正。"
+    },
+    "beam_crop_document": {
+      "status": "PASS-EXACT-RGBA-CROP",
+      "source_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-beam-r1.png",
+      "source_sha256": "41baa0e8ecea560482246344963827a925640d01dd7a5e582073975229b452e5",
+      "crop_rectangle": [
+        1060,
+        0,
+        2172,
+        724
+      ],
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-beam-near-crop-r1.png",
+      "sha256": "4462786c62d14879006f3f8802b17d452bcba025a19ad9effc8ddef312733157",
+      "anchor": [
+        0,
+        140,
+        1085,
+        618
+      ],
+      "rgba_exact_crop": true,
+      "geometry": "保留光束右端發射球，截去過長左段；高覆蓋外框寬高比接近原主光束2.27。phase16殘光沿原完整母稿。母稿原檔不改。",
+      "rejected_candidate": "figure022-candidate-r1:主光束等比contain太細且偏低；未登錄。"
+    },
+    "reproduction_recipe": {
+      "schema_version": 1,
+      "figure": 22,
+      "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+      "sources": {
+        "idle": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-022-idle-battle-hd6-master-v1.png",
+          "sha256": "60b5f05e45a578813ad6b461e1ee0d4d738b7c1e32a55fb4d6d67523d0fe3c98",
+          "anchor": [
+            238,
+            68,
+            1134,
+            1175
+          ]
+        },
+        "gather": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-022-gather-battle-hd6-master-v1.png",
+          "sha256": "c3b06e48f195f03a6fc77145f067312aa2ca7fbcf950817d115f11af2afe8af8",
+          "anchor": [
+            257,
+            63,
+            1000,
+            1169
+          ]
+        },
+        "thrust": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-022-thrust-battle-hd6-master-v1.png",
+          "sha256": "373846aef014eb0b57ffa57dcbeec8082365d39e478cc31930c6b8e3b6b24fe0",
+          "anchor": [
+            71,
+            64,
+            1240,
+            1210
+          ]
+        },
+        "orb": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-022-orb-battle-hd6-master-v1.png",
+          "sha256": "ba6722d7552c97051f1936826428cd2aed2817747d5d5c040f7560f9459c464d",
+          "anchor": [
+            333,
+            255,
+            996,
+            939
+          ]
+        },
+        "beam": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-022-beam-battle-hd6-master-v1.png",
+          "sha256": "4462786c62d14879006f3f8802b17d452bcba025a19ad9effc8ddef312733157",
+          "anchor": [
+            0,
+            140,
+            1085,
+            618
+          ]
+        },
+        "arc315": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-022-arc315-battle-hd6-master-v1.png",
+          "sha256": "6104bbc18419d7d759e4ad8b29ec9c2ebc73e4dd08c2c45cb50b2eea64b2f3e8",
+          "anchor": [
+            114,
+            578,
+            1480,
+            1789
+          ]
+        },
+        "arc270": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-022-arc270-battle-hd6-master-v1.png",
+          "sha256": "085610b1a34665eef0e68fae62a5db13c3c9cd78538a2a84fc13b62c84ac21e9",
+          "anchor": [
+            86,
+            58,
+            736,
+            1729
+          ]
+        },
+        "arc000": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-022-arc000-battle-hd6-master-v1.png",
+          "sha256": "8aaf9a152b5f68121be023344f97d04e2b04ed3975f4b21d20b27dcbb026519a",
+          "anchor": [
+            58,
+            151,
+            1729,
+            801
+          ]
+        },
+        "arc045": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-022-arc045-battle-hd6-master-v1.png",
+          "sha256": "5ad56687215ce6cd8804069706ad5a185684c190457be0d1f8e73f052ec62cf6",
+          "anchor": [
+            577,
+            402,
+            1789,
+            1767
+          ]
+        },
+        "arc090": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-022-arc090-battle-hd6-master-v1.png",
+          "sha256": "b1595ae9083832fd5086d9ac1d713029788f66def0e848531328e724b8fa543e",
+          "anchor": [
+            151,
+            45,
+            801,
+            1716
+          ]
+        },
+        "arc135": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-022-arc135-battle-hd6-master-v1.png",
+          "sha256": "fb9316363ab72f7ac0f6156bd2036fd591b76bb5f54538d7089a16b3be9269da",
+          "anchor": [
+            402,
+            94,
+            1768,
+            1305
+          ]
+        },
+        "arc225": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-022-arc225-battle-hd6-master-v1.png",
+          "sha256": "2c9047bee42f106a1abdfd60e0823ee86a9893725c08bf34dd428d343ebb1e5a",
+          "anchor": [
+            93,
+            116,
+            1305,
+            1481
+          ]
+        },
+        "beam_tail": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-022-beam_tail-battle-hd6-master-v1.png",
+          "sha256": "41baa0e8ecea560482246344963827a925640d01dd7a5e582073975229b452e5",
+          "anchor": [
+            0,
+            140,
+            2145,
+            618
+          ]
+        }
+      },
+      "resources": {
+        "66": [
+          [
+            {
+              "pose": "idle",
+              "anchor": [
+                0,
+                0,
+                120,
+                133
+              ],
+              "scale_group": "body_idle"
+            }
+          ]
+        ],
+        "67": [
+          [
+            {
+              "pose": "idle",
+              "anchor": [
+                0,
+                0,
+                120,
+                133
+              ],
+              "scale_group": "body_idle"
+            }
+          ],
+          [
+            {
+              "pose": "idle",
+              "anchor": [
+                0,
+                0,
+                120,
+                133
+              ],
+              "scale_group": "body_idle"
+            }
+          ],
+          [
+            {
+              "pose": "gather",
+              "anchor": [
+                0,
+                0,
+                112,
+                133
+              ],
+              "scale_group": "body_gather"
+            }
+          ],
+          [
+            {
+              "pose": "gather",
+              "anchor": [
+                0,
+                0,
+                98,
+                133
+              ],
+              "scale_group": "body_gather"
+            }
+          ],
+          [
+            {
+              "pose": "gather",
+              "anchor": [
+                0,
+                0,
+                82,
+                133
+              ],
+              "scale_group": "body_gather"
+            }
+          ],
+          [
+            {
+              "pose": "arc315",
+              "anchor": [
+                66,
+                0,
+                134,
+                55
+              ],
+              "scale_group": "fx67_5_0"
+            },
+            {
+              "pose": "arc270",
+              "anchor": [
+                147,
+                0,
+                182,
+                63
+              ],
+              "scale_group": "fx67_5_1"
+            },
+            {
+              "pose": "arc000",
+              "anchor": [
+                13,
+                23,
+                110,
+                43
+              ],
+              "scale_group": "fx67_5_2"
+            },
+            {
+              "pose": "arc045",
+              "anchor": [
+                35,
+                54,
+                102,
+                121
+              ],
+              "scale_group": "fx67_5_3"
+            },
+            {
+              "pose": "arc090",
+              "anchor": [
+                77,
+                74,
+                114,
+                185
+              ],
+              "scale_group": "fx67_5_4"
+            },
+            {
+              "pose": "arc000",
+              "anchor": [
+                130,
+                80,
+                182,
+                108
+              ],
+              "scale_group": "fx67_5_5"
+            },
+            {
+              "pose": "arc135",
+              "anchor": [
+                121,
+                88,
+                182,
+                164
+              ],
+              "scale_group": "fx67_5_6"
+            },
+            {
+              "pose": "gather",
+              "anchor": [
+                71,
+                59,
+                153,
+                192
+              ],
+              "scale_group": "body_gather"
+            }
+          ],
+          [
+            {
+              "pose": "arc315",
+              "anchor": [
+                28,
+                4,
+                64,
+                30
+              ],
+              "scale_group": "fx67_6_0"
+            },
+            {
+              "pose": "arc270",
+              "anchor": [
+                72,
+                28,
+                77,
+                45
+              ],
+              "scale_group": "fx67_6_1"
+            },
+            {
+              "pose": "arc000",
+              "anchor": [
+                15,
+                30,
+                56,
+                38
+              ],
+              "scale_group": "fx67_6_2"
+            },
+            {
+              "pose": "arc225",
+              "anchor": [
+                85,
+                35,
+                110,
+                48
+              ],
+              "scale_group": "fx67_6_3"
+            },
+            {
+              "pose": "arc000",
+              "anchor": [
+                57,
+                46,
+                69,
+                50
+              ],
+              "scale_group": "fx67_6_4"
+            },
+            {
+              "pose": "arc045",
+              "anchor": [
+                23,
+                52,
+                55,
+                85
+              ],
+              "scale_group": "fx67_6_5"
+            },
+            {
+              "pose": "arc315",
+              "anchor": [
+                71,
+                64,
+                89,
+                80
+              ],
+              "scale_group": "fx67_6_6"
+            },
+            {
+              "pose": "arc090",
+              "anchor": [
+                56,
+                66,
+                62,
+                95
+              ],
+              "scale_group": "fx67_6_7"
+            },
+            {
+              "pose": "gather",
+              "anchor": [
+                14,
+                41,
+                96,
+                174
+              ],
+              "scale_group": "body_gather"
+            }
+          ],
+          [
+            {
+              "pose": "arc315",
+              "anchor": [
+                50,
+                6,
+                57,
+                18
+              ],
+              "scale_group": "fx67_7_0"
+            },
+            {
+              "pose": "arc315",
+              "anchor": [
+                42,
+                16,
+                58,
+                31
+              ],
+              "scale_group": "fx67_7_1"
+            },
+            {
+              "pose": "arc045",
+              "anchor": [
+                59,
+                24,
+                62,
+                27
+              ],
+              "scale_group": "fx67_7_2"
+            },
+            {
+              "pose": "arc000",
+              "anchor": [
+                68,
+                28,
+                78,
+                31
+              ],
+              "scale_group": "fx67_7_3"
+            },
+            {
+              "pose": "arc045",
+              "anchor": [
+                22,
+                31,
+                37,
+                39
+              ],
+              "scale_group": "fx67_7_4"
+            },
+            {
+              "pose": "arc045",
+              "anchor": [
+                40,
+                38,
+                47,
+                49
+              ],
+              "scale_group": "fx67_7_5"
+            },
+            {
+              "pose": "arc315",
+              "anchor": [
+                52,
+                43,
+                59,
+                51
+              ],
+              "scale_group": "fx67_7_6"
+            },
+            {
+              "pose": "gather",
+              "anchor": [
+                0,
+                22,
+                82,
+                155
+              ],
+              "scale_group": "body_gather"
+            }
+          ],
+          [
+            {
+              "pose": "orb",
+              "anchor": [
+                42,
+                2,
+                60,
+                9
+              ],
+              "scale_group": "fx67_8_0"
+            },
+            {
+              "pose": "gather",
+              "anchor": [
+                0,
+                0,
+                82,
+                133
+              ],
+              "scale_group": "body_gather"
+            }
+          ],
+          [
+            {
+              "pose": "orb",
+              "anchor": [
+                0,
+                5,
+                62,
+                64
+              ],
+              "scale_group": "fx67_9_0"
+            },
+            {
+              "pose": "thrust",
+              "anchor": [
+                35,
+                0,
+                174,
+                144
+              ],
+              "scale_group": "body_thrust"
+            }
+          ],
+          [
+            {
+              "pose": "orb",
+              "anchor": [
+                0,
+                0,
+                78,
+                69
+              ],
+              "scale_group": "fx67_10_0"
+            },
+            {
+              "pose": "thrust",
+              "anchor": [
+                48,
+                0,
+                187,
+                144
+              ],
+              "scale_group": "body_thrust"
+            }
+          ],
+          [
+            {
+              "pose": "beam",
+              "anchor": [
+                0,
+                0,
+                228,
+                100
+              ],
+              "scale_group": "fx67_11_0"
+            },
+            {
+              "pose": "thrust",
+              "anchor": [
+                179,
+                24,
+                320,
+                169
+              ],
+              "scale_group": "body_thrust"
+            }
+          ],
+          [
+            {
+              "pose": "beam",
+              "anchor": [
+                0,
+                0,
+                226,
+                100
+              ],
+              "scale_group": "fx67_12_0"
+            },
+            {
+              "pose": "thrust",
+              "anchor": [
+                179,
+                24,
+                320,
+                169
+              ],
+              "scale_group": "body_thrust"
+            }
+          ],
+          [
+            {
+              "pose": "beam",
+              "anchor": [
+                0,
+                0,
+                227,
+                100
+              ],
+              "scale_group": "fx67_13_0"
+            },
+            {
+              "pose": "thrust",
+              "anchor": [
+                179,
+                24,
+                320,
+                169
+              ],
+              "scale_group": "body_thrust"
+            }
+          ],
+          [
+            {
+              "pose": "beam",
+              "anchor": [
+                0,
+                0,
+                227,
+                100
+              ],
+              "scale_group": "fx67_14_0"
+            },
+            {
+              "pose": "thrust",
+              "anchor": [
+                179,
+                24,
+                320,
+                169
+              ],
+              "scale_group": "body_thrust"
+            }
+          ],
+          [
+            {
+              "pose": "beam",
+              "anchor": [
+                0,
+                0,
+                227,
+                100
+              ],
+              "scale_group": "fx67_15_0"
+            },
+            {
+              "pose": "thrust",
+              "anchor": [
+                179,
+                24,
+                320,
+                169
+              ],
+              "scale_group": "body_thrust"
+            }
+          ],
+          [
+            {
+              "pose": "beam_tail",
+              "anchor": [
+                0,
+                0,
+                35,
+                11
+              ],
+              "scale_group": "fx67_16_0"
+            },
+            {
+              "pose": "beam_tail",
+              "anchor": [
+                0,
+                7,
+                41,
+                20
+              ],
+              "scale_group": "fx67_16_1"
+            },
+            {
+              "pose": "orb",
+              "anchor": [
+                172,
+                31,
+                212,
+                58
+              ],
+              "scale_group": "fx67_16_2"
+            },
+            {
+              "pose": "thrust",
+              "anchor": [
+                179,
+                7,
+                320,
+                152
+              ],
+              "scale_group": "body_thrust"
+            }
+          ],
+          [
+            {
+              "pose": "orb",
+              "anchor": [
+                0,
+                26,
+                37,
+                51
+              ],
+              "scale_group": "fx67_17_0"
+            },
+            {
+              "pose": "thrust",
+              "anchor": [
+                4,
+                0,
+                145,
+                145
+              ],
+              "scale_group": "body_thrust"
+            }
+          ],
+          [
+            {
+              "pose": "orb",
+              "anchor": [
+                0,
+                30,
+                7,
+                37
+              ],
+              "scale_group": "fx67_18_0"
+            },
+            {
+              "pose": "thrust",
+              "anchor": [
+                1,
+                0,
+                142,
+                145
+              ],
+              "scale_group": "body_thrust"
+            }
+          ],
+          [
+            {
+              "pose": "thrust",
+              "anchor": [
+                0,
+                0,
+                141,
+                145
+              ],
+              "scale_group": "body_thrust"
+            }
+          ]
+        ]
+      }
+    },
+    "raw_arc_parent": {
+      "file": "remake/generated-assets/modern-theme-prototypes/figure-022-arc-original-battle-hd6-master-v1.png",
+      "sha256": "12c2c2bf8c3a449234c0d26d2d5972ae85e0437569c1d2150957e422e4f1a6c8"
+    },
+    "known_clipping": [
+      {
+        "resource": 67,
+        "frame": 3,
+        "pose": "gather",
+        "pixels": 281
+      },
+      {
+        "resource": 67,
+        "frame": 4,
+        "pose": "gather",
+        "pixels": 1334
+      },
+      {
+        "resource": 67,
+        "frame": 7,
+        "pose": "gather",
+        "pixels": 133
+      },
+      {
+        "resource": 67,
+        "frame": 8,
+        "pose": "gather",
+        "pixels": 1334
+      }
+    ],
+    "reproduce": [
+      "從4b76fc78匯出完整catalog作base，保留460項及其素材；依reproduction_recipe及清冊白名單由私人庫還原來源。",
+      "資產Docker執行tools/build_fd2_character_battle_hd.py --layered --pack /original --inventory docs/data/fd2-battle-hd-source-inventory-20261019.json --recipe <reproduction_recipe.json> --base-catalog <base> --out <fresh-candidate>。",
+      "編製器產出的67.source_files及source_sha256另附raw_arc_parent，只保存旋轉前原RGBA出處，不變更21張PNG或執行契約。",
+      "編製拒收用tools/test_fd2_character_battle_hd.py，明示--layered及相同pack／inventory／recipe／baseline compiled.json／新out。",
+      "Game.Draw用FD2_HD_BATTLE_LIFECYCLE_GPU=1 FD2_HD_BATTLE_REAL=1 FD2_TEST_MODERN_BATTLE_FIGURE=22及明示candidate catalog／pack／capture output，with-xvfb go test ./cmd/fd2 -count=1 -timeout=500s -run ^TestModernHDBattleRuntimeGPU$ -v。",
+      "像素用tools/verify_fd2_character_battle_gpu.py --figure 22 --core-profile opaque --sample-group fixture --receipt <capture>/receipt.json --catalog <candidate> --source <pack> --original-pack /original --inventory <inventory> --proven-occlusion --report <new-report>。",
+      "audit_fd2_battle_hd_coverage.py核正式清冊；sync_modern_theme_private.py --catalog <formal> --source <formal-root> --destination <private>，另以--runtime-only輸出精簡包。",
+      "正式及runtime-only各以figure22、catalog／pack／original執行TestModernHDBattleAssetsRealCandidate與TestNativePhysicalHDPreflightStopsBeforeSettlement，使用fd2_go_test_memory_probe.py記錄有界8GB／4CPU容器。"
+    ],
+    "scope_limits": [
+      "全部二十一幀為fixture Game.Draw核心，非原版oracle、正常玩家或人工造型批准；正常抽驗依全部HD集中排程。",
+      "三人體姿勢、圓球、弧光、光束共用與旋轉／局部裁切是明示美術近似；所有原生描述子、節拍、marker及正式規則保持。",
+      "早期R1／R2取色與R1候選只作拒收歷史；R3元件固定，R4保留原光束RGBA的局部裁切已通過。"
+    ],
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-final-validation-r1.json",
+      "sha256": "87adc3f19b80c05e4ff8630cbb64bc2642197fc6aaeb7a11462c63564ab6586c"
+    },
+    "worklist_verify": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-fd2_worklist.py-verify-r1.log",
+      "sha256": "26091eea8ab3a41c4223d7a015d21fe3c26a4ad695ae0148921ec6de3bb37265"
+    },
+    "lessons_check": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure022-fd2_lessons.py-check-r1.log",
+      "sha256": "a7fcbba957ef87127dfce8ed9bd6a03b8b146cea1b4d3f9b312581029897487a"
+    },
+    "ownership_scope": {
+      "changed_files_and_new_assets": "1000:1000 verified",
+      "task_work_root": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1",
+      "task_work_root_root_owned_or_md_dirs": [],
+      "repository_scan": "historical root-owned files outside changed set observed; not modified or recursively chowned",
+      "untouched_examples": [
+        "remake/web/wasm_exec.js",
+        "docs/data/command_labels.json"
+      ]
+    }
   }
 }

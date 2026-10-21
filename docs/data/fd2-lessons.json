@@ -3522,6 +3522,14 @@
       "rule": "編製角色母稿前，另看兩臂兩手、肩肘連線、前臂與腕拳朝向，以及盔甲與肢體的邊界。PNG指紋、alpha與GPU相符只證明圖源正確呈現，不能證明關節自然；機械角色也要檢視連續關節鏈。入口61「蓋亞待機手腕修正」及HD主收據gaia_guard_arm_followup_20261021；使用者造型確認仍照已定的集中排程，不改成逐角色批准。",
       "why": "蓋亞舊待機／蓄力圖源已通過來源與GPU，使用者仍指出手有反折感；問題位於母稿腕拳銜接，不是鏡射、遊戲規則或原版資料。",
       "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#gaia_guard_arm_followup_20261021"
+    },
+    {
+      "id": "docker-sigterm-preserve-events-before-diagnosis",
+      "date": "2026-10-21",
+      "area": "測試環境",
+      "rule": "Docker工作exit143或收據缺失時，先保存docker events --since 15m --until 0s --filter container=<名稱>的首份事件及tools/fd2_go_test_memory_probe.py的log／samples；後查事件歷史可能已空。比對signal、實際存活時間、設定時限及memory.events，再區分外部中止、逾時與OOM。發送者未知即保留未知，未完成的工作不登記PASS；同測項拆成有界短批時仍須逐批完整通過。",
+      "why": "武者封包R2在198秒被Docker signal15中止，早於Go420秒與容器960秒時限，最後樣本無OOM，沒有最終memory.json。首次events讀到kill／die／destroy，後續保存查詢已空；首份工具輸出轉錄保留，發送來源仍未知。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#martial22_battle_followup_20261021"
     }
   ]
 }

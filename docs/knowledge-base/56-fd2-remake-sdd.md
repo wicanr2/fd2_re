@@ -10019,3 +10019,5 @@ battle_ch02原缺view及繼承HUD來源，第一次正常移動遭預檢拒收�
 BattleFig15／17已沿61「隊伍BattleFig15與17圖源」正式接入；唯一收據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的party15_17_battle_followup_20261021。全部34幀Game.Draw核心、F2／返回、來源拒收及正式／runtime-only原子預檢通過，限RUNTIME-E1。共用關鍵姿勢與少量原框裁切明示；人工與正常玩家依全部HD集中排程，完整HD仍未完成。
 
 蓋亞待機／蓄力腕拳修正已沿61「蓋亞待機手腕修正」接入v2；十五幀Game.Draw核心、F2／返回、來源拒收與兩包原子預檢通過，限定RUNTIME-E1。舊Gaia普通流程與截圖是v1歷史證據，新造型正常操作及人工確認由#268在全部HD後集中處理。唯一當前收據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的gaia_guard_arm_followup_20261021，其他HD缺口仍開啟。
+
+BattleFig22武者已依61「BattleFig22武者圖源」正式接入；唯一收據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的martial22_battle_followup_20261021。二十一幀實際Game.Draw核心、F2／返回、來源拒收及完整／runtime-only原子預檢通過，限RUNTIME-E1。共用姿勢、弧光旋轉、光束局部RGBA裁切及原框裁切逐筆揭露。正常操作與人工造型依全部HD後集中確認，完整HD仍未完成。
