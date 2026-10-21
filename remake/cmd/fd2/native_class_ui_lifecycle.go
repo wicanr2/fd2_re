@@ -25,9 +25,10 @@ type nativeClassUIJob struct {
 }
 
 type nativeClassUITimelineStep struct {
-	frame    []byte
-	palette  color.Palette
-	duration time.Duration
+	frame          []byte
+	palette        color.Palette
+	duration       time.Duration
+	shopEffectMask []byte
 }
 
 func (g *Game) beginNativeClassListOpening() bool {

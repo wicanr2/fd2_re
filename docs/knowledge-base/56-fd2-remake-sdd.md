@@ -10025,3 +10025,5 @@ BattleFig22武者已依61「BattleFig22武者圖源」正式接入；唯一收�
 BattleFig20騎龍人物已依61「BattleFig20騎龍人物圖源」正式接入；唯一收據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的dragonrider20_battle_followup_20261021。十八幀最終Game.Draw核心、F2／返回、來源拒收及兩包原子預檢通過，限RUNTIME-E1。六姿勢共用、局部飛出原框、遠翼／尾及寬斬光近似均揭露；正常與人工集中全部HD後，完整HD仍未完成。
 
 BattleFig16／26龍人已依61「BattleFig16與26龍人圖源」接入；唯一證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的dragons16_26_battle_followup_20261021。32張來源、30張非空最終GPU核心及兩透明空拍、F2／返回、來源拒收與兩包缺件原子性通過，限RUNTIME-E1。六姿勢共用與比例裁切屬明示美術近似，正常玩家及人工仍待全部HD後集中確認。
+
+遊戲外主題工具列與城鎮／商店已依61接入，限RUNTIME-E1。三種城鎮／三種商店、三位店員及既有隊伍裝備頭像以114個實際Game.Draw案例驗證，完整遊戲區域與無工具列版本逐位元組相同；實際滑鼠／F2／四語及兩包正式載入通過。原生選單框、游標與成功效果保持原圖樣；其他設施、正常玩家及人工依全部HD後集中確認。唯一來源與重跑命令見[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的facility_scene_followup_20261021，數量只依58。

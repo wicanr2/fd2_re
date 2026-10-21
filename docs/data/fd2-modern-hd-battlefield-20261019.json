@@ -9,7 +9,7 @@
     "native_viewport": "CONFORMED-SCOPED：穩定1920世界沿原生(4,4)、312×192窗格；死亡事件前25拍依既有producer從VGA0,0開始，最後steady回4,4。不同caller分列，不新增DOS位址parity。",
     "hd_sprite_data": "DATA-READY：完整125組1455張HD及31組372張新增24父項已登錄；舊1083張父項及HD bytes保持。",
     "hd_world_renderer": "CONFORMED-SCOPED：144人物已接Game.Draw；首章34張正常GPU、4張實際走行、兩次物理攻擊及保存／新程序LOAD通過。",
-    "private_assets": "正式清冊及完整／runtime-only allow-list已核SHA及UID；舊檔保持，母稿不進執行包。數量與遠端核對依58及captain116_battle_followup_20261021。",
+    "private_assets": "正式清冊及完整／runtime-only allow-list已核SHA及UID；舊檔保持，母稿不進執行包。數量與遠端核對依58及facility_scene_followup_20261021。",
     "quickload_battle_owner": "CONFORMED-SCOPED：成功JSON LOAD丟棄舊經驗owner與移動計畫；拒收保留。",
     "timed_dialogue": "CONFORMED-SCOPED-RUNTIME-E1：計時FFEC開收框保留HD世界，EXP99普通鍵盤／F2與保存冷讀通過；其他caller未驗。",
     "hd_terrain": "CONFORMED-SCOPED：map0六組53槽；新增圓頂綠色／褐色雙塊四底圖在兩張正常GPU全部相符，短長組合與保存冷讀通過；草地及其他地形仍待HD化。",
@@ -17,7 +17,9 @@
     "gaia_redesign": "CONFORMED-SCOPED：新版頭像與四方向圖組已登錄；正常START／Gaia北移取消／F2／冷讀分段驗證。相位差異與序章尾端失敗明示，非逐幀parity。",
     "hd_battle_animation": "本批116原11幀與80／480故事頭像已登錄；完整Draw/F2、全部不透明核心與runtime-only通過，正常目標待機／故事／戰後／保存冷讀通過。隊長主動攻擊正常GUI未提升，其餘缺口與唯一數量依58及captain116_battle_followup_20261021。",
     "native_purchase_equip": "CONFORMED-SCOPED：#266原生購買立即裝備保留ignored原始格，29項商店回歸與正常購弓F5／章首射程通過；不改格式或數值規則。",
-    "hd_event_death": "共用事件、普通行動與狀態致死已接HD；三種26拍／F2通過。正常章23事件與普通擊殺已抽驗，狀態致死正常GUI仍待；來源依death_consumers_followup_20261021。"
+    "hd_event_death": "共用事件、普通行動與狀態致死已接HD；三種26拍／F2通過。正常章23事件與普通擊殺已抽驗，狀態致死正常GUI仍待；來源依death_consumers_followup_20261021。",
+    "theme_toolbar": "CONFORMED-SCOPED-RUNTIME-E1：遊戲外工具列與F2共用路徑，實際滑鼠／F2／四語及完整遊戲區域不變通過。",
+    "hd_facility_scene": "CONFORMED-SCOPED-RUNTIME-E1：三種城鎮與三種商店靜態HD場景／店員，以及既有隊伍HD頭像接入裝備面板；114個GPU案例及兩包載入通過，集中普通／人工仍待。"
   },
   "runtime_source": {
     "binary": {
@@ -81817,6 +81819,607 @@
     },
     "lessons_check": {
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/dragons-fd2_lessons.py-check-r1.log",
+      "sha256": "a7fcbba957ef87127dfce8ed9bd6a03b8b146cea1b4d3f9b312581029897487a"
+    }
+  },
+  "facility_scene_followup_20261021": {
+    "status": "CONFORMED-SCOPED-RUNTIME-E1",
+    "date": "2026-10-21",
+    "base_commit": "f4d698ed130b0b7ae7ce9ed8491d6db56d1b85af",
+    "full_hd_complete": false,
+    "formal_registered": true,
+    "private_synced": true,
+    "private_remote_verified": true,
+    "user_decision": "參考Zeliard上方工具列切主題並保留快捷鍵；城鎮／商店HD與既有HD頭像接線。全部HD後集中正常玩家與人工抽驗。",
+    "reference_toolbar": "/home/anr2/cht/zeliard/cmd/zeliard-preview/main.go: barHeight／Update theme buttons／Draw／Layout；唯讀參考。",
+    "viewport": {
+      "game_logical": [
+        640,
+        400
+      ],
+      "toolbar_height": 24,
+      "logical_window": [
+        640,
+        424
+      ],
+      "hd_game": [
+        1920,
+        1200
+      ],
+      "hd_window": [
+        1920,
+        1272
+      ],
+      "faithful_default_window": [
+        1280,
+        848
+      ],
+      "test_fixture_without_toolbar_unchanged": true
+    },
+    "sources": {
+      "fdother_sha256": "a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce",
+      "original_manifest_sha256": "5eec2ecacc4fe97c4d0f27838e7dbecf18d1cf4b309b35800d50afd173cacca5",
+      "scene_mapping": [
+        {
+          "key": "town011",
+          "source_metadata": "surfaces/FDOTHER_011/resource.json",
+          "source_metadata_sha256": "a2b971d3e390e737d119695e5623291481dd5f4a8c05c22338de6d7e819090f7",
+          "source_frame": "surfaces/FDOTHER_011/frame.png",
+          "source_frame_sha256": "6d4ac3d628861dd4eb017ff24b6c2e9f8207298ace16f7ace96df5f98052ec6a",
+          "master": "remake/generated-assets/modern-theme-prototypes/fdother-011-scene-handpainted-hd6-master-v1.png",
+          "master_sha256": "f982a587eb22b757534498d138e5c47c081cd7bc1ae2458078f4cd6bacb7f46e",
+          "file": "remake/generated-assets/modern-theme-prototypes/fdother-011-scene-handpainted-hd6-v1.png",
+          "sha256": "602a8bd31e9f642f864aab11a0ce14bbe083a75f568ce106cad016273b3f6402",
+          "master_size": [
+            1586,
+            992
+          ],
+          "target_size": [
+            1920,
+            1200
+          ],
+          "prompt": {
+            "prompt": "Use case: stylized-concept. Asset type: production background for a faithful classic Taiwanese tactical RPG HD remake. Input image is a composition/color/identity reference, NOT output pixels. Repaint it into crisp high resolution hand-painted fantasy game art with controlled painterly texture, clear dark contours and polished 1990s character illustration matching this project's approved handpainted style. An isometric fenced early military camp with pointed wooden palisades left/right/bottom, five angular canvas tents: small dark blue upper left, cropped dark blue at top, large muted gray green right-upper center, large muted gray blue lower-left, small red tent bottom-center-right. Trees at same coordinates and curved sand paths. Do not invent buildings or move tents. Preserve the entire reference 320x200 framing at an exact 16:10 landscape aspect, target 1920x1200. Every existing main object stays at the same normalized coordinates, same camera, perspective, silhouette and palette. No UI, no dialogue boxes, no numbers, no text, no logo, no watermark, no extra people. Edge-to-edge opaque illustration. Do not include an outside border. Increase actual linework/detail, do not simply upscale pixel art.",
+            "referenced_image_paths": [
+              "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/town-011-native-rgb-reference.png"
+            ],
+            "transparent_background": false
+          }
+        },
+        {
+          "key": "town061",
+          "source_metadata": "surfaces/FDOTHER_061/resource.json",
+          "source_metadata_sha256": "eba9d7756735ba4b782adc5d0e9f74d0a68923f643996071bbad3e3e1e168177",
+          "source_frame": "surfaces/FDOTHER_061/frame.png",
+          "source_frame_sha256": "2b4efb6ea462a0defc00f78e9f2dee63cdee4bb8931d584fa0d01c560f54912a",
+          "master": "remake/generated-assets/modern-theme-prototypes/fdother-061-scene-handpainted-hd6-master-v1.png",
+          "master_sha256": "87c05999a0c414aa98b3a153ac446d6b21575b59c594205cb6e0c96501f8e44b",
+          "file": "remake/generated-assets/modern-theme-prototypes/fdother-061-scene-handpainted-hd6-v1.png",
+          "sha256": "3f2f0de20b14e9c19b1c811fc9116d09d3ebbf8db928d02cdd27ef05072918dd",
+          "master_size": [
+            1586,
+            992
+          ],
+          "target_size": [
+            1920,
+            1200
+          ],
+          "prompt": {
+            "prompt": "Use case: stylized-concept. Asset type: production background for a faithful classic Taiwanese tactical RPG HD remake. Input image is a composition/color/identity reference, NOT output pixels. Repaint it into crisp high resolution hand-painted fantasy game art with controlled painterly texture, clear dark contours and polished 1990s character illustration matching this project's approved handpainted style. An isometric fenced military camp with three round striped tents and a blue angular tent: cropped lavender round tent top-middle, white pale blue round tent left-middle, red/orange round tent upper-right, large blue angular tent lower-middle-right; fir trees and wooden palisade and sandy paths in the exact reference locations. Keep each facility silhouette and entrance at the same location. Preserve the entire reference 320x200 framing at an exact 16:10 landscape aspect, target 1920x1200. Every existing main object stays at the same normalized coordinates, same camera, perspective, silhouette and palette. No UI, no dialogue boxes, no numbers, no text, no logo, no watermark, no extra people. Edge-to-edge opaque illustration. Do not include an outside border. Increase actual linework/detail, do not simply upscale pixel art.",
+            "referenced_image_paths": [
+              "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/town-061-native-rgb-reference.png"
+            ],
+            "transparent_background": false
+          }
+        },
+        {
+          "key": "town062",
+          "source_metadata": "surfaces/FDOTHER_062/resource.json",
+          "source_metadata_sha256": "170feb1402119cfc491d7aed0682762897e23dcbcc58a37a304f91ba5b374689",
+          "source_frame": "surfaces/FDOTHER_062/frame.png",
+          "source_frame_sha256": "c483e405504118af42917860ca1fd8cdd993c57dc149d9c9ec08408bba4ea7bc",
+          "master": "remake/generated-assets/modern-theme-prototypes/fdother-062-scene-handpainted-hd6-master-v1.png",
+          "master_sha256": "8ac8281c429d768682f6bc6068e2fb83a1c4bdce9905ba8eb6ac02c019d3b092",
+          "file": "remake/generated-assets/modern-theme-prototypes/fdother-062-scene-handpainted-hd6-v1.png",
+          "sha256": "aabf7bd536fbfb29d0096b87d228b4047f03cf3741b3ed05dc5892e8406f5b85",
+          "master_size": [
+            1586,
+            992
+          ],
+          "target_size": [
+            1920,
+            1200
+          ],
+          "prompt": {
+            "prompt": "Use case: stylized-concept. Asset type: production background for a faithful classic Taiwanese tactical RPG HD remake. Input image is a composition/color/identity reference, NOT output pixels. Repaint it into crisp high resolution hand-painted fantasy game art with controlled painterly texture, clear dark contours and polished 1990s character illustration matching this project's approved handpainted style. Isometric established town with two boxy two-storey flat roof shops: gray-blue facade left-middle, ochre tan facade right-middle, both have dark blue awning and wooden counter. Giant wooden/tan building cropped at top-left, pale blue rounded stone building cropped top-right, orange striped round tent lower-right, grass and sand paths. Keep exact building footprints and entrance locations. Preserve the entire reference 320x200 framing at an exact 16:10 landscape aspect, target 1920x1200. Every existing main object stays at the same normalized coordinates, same camera, perspective, silhouette and palette. No UI, no dialogue boxes, no numbers, no text, no logo, no watermark, no extra people. Edge-to-edge opaque illustration. Do not include an outside border. Increase actual linework/detail, do not simply upscale pixel art.",
+            "referenced_image_paths": [
+              "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/town-062-native-rgb-reference.png"
+            ],
+            "transparent_background": false
+          }
+        },
+        {
+          "key": "shop012",
+          "source_metadata": "shop/FDOTHER_012/resource.json",
+          "source_metadata_sha256": "9a80b9a9d23b0d89d242c785900fbcf1a7048f540fbc609ae125d37a05a6a775",
+          "source_frame": "shop/FDOTHER_012/entry_000/frame.png",
+          "source_frame_sha256": "98df36621ffb97ce58a0af47b4de5b475fb063b2d99486bd8a930d04e3173624",
+          "master": "remake/generated-assets/modern-theme-prototypes/fdother-012-scene-handpainted-hd6-master-v1.png",
+          "master_sha256": "f65abb91d948490d88cab9bcdcff02b93dbc384564d0926bee6af7e72743d2b2",
+          "file": "remake/generated-assets/modern-theme-prototypes/fdother-012-scene-handpainted-hd6-v1.png",
+          "sha256": "96d4bcd50ccc7c024f3742f58b9ecddfa405b8d48b6bd7c988ba4cda3b826683",
+          "master_size": [
+            1586,
+            992
+          ],
+          "target_size": [
+            1920,
+            1200
+          ],
+          "prompt": {
+            "prompt": "Use case: stylized-concept. Asset type: production background for a faithful classic Taiwanese tactical RPG HD remake. Input image is a composition/color/identity reference, NOT output pixels. Repaint it into crisp high resolution hand-painted fantasy game art with controlled painterly texture, clear dark contours and polished 1990s character illustration matching this project's approved handpainted style. Interior weapon merchant stall: enormous blue-skinned broad muscular male shopkeeper with folded arms, bald black topknot, black mustache and beard, gray padded metal collar, black sleeveless tunic with gold trim, stern expression. His face stays exactly in native x123..203,y13..93 (38.4..63.4% horizontal,6.5..46.5% vertical); body/arms stay centered above counter. Shields, spears, armor and wooden walls around him; ropes and bags and shield on lower counter. Preserve identity, no human skin substitution. Preserve the entire reference 320x200 framing at an exact 16:10 landscape aspect, target 1920x1200. Every existing main object stays at the same normalized coordinates, same camera, perspective, silhouette and palette. No UI, no dialogue boxes, no numbers, no text, no logo, no watermark, no extra people. Edge-to-edge opaque illustration. Do not include an outside border. Increase actual linework/detail, do not simply upscale pixel art.",
+            "referenced_image_paths": [
+              "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shop-012-native-rgb-reference.png"
+            ],
+            "transparent_background": false
+          },
+          "portrait": {
+            "speaker_id": 128,
+            "native_rect": [
+              123,
+              13,
+              203,
+              93
+            ],
+            "hd_rect": [
+              738,
+              78,
+              1218,
+              558
+            ]
+          }
+        },
+        {
+          "key": "shop029",
+          "source_metadata": "shop/FDOTHER_029/resource.json",
+          "source_metadata_sha256": "732b27ddb48a416d4efa0ff61355f446bacc10083726792b813370e31f6bb096",
+          "source_frame": "shop/FDOTHER_029/entry_000/frame.png",
+          "source_frame_sha256": "b924e63eeec0f8ed2dc372f6afe2a1bc438d1d89ba816c804fbe9d4dbf2c6c64",
+          "master": "remake/generated-assets/modern-theme-prototypes/fdother-029-scene-handpainted-hd6-master-v1.png",
+          "master_sha256": "2fa97a4d7e179e65c049ec51e06ace604471ea1595a828ac0dd61560b1b8e318",
+          "file": "remake/generated-assets/modern-theme-prototypes/fdother-029-scene-handpainted-hd6-v1.png",
+          "sha256": "480bc117bacb80738551ddb04afdcd2b3be1ef26b3c26c2bbd071204d2825c21",
+          "master_size": [
+            1586,
+            992
+          ],
+          "target_size": [
+            1920,
+            1200
+          ],
+          "prompt": {
+            "prompt": "Use case: stylized-concept. Asset type: production background for a faithful classic Taiwanese tactical RPG HD remake. Input image is a composition/color/identity reference, NOT output pixels. Repaint it into crisp high resolution hand-painted fantasy game art with controlled painterly texture, clear dark contours and polished 1990s character illustration matching this project's approved handpainted style. Interior item merchant booth: young adult female elf with pointed ears, blue midlength hair with bangs, warm brown eyes, gold hoop earrings, olive dress with gold trim and bare shoulders, seated with hands together on her lap at same center. Her face stays native x99..179,y12..92 (30.9..55.9% horizontal,6..46% vertical). Dark blue tied curtains left and right, wooden walls, red hanging pennant top-right with only abstract gold decorative marks, not words; books and small goods. Keep composition exact. Preserve the entire reference 320x200 framing at an exact 16:10 landscape aspect, target 1920x1200. Every existing main object stays at the same normalized coordinates, same camera, perspective, silhouette and palette. No UI, no dialogue boxes, no numbers, no text, no logo, no watermark, no extra people. Edge-to-edge opaque illustration. Do not include an outside border. Increase actual linework/detail, do not simply upscale pixel art.",
+            "referenced_image_paths": [
+              "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shop-029-native-rgb-reference.png"
+            ],
+            "transparent_background": false
+          },
+          "portrait": {
+            "speaker_id": 130,
+            "native_rect": [
+              99,
+              12,
+              179,
+              92
+            ],
+            "hd_rect": [
+              594,
+              72,
+              1074,
+              552
+            ]
+          }
+        },
+        {
+          "key": "shop063",
+          "source_metadata": "shop/FDOTHER_063/resource.json",
+          "source_metadata_sha256": "c461d881cdfef918c09bcbdd7940d556b74e554a543f18509981b2b18831c838",
+          "source_frame": "shop/FDOTHER_063/entry_000/frame.png",
+          "source_frame_sha256": "cd9c3af0263039375022b47e66279421a13004b9be13b7b8a0f91bae5a6a3bff",
+          "master": "remake/generated-assets/modern-theme-prototypes/fdother-063-scene-handpainted-hd6-master-v1.png",
+          "master_sha256": "a8bcbfe1432c587bacce0a3d363a1c9561f9fbe46d5b6ca154cbf4c263beb3f3",
+          "file": "remake/generated-assets/modern-theme-prototypes/fdother-063-scene-handpainted-hd6-v1.png",
+          "sha256": "ba8e6f0ad1394ba7e7a400a6d7875a3db60cb4ea44cd09a41b6efdfd7d4d051d",
+          "master_size": [
+            1586,
+            992
+          ],
+          "target_size": [
+            1920,
+            1200
+          ],
+          "prompt": {
+            "prompt": "Use case: stylized-concept. Asset type: production background for a faithful classic Taiwanese tactical RPG HD remake. Input image is a composition/color/identity reference, NOT output pixels. Repaint it into crisp high resolution hand-painted fantasy game art with controlled painterly texture, clear dark contours and polished 1990s character illustration matching this project's approved handpainted style. Interior weapon merchant stall: enormous gray-green-skinned muscular male shopkeeper with folded arms, black topknot, black mustache and beard, gray padded metal collar, black sleeveless tunic gold trim, dark blue tattoo on left side of image visible upper arm, stern expression. Face stays native x124..204,y11..91 (38.75..63.75% horizontal,5.5..45.5% vertical). Shields, spears, armor and wooden walls around him; ropes, bags and shield on lower counter. Preserve gray-green skin and tattoo, no blue skin. Preserve the entire reference 320x200 framing at an exact 16:10 landscape aspect, target 1920x1200. Every existing main object stays at the same normalized coordinates, same camera, perspective, silhouette and palette. No UI, no dialogue boxes, no numbers, no text, no logo, no watermark, no extra people. Edge-to-edge opaque illustration. Do not include an outside border. Increase actual linework/detail, do not simply upscale pixel art.",
+            "referenced_image_paths": [
+              "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shop-063-native-rgb-reference.png"
+            ],
+            "transparent_background": false
+          },
+          "portrait": {
+            "speaker_id": 132,
+            "native_rect": [
+              124,
+              11,
+              204,
+              91
+            ],
+            "hd_rect": [
+              744,
+              66,
+              1224,
+              546
+            ]
+          }
+        }
+      ],
+      "reference_palette": "FDOTHER0; reference floor(v*255/63) vs runtime bit replication differs by at most one component level; art reference approximation, not original RGB parity"
+    },
+    "compilation_generation": {
+      "tool": "built-in image_gen",
+      "tasks": [
+        {
+          "key": "town011",
+          "args": {
+            "prompt": "Use case: stylized-concept. Asset type: production background for a faithful classic Taiwanese tactical RPG HD remake. Input image is a composition/color/identity reference, NOT output pixels. Repaint it into crisp high resolution hand-painted fantasy game art with controlled painterly texture, clear dark contours and polished 1990s character illustration matching this project's approved handpainted style. An isometric fenced early military camp with pointed wooden palisades left/right/bottom, five angular canvas tents: small dark blue upper left, cropped dark blue at top, large muted gray green right-upper center, large muted gray blue lower-left, small red tent bottom-center-right. Trees at same coordinates and curved sand paths. Do not invent buildings or move tents. Preserve the entire reference 320x200 framing at an exact 16:10 landscape aspect, target 1920x1200. Every existing main object stays at the same normalized coordinates, same camera, perspective, silhouette and palette. No UI, no dialogue boxes, no numbers, no text, no logo, no watermark, no extra people. Edge-to-edge opaque illustration. Do not include an outside border. Increase actual linework/detail, do not simply upscale pixel art.",
+            "referenced_image_paths": [
+              "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/town-011-native-rgb-reference.png"
+            ],
+            "transparent_background": false
+          },
+          "file": "remake/generated-assets/modern-theme-prototypes/fdother-011-scene-handpainted-hd6-master-v1.png",
+          "sha256": "f982a587eb22b757534498d138e5c47c081cd7bc1ae2458078f4cd6bacb7f46e",
+          "size": [
+            1586,
+            992
+          ]
+        },
+        {
+          "key": "town061",
+          "args": {
+            "prompt": "Use case: stylized-concept. Asset type: production background for a faithful classic Taiwanese tactical RPG HD remake. Input image is a composition/color/identity reference, NOT output pixels. Repaint it into crisp high resolution hand-painted fantasy game art with controlled painterly texture, clear dark contours and polished 1990s character illustration matching this project's approved handpainted style. An isometric fenced military camp with three round striped tents and a blue angular tent: cropped lavender round tent top-middle, white pale blue round tent left-middle, red/orange round tent upper-right, large blue angular tent lower-middle-right; fir trees and wooden palisade and sandy paths in the exact reference locations. Keep each facility silhouette and entrance at the same location. Preserve the entire reference 320x200 framing at an exact 16:10 landscape aspect, target 1920x1200. Every existing main object stays at the same normalized coordinates, same camera, perspective, silhouette and palette. No UI, no dialogue boxes, no numbers, no text, no logo, no watermark, no extra people. Edge-to-edge opaque illustration. Do not include an outside border. Increase actual linework/detail, do not simply upscale pixel art.",
+            "referenced_image_paths": [
+              "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/town-061-native-rgb-reference.png"
+            ],
+            "transparent_background": false
+          },
+          "file": "remake/generated-assets/modern-theme-prototypes/fdother-061-scene-handpainted-hd6-master-v1.png",
+          "sha256": "87c05999a0c414aa98b3a153ac446d6b21575b59c594205cb6e0c96501f8e44b",
+          "size": [
+            1586,
+            992
+          ]
+        },
+        {
+          "key": "town062",
+          "args": {
+            "prompt": "Use case: stylized-concept. Asset type: production background for a faithful classic Taiwanese tactical RPG HD remake. Input image is a composition/color/identity reference, NOT output pixels. Repaint it into crisp high resolution hand-painted fantasy game art with controlled painterly texture, clear dark contours and polished 1990s character illustration matching this project's approved handpainted style. Isometric established town with two boxy two-storey flat roof shops: gray-blue facade left-middle, ochre tan facade right-middle, both have dark blue awning and wooden counter. Giant wooden/tan building cropped at top-left, pale blue rounded stone building cropped top-right, orange striped round tent lower-right, grass and sand paths. Keep exact building footprints and entrance locations. Preserve the entire reference 320x200 framing at an exact 16:10 landscape aspect, target 1920x1200. Every existing main object stays at the same normalized coordinates, same camera, perspective, silhouette and palette. No UI, no dialogue boxes, no numbers, no text, no logo, no watermark, no extra people. Edge-to-edge opaque illustration. Do not include an outside border. Increase actual linework/detail, do not simply upscale pixel art.",
+            "referenced_image_paths": [
+              "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/town-062-native-rgb-reference.png"
+            ],
+            "transparent_background": false
+          },
+          "file": "remake/generated-assets/modern-theme-prototypes/fdother-062-scene-handpainted-hd6-master-v1.png",
+          "sha256": "8ac8281c429d768682f6bc6068e2fb83a1c4bdce9905ba8eb6ac02c019d3b092",
+          "size": [
+            1586,
+            992
+          ]
+        },
+        {
+          "key": "shop012",
+          "args": {
+            "prompt": "Use case: stylized-concept. Asset type: production background for a faithful classic Taiwanese tactical RPG HD remake. Input image is a composition/color/identity reference, NOT output pixels. Repaint it into crisp high resolution hand-painted fantasy game art with controlled painterly texture, clear dark contours and polished 1990s character illustration matching this project's approved handpainted style. Interior weapon merchant stall: enormous blue-skinned broad muscular male shopkeeper with folded arms, bald black topknot, black mustache and beard, gray padded metal collar, black sleeveless tunic with gold trim, stern expression. His face stays exactly in native x123..203,y13..93 (38.4..63.4% horizontal,6.5..46.5% vertical); body/arms stay centered above counter. Shields, spears, armor and wooden walls around him; ropes and bags and shield on lower counter. Preserve identity, no human skin substitution. Preserve the entire reference 320x200 framing at an exact 16:10 landscape aspect, target 1920x1200. Every existing main object stays at the same normalized coordinates, same camera, perspective, silhouette and palette. No UI, no dialogue boxes, no numbers, no text, no logo, no watermark, no extra people. Edge-to-edge opaque illustration. Do not include an outside border. Increase actual linework/detail, do not simply upscale pixel art.",
+            "referenced_image_paths": [
+              "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shop-012-native-rgb-reference.png"
+            ],
+            "transparent_background": false
+          },
+          "file": "remake/generated-assets/modern-theme-prototypes/fdother-012-scene-handpainted-hd6-master-v1.png",
+          "sha256": "f65abb91d948490d88cab9bcdcff02b93dbc384564d0926bee6af7e72743d2b2",
+          "size": [
+            1586,
+            992
+          ]
+        },
+        {
+          "key": "shop029",
+          "args": {
+            "prompt": "Use case: stylized-concept. Asset type: production background for a faithful classic Taiwanese tactical RPG HD remake. Input image is a composition/color/identity reference, NOT output pixels. Repaint it into crisp high resolution hand-painted fantasy game art with controlled painterly texture, clear dark contours and polished 1990s character illustration matching this project's approved handpainted style. Interior item merchant booth: young adult female elf with pointed ears, blue midlength hair with bangs, warm brown eyes, gold hoop earrings, olive dress with gold trim and bare shoulders, seated with hands together on her lap at same center. Her face stays native x99..179,y12..92 (30.9..55.9% horizontal,6..46% vertical). Dark blue tied curtains left and right, wooden walls, red hanging pennant top-right with only abstract gold decorative marks, not words; books and small goods. Keep composition exact. Preserve the entire reference 320x200 framing at an exact 16:10 landscape aspect, target 1920x1200. Every existing main object stays at the same normalized coordinates, same camera, perspective, silhouette and palette. No UI, no dialogue boxes, no numbers, no text, no logo, no watermark, no extra people. Edge-to-edge opaque illustration. Do not include an outside border. Increase actual linework/detail, do not simply upscale pixel art.",
+            "referenced_image_paths": [
+              "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shop-029-native-rgb-reference.png"
+            ],
+            "transparent_background": false
+          },
+          "file": "remake/generated-assets/modern-theme-prototypes/fdother-029-scene-handpainted-hd6-master-v1.png",
+          "sha256": "2fa97a4d7e179e65c049ec51e06ace604471ea1595a828ac0dd61560b1b8e318",
+          "size": [
+            1586,
+            992
+          ]
+        },
+        {
+          "key": "shop063",
+          "args": {
+            "prompt": "Use case: stylized-concept. Asset type: production background for a faithful classic Taiwanese tactical RPG HD remake. Input image is a composition/color/identity reference, NOT output pixels. Repaint it into crisp high resolution hand-painted fantasy game art with controlled painterly texture, clear dark contours and polished 1990s character illustration matching this project's approved handpainted style. Interior weapon merchant stall: enormous gray-green-skinned muscular male shopkeeper with folded arms, black topknot, black mustache and beard, gray padded metal collar, black sleeveless tunic gold trim, dark blue tattoo on left side of image visible upper arm, stern expression. Face stays native x124..204,y11..91 (38.75..63.75% horizontal,5.5..45.5% vertical). Shields, spears, armor and wooden walls around him; ropes, bags and shield on lower counter. Preserve gray-green skin and tattoo, no blue skin. Preserve the entire reference 320x200 framing at an exact 16:10 landscape aspect, target 1920x1200. Every existing main object stays at the same normalized coordinates, same camera, perspective, silhouette and palette. No UI, no dialogue boxes, no numbers, no text, no logo, no watermark, no extra people. Edge-to-edge opaque illustration. Do not include an outside border. Increase actual linework/detail, do not simply upscale pixel art.",
+            "referenced_image_paths": [
+              "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shop-063-native-rgb-reference.png"
+            ],
+            "transparent_background": false
+          },
+          "file": "remake/generated-assets/modern-theme-prototypes/fdother-063-scene-handpainted-hd6-master-v1.png",
+          "sha256": "a8bcbfe1432c587bacce0a3d363a1c9561f9fbe46d5b6ca154cbf4c263beb3f3",
+          "size": [
+            1586,
+            992
+          ]
+        }
+      ]
+    },
+    "rendering_contract": {
+      "town": "312x192 native viewport at4,4; opaque-write mask replayed on literal0/255 backgrounds; original selectors/pulse and HD glyphs retained",
+      "shop": "full HD scene behind native decoration5,95..68,110 and dialogue5,112..315,200; success/sell_success bare scenes omit dialogue; native transparent success blits replayed cumulatively for exact write coverage, restored portrait clears its coverage",
+      "party_portrait": "raw record+7 DATO; item base destination8,10; existing480 portrait follows exact source/destination regions and clip",
+      "retained_native_art": [
+        "town cursor",
+        "menu frame and icons",
+        "transaction success effects",
+        "other facilities not listed"
+      ],
+      "rules_save_rng_changed": false
+    },
+    "checks": {
+      "build": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/facility-candidate-r1/build.json",
+        "sha256": "7a98fe0db79ae0b91273ed851b65e9944783ff882da460595a63dae5a16df410"
+      },
+      "formal_coverage": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/facility-formal-coverage-r1.json",
+        "sha256": "4577c5d5cb67e1f3f5fa7ace53c6476c7cdda2f9fa730c939595cca1f2d00d73"
+      },
+      "delivery": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/facility-private-delivery-r1.json",
+        "sha256": "ec8311300631863edf7338410e586448775b3caae12148c4d922bc0026af6ee5"
+      },
+      "runtime": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/facility-runtime-r2-capture/receipt.json",
+        "sha256": "7384aaf19b429b2c238b2752f4d9b39409a1bcb95b0e4243d7fe41c05551b5b3"
+      },
+      "real_input": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/toolbar-input-r1-capture/receipt.json",
+        "sha256": "a4972fc780b0cb52ab801b06b027274923c08a4c764b74597622f37dc95db50e"
+      },
+      "facility-contract-r2": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/facility-contract-r2.memory.json",
+        "sha256": "25f63caf9c890237497b21d16e44564cd3c950c1f168924a83e9baf3eff0b928"
+      },
+      "facility-contract-r2_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/facility-contract-r2.log",
+        "sha256": "a39c32d6f1b9329eb8486836ac5208bc4d102fe11b8b3d20f3a34ac7554bd43f"
+      },
+      "facility-runtime-r2": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/facility-runtime-r2.memory.json",
+        "sha256": "6f03078b92f1464872f53035d3fc07c13b9be7983831ac25e3aa2984fa387141"
+      },
+      "facility-runtime-r2_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/facility-runtime-r2.log",
+        "sha256": "2429e117ed90058eb3625f62fd3fd591b6447a92ce945af0457660aed9cd43ce"
+      },
+      "toolbar-input-r1": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/toolbar-input-r1.memory.json",
+        "sha256": "1d942d78b16f126615b16f7bd07fab85a9bd2efbf767d7eb7d49943c5847c1fb"
+      },
+      "toolbar-input-r1_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/toolbar-input-r1.log",
+        "sha256": "7212580ed6dc5bcf286468249b4e5e3db0f020b469df514e7a037c3a535c549e"
+      },
+      "facility-regression-r1": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/facility-regression-r1.memory.json",
+        "sha256": "4568a51974588e5b0074f619ba1e2c6987f58033a7c2980995ad3ce34b4a52b4"
+      },
+      "facility-regression-r1_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/facility-regression-r1.log",
+        "sha256": "36b0d02bb049ebed7023f1ea6ac5d5320598d968377df6c646670950968d3dbc"
+      },
+      "facility-formal-load-r1": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/facility-formal-load-r1.memory.json",
+        "sha256": "8e1212dbb4c45412c2e8d8c82b10d113b6197f4f4b4f7dd10811c61416f067d7"
+      },
+      "facility-formal-load-r1_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/facility-formal-load-r1.log",
+        "sha256": "b17d9e259efc62c97848f772938c662c3d3b549fc3023db5997ee263223624a9"
+      },
+      "facility-runtime-load-r1": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/facility-runtime-load-r1.memory.json",
+        "sha256": "7662501bb590fd6e2c289988539db6921d3b558fca370cccc0dfcfa8dc791735"
+      },
+      "facility-runtime-load-r1_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/facility-runtime-load-r1.log",
+        "sha256": "167ca1aad2ccab219bf382bf67f9d7b6041277a829373efbdab5146c40bc054c"
+      }
+    },
+    "memory": {
+      "facility-contract-r2": {
+        "seconds": 42.593,
+        "peak_bytes": 939601920,
+        "oom_kill": 0
+      },
+      "facility-runtime-r2": {
+        "seconds": 62.691,
+        "peak_bytes": 2110095360,
+        "oom_kill": 0
+      },
+      "toolbar-input-r1": {
+        "seconds": 41.58,
+        "peak_bytes": 1328107520,
+        "oom_kill": 0
+      },
+      "facility-regression-r1": {
+        "seconds": 4.008,
+        "peak_bytes": 551960576,
+        "oom_kill": 0
+      },
+      "facility-formal-load-r1": {
+        "seconds": 29.055,
+        "peak_bytes": 572809216,
+        "oom_kill": 0
+      },
+      "facility-runtime-load-r1": {
+        "seconds": 30.563,
+        "peak_bytes": 546578432,
+        "oom_kill": 0
+      }
+    },
+    "coverage": {
+      "town_selector_pulse_cases": 72,
+      "gpu_cases": 114,
+      "equipment_opening_positions": 12,
+      "native_pixels_in_game_area_equal_with_and_without_toolbar": true,
+      "hd_background_min_source_samples": 1552,
+      "loader_rejections": 10,
+      "real_theme_change_sequence": [
+        true,
+        false,
+        true,
+        false,
+        true
+      ],
+      "toolbar_locales": [
+        "en",
+        "ja",
+        "zh-Hans",
+        "zh-Hant"
+      ],
+      "regression_tests": 11,
+      "catalog_python_tests": 12
+    },
+    "toolchain": {
+      "assets_image": "fd2-assets-local:20260829-sfx",
+      "assets_image_sha256": "e59237a31d4b5f7a62c59ac37b780bd93f17c99fda97be8f5ca0c53978b878bc",
+      "python_pillow": "3.12.15 / 11.3.0",
+      "go_image": "fd2-go-test-local:latest",
+      "go_image_sha256": "e4a805c52a3ad5d8c22cf23f2bcf51c6924e5ad6b99554f1b02761903c725433",
+      "go": "1.22.12",
+      "go_container": "8GB /4CPU /512pids /network none /UID:GID1000:1000",
+      "graphics": "Docker Xvfb; real input desktop2560x1600",
+      "compiler": {
+        "file": "tools/build_fd2_facility_hd.py",
+        "sha256": "88f7a45b89fe5a52ff2a99d4e41d8077b41dbebf1021bcddba27bc06fc5c1e2c"
+      },
+      "validator": {
+        "file": "tools/validate_modern_theme_catalog.py",
+        "sha256": "00df19b294255395a8e3a51066bfbff0874106ae8bfdfdaa1c57a6bb455b8832"
+      },
+      "private_sync": {
+        "file": "tools/sync_modern_theme_private.py",
+        "sha256": "b4ee0f261eae3d24d571437cd161a11060fb027c4a0925975051fc3e8272cc82"
+      },
+      "input_driver": {
+        "file": "tools/docker/fd2-xtest-input.c",
+        "sha256": "5ca9d5cf05b2b5e3fb95cd9e5782f304e45150b3cff51e2f9f40ffd46bf535fd"
+      },
+      "memory_probe": {
+        "file": "tools/fd2_go_test_memory_probe.py",
+        "sha256": "8e7c9c55b85aa72a5026b944233b94f7c0787f51b3f5ebb178ed54cc333e40f2"
+      }
+    },
+    "go_sources": [
+      {
+        "file": "remake/cmd/fd2/main.go",
+        "sha256": "e2872ad418472ea8634c266da422b7d7521dba24ac42cedfdff5cb6847a2d09b"
+      },
+      {
+        "file": "remake/cmd/fd2/player_toolbar.go",
+        "sha256": "7df1c0dbe2ec06c0cf756c7e84f63e28c3d8fe88dd0816a737d3e63e9ff5fb6e"
+      },
+      {
+        "file": "remake/cmd/fd2/player_toolbar_test.go",
+        "sha256": "af8fc3161827ba77009f877d5887a43d91fa9ad425035819eacd08301d99498b"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_facility_scene.go",
+        "sha256": "ed09a48b6f9abd588186c577bb667119c6ed48d5dec0b59b70d3ceca2aea02e8"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_facility_scene_test.go",
+        "sha256": "63bb278ea30c86b466b912610a65a35be5238cc50143bcb4f5883c675a7b97c2"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_panel_portrait.go",
+        "sha256": "179866ad1fb1765532333a120570fe5307e99c326cad11049a7b6633e84d6b87"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_presentation.go",
+        "sha256": "ae88a30e3b06366bb77394fc8f1e7ebd9671b8014c6c35c2ad310d0a046f1bba"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_story_portrait.go",
+        "sha256": "210d52d4d911b9f9e9ca7ad30d398e4fbb45e3c778ecdf70401f6c108980985a"
+      },
+      {
+        "file": "remake/cmd/fd2/native_town_ui.go",
+        "sha256": "546d59a5a0ea0e0b03dc3ea61b76fb5515c97bdc067e0c55861f227545eff6ec"
+      },
+      {
+        "file": "remake/cmd/fd2/native_shop_ui.go",
+        "sha256": "f82c70bf9acc32e57a3bea65f9101b6e97140ffc22e98181473b714273b63a85"
+      },
+      {
+        "file": "remake/cmd/fd2/native_shop_transaction_ui.go",
+        "sha256": "7f7178dbcede509cc1c1e0a596ba9999cbf52f8656a28e91f799aab308dd7380"
+      },
+      {
+        "file": "remake/cmd/fd2/native_class_ui_lifecycle.go",
+        "sha256": "39b83a452ec80c00ac7a91f7bf4242ea43d0d5e3cd5b5b0cb8881208db97a480"
+      },
+      {
+        "file": "remake/cmd/fd2/native_item_panel_ui.go",
+        "sha256": "cef09849a0c3ce12780da88a0de5d48a9b8a3898aeb478261225d1368ce85ce0"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_gold_roll.go",
+        "sha256": "7ee93dd2a0ccaed884f4c81f67825c12f30071753b2ab93fa218dc020c68898d"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_panel_transition.go",
+        "sha256": "95e2a06ba07998ed4c17d4e6376c9a6182068e324cce413413e77f88d34a42c0"
+      }
+    ],
+    "public_overview": {
+      "file": "docs/figures/hd-town-shop-toolbar.png",
+      "sha256": "0b93d360f60e83e7ef43964033af8a8957adf0450e36b51a6149ed5eec24d532"
+    },
+    "source_image_paths": "Selected six original image_gen RGB masters preserved byte-for-byte in allow-list private pack. Prompts and their reference paths remain in scene_mapping/compilation_generation; generated references are not redistributable source art.",
+    "scope": "Linux/amd64 RUNTIME-E1 fixtures and real pointer/keyboard in town fixture. No normal campaign PLAYER-E2, manual art acceptance, new EXE matching result, cross-platform execution or Release claim.",
+    "recordings_created": false,
+    "reproduce": [
+      "Restore the468-asset base catalog from f4d698ed and original manifest5eec2ecacc4f; restore old allow-list and six named RGB masters from private pack. Write compilation_generation to a temporary JSON recipe.",
+      "In assets Docker, tools/build_fd2_facility_hd.py --generation <recipe> --original-pack /original --catalog <base468> --out <fresh>; validate_modern_theme_catalog.py --verify-private --catalog <candidate>. Compare assets array and all output PNG SHA to formal catalog; private_root changes with output path.",
+      "In bounded Go Docker, set FD2_ASSET_PACK=/original, FD2_TEST_FACILITY_CATALOG=<catalog>, FD2_TEST_FACILITY_PACK=<pack>. Tests use the existing legal original org_game directory read-only for its fixture availability gate; production loads separated assets.",
+      "Run TestModernHDFacilityRejectsCorruptGroups; set FD2_HD_FACILITY_GPU=1 and FD2_TEST_FACILITY_OUT=<fresh> for TestModernHDFacilityRuntimeGPU. Always separate RunGame tests into dedicated go test processes.",
+      "Compile tools/docker/fd2-xtest-input.c with gcc -O2 -Wall -Wextra -lX11 -lXtst. Set FD2_TOOLBAR_INPUT_GPU=1, FD2_TEST_XTEST_INPUT=<binary>, FD2_TEST_TOOLBAR_OUT=<fresh>, WITH_XVFB_SCREEN=2560x1600x24 for TestPlayerThemeToolbarRealInputGPU. Uses actual click/F2/F4, including repeated current-theme clicks.",
+      "with-xvfb go test ./cmd/fd2 -count=1 -timeout=440s -run ^<test>$ -v, through fd2_go_test_memory_probe.py --timeout490; container timeout550,8GB/4CPU. Formal and runtime-only each run TestModernHDPrivateCatalogIncludesEveryPortrait with FD2_TEST_MODERN_PACK=<pack>.",
+      "Regression regex and test functions are in modern_hd_facility_scene_test.go/player_toolbar_test.go and existing native shop, gold roll, HD item/panel/text tests. sync_modern_theme_private.py preserves all4469 old names and hashes; full4487/runtime4020 are manifest counts, not release archives."
+    ],
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/facility-final-validation-r1.json",
+      "sha256": "4e465909af88e66c7c788af88ab104f9e7a722a84bdacb4ecf0035f1f1523f87"
+    },
+    "worklist_verify": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/facility-fd2_worklist.py-verify-r1.log",
+      "sha256": "26091eea8ab3a41c4223d7a015d21fe3c26a4ad695ae0148921ec6de3bb37265"
+    },
+    "lessons_check": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/facility-fd2_lessons.py-check-r1.log",
       "sha256": "a7fcbba957ef87127dfce8ed9bd6a03b8b146cea1b4d3f9b312581029897487a"
     }
   }

@@ -168,7 +168,8 @@ func (g *Game) beginNativeShopPurchaseSuccess() bool {
 	for i, frame := range debitFrames {
 		debitTimeline[i] = nativeClassUITimelineStep{
 			frame: frame, palette: g.nativeClassUI.palette,
-			duration: campaign.NativeGoldRollDelayMilliseconds * time.Millisecond,
+			shopEffectMask: timeline[len(timeline)-1].shopEffectMask,
+			duration:       campaign.NativeGoldRollDelayMilliseconds * time.Millisecond,
 		}
 	}
 	recipientID := g.shopEquipUnit
@@ -219,6 +220,10 @@ func (g *Game) nativeShopSuccessTimeline() (
 	if err != nil {
 		return nil, false
 	}
+	masks, finalMask, validMasks := modernShopEffectMasks(assets, g.nativeShopVariant)
+	if !validMasks {
+		return nil, false
+	}
 	timeline := make([]nativeClassUITimelineStep, 0, len(animation)+2)
 	if plan.PreDelayBIOSTicks != 0 {
 		timeline = append(timeline, nativeClassUITimelineStep{
@@ -233,11 +238,13 @@ func (g *Game) nativeShopSuccessTimeline() (
 		}
 		timeline = append(timeline, nativeClassUITimelineStep{
 			frame: frame, palette: g.nativeClassUI.palette,
-			duration: time.Duration(delay) * nativeBIOSTickPeriod,
+			shopEffectMask: masks[i],
+			duration:       time.Duration(delay) * nativeBIOSTickPeriod,
 		})
 	}
 	timeline = append(timeline, nativeClassUITimelineStep{
 		frame: final, palette: g.nativeClassUI.palette,
+		shopEffectMask: finalMask,
 	})
 
 	return timeline, true

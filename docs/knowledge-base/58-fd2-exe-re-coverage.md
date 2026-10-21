@@ -4,9 +4,10 @@
 
 | 項目 | 目前可證明的狀態 | 下一閘門 |
 |---|---|---|
+| 主題工具列與城鎮／商店 | RUNTIME-E1：遊戲外工具列保留F2與四語；三種城鎮及三種商店場景／店員已接HD，既有隊伍480頭像接裝備開窗。114個GPU案例、全部十二開窗位置、真實滑鼠／F2／F4及兩包載入通過 | 原生選單框、游標與交易效果保留；其他設施、普通玩家及人工造型集中全部HD後。依HD主收據facility_scene_followup_20261021，非完整HD或新Release |
 | 人物與正式世界 | 完整125組／1455張144圖已接Game.Draw，沿原生312×192窗格及raw定位，透明UI另疊 | 真正HD地形及完整HUD仍待完成 |
 | 蓋亞造型修訂 | 核准第二版80／480頭像與24／144四方向十二幀已登錄；正常START至首章97拍、七名頭像GPU及蓋亞普通北移／取消、F2與新程序LOAD已驗 | 序章尾端F9未通過，保存冷讀另有完整戰場收據；角色圖源只辨識同方向步態，兩筆相位差異與一筆不可比保留，不宣稱同幀 |
-| 大型戰鬥動畫HD | #263：共背景、非共背景、四召喚及普通指令0～8人物consumer已接；正式74個FIGANI資源550幀、普通FDOTHER十八組340幀及召喚65～68共37幀。另有FDOTHER5的12張LMI1事件死亡效果，清冊468項；最新龍人批次保持此前464項 | 其他人物、其他未列指令、法術／地圖回復、狀態致死正常GUI、其他共同效果、普通召喚與平台效能仍待。依使用者新排程先完成全部HD串接，最後集中人工確認，不宣稱完整HD |
+| 大型戰鬥動畫HD | #263：共背景、非共背景、四召喚及普通指令0～8人物consumer已接；正式74個FIGANI資源550幀、普通FDOTHER十八組340幀及召喚65～68共37幀。另有FDOTHER5的12張LMI1事件死亡效果，清冊480項；新增場景／店員不改戰鬥數量 | 其他人物、其他未列指令、法術／地圖回復、狀態致死正常GUI、其他共同效果、普通召喚與平台效能仍待。依使用者新排程先完成全部HD串接，最後集中人工確認，不宣稱完整HD |
 | 蓋亞戰鬥手腕修正 | v2待機／蓄力已接入，十五幀Game.Draw核心、F2／返回、十六項來源拒收與兩包原子預檢通過，限定RUNTIME-E1；舊出拳五幀保持 | #268：新造型的正常操作與集中人工確認仍待；舊普通圖是v1。來源見HD主收據gaia_guard_arm_followup_20261021與61，整體數量保持上列 |
 | 普通法術特效HD | CONFORMED-SCOPED／RUNTIME-E1：16組完整來源、alpha與色彩數值、全來源GPU、七種owner的完整Game.Draw／F2／MP／HP／RNG及一次續行通過；私人同步與兩包拒收通過。由audit_fd2_battle_hd_coverage.py重生，輸入與命令見HD主收據ordinary_material_effects_followup_20261021 | 原遮罩／明暗與手繪材質重定向，非逐幀獨立新畫或原版RGB parity。4／5共用owner以5代表；火龍26／27另由下列批次接入，其他人物／地形／HUD與集中人工確認仍待 |
 | 普通指令2火龍HD | CONFORMED-SCOPED／RUNTIME-E1：26／27完整來源與36矩陣、十三項錯件拒收、兩側全來源GPU及既有304回歸通過；raw-side2完整Game.Draw／F2、MP1／HP6／RNG／一次續行、施術全幀與代表特效最終核心通過。兩包缺件／F2與私人同步已核 | 三原RGBA共用、27鏡射及原框裁切明示；9／15半張口差別未獨立重畫，非原版RGB／alpha parity。另一側完整owner、普通操作與人工畫質集中最後；來源與工具見HD主收據dragon_effect_followup_20261021 |
@@ -50,7 +51,7 @@
 | 機甲隊長116戰鬥／故事HD | CONFORMED-SCOPED／RUNTIME-E1：348／349原11幀、80／480頭像、完整Draw/F2與runtime-only相同；正常目標348待機、116故事、戰後整備及保存新程序LOAD通過 | 主動攻擊正常GUI未提升，350零header不補造，章前強化／原傷亡明示；固定盤點、工具、2026-10-21重跑命令及formal_coverage見主收據captain116_battle_followup_20261021，無新oracle或整章E2 |
 | 萊汀6／索菲亞11戰鬥HD | CONFORMED-SCOPED／RUNTIME-E1：18／19與33／34共33幀，完整Draw／三階段F2／64及65 DAC與一次續行通過；每幀全部不透明核心核對、零高覆蓋裁切，完整／runtime-only PNG bytes相同 | 第11章同源建構槽、seed1與正常鍵盤，分別兩／五次END後攻擊102、自然返回／F2／保存邊界新程序LOAD通過；章前HP+1000及等級政策明示，20／35零header不補造。第12章護送失敗兩份原紀錄保留非PASS；無新oracle或整章E2。固定盤點、工具、2026-10-21重跑命令依主收據northern_party_battle_followup_20261021及formal_coverage |
 | 獸人102／獸人隊長103戰鬥HD | CONFORMED-SCOPED／RUNTIME-E1：306／307、309／310原35幀完整Draw／三階段F2、64及65 DAC與一次續行通過；32張非空全部不透明核心與三張原生空白另驗，完整／runtime-only35張PNG bytes相同 | 同第11章建構槽、seed1、各五次END後索菲亞／凱麗近戰，待機及反擊跳起／局部22／14張PNG、自然返回／F2／邊界冷讀通過。正常完整相位未逐張提升，局部裁切／共用姿勢與章前強化明示；無新oracle或整章E2。2026-10-21固定盤點、工具與重跑命令依主收據orc_battle_followup_20261021及formal_coverage |
-| 私人素材 | 現行4469檔完整allow-list及4008檔runtime-only逐筆SHA／UID／GID核對，原4428檔保持；清冊總項依上列，新母稿不進執行包 | 正式載入、同步與實際遠端核對見HD主收據dragons16_26_battle_followup_20261021，保存庫維持private |
+| 私人素材 | 現行4487檔完整allow-list及4020檔runtime-only逐筆SHA／UID／GID核對，原4469檔保持；清冊總項依上列，新母稿不進執行包 | 正式載入、同步與實際遠端核對見HD主收據facility_scene_followup_20261021，保存庫維持private |
 | 原版oracle／README動畫 | 凱麗第九章建構槽由固定dosgolem 190d944正常LOAD、出發、兩次END、攻擊與返回；原版EXE擷取與既有HD實際PNG並排，21幀／2.17秒GIF已驗 | 相近戰況與剪輯節奏，血量、亂數、到達格不同；不新增整章PLAYER-E2、傷害、逐幀或matching聲明 |
 | 計時對話 | FFEC開收框保留HD世界；37張主要GPU、6張對話及EXP99普通輸入／F2／保存冷讀通過 | 限RUNTIME-E1與明示槽；其他caller仍待驗 |
 | 完整HD | 尚未完成；普通速度藥水掉落提示與頭像仍為像素 | HD地形、其他美術、完整索引演出與平台效能沿#201／#202／#204 |
@@ -216,7 +217,7 @@ writer／consumer列已證實，與本次崩潰的關係列強推論，沒有實
 | 回合事件 | 全域 `sync_native_turn_events.py --check` 通過，仍有12筆維持spawn版本；第28章66／68／70休眠增援已補完整對白、PAN與物化，正常三波及保存通過 | [#33](https://github.com/wicanr2/fd2_re/issues/33)隨相關章補完整事件。固定EXE、來源、命令與日期見[event57主契約](../data/ida/fd2_turn_event57_20261016.json)，不重做已轉寫部分 |
 | 戰役故事節點稽核 | 第30章完整戰後接線後，工具重算119故事／過場、9直接腳本、60handler、50fallback，其中26為舊撤退骨架 | Docker `tools/audit_story_script_coverage.py --json`，2026-10-17；輸入SHA與輸出見[第30章主契約的validation.campaign_coverage](../data/ida/fd2_ch30_flow_20261017.json)。其他章fallback不因本次接線視為已證 |
 | HUD重繪 | 死亡steady及已證實戰場END／獎勵closing已接線；玩家確認、普通物理返回與部分劇情closing仍待補 | [#41](https://github.com/wicanr2/fd2_re/issues/41)，利用後續正常章收據驗證 |
-| 現代素材 | catalog結構及私人檔尺寸／SHA／透明度驗證通過。195筆登錄中，191筆runtime_candidate含33張圖集、94組可繪人物、31位80×80頭像及對應31位480×480頭像、1張HUD及1組四向圖示；另4筆concept。1187個file／files指向均存在 | [#201](https://github.com/wicanr2/fd2_re/issues/201)由正式consumer盤點需求；現有檔案完整不證明全玩家路徑覆蓋 |
+| 現代素材 | catalog結構及私人檔尺寸／SHA／透明度驗證通過。現行清冊與完整／runtime-only數量只依本檔上方目前狀態表及其機器收據；由validate_modern_theme_catalog.py、sync_modern_theme_private.py及audit_fd2_battle_hd_coverage.py重生，不沿用早期195筆快照 | [#201](https://github.com/wicanr2/fd2_re/issues/201)由正式consumer盤點需求；現有檔案完整不證明全玩家路徑覆蓋 |
 | 現代主題正式呈現 | 全主題仍為61的RUNTIME-E1-PARTIAL；序章新增父王／王后／強盜已以正常START走過97個對話拍點及首章接縫。480×480呈現另驗，人物仍24×24；selector39／57為純目的地重映射 | [#202](https://github.com/wicanr2/fd2_re/issues/202)早中晚正常操作、圖層交界與存讀檔驗收 |
 | 高解析呈現 | 2026-10-18使用者撤回160方案，採1920×1200與480×480頭像，維持版面比例。61的啟動時高解析序章契約CONFORMED；31張480圖通過預檢，正常97拍至首章與七位頭像480區域MAE=0，限本切片PLAYER-E2 | [#204](https://github.com/wicanr2/fd2_re/issues/204)[高解析收據](../data/fd2-modern-hd-20261018.json)；[F2切片](../data/fd2-modern-hd-f2-20261018.json)已通過正常雙向切換、遮罩、縮放及兩種主題LOAD同份節點存檔。[非原生切片](../data/fd2-modern-hd-dialogue-20261018.json)通過首章下框兩個新程序START後F9冷讀及F2往返，直接480圖源並保留既有504顯示區域；上下框幾何為E1。其餘玩家路徑、背景、原生固定面板文字、戰場及跨平台效能待完成 |
 | HD戰場 | F2／Home首章既有GUI與保存保持；r9既有清冊子集等比例候選及層計畫已驗。實際首章世界因漏selector96拒收，正式世界未啟用 | [HD戰場主收據](../data/fd2-modern-hd-battlefield-20261019.json)與[61](61-modern-theme-runtime-spec.md)。#259補原始圖庫漏列需求；#258接原生取景的正式世界、HUD／透明介面與正常GPU。完整美術與整款HD未完成 |

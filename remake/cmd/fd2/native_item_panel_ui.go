@@ -921,5 +921,6 @@ func (g *Game) drawNativeItemPanel(screen *ebiten.Image) bool {
 	if g.modernHDText != nil {
 		g.modernHDText.runs = append(g.modernHDText.runs, modernHDPanelRegionText(text, regions)...)
 	}
+	g.addModernHDPanelPortrait(g.nativeItemPanelRecord, regions)
 	return true
 }

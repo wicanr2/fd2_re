@@ -130,6 +130,7 @@ func (g *Game) drawModernHDStatusRegions(screen *ebiten.Image, source []byte, da
 	}
 	g.presentNativeClassFrameWithPalette(screen, frame, palette)
 	g.modernHDText.runs = append(g.modernHDText.runs, modernHDPanelRegionText(runs, regions)...)
+	g.addModernHDPanelPortrait(data.record, regions)
 	return true
 }
 
@@ -188,6 +189,9 @@ func (g *Game) drawModernBattlePlayerStatus(screen *ebiten.Image, s *nativePlaye
 	}
 	if g.modernHDText != nil {
 		g.modernHDText.runs = append(g.modernHDText.runs, modernHDPanelRegionText(runs, regions)...)
+	}
+	if data != nil {
+		g.addModernHDPanelPortrait(data.record, regions)
 	}
 	return true
 }

@@ -583,6 +583,10 @@ type Game struct {
 	modernThemeCache                    *modernStoryPortraitSet                     // 同一程序內已通過預檢的完整素材
 	nativeDialogueModernPortrait        *modernStoryPortraitFrame                   // 目前對話拍的靜態閉嘴真彩色層
 	modernHDOverlay                     *modernHDOverlay                            // 本次Draw實際呈現的高解析頭像
+	modernHDScene                       *modernFacilitySceneOverlay
+	modernHDPanelPortraits              []*modernHDOverlay
+	playerThemeRequested                bool
+	playerViewportTop                   int
 	modernHDText                        *modernHDTextFrame
 	nativeDialogueArrowTicks            int
 
@@ -8207,6 +8211,7 @@ func (g *Game) tileAt(idx int) *ebiten.Image {
 }
 
 func (g *Game) Update() error {
+	defer func() { g.playerThemeRequested = false }()
 	defer g.recordInputAuditState()
 	g.frame++
 	if g.nativeDefeat != nil {
@@ -8249,7 +8254,7 @@ func (g *Game) Update() error {
 	g.stepNativeShopUILifecycle(time.Now())
 	g.stepNativeTownUILifecycle(g.nativeTownUIClock.Sample(time.Now()))
 	g.stepNativePreparationUILifecycle(time.Now())
-	if g.nativeEnding == nil && !nativeModifierHeld() && inpututil.IsKeyJustPressed(ebiten.KeyF2) { // 全域：忠實／現代主題
+	if g.nativeEnding == nil && !nativeModifierHeld() && (g.playerThemeRequested || inpututil.IsKeyJustPressed(ebiten.KeyF2)) { // 全域：忠實／現代主題
 		g.cycleTheme()
 	}
 	if g.nativeEnding == nil && !nativeModifierHeld() && inpututil.IsKeyJustPressed(ebiten.KeyF3) { // 全域：切換音源
@@ -8909,6 +8914,10 @@ func (g *Game) Update() error {
 	// 觸控:點哪格移到哪格
 	for _, id := range inpututil.AppendJustPressedTouchIDs(nil) {
 		tx, ty := ebiten.TouchPosition(id)
+		if ty < g.playerViewportTop {
+			continue
+		}
+		ty -= g.playerViewportTop
 		targetX := (int(g.camX) + tx) / g.m.TileW
 		targetY := (int(g.camY) + ty) / g.m.TileH
 		if targetX < 0 {
@@ -9169,6 +9178,8 @@ func (g *Game) nativeMapFrameAdmission(legacyViewport, campaignBattleView bool) 
 
 func (g *Game) Draw(screen *ebiten.Image) {
 	g.modernHDOverlay = nil
+	g.modernHDScene = nil
+	g.modernHDPanelPortraits = nil
 	g.modernHDBattleVisible = false
 	g.syncModernHDBattleOwner()
 	g.modernHDWorldVisible = false
@@ -13160,14 +13171,14 @@ func main() {
 		return
 	}
 	applyPackagedPlayerDefaults()
-	ebiten.SetWindowSize(logicalW*2, logicalH*2)
+	ebiten.SetWindowSize(logicalW*2, (logicalH+playerToolbarHeight)*2)
 	ebiten.SetWindowTitle(fmt.Sprintf("炎龍騎士團2 重製 (fd2_re %s)", buildVersion))
 	ebiten.SetWindowResizingMode(ebiten.WindowResizingModeEnabled)
 	g := loadGame()
 	defer g.closeAudioPlayers()
-	player := &modernHDPresentation{Game: g, faithfulWidth: logicalW * 2, faithfulHeight: logicalH * 2}
+	player := &modernHDPresentation{Game: g, toolbar: true, faithfulWidth: logicalW * 2, faithfulHeight: (logicalH + playerToolbarHeight) * 2}
 	if g.modernStoryPortraits != nil && g.modernStoryPortraits.hasHD {
-		ebiten.SetWindowSize(modernHDWidth, modernHDHeight)
+		ebiten.SetWindowSize(modernHDWidth, modernHDHeight+playerToolbarHeight*3)
 	}
 	if err := ebiten.RunGame(player); err != nil {
 		log.Fatal(err)

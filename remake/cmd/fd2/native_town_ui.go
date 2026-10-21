@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"strconv"
 	"strings"
 
@@ -129,6 +130,10 @@ func (g *Game) stepNativeTownUILifecycle(nowTick int) {
 }
 
 func (g *Game) composeNativeTownFrame() ([]byte, bool) {
+	return g.composeNativeTownFrameWithBackground(nil)
+}
+
+func (g *Game) composeNativeTownFrameWithBackground(fill *byte) ([]byte, bool) {
 	if g.camp == nil || g.nativeTownUI == nil ||
 		g.nativeTownUI.scene == nil || g.nativeClassUI == nil {
 		return nil, false
@@ -138,6 +143,14 @@ func (g *Game) composeNativeTownFrame() ([]byte, bool) {
 		return nil, false
 	}
 	scene := g.nativeTownUI.scene
+	if fill != nil {
+		copy := *scene
+		if *n.NativeTownVariant < 0 || *n.NativeTownVariant >= len(copy.Backgrounds) {
+			return nil, false
+		}
+		copy.Backgrounds[*n.NativeTownVariant] = bytes.Repeat([]byte{*fill}, 320*200)
+		scene = &copy
+	}
 	if len(g.partyJoinOrder) > 0 {
 		unit, ok := g.partyRoster[g.partyJoinOrder[0]]
 		if !ok {
@@ -179,6 +192,9 @@ func (g *Game) composeNativeTownFrame() ([]byte, bool) {
 }
 
 func (g *Game) drawNativeTown(screen *ebiten.Image) bool {
+	if g.drawModernHDTown(screen) {
+		return true
+	}
 	frame, ok := g.composeNativeTownFrame()
 	if !ok {
 		return false

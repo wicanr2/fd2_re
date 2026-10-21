@@ -107,7 +107,9 @@ func (g *Game) drawModernHDGoldRoll(screen *ebiten.Image, job *nativeClassUIJob,
 	if !ok {
 		return false
 	}
-	g.presentNativeClassFrameWithPalette(screen, frame, step.palette)
+	if !g.drawModernHDShopFrame(screen, frame, step.palette, step.shopEffectMask) {
+		g.presentNativeClassFrameWithPalette(screen, frame, step.palette)
+	}
 	g.modernHDText.runs = append(g.modernHDText.runs, runs...)
 	return true
 }

@@ -1500,18 +1500,24 @@ func (g *Game) drawNativeShopUIJob(screen *ebiten.Image) bool {
 			job.frame = 1
 		}
 		if !g.drawModernHDGoldRoll(screen, job, index) {
-			g.presentNativeClassFrameWithPalette(screen, step.frame, step.palette)
+			if !g.drawModernHDShopFrame(screen, step.frame, step.palette, step.shopEffectMask) {
+				g.presentNativeClassFrameWithPalette(screen, step.frame, step.palette)
+			}
 		}
 		job.drawn = true
 		return true
 	}
 	if job.frame < len(job.frames) {
-		g.presentNativeClassFrame(screen, job.frames[job.frame])
+		if !g.drawModernHDShopFrame(screen, job.frames[job.frame], g.nativeClassUI.palette, nil) {
+			g.presentNativeClassFrame(screen, job.frames[job.frame])
+		}
 		job.drawn = true
 		return true
 	}
 	if len(job.restore) == 320*200 {
-		g.presentNativeClassFrame(screen, job.restore)
+		if !g.drawModernHDShopFrame(screen, job.restore, g.nativeClassUI.palette, nil) {
+			g.presentNativeClassFrame(screen, job.restore)
+		}
 		job.drawn = true
 		return true
 	}
@@ -1571,7 +1577,9 @@ func (g *Game) drawNativeShop(screen *ebiten.Image) bool {
 	if !ok {
 		return false
 	}
-	g.presentNativeClassFrame(screen, frame)
+	if !g.drawModernHDShopFrame(screen, frame, g.nativeClassUI.palette, nil) {
+		g.presentNativeClassFrame(screen, frame)
+	}
 	if g.modernHDShopText() {
 		g.modernHDText.runs = append(g.modernHDText.runs, g.font.indexedHD.runs...)
 	}

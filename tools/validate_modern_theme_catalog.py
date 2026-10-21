@@ -19,6 +19,7 @@ ROLES = PROTOTYPE_ROLES | {
     "story_portrait_frame", "story_portrait_hd_frame", "map_sprite_set", "map_tileset_set",
     "map_sprite_hd_set", "battlefield_tileset_concept", "battle_hud_panel", "battle_action_icon_set",
     "native_terrain_hd_set", "terrain_hd_master", "battle_animation_hd_set", "battle_effect_hd_set", "map_overlay_hd_set",
+    "facility_scene_hd",
 }
 STATUSES = {"prototype", "concept", "approved", "runtime_candidate", "runtime_ready"}
 # Fixed FDICON.B24 source-write inventory, independently checked by
@@ -58,6 +59,7 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
     parent_sprites, hd_sprites = {}, {}
     terrain_frames = set()
     battle_resources = set()
+    facility_resources = set()
     for entry in assets:
         required = {"asset_id", "role", "status", "file", "width", "height", "sha256", "source_refs"}
         candidate = {"master_file", "consumer_contract", "speaker_id", "frame", "mouth_state"}
@@ -76,7 +78,9 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
         }
         if not isinstance(entry, dict):
             raise ValueError("asset entry must be an object")
-        if entry.get("role") in {"story_portrait_frame", "story_portrait_hd_frame"}:
+        if entry.get("role") == "facility_scene_hd":
+            expected = required | {"master_file", "consumer_contract", "source_archive", "source_resource", "source_metadata_sha256", "source_files", "source_sha256"}
+        elif entry.get("role") in {"story_portrait_frame", "story_portrait_hd_frame"}:
             expected = required | candidate
         elif entry.get("role") == "map_sprite_set":
             expected = sprite_set | ({"master_file"} if "master_file" in entry else set())
@@ -127,6 +131,22 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
             if entry["frame"] not in range(4) or entry["mouth_state"] not in {"closed", "open"}:
                 raise ValueError(f"invalid portrait frame identity: {asset_id}")
             portrait_speakers.add(entry['speaker_id'])
+        if entry['role'] == 'facility_scene_hd':
+            resource = entry['source_resource']
+            if (resource not in {11, 61, 62, 12, 29, 63} or resource in facility_resources
+                    or entry['source_archive'] != 'FDOTHER.DAT'
+                    or entry['consumer_contract'] != 'native_facility_scene_hd6_v1'
+                    or (entry['width'], entry['height']) != (1920, 1200)
+                    or entry['status'] not in {'runtime_candidate', 'runtime_ready'}
+                    or not SHA_RE.fullmatch(entry['source_metadata_sha256'])
+                    or entry['source_files'] != [entry['master_file']]
+                    or len(entry['source_sha256']) != 1 or not SHA_RE.fullmatch(entry['source_sha256'][0])):
+                raise ValueError(f'invalid facility scene contract: {asset_id}')
+            facility_resources.add(resource)
+            if verify_private:
+                source = ROOT / private_root / entry['master_file']
+                if hashlib.sha256(source.read_bytes()).hexdigest() != entry['source_sha256'][0]:
+                    raise ValueError(f'facility master sha256 mismatch: {asset_id}')
         if entry['role'] == 'story_portrait_hd_frame':
             if (entry['consumer_contract'] != 'native_story_dialogue_rgba_overlay_hd6_v1'
                     or (entry['width'], entry['height'], entry['frame'], entry['mouth_state'])
@@ -389,11 +409,13 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
                         alpha = image.convert('RGBA').getchannel('A')
                         if alpha.getextrema() != (0, 255):
                             raise ValueError(f'invalid HD coverage alpha: {asset_id}/{file_path.name}')
-                elif entry["role"] in {"battle_action_icon_set", "story_portrait_hd_frame"}:
+                elif entry["role"] in {"battle_action_icon_set", "story_portrait_hd_frame", "facility_scene_hd"}:
                     from PIL import Image
                     alpha = Image.open(private_path).convert("RGBA").getchannel("A")
                     if set(alpha.getdata()) != {255}:
                         raise ValueError(f"non-opaque asset: {asset_id}/{file_path.name}")
+    if facility_resources and facility_resources != {11, 61, 62, 12, 29, 63}:
+        raise ValueError('facility scene group is incomplete')
     if hd_speakers and hd_speakers != portrait_speakers:
         raise ValueError('HD portrait speaker group is incomplete or orphaned')
     if hd_sprites:

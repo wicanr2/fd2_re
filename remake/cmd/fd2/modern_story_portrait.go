@@ -37,6 +37,7 @@ type modernStoryPortraitSet struct {
 	battleAnimations  map[int]*modernBattleHDResource
 	battleEffects     map[int]*modernBattleHDResource
 	mapOverlays       *modernMapOverlayHDResource
+	facilityScenes    map[int]*modernFacilityScene
 }
 
 type modernThemeAsset struct {
@@ -100,6 +101,12 @@ func loadModernStoryPortraitSet(catalogPath, packRoot string) (*modernStoryPortr
 	}
 	hdPortraits := make(map[int]image.Image)
 	for _, asset := range catalog.Assets {
+		if asset.Role == "facility_scene_hd" {
+			if err := loadModernFacilityScene(set, asset, packRoot); err != nil {
+				return nil, err
+			}
+			continue
+		}
 		if asset.Role == "map_overlay_hd_set" {
 			if err := loadModernMapOverlayHDAsset(set, asset, packRoot); err != nil {
 				return nil, err
@@ -368,6 +375,9 @@ func loadModernStoryPortraitSet(catalogPath, packRoot string) (*modernStoryPortr
 	}
 	if len(set.portraits) == 0 {
 		return nil, errors.New("modern theme catalog has no story portrait")
+	}
+	if len(set.facilityScenes) != 0 && len(set.facilityScenes) != 6 {
+		return nil, errors.New("modern facility scene group is incomplete")
 	}
 	if len(hdPortraits) != 0 {
 		if len(hdPortraits) != len(set.portraits) {

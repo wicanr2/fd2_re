@@ -1,12 +1,13 @@
 /*
  * FD2 Docker/Xvfb input helper.
  *
- * This helper deliberately injects only ordinary X11 key events.  It does
+ * This helper deliberately injects ordinary X11 key and pointer events. It does
  * not change the game state, skip a scene, or call a remake API; it is used
  * by reproducible GUI traces when the test container has no xdotool.
  *
  * Usage:
  *   fd2-xtest-input Escape:1000 Down:1000 Shift+F5:1500 Ctrl+F6:1500
+ *   fd2-xtest-input 'Click=220,12@640x424:500' F2:500
  *
  * The number is the delay, in milliseconds, after releasing the key.  A key
  * is pressed and released as two synchronised XTest events so Ebiten can
@@ -127,6 +128,41 @@ int main(int argc, char **argv) {
             *colon = '\0';
             delay_ms = atoi(colon + 1);
             if (delay_ms < 0) delay_ms = 0;
+        }
+        if (!strncmp(spec, "Click=", 6)) {
+            int x, y, logical_w, logical_h;
+            char trailing;
+            if (sscanf(spec, "Click=%d,%d@%dx%d%c", &x, &y, &logical_w, &logical_h, &trailing) != 4 ||
+                logical_w <= 0 || logical_h <= 0 || x < 0 || y < 0 || x >= logical_w || y >= logical_h) {
+                fprintf(stderr, "invalid logical click in %s\n", argv[i]);
+                free(spec);
+                XCloseDisplay(dpy);
+                return 9;
+            }
+            XWindowAttributes attrs;
+            int root_x, root_y;
+            Window child;
+            if (!XGetWindowAttributes(dpy, target, &attrs) ||
+                !XTranslateCoordinates(dpy, target, root, 0, 0, &root_x, &root_y, &child)) {
+                free(spec);
+                XCloseDisplay(dpy);
+                return 10;
+            }
+            double sx = (double)attrs.width / logical_w;
+            double sy = (double)attrs.height / logical_h;
+            double scale = sx < sy ? sx : sy;
+            int px = root_x + (int)((attrs.width-logical_w*scale)/2 + x*scale);
+            int py = root_y + (int)((attrs.height-logical_h*scale)/2 + y*scale);
+            XTestFakeMotionEvent(dpy, DefaultScreen(dpy), px, py, CurrentTime);
+            XSync(dpy, False);
+            XTestFakeButtonEvent(dpy, 1, True, CurrentTime);
+            XSync(dpy, False);
+            usleep(60000);
+            XTestFakeButtonEvent(dpy, 1, False, CurrentTime);
+            XSync(dpy, False);
+            usleep((useconds_t)delay_ms * 1000U);
+            free(spec);
+            continue;
         }
         KeySym modifier_sym = NoSymbol;
         const char *modifier_name = NULL;
