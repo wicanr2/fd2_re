@@ -148,6 +148,13 @@ func TestModernHDMonksWandAllFramesGPU(t *testing.T) {
 	testModernHDRegisteredFramesGPU(t, "FIGANI.DAT", []int{84, 85, 87, 88, 93, 94}, 44, "PASS-MONKS-WAND-44-SOURCE-GPU")
 }
 
+func TestModernHDKnightsAxemanAllFramesGPU(t *testing.T) {
+	if os.Getenv("FD2_HD_KNIGHTS_AXEMAN_GPU") != "1" {
+		t.Skip("dedicated registered knights and axeman GPU process required")
+	}
+	testModernHDRegisteredFramesGPU(t, "FIGANI.DAT", []int{96, 97, 98, 99, 100, 102, 103, 104}, 77, "PASS-KNIGHTS-AXEMAN-77-SOURCE-GPU")
+}
+
 func testModernHDRegisteredFramesGPU(t *testing.T, archive string, resources []int, frameCount int, status string) {
 	t.Helper()
 	set, err := loadModernStoryPortraitSet(os.Getenv("FD2_TEST_MODERN_EFFECT_CATALOG"), os.Getenv("FD2_TEST_MODERN_EFFECT_PACK"))

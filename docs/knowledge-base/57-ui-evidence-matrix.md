@@ -1,5 +1,7 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
+BattleFig32／34劍士與33重斧人物完整圖源已接入；全部來源GPU與物理Game.Draw／F2／返回、來源拒收及兩包原子預檢通過。98／104第三銀行僅來源GPU；既有24／29索引色caller已知，其HD呈現待接，普通0雙marker拒收保留。姿勢／武器比例、光柱與碎片形狀差異明示；不提升正常玩家或原版parity。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，主收據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的knights32_34_axeman33_followup_20261022。
+
 BattleFig28／29／31完整拳擊與短杖圖源已接入；三組全部Game.Draw核心、來源GPU、F2／返回、來源拒收及兩包缺件原子性通過。袍身／光弧比例、共用姿勢與碎光形狀近似明示，三個零header不補造；不新增正常玩家或原版parity聲明。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的monks28_31_mage29_followup_20261022。
 
 BattleFig25／27完整圖源已接入；候選及runtime-only來源GPU、兩組物理Game.Draw／F2／返回、原生空拍、來源拒收及兩包缺件原子性通過。姿勢／尾光與光寬近似保留，77第三銀行另通過指令0測試場景全部八幀，不新增原版玩家技能可達性或普通玩家聲明。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的ninja25_winged27_followup_20261022。

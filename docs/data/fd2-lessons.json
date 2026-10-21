@@ -3575,6 +3575,21 @@
         ],
         "pattern": "ninja25_winged27_followup_20261022"
       }
+    },
+    {
+      "id": "hd-anchor-resampling-footprint",
+      "area": "HD錨點取樣",
+      "date": "2026-10-22",
+      "rule": "以高覆蓋alpha包絡建立母稿錨點時，預留重採樣濾波的取樣邊界，再核對編製器每幀clipped_high_coverage_pixels；不從連續座標錨點在框內推定所有實際像素都在框內。入口tools/build_fd2_character_battle_hd.py與HD主收據knights32_34_axeman33_followup_20261022.anchor_correction；本批兩個來源像素只適用已記錄的來源倍率，其他倍率仍須實測。",
+      "why": "32／33／34的R1緊包絡經LANCZOS取樣後，在部分原框外留下5～17個高覆蓋像素。R2在來源圖片範圍內留兩個像素，完整77幀均為零裁切；原框與母稿RGBA未改。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "docs/data/fd2-modern-hd-battlefield-20261019.json"
+        ],
+        "pattern": "anchor_correction"
+      }
     }
   ]
 }

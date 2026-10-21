@@ -199,3 +199,43 @@ func TestModernHDCommand0PreflightAndF2Atomic(t *testing.T) {
 		t.Fatal("unacknowledged frame changed state")
 	}
 }
+
+func TestModernHDCommand0RejectsMultiMarkerThirdBanks(t *testing.T) {
+	catalog, pack := os.Getenv("FD2_TEST_MODERN_EFFECT_CATALOG"), os.Getenv("FD2_TEST_MODERN_EFFECT_PACK")
+	if catalog == "" || pack == "" {
+		t.Skip("explicit full theme required")
+	}
+	t.Setenv("FD2_MUTE", "1")
+	template, err := loadModernStoryPortraitSet(catalog, pack)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, figure := range []int{32, 34} {
+		t.Run(fmt.Sprint(figure), func(t *testing.T) {
+			g, actor, target := ordinaryCommand0HDTestGame(t)
+			actor.BattleFig = figure
+			set := cloneModernHDBanksForTest(template)
+			g.modernStoryPortraits = set
+			a, b, seed := *actor, *target, g.nativeRNGState
+			if err := g.startNativeCommand0Presentation(actor, target, nil); err == nil ||
+				!strings.Contains(err.Error(), "command0 actor MP markers=2") {
+				t.Fatalf("multi-marker source must reject command0: %v", err)
+			}
+			if g.nativeCmd0Presentation != nil || !reflect.DeepEqual(a, *actor) ||
+				!reflect.DeepEqual(b, *target) || seed != g.nativeRNGState {
+				t.Fatal("rejected source published an owner, unit state or RNG")
+			}
+			for _, resource := range []int{0, figure * 3, figure*3 + 2} {
+				bank := set.battleAnimations[resource]
+				if bank == nil {
+					t.Fatalf("registered source required: %d", resource)
+				}
+				for _, frame := range bank.Frames {
+					if frame != nil {
+						t.Fatalf("rejected source partially loaded HD bank %d", resource)
+					}
+				}
+			}
+		})
+	}
+}

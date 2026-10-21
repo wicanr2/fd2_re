@@ -107,6 +107,10 @@
 
 左為深藍拳師上勾拳，中為短杖命中星芒，右為灰綠拳師迴旋打擊。此圖取自明示換用圖源的測試場景最終GPU縮圖，面板仍沿用來源角色名稱；背景及受擊閃色保留原圖樣。共用姿勢、袍身比例、光弧高度與碎光形狀的差異已記錄，待全部HD接入後集中人工確認，範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
 
+![兩組劍士與重斧人物的HD測試畫面](docs/figures/hd-knights-axeman-battle.png)
+
+左為藍披風劍士迴旋斬，中為重斧人物劈擊，右為白馬尾劍士橫斬。此圖取自明示換用圖源的測試場景最終GPU縮圖，面板仍沿用來源角色名稱；背景及受擊閃色保留原圖樣。共用姿勢、人物與武器比例、光弧及碎光形狀的差異已記錄，待全部HD接入後集中人工確認，範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
+
 | 鐵諾HD普通END攻防 | 蓋亞HD普通攻防 |
 | --- | --- |
 | ![鐵諾HD普通END攻防](docs/figures/hd-tino-physical-attack.png) | ![蓋亞HD普通攻防](docs/figures/hd-gaia-physical-attack.png) |
