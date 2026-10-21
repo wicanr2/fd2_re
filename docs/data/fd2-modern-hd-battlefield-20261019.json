@@ -15,7 +15,7 @@
     "hd_terrain": "CONFORMED-SCOPED：map0六組53槽；新增圓頂綠色／褐色雙塊四底圖在兩張正常GPU全部相符，短長組合與保存冷讀通過；草地及其他地形仍待HD化。",
     "ai_player_input_lock": "CONFORMED-SCOPED：AI換手期間拒絕玩家地圖輸入重入；普通END／增援對話及相關／完整Go回歸通過。",
     "gaia_redesign": "CONFORMED-SCOPED：新版頭像與四方向圖組已登錄；正常START／Gaia北移取消／F2／冷讀分段驗證。相位差異與序章尾端失敗明示，非逐幀parity。",
-    "hd_battle_animation": "32／33／34完整77幀來源已接入，44張物理來源具Game.Draw／F2／返回；98／104另33幀具來源GPU，普通0雙marker拒收且24／29索引色caller已知但HD尚待綁定。姿勢／武器與光效形狀近似明示，正常與人工集中最後；唯一數量依58。",
+    "hd_battle_animation": "指令24／29完整HD消費端已接入，98／104兩銀行含原生空拍均具實際Game.Draw；九階段prelude、背景轉場、單／雙目標、F2及原MP／HP與一次回交通過，完整與執行包全部畫面相同。固定素材數量保持，其他人物／效果與集中正常／人工仍待；唯一數量依58。",
     "native_purchase_equip": "CONFORMED-SCOPED：#266原生購買立即裝備保留ignored原始格，29項商店回歸與正常購弓F5／章首射程通過；不改格式或數值規則。",
     "hd_event_death": "共用事件、普通行動與狀態致死已接HD；三種26拍／F2通過。正常章23事件與普通擊殺已抽驗，狀態致死正常GUI仍待；來源依death_consumers_followup_20261021。",
     "theme_toolbar": "CONFORMED-SCOPED-RUNTIME-E1：遊戲外工具列與F2共用路徑，實際滑鼠／F2／四語及完整遊戲區域不變通過。",
@@ -98453,7 +98453,7 @@
     },
     "private_remote_verification": "Independent private repository commit pushed; actual git ls-remote refs/heads/main re-read equals local HEAD. Private commit identity is not published."
   },
-  "latest_hd_batch": "knights32_34_axeman33_followup_20261022",
+  "latest_hd_batch": "split_strikes24_29_followup_20261022",
   "monks28_31_mage29_followup_20261022": {
     "status": "CONFORMED-SCOPED-RUNTIME-E1",
     "date": "2026-10-22",
@@ -105747,6 +105747,529 @@
       "Run TestModernHDBattleAssetsRealCandidate and TestNativePhysicalHDPreflightStopsBeforeSettlement separately for each figure and both full/runtime packs:12 commands, noSKIP, player/mode11 children. Total18 Go commands include both source GPU, three physical and one marker guard command.",
       "Register eight banks preserving all501 old entries and4755 files; fold identical source aliases by SHA. Sync private allow-list and runtime-only via sync_modern_theme_private.py; all102new files,18 originals and seven derivatives by SHA/UID. No rejected prototypes or original native extracts in modern pack."
     ],
-    "private_remote_verification": "Independent private repository commit pushed; actual git ls-remote refs/heads/main equals local HEAD. Private commit identity not published."
+    "private_remote_verification": "Independent private repository commit pushed; actual git ls-remote refs/heads/main equals local HEAD. Private commit identity not published.",
+    "later_hd_consumer_resolution": {
+      "evidence": "split_strikes24_29_followup_20261022",
+      "scope": "Prior source-only third-bank gap is resolved by scoped24/29 actual Game.Draw evidence; original77-source/44-physical receipts remain historical. No new normal-player claim."
+    }
+  },
+  "split_strikes24_29_followup_20261022": {
+    "status": "CONFORMED-SCOPED-RUNTIME-E1",
+    "date": "2026-10-22",
+    "base_commit": "3c4ee6d7993d435cf4cb4ba5c4b781c5e2aa2713",
+    "source_evidence_before": [
+      {
+        "file": "docs/data/ida/fd2_command24_presentation_ida.txt",
+        "sha256": "5778bd5a8e7b39c63ec1eb30a174d869310a94fb3ae4d7c9bd0ad93bad10c728"
+      },
+      {
+        "file": "docs/data/ida/fd2_command24_background_transition_ida.txt",
+        "sha256": "19ef346c7a47a589af952ac68c10fda2ddeae90048666010ed26d72d3db95316"
+      },
+      {
+        "file": "docs/data/ida/fd2_command28_29_31_presentation_ida.txt",
+        "sha256": "0b599dc75060aa80f7a733a5aafbbd01dff5fa96f70f73c18ae1fa0e1194191c"
+      },
+      {
+        "file": "remake/internal/figani/native_command24.go",
+        "sha256": "871a6f5289bf0c13a792e77002e886416d81153c1bae068ea12260976ba74f44"
+      },
+      {
+        "file": "remake/internal/battlepresent/native_command24_background.go",
+        "sha256": "a8042b31364f1e2980f3341f4fe155f9d4f5c324fa7318fdcbd0a37ac5b8e4b4"
+      },
+      {
+        "file": "remake/internal/battlepresent/native_command24_prelude.go",
+        "sha256": "d8a6f8833606d0d1e3a857280e7bbb606734f905a4b4dfa1e7c359f4c80c61a3"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command24_presentation.go",
+        "sha256": "977330a719460abb7561d64ed411a77bc522b800ef5cf1e5e8a68ff45a78c498"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command29_presentation.go",
+        "sha256": "97eb283c96cb78a6c9f549617df82f4c67e1ab370ca1c0a446761d4b307290bf"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_scroll.go",
+        "sha256": "9e25e5f07fff3567cad0cb4f45aa8f317ebbab5b486e8624cd7c5c49d2d4bd9e"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_compound.go",
+        "sha256": "e48d3fb54a7ede7855dfd3f64f315bfad2c497b229e13aefe16dead5352bb90f"
+      }
+    ],
+    "source_assets": "Existing formal509 catalog; FIGANI96/98 and102/104, target idle resources from actual typed target list. No new or changed art/catalog/private files. Prior77-source row remains source/physical evidence, not proof of this consumer.",
+    "source_grades": {
+      "known24_32_98_and29_34_104": "confirmed existing IDA9.4 evidence, fixed FD2.EXE357074 bytes MD5b97caf2239a27a896069d03549d96e1e; IDA linear address only",
+      "prelude_and20_present_viewport_metadata": "confirmed existing typed indexed producer; not a new original executable experiment",
+      "handpainted_RGBA_appearance": "art approximation; original RGB/frame equality not claimed"
+    },
+    "spec": {
+      "scope": "Add optional HD binding to existing command24 and29 owners for all prelude, actor, outgoing/incoming BG transitions and target frames, including source blanks. Keep pixel mode and all original controller state, MP/HP/sound/mark/timing/save behavior.",
+      "inputs": "Existing validated actor/target clean indexed bases, FIGANI animations and source IDs, exact prelude stages/DAC and native background present metadata.",
+      "composition": "Reuse bindModernHDCompoundPrelude(mode1), modernHDBattleScrollSources and shared GPU. Dynamic body uses original effect index, idle index, raw shake and exact after-base selection; effect remains above target.29 builds each target transition from previous exact clean base and current last effect/idle. No transparent-pixel erasure.",
+      "state_boundary": "HD adapter does not advance native cursor or publish units. Resolve exact same final target source list and stage HD decoding before native planning RNG. Publish staged banks only after all native construction/binding. Successful native plan still consumes original per-target Go RNG; failed HD lookup/F2 add none. No RNG reset or override.",
+      "data_formats": "No persisted format, command rules, source PNG/descriptor/header/marker, archive layout or catalog changes. Internal Go sources only.",
+      "fail_closed": "Missing registered HD frame or invalid binding returns before owner/state/partial HD publication. Failed F2 retains prior theme and active owner.",
+      "verification": [
+        "Dedicated GPU/indexed producer matrix including both raw side0/2, all nine preludes, all twenty BG transitions and marker/shake/multi-target body snapshots",
+        "Real Game.Draw + physical1920 final compositor full24 and two-target29 lifecycle; every special source including98:14/104:17 blanks and outgoing/incoming phases; F2 all phases, MP1/HP1 or2, RNG stable, once continuation",
+        "Independent final PNG/source verification and targeted receipt rejection cases; no draw-counter-only proof",
+        "Full/runtime-only missing-frame preflight and F2 atomicity with late target failure, and existing native24/29 rule/presentation regressions",
+        "Shared compositor regressions and appropriate full Go suite; docs/Issue/source hashes/owners/Docker cleanup"
+      ],
+      "limits": "Runtime fixtures are RUNTIME-E1 only. Normal command selection, natural campaign and concentrated human art review remain scheduled after allHD. No new oracle, PLAYER-E2, original tick/audio parity, platform or Release claim."
+    },
+    "normal_player": "pending-until-all-HD-integrated",
+    "human_review": "pending-until-all-HD-integrated",
+    "full_battle_hd_complete": false,
+    "rules_and_save_changed": false,
+    "asset_catalog_changed": false,
+    "recordings_created": false,
+    "evidence_review": "Known selectors32/34 and raw resource98/104 validated against existing fixed-version evidence. Existing mode1 prelude and full BG write-history APIs avoid a new rendering architecture or guessed timing. Adapters only consume this metadata.",
+    "preflight_rng_correction": {
+      "finding": "Existing PlanNativeCommandDerivedStrike explicitly consumes caller Go RNG once per damage resolve. Initial test wrongly assumed no planning draws; HD missing-frame check also ran too late after this plan.",
+      "evidence": [
+        {
+          "file": "remake/internal/battle/native_command24.go",
+          "sha256": "3211630257ce608a95788cbd34ed38e90f0d0bdfe53b44acbd235b73d13c0064"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_battle_assets.go",
+          "sha256": "0e1ea8184ca0d935fbc4ff704fbb9f273dcd17d56881e764fd26dfc9b86b3d96"
+        }
+      ],
+      "solution": "Before invoking native plan, use the same NativeCommandEffectTargets selector to identify exact source banks and existing stageBattleHDBanks to validate/decode without publishing. Commit staged banks only after complete native constructor/binding. Successful original per-target planning RNG stays intact; failed HD lookup and F2 consume none.",
+      "test": "Use a counted rand.Source at fixed original fixture seed; rejected HD case has zero draws, successful plan matches independent same-seed original per-target rolls; F2 and unacknowledged step add none."
+    },
+    "checks": {
+      "split2429-native-initial-oct22-r1": {
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split2429-native-initial-oct22-r1.memory.json",
+          "sha256": "7329117153215427faf139bb9ef5d986ed45aec5a1ce1a4fe95591834cbea69b"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split2429-native-initial-oct22-r1.log",
+          "sha256": "aad6e45da1c845d1ad8eec8896c267847031c7169832cd845ff7092166729dbb"
+        }
+      },
+      "split2429-native-source-24-formal-oct22-r1": {
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split2429-native-source-24-formal-oct22-r1.memory.json",
+          "sha256": "591e533bb51901de782c9b659bed295019c9769e376dcdcc5929a94ee5fd31eb"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split2429-native-source-24-formal-oct22-r1.log",
+          "sha256": "d50a21c98cfc3079de72b48a5d94a081b163fc84f491329fc183b5f17c28d05b"
+        }
+      },
+      "split2429-preflight-24-formal-oct22-r2": {
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split2429-preflight-24-formal-oct22-r2.memory.json",
+          "sha256": "9cb9ce6c6ef343822b62ac2b08712ea17770015ad3c7db8a59d521c6d9a4a3af"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split2429-preflight-24-formal-oct22-r2.log",
+          "sha256": "f28f09f1b1bb9053f6bae09d60ae764eba9a1e0ce74878de64f70f76641d85ec"
+        }
+      },
+      "split2429-preflight-24-runtime-oct22-r2": {
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split2429-preflight-24-runtime-oct22-r2.memory.json",
+          "sha256": "62df61286ea41c7313af3a83408988d6a9c8850439752ef78d6893c040a666e6"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split2429-preflight-24-runtime-oct22-r2.log",
+          "sha256": "de5fa859929a157f06d4dc1057aa101b95044e097ac00c88342eb3b131f9dd6c"
+        }
+      },
+      "split2429-lifecycle-24-formal-oct22-r2": {
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split2429-lifecycle-24-formal-oct22-r2.memory.json",
+          "sha256": "8c99b0e13e703f5c64c61751a72fd8b3581a96f347539b302e75f19fe8777bf2"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split2429-lifecycle-24-formal-oct22-r2.log",
+          "sha256": "221181855781ee0e12ffab3d742c5841d91bd69501b2a31b9bcc08c26c720617"
+        }
+      },
+      "split2429-lifecycle-29-formal-oct22-r2": {
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split2429-lifecycle-29-formal-oct22-r2.memory.json",
+          "sha256": "d58d4e67e8c11a600d9a618b5c2abaecb15228ebad3352d610f515d77f10c02e"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split2429-lifecycle-29-formal-oct22-r2.log",
+          "sha256": "618275542b1f1608ed64b0d953a72a5feaba33e99741492cc860875f14b0f8a7"
+        }
+      },
+      "split2429-lifecycle-24-runtime-oct22-r2": {
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split2429-lifecycle-24-runtime-oct22-r2.memory.json",
+          "sha256": "a1027deec3c17f993387cb4a6d441a8a54ae6d96d6f06a8e6db893e8f3211bdc"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split2429-lifecycle-24-runtime-oct22-r2.log",
+          "sha256": "95feb91dd11449c90459ea557f68e2e305a7bece87624a21761d13dab089b141"
+        }
+      },
+      "split2429-lifecycle-29-runtime-oct22-r2": {
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split2429-lifecycle-29-runtime-oct22-r2.memory.json",
+          "sha256": "9b4b51e7e5839aa91e65e914c06d0d305a31cabbcba2b07134e0cf8ab5676101"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split2429-lifecycle-29-runtime-oct22-r2.log",
+          "sha256": "b553c12a705ae412fdf32a642a177e16cc9ba9e2cae7be2c882258e5de4b706b"
+        }
+      },
+      "split2429-late-rollback-oct22-r2": {
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split2429-late-rollback-oct22-r2.memory.json",
+          "sha256": "a31a77eb63c9ef5f52aa438660d361183c49255d00926529d6498a2b68ddc5bb"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split2429-late-rollback-oct22-r2.log",
+          "sha256": "161af0e35786065c5ec37eddecf5aced41709b4a9a116f71a045b60ee4745cdc"
+        }
+      },
+      "split2429-runtime-late-rollback-oct22-r2": {
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split2429-runtime-late-rollback-oct22-r2.memory.json",
+          "sha256": "76852d8b7bb9702ed2dc46234dfbccb986b06e7c46c322fe7e8613962f9518ad"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split2429-runtime-late-rollback-oct22-r2.log",
+          "sha256": "2046ebb626bf82ef9308afafcf904a47f8289e3b234952f16f97ec8c63137d99"
+        }
+      },
+      "split2429-shared-gpu-oct22-r2": {
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split2429-shared-gpu-oct22-r2.memory.json",
+          "sha256": "a814610f0fa6b7dc7e37b036d9481cfc9919e33832bda0df3a4ba75b6ed034b0"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split2429-shared-gpu-oct22-r2.log",
+          "sha256": "57869e9147af940a9224ff516a077eb240005754c4f4b94a9be3e4d56ce42edf"
+        }
+      },
+      "split2429-empty-gpu-oct22-r2": {
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split2429-empty-gpu-oct22-r2.memory.json",
+          "sha256": "4861bf77e6e2762de6319fe9dd133af464703f98b67b6fa0a5e588aeea68a52e"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split2429-empty-gpu-oct22-r2.log",
+          "sha256": "227d8394b7b402e2d4f685f75463a7c6443f6b31020cefbaf1fdbf9044c16f89"
+        }
+      },
+      "split2429-full-go-oct22-r3": {
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split2429-full-go-oct22-r3.memory.json",
+          "sha256": "073047c925ea607bd6e702953151c67453e9fee8799ef4bb7b3bb8df9cf6d174"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split2429-full-go-oct22-r3.log",
+          "sha256": "f6c30706f20b1bb1063022be261319e32598066ac8478ab057ba3d4532687dfb"
+        }
+      },
+      "lifecycle-24-formal": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split2429-lifecycle-24-formal-oct22-r2-capture/receipt.json",
+        "sha256": "d37237de58b66c4222c561d07b264b7912755b6053ec4ef9afba5bf7cc9699d8"
+      },
+      "lifecycle-24-runtime": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split2429-lifecycle-24-runtime-oct22-r2-capture/receipt.json",
+        "sha256": "2ae4b980e2a0bf9b1c046bc5c4654c8ae52f39cc3b64e6e1115ffe2ec403b5fd"
+      },
+      "final-gpu-24": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split24-final-gpu-oct22-r4.json",
+        "sha256": "18faf3c96decbebc1b6c15e6e1038671df595cf0aace0c302e7f987ad01691f9"
+      },
+      "lifecycle-29-formal": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split2429-lifecycle-29-formal-oct22-r2-capture/receipt.json",
+        "sha256": "9b6aede44436a07053844f27c3b089a3fdae395bff39712b9863e012c0d65629"
+      },
+      "lifecycle-29-runtime": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split2429-lifecycle-29-runtime-oct22-r2-capture/receipt.json",
+        "sha256": "23490b768a67e33fbba1482a4ad22538ab3d2bbd0f78ad1f10f263b6e927b030"
+      },
+      "final-gpu-29": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split29-final-gpu-oct22-r4.json",
+        "sha256": "f5cbeb1478ef7059d6312eb1515fb3eb18b64b8726da50902b6f313075270abd"
+      },
+      "gpu-guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split24-gpu-guards-oct22-r4/guards.json",
+        "sha256": "ea253ae753f0947ea16887cd8bac5b9bdc8f5be596d4b6e61284391616ab9088"
+      },
+      "review-rebind": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split2429-review-audit-oct22-r4.json",
+        "sha256": "a302bc063a97e08041269cbd5ffdbd18ba916dd49bbabdd03de025f169d32741"
+      },
+      "readme-overview": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split2429-readme-overview-oct22-r2.json",
+        "sha256": "fc2d38acdd6f551b536170c79dba9628e65023d59560ef6ab740367495ad9e7b"
+      },
+      "native-source-matrix": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split2429-native-source-24-formal-oct22-r1-capture/receipt.json",
+        "sha256": "87860cc6a3477a741a2b475e6fe845b2d7138988dd70cf0ea0fd4ab74fcad3a8"
+      }
+    },
+    "memory": {
+      "split2429-native-initial-oct22-r1": {
+        "elapsed_seconds": 15.069,
+        "container_peak_bytes": 917958656,
+        "oom_kill": 0
+      },
+      "split2429-native-source-24-formal-oct22-r1": {
+        "elapsed_seconds": 16.553,
+        "container_peak_bytes": 947056640,
+        "oom_kill": 0
+      },
+      "split2429-preflight-24-formal-oct22-r2": {
+        "elapsed_seconds": 43.133,
+        "container_peak_bytes": 989704192,
+        "oom_kill": 0
+      },
+      "split2429-preflight-24-runtime-oct22-r2": {
+        "elapsed_seconds": 37.56,
+        "container_peak_bytes": 1017413632,
+        "oom_kill": 0
+      },
+      "split2429-lifecycle-24-formal-oct22-r2": {
+        "elapsed_seconds": 52.117,
+        "container_peak_bytes": 1576030208,
+        "oom_kill": 0
+      },
+      "split2429-lifecycle-29-formal-oct22-r2": {
+        "elapsed_seconds": 50.128,
+        "container_peak_bytes": 1556439040,
+        "oom_kill": 0
+      },
+      "split2429-lifecycle-24-runtime-oct22-r2": {
+        "elapsed_seconds": 46.583,
+        "container_peak_bytes": 1455390720,
+        "oom_kill": 0
+      },
+      "split2429-lifecycle-29-runtime-oct22-r2": {
+        "elapsed_seconds": 51.096,
+        "container_peak_bytes": 1575489536,
+        "oom_kill": 0
+      },
+      "split2429-late-rollback-oct22-r2": {
+        "elapsed_seconds": 43.617,
+        "container_peak_bytes": 891830272,
+        "oom_kill": 0
+      },
+      "split2429-runtime-late-rollback-oct22-r2": {
+        "elapsed_seconds": 35.559,
+        "container_peak_bytes": 702537728,
+        "oom_kill": 0
+      },
+      "split2429-shared-gpu-oct22-r2": {
+        "elapsed_seconds": 56.102,
+        "container_peak_bytes": 1542909952,
+        "oom_kill": 0
+      },
+      "split2429-empty-gpu-oct22-r2": {
+        "elapsed_seconds": 2.005,
+        "container_peak_bytes": 1542909952,
+        "oom_kill": 0
+      },
+      "split2429-full-go-oct22-r3": {
+        "elapsed_seconds": 152.741,
+        "container_peak_bytes": 5971628032,
+        "oom_kill": 0
+      }
+    },
+    "source_files": [
+      {
+        "file": "remake/cmd/fd2/modern_hd_split_strike.go",
+        "sha256": "c900b68c423fce2de54eeed47868fb5e919239855145b641aaeb1c33a9dc4837"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_split_strike_test.go",
+        "sha256": "f473fc7507c34cecd05f3bc947dc209379fcdfd39dc583d4e6d083b8350b23c4"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_split_strike_lifecycle_test.go",
+        "sha256": "f0c5eddb9a4b070e0abc57062733f3aa601a015b026153a76cb5c22d56dcd112"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command24_presentation.go",
+        "sha256": "47eef4a50a452a4d6c7aa22778abc03f822797e7a56c7b26bebd3adbac33a15a"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command29_presentation.go",
+        "sha256": "461805341f0ac98029f3b7909bfd20670f409300b9a8e6c093cdfa52a934c49f"
+      },
+      {
+        "file": "remake/cmd/fd2/player_shortcuts.go",
+        "sha256": "d4137409adf3480cb90dabae82e0950a9661dd66a2c35b3a6dbdb2a88a976b6a"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_runtime.go",
+        "sha256": "c95d316774fe679104598464454bd7bdd61d83f5ae4dd7bde3966a570ebcd694"
+      },
+      {
+        "file": "remake/cmd/fd2/input_audit_trace.go",
+        "sha256": "cef28bd0dd27e0d06a6f520f28b71179caad7e2b4cdf31f09ed4e658640a695c"
+      },
+      {
+        "file": "tools/verify_fd2_split_strike_gpu.py",
+        "sha256": "6a4391a3d4d311c774c274d93088f19039600e8bcabdd4588111aa606d6d759d"
+      },
+      {
+        "file": "tools/test_fd2_split_strike_gpu.py",
+        "sha256": "8cf539fc7e69445163deae544bf46bf87e644b82e05527a7774202a1726361e9"
+      },
+      {
+        "file": "docs/data/fd2-string-review.json",
+        "sha256": "7cad62fa0136d40a9b5d192b514eb64df4737aa982236c020e0715fd393b682d"
+      }
+    ],
+    "runtime_go_snapshot": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split2429-runtime-go-snapshot-oct22-r4.json",
+      "sha256": "d74b8de4d65e83e6952484e3ef200e1a5217aa205b814f7314d755cea1eecaba"
+    },
+    "catalog_unchanged": {
+      "file": "remake/assets/themes/modern/catalog.json",
+      "sha256": "0d8d326a0089f990f53b08e5f499c5779342d44fe451efda523ed8771b6a585a"
+    },
+    "private_assets": "No art/catalog changes or private commit in this consumer-only batch; private git tree clean. Existing source/archive receipts remain authoritative.",
+    "public_overview": {
+      "file": "docs/figures/hd-battle-split-strikes.png",
+      "sha256": "703603759b31923fe6d23a61eb1fb799ee88e80ac28e32dbae89a355cd96ce0c",
+      "size": [
+        1280,
+        800
+      ],
+      "resampling": "Pillow11.3.0 LANCZOS; no image generation or changed game pixels beyond display resampling",
+      "sources": [
+        {
+          "command_id": 24,
+          "phase": "actor",
+          "label": "actor-004-idle3-shake0",
+          "source_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split2429-lifecycle-24-formal-oct22-r2-capture/screen-257db933896b0a3144181676fb2802e1876599df7b1ef1fd766fbf688bcdbe54.png",
+          "source_sha256": "257db933896b0a3144181676fb2802e1876599df7b1ef1fd766fbf688bcdbe54",
+          "output_rect": [
+            0,
+            0,
+            640,
+            400
+          ]
+        },
+        {
+          "command_id": 24,
+          "phase": "target-0",
+          "label": "target-0-010-idle1-shake0",
+          "source_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split2429-lifecycle-24-formal-oct22-r2-capture/screen-287272dd4114601e2ac666f5a8559d8c6221070c422a1d1864a9082a34c9ffaa.png",
+          "source_sha256": "287272dd4114601e2ac666f5a8559d8c6221070c422a1d1864a9082a34c9ffaa",
+          "output_rect": [
+            640,
+            0,
+            1280,
+            400
+          ]
+        },
+        {
+          "command_id": 29,
+          "phase": "actor",
+          "label": "actor-006-idle0-shake0",
+          "source_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split2429-lifecycle-29-formal-oct22-r2-capture/screen-ac83c0222d8af55cd5a64eef09b414b144e9d492f6fa6eea17a20f219d5e90a8.png",
+          "source_sha256": "ac83c0222d8af55cd5a64eef09b414b144e9d492f6fa6eea17a20f219d5e90a8",
+          "output_rect": [
+            0,
+            400,
+            640,
+            800
+          ]
+        },
+        {
+          "command_id": 29,
+          "phase": "target-0",
+          "label": "target-0-014-idle0-shake3",
+          "source_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split2429-lifecycle-29-formal-oct22-r2-capture/screen-c9fc72106a8a33693bd5f4e9df51b3f8e8ec595c24d4284f84cc4ef75d3ebf09.png",
+          "source_sha256": "c9fc72106a8a33693bd5f4e9df51b3f8e8ec595c24d4284f84cc4ef75d3ebf09",
+          "output_rect": [
+            640,
+            400,
+            1280,
+            800
+          ]
+        }
+      ]
+    },
+    "validation_summary": {
+      "indexed_native_gpu_cases": 396,
+      "full_final_gpu_screens": 145,
+      "special_source_frames": {
+        "98": 15,
+        "104": 18
+      },
+      "native_blank_frames": [
+        "98:14",
+        "104:17"
+      ],
+      "guard_cases": 16,
+      "f2_phases": {
+        "24": 5,
+        "29": 8
+      },
+      "mp_publications": {
+        "24": 1,
+        "29": 1
+      },
+      "hp_publications": {
+        "24": 1,
+        "29": 2
+      },
+      "continuations_each": 1,
+      "formal_runtime_all_shots_identical": true,
+      "late_failure_all_units_restored_both_packs": true,
+      "shared_gpu_cases": 2087,
+      "full_go_suite": "passed after review source rebinding"
+    },
+    "verification_corrections": {
+      "shader_reference": "Initial straight-alpha subtraction before premultiplication differed by two units at prelude index2. Checked Ebiten2.6.6 imageToBytesSlow, Go NRGBA->RGBA and shader; corrected CPU order. Final full-canvas tolerance remains one unit; no product change.",
+      "review": "First full suite passed game/rule packages but rejected stale string inventory binding. The baseline git worktree lacked the exact bound inventory; existing ordinary-effects-r1/inv-new.json matches pinned97e53d. Migrated original99 IDs without semantic/disposition changes and classified nine already-rendered toolbar CJK labels as player_visible. New108 candidates exactly covered. Preserved failed output, then reran same full command successfully.",
+      "failed_full_suite": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split2429-full-go-oct22-r2.memory.json",
+        "sha256": "6f015b8c002c022d77e72e62e19ba3d0f7d40dbf688ae787001dc9a09f09e448"
+      },
+      "failed_full_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split2429-full-go-oct22-r2.log",
+        "sha256": "dcde97ac6f117d7aa33a2fcef87b9e9b691e20d207ce53131fc37da351f4be0e"
+      },
+      "search_cleanup": "Stopped own overly broad old-inventory search; bounded search only in existing hd-fonts root found exact pinned inventory. Temporary baseline worktree removed; no unrelated files changed."
+    },
+    "reproduce": [
+      "Use the pinned Go image, /repo writable with user1000, /repo/org_game and separated /original read-only; network none,8GB/4CPU/512pids, outer bounded timeout. FD2_ASSET_PACK and FD2_TEST_ORIGINAL_PACK=/original, explicit GOCACHE.",
+      "Dedicated process TestModernHDSplitStrikeNativeSourceGPU: FD2_HD_SPLIT_STRIKE_GPU=1 and FD2_TEST_MODERN_EFFECT_OUT=<fresh>. Builds396 exact native GPU/indexed cases on both raw sides.",
+      "TestModernHDSplitStrikePreflightAndF2Atomic and TestModernHDSplitStrikeLateFailureRestoresTransaction: explicit FD2_TEST_MODERN_EFFECT_CATALOG and FD2_TEST_MODERN_EFFECT_PACK; run each against formal and runtime-only packs. No skip allowed.",
+      "Dedicated process TestModernHDSplitStrikeRuntimeGPU: FD2_HD_SPLIT_STRIKE_GPU=1, FD2_TEST_SPLIT_STRIKE_COMMAND=24 or29, catalog/pack and fresh output above. Runtime-only may set FD2_SPLIT_HASHES_ONLY=1; all source_shots still must match formal exactly.",
+      "Assets Docker: tools/verify_fd2_split_strike_gpu.py --receipt <formal/receipt.json> --runtime-receipt <runtime/receipt.json> --catalog <formal catalog> --source <formal art> --original-pack /original --inventory docs/data/fd2-battle-hd-source-inventory-20261019.json --report <new>. Checks all145 full1920 canvases, descriptors/headers and original blanks.",
+      "Assets Docker: tools/test_fd2_split_strike_gpu.py with same inputs and fresh --out; sixteen rejected receipts use actual valid GPU positive control.",
+      "Shared GPU bridge/empty tests in separate Go processes with FD2_HD_BATTLE_GPU=1 / FD2_HD_BATTLE_EMPTY_GPU=1. Full suite: with-xvfb go test -p1 ./... -count=1 -timeout=1100s, via fd2_go_test_memory_probe.py --timeout1200. Conditional dedicated-only tests in the full suite are not substitutes for dedicated zero-skip runs."
+    ],
+    "final_checks": {
+      "fd2_worklist.py:render": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split2429-fd2_worklist.py-render-oct22-r4.log",
+        "sha256": "ade15b54f59a9c05a55d84321f36392f6e0215ea797c6af45f595b7a86ec0bd9"
+      },
+      "fd2_worklist.py:verify": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split2429-fd2_worklist.py-verify-oct22-r4.log",
+        "sha256": "26091eea8ab3a41c4223d7a015d21fe3c26a4ad695ae0148921ec6de3bb37265"
+      },
+      "fd2_lessons.py:check": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/split2429-fd2_lessons.py-check-oct22-r4.log",
+        "sha256": "c46592cfa805b727db4df7e48a39565cb99388803a73e09467b7df365342d3da"
+      },
+      "links_and_sources": {
+        "local_links": 2180,
+        "current_source_and_evidence_hashes": 1095,
+        "readme_cultural_entries_preserved": true
+      }
+    }
   }
 }

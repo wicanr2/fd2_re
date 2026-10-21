@@ -128,6 +128,27 @@ func (g *Game) recordInputAuditState() {
 		}
 	}
 
+	if j := g.nativeCmd24Presentation; j != nil {
+		r["command_id"], r["command_owner"] = 24, fmt.Sprintf("%p", j)
+		r["command_actor_fig"], r["command_target_fig"] = j.actor.BattleFig, j.target.BattleFig
+		r["command_frame"] = j.frame
+		if frame := j.modernFrame(); frame != nil {
+			r["command_phase"] = frame.hdPhase
+			r["command_source_layers"] = modernBattleAuditLayers(frame.hdSources)
+		}
+	}
+	if j := g.nativeCmd29Presentation; j != nil {
+		r["command_id"], r["command_owner"] = 29, fmt.Sprintf("%p", j)
+		r["command_actor_fig"], r["command_target_index"] = j.actor.BattleFig, j.targetIndex
+		if j.targetIndex >= 0 && j.targetIndex < len(j.targets) && j.targets[j.targetIndex].unit != nil {
+			r["command_target_fig"] = j.targets[j.targetIndex].unit.BattleFig
+		}
+		r["command_frame"] = j.frame
+		if frame := j.modernFrame(); frame != nil {
+			r["command_phase"] = frame.hdPhase
+			r["command_source_layers"] = modernBattleAuditLayers(frame.hdSources)
+		}
+	}
 	r["battle_event"] = g.battleEvent != nil
 	if j := g.nativeCmd5Presentation; j != nil {
 		r["command_id"], r["command_owner"] = j.commandID, fmt.Sprintf("%p", j)

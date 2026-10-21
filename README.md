@@ -111,6 +111,10 @@
 
 左為藍披風劍士迴旋斬，中為重斧人物劈擊，右為白馬尾劍士橫斬。此圖取自明示換用圖源的測試場景最終GPU縮圖，面板仍沿用來源角色名稱；背景及受擊閃色保留原圖樣。共用姿勢、人物與武器比例、光弧及碎光形狀的差異已記錄，待全部HD接入後集中人工確認，範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
 
+![兩種劍士分段打擊的HD測試畫面](docs/figures/hd-battle-split-strikes.png)
+
+兩種劍士的分段打擊已接入HD，包含藍白蓄光、橫向光束與金色光柱，以及背景轉場和多目標續行。上圖由測試場景的實際最終GPU畫面縮圖，上排為指令24，下排為指令29；面板沿用來源角色名稱，背景與介面仍含像素素材。原有MP／HP標記與透明停拍保持，正常操作與人工造型確認待全部HD接入後集中抽驗。來源與範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
+
 | 鐵諾HD普通END攻防 | 蓋亞HD普通攻防 |
 | --- | --- |
 | ![鐵諾HD普通END攻防](docs/figures/hd-tino-physical-attack.png) | ![蓋亞HD普通攻防](docs/figures/hd-gaia-physical-attack.png) |

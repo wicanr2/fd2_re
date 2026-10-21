@@ -3590,6 +3590,21 @@
         ],
         "pattern": "anchor_correction"
       }
+    },
+    {
+      "id": "hd-gpu-reference-premultiplied-upload",
+      "area": "HD GPU核對",
+      "date": "2026-10-22",
+      "rule": "完整HD畫布的獨立CPU參照先核對實際上傳的預乘透明度與量化順序，再套著色器及Over，不先放寬色差。入口tools/verify_fd2_split_strike_gpu.py的shader_channels支援24／29減色；遊戲shader在remake/cmd/fd2/modern_hd_battle_gpu.go，其他shader需另核契約。",
+      "why": "24淡入索引2用直通RGB先減色時出現兩階差。Ebiten2.6.6 imageToBytesSlow先把NRGBA轉八位元預乘RGBA，shader之後減色。CPU沿正確順序後，145張完整GPU保持每通道一階門檻通過。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_split_strike_gpu.py"
+        ],
+        "pattern": "def shader_channels"
+      }
     }
   ]
 }

@@ -14,6 +14,7 @@ import (
 )
 
 type nativeCommand24PresentationJob struct {
+	hd                   *modernHDSplitStrike
 	actor, target        *battle.Unit
 	plan                 *battle.NativeCommandDerivedStrikePlan
 	schedule             figani.NativeCommand24Schedule
@@ -170,6 +171,10 @@ func (g *Game) startNativeCommand24Presentation(actor, target *battle.Unit, then
 	if len(targetIdle.Frames) == 0 {
 		return errors.New("native command24 target idle FIGANI is empty")
 	}
+	publishHD, err := g.stageModernHDSplitStrikeBanks(actor, target, 24)
+	if err != nil {
+		return err
+	}
 	plan, err := g.st.PlanNativeCommandDerivedStrike(actor, target, 24, g.rng)
 	if err != nil {
 		return err
@@ -294,11 +299,15 @@ func (g *Game) startNativeCommand24Presentation(actor, target *battle.Unit, then
 	if err != nil {
 		return err
 	}
-	transitionPixels, err := battlepresent.BuildNativeCommand24BackgroundFrames(battlepresent.NativeCommand24BackgroundInputs{
+	transitionPresents, err := battlepresent.BuildNativeCommand24BackgroundPresents(battlepresent.NativeCommand24BackgroundInputs{
 		Layers: bgLayers, Source: sourceBase, Target: targetBaseBefore, TargetIdle: targetIdle.Frames[0],
 	})
 	if err != nil {
 		return err
+	}
+	transitionPixels := make([][]byte, len(transitionPresents))
+	for i, present := range transitionPresents {
+		transitionPixels[i] = present.Pixels
 	}
 	baseImages, err := nativeCommand24IndexedImages(
 		[][]byte{actorBaseBefore, actorBaseAfter, targetBaseBefore, targetBaseAfter},
@@ -329,7 +338,21 @@ func (g *Game) startNativeCommand24Presentation(actor, target *battle.Unit, then
 	if !osMuteOrShot(g) && (len(g.sfxCommand24Actor) == 0 || len(g.sfxCommand24Target) == 0) {
 		return errors.New("native command24 FDOTHER #53 samples3/2 unavailable")
 	}
+	hd, err := bindModernHDSplitStrike(battlepresent.NativeCommandPreludeInput{
+		Base: actorPreludeBase, ActorIdle: actorIdle.Frames[0], Platform: actorPlatform,
+		RawSide: actor.NativeRecordByte6, Mode: 1, BaselineDAC: paletteDAC,
+	}, prelude, actor.BattleFig*3, effect, actor.BattleFig*3+2, schedule.ActorImpactFrame,
+		schedule.TargetStart, schedule.TargetImpactFrame, actorBaseBefore, actorBaseAfter, g.nativeUIPalette)
+	if err != nil {
+		return err
+	}
+	if err := hd.addTarget(targetBaseBefore, targetBaseAfter, targetIdle, target.BattleFig*3,
+		hd.actorEndSources(), transitionPresents, bgLayers); err != nil {
+		return err
+	}
+	publishHD()
 	g.nativeCmd24Presentation = &nativeCommand24PresentationJob{
+		hd:    hd,
 		actor: actor, target: target, plan: plan, schedule: schedule,
 		effectFrames: effectImages, effectPositions: effectPositions,
 		targetFrames: targetImages, targetPositions: targetPositions, targetDelays: targetDelays,
@@ -448,6 +471,15 @@ func (g *Game) drawNativeCommand24Presentation(screen *ebiten.Image) bool {
 	if j == nil || j.frame < 0 || j.frame >= len(j.effectFrames) ||
 		j.targetFrame < 0 || j.targetFrame >= len(j.targetFrames) {
 		return false
+	}
+	if frame := j.modernFrame(); frame != nil {
+		if drawn, err := g.drawModernHDCompoundFrame(screen, frame); err != nil {
+			g.failNativeCommand24Presentation(err)
+			return true
+		} else if drawn {
+			j.drawn = true
+			return true
+		}
 	}
 	if j.preludeFrame < len(j.preludeFrames) {
 		if j.preludeFrame < 0 || j.preludeFrames[j.preludeFrame] == nil {

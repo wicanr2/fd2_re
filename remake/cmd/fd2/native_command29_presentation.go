@@ -24,6 +24,7 @@ type nativeCommand29TargetPresentation struct {
 }
 
 type nativeCommand29PresentationJob struct {
+	hd                              *modernHDSplitStrike
 	actor                           *battle.Unit
 	plan                            *battle.NativeCommandDerivedStrikePlan
 	schedule                        figani.NativeCommandDerivedStrikeSchedule
@@ -94,6 +95,10 @@ func (g *Game) startNativeCommand29Presentation(actor, confirmed *battle.Unit, t
 	actorIdle, err := figani.LoadSeparatedResource(animationRoot, actor.BattleFig*3)
 	if err != nil || len(actorIdle.Frames) == 0 {
 		return errors.New("native command29 actor idle FIGANI unavailable")
+	}
+	publishHD, err := g.stageModernHDSplitStrikeBanks(actor, confirmed, 29)
+	if err != nil {
+		return err
 	}
 	plan, err := g.st.PlanNativeCommandDerivedStrike(actor, confirmed, 29, g.rng)
 	if err != nil {
@@ -178,6 +183,15 @@ func (g *Game) startNativeCommand29Presentation(actor, confirmed *battle.Unit, t
 	if err != nil {
 		return err
 	}
+	hd, err := bindModernHDSplitStrike(battlepresent.NativeCommandPreludeInput{
+		Base: preludeBase, ActorIdle: actorIdle.Frames[0], Platform: platform,
+		RawSide: actor.NativeRecordByte6, Mode: schedule.PreludeMode, BaselineDAC: paletteDAC,
+	}, prelude, actor.BattleFig*3, effect, actor.BattleFig*3+2, schedule.ActorImpactFrame,
+		schedule.TargetStart, schedule.TargetImpactFrame, actorBaseBefore, actorBaseAfter, g.nativeUIPalette)
+	if err != nil {
+		return err
+	}
+	sourceHD := hd.actorEndSources()
 	source := append([]byte(nil), actorBaseAfter...)
 	if err := effect.Frames[schedule.TargetStart-1].BlitAt(source, 320); err != nil {
 		return err
@@ -229,11 +243,15 @@ func (g *Game) startNativeCommand29Presentation(actor, confirmed *battle.Unit, t
 		if baseErr != nil {
 			return baseErr
 		}
-		transitions, transitionErr := battlepresent.BuildNativeCommand24BackgroundFrames(battlepresent.NativeCommand24BackgroundInputs{
+		transitionPresents, transitionErr := battlepresent.BuildNativeCommand24BackgroundPresents(battlepresent.NativeCommand24BackgroundInputs{
 			Layers: bgLayers, Source: source, Target: baseBefore, TargetIdle: idle.Frames[0],
 		})
 		if transitionErr != nil {
 			return transitionErr
+		}
+		transitions := make([][]byte, len(transitionPresents))
+		for i, present := range transitionPresents {
+			transitions[i] = present.Pixels
 		}
 		bases, baseErr := nativeCommand24IndexedImages([][]byte{baseBefore, baseAfter}, g.nativeUIPalette)
 		if baseErr != nil {
@@ -246,6 +264,9 @@ func (g *Game) startNativeCommand29Presentation(actor, confirmed *battle.Unit, t
 		idleImages, idlePositions, idleErr := nativeFIGANIImages(idle, g.nativeUIPalette)
 		if idleErr != nil {
 			return idleErr
+		}
+		if err := hd.addTarget(baseBefore, baseAfter, idle, target.BattleFig*3, sourceHD, transitionPresents, bgLayers); err != nil {
+			return err
 		}
 		targetPresentations = append(targetPresentations, nativeCommand29TargetPresentation{
 			unit: target, baseBefore: bases[0], baseAfter: bases[1], idleFrames: idleImages,
@@ -263,13 +284,16 @@ func (g *Game) startNativeCommand29Presentation(actor, confirmed *battle.Unit, t
 		if err := effect.Frames[len(effect.Frames)-1].BlitAt(source, 320); err != nil {
 			return err
 		}
+		sourceHD = hd.targetEndSources(resultIndex, lastIdle)
 	}
 	sfxActor := g.separatedCommandSound(schedule.AudioResource, schedule.ActorSample)
 	sfxTarget := g.separatedCommandSound(schedule.AudioResource, schedule.TargetSample)
 	if !osMuteOrShot(g) && (len(sfxActor) == 0 || len(sfxTarget) == 0) {
 		return errors.New("native command29 FDOTHER #50 samples1/4 unavailable")
 	}
+	publishHD()
 	g.nativeCmd29Presentation = &nativeCommand29PresentationJob{
+		hd:    hd,
 		actor: actor, plan: plan, schedule: schedule, effectFrames: effectImages, effectPositions: effectPositions,
 		preludeFrames: preludeImages, actorBaseBefore: actorBases[0], actorBaseAfter: actorBases[1],
 		targets: targetPresentations, transitionFrame: -1, actorMPBefore: actor.MP,
@@ -385,6 +409,15 @@ func (g *Game) drawNativeCommand29Presentation(screen *ebiten.Image) bool {
 	j := g.nativeCmd29Presentation
 	if j == nil || j.frame < 0 || j.frame >= len(j.effectFrames) || j.targetIndex < 0 || j.targetIndex >= len(j.targets) {
 		return false
+	}
+	if frame := j.modernFrame(); frame != nil {
+		if drawn, err := g.drawModernHDCompoundFrame(screen, frame); err != nil {
+			g.failNativeCommand29Presentation(err)
+			return true
+		} else if drawn {
+			j.drawn = true
+			return true
+		}
 	}
 	if j.preludeFrame < len(j.preludeFrames) {
 		if j.preludeFrame < 0 || j.preludeFrames[j.preludeFrame] == nil {

@@ -3518,8 +3518,22 @@ BattleFig7／23完整配方READY：已檢查13張採用原稿、五份RGBA裁切
 
 ### BattleFig32／34劍士與33重斧人物圖源
 
+本節保留本批圖源完成時的證據；當時的24／29 HD消費端缺口已由下節閉合，普通玩家與人工範圍未提升。
+
 狀態：CONFORMED-SCOPED／RUNTIME-E1。以7e0ab779及501項正式清冊為基底，FIGANI96～100及102～104共八銀行77幀，98:14與104:17固定原mask為空；101原零header不補造。32保留藍髮、深藍披風與灰綠鎧甲；33保留紅褐髮髻、厚肩甲、裸臂與綠腰布及闊斧；34保留白馬尾、灰甲、藍腰布與褐劍鞘。不從圖源索引猜人物身分。原框、等待與全部命中標記保持，本體與光弧／投射物分層，姿勢共用與形狀近似明示。98與104各有兩marker，既有24／29索引色caller已知，HD尚未接入，不改marker套普通0。原圖到既有typed consumer的圖源切片；規則與保存保持。正式登錄門檻為完整來源GPU及適用實際Draw、F2／返回、來源拒收與兩包預檢，通過結果見下段。主收據knights32_34_axeman33_followup_20261022；普通及人工依已定排程集中全部HD後。
 
 32／33／34 READY時點的限定：18張採用原RGBA與七份精確裁切／正交轉置編製77幀。32／34各五個關鍵姿勢，33三個，共用相鄰變形；原框容納後部分姿勢較瘦或較小，劍長與馬尾／披風形狀仍列美術差異。98白光與劍刃RGB共用，R2先取白光再排除人物色，避免漏核心；R1少量LANCZOS邊緣裁切由R2母稿錨點留兩像素邊界解決，77幀均無高覆蓋裁切。三張較窄FX拒收稿排除白名單。藍光衰減、光束分段與金色光柱／碎片採精確裁切，比例／形狀／亮度仍是近似。98／104兩marker與兩空拍保持；普通0要求單marker；補查既有正式消費端後，24明示selector32／98，29明示selector34／104，兩者索引色路徑已存在但未綁HD。全部來源GPU、44張物理實際Draw、F2／返回、來源拒收及兩包預檢為本次技術閘門；24／29的HD消費端及集中普通／人工另列，不冒稱全部演出已驗。
 
 32／33／34接線結果：77幀候選與runtime-only均通過整張來源GPU對CPU Over；44張物理圖源全部Game.Draw核心、三相位F2、64／65 DAC、HP／RNG與一次返回通過。合法單marker25正對照通過，98／104兩marker由原普通0契約明確拒收，且owner、單位／RNG與HD載入保持不變；33張第三銀行含兩空拍只有來源GPU，不宣稱已完成HD消費端或完整演出。各21來源拒收、十二項兩包載入／玩家與AI原子預檢零SKIP，18項Go命令通過且無OOM。18原RGBA、七精確衍生及77PNG按白名單保存，原4755檔保持，三拒收FX不進私人包。數量由58引用機器收據。人物比例、劍長、光效填充及碎片近似留集中人工，不新增正常玩家、原版parity或Release聲明。
+
+### 指令24／29分段打擊的HD消費端
+
+狀態：CONFORMED-SCOPED／RUNTIME-E1。沿已閉合的[指令24](../data/ida/fd2_command24_presentation_ida.txt)、[背景轉場](../data/ida/fd2_command24_background_transition_ida.txt)及[指令29](../data/ida/fd2_command28_29_31_presentation_ida.txt)與固定FD2.EXE雜湊，不重開RE。24使用selector32／98，29使用34／104及完整typed目標列。以既有乾淨base、九階段prelude／DAC、effect與idle索引、shake及20拍背景viewport寫入歷史，接現有HD圖層與遮罩轉場API。全相位保持原層序、來源空拍、時序、MP／HP與一次續行，HD不推進owner或改規則／保存。原生計畫消耗亂數前暫存完整HD銀行，全部原生建構成功後才發布，F2錯件保留舊主題／owner；完成清GPU來源。驗收含雙側來源矩陣、24及29雙目標實際Game.Draw／F2／最終1920來源核對、空拍、標記及缺件／晚期回復，並回歸原生owner。正常玩家與人工依排程全部HD後集中；只限RUNTIME-E1，不升格原版parity。唯一主收據split_strikes24_29_followup_20261022，沿既有素材，不改清冊或私人包。
+
+24／29預檢補正：原生PlanNativeCommandDerivedStrike明確消耗caller的Go亂數，成功施放保留原擲骰。HD錯件在呼叫plan前，以同一NativeCommandEffectTargets列出來源並用既有stageBattleHDBanks只暫存；全部原生建構成功後才publish。F2與錯件不得額外消耗亂數。固定seed以計數rand.Source核對成功plan的原始每目標擲骰，不重設正式亂數或放寬RNG要求。
+
+完整GPU核對入口為[分段打擊核對器](../../tools/verify_fd2_split_strike_gpu.py)，拒收入口為[收據反例](../../tools/test_fd2_split_strike_gpu.py)。在資產Docker使用各自的`--help`列出輸入，指定既有固定來源inventory、原包、正式catalog／成品、實際Game.Draw收據與本人擁有的新report／out；可另以`--runtime-receipt`逐張比較執行包。這兩份工具只支援24／29，不代替正常指令選擇或原版oracle。
+
+核對器先驗來源雜湊與原始描述子，再獨立合成完整1920×1200畫布，所有像素維持每通道最多一階差。Go／Ebiten v2.6.6上傳NRGBA時先轉八位元預乘RGBA，shader再減色及Over；CPU須沿同順序計算，不先對直通RGB做減色查表。後一種錯誤順序在prelude索引2產生兩階差，已修正核對器，未放寬門檻或更動遊戲。原生背景／viewport幾何另由雙側獨立索引色矩陣核對。
+
+24／29接線結果：396張雙側原生GPU來源矩陣通過，兩銀行全部33幀含98:14／104:17空拍均具Game.Draw。24／29的57／88張完整1920畫布對獨立CPU預乘合成通過，完整／執行包逐張來源及畫面SHA一致；五／八相位F2、MP各一次、HP各一／兩次與一次續行通過。十六項收據反例、兩包缺件與晚期交易回復、2087共用GPU與空拍、整套Go通過，無OOM。字串審查原99筆語意保持，另補前批工具列九筆實際可見文字，沒有新增翻譯或改產品文案。來源、失敗與重跑命令見主收據；本批不改catalog或私人美術，不新增原版／正常玩家／人工完成或Release聲明。
