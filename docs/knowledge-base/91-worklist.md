@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 22 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 23 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -271,6 +271,18 @@ BattleFig110的330／331／332三組原24幀已正式登錄。物理16張及施�
 排程P1可選呈現，非增援或章流程阻擋。使用者只要求流程一致、畫面參考，這項不重開已通過章，也不啟動全面matching或硬體時序研究。
 
 怎樣算做完：由既有IDA與目前同源執行收據定位原版回交邊界，辨明正式Game或測試重播差異；READY契約後修正對應consumer，以同源局部重播核對終點並保留舊差異歷史。
+
+### P1 蓋亞HD待機與蓄力手腕反折及修正版確認
+
+`gaia-hd-guard-wrist-review` · 缺陷 · [#268](https://github.com/wicanr2/fd2_re/issues/268) · 仍未完成 · 要人判
+
+使用者指出蓋亞大型戰鬥站姿的手有反折感。檢視現行待機與蓄力母稿後，近側前臂、手腕及拳頭的朝向銜接不自然，需修正母稿並重編相關影格。保留原版厚甲造型、朝向、原始描述子、節拍及規則。修正版的來源與實際遊戲呈現自動驗證先完成，造型人工確認依既有決定留待全部HD串接後集中處理，不另設逐角色批准流程。
+
+技術修正已接入v2：待機／蓄力十幀更新，出拳後五幀PNG保持；完整十五幀實際繪製、F2與返回地圖通過。正式及精簡素材包的載入與缺件原子性通過，這輪沒有OOM。這是技術接入驗證，新造型人工確認仍按全部HD後集中處理，本議題保持開啟。
+
+怎樣算做完：修正待機與蓄力母稿的連續肩肘、前臂、手腕與拳頭結構，接入全部受影響影格，完整Game.Draw、F2及缺件原子性通過；集中人工確認時檢查站姿自然度，確認後才關閉。
+
+證據：`docs/data/fd2-modern-hd-battlefield-20261019.json`
 
 ## release — 發行、平台與封包
 

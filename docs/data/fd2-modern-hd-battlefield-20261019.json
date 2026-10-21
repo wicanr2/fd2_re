@@ -31741,7 +31741,8 @@
       ],
       "lessons": 268,
       "guards": 146
-    }
+    },
+    "current_art_superseded_by": "gaia_guard_arm_followup_20261021; prior evidence and normal captures remain historical v1"
   },
   "villager_idle_battle_followup_20261020": {
     "date": "2026-10-20",
@@ -74378,6 +74379,433 @@
     "lessons_check": {
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party-fd2_lessons.py-check-r1.log",
       "sha256": "954bce785b88c0e8c9bd84099bc043e267a30210ace5684ddf70e7b9fda5df76"
+    }
+  },
+  "gaia_guard_arm_followup_20261021": {
+    "status": "CONFORMED-SCOPED-RUNTIME-E1",
+    "issue": 268,
+    "base": "64b2da33ea30d673f473a7953246ce8e792d61b1",
+    "branch": "fix/hd-gaia-guard-arms",
+    "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md#蓋亞待機手腕修正",
+    "source_reference": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-arm-native-reference-r1.png",
+      "sha256": "9d99b4a590a4a27dab5e440e50e0e39a10f46642ade7b5a633f5175f24ec1c64"
+    },
+    "generation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-arm-generation-r1.json",
+      "sha256": "ecb26c45fe9184bfd9f5827d9ab3968221302b0b1d5bf24e3bda8a0abac4d247"
+    },
+    "recipe": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-arm-recipe-r1.json",
+      "sha256": "0dc3ee51a59ba30adaf935149d829fa25e56fecd6f573e39100049eb51080607"
+    },
+    "base_catalog": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-arm-base-r1.json",
+      "sha256": "cd62379a14b8e69ef8a7f83936c0208b8ba303b4af9dbd2207a0266ca94cd70d"
+    },
+    "before_catalog": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-arm-formal-catalog-before-r1.json",
+      "sha256": "7fe8cfcd6e0057de49e689873c29330cdc22df181baa9cc197809aa6eeb0df5c"
+    },
+    "resources": [
+      90,
+      91
+    ],
+    "frames": 15,
+    "expected_changed_frames": {
+      "90": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "91": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    "confirmed_scope": "目前母稿的前臂、手腕與拳頭連線不自然，屬美術判讀，非新原版ABI或遊戲規則結論。",
+    "formal_registered": true,
+    "private_synced": true,
+    "full_battle_hd_complete": false,
+    "human_review": "pending-until-all-HD-integrated",
+    "acceptance": [
+      "保持灰綠厚甲、鈷藍結構、左向側背視角與原框；兩臂、兩手、關節鏈清楚，腕與拳連續。",
+      "兩新母稿原RGBA保存，編製全部十五幀；原header／描述子／delay／marker保持，最後五幀PNG完全相同。",
+      "十張變更PNG及兩母稿使用v2檔名，舊版保留於原始證據與私人Git歷史；其他458項逐項保持。",
+      "完整Game.Draw十五幀、F2、淡入及一次續行、來源與缺件拒收；正式／runtime-only重載後才合併。",
+      "一般玩家與造型人工確認沿全部HD集中排程，不用舊普通收據替修正版背書。"
+    ],
+    "private_remote_verified": true,
+    "compiled": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-arm-compiled-r1/compiled.json",
+      "sha256": "4a53afb89a7de87e7f3c58fcfd75bebae1c23d5c1566176aac9d3533bba7dafa"
+    },
+    "compiler_guards": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-arm-guards-r1/guards.json",
+      "sha256": "4ed6ff857f11181561da7d849bffad42e6eee412e0150ebc5cac560eb7e9d98d"
+    },
+    "projection": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-arm-candidate-r1/projection.json",
+      "sha256": "705144b7368e5a2eb54e8270e2ceb40efef14c1ca90ee721b1b69571de773d26"
+    },
+    "runtime_gpu": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-arm-runtime-r1-capture/receipt.json",
+      "sha256": "50c95fb4274e71b41342a0afdf08206ed6daa93c813cebf72653b697f4c9666f"
+    },
+    "pixel_core": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-arm-core-r1.json",
+      "sha256": "780ec1a61ff228a3ec0c638c0dd2edea180f627234b7762db507098745eb4124"
+    },
+    "runtime_memory": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-arm-runtime-r1.memory.json",
+      "sha256": "d889e24ed4c1e37f3199f12942c08f149a71f1e79ea5d5f3f1c1f6d4825b6ba4"
+    },
+    "formal_registration": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-arm-formal-registration-r1.json",
+      "sha256": "10f610e0d9c0845acf6cb4a0e0bf37ef457ad93384be45989b4faa166841d8ee"
+    },
+    "private_delivery": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-arm-private-delivery-r1.json",
+      "sha256": "bcc2d979adb5671e6641f272c87eeff60b4fdd450230078a84ada7089f82cac5"
+    },
+    "coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-arm-formal-coverage-r1.json",
+      "sha256": "727081df912b4eeeb2b7058b67569b9941631eed2798e67e798aca0eb71f1ae4"
+    },
+    "package_checks": {
+      "formal": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-arm-formal-go-r1.memory.json",
+        "sha256": "cf41648806e56aed23d101b016fc1416d6082ee444fc90530cdb20c7d58a6c2a"
+      },
+      "runtime": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-arm-runtime-go-r1.memory.json",
+        "sha256": "45c8368a1d132056fbcb1c1e11291dbf8e67d2b417414910a21322b4eb840ed5"
+      }
+    },
+    "generation_document": {
+      "mode": "built-in image_gen",
+      "tasks": [
+        {
+          "key": "gaia-arm-idle-r1",
+          "args": {
+            "transparent_background": true,
+            "referenced_image_paths": [
+              "/home/anr2/cht/fd2/remake/generated-assets/modern-theme-prototypes/figure-030-idle-battle-hd6-master-v1.png",
+              "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-arm-native-reference-r1.png"
+            ],
+            "prompt": "Use case: precise-object-edit / identity-preserve. Edit target IMAGE1: Gaia HD robot idle battle sprite. Image2 is native sprite pose reference, not an edit target. Fix ONLY the two arms, specifically the malformed foreground forearm-to-wrist-to-fist connection. Lock exact same sage-gray and cobalt armor identity, helmet, torso, legs, feet, narrow stance, screen-LEFT facing three-quarter side/rear camera, height and hand-painted surface style. Main foreground shoulder on upper RIGHT. Draw ONE clear continuous mechanical chain: shoulder -> short upper arm descending to an elbow near RIGHT waist -> single thick forearm angled diagonally UP-LEFT from that elbow -> straight neutral blue wrist -> compact closed metal fist in front of lower chest on LEFT of elbow. The fist must extend naturally along forearm axis; fingers/knuckles form one coherent fist, thumb wraps across curled fingers, no backward-bent wrist, no hand folded backward over its own gauntlet, no extra hands, no duplicated forearm shell. The forearm and fist must be visually separate from the thigh armor below; leave a narrow transparent gap where silhouette permits, visible dark outline against torso elsewhere. Far arm remains a second compact guard arm near body, not another limb emerging from shoulder. Exactly TWO ARMS, TWO HANDS, TWO LEGS. Keep whole robot complete with genuine transparent background and padding. Don't add weapons, effects, background, ground, shadows, text, panels, cloth or skin. Opaque armor core, preserve transparent alpha. Single character."
+          },
+          "hint": "Generated images are saved to /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0 as /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-a140a356-df87-43bf-a818-3c390462b70a.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-arm-idle-r1.png",
+          "sha256": "cc647a6e7d3c815d91c1040fbcfd93e875c219d2508500f6fd3f348d715c3c07",
+          "anchor": [
+            78,
+            67,
+            1053,
+            1439
+          ],
+          "size": [
+            1070,
+            1470
+          ],
+          "raw_rgba_unchanged": true
+        },
+        {
+          "key": "gaia-arm-charge-r1",
+          "args": {
+            "transparent_background": true,
+            "referenced_image_paths": [
+              "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-a140a356-df87-43bf-a818-3c390462b70a.png",
+              "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-arm-native-reference-r1.png"
+            ],
+            "prompt": "Use case: identity-preserve / precise-object-edit. Image1 is edit target, a corrected Gaia HD robot idle sprite with natural straight wrists. Image2 is native animation reference for small charging motion only. Create ONE adjacent CHARGE key pose: keep same exact full robot, helmet, torso, hips, legs, feet, original narrow stance, LEFT facing side/rear camera and sage-gray/cobalt armor style. Lift the two guarded fists a little higher in front of chest, and draw elbows slightly back to prepare a leftward punch; small adjustment only, do not invent a huge wind-up. BOTH ARMS must remain physically coherent: each shoulder, upper arm, elbow, forearm, neutral straight wrist, closed fist in one unbroken chain. Near forearm extends diagonally up-LEFT from right-waist elbow to fist in front of lower chest. Wrist axis and fist axis align naturally. Distinct knuckles curled into fist, thumb wraps outside fingers. Exactly two arms/hands, no backward-folded hands, no third fist, no elbow attached to a knuckle. Far fist remains compact beside chest, not behind shoulder. Preserve full body padding, hand-painted surface, genuine transparent background and opaque armor. No changes to design, no weapons, effects, ground, shadow pools, text, scenery or panels."
+          },
+          "hint": "Generated images are saved to /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0 as /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-8d8f595f-da90-41f6-8506-c9d79d5c6584.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-arm-charge-r1.png",
+          "sha256": "e26b57ed19478d5b73488ef946c55f37c64e86bc7a6414612352d518c14b1e99",
+          "anchor": [
+            86,
+            61,
+            1056,
+            1443
+          ],
+          "size": [
+            1070,
+            1470
+          ],
+          "raw_rgba_unchanged": true
+        }
+      ]
+    },
+    "reproduction_recipe": {
+      "schema_version": 1,
+      "figure": 30,
+      "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+      "sources": {
+        "idle": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-030-idle-battle-hd6-master-v2.png",
+          "sha256": "cc647a6e7d3c815d91c1040fbcfd93e875c219d2508500f6fd3f348d715c3c07",
+          "anchor": [
+            78,
+            67,
+            1053,
+            1439
+          ]
+        },
+        "charge": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-030-charge-battle-hd6-master-v2.png",
+          "sha256": "e26b57ed19478d5b73488ef946c55f37c64e86bc7a6414612352d518c14b1e99",
+          "anchor": [
+            86,
+            61,
+            1056,
+            1443
+          ]
+        },
+        "impact": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-030-impact-battle-hd6-master-v1.png",
+          "sha256": "3998832bbd78c390e75597290353d87224d52fb30a86ce6eee8fe50b7d2f2ed8",
+          "anchor": [
+            25,
+            56,
+            1370,
+            1112
+          ]
+        },
+        "flare": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-030-flare-battle-hd6-master-v1.png",
+          "sha256": "80d1341f4a972c9ba33a394606c98d37cfe5a812453846fd1075efb5e312f6db",
+          "anchor": [
+            17,
+            24,
+            1240,
+            1226
+          ]
+        },
+        "follow": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-030-follow-battle-hd6-master-v1.png",
+          "sha256": "49fcecb304be23861ca1e21a5e534460d3e62467ea758c631d0a95b1b03c42e7",
+          "anchor": [
+            28,
+            24,
+            1239,
+            1226
+          ]
+        }
+      },
+      "resources": {
+        "90": [
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              104,
+              143
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              104,
+              142
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              104,
+              141
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              104,
+              142
+            ],
+            "scale_group": "standing"
+          }
+        ],
+        "91": [
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              104,
+              143
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "charge",
+            "anchor": [
+              0,
+              0,
+              110,
+              143
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "charge",
+            "anchor": [
+              0,
+              0,
+              111,
+              143
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "charge",
+            "anchor": [
+              0,
+              0,
+              111,
+              143
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "charge",
+            "anchor": [
+              0,
+              0,
+              111,
+              143
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "charge",
+            "anchor": [
+              0,
+              0,
+              104,
+              143
+            ],
+            "scale_group": "standing"
+          },
+          {
+            "pose": "impact",
+            "anchor": [
+              0,
+              0,
+              194,
+              155
+            ],
+            "scale_group": "punch"
+          },
+          {
+            "pose": "flare",
+            "anchor": [
+              0,
+              0,
+              151,
+              146
+            ],
+            "scale_group": "punch"
+          },
+          {
+            "pose": "flare",
+            "anchor": [
+              0,
+              0,
+              150,
+              147
+            ],
+            "scale_group": "punch"
+          },
+          {
+            "pose": "follow",
+            "anchor": [
+              0,
+              0,
+              149,
+              147
+            ],
+            "scale_group": "punch"
+          },
+          {
+            "pose": "follow",
+            "anchor": [
+              0,
+              0,
+              149,
+              147
+            ],
+            "scale_group": "punch"
+          }
+        ]
+      }
+    },
+    "filename_mapping": {
+      "figani-090-hd6-v2-f00.png": "figani-090-hd6-v1-f00.png",
+      "figani-090-hd6-v2-f01.png": "figani-090-hd6-v1-f01.png",
+      "figani-090-hd6-v2-f02.png": "figani-090-hd6-v1-f02.png",
+      "figani-090-hd6-v2-f03.png": "figani-090-hd6-v1-f03.png",
+      "figure-030-idle-battle-hd6-master-v2.png": "figure-030-idle-battle-hd6-master-v1.png",
+      "figani-091-hd6-v2-f00.png": "figani-091-hd6-v1-f00.png",
+      "figani-091-hd6-v2-f01.png": "figani-091-hd6-v1-f01.png",
+      "figani-091-hd6-v2-f02.png": "figani-091-hd6-v1-f02.png",
+      "figani-091-hd6-v2-f03.png": "figani-091-hd6-v1-f03.png",
+      "figani-091-hd6-v2-f04.png": "figani-091-hd6-v1-f04.png",
+      "figani-091-hd6-v2-f05.png": "figani-091-hd6-v1-f05.png",
+      "figure-030-charge-battle-hd6-master-v2.png": "figure-030-charge-battle-hd6-master-v1.png"
+    },
+    "known_clipping": [
+      {
+        "resource": 91,
+        "frame": 6,
+        "pixels": 4
+      }
+    ],
+    "scope_limits": [
+      "這是美術結構修正；肩肘、腕拳的自然度由母稿及實際回讀檢視，PNG／GPU相符不等於人工造型已驗收。",
+      "十五幀以兩新稿及三舊稿重定向，非原版逐幀RGB相同。末五幀PNG保持，原衝擊光裁切限制照舊。",
+      "舊普通玩家收據只證明舊造型流程；修正版的正常操作與造型人工確認仍集中全部HD後，#268保持開啟。"
+    ],
+    "reproduce": [
+      "從64b2da33匯出完整catalog，僅移除90／91兩項當base；保留其他458項。",
+      "在資產Docker執行tools/build_fd2_character_battle_hd.py --pack /original --inventory docs/data/fd2-battle-hd-source-inventory-20261019.json --recipe <reproduction_recipe.json> --base-catalog <base> --out <fresh-compiled>。",
+      "依filename_mapping複製十PNG及兩母稿為v2檔名，兩asset_id改為.v2，兩項放回原catalog順序；其餘SHA及欄位保持。",
+      "來源反例用tools/test_fd2_character_battle_hd.py --pack /original --inventory <inventory> --recipe <recipe> --baseline <compiled>/compiled.json --out <new-guards>。",
+      "Game.Draw用FD2_HD_BATTLE_LIFECYCLE_GPU=1 FD2_HD_BATTLE_REAL=1 FD2_TEST_MODERN_BATTLE_FIGURE=30及明示candidate catalog／pack／output，with-xvfb go test ./cmd/fd2 -count=1 -timeout=500s -run ^TestModernHDBattleRuntimeGPU$ -v。",
+      "像素用tools/verify_fd2_character_battle_gpu.py --figure 30 --core-profile opaque --sample-group fixture --receipt <capture>/receipt.json --catalog <candidate> --source <pack> --original-pack /original --inventory <inventory> --proven-occlusion --report <new-report>。",
+      "正式及runtime-only各執行TestModernHDBattleAssetsRealCandidate與TestNativePhysicalHDPreflightStopsBeforeSettlement，明示figure30及catalog／pack／original；私人同步依sync_modern_theme_private.py白名單，只移出本欄superseded_files的十二舊檔。"
+    ],
+    "visual_review_sample": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-arm-runtime-r1-capture/090-00.png",
+      "sha256": "5fb73dfa59ea34f454b01f9b193ab95c79221f194f6c9303ceaf16366daec6ef"
+    },
+    "visual_review_sample_scope": "修改BattleFig的fixture最終1920回讀；面板姓名沿原測試人物，非正常蓋亞玩家存檔或人工批准。",
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-arm-final-validation-r1.json",
+      "sha256": "712e193320a90f45ec569ceaf5f829a079cb8cbed350bd888a64a2f92d6ef88a"
+    },
+    "worklist_verify": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-arm-fd2_worklist.py-verify-r1.log",
+      "sha256": "26091eea8ab3a41c4223d7a015d21fe3c26a4ad695ae0148921ec6de3bb37265"
+    },
+    "lessons_check": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-arm-fd2_lessons.py-check-r1.log",
+      "sha256": "8fd49356321724cf74452b63e747910b261c3eda6e99c45445d9b9dc6aecb8ef"
     }
   }
 }
