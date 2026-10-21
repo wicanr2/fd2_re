@@ -3132,6 +3132,40 @@ fixture補充：共用舊fixture只留class2抗性，7的完整目標集合還�
 - 技術接入、尚待人工確認及已確認分開記錄；缺素材、未知caller與未驗平台維持明示，
   不因改排程將完整HD或PLAYER-E2提前結案。正式資料的新未知仍回到既有RE／規格閘門。
 
+### 普通法術十六組HD材質重定向
+
+狀態：CONFORMED-SCOPED／RUNTIME-E1。基底762380dc，分支feat/hd-ordinary-effect-materials。沿上一節入口及固定原版包；
+輸入為audit_fd2_ordinary_effect_source.py已核的十八組340幀。本切片先做18／19／20／21／22／23／24／25／
+28／30／32／33／37／38／39／43，共304幀。26／27的火龍頭像另需母稿，不用同一材質冒充人物重繪。
+本切片是美術與既有圖源入口，正式規則、層序、音效、數值、RNG、delay、marker及保存不變。
+
+- 沿既有召喚的原遮罩重定向方式，新增暖焰、冷白電光兩張手繪材質。前者供18／20，後者供其餘十四組。
+  材質原稿與提示保存，並如實標成材質重定向，不宣稱304張獨立新畫或原版RGB一致。
+- 材質先以BICUBIC取樣成1920×1200固定平面，再依原frame矩形取區。原版RGBA先用LANCZOS放大6倍，
+  保持其alpha；逐通道C套用 `round(clamp(C*(0.72+0.28*L/255)+0.15*(T-L)))`，
+  T為手繪材質通道，L為材質的0.2126R＋0.7152G＋0.0722B。固定平面不隨幀隨機位移，避免材質跳動。
+  這是現代美術近似；形狀與原色明暗仍由原版圖源決定，後續集中人工確認可再改畫。
+  Pillow的F通道用float32，轉L前加0.5取整／clamp；與獨立float64參考最多容許1 RGB的捨入差。
+- 固定metadata／PNG／mask SHA逐項核對。每張仍為原矩形6倍，原header與全部描述子保持。
+  本批沒有空白mask；八張全不透明原矩形依既有FDOTHER完整mask契約保留，不加透明洞。
+  超出320×200固定平面的描述子、錯素材、缺件或錯來源一律拒收，不補圖或換索引。
+- 正式登錄前驗完整304項圖源／成品、RGB與alpha公式、來源不變與錯資料拒收；以實際GPU核完整16組，
+  再用既有七種普通owner的完整Game.Draw／F2／MP／HP／RNG與一次續行作代表串接驗證。
+  原像素來源重組與已閉合原版控制流不重開。缺件／F2沿前批兩銀行原子契約。
+  通過後只同步清冊白名單至私人庫，保持原素材；普通GUI與造型人工確認集中最後。
+
+來源及結果集中於HD主收據ordinary_material_effects_followup_20261021；兩組火龍、其他人物／效果、地形與HUD仍待。
+
+已正式登錄，完整來源alpha、獨立float64色彩抽樣、損壞來源拒收、全來源GPU與七種owner代表Game.Draw通過。
+每種owner的扣魔、HP節拍、亂數、各相位F2、一次續行及施術全幀核心均通過；正式／runtime-only載入與缺件拒收通過。
+本節取代本檔較早普通0／1／5／6／7／8效果仍像素的現況敘述，保留當時收據；4／5共享owner以5代表，4未另稱完整Game.Draw。
+工具入口：tools/build_fd2_ordinary_effect_hd.py、tools/test_fd2_ordinary_effect_hd.py及tools/verify_fd2_ordinary_effect_gpu.py，
+依HD主收據ordinary_material_effects_followup_20261021.reproduce，在上述兩個Docker映像以唯讀原版包及新輸出路徑重跑。
+原始描述子、delay、命中／聲音標記與正式規則保持；材質重定向是modern-art approximation，正常操作及人工畫質仍待集中確認。
+火龍兩圖庫的全幀技術參考由tools/audit_fd2_dragon_effect_source.py產生：在Python映像用
+`--original-pack <唯讀原版包> --reference <上述普通效果盤點.json> --out <新前綴>`；只支援26／27，輸出原PNG／mask雜湊與參考板。
+火龍的三張生成母稿及完整提示先記於同欄next_dragon_sources，尚未登錄，不算本批完成範圍。
+
 ### BattleFig3 斧兵圖源
 
 狀態：RUNTIME-E1，正常操作及造型人工確認集中最後。固定FIGANI inventory的9／10為4／6幀，11為已核零header，不補造施術。

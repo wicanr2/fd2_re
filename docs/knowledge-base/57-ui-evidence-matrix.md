@@ -2370,3 +2370,9 @@ battle_ch02原缺view及繼承HUD來源，第一次正常移動遭預檢拒收�
 第3章正式流程驗收追加（2026-10-17）：[正式收據](../data/ui-traces/parity-ch03.json)與[主契約](../data/ida/fd2_ch03_flow_20261017.json)記錄正常LOAD、章前、兩次END、T3事件9兩端援軍、鐵諾存活JOIN、下一城鎮、酒店保存及新Game正式LOAD冷讀。18筆AI全部消費，零順序分岔；依111在援軍交回操作後單次清敵20筆，無HP鎖或新強化。第3章view／HUD來源已接正式移動consumer及生成器。
 
 原版230F2先SYNC再JOIN2，之後沒有第二次SYNC；重製維持NativeJoinPersistentPending，保存使用同一LOAD基底第6筆，與第2章JOIN8後SYNC的零基底條件不同。整份22987 bytes含checksum相同，SHA b942e356f2babb2d936fe7d2daa461f1270175835619f0e59ea4bf43b4ddcd40；沒有新增保存例外。畫面僅參考，鐵諾死亡後勝利分支、全寶物與自然難度未抽樣。30章統計只引用[58目前狀態表](58-fd2-exe-re-coverage.md)，HD與未抽樣規則另列。
+
+普通法術特效追加：十六組已沿既有consumer正式接入，固定原遮罩／明暗與手繪材質重定向，保留原描述子及演出控制流。
+完整來源GPU、七種owner代表Game.Draw／F2、MP／HP／RNG與一次續行，以及正式／runtime-only載入及缺件拒收通過。
+本段取代較早同批效果仍像素的現況描述；歷史收據保持。4／5共用owner以5代表，未另外提升4的完整Game.Draw。
+來源、公式、獨立核對與重跑命令見[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的ordinary_material_effects_followup_20261021，
+唯一數量與未完成範圍見[58](58-fd2-exe-re-coverage.md)。正常操作及人工畫質依全部HD串接後集中確認，火龍與其他缺項仍待。

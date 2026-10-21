@@ -39,6 +39,18 @@ def main():
         raise SystemExit('原版盤點或包指紋不同')
     if [r['resource'] for r in inventory['resources']] != list(range(409)):
         raise SystemExit('盤點未完整涵蓋409個資源位置')
+    manifest = json.loads((args.original_pack/'manifest.json').read_text())
+    files = {row['path']: row for row in manifest['assets']}
+    pinned_effect = next(row for row in json.loads((ROOT/'docs/data/fd2-reference-files.json').read_text())['files'] if row['file'] == 'FDOTHER.DAT')
+    if next(row for row in manifest['source_set'] if row['file'] == 'FDOTHER.DAT') != pinned_effect:
+        raise SystemExit('共用效果來源版本不同')
+
+    def checked_effect(path, resource, index=None):
+        row = files.get(path.relative_to(args.original_pack).as_posix())
+        if (row is None or row.get('source_file') != 'FDOTHER.DAT' or row.get('source_resource') != resource
+                or digest(path) != row['sha256'] or index is not None and row.get('source_frame') != index):
+            raise SystemExit('共用效果原版圖源SHA或定位不同')
+        return row
     catalog = validate(False, args.catalog)
     stage = 'registered-worktree' if args.catalog.resolve() == ROOT/'remake/assets/themes/modern/catalog.json' else 'candidate'
     registered = {a['source_resource']: a for a in catalog['assets'] if a['role'] == 'battle_animation_hd_set'}
@@ -76,16 +88,25 @@ def main():
     for asset in catalog['assets']:
         if asset['role'] != 'battle_effect_hd_set': continue
         resource = asset['source_resource']; metadata = args.original_pack/'animations'/f'FDOTHER_{resource:03d}'/'animation.json'
+        checked_effect(metadata, resource)
         if digest(metadata) != asset['source_metadata_sha256']: raise SystemExit('共用效果原版metadata不同')
         doc = json.loads(metadata.read_text()); expected = [{key: frame[key] for key in FIELDS} for frame in doc['frames']]
-        if asset['native_frames'] != expected: raise SystemExit('共用效果描述子不同')
+        if (doc.get('source') != {'file': 'FDOTHER.DAT', 'resource': resource} or asset['native_frames'] != expected
+                or asset['frame_count'] != len(expected)
+                or asset['native_header'] != [doc['native_header'][k] for k in ['byte_1', 'byte_2', 'byte_4']]):
+            raise SystemExit('共用效果定位、描述子、幀數或header不同')
         masks = []
-        for frame in doc['frames']:
+        for index, frame in enumerate(doc['frames']):
+            if any(Path(frame[key]).name != frame[key] for key in ['path', 'mask_path']):
+                raise SystemExit('共用效果圖源路徑越界')
             path = metadata.parent/frame['mask_path']
-            with Image.open(path) as im:
-                if im.size != (frame['width'], frame['height']): raise SystemExit('原生效果遮罩形狀不同')
+            mask_row = checked_effect(path, resource, index)
+            checked_effect(metadata.parent/frame['path'], resource, index)
+            with Image.open(path) as im, Image.open(metadata.parent/frame['path']) as pixels:
+                if im.size != (frame['width'], frame['height']) or pixels.mode != 'P' or pixels.size != im.size:
+                    raise SystemExit('原生效果PNG或遮罩形狀不同')
                 full = im.convert('L').getextrema()[0] != 0
-            masks.append({'sha256': digest(path), 'full_source_mask': full})
+            masks.append({'sha256': mask_row['sha256'], 'full_source_mask': full})
         check_pngs(asset, args.source, [m['full_source_mask'] for m in masks])
         effects.append({'resource': resource, 'registered_hd_frames': asset['frame_count'],
             'asset_status': 'REGISTERED-ASSET' if stage == 'registered-worktree' else 'CATALOG-CANDIDATE', 'native_masks': masks})

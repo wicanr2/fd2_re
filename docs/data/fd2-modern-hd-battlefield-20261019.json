@@ -72118,5 +72118,465 @@
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure003-worklist-verify-r1.log",
       "sha256": "86a705d5f4e3a2e4f08ef650f29d426c2c5c17cfa54544b6333b324e92c391d1"
     }
+  },
+  "ordinary_material_effects_followup_20261021": {
+    "status": "CONFORMED-SCOPED-RUNTIME-E1",
+    "base": "762380dcbdd85e264807756da14d20459e7c557b",
+    "branch": "feat/hd-ordinary-effect-materials",
+    "work_root": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1",
+    "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md#普通法術十六組hd材質重定向",
+    "native_source": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ordinary-effects-native-reference-r2.json",
+      "sha256": "e5f94a19af703148dd73064027ce6a162bd0ecf8fa72f77cdd1b1e87a45c69a7"
+    },
+    "resources": [
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      28,
+      30,
+      32,
+      33,
+      37,
+      38,
+      39,
+      43
+    ],
+    "frames": 304,
+    "method": "native alpha/brightness + world-aligned hand-painted material; modern-art approximation, not individually painted frames or original RGB parity",
+    "formal_registered": true,
+    "full_battle_hd_complete": false,
+    "human_review": "pending-until-all-HD-integrated",
+    "private_synced": true,
+    "source_file": {
+      "file": "FDOTHER.DAT",
+      "size": 3382481,
+      "md5": "22f56e5027edc7c766ad34ca4e5aca93",
+      "sha256": "a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce"
+    },
+    "formula": {
+      "world_material": "BICUBIC 1920x1200; crop at native descriptor *6",
+      "native": "PNG RGBA + pinned L mask; LANCZOS6",
+      "luminance": ".2126*T.R + .7152*T.G + .0722*T.B",
+      "rgb": "clamp(round(C*(.72+.28*L/255)+.15*(T-L)))",
+      "alpha": "exact native mask LANCZOS6",
+      "numeric_tolerance": "independent float64 RGB <=1, alpha exact"
+    },
+    "generation_record": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ordinary-material-generation-r1.json",
+      "sha256": "1e14013b440d8241100e4826c9cc178726c1e626f3f87128f12a98e6c49258c9"
+    },
+    "generation_prompts": {
+      "tool": "built-in image_gen",
+      "transparent_background": false,
+      "reference_image": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ordinary-effects-native-reference-r2.png",
+      "materials": [
+        {
+          "key": "fire",
+          "prompt": "Use case: stylized-concept. Asset type: opaque hand-painted fire-energy MATERIAL texture for a 1990s tactical RPG HD remake, not a finished effect sprite. Reference image shows original game effect types: use the warm red/orange/ivory fire-column palette of FDOTHER18/20 only as color guidance. Generate one square 1024x1024 fully filled painterly fire material, no transparent background. Dense flowing upward tongues of crimson and burnt-orange fire, amber brush ridges and bright pale-gold/ivory threads, with many fine hand-painted striations and varied scale soft-edged brushwork. Continuous texture from edge to edge, no single centered object or silhouette and no blank margin. Moderate contrast, richly varied local painted detail suitable for clipping through animated fire-column masks, not a photograph and not 3D. Same refined ink-and-gouache RPG remake finish as existing hand-painted sprites. Keep useful paint detail across the entire square. No character, face, dragon, emblem, weapon, text, border, panel grid, checkerboard or black vignette. Fully opaque colored material throughout.",
+          "project_file": "remake/generated-assets/modern-theme-prototypes/ordinary-fire-hd6-material-v1.png",
+          "sha256": "83f91f14c1347e580011ea7d3bda5b75c3b2eecf874792f3df46f2a6e162edc2",
+          "actual_size": [
+            1254,
+            1254
+          ],
+          "actual_mode": "RGB"
+        },
+        {
+          "key": "electric",
+          "prompt": "Use case: stylized-concept. Asset type: opaque hand-painted cold white/blue magical energy MATERIAL texture for a 1990s tactical RPG HD remake, not a finished effect sprite. Reference image shows original game effect types: use the cold white/icy-blue palette of the light columns, electric arcs and beams as color guidance, without drawing their full shapes. Generate one square 1024x1024 fully filled painterly energy material, no transparent background. Pale icy-blue painted field with flowing fine white energy fibers and cobalt-blue ink accents, small branching electric wisps and luminous ivory brush threads, broad soft blue paint transitions and crisp fine striations. Mostly light and mid values, moderate contrast and richly varied local detail, no large solid white or black zones. Continuous edge-to-edge brush texture without a central object or silhouette and without margins. It will be clipped to existing animated beam and lightning masks. Refined hand-painted ink-and-gouache RPG remake finish, not photography or 3D. No character, face, dragon, metal sphere, emblem, scenery, text, border, panel grid, checkerboard or vignette. Fully opaque colored material throughout.",
+          "project_file": "remake/generated-assets/modern-theme-prototypes/ordinary-electric-hd6-material-v1.png",
+          "sha256": "f46c8436bda46a605e190bf2f63e327e193259e50a7a5ea4b7cc6458c1d8df85",
+          "actual_size": [
+            1254,
+            1254
+          ],
+          "actual_mode": "RGB"
+        }
+      ],
+      "method": "opaque source material, native mask retarget; modern-art approximation",
+      "human_review": "pending-until-all-HD-integrated"
+    },
+    "recipe": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ordinary-material-recipe-r2.json",
+      "sha256": "c8a28398807cc97230a2265d947035a75cd74ddbe3621d6f2252b9adb9fc0205"
+    },
+    "recipe_document": {
+      "schema_version": 1,
+      "reference_sha256": "e5f94a19af703148dd73064027ce6a162bd0ecf8fa72f77cdd1b1e87a45c69a7",
+      "resources": [
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        28,
+        30,
+        32,
+        33,
+        37,
+        38,
+        39,
+        43
+      ],
+      "materials": {
+        "fire": {
+          "file": "remake/generated-assets/modern-theme-prototypes/ordinary-fire-hd6-material-v1.png",
+          "sha256": "83f91f14c1347e580011ea7d3bda5b75c3b2eecf874792f3df46f2a6e162edc2"
+        },
+        "electric": {
+          "file": "remake/generated-assets/modern-theme-prototypes/ordinary-electric-hd6-material-v1.png",
+          "sha256": "f46c8436bda46a605e190bf2f63e327e193259e50a7a5ea4b7cc6458c1d8df85"
+        }
+      }
+    },
+    "compiled": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ordinary-material-candidate-r2/compiled.json",
+      "sha256": "3df3e22d62e6d2c9380b8b1c2865eb3f7bfce6b048cd21cd92ecaee902efb024"
+    },
+    "scalar_controls": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ordinary-material-scalar-r2.json",
+      "sha256": "e1f639d0f11840cdde3da8cf7372c711bd66430452f5e45117301550cfcda379"
+    },
+    "independent_source": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ordinary-material-source-check-r1/report.json",
+      "sha256": "c23da89f329bdcfc7ca8230f9bc05bee7d00189202b1c38ee559e3f909c9c8a1"
+    },
+    "source_gpu": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/material-gpu-r1-capture/receipt.json",
+      "sha256": "3d7989658f7ccd72bc085b3f9311a24455a1a5e148b9585fd80361b630c0aecf"
+    },
+    "final_effect_gpu": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/material-effect-final-core-r1.json",
+      "sha256": "964b916208486f1b21341c45fe8f999d165706fec785a094d142bf2f4fdc7059"
+    },
+    "final_effect_rejections": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/material-effect-rejection-r1/report.json",
+      "sha256": "e007672a07ee23e4442dc4ec9f384950e73aedf10d568a6c7a9b8ea42577d4fb"
+    },
+    "coverage_controls": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/material-coverage-controls-r1.json",
+      "sha256": "087f797c1d7207acbfd50d7c23e1c0db04fed2ccbf4c2828c07efc5a2bafac9a"
+    },
+    "formal_registration": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/material-formal-registration-r1.json",
+      "sha256": "c0fa24da3f6d6728c77f026a505745f844f32a3ed185ae61a3a1a74d150d0dc0"
+    },
+    "formal_coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/material-formal-coverage-r1.json",
+      "sha256": "19c16581f91e2817ef8233074a26ade0408f2efc69aa09d89b88400bd05345be"
+    },
+    "private_delivery": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/material-private-delivery-r1.json",
+      "sha256": "6ff36018b69d31ef613ac30b054334f2facc11c77c0fcaf56ad91786a68d343f"
+    },
+    "worklist_verify": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/material-fd2_worklist.py-verify-r1.log",
+      "sha256": "86a705d5f4e3a2e4f08ef650f29d426c2c5c17cfa54544b6333b324e92c391d1"
+    },
+    "lessons_check": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/material-fd2_lessons.py-check-r1.log",
+      "sha256": "954bce785b88c0e8c9bd84099bc043e267a30210ace5684ddf70e7b9fda5df76"
+    },
+    "tools": [
+      {
+        "file": "tools/build_fd2_ordinary_effect_hd.py",
+        "sha256": "b4cc9d826dbd04c6bf70e5d2065828935c3e73d2fc94dd977bd80deb7c30742f"
+      },
+      {
+        "file": "tools/test_fd2_ordinary_effect_hd.py",
+        "sha256": "e57bc90375a657d90a721c2b1a8f30402f7249b28ba1f5c887df9d05219ebbdd"
+      },
+      {
+        "file": "tools/verify_fd2_ordinary_effect_gpu.py",
+        "sha256": "fcb1a7a1657a5e3383e94be88cb69324df045f670a1c6294359150f7ca9824c3"
+      },
+      {
+        "file": "tools/audit_fd2_battle_hd_coverage.py",
+        "sha256": "a1661e1e20a8bf6b33c5f6f51ddcaf31d4b12ea3f7fccfd2dcd50c11035d92d8"
+      }
+    ],
+    "owner_fixtures": [
+      {
+        "command": 0,
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/material-command0-r1-capture/receipt.json",
+          "sha256": "4c8a0d9a869fdf2578a1d6b99c5f9b5f85436a7dc1bacfa2bbf9afd63ba2558d"
+        },
+        "caster_gpu": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/material-command0-caster-core-r1.json",
+          "sha256": "967e95a28b4146a62aeed67fd0b2b91029fee912c8220726b1063d281045f9b4"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/material-command0-r1.memory.json",
+          "sha256": "f989ec7f81acff33f47e47b539a6f57500d90b015c0ea11539fb2d067d87c6ee"
+        },
+        "hd_draws": 74,
+        "final_draws": 80,
+        "mp_publications": 1,
+        "hp_publications": 7,
+        "continuations": 1
+      },
+      {
+        "command": 1,
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/material-command1-r1-capture/receipt.json",
+          "sha256": "f557df962db14db01ca9540cc61abbe5183e4b819bb0e3b2b781a8daf4d67180"
+        },
+        "caster_gpu": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/material-command1-caster-core-r1.json",
+          "sha256": "53e1ba01af97bcf2b046fcbf938ebd847030e7b3fe8f943355d0549104d409f1"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/material-command1-r1.memory.json",
+          "sha256": "0c0f3a705187bffff5da795a6812cfc01438f65cbf778d11a484ef3037a61a0b"
+        },
+        "hd_draws": 77,
+        "final_draws": 83,
+        "mp_publications": 1,
+        "hp_publications": 8,
+        "continuations": 1
+      },
+      {
+        "command": 3,
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/material-command3-r1-capture/receipt.json",
+          "sha256": "3c0812b49530043d42e50b2e2bf5f677f7ed555f0d2d5dea0cbc6fa364b35940"
+        },
+        "caster_gpu": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/material-command3-caster-core-r1.json",
+          "sha256": "b5fa4deabbf4ade96da5cfcc6bbd3f3bf1890b233b0f53ac8eadddc923aa28b4"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/material-command3-r1.memory.json",
+          "sha256": "dd7aae5c36206acd246d62f4df370bd40664cf26e5c6caf2c49fe4cd911b04dc"
+        },
+        "hd_draws": 110,
+        "final_draws": 118,
+        "mp_publications": 1,
+        "hp_publications": 13,
+        "continuations": 1
+      },
+      {
+        "command": 5,
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/material-command5-r1-capture/receipt.json",
+          "sha256": "bea3c2fd40ddea8cfec941ebc832245bbd228c0f01d36ba49f825926e9372b7d"
+        },
+        "caster_gpu": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/material-command5-caster-core-r1.json",
+          "sha256": "eafb4a69ed07011e324acd64d70065ed7e0f092526df66b7ea95430909937699"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/material-command5-r1.memory.json",
+          "sha256": "abbafcc0e58065808c2d6037ad2ab984515ce009f82926a7fc202ffc11f6aa52"
+        },
+        "hd_draws": 69,
+        "final_draws": 77,
+        "mp_publications": 1,
+        "hp_publications": 6,
+        "continuations": 1
+      },
+      {
+        "command": 6,
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/material-command6-r1-capture/receipt.json",
+          "sha256": "8f86dfd8eb2421eedf73b9cf795d1f21bd56b75a462862a04bc44829694d14d8"
+        },
+        "caster_gpu": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/material-command6-caster-core-r1.json",
+          "sha256": "a11a73ca91d1ce8c0e580ff9278ec52c38557a92d0610ba5e7f66ac31af2c834"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/material-command6-r1.memory.json",
+          "sha256": "ab91183ebfed0daf763f3a8ba819bcb77ba83d85bf15087792e660153c6951fd"
+        },
+        "hd_draws": 91,
+        "final_draws": 99,
+        "mp_publications": 1,
+        "hp_publications": 5,
+        "continuations": 1
+      },
+      {
+        "command": 7,
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/material-command7-r1-capture/receipt.json",
+          "sha256": "e2e8174b5eb9d92fda2b19db1a0a8d14a0d364acd9a327ef71f2b40311dedff6"
+        },
+        "caster_gpu": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/material-command7-caster-core-r1.json",
+          "sha256": "b362eb553d6bbf8d19a90197d846dac2701f39a48b00db8cd5a34c2c3fd97fc4"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/material-command7-r1.memory.json",
+          "sha256": "d95a2238e66e345eeba9635ee1f959d224d1424b91a5891cf6db6804cfc37af4"
+        },
+        "hd_draws": 140,
+        "final_draws": 149,
+        "mp_publications": 1,
+        "hp_publications": 5,
+        "continuations": 1
+      },
+      {
+        "command": 8,
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/material-command8-r1-capture/receipt.json",
+          "sha256": "ec48ebb96de67557d9813a89ee732454685b0dedff31194406eefd8354e692fd"
+        },
+        "caster_gpu": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/material-command8-caster-core-r1.json",
+          "sha256": "43f1a485b3ae4f529dba17a493d3ebf4504dbd2c55385c47a1528a1f45d4c1d4"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/material-command8-r1.memory.json",
+          "sha256": "4a4d469d02f1120e472518e64d5afd08dbcc0fae30d82d874546e5ab84a25853"
+        },
+        "hd_draws": 85,
+        "final_draws": 93,
+        "mp_publications": 1,
+        "hp_publications": 16,
+        "continuations": 1
+      }
+    ],
+    "owner_scope": "七種owner以0/1/3/5/6/7/8為代表，4/5共用owner用5；4的22/23另有全304來源GPU，未冒充完整command4 Game.Draw。",
+    "formal_and_runtime_go": {
+      "formal": {
+        "memory_report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/material-formal-go-r1.memory.json",
+          "sha256": "e7b3637acbd2e9ec3a88c6651614594f921ecc66d2fd642f87417b2da4baaad8"
+        },
+        "top": 3,
+        "sub": 11,
+        "skip": 0
+      },
+      "runtime": {
+        "memory_report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/material-runtime-go-r1.memory.json",
+          "sha256": "2ce0e7326747a0469e40e163b8a3ad3d96d2e91b351abc563eff48ef4fae1789"
+        },
+        "top": 2,
+        "sub": 2,
+        "skip": 0
+      }
+    },
+    "private_git": {
+      "commit": "2cdbfc4e8c1f7b89ce78b2c9c2b0793574eabfec",
+      "actual_remote_main": "2cdbfc4e8c1f7b89ce78b2c9c2b0793574eabfec",
+      "visibility": "沿既有已核private，未修改公開設定。"
+    },
+    "reproduce": {
+      "source": "Docker fd2-assets-local:20260829-sfx：tools/audit_fd2_ordinary_effect_source.py --original-pack <readonly-original> --out <fresh-prefix>；固定Python/Pillow重生reference SHA。",
+      "compiler": "取762380dc的catalog作基底；匯出本欄recipe_document，在Docker同映像執行tools/build_fd2_ordinary_effect_hd.py --original-pack <original> --reference <source.json> --recipe <recipe> --base-catalog <762-catalog> --out <fresh-root-under-repo>。母稿從私人庫allow-list取得，重生PNG SHA須與正式清冊相同；catalog的private_root隨輸出目錄不同。",
+      "source_test": "Docker同映像：tools/test_fd2_ordinary_effect_hd.py --original-pack <original> --reference <source.json> --recipe <recipe> --candidate <candidate> --out <fresh-output>。",
+      "gpu": "Docker fd2-go-test-local:latest --memory8g --cpus4 --pids-limit512 --user1000:1000 --network none；FD2_HD_ORDINARY_MATERIAL_GPU=1 FD2_TEST_MODERN_EFFECT_CATALOG=<catalog> FD2_TEST_MODERN_EFFECT_PACK=<pack> FD2_TEST_MODERN_EFFECT_OUT=<fresh-dir> FD2_ASSET_PACK=<original> FD2_TEST_ORIGINAL_PACK=<original>，cwd remake：with-xvfb go test ./cmd/fd2 -count=1 -timeout=500s -run ^TestModernHDOrdinaryMaterialAllFramesGPU$ -v。",
+      "owners": "同映像及catalog/pack環境，0/1/5分別FD2_HD_COMMANDn_GPU=1，跑TestModernHDCommandnRuntimeGPU；3/6/7/8用FD2_HD_ORDINARY_GPU=1及FD2_TEST_ORDINARY_COMMAND=n跑TestModernHDOrdinaryRemainingRuntimeGPU。各自新程序、新OUT。",
+      "final_effect": "Docker Python：tools/verify_fd2_ordinary_effect_gpu.py --receipt <0> --receipt <1> --receipt <3> --receipt <5> --receipt <6> --receipt <7> --receipt <8> --catalog <catalog> --source <pack> --original-pack <original> --inventory docs/data/fd2-battle-hd-source-inventory-20261019.json --report <fresh-json>。"
+    },
+    "limits": [
+      "native alpha/brightness + hand-painted material retarget；不是304張獨立新畫或原版RGB parity。",
+      "304張全GPU與七owner完整Game.Draw屬RUNTIME-E1；正常操作與人工畫質集中全部HD接好後，未提升PLAYER-E2。",
+      "火龍26/27仍像素；其他人物、效果、戰場、HUD、正常召喚及平台效能未完成。"
+    ],
+    "attempt_corrections": [
+      "首輪數值控制腳本語法錯誤，編製器未啟動；r2修正腳本後通過，未放寬編製器。",
+      "早期READY提案的.84+.32可能使白色亮部夾到255而丟材質細節；實作前改為.72+.28，僅後者進正式路徑。",
+      "第一次私人Git衛生檢查讀到尚未寫完的status快照而拒收；等待程序完成後重讀308個確切路徑，沒有產品或素材變更。"
+    ],
+    "next_dragon_sources": {
+      "status": "SOURCE-PROTOTYPE-NOT-REGISTERED",
+      "resources": [
+        26,
+        27
+      ],
+      "frames": 36,
+      "native_reference": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/dragon-head-native-reference-r2.json",
+        "sha256": "4e5c3519d4686a56a3c723cbd00c5949bfc273840dc6b04e55186e27c78e89ba"
+      },
+      "image": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/dragon-head-native-reference-r2.png",
+        "sha256": "e66e055dc4ad5169178f9dc7694d6f2db8b7f853eb29d993f9574659ef5b1389"
+      },
+      "tool": {
+        "file": "tools/audit_fd2_dragon_effect_source.py",
+        "sha256": "46449b89f195f92f343c0782358994481b521881990b12d669339c8d00e531a5"
+      },
+      "generation": [
+        {
+          "tool": "built-in image_gen",
+          "prompt": "Use case: stylized-concept. Production transparent RGBA game effect sprite for the already approved ink-and-gouache hand-painted HD remake of a 1995 Taiwanese tactical RPG. Reference is a technical contact sheet of the ORIGINAL fire-dragon spell FDOTHER26 and its opposite-facing bank27. Create ONLY ONE large fire dragon HEAD and long curved UPPER NECK, facing DOWN-LEFT, mouth CLOSED, matching the closed-mouth native 26:4 /26:10 /26:11 head. Match the original lean elongated pointed muzzle, narrow fierce ivory-yellow eye, red-orange overlapping scales, two backward swept pointed horns, radiating long thin cheek spines / fiery whiskers, short pointed chin barb, bright ivory-gold underjaw and amber belly plates. This is an EAST ASIAN flame dragon with a long thin serpentine neck, not a bulky western dinosaur or thick-jawed horned monster. Head occupies lower-left portion, long sinuous neck curves upward-right and then bends back gently, with open transparent space below the curving neck; no whole body, feet or wings. Down-left head angle about25degrees below horizontal. Preserve the original clear silhouette and orange/crimson/gold palette while adding detailed painted scales, subtle ink linework, reflected amber highlights and organic brush texture. Fierce and readable, no photorealism, no 3D. Whole head, all horns/whiskers and a generous upper-neck segment fully inside the canvas with transparent margins. Broad horizontal composition, high resolution useful for a six-times battle sprite. Do NOT include any second head, open mouth, fire breath, effect ring, free-standing flames, ground, scenery, background colors, text, labels, border, panel grid, vignette, light rays or shadow. Truly transparent RGBA background.",
+          "transparent_background": true,
+          "reference_images": [
+            "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/dragon-head-native-reference-r1.png"
+          ],
+          "generated_file": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-ed281703-62ae-4abe-9d98-fba9cec76000.png",
+          "project_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/dragon-head-closed-source-r1.png",
+          "status": "SOURCE-PROTOTYPE-NOT-REGISTERED",
+          "human_review": "pending-until-all-HD-integrated",
+          "source": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/dragon-head-closed-source-r1.png",
+            "sha256": "c2561fead43e394884723bc7d23ca510a70898a7860cc8ad58be21f389a9eaf0"
+          }
+        },
+        {
+          "tool": "built-in image_gen",
+          "prompt": "Use case: stylized-concept. Create a second transparent RGBA production spell sprite of EXACTLY THE SAME hand-painted fire dragon as reference1, which is the approved-style closed-mouth source prototype. Reference2 is the original native animation: specifically native26:15 and27:15 show the REQUIRED WIDE OPEN JAW state. Keep the same lean elongated eastern-dragon head, two swept horns, narrow ivory-yellow fierce eye, orange/crimson scale pattern, long thin red/gold radiating cheek spines and whiskers, ivory-gold underjaw and thin curving serpentine upper neck. Head faces DOWN-LEFT with the same side view and neck bend toward the upper-right. Change ONLY the mouth pose: upper muzzle stays long and pointed, lower jaw hinges visibly down to create a wide dark red/black open mouth, many pointed ivory teeth along both jaws, a dark curved red tongue and the thin pointed chin barb. Original26:15 should guide the wide gape and fierce silhouette; do not add fire breath. Painted scales and ink-and-gouache style must match reference1 closely, not realistic or 3D. The complete muzzle, lower jaw, horns, cheek spines and visible neck segment must fit inside the canvas with generous transparent padding, especially below the lower jaw. Reframe slightly upward to leave enough lower margin; do not crop the jaw or tips. ONE head and upper neck ONLY, no whole body or limbs or wings. No closed-mouth duplicate, second head, additional pose, effect ring, detached flames, sparks, scenery, ground, shadow, background color, text, panel, vignette or light aura. Truly transparent RGBA background.",
+          "transparent_background": true,
+          "reference_images": [
+            "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/dragon-head-closed-source-r1.png",
+            "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/dragon-head-native-reference-r1.png"
+          ],
+          "generated_file": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-ebe6e884-f453-4db2-8b4e-6063a1ba49cf.png",
+          "project_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/dragon-head-open-source-r1.png",
+          "status": "SOURCE-PROTOTYPE-NOT-REGISTERED",
+          "human_review": "pending-until-all-HD-integrated",
+          "source": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/dragon-head-open-source-r1.png",
+            "sha256": "3181b4aa5caae23346dfd04eb1bbb587dcf96c8af339fffc21e424fbc9ea967d"
+          }
+        },
+        {
+          "tool": "built-in image_gen",
+          "prompt": "Use case: stylized-concept. One transparent RGBA hand-painted magic flame-wave sprite for a 1995 Taiwanese tactical RPG remake. Reference1 is the pinned original native fire-dragon contact sheet: specifically FDOTHER26 frames16 and17 show the low golden curling flame wave AFTER the head passes; that is the only required subject. Reference2 is the new HD fire dragon, for matching crimson-orange/amber/ivory-gold ink-and-gouache brush style and fine line detail. Draw ONLY one low broad curling golden flame wake, travelling toward the RIGHT, with a slightly upturned sharp bright tongue at the right leading end and multiple loose spiral curls and small hooked tips trailing leftwards above a continuous low flame body. Rich bright ivory-gold core, amber edge bands, delicate burnt-orange/crimson ink accents and slender black-red internal creases as in the original. Overall footprint roughly two times wider than tall, most mass in the lower half, irregular airy gaps and tapered thin tips. Refined painted brushwork and luminous colour, but no blurry glow halo or large translucent fog. Entire flame wave fully inside canvas with transparent margin, no cropped tips. ONE isolated effect only; do not draw any dragon, head, eyes, teeth, creature, person, ring, fire column, ground, shadow, black background, smoke, scenery, text, watermark, panel border or grid. Truly transparent RGBA background, crisp visible painted shape. Not photography, not3D.",
+          "transparent_background": true,
+          "reference_images": [
+            "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/dragon-head-native-reference-r1.png",
+            "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/dragon-head-closed-source-r1.png"
+          ],
+          "generated_file": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-bb9357db-c5dd-4fb4-b124-3010b78a493e.png",
+          "project_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/dragon-wave-source-r1.png",
+          "status": "SOURCE-PROTOTYPE-NOT-REGISTERED",
+          "human_review": "pending-until-all-HD-integrated",
+          "source": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/dragon-wave-source-r1.png",
+            "sha256": "1320a7cda310ce5e760f612ce97e3ff81ad44f5bb8d7d51946dea17ab4036b2e"
+          }
+        }
+      ],
+      "scope": "只有固定圖源與三張未登錄原RGBA；尚未READY配方、編製、runtime或人工驗收。"
+    },
+    "environment": {
+      "python": "3.12.15",
+      "pillow": "11.3.0",
+      "asset_image": "fd2-assets-local:20260829-sfx",
+      "go_image": "fd2-go-test-local:latest",
+      "go_memory": "8g",
+      "go_cpus": 4,
+      "bounded_gpu_processes": 8,
+      "oom_kill_delta": 0,
+      "recordings_created": 0
+    },
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/material-final-validation-r1.json",
+      "sha256": "9ad3e3d65bf268584daaa5ba6883d9ae5befc10826c68c460978b7c1da2d2b01"
+    }
   }
 }
