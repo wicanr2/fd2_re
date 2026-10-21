@@ -6,7 +6,7 @@
 |---|---|---|
 | 人物與正式世界 | 完整125組／1455張144圖已接Game.Draw，沿原生312×192窗格及raw定位，透明UI另疊 | 真正HD地形及完整HUD仍待完成 |
 | 蓋亞造型修訂 | 核准第二版80／480頭像與24／144四方向十二幀已登錄；正常START至首章97拍、七名頭像GPU及蓋亞普通北移／取消、F2與新程序LOAD已驗 | 序章尾端F9未通過，保存冷讀另有完整戰場收據；角色圖源只辨識同方向步態，兩筆相位差異與一筆不可比保留，不宣稱同幀 |
-| 大型戰鬥動畫HD | #263：共背景、非共背景、四召喚及普通指令0～8人物consumer已接；正式62個FIGANI資源445幀、普通FDOTHER十八組340幀及召喚65～68共37幀。另有FDOTHER5的12張LMI1事件死亡效果，清冊456項；本批保持此前454項 | 其他人物、其他未列指令、法術／地圖回復、狀態致死正常GUI、其他共同效果、普通召喚與平台效能仍待。依使用者新排程先完成全部HD串接，最後集中人工確認，不宣稱完整HD |
+| 大型戰鬥動畫HD | #263：共背景、非共背景、四召喚及普通指令0～8人物consumer已接；正式66個FIGANI資源479幀、普通FDOTHER十八組340幀及召喚65～68共37幀。另有FDOTHER5的12張LMI1事件死亡效果，清冊460項；本批保持此前456項 | 其他人物、其他未列指令、法術／地圖回復、狀態致死正常GUI、其他共同效果、普通召喚與平台效能仍待。依使用者新排程先完成全部HD串接，最後集中人工確認，不宣稱完整HD |
 | 普通法術特效HD | CONFORMED-SCOPED／RUNTIME-E1：16組完整來源、alpha與色彩數值、全來源GPU、七種owner的完整Game.Draw／F2／MP／HP／RNG及一次續行通過；私人同步與兩包拒收通過。由audit_fd2_battle_hd_coverage.py重生，輸入與命令見HD主收據ordinary_material_effects_followup_20261021 | 原遮罩／明暗與手繪材質重定向，非逐幀獨立新畫或原版RGB parity。4／5共用owner以5代表；火龍26／27另由下列批次接入，其他人物／地形／HUD與集中人工確認仍待 |
 | 普通指令2火龍HD | CONFORMED-SCOPED／RUNTIME-E1：26／27完整來源與36矩陣、十三項錯件拒收、兩側全來源GPU及既有304回歸通過；raw-side2完整Game.Draw／F2、MP1／HP6／RNG／一次續行、施術全幀與代表特效最終核心通過。兩包缺件／F2與私人同步已核 | 三原RGBA共用、27鏡射及原框裁切明示；9／15半張口差別未獨立重畫，非原版RGB／alpha parity。另一側完整owner、普通操作與人工畫質集中最後；來源與工具見HD主收據dragon_effect_followup_20261021 |
 | 普通指令6人物HD | CONFORMED-SCOPED／RUNTIME-E1：同次producer保存層序、target省略與packed值；188張雙側／命中／多目標來源及八個變色案例，連既有合計2087張GPU畫布通過。完整Game.Draw觀測七色，各階段F2、MP一次／HP五段／RNG及一次續行通過；施術全幀核心與八項拒收通過 | HD採四近鄰RGB色差近似，保留alpha，非原版索引或RGB parity。效果32／33已由普通特效批次正式接入；正常操作及人工確認集中最後。主證據沿已閉合指令6契約，新增結果見HD主收據ordinary6_hd_followup_20261021 |
@@ -3721,3 +3721,5 @@ IDA9.4直接bytes更正caller定位：1D3FF在sub_1CFF0的玩家指令確認成�
 第1章完整流程追加現況（2026-10-17）：正常START、T3..T6四事件、哈諾死亡後哈瓦特電腦控制、T7後111清敵、戰後羅德鎮及五建築，原版full-r4與Game full-r8行為／節點通過；55筆AI零順序差。#242補原始phase metadata，#243移除GUI增援的額外Acted標記。保存仍由#244阻擋：START只寫JSON，嚴格SAV gate失敗。測試側提案可正常LOAD冷讀已知玩家狀態，但2228個完整byte差異尚待使用者確認，未接正式路徑。根契約及逐筆清單見[首章主證據](../data/ida/fd2_ch01_flow_20261017.json)；正式章台帳不提升。
 
 首章保存定案與正式驗收（2026-10-17）：使用者明確允許已展示差異，隨後要求matching技巧輔助。START既有C物件重連結與固定原版663 bytes相同；酒店完整C尚未匹配，沿既有IDA直接writer證據。有效紀錄65個差異在本章人物首次出現到保存均原值保留，未使用名冊2160個與衍生檢查碼3個全部逐筆列出。正式START初存已接酒店owner，Game full-r10實際寫SAV並以新Game正常LOAD冷讀5人已知能力／物品、章節1、gold1000及選項。嚴格比較仍failed；明示本份政策後行為／節點／交易passed，正式收據為[parity-ch01](../data/ui-traces/parity-ch01.json)。第1章依111列PLAYER-E2，正式台帳28章，第2、3章保留未完成；不宣稱全SAV bytes相同或未知producer已閉合。
+
+BattleFig15／17手繪來源已正式接入，限定CONFORMED-SCOPED／RUNTIME-E1；唯一入口為HD主收據party15_17_battle_followup_20261021及61「隊伍BattleFig15與17圖源」。34幀實際Draw核心、F2／返回、來源拒收及正式／runtime-only原子預檢通過；數量由同欄formal_coverage重生，不重開RE，不提升普通玩家或人工驗收。

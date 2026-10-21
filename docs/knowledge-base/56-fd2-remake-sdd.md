@@ -10015,3 +10015,5 @@ battle_ch02原缺view及繼承HUD來源，第一次正常移動遭預檢拒收�
 三原RGBA、27鏡射、9／15共用張口與16／17共用尾焰、刻意原框裁切明示，沒有原版RGB／alpha parity聲明。
 本段取代本檔較早火龍仍像素的現況描述，歷史收據不改。正式及runtime-only缺件／F2原子性與私人同步通過；正常操作及人工美術仍集中全部HD後。
 來源、工具及命令見[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的dragon_effect_followup_20261021；數量與其餘缺項只見[58](58-fd2-exe-re-coverage.md)。
+
+BattleFig15／17已沿61「隊伍BattleFig15與17圖源」正式接入；唯一收據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的party15_17_battle_followup_20261021。全部34幀Game.Draw核心、F2／返回、來源拒收及正式／runtime-only原子預檢通過，限RUNTIME-E1。共用關鍵姿勢與少量原框裁切明示；人工與正常玩家依全部HD集中排程，完整HD仍未完成。
