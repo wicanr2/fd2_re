@@ -115,6 +115,10 @@
 
 兩種劍士的分段打擊已接入HD，包含藍白蓄光、橫向光束與金色光柱，以及背景轉場和多目標續行。上圖由測試場景的實際最終GPU畫面縮圖，上排為指令24，下排為指令29；面板沿用來源角色名稱，背景與介面仍含像素素材。原有MP／HP標記與透明停拍保持，正常操作與人工造型確認待全部HD接入後集中抽驗。來源與範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
 
+![斧盾兵與兩組騎兵的HD測試畫面](docs/figures/hd-shield-riders-battle.png)
+
+左為斧盾兵劈斬，中為長戟騎兵揚馬後的下劈，右為白馬槍騎兵突刺。圖組包含蓄力、轉槍及收勢，保留原有節拍。上圖是測試場景的實際最終GPU縮圖，面板沿用來源角色名稱；背景及受擊閃色仍含像素素材。馬匹與武器比例、光弧寬度及槍影角度有美術近似，待全部HD接入後集中人工確認。來源與限定驗證見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
+
 | 鐵諾HD普通END攻防 | 蓋亞HD普通攻防 |
 | --- | --- |
 | ![鐵諾HD普通END攻防](docs/figures/hd-tino-physical-attack.png) | ![蓋亞HD普通攻防](docs/figures/hd-gaia-physical-attack.png) |

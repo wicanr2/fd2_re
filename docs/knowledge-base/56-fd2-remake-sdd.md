@@ -1,5 +1,7 @@
 # 56 — FD2 remake 系統設計規格（SDD，2026-08-09）
 
+BattleFig35斧盾與36／37騎兵完整來源已接入；三組全部Game.Draw核心、來源GPU、F2／返回、編製反例及兩包玩家／AI原子預檢通過。原框、節拍、命中、規則與保存保持；共用姿勢、馬與長柄武器比例、窄光弧及分段槍影近似明示。正常操作與人工依全部HD後集中，未新增原版parity。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，主證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的shield35_riders36_37_followup_20261022。
+
 BattleFig32／34劍士的指令24／29完整HD演出已接入，包含原生空拍、背景轉場與多目標續行。雙側來源矩陣、全部最終GPU／F2、兩包缺件及晚期回復、原MP／HP／RNG與一次續行通過。原77幀來源／物理證據保持，普通0雙marker仍拒收；本批不改美術清冊、規則或保存。正常操作、人工造型及其他人物／效果仍待。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，主證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的split_strikes24_29_followup_20261022。
 
 BattleFig28／29／31完整拳擊與短杖圖源已接入；三組全部Game.Draw核心、來源GPU、F2／返回、來源拒收及兩包缺件原子性通過。袍身／光弧比例、共用姿勢與碎光形狀近似明示，三個零header不補造；不新增正常玩家或原版parity聲明。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的monks28_31_mage29_followup_20261022。

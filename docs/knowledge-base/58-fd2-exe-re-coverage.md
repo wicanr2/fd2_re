@@ -7,7 +7,8 @@
 | 主題工具列與城鎮／商店 | RUNTIME-E1：遊戲外工具列保留F2與四語；三種城鎮及三種商店場景／店員已接HD，既有隊伍480頭像接裝備開窗。114個GPU案例、全部十二開窗位置、真實滑鼠／F2／F4及兩包載入通過 | 原生選單框、游標與交易效果保留；其他設施、普通玩家及人工造型集中全部HD後。依HD主收據facility_scene_followup_20261021，非完整HD或新Release |
 | 人物與正式世界 | 完整125組／1455張144圖已接Game.Draw，沿原生312×192窗格及raw定位，透明UI另疊 | 真正HD地形及完整HUD仍待完成 |
 | 蓋亞造型修訂 | 核准第二版80／480頭像與24／144四方向十二幀已登錄；正常START至首章97拍、七名頭像GPU及蓋亞普通北移／取消、F2與新程序LOAD已驗 | 序章尾端F9未通過，保存冷讀另有完整戰場收據；角色圖源只辨識同方向步態，兩筆相位差異與一筆不可比保留，不宣稱同幀 |
-| 大型戰鬥動畫HD | #263：共背景、非共背景、四召喚及普通指令0～8、24／29人物consumer已接；正式103個FIGANI資源825幀、普通FDOTHER十八組340幀及召喚65～68共37幀。另有FDOTHER5的12張LMI1事件死亡效果，清冊509項；最新32／33／34完整77幀，含兩原生空拍，44張物理來源有實際Draw；98／104另33幀含空拍已接24／29實際Game.Draw，普通0雙marker仍拒收；25的77第三銀行亦有指令0測試場景證據；18／19第三銀行合法caller仍未閉合 | 其他人物、其他未列指令、法術／地圖回復、狀態致死正常GUI、其他共同效果、普通召喚與平台效能仍待。依使用者新排程先完成全部HD串接，最後集中人工確認，不宣稱完整HD |
+| 大型戰鬥動畫HD | #263：共背景、非共背景、四召喚及普通指令0～8、24／29人物consumer已接；正式109個FIGANI資源872幀、普通FDOTHER十八組340幀及召喚65～68共37幀。另有FDOTHER5的12張LMI1事件死亡效果，清冊515項；最新35／36／37完整47幀全部具物理Game.Draw。98／104含原生空拍已接24／29實際Game.Draw，普通0雙marker仍拒收；25的77第三銀行亦有指令0測試場景證據；18／19第三銀行合法caller仍未閉合 | 其他人物、其他未列指令、法術／地圖回復、狀態致死正常GUI、其他共同效果、普通召喚與平台效能仍待。依使用者新排程先完成全部HD串接，最後集中人工確認，不宣稱完整HD |
+| 35斧盾及36／37騎兵HD | CONFORMED-SCOPED／RUNTIME-E1：六銀行47幀，候選及runtime-only各47張來源GPU、全部11／18／18張物理核心、三階段F2、64／65 DAC與一次續行通過；63編製拒收、六命令兩包載入及玩家／AI原子預檢零SKIP，無OOM | 十二原RGBA及四精確裁切沿白名單保存，舊4857檔保持；107／110／113零header不補造。共用姿勢、馬／武器比例、窄光弧與分段槍影近似明示，正常／人工集中最後；固定盤點與重跑工具見主收據shield35_riders36_37_followup_20261022的formal_coverage及61 |
 | 指令24／29分段打擊HD | CONFORMED-SCOPED／RUNTIME-E1：396張雙側原生來源矩陣、完整145張最終1920GPU／原始空拍、五／八相位F2、單／雙目標MP與HP標記及一次續行通過；兩包全部畫面相同，缺件原子性與晚期交易回復、2087共用GPU及整套Go通過 | 本批僅新增consumer，素材數量保持；正常指令選擇與人工集中全部HD後，非原版RGB parity或PLAYER-E2。主收據split_strikes24_29_followup_20261022，重跑工具見61 |
 | 蓋亞戰鬥手腕修正 | v2待機／蓄力已接入，十五幀Game.Draw核心、F2／返回、十六項來源拒收與兩包原子預檢通過，限定RUNTIME-E1；舊出拳五幀保持 | #268：新造型的正常操作與集中人工確認仍待；舊普通圖是v1。來源見HD主收據gaia_guard_arm_followup_20261021與61，整體數量保持上列 |
 | 普通法術特效HD | CONFORMED-SCOPED／RUNTIME-E1：16組完整來源、alpha與色彩數值、全來源GPU、七種owner的完整Game.Draw／F2／MP／HP／RNG及一次續行通過；私人同步與兩包拒收通過。由audit_fd2_battle_hd_coverage.py重生，輸入與命令見HD主收據ordinary_material_effects_followup_20261021 | 原遮罩／明暗與手繪材質重定向，非逐幀獨立新畫或原版RGB parity。4／5共用owner以5代表；火龍26／27另由下列批次接入，其他人物／地形／HUD與集中人工確認仍待 |
@@ -41,7 +42,7 @@
 | 悠妮物理戰鬥HD | CONFORMED-SCOPED：八母稿編製4／11幀，正常首章兩次END接敵、攻防／返回、F2及保存冷讀；81張PNG符合金色核心，雙方同圖39／32張 | 明示姿勢重定向及少數原矩形裁切，不宣稱唯一相位、原版逐幀或平台效能 |
 | 索爾物理戰鬥HD | CONFORMED-SCOPED：七母稿編製完整4／11幀，普通首章兩次各一回合END接敵與攻防通過，我方全員存活；F2、保存冷讀及雙方圖源核心通過 | 待機與蓄力明示重用母稿；相近核心不判唯一相位，非原版逐幀或平台效能 |
 | 強盜物理戰鬥HD | CONFORMED-SCOPED：八母稿編製完整4／8幀，普通首章雙方攻防、F2、保存冷讀與圖源核心通過 | 美化重定向保留原矩形；不宣稱唯一相位、原版逐幀或跨平台效能 |
-| 戰鬥素材覆蓋 | 固定盤點409位置、264已解碼資源、2118原幀；現行正式數量依上列大型戰鬥動畫HD，原版來源及實際PNG由audit_fd2_battle_hd_coverage.py重生 | 來源408仍阻擋；資料登錄不推定全部caller或玩家覆蓋，完整戰鬥HD未完成；最新輸入／命令與formal coverage見HD主收據dragons16_26_battle_followup_20261021 |
+| 戰鬥素材覆蓋 | 固定盤點409位置、264已解碼資源、2118原幀；現行正式數量依上列大型戰鬥動畫HD，原版來源及實際PNG由audit_fd2_battle_hd_coverage.py重生 | 來源408仍阻擋；資料登錄不推定全部caller或玩家覆蓋，完整戰鬥HD未完成；最新輸入／命令與formal_coverage見HD主收據shield35_riders36_37_followup_20261022 |
 | 亞雷斯物理戰鬥HD | DATA-READY／RUNTIME-E1及普通首章抽驗：15母稿編製完整4／15幀，正常LOAD、兩次攻擊／返回、F2、保存冷讀通過。實際PNG的高覆蓋藍衣像素與新增圖源相符 | 相近身體只列相容集合，不判定唯一相位；武器／光效目視審查，不宣稱全部19幀GPU或原版逐幀對拍。其他角色及效能另驗 |
 | 四召喚施術者HD延伸 | CONFORMED-SCOPED／RUNTIME-E1：沿既有0x27FC9／0x29164與typed producer，接prelude、actor及slide；395組GPU回歸、四caller完整810次呈現、各階段F2及跨家族原子預載通過；148張GPU核對圖源核心 | 限修改class19／BattleFig4 fixture；普通指令0另見本表，其他普通法術、施術者、保存冷讀與平台另驗。來源及拒收見61及主收據compound_caster_followup_20261019 |
 | 共用召喚演出HD | 四圖庫原始37幀核同固定容器及原始解析器；既有273個GPU案例保持。本批新增風妖精14、破壞神9、暗邪鬼9幀，完整Draw分別156／241／255次呈現，三段發布、F2、缺件拒收與一次續行通過。#264中間hold沿用舊Draw確認已修正 | 限既有class19／BattleFig4修改fixture的RUNTIME-E1；非普通玩家、自然槽或新oracle。專屬地圖尾段仍像素；施法者延伸見上列，尚未驗普通召喚保存冷讀 |
@@ -93,7 +94,7 @@
 合成入口為[`build_fd2_readme_attack_gif.py`](../../tools/build_fd2_readme_attack_gif.py)，用法在該主收據的`reproduce`。
 此展示不改動正式清冊、規則或保存。覆蓋重跑使用
 `python3 tools/audit_fd2_battle_hd_coverage.py --inventory docs/data/fd2-battle-hd-source-inventory-20261019.json --original-pack <原版分離包> --catalog remake/assets/themes/modern/catalog.json --source remake/generated-assets/modern-theme-prototypes --report <新工作區報告>`，限既有素材Docker映像檔，輸入原版包唯讀。
-2026-10-20的輸入、工具及清冊SHA與結果在主收據的`formal_coverage`，只證明資料覆蓋。
+2026-10-22目前輸入、工具及清冊SHA與結果在主收據`shield35_riders36_37_followup_20261022.formal_coverage`，只證明資料覆蓋；較早批次同名欄位保留為歷史收據。
 哈諾11幀、章前HP校準槽普通按鍵攻防及兩張故事表情見`hano_battle_followup_20261020`。蓋亞原框15幀、原控制器失敗及獨立追蹤範圍見
 `gaia_native_battle_followup_20261020`，沒有採用舊擴框方案。正式來源稽核可由
 `tools/audit_fd2_battle_hd_coverage.py`依主收據所列inventory、正式catalog及素材根重跑。
