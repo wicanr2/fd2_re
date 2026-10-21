@@ -71737,7 +71737,7 @@
     }
   },
   "axeman003_battle_followup_20261021": {
-    "status": "SOURCE-CANDIDATE-NOT-REGISTERED",
+    "status": "FORMAL-RUNTIME-E1-HUMAN-REVIEW-PENDING",
     "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md#battlefig3-斧兵圖源",
     "work_root": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1",
     "original_reference": {
@@ -71750,7 +71750,7 @@
     ],
     "empty_header_resource": 11,
     "human_review": "pending-until-all-HD-integrated",
-    "formal_registered": false,
+    "formal_registered": true,
     "full_battle_hd_complete": false,
     "generation": {
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure003-generation-r1.json",
@@ -71760,6 +71760,363 @@
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure003-source-board-r1.png",
       "sha256": "b7f21639e2ae2780042066e2701b5ac5c7e74f66c91cbc14fa39ebe9345ca672"
     },
-    "next": "先核切分與原矩形的身體／斧芒位置，再編製完整十幀；原RGBA保持。"
+    "private_synced": true,
+    "base": "3dbc5792105f7e2d736b65aa4e7cdc9a251133d9",
+    "branch": "feat/hd-axeman003",
+    "generation_r2": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure003-generation-r2.json",
+      "sha256": "3b5b6d1071a5a5c7d1687a1acc02635a11c542cd0190d9b473faa3e1f7eb3a85"
+    },
+    "generation_prompts": {
+      "r1": {
+        "tool": "built-in image_gen",
+        "prompt": "Use case: stylized-concept. Asset type: transparent production RPG battle sprite source board, one coherent axeman animation asset. Reference image 1 is the native FIGANI9/10 pose sheet: preserve the character identity, back three-quarter camera, clothes and pose silhouettes. Reference image 2 is STYLE ONLY, the accepted hand-painted remake style; do not give the axeman that reference knight's sword or metal armor. Create a 3-column, 2-row source atlas on a truly transparent background, with very generous transparent gutters and nothing crossing cell boundaries. Top row exactly three full body drawings of the same stocky muscular human axeman, viewed from behind and slightly to his left, facing screen right. Brown hair tied in a short stubby topknot, strong bare upper arms, sleeveless russet brown tunic, dark navy blue scarf/cape draped diagonally across his upper back and hanging to his calves, dark blue belt, loose olive green trousers, dark blue wrist wraps and wrapped shin boots. Short wooden haft with a SINGLE pale steel axe head with a curved cutting edge and flat back, held in both hands. Do not make a huge fantasy double axe. Top left: crouched ready idle, feet spread, axe low to his right, right shoulder nearest the enemy. Top middle: winding up, both hands lifting the same axe over his right shoulder above his head, one leg advancing. Top right: finished diagonal downward chopping strike, low crouch, body turned slightly more sideways right, axe held low and forward-left in the picture, cape behind to the right; the same head and same outfit. Every body must be complete with both feet and whole axe, no cutoffs, no detached props. Bottom left: only a large elegant warm golden axe-swing crescent sweep on transparent, like native FIGANI10:2, broad light pale-yellow center at the top/right and tapered curving orange-gold lower-left tip; no human or weapon. Bottom middle: only a small golden tapered blade-tip glint on transparent. Bottom right left fully transparent. Render refined ink-edged hand-painted 1990s tactical RPG remake illustration, detailed cloth folds, brushed steel, believable muscular anatomy, neutral even light and readable silhouette at game size. Keep same anatomy and clothes across all three poses. No text, numbers, frames, ground, floor, terrain, drop shadow, border, scene, checkerboard pattern, watermarks, extra characters, armor additions, or opaque background. Three clearly separated bodies on top, two clearly separated golden effects below, one empty cell.",
+        "reference_images": [
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/figure003-original-reference.png",
+            "role": "native pose and clothes reference"
+          },
+          {
+            "file": "remake/generated-assets/modern-theme-prototypes/figure-000-idle-battle-hd6-master-v1.png",
+            "role": "accepted style only"
+          }
+        ],
+        "generated_file": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-0a6ad66d-7df7-455b-80b8-01233e355c6b.png",
+        "project_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure003-source-board-r1.png",
+        "project_sha256": "b7f21639e2ae2780042066e2701b5ac5c7e74f66c91cbc14fa39ebe9345ca672",
+        "status": "CANDIDATE-NOT-REGISTERED",
+        "alpha": "0..254 preserved",
+        "human_review": "pending-until-all-HD-integrated"
+      },
+      "r2": {
+        "tool": "built-in image_gen",
+        "prompt": "Use case: stylized-concept. Production game sprite on a truly transparent background. Reference 1: the original pixel axeman sheet, especially FIGANI10:3 and 10:4, whose narrow, upright post-chop silhouette and close legs are the required geometry. Reference 2: same axeman's hand-painted source board; match the exact face/hair, brown sleeveless tunic, blue cape/wraps, olive trousers, short single-headed steel axe and ink-painted finish of its first two bodies. Produce ONLY ONE full body post-chop pose of this same stocky muscular human axeman, without any other pose or effect. Portrait framing, tall narrow silhouette, about 2:3 width-to-height including the axe. Back three-quarter view, looking toward the left-front of the image with face mostly hidden, as in the native FIGANI10:3, shoulders bowed forward after swinging. Knees slightly bent but close together, feet close with one foot slightly ahead, NOT a wide sideways lunge. Torso and hips nearly stacked vertically. Both hands hold the short axe low just in front of his left side, blade close to his chest/waist, no long handle protruding sideways. Heavy navy blue cloth crosses his upper back and falls straight down vertically close behind him to his calves on screen right, NOT a cape flying horizontally. Brown short topknot, bare muscular upper arms, russet sleeveless tunic, loose olive trousers, navy wrist and calf wraps with simple boots. Preserve readable 1990s tactical RPG battle sprite anatomy, detailed hand-painted cloth and brushed steel, crisp ink contours. Complete whole body and axe, generous transparent margin around all sides. No gold effects, light aura, ground, shadows, light glow around the silhouette, background colors, vignette, floor, scenery, labels, text, watermark, extra body, armor or sword. Genuinely transparent RGBA background.",
+        "reference_images": [
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/figure003-original-reference.png",
+            "role": "native narrow post-chop silhouette"
+          },
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure003-source-board-r1.png",
+            "role": "same character clothes and style"
+          }
+        ],
+        "generated_file": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-9b03c0b1-6586-4be2-adbf-722b367803cc.png",
+        "project_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure003-strike-source-r2.png",
+        "reason": "R1第三姿勢橫向跨步太寬，不適合原72×109窄矩形；採原版接近直立、垂直披布與雙腿靠攏的收勢重繪。R1第一二姿勢與斧芒仍只作來源候選。",
+        "status": "CANDIDATE-NOT-REGISTERED",
+        "human_review": "pending-until-all-HD-integrated"
+      }
+    },
+    "crop_proof": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure003-crop-proof-r2.json",
+      "sha256": "40e51a98fbef17a3e773a691b406470d2f662030f3f5affeb1ef78fe36181c2e"
+    },
+    "recipe": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure003-recipe-r3.json",
+      "sha256": "1d33786aa89fa3a234d5166ac4d03642e19d18f2077fc9a29c43096869fbe890"
+    },
+    "recipe_document": {
+      "schema_version": 1,
+      "figure": 3,
+      "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+      "sources": {
+        "idle": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-003-idle-battle-hd6-master-v1.png",
+          "sha256": "e69f2dc8494a78d717f53e6569cb6259cf4f17e5ab395002fb41c4d4acca6ff8",
+          "anchor": [
+            50,
+            125,
+            513,
+            535
+          ]
+        },
+        "windup": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-003-windup-battle-hd6-master-v1.png",
+          "sha256": "25a4dd81625a5597d2603994ad0d94e7aff0d907e83fe7d4103d7b6ff4c655f5",
+          "anchor": [
+            15,
+            15,
+            336,
+            542
+          ]
+        },
+        "strike": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-003-strike-battle-hd6-master-v1.png",
+          "sha256": "e81dcc3c0384750c846f8a2d79ea83e404525944f4bee7a67beee4209e43c60d",
+          "anchor": [
+            77,
+            158,
+            938,
+            1397
+          ]
+        },
+        "arc": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-003-arc-battle-hd6-master-v1.png",
+          "sha256": "9aad522ce659fd06dd0f873b6cec630e7c7afa37d2a60f76999636a162f1dff4",
+          "anchor": [
+            46,
+            26,
+            629,
+            441
+          ]
+        },
+        "glint": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-003-glint-battle-hd6-master-v1.png",
+          "sha256": "900cc5b43998f4b0d44064a17ced0dcc115150eeab9aa09495f0f71b92f53bcf",
+          "anchor": [
+            26,
+            41,
+            239,
+            244
+          ]
+        }
+      },
+      "resources": {
+        "9": [
+          [
+            {
+              "pose": "idle",
+              "anchor": [
+                0,
+                0,
+                120,
+                116
+              ],
+              "scale_group": "idle"
+            }
+          ],
+          [
+            {
+              "pose": "idle",
+              "anchor": [
+                0,
+                0,
+                120,
+                115
+              ],
+              "scale_group": "idle"
+            }
+          ],
+          [
+            {
+              "pose": "idle",
+              "anchor": [
+                0,
+                0,
+                120,
+                114
+              ],
+              "scale_group": "idle"
+            }
+          ],
+          [
+            {
+              "pose": "idle",
+              "anchor": [
+                0,
+                0,
+                120,
+                115
+              ],
+              "scale_group": "idle"
+            }
+          ]
+        ],
+        "10": [
+          [
+            {
+              "pose": "idle",
+              "anchor": [
+                0,
+                0,
+                120,
+                116
+              ],
+              "scale_group": "idle"
+            }
+          ],
+          [
+            {
+              "pose": "windup",
+              "anchor": [
+                0,
+                0,
+                109,
+                131
+              ],
+              "scale_group": "windup"
+            }
+          ],
+          [
+            {
+              "pose": "strike",
+              "anchor": [
+                0,
+                81,
+                72,
+                190
+              ],
+              "scale_group": "strike"
+            },
+            {
+              "pose": "arc",
+              "anchor": [
+                4,
+                0,
+                144,
+                119
+              ],
+              "scale_group": "arc"
+            }
+          ],
+          [
+            {
+              "pose": "strike",
+              "anchor": [
+                0,
+                0,
+                72,
+                109
+              ],
+              "scale_group": "strike"
+            },
+            {
+              "pose": "glint",
+              "anchor": [
+                4,
+                4,
+                16,
+                32
+              ],
+              "scale_group": "glint"
+            }
+          ],
+          [
+            {
+              "pose": "strike",
+              "anchor": [
+                0,
+                0,
+                72,
+                107
+              ],
+              "scale_group": "strike"
+            },
+            {
+              "pose": "glint",
+              "anchor": [
+                4,
+                22,
+                13,
+                30
+              ],
+              "scale_group": "glint"
+            }
+          ],
+          [
+            {
+              "pose": "strike",
+              "anchor": [
+                0,
+                0,
+                72,
+                107
+              ],
+              "scale_group": "strike"
+            }
+          ]
+        ]
+      }
+    },
+    "compiled": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure003-candidate-r3/compiled.json",
+      "sha256": "cf8bb1a849c03fca3afe1e7e73cb15d85b0ab28bf7f75c9e4b670f32885c91aa"
+    },
+    "compiler_guards": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure003-compiler-guards-r1/guards.json",
+      "sha256": "7796c26c5ee1b1e4daa003a3da22bc255cc00f6957dffa74bb4395fb14bd7e80"
+    },
+    "physical_gpu": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure003-runtime-physical-r1/receipt.json",
+      "sha256": "50792410982a646bbc42098a64a3dabd273bfe1889eecd2e6d98f57c3644cc37"
+    },
+    "independent_gpu": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure003-physical-core-r1.json",
+      "sha256": "81fcd14ac4144b9a603b39fe18a4821db2b3839eb72e7a55b7dbd554c6beac58"
+    },
+    "formal_registration": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure003-formal-registration-r1.json",
+      "sha256": "042fe588a45e8991d2afb0dc4847d704e675e092b620dea1bfacad6f8a17149e"
+    },
+    "formal_coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure003-formal-coverage-r1.json",
+      "sha256": "9fd27900101cca0cd047a14b6a552672709f8583aa008598392774e4656b13ee"
+    },
+    "private_delivery": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure003-private-delivery-r1.json",
+      "sha256": "360b4d34305ebc98725a57432cf60da08001ec277e0b93c7796ca596e08caad6"
+    },
+    "formal_and_runtime_go": {
+      "formal": {
+        "memory_report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure003-formal-go-r1.memory.json",
+          "sha256": "9e22584feb5c4e0eadf14342e1067dd606ce2680d7ea12d9df4977b9e4209750"
+        },
+        "top": 2,
+        "sub": 2,
+        "skip": 0
+      },
+      "runtime": {
+        "memory_report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure003-runtime-go-r1.memory.json",
+          "sha256": "46d2ccd4866b3e693219ce15d748e52622e19b54c9c51db2f28487125b2a6f7d"
+        },
+        "top": 2,
+        "sub": 2,
+        "skip": 0
+      }
+    },
+    "private_git": {
+      "commit": "10029c6f8ba1ba196dfd86b5c9a0f50b25ca6861",
+      "actual_remote_main": "10029c6f8ba1ba196dfd86b5c9a0f50b25ca6861",
+      "visibility": "沿前批已核private，未修改公開設定。"
+    },
+    "rejected_attempts": [
+      "R1第三姿勢跨步太寬，未編製；獨立R2收勢重新生成。R1整張圖板不進正式或私人素材白名單。",
+      "R2配方使用layers物件，被既有schema在發布前拒收；R3改為既有清單格式，原編製器未修改。"
+    ],
+    "clipping_high_coverage_pixels": 8,
+    "native_detail_difference": "10:5未知細棕線未複製；母稿共用及裁切明示，等待集中人工確認。",
+    "next_effect_reference": {
+      "data": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ordinary-effects-native-reference-r2.json",
+        "sha256": "e5f94a19af703148dd73064027ce6a162bd0ecf8fa72f77cdd1b1e87a45c69a7"
+      },
+      "image": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ordinary-effects-native-reference-r2.png",
+        "sha256": "dc0907bfbc9cddf3be5701a20da4fc36adab1e94544e4fe4ad9ed801cc0f5c7c"
+      },
+      "tool": {
+        "file": "tools/audit_fd2_ordinary_effect_source.py",
+        "sha256": "a0b9bd04c169a3df719d286fdcb8330e7ed74fa44b219b330eb1d113b82c5e7e"
+      },
+      "frames": 340,
+      "resources": 18,
+      "scope": "圖源核對，尚未HD重繪或驗原版執行期"
+    },
+    "reproduce": {
+      "compiler": "取3dbc5792的catalog作基底；從本欄recipe_document匯出配方。Docker fd2-assets-local:20260829-sfx: python tools/build_fd2_character_battle_hd.py --pack <original-pack> --inventory docs/data/fd2-battle-hd-source-inventory-20261019.json --recipe <recipe> --layered --base-catalog <3dbc5792-catalog> --out <fresh-dir>",
+      "physical_gpu": "Docker fd2-go-test-local:latest, user1000:1000, network none, memory8g/cpus4/pids512; FD2_HD_BATTLE_LIFECYCLE_GPU=1 FD2_HD_BATTLE_REAL=1 FD2_TEST_MODERN_BATTLE_FIGURE=3 FD2_TEST_HD_BATTLE_OUT=<fresh-dir> FD2_TEST_MODERN_BATTLE_CATALOG=<candidate-catalog> FD2_TEST_MODERN_BATTLE_PACK=<candidate-pack> FD2_TEST_ORIGINAL_PACK=<original> FD2_ASSET_PACK=<original>; cwd remake: with-xvfb go test ./cmd/fd2 -count=1 -timeout=400s -run '^TestModernHDBattleRuntimeGPU$|^TestModernHDBattleAssetsRealCandidate$' -v",
+      "core": "Docker Python: tools/verify_fd2_character_battle_gpu.py --figure 3 --core-profile opaque --sample-group fixture --receipt <GPU>/receipt.json --catalog <candidate-catalog> --source <candidate-pack> --report <fresh-json>"
+    },
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure003-final-validation-r1.json",
+      "sha256": "b7c9790f7dd2001afa304ac6bb677535138fb5889abee9537f7eae6da45f74a2"
+    },
+    "worklist_verify": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure003-worklist-verify-r1.log",
+      "sha256": "86a705d5f4e3a2e4f08ef650f29d426c2c5c17cfa54544b6333b324e92c391d1"
+    }
   }
 }

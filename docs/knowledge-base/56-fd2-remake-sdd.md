@@ -11,6 +11,8 @@
 來源集中於[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的ordinary_remaining_hd_followup_20261021、
 winged110_battle_followup_20261021、ordinary6_hd_followup_20261021及hd_integration_order_20261021；自動通過不當作人工或原版parity。
 效果入口結果見同份主收據ordinary_effect_banks_followup_20261021。
+BattleFig3斧兵的十幀亦已正式接入，完整攻反擊／F2／返回及實圖核心通過；母稿共用、裁切與未知細線差異明示，
+正常操作及造型人工確認集中最後。來源為同份主收據axeman003_battle_followup_20261021。
 
 約拿BattleFig21與希爾法BattleFig24沿原17幀正式登錄，65／74零header不補造。完整Draw／三階段F2／返回DAC及runtime-only最終PNG bytes一致；正常章23近戰、返回與章節邊界保存冷讀通過。希爾法使用已核對的章前AP+0強化槽，避免在抽樣前把目標反擊清除；116號故事HD頭像及正常劇情已由captain116_battle_followup_20261021補齊；隊長主動攻擊正常GUI仍待。原矩形、marker、規則與保存格式保持；原版逐幀及整章E2不由此推定。
 來源見[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的cleric_party_battle_followup_20261021，唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)。

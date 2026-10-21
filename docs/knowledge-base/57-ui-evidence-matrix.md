@@ -6,6 +6,8 @@
 施術全幀核心、八項收據拒收及六項遮擋控制通過，正常操作仍待集中確認。
 普通0～8同次來源的十八項特效入口及兩銀行共同預載通過九種owner缺件／F2原子性；
 只驗接線，未新增效果美術或一般玩家實圖。來源為主收據ordinary_effect_banks_followup_20261021。
+BattleFig3十張正式戰鬥圖源的實際Draw與核心通過，攻擊／反擊、F2／返回及一次續行通過；
+未知細線與裁切仍待集中人工確認。來源為主收據axeman003_battle_followup_20261021，不提升普通玩家或原版parity。
 依使用者2026-10-21新排程，先完成全部HD串接，再集中人工確認與修正；3／7正常操作、其他人物／效果、
 完整介面與平台仍明示待驗。來源見[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的
 ordinary_remaining_hd_followup_20261021、winged110_battle_followup_20261021、ordinary6_hd_followup_20261021，唯一覆蓋數量依[58](58-fd2-exe-re-coverage.md)。
