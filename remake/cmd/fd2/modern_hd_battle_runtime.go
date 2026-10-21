@@ -16,6 +16,8 @@ type modernHDBattleSource struct {
 	Frame                         figani.Frame
 	Resource, Index, DX, DY, Fill int
 	Clip                          *image.Rectangle
+	PackedShader                  int
+	PackedColours                 []byte
 }
 
 type modernHDBattleSources struct {
@@ -75,6 +77,8 @@ func (g *Game) syncModernHDBattleOwner() {
 		owner = g.nativeCmd2Presentation
 	case g.nativeCmd3Presentation != nil:
 		owner = g.nativeCmd3Presentation
+	case g.nativeCmd6Presentation != nil:
+		owner = g.nativeCmd6Presentation
 	case g.nativeCmd7Presentation != nil:
 		owner = g.nativeCmd7Presentation
 	case g.nativeCmd8Presentation != nil:
@@ -139,7 +143,8 @@ func (g *Game) modernHDBattlePlan(sources *modernHDBattleSources, palette color.
 			value := image.Rectangle{Min: c.Min.Mul(6), Max: c.Max.Mul(6)}
 			clip = &value
 		}
-		plan.Layers = append(plan.Layers, modernHDBattleLayer{Native: f, HD: picture, HDKey: key, Rect: rect, Fill: source.Fill, Clip: clip})
+		plan.Layers = append(plan.Layers, modernHDBattleLayer{Native: f, HD: picture, HDKey: key, Rect: rect, Fill: source.Fill, Clip: clip,
+			PackedShader: source.PackedShader, PackedColours: source.PackedColours})
 	}
 	return plan, nil
 }

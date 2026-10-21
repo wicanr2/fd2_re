@@ -8,6 +8,7 @@ import (
 	"image/draw"
 	"math"
 	"os"
+	"strings"
 	"testing"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -100,6 +101,20 @@ func (p *modernHDBattleGPUProbe) Draw(screen *ebiten.Image) {
 		if !bytes.Equal(before, p.pixels) {
 			p.err = fmt.Errorf("invalid clip changed previous world")
 			return
+		}
+		for _, shader := range []int{-1, 0x1b0, 0x9b0, 0x2b1, 0x2b0} {
+			bad = c.plan
+			bad.Layers = append([]modernHDBattleLayer(nil), bad.Layers...)
+			bad.Layers[len(bad.Layers)-1].PackedShader = shader
+			if err := p.gpu.draw(bad); err == nil {
+				p.err = fmt.Errorf("invalid late packed plan accepted")
+				return
+			}
+			p.gpu.World.ReadPixels(p.pixels)
+			if !bytes.Equal(before, p.pixels) {
+				p.err = fmt.Errorf("invalid late packed plan changed previous world")
+				return
+			}
 		}
 	}
 	op := &ebiten.DrawImageOptions{}
@@ -232,6 +247,7 @@ func TestModernHDBattleGPUBridge(t *testing.T) {
 	cases = appendModernCommand0GPUCases(t, cases)
 	cases = appendModernCommand1GPUCases(t, cases)
 	cases = appendModernOrdinaryRemainingGPUCases(t, cases)
+	cases = appendModernPackedColourGPUCases(t, cases)
 	cases = appendModernCommand5GPUCases(t, cases)
 	cases = appendModernScrollGPUCases(t, cases)
 	probe := &modernHDBattleGPUProbe{cases: cases}
@@ -243,6 +259,15 @@ func TestModernHDBattleGPUBridge(t *testing.T) {
 	defer probe.gpu.close()
 	if probe.err != nil || probe.index != len(cases) {
 		t.Fatalf("GPU bridge incomplete: %v (%d/%d)", probe.err, probe.index, len(cases))
+	}
+	packedTextures := 0
+	for key := range probe.gpu.sources {
+		if strings.HasPrefix(key, "hd/packed-matrix-target/packed/") {
+			packedTextures++
+		}
+	}
+	if packedTextures != 8 {
+		t.Fatalf("seven shades and changed palette need eight separate textures, got%d", packedTextures)
 	}
 	t.Logf("%d GPU cases: native complete-canvas exact; HD alpha/RGB shade tolerance1; no original-executable or player-path claim", len(cases))
 }

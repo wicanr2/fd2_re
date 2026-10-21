@@ -3132,6 +3132,42 @@ fixture補充：共用舊fixture只留class2抗性，7的完整目標集合還�
 - 技術接入、尚待人工確認及已確認分開記錄；缺素材、未知caller與未驗平台維持明示，
   不因改排程將完整HD或PLAYER-E2提前結案。正式資料的新未知仍回到既有RE／規格閘門。
 
+### 普通法術6的人物與變色呈現
+
+狀態：CONFORMED-SCOPED／RUNTIME-E1。基底90200c36，分支feat/hd-command6-palette。原始FD2.EXE指紋、IDA9.4線性位址
+及已閉合來源沿[指令6主契約](../data/ida/fd2_ch24_command6_work_bounds_20261004.json)與58；
+不重開座標、負列隔離、HP或RNG。固定FIGANI／FDOTHER來源沿既有HD主收據。
+本切片保持現行ComposeNativeCommand6TargetFrame與typed排程的indexed輸出，未新增DOS原版逐拍證據。
+
+- 同次BuildNativeCommand6EffectSequence記錄實際底圖、actor末幀、target idle、位移及前後效果。
+  前導orbit的底圖原本先畫target，來源另明示target先於第一組效果；tail是否畫target沿原DrawTarget。
+  內部來源新增可選順序／省略／packed控制欄位，預設保持其他普通法術順序；素材與保存格式不變。
+- 保持7張front、每目標12張／五段HP、九張boundary及7張tail。現行StageBases已保留sub_2B659的LUT15，
+  不再追加另一段共同tail。前導、actor黑／色脈衝、Draw確認、聲音、MP一次、RNG與一次續行均沿原owner。
+- 命中時現行packed值為shade高byte與低byte0xB0，shade限2..8；原target索引沿
+  `((index+shade)&7)+0xB0`。HD保留原始mask、位移與圖層順序，native層仍使用同一索引結果。
+  未命中保持原圖與原位移；不為取得七色而重擲或重算顯示RNG。
+- HD圖沒有原版索引，沿已核准地形的terrainColourWeights四近鄰色差插值：
+  只以該target原始Mask可見索引作基底，按目前native palette取得原RGB與packed映射RGB，
+  對HD直通RGB加上四近鄰加權色差並四捨五入／clamp。alpha保持；不改寫母稿。
+  同RGB不同原索引的歧義由既有索引順序與四近鄰規則決定，這是modern-art palette approximation，
+  不稱重建原始索引或原版RGB parity。僅target層套用；actor及其他圖層沿原契約。
+- 變色texture快取鍵包含原HD PNG雜湊、palette、原始可見索引與packed值；owner／theme結束時清除。
+  畫前驗完整計畫及packed範圍，錯來源、晚期缺圖與F2仍須原子拒收，不在中途重新執行交易。
+- 驗雙側、命中／未命中、合法多目標與boundary的整張indexed來源重組完全相同，保留#32已核的有界負列行為。
+  七種shade以獨立CPU色差與實際GPU回讀核對，另驗alpha、僅target變色、快取隔離與壞計畫不覆寫畫布。
+  完整Game.Draw／各階段F2／MP1／每目標HP5／RNG及一次續行須驗；正常操作及人工確認依全HD集中排程。
+
+FDOTHER32／33效果仍列後續HD素材；本批不新增美術或變更其嚴格工作緩衝規則。
+施術者實圖核對依固定原版包manifest的metadata與mask雜湊辨識FDOTHER前景遮擋；
+已登錄HD效果則驗清冊PNG與alpha。不以整個矩形排除，也不調低RGB或1000點門檻。
+來源、結果與近似邊界集中於HD主收據ordinary6_hd_followup_20261021，不把人物接線當完整HD完成。
+
+自動結果：188張新增來源與八個獨立變色案例，連既有共2087張GPU畫布通過；
+完整Game.Draw觀測七色、各階段F2、MP1／HP5／RNG及一次續行通過。
+全部施術來源核心與八項拒收、六項原生／HD遮擋控制通過；舊普通7核心亦回歸通過。
+正常操作與人工確認依全部HD集中排程，不新增PLAYER-E2或原版oracle聲明。
+
 ### BattleFig110 三組戰鬥圖源
 
 狀態：RUNTIME-E1；正式接入與自動繪圖已通過，正常操作及人工確認依全HD集中排程。來源沿固定FIGANI inventory及原版分離包，330／331／332為4／12／8幀。

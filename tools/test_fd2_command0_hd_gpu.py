@@ -18,7 +18,7 @@ def main():
     p.add_argument('--normal', action='store_true')
     p.add_argument('--command5', action='store_true')
     p.add_argument('--command1', action='store_true')
-    p.add_argument('--ordinary-command', type=int, choices=[2,3,7,8])
+    p.add_argument('--ordinary-command', type=int, choices=[2,3,6,7,8])
     p.add_argument('--normal-end-command', type=int, choices=[0,4,5])
     p.add_argument('--figure', type=int, default=9)
     p.add_argument('--core-profile', choices=['blue','gold','opaque'], default='gold')
@@ -81,13 +81,17 @@ def main():
             expected = '缺少必要施術者階段的實際HD核心或指定F2'
         elif name == 'incomplete-cast-frames':
             expected = '施術來源全幀GPU核心不完整'
+        elif name == 'incomplete-packed-shades':
+            expected = '需要七種packed變色的實際Draw觀測'
         if expected not in reason:
             raise AssertionError((name, '非預期拒收原因', reason))
         checks.append({'case': name, 'status': 'PASS-REJECTED', 'reason': reason})
 
-    reject('wrong-command', lambda d:d.update(battle_end_commands=[]) if args.normal_end_command is not None else d.update(battle_command_id=6) if args.normal else d.update(command_id=6))
+    reject('wrong-command', lambda d:d.update(battle_end_commands=[]) if args.normal_end_command is not None else d.update(battle_command_id=(command_id+1)%9) if args.normal else d.update(command_id=(command_id+1)%9))
     reject('wrong-status', lambda d:d.update(status='OBSERVATION-ONLY'))
-    reject('incomplete-transaction', lambda d:d.update(cold_loaded_units_equal=False) if normal else d.update(hp_publications={0:7,1:8,2:6,3:13,5:6,7:5,8:16}[command_id]-1))
+    reject('incomplete-transaction', lambda d:d.update(cold_loaded_units_equal=False) if normal else d.update(hp_publications={0:7,1:8,2:6,3:13,5:6,6:5,7:5,8:16}[command_id]-1))
+    if command_id==6 and not normal:
+        reject('incomplete-packed-shades',lambda d:d.update(packed_shaders=[0x2b0]))
     reject('incomplete-f2-or-return', lambda d:d.update(natural_attack_return_checked=False) if normal else d['phase_f2_switches'].update({'command1-target' if args.command1 else 'target':0}))
     reject('blank-gpu', lambda d:None, blank=True)
     if normal:

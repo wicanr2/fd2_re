@@ -71539,5 +71539,101 @@
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/phase-final-validation-r1.json",
       "sha256": "c82949b864f549fc4ac15fbfdc31e4f35de9ba90223831cb52ec36d227f60eb2"
     }
+  },
+  "ordinary6_hd_followup_20261021": {
+    "status": "CONFORMED-SCOPED-RUNTIME-E1",
+    "base": "90200c3669662486c8b4ad1ee79acceebc66eaa3",
+    "branch": "feat/hd-command6-palette",
+    "work_root": "work/promo-cadence-20261018/hd-fonts/command6-hd-r1",
+    "primary_evidence": {
+      "file": "docs/data/ida/fd2_ch24_command6_work_bounds_20261004.json",
+      "sha256": "b20ae569fbfd99a73016567f66b63569b5eb3ee2f805d03083d16b8563c4a36c"
+    },
+    "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md#普通法術6的人物與變色呈現",
+    "current_state": {
+      "remake": "人物與七色近似已接入；完整GPU／結算／F2與施術核心通過。",
+      "original_oracle": "沿既有閉合主契約，未新增原版RGB、逐拍或PLAYER-E2證據。",
+      "optional_polish": "32／33仍像素；集中人工確認待全部HD接入後。"
+    },
+    "colour_contract": "modern-art palette approximation using existing terrainColourWeights; target only; preserve alpha and original indexed bytes",
+    "human_review": "pending-until-all-HD-integrated",
+    "full_battle_hd_complete": false,
+    "validation": {
+      "native_internal": {
+        "file": "work/promo-cadence-20261018/hd-fonts/command6-hd-r1/internal-command6-r1.log",
+        "sha256": "a5f17243dbc26981ea08ddea9cc8dadcb447d2beb8a157acf5ebb32b5b52c9e5"
+      },
+      "owner_initial": {
+        "file": "work/promo-cadence-20261018/hd-fonts/command6-hd-r1/owner-command6-r1.log",
+        "sha256": "7d7501b626c88758b3214e01abcfb35cbafd1cc3bb2a4dad141adcd5216ec1e8"
+      },
+      "cpu_owner_atomic": {
+        "file": "work/promo-cadence-20261018/hd-fonts/command6-hd-r1/cpu-owner-atomic-r1.log",
+        "sha256": "9b1944cbedafb9354f5c34d99665c765db2869389916ee48ef266febfacba859"
+      },
+      "gpu_bridge": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/command6-hd-r1/bridge-r1.log",
+          "sha256": "523f767264a192cfe3919b59fbcce6a0206e7a9f9472b8ca8e059e4876936323"
+        },
+        "cases": 2087,
+        "added_native_cases": 188,
+        "added_colour_cases": 8
+      },
+      "full_draw": {
+        "file": "work/promo-cadence-20261018/hd-fonts/command6-hd-r1/fixture-r1/receipt.json",
+        "sha256": "8f86dfd8eb2421eedf73b9cf795d1f21bd56b75a462862a04bc44829694d14d8"
+      },
+      "caster_guard": {
+        "file": "work/promo-cadence-20261018/hd-fonts/command6-hd-r1/actor-guards-r2/report.json",
+        "sha256": "b3c4d4027bd557483b7d1745adc4e101bec2ff8178d15e54e0f2b6bf9037823b"
+      },
+      "occlusion_guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/command6-hd-r1/occlusion-controls-r2.json",
+        "sha256": "f08c78afd950bf67d61928d7fc308e288f100c03194df71f83849904b72fe443"
+      },
+      "previous_command7_core": {
+        "file": "work/promo-cadence-20261018/hd-fonts/command6-hd-r1/previous-command7-verifier-r1.json",
+        "sha256": "2e9d23335c6b94c5b43b2da4f572755939cc28eda0ef9b9f4e8906535a4538e2"
+      },
+      "string_review": {
+        "inventory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/command6-hd-r1/inv-new.json",
+          "sha256": "97e53ddb76e0cd1c2243b30ef3a6a28575a6837964650b123e59afa192183269"
+        },
+        "groups": 99,
+        "review": {
+          "file": "docs/data/fd2-string-review.json",
+          "sha256": "cade1604edf820a618ad1d0f8217b592a95ea8eb4ee805ff1ed2015f6c382add"
+        }
+      },
+      "skips": "cpu-owner回歸的兩項需原版槽或正常GUI旗標，未執行；獨立2087 GPU及完整Draw已實際執行。"
+    },
+    "rejected_attempts": [
+      {
+        "file": {
+          "file": "work/promo-cadence-20261018/hd-fonts/command6-hd-r1/actor-guards-r1.log",
+          "sha256": "e43298775a6405773eb2d353f7e7a6533dfc3cbb75b0e469c4711549e40936a7"
+        },
+        "cause": "核對器尚不支援FDOTHER32前景遮擋，正控制拒收後未開始反例；不是產品GPU斷言失敗。"
+      }
+    ],
+    "reproduce": {
+      "gpu": "FD2_HD_BATTLE_GPU=1 with-xvfb go test ./cmd/fd2 -run ^TestModernHDBattleGPUBridge$ -count=1",
+      "fixture": "FD2_HD_ORDINARY_GPU=1 FD2_TEST_ORDINARY_COMMAND=6 FD2_TEST_MODERN_EFFECT_OUT=<fresh-dir> with-xvfb go test ./cmd/fd2 -run ^TestModernHDOrdinaryRemainingRuntimeGPU$ -count=1",
+      "caster": "python tools/test_fd2_command0_hd_gpu.py --ordinary-command 6 --figure 9 --core-profile opaque --all-cast-frames --receipt <fixture>/receipt.json --catalog remake/assets/themes/modern/catalog.json --source <modern-pack> --original-pack <original-pack> --inventory docs/data/fd2-battle-hd-source-inventory-20261019.json --out <fresh-dir>",
+      "occlusion": "python tools/test_fd2_compound_occlusion.py --original-pack <original-pack> --source <modern-pack> --out <fresh-json>",
+      "execution": "Docker only; Go fd2-go-test-local:latest, Python fd2-assets-local:20260829-sfx; original pack read-only, user1000:1000, network none. Go cwd=remake; HOME=/tmp/fd2-home; FD2_ASSET_PACK=<original-pack>, FD2_TEST_ORIGINAL_PACK=<original-pack>, FD2_TEST_MODERN_EFFECT_CATALOG=<absolute catalog>, FD2_TEST_MODERN_EFFECT_PACK=<modern-pack>. 8 GB/4 CPU/512 pids, Go timeout600s, outer650s; Xvfb由with-xvfb有界管理。",
+      "executed_harness_sha256": "fdcb1df981435a5e971847e2c58e9bfa42fbc09e8b1c54d5bc027456cbbd1468"
+    },
+    "runtime_source_sha256": {
+      "remake/cmd/fd2/modern_hd_packed_colour.go": "81781ca7ee61247713fbd3da114f1f9dc1d717646c521b08086e2059ef907c8f",
+      "remake/cmd/fd2/modern_hd_ordinary.go": "624aab8e28ee58bb8e0b35382cb61b7c082aac5edb957671e8a248da1d1c7b48",
+      "remake/cmd/fd2/native_command6_presentation.go": "5f7ad57fe9e8d4cafdacb14013a6192a0b8c7e48a4cb8ede84fc132a16865d09"
+    },
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/command6-hd-r1/phase-final-validation-r1.json",
+      "sha256": "a1cfbd86b0c362ebb7e0da828e9742b48097088173c46e280ae4aee43ba98567"
+    }
   }
 }

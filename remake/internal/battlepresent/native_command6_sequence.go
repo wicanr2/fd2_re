@@ -10,14 +10,17 @@ import (
 type NativeCommand6TargetSequence struct {
 	Frames   [][]byte
 	HPStages []int
+	Sources  []NativeCommandSources
 }
 
 type NativeCommand6EffectSequence struct {
-	RNGAfter    uint16
-	Front       [][]byte
-	Targets     []NativeCommand6TargetSequence
-	Transitions [][][]byte
-	Tail        [][]byte
+	RNGAfter                  uint16
+	Front                     [][]byte
+	Targets                   []NativeCommand6TargetSequence
+	Transitions               [][][]byte
+	Tail                      [][]byte
+	FrontSources, TailSources []NativeCommandSources
+	TransitionSources         [][]NativeCommandSources
 }
 
 type NativeCommand6EffectInput struct {
@@ -76,6 +79,11 @@ func BuildNativeCommand6EffectSequence(in NativeCommand6EffectInput) (NativeComm
 			return NativeCommand6EffectSequence{}, err
 		}
 		out.Front = append(out.Front, pixels)
+		out.FrontSources = append(out.FrontSources, NativeCommandSources{
+			Base: in.FrontBase, ActorFrame: len(in.ActorEffect.Frames) - 1, TargetIndex: 0,
+			TargetBeforeEffects: true, Before: nativeCommand6SourceLayers(planned.First),
+			After: nativeCommand6SourceLayers(planned.Second), Phase: "handler-front",
+		})
 		radius = planned.NextRadius
 	}
 	if radius != 42 {
@@ -105,6 +113,14 @@ func BuildNativeCommand6EffectSequence(in NativeCommand6EffectInput) (NativeComm
 				return NativeCommand6EffectSequence{}, fmt.Errorf("battlepresent: command6 target %d frame %d: %w", targetIndex, frameIndex, err)
 			}
 			out.Targets[targetIndex].Frames = append(out.Targets[targetIndex].Frames, pixels)
+			sources := NativeCommandSources{Base: in.TargetBases[targetIndex][hpStage],
+				ActorFrame: len(in.ActorEffect.Frames) - 1, TargetIndex: targetIndex, TargetFrame: idleFrame,
+				TargetOffsetX: displays[frameIndex].OffsetX, TargetOffsetY: displays[frameIndex].OffsetY,
+				Before: nativeCommand6SourceLayers(frame.Mode4), After: nativeCommand6SourceLayers(frame.Mode5), Phase: "target"}
+			if displays[frameIndex].Shader != -1 {
+				sources.PackedTargetShader = displays[frameIndex].Shader
+			}
+			out.Targets[targetIndex].Sources = append(out.Targets[targetIndex].Sources, sources)
 			out.Targets[targetIndex].HPStages = append(out.Targets[targetIndex].HPStages, frame.HPStage)
 			if frame.HPStage != 0 {
 				hpStage = frame.HPStage
@@ -126,6 +142,7 @@ func BuildNativeCommand6EffectSequence(in NativeCommand6EffectInput) (NativeComm
 				return NativeCommand6EffectSequence{}, err
 			}
 			frames := make([][]byte, 0, len(transitionPlan))
+			sources := make([]NativeCommandSources, 0, len(transitionPlan))
 			for frameIndex, frame := range transitionPlan {
 				target := idle
 				if frame.UseNextTarget {
@@ -136,8 +153,16 @@ func BuildNativeCommand6EffectSequence(in NativeCommand6EffectInput) (NativeComm
 					return NativeCommand6EffectSequence{}, fmt.Errorf("battlepresent: command6 transition %d frame %d: %w", targetIndex, frameIndex, err)
 				}
 				frames = append(frames, pixels)
+				which := targetIndex
+				if frame.UseNextTarget {
+					which++
+				}
+				sources = append(sources, NativeCommandSources{Base: in.TransitionBases[targetIndex],
+					ActorFrame: len(in.ActorEffect.Frames) - 1, TargetIndex: which, TargetOffsetX: frame.TargetOffsetX,
+					Before: nativeCommand6SourceLayers(frame.Mode4), After: nativeCommand6SourceLayers(frame.Mode5), Phase: "transition"})
 			}
 			out.Transitions = append(out.Transitions, frames)
+			out.TransitionSources = append(out.TransitionSources, sources)
 			state = transitionPlan[len(transitionPlan)-1].Next
 		}
 	}
@@ -154,6 +179,10 @@ func BuildNativeCommand6EffectSequence(in NativeCommand6EffectInput) (NativeComm
 			return NativeCommand6EffectSequence{}, fmt.Errorf("battlepresent: command6 tail frame %d: %w", frameIndex, err)
 		}
 		out.Tail = append(out.Tail, pixels)
+		out.TailSources = append(out.TailSources, NativeCommandSources{Base: in.TailBase,
+			ActorFrame: len(in.ActorEffect.Frames) - 1, TargetIndex: len(in.TargetIdle) - 1, TargetFrame: lastTargetFrame,
+			OmitTarget: !planned.DrawTarget, Before: nativeCommand6SourceLayers(planned.First),
+			After: nativeCommand6SourceLayers(planned.Second), Phase: "handler-tail"})
 		radius = planned.NextRadius
 	}
 	if radius != 0 {

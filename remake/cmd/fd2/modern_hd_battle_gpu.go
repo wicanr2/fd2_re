@@ -15,12 +15,14 @@ import (
 
 // 目的矩形由已驗證的呈現計畫提供；GPU不替美術決定占寬或重新取錨點。
 type modernHDBattleLayer struct {
-	Native figani.Frame
-	HD     image.Image
-	HDKey  string
-	Rect   image.Rectangle
-	Fill   int
-	Clip   *image.Rectangle
+	Native        figani.Frame
+	HD            image.Image
+	HDKey         string
+	Rect          image.Rectangle
+	Fill          int
+	Clip          *image.Rectangle
+	PackedShader  int
+	PackedColours []byte
 }
 
 type modernHDBattlePlan struct {
@@ -125,6 +127,9 @@ func (r *modernHDBattleGPU) draw(plan modernHDBattlePlan) error {
 	// 先驗完整計畫；錯誤不清除上一張世界。
 	for _, layer := range plan.Layers {
 		f := layer.Native
+		if err := validateModernHDPackedGuide(f, layer.PackedShader, layer.PackedColours); err != nil {
+			return err
+		}
 		if layer.Rect.Empty() || layer.Rect.Min.X < -1<<20 || layer.Rect.Min.Y < -1<<20 ||
 			layer.Rect.Max.X > 1<<20 || layer.Rect.Max.Y > 1<<20 || (layer.Fill != -1 && layer.Fill != 33) {
 			return errors.New("modern HD battle: invalid layer rectangle or fill")
@@ -176,6 +181,15 @@ func (r *modernHDBattleGPU) draw(plan modernHDBattlePlan) error {
 		key := "hd/" + layer.HDKey
 		if layer.HD != nil {
 			picture = layer.HD
+			if layer.PackedShader != 0 {
+				key = modernHDPackedTextureKey(key, palette, layer.PackedColours, layer.PackedShader)
+				if r.sources[key] == nil {
+					picture, err = modernHDPackedPicture(picture, palette, layer.PackedColours, layer.PackedShader)
+					if err != nil {
+						return err
+					}
+				}
+			}
 		} else {
 			f := layer.Native
 			h := sha256.New()

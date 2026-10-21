@@ -24,6 +24,7 @@ type modernHDOrdinaryProbe struct {
 	seen                                                              map[string]bool
 	phases, switches                                                  map[string]int
 	sourceShots                                                       map[string]any
+	packedShaders                                                     map[int]bool
 	pending                                                           string
 	draws, updates, faithful, finals, callbacks, mpChanges, hpChanges int
 	lastMP, lastHP                                                    int
@@ -124,6 +125,13 @@ func (p *modernHDOrdinaryProbe) Draw(screen *ebiten.Image) {
 	_, frame, _ := p.job.position()
 	label := fmt.Sprintf("%s-%03d", f.hdPhase, frame)
 	p.seen[label] = true
+	if p.command == 6 && f.hdSources != nil {
+		for _, layer := range f.hdSources.Layers {
+			if layer.PackedShader != 0 {
+				p.packedShaders[layer.PackedShader] = true
+			}
+		}
+	}
 	if p.out == "" || p.sourceShots[label+".png"] != nil {
 		return
 	}
@@ -148,7 +156,20 @@ func (p *modernHDOrdinaryProbe) Draw(screen *ebiten.Image) {
 		p.err = err
 		return
 	}
-	p.sourceShots[label+".png"] = map[string]any{"phase": f.hdPhase, "subtract": f.hdSubtract, "mix": f.hdMix, "layers": modernBattleAuditLayers(f.hdSources)}
+	shot := map[string]any{"phase": f.hdPhase, "subtract": f.hdSubtract, "mix": f.hdMix, "layers": modernBattleAuditLayers(f.hdSources)}
+	if p.command == 6 {
+		palette, err := modernHDBattlePalette(f.hdPalette)
+		if err != nil {
+			p.err = err
+			return
+		}
+		values := make([]int, len(palette))
+		for index, value := range palette {
+			values[index] = int(value)
+		}
+		shot["palette_rgba"] = values
+	}
+	p.sourceShots[label+".png"] = shot
 }
 
 func TestModernHDOrdinaryRemainingRuntimeGPU(t *testing.T) {
@@ -156,7 +177,7 @@ func TestModernHDOrdinaryRemainingRuntimeGPU(t *testing.T) {
 		t.Skip("dedicated ordinary GPU process required")
 	}
 	command, err := strconv.Atoi(os.Getenv("FD2_TEST_ORDINARY_COMMAND"))
-	if err != nil || (command != 2 && command != 3 && command != 7 && command != 8) {
+	if err != nil || (command != 2 && command != 3 && command != 6 && command != 7 && command != 8) {
 		t.Fatal("explicit ordinary command required")
 	}
 	t.Setenv("FD2_MUTE", "1")
@@ -167,7 +188,7 @@ func TestModernHDOrdinaryRemainingRuntimeGPU(t *testing.T) {
 	}
 	g.modernStoryPortraits = set
 	p := &modernHDOrdinaryProbe{g: g, actor: actor, target: target, command: command, out: os.Getenv("FD2_TEST_MODERN_EFFECT_OUT"),
-		seen: make(map[string]bool), phases: make(map[string]int), switches: make(map[string]int), sourceShots: make(map[string]any), lastMP: actor.MP, lastHP: target.HP}
+		seen: make(map[string]bool), phases: make(map[string]int), switches: make(map[string]int), sourceShots: make(map[string]any), packedShaders: make(map[int]bool), lastMP: actor.MP, lastHP: target.HP}
 	if p.out != "" {
 		if err := os.Mkdir(p.out, 0755); err != nil {
 			t.Fatal(err)
@@ -195,7 +216,11 @@ func TestModernHDOrdinaryRemainingRuntimeGPU(t *testing.T) {
 	if p.err != nil || !p.finished || p.callbacks != 1 || p.job.active() {
 		t.Fatalf("lifecycle: %v callbacks%d", p.err, p.callbacks)
 	}
-	for _, phase := range []string{"prelude", "actor", "actor-pulse", "handler-front", "target", "handler-tail", "tail"} {
+	phases := []string{"prelude", "actor", "actor-pulse", "handler-front", "target", "handler-tail"}
+	if command != 6 {
+		phases = append(phases, "tail")
+	}
+	for _, phase := range phases {
 		if p.phases[phase] == 0 || p.switches[phase] != 1 {
 			t.Fatalf("missing HD/F2 in %s", phase)
 		}
@@ -203,7 +228,7 @@ func TestModernHDOrdinaryRemainingRuntimeGPU(t *testing.T) {
 	if len(p.job.plan.Results) > 1 && (p.phases["transition"] == 0 || p.switches["transition"] != 1) {
 		t.Fatal("missing multi-target HD/F2 transition")
 	}
-	stages := map[int]int{2: 6, 3: 13, 7: 5, 8: 16}[command]
+	stages := map[int]int{2: 6, 3: 13, 6: 5, 7: 5, 8: 16}[command]
 	for _, result := range p.job.plan.Results {
 		if result.Target.HP != result.HPAfter {
 			t.Fatal("target settlement differs")
@@ -232,6 +257,21 @@ func TestModernHDOrdinaryRemainingRuntimeGPU(t *testing.T) {
 		"go_rng_unchanged": true, "actor_figure": actor.BattleFig, "target_figure": target.BattleFig, "hd_draws": p.draws, "final_draws": p.finals,
 		"hd_phase_draws": p.phases, "phase_f2_switches": p.switches, "source_shots": p.sourceShots, "mp_publications": p.mpChanges, "hp_publications": p.hpChanges, "rng": g.nativeRNGState,
 		"scope": "同次正式owner的完整Game.Draw fixture，明示FIGANI及命令資料；非正常玩家、原版oracle或PLAYER-E2。"}
+	if command == 6 {
+		if len(p.packedShaders) != 7 {
+			t.Fatal("seven packed shader states were not presented")
+		}
+		values := make([]int, 0, 7)
+		for shade := 2; shade <= 8; shade++ {
+			shader := shade<<8 | 0xb0
+			if !p.packedShaders[shader] {
+				t.Fatal("missing packed shade")
+			}
+			values = append(values, shader)
+		}
+		report["packed_shaders"] = values
+		report["packed_colour_contract"] = "native guide + four-nearest RGB colour delta; alpha preserved; modern-art approximation"
+	}
 	if p.out != "" {
 		raw, _ := json.MarshalIndent(report, "", "  ")
 		if err := os.WriteFile(filepath.Join(p.out, "receipt.json"), append(raw, '\n'), 0644); err != nil {

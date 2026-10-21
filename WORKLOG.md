@@ -2464,3 +2464,17 @@ OOM根因已證實：唯讀查主機單一kern.log後取得2026-10-21T10:05:26.8
 110候選完整Game.Draw通過：物理16張、三階段F2／64及65 DAC／一次續行；普通7施術八張來源、多目標轉場、各階段F2／MP1／HP5及一次續行。獨立全部alpha≥250核心核對物理16張與施術21張取樣通過。正式登錄三項並保留此前433項與24張GPU已驗PNG hashes；只另把完整原始RGBA圖板加入source_files，連六張裁切母稿依白名單同步私人庫。舊3932素材逐檔保持，新完整包3963檔、runtime-only3553檔均核SHA／UID；唯一覆蓋由工具重生，數量依58。正常與造型人工確認仍依全部HD接入後集中排程，未宣稱本人物普通流程或新原版oracle。正式載入、私人Git、遠端議題及最終檢查接續記錄。
 
 正式及runtime-only各兩個頂層／四個子項載入與原子預檢通過，零SKIP；正式圖源與已驗GPU PNG hashes保持。私人6cb283ebd99d84471e1ca57e4210cd95a9e1d164已獨立提交推送，真正遠端HEAD相同，保存庫仍private。#201／#263保持開啟及原驗收條件，#4／#202已記錄使用者先全部HD、後集中人工確認順序；主機gh重拉22項、可能完成0。最終核42份來源SHA、五份Markdown的2115個本地連結、30檔UID／GID、原433項清冊與固定原始manifest及凱麗GIF保持；Python AST／shell語法通過，工作根無root-owned或誤建md目錄。未新增錄影，沒有Release或matching操作，FD2容器已清空；公開批次提交與實際遠端另核，全部HD工作繼續。
+
+## 2026-10-21：普通法術6 HD READY
+
+上一批公開90200c3669662486c8b4ad1ee79acceebc66eaa3已快轉main並推送，實際遠端HEAD相同；工作樹僅work未追蹤，無FD2容器。從main新建feat/hd-command6-palette，沿既有工作根建立command6-hd-r1。先回查規格路由與58／指令6CONFORMED主證據，不重解負列、座標、數值或RNG。
+
+規格61先達READY：同次producer來源保留前導target早於效果的層序、可選target與packed值；現行7＋12N＋9(N−1)＋7及StageBases的LUT15保持，不另加尾段。HD變色沿既有地形四近鄰RGB色差插值，保留alpha，標明modern-art palette approximation及相同RGB不同原索引的歧義。只作用target，原生indexed公式與母稿不改；待整張來源重組、七shade GPU、完整owner與F2／一次結算驗證。效果32／33與人工確認另列，尚未接入正式HD呈現。
+
+實作與驗證：同次producer記錄front／target／transition／tail來源，packed僅作用target，快取鍵包含原圖SHA、palette、可見原索引與shade。188張來源重組及八項獨立色差／快取GPU案例，連既有2087張畫布通過。完整Game.Draw有91張HD Draw、實際七種shade、各階段F2／MP1／HP5／RNG與一次續行；原子缺圖及非法shader／guide拒收通過。既有兩項需原版槽或正常GUI旗標的測試略過，不混入實際GPU通過數。99項人工字串處置重綁，集合與各處置保持。
+
+施術者核對首輪因尾段FDOTHER32遮擋而拒收，並非產品GPU斷言失敗。核對器原本只支援FIGANI；加入固定原版manifest核metadata／mask SHA的FDOTHER遮擋，已登錄現代效果則核PNG SHA與alpha。保留RGB／alpha≥250及至少1000點門檻。R2有效基底及八項錯範圍、缺結算、缺七色、缺F2、黑圖、缺actor與缺施術幀均正確拒收。反例工具的錯指令原固定6會對本命令無作用，改為不同於目前命令；七色拒收另核專屬原因。六項直接控制驗opaque／透明／clip、未知archive、竄改mask拒收及HD效果alpha，受版控工具為tools/test_fd2_compound_occlusion.py；舊普通7的27張施術核心亦通過。R1日誌保留，不放寬門檻。
+
+本批重用既有素材，私人清冊與版本保持。正常操作及人工確認留待全部HD串接後；效果32／33與其他HD缺口仍開啟。來源與工具、收據SHA集中在既有HD主收據ordinary6_hd_followup_20261021，沒有新原版oracle、錄影、matching或Release操作。
+
+最終核12份來源SHA、2050個本地連結、24份變更檔UID／GID與三份Python語法通過；本批工作根無root-owned或誤建md目錄，無殘留FD2容器。遠端重拉22條工作項，可能完成0，完整HD及集中人工確認保持未完成。公開提交與遠端驗證另存本批Git證明，私人素材未變。

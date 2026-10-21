@@ -33,7 +33,7 @@ func (g *Game) recordInputAuditState() {
 	r["battle_scene"] = g.atk != nil
 	g.recordNativeDeathAuditState(r)
 	r["command_scene"] = g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil || g.nativeCmd2Presentation != nil ||
-		g.nativeCmd3Presentation != nil || g.nativeCmd5Presentation != nil || g.nativeCmd7Presentation != nil || g.nativeCmd8Presentation != nil
+		g.nativeCmd3Presentation != nil || g.nativeCmd5Presentation != nil || g.nativeCmd6Presentation != nil || g.nativeCmd7Presentation != nil || g.nativeCmd8Presentation != nil
 	r["command_targeting"] = g.nativeCommand0Targeting
 	r["command_grid"], r["command_selection"] = g.nativeCommandOpen, g.nativeCommandSel
 	r["command_target_id"] = g.nativeCommandTargetID
@@ -81,6 +81,18 @@ func (g *Game) recordInputAuditState() {
 	}
 	if j := g.nativeCmd3Presentation; j != nil {
 		r["command_id"], r["command_owner"] = 3, fmt.Sprintf("%p", j)
+		r["command_actor_fig"] = j.actor.BattleFig
+		if j.plan != nil && len(j.plan.Results) > 0 && j.plan.Results[0].Target != nil {
+			r["command_target_fig"] = j.plan.Results[0].Target.BattleFig
+		}
+		r["command_frame"], r["command_pulse_black"] = j.frame, j.pulseBlack
+		if frame := j.modernFrame(); frame != nil {
+			r["command_phase"] = frame.hdPhase
+			r["command_source_layers"] = modernBattleAuditLayers(frame.hdSources)
+		}
+	}
+	if j := g.nativeCmd6Presentation; j != nil {
+		r["command_id"], r["command_owner"] = 6, fmt.Sprintf("%p", j)
 		r["command_actor_fig"] = j.actor.BattleFig
 		if j.plan != nil && len(j.plan.Results) > 0 && j.plan.Results[0].Target != nil {
 			r["command_target_fig"] = j.plan.Results[0].Target.BattleFig
@@ -344,9 +356,17 @@ func modernBattleAuditLayers(sources *modernHDBattleSources) []map[string]any {
 	}
 	layers := make([]map[string]any, 0, len(sources.Layers))
 	for _, layer := range sources.Layers {
-		layers = append(layers, map[string]any{"archive": layer.Archive, "resource": layer.Resource, "frame": layer.Index,
+		entry := map[string]any{"archive": layer.Archive, "resource": layer.Resource, "frame": layer.Index,
 			"x": layer.Frame.X + layer.DX, "y": layer.Frame.Y + layer.DY,
-			"width": layer.Frame.Width, "height": layer.Frame.Height, "fill": layer.Fill, "clip": layer.Clip})
+			"width": layer.Frame.Width, "height": layer.Frame.Height, "fill": layer.Fill, "clip": layer.Clip}
+		if layer.PackedShader != 0 {
+			colours := make([]int, len(layer.PackedColours))
+			for index, value := range layer.PackedColours {
+				colours[index] = int(value)
+			}
+			entry["packed_shader"], entry["packed_colours"] = layer.PackedShader, colours
+		}
+		layers = append(layers, entry)
 	}
 	return layers
 }

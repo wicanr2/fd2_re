@@ -26,7 +26,17 @@ func bindModernHDOrdinarySources(sources []battlepresent.NativeCommandSources, a
 			s.TargetFrame < 0 || s.TargetFrame >= len(targets[s.TargetIndex].Frames) {
 			return nil, fmt.Errorf("modern HD ordinary: source index differs")
 		}
+		if (s.OmitTarget && (s.TargetBeforeEffects || s.PackedTargetShader != 0)) || !validModernHDPackedShader(s.PackedTargetShader) {
+			return nil, fmt.Errorf("modern HD ordinary: target control differs")
+		}
 		var layers []modernHDBattleSource
+		target := modernHDCommandFigure(targets[s.TargetIndex], targetIDs[s.TargetIndex], s.TargetFrame)
+		target.DX, target.DY = s.TargetOffsetX, s.TargetOffsetY
+		var err error
+		target, err = modernHDPackedTargetSource(target, s.PackedTargetShader)
+		if err != nil {
+			return nil, err
+		}
 		appendEffects := func(effects []battlepresent.NativeCommandEffectSource) error {
 			for _, e := range effects {
 				if e.Frame < 0 || e.Frame >= len(effect.Frames) {
@@ -37,15 +47,18 @@ func bindModernHDOrdinarySources(sources []battlepresent.NativeCommandSources, a
 			}
 			return nil
 		}
+		if s.TargetBeforeEffects {
+			layers = append(layers, target)
+		}
 		if err := appendEffects(s.Before); err != nil {
 			return nil, err
 		}
 		if s.ActorFrame >= 0 {
 			layers = append(layers, modernHDCommandFigure(actor, actorID, s.ActorFrame))
 		}
-		target := modernHDCommandFigure(targets[s.TargetIndex], targetIDs[s.TargetIndex], s.TargetFrame)
-		target.DX, target.DY = s.TargetOffsetX, s.TargetOffsetY
-		layers = append(layers, target)
+		if !s.TargetBeforeEffects && !s.OmitTarget {
+			layers = append(layers, target)
+		}
 		if err := appendEffects(s.After); err != nil {
 			return nil, err
 		}
@@ -63,6 +76,28 @@ func (f *modernHDOrdinaryFrames) resources() []int {
 	frames = append(frames, f.handler...)
 	frames = append(frames, f.tail...)
 	return modernCompoundFigureResources(frames)
+}
+
+func (j *nativeCommand6PresentationJob) modernFrame() *nativeCompoundPresentedFrame {
+	if j == nil || j.hd == nil || j.hd.opening == nil {
+		return nil
+	}
+	var frames []nativeCompoundPresentedFrame
+	switch j.phase {
+	case nativeCommand6CommonPrelude:
+		frames = j.hd.opening.prelude
+	case nativeCommand6Actor:
+		frames = j.hd.opening.actor
+		if j.frame >= 0 && j.frame < len(j.actorSpecs) && j.actorSpecs[j.frame].Pulse && !j.pulseBlack {
+			frames = j.hd.opening.pulse
+		}
+	case nativeCommand6Handler:
+		frames = j.hd.handler
+	}
+	if j.frame < 0 || j.frame >= len(frames) {
+		return nil
+	}
+	return &frames[j.frame]
 }
 
 func (j *nativeCommand3PresentationJob) modernFrame() *nativeCompoundPresentedFrame {

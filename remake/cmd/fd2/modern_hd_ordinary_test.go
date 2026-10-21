@@ -26,7 +26,7 @@ func ordinaryRemainingHDTestGame(t *testing.T, command int) (*Game, *battle.Unit
 	switch command {
 	case 2, 3:
 		mode = 1
-	case 7:
+	case 6, 7:
 		mode = 2
 	case 8:
 		actor.BattleFig = 21
@@ -43,6 +43,8 @@ func startOrdinaryRemainingHD(g *Game, command int, actor, target *battle.Unit, 
 		return g.startNativeCommand2Presentation(actor, target, then)
 	case 3:
 		return g.startNativeCommand3Presentation(actor, target, then)
+	case 6:
+		return g.startNativeCommand6Presentation(actor, target, then)
 	case 7:
 		return g.startNativeCommand7Presentation(actor, target, then)
 	case 8:
@@ -84,6 +86,15 @@ func ordinaryRemainingOwner(g *Game, command int) ordinaryRemainingTestOwner {
 			active: func() bool { return g.nativeCmd3Presentation != nil }, modern: j.modernFrame,
 			position:     func() (int, int, bool) { return int(j.phase), j.frame, j.pulseBlack },
 			acknowledged: func() bool { return j.drawn }}
+	case 6:
+		j := g.nativeCmd6Presentation
+		if j == nil {
+			return ordinaryRemainingTestOwner{}
+		}
+		return ordinaryRemainingTestOwner{owner: j, hd: j.hd, plan: j.plan, step: g.stepNativeCommand6Presentation,
+			active: func() bool { return g.nativeCmd6Presentation != nil }, modern: j.modernFrame,
+			position:     func() (int, int, bool) { return int(j.phase), j.frame, j.pulseBlack },
+			acknowledged: func() bool { return j.drawn }}
 
 	case 7:
 		j := g.nativeCmd7Presentation
@@ -119,7 +130,7 @@ func TestModernHDOrdinaryRemainingPreflightAndF2Atomic(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, command := range []int{2, 3, 7, 8} {
+	for _, command := range []int{2, 3, 6, 7, 8} {
 		t.Run(fmt.Sprint(command), func(t *testing.T) {
 			g, actor, target := ordinaryRemainingHDTestGame(t, command)
 			set := cloneModernHDBanksForTest(template)
@@ -199,8 +210,8 @@ func appendModernOrdinaryRemainingGPUCases(t *testing.T, cases []modernHDBattleG
 		}
 		targets = append(targets, idle)
 	}
-	for _, command := range []int{2, 3, 7, 8} {
-		stages := map[int]int{2: 6, 3: 13, 7: 5, 8: 16}[command]
+	for _, command := range []int{2, 3, 6, 7, 8} {
+		stages := map[int]int{2: 6, 3: 13, 6: 5, 7: 5, 8: 16}[command]
 		count := 2
 		if command == 8 {
 			count = 1
@@ -216,9 +227,9 @@ func appendModernOrdinaryRemainingGPUCases(t *testing.T, cases []modernHDBattleG
 			}
 		}
 		for _, side := range []byte{0, 2} {
-			effectID := map[int]int{2: 26, 3: 39, 7: 37, 8: 28}[command]
+			effectID := map[int]int{2: 26, 3: 39, 6: 32, 7: 37, 8: 28}[command]
 			if side == 0 {
-				effectID = map[int]int{2: 27, 3: 43, 7: 38, 8: 30}[command]
+				effectID = map[int]int{2: 27, 3: 43, 6: 33, 7: 38, 8: 30}[command]
 			}
 			effect, err := figani.LoadSeparatedArchiveResource(separatedAssetPath("animations"), "FDOTHER.DAT", effectID)
 			if err != nil {
@@ -327,6 +338,36 @@ func appendModernOrdinaryRemainingGPUCases(t *testing.T, cases []modernHDBattleG
 					collect(frame.Sources, frame.Pixels)
 				}
 
+			case 6:
+				schedule, err := figani.BuildNativeCommand6PresentationSchedule(side, effect)
+				if err != nil {
+					t.Fatal(err)
+				}
+				for _, hits := range [][]bool{{true, false}, {false, true}} {
+					sequence, err := battlepresent.BuildNativeCommand6EffectSequence(battlepresent.NativeCommand6EffectInput{
+						FrontBase: bases[0][0], TailBase: bases[count-1][stages], TargetBases: bases, TransitionBases: transitionBases,
+						ActorEffect: actor, TargetIdle: targets[:count], Effect: effect, Schedule: schedule, RawSide: side,
+						TargetHits: hits, TargetNumericRNG: []uint16{7, 9}})
+					if err != nil {
+						t.Fatal(err)
+					}
+					for i, frame := range sequence.Front {
+						collect(sequence.FrontSources[i], frame)
+					}
+					for target, frames := range sequence.Targets {
+						for i, frame := range frames.Frames {
+							collect(frames.Sources[i], frame)
+						}
+						if target < len(sequence.Transitions) {
+							for i, frame := range sequence.Transitions[target] {
+								collect(sequence.TransitionSources[target][i], frame)
+							}
+						}
+					}
+					for i, frame := range sequence.Tail {
+						collect(sequence.TailSources[i], frame)
+					}
+				}
 			case 7:
 				schedule, err := figani.BuildNativeCommand7PresentationSchedule(side, effect)
 				if err != nil {

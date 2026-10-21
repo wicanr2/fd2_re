@@ -120,7 +120,8 @@ def main():
     by_resource={a['source_resource']:a for a in entries}
     if args.proven_occlusion:
         all_entries={a['source_resource']:a for a in catalog['assets'] if a['role']=='battle_animation_hd_set'}
-        occluded=make_native_occlusion_test(all_entries,args.source,args.original_pack,proof)
+        effects={a['source_resource']:a for a in catalog['assets'] if a['role']=='battle_effect_hd_set'}
+        occluded=make_native_occlusion_test(all_entries,args.source,args.original_pack,proof,effects)
 
     body_frames = None
     if args.body_frames:

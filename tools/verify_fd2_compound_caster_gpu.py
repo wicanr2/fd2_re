@@ -10,27 +10,42 @@ from validate_modern_theme_catalog import validate
 from verify_fd2_ares_battle_gpu import matches
 
 
-def make_native_occlusion_test(entries, source, original_pack, inventory):
+def make_native_occlusion_test(entries, source, original_pack, inventory, effect_entries=None):
     native_masks = {}
+    effect_entries = effect_entries or {}
+    manifest = json.loads((original_pack/'manifest.json').read_text())
+    if digest(original_pack/'manifest.json') != inventory['pack_manifest_sha256']:
+        raise SystemExit('遮擋來源包指紋不同')
+    pack_assets = {a['path']: a for a in manifest['assets']}
+
+    def checked_effect_path(path, resource, index=None):
+        relative = path.relative_to(original_pack).as_posix()
+        row = pack_assets.get(relative)
+        if (row is None or row.get('source_file') != 'FDOTHER.DAT'
+            or row.get('source_resource') != resource or digest(path) != row['sha256']
+            or (index is not None and row.get('source_frame') != index)):
+            raise SystemExit('原生特效遮擋來源SHA或定位不同')
+        return path
 
     def occluded(x, y, layers):
         for layer in layers:
             ox, oy = x-layer['x']*6, y-layer['y']*6
             if not (0 <= ox < layer['width']*6 and 0 <= oy < layer['height']*6): continue
-            if layer['resource'] < 0 or layer['archive'] not in ['', 'FIGANI.DAT']:
-                raise SystemExit('不能解釋的前景圖層遮擋')
             clip=layer.get('clip')
             if clip and not (clip['Min']['X']*6<=x<clip['Max']['X']*6 and clip['Min']['Y']*6<=y<clip['Max']['Y']*6):continue
-            key = (layer['resource'], layer['frame'])
+            archive = layer['archive'] or 'FIGANI.DAT'
+            if layer['resource'] < 0 or archive not in ['FIGANI.DAT', 'FDOTHER.DAT'] or layer.get('fill', -1) != -1:
+                raise SystemExit('不能解釋的前景圖層遮擋：'+str(layer))
+            key = (archive, layer['resource'], layer['frame'])
             if key not in native_masks:
-                resource, index = key
-                asset = entries.get(resource)
+                _, resource, index = key
+                asset = (entries if archive == 'FIGANI.DAT' else effect_entries).get(resource)
                 if asset is not None:
                     path = source/asset['files'][index]
                     if digest(path) != asset['frame_sha256'][index]: raise SystemExit('前景HD圖源SHA不同')
                     with Image.open(path) as im: mask = im.getchannel('A').copy()
                     native_masks[key] = (mask, True)
-                else:
+                elif archive == 'FIGANI.DAT':
                     row = inventory['resources'][resource]
                     folder = original_pack/'animations'/f'FIGANI_{resource:03d}'
                     metadata = folder/'animation.json'
@@ -38,6 +53,18 @@ def make_native_occlusion_test(entries, source, original_pack, inventory):
                     frame = json.loads(metadata.read_text())['frames'][index]
                     path = folder/frame['mask_path']
                     if digest(path) != row['frames'][index]['mask_sha256']: raise SystemExit('原生前景mask SHA不同')
+                    with Image.open(path) as im: mask = im.convert('L')
+                    native_masks[key] = (mask, False)
+                else:
+                    folder = original_pack/'animations'/f'FDOTHER_{resource:03d}'
+                    metadata = checked_effect_path(folder/'animation.json', resource)
+                    description = json.loads(metadata.read_text())
+                    if description.get('source') != {'file':'FDOTHER.DAT', 'resource':resource}:
+                        raise SystemExit('原生特效遮擋metadata定位不同')
+                    frame = description['frames'][index]
+                    if Path(frame['mask_path']).name != frame['mask_path']:
+                        raise SystemExit('原生特效遮擋mask路徑越界')
+                    path = checked_effect_path(folder/frame['mask_path'], resource, index)
                     with Image.open(path) as im: mask = im.convert('L')
                     native_masks[key] = (mask, False)
             mask, hd = native_masks[key]
@@ -58,7 +85,7 @@ def main():
     p.add_argument('--command5', action='store_true', help='核對普通指令5的完整交易、F2及施術來源')
     p.add_argument('--command1', action='store_true', help='核對普通指令1的完整交易、F2及施術來源')
     p.add_argument('--normal-command1', action='store_true', help='核對普通標題LOAD的指令1施法、自然返回與保存冷讀')
-    p.add_argument('--ordinary-command', type=int, choices=[2,3,7,8], help='核對指定普通法術的完整交易、F2與施術來源')
+    p.add_argument('--ordinary-command', type=int, choices=[2,3,6,7,8], help='核對指定普通法術的完整交易、F2與施術來源')
     p.add_argument('--normal-ordinary-command', type=int, choices=[2,3,7,8], help='核對指定普通法術的正常標題LOAD及保存冷讀')
     p.add_argument('--normal-end-command', type=int, choices=[0,4,5], help='核對正常END實際施法及完整返回／保存冷讀')
     p.add_argument('--all-cast-frames', action='store_true', help='明示要求每張施術來源都有actor階段最終GPU核心，不將非零相位抽樣冒充全幀')
@@ -83,7 +110,7 @@ def main():
     idle, actor = args.figure*3, args.figure*3+1
     phases=['prelude','actor','actor-slide']
     if ordinary:
-        phases=['prelude','actor','tail']
+        phases=['prelude','actor','handler-tail' if command_id==6 else 'tail']
         if args.normal_end_command is not None:phases.append('target-idle')
         actor=args.figure*3+2
         row=inventory['resources'][actor]
@@ -111,7 +138,8 @@ def main():
                               else (r>=100 and g>=70 and r>=g and g*100>=b*150 and r*100>=b*180)))]
             if len(points) < 1000: raise SystemExit('本圖源不適用指定色域核心核對')
             core[(resource, index)] = (name, sha, points, frame)
-    occluded=make_native_occlusion_test(entries,args.source,args.original_pack,inventory)
+    effects={a['source_resource']:a for a in catalog['assets'] if a['role']=='battle_effect_hd_set'}
+    occluded=make_native_occlusion_test(entries,args.source,args.original_pack,inventory,effects)
     reports = []
     for receipt in args.receipt:
         d = json.loads(receipt.read_text())
@@ -129,10 +157,13 @@ def main():
             or d.get('mp_publications')!=1 or d.get('hp_publications')!=8
             or any(d.get('phase_f2_switches',{}).get(phase)!=1 for phase in ['prelude','actor','actor-pulse','command1-target','tail'])):
             raise SystemExit('需要完整普通指令1交易／F2收據')
+        ordinary_phases=['prelude','actor','actor-pulse','handler-front','target','handler-tail']+([] if command_id==6 else ['tail'])
         if args.ordinary_command is not None and (d.get('status')!=f'PASS-ORDINARY-COMMAND{command_id}-FIXTURE-RUNTIME-E1' or d.get('command_id')!=command_id
-            or d.get('mp_publications')!=1 or d.get('hp_publications')!={2:6,3:13,7:5,8:16}[command_id]
-            or any(d.get('phase_f2_switches',{}).get(phase)!=1 for phase in ['prelude','actor','actor-pulse','handler-front','target','handler-tail','tail'])):
+            or d.get('mp_publications')!=1 or d.get('hp_publications')!={2:6,3:13,6:5,7:5,8:16}[command_id]
+            or any(d.get('phase_f2_switches',{}).get(phase)!=1 for phase in ordinary_phases)):
             raise SystemExit(f'需要完整普通指令{command_id}交易／F2收據')
+        if args.ordinary_command==6 and d.get('packed_shaders')!=[(shade<<8)|0xb0 for shade in range(2,9)]:
+            raise SystemExit('需要七種packed變色的實際Draw觀測')
         samples=d.get('source_shots', {})
         if args.normal_command0 or args.normal_command1 or args.normal_ordinary_command is not None:
             if (d.get('status')!='PASS' or d.get('schema')!='fd2-hd-battle-status-gui-v1'
