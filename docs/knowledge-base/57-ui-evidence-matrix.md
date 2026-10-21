@@ -2390,3 +2390,5 @@ BattleFig15／17已沿61「隊伍BattleFig15與17圖源」正式接入；唯一�
 BattleFig22武者已依61「BattleFig22武者圖源」正式接入；唯一收據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的martial22_battle_followup_20261021。二十一幀實際Game.Draw核心、F2／返回、來源拒收及完整／runtime-only原子預檢通過，限RUNTIME-E1。共用姿勢、弧光旋轉、光束局部RGBA裁切及原框裁切逐筆揭露。正常操作與人工造型依全部HD後集中確認，完整HD仍未完成。
 
 BattleFig20騎龍人物已依61「BattleFig20騎龍人物圖源」正式接入；唯一收據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的dragonrider20_battle_followup_20261021。十八幀最終Game.Draw核心、F2／返回、來源拒收及兩包原子預檢通過，限RUNTIME-E1。六姿勢共用、局部飛出原框、遠翼／尾及寬斬光近似均揭露；正常與人工集中全部HD後，完整HD仍未完成。
+
+BattleFig16／26龍人已依61「BattleFig16與26龍人圖源」接入；唯一證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的dragons16_26_battle_followup_20261021。32張來源、30張非空最終GPU核心及兩透明空拍、F2／返回、來源拒收與兩包缺件原子性通過，限RUNTIME-E1。六姿勢共用與比例裁切屬明示美術近似，正常玩家及人工仍待全部HD後集中確認。

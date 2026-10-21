@@ -190,9 +190,11 @@ HD高解析呈現仍未完成。目前穩定文字、高解析故事頭像、戰
 
 signal: killed已由核心MEMCG事件及受控重跑確認為記憶體不足。標準有界8GB／4CPU回歸與分輪結果依主收據記錄，不重新開啟已解決的環境問題。
 
-普通指令0～8人物consumer已接，普通材質效果與火龍來源、隊伍BattleFig15／17、武者BattleFig22、騎龍BattleFig20均完成各自來源及正式Game.Draw／F2／返回、正式及runtime-only缺件原子預檢。共用關鍵姿勢與美術近似均逐筆揭露；fixture不提升為正常玩家或新原版parity。蓋亞待機與蓄力手腕v2已完成技術修正，正常操作及集中造型確認由[#268](https://github.com/wicanr2/fd2_re/issues/268)保持追蹤。
+普通指令0～8人物consumer已接，普通材質效果與火龍來源、隊伍BattleFig15／17、武者BattleFig22、騎龍BattleFig20及龍人BattleFig16／26均完成各自來源及正式Game.Draw／F2／返回、正式及runtime-only缺件原子預檢。共用關鍵姿勢與美術近似均逐筆揭露；fixture不提升為正常玩家或新原版parity。蓋亞待機與蓄力手腕v2已完成技術修正，正常操作及集中造型確認由[#268](https://github.com/wicanr2/fd2_re/issues/268)保持追蹤。
 
 其餘人物、未列效果、法術／地圖回復、地形／前景、背景、完整介面與平台效能仍待。來源、限定驗證與重跑入口集中於[HD主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-battlefield-20261019.json)。已登錄素材沿清冊白名單同步私人保存庫，實際遠端已核；公開庫不含完整素材。沒有新Release或完整HD完成聲明。
+
+龍人16／26本批新增32張來源。30張非空最終GPU核心及兩張固定原mask空拍、各21項來源拒收、完整Game.Draw／F2／64及65 DAC／HP與RNG保持／一次續行通過。正式及runtime-only各figure分開載入與缺件原子預檢，八命令零SKIP；無OOM。七新原RGBA及兩衍生按白名單保存，32張候選PNG保持。比例裁切、共用姿勢及光效形狀差異明示，正常操作與造型仍待全部HD後集中確認。
 
 怎樣算做完：建立由正式consumer到FIGANI人物及共同效果的可重跑覆蓋清冊；完成可達戰鬥動畫HD素材、原始位置／層序／節拍／命中與音效標記的正式呈現，缺件明示；正常玩家抽驗攻擊、受擊／反擊、法術／效果、死亡與戰場返回，F2、保存冷讀與代表性效能通過；已登錄素材同步私人庫，保留原版像素模式。資料測試及離線PNG不能取代正式GUI。
 

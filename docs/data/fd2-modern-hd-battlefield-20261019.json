@@ -78493,5 +78493,3331 @@
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure020-fd2_lessons.py-check-r1.log",
       "sha256": "a7fcbba957ef87127dfce8ed9bd6a03b8b146cea1b4d3f9b312581029897487a"
     }
+  },
+  "dragons16_26_battle_followup_20261021": {
+    "status": "CONFORMED-SCOPED-RUNTIME-E1",
+    "base_commit": "25fe311960e9b76551446fdcf21dbf92ef92fe80",
+    "figures": [
+      16,
+      26
+    ],
+    "resources": [
+      48,
+      49,
+      78,
+      79
+    ],
+    "frames": 32,
+    "native_empty_frames": [
+      [
+        49,
+        6
+      ],
+      [
+        79,
+        5
+      ]
+    ],
+    "formal_registered": true,
+    "full_battle_hd_complete": false,
+    "human_review": "pending-until-all-HD-integrated",
+    "source_inventory": {
+      "file": "docs/data/fd2-battle-hd-source-inventory-20261019.json",
+      "sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51"
+    },
+    "generation_document": {
+      "generator": "built-in image_gen",
+      "tasks": [
+        {
+          "key": "16Idle",
+          "args": {
+            "transparent_background": true,
+            "referenced_image_paths": [
+              "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure016-native-reference-r2.png"
+            ],
+            "prompt": "Use case: stylized-concept. Asset type: ONE transparent HD battle sprite faithful to FIGANI48 frame0, NOT a board. A single draconic humanoid armored knight seen almost straight from BEHIND facing slightly LEFT, suspended in air with knees bent and feet tucked. Two LARGE leathery brown/tan bat wings rise on his back in a tall open V, long brown curled tail descends at right. Steel slate-gray armor with navy-blue edging, articulated pauldrons, blue-gray gauntlets and greaves, long navy cloth/tabard hanging from back of waist, large brown oval shield held along left side, short straight silver sword held mostly out of sight in right hand. Head is SMALL and mostly hidden by the high collar/shoulders and wing roots, low reptilian profile only, no huge dragon head sticking above wings. Compact rear-view body and bent boots exactly as native. Wings are part of the knight, no mount or rider. Mature hand-painted fantasy RPG style, clean dark outlines, painted metal and leather planes, restrained material detail, not pixel art or glossy 3D. Whole single body, both wing tips, tail and feet fully contained with transparent margins. Opaque core and genuine transparent background. No energy, scenery, ground, shadow, pedestal, panels, labels or extra poses."
+          },
+          "output_hint": "Generated images are saved to /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0 as /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-e2ae1413-facf-48c7-a85b-7dedaedd63d3.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/dragons-16Idle-original-r1.png",
+          "sha256": "21036e16be16f867f5ba1cd8ea906f935db9dad16c0f1c613b480bea77addf64",
+          "size": [
+            1190,
+            1322
+          ],
+          "alpha_ge192_bbox": [
+            44,
+            57,
+            1174,
+            1229
+          ]
+        },
+        {
+          "key": "16Fold",
+          "args": {
+            "transparent_background": true,
+            "referenced_image_paths": [
+              "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-e2ae1413-facf-48c7-a85b-7dedaedd63d3.png",
+              "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure016-native-reference-r2.png"
+            ],
+            "prompt": "Use case: identity-preserve. Image1 is edit target, brown-wing armored dragon knight; image2 FIGANI48 frame1 and2 locks folded wing stance. Create ONE adjacent FOLDED-WINGS key pose. Keep exact rear-facing armored body, small concealed brown reptilian head beneath high navy collar, silver-gray plates/navy trim and hanging blue tabard, oval brown shield at left, single short sword low at right, long brown curled tail and bent airborne boots. ONLY fold the two tall brown bat wings closer toward the spine, wing tips high and close together leaving narrow triangular gap, outer silhouette appreciably narrower than image1, width:height about0.8. Body torso, feet, arms, head and tail stay same proportions and natural joints. Same mature hand-painted RPG style. Whole single body and all tips with transparent padding, opaque core. No glow, energy, ground, shadow, scenery, text, panels or extra pose."
+          },
+          "output_hint": "Generated images are saved to /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0 as /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-adf1a357-7f3d-4e76-9bb5-c030a726ea44.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/dragons-16Fold-original-r1.png",
+          "sha256": "eb0d9beb5208e271a03528292a88740658ac6545566e1c6c3df0642b53e3e706",
+          "size": [
+            1064,
+            1479
+          ],
+          "alpha_ge192_bbox": [
+            189,
+            58,
+            875,
+            1366
+          ]
+        },
+        {
+          "key": "16Attack",
+          "args": {
+            "transparent_background": true,
+            "referenced_image_paths": [
+              "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-adf1a357-7f3d-4e76-9bb5-c030a726ea44.png",
+              "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure016-native-reference-r2.png"
+            ],
+            "prompt": "Use case: identity-preserve. Image1 locks this brown-wing armored draconic knight, image2 FIGANI49 frame7 is attack authority. Create ONE sword-sweep ATTACK key pose from almost straight REAR view. Keep same small concealed head, slate-silver armor/navy edges/tabard, brown oval shield on left, curled brown tail, folded tall brown wings and tucked airborne knees/boots. Twist upper torso slightly LEFT and bring right sword arm across upper chest in a follow-through, hand mainly hidden by shoulders from rear; short straight SILVER BLADE points horizontally RIGHT from far side, visible beyond right wing, as native. Left shield stays held close forward-left. Natural shoulder/elbow/wrist chain, two arms only; no extra swords. Feet/body placement and compact folded wing silhouette remain like image1. Exact same restrained hand-painted fantasy RPG style and colors. Whole body/tail/wings/weapon contained with genuine transparent padding and opaque core. NO energy light yet, no ground, shadow, scenery, text, panel or other pose."
+          },
+          "output_hint": "Generated images are saved to /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0 as /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-8a300503-219a-4c80-9e42-285075544b87.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/dragons-16Attack-original-r1.png",
+          "sha256": "40b909abdbc7dbeea94e1ac98b6d5f9858e496fcfb115a189523a4cf44b841b0",
+          "size": [
+            1064,
+            1478
+          ],
+          "alpha_ge192_bbox": [
+            88,
+            60,
+            1041,
+            1354
+          ]
+        },
+        {
+          "key": "26Idle",
+          "args": {
+            "transparent_background": true,
+            "referenced_image_paths": [
+              "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure026-native-reference-r2.png"
+            ],
+            "prompt": "Use case: stylized-concept. Asset type: ONE transparent HD battle sprite faithful to FIGANI78 frame0, NOT a board. Single blue-gray scaled dragon humanoid warrior, three-quarter REAR view facing LEFT, crouched hovering with both knees bent, thick curled blue tail at right, TWO blue leathery bat wings folded together trailing diagonally RIGHT like a cape. Low angular draconic head with short blue spines, face mostly hidden as native. Broad steel-gray layered pauldrons, segmented gray breast/back armor with brown crossing straps, gray armored thighs, bronze-brown cross straps and segmented shin guards. Holds ONE huge curved silver-white saber upright on screen LEFT in left/front hand; blade is longer than torso, broad strongly curved scimitar with dark edge, pointed upward-left. Other hand compact at torso. Exact native gray-blue palette and rear silhouette; NO human rider, horse or red dragon, no extra arms. Same mature hand-painted fantasy RPG look with clean dark contours, metal planes and leathery wings, not pixel art or 3D. Full single figure including complete saber, wing tips, bent feet and tail contained with genuine transparent padding, opaque body core. No energy effects, ground, shadows, scenery, panels, labels or additional poses."
+          },
+          "output_hint": "Generated images are saved to /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0 as /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-49401564-95a9-418d-8d82-a8207748483b.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/dragons-26Idle-original-r1.png",
+          "sha256": "303633c3d55214088e029b27f848bbd0ed4cfdedd21fd3db71f7c40d380560b4",
+          "size": [
+            1316,
+            1195
+          ],
+          "alpha_ge192_bbox": [
+            130,
+            16,
+            1250,
+            1176
+          ]
+        },
+        {
+          "key": "26Raise",
+          "args": {
+            "transparent_background": true,
+            "referenced_image_paths": [
+              "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-49401564-95a9-418d-8d82-a8207748483b.png",
+              "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure026-native-reference-r2.png"
+            ],
+            "prompt": "Use case: identity-preserve. Image1 locks the armored blue-gray dragon warrior identity. Image2 FIGANI79 frame2/3 is high-saber attack preparation authority. ONE transparent full-body adjacent key pose: same low blue-spined draconic head, steel-gray layered armor with brown straps, blue-gray legs and curled tail, two folded blue leathery wings trailing RIGHT. From same three-quarter rear LEFT-facing camera, raise saber-bearing left/front arm HIGH above head, elbow naturally bent, one enormous curved silver-white scimitar held upright and slightly back, ready for downward sweep. Lift front knee slightly, keep both feet tucked into compact airborne stance. Preserve exact costume, blade shape, scale and hand-painted RPG style of image1, two arms only with natural straight wrist, no other weapons or rider. Whole body, all blade/wing tips, bent feet and tail fully contained with genuine transparent padding; opaque core. No energy, ground, shadow, scenery, labels, panels or extra pose."
+          },
+          "output_hint": "Generated images are saved to /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0 as /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-e305fd7f-39d1-4f29-a6cb-ab7a1a58eea1.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/dragons-26Raise-original-r1.png",
+          "sha256": "24c48737914c8d401827ae25eb5a7cf3eaf7bdaab6fb5340bd6b2a85d9d8eeb1",
+          "size": [
+            1316,
+            1195
+          ],
+          "alpha_ge192_bbox": [
+            271,
+            19,
+            1274,
+            1176
+          ]
+        },
+        {
+          "key": "26Swing",
+          "args": {
+            "transparent_background": true,
+            "referenced_image_paths": [
+              "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-49401564-95a9-418d-8d82-a8207748483b.png",
+              "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure026-native-reference-r2.png"
+            ],
+            "prompt": "Use case: identity-preserve. Image1 locks blue-gray armored dragon humanoid identity and painted style. Image2 FIGANI79 frames6/7/10 provide rear-view down-swing follow-through. Create ONE transparent full-body follow-through key pose: rotate upper torso into almost direct BACK view and hunch slightly forward, both dark-blue leathery wings held high close together on back, top tips inward forming narrow V; head becomes mostly concealed between them. Keep same steel-gray layered shoulder/back plates, brown straps, blue-gray muscular thighs, curled blue tail and tucked armored legs/feet. Saber arm sweeps down-right: one curved silver-white saber extends diagonally LOW toward screen RIGHT beside thigh, natural elbow/wrist; other hand remains tucked close at side. No huge arm stretching far left; compact winged rear silhouette like native. Preserve exact same costume, anatomy and colors; two arms, two wings, no mount/rider, no extra weapon. Whole single figure including saber, tips, feet and tail fully contained with transparent padding and opaque core. No energy/slash light, ground, shadows, scenery, text, panel or additional poses."
+          },
+          "output_hint": "Generated images are saved to /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0 as /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-b8efbb2d-6a9c-4d67-b1ca-fb0e90e5dfdc.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/dragons-26Swing-original-r1.png",
+          "sha256": "49bdebd1102ab3422097eaf5a61a28c0e0dc79e888e49a642835f4865ee4ec71",
+          "size": [
+            1316,
+            1195
+          ],
+          "alpha_ge192_bbox": [
+            88,
+            62,
+            1273,
+            1169
+          ]
+        },
+        {
+          "key": "Crescent",
+          "args": {
+            "transparent_background": true,
+            "referenced_image_paths": [
+              "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure026-geometry-review-r2.png"
+            ],
+            "prompt": "Use case: stylized-concept. Asset type: ONE isolated transparent fantasy RPG sword energy ribbon, NOT a sprite sheet. Supporting reference is the original BattleFig26 attack board; only reinterpret the gold crescent in 79/07, no character. Broad thick curved boomerang-like golden-white slash, overall wide 2:1 silhouette. Upper LEFT tip hooks down into a very wide luminous creamy ivory ribbon sweeping diagonally DOWN and RIGHT, ending at lower RIGHT tapered golden-orange tip. Open asymmetric crescent, NOT a complete ring, no straight horizontal laser, no explosion. Large opaque bright ivory core, warm golden rim, restrained orange-red trailing taper. Mature hand-painted fantasy game art with clean readable contours. Entire ribbon within canvas with generous transparent margin. Genuine transparent background, solid opaque central core. No character, weapons, scenery, labels, other poses, black backdrop or box."
+          },
+          "output_hint": "Generated images are saved to /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0 as /home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-2c2d9dc6-cde2-425c-a524-44774c2dd826.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/dragons-Crescent-original-r1.png",
+          "sha256": "c07c5d07c11665f7d17942075b78fc832d001efe874ab345ddecf612bb196df4",
+          "size": [
+            1774,
+            887
+          ],
+          "alpha_ge192_bbox": [
+            71,
+            48,
+            1719,
+            833
+          ]
+        }
+      ]
+    },
+    "fx_transforms": [
+      {
+        "key": "beam",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/dragons-beam-rotate-r2.png",
+        "sha256": "dbec1ae290b85ba03c404cbd68e1a0872c3598f8443ca3ba5c8dd8048df7c905",
+        "operation": "exact crop then integer ROTATE_180",
+        "crop": [
+          629,
+          0,
+          2098,
+          750
+        ],
+        "parent": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-020-main-original-battle-hd6-master-v1.png",
+          "sha256": "3a6f279bb6810ca75639006b0fd8a421d1b0918d547037d90e5eb1ca1e24731a"
+        }
+      },
+      {
+        "key": "tail",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/dragons-tail-rotate-r2.png",
+        "sha256": "718f04d6dbee8a47c1da970801c936ac8140eef9ecf360dd79f3af2af349c37a",
+        "operation": "exact crop then integer ROTATE_180",
+        "crop": [
+          0,
+          0,
+          2048,
+          768
+        ],
+        "parent": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-015-gold-battle-hd6-master-v1.png",
+          "sha256": "07ed31d12700a8da4ad6ddddda64a9dd67394709804e6fd73320276cb111ddab"
+        }
+      }
+    ],
+    "geometry_document": {
+      "16": {
+        "status": "DRAFT-PINNED-GEOMETRY",
+        "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+        "fx_colors": [
+          [
+            48,
+            0,
+            0
+          ],
+          [
+            73,
+            4,
+            0
+          ],
+          [
+            101,
+            24,
+            8
+          ],
+          [
+            130,
+            44,
+            16
+          ],
+          [
+            158,
+            73,
+            0
+          ],
+          [
+            182,
+            97,
+            0
+          ],
+          [
+            207,
+            121,
+            0
+          ],
+          [
+            219,
+            134,
+            0
+          ],
+          [
+            231,
+            146,
+            0
+          ],
+          [
+            255,
+            170,
+            24
+          ],
+          [
+            255,
+            207,
+            77
+          ],
+          [
+            255,
+            243,
+            158
+          ],
+          [
+            255,
+            255,
+            215
+          ]
+        ],
+        "scope": "Warm RGBs absent from idle; stripped RGBA comparisons only prove listed geometry, not original effect or whole-frame equality.",
+        "frames": [
+          {
+            "frame": 0,
+            "descriptor": {
+              "frame": 0,
+              "x": 139,
+              "y": 23,
+              "width": 181,
+              "height": 177,
+              "delay_native": 2,
+              "raw_byte_4": 0,
+              "raw_byte_5": 0,
+              "raw_byte_7": 0,
+              "pixels_sha256": "4125e7f3879b8232c19c0b456cf89a9fa44a7b15372099c2fca002ab0062baff",
+              "mask_sha256": "659bb4fa852be4535c85d5d916ba7d51d3267569645202dedcc69f701f13e9ec"
+            },
+            "empty": false,
+            "body_box": [
+              0,
+              0,
+              181,
+              177
+            ],
+            "components": [],
+            "best_crop": {
+              "resource": 48,
+              "frame": 0,
+              "crop": [
+                0,
+                0,
+                181,
+                177
+              ],
+              "different_pixels": 0,
+              "exact_stripped_rgba": true
+            }
+          },
+          {
+            "frame": 1,
+            "descriptor": {
+              "frame": 1,
+              "x": 109,
+              "y": 26,
+              "width": 152,
+              "height": 174,
+              "delay_native": 2,
+              "raw_byte_4": 0,
+              "raw_byte_5": 0,
+              "raw_byte_7": 0,
+              "pixels_sha256": "5ebe977b649dab2622785ba491702966653f40f27c90f4bf7c33d3931e378b1b",
+              "mask_sha256": "d57747e8361215464acf9d698e192e696cdb0fcb1f459dac5062d535596dd505"
+            },
+            "empty": false,
+            "body_box": [
+              0,
+              0,
+              152,
+              174
+            ],
+            "components": [],
+            "best_crop": null
+          },
+          {
+            "frame": 2,
+            "descriptor": {
+              "frame": 2,
+              "x": 65,
+              "y": 27,
+              "width": 146,
+              "height": 173,
+              "delay_native": 2,
+              "raw_byte_4": 0,
+              "raw_byte_5": 0,
+              "raw_byte_7": 0,
+              "pixels_sha256": "5e087a45589be95a65e697697ddef23cbdd1813f370995e1564f11e483bdd558",
+              "mask_sha256": "1b9f56f43da13e242063a7d6baceaf2593d3742427686794cf614fa8f16e9af0"
+            },
+            "empty": false,
+            "body_box": [
+              0,
+              0,
+              146,
+              173
+            ],
+            "components": [],
+            "best_crop": null
+          },
+          {
+            "frame": 3,
+            "descriptor": {
+              "frame": 3,
+              "x": 8,
+              "y": 38,
+              "width": 152,
+              "height": 162,
+              "delay_native": 2,
+              "raw_byte_4": 0,
+              "raw_byte_5": 0,
+              "raw_byte_7": 0,
+              "pixels_sha256": "ea872cf71951e09b20e4a2f841a4357fe39dcf990a2b99f7a870641bf9320061",
+              "mask_sha256": "96386f9ef26bf1d652e03d495f25d477be7099d680894aa3219a080dc61742a9"
+            },
+            "empty": false,
+            "body_box": [
+              0,
+              0,
+              152,
+              162
+            ],
+            "components": [],
+            "best_crop": null
+          },
+          {
+            "frame": 4,
+            "descriptor": {
+              "frame": 4,
+              "x": 0,
+              "y": 51,
+              "width": 156,
+              "height": 149,
+              "delay_native": 2,
+              "raw_byte_4": 0,
+              "raw_byte_5": 0,
+              "raw_byte_7": 0,
+              "pixels_sha256": "b185bddf6e4a4015dbf1d3e0041ef9dbe7cc4145c9d7c9e9e624889949ab920a",
+              "mask_sha256": "cea0ff2b2f907013bebe555a4ea09f039d4cf1c91beca39aa439b4da9928919e"
+            },
+            "empty": false,
+            "body_box": [
+              0,
+              0,
+              156,
+              149
+            ],
+            "components": [],
+            "best_crop": null
+          },
+          {
+            "frame": 5,
+            "descriptor": {
+              "frame": 5,
+              "x": 0,
+              "y": 64,
+              "width": 52,
+              "height": 136,
+              "delay_native": 2,
+              "raw_byte_4": 0,
+              "raw_byte_5": 0,
+              "raw_byte_7": 0,
+              "pixels_sha256": "f5ada0f4d6f18d25c29fba20182002255eed5863d92f4492b7bf363ef4d2f1b7",
+              "mask_sha256": "b8029463485687aa07ed6abd633d076d264d0aa7831a4bbeaae29ac5b1afd8a0"
+            },
+            "empty": false,
+            "body_box": [
+              0,
+              0,
+              52,
+              136
+            ],
+            "components": [],
+            "best_crop": {
+              "resource": 48,
+              "frame": 2,
+              "crop": [
+                35,
+                0,
+                87,
+                136
+              ],
+              "different_pixels": 5045,
+              "exact_stripped_rgba": false
+            }
+          },
+          {
+            "frame": 6,
+            "descriptor": {
+              "frame": 6,
+              "x": 0,
+              "y": 0,
+              "width": 320,
+              "height": 200,
+              "delay_native": 4,
+              "raw_byte_4": 0,
+              "raw_byte_5": 0,
+              "raw_byte_7": 0,
+              "pixels_sha256": "fb35dc5cc3cf62743c8aeb0cbb675d36cd96116db937ce294842632d65bd31b3",
+              "mask_sha256": "47b3592047bc4fd2154578a5615e3235cdce0d0637b01d892a19a241274d2f18"
+            },
+            "empty": true,
+            "body_box": null,
+            "components": []
+          },
+          {
+            "frame": 7,
+            "descriptor": {
+              "frame": 7,
+              "x": 0,
+              "y": 0,
+              "width": 320,
+              "height": 161,
+              "delay_native": 2,
+              "raw_byte_4": 1,
+              "raw_byte_5": 3,
+              "raw_byte_7": 0,
+              "pixels_sha256": "d75eb2ae3d9b59abd5156d1875ae913be9615f0ad81445736beff750cd494fa9",
+              "mask_sha256": "1c7f2fa5ecf32e25785298ebac07924a7d9b936081d71371464c90aa652d9f02"
+            },
+            "empty": false,
+            "body_box": [
+              150,
+              0,
+              320,
+              161
+            ],
+            "components": [
+              {
+                "box": [
+                  315,
+                  27,
+                  318,
+                  28
+                ],
+                "pixels": 3
+              },
+              {
+                "box": [
+                  232,
+                  43,
+                  239,
+                  50
+                ],
+                "pixels": 26
+              },
+              {
+                "box": [
+                  0,
+                  54,
+                  153,
+                  142
+                ],
+                "pixels": 7036
+              },
+              {
+                "box": [
+                  186,
+                  70,
+                  188,
+                  72
+                ],
+                "pixels": 3
+              },
+              {
+                "box": [
+                  161,
+                  77,
+                  170,
+                  81
+                ],
+                "pixels": 17
+              }
+            ],
+            "best_crop": null
+          },
+          {
+            "frame": 8,
+            "descriptor": {
+              "frame": 8,
+              "x": 99,
+              "y": 0,
+              "width": 221,
+              "height": 110,
+              "delay_native": 2,
+              "raw_byte_4": 0,
+              "raw_byte_5": 0,
+              "raw_byte_7": 0,
+              "pixels_sha256": "68959c2fddbb527f3466837840d529e9a45cb3608b7738be55609bf9e11f6a85",
+              "mask_sha256": "84a89987464dee74c49634fa94a3d84893ddc769b0acd7a155cd982267b477a1"
+            },
+            "empty": false,
+            "body_box": [
+              125,
+              0,
+              221,
+              110
+            ],
+            "components": [
+              {
+                "box": [
+                  6,
+                  21,
+                  132,
+                  81
+                ],
+                "pixels": 2033
+              },
+              {
+                "box": [
+                  131,
+                  34,
+                  163,
+                  49
+                ],
+                "pixels": 182
+              },
+              {
+                "box": [
+                  35,
+                  49,
+                  36,
+                  50
+                ],
+                "pixels": 1
+              },
+              {
+                "box": [
+                  81,
+                  72,
+                  82,
+                  73
+                ],
+                "pixels": 1
+              },
+              {
+                "box": [
+                  3,
+                  73,
+                  5,
+                  74
+                ],
+                "pixels": 2
+              },
+              {
+                "box": [
+                  79,
+                  73,
+                  80,
+                  74
+                ],
+                "pixels": 1
+              },
+              {
+                "box": [
+                  0,
+                  74,
+                  1,
+                  75
+                ],
+                "pixels": 1
+              },
+              {
+                "box": [
+                  76,
+                  75,
+                  77,
+                  76
+                ],
+                "pixels": 1
+              },
+              {
+                "box": [
+                  28,
+                  81,
+                  30,
+                  82
+                ],
+                "pixels": 2
+              },
+              {
+                "box": [
+                  26,
+                  82,
+                  27,
+                  83
+                ],
+                "pixels": 1
+              }
+            ],
+            "best_crop": {
+              "resource": 49,
+              "frame": 7,
+              "crop": [
+                4,
+                35,
+                225,
+                145
+              ],
+              "different_pixels": 6007,
+              "exact_stripped_rgba": false
+            }
+          },
+          {
+            "frame": 9,
+            "descriptor": {
+              "frame": 9,
+              "x": 220,
+              "y": 0,
+              "width": 100,
+              "height": 136,
+              "delay_native": 2,
+              "raw_byte_4": 0,
+              "raw_byte_5": 0,
+              "raw_byte_7": 0,
+              "pixels_sha256": "af034391d4cc2dae8bd7fdd9e37550e399302fe167bead11e5d89bbce034bcd0",
+              "mask_sha256": "ac263889e20adb6ca5b262d98d33205bf4bf56f12626b02a5e9891ae32e0eb6d"
+            },
+            "empty": false,
+            "body_box": [
+              0,
+              0,
+              100,
+              136
+            ],
+            "components": [
+              {
+                "box": [
+                  82,
+                  16,
+                  85,
+                  19
+                ],
+                "pixels": 5
+              }
+            ],
+            "best_crop": {
+              "resource": 48,
+              "frame": 0,
+              "crop": [
+                45,
+                40,
+                145,
+                176
+              ],
+              "different_pixels": 7176,
+              "exact_stripped_rgba": false
+            }
+          },
+          {
+            "frame": 10,
+            "descriptor": {
+              "frame": 10,
+              "x": 169,
+              "y": 0,
+              "width": 151,
+              "height": 154,
+              "delay_native": 2,
+              "raw_byte_4": 0,
+              "raw_byte_5": 0,
+              "raw_byte_7": 0,
+              "pixels_sha256": "3566452c64f9223d254456feaae3bef977b2d63ad50e24cc2a26277b4fa13a21",
+              "mask_sha256": "cea5b3199fb3e2a840615dd223ce6dd3720b0c2700b6db2a1c8b6136b153d1d1"
+            },
+            "empty": false,
+            "body_box": [
+              0,
+              0,
+              151,
+              154
+            ],
+            "components": [
+              {
+                "box": [
+                  33,
+                  18,
+                  34,
+                  19
+                ],
+                "pixels": 1
+              },
+              {
+                "box": [
+                  31,
+                  19,
+                  32,
+                  20
+                ],
+                "pixels": 1
+              },
+              {
+                "box": [
+                  21,
+                  21,
+                  50,
+                  53
+                ],
+                "pixels": 223
+              },
+              {
+                "box": [
+                  51,
+                  21,
+                  53,
+                  22
+                ],
+                "pixels": 2
+              },
+              {
+                "box": [
+                  55,
+                  21,
+                  56,
+                  22
+                ],
+                "pixels": 1
+              },
+              {
+                "box": [
+                  39,
+                  54,
+                  40,
+                  55
+                ],
+                "pixels": 1
+              },
+              {
+                "box": [
+                  27,
+                  70,
+                  42,
+                  80
+                ],
+                "pixels": 32
+              },
+              {
+                "box": [
+                  23,
+                  75,
+                  24,
+                  76
+                ],
+                "pixels": 1
+              },
+              {
+                "box": [
+                  29,
+                  80,
+                  30,
+                  81
+                ],
+                "pixels": 1
+              },
+              {
+                "box": [
+                  27,
+                  81,
+                  28,
+                  82
+                ],
+                "pixels": 1
+              }
+            ],
+            "best_crop": {
+              "resource": 49,
+              "frame": 7,
+              "crop": [
+                114,
+                6,
+                265,
+                160
+              ],
+              "different_pixels": 4206,
+              "exact_stripped_rgba": false
+            }
+          },
+          {
+            "frame": 11,
+            "descriptor": {
+              "frame": 11,
+              "x": 164,
+              "y": 0,
+              "width": 156,
+              "height": 170,
+              "delay_native": 2,
+              "raw_byte_4": 0,
+              "raw_byte_5": 0,
+              "raw_byte_7": 0,
+              "pixels_sha256": "b277d2a97c1afefff246105b703b545cf9e7072ee2cec7eb3ce877bdfe22c564",
+              "mask_sha256": "cf0f8e01cc78ff481d8987f8866bcc3acc1f377c21f9099df9e8b3390c945bdf"
+            },
+            "empty": false,
+            "body_box": [
+              0,
+              0,
+              156,
+              170
+            ],
+            "components": [
+              {
+                "box": [
+                  5,
+                  63,
+                  17,
+                  73
+                ],
+                "pixels": 27
+              },
+              {
+                "box": [
+                  18,
+                  73,
+                  19,
+                  74
+                ],
+                "pixels": 1
+              },
+              {
+                "box": [
+                  18,
+                  89,
+                  21,
+                  92
+                ],
+                "pixels": 3
+              },
+              {
+                "box": [
+                  16,
+                  92,
+                  17,
+                  93
+                ],
+                "pixels": 1
+              }
+            ],
+            "best_crop": {
+              "resource": 49,
+              "frame": 12,
+              "crop": [
+                27,
+                7,
+                183,
+                177
+              ],
+              "different_pixels": 10559,
+              "exact_stripped_rgba": false
+            }
+          },
+          {
+            "frame": 12,
+            "descriptor": {
+              "frame": 12,
+              "x": 129,
+              "y": 8,
+              "width": 191,
+              "height": 177,
+              "delay_native": 2,
+              "raw_byte_4": 0,
+              "raw_byte_5": 0,
+              "raw_byte_7": 0,
+              "pixels_sha256": "7b8c0b6598c60ffd566d0cd526669d4ef72707e5bb4d298017aac49424fb7ea2",
+              "mask_sha256": "353e6f477816039beea45260074f375d02764c2746765ff093fcd15cb7dae73f"
+            },
+            "empty": false,
+            "body_box": [
+              0,
+              0,
+              191,
+              177
+            ],
+            "components": [],
+            "best_crop": null
+          }
+        ]
+      },
+      "26": {
+        "status": "DRAFT-PINNED-GEOMETRY",
+        "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+        "fx_colors": [
+          [
+            48,
+            0,
+            0
+          ],
+          [
+            60,
+            0,
+            0
+          ],
+          [
+            73,
+            4,
+            0
+          ],
+          [
+            101,
+            24,
+            8
+          ],
+          [
+            130,
+            44,
+            16
+          ],
+          [
+            158,
+            73,
+            0
+          ],
+          [
+            182,
+            97,
+            0
+          ],
+          [
+            207,
+            121,
+            0
+          ],
+          [
+            231,
+            146,
+            0
+          ],
+          [
+            255,
+            170,
+            24
+          ],
+          [
+            255,
+            207,
+            77
+          ],
+          [
+            255,
+            251,
+            186
+          ]
+        ],
+        "scope": "Warm RGBs absent from idle; stripped RGBA comparisons only prove listed geometry, not original effect or whole-frame equality.",
+        "frames": [
+          {
+            "frame": 0,
+            "descriptor": {
+              "frame": 0,
+              "x": 158,
+              "y": 5,
+              "width": 162,
+              "height": 195,
+              "delay_native": 2,
+              "raw_byte_4": 0,
+              "raw_byte_5": 0,
+              "raw_byte_7": 0,
+              "pixels_sha256": "c87f67e6db2ad6cb9496a2a2597b1432eec7bf9d10705d885ae8e6880b575f0d",
+              "mask_sha256": "b158e385d540333261431c0c8870b10f6000c058d5e2802d343b3cbc510b9f94"
+            },
+            "empty": false,
+            "body_box": [
+              0,
+              0,
+              162,
+              195
+            ],
+            "components": [],
+            "best_crop": {
+              "resource": 78,
+              "frame": 0,
+              "crop": [
+                0,
+                0,
+                162,
+                195
+              ],
+              "different_pixels": 0,
+              "exact_stripped_rgba": true
+            }
+          },
+          {
+            "frame": 1,
+            "descriptor": {
+              "frame": 1,
+              "x": 115,
+              "y": 0,
+              "width": 162,
+              "height": 199,
+              "delay_native": 2,
+              "raw_byte_4": 0,
+              "raw_byte_5": 0,
+              "raw_byte_7": 0,
+              "pixels_sha256": "86874eccd5312c51c55a1c5b900b541c978a0a9c5d542c363e789ac951cefacf",
+              "mask_sha256": "962e0a3a55fbcd640832badb5e9a16a66bb4af529d5e90dbaf4e7c2c94c99e93"
+            },
+            "empty": false,
+            "body_box": [
+              0,
+              0,
+              162,
+              199
+            ],
+            "components": [],
+            "best_crop": null
+          },
+          {
+            "frame": 2,
+            "descriptor": {
+              "frame": 2,
+              "x": 41,
+              "y": 0,
+              "width": 156,
+              "height": 183,
+              "delay_native": 2,
+              "raw_byte_4": 0,
+              "raw_byte_5": 0,
+              "raw_byte_7": 0,
+              "pixels_sha256": "212b10512cd9da7128dfe4420f1cb7bb90a58c69aa64bf440b75aae7c8f10585",
+              "mask_sha256": "1bf6720d0992739644dedc3ee0c72596b49d12be98aecd24d111c820f2db62d6"
+            },
+            "empty": false,
+            "body_box": [
+              0,
+              0,
+              156,
+              183
+            ],
+            "components": [],
+            "best_crop": {
+              "resource": 79,
+              "frame": 7,
+              "crop": [
+                89,
+                17,
+                245,
+                200
+              ],
+              "different_pixels": 14702,
+              "exact_stripped_rgba": false
+            }
+          },
+          {
+            "frame": 3,
+            "descriptor": {
+              "frame": 3,
+              "x": 7,
+              "y": 0,
+              "width": 139,
+              "height": 165,
+              "delay_native": 2,
+              "raw_byte_4": 0,
+              "raw_byte_5": 0,
+              "raw_byte_7": 0,
+              "pixels_sha256": "b85e503f0477b2e75fbf9e4ad45902707b4abb4d7b7ba9373404d9a2a840c6cb",
+              "mask_sha256": "86aadc286ae7aa09f325cfab0e24c80b9230db7396d86bf53ab6fc645ebb0d58"
+            },
+            "empty": false,
+            "body_box": [
+              0,
+              0,
+              139,
+              165
+            ],
+            "components": [],
+            "best_crop": {
+              "resource": 79,
+              "frame": 6,
+              "crop": [
+                24,
+                3,
+                163,
+                168
+              ],
+              "different_pixels": 8761,
+              "exact_stripped_rgba": false
+            }
+          },
+          {
+            "frame": 4,
+            "descriptor": {
+              "frame": 4,
+              "x": 0,
+              "y": 0,
+              "width": 86,
+              "height": 79,
+              "delay_native": 2,
+              "raw_byte_4": 0,
+              "raw_byte_5": 0,
+              "raw_byte_7": 0,
+              "pixels_sha256": "4787e15f7f9b7a8ac4d9aa31d9c12a0da39ced4301bb285e73918a9ab89bef2a",
+              "mask_sha256": "9801db00c7110414c337320bcbe95948dfe9f2fda441d1d2f534af7953295347"
+            },
+            "empty": false,
+            "body_box": [
+              0,
+              0,
+              86,
+              79
+            ],
+            "components": [],
+            "best_crop": {
+              "resource": 79,
+              "frame": 7,
+              "crop": [
+                225,
+                71,
+                311,
+                150
+              ],
+              "different_pixels": 3288,
+              "exact_stripped_rgba": false
+            }
+          },
+          {
+            "frame": 5,
+            "descriptor": {
+              "frame": 5,
+              "x": 0,
+              "y": 0,
+              "width": 320,
+              "height": 200,
+              "delay_native": 6,
+              "raw_byte_4": 0,
+              "raw_byte_5": 0,
+              "raw_byte_7": 0,
+              "pixels_sha256": "fb35dc5cc3cf62743c8aeb0cbb675d36cd96116db937ce294842632d65bd31b3",
+              "mask_sha256": "47b3592047bc4fd2154578a5615e3235cdce0d0637b01d892a19a241274d2f18"
+            },
+            "empty": true,
+            "body_box": null,
+            "components": []
+          },
+          {
+            "frame": 6,
+            "descriptor": {
+              "frame": 6,
+              "x": 2,
+              "y": 0,
+              "width": 194,
+              "height": 168,
+              "delay_native": 2,
+              "raw_byte_4": 0,
+              "raw_byte_5": 0,
+              "raw_byte_7": 0,
+              "pixels_sha256": "d7d1533a023f476db7101aec8b07f4c9aea090f033ed317f171b7a12b49af74c",
+              "mask_sha256": "04d7f033f22cfd14ab5944564bf583fd36e284bd935f5b789dc08a33679eaab1"
+            },
+            "empty": false,
+            "body_box": [
+              24,
+              3,
+              167,
+              168
+            ],
+            "components": [
+              {
+                "box": [
+                  0,
+                  0,
+                  185,
+                  67
+                ],
+                "pixels": 3493
+              },
+              {
+                "box": [
+                  161,
+                  0,
+                  194,
+                  25
+                ],
+                "pixels": 109
+              },
+              {
+                "box": [
+                  188,
+                  34,
+                  190,
+                  36
+                ],
+                "pixels": 2
+              },
+              {
+                "box": [
+                  191,
+                  37,
+                  192,
+                  38
+                ],
+                "pixels": 1
+              },
+              {
+                "box": [
+                  92,
+                  81,
+                  107,
+                  90
+                ],
+                "pixels": 46
+              }
+            ],
+            "best_crop": {
+              "resource": 79,
+              "frame": 7,
+              "crop": [
+                101,
+                30,
+                295,
+                198
+              ],
+              "different_pixels": 15471,
+              "exact_stripped_rgba": false
+            }
+          },
+          {
+            "frame": 7,
+            "descriptor": {
+              "frame": 7,
+              "x": 5,
+              "y": 0,
+              "width": 315,
+              "height": 200,
+              "delay_native": 2,
+              "raw_byte_4": 1,
+              "raw_byte_5": 3,
+              "raw_byte_7": 0,
+              "pixels_sha256": "1c51382e1cf0256edbbe898964ca4c6bb436f02a3464916f62491a76e7e577d5",
+              "mask_sha256": "0a8c82844298cad0123046786cf4745063050bb9ea432af0f777583f960d2996"
+            },
+            "empty": false,
+            "body_box": [
+              153,
+              33,
+              315,
+              200
+            ],
+            "components": [
+              {
+                "box": [
+                  0,
+                  0,
+                  163,
+                  132
+                ],
+                "pixels": 6955
+              },
+              {
+                "box": [
+                  219,
+                  113,
+                  313,
+                  172
+                ],
+                "pixels": 1963
+              },
+              {
+                "box": [
+                  210,
+                  142,
+                  241,
+                  156
+                ],
+                "pixels": 106
+              }
+            ],
+            "best_crop": null
+          },
+          {
+            "frame": 8,
+            "descriptor": {
+              "frame": 8,
+              "x": 195,
+              "y": 63,
+              "width": 125,
+              "height": 137,
+              "delay_native": 2,
+              "raw_byte_4": 0,
+              "raw_byte_5": 0,
+              "raw_byte_7": 0,
+              "pixels_sha256": "2f3f17c69f3e33ba00e8986ac2b77a4ca17278e2c8da926ebe5dc318cc15c51e",
+              "mask_sha256": "ad4e7551085ae5425a1db940a891e1b90b038b1073387eab27527e1a4664b827"
+            },
+            "empty": false,
+            "body_box": [
+              0,
+              0,
+              125,
+              137
+            ],
+            "components": [
+              {
+                "box": [
+                  110,
+                  80,
+                  111,
+                  81
+                ],
+                "pixels": 1
+              },
+              {
+                "box": [
+                  113,
+                  82,
+                  125,
+                  88
+                ],
+                "pixels": 21
+              },
+              {
+                "box": [
+                  112,
+                  87,
+                  125,
+                  98
+                ],
+                "pixels": 63
+              }
+            ],
+            "best_crop": {
+              "resource": 79,
+              "frame": 7,
+              "crop": [
+                109,
+                36,
+                234,
+                173
+              ],
+              "different_pixels": 4451,
+              "exact_stripped_rgba": false
+            }
+          },
+          {
+            "frame": 9,
+            "descriptor": {
+              "frame": 9,
+              "x": 229,
+              "y": 54,
+              "width": 91,
+              "height": 146,
+              "delay_native": 2,
+              "raw_byte_4": 0,
+              "raw_byte_5": 0,
+              "raw_byte_7": 0,
+              "pixels_sha256": "afd8b673b27ef9762b32e93bf65f12fdec9f93469f56c1940f8fb5eb1b3a9d7b",
+              "mask_sha256": "68bad9a0703818ecd3cc7b60ea4f3212c2f6c28c09d4af8d8281c2949dc3c34c"
+            },
+            "empty": false,
+            "body_box": [
+              0,
+              0,
+              91,
+              146
+            ],
+            "components": [],
+            "best_crop": {
+              "resource": 79,
+              "frame": 7,
+              "crop": [
+                153,
+                32,
+                244,
+                178
+              ],
+              "different_pixels": 1342,
+              "exact_stripped_rgba": false
+            }
+          },
+          {
+            "frame": 10,
+            "descriptor": {
+              "frame": 10,
+              "x": 187,
+              "y": 32,
+              "width": 133,
+              "height": 168,
+              "delay_native": 2,
+              "raw_byte_4": 0,
+              "raw_byte_5": 0,
+              "raw_byte_7": 0,
+              "pixels_sha256": "2f762aa763c0363eaca850eaab6f43ca4e23d8261e9bdae80c542cf874cec579",
+              "mask_sha256": "d170b8a890224ea4295de702c34fddca11ae9baca05d9b96bd113e83b0202fbe"
+            },
+            "empty": false,
+            "body_box": [
+              0,
+              0,
+              133,
+              168
+            ],
+            "components": [],
+            "best_crop": {
+              "resource": 79,
+              "frame": 7,
+              "crop": [
+                153,
+                30,
+                286,
+                198
+              ],
+              "different_pixels": 5781,
+              "exact_stripped_rgba": false
+            }
+          }
+        ]
+      }
+    },
+    "anchor_policy": [
+      {
+        "figure": 16,
+        "frame": 0,
+        "pose": "idle",
+        "native_body_box": [
+          0,
+          0,
+          181,
+          177
+        ],
+        "source_fraction": null,
+        "method": "explicit art proportional anchor; only attack0 equals idle0",
+        "empty": false
+      },
+      {
+        "figure": 16,
+        "frame": 1,
+        "pose": "fold",
+        "native_body_box": [
+          0,
+          0,
+          152,
+          174
+        ],
+        "source_fraction": null,
+        "method": "explicit art proportional anchor; only attack0 equals idle0",
+        "empty": false
+      },
+      {
+        "figure": 16,
+        "frame": 2,
+        "pose": "fold",
+        "native_body_box": [
+          0,
+          0,
+          146,
+          173
+        ],
+        "source_fraction": null,
+        "method": "explicit art proportional anchor; only attack0 equals idle0",
+        "empty": false
+      },
+      {
+        "figure": 16,
+        "frame": 3,
+        "pose": "fold_top",
+        "native_body_box": [
+          0,
+          0,
+          152,
+          162
+        ],
+        "source_fraction": [
+          0,
+          0.07,
+          1,
+          1
+        ],
+        "method": "explicit art proportional anchor; only attack0 equals idle0",
+        "empty": false
+      },
+      {
+        "figure": 16,
+        "frame": 4,
+        "pose": "idle_right",
+        "native_body_box": [
+          0,
+          0,
+          156,
+          149
+        ],
+        "source_fraction": [
+          0.17,
+          0.16,
+          1,
+          1
+        ],
+        "method": "explicit art proportional anchor; only attack0 equals idle0",
+        "empty": false
+      },
+      {
+        "figure": 16,
+        "frame": 5,
+        "pose": "fold_right",
+        "native_body_box": [
+          0,
+          0,
+          52,
+          136
+        ],
+        "source_fraction": [
+          0.65,
+          0.2,
+          1,
+          0.98
+        ],
+        "method": "explicit art proportional anchor; only attack0 equals idle0",
+        "empty": false
+      },
+      {
+        "figure": 16,
+        "frame": 6,
+        "pose": "idle",
+        "native_body_box": null,
+        "source_fraction": null,
+        "method": "explicit art proportional anchor; only attack0 equals idle0",
+        "empty": true
+      },
+      {
+        "figure": 16,
+        "frame": 7,
+        "pose": "attack_top",
+        "native_body_box": [
+          150,
+          0,
+          320,
+          161
+        ],
+        "source_fraction": [
+          0,
+          0.1,
+          1,
+          1
+        ],
+        "method": "explicit art proportional anchor; only attack0 equals idle0",
+        "empty": false
+      },
+      {
+        "figure": 16,
+        "frame": 8,
+        "pose": "attack_left",
+        "native_body_box": [
+          125,
+          0,
+          221,
+          110
+        ],
+        "source_fraction": [
+          0,
+          0.38,
+          0.58,
+          1
+        ],
+        "method": "explicit art proportional anchor; only attack0 equals idle0",
+        "empty": false
+      },
+      {
+        "figure": 16,
+        "frame": 9,
+        "pose": "fold_left",
+        "native_body_box": [
+          0,
+          0,
+          100,
+          136
+        ],
+        "source_fraction": [
+          0,
+          0.22,
+          0.65,
+          1
+        ],
+        "method": "explicit art proportional anchor; only attack0 equals idle0",
+        "empty": false
+      },
+      {
+        "figure": 16,
+        "frame": 10,
+        "pose": "fold_top10",
+        "native_body_box": [
+          0,
+          0,
+          151,
+          154
+        ],
+        "source_fraction": [
+          0,
+          0.12,
+          1,
+          1
+        ],
+        "method": "explicit art proportional anchor; only attack0 equals idle0",
+        "empty": false
+      },
+      {
+        "figure": 16,
+        "frame": 11,
+        "pose": "fold_top11",
+        "native_body_box": [
+          0,
+          0,
+          156,
+          170
+        ],
+        "source_fraction": [
+          0,
+          0.04,
+          1,
+          1
+        ],
+        "method": "explicit art proportional anchor; only attack0 equals idle0",
+        "empty": false
+      },
+      {
+        "figure": 16,
+        "frame": 12,
+        "pose": "idle",
+        "native_body_box": [
+          0,
+          0,
+          191,
+          177
+        ],
+        "source_fraction": null,
+        "method": "explicit art proportional anchor; only attack0 equals idle0",
+        "empty": false
+      },
+      {
+        "figure": 26,
+        "frame": 0,
+        "pose": "idle",
+        "native_body_box": [
+          0,
+          0,
+          162,
+          195
+        ],
+        "source_fraction": null,
+        "method": "explicit art proportional anchor; only attack0 equals idle0",
+        "empty": false
+      },
+      {
+        "figure": 26,
+        "frame": 1,
+        "pose": "idle",
+        "native_body_box": [
+          0,
+          0,
+          162,
+          199
+        ],
+        "source_fraction": null,
+        "method": "explicit art proportional anchor; only attack0 equals idle0",
+        "empty": false
+      },
+      {
+        "figure": 26,
+        "frame": 2,
+        "pose": "raise",
+        "native_body_box": [
+          0,
+          0,
+          156,
+          183
+        ],
+        "source_fraction": null,
+        "method": "explicit art proportional anchor; only attack0 equals idle0",
+        "empty": false
+      },
+      {
+        "figure": 26,
+        "frame": 3,
+        "pose": "raise_top",
+        "native_body_box": [
+          0,
+          0,
+          139,
+          165
+        ],
+        "source_fraction": [
+          0,
+          0.1,
+          1,
+          1
+        ],
+        "method": "explicit art proportional anchor; only attack0 equals idle0",
+        "empty": false
+      },
+      {
+        "figure": 26,
+        "frame": 4,
+        "pose": "raise_wing",
+        "native_body_box": [
+          0,
+          0,
+          86,
+          79
+        ],
+        "source_fraction": [
+          0.55,
+          0.4,
+          1,
+          0.85
+        ],
+        "method": "explicit art proportional anchor; only attack0 equals idle0",
+        "empty": false
+      },
+      {
+        "figure": 26,
+        "frame": 5,
+        "pose": "idle",
+        "native_body_box": null,
+        "source_fraction": null,
+        "method": "explicit art proportional anchor; only attack0 equals idle0",
+        "empty": true
+      },
+      {
+        "figure": 26,
+        "frame": 6,
+        "pose": "swing",
+        "native_body_box": [
+          24,
+          3,
+          167,
+          168
+        ],
+        "source_fraction": null,
+        "method": "explicit art proportional anchor; only attack0 equals idle0",
+        "empty": false
+      },
+      {
+        "figure": 26,
+        "frame": 7,
+        "pose": "swing",
+        "native_body_box": [
+          153,
+          33,
+          315,
+          200
+        ],
+        "source_fraction": null,
+        "method": "explicit art proportional anchor; only attack0 equals idle0",
+        "empty": false
+      },
+      {
+        "figure": 26,
+        "frame": 8,
+        "pose": "swing_left",
+        "native_body_box": [
+          0,
+          0,
+          125,
+          137
+        ],
+        "source_fraction": [
+          0,
+          0.18,
+          0.78,
+          1
+        ],
+        "method": "explicit art proportional anchor; only attack0 equals idle0",
+        "empty": false
+      },
+      {
+        "figure": 26,
+        "frame": 9,
+        "pose": "swing_left9",
+        "native_body_box": [
+          0,
+          0,
+          91,
+          146
+        ],
+        "source_fraction": [
+          0,
+          0.12,
+          0.6,
+          1
+        ],
+        "method": "explicit art proportional anchor; only attack0 equals idle0",
+        "empty": false
+      },
+      {
+        "figure": 26,
+        "frame": 10,
+        "pose": "swing",
+        "native_body_box": [
+          0,
+          0,
+          133,
+          168
+        ],
+        "source_fraction": null,
+        "method": "explicit art proportional anchor; only attack0 equals idle0",
+        "empty": false
+      }
+    ],
+    "reproduction_recipes": {
+      "16": {
+        "schema_version": 1,
+        "figure": 16,
+        "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+        "sources": {
+          "idle": {
+            "file": "remake/generated-assets/modern-theme-prototypes/figure-016-idle-battle-hd6-master-v1.png",
+            "sha256": "21036e16be16f867f5ba1cd8ea906f935db9dad16c0f1c613b480bea77addf64",
+            "anchor": [
+              44,
+              57,
+              1174,
+              1229
+            ]
+          },
+          "fold": {
+            "file": "remake/generated-assets/modern-theme-prototypes/figure-016-fold-battle-hd6-master-v1.png",
+            "sha256": "eb0d9beb5208e271a03528292a88740658ac6545566e1c6c3df0642b53e3e706",
+            "anchor": [
+              189,
+              58,
+              875,
+              1366
+            ]
+          },
+          "fold_top": {
+            "file": "remake/generated-assets/modern-theme-prototypes/figure-016-fold-battle-hd6-master-v1.png",
+            "sha256": "eb0d9beb5208e271a03528292a88740658ac6545566e1c6c3df0642b53e3e706",
+            "anchor": [
+              189,
+              150,
+              875,
+              1366
+            ]
+          },
+          "idle_right": {
+            "file": "remake/generated-assets/modern-theme-prototypes/figure-016-idle-battle-hd6-master-v1.png",
+            "sha256": "21036e16be16f867f5ba1cd8ea906f935db9dad16c0f1c613b480bea77addf64",
+            "anchor": [
+              236,
+              245,
+              1174,
+              1229
+            ]
+          },
+          "fold_right": {
+            "file": "remake/generated-assets/modern-theme-prototypes/figure-016-fold-battle-hd6-master-v1.png",
+            "sha256": "eb0d9beb5208e271a03528292a88740658ac6545566e1c6c3df0642b53e3e706",
+            "anchor": [
+              635,
+              320,
+              875,
+              1340
+            ]
+          },
+          "attack_top": {
+            "file": "remake/generated-assets/modern-theme-prototypes/figure-016-attack_top-battle-hd6-master-v1.png",
+            "sha256": "40b909abdbc7dbeea94e1ac98b6d5f9858e496fcfb115a189523a4cf44b841b0",
+            "anchor": [
+              88,
+              189,
+              1041,
+              1354
+            ]
+          },
+          "attack_left": {
+            "file": "remake/generated-assets/modern-theme-prototypes/figure-016-attack_top-battle-hd6-master-v1.png",
+            "sha256": "40b909abdbc7dbeea94e1ac98b6d5f9858e496fcfb115a189523a4cf44b841b0",
+            "anchor": [
+              88,
+              552,
+              641,
+              1354
+            ]
+          },
+          "fold_left": {
+            "file": "remake/generated-assets/modern-theme-prototypes/figure-016-fold-battle-hd6-master-v1.png",
+            "sha256": "eb0d9beb5208e271a03528292a88740658ac6545566e1c6c3df0642b53e3e706",
+            "anchor": [
+              189,
+              346,
+              635,
+              1366
+            ]
+          },
+          "fold_top10": {
+            "file": "remake/generated-assets/modern-theme-prototypes/figure-016-fold-battle-hd6-master-v1.png",
+            "sha256": "eb0d9beb5208e271a03528292a88740658ac6545566e1c6c3df0642b53e3e706",
+            "anchor": [
+              189,
+              215,
+              875,
+              1366
+            ]
+          },
+          "fold_top11": {
+            "file": "remake/generated-assets/modern-theme-prototypes/figure-016-fold-battle-hd6-master-v1.png",
+            "sha256": "eb0d9beb5208e271a03528292a88740658ac6545566e1c6c3df0642b53e3e706",
+            "anchor": [
+              189,
+              110,
+              875,
+              1366
+            ]
+          },
+          "beam": {
+            "file": "remake/generated-assets/modern-theme-prototypes/figure-016-beam-battle-hd6-master-v1.png",
+            "sha256": "dbec1ae290b85ba03c404cbd68e1a0872c3598f8443ca3ba5c8dd8048df7c905",
+            "anchor": [
+              26,
+              137,
+              1469,
+              733
+            ]
+          },
+          "tail": {
+            "file": "remake/generated-assets/modern-theme-prototypes/figure-016-tail-battle-hd6-master-v1.png",
+            "sha256": "718f04d6dbee8a47c1da970801c936ac8140eef9ecf360dd79f3af2af349c37a",
+            "anchor": [
+              84,
+              190,
+              1973,
+              592
+            ]
+          },
+          "spark": {
+            "file": "remake/generated-assets/modern-theme-prototypes/figure-022-orb-battle-hd6-master-v1.png",
+            "sha256": "ba6722d7552c97051f1936826428cd2aed2817747d5d5c040f7560f9459c464d",
+            "anchor": [
+              333,
+              255,
+              996,
+              939
+            ]
+          },
+          "crescent": {
+            "file": "remake/generated-assets/modern-theme-prototypes/figure-016-crescent-battle-hd6-master-v1.png",
+            "sha256": "c07c5d07c11665f7d17942075b78fc832d001efe874ab345ddecf612bb196df4",
+            "anchor": [
+              71,
+              48,
+              1719,
+              833
+            ]
+          }
+        },
+        "resources": {
+          "48": [
+            {
+              "pose": "idle",
+              "anchor": [
+                0,
+                0,
+                181,
+                177
+              ],
+              "scale_group": "idle0"
+            },
+            {
+              "pose": "fold",
+              "anchor": [
+                0,
+                0,
+                142,
+                181
+              ],
+              "scale_group": "idle1"
+            },
+            {
+              "pose": "fold",
+              "anchor": [
+                0,
+                0,
+                142,
+                183
+              ],
+              "scale_group": "idle2"
+            },
+            {
+              "pose": "fold",
+              "anchor": [
+                0,
+                0,
+                142,
+                181
+              ],
+              "scale_group": "idle3"
+            }
+          ],
+          "49": [
+            [
+              {
+                "pose": "idle",
+                "anchor": [
+                  0,
+                  0,
+                  181,
+                  177
+                ],
+                "scale_group": "body0"
+              }
+            ],
+            [
+              {
+                "pose": "fold",
+                "anchor": [
+                  0,
+                  0,
+                  152,
+                  174
+                ],
+                "scale_group": "body1"
+              }
+            ],
+            [
+              {
+                "pose": "fold",
+                "anchor": [
+                  0,
+                  0,
+                  146,
+                  173
+                ],
+                "scale_group": "body2"
+              }
+            ],
+            [
+              {
+                "pose": "fold_top",
+                "anchor": [
+                  0,
+                  0,
+                  152,
+                  162
+                ],
+                "scale_group": "body3"
+              }
+            ],
+            [
+              {
+                "pose": "idle_right",
+                "anchor": [
+                  0,
+                  0,
+                  156,
+                  149
+                ],
+                "scale_group": "body4"
+              }
+            ],
+            [
+              {
+                "pose": "fold_right",
+                "anchor": [
+                  0,
+                  0,
+                  52,
+                  136
+                ],
+                "scale_group": "body5"
+              }
+            ],
+            [
+              {
+                "pose": "idle",
+                "anchor": [
+                  0,
+                  0,
+                  1,
+                  1
+                ],
+                "scale_group": "body6"
+              }
+            ],
+            [
+              {
+                "pose": "spark",
+                "anchor": [
+                  315,
+                  27,
+                  318,
+                  28
+                ],
+                "scale_group": "fx7_0"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  232,
+                  43,
+                  239,
+                  50
+                ],
+                "scale_group": "fx7_1"
+              },
+              {
+                "pose": "beam",
+                "anchor": [
+                  0,
+                  54,
+                  153,
+                  142
+                ],
+                "scale_group": "fx7_2"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  186,
+                  70,
+                  188,
+                  72
+                ],
+                "scale_group": "fx7_3"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  161,
+                  77,
+                  170,
+                  81
+                ],
+                "scale_group": "fx7_4"
+              },
+              {
+                "pose": "attack_top",
+                "anchor": [
+                  150,
+                  0,
+                  320,
+                  161
+                ],
+                "scale_group": "body7"
+              }
+            ],
+            [
+              {
+                "pose": "tail",
+                "anchor": [
+                  6,
+                  21,
+                  132,
+                  81
+                ],
+                "scale_group": "fx8_0"
+              },
+              {
+                "pose": "tail",
+                "anchor": [
+                  131,
+                  34,
+                  163,
+                  49
+                ],
+                "scale_group": "fx8_1"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  35,
+                  49,
+                  36,
+                  50
+                ],
+                "scale_group": "fx8_2"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  81,
+                  72,
+                  82,
+                  73
+                ],
+                "scale_group": "fx8_3"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  3,
+                  73,
+                  5,
+                  74
+                ],
+                "scale_group": "fx8_4"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  79,
+                  73,
+                  80,
+                  74
+                ],
+                "scale_group": "fx8_5"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  0,
+                  74,
+                  1,
+                  75
+                ],
+                "scale_group": "fx8_6"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  76,
+                  75,
+                  77,
+                  76
+                ],
+                "scale_group": "fx8_7"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  28,
+                  81,
+                  30,
+                  82
+                ],
+                "scale_group": "fx8_8"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  26,
+                  82,
+                  27,
+                  83
+                ],
+                "scale_group": "fx8_9"
+              },
+              {
+                "pose": "attack_left",
+                "anchor": [
+                  125,
+                  0,
+                  221,
+                  110
+                ],
+                "scale_group": "body8"
+              }
+            ],
+            [
+              {
+                "pose": "spark",
+                "anchor": [
+                  82,
+                  16,
+                  85,
+                  19
+                ],
+                "scale_group": "fx9_0"
+              },
+              {
+                "pose": "fold_left",
+                "anchor": [
+                  0,
+                  0,
+                  100,
+                  136
+                ],
+                "scale_group": "body9"
+              }
+            ],
+            [
+              {
+                "pose": "spark",
+                "anchor": [
+                  33,
+                  18,
+                  34,
+                  19
+                ],
+                "scale_group": "fx10_0"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  31,
+                  19,
+                  32,
+                  20
+                ],
+                "scale_group": "fx10_1"
+              },
+              {
+                "pose": "crescent",
+                "anchor": [
+                  21,
+                  21,
+                  50,
+                  53
+                ],
+                "scale_group": "fx10_2"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  51,
+                  21,
+                  53,
+                  22
+                ],
+                "scale_group": "fx10_3"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  55,
+                  21,
+                  56,
+                  22
+                ],
+                "scale_group": "fx10_4"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  39,
+                  54,
+                  40,
+                  55
+                ],
+                "scale_group": "fx10_5"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  27,
+                  70,
+                  42,
+                  80
+                ],
+                "scale_group": "fx10_6"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  23,
+                  75,
+                  24,
+                  76
+                ],
+                "scale_group": "fx10_7"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  29,
+                  80,
+                  30,
+                  81
+                ],
+                "scale_group": "fx10_8"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  27,
+                  81,
+                  28,
+                  82
+                ],
+                "scale_group": "fx10_9"
+              },
+              {
+                "pose": "fold_top10",
+                "anchor": [
+                  0,
+                  0,
+                  151,
+                  154
+                ],
+                "scale_group": "body10"
+              }
+            ],
+            [
+              {
+                "pose": "spark",
+                "anchor": [
+                  5,
+                  63,
+                  17,
+                  73
+                ],
+                "scale_group": "fx11_0"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  18,
+                  73,
+                  19,
+                  74
+                ],
+                "scale_group": "fx11_1"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  18,
+                  89,
+                  21,
+                  92
+                ],
+                "scale_group": "fx11_2"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  16,
+                  92,
+                  17,
+                  93
+                ],
+                "scale_group": "fx11_3"
+              },
+              {
+                "pose": "fold_top11",
+                "anchor": [
+                  0,
+                  0,
+                  156,
+                  170
+                ],
+                "scale_group": "body11"
+              }
+            ],
+            [
+              {
+                "pose": "idle",
+                "anchor": [
+                  0,
+                  0,
+                  191,
+                  177
+                ],
+                "scale_group": "body12"
+              }
+            ]
+          ]
+        }
+      },
+      "26": {
+        "schema_version": 1,
+        "figure": 26,
+        "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+        "sources": {
+          "idle": {
+            "file": "remake/generated-assets/modern-theme-prototypes/figure-026-idle-battle-hd6-master-v1.png",
+            "sha256": "303633c3d55214088e029b27f848bbd0ed4cfdedd21fd3db71f7c40d380560b4",
+            "anchor": [
+              130,
+              16,
+              1250,
+              1176
+            ]
+          },
+          "raise": {
+            "file": "remake/generated-assets/modern-theme-prototypes/figure-026-raise-battle-hd6-master-v1.png",
+            "sha256": "24c48737914c8d401827ae25eb5a7cf3eaf7bdaab6fb5340bd6b2a85d9d8eeb1",
+            "anchor": [
+              271,
+              19,
+              1274,
+              1176
+            ]
+          },
+          "swing": {
+            "file": "remake/generated-assets/modern-theme-prototypes/figure-026-swing-battle-hd6-master-v1.png",
+            "sha256": "49bdebd1102ab3422097eaf5a61a28c0e0dc79e888e49a642835f4865ee4ec71",
+            "anchor": [
+              88,
+              62,
+              1273,
+              1169
+            ]
+          },
+          "raise_top": {
+            "file": "remake/generated-assets/modern-theme-prototypes/figure-026-raise-battle-hd6-master-v1.png",
+            "sha256": "24c48737914c8d401827ae25eb5a7cf3eaf7bdaab6fb5340bd6b2a85d9d8eeb1",
+            "anchor": [
+              271,
+              135,
+              1274,
+              1176
+            ]
+          },
+          "raise_wing": {
+            "file": "remake/generated-assets/modern-theme-prototypes/figure-026-raise-battle-hd6-master-v1.png",
+            "sha256": "24c48737914c8d401827ae25eb5a7cf3eaf7bdaab6fb5340bd6b2a85d9d8eeb1",
+            "anchor": [
+              823,
+              482,
+              1274,
+              1002
+            ]
+          },
+          "swing_left": {
+            "file": "remake/generated-assets/modern-theme-prototypes/figure-026-swing-battle-hd6-master-v1.png",
+            "sha256": "49bdebd1102ab3422097eaf5a61a28c0e0dc79e888e49a642835f4865ee4ec71",
+            "anchor": [
+              88,
+              261,
+              1012,
+              1169
+            ]
+          },
+          "swing_left9": {
+            "file": "remake/generated-assets/modern-theme-prototypes/figure-026-swing-battle-hd6-master-v1.png",
+            "sha256": "49bdebd1102ab3422097eaf5a61a28c0e0dc79e888e49a642835f4865ee4ec71",
+            "anchor": [
+              88,
+              195,
+              799,
+              1169
+            ]
+          },
+          "spark": {
+            "file": "remake/generated-assets/modern-theme-prototypes/figure-022-orb-battle-hd6-master-v1.png",
+            "sha256": "ba6722d7552c97051f1936826428cd2aed2817747d5d5c040f7560f9459c464d",
+            "anchor": [
+              333,
+              255,
+              996,
+              939
+            ]
+          },
+          "crescent": {
+            "file": "remake/generated-assets/modern-theme-prototypes/figure-016-crescent-battle-hd6-master-v1.png",
+            "sha256": "c07c5d07c11665f7d17942075b78fc832d001efe874ab345ddecf612bb196df4",
+            "anchor": [
+              71,
+              48,
+              1719,
+              833
+            ]
+          },
+          "crescent_left": {
+            "file": "remake/generated-assets/modern-theme-prototypes/figure-016-crescent-battle-hd6-master-v1.png",
+            "sha256": "c07c5d07c11665f7d17942075b78fc832d001efe874ab345ddecf612bb196df4",
+            "anchor": [
+              71,
+              48,
+              1126,
+              739
+            ]
+          },
+          "crescent_right": {
+            "file": "remake/generated-assets/modern-theme-prototypes/figure-016-crescent-battle-hd6-master-v1.png",
+            "sha256": "c07c5d07c11665f7d17942075b78fc832d001efe874ab345ddecf612bb196df4",
+            "anchor": [
+              1192,
+              574,
+              1719,
+              833
+            ]
+          }
+        },
+        "resources": {
+          "78": [
+            {
+              "pose": "idle",
+              "anchor": [
+                0,
+                0,
+                162,
+                195
+              ],
+              "scale_group": "idle0"
+            },
+            {
+              "pose": "idle",
+              "anchor": [
+                0,
+                0,
+                160,
+                193
+              ],
+              "scale_group": "idle1"
+            },
+            {
+              "pose": "idle",
+              "anchor": [
+                0,
+                0,
+                147,
+                191
+              ],
+              "scale_group": "idle2"
+            },
+            {
+              "pose": "idle",
+              "anchor": [
+                0,
+                0,
+                160,
+                193
+              ],
+              "scale_group": "idle3"
+            }
+          ],
+          "79": [
+            [
+              {
+                "pose": "idle",
+                "anchor": [
+                  0,
+                  0,
+                  162,
+                  195
+                ],
+                "scale_group": "body0"
+              }
+            ],
+            [
+              {
+                "pose": "idle",
+                "anchor": [
+                  0,
+                  0,
+                  162,
+                  199
+                ],
+                "scale_group": "body1"
+              }
+            ],
+            [
+              {
+                "pose": "raise",
+                "anchor": [
+                  0,
+                  0,
+                  156,
+                  183
+                ],
+                "scale_group": "body2"
+              }
+            ],
+            [
+              {
+                "pose": "raise_top",
+                "anchor": [
+                  0,
+                  0,
+                  139,
+                  165
+                ],
+                "scale_group": "body3"
+              }
+            ],
+            [
+              {
+                "pose": "raise_wing",
+                "anchor": [
+                  0,
+                  0,
+                  86,
+                  79
+                ],
+                "scale_group": "body4"
+              }
+            ],
+            [
+              {
+                "pose": "idle",
+                "anchor": [
+                  0,
+                  0,
+                  1,
+                  1
+                ],
+                "scale_group": "body5"
+              }
+            ],
+            [
+              {
+                "pose": "crescent",
+                "anchor": [
+                  0,
+                  0,
+                  185,
+                  67
+                ],
+                "scale_group": "fx6_0"
+              },
+              {
+                "pose": "crescent",
+                "anchor": [
+                  161,
+                  0,
+                  194,
+                  25
+                ],
+                "scale_group": "fx6_1"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  188,
+                  34,
+                  190,
+                  36
+                ],
+                "scale_group": "fx6_2"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  191,
+                  37,
+                  192,
+                  38
+                ],
+                "scale_group": "fx6_3"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  92,
+                  81,
+                  107,
+                  90
+                ],
+                "scale_group": "fx6_4"
+              },
+              {
+                "pose": "swing",
+                "anchor": [
+                  24,
+                  3,
+                  167,
+                  168
+                ],
+                "scale_group": "body6"
+              }
+            ],
+            [
+              {
+                "pose": "crescent_left",
+                "anchor": [
+                  0,
+                  0,
+                  163,
+                  132
+                ],
+                "scale_group": "fx7_0"
+              },
+              {
+                "pose": "crescent_right",
+                "anchor": [
+                  219,
+                  113,
+                  313,
+                  172
+                ],
+                "scale_group": "fx7_1"
+              },
+              {
+                "pose": "crescent_right",
+                "anchor": [
+                  210,
+                  142,
+                  241,
+                  156
+                ],
+                "scale_group": "fx7_2"
+              },
+              {
+                "pose": "swing",
+                "anchor": [
+                  153,
+                  33,
+                  315,
+                  200
+                ],
+                "scale_group": "body7"
+              }
+            ],
+            [
+              {
+                "pose": "spark",
+                "anchor": [
+                  110,
+                  80,
+                  111,
+                  81
+                ],
+                "scale_group": "fx8_0"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  113,
+                  82,
+                  125,
+                  88
+                ],
+                "scale_group": "fx8_1"
+              },
+              {
+                "pose": "spark",
+                "anchor": [
+                  112,
+                  87,
+                  125,
+                  98
+                ],
+                "scale_group": "fx8_2"
+              },
+              {
+                "pose": "swing_left",
+                "anchor": [
+                  0,
+                  0,
+                  125,
+                  137
+                ],
+                "scale_group": "body8"
+              }
+            ],
+            [
+              {
+                "pose": "swing_left9",
+                "anchor": [
+                  0,
+                  0,
+                  91,
+                  146
+                ],
+                "scale_group": "body9"
+              }
+            ],
+            [
+              {
+                "pose": "swing",
+                "anchor": [
+                  0,
+                  0,
+                  133,
+                  168
+                ],
+                "scale_group": "body10"
+              }
+            ]
+          ]
+        }
+      }
+    },
+    "evidence_scope": "Art retargeting only; native source descriptors and timing preserved. Shared poses and proportional partial anchors are disclosed approximations. No original RGB or normal-player E2 claim.",
+    "rejected_candidates": [
+      "R1: 16 main/tail diagonal reversed; R1 fixture stopped, not PASS"
+    ],
+    "private_synced": true,
+    "private_remote_verified": true,
+    "toolchain": {
+      "assets": {
+        "image": "fd2-assets-local:20260829-sfx",
+        "image_sha256": "e59237a31d4b5f7a62c59ac37b780bd93f17c99fda97be8f5ca0c53978b878bc",
+        "runtime": "Python 3.12.15 / Pillow 11.3.0"
+      },
+      "go": {
+        "image": "fd2-go-test-local:latest",
+        "image_sha256": "e4a805c52a3ad5d8c22cf23f2bcf51c6924e5ad6b99554f1b02761903c725433",
+        "runtime": "Go 1.22.12"
+      },
+      "platform": "linux/amd64",
+      "bounded_go_container": {
+        "memory_bytes": 8589934592,
+        "cpus": 4,
+        "pids_limit": 512,
+        "network": "none",
+        "uid_gid": "1000:1000"
+      },
+      "compiler": {
+        "file": "tools/build_fd2_character_battle_hd.py",
+        "sha256": "d0cca3bc3f7708d8de07be36286e21916851d194c9d9f307aedcc7813fa20a10"
+      },
+      "source_guards": {
+        "file": "tools/test_fd2_character_battle_hd.py",
+        "sha256": "3699938ea2557c49e8a71cea7d6f6dff3deb835db0b137b77d13e0ba6ed3299c"
+      },
+      "gpu_verifier": {
+        "file": "tools/verify_fd2_character_battle_gpu.py",
+        "sha256": "818c7000e7c4f990b822e74d6b605ac133f47b1f99de33517ed05424455776e1"
+      },
+      "coverage": {
+        "file": "tools/audit_fd2_battle_hd_coverage.py",
+        "sha256": "a1661e1e20a8bf6b33c5f6f51ddcaf31d4b12ea3f7fccfd2dcd50c11035d92d8"
+      },
+      "memory_probe": {
+        "file": "tools/fd2_go_test_memory_probe.py",
+        "sha256": "8e7c9c55b85aa72a5026b944233b94f7c0787f51b3f5ebb178ed54cc333e40f2"
+      }
+    },
+    "checks": {
+      "16": {
+        "compiled": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure016-candidate-r2/compiled.json",
+          "sha256": "ba7541323ef4d4f508bd4a6606674df8f0254fba223dacac19b961e948e3ebd0"
+        },
+        "compiler_guards": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure016-source-guards-r2/guards.json",
+          "sha256": "318bf1d96b2180a01efda15e5c708e7684aa8459f11337969ace915b8cc4c4da"
+        },
+        "runtime_gpu": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure016-runtime-r2-capture/receipt.json",
+          "sha256": "01b8894e95744b7528c9b1046b2b1bdaed2e9625c57b2b6a2854d58ef34d190c"
+        },
+        "pixel_core": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure016-core-r1.json",
+          "sha256": "554fac6fd8b5c48b80db19defed169efaddb5f72eccbe8c54ed8144806d1fb6d"
+        },
+        "blank_source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure016-blank-r1.json",
+          "sha256": "12ba7ef3a27534e825e2fa7203aff7e7037c4987e328021756491bef67129397"
+        },
+        "runtime_memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure016-runtime-r2.memory.json",
+          "sha256": "5e9fc4507118d5fa64e62c7d5369d6564870011ca635b97b6f56c3dc7e776607"
+        },
+        "packages": {
+          "formal_candidate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure016-formal-candidate-go-r1.memory.json",
+            "sha256": "4589d1e9ba2fee2d1a61fd182732d3d4c7f1170d020efa9bdf83996abf65bda8"
+          },
+          "formal_preflight": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure016-formal-preflight-go-r1.memory.json",
+            "sha256": "780d61edda626ac9e069385fda84cabaa368950fca4f00f887b3f819f506cc79"
+          },
+          "runtime_candidate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure016-runtime-candidate-go-r1.memory.json",
+            "sha256": "3473d6ab36c136f38b62311711805028bfb1c0a39e72d86d0da72f883a553b70"
+          },
+          "runtime_preflight": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure016-runtime-preflight-go-r1.memory.json",
+            "sha256": "bdbf5e484507b85e103ce9b52a236761af13c37ea7768fb7cded240ec315278a"
+          }
+        }
+      },
+      "26": {
+        "compiled": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure026-candidate-r2/compiled.json",
+          "sha256": "0506e3e11048caf277468600a6dd3256bdfd894a79805cbebfce546fa972cb61"
+        },
+        "compiler_guards": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure026-source-guards-r2/guards.json",
+          "sha256": "9eefa9c80ac453c0d5d3756a3707f19dd8b2e71e6cb321b0f6bb662eede38277"
+        },
+        "runtime_gpu": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure026-runtime-r2-capture/receipt.json",
+          "sha256": "fba7ae8d7717557657cbfaa3da6cc35d457c59a8144a35ee6a1de31d88826d55"
+        },
+        "pixel_core": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure026-core-r1.json",
+          "sha256": "fb15f9746fa1a14169cc7c948049735e529c9f68b80c0f583085abf2e1588ca0"
+        },
+        "blank_source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure026-blank-r1.json",
+          "sha256": "675da7d4b6ff146e6c10d8dbbd86890f70fab052a8c902b41e2f38c21fcd9579"
+        },
+        "runtime_memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure026-runtime-r2.memory.json",
+          "sha256": "371f81e4b88e2afa81ecd2779d8e7eaf11184059e9c2062352b996e9fd217864"
+        },
+        "packages": {
+          "formal_candidate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure026-formal-candidate-go-r1.memory.json",
+            "sha256": "2547af2c72ba621b874aa3a7bbc41e34dd3e791660683e2cbefbecae099d20e9"
+          },
+          "formal_preflight": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure026-formal-preflight-go-r1.memory.json",
+            "sha256": "d38e99119eddc8954951a9f86c71a121f6e5348da06fec4e379ca557f41cc3cf"
+          },
+          "runtime_candidate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure026-runtime-candidate-go-r1.memory.json",
+            "sha256": "20efe7a3b3a446c0f0e0b818c6204dba0cc952be166e69ad45cf8dda7308e920"
+          },
+          "runtime_preflight": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure026-runtime-preflight-go-r1.memory.json",
+            "sha256": "28e0789cbaf5f67c236a651a0193f90b16a740b07e14feac33b0bf603362e69f"
+          }
+        }
+      }
+    },
+    "formal_registration": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/dragons-formal-registration-r1.json",
+      "sha256": "b029775cb7ca89cf6051e8db47176ee7ae77138125391ea41a97f223b58ea572"
+    },
+    "private_delivery": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/dragons-private-delivery-r1.json",
+      "sha256": "175417dc0e290b8a3ead252014dc59f34c9910111752dbe86e30fb9bf54f6de7"
+    },
+    "coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/dragons-formal-coverage-r1.json",
+      "sha256": "620cbda037781c8d1ddc8873abb9312605cb627b42a42f9631349df1e5f19e6e"
+    },
+    "source_alias_mapping": {
+      "figure-016-spark-battle-hd6-master-v1.png": "figure-022-orb-battle-hd6-master-v1.png",
+      "figure-026-spark-battle-hd6-master-v1.png": "figure-022-orb-battle-hd6-master-v1.png",
+      "figure-016-fold_top-battle-hd6-master-v1.png": "figure-016-fold-battle-hd6-master-v1.png",
+      "figure-026-crescent-battle-hd6-master-v1.png": "figure-016-crescent-battle-hd6-master-v1.png",
+      "figure-016-fold_left-battle-hd6-master-v1.png": "figure-016-fold-battle-hd6-master-v1.png",
+      "figure-026-raise_top-battle-hd6-master-v1.png": "figure-026-raise-battle-hd6-master-v1.png",
+      "figure-016-fold_right-battle-hd6-master-v1.png": "figure-016-fold-battle-hd6-master-v1.png",
+      "figure-016-fold_top10-battle-hd6-master-v1.png": "figure-016-fold-battle-hd6-master-v1.png",
+      "figure-016-fold_top11-battle-hd6-master-v1.png": "figure-016-fold-battle-hd6-master-v1.png",
+      "figure-016-idle_right-battle-hd6-master-v1.png": "figure-016-idle-battle-hd6-master-v1.png",
+      "figure-026-raise_wing-battle-hd6-master-v1.png": "figure-026-raise-battle-hd6-master-v1.png",
+      "figure-026-swing_left-battle-hd6-master-v1.png": "figure-026-swing-battle-hd6-master-v1.png",
+      "figure-016-attack_left-battle-hd6-master-v1.png": "figure-016-attack_top-battle-hd6-master-v1.png",
+      "figure-026-swing_left9-battle-hd6-master-v1.png": "figure-026-swing-battle-hd6-master-v1.png",
+      "figure-026-crescent_left-battle-hd6-master-v1.png": "figure-016-crescent-battle-hd6-master-v1.png",
+      "figure-026-crescent_right-battle-hd6-master-v1.png": "figure-016-crescent-battle-hd6-master-v1.png"
+    },
+    "known_clipping": [
+      {
+        "resource": 49,
+        "frame": 3,
+        "pose": "fold_top",
+        "pixels": 6150
+      },
+      {
+        "resource": 49,
+        "frame": 4,
+        "pose": "idle_right",
+        "pixels": 66188
+      },
+      {
+        "resource": 49,
+        "frame": 5,
+        "pose": "fold_right",
+        "pixels": 216423
+      },
+      {
+        "resource": 49,
+        "frame": 7,
+        "pose": "attack_top",
+        "pixels": 11379
+      },
+      {
+        "resource": 49,
+        "frame": 8,
+        "pose": "attack_left",
+        "pixels": 170822
+      },
+      {
+        "resource": 49,
+        "frame": 9,
+        "pose": "fold_left",
+        "pixels": 71509
+      },
+      {
+        "resource": 49,
+        "frame": 10,
+        "pose": "fold_top10",
+        "pixels": 13808
+      },
+      {
+        "resource": 49,
+        "frame": 11,
+        "pose": "fold_top11",
+        "pixels": 2913
+      },
+      {
+        "resource": 79,
+        "frame": 4,
+        "pose": "raise_wing",
+        "pixels": 266202
+      },
+      {
+        "resource": 79,
+        "frame": 8,
+        "pose": "swing_left",
+        "pixels": 16088
+      },
+      {
+        "resource": 79,
+        "frame": 9,
+        "pose": "swing_left9",
+        "pixels": 50865
+      }
+    ],
+    "scale_groups": {
+      "16": {
+        "idle0": 1,
+        "idle1": 1,
+        "idle2": 1,
+        "idle3": 1,
+        "body0": 1,
+        "body1": 1,
+        "body2": 1,
+        "body3": 1,
+        "body4": 1,
+        "body5": 1,
+        "body6": 0.6914454277286136,
+        "fx7_0": 1,
+        "fx7_1": 1,
+        "fx7_2": 0.7165417165417165,
+        "fx7_3": 1,
+        "fx7_4": 1,
+        "body7": 1,
+        "fx8_0": 0.4882830421739897,
+        "fx8_1": 1,
+        "fx8_2": 1,
+        "fx8_3": 1,
+        "fx8_4": 1,
+        "fx8_5": 1,
+        "fx8_6": 0.6877828054298643,
+        "fx8_7": 1,
+        "fx8_8": 1,
+        "fx8_9": 1,
+        "body8": 1,
+        "fx9_0": 1,
+        "body9": 1,
+        "fx10_0": 1,
+        "fx10_1": 1,
+        "fx10_2": 1,
+        "fx10_3": 1,
+        "fx10_4": 1,
+        "fx10_5": 1,
+        "fx10_6": 1,
+        "fx10_7": 1,
+        "fx10_8": 1,
+        "fx10_9": 1,
+        "body10": 1,
+        "fx11_0": 1,
+        "fx11_1": 1,
+        "fx11_2": 1,
+        "fx11_3": 1,
+        "body11": 1,
+        "body12": 1
+      },
+      "26": {
+        "idle0": 0.8586691086691087,
+        "idle1": 0.8568344436220083,
+        "idle2": 0.7953128895537271,
+        "idle3": 0.8568344436220083,
+        "body0": 0.8586691086691087,
+        "body1": 0.8414094280928452,
+        "body2": 0.9812438821967613,
+        "body3": 0.8722438744372941,
+        "body4": 1,
+        "body5": 0.6904761904761905,
+        "fx6_0": 1,
+        "fx6_1": 0.6224110032362459,
+        "fx6_2": 1,
+        "fx6_3": 1,
+        "fx6_4": 1,
+        "body6": 1,
+        "fx7_0": 0.8071425151993873,
+        "fx7_1": 0.8135486015073061,
+        "fx7_2": 1,
+        "body7": 0.9043432123095579,
+        "fx8_0": 1,
+        "fx8_1": 1,
+        "fx8_2": 1,
+        "body8": 0.8942185146564708,
+        "body9": 0.8507151160176997,
+        "body10": 0.7377034358047017
+      }
+    },
+    "empty_cast_banks": [
+      {
+        "resource": 50,
+        "raw_sha256": "6b25930e91686cee8bb5d4dae8dbed14f63c690c1c97ecb98552d8842e2d9395",
+        "status_sha256": "049a1f1254a83eb7638ecc94a1685a015de786249c045502a130d374508651fc",
+        "status": {
+          "raw_size": 3,
+          "raw_prefix_hex": "00000a",
+          "status": "empty_header_zero",
+          "reason_code": "zero_header_word",
+          "evidence": "confirmed",
+          "header_word_le": 0,
+          "schema_version": 1,
+          "document_id": "animation-resource/figani_050",
+          "kind": "animation_resource_status",
+          "resource_id": "animation-resource/figani_050",
+          "source": {
+            "file": "FIGANI.DAT",
+            "resource": 50
+          },
+          "extensions": {}
+        }
+      },
+      {
+        "resource": 80,
+        "raw_sha256": "6b25930e91686cee8bb5d4dae8dbed14f63c690c1c97ecb98552d8842e2d9395",
+        "status_sha256": "6c2b55a7cd44f69c345256c870576d374de2aeab59b0c11ae8ce3e4708f921ed",
+        "status": {
+          "raw_size": 3,
+          "raw_prefix_hex": "00000a",
+          "status": "empty_header_zero",
+          "reason_code": "zero_header_word",
+          "evidence": "confirmed",
+          "header_word_le": 0,
+          "schema_version": 1,
+          "document_id": "animation-resource/figani_080",
+          "kind": "animation_resource_status",
+          "resource_id": "animation-resource/figani_080",
+          "source": {
+            "file": "FIGANI.DAT",
+            "resource": 80
+          },
+          "extensions": {}
+        }
+      }
+    ],
+    "reproduce": [
+      "從25fe3119匯出完整catalog作base，保持464項；依reproduction_recipes與清冊白名單自私人庫還原原RGBA。六姿勢、獨立弧光與兩衍生不調alpha，fx_transforms列原稿裁切及整數轉置。",
+      "資產Docker逐figure16、26執行tools/build_fd2_character_battle_hd.py --layered --pack /original --inventory docs/data/fd2-battle-hd-source-inventory-20261019.json --recipe <recipe> --base-catalog <base> --out <fresh-candidate>；26的base為16新候選，最後清冊468項。",
+      "拒收用tools/test_fd2_character_battle_hd.py --pack /original --inventory <inventory> --recipe <recipe> --base-catalog <same-base> --baseline <compiled.json> --out <fresh-guards>；不傳--layered，工具依baseline決定。",
+      "Game.Draw以兩者共用最終候選catalog及pack，FD2_HD_BATTLE_LIFECYCLE_GPU=1 FD2_HD_BATTLE_REAL=1 FD2_TEST_MODERN_BATTLE_FIGURE=<16或26> FD2_TEST_HD_BATTLE_OUT=<fresh-capture> with-xvfb go test ./cmd/fd2 -count=1 -timeout=500s -run ^TestModernHDBattleRuntimeGPU$ -v，probe550／容器600秒及8GB／4CPU。",
+      "tools/verify_fd2_character_battle_gpu.py --figure <figure> --core-profile opaque --sample-group fixture --body-frames <16用48:0-3,49:0-5,49:7-12；26用78:0-3,79:0-4,79:6-10> --receipt <capture/receipt.json> --catalog <same> --source <pack> --original-pack /original --inventory <inventory> --proven-occlusion --report <new-report>。",
+      "兩張空拍由load_native固定mask雜湊、成品PNG全透明、receipt.source_shots的實際resource/frame圖層與原delay驗證；不套非空核心門檻。50／80 resource.json SHA、首字零與固定盤點須一致。",
+      "按source_alias_mapping將相同SHA別名折回原母稿，49追加20寬光與15金光父稿來源，32張PNG bytes保持；audit_fd2_battle_hd_coverage.py核最終清冊及原始包。",
+      "sync_modern_theme_private.py --catalog <formal> --source <formal-root> --destination <private>及另一新destination加--runtime-only；舊4428檔逐項保持，新檔及七原RGBA沿白名單驗SHA／UID並核獨立私人提交遠端。",
+      "正式及runtime-only各figure分開執行TestModernHDBattleAssetsRealCandidate及TestNativePhysicalHDPreflightStopsBeforeSettlement，catalog／pack／original參數同上；八命令零SKIP，8GB／4CPU、Go420／probe450／容器490秒。"
+    ],
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/dragons-final-validation-r1.json",
+      "sha256": "ebb6801ab56bf29ffa6e1601d00d15063bcaa13a518d38a78bedfc9bf168ccac"
+    },
+    "worklist_verify": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/dragons-fd2_worklist.py-verify-r1.log",
+      "sha256": "26091eea8ab3a41c4223d7a015d21fe3c26a4ad695ae0148921ec6de3bb37265"
+    },
+    "lessons_check": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/dragons-fd2_lessons.py-check-r1.log",
+      "sha256": "a7fcbba957ef87127dfce8ed9bd6a03b8b146cea1b4d3f9b312581029897487a"
+    }
   }
 }
