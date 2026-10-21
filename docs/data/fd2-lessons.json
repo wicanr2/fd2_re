@@ -3460,6 +3460,14 @@
         ],
         "pattern": "普通END已回到標題"
       }
+    },
+    {
+      "id": "hd-disconnected-effect-anchor-components",
+      "date": "2026-10-21",
+      "area": "HD特效錨點",
+      "rule": "把原始亮點轉成HD圖層時，先以固定來源顏色／Mask分出連通元件，各自保留原生矩形。不要用跨越透明空隙的大外框縮放完整特效；1～2像素亮點使用可保留核心的獨立母稿。入口為61的豹形獸人契約、HD主收據orc_battle_followup_20261021.beam_components與tools/build_fd2_character_battle_hd.py的schema1圖層配方。",
+      "why": "307:8／310:7的離散光點與細光被總外框連成亮條；分元件後，細長beam縮成1×1又正確被alpha核心檢查拒收。改用原始spark母稿，保留門檻與原位置。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#orc_battle_followup_20261021"
     }
   ]
 }

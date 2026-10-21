@@ -1,6 +1,6 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
-約拿BattleFig21與希爾法BattleFig24沿原17幀正式登錄，65／74零header不補造。完整Draw／三階段F2／返回DAC及runtime-only最終PNG bytes一致；正常章23近戰、返回與章節邊界保存冷讀通過。希爾法使用已核對的章前AP+0強化槽，避免在抽樣前把目標反擊清除；116號故事HD頭像仍缺，該段劇情HD未驗。原矩形、marker、規則與保存格式保持；原版逐幀及整章E2不由此推定。
+約拿BattleFig21與希爾法BattleFig24沿原17幀正式登錄，65／74零header不補造。完整Draw／三階段F2／返回DAC及runtime-only最終PNG bytes一致；正常章23近戰、返回與章節邊界保存冷讀通過。希爾法使用已核對的章前AP+0強化槽，避免在抽樣前把目標反擊清除；116號故事HD頭像及正常劇情已由captain116_battle_followup_20261021補齊；隊長主動攻擊正常GUI仍待。原矩形、marker、規則與保存格式保持；原版逐幀及整章E2不由此推定。
 來源見[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的cleric_party_battle_followup_20261021，唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)。
 
 
@@ -340,6 +340,8 @@ F9讀酒店時殘留戰場人物資訊層已修正，成功LOAD清除、拒收�
 機甲隊長116追加現況：原十一幀與80／480靜態故事頭像沿61既有契約接入；完整Draw/F2與runtime-only通過。正常章23蓋亞攻擊的目標待機、116故事、自然戰後及保存新程序LOAD通過；隊長主動攻擊正常GUI仍待，不提升原版對拍或E2。#267依同R3原始後續釋放／第5回合／116缺圖終態撤回誤判，未修改Go演出所有權。來源與重跑命令見[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`captain116_battle_followup_20261021`及`ui_black267_correction_20261021`；唯一覆蓋數量依[58](58-fd2-exe-re-coverage.md)。
 
 萊汀6／索菲亞11追加現況：原四銀行共33幀及完整Draw／F2／不透明核心／runtime-only通過；第11章明示建構與章前HP+1000來源，正常攻擊、返回、F2及章節邊界保存冷讀通過。第12章護送失敗保留非PASS，章內無注入。不新增原版對拍、自然難度或整章E2；來源、工具與重跑命令見[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`northern_party_battle_followup_20261021`，唯一覆蓋數量依58。
+
+獸人102／獸人隊長103追加現況：原35幀完整Draw／F2與32張非空核心、三張空白來源另驗，兩包最終PNG bytes相同。正常第11章各五次END後近戰／反擊、返回／F2／邊界冷讀及已取樣圖源通過；普通完整演出相位未逐張提升，原框局部裁切與章前強化明示。來源與重跑命令見[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`orc_battle_followup_20261021`，唯一覆蓋數量依58，不新增原版逐幀或整章E2。
 
 ## 2026-07-28 visual-parity audit
 
