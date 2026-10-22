@@ -70,7 +70,8 @@ def main():
             name = sample['file']; target = folder/name
             if not target.exists():target.symlink_to((args.receipt.parent/name).resolve())
 
-    for index in (first+2, last-1):
+    missing_frames = list(dict.fromkeys([first+2, last-1, *profile['blanks']]))
+    for index in missing_frames:
         d = copy.deepcopy(base); d['source_shots'] = {k:v for k,v in d['source_shots'].items() if not contains(v, index)}
         folder = args.out/f'missing-{index}'; links(folder)
         reject(f'missing-frame-{index}', d, '最終Draw不完整', folder)

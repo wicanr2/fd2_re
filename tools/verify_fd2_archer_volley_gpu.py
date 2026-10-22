@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""核對固定FIGANI70／121飛矢；人物本體仍由既有1000點契約驗。"""
+"""核對固定FIGANI70／121／136投射物與空拍；本體保持1000點契約。"""
 import argparse
 import json
 from pathlib import Path
@@ -16,9 +16,11 @@ INVENTORY_SHA256 = 'd019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b5737
 NATIVE_COUNTS = [77, 311, 422, 437, 443, 390, 123, 33, 0]
 PROFILES = {
     23: {'resource': 70, 'header': {'byte_1': 1, 'byte_2': 16, 'byte_4': 1},
-         'frames': 25, 'first': 16, 'blank': 24, 'counts': NATIVE_COUNTS},
+         'frames': 25, 'first': 16, 'blanks': [24], 'counts': NATIVE_COUNTS},
     40: {'resource': 121, 'header': {'byte_1': 1, 'byte_2': 11, 'byte_4': 1},
-         'frames': 18, 'first': 11, 'blank': None, 'counts': [124, 393, 481, 394, 355, 342, 342]},
+         'frames': 18, 'first': 11, 'blanks': [], 'counts': [124, 393, 481, 394, 355, 342, 342]},
+    45: {'resource': 136, 'header': {'byte_1': 1, 'byte_2': 17, 'byte_4': 4},
+         'frames': 22, 'first': 17, 'blanks': [17, 21], 'counts': [0, 5148, 8014, 1579, 0]},
 }
 
 
@@ -65,7 +67,7 @@ def verify(receipt, catalog, source, original_pack, inventory, figure=23):
         with Image.open(path) as im:
             if im.mode != 'RGBA' or im.size != (frame['width']*6, frame['height']*6):
                 raise ValueError('飛矢成品形狀不同')
-            if index == profile['blank']:
+            if index in profile['blanks']:
                 sources[index]['blank'] = pinned_native_blank(original_pack, proof, resource, index, path)
             else:
                 if im.getchannel('A').getextrema() != (0, 255):
@@ -99,7 +101,7 @@ def verify(receipt, catalog, source, original_pack, inventory, figure=23):
                         raise ValueError('飛矢Draw描述子不同')
                     result = {'resource': resource, 'frame': index, 'source': sources[index], 'gpu_file': name,
                               'gpu_sha256': sample['sha256'], 'job': sample.get('job'), 'phase': 'body'}
-                    if index == profile['blank']:
+                    if index in profile['blanks']:
                         result['scope'] = '固定全透明來源與同次Draw圖層，無不透明核心聲明'
                     else:
                         x, y = layer['x']*6, layer['y']*6

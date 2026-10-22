@@ -95,8 +95,9 @@ def main():
         soft.putalpha(alpha); soft_path = out/'soft-only.png'; soft.save(soft_path)
         assert alpha.getextrema() == (0, 250)
         def missing_final_core(d):
-            resource,index = next(((key,index) for key,frames in d['resources'].items()
-                                   for index,value in enumerate(frames) if isinstance(value,list)), (first,0))
+            # Use the full idle subject, not a tiny FX fragment whose downsample
+            # can overshoot the soft source to 255 through normal LANCZOS.
+            resource,index = first,0
             target = layer(d,resource,index)['anchor']
             d['resources'][resource][index] = [{'pose':'soft_only','anchor':target,'scale_group':'soft_only'}]
             d['sources']['soft_only'] = {'file':str(soft_path),'sha256':hashlib.sha256(soft_path.read_bytes()).hexdigest(),
