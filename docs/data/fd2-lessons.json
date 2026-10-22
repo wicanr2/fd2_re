@@ -3665,6 +3665,21 @@
         ],
         "pattern": "另以未預載的集合逐人物"
       }
+    },
+    {
+      "id": "hd-share-only-pinned-identical-native-banks",
+      "date": "2026-10-22",
+      "area": "HD圖源重用",
+      "rule": "後期圖庫看似重複時，先用tools/build_fd2_character_battle_hd.py的load_native核對固定inventory／原包、兩側metadata、header、所有描述子、PNG／Mask雜湊及解碼RGBA。完全相同才沿61的58～60共用契約重編舊配方，逐成品SHA相同後共用原白名單檔名；新銀行保留各自metadata／asset_id／resource，並重驗GPU及consumer。不從相同圖庫推定故事身份或caller。",
+      "why": "58／59／60的六銀行與40／41／42完整57幀相同，原配方重編成品亦相同，可避免重新生成57幀或重複保存素材。初版機械診斷讀到resource.json狀態殼，正式核對改用load_native與固定盤點。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#identical58_59_60_followup_20261022",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+        ],
+        "pattern": "原始身份與caller不因此合併"
+      }
     }
   ]
 }

@@ -211,6 +211,13 @@ func TestModernHDDragonRidersAllFramesGPU(t *testing.T) {
 	testModernHDRegisteredFramesGPU(t, "FIGANI.DAT", []int{162, 163, 165, 166, 168, 169}, 59, "PASS-DRAGON-RIDERS-59-SOURCE-GPU")
 }
 
+func TestModernHDReusedPartyAllFramesGPU(t *testing.T) {
+	if os.Getenv("FD2_HD_REUSED_PARTY_GPU") != "1" {
+		t.Skip("dedicated reused party source GPU process required")
+	}
+	testModernHDRegisteredFramesGPU(t, "FIGANI.DAT", []int{174, 175, 177, 178, 180, 181}, 57, "PASS-REUSED-PARTY-57-SOURCE-GPU")
+}
+
 func testModernHDRegisteredFramesGPU(t *testing.T, archive string, resources []int, frameCount int, status string) {
 	t.Helper()
 	set, err := loadModernStoryPortraitSet(os.Getenv("FD2_TEST_MODERN_EFFECT_CATALOG"), os.Getenv("FD2_TEST_MODERN_EFFECT_PACK"))

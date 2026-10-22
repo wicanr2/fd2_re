@@ -98455,7 +98455,7 @@
     },
     "private_remote_verification": "Independent private repository commit pushed; actual git ls-remote refs/heads/main re-read equals local HEAD. Private commit identity is not published."
   },
-  "latest_hd_batch": "riders54_55_56_followup_20261022",
+  "latest_hd_batch": "identical58_59_60_followup_20261022",
   "monks28_31_mage29_followup_20261022": {
     "status": "CONFORMED-SCOPED-RUNTIME-E1",
     "date": "2026-10-22",
@@ -131210,6 +131210,1714 @@
     "lessons_check": {
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-fd2_lessons.py-check-oct22-r2.log",
       "sha256": "7ed5c430e2d4c530b3b8ce806298024493d3a3305522e3d935c8ca9dbb83e562"
+    }
+  },
+  "identical58_59_60_followup_20261022": {
+    "status": "CONFORMED-SCOPED / RUNTIME-E1",
+    "date": "2026-10-22",
+    "base_commit": "e563bcce",
+    "base_catalog": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party58-59-60-base-catalog-oct22-r1.json",
+      "sha256": "dae81dfb9cfd2ff39aa433853f27320b3a28c4e367cf224d60a4326c34816daf"
+    },
+    "native_reference": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party-pending-57-58-59-60-native-oct22-r2.json",
+      "sha256": "245f91aeca0708cf77a3b427ad8bd10987e607ac7145cde7a52f718152ef4176"
+    },
+    "native_identity": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party58-59-60-native-identity-oct22-r1.json",
+      "sha256": "b79c2891db8c1bb935e8fab884f811607e16b16a55d6ac9e5b44b44dd170e999"
+    },
+    "source_inventory": {
+      "file": "docs/data/fd2-battle-hd-source-inventory-20261019.json",
+      "sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51"
+    },
+    "original_manifest_sha256": "5eec2ecacc4fe97c4d0f27838e7dbecf18d1cf4b309b35800d50afd173cacca5",
+    "figures": [
+      58,
+      59,
+      60
+    ],
+    "resources": [
+      174,
+      175,
+      177,
+      178,
+      180,
+      181
+    ],
+    "frames": 57,
+    "formal_registered": true,
+    "private_synced": true,
+    "normal_player": false,
+    "human_review": "pending until all HD integrated",
+    "full_battle_hd_complete": false,
+    "rules_and_save_changed": false,
+    "recordings_created": false,
+    "generation": [],
+    "derivatives": [],
+    "recipes": {
+      "58": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure058-recipe-oct22-r1.json",
+        "sha256": "f4098937c58236a44fad56bdac48973309c3a43b9136e618148c9387db5abd09"
+      },
+      "59": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure059-recipe-oct22-r1.json",
+        "sha256": "b22cecca77eab54d88e6d294aa4574dd6becd98953bfa2f803748585d2db45b0"
+      },
+      "60": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure060-recipe-oct22-r1.json",
+        "sha256": "3fc4e417baab6e7424e8c86697f1d9f6ccec22c2baf6dcd2b7b62a6d5fdaba33"
+      }
+    },
+    "recipe_inline": {
+      "58": {
+        "schema_version": 1,
+        "figure": 58,
+        "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+        "sources": {
+          "archer40idle": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party3840-Archer40Idle-original-r1.png",
+            "sha256": "c3c85c8cf8a8493fa1b9a493a612fdf6bf7bb79d8ecba1a28bf955070c21d064",
+            "anchor": [
+              338,
+              51,
+              915,
+              1326
+            ]
+          },
+          "archer40lift": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party3840-Archer40Lift-original-r1.png",
+            "sha256": "585c12f865c94c4671b8a5efcb40120f82dbb17536be452ccf8a2b2b5fa5b345",
+            "anchor": [
+              116,
+              6,
+              1100,
+              1344
+            ]
+          },
+          "archer40aim": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party3840-Archer40Aim-original-r1.png",
+            "sha256": "60eb6bd9a3e6a259f4c94fe93788332717cdae02a8a02e7da1ddba490e572890",
+            "anchor": [
+              34,
+              18,
+              1141,
+              1353
+            ]
+          },
+          "arrow40metal": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party3840-Arrow40Metal-original-r1.png",
+            "sha256": "28c70c6df1de5604a78c9fce9199e173982e084c44bdc911786fb0fc501b2f65",
+            "anchor": [
+              93,
+              294,
+              2080,
+              429
+            ]
+          },
+          "archer40swirl": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party3840-Archer40Swirl-original-r1.png",
+            "sha256": "85782c01462c24b07dcda59f0cc38fa06ac76e7c69e4c82b54eed025ecb820cd",
+            "anchor": [
+              192,
+              217,
+              1016,
+              1029
+            ]
+          },
+          "arrowchip": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party3840-arrow-chip-r2.png",
+            "sha256": "3ffaa5bfaba909d9631c6c718be17cd6574dee48267d41224513d0bfc87b2633",
+            "anchor": [
+              0,
+              0,
+              5,
+              5
+            ]
+          }
+        },
+        "resources": {
+          "174": [
+            [
+              {
+                "pose": "archer40idle",
+                "anchor": [
+                  0,
+                  0,
+                  81,
+                  136
+                ],
+                "scale_group": "body-40-archer40idle"
+              }
+            ],
+            [
+              {
+                "pose": "archer40idle",
+                "anchor": [
+                  0,
+                  0,
+                  81,
+                  136
+                ],
+                "scale_group": "body-40-archer40idle"
+              }
+            ],
+            [
+              {
+                "pose": "archer40idle",
+                "anchor": [
+                  0,
+                  0,
+                  81,
+                  136
+                ],
+                "scale_group": "body-40-archer40idle"
+              }
+            ],
+            [
+              {
+                "pose": "archer40idle",
+                "anchor": [
+                  0,
+                  0,
+                  81,
+                  136
+                ],
+                "scale_group": "body-40-archer40idle"
+              }
+            ]
+          ],
+          "175": [
+            [
+              {
+                "pose": "archer40idle",
+                "anchor": [
+                  0,
+                  0,
+                  81,
+                  136
+                ],
+                "scale_group": "body-40-archer40idle"
+              }
+            ],
+            [
+              {
+                "pose": "archer40lift",
+                "anchor": [
+                  0,
+                  0,
+                  106,
+                  136
+                ],
+                "scale_group": "body-40-archer40lift"
+              }
+            ],
+            [
+              {
+                "pose": "archer40lift",
+                "anchor": [
+                  0,
+                  0,
+                  107,
+                  158
+                ],
+                "scale_group": "body-40-archer40lift"
+              }
+            ],
+            [
+              {
+                "pose": "archer40swirl",
+                "anchor": [
+                  16,
+                  69,
+                  45,
+                  87
+                ],
+                "scale_group": "white-121-3-0"
+              },
+              {
+                "pose": "archer40swirl",
+                "anchor": [
+                  121,
+                  75,
+                  134,
+                  100
+                ],
+                "scale_group": "white-121-3-1"
+              },
+              {
+                "pose": "archer40swirl",
+                "anchor": [
+                  0,
+                  12,
+                  15,
+                  28
+                ],
+                "scale_group": "white-121-3-2"
+              },
+              {
+                "pose": "arrowchip",
+                "anchor": [
+                  5,
+                  8,
+                  7,
+                  10
+                ],
+                "scale_group": "white-121-3-3"
+              },
+              {
+                "pose": "arrowchip",
+                "anchor": [
+                  17,
+                  89,
+                  18,
+                  90
+                ],
+                "scale_group": "white-121-3-4"
+              },
+              {
+                "pose": "arrowchip",
+                "anchor": [
+                  132,
+                  102,
+                  133,
+                  103
+                ],
+                "scale_group": "white-121-3-5"
+              },
+              {
+                "pose": "archer40aim",
+                "anchor": [
+                  0,
+                  0,
+                  137,
+                  140
+                ],
+                "scale_group": "body-40-archer40aim"
+              }
+            ],
+            [
+              {
+                "pose": "archer40swirl",
+                "anchor": [
+                  120,
+                  59,
+                  130,
+                  70
+                ],
+                "scale_group": "white-121-4-0"
+              },
+              {
+                "pose": "archer40swirl",
+                "anchor": [
+                  19,
+                  68,
+                  27,
+                  80
+                ],
+                "scale_group": "white-121-4-1"
+              },
+              {
+                "pose": "archer40swirl",
+                "anchor": [
+                  0,
+                  8,
+                  4,
+                  15
+                ],
+                "scale_group": "white-121-4-2"
+              },
+              {
+                "pose": "archer40swirl",
+                "anchor": [
+                  7,
+                  12,
+                  13,
+                  15
+                ],
+                "scale_group": "white-121-4-3"
+              },
+              {
+                "pose": "arrowchip",
+                "anchor": [
+                  8,
+                  9,
+                  9,
+                  10
+                ],
+                "scale_group": "white-121-4-4"
+              },
+              {
+                "pose": "arrowchip",
+                "anchor": [
+                  20,
+                  65,
+                  21,
+                  66
+                ],
+                "scale_group": "white-121-4-5"
+              },
+              {
+                "pose": "arrowchip",
+                "anchor": [
+                  125,
+                  72,
+                  126,
+                  73
+                ],
+                "scale_group": "white-121-4-6"
+              },
+              {
+                "pose": "archer40aim",
+                "anchor": [
+                  0,
+                  0,
+                  139,
+                  127
+                ],
+                "scale_group": "body-40-archer40aim"
+              }
+            ],
+            [
+              {
+                "pose": "archer40aim",
+                "anchor": [
+                  0,
+                  0,
+                  146,
+                  127
+                ],
+                "scale_group": "body-40-archer40aim"
+              }
+            ],
+            [
+              {
+                "pose": "archer40aim",
+                "anchor": [
+                  0,
+                  0,
+                  159,
+                  127
+                ],
+                "scale_group": "body-40-archer40aim"
+              }
+            ],
+            [
+              {
+                "pose": "archer40aim",
+                "anchor": [
+                  0,
+                  0,
+                  152,
+                  127
+                ],
+                "scale_group": "body-40-archer40aim"
+              }
+            ],
+            [
+              {
+                "pose": "archer40aim",
+                "anchor": [
+                  151,
+                  0,
+                  291,
+                  127
+                ],
+                "scale_group": "body-40-archer40aim"
+              },
+              {
+                "pose": "arrow40metal",
+                "anchor": [
+                  0,
+                  15,
+                  94,
+                  22
+                ],
+                "scale_group": "arrow-121-8-0"
+              },
+              {
+                "pose": "arrow40metal",
+                "anchor": [
+                  0,
+                  11,
+                  99,
+                  15
+                ],
+                "scale_group": "arrow-121-8-1"
+              },
+              {
+                "pose": "arrowchip",
+                "anchor": [
+                  96,
+                  18,
+                  101,
+                  19
+                ],
+                "scale_group": "arrow-121-8-2"
+              },
+              {
+                "pose": "arrowchip",
+                "anchor": [
+                  84,
+                  16,
+                  88,
+                  17
+                ],
+                "scale_group": "arrow-121-8-3"
+              },
+              {
+                "pose": "arrowchip",
+                "anchor": [
+                  103,
+                  18,
+                  104,
+                  19
+                ],
+                "scale_group": "arrow-121-8-4"
+              }
+            ],
+            [
+              {
+                "pose": "archer40aim",
+                "anchor": [
+                  0,
+                  0,
+                  129,
+                  127
+                ],
+                "scale_group": "body-40-archer40aim"
+              }
+            ],
+            [
+              {
+                "pose": "archer40aim",
+                "anchor": [
+                  0,
+                  0,
+                  135,
+                  127
+                ],
+                "scale_group": "body-40-archer40aim"
+              }
+            ],
+            [
+              {
+                "pose": "arrow40metal",
+                "anchor": [
+                  0,
+                  0,
+                  48,
+                  4
+                ],
+                "scale_group": "arrow-121-11-0"
+              }
+            ],
+            [
+              {
+                "pose": "arrow40metal",
+                "anchor": [
+                  129,
+                  0,
+                  229,
+                  4
+                ],
+                "scale_group": "arrow-121-12-0"
+              },
+              {
+                "pose": "arrow40metal",
+                "anchor": [
+                  0,
+                  17,
+                  69,
+                  20
+                ],
+                "scale_group": "arrow-121-12-1"
+              },
+              {
+                "pose": "arrowchip",
+                "anchor": [
+                  71,
+                  17,
+                  76,
+                  18
+                ],
+                "scale_group": "arrow-121-12-2"
+              },
+              {
+                "pose": "arrowchip",
+                "anchor": [
+                  78,
+                  17,
+                  79,
+                  18
+                ],
+                "scale_group": "arrow-121-12-3"
+              }
+            ],
+            [
+              {
+                "pose": "arrow40metal",
+                "anchor": [
+                  151,
+                  8,
+                  230,
+                  12
+                ],
+                "scale_group": "arrow-121-13-0"
+              },
+              {
+                "pose": "arrow40metal",
+                "anchor": [
+                  7,
+                  0,
+                  76,
+                  3
+                ],
+                "scale_group": "arrow-121-13-1"
+              },
+              {
+                "pose": "arrow40metal",
+                "anchor": [
+                  0,
+                  16,
+                  59,
+                  20
+                ],
+                "scale_group": "arrow-121-13-2"
+              },
+              {
+                "pose": "arrowchip",
+                "anchor": [
+                  78,
+                  0,
+                  83,
+                  1
+                ],
+                "scale_group": "arrow-121-13-3"
+              },
+              {
+                "pose": "arrowchip",
+                "anchor": [
+                  57,
+                  16,
+                  58,
+                  17
+                ],
+                "scale_group": "arrow-121-13-4"
+              },
+              {
+                "pose": "arrowchip",
+                "anchor": [
+                  61,
+                  18,
+                  62,
+                  19
+                ],
+                "scale_group": "arrow-121-13-5"
+              },
+              {
+                "pose": "arrowchip",
+                "anchor": [
+                  85,
+                  0,
+                  86,
+                  1
+                ],
+                "scale_group": "arrow-121-13-6"
+              }
+            ],
+            [
+              {
+                "pose": "arrow40metal",
+                "anchor": [
+                  2,
+                  9,
+                  71,
+                  12
+                ],
+                "scale_group": "arrow-121-14-0"
+              },
+              {
+                "pose": "arrow40metal",
+                "anchor": [
+                  8,
+                  0,
+                  67,
+                  4
+                ],
+                "scale_group": "arrow-121-14-1"
+              },
+              {
+                "pose": "arrow40metal",
+                "anchor": [
+                  0,
+                  19,
+                  53,
+                  22
+                ],
+                "scale_group": "arrow-121-14-2"
+              },
+              {
+                "pose": "arrowchip",
+                "anchor": [
+                  73,
+                  9,
+                  78,
+                  10
+                ],
+                "scale_group": "arrow-121-14-3"
+              },
+              {
+                "pose": "arrowchip",
+                "anchor": [
+                  65,
+                  0,
+                  66,
+                  1
+                ],
+                "scale_group": "arrow-121-14-4"
+              },
+              {
+                "pose": "arrowchip",
+                "anchor": [
+                  69,
+                  2,
+                  70,
+                  3
+                ],
+                "scale_group": "arrow-121-14-5"
+              },
+              {
+                "pose": "arrowchip",
+                "anchor": [
+                  80,
+                  9,
+                  81,
+                  10
+                ],
+                "scale_group": "arrow-121-14-6"
+              }
+            ],
+            [
+              {
+                "pose": "arrow40metal",
+                "anchor": [
+                  3,
+                  6,
+                  62,
+                  10
+                ],
+                "scale_group": "arrow-121-15-0"
+              },
+              {
+                "pose": "arrow40metal",
+                "anchor": [
+                  0,
+                  16,
+                  53,
+                  19
+                ],
+                "scale_group": "arrow-121-15-1"
+              },
+              {
+                "pose": "arrow40metal",
+                "anchor": [
+                  8,
+                  0,
+                  61,
+                  3
+                ],
+                "scale_group": "arrow-121-15-2"
+              },
+              {
+                "pose": "arrowchip",
+                "anchor": [
+                  60,
+                  6,
+                  61,
+                  7
+                ],
+                "scale_group": "arrow-121-15-3"
+              },
+              {
+                "pose": "arrowchip",
+                "anchor": [
+                  64,
+                  8,
+                  65,
+                  9
+                ],
+                "scale_group": "arrow-121-15-4"
+              }
+            ],
+            [
+              {
+                "pose": "arrow40metal",
+                "anchor": [
+                  0,
+                  17,
+                  53,
+                  20
+                ],
+                "scale_group": "arrow-121-16-0"
+              },
+              {
+                "pose": "arrow40metal",
+                "anchor": [
+                  3,
+                  9,
+                  56,
+                  12
+                ],
+                "scale_group": "arrow-121-16-1"
+              },
+              {
+                "pose": "arrow40metal",
+                "anchor": [
+                  8,
+                  0,
+                  61,
+                  3
+                ],
+                "scale_group": "arrow-121-16-2"
+              }
+            ],
+            [
+              {
+                "pose": "arrow40metal",
+                "anchor": [
+                  0,
+                  17,
+                  53,
+                  20
+                ],
+                "scale_group": "arrow-121-17-0"
+              },
+              {
+                "pose": "arrow40metal",
+                "anchor": [
+                  3,
+                  8,
+                  56,
+                  11
+                ],
+                "scale_group": "arrow-121-17-1"
+              },
+              {
+                "pose": "arrow40metal",
+                "anchor": [
+                  8,
+                  0,
+                  61,
+                  3
+                ],
+                "scale_group": "arrow-121-17-2"
+              }
+            ]
+          ]
+        }
+      },
+      "59": {
+        "schema_version": 1,
+        "figure": 59,
+        "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+        "sources": {
+          "crimson41idle": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Crimson41Idle-original-r2.png",
+            "sha256": "7fae72f1379de3f4db046dc7b0589c4a0e7ca3b0722bc15f31160ea92a414235",
+            "anchor": [
+              168,
+              12,
+              951,
+              1463
+            ]
+          },
+          "crimson41open": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Crimson41Open-original-r1.png",
+            "sha256": "a01793c5e568a4a99c8d02fa0b5bafaf6bc5cb518b63bac68604123ff2cd54ed",
+            "anchor": [
+              16,
+              31,
+              1013,
+              1490
+            ]
+          },
+          "crimson41raise": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Crimson41Raise-original-r1.png",
+            "sha256": "310f336d21f81da673125cf8bf92d7cbc14739909c0fae255e292dbf514f427a",
+            "anchor": [
+              56,
+              17,
+              1018,
+              1486
+            ]
+          },
+          "crimson41spin": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Crimson41Spin-original-r1.png",
+            "sha256": "8bf9631b43c76b709604e6ea7261f6d9674a34dccd2ea8fa5057701c8363bbc7",
+            "anchor": [
+              10,
+              174,
+              1016,
+              1255
+            ]
+          },
+          "crimson41thrust": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Crimson41Thrust-original-r1.png",
+            "sha256": "5b26bbaae44e631a36cc40a08df498560e2c6e3726ab42aa1e35ca26dff38162",
+            "anchor": [
+              7,
+              221,
+              1024,
+              1127
+            ]
+          }
+        },
+        "resources": {
+          "177": [
+            {
+              "pose": "crimson41idle",
+              "anchor": [
+                0,
+                0,
+                91,
+                136
+              ],
+              "scale_group": "crimson41idle"
+            },
+            {
+              "pose": "crimson41idle",
+              "anchor": [
+                0,
+                0,
+                91,
+                137
+              ],
+              "scale_group": "crimson41idle"
+            },
+            {
+              "pose": "crimson41idle",
+              "anchor": [
+                0,
+                0,
+                91,
+                138
+              ],
+              "scale_group": "crimson41idle"
+            },
+            {
+              "pose": "crimson41idle",
+              "anchor": [
+                0,
+                0,
+                91,
+                137
+              ],
+              "scale_group": "crimson41idle"
+            }
+          ],
+          "178": [
+            {
+              "pose": "crimson41idle",
+              "anchor": [
+                0,
+                0,
+                91,
+                136
+              ],
+              "scale_group": "crimson41idle"
+            },
+            {
+              "pose": "crimson41open",
+              "anchor": [
+                0,
+                0,
+                114,
+                136
+              ],
+              "scale_group": "crimson41open"
+            },
+            {
+              "pose": "crimson41open",
+              "anchor": [
+                0,
+                0,
+                137,
+                136
+              ],
+              "scale_group": "crimson41open"
+            },
+            {
+              "pose": "crimson41open",
+              "anchor": [
+                0,
+                0,
+                152,
+                156
+              ],
+              "scale_group": "crimson41open"
+            },
+            {
+              "pose": "crimson41raise",
+              "anchor": [
+                0,
+                0,
+                166,
+                156
+              ],
+              "scale_group": "crimson41raise"
+            },
+            {
+              "pose": "crimson41spin",
+              "anchor": [
+                0,
+                0,
+                114,
+                130
+              ],
+              "scale_group": "crimson41spin"
+            },
+            {
+              "pose": "crimson41spin",
+              "anchor": [
+                0,
+                0,
+                130,
+                129
+              ],
+              "scale_group": "crimson41spin"
+            },
+            {
+              "pose": "crimson41spin",
+              "anchor": [
+                0,
+                0,
+                142,
+                129
+              ],
+              "scale_group": "crimson41spin"
+            },
+            {
+              "pose": "crimson41spin",
+              "anchor": [
+                0,
+                0,
+                159,
+                129
+              ],
+              "scale_group": "crimson41spin"
+            },
+            {
+              "pose": "crimson41spin",
+              "anchor": [
+                0,
+                0,
+                124,
+                129
+              ],
+              "scale_group": "crimson41spin"
+            },
+            {
+              "pose": "crimson41thrust",
+              "anchor": [
+                0,
+                0,
+                134,
+                136
+              ],
+              "scale_group": "crimson41thrust"
+            },
+            {
+              "pose": "crimson41thrust",
+              "anchor": [
+                0,
+                0,
+                120,
+                136
+              ],
+              "scale_group": "crimson41thrust"
+            },
+            {
+              "pose": "crimson41thrust",
+              "anchor": [
+                0,
+                0,
+                120,
+                136
+              ],
+              "scale_group": "crimson41thrust"
+            },
+            {
+              "pose": "crimson41thrust",
+              "anchor": [
+                0,
+                0,
+                120,
+                136
+              ],
+              "scale_group": "crimson41thrust"
+            },
+            {
+              "pose": "crimson41thrust",
+              "anchor": [
+                0,
+                0,
+                120,
+                136
+              ],
+              "scale_group": "crimson41thrust"
+            },
+            {
+              "pose": "crimson41thrust",
+              "anchor": [
+                0,
+                0,
+                118,
+                136
+              ],
+              "scale_group": "crimson41thrust"
+            }
+          ]
+        }
+      },
+      "60": {
+        "schema_version": 1,
+        "figure": 60,
+        "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+        "sources": {
+          "lilac42idle": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Lilac42Idle-original-r2.png",
+            "sha256": "14cd02c1b6bb5cd93c219151e41cc4bc83f090630a2b356ff97a11fb61e48080",
+            "anchor": [
+              213,
+              18,
+              852,
+              1501
+            ]
+          },
+          "lilac42open": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Lilac42Open-original-r1.png",
+            "sha256": "a0a648f85be0bdb3f808732c9ff4a447e4e600bbe2fa4379fbd21c76be464a90",
+            "anchor": [
+              13,
+              31,
+              1024,
+              1499
+            ]
+          },
+          "lilac42raise": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Lilac42Raise-original-r1.png",
+            "sha256": "140af56db64b3e6ce85b2ebfb619acdb804becc5bbd725d81aa6f7873fe0975d",
+            "anchor": [
+              96,
+              11,
+              942,
+              1519
+            ]
+          },
+          "lilac42thrust": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Lilac42Thrust-original-r1.png",
+            "sha256": "14ba4092121207d7a13786e57346518a47d90b97215504c493c0d226c09deafe",
+            "anchor": [
+              13,
+              13,
+              1524,
+              1003
+            ]
+          }
+        },
+        "resources": {
+          "180": [
+            {
+              "pose": "lilac42idle",
+              "anchor": [
+                0,
+                0,
+                85,
+                133
+              ],
+              "scale_group": "lilac42idle"
+            },
+            {
+              "pose": "lilac42idle",
+              "anchor": [
+                0,
+                0,
+                85,
+                134
+              ],
+              "scale_group": "lilac42idle"
+            },
+            {
+              "pose": "lilac42idle",
+              "anchor": [
+                0,
+                0,
+                85,
+                135
+              ],
+              "scale_group": "lilac42idle"
+            },
+            {
+              "pose": "lilac42idle",
+              "anchor": [
+                0,
+                0,
+                85,
+                134
+              ],
+              "scale_group": "lilac42idle"
+            }
+          ],
+          "181": [
+            {
+              "pose": "lilac42idle",
+              "anchor": [
+                0,
+                0,
+                85,
+                133
+              ],
+              "scale_group": "lilac42idle"
+            },
+            {
+              "pose": "lilac42open",
+              "anchor": [
+                0,
+                0,
+                99,
+                133
+              ],
+              "scale_group": "lilac42open"
+            },
+            {
+              "pose": "lilac42open",
+              "anchor": [
+                0,
+                0,
+                111,
+                139
+              ],
+              "scale_group": "lilac42open"
+            },
+            {
+              "pose": "lilac42open",
+              "anchor": [
+                0,
+                0,
+                114,
+                164
+              ],
+              "scale_group": "lilac42open"
+            },
+            {
+              "pose": "lilac42raise",
+              "anchor": [
+                0,
+                0,
+                106,
+                166
+              ],
+              "scale_group": "lilac42raise"
+            },
+            {
+              "pose": "lilac42raise",
+              "anchor": [
+                0,
+                0,
+                106,
+                167
+              ],
+              "scale_group": "lilac42raise"
+            },
+            {
+              "pose": "lilac42thrust",
+              "anchor": [
+                0,
+                0,
+                137,
+                126
+              ],
+              "scale_group": "lilac42thrust"
+            },
+            {
+              "pose": "lilac42thrust",
+              "anchor": [
+                0,
+                0,
+                136,
+                126
+              ],
+              "scale_group": "lilac42thrust"
+            },
+            {
+              "pose": "lilac42thrust",
+              "anchor": [
+                0,
+                0,
+                136,
+                126
+              ],
+              "scale_group": "lilac42thrust"
+            },
+            {
+              "pose": "lilac42thrust",
+              "anchor": [
+                0,
+                0,
+                136,
+                126
+              ],
+              "scale_group": "lilac42thrust"
+            },
+            {
+              "pose": "lilac42thrust",
+              "anchor": [
+                0,
+                0,
+                136,
+                126
+              ],
+              "scale_group": "lilac42thrust"
+            }
+          ]
+        }
+      }
+    },
+    "reused_recipes": [
+      {
+        "from_figure": 40,
+        "to_figure": 58,
+        "prior_receipt_key": "riders38_39_archer40_followup_20261022",
+        "source_recipe": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure040-recipe-oct22-r2.json",
+          "sha256": "cd513aa7a375839df60a2e27c6ccd2aa59778233ef6baa7fdbbea64b3d6dead3"
+        },
+        "same_source_anchors_and_layer_assignments": true
+      },
+      {
+        "from_figure": 41,
+        "to_figure": 59,
+        "prior_receipt_key": "staff41_42_43_followup_20261022",
+        "source_recipe": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure041-recipe-oct22-r1.json",
+          "sha256": "330bacdd6af08a33ff97780fe42b5c39241d018c5f17617d5cd82434815bd044"
+        },
+        "same_source_anchors_and_layer_assignments": true
+      },
+      {
+        "from_figure": 42,
+        "to_figure": 60,
+        "prior_receipt_key": "staff41_42_43_followup_20261022",
+        "source_recipe": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure042-recipe-oct22-r1.json",
+          "sha256": "94b1f944cebfa71e77c636138d8d206c52b76734112f7f7486302f557382ac6f"
+        },
+        "same_source_anchors_and_layer_assignments": true
+      }
+    ],
+    "source_policy": "Six native banks exactly equal existing40/41/42 in all descriptors/header/PNG/Mask and decoded RGBA. Recompile with unchanged sources/anchors, require identical HD SHA, then share existing allow-list file names. No asset bitmap rewriting or new generation. Empty57 and176/179/182 remain absent.",
+    "art_approximations": [
+      "All previously disclosed40/41/42 key-pose, anatomy, costume, staff/arrow, cloth and micro-FX approximations retained; equal native banks do not prove identical story actors."
+    ],
+    "projectile_contract": {
+      "status": "CONFORMED-SCOPED / RUNTIME-E1",
+      "figure": 58,
+      "resource": 175,
+      "native_header": [
+        1,
+        11,
+        1
+      ],
+      "body_frames": "174:0-3,175:0-10",
+      "projectile_frames": [
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17
+      ],
+      "native_opaque_counts": [
+        124,
+        393,
+        481,
+        394,
+        355,
+        342,
+        342
+      ],
+      "native_blank_frames": [],
+      "markers": [
+        [
+          7,
+          0,
+          5
+        ],
+        [
+          12,
+          1,
+          2
+        ],
+        [
+          13,
+          1,
+          4
+        ],
+        [
+          14,
+          1,
+          3
+        ]
+      ]
+    },
+    "required_checks": [
+      "All57 compiled frames must equal existing40/41/42 HD SHA before sharing files.",
+      "Both full and runtime-only source GPU57, three complete Game.Draw/F2/64-65DAC/HP/RNG/continuation; body15/20/15cores>=1000 and58all7projectiles separately.",
+      "63compiler guards,58volley negative guards plus old40 positive regression, both packages all3valid+sixcoldpreflight failures.",
+      "No new physical PNG/raw files; old5340full/4664runtime hashes unchanged, formal catalog bytes identical tested staging; private manifest and remote verified.",
+      "Normal/player/manual/platform remain pending."
+    ],
+    "evidence_review": {
+      "native_57_frames_viewed": true,
+      "exact_native_identity_verified": true,
+      "prior_sources_and_unchanged_recipes_accepted": true,
+      "compiler_and_gpu_pending": false,
+      "three_compiled_contact_sheets_reviewed": true
+    },
+    "package_stage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party58-59-60-projection-oct22-r1.json",
+      "sha256": "eb65afaba99580fe5314258dda4547db5c4d10fd2be082d05b7bb9a2eb1e4f70"
+    },
+    "next_native_reference": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party-pending-61-62-63-64-native-oct22-r1.json",
+      "sha256": "87ce13a1368a764ecf94fb964ba1391966e9199f0086ed52485a7c3b50550d79"
+    },
+    "old40_regression_input": {
+      "catalog": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party40-candidate-oct22-r1/catalog.json",
+        "sha256": "e467b1bb28e2fea46967fbeea757049b5b7ae2be5d0f47604190639919591b75"
+      },
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party3840-physical-40-candidate-oct22-r1-capture/receipt.json",
+        "sha256": "650ca4e6f61777bbe8d213a17fe1fba42c214a8ff4c70a61e4dafc10c1d86cef"
+      },
+      "initial_wrong_catalog_rejected": true,
+      "initial_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5860-volley40-guards-oct22-r1.log",
+        "sha256": "421970b865d449bb7601d5337fb5e720266dc0df946a7936d8b82329bf81b4bf"
+      },
+      "reason": "Historical40GPUreceipt used candidatecatalog, not finalstage; restored exact matching catalog by SHA, kept failedr1 and gate unchanged."
+    },
+    "checks": {
+      "party5860-source-candidate-058-oct22-r1.memory.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5860-source-candidate-058-oct22-r1.memory.json",
+        "sha256": "54ddd223dfa1806163c4ae16e03c886e25fbe4ab030a5ce0938793274874263d"
+      },
+      "party5860-source-candidate-058-oct22-r1.log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5860-source-candidate-058-oct22-r1.log",
+        "sha256": "e749f8ee6af21287017129b758c2ef535c52cfa7adf8d85a4a80d7a1c8bd5ee1"
+      },
+      "party5860-source-candidate-058-oct22-r1-receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5860-source-candidate-058-oct22-r1-capture/receipt.json",
+        "sha256": "eeb53debb8189dd5f196559bed340cd83749cf017ec2119a138170318dff2481"
+      },
+      "party5860-source-runtime-058-oct22-r1.memory.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5860-source-runtime-058-oct22-r1.memory.json",
+        "sha256": "5f320bc4ad491a0d8b73cc931438cd2267b6a08dc02a7f0aa48dff22cf900a5a"
+      },
+      "party5860-source-runtime-058-oct22-r1.log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5860-source-runtime-058-oct22-r1.log",
+        "sha256": "b3fd87ab27867ca11ecdbad7564e8b10a7ae8b8e9fdd534ebc17aa039ca61e73"
+      },
+      "party5860-source-runtime-058-oct22-r1-receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5860-source-runtime-058-oct22-r1-capture/receipt.json",
+        "sha256": "eeb53debb8189dd5f196559bed340cd83749cf017ec2119a138170318dff2481"
+      },
+      "party5860-physical-candidate-058-oct22-r1.memory.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5860-physical-candidate-058-oct22-r1.memory.json",
+        "sha256": "d379568cce141e60963198462b52e00c0e37480f22949408a6506bf335dcede2"
+      },
+      "party5860-physical-candidate-058-oct22-r1.log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5860-physical-candidate-058-oct22-r1.log",
+        "sha256": "8694c1887d0e9710e0efe832b4a301a98cd8adb6a2a141745edfd0033583e444"
+      },
+      "party5860-physical-candidate-058-oct22-r1-receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5860-physical-candidate-058-oct22-r1-capture/receipt.json",
+        "sha256": "51b67d4d479d4f9bf32fd69ff3c5793d0dd3e6c3a73ecfdbbb83758d0787094b"
+      },
+      "party5860-physical-candidate-059-oct22-r1.memory.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5860-physical-candidate-059-oct22-r1.memory.json",
+        "sha256": "a3cd957519ee184e4eacd51d3245b24d3c001a3edaea86857712a772894c0087"
+      },
+      "party5860-physical-candidate-059-oct22-r1.log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5860-physical-candidate-059-oct22-r1.log",
+        "sha256": "b9a1de45e72f368254d8ad465ecea7c73db3e186c80c83da533f9aa2829caeeb"
+      },
+      "party5860-physical-candidate-059-oct22-r1-receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5860-physical-candidate-059-oct22-r1-capture/receipt.json",
+        "sha256": "ab13ae12fb49f540da4183df2c21f9d89d53801fc8beafe159dc04f8062a423e"
+      },
+      "party5860-physical-candidate-060-oct22-r1.memory.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5860-physical-candidate-060-oct22-r1.memory.json",
+        "sha256": "860db74c6dd62d9a13026a20991c564317938d1df02aa5465e57e509982ffac7"
+      },
+      "party5860-physical-candidate-060-oct22-r1.log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5860-physical-candidate-060-oct22-r1.log",
+        "sha256": "ba60148be6a8c89cf3058b2ab904f22075b359e793e7ccb0d864493f5a3b5953"
+      },
+      "party5860-physical-candidate-060-oct22-r1-receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5860-physical-candidate-060-oct22-r1-capture/receipt.json",
+        "sha256": "3e9d9033155e119ffa7d6f00e7dcf0f193a6765a0f6436672f776681816acb78"
+      },
+      "party5860-batch-assets-candidate-000-oct22-r1.memory.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5860-batch-assets-candidate-000-oct22-r1.memory.json",
+        "sha256": "b0ff5a59fbeed5a8dfd810d21f9cec92c18c4babb655df6ad290f66d591957fa"
+      },
+      "party5860-batch-assets-candidate-000-oct22-r1.log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5860-batch-assets-candidate-000-oct22-r1.log",
+        "sha256": "52f92021fe1e42c599131e19863a6feb7b8ba9136618a9dadee8be2d6e241037"
+      },
+      "party5860-batch-assets-runtime-000-oct22-r1.memory.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5860-batch-assets-runtime-000-oct22-r1.memory.json",
+        "sha256": "a6dea037157bdb7807a92fd1a99dc29d69203a90a540bc1c21195ec7be6d1a8f"
+      },
+      "party5860-batch-assets-runtime-000-oct22-r1.log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5860-batch-assets-runtime-000-oct22-r1.log",
+        "sha256": "6c88ee39a670b963198837cb01a1fd86c4a1226305351c1504a81aa38626d32b"
+      },
+      "party058-physical-core-oct22-r1.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party058-physical-core-oct22-r1.json",
+        "sha256": "bf4e515e98153f8dca66338b4e35066b6f6eea95cbf00700319aa0c19e66c59c"
+      },
+      "party058-compiler-guards-oct22-r1/guards.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party058-compiler-guards-oct22-r1/guards.json",
+        "sha256": "3fee94ad38057a7386d4370f895cbc40e75b1c384657677d5a5af5840a3e388c"
+      },
+      "party058-compiled-oct22-r1/compiled.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party058-compiled-oct22-r1/compiled.json",
+        "sha256": "795c13b7dee942e468e77a2ca7346534166964d3fb85f73a05b5678607005350"
+      },
+      "party059-physical-core-oct22-r1.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party059-physical-core-oct22-r1.json",
+        "sha256": "2891758db12482b3e032be17a04dfc0d7b3ebec557261a3f25a786e4cba97c7c"
+      },
+      "party059-compiler-guards-oct22-r1/guards.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party059-compiler-guards-oct22-r1/guards.json",
+        "sha256": "58c21f01e12087f830635fc8e2347c01f408e37e9db9195fd5a45029294a7b4d"
+      },
+      "party059-compiled-oct22-r1/compiled.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party059-compiled-oct22-r1/compiled.json",
+        "sha256": "4478be1c933cfadcfda6437b4731ddd4122a1816228fb83aa16f8cfcd107ee6d"
+      },
+      "party060-physical-core-oct22-r1.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party060-physical-core-oct22-r1.json",
+        "sha256": "a3f661d21d4906e45d9da2649a32296ffdceba27349c066cf641a2d472674caa"
+      },
+      "party060-compiler-guards-oct22-r1/guards.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party060-compiler-guards-oct22-r1/guards.json",
+        "sha256": "6ad6fe5d37c5265cb6ee831fc0cb806c603c4977ab05fe9253c09d9c81034cbc"
+      },
+      "party060-compiled-oct22-r1/compiled.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party060-compiled-oct22-r1/compiled.json",
+        "sha256": "413de80b79b8b42e14d3016f438340512b3d53134363f8db64c6d37968ff61e5"
+      },
+      "volley58-guards.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5860-volley58-guards-oct22-r1/guards.json",
+        "sha256": "a8c41919b27cb10a82f2aa54dc1a6f0717aa7c996777661fe1c4fa80187361ee"
+      },
+      "volley58-positive-control.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5860-volley58-guards-oct22-r1/positive-control.json",
+        "sha256": "09f0ec929d61cd006693210635f05a968a58740fc8066da49636c61ec3ddf8e3"
+      },
+      "volley40-guards.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5860-volley40-guards-oct22-r2/guards.json",
+        "sha256": "4e9c69246428a943dc853a9ee34888e9cf05c838d5fe1af55480009752096d3a"
+      },
+      "volley40-positive-control.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5860-volley40-guards-oct22-r2/positive-control.json",
+        "sha256": "d0a28f42b369af7bb03ced1c24a89a92ed781cf96a81870d9d2e4edfa962d17d"
+      },
+      "private_delivery": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party58-59-60-private-delivery-oct22-r1.json",
+        "sha256": "a1b3fc77ec943513bbd1ec5278c4f774733fbd8aa9524fe8c3ee5d92ef3b3604"
+      },
+      "formal_coverage": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party58-59-60-formal-coverage-oct22-r1.json",
+        "sha256": "6575c857b7310a9c2f96de114651b730d2590751288597ab0ef8983ba7395317"
+      }
+    },
+    "formal_catalog": {
+      "file": "remake/assets/themes/modern/catalog.json",
+      "sha256": "b9963989f1e94fc51d92aa372153cac73f5ceedbc54b14d2e3b1b51c6e6aeef2"
+    },
+    "staged_formal_catalog": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party58-59-60-staged-formal-catalog-oct22-r1.json",
+      "sha256": "b9963989f1e94fc51d92aa372153cac73f5ceedbc54b14d2e3b1b51c6e6aeef2"
+    },
+    "formal_coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party58-59-60-formal-coverage-oct22-r1.json",
+      "sha256": "6575c857b7310a9c2f96de114651b730d2590751288597ab0ef8983ba7395317"
+    },
+    "memory": {
+      "records": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5860-source-candidate-058-oct22-r1.memory.json",
+          "sha256": "54ddd223dfa1806163c4ae16e03c886e25fbe4ab030a5ce0938793274874263d"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5860-source-runtime-058-oct22-r1.memory.json",
+          "sha256": "5f320bc4ad491a0d8b73cc931438cd2267b6a08dc02a7f0aa48dff22cf900a5a"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5860-physical-candidate-058-oct22-r1.memory.json",
+          "sha256": "d379568cce141e60963198462b52e00c0e37480f22949408a6506bf335dcede2"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5860-physical-candidate-059-oct22-r1.memory.json",
+          "sha256": "a3cd957519ee184e4eacd51d3245b24d3c001a3edaea86857712a772894c0087"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5860-physical-candidate-060-oct22-r1.memory.json",
+          "sha256": "860db74c6dd62d9a13026a20991c564317938d1df02aa5465e57e509982ffac7"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5860-batch-assets-candidate-000-oct22-r1.memory.json",
+          "sha256": "b0ff5a59fbeed5a8dfd810d21f9cec92c18c4babb655df6ad290f66d591957fa"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5860-batch-assets-runtime-000-oct22-r1.memory.json",
+          "sha256": "a6dea037157bdb7807a92fd1a99dc29d69203a90a540bc1c21195ec7be6d1a8f"
+        }
+      ],
+      "all_returncode_zero": true,
+      "all_oom_kill_delta_zero": true,
+      "note": "memory.peak is cumulative shared-container upper bound, not isolated per-command peak."
+    },
+    "package_validation_inputs": {
+      "catalog_bytes_equal_formal": true,
+      "candidate": "remake/generated-assets/modern-theme-prototypes",
+      "runtime": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party58-59-60-runtime-only-oct22-r1",
+      "private_files": 5340,
+      "runtime_files": 4664,
+      "retained_files_unchanged": 5340,
+      "old_assets_unchanged": 552,
+      "new_physical_files": 0
+    },
+    "readme_overview": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party58-59-60-readme-overview-oct22-r1.json",
+      "sha256": "4f767701e4ee4c4615abf1622d0708dd1ab834ac3967e340f4c96f395fdf69a7"
+    },
+    "coverage": {
+      "new_resources": 6,
+      "new_frames": 57,
+      "source_gpu_per_package": 57,
+      "physical_body_core_frames": [
+        15,
+        20,
+        15
+      ],
+      "pure_projectile_frames": 7,
+      "compiler_guard_cases": 63,
+      "volley_guard_cases": 22,
+      "go_commands": 7,
+      "unique_current_counts": "docs/knowledge-base/58-fd2-exe-re-coverage.md"
+    },
+    "scope": "RUNTIME-E1: six pinned native banks equal existing40/41/42; unchanged recipes produce57sameHD SHA. Two packages fullGPU, all50body cores plus7projectiles, F2/64-65DAC/HP/RNG/continuation and atomicpreflight verified. Equal art is not actor/caller equivalence or new original/player parity. Full Go b4c298d1 historical, not rerun.",
+    "tools": {
+      "build_fd2_character_battle_hd.py": {
+        "file": "tools/build_fd2_character_battle_hd.py",
+        "sha256": "27337d5305ec639353d63bb437890883bf546bb8803660d1d031ba093a6c6083"
+      },
+      "test_fd2_character_battle_hd.py": {
+        "file": "tools/test_fd2_character_battle_hd.py",
+        "sha256": "63efbe259a7308bdb573f4c88dcd3f96134e202fa57c843f86171a5ae27472c5"
+      },
+      "verify_fd2_character_battle_gpu.py": {
+        "file": "tools/verify_fd2_character_battle_gpu.py",
+        "sha256": "71c8a5eea2b1bac96984481eb73a0ca35eb01c871f40411ae8e6de58948aba15"
+      },
+      "verify_fd2_archer_volley_gpu.py": {
+        "file": "tools/verify_fd2_archer_volley_gpu.py",
+        "sha256": "7419bfd608d26c4cbeef2e7661c0a1b9719300141adeb32acc5a80b151603000"
+      },
+      "test_fd2_archer_volley_gpu.py": {
+        "file": "tools/test_fd2_archer_volley_gpu.py",
+        "sha256": "adbb6d8add283c71d61fc5ae4d1832999473a1c6029968460d701a103e2e7554"
+      },
+      "sync_modern_theme_private.py": {
+        "file": "tools/sync_modern_theme_private.py",
+        "sha256": "b4ee0f261eae3d24d571437cd161a11060fb027c4a0925975051fc3e8272cc82"
+      },
+      "audit_fd2_battle_hd_coverage.py": {
+        "file": "tools/audit_fd2_battle_hd_coverage.py",
+        "sha256": "a1661e1e20a8bf6b33c5f6f51ddcaf31d4b12ea3f7fccfd2dcd50c11035d92d8"
+      },
+      "fd2_go_test_memory_probe.py": {
+        "file": "tools/fd2_go_test_memory_probe.py",
+        "sha256": "8e7c9c55b85aa72a5026b944233b94f7c0787f51b3f5ebb178ed54cc333e40f2"
+      },
+      "remake/cmd/fd2/modern_hd_ordinary_material_gpu_test.go": {
+        "file": "remake/cmd/fd2/modern_hd_ordinary_material_gpu_test.go",
+        "sha256": "0984426e296130e5883990d6adbf92225214120f2fc428129a5ab5664719f6a7"
+      },
+      "remake/cmd/fd2/modern_hd_battle_lifecycle_test.go": {
+        "file": "remake/cmd/fd2/modern_hd_battle_lifecycle_test.go",
+        "sha256": "7991f7b642c8e09e2852149c48d0fe5000322cdecfcb0fc9bbaab8a4c47cff16"
+      },
+      "remake/cmd/fd2/modern_hd_battle_assets_test.go": {
+        "file": "remake/cmd/fd2/modern_hd_battle_assets_test.go",
+        "sha256": "3d147eb506351ad2e8c5535b8a4b12f34107a53ae7f1a36b31a119f521b6ac83"
+      },
+      "remake/internal/battlepresent/native_physical_body.go": {
+        "file": "remake/internal/battlepresent/native_physical_body.go",
+        "sha256": "39a7f5423cab91ced5081197d99ec530644c495e28d7bd8e894f1ca92f600d92"
+      }
+    },
+    "toolchain": {
+      "go_image": "fd2-go-test-local:latest",
+      "go_image_sha256": "e4a805c52a3ad5d8c22cf23f2bcf51c6924e5ad6b99554f1b02761903c725433",
+      "go": "1.22.12",
+      "go_container": "8GB/4CPU/512pids/network none/UID:GID1000:1000",
+      "assets_image": "fd2-assets-local:20260829-sfx",
+      "assets_image_sha256": "e59237a31d4b5f7a62c59ac37b780bd93f17c99fda97be8f5ca0c53978b878bc",
+      "python_pillow": "3.12.15/11.3.0",
+      "memory_note": "memory.peak is cumulative cgroup lifetime upper bound across sequential commands sharing a container."
+    },
+    "reproduce": [
+      "Restore base552 catalog at e563bcce, fixed inventory and original pack manifest. For120->174,121->175,123->177,124->178,126->180,127->181 use build_fd2_character_battle_hd.load_native to verify both metadata/PNG/Mask SHA, all DESCRIPTOR fields, headers, frame counts and decodedRGBA equality. Only these six resources are aliased; story actor and caller identity remain separate.",
+      "Restore source originals by SHA from private existing40/41/42 allow-list to paths in recipe_inline. Write three inline recipes with indent2 UTF8 and newline, verify recordedSHA. Recipes exactly retain source anchors and ordered assignments from40/41/42, changing only figure and resource keys by54. Sequential build_fd2_character_battle_hd.py --pack /original --inventory <fixed> --recipe <recipe> --base-catalog <previous> --out <fresh> --layered. Original174/175=4/18,177/178=4/16,180/181=4/11; empty57/176/179/182 never fabricated.",
+      "For each compiled bank require frame_sha256, native_header and native_frames exactly equal corresponding existing bank. Replace only new files/source_files/source_sha256 with prior bank references as recorded in package_stage.identical_compiled_frame_aliases. Preserve distinct asset_id/source_resource/source_metadata_sha256/source_refs for target bank. Set private_root to formal existing source root. Old552assets unchanged, names(newcatalog)==names(base)==5340; no new physical file or image edit. validate_modern_theme_catalog --verify-private; sync_modern_theme_private.py --runtime-only yields4664files.",
+      "Three test_fd2_character_battle_hd.py --recipe <recipe> --baseline <compiled.json> --pack /original --inventory <fixed> --out <fresh>:21guards each. All compiler high-coverage clipping counts zero.",
+      "Go Docker8GB/4CPU/512pids/network none/user1000:1000/HOMEtmp, writable persistent GOCACHE, FD2_ASSET_PACK=/original FD2_TEST_ORIGINAL_PACK=/original GOMAXPROCS=2 LP_NUM_THREADS=2. Each fd2_go_test_memory_probe.py --out <fresh> --timeout550 -- with-xvfb go test ./cmd/fd2 -count=1 -timeout=500s -run ^<test>$ -v. At most two full-theme commands active. Assets use Go1200/probe1260.",
+      "Both packages TestModernHDReusedPartyAllFramesGPU with FD2_HD_REUSED_PARTY_GPU=1, FD2_TEST_MODERN_EFFECT_CATALOG/PACK/OUT. Each57fullGPU worlds versus independentCPUOver, tolerance1RGBA.",
+      "For58/59/60 TestModernHDBattleRuntimeGPU with FD2_HD_BATTLE_LIFECYCLE_GPU=1 FD2_HD_BATTLE_REAL=1 FD2_TEST_MODERN_BATTLE_FIGURE, FD2_TEST_MODERN_BATTLE_CATALOG/PACK and FD2_TEST_HD_BATTLE_OUT. All22/20/15source shots;58sixphasesF2,59/60threephasesF2,64/65DAC,HP/RNG and onecontinuation.",
+      "verify_fd2_character_battle_gpu.py --figure <58|59|60> --core-profile opaque --sample-group fixture --proven-occlusion --original-pack /original --inventory <fixed> --catalog <stage> --source <candidate> --receipt <physical> --report <fresh>. For58only add --body-frames 174:0-3,175:0-10. All15/20/15body cores>=1000. verify_fd2_archer_volley_gpu.py --figure58 separately checks all7pureprojectiles, pinned opaque counts124/393/481/394/355/342/342. test_fd2_archer_volley_gpu.py --figure58 --receipt <new> and --figure40 --receipt <prior> retain11negative guards each and positiveactualGPU.",
+      "Both packages TestModernHDBattleBatchAssetsAndPreflight with FD2_TEST_MODERN_BATTLE_FIGURES=58,59,60 and catalog/pack/original environment. Separate valid/coldsets; all3paired preloads/native metadata and sixplayer/mode11 failures retainHP/RNG and allsixcoldbanks unpublished. SevenGo groups total, noSKIP/noOOM.",
+      "After all gates install byte-identical stagedcatalog only. Sync private whitelist with existing source root, verify all5340oldSHA unchanged and runtime4664SHA/UID. Separate privatecatalog commit and actual remote/privatevisibility verification; do not publish privatecommit identifier. Run audit_fd2_battle_hd_coverage.py --inventory <fixed> --original-pack /original --catalog <formal> --source <formalroot> --report <fresh>. Normal/manual/platform pending, no new recording or release."
+    ],
+    "private_remote_verified": true,
+    "private_visibility_verified": true,
+    "private_remote_verification": {
+      "actual_remote_head_equals_local": true,
+      "tracked_worktree_clean": true,
+      "visibility": "PRIVATE",
+      "only_catalog_changed": true,
+      "private_commit_identity_published": false
+    },
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party58-59-60-final-validation-oct22-r1.json",
+      "sha256": "cf8fcccc653fabc3ae6a10e617132f79d039ec13330b902d38faf82517b708f4"
+    },
+    "worklist_verify": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5860-fd2_worklist.py-verify-oct22-r1.log",
+      "sha256": "e79d11a27482e9cc12c4e999fa07e97f07ee544b5952cb8172731e116b8f7af3"
+    },
+    "lessons_check": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5860-fd2_lessons.py-check-oct22-r1.log",
+      "sha256": "4488df40625c451041033559004fc5cad9953a8db81573e050a905e533475e5f"
     }
   }
 }

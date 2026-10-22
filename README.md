@@ -143,6 +143,10 @@
 
 左為藍龍騎者斬擊，中為灰綠龍展翼，右為紅龍騎者斬擊。上圖由測試場景的實際繪製畫面縮圖，面板沿用來源角色名稱；背景與受擊閃色仍含像素素材。升空與返回保留局部身體取樣，共用姿勢、振翼與比例近似見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。正常遊玩與造型確認待全部HD接入後集中抽驗。
 
+![連射弓手與兩組持杖人物的HD測試畫面](docs/figures/hd-reused-party-battle.png)
+
+第58組連射弓手及第59、60組持杖人物已接入HD。原版六個銀行與先前圖組完全相同，沿用已驗證的手繪圖源，保留各銀行的動作與命中標記。上圖是測試場景的實際繪製縮圖，面板沿用來源角色名稱；背景與受擊閃色仍含像素素材。共用姿勢與造型近似見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)，正常遊玩與人工確認待全部HD接入後集中抽驗。
+
 | 鐵諾HD普通END攻防 | 蓋亞HD普通攻防 |
 | --- | --- |
 | ![鐵諾HD普通END攻防](docs/figures/hd-tino-physical-attack.png) | ![蓋亞HD普通攻防](docs/figures/hd-gaia-physical-attack.png) |
