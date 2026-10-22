@@ -212,6 +212,18 @@ func TestModernHDCasters91And92Command0PreflightAndF2Atomic(t *testing.T) {
 	}
 }
 
+func TestModernHDActors104To109Command0PreflightAndF2Atomic(t *testing.T) {
+	if os.Getenv("FD2_HD_ACTORS_104_109_GPU") != "1" {
+		t.Skip("dedicated actors 104, 105 and 107 preflight process required")
+	}
+	for _, figure := range []int{104, 105, 107} {
+		t.Run(fmt.Sprint(figure), func(t *testing.T) {
+			t.Setenv("FD2_TEST_COMMAND_ACTOR_FIGURE", fmt.Sprint(figure))
+			TestModernHDCommand0PreflightAndF2Atomic(t)
+		})
+	}
+}
+
 func TestModernHDCommand0RejectsMultiMarkerThirdBanks(t *testing.T) {
 	catalog, pack := os.Getenv("FD2_TEST_MODERN_EFFECT_CATALOG"), os.Getenv("FD2_TEST_MODERN_EFFECT_PACK")
 	if catalog == "" || pack == "" {

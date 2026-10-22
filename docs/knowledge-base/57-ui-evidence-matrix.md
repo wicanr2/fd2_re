@@ -1,6 +1,6 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
-BattleFig99持刀、100／101拳師與112機兵完整65幀已接入；兩包來源GPU、全部11／14／19／20物理核心、四完整攻防／三階段F2／64及65 DAC／HP／RNG／一次續行，84編製、九接點與三錯位反例、十二眼光守衛、八閃色遮罩及兩包各八冷交易預檢通過。九Go組零SKIP／無OOM／無逾時。十五新原RGBA與七既有光效按SHA保存，原框／節拍／命中標記保持；全身縮放、光形及拳影近似已揭露。正常／集中人工／平台仍待，不新增原版parity。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，主證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的blade99_fighters100_101_robot112_followup_20261023。
+BattleFig104～109龍首與有翼人物122幀已接入；兩包來源GPU、全部96物理與26施術核心、六完整攻防及三普通0交易／F2／返回，126編製、77接點及六錯位反例、21施術反例與八閃色遮罩、兩包物理及實際施術原子預檢通過。十五Go組零SKIP／無OOM／無逾時。31新原RGBA與既有金環依SHA保存，原描述子／節拍／標記保持；姿勢與兩翼型共用、龍首裁切及光效近似明示。正常／集中人工／平台仍待，不新增原版parity。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，主證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的actors104_109_followup_20261023。
 
 BattleFig41／42／43持杖人物完整來源已接入；兩包來源GPU、全部物理Game.Draw核心、F2／返回、編製守衛及兩包玩家／AI原子預檢通過。原框、節拍、單次命中及聲音參數、規則與保存保持；共用姿勢、人物／杖長比例與握手近似明示。母稿alpha254沿既有>=250契約，正常LANCZOS成品保持255，沒有量化或放寬門檻。正常操作與人工依全部HD後集中，未新增原版parity。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，主證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的staff41_42_43_followup_20261022。
 
