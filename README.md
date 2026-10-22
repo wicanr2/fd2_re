@@ -163,6 +163,10 @@
 
 左為灰綠重甲橫斬，右為綠衣劍士下劈，兩組完整動畫已接入正式繪製。上圖是左側敵方主攻、右側我方反擊的測試場景實際繪製，角色名稱沿用測試資料，並非原版對拍或一般遊玩截圖。姿勢共用、原框裁切及殘光近似見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)，正常遊玩與人工確認待全部HD接入後集中抽驗。
 
+![兩種巨劍重甲與錐槍重甲的HD測試畫面](docs/figures/hd-giants-lancer-battle.png)
+
+由左至右為金紋巨劍重甲、紫紋巨劍重甲與錐槍重甲的攻擊演出，已接入正式繪製。上圖是左側敵方主攻、右側我方反擊的測試場景實際畫面，名稱沿用測試資料，背景與面板仍含像素素材。三組保留各自的原生節拍及音效標記；姿勢共用、武器比例、原框裁切與光痕近似見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)，一般遊玩與人工確認待全部HD接入後集中抽驗。
+
 | 鐵諾HD普通END攻防 | 蓋亞HD普通攻防 |
 | --- | --- |
 | ![鐵諾HD普通END攻防](docs/figures/hd-tino-physical-attack.png) | ![蓋亞HD普通攻防](docs/figures/hd-gaia-physical-attack.png) |

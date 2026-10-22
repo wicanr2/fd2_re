@@ -3710,6 +3710,21 @@
         ],
         "pattern": "所選圖源已登錄，不覆寫"
       }
+    },
+    {
+      "id": "hd-batch-new-assets-use-pinned-base-length",
+      "date": "2026-10-22",
+      "area": "HD批次驗證",
+      "rule": "HD批次先讀主收據base_catalog固定基底，再以實際len(base.assets)界定新增切片，逐項核完整舊前綴與來源SHA，不沿用上一批常數。正式編製入口tools/build_fd2_character_battle_hd.py以names(base)取得舊白名單；最終核對也沿同一基底，不把腳本殘留的舊範圍當成素材缺陷。",
+      "why": "80～82的最終核對初輪沿用580切片，誤把前批77／79四資源算成新增；本輪基底實為584。修正為動態基底長度後同映像／同命令重跑通過，正式清冊與素材未改。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#giants80_81_lancer82_followup_20261022",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/build_fd2_character_battle_hd.py"
+        ],
+        "pattern": "old_names = names\\(base\\)"
+      }
     }
   ]
 }

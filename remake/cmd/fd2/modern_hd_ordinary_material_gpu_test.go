@@ -246,6 +246,13 @@ func TestModernHDFrontShieldKnightsFighterAllFramesGPU(t *testing.T) {
 	testModernHDRegisteredFramesGPU(t, "FIGANI.DAT", []int{231, 232, 237, 238}, 22, "PASS-FRONT-KNIGHT-FIGHTER-22-SOURCE-GPU")
 }
 
+func TestModernHDGiantsLancerAllFramesGPU(t *testing.T) {
+	if os.Getenv("FD2_HD_GIANTS_LANCER_GPU") != "1" {
+		t.Skip("dedicated giants and lancer source GPU process required")
+	}
+	testModernHDRegisteredFramesGPU(t, "FIGANI.DAT", []int{240, 241, 243, 244, 246, 247}, 31, "PASS-GIANTS-LANCER-31-SOURCE-GPU")
+}
+
 func testModernHDRegisteredFramesGPU(t *testing.T, archive string, resources []int, frameCount int, status string) {
 	t.Helper()
 	set, err := loadModernStoryPortraitSet(os.Getenv("FD2_TEST_MODERN_EFFECT_CATALOG"), os.Getenv("FD2_TEST_MODERN_EFFECT_PACK"))

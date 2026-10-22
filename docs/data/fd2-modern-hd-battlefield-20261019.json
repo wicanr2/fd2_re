@@ -98455,7 +98455,7 @@
     },
     "private_remote_verification": "Independent private repository commit pushed; actual git ls-remote refs/heads/main re-read equals local HEAD. Private commit identity is not published."
   },
-  "latest_hd_batch": "shield76_knights77_78_fighter79_followup_20261022",
+  "latest_hd_batch": "giants80_81_lancer82_followup_20261022",
   "monks28_31_mage29_followup_20261022": {
     "status": "CONFORMED-SCOPED-RUNTIME-E1",
     "date": "2026-10-22",
@@ -144104,6 +144104,2250 @@
     "final_check": {
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party77-79-final-check-oct22-r1.json",
       "sha256": "ad9a2085b4ed7f5c61a7296eb998ead0248c8021a2e0b0b03329e15e0eb1e5ed"
+    }
+  },
+  "giants80_81_lancer82_followup_20261022": {
+    "status": "CONFORMED-SCOPED / RUNTIME-E1",
+    "date": "2026-10-22",
+    "base_commit": "463e4ed7",
+    "base_catalog": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party80-81-82-base-catalog-oct22-r1.json",
+      "sha256": "95e1e43683c886b6d572f597bb65aba90e336eaf4905c82daa5574a29b9b9b69"
+    },
+    "native_reference": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party80-81-82-native-oct22-r1.json",
+      "sha256": "61b9d35050a84f5eed9247fed1771f13e9380092ff97857481a11e4f3c41c30f"
+    },
+    "source_inventory": {
+      "file": "docs/data/fd2-battle-hd-source-inventory-20261019.json",
+      "sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51"
+    },
+    "original_manifest_sha256": "5eec2ecacc4fe97c4d0f27838e7dbecf18d1cf4b309b35800d50afd173cacca5",
+    "eligibility": {
+      "selected": [
+        240,
+        241,
+        243,
+        244,
+        246,
+        247
+      ],
+      "registered_intersection": [],
+      "remaining_inventory_verified": true
+    },
+    "figures": [
+      80,
+      81,
+      82
+    ],
+    "frames": 31,
+    "native_banks": [
+      {
+        "resource": 240,
+        "header": {
+          "byte_1": 0,
+          "byte_2": 1,
+          "byte_4": 0
+        },
+        "frames": 1,
+        "metadata_sha256": "398a093335057858f49b73c84e5d720db3b1ec5b544b45b6ac5d88b13e4432e3",
+        "native_mask_counts": [
+          12713
+        ],
+        "markers": []
+      },
+      {
+        "resource": 241,
+        "header": {
+          "byte_1": 0,
+          "byte_2": 9,
+          "byte_4": 2
+        },
+        "frames": 9,
+        "metadata_sha256": "e0d02eb14c228dfcd655e6e211d1c4d3fcd8a5cc9e0810a276fed9ee1229e4c2",
+        "native_mask_counts": [
+          12712,
+          12743,
+          12546,
+          12551,
+          12546,
+          27508,
+          14656,
+          13753,
+          13590
+        ],
+        "markers": [
+          [
+            5,
+            1,
+            4
+          ]
+        ]
+      },
+      {
+        "resource": 243,
+        "header": {
+          "byte_1": 0,
+          "byte_2": 1,
+          "byte_4": 0
+        },
+        "frames": 1,
+        "metadata_sha256": "16b99faba09a71f202a62342a454f9f4e59fc5041a2210bf96b61206963b90fc",
+        "native_mask_counts": [
+          12771
+        ],
+        "markers": []
+      },
+      {
+        "resource": 244,
+        "header": {
+          "byte_1": 0,
+          "byte_2": 9,
+          "byte_4": 2
+        },
+        "frames": 9,
+        "metadata_sha256": "711fdcdcdb654dc826e727368a038fd80ab4b0400d5a368bc666baf1fb945d6f",
+        "native_mask_counts": [
+          12770,
+          12801,
+          12604,
+          12609,
+          12604,
+          27490,
+          14638,
+          13735,
+          13572
+        ],
+        "markers": [
+          [
+            5,
+            1,
+            5
+          ]
+        ]
+      },
+      {
+        "resource": 246,
+        "header": {
+          "byte_1": 0,
+          "byte_2": 1,
+          "byte_4": 0
+        },
+        "frames": 1,
+        "metadata_sha256": "3f801db2a9ba2ca473378b15b47f6a25130f35c2981bd1d5dd9a345a1d058c58",
+        "native_mask_counts": [
+          8922
+        ],
+        "markers": []
+      },
+      {
+        "resource": 247,
+        "header": {
+          "byte_1": 0,
+          "byte_2": 10,
+          "byte_4": 2
+        },
+        "frames": 10,
+        "metadata_sha256": "50afc112a250da04ba3bdd0cb5e2257eca1e120147bc5a73f485ad14b86fffa9",
+        "native_mask_counts": [
+          9068,
+          9019,
+          8943,
+          8912,
+          8893,
+          8144,
+          6931,
+          6802,
+          6765,
+          6746
+        ],
+        "markers": [
+          [
+            5,
+            1,
+            1
+          ]
+        ]
+      }
+    ],
+    "zero_headers": [
+      {
+        "resource": 242,
+        "sha256": "468e743f5afbfe49690c72ec2d4eba8453f9f45bfd9809c509dbbdd6de9ae674"
+      },
+      {
+        "resource": 245,
+        "sha256": "59fcefa149828bc7785145786c3b980e07eded4f9c7b44505c4430775f0e64c5"
+      },
+      {
+        "resource": 248,
+        "sha256": "cf1165367c005ac1b166503797fa7e4f87560f8f277f15b1283d1214bed1778c"
+      }
+    ],
+    "generation": [
+      {
+        "key": "giant80idle",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-giant80idle-original-r1.png",
+        "sha256": "3b42b3ccf5a61894a4f2c070a17a01d694df6edeb124eb82b6d012a493ff9d07",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-2d576685-ada6-4bc8-bd93-5368dbbdd083.png",
+        "args": {
+          "transparent_background": true,
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure080-native-240-00-oct22-r1.png",
+            "/home/anr2/cht/fd2/remake/generated-assets/modern-theme-prototypes/figure-078-idle-battle-hd6-master-v1.png"
+          ],
+          "prompt": "Use case: stylized-concept. Asset: ONE full-body transparent RGBA hand-painted fantasy SRPG battle character. Input1 is THIS character's native design and pose; input2 is related armored body/style ONLY. Match input1 distinctions precisely. Massive dark navy blue spiked plate warrior, very tiny closed helmet with glowing narrow red eye slit and a SHORT RED upright crest on top. Huge spiked shoulders, heavy curved chest and thick greaves, thin GOLDEN ORANGE etched trim on collar, forearms, thighs and shins. Upper-arm exposed segments LIGHT GRAY/gray-green, NOT orange skin. Long royal BLUE front waist tabard, small dark RED rear cloth. Right hand image LEFT holds enormous broad pale green-white straight greatsword diagonally downward-left near ground; other fist hangs RIGHT. Preserve giant thick body to tiny head ratio from native. Front threequarter, feet apart grounded, no robot machinery. Full sword tip, crest, shoulder spikes and boots inside image with 10% transparent padding. Same restrained painted ink-contour style as input2, no background, floor, shadow disc, glow haze, text, extra weapons or extra limbs."
+        },
+        "size": [
+          1287,
+          1222
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          9,
+          11,
+          1276,
+          1207
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "giant81idle",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-giant81idle-original-r1.png",
+        "sha256": "5ca412c6ed56aa809ad99fd45cb6f172373a7b8acd6f6c7b77ae7e3448949c31",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-e1330047-37b2-4010-8c28-f10c9c2f640d.png",
+        "args": {
+          "transparent_background": true,
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure081-native-243-00-oct22-r1.png",
+            "/home/anr2/cht/fd2/remake/generated-assets/modern-theme-prototypes/figure-078-idle-battle-hd6-master-v1.png"
+          ],
+          "prompt": "Use case: stylized-concept. Asset: ONE full-body transparent RGBA hand-painted fantasy SRPG battle character. Input1 is THIS character's native design and pose; input2 is related armor/body/style ONLY. Match input1. Massive dark navy spiked plate warrior, very tiny closed helmet with narrow RED eye slit and TWO SMALL ochre/brown curved horn-like projections atop helmet, NOT a plume. Huge spiked shoulders, heavy curved chest and thick greaves. Subtle BLUE/VIOLET etched trim on chest/forearms/thigh/shins, NOT golden decoration. Orange-brown upper-arm flexible segments. Long royal BLUE front waist tabard, small dark RED rear cloth. Right hand image LEFT holds enormous broad pale green-white straight greatsword diagonally downward-left near ground; other fist hangs RIGHT. Tiny head, colossal armored bulk, front threequarter, feet apart grounded, no robot machinery. Full sword tip, horns, spikes and boots inside image with 10% transparent padding. Same restrained hand-painted ink-contour style as input2. True transparent background, no floor, shadow disc, atmospheric glow, text, extra limbs or weapons."
+        },
+        "size": [
+          1287,
+          1222
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          7,
+          10,
+          1273,
+          1206
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "lancer82idle",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-lancer82idle-original-r1.png",
+        "sha256": "5bc398fbe0db178328f3e477c4bf97df52f1bc37782bef9b5af5cd5ef2b264bc",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-5ff410b1-8ef9-4847-a9db-8c63f4ecf47f.png",
+        "args": {
+          "transparent_background": true,
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure082-native-246-00-oct22-r1.png",
+            "/home/anr2/cht/fd2/remake/generated-assets/modern-theme-prototypes/figure-078-idle-battle-hd6-master-v1.png"
+          ],
+          "prompt": "Use case: stylized-concept. Asset: ONE full-body transparent RGBA hand-painted fantasy SRPG battle character, same painted ink contour style as input2 but completely different native character. Input1 defines identity/pose. Stout knight in smooth GRAY-GREEN silver plate armor, enormous rounded shoulder pauldrons, broad heart-shaped curved breastplate, gray thigh/knee/shin armor, blue underclothes, pointed metal boots with blue tips. Closed cylindrical visor helmet with narrow pale eyes, dark BLUE plume flowing behind to RIGHT. Long RED front waist tabard. Right hand at image LEFT holds a single tall medieval LANCE upright beside body, shaft extends to ground. Lance head is a VERY LARGE smooth tapering metal CONE, broad near hand and narrowing upward to long sharp point above helmet, like native, not an ordinary small spear or sword. Left hand at image RIGHT rests at waist. Front threequarter standing, both feet planted. Full lance tip, shaft end, plume and boots inside image with 12% transparent padding. No horse, shield, wings, background, floor, shadow disc, FX, text or extra limbs. Native lance cone proportions important, normal grip and wrist, opaque painted core, true transparent background."
+        },
+        "size": [
+          1131,
+          1391
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          80,
+          0,
+          1059,
+          1379
+        ],
+        "high_coverage_boundary_points": 3
+      },
+      {
+        "key": "gold82tip",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-gold82tip-original-r1.png",
+        "sha256": "fb19bf852e2ac60ca678c718a5c44f0ce55371a629303d5201f59c9ff0c600b9",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-1b4b6d12-6da3-44c2-a156-41705ded73a9.png",
+        "args": {
+          "transparent_background": true,
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure082-native-247-06-oct22-r1.png"
+          ],
+          "prompt": "Use case: stylized-concept. ONE tiny weapon-tip light trail sprite for hand-painted fantasy SRPG, isolated on true transparent RGBA. Input native reference only for small GOLDEN flare beyond the spear tip at bottom right; exclude every part of warrior and weapon. Shape: a compact brilliant WHITE opaque root at UPPER LEFT, from which three narrow yellow-orange tapered tongues streak diagonally down toward LOWER RIGHT. A short pointed triangular forked flare, direction northwest to southeast; NOT a long comet, crescent, circular explosion, fullbeam or upward-flaming torch. White core touching the root must be alpha255, fine amber rim, crisp painted inkless light. Whole effect with 20% transparent padding all sides, no cropping, separate sparks, hazy aura, background, floor, text, character or weapon. Solid connected shape, genuine transparency, simple readable silhouette suitable for shrinking to a few game pixels."
+        },
+        "size": [
+          1268,
+          1240
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          282,
+          91,
+          1082,
+          1138
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "giant80raise",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-giant80raise-original-r1.png",
+        "sha256": "7144ffeb489fcb2334d4bab3e9ca1a87822ca60e0933c24ca2a9fb0e419382e5",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-c60a9227-1a6b-474a-b220-f31e7c58eef3.png",
+        "args": {
+          "transparent_background": true,
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-giant80idle-original-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure080-native-241-02-oct22-r1.png"
+          ],
+          "prompt": "Use case: identity-preserve. ONE transparent RGBA hand-painted SRPG full-body character battle pose. Input1 is exact HD identity/costume/style to PRESERVE. Input2 gives native action silhouette/direction only. New pose: Sword hand imageLEFT raised beside helmet above shoulder, elbow bent naturally, giant pale straight greatsword held almost VERTICAL extending high overhead. Other fist hangs at RIGHT waist. Preserve RED crest, goldenorange engravings, LIGHTGRAY upperarm segments and long BLUE frontcloth. Keep same bulky crouched giant, not slender. Keep camera, materials/colors/weapon and proportions from input1. Important natural shoulder/elbow/wrist grip, normal knees/ankles and both full feet; no reversed joints or floating hand. Keep ALL blade/lance ends, helmet ornaments, shoulder spikes and feet INSIDE image with generous 15% transparent padding all sides. Do NOT let spear/sword touch frame. True transparent background and opaque painted core. No floor, groundshadow, glow haze, light FX, text, extra limbs or duplicate weapons."
+        },
+        "size": [
+          1287,
+          1222
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          318,
+          4,
+          1163,
+          1219
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "giant80slash",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-giant80slash-original-r1.png",
+        "sha256": "4340b9e5043782cf97de352fdd224dcbc27c1cf0a791aabc35e02a80a880fdb1",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-3a61d265-a8b4-4b63-b2be-e66297bbc44a.png",
+        "args": {
+          "transparent_background": true,
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-giant80idle-original-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure080-native-241-05-oct22-r1.png"
+          ],
+          "prompt": "Use case: identity-preserve. ONE transparent RGBA hand-painted SRPG full-body character battle pose. Input1 is exact HD identity/costume/style to PRESERVE. Input2 gives native action silhouette/direction only. New pose: Massive warrior crouches deeply forward to RIGHT in downward cut follow-through. Sword fist in front of RIGHT knee, enormous pale broad blade extends diagonally LOWER RIGHT close to ground. Free fist bent close left waist. Torso hunched, head stays tiny hidden atop shoulders. Preserve RED crest, goldorange decoration, LIGHTGRAY upperarms, BLUE frontcloth/redrearcloth. No gold light cone from native; FX excluded. Keep camera, materials/colors/weapon and proportions from input1. Important natural shoulder/elbow/wrist grip, normal knees/ankles and both full feet; no reversed joints or floating hand. Keep ALL blade/lance ends, helmet ornaments, shoulder spikes and feet INSIDE image with generous 15% transparent padding all sides. Do NOT let spear/sword touch frame. True transparent background and opaque painted core. No floor, groundshadow, glow haze, light FX, text, extra limbs or duplicate weapons."
+        },
+        "size": [
+          1521,
+          1034
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          42,
+          51,
+          1482,
+          1007
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "giant81raise",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-giant81raise-original-r1.png",
+        "sha256": "5b76830ccd4f650e286be722ec171f39c8dd2a533894230f1af99f2af6338989",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-fc75694b-2f50-4834-a25f-c50d7b0de653.png",
+        "args": {
+          "transparent_background": true,
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-giant81idle-original-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure081-native-244-02-oct22-r1.png"
+          ],
+          "prompt": "Use case: identity-preserve. ONE transparent RGBA hand-painted SRPG full-body character battle pose. Input1 is exact HD identity/costume/style to PRESERVE. Input2 gives native action silhouette/direction only. New pose: Sword hand imageLEFT raised beside tiny helmet above shoulder, elbow bent, giant pale greatsword held nearly VERTICAL up high. Free fist hangs at RIGHT waist. Preserve BROWN twin horns, blueviolet engraved lines, ORANGE flexible upperarm segments and BLUE frontcloth/redrearcloth. Same tiny head and colossal body. Keep camera, materials/colors/weapon and proportions from input1. Important natural shoulder/elbow/wrist grip, normal knees/ankles and both full feet; no reversed joints or floating hand. Keep ALL blade/lance ends, helmet ornaments, shoulder spikes and feet INSIDE image with generous 15% transparent padding all sides. Do NOT let spear/sword touch frame. True transparent background and opaque painted core. No floor, groundshadow, glow haze, light FX, text, extra limbs or duplicate weapons."
+        },
+        "size": [
+          1287,
+          1222
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          316,
+          1,
+          1137,
+          1222
+        ],
+        "high_coverage_boundary_points": 27
+      },
+      {
+        "key": "giant81slash",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-giant81slash-original-r1.png",
+        "sha256": "a6245ea86348cc67883b4a3a306e2c95d074d8b04518a09eda81827f74407946",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-250c0c48-0ec1-4569-a259-f087574ecc15.png",
+        "args": {
+          "transparent_background": true,
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-giant81idle-original-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure081-native-244-05-oct22-r1.png"
+          ],
+          "prompt": "Use case: identity-preserve. ONE transparent RGBA hand-painted SRPG full-body character battle pose. Input1 is exact HD identity/costume/style to PRESERVE. Input2 gives native action silhouette/direction only. New pose: Massive warrior crouches deeply forward to RIGHT in downward cut follow-through. Sword fist in front of RIGHT knee, enormous pale broad blade extends diagonally LOWER RIGHT near ground. Free fist bent close left waist. Tiny head high behind giant shoulders. Preserve BROWN horns/blueviolet etching/ORANGE upperarms/BLUE frontcloth/redrearcloth. No light cone from native; FX excluded. Keep camera, materials/colors/weapon and proportions from input1. Important natural shoulder/elbow/wrist grip, normal knees/ankles and both full feet; no reversed joints or floating hand. Keep ALL blade/lance ends, helmet ornaments, shoulder spikes and feet INSIDE image with generous 15% transparent padding all sides. Do NOT let spear/sword touch frame. True transparent background and opaque painted core. No floor, groundshadow, glow haze, light FX, text, extra limbs or duplicate weapons."
+        },
+        "size": [
+          1521,
+          1034
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          43,
+          65,
+          1486,
+          1005
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "lancer82windup",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-lancer82windup-original-r1.png",
+        "sha256": "6510d3ff1547e709aef89bac982fa28123aa748b60ccedff7c269397be2a4c40",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-51073e95-b97c-452a-95a8-259e021eeeb7.png",
+        "args": {
+          "transparent_background": true,
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-lancer82idle-original-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure082-native-247-00-oct22-r1.png"
+          ],
+          "prompt": "Use case: identity-preserve. ONE transparent RGBA hand-painted SRPG full-body character battle pose. Input1 is exact HD identity/costume/style to PRESERVE. Input2 gives native action silhouette/direction only. New pose: Standing preparation: rotate the ONE lance diagonally so its very large metal cone points down toward LOWER LEFT. Right hand imageLEFT grips shaft near chest; shaft runs up behind helmet toward upperRIGHT. Free LEFT armored hand at imageRIGHT waist. Native frame is action reference. Keep closed visor, BLUE helmet plume, rounded smooth graygreen shoulders and heart-shaped breastplate, BLUE underclothes/long RED front tabard. Full long cone tip and shaft end visible. Keep camera, materials/colors/weapon and proportions from input1. Important natural shoulder/elbow/wrist grip, normal knees/ankles and both full feet; no reversed joints or floating hand. Keep ALL blade/lance ends, helmet ornaments, shoulder spikes and feet INSIDE image with generous 15% transparent padding all sides. Do NOT let spear/sword touch frame. True transparent background and opaque painted core. No floor, groundshadow, glow haze, light FX, text, extra limbs or duplicate weapons."
+        },
+        "size": [
+          1131,
+          1391
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          40,
+          21,
+          1118,
+          1342
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "lancer82thrust",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-lancer82thrust-original-r1.png",
+        "sha256": "821220176f21fcadfcd9b47a27f115f873d3303f46c4bccbad82b1344b4dd6cb",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-32709b1f-3b3f-4777-b305-8ebdbbe89d49.png",
+        "args": {
+          "transparent_background": true,
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-lancer82idle-original-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure082-native-247-06-oct22-r1.png"
+          ],
+          "prompt": "Use case: identity-preserve. ONE transparent RGBA hand-painted SRPG full-body character battle pose. Input1 is exact HD identity/costume/style to PRESERVE. Input2 gives native action silhouette/direction only. New pose: Forward lunge to RIGHT: right spear hand is low in front of belly, gripping the ONE shaft. The very large metal CONE points diagonally down toward LOWER RIGHT, almost reaching ground. Shaft extends back diagonally over LEFT shoulder toward upperLEFT behind body. Free left hand at RIGHT waist. Body leans forward, knees bent, rear foot left and forward foot right firmly planted. Preserve BLUE plume sweptback, round graygreen plate shoulders, broad heart-shaped breastplate and RED frontcloth. No yellow flare or spark in body asset. Keep camera, materials/colors/weapon and proportions from input1. Important natural shoulder/elbow/wrist grip, normal knees/ankles and both full feet; no reversed joints or floating hand. Keep ALL blade/lance ends, helmet ornaments, shoulder spikes and feet INSIDE image with generous 15% transparent padding all sides. Do NOT let spear/sword touch frame. True transparent background and opaque painted core. No floor, groundshadow, glow haze, light FX, text, extra limbs or duplicate weapons."
+        },
+        "size": [
+          1131,
+          1391
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          29,
+          82,
+          1101,
+          1251
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "lancer82idle2",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-lancer82idle2-original-r1.png",
+        "sha256": "3e16cf43ddc75cef98725191716455a19bff8862a24de636590cfa071cafbf73",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-f252514a-8d5b-4d79-8901-a47f50d9624f.png",
+        "args": {
+          "transparent_background": true,
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-lancer82idle-original-r1.png"
+          ],
+          "prompt": "Use case: precise-object-edit. Change ONLY composition/framing of this existing transparent SRPG character. The lance tip touches top frame. Preserve EXACT same character/pose/lance/armor/red tabard/blueplume/painted style, but SHRINK ENTIRE character and lance together to occupy at most 70% of canvas height, centered, with 15% FULLY TRANSPARENT empty padding on top, bottom and sides. Entire long lance tip, plume, toes and shaft bottom must be well INSIDE image, no touching boundaries. Do not redesign anything. No new elements, no background or floor, no shadow disc, no alpha recoloring. Keep genuine transparent RGBA with opaque painted core."
+        },
+        "size": [
+          1131,
+          1391
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          251,
+          209,
+          900,
+          1141
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "giant81raise2",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-giant81raise2-original-r1.png",
+        "sha256": "7d810ec7bce22a507eec0e3fa1b88d231582ea27761f63b91369f8eedcb86ca4",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-686f9f3e-182a-44b2-89f7-a69366263567.png",
+        "args": {
+          "transparent_background": true,
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-giant81raise-original-r1.png"
+          ],
+          "prompt": "Use case: precise-object-edit. Change ONLY framing of existing transparent painted SRPG warrior. Sword tip currently hits top edge. Preserve exact same pose/character/costume/colors/twinbrown horns/blueengraving/bluefrontcloth/orangeupperarms/weapon. Uniformly SHRINK ENTIRE subject and sword together to at most70% canvasheight, center it, with 15% FULLY TRANSPARENT empty margin on ALL four sides. Include full blade tip and feet well inside frame. Do NOT crop or redesign character. Genuine transparent RGBA, opaque painted core. No background, floor, shadowdisc, extra objects or text."
+        },
+        "size": [
+          1287,
+          1222
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          380,
+          128,
+          1035,
+          1116
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "lancer82thrust2",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-lancer82thrust2-original-r1.png",
+        "sha256": "9d6a3fa4dc47c29c322b437eb8cd65dcd525471f506bea4e69d1dd9af576ea62",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-6c7e5522-b48e-48d2-8943-ecfbe782ff4d.png",
+        "args": {
+          "transparent_background": true,
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-lancer82idle2-original-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure082-native-247-06-oct22-r1.png"
+          ],
+          "prompt": "Use case: identity-preserve. Create ONE transparent RGBA fullbody hand-painted battle pose. Input1 exact HD identity to preserve. Input2 native pose and NARROW SILHOUETTE to follow very closely. Graygreen smooth roundshoulder plate knight, blueplume/blueunderclothes/redfronttabard and ONE huge metal conical lance. Standing forward attack to RIGHT, nearly UPRIGHT torso with a small forward lean, knees slightly bent, feet ONLY shoulder-width apart. Do NOT do wide squat, deep crouch, broad lunge or widely spread legs. Keep full silhouette about 2 TIMES TALLER than wide, as native. Right hand low at front waist grips lance shaft, massive cone points STEEPLY diagonally DOWN-RIGHT close to ground, its tip only a little right of forward foot. Shaft extends behind LEFT shoulder toward topLEFT; match native compact shape. Free left hand stays at right waist. Natural wrists/grip/knees/ankles, visible full feet. Maintain same stocky armor but compact standing stance. ALL spear ends/feet/plume INSIDE image with 12% transparent padding; no frame contact. No yellow lights or sparks, background, floor, groundshadow, text, duplicated lance or extra limbs."
+        },
+        "size": [
+          1039,
+          1513
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          75,
+          95,
+          966,
+          1406
+        ],
+        "high_coverage_boundary_points": 0
+      }
+    ],
+    "generation_ledgers": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party80-81-82-idle-generation-oct22-r1.json",
+        "sha256": "b63a865cbf69bc154656e8212d7d80239d58317cea4f379e858a13f60929a531"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party80-81-82-fx-generation-oct22-r1.json",
+        "sha256": "a6ffee4afc95e0f169df599a2e9b6b8b3acec5ee7873275bd1b0b7d4328cece9"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party80-81-82-motion-generation-oct22-r1.json",
+        "sha256": "36f03fa8a34ef63fbc71794fb558334b4a5ef3ce43f14e7b3605991ab13393c6"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party80-81-82-revision-generation-oct22-r1.json",
+        "sha256": "c352322d08506f51a661aa79fb38230e5304e789df9a7352a16d549e83bb0838"
+      }
+    ],
+    "reused_registered_source": {
+      "key": "gold79slash",
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party7679-gold79slash-original-r1.png",
+      "sha256": "7463fb84f2ab734d7297f333f5182297bf6b1103f0067f8c9228370f0e6637c2",
+      "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-676a5bc9-3d33-4e27-bee1-d2700b3de3a5.png",
+      "args": {
+        "transparent_background": true,
+        "referenced_image_paths": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure079-native-238-03-oct22-r1.png"
+        ],
+        "prompt": "Use case: stylized-concept. Asset: ONE hand-painted fantasy SRPG sword swing effect on true transparent RGBA. Input is native reference ONLY for effect geometry, ignore character completely. One tall vertical crescent sword trail. Bright white root at LOWER RIGHT x80% y85%, broad white belly curves up along RIGHT and bends/tapers toward UPPER LEFT. Native white-yellow downcut arc, bright nearblade root. No complete ring or horizontal beam. Painted crisp opaque near-white core with restrained golden-orange rim, no detached sparks or wispy haze. Include entire effect and all tips with 12% transparent padding every side. No character, weapon, scenery, floor, text or dark background. A single connected silhouette, solid alpha255 core especially around root, transparent exterior. NOT a diagram."
+      },
+      "size": [
+        1194,
+        1317
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "high_coverage_bbox": [
+        447,
+        35,
+        1168,
+        1301
+      ],
+      "high_coverage_boundary_points": 0
+    },
+    "derivatives": [],
+    "formal_registered": true,
+    "private_synced": true,
+    "normal_player": false,
+    "human_review": "pending until all HD integrated",
+    "full_battle_hd_complete": false,
+    "rules_and_save_changed": false,
+    "recordings_created": false,
+    "source_policy": "80massive navy spiked giant with redcrest/gold-orange etching/lightgray upperarms/bluefronttabard;81brown two-hornlike helmet projections/blueviolet etching/orange upperarms/bluefronttabard, bothredrearcloth/pale greatsword.82smooth graygreen roundshoulders/blueplume/redfronttabard and a huge conical lance. Visual reference only; no story identity inference.",
+    "fixture_contract": {
+      "status": "CONFORMED-SCOPED / RUNTIME-E1",
+      "flag": "FD2_HD_BATTLE_ENEMY_ACTOR=1",
+      "actor": "existingEnemy Camp/side0 unchanged, selected80/81/82",
+      "target": "existingOwn figure0 side2 unchanged",
+      "original_coordinates_unchanged": true,
+      "new_gameplay": false,
+      "scope": "Existing test-only swappedunit fixture from463e4ed7, sameGame.Draw/F2/HP/RNG/64-65DAC/onecontinuation gates. Not naturalAI/player."
+    },
+    "required_checks": [
+      "31sourceGPU perpackage and all31physical bodycores;threefullattacks/3phaseF2/64-65DAC/HP/RNG/onecontinuation;63compiler guards, authoredcontacts/wrongroots, bothpackages threevalid/sixcoldtransactions.",
+      "RawRGBA unchanged, original canvas/descriptors/markers/soundcues differ80vs81 and remainseparate. adopted78draftcolumn newlyallowlisted onlyafterreview; existing79crescent sameSHA/name reused.",
+      "242/245/248zeroheaders untouched, no cast invented. Allsixselectedresources absentfromlivecatalog and inremaining.",
+      "Private allow-list full/runtime SHA/UID and old5500SHA/584assets preservation; actualremote/PRIVATE. Normal/manual/platform pending."
+    ],
+    "scope": "RUNTIME-E1 scoped: sixnewbanks31frames, both fullsourceGPU packages vs independentCPUOver, all31 fixturecores,10sourceconnections/3wrongroots,63compiler guards/8fill33guards,threefullF2/64-65DAC/HP/RNG/onecontinuation and bothpackages threevalid/sixcoldplayer-mode11transactions. Existing584assets/5500files unchanged. No new normalplayer/original/manual/platform/fullHD proof.",
+    "adopted_draft_sources": [
+      {
+        "key": "gold78vertical",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party7679-gold78vertical-original-r1.png",
+        "sha256": "814fcb00b7e87b5bd7687620480b84635e7905a6556ed9b5365741e61fdc3ee8",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-3cff7a5c-96d4-4267-9c47-2eddeb01e092.png",
+        "args": {
+          "transparent_background": true,
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure078-native-235-05-oct22-r1.png"
+          ],
+          "prompt": "Use case: stylized-concept. ONE isolated hand-painted golden-white sword downward-swing trail on true transparent background. Output a TALL NARROW PORTRAIT composition. Native input reference shows intended nearly VERTICAL effect only; remove ALL character and sword. Shape: near-vertical pillar/cone of solid white golden light, height THREE TIMES its width. Compact very bright white opaque root centered near x65% y85%. The flame widens toward the top but remains within x30% to75%, and long tapered tongues point almost straight UP (slightly left), NOT diagonally sideways. Tall narrow form, NOT landscape and NOT a wide horizontal splash. Thin gold-orange outline, continuous alpha255 white core including lower root, no detached sparks or atmospheric haze. Keep entire light with generous transparent padding on all four sides. No background, floor, character, weapon, text, circular halo. Match native vertical downcut geometry."
+        },
+        "size": [
+          724,
+          2172
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          207,
+          15,
+          613,
+          2145
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "gold76slash",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party7679-gold76slash-original-r1.png",
+        "sha256": "4fb47eada44999c3ce5b4a537f7403b64d6ee57455d627f3b098f8cc166eba4a",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-87b49eb7-00f3-4277-b8d0-b816384547d6.png",
+        "args": {
+          "transparent_background": true,
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure076-native-229-06-oct22-r1.png"
+          ],
+          "prompt": "Use case: stylized-concept. Asset: ONE hand-painted fantasy SRPG sword swing effect on true transparent RGBA. Input is native reference ONLY for effect geometry, ignore character completely. A narrow long sword-swing cone, brightest solid WHITE root at LOWER RIGHT about x75% y85%, widening toward UPPER LEFT. Tall diagonal upperleft spray of several long tapered yellow-white tongues; root lower-right is compact sharp and brilliant. Shape points as native: broad flame plume up-left, narrow root down-right. Painted crisp opaque near-white core with restrained golden-orange rim, no detached sparks or wispy haze. Include entire effect and all tips with 12% transparent padding every side. No character, weapon, scenery, floor, text or dark background. A single connected silhouette, solid alpha255 core especially around root, transparent exterior. NOT a diagram."
+        },
+        "size": [
+          1072,
+          1467
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          61,
+          30,
+          1056,
+          1425
+        ],
+        "high_coverage_boundary_points": 0
+      }
+    ],
+    "recipes": {
+      "80": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure080-recipe-oct22-r1.json",
+        "sha256": "4a878fef8f51945d24fed5c0e7ad0a0b6b5903bb6f43e6faa245454887e5c333"
+      },
+      "81": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure081-recipe-oct22-r1.json",
+        "sha256": "ab07c1e19c7b111856ac8f53504a7ed02a7d5cbac8368ddab29c7bc39d8fe4f4"
+      },
+      "82": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure082-recipe-oct22-r1.json",
+        "sha256": "67932ca39c54a77d83cff5d998ef5a1efcee4a2cb19e093da1f87342243fe1f9"
+      }
+    },
+    "connections": {
+      "80": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure080-connections-oct22-r1.json",
+        "sha256": "93e8ac1ea67c3a6e63afc52a8fb0e0c4d8ad9ef6a8d480a39f1e510ea3ab2895"
+      },
+      "81": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure081-connections-oct22-r1.json",
+        "sha256": "63eef39bd1a484e46c6a656da1a2928e25ecf32fb64fe6487bc0bb24d89ee8d7"
+      },
+      "82": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure082-connections-oct22-r1.json",
+        "sha256": "f4a56d181e98417d0eb8c2e2edd46540886f1cac88584f7acd64509bd6c9f97e"
+      }
+    },
+    "recipe_inline": {
+      "80": {
+        "schema_version": 1,
+        "figure": 80,
+        "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+        "sources": {
+          "giant80idle": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-giant80idle-original-r1.png",
+            "sha256": "3b42b3ccf5a61894a4f2c070a17a01d694df6edeb124eb82b6d012a493ff9d07",
+            "anchor": [
+              365,
+              3,
+              1278,
+              1210
+            ]
+          },
+          "giant80raise": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-giant80raise-original-r1.png",
+            "sha256": "7144ffeb489fcb2334d4bab3e9ca1a87822ca60e0933c24ca2a9fb0e419382e5",
+            "anchor": [
+              300,
+              315,
+              1165,
+              1218
+            ]
+          },
+          "giant80slash": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-giant80slash-original-r1.png",
+            "sha256": "4340b9e5043782cf97de352fdd224dcbc27c1cf0a791aabc35e02a80a880fdb1",
+            "anchor": [
+              40,
+              50,
+              1065,
+              990
+            ]
+          },
+          "gold78vertical-241-5": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party7679-gold78vertical-original-r1.png",
+            "sha256": "814fcb00b7e87b5bd7687620480b84635e7905a6556ed9b5365741e61fdc3ee8",
+            "anchor": [
+              495,
+              2060,
+              505,
+              2100
+            ]
+          },
+          "gold79slash-241-6": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party7679-gold79slash-original-r1.png",
+            "sha256": "7463fb84f2ab734d7297f333f5182297bf6b1103f0067f8c9228370f0e6637c2",
+            "anchor": [
+              955,
+              1190,
+              965,
+              1270
+            ]
+          },
+          "gold79slash-241-7": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party7679-gold79slash-original-r1.png",
+            "sha256": "7463fb84f2ab734d7297f333f5182297bf6b1103f0067f8c9228370f0e6637c2",
+            "anchor": [
+              955,
+              1110,
+              965,
+              1270
+            ]
+          }
+        },
+        "resources": {
+          "240": [
+            [
+              {
+                "pose": "giant80idle",
+                "anchor": [
+                  35,
+                  0,
+                  158,
+                  150
+                ],
+                "scale_group": "giant80idle"
+              }
+            ]
+          ],
+          "241": [
+            [
+              {
+                "pose": "giant80idle",
+                "anchor": [
+                  35,
+                  0,
+                  158,
+                  150
+                ],
+                "scale_group": "giant80idle"
+              }
+            ],
+            [
+              {
+                "pose": "giant80idle",
+                "anchor": [
+                  35,
+                  0,
+                  158,
+                  150
+                ],
+                "scale_group": "giant80idle"
+              }
+            ],
+            [
+              {
+                "pose": "giant80raise",
+                "anchor": [
+                  0,
+                  0,
+                  143,
+                  150
+                ],
+                "scale_group": "giant80raise"
+              }
+            ],
+            [
+              {
+                "pose": "giant80raise",
+                "anchor": [
+                  0,
+                  0,
+                  143,
+                  150
+                ],
+                "scale_group": "giant80raise"
+              }
+            ],
+            [
+              {
+                "pose": "giant80raise",
+                "anchor": [
+                  0,
+                  0,
+                  143,
+                  150
+                ],
+                "scale_group": "giant80raise"
+              }
+            ],
+            [
+              {
+                "pose": "gold78vertical-241-5",
+                "anchor": [
+                  205,
+                  148,
+                  207,
+                  154
+                ],
+                "scale_group": "gold78vertical-241-5"
+              },
+              {
+                "pose": "giant80slash",
+                "anchor": [
+                  0,
+                  10,
+                  150,
+                  155
+                ],
+                "scale_group": "giant80slash"
+              }
+            ],
+            [
+              {
+                "pose": "gold79slash-241-6",
+                "anchor": [
+                  205,
+                  146,
+                  207,
+                  148
+                ],
+                "scale_group": "gold79slash-241-6"
+              },
+              {
+                "pose": "giant80slash",
+                "anchor": [
+                  0,
+                  4,
+                  150,
+                  149
+                ],
+                "scale_group": "giant80slash"
+              }
+            ],
+            [
+              {
+                "pose": "gold79slash-241-7",
+                "anchor": [
+                  205,
+                  147,
+                  207,
+                  148
+                ],
+                "scale_group": "gold79slash-241-7"
+              },
+              {
+                "pose": "giant80slash",
+                "anchor": [
+                  0,
+                  4,
+                  150,
+                  149
+                ],
+                "scale_group": "giant80slash"
+              }
+            ],
+            [
+              {
+                "pose": "giant80slash",
+                "anchor": [
+                  0,
+                  4,
+                  150,
+                  149
+                ],
+                "scale_group": "giant80slash"
+              }
+            ]
+          ]
+        }
+      },
+      "81": {
+        "schema_version": 1,
+        "figure": 81,
+        "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+        "sources": {
+          "giant81idle": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-giant81idle-original-r1.png",
+            "sha256": "5ca412c6ed56aa809ad99fd45cb6f172373a7b8acd6f6c7b77ae7e3448949c31",
+            "anchor": [
+              330,
+              8,
+              1275,
+              1210
+            ]
+          },
+          "giant81raise2": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-giant81raise2-original-r1.png",
+            "sha256": "7d810ec7bce22a507eec0e3fa1b88d231582ea27761f63b91369f8eedcb86ca4",
+            "anchor": [
+              375,
+              385,
+              1040,
+              1110
+            ]
+          },
+          "giant81slash": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-giant81slash-original-r1.png",
+            "sha256": "a6245ea86348cc67883b4a3a306e2c95d074d8b04518a09eda81827f74407946",
+            "anchor": [
+              40,
+              60,
+              1040,
+              995
+            ]
+          },
+          "gold78vertical-244-5": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party7679-gold78vertical-original-r1.png",
+            "sha256": "814fcb00b7e87b5bd7687620480b84635e7905a6556ed9b5365741e61fdc3ee8",
+            "anchor": [
+              495,
+              2060,
+              505,
+              2100
+            ]
+          },
+          "gold79slash-244-6": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party7679-gold79slash-original-r1.png",
+            "sha256": "7463fb84f2ab734d7297f333f5182297bf6b1103f0067f8c9228370f0e6637c2",
+            "anchor": [
+              955,
+              1190,
+              965,
+              1270
+            ]
+          },
+          "gold79slash-244-7": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party7679-gold79slash-original-r1.png",
+            "sha256": "7463fb84f2ab734d7297f333f5182297bf6b1103f0067f8c9228370f0e6637c2",
+            "anchor": [
+              955,
+              1110,
+              965,
+              1270
+            ]
+          }
+        },
+        "resources": {
+          "243": [
+            [
+              {
+                "pose": "giant81idle",
+                "anchor": [
+                  35,
+                  0,
+                  158,
+                  150
+                ],
+                "scale_group": "giant81idle"
+              }
+            ]
+          ],
+          "244": [
+            [
+              {
+                "pose": "giant81idle",
+                "anchor": [
+                  35,
+                  0,
+                  158,
+                  150
+                ],
+                "scale_group": "giant81idle"
+              }
+            ],
+            [
+              {
+                "pose": "giant81idle",
+                "anchor": [
+                  35,
+                  0,
+                  158,
+                  150
+                ],
+                "scale_group": "giant81idle"
+              }
+            ],
+            [
+              {
+                "pose": "giant81raise2",
+                "anchor": [
+                  0,
+                  0,
+                  143,
+                  150
+                ],
+                "scale_group": "giant81raise2"
+              }
+            ],
+            [
+              {
+                "pose": "giant81raise2",
+                "anchor": [
+                  0,
+                  0,
+                  143,
+                  150
+                ],
+                "scale_group": "giant81raise2"
+              }
+            ],
+            [
+              {
+                "pose": "giant81raise2",
+                "anchor": [
+                  0,
+                  0,
+                  143,
+                  150
+                ],
+                "scale_group": "giant81raise2"
+              }
+            ],
+            [
+              {
+                "pose": "gold78vertical-244-5",
+                "anchor": [
+                  210,
+                  147,
+                  212,
+                  153
+                ],
+                "scale_group": "gold78vertical-244-5"
+              },
+              {
+                "pose": "giant81slash",
+                "anchor": [
+                  0,
+                  10,
+                  150,
+                  155
+                ],
+                "scale_group": "giant81slash"
+              }
+            ],
+            [
+              {
+                "pose": "gold79slash-244-6",
+                "anchor": [
+                  210,
+                  145,
+                  212,
+                  147
+                ],
+                "scale_group": "gold79slash-244-6"
+              },
+              {
+                "pose": "giant81slash",
+                "anchor": [
+                  0,
+                  4,
+                  150,
+                  149
+                ],
+                "scale_group": "giant81slash"
+              }
+            ],
+            [
+              {
+                "pose": "gold79slash-244-7",
+                "anchor": [
+                  210,
+                  146,
+                  212,
+                  147
+                ],
+                "scale_group": "gold79slash-244-7"
+              },
+              {
+                "pose": "giant81slash",
+                "anchor": [
+                  0,
+                  4,
+                  150,
+                  149
+                ],
+                "scale_group": "giant81slash"
+              }
+            ],
+            [
+              {
+                "pose": "giant81slash",
+                "anchor": [
+                  0,
+                  4,
+                  150,
+                  149
+                ],
+                "scale_group": "giant81slash"
+              }
+            ]
+          ]
+        }
+      },
+      "82": {
+        "schema_version": 1,
+        "figure": 82,
+        "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+        "sources": {
+          "lancer82idle2": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-lancer82idle2-original-r1.png",
+            "sha256": "3e16cf43ddc75cef98725191716455a19bff8862a24de636590cfa071cafbf73",
+            "anchor": [
+              385,
+              325,
+              910,
+              1148
+            ]
+          },
+          "lancer82windup": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-lancer82windup-original-r1.png",
+            "sha256": "6510d3ff1547e709aef89bac982fa28123aa748b60ccedff7c269397be2a4c40",
+            "anchor": [
+              275,
+              180,
+              1115,
+              1340
+            ]
+          },
+          "lancer82thrust2": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-lancer82thrust2-original-r1.png",
+            "sha256": "9d6a3fa4dc47c29c322b437eb8cd65dcd525471f506bea4e69d1dd9af576ea62",
+            "anchor": [
+              220,
+              235,
+              815,
+              1350
+            ]
+          },
+          "gold76slash-247-5": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party7679-gold76slash-original-r1.png",
+            "sha256": "4fb47eada44999c3ce5b4a537f7403b64d6ee57455d627f3b098f8cc166eba4a",
+            "anchor": [
+              990,
+              1345,
+              1000,
+              1385
+            ]
+          },
+          "gold82tip-247-6": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-gold82tip-original-r1.png",
+            "sha256": "fb19bf852e2ac60ca678c718a5c44f0ce55371a629303d5201f59c9ff0c600b9",
+            "anchor": [
+              595,
+              600,
+              605,
+              700
+            ]
+          },
+          "gold82tip-247-7": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-gold82tip-original-r1.png",
+            "sha256": "fb19bf852e2ac60ca678c718a5c44f0ce55371a629303d5201f59c9ff0c600b9",
+            "anchor": [
+              595,
+              600,
+              605,
+              800
+            ]
+          },
+          "gold82tip-247-8": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-gold82tip-original-r1.png",
+            "sha256": "fb19bf852e2ac60ca678c718a5c44f0ce55371a629303d5201f59c9ff0c600b9",
+            "anchor": [
+              595,
+              600,
+              605,
+              1000
+            ]
+          }
+        },
+        "resources": {
+          "246": [
+            [
+              {
+                "pose": "lancer82idle2",
+                "anchor": [
+                  23,
+                  13,
+                  122,
+                  150
+                ],
+                "scale_group": "lancer82idle2"
+              }
+            ]
+          ],
+          "247": [
+            [
+              {
+                "pose": "lancer82windup",
+                "anchor": [
+                  40,
+                  0,
+                  139,
+                  150
+                ],
+                "scale_group": "lancer82windup"
+              }
+            ],
+            [
+              {
+                "pose": "lancer82windup",
+                "anchor": [
+                  40,
+                  0,
+                  139,
+                  150
+                ],
+                "scale_group": "lancer82windup"
+              }
+            ],
+            [
+              {
+                "pose": "lancer82windup",
+                "anchor": [
+                  40,
+                  0,
+                  139,
+                  150
+                ],
+                "scale_group": "lancer82windup"
+              }
+            ],
+            [
+              {
+                "pose": "lancer82windup",
+                "anchor": [
+                  40,
+                  0,
+                  139,
+                  150
+                ],
+                "scale_group": "lancer82windup"
+              }
+            ],
+            [
+              {
+                "pose": "lancer82windup",
+                "anchor": [
+                  39,
+                  0,
+                  138,
+                  150
+                ],
+                "scale_group": "lancer82windup"
+              }
+            ],
+            [
+              {
+                "pose": "gold76slash-247-5",
+                "anchor": [
+                  125,
+                  145,
+                  127,
+                  150
+                ],
+                "scale_group": "gold76slash-247-5"
+              },
+              {
+                "pose": "lancer82thrust2",
+                "anchor": [
+                  39,
+                  20,
+                  117,
+                  148
+                ],
+                "scale_group": "lancer82thrust2"
+              }
+            ],
+            [
+              {
+                "pose": "gold82tip-247-6",
+                "anchor": [
+                  86,
+                  130,
+                  88,
+                  131
+                ],
+                "scale_group": "gold82tip-247-6"
+              },
+              {
+                "pose": "lancer82thrust2",
+                "anchor": [
+                  0,
+                  0,
+                  78,
+                  128
+                ],
+                "scale_group": "lancer82thrust2"
+              }
+            ],
+            [
+              {
+                "pose": "gold82tip-247-7",
+                "anchor": [
+                  86,
+                  130,
+                  88,
+                  131
+                ],
+                "scale_group": "gold82tip-247-7"
+              },
+              {
+                "pose": "lancer82thrust2",
+                "anchor": [
+                  0,
+                  0,
+                  78,
+                  128
+                ],
+                "scale_group": "lancer82thrust2"
+              }
+            ],
+            [
+              {
+                "pose": "gold82tip-247-8",
+                "anchor": [
+                  86,
+                  130,
+                  88,
+                  131
+                ],
+                "scale_group": "gold82tip-247-8"
+              },
+              {
+                "pose": "lancer82thrust2",
+                "anchor": [
+                  0,
+                  0,
+                  78,
+                  128
+                ],
+                "scale_group": "lancer82thrust2"
+              }
+            ],
+            [
+              {
+                "pose": "lancer82thrust2",
+                "anchor": [
+                  0,
+                  0,
+                  78,
+                  128
+                ],
+                "scale_group": "lancer82thrust2"
+              }
+            ]
+          ]
+        }
+      }
+    },
+    "connections_inline": {
+      "80": {
+        "schema_version": 1,
+        "connections": [
+          {
+            "resource": 241,
+            "frame": 5,
+            "left": {
+              "pose": "giant80slash",
+              "point": [
+                1450,
+                982
+              ]
+            },
+            "right": {
+              "pose": "gold78vertical-241-5",
+              "point": [
+                500,
+                2100
+              ]
+            },
+            "maximum_distance_hd": 8
+          },
+          {
+            "resource": 241,
+            "frame": 6,
+            "left": {
+              "pose": "giant80slash",
+              "point": [
+                1450,
+                982
+              ]
+            },
+            "right": {
+              "pose": "gold79slash-241-6",
+              "point": [
+                960,
+                1270
+              ]
+            },
+            "maximum_distance_hd": 8
+          },
+          {
+            "resource": 241,
+            "frame": 7,
+            "left": {
+              "pose": "giant80slash",
+              "point": [
+                1450,
+                982
+              ]
+            },
+            "right": {
+              "pose": "gold79slash-241-7",
+              "point": [
+                960,
+                1270
+              ]
+            },
+            "maximum_distance_hd": 8
+          }
+        ]
+      },
+      "81": {
+        "schema_version": 1,
+        "connections": [
+          {
+            "resource": 244,
+            "frame": 5,
+            "left": {
+              "pose": "giant81slash",
+              "point": [
+                1450,
+                982
+              ]
+            },
+            "right": {
+              "pose": "gold78vertical-244-5",
+              "point": [
+                500,
+                2100
+              ]
+            },
+            "maximum_distance_hd": 8
+          },
+          {
+            "resource": 244,
+            "frame": 6,
+            "left": {
+              "pose": "giant81slash",
+              "point": [
+                1450,
+                982
+              ]
+            },
+            "right": {
+              "pose": "gold79slash-244-6",
+              "point": [
+                960,
+                1270
+              ]
+            },
+            "maximum_distance_hd": 8
+          },
+          {
+            "resource": 244,
+            "frame": 7,
+            "left": {
+              "pose": "giant81slash",
+              "point": [
+                1450,
+                982
+              ]
+            },
+            "right": {
+              "pose": "gold79slash-244-7",
+              "point": [
+                960,
+                1270
+              ]
+            },
+            "maximum_distance_hd": 8
+          }
+        ]
+      },
+      "82": {
+        "schema_version": 1,
+        "connections": [
+          {
+            "resource": 247,
+            "frame": 5,
+            "left": {
+              "pose": "lancer82thrust2",
+              "point": [
+                940,
+                1370
+              ]
+            },
+            "right": {
+              "pose": "gold76slash-247-5",
+              "point": [
+                995,
+                1385
+              ]
+            },
+            "maximum_distance_hd": 8
+          },
+          {
+            "resource": 247,
+            "frame": 6,
+            "left": {
+              "pose": "lancer82thrust2",
+              "point": [
+                940,
+                1370
+              ]
+            },
+            "right": {
+              "pose": "gold82tip-247-6",
+              "point": [
+                600,
+                600
+              ]
+            },
+            "maximum_distance_hd": 8
+          },
+          {
+            "resource": 247,
+            "frame": 7,
+            "left": {
+              "pose": "lancer82thrust2",
+              "point": [
+                940,
+                1370
+              ]
+            },
+            "right": {
+              "pose": "gold82tip-247-7",
+              "point": [
+                600,
+                600
+              ]
+            },
+            "maximum_distance_hd": 8
+          },
+          {
+            "resource": 247,
+            "frame": 8,
+            "left": {
+              "pose": "lancer82thrust2",
+              "point": [
+                940,
+                1370
+              ]
+            },
+            "right": {
+              "pose": "gold82tip-247-8",
+              "point": [
+                600,
+                600
+              ]
+            },
+            "maximum_distance_hd": 8
+          }
+        ]
+      }
+    },
+    "selected_sources": [
+      {
+        "key": "giant80idle",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-giant80idle-original-r1.png",
+        "sha256": "3b42b3ccf5a61894a4f2c070a17a01d694df6edeb124eb82b6d012a493ff9d07",
+        "size": [
+          1287,
+          1222
+        ],
+        "high_coverage_bbox": [
+          9,
+          11,
+          1276,
+          1207
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "giant81idle",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-giant81idle-original-r1.png",
+        "sha256": "5ca412c6ed56aa809ad99fd45cb6f172373a7b8acd6f6c7b77ae7e3448949c31",
+        "size": [
+          1287,
+          1222
+        ],
+        "high_coverage_bbox": [
+          7,
+          10,
+          1273,
+          1206
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "gold82tip",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-gold82tip-original-r1.png",
+        "sha256": "fb19bf852e2ac60ca678c718a5c44f0ce55371a629303d5201f59c9ff0c600b9",
+        "size": [
+          1268,
+          1240
+        ],
+        "high_coverage_bbox": [
+          282,
+          91,
+          1082,
+          1138
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "giant80raise",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-giant80raise-original-r1.png",
+        "sha256": "7144ffeb489fcb2334d4bab3e9ca1a87822ca60e0933c24ca2a9fb0e419382e5",
+        "size": [
+          1287,
+          1222
+        ],
+        "high_coverage_bbox": [
+          318,
+          4,
+          1163,
+          1219
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "giant80slash",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-giant80slash-original-r1.png",
+        "sha256": "4340b9e5043782cf97de352fdd224dcbc27c1cf0a791aabc35e02a80a880fdb1",
+        "size": [
+          1521,
+          1034
+        ],
+        "high_coverage_bbox": [
+          42,
+          51,
+          1482,
+          1007
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "giant81slash",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-giant81slash-original-r1.png",
+        "sha256": "a6245ea86348cc67883b4a3a306e2c95d074d8b04518a09eda81827f74407946",
+        "size": [
+          1521,
+          1034
+        ],
+        "high_coverage_bbox": [
+          43,
+          65,
+          1486,
+          1005
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "lancer82windup",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-lancer82windup-original-r1.png",
+        "sha256": "6510d3ff1547e709aef89bac982fa28123aa748b60ccedff7c269397be2a4c40",
+        "size": [
+          1131,
+          1391
+        ],
+        "high_coverage_bbox": [
+          40,
+          21,
+          1118,
+          1342
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "lancer82idle2",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-lancer82idle2-original-r1.png",
+        "sha256": "3e16cf43ddc75cef98725191716455a19bff8862a24de636590cfa071cafbf73",
+        "size": [
+          1131,
+          1391
+        ],
+        "high_coverage_bbox": [
+          251,
+          209,
+          900,
+          1141
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "giant81raise2",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-giant81raise2-original-r1.png",
+        "sha256": "7d810ec7bce22a507eec0e3fa1b88d231582ea27761f63b91369f8eedcb86ca4",
+        "size": [
+          1287,
+          1222
+        ],
+        "high_coverage_bbox": [
+          380,
+          128,
+          1035,
+          1116
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "lancer82thrust2",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-lancer82thrust2-original-r1.png",
+        "sha256": "9d6a3fa4dc47c29c322b437eb8cd65dcd525471f506bea4e69d1dd9af576ea62",
+        "size": [
+          1039,
+          1513
+        ],
+        "high_coverage_bbox": [
+          75,
+          95,
+          966,
+          1406
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "gold78vertical",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party7679-gold78vertical-original-r1.png",
+        "sha256": "814fcb00b7e87b5bd7687620480b84635e7905a6556ed9b5365741e61fdc3ee8",
+        "size": [
+          724,
+          2172
+        ],
+        "high_coverage_bbox": [
+          207,
+          15,
+          613,
+          2145
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "gold76slash",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party7679-gold76slash-original-r1.png",
+        "sha256": "4fb47eada44999c3ce5b4a537f7403b64d6ee57455d627f3b098f8cc166eba4a",
+        "size": [
+          1072,
+          1467
+        ],
+        "high_coverage_bbox": [
+          61,
+          30,
+          1056,
+          1425
+        ],
+        "high_coverage_boundary_points": 0
+      }
+    ],
+    "rejected_generation": [
+      {
+        "key": "lancer82idle",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-lancer82idle-original-r1.png",
+        "sha256": "5bc398fbe0db178328f3e477c4bf97df52f1bc37782bef9b5af5cd5ef2b264bc",
+        "reason": "Three alpha192 pixels touch original top edge at lance tip."
+      },
+      {
+        "key": "giant81raise",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-giant81raise-original-r1.png",
+        "sha256": "5b76830ccd4f650e286be722ec171f39c8dd2a533894230f1af99f2af6338989",
+        "reason": "27 alpha192 pixels touch top boundary at greatsword."
+      },
+      {
+        "key": "lancer82thrust",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-lancer82thrust-original-r1.png",
+        "sha256": "821220176f21fcadfcd9b47a27f115f873d3303f46c4bccbad82b1344b4dd6cb",
+        "reason": "Overwide stance forces excessive shrinking in native narrow frame; replaced by compact upright stance."
+      }
+    ],
+    "art_approximations": [
+      "Approved hand-painted keypose reuse, body/costume/engraving/crest/horns and weapon proportions interpreted. Native80/81soundcue and finaldelay keptdistinct.",
+      "Body envelope follows native flight-free left coordinates; fixed native frame clips oversized weapons/helmetornaments/FX. Everylayer clipping quantified, native shadow notredrawn.",
+      "80raisedblade weakalpha tip very near sourceboundary, alpha192 boundaryzero; originalnativeviewport clips upperblade.81raisesource and82idle preserve full margin in revisions.",
+      "80/81newlyadopted verticalcolumn is narrower than native broad column; residualcrescent alreadyregistered79 reused.82up-leftimpact uses formerlyredundant76draft, newtipstreak anchored at actualwhitecore then shrinks; shapes/intensity are art approximations.",
+      "82compactthrust replaceswideprototype, cone length/feet proportions differ; fullalpha source and actualcontact preserved. Normal/manual/platform pending untilallHD."
+    ],
+    "evidence_review": {
+      "all12_selected_raw_sources_viewed": true,
+      "native31_frames_reviewed": true,
+      "body_anchors_and_actual_source_connections_reviewed": true,
+      "rejected82_boundary_tip_excluded": true,
+      "compiler_and_gpu_pending": false,
+      "three_compiled_contact_sheets_reviewed": true,
+      "three_final_game_draws_reviewed": true
+    },
+    "package_stage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party80-81-82-projection-oct22-r2.json",
+      "sha256": "bc710b5c5a3235b65fe55ae859b6de32f46e1038bce9060f9bc943cabccdb2eb"
+    },
+    "generation_reference_inputs": [
+      {
+        "file": "remake/generated-assets/modern-theme-prototypes/figure-078-idle-battle-hd6-master-v1.png",
+        "sha256": "521ad621046cb56ff2539ba3021a2731d5388751bfc1574a29a1416dfc20531e"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure076-native-229-06-oct22-r1.png",
+        "sha256": "e0ded18a5d3e499b62dd0966d96e98129fda4058255332d33d64fd60e426546c"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure078-native-235-05-oct22-r1.png",
+        "sha256": "85032a99d2238b1ebac5a1a3fed00ca2f3d4f691c368e6b607164a16a05bc8b1"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure079-native-238-03-oct22-r1.png",
+        "sha256": "dfa1c9a030c1454afbee1bd6679b098091cdfceb15231aebb2c1dae8afdd544a"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure080-native-240-00-oct22-r1.png",
+        "sha256": "5bd45474bc66a9de7a52637d638da283157c207bdefe2c57a51b83027f2c688f"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure080-native-241-02-oct22-r1.png",
+        "sha256": "2559fcb8853317ac744c943ac72bcf29ca07e8a82d60d7f830c04363c6b73762"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure080-native-241-05-oct22-r1.png",
+        "sha256": "7037d484a3ae1b5049ea1ae409b74762f8815a27d8a3746594fe25cd1776d5ed"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure081-native-243-00-oct22-r1.png",
+        "sha256": "2113d3280e37aca5b9cede5b983df8616f2350820be46e688884e8278f336146"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure081-native-244-02-oct22-r1.png",
+        "sha256": "c8dbf49bb8f8e831d38c3c95ffadf2c726bda7deeba8d7f55806d2e68ec5586c"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure081-native-244-05-oct22-r1.png",
+        "sha256": "8b57747d3a1b82c3a1e4c4d8e9334da9b018a85095afbfc604a5a8dd132b49d7"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure082-native-246-00-oct22-r1.png",
+        "sha256": "74d125e11a31a33b130caf2ea4615a30abe43256e94e8acebd441749d821bd44"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure082-native-247-00-oct22-r1.png",
+        "sha256": "97183d7b2d3591104b0a7f7548151d87da7a0122e6d034dd40b890ce5783b117"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure082-native-247-06-oct22-r1.png",
+        "sha256": "1f690e8c34a95183fd43fd3128b3ebfe77d20e4bda58da6e9d99cec407d9c81b"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-giant80idle-original-r1.png",
+        "sha256": "3b42b3ccf5a61894a4f2c070a17a01d694df6edeb124eb82b6d012a493ff9d07"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-giant81idle-original-r1.png",
+        "sha256": "5ca412c6ed56aa809ad99fd45cb6f172373a7b8acd6f6c7b77ae7e3448949c31"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-giant81raise-original-r1.png",
+        "sha256": "5b76830ccd4f650e286be722ec171f39c8dd2a533894230f1af99f2af6338989"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-lancer82idle-original-r1.png",
+        "sha256": "5bc398fbe0db178328f3e477c4bf97df52f1bc37782bef9b5af5cd5ef2b264bc"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-lancer82idle2-original-r1.png",
+        "sha256": "3e16cf43ddc75cef98725191716455a19bff8862a24de636590cfa071cafbf73"
+      }
+    ],
+    "checks": {
+      "party8082-source-candidate-080-oct22-r1.memory.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-source-candidate-080-oct22-r1.memory.json",
+        "sha256": "76eac629ae3245536be4786f4ef67362f1227841d48b94d46a55fcde639076bc"
+      },
+      "party8082-source-candidate-080-oct22-r1.log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-source-candidate-080-oct22-r1.log",
+        "sha256": "400c3ec3a746cef7b1c8f3be74f238476a0e36c5246ab7152bbe09004471681e"
+      },
+      "party8082-source-candidate-080-oct22-r1-receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-source-candidate-080-oct22-r1-capture/receipt.json",
+        "sha256": "f187cb594c5787e4727cb8cdf73d3883540c2b07596cc47e5eb0bf0203958eee"
+      },
+      "party8082-source-runtime-080-oct22-r1.memory.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-source-runtime-080-oct22-r1.memory.json",
+        "sha256": "421cea2eb4af2c8a829efc7dda1b5f7f352765b02bc3f223f81375ec8dd883f1"
+      },
+      "party8082-source-runtime-080-oct22-r1.log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-source-runtime-080-oct22-r1.log",
+        "sha256": "8e37f0ec88a0ca40f2e1b1590aef34918c7f93b0966e49a80ce0652ffd580f6c"
+      },
+      "party8082-source-runtime-080-oct22-r1-receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-source-runtime-080-oct22-r1-capture/receipt.json",
+        "sha256": "f187cb594c5787e4727cb8cdf73d3883540c2b07596cc47e5eb0bf0203958eee"
+      },
+      "party8082-physical-candidate-080-oct22-r1.memory.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-physical-candidate-080-oct22-r1.memory.json",
+        "sha256": "1f5364bf352b7de0fea5b6d0de684e096efddb879037f7d0d3fca81a76f9a64f"
+      },
+      "party8082-physical-candidate-080-oct22-r1.log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-physical-candidate-080-oct22-r1.log",
+        "sha256": "5cc3cfc0f457bfaab20d69ca10d71d01b4933d1d592cfe572754ef3d68c8df2b"
+      },
+      "party8082-physical-candidate-080-oct22-r1-receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-physical-candidate-080-oct22-r1-capture/receipt.json",
+        "sha256": "5d3c7b8c7c2b80dedc0ba1e4f7014b9e54b4d715984d627b35bfc2485bdc0fac"
+      },
+      "party8082-physical-candidate-081-oct22-r1.memory.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-physical-candidate-081-oct22-r1.memory.json",
+        "sha256": "2366070c354cc77e0b72d6f08f59450aed510febc7c7ad5f44bed21ed15bd8ef"
+      },
+      "party8082-physical-candidate-081-oct22-r1.log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-physical-candidate-081-oct22-r1.log",
+        "sha256": "82d70b5c7ad8e4e7faec5859ee85341fab335fa795123df87a4e30903cc8b28f"
+      },
+      "party8082-physical-candidate-081-oct22-r1-receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-physical-candidate-081-oct22-r1-capture/receipt.json",
+        "sha256": "cd904f425ac8aeba86bcd36eaaccca317623d3e90f22e99e74afef1daf74b6c5"
+      },
+      "party8082-physical-candidate-082-oct22-r1.memory.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-physical-candidate-082-oct22-r1.memory.json",
+        "sha256": "05314912ab2cb89612f22985925653db62b604c9ba9eac2592d363f8d32f53c5"
+      },
+      "party8082-physical-candidate-082-oct22-r1.log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-physical-candidate-082-oct22-r1.log",
+        "sha256": "2d092ad307b9c60a4f07b4200b133582ff4a03a56e8cf3c076630d5af28109ac"
+      },
+      "party8082-physical-candidate-082-oct22-r1-receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-physical-candidate-082-oct22-r1-capture/receipt.json",
+        "sha256": "935eb4f111e9b2d21cb57bbb2e72366b5e544746ba2d5af0f4ec7f15958cd292"
+      },
+      "party8082-batch-assets-candidate-000-oct22-r1.memory.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-batch-assets-candidate-000-oct22-r1.memory.json",
+        "sha256": "de37294c257c254511b5bc40a0f060fec7464b77f0e256c3a877ce35d0625ccd"
+      },
+      "party8082-batch-assets-candidate-000-oct22-r1.log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-batch-assets-candidate-000-oct22-r1.log",
+        "sha256": "b821f98bc9ae542f4ba95413550809988ba13d347a70c4d0722c7ff03a279be8"
+      },
+      "party8082-batch-assets-runtime-000-oct22-r1.memory.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-batch-assets-runtime-000-oct22-r1.memory.json",
+        "sha256": "56afb1026b4b07ad79ab3c218a0c59c31f356a3a574155f5933647b407faeb27"
+      },
+      "party8082-batch-assets-runtime-000-oct22-r1.log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-batch-assets-runtime-000-oct22-r1.log",
+        "sha256": "ab838000c5202acf7cb32fb66281a03cdfa27dcdc07186bbb65dd0448a34fbd9"
+      },
+      "core80": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-080-physical-core-oct22-r1.json",
+        "sha256": "efaff06d6eaa9351411471832cf0ba4788fd458d1a233812ee183ac49bf8f582"
+      },
+      "party080-compiler-guards-oct22-r1/guards.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party080-compiler-guards-oct22-r1/guards.json",
+        "sha256": "7aa348c0f8c160fcd101f4166c1239e651668c47ac5e53d1209b46042ed4dc57"
+      },
+      "party080-connections-oct22-r1.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party080-connections-oct22-r1.json",
+        "sha256": "f22feb0d99c43cdf7dd2a753b97a2ee8f414d06f3af7e23b53e7f381884a53be"
+      },
+      "core81": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-081-physical-core-oct22-r1.json",
+        "sha256": "abe47d31e90836ecaff31a4ebbf7ff4be158a9adb16414d3274b36a8023d2212"
+      },
+      "party081-compiler-guards-oct22-r1/guards.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party081-compiler-guards-oct22-r1/guards.json",
+        "sha256": "ca9883317350d9cc39aa233fb2f1bf0ea6dc49d0e653071d0dc7235d4911fcd5"
+      },
+      "party081-connections-oct22-r1.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party081-connections-oct22-r1.json",
+        "sha256": "72cfbd796b92da0b9e0484affae2cccab85874d746deebe2935f39bac943779e"
+      },
+      "core82": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-082-physical-core-oct22-r1.json",
+        "sha256": "e88398750b2368e7092c391fdb9c796ae28196ddcdec8d8d0f06fcb04bf5c447"
+      },
+      "party082-compiler-guards-oct22-r1/guards.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party082-compiler-guards-oct22-r1/guards.json",
+        "sha256": "115de7471ee9b9e74d2da28c5d6e70affdc3f50115918af3d2eb7759a459c45b"
+      },
+      "party082-connections-oct22-r1.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party082-connections-oct22-r1.json",
+        "sha256": "4694b4d21a61468f4bc91db342edb0ed431fc875659ad2d3d9aa7dee56256ff3"
+      },
+      "connection_guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party80-81-82-connection-guards-oct22-r1.json",
+        "sha256": "57b5268724f0ecd9743e8e684d6e0220d69d8a79cb2f14fafc7d86f690fdba66"
+      },
+      "fill33_guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party80-81-82-fill33-guards-oct22-r1.json",
+        "sha256": "46f126c3fc548981e9bb06c90c1abe5ed6d47aa408d11d2363703963b7c069ad"
+      },
+      "formal_registration": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party80-81-82-formal-registration-oct22-r1.json",
+        "sha256": "7d7da0ab3ec089306a0965ae64dc99f82ce5168ccb2a1d66601977a7d385272b"
+      },
+      "formal_coverage": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party80-81-82-formal-coverage-oct22-r1.json",
+        "sha256": "9dbbb03b9b0fdbe0307b74baef601b52d19607b28dee2d27e2a805949747ce49"
+      },
+      "lessons_guard_check": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party80-81-82-lessons-check-oct22-r3.log",
+        "sha256": "827b99a36cb2ae93b79f96e90d4bf7f743b09220ff3c9313759c0a440082d039"
+      }
+    },
+    "formal_catalog": {
+      "file": "remake/assets/themes/modern/catalog.json",
+      "sha256": "5b1872a35b7a060f424629b6749214f89aa5a215206935c435f7ea2176e8dbaf"
+    },
+    "staged_formal_catalog": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party80-81-82-staged-formal-catalog-oct22-r1.json",
+      "sha256": "5b1872a35b7a060f424629b6749214f89aa5a215206935c435f7ea2176e8dbaf"
+    },
+    "formal_coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party80-81-82-formal-coverage-oct22-r1.json",
+      "sha256": "9dbbb03b9b0fdbe0307b74baef601b52d19607b28dee2d27e2a805949747ce49"
+    },
+    "memory": {
+      "records": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-source-candidate-080-oct22-r1.memory.json",
+          "sha256": "76eac629ae3245536be4786f4ef67362f1227841d48b94d46a55fcde639076bc"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-source-runtime-080-oct22-r1.memory.json",
+          "sha256": "421cea2eb4af2c8a829efc7dda1b5f7f352765b02bc3f223f81375ec8dd883f1"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-physical-candidate-080-oct22-r1.memory.json",
+          "sha256": "1f5364bf352b7de0fea5b6d0de684e096efddb879037f7d0d3fca81a76f9a64f"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-physical-candidate-081-oct22-r1.memory.json",
+          "sha256": "2366070c354cc77e0b72d6f08f59450aed510febc7c7ad5f44bed21ed15bd8ef"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-physical-candidate-082-oct22-r1.memory.json",
+          "sha256": "05314912ab2cb89612f22985925653db62b604c9ba9eac2592d363f8d32f53c5"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-batch-assets-candidate-000-oct22-r1.memory.json",
+          "sha256": "de37294c257c254511b5bc40a0f060fec7464b77f0e256c3a877ce35d0625ccd"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-batch-assets-runtime-000-oct22-r1.memory.json",
+          "sha256": "56afb1026b4b07ad79ab3c218a0c59c31f356a3a574155f5933647b407faeb27"
+        }
+      ],
+      "all_returncode_zero": true,
+      "all_oom_kill_delta_zero": true,
+      "note": "memory.peak cumulative within sharedcontainer, not isolated command peak."
+    },
+    "package_validation_inputs": {
+      "catalog_bytes_equal_formal": true,
+      "candidate": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party082-compiled-oct22-r1/pack",
+      "runtime": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party80-81-82-runtime-only-oct22-r1",
+      "private_files": 5543,
+      "runtime_files": 4818,
+      "retained_files_unchanged": 5500,
+      "old_assets_unchanged": 584,
+      "new_physical_files": 43
+    },
+    "readme_overview": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party80-81-82-readme-overview-oct22-r1.json",
+      "sha256": "e9b0579d55b301c2aeb31757c894a899866bd425b9915380bb199e3e5f8efef5"
+    },
+    "coverage": {
+      "new_resources": 6,
+      "new_frames": 31,
+      "source_gpu_per_package": 31,
+      "physical_body_core_frames": [
+        10,
+        10,
+        11
+      ],
+      "compiler_guard_cases": 63,
+      "fill33_guard_cases": 8,
+      "connection_positive_cases": 10,
+      "connection_negative_cases": 3,
+      "maximum_connection_hd_pixels": 3.2931720197988295,
+      "go_commands": 7,
+      "unique_current_counts": "docs/knowledge-base/58-fd2-exe-re-coverage.md"
+    },
+    "current_state": {
+      "remake_complete": "Sixbanks31frames registered, bothsourceGPU/all31physicalcores/fullF2returnandcoldpreflight verified; original rules/save unchanged.",
+      "remake_remaining": "Other decoded character/effect sources and consumer/player/manual/platform gates remain, see58 andIssue263.",
+      "original_oracle_unknown": "No new originalRGB/frame/same-state or PLAYER-E2 proof; native data pinned, artwork intentional approximation.",
+      "optional_polish": "Crest/horns/etching/cloth/body/weapon proportions, narrowvertical column, sharedposes and clipping reviewed as art approximation; concentrated manualreview afterallHD."
+    },
+    "tools": {
+      "build_fd2_character_battle_hd.py": {
+        "file": "tools/build_fd2_character_battle_hd.py",
+        "sha256": "27337d5305ec639353d63bb437890883bf546bb8803660d1d031ba093a6c6083"
+      },
+      "test_fd2_character_battle_hd.py": {
+        "file": "tools/test_fd2_character_battle_hd.py",
+        "sha256": "63efbe259a7308bdb573f4c88dcd3f96134e202fa57c843f86171a5ae27472c5"
+      },
+      "verify_fd2_character_battle_gpu.py": {
+        "file": "tools/verify_fd2_character_battle_gpu.py",
+        "sha256": "71c8a5eea2b1bac96984481eb73a0ca35eb01c871f40411ae8e6de58948aba15"
+      },
+      "verify_fd2_hd_anchor_connections.py": {
+        "file": "tools/verify_fd2_hd_anchor_connections.py",
+        "sha256": "18feda8005721c396c93518a903d70b875ca31ca57ec306abcd589d5a1a73a60"
+      },
+      "verify_fd2_compound_caster_gpu.py": {
+        "file": "tools/verify_fd2_compound_caster_gpu.py",
+        "sha256": "f2ee0b0f0f5ae0304eb8818d03e162e7d2caf855a92eb2cebdcac92301fc0569"
+      },
+      "test_fd2_native_occlusion.py": {
+        "file": "tools/test_fd2_native_occlusion.py",
+        "sha256": "9623a6cb91c0ca458459e332e340f86ca2b31ddce3dcc4eb9e27fb370df15b4e"
+      },
+      "sync_modern_theme_private.py": {
+        "file": "tools/sync_modern_theme_private.py",
+        "sha256": "b4ee0f261eae3d24d571437cd161a11060fb027c4a0925975051fc3e8272cc82"
+      },
+      "audit_fd2_battle_hd_coverage.py": {
+        "file": "tools/audit_fd2_battle_hd_coverage.py",
+        "sha256": "a1661e1e20a8bf6b33c5f6f51ddcaf31d4b12ea3f7fccfd2dcd50c11035d92d8"
+      },
+      "fd2_go_test_memory_probe.py": {
+        "file": "tools/fd2_go_test_memory_probe.py",
+        "sha256": "8e7c9c55b85aa72a5026b944233b94f7c0787f51b3f5ebb178ed54cc333e40f2"
+      },
+      "remake/cmd/fd2/modern_hd_ordinary_material_gpu_test.go": {
+        "file": "remake/cmd/fd2/modern_hd_ordinary_material_gpu_test.go",
+        "sha256": "3621cbc05f220922db23688a109a9355aab541c550d4e30aaef9881853c0985b"
+      },
+      "remake/cmd/fd2/modern_hd_battle_lifecycle_test.go": {
+        "file": "remake/cmd/fd2/modern_hd_battle_lifecycle_test.go",
+        "sha256": "1c27707f5e8a007fabbd0c58be55fed8ec7efc285f53326ab74421349174174f"
+      },
+      "remake/cmd/fd2/modern_hd_battle_assets_test.go": {
+        "file": "remake/cmd/fd2/modern_hd_battle_assets_test.go",
+        "sha256": "3d147eb506351ad2e8c5535b8a4b12f34107a53ae7f1a36b31a119f521b6ac83"
+      },
+      "remake/internal/battlepresent/native_physical_body.go": {
+        "file": "remake/internal/battlepresent/native_physical_body.go",
+        "sha256": "39a7f5423cab91ced5081197d99ec530644c495e28d7bd8e894f1ca92f600d92"
+      },
+      "remake/cmd/fd2/native_physical_body.go": {
+        "file": "remake/cmd/fd2/native_physical_body.go",
+        "sha256": "d97cb4d71018cc0587be051f33c84b6a75df453b0bac5ef78f6683fb1fbd1cb0"
+      }
+    },
+    "toolchain": {
+      "go_image": "fd2-go-test-local:latest",
+      "go_image_sha256": "e4a805c52a3ad5d8c22cf23f2bcf51c6924e5ad6b99554f1b02761903c725433",
+      "go": "1.22.12",
+      "go_container": "8GB/4CPU/512pids/network none/UID:GID1000:1000",
+      "assets_image": "fd2-assets-local:20260829-sfx",
+      "assets_image_sha256": "e59237a31d4b5f7a62c59ac37b780bd93f17c99fda97be8f5ca0c53978b878bc",
+      "python_pillow": "3.12.15/11.3.0",
+      "memory_note": "memory.peak is cumulative cgroup lifetime upper bound across sequential commands sharing a container."
+    },
+    "reproduce": [
+      "Start from public463e4ed7 formal584catalog and originalmanifest/inventory pinned.240/241/243/244/246/247 absent and in latest remaining; assert intersectionempty BEFOREgeneration.242/245/248fixedzero untouched. load_native verifies exactmetadata/descriptors/PNG/Mask.80and81samegeometry doesnotmergeidentity, cue4vs5 andfinaldelay6vs2 preserved. Fixed decodedsourceart is not newdosgolem/runtimeoracle.",
+      "Restore selected_sources12 unchangedRGBA bySHA from privateallow-list, includingtwoformerlyredundantdraftlights nowfreshlyreviewed for80/81column and82impact. reused_registered_source79crescent alreadyregistered, map toexistingmaster bySHA. All13newgeneration records/prompts/inputSHA preserved; three rejected82idle topedge3,81raise topedge27 and82widepose excluded. Revised81raise/82idle marginfull,82compactthrust approved artstyle.80raise weakalpha tipnearborder disclosed, alpha192boundaryzero; noalphaediting.",
+      "Write recipe_inline/connections_inline UTF8 indent2+newline tostoredSHA. Sequential build_fd2_character_battle_hd.py --pack /original --inventory <fixed> --recipe <80then81then82> --base-catalog <previous> --out <fresh> --layered. Save compiler-catalog.json BEFOREaliasprojection; SHA equals immutable compiled.json.catalog_sha256. Normalize sourceSHA to12newmasters and1existingmaster. Append6banks31PNG only, formal590/43newfiles; old584assets5500files unchanged. ProjectionR1status label mistakenlyoldbatch, R2correctslabel only and retains R1ref; noart/catalog/compilerbytes change.",
+      "verify_fd2_hd_anchor_connections.py --compiled <each> --recipe <recipe> --pack <compiledpack> --connections <inline> --report <fresh>:10actualsourcecontacts<=8HD; three same-sourceopaque distantFXpoints must faildistance.82tip initially500/600transparent rejectedbeforeREADY, use actualwhite600/600alpha253; noRGBAchange. test_fd2_character_battle_hd.py --recipe <each> --baseline <compiled> --pack /original --inventory <fixed> --out <fresh>:21cases each63total. Everylayer viewportclipping quantified, no enlargednativecanvas.",
+      "GoDocker8GB/4CPU/512pids/networknone/user1000:1000/HOMEtmp/GOMAXPROCS2/LP_NUM_THREADS2/persistentGoCache, FD2_ASSET_PACK=/original FD2_TEST_ORIGINAL_PACK=/original, max twoheavyGo. memory_probe timeout550/Go500s forsource/physical;1260/1200s forbatch. Everycommand -count=1 -v in freshprocess, noSKIP/noOOM.",
+      "Bothpackages TestModernHDGiantsLancerAllFramesGPU with FD2_HD_GIANTS_LANCER_GPU=1 and explicit FD2_TEST_MODERN_EFFECT_CATALOG/PACK/OUT:31fullGPU vs independentCPUOver within1RGBA. Three TestModernHDBattleRuntimeGPU with lifecycle/real/enemy_actor=1, explicitfigure80/81/82 andcatalog/pack/output. Existingtestswap EnemyCamp/side0 with Ownfigure0side2 preserved; all10/10/11shots,3F2phases,64/65DAC,HP/RNG andonecontinuation. Modifiedsourcefixture only, notnaturalAI/player.",
+      "verify_fd2_character_battle_gpu.py --figure <80|81|82> --core-profile opaque --sample-group fixture --proven-occlusion --original-pack /original --inventory <fixed> --catalog <stage> --source <candidate> --receipt <physical> --report <fresh>:all10/10/11cores>=1000, noexemptions. test_fd2_native_occlusion.py --catalog <stage> --source <candidate> --original-pack /original --inventory <fixed> --report <fresh>:8HD/nativefill33/unknownfills/wrongSHAguards. Bothpackages TestModernHDBattleBatchAssetsAndPreflight with FD2_TEST_MODERN_BATTLE_FIGURES=80,81,82:threepairedvalidloads andsixindependentcoldplayer/mode11transactions each, allsixbanksnil onfailure andHP/RNG preserved.",
+      "Afterallgates copy43newallowlistedfiles and byte-identicalstagecatalog toformal. validate_modern_theme_catalog + sync_modern_theme_private.py:full5543/runtime4818 actualSHA/UID/GID, old5500unchanged. Independentlycommit/push private and verify actualremote/PRIVATE withoutpublishingprivatecommitID. audit_fd2_battle_hd_coverage.py --inventory <fixed> --original-pack /original --catalog <formal> --source <formalroot> --report <fresh>:184banks1475framesdatacoverage only. No recording/Release; normal/manual/platform/fullHD pending."
+    ],
+    "duplicate_candidate_cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party80-81-82-duplicate-dedupe-oct22-r1.json",
+      "sha256": "3b8508bec94ee05ab0f9ef7b05f37490140e56849af4097ff0c3add8d741b29d"
+    },
+    "private_remote_verified": true,
+    "private_visibility_verified": true,
+    "prior_final_check": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party80-81-82-final-check-oct22-r1.json",
+      "sha256": "d439c857a96aca50d74d5fa70705a6eb1cfc136f579dd8dc7110ba9f37332995"
+    },
+    "intermediate_final_check": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party80-81-82-final-check-oct22-r2.json",
+      "sha256": "5c9248c2f3ae805e476abd7a38fef30cd3ce9d02b4877f1d841780e52267b9e9"
+    },
+    "final_check": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party80-81-82-final-check-oct22-r3.json",
+      "sha256": "64b2a7139429cc2d54c5b35bd3bc68f890e0bd35f3f4c36bdd48b909ad832eac"
     }
   }
 }
