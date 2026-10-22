@@ -175,6 +175,10 @@
 
 上排為藍甲與灰甲肩砲人物射擊，下排為金色爆裂與藍色光束命中，兩組完整43幀已接入。畫面取自左側敵方主攻、右側我方反擊的測試場景，名稱沿用測試資料；背景、面板與受擊閃色仍含像素素材。砲身比例、光束形狀及裁切等美術近似見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。一般遊玩與人工確認待全部HD接入後集中抽驗。
 
+![兩種持杖人物的HD攻擊與施術測試畫面](docs/figures/hd-casters91-92-battle.png)
+
+上排為深藍兜帽與紅面罩持杖人物的攻擊，下排為各自施術，完整50幀已接入待機、三段命中與施術路徑。畫面來自修改人物圖源的測試場景，名稱沿用測試資料，背景與面板仍含像素素材。鉤杖、光環生成／懸浮／消散、火焰及姿勢共用的美術近似見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。一般遊玩與人工確認待全部HD接入後集中抽驗。
+
 | 鐵諾HD普通END攻防 | 蓋亞HD普通攻防 |
 | --- | --- |
 | ![鐵諾HD普通END攻防](docs/figures/hd-tino-physical-attack.png) | ![蓋亞HD普通攻防](docs/figures/hd-gaia-physical-attack.png) |

@@ -3755,6 +3755,21 @@
         ],
         "pattern": "source_sampling_review"
       }
+    },
+    {
+      "id": "xvfb-keep-container-tmp-writable",
+      "date": "2026-10-23",
+      "area": "隔離圖形驗證",
+      "rule": "Go／Xvfb測試保留容器/tmp可寫；主機暫存腳本改掛/tasktmp唯讀。映像檔入口為tools/docker/fd2-go-test.Dockerfile及tools/docker/with-xvfb.sh，測試以tools/fd2_go_test_memory_probe.py --out <新收據> --timeout <預算> -- with-xvfb go test執行；修正掛載後以相同映像檔、測試及預算重跑，舊失敗收據保留。",
+      "why": "91／92的兩個Go R1程序把整個/tmp掛成唯讀，with-xvfb尚未啟動顯示便無法建立/tmp/xvfb.log，沒有任何Go測試執行。R2只改腳本掛載位置並使用新收據名稱。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#casters91_92_followup_20261023.environment_failure_r1",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/docker/with-xvfb.sh"
+        ],
+        "pattern": "/tmp/xvfb.log"
+      }
     }
   ]
 }
