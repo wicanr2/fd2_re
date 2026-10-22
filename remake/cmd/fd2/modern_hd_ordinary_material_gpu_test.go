@@ -232,6 +232,13 @@ func TestModernHDFighterGuardsAllFramesGPU(t *testing.T) {
 	testModernHDRegisteredFramesGPU(t, "FIGANI.DAT", []int{195, 196, 204, 205, 207, 208, 210, 211}, 51, "PASS-FIGHTER-GUARDS-51-SOURCE-GPU")
 }
 
+func TestModernHDFighterCannonWingAllFramesGPU(t *testing.T) {
+	if os.Getenv("FD2_HD_FIGHTER_CANNON_WING_GPU") != "1" {
+		t.Skip("dedicated fighter cannon wing source GPU process required")
+	}
+	testModernHDRegisteredFramesGPU(t, "FIGANI.DAT", []int{213, 214, 216, 217, 219, 220}, 50, "PASS-FIGHTER-CANNON-WING-50-SOURCE-GPU")
+}
+
 func testModernHDRegisteredFramesGPU(t *testing.T, archive string, resources []int, frameCount int, status string) {
 	t.Helper()
 	set, err := loadModernStoryPortraitSet(os.Getenv("FD2_TEST_MODERN_EFFECT_CATALOG"), os.Getenv("FD2_TEST_MODERN_EFFECT_PACK"))

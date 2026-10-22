@@ -1,6 +1,6 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
-BattleFig65／68／69／70完整51幀已接入；兩包來源GPU、全部51本體核心、16連接點／四錯置反例、四完整攻防／F2／返回及兩包原子預檢通過。原框、拍數、單命中、音效與保存規則保持；65窄站姿與實心掌光、70無光暈舉劍及68可見劍刃光根修訂已核，共用姿勢、粒子與裁切近似明示。正常／人工待全部HD後集中，不新增原版parity。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，主證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的fighter65_guards68_69_70_followup_20261022。
+BattleFig71／72／73完整50幀已接入；兩包來源GPU、全部47本體核心、兩光束／一原生透明空拍、三完整攻防／F2／返回及兩包原子預檢通過。63編製、18接點／三錯置反例與新72及舊63共24投射物守衛通過，原框／節拍／標記、規則與保存保持。姿勢／砲管比例、寬翼裁切及斬光近似明示；正常／人工待全部HD後集中，不新增原版parity。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，主證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的fighter71_cannon72_wing73_followup_20261022。
 
 BattleFig41／42／43持杖人物完整來源已接入；兩包來源GPU、全部物理Game.Draw核心、F2／返回、編製守衛及兩包玩家／AI原子預檢通過。原框、節拍、單次命中及聲音參數、規則與保存保持；共用姿勢、人物／杖長比例與握手近似明示。母稿alpha254沿既有>=250契約，正常LANCZOS成品保持255，沒有量化或放寬門檻。正常操作與人工依全部HD後集中，未新增原版parity。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，主證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的staff41_42_43_followup_20261022。
 

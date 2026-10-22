@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""核對固定FIGANI70／121／136／175／190投射物與空拍；本體保持1000點契約。"""
+"""核對固定FIGANI70／121／136／175／190／217投射物與空拍；本體保持1000點契約。"""
 import argparse
 import json
 from pathlib import Path
@@ -25,6 +25,9 @@ PROFILES = {
          'frames': 18, 'first': 11, 'blanks': [], 'counts': [124, 393, 481, 394, 355, 342, 342]},
     63: {'resource': 190, 'header': {'byte_1': 1, 'byte_2': 17, 'byte_4': 4},
          'frames': 22, 'first': 17, 'blanks': [17, 21], 'counts': [0, 5148, 8014, 1579, 0]},
+    72: {'resource': 217, 'header': {'byte_1': 1, 'byte_2': 12, 'byte_4': 4},
+         'frames': 15, 'first': 12, 'blanks': [14], 'counts': [4331, 706, 0],
+         'guard_missing_frames': [12, 13, 14]},
 }
 
 
