@@ -3725,6 +3725,21 @@
         ],
         "pattern": "old_names = names\\(base\\)"
       }
+    },
+    {
+      "id": "hd-wing-cycle-body-anchor-preserves-size",
+      "date": "2026-10-23",
+      "area": "HD飛行人物",
+      "rule": "飛行人物用身體範圍界定來源錨點，避免全翼幅觸發寬度限制而縮小人物。使用tools/build_fd2_character_battle_hd.py的--recipe與--layered編製後，先看review.png，再進GPU；從原生全幀參考逐段核翼幅起點，不把待機週期直接套到命中後。主收據的recipe_inline保存錨點與逐幀映射，compiled保存原框裁切量。",
+      "why": "86候選R1把全展翼寬度納入錨點，人物在展翼拍縮小，且後九拍起點誤用收翼。R2只重編86，以身體錨點與原生展／半／收／半順序修正，R1保留，正式清冊及84／85未改。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#axe84_halberd85_dragon86_followup_20261023",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "docs/data/fd2-modern-hd-battlefield-20261019.json"
+        ],
+        "pattern": "dragon_body_anchor_and_posthit_wing_order_reviewed_r2"
+      }
     }
   ]
 }

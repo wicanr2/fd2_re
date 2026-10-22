@@ -98455,7 +98455,7 @@
     },
     "private_remote_verification": "Independent private repository commit pushed; actual git ls-remote refs/heads/main re-read equals local HEAD. Private commit identity is not published."
   },
-  "latest_hd_batch": "giants80_81_lancer82_followup_20261022",
+  "latest_hd_batch": "axe84_halberd85_dragon86_followup_20261023",
   "monks28_31_mage29_followup_20261022": {
     "status": "CONFORMED-SCOPED-RUNTIME-E1",
     "date": "2026-10-22",
@@ -146348,6 +146348,2857 @@
     "final_check": {
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party80-81-82-final-check-oct22-r3.json",
       "sha256": "64b2a7139429cc2d54c5b35bd3bc68f890e0bd35f3f4c36bdd48b909ad832eac"
+    }
+  },
+  "axe84_halberd85_dragon86_followup_20261023": {
+    "status": "CONFORMED-SCOPED / RUNTIME-E1",
+    "date": "2026-10-23",
+    "base_commit": "eb2f3008e3684ecd5e5399d3836c27dfa232d116",
+    "base_catalog": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party84-85-86-base-catalog-oct23-r1.json",
+      "sha256": "5b1872a35b7a060f424629b6749214f89aa5a215206935c435f7ea2176e8dbaf"
+    },
+    "native_reference": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party84-85-86-native-oct23-r1.json",
+      "sha256": "534652d6613190d05435f241a8fd53b70be62413ffec098869bf65767de52b9e"
+    },
+    "source_inventory": {
+      "file": "docs/data/fd2-battle-hd-source-inventory-20261019.json",
+      "sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51"
+    },
+    "original_manifest_sha256": "5eec2ecacc4fe97c4d0f27838e7dbecf18d1cf4b309b35800d50afd173cacca5",
+    "eligibility": {
+      "selected": [
+        252,
+        253,
+        255,
+        256,
+        258,
+        259
+      ],
+      "registered_intersection": [],
+      "remaining_inventory_verified": true
+    },
+    "figures": [
+      84,
+      85,
+      86
+    ],
+    "frames": 43,
+    "native_banks": [
+      {
+        "resource": 252,
+        "header": {
+          "byte_1": 0,
+          "byte_2": 1,
+          "byte_4": 0
+        },
+        "frames": 1,
+        "metadata_sha256": "7ba5baa56aac9ec5e9bf5761f0d445122e08b05f2aa50054e7cc13ae2cac8471",
+        "native_mask_counts": [
+          9754
+        ],
+        "markers": []
+      },
+      {
+        "resource": 253,
+        "header": {
+          "byte_1": 0,
+          "byte_2": 10,
+          "byte_4": 2
+        },
+        "frames": 10,
+        "metadata_sha256": "f92877eb627d8a1d7dc684621ca24bd3a28138f357334e35dc11b78e48549992",
+        "native_mask_counts": [
+          9780,
+          9835,
+          9798,
+          9828,
+          9869,
+          19682,
+          9202,
+          9061,
+          8983,
+          8979
+        ],
+        "markers": [
+          [
+            5,
+            1,
+            4
+          ]
+        ]
+      },
+      {
+        "resource": 255,
+        "header": {
+          "byte_1": 0,
+          "byte_2": 1,
+          "byte_4": 0
+        },
+        "frames": 1,
+        "metadata_sha256": "2460e77d124d3e8d247fe61cacd30995b66804c83cda7e9bde98a396307ac17c",
+        "native_mask_counts": [
+          10810
+        ],
+        "markers": []
+      },
+      {
+        "resource": 256,
+        "header": {
+          "byte_1": 0,
+          "byte_2": 10,
+          "byte_4": 5
+        },
+        "frames": 10,
+        "metadata_sha256": "81eeefcfb246103e5cd8230f254e10af7cbe9f1f1cf9e2615cf55a649eecca4d",
+        "native_mask_counts": [
+          9618,
+          9837,
+          9786,
+          9775,
+          9761,
+          11903,
+          9410,
+          9286,
+          9254,
+          9234
+        ],
+        "markers": [
+          [
+            5,
+            1,
+            1
+          ]
+        ]
+      },
+      {
+        "resource": 258,
+        "header": {
+          "byte_1": 0,
+          "byte_2": 4,
+          "byte_4": 0
+        },
+        "frames": 4,
+        "metadata_sha256": "bd10000d0ae2349b10a87b98e1ff809fbd34bcb1e16c07e65148a48b08883d7e",
+        "native_mask_counts": [
+          14327,
+          15452,
+          18562,
+          15452
+        ],
+        "markers": []
+      },
+      {
+        "resource": 259,
+        "header": {
+          "byte_1": 0,
+          "byte_2": 17,
+          "byte_4": 5
+        },
+        "frames": 17,
+        "metadata_sha256": "4a0ef51e23f77e073d74d354c5a7e8b3532044e1c76fbe885aedb117ff67c776",
+        "native_mask_counts": [
+          14315,
+          15457,
+          18380,
+          15441,
+          14245,
+          15403,
+          17919,
+          15354,
+          19970,
+          15185,
+          14017,
+          14723,
+          19288,
+          14720,
+          13586,
+          14708,
+          19245
+        ],
+        "markers": [
+          [
+            8,
+            1,
+            1
+          ]
+        ]
+      }
+    ],
+    "zero_headers": [
+      {
+        "resource": 254,
+        "sha256": "e2b373bc34080a08afdc8b213ea20b7418bf1553e3ebb386e573e7e134e4a294"
+      },
+      {
+        "resource": 257,
+        "sha256": "6e9cee4dad7d0ce833c039c4095646ee265c803a0cdd01d5bb7bb0c0e7350e22"
+      },
+      {
+        "resource": 260,
+        "sha256": "5ddd65ef9ecc7f21c9ccd168150ba89f2ffc99d9c3d2a2fb0d31685144d65ee1"
+      }
+    ],
+    "generation": [
+      {
+        "key": "axe84idle",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-axe84idle-original-r1.png",
+        "sha256": "b8926bba55e76e0310d287079787b42fa9a45363d81cf2e31a97ff55b77b60c6",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-b30026ab-52f8-4b27-bb20-2dcaef1cf8a4.png",
+        "args": {
+          "prompt": "Use case: stylized-concept. Asset type: transparent high resolution 2D fantasy RPG battle sprite master. Primary request: Redraw the FIRST pixel reference faithfully in the handpainted style of SECOND reference. A tall muscular fully armored knight in vivid crimson red smooth rounded plate, dark navy front hanging tabard, navy elbow and boot accents, sealed red helmet with small dark hornlike sides. Hold one enormous pale mint silver crescent single-bladed battleaxe diagonally over the shoulder, axe head above and right of helmet, pole pointing lower-left. One hand grasping shaft at leftwaist, other bent by rightwaist. Upright grounded stance, both boots fully visible. Match the first image pose/palette and axe design. Style: crisp clean ink contours, rich painted metal shading, visible material detail, classic 1990s fantasy illustration. First reference defines anatomy/palette/equipment; second ONLY defines rendering style, do not copy its spikes/sword/gold patterns. Composition: full entire figure and entire weapon visible, 3/4 front view facing screen-right, centered with at least 12% empty transparent margin on every edge including above axe/polearm/horns. Fit weapon and boots within frame; no cutoff. True transparent background RGBA. No ground shadow, no text, no labels, no panels, no effects. Single complete sprite, no grid. Anatomically continuous shoulder/elbow/wrist and natural joint direction.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure084-native-252-00-oct23-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-giant80idle-original-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          1220,
+          1289
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          24,
+          10,
+          1193,
+          1270
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "halberd85idle",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-halberd85idle-original-r1.png",
+        "sha256": "1293df9a393876d607865bbeebe39f5a1283d6a4f10c2ce3f3665b72024953c5",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-82ba09d3-3adc-4153-aa4e-f6dab75af860.png",
+        "args": {
+          "prompt": "Use case: stylized-concept. Asset type: transparent high resolution 2D fantasy RPG battle sprite master. Primary request: Redraw the FIRST pixel reference faithfully in the handpainted style of SECOND reference. A tall fully armored knight in smooth dark navy blue rounded plate, closed dark blue visor, vivid red cape with black lining and long red front tabard. Upright grounded stance. Carry long thin brown shaft diagonally from lower-left to upper-right over shoulder, very large pale mint silver forked halberd blade high above shoulder, sharp triangular point and curved hook as first reference. Other fist held by waist. Both boots visible. Style: crisp clean ink contours, rich painted metal shading, visible material detail, classic 1990s fantasy illustration. First reference defines anatomy/palette/equipment; second ONLY defines rendering style, do not copy its spikes/sword/gold patterns. Composition: full entire figure and entire weapon visible, 3/4 front view facing screen-right, centered with at least 12% empty transparent margin on every edge including above axe/polearm/horns. Fit weapon and boots within frame; no cutoff. True transparent background RGBA. No ground shadow, no text, no labels, no panels, no effects. Single complete sprite, no grid. Anatomically continuous shoulder/elbow/wrist and natural joint direction.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure085-native-255-00-oct23-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-giant80idle-original-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          1224,
+          1285
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          46,
+          20,
+          1188,
+          1270
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "dragon86fold",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-dragon86fold-original-r1.png",
+        "sha256": "1e43aa5d926ad78d8aa0b33401f11f11b603dfd2c50296c4b0c4b2ea74e389c8",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-3f4f0fa6-d339-47b5-9e69-faf46b84d27d.png",
+        "args": {
+          "prompt": "Use case: stylized-concept. Asset type: transparent high resolution 2D fantasy RPG battle sprite master. Primary request: Redraw the FIRST pixel reference faithfully in the handpainted style of SECOND reference. A blue grey slender flying wyvern with long upright narrow neck, small angular horned head, pale grey-green segmented belly, two clawed hind legs dangling underneath, thin curling tail, dark navy membranous bat wings folded tightly alongside body. An armored rider astride its back, royal blue closed helmet and chest/leg armor, grey green round shoulder plates, red tiny beltcloth, holding a huge grey conical lance diagonally down to right. Match the first reference as a single combined fullbody flying unit: narrow vertical silhouette, rider on right of wyvern neck. No separate figures or ground. Style: crisp clean ink contours, rich painted metal shading, visible material detail, classic 1990s fantasy illustration. First reference defines anatomy/palette/equipment; second ONLY defines rendering style, do not copy its spikes/sword/gold patterns. Composition: full entire figure and entire weapon visible, 3/4 front view facing screen-right, centered with at least 12% empty transparent margin on every edge including above axe/polearm/horns. Fit weapon and boots within frame; no cutoff. True transparent background RGBA. No ground shadow, no text, no labels, no panels, no effects. Single complete sprite, no grid. Anatomically continuous shoulder/elbow/wrist and natural joint direction.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure086-native-258-00-oct23-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-giant80idle-original-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          1079,
+          1458
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          11,
+          12,
+          1071,
+          1436
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "axe84windup",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-axe84windup-original-r1.png",
+        "sha256": "1c8eb7b4ca45de84a9f7000b92df962d69053d2aacb2c24af04d486d409d8e1f",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-59bad1ce-021c-4bb3-b730-40e11db088b7.png",
+        "args": {
+          "prompt": "Use case: identity-preserve. Asset type: single transparent 2D fantasy RPG battle keypose. Primary request: Redraw FIRST handpainted master into the pose shown by SECOND native pixel reference. Wind up before an overhead downward chop. Upright compact planted stance, identical crimson red armor/navy tabard/horn helmet, entire giant crescent axe raised beside and above head, grasp shaft with both naturally joined gauntlets near chest, axe blade visible above right shoulder. Keep feet below hips, narrow stance. Match first reference illustration style and equipment design exactly, crisp contour and painted shading. Fullbody combined sprite, no text, no panels, no cast shadows or ground, no extra particles. Actual transparent RGBA. Add 12 percent transparent empty space on every side and above all weapons. Natural shoulder-elbow-wrist continuity, do not bend wrists backwards. Preserve complete weapon silhouette. No cropping. Single sprite only.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-axe84idle-original-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure084-native-253-04-oct23-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          1189,
+          1323
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          70,
+          26,
+          1143,
+          1282
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "axe84chop",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-axe84chop-original-r1.png",
+        "sha256": "5ada757a4aa66ed6d6ecfbad962a0879e209b0bad6447c2248e29ed0ae1ff47f",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-d38646f5-3a4e-469a-814c-b09c40f9693d.png",
+        "args": {
+          "prompt": "Use case: identity-preserve. Asset type: single transparent 2D fantasy RPG battle keypose. Primary request: Redraw FIRST handpainted master into the pose shown by SECOND native pixel reference. Downward axe chop follow-through as in second reference: compact upright lunging stance, hips facing right, giant pale crescent axe now lowered at bottom-right of body, shaft diagonally from top-left behind shoulder to lower-right, both gauntlets naturally clasp shaft near waist. Original red armor and navy frontcloth. Raised left heel subtle, feet still within narrow silhouette. Entire weapon and boots visible. NO gold glow from pixel reference. Match first reference illustration style and equipment design exactly, crisp contour and painted shading. Fullbody combined sprite, no text, no panels, no cast shadows or ground, no extra particles. Actual transparent RGBA. Add 12 percent transparent empty space on every side and above all weapons. Natural shoulder-elbow-wrist continuity, do not bend wrists backwards. Preserve complete weapon silhouette. No cropping. Single sprite only.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-axe84idle-original-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure084-native-253-06-oct23-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          1220,
+          1289
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          148,
+          88,
+          1173,
+          1225
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "halberd85windup",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-halberd85windup-original-r1.png",
+        "sha256": "ea93ccc921aac19d0803f9986456df55ee5684a7d93adedd9ed18bae599b8b23",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-db5e01e3-33c6-46d1-9a2a-c8041a6112a9.png",
+        "args": {
+          "prompt": "Use case: identity-preserve. Asset type: single transparent 2D fantasy RPG battle keypose. Primary request: Redraw FIRST handpainted master into the pose shown by SECOND native pixel reference. Ready to strike with forked polearm: same navy smooth armor/red cape and tabard. Entire long shaft diagonal across body top-left to bottom-right, pale forked spearhead low at right of shin, hands naturally grasp shaft together near waist/chest. Upright compact planted feet, NOT wide sprawling stance. Match first reference illustration style and equipment design exactly, crisp contour and painted shading. Fullbody combined sprite, no text, no panels, no cast shadows or ground, no extra particles. Actual transparent RGBA. Add 12 percent transparent empty space on every side and above all weapons. Natural shoulder-elbow-wrist continuity, do not bend wrists backwards. Preserve complete weapon silhouette. No cropping. Single sprite only.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-halberd85idle-original-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure085-native-256-04-oct23-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          1186,
+          1327
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          64,
+          64,
+          1137,
+          1270
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "halberd85thrust",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-halberd85thrust-original-r1.png",
+        "sha256": "c76dd15f49054b6b9ac9c646088f290aa6eaef68c616cd877e20dc8acf5d8a9f",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-51c0fe69-7b28-4f7b-bacb-c5c579368afa.png",
+        "args": {
+          "prompt": "Use case: identity-preserve. Asset type: single transparent 2D fantasy RPG battle keypose. Primary request: Redraw FIRST handpainted master into the pose shown by SECOND native pixel reference. Compact downward-right polearm thrust finish. Same navy armor/red tabard/red cape. Body leans mildly forward, gauntlets grasp shaft together at waist, shaft diagonally from upper-left behind shoulder to right-front low point; sharp silver forked halberd tip at bottom-right near foot level. Very compact planted stance both boots close under hips. Entire spear and body, no cutoff. NO glowing streak from pixel reference. Match first reference illustration style and equipment design exactly, crisp contour and painted shading. Fullbody combined sprite, no text, no panels, no cast shadows or ground, no extra particles. Actual transparent RGBA. Add 12 percent transparent empty space on every side and above all weapons. Natural shoulder-elbow-wrist continuity, do not bend wrists backwards. Preserve complete weapon silhouette. No cropping. Single sprite only.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-halberd85idle-original-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure085-native-256-06-oct23-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          1224,
+          1285
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          62,
+          51,
+          1199,
+          1177
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "dragon86half",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-dragon86half-original-r1.png",
+        "sha256": "3ffa36e236a3fe3c12e515d2497732bfd4ce1e67c073052925d4f6ac2fce1f9e",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-c57e0540-9113-463f-930a-56755caa3e58.png",
+        "args": {
+          "prompt": "Use case: identity-preserve. Asset type: single transparent 2D fantasy RPG battle keypose. Primary request: Redraw FIRST handpainted master into the pose shown by SECOND native pixel reference. Change ONLY dragon wings to half-open downward bat-wing stroke (between tightly folded and fully spread). Preserve EXACT narrow upright torso/neck/rider pose, blue/grey colors, rider cone lance angled down-right, feet/tail. Wings attach at same shoulders. Keep complete wings, claws, horns, tail and lance visible, compact balanced vertical figure. Match first reference illustration style and equipment design exactly, crisp contour and painted shading. Fullbody combined sprite, no text, no panels, no cast shadows or ground, no extra particles. Actual transparent RGBA. Add 12 percent transparent empty space on every side and above all weapons. Natural shoulder-elbow-wrist continuity, do not bend wrists backwards. Preserve complete weapon silhouette. No cropping. Single sprite only.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-dragon86fold-original-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure086-native-258-01-oct23-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          1079,
+          1457
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          29,
+          69,
+          1056,
+          1404
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "dragon86open",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-dragon86open-original-r1.png",
+        "sha256": "12627d26178f04327520eb0eabeae963b963cb3d89a8bbc66b9dd1a105875b07",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-b883af8e-dc5c-4722-8151-08e863833313.png",
+        "args": {
+          "prompt": "Use case: identity-preserve. Asset type: single transparent 2D fantasy RPG battle keypose. Primary request: Redraw FIRST handpainted master into the pose shown by SECOND native pixel reference. Change ONLY dragon wings to fully spread triangular bat wings at sides as second pixel reference: broad symmetrical wings with navy membranes and defined finger ribs. Preserve long upright narrow neck and body, same blue/grey colors and pale segmented belly, rider identical blue armor/grey shoulder plates/red small beltcloth, huge conical lance down-right. Entire wing tips/horns/claws/tail/lance visible. Aim overall sprite height 1.2 times width, not panoramic. Match first reference illustration style and equipment design exactly, crisp contour and painted shading. Fullbody combined sprite, no text, no panels, no cast shadows or ground, no extra particles. Actual transparent RGBA. Add 12 percent transparent empty space on every side and above all weapons. Natural shoulder-elbow-wrist continuity, do not bend wrists backwards. Preserve complete weapon silhouette. No cropping. Single sprite only.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-dragon86fold-original-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure086-native-258-02-oct23-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          1145,
+          1374
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          5,
+          93,
+          1140,
+          1295
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "dragon86open2",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-dragon86open2-original-r1.png",
+        "sha256": "33a638eb4cbf961ab58dcb6f9a4dadd52c1ed4b94fe75695aa49eeeb90423d72",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-b9551b2e-8297-48f3-aeba-696a597f308d.png",
+        "args": {
+          "prompt": "Use case: identity-preserve. Asset type: 2D handpainted fantasy RPG transparent battle sprite master. Primary request: Adapt FIRST finished master using SECOND pixel pose as guide. Fully spread symmetrical navy bat wings to both sides. Rider in upright guard with cone lance pointing down-right. Preserve same upright blue-grey wyvern with pale segmented belly and royalblue/greyshoulder rider. Make overall SPRITE 70 percent of image width and 75 percent height, centered; wide EMPTY TRANSPARENT border on all sides, wing tips far from all edges. Image is an asset canvas much larger than character, not closeup. Entire horns, wing tips, tail and lance must be visible. Maintain character identity and materials and clean illustrated contour, not photoreal. One combined fullbody sprite. Keep actual transparent background RGBA; large empty transparent margins, every extremity inside the canvas. No lettering, no panels, no ground shadows. Preserve anatomically continuous shoulders/elbows/wrists. Exactly one blue wyvern and one mounted rider, never horse or extra legs.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-dragon86fold-original-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure086-native-258-02-oct23-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          1457,
+          1079
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          16,
+          111,
+          1442,
+          997
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "dragon86attackfold",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-dragon86attackfold-original-r1.png",
+        "sha256": "8e38ca3e4998582d195ad85d1b06e2c829ae8606bd90ad248de663486dc1ddf7",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-5737f7cb-b1ac-4b25-a845-36beb094cdd2.png",
+        "args": {
+          "prompt": "Use case: identity-preserve. Asset type: 2D handpainted fantasy RPG transparent battle sprite master. Primary request: Adapt FIRST finished master using SECOND pixel pose as guide. Rider strikes: extend the armored lance arm forward and slightly down toward screen-right, huge grey cone lance projected prominently in front of torso, cone tip down-right. Closed visor and red eyes preserved. Wyvern still upright and narrow, tightly folded wings, clawed feet dangling, tailcurled. Match second reference attack pose. Do not add glows. Maintain character identity and materials and clean illustrated contour, not photoreal. One combined fullbody sprite. Keep actual transparent background RGBA; large empty transparent margins, every extremity inside the canvas. No lettering, no panels, no ground shadows. Preserve anatomically continuous shoulders/elbows/wrists. Exactly one blue wyvern and one mounted rider, never horse or extra legs.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-dragon86fold-original-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure086-native-259-09-oct23-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          1079,
+          1457
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          7,
+          6,
+          1075,
+          1430
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "dragon86attackhalf",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-dragon86attackhalf-original-r1.png",
+        "sha256": "4653cc51562a19b2c2e05499d845e578baaff21378ea31c97b9b6661c94f30fb",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-4d10ade8-08f4-4ab0-be0e-1bc95c64c2dc.png",
+        "args": {
+          "prompt": "Use case: identity-preserve. Asset type: 2D handpainted fantasy RPG transparent battle sprite master. Primary request: Adapt FIRST finished master using SECOND pixel pose as guide. Rider strikes: extend armored lance arm forward/down toward screen-right, enormous grey cone lance projected prominently in front of torso, cone tip down-right. Wyvern wings HALF OPEN in descending stroke. Same upright slender bluegrey wyvern/pale segmented belly, rider royalblue armor/grey shoulders/red small beltcloth. Match second native attack with halfopenwings. No glow. Maintain character identity and materials and clean illustrated contour, not photoreal. One combined fullbody sprite. Keep actual transparent background RGBA; large empty transparent margins, every extremity inside the canvas. No lettering, no panels, no ground shadows. Preserve anatomically continuous shoulders/elbows/wrists. Exactly one blue wyvern and one mounted rider, never horse or extra legs.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-dragon86fold-original-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure086-native-259-09-oct23-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          1079,
+          1457
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          14,
+          29,
+          1077,
+          1433
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "dragon86attackopen",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-dragon86attackopen-original-r1.png",
+        "sha256": "59f1e26e27f619940dde9b888e2418222d1aa714b990f4be44a8f151b47b3679",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-ea0ef120-f721-4924-884d-276516c18fe6.png",
+        "args": {
+          "prompt": "Use case: identity-preserve. Asset type: 2D handpainted fantasy RPG transparent battle sprite master. Primary request: Adapt FIRST finished master using SECOND pixel pose as guide. Rider strikes: extend armored lance arm forward and slightly down toward screen-right, enormous grey cone lance projected prominently in front of torso, cone tip down-right. Wyvern wings FULLY OPEN broadly spread like second native reference. Same upright slender bluegrey wyvern/pale segmented belly, rider royalblue armor/greyshoulders/red small beltcloth. Do not add glows. Full entire wings in wide transparent margin, sprite maximum70percentcanvaswidth. Maintain character identity and materials and clean illustrated contour, not photoreal. One combined fullbody sprite. Keep actual transparent background RGBA; large empty transparent margins, every extremity inside the canvas. No lettering, no panels, no ground shadows. Preserve anatomically continuous shoulders/elbows/wrists. Exactly one blue wyvern and one mounted rider, never horse or extra legs.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-dragon86fold-original-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure086-native-259-08-oct23-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          1383,
+          1137
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          6,
+          77,
+          1378,
+          1117
+        ],
+        "high_coverage_boundary_points": 0
+      }
+    ],
+    "generation_ledgers": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party84-85-86-idle-generation-oct23-r1.json",
+        "sha256": "0f358093d195c28485044c163ba3d62879baf7e6a53c6971fca598ec62460bfe"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party84-85-86-motion-generation-oct23-r1.json",
+        "sha256": "b681d8c0227647aa9b7aded720cb17006567838de70b5af47be5bc080deb7891"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party84-85-86-dragon-generation-oct23-r1.json",
+        "sha256": "d882ac5fcf3dce2745f93f13ee0099030bae93c0d4f7bc9b031a320b5a08cef3"
+      }
+    ],
+    "formal_registered": true,
+    "private_synced": true,
+    "normal_player": false,
+    "human_review": "pending until all HD integrated",
+    "full_battle_hd_complete": false,
+    "rules_and_save_changed": false,
+    "recordings_created": false,
+    "source_policy": "84 red plate/navy frontcloth/huge pale single crescent axe;85 navy smooth plate/red cape and frontcloth/pale forked halberd;86 blue-grey dragon pale segmented belly with blue armored rider, grey shoulders and giant conical lance. Native art only, no story identity inferred.",
+    "scope": "RUNTIME-E1 scoped: sixbanks43frames, both fullsourceGPU vs independentCPUOver, all43 fixturecores,8contacts/2wrongroots,63compiler/8fill33guards,three fullF2/64-65DAC/HP/RNG/onecontinuation, bothpackages threepairedvalid/sixcoldplayer-mode11transactions. Old590assets/5543files unchanged. No new normalplayer/original/manual/platform/fullHD proof.",
+    "required_checks": [
+      "43 fullsource GPU per package; all physical Game.Draw body cores; three full attacks/F2/64-65DAC/HP/RNG/one continuation",
+      "63 compiler guards; authored source weapon/light contacts and wrong root negatives; perpackage valid/missing player and mode11 cold atomic preflight",
+      "Raw RGBA unchanged, old590catalog/5543files preserved, full/runtime allow-list SHA and UID, private remote/visibility",
+      "254/257/260 empty headers untouched; original descriptors, delays, markers/cues separate; normal/manual/platform pending"
+    ],
+    "reused_registered_sources": [
+      {
+        "key": "gold78vertical",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party7679-gold78vertical-original-r1.png",
+        "sha256": "814fcb00b7e87b5bd7687620480b84635e7905a6556ed9b5365741e61fdc3ee8",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-3cff7a5c-96d4-4267-9c47-2eddeb01e092.png",
+        "args": {
+          "transparent_background": true,
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure078-native-235-05-oct22-r1.png"
+          ],
+          "prompt": "Use case: stylized-concept. ONE isolated hand-painted golden-white sword downward-swing trail on true transparent background. Output a TALL NARROW PORTRAIT composition. Native input reference shows intended nearly VERTICAL effect only; remove ALL character and sword. Shape: near-vertical pillar/cone of solid white golden light, height THREE TIMES its width. Compact very bright white opaque root centered near x65% y85%. The flame widens toward the top but remains within x30% to75%, and long tapered tongues point almost straight UP (slightly left), NOT diagonally sideways. Tall narrow form, NOT landscape and NOT a wide horizontal splash. Thin gold-orange outline, continuous alpha255 white core including lower root, no detached sparks or atmospheric haze. Keep entire light with generous transparent padding on all four sides. No background, floor, character, weapon, text, circular halo. Match native vertical downcut geometry."
+        },
+        "size": [
+          724,
+          2172
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          207,
+          15,
+          613,
+          2145
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "gold79slash",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party7679-gold79slash-original-r1.png",
+        "sha256": "7463fb84f2ab734d7297f333f5182297bf6b1103f0067f8c9228370f0e6637c2",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-676a5bc9-3d33-4e27-bee1-d2700b3de3a5.png",
+        "args": {
+          "transparent_background": true,
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure079-native-238-03-oct22-r1.png"
+          ],
+          "prompt": "Use case: stylized-concept. Asset: ONE hand-painted fantasy SRPG sword swing effect on true transparent RGBA. Input is native reference ONLY for effect geometry, ignore character completely. One tall vertical crescent sword trail. Bright white root at LOWER RIGHT x80% y85%, broad white belly curves up along RIGHT and bends/tapers toward UPPER LEFT. Native white-yellow downcut arc, bright nearblade root. No complete ring or horizontal beam. Painted crisp opaque near-white core with restrained golden-orange rim, no detached sparks or wispy haze. Include entire effect and all tips with 12% transparent padding every side. No character, weapon, scenery, floor, text or dark background. A single connected silhouette, solid alpha255 core especially around root, transparent exterior. NOT a diagram."
+        },
+        "size": [
+          1194,
+          1317
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          447,
+          35,
+          1168,
+          1301
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "gold76slash",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party7679-gold76slash-original-r1.png",
+        "sha256": "4fb47eada44999c3ce5b4a537f7403b64d6ee57455d627f3b098f8cc166eba4a",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-87b49eb7-00f3-4277-b8d0-b816384547d6.png",
+        "args": {
+          "transparent_background": true,
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure076-native-229-06-oct22-r1.png"
+          ],
+          "prompt": "Use case: stylized-concept. Asset: ONE hand-painted fantasy SRPG sword swing effect on true transparent RGBA. Input is native reference ONLY for effect geometry, ignore character completely. A narrow long sword-swing cone, brightest solid WHITE root at LOWER RIGHT about x75% y85%, widening toward UPPER LEFT. Tall diagonal upperleft spray of several long tapered yellow-white tongues; root lower-right is compact sharp and brilliant. Shape points as native: broad flame plume up-left, narrow root down-right. Painted crisp opaque near-white core with restrained golden-orange rim, no detached sparks or wispy haze. Include entire effect and all tips with 12% transparent padding every side. No character, weapon, scenery, floor, text or dark background. A single connected silhouette, solid alpha255 core especially around root, transparent exterior. NOT a diagram."
+        },
+        "size": [
+          1072,
+          1467
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          61,
+          30,
+          1056,
+          1425
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "gold82tip",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-gold82tip-original-r1.png",
+        "sha256": "fb19bf852e2ac60ca678c718a5c44f0ce55371a629303d5201f59c9ff0c600b9",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-1b4b6d12-6da3-44c2-a156-41705ded73a9.png",
+        "args": {
+          "transparent_background": true,
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure082-native-247-06-oct22-r1.png"
+          ],
+          "prompt": "Use case: stylized-concept. ONE tiny weapon-tip light trail sprite for hand-painted fantasy SRPG, isolated on true transparent RGBA. Input native reference only for small GOLDEN flare beyond the spear tip at bottom right; exclude every part of warrior and weapon. Shape: a compact brilliant WHITE opaque root at UPPER LEFT, from which three narrow yellow-orange tapered tongues streak diagonally down toward LOWER RIGHT. A short pointed triangular forked flare, direction northwest to southeast; NOT a long comet, crescent, circular explosion, fullbeam or upward-flaming torch. White core touching the root must be alpha255, fine amber rim, crisp painted inkless light. Whole effect with 20% transparent padding all sides, no cropping, separate sparks, hazy aura, background, floor, text, character or weapon. Solid connected shape, genuine transparency, simple readable silhouette suitable for shrinking to a few game pixels."
+        },
+        "size": [
+          1268,
+          1240
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          282,
+          91,
+          1082,
+          1138
+        ],
+        "high_coverage_boundary_points": 0
+      }
+    ],
+    "recipes": {
+      "84": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure084-recipe-oct23-r1.json",
+        "sha256": "f0d3d569372b943f34035e7781558657a1dbbecb59e1af59d5d2c0170d386b82"
+      },
+      "85": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure085-recipe-oct23-r1.json",
+        "sha256": "a69f4f07ca28d682ee1448d80ce0e329febc639f9e285d01db1dcffda910140f"
+      },
+      "86": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure086-recipe-oct23-r2.json",
+        "sha256": "752dece01dfe86fb55950e5639ca7147b32fad28dc3db8e6c71b160740b13993"
+      }
+    },
+    "connections": {
+      "84": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure084-connections-oct23-r1.json",
+        "sha256": "931846af3891833ba958e8f3cf5364febeeaabcfc4ee4c53eea61d9a74581bea"
+      },
+      "85": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure085-connections-oct23-r1.json",
+        "sha256": "b515247b69414ee1dc5c20fa07bde46753e0c3225a9c05aec3f2b4260b421b41"
+      },
+      "86": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure086-connections-oct23-r1.json",
+        "sha256": "d7e85058eaee7807ca2d17f4929759d5716d9e567f9fa4f48651c64093c07136"
+      }
+    },
+    "recipe_inline": {
+      "84": {
+        "schema_version": 1,
+        "figure": 84,
+        "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+        "sources": {
+          "axe84idle": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-axe84idle-original-r1.png",
+            "sha256": "b8926bba55e76e0310d287079787b42fa9a45363d81cf2e31a97ff55b77b60c6",
+            "anchor": [
+              22,
+              8,
+              1195,
+              1272
+            ]
+          },
+          "axe84windup": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-axe84windup-original-r1.png",
+            "sha256": "1c8eb7b4ca45de84a9f7000b92df962d69053d2aacb2c24af04d486d409d8e1f",
+            "anchor": [
+              68,
+              24,
+              1145,
+              1284
+            ]
+          },
+          "axe84chop": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-axe84chop-original-r1.png",
+            "sha256": "5ada757a4aa66ed6d6ecfbad962a0879e209b0bad6447c2248e29ed0ae1ff47f",
+            "anchor": [
+              146,
+              86,
+              1175,
+              1227
+            ]
+          },
+          "gold78vertical-253-5": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party7679-gold78vertical-original-r1.png",
+            "sha256": "814fcb00b7e87b5bd7687620480b84635e7905a6556ed9b5365741e61fdc3ee8",
+            "anchor": [
+              495,
+              2060,
+              505,
+              2100
+            ]
+          },
+          "gold79slash-253-6": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party7679-gold79slash-original-r1.png",
+            "sha256": "7463fb84f2ab734d7297f333f5182297bf6b1103f0067f8c9228370f0e6637c2",
+            "anchor": [
+              955,
+              1190,
+              965,
+              1270
+            ]
+          },
+          "gold79slash-253-7": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party7679-gold79slash-original-r1.png",
+            "sha256": "7463fb84f2ab734d7297f333f5182297bf6b1103f0067f8c9228370f0e6637c2",
+            "anchor": [
+              955,
+              1110,
+              965,
+              1270
+            ]
+          },
+          "gold79slash-253-8": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party7679-gold79slash-original-r1.png",
+            "sha256": "7463fb84f2ab734d7297f333f5182297bf6b1103f0067f8c9228370f0e6637c2",
+            "anchor": [
+              955,
+              950,
+              965,
+              1270
+            ]
+          }
+        },
+        "resources": {
+          "252": [
+            [
+              {
+                "pose": "axe84idle",
+                "anchor": [
+                  8,
+                  0,
+                  132,
+                  149
+                ],
+                "scale_group": "axe84idle"
+              }
+            ]
+          ],
+          "253": [
+            [
+              {
+                "pose": "axe84idle",
+                "anchor": [
+                  8,
+                  0,
+                  132,
+                  149
+                ],
+                "scale_group": "axe84idle"
+              }
+            ],
+            [
+              {
+                "pose": "axe84idle",
+                "anchor": [
+                  8,
+                  0,
+                  132,
+                  149
+                ],
+                "scale_group": "axe84idle"
+              }
+            ],
+            [
+              {
+                "pose": "axe84windup",
+                "anchor": [
+                  8,
+                  0,
+                  132,
+                  149
+                ],
+                "scale_group": "axe84windup"
+              }
+            ],
+            [
+              {
+                "pose": "axe84windup",
+                "anchor": [
+                  8,
+                  0,
+                  132,
+                  149
+                ],
+                "scale_group": "axe84windup"
+              }
+            ],
+            [
+              {
+                "pose": "axe84windup",
+                "anchor": [
+                  8,
+                  0,
+                  132,
+                  149
+                ],
+                "scale_group": "axe84windup"
+              }
+            ],
+            [
+              {
+                "pose": "gold78vertical-253-5",
+                "anchor": [
+                  149,
+                  163,
+                  151,
+                  169
+                ],
+                "scale_group": "gold78vertical-253-5"
+              },
+              {
+                "pose": "axe84chop",
+                "anchor": [
+                  5,
+                  4,
+                  166,
+                  177
+                ],
+                "scale_group": "axe84chop"
+              }
+            ],
+            [
+              {
+                "pose": "gold79slash-253-6",
+                "anchor": [
+                  126,
+                  144,
+                  128,
+                  145
+                ],
+                "scale_group": "gold79slash-253-6"
+              },
+              {
+                "pose": "axe84chop",
+                "anchor": [
+                  5,
+                  4,
+                  139,
+                  152
+                ],
+                "scale_group": "axe84chop"
+              }
+            ],
+            [
+              {
+                "pose": "gold79slash-253-7",
+                "anchor": [
+                  125,
+                  144,
+                  127,
+                  145
+                ],
+                "scale_group": "gold79slash-253-7"
+              },
+              {
+                "pose": "axe84chop",
+                "anchor": [
+                  5,
+                  4,
+                  136,
+                  152
+                ],
+                "scale_group": "axe84chop"
+              }
+            ],
+            [
+              {
+                "pose": "gold79slash-253-8",
+                "anchor": [
+                  116,
+                  144,
+                  118,
+                  145
+                ],
+                "scale_group": "gold79slash-253-8"
+              },
+              {
+                "pose": "axe84chop",
+                "anchor": [
+                  5,
+                  4,
+                  118,
+                  152
+                ],
+                "scale_group": "axe84chop"
+              }
+            ],
+            [
+              {
+                "pose": "axe84chop",
+                "anchor": [
+                  5,
+                  4,
+                  118,
+                  152
+                ],
+                "scale_group": "axe84chop"
+              }
+            ]
+          ]
+        }
+      },
+      "85": {
+        "schema_version": 1,
+        "figure": 85,
+        "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+        "sources": {
+          "halberd85idle": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-halberd85idle-original-r1.png",
+            "sha256": "1293df9a393876d607865bbeebe39f5a1283d6a4f10c2ce3f3665b72024953c5",
+            "anchor": [
+              44,
+              18,
+              1190,
+              1272
+            ]
+          },
+          "halberd85windup": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-halberd85windup-original-r1.png",
+            "sha256": "ea93ccc921aac19d0803f9986456df55ee5684a7d93adedd9ed18bae599b8b23",
+            "anchor": [
+              62,
+              62,
+              1139,
+              1272
+            ]
+          },
+          "halberd85thrust": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-halberd85thrust-original-r1.png",
+            "sha256": "c76dd15f49054b6b9ac9c646088f290aa6eaef68c616cd877e20dc8acf5d8a9f",
+            "anchor": [
+              60,
+              49,
+              1201,
+              1179
+            ]
+          },
+          "gold76slash-256-5": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party7679-gold76slash-original-r1.png",
+            "sha256": "4fb47eada44999c3ce5b4a537f7403b64d6ee57455d627f3b098f8cc166eba4a",
+            "anchor": [
+              990,
+              1345,
+              1000,
+              1385
+            ]
+          },
+          "gold82tip-256-6": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-gold82tip-original-r1.png",
+            "sha256": "fb19bf852e2ac60ca678c718a5c44f0ce55371a629303d5201f59c9ff0c600b9",
+            "anchor": [
+              595,
+              600,
+              605,
+              700
+            ]
+          },
+          "gold82tip-256-7": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-gold82tip-original-r1.png",
+            "sha256": "fb19bf852e2ac60ca678c718a5c44f0ce55371a629303d5201f59c9ff0c600b9",
+            "anchor": [
+              595,
+              600,
+              605,
+              800
+            ]
+          },
+          "gold82tip-256-8": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-gold82tip-original-r1.png",
+            "sha256": "fb19bf852e2ac60ca678c718a5c44f0ce55371a629303d5201f59c9ff0c600b9",
+            "anchor": [
+              595,
+              600,
+              605,
+              1000
+            ]
+          }
+        },
+        "resources": {
+          "255": [
+            [
+              {
+                "pose": "halberd85idle",
+                "anchor": [
+                  4,
+                  1,
+                  140,
+                  149
+                ],
+                "scale_group": "halberd85idle"
+              }
+            ]
+          ],
+          "256": [
+            [
+              {
+                "pose": "halberd85windup",
+                "anchor": [
+                  4,
+                  1,
+                  136,
+                  141
+                ],
+                "scale_group": "halberd85windup"
+              }
+            ],
+            [
+              {
+                "pose": "halberd85windup",
+                "anchor": [
+                  4,
+                  1,
+                  136,
+                  140
+                ],
+                "scale_group": "halberd85windup"
+              }
+            ],
+            [
+              {
+                "pose": "halberd85windup",
+                "anchor": [
+                  4,
+                  1,
+                  140,
+                  142
+                ],
+                "scale_group": "halberd85windup"
+              }
+            ],
+            [
+              {
+                "pose": "halberd85windup",
+                "anchor": [
+                  4,
+                  1,
+                  140,
+                  143
+                ],
+                "scale_group": "halberd85windup"
+              }
+            ],
+            [
+              {
+                "pose": "halberd85windup",
+                "anchor": [
+                  4,
+                  1,
+                  140,
+                  144
+                ],
+                "scale_group": "halberd85windup"
+              }
+            ],
+            [
+              {
+                "pose": "gold76slash-256-5",
+                "anchor": [
+                  175,
+                  152,
+                  177,
+                  157
+                ],
+                "scale_group": "gold76slash-256-5"
+              },
+              {
+                "pose": "halberd85thrust",
+                "anchor": [
+                  4,
+                  1,
+                  193,
+                  164
+                ],
+                "scale_group": "halberd85thrust"
+              }
+            ],
+            [
+              {
+                "pose": "gold82tip-256-6",
+                "anchor": [
+                  156,
+                  150,
+                  158,
+                  151
+                ],
+                "scale_group": "gold82tip-256-6"
+              },
+              {
+                "pose": "halberd85thrust",
+                "anchor": [
+                  4,
+                  1,
+                  161,
+                  157
+                ],
+                "scale_group": "halberd85thrust"
+              }
+            ],
+            [
+              {
+                "pose": "gold82tip-256-7",
+                "anchor": [
+                  156,
+                  150,
+                  158,
+                  151
+                ],
+                "scale_group": "gold82tip-256-7"
+              },
+              {
+                "pose": "halberd85thrust",
+                "anchor": [
+                  4,
+                  1,
+                  161,
+                  157
+                ],
+                "scale_group": "halberd85thrust"
+              }
+            ],
+            [
+              {
+                "pose": "gold82tip-256-8",
+                "anchor": [
+                  156,
+                  150,
+                  158,
+                  151
+                ],
+                "scale_group": "gold82tip-256-8"
+              },
+              {
+                "pose": "halberd85thrust",
+                "anchor": [
+                  4,
+                  1,
+                  161,
+                  157
+                ],
+                "scale_group": "halberd85thrust"
+              }
+            ],
+            [
+              {
+                "pose": "halberd85thrust",
+                "anchor": [
+                  4,
+                  1,
+                  161,
+                  157
+                ],
+                "scale_group": "halberd85thrust"
+              }
+            ]
+          ]
+        }
+      },
+      "86": {
+        "schema_version": 1,
+        "figure": 86,
+        "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+        "sources": {
+          "dragon86fold": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-dragon86fold-original-r1.png",
+            "sha256": "1e43aa5d926ad78d8aa0b33401f11f11b603dfd2c50296c4b0c4b2ea74e389c8",
+            "anchor": [
+              200,
+              12,
+              800,
+              1436
+            ]
+          },
+          "dragon86half": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-dragon86half-original-r1.png",
+            "sha256": "3ffa36e236a3fe3c12e515d2497732bfd4ce1e67c073052925d4f6ac2fce1f9e",
+            "anchor": [
+              180,
+              69,
+              800,
+              1404
+            ]
+          },
+          "dragon86open2": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-dragon86open2-original-r1.png",
+            "sha256": "33a638eb4cbf961ab58dcb6f9a4dadd52c1ed4b94fe75695aa49eeeb90423d72",
+            "anchor": [
+              530,
+              111,
+              930,
+              997
+            ]
+          },
+          "dragon86attackfold": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-dragon86attackfold-original-r1.png",
+            "sha256": "8e38ca3e4998582d195ad85d1b06e2c829ae8606bd90ad248de663486dc1ddf7",
+            "anchor": [
+              180,
+              6,
+              800,
+              1430
+            ]
+          },
+          "dragon86attackhalf": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-dragon86attackhalf-original-r1.png",
+            "sha256": "4653cc51562a19b2c2e05499d845e578baaff21378ea31c97b9b6661c94f30fb",
+            "anchor": [
+              180,
+              29,
+              800,
+              1433
+            ]
+          },
+          "dragon86attackopen": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-dragon86attackopen-original-r1.png",
+            "sha256": "59f1e26e27f619940dde9b888e2418222d1aa714b990f4be44a8f151b47b3679",
+            "anchor": [
+              425,
+              77,
+              915,
+              1117
+            ]
+          }
+        },
+        "resources": {
+          "258": [
+            [
+              {
+                "pose": "dragon86fold",
+                "anchor": [
+                  26,
+                  0,
+                  119,
+                  194
+                ],
+                "scale_group": "dragon86fold"
+              }
+            ],
+            [
+              {
+                "pose": "dragon86half",
+                "anchor": [
+                  27,
+                  0,
+                  125,
+                  193
+                ],
+                "scale_group": "dragon86half"
+              }
+            ],
+            [
+              {
+                "pose": "dragon86open2",
+                "anchor": [
+                  37,
+                  0,
+                  169,
+                  192
+                ],
+                "scale_group": "dragon86open2"
+              }
+            ],
+            [
+              {
+                "pose": "dragon86half",
+                "anchor": [
+                  27,
+                  0,
+                  125,
+                  193
+                ],
+                "scale_group": "dragon86half"
+              }
+            ]
+          ],
+          "259": [
+            [
+              {
+                "pose": "dragon86fold",
+                "anchor": [
+                  26,
+                  0,
+                  119,
+                  194
+                ],
+                "scale_group": "dragon86fold"
+              }
+            ],
+            [
+              {
+                "pose": "dragon86half",
+                "anchor": [
+                  27,
+                  0,
+                  125,
+                  193
+                ],
+                "scale_group": "dragon86half"
+              }
+            ],
+            [
+              {
+                "pose": "dragon86open2",
+                "anchor": [
+                  36,
+                  0,
+                  166,
+                  192
+                ],
+                "scale_group": "dragon86open2"
+              }
+            ],
+            [
+              {
+                "pose": "dragon86half",
+                "anchor": [
+                  27,
+                  0,
+                  125,
+                  191
+                ],
+                "scale_group": "dragon86half"
+              }
+            ],
+            [
+              {
+                "pose": "dragon86fold",
+                "anchor": [
+                  25,
+                  0,
+                  112,
+                  190
+                ],
+                "scale_group": "dragon86fold"
+              }
+            ],
+            [
+              {
+                "pose": "dragon86half",
+                "anchor": [
+                  27,
+                  0,
+                  125,
+                  189
+                ],
+                "scale_group": "dragon86half"
+              }
+            ],
+            [
+              {
+                "pose": "dragon86open2",
+                "anchor": [
+                  35,
+                  0,
+                  159,
+                  188
+                ],
+                "scale_group": "dragon86open2"
+              }
+            ],
+            [
+              {
+                "pose": "dragon86half",
+                "anchor": [
+                  27,
+                  0,
+                  124,
+                  187
+                ],
+                "scale_group": "dragon86half"
+              }
+            ],
+            [
+              {
+                "pose": "dragon86attackopen",
+                "anchor": [
+                  42,
+                  0,
+                  194,
+                  192
+                ],
+                "scale_group": "dragon86attackopen"
+              }
+            ],
+            [
+              {
+                "pose": "dragon86attackhalf",
+                "anchor": [
+                  26,
+                  0,
+                  119,
+                  193
+                ],
+                "scale_group": "dragon86attackhalf"
+              }
+            ],
+            [
+              {
+                "pose": "dragon86attackfold",
+                "anchor": [
+                  24,
+                  0,
+                  110,
+                  194
+                ],
+                "scale_group": "dragon86attackfold"
+              }
+            ],
+            [
+              {
+                "pose": "dragon86attackhalf",
+                "anchor": [
+                  26,
+                  0,
+                  119,
+                  194
+                ],
+                "scale_group": "dragon86attackhalf"
+              }
+            ],
+            [
+              {
+                "pose": "dragon86attackopen",
+                "anchor": [
+                  42,
+                  0,
+                  194,
+                  194
+                ],
+                "scale_group": "dragon86attackopen"
+              }
+            ],
+            [
+              {
+                "pose": "dragon86attackhalf",
+                "anchor": [
+                  26,
+                  0,
+                  119,
+                  193
+                ],
+                "scale_group": "dragon86attackhalf"
+              }
+            ],
+            [
+              {
+                "pose": "dragon86attackfold",
+                "anchor": [
+                  23,
+                  0,
+                  106,
+                  192
+                ],
+                "scale_group": "dragon86attackfold"
+              }
+            ],
+            [
+              {
+                "pose": "dragon86attackhalf",
+                "anchor": [
+                  26,
+                  0,
+                  119,
+                  191
+                ],
+                "scale_group": "dragon86attackhalf"
+              }
+            ],
+            [
+              {
+                "pose": "dragon86attackopen",
+                "anchor": [
+                  42,
+                  0,
+                  192,
+                  190
+                ],
+                "scale_group": "dragon86attackopen"
+              }
+            ]
+          ]
+        }
+      }
+    },
+    "connections_inline": {
+      "84": {
+        "schema_version": 1,
+        "connections": [
+          {
+            "resource": 253,
+            "frame": 5,
+            "left": {
+              "pose": "axe84chop",
+              "point": [
+                1140,
+                1170
+              ]
+            },
+            "right": {
+              "pose": "gold78vertical-253-5",
+              "point": [
+                500,
+                2100
+              ]
+            },
+            "maximum_distance_hd": 8
+          },
+          {
+            "resource": 253,
+            "frame": 6,
+            "left": {
+              "pose": "axe84chop",
+              "point": [
+                1140,
+                1170
+              ]
+            },
+            "right": {
+              "pose": "gold79slash-253-6",
+              "point": [
+                960,
+                1270
+              ]
+            },
+            "maximum_distance_hd": 8
+          },
+          {
+            "resource": 253,
+            "frame": 7,
+            "left": {
+              "pose": "axe84chop",
+              "point": [
+                1140,
+                1170
+              ]
+            },
+            "right": {
+              "pose": "gold79slash-253-7",
+              "point": [
+                960,
+                1270
+              ]
+            },
+            "maximum_distance_hd": 8
+          },
+          {
+            "resource": 253,
+            "frame": 8,
+            "left": {
+              "pose": "axe84chop",
+              "point": [
+                1140,
+                1170
+              ]
+            },
+            "right": {
+              "pose": "gold79slash-253-8",
+              "point": [
+                960,
+                1270
+              ]
+            },
+            "maximum_distance_hd": 8
+          }
+        ]
+      },
+      "85": {
+        "schema_version": 1,
+        "connections": [
+          {
+            "resource": 256,
+            "frame": 5,
+            "left": {
+              "pose": "halberd85thrust",
+              "point": [
+                1170,
+                1130
+              ]
+            },
+            "right": {
+              "pose": "gold76slash-256-5",
+              "point": [
+                995,
+                1385
+              ]
+            },
+            "maximum_distance_hd": 8
+          },
+          {
+            "resource": 256,
+            "frame": 6,
+            "left": {
+              "pose": "halberd85thrust",
+              "point": [
+                1170,
+                1130
+              ]
+            },
+            "right": {
+              "pose": "gold82tip-256-6",
+              "point": [
+                600,
+                600
+              ]
+            },
+            "maximum_distance_hd": 8
+          },
+          {
+            "resource": 256,
+            "frame": 7,
+            "left": {
+              "pose": "halberd85thrust",
+              "point": [
+                1170,
+                1130
+              ]
+            },
+            "right": {
+              "pose": "gold82tip-256-7",
+              "point": [
+                600,
+                600
+              ]
+            },
+            "maximum_distance_hd": 8
+          },
+          {
+            "resource": 256,
+            "frame": 8,
+            "left": {
+              "pose": "halberd85thrust",
+              "point": [
+                1170,
+                1130
+              ]
+            },
+            "right": {
+              "pose": "gold82tip-256-8",
+              "point": [
+                600,
+                600
+              ]
+            },
+            "maximum_distance_hd": 8
+          }
+        ]
+      },
+      "86": {
+        "schema_version": 1,
+        "connections": []
+      }
+    },
+    "selected_sources": [
+      {
+        "key": "axe84idle",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-axe84idle-original-r1.png",
+        "sha256": "b8926bba55e76e0310d287079787b42fa9a45363d81cf2e31a97ff55b77b60c6",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-b30026ab-52f8-4b27-bb20-2dcaef1cf8a4.png",
+        "args": {
+          "prompt": "Use case: stylized-concept. Asset type: transparent high resolution 2D fantasy RPG battle sprite master. Primary request: Redraw the FIRST pixel reference faithfully in the handpainted style of SECOND reference. A tall muscular fully armored knight in vivid crimson red smooth rounded plate, dark navy front hanging tabard, navy elbow and boot accents, sealed red helmet with small dark hornlike sides. Hold one enormous pale mint silver crescent single-bladed battleaxe diagonally over the shoulder, axe head above and right of helmet, pole pointing lower-left. One hand grasping shaft at leftwaist, other bent by rightwaist. Upright grounded stance, both boots fully visible. Match the first image pose/palette and axe design. Style: crisp clean ink contours, rich painted metal shading, visible material detail, classic 1990s fantasy illustration. First reference defines anatomy/palette/equipment; second ONLY defines rendering style, do not copy its spikes/sword/gold patterns. Composition: full entire figure and entire weapon visible, 3/4 front view facing screen-right, centered with at least 12% empty transparent margin on every edge including above axe/polearm/horns. Fit weapon and boots within frame; no cutoff. True transparent background RGBA. No ground shadow, no text, no labels, no panels, no effects. Single complete sprite, no grid. Anatomically continuous shoulder/elbow/wrist and natural joint direction.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure084-native-252-00-oct23-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-giant80idle-original-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          1220,
+          1289
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          24,
+          10,
+          1193,
+          1270
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "halberd85idle",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-halberd85idle-original-r1.png",
+        "sha256": "1293df9a393876d607865bbeebe39f5a1283d6a4f10c2ce3f3665b72024953c5",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-82ba09d3-3adc-4153-aa4e-f6dab75af860.png",
+        "args": {
+          "prompt": "Use case: stylized-concept. Asset type: transparent high resolution 2D fantasy RPG battle sprite master. Primary request: Redraw the FIRST pixel reference faithfully in the handpainted style of SECOND reference. A tall fully armored knight in smooth dark navy blue rounded plate, closed dark blue visor, vivid red cape with black lining and long red front tabard. Upright grounded stance. Carry long thin brown shaft diagonally from lower-left to upper-right over shoulder, very large pale mint silver forked halberd blade high above shoulder, sharp triangular point and curved hook as first reference. Other fist held by waist. Both boots visible. Style: crisp clean ink contours, rich painted metal shading, visible material detail, classic 1990s fantasy illustration. First reference defines anatomy/palette/equipment; second ONLY defines rendering style, do not copy its spikes/sword/gold patterns. Composition: full entire figure and entire weapon visible, 3/4 front view facing screen-right, centered with at least 12% empty transparent margin on every edge including above axe/polearm/horns. Fit weapon and boots within frame; no cutoff. True transparent background RGBA. No ground shadow, no text, no labels, no panels, no effects. Single complete sprite, no grid. Anatomically continuous shoulder/elbow/wrist and natural joint direction.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure085-native-255-00-oct23-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-giant80idle-original-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          1224,
+          1285
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          46,
+          20,
+          1188,
+          1270
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "dragon86fold",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-dragon86fold-original-r1.png",
+        "sha256": "1e43aa5d926ad78d8aa0b33401f11f11b603dfd2c50296c4b0c4b2ea74e389c8",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-3f4f0fa6-d339-47b5-9e69-faf46b84d27d.png",
+        "args": {
+          "prompt": "Use case: stylized-concept. Asset type: transparent high resolution 2D fantasy RPG battle sprite master. Primary request: Redraw the FIRST pixel reference faithfully in the handpainted style of SECOND reference. A blue grey slender flying wyvern with long upright narrow neck, small angular horned head, pale grey-green segmented belly, two clawed hind legs dangling underneath, thin curling tail, dark navy membranous bat wings folded tightly alongside body. An armored rider astride its back, royal blue closed helmet and chest/leg armor, grey green round shoulder plates, red tiny beltcloth, holding a huge grey conical lance diagonally down to right. Match the first reference as a single combined fullbody flying unit: narrow vertical silhouette, rider on right of wyvern neck. No separate figures or ground. Style: crisp clean ink contours, rich painted metal shading, visible material detail, classic 1990s fantasy illustration. First reference defines anatomy/palette/equipment; second ONLY defines rendering style, do not copy its spikes/sword/gold patterns. Composition: full entire figure and entire weapon visible, 3/4 front view facing screen-right, centered with at least 12% empty transparent margin on every edge including above axe/polearm/horns. Fit weapon and boots within frame; no cutoff. True transparent background RGBA. No ground shadow, no text, no labels, no panels, no effects. Single complete sprite, no grid. Anatomically continuous shoulder/elbow/wrist and natural joint direction.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure086-native-258-00-oct23-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-giant80idle-original-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          1079,
+          1458
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          11,
+          12,
+          1071,
+          1436
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "axe84windup",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-axe84windup-original-r1.png",
+        "sha256": "1c8eb7b4ca45de84a9f7000b92df962d69053d2aacb2c24af04d486d409d8e1f",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-59bad1ce-021c-4bb3-b730-40e11db088b7.png",
+        "args": {
+          "prompt": "Use case: identity-preserve. Asset type: single transparent 2D fantasy RPG battle keypose. Primary request: Redraw FIRST handpainted master into the pose shown by SECOND native pixel reference. Wind up before an overhead downward chop. Upright compact planted stance, identical crimson red armor/navy tabard/horn helmet, entire giant crescent axe raised beside and above head, grasp shaft with both naturally joined gauntlets near chest, axe blade visible above right shoulder. Keep feet below hips, narrow stance. Match first reference illustration style and equipment design exactly, crisp contour and painted shading. Fullbody combined sprite, no text, no panels, no cast shadows or ground, no extra particles. Actual transparent RGBA. Add 12 percent transparent empty space on every side and above all weapons. Natural shoulder-elbow-wrist continuity, do not bend wrists backwards. Preserve complete weapon silhouette. No cropping. Single sprite only.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-axe84idle-original-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure084-native-253-04-oct23-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          1189,
+          1323
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          70,
+          26,
+          1143,
+          1282
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "axe84chop",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-axe84chop-original-r1.png",
+        "sha256": "5ada757a4aa66ed6d6ecfbad962a0879e209b0bad6447c2248e29ed0ae1ff47f",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-d38646f5-3a4e-469a-814c-b09c40f9693d.png",
+        "args": {
+          "prompt": "Use case: identity-preserve. Asset type: single transparent 2D fantasy RPG battle keypose. Primary request: Redraw FIRST handpainted master into the pose shown by SECOND native pixel reference. Downward axe chop follow-through as in second reference: compact upright lunging stance, hips facing right, giant pale crescent axe now lowered at bottom-right of body, shaft diagonally from top-left behind shoulder to lower-right, both gauntlets naturally clasp shaft near waist. Original red armor and navy frontcloth. Raised left heel subtle, feet still within narrow silhouette. Entire weapon and boots visible. NO gold glow from pixel reference. Match first reference illustration style and equipment design exactly, crisp contour and painted shading. Fullbody combined sprite, no text, no panels, no cast shadows or ground, no extra particles. Actual transparent RGBA. Add 12 percent transparent empty space on every side and above all weapons. Natural shoulder-elbow-wrist continuity, do not bend wrists backwards. Preserve complete weapon silhouette. No cropping. Single sprite only.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-axe84idle-original-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure084-native-253-06-oct23-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          1220,
+          1289
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          148,
+          88,
+          1173,
+          1225
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "halberd85windup",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-halberd85windup-original-r1.png",
+        "sha256": "ea93ccc921aac19d0803f9986456df55ee5684a7d93adedd9ed18bae599b8b23",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-db5e01e3-33c6-46d1-9a2a-c8041a6112a9.png",
+        "args": {
+          "prompt": "Use case: identity-preserve. Asset type: single transparent 2D fantasy RPG battle keypose. Primary request: Redraw FIRST handpainted master into the pose shown by SECOND native pixel reference. Ready to strike with forked polearm: same navy smooth armor/red cape and tabard. Entire long shaft diagonal across body top-left to bottom-right, pale forked spearhead low at right of shin, hands naturally grasp shaft together near waist/chest. Upright compact planted feet, NOT wide sprawling stance. Match first reference illustration style and equipment design exactly, crisp contour and painted shading. Fullbody combined sprite, no text, no panels, no cast shadows or ground, no extra particles. Actual transparent RGBA. Add 12 percent transparent empty space on every side and above all weapons. Natural shoulder-elbow-wrist continuity, do not bend wrists backwards. Preserve complete weapon silhouette. No cropping. Single sprite only.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-halberd85idle-original-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure085-native-256-04-oct23-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          1186,
+          1327
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          64,
+          64,
+          1137,
+          1270
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "halberd85thrust",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-halberd85thrust-original-r1.png",
+        "sha256": "c76dd15f49054b6b9ac9c646088f290aa6eaef68c616cd877e20dc8acf5d8a9f",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-51c0fe69-7b28-4f7b-bacb-c5c579368afa.png",
+        "args": {
+          "prompt": "Use case: identity-preserve. Asset type: single transparent 2D fantasy RPG battle keypose. Primary request: Redraw FIRST handpainted master into the pose shown by SECOND native pixel reference. Compact downward-right polearm thrust finish. Same navy armor/red tabard/red cape. Body leans mildly forward, gauntlets grasp shaft together at waist, shaft diagonally from upper-left behind shoulder to right-front low point; sharp silver forked halberd tip at bottom-right near foot level. Very compact planted stance both boots close under hips. Entire spear and body, no cutoff. NO glowing streak from pixel reference. Match first reference illustration style and equipment design exactly, crisp contour and painted shading. Fullbody combined sprite, no text, no panels, no cast shadows or ground, no extra particles. Actual transparent RGBA. Add 12 percent transparent empty space on every side and above all weapons. Natural shoulder-elbow-wrist continuity, do not bend wrists backwards. Preserve complete weapon silhouette. No cropping. Single sprite only.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-halberd85idle-original-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure085-native-256-06-oct23-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          1224,
+          1285
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          62,
+          51,
+          1199,
+          1177
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "dragon86half",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-dragon86half-original-r1.png",
+        "sha256": "3ffa36e236a3fe3c12e515d2497732bfd4ce1e67c073052925d4f6ac2fce1f9e",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-c57e0540-9113-463f-930a-56755caa3e58.png",
+        "args": {
+          "prompt": "Use case: identity-preserve. Asset type: single transparent 2D fantasy RPG battle keypose. Primary request: Redraw FIRST handpainted master into the pose shown by SECOND native pixel reference. Change ONLY dragon wings to half-open downward bat-wing stroke (between tightly folded and fully spread). Preserve EXACT narrow upright torso/neck/rider pose, blue/grey colors, rider cone lance angled down-right, feet/tail. Wings attach at same shoulders. Keep complete wings, claws, horns, tail and lance visible, compact balanced vertical figure. Match first reference illustration style and equipment design exactly, crisp contour and painted shading. Fullbody combined sprite, no text, no panels, no cast shadows or ground, no extra particles. Actual transparent RGBA. Add 12 percent transparent empty space on every side and above all weapons. Natural shoulder-elbow-wrist continuity, do not bend wrists backwards. Preserve complete weapon silhouette. No cropping. Single sprite only.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-dragon86fold-original-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure086-native-258-01-oct23-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          1079,
+          1457
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          29,
+          69,
+          1056,
+          1404
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "dragon86open2",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-dragon86open2-original-r1.png",
+        "sha256": "33a638eb4cbf961ab58dcb6f9a4dadd52c1ed4b94fe75695aa49eeeb90423d72",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-b9551b2e-8297-48f3-aeba-696a597f308d.png",
+        "args": {
+          "prompt": "Use case: identity-preserve. Asset type: 2D handpainted fantasy RPG transparent battle sprite master. Primary request: Adapt FIRST finished master using SECOND pixel pose as guide. Fully spread symmetrical navy bat wings to both sides. Rider in upright guard with cone lance pointing down-right. Preserve same upright blue-grey wyvern with pale segmented belly and royalblue/greyshoulder rider. Make overall SPRITE 70 percent of image width and 75 percent height, centered; wide EMPTY TRANSPARENT border on all sides, wing tips far from all edges. Image is an asset canvas much larger than character, not closeup. Entire horns, wing tips, tail and lance must be visible. Maintain character identity and materials and clean illustrated contour, not photoreal. One combined fullbody sprite. Keep actual transparent background RGBA; large empty transparent margins, every extremity inside the canvas. No lettering, no panels, no ground shadows. Preserve anatomically continuous shoulders/elbows/wrists. Exactly one blue wyvern and one mounted rider, never horse or extra legs.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-dragon86fold-original-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure086-native-258-02-oct23-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          1457,
+          1079
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          16,
+          111,
+          1442,
+          997
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "dragon86attackfold",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-dragon86attackfold-original-r1.png",
+        "sha256": "8e38ca3e4998582d195ad85d1b06e2c829ae8606bd90ad248de663486dc1ddf7",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-5737f7cb-b1ac-4b25-a845-36beb094cdd2.png",
+        "args": {
+          "prompt": "Use case: identity-preserve. Asset type: 2D handpainted fantasy RPG transparent battle sprite master. Primary request: Adapt FIRST finished master using SECOND pixel pose as guide. Rider strikes: extend the armored lance arm forward and slightly down toward screen-right, huge grey cone lance projected prominently in front of torso, cone tip down-right. Closed visor and red eyes preserved. Wyvern still upright and narrow, tightly folded wings, clawed feet dangling, tailcurled. Match second reference attack pose. Do not add glows. Maintain character identity and materials and clean illustrated contour, not photoreal. One combined fullbody sprite. Keep actual transparent background RGBA; large empty transparent margins, every extremity inside the canvas. No lettering, no panels, no ground shadows. Preserve anatomically continuous shoulders/elbows/wrists. Exactly one blue wyvern and one mounted rider, never horse or extra legs.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-dragon86fold-original-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure086-native-259-09-oct23-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          1079,
+          1457
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          7,
+          6,
+          1075,
+          1430
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "dragon86attackhalf",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-dragon86attackhalf-original-r1.png",
+        "sha256": "4653cc51562a19b2c2e05499d845e578baaff21378ea31c97b9b6661c94f30fb",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-4d10ade8-08f4-4ab0-be0e-1bc95c64c2dc.png",
+        "args": {
+          "prompt": "Use case: identity-preserve. Asset type: 2D handpainted fantasy RPG transparent battle sprite master. Primary request: Adapt FIRST finished master using SECOND pixel pose as guide. Rider strikes: extend armored lance arm forward/down toward screen-right, enormous grey cone lance projected prominently in front of torso, cone tip down-right. Wyvern wings HALF OPEN in descending stroke. Same upright slender bluegrey wyvern/pale segmented belly, rider royalblue armor/grey shoulders/red small beltcloth. Match second native attack with halfopenwings. No glow. Maintain character identity and materials and clean illustrated contour, not photoreal. One combined fullbody sprite. Keep actual transparent background RGBA; large empty transparent margins, every extremity inside the canvas. No lettering, no panels, no ground shadows. Preserve anatomically continuous shoulders/elbows/wrists. Exactly one blue wyvern and one mounted rider, never horse or extra legs.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-dragon86fold-original-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure086-native-259-09-oct23-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          1079,
+          1457
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          14,
+          29,
+          1077,
+          1433
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "dragon86attackopen",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-dragon86attackopen-original-r1.png",
+        "sha256": "59f1e26e27f619940dde9b888e2418222d1aa714b990f4be44a8f151b47b3679",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-ea0ef120-f721-4924-884d-276516c18fe6.png",
+        "args": {
+          "prompt": "Use case: identity-preserve. Asset type: 2D handpainted fantasy RPG transparent battle sprite master. Primary request: Adapt FIRST finished master using SECOND pixel pose as guide. Rider strikes: extend armored lance arm forward and slightly down toward screen-right, enormous grey cone lance projected prominently in front of torso, cone tip down-right. Wyvern wings FULLY OPEN broadly spread like second native reference. Same upright slender bluegrey wyvern/pale segmented belly, rider royalblue armor/greyshoulders/red small beltcloth. Do not add glows. Full entire wings in wide transparent margin, sprite maximum70percentcanvaswidth. Maintain character identity and materials and clean illustrated contour, not photoreal. One combined fullbody sprite. Keep actual transparent background RGBA; large empty transparent margins, every extremity inside the canvas. No lettering, no panels, no ground shadows. Preserve anatomically continuous shoulders/elbows/wrists. Exactly one blue wyvern and one mounted rider, never horse or extra legs.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-dragon86fold-original-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure086-native-259-08-oct23-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          1383,
+          1137
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          6,
+          77,
+          1378,
+          1117
+        ],
+        "high_coverage_boundary_points": 0
+      }
+    ],
+    "rejected_generation": [
+      {
+        "key": "dragon86open",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-dragon86open-original-r1.png",
+        "sha256": "12627d26178f04327520eb0eabeae963b963cb3d89a8bbc66b9dd1a105875b07",
+        "reason": "Original highcoverage boundary is zero but wings only5pixels from edge; adopt wider-canvas open2 art instead, original RGBA retained."
+      }
+    ],
+    "art_approximations": [
+      "Approved handpainted keypose reuse; weapon proportions, helmet ornaments/cloth/shading and broad axe/polearm contact light interpreted.",
+      "86 uses six wing/attack masters, half/fold/open along original fourstep cycle, eight preparatory and nine thrust phases. Native descriptors/ticks/markers preserved; rendered wing anatomy and lance angle are art approximation.",
+      "86 preserves height while wide wings/lance clip at fixed native frame; folded/half/open and attack masters vary proportions. Body/core GPU and clipping receipts required, normal/manual/platform pending.",
+      "84 column/residual and85up-left streak/tip reuse four already registered masters by SHA/name; no RGBA edits. No extra86effect invented."
+    ],
+    "generation_reference_inputs": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure076-native-229-06-oct22-r1.png",
+        "sha256": "e0ded18a5d3e499b62dd0966d96e98129fda4058255332d33d64fd60e426546c"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure078-native-235-05-oct22-r1.png",
+        "sha256": "85032a99d2238b1ebac5a1a3fed00ca2f3d4f691c368e6b607164a16a05bc8b1"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure079-native-238-03-oct22-r1.png",
+        "sha256": "dfa1c9a030c1454afbee1bd6679b098091cdfceb15231aebb2c1dae8afdd544a"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure082-native-247-06-oct22-r1.png",
+        "sha256": "1f690e8c34a95183fd43fd3128b3ebfe77d20e4bda58da6e9d99cec407d9c81b"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure084-native-252-00-oct23-r1.png",
+        "sha256": "d09f141bfe5a639954e9022f5125eb6a59520ac59b7856a57a56fefba2841ba9"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure084-native-253-04-oct23-r1.png",
+        "sha256": "d0c840ae008f0f09ad74e40efee597e30a5be48fd376fbe7bf1037e24f3ff50f"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure084-native-253-06-oct23-r1.png",
+        "sha256": "ae934547739b19ee540d825def665b30c9a08b2e58de34e45cebbfe0ccb44f8b"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure085-native-255-00-oct23-r1.png",
+        "sha256": "512a0eea749de6f443bddb79a60e84fbf4ca57bc16aa426244ee2fe8924d4359"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure085-native-256-04-oct23-r1.png",
+        "sha256": "11e9b0722bb760d6748b1b4f1e31095316007523ec3ba21595c01c91869782df"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure085-native-256-06-oct23-r1.png",
+        "sha256": "14d664ed44ba072d09510f0ec3ef523157b81ef1eb5f113bd650ea6f36f840ff"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure086-native-258-00-oct23-r1.png",
+        "sha256": "a263b643e6bc724a4d0d2e4530b06a7c548072c2b2ba553645062e2197573a86"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure086-native-258-01-oct23-r1.png",
+        "sha256": "aac7a1e8ef71df18a955a05e597d788125f2f6368c89957d7ab31f36e27c6290"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure086-native-258-02-oct23-r1.png",
+        "sha256": "ac81806f61942ee1294b47012a60af543cfc3492affa4efc964770d0eb66c33f"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure086-native-259-08-oct23-r1.png",
+        "sha256": "ee4f409b3bbc6f5a74a4dc9ff2fb1f6ec309fe9378b1f762b42db67df4674286"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure086-native-259-09-oct23-r1.png",
+        "sha256": "e4eac1a4e6076a6ceed29acabae99e204b6343bf5ecf9aa195332e44f3b09fad"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8082-giant80idle-original-r1.png",
+        "sha256": "3b42b3ccf5a61894a4f2c070a17a01d694df6edeb124eb82b6d012a493ff9d07"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-axe84idle-original-r1.png",
+        "sha256": "b8926bba55e76e0310d287079787b42fa9a45363d81cf2e31a97ff55b77b60c6"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-dragon86fold-original-r1.png",
+        "sha256": "1e43aa5d926ad78d8aa0b33401f11f11b603dfd2c50296c4b0c4b2ea74e389c8"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-halberd85idle-original-r1.png",
+        "sha256": "1293df9a393876d607865bbeebe39f5a1283d6a4f10c2ce3f3665b72024953c5"
+      }
+    ],
+    "evidence_review": {
+      "all12_selected_sources_viewed": true,
+      "all43_native_frames_reviewed": true,
+      "body_and_weapon_source_contacts_reviewed": true,
+      "dragon_no_native_glow": true,
+      "compiler_and_gpu_pending": false,
+      "dragon_body_anchor_and_posthit_wing_order_reviewed_r2": true,
+      "all_three_compiled_sheets_reviewed": true,
+      "all_three_final_game_draws_reviewed": true
+    },
+    "superseded_r1": {
+      "recipe86": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure086-recipe-oct23-r1.json",
+        "sha256": "01e175b1874f5c380dc110357c590d728c43e5360d51f57c22e1b32af3d9ad3a"
+      },
+      "recipe86_inline": {
+        "schema_version": 1,
+        "figure": 86,
+        "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+        "sources": {
+          "dragon86fold": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-dragon86fold-original-r1.png",
+            "sha256": "1e43aa5d926ad78d8aa0b33401f11f11b603dfd2c50296c4b0c4b2ea74e389c8",
+            "anchor": [
+              9,
+              10,
+              1073,
+              1438
+            ]
+          },
+          "dragon86half": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-dragon86half-original-r1.png",
+            "sha256": "3ffa36e236a3fe3c12e515d2497732bfd4ce1e67c073052925d4f6ac2fce1f9e",
+            "anchor": [
+              27,
+              67,
+              1058,
+              1406
+            ]
+          },
+          "dragon86open2": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-dragon86open2-original-r1.png",
+            "sha256": "33a638eb4cbf961ab58dcb6f9a4dadd52c1ed4b94fe75695aa49eeeb90423d72",
+            "anchor": [
+              14,
+              109,
+              1444,
+              999
+            ]
+          },
+          "dragon86attackfold": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-dragon86attackfold-original-r1.png",
+            "sha256": "8e38ca3e4998582d195ad85d1b06e2c829ae8606bd90ad248de663486dc1ddf7",
+            "anchor": [
+              5,
+              4,
+              1077,
+              1432
+            ]
+          },
+          "dragon86attackhalf": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-dragon86attackhalf-original-r1.png",
+            "sha256": "4653cc51562a19b2c2e05499d845e578baaff21378ea31c97b9b6661c94f30fb",
+            "anchor": [
+              12,
+              27,
+              1079,
+              1435
+            ]
+          },
+          "dragon86attackopen": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-dragon86attackopen-original-r1.png",
+            "sha256": "59f1e26e27f619940dde9b888e2418222d1aa714b990f4be44a8f151b47b3679",
+            "anchor": [
+              4,
+              75,
+              1380,
+              1119
+            ]
+          }
+        },
+        "resources": {
+          "258": [
+            [
+              {
+                "pose": "dragon86fold",
+                "anchor": [
+                  26,
+                  0,
+                  119,
+                  194
+                ],
+                "scale_group": "dragon86fold"
+              }
+            ],
+            [
+              {
+                "pose": "dragon86half",
+                "anchor": [
+                  27,
+                  0,
+                  125,
+                  193
+                ],
+                "scale_group": "dragon86half"
+              }
+            ],
+            [
+              {
+                "pose": "dragon86open2",
+                "anchor": [
+                  37,
+                  0,
+                  169,
+                  192
+                ],
+                "scale_group": "dragon86open2"
+              }
+            ],
+            [
+              {
+                "pose": "dragon86half",
+                "anchor": [
+                  27,
+                  0,
+                  125,
+                  193
+                ],
+                "scale_group": "dragon86half"
+              }
+            ]
+          ],
+          "259": [
+            [
+              {
+                "pose": "dragon86fold",
+                "anchor": [
+                  26,
+                  0,
+                  119,
+                  194
+                ],
+                "scale_group": "dragon86fold"
+              }
+            ],
+            [
+              {
+                "pose": "dragon86half",
+                "anchor": [
+                  27,
+                  0,
+                  125,
+                  193
+                ],
+                "scale_group": "dragon86half"
+              }
+            ],
+            [
+              {
+                "pose": "dragon86open2",
+                "anchor": [
+                  36,
+                  0,
+                  166,
+                  192
+                ],
+                "scale_group": "dragon86open2"
+              }
+            ],
+            [
+              {
+                "pose": "dragon86half",
+                "anchor": [
+                  27,
+                  0,
+                  125,
+                  191
+                ],
+                "scale_group": "dragon86half"
+              }
+            ],
+            [
+              {
+                "pose": "dragon86fold",
+                "anchor": [
+                  25,
+                  0,
+                  112,
+                  190
+                ],
+                "scale_group": "dragon86fold"
+              }
+            ],
+            [
+              {
+                "pose": "dragon86half",
+                "anchor": [
+                  27,
+                  0,
+                  125,
+                  189
+                ],
+                "scale_group": "dragon86half"
+              }
+            ],
+            [
+              {
+                "pose": "dragon86open2",
+                "anchor": [
+                  35,
+                  0,
+                  159,
+                  188
+                ],
+                "scale_group": "dragon86open2"
+              }
+            ],
+            [
+              {
+                "pose": "dragon86half",
+                "anchor": [
+                  27,
+                  0,
+                  124,
+                  187
+                ],
+                "scale_group": "dragon86half"
+              }
+            ],
+            [
+              {
+                "pose": "dragon86attackfold",
+                "anchor": [
+                  42,
+                  0,
+                  194,
+                  192
+                ],
+                "scale_group": "dragon86attackfold"
+              }
+            ],
+            [
+              {
+                "pose": "dragon86attackhalf",
+                "anchor": [
+                  26,
+                  0,
+                  119,
+                  193
+                ],
+                "scale_group": "dragon86attackhalf"
+              }
+            ],
+            [
+              {
+                "pose": "dragon86attackopen",
+                "anchor": [
+                  24,
+                  0,
+                  110,
+                  194
+                ],
+                "scale_group": "dragon86attackopen"
+              }
+            ],
+            [
+              {
+                "pose": "dragon86attackhalf",
+                "anchor": [
+                  26,
+                  0,
+                  119,
+                  194
+                ],
+                "scale_group": "dragon86attackhalf"
+              }
+            ],
+            [
+              {
+                "pose": "dragon86attackfold",
+                "anchor": [
+                  42,
+                  0,
+                  194,
+                  194
+                ],
+                "scale_group": "dragon86attackfold"
+              }
+            ],
+            [
+              {
+                "pose": "dragon86attackhalf",
+                "anchor": [
+                  26,
+                  0,
+                  119,
+                  193
+                ],
+                "scale_group": "dragon86attackhalf"
+              }
+            ],
+            [
+              {
+                "pose": "dragon86attackopen",
+                "anchor": [
+                  23,
+                  0,
+                  106,
+                  192
+                ],
+                "scale_group": "dragon86attackopen"
+              }
+            ],
+            [
+              {
+                "pose": "dragon86attackhalf",
+                "anchor": [
+                  26,
+                  0,
+                  119,
+                  191
+                ],
+                "scale_group": "dragon86attackhalf"
+              }
+            ],
+            [
+              {
+                "pose": "dragon86attackfold",
+                "anchor": [
+                  42,
+                  0,
+                  192,
+                  190
+                ],
+                "scale_group": "dragon86attackfold"
+              }
+            ]
+          ]
+        }
+      },
+      "package_stage": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party84-85-86-projection-oct23-r1.json",
+        "sha256": "990973aa020477750531ad0dd5bed0fa4d695e11aa8375699e99661773dd03f5"
+      },
+      "reason": "review found width-fit shrank full dragon during open wings; posthit native order is open/half/fold/half, not fold/half/open/half. No GPU or formal registration used R1."
+    },
+    "package_stage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party84-85-86-projection-oct23-r2.json",
+      "sha256": "f193d9635f6b414ef1e68be27fa07044d811df1a01a25c7188f1673908171699"
+    },
+    "next_art_reference": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party88-89-idle-draft-oct23-r1.json",
+      "sha256": "b95e630ebd0d7c87bebdc03e97dcc554adc421de8986009254313f791f5fdc91"
+    },
+    "checks": {
+      "party8486-source-candidate-084-oct23-r1.memory.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-source-candidate-084-oct23-r1.memory.json",
+        "sha256": "4dac889da5b5edd4ba15334907547fa8558c4cb5bab06cbe91ea620fd3dc6955"
+      },
+      "party8486-source-candidate-084-oct23-r1.log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-source-candidate-084-oct23-r1.log",
+        "sha256": "3d47f42a10340d7c8456802bd897665c8eaf6ce104a38ee1fe15c05767b1b5f7"
+      },
+      "party8486-source-candidate-084-oct23-r1-receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-source-candidate-084-oct23-r1-capture/receipt.json",
+        "sha256": "5cc84e76196efa2bc3438bad596b448aed4e527793958e591bdb920207672b23"
+      },
+      "party8486-source-runtime-084-oct23-r1.memory.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-source-runtime-084-oct23-r1.memory.json",
+        "sha256": "95d5240251dfcfe0b1816526e0ff9ab4f40c48f8518a763a351e1b23a0c4a1be"
+      },
+      "party8486-source-runtime-084-oct23-r1.log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-source-runtime-084-oct23-r1.log",
+        "sha256": "adf4464e6b7f89ee78229d9556be34eb969ca99c542f0cc0daf38f3fbc17c57f"
+      },
+      "party8486-source-runtime-084-oct23-r1-receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-source-runtime-084-oct23-r1-capture/receipt.json",
+        "sha256": "5cc84e76196efa2bc3438bad596b448aed4e527793958e591bdb920207672b23"
+      },
+      "party8486-physical-candidate-084-oct23-r1.memory.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-physical-candidate-084-oct23-r1.memory.json",
+        "sha256": "23611c8a3a93b9de2506655a9d61cfd7af6c1ec733a7ddca7e2d28d691e82ad1"
+      },
+      "party8486-physical-candidate-084-oct23-r1.log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-physical-candidate-084-oct23-r1.log",
+        "sha256": "adcb31ecb9b595b569540c68f610c9d6d803ef8f232586cb56147db390b18dba"
+      },
+      "party8486-physical-candidate-084-oct23-r1-receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-physical-candidate-084-oct23-r1-capture/receipt.json",
+        "sha256": "119d77e608dd288ab914b57a310c4b00a954783d237ab6c17003afb19bc29e5d"
+      },
+      "party8486-physical-candidate-085-oct23-r1.memory.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-physical-candidate-085-oct23-r1.memory.json",
+        "sha256": "c0a7231788646f946f7d7b88cd0b865dd057e578056cc903bda234bfe8a343a3"
+      },
+      "party8486-physical-candidate-085-oct23-r1.log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-physical-candidate-085-oct23-r1.log",
+        "sha256": "dc6b6a2b3c711b57bdc5384b0315d6771442b39ff2ad9e09c6b603d85869df65"
+      },
+      "party8486-physical-candidate-085-oct23-r1-receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-physical-candidate-085-oct23-r1-capture/receipt.json",
+        "sha256": "386cc8bba044e9cf2a8fe01bf6101c05c84fd418ae99cc4b7a5f80d83c57f658"
+      },
+      "party8486-physical-candidate-086-oct23-r1.memory.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-physical-candidate-086-oct23-r1.memory.json",
+        "sha256": "81a7d94bf973612c0c9b7cade041fbaa3469670ed13d8766f6fc4c46f4d07c99"
+      },
+      "party8486-physical-candidate-086-oct23-r1.log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-physical-candidate-086-oct23-r1.log",
+        "sha256": "62528da379d470fa24ace4601f6ab760beb32cc0cd41128890a43fc0956664b8"
+      },
+      "party8486-physical-candidate-086-oct23-r1-receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-physical-candidate-086-oct23-r1-capture/receipt.json",
+        "sha256": "4462f88dfa50ccbd5f447525348be8905e2cc2778ed6a5aad86677fcc6f22d35"
+      },
+      "party8486-batch-assets-candidate-000-oct23-r1.memory.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-batch-assets-candidate-000-oct23-r1.memory.json",
+        "sha256": "184dbd91058045d532f3d80967bfdd0b7a238ed585a4ca4583de601f25aa5edd"
+      },
+      "party8486-batch-assets-candidate-000-oct23-r1.log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-batch-assets-candidate-000-oct23-r1.log",
+        "sha256": "88e33857bb1691d01fd669c9abae91a61ca0b941f1b1bf24f108b3cf2accda68"
+      },
+      "party8486-batch-assets-runtime-000-oct23-r1.memory.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-batch-assets-runtime-000-oct23-r1.memory.json",
+        "sha256": "98f960ae34da86a21353cd6d9c5973e9aff237ef875835a58d05e08cff4b1bd5"
+      },
+      "party8486-batch-assets-runtime-000-oct23-r1.log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-batch-assets-runtime-000-oct23-r1.log",
+        "sha256": "917f6c66042d1530de7f78d8caf5d158ac0340dde414b3adf59cebfebe8225d8"
+      },
+      "core84": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-084-physical-core-oct23-r1.json",
+        "sha256": "a90bf69b01bccfeab6bed995d1e6b7c3d159fc5d6032e40339b2274e3eb9e6b3"
+      },
+      "party084-compiler-guards-oct23-r1/guards.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party084-compiler-guards-oct23-r1/guards.json",
+        "sha256": "d80b3a9b2bb90ec0428983129510312d423d5c5095d0d9de698282899aae27a2"
+      },
+      "connections84": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party084-connections-oct23-r1.json",
+        "sha256": "bc5bd2a9580284d63ed219f4cdf9347f4f790af224169353c13332ce0399369c"
+      },
+      "core85": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-085-physical-core-oct23-r1.json",
+        "sha256": "d74471183269e590e9a1f10869e2d95c88a6c88137d7cedaaafbc6eaea4a18b7"
+      },
+      "party085-compiler-guards-oct23-r1/guards.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party085-compiler-guards-oct23-r1/guards.json",
+        "sha256": "10fc216111bbad84ef05c64c59d393af7866bce93b78f2acbb988ac33669171b"
+      },
+      "connections85": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party085-connections-oct23-r1.json",
+        "sha256": "02e748ea4df65a2acdd862ddd5a13228cf30b768679411f26804e169c50113eb"
+      },
+      "core86": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-086-physical-core-oct23-r1.json",
+        "sha256": "6ca1d53a39541016fbbd5e6eb98ca058dd50e03df4f6207d52a71c6dd8160ede"
+      },
+      "party086-compiler-guards-oct23-r1/guards.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party086-compiler-guards-oct23-r1/guards.json",
+        "sha256": "de4c28c6a48611970b3bd4146b96e96bbada8470b65e1fdb22c9d12369e1cd24"
+      },
+      "connection_guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party84-85-86-connection-guards-oct23-r1.json",
+        "sha256": "3a477d7f79d936250599e4e0cd86ffd9f8e2ed1406c26e94931580e8dee34aa7"
+      },
+      "fill33_guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party84-85-86-fill33-guards-oct23-r1.json",
+        "sha256": "2d056cef75080b4e712ad4b8aa091ec4f61c724eb906dfb20826e60d29eca0a6"
+      },
+      "formal_registration": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party84-85-86-formal-registration-oct23-r1.json",
+        "sha256": "c4bf15d7198c14056f8600713d2873a981007dbf8ec75d0d7df2e0d23d2559b2"
+      },
+      "formal_coverage": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party84-85-86-formal-coverage-oct23-r1.json",
+        "sha256": "3d7eedc6e18616f7af1f7add6b87563ec43892e3151a57bd6587920443744292"
+      },
+      "private_remote_and_visibility": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party84-85-86-private-verification-oct23-r1.json",
+        "sha256": "5313a384f462737db2861f8433e1358779db24c0215ad9368c74c42056542178"
+      }
+    },
+    "formal_catalog": {
+      "file": "remake/assets/themes/modern/catalog.json",
+      "sha256": "2d708d39ea1617d575e89e31d1922f647098bf8d6f4b67a91b68bec000fb3bec"
+    },
+    "staged_formal_catalog": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party84-85-86-staged-formal-catalog-oct23-r2.json",
+      "sha256": "2d708d39ea1617d575e89e31d1922f647098bf8d6f4b67a91b68bec000fb3bec"
+    },
+    "formal_coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party84-85-86-formal-coverage-oct23-r1.json",
+      "sha256": "3d7eedc6e18616f7af1f7add6b87563ec43892e3151a57bd6587920443744292"
+    },
+    "memory": {
+      "records": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-source-candidate-084-oct23-r1.memory.json",
+          "sha256": "4dac889da5b5edd4ba15334907547fa8558c4cb5bab06cbe91ea620fd3dc6955"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-source-runtime-084-oct23-r1.memory.json",
+          "sha256": "95d5240251dfcfe0b1816526e0ff9ab4f40c48f8518a763a351e1b23a0c4a1be"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-physical-candidate-084-oct23-r1.memory.json",
+          "sha256": "23611c8a3a93b9de2506655a9d61cfd7af6c1ec733a7ddca7e2d28d691e82ad1"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-physical-candidate-085-oct23-r1.memory.json",
+          "sha256": "c0a7231788646f946f7d7b88cd0b865dd057e578056cc903bda234bfe8a343a3"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-physical-candidate-086-oct23-r1.memory.json",
+          "sha256": "81a7d94bf973612c0c9b7cade041fbaa3469670ed13d8766f6fc4c46f4d07c99"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-batch-assets-candidate-000-oct23-r1.memory.json",
+          "sha256": "184dbd91058045d532f3d80967bfdd0b7a238ed585a4ca4583de601f25aa5edd"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8486-batch-assets-runtime-000-oct23-r1.memory.json",
+          "sha256": "98f960ae34da86a21353cd6d9c5973e9aff237ef875835a58d05e08cff4b1bd5"
+        }
+      ],
+      "all_returncode_zero": true,
+      "all_oom_kill_delta_zero": true,
+      "note": "memory.peak cumulative within sharedcontainer, not isolated command peak."
+    },
+    "package_validation_inputs": {
+      "catalog_bytes_equal_formal": true,
+      "candidate": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party086-compiled-oct23-r2/pack",
+      "runtime": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party84-85-86-runtime-only-oct23-r2",
+      "private_files": 5598,
+      "runtime_files": 4861,
+      "retained_files_unchanged": 5543,
+      "old_assets_unchanged": 590,
+      "new_physical_files": 55
+    },
+    "readme_overview": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party84-85-86-readme-overview-oct23-r1.json",
+      "sha256": "77eada9087a0d3365e7dab792ada2c02b5897e647ea543cb164cf16c697a1691"
+    },
+    "coverage": {
+      "new_resources": 6,
+      "new_frames": 43,
+      "source_gpu_per_package": 43,
+      "physical_body_core_frames": [
+        11,
+        11,
+        21
+      ],
+      "compiler_guard_cases": 63,
+      "fill33_guard_cases": 8,
+      "connection_positive_cases": 8,
+      "connection_negative_cases": 2,
+      "maximum_connection_hd_pixels": 2.8432443211513316,
+      "go_commands": 7,
+      "unique_current_counts": "docs/knowledge-base/58-fd2-exe-re-coverage.md"
+    },
+    "fixture_contract": {
+      "status": "CONFORMED-SCOPED / RUNTIME-E1",
+      "flag": "FD2_HD_BATTLE_ENEMY_ACTOR=1",
+      "actor": "existing enemy Camp/side0 unchanged, selected84/85/86",
+      "target": "existing own figure0/side2 unchanged",
+      "scope": "Existing test-only swapped fixture. No natural AI/player proof or gameplay change."
+    },
+    "current_state": {
+      "remake_complete": "43frames registered and all scoped fixture gates passed. Rules/save unchanged.",
+      "remake_remaining": "Other sources, consumer, normal/manual/platform gates per58 andIssue263.",
+      "original_oracle_unknown": "No new original runtime/parity or PLAYER-E2 claim; fixed decoded art reference only.",
+      "optional_polish": "Approved handpainted keypose/body/weapon/helmet/cloth interpretation, narrowcolumn and wing/lance viewportclipping, concentrated manualreview afterallHD."
+    },
+    "tools": {
+      "build_fd2_character_battle_hd.py": {
+        "file": "tools/build_fd2_character_battle_hd.py",
+        "sha256": "27337d5305ec639353d63bb437890883bf546bb8803660d1d031ba093a6c6083"
+      },
+      "test_fd2_character_battle_hd.py": {
+        "file": "tools/test_fd2_character_battle_hd.py",
+        "sha256": "63efbe259a7308bdb573f4c88dcd3f96134e202fa57c843f86171a5ae27472c5"
+      },
+      "verify_fd2_character_battle_gpu.py": {
+        "file": "tools/verify_fd2_character_battle_gpu.py",
+        "sha256": "71c8a5eea2b1bac96984481eb73a0ca35eb01c871f40411ae8e6de58948aba15"
+      },
+      "verify_fd2_hd_anchor_connections.py": {
+        "file": "tools/verify_fd2_hd_anchor_connections.py",
+        "sha256": "18feda8005721c396c93518a903d70b875ca31ca57ec306abcd589d5a1a73a60"
+      },
+      "verify_fd2_compound_caster_gpu.py": {
+        "file": "tools/verify_fd2_compound_caster_gpu.py",
+        "sha256": "f2ee0b0f0f5ae0304eb8818d03e162e7d2caf855a92eb2cebdcac92301fc0569"
+      },
+      "test_fd2_native_occlusion.py": {
+        "file": "tools/test_fd2_native_occlusion.py",
+        "sha256": "9623a6cb91c0ca458459e332e340f86ca2b31ddce3dcc4eb9e27fb370df15b4e"
+      },
+      "sync_modern_theme_private.py": {
+        "file": "tools/sync_modern_theme_private.py",
+        "sha256": "b4ee0f261eae3d24d571437cd161a11060fb027c4a0925975051fc3e8272cc82"
+      },
+      "audit_fd2_battle_hd_coverage.py": {
+        "file": "tools/audit_fd2_battle_hd_coverage.py",
+        "sha256": "a1661e1e20a8bf6b33c5f6f51ddcaf31d4b12ea3f7fccfd2dcd50c11035d92d8"
+      },
+      "fd2_go_test_memory_probe.py": {
+        "file": "tools/fd2_go_test_memory_probe.py",
+        "sha256": "8e7c9c55b85aa72a5026b944233b94f7c0787f51b3f5ebb178ed54cc333e40f2"
+      },
+      "remake/cmd/fd2/modern_hd_ordinary_material_gpu_test.go": {
+        "file": "remake/cmd/fd2/modern_hd_ordinary_material_gpu_test.go",
+        "sha256": "07ec00e22913d163ab7c3cad52cd9ccdd0f1bbf94f2b5d87b78da1d669441ea5"
+      },
+      "remake/cmd/fd2/modern_hd_battle_lifecycle_test.go": {
+        "file": "remake/cmd/fd2/modern_hd_battle_lifecycle_test.go",
+        "sha256": "1c27707f5e8a007fabbd0c58be55fed8ec7efc285f53326ab74421349174174f"
+      },
+      "remake/cmd/fd2/modern_hd_battle_assets_test.go": {
+        "file": "remake/cmd/fd2/modern_hd_battle_assets_test.go",
+        "sha256": "3d147eb506351ad2e8c5535b8a4b12f34107a53ae7f1a36b31a119f521b6ac83"
+      },
+      "remake/internal/battlepresent/native_physical_body.go": {
+        "file": "remake/internal/battlepresent/native_physical_body.go",
+        "sha256": "39a7f5423cab91ced5081197d99ec530644c495e28d7bd8e894f1ca92f600d92"
+      },
+      "remake/cmd/fd2/native_physical_body.go": {
+        "file": "remake/cmd/fd2/native_physical_body.go",
+        "sha256": "d97cb4d71018cc0587be051f33c84b6a75df453b0bac5ef78f6683fb1fbd1cb0"
+      }
+    },
+    "toolchain": {
+      "go_image": "fd2-go-test-local:latest",
+      "go_image_sha256": "e4a805c52a3ad5d8c22cf23f2bcf51c6924e5ad6b99554f1b02761903c725433",
+      "go": "1.22.12",
+      "go_container": "8GB/4CPU/512pids/network none/UID:GID1000:1000",
+      "assets_image": "fd2-assets-local:20260829-sfx",
+      "assets_image_sha256": "e59237a31d4b5f7a62c59ac37b780bd93f17c99fda97be8f5ca0c53978b878bc",
+      "python_pillow": "3.12.15/11.3.0",
+      "memory_note": "memory.peak is cumulative cgroup lifetime upper bound across sequential commands sharing a container."
+    },
+    "reproduce": [
+      "Base publiceb2f3008 formal590catalog, originalmanifest and sourceinventory pinned. Six selected252/253/255/256/258/259 absent from livecatalog and in formal remaining, no identical registeredbank;254/257/260 fixedzero untouched. load_native checks originalmetadata/descriptors/PNG/MaskSHA. No new runtimeoracle.",
+      "Restore selected_sources12 unchangedRGBA bySHA from privateallow-list; four reused_registered_sources alreadyregistered, map sourceSHA to original masterfilename.13generated records retain prompts/inputSHA, one too-close wingdraft excluded. Noalphaediting. Original86has no glow; no FX or connection invented.",
+      "Write recipe_inline/connections_inline with UTF8 indent2+newline. Sequential build_fd2_character_battle_hd.py --pack /original --inventory <fixed> --recipe <84then85then86R2> --base-catalog <previous> --out <fresh> --layered. Save compiler-catalog BEFORE aliases; SHA equals compiled.json.catalog_sha256. R1fixedfullwing anchor caused shrink, posthit wingorder wrong; superseded_r1 preserves all. R2only86 compiled against unchanged85catalog. Front8 frames fold/half/open/half, posthit9 open/half/fold/half; sixbodyanchors preserveheight while viewport clips wider wings/lance. Normalize sourceSHA to12newnames/fourexistingnames; stage596/55newfiles, old590/5543 unchanged.",
+      "verify_fd2_hd_anchor_connections.py for84/85 compiled, recipes and inlineconnections:8contacts<=8HD; two validopaque same-source wrongroots must faildistance.86connectionsempty explicit, nofalsecounter. test_fd2_character_battle_hd.py on84R1/85R1/86R2:21cases each63total. Everylayer clipping quantified; no viewport enlargement.",
+      "GoDocker8GB/4CPU/512pids/networknone/user1000:1000/HOMEtmp/GOMAXPROCS2/LP_NUM_THREADS2/persistentGOCACHE, originalpack readonly; max2heavyGo. memory_probe550/Go500s source/physical,1260/1200s batch; -count=1 -v in freshprocess, noSKIP/noOOM. Bothpackages TestModernHDAxeHalberdDragonAllFramesGPU with FD2_HD_AXE_HALBERD_DRAGON_GPU=1, explicit EFFECT_CATALOG/PACK/OUT:43GPU vs independentCPUOver within1RGBA.",
+      "Three TestModernHDBattleRuntimeGPU with lifecycle/real/enemy_actor=1 and explicitfigure84/85/86; all11/11/21shots,threeF2phases,64/65DAC,HP/RNG andonecontinuation. Verify each with verify_fd2_character_battle_gpu.py --core-profile opaque --sample-group fixture --proven-occlusion --original-pack /original --inventory <fixed> --catalog <stage> --source <candidate> --receipt <physical> --report <fresh>:all43cores>=1000. Existingenemy Camp/side0 andtargetfigure0side2 preserved; modifiedfixture, notnaturalAI/player.",
+      "test_fd2_native_occlusion.py withstage/source/originalpack/inventory/report:8fill33/unknownfills/wrongSHAguards. Bothpackages TestModernHDBattleBatchAssetsAndPreflight with FD2_TEST_MODERN_BATTLE_FIGURES=84,85,86:threepairedvalid andsixindependentcoldplayer/mode11transactions each, allsixbanksnil onfailure andHP/RNG preserved.",
+      "Afterallgates copy55allowlistedfiles and byte-identicalstagecatalog toformal. validate_modern_theme_catalog plus sync_modern_theme_private.py:full5598/runtime4861 actualSHA/UID/GID, old5543unchanged. Independentlycommit/pushprivate and verifyactualremote/PRIVATE, no privatecommitID disclosure. audit_fd2_battle_hd_coverage.py:190banks1518framesdatacoverage only. No recording/Release; fullHD/normal/manual/platform pending."
+    ],
+    "duplicate_candidate_cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party84-85-86-duplicate-dedupe-oct23-r1.json",
+      "sha256": "0833d33bb274f268b09cbb5bcfb813f79a62c3ade412633da913d8dee3b4a332"
+    },
+    "private_remote_verified": true,
+    "private_visibility_verified": true,
+    "final_check": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party84-85-86-final-check-oct23-r1.json",
+      "sha256": "c4ad3596787b6ff12d39c94dd0b297dea7f7b0185d82f8921ee7800777b5847d"
     }
   }
 }
