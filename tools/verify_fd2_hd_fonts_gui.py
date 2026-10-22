@@ -53,6 +53,8 @@ def main():
     parser.add_argument('--world', action='store_true', help='加驗正式HD世界、普通走行、指令環、取消與物理戰鬥返回')
     parser.add_argument('--battle-hd', action='store_true', help='要求兩次普通攻擊確實使用可選HD戰鬥繪製層；需--world')
     parser.add_argument('--battle-art', action='store_true', help='另擷取兩次普通攻擊的有界PNG序列供實際圖源核對；需--battle-hd')
+    parser.add_argument('--player-toolbar', action='store_true',
+                        help='以1920×1272完整擷取工具列視窗；戰鬥圖源另精確裁出下方1920×1200遊戲區')
     parser.add_argument('--battle-node', default='battle_ch01', help='來源槽的正式戰場節點，預設首章')
     parser.add_argument('--battle-only', action='store_true', help='抽驗普通攻防、F2及保存冷讀，略過已另驗的狀態／命令字型；需--battle-hd')
     parser.add_argument('--capture-native-battle-save', action='store_true', help='正常原生標題LOAD、出發及F5建立JSON來源槽；需--native-save與--battle-status')
@@ -104,6 +106,7 @@ def main():
     parser.add_argument('--battle-end-figures',type=terrain_frame_ids,default=set(),
                         help='同一普通END擷取多個明示figure，例如133,134；省略時維持單數參數')
     args = parser.parse_args()
+    window_height = '1272' if args.player_toolbar else '1200'
     assert not args.death_commander_hd or (args.death_event==53 and args.world and args.battle_hd)
     assert args.revive_before_departure is None or args.capture_native_battle_save
     assert not args.buy_bekwei_bow or (args.capture_native_battle_save
@@ -458,7 +461,7 @@ def main():
         raise TimeoutError('逐字顯示未穩定')
 
     try:
-        xvfb=start(['Xvfb',':97','-screen','0','1920x1200x24','-nolisten','tcp'],'xvfb.log')
+        xvfb=start(['Xvfb',':97','-screen','0',f'1920x{window_height}x24','-nolisten','tcp'],'xvfb.log')
         for _ in range(100):
             try:command('xdotool','getdisplaygeometry');break
             except subprocess.CalledProcessError:time.sleep(.1)
@@ -987,10 +990,30 @@ def main():
                             if not before.get(scene_key):break
                             if before.get('hd_battle'):
                                 path=args.out/f'{prefix}-art-{index:02d}.png'
-                                command('import','-window',window,str(path))
-                                battle_art_samples.append({'scene':prefix,'file':path.name,'sha256':digest(path),
-                                                           'before':before,'after':latest(audit)})
+                                capture = {}
+                                if args.player_toolbar:
+                                    raw_path=path.with_name(path.stem+'-window.png')
+                                    command('import','-window',window,str(raw_path))
+                                    capture['window_capture']={'file':raw_path.name,'sha256':digest(raw_path),
+                                        'size':[1920,1272],'crop':[0,72,1920,1272],
+                                        'method':'exact_game_region_no_resize'}
+                                else:
+                                    command('import','-window',window,str(path))
+                                battle_art_samples.append({'scene':prefix,'file':path.name,
+                                                           **({} if args.player_toolbar else {'sha256':digest(path)}),
+                                                           'before':before,'after':latest(audit),**capture})
                             time.sleep(.04)
+                        if args.player_toolbar:
+                            # 原視窗先取完；裁切後處理避免漏掉短暫動作。
+                            for sample in battle_art_samples:
+                                if sample['scene']!=prefix:continue
+                                raw_path=args.out/sample['window_capture']['file']
+                                assert digest(raw_path)==sample['window_capture']['sha256']
+                                size=command('identify','-format','%wx%h',str(raw_path)).strip()
+                                assert size=='1920x1272', ('工具列視窗尺寸不符',size)
+                                path=args.out/sample['file']
+                                command('convert',str(raw_path),'-crop','1920x1200+0+72','+repage',str(path))
+                                sample['sha256']=digest(path)
                     returned_scene=wait(lambda s:not s.get(scene_key) and not s.get('unit_death_scene') and not s.get('walking') and s.get('hd_world'),
                                         timeout=180 if args.battle_hd else 60)
                     if args.battle_hd:
@@ -1082,7 +1105,7 @@ def main():
                 key('Home');wait(lambda s:s.get('player_status_phase')=='status')
                 shot('battle-hd-command-unit-status')
                 command('xdotool','windowsize',window,'1600','1000');shot('battle-status-resized')
-                command('xdotool','windowsize',window,'1920','1200')
+                command('xdotool','windowsize',window,'1920',window_height)
                 key('F1');wait(lambda s:s.get('help_visible') is True);shot('battle-status-help')
                 key('Escape');wait(lambda s:s.get('help_visible') is False)
                 key('Return');wait(lambda s:s.get('player_status_phase')=='commands')
@@ -1226,7 +1249,7 @@ def main():
                 key('F2');wait(lambda s:s.get('hd_theme') is False);shot('faithful-preparation-roster')
                 key('F2');wait(lambda s:s.get('hd_theme') is True);shot('hd-preparation-roster-restored')
                 command('xdotool','windowsize',window,'1600','1000');shot('preparation-resized')
-                command('xdotool','windowsize',window,'1920','1200')
+                command('xdotool','windowsize',window,'1920',window_height)
                 key('F1');wait(lambda s:s.get('help_visible') is True);shot('preparation-help')
                 key('Escape');wait(lambda s:s.get('help_visible') is False)
                 key('Right');prep(preparation_selection=1);shot('preparation-next-unit')
@@ -1398,7 +1421,7 @@ def main():
             key('F2');wait(lambda s:s.get('hd_theme') is False);shot('faithful-item-short-sword')
             key('F2');wait(lambda s:s.get('hd_theme') is True);shop('equip_panel',0);shot('hd-item-short-sword-restored')
             command('xdotool','windowsize',window,'1600','1000');shot('item-panel-resized')
-            command('xdotool','windowsize',window,'1920','1200')
+            command('xdotool','windowsize',window,'1920',window_height)
             key('F1');wait(lambda s:s.get('help_visible') is True);shot('item-panel-help')
             key('Escape');wait(lambda s:s.get('help_visible') is False)
             key('Down');shop('equip_panel',1);shot('item-armor')
@@ -1449,7 +1472,7 @@ def main():
                 key('F2');wait(lambda s:s.get('hd_theme') is False);shot('faithful-church-status-sol')
                 key('F2');wait(lambda s:s.get('hd_theme') is True);church('status_view');shot('hd-church-status-sol-restored')
                 command('xdotool','windowsize',window,'1600','1000');shot('church-status-resized')
-                command('xdotool','windowsize',window,'1920','1200')
+                command('xdotool','windowsize',window,'1920',window_height)
                 key('F1');wait(lambda s:s.get('help_visible') is True);shot('church-status-help')
                 key('Escape');wait(lambda s:s.get('help_visible') is False)
                 key('Return');church('status_roster')
@@ -1473,7 +1496,7 @@ def main():
                 assert before[field]==after[field],field
             shot('hd-church-roster-restored')
             command('xdotool','windowsize',window,'1600','1000');shot('church-roster-resized')
-            command('xdotool','windowsize',window,'1920','1200')
+            command('xdotool','windowsize',window,'1920',window_height)
             key('F1');wait(lambda s:s.get('help_visible') is True);shot('church-help')
             key('Escape');wait(lambda s:s.get('help_visible') is False)
             key('Escape');church('menu')
@@ -1564,7 +1587,7 @@ def main():
         key('Escape');key('F7');key('F7');key('F1');shot('hd-help-largest-font')
         key('Escape');key('F7');key('F7');key('F7');key('F1')
         command('xdotool','windowsize',window,'1600','1000');shot('hd-help-resized')
-        command('xdotool','windowsize',window,'1920','1200')
+        command('xdotool','windowsize',window,'1920',window_height)
         key('Escape')
         key('F9');wait(lambda s:s.get('node')=='hotel_ch02')
         key('Escape');wait(lambda s:s.get('node')=='town_ch02')

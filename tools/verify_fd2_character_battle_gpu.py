@@ -24,6 +24,8 @@ def main():
         p.add_argument('--'+name, type=Path, required=True)
     p.add_argument('--proven-occlusion',action='store_true',help='沿固定來源SHA排除真實前景mask／alpha，仍要求至少1000個可見核心')
     p.add_argument('--original-pack',type=Path)
+    p.add_argument('--player-toolbar',action='store_true',
+                   help='有完整工具列收據時，將1272高原視窗精確取下方1200遊戲區再核對')
     args = p.parse_args()
     occluded=None
     if args.proven_occlusion:
@@ -36,6 +38,13 @@ def main():
 
     if not 0 <= args.figure <= 135 or args.report.exists(): raise SystemExit('人物越界或報告已存在')
     receipt = json.loads(args.receipt.read_text())
+    if args.player_toolbar:
+        captures=receipt.get('battle_art_samples',[])
+        if args.sample_group!='attack' or not captures or not all(
+                s.get('window_capture',{}).get('size')==[1920,1272]
+                and s['window_capture'].get('crop')==[0,72,1920,1272]
+                and s['window_capture'].get('sha256') for s in captures):
+            raise SystemExit('工具列核對需要明示attack及完整原視窗裁切收據')
     idle_only=args.sample_group in ('idle-end','idle-fixture')
     target_group=args.sample_group=='target'
     flow_group=args.sample_group=='flow'
@@ -175,12 +184,17 @@ def main():
             name = scene+'-physical-scene.png'; shot = receipt['screenshots'][name]
             samples.append({'scene': scene, 'file': name, 'sha256': shot['sha256'], 'before': shot['gpu_before'], 'after': shot['state']})
     found, rejected = [], []
+    toolbar_cropped_samples=[]
     for sample in samples:
         path = args.receipt.parent/sample['file']
         if Path(sample['file']).name != sample['file'] or digest(path) != sample['sha256']: raise SystemExit('GPU圖片路徑或雜湊不同')
         if not all(s.get('battle_scene') and s.get('hd_battle') for s in [sample['before'], sample['after']]):
             rejected.append({'file': path.name, 'reason': '擷取跨越戰鬥或主題邊界'}); continue
         with Image.open(path) as im:
+            if args.player_toolbar and im.size==(1920,1272):
+                im=im.crop((0,72,1920,1272))
+                toolbar_cropped_samples.append({'file':path.name,'sha256':sample['sha256'],
+                                                'crop':[0,72,1920,1272]})
             if im.size != (1920, 1200): raise SystemExit('需要1920×1200視窗PNG')
             rgb = im.convert('RGB').load()
             for resource, index, name, sha, frame, points, total in candidates:
@@ -267,6 +281,9 @@ def main():
     if idle_only:
         report['idle_only_inventory']=idle_proof
         report['scope']='idle-end／idle-fixture只驗目標待機，不要求或宣稱不存在的攻擊／反擊。'+report['scope']
+    if args.player_toolbar:
+        report['player_toolbar_game_region']={'raw_size':[1920,1272],'crop':[0,72,1920,1272],
+                                               'cropped_samples':toolbar_cropped_samples}
     if target_group:
         report['scope']='target只驗普通攻擊中的目標待機；仍要求完整待機及攻擊清冊，但不宣稱普通揮杖或反擊。'+report['scope']
     if args.proven_occlusion:

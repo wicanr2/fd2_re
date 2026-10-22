@@ -2412,3 +2412,5 @@ BattleFig16／26龍人已依61「BattleFig16與26龍人圖源」接入；唯一�
 BattleFig18／19依61「BattleFig18與19完整三銀行圖源」接線。唯一證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的armored18_19_battle_followup_20261021。60幀含透明空拍通過完整GPU對CPU Over，兩組物理Game.Draw／F2／返回及兩包缺件原子性通過，限RUNTIME-E1。普通0強套第三銀行因2／9個標記拒收，該caller與完整生命週期未知；集中正常玩家與人工造型待全部HD後確認。
 
 BattleFig7／23已沿61「BattleFig7騎乘劍士與23弓手圖源」接入。唯一證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的mounted7_archer23_followup_20261022。50幀完整來源GPU、41個本體最終核心、八飛矢與一原空拍同次Draw、F2／返回及兩包原子性通過，限RUNTIME-E1。原23／71零header保持；共用姿勢、弧光手工包絡與飛矢亮度近似明示，正常玩家與人工依全部HD後集中確認。
+
+凱麗右腳v2已依61「凱麗右腳與README動畫修正」正式接入。完整20幀來源與Game.Draw、五組Go、21項拒收及第九章普通攻擊／自然返回／F2／保存冷讀通過；README GIF及靜態圖改用新普通GUI，完整工具列視窗精確取遊戲區。主收據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的kylie_right_foot_followup_20261022及kylie_readme_animation_20261022；相近戰況不宣稱逐幀一致，#269集中人工及其他HD缺口保持。

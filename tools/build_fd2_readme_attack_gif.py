@@ -53,6 +53,7 @@ def main():
     width, height, header = 480, 300, 34
     font = ImageFont.truetype(str(args.font), 20, index=3)
     images, durations, sources = [], [], []
+    window_sources = {}
     for entry in spec['timeline']:
         canvas = Image.new('RGB', (width * 2, height + header), '#17202b')
         for side, key, size, method in [
@@ -77,6 +78,19 @@ def main():
                 assert row['sha256'] == item['sha256']
                 assert row['before']['battle_actor_fig'] == 12
                 assert row['before']['hd_battle'] is True
+                if 'window_capture' in row:
+                    window = row['window_capture']
+                    assert Path(window['file']).name == window['file'], '原視窗檔名越界'
+                    raw_path = path.parent / window['file']
+                    assert sha(raw_path) == window['sha256'], '原視窗 SHA 不符'
+                    assert window['size'] == [1920, 1272] and window['crop'] == [0, 72, 1920, 1272]
+                    with Image.open(raw_path) as raw:
+                        assert raw.size == (1920, 1272)
+                        assert raw.crop(tuple(window['crop'])).convert('RGB').tobytes() == image.tobytes(), '遊戲區裁切像素不同'
+                    window_sources[str(raw_path.relative_to(root))] = {
+                        'path': str(raw_path.relative_to(root)), 'sha256': window['sha256'],
+                        'crop': window['crop'], 'exact_pixels_verified': True,
+                    }
         draw = ImageDraw.Draw(canvas)
         for side, label in enumerate(['原版 DOS', 'HD 重製']):
             draw.text((side * width + width // 2, 16), label, font=font,
@@ -130,6 +144,8 @@ def main():
         'timing': spec['timing'], 'sources': sources,
         'contact_sheet_sha256': sha(review_path),
     }
+    if window_sources:
+        report['raw_windows_verified'] = list(window_sources.values())
     args.report.write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n')
     print(json.dumps({k: v for k, v in report.items() if k != 'sources'}, ensure_ascii=False))
 

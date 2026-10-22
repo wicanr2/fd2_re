@@ -44202,7 +44202,8 @@
         "sha256": "920b1cbe3ba211c34cefb618b3f2b2044c095e423a3de13018f6b20c50fbf1f9"
       }
     },
-    "bekwei_candidate_superseded_by": "bekwei_battle_followup_20261020"
+    "bekwei_candidate_superseded_by": "bekwei_battle_followup_20261020",
+    "kylie_current_art_superseded_by": "kylie_right_foot_followup_20261022; v1 evidence retained as historical"
   },
   "kylie_readme_animation_20261020": {
     "schema": "fd2-readme-attack-gif-v1",
@@ -44695,7 +44696,8 @@
       "recording_created": false,
       "requested_gif_retained": true,
       "raw_screenshots_and_receipts_retained": true
-    }
+    },
+    "current_output_superseded_by": "kylie_readme_animation_20261022"
   },
   "bekwei_battle_followup_20261020": {
     "status": "CONFORMED-SCOPED",
@@ -118032,6 +118034,2287 @@
       "lessons": 301,
       "guards": 169,
       "passed": true
+    }
+  },
+  "kylie_right_foot_followup_20261022": {
+    "status": "CONFORMED-SCOPED-RUNTIME-E1",
+    "base_commit": "b60781489cbb2d68018959d3cfe81fbab3cdf019",
+    "base_catalog": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-base-catalog-oct22-r1.json",
+      "sha256": "5f1e0e5cd90975a86ce889e4f31b778b76ef6cd341838f124d05927ec0ae6c2c"
+    },
+    "user_report": "README GIF凱麗右腳位置奇怪，使用者要求修正後繼續全部戰鬥HD。",
+    "confirmed_visual_defect": "固定FIGANI36及37:0..11右側可見靴踩地、後腿被衣擺遮住；HD原母稿誤為抬膝懸足且鞋底朝觀者，另露出低處後腳，重心與原版不符。37:12旋身雙靴憑空露出，原版多被衣物／金弧遮擋；13..15收勢足底方向亦需連續檢視。",
+    "evidence": {
+      "contact": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-right-leg-before-contact-oct22-r1.png",
+        "sha256": "99ad2580741888d996fd37bb7e84da03a0380e1f23c0a4aef6c36a3ba32fede1"
+      },
+      "joints": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-right-leg-joint-zoom-oct22-r1.png",
+        "sha256": "03531c2e0fa26ee81e81fbe15f5507b9843d8c113ecdb633d532895662008146"
+      }
+    },
+    "resources": [
+      36,
+      37
+    ],
+    "frames": 20,
+    "required_checks": [
+      "Review full hip/knee/ankle/foot chain against native, all6keyposes and20finalframes.",
+      "Native descriptors/timing/markers/audio and rules/save unchanged; no alpha quantization.",
+      "All20 sourceGPU, physical Game.Draw/F2/return and bothpackages load/preflight.",
+      "Fresh normal chapter9 capture, rebuild README GIF from actualGPU; keep existing original dosgolem evidence and disclose editorial timing.",
+      "Version selected rawRGBA and frames in private allow-list, preserve old-source provenance; verify private/remote/main."
+    ],
+    "formal_registered": true,
+    "private_synced": true,
+    "normal_player": true,
+    "human_review": "集中造型人工確認仍待#269；本次正常GUI與GIF為v2新證據，舊v1證據保留歷史。",
+    "full_battle_hd_complete": false,
+    "rules_and_save_changed": false,
+    "recordings_created": false,
+    "issue": 269,
+    "generation": [
+      {
+        "key": "idle",
+        "args": {
+          "prompt": "Use case: identity-preserve. Asset type: corrected HD battle sprite. Input1 is EDIT TARGET and approved character/rendering. Input2 is authoritative native pose and leg/foot placement reference. Correct the LOWER BODY to native stance in image2. The visible RIGHT leg bears weight: right thigh slopes DOWN to a bent knee at screen right, lower leg descends nearly vertically, and wrapped right boot has its sole FLAT ON THE GROUND at the lowest baseline. Toe points naturally to screen right, show top/side of boot, never the underside facing camera. Remove the floating crane-pose right foot. The REAR LEFT leg/foot is concealed by the long blue split tunic as in image2; remove the separate much lower left support boot shown in image1. Hip-knee-ankle-foot chain must be anatomically continuous. Preserve torso/head scale and use native leg and hem proportions, do not stretch a long shin merely to move the foot down. Keep exact same blond ponytail, blue sleeveless martial tunic, red sash, baggy dark olive trousers, blue wrapped soft boots, bare arms and glove design, rear-left camera, painted line style, upper-body pose and palette. NO redesign, no extra limbs, no ground/platform/shadow/text. Full figure inside padded canvas, actual transparent RGBA, opaque painted subject. Preserve existing gold effect if present; otherwise no new FX.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/remake/generated-assets/modern-theme-prototypes/figure-012-idle-battle-hd6-master-v1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-right-leg-native-stance-oct22-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-f7160549-8fc5-49f9-bd1c-dc614658302d.png",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-idle-original-r1.png",
+        "sha256": "99009c32168b7b5e63c19eade299e489d38125787f0aab999aeb4a04ab1aecc6",
+        "size": [
+          923,
+          1704
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ]
+      },
+      {
+        "key": "arc",
+        "args": {
+          "prompt": "Use case: identity-preserve. Asset type: corrected HD battle sprite. Input1 is EDIT TARGET and approved character/rendering. Input2 is authoritative native pose and leg/foot placement reference. Correct ONLY lower body and its occlusion during the sweeping turn. Image2 shows that legs/feet are mostly HIDDEN behind the long blue tunic, baggy trouser fold and bright gold arc. Remove the two conspicuous backwards shoe soles exposed below the body in image1. Match native silhouette and hide feet naturally behind the existing cloth/arc, without enlarging or moving the gold effect. Keep a believable continuous hip-knee-ankle chain beneath cloth. Do not depict floating disconnected boots or add any ground/shadow. Preserve this dynamic torso turn, existing raised fist, ponytail and identical gold crescent composition. Keep exact same blond ponytail, blue sleeveless martial tunic, red sash, baggy dark olive trousers, blue wrapped soft boots, bare arms and glove design, rear-left camera, painted line style, upper-body pose and palette. NO redesign, no extra limbs, no ground/platform/shadow/text. Full figure inside padded canvas, actual transparent RGBA, opaque painted subject. Preserve existing gold effect if present; otherwise no new FX.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/remake/generated-assets/modern-theme-prototypes/figure-012-arc-battle-hd6-master-v1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-right-leg-native-arc-oct22-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-179be2a7-c790-49fd-8469-d55e9f6f5fce.png",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-arc-original-r1.png",
+        "sha256": "6e5484f4cd34f455b82841b50c478ca86d75661babdd0ade28ea1c715081d35f",
+        "size": [
+          1200,
+          1311
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ]
+      },
+      {
+        "key": "recover",
+        "args": {
+          "prompt": "Use case: identity-preserve. Asset type: corrected HD battle sprite. Input1 is EDIT TARGET and approved character/rendering. Input2 is authoritative native pose and leg/foot placement reference. Correct lower-body stance to native image2. Visible RIGHT foot at lower screen right is a GROUNDED weight-bearing foot, toe angled gently toward viewer-right, heel and toe on one natural sole plane. Right hip, bent knee, shin and wrapped ankle align without torsion. The rear LEFT leg/foot at screen left is concealed by hanging blue/red cloth, not lifted out sideways with a second exposed boot. Preserve the turning upper-body pose, raised far arm and flowing ponytail; alter only lower legs/hem needed for correct natural landing and native silhouette. Keep exact same blond ponytail, blue sleeveless martial tunic, red sash, baggy dark olive trousers, blue wrapped soft boots, bare arms and glove design, rear-left camera, painted line style, upper-body pose and palette. NO redesign, no extra limbs, no ground/platform/shadow/text. Full figure inside padded canvas, actual transparent RGBA, opaque painted subject. Preserve existing gold effect if present; otherwise no new FX.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/remake/generated-assets/modern-theme-prototypes/figure-012-recover-battle-hd6-master-v1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-right-leg-native-recover-oct22-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-31675911-a10d-4df6-9dbc-5a30ce3f7e1a.png",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-recover-original-r1.png",
+        "sha256": "2cb78c1c181c91c82e97d921d0aecf226236a94cb732d0aa2805a4373463f046",
+        "size": [
+          1015,
+          1549
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ]
+      },
+      {
+        "key": "coil",
+        "args": {
+          "prompt": "Use case: identity-preserve. Asset type: corrected HD battle sprite. Input1 is EDIT TARGET: keep its exact upper-body attack pose, arms, fists, hair, camera, tunic/sash colors, material shading and existing palm glow. Input2 is authoritative native lower-body STANCE. Input3 is the corrected idle artwork: use its LOWER BODY as the exact consistency reference for the same character. Replace only lower-body stance in input1 to match image3: visible RIGHT thigh slopes down into bent screen-right knee; wrapped right shin nearly vertical; right boot planted flat at lowest baseline with toe pointing screen right, showing top/side rather than sole. Back LEFT foot is hidden behind long hanging blue/red cloth; no separately exposed low left support boot. NO lifted crane-pose knee, no dangling right foot, no twisted ankle or sole facing camera. Preserve natural continuous hip-knee-ankle-foot chain and original figure height/proportions, without stretching shin. Keep upper body and head pose of input1, not idle pose of image3. Entire subject in padded canvas, genuine transparent RGBA, opaque painted interior. No floor/platform/shadow, no extra limbs, labels, text, new accessories or added FX. Preserve existing gold palm light if present; no light if absent.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/remake/generated-assets/modern-theme-prototypes/figure-012-coil-battle-hd6-master-v1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-right-leg-native-stance-oct22-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-idle-original-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-762f16b7-9bf4-46f7-88c6-54b5615933b9.png",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-coil-original-r1.png",
+        "sha256": "b29ab9694eff8feee16bb7429b980ae0930e980840c2b355432644cab36b5c51",
+        "size": [
+          970,
+          1622
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ]
+      },
+      {
+        "key": "palm-lit",
+        "args": {
+          "prompt": "Use case: identity-preserve. Asset type: corrected HD battle sprite. Input1 is EDIT TARGET: keep its exact upper-body attack pose, arms, fists, hair, camera, tunic/sash colors, material shading and existing palm glow. Input2 is authoritative native lower-body STANCE. Input3 is the corrected idle artwork: use its LOWER BODY as the exact consistency reference for the same character. Replace only lower-body stance in input1 to match image3: visible RIGHT thigh slopes down into bent screen-right knee; wrapped right shin nearly vertical; right boot planted flat at lowest baseline with toe pointing screen right, showing top/side rather than sole. Back LEFT foot is hidden behind long hanging blue/red cloth; no separately exposed low left support boot. NO lifted crane-pose knee, no dangling right foot, no twisted ankle or sole facing camera. Preserve natural continuous hip-knee-ankle-foot chain and original figure height/proportions, without stretching shin. Keep upper body and head pose of input1, not idle pose of image3. Entire subject in padded canvas, genuine transparent RGBA, opaque painted interior. No floor/platform/shadow, no extra limbs, labels, text, new accessories or added FX. Preserve existing gold palm light if present; no light if absent.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/remake/generated-assets/modern-theme-prototypes/figure-012-palm-lit-battle-hd6-master-v1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-right-leg-native-stance-oct22-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-idle-original-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-6368a738-f05f-46d0-8ac8-1f04fac9c25f.png",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-palm-lit-original-r1.png",
+        "sha256": "04608d4467266a46f883bcf84e280d1e0a41ddda1d41ce1802e294b8d876a28c",
+        "size": [
+          923,
+          1704
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ]
+      },
+      {
+        "key": "palm",
+        "args": {
+          "prompt": "Use case: identity-preserve. Asset type: corrected HD battle sprite. Input1 is EDIT TARGET: keep its exact upper-body attack pose, arms, fists, hair, camera, tunic/sash colors, material shading and existing palm glow. Input2 is authoritative native lower-body STANCE. Input3 is the corrected idle artwork: use its LOWER BODY as the exact consistency reference for the same character. Replace only lower-body stance in input1 to match image3: visible RIGHT thigh slopes down into bent screen-right knee; wrapped right shin nearly vertical; right boot planted flat at lowest baseline with toe pointing screen right, showing top/side rather than sole. Back LEFT foot is hidden behind long hanging blue/red cloth; no separately exposed low left support boot. NO lifted crane-pose knee, no dangling right foot, no twisted ankle or sole facing camera. Preserve natural continuous hip-knee-ankle-foot chain and original figure height/proportions, without stretching shin. Keep upper body and head pose of input1, not idle pose of image3. Entire subject in padded canvas, genuine transparent RGBA, opaque painted interior. No floor/platform/shadow, no extra limbs, labels, text, new accessories or added FX. Preserve existing gold palm light if present; no light if absent.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/remake/generated-assets/modern-theme-prototypes/figure-012-palm-battle-hd6-master-v1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-right-leg-native-stance-oct22-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-idle-original-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-d2fc0f44-af1e-4546-85b7-05bf0fa0d2e0.png",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-palm-original-r1.png",
+        "sha256": "ec32a94b61340ff9360e14018e7784e04968507e15b67355ae428a634be2e186",
+        "size": [
+          923,
+          1704
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ]
+      }
+    ],
+    "generation_ledger": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-generation-r1.json",
+      "sha256": "30d2d564f5fb11b1bf67e71ff3b405c6462b0670ae5b7bd2f3a6dcb931a01913"
+    },
+    "recipe": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-recipe-oct22-r1.json",
+      "sha256": "032855cf93416d2374453dfd449b2b56986dd92b0e068e383034c830c47d544d"
+    },
+    "recipe_inline": {
+      "schema_version": 1,
+      "figure": 12,
+      "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+      "sources": {
+        "idle": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-idle-original-r1.png",
+          "sha256": "99009c32168b7b5e63c19eade299e489d38125787f0aab999aeb4a04ab1aecc6",
+          "anchor": [
+            62,
+            20,
+            895,
+            1582
+          ]
+        },
+        "coil": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-coil-original-r1.png",
+          "sha256": "b29ab9694eff8feee16bb7429b980ae0930e980840c2b355432644cab36b5c51",
+          "anchor": [
+            55,
+            18,
+            952,
+            1598
+          ]
+        },
+        "palm-lit": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-palm-lit-original-r1.png",
+          "sha256": "04608d4467266a46f883bcf84e280d1e0a41ddda1d41ce1802e294b8d876a28c",
+          "anchor": [
+            22,
+            32,
+            921,
+            1544
+          ]
+        },
+        "palm": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-palm-original-r1.png",
+          "sha256": "ec32a94b61340ff9360e14018e7784e04968507e15b67355ae428a634be2e186",
+          "anchor": [
+            10,
+            28,
+            923,
+            1587
+          ]
+        },
+        "arc": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-arc-original-r1.png",
+          "sha256": "6e5484f4cd34f455b82841b50c478ca86d75661babdd0ade28ea1c715081d35f",
+          "anchor": [
+            30,
+            38,
+            1200,
+            1291
+          ]
+        },
+        "recover": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-recover-original-r1.png",
+          "sha256": "2cb78c1c181c91c82e97d921d0aecf226236a94cb732d0aa2805a4373463f046",
+          "anchor": [
+            60,
+            62,
+            987,
+            1488
+          ]
+        }
+      },
+      "resources": {
+        "36": [
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              66,
+              122
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              66,
+              121
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              66,
+              120
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              66,
+              121
+            ],
+            "scale_group": "stance"
+          }
+        ],
+        "37": [
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              66,
+              122
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              66,
+              122
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "coil",
+            "anchor": [
+              0,
+              0,
+              73,
+              122
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "coil",
+            "anchor": [
+              0,
+              0,
+              73,
+              122
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "coil",
+            "anchor": [
+              0,
+              0,
+              73,
+              122
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "coil",
+            "anchor": [
+              0,
+              0,
+              73,
+              122
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "palm-lit",
+            "anchor": [
+              0,
+              0,
+              92,
+              125
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "palm",
+            "anchor": [
+              0,
+              0,
+              92,
+              123
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "palm",
+            "anchor": [
+              0,
+              0,
+              91,
+              123
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "palm",
+            "anchor": [
+              0,
+              0,
+              91,
+              123
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "palm",
+            "anchor": [
+              0,
+              0,
+              90,
+              123
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "palm",
+            "anchor": [
+              0,
+              0,
+              90,
+              123
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "arc",
+            "anchor": [
+              0,
+              0,
+              142,
+              130
+            ],
+            "scale_group": "arc"
+          },
+          {
+            "pose": "recover",
+            "anchor": [
+              0,
+              0,
+              76,
+              116
+            ],
+            "scale_group": "recover"
+          },
+          {
+            "pose": "recover",
+            "anchor": [
+              0,
+              0,
+              71,
+              116
+            ],
+            "scale_group": "recover"
+          },
+          {
+            "pose": "recover",
+            "anchor": [
+              0,
+              0,
+              70,
+              116
+            ],
+            "scale_group": "recover"
+          }
+        ]
+      }
+    },
+    "filtered_base": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-filtered-base-oct22-r1.json",
+      "sha256": "396030ded5c775ccb61057868ba295d293f925d41b955847ca8d352a0a02853e"
+    },
+    "evidence_review": "All six edited originalRGBA and fixed native joint references viewed. Idle/coil/palm right boot grounded and rear foot hidden; recovery right foot has continuous shin/ankle and flat sole; arc boots concealed behind cloth/effect. No frame/header/timing/marker/rule/save changes. Exact RGBA preserved; thresholds unchanged.",
+    "art_approximations": [
+      "Key poses remain shared across20frames, not independently painted full animation.",
+      "Lower-body cloth folds and boot proportions interpreted in hand-painted style; body/FX source anchoring remains contain fit within native frames.",
+      "Arc occlusion follows native visibility; underlying hidden leg anatomy cannot be claimed exact.",
+      "Upper-body rendering and palm/arc effects mostly preserved by image edit; minor painterly pixel differences allowed, not RGB parity.",
+      "Focused agent anatomy review performed; final user visual review remains #269 under allHD concentrated schedule."
+    ],
+    "compiled": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-compiled-oct22-r1/compiled.json",
+      "sha256": "63a39ce53c09de6bd5b9e4bfb3ab4fdb59028e68c662dcccae3ecfb28200a30b"
+    },
+    "compiler_guards": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-compiler-guards-oct22-r1/guards.json",
+      "sha256": "2562b24078c5fdd4b546be01799f6b3932be94128cf9443dfc73ef184bee1669"
+    },
+    "projection": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-candidate-oct22-r1/projection.json",
+      "sha256": "71aa491d9591492503532e02809d2a5a15105a56f27067b76b06e340d5b72120"
+    },
+    "runtime_gpu": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-physical-candidate-oct22-r1-capture/receipt.json",
+      "sha256": "51b47898b8c305b13bd4ce5231bfdedbfbe968a56f472f226473ba9737ef0c88"
+    },
+    "pixel_core": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-physical-cores-oct22-r1.json",
+      "sha256": "203dd9e9bb31e2cacca0eec5915cbd98c299db09ec802d07b3e25e3982337540"
+    },
+    "normal_gui": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/receipt.json",
+      "sha256": "0613fe4f6d466900fbb50308ccd2551f0f32dff7540ab40e03dc67a2cce62baf"
+    },
+    "normal_geometry": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-geometry-oct22-r2.json",
+      "sha256": "9d149b72c84e98dc4abbfc33f2a6162e893c0297959f3e3f11e89d71ec8a25b3"
+    },
+    "normal_memory": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4-probe.memory.json",
+      "sha256": "45e9f568f28e53b2d4a126f36ff5f0e270b47e5a8880905baf91c85241422c95"
+    },
+    "formal_registration": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-formal-registration-oct22-r1.json",
+      "sha256": "3f5eb4bf8bf80cb498711754baf9808d0b6f8f60ad7c518b3e97827ce50dd10f"
+    },
+    "private_delivery": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-private-delivery-oct22-r1.json",
+      "sha256": "36cffa077f24a6074006d8ba7f28818ab23ec5ee7cd48e21938ffa634576848b"
+    },
+    "coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-formal-coverage-oct22-r1.json",
+      "sha256": "3d215ac58a50941a1cff99634e682aab4a30ba1e29cbe0ce0ca0800bff8f4e61"
+    },
+    "package_checks": {
+      "source_candidate": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-source-candidate-oct22-r1.memory.json",
+        "sha256": "4971dc99fcb9d7d28d276d1b937156b5a0cddf809abc9d3c540ccf43be477a4e"
+      },
+      "physical_candidate": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-physical-candidate-oct22-r1.memory.json",
+        "sha256": "5e2508a9367c103dc8741f78a226cf2e3ab673cbbd41544ce1e7be7a4a908341"
+      },
+      "source_runtime": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-source-runtime-oct22-r1.memory.json",
+        "sha256": "0e13c84ddce6ce46d74e23dab38466c159ccd89ce672b1d73241aa5bf38465d6"
+      },
+      "assets_candidate": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-assets-candidate-oct22-r1.memory.json",
+        "sha256": "27ef28ccf379e5a55dd9f108a349cb2c4e0eae7d56ca71b6eb8f717414234fa1"
+      },
+      "assets_runtime": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-assets-runtime-oct22-r1.memory.json",
+        "sha256": "0b7cdc24188579ce9c24a0e88d1de49d2fd98355c968223fbc3eda88293c441d"
+      }
+    },
+    "reproduction_recipe": {
+      "schema_version": 1,
+      "figure": 12,
+      "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+      "sources": {
+        "idle": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-012-idle-battle-hd6-master-v2.png",
+          "sha256": "99009c32168b7b5e63c19eade299e489d38125787f0aab999aeb4a04ab1aecc6",
+          "anchor": [
+            62,
+            20,
+            895,
+            1582
+          ]
+        },
+        "coil": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-012-coil-battle-hd6-master-v2.png",
+          "sha256": "b29ab9694eff8feee16bb7429b980ae0930e980840c2b355432644cab36b5c51",
+          "anchor": [
+            55,
+            18,
+            952,
+            1598
+          ]
+        },
+        "palm-lit": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-012-palm-lit-battle-hd6-master-v2.png",
+          "sha256": "04608d4467266a46f883bcf84e280d1e0a41ddda1d41ce1802e294b8d876a28c",
+          "anchor": [
+            22,
+            32,
+            921,
+            1544
+          ]
+        },
+        "palm": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-012-palm-battle-hd6-master-v2.png",
+          "sha256": "ec32a94b61340ff9360e14018e7784e04968507e15b67355ae428a634be2e186",
+          "anchor": [
+            10,
+            28,
+            923,
+            1587
+          ]
+        },
+        "arc": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-012-arc-battle-hd6-master-v2.png",
+          "sha256": "6e5484f4cd34f455b82841b50c478ca86d75661babdd0ade28ea1c715081d35f",
+          "anchor": [
+            30,
+            38,
+            1200,
+            1291
+          ]
+        },
+        "recover": {
+          "file": "remake/generated-assets/modern-theme-prototypes/figure-012-recover-battle-hd6-master-v2.png",
+          "sha256": "2cb78c1c181c91c82e97d921d0aecf226236a94cb732d0aa2805a4373463f046",
+          "anchor": [
+            60,
+            62,
+            987,
+            1488
+          ]
+        }
+      },
+      "resources": {
+        "36": [
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              66,
+              122
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              66,
+              121
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              66,
+              120
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              66,
+              121
+            ],
+            "scale_group": "stance"
+          }
+        ],
+        "37": [
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              66,
+              122
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "idle",
+            "anchor": [
+              0,
+              0,
+              66,
+              122
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "coil",
+            "anchor": [
+              0,
+              0,
+              73,
+              122
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "coil",
+            "anchor": [
+              0,
+              0,
+              73,
+              122
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "coil",
+            "anchor": [
+              0,
+              0,
+              73,
+              122
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "coil",
+            "anchor": [
+              0,
+              0,
+              73,
+              122
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "palm-lit",
+            "anchor": [
+              0,
+              0,
+              92,
+              125
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "palm",
+            "anchor": [
+              0,
+              0,
+              92,
+              123
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "palm",
+            "anchor": [
+              0,
+              0,
+              91,
+              123
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "palm",
+            "anchor": [
+              0,
+              0,
+              91,
+              123
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "palm",
+            "anchor": [
+              0,
+              0,
+              90,
+              123
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "palm",
+            "anchor": [
+              0,
+              0,
+              90,
+              123
+            ],
+            "scale_group": "stance"
+          },
+          {
+            "pose": "arc",
+            "anchor": [
+              0,
+              0,
+              142,
+              130
+            ],
+            "scale_group": "arc"
+          },
+          {
+            "pose": "recover",
+            "anchor": [
+              0,
+              0,
+              76,
+              116
+            ],
+            "scale_group": "recover"
+          },
+          {
+            "pose": "recover",
+            "anchor": [
+              0,
+              0,
+              71,
+              116
+            ],
+            "scale_group": "recover"
+          },
+          {
+            "pose": "recover",
+            "anchor": [
+              0,
+              0,
+              70,
+              116
+            ],
+            "scale_group": "recover"
+          }
+        ]
+      }
+    },
+    "filename_mapping": {
+      "figani-036-hd6-v2-f00.png": "figani-036-hd6-v1-f00.png",
+      "figani-036-hd6-v2-f01.png": "figani-036-hd6-v1-f01.png",
+      "figani-036-hd6-v2-f02.png": "figani-036-hd6-v1-f02.png",
+      "figani-036-hd6-v2-f03.png": "figani-036-hd6-v1-f03.png",
+      "figure-012-idle-battle-hd6-master-v2.png": "figure-012-idle-battle-hd6-master-v1.png",
+      "figani-037-hd6-v2-f00.png": "figani-037-hd6-v1-f00.png",
+      "figani-037-hd6-v2-f01.png": "figani-037-hd6-v1-f01.png",
+      "figani-037-hd6-v2-f02.png": "figani-037-hd6-v1-f02.png",
+      "figani-037-hd6-v2-f03.png": "figani-037-hd6-v1-f03.png",
+      "figani-037-hd6-v2-f04.png": "figani-037-hd6-v1-f04.png",
+      "figani-037-hd6-v2-f05.png": "figani-037-hd6-v1-f05.png",
+      "figani-037-hd6-v2-f06.png": "figani-037-hd6-v1-f06.png",
+      "figani-037-hd6-v2-f07.png": "figani-037-hd6-v1-f07.png",
+      "figani-037-hd6-v2-f08.png": "figani-037-hd6-v1-f08.png",
+      "figani-037-hd6-v2-f09.png": "figani-037-hd6-v1-f09.png",
+      "figani-037-hd6-v2-f10.png": "figani-037-hd6-v1-f10.png",
+      "figani-037-hd6-v2-f11.png": "figani-037-hd6-v1-f11.png",
+      "figani-037-hd6-v2-f12.png": "figani-037-hd6-v1-f12.png",
+      "figani-037-hd6-v2-f13.png": "figani-037-hd6-v1-f13.png",
+      "figani-037-hd6-v2-f14.png": "figani-037-hd6-v1-f14.png",
+      "figani-037-hd6-v2-f15.png": "figani-037-hd6-v1-f15.png",
+      "figure-012-arc-battle-hd6-master-v2.png": "figure-012-arc-battle-hd6-master-v1.png",
+      "figure-012-coil-battle-hd6-master-v2.png": "figure-012-coil-battle-hd6-master-v1.png",
+      "figure-012-palm-battle-hd6-master-v2.png": "figure-012-palm-battle-hd6-master-v1.png",
+      "figure-012-palm-lit-battle-hd6-master-v2.png": "figure-012-palm-lit-battle-hd6-master-v1.png",
+      "figure-012-recover-battle-hd6-master-v2.png": "figure-012-recover-battle-hd6-master-v1.png"
+    },
+    "scope_limits": [
+      "六母稿重定向完整20幀；沿既有關鍵姿勢共用，不宣稱原版RGB或逐幀動畫相同。",
+      "本次第九章普通LOAD／鍵盤攻擊／自然返回／F2／保存與新程序冷讀均為v2；來源為已明示HP+1000章前建構槽，seed1，章內無鎖血及座標注入。",
+      "正常PNG原視窗1920×1272含72像素工具列，遊戲區精確取下方1920×1200；未縮放補畫，逐筆保留原圖SHA與裁切座標。",
+      "README重用既有dosgolem原版收據，右側新普通v2；相近戰況、姿勢編輯對應，不代表同狀態、傷害、亂數或wall-clock。",
+      "二十幀來源及Game.Draw證明圖源呈現；人體自然度仍待全部HD後集中人工確認，#269保持開啟；整體戰鬥HD仍未完成。"
+    ],
+    "reproduce": [
+      "基底b6078148的完整catalog只移出FIGANI36／37兩項，其餘531項保持；以reproduction_recipe及固定原版包執行tools/build_fd2_character_battle_hd.py --layered，產生20幀。",
+      "依filename_mapping轉v2名稱並將兩項放回原catalog位置，其他欄位及圖檔SHA保持；tools/test_fd2_character_battle_hd.py核來源反例。",
+      "FD2_HD_KYLIE_LEG_GPU=1、明示figure12／catalog／pack執行TestModernHDKylieLegFramesGPU，candidate及runtime-only各一次。",
+      "FD2_HD_BATTLE_LIFECYCLE_GPU=1 FD2_HD_BATTLE_REAL=1 FD2_TEST_MODERN_BATTLE_FIGURE=12執行TestModernHDBattleRuntimeGPU；用verify_fd2_character_battle_gpu.py --figure 12 --sample-group fixture --core-profile opaque --proven-occlusion核20幀。",
+      "candidate及runtime-only各執行TestModernHDBattleAssetsRealCandidate與TestNativePhysicalHDPreflightStopsBeforeSettlement。所有Go透過固定映像with-xvfb與memoryprobe。",
+      "普通GUI完整精確argv見normal_gui_command；--assets傳runtime根目錄，--player-toolbar輸出1920×1272原PNG及精確遊戲區裁切，使用同一章前來源槽及seed1。",
+      "README合成用tools/build_fd2_readme_attack_gif.py --section kylie_readme_animation_20261022，固定字型SHA；來源、姿勢對應及25筆時間線皆在該欄，並以FFmpeg全檔解碼。",
+      "正式白名單增加26新檔並替代26舊檔，來源及私人Git歷史保留；sync_modern_theme_private.py只同步catalog白名單；現行私人包5133／runtime-only4508，5107既有檔SHA保持。",
+      "目前正式Go無玩法變更。新二進位在固定Go Docker以go build -o <fresh-binary> ./cmd/fd2建立，再依normal_gui_command執行；原圖源及指紋以base_commit與本提交清冊為準。"
+    ],
+    "normal_gui_command": [
+      "/usr/bin/python3",
+      "/repo/tools/verify_fd2_hd_fonts_gui.py",
+      "--binary",
+      "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-game-oct22-r1",
+      "--assets",
+      "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-candidate-oct22-r1/runtime",
+      "--original-pack",
+      "/original",
+      "--modern-pack",
+      "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-candidate-oct22-r1/pack",
+      "--out",
+      "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4",
+      "--town-save",
+      "/repo/work/promo-cadence-20261018/hd-fonts/early-party-ch09-source-gui-r1/user-data/fd2_re/fd2_save.json",
+      "--player-toolbar",
+      "--battle-status",
+      "--world",
+      "--battle-hd",
+      "--battle-art",
+      "--battle-only",
+      "--battle-node",
+      "battle_ch09",
+      "--battle-own-index",
+      "9",
+      "--battle-approach-rounds",
+      "3",
+      "--battle-advance",
+      "--battle-repetitions",
+      "1",
+      "--battle-art-samples",
+      "32",
+      "--startup-timeout",
+      "120"
+    ],
+    "normal_gpu_core": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-core-oct22-r1.json",
+      "sha256": "f044991ab3eed53651bbe4991b2301c48852b39a353b0c1f8e6a88716e3d3a45"
+    },
+    "gif_crop_negative_guard": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-gif-crop-guard-oct22-r1.json",
+      "sha256": "de3481736e456675db3dadc4a01fa296482047ad27867bdc2f7e296d45d46cc3"
+    },
+    "readme_animation": "kylie_readme_animation_20261022",
+    "private_remote_verified": true,
+    "private_visibility_verified": true,
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-final-validation-oct22-r1.json",
+      "sha256": "e49d18d17a504040c4cf8f6c8d5811d7c205313776e64220288ee02dbee403bc"
+    },
+    "worklist_verify": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-fd2_worklist.py-verify-oct22-r1.log",
+      "sha256": "e79d11a27482e9cc12c4e999fa07e97f07ee544b5952cb8172731e116b8f7af3"
+    },
+    "lessons_check": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-fd2_lessons.py-check-oct22-r1.log",
+      "sha256": "281bf6cc0c506a48692a90968dd5aba86d84ea76d4ff7e56c554e6bf475b6344"
+    },
+    "cleanup": {
+      "temporary_font_copy_removed": true,
+      "removed_bytes": 19484784,
+      "previous_font_sha256": "b76b0433203017ca80401b2ee0dd69350349871c4b19d504c34dbdd80541690a",
+      "source_font_retained_in_pinned_image": true,
+      "recordings_created": false,
+      "requested_gif_retained": true
+    }
+  },
+  "kylie_readme_animation_20261022": {
+    "schema": "fd2-readme-attack-gif-v1",
+    "original_commit": "190d944ebb9f3d456a5bac83b1e1b2f5ab0bf434",
+    "original_runner": {
+      "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/runner.json",
+      "sha256": "16cf716a1fa0fc78b6e256bf34304cb28067cb43e0b654c6c44bbdcd99fdbb13"
+    },
+    "original_frames": {
+      "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frames.jsonl",
+      "sha256": "6a1e1b7a9f6678a2fc10ca57df570852568f37b30bbc7d55bd7a8a01de9bbb15"
+    },
+    "original_actions": {
+      "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/actions.jsonl",
+      "sha256": "a39755c98e2334cff0b6ac94435e173811913876cac5cce9313ab2ede5191512"
+    },
+    "original_trace": {
+      "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/eip-trace.jsonl",
+      "sha256": "5801afd4eaedec986d8ad965f3ce549027a4b7e036473d6c2a86f6b22b9c4249"
+    },
+    "control_plan": {
+      "path": "docs/data/parity-plans/kylie-ch09-readme-20261020.jsonl",
+      "sha256": "86075c4c27abc39fd2b8afbe3479293a0aa5a80dfadbf214fb109748bf65374f"
+    },
+    "font_sha256": "b76b0433203017ca80401b2ee0dd69350349871c4b19d504c34dbdd80541690a",
+    "font_source": "fd2-promo:20261017-r1 /usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc index 3",
+    "source_policy": {
+      "ancestor_save": {
+        "path": "work/promo-cadence-20261018/hd-fonts/early-party-ch09-hp1000-slot-r1/FD2.SAV",
+        "sha256": "9fb33896c82640c896b00b63e0a64fa9443c9656f6e46d67e8ce87b3a0b346fd"
+      },
+      "hp_bonus": 1000,
+      "in_chapter_hp_lock": false,
+      "in_chapter_position_injection": false,
+      "original_attack": {
+        "frm": [
+          13,
+          25
+        ],
+        "target": [
+          13,
+          24
+        ],
+        "actor_hp": 833,
+        "target_hp": 161,
+        "rng_word": 21579
+      },
+      "hd_seed": 1,
+      "comparison": "近似戰況；相同敵方BattleFig78，血量、亂數與到達格不同"
+    },
+    "original_validation": {
+      "normal_bios_key_reads": 80,
+      "checkpoints": 176,
+      "steps_at_return": 1235360337,
+      "captured_images": 770,
+      "attack_window_steps": [
+        1085413432,
+        1091753858
+      ],
+      "actor_index": 9,
+      "actor_fig": 12,
+      "target_fig": 78,
+      "raw_attack_caller_trace": {
+        "entry": "0x28A6C",
+        "body": "0x29164",
+        "restore": "0x28F4D",
+        "address_space": "dosgolem relocated LE linear"
+      },
+      "new_matching_decompilation": false
+    },
+    "hd_receipt": {
+      "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/receipt.json",
+      "sha256": "0613fe4f6d466900fbb50308ccd2551f0f32dff7540ab40e03dc67a2cce62baf"
+    },
+    "timeline": [
+      {
+        "original": {
+          "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000728.png",
+          "sha256": "6fb35507a1df3417fc8d5b08ba7d4dbefd584a60c835e1e0a100e158ea43e584",
+          "step": 1088194614,
+          "source_index": 728
+        },
+        "hd": {
+          "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-00.png",
+          "sha256": "5e21c7ff23892bb1475de2996460c5885e2fb5b4a66be1e4ff8dd95108f504cd"
+        },
+        "duration_ms": 270
+      },
+      {
+        "original": {
+          "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000729.png",
+          "sha256": "d638457cece9987497e3ce651aa4e7eb2c7bbf79c5de9af3e26853029cb38ec1",
+          "step": 1088334774,
+          "source_index": 729
+        },
+        "hd": {
+          "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-00.png",
+          "sha256": "5e21c7ff23892bb1475de2996460c5885e2fb5b4a66be1e4ff8dd95108f504cd"
+        },
+        "duration_ms": 30
+      },
+      {
+        "original": {
+          "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000729.png",
+          "sha256": "d638457cece9987497e3ce651aa4e7eb2c7bbf79c5de9af3e26853029cb38ec1",
+          "step": 1088334774,
+          "source_index": 729
+        },
+        "hd": {
+          "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-00.png",
+          "sha256": "5e21c7ff23892bb1475de2996460c5885e2fb5b4a66be1e4ff8dd95108f504cd"
+        },
+        "duration_ms": 100
+      },
+      {
+        "original": {
+          "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000730.png",
+          "sha256": "b5e87ed980dc838b819970facaf25adb3661416967afd0f95d93d3e9b88653dc",
+          "step": 1088474375,
+          "source_index": 730
+        },
+        "hd": {
+          "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-00.png",
+          "sha256": "5e21c7ff23892bb1475de2996460c5885e2fb5b4a66be1e4ff8dd95108f504cd"
+        },
+        "duration_ms": 70
+      },
+      {
+        "original": {
+          "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000731.png",
+          "sha256": "754507c88e3d9d9d681893102b8e68c5bb749ca1c4e6a8e4fa79a87ebc768d56",
+          "step": 1088686421,
+          "source_index": 731
+        },
+        "hd": {
+          "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-01.png",
+          "sha256": "96897a5127d4e69d5efa04512d310d612d1a4c60a78475f57d9dbad1e4705cff"
+        },
+        "duration_ms": 30
+      },
+      {
+        "original": {
+          "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000731.png",
+          "sha256": "754507c88e3d9d9d681893102b8e68c5bb749ca1c4e6a8e4fa79a87ebc768d56",
+          "step": 1088686421,
+          "source_index": 731
+        },
+        "hd": {
+          "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-01.png",
+          "sha256": "96897a5127d4e69d5efa04512d310d612d1a4c60a78475f57d9dbad1e4705cff"
+        },
+        "duration_ms": 30
+      },
+      {
+        "original": {
+          "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000732.png",
+          "sha256": "e896be6af42f7387c15c0f2ff6f371de2b393f77bbdd07916bf97c274d38b46c",
+          "step": 1088761135,
+          "source_index": 732
+        },
+        "hd": {
+          "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-01.png",
+          "sha256": "96897a5127d4e69d5efa04512d310d612d1a4c60a78475f57d9dbad1e4705cff"
+        },
+        "duration_ms": 70
+      },
+      {
+        "original": {
+          "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000733.png",
+          "sha256": "b5a42fc94e4f1adba6239107d6d3ba7aafec3233a098e6068db70162fa34d7f3",
+          "step": 1088830048,
+          "source_index": 733
+        },
+        "hd": {
+          "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-02.png",
+          "sha256": "97baeab5cd83bd0757345cf6a864a461e9d00f1c8ce6613d97144e792fd0a583"
+        },
+        "duration_ms": 30
+      },
+      {
+        "original": {
+          "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000734.png",
+          "sha256": "7a972dd2f93b1570ef194915286faceb100f0cf2045bf7777a545db96c77450e",
+          "step": 1088899966,
+          "source_index": 734
+        },
+        "hd": {
+          "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-02.png",
+          "sha256": "97baeab5cd83bd0757345cf6a864a461e9d00f1c8ce6613d97144e792fd0a583"
+        },
+        "duration_ms": 70
+      },
+      {
+        "original": {
+          "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000735.png",
+          "sha256": "7e331dc388311bb0bfebcf66574cf244b86cafe3ae99a316a676bf1ca19cbdc8",
+          "step": 1088969447,
+          "source_index": 735
+        },
+        "hd": {
+          "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-03.png",
+          "sha256": "059d9805583562c57ed37904a9913113d22df7e4a33f8007867e509939339cf4"
+        },
+        "duration_ms": 100
+      },
+      {
+        "original": {
+          "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000736.png",
+          "sha256": "5d5e285e088df01e8b3c920de58a6052e8db00455ddc352134d9484e0f9c0e68",
+          "step": 1089039435,
+          "source_index": 736
+        },
+        "hd": {
+          "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-03.png",
+          "sha256": "059d9805583562c57ed37904a9913113d22df7e4a33f8007867e509939339cf4"
+        },
+        "duration_ms": 70
+      },
+      {
+        "original": {
+          "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000737.png",
+          "sha256": "1dc66b0114d60d76c69f466b9319353a76c8ec51ef9848ab56be787a11fd1e52",
+          "step": 1089109281,
+          "source_index": 737
+        },
+        "hd": {
+          "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-03.png",
+          "sha256": "059d9805583562c57ed37904a9913113d22df7e4a33f8007867e509939339cf4"
+        },
+        "duration_ms": 100
+      },
+      {
+        "original": {
+          "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000738.png",
+          "sha256": "9220c3244bf9ed4f4020e3fcc46c38efd5a86766ff7f402abdfa3c102ea50574",
+          "step": 1089249123,
+          "source_index": 738
+        },
+        "hd": {
+          "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-05.png",
+          "sha256": "43976004fb45d6b5978c7eb44fb346b09905082447d41f9f39decffa94246230"
+        },
+        "duration_ms": 70
+      },
+      {
+        "original": {
+          "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000738.png",
+          "sha256": "9220c3244bf9ed4f4020e3fcc46c38efd5a86766ff7f402abdfa3c102ea50574",
+          "step": 1089249123,
+          "source_index": 738
+        },
+        "hd": {
+          "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-05.png",
+          "sha256": "43976004fb45d6b5978c7eb44fb346b09905082447d41f9f39decffa94246230"
+        },
+        "duration_ms": 100
+      },
+      {
+        "original": {
+          "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000739.png",
+          "sha256": "21c129411560c74dc52231ca845e1b50401118ad0ba1b1d3b746d6b3966523dd",
+          "step": 1089389024,
+          "source_index": 739
+        },
+        "hd": {
+          "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-05.png",
+          "sha256": "43976004fb45d6b5978c7eb44fb346b09905082447d41f9f39decffa94246230"
+        },
+        "duration_ms": 30
+      },
+      {
+        "original": {
+          "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000739.png",
+          "sha256": "21c129411560c74dc52231ca845e1b50401118ad0ba1b1d3b746d6b3966523dd",
+          "step": 1089389024,
+          "source_index": 739
+        },
+        "hd": {
+          "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-05.png",
+          "sha256": "43976004fb45d6b5978c7eb44fb346b09905082447d41f9f39decffa94246230"
+        },
+        "duration_ms": 70
+      },
+      {
+        "original": {
+          "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000740.png",
+          "sha256": "b581f15e2558124424e4a9aeaaeaf3e4f742c120e2e046ef5dc1b1f550004edc",
+          "step": 1089599133,
+          "source_index": 740
+        },
+        "hd": {
+          "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-08.png",
+          "sha256": "6e81626668e9f1613739de3ffc706bc02003ca056127af33184b188eb82936c3"
+        },
+        "duration_ms": 30
+      },
+      {
+        "original": {
+          "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000741.png",
+          "sha256": "a8b9a6db6d3ef8aac74ec0d6d790add2b9d4665ebae23573d447c8a27b480885",
+          "step": 1089670185,
+          "source_index": 741
+        },
+        "hd": {
+          "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-08.png",
+          "sha256": "6e81626668e9f1613739de3ffc706bc02003ca056127af33184b188eb82936c3"
+        },
+        "duration_ms": 100
+      },
+      {
+        "original": {
+          "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000742.png",
+          "sha256": "c08b3cdf1c7634a82bb8a105ed8e0cacbd041cdf209382beed63de7287a89055",
+          "step": 1089739403,
+          "source_index": 742
+        },
+        "hd": {
+          "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-08.png",
+          "sha256": "6e81626668e9f1613739de3ffc706bc02003ca056127af33184b188eb82936c3"
+        },
+        "duration_ms": 30
+      },
+      {
+        "original": {
+          "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000743.png",
+          "sha256": "9ec0e9060e4fb8178afbfd775e869b8f57b13b7dbe269137cd2e54e268d29d6c",
+          "step": 1089809318,
+          "source_index": 743
+        },
+        "hd": {
+          "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-08.png",
+          "sha256": "6e81626668e9f1613739de3ffc706bc02003ca056127af33184b188eb82936c3"
+        },
+        "duration_ms": 70
+      },
+      {
+        "original": {
+          "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000744.png",
+          "sha256": "12b80316128a9202295fc79aec572f59ac3951b9a3a45776a978d51b3945cf66",
+          "step": 1089878855,
+          "source_index": 744
+        },
+        "hd": {
+          "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-09.png",
+          "sha256": "d3c9f7760bfdb1543e5c938bc4e7237b9033a95ccf65938621a468c312b0bf74"
+        },
+        "duration_ms": 30
+      },
+      {
+        "original": {
+          "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000745.png",
+          "sha256": "c31d6c50a3dedccfcedf3888989242d9d1913d094e5294afaf6e66f2ff91b0eb",
+          "step": 1089948766,
+          "source_index": 745
+        },
+        "hd": {
+          "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-09.png",
+          "sha256": "d3c9f7760bfdb1543e5c938bc4e7237b9033a95ccf65938621a468c312b0bf74"
+        },
+        "duration_ms": 70
+      },
+      {
+        "original": {
+          "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000746.png",
+          "sha256": "b56d09331ddaccf0ea05a7ad6c84ddaf76d5f1e2fad61a7ad2649a325cf43baa",
+          "step": 1090018087,
+          "source_index": 746
+        },
+        "hd": {
+          "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-10.png",
+          "sha256": "0573ad387c559274a4a559f8f24b673a2f69ed72e28077754fdb8670c6e0f0ad"
+        },
+        "duration_ms": 30
+      },
+      {
+        "original": {
+          "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000746.png",
+          "sha256": "b56d09331ddaccf0ea05a7ad6c84ddaf76d5f1e2fad61a7ad2649a325cf43baa",
+          "step": 1090018087,
+          "source_index": 746
+        },
+        "hd": {
+          "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-10.png",
+          "sha256": "0573ad387c559274a4a559f8f24b673a2f69ed72e28077754fdb8670c6e0f0ad"
+        },
+        "duration_ms": 70
+      },
+      {
+        "original": {
+          "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000747.png",
+          "sha256": "f3805f4be7b740b79e7dd28a131000a18af2fe85bc5cf1130c79676efc915649",
+          "step": 1090159131,
+          "source_index": 747
+        },
+        "hd": {
+          "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-12.png",
+          "sha256": "bd57f7593ded86565e215beb2dc068cf17569aeb68b170d9a99888940a947925"
+        },
+        "duration_ms": 500
+      }
+    ],
+    "review_indices": [
+      0,
+      9,
+      16,
+      22
+    ],
+    "status": "CONFORMED-SCOPED",
+    "output": "docs/figures/hd-kylie-original-vs-hd.gif",
+    "scope": "原版dosgolem既有第九章收據與凱麗v2新普通攻擊，相近戰況；不宣稱同狀態、傷害、亂數或逐幀對拍。",
+    "timing": "沿用2170ms剪輯節奏；原版姿勢對應新GUI實際PNG核心的最近相容集合，可重複真實畫面。多候選保持歧義；未補畫／插幀，不代表兩側wall-clock或逐幀相同。",
+    "game_region_geometry": {
+      "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-geometry-oct22-r2.json",
+      "sha256": "9d149b72c84e98dc4abbfc33f2a6162e893c0297959f3e3f11e89d71ec8a25b3"
+    },
+    "pose_mapping": [
+      {
+        "old_native": [
+          37,
+          3
+        ],
+        "new_sample": 0,
+        "new_gpu_compatible_candidates": [
+          [
+            37,
+            2
+          ],
+          [
+            37,
+            3
+          ],
+          [
+            37,
+            4
+          ],
+          [
+            37,
+            5
+          ]
+        ],
+        "closest_frame_distance": 0,
+        "unique_native_frame": false
+      },
+      {
+        "old_native": [
+          37,
+          4
+        ],
+        "new_sample": 0,
+        "new_gpu_compatible_candidates": [
+          [
+            37,
+            2
+          ],
+          [
+            37,
+            3
+          ],
+          [
+            37,
+            4
+          ],
+          [
+            37,
+            5
+          ]
+        ],
+        "closest_frame_distance": 0,
+        "unique_native_frame": false
+      },
+      {
+        "old_native": [
+          37,
+          4
+        ],
+        "new_sample": 0,
+        "new_gpu_compatible_candidates": [
+          [
+            37,
+            2
+          ],
+          [
+            37,
+            3
+          ],
+          [
+            37,
+            4
+          ],
+          [
+            37,
+            5
+          ]
+        ],
+        "closest_frame_distance": 0,
+        "unique_native_frame": false
+      },
+      {
+        "old_native": [
+          37,
+          5
+        ],
+        "new_sample": 0,
+        "new_gpu_compatible_candidates": [
+          [
+            37,
+            2
+          ],
+          [
+            37,
+            3
+          ],
+          [
+            37,
+            4
+          ],
+          [
+            37,
+            5
+          ]
+        ],
+        "closest_frame_distance": 0,
+        "unique_native_frame": false
+      },
+      {
+        "old_native": [
+          37,
+          6
+        ],
+        "new_sample": 1,
+        "new_gpu_compatible_candidates": [
+          [
+            37,
+            6
+          ]
+        ],
+        "closest_frame_distance": 0,
+        "unique_native_frame": true
+      },
+      {
+        "old_native": [
+          37,
+          6
+        ],
+        "new_sample": 1,
+        "new_gpu_compatible_candidates": [
+          [
+            37,
+            6
+          ]
+        ],
+        "closest_frame_distance": 0,
+        "unique_native_frame": true
+      },
+      {
+        "old_native": [
+          37,
+          6
+        ],
+        "new_sample": 1,
+        "new_gpu_compatible_candidates": [
+          [
+            37,
+            6
+          ]
+        ],
+        "closest_frame_distance": 0,
+        "unique_native_frame": true
+      },
+      {
+        "old_native": [
+          37,
+          7
+        ],
+        "new_sample": 2,
+        "new_gpu_compatible_candidates": [
+          [
+            37,
+            7
+          ]
+        ],
+        "closest_frame_distance": 0,
+        "unique_native_frame": true
+      },
+      {
+        "old_native": [
+          37,
+          7
+        ],
+        "new_sample": 2,
+        "new_gpu_compatible_candidates": [
+          [
+            37,
+            7
+          ]
+        ],
+        "closest_frame_distance": 0,
+        "unique_native_frame": true
+      },
+      {
+        "old_native": [
+          37,
+          8
+        ],
+        "new_sample": 3,
+        "new_gpu_compatible_candidates": [
+          [
+            37,
+            8
+          ],
+          [
+            37,
+            9
+          ]
+        ],
+        "closest_frame_distance": 0,
+        "unique_native_frame": false
+      },
+      {
+        "old_native": [
+          37,
+          8
+        ],
+        "new_sample": 3,
+        "new_gpu_compatible_candidates": [
+          [
+            37,
+            8
+          ],
+          [
+            37,
+            9
+          ]
+        ],
+        "closest_frame_distance": 0,
+        "unique_native_frame": false
+      },
+      {
+        "old_native": [
+          37,
+          9
+        ],
+        "new_sample": 3,
+        "new_gpu_compatible_candidates": [
+          [
+            37,
+            8
+          ],
+          [
+            37,
+            9
+          ]
+        ],
+        "closest_frame_distance": 0,
+        "unique_native_frame": false
+      },
+      {
+        "old_native": [
+          37,
+          10
+        ],
+        "new_sample": 5,
+        "new_gpu_compatible_candidates": [
+          [
+            37,
+            10
+          ],
+          [
+            37,
+            11
+          ]
+        ],
+        "closest_frame_distance": 0,
+        "unique_native_frame": false
+      },
+      {
+        "old_native": [
+          37,
+          10
+        ],
+        "new_sample": 5,
+        "new_gpu_compatible_candidates": [
+          [
+            37,
+            10
+          ],
+          [
+            37,
+            11
+          ]
+        ],
+        "closest_frame_distance": 0,
+        "unique_native_frame": false
+      },
+      {
+        "old_native": [
+          37,
+          11
+        ],
+        "new_sample": 5,
+        "new_gpu_compatible_candidates": [
+          [
+            37,
+            10
+          ],
+          [
+            37,
+            11
+          ]
+        ],
+        "closest_frame_distance": 0,
+        "unique_native_frame": false
+      },
+      {
+        "old_native": [
+          37,
+          11
+        ],
+        "new_sample": 5,
+        "new_gpu_compatible_candidates": [
+          [
+            37,
+            10
+          ],
+          [
+            37,
+            11
+          ]
+        ],
+        "closest_frame_distance": 0,
+        "unique_native_frame": false
+      },
+      {
+        "old_native": [
+          37,
+          12
+        ],
+        "new_sample": 8,
+        "new_gpu_compatible_candidates": [
+          [
+            37,
+            12
+          ]
+        ],
+        "closest_frame_distance": 0,
+        "unique_native_frame": true
+      },
+      {
+        "old_native": [
+          37,
+          12
+        ],
+        "new_sample": 8,
+        "new_gpu_compatible_candidates": [
+          [
+            37,
+            12
+          ]
+        ],
+        "closest_frame_distance": 0,
+        "unique_native_frame": true
+      },
+      {
+        "old_native": [
+          37,
+          13
+        ],
+        "new_sample": 8,
+        "new_gpu_compatible_candidates": [
+          [
+            37,
+            12
+          ]
+        ],
+        "closest_frame_distance": 1,
+        "unique_native_frame": true
+      },
+      {
+        "old_native": [
+          37,
+          13
+        ],
+        "new_sample": 8,
+        "new_gpu_compatible_candidates": [
+          [
+            37,
+            12
+          ]
+        ],
+        "closest_frame_distance": 1,
+        "unique_native_frame": true
+      },
+      {
+        "old_native": [
+          37,
+          14
+        ],
+        "new_sample": 9,
+        "new_gpu_compatible_candidates": [
+          [
+            37,
+            14
+          ]
+        ],
+        "closest_frame_distance": 0,
+        "unique_native_frame": true
+      },
+      {
+        "old_native": [
+          37,
+          14
+        ],
+        "new_sample": 9,
+        "new_gpu_compatible_candidates": [
+          [
+            37,
+            14
+          ]
+        ],
+        "closest_frame_distance": 0,
+        "unique_native_frame": true
+      },
+      {
+        "old_native": [
+          37,
+          15
+        ],
+        "new_sample": 10,
+        "new_gpu_compatible_candidates": [
+          [
+            37,
+            15
+          ]
+        ],
+        "closest_frame_distance": 0,
+        "unique_native_frame": true
+      },
+      {
+        "old_native": [
+          37,
+          15
+        ],
+        "new_sample": 10,
+        "new_gpu_compatible_candidates": [
+          [
+            37,
+            15
+          ]
+        ],
+        "closest_frame_distance": 0,
+        "unique_native_frame": true
+      },
+      {
+        "old_native": [
+          36,
+          0
+        ],
+        "new_sample": 12,
+        "new_gpu_compatible_candidates": [
+          [
+            36,
+            0
+          ],
+          [
+            37,
+            0
+          ],
+          [
+            37,
+            1
+          ]
+        ],
+        "closest_frame_distance": 0,
+        "unique_native_frame": false
+      }
+    ],
+    "verification": {
+      "schema": "fd2-readme-attack-gif-verification-v1",
+      "status": "PASS",
+      "tool_sha256": "63f802173752df3c1287384d33d9c30cb83b1f7e3d7e2b09dacb3550b186ea6d",
+      "input_spec_sha256": "e26aebe62c2e89a2ce61fc463f89b688d56d23863a104fe36bb0d8b8236974f6",
+      "output": "/repo/docs/figures/hd-kylie-original-vs-hd.gif",
+      "output_sha256": "7e6da968bd9217afe8a9b4fba7991613b5aaa737a803ba1c01ea420982a32ebc",
+      "bytes": 2183710,
+      "size": [
+        960,
+        334
+      ],
+      "frames": 20,
+      "timeline_entries": 25,
+      "duration_ms": 2170,
+      "loop": 0,
+      "unique_gameplay_frames": [
+        20,
+        20
+      ],
+      "source_images_unchanged": true,
+      "interpolation": false,
+      "timing": "沿用2170ms剪輯節奏；原版姿勢對應新GUI實際PNG核心的最近相容集合，可重複真實畫面。多候選保持歧義；未補畫／插幀，不代表兩側wall-clock或逐幀相同。",
+      "sources": [
+        {
+          "original": {
+            "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000728.png",
+            "sha256": "6fb35507a1df3417fc8d5b08ba7d4dbefd584a60c835e1e0a100e158ea43e584",
+            "step": 1088194614,
+            "source_index": 728
+          },
+          "hd": {
+            "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-00.png",
+            "sha256": "5e21c7ff23892bb1475de2996460c5885e2fb5b4a66be1e4ff8dd95108f504cd"
+          },
+          "duration_ms": 270
+        },
+        {
+          "original": {
+            "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000729.png",
+            "sha256": "d638457cece9987497e3ce651aa4e7eb2c7bbf79c5de9af3e26853029cb38ec1",
+            "step": 1088334774,
+            "source_index": 729
+          },
+          "hd": {
+            "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-00.png",
+            "sha256": "5e21c7ff23892bb1475de2996460c5885e2fb5b4a66be1e4ff8dd95108f504cd"
+          },
+          "duration_ms": 30
+        },
+        {
+          "original": {
+            "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000729.png",
+            "sha256": "d638457cece9987497e3ce651aa4e7eb2c7bbf79c5de9af3e26853029cb38ec1",
+            "step": 1088334774,
+            "source_index": 729
+          },
+          "hd": {
+            "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-00.png",
+            "sha256": "5e21c7ff23892bb1475de2996460c5885e2fb5b4a66be1e4ff8dd95108f504cd"
+          },
+          "duration_ms": 100
+        },
+        {
+          "original": {
+            "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000730.png",
+            "sha256": "b5e87ed980dc838b819970facaf25adb3661416967afd0f95d93d3e9b88653dc",
+            "step": 1088474375,
+            "source_index": 730
+          },
+          "hd": {
+            "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-00.png",
+            "sha256": "5e21c7ff23892bb1475de2996460c5885e2fb5b4a66be1e4ff8dd95108f504cd"
+          },
+          "duration_ms": 70
+        },
+        {
+          "original": {
+            "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000731.png",
+            "sha256": "754507c88e3d9d9d681893102b8e68c5bb749ca1c4e6a8e4fa79a87ebc768d56",
+            "step": 1088686421,
+            "source_index": 731
+          },
+          "hd": {
+            "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-01.png",
+            "sha256": "96897a5127d4e69d5efa04512d310d612d1a4c60a78475f57d9dbad1e4705cff"
+          },
+          "duration_ms": 30
+        },
+        {
+          "original": {
+            "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000731.png",
+            "sha256": "754507c88e3d9d9d681893102b8e68c5bb749ca1c4e6a8e4fa79a87ebc768d56",
+            "step": 1088686421,
+            "source_index": 731
+          },
+          "hd": {
+            "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-01.png",
+            "sha256": "96897a5127d4e69d5efa04512d310d612d1a4c60a78475f57d9dbad1e4705cff"
+          },
+          "duration_ms": 30
+        },
+        {
+          "original": {
+            "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000732.png",
+            "sha256": "e896be6af42f7387c15c0f2ff6f371de2b393f77bbdd07916bf97c274d38b46c",
+            "step": 1088761135,
+            "source_index": 732
+          },
+          "hd": {
+            "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-01.png",
+            "sha256": "96897a5127d4e69d5efa04512d310d612d1a4c60a78475f57d9dbad1e4705cff"
+          },
+          "duration_ms": 70
+        },
+        {
+          "original": {
+            "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000733.png",
+            "sha256": "b5a42fc94e4f1adba6239107d6d3ba7aafec3233a098e6068db70162fa34d7f3",
+            "step": 1088830048,
+            "source_index": 733
+          },
+          "hd": {
+            "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-02.png",
+            "sha256": "97baeab5cd83bd0757345cf6a864a461e9d00f1c8ce6613d97144e792fd0a583"
+          },
+          "duration_ms": 30
+        },
+        {
+          "original": {
+            "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000734.png",
+            "sha256": "7a972dd2f93b1570ef194915286faceb100f0cf2045bf7777a545db96c77450e",
+            "step": 1088899966,
+            "source_index": 734
+          },
+          "hd": {
+            "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-02.png",
+            "sha256": "97baeab5cd83bd0757345cf6a864a461e9d00f1c8ce6613d97144e792fd0a583"
+          },
+          "duration_ms": 70
+        },
+        {
+          "original": {
+            "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000735.png",
+            "sha256": "7e331dc388311bb0bfebcf66574cf244b86cafe3ae99a316a676bf1ca19cbdc8",
+            "step": 1088969447,
+            "source_index": 735
+          },
+          "hd": {
+            "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-03.png",
+            "sha256": "059d9805583562c57ed37904a9913113d22df7e4a33f8007867e509939339cf4"
+          },
+          "duration_ms": 100
+        },
+        {
+          "original": {
+            "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000736.png",
+            "sha256": "5d5e285e088df01e8b3c920de58a6052e8db00455ddc352134d9484e0f9c0e68",
+            "step": 1089039435,
+            "source_index": 736
+          },
+          "hd": {
+            "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-03.png",
+            "sha256": "059d9805583562c57ed37904a9913113d22df7e4a33f8007867e509939339cf4"
+          },
+          "duration_ms": 70
+        },
+        {
+          "original": {
+            "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000737.png",
+            "sha256": "1dc66b0114d60d76c69f466b9319353a76c8ec51ef9848ab56be787a11fd1e52",
+            "step": 1089109281,
+            "source_index": 737
+          },
+          "hd": {
+            "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-03.png",
+            "sha256": "059d9805583562c57ed37904a9913113d22df7e4a33f8007867e509939339cf4"
+          },
+          "duration_ms": 100
+        },
+        {
+          "original": {
+            "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000738.png",
+            "sha256": "9220c3244bf9ed4f4020e3fcc46c38efd5a86766ff7f402abdfa3c102ea50574",
+            "step": 1089249123,
+            "source_index": 738
+          },
+          "hd": {
+            "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-05.png",
+            "sha256": "43976004fb45d6b5978c7eb44fb346b09905082447d41f9f39decffa94246230"
+          },
+          "duration_ms": 70
+        },
+        {
+          "original": {
+            "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000738.png",
+            "sha256": "9220c3244bf9ed4f4020e3fcc46c38efd5a86766ff7f402abdfa3c102ea50574",
+            "step": 1089249123,
+            "source_index": 738
+          },
+          "hd": {
+            "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-05.png",
+            "sha256": "43976004fb45d6b5978c7eb44fb346b09905082447d41f9f39decffa94246230"
+          },
+          "duration_ms": 100
+        },
+        {
+          "original": {
+            "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000739.png",
+            "sha256": "21c129411560c74dc52231ca845e1b50401118ad0ba1b1d3b746d6b3966523dd",
+            "step": 1089389024,
+            "source_index": 739
+          },
+          "hd": {
+            "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-05.png",
+            "sha256": "43976004fb45d6b5978c7eb44fb346b09905082447d41f9f39decffa94246230"
+          },
+          "duration_ms": 30
+        },
+        {
+          "original": {
+            "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000739.png",
+            "sha256": "21c129411560c74dc52231ca845e1b50401118ad0ba1b1d3b746d6b3966523dd",
+            "step": 1089389024,
+            "source_index": 739
+          },
+          "hd": {
+            "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-05.png",
+            "sha256": "43976004fb45d6b5978c7eb44fb346b09905082447d41f9f39decffa94246230"
+          },
+          "duration_ms": 70
+        },
+        {
+          "original": {
+            "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000740.png",
+            "sha256": "b581f15e2558124424e4a9aeaaeaf3e4f742c120e2e046ef5dc1b1f550004edc",
+            "step": 1089599133,
+            "source_index": 740
+          },
+          "hd": {
+            "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-08.png",
+            "sha256": "6e81626668e9f1613739de3ffc706bc02003ca056127af33184b188eb82936c3"
+          },
+          "duration_ms": 30
+        },
+        {
+          "original": {
+            "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000741.png",
+            "sha256": "a8b9a6db6d3ef8aac74ec0d6d790add2b9d4665ebae23573d447c8a27b480885",
+            "step": 1089670185,
+            "source_index": 741
+          },
+          "hd": {
+            "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-08.png",
+            "sha256": "6e81626668e9f1613739de3ffc706bc02003ca056127af33184b188eb82936c3"
+          },
+          "duration_ms": 100
+        },
+        {
+          "original": {
+            "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000742.png",
+            "sha256": "c08b3cdf1c7634a82bb8a105ed8e0cacbd041cdf209382beed63de7287a89055",
+            "step": 1089739403,
+            "source_index": 742
+          },
+          "hd": {
+            "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-08.png",
+            "sha256": "6e81626668e9f1613739de3ffc706bc02003ca056127af33184b188eb82936c3"
+          },
+          "duration_ms": 30
+        },
+        {
+          "original": {
+            "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000743.png",
+            "sha256": "9ec0e9060e4fb8178afbfd775e869b8f57b13b7dbe269137cd2e54e268d29d6c",
+            "step": 1089809318,
+            "source_index": 743
+          },
+          "hd": {
+            "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-08.png",
+            "sha256": "6e81626668e9f1613739de3ffc706bc02003ca056127af33184b188eb82936c3"
+          },
+          "duration_ms": 70
+        },
+        {
+          "original": {
+            "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000744.png",
+            "sha256": "12b80316128a9202295fc79aec572f59ac3951b9a3a45776a978d51b3945cf66",
+            "step": 1089878855,
+            "source_index": 744
+          },
+          "hd": {
+            "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-09.png",
+            "sha256": "d3c9f7760bfdb1543e5c938bc4e7237b9033a95ccf65938621a468c312b0bf74"
+          },
+          "duration_ms": 30
+        },
+        {
+          "original": {
+            "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000745.png",
+            "sha256": "c31d6c50a3dedccfcedf3888989242d9d1913d094e5294afaf6e66f2ff91b0eb",
+            "step": 1089948766,
+            "source_index": 745
+          },
+          "hd": {
+            "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-09.png",
+            "sha256": "d3c9f7760bfdb1543e5c938bc4e7237b9033a95ccf65938621a468c312b0bf74"
+          },
+          "duration_ms": 70
+        },
+        {
+          "original": {
+            "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000746.png",
+            "sha256": "b56d09331ddaccf0ea05a7ad6c84ddaf76d5f1e2fad61a7ad2649a325cf43baa",
+            "step": 1090018087,
+            "source_index": 746
+          },
+          "hd": {
+            "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-10.png",
+            "sha256": "0573ad387c559274a4a559f8f24b673a2f69ed72e28077754fdb8670c6e0f0ad"
+          },
+          "duration_ms": 30
+        },
+        {
+          "original": {
+            "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000746.png",
+            "sha256": "b56d09331ddaccf0ea05a7ad6c84ddaf76d5f1e2fad61a7ad2649a325cf43baa",
+            "step": 1090018087,
+            "source_index": 746
+          },
+          "hd": {
+            "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-10.png",
+            "sha256": "0573ad387c559274a4a559f8f24b673a2f69ed72e28077754fdb8670c6e0f0ad"
+          },
+          "duration_ms": 70
+        },
+        {
+          "original": {
+            "path": "work/promo-cadence-20261018/hd-fonts/kylie-readme-original-r4/frames/frame-000747.png",
+            "sha256": "f3805f4be7b740b79e7dd28a131000a18af2fe85bc5cf1130c79676efc915649",
+            "step": 1090159131,
+            "source_index": 747
+          },
+          "hd": {
+            "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-12.png",
+            "sha256": "bd57f7593ded86565e215beb2dc068cf17569aeb68b170d9a99888940a947925"
+          },
+          "duration_ms": 500
+        }
+      ],
+      "contact_sheet_sha256": "a04677f165c0f4fc23e17328c9f156cb05af9090eba305ed68625b68f421b1ba",
+      "raw_windows_verified": [
+        {
+          "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-00-window.png",
+          "sha256": "a50b2a26b7686b3ff1a43a747be643e124238a6052f0959aaf8e7ee33f86d993",
+          "crop": [
+            0,
+            72,
+            1920,
+            1272
+          ],
+          "exact_pixels_verified": true
+        },
+        {
+          "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-01-window.png",
+          "sha256": "fdddea18c1522ef58277eac61ee148be134630e47dd0c9457e153ca3a039680e",
+          "crop": [
+            0,
+            72,
+            1920,
+            1272
+          ],
+          "exact_pixels_verified": true
+        },
+        {
+          "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-02-window.png",
+          "sha256": "bff6cf0a39c09391568832df3926a903a58da9137487cf734553d553b1ef75ad",
+          "crop": [
+            0,
+            72,
+            1920,
+            1272
+          ],
+          "exact_pixels_verified": true
+        },
+        {
+          "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-03-window.png",
+          "sha256": "7df81bd7172ba4d1fba3dc8ab75f85a270678bd75a31c36e44afaa768c2e736a",
+          "crop": [
+            0,
+            72,
+            1920,
+            1272
+          ],
+          "exact_pixels_verified": true
+        },
+        {
+          "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-05-window.png",
+          "sha256": "25fe72d5281a3b63370ae1e5007e8f8221a9d04a8c3416d6db5d01f6f505d98e",
+          "crop": [
+            0,
+            72,
+            1920,
+            1272
+          ],
+          "exact_pixels_verified": true
+        },
+        {
+          "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-08-window.png",
+          "sha256": "4c6b793bc46a0a376b1f9eab889deed4df11f24cdb04608dd7b8f79907ec1d04",
+          "crop": [
+            0,
+            72,
+            1920,
+            1272
+          ],
+          "exact_pixels_verified": true
+        },
+        {
+          "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-09-window.png",
+          "sha256": "4ceac5fa18dff9559ee2463763ccb93d3567118baa9620308358801cc1d7a5fe",
+          "crop": [
+            0,
+            72,
+            1920,
+            1272
+          ],
+          "exact_pixels_verified": true
+        },
+        {
+          "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-10-window.png",
+          "sha256": "6ada66c51815dd2c757d4bbb0af5b09471eaffeecec8b4f7181f17909a65cb1e",
+          "crop": [
+            0,
+            72,
+            1920,
+            1272
+          ],
+          "exact_pixels_verified": true
+        },
+        {
+          "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-12-window.png",
+          "sha256": "fa0e1352abcc6dea7b57e2c8242c3ed1a34f8d979a3b045a91591f593cdf3bfd",
+          "crop": [
+            0,
+            72,
+            1920,
+            1272
+          ],
+          "exact_pixels_verified": true
+        }
+      ],
+      "ffmpeg_full_decode": "PASS",
+      "reviewed_full_frame_and_right_foot": true
+    },
+    "verification_report": {
+      "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-gif-verification-oct22-r2.json",
+      "sha256": "1aab50648024d4ebcfb010235ad84a181894394e55a53224820cea50a6699474"
+    },
+    "still_source": {
+      "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-02.png",
+      "sha256": "97baeab5cd83bd0757345cf6a864a461e9d00f1c8ce6613d97144e792fd0a583"
+    },
+    "superseded_gif": {
+      "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-before-hd-kylie-original-vs-hd.gif",
+      "sha256": "c0af386348ad84574a3041d2af5ebc60ff9a930b04e6a9099d6a9ca7c0023ce2"
+    },
+    "superseded_still": {
+      "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-before-hd-kylie-physical-attack.png",
+      "sha256": "54fe0310349bf7e770395162b76cb3fb2cee7d38e72aa13cc6addae181901b96"
+    },
+    "actual_pose_core_receipt": {
+      "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-core-oct22-r1.json",
+      "sha256": "f044991ab3eed53651bbe4991b2301c48852b39a353b0c1f8e6a88716e3d3a45"
+    },
+    "mapping_basis": "依最終PNG高覆蓋核心相容集合取最近姿勢，保留多候選，不以先行audit當成已呈現幀；剪輯對應不宣稱原版同狀態或逐幀一致。",
+    "audit_index_candidate_superseded": {
+      "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-gif-audit-index-candidate-oct22-r1.gif",
+      "sha256": "14ee84a59da2d8bcef4787fe8caffce29fab615e30a8d4d9bad4f999844ac16b"
+    },
+    "crop_negative_guard": {
+      "path": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-gif-crop-guard-oct22-r1.json",
+      "sha256": "de3481736e456675db3dadc4a01fa296482047ad27867bdc2f7e296d45d46cc3"
     }
   }
 }

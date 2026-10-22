@@ -183,6 +183,13 @@ func TestModernHDFighterCannonStaffAllFramesGPU(t *testing.T) {
 	testModernHDRegisteredFramesGPU(t, "FIGANI.DAT", []int{132, 133, 135, 136, 138, 139}, 56, "PASS-FIGHTER-CANNON-STAFF-56-SOURCE-GPU")
 }
 
+func TestModernHDKylieLegFramesGPU(t *testing.T) {
+	if os.Getenv("FD2_HD_KYLIE_LEG_GPU") != "1" {
+		t.Skip("dedicated corrected Kylie frames GPU process required")
+	}
+	testModernHDRegisteredFramesGPU(t, "FIGANI.DAT", []int{36, 37}, 20, "PASS-KYLIE-LEG-20-SOURCE-GPU")
+}
+
 func testModernHDRegisteredFramesGPU(t *testing.T, archive string, resources []int, frameCount int, status string) {
 	t.Helper()
 	set, err := loadModernStoryPortraitSet(os.Getenv("FD2_TEST_MODERN_EFFECT_CATALOG"), os.Getenv("FD2_TEST_MODERN_EFFECT_PACK"))

@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 23 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 24 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -287,6 +287,18 @@ HD高解析呈現仍未完成。目前穩定文字、高解析故事頭像、戰
 技術修正已接入v2：待機／蓄力十幀更新，出拳後五幀PNG保持；完整十五幀實際繪製、F2與返回地圖通過。正式及精簡素材包的載入與缺件原子性通過，這輪沒有OOM。這是技術接入驗證，新造型人工確認仍按全部HD後集中處理，本議題保持開啟。
 
 怎樣算做完：修正待機與蓄力母稿的連續肩肘、前臂、手腕與拳頭結構，接入全部受影響影格，完整Game.Draw、F2及缺件原子性通過；集中人工確認時檢查站姿自然度，確認後才關閉。
+
+證據：`docs/data/fd2-modern-hd-battlefield-20261019.json`
+
+### 凱麗HD戰鬥右腳落點與README動畫修正
+
+`kylie-hd-right-foot-review` · 缺陷 · [#269](https://github.com/wicanr2/fd2_re/issues/269) · 仍未完成 · 要人判
+
+凱麗舊HD母稿的可見右靴誤畫為懸空並露鞋底，與固定FIGANI36／37的踩地承重姿勢不同。六母稿及完整20幀已修為v2，原框、節拍、標記、規則與保存保持。20幀來源及Game.Draw核心、五組Go、21項來源拒收、兩包載入／缺件原子性均通過，無SKIP或OOM。第九章同槽seed1普通攻擊、自然返回、F2、保存與新程序冷讀通過；25張普通PNG實際圖源核心通過。README GIF與靜態圖改用新普通v2，完整工具列原PNG及精確遊戲區裁切逐筆保留。剪輯配對依實際PNG核心相容集合，audit先行及多候選歧義明示；相近戰況不宣稱逐幀一致。新造型仍依全部HD後集中人工確認，保持OPEN。
+
+主收據kylie_right_foot_followup_20261022及kylie_readme_animation_20261022；規格61「凱麗右腳與README動畫修正」。
+
+怎樣算做完：修正髖／膝／踝與腳底的連續結構及原版右腳承重落點，六母稿與20影格接入；完整來源GPU、Game.Draw／F2／返回及兩包載入／缺件原子性通過，以新普通GUI擷取更新README GIF；集中人工確認自然度後才關閉。
 
 證據：`docs/data/fd2-modern-hd-battlefield-20261019.json`
 

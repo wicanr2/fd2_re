@@ -171,10 +171,10 @@
 
 ![凱麗攻擊動畫：原版 DOS 與 HD 重製並排](docs/figures/hd-kylie-original-vs-hd.gif)
 
-左側是 dosgolem 執行原版遊戲，右側是 HD 重製的實際遊玩畫面，節錄凱麗的掌擊、旋身與收勢。
+左側是 dosgolem 執行原版遊戲，右側是 HD 重製的實際遊玩畫面，節錄凱麗的掌擊、旋身與收勢。右腳已依原版踩地站姿修正；右側取自新版正常攻擊，保留完整遊戲區。
 兩側沿用上述章前加血槽，屬相近戰況；動畫依動作順序剪輯，血量與亂數不同，不代表逐幀一致。
 HD 背景、敵方與面板仍含像素素材。來源與可重跑方式見
-[動畫驗證紀錄](docs/data/fd2-modern-hd-battlefield-20261019.json)的`kylie_readme_animation_20261020`。
+[動畫驗證紀錄](docs/data/fd2-modern-hd-battlefield-20261019.json)的`kylie_readme_animation_20261022`。
 
 | 貝克威HD端炮 | 貝克威HD光束 |
 | --- | --- |

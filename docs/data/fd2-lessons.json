@@ -3620,6 +3620,21 @@
         ],
         "pattern": "if isinstance\\(assignment, list\\):\\n\\s+if not \\(args\\.with_cast or args\\.layered\\)"
       }
+    },
+    {
+      "id": "hd-toolbar-capture-preserve-game-region",
+      "date": "2026-10-22",
+      "area": "HD視窗擷取",
+      "rule": "遊戲加入工具列後，擷取器依正式視窗尺寸保留完整原PNG，另按已確認的工具列高度精確裁出遊戲區，不把工具列擠入舊遊戲尺寸。以tools/verify_fd2_hd_fonts_gui.py --player-toolbar使用1920×1272原視窗及crop(0,72,1920,1272)，逐筆保留SHA並核對裁切像素；未帶此旗標的舊路徑保持。",
+      "why": "凱麗新腳部的普通GUI流程通過，但舊擷取器強制1920×1200，將遊戲底部72像素裁掉，掩蓋本次要看的右腳；這是擷取幾何問題。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#kylie_right_foot_followup_20261022",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_hd_fonts_gui.py"
+        ],
+        "pattern": "exact_game_region_no_resize"
+      }
     }
   ]
 }
