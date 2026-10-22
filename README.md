@@ -139,6 +139,10 @@
 
 左為雙斧交叉斬，中為紅披風持杖人物前伸，右為斧盾重甲下劈。上圖由測試場景的實際繪製畫面縮圖，面板沿用來源角色名稱；背景與受擊閃色仍含像素素材。共用姿勢與人物、武器比例的近似見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。正常遊玩與造型確認待全部HD接入後集中抽驗。
 
+![藍龍斬擊、灰綠龍展翼與紅龍斬擊的HD測試畫面](docs/figures/hd-dragon-riders-battle.png)
+
+左為藍龍騎者斬擊，中為灰綠龍展翼，右為紅龍騎者斬擊。上圖由測試場景的實際繪製畫面縮圖，面板沿用來源角色名稱；背景與受擊閃色仍含像素素材。升空與返回保留局部身體取樣，共用姿勢、振翼與比例近似見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。正常遊玩與造型確認待全部HD接入後集中抽驗。
+
 | 鐵諾HD普通END攻防 | 蓋亞HD普通攻防 |
 | --- | --- |
 | ![鐵諾HD普通END攻防](docs/figures/hd-tino-physical-attack.png) | ![蓋亞HD普通攻防](docs/figures/hd-gaia-physical-attack.png) |

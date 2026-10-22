@@ -3650,6 +3650,21 @@
         ],
         "pattern": "distance = math.dist"
       }
+    },
+    {
+      "id": "hd-batch-preflight-separate-cold-set",
+      "date": "2026-10-22",
+      "area": "HD批次預檢",
+      "rule": "多人物資產驗證共用完整主題載入時，成功預載與缺件交易使用不同集合。每位人物保留獨立player／mode11案例，還原被修改的來源路徑，核對HP、兩種亂數與所有受驗冷銀行沒有部分發布。入口remake/cmd/fd2/modern_hd_battle_assets_test.go的TestModernHDBattleBatchAssetsAndPreflight，使用FD2_TEST_MODERN_BATTLE_FIGURES明示人物清單；只適用既有FIGANI物理攻防銀行，不代替實際Game.Draw或正常玩家流程。",
+      "why": "54兩包逐人物預檢在四容器併行時超過550秒，完整主題重載佔去主要時間。批次改為每包兩次載入，保留三人物六個交易拒收斷言；兩包皆通過，初輪逾時及明示停止的舊工作另存。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#riders54_55_56_followup_20261022",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+        ],
+        "pattern": "另以未預載的集合逐人物"
+      }
     }
   ]
 }

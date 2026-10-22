@@ -98455,7 +98455,7 @@
     },
     "private_remote_verification": "Independent private repository commit pushed; actual git ls-remote refs/heads/main re-read equals local HEAD. Private commit identity is not published."
   },
-  "latest_hd_batch": "actors51_52_53_followup_20261022",
+  "latest_hd_batch": "riders54_55_56_followup_20261022",
   "monks28_31_mage29_followup_20261022": {
     "status": "CONFORMED-SCOPED-RUNTIME-E1",
     "date": "2026-10-22",
@@ -128805,6 +128805,2411 @@
     "lessons_check": {
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5153-fd2_lessons.py-check-oct22-r1.log",
       "sha256": "98f0096f5143299da0881ef4c62bf9004ed2e9217ce90f3fb09b1e7407677545"
+    }
+  },
+  "riders54_55_56_followup_20261022": {
+    "status": "CONFORMED-SCOPED / RUNTIME-E1",
+    "date": "2026-10-22",
+    "base_commit": "9256e8affa0ad89fa01a5a4a4ae477cfd8049a81",
+    "base_catalog": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party54-55-56-base-catalog-oct22-r1.json",
+      "sha256": "82cfd16d1e676690bae2a0686558a5bbfb4e0b3317cd1b07d28127393210c98f"
+    },
+    "native_reference": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party-pending-54-55-56-native-oct22-r1.json",
+      "sha256": "f20880dd7a04d1721f51fd70711c7bc364b00813791efaaed9e789283d096abd"
+    },
+    "figures": [
+      54,
+      55,
+      56
+    ],
+    "resources": [
+      162,
+      163,
+      165,
+      166,
+      168,
+      169
+    ],
+    "frames": 59,
+    "formal_registered": true,
+    "private_synced": true,
+    "normal_player": false,
+    "human_review": "deferred until all HD connected, as approved",
+    "full_battle_hd_complete": false,
+    "rules_and_save_changed": false,
+    "recordings_created": false,
+    "consumer_evidence": {
+      "file": "remake/internal/battlepresent/native_physical_body.go",
+      "sha256": "39a7f5423cab91ced5081197d99ec530644c495e28d7bd8e894f1ca92f600d92"
+    },
+    "source_policy": "Pinned native PNG/Mask/descriptors verified. All six HeaderByte1=0, all59 masks nonempty. Single impact/Cue at163:7=1/3,166:7=1/4,169:7=1/4. Zero164/167/170 remain absent. Existing BuildNativePhysicalBodyPlan only; no new caller reach or original RGB/frame parity claim.",
+    "generation": [
+      {
+        "key": "rider54idle",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider54idle-original-r1.png",
+        "sha256": "88f1a89f07abca465af6e9ec54d865d1ca617d72765192b5330c385a6f1986e0",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-ab037c96-484c-4773-b656-171bf284654c.png",
+        "args": {
+          "transparent_background": true,
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure054-native-162-00-oct22-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party2527-WingedIdle-original-r1.png"
+          ],
+          "prompt": "Use case: stylized-concept. Asset type: single transparent full-body game battle sprite master, not a sprite sheet. Primary request: faithfully redraw reference image1 as crisp hand-painted HD fantasy art, rear three-quarter view facing upper-left, entire winged dragon MOUNT plus its separate HUMAN RIDER and saddle. Image1 is the actual original sprite and controls silhouette, rider/mount anatomy, equipment, colors and rear perspective. Image2 is ONLY the inking and painterly-shading style; do NOT borrow its standing humanoid dragon anatomy. Navy blue scaled flying dragon, pale blue long cape on separate dark navy and gold armored rider, short sword near shoulder. Brown leather saddle and harness, curled long tail, two hind legs with claws, long narrow dragon neck and horned head looking upper-left. Wings held mostly upward/near-folded as original idle frame0, narrow tall silhouette. Keep rider seated anatomically, hands naturally gripping reins/weapon, no fused rider and mount, no extra arms or feet. Clean bold outlines, rich painted colors, restrained texture. Transparent background with actual alpha, no ground, no shadow, no labels, no border, no glow. Whole subject inside frame with clear transparent margin on all sides. Centered single sprite."
+        },
+        "size": [
+          1109,
+          1418
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          4,
+          21,
+          1107,
+          1399
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "rider55idle",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider55idle-original-r1.png",
+        "sha256": "f64303b8a061bb119c2a79ef64c670e76427b2d25f09bddec96b9cdc13c7bab8",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-492bad5e-29e6-4476-9021-89064e56c756.png",
+        "args": {
+          "transparent_background": true,
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure055-native-165-00-oct22-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party2527-WingedIdle-original-r1.png"
+          ],
+          "prompt": "Use case: stylized-concept. Asset type: single transparent full-body game battle sprite master, not a sprite sheet. Primary request: faithfully redraw reference image1 as crisp hand-painted HD fantasy art, rear three-quarter view facing upper-left, entire winged dragon MOUNT plus its separate HUMAN RIDER and saddle. Image1 is the actual original sprite and controls silhouette, rider/mount anatomy, equipment, colors and rear perspective. Image2 is ONLY the inking and painterly-shading style; do NOT borrow its standing humanoid dragon anatomy. Muted gray-green scaled flying dragon, separate silver-haired light-armored human rider with exposed arms, pale silver armor, blue-gray cape and sword. Brown leather saddle and harness, curled long tail, two hind legs with claws, long narrow dragon neck and horned head looking upper-left. Wings held mostly upward/near-folded as original idle frame0, narrow tall silhouette. Keep rider seated anatomically, hands naturally gripping reins/weapon, no fused rider and mount, no extra arms or feet. Clean bold outlines, rich painted colors, restrained texture. Transparent background with actual alpha, no ground, no shadow, no labels, no border, no glow. Whole subject inside frame with clear transparent margin on all sides. Centered single sprite."
+        },
+        "size": [
+          1109,
+          1418
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          8,
+          14,
+          1104,
+          1399
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "rider56idle",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider56idle-original-r1.png",
+        "sha256": "fd73360b30cfec462b9cc3b31903d463f14336d9fb6ba8978020979365840ad6",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-1c82a3db-bf06-4dd5-b0e9-bc689353e703.png",
+        "args": {
+          "transparent_background": true,
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure056-native-168-00-oct22-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party2527-WingedIdle-original-r1.png"
+          ],
+          "prompt": "Use case: stylized-concept. Asset type: single transparent full-body game battle sprite master, not a sprite sheet. Primary request: faithfully redraw reference image1 as crisp hand-painted HD fantasy art, rear three-quarter view facing upper-left, entire winged dragon MOUNT plus its separate HUMAN RIDER and saddle. Image1 is the actual original sprite and controls silhouette, rider/mount anatomy, equipment, colors and rear perspective. Image2 is ONLY the inking and painterly-shading style; do NOT borrow its standing humanoid dragon anatomy. Rust red/brown scaled flying dragon, separate human rider in navy-and-gold armor with bare muscular upper arms, long vivid red cape, large silver double-edged poleaxe near upper-left shoulder. Brown leather saddle and harness, curled long tail, two hind legs with claws, long narrow dragon neck and horned head looking upper-left. Wings held mostly upward/near-folded as original idle frame0, narrow tall silhouette. Keep rider seated anatomically, hands naturally gripping reins/weapon, no fused rider and mount, no extra arms or feet. Clean bold outlines, rich painted colors, restrained texture. Transparent background with actual alpha, no ground, no shadow, no labels, no border, no glow. Whole subject inside frame with clear transparent margin on all sides. Centered single sprite."
+        },
+        "size": [
+          1092,
+          1440
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          6,
+          6,
+          1086,
+          1424
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "rider54half",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider54half-original-r1.png",
+        "sha256": "0a3cd873190ef4ec2c94328465ef52bf253ff05b26a0fe03173bd6a37943ee4b",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-da6b0caf-28fe-4959-8491-0911c1af1279.png",
+        "args": {
+          "transparent_background": true,
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider54idle-original-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure054-native-162-01-oct22-r1.png"
+          ],
+          "prompt": "Use case: identity-preserve. Asset type: ONE transparent hand-painted HD battle sprite master. Image1 is the approved style and identity for this separate HUMAN RIDER on a winged dragon MOUNT; image2 is the original pixel pose and controls action/wing shape. Change wing pose only: the dragon's two wings open halfway diagonally, halfway between near-folded upward wings and horizontal span. Same upright body, centered head/rider, seated legs and curled tail. Keep weapon and rider pose as image1. Preserve rear three-quarter camera facing upper-left, character/rider proportions, colors, materials, clean outlines and painted shading from image1. Single full subject with wings, horns, weapon, saddle, fingers, curled tail and claws all inside frame. Natural arms/wrists, no fused rider and dragon. Transparent actual alpha background, generous margin all sides, no ground, no cast shadow, no text or effects, no sprite sheet."
+        },
+        "size": [
+          1109,
+          1418
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          11,
+          33,
+          1105,
+          1374
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "rider54cut",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider54cut-original-r1.png",
+        "sha256": "8fa2343786f9e3bb4efb61bb939cf36b7e92241099585768b69060c483552f09",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-4a7fbbf9-eded-4593-aa63-b48e8b625810.png",
+        "args": {
+          "transparent_background": true,
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider54idle-original-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure054-native-163-07-oct22-r1.png"
+          ],
+          "prompt": "Use case: identity-preserve. Asset type: ONE transparent hand-painted HD battle sprite master. Image1 is the approved style and identity for this separate HUMAN RIDER on a winged dragon MOUNT; image2 is the original pixel pose and controls action/wing shape. Draw the same dragon and human rider immediately after a downward sweeping melee strike, as image2's rider/cape/body orientation; show the FULL dragon including hind feet and curled tail even though image2 is cropped by the original game viewport. Rider leans and twists forward, cloak billows strongly toward upper-right, weapon finishes the downward sweep toward lower-left. Dragon wings partially open, human hands naturally connected to the weapon. No gold magic, no luminous trails in this pose, no duplicated weapon. Keep exact same identity, colors, equipment, saddle. Preserve rear three-quarter camera facing upper-left, character/rider proportions, colors, materials, clean outlines and painted shading from image1. Single full subject with wings, horns, weapon, saddle, fingers, curled tail and claws all inside frame. Natural arms/wrists, no fused rider and dragon. Transparent actual alpha background, generous margin all sides, no ground, no cast shadow, no text or effects, no sprite sheet."
+        },
+        "size": [
+          1109,
+          1418
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          12,
+          61,
+          1102,
+          1407
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "rider55half",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider55half-original-r1.png",
+        "sha256": "19eea38191599152124ca9d48db3bcdfca2edc9e4eef54b58fdb8e9c554eb8ef",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-8b2110e1-fba9-41e5-8a00-10f88758ec2a.png",
+        "args": {
+          "transparent_background": true,
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider55idle-original-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure055-native-165-01-oct22-r1.png"
+          ],
+          "prompt": "Use case: identity-preserve. Asset type: ONE transparent hand-painted HD battle sprite master. Image1 is the approved style and identity for this separate HUMAN RIDER on a winged dragon MOUNT; image2 is the original pixel pose and controls action/wing shape. Change wing pose only: the dragon's two wings open halfway diagonally, halfway between near-folded upward wings and horizontal span. Same upright body, centered head/rider, seated legs and curled tail. Keep weapon and rider pose as image1. Preserve rear three-quarter camera facing upper-left, character/rider proportions, colors, materials, clean outlines and painted shading from image1. Single full subject with wings, horns, weapon, saddle, fingers, curled tail and claws all inside frame. Natural arms/wrists, no fused rider and dragon. Transparent actual alpha background, generous margin all sides, no ground, no cast shadow, no text or effects, no sprite sheet."
+        },
+        "size": [
+          1109,
+          1418
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          9,
+          32,
+          1103,
+          1353
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "rider55cut",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider55cut-original-r1.png",
+        "sha256": "622cd102745106ecc72cede635852a408c6d1c19e71f5085099afb2c01a1245c",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-f205f66f-06c0-49ee-bef0-6619c0f8cd33.png",
+        "args": {
+          "transparent_background": true,
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider55idle-original-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure055-native-166-07-oct22-r1.png"
+          ],
+          "prompt": "Use case: identity-preserve. Asset type: ONE transparent hand-painted HD battle sprite master. Image1 is the approved style and identity for this separate HUMAN RIDER on a winged dragon MOUNT; image2 is the original pixel pose and controls action/wing shape. Draw the same dragon and human rider immediately after a downward sweeping melee strike, as image2's rider/cape/body orientation; show the FULL dragon including hind feet and curled tail even though image2 is cropped by the original game viewport. Rider leans and twists forward, cloak billows strongly toward upper-right, weapon finishes the downward sweep toward lower-left. Dragon wings partially open, human hands naturally connected to the weapon. No gold magic, no luminous trails in this pose, no duplicated weapon. Keep exact same identity, colors, equipment, saddle. Preserve rear three-quarter camera facing upper-left, character/rider proportions, colors, materials, clean outlines and painted shading from image1. Single full subject with wings, horns, weapon, saddle, fingers, curled tail and claws all inside frame. Natural arms/wrists, no fused rider and dragon. Transparent actual alpha background, generous margin all sides, no ground, no cast shadow, no text or effects, no sprite sheet."
+        },
+        "size": [
+          1109,
+          1418
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          10,
+          18,
+          1106,
+          1359
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "rider56half",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider56half-original-r1.png",
+        "sha256": "eb5d4efc963773921f73edc5f4c96b4e99c2a02b9100848acf42ef00a18935df",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-c3bf6ae0-2039-4d45-8e36-6d2b55fea17e.png",
+        "args": {
+          "transparent_background": true,
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider56idle-original-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure056-native-168-01-oct22-r1.png"
+          ],
+          "prompt": "Use case: identity-preserve. Asset type: ONE transparent hand-painted HD battle sprite master. Image1 is the approved style and identity for this separate HUMAN RIDER on a winged dragon MOUNT; image2 is the original pixel pose and controls action/wing shape. Change wing pose only: the dragon's two wings open halfway diagonally, halfway between near-folded upward wings and horizontal span. Same upright body, centered head/rider, seated legs and curled tail. Keep weapon and rider pose as image1. Preserve rear three-quarter camera facing upper-left, character/rider proportions, colors, materials, clean outlines and painted shading from image1. Single full subject with wings, horns, weapon, saddle, fingers, curled tail and claws all inside frame. Natural arms/wrists, no fused rider and dragon. Transparent actual alpha background, generous margin all sides, no ground, no cast shadow, no text or effects, no sprite sheet."
+        },
+        "size": [
+          1092,
+          1440
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          6,
+          9,
+          1089,
+          1416
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "rider56spread",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider56spread-original-r1.png",
+        "sha256": "184b33568c5a149a16038851ba677e708721425acc36398faa9e86d4ce8b8ba3",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-a3475dfb-1c92-4a68-9ad1-bf9cccce6836.png",
+        "args": {
+          "transparent_background": true,
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider56idle-original-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure056-native-168-02-oct22-r1.png"
+          ],
+          "prompt": "Use case: identity-preserve. Asset type: ONE transparent hand-painted HD battle sprite master. Image1 is the approved style and identity for this separate HUMAN RIDER on a winged dragon MOUNT; image2 is the original pixel pose and controls action/wing shape. Change wing pose only: two dragon wings broadly extended to both sides, near horizontal, matching image2's span. Keep head/rider upright and same seated legs/tail, cape hanging. Wings have clear anatomical shoulder joints. Preserve rear three-quarter camera facing upper-left, character/rider proportions, colors, materials, clean outlines and painted shading from image1. Single full subject with wings, horns, weapon, saddle, fingers, curled tail and claws all inside frame. Natural arms/wrists, no fused rider and dragon. Transparent actual alpha background, generous margin all sides, no ground, no cast shadow, no text or effects, no sprite sheet."
+        },
+        "size": [
+          1226,
+          1283
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          9,
+          29,
+          1225,
+          1230
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "rider54gold",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider54gold-original-r1.png",
+        "sha256": "a4754bd1789260e834caa1267dc9159cb50c4b4516dca0929c96641c7aa94056",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-05633010-9f79-4f30-b4b0-7cbdee0a02cf.png",
+        "args": {
+          "transparent_background": true,
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure054-native-163-07-oct22-r1.png"
+          ],
+          "prompt": "Use case: stylized-concept. Asset type: a SINGLE isolated golden weapon slash FX sprite on a true transparent background. Use reference image ONLY to match the bright gold slash's overall silhouette and direction. Remove the entire character, dragon, wings, armor, cloak and any black opaque background: output ONLY golden light. A very broad bold crescent sweep curving from upper-right across the top, down the left side to a sharp lower tip; open transparent space on the right, like a large C-shaped cut. Hand-painted crisp fantasy RPG art with pale yellow/ivory solid core, warm gold edges, subtle thin rays; match established clean dark-edged hand-painted sprites, no particle cloud, no stars, no circular magic sigil, no characters, no weapon handle or blade, no rectangular straight clipping edge. Entire curve/pointed tips fully inside image with transparent margin on every side. No text, no ground, no vignette, no panel, actual alpha transparency."
+        },
+        "size": [
+          1586,
+          992
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          60,
+          24,
+          1536,
+          967
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "rider55gold",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider55gold-original-r1.png",
+        "sha256": "88ccff3990b9b1487f742de37074410baf2e8c9302081bc99c61f11dff5e2dda",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-c0e14c92-f290-42c8-b75a-1a12bdda92fc.png",
+        "args": {
+          "transparent_background": true,
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure055-native-166-07-oct22-r1.png"
+          ],
+          "prompt": "Use case: stylized-concept. Asset type: a SINGLE isolated golden weapon slash FX sprite on a true transparent background. Use reference image ONLY to match the bright gold slash's overall silhouette and direction. Remove the entire character, dragon, wings, armor, cloak and any black opaque background: output ONLY golden light. A large broad U-shaped crescent sweep, following left and lower sides of an elliptical circle, open at upper-right; thick luminous gold lower-left band with a clear transparent middle and sharply tapering tips. Hand-painted crisp fantasy RPG art with pale yellow/ivory solid core, warm gold edges, subtle thin rays; match established clean dark-edged hand-painted sprites, no particle cloud, no stars, no circular magic sigil, no characters, no weapon handle or blade, no rectangular straight clipping edge. Entire curve/pointed tips fully inside image with transparent margin on every side. No text, no ground, no vignette, no panel, actual alpha transparency."
+        },
+        "size": [
+          1586,
+          992
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          31,
+          14,
+          1555,
+          981
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "rider56gold",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider56gold-original-r1.png",
+        "sha256": "217f502c029bd4b9a32dee70b57715e77a6146d120f24d11dfb62d90564f1c21",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-de99b1e2-278d-4544-a844-ed397d32448d.png",
+        "args": {
+          "transparent_background": true,
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure056-native-169-07-oct22-r1.png"
+          ],
+          "prompt": "Use case: stylized-concept. Asset type: a SINGLE isolated golden weapon slash FX sprite on a true transparent background. Use reference image ONLY to match the bright gold slash's overall silhouette and direction. Remove the entire character, dragon, wings, armor, cloak and any black opaque background: output ONLY golden light. A broad rising diagonal weapon slash from lower-left to upper-right, several parallel golden blades of light that taper to natural sharp points, broad central band. Hand-painted crisp fantasy RPG art with pale yellow/ivory solid core, warm gold edges, subtle thin rays; match established clean dark-edged hand-painted sprites, no particle cloud, no stars, no circular magic sigil, no characters, no weapon handle or blade, no rectangular straight clipping edge. Entire curve/pointed tips fully inside image with transparent margin on every side. No text, no ground, no vignette, no panel, actual alpha transparency."
+        },
+        "size": [
+          1586,
+          992
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          11,
+          8,
+          1581,
+          980
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "rider54spreadv2",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider54spreadv2-original-r1.png",
+        "sha256": "29af7617ffb1e9a5df387408d8d753d4a35b122e5aa44c3167abde377845de66",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-aea6c38e-2aa3-4e4d-a93a-a9cb6c3b9ada.png",
+        "args": {
+          "transparent_background": true,
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider54spread-original-r1.png"
+          ],
+          "prompt": "Use case: precise-object-edit. Fix ONLY framing of this exact transparent game sprite. Complete both dragon wing tips and all wing membranes that are truncated at left or right image border. Preserve this exact dragon and human rider identity, pose, colors, anatomy, weapon, cloak, saddle, linework and painterly shading. Zoom out slightly or extend the transparent canvas horizontally so the ENTIRE subject has a generous clear transparent margin on all sides including wing tips, weapon, cloak, tail and feet. Naturally pointed/scalloped complete wing tips, never flat rectangular cut edges. Do not change action or add any element. Keep actual alpha transparency; no ground, shadow, text, frame or background."
+        },
+        "size": [
+          1240,
+          1269
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          12,
+          201,
+          1227,
+          1178
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "rider55spreadv2",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider55spreadv2-original-r1.png",
+        "sha256": "0ee2271816ad2bc8da6fa437125d8b59390533f82fa0883778d58faae9d9f034",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-777fb937-eafd-401c-8d4d-4e7904b68b62.png",
+        "args": {
+          "transparent_background": true,
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider55spread-original-r1.png"
+          ],
+          "prompt": "Use case: precise-object-edit. Fix ONLY framing of this exact transparent game sprite. Complete both dragon wing tips and all wing membranes that are truncated at left or right image border. Preserve this exact dragon and human rider identity, pose, colors, anatomy, weapon, cloak, saddle, linework and painterly shading. Zoom out slightly or extend the transparent canvas horizontally so the ENTIRE subject has a generous clear transparent margin on all sides including wing tips, weapon, cloak, tail and feet. Naturally pointed/scalloped complete wing tips, never flat rectangular cut edges. Do not change action or add any element. Keep actual alpha transparency; no ground, shadow, text, frame or background."
+        },
+        "size": [
+          1218,
+          1292
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          15,
+          201,
+          1208,
+          1098
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "rider56cutv2",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider56cutv2-original-r1.png",
+        "sha256": "d078f5c517c578053fb9a7744b00410bcb9828f6e41e4cfc0c7c989e098d666f",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-19832efb-4780-4cb7-afe5-e0c15113355d.png",
+        "args": {
+          "transparent_background": true,
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider56cut-original-r1.png"
+          ],
+          "prompt": "Use case: precise-object-edit. Fix ONLY framing of this exact transparent game sprite. Complete both dragon wing tips and all wing membranes that are truncated at left or right image border. Preserve this exact dragon and human rider identity, pose, colors, anatomy, weapon, cloak, saddle, linework and painterly shading. Zoom out slightly or extend the transparent canvas horizontally so the ENTIRE subject has a generous clear transparent margin on all sides including wing tips, weapon, cloak, tail and feet. Naturally pointed/scalloped complete wing tips, never flat rectangular cut edges. Do not change action or add any element. Keep actual alpha transparency; no ground, shadow, text, frame or background."
+        },
+        "size": [
+          1092,
+          1440
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          17,
+          113,
+          1087,
+          1350
+        ],
+        "high_coverage_boundary_points": 0
+      }
+    ],
+    "derivatives": [],
+    "recipes": {
+      "54": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure054-recipe-oct22-r1.json",
+        "sha256": "60b1f338a11592476fc44da006a1b298d2d2cb0d4506220c0986ebe7f20ac36a"
+      },
+      "55": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure055-recipe-oct22-r1.json",
+        "sha256": "cf2feadfc2856b7b42d2f818373fbda817968f4300b0dd6bc0ef2c22b97da010"
+      },
+      "56": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure056-recipe-oct22-r1.json",
+        "sha256": "922d9cb8ea0fb879b467c766379f0d7e2d785f7d73daf31bd25404e9d862a061"
+      }
+    },
+    "recipe_inline": {
+      "54": {
+        "schema_version": 1,
+        "figure": 54,
+        "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+        "sources": {
+          "r54p162f0-idle": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider54idle-original-r1.png",
+            "sha256": "88f1a89f07abca465af6e9ec54d865d1ca617d72765192b5330c385a6f1986e0",
+            "anchor": [
+              12,
+              17,
+              1097,
+              1403
+            ]
+          },
+          "r54p162f1-half": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider54half-original-r1.png",
+            "sha256": "0a3cd873190ef4ec2c94328465ef52bf253ff05b26a0fe03173bd6a37943ee4b",
+            "anchor": [
+              13,
+              29,
+              1103,
+              1378
+            ]
+          },
+          "r54p162f2-spread": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider54spreadv2-original-r1.png",
+            "sha256": "29af7617ffb1e9a5df387408d8d753d4a35b122e5aa44c3167abde377845de66",
+            "anchor": [
+              12,
+              197,
+              1227,
+              1182
+            ]
+          },
+          "r54p162f3-half": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider54half-original-r1.png",
+            "sha256": "0a3cd873190ef4ec2c94328465ef52bf253ff05b26a0fe03173bd6a37943ee4b",
+            "anchor": [
+              13,
+              29,
+              1103,
+              1378
+            ]
+          },
+          "r54p163f0-idle": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider54idle-original-r1.png",
+            "sha256": "88f1a89f07abca465af6e9ec54d865d1ca617d72765192b5330c385a6f1986e0",
+            "anchor": [
+              12,
+              17,
+              1097,
+              1403
+            ]
+          },
+          "r54p163f1-half": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider54half-original-r1.png",
+            "sha256": "0a3cd873190ef4ec2c94328465ef52bf253ff05b26a0fe03173bd6a37943ee4b",
+            "anchor": [
+              13,
+              36,
+              1103,
+              1378
+            ]
+          },
+          "r54p163f2-spread": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider54spreadv2-original-r1.png",
+            "sha256": "29af7617ffb1e9a5df387408d8d753d4a35b122e5aa44c3167abde377845de66",
+            "anchor": [
+              12,
+              268,
+              1150,
+              1182
+            ]
+          },
+          "r54p163f3-half": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider54half-original-r1.png",
+            "sha256": "0a3cd873190ef4ec2c94328465ef52bf253ff05b26a0fe03173bd6a37943ee4b",
+            "anchor": [
+              13,
+              204,
+              1012,
+              1378
+            ]
+          },
+          "r54p163f4-idle": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider54idle-original-r1.png",
+            "sha256": "88f1a89f07abca465af6e9ec54d865d1ca617d72765192b5330c385a6f1986e0",
+            "anchor": [
+              12,
+              311,
+              838,
+              1403
+            ]
+          },
+          "r54p163f5-half": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider54half-original-r1.png",
+            "sha256": "0a3cd873190ef4ec2c94328465ef52bf253ff05b26a0fe03173bd6a37943ee4b",
+            "anchor": [
+              13,
+              420,
+              873,
+              1378
+            ]
+          },
+          "r54p163f6-spread": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider54spreadv2-original-r1.png",
+            "sha256": "29af7617ffb1e9a5df387408d8d753d4a35b122e5aa44c3167abde377845de66",
+            "anchor": [
+              12,
+              559,
+              921,
+              1182
+            ]
+          },
+          "rider54gold": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider54gold-original-r1.png",
+            "sha256": "a4754bd1789260e834caa1267dc9159cb50c4b4516dca0929c96641c7aa94056",
+            "anchor": [
+              56,
+              20,
+              1540,
+              971
+            ]
+          },
+          "r54p163f7-cut": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider54cut-original-r1.png",
+            "sha256": "8fa2343786f9e3bb4efb61bb939cf36b7e92241099585768b69060c483552f09",
+            "anchor": [
+              10,
+              57,
+              1104,
+              1236
+            ]
+          },
+          "r54p163f8-cut": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider54cut-original-r1.png",
+            "sha256": "8fa2343786f9e3bb4efb61bb939cf36b7e92241099585768b69060c483552f09",
+            "anchor": [
+              10,
+              57,
+              1104,
+              1137
+            ]
+          },
+          "r54p163f9-spread": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider54spreadv2-original-r1.png",
+            "sha256": "29af7617ffb1e9a5df387408d8d753d4a35b122e5aa44c3167abde377845de66",
+            "anchor": [
+              12,
+              197,
+              1227,
+              799
+            ]
+          },
+          "r54p163f10-half": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider54half-original-r1.png",
+            "sha256": "0a3cd873190ef4ec2c94328465ef52bf253ff05b26a0fe03173bd6a37943ee4b",
+            "anchor": [
+              13,
+              29,
+              1103,
+              945
+            ]
+          },
+          "r54p163f11-idle": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider54idle-original-r1.png",
+            "sha256": "88f1a89f07abca465af6e9ec54d865d1ca617d72765192b5330c385a6f1986e0",
+            "anchor": [
+              12,
+              17,
+              1104,
+              1116
+            ]
+          },
+          "r54p163f12-half": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider54half-original-r1.png",
+            "sha256": "0a3cd873190ef4ec2c94328465ef52bf253ff05b26a0fe03173bd6a37943ee4b",
+            "anchor": [
+              13,
+              29,
+              1103,
+              1259
+            ]
+          }
+        },
+        "resources": {
+          "162": [
+            [
+              {
+                "pose": "r54p162f0-idle",
+                "anchor": [
+                  0,
+                  0,
+                  151,
+                  193
+                ],
+                "scale_group": "r54p162f0-idle"
+              }
+            ],
+            [
+              {
+                "pose": "r54p162f1-half",
+                "anchor": [
+                  13,
+                  0,
+                  169,
+                  193
+                ],
+                "scale_group": "r54p162f1-half"
+              }
+            ],
+            [
+              {
+                "pose": "r54p162f2-spread",
+                "anchor": [
+                  3,
+                  0,
+                  241,
+                  193
+                ],
+                "scale_group": "r54p162f2-spread"
+              }
+            ],
+            [
+              {
+                "pose": "r54p162f3-half",
+                "anchor": [
+                  13,
+                  0,
+                  169,
+                  193
+                ],
+                "scale_group": "r54p162f3-half"
+              }
+            ]
+          ],
+          "163": [
+            [
+              {
+                "pose": "r54p163f0-idle",
+                "anchor": [
+                  0,
+                  0,
+                  151,
+                  193
+                ],
+                "scale_group": "r54p163f0-idle"
+              }
+            ],
+            [
+              {
+                "pose": "r54p163f1-half",
+                "anchor": [
+                  13,
+                  0,
+                  169,
+                  192
+                ],
+                "scale_group": "r54p163f1-half"
+              }
+            ],
+            [
+              {
+                "pose": "r54p163f2-spread",
+                "anchor": [
+                  3,
+                  0,
+                  226,
+                  179
+                ],
+                "scale_group": "r54p163f2-spread"
+              }
+            ],
+            [
+              {
+                "pose": "r54p163f3-half",
+                "anchor": [
+                  13,
+                  0,
+                  156,
+                  168
+                ],
+                "scale_group": "r54p163f3-half"
+              }
+            ],
+            [
+              {
+                "pose": "r54p163f4-idle",
+                "anchor": [
+                  0,
+                  0,
+                  115,
+                  152
+                ],
+                "scale_group": "r54p163f4-idle"
+              }
+            ],
+            [
+              {
+                "pose": "r54p163f5-half",
+                "anchor": [
+                  13,
+                  0,
+                  136,
+                  137
+                ],
+                "scale_group": "r54p163f5-half"
+              }
+            ],
+            [
+              {
+                "pose": "r54p163f6-spread",
+                "anchor": [
+                  3,
+                  0,
+                  181,
+                  122
+                ],
+                "scale_group": "r54p163f6-spread"
+              }
+            ],
+            [
+              {
+                "pose": "rider54gold",
+                "anchor": [
+                  0,
+                  0,
+                  320,
+                  200
+                ],
+                "scale_group": "rider54gold"
+              },
+              {
+                "pose": "r54p163f7-cut",
+                "anchor": [
+                  82,
+                  32,
+                  238,
+                  200
+                ],
+                "scale_group": "r54p163f7-cut"
+              }
+            ],
+            [
+              {
+                "pose": "rider54gold",
+                "anchor": [
+                  9,
+                  92,
+                  147,
+                  154
+                ],
+                "scale_group": "rider54gold"
+              },
+              {
+                "pose": "r54p163f8-cut",
+                "anchor": [
+                  29,
+                  0,
+                  185,
+                  154
+                ],
+                "scale_group": "r54p163f8-cut"
+              }
+            ],
+            [
+              {
+                "pose": "r54p163f9-spread",
+                "anchor": [
+                  3,
+                  0,
+                  241,
+                  118
+                ],
+                "scale_group": "r54p163f9-spread"
+              }
+            ],
+            [
+              {
+                "pose": "r54p163f10-half",
+                "anchor": [
+                  13,
+                  0,
+                  169,
+                  131
+                ],
+                "scale_group": "r54p163f10-half"
+              }
+            ],
+            [
+              {
+                "pose": "r54p163f11-idle",
+                "anchor": [
+                  0,
+                  0,
+                  152,
+                  153
+                ],
+                "scale_group": "r54p163f11-idle"
+              }
+            ],
+            [
+              {
+                "pose": "r54p163f12-half",
+                "anchor": [
+                  13,
+                  0,
+                  169,
+                  176
+                ],
+                "scale_group": "r54p163f12-half"
+              }
+            ]
+          ]
+        }
+      },
+      "55": {
+        "schema_version": 1,
+        "figure": 55,
+        "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+        "sources": {
+          "r55p165f0-idle": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider55idle-original-r1.png",
+            "sha256": "f64303b8a061bb119c2a79ef64c670e76427b2d25f09bddec96b9cdc13c7bab8",
+            "anchor": [
+              11,
+              10,
+              1101,
+              1403
+            ]
+          },
+          "r55p165f1-half": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider55half-original-r1.png",
+            "sha256": "19eea38191599152124ca9d48db3bcdfca2edc9e4eef54b58fdb8e9c554eb8ef",
+            "anchor": [
+              5,
+              28,
+              1107,
+              1357
+            ]
+          },
+          "r55p165f2-spread": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider55spreadv2-original-r1.png",
+            "sha256": "0ee2271816ad2bc8da6fa437125d8b59390533f82fa0883778d58faae9d9f034",
+            "anchor": [
+              39,
+              197,
+              1184,
+              1102
+            ]
+          },
+          "r55p165f3-half": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider55half-original-r1.png",
+            "sha256": "19eea38191599152124ca9d48db3bcdfca2edc9e4eef54b58fdb8e9c554eb8ef",
+            "anchor": [
+              5,
+              28,
+              1107,
+              1357
+            ]
+          },
+          "r55p166f0-idle": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider55idle-original-r1.png",
+            "sha256": "f64303b8a061bb119c2a79ef64c670e76427b2d25f09bddec96b9cdc13c7bab8",
+            "anchor": [
+              7,
+              10,
+              1105,
+              1360
+            ]
+          },
+          "r55p166f1-cut": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider55cut-original-r1.png",
+            "sha256": "622cd102745106ecc72cede635852a408c6d1c19e71f5085099afb2c01a1245c",
+            "anchor": [
+              9,
+              14,
+              1106,
+              1223
+            ]
+          },
+          "r55p166f2-cut": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider55cut-original-r1.png",
+            "sha256": "622cd102745106ecc72cede635852a408c6d1c19e71f5085099afb2c01a1245c",
+            "anchor": [
+              9,
+              14,
+              1106,
+              1132
+            ]
+          },
+          "r55p166f3-cut": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider55cut-original-r1.png",
+            "sha256": "622cd102745106ecc72cede635852a408c6d1c19e71f5085099afb2c01a1245c",
+            "anchor": [
+              9,
+              14,
+              1106,
+              1041
+            ]
+          },
+          "r55p166f4-cut": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider55cut-original-r1.png",
+            "sha256": "622cd102745106ecc72cede635852a408c6d1c19e71f5085099afb2c01a1245c",
+            "anchor": [
+              12,
+              14,
+              1103,
+              944
+            ]
+          },
+          "r55p166f5-cut": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider55cut-original-r1.png",
+            "sha256": "622cd102745106ecc72cede635852a408c6d1c19e71f5085099afb2c01a1245c",
+            "anchor": [
+              9,
+              14,
+              1106,
+              853
+            ]
+          },
+          "rider55gold": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider55gold-original-r1.png",
+            "sha256": "88ccff3990b9b1487f742de37074410baf2e8c9302081bc99c61f11dff5e2dda",
+            "anchor": [
+              27,
+              10,
+              1559,
+              985
+            ]
+          },
+          "r55p166f6-cut": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider55cut-original-r1.png",
+            "sha256": "622cd102745106ecc72cede635852a408c6d1c19e71f5085099afb2c01a1245c",
+            "anchor": [
+              9,
+              14,
+              1106,
+              1007
+            ]
+          },
+          "r55p166f7-cut": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider55cut-original-r1.png",
+            "sha256": "622cd102745106ecc72cede635852a408c6d1c19e71f5085099afb2c01a1245c",
+            "anchor": [
+              12,
+              699,
+              1103,
+              1363
+            ]
+          },
+          "r55p166f8-cut": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider55cut-original-r1.png",
+            "sha256": "622cd102745106ecc72cede635852a408c6d1c19e71f5085099afb2c01a1245c",
+            "anchor": [
+              9,
+              916,
+              1106,
+              1363
+            ]
+          },
+          "r55p166f9-cut": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider55cut-original-r1.png",
+            "sha256": "622cd102745106ecc72cede635852a408c6d1c19e71f5085099afb2c01a1245c",
+            "anchor": [
+              65,
+              1146,
+              1050,
+              1363
+            ]
+          },
+          "r55p166f10-cut": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider55cut-original-r1.png",
+            "sha256": "622cd102745106ecc72cede635852a408c6d1c19e71f5085099afb2c01a1245c",
+            "anchor": [
+              12,
+              958,
+              1103,
+              1363
+            ]
+          },
+          "r55p166f11-cut": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider55cut-original-r1.png",
+            "sha256": "622cd102745106ecc72cede635852a408c6d1c19e71f5085099afb2c01a1245c",
+            "anchor": [
+              12,
+              685,
+              1103,
+              1363
+            ]
+          },
+          "r55p166f12-spread": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider55spreadv2-original-r1.png",
+            "sha256": "0ee2271816ad2bc8da6fa437125d8b59390533f82fa0883778d58faae9d9f034",
+            "anchor": [
+              39,
+              394,
+              1212,
+              1102
+            ]
+          },
+          "r55p166f13-half": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider55half-original-r1.png",
+            "sha256": "19eea38191599152124ca9d48db3bcdfca2edc9e4eef54b58fdb8e9c554eb8ef",
+            "anchor": [
+              5,
+              131,
+              1107,
+              1357
+            ]
+          },
+          "r55p166f14-idle": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider55idle-original-r1.png",
+            "sha256": "f64303b8a061bb119c2a79ef64c670e76427b2d25f09bddec96b9cdc13c7bab8",
+            "anchor": [
+              11,
+              10,
+              1101,
+              1403
+            ]
+          },
+          "r55p166f15-half": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider55half-original-r1.png",
+            "sha256": "19eea38191599152124ca9d48db3bcdfca2edc9e4eef54b58fdb8e9c554eb8ef",
+            "anchor": [
+              5,
+              28,
+              1107,
+              1357
+            ]
+          },
+          "r55p166f16-spread": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider55spreadv2-original-r1.png",
+            "sha256": "0ee2271816ad2bc8da6fa437125d8b59390533f82fa0883778d58faae9d9f034",
+            "anchor": [
+              39,
+              197,
+              1184,
+              1102
+            ]
+          },
+          "r55p166f17-half": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider55half-original-r1.png",
+            "sha256": "19eea38191599152124ca9d48db3bcdfca2edc9e4eef54b58fdb8e9c554eb8ef",
+            "anchor": [
+              5,
+              28,
+              1107,
+              1357
+            ]
+          }
+        },
+        "resources": {
+          "165": [
+            [
+              {
+                "pose": "r55p165f0-idle",
+                "anchor": [
+                  0,
+                  0,
+                  151,
+                  193
+                ],
+                "scale_group": "r55p165f0-idle"
+              }
+            ],
+            [
+              {
+                "pose": "r55p165f1-half",
+                "anchor": [
+                  11,
+                  0,
+                  171,
+                  193
+                ],
+                "scale_group": "r55p165f1-half"
+              }
+            ],
+            [
+              {
+                "pose": "r55p165f2-spread",
+                "anchor": [
+                  0,
+                  0,
+                  244,
+                  193
+                ],
+                "scale_group": "r55p165f2-spread"
+              }
+            ],
+            [
+              {
+                "pose": "r55p165f3-half",
+                "anchor": [
+                  11,
+                  0,
+                  171,
+                  193
+                ],
+                "scale_group": "r55p165f3-half"
+              }
+            ]
+          ],
+          "166": [
+            [
+              {
+                "pose": "r55p166f0-idle",
+                "anchor": [
+                  2,
+                  0,
+                  154,
+                  187
+                ],
+                "scale_group": "r55p166f0-idle"
+              }
+            ],
+            [
+              {
+                "pose": "r55p166f1-cut",
+                "anchor": [
+                  20,
+                  0,
+                  177,
+                  173
+                ],
+                "scale_group": "r55p166f1-cut"
+              }
+            ],
+            [
+              {
+                "pose": "r55p166f2-cut",
+                "anchor": [
+                  59,
+                  0,
+                  216,
+                  160
+                ],
+                "scale_group": "r55p166f2-cut"
+              }
+            ],
+            [
+              {
+                "pose": "r55p166f3-cut",
+                "anchor": [
+                  31,
+                  0,
+                  188,
+                  147
+                ],
+                "scale_group": "r55p166f3-cut"
+              }
+            ],
+            [
+              {
+                "pose": "r55p166f4-cut",
+                "anchor": [
+                  0,
+                  0,
+                  156,
+                  133
+                ],
+                "scale_group": "r55p166f4-cut"
+              }
+            ],
+            [
+              {
+                "pose": "r55p166f5-cut",
+                "anchor": [
+                  26,
+                  0,
+                  183,
+                  120
+                ],
+                "scale_group": "r55p166f5-cut"
+              }
+            ],
+            [
+              {
+                "pose": "rider55gold",
+                "anchor": [
+                  194,
+                  105,
+                  289,
+                  136
+                ],
+                "scale_group": "rider55gold"
+              },
+              {
+                "pose": "r55p166f6-cut",
+                "anchor": [
+                  66,
+                  0,
+                  223,
+                  142
+                ],
+                "scale_group": "r55p166f6-cut"
+              }
+            ],
+            [
+              {
+                "pose": "rider55gold",
+                "anchor": [
+                  7,
+                  19,
+                  320,
+                  200
+                ],
+                "scale_group": "rider55gold"
+              },
+              {
+                "pose": "r55p166f7-cut",
+                "anchor": [
+                  47,
+                  0,
+                  203,
+                  95
+                ],
+                "scale_group": "r55p166f7-cut"
+              }
+            ],
+            [
+              {
+                "pose": "rider55gold",
+                "anchor": [
+                  27,
+                  0,
+                  61,
+                  15
+                ],
+                "scale_group": "rider55gold"
+              },
+              {
+                "pose": "r55p166f8-cut",
+                "anchor": [
+                  31,
+                  0,
+                  188,
+                  64
+                ],
+                "scale_group": "r55p166f8-cut"
+              }
+            ],
+            [
+              {
+                "pose": "r55p166f9-cut",
+                "anchor": [
+                  0,
+                  0,
+                  141,
+                  31
+                ],
+                "scale_group": "r55p166f9-cut"
+              }
+            ],
+            [
+              {
+                "pose": "r55p166f10-cut",
+                "anchor": [
+                  26,
+                  0,
+                  182,
+                  58
+                ],
+                "scale_group": "r55p166f10-cut"
+              }
+            ],
+            [
+              {
+                "pose": "r55p166f11-cut",
+                "anchor": [
+                  19,
+                  0,
+                  175,
+                  97
+                ],
+                "scale_group": "r55p166f11-cut"
+              }
+            ],
+            [
+              {
+                "pose": "r55p166f12-spread",
+                "anchor": [
+                  0,
+                  0,
+                  250,
+                  151
+                ],
+                "scale_group": "r55p166f12-spread"
+              }
+            ],
+            [
+              {
+                "pose": "r55p166f13-half",
+                "anchor": [
+                  11,
+                  0,
+                  171,
+                  178
+                ],
+                "scale_group": "r55p166f13-half"
+              }
+            ],
+            [
+              {
+                "pose": "r55p166f14-idle",
+                "anchor": [
+                  0,
+                  0,
+                  151,
+                  193
+                ],
+                "scale_group": "r55p166f14-idle"
+              }
+            ],
+            [
+              {
+                "pose": "r55p166f15-half",
+                "anchor": [
+                  11,
+                  0,
+                  171,
+                  193
+                ],
+                "scale_group": "r55p166f15-half"
+              }
+            ],
+            [
+              {
+                "pose": "r55p166f16-spread",
+                "anchor": [
+                  0,
+                  0,
+                  244,
+                  193
+                ],
+                "scale_group": "r55p166f16-spread"
+              }
+            ],
+            [
+              {
+                "pose": "r55p166f17-half",
+                "anchor": [
+                  11,
+                  0,
+                  171,
+                  193
+                ],
+                "scale_group": "r55p166f17-half"
+              }
+            ]
+          ]
+        }
+      },
+      "56": {
+        "schema_version": 1,
+        "figure": 56,
+        "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+        "sources": {
+          "r56p168f0-idle": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider56idle-original-r1.png",
+            "sha256": "fd73360b30cfec462b9cc3b31903d463f14336d9fb6ba8978020979365840ad6",
+            "anchor": [
+              5,
+              2,
+              1087,
+              1428
+            ]
+          },
+          "r56p168f1-half": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider56half-original-r1.png",
+            "sha256": "eb5d4efc963773921f73edc5f4c96b4e99c2a02b9100848acf42ef00a18935df",
+            "anchor": [
+              8,
+              5,
+              1086,
+              1420
+            ]
+          },
+          "r56p168f2-spread": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider56spread-original-r1.png",
+            "sha256": "184b33568c5a149a16038851ba677e708721425acc36398faa9e86d4ce8b8ba3",
+            "anchor": [
+              8,
+              25,
+              1223,
+              1234
+            ]
+          },
+          "r56p168f3-half": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider56half-original-r1.png",
+            "sha256": "eb5d4efc963773921f73edc5f4c96b4e99c2a02b9100848acf42ef00a18935df",
+            "anchor": [
+              8,
+              5,
+              1086,
+              1420
+            ]
+          },
+          "r56p169f0-idle": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider56idle-original-r1.png",
+            "sha256": "fd73360b30cfec462b9cc3b31903d463f14336d9fb6ba8978020979365840ad6",
+            "anchor": [
+              5,
+              2,
+              1087,
+              1428
+            ]
+          },
+          "r56p169f1-half": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider56half-original-r1.png",
+            "sha256": "eb5d4efc963773921f73edc5f4c96b4e99c2a02b9100848acf42ef00a18935df",
+            "anchor": [
+              8,
+              84,
+              1086,
+              1420
+            ]
+          },
+          "r56p169f2-spread": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider56spread-original-r1.png",
+            "sha256": "184b33568c5a149a16038851ba677e708721425acc36398faa9e86d4ce8b8ba3",
+            "anchor": [
+              8,
+              174,
+              1223,
+              1234
+            ]
+          },
+          "r56p169f3-half": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider56half-original-r1.png",
+            "sha256": "eb5d4efc963773921f73edc5f4c96b4e99c2a02b9100848acf42ef00a18935df",
+            "anchor": [
+              8,
+              264,
+              971,
+              1420
+            ]
+          },
+          "r56p169f4-idle": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider56idle-original-r1.png",
+            "sha256": "fd73360b30cfec462b9cc3b31903d463f14336d9fb6ba8978020979365840ad6",
+            "anchor": [
+              5,
+              367,
+              772,
+              1428
+            ]
+          },
+          "r56p169f5-half": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider56half-original-r1.png",
+            "sha256": "eb5d4efc963773921f73edc5f4c96b4e99c2a02b9100848acf42ef00a18935df",
+            "anchor": [
+              8,
+              508,
+              762,
+              1420
+            ]
+          },
+          "r56p169f6-spread": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider56spread-original-r1.png",
+            "sha256": "184b33568c5a149a16038851ba677e708721425acc36398faa9e86d4ce8b8ba3",
+            "anchor": [
+              8,
+              546,
+              882,
+              1234
+            ]
+          },
+          "rider56gold": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider56gold-original-r1.png",
+            "sha256": "217f502c029bd4b9a32dee70b57715e77a6146d120f24d11dfb62d90564f1c21",
+            "anchor": [
+              7,
+              4,
+              1585,
+              984
+            ]
+          },
+          "r56p169f7-cut": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider56cutv2-original-r1.png",
+            "sha256": "d078f5c517c578053fb9a7744b00410bcb9828f6e41e4cfc0c7c989e098d666f",
+            "anchor": [
+              14,
+              109,
+              1090,
+              1148
+            ]
+          },
+          "r56p169f8-cut": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider56cutv2-original-r1.png",
+            "sha256": "d078f5c517c578053fb9a7744b00410bcb9828f6e41e4cfc0c7c989e098d666f",
+            "anchor": [
+              14,
+              109,
+              1090,
+              941
+            ]
+          },
+          "r56p169f9-cut": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider56cutv2-original-r1.png",
+            "sha256": "d078f5c517c578053fb9a7744b00410bcb9828f6e41e4cfc0c7c989e098d666f",
+            "anchor": [
+              14,
+              109,
+              1090,
+              835
+            ]
+          },
+          "r56p169f10-half": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider56half-original-r1.png",
+            "sha256": "eb5d4efc963773921f73edc5f4c96b4e99c2a02b9100848acf42ef00a18935df",
+            "anchor": [
+              8,
+              5,
+              1086,
+              831
+            ]
+          },
+          "r56p169f11-idle": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider56idle-original-r1.png",
+            "sha256": "fd73360b30cfec462b9cc3b31903d463f14336d9fb6ba8978020979365840ad6",
+            "anchor": [
+              5,
+              2,
+              1087,
+              1027
+            ]
+          },
+          "r56p169f12-half": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider56half-original-r1.png",
+            "sha256": "eb5d4efc963773921f73edc5f4c96b4e99c2a02b9100848acf42ef00a18935df",
+            "anchor": [
+              8,
+              5,
+              1021,
+              1118
+            ]
+          },
+          "r56p169f13-spread": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider56spread-original-r1.png",
+            "sha256": "184b33568c5a149a16038851ba677e708721425acc36398faa9e86d4ce8b8ba3",
+            "anchor": [
+              8,
+              25,
+              1037,
+              1085
+            ]
+          },
+          "r56p169f14-half": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider56half-original-r1.png",
+            "sha256": "eb5d4efc963773921f73edc5f4c96b4e99c2a02b9100848acf42ef00a18935df",
+            "anchor": [
+              8,
+              5,
+              1086,
+              1398
+            ]
+          },
+          "r56p169f15-idle": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider56idle-original-r1.png",
+            "sha256": "fd73360b30cfec462b9cc3b31903d463f14336d9fb6ba8978020979365840ad6",
+            "anchor": [
+              5,
+              2,
+              1087,
+              1428
+            ]
+          }
+        },
+        "resources": {
+          "168": [
+            [
+              {
+                "pose": "r56p168f0-idle",
+                "anchor": [
+                  0,
+                  0,
+                  151,
+                  199
+                ],
+                "scale_group": "r56p168f0-idle"
+              }
+            ],
+            [
+              {
+                "pose": "r56p168f1-half",
+                "anchor": [
+                  16,
+                  0,
+                  166,
+                  197
+                ],
+                "scale_group": "r56p168f1-half"
+              }
+            ],
+            [
+              {
+                "pose": "r56p168f2-spread",
+                "anchor": [
+                  24,
+                  0,
+                  220,
+                  195
+                ],
+                "scale_group": "r56p168f2-spread"
+              }
+            ],
+            [
+              {
+                "pose": "r56p168f3-half",
+                "anchor": [
+                  16,
+                  0,
+                  166,
+                  197
+                ],
+                "scale_group": "r56p168f3-half"
+              }
+            ]
+          ],
+          "169": [
+            [
+              {
+                "pose": "r56p169f0-idle",
+                "anchor": [
+                  0,
+                  0,
+                  151,
+                  199
+                ],
+                "scale_group": "r56p169f0-idle"
+              }
+            ],
+            [
+              {
+                "pose": "r56p169f1-half",
+                "anchor": [
+                  16,
+                  0,
+                  166,
+                  186
+                ],
+                "scale_group": "r56p169f1-half"
+              }
+            ],
+            [
+              {
+                "pose": "r56p169f2-spread",
+                "anchor": [
+                  24,
+                  0,
+                  220,
+                  171
+                ],
+                "scale_group": "r56p169f2-spread"
+              }
+            ],
+            [
+              {
+                "pose": "r56p169f3-half",
+                "anchor": [
+                  16,
+                  0,
+                  150,
+                  161
+                ],
+                "scale_group": "r56p169f3-half"
+              }
+            ],
+            [
+              {
+                "pose": "r56p169f4-idle",
+                "anchor": [
+                  0,
+                  0,
+                  107,
+                  148
+                ],
+                "scale_group": "r56p169f4-idle"
+              }
+            ],
+            [
+              {
+                "pose": "r56p169f5-half",
+                "anchor": [
+                  16,
+                  0,
+                  121,
+                  127
+                ],
+                "scale_group": "r56p169f5-half"
+              }
+            ],
+            [
+              {
+                "pose": "r56p169f6-spread",
+                "anchor": [
+                  24,
+                  0,
+                  165,
+                  111
+                ],
+                "scale_group": "r56p169f6-spread"
+              }
+            ],
+            [
+              {
+                "pose": "rider56gold",
+                "anchor": [
+                  0,
+                  0,
+                  320,
+                  200
+                ],
+                "scale_group": "rider56gold"
+              },
+              {
+                "pose": "r56p169f7-cut",
+                "anchor": [
+                  20,
+                  34,
+                  192,
+                  200
+                ],
+                "scale_group": "r56p169f7-cut"
+              }
+            ],
+            [
+              {
+                "pose": "rider56gold",
+                "anchor": [
+                  0,
+                  65,
+                  102,
+                  133
+                ],
+                "scale_group": "rider56gold"
+              },
+              {
+                "pose": "r56p169f8-cut",
+                "anchor": [
+                  20,
+                  0,
+                  192,
+                  133
+                ],
+                "scale_group": "r56p169f8-cut"
+              }
+            ],
+            [
+              {
+                "pose": "r56p169f9-cut",
+                "anchor": [
+                  20,
+                  0,
+                  192,
+                  116
+                ],
+                "scale_group": "r56p169f9-cut"
+              }
+            ],
+            [
+              {
+                "pose": "r56p169f10-half",
+                "anchor": [
+                  16,
+                  0,
+                  166,
+                  115
+                ],
+                "scale_group": "r56p169f10-half"
+              }
+            ],
+            [
+              {
+                "pose": "r56p169f11-idle",
+                "anchor": [
+                  0,
+                  0,
+                  151,
+                  143
+                ],
+                "scale_group": "r56p169f11-idle"
+              }
+            ],
+            [
+              {
+                "pose": "r56p169f12-half",
+                "anchor": [
+                  16,
+                  0,
+                  157,
+                  155
+                ],
+                "scale_group": "r56p169f12-half"
+              }
+            ],
+            [
+              {
+                "pose": "r56p169f13-spread",
+                "anchor": [
+                  24,
+                  0,
+                  190,
+                  171
+                ],
+                "scale_group": "r56p169f13-spread"
+              }
+            ],
+            [
+              {
+                "pose": "r56p169f14-half",
+                "anchor": [
+                  16,
+                  0,
+                  166,
+                  194
+                ],
+                "scale_group": "r56p169f14-half"
+              }
+            ],
+            [
+              {
+                "pose": "r56p169f15-idle",
+                "anchor": [
+                  0,
+                  0,
+                  151,
+                  199
+                ],
+                "scale_group": "r56p169f15-idle"
+              }
+            ]
+          ]
+        }
+      }
+    },
+    "art_approximations": [
+      "Key pose reuse; wing/mount/rider proportions and cloth movement remain art approximations.",
+      "Original flight offscreen windows must crop virtual full body, never shrink whole rider into the remaining partial frame.",
+      "Gold arcs retain native placement and timing; no guessed rule/descriptor changes.",
+      "Fifteen selected original RGBA sources all have zero alpha>=192 boundary points; three cropped-wing drafts rejected before compiler.",
+      "Virtual envelopes use native phase templates and clipped source anchors; partial compiler clipping is intentional viewport sampling, not whole-body scaling into residual windows. Native RGB heuristics are art aids only.",
+      "55 uses a shared billowing-cape strike key pose through descent/rising spin; individual wing and sword foreshortening, gold curve geometry and exact mount/rider size remain art approximations."
+    ],
+    "required_checks": [
+      "Source RGBA/contact sheets and explicit source-anchor geometry review before READY.",
+      "All59 full source GPU against independent CPU Over for candidate and runtime-only.",
+      "All17/22/20 physical Game.Draw source cores, prelude/body/counter F2,64/65 DAC,HP/RNG and one continuation.",
+      "Compiler guards and both packages batched player/AI atomic preflight; each figure keeps independent valid pair and cold player/mode11 assertions; original markers unchanged.",
+      "Formal assets old546 and private old5266 files unchanged; whitelist sync and actual private remote check."
+    ],
+    "scope": "RUNTIME-E1 only: both complete source GPU packages and three physical fixtures/all59 visible source cores. No new normal-player/original RGB or frame parity, PLAYER-E2, platform or fullHD claim. Full Go b4c298d1 remains historical, not rerun.",
+    "generation_ledgers": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party54-55-56-primary-generation-oct22-r1.json",
+        "sha256": "9c629a69ae3939018d9f3b2ed4c03e47e24b33a34d9f9196ebf939f5a4a85ba2"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party54-55-56-motion-generation-oct22-r1.json",
+        "sha256": "9bb94ca3c301c4c1526b0289bc0248d04d5c8d7c3300433402993c49c0a857f8"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party54-55-56-fx-generation-oct22-r1.json",
+        "sha256": "ebd645aa2effc39041fc43dcc841c17fbf96681f10bc025575207ad0cf5af937"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party54-55-56-fix-generation-oct22-r1.json",
+        "sha256": "10dba81afee440678d1b5ea217145756a1339401df3e4d3f7f0f819172bd973d"
+      }
+    ],
+    "rejected_generation": [
+      {
+        "key": "rider54spread",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider54spread-original-r1.png",
+        "sha256": "a89821e52c3c25c0920a392c1aaf57e1116a733acf8ff59f38000c65e342fab1",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-db978139-9b3e-40bf-8799-33cc06df2b59.png",
+        "args": {
+          "transparent_background": true,
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider54idle-original-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure054-native-162-02-oct22-r1.png"
+          ],
+          "prompt": "Use case: identity-preserve. Asset type: ONE transparent hand-painted HD battle sprite master. Image1 is the approved style and identity for this separate HUMAN RIDER on a winged dragon MOUNT; image2 is the original pixel pose and controls action/wing shape. Change wing pose only: two dragon wings broadly extended to both sides, near horizontal, matching image2's span. Keep head/rider upright and same seated legs/tail, cape hanging. Wings have clear anatomical shoulder joints. Preserve rear three-quarter camera facing upper-left, character/rider proportions, colors, materials, clean outlines and painted shading from image1. Single full subject with wings, horns, weapon, saddle, fingers, curled tail and claws all inside frame. Natural arms/wrists, no fused rider and dragon. Transparent actual alpha background, generous margin all sides, no ground, no cast shadow, no text or effects, no sprite sheet."
+        },
+        "size": [
+          1240,
+          1269
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          1,
+          192,
+          1240,
+          1217
+        ],
+        "high_coverage_boundary_points": 17
+      },
+      {
+        "key": "rider55spread",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider55spread-original-r1.png",
+        "sha256": "90267cfe1e71c0a336b904cdaf601cb78810a8e2f3afbcb8d5437b4f0951e2b5",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-7e0c3afa-10b5-4c0a-8abe-355f8a3dbbbf.png",
+        "args": {
+          "transparent_background": true,
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider55idle-original-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure055-native-165-02-oct22-r1.png"
+          ],
+          "prompt": "Use case: identity-preserve. Asset type: ONE transparent hand-painted HD battle sprite master. Image1 is the approved style and identity for this separate HUMAN RIDER on a winged dragon MOUNT; image2 is the original pixel pose and controls action/wing shape. Change wing pose only: two dragon wings broadly extended to both sides, near horizontal, matching image2's span. Keep head/rider upright and same seated legs/tail, cape hanging. Wings have clear anatomical shoulder joints. Preserve rear three-quarter camera facing upper-left, character/rider proportions, colors, materials, clean outlines and painted shading from image1. Single full subject with wings, horns, weapon, saddle, fingers, curled tail and claws all inside frame. Natural arms/wrists, no fused rider and dragon. Transparent actual alpha background, generous margin all sides, no ground, no cast shadow, no text or effects, no sprite sheet."
+        },
+        "size": [
+          1218,
+          1292
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          0,
+          144,
+          1218,
+          1206
+        ],
+        "high_coverage_boundary_points": 603
+      },
+      {
+        "key": "rider56cut",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider56cut-original-r1.png",
+        "sha256": "f740da0bf4578a4c425583c1629a8b005ab82c8f9a153a8d0d28bc0874c1bbbd",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-794ca265-af0d-4e20-b425-6f9988831c81.png",
+        "args": {
+          "transparent_background": true,
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-rider56idle-original-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure056-native-169-07-oct22-r1.png"
+          ],
+          "prompt": "Use case: identity-preserve. Asset type: ONE transparent hand-painted HD battle sprite master. Image1 is the approved style and identity for this separate HUMAN RIDER on a winged dragon MOUNT; image2 is the original pixel pose and controls action/wing shape. Draw the same dragon and human rider immediately after a downward sweeping melee strike, as image2's rider/cape/body orientation; show the FULL dragon including hind feet and curled tail even though image2 is cropped by the original game viewport. Rider leans and twists forward, cloak billows strongly toward upper-right, weapon finishes the downward sweep toward lower-left. Dragon wings partially open, human hands naturally connected to the weapon. No gold magic, no luminous trails in this pose, no duplicated weapon. Keep exact same identity, colors, equipment, saddle. Preserve rear three-quarter camera facing upper-left, character/rider proportions, colors, materials, clean outlines and painted shading from image1. Single full subject with wings, horns, weapon, saddle, fingers, curled tail and claws all inside frame. Natural arms/wrists, no fused rider and dragon. Transparent actual alpha background, generous margin all sides, no ground, no cast shadow, no text or effects, no sprite sheet."
+        },
+        "size": [
+          1092,
+          1440
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          12,
+          72,
+          1092,
+          1412
+        ],
+        "high_coverage_boundary_points": 638
+      }
+    ],
+    "preparation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party54-55-56-preparation-oct22-r1.json",
+      "sha256": "47baa5b6e090e2c2f181694e5839556be3006f7a9d1bf9fc64aae50f9d07830c"
+    },
+    "native_geometry": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party54-55-56-native-geometry-oct22-r1.json",
+      "sha256": "559222d50eb9c9e9f8e9124cec1dcb7403d02873103d885a498922306b4775dc"
+    },
+    "source_review": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party54-55-56-source-review-oct22-r2.png",
+      "sha256": "a1e5d6e1ab325e9aa5dd35e7a454282c43e3b18a8a708a34a3a8fff27d92bdc3"
+    },
+    "evidence_review": {
+      "all_selected_raw_originals_viewed": true,
+      "native_sheets_and_flight_windows_viewed": true,
+      "source_edge_drafts_rejected": true,
+      "compiler_and_gpu_pending": false,
+      "three_compiled_contact_sheets_reviewed": true
+    },
+    "package_stage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party54-55-56-projection-oct22-r1.json",
+      "sha256": "66df0a2c6294cc5a0cda108dc8550dba6eb7c1c48bbf10beff431652e740ebd9"
+    },
+    "rejected_execution_attempts": {
+      "evidence": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-assets-candidate-054-oct22-r1.log",
+          "sha256": "8953eb7bac6ec2d4f36cef9655ec244e64d99b1ebdb0be62c62a7c669154c22f"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-assets-candidate-054-oct22-r1.memory.json",
+          "sha256": "6a2b14eef2dab4557d13159a4264d736cf33ac5594822712bec48a77b448e664"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-assets-runtime-054-oct22-r1.log",
+          "sha256": "ddd61d8d6eb7a8503c42df50b3e1531c332828751516342d87f7d51d923cd8ff"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-assets-runtime-054-oct22-r1.memory.json",
+          "sha256": "91b2e40bf35b308487f25084d65cc02ec8a0d2fdf2f05feebbe72e208b91d09c"
+        }
+      ],
+      "reason": "Two first figure54 asset pair runs exceeded550seconds under four concurrent Go containers; both source59GPU checks passed, noOOM. No full asset/preflight PASS claimed for these attempts.",
+      "correction": "Single sequential assets container, same image/8GB/4CPU/same inputs and assertions, project standard Go1200s/probe1260s bounds; new r2 receipts. Physical/source remain r1."
+    },
+    "interrupted_redundant_execution": {
+      "evidence": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-assets-r2-stop-events-oct22.jsonl",
+          "sha256": "f18464951f3bd6c7fa67d6d2ccec4552de506ce584ef03ccd3de1c40b84401f8"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-assets-candidate-054-oct22-r2.log",
+          "sha256": "f0c6c2a5f83a182a1e728f9ee90d49daf25edd1f3019f78ae7596ea6151045f9"
+        }
+      ],
+      "reason": "Agent explicitly stopped sequential per-figure r2 container after first valid-loader check and during preflight, replacing duplicated whole-theme loads with equivalent batched assertions. No complete r2 sequence pass claimed.",
+      "replacement": "TestModernHDBattleBatchAssetsAndPreflight in remake/cmd/fd2/modern_hd_battle_assets_test.go; two sets per package, valid pair preloads and separate cold six player/mode11 cases, all six banks unpopulated after each failure."
+    },
+    "next_native_reference": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party-pending-57-58-59-60-native-oct22-r2.json",
+      "sha256": "245f91aeca0708cf77a3b427ad8bd10987e607ac7145cde7a52f718152ef4176"
+    },
+    "superseded_source_review": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party54-55-56-source-review-oct22-r1.png",
+      "sha256": "7de8434be1b4cdc986b98392e897695ea52a702e6cc35e562fc516b48eb93ab8"
+    },
+    "checks": {
+      "party5456-source-candidate-054-oct22-r1.memory.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-source-candidate-054-oct22-r1.memory.json",
+        "sha256": "cb79485662a96b99e0654b96c3237db2d0ed0c9af242e81992d08ecb7ba6e011"
+      },
+      "party5456-source-candidate-054-oct22-r1.log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-source-candidate-054-oct22-r1.log",
+        "sha256": "c09328de3f45284f0dd7e702af35594ac3b515656564358d9bb2d4bee45b8f40"
+      },
+      "party5456-source-candidate-054-oct22-r1-receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-source-candidate-054-oct22-r1-capture/receipt.json",
+        "sha256": "00be6cadfcc47a9ec4be663e3a8a23b3dc8070a8022031390c4f2e048b7d746e"
+      },
+      "party5456-source-runtime-054-oct22-r1.memory.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-source-runtime-054-oct22-r1.memory.json",
+        "sha256": "45d3355a620126a1130e85db4e8f57032acedb6c5c6f7c3dda54d6243c573343"
+      },
+      "party5456-source-runtime-054-oct22-r1.log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-source-runtime-054-oct22-r1.log",
+        "sha256": "73f6e3b009d818809684796338acecf9ae02d945c0f17870bb64c2622390c792"
+      },
+      "party5456-source-runtime-054-oct22-r1-receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-source-runtime-054-oct22-r1-capture/receipt.json",
+        "sha256": "00be6cadfcc47a9ec4be663e3a8a23b3dc8070a8022031390c4f2e048b7d746e"
+      },
+      "party5456-physical-candidate-054-oct22-r1.memory.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-physical-candidate-054-oct22-r1.memory.json",
+        "sha256": "f4e099a0faf7e8e9774380cd6ef5d5f87287e8c72faf91e48d9c91835fdf2e6c"
+      },
+      "party5456-physical-candidate-054-oct22-r1.log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-physical-candidate-054-oct22-r1.log",
+        "sha256": "96dcbf4bf0f4f8cc09990a5873b863b8b5f7f46a8ea12b93a3ab9bee256a6351"
+      },
+      "party5456-physical-candidate-054-oct22-r1-receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-physical-candidate-054-oct22-r1-capture/receipt.json",
+        "sha256": "46853066286eaabeccccfc5a83d56b5b82073f8e66f669a64001bf3a6c2491ac"
+      },
+      "party5456-physical-candidate-055-oct22-r1.memory.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-physical-candidate-055-oct22-r1.memory.json",
+        "sha256": "6e8f8a02b2cd533193185f2fc8284ded658d60c9a78fff2215ece8c4e2c6e372"
+      },
+      "party5456-physical-candidate-055-oct22-r1.log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-physical-candidate-055-oct22-r1.log",
+        "sha256": "797f5e58e671c048f051f1caae5e9e545af2db5383ae467ed4a9516a1d2bc968"
+      },
+      "party5456-physical-candidate-055-oct22-r1-receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-physical-candidate-055-oct22-r1-capture/receipt.json",
+        "sha256": "ee5e6d862bc9436a1e096e043aad34030474b094ded16404d6ef9a1572c4b9b4"
+      },
+      "party5456-physical-candidate-056-oct22-r1.memory.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-physical-candidate-056-oct22-r1.memory.json",
+        "sha256": "ec3d854f27e2dc511d629bd3699fed169173a78531f7a70562d2c8bc5cbccd69"
+      },
+      "party5456-physical-candidate-056-oct22-r1.log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-physical-candidate-056-oct22-r1.log",
+        "sha256": "96ad05196311e115a0bf756fde05515c6986fbaa9ed74cb38e05c7feb7546f03"
+      },
+      "party5456-physical-candidate-056-oct22-r1-receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-physical-candidate-056-oct22-r1-capture/receipt.json",
+        "sha256": "b5a5509e66943fbbe48ff71e8ecf9a241224e9624521f61fd021866b8930d5d5"
+      },
+      "party5456-batch-assets-candidate-oct22-r3.memory.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-batch-assets-candidate-oct22-r3.memory.json",
+        "sha256": "10ba2e2e2fa1bc08edb779e8fc0f05ad314f75a801894bf7d752386433a68295"
+      },
+      "party5456-batch-assets-candidate-oct22-r3.log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-batch-assets-candidate-oct22-r3.log",
+        "sha256": "fcef6138be4ce96b24ab42d2013c76d7928400ee5c901958ad24cfd988944a1b"
+      },
+      "party5456-batch-assets-runtime-oct22-r3.memory.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-batch-assets-runtime-oct22-r3.memory.json",
+        "sha256": "68e0613a4cc62546101c2232e5ca3c5bde133f77ece471d72322ba594cc44a57"
+      },
+      "party5456-batch-assets-runtime-oct22-r3.log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-batch-assets-runtime-oct22-r3.log",
+        "sha256": "5fc05bf4a0260cdea53fd02f46a77390372421c82a0ecb6afb62d834c04b4ce3"
+      },
+      "party054-compiler-guards-oct22-r1/guards.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party054-compiler-guards-oct22-r1/guards.json",
+        "sha256": "5a69339e68c40d90ae8a6a94bdddc4c6c737ca4bdd8af2c4748843a8f1a12648"
+      },
+      "party054-physical-core-oct22-r1.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party054-physical-core-oct22-r1.json",
+        "sha256": "fd3cf6b010c9c22c1475f485b3505752a4645ac15e0eb939eb56d7d51e832a29"
+      },
+      "party054-compiled-oct22-r1/compiled.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party054-compiled-oct22-r1/compiled.json",
+        "sha256": "53a27bfca81f346963d945b89b498da05643b141b1c66862370e8d3250c36f68"
+      },
+      "party055-compiler-guards-oct22-r1/guards.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party055-compiler-guards-oct22-r1/guards.json",
+        "sha256": "94e6eb5130fbecb4703ac30db4058fd48f396ecb08424b4c0403fe1224229c47"
+      },
+      "party055-physical-core-oct22-r1.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party055-physical-core-oct22-r1.json",
+        "sha256": "b84a76297ceb5ef1a855c777adac8e75a34a0bbb4bbedf4e88832fbc0e728bab"
+      },
+      "party055-compiled-oct22-r1/compiled.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party055-compiled-oct22-r1/compiled.json",
+        "sha256": "16c0bd9ea8955cdbc7c09dcd1a928ce3759acc023282c58ce3f5114c2bebd0f6"
+      },
+      "party056-compiler-guards-oct22-r1/guards.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party056-compiler-guards-oct22-r1/guards.json",
+        "sha256": "b46c2ba0512d48bd6035e65d77ef8391b96b0b9818d0cbd457c2c09e5fba0668"
+      },
+      "party056-physical-core-oct22-r1.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party056-physical-core-oct22-r1.json",
+        "sha256": "1704fa3142df5890d3930d18096744e1047afba3f89d0da4f40f596fd0b6935e"
+      },
+      "party056-compiled-oct22-r1/compiled.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party056-compiled-oct22-r1/compiled.json",
+        "sha256": "abc952679bbe8a69ff977df203ce598101ee4765cf3f2b55c1f135954eefb90e"
+      },
+      "party54-55-56-formal-registration-oct22-r1.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party54-55-56-formal-registration-oct22-r1.json",
+        "sha256": "9bf7435d3b254d30efc6106796451de538dbceef80521d9b2ba8fb70514fa70f"
+      },
+      "party54-55-56-private-delivery-oct22-r1.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party54-55-56-private-delivery-oct22-r1.json",
+        "sha256": "877aa9cc9fe6848a1c853e60f07b1886898c295c90a5a0df56c4463c1f40ea3a"
+      },
+      "party54-55-56-formal-coverage-oct22-r1.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party54-55-56-formal-coverage-oct22-r1.json",
+        "sha256": "4d19d4fffd193c16b298382bf1bfbe6ddf1fdb273ae6f1b4b6d0af48b544f686"
+      }
+    },
+    "memory": {
+      "records": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-source-candidate-054-oct22-r1.memory.json",
+          "sha256": "cb79485662a96b99e0654b96c3237db2d0ed0c9af242e81992d08ecb7ba6e011"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-source-runtime-054-oct22-r1.memory.json",
+          "sha256": "45d3355a620126a1130e85db4e8f57032acedb6c5c6f7c3dda54d6243c573343"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-physical-candidate-054-oct22-r1.memory.json",
+          "sha256": "f4e099a0faf7e8e9774380cd6ef5d5f87287e8c72faf91e48d9c91835fdf2e6c"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-physical-candidate-055-oct22-r1.memory.json",
+          "sha256": "6e8f8a02b2cd533193185f2fc8284ded658d60c9a78fff2215ece8c4e2c6e372"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-physical-candidate-056-oct22-r1.memory.json",
+          "sha256": "ec3d854f27e2dc511d629bd3699fed169173a78531f7a70562d2c8bc5cbccd69"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-batch-assets-candidate-oct22-r3.memory.json",
+          "sha256": "10ba2e2e2fa1bc08edb779e8fc0f05ad314f75a801894bf7d752386433a68295"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-batch-assets-runtime-oct22-r3.memory.json",
+          "sha256": "68e0613a4cc62546101c2232e5ca3c5bde133f77ece471d72322ba594cc44a57"
+        }
+      ],
+      "all_returncode_zero": true,
+      "all_oom_kill_delta_zero": true,
+      "note": "memory.peak is cumulative lifetime upper bound in a shared container, not per-command isolated peak."
+    },
+    "formal_catalog": {
+      "file": "remake/assets/themes/modern/catalog.json",
+      "sha256": "dae81dfb9cfd2ff39aa433853f27320b3a28c4e367cf224d60a4326c34816daf"
+    },
+    "staged_formal_catalog": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party54-55-56-staged-formal-catalog-oct22-r1.json",
+      "sha256": "dae81dfb9cfd2ff39aa433853f27320b3a28c4e367cf224d60a4326c34816daf"
+    },
+    "formal_coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party54-55-56-formal-coverage-oct22-r1.json",
+      "sha256": "4d19d4fffd193c16b298382bf1bfbe6ddf1fdb273ae6f1b4b6d0af48b544f686"
+    },
+    "readme_overview": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party54-55-56-readme-overview-oct22-r1.json",
+      "sha256": "34260f9540aadc60ff9eff50ad4f66f1f2ed3c9779c9f8bf34c33c03ea7f0114"
+    },
+    "package_validation_inputs": {
+      "catalog_bytes_equal_formal": true,
+      "candidate": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party056-compiled-oct22-r1/pack",
+      "runtime": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party54-55-56-runtime-only-oct22-r1",
+      "new_allow_list_files": 74,
+      "private_files": 5340,
+      "runtime_files": 4664,
+      "old_assets_unchanged": 546,
+      "retained_files_unchanged": 5266,
+      "raw_sources": 15,
+      "crops": 0,
+      "duplicate_source_aliases_folded": true,
+      "rejected_source_edge_drafts_excluded": true
+    },
+    "batch_preflight": "Two package commands, each checks all3 figures valid native idle/attack banks plus six independent cold player/mode11 failures. Valid and failing asset sets are separate; all six cold banks remain unpopulated after each failure.",
+    "coverage": {
+      "new_resources": 6,
+      "new_frames": 59,
+      "source_gpu_per_package": 59,
+      "physical_body_core_frames": [
+        17,
+        22,
+        20
+      ],
+      "compiler_guard_cases": 63,
+      "go_commands": 7,
+      "unique_current_counts": "docs/knowledge-base/58-fd2-exe-re-coverage.md"
+    },
+    "tools": {
+      "build_fd2_character_battle_hd.py": {
+        "file": "tools/build_fd2_character_battle_hd.py",
+        "sha256": "27337d5305ec639353d63bb437890883bf546bb8803660d1d031ba093a6c6083"
+      },
+      "test_fd2_character_battle_hd.py": {
+        "file": "tools/test_fd2_character_battle_hd.py",
+        "sha256": "63efbe259a7308bdb573f4c88dcd3f96134e202fa57c843f86171a5ae27472c5"
+      },
+      "verify_fd2_character_battle_gpu.py": {
+        "file": "tools/verify_fd2_character_battle_gpu.py",
+        "sha256": "71c8a5eea2b1bac96984481eb73a0ca35eb01c871f40411ae8e6de58948aba15"
+      },
+      "sync_modern_theme_private.py": {
+        "file": "tools/sync_modern_theme_private.py",
+        "sha256": "b4ee0f261eae3d24d571437cd161a11060fb027c4a0925975051fc3e8272cc82"
+      },
+      "audit_fd2_battle_hd_coverage.py": {
+        "file": "tools/audit_fd2_battle_hd_coverage.py",
+        "sha256": "a1661e1e20a8bf6b33c5f6f51ddcaf31d4b12ea3f7fccfd2dcd50c11035d92d8"
+      },
+      "fd2_go_test_memory_probe.py": {
+        "file": "tools/fd2_go_test_memory_probe.py",
+        "sha256": "8e7c9c55b85aa72a5026b944233b94f7c0787f51b3f5ebb178ed54cc333e40f2"
+      },
+      "remake/cmd/fd2/modern_hd_ordinary_material_gpu_test.go": {
+        "file": "remake/cmd/fd2/modern_hd_ordinary_material_gpu_test.go",
+        "sha256": "dfc5f67310cd205e0c3dc2f757134ad9caa94c495d80e3d09f0ffd42b32bd1c1"
+      },
+      "remake/cmd/fd2/modern_hd_battle_lifecycle_test.go": {
+        "file": "remake/cmd/fd2/modern_hd_battle_lifecycle_test.go",
+        "sha256": "7991f7b642c8e09e2852149c48d0fe5000322cdecfcb0fc9bbaab8a4c47cff16"
+      },
+      "remake/cmd/fd2/modern_hd_battle_assets_test.go": {
+        "file": "remake/cmd/fd2/modern_hd_battle_assets_test.go",
+        "sha256": "3d147eb506351ad2e8c5535b8a4b12f34107a53ae7f1a36b31a119f521b6ac83"
+      },
+      "remake/internal/battlepresent/native_physical_body.go": {
+        "file": "remake/internal/battlepresent/native_physical_body.go",
+        "sha256": "39a7f5423cab91ced5081197d99ec530644c495e28d7bd8e894f1ca92f600d92"
+      }
+    },
+    "toolchain": {
+      "go_image": "fd2-go-test-local:latest",
+      "go_image_sha256": "e4a805c52a3ad5d8c22cf23f2bcf51c6924e5ad6b99554f1b02761903c725433",
+      "go": "1.22.12",
+      "go_container": "8GB/4CPU/512pids/network none/UID:GID1000:1000",
+      "assets_image": "fd2-assets-local:20260829-sfx",
+      "assets_image_sha256": "e59237a31d4b5f7a62c59ac37b780bd93f17c99fda97be8f5ca0c53978b878bc",
+      "python_pillow": "3.12.15/11.3.0",
+      "memory_note": "memory.peak is cumulative cgroup lifetime upper bound across sequential commands sharing a container."
+    },
+    "reproduce": [
+      "Restore base546catalog at9256e8af and pinned inventory/original manifest. Restore15selected rawRGBA by SHA from private allow-list. Three source-edge drafts are rejected, no derivative or alpha modification. Zero164/167/170 headers unchanged.",
+      "Write recipe_inline54/55/56 as indent2 UTF8 JSON plus newline and verifySHA. Source anchors explicitly encode virtual full-body windows including intentional viewport clipping. Sequentially run build_fd2_character_battle_hd.py --pack /original --inventory <fixed> --recipe <recipe> --base-catalog <previous> --out <fresh> --layered in existing assets Docker. No whole-body shrink into partial windows. Review all59contact-sheet frames; exact body/wing/cape/weapon and arc proportions remain art approximations.",
+      "Fold all duplicate source aliases by SHA to figure-<figure>-<selected key>-battle-hd6-master-v1.png, using package_stage.source_alias_mapping. Preserve old546assets and private_root in stagedcatalog. sync_modern_theme_private.py --runtime-only yields4664files. Full allow-list adds59PNG+15raw, rejected source drafts excluded.",
+      "test_fd2_character_battle_hd.py --recipe <recipe> --baseline <compiled.json> --pack /original --inventory <fixed> --out <fresh> for eachfigure;21guards each.",
+      "Go Docker8GB/4CPU/512pids/network none/UID1000:1000, HOME=/tmp/fd2-home, persistent writable GOCACHE, FD2_ASSET_PACK=/original FD2_TEST_ORIGINAL_PACK=/original GOMAXPROCS=2 LP_NUM_THREADS=2. Each command fd2_go_test_memory_probe.py --out <fresh> --timeout550 -- with-xvfb go test ./cmd/fd2 -count=1 -timeout=500s -run ^<test>$ -v.",
+      "FD2_HD_DRAGON_RIDERS_GPU=1 FD2_TEST_MODERN_EFFECT_CATALOG=<stage> FD2_TEST_MODERN_EFFECT_PACK=<candidate|runtime> FD2_TEST_MODERN_EFFECT_OUT=<fresh>: TestModernHDDragonRidersAllFramesGPU.59complete worlds/package versus independentCPUOver withinoneRGBAunit.",
+      "FD2_HD_BATTLE_LIFECYCLE_GPU=1 FD2_HD_BATTLE_REAL=1 FD2_TEST_MODERN_BATTLE_FIGURE=<54|55|56> FD2_TEST_MODERN_BATTLE_CATALOG=<stage> FD2_TEST_MODERN_BATTLE_PACK=<candidate> FD2_TEST_HD_BATTLE_OUT=<fresh>: TestModernHDBattleRuntimeGPU.17/22/20source shots,prelude/body/counterF2,64/65DAC,HP/RNG/onecontinuation.",
+      "verify_fd2_character_battle_gpu.py --figure <54|55|56> --core-profile opaque --sample-group fixture --proven-occlusion --original-pack /original --inventory <fixed> --catalog <stage> --source <candidate> --receipt <physical> --report <fresh>.All17/22/20cores>=1000visible, no blank/projectile exemption.",
+      "Bothpackages run ^TestModernHDBattleBatchAssetsAndPreflight$ with FD2_TEST_MODERN_BATTLE_FIGURES=54,55,56 and catalog/pack/original environment. Two complete sets per command: valid pair preload for each figure and separate cold failure set, six independent player/mode11 transactions, wrong-source rejection/all cold banks nil/HP/RNG retained. Assets Go1200s/probe1260s, source/physical Go500s/probe550s. Seven required Go commands total, noSKIP/noOOM; two initial550s asset timeouts and interrupted redundant r2 sequence retained separately.",
+      "Only after allchecks copy74newallowlisted files and byte-identical stagedcatalog to formalroot; validate old5266SHA/546assets unchanged. Syncprivate with sync_modern_theme_private.py;5340/4664files allSHA/UID checked. Separate private commit, actual remote/private visibility verified, no private commit identifiers published.",
+      "audit_fd2_battle_hd_coverage.py --inventory <fixed> --original-pack /original --catalog <formal> --source <formalroot> --report <fresh>. Data coverage only; normal/manual/platform remain pending."
+    ],
+    "private_remote_verified": true,
+    "private_visibility_verified": true,
+    "validation_guard_correction": {
+      "rejected_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-fd2_lessons.py-check-oct22-r1.log",
+        "sha256": "5a886f864583071cb7d8cec5cd1168aa2e54f32c44f1882ec5dbf5fac04700be"
+      },
+      "reason": "fd2_lessons.py deliberately excludes test files. Guard now checks the explicit separate-cold-set contract in61; both batch Go commands already passed independently. No product/test code or threshold changed."
+    },
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party54-55-56-final-validation-oct22-r2.json",
+      "sha256": "623b0a63edb599d18e74a558a2ef16947ed2d185fb0b307e5e635b92f2f11c72"
+    },
+    "worklist_verify": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-fd2_worklist.py-verify-oct22-r2.log",
+      "sha256": "e79d11a27482e9cc12c4e999fa07e97f07ee544b5952cb8172731e116b8f7af3"
+    },
+    "lessons_check": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party5456-fd2_lessons.py-check-oct22-r2.log",
+      "sha256": "7ed5c430e2d4c530b3b8ce806298024493d3a3305522e3d935c8ca9dbb83e562"
     }
   }
 }

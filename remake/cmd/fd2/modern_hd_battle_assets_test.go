@@ -334,6 +334,115 @@ func TestModernHDBattleAssetsRealCandidate(t *testing.T) {
 }
 
 // 明示fixture：只換BattleFig以命中所選圖源，不當成一般玩家路徑。
+// TestModernHDBattleBatchAssetsAndPreflight 共用兩份完整主題載入，逐人物保留獨立交易案例。
+// 成功預載與缺件交易使用不同 set；缺件案例不共用已預載的動畫。
+func TestModernHDBattleBatchAssetsAndPreflight(t *testing.T) {
+	catalog, pack := os.Getenv("FD2_TEST_MODERN_BATTLE_CATALOG"), os.Getenv("FD2_TEST_MODERN_BATTLE_PACK")
+	values := os.Getenv("FD2_TEST_MODERN_BATTLE_FIGURES")
+	if catalog == "" || pack == "" || values == "" {
+		t.Skip("requires explicit batch catalog/pack/figures")
+	}
+	requirePhysicalScenePack(t)
+	var figures []int
+	selected := map[int]bool{}
+	for _, value := range strings.Split(values, ",") {
+		figure, err := strconv.Atoi(value)
+		if err != nil || figure < 0 || figure > 135 || selected[figure] {
+			t.Fatal("invalid or duplicate batch figure")
+		}
+		selected[figure] = true
+		figures = append(figures, figure)
+	}
+	valid, err := loadModernStoryPortraitSet(catalog, pack)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, figure := range figures {
+		for _, resource := range []int{figure * 3, figure*3 + 1} {
+			native, err := figani.LoadSeparatedResource(filepath.Join(os.Getenv("FD2_TEST_ORIGINAL_PACK"), "animations"), resource)
+			if err != nil {
+				t.Fatal(err)
+			}
+			bank := valid.battleAnimations[resource]
+			if bank == nil || len(bank.Frames) != len(native.Frames) || bank.Frames[0] != nil {
+				t.Fatalf("batch resource %d missing or eagerly retained", resource)
+			}
+		}
+		if err := valid.prepareBattleHDResources(figure*3, figure*3+1); err != nil {
+			t.Fatal(err)
+		}
+		for _, resource := range []int{figure * 3, figure*3 + 1} {
+			bank := valid.battleAnimations[resource]
+			if bank.Frames[0] == nil || bank.Frames[len(bank.Frames)-1] == nil {
+				t.Fatalf("batch resource %d incomplete", resource)
+			}
+		}
+	}
+	raw, err := os.ReadFile(catalog)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var doc modernThemeCatalog
+	if err := json.Unmarshal(raw, &doc); err != nil {
+		t.Fatal(err)
+	}
+	for _, asset := range doc.Assets {
+		if asset.Role != "battle_animation_hd_set" || !selected[asset.SourceResource/3] {
+			continue
+		}
+		asset.SourceMetadataSHA256 = strings.Repeat("0", 64)
+		isolated := &modernStoryPortraitSet{}
+		if err := loadModernBattleHDAsset(isolated, asset, pack); err == nil || len(isolated.battleAnimations) != 0 {
+			t.Fatal("batch wrong-source resource accepted or published")
+		}
+	}
+	cold, err := loadModernStoryPortraitSet(catalog, pack)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, figure := range figures {
+		for _, owner := range []string{"player", "mode11"} {
+			t.Run(strconv.Itoa(figure)+"/"+owner, func(t *testing.T) {
+				idle, attack := figure*3, figure*3+1
+				bank := cold.battleAnimations[idle]
+				if bank == nil || cold.battleAnimations[attack] == nil {
+					t.Fatal("batch cold bank missing")
+				}
+				originalPath := bank.paths[0]
+				bank.paths[0] = filepath.Join(t.TempDir(), "missing-hd-frame.png")
+				defer func() { bank.paths[0] = originalPath }()
+				g, actor, target := physicalSceneTestGame(t)
+				actor.BattleFig = figure
+				g.modernStoryPortraits = cold
+				beforeActor, beforeTarget := *actor, *target
+				if owner == "player" {
+					g.confirm()
+				} else {
+					g.aiBusy = true
+					g.executeNativeAIMode11Physical(&battle.AIPlan{U: actor, Target: target}, nil)
+				}
+				if !strings.Contains(g.loadErr, "HD source preflight") || g.atk != nil || g.nativeRNGState != 17791 ||
+					!reflect.DeepEqual(*actor, beforeActor) || !reflect.DeepEqual(*target, beforeTarget) {
+					t.Fatalf("batch failure did not stop before settlement: %s", g.loadErr)
+				}
+				if g.rng.Int63() != rand.New(rand.NewSource(73)).Int63() {
+					t.Fatal("batch failure consumed Go RNG")
+				}
+				for _, other := range figures {
+					for _, resource := range []int{other * 3, other*3 + 1} {
+						for _, frame := range cold.battleAnimations[resource].Frames {
+							if frame != nil {
+								t.Fatal("batch failure published or reused a partial bank")
+							}
+						}
+					}
+				}
+			})
+		}
+	}
+	t.Logf("batch figures %v: complete native banks and wrong-source rejection; independent player/mode11 failures preserve HP/RNG and all cold banks", figures)
+}
+
 func TestNativePhysicalHDPreflightStopsBeforeSettlement(t *testing.T) {
 	catalog, pack := os.Getenv("FD2_TEST_MODERN_BATTLE_CATALOG"), os.Getenv("FD2_TEST_MODERN_BATTLE_PACK")
 	if catalog == "" || pack == "" {

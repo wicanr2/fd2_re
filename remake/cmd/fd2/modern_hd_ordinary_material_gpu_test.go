@@ -204,6 +204,13 @@ func TestModernHDAxesMageShieldAllFramesGPU(t *testing.T) {
 	testModernHDRegisteredFramesGPU(t, "FIGANI.DAT", []int{153, 154, 156, 157, 159, 160}, 42, "PASS-AXES-MAGE-SHIELD-42-SOURCE-GPU")
 }
 
+func TestModernHDDragonRidersAllFramesGPU(t *testing.T) {
+	if os.Getenv("FD2_HD_DRAGON_RIDERS_GPU") != "1" {
+		t.Skip("dedicated dragon riders source GPU process required")
+	}
+	testModernHDRegisteredFramesGPU(t, "FIGANI.DAT", []int{162, 163, 165, 166, 168, 169}, 59, "PASS-DRAGON-RIDERS-59-SOURCE-GPU")
+}
+
 func testModernHDRegisteredFramesGPU(t *testing.T, archive string, resources []int, frameCount int, status string) {
 	t.Helper()
 	set, err := loadModernStoryPortraitSet(os.Getenv("FD2_TEST_MODERN_EFFECT_CATALOG"), os.Getenv("FD2_TEST_MODERN_EFFECT_PACK"))

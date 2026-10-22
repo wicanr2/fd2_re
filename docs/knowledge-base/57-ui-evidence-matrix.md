@@ -1,6 +1,6 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
-BattleFig51雙斧、52紅披風持杖人物與53斧盾重甲完整來源已接入；兩包全部來源GPU、三組物理Game.Draw、F2／返回、編製守衛與兩包玩家／AI原子預檢通過。半展臂及披風收束已分開，殘光改尖端原稿，原框、節拍、標記與保存保持。正常／人工依全部HD後集中，未新增原版parity。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，主證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的actors51_52_53_followup_20261022。
+BattleFig54／55／56飛龍騎乘完整來源已接入；兩包來源GPU、三組物理Game.Draw、F2／返回、編製守衛與兩包玩家／AI原子預檢通過。升空與落下保留局部取樣，原框、節拍、標記與保存保持；共用姿勢、振翼與比例仍屬美術近似。正常／人工依全部HD後集中，未新增原版parity。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，主證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的riders54_55_56_followup_20261022。
 
 BattleFig41／42／43持杖人物完整來源已接入；兩包來源GPU、全部物理Game.Draw核心、F2／返回、編製守衛及兩包玩家／AI原子預檢通過。原框、節拍、單次命中及聲音參數、規則與保存保持；共用姿勢、人物／杖長比例與握手近似明示。母稿alpha254沿既有>=250契約，正常LANCZOS成品保持255，沒有量化或放寬門檻。正常操作與人工依全部HD後集中，未新增原版parity。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，主證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的staff41_42_43_followup_20261022。
 
