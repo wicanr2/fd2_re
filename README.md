@@ -147,6 +147,10 @@
 
 第58組連射弓手及第59、60組持杖人物已接入HD。原版六個銀行與先前圖組完全相同，沿用已驗證的手繪圖源，保留各銀行的動作與命中標記。上圖是測試場景的實際繪製縮圖，面板沿用來源角色名稱；背景與受擊閃色仍含像素素材。共用姿勢與造型近似見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)，正常遊玩與人工確認待全部HD接入後集中抽驗。
 
+![持杖、拳師與機甲砲手的HD測試畫面](docs/figures/hd-special-reused-party-battle.png)
+
+左上、右上、左下、右下依序為第61組持杖人物、第62組拳師、第63組機甲砲手與第64組持杖人物。八個原版銀行與先前圖組完全相同，沿用原手繪圖源，保留拳光、飛彈與透明停拍。上圖是測試場景的實際繪製縮圖，面板沿用來源角色名稱；背景與受擊閃色仍含像素素材。共用姿勢與造型近似見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)，正常遊玩與人工確認待全部HD接入後集中抽驗。
+
 | 鐵諾HD普通END攻防 | 蓋亞HD普通攻防 |
 | --- | --- |
 | ![鐵諾HD普通END攻防](docs/figures/hd-tino-physical-attack.png) | ![蓋亞HD普通攻防](docs/figures/hd-gaia-physical-attack.png) |

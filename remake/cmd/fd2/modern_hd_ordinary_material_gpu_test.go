@@ -218,6 +218,13 @@ func TestModernHDReusedPartyAllFramesGPU(t *testing.T) {
 	testModernHDRegisteredFramesGPU(t, "FIGANI.DAT", []int{174, 175, 177, 178, 180, 181}, 57, "PASS-REUSED-PARTY-57-SOURCE-GPU")
 }
 
+func TestModernHDReusedSpecialPartyAllFramesGPU(t *testing.T) {
+	if os.Getenv("FD2_HD_REUSED_SPECIAL_PARTY_GPU") != "1" {
+		t.Skip("dedicated reused special party source GPU process required")
+	}
+	testModernHDRegisteredFramesGPU(t, "FIGANI.DAT", []int{183, 184, 186, 187, 189, 190, 192, 193}, 70, "PASS-REUSED-SPECIAL-PARTY-70-SOURCE-GPU")
+}
+
 func testModernHDRegisteredFramesGPU(t *testing.T, archive string, resources []int, frameCount int, status string) {
 	t.Helper()
 	set, err := loadModernStoryPortraitSet(os.Getenv("FD2_TEST_MODERN_EFFECT_CATALOG"), os.Getenv("FD2_TEST_MODERN_EFFECT_PACK"))

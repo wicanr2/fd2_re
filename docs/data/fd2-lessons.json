@@ -3680,6 +3680,21 @@
         ],
         "pattern": "原始身份與caller不因此合併"
       }
+    },
+    {
+      "id": "candidate-capacity-count-regular-files-not-link-targets",
+      "date": "2026-10-22",
+      "area": "HD候選容量與清理",
+      "rule": "候選包容量先用lstat區分符號連結與實體檔，不把連結目標大小當成新的占用。tools/build_fd2_character_battle_hd.py本來就以symlink_to共用舊清冊；只針對本人擁有、已逐SHA核實存在私人白名單與正式來源的實體重複PNG，原子改為同SHA相對連結，維持舊catalog、名稱與父包鏈可重跑。清理範圍沿主收據duplicate_candidate_cleanup，禁止跟隨連結刪除來源。",
+      "why": "58～64七候選包看似各約2GB，多數其實是既有連結，真正重複實檔合計114854570bytes。初輪禁止symlink而在刪除前停止；修訂只整理167實檔，舊目錄與連結保持，避免高估釋放量或破壞歷史候選。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#identical61_62_63_64_followup_20261022",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/build_fd2_character_battle_hd.py"
+        ],
+        "pattern": "symlink_to"
+      }
     }
   ]
 }
