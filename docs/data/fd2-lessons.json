@@ -3770,6 +3770,21 @@
         ],
         "pattern": "/tmp/xvfb.log"
       }
+    },
+    {
+      "id": "physical-capture-respects-zero-delay",
+      "date": "2026-10-23",
+      "area": "戰鬥HD驗收",
+      "rule": "來源素材幀數與實際呈現幀數分開驗證。共背景攻擊尾段delay0要求無HD工作與無截圖，素材仍保留並由來源GPU驗證；待機及非共背景departure不套用此例外。入口為remake/cmd/fd2/modern_hd_battle_lifecycle_test.go的checkModernHDPhysicalCaptures，反例由TestModernHDPhysicalCaptureZeroDelayContract執行；原契約見docs/data/ida/fd2_physical_background_selection_20261004.json的physical_tail_evidence.claims[3]。",
+      "why": "337/19原生delay0且正式排程正確，舊驗收卻要求所有解碼幀都有截圖；112流程在返回後才因此誤報失敗。修測試契約，不改原生delay或正式規則。教訓檢查器刻意排除測試檔，guard綁定主收據契約；實際錯誤擷取由專用Go正反例拒收。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#blade99_fighters100_101_robot112_followup_20261023.zero_delay_capture_spec",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "docs/data/fd2-modern-hd-battlefield-20261019.json"
+        ],
+        "pattern": "\"zero_delay_capture_spec\":\\s*\\{"
+      }
     }
   ]
 }

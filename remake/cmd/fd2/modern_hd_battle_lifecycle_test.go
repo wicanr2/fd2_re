@@ -74,6 +74,34 @@ type modernHDBattleLifecycleProbe struct {
 	capture                                                   func(*ebiten.Image, string)
 }
 
+type modernHDZeroDelaySource struct {
+	Resource int `json:"resource"`
+	Frame    int `json:"frame"`
+	Delay    int `json:"delay_native"`
+}
+
+// 共背景攻擊尾段的delay0沒有inner present；待機與非共背景departure不適用。
+// 已閉合契約：physical_tail_evidence.claims[3]，原0x297D0..0x2987F。
+func checkModernHDPhysicalCaptures(figure int, animations map[int]*figani.Animation, shots map[string]any, bound map[string]bool) ([]modernHDZeroDelaySource, error) {
+	var zero []modernHDZeroDelaySource
+	for resource, animation := range animations {
+		for index, frame := range animation.Frames {
+			key := fmt.Sprintf("%03d-%02d", resource, index)
+			if resource == figure*3+1 && animation.HeaderByte1 == 0 && frame.Delay == 0 {
+				if bound[key] || shots[key] != nil {
+					return nil, fmt.Errorf("zero-delay source%d/%d unexpectedly presented", resource, index)
+				}
+				zero = append(zero, modernHDZeroDelaySource{Resource: resource, Frame: index})
+				continue
+			}
+			if shots[key] == nil {
+				return nil, fmt.Errorf("selected source%d/%d missing GPU capture", resource, index)
+			}
+		}
+	}
+	return zero, nil
+}
+
 func (p *modernHDBattleLifecycleProbe) stable() [7]int {
 	return [7]int{p.scene.preludeFrame, p.scene.body.index, int(p.g.nativeRNGState), p.actor.HP, p.target.HP, p.actor.MP, p.target.MP}
 }
@@ -466,18 +494,27 @@ func TestModernHDBattleRuntimeGPU(t *testing.T) {
 				t.Fatalf("phase%s missing HD/F2", phase)
 			}
 		}
-		for resource, animation := range selectedResources {
-			for index := range animation.Frames {
-				if shots[fmt.Sprintf("%03d-%02d", resource, index)] == nil {
-					t.Fatalf("selected source%d/%d missing GPU capture", resource, index)
-				}
+		bound := make(map[string]bool)
+		for _, job := range scene.body.jobs {
+			if job.hdSources == nil {
+				continue
 			}
+			for _, source := range job.hdSources.Layers {
+				bound[fmt.Sprintf("%03d-%02d", source.Resource, source.Index)] = true
+			}
+		}
+		zeroDelaySources, err := checkModernHDPhysicalCaptures(figure, selectedResources, shots, bound)
+		if err != nil {
+			t.Fatal(err)
 		}
 		catalog, err := os.ReadFile(os.Getenv("FD2_TEST_MODERN_BATTLE_CATALOG"))
 		if err != nil {
 			t.Fatal(err)
 		}
 		report := map[string]any{"status": "PASS-CHARACTER-FIXTURE-RUNTIME-E1", "figure": figure, "catalog_sha256": fmt.Sprintf("%x", sha256.Sum256(catalog)), "phase_f2": probe.phaseF2, "phase_hd_draws": probe.phaseDraws, "continuations": callbacks, "battle_dac_steps": len(probe.rampSeen), "map_dac_steps": len(probe.mapRampSeen), "source_shots": shots, "scope": "真實FIGANI、強制一次攻擊與反擊計畫及native地圖fixture；Game.Draw最終1920回讀。非普通玩家或原版oracle。"}
+		if len(zeroDelaySources) != 0 {
+			report["zero_delay_sources"] = zeroDelaySources
+		}
 		if enemyActor {
 			report["role"], report["counterpart_figure"] = "enemy-actor", target.BattleFig
 			report["actor_camp"], report["target_camp"] = actor.Camp, target.Camp
