@@ -179,6 +179,10 @@
 
 上排為深藍兜帽與紅面罩持杖人物的攻擊，下排為各自施術，完整50幀已接入待機、三段命中與施術路徑。畫面來自修改人物圖源的測試場景，名稱沿用測試資料，背景與面板仍含像素素材。鉤杖、光環生成／懸浮／消散、火焰及姿勢共用的美術近似見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。一般遊玩與人工確認待全部HD接入後集中抽驗。
 
+![持木杖與持刀人物的HD戰鬥測試畫面](docs/figures/hd-actors94-95-97-98-battle.png)
+
+上排為兩種持木杖人物，下排為持刀人物的下劈與反向斬擊，完整36幀已接入待機與攻防路徑。畫面來自修改人物圖源的測試場景，名稱沿用測試資料，背景與面板仍含像素素材。姿勢共用、刀光形狀與微小殘留塵痕的差異見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。一般遊玩與人工確認待全部HD接入後集中抽驗。
+
 | 鐵諾HD普通END攻防 | 蓋亞HD普通攻防 |
 | --- | --- |
 | ![鐵諾HD普通END攻防](docs/figures/hd-tino-physical-attack.png) | ![蓋亞HD普通攻防](docs/figures/hd-gaia-physical-attack.png) |

@@ -274,6 +274,13 @@ func TestModernHDCasters91And92AllFramesGPU(t *testing.T) {
 	testModernHDRegisteredFramesGPU(t, "FIGANI.DAT", []int{273, 274, 275, 276, 277, 278}, 50, "PASS-CASTERS-91-92-50-SOURCE-GPU")
 }
 
+func TestModernHDActors94To98AllFramesGPU(t *testing.T) {
+	if os.Getenv("FD2_HD_ACTORS_94_98_GPU") != "1" {
+		t.Skip("dedicated actors 94, 95, 97 and 98 source GPU process required")
+	}
+	testModernHDRegisteredFramesGPU(t, "FIGANI.DAT", []int{282, 283, 285, 286, 291, 292, 294, 295}, 36, "PASS-ACTORS-94-95-97-98-36-SOURCE-GPU")
+}
+
 func testModernHDRegisteredFramesGPU(t *testing.T, archive string, resources []int, frameCount int, status string) {
 	t.Helper()
 	set, err := loadModernStoryPortraitSet(os.Getenv("FD2_TEST_MODERN_EFFECT_CATALOG"), os.Getenv("FD2_TEST_MODERN_EFFECT_PACK"))

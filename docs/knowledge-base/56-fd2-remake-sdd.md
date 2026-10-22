@@ -1,6 +1,6 @@
 # 56 — FD2 remake 系統設計規格（SDD，2026-08-09）
 
-BattleFig91／92持杖完整50幀已接入；兩包來源GPU、26物理及24實際第三圖庫施術核心、兩完整三段命中攻防／三階段F2／64及65 DAC，以及兩完整普通0／五階段F2／MP1／HP7／一次續行通過。42編製、40接點／兩錯位反例、14施術及八閃色遮罩守衛與兩包物理／施術原子預檢通過，十Go組零SKIP／無OOM／無逾時。十一新原RGBA與一既有金焰按SHA保存，兩額外光暈稿排除；光環生成／懸浮／斷弧及原框／節拍／標記保持。原Go R1掛載失敗於測試前，修環境後同預算R2通過，不列產品缺陷。正常／人工／平台待集中，不新增原版parity。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，主證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的casters91_92_followup_20261023。
+BattleFig94／95持木杖與97／98持刀完整36幀已接入；兩包來源GPU、全部5／6／12／13物理核心、四完整攻防／三階段F2／64及65 DAC／HP／RNG／一次續行，84編製、十一接點與兩錯位反例、八閃色遮罩守衛及兩包各八冷交易預檢通過。八Go R2組零SKIP／無OOM／無逾時。十二新原RGBA及三既有刀光按SHA保存，兩多餘光暈稿排除，原框／節拍／命中標記保持；姿勢與光形近似、微小遠端塵痕省略已揭露。正常／集中人工／平台仍待，不新增原版parity。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，主證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的robed94_95_blades97_98_followup_20261023。
 
 BattleFig41／42／43持杖人物完整來源已接入；兩包來源GPU、全部物理Game.Draw核心、F2／返回、編製守衛及兩包玩家／AI原子預檢通過。原框、節拍、單次命中及聲音參數、規則與保存保持；共用姿勢、人物／杖長比例與握手近似明示。母稿alpha254沿既有>=250契約，正常LANCZOS成品保持255，沒有量化或放寬門檻。正常操作與人工依全部HD後集中，未新增原版parity。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，主證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的staff41_42_43_followup_20261022。
 
