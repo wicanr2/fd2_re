@@ -78,7 +78,12 @@ def main():
     if layered and not with_cast:
         check('empty-layers',lambda d:d['resources'][first].__setitem__(0,[]),'分層配方須明示三組模式並含非空圖層')
         check('invalid-layer',lambda d:d['resources'][first].__setitem__(0,[None]),'未知母稿、群組或配方欄位')
-        check('missing-layered-flag',lambda d:None,'分層配方須明示三組模式並含非空圖層',layer_flag=False)
+        def require_layered_flag(d):
+            # The flag permits layers; a plain assignment remains valid without it.
+            value = d['resources'][first][0]
+            if not isinstance(value, list):
+                d['resources'][first][0] = [value]
+        check('missing-layered-flag',require_layered_flag,'分層配方須明示三組模式並含非空圖層',layer_flag=False)
         check('two-banks-not-cast',lambda d:None,'配方須涵蓋完整待機及攻擊資源',cast_flag=True)
         # 中間層可沿既有母稿契約接受250；完整圖仍必須含真正不透明核心。
         from PIL import Image
@@ -90,8 +95,8 @@ def main():
         soft.putalpha(alpha); soft_path = out/'soft-only.png'; soft.save(soft_path)
         assert alpha.getextrema() == (0, 250)
         def missing_final_core(d):
-            resource,index = next((key,index) for key,frames in d['resources'].items()
-                                  for index,value in enumerate(frames) if isinstance(value,list))
+            resource,index = next(((key,index) for key,frames in d['resources'].items()
+                                   for index,value in enumerate(frames) if isinstance(value,list)), (first,0))
             target = layer(d,resource,index)['anchor']
             d['resources'][resource][index] = [{'pose':'soft_only','anchor':target,'scale_group':'soft_only'}]
             d['sources']['soft_only'] = {'file':str(soft_path),'sha256':hashlib.sha256(soft_path.read_bytes()).hexdigest(),

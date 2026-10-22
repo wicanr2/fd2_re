@@ -15,12 +15,12 @@
     "hd_terrain": "CONFORMED-SCOPED：map0六組53槽；新增圓頂綠色／褐色雙塊四底圖在兩張正常GPU全部相符，短長組合與保存冷讀通過；草地及其他地形仍待HD化。",
     "ai_player_input_lock": "CONFORMED-SCOPED：AI換手期間拒絕玩家地圖輸入重入；普通END／增援對話及相關／完整Go回歸通過。",
     "gaia_redesign": "CONFORMED-SCOPED：新版頭像與四方向圖組已登錄；正常START／Gaia北移取消／F2／冷讀分段驗證。相位差異與序章尾端失敗明示，非逐幀parity。",
-    "hd_battle_animation": "38／39騎兵與40遠射手完整61幀已接入，含54本體與七張純飛矢實際Game.Draw；候選／精簡來源GPU、各階段F2／返回、來源及飛矢反例、兩包原子預檢通過。姿勢及材質近似保留，其他人物／效果與集中正常／人工仍待；唯一數量依58。",
+    "hd_battle_animation": "41／42／43持杖人物完整49幀已接入；兩包來源GPU、全部物理核心／F2／返回、編製守衛及兩包玩家／AI原子預檢通過。姿勢／比例與母稿邊緣近似明示，其他人物／效果與集中正常／人工仍待，唯一數量依58。",
     "native_purchase_equip": "CONFORMED-SCOPED：#266原生購買立即裝備保留ignored原始格，29項商店回歸與正常購弓F5／章首射程通過；不改格式或數值規則。",
     "hd_event_death": "共用事件、普通行動與狀態致死已接HD；三種26拍／F2通過。正常章23事件與普通擊殺已抽驗，狀態致死正常GUI仍待；來源依death_consumers_followup_20261021。",
     "theme_toolbar": "CONFORMED-SCOPED-RUNTIME-E1：遊戲外工具列與F2共用路徑，實際滑鼠／F2／四語及完整遊戲區域不變通過。",
     "hd_facility_scene": "CONFORMED-SCOPED-RUNTIME-E1：三種城鎮與三種商店靜態HD場景／店員，以及既有隊伍HD頭像接入裝備面板；114個GPU案例及兩包載入通過，集中普通／人工仍待。",
-    "assets": "正式清冊及完整／runtime-only allow-list逐筆SHA／UID通過，舊檔保持。數量與遠端依58及riders38_39_archer40_followup_20261022。"
+    "assets": "正式及完整／runtime-only allow-list逐檔SHA／UID通過，舊檔保持。數量與遠端依58及staff41_42_43_followup_20261022。"
   },
   "runtime_source": {
     "binary": {
@@ -98453,7 +98453,7 @@
     },
     "private_remote_verification": "Independent private repository commit pushed; actual git ls-remote refs/heads/main re-read equals local HEAD. Private commit identity is not published."
   },
-  "latest_hd_batch": "riders38_39_archer40_followup_20261022",
+  "latest_hd_batch": "staff41_42_43_followup_20261022",
   "monks28_31_mage29_followup_20261022": {
     "status": "CONFORMED-SCOPED-RUNTIME-E1",
     "date": "2026-10-22",
@@ -112410,6 +112410,1701 @@
       "Run audit_fd2_battle_hd_coverage.py --inventory <fixed> --original-pack /original --catalog <formal> --source <formal pack> --report <fresh>. Asset coverage does not infer caller/normal-player reachability; source408 remains blocked."
     ],
     "original_manifest_sha256": "5eec2ecacc4fe97c4d0f27838e7dbecf18d1cf4b309b35800d50afd173cacca5",
+    "private_remote_verification": {
+      "date": "2026-10-22",
+      "pushed": true,
+      "actual_remote_head_matches": true,
+      "worktree_clean": true,
+      "isPrivate": true,
+      "policy": "Private git identity intentionally omitted from public records."
+    }
+  },
+  "staff41_42_43_followup_20261022": {
+    "status": "CONFORMED-SCOPED/RUNTIME-E1",
+    "date": "2026-10-22",
+    "base_commit": "636773e9c6224127a5cbb8db2e52a259126123e7",
+    "base_catalog": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-base-catalog-oct22-r1.json",
+      "sha256": "c8382f59b7f37f157651403af56ad5f9883b329050ff4b0f4da0d9e51cc075aa"
+    },
+    "source_inventory": {
+      "file": "docs/data/fd2-battle-hd-source-inventory-20261019.json",
+      "sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51"
+    },
+    "original_manifest_sha256": "5eec2ecacc4fe97c4d0f27838e7dbecf18d1cf4b309b35800d50afd173cacca5",
+    "native_reference": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party-pending-41-43-native-oct22-r1.json",
+      "sha256": "817ac4fca58cbda0d646bb7a980de9c47260dfe4f29f700ba8f0cab6901a2419"
+    },
+    "resources": {
+      "123": 4,
+      "124": 16,
+      "126": 4,
+      "127": 11,
+      "129": 4,
+      "130": 10
+    },
+    "zero_headers": [
+      {
+        "resource": 125,
+        "status_sha256": "216602e6764740aee17ac5c29c03735835bc9cda72591faafa3973431cab4084",
+        "raw_sha256": "6b25930e91686cee8bb5d4dae8dbed14f63c690c1c97ecb98552d8842e2d9395",
+        "status": {
+          "raw_size": 3,
+          "raw_prefix_hex": "00000a",
+          "status": "empty_header_zero",
+          "reason_code": "zero_header_word",
+          "evidence": "confirmed",
+          "header_word_le": 0,
+          "schema_version": 1,
+          "document_id": "animation-resource/figani_125",
+          "kind": "animation_resource_status",
+          "resource_id": "animation-resource/figani_125",
+          "source": {
+            "file": "FIGANI.DAT",
+            "resource": 125
+          },
+          "extensions": {}
+        }
+      },
+      {
+        "resource": 128,
+        "status_sha256": "ca0648e7ac19c81dca11842c0e45cfcc4cc9c773f6352d34dfde0edf39a97fca",
+        "raw_sha256": "6b25930e91686cee8bb5d4dae8dbed14f63c690c1c97ecb98552d8842e2d9395",
+        "status": {
+          "raw_size": 3,
+          "raw_prefix_hex": "00000a",
+          "status": "empty_header_zero",
+          "reason_code": "zero_header_word",
+          "evidence": "confirmed",
+          "header_word_le": 0,
+          "schema_version": 1,
+          "document_id": "animation-resource/figani_128",
+          "kind": "animation_resource_status",
+          "resource_id": "animation-resource/figani_128",
+          "source": {
+            "file": "FIGANI.DAT",
+            "resource": 128
+          },
+          "extensions": {}
+        }
+      },
+      {
+        "resource": 131,
+        "status_sha256": "bf2e406e16809e0342e5a30b70921902017529949381cceebd0e58af8d45edb3",
+        "raw_sha256": "6b25930e91686cee8bb5d4dae8dbed14f63c690c1c97ecb98552d8842e2d9395",
+        "status": {
+          "raw_size": 3,
+          "raw_prefix_hex": "00000a",
+          "status": "empty_header_zero",
+          "reason_code": "zero_header_word",
+          "evidence": "confirmed",
+          "header_word_le": 0,
+          "schema_version": 1,
+          "document_id": "animation-resource/figani_131",
+          "kind": "animation_resource_status",
+          "resource_id": "animation-resource/figani_131",
+          "source": {
+            "file": "FIGANI.DAT",
+            "resource": 131
+          },
+          "extensions": {}
+        }
+      }
+    ],
+    "zero_header_check": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-zero-headers-oct22-r1.json",
+      "sha256": "2938a56d55829781e57278d4656931b8d78304ce011abf8c42f7fc7cd026af74"
+    },
+    "native_markers": {
+      "124": [
+        10
+      ],
+      "127": [
+        7
+      ],
+      "130": [
+        5
+      ]
+    },
+    "source_policy": "Existing common-background physical consumer only; no new caller or story identity inferred.41 bright red ponytail/crimson cape/gold shoulders/purple sleeves;42 lilac ponytail/olive coat/teal sleeves and boots/purple back strips;43 blond ponytail/rust robe/gray-green armor/dark waist cords. Native sources viewed.",
+    "required_checks": [
+      "All49 sources GPU versus independent CPU Over in full and runtime-only packs.",
+      "All20/15/14 physical source Game.Draw body cores, each minimum1000 visible points; phases/F2/64-65DAC/HP/RNG/one continuation.",
+      "Three21-case compiler rejection suites and both packages source/hash/player-AI atomic-preflight.",
+      "Catalog allow-list, all49 runtime frames and selected raw RGBA preserved privately; old4996 hashes unchanged; private actual remote and visibility verified.",
+      "Normal player and concentrated human art review after all HD integrated; no original RGB/frame parity or fullHD claim."
+    ],
+    "formal_registered": true,
+    "private_synced": true,
+    "generation": [
+      {
+        "key": "Crimson41Idle",
+        "args": {
+          "prompt": "Use case: background-extraction. Asset type: production game sprite with transparent background. Edit the input only to correct transparency: retain exactly this single character, all costume colors, pose, rear camera, staff, outlines, full body framing and painting. Make the painted character interior FULLY OPAQUE (alpha255), not semi-transparent. Background must be alpha0. Remove any soft colored halo, rim fog, glow, vignette and translucent haze outside the silhouette; preserve hair strands, staff and clothing ribbons. Crisp clean cutout with anti-aliased boundary only. Do not add a background, ground, shadow, text, second figure or change the costume/pose. This is an actual PNG cutout for compositing, not an image of a cutout.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Crimson41Idle-original-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-f2d397f5-2684-40aa-a739-f04857093f9c.png",
+        "revision": 2,
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Crimson41Idle-original-r2.png",
+        "sha256": "7fae72f1379de3f4db046dc7b0589c4a0e7ca3b0722bc15f31160ea92a414235",
+        "size": [
+          1024,
+          1536
+        ],
+        "mode": "RGBA",
+        "alpha_extrema": [
+          0,
+          254
+        ],
+        "selection": "selected original RGBA; technically integrated; concentrated human review pending"
+      },
+      {
+        "key": "Lilac42Idle",
+        "args": {
+          "prompt": "Use case: background-extraction. Asset type: production game sprite with transparent background. Edit the input only to correct transparency: retain exactly this single character, all costume colors, pose, rear camera, staff, outlines, full body framing and painting. Make the painted character interior FULLY OPAQUE (alpha255), not semi-transparent. Background must be alpha0. Remove any soft colored halo, rim fog, glow, vignette and translucent haze outside the silhouette; preserve hair strands, staff and clothing ribbons. Crisp clean cutout with anti-aliased boundary only. Do not add a background, ground, shadow, text, second figure or change the costume/pose. This is an actual PNG cutout for compositing, not an image of a cutout.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Lilac42Idle-original-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-e97e454a-630e-4386-8a5d-263aa7e35989.png",
+        "revision": 2,
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Lilac42Idle-original-r2.png",
+        "sha256": "14cd02c1b6bb5cd93c219151e41cc4bc83f090630a2b356ff97a11fb61e48080",
+        "size": [
+          1024,
+          1536
+        ],
+        "mode": "RGBA",
+        "alpha_extrema": [
+          0,
+          254
+        ],
+        "selection": "selected original RGBA; technically integrated; concentrated human review pending"
+      },
+      {
+        "key": "Blond43Idle",
+        "args": {
+          "prompt": "Use case: background-extraction. Asset type: production game sprite with transparent background. Edit the input only to correct transparency: retain exactly this single character, all costume colors, pose, rear camera, staff, outlines, full body framing and painting. Make the painted character interior FULLY OPAQUE (alpha255), not semi-transparent. Background must be alpha0. Remove any soft colored halo, rim fog, glow, vignette and translucent haze outside the silhouette; preserve hair strands, staff and clothing ribbons. Crisp clean cutout with anti-aliased boundary only. Do not add a background, ground, shadow, text, second figure or change the costume/pose. This is an actual PNG cutout for compositing, not an image of a cutout.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Blond43Idle-original-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-feeb582a-ff88-4e9a-bda0-dd622b2c3adc.png",
+        "revision": 2,
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Blond43Idle-original-r2.png",
+        "sha256": "42c5de408128ebb158960cf8b7900db78345b43ef2b13e09a2a1f365f62dc2a8",
+        "size": [
+          1024,
+          1536
+        ],
+        "mode": "RGBA",
+        "alpha_extrema": [
+          0,
+          254
+        ],
+        "selection": "selected original RGBA; technically integrated; concentrated human review pending"
+      },
+      {
+        "key": "Crimson41Open",
+        "args": {
+          "prompt": "Use case: identity-preserve. Asset type: one high-resolution battle sprite. Input1 is the exact character/costume/style identity to preserve; input2 is the original game's action/pose and rear-camera reference. Change only the pose as specified. Same hand-painted1990s fantasy RPG linework, face/hair colors, armor, cloth, staff and boots. ONE complete full body figure facing toward LEFT, mostly seen from rear three-quarter. All staff tips, fingers, flowing hair, cloak, ribbons and shoes inside frame with padding. Genuine transparent background, clean cutout, opaque painted character interior; no halo, glow, backdrop, vignette, ground, shadow, labels, UI, magic, attack FX or extra limbs. Hands must grip staff naturally; connected shoulder-elbow-wrist-finger chains. Match native124:3: standing upright, both arms spread broadly at shoulder height, left palm open toward left; right hand holds the ornate curved gold-topped staff slanting upward to the upper right. Long crimson cape falls nearly straight behind the red ponytail, purple wrist ribbons hang in long arcs. Keep both staff ends fully visible.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Crimson41Idle-original-r2.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure041-native-oct22-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-d90ce3d4-b237-463b-a2a1-8218eab4e6f0.png",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Crimson41Open-original-r1.png",
+        "sha256": "a01793c5e568a4a99c8d02fa0b5bafaf6bc5cb518b63bac68604123ff2cd54ed",
+        "size": [
+          1024,
+          1536
+        ],
+        "mode": "RGBA",
+        "alpha_extrema": [
+          0,
+          254
+        ],
+        "selection": "selected original RGBA; technically integrated; concentrated human review pending"
+      },
+      {
+        "key": "Crimson41Raise",
+        "args": {
+          "prompt": "Use case: identity-preserve. Asset type: one high-resolution battle sprite. Input1 is the exact character/costume/style identity to preserve; input2 is the original game's action/pose and rear-camera reference. Change only the pose as specified. Same hand-painted1990s fantasy RPG linework, face/hair colors, armor, cloth, staff and boots. ONE complete full body figure facing toward LEFT, mostly seen from rear three-quarter. All staff tips, fingers, flowing hair, cloak, ribbons and shoes inside frame with padding. Genuine transparent background, clean cutout, opaque painted character interior; no halo, glow, backdrop, vignette, ground, shadow, labels, UI, magic, attack FX or extra limbs. Hands must grip staff naturally; connected shoulder-elbow-wrist-finger chains. Match native124:4: still facing mostly away, both elbows bent and raised near head level, staff held diagonally behind and above the head, gold cap at upper left, shaft extends to right. Left fingers open near left temple. Crimson cape still hangs to feet, purple wrist ribbons curl outward.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Crimson41Idle-original-r2.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure041-native-oct22-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-b1f30bd2-6386-492d-a9fb-ba5e51e7d7a0.png",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Crimson41Raise-original-r1.png",
+        "sha256": "310f336d21f81da673125cf8bf92d7cbc14739909c0fae255e292dbf514f427a",
+        "size": [
+          1024,
+          1536
+        ],
+        "mode": "RGBA",
+        "alpha_extrema": [
+          0,
+          254
+        ],
+        "selection": "selected original RGBA; technically integrated; concentrated human review pending"
+      },
+      {
+        "key": "Crimson41Spin",
+        "args": {
+          "prompt": "Use case: identity-preserve. Asset type: one high-resolution battle sprite. Input1 is the exact character/costume/style identity to preserve; input2 is the original game's action/pose and rear-camera reference. Change only the pose as specified. Same hand-painted1990s fantasy RPG linework, face/hair colors, armor, cloth, staff and boots. ONE complete full body figure facing toward LEFT, mostly seen from rear three-quarter. All staff tips, fingers, flowing hair, cloak, ribbons and shoes inside frame with padding. Genuine transparent background, clean cutout, opaque painted character interior; no halo, glow, backdrop, vignette, ground, shadow, labels, UI, magic, attack FX or extra limbs. Hands must grip staff naturally; connected shoulder-elbow-wrist-finger chains. Match native124:8: torso rotates toward LEFT, staff angled horizontally toward upper-left from right shoulder, both forearms near chest. Very wide bell-shaped crimson cape fans out on both sides behind body, red ponytail fans to the right, two red boot tips visible beneath cape. This is turning windup, not a frontal portrait.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Crimson41Idle-original-r2.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure041-native-oct22-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-ad676219-7759-40ef-ad8d-9b1fe60b2d54.png",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Crimson41Spin-original-r1.png",
+        "sha256": "8bf9631b43c76b709604e6ea7261f6d9674a34dccd2ea8fa5057701c8363bbc7",
+        "size": [
+          1024,
+          1536
+        ],
+        "mode": "RGBA",
+        "alpha_extrema": [
+          0,
+          254
+        ],
+        "selection": "selected original RGBA; technically integrated; concentrated human review pending"
+      },
+      {
+        "key": "Crimson41Thrust",
+        "args": {
+          "prompt": "Use case: identity-preserve. Asset type: one high-resolution battle sprite. Input1 is the exact character/costume/style identity to preserve; input2 is the original game's action/pose and rear-camera reference. Change only the pose as specified. Same hand-painted1990s fantasy RPG linework, face/hair colors, armor, cloth, staff and boots. ONE complete full body figure facing toward LEFT, mostly seen from rear three-quarter. All staff tips, fingers, flowing hair, cloak, ribbons and shoes inside frame with padding. Genuine transparent background, clean cutout, opaque painted character interior; no halo, glow, backdrop, vignette, ground, shadow, labels, UI, magic, attack FX or extra limbs. Hands must grip staff naturally; connected shoulder-elbow-wrist-finger chains. Match native124:10-12: powerful leftward staff thrust with both arms reaching forward to LEFT at shoulder height, long thin staff almost horizontal with ornate gold cap aimed left. Torso leans left, left knee bent forward, right leg braces behind. Red boots and some fitted leg fabric visible under billowing crimson cape flowing right; red ponytail streams right, purple wrist ribbons follow. Rear three-quarter, not side front.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Crimson41Idle-original-r2.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure041-native-oct22-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-60980154-e93e-4c5c-8f17-3311caae24c8.png",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Crimson41Thrust-original-r1.png",
+        "sha256": "5b26bbaae44e631a36cc40a08df498560e2c6e3726ab42aa1e35ca26dff38162",
+        "size": [
+          1024,
+          1536
+        ],
+        "mode": "RGBA",
+        "alpha_extrema": [
+          0,
+          254
+        ],
+        "selection": "selected original RGBA; technically integrated; concentrated human review pending"
+      },
+      {
+        "key": "Lilac42Open",
+        "args": {
+          "prompt": "Use case: identity-preserve. Asset type: one high-resolution battle sprite. Input1 is the exact character/costume/style identity to preserve; input2 is the original game's action/pose and rear-camera reference. Change only the pose as specified. Same hand-painted1990s fantasy RPG linework, face/hair colors, armor, cloth, staff and boots. ONE complete full body figure facing toward LEFT, mostly seen from rear three-quarter. All staff tips, fingers, flowing hair, cloak, ribbons and shoes inside frame with padding. Genuine transparent background, clean cutout, opaque painted character interior; no halo, glow, backdrop, vignette, ground, shadow, labels, UI, magic, attack FX or extra limbs. Hands must grip staff naturally; connected shoulder-elbow-wrist-finger chains. Match native127:3: upright back view, both arms stretched open to sides at shoulder height. Left palm open to left; right hand holds small gold cross-ring topped staff slanting up toward upper-right with shaft beside right leg. Long lilac ponytail and purple knotted back strips hang down over olive coat; teal wrapped boots remain planted.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Lilac42Idle-original-r2.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure042-native-oct22-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-65dc17ad-2d0b-4e5f-be5a-a2450eb15a2e.png",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Lilac42Open-original-r1.png",
+        "sha256": "a0a648f85be0bdb3f808732c9ff4a447e4e600bbe2fa4379fbd21c76be464a90",
+        "size": [
+          1024,
+          1536
+        ],
+        "mode": "RGBA",
+        "alpha_extrema": [
+          0,
+          254
+        ],
+        "selection": "selected original RGBA; technically integrated; concentrated human review pending"
+      },
+      {
+        "key": "Lilac42Raise",
+        "args": {
+          "prompt": "Use case: identity-preserve. Asset type: one high-resolution battle sprite. Input1 is the exact character/costume/style identity to preserve; input2 is the original game's action/pose and rear-camera reference. Change only the pose as specified. Same hand-painted1990s fantasy RPG linework, face/hair colors, armor, cloth, staff and boots. ONE complete full body figure facing toward LEFT, mostly seen from rear three-quarter. All staff tips, fingers, flowing hair, cloak, ribbons and shoes inside frame with padding. Genuine transparent background, clean cutout, opaque painted character interior; no halo, glow, backdrop, vignette, ground, shadow, labels, UI, magic, attack FX or extra limbs. Hands must grip staff naturally; connected shoulder-elbow-wrist-finger chains. Match native127:4-5: upright back view, both arms rise above shoulder level, left palm open toward upper-left. Right hand raises the gold cross-ring topped staff almost vertically at right shoulder, head well above hair and shaft down beside body. Olive split coat and knotted purple back strips hang straight, lilac ponytail down back, teal wrapped boots planted.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Lilac42Idle-original-r2.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure042-native-oct22-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-56b3429e-def9-41d8-943a-5a1f8fedeb1f.png",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Lilac42Raise-original-r1.png",
+        "sha256": "140af56db64b3e6ce85b2ebfb619acdb804becc5bbd725d81aa6f7873fe0975d",
+        "size": [
+          1024,
+          1536
+        ],
+        "mode": "RGBA",
+        "alpha_extrema": [
+          0,
+          254
+        ],
+        "selection": "selected original RGBA; technically integrated; concentrated human review pending"
+      },
+      {
+        "key": "Lilac42Thrust",
+        "args": {
+          "prompt": "Use case: identity-preserve. Asset type: one high-resolution battle sprite. Input1 is the exact character/costume/style identity to preserve; input2 is the original game's action/pose and rear-camera reference. Change only the pose as specified. Same hand-painted1990s fantasy RPG linework, face/hair colors, armor, cloth, staff and boots. ONE complete full body figure facing toward LEFT, mostly seen from rear three-quarter. All staff tips, fingers, flowing hair, cloak, ribbons and shoes inside frame with padding. Genuine transparent background, clean cutout, opaque painted character interior; no halo, glow, backdrop, vignette, ground, shadow, labels, UI, magic, attack FX or extra limbs. Hands must grip staff naturally; connected shoulder-elbow-wrist-finger chains. Match native127:6-10: lunge and thrust staff to LEFT with both arms extended at shoulder level, torso leans low left, bent left knee and braced right leg, teal wrapped boots visible. Gold geometric staff head points left with narrow shaft held by both hands. Long pink-lilac ponytail, olive split coat and two purple knotted back strips stream horizontally to RIGHT. Rear three-quarter view, preserving same costume.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Lilac42Idle-original-r2.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure042-native-oct22-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-7851f2c7-c8ef-4192-b611-bda3476b5fef.png",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Lilac42Thrust-original-r1.png",
+        "sha256": "14ba4092121207d7a13786e57346518a47d90b97215504c493c0d226c09deafe",
+        "size": [
+          1536,
+          1024
+        ],
+        "mode": "RGBA",
+        "alpha_extrema": [
+          0,
+          254
+        ],
+        "selection": "selected original RGBA; technically integrated; concentrated human review pending"
+      },
+      {
+        "key": "Blond43Open",
+        "args": {
+          "prompt": "Use case: identity-preserve. Asset type: one high-resolution battle sprite. Input1 is the exact character/costume/style identity to preserve; input2 is the original game's action/pose and rear-camera reference. Change only the pose as specified. Same hand-painted1990s fantasy RPG linework, face/hair colors, armor, cloth, staff and boots. ONE complete full body figure facing toward LEFT, mostly seen from rear three-quarter. All staff tips, fingers, flowing hair, cloak, ribbons and shoes inside frame with padding. Genuine transparent background, clean cutout, opaque painted character interior; no halo, glow, backdrop, vignette, ground, shadow, labels, UI, magic, attack FX or extra limbs. Hands must grip staff naturally; connected shoulder-elbow-wrist-finger chains. Match native130:3: upright mostly rear view, both arms spread at shoulder height, left palm open toward left. Right hand holds small ornate gold cross-ring topped brown staff slanting up to upper-right. Long blond ponytail, rust-red robe, cool gray-green sleeves/shoulders and dark waist cords remain same.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Blond43Idle-original-r2.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure043-native-oct22-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-9f11d09e-0aa2-42fd-8048-f17270576521.png",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Blond43Open-original-r1.png",
+        "sha256": "458d6fa4084e5098300422f3bdb9a427b896f1ad4d9f40ebd2d7349b31e54510",
+        "size": [
+          1024,
+          1536
+        ],
+        "mode": "RGBA",
+        "alpha_extrema": [
+          0,
+          254
+        ],
+        "selection": "selected original RGBA; technically integrated; concentrated human review pending"
+      },
+      {
+        "key": "Blond43Raise",
+        "args": {
+          "prompt": "Use case: identity-preserve. Asset type: one high-resolution battle sprite. Input1 is the exact character/costume/style identity to preserve; input2 is the original game's action/pose and rear-camera reference. Change only the pose as specified. Same hand-painted1990s fantasy RPG linework, face/hair colors, armor, cloth, staff and boots. ONE complete full body figure facing toward LEFT, mostly seen from rear three-quarter. All staff tips, fingers, flowing hair, cloak, ribbons and shoes inside frame with padding. Genuine transparent background, clean cutout, opaque painted character interior; no halo, glow, backdrop, vignette, ground, shadow, labels, UI, magic, attack FX or extra limbs. Hands must grip staff naturally; connected shoulder-elbow-wrist-finger chains. Match native130:4: upright rear view with both arms lifted above shoulder height, left palm open up-left, right hand raises ornate gold cross-ring topped staff almost vertically at upper-right with long thin shaft beside body. Rust-red robe still hangs to feet, long blond ponytail down back, cool gray-green sleeves and armor, dark long waist cords.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Blond43Idle-original-r2.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure043-native-oct22-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-3633a8c1-50d2-4686-b5ef-bbf187aa0915.png",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Blond43Raise-original-r1.png",
+        "sha256": "6421e99a5f6c5c3299ef3202826b67eeaa4d210c354518c698a4f91f66a65c23",
+        "size": [
+          1024,
+          1536
+        ],
+        "mode": "RGBA",
+        "alpha_extrema": [
+          0,
+          254
+        ],
+        "selection": "selected original RGBA; technically integrated; concentrated human review pending"
+      },
+      {
+        "key": "Blond43Thrust",
+        "args": {
+          "prompt": "Use case: identity-preserve. Asset type: one high-resolution battle sprite. Input1 is the exact character/costume/style identity to preserve; input2 is the original game's action/pose and rear-camera reference. Change only the pose as specified. Same hand-painted1990s fantasy RPG linework, face/hair colors, armor, cloth, staff and boots. ONE complete full body figure facing toward LEFT, mostly seen from rear three-quarter. All staff tips, fingers, flowing hair, cloak, ribbons and shoes inside frame with padding. Genuine transparent background, clean cutout, opaque painted character interior; no halo, glow, backdrop, vignette, ground, shadow, labels, UI, magic, attack FX or extra limbs. Hands must grip staff naturally; connected shoulder-elbow-wrist-finger chains. Match native130:5-9: leftward staff thrust with both arms extended toward LEFT at shoulder height, torso leans left, left knee bent forward and right leg braced. Brown staff horizontal, ornate gold ring/cross head points far left. Long blond ponytail and rust-red split robe stream to RIGHT, gray-green armored sleeves and dark waist cords follow action, both dark wrapped boots visible. Rear three-quarter, naturally connected arms.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Blond43Idle-original-r2.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure043-native-oct22-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-ba5512e5-b24c-4ba9-9a08-248a36bd0ac2.png",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Blond43Thrust-original-r1.png",
+        "sha256": "262f9eb09a9b7602efeb71d70b95b1aca2e0852e97da5ba77622c4d30ce22361",
+        "size": [
+          1024,
+          1536
+        ],
+        "mode": "RGBA",
+        "alpha_extrema": [
+          0,
+          254
+        ],
+        "selection": "selected original RGBA; technically integrated; concentrated human review pending"
+      }
+    ],
+    "recipes": {
+      "41": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure041-recipe-oct22-r1.json",
+        "sha256": "330bacdd6af08a33ff97780fe42b5c39241d018c5f17617d5cd82434815bd044"
+      },
+      "42": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure042-recipe-oct22-r1.json",
+        "sha256": "94b1f944cebfa71e77c636138d8d206c52b76734112f7f7486302f557382ac6f"
+      },
+      "43": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure043-recipe-oct22-r1.json",
+        "sha256": "d09f00a2837a0afc43aea0c27c1e4bba1ad20bfe395ec43b7ac2bf16937b7307"
+      }
+    },
+    "recipe_inline": {
+      "41": {
+        "schema_version": 1,
+        "figure": 41,
+        "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+        "sources": {
+          "crimson41idle": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Crimson41Idle-original-r2.png",
+            "sha256": "7fae72f1379de3f4db046dc7b0589c4a0e7ca3b0722bc15f31160ea92a414235",
+            "anchor": [
+              168,
+              12,
+              951,
+              1463
+            ]
+          },
+          "crimson41open": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Crimson41Open-original-r1.png",
+            "sha256": "a01793c5e568a4a99c8d02fa0b5bafaf6bc5cb518b63bac68604123ff2cd54ed",
+            "anchor": [
+              16,
+              31,
+              1013,
+              1490
+            ]
+          },
+          "crimson41raise": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Crimson41Raise-original-r1.png",
+            "sha256": "310f336d21f81da673125cf8bf92d7cbc14739909c0fae255e292dbf514f427a",
+            "anchor": [
+              56,
+              17,
+              1018,
+              1486
+            ]
+          },
+          "crimson41spin": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Crimson41Spin-original-r1.png",
+            "sha256": "8bf9631b43c76b709604e6ea7261f6d9674a34dccd2ea8fa5057701c8363bbc7",
+            "anchor": [
+              10,
+              174,
+              1016,
+              1255
+            ]
+          },
+          "crimson41thrust": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Crimson41Thrust-original-r1.png",
+            "sha256": "5b26bbaae44e631a36cc40a08df498560e2c6e3726ab42aa1e35ca26dff38162",
+            "anchor": [
+              7,
+              221,
+              1024,
+              1127
+            ]
+          }
+        },
+        "resources": {
+          "123": [
+            {
+              "pose": "crimson41idle",
+              "anchor": [
+                0,
+                0,
+                91,
+                136
+              ],
+              "scale_group": "crimson41idle"
+            },
+            {
+              "pose": "crimson41idle",
+              "anchor": [
+                0,
+                0,
+                91,
+                137
+              ],
+              "scale_group": "crimson41idle"
+            },
+            {
+              "pose": "crimson41idle",
+              "anchor": [
+                0,
+                0,
+                91,
+                138
+              ],
+              "scale_group": "crimson41idle"
+            },
+            {
+              "pose": "crimson41idle",
+              "anchor": [
+                0,
+                0,
+                91,
+                137
+              ],
+              "scale_group": "crimson41idle"
+            }
+          ],
+          "124": [
+            {
+              "pose": "crimson41idle",
+              "anchor": [
+                0,
+                0,
+                91,
+                136
+              ],
+              "scale_group": "crimson41idle"
+            },
+            {
+              "pose": "crimson41open",
+              "anchor": [
+                0,
+                0,
+                114,
+                136
+              ],
+              "scale_group": "crimson41open"
+            },
+            {
+              "pose": "crimson41open",
+              "anchor": [
+                0,
+                0,
+                137,
+                136
+              ],
+              "scale_group": "crimson41open"
+            },
+            {
+              "pose": "crimson41open",
+              "anchor": [
+                0,
+                0,
+                152,
+                156
+              ],
+              "scale_group": "crimson41open"
+            },
+            {
+              "pose": "crimson41raise",
+              "anchor": [
+                0,
+                0,
+                166,
+                156
+              ],
+              "scale_group": "crimson41raise"
+            },
+            {
+              "pose": "crimson41spin",
+              "anchor": [
+                0,
+                0,
+                114,
+                130
+              ],
+              "scale_group": "crimson41spin"
+            },
+            {
+              "pose": "crimson41spin",
+              "anchor": [
+                0,
+                0,
+                130,
+                129
+              ],
+              "scale_group": "crimson41spin"
+            },
+            {
+              "pose": "crimson41spin",
+              "anchor": [
+                0,
+                0,
+                142,
+                129
+              ],
+              "scale_group": "crimson41spin"
+            },
+            {
+              "pose": "crimson41spin",
+              "anchor": [
+                0,
+                0,
+                159,
+                129
+              ],
+              "scale_group": "crimson41spin"
+            },
+            {
+              "pose": "crimson41spin",
+              "anchor": [
+                0,
+                0,
+                124,
+                129
+              ],
+              "scale_group": "crimson41spin"
+            },
+            {
+              "pose": "crimson41thrust",
+              "anchor": [
+                0,
+                0,
+                134,
+                136
+              ],
+              "scale_group": "crimson41thrust"
+            },
+            {
+              "pose": "crimson41thrust",
+              "anchor": [
+                0,
+                0,
+                120,
+                136
+              ],
+              "scale_group": "crimson41thrust"
+            },
+            {
+              "pose": "crimson41thrust",
+              "anchor": [
+                0,
+                0,
+                120,
+                136
+              ],
+              "scale_group": "crimson41thrust"
+            },
+            {
+              "pose": "crimson41thrust",
+              "anchor": [
+                0,
+                0,
+                120,
+                136
+              ],
+              "scale_group": "crimson41thrust"
+            },
+            {
+              "pose": "crimson41thrust",
+              "anchor": [
+                0,
+                0,
+                120,
+                136
+              ],
+              "scale_group": "crimson41thrust"
+            },
+            {
+              "pose": "crimson41thrust",
+              "anchor": [
+                0,
+                0,
+                118,
+                136
+              ],
+              "scale_group": "crimson41thrust"
+            }
+          ]
+        }
+      },
+      "42": {
+        "schema_version": 1,
+        "figure": 42,
+        "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+        "sources": {
+          "lilac42idle": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Lilac42Idle-original-r2.png",
+            "sha256": "14cd02c1b6bb5cd93c219151e41cc4bc83f090630a2b356ff97a11fb61e48080",
+            "anchor": [
+              213,
+              18,
+              852,
+              1501
+            ]
+          },
+          "lilac42open": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Lilac42Open-original-r1.png",
+            "sha256": "a0a648f85be0bdb3f808732c9ff4a447e4e600bbe2fa4379fbd21c76be464a90",
+            "anchor": [
+              13,
+              31,
+              1024,
+              1499
+            ]
+          },
+          "lilac42raise": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Lilac42Raise-original-r1.png",
+            "sha256": "140af56db64b3e6ce85b2ebfb619acdb804becc5bbd725d81aa6f7873fe0975d",
+            "anchor": [
+              96,
+              11,
+              942,
+              1519
+            ]
+          },
+          "lilac42thrust": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Lilac42Thrust-original-r1.png",
+            "sha256": "14ba4092121207d7a13786e57346518a47d90b97215504c493c0d226c09deafe",
+            "anchor": [
+              13,
+              13,
+              1524,
+              1003
+            ]
+          }
+        },
+        "resources": {
+          "126": [
+            {
+              "pose": "lilac42idle",
+              "anchor": [
+                0,
+                0,
+                85,
+                133
+              ],
+              "scale_group": "lilac42idle"
+            },
+            {
+              "pose": "lilac42idle",
+              "anchor": [
+                0,
+                0,
+                85,
+                134
+              ],
+              "scale_group": "lilac42idle"
+            },
+            {
+              "pose": "lilac42idle",
+              "anchor": [
+                0,
+                0,
+                85,
+                135
+              ],
+              "scale_group": "lilac42idle"
+            },
+            {
+              "pose": "lilac42idle",
+              "anchor": [
+                0,
+                0,
+                85,
+                134
+              ],
+              "scale_group": "lilac42idle"
+            }
+          ],
+          "127": [
+            {
+              "pose": "lilac42idle",
+              "anchor": [
+                0,
+                0,
+                85,
+                133
+              ],
+              "scale_group": "lilac42idle"
+            },
+            {
+              "pose": "lilac42open",
+              "anchor": [
+                0,
+                0,
+                99,
+                133
+              ],
+              "scale_group": "lilac42open"
+            },
+            {
+              "pose": "lilac42open",
+              "anchor": [
+                0,
+                0,
+                111,
+                139
+              ],
+              "scale_group": "lilac42open"
+            },
+            {
+              "pose": "lilac42open",
+              "anchor": [
+                0,
+                0,
+                114,
+                164
+              ],
+              "scale_group": "lilac42open"
+            },
+            {
+              "pose": "lilac42raise",
+              "anchor": [
+                0,
+                0,
+                106,
+                166
+              ],
+              "scale_group": "lilac42raise"
+            },
+            {
+              "pose": "lilac42raise",
+              "anchor": [
+                0,
+                0,
+                106,
+                167
+              ],
+              "scale_group": "lilac42raise"
+            },
+            {
+              "pose": "lilac42thrust",
+              "anchor": [
+                0,
+                0,
+                137,
+                126
+              ],
+              "scale_group": "lilac42thrust"
+            },
+            {
+              "pose": "lilac42thrust",
+              "anchor": [
+                0,
+                0,
+                136,
+                126
+              ],
+              "scale_group": "lilac42thrust"
+            },
+            {
+              "pose": "lilac42thrust",
+              "anchor": [
+                0,
+                0,
+                136,
+                126
+              ],
+              "scale_group": "lilac42thrust"
+            },
+            {
+              "pose": "lilac42thrust",
+              "anchor": [
+                0,
+                0,
+                136,
+                126
+              ],
+              "scale_group": "lilac42thrust"
+            },
+            {
+              "pose": "lilac42thrust",
+              "anchor": [
+                0,
+                0,
+                136,
+                126
+              ],
+              "scale_group": "lilac42thrust"
+            }
+          ]
+        }
+      },
+      "43": {
+        "schema_version": 1,
+        "figure": 43,
+        "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+        "sources": {
+          "blond43idle": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Blond43Idle-original-r2.png",
+            "sha256": "42c5de408128ebb158960cf8b7900db78345b43ef2b13e09a2a1f365f62dc2a8",
+            "anchor": [
+              171,
+              28,
+              867,
+              1505
+            ]
+          },
+          "blond43open": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Blond43Open-original-r1.png",
+            "sha256": "458d6fa4084e5098300422f3bdb9a427b896f1ad4d9f40ebd2d7349b31e54510",
+            "anchor": [
+              15,
+              44,
+              1020,
+              1490
+            ]
+          },
+          "blond43raise": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Blond43Raise-original-r1.png",
+            "sha256": "6421e99a5f6c5c3299ef3202826b67eeaa4d210c354518c698a4f91f66a65c23",
+            "anchor": [
+              78,
+              11,
+              964,
+              1494
+            ]
+          },
+          "blond43thrust": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Blond43Thrust-original-r1.png",
+            "sha256": "262f9eb09a9b7602efeb71d70b95b1aca2e0852e97da5ba77622c4d30ce22361",
+            "anchor": [
+              0,
+              225,
+              1024,
+              1289
+            ]
+          }
+        },
+        "resources": {
+          "129": [
+            {
+              "pose": "blond43idle",
+              "anchor": [
+                0,
+                0,
+                78,
+                135
+              ],
+              "scale_group": "blond43idle"
+            },
+            {
+              "pose": "blond43idle",
+              "anchor": [
+                0,
+                0,
+                78,
+                136
+              ],
+              "scale_group": "blond43idle"
+            },
+            {
+              "pose": "blond43idle",
+              "anchor": [
+                0,
+                0,
+                78,
+                137
+              ],
+              "scale_group": "blond43idle"
+            },
+            {
+              "pose": "blond43idle",
+              "anchor": [
+                0,
+                0,
+                78,
+                136
+              ],
+              "scale_group": "blond43idle"
+            }
+          ],
+          "130": [
+            {
+              "pose": "blond43idle",
+              "anchor": [
+                0,
+                0,
+                78,
+                135
+              ],
+              "scale_group": "blond43idle"
+            },
+            {
+              "pose": "blond43open",
+              "anchor": [
+                0,
+                0,
+                103,
+                135
+              ],
+              "scale_group": "blond43open"
+            },
+            {
+              "pose": "blond43open",
+              "anchor": [
+                0,
+                0,
+                114,
+                135
+              ],
+              "scale_group": "blond43open"
+            },
+            {
+              "pose": "blond43open",
+              "anchor": [
+                0,
+                0,
+                130,
+                146
+              ],
+              "scale_group": "blond43open"
+            },
+            {
+              "pose": "blond43raise",
+              "anchor": [
+                0,
+                0,
+                130,
+                160
+              ],
+              "scale_group": "blond43raise"
+            },
+            {
+              "pose": "blond43thrust",
+              "anchor": [
+                0,
+                0,
+                155,
+                128
+              ],
+              "scale_group": "blond43thrust"
+            },
+            {
+              "pose": "blond43thrust",
+              "anchor": [
+                0,
+                0,
+                150,
+                128
+              ],
+              "scale_group": "blond43thrust"
+            },
+            {
+              "pose": "blond43thrust",
+              "anchor": [
+                0,
+                0,
+                151,
+                128
+              ],
+              "scale_group": "blond43thrust"
+            },
+            {
+              "pose": "blond43thrust",
+              "anchor": [
+                0,
+                0,
+                151,
+                128
+              ],
+              "scale_group": "blond43thrust"
+            },
+            {
+              "pose": "blond43thrust",
+              "anchor": [
+                0,
+                0,
+                154,
+                128
+              ],
+              "scale_group": "blond43thrust"
+            }
+          ]
+        }
+      }
+    },
+    "art_approximations": [
+      "Thirteen raw key poses drive49 native frames: breathing, gradual arm lifts, hair/cape/ribbon settling share poses and native envelopes; no49 independently drawn frames or original RGB parity claim.",
+      "Whole-subject native envelopes and source alpha192 bounds plus4 sampling pixels anchor contain-fit. Cloak/shoulder/staff/boot proportions, staffhead ornaments and hand contact may differ; phase fit values remain in compiled receipts.",
+      "41 has flowing bright crimson cape and wrist ribbons;42 knotted back strips and gold staff geometry;43 gold robe trim and draped dark cords are interpreted painted detail. No story identity inferred.",
+      "Raw sources may peak254 and keep small semitransparent edge/core values; exact RGBA preserved. Standard LANCZOS final PNG must still have0 and255, all source/GPU numeric contracts unchanged.",
+      "Raised-staff angles and wide41 turning cape use shared key poses. Normal player, joint/grip/costume and concentrated human art review pending until all HD integrated.",
+      "Raw source border alpha192 contact, top/bottom/left/right: {\"Lilac42Open\": [0, 0, 0, 3], \"Blond43Thrust\": [0, 0, 0, 49]}. Small staff/cloth tips may touch source edges; retained for concentrated human review, not hidden by zero compiler clipping claim."
+    ],
+    "normal_player": "pending until all HD integrated",
+    "human_review": "pending until all HD integrated",
+    "full_battle_hd_complete": false,
+    "rules_and_save_changed": false,
+    "recordings_created": false,
+    "rejected_generation": [
+      {
+        "key": "Crimson41Idle",
+        "args": {
+          "prompt": "Use case: stylized-concept. Asset type: high-resolution production candidate battle sprite for a faithful1995 Taiwanese tactical RPG remake. Input image is a native costume, silhouette and camera REFERENCE only. FIRST ROW shows requested idle pose. Output ONE isolated whole body person, not a sheet. Hand-painted1990s Japanese fantasy RPG illustration with crisp dark outlines and restrained cloth/metal shading, in the established remake style. Rear three-quarter view looking toward LEFT, viewed mostly from behind. Entire hair, staff, garment hem and shoes inside frame with generous padding. Opaque subject interior, genuinely transparent background. No ground, shadow, text, labels, border, UI, extra figures, magic or attack FX. Preserve native costume/palette rather than invent additional ornaments. Tall red-haired staff wielder with bright crimson high ponytail down upper back, long floor-length vivid crimson cape hiding legs, round layered gold shoulder pauldrons with small scrollwork, dark purple fitted sleeves and narrow long purple ribbons hanging from wrists, gold bracelets, red boots just visible at cape hem. Right hand holds slender dark wooden staff vertically beside right shoulder with a small curved ornate gold cap. Arms relaxed low at sides, back straight, cape narrow and draped. Do not turn the back view into a portrait.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure041-native-oct22-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-d3b9819a-b893-4fa8-8c7d-5177eef89559.png",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Crimson41Idle-original-r1.png",
+        "sha256": "fd5f88f8946202770aa1217c3ca4f5ae81c59cd061ac5ba7f119bac39f56c518",
+        "size": [
+          1024,
+          1536
+        ],
+        "mode": "RGBA",
+        "alpha_extrema": [
+          0,
+          254
+        ],
+        "selection": "unselected alternate, not proven invalid compiler input; alpha254 alone meets existing source>=250 contract; excluded from private allow-list"
+      },
+      {
+        "key": "Lilac42Idle",
+        "args": {
+          "prompt": "Use case: stylized-concept. Asset type: high-resolution production candidate battle sprite for a faithful1995 Taiwanese tactical RPG remake. Input image is a native costume, silhouette and camera REFERENCE only. FIRST ROW shows requested idle pose. Output ONE isolated whole body person, not a sheet. Hand-painted1990s Japanese fantasy RPG illustration with crisp dark outlines and restrained cloth/metal shading, in the established remake style. Rear three-quarter view looking toward LEFT, viewed mostly from behind. Entire hair, staff, garment hem and shoes inside frame with generous padding. Opaque subject interior, genuinely transparent background. No ground, shadow, text, labels, border, UI, extra figures, magic or attack FX. Preserve native costume/palette rather than invent additional ornaments. Slim athletic staff wielder with very long pink-lilac high ponytail reaching lower back, dark teal short sleeves and shoulder padding, gold bracelets, olive-khaki sleeveless long coat split into two hanging panels below knees, long purple segmented draped sash strips down back, short teal garment visible at side and dark teal wrapped knee-high boots with olive shoes. Right hand holds a slender dark staff lowered beside right leg, with a small gold geometric four-point ring/cross head. Left bare forearm relaxed at side. Upright narrow stance, both feet planted.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure042-native-oct22-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-c567f883-90ed-443e-aa80-a7bcfa9597f4.png",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Lilac42Idle-original-r1.png",
+        "sha256": "f7959100d64d5411bae990f001cd1a05eb2b5cb43a8a8d5ed926fc2f31534bdc",
+        "size": [
+          1024,
+          1536
+        ],
+        "mode": "RGBA",
+        "alpha_extrema": [
+          0,
+          254
+        ],
+        "selection": "unselected alternate, not proven invalid compiler input; alpha254 alone meets existing source>=250 contract; excluded from private allow-list"
+      },
+      {
+        "key": "Blond43Idle",
+        "args": {
+          "prompt": "Use case: stylized-concept. Asset type: high-resolution production candidate battle sprite for a faithful1995 Taiwanese tactical RPG remake. Input image is a native costume, silhouette and camera REFERENCE only. FIRST ROW shows requested idle pose. Output ONE isolated whole body person, not a sheet. Hand-painted1990s Japanese fantasy RPG illustration with crisp dark outlines and restrained cloth/metal shading, in the established remake style. Rear three-quarter view looking toward LEFT, viewed mostly from behind. Entire hair, staff, garment hem and shoes inside frame with generous padding. Opaque subject interior, genuinely transparent background. No ground, shadow, text, labels, border, UI, extra figures, magic or attack FX. Preserve native costume/palette rather than invent additional ornaments. Tall blond staff wielder, very long pale-gold high ponytail reaching mid-back, dark rust-red floor-length robe and vest with split hem, cool muted gray-green angular shoulder pauldrons and loose gray-green long sleeves, dark belt and several long dark cords draped down back from waist, dark wrapped boots. Right hand holds a slender brown staff vertical beside right shoulder; its ornate gold openwork ring with pointed cross-finials is small and readable. Left hand low, upright narrow stance with two feet visible at hem. Keep native restrained costume, no huge fantasy horns.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure043-native-oct22-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-c55c202d-bd1f-4e20-a657-dfad1ddc11e8.png",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Blond43Idle-original-r1.png",
+        "sha256": "195a7beb965972c855abe666dcf7877b0038d75c195e7be13cf27c7faf2c64bd",
+        "size": [
+          1024,
+          1536
+        ],
+        "mode": "RGBA",
+        "alpha_extrema": [
+          0,
+          254
+        ],
+        "selection": "unselected alternate, not proven invalid compiler input; alpha254 alone meets existing source>=250 contract; excluded from private allow-list"
+      },
+      {
+        "key": "Lilac42Idle",
+        "args": {
+          "prompt": "Use case: stylized-concept. Asset type: high-resolution production candidate battle sprite for a faithful1995 Taiwanese tactical RPG remake. Input image is a native costume, silhouette and camera REFERENCE only. FIRST ROW shows requested idle pose. Output ONE isolated whole body person, not a sheet. Hand-painted1990s Japanese fantasy RPG illustration with crisp dark outlines and restrained cloth/metal shading, in the established remake style. Rear three-quarter view looking toward LEFT, viewed mostly from behind. Entire hair, staff, garment hem and shoes inside frame with generous padding. Opaque subject interior, genuinely transparent background. No ground, shadow, text, labels, border, UI, extra figures, magic or attack FX. Preserve native costume/palette rather than invent additional ornaments. Slim athletic staff wielder with very long pink-lilac high ponytail reaching lower back, dark teal short sleeves and shoulder padding, gold bracelets, olive-khaki sleeveless long coat split into two hanging panels below knees, long purple segmented draped sash strips down back, short teal garment visible at side and dark teal wrapped knee-high boots with olive shoes. Right hand holds a slender dark staff lowered beside right leg, with a small gold geometric four-point ring/cross head. Left bare forearm relaxed at side. Upright narrow stance, both feet planted. Image1 is the only costume/pose reference. Image2 is a STYLE AND CLEAN CUTOUT reference only: match its opaque painted silhouette, flat controlled cel shading and lack of halo. Do not copy image2's hood, colors or pose. Repaint a fresh clean standalone sprite. No cinematic lighting, bloom, fog, colored backdrop, vignette or visible pixels outside the silhouette. The sprite interior must be fully opaque255 and the outside must be transparent0.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure042-native-oct22-r1.png",
+            "/home/anr2/cht/fd2/remake/generated-assets/modern-theme-prototypes/figure-029-idle-battle-hd6-master-v1.png"
+          ],
+          "transparent_background": true
+        },
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-b606380e-dd42-4b3c-8de6-f472e1b18d5a.png",
+        "revision": 3,
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-Lilac42Idle-original-r3.png",
+        "sha256": "9868bcb36568d675fb182596c8ea14492a967f2d1b973ae5724114a9f1ac630b",
+        "size": [
+          1024,
+          1536
+        ],
+        "mode": "RGBA",
+        "alpha_extrema": [
+          0,
+          254
+        ],
+        "selection": "unselected alternate, not proven invalid compiler input; alpha254 alone meets existing source>=250 contract; excluded from private allow-list"
+      }
+    ],
+    "source_alpha_correction": "Correction: source0..254 is permitted by existing compiler source>=250 contract. Initial rejection inferred finalalpha from rawalpha and was overstrict, already warned by existing layered-alpha lesson. Exact existing LANCZOS dry run yields0..255 with1934-2593 opaque255 points for all seven attempted idle files. R2 idles selected for costume consistency; R1 and one R3 are superseded variants, not proven invalid compiler input. No alpha/threshold changes or added layers to force opacity. Full candidate/GPU gates still required.",
+    "preparation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party41-43-preparation-oct22-r1.json",
+      "sha256": "9376e890bc900bd51d6148a61dd73cb92608b033ae114de239329fcc9d9288e9"
+    },
+    "evidence_review": "All13 selected original RGBA images and three native references viewed. Fixed49 descriptors, markers and zeros checked. Thirteen source anchors and49 native envelopes bounded; no game/format/rule/save/ordinary-caller change. Existing schema1 compiler and physical presenter only.",
+    "raw_source_edges": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-source-edge-audit-oct22-r1.json",
+      "sha256": "34097780a8445ad74e068580fe90b5ed949ae7aaf97f0ccdd443de4c104db5f1"
+    },
+    "package_stage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-package-stage-oct22-r1.json",
+      "sha256": "e5a45eda5c5d564164a65b586bd341eec91c46cd1123c8cd152a55a1057ea740"
+    },
+    "checks": {
+      "party4143-source-41-candidate-oct22-r1": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-source-41-candidate-oct22-r1.memory.json",
+        "sha256": "bf15a7bbb4c6f1e83bacc3806521eb46a563c99a37d4bbef7104b1b24e541564"
+      },
+      "party4143-source-41-candidate-oct22-r1-log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-source-41-candidate-oct22-r1.log",
+        "sha256": "b05d0bacc5de6b7d2eeafb65edffb0bbf3e3405ace6dd99f66cd3be6c52348ed"
+      },
+      "party4143-source-41-candidate-oct22-r1-receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-source-41-candidate-oct22-r1-capture/receipt.json",
+        "sha256": "e78bd735bb0146cf7663e2b80a64c8063f8efb76f136276d1510c2acc6f76926"
+      },
+      "party4143-source-41-runtime-oct22-r1": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-source-41-runtime-oct22-r1.memory.json",
+        "sha256": "e373759fab0645edd3b60cb2b9171d86cd8dde599d040ba8206e43614e9057f0"
+      },
+      "party4143-source-41-runtime-oct22-r1-log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-source-41-runtime-oct22-r1.log",
+        "sha256": "82954d8da341e29278c0e70f8badf57f9f1ed3f2253edbf9a34316cbb1ac64b4"
+      },
+      "party4143-source-41-runtime-oct22-r1-receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-source-41-runtime-oct22-r1-capture/receipt.json",
+        "sha256": "e78bd735bb0146cf7663e2b80a64c8063f8efb76f136276d1510c2acc6f76926"
+      },
+      "party4143-physical-41-candidate-oct22-r1": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-physical-41-candidate-oct22-r1.memory.json",
+        "sha256": "3af4c2ed1f3e92e4753e6b5eb6f2f16a63bc57e83384921850701a9d94b4b71d"
+      },
+      "party4143-physical-41-candidate-oct22-r1-log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-physical-41-candidate-oct22-r1.log",
+        "sha256": "fe71286b6b6fc3151770bd2213ae5744a6d3cee5aac0a4eae17fbe55cda1b766"
+      },
+      "party4143-physical-41-candidate-oct22-r1-receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-physical-41-candidate-oct22-r1-capture/receipt.json",
+        "sha256": "d671453f014fc4fad50d3c831d634b125e86411d70a34a0aeddf315020493b47"
+      },
+      "party4143-physical-42-candidate-oct22-r1": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-physical-42-candidate-oct22-r1.memory.json",
+        "sha256": "0e71e88725971362e4ec4227fb1f9668e560e2191ff827ebdfd4fabc54e5b4bc"
+      },
+      "party4143-physical-42-candidate-oct22-r1-log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-physical-42-candidate-oct22-r1.log",
+        "sha256": "e7fa1a3b6051e79d8559e5725c92039e68269ee3f65efe67988e5aebc10be70b"
+      },
+      "party4143-physical-42-candidate-oct22-r1-receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-physical-42-candidate-oct22-r1-capture/receipt.json",
+        "sha256": "88d777286201b59ded5f4c7707f45dc72d3fc959642f6110af90db8969512227"
+      },
+      "party4143-physical-43-candidate-oct22-r1": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-physical-43-candidate-oct22-r1.memory.json",
+        "sha256": "18925e103264a660da2a6d06005587d11bd19c603ec12280956ea9bcf637604a"
+      },
+      "party4143-physical-43-candidate-oct22-r1-log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-physical-43-candidate-oct22-r1.log",
+        "sha256": "449c821ab7be79cc3bf6442a911620fec951a0db8f21f8bd471e0b678353e201"
+      },
+      "party4143-physical-43-candidate-oct22-r1-receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-physical-43-candidate-oct22-r1-capture/receipt.json",
+        "sha256": "8d778495a66af41239689ef5cdf830057b7dd34440e4ba8ecee0e05a7b45676e"
+      },
+      "party4143-assets-41-formal-oct22-r1": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-assets-41-formal-oct22-r1.memory.json",
+        "sha256": "b1eaae8483af9ac7816b8450525c89a3ea8e070755e6d31fa4627a7536ee5955"
+      },
+      "party4143-assets-41-formal-oct22-r1-log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-assets-41-formal-oct22-r1.log",
+        "sha256": "3f3b5675732748f690e5d1cf59a4da7ef8fdd09da9cffad6f1fdb465523b8389"
+      },
+      "party4143-assets-42-formal-oct22-r1": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-assets-42-formal-oct22-r1.memory.json",
+        "sha256": "bbbd37f1fdda3eb21e0937bef688efc17a3311c82f1beba288cbbb1b13972b40"
+      },
+      "party4143-assets-42-formal-oct22-r1-log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-assets-42-formal-oct22-r1.log",
+        "sha256": "abe90274d8e7388b3dcf9694518f01cecf3980a86a7db8e27ab89e39230007df"
+      },
+      "party4143-assets-43-formal-oct22-r1": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-assets-43-formal-oct22-r1.memory.json",
+        "sha256": "ce2ed970efb634eb732c15fea43831acdb3c385374baab953c455f7bd23eeccb"
+      },
+      "party4143-assets-43-formal-oct22-r1-log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-assets-43-formal-oct22-r1.log",
+        "sha256": "1bb134d5966ba22db132661d1c24ee09540a8d84c43c68ba8b4deffba881c1ea"
+      },
+      "party4143-assets-41-runtime-oct22-r1": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-assets-41-runtime-oct22-r1.memory.json",
+        "sha256": "011de84a6a10125554cb21fb6a150f2e709a914a4fb4f611348a971bcf8ac260"
+      },
+      "party4143-assets-41-runtime-oct22-r1-log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-assets-41-runtime-oct22-r1.log",
+        "sha256": "75bded195e85ea55d43db039aeb109e41860ae3efd7a064ce1a30a497ad8d333"
+      },
+      "party4143-assets-42-runtime-oct22-r1": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-assets-42-runtime-oct22-r1.memory.json",
+        "sha256": "c62f805c543758340e6f59ee6ad7465c42cc34f663a283588ebb732511d8536b"
+      },
+      "party4143-assets-42-runtime-oct22-r1-log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-assets-42-runtime-oct22-r1.log",
+        "sha256": "38c5455c2c68bfe44a465f6f700c5d3fbf5c364a6359220f385e393f7479d9dc"
+      },
+      "party4143-assets-43-runtime-oct22-r1": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-assets-43-runtime-oct22-r1.memory.json",
+        "sha256": "3753411eaa43e6bf27dc2a688cab4702168685f4ca91b057d31629acaf0095c5"
+      },
+      "party4143-assets-43-runtime-oct22-r1-log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-assets-43-runtime-oct22-r1.log",
+        "sha256": "4d839b3fefd0ef9293f9a9d90c2d79f09f21f87f1087b95da15d5d57d48c2291"
+      },
+      "party41-compiler-guards-oct22-r2/guards.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party41-compiler-guards-oct22-r2/guards.json",
+        "sha256": "e9b7328aecbfdbd35042c633b579272923a55ac1e929e06114110ff4cccf69f4"
+      },
+      "party41-physical-gpu-cores-oct22-r1.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party41-physical-gpu-cores-oct22-r1.json",
+        "sha256": "0488de6f9b6f9d13f34f89fe3bcab4759665747dadfad46240ab2ac8b8709927"
+      },
+      "party41-candidate-oct22-r1/compiled.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party41-candidate-oct22-r1/compiled.json",
+        "sha256": "0f431b31229482734a15906a870c6533defe509bfddc2b290b83cddd5ba0d5d4"
+      },
+      "party42-compiler-guards-oct22-r2/guards.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party42-compiler-guards-oct22-r2/guards.json",
+        "sha256": "a814c1a95c6d1cee148bf403f16a308bfbc8ab34eac675cae1371b53e7fdfe3b"
+      },
+      "party42-physical-gpu-cores-oct22-r1.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party42-physical-gpu-cores-oct22-r1.json",
+        "sha256": "943ca25566765ea87e6ad1ea8ffc207d2e225608239f3d3cc6f9353ae20d3e42"
+      },
+      "party42-candidate-oct22-r1/compiled.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party42-candidate-oct22-r1/compiled.json",
+        "sha256": "e4f148f444c401fe5ee330065ab4413f47ba20755120ddd99dcf8bdc7b6c2b61"
+      },
+      "party43-compiler-guards-oct22-r2/guards.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party43-compiler-guards-oct22-r2/guards.json",
+        "sha256": "bb8f1adca3459b728495e2fc47269123ca580efbd92c85d3eaa8744664abe17d"
+      },
+      "party43-physical-gpu-cores-oct22-r1.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party43-physical-gpu-cores-oct22-r1.json",
+        "sha256": "44fb8d3b782cbc57e5bcd183df521c6e161aedea9c92fc7ea232afe7e954cd6a"
+      },
+      "party43-candidate-oct22-r1/compiled.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party43-candidate-oct22-r1/compiled.json",
+        "sha256": "2e385bbea7d5ef019fcb0bca892310e78517717b6bcbac641046318c30db4200"
+      },
+      "party38-compiler-guards-oct22-r2/guards.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party38-compiler-guards-oct22-r2/guards.json",
+        "sha256": "d5c12bdc0252fb0dcb814bed27dc87853381435ea3dd0b668144d23e7664aa59"
+      },
+      "party4143-zero-headers-oct22-r1.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-zero-headers-oct22-r1.json",
+        "sha256": "2938a56d55829781e57278d4656931b8d78304ce011abf8c42f7fc7cd026af74"
+      },
+      "party4143-readme-overview-oct22-r1.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-readme-overview-oct22-r1.json",
+        "sha256": "54a011c37d0de54ba04a9bff6b39e7d88ed2b2e1c3c4c31d0b950162c91d8631"
+      },
+      "party4143-formal-registration-oct22-r1.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-formal-registration-oct22-r1.json",
+        "sha256": "8a0be7ed04625435305b2e32e070984fb0810bd3249dd7a2ef4fb34c2e934b8f"
+      },
+      "party4143-private-delivery-oct22-r1.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-private-delivery-oct22-r1.json",
+        "sha256": "bcb3d0ab987fce4be907ff61f3892a5858cb50d517267a469cbd67cb037d62e0"
+      },
+      "party4143-formal-coverage-oct22-r1.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-formal-coverage-oct22-r1.json",
+        "sha256": "f5158747c3c22d7596c73cb1670edaabf0dd574b56008e1676bd60c9a5a8e049"
+      }
+    },
+    "memory": {
+      "party4143-source-41-candidate-oct22-r1": {
+        "seconds": 47.066,
+        "peak_bytes": 988336128,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "party4143-source-41-runtime-oct22-r1": {
+        "seconds": 41.571,
+        "peak_bytes": 980041728,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "party4143-physical-41-candidate-oct22-r1": {
+        "seconds": 53.102,
+        "peak_bytes": 988336128,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "party4143-physical-42-candidate-oct22-r1": {
+        "seconds": 52.614,
+        "peak_bytes": 988336128,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "party4143-physical-43-candidate-oct22-r1": {
+        "seconds": 53.121,
+        "peak_bytes": 1183072256,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "party4143-assets-41-formal-oct22-r1": {
+        "seconds": 115.168,
+        "peak_bytes": 980041728,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "party4143-assets-42-formal-oct22-r1": {
+        "seconds": 115.177,
+        "peak_bytes": 980041728,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "party4143-assets-43-formal-oct22-r1": {
+        "seconds": 115.161,
+        "peak_bytes": 980041728,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "party4143-assets-41-runtime-oct22-r1": {
+        "seconds": 115.676,
+        "peak_bytes": 980041728,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "party4143-assets-42-runtime-oct22-r1": {
+        "seconds": 116.678,
+        "peak_bytes": 980041728,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "party4143-assets-43-runtime-oct22-r1": {
+        "seconds": 115.169,
+        "peak_bytes": 980041728,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      }
+    },
+    "formal_catalog": {
+      "file": "remake/assets/themes/modern/catalog.json",
+      "sha256": "885e59123d3cd8905116099286f4a9530d7117d23029aa1dde743ea3143c50d3"
+    },
+    "staged_formal_catalog": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-staged-formal-catalog-oct22-r1.json",
+      "sha256": "885e59123d3cd8905116099286f4a9530d7117d23029aa1dde743ea3143c50d3"
+    },
+    "formal_coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-formal-coverage-oct22-r1.json",
+      "sha256": "f5158747c3c22d7596c73cb1670edaabf0dd574b56008e1676bd60c9a5a8e049"
+    },
+    "readme_overview": {
+      "file": "docs/figures/hd-staff-fighters-battle.png",
+      "sha256": "fa812b661ee5d77d771de24133c46d3ee17b076cd9c2bc7f62b07b9d4bf10c1a",
+      "size": [
+        1920,
+        400
+      ],
+      "sources": [
+        {
+          "figure": 41,
+          "key": "124-10",
+          "phase": "body",
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-physical-41-candidate-oct22-r1-capture/124-10.png",
+          "sha256": "8a2b054d534f215c529afaaccb006a45bcd64527bd7a8e64173538b66e88aba4",
+          "destination": [
+            0,
+            0,
+            640,
+            400
+          ]
+        },
+        {
+          "figure": 42,
+          "key": "127-07",
+          "phase": "body",
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-physical-42-candidate-oct22-r1-capture/127-07.png",
+          "sha256": "a91b1d038eec727416be5f1b36c88a281b391cd601e2e88b0a847a73f96e56ab",
+          "destination": [
+            640,
+            0,
+            1280,
+            400
+          ]
+        },
+        {
+          "figure": 43,
+          "key": "130-05",
+          "phase": "body",
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-physical-43-candidate-oct22-r1-capture/130-05.png",
+          "sha256": "98380998cadf27e6cf772ec654ecaec91422619d8a33bced1b5fef883b5148e8",
+          "destination": [
+            1280,
+            0,
+            1920,
+            400
+          ]
+        }
+      ],
+      "resampling": "Pillow11.3.0 LANCZOS; actual1920 GPU to640, three columns, no painting edits",
+      "scope": "Forced attack/counter fixture screenshots only; not normal player or original RGB/frame parity."
+    },
+    "package_validation_inputs": {
+      "full_pack": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party43-candidate-oct22-r1/pack",
+      "runtime_pack": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party41-43-runtime-only-oct22-r1",
+      "catalog": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party4143-staged-formal-catalog-oct22-r1.json",
+        "sha256": "885e59123d3cd8905116099286f4a9530d7117d23029aa1dde743ea3143c50d3"
+      },
+      "promotion": "Before registration both packages used staged formal catalog; registered bytes equal stage. Registration/delivery prove identical filenames and PNG bytes, not a claim of testing different inputs."
+    },
+    "coverage": {
+      "new_resources": 6,
+      "new_frames": 49,
+      "source_gpu_per_package": 49,
+      "physical_source_shots": 49,
+      "nonempty_body_core_frames": 49,
+      "compiler_guard_cases": 63,
+      "legacy_layered_guard_cases": 21,
+      "go_commands": 11,
+      "unique_current_counts": "docs/knowledge-base/58-fd2-exe-re-coverage.md"
+    },
+    "scope": "Three native common-background forced physical fixtures and all49 complete source GPU worlds; normal player/human pending until all HD integrated. No new original RGB/frame parity, PLAYER-E2 or cross-platform acceptance. No production Go change; b4c298d1 full Go is historical, not rerun this batch.",
+    "compiler_guard_correction": "The enabled --layered option permits but does not require list assignments. Old missing-flag guard incorrectly expected plain assignments to fail. It now wraps one assignment as an actual layer list before removing flag. Missing-final-core also accepts a plain baseline by replacing first assignment. Current three plain recipes and prior38 layered recipe all21 guards pass. Preserved initial tool failure; no compiler/runtime/threshold change.",
+    "tools": {
+      "tools/build_fd2_character_battle_hd.py": {
+        "file": "tools/build_fd2_character_battle_hd.py",
+        "sha256": "27337d5305ec639353d63bb437890883bf546bb8803660d1d031ba093a6c6083"
+      },
+      "tools/test_fd2_character_battle_hd.py": {
+        "file": "tools/test_fd2_character_battle_hd.py",
+        "sha256": "dc788dbb21a8893bae49a8ee68815ac6b17dd1f9065734e1a5b6f43c3da6ab90"
+      },
+      "tools/verify_fd2_character_battle_gpu.py": {
+        "file": "tools/verify_fd2_character_battle_gpu.py",
+        "sha256": "818c7000e7c4f990b822e74d6b605ac133f47b1f99de33517ed05424455776e1"
+      },
+      "tools/sync_modern_theme_private.py": {
+        "file": "tools/sync_modern_theme_private.py",
+        "sha256": "b4ee0f261eae3d24d571437cd161a11060fb027c4a0925975051fc3e8272cc82"
+      },
+      "tools/audit_fd2_battle_hd_coverage.py": {
+        "file": "tools/audit_fd2_battle_hd_coverage.py",
+        "sha256": "a1661e1e20a8bf6b33c5f6f51ddcaf31d4b12ea3f7fccfd2dcd50c11035d92d8"
+      },
+      "tools/fd2_go_test_memory_probe.py": {
+        "file": "tools/fd2_go_test_memory_probe.py",
+        "sha256": "8e7c9c55b85aa72a5026b944233b94f7c0787f51b3f5ebb178ed54cc333e40f2"
+      },
+      "remake/cmd/fd2/modern_hd_ordinary_material_gpu_test.go": {
+        "file": "remake/cmd/fd2/modern_hd_ordinary_material_gpu_test.go",
+        "sha256": "663ac5760710f6aaba3dc989e8191b3297aeb16ea1069580b5660d421fd303e4"
+      },
+      "remake/cmd/fd2/modern_hd_battle_lifecycle_test.go": {
+        "file": "remake/cmd/fd2/modern_hd_battle_lifecycle_test.go",
+        "sha256": "7991f7b642c8e09e2852149c48d0fe5000322cdecfcb0fc9bbaab8a4c47cff16"
+      }
+    },
+    "toolchain": {
+      "go_image": "fd2-go-test-local:latest",
+      "go_image_sha256": "e4a805c52a3ad5d8c22cf23f2bcf51c6924e5ad6b99554f1b02761903c725433",
+      "go": "1.22.12",
+      "go_container": "8GB/4CPU/512pids/network none/UID:GID1000:1000",
+      "assets_image": "fd2-assets-local:20260829-sfx",
+      "assets_image_sha256": "e59237a31d4b5f7a62c59ac37b780bd93f17c99fda97be8f5ca0c53978b878bc",
+      "python_pillow": "3.12.15/11.3.0",
+      "memory_note": "memory.peak is cumulative cgroup lifetime upper bound across sequential commands sharing a container."
+    },
+    "reproduce": [
+      "Restore521 base catalog from636773e9 and fixed original pack/inventory. Restore13 selected original RGBA from private allow-list by SHA. Preserve original alpha, including0..254; four unused variants excluded.",
+      "Write recipe_inline as indent2 UTF-8 JSON plus newline and verify SHA. In assets Docker run build_fd2_character_battle_hd.py --pack /original --inventory <fixed> --recipe <41/42/43> --base-catalog <previous> --out <fresh> --layered in order. Require49 frames, final0/255 and zero high-coverage clipping;125/128/131 remain pinned zero headers.",
+      "Run test_fd2_character_battle_hd.py --recipe --baseline <candidate>/compiled.json --pack /original --inventory <fixed> --out <fresh>;21 guard cases each. Run same current guard tool against prior38 recipe/candidate,21 legacy cases. Missing flag test introduces an actual layer list; source>=250/layer>=250/final255 gates unchanged.",
+      "In8GB/4CPU Go Docker set original envs=/original, persistent repository GOCACHE and HOME=/tmp/fd2-home. Each RunGame test is a dedicated process via fd2_go_test_memory_probe.py --timeout550 -- with-xvfb go test ./cmd/fd2 -count=1 -timeout=500s -run ^<test>$ -v.",
+      "Set FD2_HD_STAFF_GPU=1 plus FD2_TEST_MODERN_EFFECT_CATALOG/PACK/OUT and run TestModernHDStaffAllFramesGPU for candidate and runtime-only;49 complete worlds each versus independent CPU Over within one RGBA unit.",
+      "For41/42/43 set FD2_HD_BATTLE_LIFECYCLE_GPU=1 FD2_HD_BATTLE_REAL=1 FD2_TEST_MODERN_BATTLE_FIGURE plus CATALOG/PACK and FD2_TEST_HD_BATTLE_OUT; run TestModernHDBattleRuntimeGPU. All20/15/14 source captures, three F2 phases,64/65 DAC, HP/RNG and one continuation.",
+      "Run verify_fd2_character_battle_gpu.py --figure <f> --core-profile opaque --sample-group fixture --proven-occlusion --original-pack /original --inventory <fixed> --catalog <candidate> --source <pack> --receipt <physical> --report <fresh>;20/15/14 body cores keep minimum1000 visible points.",
+      "Before registration stage intended formal catalog preserving521 base entries/private_root and append six candidate entries, no source aliases. Build runtime-only via sync_modern_theme_private.py --runtime-only. For both full candidate pack and runtime-only and all41/42/43 run ^(TestModernHDBattleAssetsRealCandidate|TestNativePhysicalHDPreflightStopsBeforeSettlement)$, six commands, noSKIP with player/mode11 children; total11 Go commands.",
+      "After all checks copy62 allow-listed files and exact staged catalog into stable formal root, validate and prove old4996 hashes unchanged. Sync private via sync_modern_theme_private.py. Verify all5058/4452 files/SHA/UID,13 originals and exclusion of four variants. Independent private commit/remote check without publishing private git identity.",
+      "Run audit_fd2_battle_hd_coverage.py --inventory <fixed> --original-pack /original --catalog <formal> --source <formal pack> --report <fresh>. Does not infer caller/normal-player reachability; resource408 remains blocked."
+    ],
     "private_remote_verification": {
       "date": "2026-10-22",
       "pushed": true,

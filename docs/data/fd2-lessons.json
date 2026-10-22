@@ -3337,7 +3337,7 @@
       "date": "2026-10-20",
       "area": "HD資產編製",
       "rule": "tools/build_fd2_character_battle_hd.py分開驗母稿、中間圖層與最終PNG的alpha契約；分層中間層沿既有max>=250，最終原非空圖在建立out前仍須0／255。保存生成alpha，不為過中間檢查而重畫或量化。 原母稿max254不能推定重採樣後仍254；先用同一編製器及配方實測，不量化alpha或用額外材質補值。",
-      "why": "洛娜兩份碎光maxA254，已符合既有母稿規則；中間層卻用255擋下。最終合成沿身體保有255，新缺最終核心反例與舊33張位元組回歸通過。 2026-10-22藍光V2原alpha254，依既有LANCZOS公式及完整編製，八張飛矢均有255核心；金屬箭尖提案未實作即取消。",
+      "why": "洛娜兩份碎光maxA254，已符合既有母稿規則；中間層卻用255擋下。最終合成沿身體保有255，新缺最終核心反例與舊33張位元組回歸通過。 2026-10-22藍光V2原alpha254，依既有LANCZOS公式及完整編製，八張飛矢均有255核心；金屬箭尖提案未實作即取消。 2026-10-22三組持杖母稿再次被誤判max254不合法，回查本條並按原編製器量測後，全部49張保持成品255，無alpha量化。",
       "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#lorna5_battle_followup_20261020",
       "guard": {
         "kind": "present",
@@ -3604,6 +3604,21 @@
           "tools/verify_fd2_split_strike_gpu.py"
         ],
         "pattern": "def shader_channels"
+      }
+    },
+    {
+      "id": "layered-flag-guard-needs-layered-input",
+      "date": "2026-10-22",
+      "area": "HD資產驗證",
+      "rule": "驗證可選能力旗標的拒收時，先構造實際依賴該能力的輸入。tools/test_fd2_character_battle_hd.py的require_layered_flag先把dict包為list，再移除--layered；普通dict即使編製時帶該旗標，仍可合法省略。缺最終核心守衛同時涵蓋單層與分層基底。",
+      "why": "41／42／43都是單層配方，舊守衛依baseline.layered預期移除旗標必須失敗，實際成功是合法行為。修正輸入後本批三份及舊38分層各21案例通過，compiler及遊戲規則保持。 守衛綁實際compiler的list／旗標分支；教訓掃描器依契約排除test_檔，不更改掃描規則，測試通過仍依84個實際案例。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#staff41_42_43_followup_20261022",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/build_fd2_character_battle_hd.py"
+        ],
+        "pattern": "if isinstance\\(assignment, list\\):\\n\\s+if not \\(args\\.with_cast or args\\.layered\\)"
       }
     }
   ]

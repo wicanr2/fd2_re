@@ -123,6 +123,10 @@
 
 上排為長戟下劈與投槍後的藍光揮擊，下排為遠射手準備射擊與三連飛矢。這是測試場景的實際最終GPU縮圖，保留原本離場、命中分段與反擊；面板沿用來源角色名稱，背景與受擊閃色仍含像素素材。人物、馬匹與武器比例、握手及光弧外形有美術近似，正常操作與人工造型確認待全部HD接入後集中處理。來源與範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
 
+![三位持杖人物的HD戰鬥測試畫面](docs/figures/hd-staff-fighters-battle.png)
+
+紅髮披風、粉紫馬尾與金髮長袍三組人物，已接入原有揮杖與反擊排程。上圖是測試場景的實際最終GPU縮圖，面板沿用來源角色名稱；背景、面板與受擊閃色仍含像素素材。人物比例、握手與衣褶待全部HD接入後集中人工確認，來源及限定驗證見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
+
 | 鐵諾HD普通END攻防 | 蓋亞HD普通攻防 |
 | --- | --- |
 | ![鐵諾HD普通END攻防](docs/figures/hd-tino-physical-attack.png) | ![蓋亞HD普通攻防](docs/figures/hd-gaia-physical-attack.png) |

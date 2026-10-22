@@ -1,5 +1,7 @@
 # 56 — FD2 remake 系統設計規格（SDD，2026-08-09）
 
+BattleFig41／42／43持杖人物完整來源已接入；兩包來源GPU、全部物理Game.Draw核心、F2／返回、編製守衛及兩包玩家／AI原子預檢通過。原框、節拍、單次命中及聲音參數、規則與保存保持；共用姿勢、人物／杖長比例與握手近似明示。母稿alpha254沿既有>=250契約，正常LANCZOS成品保持255，沒有量化或放寬門檻。正常操作與人工依全部HD後集中，未新增原版parity。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，主證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的staff41_42_43_followup_20261022。
+
 BattleFig38／39騎兵與40遠射手完整來源已接入；候選及精簡包的全幀來源GPU、三組物理Game.Draw、F2／返回、編製及飛矢反例、兩包玩家／AI原子預檢通過。原框、離場／飛矢分段、命中標記、規則與保存保持；共用姿勢、馬／武器比例、握手與光弧近似明示。正常操作與人工依全部HD後集中，未新增原版parity。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，主證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的riders38_39_archer40_followup_20261022。
 
 BattleFig35斧盾與36／37騎兵完整來源已接入；三組全部Game.Draw核心、來源GPU、F2／返回、編製反例及兩包玩家／AI原子預檢通過。原框、節拍、命中、規則與保存保持；共用姿勢、馬與長柄武器比例、窄光弧及分段槍影近似明示。正常操作與人工依全部HD後集中，未新增原版parity。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，主證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的shield35_riders36_37_followup_20261022。

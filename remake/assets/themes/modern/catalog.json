@@ -36589,6 +36589,830 @@
         "28c70c6df1de5604a78c9fce9199e173982e084c44bdc911786fb0fc501b2f65",
         "3ffaa5bfaba909d9631c6c718be17cd6574dee48267d41224513d0bfc87b2633"
       ]
+    },
+    {
+      "asset_id": "modern.figani.123.hd6.v1",
+      "role": "battle_animation_hd_set",
+      "status": "runtime_candidate",
+      "files": [
+        "figani-123-hd6-v1-f00.png",
+        "figani-123-hd6-v1-f01.png",
+        "figani-123-hd6-v1-f02.png",
+        "figani-123-hd6-v1-f03.png"
+      ],
+      "width": 1920,
+      "height": 1200,
+      "frame_count": 4,
+      "frame_sha256": [
+        "97e4073792b62e77212df73f2fbe0fed002ab72d2e9965dbf48632aa0fdaead2",
+        "400e95c78c3d6a6c1bbb8d88ad1ec0851f4aa8c9dd5d6380e7d7628a30d1662d",
+        "656b63f08f5d649ca4c59378e4d2f9c8b79e7a872153b39933420a0385b44c96",
+        "400e95c78c3d6a6c1bbb8d88ad1ec0851f4aa8c9dd5d6380e7d7628a30d1662d"
+      ],
+      "consumer_contract": "native_figani_rgba_hd6_v1",
+      "alpha_contract": "coverage",
+      "source_refs": [
+        "asset:FIGANI_123",
+        "docs/data/fd2-reference-files.json"
+      ],
+      "source_archive": "FIGANI.DAT",
+      "source_resource": 123,
+      "source_metadata_sha256": "b296a88baf57128676db3567b0dbc529cf354f758f543f97c7b19a4bec7c11f8",
+      "native_header": [
+        0,
+        4,
+        0
+      ],
+      "native_frames": [
+        {
+          "x": 200,
+          "y": 56,
+          "width": 91,
+          "height": 136,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 200,
+          "y": 55,
+          "width": 91,
+          "height": 137,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 200,
+          "y": 54,
+          "width": 91,
+          "height": 138,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 200,
+          "y": 55,
+          "width": 91,
+          "height": 137,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        }
+      ],
+      "cycle_policy": "native_descriptor_key_poses",
+      "layout_policy": "contain_native_descriptor_hd6_candidate",
+      "source_files": [
+        "figure-041-crimson41idle-battle-hd6-master-v1.png"
+      ],
+      "source_sha256": [
+        "7fae72f1379de3f4db046dc7b0589c4a0e7ca3b0722bc15f31160ea92a414235"
+      ]
+    },
+    {
+      "asset_id": "modern.figani.124.hd6.v1",
+      "role": "battle_animation_hd_set",
+      "status": "runtime_candidate",
+      "files": [
+        "figani-124-hd6-v1-f00.png",
+        "figani-124-hd6-v1-f01.png",
+        "figani-124-hd6-v1-f02.png",
+        "figani-124-hd6-v1-f03.png",
+        "figani-124-hd6-v1-f04.png",
+        "figani-124-hd6-v1-f05.png",
+        "figani-124-hd6-v1-f06.png",
+        "figani-124-hd6-v1-f07.png",
+        "figani-124-hd6-v1-f08.png",
+        "figani-124-hd6-v1-f09.png",
+        "figani-124-hd6-v1-f10.png",
+        "figani-124-hd6-v1-f11.png",
+        "figani-124-hd6-v1-f12.png",
+        "figani-124-hd6-v1-f13.png",
+        "figani-124-hd6-v1-f14.png",
+        "figani-124-hd6-v1-f15.png"
+      ],
+      "width": 1920,
+      "height": 1200,
+      "frame_count": 16,
+      "frame_sha256": [
+        "97e4073792b62e77212df73f2fbe0fed002ab72d2e9965dbf48632aa0fdaead2",
+        "896a56bce1d6c33c7085115cb803610eed57cbb84d2f4d3656e38cf2cf676c52",
+        "988c02584e1bbbdfa6227dd256f30eff76ee0819aefa56464ed84a2932de6ba9",
+        "25496cfcc5f73b56d87c80c20a96a8bebb85c2af5a47b951d450bf61c932439c",
+        "949bc0bd10c4d55d7390649ac0bb6e5a7e3cea5ce312db6609ba8e9d6fe25161",
+        "ba0f9aba053553c18a0f05865812699be5535d8070b22ab72833a47b2879139e",
+        "b4e71e248c6554c47666e42bb53a922acef0a4805c110aef60142c7bda4f4fbf",
+        "ee403982c5bf9487511e20ce68ddc101f4d3ee3da12408bfea7e5e52b16da1ba",
+        "a17dbff13fd8ba2216b6921c001a22eee118fe7d4dca205143a0963c228b3081",
+        "e334175c47ceb1f76af9dc337a7355f19554bb5af563aede5873d2e93187f0c8",
+        "2b681e6653e32491c944a6b6993ef6ad689ea0d1eaea9a85de2134c3d52fcace",
+        "078f4f0f31e43a0bb4b190257955e259cd319bb51d2c6781d5b34853b007164e",
+        "078f4f0f31e43a0bb4b190257955e259cd319bb51d2c6781d5b34853b007164e",
+        "078f4f0f31e43a0bb4b190257955e259cd319bb51d2c6781d5b34853b007164e",
+        "078f4f0f31e43a0bb4b190257955e259cd319bb51d2c6781d5b34853b007164e",
+        "31940f5d27ba479db2bfa58198fa8d36fd1cc085204190fbd96c976964a80a5e"
+      ],
+      "consumer_contract": "native_figani_rgba_hd6_v1",
+      "alpha_contract": "coverage",
+      "source_refs": [
+        "asset:FIGANI_124",
+        "docs/data/fd2-reference-files.json"
+      ],
+      "source_archive": "FIGANI.DAT",
+      "source_resource": 124,
+      "source_metadata_sha256": "f7fbf9fe806aea0441036ac2db04bdf519967be58681f2d7ac4e5cbfec8d50f2",
+      "native_header": [
+        0,
+        16,
+        6
+      ],
+      "native_frames": [
+        {
+          "x": 200,
+          "y": 56,
+          "width": 91,
+          "height": 136,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 194,
+          "y": 56,
+          "width": 114,
+          "height": 136,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 183,
+          "y": 56,
+          "width": 137,
+          "height": 136,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 168,
+          "y": 36,
+          "width": 152,
+          "height": 156,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 154,
+          "y": 36,
+          "width": 166,
+          "height": 156,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 180,
+          "y": 62,
+          "width": 114,
+          "height": 130,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 189,
+          "y": 63,
+          "width": 130,
+          "height": 129,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 178,
+          "y": 63,
+          "width": 142,
+          "height": 129,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 161,
+          "y": 63,
+          "width": 159,
+          "height": 129,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 190,
+          "y": 63,
+          "width": 124,
+          "height": 129,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 186,
+          "y": 56,
+          "width": 134,
+          "height": 136,
+          "delay_native": 2,
+          "raw_byte_4": 1,
+          "raw_byte_5": 1,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 200,
+          "y": 56,
+          "width": 120,
+          "height": 136,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 200,
+          "y": 56,
+          "width": 120,
+          "height": 136,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 200,
+          "y": 56,
+          "width": 120,
+          "height": 136,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 200,
+          "y": 56,
+          "width": 120,
+          "height": 136,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 200,
+          "y": 56,
+          "width": 118,
+          "height": 136,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        }
+      ],
+      "cycle_policy": "native_descriptor_key_poses",
+      "layout_policy": "contain_native_descriptor_hd6_candidate",
+      "source_files": [
+        "figure-041-crimson41idle-battle-hd6-master-v1.png",
+        "figure-041-crimson41open-battle-hd6-master-v1.png",
+        "figure-041-crimson41raise-battle-hd6-master-v1.png",
+        "figure-041-crimson41spin-battle-hd6-master-v1.png",
+        "figure-041-crimson41thrust-battle-hd6-master-v1.png"
+      ],
+      "source_sha256": [
+        "7fae72f1379de3f4db046dc7b0589c4a0e7ca3b0722bc15f31160ea92a414235",
+        "a01793c5e568a4a99c8d02fa0b5bafaf6bc5cb518b63bac68604123ff2cd54ed",
+        "310f336d21f81da673125cf8bf92d7cbc14739909c0fae255e292dbf514f427a",
+        "8bf9631b43c76b709604e6ea7261f6d9674a34dccd2ea8fa5057701c8363bbc7",
+        "5b26bbaae44e631a36cc40a08df498560e2c6e3726ab42aa1e35ca26dff38162"
+      ]
+    },
+    {
+      "asset_id": "modern.figani.126.hd6.v1",
+      "role": "battle_animation_hd_set",
+      "status": "runtime_candidate",
+      "files": [
+        "figani-126-hd6-v1-f00.png",
+        "figani-126-hd6-v1-f01.png",
+        "figani-126-hd6-v1-f02.png",
+        "figani-126-hd6-v1-f03.png"
+      ],
+      "width": 1920,
+      "height": 1200,
+      "frame_count": 4,
+      "frame_sha256": [
+        "38cd0812fe4de65e84bea384d24f66ced0195eba0944d3f221ba842181321252",
+        "75ab7a2397c9dc295647771c5167b4e98b97d0e71a71f6112a20f55e5daecf77",
+        "e13751d5714d35d232c39bd746e6b3f68c033401b658683433937def2528bf21",
+        "75ab7a2397c9dc295647771c5167b4e98b97d0e71a71f6112a20f55e5daecf77"
+      ],
+      "consumer_contract": "native_figani_rgba_hd6_v1",
+      "alpha_contract": "coverage",
+      "source_refs": [
+        "asset:FIGANI_126",
+        "docs/data/fd2-reference-files.json"
+      ],
+      "source_archive": "FIGANI.DAT",
+      "source_resource": 126,
+      "source_metadata_sha256": "cf8085efea4f92eca03358f93facfb2735275b5da98a11b8ce606b1fb89387b8",
+      "native_header": [
+        0,
+        4,
+        0
+      ],
+      "native_frames": [
+        {
+          "x": 222,
+          "y": 59,
+          "width": 85,
+          "height": 133,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 222,
+          "y": 58,
+          "width": 85,
+          "height": 134,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 222,
+          "y": 57,
+          "width": 85,
+          "height": 135,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 222,
+          "y": 58,
+          "width": 85,
+          "height": 134,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        }
+      ],
+      "cycle_policy": "native_descriptor_key_poses",
+      "layout_policy": "contain_native_descriptor_hd6_candidate",
+      "source_files": [
+        "figure-042-lilac42idle-battle-hd6-master-v1.png"
+      ],
+      "source_sha256": [
+        "14cd02c1b6bb5cd93c219151e41cc4bc83f090630a2b356ff97a11fb61e48080"
+      ]
+    },
+    {
+      "asset_id": "modern.figani.127.hd6.v1",
+      "role": "battle_animation_hd_set",
+      "status": "runtime_candidate",
+      "files": [
+        "figani-127-hd6-v1-f00.png",
+        "figani-127-hd6-v1-f01.png",
+        "figani-127-hd6-v1-f02.png",
+        "figani-127-hd6-v1-f03.png",
+        "figani-127-hd6-v1-f04.png",
+        "figani-127-hd6-v1-f05.png",
+        "figani-127-hd6-v1-f06.png",
+        "figani-127-hd6-v1-f07.png",
+        "figani-127-hd6-v1-f08.png",
+        "figani-127-hd6-v1-f09.png",
+        "figani-127-hd6-v1-f10.png"
+      ],
+      "width": 1920,
+      "height": 1200,
+      "frame_count": 11,
+      "frame_sha256": [
+        "38cd0812fe4de65e84bea384d24f66ced0195eba0944d3f221ba842181321252",
+        "0d0110c873f7c6402610c24924ee8cb2de30bae52c766a6f9c4d2fd8c275f6bf",
+        "4562c93fa32803345f49a63e51e7614f07013100271d5667f292f92aee9f02fd",
+        "0924254358536f4eae67d22ff5ea47587b6015e2aec7ab196fd2dc80c6641741",
+        "0081228b40227ed7e6b7d94c7cb52b5986501a63fc535af4326c6f41252a3e19",
+        "125a99d6258b450045a70c6aeb7aa543a3666bc4c6dc35768586cbe81c9d9375",
+        "e5d76a510781d44dfad7cade9fa312e22f29ab320f4da3bbf6243ef289684241",
+        "103cd692c0d04c9653da52b8303d20ba8d61cd5e267554e1d4ed419005b3e6e7",
+        "103cd692c0d04c9653da52b8303d20ba8d61cd5e267554e1d4ed419005b3e6e7",
+        "103cd692c0d04c9653da52b8303d20ba8d61cd5e267554e1d4ed419005b3e6e7",
+        "103cd692c0d04c9653da52b8303d20ba8d61cd5e267554e1d4ed419005b3e6e7"
+      ],
+      "consumer_contract": "native_figani_rgba_hd6_v1",
+      "alpha_contract": "coverage",
+      "source_refs": [
+        "asset:FIGANI_127",
+        "docs/data/fd2-reference-files.json"
+      ],
+      "source_archive": "FIGANI.DAT",
+      "source_resource": 127,
+      "source_metadata_sha256": "8f7e612606ac53d806c8b0070964486bbe192cbed1a6dad1846f5093a1216306",
+      "native_header": [
+        0,
+        11,
+        6
+      ],
+      "native_frames": [
+        {
+          "x": 222,
+          "y": 59,
+          "width": 85,
+          "height": 133,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 220,
+          "y": 59,
+          "width": 99,
+          "height": 133,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 209,
+          "y": 53,
+          "width": 111,
+          "height": 139,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 206,
+          "y": 28,
+          "width": 114,
+          "height": 164,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 210,
+          "y": 26,
+          "width": 106,
+          "height": 166,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 210,
+          "y": 25,
+          "width": 106,
+          "height": 167,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 183,
+          "y": 66,
+          "width": 137,
+          "height": 126,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 184,
+          "y": 66,
+          "width": 136,
+          "height": 126,
+          "delay_native": 2,
+          "raw_byte_4": 1,
+          "raw_byte_5": 1,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 184,
+          "y": 66,
+          "width": 136,
+          "height": 126,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 184,
+          "y": 66,
+          "width": 136,
+          "height": 126,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 184,
+          "y": 66,
+          "width": 136,
+          "height": 126,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        }
+      ],
+      "cycle_policy": "native_descriptor_key_poses",
+      "layout_policy": "contain_native_descriptor_hd6_candidate",
+      "source_files": [
+        "figure-042-lilac42idle-battle-hd6-master-v1.png",
+        "figure-042-lilac42open-battle-hd6-master-v1.png",
+        "figure-042-lilac42raise-battle-hd6-master-v1.png",
+        "figure-042-lilac42thrust-battle-hd6-master-v1.png"
+      ],
+      "source_sha256": [
+        "14cd02c1b6bb5cd93c219151e41cc4bc83f090630a2b356ff97a11fb61e48080",
+        "a0a648f85be0bdb3f808732c9ff4a447e4e600bbe2fa4379fbd21c76be464a90",
+        "140af56db64b3e6ce85b2ebfb619acdb804becc5bbd725d81aa6f7873fe0975d",
+        "14ba4092121207d7a13786e57346518a47d90b97215504c493c0d226c09deafe"
+      ]
+    },
+    {
+      "asset_id": "modern.figani.129.hd6.v1",
+      "role": "battle_animation_hd_set",
+      "status": "runtime_candidate",
+      "files": [
+        "figani-129-hd6-v1-f00.png",
+        "figani-129-hd6-v1-f01.png",
+        "figani-129-hd6-v1-f02.png",
+        "figani-129-hd6-v1-f03.png"
+      ],
+      "width": 1920,
+      "height": 1200,
+      "frame_count": 4,
+      "frame_sha256": [
+        "d3efeb39f06c02de42e2350f059b723a1790679215079a7611f083c5d1aead2a",
+        "b64bb2e4e598fbf04cb0fcf18e9da6959a783cfccdd7ebeaffeff21060900101",
+        "047716265732c7b8c5a0203c5c7890efa4ee3a39b9d95b3532899f60b9a8fb46",
+        "b64bb2e4e598fbf04cb0fcf18e9da6959a783cfccdd7ebeaffeff21060900101"
+      ],
+      "consumer_contract": "native_figani_rgba_hd6_v1",
+      "alpha_contract": "coverage",
+      "source_refs": [
+        "asset:FIGANI_129",
+        "docs/data/fd2-reference-files.json"
+      ],
+      "source_archive": "FIGANI.DAT",
+      "source_resource": 129,
+      "source_metadata_sha256": "9d7cde3d45332276b1ede07fc3c2ca063c9280d6983df553e8e107c1d027570f",
+      "native_header": [
+        0,
+        4,
+        0
+      ],
+      "native_frames": [
+        {
+          "x": 211,
+          "y": 57,
+          "width": 78,
+          "height": 135,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 211,
+          "y": 56,
+          "width": 78,
+          "height": 136,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 211,
+          "y": 55,
+          "width": 78,
+          "height": 137,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 211,
+          "y": 56,
+          "width": 78,
+          "height": 136,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        }
+      ],
+      "cycle_policy": "native_descriptor_key_poses",
+      "layout_policy": "contain_native_descriptor_hd6_candidate",
+      "source_files": [
+        "figure-043-blond43idle-battle-hd6-master-v1.png"
+      ],
+      "source_sha256": [
+        "42c5de408128ebb158960cf8b7900db78345b43ef2b13e09a2a1f365f62dc2a8"
+      ]
+    },
+    {
+      "asset_id": "modern.figani.130.hd6.v1",
+      "role": "battle_animation_hd_set",
+      "status": "runtime_candidate",
+      "files": [
+        "figani-130-hd6-v1-f00.png",
+        "figani-130-hd6-v1-f01.png",
+        "figani-130-hd6-v1-f02.png",
+        "figani-130-hd6-v1-f03.png",
+        "figani-130-hd6-v1-f04.png",
+        "figani-130-hd6-v1-f05.png",
+        "figani-130-hd6-v1-f06.png",
+        "figani-130-hd6-v1-f07.png",
+        "figani-130-hd6-v1-f08.png",
+        "figani-130-hd6-v1-f09.png"
+      ],
+      "width": 1920,
+      "height": 1200,
+      "frame_count": 10,
+      "frame_sha256": [
+        "d3efeb39f06c02de42e2350f059b723a1790679215079a7611f083c5d1aead2a",
+        "fe8f1ea47e9d2be259d4d83a0a8e011774a4fe18c28e54262cbaef09d656fdc8",
+        "cdb02030ec8317c80e9c24cafcbdfe46755be7b534eaac2d36b207124c507df6",
+        "e86174cdfac6c90bbdde84fdf50f6e2021c07ffd412cb683c9f2a9dbb16b338c",
+        "64f7ad15cfd938b9d960528440c8c8e53553c5ae5a8ea370636a7a7726af97a5",
+        "e9edf55c6c30b6058a9238d3b556c4df85b1432f53a82a13b0711c222e9ad9a0",
+        "5f9f3130b3bad2fc8754522367f68022d1a1bd032a25eed923cae2cf54ef2ef7",
+        "762dad759dc24ed66d86ec9a851da47cd7f8a68e92caec49f1ab7788130f16d1",
+        "762dad759dc24ed66d86ec9a851da47cd7f8a68e92caec49f1ab7788130f16d1",
+        "0ceb77bda56f8870f33714b090c5cb5ffaba56779bc08539e4b1ade871d6a8f6"
+      ],
+      "consumer_contract": "native_figani_rgba_hd6_v1",
+      "alpha_contract": "coverage",
+      "source_refs": [
+        "asset:FIGANI_130",
+        "docs/data/fd2-reference-files.json"
+      ],
+      "source_archive": "FIGANI.DAT",
+      "source_resource": 130,
+      "source_metadata_sha256": "ffa479f6db3df044b60b1fbe25459cea4400d2101e33abc55610979812d9cd7c",
+      "native_header": [
+        0,
+        10,
+        6
+      ],
+      "native_frames": [
+        {
+          "x": 211,
+          "y": 57,
+          "width": 78,
+          "height": 135,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 205,
+          "y": 57,
+          "width": 103,
+          "height": 135,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 202,
+          "y": 57,
+          "width": 114,
+          "height": 135,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 190,
+          "y": 46,
+          "width": 130,
+          "height": 146,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 190,
+          "y": 32,
+          "width": 130,
+          "height": 160,
+          "delay_native": 4,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 164,
+          "y": 64,
+          "width": 155,
+          "height": 128,
+          "delay_native": 2,
+          "raw_byte_4": 1,
+          "raw_byte_5": 1,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 165,
+          "y": 64,
+          "width": 150,
+          "height": 128,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 165,
+          "y": 64,
+          "width": 151,
+          "height": 128,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 165,
+          "y": 64,
+          "width": 151,
+          "height": 128,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        },
+        {
+          "x": 165,
+          "y": 64,
+          "width": 154,
+          "height": 128,
+          "delay_native": 2,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        }
+      ],
+      "cycle_policy": "native_descriptor_key_poses",
+      "layout_policy": "contain_native_descriptor_hd6_candidate",
+      "source_files": [
+        "figure-043-blond43idle-battle-hd6-master-v1.png",
+        "figure-043-blond43open-battle-hd6-master-v1.png",
+        "figure-043-blond43raise-battle-hd6-master-v1.png",
+        "figure-043-blond43thrust-battle-hd6-master-v1.png"
+      ],
+      "source_sha256": [
+        "42c5de408128ebb158960cf8b7900db78345b43ef2b13e09a2a1f365f62dc2a8",
+        "458d6fa4084e5098300422f3bdb9a427b896f1ad4d9f40ebd2d7349b31e54510",
+        "6421e99a5f6c5c3299ef3202826b67eeaa4d210c354518c698a4f91f66a65c23",
+        "262f9eb09a9b7602efeb71d70b95b1aca2e0852e97da5ba77622c4d30ce22361"
+      ]
     }
   ]
 }
