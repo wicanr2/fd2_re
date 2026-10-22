@@ -225,6 +225,13 @@ func TestModernHDReusedSpecialPartyAllFramesGPU(t *testing.T) {
 	testModernHDRegisteredFramesGPU(t, "FIGANI.DAT", []int{183, 184, 186, 187, 189, 190, 192, 193}, 70, "PASS-REUSED-SPECIAL-PARTY-70-SOURCE-GPU")
 }
 
+func TestModernHDFighterGuardsAllFramesGPU(t *testing.T) {
+	if os.Getenv("FD2_HD_FIGHTER_GUARDS_GPU") != "1" {
+		t.Skip("dedicated fighter and guards source GPU process required")
+	}
+	testModernHDRegisteredFramesGPU(t, "FIGANI.DAT", []int{195, 196, 204, 205, 207, 208, 210, 211}, 51, "PASS-FIGHTER-GUARDS-51-SOURCE-GPU")
+}
+
 func testModernHDRegisteredFramesGPU(t *testing.T, archive string, resources []int, frameCount int, status string) {
 	t.Helper()
 	set, err := loadModernStoryPortraitSet(os.Getenv("FD2_TEST_MODERN_EFFECT_CATALOG"), os.Getenv("FD2_TEST_MODERN_EFFECT_PACK"))

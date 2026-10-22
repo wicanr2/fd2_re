@@ -151,6 +151,10 @@
 
 左上、右上、左下、右下依序為第61組持杖人物、第62組拳師、第63組機甲砲手與第64組持杖人物。八個原版銀行與先前圖組完全相同，沿用原手繪圖源，保留拳光、飛彈與透明停拍。上圖是測試場景的實際繪製縮圖，面板沿用來源角色名稱；背景與受擊閃色仍含像素素材。共用姿勢與造型近似見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)，正常遊玩與人工確認待全部HD接入後集中抽驗。
 
+![藍衣拳師、劍盾兵、槍兵與披風劍士的HD測試畫面](docs/figures/hd-fighter-guards-battle.png)
+
+左上、右上、左下、右下依序為藍衣拳師的掌光、劍盾兵斬擊、槍兵突刺與披風劍士跪斬，已接入遊戲繪製。上圖為測試場景的實際繪製縮圖，面板沿用來源角色名稱；背景與受擊閃色仍含像素素材。共用姿勢、武器角度與光效裁切見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)，正常遊玩與人工確認待全部HD接入後集中抽驗。
+
 | 鐵諾HD普通END攻防 | 蓋亞HD普通攻防 |
 | --- | --- |
 | ![鐵諾HD普通END攻防](docs/figures/hd-tino-physical-attack.png) | ![蓋亞HD普通攻防](docs/figures/hd-gaia-physical-attack.png) |
