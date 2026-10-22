@@ -54,7 +54,11 @@ def make_native_occlusion_test(entries, source, original_pack, inventory, effect
             clip=layer.get('clip')
             if clip and not (clip['Min']['X']*6<=x<clip['Max']['X']*6 and clip['Min']['Y']*6<=y<clip['Max']['Y']*6):continue
             archive = layer['archive'] or 'FIGANI.DAT'
-            if layer['resource'] < 0 or archive not in ['FIGANI.DAT', 'FDOTHER.DAT'] or layer.get('fill', -1) != -1:
+            fill = layer.get('fill', -1)
+            # modern_hd_battle_gpu.go的FillColor只改RGB；33保留同份HD alpha／原生Mask。
+            # 只接受已知FIGANI受擊閃色，其他填色與特效填色仍拒收。
+            if (layer['resource'] < 0 or archive not in ['FIGANI.DAT', 'FDOTHER.DAT']
+                or fill not in (-1, 33) or (fill == 33 and archive != 'FIGANI.DAT')):
                 raise SystemExit('不能解釋的前景圖層遮擋：'+str(layer))
             key = (archive, layer['resource'], layer['frame'])
             if key not in native_masks:

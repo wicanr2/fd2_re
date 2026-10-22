@@ -1,6 +1,6 @@
 # 56 — FD2 remake 系統設計規格（SDD，2026-08-09）
 
-BattleFig71／72／73完整50幀已接入；兩包來源GPU、全部47本體核心、兩光束／一原生透明空拍、三完整攻防／F2／返回及兩包原子預檢通過。63編製、18接點／三錯置反例與新72及舊63共24投射物守衛通過，原框／節拍／標記、規則與保存保持。姿勢／砲管比例、寬翼裁切及斬光近似明示；正常／人工待全部HD後集中，不新增原版parity。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，主證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的fighter71_cannon72_wing73_followup_20261022。
+BattleFig77／79完整22幀已接入；兩包來源GPU、全部22本體核心、兩完整攻防／三階段F2／64及65 DAC／一次續行及兩包原子預檢通過。42編製、五接點／兩錯位反例與既有71預設攻防19核心回歸通過，七Go組零SKIP／無OOM。測試僅交換既有敵我單位並保留Camp／side，正式原框、規則與保存不變；76／78已登錄，舊SHA保持。共用姿勢、舉劍比例及殘光近似明示，正常／人工／平台待集中，不新增原版parity。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，主證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的shield76_knights77_78_fighter79_followup_20261022。
 
 BattleFig41／42／43持杖人物完整來源已接入；兩包來源GPU、全部物理Game.Draw核心、F2／返回、編製守衛及兩包玩家／AI原子預檢通過。原框、節拍、單次命中及聲音參數、規則與保存保持；共用姿勢、人物／杖長比例與握手近似明示。母稿alpha254沿既有>=250契約，正常LANCZOS成品保持255，沒有量化或放寬門檻。正常操作與人工依全部HD後集中，未新增原版parity。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，主證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的staff41_42_43_followup_20261022。
 

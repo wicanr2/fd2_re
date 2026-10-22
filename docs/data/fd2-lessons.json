@@ -3695,6 +3695,21 @@
         ],
         "pattern": "symlink_to"
       }
+    },
+    {
+      "id": "hd-select-only-unregistered-resource-intersection",
+      "date": "2026-10-22",
+      "area": "HD批次選取",
+      "rule": "生成下一批HD前，先讀HD主收據latest_hd_batch.formal_coverage指向的remaining_decoded_resources，再與remake/assets/themes/modern/catalog.json即時已登錄FIGANI資源交集核對。只生成尚缺銀行的完整人物集合，不按figure序號推算未完成。tools/build_fd2_character_battle_hd.py會拒絕已登錄銀行，該拒絕不能用移除舊清冊項目繞過。",
+      "why": "初選76～79未與當前清冊交集，76及78其實早已登錄。編製器在寫候選前拒絕76，正式素材未改；收斂77／79，十張冗餘稿排除白名單。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#shield76_knights77_78_fighter79_followup_20261022",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/build_fd2_character_battle_hd.py"
+        ],
+        "pattern": "所選圖源已登錄，不覆寫"
+      }
     }
   ]
 }

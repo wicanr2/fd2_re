@@ -3663,3 +3663,17 @@ R2三份新增母稿及配方已審查：兩向尖端光痕取代全部裁切光
 兩包各50完整來源GPU對獨立CPU合成、全部19／13／15物理Game.Draw本體核心至少1000點通過。72兩光束驗全部可見高覆蓋點，14透明空拍另核固定來源／同次Draw，不降低本體門檻。三完整攻防、3／6／3階段F2、64／65 DAC、HP／RNG及一次續行通過。63編製、新72與舊63共24投射物守衛、兩包三人物六個獨立玩家／mode11原子預檢及七Go組零SKIP／無OOM；舊63正對照沿當時受驗清冊SHA。完整5470／精簡4765實檔及UID已核，原574項／5405舊檔SHA保持，十五新母稿與50成品沿私人白名單保存，既有斬光依SHA共用原檔名。
 
 關鍵姿勢、71小光紋及縮短尾光、72抬砲後座動作與光紋共用；砲管／管線／衣物比例、73寬翼／長劍與斬光弧度差異明示。以身體錨點保留飛行平移，原框對翼尖、武器、放大光效的裁切逐圖層保存於compiled。README三格為測試場景實際Game.Draw；正常玩家、集中人工、其他人物／效果與平台尚待，無新原版parity、錄影或Release。唯一全域數量依58。
+
+### 77灰綠重甲／79綠衣劍士HD
+
+狀態：CONFORMED-SCOPED／RUNTIME-E1。231／232、237／238四銀行22幀，均原生共背景且各單一命中標記，沿既有物理繪製入口。77灰綠重甲／紅肩飾／黃垂布與彎刃、79綠衣覆面／灰肩甲／橘纏帶與雙手劍作視覺參考，不推定故事身份。八張原RGBA與22幀身體／光效配方已審查；77末段落塵獨立定位，五個武器光痕接點另驗。原框／節拍／標記及正式規則保持。主收據shield76_knights77_78_fighter79_followup_20261022保存範圍勘誤與全部生成譜系。
+
+本輪最初誤將已登錄76／78也列為新素材；編製器拒絕重複，正式清冊未改。兩組舊圖／母稿SHA保持，新生成76／78及78斜光修訂均不入正式白名單。74／75與233／239零header不補造。
+
+兩組原框均在左側。測試旗標FD2_HD_BATTLE_ENEMY_ACTOR=1交換既有敵我測試單位，保留原Camp及NativeRecordByte6，只換敵方BattleFig與右側我方0；不改正式規則、存檔或圖源座標。收據記role／雙方Camp與side，仍限修改圖源的RUNTIME-E1，另回歸既有右側71預設測試。
+
+八張採用原RGBA、22幀分層與實際高覆蓋接點已審查。76／78冗餘稿排除；來源原樣保存，未改alpha。原框對武器、盔刺及放大光效的裁切、姿勢共用與77收勢殘光／落塵近似明示。42編製、兩包22來源GPU、全部22最終Game.Draw核心、五接點與兩錯位反例通過。兩完整攻防及三階段F2、64／65 DAC、HP／RNG／一次續行與兩包四冷交易通過；舊71預設攻防及19核心通過。七Go組零SKIP／無OOM。完整5500／精簡4787逐檔SHA與UID核對，舊580項／5470檔不變。正常／集中人工／平台仍待，沒有新原版parity或Release。
+
+選取新批次先查HD主收據latest_hd_batch.formal_coverage的remaining_decoded_resources，再與即時remake/assets/themes/modern/catalog.json已登錄FIGANI銀行交集核對。tools/build_fd2_character_battle_hd.py遇到已登錄銀行會拒絕，不移除舊清冊項目繞過；此規則適用新素材批次，不擴張為重做已完成素材。
+
+左側主攻的前景FIGANI受擊閃色33沿既有modern_hd_battle_gpu.go的FillColor分支，只改RGB，保留相同HD alpha或原生Mask。verify_fd2_compound_caster_gpu.py的make_native_occlusion_test只加入FIGANI的33，逐SHA與形狀核對保持；未知填色與FDOTHER填色仍拒收。tools/test_fd2_native_occlusion.py驗HD原色／33、原生33、未知32／34、特效冒用及兩種錯SHA，八個案例；Game.Draw核心仍需至少1000點，未擴大遮擋區域。

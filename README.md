@@ -159,6 +159,10 @@
 
 由左至右為深藍拳師回身擊、肩砲射擊與有翼蜥蜴人物斬擊，已接入正式繪製；光束飛行及透明空拍也保留原節拍。上圖是測試場景的實際繪製縮圖，面板沿用來源角色名稱，背景與受擊閃色仍含像素素材。姿勢共用、武器比例與原框裁切見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)，正常遊玩與人工確認待全部HD接入後集中抽驗。
 
+![灰綠重甲與綠衣劍士的HD測試畫面](docs/figures/hd-front-knight-fighter-battle.png)
+
+左為灰綠重甲橫斬，右為綠衣劍士下劈，兩組完整動畫已接入正式繪製。上圖是左側敵方主攻、右側我方反擊的測試場景實際繪製，角色名稱沿用測試資料，並非原版對拍或一般遊玩截圖。姿勢共用、原框裁切及殘光近似見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)，正常遊玩與人工確認待全部HD接入後集中抽驗。
+
 | 鐵諾HD普通END攻防 | 蓋亞HD普通攻防 |
 | --- | --- |
 | ![鐵諾HD普通END攻防](docs/figures/hd-tino-physical-attack.png) | ![蓋亞HD普通攻防](docs/figures/hd-gaia-physical-attack.png) |

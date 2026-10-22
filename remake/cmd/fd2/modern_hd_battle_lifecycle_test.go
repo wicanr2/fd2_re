@@ -245,13 +245,26 @@ func TestModernHDBattleRuntimeGPU(t *testing.T) {
 	g, actor, target := physicalSceneTestGame(t)
 	real := os.Getenv("FD2_HD_BATTLE_REAL") == "1"
 	idleTarget := os.Getenv("FD2_HD_BATTLE_IDLE_TARGET") == "1"
+	enemyActor := os.Getenv("FD2_HD_BATTLE_ENEMY_ACTOR") == "1"
 	if idleTarget && !real {
 		t.Fatal("idle-target requires explicit real candidate")
+	}
+	if enemyActor && (!real || idleTarget) {
+		t.Fatal("enemy-actor requires a real armed candidate")
 	}
 	figure := 0
 	if real {
 		figure = modernBattleCandidateFigure(t)
-		if idleTarget {
+		if enemyActor {
+			// 前向原圖在左側。交換既有敵我單位，不改Camp或原生side；
+			// 右側使用已登錄的0，避免和固定左側76重疊。
+			actor, target = target, actor
+			actor.BattleFig, target.BattleFig = figure, 0
+			g.sel, g.curX, g.curY = actor, target.X, target.Y
+			if actor.Camp != battle.Enemy || target.Camp != battle.Own || actor.NativeRecordByte6 != 0 || target.NativeRecordByte6 != 2 {
+				t.Fatal("enemy-actor fixture changed native camp or side")
+			}
+		} else if idleTarget {
 			// 既有前向劍盾兵在x0..132；後向村民在x200之後，避免兩個右側描述子重疊。
 			actor.BattleFig, target.BattleFig = 76, figure
 			if g.st.NativePhysicalCounterattackEligible(actor, target) {
@@ -465,6 +478,12 @@ func TestModernHDBattleRuntimeGPU(t *testing.T) {
 			t.Fatal(err)
 		}
 		report := map[string]any{"status": "PASS-CHARACTER-FIXTURE-RUNTIME-E1", "figure": figure, "catalog_sha256": fmt.Sprintf("%x", sha256.Sum256(catalog)), "phase_f2": probe.phaseF2, "phase_hd_draws": probe.phaseDraws, "continuations": callbacks, "battle_dac_steps": len(probe.rampSeen), "map_dac_steps": len(probe.mapRampSeen), "source_shots": shots, "scope": "真實FIGANI、強制一次攻擊與反擊計畫及native地圖fixture；Game.Draw最終1920回讀。非普通玩家或原版oracle。"}
+		if enemyActor {
+			report["role"], report["counterpart_figure"] = "enemy-actor", target.BattleFig
+			report["actor_camp"], report["target_camp"] = actor.Camp, target.Camp
+			report["actor_native_side"], report["target_native_side"] = actor.NativeRecordByte6, target.NativeRecordByte6
+			report["scope"] = "交換既有敵我測試單位後明示換圖源，保持Camp與原生side；左側敵方主攻、右側我方0反擊的Game.Draw最終1920回讀。非普通玩家、自然AI或新原版oracle。"
+		}
 		if idleTarget {
 			report["status"], report["role"] = "PASS-IDLE-TARGET-FIXTURE-RUNTIME-E1", "idle-target"
 			report["selected_resources"], report["expected_phases"], report["counter_present"] = []int{figure * 3}, phases, false
