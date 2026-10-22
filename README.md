@@ -135,6 +135,10 @@
 
 左為拳師高踢，中為翼人迴斬，右為披風劍士劍光。圖組保留翼人飛離畫面的局部與透明停拍，以及兩段／四段命中。上圖由測試場景的實際最終GPU畫面縮圖，面板沿用來源角色名稱；背景與受擊閃色仍含像素素材。關鍵姿勢共用、光弧形狀與局部裁切差異已記錄，正常操作與造型確認待全部HD接入後集中抽驗。來源與範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
 
+![雙斧交叉斬、紅披風持杖人物與斧盾重甲的HD測試畫面](docs/figures/hd-axes-mage-shield-battle.png)
+
+左為雙斧交叉斬，中為紅披風持杖人物前伸，右為斧盾重甲下劈。上圖由測試場景的實際繪製畫面縮圖，面板沿用來源角色名稱；背景與受擊閃色仍含像素素材。共用姿勢與人物、武器比例的近似見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。正常遊玩與造型確認待全部HD接入後集中抽驗。
+
 | 鐵諾HD普通END攻防 | 蓋亞HD普通攻防 |
 | --- | --- |
 | ![鐵諾HD普通END攻防](docs/figures/hd-tino-physical-attack.png) | ![蓋亞HD普通攻防](docs/figures/hd-gaia-physical-attack.png) |
