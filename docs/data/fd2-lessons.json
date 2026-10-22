@@ -3635,6 +3635,21 @@
         ],
         "pattern": "exact_game_region_no_resize"
       }
+    },
+    {
+      "id": "hd-effect-root-follows-authored-weapon-point",
+      "date": "2026-10-22",
+      "area": "HD分層光效定位",
+      "rule": "分層光效與武器的連接依手繪來源的實際定位點驗證，不只比較外包矩形。使用tools/verify_fd2_hd_anchor_connections.py --compiled <編製收據> --recipe <配方> --pack <成品目錄> --connections <schema1定位點> --report <新收據>，核原稿與成品SHA、高覆蓋來源點及仿射後間距；另以真實舊配置作拒收對照。此檢查不推定人體自然度或最終GPU。",
+      "why": "50劍士初版按原亮區包絡放置扇光，但手繪劍尖位置不同，光根浮離。R2七幀改對實際劍尖，原框與RGBA保持，舊R1同限制下在201.180HD像素拒收。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#fighter47_wing49_knight50_followup_20261022",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_hd_anchor_connections.py"
+        ],
+        "pattern": "distance = math.dist"
+      }
     }
   ]
 }

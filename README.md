@@ -131,6 +131,10 @@
 
 拳師的上勾拳與金色拳風、機甲砲手的開砲與分段飛彈，以及持杖人物的前刺已接入原有戰鬥排程。上圖是測試場景的實際最終GPU縮圖，面板沿用來源角色名稱；背景、面板與受擊閃色仍含像素素材。姿勢共用、人物／武器比例與握手待全部HD接入後集中人工確認，來源及限定驗證見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
 
+![拳師高踢、翼人迴斬與披風劍士劍光的HD測試畫面](docs/figures/hd-fighter-wing-knight-battle.png)
+
+左為拳師高踢，中為翼人迴斬，右為披風劍士劍光。圖組保留翼人飛離畫面的局部與透明停拍，以及兩段／四段命中。上圖由測試場景的實際最終GPU畫面縮圖，面板沿用來源角色名稱；背景與受擊閃色仍含像素素材。關鍵姿勢共用、光弧形狀與局部裁切差異已記錄，正常操作與造型確認待全部HD接入後集中抽驗。來源與範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
+
 | 鐵諾HD普通END攻防 | 蓋亞HD普通攻防 |
 | --- | --- |
 | ![鐵諾HD普通END攻防](docs/figures/hd-tino-physical-attack.png) | ![蓋亞HD普通攻防](docs/figures/hd-gaia-physical-attack.png) |

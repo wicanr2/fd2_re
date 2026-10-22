@@ -1,6 +1,6 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
-BattleFig44拳師、45機甲砲手與46持杖人物完整來源已接入；兩包全部來源GPU、51張本體與三飛彈／兩空拍的實際Game.Draw、F2／返回、編製及飛彈守衛、兩包玩家／AI原子預檢通過。原框、節拍、標記、規則與保存保持，姿勢共用、比例／握手及砲管轉動殘影近似明示。正常操作與人工依全部HD後集中，未新增原版parity。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，主證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的fighter44_cannon45_staff46_followup_20261022。
+BattleFig47拳師、49翼人與50披風劍士完整來源已接入；兩包全部來源GPU、三組物理Game.Draw、翼人固定空拍及劍士第三銀行施術核對通過。保留原框、節拍、兩段／四段命中與保存；劍光接點七幀已修正並以舊配置反例核對。正常操作與人工依全部HD後集中，未新增原版parity。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，主證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的fighter47_wing49_knight50_followup_20261022。
 
 BattleFig41／42／43持杖人物完整來源已接入；兩包來源GPU、全部物理Game.Draw核心、F2／返回、編製守衛及兩包玩家／AI原子預檢通過。原框、節拍、單次命中及聲音參數、規則與保存保持；共用姿勢、人物／杖長比例與握手近似明示。母稿alpha254沿既有>=250契約，正常LANCZOS成品保持255，沒有量化或放寬門檻。正常操作與人工依全部HD後集中，未新增原版parity。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，主證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的staff41_42_43_followup_20261022。
 
