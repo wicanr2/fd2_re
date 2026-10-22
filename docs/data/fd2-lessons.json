@@ -3740,6 +3740,21 @@
         ],
         "pattern": "dragon_body_anchor_and_posthit_wing_order_reviewed_r2"
       }
+    },
+    {
+      "id": "hd-downsampling-measure-opaque-core-before-tail-window",
+      "date": "2026-10-23",
+      "area": "HD光效縮小",
+      "rule": "縮小光效失去不透明核心時，先量測原RGBA經實際重採樣的alpha極值，再選保留核心的尺度及來源範圍；不改原稿alpha或降低編製門檻。入口tools/build_fd2_character_battle_hd.py的--recipe與--layered；主收據cannons88_89_followup_20261023.source_sampling_review保存不同尺度量測及原稿SHA，recipe_inline保存採用範圍，compiled記錄原框裁切。",
+      "why": "88落塵縮為1原像素高後alpha240、89藍束320來源高度縮小後245，既有編製器均拒收。落塵沿已驗2像素下限；藍束量測80／160為255、320為245、360為225後保留160尺度，改實際不透明尾點收束。原失敗配方保留，門檻與原幀時序不變。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#cannons88_89_followup_20261023",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "docs/data/fd2-modern-hd-battlefield-20261019.json"
+        ],
+        "pattern": "source_sampling_review"
+      }
     }
   ]
 }

@@ -98455,7 +98455,7 @@
     },
     "private_remote_verification": "Independent private repository commit pushed; actual git ls-remote refs/heads/main re-read equals local HEAD. Private commit identity is not published."
   },
-  "latest_hd_batch": "axe84_halberd85_dragon86_followup_20261023",
+  "latest_hd_batch": "cannons88_89_followup_20261023",
   "monks28_31_mage29_followup_20261022": {
     "status": "CONFORMED-SCOPED-RUNTIME-E1",
     "date": "2026-10-22",
@@ -149199,6 +149199,4876 @@
     "final_check": {
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party84-85-86-final-check-oct23-r1.json",
       "sha256": "c4ad3596787b6ff12d39c94dd0b297dea7f7b0185d82f8921ee7800777b5847d"
+    }
+  },
+  "cannons88_89_followup_20261023": {
+    "status": "CONFORMED-SCOPED / RUNTIME-E1",
+    "date": "2026-10-23",
+    "base_commit": "b61f734968aa97a5ad1eafe87d8a08d329762730",
+    "base_catalog": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party88-89-base-catalog-oct23-r2.json",
+      "sha256": "2d708d39ea1617d575e89e31d1922f647098bf8d6f4b67a91b68bec000fb3bec"
+    },
+    "native_reference": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party88-89-native-oct23-r2.json",
+      "sha256": "ae438baa6bf766addd0a991a621a38a8aec3d55eece4b89af0d66b4a78104139"
+    },
+    "source_inventory": {
+      "file": "docs/data/fd2-battle-hd-source-inventory-20261019.json",
+      "sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51"
+    },
+    "original_manifest_sha256": "5eec2ecacc4fe97c4d0f27838e7dbecf18d1cf4b309b35800d50afd173cacca5",
+    "eligibility": {
+      "selected": [
+        264,
+        265,
+        267,
+        268
+      ],
+      "registered_intersection": [],
+      "remaining_inventory_verified": true
+    },
+    "figures": [
+      88,
+      89
+    ],
+    "frames": 43,
+    "native_banks": [
+      {
+        "resource": 264,
+        "header": {
+          "byte_1": 0,
+          "byte_2": 1,
+          "byte_4": 0
+        },
+        "frames": 1,
+        "metadata_sha256": "5f0cb8caf0bc34b668c0dbc793df56569ead83c04b3d4fc78b571513d8dcb0bb",
+        "markers": []
+      },
+      {
+        "resource": 265,
+        "header": {
+          "byte_1": 1,
+          "byte_2": 13,
+          "byte_4": 4
+        },
+        "frames": 21,
+        "metadata_sha256": "3d0f3899707cb916aa9585e5e35bbd85928a13f7db545b7a21693bd25b35143a",
+        "markers": [
+          [
+            3,
+            0,
+            1
+          ],
+          [
+            15,
+            1,
+            2
+          ]
+        ]
+      },
+      {
+        "resource": 267,
+        "header": {
+          "byte_1": 0,
+          "byte_2": 1,
+          "byte_4": 0
+        },
+        "frames": 1,
+        "metadata_sha256": "5dfdc5c81d98f51408f9fd0228d804a7e47dbb5149aea4c3dfe0555499c7bbdd",
+        "markers": []
+      },
+      {
+        "resource": 268,
+        "header": {
+          "byte_1": 1,
+          "byte_2": 15,
+          "byte_4": 4
+        },
+        "frames": 20,
+        "metadata_sha256": "6b3169f0696dbfc8284d3dfb2d2abb97eb5896f03f6b33e76a3dad9b573e9a90",
+        "markers": [
+          [
+            4,
+            0,
+            1
+          ],
+          [
+            17,
+            1,
+            2
+          ]
+        ]
+      }
+    ],
+    "zero_headers": [
+      {
+        "resource": 266,
+        "sha256": "59a184508ba4d1ece0a4be74b8e998b9d9939dcf3ff3a12afd4c0677500bc183"
+      },
+      {
+        "resource": 269,
+        "sha256": "84b616733e85008cc898bc7489b9a5d81dcd93511bc934d734499ca75e6761c0"
+      }
+    ],
+    "adopted_draft_sources": [
+      {
+        "key": "cannon88idle",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-cannon88idle-original-r1.png",
+        "sha256": "cc0edde187800831a9776472c9aa1390b2847c7d4ace134f138e0ec3085466c9",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-f0834699-65ce-4392-95ba-f09f1173bc9b.png",
+        "args": {
+          "prompt": "Use case: stylized-concept. Asset type: transparent 2D fantasy RPG battle sprite master. Primary request: Faithful HD redraw of FIRST native pixel reference using clean handpainted illustration medium of SECOND reference. Vivid royalblue squared shoulder and breast plate, navy baggy trousers/frontcloth and blue boots; dull olivegrey helmet, bracers, collar and pouches. Fully closed simple olive grey cylindrical helmet with narrow visor, NO human face or scarf. Carry ONE large simple royalblue cylindrical single-bore shoulder cannon horizontally across left shoulder, black round open muzzle directed left in the image. One hand grips underside of cannon, other gauntlet rests on waist. Match native pixel palette and native compact stance. Threequarter front view. Full head, entire cannon and both boots visible. Stocky strong adult proportions, compact planted feet under hips; do not spread into wide lunge. Crisp ink contour and painted metal highlights, classic fantasy technoknight. True transparent RGBA background, no text/panels, no ground/shadow, no effects. Single complete sprite only. At least 10 percent transparent margin around every extremity. No modern rifle, no extra barrels, no spikes. Anatomically natural shoulder/elbow/wrist continuity.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure088-native-264-00-oct23-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party7173-cannon72idle-original-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          1206,
+          1305
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          40,
+          9,
+          1082,
+          1294
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "cannon89idle",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-cannon89idle-original-r1.png",
+        "sha256": "328f67ca3b445b342f29fa9ed8ce87be6505c92ad980573ba226591e83f89331",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-fc375a38-3cbf-4db0-b4ca-1e467cc5761c.png",
+        "args": {
+          "prompt": "Use case: stylized-concept. Asset type: transparent 2D fantasy RPG battle sprite master. Primary request: Faithful HD redraw of FIRST native pixel reference using clean handpainted illustration medium of SECOND reference. Dark navy breast armor and baggy blue trousers; dull olivegrey shoulder plates, shin guards/boots and cylindrical single-bore cannon; brown collar/belt/pouches/bracers and long rust-red frontcloth; visible tan muscular upper arms, simple closed olivegrey visor helmet and small rust-red plume or crest. Carry ONE large grey olive shoulder cannon across shoulder with black single round bore directed left in image, one hand supporting underneath and other fist at waist. Match native compact stance, do not copy second reference turban/scarf or multi-barrel gun. Threequarter front view. Full head, entire cannon and both boots visible. Stocky strong adult proportions, compact planted feet under hips; do not spread into wide lunge. Crisp ink contour and painted metal highlights, classic fantasy technoknight. True transparent RGBA background, no text/panels, no ground/shadow, no effects. Single complete sprite only. At least 10 percent transparent margin around every extremity. No modern rifle, no extra barrels, no spikes. Anatomically natural shoulder/elbow/wrist continuity.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure089-native-267-00-oct23-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party7173-cannon72idle-original-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          1200,
+          1310
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          55,
+          25,
+          1070,
+          1290
+        ],
+        "high_coverage_boundary_points": 0
+      }
+    ],
+    "adopted_draft_ledger": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party88-89-idle-draft-oct23-r1.json",
+      "sha256": "b95e630ebd0d7c87bebdc03e97dcc554adc421de8986009254313f791f5fdc91"
+    },
+    "generation": [
+      {
+        "key": "cannon88aim",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-cannon88aim-original-r1.png",
+        "sha256": "b4f9d5676497c79d4154cfc6cebc669c68a380d6e45c0aa1e156418194712e97",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-b28a6707-d31f-43ca-8f91-26dffe2c94b3.png",
+        "args": {
+          "prompt": "Use case: identity-preserve. Asset type: transparent 2D fantasy RPG battle keypose. Adapt FIRST finished blue-armored cannon knight to aiming pose in SECOND pixel reference. Cannon now horizontal across shoulder, its SINGLE round OPEN MUZZLE pointing SCREEN RIGHT. Fullbody turns to right, head mostly hidden UNDER shoulder cannon, both olivegrey gauntleted hands naturally support gun under the front and trigger. Royalblue cannon/breast/shoulders/navy baggy trousers and frontcloth, olivegrey closed cylindrical visor helmet/collar/gloves/pouches. Compact braced stance with feet below hips. Preserve same equipment/material/identity, crisp handpainted contour and shading. Entire cannon, muzzle cap, helmet and both boots inside frame with12percent empty transparent margins. No beam, ground/shadow, captions or grid. True transparent RGBA. One complete sprite, natural shoulder-elbow-wrist.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-cannon88idle-original-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure088-native-265-01-oct23-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          1261,
+          1247
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          146,
+          28,
+          1232,
+          1217
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "cannon89aim",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-cannon89aim-original-r1.png",
+        "sha256": "edbad3206ea7084b3766792f95c196ad57f52b695eed0776cc8b2485719221a7",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-6513a90f-3bc5-4549-8d59-7799f5ba13a4.png",
+        "args": {
+          "prompt": "Use case: identity-preserve. Asset type: transparent 2D fantasy RPG battle keypose. Adapt FIRST finished grey-cannon trooper into SECOND pixel aiming pose. Cannon horizontal across shoulder, SINGLE OPEN ROUND MUZZLE pointing SCREEN RIGHT, rear of cannon to left. Entire fullbody facing right, head mostly hidden UNDER cannon, two hands naturally support grip/trigger beneath front of cannon. Keep olivegrey cannon/closed visor helmet/shoulder plates/shinguards, tan exposed muscular upperarms, brown collar/bracers/belt, navy breast/trousers, rust-red frontcloth and small rust-red crest. Compact planted braced feet under hips. Handpainted medium exactly as first master. Entire sprite and complete gun/muzzlecap/boots inside12percent transparent margins, RGBA background. No beam, groundshadow, text, grid or panel. Continuous shoulder/elbow/wrist anatomy.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-cannon89idle-original-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure089-native-268-01-oct23-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          1271,
+          1237
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          177,
+          23,
+          1225,
+          1217
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "gold88arc",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-gold88arc-original-r1.png",
+        "sha256": "5c09b2ebc3fd21986305eaf4b1cf1a73ba2a3b5b9b5309dfddc025fd7cd5c9c2",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-fa2704b7-b286-47ae-8e72-996141869e44.png",
+        "args": {
+          "prompt": "Use case: stylized-concept. Asset type: isolated transparent 2D RPG cannon projectile effect. Only redraw the GOLDEN ARC of light in reference; no soldier, cannon, ground or dust. One horizontal smooth convex arc, starts thick and bright at LEFT then curves upward to mid peak then slopes down and tapers to a fine right tip. Cream white opaque core, saturated yellowgold thin edge. Crisp handpainted ink-like light streak, no long soft cloud. Wide landscape canvas, effect occupies central70percent with transparent margins all around. True transparent RGBA with solid opaque whitegold core. No text or framing. Exactly one arc.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure088-native-265-04-oct23-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          2172,
+          724
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          92,
+          151,
+          2092,
+          603
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "burst88full",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-burst88full-original-r1.png",
+        "sha256": "73e21d723b63509d74d2f69299171c387c24e11da856ef602725bb8be03dca79",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-44f01bea-9f8e-483f-9315-226ee13bcbe5.png",
+        "args": {
+          "prompt": "Use case: stylized-concept. Asset type: isolated transparent handpainted 2D RPG impact effect. Extract/redraw ONLY star-shaped orange-red/yellow explosion in lower-right of reference as centered standalone effect. No diagonal beam, person, ground or any other objects. Compact irregular bright creamWHITE opaque central core with long angular yellow-orange spikes and short saturated RED outline spikes radiating all directions. Classic fantasy cannon hit flash. Sharp handpainted edges, minimal diffuse glow. Square composition, entire star within central65percent and wide empty transparent border. True transparent RGBA, core alpha fullyopaque. No words, panels or circles of smoke.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure088-native-265-15-oct23-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          1254,
+          1254
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          115,
+          165,
+          1149,
+          1054
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "burst88ring",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-burst88ring-original-r1.png",
+        "sha256": "ce956717fe4ad236cb7ebcfc7a296c9d661cd6dc7183aff08ad7d3212ab14423",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-6eab3e3d-af27-4fe1-af8f-043a32041816.png",
+        "args": {
+          "prompt": "Use case: stylized-concept. Asset type: isolated transparent 2D RPG fading impact ring. Redraw ONLY orange/red spiked blast ring from reference, centered. Ring shaped from angular short flame shards and long spikes radiating outward, yelloworange interior edges and saturated red outeredges. LARGE completely transparent hole at center. No diagonal beam, no central white flash, no circle disc, no ground, no text or other objects. Sharp handpainted light effect with truly opaque highcoverage colored shard cores. Entire spiked ring visible within central65percent of square canvas, wide transparent margins. Preserve actual transparent RGBA center and background.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure088-native-265-17-oct23-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          1254,
+          1254
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          109,
+          63,
+          1184,
+          1096
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "burst88sparks",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-burst88sparks-original-r1.png",
+        "sha256": "20644523bf64bb2bd36ba4be30aa87b6729225fb5fbcc457ea91a5eac71c7abc",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-7c03093e-a435-4066-b891-590a6f4f1827.png",
+        "args": {
+          "prompt": "Use case: stylized-concept. Asset type: isolated transparent 2D RPG dissipating explosion fragments. Redraw ONLY the sparse RED flame shards in reference as a loose centered circular arrangement, about8 small sharp triangular red shards spaced far apart, centers and all gaps fully transparent. Very small orange accents on a few fragments. Dark saturated red, no gold-white full explosion or bloom. Full shards inside central65percent of canvas with wide empty margins. Handpainted crisp contours, solid opaque colored shardcores. RGBA actual transparency, no shadow/ground/text or beam.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure088-native-265-19-oct23-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          1424,
+          1104
+        ],
+        "alpha_extrema": [
+          0,
+          254
+        ],
+        "high_coverage_bbox": [
+          130,
+          37,
+          1298,
+          1038
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "goldgrounddust",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-goldgrounddust-original-r1.png",
+        "sha256": "d1cef1e5db94e4d44c0e8bfb1041acb9159ed18399493f1ae7c953486aa9abce",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-d06cdaba-9587-4d0f-99cc-9f75a18362bc.png",
+        "args": {
+          "prompt": "Use case: stylized-concept. Asset type: isolated transparent 2D fantasy RPG cannon recoil dust strip. Extract/redraw ONLY tan-gold dust fragments along ground at lower-right of reference; absolutely no person, legs, weapon or ground plane. A low horizontal strip of jagged little tan sandwisps, narrow wedge-shaped gusts, a few tiny angular golden specks. Flat bottom alignment, wisps blowing toward right, separated transparent gaps; darkest tan strokes have solid opaque cores. Clean illustrated handpainted sprite effect, no photoreal smoke cloud, no soft opaque background. Wide landscape canvas, strip centered in middle half of image with broad transparent borders. True transparent RGBA, no text.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure088-native-265-08-oct23-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          2172,
+          724
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          73,
+          206,
+          2100,
+          553
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "blue89beam",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-blue89beam-original-r1.png",
+        "sha256": "c7fd44b2352518004f5b3c09d30d3fc33c1e5304ca93aa65742fc3a43de56806",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-b1544ed3-fde5-49f8-8d5b-882fd302247f.png",
+        "args": {
+          "prompt": "Use case: stylized-concept. Asset type: isolated transparent 2D fantasy RPG cannon energy beam sprite. Primary request: Faithful HD redraw of native reference's simple straight WHITE beam with narrow BLUE outline. One long perfectly horizontal beam, uniformly wide opaque purewhite center, thin muted royalblue/darkblue rim at top and bottom; left end flat, right end pointed smallarrowtip. No diagonal slope or cone, no gold/orange. Long landscape transparent canvas, beam centered vertically inside central70percentwidth and central15percentheight, plenty empty transparent space around every edge. Crisp clean handpainted linework, restrained slight texture at blueedge. Core must contain fully opaque pixels, actual RGBA transparency outsidebeam. No sourcecharacter, effects, sparks, grid, text or shadow.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure089-native-268-17-oct23-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          2172,
+          724
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          120,
+          309,
+          2084,
+          414
+        ],
+        "high_coverage_boundary_points": 0
+      }
+    ],
+    "generation_ledgers": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party88-89-motionfx-generation-oct23-r1.json",
+        "sha256": "22a7fface8b3e603ee37b9ae303746ef09de68a167cbf124d4c3b77ddee74a80"
+      }
+    ],
+    "projectile_contracts": {
+      "88": {
+        "resource": 265,
+        "header": {
+          "byte_1": 1,
+          "byte_2": 13,
+          "byte_4": 4
+        },
+        "frames": 21,
+        "first": 13,
+        "body_frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        "native_opaque_counts": [
+          0,
+          330,
+          5868,
+          1630,
+          1014,
+          404,
+          252,
+          0
+        ],
+        "blanks": [
+          13,
+          20
+        ],
+        "guard_missing_frames": [
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20
+        ]
+      },
+      "89": {
+        "resource": 268,
+        "header": {
+          "byte_1": 1,
+          "byte_2": 15,
+          "byte_4": 4
+        },
+        "frames": 20,
+        "first": 15,
+        "body_frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14
+        ],
+        "native_opaque_counts": [
+          361,
+          4203,
+          5440,
+          850,
+          0
+        ],
+        "blanks": [
+          19
+        ],
+        "guard_missing_frames": [
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      }
+    },
+    "consumer_review": {
+      "status": "PASS-EXISTING-CONSUMER-ELIGIBILITY",
+      "references": [
+        {
+          "file": "remake/internal/battlepresent/native_physical_body.go",
+          "sha256": "39a7f5423cab91ced5081197d99ec530644c495e28d7bd8e894f1ca92f600d92"
+        },
+        {
+          "file": "remake/cmd/fd2/native_physical_body.go",
+          "sha256": "d97cb4d71018cc0587be051f33c84b6a75df453b0bac5ef78f6683fb1fbd1cb0"
+        }
+      ],
+      "scope": "Header1/byte2 departure and separate projectile body, cue1 and singlehit cue2; existing consumer only, no new original oracle/caller/rule/save proof."
+    },
+    "formal_registered": true,
+    "private_synced": true,
+    "normal_player": false,
+    "human_review": "pending until all HD integrated",
+    "full_battle_hd_complete": false,
+    "rules_and_save_changed": false,
+    "recordings_created": false,
+    "source_policy": "88 blue cannon/armor/cloth and olivegrey closedhelmet/gauntlets;89 grey cannon/helmet/shoulders/greaves, exposed tanupperarms, rustfrontcloth and crest. Idle leftward cannon turns rightward overhead for attack per native. No story identity inferred.",
+    "required_checks": [
+      "43 fullsourceGPU in both packages;30 bodycores>=1000,10 projectile allvisiblecores and3 pinnedblank sameDraw, no bodythreshold reduction",
+      "Two sixphase F2/64-65DAC/HP/RNG/onecontinuation;42 compilerguards, authored muzzle/effect contacts/wrongroots, bothpackage two paired valid/four cold player-mode11transactions",
+      "Extend existing verify_fd2_archer_volley_gpu.py profiles only, fixed265/268 split/nativeMask counts; negative guards for both and existing72 positive/negatives exact original catalog",
+      "RawRGBA unchanged; old596assets5598files and bothfull/runtime SHA/UID/allowlist preservation, private actualremote/PRIVATE; normal/manual/platform/fullHD pending"
+    ],
+    "scope": "RUNTIME-E1 scoped: fourbanks43frames; both fullsourceGPU vs independentCPUOver;30 bodycores >=1000,10 realprojectile cores atallvisiblealpha250points+3pinnednativeblanks;13contacts/2wrongroots;42compiler/8fill33/31new+12old72projectileguards;two fullsixphaseF2/64-65DAC/HP/RNG/onecontinuation;bothpackages twofiguresfourcoldplayer-mode11transactions. Old596assets/5598files unchanged. No new normalplayer/original/manual/platform/fullHD proof.",
+    "native_consumer_contract": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party88-89-native-consumer-contract-oct23-r1.json",
+      "sha256": "d0db12d562abb6fcd9590823c0e3395060b1975e26080706f2e60475b03c6c38"
+    },
+    "reused_registered_sources": [
+      {
+        "key": "beam72",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party7173-beam72-original-r1.png",
+        "sha256": "a25311369f2fe066471039be4fdf73a7bb9cd39fce11ee2c8cc1337e18209041",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-13258aab-15fe-42c9-a3f0-ca78a06888b1.png",
+        "args": {
+          "prompt": "Use case: stylized-concept. Asset type: ONE isolated transparent battle laser FX sprite. Native input is shape/color reference only. Draw a VERY LONG THIN horizontal warm-white/golden beam, left end round, right end tapers to a short narrow feathered point. STRAIGHT parallel edges, solid cream-white opaque core and clean yellow/gold rim with a few tiny amber tail streaks. Silhouette LENGTH:THICKNESS about22:1 (for example1300px long and60px thick). Center beam in a wide canvas with actual transparency above/below and clear padding left/right, ALL endpoints contained. Painted ink-accented classic fantasy game finish. No curvature, crescent, orbit, glow haze, aura, character, weapon, background, ground, text, checkerboard or border. Entire surrounding canvas transparent RGBA.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure072-native-217-12-oct22-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure072-native-217-13-oct22-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          1855,
+          848
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          36,
+          397,
+          1826,
+          457
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "gold76slash",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party7679-gold76slash-original-r1.png",
+        "sha256": "4fb47eada44999c3ce5b4a537f7403b64d6ee57455d627f3b098f8cc166eba4a",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-87b49eb7-00f3-4277-b8d0-b816384547d6.png",
+        "args": {
+          "transparent_background": true,
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure076-native-229-06-oct22-r1.png"
+          ],
+          "prompt": "Use case: stylized-concept. Asset: ONE hand-painted fantasy SRPG sword swing effect on true transparent RGBA. Input is native reference ONLY for effect geometry, ignore character completely. A narrow long sword-swing cone, brightest solid WHITE root at LOWER RIGHT about x75% y85%, widening toward UPPER LEFT. Tall diagonal upperleft spray of several long tapered yellow-white tongues; root lower-right is compact sharp and brilliant. Shape points as native: broad flame plume up-left, narrow root down-right. Painted crisp opaque near-white core with restrained golden-orange rim, no detached sparks or wispy haze. Include entire effect and all tips with 12% transparent padding every side. No character, weapon, scenery, floor, text or dark background. A single connected silhouette, solid alpha255 core especially around root, transparent exterior. NOT a diagram."
+        },
+        "size": [
+          1072,
+          1467
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          61,
+          30,
+          1056,
+          1425
+        ],
+        "high_coverage_boundary_points": 0
+      }
+    ],
+    "recipes": {
+      "88": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure088-recipe-oct23-r2.json",
+        "sha256": "6a2cf559bb5d8337899cf6f56f0e03c55ee90ad16c5e2e2fcd484dd2c68402c3"
+      },
+      "89": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure089-recipe-oct23-r3.json",
+        "sha256": "56204a9f38049c49cfba006db9e8d1709e72e63d09e925ddca3b13f7f4b442a3"
+      }
+    },
+    "connections": {
+      "88": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure088-connections-oct23-r1.json",
+        "sha256": "72f9e96e7844a1eaf31b5400dbcd045cdfbfd1b6d31e9708dac7c193595f2bfd"
+      },
+      "89": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure089-connections-oct23-r3.json",
+        "sha256": "08b3b9a2ee233d9f4508d195b0a013d568d3b4555000fb182905fa44a5a373e9"
+      }
+    },
+    "recipe_inline": {
+      "88": {
+        "schema_version": 1,
+        "figure": 88,
+        "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+        "sources": {
+          "cannon88idle": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-cannon88idle-original-r1.png",
+            "sha256": "cc0edde187800831a9776472c9aa1390b2847c7d4ace134f138e0ec3085466c9",
+            "anchor": [
+              38,
+              7,
+              1084,
+              1296
+            ]
+          },
+          "cannon88aim": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-cannon88aim-original-r1.png",
+            "sha256": "b4f9d5676497c79d4154cfc6cebc669c68a380d6e45c0aa1e156418194712e97",
+            "anchor": [
+              144,
+              26,
+              1234,
+              1219
+            ]
+          },
+          "blank265-13": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party7173-beam72-original-r1.png",
+            "sha256": "a25311369f2fe066471039be4fdf73a7bb9cd39fce11ee2c8cc1337e18209041",
+            "anchor": [
+              34,
+              395,
+              1828,
+              459
+            ]
+          },
+          "incoming265-14": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party7679-gold76slash-original-r1.png",
+            "sha256": "4fb47eada44999c3ce5b4a537f7403b64d6ee57455d627f3b098f8cc166eba4a",
+            "anchor": [
+              850,
+              1320,
+              1050,
+              1410
+            ]
+          },
+          "burst88full": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-burst88full-original-r1.png",
+            "sha256": "73e21d723b63509d74d2f69299171c387c24e11da856ef602725bb8be03dca79",
+            "anchor": [
+              113,
+              163,
+              1151,
+              1056
+            ]
+          },
+          "burst88ring": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-burst88ring-original-r1.png",
+            "sha256": "ce956717fe4ad236cb7ebcfc7a296c9d661cd6dc7183aff08ad7d3212ab14423",
+            "anchor": [
+              107,
+              61,
+              1186,
+              1098
+            ]
+          },
+          "burst88sparks": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-burst88sparks-original-r1.png",
+            "sha256": "20644523bf64bb2bd36ba4be30aa87b6729225fb5fbcc457ea91a5eac71c7abc",
+            "anchor": [
+              128,
+              35,
+              1300,
+              1040
+            ]
+          },
+          "blank265-20": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party7173-beam72-original-r1.png",
+            "sha256": "a25311369f2fe066471039be4fdf73a7bb9cd39fce11ee2c8cc1337e18209041",
+            "anchor": [
+              34,
+              395,
+              1828,
+              459
+            ]
+          },
+          "beam72-265-3": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party7173-beam72-original-r1.png",
+            "sha256": "a25311369f2fe066471039be4fdf73a7bb9cd39fce11ee2c8cc1337e18209041",
+            "anchor": [
+              45,
+              405,
+              55,
+              425
+            ]
+          },
+          "gold88arc-265-4": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-gold88arc-original-r1.png",
+            "sha256": "5c09b2ebc3fd21986305eaf4b1cf1a73ba2a3b5b9b5309dfddc025fd7cd5c9c2",
+            "anchor": [
+              125,
+              495,
+              135,
+              535
+            ]
+          },
+          "gold88arc-265-5": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-gold88arc-original-r1.png",
+            "sha256": "5c09b2ebc3fd21986305eaf4b1cf1a73ba2a3b5b9b5309dfddc025fd7cd5c9c2",
+            "anchor": [
+              125,
+              490,
+              135,
+              535
+            ]
+          },
+          "gold88arc-265-6": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-gold88arc-original-r1.png",
+            "sha256": "5c09b2ebc3fd21986305eaf4b1cf1a73ba2a3b5b9b5309dfddc025fd7cd5c9c2",
+            "anchor": [
+              125,
+              485,
+              135,
+              535
+            ]
+          },
+          "gold88arc-265-7": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-gold88arc-original-r1.png",
+            "sha256": "5c09b2ebc3fd21986305eaf4b1cf1a73ba2a3b5b9b5309dfddc025fd7cd5c9c2",
+            "anchor": [
+              125,
+              435,
+              135,
+              535
+            ]
+          },
+          "gold88arc-265-8": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-gold88arc-original-r1.png",
+            "sha256": "5c09b2ebc3fd21986305eaf4b1cf1a73ba2a3b5b9b5309dfddc025fd7cd5c9c2",
+            "anchor": [
+              125,
+              335,
+              135,
+              535
+            ]
+          },
+          "gold88arc-265-9": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-gold88arc-original-r1.png",
+            "sha256": "5c09b2ebc3fd21986305eaf4b1cf1a73ba2a3b5b9b5309dfddc025fd7cd5c9c2",
+            "anchor": [
+              125,
+              135,
+              135,
+              535
+            ]
+          },
+          "gold76slash-265-15": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party7679-gold76slash-original-r1.png",
+            "sha256": "4fb47eada44999c3ce5b4a537f7403b64d6ee57455d627f3b098f8cc166eba4a",
+            "anchor": [
+              990,
+              1345,
+              1000,
+              1385
+            ]
+          },
+          "goldgrounddust-265-4": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-goldgrounddust-original-r1.png",
+            "sha256": "d1cef1e5db94e4d44c0e8bfb1041acb9159ed18399493f1ae7c953486aa9abce",
+            "anchor": [
+              71,
+              204,
+              2102,
+              555
+            ]
+          },
+          "goldgrounddust-265-5": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-goldgrounddust-original-r1.png",
+            "sha256": "d1cef1e5db94e4d44c0e8bfb1041acb9159ed18399493f1ae7c953486aa9abce",
+            "anchor": [
+              71,
+              204,
+              2102,
+              555
+            ]
+          },
+          "goldgrounddust-265-6": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-goldgrounddust-original-r1.png",
+            "sha256": "d1cef1e5db94e4d44c0e8bfb1041acb9159ed18399493f1ae7c953486aa9abce",
+            "anchor": [
+              71,
+              204,
+              2102,
+              555
+            ]
+          },
+          "goldgrounddust-265-7": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-goldgrounddust-original-r1.png",
+            "sha256": "d1cef1e5db94e4d44c0e8bfb1041acb9159ed18399493f1ae7c953486aa9abce",
+            "anchor": [
+              71,
+              204,
+              2102,
+              555
+            ]
+          },
+          "goldgrounddust-265-8": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-goldgrounddust-original-r1.png",
+            "sha256": "d1cef1e5db94e4d44c0e8bfb1041acb9159ed18399493f1ae7c953486aa9abce",
+            "anchor": [
+              71,
+              204,
+              2102,
+              555
+            ]
+          },
+          "goldgrounddust-265-9": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-goldgrounddust-original-r1.png",
+            "sha256": "d1cef1e5db94e4d44c0e8bfb1041acb9159ed18399493f1ae7c953486aa9abce",
+            "anchor": [
+              71,
+              204,
+              2102,
+              555
+            ]
+          },
+          "goldgrounddust-265-10": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-goldgrounddust-original-r1.png",
+            "sha256": "d1cef1e5db94e4d44c0e8bfb1041acb9159ed18399493f1ae7c953486aa9abce",
+            "anchor": [
+              71,
+              204,
+              2102,
+              555
+            ]
+          },
+          "goldgrounddust-265-11": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-goldgrounddust-original-r1.png",
+            "sha256": "d1cef1e5db94e4d44c0e8bfb1041acb9159ed18399493f1ae7c953486aa9abce",
+            "anchor": [
+              71,
+              204,
+              2102,
+              555
+            ]
+          }
+        },
+        "resources": {
+          "264": [
+            [
+              {
+                "pose": "cannon88idle",
+                "anchor": [
+                  1,
+                  1,
+                  109,
+                  118
+                ],
+                "scale_group": "cannon88idle"
+              }
+            ]
+          ],
+          "265": [
+            [
+              {
+                "pose": "cannon88aim",
+                "anchor": [
+                  1,
+                  1,
+                  117,
+                  114
+                ],
+                "scale_group": "cannon88aim"
+              }
+            ],
+            [
+              {
+                "pose": "cannon88aim",
+                "anchor": [
+                  1,
+                  1,
+                  119,
+                  118
+                ],
+                "scale_group": "cannon88aim"
+              }
+            ],
+            [
+              {
+                "pose": "cannon88aim",
+                "anchor": [
+                  1,
+                  1,
+                  119,
+                  118
+                ],
+                "scale_group": "cannon88aim"
+              }
+            ],
+            [
+              {
+                "pose": "beam72-265-3",
+                "anchor": [
+                  110,
+                  37,
+                  112,
+                  39
+                ],
+                "scale_group": "beam72-265-3"
+              },
+              {
+                "pose": "cannon88aim",
+                "anchor": [
+                  1,
+                  21,
+                  120,
+                  139
+                ],
+                "scale_group": "cannon88aim"
+              }
+            ],
+            [
+              {
+                "pose": "goldgrounddust-265-4",
+                "anchor": [
+                  105,
+                  129,
+                  248,
+                  137
+                ],
+                "scale_group": "goldgrounddust-265-4"
+              },
+              {
+                "pose": "gold88arc-265-4",
+                "anchor": [
+                  110,
+                  34,
+                  112,
+                  37
+                ],
+                "scale_group": "gold88arc-265-4"
+              },
+              {
+                "pose": "cannon88aim",
+                "anchor": [
+                  1,
+                  19,
+                  120,
+                  137
+                ],
+                "scale_group": "cannon88aim"
+              }
+            ],
+            [
+              {
+                "pose": "goldgrounddust-265-5",
+                "anchor": [
+                  105,
+                  129,
+                  232,
+                  136
+                ],
+                "scale_group": "goldgrounddust-265-5"
+              },
+              {
+                "pose": "gold88arc-265-5",
+                "anchor": [
+                  110,
+                  34,
+                  112,
+                  36
+                ],
+                "scale_group": "gold88arc-265-5"
+              },
+              {
+                "pose": "cannon88aim",
+                "anchor": [
+                  1,
+                  18,
+                  120,
+                  136
+                ],
+                "scale_group": "cannon88aim"
+              }
+            ],
+            [
+              {
+                "pose": "goldgrounddust-265-6",
+                "anchor": [
+                  105,
+                  124,
+                  223,
+                  130
+                ],
+                "scale_group": "goldgrounddust-265-6"
+              },
+              {
+                "pose": "gold88arc-265-6",
+                "anchor": [
+                  110,
+                  29,
+                  112,
+                  30
+                ],
+                "scale_group": "gold88arc-265-6"
+              },
+              {
+                "pose": "cannon88aim",
+                "anchor": [
+                  1,
+                  12,
+                  120,
+                  130
+                ],
+                "scale_group": "cannon88aim"
+              }
+            ],
+            [
+              {
+                "pose": "goldgrounddust-265-7",
+                "anchor": [
+                  105,
+                  119,
+                  223,
+                  124
+                ],
+                "scale_group": "goldgrounddust-265-7"
+              },
+              {
+                "pose": "gold88arc-265-7",
+                "anchor": [
+                  110,
+                  23,
+                  112,
+                  24
+                ],
+                "scale_group": "gold88arc-265-7"
+              },
+              {
+                "pose": "cannon88aim",
+                "anchor": [
+                  1,
+                  6,
+                  120,
+                  124
+                ],
+                "scale_group": "cannon88aim"
+              }
+            ],
+            [
+              {
+                "pose": "goldgrounddust-265-8",
+                "anchor": [
+                  105,
+                  118,
+                  223,
+                  122
+                ],
+                "scale_group": "goldgrounddust-265-8"
+              },
+              {
+                "pose": "gold88arc-265-8",
+                "anchor": [
+                  110,
+                  21,
+                  112,
+                  22
+                ],
+                "scale_group": "gold88arc-265-8"
+              },
+              {
+                "pose": "cannon88aim",
+                "anchor": [
+                  1,
+                  4,
+                  120,
+                  122
+                ],
+                "scale_group": "cannon88aim"
+              }
+            ],
+            [
+              {
+                "pose": "goldgrounddust-265-9",
+                "anchor": [
+                  105,
+                  116,
+                  225,
+                  119
+                ],
+                "scale_group": "goldgrounddust-265-9"
+              },
+              {
+                "pose": "gold88arc-265-9",
+                "anchor": [
+                  110,
+                  18,
+                  112,
+                  19
+                ],
+                "scale_group": "gold88arc-265-9"
+              },
+              {
+                "pose": "cannon88aim",
+                "anchor": [
+                  1,
+                  1,
+                  120,
+                  119
+                ],
+                "scale_group": "cannon88aim"
+              }
+            ],
+            [
+              {
+                "pose": "goldgrounddust-265-10",
+                "anchor": [
+                  105,
+                  116,
+                  227,
+                  118
+                ],
+                "scale_group": "goldgrounddust-265-10"
+              },
+              {
+                "pose": "cannon88aim",
+                "anchor": [
+                  1,
+                  0,
+                  120,
+                  118
+                ],
+                "scale_group": "cannon88aim"
+              }
+            ],
+            [
+              {
+                "pose": "goldgrounddust-265-11",
+                "anchor": [
+                  105,
+                  116,
+                  228,
+                  118
+                ],
+                "scale_group": "goldgrounddust-265-11"
+              },
+              {
+                "pose": "cannon88aim",
+                "anchor": [
+                  1,
+                  0,
+                  120,
+                  118
+                ],
+                "scale_group": "cannon88aim"
+              }
+            ],
+            [
+              {
+                "pose": "cannon88aim",
+                "anchor": [
+                  1,
+                  0,
+                  119,
+                  118
+                ],
+                "scale_group": "cannon88aim"
+              }
+            ],
+            [
+              {
+                "pose": "blank265-13",
+                "anchor": [
+                  1,
+                  1,
+                  319,
+                  199
+                ],
+                "scale_group": "blank265-13"
+              }
+            ],
+            [
+              {
+                "pose": "incoming265-14",
+                "anchor": [
+                  1,
+                  1,
+                  32,
+                  13
+                ],
+                "scale_group": "incoming265-14"
+              }
+            ],
+            [
+              {
+                "pose": "gold76slash-265-15",
+                "anchor": [
+                  148,
+                  135,
+                  150,
+                  139
+                ],
+                "scale_group": "gold76slash-265-15"
+              },
+              {
+                "pose": "burst88full",
+                "anchor": [
+                  110,
+                  108,
+                  188,
+                  168
+                ],
+                "scale_group": "burst88full"
+              }
+            ],
+            [
+              {
+                "pose": "burst88ring",
+                "anchor": [
+                  100,
+                  107,
+                  184,
+                  181
+                ],
+                "scale_group": "burst88ring"
+              }
+            ],
+            [
+              {
+                "pose": "burst88ring",
+                "anchor": [
+                  96,
+                  104,
+                  184,
+                  185
+                ],
+                "scale_group": "burst88ring"
+              }
+            ],
+            [
+              {
+                "pose": "burst88sparks",
+                "anchor": [
+                  18,
+                  10,
+                  124,
+                  101
+                ],
+                "scale_group": "burst88sparks"
+              }
+            ],
+            [
+              {
+                "pose": "burst88sparks",
+                "anchor": [
+                  10,
+                  10,
+                  142,
+                  110
+                ],
+                "scale_group": "burst88sparks"
+              }
+            ],
+            [
+              {
+                "pose": "blank265-20",
+                "anchor": [
+                  1,
+                  1,
+                  319,
+                  199
+                ],
+                "scale_group": "blank265-20"
+              }
+            ]
+          ]
+        }
+      },
+      "89": {
+        "schema_version": 1,
+        "figure": 89,
+        "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+        "sources": {
+          "cannon89idle": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-cannon89idle-original-r1.png",
+            "sha256": "328f67ca3b445b342f29fa9ed8ce87be6505c92ad980573ba226591e83f89331",
+            "anchor": [
+              53,
+              23,
+              1072,
+              1292
+            ]
+          },
+          "cannon89aim": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-cannon89aim-original-r1.png",
+            "sha256": "edbad3206ea7084b3766792f95c196ad57f52b695eed0776cc8b2485719221a7",
+            "anchor": [
+              175,
+              21,
+              1227,
+              1219
+            ]
+          },
+          "blue89-flight15": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-blue89beam-original-r1.png",
+            "sha256": "c7fd44b2352518004f5b3c09d30d3fc33c1e5304ca93aa65742fc3a43de56806",
+            "anchor": [
+              1900,
+              313,
+              2084,
+              406
+            ]
+          },
+          "blue89-flight16": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-blue89beam-original-r1.png",
+            "sha256": "c7fd44b2352518004f5b3c09d30d3fc33c1e5304ca93aa65742fc3a43de56806",
+            "anchor": [
+              120,
+              313,
+              2084,
+              406
+            ]
+          },
+          "blue89-flight17": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-blue89beam-original-r1.png",
+            "sha256": "c7fd44b2352518004f5b3c09d30d3fc33c1e5304ca93aa65742fc3a43de56806",
+            "anchor": [
+              120,
+              313,
+              2084,
+              406
+            ]
+          },
+          "blue89-flight18": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-blue89beam-original-r1.png",
+            "sha256": "c7fd44b2352518004f5b3c09d30d3fc33c1e5304ca93aa65742fc3a43de56806",
+            "anchor": [
+              1635,
+              313,
+              2084,
+              406
+            ]
+          },
+          "blue89-flight19": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-blue89beam-original-r1.png",
+            "sha256": "c7fd44b2352518004f5b3c09d30d3fc33c1e5304ca93aa65742fc3a43de56806",
+            "anchor": [
+              120,
+              313,
+              2084,
+              406
+            ]
+          },
+          "blue89beam-268-6": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-blue89beam-original-r1.png",
+            "sha256": "c7fd44b2352518004f5b3c09d30d3fc33c1e5304ca93aa65742fc3a43de56806",
+            "anchor": [
+              120,
+              345,
+              130,
+              365
+            ]
+          },
+          "blue89beam-268-7": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-blue89beam-original-r1.png",
+            "sha256": "c7fd44b2352518004f5b3c09d30d3fc33c1e5304ca93aa65742fc3a43de56806",
+            "anchor": [
+              120,
+              285,
+              130,
+              365
+            ]
+          },
+          "blue89beam-268-8": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-blue89beam-original-r1.png",
+            "sha256": "c7fd44b2352518004f5b3c09d30d3fc33c1e5304ca93aa65742fc3a43de56806",
+            "anchor": [
+              120,
+              205,
+              130,
+              365
+            ]
+          },
+          "blue89beam-268-9": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-blue89beam-original-r1.png",
+            "sha256": "c7fd44b2352518004f5b3c09d30d3fc33c1e5304ca93aa65742fc3a43de56806",
+            "anchor": [
+              1795,
+              205,
+              1805,
+              365
+            ]
+          },
+          "blue89beam-268-10": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-blue89beam-original-r1.png",
+            "sha256": "c7fd44b2352518004f5b3c09d30d3fc33c1e5304ca93aa65742fc3a43de56806",
+            "anchor": [
+              2005,
+              205,
+              2015,
+              365
+            ]
+          },
+          "goldgrounddust-268-7": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-goldgrounddust-original-r1.png",
+            "sha256": "d1cef1e5db94e4d44c0e8bfb1041acb9159ed18399493f1ae7c953486aa9abce",
+            "anchor": [
+              71,
+              204,
+              2102,
+              555
+            ]
+          },
+          "goldgrounddust-268-8": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-goldgrounddust-original-r1.png",
+            "sha256": "d1cef1e5db94e4d44c0e8bfb1041acb9159ed18399493f1ae7c953486aa9abce",
+            "anchor": [
+              71,
+              204,
+              2102,
+              555
+            ]
+          },
+          "goldgrounddust-268-9": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-goldgrounddust-original-r1.png",
+            "sha256": "d1cef1e5db94e4d44c0e8bfb1041acb9159ed18399493f1ae7c953486aa9abce",
+            "anchor": [
+              71,
+              204,
+              2102,
+              555
+            ]
+          },
+          "goldgrounddust-268-10": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-goldgrounddust-original-r1.png",
+            "sha256": "d1cef1e5db94e4d44c0e8bfb1041acb9159ed18399493f1ae7c953486aa9abce",
+            "anchor": [
+              71,
+              204,
+              2102,
+              555
+            ]
+          },
+          "goldgrounddust-268-11": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-goldgrounddust-original-r1.png",
+            "sha256": "d1cef1e5db94e4d44c0e8bfb1041acb9159ed18399493f1ae7c953486aa9abce",
+            "anchor": [
+              71,
+              204,
+              2102,
+              555
+            ]
+          },
+          "goldgrounddust-268-12": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-goldgrounddust-original-r1.png",
+            "sha256": "d1cef1e5db94e4d44c0e8bfb1041acb9159ed18399493f1ae7c953486aa9abce",
+            "anchor": [
+              71,
+              204,
+              2102,
+              555
+            ]
+          },
+          "goldgrounddust-268-13": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-goldgrounddust-original-r1.png",
+            "sha256": "d1cef1e5db94e4d44c0e8bfb1041acb9159ed18399493f1ae7c953486aa9abce",
+            "anchor": [
+              71,
+              204,
+              2102,
+              555
+            ]
+          },
+          "goldgrounddust-268-14": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-goldgrounddust-original-r1.png",
+            "sha256": "d1cef1e5db94e4d44c0e8bfb1041acb9159ed18399493f1ae7c953486aa9abce",
+            "anchor": [
+              71,
+              204,
+              2102,
+              555
+            ]
+          }
+        },
+        "resources": {
+          "267": [
+            [
+              {
+                "pose": "cannon89idle",
+                "anchor": [
+                  1,
+                  1,
+                  109,
+                  119
+                ],
+                "scale_group": "cannon89idle"
+              }
+            ]
+          ],
+          "268": [
+            [
+              {
+                "pose": "cannon89aim",
+                "anchor": [
+                  1,
+                  1,
+                  111,
+                  118
+                ],
+                "scale_group": "cannon89aim"
+              }
+            ],
+            [
+              {
+                "pose": "cannon89aim",
+                "anchor": [
+                  1,
+                  1,
+                  117,
+                  114
+                ],
+                "scale_group": "cannon89aim"
+              }
+            ],
+            [
+              {
+                "pose": "cannon89aim",
+                "anchor": [
+                  1,
+                  1,
+                  117,
+                  114
+                ],
+                "scale_group": "cannon89aim"
+              }
+            ],
+            [
+              {
+                "pose": "cannon89aim",
+                "anchor": [
+                  1,
+                  1,
+                  117,
+                  114
+                ],
+                "scale_group": "cannon89aim"
+              }
+            ],
+            [
+              {
+                "pose": "cannon89aim",
+                "anchor": [
+                  1,
+                  1,
+                  117,
+                  114
+                ],
+                "scale_group": "cannon89aim"
+              }
+            ],
+            [
+              {
+                "pose": "cannon89aim",
+                "anchor": [
+                  1,
+                  1,
+                  117,
+                  114
+                ],
+                "scale_group": "cannon89aim"
+              }
+            ],
+            [
+              {
+                "pose": "blue89beam-268-6",
+                "anchor": [
+                  105,
+                  21,
+                  107,
+                  23
+                ],
+                "scale_group": "blue89beam-268-6"
+              },
+              {
+                "pose": "cannon89aim",
+                "anchor": [
+                  1,
+                  1,
+                  118,
+                  114
+                ],
+                "scale_group": "cannon89aim"
+              }
+            ],
+            [
+              {
+                "pose": "goldgrounddust-268-7",
+                "anchor": [
+                  105,
+                  138,
+                  161,
+                  146
+                ],
+                "scale_group": "goldgrounddust-268-7"
+              },
+              {
+                "pose": "blue89beam-268-7",
+                "anchor": [
+                  109,
+                  50,
+                  111,
+                  51
+                ],
+                "scale_group": "blue89beam-268-7"
+              },
+              {
+                "pose": "cannon89aim",
+                "anchor": [
+                  1,
+                  28,
+                  120,
+                  146
+                ],
+                "scale_group": "cannon89aim"
+              }
+            ],
+            [
+              {
+                "pose": "goldgrounddust-268-8",
+                "anchor": [
+                  105,
+                  133,
+                  179,
+                  140
+                ],
+                "scale_group": "goldgrounddust-268-8"
+              },
+              {
+                "pose": "blue89beam-268-8",
+                "anchor": [
+                  109,
+                  44,
+                  111,
+                  45
+                ],
+                "scale_group": "blue89beam-268-8"
+              },
+              {
+                "pose": "cannon89aim",
+                "anchor": [
+                  1,
+                  22,
+                  120,
+                  140
+                ],
+                "scale_group": "cannon89aim"
+              }
+            ],
+            [
+              {
+                "pose": "goldgrounddust-268-9",
+                "anchor": [
+                  105,
+                  112,
+                  197,
+                  118
+                ],
+                "scale_group": "goldgrounddust-268-9"
+              },
+              {
+                "pose": "blue89beam-268-9",
+                "anchor": [
+                  109,
+                  22,
+                  111,
+                  23
+                ],
+                "scale_group": "blue89beam-268-9"
+              },
+              {
+                "pose": "cannon89aim",
+                "anchor": [
+                  1,
+                  0,
+                  120,
+                  118
+                ],
+                "scale_group": "cannon89aim"
+              }
+            ],
+            [
+              {
+                "pose": "goldgrounddust-268-10",
+                "anchor": [
+                  105,
+                  113,
+                  210,
+                  118
+                ],
+                "scale_group": "goldgrounddust-268-10"
+              },
+              {
+                "pose": "blue89beam-268-10",
+                "anchor": [
+                  109,
+                  22,
+                  111,
+                  23
+                ],
+                "scale_group": "blue89beam-268-10"
+              },
+              {
+                "pose": "cannon89aim",
+                "anchor": [
+                  1,
+                  0,
+                  120,
+                  118
+                ],
+                "scale_group": "cannon89aim"
+              }
+            ],
+            [
+              {
+                "pose": "goldgrounddust-268-11",
+                "anchor": [
+                  105,
+                  114,
+                  223,
+                  118
+                ],
+                "scale_group": "goldgrounddust-268-11"
+              },
+              {
+                "pose": "cannon89aim",
+                "anchor": [
+                  1,
+                  0,
+                  120,
+                  118
+                ],
+                "scale_group": "cannon89aim"
+              }
+            ],
+            [
+              {
+                "pose": "goldgrounddust-268-12",
+                "anchor": [
+                  105,
+                  115,
+                  225,
+                  118
+                ],
+                "scale_group": "goldgrounddust-268-12"
+              },
+              {
+                "pose": "cannon89aim",
+                "anchor": [
+                  1,
+                  0,
+                  120,
+                  118
+                ],
+                "scale_group": "cannon89aim"
+              }
+            ],
+            [
+              {
+                "pose": "goldgrounddust-268-13",
+                "anchor": [
+                  105,
+                  116,
+                  227,
+                  118
+                ],
+                "scale_group": "goldgrounddust-268-13"
+              },
+              {
+                "pose": "cannon89aim",
+                "anchor": [
+                  1,
+                  0,
+                  120,
+                  118
+                ],
+                "scale_group": "cannon89aim"
+              }
+            ],
+            [
+              {
+                "pose": "goldgrounddust-268-14",
+                "anchor": [
+                  105,
+                  116,
+                  228,
+                  118
+                ],
+                "scale_group": "goldgrounddust-268-14"
+              },
+              {
+                "pose": "cannon89aim",
+                "anchor": [
+                  1,
+                  0,
+                  120,
+                  118
+                ],
+                "scale_group": "cannon89aim"
+              }
+            ],
+            [
+              {
+                "pose": "blue89-flight15",
+                "anchor": [
+                  1,
+                  1,
+                  23,
+                  16
+                ],
+                "scale_group": "blue89-flight15"
+              }
+            ],
+            [
+              {
+                "pose": "blue89-flight16",
+                "anchor": [
+                  1,
+                  1,
+                  249,
+                  16
+                ],
+                "scale_group": "blue89-flight16"
+              }
+            ],
+            [
+              {
+                "pose": "blue89-flight17",
+                "anchor": [
+                  1,
+                  1,
+                  319,
+                  16
+                ],
+                "scale_group": "blue89-flight17"
+              }
+            ],
+            [
+              {
+                "pose": "blue89-flight18",
+                "anchor": [
+                  1,
+                  1,
+                  66,
+                  16
+                ],
+                "scale_group": "blue89-flight18"
+              }
+            ],
+            [
+              {
+                "pose": "blue89-flight19",
+                "anchor": [
+                  1,
+                  1,
+                  319,
+                  199
+                ],
+                "scale_group": "blue89-flight19"
+              }
+            ]
+          ]
+        }
+      }
+    },
+    "connections_inline": {
+      "88": {
+        "schema_version": 1,
+        "connections": [
+          {
+            "resource": 265,
+            "frame": 3,
+            "left": {
+              "pose": "cannon88aim",
+              "point": [
+                1200,
+                210
+              ]
+            },
+            "right": {
+              "pose": "beam72-265-3",
+              "point": [
+                50,
+                425
+              ]
+            },
+            "maximum_distance_hd": 8
+          },
+          {
+            "resource": 265,
+            "frame": 4,
+            "left": {
+              "pose": "cannon88aim",
+              "point": [
+                1200,
+                210
+              ]
+            },
+            "right": {
+              "pose": "gold88arc-265-4",
+              "point": [
+                130,
+                535
+              ]
+            },
+            "maximum_distance_hd": 8
+          },
+          {
+            "resource": 265,
+            "frame": 5,
+            "left": {
+              "pose": "cannon88aim",
+              "point": [
+                1200,
+                210
+              ]
+            },
+            "right": {
+              "pose": "gold88arc-265-5",
+              "point": [
+                130,
+                535
+              ]
+            },
+            "maximum_distance_hd": 8
+          },
+          {
+            "resource": 265,
+            "frame": 6,
+            "left": {
+              "pose": "cannon88aim",
+              "point": [
+                1200,
+                210
+              ]
+            },
+            "right": {
+              "pose": "gold88arc-265-6",
+              "point": [
+                130,
+                535
+              ]
+            },
+            "maximum_distance_hd": 8
+          },
+          {
+            "resource": 265,
+            "frame": 7,
+            "left": {
+              "pose": "cannon88aim",
+              "point": [
+                1200,
+                210
+              ]
+            },
+            "right": {
+              "pose": "gold88arc-265-7",
+              "point": [
+                130,
+                535
+              ]
+            },
+            "maximum_distance_hd": 8
+          },
+          {
+            "resource": 265,
+            "frame": 8,
+            "left": {
+              "pose": "cannon88aim",
+              "point": [
+                1200,
+                210
+              ]
+            },
+            "right": {
+              "pose": "gold88arc-265-8",
+              "point": [
+                130,
+                535
+              ]
+            },
+            "maximum_distance_hd": 8
+          },
+          {
+            "resource": 265,
+            "frame": 9,
+            "left": {
+              "pose": "cannon88aim",
+              "point": [
+                1200,
+                210
+              ]
+            },
+            "right": {
+              "pose": "gold88arc-265-9",
+              "point": [
+                130,
+                535
+              ]
+            },
+            "maximum_distance_hd": 8
+          },
+          {
+            "resource": 265,
+            "frame": 15,
+            "left": {
+              "pose": "burst88full",
+              "point": [
+                627,
+                627
+              ]
+            },
+            "right": {
+              "pose": "gold76slash-265-15",
+              "point": [
+                995,
+                1385
+              ]
+            },
+            "maximum_distance_hd": 8
+          }
+        ]
+      },
+      "89": {
+        "schema_version": 1,
+        "connections": [
+          {
+            "resource": 268,
+            "frame": 6,
+            "left": {
+              "pose": "cannon89aim",
+              "point": [
+                1200,
+                250
+              ]
+            },
+            "right": {
+              "pose": "blue89beam-268-6",
+              "point": [
+                125,
+                365
+              ]
+            },
+            "maximum_distance_hd": 8
+          },
+          {
+            "resource": 268,
+            "frame": 7,
+            "left": {
+              "pose": "cannon89aim",
+              "point": [
+                1200,
+                250
+              ]
+            },
+            "right": {
+              "pose": "blue89beam-268-7",
+              "point": [
+                125,
+                365
+              ]
+            },
+            "maximum_distance_hd": 8
+          },
+          {
+            "resource": 268,
+            "frame": 8,
+            "left": {
+              "pose": "cannon89aim",
+              "point": [
+                1200,
+                250
+              ]
+            },
+            "right": {
+              "pose": "blue89beam-268-8",
+              "point": [
+                125,
+                365
+              ]
+            },
+            "maximum_distance_hd": 8
+          },
+          {
+            "resource": 268,
+            "frame": 9,
+            "left": {
+              "pose": "cannon89aim",
+              "point": [
+                1200,
+                250
+              ]
+            },
+            "right": {
+              "pose": "blue89beam-268-9",
+              "point": [
+                1800,
+                365
+              ]
+            },
+            "maximum_distance_hd": 8
+          },
+          {
+            "resource": 268,
+            "frame": 10,
+            "left": {
+              "pose": "cannon89aim",
+              "point": [
+                1200,
+                250
+              ]
+            },
+            "right": {
+              "pose": "blue89beam-268-10",
+              "point": [
+                2010,
+                365
+              ]
+            },
+            "maximum_distance_hd": 8
+          }
+        ]
+      }
+    },
+    "selected_sources": [
+      {
+        "key": "cannon88aim",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-cannon88aim-original-r1.png",
+        "sha256": "b4f9d5676497c79d4154cfc6cebc669c68a380d6e45c0aa1e156418194712e97",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-b28a6707-d31f-43ca-8f91-26dffe2c94b3.png",
+        "args": {
+          "prompt": "Use case: identity-preserve. Asset type: transparent 2D fantasy RPG battle keypose. Adapt FIRST finished blue-armored cannon knight to aiming pose in SECOND pixel reference. Cannon now horizontal across shoulder, its SINGLE round OPEN MUZZLE pointing SCREEN RIGHT. Fullbody turns to right, head mostly hidden UNDER shoulder cannon, both olivegrey gauntleted hands naturally support gun under the front and trigger. Royalblue cannon/breast/shoulders/navy baggy trousers and frontcloth, olivegrey closed cylindrical visor helmet/collar/gloves/pouches. Compact braced stance with feet below hips. Preserve same equipment/material/identity, crisp handpainted contour and shading. Entire cannon, muzzle cap, helmet and both boots inside frame with12percent empty transparent margins. No beam, ground/shadow, captions or grid. True transparent RGBA. One complete sprite, natural shoulder-elbow-wrist.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-cannon88idle-original-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure088-native-265-01-oct23-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          1261,
+          1247
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          146,
+          28,
+          1232,
+          1217
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "cannon89aim",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-cannon89aim-original-r1.png",
+        "sha256": "edbad3206ea7084b3766792f95c196ad57f52b695eed0776cc8b2485719221a7",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-6513a90f-3bc5-4549-8d59-7799f5ba13a4.png",
+        "args": {
+          "prompt": "Use case: identity-preserve. Asset type: transparent 2D fantasy RPG battle keypose. Adapt FIRST finished grey-cannon trooper into SECOND pixel aiming pose. Cannon horizontal across shoulder, SINGLE OPEN ROUND MUZZLE pointing SCREEN RIGHT, rear of cannon to left. Entire fullbody facing right, head mostly hidden UNDER cannon, two hands naturally support grip/trigger beneath front of cannon. Keep olivegrey cannon/closed visor helmet/shoulder plates/shinguards, tan exposed muscular upperarms, brown collar/bracers/belt, navy breast/trousers, rust-red frontcloth and small rust-red crest. Compact planted braced feet under hips. Handpainted medium exactly as first master. Entire sprite and complete gun/muzzlecap/boots inside12percent transparent margins, RGBA background. No beam, groundshadow, text, grid or panel. Continuous shoulder/elbow/wrist anatomy.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-cannon89idle-original-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure089-native-268-01-oct23-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          1271,
+          1237
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          177,
+          23,
+          1225,
+          1217
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "gold88arc",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-gold88arc-original-r1.png",
+        "sha256": "5c09b2ebc3fd21986305eaf4b1cf1a73ba2a3b5b9b5309dfddc025fd7cd5c9c2",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-fa2704b7-b286-47ae-8e72-996141869e44.png",
+        "args": {
+          "prompt": "Use case: stylized-concept. Asset type: isolated transparent 2D RPG cannon projectile effect. Only redraw the GOLDEN ARC of light in reference; no soldier, cannon, ground or dust. One horizontal smooth convex arc, starts thick and bright at LEFT then curves upward to mid peak then slopes down and tapers to a fine right tip. Cream white opaque core, saturated yellowgold thin edge. Crisp handpainted ink-like light streak, no long soft cloud. Wide landscape canvas, effect occupies central70percent with transparent margins all around. True transparent RGBA with solid opaque whitegold core. No text or framing. Exactly one arc.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure088-native-265-04-oct23-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          2172,
+          724
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          92,
+          151,
+          2092,
+          603
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "burst88full",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-burst88full-original-r1.png",
+        "sha256": "73e21d723b63509d74d2f69299171c387c24e11da856ef602725bb8be03dca79",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-44f01bea-9f8e-483f-9315-226ee13bcbe5.png",
+        "args": {
+          "prompt": "Use case: stylized-concept. Asset type: isolated transparent handpainted 2D RPG impact effect. Extract/redraw ONLY star-shaped orange-red/yellow explosion in lower-right of reference as centered standalone effect. No diagonal beam, person, ground or any other objects. Compact irregular bright creamWHITE opaque central core with long angular yellow-orange spikes and short saturated RED outline spikes radiating all directions. Classic fantasy cannon hit flash. Sharp handpainted edges, minimal diffuse glow. Square composition, entire star within central65percent and wide empty transparent border. True transparent RGBA, core alpha fullyopaque. No words, panels or circles of smoke.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure088-native-265-15-oct23-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          1254,
+          1254
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          115,
+          165,
+          1149,
+          1054
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "burst88ring",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-burst88ring-original-r1.png",
+        "sha256": "ce956717fe4ad236cb7ebcfc7a296c9d661cd6dc7183aff08ad7d3212ab14423",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-6eab3e3d-af27-4fe1-af8f-043a32041816.png",
+        "args": {
+          "prompt": "Use case: stylized-concept. Asset type: isolated transparent 2D RPG fading impact ring. Redraw ONLY orange/red spiked blast ring from reference, centered. Ring shaped from angular short flame shards and long spikes radiating outward, yelloworange interior edges and saturated red outeredges. LARGE completely transparent hole at center. No diagonal beam, no central white flash, no circle disc, no ground, no text or other objects. Sharp handpainted light effect with truly opaque highcoverage colored shard cores. Entire spiked ring visible within central65percent of square canvas, wide transparent margins. Preserve actual transparent RGBA center and background.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure088-native-265-17-oct23-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          1254,
+          1254
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          109,
+          63,
+          1184,
+          1096
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "burst88sparks",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-burst88sparks-original-r1.png",
+        "sha256": "20644523bf64bb2bd36ba4be30aa87b6729225fb5fbcc457ea91a5eac71c7abc",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-7c03093e-a435-4066-b891-590a6f4f1827.png",
+        "args": {
+          "prompt": "Use case: stylized-concept. Asset type: isolated transparent 2D RPG dissipating explosion fragments. Redraw ONLY the sparse RED flame shards in reference as a loose centered circular arrangement, about8 small sharp triangular red shards spaced far apart, centers and all gaps fully transparent. Very small orange accents on a few fragments. Dark saturated red, no gold-white full explosion or bloom. Full shards inside central65percent of canvas with wide empty margins. Handpainted crisp contours, solid opaque colored shardcores. RGBA actual transparency, no shadow/ground/text or beam.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure088-native-265-19-oct23-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          1424,
+          1104
+        ],
+        "alpha_extrema": [
+          0,
+          254
+        ],
+        "high_coverage_bbox": [
+          130,
+          37,
+          1298,
+          1038
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "goldgrounddust",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-goldgrounddust-original-r1.png",
+        "sha256": "d1cef1e5db94e4d44c0e8bfb1041acb9159ed18399493f1ae7c953486aa9abce",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-d06cdaba-9587-4d0f-99cc-9f75a18362bc.png",
+        "args": {
+          "prompt": "Use case: stylized-concept. Asset type: isolated transparent 2D fantasy RPG cannon recoil dust strip. Extract/redraw ONLY tan-gold dust fragments along ground at lower-right of reference; absolutely no person, legs, weapon or ground plane. A low horizontal strip of jagged little tan sandwisps, narrow wedge-shaped gusts, a few tiny angular golden specks. Flat bottom alignment, wisps blowing toward right, separated transparent gaps; darkest tan strokes have solid opaque cores. Clean illustrated handpainted sprite effect, no photoreal smoke cloud, no soft opaque background. Wide landscape canvas, strip centered in middle half of image with broad transparent borders. True transparent RGBA, no text.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure088-native-265-08-oct23-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          2172,
+          724
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          73,
+          206,
+          2100,
+          553
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "blue89beam",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-blue89beam-original-r1.png",
+        "sha256": "c7fd44b2352518004f5b3c09d30d3fc33c1e5304ca93aa65742fc3a43de56806",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-b1544ed3-fde5-49f8-8d5b-882fd302247f.png",
+        "args": {
+          "prompt": "Use case: stylized-concept. Asset type: isolated transparent 2D fantasy RPG cannon energy beam sprite. Primary request: Faithful HD redraw of native reference's simple straight WHITE beam with narrow BLUE outline. One long perfectly horizontal beam, uniformly wide opaque purewhite center, thin muted royalblue/darkblue rim at top and bottom; left end flat, right end pointed smallarrowtip. No diagonal slope or cone, no gold/orange. Long landscape transparent canvas, beam centered vertically inside central70percentwidth and central15percentheight, plenty empty transparent space around every edge. Crisp clean handpainted linework, restrained slight texture at blueedge. Core must contain fully opaque pixels, actual RGBA transparency outsidebeam. No sourcecharacter, effects, sparks, grid, text or shadow.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure089-native-268-17-oct23-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          2172,
+          724
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          120,
+          309,
+          2084,
+          414
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "cannon88idle",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-cannon88idle-original-r1.png",
+        "sha256": "cc0edde187800831a9776472c9aa1390b2847c7d4ace134f138e0ec3085466c9",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-f0834699-65ce-4392-95ba-f09f1173bc9b.png",
+        "args": {
+          "prompt": "Use case: stylized-concept. Asset type: transparent 2D fantasy RPG battle sprite master. Primary request: Faithful HD redraw of FIRST native pixel reference using clean handpainted illustration medium of SECOND reference. Vivid royalblue squared shoulder and breast plate, navy baggy trousers/frontcloth and blue boots; dull olivegrey helmet, bracers, collar and pouches. Fully closed simple olive grey cylindrical helmet with narrow visor, NO human face or scarf. Carry ONE large simple royalblue cylindrical single-bore shoulder cannon horizontally across left shoulder, black round open muzzle directed left in the image. One hand grips underside of cannon, other gauntlet rests on waist. Match native pixel palette and native compact stance. Threequarter front view. Full head, entire cannon and both boots visible. Stocky strong adult proportions, compact planted feet under hips; do not spread into wide lunge. Crisp ink contour and painted metal highlights, classic fantasy technoknight. True transparent RGBA background, no text/panels, no ground/shadow, no effects. Single complete sprite only. At least 10 percent transparent margin around every extremity. No modern rifle, no extra barrels, no spikes. Anatomically natural shoulder/elbow/wrist continuity.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure088-native-264-00-oct23-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party7173-cannon72idle-original-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          1206,
+          1305
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          40,
+          9,
+          1082,
+          1294
+        ],
+        "high_coverage_boundary_points": 0
+      },
+      {
+        "key": "cannon89idle",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-cannon89idle-original-r1.png",
+        "sha256": "328f67ca3b445b342f29fa9ed8ce87be6505c92ad980573ba226591e83f89331",
+        "generated_path": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-fc375a38-3cbf-4db0-b4ca-1e467cc5761c.png",
+        "args": {
+          "prompt": "Use case: stylized-concept. Asset type: transparent 2D fantasy RPG battle sprite master. Primary request: Faithful HD redraw of FIRST native pixel reference using clean handpainted illustration medium of SECOND reference. Dark navy breast armor and baggy blue trousers; dull olivegrey shoulder plates, shin guards/boots and cylindrical single-bore cannon; brown collar/belt/pouches/bracers and long rust-red frontcloth; visible tan muscular upper arms, simple closed olivegrey visor helmet and small rust-red plume or crest. Carry ONE large grey olive shoulder cannon across shoulder with black single round bore directed left in image, one hand supporting underneath and other fist at waist. Match native compact stance, do not copy second reference turban/scarf or multi-barrel gun. Threequarter front view. Full head, entire cannon and both boots visible. Stocky strong adult proportions, compact planted feet under hips; do not spread into wide lunge. Crisp ink contour and painted metal highlights, classic fantasy technoknight. True transparent RGBA background, no text/panels, no ground/shadow, no effects. Single complete sprite only. At least 10 percent transparent margin around every extremity. No modern rifle, no extra barrels, no spikes. Anatomically natural shoulder/elbow/wrist continuity.",
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure089-native-267-00-oct23-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party7173-cannon72idle-original-r1.png"
+          ],
+          "transparent_background": true
+        },
+        "size": [
+          1200,
+          1310
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "high_coverage_bbox": [
+          55,
+          25,
+          1070,
+          1290
+        ],
+        "high_coverage_boundary_points": 0
+      }
+    ],
+    "rejected_generation": [],
+    "art_approximations": [
+      "Approved handpainted keypose reuse, cannon larger/head more visible than native, armor/cloth/helmet proportions interpreted. Idle points left, aim right per fixed native views.",
+      "Muzzle/fullcore source contacts authored;88goldarc shrinks at muzzle, where some original late streak fragments detach; recoil dust is shared and scales rather than original scatter shape.",
+      "88impact full/ring/sparse stages use separate raw masters, hollow center truealpha; gold76diagonal reused, ray/fan shape differs. Sparse master max254 unchanged, final nonblank must retain255 via normal resizing.",
+      "89white-blue beam master respects horizontal color and direction, source partial views for incoming/tail; all original frame descriptors/ticks/blank proof kept. Fixed viewport clipping quantified, no alpha editing.",
+      "Late recoil dust minimum2 nativepixels high preserves individual layer >=250 core;1pixel draft alpha240 rejected. Original descriptors/ticks and sourceRGBA unchanged.89last residual sourceheight360 keeps anchorinside source, no threshold relaxation.",
+      "89last two recoil glints retain tested160sourceheight and use later actualopaque tail points1800/2010, moving most glow behind cannon rather than minify to alpha245/225; authored art approximation, nativephase timing preserved."
+    ],
+    "generation_reference_inputs": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure072-native-217-12-oct22-r1.png",
+        "sha256": "34eee4f39c9663fd432ef54dbdcdc63503838c90c55c3e21ec193371e9c41db9"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure072-native-217-13-oct22-r1.png",
+        "sha256": "dcda979d19519429c1fb61792f19c7d854b0aeeb01b709b37658f1fc65d312e6"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure076-native-229-06-oct22-r1.png",
+        "sha256": "e0ded18a5d3e499b62dd0966d96e98129fda4058255332d33d64fd60e426546c"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure088-native-264-00-oct23-r1.png",
+        "sha256": "b781114475564f0c69277019f31988650b58e4edb7557ad7042d431ce294f0a4"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure088-native-265-01-oct23-r1.png",
+        "sha256": "54f06f9e38468a219beac7f0cc9183bf8a902c1fef73f7ab1441f73b7b3212b4"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure088-native-265-04-oct23-r1.png",
+        "sha256": "dbd1bf6eab322deb30176b231673b948562fee9a2b9379511551ed1d4cc9eb6c"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure088-native-265-08-oct23-r1.png",
+        "sha256": "4b3cc8c2b4008f0cbfefbb6f24b4afcacfb0df21a971386fc7231c0cd516e4e7"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure088-native-265-15-oct23-r1.png",
+        "sha256": "1b8e916b7b7f26480876611853355f68f8a588a9337f3f002dced33634de3b0e"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure088-native-265-17-oct23-r1.png",
+        "sha256": "51fb6f7e2ff2f66631aa00c052798ca6f1b09a726d699a75293b5901a240d1f0"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure088-native-265-19-oct23-r1.png",
+        "sha256": "d0576527daad47cf496c37352be2b4cd2f360b187ceec47a5f0570cedf01a164"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure089-native-267-00-oct23-r1.png",
+        "sha256": "a7c57ffebc74cd9e19071e64fb91e683fdd4178c03ac55641af576e30f127d72"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure089-native-268-01-oct23-r1.png",
+        "sha256": "af92253c0cb625f79be9535340a31a2bd94769f101963650dd5995ccbfbef24d"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure089-native-268-17-oct23-r1.png",
+        "sha256": "63868fb4ca48b4245c04baefc0e98b2699fbafd469cf9382c58e7f481953a076"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party7173-cannon72idle-original-r1.png",
+        "sha256": "ee35d2de4f613e07fae582f7598f728a7f5d5f22ecf1eca671f0e698cbadbf57"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-cannon88idle-original-r1.png",
+        "sha256": "cc0edde187800831a9776472c9aa1390b2847c7d4ace134f138e0ec3085466c9"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-cannon89idle-original-r1.png",
+        "sha256": "328f67ca3b445b342f29fa9ed8ce87be6505c92ad980573ba226591e83f89331"
+      }
+    ],
+    "evidence_review": {
+      "all10_selected_sources_viewed": true,
+      "all43_native_frames_reviewed": true,
+      "actual_muzzle_and_projectile_source_contacts_reviewed": true,
+      "projectile_profiles_match_pinned_masks": true,
+      "compiler_and_gpu_pending": false,
+      "both_compiled_sheets_reviewed": true,
+      "both_departure_and_hit_final_game_draws_reviewed": true
+    },
+    "fixture_contract": {
+      "status": "CONFORMED-SCOPED / RUNTIME-E1",
+      "flag": "FD2_HD_BATTLE_ENEMY_ACTOR=1",
+      "actor": "existing enemy Camp/side0 unchanged, selected88/89",
+      "target": "existing own figure0/side2 unchanged",
+      "scope": "Existing test-only swapped fixture. No natural AI/player proof or gameplay change."
+    },
+    "superseded_r1": {
+      "recipes": {
+        "88": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure088-recipe-oct23-r2.json",
+          "sha256": "6a2cf559bb5d8337899cf6f56f0e03c55ee90ad16c5e2e2fcd484dd2c68402c3"
+        },
+        "89": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure089-recipe-oct23-r2.json",
+          "sha256": "9bec9af7a3f4b68308717822bb54c69e1d890114cce380f343b73e75d598de7b"
+        }
+      },
+      "recipe_inline": {
+        "88": {
+          "schema_version": 1,
+          "figure": 88,
+          "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+          "sources": {
+            "cannon88idle": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-cannon88idle-original-r1.png",
+              "sha256": "cc0edde187800831a9776472c9aa1390b2847c7d4ace134f138e0ec3085466c9",
+              "anchor": [
+                38,
+                7,
+                1084,
+                1296
+              ]
+            },
+            "cannon88aim": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-cannon88aim-original-r1.png",
+              "sha256": "b4f9d5676497c79d4154cfc6cebc669c68a380d6e45c0aa1e156418194712e97",
+              "anchor": [
+                144,
+                26,
+                1234,
+                1219
+              ]
+            },
+            "blank265-13": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party7173-beam72-original-r1.png",
+              "sha256": "a25311369f2fe066471039be4fdf73a7bb9cd39fce11ee2c8cc1337e18209041",
+              "anchor": [
+                34,
+                395,
+                1828,
+                459
+              ]
+            },
+            "incoming265-14": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party7679-gold76slash-original-r1.png",
+              "sha256": "4fb47eada44999c3ce5b4a537f7403b64d6ee57455d627f3b098f8cc166eba4a",
+              "anchor": [
+                850,
+                1320,
+                1050,
+                1410
+              ]
+            },
+            "burst88full": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-burst88full-original-r1.png",
+              "sha256": "73e21d723b63509d74d2f69299171c387c24e11da856ef602725bb8be03dca79",
+              "anchor": [
+                113,
+                163,
+                1151,
+                1056
+              ]
+            },
+            "burst88ring": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-burst88ring-original-r1.png",
+              "sha256": "ce956717fe4ad236cb7ebcfc7a296c9d661cd6dc7183aff08ad7d3212ab14423",
+              "anchor": [
+                107,
+                61,
+                1186,
+                1098
+              ]
+            },
+            "burst88sparks": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-burst88sparks-original-r1.png",
+              "sha256": "20644523bf64bb2bd36ba4be30aa87b6729225fb5fbcc457ea91a5eac71c7abc",
+              "anchor": [
+                128,
+                35,
+                1300,
+                1040
+              ]
+            },
+            "blank265-20": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party7173-beam72-original-r1.png",
+              "sha256": "a25311369f2fe066471039be4fdf73a7bb9cd39fce11ee2c8cc1337e18209041",
+              "anchor": [
+                34,
+                395,
+                1828,
+                459
+              ]
+            },
+            "beam72-265-3": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party7173-beam72-original-r1.png",
+              "sha256": "a25311369f2fe066471039be4fdf73a7bb9cd39fce11ee2c8cc1337e18209041",
+              "anchor": [
+                45,
+                405,
+                55,
+                425
+              ]
+            },
+            "gold88arc-265-4": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-gold88arc-original-r1.png",
+              "sha256": "5c09b2ebc3fd21986305eaf4b1cf1a73ba2a3b5b9b5309dfddc025fd7cd5c9c2",
+              "anchor": [
+                125,
+                495,
+                135,
+                535
+              ]
+            },
+            "gold88arc-265-5": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-gold88arc-original-r1.png",
+              "sha256": "5c09b2ebc3fd21986305eaf4b1cf1a73ba2a3b5b9b5309dfddc025fd7cd5c9c2",
+              "anchor": [
+                125,
+                490,
+                135,
+                535
+              ]
+            },
+            "gold88arc-265-6": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-gold88arc-original-r1.png",
+              "sha256": "5c09b2ebc3fd21986305eaf4b1cf1a73ba2a3b5b9b5309dfddc025fd7cd5c9c2",
+              "anchor": [
+                125,
+                485,
+                135,
+                535
+              ]
+            },
+            "gold88arc-265-7": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-gold88arc-original-r1.png",
+              "sha256": "5c09b2ebc3fd21986305eaf4b1cf1a73ba2a3b5b9b5309dfddc025fd7cd5c9c2",
+              "anchor": [
+                125,
+                435,
+                135,
+                535
+              ]
+            },
+            "gold88arc-265-8": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-gold88arc-original-r1.png",
+              "sha256": "5c09b2ebc3fd21986305eaf4b1cf1a73ba2a3b5b9b5309dfddc025fd7cd5c9c2",
+              "anchor": [
+                125,
+                335,
+                135,
+                535
+              ]
+            },
+            "gold88arc-265-9": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-gold88arc-original-r1.png",
+              "sha256": "5c09b2ebc3fd21986305eaf4b1cf1a73ba2a3b5b9b5309dfddc025fd7cd5c9c2",
+              "anchor": [
+                125,
+                135,
+                135,
+                535
+              ]
+            },
+            "gold76slash-265-15": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party7679-gold76slash-original-r1.png",
+              "sha256": "4fb47eada44999c3ce5b4a537f7403b64d6ee57455d627f3b098f8cc166eba4a",
+              "anchor": [
+                990,
+                1345,
+                1000,
+                1385
+              ]
+            },
+            "goldgrounddust-265-4": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-goldgrounddust-original-r1.png",
+              "sha256": "d1cef1e5db94e4d44c0e8bfb1041acb9159ed18399493f1ae7c953486aa9abce",
+              "anchor": [
+                71,
+                204,
+                2102,
+                555
+              ]
+            },
+            "goldgrounddust-265-5": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-goldgrounddust-original-r1.png",
+              "sha256": "d1cef1e5db94e4d44c0e8bfb1041acb9159ed18399493f1ae7c953486aa9abce",
+              "anchor": [
+                71,
+                204,
+                2102,
+                555
+              ]
+            },
+            "goldgrounddust-265-6": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-goldgrounddust-original-r1.png",
+              "sha256": "d1cef1e5db94e4d44c0e8bfb1041acb9159ed18399493f1ae7c953486aa9abce",
+              "anchor": [
+                71,
+                204,
+                2102,
+                555
+              ]
+            },
+            "goldgrounddust-265-7": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-goldgrounddust-original-r1.png",
+              "sha256": "d1cef1e5db94e4d44c0e8bfb1041acb9159ed18399493f1ae7c953486aa9abce",
+              "anchor": [
+                71,
+                204,
+                2102,
+                555
+              ]
+            },
+            "goldgrounddust-265-8": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-goldgrounddust-original-r1.png",
+              "sha256": "d1cef1e5db94e4d44c0e8bfb1041acb9159ed18399493f1ae7c953486aa9abce",
+              "anchor": [
+                71,
+                204,
+                2102,
+                555
+              ]
+            },
+            "goldgrounddust-265-9": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-goldgrounddust-original-r1.png",
+              "sha256": "d1cef1e5db94e4d44c0e8bfb1041acb9159ed18399493f1ae7c953486aa9abce",
+              "anchor": [
+                71,
+                204,
+                2102,
+                555
+              ]
+            },
+            "goldgrounddust-265-10": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-goldgrounddust-original-r1.png",
+              "sha256": "d1cef1e5db94e4d44c0e8bfb1041acb9159ed18399493f1ae7c953486aa9abce",
+              "anchor": [
+                71,
+                204,
+                2102,
+                555
+              ]
+            },
+            "goldgrounddust-265-11": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-goldgrounddust-original-r1.png",
+              "sha256": "d1cef1e5db94e4d44c0e8bfb1041acb9159ed18399493f1ae7c953486aa9abce",
+              "anchor": [
+                71,
+                204,
+                2102,
+                555
+              ]
+            }
+          },
+          "resources": {
+            "264": [
+              [
+                {
+                  "pose": "cannon88idle",
+                  "anchor": [
+                    1,
+                    1,
+                    109,
+                    118
+                  ],
+                  "scale_group": "cannon88idle"
+                }
+              ]
+            ],
+            "265": [
+              [
+                {
+                  "pose": "cannon88aim",
+                  "anchor": [
+                    1,
+                    1,
+                    117,
+                    114
+                  ],
+                  "scale_group": "cannon88aim"
+                }
+              ],
+              [
+                {
+                  "pose": "cannon88aim",
+                  "anchor": [
+                    1,
+                    1,
+                    119,
+                    118
+                  ],
+                  "scale_group": "cannon88aim"
+                }
+              ],
+              [
+                {
+                  "pose": "cannon88aim",
+                  "anchor": [
+                    1,
+                    1,
+                    119,
+                    118
+                  ],
+                  "scale_group": "cannon88aim"
+                }
+              ],
+              [
+                {
+                  "pose": "beam72-265-3",
+                  "anchor": [
+                    110,
+                    37,
+                    112,
+                    39
+                  ],
+                  "scale_group": "beam72-265-3"
+                },
+                {
+                  "pose": "cannon88aim",
+                  "anchor": [
+                    1,
+                    21,
+                    120,
+                    139
+                  ],
+                  "scale_group": "cannon88aim"
+                }
+              ],
+              [
+                {
+                  "pose": "goldgrounddust-265-4",
+                  "anchor": [
+                    105,
+                    129,
+                    248,
+                    137
+                  ],
+                  "scale_group": "goldgrounddust-265-4"
+                },
+                {
+                  "pose": "gold88arc-265-4",
+                  "anchor": [
+                    110,
+                    34,
+                    112,
+                    37
+                  ],
+                  "scale_group": "gold88arc-265-4"
+                },
+                {
+                  "pose": "cannon88aim",
+                  "anchor": [
+                    1,
+                    19,
+                    120,
+                    137
+                  ],
+                  "scale_group": "cannon88aim"
+                }
+              ],
+              [
+                {
+                  "pose": "goldgrounddust-265-5",
+                  "anchor": [
+                    105,
+                    129,
+                    232,
+                    136
+                  ],
+                  "scale_group": "goldgrounddust-265-5"
+                },
+                {
+                  "pose": "gold88arc-265-5",
+                  "anchor": [
+                    110,
+                    34,
+                    112,
+                    36
+                  ],
+                  "scale_group": "gold88arc-265-5"
+                },
+                {
+                  "pose": "cannon88aim",
+                  "anchor": [
+                    1,
+                    18,
+                    120,
+                    136
+                  ],
+                  "scale_group": "cannon88aim"
+                }
+              ],
+              [
+                {
+                  "pose": "goldgrounddust-265-6",
+                  "anchor": [
+                    105,
+                    124,
+                    223,
+                    130
+                  ],
+                  "scale_group": "goldgrounddust-265-6"
+                },
+                {
+                  "pose": "gold88arc-265-6",
+                  "anchor": [
+                    110,
+                    29,
+                    112,
+                    30
+                  ],
+                  "scale_group": "gold88arc-265-6"
+                },
+                {
+                  "pose": "cannon88aim",
+                  "anchor": [
+                    1,
+                    12,
+                    120,
+                    130
+                  ],
+                  "scale_group": "cannon88aim"
+                }
+              ],
+              [
+                {
+                  "pose": "goldgrounddust-265-7",
+                  "anchor": [
+                    105,
+                    119,
+                    223,
+                    124
+                  ],
+                  "scale_group": "goldgrounddust-265-7"
+                },
+                {
+                  "pose": "gold88arc-265-7",
+                  "anchor": [
+                    110,
+                    23,
+                    112,
+                    24
+                  ],
+                  "scale_group": "gold88arc-265-7"
+                },
+                {
+                  "pose": "cannon88aim",
+                  "anchor": [
+                    1,
+                    6,
+                    120,
+                    124
+                  ],
+                  "scale_group": "cannon88aim"
+                }
+              ],
+              [
+                {
+                  "pose": "goldgrounddust-265-8",
+                  "anchor": [
+                    105,
+                    118,
+                    223,
+                    122
+                  ],
+                  "scale_group": "goldgrounddust-265-8"
+                },
+                {
+                  "pose": "gold88arc-265-8",
+                  "anchor": [
+                    110,
+                    21,
+                    112,
+                    22
+                  ],
+                  "scale_group": "gold88arc-265-8"
+                },
+                {
+                  "pose": "cannon88aim",
+                  "anchor": [
+                    1,
+                    4,
+                    120,
+                    122
+                  ],
+                  "scale_group": "cannon88aim"
+                }
+              ],
+              [
+                {
+                  "pose": "goldgrounddust-265-9",
+                  "anchor": [
+                    105,
+                    116,
+                    225,
+                    119
+                  ],
+                  "scale_group": "goldgrounddust-265-9"
+                },
+                {
+                  "pose": "gold88arc-265-9",
+                  "anchor": [
+                    110,
+                    18,
+                    112,
+                    19
+                  ],
+                  "scale_group": "gold88arc-265-9"
+                },
+                {
+                  "pose": "cannon88aim",
+                  "anchor": [
+                    1,
+                    1,
+                    120,
+                    119
+                  ],
+                  "scale_group": "cannon88aim"
+                }
+              ],
+              [
+                {
+                  "pose": "goldgrounddust-265-10",
+                  "anchor": [
+                    105,
+                    116,
+                    227,
+                    118
+                  ],
+                  "scale_group": "goldgrounddust-265-10"
+                },
+                {
+                  "pose": "cannon88aim",
+                  "anchor": [
+                    1,
+                    0,
+                    120,
+                    118
+                  ],
+                  "scale_group": "cannon88aim"
+                }
+              ],
+              [
+                {
+                  "pose": "goldgrounddust-265-11",
+                  "anchor": [
+                    105,
+                    116,
+                    228,
+                    118
+                  ],
+                  "scale_group": "goldgrounddust-265-11"
+                },
+                {
+                  "pose": "cannon88aim",
+                  "anchor": [
+                    1,
+                    0,
+                    120,
+                    118
+                  ],
+                  "scale_group": "cannon88aim"
+                }
+              ],
+              [
+                {
+                  "pose": "cannon88aim",
+                  "anchor": [
+                    1,
+                    0,
+                    119,
+                    118
+                  ],
+                  "scale_group": "cannon88aim"
+                }
+              ],
+              [
+                {
+                  "pose": "blank265-13",
+                  "anchor": [
+                    1,
+                    1,
+                    319,
+                    199
+                  ],
+                  "scale_group": "blank265-13"
+                }
+              ],
+              [
+                {
+                  "pose": "incoming265-14",
+                  "anchor": [
+                    1,
+                    1,
+                    32,
+                    13
+                  ],
+                  "scale_group": "incoming265-14"
+                }
+              ],
+              [
+                {
+                  "pose": "gold76slash-265-15",
+                  "anchor": [
+                    148,
+                    135,
+                    150,
+                    139
+                  ],
+                  "scale_group": "gold76slash-265-15"
+                },
+                {
+                  "pose": "burst88full",
+                  "anchor": [
+                    110,
+                    108,
+                    188,
+                    168
+                  ],
+                  "scale_group": "burst88full"
+                }
+              ],
+              [
+                {
+                  "pose": "burst88ring",
+                  "anchor": [
+                    100,
+                    107,
+                    184,
+                    181
+                  ],
+                  "scale_group": "burst88ring"
+                }
+              ],
+              [
+                {
+                  "pose": "burst88ring",
+                  "anchor": [
+                    96,
+                    104,
+                    184,
+                    185
+                  ],
+                  "scale_group": "burst88ring"
+                }
+              ],
+              [
+                {
+                  "pose": "burst88sparks",
+                  "anchor": [
+                    18,
+                    10,
+                    124,
+                    101
+                  ],
+                  "scale_group": "burst88sparks"
+                }
+              ],
+              [
+                {
+                  "pose": "burst88sparks",
+                  "anchor": [
+                    10,
+                    10,
+                    142,
+                    110
+                  ],
+                  "scale_group": "burst88sparks"
+                }
+              ],
+              [
+                {
+                  "pose": "blank265-20",
+                  "anchor": [
+                    1,
+                    1,
+                    319,
+                    199
+                  ],
+                  "scale_group": "blank265-20"
+                }
+              ]
+            ]
+          }
+        },
+        "89": {
+          "schema_version": 1,
+          "figure": 89,
+          "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+          "sources": {
+            "cannon89idle": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-cannon89idle-original-r1.png",
+              "sha256": "328f67ca3b445b342f29fa9ed8ce87be6505c92ad980573ba226591e83f89331",
+              "anchor": [
+                53,
+                23,
+                1072,
+                1292
+              ]
+            },
+            "cannon89aim": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-cannon89aim-original-r1.png",
+              "sha256": "edbad3206ea7084b3766792f95c196ad57f52b695eed0776cc8b2485719221a7",
+              "anchor": [
+                175,
+                21,
+                1227,
+                1219
+              ]
+            },
+            "blue89-flight15": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-blue89beam-original-r1.png",
+              "sha256": "c7fd44b2352518004f5b3c09d30d3fc33c1e5304ca93aa65742fc3a43de56806",
+              "anchor": [
+                1900,
+                313,
+                2084,
+                406
+              ]
+            },
+            "blue89-flight16": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-blue89beam-original-r1.png",
+              "sha256": "c7fd44b2352518004f5b3c09d30d3fc33c1e5304ca93aa65742fc3a43de56806",
+              "anchor": [
+                120,
+                313,
+                2084,
+                406
+              ]
+            },
+            "blue89-flight17": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-blue89beam-original-r1.png",
+              "sha256": "c7fd44b2352518004f5b3c09d30d3fc33c1e5304ca93aa65742fc3a43de56806",
+              "anchor": [
+                120,
+                313,
+                2084,
+                406
+              ]
+            },
+            "blue89-flight18": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-blue89beam-original-r1.png",
+              "sha256": "c7fd44b2352518004f5b3c09d30d3fc33c1e5304ca93aa65742fc3a43de56806",
+              "anchor": [
+                1635,
+                313,
+                2084,
+                406
+              ]
+            },
+            "blue89-flight19": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-blue89beam-original-r1.png",
+              "sha256": "c7fd44b2352518004f5b3c09d30d3fc33c1e5304ca93aa65742fc3a43de56806",
+              "anchor": [
+                120,
+                313,
+                2084,
+                406
+              ]
+            },
+            "blue89beam-268-6": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-blue89beam-original-r1.png",
+              "sha256": "c7fd44b2352518004f5b3c09d30d3fc33c1e5304ca93aa65742fc3a43de56806",
+              "anchor": [
+                120,
+                345,
+                130,
+                365
+              ]
+            },
+            "blue89beam-268-7": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-blue89beam-original-r1.png",
+              "sha256": "c7fd44b2352518004f5b3c09d30d3fc33c1e5304ca93aa65742fc3a43de56806",
+              "anchor": [
+                120,
+                285,
+                130,
+                365
+              ]
+            },
+            "blue89beam-268-8": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-blue89beam-original-r1.png",
+              "sha256": "c7fd44b2352518004f5b3c09d30d3fc33c1e5304ca93aa65742fc3a43de56806",
+              "anchor": [
+                120,
+                205,
+                130,
+                365
+              ]
+            },
+            "blue89beam-268-9": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-blue89beam-original-r1.png",
+              "sha256": "c7fd44b2352518004f5b3c09d30d3fc33c1e5304ca93aa65742fc3a43de56806",
+              "anchor": [
+                120,
+                45,
+                130,
+                365
+              ]
+            },
+            "blue89beam-268-10": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-blue89beam-original-r1.png",
+              "sha256": "c7fd44b2352518004f5b3c09d30d3fc33c1e5304ca93aa65742fc3a43de56806",
+              "anchor": [
+                120,
+                5,
+                130,
+                365
+              ]
+            },
+            "goldgrounddust-268-7": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-goldgrounddust-original-r1.png",
+              "sha256": "d1cef1e5db94e4d44c0e8bfb1041acb9159ed18399493f1ae7c953486aa9abce",
+              "anchor": [
+                71,
+                204,
+                2102,
+                555
+              ]
+            },
+            "goldgrounddust-268-8": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-goldgrounddust-original-r1.png",
+              "sha256": "d1cef1e5db94e4d44c0e8bfb1041acb9159ed18399493f1ae7c953486aa9abce",
+              "anchor": [
+                71,
+                204,
+                2102,
+                555
+              ]
+            },
+            "goldgrounddust-268-9": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-goldgrounddust-original-r1.png",
+              "sha256": "d1cef1e5db94e4d44c0e8bfb1041acb9159ed18399493f1ae7c953486aa9abce",
+              "anchor": [
+                71,
+                204,
+                2102,
+                555
+              ]
+            },
+            "goldgrounddust-268-10": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-goldgrounddust-original-r1.png",
+              "sha256": "d1cef1e5db94e4d44c0e8bfb1041acb9159ed18399493f1ae7c953486aa9abce",
+              "anchor": [
+                71,
+                204,
+                2102,
+                555
+              ]
+            },
+            "goldgrounddust-268-11": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-goldgrounddust-original-r1.png",
+              "sha256": "d1cef1e5db94e4d44c0e8bfb1041acb9159ed18399493f1ae7c953486aa9abce",
+              "anchor": [
+                71,
+                204,
+                2102,
+                555
+              ]
+            },
+            "goldgrounddust-268-12": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-goldgrounddust-original-r1.png",
+              "sha256": "d1cef1e5db94e4d44c0e8bfb1041acb9159ed18399493f1ae7c953486aa9abce",
+              "anchor": [
+                71,
+                204,
+                2102,
+                555
+              ]
+            },
+            "goldgrounddust-268-13": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-goldgrounddust-original-r1.png",
+              "sha256": "d1cef1e5db94e4d44c0e8bfb1041acb9159ed18399493f1ae7c953486aa9abce",
+              "anchor": [
+                71,
+                204,
+                2102,
+                555
+              ]
+            },
+            "goldgrounddust-268-14": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-goldgrounddust-original-r1.png",
+              "sha256": "d1cef1e5db94e4d44c0e8bfb1041acb9159ed18399493f1ae7c953486aa9abce",
+              "anchor": [
+                71,
+                204,
+                2102,
+                555
+              ]
+            }
+          },
+          "resources": {
+            "267": [
+              [
+                {
+                  "pose": "cannon89idle",
+                  "anchor": [
+                    1,
+                    1,
+                    109,
+                    119
+                  ],
+                  "scale_group": "cannon89idle"
+                }
+              ]
+            ],
+            "268": [
+              [
+                {
+                  "pose": "cannon89aim",
+                  "anchor": [
+                    1,
+                    1,
+                    111,
+                    118
+                  ],
+                  "scale_group": "cannon89aim"
+                }
+              ],
+              [
+                {
+                  "pose": "cannon89aim",
+                  "anchor": [
+                    1,
+                    1,
+                    117,
+                    114
+                  ],
+                  "scale_group": "cannon89aim"
+                }
+              ],
+              [
+                {
+                  "pose": "cannon89aim",
+                  "anchor": [
+                    1,
+                    1,
+                    117,
+                    114
+                  ],
+                  "scale_group": "cannon89aim"
+                }
+              ],
+              [
+                {
+                  "pose": "cannon89aim",
+                  "anchor": [
+                    1,
+                    1,
+                    117,
+                    114
+                  ],
+                  "scale_group": "cannon89aim"
+                }
+              ],
+              [
+                {
+                  "pose": "cannon89aim",
+                  "anchor": [
+                    1,
+                    1,
+                    117,
+                    114
+                  ],
+                  "scale_group": "cannon89aim"
+                }
+              ],
+              [
+                {
+                  "pose": "cannon89aim",
+                  "anchor": [
+                    1,
+                    1,
+                    117,
+                    114
+                  ],
+                  "scale_group": "cannon89aim"
+                }
+              ],
+              [
+                {
+                  "pose": "blue89beam-268-6",
+                  "anchor": [
+                    105,
+                    21,
+                    107,
+                    23
+                  ],
+                  "scale_group": "blue89beam-268-6"
+                },
+                {
+                  "pose": "cannon89aim",
+                  "anchor": [
+                    1,
+                    1,
+                    118,
+                    114
+                  ],
+                  "scale_group": "cannon89aim"
+                }
+              ],
+              [
+                {
+                  "pose": "goldgrounddust-268-7",
+                  "anchor": [
+                    105,
+                    138,
+                    161,
+                    146
+                  ],
+                  "scale_group": "goldgrounddust-268-7"
+                },
+                {
+                  "pose": "blue89beam-268-7",
+                  "anchor": [
+                    109,
+                    50,
+                    111,
+                    51
+                  ],
+                  "scale_group": "blue89beam-268-7"
+                },
+                {
+                  "pose": "cannon89aim",
+                  "anchor": [
+                    1,
+                    28,
+                    120,
+                    146
+                  ],
+                  "scale_group": "cannon89aim"
+                }
+              ],
+              [
+                {
+                  "pose": "goldgrounddust-268-8",
+                  "anchor": [
+                    105,
+                    133,
+                    179,
+                    140
+                  ],
+                  "scale_group": "goldgrounddust-268-8"
+                },
+                {
+                  "pose": "blue89beam-268-8",
+                  "anchor": [
+                    109,
+                    44,
+                    111,
+                    45
+                  ],
+                  "scale_group": "blue89beam-268-8"
+                },
+                {
+                  "pose": "cannon89aim",
+                  "anchor": [
+                    1,
+                    22,
+                    120,
+                    140
+                  ],
+                  "scale_group": "cannon89aim"
+                }
+              ],
+              [
+                {
+                  "pose": "goldgrounddust-268-9",
+                  "anchor": [
+                    105,
+                    112,
+                    197,
+                    118
+                  ],
+                  "scale_group": "goldgrounddust-268-9"
+                },
+                {
+                  "pose": "blue89beam-268-9",
+                  "anchor": [
+                    109,
+                    22,
+                    111,
+                    23
+                  ],
+                  "scale_group": "blue89beam-268-9"
+                },
+                {
+                  "pose": "cannon89aim",
+                  "anchor": [
+                    1,
+                    0,
+                    120,
+                    118
+                  ],
+                  "scale_group": "cannon89aim"
+                }
+              ],
+              [
+                {
+                  "pose": "goldgrounddust-268-10",
+                  "anchor": [
+                    105,
+                    113,
+                    210,
+                    118
+                  ],
+                  "scale_group": "goldgrounddust-268-10"
+                },
+                {
+                  "pose": "blue89beam-268-10",
+                  "anchor": [
+                    109,
+                    22,
+                    111,
+                    23
+                  ],
+                  "scale_group": "blue89beam-268-10"
+                },
+                {
+                  "pose": "cannon89aim",
+                  "anchor": [
+                    1,
+                    0,
+                    120,
+                    118
+                  ],
+                  "scale_group": "cannon89aim"
+                }
+              ],
+              [
+                {
+                  "pose": "goldgrounddust-268-11",
+                  "anchor": [
+                    105,
+                    114,
+                    223,
+                    118
+                  ],
+                  "scale_group": "goldgrounddust-268-11"
+                },
+                {
+                  "pose": "cannon89aim",
+                  "anchor": [
+                    1,
+                    0,
+                    120,
+                    118
+                  ],
+                  "scale_group": "cannon89aim"
+                }
+              ],
+              [
+                {
+                  "pose": "goldgrounddust-268-12",
+                  "anchor": [
+                    105,
+                    115,
+                    225,
+                    118
+                  ],
+                  "scale_group": "goldgrounddust-268-12"
+                },
+                {
+                  "pose": "cannon89aim",
+                  "anchor": [
+                    1,
+                    0,
+                    120,
+                    118
+                  ],
+                  "scale_group": "cannon89aim"
+                }
+              ],
+              [
+                {
+                  "pose": "goldgrounddust-268-13",
+                  "anchor": [
+                    105,
+                    116,
+                    227,
+                    118
+                  ],
+                  "scale_group": "goldgrounddust-268-13"
+                },
+                {
+                  "pose": "cannon89aim",
+                  "anchor": [
+                    1,
+                    0,
+                    120,
+                    118
+                  ],
+                  "scale_group": "cannon89aim"
+                }
+              ],
+              [
+                {
+                  "pose": "goldgrounddust-268-14",
+                  "anchor": [
+                    105,
+                    116,
+                    228,
+                    118
+                  ],
+                  "scale_group": "goldgrounddust-268-14"
+                },
+                {
+                  "pose": "cannon89aim",
+                  "anchor": [
+                    1,
+                    0,
+                    120,
+                    118
+                  ],
+                  "scale_group": "cannon89aim"
+                }
+              ],
+              [
+                {
+                  "pose": "blue89-flight15",
+                  "anchor": [
+                    1,
+                    1,
+                    23,
+                    16
+                  ],
+                  "scale_group": "blue89-flight15"
+                }
+              ],
+              [
+                {
+                  "pose": "blue89-flight16",
+                  "anchor": [
+                    1,
+                    1,
+                    249,
+                    16
+                  ],
+                  "scale_group": "blue89-flight16"
+                }
+              ],
+              [
+                {
+                  "pose": "blue89-flight17",
+                  "anchor": [
+                    1,
+                    1,
+                    319,
+                    16
+                  ],
+                  "scale_group": "blue89-flight17"
+                }
+              ],
+              [
+                {
+                  "pose": "blue89-flight18",
+                  "anchor": [
+                    1,
+                    1,
+                    66,
+                    16
+                  ],
+                  "scale_group": "blue89-flight18"
+                }
+              ],
+              [
+                {
+                  "pose": "blue89-flight19",
+                  "anchor": [
+                    1,
+                    1,
+                    319,
+                    199
+                  ],
+                  "scale_group": "blue89-flight19"
+                }
+              ]
+            ]
+          }
+        }
+      },
+      "compile88_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party088-compile-oct23-r1.log",
+        "sha256": "28552d961bd915f4fd014bbc5b4c42edf136093382b0ec1c78dcd29d5c2c5e16"
+      },
+      "candidate_published": false,
+      "reason": "265:11 dust source minification alpha240 rejected before publishing any candidate; nativeheight2 dust already passed at265:10. Also preflight noticed blue89beam-268-10 source anchor top<0 fromheight640, nowheight360 within source. No RGBA/threshold/gameplay changes."
+    },
+    "superseded89_r2": {
+      "recipe": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure089-recipe-oct23-r2.json",
+        "sha256": "9bec9af7a3f4b68308717822bb54c69e1d890114cce380f343b73e75d598de7b"
+      },
+      "recipe_inline": {
+        "schema_version": 1,
+        "figure": 89,
+        "inventory_sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51",
+        "sources": {
+          "cannon89idle": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-cannon89idle-original-r1.png",
+            "sha256": "328f67ca3b445b342f29fa9ed8ce87be6505c92ad980573ba226591e83f89331",
+            "anchor": [
+              53,
+              23,
+              1072,
+              1292
+            ]
+          },
+          "cannon89aim": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-cannon89aim-original-r1.png",
+            "sha256": "edbad3206ea7084b3766792f95c196ad57f52b695eed0776cc8b2485719221a7",
+            "anchor": [
+              175,
+              21,
+              1227,
+              1219
+            ]
+          },
+          "blue89-flight15": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-blue89beam-original-r1.png",
+            "sha256": "c7fd44b2352518004f5b3c09d30d3fc33c1e5304ca93aa65742fc3a43de56806",
+            "anchor": [
+              1900,
+              313,
+              2084,
+              406
+            ]
+          },
+          "blue89-flight16": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-blue89beam-original-r1.png",
+            "sha256": "c7fd44b2352518004f5b3c09d30d3fc33c1e5304ca93aa65742fc3a43de56806",
+            "anchor": [
+              120,
+              313,
+              2084,
+              406
+            ]
+          },
+          "blue89-flight17": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-blue89beam-original-r1.png",
+            "sha256": "c7fd44b2352518004f5b3c09d30d3fc33c1e5304ca93aa65742fc3a43de56806",
+            "anchor": [
+              120,
+              313,
+              2084,
+              406
+            ]
+          },
+          "blue89-flight18": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-blue89beam-original-r1.png",
+            "sha256": "c7fd44b2352518004f5b3c09d30d3fc33c1e5304ca93aa65742fc3a43de56806",
+            "anchor": [
+              1635,
+              313,
+              2084,
+              406
+            ]
+          },
+          "blue89-flight19": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-blue89beam-original-r1.png",
+            "sha256": "c7fd44b2352518004f5b3c09d30d3fc33c1e5304ca93aa65742fc3a43de56806",
+            "anchor": [
+              120,
+              313,
+              2084,
+              406
+            ]
+          },
+          "blue89beam-268-6": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-blue89beam-original-r1.png",
+            "sha256": "c7fd44b2352518004f5b3c09d30d3fc33c1e5304ca93aa65742fc3a43de56806",
+            "anchor": [
+              120,
+              345,
+              130,
+              365
+            ]
+          },
+          "blue89beam-268-7": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-blue89beam-original-r1.png",
+            "sha256": "c7fd44b2352518004f5b3c09d30d3fc33c1e5304ca93aa65742fc3a43de56806",
+            "anchor": [
+              120,
+              285,
+              130,
+              365
+            ]
+          },
+          "blue89beam-268-8": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-blue89beam-original-r1.png",
+            "sha256": "c7fd44b2352518004f5b3c09d30d3fc33c1e5304ca93aa65742fc3a43de56806",
+            "anchor": [
+              120,
+              205,
+              130,
+              365
+            ]
+          },
+          "blue89beam-268-9": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-blue89beam-original-r1.png",
+            "sha256": "c7fd44b2352518004f5b3c09d30d3fc33c1e5304ca93aa65742fc3a43de56806",
+            "anchor": [
+              120,
+              45,
+              130,
+              365
+            ]
+          },
+          "blue89beam-268-10": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-blue89beam-original-r1.png",
+            "sha256": "c7fd44b2352518004f5b3c09d30d3fc33c1e5304ca93aa65742fc3a43de56806",
+            "anchor": [
+              120,
+              5,
+              130,
+              365
+            ]
+          },
+          "goldgrounddust-268-7": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-goldgrounddust-original-r1.png",
+            "sha256": "d1cef1e5db94e4d44c0e8bfb1041acb9159ed18399493f1ae7c953486aa9abce",
+            "anchor": [
+              71,
+              204,
+              2102,
+              555
+            ]
+          },
+          "goldgrounddust-268-8": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-goldgrounddust-original-r1.png",
+            "sha256": "d1cef1e5db94e4d44c0e8bfb1041acb9159ed18399493f1ae7c953486aa9abce",
+            "anchor": [
+              71,
+              204,
+              2102,
+              555
+            ]
+          },
+          "goldgrounddust-268-9": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-goldgrounddust-original-r1.png",
+            "sha256": "d1cef1e5db94e4d44c0e8bfb1041acb9159ed18399493f1ae7c953486aa9abce",
+            "anchor": [
+              71,
+              204,
+              2102,
+              555
+            ]
+          },
+          "goldgrounddust-268-10": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-goldgrounddust-original-r1.png",
+            "sha256": "d1cef1e5db94e4d44c0e8bfb1041acb9159ed18399493f1ae7c953486aa9abce",
+            "anchor": [
+              71,
+              204,
+              2102,
+              555
+            ]
+          },
+          "goldgrounddust-268-11": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-goldgrounddust-original-r1.png",
+            "sha256": "d1cef1e5db94e4d44c0e8bfb1041acb9159ed18399493f1ae7c953486aa9abce",
+            "anchor": [
+              71,
+              204,
+              2102,
+              555
+            ]
+          },
+          "goldgrounddust-268-12": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-goldgrounddust-original-r1.png",
+            "sha256": "d1cef1e5db94e4d44c0e8bfb1041acb9159ed18399493f1ae7c953486aa9abce",
+            "anchor": [
+              71,
+              204,
+              2102,
+              555
+            ]
+          },
+          "goldgrounddust-268-13": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-goldgrounddust-original-r1.png",
+            "sha256": "d1cef1e5db94e4d44c0e8bfb1041acb9159ed18399493f1ae7c953486aa9abce",
+            "anchor": [
+              71,
+              204,
+              2102,
+              555
+            ]
+          },
+          "goldgrounddust-268-14": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-goldgrounddust-original-r1.png",
+            "sha256": "d1cef1e5db94e4d44c0e8bfb1041acb9159ed18399493f1ae7c953486aa9abce",
+            "anchor": [
+              71,
+              204,
+              2102,
+              555
+            ]
+          }
+        },
+        "resources": {
+          "267": [
+            [
+              {
+                "pose": "cannon89idle",
+                "anchor": [
+                  1,
+                  1,
+                  109,
+                  119
+                ],
+                "scale_group": "cannon89idle"
+              }
+            ]
+          ],
+          "268": [
+            [
+              {
+                "pose": "cannon89aim",
+                "anchor": [
+                  1,
+                  1,
+                  111,
+                  118
+                ],
+                "scale_group": "cannon89aim"
+              }
+            ],
+            [
+              {
+                "pose": "cannon89aim",
+                "anchor": [
+                  1,
+                  1,
+                  117,
+                  114
+                ],
+                "scale_group": "cannon89aim"
+              }
+            ],
+            [
+              {
+                "pose": "cannon89aim",
+                "anchor": [
+                  1,
+                  1,
+                  117,
+                  114
+                ],
+                "scale_group": "cannon89aim"
+              }
+            ],
+            [
+              {
+                "pose": "cannon89aim",
+                "anchor": [
+                  1,
+                  1,
+                  117,
+                  114
+                ],
+                "scale_group": "cannon89aim"
+              }
+            ],
+            [
+              {
+                "pose": "cannon89aim",
+                "anchor": [
+                  1,
+                  1,
+                  117,
+                  114
+                ],
+                "scale_group": "cannon89aim"
+              }
+            ],
+            [
+              {
+                "pose": "cannon89aim",
+                "anchor": [
+                  1,
+                  1,
+                  117,
+                  114
+                ],
+                "scale_group": "cannon89aim"
+              }
+            ],
+            [
+              {
+                "pose": "blue89beam-268-6",
+                "anchor": [
+                  105,
+                  21,
+                  107,
+                  23
+                ],
+                "scale_group": "blue89beam-268-6"
+              },
+              {
+                "pose": "cannon89aim",
+                "anchor": [
+                  1,
+                  1,
+                  118,
+                  114
+                ],
+                "scale_group": "cannon89aim"
+              }
+            ],
+            [
+              {
+                "pose": "goldgrounddust-268-7",
+                "anchor": [
+                  105,
+                  138,
+                  161,
+                  146
+                ],
+                "scale_group": "goldgrounddust-268-7"
+              },
+              {
+                "pose": "blue89beam-268-7",
+                "anchor": [
+                  109,
+                  50,
+                  111,
+                  51
+                ],
+                "scale_group": "blue89beam-268-7"
+              },
+              {
+                "pose": "cannon89aim",
+                "anchor": [
+                  1,
+                  28,
+                  120,
+                  146
+                ],
+                "scale_group": "cannon89aim"
+              }
+            ],
+            [
+              {
+                "pose": "goldgrounddust-268-8",
+                "anchor": [
+                  105,
+                  133,
+                  179,
+                  140
+                ],
+                "scale_group": "goldgrounddust-268-8"
+              },
+              {
+                "pose": "blue89beam-268-8",
+                "anchor": [
+                  109,
+                  44,
+                  111,
+                  45
+                ],
+                "scale_group": "blue89beam-268-8"
+              },
+              {
+                "pose": "cannon89aim",
+                "anchor": [
+                  1,
+                  22,
+                  120,
+                  140
+                ],
+                "scale_group": "cannon89aim"
+              }
+            ],
+            [
+              {
+                "pose": "goldgrounddust-268-9",
+                "anchor": [
+                  105,
+                  112,
+                  197,
+                  118
+                ],
+                "scale_group": "goldgrounddust-268-9"
+              },
+              {
+                "pose": "blue89beam-268-9",
+                "anchor": [
+                  109,
+                  22,
+                  111,
+                  23
+                ],
+                "scale_group": "blue89beam-268-9"
+              },
+              {
+                "pose": "cannon89aim",
+                "anchor": [
+                  1,
+                  0,
+                  120,
+                  118
+                ],
+                "scale_group": "cannon89aim"
+              }
+            ],
+            [
+              {
+                "pose": "goldgrounddust-268-10",
+                "anchor": [
+                  105,
+                  113,
+                  210,
+                  118
+                ],
+                "scale_group": "goldgrounddust-268-10"
+              },
+              {
+                "pose": "blue89beam-268-10",
+                "anchor": [
+                  109,
+                  22,
+                  111,
+                  23
+                ],
+                "scale_group": "blue89beam-268-10"
+              },
+              {
+                "pose": "cannon89aim",
+                "anchor": [
+                  1,
+                  0,
+                  120,
+                  118
+                ],
+                "scale_group": "cannon89aim"
+              }
+            ],
+            [
+              {
+                "pose": "goldgrounddust-268-11",
+                "anchor": [
+                  105,
+                  114,
+                  223,
+                  118
+                ],
+                "scale_group": "goldgrounddust-268-11"
+              },
+              {
+                "pose": "cannon89aim",
+                "anchor": [
+                  1,
+                  0,
+                  120,
+                  118
+                ],
+                "scale_group": "cannon89aim"
+              }
+            ],
+            [
+              {
+                "pose": "goldgrounddust-268-12",
+                "anchor": [
+                  105,
+                  115,
+                  225,
+                  118
+                ],
+                "scale_group": "goldgrounddust-268-12"
+              },
+              {
+                "pose": "cannon89aim",
+                "anchor": [
+                  1,
+                  0,
+                  120,
+                  118
+                ],
+                "scale_group": "cannon89aim"
+              }
+            ],
+            [
+              {
+                "pose": "goldgrounddust-268-13",
+                "anchor": [
+                  105,
+                  116,
+                  227,
+                  118
+                ],
+                "scale_group": "goldgrounddust-268-13"
+              },
+              {
+                "pose": "cannon89aim",
+                "anchor": [
+                  1,
+                  0,
+                  120,
+                  118
+                ],
+                "scale_group": "cannon89aim"
+              }
+            ],
+            [
+              {
+                "pose": "goldgrounddust-268-14",
+                "anchor": [
+                  105,
+                  116,
+                  228,
+                  118
+                ],
+                "scale_group": "goldgrounddust-268-14"
+              },
+              {
+                "pose": "cannon89aim",
+                "anchor": [
+                  1,
+                  0,
+                  120,
+                  118
+                ],
+                "scale_group": "cannon89aim"
+              }
+            ],
+            [
+              {
+                "pose": "blue89-flight15",
+                "anchor": [
+                  1,
+                  1,
+                  23,
+                  16
+                ],
+                "scale_group": "blue89-flight15"
+              }
+            ],
+            [
+              {
+                "pose": "blue89-flight16",
+                "anchor": [
+                  1,
+                  1,
+                  249,
+                  16
+                ],
+                "scale_group": "blue89-flight16"
+              }
+            ],
+            [
+              {
+                "pose": "blue89-flight17",
+                "anchor": [
+                  1,
+                  1,
+                  319,
+                  16
+                ],
+                "scale_group": "blue89-flight17"
+              }
+            ],
+            [
+              {
+                "pose": "blue89-flight18",
+                "anchor": [
+                  1,
+                  1,
+                  66,
+                  16
+                ],
+                "scale_group": "blue89-flight18"
+              }
+            ],
+            [
+              {
+                "pose": "blue89-flight19",
+                "anchor": [
+                  1,
+                  1,
+                  319,
+                  199
+                ],
+                "scale_group": "blue89-flight19"
+              }
+            ]
+          ]
+        }
+      },
+      "connections": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/figure089-connections-oct23-r1.json",
+        "sha256": "86614ed72e7d7a09fcf9cb0b5b13b0dd2fa46c7dff3aaa993edd549a80ea1404"
+      },
+      "connections_inline": {
+        "schema_version": 1,
+        "connections": [
+          {
+            "resource": 268,
+            "frame": 6,
+            "left": {
+              "pose": "cannon89aim",
+              "point": [
+                1200,
+                250
+              ]
+            },
+            "right": {
+              "pose": "blue89beam-268-6",
+              "point": [
+                125,
+                365
+              ]
+            },
+            "maximum_distance_hd": 8
+          },
+          {
+            "resource": 268,
+            "frame": 7,
+            "left": {
+              "pose": "cannon89aim",
+              "point": [
+                1200,
+                250
+              ]
+            },
+            "right": {
+              "pose": "blue89beam-268-7",
+              "point": [
+                125,
+                365
+              ]
+            },
+            "maximum_distance_hd": 8
+          },
+          {
+            "resource": 268,
+            "frame": 8,
+            "left": {
+              "pose": "cannon89aim",
+              "point": [
+                1200,
+                250
+              ]
+            },
+            "right": {
+              "pose": "blue89beam-268-8",
+              "point": [
+                125,
+                365
+              ]
+            },
+            "maximum_distance_hd": 8
+          },
+          {
+            "resource": 268,
+            "frame": 9,
+            "left": {
+              "pose": "cannon89aim",
+              "point": [
+                1200,
+                250
+              ]
+            },
+            "right": {
+              "pose": "blue89beam-268-9",
+              "point": [
+                125,
+                365
+              ]
+            },
+            "maximum_distance_hd": 8
+          },
+          {
+            "resource": 268,
+            "frame": 10,
+            "left": {
+              "pose": "cannon89aim",
+              "point": [
+                1200,
+                250
+              ]
+            },
+            "right": {
+              "pose": "blue89beam-268-10",
+              "point": [
+                125,
+                365
+              ]
+            },
+            "maximum_distance_hd": 8
+          }
+        ]
+      },
+      "compile_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party089-compile-oct23-r2.log",
+        "sha256": "efd737333bce601525ce83a1205d4a9d8cf058b2ec3a95fc36ae895e8ee055fd"
+      },
+      "candidate89_published": false,
+      "retained88_compiled": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party088-compiled-oct23-r2/compiled.json",
+        "sha256": "222ebe74142d778bc40fd63aef4dd254bfa3ec81f348bab385a03829ffa17593"
+      },
+      "reason": "Minified blue89beam-268-9 alpha245 rejected. Direct LANCZOS measurement: sourceheight80/160=>255,320=>245,360=>225. Use160 proven core and shift actual tail contact, no alpha edit or threshold change."
+    },
+    "source_sampling_review": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party88-89-bluebeam-minification-oct23-r1.json",
+      "sha256": "a12aaeee8785c8d126f63c9b725c45886f053c30bf84e8fea104aeacc9833af6"
+    },
+    "package_stage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party88-89-projection-oct23-r3.json",
+      "sha256": "5fa3652d1309447ef289ea3a85be372f5025126c8bbfe92ec24225d4dafc670a"
+    },
+    "old72_regression_input": {
+      "catalog": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party71-72-73-staged-formal-catalog-oct22-r2.json",
+        "sha256": "e9efabf62375b2412ef7e72710138689346909745602908aeaee50aa0f2335b3"
+      },
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party7173-physical-candidate-072-oct22-r2-capture/receipt.json",
+        "sha256": "7703d573ab150b0f10fe2c82b298f76f47beba6e464b756804f55f2e226a9dd1"
+      }
+    },
+    "checks": {
+      "party8889-source-candidate-088-oct23-r3.memory.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-source-candidate-088-oct23-r3.memory.json",
+        "sha256": "5e5016f751083824b504bca9df356666f0e73ad960914f411cbb1f0f057d435c"
+      },
+      "party8889-source-candidate-088-oct23-r3.log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-source-candidate-088-oct23-r3.log",
+        "sha256": "1b7562dca10cf962880a5d12f0edfbb29163daeb9c9fdcddd589956c111b6091"
+      },
+      "party8889-source-candidate-088-oct23-r3-receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-source-candidate-088-oct23-r3-capture/receipt.json",
+        "sha256": "0104feb87d0c5142660c90cd9b038d173d243436c030862141bae3acad8b1bad"
+      },
+      "party8889-source-runtime-088-oct23-r3.memory.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-source-runtime-088-oct23-r3.memory.json",
+        "sha256": "e831c95e6db948f4a85e2753c4db8d3b0388b7b20eef52459d805cd437a58a75"
+      },
+      "party8889-source-runtime-088-oct23-r3.log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-source-runtime-088-oct23-r3.log",
+        "sha256": "c44d3a7006e7efb923e19fd565c3cc2ee05cd952c5a745d0de5363a46befdd4b"
+      },
+      "party8889-source-runtime-088-oct23-r3-receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-source-runtime-088-oct23-r3-capture/receipt.json",
+        "sha256": "0104feb87d0c5142660c90cd9b038d173d243436c030862141bae3acad8b1bad"
+      },
+      "party8889-physical-candidate-088-oct23-r3.memory.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-physical-candidate-088-oct23-r3.memory.json",
+        "sha256": "655dc5bbec9645ea1ecad011795b0e2c0b8ae46129f8a8cda5d085e63f886060"
+      },
+      "party8889-physical-candidate-088-oct23-r3.log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-physical-candidate-088-oct23-r3.log",
+        "sha256": "08d12050912017b25a3bc5e1409acc081a44ab25bb26ec71a629ce86425e0074"
+      },
+      "party8889-physical-candidate-088-oct23-r3-receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-physical-candidate-088-oct23-r3-capture/receipt.json",
+        "sha256": "ec645ead6b4746788b56a142a443eeb9b31e26e83f1f4095496ded7721dcc865"
+      },
+      "party8889-physical-candidate-089-oct23-r3.memory.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-physical-candidate-089-oct23-r3.memory.json",
+        "sha256": "ff10bcf4328a8b62901787e9263fd73b65f475263151b076a775021b75a39ccd"
+      },
+      "party8889-physical-candidate-089-oct23-r3.log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-physical-candidate-089-oct23-r3.log",
+        "sha256": "32502f08aef3f7e54643359c0465f08f7f5bcb71d597b65e3eee0c7d60827211"
+      },
+      "party8889-physical-candidate-089-oct23-r3-receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-physical-candidate-089-oct23-r3-capture/receipt.json",
+        "sha256": "590f13e657de3851913376a24eff28878c8f8aba656095ebb18cf1206c6e9e31"
+      },
+      "party8889-batch-assets-candidate-000-oct23-r3.memory.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-batch-assets-candidate-000-oct23-r3.memory.json",
+        "sha256": "d89d07f9d981c72313edff529deb4a8ea961db717f7e5996293c8e45f274efa9"
+      },
+      "party8889-batch-assets-candidate-000-oct23-r3.log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-batch-assets-candidate-000-oct23-r3.log",
+        "sha256": "700bf396211de8067eed81d04bc601adb4e1458e3070b996eb97b5da4f9c3382"
+      },
+      "party8889-batch-assets-runtime-000-oct23-r3.memory.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-batch-assets-runtime-000-oct23-r3.memory.json",
+        "sha256": "8d9211b466af3ee6812311a9dc771d985c48ca915d2b7f574066e6b7a8e7fa05"
+      },
+      "party8889-batch-assets-runtime-000-oct23-r3.log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-batch-assets-runtime-000-oct23-r3.log",
+        "sha256": "e69e579547945a2cab67dc852bba031e440991a4f753452934459488f4abfe6a"
+      },
+      "core88": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-088-physical-core-oct23-r3.json",
+        "sha256": "74f4f0d587829e9a8e8169802be96690fd184b09058cc0d9bd9101077922fd0c"
+      },
+      "party088-compiler-guards-oct23-r3/guards.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party088-compiler-guards-oct23-r3/guards.json",
+        "sha256": "3f1e38886e0ba9ad5f755e0c8a785f1213cb37a28df9118520e299dea5ea5937"
+      },
+      "connections88": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party088-connections-oct23-r3.json",
+        "sha256": "5270ef5751ca38da6ea60a37a9ae7bcf386d525683b64a593f8857969cc32bf6"
+      },
+      "core89": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-089-physical-core-oct23-r3.json",
+        "sha256": "04c10acc1adfad66ed27ff4a7249a4a9fc262baa2f42cb25128320400c7332ea"
+      },
+      "party089-compiler-guards-oct23-r3/guards.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party089-compiler-guards-oct23-r3/guards.json",
+        "sha256": "0bcdf9eb55141308cce4407318c71da60f3ff80b5f2b8e5019f9129515640b79"
+      },
+      "connections89": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party089-connections-oct23-r3.json",
+        "sha256": "50080385b4ad64fd70bd2d4275cc8f9497fdebb7356e568e6d32f71c8c39fbee"
+      },
+      "volley88-guards.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-volley88-guards-oct23-r3/guards.json",
+        "sha256": "9f3acf90837351ddeda89416c861c9c6d8f928372c41f7e31f9d63356a5d3d58"
+      },
+      "volley88-positive-control.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-volley88-guards-oct23-r3/positive-control.json",
+        "sha256": "9d719046f38ec60a41e352a798f29e7e7c802fc5bbce9e82b0c4f814e0cb6766"
+      },
+      "volley89-guards.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-volley89-guards-oct23-r3/guards.json",
+        "sha256": "4f1941aaece010ec8f9793fac84b50c10f4cf3f397164c6ed771e7c4ca9fb413"
+      },
+      "volley89-positive-control.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-volley89-guards-oct23-r3/positive-control.json",
+        "sha256": "d82e9e91c21c130ca6f29e7f3a572192031b17bf9ea73501859e7f6deaf9c0a8"
+      },
+      "volley72-guards.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-volley72-guards-oct23-r3/guards.json",
+        "sha256": "43d211c8157c6493b5008abad28a1116275bab18651b3ce021021a4b1ffaff4e"
+      },
+      "volley72-positive-control.json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-volley72-guards-oct23-r3/positive-control.json",
+        "sha256": "2a0d1fbe4c783c7b3abf848f0f5236f004007970e6e407d7ee55c84b5f2db0e1"
+      },
+      "connection_guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party88-89-connection-guards-oct23-r3.json",
+        "sha256": "dac7d713a0f6ff4a918b40d4ca50a63e78d7af38bc43e951f3246fd73d2e540e"
+      },
+      "fill33_guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party88-89-fill33-guards-oct23-r3.json",
+        "sha256": "15cffc9d4185e2fb1accb89e14d5dad04f06e9957b8418d45ab1622693ef06a8"
+      },
+      "formal_registration": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party88-89-formal-registration-oct23-r3.json",
+        "sha256": "d52d51557656fcf8d430e58d3fb1e58d85b75086c6620b02d8f4ad09e20d4efd"
+      },
+      "formal_coverage": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party88-89-formal-coverage-oct23-r3.json",
+        "sha256": "9987f6668c1d93816d65b22ca050b71cdecad079587c2e1cda934f92e57d2417"
+      },
+      "private_remote_and_visibility": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party88-89-private-verification-oct23-r3.json",
+        "sha256": "be93a4d5dd24c4024657bd2613bba0a39e22414708b68d408bea33bd2eafa3a3"
+      }
+    },
+    "formal_catalog": {
+      "file": "remake/assets/themes/modern/catalog.json",
+      "sha256": "4aa3c756443ef5c5a37c9387b6e63b3491722caf8181e965567f17b35df215b9"
+    },
+    "staged_formal_catalog": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party88-89-staged-formal-catalog-oct23-r3.json",
+      "sha256": "4aa3c756443ef5c5a37c9387b6e63b3491722caf8181e965567f17b35df215b9"
+    },
+    "formal_coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party88-89-formal-coverage-oct23-r3.json",
+      "sha256": "9987f6668c1d93816d65b22ca050b71cdecad079587c2e1cda934f92e57d2417"
+    },
+    "memory": {
+      "records": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-source-candidate-088-oct23-r3.memory.json",
+          "sha256": "5e5016f751083824b504bca9df356666f0e73ad960914f411cbb1f0f057d435c"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-source-runtime-088-oct23-r3.memory.json",
+          "sha256": "e831c95e6db948f4a85e2753c4db8d3b0388b7b20eef52459d805cd437a58a75"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-physical-candidate-088-oct23-r3.memory.json",
+          "sha256": "655dc5bbec9645ea1ecad011795b0e2c0b8ae46129f8a8cda5d085e63f886060"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-physical-candidate-089-oct23-r3.memory.json",
+          "sha256": "ff10bcf4328a8b62901787e9263fd73b65f475263151b076a775021b75a39ccd"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-batch-assets-candidate-000-oct23-r3.memory.json",
+          "sha256": "d89d07f9d981c72313edff529deb4a8ea961db717f7e5996293c8e45f274efa9"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party8889-batch-assets-runtime-000-oct23-r3.memory.json",
+          "sha256": "8d9211b466af3ee6812311a9dc771d985c48ca915d2b7f574066e6b7a8e7fa05"
+        }
+      ],
+      "all_returncode_zero": true,
+      "all_oom_kill_delta_zero": true,
+      "note": "memory.peak cumulative within sharedcontainer, not isolated command peak."
+    },
+    "package_validation_inputs": {
+      "catalog_bytes_equal_formal": true,
+      "candidate": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party089-compiled-oct23-r3/pack",
+      "runtime": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party88-89-runtime-only-oct23-r3",
+      "private_files": 5651,
+      "runtime_files": 4904,
+      "retained_files_unchanged": 5598,
+      "old_assets_unchanged": 596,
+      "new_physical_files": 53
+    },
+    "readme_overview": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party88-89-readme-overview-oct23-r3.json",
+      "sha256": "48af92c31738fb0a527e751fb9e8f45a05ddbd9f6180caec0083202009885a57"
+    },
+    "coverage": {
+      "new_resources": 4,
+      "new_frames": 43,
+      "source_gpu_per_package": 43,
+      "physical_body_core_frames": [
+        14,
+        16
+      ],
+      "projectile_core_frames": [
+        6,
+        4
+      ],
+      "pinned_blank_frames": [
+        2,
+        1
+      ],
+      "compiler_guard_cases": 42,
+      "fill33_guard_cases": 8,
+      "connection_positive_cases": 13,
+      "connection_negative_cases": 2,
+      "maximum_connection_hd_pixels": 3.677083446892921,
+      "projectile_guard_cases": 31,
+      "old72_projectile_guard_cases": 12,
+      "go_commands": 6,
+      "unique_current_counts": "docs/knowledge-base/58-fd2-exe-re-coverage.md"
+    },
+    "current_state": {
+      "remake_complete": "43frames registered and all scoped fixture gates passed. Rules/save unchanged.",
+      "remake_remaining": "Other sources, consumers, normal/manual/platform gates per58 andIssue263.",
+      "original_oracle_unknown": "No new original runtime/parity or PLAYER-E2 claim; fixed decoded art reference only.",
+      "optional_polish": "Approved handpainted body/cannon/helmet/cloth interpretation, sharedkeyposes, goldarc/burst/sparks/dust and arrowlikebluebeam artapproximation; concentrated manualreview afterallHD."
+    },
+    "tools": {
+      "build_fd2_character_battle_hd.py": {
+        "file": "tools/build_fd2_character_battle_hd.py",
+        "sha256": "27337d5305ec639353d63bb437890883bf546bb8803660d1d031ba093a6c6083"
+      },
+      "test_fd2_character_battle_hd.py": {
+        "file": "tools/test_fd2_character_battle_hd.py",
+        "sha256": "63efbe259a7308bdb573f4c88dcd3f96134e202fa57c843f86171a5ae27472c5"
+      },
+      "verify_fd2_character_battle_gpu.py": {
+        "file": "tools/verify_fd2_character_battle_gpu.py",
+        "sha256": "71c8a5eea2b1bac96984481eb73a0ca35eb01c871f40411ae8e6de58948aba15"
+      },
+      "verify_fd2_archer_volley_gpu.py": {
+        "file": "tools/verify_fd2_archer_volley_gpu.py",
+        "sha256": "ee754d22138c570b66d12d9b73e2e703ee69123639de461c60ce723b22c4afa6"
+      },
+      "test_fd2_archer_volley_gpu.py": {
+        "file": "tools/test_fd2_archer_volley_gpu.py",
+        "sha256": "7f2cd72bea9bcdaaac4af3f5ddd14f8f4de64e86b873f655b911b379b4ff19f8"
+      },
+      "verify_fd2_hd_anchor_connections.py": {
+        "file": "tools/verify_fd2_hd_anchor_connections.py",
+        "sha256": "18feda8005721c396c93518a903d70b875ca31ca57ec306abcd589d5a1a73a60"
+      },
+      "verify_fd2_compound_caster_gpu.py": {
+        "file": "tools/verify_fd2_compound_caster_gpu.py",
+        "sha256": "f2ee0b0f0f5ae0304eb8818d03e162e7d2caf855a92eb2cebdcac92301fc0569"
+      },
+      "test_fd2_native_occlusion.py": {
+        "file": "tools/test_fd2_native_occlusion.py",
+        "sha256": "9623a6cb91c0ca458459e332e340f86ca2b31ddce3dcc4eb9e27fb370df15b4e"
+      },
+      "sync_modern_theme_private.py": {
+        "file": "tools/sync_modern_theme_private.py",
+        "sha256": "b4ee0f261eae3d24d571437cd161a11060fb027c4a0925975051fc3e8272cc82"
+      },
+      "audit_fd2_battle_hd_coverage.py": {
+        "file": "tools/audit_fd2_battle_hd_coverage.py",
+        "sha256": "a1661e1e20a8bf6b33c5f6f51ddcaf31d4b12ea3f7fccfd2dcd50c11035d92d8"
+      },
+      "fd2_go_test_memory_probe.py": {
+        "file": "tools/fd2_go_test_memory_probe.py",
+        "sha256": "8e7c9c55b85aa72a5026b944233b94f7c0787f51b3f5ebb178ed54cc333e40f2"
+      },
+      "remake/cmd/fd2/modern_hd_ordinary_material_gpu_test.go": {
+        "file": "remake/cmd/fd2/modern_hd_ordinary_material_gpu_test.go",
+        "sha256": "ec9410827ce7091166c977efb4be78c4835d3de4a0cff44092df5775f11f72d9"
+      },
+      "remake/cmd/fd2/modern_hd_battle_lifecycle_test.go": {
+        "file": "remake/cmd/fd2/modern_hd_battle_lifecycle_test.go",
+        "sha256": "1c27707f5e8a007fabbd0c58be55fed8ec7efc285f53326ab74421349174174f"
+      },
+      "remake/cmd/fd2/modern_hd_battle_assets_test.go": {
+        "file": "remake/cmd/fd2/modern_hd_battle_assets_test.go",
+        "sha256": "3d147eb506351ad2e8c5535b8a4b12f34107a53ae7f1a36b31a119f521b6ac83"
+      },
+      "remake/internal/battlepresent/native_physical_body.go": {
+        "file": "remake/internal/battlepresent/native_physical_body.go",
+        "sha256": "39a7f5423cab91ced5081197d99ec530644c495e28d7bd8e894f1ca92f600d92"
+      },
+      "remake/cmd/fd2/native_physical_body.go": {
+        "file": "remake/cmd/fd2/native_physical_body.go",
+        "sha256": "d97cb4d71018cc0587be051f33c84b6a75df453b0bac5ef78f6683fb1fbd1cb0"
+      }
+    },
+    "toolchain": {
+      "go_image": "fd2-go-test-local:latest",
+      "go_image_sha256": "e4a805c52a3ad5d8c22cf23f2bcf51c6924e5ad6b99554f1b02761903c725433",
+      "go": "1.22.12",
+      "go_container": "8GB/4CPU/512pids/network none/UID:GID1000:1000",
+      "assets_image": "fd2-assets-local:20260829-sfx",
+      "assets_image_sha256": "e59237a31d4b5f7a62c59ac37b780bd93f17c99fda97be8f5ca0c53978b878bc",
+      "python_pillow": "3.12.15/11.3.0",
+      "memory_note": "memory.peak is cumulative cgroup lifetime upper bound across sequential commands sharing a container."
+    },
+    "reproduce": [
+      "Base publicb61f7349 formal596catalog, originalmanifest and sourceinventory pinned.264/265/267/268 absent from livecatalog and formalremaining;266/269 fixedzero untouched. Native metadata/descriptors/PNG/Mask reloaded by load_native. No new runtimeoracle.",
+      "Restore selected_sources10 originalRGBA bySHA fromprivateallowlist, includingtwoadopteddraftidles andeightfreshmasters. Two reused_registered_sources mapbySHA tooriginalregisteredfilenames. Preserve generation prompt/inputSHA ledgers. No alphaediting. sourceedgealpha192 countzero; sparksrawmax254 allowedbysource250contract.",
+      "Write recipe_inline/connections_inline UTF8indent2+newline. Sequential build_fd2_character_battle_hd.py --pack /original --inventory <fixed> --recipe <88R2then89R3> --base-catalog <previous> --out <fresh> --layered. Save compiler-catalog BEFOREaliasprojection; SHAequals compiled.catalog_sha256. R1dust240, R2blueglint245 rejected before affectedcandidatepublication. superseded_r1/superseded89_r2 retainrecipes/logs. R3measureminificationandkeep160sourceheight/actualopaque1800,2010tailpoints; thresholdsunchanged. Stage600/53newfiles,old596/5598 unchanged.",
+      "test_fd2_character_battle_hd.py 21each42total; verify_fd2_hd_anchor_connections.py 13actualcontacts<=8HDpixels,two validopaque wrongroots reject; test_fd2_native_occlusion.py eightfill33guards. Allclippingquantified. No viewport enlargement.",
+      "GoDocker8GB/4CPU/512pids/networknone/user1000:1000/HOMEtmp/GOMAXPROCS2/LP_NUM_THREADS2/persistentGOCACHE,originalreadonly,max2heavy. source Go500/probe550, physicalGo900/probe950, batchGo1200/probe1260 seconds fixedbeforeexecution. Sixfreshcommands -count=1 -v allPASS/noSKIP/noOOM/notimeout. Bothpackages TestModernHDCannons88And89AllFramesGPU FD2_HD_CANNONS_88_89_GPU=1 explicit EFFECT_CATALOG/PACK/OUT,43sourceGPU vsindependentCPUOverwithin1RGBA.",
+      "Two TestModernHDBattleRuntimeGPU lifecycle/real/enemy_actor=1 explicitfigure88/89;22/21shots,sixF2phases,64/65DAC,HP/RNG,onecontinuation. verify_fd2_character_battle_gpu.py --core-profile opaque --sample-group fixture --proven-occlusion --body-frames 264:0,265:0-12 OR267:0,268:0-14 --catalog <stage> --source <candidate> --receipt <physical> withfixedoriginal/inventory:14/16cores>=1000. Modifiedfixture,Camp/sideunchanged,notnaturalAI/player.",
+      "test_fd2_archer_volley_gpu.py figure88/89:8/5positiveprojectileframes including3pinnedblanks,17/14negativecases. Fixedprofilesmatchheader/split/nativeMaskcounts; realprojectiles checkeveryvisiblealpha250point. Old72positive+12negative useexactoriginalreceipt/catalogSHA,notcurrentformal. Bothpackages TestModernHDBattleBatchAssetsAndPreflight FD2_TEST_MODERN_BATTLE_FIGURES=88,89:twopairedvalid/fourindependentcoldplayer-mode11transactions each,allfourbanksnil onfailureandHP/RNGpreserved.",
+      "Afterallgatescopy53allowlistedfiles andbyteidenticalstagecatalogtoformal. validate_modern_theme_catalog+sync_modern_theme_private.py:full5651/runtime4904actualSHA/UID/GID,old5598unchanged. Independentlycommit/pushprivateandverifyactualremote/PRIVATE,noprivateIDdisclosure. audit_fd2_battle_hd_coverage.py194resources1561framesdatacoverageonly. Normal/manual/platform/fullHDpending;nonewrecordingorRelease."
+    ],
+    "duplicate_candidate_cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party88-89-duplicate-dedupe-oct23-r3.json",
+      "sha256": "80038c2e8af4f6a7bc323d8a1ea154e85f44316e088360f06c7067c308f635a5"
+    },
+    "private_remote_verified": true,
+    "private_visibility_verified": true,
+    "final_check": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/party88-89-final-check-oct23-r3.json",
+      "sha256": "d1dc8f951591c16786c524ffddef5ee1c6952ef2f26f2aeed5ae28fce2ae660b"
     }
   }
 }

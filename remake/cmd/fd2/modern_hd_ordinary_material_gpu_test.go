@@ -260,6 +260,13 @@ func TestModernHDAxeHalberdDragonAllFramesGPU(t *testing.T) {
 	testModernHDRegisteredFramesGPU(t, "FIGANI.DAT", []int{252, 253, 255, 256, 258, 259}, 43, "PASS-AXE-HALBERD-DRAGON-43-SOURCE-GPU")
 }
 
+func TestModernHDCannons88And89AllFramesGPU(t *testing.T) {
+	if os.Getenv("FD2_HD_CANNONS_88_89_GPU") != "1" {
+		t.Skip("dedicated cannons 88 and 89 source GPU process required")
+	}
+	testModernHDRegisteredFramesGPU(t, "FIGANI.DAT", []int{264, 265, 267, 268}, 43, "PASS-CANNONS-88-89-43-SOURCE-GPU")
+}
+
 func testModernHDRegisteredFramesGPU(t *testing.T, archive string, resources []int, frameCount int, status string) {
 	t.Helper()
 	set, err := loadModernStoryPortraitSet(os.Getenv("FD2_TEST_MODERN_EFFECT_CATALOG"), os.Getenv("FD2_TEST_MODERN_EFFECT_PACK"))
