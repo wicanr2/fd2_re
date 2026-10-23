@@ -3905,6 +3905,14 @@
         ],
         "pattern": "legacy-gpu.*TestModernHDBattleGPUBridge"
       }
+    },
+    {
+      "id": "go-loop-closures-follow-module-language-version",
+      "date": "2026-10-23",
+      "area": "Go驗證",
+      "rule": "Go測試在迴圈內建立延遲執行的交易閉包時，先將迴圈值複製到區域變數。range語意依go.mod的語言版本判斷，不由容器go工具鏈版本推定。入口remake/go.mod及remake/cmd/fd2/modern_hd_heal_map_gpu_test.go的command區域副本。",
+      "why": "go.mod仍為go1.21，工具鏈雖是Go1.22.12，回復八案例第一個延遲交易仍抓到最後id16。只修測試的閉包捕捉，不改遊戲或目標選擇守衛。 通用文字guard刻意排除_test.go，因此不把測試檔的文字當成guard；八案例GPU以各自的命令與一次交易檢查此行為。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json"
     }
   ]
 }

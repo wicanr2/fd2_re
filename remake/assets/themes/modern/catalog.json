@@ -57729,6 +57729,222 @@
       ],
       "alpha_contract": "coverage",
       "layout_policy": "native_surface_hd6"
+    },
+    {
+      "asset_id": "heal1316-map-fdother006-hd6",
+      "role": "map_overlay_hd_set",
+      "status": "runtime_candidate",
+      "files": [
+        "heal1316-fdother006-057-hd6-r1.png",
+        "heal1316-fdother006-058-hd6-r1.png",
+        "heal1316-fdother006-059-hd6-r1.png",
+        "heal1316-fdother006-060-hd6-r1.png",
+        "heal1316-fdother006-061-hd6-r1.png",
+        "heal1316-fdother006-062-hd6-r1.png",
+        "heal1316-fdother006-063-hd6-r1.png"
+      ],
+      "width": 1920,
+      "height": 1200,
+      "frame_count": 7,
+      "frame_sha256": [
+        "e7c5c22be273d91004c93ee6d7e4196d1953a6c91aa7c68acef412b185485907",
+        "7c13f61aa4a57e1a6137f14e8c2285a9a7bf1f68b5e81d9f427a2946d24d7e46",
+        "b965db82e42a3ffb045cfcd610a8f2e1033672c35bbac201bdcff9152d7f6b51",
+        "e79629072fe43b2dc04bfe3f6cf5cc70ed5d1379d65d7586dbfae56c802ac9ae",
+        "c90413446b4b6a41c6da858c1fc82651c4bb8dd4b54f8b935a2b97b4014a64b0",
+        "6843cd76ec4c1e00860e06b2ff8c65de2874a172dd010f9c0b661a785394879f",
+        "818a100a31bed9ad1c6a1356494d6f21d97f2eed37260bad853e746e0a19b05e"
+      ],
+      "consumer_contract": "native_lmi1_rgba_hd6_v1",
+      "alpha_contract": "coverage",
+      "cycle_policy": "native_lmi1_entries",
+      "source_archive": "FDOTHER.DAT",
+      "source_resource": 6,
+      "source_metadata_sha256": "88680097b2b64585613699c5593f19dee143f044e893de54ee486cd93465e675",
+      "native_lmi_frames": [
+        {
+          "index": 57,
+          "width": 24,
+          "height": 24,
+          "pixels_sha256": "fde39d438c2f8b207d420b76b3775a964c1d988671a1138a2b81d567841d213a"
+        },
+        {
+          "index": 58,
+          "width": 24,
+          "height": 24,
+          "pixels_sha256": "5d7a055c08be993f699198ef4d314f1ce1a9b2a10c13590a20b4468d3eafa1a0"
+        },
+        {
+          "index": 59,
+          "width": 18,
+          "height": 18,
+          "pixels_sha256": "fd99c74eef8434bd49ffc5f3b9c555f2e43fe7ce81b60860d190cbf5a109c8ff"
+        },
+        {
+          "index": 60,
+          "width": 17,
+          "height": 17,
+          "pixels_sha256": "a0ea46415f8c851864af6b16914b312b5bf6fe48ac1bcdde192b053731f26ab3"
+        },
+        {
+          "index": 61,
+          "width": 15,
+          "height": 16,
+          "pixels_sha256": "495bacedaa8bc0bea17dcddefb08a3a487555f627ccaff0912e8f40e14060e07"
+        },
+        {
+          "index": 62,
+          "width": 13,
+          "height": 14,
+          "pixels_sha256": "3a0b9f4729a3ef352a50d11d395872e1112a2aa6cebea4283a2b1a4399a5a966"
+        },
+        {
+          "index": 63,
+          "width": 12,
+          "height": 13,
+          "pixels_sha256": "972c9954c16bc35570976c4b9a9ba757ed4105d95c1ac7118496667090abe66a"
+        }
+      ],
+      "layout_policy": "native_lmi1_rect_hd6",
+      "source_files": [
+        "heal1316-ring-master-oct23-r1.png"
+      ],
+      "source_sha256": [
+        "98942583781dc9cedb1145fa7ca857778fa1dce659df3b239c849093930afe1d"
+      ],
+      "source_refs": [
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+        "tools/build_fd2_heal_map_hd.py"
+      ]
+    },
+    {
+      "asset_id": "heal1316-map-fdother005-hd6",
+      "role": "map_overlay_hd_set",
+      "status": "runtime_candidate",
+      "files": [
+        "heal1316-fdother005-105-hd6-r1.png",
+        "heal1316-fdother005-106-hd6-r1.png",
+        "heal1316-fdother005-107-hd6-r1.png",
+        "heal1316-fdother005-108-hd6-r1.png",
+        "heal1316-fdother005-109-hd6-r1.png",
+        "heal1316-fdother005-110-hd6-r1.png",
+        "heal1316-fdother005-111-hd6-r1.png",
+        "heal1316-fdother005-112-hd6-r1.png",
+        "heal1316-fdother005-113-hd6-r1.png",
+        "heal1316-fdother005-114-hd6-r1.png"
+      ],
+      "width": 1920,
+      "height": 1200,
+      "frame_count": 10,
+      "frame_sha256": [
+        "08394f8d0a90a68c5491eea1f7eb497ab60f498f6300ac646d5c216659c373f2",
+        "3f87a807c4d461d28a72eadb5151877bb6235922d75d3a65db38321fd7221844",
+        "7d7b735bb7eb5f6d426a2182441186ced3fb45f8e2242f49f6ffb45a89f50b06",
+        "cc03b5080fa0a2cd84a7b633b25d9c9a5ae5fe4d7cf79f58853065cd29853333",
+        "c693c534676efa12765f789876c7c079a6e242098068068aba61acca2b8de9a5",
+        "645121c69be86388da581cc92c24b8fe710284a418aaa49947509749febc3399",
+        "468f1fcf0a3cd515e192b37040548065dd018bdeb1eaf9a265cb82235d1c3d53",
+        "190ae45ed46747e3c7a9be76a6dbc91ed90f5d585d1324a0521617666b123f37",
+        "9d876a3287450f91b43082b69f62e61bc3c2427e3d9d4d1233ecd4f6e1981718",
+        "897a65bdd75e9501ac9d150ff827ecb7d9f6a812f768d4ca04e40c5550a7eef7"
+      ],
+      "consumer_contract": "native_lmi1_rgba_hd6_v1",
+      "alpha_contract": "coverage",
+      "cycle_policy": "native_lmi1_entries",
+      "source_archive": "FDOTHER.DAT",
+      "source_resource": 5,
+      "source_metadata_sha256": "ada6bd6712a1f958f0b12dbb6a4b7dee8d71d428ae7746b599b83010e6c19822",
+      "native_lmi_frames": [
+        {
+          "index": 105,
+          "width": 6,
+          "height": 7,
+          "pixels_sha256": "ab15d0ddd8e311462e9f7b9de2c3ee74fee4d8fc5df9aed52bc8fc51a4ea9fdf"
+        },
+        {
+          "index": 106,
+          "width": 6,
+          "height": 7,
+          "pixels_sha256": "5132bc8a0ccafe8f59a1a13ebc6d2294456ed1817bd1f97cc3983ec0ebb8d2bd"
+        },
+        {
+          "index": 107,
+          "width": 6,
+          "height": 7,
+          "pixels_sha256": "f7ed5b1a4ebea7595f638687e0728d7bde6150b6f3578394b52a71b9418317a2"
+        },
+        {
+          "index": 108,
+          "width": 5,
+          "height": 7,
+          "pixels_sha256": "9574a3a3d9842c5d125a4b7337e8b3786b57aa4f1e8ef33f461b7a68ff7e1895"
+        },
+        {
+          "index": 109,
+          "width": 6,
+          "height": 7,
+          "pixels_sha256": "aa7dbf69d72b41615f48651c8e326432330f9b3e24ab1b46f8a58ee37187c471"
+        },
+        {
+          "index": 110,
+          "width": 6,
+          "height": 7,
+          "pixels_sha256": "b99cf0fcf43987f3fc7c6c1412d2a0f48fb867f1ae90a5833d7f71a5b6810e51"
+        },
+        {
+          "index": 111,
+          "width": 6,
+          "height": 7,
+          "pixels_sha256": "684be3e00a1cf21c98c8e00ae366a85cb24a97458598a7791bc3c13034944d85"
+        },
+        {
+          "index": 112,
+          "width": 6,
+          "height": 7,
+          "pixels_sha256": "e3df6973a32ea911e1f0f20baec4033775f91e208b1cae722531d5f7668fd057"
+        },
+        {
+          "index": 113,
+          "width": 6,
+          "height": 7,
+          "pixels_sha256": "a5accc9143ccbd628364ff58d040b954ea2d41edd9c2465ddb44fd49dcaf09bd"
+        },
+        {
+          "index": 114,
+          "width": 6,
+          "height": 7,
+          "pixels_sha256": "82dca7750645652ccc52f677f8da1b49d7ad9c102db2e6c192ce2b6bce2cf39a"
+        }
+      ],
+      "layout_policy": "native_lmi1_rect_hd6",
+      "source_files": [
+        "heal1316-noto-0-original-r1.png",
+        "heal1316-noto-1-original-r1.png",
+        "heal1316-noto-2-original-r1.png",
+        "heal1316-noto-3-original-r1.png",
+        "heal1316-noto-4-original-r1.png",
+        "heal1316-noto-5-original-r1.png",
+        "heal1316-noto-6-original-r1.png",
+        "heal1316-noto-7-original-r1.png",
+        "heal1316-noto-8-original-r1.png",
+        "heal1316-noto-9-original-r1.png"
+      ],
+      "source_sha256": [
+        "08394f8d0a90a68c5491eea1f7eb497ab60f498f6300ac646d5c216659c373f2",
+        "3f87a807c4d461d28a72eadb5151877bb6235922d75d3a65db38321fd7221844",
+        "7d7b735bb7eb5f6d426a2182441186ced3fb45f8e2242f49f6ffb45a89f50b06",
+        "cc03b5080fa0a2cd84a7b633b25d9c9a5ae5fe4d7cf79f58853065cd29853333",
+        "c693c534676efa12765f789876c7c079a6e242098068068aba61acca2b8de9a5",
+        "645121c69be86388da581cc92c24b8fe710284a418aaa49947509749febc3399",
+        "468f1fcf0a3cd515e192b37040548065dd018bdeb1eaf9a265cb82235d1c3d53",
+        "190ae45ed46747e3c7a9be76a6dbc91ed90f5d585d1324a0521617666b123f37",
+        "9d876a3287450f91b43082b69f62e61bc3c2427e3d9d4d1233ecd4f6e1981718",
+        "897a65bdd75e9501ac9d150ff827ecb7d9f6a812f768d4ca04e40c5550a7eef7"
+      ],
+      "source_refs": [
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+        "tools/build_fd2_heal_map_hd.py"
+      ]
     }
   ]
 }

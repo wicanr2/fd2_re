@@ -3888,3 +3888,24 @@ BG 與 TAI 各 57 項，末項各為零長 raw，不能補造美術。BG 的 10 
 兩包各載入完整675項主題、圖源與原子拒收，124張原生畫布重組及50個GPU世界通過。GPU涵蓋兩側九階進場、攻防／restore、未登錄台座的舊主題回退，以及只有台座HD、沒有HD人物或背景的情況，逐RGBA對獨立CPU Over容差1。首輪CPU期望漏算Ebiten v2.6.6上傳前的RGBA8預乘量化，失敗收據保留；依鎖定版imagetobytes.go修正比較器後通過，正式shader與容差未改。候選單元先於這項測試修正執行，三項受驗單元與正式邏輯不變；最後獨立包使用完整最終原碼。
 
 雙側完整Game.Draw各三階段F2、失效TAI候選原子拒收、64步戰鬥DAC與65步地圖DAC、HP／RNG及一次返回保持。28張跨包截圖逐SHA相同，不宣稱Draw計數一致；七項舊路徑回歸另在乾淨程序通過。原生HUD、其他caller與正常／人工／平台仍待。完整舊GPU核心沿上節2087案例，本批未重跑；新增台座的透明／層序已有上述50案例，不拿舊案例代替。
+
+### 指令13～16地圖回復HD
+
+狀態：CONFORMED-SCOPED／RUNTIME-E1。沿用既有玩家／AI回復owner，保留16張前導、兩次200ms等待、七張光環、五組角色遮罩閃爍、交易一次、22張數字及500ms等待。規則、HP／MP／RNG、輸入／保存、音效選擇及正式原生畫布不改。正常玩家與人工／平台仍集中全部HD後驗。
+
+原版證據沿[21EB1既有IDA匯出](../data/ida/fd2_command13_21eb1_presentation_ida.txt)，固定FD2.EXE為357074 bytes、SHA-256 `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`，IDA9.4線性位址與Capstone5.0.3交叉檢查。既有 `BuildNativeCommandHealPresentationSchedule`、`BuildNativeCommandHealTailSchedule` 與 `ComposeNativeCommandHeal*` 為已接正式consumer；本批不重開反組譯、不新增原版RGB或PLAYER-E2聲明。FDOTHER.DAT與原包manifest、#5／#6 raw、metadata與PNG雜湊由[固定LMI稽核器](../../tools/audit_fd2_player9_map_source.py)的可選ranges逐來源核對。
+
+- 新增兩個可選 `map_overlay_hd_set` 群組：#6索引57..63共七張淡藍環，#5索引105..114共十個綠色數字。沿既有LMI單圖描述子、六倍原框、coverage透明度、全組SHA與原子載入。既有死亡／玩家9群組不變；只登錄一半或宣告後缺件拒收，未登錄的舊主題保留原生效果回退。沿[回復編製器](../../tools/build_fd2_heal_map_hd.py)產生候選，先驗後登錄／私人同步。
+- 光環以透明手繪母稿按原生墨跡框縮放，七拍共用母稿、裁切與半透明是現代詮釋。十個數字以既有固定SHA的Noto字型直接在HD原框繪製，綠色填字與深色外框，不放大原點陣字。原稿保留完整alpha，不為增加255像素而量化。
+- owner保存同次前導的typed幾何／三個pass、LUT、凍結steady輸入，以及尾段每次實際LMI寫入的位置與索引。前導保留terrain先映射、人物／前景重畫、第二圓形及矩形映射的順序。映射次數依原合成器實際工作緩衝與viewport偏移計算，不把raw座標擅自正規化。HD地形沿既有四色差近似，HD人物採同類原色差加權並保留alpha；原生前景依原索引精確映射。這些HD顏色不是原版索引恢復。
+- 前導用VGA0,0的312×192範圍，世界人物與地形保持六倍原錨點；中／前等待及尾段沿既有owner的正常steady位置。尾段LMI效果／數字仍在0,0事件viewport，HD角色閃光取相同selector、idle cycle與原生位置，用現有HD透明輪廓填入原palette索引0xc0。不可從已合成RGB猜測來源或畫第二份原生角色。
+- F2先預備全部候選再發布，失敗保持目前主題、owner、相位與結算。起動預檢涵蓋所有數字及光效；交易後數字只消費一次結果，不能再次呼叫交易。缺原生來源、錯圖框、凍結輸入不符與部分群組均拒收。原生主題保留現有呈現與結算。
+- 驗收須包含四個指令完整Game.Draw、單／多目標與HP上限、七光環及十數字來源、全部原生前導／尾段重組、三個幾何pass的獨立區域／LUT次數、非空HD變色、遮罩／數字實際HD核心、等待／Draw確認／一次交易／續行、F2及缺件原子拒收。完整主題與新實檔runtime-only包分別驗；永久入口為[回復驗證驅動器](../../tools/verify_fd2_heal_map_hd.py)，採分離的單元／GPU程序，不用測試捷徑宣稱正常玩家。
+
+本批來源、提示、原稿、候選、驗證與已知差異集中[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的 `heal13_16_map_hd_followup_20261023`。在既有素材Docker使用編製器的 `--original-pack ABS --master ABS --font ABS --base-catalog ABS --out FRESH_DIR`；Noto原檔取自既有Go工具image，固定字型SHA與索引3見主收據，不掛入主機library。驗證驅動器在既有Go Docker使用 `--kind unit|source|game|regression --catalog ABS --pack ABS --out FRESH_PREFIX --timeout 1500`；獨立包以既有私人同步工具 `--runtime-only` 全新複製，再加 `--require-real-runtime`。已去重包不可再次稱獨立實檔。
+
+兩包七份最終Go閘門通過，無SKIP／逾時／OOM：各完整主題與原子F2、180張前導／尾段來源重組、425984個獨立幾何點、17個圖源GPU與18種冷載入反例，以及四指令單／三目標共八個完整Game.Draw、88次F2、一個結算與續行。四指令均有非空HD地形變色，範圍外零變色；48張跨包擷取逐SHA相同。GPU逐RGBA對獨立RGBA8 scalar Over容差2，沿實際預乘上傳與每層取整；正式GPU不改。峰值包含八個同時保留的Game測試與CPU／GPU比較快取，不能當成一般遊玩的記憶體量測。
+
+失敗樣本仍保留：最初測試角色超出range1，原生守衛正確拒收；延遲閉包依go.mod的go1.21語意抓到最後id，改測試區域副本；多目標疊光抓到舊CPU整數Over的取整差，改比較器並維持容差。這些不靠改遊戲規則或重擲亂數通過。最後fixture採actor(10,7)、target(11,7)與額外(11,6)，使最小半徑也覆蓋HD樹林。早期成功單元與第一份source的範圍較窄，另列歷史，不取代最後七閘門。
+
+正式清冊新增兩群組與17圖，舊675項保持。原稿、十個直接Noto字形來源及成品沿白名單保存私人庫；全體數量與目前分層只見58及同批formal_coverage。其他指令owner、背景／台座／HUD、工具列與遊戲加速仍待，未新增普通玩家、原版RGB或完整HD聲明。

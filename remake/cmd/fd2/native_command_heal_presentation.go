@@ -25,24 +25,32 @@ const (
 )
 
 type nativeCommandHealPresentationJob struct {
-	frontSchedule fdother.NativeCommandHealPresentationSchedule
-	tailSchedule  fdother.NativeCommandHealTailSchedule
-	frontFrames   [][]byte
-	effectFrames  [][]byte
-	maskFrame     []byte
-	digitFrames   [][]byte
-	baselineVGA   []byte
-	baselineWork  []byte
-	digits        []fdother.LMI1Entry
-	targets       []indexedmap.NativeCommandHealTailTarget
-	palette       color.Palette
-	frame         int
-	phase         nativeCommandHealPresentationPhase
-	hold          int
-	drawn         bool
-	transaction   func() ([]battle.NativeCommandHealResult, error)
-	results       []battle.NativeCommandHealResult
-	then          func([]battle.NativeCommandHealResult)
+	frontSchedule               fdother.NativeCommandHealPresentationSchedule
+	tailSchedule                fdother.NativeCommandHealTailSchedule
+	frontFrames                 [][]byte
+	effectFrames                [][]byte
+	maskFrame                   []byte
+	digitFrames                 [][]byte
+	baselineVGA                 []byte
+	baselineWork                []byte
+	digits                      []fdother.LMI1Entry
+	targets                     []indexedmap.NativeCommandHealTailTarget
+	palette                     color.Palette
+	frame                       int
+	phase                       nativeCommandHealPresentationPhase
+	hold                        int
+	drawn                       bool
+	transaction                 func() ([]battle.NativeCommandHealResult, error)
+	results                     []battle.NativeCommandHealResult
+	then                        func([]battle.NativeCommandHealResult)
+	hdInput, hdBaseline         indexedmap.NativeFrameInput
+	hdInputErr                  error
+	hdPasses                    []fdother.IndexedTransitionPass
+	hdLUTs                      [][]byte
+	effectSources, digitSources [][]indexedmap.NativeCommandTailLayer
+	effectTargets               []indexedmap.NativeCommandHealTailTarget
+	hdFrames, hdCached          *modernHDHealFrames
+	hdTheme, hdCachedTheme      *modernStoryPortraitSet
 }
 
 func nativeCommandHealTailTargets(st *battle.State, targets []*battle.Unit) ([]indexedmap.NativeCommandHealTailTarget, error) {
@@ -113,6 +121,8 @@ func (g *Game) startNativeCommandHealPresentation(commandID int, targetUnits []*
 	}
 	centerX, centerY := 24*view.VisibleCursorX+12, 24*view.VisibleCursorY+16
 	frontFrames := make([][]byte, 0, len(front.Frames))
+	var hdPasses []fdother.IndexedTransitionPass
+	var hdLUTs [][]byte
 	for index, spec := range front.Frames {
 		lut, err := fdother.NativeIndexedTransitionLUT(a.LUTs, spec.LUTIndex)
 		if err != nil {
@@ -128,6 +138,8 @@ func (g *Game) startNativeCommandHealPresentation(commandID int, targetUnits []*
 			return fmt.Errorf("native command heal presentation frame %d: %w", index, err)
 		}
 		frontFrames = append(frontFrames, vga)
+		hdPasses = append(hdPasses, pass)
+		hdLUTs = append(hdLUTs, append([]byte(nil), lut...))
 	}
 	baselineWork, baselineVGA := append([]byte(nil), g.nativeMapWork...), append([]byte(nil), g.nativeMapVGA...)
 	effectTargets := make([]indexedmap.NativeCommandHealTailTarget, 0, len(targets))
@@ -137,12 +149,15 @@ func (g *Game) startNativeCommandHealPresentation(commandID int, targetUnits []*
 		}
 	}
 	effectFrames := make([][]byte, 0, tail.EffectFrames)
+	var effectSources [][]indexedmap.NativeCommandTailLayer
 	for frame := 0; frame < tail.EffectFrames; frame++ {
 		work, vga := append([]byte(nil), baselineWork...), append([]byte(nil), baselineVGA...)
-		if err := indexedmap.ComposeNativeCommandHealEffectFrame(work, vga, baselineWork, a.FDOTHER6[tail.EffectStart+frame], effectTargets, in.CameraX, in.CameraY); err != nil {
+		sources, err := indexedmap.ComposeNativeCommandHealEffectFrameWithSources(work, vga, baselineWork, a.FDOTHER6[tail.EffectStart+frame], effectTargets, in.CameraX, in.CameraY, 6, tail.EffectStart+frame)
+		if err != nil {
 			return fmt.Errorf("native command heal tail effect %d: %w", frame, err)
 		}
 		effectFrames = append(effectFrames, vga)
+		effectSources = append(effectSources, sources)
 	}
 	roster, err := g.st.NativeMapFrameRoster()
 	if err != nil {
@@ -191,14 +206,24 @@ func (g *Game) startNativeCommandHealPresentation(commandID int, targetUnits []*
 	if len(palette) != 256 {
 		return errors.New("native command heal presentation palette unavailable")
 	}
-	g.nativeHealPresentation = &nativeCommandHealPresentationJob{
+	job := &nativeCommandHealPresentationJob{
 		frontSchedule: front, tailSchedule: tail,
 		frontFrames: frontFrames, effectFrames: effectFrames, maskFrame: maskVGA,
 		baselineVGA: baselineVGA, baselineWork: baselineWork,
 		digits: a.CommandHealDigits, targets: targets,
 		palette: append(color.Palette(nil), palette...), phase: nativeCommandHealFrames,
 		transaction: transaction, then: then,
+		hdPasses: hdPasses, hdLUTs: hdLUTs, effectSources: effectSources, effectTargets: effectTargets,
 	}
+	job.hdInput, job.hdBaseline, job.hdInputErr = g.freezeHealHDInput(in)
+	if g.modernStoryPortraits != nil {
+		job.hdFrames, err = g.prepareModernHDHeal(job, g.modernStoryPortraits)
+		if err != nil {
+			return err
+		}
+		job.hdTheme = g.modernStoryPortraits
+	}
+	g.nativeHealPresentation = job
 	g.playSFX(front.SampleIndex)
 	return nil
 }
@@ -247,14 +272,26 @@ func (g *Game) buildNativeCommandHealDigitFrames(j *nativeCommandHealPresentatio
 		}
 	}
 	frames := make([][]byte, 0, j.tailSchedule.DigitFrames)
+	var sources [][]indexedmap.NativeCommandTailLayer
 	for frame := 0; frame < j.tailSchedule.DigitFrames; frame++ {
 		work, vga := append([]byte(nil), j.baselineWork...), append([]byte(nil), j.baselineVGA...)
-		if err := indexedmap.ComposeNativeCommandHealDigitFrame(work, vga, j.baselineWork, j.digits, queue, j.targets, view.CameraX, view.CameraY, j.tailSchedule.DigitVertical, frame); err != nil {
+		layers, err := indexedmap.ComposeNativeCommandHealDigitFrameWithSources(work, vga, j.baselineWork, j.digits, queue, j.targets, view.CameraX, view.CameraY, j.tailSchedule.DigitVertical, frame)
+		if err != nil {
 			return fmt.Errorf("native command heal digit frame %d: %w", frame, err)
 		}
 		frames = append(frames, vga)
+		sources = append(sources, layers)
 	}
 	j.digitFrames = frames
+	j.digitSources = sources
+	j.hdBaseline, j.hdInputErr = freezeModernHDCommandGeometry(steady)
+	if g.modernStoryPortraits != nil {
+		j.hdFrames, err = g.prepareModernHDHeal(j, g.modernStoryPortraits)
+		if err != nil {
+			return err
+		}
+		j.hdTheme = g.modernStoryPortraits
+	}
 	return nil
 }
 
@@ -353,6 +390,36 @@ func (g *Game) drawNativeCommandHealPresentation(screen *ebiten.Image) bool {
 	j := g.nativeHealPresentation
 	if j == nil || len(j.palette) != 256 {
 		return false
+	}
+	if j.hdFrames != nil && j.hdTheme == g.modernStoryPortraits && g.modernStoryPortraits != nil {
+		frame := j.hdFrames.Steady
+		switch j.phase {
+		case nativeCommandHealFrames:
+			if j.frame < 0 || j.frame >= len(j.hdFrames.Front) {
+				return false
+			}
+			frame = j.hdFrames.Front[j.frame]
+		case nativeCommandHealEffectFrames:
+			if j.frame < 0 || j.frame >= len(j.hdFrames.Effects) {
+				return false
+			}
+			frame = j.hdFrames.Effects[j.frame]
+		case nativeCommandHealMaskFrames:
+			frame = j.hdFrames.Event
+			if j.frame%2 == 1 {
+				frame = j.hdFrames.Mask
+			}
+		case nativeCommandHealDigitFrames:
+			if j.frame < 0 || j.frame >= len(j.hdFrames.Digits) {
+				return false
+			}
+			frame = j.hdFrames.Digits[j.frame]
+		}
+		if !g.drawPreparedModernHDMapFrame(screen, frame, false) {
+			return false
+		}
+		j.drawn = true
+		return true
 	}
 	pixels := j.baselineVGA
 	switch j.phase {

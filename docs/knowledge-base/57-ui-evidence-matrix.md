@@ -1,5 +1,7 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
+指令13～16回復的前導、淡藍環、HD輪廓閃光、綠色數字與等待已接入，限定CONFORMED-SCOPED／RUNTIME-E1。兩包各八完整Game.Draw、88次F2、一次結算／續行與四指令非空HD地形變色通過；48張跨包畫面SHA相同。固定種子7與受控記錄／角色位置明示，未新增正常玩家、原版RGB或PLAYER-E2。其他效果／指令owner、背景／台座／HUD與集中正常／人工／平台仍待。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，主證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的heal13_16_map_hd_followup_20261023。
+
 BG_004森林背景與TAI_004透明草地台座已接入一般共用背景物理戰鬥，限定CONFORMED-SCOPED／RUNTIME-E1。兩側預備、主攻／反擊、restore與既有DAC沿同次圖源呈現，保留F2及原HP／RNG／一次返回。兩包完整主題、來源拒收、獨立GPU及七項舊路徑回歸已驗；面板、其他背景／台座／捲動／指令caller仍待。這是受控攻防fixture，未新增正常玩家、原版RGB或PLAYER-E2聲明。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源及重跑依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的tai004_physical_followup_20261023。
 
 指令10～12的60幀地圖取樣與11／12十輪前導已接入HD，限定RUNTIME-E1。正式及獨立素材包各驗三指令命中、MISS、雙目標、22張結果與500ms hold；F2、MP／HP／RNG／Acted及一次續行保持。四surface沿原固定小數表取樣HD子像素，徑向LUT沿原生範圍，以既有四色差近似接入手繪地形。缺件／尺寸原子拒收、非空HD徑向變色及舊2189A／敵方10／玩家9／死亡回歸通過。沒有新增素材、規則或保存格式。其他效果／地圖回復／背景／HUD、正常玩家與集中人工／平台仍待。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，主證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的commands10_12_map_hd_followup_20261023。

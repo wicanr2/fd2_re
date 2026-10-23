@@ -237,6 +237,13 @@
 [驗證紀錄](docs/data/fd2-modern-hd-battlefield-20261019.json)的`early_party_battle_followup_20261020`。
 貝克威的端炮與光束也已正式登錄；混合背景反擊的一般能力限制仍由[#265](https://github.com/wicanr2/fd2_re/issues/265)追蹤。
 
+![HD地圖回復的前導、光環、輪廓閃光與綠色數字](docs/figures/hd-heal-map.png)
+
+回復演出已接上 HD 世界、淡藍光環、人物輪廓閃光與綠色數字，保留單體及範圍回復的結算順序。
+四格取自指令13～16受控測試的完整遊戲畫面，使用固定種子7與明示角色位置、回復量及MP消耗；尚未作正常玩家抽驗。
+光環共用手繪母稿，地形與人物的色表映射為現代呈現近似；HUD及其餘未重繪地形仍含像素素材。
+來源與範圍見[HD驗證紀錄](docs/data/fd2-modern-hd-battlefield-20261019.json)的`heal13_16_map_hd_followup_20261023`。
+
 ![地圖法術的HD取樣、前導與雙目標結果](docs/figures/hd-map-commands10-12.png)
 
 四格取自指令10～12的實際遊戲繪製，保留完整遊戲區並縮為一半大小：地形取樣、另一取樣位置、徑向前導與雙目標結果。使用固定種子7、受控傷害與命中參數及移位角色，屬測試場景，尚未作正常玩家抽驗。人物與已重繪地形保持HD，其餘地形及HUD仍含像素素材；高解析子像素取樣與變色為現代呈現近似。來源及範圍見[HD驗證紀錄](docs/data/fd2-modern-hd-battlefield-20261019.json)的`commands10_12_map_hd_followup_20261023`。

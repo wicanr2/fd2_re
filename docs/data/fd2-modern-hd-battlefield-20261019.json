@@ -9,20 +9,21 @@
     "native_viewport": "CONFORMED-SCOPED：穩定1920世界沿原生(4,4)、312×192窗格；死亡事件前25拍依既有producer從VGA0,0開始，最後steady回4,4。不同caller分列，不新增DOS位址parity。",
     "hd_sprite_data": "DATA-READY：完整125組1455張HD及31組372張新增24父項已登錄；舊1083張父項及HD bytes保持。",
     "hd_world_renderer": "CONFORMED-SCOPED：144人物已接Game.Draw；首章34張正常GPU、4張實際走行、兩次物理攻擊及保存／新程序LOAD通過。",
-    "private_assets": "正式白名單同步私人包，舊檔SHA保持；來源／實檔／UID及私人Git遠端／PRIVATE核對見tai004_physical_followup_20261023，沒有公開私人提交識別碼。",
+    "private_assets": "正式白名單同步私人包，舊檔SHA保持；來源／實檔／UID及私人Git遠端／PRIVATE核對見heal13_16_map_hd_followup_20261023，沒有公開私人提交識別碼。",
     "quickload_battle_owner": "CONFORMED-SCOPED：成功JSON LOAD丟棄舊經驗owner與移動計畫；拒收保留。",
     "timed_dialogue": "CONFORMED-SCOPED-RUNTIME-E1：計時FFEC開收框保留HD世界，EXP99普通鍵盤／F2與保存冷讀通過；其他caller未驗。",
     "hd_terrain": "CONFORMED-SCOPED：map0六組53槽；新增圓頂綠色／褐色雙塊四底圖在兩張正常GPU全部相符，短長組合與保存冷讀通過；草地及其他地形仍待HD化。",
     "ai_player_input_lock": "CONFORMED-SCOPED：AI換手期間拒絕玩家地圖輸入重入；普通END／增援對話及相關／完整Go回歸通過。",
     "gaia_redesign": "CONFORMED-SCOPED：新版頭像與四方向圖組已登錄；正常START／Gaia北移取消／F2／冷讀分段驗證。相位差異與序章尾端失敗明示，非逐幀parity。",
-    "hd_battle_animation": "已登錄圖源目前覆蓋由58與tai004_physical_followup_20261023.formal_coverage重生；BG_004與TAI_004共用物理另有RUNTIME-E1。其他效果／背景／HUD、正常玩家及集中人工／平台仍待，完整HD未完成。",
+    "hd_battle_animation": "目前FIGANI／FDOTHER／LMI及BG／TAI覆蓋由58與heal13_16_map_hd_followup_20261023.formal_coverage重生。13～16回復已接，其他效果／背景／HUD與正常／集中人工／平台仍待，完整HD未完成。",
     "native_purchase_equip": "CONFORMED-SCOPED：#266原生購買立即裝備保留ignored原始格，29項商店回歸與正常購弓F5／章首射程通過；不改格式或數值規則。",
     "hd_event_death": "共用事件、普通行動與狀態致死已接HD；三種26拍／F2通過。正常章23事件與普通擊殺已抽驗，狀態致死正常GUI仍待；來源依death_consumers_followup_20261021。",
     "theme_toolbar": "現有固定工具列仍為 CONFORMED-SCOPED-RUNTIME-E1；新 A 頂端浮出／四語／A+／速度操作原型已選定，正式串接 DRAFT，依 background_toolbar_prototype_20261023。",
     "hd_facility_scene": "CONFORMED-SCOPED-RUNTIME-E1：三種城鎮與三種商店靜態HD場景／店員，以及既有隊伍HD頭像接入裝備面板；114個GPU案例及兩包載入通過，集中普通／人工仍待。",
-    "assets": "正式及完整／runtime-only allow-list逐SHA／UID通過；目前數量依58及tai004_physical_followup_20261023，其他來源不推定caller完成。",
+    "assets": "正式及完整／runtime-only allow-list逐SHA／UID通過，現在數量依58及heal13_16_map_hd_followup_20261023；已去重暫存包不再作獨立驗收。",
     "hd_battle_background": "CONFORMED-SCOPED／RUNTIME-E1：BG_004森林背景接一般共用背景物理戰鬥；兩包圖源／完整攻防、F2／DAC／一次返回及舊GPU回歸通過。其他BG／TAI／捲動及指令caller仍待，依bg004_physical_followup_20261023。",
-    "hd_battle_pedestal": "CONFORMED-SCOPED／RUNTIME-E1：TAI_004透明台座接共用物理的靜態／移位進場、攻防／restore／淡出。兩包來源、50 GPU世界及雙側完整Game.Draw／F2通過，其他caller與集中人工仍待，依tai004_physical_followup_20261023。"
+    "hd_battle_pedestal": "CONFORMED-SCOPED／RUNTIME-E1：TAI_004透明台座接共用物理的靜態／移位進場、攻防／restore／淡出。兩包來源、50 GPU世界及雙側完整Game.Draw／F2通過，其他caller與集中人工仍待，依tai004_physical_followup_20261023。",
+    "hd_heal_map": "CONFORMED-SCOPED／RUNTIME-E1：13～16的前導、七張光環、HD輪廓閃光、十個綠數字及等待接入；兩包各八完整Game.Draw／88次F2、一次交易／續行與非空HD地形變色通過。來源及限制見heal13_16_map_hd_followup_20261023，正常／人工／平台仍待。"
   },
   "runtime_source": {
     "binary": {
@@ -98457,7 +98458,7 @@
     },
     "private_remote_verification": "Independent private repository commit pushed; actual git ls-remote refs/heads/main re-read equals local HEAD. Private commit identity is not published."
   },
-  "latest_hd_batch": "tai004_physical_followup_20261023",
+  "latest_hd_batch": "heal13_16_map_hd_followup_20261023",
   "monks28_31_mage29_followup_20261022": {
     "status": "CONFORMED-SCOPED-RUNTIME-E1",
     "date": "2026-10-22",
@@ -202793,5 +202794,540 @@
     "private_asset_commit_pushed": true,
     "github_issue_comment": "https://github.com/wicanr2/fd2_re/issues/263#issuecomment-6366537753",
     "public_git_verification_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/tai004-public-git-verification-oct23-r1.json"
+  },
+  "heal13_16_map_hd_followup_20261023": {
+    "date": "2026-10-23",
+    "base_commit": "530fd6a44ea8fee11ef6a6655c5eb00b9fec4ae2",
+    "status": "CONFORMED-SCOPED / RUNTIME-E1",
+    "full_hd_complete": false,
+    "spec": "61-modern-theme-runtime-spec.md: 指令13～16地圖回復HD",
+    "source_audit": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-source-oct23-r1.json",
+      "sha256": "f5faf5934abb853254d57810150e76995451f74968637f8daff7f6c59867d543"
+    },
+    "master": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-ring-master-oct23-r1.png",
+      "sha256": "98942583781dc9cedb1145fa7ca857778fa1dce659df3b239c849093930afe1d",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alpha_max": 254,
+      "unmodified": true,
+      "compile_crop": [
+        154,
+        152,
+        1100,
+        1098
+      ]
+    },
+    "remaining": [
+      "Other effects/modifier owners and remaining background/TAI/scrolling callers",
+      "HUD and remaining world terrain",
+      "Floating toolbar and actual game speed contract",
+      "Concentrated normal player/manual/platform review"
+    ],
+    "generation": {
+      "prompt": "Use case: style-transfer. Asset type: one transparent healing magic ring sprite for a hand-painted 1995 tactical RPG remake. Reference image shows native FDOTHER6 entries57..63 and green digits; use ONLY the first two blue rings for the visual motif. Draw ONE perfectly front-facing circular ring of soft icy blue magical light. Thin softly hand-painted luminous blue rim, pale blue-white bright core line, subtle very narrow blue bloom around rim, transparent completely empty circular center. Smooth continuous circular outline, no perspective or ellipse. Match the restrained hand-painted fantasy art already in the game. Isolated centered circle, keep entire ring and narrow halo inside image with modest transparent padding, usable as a 144x144 sprite and smaller fading rings. No character, particles, symbols, runes, text, numbers, scene, floor, black background, checkerboard or labels. Preserve actual alpha transparency outside AND inside the ring. This is an energy ring, not a thick metal hoop or portal with a filled center. High resolution detail, clean anti-aliased edge, solid opaque brightest core and transparent center.",
+      "tool": "built-in image_gen",
+      "reference": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-source-oct23-r1.png"
+    },
+    "font_input": {
+      "image": "fd2-go-test-local:latest",
+      "container_path": "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
+      "sha256": "b76b0433203017ca80401b2ee0dd69350349871c4b19d504c34dbdd80541690a",
+      "package": "fonts-noto-cjk 1:20220127+repack1-1",
+      "font_index": 3,
+      "bundled_font": false
+    },
+    "production_changed": true,
+    "formal_catalog": {
+      "file": "remake/assets/themes/modern/catalog.json",
+      "sha256": "7d172a3daa6e5bcadfd944147d9c552e7d2e1824f9e22a08b8da7f8c3c2c362a"
+    },
+    "candidate": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-candidate-oct23-r1/compiled.json",
+      "sha256": "c21bf11c1d393fe36e1bddf50ea7e43911d36a46144d66ae872ed70ab1497403"
+    },
+    "candidate_catalog": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-candidate-oct23-r1/catalog.json",
+      "sha256": "073be33168552ce5c4ead8b3b1b81da0e361b2145d056fd35da25822d72c2e7c"
+    },
+    "runtime_manifest": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-runtime-only-oct23-r1/private-manifest.json",
+      "sha256": "5b7fddf56994e6d0cf411f0dc24ed99579c6169eea25d47f845982984ddd24a7"
+    },
+    "formal_registration": {
+      "assets": 677,
+      "old_entries_preserved": 675,
+      "new_files": [
+        "heal1316-fdother005-105-hd6-r1.png",
+        "heal1316-fdother005-106-hd6-r1.png",
+        "heal1316-fdother005-107-hd6-r1.png",
+        "heal1316-fdother005-108-hd6-r1.png",
+        "heal1316-fdother005-109-hd6-r1.png",
+        "heal1316-fdother005-110-hd6-r1.png",
+        "heal1316-fdother005-111-hd6-r1.png",
+        "heal1316-fdother005-112-hd6-r1.png",
+        "heal1316-fdother005-113-hd6-r1.png",
+        "heal1316-fdother005-114-hd6-r1.png",
+        "heal1316-fdother006-057-hd6-r1.png",
+        "heal1316-fdother006-058-hd6-r1.png",
+        "heal1316-fdother006-059-hd6-r1.png",
+        "heal1316-fdother006-060-hd6-r1.png",
+        "heal1316-fdother006-061-hd6-r1.png",
+        "heal1316-fdother006-062-hd6-r1.png",
+        "heal1316-fdother006-063-hd6-r1.png",
+        "heal1316-noto-0-original-r1.png",
+        "heal1316-noto-1-original-r1.png",
+        "heal1316-noto-2-original-r1.png",
+        "heal1316-noto-3-original-r1.png",
+        "heal1316-noto-4-original-r1.png",
+        "heal1316-noto-5-original-r1.png",
+        "heal1316-noto-6-original-r1.png",
+        "heal1316-noto-7-original-r1.png",
+        "heal1316-noto-8-original-r1.png",
+        "heal1316-noto-9-original-r1.png",
+        "heal1316-ring-master-oct23-r1.png"
+      ],
+      "new_runtime_frames": 17,
+      "candidate_equal_except_private_root": true
+    },
+    "verification": {
+      "completed": [
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-unit-candidate-oct23-r3.gate.json",
+            "sha256": "655cd210df065d38b536c46bb4df56cacce05bfce71624f0e8a32dff99a60e72"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-unit-candidate-oct23-r3.log",
+            "sha256": "49e5f377171e1f7c3b35d7b8f5cad2cd00ebb4bbb3e72dfd8995c5aee171339f"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-unit-candidate-oct23-r3.memory.json",
+            "sha256": "76a04748f365c7c171aefb1858f5663b096504cf3a4c195f6dffd6a5aad9ca87"
+          },
+          "elapsed_seconds": 233.652,
+          "memory_peak_bytes": 1827811328
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-source-candidate-oct23-r2.gate.json",
+            "sha256": "af0d2c686d0dd5559ddd5d39e584bc68697fad84d55ff587bde6d23271efebf8"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-source-candidate-oct23-r2.log",
+            "sha256": "83aa5000d6fb55019ff3db2265431134a9eda7e7f9cecc81f02bea8c0e7730fc"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-source-candidate-oct23-r2.memory.json",
+            "sha256": "5d77ea24ea90d69499505c1b6c731b60eaa5e9cb18a18f0fdf68586ffe20f2aa"
+          },
+          "elapsed_seconds": 15.159,
+          "memory_peak_bytes": 685789184
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-game-candidate-oct23-r3.gate.json",
+            "sha256": "7809f1e07576c9c67e47314006fedb0ea1554f74a698e59385e3590d54ad05ac"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-game-candidate-oct23-r3.log",
+            "sha256": "1976d73baa87e4bffc6ac67974ea74bd264e2d9d69fa63c31700fcd418047ab8"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-game-candidate-oct23-r3.memory.json",
+            "sha256": "b9f5a5da69f8cfb5216e09ac246950f3ab3e01d8d39c7f5c7d5d77b4004a8ca1"
+          },
+          "elapsed_seconds": 931.221,
+          "memory_peak_bytes": 5974482944
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-unit-runtime-oct23-r2.gate.json",
+            "sha256": "557fae7a2c84d9e83b0afcdaf983f458c4d6010c8320a412a15f6391a14feb65"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-unit-runtime-oct23-r2.log",
+            "sha256": "f780cbb54a92dace2bc64e95d27fc8a3158bcbce31303c3545f0505fa63b11d7"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-unit-runtime-oct23-r2.memory.json",
+            "sha256": "fc51a9e977c7c7859350744dc749e019135302e88bb0b609c1955b4ee88b56f1"
+          },
+          "elapsed_seconds": 204.729,
+          "memory_peak_bytes": 2251259904
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-source-runtime-oct23-r1.gate.json",
+            "sha256": "9d17f3e0df9e295b8119bf96642419575450962f10bdb60005d69f4cba412d16"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-source-runtime-oct23-r1.log",
+            "sha256": "339603746e6256c1ab17b1df94b38fcc613998050bcabd5938c94cbc45776032"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-source-runtime-oct23-r1.memory.json",
+            "sha256": "a49fb39d699e9b2ed5014228d150c0b06404203cf8f3903883dc800c14ec29dc"
+          },
+          "elapsed_seconds": 5.515,
+          "memory_peak_bytes": 2174701568
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-game-runtime-oct23-r1.gate.json",
+            "sha256": "5283ef65bbd37373244290f2c64c89294e35afcae33bf509580e7052a1c11c4f"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-game-runtime-oct23-r1.log",
+            "sha256": "4a789f852a7ee630f19d361b9dba91381839910e7786de62b4eeec99bb173a2b"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-game-runtime-oct23-r1.memory.json",
+            "sha256": "76188b4743ea64b982d299214551484993aedc6652b11b60a3c37efe1bb7dc34"
+          },
+          "elapsed_seconds": 917.94,
+          "memory_peak_bytes": 5847494656
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-regression-oct23-r1.gate.json",
+            "sha256": "cb8cd5f0a7a8d25b22842d0c9327b2e44251bebdc08dc3577bd2b03d4661cd5a"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-regression-oct23-r1.log",
+            "sha256": "b2fd9d2ef7a307630469c982663060090d2882999726ae7baf6c562c9282e543"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-regression-oct23-r1.memory.json",
+            "sha256": "6f761d60fdfe34d8447b67907fa79de9df67ed767920c1146853bbb1fb332351"
+          },
+          "elapsed_seconds": 52.908,
+          "memory_peak_bytes": 955404288
+        }
+      ],
+      "pending": [],
+      "native_geometry_points_per_pack": 425984,
+      "native_canvases_per_pack": 180,
+      "cold_lmi_rejection_cases_per_pack": 18,
+      "source_gpu_frames_per_pack": 17,
+      "complete_cases_per_pack": 8,
+      "f2_round_trips_per_pack": 88,
+      "rgba_tolerance": 2,
+      "native_rng_seed": 7,
+      "fixture": "Actor(10,7), target(11,7) HP99/max100, extra(11,6) HP20/max100. Controlled heal records damage70/selection1/effect0or1/MP3. Native rules choose one or three targets, including caster in area case. No normal-player or original RGB claim.",
+      "runtime_receipts": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-game-candidate-oct23-r3-capture/receipt.json",
+          "sha256": "ff2cdbab448062c959a11591eaeec53a8e2d66e8d09a4a03dbfbbf5a45bc8aa0"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-game-runtime-oct23-r1-capture/receipt.json",
+          "sha256": "ff2cdbab448062c959a11591eaeec53a8e2d66e8d09a4a03dbfbbf5a45bc8aa0"
+        }
+      ],
+      "radial_nonvacuous_source_check": {
+        "count_scope": "sum of HD texel/frame visits over16 front frames; not unique screen coordinates",
+        "packs": {
+          "candidate": {
+            "13": {
+              "inside": 377028,
+              "changed": 375878,
+              "outside_mismatch": 0
+            },
+            "14": {
+              "inside": 758160,
+              "changed": 756227,
+              "outside_mismatch": 0
+            },
+            "15": {
+              "inside": 849132,
+              "changed": 847199,
+              "outside_mismatch": 0
+            },
+            "16": {
+              "inside": 867744,
+              "changed": 865817,
+              "outside_mismatch": 0
+            }
+          },
+          "runtime": {
+            "13": {
+              "inside": 377028,
+              "changed": 375878,
+              "outside_mismatch": 0
+            },
+            "14": {
+              "inside": 758160,
+              "changed": 756227,
+              "outside_mismatch": 0
+            },
+            "15": {
+              "inside": 849132,
+              "changed": 847199,
+              "outside_mismatch": 0
+            },
+            "16": {
+              "inside": 867744,
+              "changed": 865817,
+              "outside_mismatch": 0
+            }
+          }
+        }
+      },
+      "cross_pack_screenshots": {
+        "count": 48,
+        "all_sha256_identical": true,
+        "hashes": {
+          "candidate-oct23-r3": {
+            "heal14-multitrue-phase0-frame00.png": "623867ec0e592fff66a9352942ae854b99051c3ef78e2e70f01ed814cbf6fb3b",
+            "heal14-multifalse-phase0-frame15.png": "a3fb05046309180976bc4511b4484fd5ecdf4d8c3863b30028c1d34c4b2f24f9",
+            "heal14-multitrue-phase4-frame01.png": "a69fee72675d0c93c4a2d978d7172f6bd3937558f2c446625b4a8fb547e0f9ce",
+            "heal16-multitrue-phase5-frame05.png": "966ee588cecbf3613267b7946aa2d100505403a93d5d040949aba54149871668",
+            "heal14-multifalse-phase5-frame05.png": "df3c977299213e9bfcbe0b2156771c508386ccdd1d74f415b5d1a32b4cbc3f77",
+            "heal14-multitrue-phase3-frame01.png": "1d05086e5d3324e584a5dcc9aec3ad0f4ce4d179e91a20632c3c138fa13d6768",
+            "heal13-multifalse-phase0-frame00.png": "d48b982a67cb088a252c4fd1c640ae6a0bd8ac540f646277a529060cf06bbfa4",
+            "heal14-multifalse-phase3-frame01.png": "b8926ae7f254d3737a912ef258c89c90bd0d19e4ea8cf17ab601a1add0986082",
+            "heal16-multifalse-phase0-frame08.png": "d2ad886b142f16b100c59e07ccaa3cbc0be91c1d9d87c96f7edac7b230fb1d36",
+            "heal16-multifalse-phase3-frame01.png": "b8926ae7f254d3737a912ef258c89c90bd0d19e4ea8cf17ab601a1add0986082",
+            "heal13-multifalse-phase0-frame15.png": "35a33cc5964e900c0176d932ee94ebe75ffd3f0d794d52cd3775a5756f5b0d67",
+            "heal15-multifalse-phase0-frame15.png": "de406ffe2a9b156914334461aafb1c162b7bab50b52d8f652841bd776824e89e",
+            "heal14-multitrue-phase0-frame08.png": "c62d0d28594d466658c9bbce6399b0d817c73d721d0f32f2f2ffcbffca94d6c6",
+            "heal15-multitrue-phase5-frame05.png": "966ee588cecbf3613267b7946aa2d100505403a93d5d040949aba54149871668",
+            "heal13-multitrue-phase3-frame01.png": "1d05086e5d3324e584a5dcc9aec3ad0f4ce4d179e91a20632c3c138fa13d6768",
+            "heal13-multitrue-phase0-frame00.png": "0c22e48c43c9d38d4220733860b2f10848c2fa8cf3265c0f017cdbe034137881",
+            "heal14-multifalse-phase4-frame01.png": "1595b7501490a31b744a641f2d61916dc970f6948bb77f608273e977dfef6869",
+            "heal15-multitrue-phase0-frame15.png": "21d0b3764661ab2615e96419693ed2b631e7faa1d7bc136e054f95ba864ee33c",
+            "heal14-multifalse-phase0-frame08.png": "352d30d2cb95364286c3c55ac0e4caaebfa130abd433a760e0dd4c67d6e3e7e3",
+            "heal16-multifalse-phase4-frame01.png": "1595b7501490a31b744a641f2d61916dc970f6948bb77f608273e977dfef6869",
+            "heal16-multifalse-phase5-frame05.png": "df3c977299213e9bfcbe0b2156771c508386ccdd1d74f415b5d1a32b4cbc3f77",
+            "heal13-multitrue-phase0-frame08.png": "b542968eba8acea0cada2a89e8d87f5272cc555684f277a3ed6b84078258a2c3",
+            "heal15-multifalse-phase0-frame00.png": "59931b0c20ce6cf9435f68936c0ed29dc9ea8b35387f79a16a17814ef2f317ff",
+            "heal16-multitrue-phase0-frame00.png": "c4d559a8dbd680baa28480aef9b0bb0ebcaf88c9f5382421b8d4ca60e2a03333",
+            "heal14-multitrue-phase5-frame05.png": "966ee588cecbf3613267b7946aa2d100505403a93d5d040949aba54149871668",
+            "heal16-multifalse-phase0-frame15.png": "3cf9491673d0697e6965237e14d96b8f471df755d4c33559e7e5c5cc2e9cdd52",
+            "heal16-multitrue-phase4-frame01.png": "a69fee72675d0c93c4a2d978d7172f6bd3937558f2c446625b4a8fb547e0f9ce",
+            "heal13-multitrue-phase4-frame01.png": "a69fee72675d0c93c4a2d978d7172f6bd3937558f2c446625b4a8fb547e0f9ce",
+            "heal15-multifalse-phase5-frame05.png": "df3c977299213e9bfcbe0b2156771c508386ccdd1d74f415b5d1a32b4cbc3f77",
+            "heal13-multifalse-phase5-frame05.png": "df3c977299213e9bfcbe0b2156771c508386ccdd1d74f415b5d1a32b4cbc3f77",
+            "heal16-multitrue-phase0-frame15.png": "865e9623863f4db576ff6bc247c60fcfaef367b211d6f13f17125b314bdf45cd",
+            "heal16-multitrue-phase0-frame08.png": "e5243304eacab86e0c625a3ab143e987205834fdba854747e5054343e4dde6f5",
+            "heal14-multitrue-phase0-frame15.png": "03a4e6e6c057b1500983a9aa61930f5f98190d40cc4945c0ddb0e2e035609fd9",
+            "heal13-multitrue-phase5-frame05.png": "966ee588cecbf3613267b7946aa2d100505403a93d5d040949aba54149871668",
+            "heal16-multifalse-phase0-frame00.png": "52396d72f408430f53d30a16b799876a89103a94cd01b066f90f27c0f9490c7d",
+            "heal15-multitrue-phase0-frame00.png": "6caf69d6c5d61596fedd5dc641121cefb7c99f18cdc9199c92aecb4827a0f380",
+            "heal15-multifalse-phase3-frame01.png": "b8926ae7f254d3737a912ef258c89c90bd0d19e4ea8cf17ab601a1add0986082",
+            "heal13-multitrue-phase0-frame15.png": "93936e49574aa96ced111f3d7a6cff7bdbc01c4664c99db8caa7059ecaf7d391",
+            "heal15-multitrue-phase0-frame08.png": "5123e828876ba2579ebd250f47e6806aa3749b49062f5c3cf06156a24e000171",
+            "heal14-multifalse-phase0-frame00.png": "f8f12b2620af35aaa21fb1a7a65b67e4f0777d57edcba20f0db89fb5b2782168",
+            "heal13-multifalse-phase4-frame01.png": "1595b7501490a31b744a641f2d61916dc970f6948bb77f608273e977dfef6869",
+            "heal15-multitrue-phase3-frame01.png": "1d05086e5d3324e584a5dcc9aec3ad0f4ce4d179e91a20632c3c138fa13d6768",
+            "heal13-multifalse-phase0-frame08.png": "46206869c4e904623f7731714b6ee760978d7a574702d77dfab755ec229772cd",
+            "heal13-multifalse-phase3-frame01.png": "b8926ae7f254d3737a912ef258c89c90bd0d19e4ea8cf17ab601a1add0986082",
+            "heal15-multitrue-phase4-frame01.png": "a69fee72675d0c93c4a2d978d7172f6bd3937558f2c446625b4a8fb547e0f9ce",
+            "heal15-multifalse-phase0-frame08.png": "429981ae0285b2b030a86976400130fe92fb949b5e384159bb2d38203f6a2779",
+            "heal16-multitrue-phase3-frame01.png": "1d05086e5d3324e584a5dcc9aec3ad0f4ce4d179e91a20632c3c138fa13d6768",
+            "heal15-multifalse-phase4-frame01.png": "1595b7501490a31b744a641f2d61916dc970f6948bb77f608273e977dfef6869"
+          },
+          "runtime-oct23-r1": {
+            "heal14-multitrue-phase0-frame00.png": "623867ec0e592fff66a9352942ae854b99051c3ef78e2e70f01ed814cbf6fb3b",
+            "heal14-multifalse-phase0-frame15.png": "a3fb05046309180976bc4511b4484fd5ecdf4d8c3863b30028c1d34c4b2f24f9",
+            "heal14-multitrue-phase4-frame01.png": "a69fee72675d0c93c4a2d978d7172f6bd3937558f2c446625b4a8fb547e0f9ce",
+            "heal16-multitrue-phase5-frame05.png": "966ee588cecbf3613267b7946aa2d100505403a93d5d040949aba54149871668",
+            "heal14-multifalse-phase5-frame05.png": "df3c977299213e9bfcbe0b2156771c508386ccdd1d74f415b5d1a32b4cbc3f77",
+            "heal14-multitrue-phase3-frame01.png": "1d05086e5d3324e584a5dcc9aec3ad0f4ce4d179e91a20632c3c138fa13d6768",
+            "heal13-multifalse-phase0-frame00.png": "d48b982a67cb088a252c4fd1c640ae6a0bd8ac540f646277a529060cf06bbfa4",
+            "heal14-multifalse-phase3-frame01.png": "b8926ae7f254d3737a912ef258c89c90bd0d19e4ea8cf17ab601a1add0986082",
+            "heal16-multifalse-phase0-frame08.png": "d2ad886b142f16b100c59e07ccaa3cbc0be91c1d9d87c96f7edac7b230fb1d36",
+            "heal16-multifalse-phase3-frame01.png": "b8926ae7f254d3737a912ef258c89c90bd0d19e4ea8cf17ab601a1add0986082",
+            "heal13-multifalse-phase0-frame15.png": "35a33cc5964e900c0176d932ee94ebe75ffd3f0d794d52cd3775a5756f5b0d67",
+            "heal15-multifalse-phase0-frame15.png": "de406ffe2a9b156914334461aafb1c162b7bab50b52d8f652841bd776824e89e",
+            "heal14-multitrue-phase0-frame08.png": "c62d0d28594d466658c9bbce6399b0d817c73d721d0f32f2f2ffcbffca94d6c6",
+            "heal15-multitrue-phase5-frame05.png": "966ee588cecbf3613267b7946aa2d100505403a93d5d040949aba54149871668",
+            "heal13-multitrue-phase3-frame01.png": "1d05086e5d3324e584a5dcc9aec3ad0f4ce4d179e91a20632c3c138fa13d6768",
+            "heal13-multitrue-phase0-frame00.png": "0c22e48c43c9d38d4220733860b2f10848c2fa8cf3265c0f017cdbe034137881",
+            "heal14-multifalse-phase4-frame01.png": "1595b7501490a31b744a641f2d61916dc970f6948bb77f608273e977dfef6869",
+            "heal15-multitrue-phase0-frame15.png": "21d0b3764661ab2615e96419693ed2b631e7faa1d7bc136e054f95ba864ee33c",
+            "heal14-multifalse-phase0-frame08.png": "352d30d2cb95364286c3c55ac0e4caaebfa130abd433a760e0dd4c67d6e3e7e3",
+            "heal16-multifalse-phase4-frame01.png": "1595b7501490a31b744a641f2d61916dc970f6948bb77f608273e977dfef6869",
+            "heal16-multifalse-phase5-frame05.png": "df3c977299213e9bfcbe0b2156771c508386ccdd1d74f415b5d1a32b4cbc3f77",
+            "heal13-multitrue-phase0-frame08.png": "b542968eba8acea0cada2a89e8d87f5272cc555684f277a3ed6b84078258a2c3",
+            "heal15-multifalse-phase0-frame00.png": "59931b0c20ce6cf9435f68936c0ed29dc9ea8b35387f79a16a17814ef2f317ff",
+            "heal16-multitrue-phase0-frame00.png": "c4d559a8dbd680baa28480aef9b0bb0ebcaf88c9f5382421b8d4ca60e2a03333",
+            "heal14-multitrue-phase5-frame05.png": "966ee588cecbf3613267b7946aa2d100505403a93d5d040949aba54149871668",
+            "heal16-multifalse-phase0-frame15.png": "3cf9491673d0697e6965237e14d96b8f471df755d4c33559e7e5c5cc2e9cdd52",
+            "heal16-multitrue-phase4-frame01.png": "a69fee72675d0c93c4a2d978d7172f6bd3937558f2c446625b4a8fb547e0f9ce",
+            "heal13-multitrue-phase4-frame01.png": "a69fee72675d0c93c4a2d978d7172f6bd3937558f2c446625b4a8fb547e0f9ce",
+            "heal15-multifalse-phase5-frame05.png": "df3c977299213e9bfcbe0b2156771c508386ccdd1d74f415b5d1a32b4cbc3f77",
+            "heal13-multifalse-phase5-frame05.png": "df3c977299213e9bfcbe0b2156771c508386ccdd1d74f415b5d1a32b4cbc3f77",
+            "heal16-multitrue-phase0-frame15.png": "865e9623863f4db576ff6bc247c60fcfaef367b211d6f13f17125b314bdf45cd",
+            "heal16-multitrue-phase0-frame08.png": "e5243304eacab86e0c625a3ab143e987205834fdba854747e5054343e4dde6f5",
+            "heal14-multitrue-phase0-frame15.png": "03a4e6e6c057b1500983a9aa61930f5f98190d40cc4945c0ddb0e2e035609fd9",
+            "heal13-multitrue-phase5-frame05.png": "966ee588cecbf3613267b7946aa2d100505403a93d5d040949aba54149871668",
+            "heal16-multifalse-phase0-frame00.png": "52396d72f408430f53d30a16b799876a89103a94cd01b066f90f27c0f9490c7d",
+            "heal15-multitrue-phase0-frame00.png": "6caf69d6c5d61596fedd5dc641121cefb7c99f18cdc9199c92aecb4827a0f380",
+            "heal15-multifalse-phase3-frame01.png": "b8926ae7f254d3737a912ef258c89c90bd0d19e4ea8cf17ab601a1add0986082",
+            "heal13-multitrue-phase0-frame15.png": "93936e49574aa96ced111f3d7a6cff7bdbc01c4664c99db8caa7059ecaf7d391",
+            "heal15-multitrue-phase0-frame08.png": "5123e828876ba2579ebd250f47e6806aa3749b49062f5c3cf06156a24e000171",
+            "heal14-multifalse-phase0-frame00.png": "f8f12b2620af35aaa21fb1a7a65b67e4f0777d57edcba20f0db89fb5b2782168",
+            "heal13-multifalse-phase4-frame01.png": "1595b7501490a31b744a641f2d61916dc970f6948bb77f608273e977dfef6869",
+            "heal15-multitrue-phase3-frame01.png": "1d05086e5d3324e584a5dcc9aec3ad0f4ce4d179e91a20632c3c138fa13d6768",
+            "heal13-multifalse-phase0-frame08.png": "46206869c4e904623f7731714b6ee760978d7a574702d77dfab755ec229772cd",
+            "heal13-multifalse-phase3-frame01.png": "b8926ae7f254d3737a912ef258c89c90bd0d19e4ea8cf17ab601a1add0986082",
+            "heal15-multitrue-phase4-frame01.png": "a69fee72675d0c93c4a2d978d7172f6bd3937558f2c446625b4a8fb547e0f9ce",
+            "heal15-multifalse-phase0-frame08.png": "429981ae0285b2b030a86976400130fe92fb949b5e384159bb2d38203f6a2779",
+            "heal16-multitrue-phase3-frame01.png": "1d05086e5d3324e584a5dcc9aec3ad0f4ce4d179e91a20632c3c138fa13d6768",
+            "heal15-multifalse-phase4-frame01.png": "1595b7501490a31b744a641f2d61916dc970f6948bb77f608273e977dfef6869"
+          }
+        }
+      },
+      "cpu_reference": "Independent scalar RGBA8 premultiplied upload and per-layer rounded source-over; common renderer/shader unchanged.",
+      "peak_scope": "Eight retained Game fixtures, full theme and CPU/GPU readback caches; not normal-player peak memory.",
+      "normal_player_verified": false,
+      "manual_art_finalized": false,
+      "rejected_runs": [
+        {
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-unit-candidate-oct23-r1.log",
+            "sha256": "f97d5800450ace3ad15a6ff7289035897ba19d1f808a3cb72471e254cf526078"
+          },
+          "reason": "Fixture actor was outside range1; manual Docker stop after known FAIL, exit137, not an OOM claim. Partial log retained; no final memory receipt."
+        },
+        {
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-game-candidate-oct23-r1.log",
+            "sha256": "70e1fde06bb8b0a11a2ac51fd9e2b11f4d23b278e4bad50622f470d84ce92e6d"
+          },
+          "reason": "Delayed closure captured range id16 under module go1.21; fix test-local command copy, no engine change.",
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-game-candidate-oct23-r1.memory.json",
+            "sha256": "718468794a9a45b66d6e340fb71a8ef2e3b6ceb2d00e4b43cc373abe65d0e6cb"
+          }
+        },
+        {
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-game-candidate-oct23-r2.log",
+            "sha256": "bff550909620ab90b9b254ef5d5477bc3cd7c8b2ac9bfe3eba2206d476652a05"
+          },
+          "reason": "Old 16-bit integer CPU Over accumulated3 channel steps over translucent layers; corrected RGBA8 reference, tolerance2 unchanged.",
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-game-candidate-oct23-r2.memory.json",
+            "sha256": "41b91978d26c9ef6b9ffc3d101e91930b5de16e8906c073c56b0d342a78e48ec"
+          }
+        }
+      ],
+      "superseded_scope": "Prior candidate unit r2, runtime unit r1 and source candidate r1 passed before nonempty-HD geometry position and/or expanded source checks; retained, not counted among seven final admission gates."
+    },
+    "runtime_source": {
+      "files": {
+        "remake/cmd/fd2/modern_hd_heal_map.go": "e502e82685d8dab6d6497252de6a5d8841c02ed80d37a4f117c4a656a83cf175",
+        "remake/cmd/fd2/modern_hd_heal_map_test.go": "8d2c5bc55ce3e330f39ad478c91cea490639f410a9c9280225d6f12224741f39",
+        "remake/cmd/fd2/modern_hd_heal_map_gpu_test.go": "2638324cebf92df0a8dade31283321fbcad333a02d56243db0aac37e8165da8a",
+        "remake/cmd/fd2/native_command_heal_presentation.go": "0ec1a19b20ec8ccf7827fcc81ef1d3489ce05a0b204d71171d23abe26e20e668",
+        "remake/cmd/fd2/player_shortcuts.go": "b92d8ecbe0f0a8410515ca881c61581a4f8a0ff8f76c40a5a447fa9fd1e57ea7",
+        "remake/cmd/fd2/modern_hd_map_overlay_assets.go": "b1e7eb6b274bded67c558991d7cf3e6dd9ae4ab113d16fc78975bbcd07e7e326",
+        "tools/build_fd2_heal_map_hd.py": "2c79a33c8550bf6c9ca34820ea7db5165fdc8c2861cad894e025f389ce720187",
+        "tools/verify_fd2_heal_map_hd.py": "a0c9c21dc860e0fffaaf4c077f36031bf2bb33b047f994a47db29b02b8814139",
+        "tools/validate_modern_theme_catalog.py": "98458c685784e6e9419a14951148543b3c26e1afb23e65883447c69ce068f7eb"
+      },
+      "game_rules_changed": false,
+      "save_format_changed": false,
+      "production_gpu_shader_changed": false
+    },
+    "readme_figure": {
+      "image": {
+        "file": "docs/figures/hd-heal-map.png",
+        "sha256": "c63e339e1c95235a645bbee23373f1938db304d6f26212280516c413a835f3ad"
+      },
+      "sources": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-game-candidate-oct23-r3-capture/heal13-multifalse-phase0-frame15.png",
+          "sha256": "35a33cc5964e900c0176d932ee94ebe75ffd3f0d794d52cd3775a5756f5b0d67"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-game-candidate-oct23-r3-capture/heal13-multitrue-phase3-frame01.png",
+          "sha256": "1d05086e5d3324e584a5dcc9aec3ad0f4ce4d179e91a20632c3c138fa13d6768"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-game-candidate-oct23-r3-capture/heal16-multitrue-phase4-frame01.png",
+          "sha256": "a69fee72675d0c93c4a2d978d7172f6bd3937558f2c446625b4a8fb547e0f9ce"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-game-candidate-oct23-r3-capture/heal16-multitrue-phase5-frame05.png",
+          "sha256": "966ee588cecbf3613267b7946aa2d100505403a93d5d040949aba54149871668"
+        }
+      ],
+      "recipe": "four full1920x1200 actual Game.Draw PNGs -> each LANCZOS960x600; add external40px label rows; no game crop or repaint",
+      "scope": "Controlled healing fixture, native HUD/remaining terrain; no normal-player or original oracle proof."
+    },
+    "runtime_pack_after_cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-runtime-cleanup-oct23-r1.json",
+      "sha256": "8305572b7274260843359b13f6632e4d21eca33f34693f5be212f4b8f3d0a17a"
+    },
+    "formal_coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-formal-coverage-oct23-r1.json",
+      "sha256": "69467bf5150c98024df715d0289c774d626e3ad7d87462359c30cdaf8051d081"
+    },
+    "private_asset_sync": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-private-sync-oct23-r1.json",
+      "sha256": "0804fe27325b659d55fc5d0b28bf2c3127ee2030fe8fb974b07fee45b41fd866"
+    },
+    "base_catalog": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-base-catalog-oct23-r1.json",
+      "sha256": "e3a80174a7ce6db66d710f85a37b3a7518b27920da03a972684e008ee04699f9"
+    },
+    "toolchain": {
+      "assets_image": "fd2-assets-local:20260829-sfx",
+      "compiler_python": "3.12.15",
+      "compiler_pillow": "11.3.0",
+      "go_image": "fd2-go-test-local:latest",
+      "go_language": "go.mod 1.21",
+      "runtime_go": "1.22.12",
+      "graphics": "Ebiten v2.6.6 / Xvfb1920x1200, software GPU, Linux Docker only",
+      "assets_image_id": "sha256:e59237a31d4b5f7a62c59ac37b780bd93f17c99fda97be8f5ca0c53978b878bc",
+      "go_image_id": "sha256:e4a805c52a3ad5d8c22cf23f2bcf51c6924e5ad6b99554f1b02761903c725433"
+    },
+    "historical_candidate_units_progress": {
+      "gate": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-unit-candidate-oct23-r3.gate.json",
+      "source_gate": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-source-candidate-oct23-r1.gate.json",
+      "region_samples": {
+        "13": {
+          "inside": 377028,
+          "changed": 375878,
+          "outside_mismatch": 0
+        },
+        "14": {
+          "inside": 758160,
+          "changed": 756227,
+          "outside_mismatch": 0
+        },
+        "15": {
+          "inside": 849132,
+          "changed": 847199,
+          "outside_mismatch": 0
+        },
+        "16": {
+          "inside": 867744,
+          "changed": 865817,
+          "outside_mismatch": 0
+        }
+      },
+      "native_geometry_points": 425984,
+      "native_canvases": 180,
+      "registered_candidate_assets": 677,
+      "formal_assets": 675,
+      "production_shader_changed": false,
+      "game_gpu_pending": true
+    },
+    "public_git_verification_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-public-git-verification-oct23-r1.json",
+    "private_git_verification": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-private-git-verification-oct23-r1.json",
+      "sha256": "c3aad25a5f60fb79176aa8a292beb4322da17d01388092f60538afa4372a8208"
+    },
+    "private_asset_commit_pushed": true,
+    "github_issue_comment": "https://github.com/wicanr2/fd2_re/issues/263#issuecomment-6368477656"
   }
 }
