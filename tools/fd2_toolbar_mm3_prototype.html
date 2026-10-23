@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="zh-Hant">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FD2 工具列操作原型</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#101722;color:#eef0e7;font-family:"Noto Sans CJK TC","Noto Sans CJK JP","WenQuanYi Zen Hei",sans-serif}main{max-width:1248px;margin:auto;padding:18px 24px}h1{font-size:25px;margin:0 0 7px}p{margin:6px 0 12px;color:#c5cfda;font-size:16px}.review{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}.review button{font-size:16px;padding:7px 14px}.stage{position:relative;background:#05070a;border:1px solid #43546a}.scene{display:block;width:100%;height:auto}.hotzone{position:absolute;top:0;left:0;right:0;height:8px;z-index:4;background:#b39958;opacity:.3}.toolbar{--factor:1.5;--font:33px;position:absolute;top:0;left:0;right:0;z-index:5;background:rgb(22,38,58);padding:10px;border-bottom:2px solid #9aafc2;box-shadow:0 6px 14px #0008}.toolbar.hidden{visibility:hidden;pointer-events:none}.stage.docked .toolbar{position:relative;box-shadow:none}.stage.docked .hotzone{display:none}.controls{display:grid;gap:8px;grid-template-columns:repeat(4,minmax(0,1fr)) 82px}.controls button,.options button{font:inherit;font-size:var(--font);white-space:nowrap;min-width:0;min-height:calc(44px * var(--factor));padding:5px 10px;color:rgb(187,199,207);background:rgb(37,53,71);border:1px solid #bbc7cf;border-radius:3px;cursor:pointer}.controls button.selected,.options button.selected{color:rgb(242,218,162);border-color:rgb(242,218,162);background:#39444f}.controls button:focus-visible,.options button:focus-visible{outline:3px solid #ffe4a0;outline-offset:1px}.size{grid-column:5;grid-row:1 / span 2;font-size:24px!important}.size span{display:block;font-size:16px}.speed{grid-column:1 / span 2;grid-row:2}.original{grid-column:3;grid-row:2}.hd{grid-column:4;grid-row:2}.toolbar.compact{--factor:1;--font:22px}.compact .controls{grid-template-columns:repeat(4,minmax(0,.8fr)) 1.15fr 1.3fr 1.15fr 64px}.compact .size,.compact .speed,.compact .original,.compact .hd{grid-column:auto;grid-row:auto}.compact .size{font-size:20px!important}.compact .size span{font-size:11px}.options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:9px}.compact .options{grid-template-columns:repeat(6,minmax(0,1fr))}.options[hidden]{display:none}.toolbar-note{font-size:14px;color:#b9c9d8;margin-top:8px}.demo{background:#1a2635;border:1px solid #465a70;padding:12px;margin-top:12px;font-size:15px}.demo meter{width:100%;height:14px;display:block;margin-top:8px}.legend{color:#dbc490}.review .active{outline:2px solid #ead095}button{font-family:inherit;color:#e9edf2;background:#26384c;border:1px solid #8397ab;border-radius:3px}.status{font-size:14px;color:#a7b7c9;margin-top:10px;min-height:20px}
+</style>
+<main>
+<h1>FD2 工具列操作原型</h1>
+<p>遊戲畫面是固定擷圖。此頁可操作工具列；主題、語系與速度尚未接入正式遊戲。</p>
+<div class="review"><button id="float">A 頂端浮出</button><button id="dock">B 遊戲外固定</button><span id="instructions">滑鼠移到遊戲頂端可顯示工具列，移開即隱藏。</span></div>
+<section class="stage" id="stage">
+<div class="hotzone" id="hotzone"></div>
+<nav class="toolbar" id="toolbar" aria-label="遊戲工具列">
+<div class="controls">
+<button class="locale" data-locale="zh-Hant">繁體中文</button><button class="locale" data-locale="zh-Hans">简体中文</button><button class="locale" data-locale="en">English</button><button class="locale" data-locale="ja">日本語</button>
+<button id="speed" class="speed" aria-expanded="false">遊戲速度 1× ▾</button><button id="original" class="original">原版像素</button><button id="hd" class="hd">HD 手繪</button><button id="size" class="size">A+<span>150%</span></button>
+</div>
+<div class="options" id="options" hidden aria-label="遊戲速度"><button data-speed="1">1×</button><button data-speed="2">2×</button><button data-speed="4">4×</button><button data-speed="8">8×</button><button data-speed="16">16×</button><button data-speed="32">32×</button></div>
+<div class="toolbar-note" id="hint">F2 切換主題 · F4 切換語系 · 字級只影響工具列</div>
+</nav>
+<img class="scene" id="scene" src="__SCENE_DATA_URL__" alt="FD2 重製遊戲的實際測試場景固定擷圖">
+</section>
+<div class="demo"><span class="legend">倍率操作示意</span> <span id="demo-label">1×</span>；下方僅示意計時快慢，不代表遊戲效能或實際加速結果。<meter id="meter" min="0" max="100" value="0"></meter></div>
+<div class="status" id="status" aria-live="polite"></div>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const query=new URLSearchParams(location.search);
+const state={mode:query.get('mode')==='dock'?'dock':'float',size:Number(query.get('size'))||150,locale:'zh-Hant',hd:true,speed:1,open:query.get('open')==='1',menu:false,events:[]};
+const labels={
+ 'zh-Hant':['遊戲速度','原版像素','HD 手繪','F2 切換主題 · F4 切換語系 · 字級只影響工具列'],
+ 'zh-Hans':['游戏速度','原版像素','HD 手绘','F2 切换主题 · F4 切换语言 · 字号只影响工具栏'],
+ en:['Game speed','Original pixels','HD artwork','F2: theme · F4: language · Text size affects toolbar only'],
+ ja:['ゲーム速度','オリジナル','HDイラスト','F2：テーマ · F4：言語 · 文字サイズはツールバーのみ']
+};
+function record(kind){state.events.push({kind,mode:state.mode,size:state.size,locale:state.locale,hd:state.hd,speed:state.speed,open:state.open,menu:state.menu});$('status').textContent=`原型狀態：${state.locale}／${state.hd?'HD':'原版'}／${state.speed}×／字級 ${state.size}%`}
+function render(){
+ const t=$('toolbar');t.classList.toggle('hidden',state.mode==='float'&&!state.open);t.classList.toggle('compact',state.size===100);t.style.setProperty('--factor',state.size/100);t.style.setProperty('--font',22*state.size/100+'px');
+ $('stage').classList.toggle('docked',state.mode==='dock');$('float').classList.toggle('active',state.mode==='float');$('dock').classList.toggle('active',state.mode==='dock');
+ $('instructions').textContent=state.mode==='float'?'滑鼠移到遊戲頂端可顯示工具列，移開即隱藏。':'工具列在遊戲畫面外固定顯示，不遮住內容。';
+ const l=labels[state.locale];const speedName=state.size===100?({en:'Speed',ja:'速度'}[state.locale]||l[0]):l[0];$('speed').textContent=`${speedName} ${state.speed}× ▾`;$('speed').title=l[0];$('original').textContent=l[1];$('hd').textContent=l[2];$('hint').textContent=l[3];$('original').classList.toggle('selected',!state.hd);$('hd').classList.toggle('selected',state.hd);$('size').innerHTML=`A+<span>${state.size}%</span>`;
+ document.querySelectorAll('[data-locale]').forEach(b=>b.classList.toggle('selected',b.dataset.locale===state.locale));document.querySelectorAll('[data-speed]').forEach(b=>b.classList.toggle('selected',Number(b.dataset.speed)===state.speed));$('options').hidden=!state.menu;$('speed').setAttribute('aria-expanded',String(state.menu));$('demo-label').textContent=state.speed+'×';
+}
+for(const mode of ['float','dock'])$(mode).onclick=()=>{state.mode=mode;state.open=true;state.menu=false;record('layout');render()};
+$('stage').addEventListener('pointermove',e=>{if(state.mode!=='float')return;const s=$('stage').getBoundingClientRect(),bar=$('toolbar').getBoundingClientRect();if(e.clientY-s.top<8){state.open=true;render()}else if(state.open&&e.clientY>bar.bottom){state.open=false;state.menu=false;render()}});
+$('stage').addEventListener('pointerleave',()=>{if(state.mode==='float'){state.open=false;state.menu=false;render()}});
+document.querySelectorAll('[data-locale]').forEach(b=>b.onclick=()=>{state.locale=b.dataset.locale;record('locale');render()});
+for(const hd of [false,true])$(hd?'hd':'original').onclick=()=>{state.hd=hd;record('theme');render()};
+$('size').onclick=()=>{state.size=state.size===100?125:state.size===125?150:100;record('size');render()};
+$('speed').onclick=()=>{state.menu=!state.menu;record('speed-menu');render()};
+document.querySelectorAll('[data-speed]').forEach(b=>b.onclick=()=>{state.speed=Number(b.dataset.speed);state.menu=false;record('speed');render()});
+addEventListener('keydown',e=>{if(e.repeat)return;if(e.key==='F2'){e.preventDefault();state.hd=!state.hd;record('F2');render()}if(e.key==='F4'){e.preventDefault();const ids=Object.keys(labels);state.locale=ids[(ids.indexOf(state.locale)+1)%ids.length];record('F4');render()}});
+let last=performance.now(),value=0;function animate(now){value=(value+Math.min(now-last,100)*state.speed/100)%100;last=now;$('meter').value=value;requestAnimationFrame(animate)}
+window.fd2Prototype={state,render,record,layout:()=>({canvas:$('scene').getBoundingClientRect().toJSON(),toolbar:$('toolbar').getBoundingClientRect().toJSON(),controls:[...document.querySelectorAll('.controls button')].map(b=>({id:b.id||b.dataset.locale,rect:b.getBoundingClientRect().toJSON(),overflow:b.scrollWidth>b.clientWidth}))})};render();record('initial');requestAnimationFrame(animate);
+</script>
+</html>

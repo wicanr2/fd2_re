@@ -8,6 +8,7 @@ from PIL import Image
 from build_fd2_gaia_battle_hd import digest
 from validate_modern_theme_catalog import ROOT, validate
 from audit_fd2_player9_map_source import audit as audit_lmi_sources
+from audit_fd2_battle_background_sources import audit as audit_background_sources
 
 
 FIELDS = ['x', 'y', 'width', 'height', 'delay_native', 'raw_byte_4', 'raw_byte_5', 'raw_byte_7']
@@ -140,8 +141,29 @@ def main():
             lmi_overlays.append({'asset_id':asset['asset_id'],'resource':asset['source_resource'],
                 'registered_hd_frames':asset['frame_count'],'indices':[f['index'] for f in asset['native_lmi_frames']],
                 'raw_sha256':bank['raw_sha256'],'runtime_caller_status':'NOT-INFERRED-FROM-ASSETS'})
+    surfaces = []
+    surface_assets = [a for a in catalog['assets'] if a['role'] == 'battle_surface_hd']
+    if surface_assets:
+        native_surfaces, _ = audit_background_sources(args.original_pack)
+        for asset in surface_assets:
+            archive, resource = asset['source_archive'], asset['source_resource']
+            frame = native_surfaces['banks'][archive[:-4]]['entries'][resource]
+            descriptor = dict(x=0,y=0,width=frame['width'],height=frame['height'],delay_native=0,raw_byte_4=0,raw_byte_5=0,raw_byte_7=0)
+            if (frame.get('visible_pixels',0) == 0 or asset['source_metadata_sha256'] != frame['metadata_sha256']
+                    or asset['native_frames'] != [descriptor] or digest(args.source/asset['file']) != asset['sha256']):
+                raise SystemExit('背景或台座來源／原框／成品SHA不同')
+            with Image.open(args.source/asset['file']) as picture:
+                if picture.mode != 'RGBA' or picture.size != (frame['width']*6,frame['height']*6):
+                    raise SystemExit('背景或台座HD尺寸不同')
+                low, high = picture.getchannel('A').getextrema()
+                full = frame['visible_pixels'] == frame['width']*frame['height']
+                if high != 255 or (full and low != 255) or (not full and low != 0):
+                    raise SystemExit('背景或台座HD透明度契約不同')
+            surfaces.append({'asset_id':asset['asset_id'],'archive':archive,'resource':resource,
+                'metadata_sha256':frame['metadata_sha256'],'native_size':[frame['width'],frame['height']],
+                'compiled_sha256':asset['sha256'],'runtime_caller_status':'NOT-INFERRED-FROM-ASSETS'})
     decoded = [r for r in rows if r['source_status'] == 'decoded']
-    report = {'status': 'PASS-BATTLE-HD-ASSET-COVERAGE', 'registered_lmi_overlays':lmi_overlays,'inventory_sha256': digest(args.inventory),
+    report = {'status': 'PASS-BATTLE-HD-ASSET-COVERAGE', 'registered_battle_surfaces':surfaces,'registered_lmi_overlays':lmi_overlays,'inventory_sha256': digest(args.inventory),
         'catalog_sha256': digest(args.catalog), 'catalog_stage': stage, 'tool_sha256': digest(Path(__file__)), 'catalog_assets': len(catalog['assets']),
         'figani': {'resource_positions': len(rows), 'decoded_resources': len(decoded),
             'native_frames': sum(r['native_frames'] for r in decoded), 'registered_resources': len(registered),

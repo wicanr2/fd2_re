@@ -2954,3 +2954,27 @@ R2的88完整22幀編製通過，89於268:9殘光縮小alpha245拒收，未發�
 2026-10-23 驗證範圍勘誤：C10／11正式GPU先於新增13圖尺寸拒收；C12正式、三指令runtime及兩包最終單元使用補守衛後正式程式，有效圖源與排程不變。另將角色移到HD地形旁(8,5)，以獨立範圍核對11的58387內點／57708變色及12的101025／100331，兩包相同；該來源檢查與actor(1,6)完整Game.Draw分開，不冒稱正常玩家。永久驅動器後補必要測試逐名／OOM及非空HD覆蓋拒收，對九份不可覆寫的真實log再驗通過，未重寫舊收據或宣稱再執行Go。全畫面跨程序SHA不作相同聲明，初始地圖clock未控制；各張GPU均對同次獨立CPU Over逐RGBA核對至容差2。
 
 2026-10-23 本批只接既有consumer，673項清冊與私人素材SHA保持，沒有新增圖稿或私人提交。HD子像素取樣、既有四色差近似與未HD地形／HUD明示；README四格為實際Game.Draw完整遊戲區半縮圖。#263更新仍OPEN，#268／#269保持集中人工；24項遠端worklist重生，0項可能已完成。所有修改與輸出1000:1000，本批測試容器已退出。5532份獨立暫存圖經測試及逐SHA確認後改相對連結，移除重複實檔配置1615429632 bytes，明細及測試前／清理後獨立性見主收據runtime_pack_after_cleanup；原稿、正式素材、收據與截圖保留，沒有錄影或新Release。完整戰鬥HD及13～16回復、其他效果／背景／HUD、集中正常／人工／平台仍待，目標保持active。
+
+2026-10-23 接續385f12b2，從origin/main建立hd/battle-background-toolbar-20261023。依使用者最新指示先核對mm3工具列與戰鬥背景；13～16回復保留。路由命中規格閘門與文件職責，使用grilling及imagegen。使用者選擇加入遊戲加速但先看操作原型，並看過同狀態A／B後選定A頂端浮出、自動隱藏。正式程式及673項素材未改，新工具列／加速仍DRAFT。
+
+工具列以受版控HTML、建構器及既有Playwright固定image重生。r1發現100%英文溢出，緊湊標籤訂正後r2通過；r3補來源／工具SHA及純工具列圖，12語系／字級、六速度、F2／F4、顯隱、39操作及七圖通過。這是固定Game.Draw截圖上的可操作原型，速度只改選單與示意條，不證明遊戲加速。使用者選定的純UI圖保存docs/figures/fd2-toolbar-floating-prototype.png並掛入61，不公開嵌入私人畫面的HTML產物。
+
+固定原包BG／TAI各57資源逐manifest／raw／PNG／Mask SHA核對，末項各零長raw保持；BG十個／TAI十六個10×3均全透明。46可見BG逐indexed／mask不同；40可見TAI去重29種，33地形表第三欄涉及40索引，只描述表內容，不冒稱正常章內可達。320×101／318×100與台座各原框保持，總覽以正式FDOTHER#0色盤，不當作原版執行圖。稽核首次Docker socket被sandbox拒絕，改用既有容器的host權限後同命令成功，是環境邊界，不是產品失敗。
+
+內建image_gen依BG_004原框及正確色盤總覽生成2243×701 RGB森林草稿，未修改原檔完整複製到既有work目錄，提示／SHA／輸入與限制集中background_toolbar_prototype_20261023。尚未轉正式1920×600、登錄清冊、同步私人包或接Game；其他背景／台座、正式工具列／加速、13～16與集中正常／人工／平台仍待，無新原版parity、錄影或Release。純原型與盤點不構成重大可玩更新，本輪不提交推送。
+
+本批收尾：15項SHA引用、六個新增規格連結、既有入口正對照、新工具語法與全部修改檔1000:1000通過。主機gh已追加[#204](https://github.com/wicanr2/fd2_re/issues/204#issuecomment-6364115060)與[#263](https://github.com/wicanr2/fd2_re/issues/263#issuecomment-6364116053)進度，未改驗收或關閉；24項遠端worklist經官方純函式產生快照、render及verify，可能已完成0項。Docker檢查無本批遺留容器，沒有新增錄影需清除。正式遊戲程式未改，因此本輪未重跑Go回歸，瀏覽器原型檢查不替代正式玩家驗證。
+
+2026-10-23 延續前輪原型實際前進至背景consumer：BG_004共用物理場景先補READY契約，新增battle_surface_hd的固定metadata／PNG／原框／alpha驗證與BaseScenery同次來源，再接兩側預備、body／counter／restore及DAC。工具列與實際加速未接；規則／保存格式不改。候選674項已編製，正式清冊仍673項。
+
+兩包各三個必要單元閘門、24個獨立CPU Over逐RGBA GPU世界、我方／敵方完整Game.Draw通過，共八份Go gate，無SKIP／逾時／OOM。兩側124個原生預備／攻防／restore畫布獨立重組相同；候選與5533份全新實檔包的15／13張實際截圖SHA全部相同。呈現Draw次數因host排程不同，不宣稱同幀數。每案例64個戰鬥DAC及65個地圖DAC、三階段F2、HP／RNG及一次返回保持；強制攻防結果與地形4的fixture明示，非正常玩家或原版RGB對拍。完整共用GPU與七項舊路徑回歸仍在同一live程序執行，須通過才登錄正式素材。主收據bg004_physical_followup_20261023；README候選縮圖取實際完整遊戲區，不裁切重畫，台座／HUD仍像素。
+
+2026-10-23 共用回歸勘誤：r1的GPU本體通過，隨後原生測試NewImage觸發鎖定版Ebiten v2.6.6的isRunGameEnded守衛，整包FAIL不計驗收，非產品缺陷或OOM。依實際module原碼與試玩路由核對後，永久driver拆為legacy-gpu／regression兩個新程序r2，保留舊失敗log與memory。彙整腳本首次誤讀stdout摘要鍵memory_peak_bytes，改讀原始JSON的after.memory.peak，舊收據不改；同程式重跑成功。新增可重用程序隔離教訓，guard綁正式driver。
+
+2026-10-23 BG_004十份Go gate均已通過，包含分開程序的原生七項與完整共用GPU回歸；失敗r1不計驗收。正式清冊新增一項至674，與受驗候選僅private_root不同，舊673項保持，新增未修改原稿與1920×600圖源各一檔。兩包28張實際攻防截圖逐SHA相同，Draw次數不作相同聲明。私人同步、正式覆蓋與收尾仍待。
+
+2026-10-23 BG_004限定CONFORMED-SCOPED／RUNTIME-E1：正式及獨立包驗收完整，native七項與2087共用GPU各在乾淨程序通過，全部十份Go閘門無SKIP／逾時／OOM。正式覆蓋重生為674項，264個FIGANI／2118幀、23個FDOTHER／408幀及三LMI／52張保持，新增BG_004一份可見單圖，不推定其他caller。私人6422實檔逐SHA／UID通過，舊6420檔保持；兩份新圖沿catalog白名單保存，其他原始研究BG／TAI不混入。README加入實際完整Game.Draw半縮圖，文化保存段落保持；56／57／58／61與唯一現況資料同步。工具列與實際加速仍為原型，其他BG／TAI／捲動／指令、13～16／HUD及集中正常／人工／平台仍待。Git同步、worklist與空間清理在最後收尾核對。
+
+2026-10-23 BG_004收尾：私人素材庫四檔差異獨立提交推送後，實際本機／遠端main相同、工作樹乾淨且PRIVATE；公開資料只記核對結果，不公開私人提交識別碼。5533個本人單連結暫存PNG在四份獨立包PASS收據及逐SHA核對後改相對連結，移除重複配置1619103744 bytes，非共享主機淨可用空間量測；原稿、正式／私人素材、所有截圖、log、失敗樣本與原manifest保持。歷史收據描述驗證當時的獨立實檔，現在的包不可再當獨立驗收，未來需重建。明細與最後檢查依主收據runtime_pack_after_cleanup及work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/bg004-final-check-oct23-r1.json。
+
+2026-10-23 最後檢查通過58項本批SHA引用、12份來源指紋、2406個本地Markdown目標及README全部舊文化行／標題保持，所有修改及輸出1000:1000，gofmt無輸出；320條教訓／188個guard通過。主機gh已更新[#263](https://github.com/wicanr2/fd2_re/issues/263#issuecomment-6365410806)，保持總驗收與OPEN；官方函式從最新遠端資料pull／render／verify共24條，可能已完成0條，#268／#269仍待集中人工。全部本批Docker容器已退出並清除，未建新image／volume，未錄製新影片。此批已有真實可編輯來源到Game.Draw的切片及真實回歸，符合重大更新條件，即將提交並推送公開主線；推送後主機Git核對輸出於bg004-public-git-verification-oct23-r1.json。完整HD目標保持active。

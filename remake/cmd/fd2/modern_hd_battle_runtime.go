@@ -21,8 +21,9 @@ type modernHDBattleSource struct {
 }
 
 type modernHDBattleSources struct {
-	Base   []byte
-	Layers []modernHDBattleSource
+	Base        []byte
+	Layers      []modernHDBattleSource
+	BaseScenery []modernHDBattleSource
 }
 
 func modernHDBattleBodySources(base []byte, attack, idle figani.Frame, side byte,
@@ -51,6 +52,10 @@ func (g *Game) modernHDBattleWanted(scene *nativePhysicalScene) bool {
 	set := g.modernStoryPortraits
 	if set == nil || !set.hasHD || scene == nil || scene.bodyResources == nil || scene.bodyResources.attack == nil {
 		return false
+	}
+	if !scene.selection.HasSeparateBackgrounds && scene.backgroundFrame.Width == 320 && scene.backgroundFrame.Height == 100 &&
+		set.battleSurfaces["BG.DAT"][int(scene.selection.BaseBG)] != nil {
+		return true
 	}
 	for _, resource := range scene.modernResources() {
 		if set.battleAnimations[resource] != nil {
@@ -112,7 +117,13 @@ func (g *Game) modernHDBattlePlan(sources *modernHDBattleSources, palette color.
 		return modernHDBattlePlan{}, fmt.Errorf("modern HD battle: sources unavailable")
 	}
 	plan := modernHDBattlePlan{Base: sources.Base, Palette: palette, HDSubtract: subtract}
-	for _, source := range sources.Layers {
+	ordered := make([]modernHDBattleSource, 0, len(sources.BaseScenery)+len(sources.Layers))
+	ordered = append(ordered, sources.BaseScenery...)
+	ordered = append(ordered, sources.Layers...)
+	for _, source := range ordered {
+		if (source.Archive == "BG.DAT" || source.Archive == "TAI.DAT") && source.Resource < 0 {
+			return modernHDBattlePlan{}, fmt.Errorf("modern HD battle: invalid surface resource")
+		}
 		var picture image.Image
 		var key string
 		if source.Resource >= 0 {
@@ -122,6 +133,11 @@ func (g *Game) modernHDBattlePlan(sources *modernHDBattleSources, palette color.
 				entries = g.modernStoryPortraits.battleAnimations
 			}
 			switch source.Archive {
+			case "BG.DAT", "TAI.DAT":
+				picture, key, err = g.modernStoryPortraits.battleSurfaceHD(source)
+				if err != nil {
+					return modernHDBattlePlan{}, err
+				}
 			case "", "FIGANI.DAT":
 			case "FDOTHER.DAT":
 				if g.modernStoryPortraits != nil {
@@ -130,12 +146,14 @@ func (g *Game) modernHDBattlePlan(sources *modernHDBattleSources, palette color.
 			default:
 				return modernHDBattlePlan{}, fmt.Errorf("modern HD battle: unsupported source archive")
 			}
-			picture, err = modernBattleHDFrame(entries, source.Resource, source.Index)
-			if err != nil {
-				return modernHDBattlePlan{}, err
-			}
-			if picture != nil {
-				key = entries[source.Resource].hashes[source.Index]
+			if source.Archive != "BG.DAT" && source.Archive != "TAI.DAT" {
+				picture, err = modernBattleHDFrame(entries, source.Resource, source.Index)
+				if err != nil {
+					return modernHDBattlePlan{}, err
+				}
+				if picture != nil {
+					key = entries[source.Resource].hashes[source.Index]
+				}
 			}
 		}
 		f := source.Frame
@@ -182,6 +200,10 @@ func (g *Game) modernHDBattlePreludeSources(scene *nativePhysicalScene, stage in
 	}
 	r := scene.bodyResources
 	base := append([]byte(nil), scene.preludeBase...)
+	scenery, err := modernPhysicalBaseScenery(scene)
+	if err != nil {
+		return nil, err
+	}
 	a := modernHDBattleSource{Frame: r.actorIdle.Frames[0], Resource: scene.actorBattleFig * 3, Fill: -1}
 	b := modernHDBattleSource{Frame: r.targetIdle.Frames[0], Resource: scene.targetBattleFig * 3, Fill: -1}
 	if r.actorSide == 0 {
@@ -196,7 +218,7 @@ func (g *Game) modernHDBattlePreludeSources(scene *nativePhysicalScene, stage in
 		if scene.selection.HasSeparateBackgrounds {
 			return &modernHDBattleSources{Base: base, Layers: []modernHDBattleSource{a}}, nil
 		}
-		return &modernHDBattleSources{Base: base, Layers: []modernHDBattleSource{a, b}}, nil
+		return &modernHDBattleSources{Base: base, BaseScenery: scenery, Layers: []modernHDBattleSource{a, b}}, nil
 	}
 	platform := r.platform
 	p := modernHDBattleSource{Frame: figani.Frame{X: 164, Y: 157, Width: platform.Width, Height: platform.Height,
@@ -205,7 +227,7 @@ func (g *Game) modernHDBattlePreludeSources(scene *nativePhysicalScene, stage in
 	if scene.selection.HasSeparateBackgrounds {
 		return &modernHDBattleSources{Base: base, Layers: []modernHDBattleSource{p, a}}, nil
 	}
-	return &modernHDBattleSources{Base: base, Layers: []modernHDBattleSource{b, p, a}}, nil
+	return &modernHDBattleSources{Base: base, BaseScenery: scenery, Layers: []modernHDBattleSource{b, p, a}}, nil
 }
 
 func (g *Game) drawModernHDBattlePrelude(screen *ebiten.Image, scene *nativePhysicalScene) (bool, error) {

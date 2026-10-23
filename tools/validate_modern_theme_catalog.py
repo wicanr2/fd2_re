@@ -19,7 +19,7 @@ ROLES = PROTOTYPE_ROLES | {
     "story_portrait_frame", "story_portrait_hd_frame", "map_sprite_set", "map_tileset_set",
     "map_sprite_hd_set", "battlefield_tileset_concept", "battle_hud_panel", "battle_action_icon_set",
     "native_terrain_hd_set", "terrain_hd_master", "battle_animation_hd_set", "battle_effect_hd_set", "map_overlay_hd_set",
-    "facility_scene_hd",
+    "facility_scene_hd", "battle_surface_hd",
 }
 STATUSES = {"prototype", "concept", "approved", "runtime_candidate", "runtime_ready"}
 # Fixed FDICON.B24 source-write inventory, independently checked by
@@ -60,6 +60,7 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
     terrain_frames = set()
     battle_resources = set()
     facility_resources = set()
+    surface_resources = set()
     for entry in assets:
         required = {"asset_id", "role", "status", "file", "width", "height", "sha256", "source_refs"}
         candidate = {"master_file", "consumer_contract", "speaker_id", "frame", "mouth_state"}
@@ -78,7 +79,9 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
         }
         if not isinstance(entry, dict):
             raise ValueError("asset entry must be an object")
-        if entry.get("role") == "facility_scene_hd":
+        if entry.get("role") == "battle_surface_hd":
+            expected = required | {"master_file", "consumer_contract", "source_archive", "source_resource", "source_metadata_sha256", "source_files", "source_sha256", "native_frames", "alpha_contract", "layout_policy"}
+        elif entry.get("role") == "facility_scene_hd":
             expected = required | {"master_file", "consumer_contract", "source_archive", "source_resource", "source_metadata_sha256", "source_files", "source_sha256"}
         elif entry.get("role") in {"story_portrait_frame", "story_portrait_hd_frame"}:
             expected = required | candidate
@@ -131,6 +134,27 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
             if entry["frame"] not in range(4) or entry["mouth_state"] not in {"closed", "open"}:
                 raise ValueError(f"invalid portrait frame identity: {asset_id}")
             portrait_speakers.add(entry['speaker_id'])
+        if entry['role'] == 'battle_surface_hd':
+            source = (entry['source_archive'], entry['source_resource'])
+            frames = entry['native_frames']
+            if (source[0] not in {'BG.DAT', 'TAI.DAT'} or type(source[1]) is not int or source[1] not in range(56)
+                    or source in surface_resources or entry['consumer_contract'] != 'native_battle_surface_rgba_hd6_v1'
+                    or entry['status'] not in {'runtime_candidate', 'runtime_ready'} or entry['alpha_contract'] != 'coverage'
+                    or entry['layout_policy'] != 'native_surface_hd6' or not SHA_RE.fullmatch(entry['source_metadata_sha256'])
+                    or not isinstance(frames, list) or len(frames) != 1 or not isinstance(frames[0], dict)):
+                raise ValueError(f'invalid battle surface contract: {asset_id}')
+            frame = frames[0]
+            if (set(frame) != {'x', 'y', 'width', 'height', 'delay_native', 'raw_byte_4', 'raw_byte_5', 'raw_byte_7'}
+                    or any(type(v) is not int for v in frame.values())
+                    or not 1 <= frame['width'] <= 320 or not 1 <= frame['height'] <= 200
+                    or any(frame[k] != 0 for k in ['x', 'y', 'delay_native', 'raw_byte_4', 'raw_byte_5', 'raw_byte_7'])
+                    or (entry['width'], entry['height']) != (frame['width']*6, frame['height']*6)
+                    or entry['source_files'] != [entry['master_file']] or len(entry['source_sha256']) != 1
+                    or not SHA_RE.fullmatch(entry['source_sha256'][0])):
+                raise ValueError(f'invalid battle surface geometry or master: {asset_id}')
+            surface_resources.add(source)
+            if verify_private and hashlib.sha256((ROOT/private_root/entry['master_file']).read_bytes()).hexdigest() != entry['source_sha256'][0]:
+                raise ValueError(f'battle surface master sha256 mismatch: {asset_id}')
         if entry['role'] == 'facility_scene_hd':
             resource = entry['source_resource']
             if (resource not in {11, 61, 62, 12, 29, 63} or resource in facility_resources

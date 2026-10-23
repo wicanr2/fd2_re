@@ -298,6 +298,12 @@ func modernHDBattleFixtureSet(t *testing.T, catalog, pack string, resources []in
 	}
 	set := &modernStoryPortraitSet{hasHD: true}
 	for _, asset := range doc.Assets {
+		if asset.Role == "battle_surface_hd" {
+			if err := loadModernBattleSurfaceHD(set, asset, pack); err != nil {
+				t.Fatal(err)
+			}
+			continue
+		}
 		if asset.Role != "battle_animation_hd_set" || !wanted[asset.SourceResource] {
 			continue
 		}

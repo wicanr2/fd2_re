@@ -141,6 +141,9 @@ func (g *Game) applyTheme(set *modernStoryPortraitSet) error {
 		}
 	}
 	if set != nil && g.atk != nil && g.atk.nativeScene != nil {
+		if err := set.validatePhysicalScenery(g.atk.nativeScene); err != nil {
+			return err
+		}
 		if err := set.prepareBattleHDResources(g.atk.nativeScene.modernResources()...); err != nil {
 			return err
 		}

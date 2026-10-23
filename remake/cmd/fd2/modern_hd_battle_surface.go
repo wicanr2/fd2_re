@@ -1,0 +1,164 @@
+package main
+
+import (
+	"bytes"
+	"crypto/sha256"
+	"encoding/hex"
+	"errors"
+	"fmt"
+	"image"
+	"os"
+	"path/filepath"
+
+	"github.com/wicanr2/fd2_re/remake/internal/fdother"
+	"github.com/wicanr2/fd2_re/remake/internal/figani"
+)
+
+// 靜態場景圖完整解碼後才發布。原始像素保留供同次 producer 身分核對。
+type modernBattleSurfaceHD struct {
+	native  figani.Frame
+	picture image.Image
+	hash    string
+}
+
+func loadModernBattleSurfaceHD(set *modernStoryPortraitSet, asset modernThemeAsset, root string) error {
+	if set == nil || asset.Role != "battle_surface_hd" ||
+		(asset.SourceArchive != "BG.DAT" && asset.SourceArchive != "TAI.DAT") ||
+		asset.SourceResource < 0 || asset.SourceResource >= 56 {
+		return errors.New("modern HD battle surface: unsupported source")
+	}
+	prefix := asset.SourceArchive[:len(asset.SourceArchive)-4]
+	metadata := filepath.Join(separatedAssetPath("surfaces"), fmt.Sprintf("%s_%03d", prefix, asset.SourceResource), "resource.json")
+	raw, err := os.ReadFile(metadata)
+	if err != nil {
+		return err
+	}
+	digest := sha256.Sum256(raw)
+	if hex.EncodeToString(digest[:]) != asset.SourceMetadataSHA256 {
+		return errors.New("modern HD battle surface: metadata sha256 mismatch")
+	}
+	native, err := fdother.LoadSeparatedSingleFrame(separatedAssetPath("surfaces"), asset.SourceArchive, asset.SourceResource)
+	if err != nil {
+		return err
+	}
+	frame, err := modernHDBattleSurfaceFrame(native)
+	if err != nil {
+		return err
+	}
+	return loadModernBattleSurfaceHDWithNative(set, asset, root, frame)
+}
+
+func loadModernBattleSurfaceHDWithNative(set *modernStoryPortraitSet, asset modernThemeAsset, root string, frame figani.Frame) error {
+	if set == nil || asset.Role != "battle_surface_hd" ||
+		(asset.SourceArchive != "BG.DAT" && asset.SourceArchive != "TAI.DAT") || asset.SourceResource < 0 || asset.SourceResource >= 56 ||
+		(asset.Status != "runtime_candidate" && asset.Status != "runtime_ready") ||
+		asset.ConsumerContract != "native_battle_surface_rgba_hd6_v1" || asset.AlphaContract != "coverage" ||
+		asset.LayoutPolicy != "native_surface_hd6" || asset.Width != frame.Width*6 || asset.Height != frame.Height*6 ||
+		frame.Width <= 0 || frame.Width > 320 || frame.Height <= 0 || frame.Height > 200 ||
+		len(frame.Pixels) != frame.Width*frame.Height || len(frame.Mask) != len(frame.Pixels) ||
+		len(asset.NativeFrames) != 1 || asset.NativeFrames[0] != (modernBattleHDDescriptor{Width: frame.Width, Height: frame.Height}) ||
+		filepath.Base(asset.File) != asset.File || filepath.Ext(asset.File) != ".png" {
+		return errors.New("modern HD battle surface: invalid native contract")
+	}
+	fullMask, visible := true, false
+	for _, value := range frame.Mask {
+		if value != 0 && value != 255 {
+			return errors.New("modern HD battle surface: invalid native mask")
+		}
+		fullMask = fullMask && value == 255
+		visible = visible || value != 0
+	}
+	if !visible || set.battleSurfaces[asset.SourceArchive][asset.SourceResource] != nil {
+		return errors.New("modern HD battle surface: empty or duplicate native source")
+	}
+	raw, err := os.ReadFile(filepath.Join(root, asset.File))
+	if err != nil {
+		return err
+	}
+	digest := sha256.Sum256(raw)
+	if hex.EncodeToString(digest[:]) != asset.SHA256 {
+		return errors.New("modern HD battle surface: PNG sha256 mismatch")
+	}
+	config, _, err := image.DecodeConfig(bytes.NewReader(raw))
+	if err != nil || config.Width != asset.Width || config.Height != asset.Height {
+		return errors.New("modern HD battle surface: PNG geometry mismatch")
+	}
+	picture, _, err := image.Decode(bytes.NewReader(raw))
+	if err != nil {
+		return err
+	}
+	opaque, transparent := false, false
+	for y := 0; y < asset.Height; y++ {
+		for x := 0; x < asset.Width; x++ {
+			_, _, _, alpha := picture.At(x, y).RGBA()
+			if fullMask && alpha != 0xffff {
+				return errors.New("modern HD battle surface: opaque source requires opaque HD")
+			}
+			opaque = opaque || alpha == 0xffff
+			transparent = transparent || alpha == 0
+		}
+	}
+	if !opaque || (!fullMask && !transparent) {
+		return errors.New("modern HD battle surface: missing coverage endpoints")
+	}
+	// 唯一的發布點。失敗不建立 map 或改已載入圖源。
+	if set.battleSurfaces == nil {
+		set.battleSurfaces = make(map[string]map[int]*modernBattleSurfaceHD)
+	}
+	if set.battleSurfaces[asset.SourceArchive] == nil {
+		set.battleSurfaces[asset.SourceArchive] = make(map[int]*modernBattleSurfaceHD)
+	}
+	frame.Pixels = append([]byte(nil), frame.Pixels...)
+	frame.Mask = append([]byte(nil), frame.Mask...)
+	set.battleSurfaces[asset.SourceArchive][asset.SourceResource] = &modernBattleSurfaceHD{native: frame, picture: picture, hash: asset.SHA256}
+	set.hasHD = true
+	return nil
+}
+
+func (set *modernStoryPortraitSet) battleSurfaceHD(source modernHDBattleSource) (image.Image, string, error) {
+	if source.Index != 0 || source.Resource < 0 || source.Resource >= 56 {
+		return nil, "", errors.New("modern HD battle surface: invalid single-frame source")
+	}
+	if set == nil {
+		return nil, "", nil
+	}
+	entry := set.battleSurfaces[source.Archive][source.Resource]
+	if entry == nil {
+		return nil, "", nil
+	}
+	f := source.Frame
+	if entry.picture == nil || entry.hash == "" || entry.picture.Bounds() != image.Rect(0, 0, f.Width*6, f.Height*6) || f.Width != entry.native.Width || f.Height != entry.native.Height ||
+		!bytes.Equal(f.Pixels, entry.native.Pixels) || !bytes.Equal(f.Mask, entry.native.Mask) {
+		return nil, "", errors.New("modern HD battle surface: producer source differs")
+	}
+	return entry.picture, entry.hash, nil
+}
+
+func (set *modernStoryPortraitSet) validatePhysicalScenery(scene *nativePhysicalScene) error {
+	sources, err := modernPhysicalBaseScenery(scene)
+	if err != nil {
+		return err
+	}
+	for _, source := range sources {
+		if _, _, err := set.battleSurfaceHD(source); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func modernPhysicalBaseScenery(scene *nativePhysicalScene) ([]modernHDBattleSource, error) {
+	if scene == nil || scene.selection.HasSeparateBackgrounds {
+		return nil, nil
+	}
+	// 其他原框須先審查 UI 層序；此橋接不外推 101 高或窄圖源。
+	if scene.backgroundFrame.Width != 320 || scene.backgroundFrame.Height != 100 {
+		return nil, nil
+	}
+	frame, err := modernHDBattleSurfaceFrame(scene.backgroundFrame)
+	if err != nil {
+		return nil, err
+	}
+	frame.X, frame.Y = 0, 50
+	return []modernHDBattleSource{{Archive: "BG.DAT", Resource: int(scene.selection.BaseBG), Frame: frame, Fill: -1}}, nil
+}

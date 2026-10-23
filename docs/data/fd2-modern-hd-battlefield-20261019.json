@@ -9,18 +9,19 @@
     "native_viewport": "CONFORMED-SCOPED：穩定1920世界沿原生(4,4)、312×192窗格；死亡事件前25拍依既有producer從VGA0,0開始，最後steady回4,4。不同caller分列，不新增DOS位址parity。",
     "hd_sprite_data": "DATA-READY：完整125組1455張HD及31組372張新增24父項已登錄；舊1083張父項及HD bytes保持。",
     "hd_world_renderer": "CONFORMED-SCOPED：144人物已接Game.Draw；首章34張正常GPU、4張實際走行、兩次物理攻擊及保存／新程序LOAD通過。",
-    "private_assets": "正式清冊及完整／runtime-only allow-list已核SHA及UID；舊檔保持，母稿不進執行包。數量與遠端核對依58及facility_scene_followup_20261021。",
+    "private_assets": "本批正式白名單同步私人包，舊檔SHA保持；來源、實檔／UID及私人Git遠端／PRIVATE核對見bg004_physical_followup_20261023，沒有公開私人提交識別碼。",
     "quickload_battle_owner": "CONFORMED-SCOPED：成功JSON LOAD丟棄舊經驗owner與移動計畫；拒收保留。",
     "timed_dialogue": "CONFORMED-SCOPED-RUNTIME-E1：計時FFEC開收框保留HD世界，EXP99普通鍵盤／F2與保存冷讀通過；其他caller未驗。",
     "hd_terrain": "CONFORMED-SCOPED：map0六組53槽；新增圓頂綠色／褐色雙塊四底圖在兩張正常GPU全部相符，短長組合與保存冷讀通過；草地及其他地形仍待HD化。",
     "ai_player_input_lock": "CONFORMED-SCOPED：AI換手期間拒絕玩家地圖輸入重入；普通END／增援對話及相關／完整Go回歸通過。",
     "gaia_redesign": "CONFORMED-SCOPED：新版頭像與四方向圖組已登錄；正常START／Gaia北移取消／F2／冷讀分段驗證。相位差異與序章尾端失敗明示，非逐幀parity。",
-    "hd_battle_animation": "44／45／46完整56幀已接入；兩包來源GPU、51本體及三飛彈／兩空拍Game.Draw、F2／返回、編製及飛彈守衛與兩包玩家／AI原子預檢通過。共用姿勢、比例與握手近似明示，其他人物／效果與集中正常／人工仍待，唯一數量依58。",
+    "hd_battle_animation": "已登錄FIGANI／FDOTHER／LMI圖源的目前覆蓋由58與bg004_physical_followup_20261023.formal_coverage重生；BG_004共用物理背景另有RUNTIME-E1。其他效果／背景／HUD、正常玩家及集中人工／平台仍待，完整HD未完成。",
     "native_purchase_equip": "CONFORMED-SCOPED：#266原生購買立即裝備保留ignored原始格，29項商店回歸與正常購弓F5／章首射程通過；不改格式或數值規則。",
     "hd_event_death": "共用事件、普通行動與狀態致死已接HD；三種26拍／F2通過。正常章23事件與普通擊殺已抽驗，狀態致死正常GUI仍待；來源依death_consumers_followup_20261021。",
-    "theme_toolbar": "CONFORMED-SCOPED-RUNTIME-E1：遊戲外工具列與F2共用路徑，實際滑鼠／F2／四語及完整遊戲區域不變通過。",
+    "theme_toolbar": "現有固定工具列仍為 CONFORMED-SCOPED-RUNTIME-E1；新 A 頂端浮出／四語／A+／速度操作原型已選定，正式串接 DRAFT，依 background_toolbar_prototype_20261023。",
     "hd_facility_scene": "CONFORMED-SCOPED-RUNTIME-E1：三種城鎮與三種商店靜態HD場景／店員，以及既有隊伍HD頭像接入裝備面板；114個GPU案例及兩包載入通過，集中普通／人工仍待。",
-    "assets": "正式及完整／runtime-only allow-list逐檔SHA／UID通過，舊檔保持。數量與遠端依58及fighter44_cannon45_staff46_followup_20261022。"
+    "assets": "正式及完整／runtime-only allow-list逐檔SHA／UID通過，舊檔保持。數量與遠端依58及fighter44_cannon45_staff46_followup_20261022。",
+    "hd_battle_background": "CONFORMED-SCOPED／RUNTIME-E1：BG_004森林背景接一般共用背景物理戰鬥；兩包圖源／完整攻防、F2／DAC／一次返回及舊GPU回歸通過。其他BG／TAI／捲動及指令caller仍待，依bg004_physical_followup_20261023。"
   },
   "runtime_source": {
     "binary": {
@@ -29078,7 +29079,7 @@
     "date": "2026-10-20",
     "modern_asset_resolution_followup": "本區塊的清冊數及忠實END限制屬當批收據，原始證據保持。鐵諾FIGANI6／7已於tino_battle_followup_20261020正式登錄，最新四次HD END、F2與保存冷讀通過；目前真相以current_state及58為準。"
   },
-  "current_state_date": "2026-10-22",
+  "current_state_date": "2026-10-23",
   "tino_battle_followup_20261020": {
     "date": "2026-10-20",
     "status": "CONFORMED-SCOPED：14幀正式登錄、普通HD END／射擊／F2／章節邊界保存冷讀及私人包通過",
@@ -52959,7 +52960,7 @@
       "sha256": "2cf0835fefcb321ed5f191cbed82c8831f5536908b103d707489cec0c4af2971"
     }
   },
-  "runtime_source_scope": "頂層runtime_source及source_commit保留索爾階段歷史來源；現行來源見cleric_party_battle_followup_20261021.runtime_source，只增唯讀audit，Go規則未改，發布HEAD見該段Git核對檔。",
+  "runtime_source_scope": "頂層runtime_source及source_commit保留歷史索爾來源。現行繪製來源見bg004_physical_followup_20261023.runtime_source逐檔SHA；本批新增BG／TAI單圖loader與共用物理BG_004來源橋接，原版規則與保存格式不改。",
   "shan14_battle_followup_20261021": {
     "status": "CONFORMED-SCOPED",
     "base_commit": "2400e21ce463822d52872df69bc11fc523bf35d5",
@@ -98455,7 +98456,7 @@
     },
     "private_remote_verification": "Independent private repository commit pushed; actual git ls-remote refs/heads/main re-read equals local HEAD. Private commit identity is not published."
   },
-  "latest_hd_batch": "commands10_12_map_hd_followup_20261023",
+  "latest_hd_batch": "bg004_physical_followup_20261023",
   "monks28_31_mage29_followup_20261022": {
     "status": "CONFORMED-SCOPED-RUNTIME-E1",
     "date": "2026-10-22",
@@ -201687,5 +201688,639 @@
       "independent_files_now": false,
       "note": "Old PASS receipts and original manifest describe real independent files at test time; this package now uses links. Future independent tests must rebuild real files. Removed original-file allocations are not net shared-host free-space measurements."
     }
-  }
+  },
+  "background_toolbar_prototype_20261023": {
+    "date": "2026-10-23",
+    "base_commit": "385f12b27ebb5779d3dcaedab288ce534c4ea84e",
+    "status": "PROTOTYPE-REVIEWED / SOURCE-AUDITED / PRODUCTION-DRAFT",
+    "production_changed": false,
+    "full_hd_complete": false,
+    "user_decisions": [
+      {
+        "answer": "也加入遊戲加速，先看操作原型",
+        "scope": "原型可含遊戲速度選單，尚未核准正式加速契約。"
+      },
+      {
+        "answer": "A 頂端浮出，自動隱藏（建議）",
+        "scope": "已展示 A／B，同狀態選定 A；顯示時遮住上方遊戲，移開即隱藏。B 不作新目標。"
+      }
+    ],
+    "toolbar": {
+      "reference_project": "/home/anr2/cht/mm3",
+      "reference_commit": "732c369d0348d822e71d9ecd60286a1997901a73",
+      "reference_files": {
+        "mm3display/display_toolbar.go": "df01a8ac36f00bcf8db5c84d82ecb680d53315162cf5a9e79a036bf0ecc76f98",
+        "mm3display/toolbar_text_size.go": "2c22735234b2bdfc8a3c3e392ce1aef1dddb5a4670d8b333ea28a0e68074e928",
+        "mm3display/cpu_toolbar.go": "07ea2bb4bc49a21921b8168511907722a39dfcf1e9bfdf1dce68fce14e3d1f33"
+      },
+      "reference_readonly": true,
+      "template": {
+        "file": "tools/fd2_toolbar_mm3_prototype.html",
+        "sha256": "8fb6e04f5d6ddac8d6a17c154185189c34c98b93f0fa6899591d4f8861c7b11d"
+      },
+      "builder": {
+        "file": "tools/build_fd2_toolbar_mm3_prototype.py",
+        "sha256": "adba44a35e3ac9af76729ed6ac314ae79cff0a230a3f17f913ccdd987e69de3b"
+      },
+      "verifier": {
+        "file": "tools/verify_fd2_toolbar_mm3_prototype.mjs",
+        "sha256": "d2326ee9df5eae1c9931633b695879132159bf6be2728a775b1e8872aaf42718"
+      },
+      "prototype": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/toolbar-mm3-prototype-oct23-r2.json",
+        "sha256": "6f49760bac9a758067f71a8b752b5da82711af26e6e1c1fb282cd2e816c61292"
+      },
+      "html": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/toolbar-mm3-prototype-oct23-r2.html",
+        "sha256": "893406d8636a3a01a6bbb5e04272282f7604dc4b25f23dd639cbc5608ad23f9e"
+      },
+      "browser_receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/toolbar-mm3-prototype-oct23-r3.browser.json",
+        "sha256": "a43733c60ef90f3eeef45c85ec4b4517f2dbe1a4fb5130b274838acb0934b825"
+      },
+      "browser_image": "mcr.microsoft.com/playwright:v1.56.1-noble",
+      "selected_toolbar_preview": {
+        "file": "docs/figures/fd2-toolbar-floating-prototype.png",
+        "sha256": "e0439efbe2acb9d5aa12d4f800caf453a2c09b7706820fbcf3af7a89f51f2fbb"
+      },
+      "accepted_float_preview": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/toolbar-mm3-prototype-oct23-r2-float-150-speed.png",
+        "sha256": "267056c02ab61277294bed6635c086d79d3a4aaa375edea3f89bcf8ea345d5c1"
+      },
+      "rejected_dock_preview": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/toolbar-mm3-prototype-oct23-r2-dock-150.png",
+        "sha256": "8580321083ba2fdf329aebc093473c498fb1a30fc2aa4afe64e476ce31dbd4fe"
+      },
+      "controls": {
+        "locales": [
+          "zh-Hant",
+          "zh-Hans",
+          "en",
+          "ja"
+        ],
+        "themes": [
+          "original",
+          "HD"
+        ],
+        "toolbar_text_percent": [
+          100,
+          125,
+          150
+        ],
+        "default_percent": 150,
+        "prototype_speed_options": [
+          1,
+          2,
+          4,
+          8,
+          16,
+          32
+        ],
+        "shortcuts": [
+          "F2",
+          "F4"
+        ]
+      },
+      "verified": "12 種字級／語系無標籤或 hit box 溢出；六速度選取、F2／F4、顯隱、固定版面邊界與靜態畫面不變通過。最後一輪 39 個操作事件、七份擷圖。",
+      "not_verified": "未連正式 Game，速度只改選單與示意條；無正式遊戲加速、音訊／存讀檔、正常玩家或跨平台結論。系統 fallback 字型不能替代正式 Noto 字寬檢查。",
+      "rejected_attempt": {
+        "prefix": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/toolbar-mm3-prototype-oct23-r1",
+        "reason": "100% 英文 Game speed 標籤溢出；改緊湊 Speed／速度標籤，全稱保留 title，未放寬界線檢查。"
+      },
+      "production_pending": [
+        "正式浮出繪製與輸入所有權",
+        "四語按鈕沿正式語系交易",
+        "A+ 工具列專用字級",
+        "加速排程、Draw 確認與有效倍率",
+        "音訊／輸入／存讀檔邊界",
+        "正常玩家與平台抽驗"
+      ]
+    },
+    "background_sources": {
+      "audit": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-background-sources-oct23-r2.json",
+        "sha256": "b99c3c261b8eafc6c664b79ad81ef8495ab59906d6a88fe2ee6b8018d8976e03"
+      },
+      "tool": {
+        "file": "tools/audit_fd2_battle_background_sources.py",
+        "sha256": "0e0ba3fa1e9fff786714368564b9f6e3828e199d7f1237e8ea7d10395817bf0c"
+      },
+      "source_files": {
+        "BG.DAT": {
+          "file": "BG.DAT",
+          "size": 624564,
+          "md5": "4b5414c92b40ef25ba0ee10c80f9e149",
+          "sha256": "b9fc21d019d6256a4bb7e6da1cefcb0bfe331d8ff74a52a8201570afc98b56de"
+        },
+        "TAI.DAT": {
+          "file": "TAI.DAT",
+          "size": 94917,
+          "md5": "7cfe4b9ad2cbff44b2ebd7ab2f94e4aa",
+          "sha256": "d56fea9c43f8bb59aad89ad76698885d7e07f380d12a4547888a0b60ea5e0410"
+        },
+        "FDOTHER.DAT": {
+          "file": "FDOTHER.DAT",
+          "size": 3382481,
+          "md5": "22f56e5027edc7c766ad34ca4e5aca93",
+          "sha256": "a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce"
+        },
+        "FDSHAP.DAT": {
+          "file": "FDSHAP.DAT",
+          "size": 3557794,
+          "md5": "9b0d356074f57cc27aebf3bb89aae247",
+          "sha256": "901b70ea82d5d977192759fad510921ffe16a0ab6af6ab7c32757de03e30aa3c"
+        }
+      },
+      "pack_manifest_sha256": "5eec2ecacc4fe97c4d0f27838e7dbecf18d1cf4b309b35800d50afd173cacca5",
+      "palette": {
+        "resource": 0,
+        "sha256": "404db1ca72ffc19fa7404fbc59bde98cdf239f63fe3375ec248a8142073a28bf"
+      },
+      "banks": {
+        "BG": {
+          "decoded": 56,
+          "visible_entries": 46,
+          "dimension_counts": {
+            "320x100": 43,
+            "10x3": 10,
+            "318x100": 1,
+            "320x101": 2
+          },
+          "distinct_decoded_indexed_masks": 47,
+          "distinct_visible_indexed_masks": 46,
+          "identical_indexed_mask_groups": [
+            [
+              11,
+              12,
+              13,
+              15,
+              20,
+              23,
+              26,
+              39,
+              46,
+              54
+            ]
+          ]
+        },
+        "TAI": {
+          "decoded": 56,
+          "visible_entries": 40,
+          "dimension_counts": {
+            "10x3": 16,
+            "154x42": 5,
+            "155x42": 25,
+            "155x41": 7,
+            "155x39": 1,
+            "154x39": 1,
+            "153x42": 1
+          },
+          "distinct_decoded_indexed_masks": 30,
+          "distinct_visible_indexed_masks": 29,
+          "identical_indexed_mask_groups": [
+            [
+              0,
+              1,
+              2,
+              3,
+              11,
+              12,
+              13,
+              15,
+              20,
+              23,
+              25,
+              26,
+              39,
+              46,
+              48,
+              54
+            ],
+            [
+              5,
+              27,
+              53
+            ],
+            [
+              7,
+              8
+            ],
+            [
+              14,
+              28
+            ],
+            [
+              21,
+              22
+            ],
+            [
+              29,
+              33,
+              34,
+              36,
+              37
+            ],
+            [
+              40,
+              41,
+              42
+            ]
+          ]
+        }
+      },
+      "terrain_tables": 33,
+      "terrain_control2_indices": [
+        0,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        14,
+        16,
+        17,
+        18,
+        19,
+        21,
+        22,
+        25,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        40,
+        41,
+        42,
+        43,
+        44,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        55
+      ],
+      "empty_policy": "BG／TAI index56 raw_size0，保留未解碼狀態，不補造。全部 10x3 的 Mask 均全透明，不列入可見美術。",
+      "evidence": "confirmed：固定分離包 manifest／raw／PNG／Mask SHA、尺寸、遮罩與地形表內容；unknown：各 selector 的正常章內可達性。",
+      "production_consumer": "remake/internal/battle/native_physical_scene.go:SelectNativePhysicalScene；remake/cmd/fd2/native_physical_scene.go。沿既有已閉合證據，不重開 RE。",
+      "bridge_status": "DRAFT，未新增 production role／schema／合成層。必須保留同次背景／台座來源、位置、裁切與層序，不從 RGB 差異猜來源。",
+      "sheets": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-background-sources-oct23-r2-BG.png",
+          "sha256": "717c82daf513c50a54c72aadf22d813ed95d8b8914780b31d46530068fc9f2cd"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-background-sources-oct23-r2-TAI.png",
+          "sha256": "b6ba22028026e2119986b373a58298901a7e16e3b98acad611db705859c9d32c"
+        }
+      ]
+    },
+    "bg004_art_draft": {
+      "status": "DRAFT-NOT-CATALOGED",
+      "tool": "built-in image_gen",
+      "transparent_background": false,
+      "master": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/bg004-master-oct23-r1.png",
+        "sha256": "0266a8cdd8c710fbe7790e30b621fef406e8475bd8031be5ac23e74e3c6a92d4"
+      },
+      "size": [
+        2243,
+        701
+      ],
+      "mode": "RGB",
+      "original_output": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-ebd96edd-83df-442b-b7a8-a8f51555ea9e.png",
+      "input_roles": [
+        {
+          "role": "BG_004 exact composition reference; indexed PNG displayed gray without runtime palette",
+          "file": "surfaces/BG_004/frame.png",
+          "sha256": "50e8381705272c768e323d9defa9e97fa9d7ac5e45e1e54d8fd436c799bbc412"
+        },
+        {
+          "role": "BG_004 colour reference only; second row first column of research sheet",
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-background-sources-oct23-r1-BG.png",
+          "sha256": "717c82daf513c50a54c72aadf22d813ed95d8b8914780b31d46530068fc9f2cd"
+        }
+      ],
+      "prompt": "Use case: style-transfer. Asset type: hand-painted HD background plate for the existing Taiwanese tactical RPG FD2 remake. Create ONE production-quality draft of source BG_004 only, NOT a contact sheet. Input image 1 is the exact 320x100 grayscale indexed-source composition reference. Input image 2 is a color reference contact sheet; use ONLY its BG_004 cell (second row first column) for this background's palette. Preserve the reference composition very closely: low moss-green open grass foreground across the bottom; muted dark evergreen forest and distant rugged gray-green mountains from left to center; a tiny wooden cabin with a reddish warm door/window around x=75% of width, y=60% of height; enormous warm brown tree trunk with spreading roots dominating the rightmost fifth of the panorama, branches entering from the upper right; pale muted blue-gray daytime sky. No people, enemies, UI, writing, decorative borders, or new landmarks. Broad side-view 2D battle stage, hand-painted fantasy adventure illustration, detailed organic bark, fine grass, textured conifers, soft natural light, restrained readable background contrast to support character sprites. Keep all scene landmarks in the same normalized positions as the reference. Exact intended art window is 1920x600, a 3.2:1 panorama; if the output canvas is taller, contain the complete panorama in a centered horizontal band with no content essential outside it, so a simple crop preserves the composition. This is a single continuous scene, NOT separate panels, NOT an isometric map, NOT pixel art, NOT a photoreal render. Do not incorporate any other BG index from the contact sheet. Opaque background.",
+      "review": "已目視：保留森林、小屋與右側大樹，無人物／UI／文字。山線、樹形、材質屬現代手繪詮釋；尚未與正式1920x600及人物／台座合成驗證。",
+      "master_unmodified": true,
+      "runtime_connected": false,
+      "private_catalog_synced": false,
+      "rights": "本機草稿，未加入公開庫、Release 或私人現代主題 allow-list。"
+    },
+    "unchanged": "正式673項素材、私人包與遊戲規則／保存格式保持。無新原版oracle、PLAYER-E2、錄影或Release。",
+    "remaining": [
+      "正式工具列及加速契約",
+      "完整BG／TAI現代圖源與同次來源橋接",
+      "指令13～16回復",
+      "其他效果與HUD",
+      "集中正常玩家／人工／平台抽驗"
+    ]
+  },
+  "bg004_physical_followup_20261023": {
+    "date": "2026-10-23",
+    "base_commit": "385f12b27ebb5779d3dcaedab288ce534c4ea84e",
+    "status": "CONFORMED-SCOPED / RUNTIME-E1",
+    "full_hd_complete": false,
+    "scope": "BG_004 only, common-background normal physical presentation: both native sides, prelude/body/counter/restore and return DAC. Other callers, scrolling backgrounds, HD TAI and HUD remain incomplete.",
+    "evidence": "Existing closed physical_background_selection_20261004 plus pinned BG/TAI audit; no new binary inference, matching or original RGB oracle.",
+    "spec": {
+      "file": "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+      "section": "BG_004 共用背景物理戰鬥切片",
+      "status": "CONFORMED-SCOPED"
+    },
+    "candidate": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/bg004-candidate-oct23-r1/recipe.json",
+      "sha256": "dd3df216859f182e4a7cfc6a7a5310d9a902f9a2d28ed71b42f0df9147d92510"
+    },
+    "candidate_catalog": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/bg004-candidate-oct23-r1/catalog.json",
+      "sha256": "e96e64ec7733f8faca8617ae2845f8c17d4cdb1ee5d5816a9a83a4543ab81985"
+    },
+    "candidate_coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/bg004-candidate-coverage-oct23-r1.json",
+      "sha256": "66dbabd33a9b41fc83cd0c9ce7e0fa0d63a54234e585af5642bbe9190c1a80f2"
+    },
+    "runtime_manifest": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/bg004-runtime-only-oct23-r1/private-manifest.json",
+      "sha256": "efdd50c97ace82d75afdeecab08edd51ce6ac58e68439f84cab09788ef8af96a"
+    },
+    "runtime_source": {
+      "files": {
+        "remake/cmd/fd2/modern_hd_battle_surface.go": "6d0ee91589a1df66f40af7ac289d357234d8271ad4e8f224c390db5e664e1d46",
+        "remake/cmd/fd2/modern_hd_battle_runtime.go": "d66668f6dc4541dff29a4772c621bb0c47fccff57c131c84443ffc7ade578df4",
+        "remake/cmd/fd2/modern_story_portrait.go": "cb029fb3611863640c899ddcce878f9723892415c0817155c50fac28a3ef9fb8",
+        "remake/cmd/fd2/native_physical_body.go": "6ae35359f156a4c2c3b50c5a26a72eceafc239cd22be44486a86aa837f92ab0c",
+        "remake/cmd/fd2/player_shortcuts.go": "ae1d87fad902e82836b67dd330d901595316c4ee34c3cd5dc253a9b53da537d6",
+        "remake/cmd/fd2/modern_hd_battle_surface_test.go": "993d2542e2c2d1235fe27f32c1b70a5a6b323bc32803a0a85c39c3f4790c8bd7",
+        "remake/cmd/fd2/modern_hd_battle_assets_test.go": "3b6634317a07e3df2d446f75a4afc2bfa8c6682c052c81d46b71d6f1a6151a71",
+        "remake/cmd/fd2/modern_hd_battle_lifecycle_test.go": "9f48b598f0b60a9cace1f065908818b0ca3b5f602dee221a72871290408ca55d",
+        "tools/build_fd2_battle_surface_hd.py": "bc646c9fcd3a0e6debbf8ac6e683b20ff261eb3de76ac70575568ad5f937e1d4",
+        "tools/verify_fd2_battle_surface_hd.py": "196ea37bd040574509394a69ea8dcf419ca4de2db157140c1967512926cbe826",
+        "tools/validate_modern_theme_catalog.py": "7e82bf6a016d2c34979ab8e63c28d00ffe2e239d46f80a7d2a7731691b48bfe6",
+        "tools/audit_fd2_battle_hd_coverage.py": "52d39007c6942bc5405dfacd6f16cef9772f1faf6be45d01c36573c870346910"
+      },
+      "game_rules_changed": false,
+      "save_format_changed": false,
+      "draw_source_bridge_changed": true
+    },
+    "verification": {
+      "completed": [
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/bg004-unit-candidate-oct23-r1.gate.json",
+            "sha256": "509517a5d3ee93add6e499efe290d534db5857499ebb9ed97490025e783d1197"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/bg004-unit-candidate-oct23-r1.memory.json",
+            "sha256": "b5deb9b3e7f1e5591854f1ad600ec1e4876bc4f0928cb67459befe44834dca45"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/bg004-unit-candidate-oct23-r1.log",
+            "sha256": "12b1d035ff5dd47fb45f4daf5a2b91f06cec6575a1543191e15459c180869316"
+          },
+          "elapsed_seconds": 233.225,
+          "memory_peak_bytes": 2231967744
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/bg004-source-candidate-oct23-r1.gate.json",
+            "sha256": "48113d3a8348c68a6148c0d5be5b6a2599bc4f3016c8b6fa2179561e649d1923"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/bg004-source-candidate-oct23-r1.memory.json",
+            "sha256": "5e802d073a5f53768ec6ca1f55ae52338537293dc32ed9e7ea41c9203ed094be"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/bg004-source-candidate-oct23-r1.log",
+            "sha256": "f43b530551879b8a8b8fc443cb6a361527757b0a69a7bfe8e465fbcce3d014bf"
+          },
+          "elapsed_seconds": 33.422,
+          "memory_peak_bytes": 787800064
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/bg004-game-own-candidate-oct23-r1.gate.json",
+            "sha256": "81a0f9e3080dc598e06f963abfa1f6fe7a62edd56e3064c1d3fe74d4ed187d2e"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/bg004-game-own-candidate-oct23-r1.memory.json",
+            "sha256": "064726e9b44bf27c855b331c666e4f44680b8301e3f8e8a34503fec9851aff6d"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/bg004-game-own-candidate-oct23-r1.log",
+            "sha256": "8149cb63aa61fa75192d7ceeebd1b91d8ec9495ea440987b1b221f8bfa739d24"
+          },
+          "elapsed_seconds": 100.411,
+          "memory_peak_bytes": 859275264
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/bg004-game-enemy-candidate-oct23-r1.gate.json",
+            "sha256": "723ad4c60c01a1d96440ded0623ad600e8f236cfd9e267ff282e901a9422f2eb"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/bg004-game-enemy-candidate-oct23-r1.memory.json",
+            "sha256": "79e68a670d452b07dcdefe0a75aa644b4c7d280b710e5a606519f3dada43f94d"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/bg004-game-enemy-candidate-oct23-r1.log",
+            "sha256": "26f7d06abfc9a60da7a29cc21cd23c084481bcfc85323350f5224383fdd28838"
+          },
+          "elapsed_seconds": 96.623,
+          "memory_peak_bytes": 765906944
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/bg004-unit-runtime-oct23-r1.gate.json",
+            "sha256": "6f484bb61ef3af6be74ee4d78c29f8a2bb52e207dbf69a42f3faa6e2d6ab9fb6"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/bg004-unit-runtime-oct23-r1.memory.json",
+            "sha256": "bf694f638ba16e071893ab0655bda8e3499fd5ad9c4a0c6b1769ad75a2ad8251"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/bg004-unit-runtime-oct23-r1.log",
+            "sha256": "48b7f8e909f42e1c3f4b52523543a7344cea994ef3455815d2e05053f9d6e6d1"
+          },
+          "elapsed_seconds": 226.593,
+          "memory_peak_bytes": 2344366080
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/bg004-source-runtime-oct23-r1.gate.json",
+            "sha256": "abcee53614665b5d41c98f899c1d1eeec0a7dcf5e53b2809ff5b96c57da48b63"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/bg004-source-runtime-oct23-r1.memory.json",
+            "sha256": "50a49806f532c02171e7323b2861f688d90a01e5c7561116fad25fb3998ce918"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/bg004-source-runtime-oct23-r1.log",
+            "sha256": "49bf4dc270d9517a35f8d4ea7f49e4511107ccae21ce8eeb278d80b925ad32ef"
+          },
+          "elapsed_seconds": 33.463,
+          "memory_peak_bytes": 1022025728
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/bg004-game-own-runtime-oct23-r1.gate.json",
+            "sha256": "ddcfcb64043225eeaafd57acbd9f42b6a869fc58508e1b009dcfbc77a592844d"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/bg004-game-own-runtime-oct23-r1.memory.json",
+            "sha256": "83ba4492e6793abb81dee9485c13946422ab052e30574b9df860f030c34823a0"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/bg004-game-own-runtime-oct23-r1.log",
+            "sha256": "ba1a0ee0d7da61f09531993fecec6f944286578b4ba661338d30536e8989dba9"
+          },
+          "elapsed_seconds": 86.388,
+          "memory_peak_bytes": 2059517952
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/bg004-game-enemy-runtime-oct23-r1.gate.json",
+            "sha256": "5a74a1461db595119aa21f3d6f9b99fb2f717a92139d903758417ec80d7bab48"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/bg004-game-enemy-runtime-oct23-r1.memory.json",
+            "sha256": "6e0949dd7495c11cb778aea7aa17aa5106fd643cbce72c5f73a8c5537c1a0af1"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/bg004-game-enemy-runtime-oct23-r1.log",
+            "sha256": "c9348a6b2fa6fa8c9a142d7ad89be2ac4e79b1165114eaf35522698efc00eb5c"
+          },
+          "elapsed_seconds": 101.18,
+          "memory_peak_bytes": 2299314176
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/bg004-regression-oct23-r2.gate.json",
+            "sha256": "01d8359aa1c0c42826b35117d378e184b269ef2aa68985fed18b5e059c697062"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/bg004-regression-oct23-r2.memory.json",
+            "sha256": "7c2f3b286baa126c275c4a0c7b09f8bd81996d8c45733f684a2e60b02f654457"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/bg004-regression-oct23-r2.log",
+            "sha256": "6ab03cddc2dff6ed32460e2cdc554b0f1315401b848bfaa44ff39653e96d8be0"
+          },
+          "elapsed_seconds": 7.622,
+          "memory_peak_bytes": 818118656
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/bg004-legacy-gpu-oct23-r2.gate.json",
+            "sha256": "520dcecfeebda1b67e1c72fbca39d45e316a643ca9a3d602c3d927e1e2d7f8db"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/bg004-legacy-gpu-oct23-r2.memory.json",
+            "sha256": "fe307736ceab07467e184e642536ddd002f1521b69d78949bee9a5394ffdff58"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/bg004-legacy-gpu-oct23-r2.log",
+            "sha256": "50df0d996c29e937693c3d095801b3ac76f6227ab78b86b34ae6fd0464ff3680"
+          },
+          "elapsed_seconds": 341.504,
+          "memory_peak_bytes": 1609101312
+        }
+      ],
+      "pending": [],
+      "rejected_environment_run": {
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/bg004-regression-oct23-r1.memory.json",
+          "sha256": "aa144ffd8bfe64cf40e50a8d63a0a10a4b995c7b677e440dad57edf1683abc38"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/bg004-regression-oct23-r1.log",
+          "sha256": "5761a9ef1cb91cb6d4e0fd95761d7fc709d2406386debfaff9b07bdfba8ac371"
+        },
+        "reason": "GPU test passed, then subsequent NewImage after RunGame terminated panicked. Keep failed package out of admission; rerun GPU and native tests in separate processes."
+      },
+      "native_reconstructed_canvases": 124,
+      "source_gpu_worlds_per_pack": 24,
+      "source_gpu_tolerance": 1,
+      "cases": "Controlled physical scene: terrain control[2]=4, explicit real figures0/76, forced one attack and one counter presentation with crit/status pulse. Native RNG17791 and legacy RNGseed73 preserved. Damage-result fixture does not prove natural combat rules.",
+      "cross_pack_screenshots": {
+        "own": 15,
+        "enemy": 13,
+        "sha256_identical": 28,
+        "frame_counts_equal_claimed": false
+      },
+      "f2_round_trips_per_pack": 6,
+      "battle_dac_steps_per_case": 64,
+      "map_dac_steps_per_case": 65,
+      "normal_player_verified": false,
+      "manual_art_finalized": false,
+      "legacy_gpu_cases": 2087,
+      "runtime_load_scope": "Game.Draw fixtures use selected real FIGANI banks plus all declared scenery, through formal loaders. Both unit packages separately load the complete674-entry theme."
+    },
+    "readme_figure": {
+      "image": {
+        "file": "docs/figures/hd-battle-forest-background.png",
+        "sha256": "6c9c3e1ad547a0eea2944e54360ed38364e49117fba246ee042f985dae91642b"
+      },
+      "source": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/bg004-game-own-candidate-oct23-r1-capture/001-04.png",
+        "sha256": "6bc0c30e04b132b689e02d4be1dd40a44681871a4f61db116baad850c5031387"
+      },
+      "recipe": "Full1920x1200 Game.Draw final -> LANCZOS960x600, no crop or repaint",
+      "scope": "Controlled fixture; native TAI and HUD remain visible."
+    },
+    "remaining": [
+      "Other BG/TAI sources, scrolling and command-specific background callers",
+      "Commands13..16 map healing and remaining effects/HUD",
+      "Toolbar production integration and game-speed contract",
+      "Concentrated normal player/manual/platform verification"
+    ],
+    "formal_catalog": {
+      "file": "remake/assets/themes/modern/catalog.json",
+      "sha256": "0eed2e28539230a197cc1d08a86b9f7b696a0b07c54334a96927e238bdf75133"
+    },
+    "formal_registration": {
+      "assets": 674,
+      "old_entries_preserved": 673,
+      "candidate_equal_except_private_root": true,
+      "new_files": [
+        "battle-bg-004-hd6-oct23-r1.png",
+        "battle-bg-004-master-oct23-r1.png"
+      ],
+      "compiled_sha256": "844c1d95f8eadc58d87a52a2226d174e9e9868842f99cba74b71cbaddbeced6a",
+      "master_sha256": "0266a8cdd8c710fbe7790e30b621fef406e8475bd8031be5ac23e74e3c6a92d4"
+    },
+    "formal_coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/bg004-formal-coverage-oct23-r1.json",
+      "sha256": "64e971df4927bf0ebf13ddbd589306250c65743628658c65140f795eb8802625"
+    },
+    "private_asset_sync": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/bg004-private-sync-oct23-r1.json",
+      "sha256": "f1172e2ef3293979dea9a5ca10b83dc9a04d332e3fbcad2f8c95b41e0f4af831"
+    },
+    "production_changed": true,
+    "private_git_verification": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/bg004-private-git-verification-oct23-r1.json",
+      "sha256": "13078b290ac53d8d6c25593adf6edf5be7ed1fc33eb154f4a3cfab8e629b496d"
+    },
+    "runtime_pack_after_cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/bg004-runtime-cleanup-oct23-r1.json",
+      "sha256": "90f3f9a499e00e9c6c0edc4d5c48247f3bdfbf7fa091795d214733a3ea031ff0"
+    },
+    "private_asset_commit_pushed": true,
+    "github_issue_comment": "https://github.com/wicanr2/fd2_re/issues/263#issuecomment-6365410806",
+    "public_git_verification_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/bg004-public-git-verification-oct23-r1.json"
+  },
+  "historical_runtime_source_scope_before_bg004": "頂層runtime_source及source_commit保留索爾階段歷史來源；現行來源見cleric_party_battle_followup_20261021.runtime_source，只增唯讀audit，Go規則未改，發布HEAD見該段Git核對檔。"
 }

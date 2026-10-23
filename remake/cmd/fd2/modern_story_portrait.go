@@ -36,6 +36,7 @@ type modernStoryPortraitSet struct {
 	battleActionIcons []image.Image
 	battleAnimations  map[int]*modernBattleHDResource
 	battleEffects     map[int]*modernBattleHDResource
+	battleSurfaces    map[string]map[int]*modernBattleSurfaceHD
 	mapOverlays       *modernMapOverlayHDResource
 	mapEffects        *modernMapOverlayHDResource
 	facilityScenes    map[int]*modernFacilityScene
@@ -102,6 +103,12 @@ func loadModernStoryPortraitSet(catalogPath, packRoot string) (*modernStoryPortr
 	}
 	hdPortraits := make(map[int]image.Image)
 	for _, asset := range catalog.Assets {
+		if asset.Role == "battle_surface_hd" {
+			if err := loadModernBattleSurfaceHD(set, asset, packRoot); err != nil {
+				return nil, err
+			}
+			continue
+		}
 		if asset.Role == "facility_scene_hd" {
 			if err := loadModernFacilityScene(set, asset, packRoot); err != nil {
 				return nil, err

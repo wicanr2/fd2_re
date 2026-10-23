@@ -3832,3 +3832,41 @@ R1編製總覽發現龍息接在上顎，以及空中連片被放成大光球。
 兩包各1083張主要Game.Draw與90次F2，完整命中／MISS／雙目標、所有前導、結算與一次續行通過；結果銀行缺103及錯尺寸在啟動／F2原子拒收。另將角色移到(8,5)，獨立幾何核對11的58387個內部HD取樣點與12的101025點，其中57708／100331點確實變色，避免流程測試位於未HD地形而空泛通過。正式／runtime最後單元均驗相同點數；原版RGB、正常玩家與集中人工仍待。
 
 永久入口為[verify_fd2_commands10_12_hd.py](../../tools/verify_fd2_commands10_12_hd.py)，在既有Go Docker使用`--kind unit|game|regression --id 10|11|12 --catalog ABS --pack ABS --out FRESH_PREFIX --timeout 1200`。以[sync_modern_theme_private.py](../../tools/sync_modern_theme_private.py)的`--runtime-only`建立全新實檔包，再加`--require-real-runtime`驗5532檔；驗證完去重後不再稱獨立實檔。完整收據與已知近似見同筆主收據，清冊與私人素材保持原SHA。
+
+### mm3 參考工具列與戰鬥背景盤點
+
+工具列狀態：操作原型已驗，正式工具列串接仍為 DRAFT。使用者已選擇「加入遊戲加速，先看操作原型」，並在看到同狀態兩種版面後選定 A 頂端浮出、自動隱藏。B 遊戲外固定方案不作為新工具列目標。現有正式遊戲仍使用先前驗證的固定工具列，不能把這份原型列為正式功能完成。
+
+![已選定的頂端浮出工具列操作原型](../figures/fd2-toolbar-floating-prototype.png)
+
+這是純工具列的瀏覽器操作原型，不是正式遊戲畫面。四語系、原版／HD、A+ 工具列字級 100／125／150%、速度選單 1／2／4／8／16／32 倍，以及 F2／F4 均可操作。速度選單只改原型狀態與示意計時條，沒有加速遊戲。A+ 僅調整工具列，不取代既有遊戲字級。原型使用容器系統字型；正式 Noto 字型、實際視窗縮放及字寬仍須在遊戲內驗證。
+
+- 來源：唯讀參考 `/home/anr2/cht/mm3/mm3display/display_toolbar.go`、`toolbar_text_size.go` 與 `cpu_toolbar.go`。mm3 控制模擬器 CPU 上限，FD2 是原生引擎；正式加速須另行界定演出排程、Draw 確認、音訊、輸入與存讀檔邊界，不能直接照搬倍率迴圈。
+- 重生：在既有 `fd2-assets-local:20260829-sfx` 容器使用[原型建構器](../../tools/build_fd2_toolbar_mm3_prototype.py)，以 `--image <實際 Game.Draw PNG> --out <全新前綴>` 建立獨立 HTML。[版面來源](../../tools/fd2_toolbar_mm3_prototype.html)只含資料佔位符，不內嵌私人遊戲素材。
+- 檢查：在現有 `mcr.microsoft.com/playwright:v1.56.1-noble` 容器以 Node 執行[瀏覽器檢查器](../../tools/verify_fd2_toolbar_mm3_prototype.mjs)的 `<HTML> <全新輸出前綴>`。容器使用本人 UID、無網路及有界生命週期。12 種語系／字級、六個速度選項、F2／F4、顯隱及固定版面邊界通過，來源與工具 SHA 寫入收據。此結果只證明原型控制可操作。
+- 正式接入驗收：沿用 F2／F4 的正式載入與語系交易；原子拒收缺件；浮出控制不穿透至遊戲；拖出、放開及觸控所有權完整；移開後恢復完整遊戲呈現。須補實際遊戲滑鼠／快捷鍵、四語文字、原版／HD、正常玩家流程與保存冷讀。尚未通過這些檢查。
+
+背景盤點入口為[固定 BG／TAI 圖源稽核器](../../tools/audit_fd2_battle_background_sources.py)。在上述素材容器以 `--original-pack <唯讀固定原包> --out <全新前綴>` 重生 JSON 與兩份研究總覽。輸入由原包 manifest、固定來源清單與每份 PNG／Mask／raw SHA 約束；總覽套用正式戰鬥 FDOTHER #0 色盤，不能當成原版執行截圖或 HD 美術。
+
+BG 與 TAI 各 57 項，末項各為零長 raw，不能補造美術。BG 的 10 個 10×3 來源與 TAI 的 16 個 10×3 來源均為全透明遮罩。BG 有 46 個可見來源，逐 indexed 像素與遮罩皆不同；TAI 有 40 個可見來源，去重後為 29 種。各 56 個可解碼項的尺寸並不全相同，保留 318×100／320×101 與各台座原框。33 份地形表的 `control[2]` 涉及 40 個索引，這只證明表內容，不證明章內可達。
+
+背景與台座串接沿既有 `SelectNativePhysicalScene` 及已閉合原版證據，不重開全程反組譯。仍須在原合成器保存同次來源、順序、位置與裁切；不能從 RGB 差異反推來源。BG_004 的森林原稿與完整提示已保存；後續共用物理戰鬥接入見下節，原型本身不作為正式接入證據。來源盤點、草稿、使用者選擇與限制集中於[HD 主收據](../data/fd2-modern-hd-battlefield-20261019.json)的 `background_toolbar_prototype_20261023`。其他戰鬥背景與台座美術／caller 串接、13～16 回復及集中人工仍待。
+
+### BG_004 共用背景物理戰鬥切片
+
+狀態：CONFORMED-SCOPED／RUNTIME-E1。這是前節背景原稿的第一條正式消費鏈，不代表全背景或全戰鬥 HD。適用一般物理戰鬥 `HasSeparateBackgrounds=false`，原 selector 選定 BG_004；包含兩側預備、主攻、適用反擊、restore 與既有 DAC 淡出。分離背景捲動、其他指令與 HD 台座不在本切片範圍，既有像素路徑保持。
+
+證據沿 [原版背景選擇契約](../data/ida/fd2_physical_background_selection_20261004.json)、`SelectNativePhysicalScene` 與 `nativePhysicalBase`。底圖明確先畫上方 actor 面板，再於原生 `(0,50)` 畫 BG，最後畫 target 面板。BG_004 為 320×100、全不透明，位於 `[0,320)×[50,150)`；上下介面及 `(164,157)` 台座不在其內。原版版本與圖源 SHA 由前節固定圖源稽核收據約束，不新增位址語意或原版 RGB 一致聲明。
+
+- 清冊新增可選角色 `battle_surface_hd`，契約 `native_battle_surface_rgba_hd6_v1`。只接受 BG／TAI 的 0..55 單圖來源，原 metadata SHA、單一原框描述子、HD 檔 SHA、原稿 SHA 與六倍尺寸均須相符；全透明／零長來源拒收。背景原 Mask 全不透明時，HD 圖也須全不透明。這是現代主題清冊的加法擴充，存檔及原版格式不改。
+- BG_004 未修改 RGB 原稿以 LANCZOS 縮放至 1920×600，另存 RGBA 圖源；這是明示手繪詮釋，不修改原稿或原生 Mask。編製器先核對固定分離包、原稿與既有清冊，再產生獨立候選；不得直接覆寫正式素材。
+- 正式載入器先在候選集合完整解碼、核 SHA、原框與 alpha，成功才發布。未宣告某來源的舊主題仍用原生來源；宣告後缺檔、錯 SHA、錯原框或空白須拒收，不默默降級。F2 沿既有完整候選載入交易，不改規則或保存。
+- 同次 `modernHDBattleSources.BaseScenery` 保存原生來源、archive、resource 與位置。一般共用背景的預備及各 body job 都從 scene 的原生背景建立，不搜尋 RGB。HD 計畫把這些來源放在人物層前；上下 UI、台座、人物、FX 與原生結算保持。非共用背景不套用此簡化層序。
+- 來源消費端再檢查圖框像素與 Mask 等於已載入來源，防止把 BG_004 美術誤綁其他背景。HD 淡出沿既有 subtract／mix 顏色近似，原 DAC 與時間閘門不改。
+- 驗收須有真實原稿編製與拒收對照、來源 metadata／PNG／尺寸／空圖／重複載入反例、同次原生重組、兩側與反擊完整 Game.Draw、F2、HP／RNG／一次返回、完整主題啟動與晚期 F2 原子拒收，以及舊普通戰鬥回歸。正式與全新實檔 runtime-only 包各驗一次；驗證通過才登錄清冊並同步私人保存庫。正常玩家、人工造型與平台抽驗仍另列。
+
+若其他 BG 原框或 caller 的 UI 層序不同，先補其來源契約，不外推這個切片。此切片只涵蓋已界定的背景來源橋接，工具列與遊戲加速仍另列原型。
+
+重生入口：[森林背景編製器](../../tools/build_fd2_battle_surface_hd.py)以 `--original-pack <固定原包> --master <已審查原稿> --base-catalog <舊清冊> --out <全新候選目錄>` 建立候選；既有檔案只沿白名單建立連結，不能當成獨立實檔驗收。以既有私人同步工具的 `--runtime-only` 複製全新包後，[永久驗證驅動器](../../tools/verify_fd2_battle_surface_hd.py)在既有 Go 容器執行 `--kind unit|source|game|regression|legacy-gpu --catalog ABS --pack ABS --out FRESH_PREFIX --timeout 1200`；相反側主攻加 `--enemy`，獨立包加 `--require-real-runtime`。單元、GPU 與完整 Game.Draw 的必要測試逐名核對，任何 SKIP、失敗、逾時或 OOM 均拒收。`legacy-gpu` 與 `regression` 各自啟動 Go 程序；鎖定版 Ebiten v2.6.6 禁止 RunGame 結束後再建立影像，不能把兩者合成同一個測試程序。缺件的冷載入與失效背景的 F2 候選必須拒收；已完整載入的背景影像沿快取使用，不因原檔事後移除而作未驗證重載聲明。
+
+驗收結果：兩包各完整主題與圖源拒收、124張原生畫布獨立重組、24個完整GPU世界逐RGBA對獨立CPU Over容差1、雙側主攻／反擊的完整Game.Draw與三階段F2／每案例64戰鬥DAC及65地圖DAC／HP與RNG／一次返回通過。15張我方及13張敵方截圖跨包逐SHA相同，但host排程造成Draw計數不同，不宣稱幀數一致。十份Go閘門均無SKIP／逾時／OOM，含七項原生回歸及2087個共用GPU案例。首次將RunGame與其後的NewImage測試合併導致的環境失敗保留，不計驗收；分開程序乾淨重跑通過，遊戲程式不為此修改。正式清冊與受驗候選只有private_root不同，舊673項及6420份私人檔內容保持，新增原稿與1920×600圖源兩檔。完整來源／命令／限制依bg004_physical_followup_20261023；私人Git與公開Git收尾另核，不新增普通玩家、原版RGB或完整HD聲明。

@@ -57653,6 +57653,44 @@
         "docs/data/fd2-modern-hd-battlefield-20261019.json",
         "tools/build_fd2_player9_map_hd.py"
       ]
+    },
+    {
+      "asset_id": "modern.battle.bg004.hd6",
+      "role": "battle_surface_hd",
+      "status": "runtime_candidate",
+      "file": "battle-bg-004-hd6-oct23-r1.png",
+      "width": 1920,
+      "height": 600,
+      "sha256": "844c1d95f8eadc58d87a52a2226d174e9e9868842f99cba74b71cbaddbeced6a",
+      "master_file": "battle-bg-004-master-oct23-r1.png",
+      "source_refs": [
+        "asset:BG_004",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ],
+      "consumer_contract": "native_battle_surface_rgba_hd6_v1",
+      "source_archive": "BG.DAT",
+      "source_resource": 4,
+      "source_metadata_sha256": "208f1b7057af5f60a87d3537c07e416b4ec68be563e7e5a9abec9c3196ceeea5",
+      "source_files": [
+        "battle-bg-004-master-oct23-r1.png"
+      ],
+      "source_sha256": [
+        "0266a8cdd8c710fbe7790e30b621fef406e8475bd8031be5ac23e74e3c6a92d4"
+      ],
+      "native_frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 100,
+          "delay_native": 0,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        }
+      ],
+      "alpha_contract": "coverage",
+      "layout_policy": "native_surface_hd6"
     }
   ]
 }

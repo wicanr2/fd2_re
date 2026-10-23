@@ -272,6 +272,13 @@ func TestModernHDBattleRuntimeGPU(t *testing.T) {
 	t.Setenv("FD2_MUTE", "1")
 	g, actor, target := physicalSceneTestGame(t)
 	real := os.Getenv("FD2_HD_BATTLE_REAL") == "1"
+	background := os.Getenv("FD2_HD_BATTLE_BACKGROUND")
+	if background != "" {
+		if background != "4" || !real {
+			t.Fatal("background fixture requires real BG_004")
+		}
+		g.m.NativeTerrainControl[2] = 4
+	}
 	idleTarget := os.Getenv("FD2_HD_BATTLE_IDLE_TARGET") == "1"
 	enemyActor := os.Getenv("FD2_HD_BATTLE_ENEMY_ACTOR") == "1"
 	if idleTarget && !real {
@@ -306,6 +313,9 @@ func TestModernHDBattleRuntimeGPU(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	if background != "" && (scene.selection.HasSeparateBackgrounds || scene.selection.BaseBG != 4) {
+		t.Fatal("BG_004 fixture did not select common background")
+	}
 	result := battle.NativePhysicalAttackResult{AttackStrikes: []battle.NativePhysicalStrike{{Roll: battle.NativePhysicalRollResult{Damage: 7, Crit: true, Status: true}, DefenderHP: 73}}}
 	if !idleTarget {
 		scene.bodyResources.counter, err = figani.LoadSeparatedResource(separatedAssetPath("animations"), target.BattleFig*3+1)
@@ -328,6 +338,16 @@ func TestModernHDBattleRuntimeGPU(t *testing.T) {
 	if real {
 		set = modernHDBattleFixtureSet(t, os.Getenv("FD2_TEST_MODERN_BATTLE_CATALOG"),
 			os.Getenv("FD2_TEST_MODERN_BATTLE_PACK"), scene.modernResources())
+	}
+	if background != "" {
+		if set.battleSurfaces["BG.DAT"][4] == nil {
+			t.Fatal("BG_004 HD source missing")
+		}
+		for _, job := range scene.body.jobs {
+			if job.hdSources != nil && (len(job.hdSources.BaseScenery) != 1 || job.hdSources.BaseScenery[0].Resource != 4) {
+				t.Fatal("body lost BG_004 provenance")
+			}
+		}
 	}
 	selectedResources := map[int]*figani.Animation{figure * 3: scene.bodyResources.actorIdle, figure*3 + 1: scene.bodyResources.attack}
 	phases := []string{"prelude", "body", "counter"}
@@ -368,6 +388,16 @@ func TestModernHDBattleRuntimeGPU(t *testing.T) {
 	g.atk = &atkAnim{nativeScene: scene, fpt: 1, after: func() { callbacks++; probe.finished = true }}
 	if err := g.applyTheme(set); err != nil {
 		t.Fatal(err)
+	}
+	if background != "" {
+		badSurface := *set
+		entry := *set.battleSurfaces["BG.DAT"][4]
+		entry.picture = nil
+		badSurface.battleSurfaces = map[string]map[int]*modernBattleSurfaceHD{"BG.DAT": {4: &entry}}
+		before := probe.stable()
+		if err := g.applyTheme(&badSurface); err == nil || g.modernStoryPortraits != set || probe.stable() != before {
+			t.Fatal("failed BG_004 F2 preflight changed theme or state")
+		}
 	}
 	// 主題切換的壞圖源不能發布，也不能推進演出。
 	bad := &modernStoryPortraitSet{hasHD: true, battleAnimations: map[int]*modernBattleHDResource{actor.BattleFig * 3: {Frames: make([]image.Image, 1), paths: []string{"missing-frame.png"}, hashes: []string{""}, sizes: []image.Rectangle{image.Rect(0, 0, 6, 6)}}}}
@@ -509,6 +539,10 @@ func TestModernHDBattleRuntimeGPU(t *testing.T) {
 			t.Fatal(err)
 		}
 		report := map[string]any{"status": "PASS-CHARACTER-FIXTURE-RUNTIME-E1", "figure": figure, "catalog_sha256": fmt.Sprintf("%x", sha256.Sum256(catalog)), "phase_f2": probe.phaseF2, "phase_hd_draws": probe.phaseDraws, "continuations": callbacks, "battle_dac_steps": len(probe.rampSeen), "map_dac_steps": len(probe.mapRampSeen), "source_shots": shots, "scope": "真實FIGANI、強制一次攻擊與反擊計畫及native地圖fixture；Game.Draw最終1920回讀。非普通玩家或原版oracle。"}
+		if background != "" {
+			report["background_selection"], report["background_hd_sha256"] = scene.selection, set.battleSurfaces["BG.DAT"][4].hash
+			report["background_scope"] = "BG_004 shared physical scene; native TAI and UI retained; explicit controlled fixture, not normal player or original RGB parity"
+		}
 		report["fixture_asset_load_scope"], report["fixture_requested_resources"] = "selected-battle-banks", scene.modernResources()
 		if len(zeroDelaySources) != 0 {
 			report["zero_delay_sources"] = zeroDelaySources

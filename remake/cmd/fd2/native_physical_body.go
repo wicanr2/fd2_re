@@ -134,6 +134,9 @@ func (g *Game) prepareNativePhysicalBodyResources(scene *nativePhysicalScene, ac
 		}
 	}
 	if g.modernStoryPortraits != nil {
+		if err := g.modernStoryPortraits.validatePhysicalScenery(scene); err != nil {
+			return err
+		}
 		resources := []int{actor.BattleFig * 3, actor.BattleFig*3 + 1, target.BattleFig * 3}
 		if r.counter != nil {
 			resources = append(resources, target.BattleFig*3+1)
@@ -345,7 +348,14 @@ func (g *Game) attachNativePhysicalBody(scene *nativePhysicalScene, result battl
 		}
 		p.jobs = append(p.jobs, nativePhysicalBodyJob{pixels: pixels, cue: -1, hdSources: hdRestore, hdPhase: "restore"}) // 28F4D..28FD6的final restore。
 	}
+	scenery, err := modernPhysicalBaseScenery(scene)
+	if err != nil {
+		return err
+	}
 	for i := range p.jobs {
+		if p.jobs[i].hdSources != nil {
+			p.jobs[i].hdSources.BaseScenery = scenery
+		}
 		if len(p.jobs[i].pixels) != 0 || p.jobs[i].present != nil {
 			p.lastPresent = i
 		}

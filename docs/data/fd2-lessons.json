@@ -3890,6 +3890,21 @@
         ],
         "pattern": "HD徑向變色沒有非空覆蓋"
       }
+    },
+    {
+      "id": "rungame-regression-process-isolation",
+      "date": "2026-10-23",
+      "area": "驗證程序",
+      "rule": "含RunGame的GPU回歸各自使用獨立Go程序，不在其後執行會NewImage的原生測試。入口為tools/verify_fd2_battle_surface_hd.py的--kind legacy-gpu與regression；Docker及重跑契約見docs/knowledge-base/61-modern-theme-runtime-spec.md的BG_004切片。",
+      "why": "合併GPU與原生回歸後，GPU本體通過，後續NewImage觸發Ebiten v2.6.6的isRunGameEnded守衛。失敗收據保留；分開兩種kind，不改遊戲或放寬斷言。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_battle_surface_hd.py"
+        ],
+        "pattern": "legacy-gpu.*TestModernHDBattleGPUBridge"
+      }
     }
   ]
 }
