@@ -175,7 +175,11 @@ func modernPhysicalTargetBGIndex(scene *nativePhysicalScene) byte {
 }
 
 func modernPhysicalPlatformSource(scene *nativePhysicalScene) (modernHDBattleSource, error) {
-	frame, err := modernHDBattleSurfaceFrame(scene.platformFrame)
+	return modernBattlePlatformSource(scene.platformFrame, int(scene.selection.TAI))
+}
+
+func modernBattlePlatformSource(platform fdother.Frame, resource int) (modernHDBattleSource, error) {
+	frame, err := modernHDBattleSurfaceFrame(platform)
 	if err != nil {
 		return modernHDBattleSource{}, err
 	}
@@ -184,7 +188,7 @@ func modernPhysicalPlatformSource(scene *nativePhysicalScene) (modernHDBattleSou
 	if !rect.In(image.Rect(0, 0, 320, 200)) || rect.Overlaps(image.Rect(0, 154, 149, 196)) || rect.Overlaps(image.Rect(171, 4, 320, 46)) || rect.Overlaps(image.Rect(0, 50, 320, 150)) {
 		return modernHDBattleSource{}, errors.New("modern HD physical platform overlaps a native base component")
 	}
-	return modernHDBattleSource{Archive: "TAI.DAT", Resource: int(scene.selection.TAI), Frame: frame, Fill: -1}, nil
+	return modernHDBattleSource{Archive: "TAI.DAT", Resource: resource, Frame: frame, Fill: -1}, nil
 }
 
 func modernPhysicalScenery(scene *nativePhysicalScene, platform bool) ([]modernHDBattleSource, error) {

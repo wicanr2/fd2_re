@@ -45,6 +45,40 @@ func splitStrikeHDTestGame(t *testing.T, command int) (*Game, *battle.Unit, []*b
 	// 提供F2所需的視覺context；單位、terrain及command仍沿原生fixture。
 	g.baseMapTileset = image.NewRGBA(image.Rect(0, 0, 24, 24))
 	g.m.TileW, g.m.TileH, g.currentMapID = 24, 24, -1
+	if value := os.Getenv("FD2_HD_SPLIT_SCENERY"); value != "" {
+		var indices []byte
+		switch value {
+		case "4:5:6":
+			indices = []byte{4, 5, 6}
+		case "5:6:4":
+			indices = []byte{5, 6, 4}
+		case "6:4:5":
+			indices = []byte{6, 4, 5}
+		default:
+			t.Fatal("unsupported explicit command scenery", value)
+		}
+		side := os.Getenv("FD2_HD_SPLIT_SCENERY_SIDE")
+		if side != "0" && side != "2" {
+			t.Fatal("explicit scenery side0 or2 required")
+		}
+		g.m.NativeTerrainControl = nil
+		for _, index := range indices {
+			g.m.NativeTerrainControl = append(g.m.NativeTerrainControl, 0, 0, index, 0)
+		}
+		for i, unit := range append([]*battle.Unit{actor}, targets...) {
+			g.m.Tiles[unit.Y*g.m.W+unit.X] = i
+		}
+		actor.NativeRecordByte6 = 0
+		if side == "2" {
+			actor.NativeRecordByte6 = 2
+		}
+		for _, target := range targets {
+			target.NativeRecordByte6 = 1
+			if side == "2" {
+				target.NativeRecordByte6 = 0
+			}
+		}
+	}
 	return g, actor, targets
 }
 
@@ -385,4 +419,317 @@ func TestModernHDSplitStrikeNativeSourceGPU(t *testing.T) {
 		}
 	}
 	t.Logf("%d full native GPU cases include both sides, all split frames, BG presents and shake offsets", len(cases))
+}
+
+func TestModernHDSplitStrikeSceneryNativeAndAtomic(t *testing.T) {
+	requirePhysicalScenePack(t)
+	set := modernHDBattleFixtureSet(t, os.Getenv("FD2_TEST_MODERN_EFFECT_CATALOG"), os.Getenv("FD2_TEST_MODERN_EFFECT_PACK"), nil)
+	panelAssets, err := battle.LoadNativeItemPanelDataAssets(separatedAssetPath(""))
+	if err != nil {
+		t.Fatal(err)
+	}
+	canvases, rejections := 0, 0
+	for _, triple := range []string{"4:5:6", "5:6:4", "6:4:5"} {
+		t.Setenv("FD2_HD_SPLIT_SCENERY", triple)
+		for _, side := range []string{"0", "2"} {
+			t.Setenv("FD2_HD_SPLIT_SCENERY_SIDE", side)
+			for _, command := range []int{24, 29} {
+				g, actor, targets := splitStrikeHDTestGame(t, command)
+				rng := &splitStrikeCountedSource{Source: rand.NewSource(int64(command))}
+				g.rng = rand.New(rng)
+				g.modernStoryPortraits = set
+				if err := startSplitStrikeHD(g, command, actor, targets[0], nil); err != nil {
+					t.Fatal(err)
+				}
+				h := g.nativeCmd24Presentation
+				var hd *modernHDSplitStrike
+				var plan *battle.NativeCommandDerivedStrikePlan
+				if command == 24 {
+					hd, plan = h.hd, h.plan
+				} else {
+					hd, plan = g.nativeCmd29Presentation.hd, g.nativeCmd29Presentation.plan
+				}
+				check := func(label string, s *modernHDBattleSources, want []byte) {
+					t.Helper()
+					if s == nil || !reflect.DeepEqual(surfaceIndexedReference(s), want) {
+						t.Fatalf("command%d %s side%s %s native canvas differs", command, triple, side, label)
+					}
+					for _, source := range append(append([]modernHDBattleSource(nil), s.BaseScenery...), s.Layers...) {
+						if source.Archive == "BG.DAT" || source.Archive == "TAI.DAT" {
+							im, _, err := set.battleSurfaceHD(source)
+							if err != nil || im == nil {
+								t.Fatal("lost pinned scenery source", err)
+							}
+						}
+					}
+					canvases++
+				}
+				base := func(unit *battle.Unit, mp, hp int, platform *fdother.Frame) []byte {
+					t.Helper()
+					selector, err := nativeCommand24BGSelector(g.m, unit)
+					if err != nil {
+						t.Fatal(err)
+					}
+					bg, err := fdother.LoadSeparatedSingleFrame(separatedAssetPath("surfaces"), "BG.DAT", selector)
+					if err != nil {
+						t.Fatal(err)
+					}
+					copyUnit := *unit
+					copyUnit.MP, copyUnit.HP = mp, hp
+					record, err := battle.NativeBattlePanelRecordForUnit(&copyUnit)
+					if err != nil {
+						t.Fatal(err)
+					}
+					index, err := nativeCommand24RuntimeUnitIndex(g.st, unit)
+					if err != nil {
+						t.Fatal(err)
+					}
+					out, err := g.localizedNativeCommand24BackgroundBase(bg, panelAssets, record, index, g.handlerChapter, platform)
+					if err != nil {
+						t.Fatal(err)
+					}
+					return out
+				}
+				var platform *fdother.Frame
+				actorSelector, _ := nativeCommand24BGSelector(g.m, actor)
+				if side == "2" {
+					f, err := fdother.LoadSeparatedSingleFrame(separatedAssetPath("surfaces"), "TAI.DAT", actorSelector)
+					if err != nil {
+						t.Fatal(err)
+					}
+					platform = &f
+				}
+				before, after := base(actor, actor.MP, actor.HP, platform), base(actor, plan.MPAfter, actor.HP, platform)
+				idle, err := figani.LoadSeparatedResource(separatedAssetPath("animations"), actor.BattleFig*3)
+				if err != nil {
+					t.Fatal(err)
+				}
+				dac, _, err := loadNativeBattlePalette()
+				if err != nil {
+					t.Fatal(err)
+				}
+				prelude, err := battlepresent.BuildNativeCommandPreludeFrames(battlepresent.NativeCommandPreludeInput{Base: base(actor, actor.MP, actor.HP, nil), ActorIdle: idle.Frames[0], Platform: platform, RawSide: actor.NativeRecordByte6, Mode: 1, BaselineDAC: dac})
+				if err != nil {
+					t.Fatal(err)
+				}
+				for i, f := range prelude {
+					check("prelude", hd.prelude[i].hdSources, f.Pixels)
+				}
+				for f := 0; f < hd.targetStart; f++ {
+					want := append([]byte(nil), before...)
+					if f >= hd.actorImpact {
+						copy(want, after)
+					}
+					splitStrikeNativeBlit(want, hd.effect.Frames[f], 0)
+					check("actor", hd.frame(9, -1, 0, f, 0, false, 0).hdSources, want)
+				}
+				source := append([]byte(nil), after...)
+				splitStrikeNativeBlit(source, hd.effect.Frames[hd.targetStart-1], 0)
+				check("actor-end", hd.actorEndSources(), source)
+				var bg [3]fdother.Frame
+				for i := range bg {
+					bg[i], err = fdother.LoadSeparatedSingleFrame(separatedAssetPath("surfaces"), "BG.DAT", i)
+					if err != nil {
+						t.Fatal(err)
+					}
+				}
+				for i, target := range targets {
+					a, b := base(target, target.MP, target.HP, nil), base(target, target.MP, plan.Results[i].HPAfter, nil)
+					ti := hd.targets[i]
+					presents, err := battlepresent.BuildNativeCommand24BackgroundPresents(battlepresent.NativeCommand24BackgroundInputs{Layers: bg, Source: source, Target: a, TargetIdle: ti.idle.Frames[0]})
+					if err != nil {
+						t.Fatal(err)
+					}
+					for n, p := range presents {
+						check("transition", ti.transitions[n].hdSources, p.Pixels)
+					}
+					for f := hd.targetStart; f < len(hd.effect.Frames); f++ {
+						for idleIndex := range ti.idle.Frames {
+							for _, shake := range []int{0, 4, 9, 14, 18} {
+								want := append([]byte(nil), a...)
+								if f >= hd.impact {
+									copy(want, b)
+								}
+								splitStrikeNativeBlit(want, ti.idle.Frames[idleIndex], -shake)
+								splitStrikeNativeBlit(want, hd.effect.Frames[f], 0)
+								check("target", hd.frame(9, -1, i, f, idleIndex, f >= hd.impact, shake).hdSources, want)
+							}
+						}
+					}
+					last := len(ti.idle.Frames) - 1
+					if command == 29 {
+						last, err = nativeCommand29FinalIdleFrame(idleDelaysForScenery(ti.idle), g.nativeCmd29Presentation.schedule)
+						if err != nil {
+							t.Fatal(err)
+						}
+					}
+					source = append([]byte(nil), b...)
+					splitStrikeNativeBlit(source, ti.idle.Frames[last], 0)
+					splitStrikeNativeBlit(source, hd.effect.Frames[len(hd.effect.Frames)-1], 0)
+					check("target-end", hd.targetEndSources(i, last), source)
+				}
+				wanted := []struct {
+					archive string
+					index   int
+				}{{"BG.DAT", actorSelector}}
+				for _, target := range targets {
+					index, _ := nativeCommand24BGSelector(g.m, target)
+					wanted = append(wanted, struct {
+						archive string
+						index   int
+					}{"BG.DAT", index})
+				}
+				if side == "2" {
+					wanted = append(wanted, struct {
+						archive string
+						index   int
+					}{"TAI.DAT", actorSelector})
+				}
+				for _, source := range wanted {
+					bad := *set
+					entry := *set.battleSurfaces[source.archive][source.index]
+					entry.picture = nil
+					bad.battleSurfaces = map[string]map[int]*modernBattleSurfaceHD{source.archive: {source.index: &entry}}
+					state := func() string {
+						units, _ := json.Marshal(g.st.Units)
+						return fmt.Sprintf("%s/%d/%d", units, g.nativeRNGState, rng.calls)
+					}
+					beforeState := state()
+					if err := g.applyTheme(&bad); err == nil || g.modernStoryPortraits != set || state() != beforeState {
+						t.Fatal("bad command scenery F2 changed owner/state", source)
+					}
+					fresh, a, ts := splitStrikeHDTestGame(t, command)
+					counter := &splitStrikeCountedSource{Source: rand.NewSource(int64(command))}
+					fresh.rng = rand.New(counter)
+					fresh.modernStoryPortraits = &bad
+					units, _ := json.Marshal(fresh.st.Units)
+					if err := startSplitStrikeHD(fresh, command, a, ts[0], nil); err == nil || counter.calls != 0 || fresh.nativeCmd24Presentation != nil || fresh.nativeCmd29Presentation != nil {
+						t.Fatal("bad scenery reached planning or owner", source)
+					}
+					afterUnits, _ := json.Marshal(fresh.st.Units)
+					if string(units) != string(afterUnits) {
+						t.Fatal("bad scenery changed units")
+					}
+					rejections++
+				}
+			}
+		}
+	}
+	t.Logf("%d complete native canvases, %d early RNG/owner and %d live F2 scenery rejections; three triples, both sides, command24/29", canvases, rejections, rejections)
+}
+
+func idleDelaysForScenery(animation *figani.Animation) []int {
+	delays := make([]int, len(animation.Frames))
+	for i, f := range animation.Frames {
+		delays[i] = f.Delay
+	}
+	return delays
+}
+
+type splitSceneryOnlyCase struct {
+	g      *Game
+	frame  nativeCompoundPresentedFrame
+	wanted bool
+	want   *image.RGBA
+}
+
+type splitSceneryOnlyProbe struct {
+	cases []splitSceneryOnlyCase
+	index int
+	err   error
+}
+
+func (p *splitSceneryOnlyProbe) Update() error {
+	if p.err != nil || p.index == len(p.cases) {
+		return ebiten.Termination
+	}
+	return nil
+}
+func (p *splitSceneryOnlyProbe) Layout(int, int) (int, int) { return 640, 400 }
+func (p *splitSceneryOnlyProbe) Draw(screen *ebiten.Image) {
+	if p.err != nil || p.index >= len(p.cases) {
+		return
+	}
+	c := &p.cases[p.index]
+	c.g.modernHDBattleVisible = false
+	ok, err := c.g.drawModernHDCompoundFrame(screen, &c.frame)
+	if err != nil || ok != c.wanted || c.g.modernHDBattleVisible != c.wanted {
+		p.err = fmt.Errorf("surface-only draw %d wanted%v got%v: %v", p.index, c.wanted, ok, err)
+		return
+	}
+	if c.wanted {
+		pixels := make([]byte, len(c.want.Pix))
+		c.g.modernHDBattleGPU.World.ReadPixels(pixels)
+		for i, w := range c.want.Pix {
+			delta := int(pixels[i]) - int(w)
+			if delta < -1 || delta > 1 {
+				p.err = fmt.Errorf("surface-only%d RGBA byte%d got%d want%d", p.index, i, pixels[i], w)
+				return
+			}
+		}
+	}
+	p.index++
+}
+
+func TestModernHDSplitStrikeSceneryOnlyGPU(t *testing.T) {
+	if os.Getenv("FD2_HD_SPLIT_STRIKE_GPU") != "1" {
+		t.Skip("dedicated scenery-only GPU process required")
+	}
+	requirePhysicalScenePack(t)
+	set := modernHDBattleFixtureSet(t, os.Getenv("FD2_TEST_MODERN_EFFECT_CATALOG"), os.Getenv("FD2_TEST_MODERN_EFFECT_PACK"), nil)
+	var cases []splitSceneryOnlyCase
+	for _, triple := range []string{"4:5:6", "5:6:4", "6:4:5"} {
+		t.Setenv("FD2_HD_SPLIT_SCENERY", triple)
+		for _, side := range []string{"0", "2"} {
+			t.Setenv("FD2_HD_SPLIT_SCENERY_SIDE", side)
+			for _, command := range []int{24, 29} {
+				g, actor, targets := splitStrikeHDTestGame(t, command)
+				g.modernStoryPortraits = set
+				if err := startSplitStrikeHD(g, command, actor, targets[0], nil); err != nil {
+					t.Fatal(err)
+				}
+				var hd *modernHDSplitStrike
+				if command == 24 {
+					hd = g.nativeCmd24Presentation.hd
+				} else {
+					hd = g.nativeCmd29Presentation.hd
+				}
+				for _, archive := range []string{"BG.DAT", "TAI.DAT"} {
+					only := &modernStoryPortraitSet{hasHD: true, battleSurfaces: map[string]map[int]*modernBattleSurfaceHD{archive: set.battleSurfaces[archive]}}
+					frames := []nativeCompoundPresentedFrame{hd.prelude[4], *hd.frame(9, -1, 0, 0, 0, false, 0), *hd.frame(9, -1, 0, hd.targetStart, 0, false, 0)}
+					for i, frame := range frames {
+						copyGame := *g
+						copyGame.modernStoryPortraits = only
+						wanted := archive == "BG.DAT" || side == "2" && i < 2
+						c := splitSceneryOnlyCase{g: &copyGame, frame: frame, wanted: wanted}
+						if wanted {
+							plan, err := copyGame.modernHDBattlePlan(frame.hdSources, frame.hdPalette, frame.hdSubtract)
+							if err != nil {
+								t.Fatal(err)
+							}
+							c.want = surfaceCPUWorld(plan)
+						}
+						cases = append(cases, c)
+					}
+				}
+			}
+		}
+	}
+	p := &splitSceneryOnlyProbe{cases: cases}
+	ebiten.SetWindowSize(640, 400)
+	ebiten.SetVsyncEnabled(false)
+	if err := ebiten.RunGame(p); err != nil {
+		t.Fatal(err)
+	}
+	defer func() {
+		for _, c := range cases {
+			if c.g.modernHDBattleGPU != nil {
+				c.g.modernHDBattleGPU.close()
+			}
+		}
+	}()
+	if p.err != nil || p.index != len(cases) {
+		t.Fatalf("surface-only GPU %d/%d: %v", p.index, len(cases), p.err)
+	}
+	t.Logf("%d command24/29 BG-only/TAI-only activation and native-fallback cases; 48 actual GPU worlds against independent CPU Over tolerance1", len(cases))
 }

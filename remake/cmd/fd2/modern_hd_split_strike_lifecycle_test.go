@@ -238,9 +238,10 @@ func (p *modernHDSplitStrikeProbe) Draw(screen *ebiten.Image) {
 		return
 	}
 	layers := make([]map[string]any, 0, len(plan.Layers))
+	ordered := append(append([]modernHDBattleSource(nil), f.hdSources.BaseScenery...), f.hdSources.Layers...)
 	for i, layer := range plan.Layers {
-		source := f.hdSources.Layers[i]
-		v := map[string]any{"resource": source.Resource, "frame": source.Index, "hd_sha256": layer.HDKey,
+		source := ordered[i]
+		v := map[string]any{"archive": source.Archive, "resource": source.Resource, "frame": source.Index, "hd_sha256": layer.HDKey,
 			"x": source.Frame.X, "y": source.Frame.Y, "width": source.Frame.Width, "height": source.Frame.Height,
 			"dx": source.DX, "dy": source.DY, "fill": source.Fill,
 			"rect": []int{layer.Rect.Min.X, layer.Rect.Min.Y, layer.Rect.Max.X, layer.Rect.Max.Y}}
@@ -280,9 +281,18 @@ func TestModernHDSplitStrikeRuntimeGPU(t *testing.T) {
 		t.Fatal("explicit command24 or29 required")
 	}
 	g, actor, targets := splitStrikeHDTestGame(t, command)
-	set, err := loadModernStoryPortraitSet(os.Getenv("FD2_TEST_MODERN_EFFECT_CATALOG"), os.Getenv("FD2_TEST_MODERN_EFFECT_PACK"))
-	if err != nil {
-		t.Fatal(err)
+	var set *modernStoryPortraitSet
+	if os.Getenv("FD2_HD_SPLIT_SCENERY") != "" {
+		resources := []int{actor.BattleFig * 3, actor.BattleFig*3 + 2}
+		for _, target := range targets {
+			resources = append(resources, target.BattleFig*3)
+		}
+		set = modernHDBattleFixtureSet(t, os.Getenv("FD2_TEST_MODERN_EFFECT_CATALOG"), os.Getenv("FD2_TEST_MODERN_EFFECT_PACK"), resources)
+	} else {
+		set, err = loadModernStoryPortraitSet(os.Getenv("FD2_TEST_MODERN_EFFECT_CATALOG"), os.Getenv("FD2_TEST_MODERN_EFFECT_PACK"))
+		if err != nil {
+			t.Fatal(err)
+		}
 	}
 	g.modernStoryPortraits, g.modernThemeCache = set, set
 	seed := int64(2)
@@ -381,6 +391,25 @@ func TestModernHDSplitStrikeRuntimeGPU(t *testing.T) {
 		"continuations": p.callbacks, "owner_released": true, "gpu_sources_cleared": true,
 		"phase_draws": p.phases, "phase_f2": p.switches, "hd_draws": p.hd, "final_draws": p.finals,
 		"source_shots": p.shots, "scope": "Existing indexed command24/29 fixtures with real Game.Draw and1920 final GPU; no normal player/original oracle/PLAYER-E2 or manual-art claim."}
+	if scenery := os.Getenv("FD2_HD_SPLIT_SCENERY"); scenery != "" {
+		report["scenery_triple"], report["scenery_side"] = scenery, os.Getenv("FD2_HD_SPLIT_SCENERY_SIDE")
+		used := map[string]int{}
+		for _, shot := range p.shots {
+			for _, layer := range shot["layers"].([]map[string]any) {
+				if layer["archive"] == "BG.DAT" || layer["archive"] == "TAI.DAT" {
+					key := layer["hd_sha256"].(string)
+					if key == "" {
+						t.Fatal("registered scenery missing in actual draw")
+					}
+					used[key]++
+				}
+			}
+		}
+		if len(used) < len(targets)+1 {
+			t.Fatal("missing actual scenery sources")
+		}
+		report["scenery_actual_sources"] = used
+	}
 	data, err := json.MarshalIndent(report, "", "  ")
 	if err != nil {
 		t.Fatal(err)

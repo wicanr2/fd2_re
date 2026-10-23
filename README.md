@@ -124,7 +124,7 @@
 
 ![兩種劍士分段打擊的HD測試畫面](docs/figures/hd-battle-split-strikes.png)
 
-兩種劍士的分段打擊已接入HD，包含藍白蓄光、橫向光束與金色光柱，以及背景轉場和多目標續行。上圖由測試場景的實際最終GPU畫面縮圖，上排為指令24，下排為指令29；面板沿用來源角色名稱，背景與介面仍含像素素材。原有MP／HP標記與透明停拍保持，正常操作與人工造型確認待全部HD接入後集中抽驗。來源與範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
+兩種劍士的分段打擊、森林／海岸場景及原規則適用的台座已接入HD，保留原有蓄光、光束、光柱與多目標續行。四格取自明示地形與固定亂數的完整Game.Draw縮圖，上排為指令24的蓄力與命中，下排為指令29先後兩個目標的場景。面板沿用來源角色名稱，介面與捲動過渡遮罩仍為像素素材。MP／HP標記及透明停拍保持，正常操作與人工造型確認待全部HD接入後集中抽驗；來源與範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
 
 ![斧盾兵與兩組騎兵的HD測試畫面](docs/figures/hd-shield-riders-battle.png)
 

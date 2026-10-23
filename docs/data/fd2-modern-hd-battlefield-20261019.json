@@ -98459,7 +98459,7 @@
     },
     "private_remote_verification": "Independent private repository commit pushed; actual git ls-remote refs/heads/main re-read equals local HEAD. Private commit identity is not published."
   },
-  "latest_hd_batch": "scroll_scenery_followup_20261024",
+  "latest_hd_batch": "command24_29_scenery_followup_20261024",
   "monks28_31_mage29_followup_20261022": {
     "status": "CONFORMED-SCOPED-RUNTIME-E1",
     "date": "2026-10-22",
@@ -206325,6 +206325,1430 @@
       "remote": {
         "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/scroll-scenery-issue263-remote-oct24-r1.json",
         "sha256": "e97adf31941185232e5876fcee13c0156595ca6e01b8dd14c135f81167cbd8f8"
+      },
+      "acceptance_unchanged": true
+    }
+  },
+  "command24_29_scenery_followup_20261024": {
+    "date": "2026-10-24",
+    "base_commit": "5da8971b86e47957ba16f30fef25194b3a40b09a",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1",
+    "input": {
+      "name": "FD2.EXE",
+      "size": 357074,
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+      "md5": "b97caf2239a27a896069d03549d96e1e"
+    },
+    "original_evidence": [
+      {
+        "file": "docs/data/ida/fd2_command24_presentation_ida.txt",
+        "sha256": "5778bd5a8e7b39c63ec1eb30a174d869310a94fb3ae4d7c9bd0ad93bad10c728"
+      },
+      {
+        "file": "docs/data/ida/fd2_command24_background_transition_ida.txt",
+        "sha256": "19ef346c7a47a589af952ac68c10fda2ddeae90048666010ed26d72d3db95316"
+      },
+      {
+        "file": "docs/data/ida/fd2_command28_29_31_presentation_ida.txt",
+        "sha256": "0b599dc75060aa80f7a733a5aafbbd01dff5fa96f70f73c18ae1fa0e1194191c"
+      }
+    ],
+    "tool": "IDA Pro 9.4; existing RE-CLOSED evidence only",
+    "address_space": "IDA Pro 9.4 LE linear addresses",
+    "original_locations": [
+      "sub_276EC; 0x27982..0x27ADA",
+      "sub_2B659; 0x2B6F4..0x2B763",
+      "sub_29C90; 0x29C90..0x29DEC",
+      "0x27B33..0x27D9A"
+    ],
+    "evidence_level": "已證實：原生地形selector／BG／適用TAI／前導及多目標捲動；HD繪圖屬美化，非原版RGB parity",
+    "spec": {
+      "scope": "指令24／29兩側九階前導、actor、逐目標轉場／效果及owner收尾；只接已審查320x100 BG及原生適用TAI",
+      "inputs": "原生caller當次BG frame／selector、actor raw side與可選platform、before／after typed base、原生FIGANI／target列／viewport歷史",
+      "rules": [
+        "actor與每個target各保留同次BG來源，不從RGB猜來源；actor raw side非零時沿原TAI及前導位移，target原本沒有台座就不新增",
+        "HD專用base只把已證實不與BG／UI重疊的TAI矩形還原memset零，再沿原層序畫一次；原生base與演出不改",
+        "轉場沿共用scroll場景來源橋接，保留完整BG0..2原生遮罩歷史、裁切及多目標前一畫面傳遞",
+        "所有已宣告BG／TAI與人物銀行在Go規劃RNG前原子預檢；全部原生計畫建構成功後才發布HD銀行；F2同次sources完整預檢",
+        "共用指令繪製器辨識BG／TAI與BaseScenery，只有場景HD時也可啟用；不把BG索引當FIGANI",
+        "未登錄圖源原生fallback，已宣告錯件拒收；清冊、美術、shader、規則、保存、MP／HP／RNG、聲音與owner保持"
+      ],
+      "acceptance": [
+        "三組4:5:6／5:6:4／6:4:5與兩側之全部原生畫布獨立重組",
+        "兩包24／29三組雙側完整Game.Draw、五／八階段F2、MP一次／每目標HP一次／RNG／續行／釋放、空拍及全部effect索引",
+        "完整1920 GPU對獨立Pillow RGBA8 Over容差1，正式與新實檔runtime包擷取逐SHA一致，原生描述子及BG／TAI來源稽核",
+        "BG-only／TAI-only非空實際呈現、缺件冷載入與F2原子拒收、晚期交易回復、舊指令／物理回歸"
+      ],
+      "remaining": "其他指令場景、其餘BG／TAI／過渡美術、效果尾段及HUD；全部HD後集中正常玩家／人工／平台"
+    },
+    "catalog_sha256": "4c0ee9558fb586deae1e3791413cff1d62ece755ae7025e6dec3d4b2920a0d6a",
+    "full_hd_complete": false,
+    "normal_player_verified": false,
+    "gates": [
+      {
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-unit-formal-oct24-r1.gate.json",
+          "sha256": "629057aa51a34e9a6cd5b296d688ccd646abc9d91da0f043c1e0cf8dc8894e9e"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-unit-formal-oct24-r1.memory.json",
+          "sha256": "5f371f5a3b54dd957b0881b24aa2b8ecc0c22210af2f960085a42355bdc00e0d"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-unit-formal-oct24-r1.log",
+          "sha256": "b1aa3667f79954cc266d05aa64c042b1c28e8b0960c8f3bbb748aad481a3aeeb"
+        },
+        "kind": "split-unit",
+        "required": [
+          "TestModernHDSplitStrikeSceneryNativeAndAtomic"
+        ]
+      },
+      {
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-native-gpu-oct24-r1.gate.json",
+          "sha256": "e1a4ad2a28f1e5ef2394bd3b07c1539424dbd1c6785d38577e7127fb529d66d1"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-native-gpu-oct24-r1.memory.json",
+          "sha256": "1e496dc72d67a519b814c0b393fa1df513a797a9c171dba7aba7686a5eb3f8fd"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-native-gpu-oct24-r1.log",
+          "sha256": "d374b4cbf7e8cfe45d04a17cc71f7554da146096834d11f71cbd88b6556e4f3d"
+        },
+        "kind": "split-native-gpu",
+        "required": [
+          "TestModernHDSplitStrikeNativeSourceGPU"
+        ]
+      },
+      {
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-source-formal-oct24-r1.gate.json",
+          "sha256": "2be538658c94137ae083e2e44c3e6e91b23addd31e68f85f015e03875facfecb"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-source-formal-oct24-r1.memory.json",
+          "sha256": "c8c46a457a44dcb27b7f89f6d283619fb4f2a562b69a211b212892f7a758a999"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-source-formal-oct24-r1.log",
+          "sha256": "d4d6c24289847134c0c05b96ba67490739adbc35126d73e617ab226bde036f63"
+        },
+        "kind": "split-source",
+        "required": [
+          "TestModernHDSplitStrikeSceneryOnlyGPU"
+        ]
+      },
+      {
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-regression-oct24-r1.gate.json",
+          "sha256": "1e01db186d69b22cd3f5ee23ece50778466b6d2c36c4b02d6bbd0d8d80acf7c5"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-regression-oct24-r1.memory.json",
+          "sha256": "8dc9abeb5fff2ccc804f3f5b1ccdb960b1ecb176c7c45e1d59c3d169d107adc4"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-regression-oct24-r1.log",
+          "sha256": "d2ed213add71b0f7f14a27a7d9841398d418fdd4729dedfba32758dfa7fc3b07"
+        },
+        "kind": "scroll-regression",
+        "required": [
+          "TestModernHDSplitStrikeLateFailureRestoresTransaction",
+          "TestModernHDSplitStrikePreflightAndF2Atomic",
+          "TestModernScrollMetadataRejectsBeforePartialSources",
+          "TestModernScrollSourceClipRejectsBeforeScaling",
+          "TestNativePhysicalBodyMissingSoundStopsBeforeSettlement",
+          "TestNativePhysicalBodyMultiStrikeCounterAndPulse"
+        ]
+      },
+      {
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-unit-runtime-oct24-r1.gate.json",
+          "sha256": "f3d7d52392972b45314c18fdb99a9b7c03a80144bbeaf8ed59d1b72f07820c31"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-unit-runtime-oct24-r1.memory.json",
+          "sha256": "1b56c8c427f01479363e1abe2de13e547b0319334aa99511a717e344d6e516e5"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-unit-runtime-oct24-r1.log",
+          "sha256": "47967b19932b79bb4424b69cff9d91316e3bd000c34da02aef3d7412c04bdfa1"
+        },
+        "kind": "split-unit",
+        "required": [
+          "TestModernHDSplitStrikeSceneryNativeAndAtomic"
+        ]
+      },
+      {
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-source-runtime-oct24-r1.gate.json",
+          "sha256": "4578b11ee1b64a80545bb2c890448887fb5fa8444b630e2e16f0ff8d5d769372"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-source-runtime-oct24-r1.memory.json",
+          "sha256": "0cce9e28f56ceebd63e0013e875d794aa689f8e429c3d504991e0cf1f6648b66"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-source-runtime-oct24-r1.log",
+          "sha256": "ccc56506e6da291c7ff8a42c0ffd0098ebe190b7a3cbb7fd3528f4ff9fbda7ec"
+        },
+        "kind": "split-source",
+        "required": [
+          "TestModernHDSplitStrikeSceneryOnlyGPU"
+        ]
+      },
+      {
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-legacy-gpu-oct24-r1.gate.json",
+          "sha256": "41f0af7934de72ae1197820fa94c73ae656462f9037568d8b0925283b3671307"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-legacy-gpu-oct24-r1.memory.json",
+          "sha256": "a830b1ba9b8ec1a38936ebe18a7de0c29d7dc323eac7213699e71b0dc47beefb"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-legacy-gpu-oct24-r1.log",
+          "sha256": "bd6712dbf46e5e1293c7553187ca2eb7a0011054fc36ff42814f57dbd2c78ccc"
+        },
+        "kind": "legacy-gpu",
+        "required": [
+          "TestModernHDBattleGPUBridge"
+        ]
+      },
+      {
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-physical-unit-oct24-r1.gate.json",
+          "sha256": "98e2386a9c4bf98c1c3e262d723b0d61785caed72311b2fbf9282820eb569e26"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-physical-unit-oct24-r1.memory.json",
+          "sha256": "cc8e6ef69dd9b7da54adcf73af3c08b7c6bc26911a4ac3c0ba00b05fc860b7c1"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-physical-unit-oct24-r1.log",
+          "sha256": "5bc0ee2f64c7a432f5d66a5d4d5d405e1c38cb3209e06a5ddffd89178285294b"
+        },
+        "kind": "scroll-unit",
+        "required": [
+          "TestModernScrollSceneryNativeAndAtomic"
+        ]
+      },
+      {
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-physical-source-oct24-r1.gate.json",
+          "sha256": "9b0ff26350963922350e364b7f198520c9cc8b5ef1d5a8ffcb6ab6cbb0cdb75c"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-physical-source-oct24-r1.memory.json",
+          "sha256": "f5fe0b709da1086ff23a67274bd673c75863e7167c856bf1b60c0b8d846c9550"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-physical-source-oct24-r1.log",
+          "sha256": "13ed9d4817dafec5d7ab03852194ea112bed04bc48814d34099eb38baffb9d3c"
+        },
+        "kind": "scroll-source",
+        "required": [
+          "TestModernScrollSceneryGPU"
+        ]
+      },
+      {
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-456-formal-side0-oct24-r1.gate.json",
+          "sha256": "7e86cd8a104017e7a52122e4f709d70f8f05c17f36c66cc823ab4f3baae9e7d6"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-456-formal-side0-oct24-r1.memory.json",
+          "sha256": "af3811ce545080af1d13d02cfb7ea79ef3b94f306f19e2e9681949af924ac408"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-456-formal-side0-oct24-r1.log",
+          "sha256": "28790986e0b81d87b1fe8efca75d2c407a48958a728c1eb68fc65f25537733f2"
+        },
+        "kind": "split-game",
+        "required": [
+          "TestModernHDSplitStrikeRuntimeGPU"
+        ]
+      },
+      {
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-456-runtime-side0-oct24-r1.gate.json",
+          "sha256": "ceaf9c6c035ac4d642dda90539582de3c6f02744c6f2441653f9d5cc4accdadf"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-456-runtime-side0-oct24-r1.memory.json",
+          "sha256": "a29668595759bf65aa53bbd04c939f70dd1435e39e30c1bae2e002654129c241"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-456-runtime-side0-oct24-r1.log",
+          "sha256": "4330d32c3405c790c495bc66fa75fcae2486951e46b5cd551ca4765d60435aa7"
+        },
+        "kind": "split-game",
+        "required": [
+          "TestModernHDSplitStrikeRuntimeGPU"
+        ]
+      },
+      {
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-456-formal-side2-oct24-r1.gate.json",
+          "sha256": "a9c172b69a823ff023137100df0f37286b282088d1b5bef15f6e57221d98eea2"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-456-formal-side2-oct24-r1.memory.json",
+          "sha256": "2ca62fab28a982d7bea5b22f1860d1d6b95b6addea4074ea343b3636a0fdc46a"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-456-formal-side2-oct24-r1.log",
+          "sha256": "e2e58110392a44326c83c1ce4df95729599d4d2140d7d222ea4ac4426612973d"
+        },
+        "kind": "split-game",
+        "required": [
+          "TestModernHDSplitStrikeRuntimeGPU"
+        ]
+      },
+      {
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-456-runtime-side2-oct24-r1.gate.json",
+          "sha256": "125b95fa87e5103bd7c1a685d9447f07434c5c0497c06d11e498b22605f2b33b"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-456-runtime-side2-oct24-r1.memory.json",
+          "sha256": "fb6a8a45a6f5f7ed1b3cb76918a5ce297127ad1cccb2507659a06f531588bc03"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-456-runtime-side2-oct24-r1.log",
+          "sha256": "cc327376e5c67d7b31cabf7ce3cf85ce458528150de0ca0ea804c48a56894ec8"
+        },
+        "kind": "split-game",
+        "required": [
+          "TestModernHDSplitStrikeRuntimeGPU"
+        ]
+      },
+      {
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-564-formal-side0-oct24-r1.gate.json",
+          "sha256": "bd2e3648bcb9d0b841eccbcb7f0e26e2e3f3b89a3ef58f439cecb2ea7b5b863b"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-564-formal-side0-oct24-r1.memory.json",
+          "sha256": "f36e2895772120083458cf8f9efbc60b03dd4ad0284a14135a6b55c503cad5c9"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-564-formal-side0-oct24-r1.log",
+          "sha256": "cf2e4a8b6c2fb660052547b94658f01d5bf0f624d0430f28d26d9ab37e3b3246"
+        },
+        "kind": "split-game",
+        "required": [
+          "TestModernHDSplitStrikeRuntimeGPU"
+        ]
+      },
+      {
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-564-runtime-side0-oct24-r1.gate.json",
+          "sha256": "c62211badbc372acba1c944c032338b2f866ac57bca3b3caa074bc1c3710b3d7"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-564-runtime-side0-oct24-r1.memory.json",
+          "sha256": "711a13d1d061b4212f6ddaa0055a77e71aea24911c10e9bdffa0d0c0d36ba735"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-564-runtime-side0-oct24-r1.log",
+          "sha256": "1772d5398de6dfaa6af40f04e86350a205acf3b7d543d7059f7eaa389ae43f83"
+        },
+        "kind": "split-game",
+        "required": [
+          "TestModernHDSplitStrikeRuntimeGPU"
+        ]
+      },
+      {
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-564-formal-side2-oct24-r1.gate.json",
+          "sha256": "92b0598700951423c39a2f8465e7a14cdbac43671e97034b2ca688c591052bcf"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-564-formal-side2-oct24-r1.memory.json",
+          "sha256": "e9813224b81cf667092e2d097add9fbaa1512c866ac0228918ce6171212f5410"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-564-formal-side2-oct24-r1.log",
+          "sha256": "baa63dc02de4df8f7fe2387246a34a91f30745d60e7195a1d11b5cb7940c6554"
+        },
+        "kind": "split-game",
+        "required": [
+          "TestModernHDSplitStrikeRuntimeGPU"
+        ]
+      },
+      {
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-564-runtime-side2-oct24-r1.gate.json",
+          "sha256": "1df0523bdb4b16af4a65f7b1c99a47f492cdf9bf3c4dca8cb48ed488fa8f743c"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-564-runtime-side2-oct24-r1.memory.json",
+          "sha256": "3669c020c9860c910135fb73f4b63bfa596bc129030f4d94f6b9ea35803fb258"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-564-runtime-side2-oct24-r1.log",
+          "sha256": "959b2144457102fef2905a56d05428d8ecf37b15c5853c3239f9eecf01cc8611"
+        },
+        "kind": "split-game",
+        "required": [
+          "TestModernHDSplitStrikeRuntimeGPU"
+        ]
+      },
+      {
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-645-formal-side0-oct24-r1.gate.json",
+          "sha256": "41b3afe6157e3f3f2e528ca640a7b057e3e6509a19666cccb306a840d1c40123"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-645-formal-side0-oct24-r1.memory.json",
+          "sha256": "548e5bbddf765a39d772f4e5c544ff2e68c8d3538742b9661258e3626012a74b"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-645-formal-side0-oct24-r1.log",
+          "sha256": "7918a5c5d96af4377433fd7bf127d4fbbb9ee78d3af158372e5e83b1c3b22bfd"
+        },
+        "kind": "split-game",
+        "required": [
+          "TestModernHDSplitStrikeRuntimeGPU"
+        ]
+      },
+      {
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-645-runtime-side0-oct24-r1.gate.json",
+          "sha256": "fd3d27582fbc38ad680a0cbf48288fcfa6bbac70f3083668cabdae54946d498d"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-645-runtime-side0-oct24-r1.memory.json",
+          "sha256": "1ee7cba337b40f8d628cef0562384eff39afa302dea7122ff7a3eefba5bb60a1"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-645-runtime-side0-oct24-r1.log",
+          "sha256": "b7b8d7407333adcb9ac6ca281786e6bb7e2cd656806e9d204533de3814d5bcdf"
+        },
+        "kind": "split-game",
+        "required": [
+          "TestModernHDSplitStrikeRuntimeGPU"
+        ]
+      },
+      {
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-645-formal-side2-oct24-r1.gate.json",
+          "sha256": "e0e68b9fde5d494f64832798ba6ca387d636d9630b16c89fd253855da2c75fd2"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-645-formal-side2-oct24-r1.memory.json",
+          "sha256": "15f647ba47f59400d8cb2d6546ae0f2f76211a094a194772596c206f8de9eafd"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-645-formal-side2-oct24-r1.log",
+          "sha256": "2ca996075364d6ac07986814d487fb98cc7fca3cb314e78fd3ab9c9abac76744"
+        },
+        "kind": "split-game",
+        "required": [
+          "TestModernHDSplitStrikeRuntimeGPU"
+        ]
+      },
+      {
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-645-runtime-side2-oct24-r1.gate.json",
+          "sha256": "0b622fa25d4528581d1f6f5badb0b79e415a3ac690e54b794fdb7a8ce92ed1c0"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-645-runtime-side2-oct24-r1.memory.json",
+          "sha256": "e8ae6fb361b7c55427139a94578c8734f82e524af434bbea266bf9fb445b940f"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-645-runtime-side2-oct24-r1.log",
+          "sha256": "ea0121b92b7a9cd4b5d94a9ffa2eee3e86f58727190c1d2203e34ddc6cd66a15"
+        },
+        "kind": "split-game",
+        "required": [
+          "TestModernHDSplitStrikeRuntimeGPU"
+        ]
+      },
+      {
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-456-formal-side0-oct24-r1.gate.json",
+          "sha256": "d900236df95e1954b1df7bb11b91df4bf4ff61244d83c168fdced6e86419d719"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-456-formal-side0-oct24-r1.memory.json",
+          "sha256": "bb9dcb5807d547c1de21f360268a2a8ae0a2c4a4b07c55698416316d4a420845"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-456-formal-side0-oct24-r1.log",
+          "sha256": "8cafd98ff314b74f74a043c854ed6d703af168739e70203346064c0f9198df92"
+        },
+        "kind": "split-game",
+        "required": [
+          "TestModernHDSplitStrikeRuntimeGPU"
+        ]
+      },
+      {
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-456-runtime-side0-oct24-r1.gate.json",
+          "sha256": "c84c21b28d2051c2a7124df1f9ed62a477684d5462f4f936b7d768922f44d7b4"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-456-runtime-side0-oct24-r1.memory.json",
+          "sha256": "969beab9db4ade45e548350ebcf6af0819c335cfcc45a5dd6fae871a3c5d209c"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-456-runtime-side0-oct24-r1.log",
+          "sha256": "0ee79a02b9e60efdf1f1a6bafe0d9976e421806c694c12d1297a444267a55617"
+        },
+        "kind": "split-game",
+        "required": [
+          "TestModernHDSplitStrikeRuntimeGPU"
+        ]
+      },
+      {
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-456-formal-side2-oct24-r1.gate.json",
+          "sha256": "7f85f5e36b6ae47200b7d3a661f0e91609383d5184c58e5fbb2a7e9e5167f880"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-456-formal-side2-oct24-r1.memory.json",
+          "sha256": "ffaeb0487e2ee1c54e3bf966a53d1c4a81c6afce2501263b71fbaeaa101fb76a"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-456-formal-side2-oct24-r1.log",
+          "sha256": "a38e7271052597ccc37c997ec88b3483593468983bac0b384da2525acf365df0"
+        },
+        "kind": "split-game",
+        "required": [
+          "TestModernHDSplitStrikeRuntimeGPU"
+        ]
+      },
+      {
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-456-runtime-side2-oct24-r1.gate.json",
+          "sha256": "cdf75a1a0f35164190434c4bbeeaa1ad0d2e54c642ad7b392bb4a0a8adc90018"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-456-runtime-side2-oct24-r1.memory.json",
+          "sha256": "40427f1f78831cb50f777a90ab3935e3db57059d88cf28ef6f6e9cb96249f514"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-456-runtime-side2-oct24-r1.log",
+          "sha256": "24becf5a85fd2adc6bc8ebf2827aa4920c61510e7650b1d4e01e0a25a35b2d90"
+        },
+        "kind": "split-game",
+        "required": [
+          "TestModernHDSplitStrikeRuntimeGPU"
+        ]
+      },
+      {
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-564-formal-side0-oct24-r1.gate.json",
+          "sha256": "0173350cdad981cd530b6f756266ee46974e896e19795f2e4cfee405aa1d7e20"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-564-formal-side0-oct24-r1.memory.json",
+          "sha256": "da7ce928811779324d14a9e3dd51f8ff113c5abe4646a468c02d867f77c64272"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-564-formal-side0-oct24-r1.log",
+          "sha256": "0592efb67a363c1e4a5605a8e87085bc189edb1f3af676e6ace9432c914d7857"
+        },
+        "kind": "split-game",
+        "required": [
+          "TestModernHDSplitStrikeRuntimeGPU"
+        ]
+      },
+      {
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-564-runtime-side0-oct24-r1.gate.json",
+          "sha256": "1604de62b86ba5ad34d9cc2b58280a23a1cae1c43a856bc37c7231f447595468"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-564-runtime-side0-oct24-r1.memory.json",
+          "sha256": "a83ae216ec6294980f51599671f8288c71b8cefd8c362925908507ad91e5ccc1"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-564-runtime-side0-oct24-r1.log",
+          "sha256": "8dfb69a0595d27c69fd5577a3fdd02cf065e87950e9a43aec0e24b480ef47a50"
+        },
+        "kind": "split-game",
+        "required": [
+          "TestModernHDSplitStrikeRuntimeGPU"
+        ]
+      },
+      {
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-564-formal-side2-oct24-r1.gate.json",
+          "sha256": "eb00a5c2ea07e913562bcbab896a96cca1ba14c5592af97237b830790bae7317"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-564-formal-side2-oct24-r1.memory.json",
+          "sha256": "2156738f8ff34a29c0f671cdb6f89bde44da4ef50e082ea6b988fa47effee0ff"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-564-formal-side2-oct24-r1.log",
+          "sha256": "b7811c8caa3e2c254b15f2bd73a60eb74636a862bd76fcfa451accfa37d0ea1d"
+        },
+        "kind": "split-game",
+        "required": [
+          "TestModernHDSplitStrikeRuntimeGPU"
+        ]
+      },
+      {
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-564-runtime-side2-oct24-r1.gate.json",
+          "sha256": "ab61db97e84b02074b9d15a66d09ddf0b21d389c8db2722546ca4a5595202b80"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-564-runtime-side2-oct24-r1.memory.json",
+          "sha256": "3126f9b1398e8bc6aae91742d01f441ae30b190ec80f866255b78547b2ee4007"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-564-runtime-side2-oct24-r1.log",
+          "sha256": "82c8f07c499b87f4b7afe69d4270eb16dade9362e5006edcad83b39c69dd3a4d"
+        },
+        "kind": "split-game",
+        "required": [
+          "TestModernHDSplitStrikeRuntimeGPU"
+        ]
+      },
+      {
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-645-formal-side0-oct24-r1.gate.json",
+          "sha256": "783e79f6f6956f6023785b75804229fb463ca6a13fd1f2189b967ae0723f08cc"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-645-formal-side0-oct24-r1.memory.json",
+          "sha256": "fe97c2947076fb621d0f26f64ac406d8ad7ef8c01f22ab6d365360e08c8e4d97"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-645-formal-side0-oct24-r1.log",
+          "sha256": "00769ff63f2876c6ee4945a6424f2a736084a60ebcb21702ae30eb9297e16d3b"
+        },
+        "kind": "split-game",
+        "required": [
+          "TestModernHDSplitStrikeRuntimeGPU"
+        ]
+      },
+      {
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-645-runtime-side0-oct24-r1.gate.json",
+          "sha256": "598b168897df03d3739de658d3e46cec8aa943848abe4e86155228581b633950"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-645-runtime-side0-oct24-r1.memory.json",
+          "sha256": "1951c5f5c0db3b70754d8f68de72416294d5b735a455450895939a1749451a0c"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-645-runtime-side0-oct24-r1.log",
+          "sha256": "001014b00f5438cbb5403f8d055bbbff8aab9145fb1726785ebfb9301622d64d"
+        },
+        "kind": "split-game",
+        "required": [
+          "TestModernHDSplitStrikeRuntimeGPU"
+        ]
+      },
+      {
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-645-formal-side2-oct24-r1.gate.json",
+          "sha256": "0ee48e79272e3c5364d3a6b6ed00d896e5df7d51cabbddc79c1c75f18ce9f3be"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-645-formal-side2-oct24-r1.memory.json",
+          "sha256": "251d474a14b74a8937192170aafea10e394211c32b480097cd9e206bd43acac8"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-645-formal-side2-oct24-r1.log",
+          "sha256": "873f2baa4bdb56089ec4f8e29a7860e38c9978f8bbb84d29434a77ad1fcd7753"
+        },
+        "kind": "split-game",
+        "required": [
+          "TestModernHDSplitStrikeRuntimeGPU"
+        ]
+      },
+      {
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-645-runtime-side2-oct24-r1.gate.json",
+          "sha256": "30542cb696f38c18914ff37a49a12a3da48201501ecfc076b01f8049fac80222"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-645-runtime-side2-oct24-r1.memory.json",
+          "sha256": "cadca72e498317081c5f37d100f39a14a75cd7f0a5805d48accb883a0daddc7b"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-645-runtime-side2-oct24-r1.log",
+          "sha256": "637c48551bfa629b8b4f84c209aff54298739a643eb18e8ca85bc4ab031adacf"
+        },
+        "kind": "split-game",
+        "required": [
+          "TestModernHDSplitStrikeRuntimeGPU"
+        ]
+      },
+      {
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-cold4-oct24-r1.gate.json",
+          "sha256": "e8b50feb9e98cae14123fc295f08d144205f2a8bf912b850efb83ab9b6b74c8a"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-cold4-oct24-r1.memory.json",
+          "sha256": "0921fe9830be6c1c5c596c6eb83fea5b151ba3e27dff94c5da12071f200257aa"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-cold4-oct24-r1.log",
+          "sha256": "a84e10f3518bf242a12d7e09d6f589097f970d217e49fce3c77279fc11372299"
+        },
+        "kind": "source-unit",
+        "required": [
+          "TestModernBattleSurfaceHDSourceAndAtomic",
+          "TestModernBattleSurfacePhysicalNativeReconstruction"
+        ]
+      },
+      {
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-cold5-oct24-r1.gate.json",
+          "sha256": "018ff51c318d21e4b595f0bf0420b665ff098272d7ebcee208dfea5da3773874"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-cold5-oct24-r1.memory.json",
+          "sha256": "3fbceb54ebada1d6c7760b2cd17f836a57c93f08baab7ae322a1a6525c4a71e3"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-cold5-oct24-r1.log",
+          "sha256": "4d25c71ac831bc2659acee4dbb53402e9726c356953d26af34e583bc95b66e3e"
+        },
+        "kind": "source-unit",
+        "required": [
+          "TestModernBattleSurfaceHDSourceAndAtomic",
+          "TestModernBattleSurfacePhysicalNativeReconstruction"
+        ]
+      },
+      {
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-cold6-oct24-r1.gate.json",
+          "sha256": "0f1dfbe6f92dd44cbbc375128223d45cb4605b3222dbac990ca2f902b1907780"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-cold6-oct24-r1.memory.json",
+          "sha256": "ca8f4f0db63d3ba2167b51176c274a53c8127258284c350d9b584e7282f79cd0"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-cold6-oct24-r1.log",
+          "sha256": "8617358dedaea7ae0ba0a8755e2903b8014a24212c0c3d409b5e213ca5497232"
+        },
+        "kind": "source-unit",
+        "required": [
+          "TestModernBattleSurfaceHDSourceAndAtomic",
+          "TestModernBattleSurfacePhysicalNativeReconstruction"
+        ]
+      }
+    ],
+    "runtime_sources": [
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_surface.go",
+        "sha256": "11b1a113e54f35115c1f54edcbbab849c4e1f9c483f91e5661b979112b5cd7aa"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_compound.go",
+        "sha256": "1a78ef258d222ad91f80090c2c915b7a70906099dd0618f5653968156663ba43"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_split_strike.go",
+        "sha256": "c6c06df9056d2078f16208378f375e7bbd816e8d6594767ddf872f51a5239396"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command24_presentation.go",
+        "sha256": "f9396ae941a51f97b95b92568e258c75182d5e3db253a015f439f15056062aa8"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command29_presentation.go",
+        "sha256": "d80142b3b3e8394c620b72f23ba49663da5a9bc4aad3e94de2e608be46aac0d7"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_split_strike_test.go",
+        "sha256": "0b4ada4f92ff89f29b5266b44fb673028181121ec480a0184a2937776aa5aca0"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_split_strike_lifecycle_test.go",
+        "sha256": "d2df29585c408d878dfec1a83ed595d1c8d2bb20a050764362d590cc33ce42e6"
+      },
+      {
+        "file": "tools/verify_fd2_battle_surface_hd.py",
+        "sha256": "0799255baff40c0ac4affaf5b4c279390ca18fc9085371120f7bc7f19f11edf2"
+      },
+      {
+        "file": "tools/verify_fd2_split_strike_gpu.py",
+        "sha256": "58cb1c96fdfcb2ec06fa104947d69e35b111feef897b4bbf987ab3e7bce1c7dd"
+      },
+      {
+        "file": "tools/test_fd2_split_strike_gpu.py",
+        "sha256": "d005bf0dcd6e5b8d1214d480f61522776996ff44c24ffd63f812f3a8f47ec8da"
+      }
+    ],
+    "production_go_changes": [
+      "modern_hd_battle_surface.go",
+      "modern_hd_compound.go",
+      "modern_hd_split_strike.go",
+      "native_command24_presentation.go",
+      "native_command29_presentation.go"
+    ],
+    "catalog_unchanged": true,
+    "asset_files_added": 0,
+    "private_assets_changed": false,
+    "shader_changes": false,
+    "required_top_level_test_runs": 44,
+    "games": [
+      {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-456-formal-side0-oct24-r1-capture/receipt.json",
+          "sha256": "d9e1a9907bee17b2380f694932bb923e8cd41f5977777ba230a1a477c09afc9e"
+        },
+        "command": 24,
+        "triple": "4:5:6",
+        "side": 0,
+        "pack": "formal",
+        "f2_round_trips": 5,
+        "complete_snapshots": 57,
+        "hashes_only": false
+      },
+      {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-456-runtime-side0-oct24-r1-capture/receipt.json",
+          "sha256": "e71f9766fdc49953ed358c7308be18d4ff5b829e49e43c16c9b91fe1c9e58b73"
+        },
+        "command": 24,
+        "triple": "4:5:6",
+        "side": 0,
+        "pack": "runtime",
+        "f2_round_trips": 5,
+        "complete_snapshots": 57,
+        "hashes_only": true
+      },
+      {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-456-formal-side2-oct24-r1-capture/receipt.json",
+          "sha256": "0b2050e6b22bb611a30362b60b2c6784f3cd2d27ace087bbe5035f5dec738a46"
+        },
+        "command": 24,
+        "triple": "4:5:6",
+        "side": 2,
+        "pack": "formal",
+        "f2_round_trips": 5,
+        "complete_snapshots": 57,
+        "hashes_only": false
+      },
+      {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-456-runtime-side2-oct24-r1-capture/receipt.json",
+          "sha256": "d03bfad86e3f9a7b28523dcc67024877c8ee363e7ea69fdf7baaec6c5b052022"
+        },
+        "command": 24,
+        "triple": "4:5:6",
+        "side": 2,
+        "pack": "runtime",
+        "f2_round_trips": 5,
+        "complete_snapshots": 57,
+        "hashes_only": true
+      },
+      {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-564-formal-side0-oct24-r1-capture/receipt.json",
+          "sha256": "8e62845ae1a9153302432e0d4a52a54a92c5adc203f5729807598b45a8f405c7"
+        },
+        "command": 24,
+        "triple": "5:6:4",
+        "side": 0,
+        "pack": "formal",
+        "f2_round_trips": 5,
+        "complete_snapshots": 57,
+        "hashes_only": false
+      },
+      {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-564-runtime-side0-oct24-r1-capture/receipt.json",
+          "sha256": "4781d062843d65039d56720d1e685069903f470e952704edfd88ba2c17766471"
+        },
+        "command": 24,
+        "triple": "5:6:4",
+        "side": 0,
+        "pack": "runtime",
+        "f2_round_trips": 5,
+        "complete_snapshots": 57,
+        "hashes_only": true
+      },
+      {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-564-formal-side2-oct24-r1-capture/receipt.json",
+          "sha256": "b3aa170a4cb820765526cf3d80593d3ae191311595b7ab9ded0c699843dcf82c"
+        },
+        "command": 24,
+        "triple": "5:6:4",
+        "side": 2,
+        "pack": "formal",
+        "f2_round_trips": 5,
+        "complete_snapshots": 57,
+        "hashes_only": false
+      },
+      {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-564-runtime-side2-oct24-r1-capture/receipt.json",
+          "sha256": "ccd73a02986f43ee33d457a2fcccfe3f801e03bfab1a182f782b851dfaa1ba39"
+        },
+        "command": 24,
+        "triple": "5:6:4",
+        "side": 2,
+        "pack": "runtime",
+        "f2_round_trips": 5,
+        "complete_snapshots": 57,
+        "hashes_only": true
+      },
+      {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-645-formal-side0-oct24-r1-capture/receipt.json",
+          "sha256": "dd9f162ad4e952ef16a1677e2f6bd757e735476b87c5c00025feac3af9af9bd3"
+        },
+        "command": 24,
+        "triple": "6:4:5",
+        "side": 0,
+        "pack": "formal",
+        "f2_round_trips": 5,
+        "complete_snapshots": 57,
+        "hashes_only": false
+      },
+      {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-645-runtime-side0-oct24-r1-capture/receipt.json",
+          "sha256": "396d06681e493cd6e60c3e7b148cfb8d9fd93350da40b476161ccaa140e44b68"
+        },
+        "command": 24,
+        "triple": "6:4:5",
+        "side": 0,
+        "pack": "runtime",
+        "f2_round_trips": 5,
+        "complete_snapshots": 57,
+        "hashes_only": true
+      },
+      {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-645-formal-side2-oct24-r1-capture/receipt.json",
+          "sha256": "a70124228f2a38c44db4dda64ccadac8e093adb43a8a0703b84b2105cfc6bc82"
+        },
+        "command": 24,
+        "triple": "6:4:5",
+        "side": 2,
+        "pack": "formal",
+        "f2_round_trips": 5,
+        "complete_snapshots": 57,
+        "hashes_only": false
+      },
+      {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-645-runtime-side2-oct24-r1-capture/receipt.json",
+          "sha256": "03a891c36a6b092e751b78bdcab40235d61caa9ab2ef10863b1f1151311ee3b8"
+        },
+        "command": 24,
+        "triple": "6:4:5",
+        "side": 2,
+        "pack": "runtime",
+        "f2_round_trips": 5,
+        "complete_snapshots": 57,
+        "hashes_only": true
+      },
+      {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-456-formal-side0-oct24-r1-capture/receipt.json",
+          "sha256": "359d72351c14fd5569b3eb5fb1f5657e6cd8db16f4bddbfd059f9d34209478cb"
+        },
+        "command": 29,
+        "triple": "4:5:6",
+        "side": 0,
+        "pack": "formal",
+        "f2_round_trips": 8,
+        "complete_snapshots": 88,
+        "hashes_only": false
+      },
+      {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-456-runtime-side0-oct24-r1-capture/receipt.json",
+          "sha256": "f87a0613f726bb9b6bea57313778c7942946b72c459229f711740fd9f351c673"
+        },
+        "command": 29,
+        "triple": "4:5:6",
+        "side": 0,
+        "pack": "runtime",
+        "f2_round_trips": 8,
+        "complete_snapshots": 88,
+        "hashes_only": true
+      },
+      {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-456-formal-side2-oct24-r1-capture/receipt.json",
+          "sha256": "a2ea4f3539657ad0e9ff50bf21c5e9f44e7e89e3a1edb45741b22452fa99d410"
+        },
+        "command": 29,
+        "triple": "4:5:6",
+        "side": 2,
+        "pack": "formal",
+        "f2_round_trips": 8,
+        "complete_snapshots": 88,
+        "hashes_only": false
+      },
+      {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-456-runtime-side2-oct24-r1-capture/receipt.json",
+          "sha256": "4948f8cdc781eb3fdd533799a9b12f58651b9fba0e86afe764f2dd5c3ad4215e"
+        },
+        "command": 29,
+        "triple": "4:5:6",
+        "side": 2,
+        "pack": "runtime",
+        "f2_round_trips": 8,
+        "complete_snapshots": 88,
+        "hashes_only": true
+      },
+      {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-564-formal-side0-oct24-r1-capture/receipt.json",
+          "sha256": "22db19cd3b8f0892650362e5d94be0aaea24533d686d401cede06491cd20e339"
+        },
+        "command": 29,
+        "triple": "5:6:4",
+        "side": 0,
+        "pack": "formal",
+        "f2_round_trips": 8,
+        "complete_snapshots": 88,
+        "hashes_only": false
+      },
+      {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-564-runtime-side0-oct24-r1-capture/receipt.json",
+          "sha256": "65b5dc6af02929b272a9d92ce08bdc84aef3e88becfbad68cf8491ce9f0da582"
+        },
+        "command": 29,
+        "triple": "5:6:4",
+        "side": 0,
+        "pack": "runtime",
+        "f2_round_trips": 8,
+        "complete_snapshots": 88,
+        "hashes_only": true
+      },
+      {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-564-formal-side2-oct24-r1-capture/receipt.json",
+          "sha256": "21c365dd9944a720e5222e15af56e3e2acc346e4f397d3528fba837f34551e52"
+        },
+        "command": 29,
+        "triple": "5:6:4",
+        "side": 2,
+        "pack": "formal",
+        "f2_round_trips": 8,
+        "complete_snapshots": 88,
+        "hashes_only": false
+      },
+      {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-564-runtime-side2-oct24-r1-capture/receipt.json",
+          "sha256": "d7e524bdaa3cd072d054f65f719a21545f4dcecdf969e97490de8e2efd1a02e2"
+        },
+        "command": 29,
+        "triple": "5:6:4",
+        "side": 2,
+        "pack": "runtime",
+        "f2_round_trips": 8,
+        "complete_snapshots": 88,
+        "hashes_only": true
+      },
+      {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-645-formal-side0-oct24-r1-capture/receipt.json",
+          "sha256": "97b2867770a2f856be5b0b1aa2d602ecbce2de5b69eec35c434eabb11699ec02"
+        },
+        "command": 29,
+        "triple": "6:4:5",
+        "side": 0,
+        "pack": "formal",
+        "f2_round_trips": 8,
+        "complete_snapshots": 88,
+        "hashes_only": false
+      },
+      {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-645-runtime-side0-oct24-r1-capture/receipt.json",
+          "sha256": "5cfa36aafc6dde8e3a4c2a67fd6a55acba6fcb07195ebce1e5bd266dcd8dbbc3"
+        },
+        "command": 29,
+        "triple": "6:4:5",
+        "side": 0,
+        "pack": "runtime",
+        "f2_round_trips": 8,
+        "complete_snapshots": 88,
+        "hashes_only": true
+      },
+      {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-645-formal-side2-oct24-r1-capture/receipt.json",
+          "sha256": "951fe176b41dd4e5e4d17d6a36ef6681e4a1602b47df08efeb20e25908d211b8"
+        },
+        "command": 29,
+        "triple": "6:4:5",
+        "side": 2,
+        "pack": "formal",
+        "f2_round_trips": 8,
+        "complete_snapshots": 88,
+        "hashes_only": false
+      },
+      {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-645-runtime-side2-oct24-r1-capture/receipt.json",
+          "sha256": "67c71153b5ed76383144f9a8a53d96c4acd5e90ade2998830a56f944c3b2a647"
+        },
+        "command": 29,
+        "triple": "6:4:5",
+        "side": 2,
+        "pack": "runtime",
+        "f2_round_trips": 8,
+        "complete_snapshots": 88,
+        "hashes_only": true
+      }
+    ],
+    "paired_full_gpu_verifications": [
+      {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-gpu24-456-side0-paired-oct24-r1.json",
+          "sha256": "fc77dfd930c5ff02682753d60faa96286c2914058aa8ed204be563248110e4c8"
+        },
+        "formal_receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-456-formal-side0-oct24-r1-capture/receipt.json",
+          "sha256": "d9e1a9907bee17b2380f694932bb923e8cd41f5977777ba230a1a477c09afc9e"
+        },
+        "runtime_receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-456-runtime-side0-oct24-r1-capture/receipt.json",
+          "sha256": "e71f9766fdc49953ed358c7308be18d4ff5b829e49e43c16c9b91fe1c9e58b73"
+        },
+        "command": 24,
+        "triple": "4:5:6",
+        "side": 0,
+        "full_canvas_images": 57,
+        "worst_channel_error": 1
+      },
+      {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-gpu24-456-side2-paired-oct24-r1.json",
+          "sha256": "8a8bcf7df430b834a609b87f0b961ea573a4a691931efdc4b66dacb36c7361d4"
+        },
+        "formal_receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-456-formal-side2-oct24-r1-capture/receipt.json",
+          "sha256": "0b2050e6b22bb611a30362b60b2c6784f3cd2d27ace087bbe5035f5dec738a46"
+        },
+        "runtime_receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-456-runtime-side2-oct24-r1-capture/receipt.json",
+          "sha256": "d03bfad86e3f9a7b28523dcc67024877c8ee363e7ea69fdf7baaec6c5b052022"
+        },
+        "command": 24,
+        "triple": "4:5:6",
+        "side": 2,
+        "full_canvas_images": 57,
+        "worst_channel_error": 1
+      },
+      {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-gpu24-564-side0-paired-oct24-r1.json",
+          "sha256": "1eddef6783c80bf5311f797262ab86208530e116748b580517a418e5f11a3fc9"
+        },
+        "formal_receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-564-formal-side0-oct24-r1-capture/receipt.json",
+          "sha256": "8e62845ae1a9153302432e0d4a52a54a92c5adc203f5729807598b45a8f405c7"
+        },
+        "runtime_receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-564-runtime-side0-oct24-r1-capture/receipt.json",
+          "sha256": "4781d062843d65039d56720d1e685069903f470e952704edfd88ba2c17766471"
+        },
+        "command": 24,
+        "triple": "5:6:4",
+        "side": 0,
+        "full_canvas_images": 57,
+        "worst_channel_error": 1
+      },
+      {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-gpu24-564-side2-paired-oct24-r1.json",
+          "sha256": "6eef847bcd726901c301fdc8863e6021f921af567c75f0c85f2b56c9d3d484c3"
+        },
+        "formal_receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-564-formal-side2-oct24-r1-capture/receipt.json",
+          "sha256": "b3aa170a4cb820765526cf3d80593d3ae191311595b7ab9ded0c699843dcf82c"
+        },
+        "runtime_receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-564-runtime-side2-oct24-r1-capture/receipt.json",
+          "sha256": "ccd73a02986f43ee33d457a2fcccfe3f801e03bfab1a182f782b851dfaa1ba39"
+        },
+        "command": 24,
+        "triple": "5:6:4",
+        "side": 2,
+        "full_canvas_images": 57,
+        "worst_channel_error": 1
+      },
+      {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-gpu24-645-side0-paired-oct24-r1.json",
+          "sha256": "caca03d95865f7fedb28aebd63f7e958a96aae8856f21cd2ffa70961f1a18c82"
+        },
+        "formal_receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-645-formal-side0-oct24-r1-capture/receipt.json",
+          "sha256": "dd9f162ad4e952ef16a1677e2f6bd757e735476b87c5c00025feac3af9af9bd3"
+        },
+        "runtime_receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-645-runtime-side0-oct24-r1-capture/receipt.json",
+          "sha256": "396d06681e493cd6e60c3e7b148cfb8d9fd93350da40b476161ccaa140e44b68"
+        },
+        "command": 24,
+        "triple": "6:4:5",
+        "side": 0,
+        "full_canvas_images": 57,
+        "worst_channel_error": 1
+      },
+      {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-gpu24-645-side2-paired-oct24-r1.json",
+          "sha256": "bad59f5777bdc9cb284462b4a84417de74eb1e19be07ac35d14d51c99c6ed8c7"
+        },
+        "formal_receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-645-formal-side2-oct24-r1-capture/receipt.json",
+          "sha256": "a70124228f2a38c44db4dda64ccadac8e093adb43a8a0703b84b2105cfc6bc82"
+        },
+        "runtime_receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-645-runtime-side2-oct24-r1-capture/receipt.json",
+          "sha256": "03a891c36a6b092e751b78bdcab40235d61caa9ab2ef10863b1f1151311ee3b8"
+        },
+        "command": 24,
+        "triple": "6:4:5",
+        "side": 2,
+        "full_canvas_images": 57,
+        "worst_channel_error": 1
+      },
+      {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-gpu29-456-side0-paired-oct24-r1.json",
+          "sha256": "e3f58eb443b6c20b13044e32e11a34c9fc22314af2fccdd3e2e93fc14957413d"
+        },
+        "formal_receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-456-formal-side0-oct24-r1-capture/receipt.json",
+          "sha256": "359d72351c14fd5569b3eb5fb1f5657e6cd8db16f4bddbfd059f9d34209478cb"
+        },
+        "runtime_receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-456-runtime-side0-oct24-r1-capture/receipt.json",
+          "sha256": "f87a0613f726bb9b6bea57313778c7942946b72c459229f711740fd9f351c673"
+        },
+        "command": 29,
+        "triple": "4:5:6",
+        "side": 0,
+        "full_canvas_images": 88,
+        "worst_channel_error": 1
+      },
+      {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-gpu29-456-side2-paired-oct24-r1.json",
+          "sha256": "507f152b19c4062139e1d65cd43cffb74cd06c4ab52e979deb10fe9887f00094"
+        },
+        "formal_receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-456-formal-side2-oct24-r1-capture/receipt.json",
+          "sha256": "a2ea4f3539657ad0e9ff50bf21c5e9f44e7e89e3a1edb45741b22452fa99d410"
+        },
+        "runtime_receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-456-runtime-side2-oct24-r1-capture/receipt.json",
+          "sha256": "4948f8cdc781eb3fdd533799a9b12f58651b9fba0e86afe764f2dd5c3ad4215e"
+        },
+        "command": 29,
+        "triple": "4:5:6",
+        "side": 2,
+        "full_canvas_images": 88,
+        "worst_channel_error": 1
+      },
+      {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-gpu29-564-side0-paired-oct24-r1.json",
+          "sha256": "beaf3a0e874026ae5437faadfe92c1259ed3f77e885b33e32b6f104f9061162c"
+        },
+        "formal_receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-564-formal-side0-oct24-r1-capture/receipt.json",
+          "sha256": "22db19cd3b8f0892650362e5d94be0aaea24533d686d401cede06491cd20e339"
+        },
+        "runtime_receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-564-runtime-side0-oct24-r1-capture/receipt.json",
+          "sha256": "65b5dc6af02929b272a9d92ce08bdc84aef3e88becfbad68cf8491ce9f0da582"
+        },
+        "command": 29,
+        "triple": "5:6:4",
+        "side": 0,
+        "full_canvas_images": 88,
+        "worst_channel_error": 1
+      },
+      {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-gpu29-564-side2-paired-oct24-r1.json",
+          "sha256": "7822d5c73e83b13b6e47a84e14e4c800abaac089d7d66c73cc2864304feea05d"
+        },
+        "formal_receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-564-formal-side2-oct24-r1-capture/receipt.json",
+          "sha256": "21c365dd9944a720e5222e15af56e3e2acc346e4f397d3528fba837f34551e52"
+        },
+        "runtime_receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-564-runtime-side2-oct24-r1-capture/receipt.json",
+          "sha256": "d7e524bdaa3cd072d054f65f719a21545f4dcecdf969e97490de8e2efd1a02e2"
+        },
+        "command": 29,
+        "triple": "5:6:4",
+        "side": 2,
+        "full_canvas_images": 88,
+        "worst_channel_error": 1
+      },
+      {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-gpu29-645-side0-paired-oct24-r1.json",
+          "sha256": "0c4884471b2fe7f15929ece71f46102be34e72fd1568427c9b49f665a9e28e12"
+        },
+        "formal_receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-645-formal-side0-oct24-r1-capture/receipt.json",
+          "sha256": "97b2867770a2f856be5b0b1aa2d602ecbce2de5b69eec35c434eabb11699ec02"
+        },
+        "runtime_receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-645-runtime-side0-oct24-r1-capture/receipt.json",
+          "sha256": "5cfa36aafc6dde8e3a4c2a67fd6a55acba6fcb07195ebce1e5bd266dcd8dbbc3"
+        },
+        "command": 29,
+        "triple": "6:4:5",
+        "side": 0,
+        "full_canvas_images": 88,
+        "worst_channel_error": 1
+      },
+      {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-gpu29-645-side2-paired-oct24-r1.json",
+          "sha256": "097f7e7d98d412b99e5ac0069a65591c8c00e28911d08fe31f3280e7bb7c85c5"
+        },
+        "formal_receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-645-formal-side2-oct24-r1-capture/receipt.json",
+          "sha256": "951fe176b41dd4e5e4d17d6a36ef6681e4a1602b47df08efeb20e25908d211b8"
+        },
+        "runtime_receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-645-runtime-side2-oct24-r1-capture/receipt.json",
+          "sha256": "67c71153b5ed76383144f9a8a53d96c4acd5e90ade2998830a56f944c3b2a647"
+        },
+        "command": 29,
+        "triple": "6:4:5",
+        "side": 2,
+        "full_canvas_images": 88,
+        "worst_channel_error": 1
+      }
+    ],
+    "gpu_guard_reports": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-guards24-oct24-r1/guards.json",
+        "sha256": "7588cee84fc1446a1efb816278c5192057ba66cf9faa9915fcca6a78ddfb0c0b"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-guards29-oct24-r1/guards.json",
+        "sha256": "fa18d2d5af7a345fed9ebccfd014898c99d0abe417bc29344647b4d0e853d67a"
+      }
+    ],
+    "native_canvases_per_pack": 3018,
+    "rng_before_owner_rejections_per_pack": 36,
+    "live_f2_rejections_per_pack": 36,
+    "scenery_only_cases_per_pack": 72,
+    "scenery_only_gpu_worlds_per_pack": 48,
+    "f2_round_trips": 156,
+    "cross_pack_identical_full_frames": 870,
+    "validated_runtime_files": 5555,
+    "memory_scope": {
+      "maximum_test_cgroup_peak_bytes": 3367952384,
+      "limit_bytes": 8589934592,
+      "cpus": 4,
+      "max_parallel_go_jobs": 2,
+      "normal_player_performance_claim": false,
+      "runtime_capture_policy": "actual1920 readback and identical PNG encoding; store hashes-only in runtime receipt, retain formal PNGs"
+    },
+    "readme_figure": {
+      "status": "PASS-COMPILED-ACTUAL-GAME-DRAW",
+      "sources": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-456-formal-side2-oct24-r1-capture/screen-955ad72953867574e8882a26d28c8ee1f6f05232fa5d24f0271cf6d4cdc49175.png",
+          "sha256": "955ad72953867574e8882a26d28c8ee1f6f05232fa5d24f0271cf6d4cdc49175",
+          "label": "actor-006-idle1-shake0",
+          "cell": 0,
+          "command": 24
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game24-456-formal-side2-oct24-r1-capture/screen-c7c8814ec941b46caf88dc709062acef40e67d97802ad3bbdcafcf0297882e73.png",
+          "sha256": "c7c8814ec941b46caf88dc709062acef40e67d97802ad3bbdcafcf0297882e73",
+          "label": "target-0-012-idle1-shake-1",
+          "cell": 1,
+          "command": 24
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-456-formal-side2-oct24-r1-capture/screen-264c0b115a2e136c687d13efad9eed7c8d74f88fc92edb663fd5787b0e30bd30.png",
+          "sha256": "264c0b115a2e136c687d13efad9eed7c8d74f88fc92edb663fd5787b0e30bd30",
+          "label": "target-0-014-idle0-shake3",
+          "cell": 2,
+          "command": 29
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-game29-456-formal-side2-oct24-r1-capture/screen-278235ee79bbacb03d2b17c7e8fb2069986fc961fe3e6d0323426a61d081680b.png",
+          "sha256": "278235ee79bbacb03d2b17c7e8fb2069986fc961fe3e6d0323426a61d081680b",
+          "label": "target-1-014-idle0-shake3",
+          "cell": 3,
+          "command": 29
+        }
+      ],
+      "output": {
+        "file": "docs/figures/hd-battle-split-strikes.png",
+        "sha256": "b3eab15984d2781abff868fdb71a9074352b5265d39a163d2fb81d67de0f025e"
+      },
+      "operation": "four complete1920x1200 Game.Draw frames, LANCZOS halfscale, row-major; no crop or repaint",
+      "normal_player": false
+    },
+    "public_git_verification_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-public-git-oct24-r1.json",
+    "cleanup": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-cleanup-oct24-r1.json",
+        "sha256": "beb496d0da0336a751eeeb748625b658817faa2e852c42688fd22d281acfcece"
+      },
+      "duplicate_allocated_bytes_removed": 1600626688,
+      "runtime_current_is_independent": false,
+      "validated_runtime_files_before_cleanup": 5555,
+      "string_old_tree_removed": true
+    },
+    "string_review": {
+      "status": "PASS-REBOUND",
+      "reviewed_candidates": 108,
+      "dispositions_changed": false,
+      "public_base_commit": "5da8971b86e47957ba16f30fef25194b3a40b09a",
+      "old_inventory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-string-inventory-old-oct24-r1.json",
+        "sha256": "2dd46ccc01a93ec67109dfbf219b89e2735a7066cf5ad1d9e4299f756d2bbf7e"
+      },
+      "new_inventory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-string-inventory-new-oct24-r1.json",
+        "sha256": "20a5afb1a57909ba709860a1b7aea8b685561b8c4d50899e08d033f6ee888a16"
+      },
+      "review": {
+        "file": "docs/data/fd2-string-review.json",
+        "sha256": "a9166bb721d8e9067a136da625b1da9f8edb71e8d115c9ece9396718c2f14ab4"
+      },
+      "test_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-strings-check-oct24-r1.log",
+        "sha256": "1208d0effb3f928b62324fedb00935ea5b41f2807ccc2c53defbda03c4cfa731"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-strings-check-oct24-r1.memory.json",
+        "sha256": "270f8705cc9f66abd74444389481fdd6ebe790b54a8284484ad0b8cc002b8adf"
+      }
+    },
+    "issue": {
+      "number": 263,
+      "state": "OPEN",
+      "url": "https://github.com/wicanr2/fd2_re/issues/263",
+      "remote": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cmd2429-scenery-issue263-remote-oct24-r1.json",
+        "sha256": "1483a8ad6a242d80e3af2a8dbf8867141b39cab57cd0777a2cddacb71a412024"
       },
       "acceptance_unchanged": true
     }

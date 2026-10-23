@@ -10063,3 +10063,5 @@ BattleFig7／23已沿61「BattleFig7騎乘劍士與23弓手圖源」接入。唯
 凱麗右腳v2已依61「凱麗右腳與README動畫修正」正式接入。完整20幀來源與Game.Draw、五組Go、21項拒收及第九章普通攻擊／自然返回／F2／保存冷讀通過；README GIF及靜態圖改用新普通GUI，完整工具列視窗精確取遊戲區。主收據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的kylie_right_foot_followup_20261022及kylie_readme_animation_20261022；相近戰況不宣稱逐幀一致，#269集中人工及其他HD缺口保持。
 
 分離背景物理的HD場景橋接已達CONFORMED-SCOPED／RUNTIME-E1，包含兩側預備、捲動、連射、主攻／反擊與淡出。原生producer、BG0..2遮罩歷史、聲音／規則／保存保持；只有場景來源消費端改動。唯一驗收與限制見[58](58-fd2-exe-re-coverage.md)及[61](61-modern-theme-runtime-spec.md)「分離背景物理捲動的HD場景來源」，不外推其餘美術、指令場景、HUD或正常／人工／平台。
+
+指令24／29的actor及逐目標場景已接HD，保留原規則適用TAI、原生捲動歷史、標記與交易。分層為CONFORMED-SCOPED／RUNTIME-E1，唯一驗收與限制見[58](58-fd2-exe-re-coverage.md)及[61](61-modern-theme-runtime-spec.md)「指令24／29的HD場景來源」。清冊／美術／shader／規則／保存保持，其餘場景、過渡及HUD與正常／人工／平台仍待。

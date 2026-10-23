@@ -3957,3 +3957,21 @@ BG 與 TAI 各 57 項，末項各為零長 raw，不能補造美術。BG 的 10 
 兩包各1038張原生完整畫布與120個獨立CPU Over對GPU世界通過，包含三組地形、兩側九階前導、退場／捲動／攻防及BG-only／TAI-only；色差容差1保持。兩包共十二完整Game.Draw、72次F2與每案例64／65DAC、HP／RNG及一次返回通過，36組跨包PNG逐SHA相同。六項原生／分段指令回歸、舊共用4／5／6來源及完整舊GPU核心另通過，共24份Go閘門／32項必要頂層測試，無SKIP／逾時／OOM。首次driver漏帶分段指令素材環境造成的兩個SKIP整包拒收，補環境後乾淨r2通過，正式規則不改。
 
 正式清冊681項、六份場景圖及私人美術保持原SHA，沒有新增圖稿或私人同步需求。捲動BG0..2的過渡圖仍用原版素材，其他來源／指令場景／HUD與正常玩家、人工造型及平台驗收仍待。既有希莉亞正常射擊抽驗不自動提升本次HD場景橋接為PLAYER-E2。
+
+### 指令24／29的HD場景來源
+
+狀態：CONFORMED-SCOPED／RUNTIME-E1。沿[指令24](../data/ida/fd2_command24_presentation_ida.txt)、[背景轉場](../data/ida/fd2_command24_background_transition_ida.txt)及[指令29](../data/ida/fd2_command28_29_31_presentation_ida.txt)已閉合證據，不重開RE。FD2.EXE固定357074 bytes、SHA-256 `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`；IDA9.4 LE線性位址sub_276EC／27982..27ADA、sub_2B659／2B6F4..2B763、sub_29C90及27B33..27D9A。原始名稱、bytes及caller保持。輸入與驗收集中[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的command24_29_scenery_followup_20261024。
+
+- 只新增24／29的BG／適用TAI來源消費。各底圖沿當次selector與原生frame，BG在(0,50)，TAI在(164,157)；只支援已審查320×100背景。原本沒有target台座就不新增；actor raw side非零的台座沿九階前導位移。
+- HD底圖以原生memset及UI不重疊證據分離台座，保持原生before／after畫布；圖層依場景、人物、效果順序。多目標轉場沿完整ContentX／BGX／ViewportX／Incoming及BG0..2遮罩歷史，不以RGB猜來源或只畫最後一張過渡圖。
+- 已宣告BG／TAI與完整人物銀行在規劃Go亂數前預檢，未發布的HD銀行沿原stage交易；原生建構成功才publish。F2核對sourceFrames中的全部場景來源，錯件不改owner／主題／單位與RNG。未登錄美術保留原生fallback。
+- 共用指令繪製器識別BaseScenery與BG／TAI的archive，不能把相同數字當FIGANI。只啟用場景HD的主題也須實際繪出。其他指令沒有附加場景來源時維持既有行為。
+- 驗收含三組4:5:6／5:6:4／6:4:5、雙側、24單目標與29雙目標的全部原生重組，兩包完整Game.Draw／五及八階段F2／MP一次／逐目標HP一次／RNG／一次續行及owner釋放。最終1920畫布對獨立Pillow RGBA8 Over容差1，空拍與所有effect索引保持；另驗BG-only／TAI-only、來源錯件、冷載入／F2、晚期回復及舊指令／物理。
+
+清冊、私人美術、GPU shader、規則、保存、音效與原生owner均保持。此切片是同次來源到正式UI的美化，不新增原版RGB parity或PLAYER-E2；其餘場景／過渡美術／HUD及正常玩家、集中人工與平台仍待。重跑沿既有[場景驗證器](../../tools/verify_fd2_battle_surface_hd.py)及[分段打擊GPU核對器](../../tools/verify_fd2_split_strike_gpu.py)擴充明示測項；未取得全部PASS前不稱CONFORMED。
+
+重跑在既有Go Docker使用`tools/verify_fd2_battle_surface_hd.py --kind split-game --command 24 --triple 4:5:6 --catalog ABS --pack ABS --out FRESH_PREFIX --timeout 1200`，另一側加`--enemy`；另驗command29與三組4:5:6、5:6:4、6:4:5。`split-unit`及`split-source`自行遍歷三組雙側；`split-native-gpu`重跑原生矩陣。由既有私人同步工具的`--runtime-only`建立新實檔包後，加`--require-real-runtime`核對；完整runtime流程可加`--hashes-only`，仍由最終1920回讀逐張編碼PNG並核SHA，只不另存重複圖檔。資產Docker的`tools/verify_fd2_split_strike_gpu.py`以`--receipt FORMAL --catalog ABS --source ABS --original-pack ABS --inventory ABS --report FRESH --runtime-receipt RUNTIME`核固定FIGANI、BG／TAI及全部畫布。反例入口`tools/test_fd2_split_strike_gpu.py --help`，不把場景索引誤當FIGANI，也不放寬原有圖源與一階色差門檻。
+
+兩包各3018張原生畫布、36組RNG前錯件及36組F2原子拒收通過；各72項BG-only／TAI-only／原生fallback含48個實際GPU世界對獨立CPU Over容差1通過。三組雙側24／29共24完整Game.Draw、156次F2、MP一次／逐目標HP一次／原擲骰及一次續行保持；870張完整1920畫布對固定FIGANI與BG／TAI來源及Pillow RGBA8合成容差1，跨包編碼PNG雜湊完全相同。Runtime仍逐張最終回讀與編碼，只保存雜湊，不另留重複PNG。兩指令各20收據反例通過，舊原生396、共用2087、物理場景及冷載入／晚期回復保持，共36份Go閘門／44項必要頂層測試無SKIP／逾時／OOM。
+
+清冊681項及私人美術保持原SHA，沒有新原稿／成品或同步需求。BG0..2過渡、其餘場景與指令／HUD、正常玩家及集中人工／平台仍待；本批不新增原版RGB parity或PLAYER-E2。

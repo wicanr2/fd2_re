@@ -97,11 +97,13 @@ func (g *Game) drawModernHDCompoundFrame(screen *ebiten.Image, frame *nativeComp
 		return false, nil
 	}
 	wanted := false
-	for _, layer := range frame.hdSources.Layers {
+	for _, layer := range append(append([]modernHDBattleSource(nil), frame.hdSources.BaseScenery...), frame.hdSources.Layers...) {
 		if layer.Resource < 0 {
 			continue
 		}
-		if layer.Archive == "FDOTHER.DAT" {
+		if layer.Archive == "BG.DAT" || layer.Archive == "TAI.DAT" {
+			wanted = wanted || set.battleSurfaces[layer.Archive][layer.Resource] != nil
+		} else if layer.Archive == "FDOTHER.DAT" {
 			wanted = wanted || set.battleEffects[layer.Resource] != nil
 		} else {
 			wanted = wanted || set.battleAnimations[layer.Resource] != nil
@@ -229,6 +231,18 @@ type modernHDCommandBankSource interface {
 
 func prepareModernHDCommandBanks(set *modernStoryPortraitSet, source modernHDCommandBankSource) error {
 	frames := source.sourceFrames()
+	for _, frame := range frames {
+		if frame.hdSources == nil {
+			continue
+		}
+		for _, layer := range append(append([]modernHDBattleSource(nil), frame.hdSources.BaseScenery...), frame.hdSources.Layers...) {
+			if layer.Archive == "BG.DAT" || layer.Archive == "TAI.DAT" {
+				if _, _, err := set.battleSurfaceHD(layer); err != nil {
+					return err
+				}
+			}
+		}
+	}
 	return set.prepareBattleHDBanks(modernCompoundFigureResources(frames), modernCompoundEffectResources(frames))
 }
 

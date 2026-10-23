@@ -249,6 +249,14 @@ func (g *Game) startNativeCommand24Presentation(actor, target *battle.Unit, then
 		}
 		actorPlatform = &frame
 	}
+	actorScenery, err := modernSplitStrikeScenery(actorBG, actorBGSelector, actorPlatform)
+	if err != nil {
+		return err
+	}
+	targetScenery, err := modernSplitStrikeScenery(targetBG, targetBGSelector, nil)
+	if err != nil {
+		return err
+	}
 	actorBaseBefore, err := g.localizedNativeCommand24BackgroundBase(
 		actorBG, panelAssets, actorRecordBefore, actorIndex, g.handlerChapter,
 		actorPlatform,
@@ -342,12 +350,12 @@ func (g *Game) startNativeCommand24Presentation(actor, target *battle.Unit, then
 		Base: actorPreludeBase, ActorIdle: actorIdle.Frames[0], Platform: actorPlatform,
 		RawSide: actor.NativeRecordByte6, Mode: 1, BaselineDAC: paletteDAC,
 	}, prelude, actor.BattleFig*3, effect, actor.BattleFig*3+2, schedule.ActorImpactFrame,
-		schedule.TargetStart, schedule.TargetImpactFrame, actorBaseBefore, actorBaseAfter, g.nativeUIPalette)
+		schedule.TargetStart, schedule.TargetImpactFrame, actorBaseBefore, actorBaseAfter, g.nativeUIPalette, actorScenery...)
 	if err != nil {
 		return err
 	}
 	if err := hd.addTarget(targetBaseBefore, targetBaseAfter, targetIdle, target.BattleFig*3,
-		hd.actorEndSources(), transitionPresents, bgLayers); err != nil {
+		hd.actorEndSources(), transitionPresents, bgLayers, targetScenery...); err != nil {
 		return err
 	}
 	publishHD()

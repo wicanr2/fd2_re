@@ -3030,3 +3030,11 @@ TAI_004候選675項編製及單元通過，原框154×42轉924×252透明圖，�
 5555份新runtime實檔在十二攻防／來源閘門完成及正式來源逐SHA核對後，原子改為相對連結，移除重複配置1600884736 bytes；不宣稱共享主機淨可用空間量測，清理後不能作獨立實檔。108項字串人工處置以受控遷移器重綁並通過目前盤點測試，處置數保持。可由公開b4c298d1重建的舊字串來源樹及臨時tar已刪，兩份inventory與測試／拒收收據、原稿、PNG及正式／私人素材全部保留；沒有新影片或Release。
 
 本批收尾通過181項SHA引用、九份來源指紋、2450個本地Markdown目標、gofmt與1000:1000擁有權。README除明示現況句與捲動圖說外逐字保持；323條教訓／188個guard保持。主機gh更新#263並再次取得遠端24項worklist，於Docker呼叫官方build_snapshot／render／verify更新快照，可能已完成0項；#268／#269保持OPEN。所有FD2容器已退出，沒有新Docker映像、volume或錄影。最終檢查依scroll-scenery-final-check-oct24-r1.json；公開提交／遠端核對保存於scroll-scenery-public-git-oct24-r1.json，完整HD目標保持active。
+
+2026-10-24 從5da8971b main建立hd/command24-29-scenery-20261024。前輪捲動HD為實際PROGRESS，tracked乾淨且無FD2容器。沿原指令24／29與29C90閉合證據，61先READY，準備補actor／各target的HD場景、原規則適用TAI、RNG前及F2來源預檢；不改清冊或美術，驗收尚待。
+
+2026-10-24 指令24／29場景限定CONFORMED-SCOPED／RUNTIME-E1：三組地形與雙側，兩包各3018原生畫布、36組Go規劃前錯件及36組F2拒收、72項純場景／原生回退含48實際GPU對CPU Over通過。24完整Game.Draw、156次F2、MP一次／逐目標HP一次／原擲骰及一次續行保持，870完整1920畫布對固定FIGANI／BG／TAI及獨立Pillow合成容差1，跨包PNG雜湊相同。Runtime逐張回讀與編碼、僅不留重複PNG；兩指令各20收據反例、舊396／2087 GPU、物理與冷載入及晚期回復保持，36份Go閘門／44必要頂層測試零SKIP／逾時／OOM。清冊681及私人美術／shader／規則／保存保持，README四格取實際完整畫面半縮，不裁切／重畫。其他場景／過渡／HUD與正常／集中人工／平台仍待，不稱完整HD。字串綁定、worklist與清理另核。
+
+5555份runtime新實檔完成全部閘門及正式來源逐SHA核對後，原子改同SHA相對連結，移除重複配置1600626688 bytes；不宣稱共享主機淨可用空間量測，清理後不可再當獨立實檔。108項人工字串處置以受控遷移器重綁並通過目前盤點，處置數保持；可由5da8971b重建的舊來源樹及臨時tar已刪。正式870畫布、runtime編碼雜湊、base／native PNG、log、manifest與通過／反例收據及原版／私人美術保留；沒有新影片或Release。
+
+本批最後核對195項SHA引用、十份程式來源指紋、2460個本地Markdown目標、gofmt及1000:1000擁有權通過。README僅更新分段打擊圖說及同名實際縮圖，其餘內容逐字保持；323條教訓／188 guard保持。主機gh更新#263並再次取得24項worklist，由Docker內官方build_snapshot／render／verify更新快照；#263、#268及#269皆保持OPEN。所有FD2容器已退出，沒有新Docker映像、volume或錄影。最終收據為cmd2429-scenery-final-check-oct24-r1.json；公開提交／遠端核對另存cmd2429-scenery-public-git-oct24-r1.json，完整HD目標維持active。

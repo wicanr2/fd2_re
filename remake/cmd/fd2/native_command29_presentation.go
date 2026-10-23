@@ -152,6 +152,10 @@ func (g *Game) startNativeCommand29Presentation(actor, confirmed *battle.Unit, t
 		}
 		platform = &frame
 	}
+	actorScenery, err := modernSplitStrikeScenery(actorBG, actorSelector, platform)
+	if err != nil {
+		return err
+	}
 	actorBaseBefore, err := g.localizedNativeCommand24BackgroundBase(actorBG, panelAssets, actorRecordBefore, actorIndex, g.handlerChapter, platform)
 	if err != nil {
 		return err
@@ -187,7 +191,7 @@ func (g *Game) startNativeCommand29Presentation(actor, confirmed *battle.Unit, t
 		Base: preludeBase, ActorIdle: actorIdle.Frames[0], Platform: platform,
 		RawSide: actor.NativeRecordByte6, Mode: schedule.PreludeMode, BaselineDAC: paletteDAC,
 	}, prelude, actor.BattleFig*3, effect, actor.BattleFig*3+2, schedule.ActorImpactFrame,
-		schedule.TargetStart, schedule.TargetImpactFrame, actorBaseBefore, actorBaseAfter, g.nativeUIPalette)
+		schedule.TargetStart, schedule.TargetImpactFrame, actorBaseBefore, actorBaseAfter, g.nativeUIPalette, actorScenery...)
 	if err != nil {
 		return err
 	}
@@ -220,6 +224,10 @@ func (g *Game) startNativeCommand29Presentation(actor, confirmed *battle.Unit, t
 		background, decodeErr := fdother.LoadSeparatedSingleFrame(separatedAssetPath("surfaces"), "BG.DAT", selector)
 		if decodeErr != nil {
 			return decodeErr
+		}
+		targetScenery, err := modernSplitStrikeScenery(background, selector, nil)
+		if err != nil {
+			return err
 		}
 		unitIndex, indexErr := nativeCommand24RuntimeUnitIndex(g.st, target)
 		if indexErr != nil {
@@ -265,7 +273,7 @@ func (g *Game) startNativeCommand29Presentation(actor, confirmed *battle.Unit, t
 		if idleErr != nil {
 			return idleErr
 		}
-		if err := hd.addTarget(baseBefore, baseAfter, idle, target.BattleFig*3, sourceHD, transitionPresents, bgLayers); err != nil {
+		if err := hd.addTarget(baseBefore, baseAfter, idle, target.BattleFig*3, sourceHD, transitionPresents, bgLayers, targetScenery...); err != nil {
 			return err
 		}
 		targetPresentations = append(targetPresentations, nativeCommand29TargetPresentation{

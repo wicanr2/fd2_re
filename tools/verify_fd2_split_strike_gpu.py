@@ -2,6 +2,7 @@
 """核對24／29完整最終GPU、固定FIGANI來源及原生空拍。須在資產Docker執行。"""
 import argparse
 import json
+from functools import lru_cache
 from pathlib import Path
 
 from PIL import Image, ImageChops, ImageMath
@@ -9,8 +10,14 @@ from build_fd2_character_battle_hd import DESCRIPTOR, load_native
 from build_fd2_gaia_battle_hd import digest
 from validate_modern_theme_catalog import validate
 from verify_fd2_compound_caster_gpu import pinned_native_blank
+from audit_fd2_battle_background_sources import audit as audit_backgrounds
 
 INVENTORY_SHA = 'd019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51'
+
+
+@lru_cache(maxsize=2)
+def background_inventory(pack):
+    return audit_backgrounds(pack)[0]
 
 
 def shader_channels(picture, subtract):
@@ -56,6 +63,7 @@ def verify(receipt, catalog, source, original_pack, inventory, runtime_receipt=N
         raise ValueError('原始包或重建證據不同')
     doc = validate(False, catalog)
     entries = {a['source_resource']: a for a in doc['assets'] if a['role'] == 'battle_animation_hd_set'}
+    surfaces = {(a['source_archive'],a['source_resource']):a for a in doc['assets'] if a['role']=='battle_surface_hd'}
     d = json.loads(receipt.read_text())
     command = d.get('command_id')
     if command not in (24, 29):
@@ -99,6 +107,7 @@ def verify(receipt, catalog, source, original_pack, inventory, runtime_receipt=N
         raise ValueError('分段打擊幀數不同')
     blank = pinned_native_blank(original_pack, proof, resource, count-1, source/asset['files'][-1])
     found, coverage, outputs, worst = set(), {p: set() for p in phases}, {}, 0
+    used_surfaces=set(); surface_proofs={}
     shots = d.get('source_shots', {})
     if not shots:
         raise ValueError('缺少實際GPU畫面')
@@ -120,7 +129,26 @@ def verify(receipt, catalog, source, original_pack, inventory, runtime_receipt=N
             if rect != layer['rect'] or layer['fill'] != -1:
                 raise ValueError('圖層目的矩形或填色不同')
             rid, frame = layer['resource'], layer['frame']
-            if rid >= 0:
+            archive=layer.get('archive','')
+            if archive not in ('','FIGANI.DAT','BG.DAT','TAI.DAT'):
+                raise ValueError('不支援的分段打擊archive')
+            if archive in ('BG.DAT','TAI.DAT'):
+                if frame!=0 or (archive,rid) not in surfaces:
+                    raise ValueError('場景來源或單圖索引不同')
+                row=background_inventory(original_pack)['banks'][archive[:-4]]['entries'][rid]
+                asset=surfaces[archive,rid]
+                origin=(0,50) if archive=='BG.DAT' else (164,157)
+                if ([x,y,w,h]!=[origin[0],origin[1],row['width'],row['height']]
+                        or asset['source_metadata_sha256']!=row['metadata_sha256']
+                        or asset['width']!=w*6 or asset['height']!=h*6
+                        or asset['native_frames']!=[dict(x=0,y=0,width=w,height=h,delay_native=0,raw_byte_4=0,raw_byte_5=0,raw_byte_7=0)]
+                        or layer['hd_sha256']!=asset['sha256'] or 'native_file' in layer):
+                    raise ValueError('場景原描述子／metadata／HD身分不同')
+                key=archive,rid,subtract
+                if key not in pictures:
+                    pictures[key]=shader_channels(checked_image(source,asset['file'],asset['sha256'],(w*6,h*6)),subtract)
+                picture=pictures[key];used_surfaces.add((archive,rid));surface_proofs[f'{archive}:{rid}']=row['metadata_sha256']
+            elif rid >= 0:
                 native, registered = bank(rid)
                 if not 0 <= frame < len(native['frames']):
                     raise ValueError('圖源索引越界')
@@ -160,12 +188,22 @@ def verify(receipt, catalog, source, original_pack, inventory, runtime_receipt=N
                          f'transition-in-{i}': set(range(10, 20)), f'target-{i}': set(range(start, count))})
     if coverage != required or found != set(range(count)):
         raise ValueError('完整原生相位、來源幀或空拍缺少實際Draw')
+    if d.get('scenery_triple') is not None:
+        triple=d['scenery_triple'];side=d.get('scenery_side')
+        if triple not in ('4:5:6','5:6:4','6:4:5') or side not in ('0','2'):
+            raise ValueError('明示場景測試槽不同')
+        indices=list(map(int,triple.split(':')))
+        wanted={('BG.DAT',i) for i in indices[:target_count+1]}
+        if side=='2':wanted.add(('TAI.DAT',indices[0]))
+        if used_surfaces!=wanted:
+            raise ValueError('缺少全部實際BG／TAI來源Draw')
     runtime_sha = None
     if runtime_receipt is not None:
         runtime = json.loads(runtime_receipt.read_text())
         for key in ('status', 'command_id', 'actor_figure', 'catalog_sha256', 'go_seed', 'go_rng_planning_calls',
                     'go_rng_next_matches_native_plan', 'native_rng', 'mp_before', 'mp_after', 'mp_changes',
-                    'hp_before', 'hp_after', 'hp_changes', 'continuations', 'owner_released', 'gpu_sources_cleared'):
+                    'hp_before', 'hp_after', 'hp_changes', 'continuations', 'owner_released', 'gpu_sources_cleared',
+                    'scenery_triple','scenery_side','scenery_actual_sources'):
             if runtime.get(key) != d.get(key):
                 raise ValueError('執行包生命週期不同：'+key)
         if runtime.get('hashes_only') is not True or runtime.get('phase_f2') != d['phase_f2'] or runtime.get('source_shots') != shots:
@@ -175,7 +213,7 @@ def verify(receipt, catalog, source, original_pack, inventory, runtime_receipt=N
             'receipt_sha256': digest(receipt), 'runtime_receipt_sha256': runtime_sha,
             'catalog_sha256': digest(catalog), 'inventory_sha256': digest(inventory),
             'original_manifest_sha256': digest(original_pack/'manifest.json'), 'verifier_sha256': digest(Path(__file__)),
-            'native_metadata': native_proofs, 'blank': blank, 'special_frames': sorted(found),
+            'native_metadata': native_proofs, 'surface_metadata':surface_proofs,'blank': blank, 'special_frames': sorted(found),
             'phase_indices': {p: sorted(v) for p, v in coverage.items()}, 'screens': outputs, 'worst_channel_error': worst,
             'scope': '實際Game.Draw最終1920全畫布對獨立Pillow Over及固定FIGANI描述子／成品；'
                      '原生背景與viewport幾何另由雙側來源矩陣驗證。非原版RGB parity、正常玩家或人工美術驗收。'}

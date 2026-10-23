@@ -61,11 +61,21 @@ def main():
     ]:
         reject(name, mutate, '需要24' if name == 'wrong-command' else '生命週期')
     first = next(iter(base['source_shots']))
+    def figure(doc):
+        return next(l for l in doc['source_shots'][first]['layers'] if l.get('archive','') in ('','FIGANI.DAT') and l['resource']>=0)
     reject('wrong-screen-sha', lambda d: d['source_shots'][first].update(sha256='bad'), '圖片路徑或SHA')
-    reject('changed-origin', lambda d: d['source_shots'][first]['layers'][0].update(dx=1), '目的矩形')
-    reject('changed-descriptor', lambda d: d['source_shots'][first]['layers'][0].update(x=0, rect=[0, 0, 6, 6]), '目的矩形')
-    reject('changed-hd-source', lambda d: d['source_shots'][first]['layers'][0].update(hd_sha256='bad'), 'HD來源SHA')
-    reject('hidden-hd', lambda d: d['source_shots'][first]['layers'][0].update(clip=[0, 0, 0, 0]), '完整GPU')
+    reject('changed-origin', lambda d: figure(d).update(dx=1), '目的矩形')
+    reject('changed-descriptor', lambda d: figure(d).update(x=0, rect=[0, 0, 6, 6]), '目的矩形')
+    reject('changed-hd-source', lambda d: figure(d).update(hd_sha256='bad'), 'HD來源SHA')
+    reject('hidden-hd', lambda d: figure(d).update(clip=[0, 0, 0, 0]), '完整GPU')
+    if any(l.get('archive') in ('BG.DAT','TAI.DAT') for l in base['source_shots'][first]['layers']):
+        def surface(doc):return next(l for l in doc['source_shots'][first]['layers'] if l.get('archive')=='BG.DAT')
+        reject('wrong-surface-sha',lambda d:surface(d).update(hd_sha256='bad'),'場景原描述子')
+        reject('surface-frame-out-of-range',lambda d:surface(d).update(frame=1),'場景來源或單圖')
+        reject('hidden-surface',lambda d:surface(d).update(clip=[0,0,0,0]),'完整GPU')
+        def changed_surface_origin(doc):
+            l=surface(doc);l['y']+=1;l['rect'][1]+=6;l['rect'][3]+=6
+        reject('self-consistent-surface-origin',changed_surface_origin,'場景原描述子')
 
     def missing_blank(doc):
         end = 14 if doc['command_id'] == 24 else 17

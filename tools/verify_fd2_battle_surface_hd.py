@@ -12,6 +12,10 @@ from verify_fd2_player9_map_hd import check_real_runtime
 
 ROOT = Path(__file__).resolve().parents[1]
 REQUIRED = {
+    'split-unit': {'TestModernHDSplitStrikeSceneryNativeAndAtomic'},
+    'split-game': {'TestModernHDSplitStrikeRuntimeGPU'},
+    'split-native-gpu': {'TestModernHDSplitStrikeNativeSourceGPU'},
+    'split-source': {'TestModernHDSplitStrikeSceneryOnlyGPU'},
     'scroll-unit': {'TestModernScrollSceneryNativeAndAtomic'},
     'scroll-source': {'TestModernScrollSceneryGPU'},
     'scroll-game': {'TestModernHDScrollRuntimeGPU'},
@@ -39,6 +43,9 @@ def main():
     p.add_argument('--enemy', action='store_true')
     p.add_argument('--surface', type=int, choices=[4,5,6], default=4)
     p.add_argument('--pair', choices=['4:5','5:6','6:4'], default='4:5')
+    p.add_argument('--command',type=int,choices=[24,29],default=24)
+    p.add_argument('--triple',choices=['4:5:6','5:6:4','6:4:5'],default='4:5:6')
+    p.add_argument('--hashes-only',action='store_true')
     p.add_argument('--with-pedestal', action='store_true')
     p.add_argument('--require-real-runtime', action='store_true')
     p.add_argument('--timeout', type=int, default=1200)
@@ -55,6 +62,8 @@ def main():
         env.pop(name,None)
     for name in ['FD2_HD_SCROLL_SIDE','FD2_HD_SCROLL_SCENERY','FD2_HD_SCROLL_SCENERY_GPU','FD2_HD_SCROLL_REAL','FD2_HD_SCROLL_TARGET','FD2_HD_SCROLL_PROJECTILES','FD2_HD_SCROLL_TARGET_FRAMES']:
         env.pop(name,None)
+    for name in ['FD2_HD_SPLIT_SCENERY','FD2_HD_SPLIT_SCENERY_SIDE','FD2_HD_SPLIT_STRIKE_GPU','FD2_SPLIT_HASHES_ONLY']:
+        env.pop(name,None)
     env['FD2_HD_BATTLE_SURFACE_INDEX']=str(a.surface)
     if a.with_pedestal: env['FD2_HD_BATTLE_PEDESTAL']=str(a.surface)
     if a.kind == 'game':
@@ -69,6 +78,13 @@ def main():
     elif a.kind == 'scroll-game':
         env.update(FD2_HD_SCROLL_SIDE='2' if a.enemy else '0',FD2_HD_SCROLL_REAL='1',FD2_HD_SCROLL_SCENERY=a.pair,
                    FD2_TEST_HD_SCROLL_OUT=str(a.out)+'-capture')
+    if a.kind in ['split-unit','split-game','split-native-gpu','split-source']:
+        env.update(FD2_TEST_MODERN_EFFECT_CATALOG=str(a.catalog.resolve()),FD2_TEST_MODERN_EFFECT_PACK=str(a.pack.resolve()))
+    if a.kind in ['split-game','split-native-gpu','split-source']:
+        env.update(FD2_HD_SPLIT_STRIKE_GPU='1',FD2_TEST_MODERN_EFFECT_OUT=str(a.out)+'-capture')
+    if a.kind=='split-game':
+        env.update(FD2_TEST_SPLIT_STRIKE_COMMAND=str(a.command),FD2_HD_SPLIT_SCENERY=a.triple,FD2_HD_SPLIT_SCENERY_SIDE='2' if a.enemy else '0')
+        if a.hashes_only:env['FD2_SPLIT_HASHES_ONLY']='1'
     pattern = '^('+'|'.join(sorted(REQUIRED[a.kind]))+')$'
     shell = '''set -euo pipefail
 Xvfb :99 -screen 0 1920x1200x24 -nolisten tcp >/tmp/fd2-surface-xvfb.log 2>&1 &
@@ -105,9 +121,19 @@ export DISPLAY=:99
                 or len(receipt.get('scenery_sources',[]))!=3
                 or any(receipt.get('scenery_actual_capture_draws',{}).get(s['sha256'],0)<=0 for s in receipt.get('scenery_sources',[]))):
             raise SystemExit('缺少分離場景完整Game.Draw／來源／F2／DAC／一次續行')
+    if a.kind=='split-game':
+        receipt=json.loads(Path(str(a.out)+'-capture/receipt.json').read_text())
+        if (receipt.get('scenery_triple')!=a.triple or receipt.get('scenery_side')!=('2' if a.enemy else '0')
+                or receipt.get('command_id')!=a.command or receipt.get('continuations')!=1
+                or receipt.get('mp_changes')!=1 or receipt.get('hp_changes')!=([1] if a.command==24 else [1,1])
+                or len(receipt.get('phase_f2',{}))!=(5 if a.command==24 else 8)
+                or any(v!=1 for v in receipt.get('phase_f2',{}).values()) or not receipt.get('scenery_actual_sources')
+                or receipt.get('catalog_sha256')!=hashlib.sha256(a.catalog.read_bytes()).hexdigest()):
+            raise SystemExit('缺少24／29完整場景Game.Draw／F2／交易／一次續行')
     report = dict(status='PASS',kind=a.kind,enemy=a.enemy,required=sorted(REQUIRED[a.kind]),
                   catalog_sha256=hashlib.sha256(a.catalog.read_bytes()).hexdigest(),
                   catalog=str(a.catalog.resolve()),pack=str(a.pack.resolve()),with_pedestal=a.with_pedestal,surface=a.surface,pair=a.pair,
+                  command_id=a.command,triple=a.triple,hashes_only=a.hashes_only,
                   independent_runtime_files=independent, memory=str(a.out)+'.memory.json',log=str(a.out)+'.log',
                   scope='固定來源／GPU／明示物理戰鬥fixture，非正常玩家或新原版RGB對拍')
     Path(str(a.out)+'.gate.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
