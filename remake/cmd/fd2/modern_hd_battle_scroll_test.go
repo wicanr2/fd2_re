@@ -6,8 +6,11 @@ import (
 	"image"
 	"image/color"
 	"image/draw"
+	"os"
+	"reflect"
 	"testing"
 
+	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/battlepresent"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
@@ -23,7 +26,21 @@ func modernScrollSceneFixture(t *testing.T, side byte) (*Game, *nativePhysicalSc
 func modernScrollTargetSceneFixture(t *testing.T, side byte, targetFigure int) (*Game, *nativePhysicalScene, *battle.Unit, *battle.Unit) {
 	t.Helper()
 	g, actor, target := physicalSceneTestGame(t)
-	g.m.NativeTerrainControl = append(g.m.NativeTerrainControl, 0, 0, 5, 0)
+	actorBG, targetBG := byte(55), byte(5)
+	if pair := os.Getenv("FD2_HD_SCROLL_SCENERY"); pair != "" {
+		switch pair {
+		case "4:5":
+			actorBG, targetBG = 4, 5
+		case "5:6":
+			actorBG, targetBG = 5, 6
+		case "6:4":
+			actorBG, targetBG = 6, 4
+		default:
+			t.Fatal("unsupported explicit scenery pair", pair)
+		}
+	}
+	g.m.NativeTerrainControl[2] = actorBG
+	g.m.NativeTerrainControl = append(g.m.NativeTerrainControl, 0, 0, targetBG, 0)
 	g.m.Tiles[1] = 1 // two real BG55/5 inputs, not merely a header toggle.
 	actor.BattleFig, target.BattleFig = 8, targetFigure
 	actor.NativeRecordByte6, target.NativeRecordByte6 = side, 2
@@ -215,4 +232,177 @@ func TestModernScrollSourceClipRejectsBeforeScaling(t *testing.T) {
 	if _, err := (&Game{}).modernHDBattlePlan(sources, nil, 0); err == nil {
 		t.Fatal("unbounded logical clip accepted")
 	}
+}
+
+func TestModernScrollSceneryNativeAndAtomic(t *testing.T) {
+	requirePhysicalScenePack(t)
+	catalog, pack := os.Getenv("FD2_TEST_MODERN_BATTLE_CATALOG"), os.Getenv("FD2_TEST_MODERN_BATTLE_PACK")
+	set := modernHDBattleFixtureSet(t, catalog, pack, nil)
+	canvases := 0
+	for _, pair := range []string{"4:5", "5:6", "6:4"} {
+		t.Setenv("FD2_HD_SCROLL_SCENERY", pair)
+		for _, side := range []byte{0, 2} {
+			g, scene, actor, target := modernScrollSceneFixture(t, side)
+			check := func(name string, sources *modernHDBattleSources, native []byte) {
+				t.Helper()
+				if sources == nil || !bytes.Equal(surfaceIndexedReference(sources), native) {
+					t.Fatalf("%s side%d %s native reconstruction differs", pair, side, name)
+				}
+				for _, source := range append(append([]modernHDBattleSource(nil), sources.BaseScenery...), sources.Layers...) {
+					if source.Archive != "BG.DAT" && source.Archive != "TAI.DAT" {
+						continue
+					}
+					picture, _, err := set.battleSurfaceHD(source)
+					if err != nil || picture == nil {
+						t.Fatalf("scenery source lost provenance: %v", err)
+					}
+				}
+				canvases++
+			}
+			for _, f := range scene.prelude {
+				sources, err := g.modernHDBattlePreludeSources(scene, f.Stage)
+				if err != nil {
+					t.Fatal(err)
+				}
+				check("prelude", sources, f.Pixels)
+			}
+			for i, sources := range scene.leadSources {
+				pixels := scene.departure
+				j := i
+				if j >= len(pixels) {
+					j -= len(pixels)
+					pixels = scene.transition
+				}
+				check("lead", sources, pixels[j])
+			}
+			for _, job := range scene.body.jobs {
+				if job.hdSources == nil {
+					continue
+				}
+				pixels, err := job.indexed()
+				if err != nil {
+					t.Fatal(err)
+				}
+				check(job.hdPhase, job.hdSources, pixels)
+			}
+			for _, source := range []struct {
+				archive string
+				index   byte
+			}{
+				{"BG.DAT", scene.selection.BaseBG}, {"BG.DAT", modernPhysicalTargetBGIndex(scene)}, {"TAI.DAT", scene.selection.TAI},
+			} {
+				bad := *set
+				bad.battleSurfaces = map[string]map[int]*modernBattleSurfaceHD{}
+				for archive, entries := range set.battleSurfaces {
+					bad.battleSurfaces[archive] = map[int]*modernBattleSurfaceHD{}
+					for index, entry := range entries {
+						bad.battleSurfaces[archive][index] = entry
+					}
+				}
+				entry := *bad.battleSurfaces[source.archive][int(source.index)]
+				entry.picture = nil
+				bad.battleSurfaces[source.archive][int(source.index)] = &entry
+				g.modernStoryPortraits = &bad
+				beforeActor, beforeTarget, beforeRNG := *actor, *target, g.nativeRNGState
+				if _, err := g.prepareNativePhysicalScene(actor, target); err == nil || !reflect.DeepEqual(*actor, beforeActor) || !reflect.DeepEqual(*target, beforeTarget) || g.nativeRNGState != beforeRNG {
+					t.Fatal("bad scenery did not stop before settlement", source)
+				}
+			}
+		}
+	}
+	t.Logf("%d full native canvases across three pairs and both sides; 18 actor/target/TAI preflight rejections without state changes", canvases)
+}
+
+func TestModernScrollSceneryGPU(t *testing.T) {
+	if os.Getenv("FD2_HD_SCROLL_SCENERY_GPU") != "1" {
+		t.Skip("dedicated scenery GPU process required")
+	}
+	requirePhysicalScenePack(t)
+	set := modernHDBattleFixtureSet(t, os.Getenv("FD2_TEST_MODERN_BATTLE_CATALOG"), os.Getenv("FD2_TEST_MODERN_BATTLE_PACK"), nil)
+	var cases []modernHDBattleGPUCase
+	for _, pair := range []string{"4:5", "5:6", "6:4"} {
+		t.Setenv("FD2_HD_SCROLL_SCENERY", pair)
+		for _, side := range []byte{0, 2} {
+			g, scene, _, _ := modernScrollSceneFixture(t, side)
+			g.modernStoryPortraits = set
+			appendCase := func(name string, sources *modernHDBattleSources, subtract float32, palette color.Palette) {
+				t.Helper()
+				plan, err := g.modernHDBattlePlan(sources, palette, subtract)
+				if err != nil {
+					t.Fatal(err)
+				}
+				scenery := 0
+				for _, layer := range plan.Layers {
+					if layer.HD != nil {
+						scenery++
+					}
+				}
+				if scenery == 0 {
+					t.Fatal("vacuous scenery GPU case", name)
+				}
+				cases = append(cases, modernHDBattleGPUCase{name: fmt.Sprintf("scenery/%s/%d/%s", pair, side, name), plan: plan, want: surfaceCPUWorld(plan), tolerance: 1})
+			}
+			for _, f := range scene.prelude {
+				s, err := g.modernHDBattlePreludeSources(scene, f.Stage)
+				if err != nil {
+					t.Fatal(err)
+				}
+				palette, err := fdother.ParseVGAPalette(f.DAC)
+				if err != nil {
+					t.Fatal(err)
+				}
+				appendCase(fmt.Sprintf("prelude%d", f.Stage), s, float32(f.Stage*6)/63, palette)
+			}
+			counts := map[string]int{}
+			var body, incoming *modernHDBattleSources
+			for _, job := range scene.body.jobs {
+				if job.hdSources == nil {
+					continue
+				}
+				counts[job.hdPhase]++
+				n := counts[job.hdPhase]
+				if job.hdPhase == "body" && body == nil {
+					body = job.hdSources
+				}
+				if job.hdPhase == "scroll-in" && incoming == nil {
+					incoming = job.hdSources
+				}
+				if n != 1 && !((job.hdPhase == "scroll-out" || job.hdPhase == "scroll-in") && (n == 5 || n == 9)) {
+					continue
+				}
+				palette := append(color.Palette(nil), g.nativeUIPalette...)
+				if job.palette0 != nil {
+					palette[0] = *job.palette0
+				}
+				appendCase(fmt.Sprintf("%s%d", job.hdPhase, n), job.hdSources, 0, palette)
+			}
+			if body == nil || incoming == nil {
+				t.Fatal("missing body or incoming")
+			}
+			for _, archive := range []string{"BG.DAT", "TAI.DAT"} {
+				only := &modernStoryPortraitSet{hasHD: true, battleSurfaces: map[string]map[int]*modernBattleSurfaceHD{archive: set.battleSurfaces[archive]}}
+				g.modernStoryPortraits = only
+				if !g.modernHDBattleWanted(scene) {
+					t.Fatal("surface-only did not enable HD", archive)
+				}
+				// TAI occurs on the stationary right half: side0 target, side2 actor.
+				s := body
+				if side != 0 {
+					s = scene.body.jobs[0].hdSources
+				}
+				appendCase(archive+"-only", s, 0, g.nativeUIPalette)
+			}
+		}
+	}
+	probe := &modernHDBattleGPUProbe{cases: cases}
+	ebiten.SetWindowSize(640, 400)
+	ebiten.SetVsyncEnabled(false)
+	if err := ebiten.RunGame(probe); err != nil {
+		t.Fatal(err)
+	}
+	defer probe.gpu.close()
+	if probe.err != nil || probe.index != len(cases) {
+		t.Fatalf("scroll scenery GPU %d/%d: %v", probe.index, len(cases), probe.err)
+	}
+	t.Logf("%d real BG/TAI GPU worlds across three pairs, both sides, nine prelude shades, departure/scroll/body/counter and BG-only/TAI-only; independent RGBA8 Over tolerance1", len(cases))
 }

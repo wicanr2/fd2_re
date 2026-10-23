@@ -325,6 +325,13 @@ func (g *Game) prepareNativePhysicalDeparture(scene *nativePhysicalScene, actor 
 		}
 		scene.departure = append(scene.departure, pixels)
 		sourceLayers = &modernHDBattleSources{Base: base, Layers: []modernHDBattleSource{{Frame: frame, Resource: scene.actorBattleFig*3 + 1, Index: i, Fill: -1}}}
+		scenery, err := modernPhysicalScenery(scene, false)
+		if err != nil {
+			return err
+		}
+		if err := bindModernPhysicalBaseScenery(sourceLayers, scenery); err != nil {
+			return err
+		}
 		scene.leadSources = append(scene.leadSources, sourceLayers)
 		scene.leadDelays = append(scene.leadDelays, frame.Delay)
 		source = pixels
@@ -334,7 +341,15 @@ func (g *Game) prepareNativePhysicalDeparture(scene *nativePhysicalScene, actor 
 	if err != nil {
 		return err
 	}
-	bound, err := modernHDBattleScrollSources(presents, sourceLayers, targetBase, targetIdle.Frames[0], scene.targetBattleFig*3, layers)
+	targetSources := &modernHDBattleSources{Base: targetBase}
+	scenery, err := modernPhysicalBackdropScenery(scene, scene.targetBackground, modernPhysicalTargetBGIndex(scene), scene.rawSide == 0)
+	if err != nil {
+		return err
+	}
+	if err := bindModernPhysicalBaseScenery(targetSources, scenery); err != nil {
+		return err
+	}
+	bound, err := modernHDBattleScrollScenerySources(presents, sourceLayers, targetSources, targetIdle.Frames[0], scene.targetBattleFig*3, layers)
 	if err != nil {
 		return err
 	}

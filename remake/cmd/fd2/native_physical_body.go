@@ -210,13 +210,32 @@ func (g *Game) attachNativePhysicalBody(scene *nativePhysicalScene, result battl
 	}
 	p := &nativePhysicalBodyPlayback{lastPresent: -1, returnWaitMillis: 6 * indexedmap.PhaseBannerStepMillis}
 	base := r.base
+	var baseScenery []modernHDBattleSource
+	if scene.selection.HasSeparateBackgrounds {
+		var err error
+		baseScenery, err = modernPhysicalScenery(scene, r.actorSide != 0)
+		if err != nil {
+			return err
+		}
+	}
+	bindBase := func(sources *modernHDBattleSources) error {
+		return bindModernPhysicalBaseScenery(sources, baseScenery)
+	}
 	actorRecord, targetRecord := append([]byte(nil), scene.actorRecord...), append([]byte(nil), scene.targetRecord...)
-	appendScroll := func(source []byte, sourceLayers *modernHDBattleSources, background fdother.Frame, record []byte, index int, idle figani.Frame, idleResource int, right bool) error {
+	appendScroll := func(source []byte, sourceLayers *modernHDBattleSources, background fdother.Frame, backgroundIndex byte, record []byte, index int, idle figani.Frame, idleResource int, right bool) error {
 		nextBase, presents, err := g.nativePhysicalScroll(scene, source, background, record, index, idle, right)
 		if err != nil {
 			return err
 		}
-		bound, err := modernHDBattleScrollSources(presents, sourceLayers, nextBase, idle, idleResource, r.layers)
+		nextScenery, err := modernPhysicalBackdropScenery(scene, background, backgroundIndex, right)
+		if err != nil {
+			return err
+		}
+		targetSources := &modernHDBattleSources{Base: nextBase}
+		if err := bindModernPhysicalBaseScenery(targetSources, nextScenery); err != nil {
+			return err
+		}
+		bound, err := modernHDBattleScrollScenerySources(presents, sourceLayers, targetSources, idle, idleResource, r.layers)
 		if err != nil {
 			return err
 		}
@@ -228,6 +247,7 @@ func (g *Game) attachNativePhysicalBody(scene *nativePhysicalScene, result battl
 			p.jobs = append(p.jobs, nativePhysicalBodyJob{pixels: present.Pixels, hdSources: bound[i], hdPhase: phase, cue: -1})
 		}
 		base = nextBase
+		baseScenery = nextScenery
 		return nil
 	}
 	appendStage := func(attack, idle *figani.Animation, side byte, strikes []battle.NativePhysicalStrike, currentActor, currentTarget []byte, actorIndex, targetIndex int, sounds map[int][]byte, attackResource, idleResource int, bodyPhase string) error {
@@ -254,9 +274,12 @@ func (g *Game) attachNativePhysicalBody(scene *nativePhysicalScene, result battl
 						cue = int(f.RawByte5)
 					}
 					sourceLayers = &modernHDBattleSources{Base: base, Layers: []modernHDBattleSource{{Frame: f, Resource: attackResource, Index: fi, Fill: -1}}}
+					if err := bindBase(sourceLayers); err != nil {
+						return err
+					}
 					p.jobs = append(p.jobs, nativePhysicalBodyJob{pixels: source, hdSources: sourceLayers, hdPhase: "departure", waitMillis: float64(f.Delay) * indexedmap.PhaseBannerStepMillis, cue: cue, sounds: sounds})
 				}
-				if err := appendScroll(source, sourceLayers, r.targetBG, currentTarget, targetIndex, idle.Frames[0], idleResource, side == 0); err != nil {
+				if err := appendScroll(source, sourceLayers, r.targetBG, modernPhysicalTargetBGIndex(scene), currentTarget, targetIndex, idle.Frames[0], idleResource, side == 0); err != nil {
 					return err
 				}
 			}
@@ -277,6 +300,9 @@ func (g *Game) attachNativePhysicalBody(scene *nativePhysicalScene, result battl
 					present := present
 					job := nativePhysicalBodyJob{base: base, attack: attack.Frames[f.Frame], idle: idle.Frames[present.IdleFrame], rawSide: side, present: &present, cue: -1, sounds: sounds, hdPhase: bodyPhase}
 					job.hdSources = modernHDBattleBodySources(base, job.attack, job.idle, side, present, attackResource, f.Frame, idleResource, present.IdleFrame)
+					if err := bindBase(job.hdSources); err != nil {
+						return err
+					}
 					if inner == 0 {
 						job.cue = f.Cue
 					}
@@ -314,7 +340,10 @@ func (g *Game) attachNativePhysicalBody(scene *nativePhysicalScene, result battl
 					return err
 				}
 				sourceLayers := &modernHDBattleSources{Base: base, Layers: []modernHDBattleSource{{Frame: idle.Frames[0], Resource: idleResource, Index: 0, Fill: -1}}}
-				if err := appendScroll(source, sourceLayers, r.actorBG, currentActor, actorIndex, attack.Frames[0], attackResource, side != 0); err != nil {
+				if err := bindBase(sourceLayers); err != nil {
+					return err
+				}
+				if err := appendScroll(source, sourceLayers, r.actorBG, scene.selection.BaseBG, currentActor, actorIndex, attack.Frames[0], attackResource, side != 0); err != nil {
 					return err
 				}
 			}

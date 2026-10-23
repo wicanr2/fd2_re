@@ -52,7 +52,12 @@ func nativePhysicalBackgroundPresents(in battlepresent.NativeCommand24Background
 // consumer supplies clean bases and explicit FIGANI layers, never erased ink.
 func modernHDBattleScrollSources(presents []battlepresent.NativeCommand24BackgroundPresent, source *modernHDBattleSources,
 	target []byte, idle figani.Frame, idleResource int, layers [3]fdother.Frame) ([]*modernHDBattleSources, error) {
-	if source == nil || len(source.Base) != 64000 || len(target) != 64000 || len(presents) == 0 {
+	return modernHDBattleScrollScenerySources(presents, source, &modernHDBattleSources{Base: target}, idle, idleResource, layers)
+}
+
+func modernHDBattleScrollScenerySources(presents []battlepresent.NativeCommand24BackgroundPresent, source, target *modernHDBattleSources,
+	idle figani.Frame, idleResource int, layers [3]fdother.Frame) ([]*modernHDBattleSources, error) {
+	if source == nil || target == nil || len(source.Base) != 64000 || len(target.Base) != 64000 || len(presents) == 0 {
 		return nil, fmt.Errorf("modern HD battle: scroll bases unavailable")
 	}
 	var backgrounds [3]figani.Frame
@@ -76,7 +81,7 @@ func modernHDBattleScrollSources(presents []battlepresent.NativeCommand24Backgro
 		}
 		base := source.Base
 		if present.Incoming {
-			base = target
+			base = target.Base
 		}
 		work := make([]byte, 640*200)
 		for y := 0; y < 200; y++ {
@@ -96,17 +101,8 @@ func modernHDBattleScrollSources(presents []battlepresent.NativeCommand24Backgro
 		}
 		value := &modernHDBattleSources{Base: clean}
 		shift := present.ContentX - present.ViewportX
-		if present.Incoming {
-			// TargetIdle is blitted into the 640-wide work, not clipped to its
-			// nominal half. The later BG writes can cover any crossing pixels.
-			value.Layers = append(value.Layers, modernHDBattleSource{Frame: idle, Resource: idleResource, Index: 0, DX: shift, Fill: -1})
-			if present.ContentX+idle.X+idle.Width > 640 {
-				// BlitAtBase adds a linear base to each row. A descriptor wider
-				// than the remaining work row wraps to x0 on the next row.
-				value.Layers = append(value.Layers, modernHDBattleSource{Frame: idle, Resource: idleResource, Index: 0, DX: shift - 640, DY: 1, Fill: -1})
-			}
-		} else {
-			for _, layer := range source.Layers {
+		appendShifted := func(layers []modernHDBattleSource) {
+			for _, layer := range layers {
 				clip := image.Rect(0, 0, 320, 200)
 				if layer.Clip != nil {
 					clip = clip.Intersect(*layer.Clip)
@@ -116,6 +112,20 @@ func modernHDBattleScrollSources(presents []battlepresent.NativeCommand24Backgro
 				layer.DX += shift
 				value.Layers = append(value.Layers, layer)
 			}
+		}
+		if present.Incoming {
+			appendShifted(target.BaseScenery)
+			// TargetIdle is blitted into the 640-wide work, not clipped to its
+			// nominal half. The later BG writes can cover any crossing pixels.
+			value.Layers = append(value.Layers, modernHDBattleSource{Frame: idle, Resource: idleResource, Index: 0, DX: shift, Fill: -1})
+			if present.ContentX+idle.X+idle.Width > 640 {
+				// BlitAtBase adds a linear base to each row. A descriptor wider
+				// than the remaining work row wraps to x0 on the next row.
+				value.Layers = append(value.Layers, modernHDBattleSource{Frame: idle, Resource: idleResource, Index: 0, DX: shift - 640, DY: 1, Fill: -1})
+			}
+		} else {
+			appendShifted(source.BaseScenery)
+			appendShifted(source.Layers)
 		}
 		// Replay the native mask writes after TargetIdle. Repeating them on
 		// the already composed clean base is idempotent, including index0.

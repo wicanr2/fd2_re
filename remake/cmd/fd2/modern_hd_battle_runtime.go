@@ -53,8 +53,9 @@ func (g *Game) modernHDBattleWanted(scene *nativePhysicalScene) bool {
 	if set == nil || !set.hasHD || scene == nil || scene.bodyResources == nil || scene.bodyResources.attack == nil {
 		return false
 	}
-	if !scene.selection.HasSeparateBackgrounds && scene.backgroundFrame.Width == 320 && scene.backgroundFrame.Height == 100 &&
-		(set.battleSurfaces["BG.DAT"][int(scene.selection.BaseBG)] != nil || set.battleSurfaces["TAI.DAT"][int(scene.selection.TAI)] != nil) {
+	if scene.backgroundFrame.Width == 320 && scene.backgroundFrame.Height == 100 &&
+		(set.battleSurfaces["BG.DAT"][int(scene.selection.BaseBG)] != nil || set.battleSurfaces["TAI.DAT"][int(scene.selection.TAI)] != nil ||
+			(scene.selection.HasSeparateBackgrounds && scene.targetBackground.Width == 320 && scene.targetBackground.Height == 100 && set.battleSurfaces["BG.DAT"][int(modernPhysicalTargetBGIndex(scene))] != nil)) {
 		return true
 	}
 	for _, resource := range scene.modernResources() {
@@ -200,7 +201,7 @@ func (g *Game) modernHDBattlePreludeSources(scene *nativePhysicalScene, stage in
 	}
 	r := scene.bodyResources
 	base := append([]byte(nil), scene.preludeBase...)
-	scenery, err := modernPhysicalScenery(scene, r.actorSide == 0)
+	scenery, err := modernPhysicalScenery(scene, r.actorSide == 0 && !scene.selection.HasSeparateBackgrounds)
 	if err != nil {
 		return nil, err
 	}
@@ -217,14 +218,14 @@ func (g *Game) modernHDBattlePreludeSources(scene *nativePhysicalScene, stage in
 		}
 		a.DX = -stage * 10
 		if scene.selection.HasSeparateBackgrounds {
-			return &modernHDBattleSources{Base: base, Layers: []modernHDBattleSource{a}}, nil
+			return &modernHDBattleSources{Base: base, BaseScenery: scenery, Layers: []modernHDBattleSource{a}}, nil
 		}
 		return &modernHDBattleSources{Base: base, BaseScenery: scenery, Layers: []modernHDBattleSource{a, b}}, nil
 	}
 	platform := r.platform
 	p := modernHDBattleSource{Frame: figani.Frame{X: 164, Y: 157, Width: platform.Width, Height: platform.Height,
 		Pixels: platform.Indexed, Mask: platform.Mask}, Resource: -1, DX: stage * 10, Fill: -1}
-	if !scene.selection.HasSeparateBackgrounds && len(scenery) > 0 {
+	if len(scenery) > 0 {
 		p, err = modernPhysicalPlatformSource(scene)
 		if err != nil {
 			return nil, err
@@ -233,7 +234,7 @@ func (g *Game) modernHDBattlePreludeSources(scene *nativePhysicalScene, stage in
 	}
 	a.DX = stage * 10
 	if scene.selection.HasSeparateBackgrounds {
-		return &modernHDBattleSources{Base: base, Layers: []modernHDBattleSource{p, a}}, nil
+		return &modernHDBattleSources{Base: base, BaseScenery: scenery, Layers: []modernHDBattleSource{p, a}}, nil
 	}
 	return &modernHDBattleSources{Base: base, BaseScenery: scenery, Layers: []modernHDBattleSource{b, p, a}}, nil
 }

@@ -3939,3 +3939,21 @@ BG 與 TAI 各 57 項，末項各為零長 raw，不能補造美術。BG 的 10 
 [驗證器](../../tools/verify_fd2_battle_surface_hd.py)在既有Go Docker內以`--surface 5 --with-pedestal`選森林、改為`--surface 6`選海岸，省略surface維持4。kind涵蓋unit、source-unit、source、game與regression；game另以`--enemy`驗相反側，獨立包加`--require-real-runtime`。各次使用新out前綴，原始log／記憶體／必要測試缺項、SKIP／逾時／OOM即拒收。兩包八完整攻防、24次F2、64／65 DAC與一次返回通過，56組PNG跨包逐SHA相同；兩包各兩來源124張原生畫布與50世界GPU、缺件原子性與原生UI保持。正式載入與舊4原生／GPU／七項回歸通過，renderer及shader未改，不冒稱本批重跑2087個共用核心。
 
 最初unit5拒收只因移位台座仍用source.Resource!=4及原154寬度斷言；完整新主題與冷圖源已通過，但該包不作驗收。測試改沿明示4／5／6與native.Width後乾淨重跑，正式選取規則與圖源未作對應特例。受控地形索引、固定攻防結果與native返回map fixture如實記錄，不提升一般玩家、原版RGB或全部背景caller完成。
+
+### 分離背景物理捲動的HD場景來源
+
+狀態：CONFORMED-SCOPED／RUNTIME-E1。沿[固定原版選擇與捲動證據](../data/ida/fd2_physical_background_selection_20261004.json)的physical_scroll_evidence、physical_tail_evidence及physical_counter_capture_evidence，不重開RE。固定FD2.EXE為357074 bytes、SHA-256 `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`；IDA9.4 LE線性位址29510..29705、29C90..29DEC、29DED..29F71及29B4C..29C7C仍保留原始名稱與bytes。輸入與驗收集中[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的scroll_scenery_followup_20261024。
+
+- 範圍為非零header物理caller的兩側預備、departure、雙向scroll、連射、主攻／反擊與淡出。只接320×100且已審查層序的BG與既有TAI；未登錄圖源保持原生fallback，其他形狀不外推。
+- 各底圖保存當次原生frame與BG索引，scene的actorBG／targetBG沿原caller不交換；返回攻方背景時傳回actorBG。台座只在原生已畫入的底圖分離，矩形還原原memset的索引0，再放在人物前畫一次；不從像素差異推論來源。
+- 捲動以typed ContentX／BGX／ViewportX／Incoming及完整BGLayers寫入歷史驅動。BaseScenery與人物同時位移並裁切到原半邊；Incoming先重畫目標BG／適用台座，再畫idle，最後依歷史重播BG0..2的原生Mask。透明洞與不透明索引0沿既有契約，不能只畫最後一張過渡圖。
+- 兩個選取BG與TAI在方向、HP及RNG改動前完整預檢；已宣告失效圖源與F2錯件原子拒收。原生producer、GPU shader、聲音、時序、Draw確認、規則及保存不改。HD只消費既有計畫，不推進owner。
+- 驗收包含4／5、5／6、6／4三組雙側indexed重組、獨立CPU Over與GPU、BG-only／TAI-only、全部六階段F2／64及65DAC／HP與RNG／一次續行、兩包完整Game.Draw與跨包PNG核對，以及舊共用／原生／分段指令scroll回歸。永久入口沿[場景驗證器](../../tools/verify_fd2_battle_surface_hd.py)擴充scroll測項；未取得PASS前不稱CONFORMED。
+
+原始資料經既有loader與selector到同次圖層，正式UI沿原owner，存檔格式與內容不變。本切片不新增BG0..2過渡美術、其餘場景或指令caller的完成聲明。受控fixture只屬RUNTIME-E1，正常玩家與人工／平台待全部HD後集中。
+
+永久入口為既有Go Docker內的`tools/verify_fd2_battle_surface_hd.py --kind scroll-unit|scroll-source|scroll-game|scroll-regression --catalog ABS --pack ABS --out FRESH_PREFIX --timeout 1200`。完整流程以`--pair 4:5|5:6|6:4`選明示三組地形，預設side0，另一側加`--enemy`；來源單元與GPU會自行遍歷三組雙側。沿私人同步工具`--runtime-only`建立全新5555實檔包後，加`--require-real-runtime`核對，已去重舊包不適用。`scroll-regression`自行傳遞分段指令需要的完整主題環境；必要測試逐名核對，任一SKIP、逾時或OOM整包拒收。這些旗標只供受控驗證，不改正式玩家路徑。
+
+兩包各1038張原生完整畫布與120個獨立CPU Over對GPU世界通過，包含三組地形、兩側九階前導、退場／捲動／攻防及BG-only／TAI-only；色差容差1保持。兩包共十二完整Game.Draw、72次F2與每案例64／65DAC、HP／RNG及一次返回通過，36組跨包PNG逐SHA相同。六項原生／分段指令回歸、舊共用4／5／6來源及完整舊GPU核心另通過，共24份Go閘門／32項必要頂層測試，無SKIP／逾時／OOM。首次driver漏帶分段指令素材環境造成的兩個SKIP整包拒收，補環境後乾淨r2通過，正式規則不改。
+
+正式清冊681項、六份場景圖及私人美術保持原SHA，沒有新增圖稿或私人同步需求。捲動BG0..2的過渡圖仍用原版素材，其他來源／指令場景／HUD與正常玩家、人工造型及平台驗收仍待。既有希莉亞正常射擊抽驗不自動提升本次HD場景橋接為PLAYER-E2。

@@ -3022,3 +3022,11 @@ TAI_004候選675項編製及單元通過，原框154×42轉924×252透明圖，�
 私人6460實檔已獨立提交推送，主機核對本機／遠端main相同、工作樹乾淨；公開資料只存核對結果，不公開私人提交識別碼。編製器以固定基底／原稿重跑，八份新檔及正式assets陣列完全相同，inline配方與前677項基底均可精確重建原SHA。5555份runtime實檔與兩份候選各八新實檔，在正式／私人來源逐SHA核對後原子改為同SHA相對連結，移除重複配置1626701824 bytes，不當共享主機淨可用空間量測。原稿、全部PNG、recipe／manifest／log／拒收與通過收據保留，已去重runtime不能再作獨立驗收。沒有新影片、Release、映像或volume。
 
 森林／海岸最後檢查通過101項SHA引用、九份來源指紋、2443個本地Markdown目標、gofmt及本批輸出1000:1000。README除明示現況句及新雙圖外逐字保持；323條教訓／188個guard通過。遠端24項worklist已pull／render／verify，#263保持OPEN，集中人工#268／#269不關閉。FD2測試容器全部退出，沒有新映像或volume；最終收據為forest-coast-final-check-oct24-r1.json。公開提交／遠端核對保存於forest-coast-public-git-oct24-r1.json，完整HD目標保持active。
+
+2026-10-24 從e9cdc37e主線建立hd/scroll-scenery-20261024。沿已閉合29510／29C90／29DED及連射證據，61先記READY，準備把分離背景物理的同次BG／TAI身份接入預備、departure、scroll、連射與反擊。原生計畫與BG0..2遮罩歷史保持，不改清冊或美術，不新增原版parity或正常玩家聲明；驗收尚待。
+
+2026-10-24 分離背景場景限定CONFORMED-SCOPED／RUNTIME-E1：三組4:5／5:6／6:4、雙側各1038張原生畫布及120世界GPU／CPU Over容差1通過；兩包十二完整Game.Draw、72次F2、64／65 DAC、HP／RNG與一次返回保持，36組跨包PNG逐SHA相同。24份Go閘門／32必要頂層測試含舊4／5／6及原生／分段指令／完整GPU核心回歸通過，無SKIP／逾時／OOM。首輪driver漏帶兩項分段指令素材環境，整包依SKIP拒收；r2補明示環境乾淨成功，不改正式規則。清冊681項與私人美術保持，沒有新圖稿或同步需求。README四格沿實際完整Game.Draw半縮，不裁切／重畫，原生BG0..2過渡及HUD明示。正常／集中人工／平台及完整HD仍待；字串重綁、worklist與清理另核。
+
+5555份新runtime實檔在十二攻防／來源閘門完成及正式來源逐SHA核對後，原子改為相對連結，移除重複配置1600884736 bytes；不宣稱共享主機淨可用空間量測，清理後不能作獨立實檔。108項字串人工處置以受控遷移器重綁並通過目前盤點測試，處置數保持。可由公開b4c298d1重建的舊字串來源樹及臨時tar已刪，兩份inventory與測試／拒收收據、原稿、PNG及正式／私人素材全部保留；沒有新影片或Release。
+
+本批收尾通過181項SHA引用、九份來源指紋、2450個本地Markdown目標、gofmt與1000:1000擁有權。README除明示現況句與捲動圖說外逐字保持；323條教訓／188個guard保持。主機gh更新#263並再次取得遠端24項worklist，於Docker呼叫官方build_snapshot／render／verify更新快照，可能已完成0項；#268／#269保持OPEN。所有FD2容器已退出，沒有新Docker映像、volume或錄影。最終檢查依scroll-scenery-final-check-oct24-r1.json；公開提交／遠端核對保存於scroll-scenery-public-git-oct24-r1.json，完整HD目標保持active。

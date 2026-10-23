@@ -1,6 +1,7 @@
 package main
 
 import (
+	"crypto/sha256"
 	"encoding/json"
 	"fmt"
 	"image"
@@ -35,11 +36,15 @@ func TestModernHDScrollRuntimeGPU(t *testing.T) {
 	set := diagnosticModernBattleSet(t, g, scene)
 	real := os.Getenv("FD2_HD_SCROLL_REAL") == "1"
 	if real {
-		full, err := loadModernStoryPortraitSet(os.Getenv("FD2_TEST_MODERN_BATTLE_CATALOG"), os.Getenv("FD2_TEST_MODERN_BATTLE_PACK"))
-		if err != nil {
-			t.Fatal(err)
+		if os.Getenv("FD2_HD_SCROLL_SCENERY") != "" {
+			set = modernHDBattleFixtureSet(t, os.Getenv("FD2_TEST_MODERN_BATTLE_CATALOG"), os.Getenv("FD2_TEST_MODERN_BATTLE_PACK"), scene.modernResources())
+		} else {
+			full, err := loadModernStoryPortraitSet(os.Getenv("FD2_TEST_MODERN_BATTLE_CATALOG"), os.Getenv("FD2_TEST_MODERN_BATTLE_PACK"))
+			if err != nil {
+				t.Fatal(err)
+			}
+			set = &modernStoryPortraitSet{hasHD: true, battleAnimations: full.battleAnimations}
 		}
-		set = &modernStoryPortraitSet{hasHD: true, battleAnimations: full.battleAnimations}
 	}
 	assets, field, state := completeNativeMapFrameFixture(t)
 	dac, palette, err := loadNativeBattlePalette()
@@ -61,6 +66,21 @@ func TestModernHDScrollRuntimeGPU(t *testing.T) {
 	if err := g.applyTheme(bad); err == nil || g.modernStoryPortraits != set || probe.stable() != before {
 		t.Fatal("failed F2 changed live scroll owner or state")
 	}
+	if os.Getenv("FD2_HD_SCROLL_SCENERY") != "" {
+		for _, source := range []struct {
+			archive string
+			index   byte
+		}{{"BG.DAT", scene.selection.BaseBG}, {"BG.DAT", modernPhysicalTargetBGIndex(scene)}, {"TAI.DAT", scene.selection.TAI}} {
+			entry := *set.battleSurfaces[source.archive][int(source.index)]
+			entry.picture = nil
+			bad := *set
+			bad.battleSurfaces = map[string]map[int]*modernBattleSurfaceHD{source.archive: {int(source.index): &entry}}
+			before := probe.stable()
+			if err := g.applyTheme(&bad); err == nil || g.modernStoryPortraits != set || probe.stable() != before {
+				t.Fatal("bad scroll scenery F2 changed live state", source)
+			}
+		}
+	}
 	for i := 0; i < 3; i++ {
 		if err := g.stepAttackPresentationTick(); err != nil {
 			t.Fatal(err)
@@ -76,6 +96,7 @@ func TestModernHDScrollRuntimeGPU(t *testing.T) {
 		}
 	}
 	shots := make(map[string]any)
+	sceneryDraws := make(map[string]int)
 	var readback *ebiten.Image
 	pixels := make([]byte, 1920*1200*4)
 	defer func() {
@@ -118,12 +139,22 @@ func TestModernHDScrollRuntimeGPU(t *testing.T) {
 		}
 		visible := false
 		layers := make([]map[string]any, 0, len(sources.Layers))
-		for _, s := range sources.Layers {
+		for _, s := range append(append([]modernHDBattleSource(nil), sources.BaseScenery...), sources.Layers...) {
 			r := image.Rect(s.Frame.X+s.DX, s.Frame.Y+s.DY, s.Frame.X+s.DX+s.Frame.Width, s.Frame.Y+s.DY+s.Frame.Height)
 			if s.Resource >= 0 && set.battleAnimations[s.Resource] != nil && s.Fill == -1 && r.In(image.Rect(0, 0, 320, 200)) {
 				visible = true
 			}
-			layers = append(layers, map[string]any{"resource": s.Resource, "frame": s.Index, "rect": r, "clip": s.Clip, "fill": s.Fill})
+			row := map[string]any{"archive": s.Archive, "resource": s.Resource, "frame": s.Index, "rect": r, "clip": s.Clip, "fill": s.Fill}
+			if os.Getenv("FD2_HD_SCROLL_SCENERY") != "" && (s.Archive == "BG.DAT" || s.Archive == "TAI.DAT") {
+				entry := set.battleSurfaces[s.Archive][s.Resource]
+				if entry == nil || g.modernHDBattleGPU.sources["hd/"+entry.hash] == nil {
+					probe.err = fmt.Errorf("Game.Draw lacks actual HD scenery texture %s/%d", s.Archive, s.Resource)
+					return
+				}
+				row["sha256"] = entry.hash
+				sceneryDraws[entry.hash]++
+			}
+			layers = append(layers, row)
 		}
 		if !visible {
 			return
@@ -217,6 +248,31 @@ func TestModernHDScrollRuntimeGPU(t *testing.T) {
 	report := map[string]any{"status": "PASS-SCOPED-RUNTIME-E1", "side": side, "real_registered_battle_bank": real, "phase_hd_draws": probe.phaseDraws, "phase_f2": probe.phaseF2, "presents": len(probe.seen), "hd_draws": probe.hdDraws, "faithful_draws": probe.faithfulDraws, "final_draws": probe.finals, "continuations": callbacks, "battle_dac_steps": len(probe.rampSeen), "map_dac_steps": len(probe.mapRampSeen), "source_shots": shots, "scope": "真實FIGANI25／288／289與BG55／5的修改fixture；兩次射擊及反擊的正式Game.Draw。非普通玩家或新原版oracle。real只換正式battle銀行，地圖返回沿既有native fixture；F2切換的測試tick停一次以要求同present兩主題Draw。"}
 	report["target_figure"] = targetFigure
 	report["target_attack_frames_captured"] = os.Getenv("FD2_HD_SCROLL_TARGET_FRAMES") == "1"
+	if pair := os.Getenv("FD2_HD_SCROLL_SCENERY"); pair != "" {
+		catalog, err := os.ReadFile(os.Getenv("FD2_TEST_MODERN_BATTLE_CATALOG"))
+		if err != nil {
+			t.Fatal(err)
+		}
+		report["catalog_sha256"] = fmt.Sprintf("%x", sha256.Sum256(catalog))
+		report["scenery_pair"], report["scene_selection"] = pair, scene.selection
+		var surfaces []map[string]any
+		for _, source := range []struct {
+			archive string
+			index   byte
+		}{{"BG.DAT", scene.selection.BaseBG}, {"BG.DAT", modernPhysicalTargetBGIndex(scene)}, {"TAI.DAT", scene.selection.TAI}} {
+			entry := set.battleSurfaces[source.archive][int(source.index)]
+			if sceneryDraws[entry.hash] == 0 {
+				t.Fatal("no actual Game.Draw scenery source", source)
+			}
+			if g.modernHDBattleGPU.sources["hd/"+entry.hash] != nil {
+				t.Fatal("returned owner retained scenery textures")
+			}
+			surfaces = append(surfaces, map[string]any{"archive": source.archive, "resource": source.index, "sha256": entry.hash})
+		}
+		report["scenery_sources"] = surfaces
+		report["scenery_actual_capture_draws"] = sceneryDraws
+		report["scope"] = "明示三組地形的分離背景物理fixture，兩次射擊與強制反擊；原生過渡BG0..2保持，六階段F2與正式Game.Draw；不是正常玩家或原版RGB對拍。"
+	}
 	report["scope"] = fmt.Sprintf("真實FIGANI25／%d／%d與BG55／5的修改fixture；兩次射擊及強制反擊計畫的正式Game.Draw。非普通玩家或新原版oracle；地圖返回沿native fixture，六階段F2測試tick停一次以要求同present兩主題Draw。", targetFigure*3, targetFigure*3+1)
 	if out != "" {
 		raw, _ := json.MarshalIndent(report, "", "  ")

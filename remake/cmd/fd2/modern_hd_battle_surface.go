@@ -139,6 +139,19 @@ func (set *modernStoryPortraitSet) validatePhysicalScenery(scene *nativePhysical
 	if err != nil {
 		return err
 	}
+	if scene != nil && scene.selection.HasSeparateBackgrounds {
+		for _, target := range []bool{false, true} {
+			frame, index := scene.backgroundFrame, scene.selection.BaseBG
+			if target {
+				frame, index = scene.targetBackground, modernPhysicalTargetBGIndex(scene)
+			}
+			more, err := modernPhysicalBackdropScenery(scene, frame, index, true)
+			if err != nil {
+				return err
+			}
+			sources = append(sources, more...)
+		}
+	}
 	for _, source := range sources {
 		if _, _, err := set.battleSurfaceHD(source); err != nil {
 			return err
@@ -148,7 +161,17 @@ func (set *modernStoryPortraitSet) validatePhysicalScenery(scene *nativePhysical
 }
 
 func modernPhysicalBaseScenery(scene *nativePhysicalScene) ([]modernHDBattleSource, error) {
+	if scene == nil || scene.selection.HasSeparateBackgrounds {
+		return nil, nil
+	}
 	return modernPhysicalScenery(scene, true)
+}
+
+func modernPhysicalTargetBGIndex(scene *nativePhysicalScene) byte {
+	if scene.rawSide == 0 {
+		return scene.selection.SecondaryBG
+	}
+	return scene.selection.PrimaryBG
 }
 
 func modernPhysicalPlatformSource(scene *nativePhysicalScene) (modernHDBattleSource, error) {
@@ -165,19 +188,23 @@ func modernPhysicalPlatformSource(scene *nativePhysicalScene) (modernHDBattleSou
 }
 
 func modernPhysicalScenery(scene *nativePhysicalScene, platform bool) ([]modernHDBattleSource, error) {
-	if scene == nil || scene.selection.HasSeparateBackgrounds {
+	if scene == nil {
 		return nil, nil
 	}
+	return modernPhysicalBackdropScenery(scene, scene.backgroundFrame, scene.selection.BaseBG, platform)
+}
+
+func modernPhysicalBackdropScenery(scene *nativePhysicalScene, background fdother.Frame, index byte, platform bool) ([]modernHDBattleSource, error) {
 	// 其他原框須先審查 UI 層序；此橋接不外推 101 高或窄圖源。
-	if scene.backgroundFrame.Width != 320 || scene.backgroundFrame.Height != 100 {
+	if background.Width != 320 || background.Height != 100 {
 		return nil, nil
 	}
-	frame, err := modernHDBattleSurfaceFrame(scene.backgroundFrame)
+	frame, err := modernHDBattleSurfaceFrame(background)
 	if err != nil {
 		return nil, err
 	}
 	frame.X, frame.Y = 0, 50
-	sources := []modernHDBattleSource{{Archive: "BG.DAT", Resource: int(scene.selection.BaseBG), Frame: frame, Fill: -1}}
+	sources := []modernHDBattleSource{{Archive: "BG.DAT", Resource: int(index), Frame: frame, Fill: -1}}
 	if platform {
 		p, err := modernPhysicalPlatformSource(scene)
 		if err != nil {
@@ -198,13 +225,25 @@ func bindModernPhysicalScenery(scene *nativePhysicalScene, sources *modernHDBatt
 	if sources == nil || len(scenery) == 0 {
 		return nil
 	}
+	return bindModernPhysicalBaseScenery(sources, scenery)
+}
+
+func bindModernPhysicalBaseScenery(sources *modernHDBattleSources, scenery []modernHDBattleSource) error {
+	if sources == nil || len(scenery) == 0 {
+		return nil
+	}
 	if len(sources.Base) != 64000 {
 		return errors.New("modern HD physical clean base unavailable")
 	}
 	base := append([]byte(nil), sources.Base...)
-	platform := scenery[1].Frame
-	for y := platform.Y; y < platform.Y+platform.Height; y++ {
-		clear(base[y*320+platform.X : y*320+platform.X+platform.Width])
+	for _, source := range scenery {
+		if source.Archive != "TAI.DAT" {
+			continue
+		}
+		platform := source.Frame
+		for y := platform.Y; y < platform.Y+platform.Height; y++ {
+			clear(base[y*320+platform.X : y*320+platform.X+platform.Width])
+		}
 	}
 	sources.Base, sources.BaseScenery = base, scenery
 	return nil

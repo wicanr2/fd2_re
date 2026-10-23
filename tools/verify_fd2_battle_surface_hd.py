@@ -12,6 +12,12 @@ from verify_fd2_player9_map_hd import check_real_runtime
 
 ROOT = Path(__file__).resolve().parents[1]
 REQUIRED = {
+    'scroll-unit': {'TestModernScrollSceneryNativeAndAtomic'},
+    'scroll-source': {'TestModernScrollSceneryGPU'},
+    'scroll-game': {'TestModernHDScrollRuntimeGPU'},
+    'scroll-regression': {'TestNativePhysicalBodyMultiStrikeCounterAndPulse', 'TestNativePhysicalBodyMissingSoundStopsBeforeSettlement',
+                          'TestModernScrollMetadataRejectsBeforePartialSources', 'TestModernScrollSourceClipRejectsBeforeScaling',
+                          'TestModernHDSplitStrikePreflightAndF2Atomic', 'TestModernHDSplitStrikeLateFailureRestoresTransaction'},
     'source-unit': {'TestModernBattleSurfaceHDSourceAndAtomic', 'TestModernBattleSurfacePhysicalNativeReconstruction'},
     'unit': {'TestModernBattleSurfaceHDSourceAndAtomic', 'TestModernBattleSurfacePhysicalNativeReconstruction', 'TestModernBattleSurfaceCompleteTheme'},
     'source': {'TestModernBattleSurfaceHDGPU'},
@@ -32,6 +38,7 @@ def main():
     p.add_argument('--out', type=Path, required=True)
     p.add_argument('--enemy', action='store_true')
     p.add_argument('--surface', type=int, choices=[4,5,6], default=4)
+    p.add_argument('--pair', choices=['4:5','5:6','6:4'], default='4:5')
     p.add_argument('--with-pedestal', action='store_true')
     p.add_argument('--require-real-runtime', action='store_true')
     p.add_argument('--timeout', type=int, default=1200)
@@ -46,6 +53,8 @@ def main():
     env.update(FD2_MUTE='1', FD2_TEST_MODERN_BATTLE_CATALOG=str(a.catalog.resolve()), FD2_TEST_MODERN_BATTLE_PACK=str(a.pack.resolve()))
     for name in ['FD2_HD_BATTLE_LIFECYCLE_GPU','FD2_HD_BATTLE_REAL','FD2_HD_BATTLE_ENEMY_ACTOR','FD2_HD_SURFACE_GPU','FD2_HD_BATTLE_BACKGROUND','FD2_HD_BATTLE_PEDESTAL']:
         env.pop(name,None)
+    for name in ['FD2_HD_SCROLL_SIDE','FD2_HD_SCROLL_SCENERY','FD2_HD_SCROLL_SCENERY_GPU','FD2_HD_SCROLL_REAL','FD2_HD_SCROLL_TARGET','FD2_HD_SCROLL_PROJECTILES','FD2_HD_SCROLL_TARGET_FRAMES']:
+        env.pop(name,None)
     env['FD2_HD_BATTLE_SURFACE_INDEX']=str(a.surface)
     if a.with_pedestal: env['FD2_HD_BATTLE_PEDESTAL']=str(a.surface)
     if a.kind == 'game':
@@ -54,6 +63,12 @@ def main():
         if a.enemy: env['FD2_HD_BATTLE_ENEMY_ACTOR']='1'
     elif a.kind == 'source': env['FD2_HD_SURFACE_GPU']='1'
     elif a.kind == 'legacy-gpu': env['FD2_HD_BATTLE_GPU']='1'
+    elif a.kind == 'scroll-source': env['FD2_HD_SCROLL_SCENERY_GPU']='1'
+    elif a.kind == 'scroll-regression':
+        env.update(FD2_TEST_MODERN_EFFECT_CATALOG=str(a.catalog.resolve()),FD2_TEST_MODERN_EFFECT_PACK=str(a.pack.resolve()))
+    elif a.kind == 'scroll-game':
+        env.update(FD2_HD_SCROLL_SIDE='2' if a.enemy else '0',FD2_HD_SCROLL_REAL='1',FD2_HD_SCROLL_SCENERY=a.pair,
+                   FD2_TEST_HD_SCROLL_OUT=str(a.out)+'-capture')
     pattern = '^('+'|'.join(sorted(REQUIRED[a.kind]))+')$'
     shell = '''set -euo pipefail
 Xvfb :99 -screen 0 1920x1200x24 -nolisten tcp >/tmp/fd2-surface-xvfb.log 2>&1 &
@@ -79,9 +94,20 @@ export DISPLAY=:99
             raise SystemExit('缺少所選 BG Game.Draw 或一次返回')
         if a.with_pedestal and (receipt.get('background_selection',{}).get('TAI') != a.surface or not receipt.get('pedestal_hd_sha256')):
             raise SystemExit('缺少所選 TAI Game.Draw')
+    if a.kind == 'scroll-game':
+        receipt=json.loads(Path(str(a.out)+'-capture/receipt.json').read_text())
+        phases=['prelude','departure','scroll-out','scroll-in','body','counter']
+        if (receipt.get('scenery_pair')!=a.pair or receipt.get('side')!=(2 if a.enemy else 0)
+                or receipt.get('catalog_sha256')!=hashlib.sha256(a.catalog.read_bytes()).hexdigest()
+                or not receipt.get('scene_selection',{}).get('HasSeparateBackgrounds')
+                or receipt.get('continuations')!=1 or receipt.get('battle_dac_steps')!=64 or receipt.get('map_dac_steps')!=65
+                or any(receipt.get('phase_f2',{}).get(p)!=1 or receipt.get('phase_hd_draws',{}).get(p,0)<=0 for p in phases)
+                or len(receipt.get('scenery_sources',[]))!=3
+                or any(receipt.get('scenery_actual_capture_draws',{}).get(s['sha256'],0)<=0 for s in receipt.get('scenery_sources',[]))):
+            raise SystemExit('缺少分離場景完整Game.Draw／來源／F2／DAC／一次續行')
     report = dict(status='PASS',kind=a.kind,enemy=a.enemy,required=sorted(REQUIRED[a.kind]),
                   catalog_sha256=hashlib.sha256(a.catalog.read_bytes()).hexdigest(),
-                  catalog=str(a.catalog.resolve()),pack=str(a.pack.resolve()),with_pedestal=a.with_pedestal,surface=a.surface,
+                  catalog=str(a.catalog.resolve()),pack=str(a.pack.resolve()),with_pedestal=a.with_pedestal,surface=a.surface,pair=a.pair,
                   independent_runtime_files=independent, memory=str(a.out)+'.memory.json',log=str(a.out)+'.log',
                   scope='固定來源／GPU／明示物理戰鬥fixture，非正常玩家或新原版RGB對拍')
     Path(str(a.out)+'.gate.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')

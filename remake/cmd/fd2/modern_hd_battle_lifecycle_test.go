@@ -43,7 +43,7 @@ func diagnosticModernBattleSet(t *testing.T, g *Game, scene *nativePhysicalScene
 			continue
 		}
 		for _, source := range job.hdSources.Layers {
-			if source.Resource < 0 {
+			if source.Resource < 0 || source.Archive == "BG.DAT" || source.Archive == "TAI.DAT" {
 				continue
 			}
 			animation := animations[source.Resource]
