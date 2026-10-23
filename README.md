@@ -237,6 +237,12 @@
 [驗證紀錄](docs/data/fd2-modern-hd-battlefield-20261019.json)的`early_party_battle_followup_20261020`。
 貝克威的端炮與光束也已正式登錄；混合背景反擊的一般能力限制仍由[#265](https://github.com/wicanr2/fd2_re/issues/265)追蹤。
 
+![物品與金錢成功提示的HD文字與頭像](docs/figures/hd-reward-message.png)
+
+戰後物品與金錢成功提示已接上清晰文字、高解析頭像與HD世界，保留原有開收框及結算順序。
+左右為受控頭像選擇及獎勵值的實際遊戲畫面，完整縮圖未裁切；面板與部分地形仍為像素素材，正常玩家抽驗仍待。
+來源見[HD驗證紀錄](docs/data/fd2-modern-hd-battlefield-20261019.json)的`reward_message_hd_followup_20261023`。
+
 ![HD地圖回復的前導、光環、輪廓閃光與綠色數字](docs/figures/hd-heal-map.png)
 
 回復演出已接上 HD 世界、淡藍光環、人物輪廓閃光與綠色數字，保留單體及範圍回復的結算順序。

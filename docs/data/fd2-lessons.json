@@ -3913,6 +3913,14 @@
       "rule": "Go測試在迴圈內建立延遲執行的交易閉包時，先將迴圈值複製到區域變數。range語意依go.mod的語言版本判斷，不由容器go工具鏈版本推定。入口remake/go.mod及remake/cmd/fd2/modern_hd_heal_map_gpu_test.go的command區域副本。",
       "why": "go.mod仍為go1.21，工具鏈雖是Go1.22.12，回復八案例第一個延遲交易仍抓到最後id16。只修測試的閉包捕捉，不改遊戲或目標選擇守衛。 通用文字guard刻意排除_test.go，因此不把測試檔的文字當成guard；八案例GPU以各自的命令與一次交易檢查此行為。",
       "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json"
+    },
+    {
+      "id": "isolated-modal-fixtures-finish-unrelated-intro",
+      "date": "2026-10-24",
+      "area": "HD介面驗證",
+      "rule": "以resetBattle建立行動收尾的受控UI測試槽時，先明示開戰對話與橫幅已結束，再啟動待驗owner。完整Game.Draw的失敗需保留原始離屏PNG與最終PNG，依實際alpha和owner定位額外圖層。入口remake/cmd/fd2/modern_hd_reward_message_test.go的rewardHDTestGame，只適用受控fixture，正常玩家仍走鍵盤流程。",
+      "why": "成功獎勵fixture直接重用開戰槽，留下開戰對話，使完整Game.Draw同時疊出兩個對話框。原始離屏PNG在對話面板範圍外有96720個非透明像素，定位到舊開戰框；只修測試初始狀態，不改正式遊戲、遮罩或色差門檻。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json"
     }
   ]
 }

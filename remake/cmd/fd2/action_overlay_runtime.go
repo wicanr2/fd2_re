@@ -783,6 +783,9 @@ func (g *Game) drawNativeSystemEndTurn(screen *ebiten.Image) bool {
 	if state == nil || g.nativeClassUI == nil || g.nativePreparationUI == nil {
 		return false
 	}
+	if g.drawModernHDRewardMessage(screen) {
+		return true
+	}
 	if g.drawNativeClassUIJob(screen) {
 		return true
 	}

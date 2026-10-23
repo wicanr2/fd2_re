@@ -168,17 +168,15 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 `modern-theme-highres-prototype` · 工作 · [#204](https://github.com/wicanr2/fd2_re/issues/204) · 仍未完成 · 要人判
 
-HD高解析呈現仍未完成。目前穩定文字、高解析故事頭像、戰場人物及已登錄地形依58；大型戰鬥的人物、飛矢與召喚來源／普通抽驗另見#263，不以舊清冊或舊FIGANI狀態推定現況。
+HD高解析呈現仍未全部完成。本項保持開啟；目前狀態與唯一數量依[58](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)，介面覆蓋依57、呈現契約依61。使用者定案先完成全部HD串接，再集中正常玩家與人工確認。
 
-已核准的蓋亞第二版維持原版厚甲機器人造型，故事頭像與四方向人物已接正式呈現。正常START、戰場選角／移動取消、F2及保存冷讀各有分段證據；序章末F9舊輪失敗、步態相位差異與不可比樣本仍保留，不冒稱同次長流程全通或逐幀一致。
+已接入清晰字型、高解析故事頭像、戰場人物及已登錄地形。三種城鎮與三種商店的靜態背景／店員、裝備面板的既有480頭像已通過正式繪製與兩包載入；其他設施與固定圖樣仍待。
 
-本次普通第九章希莉亞射擊87號弓手後，實際視窗出現「得到速度藥水」成功訊息，頭像與文字仍為像素呈現。這是nativeSystemEndTurnUI.rewardMessage的既有成功提示，不是滿背包選擇問句；目前只確認此caller，其他掉落、金額提示及滿背包分支仍須分別驗證。來源截圖與觀測見docs/data/fd2-modern-hd-battlefield-20261019.json的archer87_battle_followup_20261020.loot_dialogue_observation。測試回交等待另行修正，不把測試工具失敗寫成遊戲卡關。
+先前普通第九章觀察到的「得到速度藥水」屬nativeSystemEndTurnUI.rewardMessage成功臂。本輪已將物品／金錢成功提示接上凍結HD世界、Noto文字與480頭像。兩完整受控Game.Draw共26拍及26次F2、原生開收框遮罩、每個金額數字、頭像朝向與移動裁切、HUD回交及一次續行通過；金幣仍於restore後加入。四批13項必要Go測試無SKIP／逾時／OOM，清冊及私人素材保持。這是RUNTIME-E1，尚未補做該普通玩家來源的HD抽驗；滿背包問句、到期訊息及其他caller仍待。來源依[HD主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-battlefield-20261019.json)的reward_message_hd_followup_20261023及61。
 
-後續須補原生成功／掉落訊息及其他未列UI的高解析文字／頭像、完整HUD與固定字樣、其餘HD地形及索引演出，再驗證代表性效能與跨平台實機。所有既有像素模式、規則與保存契約保持。
+最初兩次GPU拒收由受控fixture殘留開戰對話造成；原始離屏與最終PNG保留，確認後只修測試初始狀態，再以相同色差門檻重跑。未據此修改正式規則或擴稱原版對拍。
 
-唯一現況依58，介面57、契約61。較早蓋亞來源及拒收證據沿主收據gaia_redesign_followup_20261019與WORKLOG；本項保持開啟，不新增完整HD、整章E2、matching或Release聲明。
-
-工具列與設施HD追加：遊戲上方已提供原版／HD選取，沿用F2並支援四語；工具列位於遊戲畫面外。三種城鎮與三種商店背景及店員已接HD，既有隊伍480頭像接入裝備開窗。114個實際Game.Draw案例、十二個開窗位置、完整遊戲區域與無工具列版本相同、實際滑鼠／F2／F4及兩包正式載入通過。來源與重跑依docs/data/fd2-modern-hd-battlefield-20261019.json的facility_scene_followup_20261021及61；原生選單框／游標／交易效果保持，其他設施、正常玩家、集中人工與平台驗收仍待，不關閉本總項。
+現有正式工具列仍位於遊戲畫面外，可切原版／HD並保留F2與四語。使用者已選A頂端浮出、自動隱藏操作原型；正式串接與實際遊戲加速仍待。後續還包含完整HUD／固定字樣、其餘HD地形／索引演出與代表性效能／平台驗收。蓋亞手腕#268及凱麗右腳#269依既有排程集中人工確認，不以自動測試取代造型確認。
 
 怎樣算做完：既有HD頭像／黑體／穩定頁／整備問句／金幣／角色物品轉場及首章角色狀態覆蓋已抽驗。接續其他設施轉場、成功演出、圖示與未列畫面，再完成角色／地形真正高解析素材、戰場交界及跨平台HD效能；完整HD仍未完成。
 
@@ -188,15 +186,13 @@ HD高解析呈現仍未完成。目前穩定文字、高解析故事頭像、戰
 
 `modern-battle-animation-hd` · 工作 · [#263](https://github.com/wicanr2/fd2_re/issues/263) · 仍未完成 · 要人判
 
-全部HD仍未完成，本項保持開啟。使用者定案先完成全部HD串接，再集中正常玩家抽驗與人工造型確認，原驗收條件保持。唯一數量與缺口依[58](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)，契約依[61](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/61-modern-theme-runtime-spec.md)。
+全部戰鬥HD仍未完成，本項保持開啟。使用者定案先完成全部HD串接，再集中正常玩家抽驗與人工造型確認；原驗收條件保持。唯一數量與缺口依[58](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)，契約依[61](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/61-modern-theme-runtime-spec.md)。
 
-最新指令10～12的60幀地圖取樣與11／12十輪2189A前導已接HD；兩包各1083次主要Game.Draw、90次F2，三指令命中／MISS／雙目標、22結果、500ms hold及一次續行通過。原MP／HP／RNG／Acted、音效呼叫與全部排程保持，不改規則／保存。使用同次typed輸入與terrain snapshot、LUT／radial spec，地形用原固定小數表作HD子像素取樣，物件在原位置重畫。
+已登錄FIGANI人物與FDOTHER效果、指令9／10～12及13～16地圖回復、森林BG_004與TAI_004等來源的實際接入及驗證，逐批依[HD主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-battlefield-20261019.json)。13～16兩包完整回復流程、F2與一次交易已通過，不能再列為未接入；正常／人工／平台驗收仍待。
 
-九個最終Go閘門無SKIP、逾時或OOM。獨立HD座標、原子缺件／錯尺寸及F2預檢通過。另在HD地形旁核對指令11的58387個範圍內取樣點、指令12的101025點，其中57708／100331確實變色，避免只驗到像素背景。舊2189A、原生敵方10、玩家9與死亡回歸通過。完整GUI場景使用seed7、受控傷害999與命中0／100、角色移位；非正常玩家、新原版parity或PLAYER-E2。
+本輪補上行動收尾的物品／金錢成功訊息HD，詳reward_message_hd_followup_20261023；兩受控Game.Draw、26拍／26次F2、HD頭像朝向／移動裁切與一次續行通過，原獎勵／金額／HUD回交順序保持，無新素材。此成功提示進度同步#204，不擴稱所有戰鬥介面已HD。
 
-本批沒有新增美術，673項清冊與私人素材SHA保持，既有264個FIGANI／2118幀、23個FDOTHER／408幀及三組LMI／52張保持。四張README總覽由完整實際Game.Draw縮為一半；HD子像素與四色差近似明示，不宣稱造型定稿。完整收據與永久重跑入口見[HD主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-battlefield-20261019.json)的commands10_12_map_hd_followup_20261023。
-
-來源408、其他效果／13～16地圖回復／背景／HUD、18／19第三銀行合法caller、普通召喚與平台仍待。凱麗右腳#269與蓋亞手腕#268保持集中人工待辦。本批無錄影、Release或完整HD聲明。
+仍待來源408、其他效果／指令caller、其餘BG／TAI與捲動、完整HUD、18／19第三銀行合法caller、狀態致死與普通召喚的正常GUI、集中人工及平台效能。混合背景反擊限制沿#265；凱麗右腳#269及蓋亞手腕#268維持集中人工待辦。沒有新原版parity、整章E2、Release或完整HD聲明。
 
 怎樣算做完：建立由正式consumer到FIGANI人物及共同效果的可重跑覆蓋清冊；完成可達戰鬥動畫HD素材、原始位置／層序／節拍／命中與音效標記的正式呈現，缺件明示；正常玩家抽驗攻擊、受擊／反擊、法術／效果、死亡與戰場返回，F2、保存冷讀與代表性效能通過；已登錄素材同步私人庫，保留原版像素模式。資料測試及離線PNG不能取代正式GUI。
 

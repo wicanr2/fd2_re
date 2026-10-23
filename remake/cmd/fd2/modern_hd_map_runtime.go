@@ -41,6 +41,10 @@ func (g *Game) modernHDMapFrameAdmission(story, battleView bool) bool {
 		g.st == nil || !g.st.HasNativeMapViewState {
 		return false
 	}
+	if state := g.nativeSystemEndTurnUI; state != nil && state.rewardMessage != nil &&
+		state.rewardMessage.hdWorld != nil && state.rewardMessage.hdTheme == g.modernStoryPortraits {
+		return true
+	}
 	if g.spellOpen || g.itemOpen || g.castSp != nil {
 		return false
 	}

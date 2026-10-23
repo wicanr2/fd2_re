@@ -3004,3 +3004,11 @@ TAI_004候選675項編製及單元通過，原框154×42轉924×252透明圖，�
 5551份runtime暫存圖在三份最終獨立包閘門與清理前後SHA核對後改相對連結，移除重複配置1619963904 bytes；另核固定SHA刪19,484,784 bytes的臨時Noto字型複本。不是共享主機淨可用空間量測，已去重包不能再當獨立實檔；原稿、字形來源、manifest、全部PNG／log與拒收樣本保持。沒有錄影或新Release。其他owner、背景／台座／HUD／地形、浮出工具列／速度與集中正常／人工／平台仍待，完整HD目標保持active。
 
 本批收尾：私人素材已獨立提交推送，主機核對本機／遠端main完全相同、工作樹乾淨且PRIVATE；公開檔只記核對結果，不公開私人提交識別碼。#263已追加本批進度且保持OPEN，#268／#269集中人工仍待；遠端24項worklist已pull／render／verify，可能已完成0項。44項SHA引用、九來源指紋、2413個本地Markdown目標、gofmt、321條教訓／188個guard及所有修改／輸出UID1000:1000通過。僅在本批工作根執行find，無root產物或.md目錄，不掃全庫或chown舊檔。全部FD2容器已退出；沒有新映像／volume或影片。相關收尾依heal1316-final-check-oct23-r1.json；接著提交並推送公開main，實際HEAD／遠端核對保存於同批public-git-verification。完整HD目標維持active。
+
+2026-10-23 從93ce12ec主線建立hd/reward-message-20261023，續接#204已知物品／金錢成功訊息像素缺口。原版來源沿58已閉合死亡效果與既有caller，不開新RE。61先記READY，再以凍結typed地圖／work／色盤串接HD世界、Noto文字與既有480頭像；六開、等鍵、五收與restore仍沿原owner。清冊及美術不變，目前驗證待完成，不能列CONFORMED或正常玩家完成。重跑入口tools/verify_fd2_reward_message_hd.py及HD主收據reward_message_hd_followup_20261023。
+
+2026-10-24 成功訊息初輪兩項單元與八項舊回歸通過，補強金額0與123456789逐字HD檢查後單元r2亦通過；兩項HUD回交／唯讀觀察另通過。完整Game r1在開框第0拍框外30,594差3拒收，r2同門檻保存原始離屏／最終PNG。原始離屏在本輪面板以外有96720個非透明點，明確顯示resetBattle留下的開戰對話；這是fixture初始狀態，不作產品缺陷。rewardHDTestGame明示初始開戰對話與橫幅已結束，正式引擎／色差2不變，r3乾淨重跑。舊失敗收據與PNG保留，不計驗收。
+
+2026-10-24 成功訊息限定CONFORMED-SCOPED／RUNTIME-E1：最終unit r3、game r3、八項regression及兩項hud四批13項必要Go測試通過，無SKIP／逾時／OOM。物品192與金額123456各六開、等ACK、五收與restore，共26完整Game.Draw與26次F2；頭像selector9為受控fixture，原生面板框外HD世界、鏡向／移動裁切、金額0及123456789逐字、HP／MP／RNG／owner／原final與一次續行通過。關框後才加金幣與HUD回交保持。清冊677項及全部美術／私人白名單未改；README雙圖由兩張完整1920×1200等待畫面半縮並排，不裁切或重畫。其他成功問句、到期訊息、HUD／地形、背景／caller、浮出工具列／速度及正常／集中人工／平台仍待，不宣稱完整HD或新原版parity。
+
+收尾核對：#204與#263已更新遠端內文、原驗收條件保持且皆OPEN，提交前重新拉24項worklist並render／verify，可能已完成0項。322條教訓／188 guard通過；41項SHA引用、八份來源指紋、2431個本地Markdown目標、gofmt與本批輸出UID1000:1000通過。完整主題加兩個保留測試Game的峰值3430088704 bytes，只作測試資源量測，不外推正常玩家效能。本批沒有錄影、Release、新映像／volume或大型素材複本，十張通過PNG、兩張拒收PNG與原始log／收據保存。FD2測試容器已退出；公開提交／遠端核對另記reward-hd-public-git-oct24-r1.json。

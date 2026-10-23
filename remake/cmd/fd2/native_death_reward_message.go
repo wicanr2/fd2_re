@@ -2,10 +2,13 @@ package main
 
 import (
 	"errors"
+	"image/color"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 	"github.com/wicanr2/fd2_re/remake/internal/dato"
+	"github.com/wicanr2/fd2_re/remake/internal/fdother"
+	"github.com/wicanr2/fd2_re/remake/internal/indexedmap"
 )
 
 // pendingNativeDeathRewardMessage 是 0x1AA1D 物品型態 0／1 成功臂要播的訊息：
@@ -19,14 +22,21 @@ type pendingNativeDeathRewardMessage struct {
 }
 
 type nativeDeathRewardMessageState struct {
-	killer      *battle.Unit
-	actor       *battle.Unit // 這次行動的單位：0x1AA1D 在 0x13512 設 +5 bit7 之前，底圖上它還沒變灰
-	awaitAck    bool
-	final       []byte
-	then        func()
-	portrait    dato.Frame
-	portraits   []dato.Frame // 0x16559 等待期間店主式眨眼／嘴型各幀，重播端各出一張變體
-	kind, value int
+	killer           *battle.Unit
+	actor            *battle.Unit // 這次行動的單位：0x1AA1D 在 0x13512 設 +5 bit7 之前，底圖上它還沒變灰
+	awaitAck         bool
+	final            []byte
+	then             func()
+	portrait         dato.Frame
+	portraits        []dato.Frame // 0x16559 等待期間店主式眨眼／嘴型各幀，重播端各出一張變體
+	kind, value      int
+	hdInput          indexedmap.NativeFrameInput
+	hdInputErr       error
+	hdWork           []byte
+	hdPalette        color.Palette
+	hdWorld          *modernHDMapFrame
+	hdTheme          *modernStoryPortraitSet
+	opening, closing *nativeClassUIJob
 }
 
 // composeNativeDeathRewardMessageOn 把同一則訊息（對話格＋頭像＋文字）疊在另一張
@@ -111,6 +121,19 @@ func (g *Game) beginNativeDeathRewardMessage(pending pendingNativeDeathRewardMes
 		killer: pending.killer, actor: actor, final: final, then: then,
 		portrait: portraits[0], portraits: portraits, kind: pending.kind, value: pending.value,
 	}
+	message.hdInput, message.hdInputErr = g.freezeNativeCommand9MapInput()
+	message.hdWork = append([]byte(nil), g.nativeMapWork...)
+	message.hdPalette, err = fdother.VGAPaletteFromDAC(g.nativeMapDAC)
+	if err != nil && message.hdInputErr == nil {
+		message.hdInputErr = err
+	}
+	if g.modernStoryPortraits != nil {
+		message.hdWorld, err = g.prepareModernHDRewardWorld(message, source, g.modernStoryPortraits)
+		if err != nil {
+			return err
+		}
+		message.hdTheme = g.modernStoryPortraits
+	}
 	g.nativeSystemEndTurnUI = &nativeSystemEndTurnUIState{
 		source: source, dialogue: final, rewardMessage: message,
 	}
@@ -121,6 +144,7 @@ func (g *Game) beginNativeDeathRewardMessage(pending pendingNativeDeathRewardMes
 	g.nativeClassUIJob = &nativeClassUIJob{frames: opening, after: func() {
 		message.awaitAck = true
 	}}
+	message.opening = g.nativeClassUIJob
 	return nil
 }
 
@@ -149,6 +173,7 @@ func (g *Game) acknowledgeNativeDeathRewardMessage() {
 			message.then()
 		}
 	}}
+	message.closing = g.nativeClassUIJob
 }
 
 func (g *Game) nativeDeathRewardMessageAwaitingKey() bool {

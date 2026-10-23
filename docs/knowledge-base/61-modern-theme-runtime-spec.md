@@ -3909,3 +3909,18 @@ BG 與 TAI 各 57 項，末項各為零長 raw，不能補造美術。BG 的 10 
 失敗樣本仍保留：最初測試角色超出range1，原生守衛正確拒收；延遲閉包依go.mod的go1.21語意抓到最後id，改測試區域副本；多目標疊光抓到舊CPU整數Over的取整差，改比較器並維持容差。這些不靠改遊戲規則或重擲亂數通過。最後fixture採actor(10,7)、target(11,7)與額外(11,6)，使最小半徑也覆蓋HD樹林。早期成功單元與第一份source的範圍較窄，另列歷史，不取代最後七閘門。
 
 正式清冊新增兩群組與17圖，舊675項保持。原稿、十個直接Noto字形來源及成品沿白名單保存私人庫；全體數量與目前分層只見58及同批formal_coverage。其他指令owner、背景／台座／HUD、工具列與遊戲加速仍待，未新增普通玩家、原版RGB或完整HD聲明。
+
+
+### 戰後物品／金錢成功訊息 HD
+
+狀態：CONFORMED-SCOPED／RUNTIME-E1。限既有 `nativeSystemEndTurnUI.rewardMessage` 的型態0／1成功臂，不包含滿背包問句或到期提示。原版證據沿58的死亡效果／110行動尾端與 `native_death_reward_message.go` 定位；不重開已閉合RE。固定執行檔SHA-256仍為 `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。呈現輸入沿 `campaign/native_transient_expiry.go` 的FDTXT0x1B0／0x1B3、FFFC物品名／FFFA金額與offset0x9F23，頭像沿原killer+7，不以獎勵值推人物。
+
+- 開框六拍與收框五拍只使用 `NativeClassListOpeningFrames`／`ClosingFrames` 的實際310×86來源矩形、y112及每拍13像素位移，還原拍不留文字或頭像。所有原生快取與節拍保持。
+- 成功訊息建立時凍結與原生VGA逐位元組相符的typed地圖輸入、work及色盤；HD世界沿同一凍結來源，保留actor尚未灰化的呈現。F2必須先準備完整HD世界再發布，不重跑交易或更改owner。
+- 正式HD文字沿既有字形映射與Noto捕捉器，未知字形保留原字模。重新組版只發生在Draw的值複本，不修改原final／字型／字串。每個字沿既有17×17原生安全格；開收框的位移與可見矩形同步裁切。
+- 已登錄480頭像以原生80×80位置及右至左朝向呈現，與實際面板一起位移和裁切。沒有該角色HD圖時保留原頭像，不捏造素材。
+- 物品獎勵、關框後才加金幣、ACK、一次續行、HP／MP／亂數及存檔不改。原版像素模式保持。驗收須涵蓋物品與金錢、六開／等待／五收／restore、F2與零狀態改寫，另跑原生交易回歸；受控GUI不當正常玩家或原版對拍證據。
+
+實作入口為[成功訊息HD](../../remake/cmd/fd2/modern_hd_reward_message.go)，[受控測試](../../remake/cmd/fd2/modern_hd_reward_message_test.go)涵蓋原生面板與完整繪製。[永久驗證器](../../tools/verify_fd2_reward_message_hd.py)在既有Go Docker內以 `--kind unit --catalog <正式catalog> --pack <正式圖源> --out <既有工作根的新前綴> --timeout 900` 重跑；kind另接受game、regression及hud，缺必要測試、SKIP／失敗／逾時／OOM即拒收。來源與四份最終閘門沿HD主收據 `reward_message_hd_followup_20261023`；完整HD與集中人工／平台仍待。
+
+兩種成功訊息各六開、一次等待、五收及restore，26張完整Game.Draw／26次F2通過，框外保持同一HD世界，480圖源的朝向／可見核心與移動裁切逐點核對。金幣仍在restore後加入、續行一次；四批共13項必要Go測試無SKIP／逾時／OOM。清冊與私人素材保持，不新增原版對拍或正常玩家證據。最初兩輪受控fixture仍帶resetBattle開戰對話，原始PNG與差異保留，修正測試初始狀態後以同門檻重跑，正式引擎不作對應特例。
