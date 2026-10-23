@@ -3875,6 +3875,21 @@
         ],
         "pattern": "func modernMapSpriteAlpha\\("
       }
+    },
+    {
+      "id": "regional-hd-effect-needs-nonvacuous-hd-terrain",
+      "date": "2026-10-23",
+      "area": "HD演出驗證",
+      "rule": "局部地形的HD變色演出，另設位置讓效果確實覆蓋已登錄HD圖塊，核對原生範圍與確實變色點數，不只看全流程畫面通過。入口為tools/verify_fd2_commands10_12_hd.py --kind unit --catalog <清冊> --pack <素材包> --out <新前綴>；必要兩個單元及11／12各至少100個範圍內與變色點由永久驅動器檢查，完整Game.Draw另驗。",
+      "why": "原流程actor(1,6)的指令11圈大部分落在尚未HD的海岸，不能單靠該流程證明HD圖塊變色。改以(8,5)做獨立來源核對，11有58387個內點／57708變色，12有101025／100331，兩包最終單元均通過。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#commands10_12_map_hd_followup_20261023.verification.radial_nonvacuous_source_check",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_commands10_12_hd.py"
+        ],
+        "pattern": "HD徑向變色沒有非空覆蓋"
+      }
     }
   ]
 }

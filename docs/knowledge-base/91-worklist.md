@@ -188,17 +188,15 @@ HD高解析呈現仍未完成。目前穩定文字、高解析故事頭像、戰
 
 `modern-battle-animation-hd` · 工作 · [#263](https://github.com/wicanr2/fd2_re/issues/263) · 仍未完成 · 要人判
 
-全部HD仍未完成，本項保持開啟。使用者定案先完成全部HD串接，再集中正常玩家抽驗與人工造型確認，原驗收條件保持。唯一數量及缺口依[58現況矩陣](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)，契約依[61](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/61-modern-theme-runtime-spec.md)。
+全部HD仍未完成，本項保持開啟。使用者定案先完成全部HD串接，再集中正常玩家抽驗與人工造型確認，原驗收條件保持。唯一數量與缺口依[58](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)，契約依[61](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/61-modern-theme-runtime-spec.md)。
 
-最新玩家指令9已接入HD地圖演出：FDOTHER6的27個效果及FDOTHER5的13份數字／MISS來源，完整八次色盤、27效果、22結果及500ms hold保持。原生steady同次typed input凍結，98張indexed VGA由獨立覆寫器逐位元組重組一致；事件(0,0)與正常(4,4)分開，HD地圖人物及HUD上方效果沿原生copy與層序。
+最新指令10～12的60幀地圖取樣與11／12十輪2189A前導已接HD；兩包各1083次主要Game.Draw、90次F2，三指令命中／MISS／雙目標、22結果、500ms hold及一次續行通過。原MP／HP／RNG／Acted、音效呼叫與全部排程保持，不改規則／保存。使用同次typed輸入與terrain snapshot、LUT／radial spec，地形用原固定小數表作HD子像素取樣，物件在原位置重畫。
 
-候選／獨立runtime-only兩包各120張來源GPU世界與完整命中／MISS通過；正式路徑另用永久驅動器重跑同樣120來源與176次HD呈現、16次F2往返。MP80→50一次、目標HP100→0或100、RNG及一次續行保持；五項編製測試包含10配方拒收、2原PNG/raw破壞及9清冊拒收。完整主題預檢、晚期缺件／F2原子拒收、既有死亡回歸及alpha掃描等價通過，八項Go閘門無SKIP／OOM／逾時。
+九個最終Go閘門無SKIP、逾時或OOM。獨立HD座標、原子缺件／錯尺寸及F2預檢通過。另在HD地形旁核對指令11的58387個範圍內取樣點、指令12的101025點，其中57708／100331確實變色，避免只驗到像素背景。舊2189A、原生敵方10、玩家9與死亡回歸通過。完整GUI場景使用seed7、受控傷害999與命中0／100、角色移位；非正常玩家、新原版parity或PLAYER-E2。
 
-新增40成品、五原RGBA與13字形來源共58白名單檔；舊671項／6362檔SHA保持，私人6420實檔逐SHA驗證且保存庫仍PRIVATE。正式清冊除恢復private_root外與受驗候選相同。公開庫只放程式、配方、雜湊及README四格實際Game.Draw總覽。共用母稿、原框裁切、消散及光形為明示現代近似，集中人工未過。測試明示seed7、角色移位、傷害999及受控100/0命中，不當作正常玩家或原版parity。
+本批沒有新增美術，673項清冊與私人素材SHA保持，既有264個FIGANI／2118幀、23個FDOTHER／408幀及三組LMI／52張保持。四張README總覽由完整實際Game.Draw縮為一半；HD子像素與四色差近似明示，不宣稱造型定稿。完整收據與永久重跑入口見[HD主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-battlefield-20261019.json)的commands10_12_map_hd_followup_20261023。
 
-三次舊360/420秒逾時的oom計數均0；20秒剖析定位完整主題alpha掃描成本，再以等價掃描及完整同條件重跑確認。微基準只說掃描，不外推整體載入或平台效能。收據、原始提示、配方、私人來源與重跑入口集中於[HD主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-battlefield-20261019.json)的player9_map_hd_followup_20261023。
-
-既有敵方9、264個FIGANI／2118幀、普通0～8、24／29、四召喚及前批正常抽樣證據保持。來源408、其他效果／地圖回復／背景／HUD、18／19第三銀行合法caller、普通召喚與平台仍待。凱麗右腳[#269](https://github.com/wicanr2/fd2_re/issues/269)與蓋亞手腕[#268](https://github.com/wicanr2/fd2_re/issues/268)保持集中人工待辦。本批無新錄影、Release、PLAYER-E2或完整HD聲明。
+來源408、其他效果／13～16地圖回復／背景／HUD、18／19第三銀行合法caller、普通召喚與平台仍待。凱麗右腳#269與蓋亞手腕#268保持集中人工待辦。本批無錄影、Release或完整HD聲明。
 
 怎樣算做完：建立由正式consumer到FIGANI人物及共同效果的可重跑覆蓋清冊；完成可達戰鬥動畫HD素材、原始位置／層序／節拍／命中與音效標記的正式呈現，缺件明示；正常玩家抽驗攻擊、受擊／反擊、法術／效果、死亡與戰場返回，F2、保存冷讀與代表性效能通過；已登錄素材同步私人庫，保留原版像素模式。資料測試及離線PNG不能取代正式GUI。
 

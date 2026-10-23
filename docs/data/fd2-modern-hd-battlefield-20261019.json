@@ -98455,7 +98455,7 @@
     },
     "private_remote_verification": "Independent private repository commit pushed; actual git ls-remote refs/heads/main re-read equals local HEAD. Private commit identity is not published."
   },
-  "latest_hd_batch": "player9_map_hd_followup_20261023",
+  "latest_hd_batch": "commands10_12_map_hd_followup_20261023",
   "monks28_31_mage29_followup_20261022": {
     "status": "CONFORMED-SCOPED-RUNTIME-E1",
     "date": "2026-10-22",
@@ -201380,6 +201380,312 @@
       "driver": "python3 tools/verify_fd2_player9_map_hd.py --kind unit|source|game|regression --catalog ABS_CATALOG --pack ABS_PACK --out FRESH_PREFIX --timeout 900",
       "runtime_pack": "python3 tools/sync_modern_theme_private.py --catalog ABS_CATALOG --source ABS_FORMAL_ROOT --destination NEW_RUNTIME_DIRECTORY --runtime-only; then driver --require-real-runtime",
       "docker": "All commands use existing fd2-assets-local:20260829-sfx or fd2-go-test-local:latest, user1000, original RO, network none, bounded CPU/memory/PIDs; Xvfb owned by driver trap."
+    }
+  },
+  "commands10_12_map_hd_followup_20261023": {
+    "status": "CONFORMED-SCOPED",
+    "base_commit": "087417ac67cf7b722798cf1e6040dc7996f22986",
+    "date": "2026-10-23",
+    "scope": "指令10～12既有60幀地形取樣、11／12十輪2189A前導、22結果與500ms hold。只接HD繪製，不改規則／保存或新美術。13～16回復及其他owner另列。",
+    "evidence": {
+      "docs/data/ida/fd2_command10_12_presentation_ida.txt": "4fd329a94d40ab2cef50985fef0c4baa0a796e76b1bc19e92e6fc929b056af3d",
+      "docs/data/ida/fd2_ch22_post_ida.txt": "51ad4d74cc62876f69c2b9e5a31610c41e76a8d9a4453291593795649710fdc7",
+      "remake/internal/indexedmap/native_command10_12.go": "d9c1a2321e07a3cfee04ec2a7a700621b5ac9fcdf998627ce453b815ca59191c",
+      "remake/internal/fdother/native_command10_12.go": "9de2d5d020d255ff2d2ebf98320211db444cf3f159fa3eaf1796622859015abc"
+    },
+    "spec": {
+      "status": "CONFORMED-SCOPED",
+      "evidence_review": "沿已閉合IDA9.4與typed合成器；原EXE SHA222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f，IDA linear。未重開RE。",
+      "inputs": "原typed sampler使用的in、baseline、三組signed raw origin/increment、actual LMI結果來源；2189A保存同次terrain snapshot／radial spec／LUT，不用章內結算後狀態重建。",
+      "sampling": "原生startX=cameraX*3072+13*1536+xOrigin-156*increment，Y同8*1536-96*increment；HD子像素用start*6+HDx*increment，tile divisor18432，原24像素轉144像素後像素索引rem/128。只有已核HD terrain來源替換，其他地形沿原native取樣，所有物件於原位置重畫，事件copy(0,0)；4 surface順序與60拍保持。",
+      "layers": "native object-free sampled terrain -> HD sparse terrain plane -> HD人物 ->原生／HD前景；取樣與radial段無HUD／Range／selection。surface0、hold及前導末張restore沿各自同次steady輸入；結果沿原snapshot HUD上方LMI。",
+      "radial": "2189A的十份原始LUT及同次center/radius/Scale12直接保存。透過ApplyRadialLUTRemap的常數探針重生原生範圍，原生像素範圍6倍套用HD地形，角色不變色。顏色沿既有terrainColourContext四近鄰RGB色差，組合實際TerrainLUT與radial LUT；非原RGB parity。",
+      "atomicity": "開始與F2前完整預建所有新HD畫布，任何13份結果來源／人物／terrain／LUT／descriptor缺件拒收。F2只交換快取，不改phase/frame/drawn/hold、MP/HP/RNG/Acted/聲音／callback。不得省略前導或回退原像素以宣稱HD完成。",
+      "acceptance": [
+        "三組fixed-point取樣逐native錨點與獨立參考核對，含負origin／邊緣；三command／hit／MISS／多目標來源。",
+        "正式Game.Draw全部60+22+hold，11／12完整十輪與restore；主要相位F2，MP／HP／RNG／Acted／一次續行保持。",
+        "完整主題與實檔runtime包、缺件／F2原子性、原command10～12／player9及死亡回歸；CPU／GPU世界獨立核對。",
+        "同原生幾何，HD子像素取樣及RGB色差屬現代近似，正常／集中人工／平台保持待辦。"
+      ],
+      "rights": "不增新圖源；完整素材保持私人，公開僅程式／配方／雜湊／實際繪製總覽。"
+    },
+    "formal_registered": false,
+    "normal_player": false,
+    "human_review": false,
+    "full_battle_hd_complete": false,
+    "base_source_preimages": {
+      "remake/cmd/fd2/native_command10_12_presentation.go": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/commands1012-preimage-native_command10_12_presentation.go.txt",
+        "sha256": "f578f782a817adbad7699f90028d4206e1bf2672df925d8bfb9abd2baa9c32d5"
+      },
+      "remake/cmd/fd2/native_ch22_post.go": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/commands1012-preimage-native_ch22_post.go.txt",
+        "sha256": "84d0b8fdec65b297766c83ab99b6e6b81d9dbb21906761bda22cd2f943f8f13d"
+      }
+    },
+    "verification_in_progress": {
+      "native_regression": "commands1012-native-regression-oct23-r1",
+      "initial_hd_unit": "commands1012-hd-unit-oct23-r1",
+      "status": "HISTORICAL-INITIAL-PASSES; superseded by verification",
+      "current_catalog_assets": 673,
+      "new_assets": 0,
+      "temporary_runtime_files": 5532,
+      "command10_formal_complete": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command10-hd-game-formal-oct23-r1.gate.json",
+        "sha256": "ce0460cf33bc3d46e8747fdf94ae1bff60a6ab395aa36e5eaea056ca8dcceafe"
+      },
+      "runtime_unit_first_pass": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/commands1012-hd-unit-runtime-oct23-r1.gate.json",
+        "sha256": "09047b6ae1d05f438d1c587287cf956a57f9206bd992f74753099edf36e5e989"
+      },
+      "geometry_guard_followup": "初兩包單元與指令10正式GPU通過後，審查補上結果13圖的尺寸守衛及錯尺寸反例。有效圖源與排程不變；最終單元與runtime GPU須以補守衛後程式重跑，舊通過不冒稱新反例已驗。"
+    },
+    "catalog_changed": false,
+    "new_assets": 0,
+    "private_sync_required": false,
+    "private_synced": true,
+    "formal_coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-formal-coverage-oct23-r1.json",
+      "sha256": "01bdb1491f9cb8c30aac2da7877e3eb5195ddabcc26e92b0f14daa1316aaf29c"
+    },
+    "catalog_sha256": "6d34e52b39013847efc406a5b119dfd43173fa163d1871cce81404d174cacc53",
+    "recordings_created": false,
+    "formal_registration_note": "只接既有已登錄素材的新consumer，清冊673項與私人包保持，不需要新增素材登錄或私人提交。",
+    "verification": {
+      "status": "PASS-SCOPED-RUNTIME-E1",
+      "runs": [
+        {
+          "name": "command10-hd-game-formal-oct23-r1",
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command10-hd-game-formal-oct23-r1.memory.json",
+            "sha256": "94a218af79c0edaa2d2b5660cd4554ede7fc6188466d133ad16bc1c269f9079b"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command10-hd-game-formal-oct23-r1.log",
+            "sha256": "07864d5f0e321750cec9c30f76ff68ebd47811177b9fd5cc7cb4654ff8517287"
+          },
+          "elapsed_seconds": 221.289,
+          "memory_peak_bytes": 4407431168
+        },
+        {
+          "name": "command11-hd-game-formal-oct23-r1",
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command11-hd-game-formal-oct23-r1.memory.json",
+            "sha256": "e46f544601234755cb58933f17a21a21a9bc98122afc02d94607ae2787cc21b5"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command11-hd-game-formal-oct23-r1.log",
+            "sha256": "5dccecdb9258b086df9824bae4ffaa3d3b3e5ddb9ccc1fe60a271b316b94950b"
+          },
+          "elapsed_seconds": 292.729,
+          "memory_peak_bytes": 5479075840
+        },
+        {
+          "name": "command12-hd-game-formal-oct23-r1",
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command12-hd-game-formal-oct23-r1.memory.json",
+            "sha256": "37fc0db80786e0b6498468217f03b5447b79a619313040534a59c83da815a905"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command12-hd-game-formal-oct23-r1.log",
+            "sha256": "73c9a726ef7c907f7df02666b7482f3f7fc79dcc31fdb74eb5a27aaf0f96804f"
+          },
+          "elapsed_seconds": 346.367,
+          "memory_peak_bytes": 5181014016
+        },
+        {
+          "name": "command10-hd-game-runtime-oct23-r1",
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command10-hd-game-runtime-oct23-r1.memory.json",
+            "sha256": "7fb2c1ea0639fcf75f317aa6db1a90ecb4f02aef0e203f817dbfb001e2d198d8"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command10-hd-game-runtime-oct23-r1.log",
+            "sha256": "49f12fe6c8eac8d4158ae96788adcc99ac81f4ec0663493281a741c4c0f48e35"
+          },
+          "elapsed_seconds": 270.23,
+          "memory_peak_bytes": 3395203072
+        },
+        {
+          "name": "command11-hd-game-runtime-oct23-r1",
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command11-hd-game-runtime-oct23-r1.memory.json",
+            "sha256": "1299f58c137992e685c0a3e22773c5638bcaddf9da587213705792ad91414e77"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command11-hd-game-runtime-oct23-r1.log",
+            "sha256": "34a05930ec45a894d2385cbb2d641b5bdbb06bf21f1cf58fcb0c11184420b29f"
+          },
+          "elapsed_seconds": 338.925,
+          "memory_peak_bytes": 5016682496
+        },
+        {
+          "name": "command12-hd-game-runtime-oct23-r1",
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command12-hd-game-runtime-oct23-r1.memory.json",
+            "sha256": "a71bfc615940e2cba06e7fddba2c0e3d475656ea7008134c9feae655de5725f4"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command12-hd-game-runtime-oct23-r1.log",
+            "sha256": "bbb91294b9e880dcaaf7b0405a58cdc3ca69f846807fd7afbb3e82167f255a0c"
+          },
+          "elapsed_seconds": 313.346,
+          "memory_peak_bytes": 4818608128
+        },
+        {
+          "name": "commands1012-hd-unit-formal-final-oct23-r1",
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/commands1012-hd-unit-formal-final-oct23-r1.memory.json",
+            "sha256": "a7f922ffe6fad4bdb05f83e434d1c2f9f871759b24e44b182bb963c8933fc837"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/commands1012-hd-unit-formal-final-oct23-r1.log",
+            "sha256": "2690e71c5186f05cc5ff716881024cf7a80ccde3185cb40072c197ad08e31892"
+          },
+          "elapsed_seconds": 207.594,
+          "memory_peak_bytes": 2465705984
+        },
+        {
+          "name": "commands1012-hd-unit-runtime-final-oct23-r1",
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/commands1012-hd-unit-runtime-final-oct23-r1.memory.json",
+            "sha256": "6a223ccf9b34f741965326b282a24fee303783a3d6ffe8a41a1bceabaacee989"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/commands1012-hd-unit-runtime-final-oct23-r1.log",
+            "sha256": "28b46c24061338e83aa0e809177722ff81fdcdeee87acce3264cb79801118f86"
+          },
+          "elapsed_seconds": 96.253,
+          "memory_peak_bytes": 2708914176
+        },
+        {
+          "name": "commands1012-legacy-regression-final-oct23-r1",
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/commands1012-legacy-regression-final-oct23-r1.memory.json",
+            "sha256": "61033a9f501505556365fb02024dd81021462b439fa3a7d3fb05c70834fdbfab"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/commands1012-legacy-regression-final-oct23-r1.log",
+            "sha256": "ee0d4e76500412f0e5b72af267c0cd7f66efc658f007ea5d9202d27fc987b915"
+          },
+          "elapsed_seconds": 7.015,
+          "memory_peak_bytes": 454742016
+        }
+      ],
+      "gpu": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command10-hd-game-formal-oct23-r1-capture/gpu.json",
+          "sha256": "b1dd005852dfd90749affcd59b3285f9fa53bc7ee429f51a73387ab6a153f4ef"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command11-hd-game-formal-oct23-r1-capture/gpu.json",
+          "sha256": "55326d2809e91e95a40af57a0b2f71401f84c39aa95e8fecde74a656548fd1c3"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command12-hd-game-formal-oct23-r1-capture/gpu.json",
+          "sha256": "ecfca6ef48bd597c6be454520f7409179f1a1416a186cc2ccb042f820f40678b"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command10-hd-game-runtime-oct23-r1-capture/gpu.json",
+          "sha256": "b1dd005852dfd90749affcd59b3285f9fa53bc7ee429f51a73387ab6a153f4ef"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command11-hd-game-runtime-oct23-r1-capture/gpu.json",
+          "sha256": "55326d2809e91e95a40af57a0b2f71401f84c39aa95e8fecde74a656548fd1c3"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command12-hd-game-runtime-oct23-r1-capture/gpu.json",
+          "sha256": "ecfca6ef48bd597c6be454520f7409179f1a1416a186cc2ccb042f820f40678b"
+        }
+      ],
+      "primary_hd_draws_per_pack": 1083,
+      "f2_round_trips_per_pack": 90,
+      "cases": "Each command: seed7, controlled single-target hit/MISS and two-target hit; actor(1,6), target(2,6), second target(3,6), damage999, MP80->50 once, HP/RNG/Acted and one continuation asserted.",
+      "radial_nonvacuous_source_check": {
+        "actor": [
+          8,
+          5
+        ],
+        "target": [
+          9,
+          5
+        ],
+        "command11_inside": 58387,
+        "command11_changed": 57708,
+        "command12_inside": 101025,
+        "command12_changed": 100331,
+        "method": "CPU sparse HD planes checked against independent radial membership and existing colour primitive; full Game.Draw fixtures remain separately identified."
+      },
+      "source_revision_note": "Formal command10/11 preceded the added result-dimension rejection. All runtime GPU, formal command12, and both final unit runs use the final production guard; valid source images are identical. Test-only near-terrain checks were added afterward and both final units include them.",
+      "cross_process_scope": "Full-world cross-process SHA equality is not asserted; initial map animation clock is not controlled. Every actual GPU and final presentation is checked against the same-state independent CPU Over world, tolerance2.",
+      "approximation": "HD subpixel terrain sampling and existing four-nearest RGB colour delta are modern-art extensions; original tables, copy origins, source descriptors, phase order, state transactions and timing gates remain unchanged.",
+      "required_test_admission": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/commands1012-required-tests-final-oct23-r1.json",
+        "sha256": "ff8d267c012d2d30b7068470ea750e73c895f5b758cf8fa17311ec051eb3220f"
+      }
+    },
+    "verified_implementation_files": {
+      "remake/cmd/fd2/modern_hd_commands10_12_map.go": "c464b9388e6d7c4f30ab152d0ad6376cd27f98f27f7e2931c0f96541a57b4376",
+      "remake/cmd/fd2/modern_hd_commands10_12_map_test.go": "4edaf4b39ea89dc1f1917aaafe9c4b82aca45e087a2570e0ddd4bb5f31ce0dd6",
+      "remake/cmd/fd2/modern_hd_commands10_12_map_gpu_test.go": "4d31d13993d6620fd06a5c65624e27821f9810293e38ef3da65892a884c4ad8c",
+      "remake/cmd/fd2/native_command10_12_presentation.go": "bb0746906ce36a9d09dbe4d82c26e5c3e7c891a74d861ee6a0d824c20acdd0d6",
+      "remake/cmd/fd2/native_ch22_post.go": "3e2c9662d6a71a26c7d3360a9cb555894243864bc0549e3dd51d9e25a8b94bd1",
+      "remake/cmd/fd2/player_shortcuts.go": "ede38178db364e2e660c5c844a5a8f7b96623dde84d47d9293dd90c5c07b8862",
+      "tools/verify_fd2_commands10_12_hd.py": "9706c33f2bc0b7555397e8601d9a8f3a8c64b36fec7c19ec73bc4ffefd36f172"
+    },
+    "driver": {
+      "file": "tools/verify_fd2_commands10_12_hd.py",
+      "sha256": "9706c33f2bc0b7555397e8601d9a8f3a8c64b36fec7c19ec73bc4ffefd36f172",
+      "usage": "Go Docker; --kind unit|game|regression --id 10|11|12 --catalog ABS --pack ABS --out FRESH_PREFIX --timeout 1200; fresh runtime package adds --require-real-runtime."
+    },
+    "readme_overview": {
+      "file": "docs/figures/hd-map-commands10-12.png",
+      "sha256": "4a31c297533425983a0ffbbcee6765bd12fb145747b3170728260e6ebe650cfd",
+      "sources": [
+        {
+          "source": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command10-hd-game-formal-oct23-r1-capture/command10-targets1-phase1-frame01.png",
+            "sha256": "091b187753a14272a6dd6f6209e9723839c3a4dcc0dcfe5148a8ac8ca6412b7c"
+          },
+          "scale": 0.5,
+          "crop": null,
+          "label": "指令10：地形取樣"
+        },
+        {
+          "source": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command10-hd-game-formal-oct23-r1-capture/command10-targets1-phase1-frame03.png",
+            "sha256": "585006b0aaa665e2492538f41b384634df8dc4081b69dd7cf7cc4cdd7f9f5b7f"
+          },
+          "scale": 0.5,
+          "crop": null,
+          "label": "指令10：另一取樣位置"
+        },
+        {
+          "source": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command11-hd-game-formal-oct23-r1-capture/command11-targets1-phase0-frame05.png",
+            "sha256": "bbe92f436f698cbb2a6b99a649858c5d652552958258cd7a78a2d1a97b80dc65"
+          },
+          "scale": 0.5,
+          "crop": null,
+          "label": "指令11：徑向前導"
+        },
+        {
+          "source": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command12-hd-game-formal-oct23-r1-capture/command12-targets2-phase2-frame04.png",
+            "sha256": "3c998aef571848294591694147f609059a668b7101e3324f265e0a72b93d6de8"
+          },
+          "scale": 0.5,
+          "crop": null,
+          "label": "指令12：雙目標結果"
+        }
+      ],
+      "scope": "Actual Game.Draw fixture worlds, controlled seed7/damage/hit and relocated actors; half-size overview, no normal-player or original-parity claim."
+    },
+    "runtime_pack_after_cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/commands1012-runtime-cleanup-oct23-r1.json",
+      "sha256": "d9e3bb048d965dc438df5567df4e5c9a0cbf4c4dfbdd6eb209e70b126fc71a7e",
+      "independent_files_now": false,
+      "note": "Old PASS receipts and original manifest describe real independent files at test time; this package now uses links. Future independent tests must rebuild real files. Removed original-file allocations are not net shared-host free-space measurements."
     }
   }
 }

@@ -1,6 +1,8 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
-玩家指令9的地圖演出已接入HD，限定RUNTIME-E1。兩包各40個來源與120張GPU世界、完整命中／MISS的176次HD呈現、16次F2往返，以及MP一次／HP／RNG／500ms hold／一次續行通過；98張原生VGA由獨立覆寫器逐位元組重組一致。原生穩定畫面的同次typed輸入凍結後使用，效果與結果沿(0,0)複製並畫在HUD之上，正常色盤與hold沿(4,4)；不按受傷後現況重建地圖。兩包完整主題預檢及缺件／F2原子拒收、既有死亡回歸與編製守衛通過。五份原RGBA與Noto數字來源保留，原框裁切、母稿共用、消散與揮刃形狀屬手繪近似。其他效果／地圖回復／背景／HUD、正常玩家與集中人工確認仍待。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，主證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的player9_map_hd_followup_20261023。
+指令10～12的60幀地圖取樣與11／12十輪前導已接入HD，限定RUNTIME-E1。正式及獨立素材包各驗三指令命中、MISS、雙目標、22張結果與500ms hold；F2、MP／HP／RNG／Acted及一次續行保持。四surface沿原固定小數表取樣HD子像素，徑向LUT沿原生範圍，以既有四色差近似接入手繪地形。缺件／尺寸原子拒收、非空HD徑向變色及舊2189A／敵方10／玩家9／死亡回歸通過。沒有新增素材、規則或保存格式。其他效果／地圖回復／背景／HUD、正常玩家與集中人工／平台仍待。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，主證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的commands10_12_map_hd_followup_20261023。
+
+前批玩家9的40來源與完整地圖演出保持，依同份主收據player9_map_hd_followup_20261023；地圖取樣與原LMI效果分開驗證。
 
 敵方指令9既有31來源、119幀與完整Game.Draw／F2收據保持，依同份主收據command9_battle_hd_followup_20261023；玩家地圖效果與敵方大型效果分開核對。
 

@@ -23,6 +23,13 @@ type native2189AJob struct {
 	drawn      bool
 	then       func()
 	rollback   func()
+	hdInput    indexedmap.NativeFrameInput
+	hdInputErr error
+	hdTerrain  []byte
+	hdRadial   []fdother.RadialLUTRemap
+	hdLUTs     [][]byte
+	hdFrames   []*modernHDMapFrame
+	hdTheme    *modernStoryPortraitSet
 }
 
 func nativeTransitionInput(in indexedmap.NativeFrameInput) indexedmap.NativeTransitionFrameInput {
@@ -90,10 +97,18 @@ func (g *Game) startNative2189A(loop campaign.Native2189ALoop, then func()) erro
 		}
 	}
 	job := &native2189AJob{palette: palette, then: then}
+	if g.nativeCmd1012 != nil {
+		job.hdInput, job.hdInputErr = freezeModernHDCommandGeometry(in)
+		job.hdTerrain = append([]byte(nil), snapshot...)
+	}
 	for i := 0; i < 10; i++ {
 		work := append([]byte(nil), snapshot...)
 		vga := append([]byte(nil), g.nativeMapVGA...)
 		radius := initialRadius + i*radiusStep
+		if g.nativeCmd1012 != nil {
+			job.hdRadial = append(job.hdRadial, fdother.RadialLUTRemap{CenterX: centerX, CenterY: centerY, Radius: radius, Scale: 12, StartY: 0, EndY: loop.ClipHeight, ClipWidth: loop.ClipWidth})
+			job.hdLUTs = append(job.hdLUTs, append([]byte(nil), g.nativeMapAssets.LUTs[i]...))
+		}
 		if err := fdother.ApplyRadialLUTRemap(work[loop.WorkOffset:], loop.WorkStride, g.nativeMapAssets.LUTs[i], fdother.RadialLUTRemap{
 			CenterX: centerX, CenterY: centerY, Radius: radius, Scale: 12,
 			StartY: 0, EndY: loop.ClipHeight, ClipWidth: loop.ClipWidth,
@@ -123,6 +138,13 @@ func (g *Game) startNative2189A(loop campaign.Native2189ALoop, then func()) erro
 	job.rollback = func() {
 		g.nativeMapWork = append(g.nativeMapWork[:0], beforeWork...)
 		g.nativeMapVGA = append(g.nativeMapVGA[:0], beforeVGA...)
+	}
+	if g.nativeCmd1012 != nil && g.nativeCmd1012.hdFrames != nil && g.modernStoryPortraits != nil {
+		job.hdFrames, err = g.prepareModernHDCommandPrelude(job, g.modernStoryPortraits)
+		if err != nil {
+			return err
+		}
+		job.hdTheme = g.modernStoryPortraits
 	}
 	g.native2189A = job
 	g.publishNative2189AFrame()
@@ -169,6 +191,13 @@ func (g *Game) drawNative2189A(screen *ebiten.Image) bool {
 	j := g.native2189A
 	if j == nil || len(j.palette) != 256 || len(g.nativeMapVGA) != indexedmap.NativeMapVGASize {
 		return false
+	}
+	if j.hdFrames != nil && j.hdTheme == g.modernStoryPortraits && g.modernStoryPortraits != nil {
+		if j.index < 0 || j.index >= len(j.hdFrames) || !g.drawPreparedModernHDMapFrame(screen, j.hdFrames[j.index], false) {
+			return false
+		}
+		j.drawn = true
+		return true
 	}
 	img := image.NewPaletted(image.Rect(0, 0, 320, 200), j.palette)
 	copy(img.Pix, g.nativeMapVGA)

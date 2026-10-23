@@ -37,6 +37,11 @@ type nativeCommand1012Job struct {
 	targetHPBefore            []int
 	rngBefore                 uint16
 	then                      func([]battle.NativeCommandDamageResult)
+	resultSources             [][]indexedmap.NativeCommandTailLayer
+	hdInput, hdBaseline       indexedmap.NativeFrameInput
+	hdInputErr                error
+	hdFrames                  *modernHDCommand1012Frames
+	hdTheme                   *modernStoryPortraitSet
 }
 
 func (g *Game) startNativeCommand1012Presentation(actor, confirmed *battle.Unit, commandID int, then func([]battle.NativeCommandDamageResult)) error {
@@ -118,12 +123,15 @@ func (g *Game) startNativeCommand1012Presentation(actor, confirmed *battle.Unit,
 		}
 	}
 	resultFrames := make([][]byte, 0, schedule.ResultFrames)
+	resultSources := make([][]indexedmap.NativeCommandTailLayer, 0, schedule.ResultFrames)
 	for frame := 0; frame < schedule.ResultFrames; frame++ {
 		work, vga := append([]byte(nil), baselineWork...), append([]byte(nil), baselineVGA...)
-		if err := indexedmap.ComposeNativeCommandHealDigitFrame(work, vga, baselineWork, g.nativeMapAssets.CommandHealDigits, queue, targets, view.CameraX, view.CameraY, schedule.ResultVertical, frame); err != nil {
+		sources, err := indexedmap.ComposeNativeCommandHealDigitFrameWithSources(work, vga, baselineWork, g.nativeMapAssets.CommandHealDigits, queue, targets, view.CameraX, view.CameraY, schedule.ResultVertical, frame)
+		if err != nil {
 			return fmt.Errorf("native command10-12 result frame %d: %w", frame, err)
 		}
 		resultFrames = append(resultFrames, vga)
+		resultSources = append(resultSources, sources)
 	}
 	palette := append(color.Palette(nil), g.nativeMapAssets.Palette...)
 	if len(g.nativeMapDAC) == 256*3 {
@@ -138,6 +146,19 @@ func (g *Game) startNativeCommand1012Presentation(actor, confirmed *battle.Unit,
 		targetHPBefore: make([]int, len(plan.Results)), rngBefore: g.nativeRNGState, then: then}
 	for i, result := range plan.Results {
 		job.targetHPBefore[i] = result.Target.HP
+	}
+	job.resultSources = resultSources
+	job.hdBaseline, job.hdInputErr = g.freezeNativeCommand9MapInput()
+	job.hdInput, err = freezeModernHDCommandGeometry(in)
+	if err != nil {
+		job.hdInputErr = err
+	}
+	if g.modernStoryPortraits != nil {
+		job.hdFrames, err = g.prepareModernHDCommand1012(job, g.modernStoryPortraits)
+		if err != nil {
+			return err
+		}
+		job.hdTheme = g.modernStoryPortraits
 	}
 	g.nativeCmd1012 = job
 	if schedule.Prelude.Enabled {
@@ -257,6 +278,26 @@ func (g *Game) drawNativeCommand1012Presentation(screen *ebiten.Image) bool {
 	j := g.nativeCmd1012
 	if j == nil || len(j.palette) != 256 || j.phase == nativeCommand1012Prelude {
 		return false
+	}
+	if j.hdFrames != nil && j.hdTheme == g.modernStoryPortraits && g.modernStoryPortraits != nil {
+		frame := j.hdFrames.Hold
+		switch j.phase {
+		case nativeCommand1012Main:
+			if j.frame < 0 || j.frame >= len(j.mainFrames) {
+				return false
+			}
+			frame = j.hdFrames.Main[j.schedule.SurfaceCycle[j.frame%4]]
+		case nativeCommand1012Result:
+			if j.frame < 0 || j.frame >= len(j.hdFrames.Results) {
+				return false
+			}
+			frame = j.hdFrames.Results[j.frame]
+		}
+		if !g.drawPreparedModernHDMapFrame(screen, frame, false) {
+			return false
+		}
+		j.drawn = true
+		return true
 	}
 	pixels := j.baselineVGA
 	if j.phase == nativeCommand1012Main {

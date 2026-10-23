@@ -3822,3 +3822,13 @@ R1編製總覽發現龍息接在上顎，以及空中連片被放成大光球。
 兩包各120張來源GPU世界對獨立CPU Over逐RGBA核對，完整命中／MISS共176次HD呈現、16次F2往返；原生98張VGA另由獨立indexed覆寫器逐位元組重組。完整主題冷預檢、缺件／錯SHA／原框與F2拒收、既有死亡演出回歸及五項編製測試通過，七項既有Go閘門無SKIP或OOM。正式清冊除private_root恢復正式路徑外與受驗stage相同，舊671項／6362檔SHA保持，58新白名單檔含五原RGBA與13份字形來源。黑色輪廓由獨立原RGBA提供；升起裁切、母稿共用、消散與揮刃形狀為現代美術近似，人工造型定稿仍待集中確認。
 
 重生入口為[圖源稽核器](../../tools/audit_fd2_player9_map_source.py)、[編製器](../../tools/build_fd2_player9_map_hd.py)、[正負控制](../../tools/test_fd2_player9_map_hd.py)與[永久Go驗證驅動器](../../tools/verify_fd2_player9_map_hd.py)。公開[配方](../data/fd2-player9-map-hd-recipe-20261023.json)搭配私人包的五原RGBA及固定Noto字型，在Docker以`--masters-root`指定來源、全新`--out`重生。驗證驅動器以`--kind unit/preflight/source/game/regression --catalog ABS --pack ABS --out FRESH_PREFIX`執行，獨立runtime包另加`--require-real-runtime`，不能拿清理後連結包充當獨立實檔。完整收據、原稿／私人檔名及SHA見同筆主收據；README為明示fixture的實際Draw，未新增原版parity、正常玩家或PLAYER-E2。
+
+### 指令10～12地圖取樣的HD接入
+
+狀態：CONFORMED-SCOPED／RUNTIME-E1。原始三組取樣表、60幀與11／12十輪2189A前導沿既有IDA閉合證據；HD取樣、分層、凍結輸入、LUT近似、F2原子預檢與驗收集中[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的commands10_12_map_hd_followup_20261023。數字／MISS沿玩家9既有13圖，不新增美術或改規則；13～16回復另列。
+
+主段保留四surface的0／1／2／3循環及60次Draw。HD地形使用原fixed-point起點乘6，逐HD子像素加原increment，除18432取tile與餘數，再除128取144圖源像素；原生錨點保持，背景未重繪處仍沿原indexed取樣。物件在原位置重畫，取樣與前導段不加HUD／Range；結果沿原snapshot的HUD上方13份數字圖。11／12前導保存同次terrain snapshot、十份LUT與radial spec，HD地形採原生範圍6倍與既有四近鄰RGB色差，不變色角色，不把HD RGB稱為原索引parity。
+
+兩包各1083張主要Game.Draw與90次F2，完整命中／MISS／雙目標、所有前導、結算與一次續行通過；結果銀行缺103及錯尺寸在啟動／F2原子拒收。另將角色移到(8,5)，獨立幾何核對11的58387個內部HD取樣點與12的101025點，其中57708／100331點確實變色，避免流程測試位於未HD地形而空泛通過。正式／runtime最後單元均驗相同點數；原版RGB、正常玩家與集中人工仍待。
+
+永久入口為[verify_fd2_commands10_12_hd.py](../../tools/verify_fd2_commands10_12_hd.py)，在既有Go Docker使用`--kind unit|game|regression --id 10|11|12 --catalog ABS --pack ABS --out FRESH_PREFIX --timeout 1200`。以[sync_modern_theme_private.py](../../tools/sync_modern_theme_private.py)的`--runtime-only`建立全新實檔包，再加`--require-real-runtime`驗5532檔；驗證完去重後不再稱獨立實檔。完整收據與已知近似見同筆主收據，清冊與私人素材保持原SHA。

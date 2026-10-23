@@ -48,6 +48,21 @@ func (g *Game) cycleTheme() {
 // applyTheme validates the current typed speaker before publishing any resource.
 // Rebinding only the portrait preserves the active dialogue's pages and progress.
 func (g *Game) applyTheme(set *modernStoryPortraitSet) error {
+	var command1012Frames *modernHDCommand1012Frames
+	var commandPreludeFrames []*modernHDMapFrame
+	if set != nil && g.nativeCmd1012 != nil {
+		var err error
+		command1012Frames, err = g.prepareModernHDCommand1012(g.nativeCmd1012, set)
+		if err != nil {
+			return err
+		}
+		if command1012Frames != nil && g.native2189A != nil {
+			commandPreludeFrames, err = g.prepareModernHDCommandPrelude(g.native2189A, set)
+			if err != nil {
+				return err
+			}
+		}
+	}
 	var player9Frames *modernHDPlayer9Frames
 	if set != nil && g.nativeCmd9Player != nil {
 		var err error
@@ -145,6 +160,12 @@ func (g *Game) applyTheme(set *modernStoryPortraitSet) error {
 		}
 	}
 	g.modernStoryPortraits = set
+	if job := g.nativeCmd1012; job != nil {
+		job.hdFrames, job.hdTheme = command1012Frames, set
+		if prelude := g.native2189A; prelude != nil {
+			prelude.hdFrames, prelude.hdTheme = commandPreludeFrames, set
+		}
+	}
 	if job := g.nativeCmd9Player; job != nil {
 		job.hdFrames, job.hdTheme = player9Frames, set
 	}
