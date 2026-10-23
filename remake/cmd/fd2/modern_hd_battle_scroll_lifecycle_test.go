@@ -109,6 +109,7 @@ func TestModernHDScrollRuntimeGPU(t *testing.T) {
 	}
 	shots := make(map[string]any)
 	sceneryDraws := make(map[string]int)
+	panelDraws := make(map[string]int)
 	var readback *ebiten.Image
 	pixels := make([]byte, 1920*1200*4)
 	defer func() {
@@ -130,6 +131,24 @@ func TestModernHDScrollRuntimeGPU(t *testing.T) {
 		}
 		if sources == nil {
 			return
+		}
+		if os.Getenv("FD2_HD_PANEL_TEXT") == "1" {
+			for _, source := range append(append([]modernHDBattleSource(nil), sources.BaseScenery...), sources.Layers...) {
+				if p := source.PanelText; p != nil {
+					r := image.Rect(source.Frame.X+source.DX, source.Frame.Y+source.DY, source.Frame.X+source.DX+149, source.Frame.Y+source.DY+42)
+					if source.Clip != nil {
+						r = r.Intersect(*source.Clip)
+					}
+					if r.Intersect(image.Rect(0, 0, 320, 200)).Empty() {
+						continue
+					}
+					if g.modernHDBattleGPU.sources["hd/"+p.key] == nil {
+						probe.err = fmt.Errorf("visible scroll panel missing GPU texture")
+						return
+					}
+					panelDraws[phase]++
+				}
+			}
 		}
 		shotKey := phase
 		if os.Getenv("FD2_HD_TRANSITION_REQUIRED") == "1" && (phase == "scroll-in" || phase == "scroll-out") {
@@ -268,6 +287,14 @@ func TestModernHDScrollRuntimeGPU(t *testing.T) {
 		t.Fatal("scroll retained GPU textures")
 	}
 	report := map[string]any{"status": "PASS-SCOPED-RUNTIME-E1", "side": side, "real_registered_battle_bank": real, "phase_hd_draws": probe.phaseDraws, "phase_f2": probe.phaseF2, "presents": len(probe.seen), "hd_draws": probe.hdDraws, "faithful_draws": probe.faithfulDraws, "final_draws": probe.finals, "continuations": callbacks, "battle_dac_steps": len(probe.rampSeen), "map_dac_steps": len(probe.mapRampSeen), "source_shots": shots, "scope": "真實FIGANI25／288／289與BG55／5的修改fixture；兩次射擊及反擊的正式Game.Draw。非普通玩家或新原版oracle。real只換正式battle銀行，地圖返回沿既有native fixture；F2切換的測試tick停一次以要求同present兩主題Draw。"}
+	if os.Getenv("FD2_HD_PANEL_TEXT") == "1" {
+		for _, phase := range []string{"prelude", "departure", "scroll-out", "scroll-in", "body", "counter"} {
+			if panelDraws[phase] == 0 {
+				t.Fatal("missing visible HD panel phase", phase)
+			}
+		}
+		report["panel_text"] = map[string]any{"locale": g.localeID, "frozen_snapshots": len(scene.hdPanelText), "actual_gpu_phase_draws": panelDraws}
+	}
 	report["target_figure"] = targetFigure
 	report["target_attack_frames_captured"] = os.Getenv("FD2_HD_SCROLL_TARGET_FRAMES") == "1"
 	if pair := os.Getenv("FD2_HD_SCROLL_SCENERY"); pair != "" {

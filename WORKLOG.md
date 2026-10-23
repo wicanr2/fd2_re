@@ -3072,3 +3072,19 @@ GitHub連接器無權查私人素材庫；沿用主機Git已登入路徑fetch成
 最終檢查通過386項SHA引用、10份來源指紋、4675個有效本地Markdown目標、gofmt與本批1000:1000擁有權。三份未改動的歷史交付筆記有八個舊輸出連結不可用，與base56a527c0逐bytes相同，分列於收據；初版檢查器另誤把行內／縮排程式碼當連結，修正後無本輪新增缺鏈。收尾封裝命令的引號錯誤在執行前拒收，改用檔案腳本，沒有修改正式程式或驗證門檻。323條教訓／188 guard通過；主機gh更新#263後重新拉24項worklist，由官方build_snapshot／render／verify同步，可能已完成0項，#268／#269保持OPEN。私人已獨立提交推送，登入Git核對HEAD／遠端相同且乾淨，匿名REST及HTML404，不公開私人提交識別碼。最終收據allscenery-final-check-oct24-r2.json；公開提交／遠端核對另記，完整HD目標維持active。
 
 本批Go／Xvfb及素材／Pillow容器已全部退出並刪除；沒有新映像、volume、錄影或Release。公開提交後核對HEAD／遠端與乾淨工作樹，結果保存allscenery-public-git-oct24-r1.json。
+
+2026-10-24 物理戰鬥面板HD文字，限定CONFORMED-SCOPED／RUNTIME-E1。沿核准1920／Noto／原位置，保存每次typed數值、raw名稱與原生149×42，逐byte匹配source base才附加。原框、bar、overflow符號、層序與保存保持，其他caller及完整HUD仍待。四語228姓名ink、24 GPU畫布、六完整Game.Draw／24次F2、72實際PNG及README四語圖組重生通過。11 HD閘門／24必要測試、七原生面板及八字串測試通過，峰值2611900416 bytes，沒有SKIP、逾時或OOM；這是受控fixture與測試快取範圍，不是正常玩家／平台效能。
+
+本輪三種工具／審查失敗均保留：首個compile-only命令缺DISPLAY，改同工具鏈Xvfb乾淨重跑；字形測試最初誤設80個有效姓名，實際目錄為57×4；字串遷移保留舊108分類後，新LV標籤仍須審查，已補player_visible一筆至109並重跑八項。實際畫面另抓到原字模左下陰影，依fdtxt.Font.BlitNativeGlyph寫入足跡修清除區，重跑四語／GPU與完整流程；舊失敗圖保留。Pillow image未提供DejaVu，外部標籤改內建字型，遊戲圖未重畫。新增教訓入口與guard，沒有新RE或原版RGB聲明。
+
+重跑沿tools/verify_fd2_battle_surface_hd.py的panel-unit／panel-source／panel-game／panel-scroll與既有regression／scroll-regression／legacy-gpu，在有界Go Docker內給正式catalog、pack、原包與out前綴；四語由--panel-locale，分離場景--pair 34:36 --transition與--enemy。原生面板由go test ./internal/battle -run "^(TestRenderNativeBattlePanel|TestNativeBattlePanelRecord)"；字串由fd2-string-inventory、官方migrate_string_review.py及./cmd/fd2-string-inventory測試。固定來源、源碼SHA與全部最終收據見HD主收據battle_panel_text_followup_20261024及hud-final-verification-oct24-r1.json。正式catalog761項與私人美術保持，不需新私人素材提交；原正常／集中人工／平台與浮出工具列／速度排程保持。公開提交、Issue及容器清理於收尾另核。
+
+收尾只刪本輪被陰影修正版取代的55份r1 PNG，共132336154 bytes；逐檔核對原收據SHA後刪除，保留一份陰影缺陷原圖、全部72份最終PNG、收據及log，不當作共享主機淨可用空間。彙整器先誤認分離背景收據也帶PNG SHA；確認其只記檔名與圖層後，72份最終PNG均核完整尺寸並另存首份SHA清單，未冒充全部上游均有逐SHA比對。
+
+新教訓guard首檢拒收，因fd2_lessons.py明確排除_test檔；改綁正式raster的陰影清除矩形，保留實際字形回歸，未修改產品或放寬測試。
+
+最終收尾通過17份來源指紋、72 PNG雜湊、2390個本輪文件本地目標、153個來源／輸出擁有權，324教訓／189 guard及24條遠端worklist。#263／#204已更新且原acceptance保持，#268／#269仍OPEN，可能已完成0條；最終核對hud-final-check-oct24-r3.json。廣域自檢另見51份歷史root-owned原資料／圖片，均未列本輪寫入，受版控者與HEAD逐bytes相同，其他只留SHA；沒有全域chown或刪除。所有本輪Go／Xvfb／Pillow容器均已退出且--rm，私人庫沒有本輪變更，沒有新image、volume、錄影或Release。
+
+提交前程式審查補修拒收分支：bindModernPhysicalScenery的defer原會在來源失敗時也附加typed面板；改為只有成功才綁定，補真實尺寸但缺raw的BG拒收案例。最終panel-unit r6三項、physical-regression r2七項及字串r3八項乾淨重跑通過，109筆分類保持。有效繪製、捲動與shader完全未改，因此保留六場成功GPU收據並保存其原始碼快照，不重新擴跑無關畫面；最終來源與差異界線見hud-final-verification-oct24-r2.json。
+
+拒收分支補修後最終核對hud-final-check-oct24-r4.json通過：17來源、72 PNG、2390本地目標、176本輪來源／輸出擁有權；51歷史root檔保持。提交前host gh重新拉24項，官方snapshot／render／verify及324教訓／189 guard通過；最新origin/main仍為本輪基底aa156fa0。

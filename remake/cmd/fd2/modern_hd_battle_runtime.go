@@ -12,6 +12,7 @@ import (
 )
 
 type modernHDBattleSource struct {
+	PanelText                     *modernBattlePanelText
 	Archive                       string
 	Frame                         figani.Frame
 	Resource, Index, DX, DY, Fill int
@@ -134,6 +135,13 @@ func (g *Game) modernHDBattlePlan(sources *modernHDBattleSources, palette color.
 		}
 		var picture image.Image
 		var key string
+		if source.PanelText != nil {
+			var err error
+			picture, key, err = source.PanelText.raster(palette)
+			if err != nil {
+				return modernHDBattlePlan{}, err
+			}
+		}
 		if source.Resource >= 0 {
 			var err error
 			var entries map[int]*modernBattleHDResource
@@ -176,7 +184,7 @@ func (g *Game) modernHDBattlePlan(sources *modernHDBattleSources, palette color.
 			clip = &value
 		}
 		plan.Layers = append(plan.Layers, modernHDBattleLayer{Native: f, HD: picture, HDKey: key, Rect: rect, Fill: source.Fill, Clip: clip,
-			PackedShader: source.PackedShader, PackedColours: source.PackedColours})
+			PackedShader: source.PackedShader, PackedColours: source.PackedColours, PreservePalette: source.PanelText != nil})
 	}
 	return plan, nil
 }
@@ -202,7 +210,12 @@ func (g *Game) publishModernHDBattlePlan(screen *ebiten.Image, plan modernHDBatt
 	return nil
 }
 
-func (g *Game) modernHDBattlePreludeSources(scene *nativePhysicalScene, stage int) (*modernHDBattleSources, error) {
+func (g *Game) modernHDBattlePreludeSources(scene *nativePhysicalScene, stage int) (sources *modernHDBattleSources, err error) {
+	defer func() {
+		if err == nil {
+			bindModernPhysicalPanelText(scene, sources)
+		}
+	}()
 	if scene == nil || scene.bodyResources == nil || stage < 0 || stage > 8 || len(scene.preludeBase) != 64000 {
 		return nil, fmt.Errorf("modern HD battle: prelude sources unavailable")
 	}

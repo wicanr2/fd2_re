@@ -218678,5 +218678,162 @@
       "volumes_created": 0,
       "new_recordings": 0
     }
+  },
+  "battle_panel_text_followup_20261024": {
+    "status": "CONFORMED-SCOPED/RUNTIME-E1",
+    "date": "2026-10-24",
+    "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+    "scope": "physical battle typed frozen panel direct HD text; native panel frame, bars, rules and save remain",
+    "original_exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "original_evidence": "existing closed NativeBattlePanelRecordForUnit / NativeBattlePanelOrigin / RenderNativeBattlePanel and physical caller evidence; no new RE",
+    "resolution": [
+      1920,
+      1200
+    ],
+    "full_hd_complete": false,
+    "normal_player_verified": false,
+    "new_art_assets": 0,
+    "catalog_changed": false,
+    "private_asset_sync_required": false,
+    "remaining": [
+      "full HUD artwork",
+      "other command callers and effect tails",
+      "source 408 unknown",
+      "concentrated normal player, shape and platform checks",
+      "floating toolbar and speed"
+    ],
+    "verification": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-final-verification-oct24-r2.json",
+      "sha256": "2ac881a6b5ba71df2dfcbefaaa49bad3c9a6efe4f3c3686a91cc8d6971abbe32"
+    },
+    "implementation_sources": [
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_panel.go",
+        "sha256": "63b16d7a011a9ce731126243c89b36b5660fc5a0be0f5feca8798bc21f4e466f"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_panel_test.go",
+        "sha256": "68f8e7271316e8e91f5ff194ebc2558d6cd5109db457a89d157bfed284c48723"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_runtime.go",
+        "sha256": "c98757186d86cf106a2e10f142f65aebb66a8a3a740497f94deeb5001a267fe8"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_gpu.go",
+        "sha256": "5af6ffe5d4ff145e2c74dc30fcb59794cb52a1376bf1345ec04f8ab908998305"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_surface.go",
+        "sha256": "7db9ef514db081e91a6500519e33b010a02eabea5cfba12018eb93af329a98f1"
+      },
+      {
+        "file": "remake/cmd/fd2/native_physical_scene.go",
+        "sha256": "0dc6ae449458b59679a1a00b5ba166f5bdec693047c1343b958ed04d89140061"
+      },
+      {
+        "file": "remake/cmd/fd2/native_physical_body.go",
+        "sha256": "21ca5e4cde7fc19411722bb166df59e3208086e05d6395df98065f1cb1044324"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_lifecycle_test.go",
+        "sha256": "ee33685de80f2d3dc9d85e3ce524ad15e8e9143dcbe809b11535f8d41b0157b9"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_scroll_test.go",
+        "sha256": "8baa9a7545948b767c36dbd86f1ddbe5b43f128c40e20055809f1d66843fee91"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_scroll_lifecycle_test.go",
+        "sha256": "1d2174e1391b2ff292a75a4cdd0eea24e68153445730961b6da23257be1efcd4"
+      },
+      {
+        "file": "remake/cmd/fd2/font.go",
+        "sha256": "4a7572ec1f904605a14929a1bd29e27e10092f8d505470591e7177a8c7e3d11f"
+      },
+      {
+        "file": "tools/verify_fd2_battle_surface_hd.py",
+        "sha256": "03b574ce41abf90dbb5e7bc6c918767b4622d2c76266b7a857a83c49019eedaf"
+      },
+      {
+        "file": "tools/build_fd2_battle_panel_gallery.py",
+        "sha256": "4dade6767835a8f81c06a8f50d3ea9d80597f7651cb9be1818da466d810e2d33"
+      },
+      {
+        "file": "remake/internal/battle/native_battle_panel.go",
+        "sha256": "478f445988a42571752143b179c643115105e5fcd1cfdd583078bdf30ceba798"
+      },
+      {
+        "file": "remake/internal/fdtxt/fdtxt.go",
+        "sha256": "bfc2c8cd0b5bf06e35d94a2fdd56cca85b9d8f0211464c76eb92355cb87e080a"
+      },
+      {
+        "file": "remake/go.mod",
+        "sha256": "97c4d9a19ccb559f64ea3d0282633790ff192ca8632375f28429d8fca207008b"
+      },
+      {
+        "file": "remake/go.sum",
+        "sha256": "c11f49fbe83587398c52eee4fdb1702dd4daa228471362028bbdb1e9f13f8478"
+      }
+    ],
+    "summary": {
+      "hd_go_gates": 11,
+      "required_hd_tests": 24,
+      "additional_native_tests": 7,
+      "additional_string_tests": 8,
+      "flows": 6,
+      "f2": 24,
+      "source_png_count": 72,
+      "gpu_panel_cases": 24,
+      "valid_name_ink_cases": 228,
+      "peak_memory_bytes": 2611900416
+    },
+    "gallery": {
+      "file": "docs/figures/hd-battle-panel-text.png",
+      "sha256": "c902d09b82e9d518ea56f43d7dd8e1069227b762d87f1f827c9eb2bd16531174"
+    },
+    "string_review": {
+      "file": "docs/data/fd2-string-review.json",
+      "sha256": "84a76c5a33b692da4ddfb6d231d6b244a00cc2f595986daead440234126bce34"
+    },
+    "known_differences": [
+      "Noto direct HD glyphs replace native glyph geometry; frame and bars retain native pixels",
+      "existing native digit foreground colours selected from the respective digit source",
+      "unresolved optional names retain native presentation",
+      "modified fixtures only; no normal-player, original RGB or platform parity claim"
+    ],
+    "corrections": [
+      "first compile-only command lacked DISPLAY; clean bounded Xvfb rerun passed",
+      "valid nonempty BattleName selectors are 57 per locale, not 80; all 228 real ink cases passed",
+      "native glyph left/down shadows require erase(4,4)-(132,21); actual Game.Draw and GPU rerun passed",
+      "LV label is a new player-visible go_review candidate; old 108 classifications preserved and one added",
+      "Pillow tool image lacks DejaVu; built-in font used only for labels outside game area"
+    ],
+    "cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-cleanup-oct24-r1.json",
+      "sha256": "96452deb63e37c744fe2c63d75b962c60a958a4e7e33c8b68f8cb4179b286081"
+    },
+    "github_issues": [
+      263,
+      204
+    ],
+    "issue_acceptance_preserved": true,
+    "final_check": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-final-check-oct24-r4.json",
+      "sha256": "75ac4357991b3e9bbc2c3d9cfcafbe76779e602518753629b1df4add9e5136c8"
+    },
+    "github_issues_verified_open": [
+      263,
+      204,
+      268,
+      269
+    ],
+    "worklist_open": 24,
+    "docker_cleanup_verified": true,
+    "runtime_capture_source_before_error_guard": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-pre-atomic-guard-sources-oct24-r1.json",
+      "sha256": "0cf75fd29d775b5842d72bce2b4e2a3b58d2f18eaabd5eec18f7335c59842d16"
+    },
+    "last_change_scope": "Only rejected-scene binding now skips typed panel metadata; successful render/scroll paths unchanged. Final panel-unit and physical regression rerun; six successful GPU flows retain their actual earlier source snapshots."
   }
 }

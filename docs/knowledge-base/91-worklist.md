@@ -170,6 +170,8 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 HD高解析呈現仍未全部完成。本項保持開啟；目前狀態與唯一數量依[58](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)，介面覆蓋依57、呈現契約依61。使用者定案先完成全部HD串接，再集中正常玩家與人工確認。
 
+物理戰鬥面板姓名、LV、HP／MP標籤與數字已接入1920畫布的直接Noto繪字，限定CONFORMED-SCOPED／RUNTIME-E1。每次繪製保存raw名稱、typed數值與原生圖，與同次base逐byte相符才附加；較早幀不讀取交易後HP。四語228姓名ink、24 GPU畫布、四語共背景與雙側分離背景合計六完整Game.Draw／24次F2及72實際PNG通過。11份HD閘門／24必要測試，另七原生面板與八字串回歸無SKIP／逾時／OOM；原框線、bar、overflow符號、人物遮擋與保存保持。README新增四語完整半縮圖並逐SHA重生；清冊與私人美術未變，完整HUD美術與其他caller仍待。來源依[HD主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-battlefield-20261019.json)的battle_panel_text_followup_20261024及61。
+
 已接入清晰字型、高解析故事頭像、戰場人物及已登錄地形。三種城鎮與三種商店的靜態背景／店員、裝備面板的既有480頭像已通過正式繪製與兩包載入；其他設施與固定圖樣仍待。
 
 先前普通第九章觀察到的「得到速度藥水」屬nativeSystemEndTurnUI.rewardMessage成功臂。本輪已將物品／金錢成功提示接上凍結HD世界、Noto文字與480頭像。兩完整受控Game.Draw共26拍及26次F2、原生開收框遮罩、每個金額數字、頭像朝向與移動裁切、HUD回交及一次續行通過；金幣仍於restore後加入。四批13項必要Go測試無SKIP／逾時／OOM，清冊及私人素材保持。這是RUNTIME-E1，尚未補做該普通玩家來源的HD抽驗；滿背包問句、到期訊息及其他caller仍待。來源依[HD主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-battlefield-20261019.json)的reward_message_hd_followup_20261023及61。
@@ -187,6 +189,8 @@ HD高解析呈現仍未全部完成。本項保持開啟；目前狀態與唯一
 `modern-battle-animation-hd` · 工作 · [#263](https://github.com/wicanr2/fd2_re/issues/263) · 仍未完成 · 要人判
 
 全部戰鬥HD仍未完成，本項保持開啟。使用者定案先完成全部HD串接，再集中正常玩家與人工造型確認；原驗收條件保持。唯一現況與數量依[58](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)，契約依[61](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/61-modern-theme-runtime-spec.md)。
+
+物理戰鬥面板姓名、LV、HP／MP標籤與數字已接入1920畫布的直接Noto繪字，限定CONFORMED-SCOPED／RUNTIME-E1。每次繪製保存raw名稱、typed數值與原生圖，與同次base逐byte相符才附加；較早幀不讀取交易後HP。四語228姓名ink、24 GPU畫布、四語共背景與雙側分離背景合計六完整Game.Draw／24次F2及72實際PNG通過。11份HD閘門／24必要測試，另七原生面板與八字串回歸無SKIP／逾時／OOM；原框線、bar、overflow符號、人物遮擋與保存保持。README新增四語完整半縮圖並逐SHA重生；清冊與私人美術未變，完整HUD美術與其他caller仍待。來源依[HD主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-battlefield-20261019.json)的battle_panel_text_followup_20261024及61。
 
 固定原包的全部可見戰鬥背景與台座圖源已補齊，限定CONFORMED-SCOPED／RUNTIME-E1。新增66份原稿、77個來源，原raw相同的台座共用原稿但保留各資源metadata；空Mask與終止空raw維持空白。BG的318寬／101高、原生透明孔洞與台座原框保留，接入共背景／分離物理及指令24／29的已驗caller。來源與完整配方依[HD主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-battlefield-20261019.json)的remaining_scenery_followup_20261024。
 

@@ -26,6 +26,18 @@ func modernScrollSceneFixture(t *testing.T, side byte) (*Game, *nativePhysicalSc
 func modernScrollTargetSceneFixture(t *testing.T, side byte, targetFigure int) (*Game, *nativePhysicalScene, *battle.Unit, *battle.Unit) {
 	t.Helper()
 	g, actor, target := physicalSceneTestGame(t)
+	if os.Getenv("FD2_HD_PANEL_TEXT") == "1" {
+		g.font = loadFont()
+		g.localeID = os.Getenv("FD2_HD_PANEL_LOCALE")
+		if g.localeID == "" {
+			g.localeID = "zh-Hant"
+		}
+		var err error
+		g.localeEntities, err = loadOfficialLocaleEntities(g.localeID)
+		if err != nil || g.font == nil {
+			t.Fatal("panel font/catalog required", err)
+		}
+	}
 	actorBG, targetBG := byte(55), byte(5)
 	if pair := os.Getenv("FD2_HD_SCROLL_SCENERY"); pair != "" {
 		switch pair {

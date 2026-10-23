@@ -18,6 +18,7 @@ import (
 // READY 子規格見 docs/data/ida/fd2_physical_background_selection_20261004.json。
 // 首次非零 header departure／scroll 已接線；完整 DAC 與尾段仍屬 E1。
 type nativePhysicalScene struct {
+	hdPanelText                     []*modernBattlePanelText
 	actorBattleFig, targetBattleFig int
 	preludeBase                     []byte
 	selection                       battle.NativePhysicalSceneSelection
@@ -191,7 +192,7 @@ func (g *Game) preflightNativePhysicalMapReturn() error {
 // 320×200 base 的清零來自 0x28B41..0x28B4E 明確 memset。
 func (g *Game) nativePhysicalBase(scene *nativePhysicalScene, actorRecord, targetRecord []byte) ([]byte, error) {
 	base := make([]byte, 320*200)
-	if err := g.renderLocalizedNativeBattlePanel(scene.panelAssets, actorRecord, base, scene.actorIndex, g.handlerChapter); err != nil {
+	if err := g.renderPhysicalBattlePanel(scene, actorRecord, base, scene.actorIndex); err != nil {
 		return nil, err
 	}
 	bg := scene.backgroundFrame
@@ -200,7 +201,7 @@ func (g *Game) nativePhysicalBase(scene *nativePhysicalScene, actorRecord, targe
 		return nil, err
 	}
 	if !scene.selection.HasSeparateBackgrounds {
-		if err := g.renderLocalizedNativeBattlePanel(scene.panelAssets, targetRecord, base, scene.targetIndex, g.handlerChapter); err != nil {
+		if err := g.renderPhysicalBattlePanel(scene, targetRecord, base, scene.targetIndex); err != nil {
 			return nil, err
 		}
 	}
@@ -282,7 +283,7 @@ func (g *Game) nativePhysicalTargetBase(scene *nativePhysicalScene, record []byt
 			return nil, err
 		}
 	}
-	if err := g.renderLocalizedNativeBattlePanel(scene.panelAssets, record, base, scene.targetIndex, g.handlerChapter); err != nil {
+	if err := g.renderPhysicalBattlePanel(scene, record, base, scene.targetIndex); err != nil {
 		return nil, err
 	}
 	return base, nil
@@ -332,6 +333,7 @@ func (g *Game) prepareNativePhysicalDeparture(scene *nativePhysicalScene, actor 
 		if err := bindModernPhysicalBaseScenery(sourceLayers, scenery); err != nil {
 			return err
 		}
+		bindModernPhysicalPanelText(scene, sourceLayers)
 		scene.leadSources = append(scene.leadSources, sourceLayers)
 		scene.leadDelays = append(scene.leadDelays, frame.Delay)
 		source = pixels
@@ -349,6 +351,8 @@ func (g *Game) prepareNativePhysicalDeparture(scene *nativePhysicalScene, actor 
 	if err := bindModernPhysicalBaseScenery(targetSources, scenery); err != nil {
 		return err
 	}
+	bindModernPhysicalPanelText(scene, sourceLayers)
+	bindModernPhysicalPanelText(scene, targetSources)
 	bound, err := modernHDBattleScrollScenerySources(presents, sourceLayers, targetSources, targetIdle.Frames[0], scene.targetBattleFig*3, layers)
 	if err != nil {
 		return err

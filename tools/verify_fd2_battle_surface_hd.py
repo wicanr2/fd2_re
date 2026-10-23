@@ -12,6 +12,10 @@ from verify_fd2_player9_map_hd import check_real_runtime
 
 ROOT = Path(__file__).resolve().parents[1]
 REQUIRED = {
+	'panel-unit': {'TestModernBattlePanelTextFrozenSources', 'TestModernBattlePanelTextFourLocaleInk', 'TestModernBattlePanelTextFourLocalePreview'},
+	'panel-source': {'TestModernBattlePanelTextGPU'},
+	'panel-game': {'TestModernHDBattleRuntimeGPU'},
+    'panel-scroll': {'TestModernHDScrollRuntimeGPU'},
     'scenery-legacy': {'TestModernBattleSceneryLegacyFallbackGPU'},
     'scenery-native': {'TestModernBattleSceneryAllNativeGeometry'},
     'scenery-unit': {'TestModernBattleSceneryAllSourcesAndAtomic'},
@@ -46,6 +50,7 @@ def main():
     p.add_argument('--pack', type=Path, required=True)
     p.add_argument('--out', type=Path, required=True)
     p.add_argument('--enemy', action='store_true')
+    p.add_argument('--panel-locale', choices=['zh-Hant','zh-Hans','ja','en'], default='zh-Hant')
     p.add_argument('--surface', type=int, choices=range(56), default=4)
     p.add_argument('--scenery-start',type=int,default=0)
     p.add_argument('--scenery-limit',type=int,default=16)
@@ -75,6 +80,10 @@ def main():
     env.pop('FD2_HD_TRANSITION_REQUIRED',None)
     env.pop('FD2_HD_TRANSITION_GPU',None)
     env.pop('FD2_HD_SCENERY_BATCH',None)
+    for name in ['FD2_HD_PANEL_GPU','FD2_HD_PANEL_TEXT','FD2_HD_PANEL_LOCALE','FD2_HD_PANEL_PREVIEW']:env.pop(name,None)
+    if a.kind=='panel-unit':env['FD2_HD_PANEL_PREVIEW']=str(a.out)+'.png'
+    if a.kind=='panel-source':env['FD2_HD_PANEL_GPU']='1'
+    if a.kind in ['panel-game','panel-scroll']:env.update(FD2_HD_PANEL_TEXT='1',FD2_HD_PANEL_LOCALE=a.panel_locale)
     if a.kind in ['scenery-native','scenery-unit','scenery-source','scenery-legacy']:env['FD2_HD_SCENERY_BATCH']='1'
     if a.kind=='scenery-source':
         if not 0<=a.scenery_start<86 or not 1<=a.scenery_limit<=16:raise SystemExit('完整場景GPU使用有界16來源切片')
@@ -83,7 +92,7 @@ def main():
     if a.transition:env['FD2_HD_TRANSITION_REQUIRED']='1'
     env['FD2_HD_BATTLE_SURFACE_INDEX']=str(a.surface)
     if a.with_pedestal: env['FD2_HD_BATTLE_PEDESTAL']=str(a.surface)
-    if a.kind == 'game':
+    if a.kind in ['game','panel-game']:
         env.update(FD2_HD_BATTLE_LIFECYCLE_GPU='1',FD2_HD_BATTLE_REAL='1',FD2_HD_BATTLE_BACKGROUND=str(a.surface),
                    FD2_TEST_MODERN_BATTLE_FIGURE='76' if a.enemy else '0',FD2_TEST_HD_BATTLE_OUT=str(a.out)+'-capture')
         if a.enemy: env['FD2_HD_BATTLE_ENEMY_ACTOR']='1'
@@ -93,7 +102,7 @@ def main():
     elif a.kind == 'transition-source':env['FD2_HD_TRANSITION_GPU']='1'
     elif a.kind == 'scroll-regression':
         env.update(FD2_TEST_MODERN_EFFECT_CATALOG=str(a.catalog.resolve()),FD2_TEST_MODERN_EFFECT_PACK=str(a.pack.resolve()))
-    elif a.kind == 'scroll-game':
+    elif a.kind in ['scroll-game','panel-scroll']:
         env.update(FD2_HD_SCROLL_SIDE='2' if a.enemy else '0',FD2_HD_SCROLL_REAL='1',FD2_HD_SCROLL_SCENERY=a.pair,
                    FD2_TEST_HD_SCROLL_OUT=str(a.out)+'-capture')
     if a.kind in ['split-unit','split-game','split-native-gpu','split-source']:
@@ -122,13 +131,15 @@ export DISPLAY=:99
     passed = {e.get('Test') for e in events if e.get('Action')=='pass'}
     if not REQUIRED[a.kind] <= passed or any(e.get('Action') in {'skip','fail'} for e in events):
         raise SystemExit('必要測試缺項、SKIP 或失敗')
-    if a.kind == 'game':
+    if a.kind in ['game','panel-game']:
         receipt = json.loads(Path(str(a.out)+'-capture/receipt.json').read_text())
         if receipt.get('background_selection',{}).get('BaseBG') != a.surface or not receipt.get('background_hd_sha256') or receipt['continuations'] != 1:
             raise SystemExit('缺少所選 BG Game.Draw 或一次返回')
         if a.with_pedestal and (receipt.get('background_selection',{}).get('TAI') != a.surface or not receipt.get('pedestal_hd_sha256')):
             raise SystemExit('缺少所選 TAI Game.Draw')
-    if a.kind == 'scroll-game':
+        if a.kind=='panel-game' and (receipt.get('panel_text',{}).get('locale')!=a.panel_locale or receipt.get('panel_text',{}).get('frozen_snapshots',0)<4 or receipt.get('panel_text',{}).get('actual_gpu_draws',0)<=0):
+            raise SystemExit('缺少面板凍結來源或實際GPU繪製')
+    if a.kind in ['scroll-game','panel-scroll']:
         receipt=json.loads(Path(str(a.out)+'-capture/receipt.json').read_text())
         phases=['prelude','departure','scroll-out','scroll-in','body','counter']
         if (receipt.get('scenery_pair')!=a.pair or receipt.get('side')!=(2 if a.enemy else 0)
@@ -142,6 +153,8 @@ export DISPLAY=:99
         if a.transition and (len(receipt.get('transition_sources',[]))!=3
                 or any(receipt.get('scenery_actual_capture_draws',{}).get(s['sha256'],0)<=0 for s in receipt.get('transition_sources',[]))):
             raise SystemExit('缺少全部三個過渡來源的實際Draw')
+        if a.kind=='panel-scroll' and (receipt.get('panel_text',{}).get('locale')!=a.panel_locale or any(receipt.get('panel_text',{}).get('actual_gpu_phase_draws',{}).get(phase,0)<=0 for phase in phases)):
+            raise SystemExit('缺少六階段實際HD面板')
     if a.kind=='split-game':
         receipt=json.loads(Path(str(a.out)+'-capture/receipt.json').read_text())
         if (receipt.get('scenery_triple')!=a.triple or receipt.get('scenery_side')!=('2' if a.enemy else '0')
@@ -171,6 +184,7 @@ export DISPLAY=:99
                   catalog_sha256=hashlib.sha256(a.catalog.read_bytes()).hexdigest(),
                   catalog=str(a.catalog.resolve()),pack=str(a.pack.resolve()),with_pedestal=a.with_pedestal,surface=a.surface,pair=a.pair,
                   command_id=a.command,triple=a.triple,hashes_only=a.hashes_only,transition_required=a.transition,
+                  panel_locale=a.panel_locale,
                   scenery_start=a.scenery_start,scenery_limit=a.scenery_limit,
                   independent_runtime_files=independent, memory=str(a.out)+'.memory.json',log=str(a.out)+'.log',
                   scope='固定來源／GPU／明示物理戰鬥fixture，非正常玩家或新原版RGB對拍')

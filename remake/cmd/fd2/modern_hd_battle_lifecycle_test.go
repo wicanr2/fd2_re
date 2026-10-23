@@ -276,6 +276,20 @@ func TestModernHDBattleRuntimeGPU(t *testing.T) {
 	requirePhysicalScenePack(t)
 	t.Setenv("FD2_MUTE", "1")
 	g, actor, target := physicalSceneTestGame(t)
+	panelText := os.Getenv("FD2_HD_PANEL_TEXT") == "1"
+	if panelText {
+		g.font = loadFont()
+		locale := os.Getenv("FD2_HD_PANEL_LOCALE")
+		if locale == "" {
+			locale = "zh-Hant"
+		}
+		g.localeID = locale
+		var err error
+		g.localeEntities, err = loadOfficialLocaleEntities(locale)
+		if err != nil || g.font == nil {
+			t.Fatal("panel font/catalog unavailable", err)
+		}
+	}
 	real := os.Getenv("FD2_HD_BATTLE_REAL") == "1"
 	background := os.Getenv("FD2_HD_BATTLE_BACKGROUND")
 	surfaceIndex := surfaceTestIndex(t)
@@ -340,6 +354,25 @@ func TestModernHDBattleRuntimeGPU(t *testing.T) {
 	if err := g.attachNativePhysicalBody(scene, result); err != nil {
 		t.Fatal(err)
 	}
+	if panelText {
+		if len(scene.hdPanelText) < 4 {
+			t.Fatal("missing initial, damage or counter panel snapshot")
+		}
+		for _, job := range scene.body.jobs {
+			if job.present == nil {
+				continue
+			}
+			count := 0
+			for _, source := range job.hdSources.BaseScenery {
+				if source.PanelText != nil {
+					count++
+				}
+			}
+			if count != 2 {
+				t.Fatal("body lost current typed panels", count)
+			}
+		}
+	}
 	set := diagnosticModernBattleSet(t, g, scene)
 	if real {
 		set = modernHDBattleFixtureSet(t, os.Getenv("FD2_TEST_MODERN_BATTLE_CATALOG"),
@@ -350,7 +383,15 @@ func TestModernHDBattleRuntimeGPU(t *testing.T) {
 			t.Fatal("selected BG HD source missing")
 		}
 		for _, job := range scene.body.jobs {
-			if job.hdSources != nil && (len(job.hdSources.BaseScenery) != 2 || job.hdSources.BaseScenery[0].Resource != surfaceIndex || job.hdSources.BaseScenery[1].Archive != "TAI.DAT" || job.hdSources.BaseScenery[1].Resource != surfaceIndex) {
+			scenery := []modernHDBattleSource{}
+			if job.hdSources != nil {
+				for _, source := range job.hdSources.BaseScenery {
+					if source.PanelText == nil {
+						scenery = append(scenery, source)
+					}
+				}
+			}
+			if job.hdSources != nil && (len(scenery) != 2 || scenery[0].Resource != surfaceIndex || scenery[1].Archive != "TAI.DAT" || scenery[1].Resource != surfaceIndex) {
 				t.Fatal("body lost selected BG provenance")
 			}
 		}
@@ -438,6 +479,7 @@ func TestModernHDBattleRuntimeGPU(t *testing.T) {
 	probe.presentation = &modernHDPresentation{Game: g}
 	out := os.Getenv("FD2_TEST_HD_BATTLE_OUT")
 	shots := make(map[string]any)
+	panelDraws := 0
 	if real && out != "" {
 		if err := os.Mkdir(out, 0755); err != nil {
 			t.Fatal(err)
@@ -452,6 +494,23 @@ func TestModernHDBattleRuntimeGPU(t *testing.T) {
 			index := scene.body.index
 			if index < 0 || index >= len(scene.body.jobs) || scene.body.jobs[index].hdSources == nil {
 				return
+			}
+			if panelText {
+				count := 0
+				for _, source := range scene.body.jobs[index].hdSources.BaseScenery {
+					if p := source.PanelText; p != nil {
+						if g.modernHDBattleGPU.sources["hd/"+p.key] == nil {
+							probe.err = fmt.Errorf("panel missing from actual GPU source cache")
+							return
+						}
+						count++
+					}
+				}
+				if count != 2 {
+					probe.err = fmt.Errorf("current GPU body lacks both panels")
+					return
+				}
+				panelDraws++
 			}
 			for _, source := range scene.body.jobs[index].hdSources.Layers {
 				if _, selected := selectedResources[source.Resource]; !selected || source.Fill != -1 {
@@ -570,6 +629,12 @@ func TestModernHDBattleRuntimeGPU(t *testing.T) {
 			}
 		}
 		report["fixture_asset_load_scope"], report["fixture_requested_resources"] = "selected-battle-banks", scene.modernResources()
+		if panelText {
+			if panelDraws == 0 {
+				t.Fatal("no actual panel GPU draws")
+			}
+			report["panel_text"] = map[string]any{"locale": g.localeID, "frozen_snapshots": len(scene.hdPanelText), "actual_gpu_draws": panelDraws, "scope": "direct HD text; native panel frame and bars retained"}
+		}
 		if len(zeroDelaySources) != 0 {
 			report["zero_delay_sources"] = zeroDelaySources
 		}

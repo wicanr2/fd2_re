@@ -15,14 +15,15 @@ import (
 
 // 目的矩形由已驗證的呈現計畫提供；GPU不替美術決定占寬或重新取錨點。
 type modernHDBattleLayer struct {
-	Native        figani.Frame
-	HD            image.Image
-	HDKey         string
-	Rect          image.Rectangle
-	Fill          int
-	Clip          *image.Rectangle
-	PackedShader  int
-	PackedColours []byte
+	PreservePalette bool
+	Native          figani.Frame
+	HD              image.Image
+	HDKey           string
+	Rect            image.Rectangle
+	Fill            int
+	Clip            *image.Rectangle
+	PackedShader    int
+	PackedColours   []byte
 }
 
 type modernHDBattlePlan struct {
@@ -220,7 +221,7 @@ func (r *modernHDBattleGPU) draw(plan modernHDBattlePlan) error {
 		}
 		subtract := float32(0)
 		mix := float32(0)
-		if layer.HD != nil {
+		if layer.HD != nil && !layer.PreservePalette {
 			subtract = plan.HDSubtract
 			mix = plan.HDMix
 		}

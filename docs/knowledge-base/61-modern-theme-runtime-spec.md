@@ -2,6 +2,17 @@
 
 狀態：現代主題仍為部分覆蓋；目前分層與缺口依[58](58-fd2-exe-re-coverage.md)。
 
+## 戰鬥面板六倍直接繪字（CONFORMED-SCOPED／RUNTIME-E1，2026-10-24）
+
+本切片沿已定案1920×1200與Noto清晰黑體，只替換物理攻擊面板文字。原框、HP／MP條、位置、人物遮擋、節拍、交易及保存保持。完整HUD美術與其他指令caller仍待，不外推PLAYER-E2。唯一收據沿[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`battle_panel_text_followup_20261024`。
+
+- 原版契約重用已閉合`NativeBattlePanelRecordForUnit`→`NativeBattlePanelOrigin`→`RenderNativeBattlePanel`及已登錄物理caller，固定執行檔依`fd2-reference-files.json`。不新增原版語意或RE聲明。
+- 每次成功繪製保存該次typed數值、raw +8語系名稱、原點與149×42原生圖，掛在本次scene；不得讀取交易後單位取代較早幀的HP。候選圖須與source base同一原點逐byte相同，才可附加文字層。
+- 空白底色取同次原版panel母版的無字背景。六倍原圖保留框與bar；姓名ink矩形(5,4)-(114,20)，LV(115,4)-(147,13)，HP標籤(3,21)-(20,30)與數字(126,21)-(147,30)，MP同列下移9。姓名／LV標籤先清除(4,4)-(132,21)，涵蓋既有`fdtxt.Font.BlitNativeGlyph`的左下陰影與localized姓名框；LV數字及原生overflow區域不在其中，其餘欄位各自清除。字只畫在ink矩形內。
+- regional Noto以實際ink bounds同時量寬高，姓名上限96px、其餘48px，逐px縮小至24px；不截字、不省略、不增加行數，無法容納即拒收。數字沿原生負值歸零與補零；超過99／999的原版marker保留，不臆造新文字。
+- HD圖層位於背景之上、人物及效果之下；捲動沿同一source clip與shift，F2原子保持。來源綁定錯誤返回不附加面板資料，只在完整來源成功後綁定。面板依原palette著色，不能套人物專用subtract／tint。像素主題及缺字型的既有診斷路徑保持原生。
+- 驗收包括四語實際字形bounds、不同HP快照、來源不符拒收、同次原生重組、完整Game.Draw、雙側／F2及回歸；使用修改fixture的結果只到RUNTIME-E1。測試與原稿沿既有工具／工作根，不新增交付目錄。
+
 2026-10-15 接續現況：使用者已要求加速HD化；本檔既有手繪風格、靜態嘴型、幾何與原子預檢契約保持。
 清冊與私人檔檢查通過，不代表完整玩家路徑或高解析呈現完成；唯一數量與缺口見[58目前狀態](58-fd2-exe-re-coverage.md)。
 [#4](https://github.com/wicanr2/fd2_re/issues/4)為總項，
@@ -15,6 +26,8 @@
 再查正式consumer或正常玩家路徑。工具用法見檔首；它包含可能不可達的故事資料，零缺件也不代表完整玩家覆蓋。
 負speaker宣告另列，不直接視為缺頭像。此次靜態候選、來源雜湊及18項私人素材回歸結果見
 [工具與素材主收據](../data/fd2-remake-toolchain-recovery-20261015.json)；尚未改變catalog的候選狀態。
+
+實作入口為[面板文字](../../remake/cmd/fd2/modern_hd_battle_panel.go)與[來源／字形測試](../../remake/cmd/fd2/modern_hd_battle_panel_test.go)。[永久驗證器](../../tools/verify_fd2_battle_surface_hd.py)新增panel-unit、panel-source、panel-game、panel-scroll；沿既有Go Docker、正式catalog／pack與有界out前綴，panel-game以--panel-locale選四語，panel-scroll沿--pair及--enemy。11份HD閘門／24必要測試通過，另七項原生面板與八項字串回歸；228姓名ink與24 GPU畫布、六完整流程／24次F2及72實際PNG通過。原版字模左下陰影已依writer足跡清除，LV／HP／MP原生overflow符號保持。所有閘門無SKIP／逾時／OOM，數值僅見58及同批主收據。[README圖組工具](../../tools/build_fd2_battle_panel_gallery.py)接受四個capture目錄與既有輸出父目錄，可逐SHA重生完整半縮圖。清冊與私人美術未變，沒有新資產同步需求；完整HUD與其他caller、普通／集中人工／平台仍待。
 
 ## 範圍
 

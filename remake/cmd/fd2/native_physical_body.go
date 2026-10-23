@@ -192,7 +192,7 @@ func (g *Game) nativePhysicalScroll(scene *nativePhysicalScene, source []byte, b
 			return nil, nil, err
 		}
 	}
-	if err := g.renderLocalizedNativeBattlePanel(scene.panelAssets, record, base, index, g.handlerChapter); err != nil {
+	if err := g.renderPhysicalBattlePanel(scene, record, base, index); err != nil {
 		return nil, nil, err
 	}
 	in := battlepresent.NativeCommand24BackgroundInputs{Layers: scene.bodyResources.layers, Source: source, Target: base, TargetIdle: idle}
@@ -219,7 +219,11 @@ func (g *Game) attachNativePhysicalBody(scene *nativePhysicalScene, result battl
 		}
 	}
 	bindBase := func(sources *modernHDBattleSources) error {
-		return bindModernPhysicalBaseScenery(sources, baseScenery)
+		if err := bindModernPhysicalBaseScenery(sources, baseScenery); err != nil {
+			return err
+		}
+		bindModernPhysicalPanelText(scene, sources)
+		return nil
 	}
 	actorRecord, targetRecord := append([]byte(nil), scene.actorRecord...), append([]byte(nil), scene.targetRecord...)
 	appendScroll := func(source []byte, sourceLayers *modernHDBattleSources, background fdother.Frame, backgroundIndex byte, record []byte, index int, idle figani.Frame, idleResource int, right bool) error {
@@ -235,6 +239,8 @@ func (g *Game) attachNativePhysicalBody(scene *nativePhysicalScene, result battl
 		if err := bindModernPhysicalBaseScenery(targetSources, nextScenery); err != nil {
 			return err
 		}
+		bindModernPhysicalPanelText(scene, sourceLayers)
+		bindModernPhysicalPanelText(scene, targetSources)
 		bound, err := modernHDBattleScrollScenerySources(presents, sourceLayers, targetSources, idle, idleResource, r.layers)
 		if err != nil {
 			return err
@@ -289,7 +295,7 @@ func (g *Game) attachNativePhysicalBody(scene *nativePhysicalScene, result battl
 				if f.UpdatePanel {
 					binary.LittleEndian.PutUint16(currentTarget[64:], uint16(f.HP))
 					base = append([]byte(nil), base...)
-					if err := g.renderLocalizedNativeBattlePanel(scene.panelAssets, currentTarget, base, targetIndex, g.handlerChapter); err != nil {
+					if err := g.renderPhysicalBattlePanel(scene, currentTarget, base, targetIndex); err != nil {
 						return err
 					}
 				}

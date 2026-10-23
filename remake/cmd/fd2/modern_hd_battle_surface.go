@@ -249,7 +249,12 @@ func modernPhysicalBackdropScenery(scene *nativePhysicalScene, background fdothe
 
 // 只還原已證實由memset供應、且不與BG／面板交會的台座底層。
 // 不改job的原生base；原生及HD-native fallback分別重組驗證。
-func bindModernPhysicalScenery(scene *nativePhysicalScene, sources *modernHDBattleSources) error {
+func bindModernPhysicalScenery(scene *nativePhysicalScene, sources *modernHDBattleSources) (err error) {
+	defer func() {
+		if err == nil {
+			bindModernPhysicalPanelText(scene, sources)
+		}
+	}()
 	scenery, err := modernPhysicalBaseScenery(scene)
 	if err != nil {
 		return err
@@ -275,6 +280,11 @@ func bindModernPhysicalBaseScenery(sources *modernHDBattleSources, scenery []mod
 		platform := source.Frame
 		for y := platform.Y; y < platform.Y+platform.Height; y++ {
 			clear(base[y*320+platform.X : y*320+platform.X+platform.Width])
+		}
+	}
+	for _, source := range sources.BaseScenery {
+		if source.PanelText != nil {
+			scenery = append(scenery, source)
 		}
 	}
 	sources.Base, sources.BaseScenery = base, scenery

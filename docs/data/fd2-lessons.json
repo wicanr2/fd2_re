@@ -3929,6 +3929,21 @@
       "rule": "背景／台座測試的身分與範圍斷言沿同一明示索引及原生描述子，不保留舊資源4或154寬度。入口remake/cmd/fd2/modern_hd_battle_surface_test.go的surfaceTestIndex與assertTAIPlan；只選固定原包有內容的0至55索引，BG原框限318×100、320×100及320×101，台座沿各原框。固定來源盤點入口tools/audit_fd2_battle_background_sources.py --help；空Mask不補造，新形狀先補來源契約。",
       "why": "森林5的冷載入與50世界GPU通過，但原生移位台座仍被source.Resource!=4舊斷言拒收；改測試索引及native.Width後重跑，原renderer與圖源不變。",
       "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json"
+    },
+    {
+      "id": "hd-text-clear-native-shadow-footprint",
+      "date": "2026-10-24",
+      "area": "HD文字",
+      "rule": "替換原生點陣文字時，清除範圍沿producer實際寫入足跡，含陰影／外框；新字的ink安全矩形另量寬高。入口remake/internal/fdtxt/fdtxt.go的Font.BlitNativeGlyph及remake/cmd/fd2/modern_hd_battle_panel.go的raster；戰鬥姓名會寫到左一欄及下一列，LV數字與overflow區域須保留。重跑tools/verify_fd2_battle_surface_hd.py --kind panel-unit，Docker契約依規格61。",
+      "why": "四語字形與GPU位置測試通過後，實際Game.Draw仍見姓名左緣殘留；原字模陰影在x-1,y+1。將姓名／LV標籤清除區擴至原writer足跡，再重跑實際畫面；沒有改原版glyph ABI或保存格式。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/modern_hd_battle_panel.go"
+        ],
+        "pattern": "erase = image.Rect\\(4\\*6, 4\\*6, 132\\*6, 21\\*6\\)"
+      }
     }
   ]
 }
