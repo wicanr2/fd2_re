@@ -158,7 +158,7 @@ func (g *Game) prepareNativePhysicalScene(actor, target *battle.Unit) (*nativePh
 	if err != nil {
 		return nil, err
 	}
-	scene := &nativePhysicalScene{selection: selection, background: background, pedestal: pedestal,
+	scene := &nativePhysicalScene{selection: selection, background: background, pedestal: pedestal, platformFrame: tai,
 		actorBattleFig: actor.BattleFig, targetBattleFig: target.BattleFig}
 	if err := g.prepareNativePhysicalPrelude(scene, actor, target, animation, bg, tai); err != nil {
 		return nil, err

@@ -348,13 +348,13 @@ func (g *Game) attachNativePhysicalBody(scene *nativePhysicalScene, result battl
 		}
 		p.jobs = append(p.jobs, nativePhysicalBodyJob{pixels: pixels, cue: -1, hdSources: hdRestore, hdPhase: "restore"}) // 28F4D..28FD6的final restore。
 	}
-	scenery, err := modernPhysicalBaseScenery(scene)
-	if err != nil {
-		return err
-	}
+	bound := make(map[*modernHDBattleSources]bool)
 	for i := range p.jobs {
-		if p.jobs[i].hdSources != nil {
-			p.jobs[i].hdSources.BaseScenery = scenery
+		if sources := p.jobs[i].hdSources; sources != nil && !bound[sources] {
+			if err := bindModernPhysicalScenery(scene, sources); err != nil {
+				return err
+			}
+			bound[sources] = true
 		}
 		if len(p.jobs[i].pixels) != 0 || p.jobs[i].present != nil {
 			p.lastPresent = i

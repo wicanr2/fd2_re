@@ -54,7 +54,7 @@ func (g *Game) modernHDBattleWanted(scene *nativePhysicalScene) bool {
 		return false
 	}
 	if !scene.selection.HasSeparateBackgrounds && scene.backgroundFrame.Width == 320 && scene.backgroundFrame.Height == 100 &&
-		set.battleSurfaces["BG.DAT"][int(scene.selection.BaseBG)] != nil {
+		(set.battleSurfaces["BG.DAT"][int(scene.selection.BaseBG)] != nil || set.battleSurfaces["TAI.DAT"][int(scene.selection.TAI)] != nil) {
 		return true
 	}
 	for _, resource := range scene.modernResources() {
@@ -200,14 +200,15 @@ func (g *Game) modernHDBattlePreludeSources(scene *nativePhysicalScene, stage in
 	}
 	r := scene.bodyResources
 	base := append([]byte(nil), scene.preludeBase...)
-	scenery, err := modernPhysicalBaseScenery(scene)
+	scenery, err := modernPhysicalScenery(scene, r.actorSide == 0)
 	if err != nil {
 		return nil, err
 	}
 	a := modernHDBattleSource{Frame: r.actorIdle.Frames[0], Resource: scene.actorBattleFig * 3, Fill: -1}
 	b := modernHDBattleSource{Frame: r.targetIdle.Frames[0], Resource: scene.targetBattleFig * 3, Fill: -1}
 	if r.actorSide == 0 {
-		if !scene.selection.HasSeparateBackgrounds {
+		if !scene.selection.HasSeparateBackgrounds && len(scenery) == 0 {
+			// 尚未納入來源橋接的原框保留既有原生base。
 			platform := r.platform
 			platform.X, platform.Y = 164, 157
 			if err := platform.Blit(base, 320, -1); err != nil {
@@ -223,6 +224,13 @@ func (g *Game) modernHDBattlePreludeSources(scene *nativePhysicalScene, stage in
 	platform := r.platform
 	p := modernHDBattleSource{Frame: figani.Frame{X: 164, Y: 157, Width: platform.Width, Height: platform.Height,
 		Pixels: platform.Indexed, Mask: platform.Mask}, Resource: -1, DX: stage * 10, Fill: -1}
+	if !scene.selection.HasSeparateBackgrounds && len(scenery) > 0 {
+		p, err = modernPhysicalPlatformSource(scene)
+		if err != nil {
+			return nil, err
+		}
+		p.DX = stage * 10
+	}
 	a.DX = stage * 10
 	if scene.selection.HasSeparateBackgrounds {
 		return &modernHDBattleSources{Base: base, Layers: []modernHDBattleSource{p, a}}, nil

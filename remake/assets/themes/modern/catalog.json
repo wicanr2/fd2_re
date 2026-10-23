@@ -57691,6 +57691,44 @@
       ],
       "alpha_contract": "coverage",
       "layout_policy": "native_surface_hd6"
+    },
+    {
+      "asset_id": "modern.battle.tai004.hd6",
+      "role": "battle_surface_hd",
+      "status": "runtime_candidate",
+      "file": "battle-tai-004-hd6-oct23-r1.png",
+      "width": 924,
+      "height": 252,
+      "sha256": "42a66446ae4255af99d2cca42a568a6d3179916875e6e9d5488b8e7b80bf7046",
+      "master_file": "battle-tai-004-master-oct23-r1.png",
+      "source_refs": [
+        "asset:TAI_004",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ],
+      "consumer_contract": "native_battle_surface_rgba_hd6_v1",
+      "source_archive": "TAI.DAT",
+      "source_resource": 4,
+      "source_metadata_sha256": "941dbc56bd8d7bf3a3ab805d304fc43d6e9bbf414822e541a93762eece4d3ed0",
+      "source_files": [
+        "battle-tai-004-master-oct23-r1.png"
+      ],
+      "source_sha256": [
+        "9fa82e94873ef6ba2acb97066cb4a9e9795437076319bed9abb640a4eb74b876"
+      ],
+      "native_frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 154,
+          "height": 42,
+          "delay_native": 0,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        }
+      ],
+      "alpha_contract": "coverage",
+      "layout_policy": "native_surface_hd6"
     }
   ]
 }

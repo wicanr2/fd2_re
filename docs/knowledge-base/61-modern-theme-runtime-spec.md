@@ -3870,3 +3870,21 @@ BG 與 TAI 各 57 項，末項各為零長 raw，不能補造美術。BG 的 10 
 重生入口：[森林背景編製器](../../tools/build_fd2_battle_surface_hd.py)以 `--original-pack <固定原包> --master <已審查原稿> --base-catalog <舊清冊> --out <全新候選目錄>` 建立候選；既有檔案只沿白名單建立連結，不能當成獨立實檔驗收。以既有私人同步工具的 `--runtime-only` 複製全新包後，[永久驗證驅動器](../../tools/verify_fd2_battle_surface_hd.py)在既有 Go 容器執行 `--kind unit|source|game|regression|legacy-gpu --catalog ABS --pack ABS --out FRESH_PREFIX --timeout 1200`；相反側主攻加 `--enemy`，獨立包加 `--require-real-runtime`。單元、GPU 與完整 Game.Draw 的必要測試逐名核對，任何 SKIP、失敗、逾時或 OOM 均拒收。`legacy-gpu` 與 `regression` 各自啟動 Go 程序；鎖定版 Ebiten v2.6.6 禁止 RunGame 結束後再建立影像，不能把兩者合成同一個測試程序。缺件的冷載入與失效背景的 F2 候選必須拒收；已完整載入的背景影像沿快取使用，不因原檔事後移除而作未驗證重載聲明。
 
 驗收結果：兩包各完整主題與圖源拒收、124張原生畫布獨立重組、24個完整GPU世界逐RGBA對獨立CPU Over容差1、雙側主攻／反擊的完整Game.Draw與三階段F2／每案例64戰鬥DAC及65地圖DAC／HP與RNG／一次返回通過。15張我方及13張敵方截圖跨包逐SHA相同，但host排程造成Draw計數不同，不宣稱幀數一致。十份Go閘門均無SKIP／逾時／OOM，含七項原生回歸及2087個共用GPU案例。首次將RunGame與其後的NewImage測試合併導致的環境失敗保留，不計驗收；分開程序乾淨重跑通過，遊戲程式不為此修改。正式清冊與受驗候選只有private_root不同，舊673項及6420份私人檔內容保持，新增原稿與1920×600圖源兩檔。完整來源／命令／限制依bg004_physical_followup_20261023；私人Git與公開Git收尾另核，不新增普通玩家、原版RGB或完整HD聲明。
+
+### TAI_004 共用物理台座切片
+
+狀態：CONFORMED-SCOPED／RUNTIME-E1。沿用上節單圖載入契約，存檔、規則及GPU shader不改。範圍是一般共用背景物理戰鬥的 TAI_004，包含兩側預備、主攻／反擊、restore 與淡出；其他 TAI、美術／捲動／指令 caller 與集中正常玩家／人工／平台仍待。
+
+固定 TAI.DAT 為 94,917 bytes，SHA-256 `d56fea9c43f8bb59aad89ad76698885d7e07f380d12a4547888a0b60ea5e0410`。TAI_004 metadata SHA-256 為 `941dbc56bd8d7bf3a3ab805d304fc43d6e9bbf414822e541a93762eece4d3ed0`，原框154×42，遮罩5,366個可見點；raw／PNG／Mask由既有背景來源稽核固定，不新增原版位址推論。原稿為2170×725未修改RGBA透明圖；以alpha≥64核心框外擴兩像素裁切，只去除框外極淡生成雜點，保留框內原alpha，再用LANCZOS縮放至924×252。橢圓比例調整、草皮與土緣是現代詮釋，不稱原輪廓逐像素相同。
+
+- 原生 `nativePhysicalBase` 從零畫布合成，BG_004止於y150之前。`NativeBattlePanelOrigin` 的面板為149×42，位於 `(171,4)` 或 `(0,154)`；台座矩形 `(164,157,154,42)` 不與它們重疊。因此 body／restore 的HD來源底圖可複製後，把明示台座矩形還原為原memset的索引0，再依原圖層重畫台座。這項分離不以RGB或像素差異猜來源，也不改正式原生畫布。
+- raw side=0 的共用預備，台座以明示單圖來源放於人物之前，不再烘入HD底圖。另一側保留既有人物／台座／人物層序與 `stage*10` 水平移位；只替既有台座層補archive／resource，不能畫兩份台座。
+- 台座與BG都使用scene當次選擇及原框；透明span先以既有surface解碼正規化，再與已載入來源逐像素／Mask核對。選定TAI美術即使沒有HD人物／BG，也能啟用這條物理呈現。非共用背景仍用既有路徑，不因登錄圖源而宣稱caller完成。
+- 載入沿既有 `battle_surface_hd` 原子交易，缺件、錯SHA、錯原框／空白及失效F2候選拒收。原Mask非全不透明時，HD保留透明背景及255核心；不放寬alpha端點門檻。原稿與正式圖源分開保存，驗證前不登錄正式清冊。
+- 驗收包含兩側全部原生畫布重組、底圖台座矩形全0與UI保留、移位台座來源／位置、HD透明邊緣無舊像素殘留、獨立CPU Over對GPU、完整Game.Draw／F2／HP／RNG／DAC／一次返回，以及舊路徑回歸。完整主題與全新實檔runtime-only包各驗；已去重的舊包不當獨立樣本。
+
+來源與收據集中[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的 `tai004_physical_followup_20261023`。編製沿[單圖編製器](../../tools/build_fd2_battle_surface_hd.py)加 `--archive TAI.DAT`；[單圖驗證驅動器](../../tools/verify_fd2_battle_surface_hd.py)沿上節參數加 `--with-pedestal`，必要時加 `--enemy`／`--require-real-runtime`。獨立包以既有私人同步工具的 `--runtime-only` 從本次清冊全新建立，不沿用已去重包。
+
+兩包各載入完整675項主題、圖源與原子拒收，124張原生畫布重組及50個GPU世界通過。GPU涵蓋兩側九階進場、攻防／restore、未登錄台座的舊主題回退，以及只有台座HD、沒有HD人物或背景的情況，逐RGBA對獨立CPU Over容差1。首輪CPU期望漏算Ebiten v2.6.6上傳前的RGBA8預乘量化，失敗收據保留；依鎖定版imagetobytes.go修正比較器後通過，正式shader與容差未改。候選單元先於這項測試修正執行，三項受驗單元與正式邏輯不變；最後獨立包使用完整最終原碼。
+
+雙側完整Game.Draw各三階段F2、失效TAI候選原子拒收、64步戰鬥DAC與65步地圖DAC、HP／RNG及一次返回保持。28張跨包截圖逐SHA相同，不宣稱Draw計數一致；七項舊路徑回歸另在乾淨程序通過。原生HUD、其他caller與正常／人工／平台仍待。完整舊GPU核心沿上節2087案例，本批未重跑；新增台座的透明／層序已有上述50案例，不拿舊案例代替。

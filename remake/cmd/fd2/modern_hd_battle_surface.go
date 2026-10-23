@@ -148,6 +148,23 @@ func (set *modernStoryPortraitSet) validatePhysicalScenery(scene *nativePhysical
 }
 
 func modernPhysicalBaseScenery(scene *nativePhysicalScene) ([]modernHDBattleSource, error) {
+	return modernPhysicalScenery(scene, true)
+}
+
+func modernPhysicalPlatformSource(scene *nativePhysicalScene) (modernHDBattleSource, error) {
+	frame, err := modernHDBattleSurfaceFrame(scene.platformFrame)
+	if err != nil {
+		return modernHDBattleSource{}, err
+	}
+	frame.X, frame.Y = 164, 157
+	rect := image.Rect(frame.X, frame.Y, frame.X+frame.Width, frame.Y+frame.Height)
+	if !rect.In(image.Rect(0, 0, 320, 200)) || rect.Overlaps(image.Rect(0, 154, 149, 196)) || rect.Overlaps(image.Rect(171, 4, 320, 46)) || rect.Overlaps(image.Rect(0, 50, 320, 150)) {
+		return modernHDBattleSource{}, errors.New("modern HD physical platform overlaps a native base component")
+	}
+	return modernHDBattleSource{Archive: "TAI.DAT", Resource: int(scene.selection.TAI), Frame: frame, Fill: -1}, nil
+}
+
+func modernPhysicalScenery(scene *nativePhysicalScene, platform bool) ([]modernHDBattleSource, error) {
 	if scene == nil || scene.selection.HasSeparateBackgrounds {
 		return nil, nil
 	}
@@ -160,5 +177,35 @@ func modernPhysicalBaseScenery(scene *nativePhysicalScene) ([]modernHDBattleSour
 		return nil, err
 	}
 	frame.X, frame.Y = 0, 50
-	return []modernHDBattleSource{{Archive: "BG.DAT", Resource: int(scene.selection.BaseBG), Frame: frame, Fill: -1}}, nil
+	sources := []modernHDBattleSource{{Archive: "BG.DAT", Resource: int(scene.selection.BaseBG), Frame: frame, Fill: -1}}
+	if platform {
+		p, err := modernPhysicalPlatformSource(scene)
+		if err != nil {
+			return nil, err
+		}
+		sources = append(sources, p)
+	}
+	return sources, nil
+}
+
+// 只還原已證實由memset供應、且不與BG／面板交會的台座底層。
+// 不改job的原生base；原生及HD-native fallback分別重組驗證。
+func bindModernPhysicalScenery(scene *nativePhysicalScene, sources *modernHDBattleSources) error {
+	scenery, err := modernPhysicalBaseScenery(scene)
+	if err != nil {
+		return err
+	}
+	if sources == nil || len(scenery) == 0 {
+		return nil
+	}
+	if len(sources.Base) != 64000 {
+		return errors.New("modern HD physical clean base unavailable")
+	}
+	base := append([]byte(nil), sources.Base...)
+	platform := scenery[1].Frame
+	for y := platform.Y; y < platform.Y+platform.Height; y++ {
+		clear(base[y*320+platform.X : y*320+platform.X+platform.Width])
+	}
+	sources.Base, sources.BaseScenery = base, scenery
+	return nil
 }

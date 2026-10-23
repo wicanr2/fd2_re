@@ -72,6 +72,7 @@ type modernHDBattleLifecycleProbe struct {
 	pendingPhase                                              string
 	pendingFaithful                                           int
 	capture                                                   func(*ebiten.Image, string)
+	requiredPedestalHash                                      string
 }
 
 type modernHDZeroDelaySource struct {
@@ -210,6 +211,10 @@ func (p *modernHDBattleLifecycleProbe) Draw(screen *ebiten.Image) {
 			return
 		}
 		p.hdDraws++
+		if p.requiredPedestalHash != "" && p.g.modernHDBattleGPU.sources["hd/"+p.requiredPedestalHash] == nil {
+			p.err = fmt.Errorf("HD pedestal source missing in actual Game.Draw")
+			return
+		}
 		if p.everyPhase {
 			p.phaseDraws[p.phase()]++
 		}
@@ -344,7 +349,7 @@ func TestModernHDBattleRuntimeGPU(t *testing.T) {
 			t.Fatal("BG_004 HD source missing")
 		}
 		for _, job := range scene.body.jobs {
-			if job.hdSources != nil && (len(job.hdSources.BaseScenery) != 1 || job.hdSources.BaseScenery[0].Resource != 4) {
+			if job.hdSources != nil && (len(job.hdSources.BaseScenery) != 2 || job.hdSources.BaseScenery[0].Resource != 4 || job.hdSources.BaseScenery[1].Archive != "TAI.DAT" || job.hdSources.BaseScenery[1].Resource != 4) {
 				t.Fatal("body lost BG_004 provenance")
 			}
 		}
@@ -381,6 +386,13 @@ func TestModernHDBattleRuntimeGPU(t *testing.T) {
 	g.nativeMapDAC = append([]byte(nil), dac...)
 	g.baseMapTileset = image.NewRGBA(image.Rect(0, 0, 24, 24))
 	probe := &modernHDBattleLifecycleProbe{g: g, scene: scene, actor: actor, target: target, seen: make([]bool, len(scene.preludeImages)+len(scene.body.jobs))}
+	if os.Getenv("FD2_HD_BATTLE_PEDESTAL") == "4" {
+		entry := set.battleSurfaces["TAI.DAT"][4]
+		if entry == nil {
+			t.Fatal("required TAI004 is absent")
+		}
+		probe.requiredPedestalHash = entry.hash
+	}
 	if real {
 		probe.everyPhase, probe.phaseDraws, probe.phaseF2 = true, make(map[string]int), make(map[string]int)
 	}
@@ -397,6 +409,15 @@ func TestModernHDBattleRuntimeGPU(t *testing.T) {
 		before := probe.stable()
 		if err := g.applyTheme(&badSurface); err == nil || g.modernStoryPortraits != set || probe.stable() != before {
 			t.Fatal("failed BG_004 F2 preflight changed theme or state")
+		}
+		if probe.requiredPedestalHash != "" {
+			entry := *set.battleSurfaces["TAI.DAT"][4]
+			entry.picture = nil
+			badTAI := *set
+			badTAI.battleSurfaces = map[string]map[int]*modernBattleSurfaceHD{"BG.DAT": set.battleSurfaces["BG.DAT"], "TAI.DAT": {4: &entry}}
+			if err := g.applyTheme(&badTAI); err == nil || g.modernStoryPortraits != set || probe.stable() != before {
+				t.Fatal("failed TAI004 F2 preflight changed state")
+			}
 		}
 	}
 	// 主題切換的壞圖源不能發布，也不能推進演出。
@@ -542,6 +563,10 @@ func TestModernHDBattleRuntimeGPU(t *testing.T) {
 		if background != "" {
 			report["background_selection"], report["background_hd_sha256"] = scene.selection, set.battleSurfaces["BG.DAT"][4].hash
 			report["background_scope"] = "BG_004 shared physical scene; native TAI and UI retained; explicit controlled fixture, not normal player or original RGB parity"
+			if probe.requiredPedestalHash != "" {
+				report["pedestal_hd_sha256"] = probe.requiredPedestalHash
+				report["background_scope"] = "BG_004 and TAI_004 shared physical scene; original UI retained; controlled fixture only"
+			}
 		}
 		report["fixture_asset_load_scope"], report["fixture_requested_resources"] = "selected-battle-banks", scene.modernResources()
 		if len(zeroDelaySources) != 0 {

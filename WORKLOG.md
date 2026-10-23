@@ -2978,3 +2978,13 @@ R2的88完整22幀編製通過，89於268:9殘光縮小alpha245拒收，未發�
 2026-10-23 BG_004收尾：私人素材庫四檔差異獨立提交推送後，實際本機／遠端main相同、工作樹乾淨且PRIVATE；公開資料只記核對結果，不公開私人提交識別碼。5533個本人單連結暫存PNG在四份獨立包PASS收據及逐SHA核對後改相對連結，移除重複配置1619103744 bytes，非共享主機淨可用空間量測；原稿、正式／私人素材、所有截圖、log、失敗樣本與原manifest保持。歷史收據描述驗證當時的獨立實檔，現在的包不可再當獨立驗收，未來需重建。明細與最後檢查依主收據runtime_pack_after_cleanup及work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/bg004-final-check-oct23-r1.json。
 
 2026-10-23 最後檢查通過58項本批SHA引用、12份來源指紋、2406個本地Markdown目標及README全部舊文化行／標題保持，所有修改及輸出1000:1000，gofmt無輸出；320條教訓／188個guard通過。主機gh已更新[#263](https://github.com/wicanr2/fd2_re/issues/263#issuecomment-6365410806)，保持總驗收與OPEN；官方函式從最新遠端資料pull／render／verify共24條，可能已完成0條，#268／#269仍待集中人工。全部本批Docker容器已退出並清除，未建新image／volume，未錄製新影片。此批已有真實可編輯來源到Game.Draw的切片及真實回歸，符合重大更新條件，即將提交並推送公開主線；推送後主機Git核對輸出於bg004-public-git-verification-oct23-r1.json。完整HD目標保持active。
+
+2026-10-23 接續6b4e2679，前輪森林背景為實際PROGRESS；tracked乾淨、無FD2容器，從最新origin/main建立hd/tai004-pedestal-20261023。沿spec-gated路由與既有TAI4 metadata／原框／遮罩、NativeBattlePanelOrigin及零底圖證據，不重開RE。RGBA台座原稿2170×725保留不變，alpha64核心裁切框與完整提示已記tai004_physical_followup_20261023；來源橋接READY，美術編製尚待端點及正式合成核對。計畫先去掉HD底圖中已烘的原生台座，再沿同次來源補靜態／移位層，避免舊像素殘影；正式清冊仍674項，其他caller與集中人工保持待辦。
+
+TAI_004候選675項編製及單元通過，原框154×42轉924×252透明圖，保留未修改母稿。GPU首輪在prelude side0 stage6的byte7293841得到3而舊CPU期望1，收據保留並拒收；原因是舊CPU直接對straight RGB取整，漏了鎖定Ebiten v2.6.6 imagetobytes.go的draw.Src RGBA8預乘量化。比較器改為先依相同公開貼圖格式量化，再獨立計算subtract及Over，原容差1與正式shader不改。第二輪50個世界通過；另把TAI-only測例清除所有人物／背景HD集合，避免僅靠既有HD人物啟用而空泛通過，後續乾淨重跑。工具列A定案保持，新工具列及實際加速仍未接入。
+
+2026-10-23 TAI_004限定CONFORMED-SCOPED／RUNTIME-E1：兩包各完整675項主題與原子拒收、124張原生重組、50個GPU世界及雙側完整Game.Draw通過；九份必要Go閘門含七項舊回歸，無SKIP／逾時／OOM。補強前source r2另為通過樣本，最終採只含TAI的r3，不以重複案例增加覆蓋。每案例三階段F2、64／65 DAC、HP／RNG及一次返回保持，28張跨包PNG逐SHA相同，Draw數不作相同聲明。未改shader，2087共用核心沿前批，未冒稱本批重跑。正式清冊675項，舊674項保持，新增未修改原稿與924×252圖源；264 FIGANI／2118幀、23 FDOTHER／408幀與三LMI／52張保持。
+
+私人6424實檔逐SHA／UID通過，舊6422檔保持，四檔獨立提交推送；主機核對本機／遠端main相同、工作樹乾淨且PRIVATE，公開資料不記私人提交識別碼。README實際完整Game.Draw半縮圖換成森林及台座，面板保持像素，文化內容不改。5534份暫存runtime圖在四份獨立包閘門及清理前後SHA驗證後改相對連結，移除重複實檔配置1619914752 bytes，不宣稱共享檔案系統淨可用空間量。去重後包不能再當獨立實檔；原稿、截圖、manifest、log及失敗樣本保留，沒有新錄影或Release。#263已更新並保持OPEN，其他背景／台座／caller、13～16回復／HUD、正式浮出工具列／速度與集中正常／人工／平台仍待，完整HD目標保持active。
+
+最後檢查：45項本批SHA引用、九份來源指紋、2297個本地Markdown目標、gofmt及全部本批輸出1000:1000通過；README僅替換HD圖說與實際縮圖，其餘文化行／標題保持。320條教訓／188 guard通過，24項worklist、可能已完成0項。全庫find的r1雖已產出無本批root檔報表，外層退出124，不計成功命令；縮到本批輸出與程式／工具工作根的r2乾淨成功，既有root檔未chown。無新映像／volume／錄影，最後核對沒有FD2容器遺留後提交推送。
