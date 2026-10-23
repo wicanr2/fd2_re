@@ -60,9 +60,9 @@ func (g *Game) modernHDBattleWanted(scene *nativePhysicalScene) bool {
 			}
 		}
 	}
-	if scene.backgroundFrame.Width == 320 && scene.backgroundFrame.Height == 100 &&
+	if modernBattleBackdropGeometry(scene.backgroundFrame) &&
 		(set.battleSurfaces["BG.DAT"][int(scene.selection.BaseBG)] != nil || set.battleSurfaces["TAI.DAT"][int(scene.selection.TAI)] != nil ||
-			(scene.selection.HasSeparateBackgrounds && scene.targetBackground.Width == 320 && scene.targetBackground.Height == 100 && set.battleSurfaces["BG.DAT"][int(modernPhysicalTargetBGIndex(scene))] != nil)) {
+			(scene.selection.HasSeparateBackgrounds && modernBattleBackdropGeometry(scene.targetBackground) && set.battleSurfaces["BG.DAT"][int(modernPhysicalTargetBGIndex(scene))] != nil)) {
 		return true
 	}
 	for _, resource := range scene.modernResources() {

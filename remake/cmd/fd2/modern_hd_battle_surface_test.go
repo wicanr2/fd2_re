@@ -12,6 +12,7 @@ import (
 	"math"
 	"os"
 	"path/filepath"
+	"sort"
 	"strconv"
 	"testing"
 
@@ -28,10 +29,226 @@ func surfaceTestIndex(t *testing.T) int {
 		return 4
 	}
 	index, err := strconv.Atoi(value)
-	if err != nil || (index != 0 && index != 1 && index != 2 && index != 4 && index != 5 && index != 6) {
+	if err != nil || index < 0 || index >= 56 {
 		t.Fatal("unsupported explicit surface fixture", value)
 	}
 	return index
+}
+
+func requireAllSceneryProcess(t *testing.T) {
+	t.Helper()
+	if os.Getenv("FD2_HD_SCENERY_BATCH") != "1" {
+		t.Skip("dedicated complete scenery process required")
+	}
+	requirePhysicalScenePack(t)
+}
+
+func TestModernBattleSceneryAllNativeGeometry(t *testing.T) {
+	requireAllSceneryProcess(t)
+	visible, empty := 0, 0
+	shapes := make(map[image.Point]int)
+	for index := 0; index < 56; index++ {
+		native, err := fdother.LoadSeparatedSingleFrame(separatedAssetPath("surfaces"), "BG.DAT", index)
+		if err != nil {
+			t.Fatal(err)
+		}
+		frame, err := modernHDBattleSurfaceFrame(native)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !bytes.Contains(frame.Mask, []byte{255}) {
+			empty++
+			continue
+		}
+		if !modernBattleBackdropGeometry(native) {
+			t.Fatal("visible fixed native geometry missing", index, native.Width, native.Height)
+		}
+		visible++
+		shapes[image.Pt(native.Width, native.Height)]++
+		t.Run(fmt.Sprintf("BG%03d", index), func(t *testing.T) {
+			t.Setenv("FD2_HD_BATTLE_SURFACE_INDEX", strconv.Itoa(index))
+			TestModernBattleSurfacePhysicalNativeReconstruction(t)
+		})
+	}
+	if visible != 46 || empty != 10 || shapes[image.Pt(318, 100)] != 1 || shapes[image.Pt(320, 101)] != 2 || shapes[image.Pt(320, 100)] != 43 {
+		t.Fatal("fixed backdrop inventory differs", visible, empty, shapes)
+	}
+	for _, geometry := range []image.Point{{317, 100}, {319, 100}, {320, 102}, {10, 3}} {
+		if modernBattleBackdropGeometry(fdother.Frame{Width: geometry.X, Height: geometry.Y}) {
+			t.Fatal("unreviewed backdrop geometry enabled", geometry)
+		}
+	}
+	t.Logf("%d visible BG sources, %d empty slots, three native geometry classes; both-side complete native prelude/body/counter/restore reconstruction", visible, empty)
+}
+
+func TestModernBattleSceneryAllSourcesAndAtomic(t *testing.T) {
+	requireAllSceneryProcess(t)
+	catalog := os.Getenv("FD2_TEST_MODERN_BATTLE_CATALOG")
+	raw, err := os.ReadFile(catalog)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var doc modernThemeCatalog
+	if err := json.Unmarshal(raw, &doc); err != nil {
+		t.Fatal(err)
+	}
+	registered := make(map[string]map[int]bool)
+	for _, a := range doc.Assets {
+		if a.Role == "battle_surface_hd" {
+			if registered[a.SourceArchive] == nil {
+				registered[a.SourceArchive] = make(map[int]bool)
+			}
+			if registered[a.SourceArchive][a.SourceResource] {
+				t.Fatal("duplicate surface", a.SourceArchive, a.SourceResource)
+			}
+			registered[a.SourceArchive][a.SourceResource] = true
+		}
+	}
+	for _, archive := range []string{"BG.DAT", "TAI.DAT"} {
+		visible := 0
+		for index := 0; index < 56; index++ {
+			native, err := fdother.LoadSeparatedSingleFrame(separatedAssetPath("surfaces"), archive, index)
+			if err != nil {
+				t.Fatal(err)
+			}
+			frame, err := modernHDBattleSurfaceFrame(native)
+			if err != nil {
+				t.Fatal(err)
+			}
+			ink := bytes.Contains(frame.Mask, []byte{255})
+			if registered[archive][index] != ink {
+				t.Fatal("catalog does not exactly cover visible native sources", archive, index, ink)
+			}
+			if !ink {
+				continue
+			}
+			visible++
+			t.Run(fmt.Sprintf("%s%03d", archive, index), func(t *testing.T) {
+				t.Setenv("FD2_HD_BATTLE_SURFACE_INDEX", strconv.Itoa(index))
+				checkModernBattleSurfaceAtomic(t, archive)
+			})
+		}
+		want := 46
+		if archive == "TAI.DAT" {
+			want = 40
+		}
+		if visible != want || len(registered[archive]) != want {
+			t.Fatal("fixed visible source count differs", archive, visible, len(registered[archive]))
+		}
+	}
+	t.Log("all86 real BG/TAI sources and cold/producer rejection cases; empty native slots remain undeclared")
+}
+
+func TestModernBattleScenerySourcesGPU(t *testing.T) {
+	requireAllSceneryProcess(t)
+	raw, err := os.ReadFile(os.Getenv("FD2_TEST_MODERN_BATTLE_CATALOG"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var doc modernThemeCatalog
+	if err := json.Unmarshal(raw, &doc); err != nil {
+		t.Fatal(err)
+	}
+	var assets []modernThemeAsset
+	for _, asset := range doc.Assets {
+		if asset.Role == "battle_surface_hd" {
+			assets = append(assets, asset)
+		}
+	}
+	sort.Slice(assets, func(i, j int) bool {
+		if assets[i].SourceArchive != assets[j].SourceArchive {
+			return assets[i].SourceArchive < assets[j].SourceArchive
+		}
+		return assets[i].SourceResource < assets[j].SourceResource
+	})
+	start, err := strconv.Atoi(os.Getenv("FD2_HD_SCENERY_START"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	limit, err := strconv.Atoi(os.Getenv("FD2_HD_SCENERY_LIMIT"))
+	if err != nil || len(assets) != 86 || start < 0 || start >= len(assets) || limit < 1 || limit > 16 {
+		t.Fatal("invalid bounded complete scenery slice", start, limit, len(assets), err)
+	}
+	end := start + limit
+	if end > len(assets) {
+		end = len(assets)
+	}
+	set := modernHDBattleFixtureSet(t, os.Getenv("FD2_TEST_MODERN_BATTLE_CATALOG"), os.Getenv("FD2_TEST_MODERN_BATTLE_PACK"), nil)
+	_, palette, err := loadNativeBattlePalette()
+	if err != nil {
+		t.Fatal(err)
+	}
+	g := &Game{modernStoryPortraits: set}
+	var cases []modernHDBattleGPUCase
+	var records []map[string]any
+	for _, asset := range assets[start:end] {
+		identity := fmt.Sprintf("%s:%03d", asset.SourceArchive, asset.SourceResource)
+		entry := set.battleSurfaces[asset.SourceArchive][asset.SourceResource]
+		if entry == nil || entry.hash != asset.SHA256 {
+			t.Fatal("real complete scenery source missing", identity)
+		}
+		frame := entry.native
+		frame.X, frame.Y = 0, 50
+		if asset.SourceArchive == "TAI.DAT" {
+			frame.X, frame.Y = 164, 157
+		}
+		if asset.SourceArchive == "BG.DAT" && (asset.SourceResource == 36 || asset.SourceResource == 37) {
+			for y := 0; y < frame.Height*6; y++ {
+				for x := 0; x < frame.Width*6; x++ {
+					_, _, _, alpha := entry.picture.At(x, y).RGBA()
+					if alpha != uint32(frame.Mask[(y/6)*frame.Width+x/6])*257 {
+						t.Fatal("partial BG lost exact native coverage", asset.SourceResource, x, y)
+					}
+				}
+			}
+		}
+		for variant := 0; variant < 2; variant++ {
+			source := modernHDBattleSource{Archive: asset.SourceArchive, Resource: asset.SourceResource, Frame: frame, Fill: -1}
+			subtract := float32(0)
+			if variant != 0 {
+				subtract = float32(12) / 63
+				clip := image.Rect(9, 40, 303, 160)
+				source.DX = -21
+				if asset.SourceArchive == "TAI.DAT" {
+					source.DX = 35
+					clip = image.Rect(160, 150, 312, 200)
+				}
+				source.Clip = &clip
+			}
+			sources := &modernHDBattleSources{Base: make([]byte, 64000), BaseScenery: []modernHDBattleSource{source}}
+			plan, err := g.modernHDBattlePlan(sources, palette, subtract)
+			if err != nil || len(plan.Layers) != 1 || plan.Layers[0].HD == nil || plan.Layers[0].HDKey != asset.SHA256 {
+				t.Fatal("missing real scenery GPU identity", identity, err)
+			}
+			cases = append(cases, modernHDBattleGPUCase{name: fmt.Sprintf("all-scenery/%s/%d", identity, variant), plan: plan, want: surfaceCPUWorld(plan), tolerance: 1})
+		}
+		records = append(records, map[string]any{"source_id": identity, "archive": asset.SourceArchive, "resource": asset.SourceResource,
+			"metadata_sha256": asset.SourceMetadataSHA256, "hd_sha256": asset.SHA256, "native_size": []int{frame.Width, frame.Height}, "gpu_cases": 2})
+	}
+	probe := &modernHDBattleGPUProbe{cases: cases}
+	ebiten.SetWindowSize(640, 400)
+	ebiten.SetVsyncEnabled(false)
+	if err := ebiten.RunGame(probe); err != nil {
+		t.Fatal(err)
+	}
+	defer probe.gpu.close()
+	if probe.err != nil || probe.index != len(cases) {
+		t.Fatalf("complete scenery GPU %d/%d: %v", probe.index, len(cases), probe.err)
+	}
+	out := os.Getenv("FD2_TEST_HD_SCENERY_OUT")
+	if out == "" {
+		t.Fatal("scenery GPU receipt path required")
+	}
+	report := map[string]any{"status": "PASS-COMPLETE-SCENERY-SOURCE-GPU", "start": start, "end": end, "total_assets": 86,
+		"completed_gpu_cases": len(cases), "assets": records, "tolerance": 1, "scope": "isolated real source GPU/CPU Over; no normal-player or original RGB claim"}
+	encoded, err := json.MarshalIndent(report, "", "  ")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(out, append(encoded, '\n'), 0644); err != nil {
+		t.Fatal(err)
+	}
+	t.Logf("%d real BG/TAI GPU worlds for source slice%d:%d, clipped translation and shade; independent RGBA8 Over tolerance1", len(cases), start, end)
 }
 
 func surfaceTestAsset(t *testing.T) (modernThemeAsset, string) {
@@ -98,8 +315,8 @@ func checkModernBattleSurfaceAtomic(t *testing.T, archive string) {
 			bad.NativeFrames = append([]modernBattleHDDescriptor(nil), asset.NativeFrames...)
 			mutate(&bad)
 			marker := &modernBattleSurfaceHD{}
-			probe := &modernStoryPortraitSet{battleSurfaces: map[string]map[int]*modernBattleSurfaceHD{"TAI.DAT": {55: marker}}}
-			if err := loadModernBattleSurfaceHD(probe, bad, pack); err == nil || probe.battleSurfaces["TAI.DAT"][55] != marker || len(probe.battleSurfaces) != 1 || len(probe.battleSurfaces["TAI.DAT"]) != 1 || probe.hasHD {
+			probe := &modernStoryPortraitSet{battleSurfaces: map[string]map[int]*modernBattleSurfaceHD{"TAI.DAT": {56: marker}}}
+			if err := loadModernBattleSurfaceHD(probe, bad, pack); err == nil || probe.battleSurfaces["TAI.DAT"][56] != marker || len(probe.battleSurfaces) != 1 || len(probe.battleSurfaces["TAI.DAT"]) != 1 || probe.hasHD {
 				t.Fatal("invalid source published")
 			}
 		})
@@ -266,7 +483,7 @@ func TestModernBattleSurfacePhysicalNativeReconstruction(t *testing.T) {
 			if len(job.hdSources.BaseScenery) != 2 || !bytes.Equal(surfaceIndexedReference(job.hdSources), want) {
 				t.Fatalf("body%d side%d differs", i, side)
 			}
-			for y := 157; y < 199; y++ {
+			for y := 157; y < 157+scene.platformFrame.Height; y++ {
 				for x := 164; x < 164+scene.platformFrame.Width; x++ {
 					if job.hdSources.Base[y*320+x] != 0 {
 						t.Fatal("native pedestal remains baked into HD base")
@@ -376,7 +593,7 @@ func TestModernBattleSurfaceHDGPU(t *testing.T) {
 				if err != nil {
 					t.Fatal(err)
 				}
-				if plan.Layers[0].HD == nil || plan.Layers[0].Rect != image.Rect(0, 300, 1920, 900) {
+				if plan.Layers[0].HD == nil || plan.Layers[0].Rect != image.Rect(0, 300, scene.backgroundFrame.Width*6, (50+scene.backgroundFrame.Height)*6) {
 					t.Fatal("HD background missing or misplaced")
 				}
 				if withPedestal && variant == 0 {
@@ -452,7 +669,7 @@ func assertTAIPlan(t *testing.T, plan modernHDBattlePlan, set *modernStoryPortra
 			if side != 0 {
 				x += stage * 10
 			}
-			if layer.Rect != image.Rect(x*6, 157*6, (x+entry.native.Width)*6, 199*6) {
+			if layer.Rect != image.Rect(x*6, 157*6, (x+entry.native.Width)*6, (157+entry.native.Height)*6) {
 				t.Fatal("selected TAI rectangle differs", layer.Rect)
 			}
 		}

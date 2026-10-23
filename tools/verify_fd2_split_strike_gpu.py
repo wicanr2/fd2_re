@@ -212,7 +212,7 @@ def verify(receipt, catalog, source, original_pack, inventory, runtime_receipt=N
         raise ValueError('完整原生相位、來源幀或空拍缺少實際Draw')
     if d.get('scenery_triple') is not None:
         triple=d['scenery_triple'];side=d.get('scenery_side')
-        if triple not in ('4:5:6','5:6:4','6:4:5') or side not in ('0','2'):
+        if triple not in ('4:5:6','5:6:4','6:4:5','7:9:10','34:36:37','40:43:47') or side not in ('0','2'):
             raise ValueError('明示場景測試槽不同')
         indices=list(map(int,triple.split(':')))
         wanted={('BG.DAT',i) for i in indices[:target_count+1]}

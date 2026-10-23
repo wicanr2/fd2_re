@@ -3994,3 +3994,22 @@ BG0..2三份原稿及完整六倍預覽已審查：皆為深藍水平刷紋，�
 完整驗證命令沿tools/verify_fd2_battle_surface_hd.py，使用--transition；--kind source-unit --surface 0／1／2不帶--with-pedestal，完整主題仍以4及台座驗證。--kind transition-source驗僅過渡HD與原生回退；scroll-unit／scroll-source／scroll-game及split-unit／split-source／split-game覆蓋物理與24／29，後兩者依既有三組--pair／--triple、雙側--enemy、兩包--require-real-runtime，分段runtime以--hashes-only仍逐圖回讀及編碼。全矩陣、固定配方inline、來源指紋與收據依HD主收據transition_backgrounds_followup_20261024。不得以已去重runtime重作獨立實檔聲明。
 
 手繪筆觸、色彩與全框比例屬現代美術近似，不稱原版RGB或循環相位一致；原生producer、規則、音效、保存與shader保持。其他BG／TAI、效果尾段、HUD與普通／集中人工／平台仍待，不新增PLAYER-E2或完整HD聲明。
+
+### 其餘可見戰鬥背景與台座HD
+
+狀態：CONFORMED-SCOPED／RUNTIME-E1，含全部固定可見圖源及已驗caller。固定原包與位址基準沿上一節，原始BG／TAI各57槽；本批補剩餘40張可見BG與37個TAI來源，原檔相同的台座共用原稿，但保留各資源metadata與描述子。完整來源、提示、別名及停止線依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的remaining_scenery_followup_20261024。空Mask、10×3占位與第56槽空raw不補造。
+
+已閉合28CE7→28D48→28D62與29C90／29DED的BG定位為0,50，台座164,157，原生base明示清零。原生consumer按解碼描述子Blit；本批只把HD橋接的320×100限制擴到固定來源實有的318×100及320×101。最大背景下緣151，不與下方面板154或上方面板46交會；318寬保留右兩欄。BG36／37的透明101列與少量孔洞以固定原生二值Mask六倍保護，畫作不替換原生定位、遮罩、順序、viewport或節拍。TAI仍沿現代coverage契約與既有alpha核心裁切。未知形狀保持原生回退，不推測新caller。
+
+素材以內建圖像工具逐張生成，原圖作構圖參考、已核准原稿作風格參考。全部原稿與完整六倍圖審查前不升美術READY或登錄；色彩、刷紋、比例及台座輪廓屬美術近似。兩包需核完整來源、原生重組與GPU合成，特殊尺寸另驗共同／分離物理與24／29完整Game.Draw、F2、原規則與一次返回，並保留舊圖組回歸。正式白名單及私人保存通過後才去重。其他命令背景caller、效果尾段、HUD與集中正常／人工／平台仍待；不得外推完整HD或PLAYER-E2。
+
+
+本批66份新原稿、77個新增來源正式登錄，舊684項保持；原raw完全相同的TAI共用原稿，各資源metadata及編製檔名仍獨立。正式覆蓋由audit_fd2_battle_hd_coverage.py重生，唯一數量依58及本批formal_coverage。BG36／37保留原生二值遮罩六倍後的每個alpha，不把透明列或孔洞塗滿；台座沿原RGBA核心框配方。全部原稿／提示／來源／配方inline依同筆主收據，可從私人白名單還原，不依賴生成器工作目錄永久存在。
+
+兩包各86來源冷載入／PNG／metadata／producer拒收及172個實際GPU世界對獨立RGBA8 Over容差1通過。固定原包46張BG、三種尺寸共5704張原生完整畫布重組通過，此數不重複算成兩份美術包。四組共背景、三組分離物理、三組24／29與兩側／兩包共52完整Game.Draw及276次F2，1030組最終1920畫布跨包PNG逐SHA相同；分段870張另對固定FIGANI／BG／TAI及Pillow合成容差1。兩指令各22項收據反例通過；舊684清冊對八新來源16個GPU世界保持原圖回退。75份HD Go閘門、92個必要頂層測試無SKIP／逾時／OOM，字串另八項通過；峰值只作有界測試資源量測。RNG／MP／HP／DAC與一次續行保持，原生producer／shader／音效／保存不改。
+
+永久入口在既有Go Docker使用tools/verify_fd2_battle_surface_hd.py --kind scenery-native|scenery-unit|scenery-source --catalog ABS --pack ABS --out FRESH_PREFIX --timeout 1200。scenery-source每次--scenery-start取0、16、32、48、64、80，--scenery-limit最多16。舊清冊回退另用--kind scenery-legacy與固定684項基底，必須保持其cd4b81d9c3b9d1d6cd2a97c10eca6e27d8841698f47da4290816c99d86f96309 SHA；基底可由正式清冊前684項及原private_root還原。本批66個排程／兩個初始閘門的驗證器版本保存在matrix_verifier_snapshot，之後只新增隔離回退測項及正式來源抽驗，完整Game.Draw方法與正式引擎保持；最後另把冷拒收測試標記由55移至未用56，避免TAI55先碰到重覆來源而漏驗錯件，補跑全部86來源通過。
+
+完整流程使用game配--surface 3、34、37、47，3不帶--with-pedestal；其餘帶台座，另一側加--enemy。scroll-game配--pair 7:10、34:36、36:37及--transition；split-game配--command 24或29、--triple 7:9:10、34:36:37、40:43:47及--transition。獨立包由sync_modern_theme_private.py --runtime-only全新複製，再以--require-real-runtime驗；分段runtime可--hashes-only但仍逐張回讀與編碼。獨立Pillow及反例沿verify_fd2_split_strike_gpu.py／test_fd2_split_strike_gpu.py，完整命令與收據見同筆主收據。去重後的包不得重用為獨立實檔證據。
+
+README四格由已核對的完整Game.Draw半縮，保留像素面板，未裁切或重畫遊戲區。手繪構圖細節、材質、全框適配及台座輪廓是美術近似；資料來源補齊不等於全部指令caller、普通玩家、人工造型或平台完成。其餘效果尾段／指令場景、HUD、浮出工具列與加速及集中正常／人工／平台仍待，不新增原版RGB parity或PLAYER-E2。

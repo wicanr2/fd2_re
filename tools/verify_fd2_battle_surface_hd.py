@@ -12,6 +12,10 @@ from verify_fd2_player9_map_hd import check_real_runtime
 
 ROOT = Path(__file__).resolve().parents[1]
 REQUIRED = {
+    'scenery-legacy': {'TestModernBattleSceneryLegacyFallbackGPU'},
+    'scenery-native': {'TestModernBattleSceneryAllNativeGeometry'},
+    'scenery-unit': {'TestModernBattleSceneryAllSourcesAndAtomic'},
+    'scenery-source': {'TestModernBattleScenerySourcesGPU'},
     'transition-source': {'TestModernHDTransitionOnlyGPU'},
     'split-unit': {'TestModernHDSplitStrikeSceneryNativeAndAtomic'},
     'split-game': {'TestModernHDSplitStrikeRuntimeGPU'},
@@ -42,11 +46,13 @@ def main():
     p.add_argument('--pack', type=Path, required=True)
     p.add_argument('--out', type=Path, required=True)
     p.add_argument('--enemy', action='store_true')
-    p.add_argument('--surface', type=int, choices=[0,1,2,4,5,6], default=4)
+    p.add_argument('--surface', type=int, choices=range(56), default=4)
+    p.add_argument('--scenery-start',type=int,default=0)
+    p.add_argument('--scenery-limit',type=int,default=16)
     p.add_argument('--transition',action='store_true',help='要求BG0..2真實HD來源與完整過渡擷取')
-    p.add_argument('--pair', choices=['4:5','5:6','6:4'], default='4:5')
+    p.add_argument('--pair', choices=['4:5','5:6','6:4','7:10','34:36','36:37'], default='4:5')
     p.add_argument('--command',type=int,choices=[24,29],default=24)
-    p.add_argument('--triple',choices=['4:5:6','5:6:4','6:4:5'],default='4:5:6')
+    p.add_argument('--triple',choices=['4:5:6','5:6:4','6:4:5','7:9:10','34:36:37','40:43:47'],default='4:5:6')
     p.add_argument('--hashes-only',action='store_true')
     p.add_argument('--with-pedestal', action='store_true')
     p.add_argument('--require-real-runtime', action='store_true')
@@ -68,6 +74,12 @@ def main():
         env.pop(name,None)
     env.pop('FD2_HD_TRANSITION_REQUIRED',None)
     env.pop('FD2_HD_TRANSITION_GPU',None)
+    env.pop('FD2_HD_SCENERY_BATCH',None)
+    if a.kind in ['scenery-native','scenery-unit','scenery-source','scenery-legacy']:env['FD2_HD_SCENERY_BATCH']='1'
+    if a.kind=='scenery-source':
+        if not 0<=a.scenery_start<86 or not 1<=a.scenery_limit<=16:raise SystemExit('完整場景GPU使用有界16來源切片')
+        env.update(FD2_HD_SCENERY_START=str(a.scenery_start),FD2_HD_SCENERY_LIMIT=str(a.scenery_limit),FD2_TEST_HD_SCENERY_OUT=str(a.out)+'.source.json')
+    if a.kind=='scenery-legacy':env['FD2_TEST_HD_SCENERY_OUT']=str(a.out)+'.legacy.json'
     if a.transition:env['FD2_HD_TRANSITION_REQUIRED']='1'
     env['FD2_HD_BATTLE_SURFACE_INDEX']=str(a.surface)
     if a.with_pedestal: env['FD2_HD_BATTLE_PEDESTAL']=str(a.surface)
@@ -141,10 +153,25 @@ export DISPLAY=:99
             raise SystemExit('缺少24／29完整場景Game.Draw／F2／交易／一次續行')
         if a.transition and receipt.get('transition_required') is not True:
             raise SystemExit('缺少全部三個過渡來源的實際Draw')
+    if a.kind=='scenery-source':
+        receipt=json.loads(Path(str(a.out)+'.source.json').read_text())
+        if (receipt.get('status')!='PASS-COMPLETE-SCENERY-SOURCE-GPU' or receipt.get('start')!=a.scenery_start
+                or receipt.get('end')!=min(86,a.scenery_start+a.scenery_limit) or receipt.get('total_assets')!=86
+                or len(receipt.get('assets',[]))!=receipt['end']-receipt['start']
+                or receipt.get('completed_gpu_cases')!=2*len(receipt['assets'])):
+            raise SystemExit('完整場景GPU切片缺少實際繪圖')
+    if a.kind=='scenery-legacy':
+        receipt=json.loads(Path(str(a.out)+'.legacy.json').read_text())
+        if (receipt.get('status')!='PASS-OLD684-NEW-SCENERY-FALLBACK-GPU'
+                or receipt.get('legacy_catalog_sha256')!=hashlib.sha256(a.catalog.read_bytes()).hexdigest()
+                or receipt.get('legacy_registered_surfaces')!=9 or receipt.get('completed_gpu_cases')!=16
+                or len(set(receipt.get('source_ids',[])))!=8):
+            raise SystemExit('舊684主題缺少新場景原圖GPU回退')
     report = dict(status='PASS',kind=a.kind,enemy=a.enemy,required=sorted(REQUIRED[a.kind]),
                   catalog_sha256=hashlib.sha256(a.catalog.read_bytes()).hexdigest(),
                   catalog=str(a.catalog.resolve()),pack=str(a.pack.resolve()),with_pedestal=a.with_pedestal,surface=a.surface,pair=a.pair,
                   command_id=a.command,triple=a.triple,hashes_only=a.hashes_only,transition_required=a.transition,
+                  scenery_start=a.scenery_start,scenery_limit=a.scenery_limit,
                   independent_runtime_files=independent, memory=str(a.out)+'.memory.json',log=str(a.out)+'.log',
                   scope='固定來源／GPU／明示物理戰鬥fixture，非正常玩家或新原版RGB對拍')
     Path(str(a.out)+'.gate.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')

@@ -35,6 +35,12 @@ func modernScrollTargetSceneFixture(t *testing.T, side byte, targetFigure int) (
 			actorBG, targetBG = 5, 6
 		case "6:4":
 			actorBG, targetBG = 6, 4
+		case "7:10":
+			actorBG, targetBG = 7, 10
+		case "34:36":
+			actorBG, targetBG = 34, 36
+		case "36:37":
+			actorBG, targetBG = 36, 37
 		default:
 			t.Fatal("unsupported explicit scenery pair", pair)
 		}

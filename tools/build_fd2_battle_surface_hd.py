@@ -21,6 +21,12 @@ def compile_reviewed_batch(a):
     batch = recipe.get('batch_key','forest_coast_surface_followup_20261024')
     allowed = {'forest_coast_surface_followup_20261024':{('BG.DAT',5),('BG.DAT',6),('TAI.DAT',5),('TAI.DAT',6)},
                'transition_backgrounds_followup_20261024':{('BG.DAT',0),('BG.DAT',1),('BG.DAT',2)}}
+    complete_batch = batch == 'remaining_scenery_followup_20261024'
+    if complete_batch:
+        approved = json.loads((ROOT/'docs/data/fd2-modern-hd-battlefield-20261019.json').read_text())[batch]
+        allowed[batch] = {(bank+'.DAT',r['index']) for bank,rows in approved['sources'].items() for r in rows}
+        if len(allowed[batch]) != 77 or sha(a.base_catalog) != approved['base_catalog_sha256']:
+            raise ValueError('完整場景批次或基底清冊不同')
     if batch not in allowed: raise ValueError('未審查的批次')
     state = json.loads((ROOT/'docs/data/fd2-modern-hd-battlefield-20261019.json').read_text())[batch]
     if state['status'] not in {'READY-ART-REVIEWED', 'CONFORMED-SCOPED/RUNTIME-E1'} or sha(a.recipe) != state['art_recipe']['sha256']:
@@ -37,6 +43,11 @@ def compile_reviewed_batch(a):
         pinned = next(r for r in state['sources'][archive[:-4]] if r['index']==index)
         if json.loads(json.dumps(source)) != pinned or (archive,index) in existing:
             raise ValueError('固定原版圖源不同或已登錄')
+        if complete_batch:
+            alias = next(r for r in state['plan_inline']['aliases'] if r['bank']==archive[:-4] and r['index']==index)
+            representative = alias['master_representative']
+            if row['master_representative'] != representative or inventory['banks'][archive[:-4]]['entries'][representative]['raw_sha256'] != source['raw_sha256']:
+                raise ValueError('未證實的共用原稿關係')
         master = ROOT/row['master']
         if sha(master) != row['master_sha256']:
             raise ValueError('原稿SHA不同')
@@ -54,7 +65,15 @@ def compile_reviewed_batch(a):
             elif row['crop'] is not None:
                 raise ValueError('背景不接受額外裁切')
             picture = im.resize((source['width']*6,source['height']*6),Image.Resampling.LANCZOS).convert('RGBA')
-            if picture.getchannel('A').getextrema() != ((255,255) if archive=='BG.DAT' else (0,255)):
+            full = source['visible_pixels'] == source['width']*source['height']
+            if archive=='BG.DAT' and not full:
+                if not complete_batch or index not in (36,37):
+                    raise ValueError('未審查的局部背景Mask')
+                folder=a.original_pack/'surfaces'/f'BG_{index:03d}'
+                metadata=json.loads((folder/'resource.json').read_text())
+                with Image.open(folder/metadata['mask']) as mask:
+                    picture.putalpha(mask.convert('L').resize(picture.size,Image.Resampling.NEAREST))
+            if picture.getchannel('A').getextrema() != ((255,255) if archive=='BG.DAT' and full else (0,255)):
                 raise ValueError('成品透明／不透明端點不同')
             if picture.tobytes() != Image.open(ROOT/row['review']['file']).convert('RGBA').tobytes() or sha(ROOT/row['review']['file']) != row['review']['sha256']:
                 raise ValueError('編製結果與已審圖不同')
@@ -72,13 +91,30 @@ def compile_reviewed_batch(a):
         names.update(e[k] for k in ['file','master_file'] if k in e)
     additions = [r[k] for r,_,_,_ in prepared for k in ['file','master_file']]
     base = ROOT/catalog['private_root']
-    if len(set(additions)) != 2*len(prepared) or set(additions)&names or any(Path(n).name != n for n in names|set(additions)) or any(not (base/n).is_file() for n in names):
+    if not complete_batch and (len(set(additions)) != 2*len(prepared) or set(additions)&names):
+        raise ValueError('白名單名稱碰撞')
+    if complete_batch:
+        outputs=[r['file'] for r,_,_,_ in prepared]
+        if len(set(outputs))!=77 or set(outputs)&names or set(outputs)&{r['master_file'] for r,_,_,_ in prepared}:
+            raise ValueError('完整批次成品名稱碰撞')
+        masters={}
+        for row,master,_,_ in prepared:
+            name=row['master_file'];digest=sha(master)
+            if name in masters and masters[name]!=digest or name in names and sha(base/name)!=digest:
+                raise ValueError('共用原稿SHA衝突')
+            masters[name]=digest
+        if len(set(masters)-names)!=66:
+            raise ValueError('完整批次新原稿數量不同')
+    if any(Path(n).name != n for n in names|set(additions)) or any(not (base/n).is_file() for n in names):
         raise ValueError('白名單名稱碰撞或來源缺件')
     a.out.mkdir()
     for name in sorted(names):
         (a.out/name).symlink_to(os.path.relpath(base/name,a.out))
     for row,master,picture,entry in prepared:
-        shutil.copyfile(master,a.out/row['master_file'])
+        target=a.out/row['master_file']
+        if target.exists():
+            if sha(target)!=row['master_sha256']:raise ValueError('已建共用原稿SHA不同')
+        else:shutil.copyfile(master,target)
         picture.save(a.out/row['file'])
         entry['sha256'] = sha(a.out/row['file'])
         catalog['assets'].append(entry)

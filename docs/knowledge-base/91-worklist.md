@@ -186,15 +186,17 @@ HD高解析呈現仍未全部完成。本項保持開啟；目前狀態與唯一
 
 `modern-battle-animation-hd` · 工作 · [#263](https://github.com/wicanr2/fd2_re/issues/263) · 仍未完成 · 要人判
 
-全部戰鬥HD仍未完成，本項保持開啟。使用者定案先完成全部HD串接，再集中正常玩家抽驗與人工造型確認；原驗收條件保持。唯一數量與缺口依[58](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)，契約依[61](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/61-modern-theme-runtime-spec.md)。
+全部戰鬥HD仍未完成，本項保持開啟。使用者定案先完成全部HD串接，再集中正常玩家與人工造型確認；原驗收條件保持。唯一現況與數量依[58](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)，契約依[61](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/61-modern-theme-runtime-spec.md)。
 
-已登錄FIGANI人物與FDOTHER效果、指令9／10～12及13～16地圖回復、物品／金錢成功訊息，逐批來源、限制與永久重跑依[HD主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-battlefield-20261019.json)。森林小屋／內部／海岸BG與TAI已接共用／分離物理與指令24／29的已驗caller，保留連射、反擊、多目標、原規則與保存。
+固定原包的全部可見戰鬥背景與台座圖源已補齊，限定CONFORMED-SCOPED／RUNTIME-E1。新增66份原稿、77個來源，原raw相同的台座共用原稿但保留各資源metadata；空Mask與終止空raw維持空白。BG的318寬／101高、原生透明孔洞與台座原框保留，接入共背景／分離物理及指令24／29的已驗caller。來源與完整配方依[HD主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-battlefield-20261019.json)的remaining_scenery_followup_20261024。
 
-本批BG0..2過渡背景達限定CONFORMED-SCOPED／RUNTIME-E1。三張1920×600圖源保留原生遮罩歷史、位移、裁切與節拍；來源於規劃RNG前及F2預檢。兩包各1038物理／3018分段原生畫布，36物理規劃前、72分段規劃前及72 F2拒收通過；僅過渡HD及原生回退95個GPU世界通過。兩包36完整Game.Draw、228次F2、單次MP／逐目標HP／原擲骰與一次返回保持；918組最終PNG跨包相同，其中870分段畫布另對固定來源及獨立Pillow合成容差1。全部Go閘門無SKIP／逾時／OOM；44項HD與23項舊主題回退收據反例通過。
+兩包各86來源冷載入／PNG／metadata／producer拒收及172個GPU世界通過，固定原包另驗46張BG三種尺寸5704張完整原生畫布。兩包合計52完整Game.Draw、276次F2、1030組跨包完整PNG逐SHA相同；分段870張另對固定FIGANI／BG／TAI及獨立Pillow合成容差1。原RNG／MP／HP／DAC與一次續行保持；75份HD Go閘門／92個必要頂層測試無SKIP／逾時／OOM，字串另八項通過，兩指令各22項收據反例通過。舊684主題對八新來源16個GPU世界維持原圖回退。
 
-三份原稿及成品依白名單同步私人庫，舊6460檔雜湊保持；固定配方重編六檔完全相同。README使用實際完整Game.Draw半縮，未裁切或重畫；手繪條帶、色彩與全框比例是美術近似，不稱原版RGB或循環相位相同。舊681主題未宣告BG0..2時，維持固定原圖／色盤回退；自洽改寫native RGB亦拒收。左右歷史順序及排程重繪計數如實記錄，不要求每個frame相同。
+正式來源及私人白名單已同步、遠端HEAD核對一致；舊684清冊項目及6466私人檔雜湊保持，固定配方重編143份新檔相同。README新四格取實際完整Game.Draw半縮，未裁切或重畫遊戲區，面板仍為像素。手繪構圖、材質、全框適配及台座輪廓屬美術近似，不稱原版RGB或逐幀相同；原生producer、shader、音效、保存與規則保持。
 
-其餘BG／TAI、其他效果尾段與指令場景、完整HUD、18／19第三銀行合法caller、狀態致死與普通召喚正常GUI、集中人工與平台效能仍待。來源408保留原有未知／阻擋等級，不由素材數外推完成。混合背景反擊限制沿#265；凱麗右腳#269及蓋亞手腕#268保持集中人工待辦。本批沒有新Release、原版RGB對拍、PLAYER-E2或完整HD聲明。
+其餘效果尾段與指令場景、完整HUD、18／19第三銀行合法caller、狀態致死與普通召喚正常GUI、集中人工及平台效能仍待。來源408保留未知／阻擋等級，不由素材數外推完成。混合背景反擊限制沿#265；蓋亞手腕#268、凱麗右腳#269保持集中人工待辦。正式浮出工具列／速度依#204；本批沒有新Release、PLAYER-E2或完整HD聲明。
+
+_下面這個區塊給 `tools/fd2_worklist_issues.py` 讀，保持原驗收契約。_
 
 怎樣算做完：建立由正式consumer到FIGANI人物及共同效果的可重跑覆蓋清冊；完成可達戰鬥動畫HD素材、原始位置／層序／節拍／命中與音效標記的正式呈現，缺件明示；正常玩家抽驗攻擊、受擊／反擊、法術／效果、死亡與戰場返回，F2、保存冷讀與代表性效能通過；已登錄素材同步私人庫，保留原版像素模式。資料測試及離線PNG不能取代正式GUI。
 

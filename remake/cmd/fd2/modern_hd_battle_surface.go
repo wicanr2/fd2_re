@@ -220,9 +220,15 @@ func modernPhysicalScenery(scene *nativePhysicalScene, platform bool) ([]modernH
 	return modernPhysicalBackdropScenery(scene, scene.backgroundFrame, scene.selection.BaseBG, platform)
 }
 
+func modernBattleBackdropGeometry(frame fdother.Frame) bool {
+	return (frame.Width == 320 && (frame.Height == 100 || frame.Height == 101)) ||
+		(frame.Width == 318 && frame.Height == 100)
+}
+
 func modernPhysicalBackdropScenery(scene *nativePhysicalScene, background fdother.Frame, index byte, platform bool) ([]modernHDBattleSource, error) {
-	// 其他原框須先審查 UI 層序；此橋接不外推 101 高或窄圖源。
-	if background.Width != 320 || background.Height != 100 {
+	// 三種原框均落於y50..151，不與面板y4..46及y154..196交會。
+	// 固定來源及READY契約見61「其餘可見戰鬥背景與台座HD」。
+	if !modernBattleBackdropGeometry(background) {
 		return nil, nil
 	}
 	frame, err := modernHDBattleSurfaceFrame(background)

@@ -54,6 +54,12 @@ func splitStrikeHDTestGame(t *testing.T, command int) (*Game, *battle.Unit, []*b
 			indices = []byte{5, 6, 4}
 		case "6:4:5":
 			indices = []byte{6, 4, 5}
+		case "7:9:10":
+			indices = []byte{7, 9, 10}
+		case "34:36:37":
+			indices = []byte{34, 36, 37}
+		case "40:43:47":
+			indices = []byte{40, 43, 47}
 		default:
 			t.Fatal("unsupported explicit command scenery", value)
 		}

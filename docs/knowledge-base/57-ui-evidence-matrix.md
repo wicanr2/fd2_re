@@ -2434,3 +2434,5 @@ BattleFig7／23已沿61「BattleFig7騎乘劍士與23弓手圖源」接入。唯
 指令24／29的actor及逐目標場景已接HD，保留原規則適用TAI、原生捲動歷史、標記與交易。分層為CONFORMED-SCOPED／RUNTIME-E1，唯一驗收與限制見[58](58-fd2-exe-re-coverage.md)及[61](61-modern-theme-runtime-spec.md)「指令24／29的HD場景來源」。清冊／美術／shader／規則／保存保持，BG0..2過渡後續依下段；其餘場景與HUD及正常／人工／平台仍待。
 
 BG0..2過渡背景已接物理與24／29的既有caller，限定CONFORMED-SCOPED／RUNTIME-E1。原遮罩歷史、位移、裁切、節拍與結算保持；兩包完整繪圖、F2與原生回退已驗。手繪條帶及色彩近似明示，其餘場景／效果／HUD與正常／集中人工／平台仍待；唯一數量與驗收依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)「BG0～2捲動過渡背景HD」及主收據transition_backgrounds_followup_20261024。
+
+全部固定可見BG／TAI圖源已補齊並接到已驗共背景／分離物理與24／29 caller，限定CONFORMED-SCOPED／RUNTIME-E1。特殊原框與透明孔洞、舊主題原圖回退及原規則保持；手繪適配與輪廓近似明示。資料補齊不外推其他caller、HUD或普通／集中人工／平台完成；唯一現況與數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源依HD主收據remaining_scenery_followup_20261024。

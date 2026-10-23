@@ -84,13 +84,17 @@
 
 ![森林小屋背景接入HD近戰的實際遊戲畫面](docs/figures/hd-battle-forest-background.png)
 
-森林小屋背景與草地台座已分別使用1920×600及924×252圖源，接入共用背景物理戰鬥的預備、主攻、反擊與淡出。上圖是明示換用地形索引與攻防結果的測試場景，取自正式 Game.Draw 最終合成的完整遊戲區縮圖；不是一般遊玩或原版對拍截圖。戰鬥面板仍用像素素材，其餘背景、台座及指令場景尚待接入；分離背景的捲動接線見下方。手繪山線、樹形及材質屬現代詮釋，來源與驗證範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
+森林小屋背景與草地台座已分別使用1920×600及924×252圖源，接入共用背景物理戰鬥的預備、主攻、反擊與淡出。上圖是明示換用地形索引與攻防結果的測試場景，取自正式 Game.Draw 最終合成的完整遊戲區縮圖；不是一般遊玩或原版對拍截圖。戰鬥面板仍用像素素材，更多背景與台座見下方場景圖組；其餘指令場景仍待接入，分離背景的捲動接線見下方。手繪山線、樹形及材質屬現代詮釋，來源與驗證範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
 
 ![森林內部與海岸背景、台座的HD實際戰鬥畫面](docs/figures/hd-battle-forest-coast.png)
 
 森林內部與海岸也已接入手繪HD背景及透明台座，沿用原有攻擊、反擊、進退場與淡出順序。
 左右取自受控地形索引與固定攻防結果的實際遊戲畫面，完整縮圖未裁切；面板仍為像素素材，正常玩家與集中人工抽驗仍待。
 原稿、材質近似與驗證範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)及[HD主收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的`forest_coast_surface_followup_20261024`。
+
+![山地石台、裂谷、冰格與木橋的HD戰鬥畫面](docs/figures/hd-battle-scenery.png)
+
+固定原包的可見戰鬥背景與台座圖源已補齊，接入共背景、分離背景物理及指令24／29的已驗流程。四格是受控地形與攻防結果的完整Game.Draw半縮圖，右下為木橋退場；面板沿用測試槽名稱與像素素材。原有空白來源維持空白，特殊尺寸與透明孔洞保留。構圖、筆觸與台座輪廓屬現代詮釋，正常玩家及集中人工／平台抽驗仍待。來源、限制與重跑入口見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)及[HD主收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的`remaining_scenery_followup_20261024`。
 
 ![非共背景戰鬥的HD人物捲入](docs/figures/hd-physical-scroll.png)
 

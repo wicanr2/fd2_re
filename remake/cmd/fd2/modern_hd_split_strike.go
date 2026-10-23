@@ -76,7 +76,7 @@ func (g *Game) stageModernHDSplitStrikeBanks(actor, confirmed *battle.Unit, comm
 }
 
 func modernSplitStrikeScenery(background fdother.Frame, selector int, platform *fdother.Frame) ([]modernHDBattleSource, error) {
-	if background.Width != 320 || background.Height != 100 {
+	if !modernBattleBackdropGeometry(background) {
 		return nil, nil
 	}
 	frame, err := modernHDBattleSurfaceFrame(background)
