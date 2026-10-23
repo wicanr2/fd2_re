@@ -3926,7 +3926,7 @@
       "id": "surface-tests-follow-selected-native-identity-and-size",
       "date": "2026-10-24",
       "area": "HD來源驗證",
-      "rule": "背景／台座測試選擇新來源時，所有身份與範圍斷言沿同一明示索引及原生描述子，不保留舊資源4或154寬度。入口remake/cmd/fd2/modern_hd_battle_surface_test.go的surfaceTestIndex與assertTAIPlan；目前支援4／5／6，其他形狀先補來源契約。",
+      "rule": "背景／台座測試選擇新來源時，所有身份與範圍斷言沿同一明示索引及原生描述子，不保留舊資源4或154寬度。入口remake/cmd/fd2/modern_hd_battle_surface_test.go的surfaceTestIndex與assertTAIPlan；背景支援0／1／2／4／5／6，台座支援4／5／6，其他形狀先補來源契約。",
       "why": "森林5的冷載入與50世界GPU通過，但原生移位台座仍被source.Resource!=4舊斷言拒收；改測試索引及native.Width後重跑，原renderer與圖源不變。",
       "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json"
     }

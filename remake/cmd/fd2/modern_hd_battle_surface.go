@@ -140,6 +140,11 @@ func (set *modernStoryPortraitSet) validatePhysicalScenery(scene *nativePhysical
 		return err
 	}
 	if scene != nil && scene.selection.HasSeparateBackgrounds {
+		transitions, err := modernBattleTransitionSources()
+		if err != nil {
+			return err
+		}
+		sources = append(sources, transitions...)
 		for _, target := range []bool{false, true} {
 			frame, index := scene.backgroundFrame, scene.selection.BaseBG
 			if target {
@@ -158,6 +163,23 @@ func (set *modernStoryPortraitSet) validatePhysicalScenery(scene *nativePhysical
 		}
 	}
 	return nil
+}
+
+func modernBattleTransitionSources() ([]modernHDBattleSource, error) {
+	var sources []modernHDBattleSource
+	for index := 0; index < 3; index++ {
+		native, err := fdother.LoadSeparatedSingleFrame(separatedAssetPath("surfaces"), "BG.DAT", index)
+		if err != nil {
+			return nil, err
+		}
+		frame, err := modernHDBattleSurfaceFrame(native)
+		if err != nil {
+			return nil, err
+		}
+		frame.X, frame.Y = 0, 50
+		sources = append(sources, modernHDBattleSource{Archive: "BG.DAT", Resource: index, Frame: frame, Fill: -1})
+	}
+	return sources, nil
 }
 
 func modernPhysicalBaseScenery(scene *nativePhysicalScene) ([]modernHDBattleSource, error) {

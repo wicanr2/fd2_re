@@ -238,7 +238,7 @@ func TestModernScrollSceneryNativeAndAtomic(t *testing.T) {
 	requirePhysicalScenePack(t)
 	catalog, pack := os.Getenv("FD2_TEST_MODERN_BATTLE_CATALOG"), os.Getenv("FD2_TEST_MODERN_BATTLE_PACK")
 	set := modernHDBattleFixtureSet(t, catalog, pack, nil)
-	canvases := 0
+	canvases, rejections := 0, 0
 	for _, pair := range []string{"4:5", "5:6", "6:4"} {
 		t.Setenv("FD2_HD_SCROLL_SCENERY", pair)
 		for _, side := range []byte{0, 2} {
@@ -253,6 +253,12 @@ func TestModernScrollSceneryNativeAndAtomic(t *testing.T) {
 						continue
 					}
 					picture, _, err := set.battleSurfaceHD(source)
+					if source.Archive == "BG.DAT" && source.Resource >= 0 && source.Resource < 3 && set.battleSurfaces["BG.DAT"][source.Resource] == nil {
+						if err != nil || picture != nil {
+							t.Fatal("undeclared transition source did not use native fallback", err)
+						}
+						continue
+					}
 					if err != nil || picture == nil {
 						t.Fatalf("scenery source lost provenance: %v", err)
 					}
@@ -285,12 +291,21 @@ func TestModernScrollSceneryNativeAndAtomic(t *testing.T) {
 				}
 				check(job.hdPhase, job.hdSources, pixels)
 			}
-			for _, source := range []struct {
+			wanted := []struct {
 				archive string
 				index   byte
 			}{
 				{"BG.DAT", scene.selection.BaseBG}, {"BG.DAT", modernPhysicalTargetBGIndex(scene)}, {"TAI.DAT", scene.selection.TAI},
-			} {
+			}
+			for index := 0; index < 3; index++ {
+				if set.battleSurfaces["BG.DAT"][index] != nil {
+					wanted = append(wanted, struct {
+						archive string
+						index   byte
+					}{"BG.DAT", byte(index)})
+				}
+			}
+			for _, source := range wanted {
 				bad := *set
 				bad.battleSurfaces = map[string]map[int]*modernBattleSurfaceHD{}
 				for archive, entries := range set.battleSurfaces {
@@ -307,10 +322,11 @@ func TestModernScrollSceneryNativeAndAtomic(t *testing.T) {
 				if _, err := g.prepareNativePhysicalScene(actor, target); err == nil || !reflect.DeepEqual(*actor, beforeActor) || !reflect.DeepEqual(*target, beforeTarget) || g.nativeRNGState != beforeRNG {
 					t.Fatal("bad scenery did not stop before settlement", source)
 				}
+				rejections++
 			}
 		}
 	}
-	t.Logf("%d full native canvases across three pairs and both sides; 18 actor/target/TAI preflight rejections without state changes", canvases)
+	t.Logf("%d full native canvases across three pairs and both sides; %d scenery preflight rejections without state changes", canvases, rejections)
 }
 
 func TestModernScrollSceneryGPU(t *testing.T) {
@@ -405,4 +421,86 @@ func TestModernScrollSceneryGPU(t *testing.T) {
 		t.Fatalf("scroll scenery GPU %d/%d: %v", probe.index, len(cases), probe.err)
 	}
 	t.Logf("%d real BG/TAI GPU worlds across three pairs, both sides, nine prelude shades, departure/scroll/body/counter and BG-only/TAI-only; independent RGBA8 Over tolerance1", len(cases))
+}
+
+func TestModernHDTransitionOnlyGPU(t *testing.T) {
+	if os.Getenv("FD2_HD_TRANSITION_GPU") != "1" {
+		t.Skip("dedicated transition-only GPU process required")
+	}
+	requirePhysicalScenePack(t)
+	full := modernHDBattleFixtureSet(t, os.Getenv("FD2_TEST_MODERN_BATTLE_CATALOG"), os.Getenv("FD2_TEST_MODERN_BATTLE_PACK"), nil)
+	entries := map[int]*modernBattleSurfaceHD{}
+	for index := 0; index < 3; index++ {
+		if full.battleSurfaces["BG.DAT"][index] == nil {
+			t.Fatal("required real transition missing", index)
+		}
+		entries[index] = full.battleSurfaces["BG.DAT"][index]
+	}
+	only := &modernStoryPortraitSet{hasHD: true, battleSurfaces: map[string]map[int]*modernBattleSurfaceHD{"BG.DAT": entries}}
+	var cases []modernHDBattleGPUCase
+	seen := map[int]bool{}
+	t.Setenv("FD2_HD_SCROLL_SCENERY", "4:5")
+	for _, side := range []byte{0, 2} {
+		g, scene, _, _ := modernScrollSceneFixture(t, side)
+		g.modernStoryPortraits = only
+		if !g.modernHDBattleWanted(scene) {
+			t.Fatal("transition-only theme did not enable physical owner")
+		}
+		add := func(name string, s *modernHDBattleSources, palette color.Palette, subtract float32) {
+			t.Helper()
+			plan, err := g.modernHDBattlePlan(s, palette, subtract)
+			if err != nil {
+				t.Fatal(err)
+			}
+			ordered := append(append([]modernHDBattleSource(nil), s.BaseScenery...), s.Layers...)
+			for i, layer := range plan.Layers {
+				if layer.HD != nil {
+					source := ordered[i]
+					if source.Archive != "BG.DAT" || source.Resource < 0 || source.Resource > 2 || layer.HDKey != entries[source.Resource].hash {
+						t.Fatal("transition-only invented another HD source")
+					}
+					if !layer.Rect.Intersect(image.Rect(0, 0, 1920, 1200)).Empty() {
+						seen[source.Resource] = true
+					}
+				}
+			}
+			cases = append(cases, modernHDBattleGPUCase{name: fmt.Sprintf("transition-only/%d/%s", side, name), plan: plan, want: surfaceCPUWorld(plan), tolerance: 1})
+		}
+		for _, f := range scene.prelude {
+			s, err := g.modernHDBattlePreludeSources(scene, f.Stage)
+			if err != nil {
+				t.Fatal(err)
+			}
+			palette, err := fdother.ParseVGAPalette(f.DAC)
+			if err != nil {
+				t.Fatal(err)
+			}
+			add(fmt.Sprintf("prelude%d", f.Stage), s, palette, float32(f.Stage*6)/63)
+		}
+		for i, s := range scene.leadSources {
+			add(fmt.Sprintf("lead%d", i), s, g.nativeUIPalette, 0)
+		}
+		phases := map[string]bool{}
+		for _, job := range scene.body.jobs {
+			if job.hdSources == nil || phases[job.hdPhase] {
+				continue
+			}
+			phases[job.hdPhase] = true
+			add(job.hdPhase, job.hdSources, g.nativeUIPalette, 0)
+		}
+	}
+	if len(seen) != 3 {
+		t.Fatal("missing visible transition planes", seen)
+	}
+	probe := &modernHDBattleGPUProbe{cases: cases}
+	ebiten.SetWindowSize(640, 400)
+	ebiten.SetVsyncEnabled(false)
+	if err := ebiten.RunGame(probe); err != nil {
+		t.Fatal(err)
+	}
+	defer probe.gpu.close()
+	if probe.err != nil || probe.index != len(cases) {
+		t.Fatalf("transition-only GPU %d/%d: %v", probe.index, len(cases), probe.err)
+	}
+	t.Logf("%d transition-only/native-fallback GPU worlds; both sides, all lead frames, native prelude/body/counter, three visible real HD backgrounds; independent Over tolerance1", len(cases))
 }

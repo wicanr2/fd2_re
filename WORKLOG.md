@@ -3038,3 +3038,17 @@ TAI_004候選675項編製及單元通過，原框154×42轉924×252透明圖，�
 5555份runtime新實檔完成全部閘門及正式來源逐SHA核對後，原子改同SHA相對連結，移除重複配置1600626688 bytes；不宣稱共享主機淨可用空間量測，清理後不可再當獨立實檔。108項人工字串處置以受控遷移器重綁並通過目前盤點，處置數保持；可由5da8971b重建的舊來源樹及臨時tar已刪。正式870畫布、runtime編碼雜湊、base／native PNG、log、manifest與通過／反例收據及原版／私人美術保留；沒有新影片或Release。
 
 本批最後核對195項SHA引用、十份程式來源指紋、2460個本地Markdown目標、gofmt及1000:1000擁有權通過。README僅更新分段打擊圖說及同名實際縮圖，其餘內容逐字保持；323條教訓／188 guard保持。主機gh更新#263並再次取得24項worklist，由Docker內官方build_snapshot／render／verify更新快照；#263、#268及#269皆保持OPEN。所有FD2容器已退出，沒有新Docker映像、volume或錄影。最終收據為cmd2429-scenery-final-check-oct24-r1.json；公開提交／遠端核對另存cmd2429-scenery-public-git-oct24-r1.json，完整HD目標維持active。
+
+2026-10-24 從ee0900c6 main建立hd/transition-bg-20261024。前輪指令24／29場景已推送，屬PROGRESS；tracked乾淨且無FD2容器。本輪補BG0..2過渡背景，固定原圖三份RGBA色盤參考與320×100／全不透明來源已核對，非單一循環位移不作假設。61先記來源橋接READY／美術DRAFT，三份生成原稿各以原圖參考製作；審查／編製／正式登錄與驗收尚待。
+
+過渡背景十二完整物理流程／72次F2通過。跨包比較第一版把整份收據相等當成條件，因排程造成的final_draws／hd_draws／phase_hd_draws不同而拒收；改為明示排除這三項計數，其他欄位及60組完整PNG逐SHA相同。正式renderer與測試閘門不改，來源／每階段實際繪圖仍必要。舊Git快照解包初次使用容器Python尚未支援的tarfile filter參數失敗，檢查自有Git archive全部路徑與連結後以既有API解開；屬驗證環境問題。
+
+跨包物理比較最終勘誤：首段的60組及第二版已通過敘述不成立。六組逐欄與逐圖檢查確認，排程計數共四項可不同；左右轉場的最後歷史來源不同，實際擷取鍵為左10／右6，不能兩側均假設10。依原phase／來源集合核對後，共48組完整PNG逐SHA相同，四項以外收據欄位相同，全部必要來源計數皆正值。三份過渡圖實際參與Draw不等於每個歷史層同時可見；不改正式producer、遮罩、規則或Go閘門。最終證據transition-physical-paired-oct24-r1.json。
+
+GitHub連接器無權查私人素材庫；沿用主機Git已登入路徑fetch成功，兩庫本機與origin/main皆無分歧。另在不帶主機憑證的有界Docker查匿名GitHub REST，私人庫回404；與登入Git可達並列記錄，不搬運憑證、不改公開方式。
+
+2026-10-24 BG0..2過渡背景限定CONFORMED-SCOPED／RUNTIME-E1：三份新原稿／成品登錄，清冊684項，固定配方六檔逐SHA可重編，舊681項及私人6460檔保持。兩包36完整Game.Draw、228次F2，918組最終PNG跨包雜湊相同；分段870畫布對固定來源／Pillow合成容差1。兩包原生重組、來源拒收、僅過渡95 GPU及舊681原生回退通過，67項收據反例通過，共59份Go閘門／79必要頂層測試無SKIP／逾時／OOM。README四格取實際完整畫面半縮，未裁切或重畫；手繪條帶／色彩／比例近似明示。原producer／規則／音效／保存／shader保持，其他場景／效果／HUD及普通／人工／平台仍待，完整HD目標保持active。字串盤點、Git及清理另核。
+
+5558份runtime實檔及兩份候選共12新檔，在全部閘門與正式來源逐SHA核對後原子改為同SHA相對連結，移除重複配置1617747968 bytes；不是共享主機淨可用空間量測。清理後runtime不再是獨立實檔。108項字串人工處置經官方遷移器重綁／盤點測試通過，處置數保持；可由ee0900c6重建的舊樹及臨時Git tar已刪。原稿、正式／私人美術、最終PNG、來源／配方與全部收據保留，沒有新影片、Release、映像或volume。
+
+本批最後核對262項SHA引用、13份來源指紋、2471個本地Markdown目標、gofmt及1000:1000擁有權通過。README只更新既有捲動圖與限定圖說，其餘內容逐字保持；323條教訓／188 guard保持。私人庫已獨立提交推送，登入Git核對本機／遠端main相同且工作樹乾淨，匿名API404並列記錄，不公開私人提交識別碼。主機gh更新#263並再次取得24項worklist，由Docker內官方build_snapshot／render／verify更新快照；#263／#268／#269保持OPEN。所有FD2容器已退出，沒有新映像、volume、錄影或Release。最終證據為transition-final-check-oct24-r1.json；公開提交及遠端核對另存transition-public-git-oct24-r1.json，完整HD目標保持active。

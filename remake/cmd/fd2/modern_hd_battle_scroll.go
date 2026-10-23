@@ -130,7 +130,7 @@ func modernHDBattleScrollScenerySources(presents []battlepresent.NativeCommand24
 		// Replay the native mask writes after TargetIdle. Repeating them on
 		// the already composed clean base is idempotent, including index0.
 		for _, index := range present.BGLayers {
-			value.Layers = append(value.Layers, modernHDBattleSource{Frame: backgrounds[index], Resource: -1, DX: present.BGX - present.ViewportX, Fill: -1})
+			value.Layers = append(value.Layers, modernHDBattleSource{Archive: "BG.DAT", Frame: backgrounds[index], Resource: index, DX: present.BGX - present.ViewportX, Fill: -1})
 		}
 		out = append(out, value)
 	}

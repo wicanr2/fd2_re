@@ -53,6 +53,22 @@ def checked_image(root, name, sha, size=None):
         return im.convert('RGBA')
 
 
+def native_transition_channels(receipt,sample,layer,original_pack,row):
+    if layer['hd_sha256'] or 'native_file' not in layer:
+        raise ValueError('未登錄過渡來源不可偽裝為HD')
+    folder=original_pack/'surfaces'/f"BG_{layer['resource']:03d}"
+    meta=json.loads((folder/'resource.json').read_text())
+    with Image.open(receipt.parent/sample['base_file']) as base, Image.open(folder/meta['frame']) as native, Image.open(folder/meta['mask']) as mask:
+        if base.mode!='P' or native.mode!='P':
+            raise ValueError('原生過渡回退缺少索引色盤')
+        native=native.copy();native.putpalette(base.getpalette())
+        expected=native.convert('RGBA');expected.putalpha(mask.convert('L'))
+    actual=checked_image(receipt.parent,layer['native_file'],layer['native_sha256'],(row['width'],row['height']))
+    if any(high!=0 for _,high in ImageChops.difference(expected,actual).getextrema()):
+        raise ValueError('原生過渡回退與固定來源／當次色盤不同')
+    return shader_channels(actual.resize((row['width']*6,row['height']*6),Image.Resampling.NEAREST),0)
+
+
 def verify(receipt, catalog, source, original_pack, inventory, runtime_receipt=None):
     if digest(inventory) != INVENTORY_SHA:
         raise ValueError('固定來源盤點不同')
@@ -133,21 +149,27 @@ def verify(receipt, catalog, source, original_pack, inventory, runtime_receipt=N
             if archive not in ('','FIGANI.DAT','BG.DAT','TAI.DAT'):
                 raise ValueError('不支援的分段打擊archive')
             if archive in ('BG.DAT','TAI.DAT'):
-                if frame!=0 or (archive,rid) not in surfaces:
+                if frame!=0 or not isinstance(rid,int) or not 0<=rid<56:
                     raise ValueError('場景來源或單圖索引不同')
                 row=background_inventory(original_pack)['banks'][archive[:-4]]['entries'][rid]
-                asset=surfaces[archive,rid]
                 origin=(0,50) if archive=='BG.DAT' else (164,157)
-                if ([x,y,w,h]!=[origin[0],origin[1],row['width'],row['height']]
-                        or asset['source_metadata_sha256']!=row['metadata_sha256']
-                        or asset['width']!=w*6 or asset['height']!=h*6
-                        or asset['native_frames']!=[dict(x=0,y=0,width=w,height=h,delay_native=0,raw_byte_4=0,raw_byte_5=0,raw_byte_7=0)]
-                        or layer['hd_sha256']!=asset['sha256'] or 'native_file' in layer):
+                if [x,y,w,h]!=[origin[0],origin[1],row['width'],row['height']]:
                     raise ValueError('場景原描述子／metadata／HD身分不同')
-                key=archive,rid,subtract
-                if key not in pictures:
-                    pictures[key]=shader_channels(checked_image(source,asset['file'],asset['sha256'],(w*6,h*6)),subtract)
-                picture=pictures[key];used_surfaces.add((archive,rid));surface_proofs[f'{archive}:{rid}']=row['metadata_sha256']
+                if (archive,rid) not in surfaces:
+                    if archive!='BG.DAT' or rid not in (0,1,2):
+                        raise ValueError('場景來源或單圖索引不同')
+                    picture=native_transition_channels(receipt,sample,layer,original_pack,row)
+                else:
+                    asset=surfaces[archive,rid]
+                    if (asset['source_metadata_sha256']!=row['metadata_sha256'] or asset['width']!=w*6 or asset['height']!=h*6
+                            or asset['native_frames']!=[dict(x=0,y=0,width=w,height=h,delay_native=0,raw_byte_4=0,raw_byte_5=0,raw_byte_7=0)]
+                            or layer['hd_sha256']!=asset['sha256'] or 'native_file' in layer):
+                        raise ValueError('場景原描述子／metadata／HD身分不同')
+                    key=archive,rid,subtract
+                    if key not in pictures:
+                        pictures[key]=shader_channels(checked_image(source,asset['file'],asset['sha256'],(w*6,h*6)),subtract)
+                    picture=pictures[key];used_surfaces.add((archive,rid))
+                surface_proofs[f'{archive}:{rid}']=row['metadata_sha256']
             elif rid >= 0:
                 native, registered = bank(rid)
                 if not 0 <= frame < len(native['frames']):
@@ -194,6 +216,7 @@ def verify(receipt, catalog, source, original_pack, inventory, runtime_receipt=N
             raise ValueError('明示場景測試槽不同')
         indices=list(map(int,triple.split(':')))
         wanted={('BG.DAT',i) for i in indices[:target_count+1]}
+        wanted.update(('BG.DAT',i) for i in range(3) if ('BG.DAT',i) in surfaces)
         if side=='2':wanted.add(('TAI.DAT',indices[0]))
         if used_surfaces!=wanted:
             raise ValueError('缺少全部實際BG／TAI來源Draw')

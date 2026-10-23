@@ -17,11 +17,15 @@ def sha(p):
 
 
 def compile_reviewed_batch(a):
-    state = json.loads((ROOT/'docs/data/fd2-modern-hd-battlefield-20261019.json').read_text())['forest_coast_surface_followup_20261024']
+    recipe = json.loads(a.recipe.read_text())
+    batch = recipe.get('batch_key','forest_coast_surface_followup_20261024')
+    allowed = {'forest_coast_surface_followup_20261024':{('BG.DAT',5),('BG.DAT',6),('TAI.DAT',5),('TAI.DAT',6)},
+               'transition_backgrounds_followup_20261024':{('BG.DAT',0),('BG.DAT',1),('BG.DAT',2)}}
+    if batch not in allowed: raise ValueError('未審查的批次')
+    state = json.loads((ROOT/'docs/data/fd2-modern-hd-battlefield-20261019.json').read_text())[batch]
     if state['status'] not in {'READY-ART-REVIEWED', 'CONFORMED-SCOPED/RUNTIME-E1'} or sha(a.recipe) != state['art_recipe']['sha256']:
         raise ValueError('配方尚未READY或SHA不同')
-    recipe = json.loads(a.recipe.read_text())
-    if recipe.get('schema_version') != 1 or {(e['archive'],e['resource']) for e in recipe['surfaces']} != {('BG.DAT',5),('BG.DAT',6),('TAI.DAT',5),('TAI.DAT',6)} or len(recipe['surfaces']) != 4:
+    if recipe.get('schema_version') != 1 or {(e['archive'],e['resource']) for e in recipe['surfaces']} != allowed[batch] or len(recipe['surfaces']) != len(allowed[batch]):
         raise ValueError('批次來源集合不同')
     inventory, _ = audit(a.original_pack)
     catalog = validate(True, a.base_catalog)
@@ -68,7 +72,7 @@ def compile_reviewed_batch(a):
         names.update(e[k] for k in ['file','master_file'] if k in e)
     additions = [r[k] for r,_,_,_ in prepared for k in ['file','master_file']]
     base = ROOT/catalog['private_root']
-    if len(set(additions)) != 8 or set(additions)&names or any(Path(n).name != n for n in names|set(additions)) or any(not (base/n).is_file() for n in names):
+    if len(set(additions)) != 2*len(prepared) or set(additions)&names or any(Path(n).name != n for n in names|set(additions)) or any(not (base/n).is_file() for n in names):
         raise ValueError('白名單名稱碰撞或來源缺件')
     a.out.mkdir()
     for name in sorted(names):

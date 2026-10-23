@@ -457,6 +457,12 @@ func TestModernHDSplitStrikeSceneryNativeAndAtomic(t *testing.T) {
 					for _, source := range append(append([]modernHDBattleSource(nil), s.BaseScenery...), s.Layers...) {
 						if source.Archive == "BG.DAT" || source.Archive == "TAI.DAT" {
 							im, _, err := set.battleSurfaceHD(source)
+							if source.Archive == "BG.DAT" && source.Resource >= 0 && source.Resource < 3 && set.battleSurfaces["BG.DAT"][source.Resource] == nil {
+								if err != nil || im != nil {
+									t.Fatal("undeclared transition source did not use native fallback", err)
+								}
+								continue
+							}
 							if err != nil || im == nil {
 								t.Fatal("lost pinned scenery source", err)
 							}
@@ -584,6 +590,14 @@ func TestModernHDSplitStrikeSceneryNativeAndAtomic(t *testing.T) {
 						archive string
 						index   int
 					}{"TAI.DAT", actorSelector})
+				}
+				for index := 0; index < 3; index++ {
+					if set.battleSurfaces["BG.DAT"][index] != nil {
+						wanted = append(wanted, struct {
+							archive string
+							index   int
+						}{"BG.DAT", index})
+					}
 				}
 				for _, source := range wanted {
 					bad := *set

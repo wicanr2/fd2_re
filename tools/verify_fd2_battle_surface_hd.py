@@ -12,6 +12,7 @@ from verify_fd2_player9_map_hd import check_real_runtime
 
 ROOT = Path(__file__).resolve().parents[1]
 REQUIRED = {
+    'transition-source': {'TestModernHDTransitionOnlyGPU'},
     'split-unit': {'TestModernHDSplitStrikeSceneryNativeAndAtomic'},
     'split-game': {'TestModernHDSplitStrikeRuntimeGPU'},
     'split-native-gpu': {'TestModernHDSplitStrikeNativeSourceGPU'},
@@ -41,7 +42,8 @@ def main():
     p.add_argument('--pack', type=Path, required=True)
     p.add_argument('--out', type=Path, required=True)
     p.add_argument('--enemy', action='store_true')
-    p.add_argument('--surface', type=int, choices=[4,5,6], default=4)
+    p.add_argument('--surface', type=int, choices=[0,1,2,4,5,6], default=4)
+    p.add_argument('--transition',action='store_true',help='要求BG0..2真實HD來源與完整過渡擷取')
     p.add_argument('--pair', choices=['4:5','5:6','6:4'], default='4:5')
     p.add_argument('--command',type=int,choices=[24,29],default=24)
     p.add_argument('--triple',choices=['4:5:6','5:6:4','6:4:5'],default='4:5:6')
@@ -64,6 +66,9 @@ def main():
         env.pop(name,None)
     for name in ['FD2_HD_SPLIT_SCENERY','FD2_HD_SPLIT_SCENERY_SIDE','FD2_HD_SPLIT_STRIKE_GPU','FD2_SPLIT_HASHES_ONLY']:
         env.pop(name,None)
+    env.pop('FD2_HD_TRANSITION_REQUIRED',None)
+    env.pop('FD2_HD_TRANSITION_GPU',None)
+    if a.transition:env['FD2_HD_TRANSITION_REQUIRED']='1'
     env['FD2_HD_BATTLE_SURFACE_INDEX']=str(a.surface)
     if a.with_pedestal: env['FD2_HD_BATTLE_PEDESTAL']=str(a.surface)
     if a.kind == 'game':
@@ -73,6 +78,7 @@ def main():
     elif a.kind == 'source': env['FD2_HD_SURFACE_GPU']='1'
     elif a.kind == 'legacy-gpu': env['FD2_HD_BATTLE_GPU']='1'
     elif a.kind == 'scroll-source': env['FD2_HD_SCROLL_SCENERY_GPU']='1'
+    elif a.kind == 'transition-source':env['FD2_HD_TRANSITION_GPU']='1'
     elif a.kind == 'scroll-regression':
         env.update(FD2_TEST_MODERN_EFFECT_CATALOG=str(a.catalog.resolve()),FD2_TEST_MODERN_EFFECT_PACK=str(a.pack.resolve()))
     elif a.kind == 'scroll-game':
@@ -121,6 +127,9 @@ export DISPLAY=:99
                 or len(receipt.get('scenery_sources',[]))!=3
                 or any(receipt.get('scenery_actual_capture_draws',{}).get(s['sha256'],0)<=0 for s in receipt.get('scenery_sources',[]))):
             raise SystemExit('缺少分離場景完整Game.Draw／來源／F2／DAC／一次續行')
+        if a.transition and (len(receipt.get('transition_sources',[]))!=3
+                or any(receipt.get('scenery_actual_capture_draws',{}).get(s['sha256'],0)<=0 for s in receipt.get('transition_sources',[]))):
+            raise SystemExit('缺少全部三個過渡來源的實際Draw')
     if a.kind=='split-game':
         receipt=json.loads(Path(str(a.out)+'-capture/receipt.json').read_text())
         if (receipt.get('scenery_triple')!=a.triple or receipt.get('scenery_side')!=('2' if a.enemy else '0')
@@ -130,10 +139,12 @@ export DISPLAY=:99
                 or any(v!=1 for v in receipt.get('phase_f2',{}).values()) or not receipt.get('scenery_actual_sources')
                 or receipt.get('catalog_sha256')!=hashlib.sha256(a.catalog.read_bytes()).hexdigest()):
             raise SystemExit('缺少24／29完整場景Game.Draw／F2／交易／一次續行')
+        if a.transition and receipt.get('transition_required') is not True:
+            raise SystemExit('缺少全部三個過渡來源的實際Draw')
     report = dict(status='PASS',kind=a.kind,enemy=a.enemy,required=sorted(REQUIRED[a.kind]),
                   catalog_sha256=hashlib.sha256(a.catalog.read_bytes()).hexdigest(),
                   catalog=str(a.catalog.resolve()),pack=str(a.pack.resolve()),with_pedestal=a.with_pedestal,surface=a.surface,pair=a.pair,
-                  command_id=a.command,triple=a.triple,hashes_only=a.hashes_only,
+                  command_id=a.command,triple=a.triple,hashes_only=a.hashes_only,transition_required=a.transition,
                   independent_runtime_files=independent, memory=str(a.out)+'.memory.json',log=str(a.out)+'.log',
                   scope='固定來源／GPU／明示物理戰鬥fixture，非正常玩家或新原版RGB對拍')
     Path(str(a.out)+'.gate.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')

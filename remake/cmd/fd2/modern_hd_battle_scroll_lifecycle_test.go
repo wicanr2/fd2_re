@@ -67,10 +67,22 @@ func TestModernHDScrollRuntimeGPU(t *testing.T) {
 		t.Fatal("failed F2 changed live scroll owner or state")
 	}
 	if os.Getenv("FD2_HD_SCROLL_SCENERY") != "" {
-		for _, source := range []struct {
+		wanted := []struct {
 			archive string
 			index   byte
-		}{{"BG.DAT", scene.selection.BaseBG}, {"BG.DAT", modernPhysicalTargetBGIndex(scene)}, {"TAI.DAT", scene.selection.TAI}} {
+		}{{"BG.DAT", scene.selection.BaseBG}, {"BG.DAT", modernPhysicalTargetBGIndex(scene)}, {"TAI.DAT", scene.selection.TAI}}
+		if os.Getenv("FD2_HD_TRANSITION_REQUIRED") == "1" {
+			for index := 0; index < 3; index++ {
+				if set.battleSurfaces["BG.DAT"][index] == nil {
+					t.Fatal("required HD transition absent", index)
+				}
+				wanted = append(wanted, struct {
+					archive string
+					index   byte
+				}{"BG.DAT", byte(index)})
+			}
+		}
+		for _, source := range wanted {
 			entry := *set.battleSurfaces[source.archive][int(source.index)]
 			entry.picture = nil
 			bad := *set
@@ -120,6 +132,13 @@ func TestModernHDScrollRuntimeGPU(t *testing.T) {
 			return
 		}
 		shotKey := phase
+		if os.Getenv("FD2_HD_TRANSITION_REQUIRED") == "1" && (phase == "scroll-in" || phase == "scroll-out") {
+			for _, source := range sources.Layers {
+				if source.Archive == "BG.DAT" && source.Resource >= 0 && source.Resource < 3 {
+					shotKey = fmt.Sprintf("%s-bg%d", phase, source.Resource)
+				}
+			}
+		}
 		if os.Getenv("FD2_HD_SCROLL_PROJECTILES") == "1" {
 			for _, s := range sources.Layers {
 				if s.Resource == 25 && s.Index >= 15 && s.Index <= 18 && s.Fill == -1 {
@@ -147,12 +166,15 @@ func TestModernHDScrollRuntimeGPU(t *testing.T) {
 			row := map[string]any{"archive": s.Archive, "resource": s.Resource, "frame": s.Index, "rect": r, "clip": s.Clip, "fill": s.Fill}
 			if os.Getenv("FD2_HD_SCROLL_SCENERY") != "" && (s.Archive == "BG.DAT" || s.Archive == "TAI.DAT") {
 				entry := set.battleSurfaces[s.Archive][s.Resource]
-				if entry == nil || g.modernHDBattleGPU.sources["hd/"+entry.hash] == nil {
+				if entry == nil && s.Archive == "BG.DAT" && s.Resource >= 0 && s.Resource < 3 && os.Getenv("FD2_HD_TRANSITION_REQUIRED") != "1" {
+					row["native_fallback"] = true
+				} else if entry == nil || g.modernHDBattleGPU.sources["hd/"+entry.hash] == nil {
 					probe.err = fmt.Errorf("Game.Draw lacks actual HD scenery texture %s/%d", s.Archive, s.Resource)
 					return
+				} else {
+					row["sha256"] = entry.hash
+					sceneryDraws[entry.hash]++
 				}
-				row["sha256"] = entry.hash
-				sceneryDraws[entry.hash]++
 			}
 			layers = append(layers, row)
 		}
@@ -271,6 +293,17 @@ func TestModernHDScrollRuntimeGPU(t *testing.T) {
 		}
 		report["scenery_sources"] = surfaces
 		report["scenery_actual_capture_draws"] = sceneryDraws
+		if os.Getenv("FD2_HD_TRANSITION_REQUIRED") == "1" {
+			var transitions []map[string]any
+			for index := 0; index < 3; index++ {
+				entry := set.battleSurfaces["BG.DAT"][index]
+				if entry == nil || sceneryDraws[entry.hash] == 0 {
+					t.Fatal("no actual transition draw", index)
+				}
+				transitions = append(transitions, map[string]any{"archive": "BG.DAT", "resource": index, "sha256": entry.hash})
+			}
+			report["transition_sources"] = transitions
+		}
 		report["scope"] = "明示三組地形的分離背景物理fixture，兩次射擊與強制反擊；原生過渡BG0..2保持，六階段F2與正式Game.Draw；不是正常玩家或原版RGB對拍。"
 	}
 	report["scope"] = fmt.Sprintf("真實FIGANI25／%d／%d與BG55／5的修改fixture；兩次射擊及強制反擊計畫的正式Game.Draw。非普通玩家或新原版oracle；地圖返回沿native fixture，六階段F2測試tick停一次以要求同present兩主題Draw。", targetFigure*3, targetFigure*3+1)

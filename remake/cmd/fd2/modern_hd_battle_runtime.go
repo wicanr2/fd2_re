@@ -53,6 +53,13 @@ func (g *Game) modernHDBattleWanted(scene *nativePhysicalScene) bool {
 	if set == nil || !set.hasHD || scene == nil || scene.bodyResources == nil || scene.bodyResources.attack == nil {
 		return false
 	}
+	if scene.selection.HasSeparateBackgrounds {
+		for index := 0; index < 3; index++ {
+			if set.battleSurfaces["BG.DAT"][index] != nil {
+				return true
+			}
+		}
+	}
 	if scene.backgroundFrame.Width == 320 && scene.backgroundFrame.Height == 100 &&
 		(set.battleSurfaces["BG.DAT"][int(scene.selection.BaseBG)] != nil || set.battleSurfaces["TAI.DAT"][int(scene.selection.TAI)] != nil ||
 			(scene.selection.HasSeparateBackgrounds && scene.targetBackground.Width == 320 && scene.targetBackground.Height == 100 && set.battleSurfaces["BG.DAT"][int(modernPhysicalTargetBGIndex(scene))] != nil)) {

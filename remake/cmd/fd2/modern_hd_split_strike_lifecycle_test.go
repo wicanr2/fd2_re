@@ -398,6 +398,9 @@ func TestModernHDSplitStrikeRuntimeGPU(t *testing.T) {
 			for _, layer := range shot["layers"].([]map[string]any) {
 				if layer["archive"] == "BG.DAT" || layer["archive"] == "TAI.DAT" {
 					key := layer["hd_sha256"].(string)
+					if key == "" && layer["archive"] == "BG.DAT" && layer["resource"].(int) >= 0 && layer["resource"].(int) < 3 && os.Getenv("FD2_HD_TRANSITION_REQUIRED") != "1" {
+						continue
+					}
 					if key == "" {
 						t.Fatal("registered scenery missing in actual draw")
 					}
@@ -409,6 +412,15 @@ func TestModernHDSplitStrikeRuntimeGPU(t *testing.T) {
 			t.Fatal("missing actual scenery sources")
 		}
 		report["scenery_actual_sources"] = used
+		if os.Getenv("FD2_HD_TRANSITION_REQUIRED") == "1" {
+			for index := 0; index < 3; index++ {
+				entry := set.battleSurfaces["BG.DAT"][index]
+				if entry == nil || used[entry.hash] == 0 {
+					t.Fatal("no actual HD transition source", index)
+				}
+			}
+			report["transition_required"] = true
+		}
 	}
 	data, err := json.MarshalIndent(report, "", "  ")
 	if err != nil {

@@ -28,7 +28,7 @@ func surfaceTestIndex(t *testing.T) int {
 		return 4
 	}
 	index, err := strconv.Atoi(value)
-	if err != nil || (index != 4 && index != 5 && index != 6) {
+	if err != nil || (index != 0 && index != 1 && index != 2 && index != 4 && index != 5 && index != 6) {
 		t.Fatal("unsupported explicit surface fixture", value)
 	}
 	return index

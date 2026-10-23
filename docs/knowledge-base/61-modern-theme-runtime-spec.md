@@ -3974,4 +3974,23 @@ BG 與 TAI 各 57 項，末項各為零長 raw，不能補造美術。BG 的 10 
 
 兩包各3018張原生畫布、36組RNG前錯件及36組F2原子拒收通過；各72項BG-only／TAI-only／原生fallback含48個實際GPU世界對獨立CPU Over容差1通過。三組雙側24／29共24完整Game.Draw、156次F2、MP一次／逐目標HP一次／原擲骰及一次續行保持；870張完整1920畫布對固定FIGANI與BG／TAI來源及Pillow RGBA8合成容差1，跨包編碼PNG雜湊完全相同。Runtime仍逐張最終回讀與編碼，只保存雜湊，不另留重複PNG。兩指令各20收據反例通過，舊原生396、共用2087、物理場景及冷載入／晚期回復保持，共36份Go閘門／44項必要頂層測試無SKIP／逾時／OOM。
 
-清冊681項及私人美術保持原SHA，沒有新原稿／成品或同步需求。BG0..2過渡、其餘場景與指令／HUD、正常玩家及集中人工／平台仍待；本批不新增原版RGB parity或PLAYER-E2。
+清冊681項及私人美術保持原SHA，沒有新原稿／成品或同步需求。BG0..2過渡後續依下節；其餘場景與指令／HUD、正常玩家及集中人工／平台仍待；本批不新增原版RGB parity或PLAYER-E2。
+
+### BG0～2捲動過渡背景HD
+
+狀態：CONFORMED-SCOPED／RUNTIME-E1，含美術與來源橋接。沿[物理捲動](../data/ida/fd2_physical_background_selection_20261004.json)、[29C90轉場](../data/ida/fd2_command24_background_transition_ida.txt)及[指令29](../data/ida/fd2_command28_29_31_presentation_ida.txt)已閉合證據，不重開RE。FD2.EXE固定357074 bytes、MD5 `b97caf2239a27a896069d03549d96e1e`、SHA-256 `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`；IDA9.4 LE線性位址sub_29C90／29C90..29DEC及sub_29DED／29DED..29F71。固定BG0／1／2各320×100且32000點不透明，來源與契約集中[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的transition_backgrounds_followup_20261024。
+
+- 原BGLayers已記錄每次BG0..2寫入，HD消費端只附加archive／index，保持原生Mask、順序、viewport及裁切，不能以RGB差異推論。只有過渡美術的主題也能沿原物理owner繪出；指令沒有HD來源的相位維持native fallback。
+- 已宣告圖源於方向／規劃RNG前與F2完整預檢，錯件不改theme／owner／單位與RNG。原生producer、底圖、shader、聲音、MP／HP、命中與一次續行、保存不改。
+- 美術為三張獨立低彩度深藍水平帶原稿，沿已核准手繪風格；原檔保留，完整構圖LANCZOS編製1920×600不透明RGBA，不裁切或改原alpha。三張來源不同，不假定為單一圖樣的循環位移。帶位、色彩與刷紋是現代詮釋，不稱原版RGB相同；原稿與成品審查前不升READY或登錄正式包。
+- 驗收包含三來源冷載入／PNG／metadata／alpha／producer及F2拒收、編製重跑、兩包完整原生重組與CPU Over／GPU、雙側連射反擊Game.Draw／64及65DAC／一次返回，以及24／29三組雙側全部1920畫布／標記／F2／RNG與一次續行。過渡-only、舊主題fallback、晚期回復及原生／GPU回歸須通過，任一SKIP／逾時／OOM整包拒收；之後才正式登錄、私人白名單同步與暫存去重。
+
+永久編製與驗證沿[場景編製器](../../tools/build_fd2_battle_surface_hd.py)、[場景驗證器](../../tools/verify_fd2_battle_surface_hd.py)及[指令GPU核對器](../../tools/verify_fd2_split_strike_gpu.py)擴充明示來源；未取得PASS前不稱CONFORMED。此切片不擴稱其餘背景、指令／HUD或完整HD。全部HD後集中正常玩家／人工與平台，證據只到實際通過的RUNTIME-E1。
+
+BG0..2三份原稿及完整六倍預覽已審查：皆為深藍水平刷紋，無額外角色、地景、文字或放射線；原PNG保持，RGBA全不透明。完整提示、原稿SHA／實際尺寸／全框比例調整及固定配方inline保存在同筆主收據。來源橋接與美術先達READY，再經下方正式Game.Draw、原子拒收、兩包及私人保存驗收後登錄。
+
+過渡背景限定驗收：三份原稿及1920×600成品已正式登錄，舊清冊前681項與私人舊6460檔保持；固定配方重編六檔逐SHA相同。兩包各驗1038張物理／3018張分段指令原生畫布，36組物理規劃前拒收、72組分段規劃前及72組F2拒收；95個僅過渡HD GPU世界、120個物理及48個分段場景GPU世界對獨立Over容差1通過。三組雙側、兩包共36完整Game.Draw與228次F2，918組跨包最終PNG雜湊相同，其中分段870張對固定FIGANI／BG／TAI與Pillow合成容差1。兩個舊681主題流程保留原生BG0..2回退；44項HD與23項回退收據反例通過。左右原生歷史順序不同，物理擷取鍵為左10／右6；逐來源Draw不等於每個歷史層同時可見，排程重繪次數不作相等要求。
+
+完整驗證命令沿tools/verify_fd2_battle_surface_hd.py，使用--transition；--kind source-unit --surface 0／1／2不帶--with-pedestal，完整主題仍以4及台座驗證。--kind transition-source驗僅過渡HD與原生回退；scroll-unit／scroll-source／scroll-game及split-unit／split-source／split-game覆蓋物理與24／29，後兩者依既有三組--pair／--triple、雙側--enemy、兩包--require-real-runtime，分段runtime以--hashes-only仍逐圖回讀及編碼。全矩陣、固定配方inline、來源指紋與收據依HD主收據transition_backgrounds_followup_20261024。不得以已去重runtime重作獨立實檔聲明。
+
+手繪筆觸、色彩與全框比例屬現代美術近似，不稱原版RGB或循環相位一致；原生producer、規則、音效、保存與shader保持。其他BG／TAI、效果尾段、HUD與普通／集中人工／平台仍待，不新增PLAYER-E2或完整HD聲明。

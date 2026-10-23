@@ -77,6 +77,25 @@ def main():
             l=surface(doc);l['y']+=1;l['rect'][1]+=6;l['rect'][3]+=6
         reject('self-consistent-surface-origin',changed_surface_origin,'場景原描述子')
 
+    transitions=[(name,i) for name,shot in base['source_shots'].items()
+                 for i,layer in enumerate(shot['layers'])
+                 if layer.get('archive')=='BG.DAT' and layer['resource'] in (0,1,2)]
+    if transitions:
+        shot_name,layer_index=transitions[0]
+        def transition(doc):return doc['source_shots'][shot_name]['layers'][layer_index]
+        reject('wrong-transition-sha',lambda d:transition(d).update(hd_sha256='bad'),
+               '場景原描述子' if transition(base)['hd_sha256'] else '未登錄過渡')
+        def changed_transition_origin(doc):
+            layer=transition(doc);layer['y']+=1;layer['rect'][1]+=6;layer['rect'][3]+=6
+        reject('self-consistent-transition-origin',changed_transition_origin,'場景原描述子')
+        if not transition(base)['hd_sha256']:
+            def corrupt_native_transition(doc,folder):
+                layer=transition(doc);path=folder/layer['native_file'];path.unlink()
+                picture=Image.open(a.receipt.parent/layer['native_file']).convert('RGBA')
+                r,g,b,alpha=picture.getpixel((0,0));picture.putpixel((0,0),(r^255,g,b,alpha));picture.save(path)
+                layer['native_sha256']=digest(path)
+            reject('self-consistent-native-transition-rgb',lambda d:None,'原生過渡回退與固定來源',corrupt_native_transition)
+
     def missing_blank(doc):
         end = 14 if doc['command_id'] == 24 else 17
         doc['source_shots'] = {k: v for k, v in doc['source_shots'].items()

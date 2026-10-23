@@ -63,6 +63,15 @@ func (g *Game) stageModernHDSplitStrikeBanks(actor, confirmed *battle.Unit, comm
 			}
 		}
 	}
+	transitions, err := modernBattleTransitionSources()
+	if err != nil {
+		return nil, err
+	}
+	for _, source := range transitions {
+		if _, _, err := g.modernStoryPortraits.battleSurfaceHD(source); err != nil {
+			return nil, err
+		}
+	}
 	return g.modernStoryPortraits.stageBattleHDBanks(resources, nil)
 }
 
