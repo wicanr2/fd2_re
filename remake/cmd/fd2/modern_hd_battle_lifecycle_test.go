@@ -326,11 +326,8 @@ func TestModernHDBattleRuntimeGPU(t *testing.T) {
 	}
 	set := diagnosticModernBattleSet(t, g, scene)
 	if real {
-		full, err := loadModernStoryPortraitSet(os.Getenv("FD2_TEST_MODERN_BATTLE_CATALOG"), os.Getenv("FD2_TEST_MODERN_BATTLE_PACK"))
-		if err != nil {
-			t.Fatal(err)
-		}
-		set = &modernStoryPortraitSet{hasHD: true, battleAnimations: full.battleAnimations}
+		set = modernHDBattleFixtureSet(t, os.Getenv("FD2_TEST_MODERN_BATTLE_CATALOG"),
+			os.Getenv("FD2_TEST_MODERN_BATTLE_PACK"), scene.modernResources())
 	}
 	selectedResources := map[int]*figani.Animation{figure * 3: scene.bodyResources.actorIdle, figure*3 + 1: scene.bodyResources.attack}
 	phases := []string{"prelude", "body", "counter"}
@@ -512,6 +509,7 @@ func TestModernHDBattleRuntimeGPU(t *testing.T) {
 			t.Fatal(err)
 		}
 		report := map[string]any{"status": "PASS-CHARACTER-FIXTURE-RUNTIME-E1", "figure": figure, "catalog_sha256": fmt.Sprintf("%x", sha256.Sum256(catalog)), "phase_f2": probe.phaseF2, "phase_hd_draws": probe.phaseDraws, "continuations": callbacks, "battle_dac_steps": len(probe.rampSeen), "map_dac_steps": len(probe.mapRampSeen), "source_shots": shots, "scope": "真實FIGANI、強制一次攻擊與反擊計畫及native地圖fixture；Game.Draw最終1920回讀。非普通玩家或原版oracle。"}
+		report["fixture_asset_load_scope"], report["fixture_requested_resources"] = "selected-battle-banks", scene.modernResources()
 		if len(zeroDelaySources) != 0 {
 			report["zero_delay_sources"] = zeroDelaySources
 		}

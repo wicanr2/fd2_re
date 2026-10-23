@@ -154,6 +154,12 @@ func TestModernHDCommand0PreflightAndF2Atomic(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	modernHDCommand0PreflightAndF2Atomic(t, template)
+}
+
+// 每次交易仍從獨立paths與全nil Frames開始；template只提供唯讀來源資料。
+func modernHDCommand0PreflightAndF2Atomic(t *testing.T, template *modernStoryPortraitSet) {
+	t.Helper()
 	g, actor, target := ordinaryCommand0HDTestGame(t)
 	set := cloneModernHDBanksForTest(template)
 	g.modernStoryPortraits = set
@@ -221,6 +227,40 @@ func TestModernHDActors104To109Command0PreflightAndF2Atomic(t *testing.T) {
 			t.Setenv("FD2_TEST_COMMAND_ACTOR_FIGURE", fmt.Sprint(figure))
 			TestModernHDCommand0PreflightAndF2Atomic(t)
 		})
+	}
+}
+
+func TestModernHDRemainingFIGANICommand0PreflightAndF2Atomic(t *testing.T) {
+	if os.Getenv("FD2_HD_REMAINING_FIGANI_GPU") != "1" {
+		t.Skip("dedicated remaining FIGANI command0 preflight process required")
+	}
+	catalog, pack := os.Getenv("FD2_TEST_MODERN_EFFECT_CATALOG"), os.Getenv("FD2_TEST_MODERN_EFFECT_PACK")
+	if catalog == "" || pack == "" {
+		t.Fatal("explicit full theme required")
+	}
+	t.Setenv("FD2_MUTE", "1")
+	template, err := loadModernStoryPortraitSet(catalog, pack)
+	if err != nil {
+		t.Fatal(err)
+	}
+	assertCold := func() {
+		for _, banks := range []map[int]*modernBattleHDResource{template.battleAnimations, template.battleEffects} {
+			for resource, bank := range banks {
+				for _, frame := range bank.Frames {
+					if frame != nil {
+						t.Fatalf("shared template preloaded bank %d", resource)
+					}
+				}
+			}
+		}
+	}
+	assertCold()
+	for _, figure := range []int{124, 125, 126, 127} {
+		t.Run(fmt.Sprint(figure), func(t *testing.T) {
+			t.Setenv("FD2_TEST_COMMAND_ACTOR_FIGURE", fmt.Sprint(figure))
+			modernHDCommand0PreflightAndF2Atomic(t, template)
+		})
+		assertCold()
 	}
 }
 

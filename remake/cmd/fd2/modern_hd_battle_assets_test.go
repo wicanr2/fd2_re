@@ -196,7 +196,7 @@ func TestModernHDBattleAssetsLazySetAtomic(t *testing.T) {
 }
 
 func TestModernHDBattleEmptyFrameRequiresCompleteNativeMask(t *testing.T) {
-	for _, kind := range []string{"native-empty", "missing-mask", "short-mask", "nonempty-native", "opaque-ink", "soft-ink", "other-archive"} {
+	for _, kind := range []string{"native-empty", "missing-mask", "short-mask", "nonempty-native", "opaque-ink", "soft-ink", "late-opaque-ink", "late-soft-ink", "other-archive"} {
 		t.Run(kind, func(t *testing.T) {
 			a, native, root := battleHDAssetFixture(t)
 			native.Frames[1].Mask = make([]byte, 4)
@@ -212,6 +212,10 @@ func TestModernHDBattleEmptyFrameRequiresCompleteNativeMask(t *testing.T) {
 				picture.SetNRGBA(1, 1, color.NRGBA{R: 255, A: 255})
 			case "soft-ink":
 				picture.SetNRGBA(1, 1, color.NRGBA{R: 255, A: 1})
+			case "late-opaque-ink":
+				picture.SetNRGBA(11, 11, color.NRGBA{R: 255, A: 255})
+			case "late-soft-ink":
+				picture.SetNRGBA(11, 11, color.NRGBA{R: 255, A: 1})
 			case "other-archive":
 				a.Role, a.SourceArchive, a.SourceResource = "battle_effect_hd_set", "FDOTHER.DAT", 65
 				a.ConsumerContract, a.CyclePolicy, a.LayoutPolicy = "native_fdother_compound_rgba_hd6_v1", "native_compound_frames", "native_descriptor_hd6"
@@ -274,6 +278,39 @@ func modernBattleCandidateFigure(t *testing.T) int {
 		t.Fatal("candidate figure must have a valid FIGANI idle/attack pair")
 	}
 	return figure
+}
+
+// 攻防fixture原本也只使用battleAnimations。完整主題另由來源GPU與冷預檢驗證。
+// 這裡仍沿正式逐組loader核對每一個場景實際請求的PNG／SHA／原描述子。
+func modernHDBattleFixtureSet(t *testing.T, catalog, pack string, resources []int) *modernStoryPortraitSet {
+	t.Helper()
+	raw, err := os.ReadFile(catalog)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var doc modernThemeCatalog
+	if err := json.Unmarshal(raw, &doc); err != nil {
+		t.Fatal(err)
+	}
+	wanted := make(map[int]bool)
+	for _, resource := range resources {
+		wanted[resource] = true
+	}
+	set := &modernStoryPortraitSet{hasHD: true}
+	for _, asset := range doc.Assets {
+		if asset.Role != "battle_animation_hd_set" || !wanted[asset.SourceResource] {
+			continue
+		}
+		if err := loadModernBattleHDAsset(set, asset, pack); err != nil {
+			t.Fatal(err)
+		}
+	}
+	for resource := range wanted {
+		if set.battleAnimations[resource] == nil {
+			t.Fatalf("physical fixture requested missing HD bank %d", resource)
+		}
+	}
+	return set
 }
 
 func TestModernHDBattleAssetsRealCandidate(t *testing.T) {
@@ -480,6 +517,67 @@ func TestNativePhysicalHDPreflightStopsBeforeSettlement(t *testing.T) {
 			}
 			if set.battleAnimations[idle].Frames[0] != nil || set.battleAnimations[attack].Frames[0] != nil {
 				t.Fatal("HD failure published a partial bank")
+			}
+		})
+	}
+}
+
+// 135只有405待機；缺最後一幀必須在結算前拒收，不請求406／407。
+func TestModernHDRemainingFIGANIIdleTargetPreflight(t *testing.T) {
+	if os.Getenv("FD2_HD_REMAINING_FIGANI_GPU") != "1" {
+		t.Skip("dedicated remaining FIGANI idle-target preflight process required")
+	}
+	requirePhysicalScenePack(t)
+	catalog, pack := os.Getenv("FD2_TEST_MODERN_BATTLE_CATALOG"), os.Getenv("FD2_TEST_MODERN_BATTLE_PACK")
+	valid, err := loadModernStoryPortraitSet(catalog, pack)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if valid.battleAnimations[405] == nil || len(valid.battleAnimations[405].Frames) != 4 ||
+		valid.battleAnimations[406] != nil || valid.battleAnimations[407] != nil {
+		t.Fatal("idle-only source contract differs")
+	}
+	g, actor, target := physicalSceneTestGame(t)
+	actor.BattleFig, target.BattleFig = 76, 135
+	g.modernStoryPortraits = valid
+	scene, err := g.prepareNativePhysicalScene(actor, target)
+	if err != nil || scene == nil || scene.bodyResources.counter != nil {
+		t.Fatalf("idle target must prepare without counter bank: %v", err)
+	}
+	for _, frame := range valid.battleAnimations[405].Frames {
+		if frame == nil {
+			t.Fatal("idle target preflight omitted a frame")
+		}
+	}
+	cold, err := loadModernStoryPortraitSet(catalog, pack)
+	if err != nil {
+		t.Fatal(err)
+	}
+	bank := cold.battleAnimations[405]
+	bank.paths[len(bank.paths)-1] = filepath.Join(t.TempDir(), "missing-last-idle.png")
+	for _, owner := range []string{"player", "mode11"} {
+		t.Run(owner, func(t *testing.T) {
+			g, actor, target := physicalSceneTestGame(t)
+			actor.BattleFig, target.BattleFig = 76, 135
+			g.modernStoryPortraits = cold
+			a, b := *actor, *target
+			if owner == "player" {
+				g.confirm()
+			} else {
+				g.aiBusy = true
+				g.executeNativeAIMode11Physical(&battle.AIPlan{U: actor, Target: target}, nil)
+			}
+			if !strings.Contains(g.loadErr, "HD source preflight") || g.atk != nil ||
+				g.nativeRNGState != 17791 || !reflect.DeepEqual(a, *actor) || !reflect.DeepEqual(b, *target) ||
+				g.rng.Int63() != rand.New(rand.NewSource(73)).Int63() {
+				t.Fatalf("idle target failure changed settlement: %s", g.loadErr)
+			}
+			for _, resource := range []int{228, 229, 405} {
+				for _, frame := range cold.battleAnimations[resource].Frames {
+					if frame != nil {
+						t.Fatal("idle target failure published a partial bank")
+					}
+				}
 			}
 		})
 	}

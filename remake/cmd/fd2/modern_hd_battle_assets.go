@@ -125,12 +125,18 @@ func loadModernBattleHDAssetWithNative(set *modernStoryPortraitSet, asset modern
 			return err
 		}
 		transparent, opaque, visible := false, false, false
+	alphaScan:
 		for y := picture.Bounds().Min.Y; y < picture.Bounds().Max.Y; y++ {
 			for x := picture.Bounds().Min.X; x < picture.Bounds().Max.X; x++ {
 				_, _, _, a := picture.At(x, y).RGBA()
 				transparent = transparent || a == 0
 				opaque = opaque || a == 0xffff
 				visible = visible || a != 0
+				// 這三個OR結果只會由false轉true；找到兩端後不再改變。
+				// 原空白若有任何墨跡，仍由下方nativeEmpty／visible拒收。
+				if transparent && opaque {
+					break alphaScan
+				}
 			}
 		}
 		fullMask := asset.SourceArchive == "FDOTHER.DAT" && len(frame.Mask) == frame.Width*frame.Height

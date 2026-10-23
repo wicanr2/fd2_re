@@ -1,6 +1,6 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
-BattleFig104～109龍首與有翼人物122幀已接入；兩包來源GPU、全部96物理與26施術核心、六完整攻防及三普通0交易／F2／返回，126編製、77接點及六錯位反例、21施術反例與八閃色遮罩、兩包物理及實際施術原子預檢通過。十五Go組零SKIP／無OOM／無逾時。31新原RGBA與既有金環依SHA保存，原描述子／節拍／標記保持；姿勢與兩翼型共用、龍首裁切及光效近似明示。正常／集中人工／平台仍待，不新增原版parity。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，主證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的actors104_109_followup_20261023。
+本批十五種圖源的33個圖庫284幀已接入，限定RUNTIME-E1。兩包完整來源GPU、230個攻防／待機與34個施術本體核心、18個特效及兩個原空拍的實際Game.Draw核對通過；十四攻防、四普通0與135僅待機均保留適用F2、HP／MP／RNG、淡出及一次返回。319編製反例、55接點與五錯根、48特效及28施術反例、八閃色遮罩、兩包完整主題冷預檢與三項等價alpha掃描回歸，共三十項必要Go檢查通過，無SKIP或OOM。50新原RGBA與11既有來源依SHA保存，原框、描述子、延遲、命中與音效標記保持；姿勢、衣物、光形及裁切近似明示。正常玩家、集中人工及平台仍待，不新增原版parity。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，主證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的remaining_figani_33_followup_20261023。
 
 BattleFig41／42／43持杖人物完整來源已接入；兩包來源GPU、全部物理Game.Draw核心、F2／返回、編製守衛及兩包玩家／AI原子預檢通過。原框、節拍、單次命中及聲音參數、規則與保存保持；共用姿勢、人物／杖長比例與握手近似明示。母稿alpha254沿既有>=250契約，正常LANCZOS成品保持255，沒有量化或放寬門檻。正常操作與人工依全部HD後集中，未新增原版parity。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，主證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的staff41_42_43_followup_20261022。
 

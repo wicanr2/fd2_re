@@ -24,7 +24,10 @@ def main():
     p.add_argument('--core-profile', choices=['blue','gold','opaque'], default='gold')
     p.add_argument('--all-cast-frames', action='store_true')
     p.add_argument('--allow-native-empty-frames', action='store_true')
+    p.add_argument('--verifier-timeout', type=int, default=90, metavar='SECONDS')
     args = p.parse_args()
+    if not 1 <= args.verifier_timeout <= 600:
+        raise SystemExit('驗證器逾時必須為1～600秒')
     if args.command1 and (args.command5 or args.normal_end_command is not None):
         raise SystemExit('指令1模式不可與其他指令混用')
     if args.ordinary_command is not None and (args.command1 or args.command5 or args.normal_end_command is not None):
@@ -51,7 +54,7 @@ def main():
 
     # A broken path or environment must not make every negative case look green.
     positive_path = args.out/'positive-control.json'
-    positive = subprocess.run(command_for(args.receipt, positive_path), capture_output=True, text=True, timeout=90)
+    positive = subprocess.run(command_for(args.receipt, positive_path), capture_output=True, text=True, timeout=args.verifier_timeout)
     if positive.returncode != 0 or not positive_path.is_file():
         raise AssertionError('有效基底未通過，停止反例：'+positive.stdout+positive.stderr)
 
@@ -68,7 +71,7 @@ def main():
         target = folder/'receipt.json'
         target.write_text(json.dumps(doc))
         command = command_for(target, folder/'report.json')
-        result = subprocess.run(command, capture_output=True, text=True, timeout=90)
+        result = subprocess.run(command, capture_output=True, text=True, timeout=args.verifier_timeout)
         if result.returncode == 0 or (folder/'report.json').exists():
             raise AssertionError('錯誤收據被接受：'+name)
         reason = (result.stdout+result.stderr).strip().splitlines()[-1]
@@ -112,6 +115,7 @@ def main():
               'command_id':command_id,'all_cast_frames_required':args.all_cast_frames,
               'allow_native_empty_frames':args.allow_native_empty_frames,
               'positive_control_passed': True,
+              'verifier_timeout_seconds': args.verifier_timeout,
               'checks': checks, 'scope': '保留原RGB／alpha／至少1000點門檻；拒收錯範圍、缺交易／F2或自然返回、錯圖與缺圖。'}
     (args.out/'report.json').write_text(json.dumps(report, ensure_ascii=False, indent=2)+'\n')
     print(json.dumps({'status': report['status'], 'cases': len(checks)}))

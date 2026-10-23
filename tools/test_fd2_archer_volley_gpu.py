@@ -21,6 +21,7 @@ def main():
     args = p.parse_args()
     profile = PROFILES[args.figure]
     resource, first, last = profile['resource'], profile['first'], profile['frames']
+    indices = profile.get('selected_frames', list(range(first, last)))
     if not Path('/.dockerenv').exists() or args.out.exists() or args.out.parent.stat().st_uid != os.getuid():
         raise SystemExit('在Docker使用本人擁有的新輸出目錄')
     args.out.mkdir()
@@ -39,7 +40,8 @@ def main():
     if result.returncode != 0 or not positive.is_file():
         raise AssertionError('有效正對照未通過：'+result.stdout+result.stderr)
     actual = json.loads(positive.read_text())
-    if actual['status'] != 'PASS-PINNED-ARCHER-VOLLEY-GPU' or len(actual['matches']) != last-first:
+    if (actual['status'] != 'PASS-PINNED-ARCHER-VOLLEY-GPU' or len(actual['matches']) != len(indices)
+        or len(actual.get('auxiliary_blank_draws', [])) != len(profile.get('auxiliary_blanks', []))):
         raise AssertionError('正對照範圍不完整')
 
     def reject(name, doc, expected, folder=None, **kwargs):
@@ -52,15 +54,15 @@ def main():
         checks.append({'case': name, 'status': 'PASS-REJECTED', 'reason': (result.stdout+result.stderr).strip().splitlines()[-1]})
 
     for name, mutate in [('wrong-figure', lambda d:d.update(figure=7)),
-                         ('missing-departure-f2', lambda d:d['phase_f2'].update(departure=0)),
-                         ('missing-scroll-in-f2', lambda d:d['phase_f2'].update({'scroll-in': 0})),
-                         ('missing-scroll-out-f2', lambda d:d['phase_f2'].update({'scroll-out': 0})),
                          ('missing-return', lambda d:d.update(map_dac_steps=64))]:
         d = copy.deepcopy(base); mutate(d)
         reject(name, d, '需要完整弓手')
+    for phase in profile.get('phases', ['departure', 'scroll-in', 'scroll-out']):
+        d = copy.deepcopy(base); d['phase_f2'][phase] = 0
+        reject('missing-'+phase+'-f2', d, '需要完整弓手')
 
-    def contains(sample, index):
-        return any(layer['resource'] == resource and layer['frame'] == index
+    def contains(sample, index, bank=resource):
+        return any(layer['resource'] == bank and layer['frame'] == index
                    for key in ('before', 'after') for layer in sample.get(key, {}).get('battle_source_layers') or [])
 
     # Valid receipt-relative images are required even in the missing-frame case.
@@ -75,6 +77,24 @@ def main():
         d = copy.deepcopy(base); d['source_shots'] = {k:v for k,v in d['source_shots'].items() if not contains(v, index)}
         folder = args.out/f'missing-{index}'; links(folder)
         reject(f'missing-frame-{index}', d, '最終Draw不完整', folder)
+
+    for blank in profile.get('auxiliary_blanks', []):
+        bank, index = blank['resource'], blank['frame']
+        d = copy.deepcopy(base); d['source_shots'] = {k:v for k,v in d['source_shots'].items() if not contains(v, index, bank)}
+        folder = args.out/f'missing-blank-{bank}-{index}'; links(folder)
+        reject(f'missing-blank-{bank}-{index}', d, '最終Draw不完整', folder)
+        wrong = args.out/f'wrong-blank-{bank}-{index}'; wrong.mkdir()
+        for path in args.source.iterdir():
+            if path.is_file():(wrong/path.name).symlink_to(path.resolve())
+        catalog = json.loads(args.catalog.read_text())
+        entry = next(a for a in catalog['assets'] if a.get('role') == 'battle_animation_hd_set' and a['source_resource'] == bank)
+        path = wrong/entry['files'][index]
+        with Image.open(path) as im: size = im.size
+        path.unlink(); Image.new('RGBA', size, (255, 255, 255, 255)).save(path)
+        entry['frame_sha256'][index] = digest(path)
+        wrong_catalog = wrong/'catalog.json'; wrong_catalog.write_text(json.dumps(catalog))
+        d = copy.deepcopy(base); d['catalog_sha256'] = digest(wrong_catalog)
+        reject(f'nontransparent-blank-{bank}-{index}', d, '空拍成品不是原框六倍RGBA全透明', source=wrong, catalog=wrong_catalog)
 
     folder = args.out/'wrong-pixels'; links(folder)
     d = copy.deepcopy(base); sample = next(s for s in d['source_shots'].values() if contains(s, first+1))

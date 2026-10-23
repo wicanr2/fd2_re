@@ -3785,6 +3785,51 @@
         ],
         "pattern": "\"zero_delay_capture_spec\":\\s*\\{"
       }
+    },
+    {
+      "id": "transparent-source-review-composites-alpha",
+      "date": "2026-10-23",
+      "area": "HD素材驗收",
+      "rule": "審查透明母稿時先量原RGBA，並在黑白底執行Over合成；不把alpha0底下的RGB預覽直接判成可見光暈。使用既有fd2-assets-local:20260829-sfx容器的Pillow Image.alpha_composite，入口docs/data/fd2-modern-hd-battlefield-20261019.json的remaining_figani_33_followup_20261023.alpha_preview_correction連結原通道量測與黑白對照。原alpha保持，實際配方縮小仍須逐層至少250及非空合成255。",
+      "why": "三腳機器人、髮束與鞭姿勢的裸預覽出現彩暈，實測其外部像素alpha為0，黑白底Over合成清晰。先前只看裸預覽造成多餘重繪；保留生成與量測紀錄並勘誤。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#remaining_figani_33_followup_20261023.alpha_preview_correction",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "docs/data/fd2-modern-hd-battlefield-20261019.json"
+        ],
+        "pattern": "\"alpha_preview_correction\":\\s*\\{"
+      }
+    },
+    {
+      "id": "character-hd-recipe-keys-follow-compiler-schema",
+      "date": "2026-10-23",
+      "area": "HD配方編製",
+      "rule": "產生角色HD配方時，來源pose鍵與scale_group先通過tools/build_fd2_character_battle_hd.py的KEY契約：[a-z]起首、後續限小寫英數／底線／連字號且最多40字。生成任務名稱可另存原稿台帳，配方只使用合法鍵；以既有編製器重跑並核對SHA，不為名稱方便放寬schema1。",
+      "why": "DRAFT取樣只重算圖像變換而未套KEY檢查；114的camelCase來源名在正式編製前被拒收。鍵正規化後原RGBA、所有580變換與55接點數值保持，拒收輸出與已通過113候選均保留。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#remaining_figani_33_followup_20261023.identifier_contract_review",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/build_fd2_character_battle_hd.py"
+        ],
+        "pattern": "KEY = re\\.compile"
+      }
+    },
+    {
+      "id": "full-pixel-verifier-timeouts-use-measured-bounded-budget",
+      "date": "2026-10-23",
+      "area": "HD驗證成本",
+      "rule": "全像素核對逾時時，先保留失敗，再量固定來源尺寸、核心點數與CPU／記憶體成本；時間預算透過tools/test_fd2_command0_hd_gpu.py --verifier-timeout明示，預設90秒，限1～600秒並寫入收據。使用既有fd2-assets-local:20260829-sfx容器及tools/fd2_go_test_memory_probe.py保存量測；調整時間不減少核對幀／像素或放寬門檻，正對照與完整拒收案例仍須重跑。",
+      "why": "126的18張待機／施術來源共9491399個高覆蓋點，兩次90秒逾時，獨立全像素核對實測147.565秒、CPU約128秒、峰值約1.69GB且無OOM。127亦於90秒逾時；測試工具需要明示有界預算，不能把Go演出通過抵銷尚未通過的獨立像素檢查。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#remaining_figani_33_followup_20261023.cast126_verifier_budget_review",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "docs/data/fd2-modern-hd-battlefield-20261019.json"
+        ],
+        "pattern": "\"cast126_verifier_budget_review\":\\s*\\{"
+      }
     }
   ]
 }

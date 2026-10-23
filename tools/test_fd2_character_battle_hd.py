@@ -97,7 +97,10 @@ def main():
         def missing_final_core(d):
             # Use the full idle subject, not a tiny FX fragment whose downsample
             # can overshoot the soft source to 255 through normal LANCZOS.
-            resource,index = first,0
+            # 純FX人物的idle可為固定原空白；空白本來就不要求核心。
+            # 此反例必須改到已編製的非空幀，才是在核對非空255門檻。
+            frame = next(row for row in baseline['frames'] if not row.get('native_empty_source'))
+            resource,index = str(frame['resource']),frame['frame']
             target = layer(d,resource,index)['anchor']
             d['resources'][resource][index] = [{'pose':'soft_only','anchor':target,'scale_group':'soft_only'}]
             d['sources']['soft_only'] = {'file':str(soft_path),'sha256':hashlib.sha256(soft_path.read_bytes()).hexdigest(),
