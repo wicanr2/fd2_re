@@ -3812,3 +3812,13 @@ R1編製總覽發現龍息接在上顎，以及空中連片被放成大光球。
 驗證入口：[真實圖源與配方反例](../../tools/test_fd2_command9_effect_hd.py)、[最終GPU核對器](../../tools/verify_fd2_command9_hd_gpu.py)、[GPU核對器正負控制](../../tools/test_fd2_command9_hd_gpu.py)。各工具以 `--help` 列出必須明示的收據、清冊、素材包、固定原包與新輸出位置。完整配方保存在主收據的 `recipe_inline`，母稿與私人包檔名對照見 `source_master_catalog_mapping`；從私人包依SHA復原母稿至配方路徑，再使用固定工具映像重生圖源稽核及31張PNG，不能依賴未版控的臨時執行器。
 
 驗收：31來源在工作樹與獨立runtime-only包的完整GPU世界，均對獨立CPU Over逐RGBA核對至容差1。既有119幀排程附Sources後，以獨立indexed覆寫器逐幀重組一致。正式Game.Draw完成199次HD呈現、九階段F2、MP一次、20段HP與一次返回；最後留白幀另核固定原Mask全0、HD alpha全0及同次可見目標核心。31個效果與11個施術來源各具至少1000個可見高覆蓋核心。完整主題冷預檢在兩包各驗晚期缺件的啟動與F2原子拒收，既有2／3／6／7／8與內部圖源／合成器回歸通過。33項編製與15項核對器反例均有實檔正對照，八項Go閘門無SKIP或OOM。正式清冊與受驗stage相同，新增35檔，舊670項及6327檔SHA保持；私人同步及現行覆蓋收據見主收據。此結論只限圖源與既有演出擁有者，不新增正常玩家、原版RGB或PLAYER-E2聲明。
+
+### 玩家指令9地圖演出的HD接入
+
+狀態：CONFORMED-SCOPED／RUNTIME-E1。完整輸入、凍結快照、兩種viewport位置、HUD上方效果、F2原子性與驗收條件集中於[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`player9_map_hd_followup_20261023.implementation_spec`。FDOTHER6的27項與FDOTHER5的13項已正式登錄，敵方9使用另一份已閉合契約。原生MP／HP／RNG／聲音／500ms hold、一次續行及保存格式保持。
+
+同次steady producer保存typed input，owner開始時凍結cells／units／前景／控制／LUT／HUD及選取覆寫；完整VGA必須與原快照相同。八次色盤與hold沿(4,4)，27效果及22結果沿(0,0)複製312×192視窗；HD地形／人物／前景／Range／UI同移(-24,-24)，同次LMI效果畫在HUD之上。所有40圖及完整HD世界先預檢，開始或F2失敗不發布半套owner／theme。LMI5死亡與數字集合只准互斥索引原子合併，部分新效果／結果組禁止；舊未宣告新銀行的主題保留原生FX，不聲稱該主題已HD。
+
+兩包各120張來源GPU世界對獨立CPU Over逐RGBA核對，完整命中／MISS共176次HD呈現、16次F2往返；原生98張VGA另由獨立indexed覆寫器逐位元組重組。完整主題冷預檢、缺件／錯SHA／原框與F2拒收、既有死亡演出回歸及五項編製測試通過，七項既有Go閘門無SKIP或OOM。正式清冊除private_root恢復正式路徑外與受驗stage相同，舊671項／6362檔SHA保持，58新白名單檔含五原RGBA與13份字形來源。黑色輪廓由獨立原RGBA提供；升起裁切、母稿共用、消散與揮刃形狀為現代美術近似，人工造型定稿仍待集中確認。
+
+重生入口為[圖源稽核器](../../tools/audit_fd2_player9_map_source.py)、[編製器](../../tools/build_fd2_player9_map_hd.py)、[正負控制](../../tools/test_fd2_player9_map_hd.py)與[永久Go驗證驅動器](../../tools/verify_fd2_player9_map_hd.py)。公開[配方](../data/fd2-player9-map-hd-recipe-20261023.json)搭配私人包的五原RGBA及固定Noto字型，在Docker以`--masters-root`指定來源、全新`--out`重生。驗證驅動器以`--kind unit/preflight/source/game/regression --catalog ABS --pack ABS --out FRESH_PREFIX`執行，獨立runtime包另加`--require-real-runtime`，不能拿清理後連結包充當獨立實檔。完整收據、原稿／私人檔名及SHA見同筆主收據；README為明示fixture的實際Draw，未新增原版parity、正常玩家或PLAYER-E2。

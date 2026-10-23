@@ -1,6 +1,8 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
-敵方指令9的FDOTHER44全部31來源已接入HD，限定RUNTIME-E1。兩包來源GPU、完整119幀handler的實際Game.Draw、九階段F2、MP一次／HP20段／RNG／一次續行，以及全部31效果與11施術來源最終GPU核心通過。兩包完整主題冷預檢、既有2／3／6／7／8回歸、33編製反例、15核對器反例及完整圖源／合成器套件通過，八項Go檢查無SKIP或OOM。第30原生空拍仍同次Draw，不套FIGANI零延遲跳幀規則。四份原RGBA不修改，光柱伸縮、鬼臉位置與共用圖源屬手繪近似。玩家指令9的獨立地圖演出、其他效果／背景／HUD、正常玩家與集中人工確認仍待。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，主證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的command9_battle_hd_followup_20261023。
+玩家指令9的地圖演出已接入HD，限定RUNTIME-E1。兩包各40個來源與120張GPU世界、完整命中／MISS的176次HD呈現、16次F2往返，以及MP一次／HP／RNG／500ms hold／一次續行通過；98張原生VGA由獨立覆寫器逐位元組重組一致。原生穩定畫面的同次typed輸入凍結後使用，效果與結果沿(0,0)複製並畫在HUD之上，正常色盤與hold沿(4,4)；不按受傷後現況重建地圖。兩包完整主題預檢及缺件／F2原子拒收、既有死亡回歸與編製守衛通過。五份原RGBA與Noto數字來源保留，原框裁切、母稿共用、消散與揮刃形狀屬手繪近似。其他效果／地圖回復／背景／HUD、正常玩家與集中人工確認仍待。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，主證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的player9_map_hd_followup_20261023。
+
+敵方指令9既有31來源、119幀與完整Game.Draw／F2收據保持，依同份主收據command9_battle_hd_followup_20261023；玩家地圖效果與敵方大型效果分開核對。
 
 上一批十五種圖源的33個圖庫284幀已接入，限定RUNTIME-E1。兩包完整來源GPU、230個攻防／待機與34個施術本體核心、18個特效及兩個原空拍的實際Game.Draw核對通過；十四攻防、四普通0與135僅待機均保留適用F2、HP／MP／RNG、淡出及一次返回。319編製反例、55接點與五錯根、48特效及28施術反例、八閃色遮罩、兩包完整主題冷預檢與三項等價alpha掃描回歸，共三十項必要Go檢查通過，無SKIP或OOM。50新原RGBA與11既有來源依SHA保存，原框、描述子、延遲、命中與音效標記保持；姿勢、衣物、光形及裁切近似明示。正常玩家、集中人工及平台仍待，不新增原版parity。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，主證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的remaining_figani_33_followup_20261023。
 

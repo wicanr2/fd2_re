@@ -33,6 +33,11 @@ func modernLMIHDDescription(index int, entry fdother.LMI1Entry) modernLMIHDDescr
 
 func loadModernMapOverlayHDAsset(set *modernStoryPortraitSet, asset modernThemeAsset, root string) error {
 	dir := separatedAssetPath("ui/fdother_005_lmi1_opaque")
+	if asset.SourceResource == 6 {
+		dir = separatedAssetPath("effects/fdother_006_lmi1_opaque")
+	} else if asset.SourceResource != 5 {
+		return errors.New("modern HD map overlay: unproved source resource")
+	}
 	raw, err := os.ReadFile(filepath.Join(dir, "bank.json"))
 	if err != nil {
 		return err
@@ -41,7 +46,7 @@ func loadModernMapOverlayHDAsset(set *modernStoryPortraitSet, asset modernThemeA
 	if hex.EncodeToString(digest[:]) != asset.SourceMetadataSHA256 {
 		return errors.New("modern HD map overlay: source metadata sha256 mismatch")
 	}
-	native, err := fdother.LoadSeparatedLMI1Bank(dir, 5)
+	native, err := fdother.LoadSeparatedLMI1Bank(dir, asset.SourceResource)
 	if err != nil {
 		return err
 	}
@@ -50,23 +55,73 @@ func loadModernMapOverlayHDAsset(set *modernStoryPortraitSet, asset modernThemeA
 
 // Decode every declared source before publishing the optional bank. Legacy
 // themes without the role retain the original indexed presentation.
+func modernMapOverlayHDIndices(resource, count int) []int {
+	var indices []int
+	switch {
+	case resource == 5 && count == 12:
+		for i := 68; i <= 79; i++ {
+			indices = append(indices, i)
+		}
+	case resource == 5 && count == 13:
+		for i := 94; i <= 103; i++ {
+			indices = append(indices, i)
+		}
+		indices = append(indices, 116, 117, 118)
+	case resource == 6 && count == 27:
+		for i := 87; i <= 113; i++ {
+			indices = append(indices, i)
+		}
+	}
+	return indices
+}
+
+func hasModernHDDeathBank(set *modernStoryPortraitSet) bool {
+	if set == nil || set.mapOverlays == nil {
+		return false
+	}
+	for index := 68; index <= 79; index++ {
+		_, declared := set.mapOverlays.native[index]
+		if declared || set.mapOverlays.frames[index] != nil {
+			return true
+		}
+	}
+	return false
+}
+
 func loadModernMapOverlayHDWithNative(set *modernStoryPortraitSet, asset modernThemeAsset, root string, native []fdother.LMI1Entry) error {
-	if set == nil || set.mapOverlays != nil || asset.Role != "map_overlay_hd_set" ||
-		asset.SourceArchive != "FDOTHER.DAT" || asset.SourceResource != 5 ||
+	indices := modernMapOverlayHDIndices(asset.SourceResource, asset.FrameCount)
+	if set == nil || len(indices) == 0 || asset.Role != "map_overlay_hd_set" ||
+		asset.SourceArchive != "FDOTHER.DAT" ||
 		asset.ConsumerContract != "native_lmi1_rgba_hd6_v1" || asset.AlphaContract != "coverage" ||
 		asset.CyclePolicy != "native_lmi1_entries" || asset.LayoutPolicy != "native_lmi1_rect_hd6" ||
 		asset.Width != modernHDWidth || asset.Height != modernHDHeight ||
 		(asset.Status != "runtime_candidate" && asset.Status != "runtime_ready") ||
-		asset.FrameCount != 12 || len(asset.Files) != 12 || len(asset.FrameSHA256) != 12 || len(asset.NativeLMIFrames) != 12 {
+		len(asset.Files) != len(indices) || len(asset.FrameSHA256) != len(indices) || len(asset.NativeLMIFrames) != len(indices) {
 		return errors.New("modern HD map overlay: invalid bank contract")
 	}
-	if err := fdother.ValidateNativeCh28PostLMI(native); err != nil {
-		return err
+	if asset.SourceResource == 5 && asset.FrameCount == 12 {
+		if err := fdother.ValidateNativeCh28PostLMI(native); err != nil {
+			return err
+		}
 	}
 	bank := &modernMapOverlayHDResource{frames: make(map[int]*image.RGBA), native: make(map[int]modernLMIHDDescriptor)}
+	previous := set.mapOverlays
+	if asset.SourceResource == 6 {
+		previous = set.mapEffects
+	}
+	if previous != nil {
+		for index, picture := range previous.frames {
+			bank.frames[index] = picture
+		}
+		for index, descriptor := range previous.native {
+			bank.native[index] = descriptor
+		}
+	}
 	for i, descriptor := range asset.NativeLMIFrames {
-		index := 68 + i
-		if descriptor != modernLMIHDDescription(index, native[index]) || descriptor.Width > 128 || descriptor.Height > 128 {
+		index := indices[i]
+		if index >= len(native) || bank.frames[index] != nil ||
+			descriptor != modernLMIHDDescription(index, native[index]) ||
+			descriptor.Width < 1 || descriptor.Height < 1 || descriptor.Width > 128 || descriptor.Height > 128 {
 			return fmt.Errorf("modern HD map overlay: native entry %d mismatch", index)
 		}
 		name := asset.Files[i]
@@ -104,6 +159,10 @@ func loadModernMapOverlayHDWithNative(set *modernStoryPortraitSet, asset modernT
 		}
 		bank.frames[index], bank.native[index] = picture, descriptor
 	}
-	set.mapOverlays = bank
+	if asset.SourceResource == 6 {
+		set.mapEffects = bank
+	} else {
+		set.mapOverlays = bank
+	}
 	return nil
 }

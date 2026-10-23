@@ -216,7 +216,7 @@ func (g *Game) startNativeUnitDeathPresentMode(prelude func(*battle.State) error
 		len(job.stateFrames) != len(job.vgaFrames) || len(job.waits) != len(job.vgaFrames) {
 		return errors.New("native 0x1DB65 preflight produced an invalid 13+6+6+steady schedule")
 	}
-	if g.modernStoryPortraits != nil && g.modernStoryPortraits.mapOverlays != nil {
+	if hasModernHDDeathBank(g.modernStoryPortraits) {
 		frames, err := g.prepareModernHDDeathFrames(job, g.modernStoryPortraits)
 		if err != nil {
 			return err
@@ -306,7 +306,7 @@ func (g *Game) drawNativeCh28PostPresent(screen *ebiten.Image) bool {
 	if j == nil || len(j.palette) != 256 || len(g.nativeMapVGA) != indexedmap.NativeMapVGASize {
 		return false
 	}
-	if g.modernStoryPortraits != nil && g.modernStoryPortraits.mapOverlays != nil {
+	if hasModernHDDeathBank(g.modernStoryPortraits) {
 		if j.hdTheme != g.modernStoryPortraits || len(j.hdFrames) != 26 || j.frame >= len(j.hdFrames) {
 			return false
 		}

@@ -233,6 +233,10 @@
 [驗證紀錄](docs/data/fd2-modern-hd-battlefield-20261019.json)的`early_party_battle_followup_20261020`。
 貝克威的端炮與光束也已正式登錄；混合背景反擊的一般能力限制仍由[#265](https://github.com/wicanr2/fd2_re/issues/265)追蹤。
 
+![玩家第九類攻擊的HD地圖效果與結果](docs/figures/hd-player9-map-effects.png)
+
+四格取自重製遊戲實際繪製的測試場景，依序為幽影升起、揮刃、命中與 MISS；只裁切效果周圍區域。固定亂數種子7，角色位置為(1,6)、目標為(2,6)，命中與 MISS 採受控測試參數，尚未作正常玩家抽驗。地圖人物保持HD，HUD與多數地形仍含像素素材；升起裁切、共用母稿與光形是手繪近似。來源與驗證範圍見[HD驗證紀錄](docs/data/fd2-modern-hd-battlefield-20261019.json)的`player9_map_hd_followup_20261023`。
+
 ![凱麗攻擊動畫：原版 DOS 與 HD 重製並排](docs/figures/hd-kylie-original-vs-hd.gif)
 
 左側是 dosgolem 執行原版遊戲，右側是 HD 重製的實際遊玩畫面，節錄凱麗的掌擊、旋身與收勢。右腳已依原版踩地站姿修正；右側取自新版正常攻擊，保留完整遊戲區。

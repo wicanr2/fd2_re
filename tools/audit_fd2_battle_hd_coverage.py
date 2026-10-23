@@ -7,6 +7,7 @@ from pathlib import Path
 from PIL import Image
 from build_fd2_gaia_battle_hd import digest
 from validate_modern_theme_catalog import ROOT, validate
+from audit_fd2_player9_map_source import audit as audit_lmi_sources
 
 
 FIELDS = ['x', 'y', 'width', 'height', 'delay_native', 'raw_byte_4', 'raw_byte_5', 'raw_byte_7']
@@ -114,8 +115,33 @@ def main():
         check_pngs(asset, args.source, [m['full_source_mask'] for m in masks], [m['empty_source_mask'] for m in masks])
         effects.append({'resource': resource, 'registered_hd_frames': asset['frame_count'],
             'asset_status': 'REGISTERED-ASSET' if stage == 'registered-worktree' else 'CATALOG-CANDIDATE', 'native_masks': masks})
+    lmi_assets=[a for a in catalog['assets'] if a['role']=='map_overlay_hd_set']
+    lmi_overlays=[]
+    if lmi_assets:
+        ranges={}
+        for asset in lmi_assets:
+            ranges.setdefault(asset['source_resource'],set()).update(f['index'] for f in asset['native_lmi_frames'])
+        source_report,_=audit_lmi_sources(args.original_pack,{res:sorted(indices) for res,indices in sorted(ranges.items())})
+        banks={b['resource']:b for b in source_report['resources']}
+        for asset in lmi_assets:
+            bank=banks[asset['source_resource']]
+            if bank['metadata_sha256']!=asset['source_metadata_sha256']:
+                raise SystemExit('LMI原始metadata不同')
+            native={f['index']:f for f in bank['frames']}
+            for name,sha,frame in zip(asset['files'],asset['frame_sha256'],asset['native_lmi_frames']):
+                expected={k:native[frame['index']][k] for k in ['index','width','height','pixels_sha256']}
+                if frame!=expected or digest(args.source/name)!=sha:
+                    raise SystemExit('LMI原始索引或已登錄SHA不同')
+                with Image.open(args.source/name) as im:
+                    if im.mode!='RGBA' or im.size!=(frame['width']*6,frame['height']*6):
+                        raise SystemExit('LMI已登錄尺寸不同')
+                    low,high=im.getchannel('A').getextrema()
+                    if low!=0 or high==0:raise SystemExit('LMI已登錄缺少透明背景或墨跡')
+            lmi_overlays.append({'asset_id':asset['asset_id'],'resource':asset['source_resource'],
+                'registered_hd_frames':asset['frame_count'],'indices':[f['index'] for f in asset['native_lmi_frames']],
+                'raw_sha256':bank['raw_sha256'],'runtime_caller_status':'NOT-INFERRED-FROM-ASSETS'})
     decoded = [r for r in rows if r['source_status'] == 'decoded']
-    report = {'status': 'PASS-BATTLE-HD-ASSET-COVERAGE', 'inventory_sha256': digest(args.inventory),
+    report = {'status': 'PASS-BATTLE-HD-ASSET-COVERAGE', 'registered_lmi_overlays':lmi_overlays,'inventory_sha256': digest(args.inventory),
         'catalog_sha256': digest(args.catalog), 'catalog_stage': stage, 'tool_sha256': digest(Path(__file__)), 'catalog_assets': len(catalog['assets']),
         'figani': {'resource_positions': len(rows), 'decoded_resources': len(decoded),
             'native_frames': sum(r['native_frames'] for r in decoded), 'registered_resources': len(registered),

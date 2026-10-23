@@ -167,8 +167,10 @@ func (g *Game) drawPreparedModernHDMapFrame(screen *ebiten.Image, frame *modernH
 		op.GeoM.Translate(float64(foreground.Rect.Min.X), float64(foreground.Rect.Min.Y))
 		r.World.SubImage(clip).(*ebiten.Image).DrawImage(r.Foreground[i], op)
 	}
-	for _, overlay := range frame.Overlays {
-		r.drawTerrainClipped(overlay.Image, overlay.Rect, clip)
+	if !frame.OverlaysAboveUI {
+		for _, overlay := range frame.Overlays {
+			r.drawTerrainClipped(overlay.Image, overlay.Rect, clip)
+		}
 	}
 	if banner && g.bannerT > 0 && g.banner != "" {
 		if r.Banner == nil {
@@ -202,9 +204,19 @@ func (g *Game) drawPreparedModernHDMapFrame(screen *ebiten.Image, frame *modernH
 	screen.Clear()
 	g.clearModernHDText()
 	r.UI.WritePixels(frame.UI.Pix)
-	uiop := &ebiten.DrawImageOptions{}
-	uiop.GeoM.Scale(2, 2)
-	screen.DrawImage(r.UI, uiop)
+	if frame.OverlaysAboveUI {
+		// Command tails write LMI after the frozen HUD in the same work
+		// buffer. Keep that order at full resolution; the final logical UI
+		// plane remains transparent and cannot cover the effect again.
+		r.World.DrawImage(r.UI, op)
+		for _, overlay := range frame.Overlays {
+			r.drawTerrainClipped(overlay.Image, overlay.Rect, clip)
+		}
+	} else {
+		uiop := &ebiten.DrawImageOptions{}
+		uiop.GeoM.Scale(2, 2)
+		screen.DrawImage(r.UI, uiop)
+	}
 	g.modernHDWorldVisible = true
 	g.modernHDMapPresentedFrame = g.frame
 	g.modernHDMapPresented = frame

@@ -15,6 +15,17 @@ type NativeCommandHealTailTarget struct {
 	RecordIndex, X, Y, SelectorSlot int
 }
 
+// NativeCommandTailLayer records the exact successful LMI write. X/Y are
+// relative to the copied work viewport, before its VGA destination is chosen.
+type NativeCommandTailLayer struct {
+	Resource, Entry, X, Y int
+}
+
+func nativeCommandTailLayer(resource, index, x, y int) NativeCommandTailLayer {
+	return NativeCommandTailLayer{Resource: resource, Entry: index,
+		X: x - workBase%workStride, Y: y - workBase/workStride}
+}
+
 func nativeCommandTailOrigin(x, y, cameraX, cameraY, extraX, extraRows int) (int, int, error) {
 	offset := workBase + 24*(x-cameraX) + 24*workStride*(y-cameraY) + extraX + extraRows*workStride
 	if offset < 0 {
@@ -27,26 +38,40 @@ func nativeCommandTailOrigin(x, y, cameraX, cameraY, extraX, extraRows int) (int
 // The caller supplies the exact steady-frame snapshot and visible final target
 // array; rejected input leaves both work and VGA unchanged.
 func ComposeNativeCommandHealEffectFrame(work, vga, snapshot []byte, entry fdother.LMI1Entry, targets []NativeCommandHealTailTarget, cameraX, cameraY int) error {
+	_, err := composeNativeCommandHealEffectFrame(work, vga, snapshot, entry, targets, cameraX, cameraY, -1, -1)
+	return err
+}
+
+func ComposeNativeCommandHealEffectFrameWithSources(work, vga, snapshot []byte, entry fdother.LMI1Entry, targets []NativeCommandHealTailTarget, cameraX, cameraY, resource, index int) ([]NativeCommandTailLayer, error) {
+	if resource < 0 || index < 0 {
+		return nil, errors.New("indexedmap: command tail source unavailable")
+	}
+	return composeNativeCommandHealEffectFrame(work, vga, snapshot, entry, targets, cameraX, cameraY, resource, index)
+}
+
+func composeNativeCommandHealEffectFrame(work, vga, snapshot []byte, entry fdother.LMI1Entry, targets []NativeCommandHealTailTarget, cameraX, cameraY, resource, index int) ([]NativeCommandTailLayer, error) {
 	if len(work) != NativeUnitPresentWorkSize || len(snapshot) != NativeUnitPresentWorkSize || len(vga) != NativeMapVGASize {
-		return errors.New("indexedmap: incomplete native command heal effect buffers")
+		return nil, errors.New("indexedmap: incomplete native command heal effect buffers")
 	}
 	frame := append([]byte(nil), snapshot...)
+	layers := make([]NativeCommandTailLayer, 0, len(targets))
 	for _, target := range targets {
 		x, y, err := nativeCommandTailOrigin(target.X, target.Y, cameraX, cameraY, 0, -6)
 		if err != nil {
-			return err
+			return nil, err
 		}
 		if err := entry.BlitAt(frame, workStride, x, y, false); err != nil {
-			return fmt.Errorf("indexedmap: command heal effect target %d: %w", target.RecordIndex, err)
+			return nil, fmt.Errorf("indexedmap: command heal effect target %d: %w", target.RecordIndex, err)
 		}
+		layers = append(layers, nativeCommandTailLayer(resource, index, x, y))
 	}
 	viewport := append([]byte(nil), vga...)
 	if err := CopyNativeUnitPresentViewport(viewport, frame); err != nil {
-		return err
+		return nil, err
 	}
 	copy(work, frame)
 	copy(vga, viewport)
-	return nil
+	return layers, nil
 }
 
 // ComposeNativeCommandHealMaskFrame reproduces 0x1c2da's 0x4ddd7 calls.
@@ -115,42 +140,53 @@ func ComposeNativeAIItemDamageBlendFrame(work, vga, snapshot []byte, units *fdic
 
 // ComposeNativeCommandHealDigitFrame consumes one typed 0x1df58 queue frame.
 func ComposeNativeCommandHealDigitFrame(work, vga, snapshot []byte, digits []fdother.LMI1Entry, queue []battle.NativePresentationDigit, targets []NativeCommandHealTailTarget, cameraX, cameraY int, vertical [25]int, frameIndex int) error {
+	_, err := composeNativeCommandHealDigitFrame(work, vga, snapshot, digits, queue, targets, cameraX, cameraY, vertical, frameIndex)
+	return err
+}
+
+func ComposeNativeCommandHealDigitFrameWithSources(work, vga, snapshot []byte, digits []fdother.LMI1Entry, queue []battle.NativePresentationDigit, targets []NativeCommandHealTailTarget, cameraX, cameraY int, vertical [25]int, frameIndex int) ([]NativeCommandTailLayer, error) {
+	return composeNativeCommandHealDigitFrame(work, vga, snapshot, digits, queue, targets, cameraX, cameraY, vertical, frameIndex)
+}
+
+func composeNativeCommandHealDigitFrame(work, vga, snapshot []byte, digits []fdother.LMI1Entry, queue []battle.NativePresentationDigit, targets []NativeCommandHealTailTarget, cameraX, cameraY int, vertical [25]int, frameIndex int) ([]NativeCommandTailLayer, error) {
 	if len(work) != NativeUnitPresentWorkSize || len(snapshot) != NativeUnitPresentWorkSize || len(vga) != NativeMapVGASize || frameIndex < 0 || frameIndex >= 22 {
-		return errors.New("indexedmap: incomplete native command heal digit input")
+		return nil, errors.New("indexedmap: incomplete native command heal digit input")
 	}
 	byRecord := make(map[int]NativeCommandHealTailTarget, len(targets))
 	for _, target := range targets {
 		byRecord[target.RecordIndex] = target
 	}
 	frame := append([]byte(nil), snapshot...)
+	layers := make([]NativeCommandTailLayer, 0, len(queue))
 	for index, item := range queue {
 		if item.Digit == 0 {
 			continue
 		}
 		if item.Digit < 0 || item.Digit >= len(digits) {
-			return fmt.Errorf("indexedmap: command heal digit descriptor %#x unavailable", item.Digit)
+			return nil, fmt.Errorf("indexedmap: command heal digit descriptor %#x unavailable", item.Digit)
 		}
 		target, ok := byRecord[item.Target]
 		if !ok {
-			return fmt.Errorf("indexedmap: command heal digit target %d unavailable", item.Target)
+			return nil, fmt.Errorf("indexedmap: command heal digit target %d unavailable", item.Target)
 		}
 		at := frameIndex + index%4
 		if at < 0 || at >= len(vertical) {
-			return errors.New("indexedmap: command heal digit phase outside vertical table")
+			return nil, errors.New("indexedmap: command heal digit phase outside vertical table")
 		}
 		x, y, err := nativeCommandTailOrigin(target.X, target.Y, cameraX, cameraY, item.PositionCode, vertical[at]-3)
 		if err != nil {
-			return err
+			return nil, err
 		}
 		if err := digits[item.Digit].BlitAt(frame, workStride, x, y, false); err != nil {
-			return fmt.Errorf("indexedmap: command heal digit queue %d: %w", index, err)
+			return nil, fmt.Errorf("indexedmap: command heal digit queue %d: %w", index, err)
 		}
+		layers = append(layers, nativeCommandTailLayer(5, item.Digit, x, y))
 	}
 	viewport := append([]byte(nil), vga...)
 	if err := CopyNativeUnitPresentViewport(viewport, frame); err != nil {
-		return err
+		return nil, err
 	}
 	copy(work, frame)
 	copy(vga, viewport)
-	return nil
+	return layers, nil
 }

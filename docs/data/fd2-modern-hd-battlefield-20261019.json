@@ -98455,7 +98455,7 @@
     },
     "private_remote_verification": "Independent private repository commit pushed; actual git ls-remote refs/heads/main re-read equals local HEAD. Private commit identity is not published."
   },
-  "latest_hd_batch": "command9_battle_hd_followup_20261023",
+  "latest_hd_batch": "player9_map_hd_followup_20261023",
   "monks28_31_mage29_followup_20261022": {
     "status": "CONFORMED-SCOPED-RUNTIME-E1",
     "date": "2026-10-22",
@@ -200849,5 +200849,537 @@
       "sha256": "54ba86e9828c7e2db077ff898f7877eb6e058a04dfbd6dc9fc777e32b5d51c85"
     },
     "publication_audit_scope": "僅核唯一latest_hd_batch。最初全歷史遞迴把明示已刪執行檔、舊工具版本SHA與53份未修改root-owned歷史檔當成目前產物，非產品缺陷；改以本批完整SHA／所有修改檔與輸出1000:1000檢查。舊670項及6327素材另有逐SHA保持收據，歷史不改寫、不全庫chown。"
+  },
+  "player9_map_hd_followup_20261023": {
+    "status": "CONFORMED-SCOPED",
+    "base_commit": "f095ce9debb108c6f69b97c6171e7df722664982",
+    "date": "2026-10-23",
+    "base_catalog": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-base-catalog-oct23-r1.json",
+      "sha256": "ed2171455f92a6a58a9b57d79757883526c7354ebaa03a380d70df754d7f49db"
+    },
+    "native_reference": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-native-oct23-r3.json",
+      "sha256": "158d86ec48c0e18cf332c69e165d8d7611e4480393b2e26360c060c1ca8144e3"
+    },
+    "initial_grayscale_reference": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-native-oct23-r1.json",
+      "sha256": "4f7387aa1f2b47b7fb884115cfc0292368ff356ec88b5be5fed4efc8e7bce31b"
+    },
+    "source_auditor": {
+      "file": "tools/audit_fd2_player9_map_source.py",
+      "sha256": "d84d159ac3dc2f913dd2d47f0493242607160f7050b6dbb5aebaf6165d13cd11"
+    },
+    "evidence": [
+      {
+        "file": "docs/data/ida/fd2_command9_player_ai_presentation_ida.txt",
+        "sha256": "00f115e71002ed3e19c525ffce9d6d4c35893a931bfb5af977e38ecfec0edab7"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-preimage-remake_cmd_fd2_native_command9_player_presentation.go",
+        "sha256": "b9b4227555d4898f412844f9ab52782efb78a297e2e4423486c0136764e0707b",
+        "original_file": "remake/cmd/fd2/native_command9_player_presentation.go"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-preimage-remake_internal_indexedmap_native_command_heal_tail.go",
+        "sha256": "c030d37e874af66b04f27c02a21c99e8c7d02206308dfabd77e56fffd847109f",
+        "original_file": "remake/internal/indexedmap/native_command_heal_tail.go"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-preimage-remake_cmd_fd2_modern_hd_map_overlay_assets.go",
+        "sha256": "de8e40c351d9efb3ca4d07e161787eecc7a3d4cd316a4d3ccf1fa35c4dee0fbc",
+        "original_file": "remake/cmd/fd2/modern_hd_map_overlay_assets.go"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-preimage-remake_cmd_fd2_modern_hd_map_runtime.go",
+        "sha256": "aa15ac29b7f7b2bbe87664fb72c76758e6c9e230b4b32424238962a637f737a6",
+        "original_file": "remake/cmd/fd2/modern_hd_map_runtime.go"
+      }
+    ],
+    "generation_reference_inputs": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-reference-096-oct23-r1.png",
+        "sha256": "acfb658956bc541854e8e308eb61b840b808795d53ee47f103c8594cb81c6210"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-reference-099-oct23-r1.png",
+        "sha256": "70ee84c8cb23beef8f56f5e4aefe6a79332254ef916e82439d9f70507e63ed6a"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-reference-108-oct23-r1.png",
+        "sha256": "26c2da971507530d16f66a661ee690e4c3669881f4f150a8ffce50e568d22231"
+      }
+    ],
+    "scope": "玩家9的八次色盤、27個LMI6效果、22張LMI5命中／MISS數字與hold；原HD地圖及人物保持，沿既有正式owner交易與callback。敵方9不重做，後續10..12／回復與其他地圖尾段保持待辦。",
+    "current_state": {
+      "player9_pixels_only": false,
+      "effect6_87_113_unregistered": false,
+      "result5_94_103_116_118_unregistered": false
+    },
+    "required_checks": [
+      "固定raw／PNG的40來源、27效果+13數字，色盤0而非研究灰階；微小原框與黑色FX不可套1000像素人物門檻。",
+      "同次producer來源記錄及獨立indexed重組；viewport複製0,0與正常4,4分開；F2不可重算數值或改世界狀態。",
+      "兩包來源GPU、完整Game.Draw命中／MISS、八palette／27effect／22result／hold、MP／HP／RNG／聲音與一次callback；地圖人物HD保持。",
+      "缺來源／重複／錯SHA／原生空拍／F2原子性、既有死亡及普通地圖回歸；全部通過後正式／私人／README及#263更新。"
+    ],
+    "formal_registered": true,
+    "private_synced": true,
+    "normal_player": false,
+    "human_review": false,
+    "full_battle_hd_complete": false,
+    "rules_and_save_changed": false,
+    "recordings_created": false,
+    "audit_corrections": [
+      "最初猜effects目錄錯誤，依manifest定位為effects/fdother_006_lmi1_opaque。",
+      "固定包5 bank.json未列metadata但所有圖源與raw均列；稽核由原raw依既有LMI1格式逐cell獨立重解核對，不接受metadata自承。",
+      "初參考Pmode嵌灰階僅供研究，r2改用正式#0色盤，RGBA母稿依r2參考。"
+    ],
+    "generation_preservation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-generation-preserved-oct23-r1.json",
+      "sha256": "efa263be4ebbb9cae1978c55df7f4ae3ac576875acdcda5ff091114b6aa74f0f",
+      "note": "初始四份生成原圖逐位元組保留；後加輪廓原RGBA另見silhouette_generation。五份來源均已登錄，完整提示及原輸出保存。",
+      "alpha_modified": false
+    },
+    "implementation_spec": {
+      "status": "CONFORMED-SCOPED",
+      "scope": "既有玩家指令9所有者的繪製層；原生規則、排程、MP/HP、RNG、聲音、hold、callback及保存格式保持。",
+      "evidence_level": "LMI原始索引與caller為已證實；手繪形狀及骨架分段為明示現代美術近似；本切片驗證限RUNTIME-E1，不新增原版parity。",
+      "inputs": "固定FDOTHER.DAT與原包manifest沿native_reference；同次indexed producer記錄resource/entry及相對viewport的X/Y。LMI6 87..113共27項；LMI5 94..103、116..118共13項。",
+      "source_authority": "既有IDA9.4 command9 player閉合記錄及source_auditor；不重開原版RE。正式合成器的typed input與原始work/VGA快照是HD世界唯一來源。",
+      "frozen_input": "原生steady compositor僅在成功發布時保存typed input。owner開始時複製cells/units/foreground/controls/LUT/HUD可變值，將SelectionOverlay凍結為已證實覆寫的索引圖層；重組VGA必須完全等於baseline，不可按受傷後現況重建。沒有sidecar的直接測試可用明示輸入，但同樣須逐byte等於snapshot。",
+      "states": "八次palette ->27effect ->既有ApplyNativeCommandDamage->22result->500ms hold->既有Complete/一次callback；Draw acknowledgement及所有節拍保持。",
+      "geometry": "palette/hold沿正常(4,4)312x192；effect/result沿原生CopyNativeUnitPresentViewport的(0,0)312x192，地形/人物/前景/Range/UI一起平移(-4,-4)原生像素，保留copy區外原始VGA。",
+      "layer_order": "背景->HD地形->Range->HD人物->前景->既有HUD/選取UI->同次producer的LMI效果或結果。新增事件專用OverlaysAboveUI旗標；此路徑將UI以6倍先合成到HD世界，再貼HD LMI，640邏輯層保持透明；其他地圖及死亡順序不變。",
+      "assets": "LMI5允許死亡68..79與結果94..103/116..118兩個互斥集合並以entry原子合併；LMI6只准87..113。既有圖組及metadata/SHA/原框/coverage守衛保持。僅在40圖全部通過候選測試後登錄正式清冊。",
+      "failure": "來源錯誤、部分銀行、缺件、重複entry、錯SHA或不相同snapshot拒收；開始前或F2前預備全部HD幀，失敗不發布theme/owner/數值。舊主題未宣告新銀行時保留原生FX，不宣稱該主題玩家9已HD；宣告半套禁止。",
+      "f2": "同一job凍結輸入重新準備；只替換繪製快取及theme，不重算plan、不改phase/frame/drawn/hold、MP/HP、RNG或callback。",
+      "art_status": "CONFORMED-SCOPED；五份原RGBA與Noto字型來源已編製並登錄，造型人工確認保持待辦。",
+      "acceptance": [
+        "固定raw／PNG的40來源、27效果+13數字，色盤0而非研究灰階；微小原框與黑色FX不可套1000像素人物門檻。",
+        "同次producer來源記錄及獨立indexed重組；viewport複製0,0與正常4,4分開；F2不可重算數值或改世界狀態。",
+        "兩包來源GPU、完整Game.Draw命中／MISS、八palette／27effect／22result／hold、MP／HP／RNG／聲音與一次callback；地圖人物HD保持。",
+        "缺來源／重複／錯SHA／原生空拍／F2原子性、既有死亡及普通地圖回歸；全部通過後正式／私人／README及#263更新。",
+        "原生整個VGA獨立重組、(0,0)及(4,4)與UI遮擋的最終GPU核對；完整hit/MISS和各相位F2。",
+        "正式登錄與私人白名單同步後，更新README與Issue 263；集中普通玩家及人工造型確認仍待全部HD。"
+      ],
+      "rights": "完整圖源只在本機及私人保存庫，公開僅配方/雜湊/程式/核准總覽。"
+    },
+    "silhouette_generation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-silhouette-generation-oct23-r1.json",
+      "sha256": "72f7d0545292a82a36b05026e310dfca356ef07e4cfed3d7c3ed67cc27acd836"
+    },
+    "art_spec": {
+      "status": "CONFORMED-SCOPED",
+      "review": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-compiled-oct23-r1/review.png",
+      "note": "已檢視40格：升起逐步裁切、開閉口、黑色輪廓、環狀消散、極小殘光及Noto數字。共用母稿、原框裁切及縮放為現代近似，人工造型定稿仍依全部HD後集中確認。"
+    },
+    "candidate_recipe": {
+      "file": "docs/data/fd2-player9-map-hd-recipe-20261023.json",
+      "sha256": "3b813270936daa0e1e24772ef573a9294bce7b42d40f6e43a0a5fb64091206e9"
+    },
+    "candidate_stage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-stage-oct23-r1/catalog.json",
+      "sha256": "1ef348bc6cfdfee1d8914f8a5cf605cd3e5e099f58483a773617a6346b9bf990",
+      "assets": 673,
+      "base_assets": 671,
+      "unchanged_files_are_links": true,
+      "new_files_are_independent_copies": true
+    },
+    "verification_in_progress": {
+      "source_native": "兩種hit/MISS的27+22共98張獨立原生VGA重組已通過，完整HD仍待。",
+      "candidate_catalog": "673項含40新圖與58新白名單檔實檔驗證通過；尚未正式登錄。",
+      "compiler_refusals": "5項測試含10編製拒收、2個原PNG/raw毀損、9個清冊拒收及真實40圖正對照全部通過。",
+      "timed_out_runs": [
+        "player9-map-full-unit-oct23-r1",
+        "player9-map-full-gpu-oct23-r1",
+        "player9-map-full-unit-oct23-r2"
+      ],
+      "timeout_classification": "三次360/420秒有界逾時，oom/oom_kill為0。對第二次單元程序嘗試取得SIGQUIT時容器已退出，沒有信號送達；不當作產品signal-killed或通過。20秒剖析只供定位。",
+      "cpu_profile": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-theme-load-profile-oct23-r1.txt",
+        "sha256": "8f6b916ce11d8203c6be851b5d1853401dd5196d8479874fbe23e99d4b0ade46",
+        "scope": "20秒完整主題載入剖析，非完整載入或遊玩驗收。"
+      },
+      "alpha_optimization": "已以七種image格式、非零bounds/SubImage stride及0/1/128/254/255 alpha對舊At參考等價通過。掃描微基準由3.793882ms/82945B/20736alloc降至0.138962ms/0B/0alloc；只限alpha掃描，不外推完整主題或正式平台效能。沒有PNG解碼快取或驗證繞過。",
+      "status": "HISTORICAL-INITIAL-ATTEMPTS",
+      "superseded_by": "verification"
+    },
+    "initial_recipe": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-recipe-oct23-r1.json",
+      "sha256": "3b813270936daa0e1e24772ef573a9294bce7b42d40f6e43a0a5fb64091206e9"
+    },
+    "verification_driver": {
+      "file": "tools/verify_fd2_player9_map_hd.py",
+      "sha256": "651bcb750df44e384fd0f1c759ba69a62f7f98598db7518aef5c27561ec9b40a",
+      "mode": "Go Docker image; --kind unit/preflight/source/game/regression --catalog ABS --pack ABS --out FRESH_PREFIX; runtime-only adds --require-real-runtime."
+    },
+    "pre_registration_gates": {
+      "runs": [
+        "player9-map-full-unit-oct23-r3",
+        "player9-map-source-candidate-go-oct23-r1",
+        "player9-map-game-candidate-go-oct23-r2",
+        "player9-map-unit-runtime-go-oct23-r1",
+        "player9-map-game-runtime-go-oct23-r1",
+        "player9-map-death-regression-go-oct23-r1",
+        "player9-map-driver-runtime-oct23-r1"
+      ],
+      "no_skip_or_oom": true,
+      "source_worlds_per_pack": 120,
+      "source_worlds_equal_between_packs": true,
+      "game_hd_draws_per_pack": 176,
+      "f2_round_trips_per_pack": 16,
+      "compiled_frames": 40,
+      "new_allowlist_files": 58,
+      "runtime_real_files": 5532,
+      "native_independent_vga_frames": 98,
+      "code_and_tool_input_fingerprints_pending_finalization": false
+    },
+    "runtime_pack_after_cleanup": {
+      "file": "work/cleanup-20261023-followup.json",
+      "sha256": "9654e92a16de1989bf6a79964be7711c50eb6d7f9798a0d0718155bf9ec691a5",
+      "independent_files_now": false,
+      "note": "Original runtime-manifest and PASS receipts describe independent files at test time. After cleanup this pack uses links; future independent-pack tests must rebuild real files."
+    },
+    "previous_source_reference": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-native-oct23-r2.json",
+      "sha256": "d0a78972843c7237d331d1b274ae276708033b670ae76f6463f78727ad97adaf"
+    },
+    "formal_admission": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-formal-admission-oct23-r1.json",
+      "sha256": "dcd20fb6e7525023df3d72a73313e5f6ed24d16537d25b71f5c163d0fd6f767a"
+    },
+    "readme_overview": {
+      "file": "docs/figures/hd-player9-map-effects.png",
+      "sha256": "c5fc358f168ee788814c68c7d36636fd7e839b01fdd9f75ef305bed6de13ca64",
+      "sources": [
+        {
+          "source": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-game-runtime-oct23-r1-capture/player9-game-hittrue-phase1-frame09.png",
+            "sha256": "6d94b7fe1720011a4c0f24748a81c94d16d986a4d7d0d8c0ec09193452f1ab12"
+          },
+          "crop": [
+            0,
+            720,
+            624,
+            1152
+          ],
+          "label": "幽影升起",
+          "resized": false
+        },
+        {
+          "source": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-game-runtime-oct23-r1-capture/player9-game-hittrue-phase1-frame21.png",
+            "sha256": "132c5354deb454bb875657ef1d2e322b67c93c0fc765446deda5c990e1c55296"
+          },
+          "crop": [
+            0,
+            720,
+            624,
+            1152
+          ],
+          "label": "揮刃",
+          "resized": false
+        },
+        {
+          "source": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-game-runtime-oct23-r1-capture/player9-game-hittrue-phase2-frame04.png",
+            "sha256": "2fd7c35808152499b3f33986eb5b945bddfb1546a6f8cc34783cfd12641e42e4"
+          },
+          "crop": [
+            0,
+            720,
+            624,
+            1152
+          ],
+          "label": "命中結果",
+          "resized": false
+        },
+        {
+          "source": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-game-runtime-oct23-r1-capture/player9-game-hitfalse-phase2-frame04.png",
+            "sha256": "88e9fc2f00e2be91c47733120a6178d9d5f291ffc065a1bc0c96a5ce8ba07fd2"
+          },
+          "crop": [
+            0,
+            720,
+            624,
+            1152
+          ],
+          "label": "MISS",
+          "resized": false
+        }
+      ],
+      "scope": "Actual Game.Draw fixture, actor (1,6), target (2,6), RNG seed 7, modern theme. Exact crops only; not normal player or original parity. Native HUD and most terrain remain pixel assets."
+    },
+    "formal_coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-formal-coverage-oct23-r1.json",
+      "sha256": "01bdb1491f9cb8c30aac2da7877e3eb5195ddabcc26e92b0f14daa1316aaf29c"
+    },
+    "private_verification": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-private-verify-oct23-r1.json",
+      "sha256": "bff43cb9d9f53ce6c4ce792d89f1943e2568dc7f538767ccf80d089daedfdb67"
+    },
+    "verification": {
+      "status": "PASS-SCOPED-RUNTIME-E1",
+      "go_runs": [
+        {
+          "name": "player9-map-full-unit-oct23-r3",
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-full-unit-oct23-r3.memory.json",
+            "sha256": "c176ef2c4c0709c7443a0830a01369cfe9e7029573ba4e7f26bd397a557ec4d1"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-full-unit-oct23-r3.log",
+            "sha256": "3403f3fd5939291565846820f26bb6168c59665547651541d51e54d92eae13f7"
+          },
+          "elapsed_seconds": 168.337,
+          "memory_peak_bytes": 2879053824,
+          "skip": false,
+          "oom": false
+        },
+        {
+          "name": "player9-map-source-candidate-go-oct23-r1",
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-source-candidate-go-oct23-r1.memory.json",
+            "sha256": "09972b925cfc6e6b08b133d8e2da4caa31853dc8dfd8ffa7a11e28b8203aa866"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-source-candidate-go-oct23-r1.log",
+            "sha256": "dff28f723ce13fe8fdd4ead51c0e96f649305688d86cabf49231b33956dd2ffd"
+          },
+          "elapsed_seconds": 55.693,
+          "memory_peak_bytes": 1084026880,
+          "skip": false,
+          "oom": false
+        },
+        {
+          "name": "player9-map-game-candidate-go-oct23-r2",
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-game-candidate-go-oct23-r2.memory.json",
+            "sha256": "606ee934e5094e11eab1780c05274a233af1085ba34546c074d94677c7aebec9"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-game-candidate-go-oct23-r2.log",
+            "sha256": "c1cecd8432b2985a8075a19658ff99380a8f4e4f9ed60cc6c775444fc61b0af5"
+          },
+          "elapsed_seconds": 245.342,
+          "memory_peak_bytes": 1993297920,
+          "skip": false,
+          "oom": false
+        },
+        {
+          "name": "player9-map-unit-runtime-go-oct23-r1",
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-unit-runtime-go-oct23-r1.memory.json",
+            "sha256": "132eb0bb999faedeaa788178446b0eba0c56b3a1db17e2bd985049083ba0c8af"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-unit-runtime-go-oct23-r1.log",
+            "sha256": "b761c40652a4e652e678cd3d14f1ce3d4a41df183087eb73aeec970b3e75ea93"
+          },
+          "elapsed_seconds": 139.654,
+          "memory_peak_bytes": 2403217408,
+          "skip": false,
+          "oom": false
+        },
+        {
+          "name": "player9-map-game-runtime-go-oct23-r1",
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-game-runtime-go-oct23-r1.memory.json",
+            "sha256": "460f6b2f5abda6fc0231594bc6ee236d0f9695ed69d6a455cde4479834859ba3"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-game-runtime-go-oct23-r1.log",
+            "sha256": "9f91c7d4df081156f8e712fb6e3a89bc13985339466641706198f2b2bfa4fb14"
+          },
+          "elapsed_seconds": 407.921,
+          "memory_peak_bytes": 2852589568,
+          "skip": false,
+          "oom": false
+        },
+        {
+          "name": "player9-map-death-regression-go-oct23-r1",
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-death-regression-go-oct23-r1.memory.json",
+            "sha256": "550a084d334914ec445857612b61699613394647c000bcba62804c1eb306db85"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-death-regression-go-oct23-r1.log",
+            "sha256": "e57ddfd79ecfc73c74af990b49eb8a3009a2dd393fa525b219607c1373ca3977"
+          },
+          "elapsed_seconds": 265.594,
+          "memory_peak_bytes": 1963241472,
+          "skip": false,
+          "oom": false
+        },
+        {
+          "name": "player9-map-driver-runtime-oct23-r1",
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-driver-runtime-oct23-r1.memory.json",
+            "sha256": "09afed409ad9e6976eb3429795a66fa935e6c15418610ffc121d3fdeade37409"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-driver-runtime-oct23-r1.log",
+            "sha256": "957f4bccb0b9eac94dedb8e963b5cdd9f3050579f7122df04c7e6d49a7ba8b22"
+          },
+          "elapsed_seconds": 20.537,
+          "memory_peak_bytes": 1405620224,
+          "skip": false,
+          "oom": false
+        },
+        {
+          "name": "player9-map-game-formal-final-oct23-r1",
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-game-formal-final-oct23-r1.memory.json",
+            "sha256": "6c5eaaf8a4c6966b5bfde471d3a2c0cca78527912915ccb71a6a58c315aac1a1"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-game-formal-final-oct23-r1.log",
+            "sha256": "e1dee589d246ed2514568498040cfa7fcb9f20933f41094ffb1653bba3340995"
+          },
+          "elapsed_seconds": 214.392,
+          "memory_peak_bytes": 2853666816,
+          "skip": false,
+          "oom": false
+        }
+      ],
+      "formal_driver_gate": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-game-formal-final-oct23-r1.gate.json",
+        "sha256": "e1f7eed8e4ddd488f9946af19b97685c2959ad885f5a8af250b91fed78f81988"
+      },
+      "compiler_guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-compiler-guards-final-oct23-r1.log",
+        "sha256": "5eb15a95368f6bb61c7e48b7b7dc20ef9b7ffc692a52e87454ec1ad922947d79"
+      },
+      "compiler_tests": 5,
+      "recipe_refusals": 10,
+      "original_raw_png_tamper_refusals": 2,
+      "catalog_refusals": 9,
+      "compiled_report": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-compiled-oct23-r2/compiled.json",
+        "sha256": "188f8ca175c1237b0b07f37b8cbba98cb8ffcd80bcd41c90f4feb859e6d90c7f"
+      },
+      "gpu_receipts": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-game-candidate-oct23-r2-capture/gpu.json",
+          "sha256": "1667bf78e932034aadf9bc25a7e8f15e93be1369f00d61677f59577be8953f30"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-game-runtime-oct23-r1-capture/gpu.json",
+          "sha256": "1667bf78e932034aadf9bc25a7e8f15e93be1369f00d61677f59577be8953f30"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-game-formal-final-oct23-r1-capture/gpu.json",
+          "sha256": "1667bf78e932034aadf9bc25a7e8f15e93be1369f00d61677f59577be8953f30"
+        }
+      ],
+      "source_worlds_equal_between_three_packs": true,
+      "source_worlds_per_pack": 120,
+      "game_hd_draws_per_pack": 176,
+      "f2_round_trips_per_pack": 16,
+      "independent_native_vga_frames": 98,
+      "fixture": {
+        "seed": 7,
+        "actor_position": [
+          1,
+          6
+        ],
+        "target_position": [
+          2,
+          6
+        ],
+        "command_damage": 999,
+        "controlled_hit_chances": [
+          100,
+          0
+        ],
+        "mp_before": 80,
+        "mp_after": 50,
+        "target_hp_before": 100,
+        "target_hp_after_hit": 0,
+        "target_hp_after_miss": 100,
+        "normal_player": false,
+        "original_parity": false
+      },
+      "alpha_equivalence": {
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-alpha-equivalence-go-oct23-r1.memory.json",
+          "sha256": "759a1fc673ad6ed4481cdbdfc8435b8bc8c5b63d78fd5a7e4011d7124e565054"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-map-alpha-equivalence-go-oct23-r1.log",
+          "sha256": "53fc39ce594a85cdadbba981075f3c20b0f7857527c7ac13548b961209d08d4f"
+        }
+      },
+      "scope": "Frozen same-producer source and actual Game.Draw at RUNTIME-E1. Complete cross-process Game.Draw hashes are not asserted because initial map animation clock is not controlled. Each world is checked against independent CPU Over; source120 rows are equal across all packs."
+    },
+    "verified_implementation_files": {
+      "remake/cmd/fd2/main.go": "98724abcf0fbce188eb43e02628db71c12ac65122568219be745a73763c66c1a",
+      "remake/cmd/fd2/modern_hd_player9_map.go": "df7104448d4bd428b91938c8a08ac128da6b1d2c9e1147c0d230e07ae682be4a",
+      "remake/cmd/fd2/modern_hd_player9_map_test.go": "87156a330a3516b4f1c3ac9574694df944d2dff059b8acc45d018ada2cc3c3e1",
+      "remake/cmd/fd2/modern_hd_player9_map_gpu_test.go": "5273bcedb3c05cd6255bec58878505afdbe8114b0f500eb5e4e5f009a0e6ad08",
+      "remake/cmd/fd2/modern_hd_map_gpu.go": "ca796621bbc506aeb33b84ec59cb4d32ee1026d24a0fbed95000ed4fb2dbdaad",
+      "remake/cmd/fd2/modern_hd_map_runtime.go": "5421e1c297ba99d143ec929e974473b20fdea7c699511293dce3fb5c96aef625",
+      "remake/cmd/fd2/modern_hd_map_overlay_assets.go": "435868519d65c3f960f2394cb3c50dae983cc2a2abd9d6c66194d3044882ae17",
+      "remake/cmd/fd2/modern_hd_map_sprite_assets.go": "9aecbc8305a92109dee3146b7d336e0ed6ba1c618e929b2d55faacf69a62744b",
+      "remake/cmd/fd2/modern_hd_map_sprite_alpha_test.go": "776fc472dd01a5143c86e35c88fe40d5d6a7c4fe29c50a06da71a7a338a4c6e8",
+      "remake/cmd/fd2/modern_hd_death_test.go": "ec559f4bb43b59d4524b936c059f2a6fb3a853614916b43b38bd9d490032f7d1",
+      "remake/cmd/fd2/modern_story_portrait.go": "eb906104439417e2aca3b3f66b94f1c1439c443c6c8781fe28a1a1275038475e",
+      "remake/cmd/fd2/native_ch28_post_present.go": "bef4a6fad62ab4beffc4875d8e32c85752bf74ee8aad770fd8a98d20a2534741",
+      "remake/cmd/fd2/native_command9_player_presentation.go": "c86b1c9a54537801be8b22e07858a95f8aa7011c6ae3162117ceee62d33cebcb",
+      "remake/cmd/fd2/player_shortcuts.go": "9a55e20221dfa1f5a272108cd4f045df0cc6f0e4a69a28bc6847ca2ae3bc41bd",
+      "remake/internal/indexedmap/native_command_heal_tail.go": "c66b9e42c5f3c94b0c5abbf00a12835d8485f20b6cfb7a0e62c0e88cf0e14aa5",
+      "tools/audit_fd2_player9_map_source.py": "d84d159ac3dc2f913dd2d47f0493242607160f7050b6dbb5aebaf6165d13cd11",
+      "tools/build_fd2_player9_map_hd.py": "2bbf04dd912a23392ce7277b47c17435f4a25487b798ae089006bf2678a063da",
+      "tools/test_fd2_player9_map_hd.py": "e331de9fce4c00098ab58ebcc62ebbd7f4040443e2b29aa046850026e003e6f5",
+      "tools/verify_fd2_player9_map_hd.py": "651bcb750df44e384fd0f1c759ba69a62f7f98598db7518aef5c27561ec9b40a",
+      "tools/audit_fd2_battle_hd_coverage.py": "bb6e7465615d0a4e3f828352b9c73a90f6378c561a0ef0a7934671f3e1b05db3",
+      "tools/validate_modern_theme_catalog.py": "611faf3ba721352607963b3274e8baf21057204cffce84f4db6e0a86102ba390"
+    },
+    "source_master_catalog_mapping": [
+      {
+        "role": "hood-closed",
+        "file": "player9-hood-closed-original-r1.png",
+        "sha256": "1ab307d3958e16abb90ee0a87a8a9d7dfd0d21a4504f0af594cb458f7c6a0919"
+      },
+      {
+        "role": "hood-open",
+        "file": "player9-hood-open-original-r1.png",
+        "sha256": "b5cdc7cc2c0168883f8f7cf0a20c370a3992b7c89a9aaf4baef0b6f50503a6bd"
+      },
+      {
+        "role": "hood-silhouette",
+        "file": "player9-hood-silhouette-original-r1.png",
+        "sha256": "a97c5c680efb876cb45bc8ebc9de6943400e6508ec3cd22d560505ea0b0def45"
+      },
+      {
+        "role": "dark-ring",
+        "file": "player9-dark-ring-original-r1.png",
+        "sha256": "545915941729fc3f04ac07b2f9e89175c0f4e1d1913c3e84fe5f549052ba0542"
+      },
+      {
+        "role": "scythe-arc",
+        "file": "player9-scythe-arc-original-r1.png",
+        "sha256": "bebe6f4a6fc76e119cfad6ea83c7359dd7f10d8e36528ee543f7fee93c2a772e"
+      }
+    ],
+    "font_input": {
+      "image": "fd2-go-test-local:latest",
+      "image_id": "e4a805c52a3a",
+      "container_path": "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
+      "sha256": "b76b0433203017ca80401b2ee0dd69350349871c4b19d504c34dbdd80541690a",
+      "package": "fonts-noto-cjk 1:20220127+repack1-1",
+      "font_index": 3,
+      "family": "Noto Sans CJK TC",
+      "bundled_in_private_pack": false,
+      "note": "十三份字形PNG源依清冊保存，編製時使用固定字型；不掛入主機library。"
+    },
+    "reproduce": {
+      "source_audit": "python3 tools/audit_fd2_player9_map_source.py --original-pack /original --out FRESH_PREFIX",
+      "compiler": "python3 tools/build_fd2_player9_map_hd.py --original-pack /original --recipe /repo/docs/data/fd2-player9-map-hd-recipe-20261023.json --masters-root /private-modern --font FIXED_FONT_TTC --out NEW_DIRECTORY",
+      "driver": "python3 tools/verify_fd2_player9_map_hd.py --kind unit|source|game|regression --catalog ABS_CATALOG --pack ABS_PACK --out FRESH_PREFIX --timeout 900",
+      "runtime_pack": "python3 tools/sync_modern_theme_private.py --catalog ABS_CATALOG --source ABS_FORMAL_ROOT --destination NEW_RUNTIME_DIRECTORY --runtime-only; then driver --require-real-runtime",
+      "docker": "All commands use existing fd2-assets-local:20260829-sfx or fd2-go-test-local:latest, user1000, original RO, network none, bounded CPU/memory/PIDs; Xvfb owned by driver trap."
+    }
   }
 }

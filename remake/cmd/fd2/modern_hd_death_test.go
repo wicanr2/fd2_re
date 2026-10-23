@@ -95,7 +95,7 @@ func TestModernHDDeathScheduleAndAtomicPreflight(t *testing.T) {
 	if err := g.applyTheme(bad); err == nil || g.st != before || g.modernStoryPortraits == bad || j.frame != position || j.hdFrames[0] != frames {
 		t.Fatal("failed F2 published partial state or art")
 	}
-	for _, damage := range []string{"image", "native", "unit"} {
+	for _, damage := range []string{"image", "first-image", "native", "unit"} {
 		t.Run(damage, func(t *testing.T) {
 			g := completeNativeCh28PostGame(t)
 			set := deathHDTestSet(g)
@@ -103,6 +103,8 @@ func TestModernHDDeathScheduleAndAtomicPreflight(t *testing.T) {
 			switch damage {
 			case "image":
 				delete(set.mapOverlays.frames, 79)
+			case "first-image":
+				delete(set.mapOverlays.frames, 68)
 			case "native":
 				set.mapOverlays.native[68] = modernLMIHDDescriptor{}
 			case "unit":

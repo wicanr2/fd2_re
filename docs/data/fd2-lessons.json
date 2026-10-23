@@ -3845,6 +3845,36 @@
         ],
         "pattern": "固定來源只有第30幀為空拍"
       }
+    },
+    {
+      "id": "lmi-bank-role-follows-declared-entry-set",
+      "date": "2026-10-23",
+      "area": "HD圖源與原子載入",
+      "rule": "同一LMI銀行支援多種演出時，以原生索引集合辨別角色並原子合併。FDOTHER5的死亡68～79與結果94～103／116～118保持互斥；死亡宣告須查全部12項，缺首68也要拒收，不能依是否存在整個銀行或首圖決定回退。入口為remake/cmd/fd2/modern_hd_map_overlay_assets.go的hasModernHDDeathBank及tools/test_fd2_player9_map_hd.py；可支援集合由modernMapOverlayHDIndices明列。",
+      "why": "玩家9加入數字圖組後，單看mapOverlays非空會把純數字主題誤判為死亡主題；只查68則缺首圖可繞過死亡預檢。新測試包含68／79缺件及互斥合併、重複與部分銀行拒收。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#player9_map_hd_followup_20261023",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/modern_hd_map_overlay_assets.go"
+        ],
+        "pattern": "func hasModernHDDeathBank"
+      }
+    },
+    {
+      "id": "image-alpha-scan-preserves-format-and-stride",
+      "date": "2026-10-23",
+      "area": "HD載入效能",
+      "rule": "完整HD清冊掃描成本先以tools/fd2_go_test_memory_probe.py量測，沒有OOM不把逾時稱為signal-killed。優化alpha時，RGBA／NRGBA直接沿Pix與Stride掃描，其他格式保留At參考；以remake/cmd/fd2/modern_hd_map_sprite_alpha_test.go驗證非零bounds、SubImage及不同alpha。PNG解碼、SHA、原框及完整主題預檢維持；掃描微基準不外推為整體遊戲效能。",
+      "why": "完整主題約18.9億HD像素，At逐像素介面配置讓三次有界預檢逾時而oom均0。一次alpha與inkbox等價掃描通過七格式及完整演出重跑；1455張人物只有一張同SHA，解碼快取沒有保留價值。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#player9_map_hd_followup_20261023.verification_in_progress.alpha_optimization",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/modern_hd_map_sprite_assets.go"
+        ],
+        "pattern": "func modernMapSpriteAlpha\\("
+      }
     }
   ]
 }

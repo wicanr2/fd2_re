@@ -37,6 +37,7 @@ type modernStoryPortraitSet struct {
 	battleAnimations  map[int]*modernBattleHDResource
 	battleEffects     map[int]*modernBattleHDResource
 	mapOverlays       *modernMapOverlayHDResource
+	mapEffects        *modernMapOverlayHDResource
 	facilityScenes    map[int]*modernFacilityScene
 }
 
@@ -394,6 +395,10 @@ func loadModernStoryPortraitSet(catalogPath, packRoot string) (*modernStoryPortr
 	}
 	if err := validateModernHDMapSpriteParents(set, catalog.Assets); err != nil {
 		return nil, err
+	}
+	hasPlayer9Results := set.mapOverlays != nil && set.mapOverlays.frames[94] != nil
+	if (set.mapEffects != nil) != hasPlayer9Results {
+		return nil, errors.New("modern HD player9 effect/result group is incomplete")
 	}
 	return set, nil
 }

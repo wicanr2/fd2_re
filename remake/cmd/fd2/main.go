@@ -81,12 +81,13 @@ type MapData struct {
 
 type Game struct {
 	m                            *MapData
-	nativeMapAssets              *nativeMapAssets // all original map HUD resources, nil on any missing/malformed asset
-	modernMapTilesetLoaded       bool             // 本次 loadMap 已原子採用現代圖集
-	baseMapTileset               image.Image      // 目前地圖的忠實原版 PNG；F2 只重建圖層，不改戰況
-	currentMapID                 int              // 目前地圖 selector；-1 表示尚未載入
-	nativeMapWork                []byte           // persistent 456-stride original tactical framebuffer
-	nativeMapVGA                 []byte           // persistent 320x200 indexed VGA surface
+	nativeMapAssets              *nativeMapAssets             // all original map HUD resources, nil on any missing/malformed asset
+	modernMapTilesetLoaded       bool                         // 本次 loadMap 已原子採用現代圖集
+	baseMapTileset               image.Image                  // 目前地圖的忠實原版 PNG；F2 只重建圖層，不改戰況
+	currentMapID                 int                          // 目前地圖 selector；-1 表示尚未載入
+	nativeMapWork                []byte                       // persistent 456-stride original tactical framebuffer
+	nativeMapVGA                 []byte                       // persistent 320x200 indexed VGA surface
+	nativeMapFrameSource         *indexedmap.NativeFrameInput // Published with the successful steady snapshot.
 	modernHDMapFrame             *modernHDMapFrame
 	modernHDMapGPU               *modernHDMapGPU
 	modernHDBattleGPU            *modernHDBattleGPU
@@ -12461,6 +12462,11 @@ func (g *Game) composeNativeMapFrameAtWithPaletteCycle(now time.Time, closedActi
 		g.nativeCh23State = stage
 	}
 	g.nativeMapWork, g.nativeMapVGA = work, vga
+	g.nativeMapFrameSource = nil
+	if _, _, walkingUp := g.nativeCh12UpWalkFrame(); !walkingUp && g.walk == nil && g.bannerT <= 0 {
+		published := in
+		g.nativeMapFrameSource = &published
+	}
 	*g.st = candidateState
 	g.nativeMapClock = candidateGame.nativeMapClock
 	g.nativeMapDAC = candidateDAC

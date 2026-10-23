@@ -47,19 +47,11 @@ func loadModernHDMapSpriteAsset(set *modernStoryPortraitSet, asset modernThemeAs
 		if err != nil || decoded.Bounds().Dx() != 144 || decoded.Bounds().Dy() != 144 {
 			return fmt.Errorf("modern HD map sprite %d frame %d has invalid PNG geometry", asset.SourceGroup, index)
 		}
-		transparent, opaque := false, false
-		bounds := decoded.Bounds()
-		for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
-			for x := bounds.Min.X; x < bounds.Max.X; x++ {
-				_, _, _, alpha := decoded.At(x, y).RGBA()
-				transparent = transparent || alpha == 0
-				opaque = opaque || alpha == 0xffff
-			}
-		}
-		if !transparent || !opaque {
+		alpha := modernMapSpriteAlpha(decoded)
+		if !alpha.transparent || !alpha.opaque {
 			return fmt.Errorf("modern HD map sprite %d frame %d lacks transparent background or opaque core", asset.SourceGroup, index)
 		}
-		ink := modernMapSpriteInk(decoded)
+		ink := alpha.ink
 		if ink.Empty() || ink.Dx() > 132 || ink.Dy() > 132 || ink.Min.X+ink.Max.X < 142 || ink.Min.X+ink.Max.X > 146 {
 			return fmt.Errorf("modern HD map sprite %d frame %d violates its proportional cell", asset.SourceGroup, index)
 		}
@@ -117,16 +109,64 @@ func validateModernHDMapSpriteParents(set *modernStoryPortraitSet, assets []mode
 }
 
 func modernMapSpriteInk(source image.Image) image.Rectangle {
+	return modernMapSpriteAlpha(source).ink
+}
+
+type modernMapSpriteAlphaStats struct {
+	ink                 image.Rectangle
+	transparent, opaque bool
+}
+
+// The PNG decoder's 8-bit RGBA/NRGBA buffers expose alpha directly. This
+// preserves the exact 16-bit At().RGBA() predicates without allocating a color
+// interface for every pixel. Other image formats retain the reference path.
+func modernMapSpriteAlpha(source image.Image) modernMapSpriteAlphaStats {
 	bounds := source.Bounds()
-	ink := image.Rectangle{}
-	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
-		for x := bounds.Min.X; x < bounds.Max.X; x++ {
-			_, _, _, alpha := source.At(x, y).RGBA()
-			if alpha != 0 {
-				pixel := image.Rect(x, y, x+1, y+1)
-				ink = ink.Union(pixel)
+	result := modernMapSpriteAlphaStats{}
+	minX, minY, maxX, maxY := bounds.Max.X, bounds.Max.Y, bounds.Min.X, bounds.Min.Y
+	observe := func(x, y int, alpha uint32) {
+		result.transparent = result.transparent || alpha == 0
+		result.opaque = result.opaque || alpha == 0xffff
+		if alpha != 0 {
+			if x < minX {
+				minX = x
+			}
+			if y < minY {
+				minY = y
+			}
+			if x+1 > maxX {
+				maxX = x + 1
+			}
+			if y+1 > maxY {
+				maxY = y + 1
 			}
 		}
 	}
-	return ink
+	var pixels []byte
+	var stride int
+	switch picture := source.(type) {
+	case *image.NRGBA:
+		pixels, stride = picture.Pix, picture.Stride
+	case *image.RGBA:
+		pixels, stride = picture.Pix, picture.Stride
+	}
+	if pixels != nil {
+		for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
+			row := (y - bounds.Min.Y) * stride
+			for x := bounds.Min.X; x < bounds.Max.X; x++ {
+				observe(x, y, uint32(pixels[row+(x-bounds.Min.X)*4+3])*257)
+			}
+		}
+	} else {
+		for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
+			for x := bounds.Min.X; x < bounds.Max.X; x++ {
+				_, _, _, alpha := source.At(x, y).RGBA()
+				observe(x, y, alpha)
+			}
+		}
+	}
+	if minX < maxX && minY < maxY {
+		result.ink = image.Rect(minX, minY, maxX, maxY)
+	}
+	return result
 }

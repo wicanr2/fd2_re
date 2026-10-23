@@ -26,6 +26,7 @@ type modernHDMapFrame struct {
 	TerrainColourKey [32]byte
 	Overlays         []modernHDMapOverlayDraw
 	Viewport         image.Rectangle
+	OverlaysAboveUI  bool
 }
 
 type modernHDMapOverlayDraw struct {

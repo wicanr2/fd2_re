@@ -198,19 +198,26 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
                 raise ValueError(f"invalid native HD terrain files: {asset_id}")
             file_paths = [Path(value) for value in files]
         elif entry["role"] == "map_overlay_hd_set":
+            resource, count = entry['source_resource'], entry['frame_count']
+            indices = (list(range(68,80)) if resource == 5 and count == 12 else
+                       list(range(94,104))+[116,117,118] if resource == 5 and count == 13 else
+                       list(range(87,114)) if resource == 6 and count == 27 else [])
             if (entry['status'] not in {'runtime_candidate', 'runtime_ready'} or
                     entry['consumer_contract'] != 'native_lmi1_rgba_hd6_v1' or entry['source_archive'] != 'FDOTHER.DAT' or
-                    type(entry['source_resource']) is not int or entry['source_resource'] != 5 or ('LMI1',5) in battle_resources or
+                    type(resource) is not int or not indices or
                     entry['alpha_contract'] != 'coverage' or entry['cycle_policy'] != 'native_lmi1_entries' or
                     entry['layout_policy'] != 'native_lmi1_rect_hd6' or (entry['width'],entry['height']) != (1920,1200) or
-                    type(entry['frame_count']) is not int or entry['frame_count'] != 12 or
+                    type(count) is not int or
                     not isinstance(entry['source_metadata_sha256'],str) or not SHA_RE.fullmatch(entry['source_metadata_sha256'])):
                 raise ValueError(f'invalid HD LMI bank: {asset_id}')
-            battle_resources.add(('LMI1',5))
             frames = entry['native_lmi_frames']
-            if not isinstance(frames,list) or len(frames)!=12:
+            if not isinstance(frames,list) or len(frames)!=len(indices):
                 raise ValueError(f'invalid HD LMI descriptors: {asset_id}')
-            for index, frame in enumerate(frames,68):
+            for index, frame in zip(indices,frames):
+                key=('LMI1',resource,index)
+                if key in battle_resources:
+                    raise ValueError(f'duplicate HD LMI entry: {asset_id}')
+                battle_resources.add(key)
                 if (not isinstance(frame,dict) or set(frame)!={'index','width','height','pixels_sha256'} or
                         type(frame['index']) is not int or frame['index']!=index or
                         any(type(frame[k]) is not int or frame[k] not in range(1,129) for k in ['width','height']) or
@@ -218,7 +225,7 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
                     raise ValueError(f'invalid HD LMI descriptor: {asset_id}')
             files, hashes = entry['files'], entry['frame_sha256']
             sources, source_hashes = entry['source_files'], entry['source_sha256']
-            for names, digests, count in [(files,hashes,12),(sources,source_hashes,None)]:
+            for names, digests, count in [(files,hashes,len(indices)),(sources,source_hashes,None)]:
                 if (not isinstance(names,list) or not names or any(not isinstance(v,str) for v in names) or
                         len(set(names))!=len(names) or (count is not None and len(names)!=count) or
                         not isinstance(digests,list) or len(digests)!=len(names) or
@@ -420,6 +427,8 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
                         raise ValueError(f"non-opaque asset: {asset_id}/{file_path.name}")
     if facility_resources and facility_resources != {11, 61, 62, 12, 29, 63}:
         raise ValueError('facility scene group is incomplete')
+    if (('LMI1',6,87) in battle_resources) != (('LMI1',5,94) in battle_resources):
+        raise ValueError('player9 effect/result group is incomplete')
     if hd_speakers and hd_speakers != portrait_speakers:
         raise ValueError('HD portrait speaker group is incomplete or orphaned')
     if hd_sprites:

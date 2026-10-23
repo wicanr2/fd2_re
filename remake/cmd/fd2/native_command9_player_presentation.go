@@ -34,6 +34,11 @@ type nativeCommand9PlayerJob struct {
 	actorActedBefore              bool
 	rngBefore                     uint16
 	then                          func([]battle.NativeCommandDamageResult)
+	effectSources, resultSources  [][]indexedmap.NativeCommandTailLayer
+	hdInput                       indexedmap.NativeFrameInput
+	hdInputErr                    error
+	hdFrames                      *modernHDPlayer9Frames
+	hdTheme                       *modernStoryPortraitSet
 }
 
 func (g *Game) startNativeCommand9PlayerPresentation(actor, confirmed *battle.Unit, then func([]battle.NativeCommandDamageResult)) error {
@@ -78,12 +83,15 @@ func (g *Game) startNativeCommand9PlayerPresentation(actor, confirmed *battle.Un
 	}
 	baselineWork, baselineVGA := append([]byte(nil), g.nativeMapWork...), append([]byte(nil), g.nativeMapVGA...)
 	effects := make([][]byte, 0, schedule.EffectFrames)
+	effectSources := make([][]indexedmap.NativeCommandTailLayer, 0, schedule.EffectFrames)
 	for frame := 0; frame < schedule.EffectFrames; frame++ {
 		work, vga := append([]byte(nil), baselineWork...), append([]byte(nil), baselineVGA...)
-		if err := indexedmap.ComposeNativeCommandHealEffectFrame(work, vga, baselineWork, a.FDOTHER6[schedule.EffectStart+frame], targets, view.CameraX, view.CameraY); err != nil {
+		sources, err := indexedmap.ComposeNativeCommandHealEffectFrameWithSources(work, vga, baselineWork, a.FDOTHER6[schedule.EffectStart+frame], targets, view.CameraX, view.CameraY, 6, schedule.EffectStart+frame)
+		if err != nil {
 			return fmt.Errorf("native command9 player effect %d: %w", frame, err)
 		}
 		effects = append(effects, vga)
+		effectSources = append(effectSources, sources)
 	}
 	record := targets[0].RecordIndex
 	inCamera := targets[0].X >= view.CameraX && targets[0].X < view.CameraX+12 && targets[0].Y >= view.CameraY-1 && targets[0].Y <= view.CameraY+7
@@ -100,12 +108,15 @@ func (g *Game) startNativeCommand9PlayerPresentation(actor, confirmed *battle.Un
 		return err
 	}
 	results := make([][]byte, 0, schedule.ResultFrames)
+	resultSources := make([][]indexedmap.NativeCommandTailLayer, 0, schedule.ResultFrames)
 	for frame := 0; frame < schedule.ResultFrames; frame++ {
 		work, vga := append([]byte(nil), baselineWork...), append([]byte(nil), baselineVGA...)
-		if err := indexedmap.ComposeNativeCommandHealDigitFrame(work, vga, baselineWork, a.CommandHealDigits, queue, targets, view.CameraX, view.CameraY, schedule.ResultVertical, frame); err != nil {
+		sources, err := indexedmap.ComposeNativeCommandHealDigitFrameWithSources(work, vga, baselineWork, a.CommandHealDigits, queue, targets, view.CameraX, view.CameraY, schedule.ResultVertical, frame)
+		if err != nil {
 			return fmt.Errorf("native command9 player result %d: %w", frame, err)
 		}
 		results = append(results, vga)
+		resultSources = append(resultSources, sources)
 	}
 	phases, err := g.nativeCommandPaletteFlash.NativeCommandPaletteFlashPhases(9)
 	if err != nil {
@@ -121,11 +132,21 @@ func (g *Game) startNativeCommand9PlayerPresentation(actor, confirmed *battle.Un
 		}
 		palettes = append(palettes, palette)
 	}
-	g.nativeCmd9Player = &nativeCommand9PlayerJob{
+	job := &nativeCommand9PlayerJob{
 		actor: actor, target: confirmed, plan: plan, palettes: palettes, effectFrames: effects, resultFrames: results,
 		baselineWork: baselineWork, baselineVGA: baselineVGA, actorMPBefore: actor.MP,
 		actorActedBefore: actor.Acted, targetHPBefore: confirmed.HP, rngBefore: g.nativeRNGState, then: then,
+		effectSources: effectSources, resultSources: resultSources,
 	}
+	job.hdInput, job.hdInputErr = g.freezeNativeCommand9MapInput()
+	if g.modernStoryPortraits != nil {
+		job.hdFrames, err = g.prepareModernHDPlayer9Frames(job, g.modernStoryPortraits)
+		if err != nil {
+			return err
+		}
+		job.hdTheme = g.modernStoryPortraits
+	}
+	g.nativeCmd9Player = job
 	g.playRaw(g.sfxCommand9PlayerPalette)
 	return nil
 }
@@ -210,6 +231,30 @@ func (g *Game) drawNativeCommand9PlayerPresentation(screen *ebiten.Image) bool {
 	j := g.nativeCmd9Player
 	if j == nil {
 		return false
+	}
+	if j.hdFrames != nil && j.hdTheme == g.modernStoryPortraits && g.modernStoryPortraits != nil {
+		var frame *modernHDMapFrame
+		switch j.phase {
+		case nativeCommand9PlayerPalette:
+			if j.frame >= 0 && j.frame < len(j.hdFrames.Palette) {
+				frame = j.hdFrames.Palette[j.frame]
+			}
+		case nativeCommand9PlayerEffect:
+			if j.frame >= 0 && j.frame < len(j.hdFrames.Effects) {
+				frame = j.hdFrames.Effects[j.frame]
+			}
+		case nativeCommand9PlayerResult:
+			if j.frame >= 0 && j.frame < len(j.hdFrames.Results) {
+				frame = j.hdFrames.Results[j.frame]
+			}
+		case nativeCommand9PlayerHold:
+			frame = j.hdFrames.Hold
+		}
+		if frame == nil || !g.drawPreparedModernHDMapFrame(screen, frame, false) {
+			return false
+		}
+		j.drawn = true
+		return true
 	}
 	pixels, palette := j.baselineVGA, color.Palette(nil)
 	switch j.phase {
