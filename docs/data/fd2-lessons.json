@@ -3921,6 +3921,14 @@
       "rule": "以resetBattle建立行動收尾的受控UI測試槽時，先明示開戰對話與橫幅已結束，再啟動待驗owner。完整Game.Draw的失敗需保留原始離屏PNG與最終PNG，依實際alpha和owner定位額外圖層。入口remake/cmd/fd2/modern_hd_reward_message_test.go的rewardHDTestGame，只適用受控fixture，正常玩家仍走鍵盤流程。",
       "why": "成功獎勵fixture直接重用開戰槽，留下開戰對話，使完整Game.Draw同時疊出兩個對話框。原始離屏PNG在對話面板範圍外有96720個非透明像素，定位到舊開戰框；只修測試初始狀態，不改正式遊戲、遮罩或色差門檻。",
       "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json"
+    },
+    {
+      "id": "surface-tests-follow-selected-native-identity-and-size",
+      "date": "2026-10-24",
+      "area": "HD來源驗證",
+      "rule": "背景／台座測試選擇新來源時，所有身份與範圍斷言沿同一明示索引及原生描述子，不保留舊資源4或154寬度。入口remake/cmd/fd2/modern_hd_battle_surface_test.go的surfaceTestIndex與assertTAIPlan；目前支援4／5／6，其他形狀先補來源契約。",
+      "why": "森林5的冷載入與50世界GPU通過，但原生移位台座仍被source.Resource!=4舊斷言拒收；改測試索引及native.Width後重跑，原renderer與圖源不變。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json"
     }
   ]
 }

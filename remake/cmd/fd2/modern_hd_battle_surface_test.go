@@ -12,6 +12,7 @@ import (
 	"math"
 	"os"
 	"path/filepath"
+	"strconv"
 	"testing"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -19,6 +20,19 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 	"github.com/wicanr2/fd2_re/remake/internal/figani"
 )
+
+func surfaceTestIndex(t *testing.T) int {
+	t.Helper()
+	value := os.Getenv("FD2_HD_BATTLE_SURFACE_INDEX")
+	if value == "" {
+		return 4
+	}
+	index, err := strconv.Atoi(value)
+	if err != nil || (index != 4 && index != 5 && index != 6) {
+		t.Fatal("unsupported explicit surface fixture", value)
+	}
+	return index
+}
 
 func surfaceTestAsset(t *testing.T) (modernThemeAsset, string) {
 	return surfaceTestAssetFor(t, "BG.DAT")
@@ -39,7 +53,7 @@ func surfaceTestAssetFor(t *testing.T, archive string) (modernThemeAsset, string
 		t.Fatal(err)
 	}
 	for _, a := range doc.Assets {
-		if a.Role == "battle_surface_hd" && a.SourceArchive == archive && a.SourceResource == 4 {
+		if a.Role == "battle_surface_hd" && a.SourceArchive == archive && a.SourceResource == surfaceTestIndex(t) {
 			return a, pack
 		}
 	}
@@ -49,7 +63,7 @@ func surfaceTestAssetFor(t *testing.T, archive string) (modernThemeAsset, string
 
 func TestModernBattleSurfaceHDSourceAndAtomic(t *testing.T) {
 	t.Run("BG.DAT", func(t *testing.T) { checkModernBattleSurfaceAtomic(t, "BG.DAT") })
-	if os.Getenv("FD2_HD_BATTLE_PEDESTAL") == "4" {
+	if os.Getenv("FD2_HD_BATTLE_PEDESTAL") != "" {
 		t.Run("TAI.DAT", func(t *testing.T) { checkModernBattleSurfaceAtomic(t, "TAI.DAT") })
 	}
 }
@@ -60,7 +74,7 @@ func checkModernBattleSurfaceAtomic(t *testing.T, archive string) {
 	if err := loadModernBattleSurfaceHD(set, asset, pack); err != nil {
 		t.Fatal(err)
 	}
-	entry := set.battleSurfaces[archive][4]
+	entry := set.battleSurfaces[archive][surfaceTestIndex(t)]
 	if entry == nil || entry.picture.Bounds() != image.Rect(0, 0, asset.Width, asset.Height) || !set.hasHD {
 		t.Fatal("real background not loaded")
 	}
@@ -84,8 +98,8 @@ func checkModernBattleSurfaceAtomic(t *testing.T, archive string) {
 			bad.NativeFrames = append([]modernBattleHDDescriptor(nil), asset.NativeFrames...)
 			mutate(&bad)
 			marker := &modernBattleSurfaceHD{}
-			probe := &modernStoryPortraitSet{battleSurfaces: map[string]map[int]*modernBattleSurfaceHD{"TAI.DAT": {5: marker}}}
-			if err := loadModernBattleSurfaceHD(probe, bad, pack); err == nil || probe.battleSurfaces["TAI.DAT"][5] != marker || len(probe.battleSurfaces) != 1 || len(probe.battleSurfaces["TAI.DAT"]) != 1 || probe.hasHD {
+			probe := &modernStoryPortraitSet{battleSurfaces: map[string]map[int]*modernBattleSurfaceHD{"TAI.DAT": {55: marker}}}
+			if err := loadModernBattleSurfaceHD(probe, bad, pack); err == nil || probe.battleSurfaces["TAI.DAT"][55] != marker || len(probe.battleSurfaces) != 1 || len(probe.battleSurfaces["TAI.DAT"]) != 1 || probe.hasHD {
 				t.Fatal("invalid source published")
 			}
 		})
@@ -121,8 +135,8 @@ func checkModernBattleSurfaceAtomic(t *testing.T, archive string) {
 		t.Run("producer-"+kind, func(t *testing.T) {
 			copySet := *set
 			local := *entry
-			copySet.battleSurfaces = map[string]map[int]*modernBattleSurfaceHD{archive: {4: &local}}
-			source := modernHDBattleSource{Archive: archive, Resource: 4, Frame: entry.native, Fill: -1}
+			copySet.battleSurfaces = map[string]map[int]*modernBattleSurfaceHD{archive: {surfaceTestIndex(t): &local}}
+			source := modernHDBattleSource{Archive: archive, Resource: surfaceTestIndex(t), Frame: entry.native, Fill: -1}
 			source.Frame.Pixels = append([]byte(nil), source.Frame.Pixels...)
 			source.Frame.Mask = append([]byte(nil), source.Frame.Mask...)
 			switch kind {
@@ -142,7 +156,7 @@ func checkModernBattleSurfaceAtomic(t *testing.T, archive string) {
 			}
 		})
 	}
-	good := modernHDBattleSource{Archive: archive, Resource: 4, Frame: entry.native, Fill: -1}
+	good := modernHDBattleSource{Archive: archive, Resource: surfaceTestIndex(t), Frame: entry.native, Fill: -1}
 	good.Frame.Y = 50
 	if im, _, err := set.battleSurfaceHD(good); err != nil || im == nil {
 		t.Fatal("translated real producer rejected", err)
@@ -152,14 +166,14 @@ func checkModernBattleSurfaceAtomic(t *testing.T, archive string) {
 	if err := loadModernBattleSurfaceHDWithNative(&modernStoryPortraitSet{}, asset, pack, empty); err == nil {
 		t.Fatal("empty native source accepted")
 	}
-	t.Logf("real %s004 PNG, duplicate, nine metadata/contract cases, three PNG cases, five producer cases and native-empty rejection passed", archive)
+	t.Logf("real %s%03d PNG, duplicate, nine metadata/contract cases, three PNG cases, five producer cases and native-empty rejection passed", archive, surfaceTestIndex(t))
 }
 
 func surfaceScene(t *testing.T, side byte) (*Game, *nativePhysicalScene) {
 	t.Helper()
 	requirePhysicalScenePack(t)
 	g, actor, target := physicalSceneTestGame(t)
-	g.m.NativeTerrainControl[2] = 4
+	g.m.NativeTerrainControl[2] = byte(surfaceTestIndex(t))
 	actor.BattleFig, target.BattleFig = 0, 76
 	actor.NativeRecordByte6 = side
 	if side == 0 {
@@ -169,8 +183,8 @@ func surfaceScene(t *testing.T, side byte) (*Game, *nativePhysicalScene) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if scene.selection.HasSeparateBackgrounds || scene.selection.BaseBG != 4 || scene.selection.TAI != 4 {
-		t.Fatal("not the actual common BG004 scene", scene.selection)
+	if scene.selection.HasSeparateBackgrounds || int(scene.selection.BaseBG) != surfaceTestIndex(t) || int(scene.selection.TAI) != surfaceTestIndex(t) {
+		t.Fatal("not the actual common selected BG scene", scene.selection)
 	}
 	scene.bodyResources.counter, err = figani.LoadSeparatedResource(separatedAssetPath("animations"), target.BattleFig*3+1)
 	if err != nil {
@@ -231,7 +245,7 @@ func TestModernBattleSurfacePhysicalNativeReconstruction(t *testing.T) {
 				for _, source := range s.Layers {
 					if source.Archive == "TAI.DAT" {
 						found++
-						if source.Resource != 4 || source.Frame.X != 164 || source.Frame.Y != 157 || source.DX != f.Stage*10 {
+						if source.Resource != surfaceTestIndex(t) || source.Frame.X != 164 || source.Frame.Y != 157 || source.DX != f.Stage*10 {
 							t.Fatal("translated pedestal provenance differs")
 						}
 					}
@@ -253,7 +267,7 @@ func TestModernBattleSurfacePhysicalNativeReconstruction(t *testing.T) {
 				t.Fatalf("body%d side%d differs", i, side)
 			}
 			for y := 157; y < 199; y++ {
-				for x := 164; x < 318; x++ {
+				for x := 164; x < 164+scene.platformFrame.Width; x++ {
 					if job.hdSources.Base[y*320+x] != 0 {
 						t.Fatal("native pedestal remains baked into HD base")
 					}
@@ -268,13 +282,13 @@ func TestModernBattleSurfacePhysicalNativeReconstruction(t *testing.T) {
 func TestModernBattleSurfaceCompleteTheme(t *testing.T) {
 	_, pack := surfaceTestAsset(t)
 	set, err := loadModernStoryPortraitSet(os.Getenv("FD2_TEST_MODERN_BATTLE_CATALOG"), pack)
-	if err != nil || set == nil || set.battleSurfaces["BG.DAT"][4] == nil {
+	if err != nil || set == nil || set.battleSurfaces["BG.DAT"][surfaceTestIndex(t)] == nil {
 		t.Fatal("complete theme load failed", err)
 	}
-	if os.Getenv("FD2_HD_BATTLE_PEDESTAL") == "4" && set.battleSurfaces["TAI.DAT"][4] == nil {
-		t.Fatal("complete theme lacks TAI004")
+	if os.Getenv("FD2_HD_BATTLE_PEDESTAL") != "" && set.battleSurfaces["TAI.DAT"][surfaceTestIndex(t)] == nil {
+		t.Fatal("complete theme lacks selected TAI")
 	}
-	t.Log("complete candidate theme loaded with BG004; existing assets remain included")
+	t.Log("complete candidate theme loaded with selected BG; existing assets remain included")
 }
 
 func surfaceCPUWorld(plan modernHDBattlePlan) *image.RGBA {
@@ -339,7 +353,7 @@ func TestModernBattleSurfaceHDGPU(t *testing.T) {
 	set := modernHDBattleFixtureSet(t, os.Getenv("FD2_TEST_MODERN_BATTLE_CATALOG"), pack, nil)
 	var cases []modernHDBattleGPUCase
 	sets := []*modernStoryPortraitSet{set}
-	withPedestal := os.Getenv("FD2_HD_BATTLE_PEDESTAL") == "4"
+	withPedestal := os.Getenv("FD2_HD_BATTLE_PEDESTAL") != ""
 	if withPedestal {
 		legacy := *set
 		legacy.battleSurfaces = map[string]map[int]*modernBattleSurfaceHD{"BG.DAT": set.battleSurfaces["BG.DAT"]}
@@ -421,14 +435,14 @@ func TestModernBattleSurfaceHDGPU(t *testing.T) {
 	if probe.err != nil || probe.index != len(cases) {
 		t.Fatalf("background GPU %d/%d: %v", probe.index, len(cases), probe.err)
 	}
-	t.Logf("%d real BG004/declared TAI GPU worlds match independent CPU Over within1; two sides, all nine prelude shades, body/counter/restore and preserved native UI", len(cases))
+	t.Logf("%d real selected BG/TAI GPU worlds match independent CPU Over within1; two sides, all nine prelude shades, body/counter/restore and preserved native UI", len(cases))
 }
 
 func assertTAIPlan(t *testing.T, plan modernHDBattlePlan, set *modernStoryPortraitSet, side byte, stage int) {
 	t.Helper()
-	entry := set.battleSurfaces["TAI.DAT"][4]
+	entry := set.battleSurfaces["TAI.DAT"][surfaceTestIndex(t)]
 	if entry == nil {
-		t.Fatal("TAI004 missing from GPU theme")
+		t.Fatal("selected TAI missing from GPU theme")
 	}
 	count := 0
 	for _, layer := range plan.Layers {
@@ -438,12 +452,12 @@ func assertTAIPlan(t *testing.T, plan modernHDBattlePlan, set *modernStoryPortra
 			if side != 0 {
 				x += stage * 10
 			}
-			if layer.Rect != image.Rect(x*6, 157*6, (x+154)*6, 199*6) {
-				t.Fatal("TAI004 rectangle differs", layer.Rect)
+			if layer.Rect != image.Rect(x*6, 157*6, (x+entry.native.Width)*6, 199*6) {
+				t.Fatal("selected TAI rectangle differs", layer.Rect)
 			}
 		}
 	}
 	if count != 1 {
-		t.Fatal("HD TAI004 missing or duplicated", count)
+		t.Fatal("HD selected TAI missing or duplicated", count)
 	}
 }

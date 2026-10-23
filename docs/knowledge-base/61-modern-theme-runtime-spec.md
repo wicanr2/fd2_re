@@ -3924,3 +3924,18 @@ BG 與 TAI 各 57 項，末項各為零長 raw，不能補造美術。BG 的 10 
 實作入口為[成功訊息HD](../../remake/cmd/fd2/modern_hd_reward_message.go)，[受控測試](../../remake/cmd/fd2/modern_hd_reward_message_test.go)涵蓋原生面板與完整繪製。[永久驗證器](../../tools/verify_fd2_reward_message_hd.py)在既有Go Docker內以 `--kind unit --catalog <正式catalog> --pack <正式圖源> --out <既有工作根的新前綴> --timeout 900` 重跑；kind另接受game、regression及hud，缺必要測試、SKIP／失敗／逾時／OOM即拒收。來源與四份最終閘門沿HD主收據 `reward_message_hd_followup_20261023`；完整HD與集中人工／平台仍待。
 
 兩種成功訊息各六開、一次等待、五收及restore，26張完整Game.Draw／26次F2通過，框外保持同一HD世界，480圖源的朝向／可見核心與移動裁切逐點核對。金幣仍在restore後加入、續行一次；四批共13項必要Go測試無SKIP／逾時／OOM。清冊與私人素材保持，不新增原版對拍或正常玩家證據。最初兩輪受控fixture仍帶resetBattle開戰對話，原始PNG與差異保留，修正測試初始狀態後以同門檻重跑，正式引擎不作對應特例。
+
+
+### 森林內部與海岸戰鬥場景HD
+
+狀態：CONFORMED-SCOPED／RUNTIME-E1。沿既有BG／TAI固定來源盤點與共用物理caller，只補BG005／006各320×100及TAI005／006各155×42，原生位置、層序、節拍與交易不改。既有BG004／TAI004保持，其他caller不外推。新圖沿已核准手繪風格，森林保留密集樹幹／低地面，海岸保留沙灘／右海面／遠山；台座保持原生淺橢圓、5以裸土為主且外圍稀草、6以沙為主且左側草地。
+
+原圖與Mask、metadata、來源檔雜湊依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的forest_coast_surface_followup_20261024及既有audit_fd2_battle_background_sources.py。原稿保留原RGBA，透明台座不畫背景或改alpha；審查原圖與縮小成品後才升READY。候選及獨立素材包、原生來源重組、雙側完整攻防／進退場／F2／DAC／一次返回與缺件原子性通過後才正式登錄及同步私人庫；正常／集中人工／平台仍待。
+
+四份原稿與配方已審查，背景全框LANCZOS至1920×600；台座以原RGBA的alpha64核心框向外擴2後裁切，LANCZOS至930×252，不重畫alpha。森林裸土與海岸左草右沙保留，BG006近3:1原稿整框適配至原生3.2:1，構圖、材質與比例屬明示美術近似。原稿、提示詞、原生參考及完整配方inline依主收據保存；私人保存庫只同步白名單四原稿與四成品。
+
+沿[背景編製器](../../tools/build_fd2_battle_surface_hd.py)的`--recipe <主收據art_recipe>`與固定章前清冊重生；原BG004／TAI004的`--master`入口保留。新批次僅收已審四來源集合、原稿／配方／原生metadata SHA、實際原框與透明端點。先驗完整舊前綴及所有圖稿，再建立候選；舊檔以連結共用。若重建工作目錄，先將主收據art_recipe.inline以JSON indent2及結尾換行還原，核SHA，並把私人庫master_file原樣還原到配方master路徑；基底可由正式清冊前677項與原private_root重建並核base_catalog SHA。
+
+[驗證器](../../tools/verify_fd2_battle_surface_hd.py)在既有Go Docker內以`--surface 5 --with-pedestal`選森林、改為`--surface 6`選海岸，省略surface維持4。kind涵蓋unit、source-unit、source、game與regression；game另以`--enemy`驗相反側，獨立包加`--require-real-runtime`。各次使用新out前綴，原始log／記憶體／必要測試缺項、SKIP／逾時／OOM即拒收。兩包八完整攻防、24次F2、64／65 DAC與一次返回通過，56組PNG跨包逐SHA相同；兩包各兩來源124張原生畫布與50世界GPU、缺件原子性與原生UI保持。正式載入與舊4原生／GPU／七項回歸通過，renderer及shader未改，不冒稱本批重跑2087個共用核心。
+
+最初unit5拒收只因移位台座仍用source.Resource!=4及原154寬度斷言；完整新主題與冷圖源已通過，但該包不作驗收。測試改沿明示4／5／6與native.Width後乾淨重跑，正式選取規則與圖源未作對應特例。受控地形索引、固定攻防結果與native返回map fixture如實記錄，不提升一般玩家、原版RGB或全部背景caller完成。

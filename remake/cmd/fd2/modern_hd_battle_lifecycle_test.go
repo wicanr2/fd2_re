@@ -278,11 +278,12 @@ func TestModernHDBattleRuntimeGPU(t *testing.T) {
 	g, actor, target := physicalSceneTestGame(t)
 	real := os.Getenv("FD2_HD_BATTLE_REAL") == "1"
 	background := os.Getenv("FD2_HD_BATTLE_BACKGROUND")
+	surfaceIndex := surfaceTestIndex(t)
 	if background != "" {
-		if background != "4" || !real {
-			t.Fatal("background fixture requires real BG_004")
+		if background != fmt.Sprint(surfaceIndex) || !real {
+			t.Fatal("background fixture requires real selected BG")
 		}
-		g.m.NativeTerrainControl[2] = 4
+		g.m.NativeTerrainControl[2] = byte(surfaceIndex)
 	}
 	idleTarget := os.Getenv("FD2_HD_BATTLE_IDLE_TARGET") == "1"
 	enemyActor := os.Getenv("FD2_HD_BATTLE_ENEMY_ACTOR") == "1"
@@ -318,8 +319,8 @@ func TestModernHDBattleRuntimeGPU(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if background != "" && (scene.selection.HasSeparateBackgrounds || scene.selection.BaseBG != 4) {
-		t.Fatal("BG_004 fixture did not select common background")
+	if background != "" && (scene.selection.HasSeparateBackgrounds || int(scene.selection.BaseBG) != surfaceIndex) {
+		t.Fatal("selected BG fixture did not select common background")
 	}
 	result := battle.NativePhysicalAttackResult{AttackStrikes: []battle.NativePhysicalStrike{{Roll: battle.NativePhysicalRollResult{Damage: 7, Crit: true, Status: true}, DefenderHP: 73}}}
 	if !idleTarget {
@@ -345,12 +346,12 @@ func TestModernHDBattleRuntimeGPU(t *testing.T) {
 			os.Getenv("FD2_TEST_MODERN_BATTLE_PACK"), scene.modernResources())
 	}
 	if background != "" {
-		if set.battleSurfaces["BG.DAT"][4] == nil {
-			t.Fatal("BG_004 HD source missing")
+		if set.battleSurfaces["BG.DAT"][surfaceIndex] == nil {
+			t.Fatal("selected BG HD source missing")
 		}
 		for _, job := range scene.body.jobs {
-			if job.hdSources != nil && (len(job.hdSources.BaseScenery) != 2 || job.hdSources.BaseScenery[0].Resource != 4 || job.hdSources.BaseScenery[1].Archive != "TAI.DAT" || job.hdSources.BaseScenery[1].Resource != 4) {
-				t.Fatal("body lost BG_004 provenance")
+			if job.hdSources != nil && (len(job.hdSources.BaseScenery) != 2 || job.hdSources.BaseScenery[0].Resource != surfaceIndex || job.hdSources.BaseScenery[1].Archive != "TAI.DAT" || job.hdSources.BaseScenery[1].Resource != surfaceIndex) {
+				t.Fatal("body lost selected BG provenance")
 			}
 		}
 	}
@@ -386,10 +387,10 @@ func TestModernHDBattleRuntimeGPU(t *testing.T) {
 	g.nativeMapDAC = append([]byte(nil), dac...)
 	g.baseMapTileset = image.NewRGBA(image.Rect(0, 0, 24, 24))
 	probe := &modernHDBattleLifecycleProbe{g: g, scene: scene, actor: actor, target: target, seen: make([]bool, len(scene.preludeImages)+len(scene.body.jobs))}
-	if os.Getenv("FD2_HD_BATTLE_PEDESTAL") == "4" {
-		entry := set.battleSurfaces["TAI.DAT"][4]
+	if os.Getenv("FD2_HD_BATTLE_PEDESTAL") != "" {
+		entry := set.battleSurfaces["TAI.DAT"][surfaceIndex]
 		if entry == nil {
-			t.Fatal("required TAI004 is absent")
+			t.Fatal("required selected TAI is absent")
 		}
 		probe.requiredPedestalHash = entry.hash
 	}
@@ -403,20 +404,20 @@ func TestModernHDBattleRuntimeGPU(t *testing.T) {
 	}
 	if background != "" {
 		badSurface := *set
-		entry := *set.battleSurfaces["BG.DAT"][4]
+		entry := *set.battleSurfaces["BG.DAT"][surfaceIndex]
 		entry.picture = nil
-		badSurface.battleSurfaces = map[string]map[int]*modernBattleSurfaceHD{"BG.DAT": {4: &entry}}
+		badSurface.battleSurfaces = map[string]map[int]*modernBattleSurfaceHD{"BG.DAT": {surfaceIndex: &entry}}
 		before := probe.stable()
 		if err := g.applyTheme(&badSurface); err == nil || g.modernStoryPortraits != set || probe.stable() != before {
-			t.Fatal("failed BG_004 F2 preflight changed theme or state")
+			t.Fatal("failed selected BG F2 preflight changed theme or state")
 		}
 		if probe.requiredPedestalHash != "" {
-			entry := *set.battleSurfaces["TAI.DAT"][4]
+			entry := *set.battleSurfaces["TAI.DAT"][surfaceIndex]
 			entry.picture = nil
 			badTAI := *set
-			badTAI.battleSurfaces = map[string]map[int]*modernBattleSurfaceHD{"BG.DAT": set.battleSurfaces["BG.DAT"], "TAI.DAT": {4: &entry}}
+			badTAI.battleSurfaces = map[string]map[int]*modernBattleSurfaceHD{"BG.DAT": set.battleSurfaces["BG.DAT"], "TAI.DAT": {surfaceIndex: &entry}}
 			if err := g.applyTheme(&badTAI); err == nil || g.modernStoryPortraits != set || probe.stable() != before {
-				t.Fatal("failed TAI004 F2 preflight changed state")
+				t.Fatal("failed selected TAI F2 preflight changed state")
 			}
 		}
 	}
@@ -561,11 +562,11 @@ func TestModernHDBattleRuntimeGPU(t *testing.T) {
 		}
 		report := map[string]any{"status": "PASS-CHARACTER-FIXTURE-RUNTIME-E1", "figure": figure, "catalog_sha256": fmt.Sprintf("%x", sha256.Sum256(catalog)), "phase_f2": probe.phaseF2, "phase_hd_draws": probe.phaseDraws, "continuations": callbacks, "battle_dac_steps": len(probe.rampSeen), "map_dac_steps": len(probe.mapRampSeen), "source_shots": shots, "scope": "真實FIGANI、強制一次攻擊與反擊計畫及native地圖fixture；Game.Draw最終1920回讀。非普通玩家或原版oracle。"}
 		if background != "" {
-			report["background_selection"], report["background_hd_sha256"] = scene.selection, set.battleSurfaces["BG.DAT"][4].hash
-			report["background_scope"] = "BG_004 shared physical scene; native TAI and UI retained; explicit controlled fixture, not normal player or original RGB parity"
+			report["background_selection"], report["background_hd_sha256"] = scene.selection, set.battleSurfaces["BG.DAT"][surfaceIndex].hash
+			report["background_scope"] = "selected BG shared physical scene; native TAI and UI retained; explicit controlled fixture, not normal player or original RGB parity"
 			if probe.requiredPedestalHash != "" {
 				report["pedestal_hd_sha256"] = probe.requiredPedestalHash
-				report["background_scope"] = "BG_004 and TAI_004 shared physical scene; original UI retained; controlled fixture only"
+				report["background_scope"] = "Selected BG and TAI shared physical scene; original UI retained; controlled fixture only"
 			}
 		}
 		report["fixture_asset_load_scope"], report["fixture_requested_resources"] = "selected-battle-banks", scene.modernResources()

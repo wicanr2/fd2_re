@@ -9,20 +9,20 @@
     "native_viewport": "CONFORMED-SCOPED：穩定1920世界沿原生(4,4)、312×192窗格；死亡事件前25拍依既有producer從VGA0,0開始，最後steady回4,4。不同caller分列，不新增DOS位址parity。",
     "hd_sprite_data": "DATA-READY：完整125組1455張HD及31組372張新增24父項已登錄；舊1083張父項及HD bytes保持。",
     "hd_world_renderer": "CONFORMED-SCOPED：144人物已接Game.Draw；首章34張正常GPU、4張實際走行、兩次物理攻擊及保存／新程序LOAD通過。",
-    "private_assets": "正式白名單同步私人包，舊檔SHA保持；來源／實檔／UID及私人Git遠端／PRIVATE核對見heal13_16_map_hd_followup_20261023，沒有公開私人提交識別碼。",
+    "private_assets": "正式白名單同步私人包，舊6452檔SHA保持；新四原稿／四成品，實檔／UID通過。私人Git遠端另核對，不公開私人提交識別碼，依forest_coast_surface_followup_20261024。",
     "quickload_battle_owner": "CONFORMED-SCOPED：成功JSON LOAD丟棄舊經驗owner與移動計畫；拒收保留。",
     "timed_dialogue": "CONFORMED-SCOPED-RUNTIME-E1：計時FFEC開收框保留HD世界，EXP99普通鍵盤／F2與保存冷讀通過；其他caller未驗。",
     "hd_terrain": "CONFORMED-SCOPED：map0六組53槽；新增圓頂綠色／褐色雙塊四底圖在兩張正常GPU全部相符，短長組合與保存冷讀通過；草地及其他地形仍待HD化。",
     "ai_player_input_lock": "CONFORMED-SCOPED：AI換手期間拒絕玩家地圖輸入重入；普通END／增援對話及相關／完整Go回歸通過。",
     "gaia_redesign": "CONFORMED-SCOPED：新版頭像與四方向圖組已登錄；正常START／Gaia北移取消／F2／冷讀分段驗證。相位差異與序章尾端失敗明示，非逐幀parity。",
-    "hd_battle_animation": "目前FIGANI／FDOTHER／LMI及BG／TAI覆蓋由58與heal13_16_map_hd_followup_20261023.formal_coverage重生。13～16回復已接，其他效果／背景／HUD與正常／集中人工／平台仍待，完整HD未完成。",
+    "hd_battle_animation": "目前來源數量由58與forest_coast_surface_followup_20261024.formal_coverage重生；森林內部／海岸背景及台座已接共用物理。其他效果／caller、背景／HUD與正常／集中人工／平台仍待，完整HD未完成。",
     "native_purchase_equip": "CONFORMED-SCOPED：#266原生購買立即裝備保留ignored原始格，29項商店回歸與正常購弓F5／章首射程通過；不改格式或數值規則。",
     "hd_event_death": "共用事件、普通行動與狀態致死已接HD；三種26拍／F2通過。正常章23事件與普通擊殺已抽驗，狀態致死正常GUI仍待；來源依death_consumers_followup_20261021。",
     "theme_toolbar": "現有固定工具列仍為 CONFORMED-SCOPED-RUNTIME-E1；新 A 頂端浮出／四語／A+／速度操作原型已選定，正式串接 DRAFT，依 background_toolbar_prototype_20261023。",
     "hd_facility_scene": "CONFORMED-SCOPED-RUNTIME-E1：三種城鎮與三種商店靜態HD場景／店員，以及既有隊伍HD頭像接入裝備面板；114個GPU案例及兩包載入通過，集中普通／人工仍待。",
-    "assets": "正式及完整／runtime-only allow-list逐SHA／UID通過，現在數量依58及heal13_16_map_hd_followup_20261023；已去重暫存包不再作獨立驗收。",
-    "hd_battle_background": "CONFORMED-SCOPED／RUNTIME-E1：BG_004森林背景接一般共用背景物理戰鬥；兩包圖源／完整攻防、F2／DAC／一次返回及舊GPU回歸通過。其他BG／TAI／捲動及指令caller仍待，依bg004_physical_followup_20261023。",
-    "hd_battle_pedestal": "CONFORMED-SCOPED／RUNTIME-E1：TAI_004透明台座接共用物理的靜態／移位進場、攻防／restore／淡出。兩包來源、50 GPU世界及雙側完整Game.Draw／F2通過，其他caller與集中人工仍待，依tai004_physical_followup_20261023。",
+    "assets": "正式681項／兩包圖源SHA／UID與私人保存通過，數量依58及forest_coast_surface_followup_20261024。5555份runtime曾為獨立實檔驗收，已於全流程通過後去重；現有暫存包不能再作獨立驗收。",
+    "hd_battle_background": "CONFORMED-SCOPED／RUNTIME-E1：森林小屋、森林內部與海岸的已登錄BG接共用物理；新兩來源兩包八完整攻防、24次F2、56跨包PNG相同及正式載入通過。其他BG／捲動／指令仍待，依forest_coast_surface_followup_20261024。",
+    "hd_battle_pedestal": "CONFORMED-SCOPED／RUNTIME-E1：已登錄草地、森林裸土及海岸沙地TAI接共用物理的靜態／移位進場、攻防／restore／淡出。原框、層序與節拍保持，其他來源及caller仍待，依forest_coast_surface_followup_20261024。",
     "hd_heal_map": "CONFORMED-SCOPED／RUNTIME-E1：13～16的前導、七張光環、HD輪廓閃光、十個綠數字及等待接入；兩包各八完整Game.Draw／88次F2、一次交易／續行與非空HD地形變色通過。來源及限制見heal13_16_map_hd_followup_20261023，正常／人工／平台仍待。",
     "hd_reward_message": "CONFORMED-SCOPED／RUNTIME-E1：物品／金錢成功訊息的HD世界、Noto文字與480頭像接入；兩完整Game.Draw共26拍／26次F2、原生開收框遮罩、動態金額、HUD回交及一次續行通過。受控頭像選擇與獎勵值，正常／人工／平台仍待；依reward_message_hd_followup_20261023。"
   },
@@ -98459,7 +98459,7 @@
     },
     "private_remote_verification": "Independent private repository commit pushed; actual git ls-remote refs/heads/main re-read equals local HEAD. Private commit identity is not published."
   },
-  "latest_hd_batch": "heal13_16_map_hd_followup_20261023",
+  "latest_hd_batch": "forest_coast_surface_followup_20261024",
   "monks28_31_mage29_followup_20261022": {
     "status": "CONFORMED-SCOPED-RUNTIME-E1",
     "date": "2026-10-22",
@@ -203669,5 +203669,1372 @@
     ],
     "memory_scope": "Full theme, two retained controlled Games and GPU readbacks; not a normal-player memory measurement.",
     "public_git_verification_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/reward-hd-public-git-oct24-r1.json"
+  },
+  "forest_coast_surface_followup_20261024": {
+    "date": "2026-10-24",
+    "base_commit": "73bca93ebb11b5af58cbce2667aee073c8ee2805",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1",
+    "sources": {
+      "BG": [
+        {
+          "index": 5,
+          "metadata_sha256": "b2050b00eb7a1d28ffa7588a34d4cd2e35fdf56ff2a791f0dc33ca69699a8398",
+          "raw_sha256": "becf7ad51038590277528fe97146d4637423c2ac6b5eb88bb77948ec3d6acaf2",
+          "raw_size": 25979,
+          "status": "decoded",
+          "width": 320,
+          "height": 100,
+          "frame_sha256": "341181d2f6f96ec422f2807f365e173a55daa4d7f29c434f8d1361c7dbd938da",
+          "mask_sha256": "19384a76dd697551cd286197358b2771b2d876e8f68d787927a1bb446e3678bb",
+          "indexed_mask_sha256": "75c2cad5085ca3a8985490523b36a01f364fa4363ab5b4d612f614a077227194",
+          "visible_pixels": 32000,
+          "ink_box": [
+            0,
+            0,
+            320,
+            100
+          ],
+          "classification": "scene-source"
+        },
+        {
+          "index": 6,
+          "metadata_sha256": "88bb1baf65b0010865fbe6caf24436e007a6bd388db1b4f725e04455d5e9c36f",
+          "raw_sha256": "974d42de44a0ae94f811c169fb0119e915e0c72ef0165f8f8a124f8070f7bfb5",
+          "raw_size": 10299,
+          "status": "decoded",
+          "width": 320,
+          "height": 100,
+          "frame_sha256": "e0f6d3a232faea7c8060ff9e0ede50523b4788f8992ae365fb21bb36fbdc91dc",
+          "mask_sha256": "19384a76dd697551cd286197358b2771b2d876e8f68d787927a1bb446e3678bb",
+          "indexed_mask_sha256": "e2076c414917e757cdf110ca4bea14f928f2d1bc19305a5a3fa82fb2964ef225",
+          "visible_pixels": 32000,
+          "ink_box": [
+            0,
+            0,
+            320,
+            100
+          ],
+          "classification": "scene-source"
+        }
+      ],
+      "TAI": [
+        {
+          "index": 5,
+          "metadata_sha256": "90da236514fd2613f194c574409ddf5f5e448a2681a330d823ac954cb9127284",
+          "raw_sha256": "d39bc08a85dcc6dae4dcf7cf509b06c59abd45abc9a0c0e2114e53aa79998d08",
+          "raw_size": 2813,
+          "status": "decoded",
+          "width": 155,
+          "height": 42,
+          "frame_sha256": "a93d7fcb7d184b0db259452590fe899015311fd4d5901890ea517614b4230859",
+          "mask_sha256": "0280f5398813bf7098c43d1b6a10b510019de5da62d2d4b3f924fb401a52ff2b",
+          "indexed_mask_sha256": "1730b3770fd818bc357a3272b05c1ed424e420bc451d3e92b929ef5a461077d7",
+          "visible_pixels": 5378,
+          "ink_box": [
+            0,
+            0,
+            155,
+            42
+          ],
+          "classification": "scene-source"
+        },
+        {
+          "index": 6,
+          "metadata_sha256": "8ed1f8d210329dc69ee847bea1f4b70ecf3fd23d47c6a8cf2eb0803e32887afe",
+          "raw_sha256": "bc9dcdd237abeac3157b64ce5a3c4f113d25cd800e96ee3cbd13a288a89606b8",
+          "raw_size": 2646,
+          "status": "decoded",
+          "width": 155,
+          "height": 42,
+          "frame_sha256": "b55a8d6c1c2be5f7da2e0e650bd84067d73ab01ade100c5940f74e8b2167c28c",
+          "mask_sha256": "7e9e6055ae666615f921f357b0b86748ec81cc7bc5134e7ffbba945a87292b47",
+          "indexed_mask_sha256": "8ee74a19903071e0c0cb38418406cdfc8859cc28131f7040f68dfd5577a187a4",
+          "visible_pixels": 5376,
+          "ink_box": [
+            0,
+            0,
+            155,
+            42
+          ],
+          "classification": "scene-source"
+        }
+      ]
+    },
+    "generation_prompts": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-prompts-oct24-r1.json",
+    "full_hd_complete": false,
+    "scope": "BG005/006 and TAI005/006 common physical caller; approved handpainted style, no rule or save change",
+    "normal_player_verified": false,
+    "art_recipe": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-art-recipe-oct24-r1.json",
+      "sha256": "6bf7da0602c2607c9575886bdc00ff7343318522ae794ea3b2a2b6efef680e54",
+      "inline": {
+        "schema_version": 1,
+        "surfaces": [
+          {
+            "archive": "BG.DAT",
+            "resource": 5,
+            "master": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-bg5-master-oct24-r1.png",
+            "master_sha256": "b44abef167088399efeb6b29b79b580bca35cf38a0a9317743c1885e605370b4",
+            "master_size": [
+              2243,
+              701
+            ],
+            "master_mode": "RGB",
+            "alpha64_bbox": null,
+            "crop": null,
+            "master_file": "battle-bg.-005-master-oct24-r1.png",
+            "file": "battle-bg.-005-hd6-oct24-r1.png",
+            "review": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-bg5-compiled-review-r1.png",
+              "sha256": "53595fbfbebe10f905378d2bf26ba1487759d99c66a51748fb3af5163de34056"
+            }
+          },
+          {
+            "archive": "BG.DAT",
+            "resource": 6,
+            "master": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-bg6-master-oct24-r1.png",
+            "master_sha256": "31eac0f429c0ca2802116ff84d77d120cace506c36cfc9500ad122e23dfd6cef",
+            "master_size": [
+              2172,
+              724
+            ],
+            "master_mode": "RGB",
+            "alpha64_bbox": null,
+            "crop": null,
+            "master_file": "battle-bg.-006-master-oct24-r1.png",
+            "file": "battle-bg.-006-hd6-oct24-r1.png",
+            "review": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-bg6-compiled-review-r1.png",
+              "sha256": "e5806b66181250c6d34443f64059a5dec725b4ed46e5b636ff9fae4063eee7e6"
+            }
+          },
+          {
+            "archive": "TAI.DAT",
+            "resource": 5,
+            "master": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-tai5-master-oct24-r1.png",
+            "master_sha256": "564bc98a9ed7fb35808fec64d5d380273cf163aff82b826ea866fb2616299b05",
+            "master_size": [
+              2188,
+              718
+            ],
+            "master_mode": "RGBA",
+            "alpha64_bbox": [
+              54,
+              188,
+              2132,
+              590
+            ],
+            "crop": [
+              52,
+              186,
+              2134,
+              592
+            ],
+            "master_file": "battle-tai-005-master-oct24-r1.png",
+            "file": "battle-tai-005-hd6-oct24-r1.png",
+            "review": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-tai5-compiled-review-r1.png",
+              "sha256": "c1685faaef7a05ca08ced5dda02e76e21cc8ef554e39051c02746e3a10d217b3"
+            }
+          },
+          {
+            "archive": "TAI.DAT",
+            "resource": 6,
+            "master": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-tai6-master-oct24-r1.png",
+            "master_sha256": "63f7feaeeb13f646ee01a30fba6eef8fb1ad2dbfbf54d08b81051d72b804fc50",
+            "master_size": [
+              2149,
+              732
+            ],
+            "master_mode": "RGBA",
+            "alpha64_bbox": [
+              45,
+              159,
+              2103,
+              599
+            ],
+            "crop": [
+              43,
+              157,
+              2105,
+              601
+            ],
+            "master_file": "battle-tai-006-master-oct24-r1.png",
+            "file": "battle-tai-006-hd6-oct24-r1.png",
+            "review": {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-tai6-compiled-review-r1.png",
+              "sha256": "6f829ae35552a375f1e6ead1305d0eb6bfa636d9b2e069cf1f4ca3524709301e"
+            }
+          }
+        ]
+      }
+    },
+    "generation": {
+      "tool": "built-in image_gen",
+      "prompts": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-prompts-oct24-r1.json",
+        "sha256": "69049a4fe67a037e425cb4aab8548b5b27ce6cdc263fdf783ed3bdb1fd29eb40",
+        "inline": {
+          "bg5": "Use case: stylized-concept. Asset type: complete panoramic hand-painted HD combat background for Flame Dragon 2 remake. Image 1 is composition reference only: original BG_005 grayscale palette preview, a dense forest interior. Image 2 is approved existing HD style only, not scene content. Create only the dense forest interior from image 1, with the same low side-view camera and very wide approximately 3.2:1 canvas, used as a 320x100 background displayed at 1920x600. Rows of tall mature broad tree trunks fill the full width from the top edge, pale atmospheric grey-green trunks recede behind; twisting roots cross the mossy earthy forest floor at the bottom third. Brown and grey bark, deep muted green moss, diffuse woodland daylight, detailed painterly brushwork matching image 2. Keep the native broad trunk positions, open low ground strip and layered depth; the nearest thick trunk grows through the right edge. Fill the whole opaque canvas. No cottage, mountains, open sky, people, animals, weapons, UI, lettering, border or watermark. Do not turn this into an aerial or isometric view.",
+          "bg6": "Use case: stylized-concept. Asset type: complete panoramic hand-painted HD combat background for Flame Dragon 2 remake. Image 1 is composition reference only: original BG_006 grayscale palette preview. Image 2 gives the approved existing HD painterly style only. Paint the coastal battleground of image 1 on a very wide approximately 3.2:1 opaque panorama for a 320x100 source displayed at 1920x600. Low side-view camera. Pale blue sky and soft wispy clouds across top third, blue-grey distant mountains toward left and center, a curved sandy beach sweeping from lower center toward a small distant headland near center-right, a calm blue sea fills the right side with fine white surf near shore, small irregular green grass and darker damp soil patch at lower left. Match the composition and calm daylight, not the grayscale palette. Detailed restrained hand-painted fantasy game art, natural warm sand and cool blue water, same fidelity as approved style. No buildings, trees, people, animals, boats, objects, UI, text, border or watermark. Keep foreground open for combat sprites.",
+          "tai5": "Use case: stylized-concept. Asset type: transparent-background HD battle ground pedestal for Flame Dragon 2 remake. Image 1 is the exact original TAI_005 footprint and perspective reference, shown grayscale. Image 2 is approved HD pedestal style, material detail and cutout quality only. Generate one complete very flat oval slab of forest ground, low side-view with shallow visible top, matching the original 155:42 silhouette. Surface is mostly flat light ochre compact earth with subtle irregular worn patches, a restrained mossy green edge strongest on the left and back, thin brown exposed soil side wall at front, no grass tufts or roots sticking beyond the silhouette. The approved grassy image2 is not the target pattern: keep TAI005's mostly bare center and sparse soft grass around edges. The entire broad oval must fit with transparent margin on all sides, about 3.2:1 canvas. Hand-painted realistic fantasy RPG texture, no outline, no cast shadow, no glow, no background of any color, genuine alpha cutout. No characters, UI, text, watermark, stones or additional objects.",
+          "tai6": "Use case: stylized-concept. Asset type: transparent-background HD combat ground pedestal for Flame Dragon 2 remake. Image 1 is original TAI_006 silhouette and perspective reference, shown grayscale. Image 2 is approved existing HD pedestal style only. One complete very flat oval slab of coastal sandy ground, original 155:42 proportions and low side-view shallow top. Most top surface is pale warm dry sand with delicate natural sand marks, with a soft irregular moss-green grass patch hugging the LEFT and back-left third, pale sand stays open over the right two-thirds. Thin warm tan compact earth side wall along front. Match original broad shallow oval footprint, not a floating thick island or isometric disk. Detailed hand-painted fantasy game art, same rendering quality as image2. The full slab must be contained with clear transparent margins on all sides, very wide 3.2:1 canvas. Genuine transparent background, no cast shadow, glow, halo, solid backdrop, extra grass tufts beyond silhouette, stones, people, objects, text or watermark."
+        }
+      },
+      "masters": {
+        "bg5": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-bg5-master-oct24-r1.png",
+          "sha256": "b44abef167088399efeb6b29b79b580bca35cf38a0a9317743c1885e605370b4",
+          "size": [
+            2243,
+            701
+          ],
+          "mode": "RGB"
+        },
+        "bg6": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-bg6-master-oct24-r1.png",
+          "sha256": "31eac0f429c0ca2802116ff84d77d120cace506c36cfc9500ad122e23dfd6cef",
+          "size": [
+            2172,
+            724
+          ],
+          "mode": "RGB"
+        },
+        "tai5": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-tai5-master-oct24-r1.png",
+          "sha256": "564bc98a9ed7fb35808fec64d5d380273cf163aff82b826ea866fb2616299b05",
+          "size": [
+            2188,
+            718
+          ],
+          "mode": "RGBA",
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "alpha64_bbox": [
+            54,
+            188,
+            2132,
+            590
+          ],
+          "red_pixels_by_alpha": {
+            "1": 17343,
+            "64": 16175,
+            "250": 15710,
+            "255": 9
+          }
+        },
+        "tai6": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-tai6-master-oct24-r1.png",
+          "sha256": "63f7feaeeb13f646ee01a30fba6eef8fb1ad2dbfbf54d08b81051d72b804fc50",
+          "size": [
+            2149,
+            732
+          ],
+          "mode": "RGBA",
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "alpha64_bbox": [
+            45,
+            159,
+            2103,
+            599
+          ],
+          "red_pixels_by_alpha": {
+            "1": 27709,
+            "64": 23608,
+            "250": 21171,
+            "255": 170
+          }
+        }
+      },
+      "review": "Native framing and material identity inspected; black/white alpha composites show no visible colored halo; raw RGBA unchanged.",
+      "approximation": "Painterly textures/composition, BG006 full-frame aspect fit and pedestal alpha64 crop expanded2 fit native rectangle; no exact original RGB claim."
+    },
+    "historical_unit_rejection": {
+      "prefix": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-unit5-candidate-oct24-r1",
+      "reason": "source.Resource!=4 remained in native reconstruction assertion; all old main RGB/source and native width remain unchanged, test source parameter corrected",
+      "not_product_signal_killed": true,
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-unit5-candidate-oct24-r1.log",
+        "sha256": "660a46ece19e06b70c7bcce0525e8dbeac6c892dd5577e338b2be4004b3d9bde"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-unit5-candidate-oct24-r1.memory.json",
+        "sha256": "5c4314a328bda23c6c7ffb832f355656ab0013b17e45ac03dd89e23afd836c18"
+      }
+    },
+    "gates": [
+      {
+        "name": "forest-coast-game5-candidate-enemy-oct24-r1",
+        "kind": "game",
+        "surface": 5,
+        "enemy": true,
+        "independent_runtime_files": null,
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-game5-candidate-enemy-oct24-r1.gate.json",
+          "sha256": "aaa5490b6649ccbdc8395c43bbcc4785257114fc846a2bbd7b5a0392e3f1aa43"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-game5-candidate-enemy-oct24-r1.log",
+          "sha256": "97bfca26b2d732a8681dc40a72349f9ebc64c3cd3c001539a1cd73d24c8ce26a"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-game5-candidate-enemy-oct24-r1.memory.json",
+          "sha256": "e6712119a915f80a4b509e5f7fbf4b7aff03e6dce6e449dbd98240a9e85f7775"
+        },
+        "peak_bytes": 1067044864,
+        "required": [
+          "TestModernHDBattleRuntimeGPU"
+        ]
+      },
+      {
+        "name": "forest-coast-game5-candidate-player-oct24-r1",
+        "kind": "game",
+        "surface": 5,
+        "enemy": false,
+        "independent_runtime_files": null,
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-game5-candidate-player-oct24-r1.gate.json",
+          "sha256": "a12168c82b12c01183ad1f12dcdfd77aba1f346af0991826e49998eb8d80b832"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-game5-candidate-player-oct24-r1.log",
+          "sha256": "3807af9d873ccdc54cb9d5026945633b9d1808e32460c1701f68f18873897aa5"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-game5-candidate-player-oct24-r1.memory.json",
+          "sha256": "c191e344750e5956651c892122114ac67c281ab0dbc8a889fc623b6e9de52304"
+        },
+        "peak_bytes": 1026465792,
+        "required": [
+          "TestModernHDBattleRuntimeGPU"
+        ]
+      },
+      {
+        "name": "forest-coast-game5-runtime-enemy-oct24-r1",
+        "kind": "game",
+        "surface": 5,
+        "enemy": true,
+        "independent_runtime_files": 5555,
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-game5-runtime-enemy-oct24-r1.gate.json",
+          "sha256": "81e09a6f6ba10afc985e2e6654c605adaffde1210b549ad279cba3055c247cbe"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-game5-runtime-enemy-oct24-r1.log",
+          "sha256": "64af1818efa33edc0d37a81578ac8f50f61884639d3b82b848ee2dd70e4a15c2"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-game5-runtime-enemy-oct24-r1.memory.json",
+          "sha256": "fdd7080444883244e6ddca48ee562e4dbe4c2783d6387f78e680bd45052d1e42"
+        },
+        "peak_bytes": 1007972352,
+        "required": [
+          "TestModernHDBattleRuntimeGPU"
+        ]
+      },
+      {
+        "name": "forest-coast-game5-runtime-player-oct24-r1",
+        "kind": "game",
+        "surface": 5,
+        "enemy": false,
+        "independent_runtime_files": 5555,
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-game5-runtime-player-oct24-r1.gate.json",
+          "sha256": "f96c8e98d72e743760fbbcad168964b41263a2d7c0d8ae30bbe3fd9ce95e2ca7"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-game5-runtime-player-oct24-r1.log",
+          "sha256": "0be9e5c0f7fc4629286ac4d50cadcb5a528e8d351ff7e7350d87777343470927"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-game5-runtime-player-oct24-r1.memory.json",
+          "sha256": "0eae6be6b9abb96a327e04d2083bf49900ea3a3e1f71180a8596dc7e7c049b79"
+        },
+        "peak_bytes": 989245440,
+        "required": [
+          "TestModernHDBattleRuntimeGPU"
+        ]
+      },
+      {
+        "name": "forest-coast-game6-candidate-enemy-oct24-r1",
+        "kind": "game",
+        "surface": 6,
+        "enemy": true,
+        "independent_runtime_files": null,
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-game6-candidate-enemy-oct24-r1.gate.json",
+          "sha256": "8a7dc826791cb2a8a765c9bb7f13b399cdad996393ddd80e5d1ded0aa73c1f52"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-game6-candidate-enemy-oct24-r1.log",
+          "sha256": "c72618e7c76575a0e78bdfa2f1f77a47bd78901c68c4e22a4fb6e28408b63d74"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-game6-candidate-enemy-oct24-r1.memory.json",
+          "sha256": "beda5ce96a3c20a1fcdfad75b896e2625e99b687488c26015de2787f39ab5534"
+        },
+        "peak_bytes": 1032482816,
+        "required": [
+          "TestModernHDBattleRuntimeGPU"
+        ]
+      },
+      {
+        "name": "forest-coast-game6-candidate-player-oct24-r1",
+        "kind": "game",
+        "surface": 6,
+        "enemy": false,
+        "independent_runtime_files": null,
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-game6-candidate-player-oct24-r1.gate.json",
+          "sha256": "866fcbf9fc8809a1b0a39a91292f10053a826917084d07e6f1abac318246b3f7"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-game6-candidate-player-oct24-r1.log",
+          "sha256": "45593286ae8fd9a79b4f37e0f6410e9a3162c999ee9a9783dd9f88d40f7df886"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-game6-candidate-player-oct24-r1.memory.json",
+          "sha256": "0d086f36a9f2b774cd730f0486d2f758a4edcdd8f084946e211e495b629a80cd"
+        },
+        "peak_bytes": 966582272,
+        "required": [
+          "TestModernHDBattleRuntimeGPU"
+        ]
+      },
+      {
+        "name": "forest-coast-game6-runtime-enemy-oct24-r1",
+        "kind": "game",
+        "surface": 6,
+        "enemy": true,
+        "independent_runtime_files": 5555,
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-game6-runtime-enemy-oct24-r1.gate.json",
+          "sha256": "e173693044f163ac4ece5cae35eeadfe086bfe614d2d66c1f14a63e28a30d7cf"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-game6-runtime-enemy-oct24-r1.log",
+          "sha256": "e4376065e696e04c8afbbf0c5643a69328d77cea9f0783db3dab8efcca6721f8"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-game6-runtime-enemy-oct24-r1.memory.json",
+          "sha256": "d1a1801d98567a1ebc9a1d0828a9697486262b8a07335e8658eae425d20850df"
+        },
+        "peak_bytes": 1254068224,
+        "required": [
+          "TestModernHDBattleRuntimeGPU"
+        ]
+      },
+      {
+        "name": "forest-coast-game6-runtime-player-oct24-r1",
+        "kind": "game",
+        "surface": 6,
+        "enemy": false,
+        "independent_runtime_files": 5555,
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-game6-runtime-player-oct24-r1.gate.json",
+          "sha256": "92633607d795e749055ef72f3a4ac321edade9b02226d8ffaf86a7fc38f0b437"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-game6-runtime-player-oct24-r1.log",
+          "sha256": "772fab106c307558c8539c4b02a1507beb7995e8cf5299aa258e99c84a5e3fc2"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-game6-runtime-player-oct24-r1.memory.json",
+          "sha256": "303b92b3b48e8980275ce6f9364c424c0983dc126eb73fda8551eb7eaba91286"
+        },
+        "peak_bytes": 1238745088,
+        "required": [
+          "TestModernHDBattleRuntimeGPU"
+        ]
+      },
+      {
+        "name": "forest-coast-regression4-legacy-oct24-r1",
+        "kind": "regression",
+        "surface": 4,
+        "enemy": false,
+        "independent_runtime_files": null,
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-regression4-legacy-oct24-r1.gate.json",
+          "sha256": "8fc92591157cee5ec2cf93e2546e0228effe5c9d894758b9b3af2e3038777913"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-regression4-legacy-oct24-r1.log",
+          "sha256": "6dd62b9c1f8b767bd3bd8e0f1246cfcc1f40c67f454299b8dd8a54fd74ce9d95"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-regression4-legacy-oct24-r1.memory.json",
+          "sha256": "9ef8621ee8643a1f646b76cc3a7c8d2ba620abc30660d09cfb705991c1be4422"
+        },
+        "peak_bytes": 459382784,
+        "required": [
+          "TestModernHDBattleAssetsCompleteAndAtomic",
+          "TestModernHDBattleAssetsLazySetAtomic",
+          "TestModernScrollMetadataRejectsBeforePartialSources",
+          "TestModernScrollSurfaceKeepsOpaqueZeroAndTransparentMask",
+          "TestNativePhysicalSceneMatchesChapter8NormalOracleSelection",
+          "TestNativePhysicalSceneMissingBGStopsPlayerAndMode11BeforeSettlement",
+          "TestNativePhysicalSurfaceRetainsOpaqueIndexZero"
+        ]
+      },
+      {
+        "name": "forest-coast-source-unit4-legacy-oct24-r1",
+        "kind": "source-unit",
+        "surface": 4,
+        "enemy": false,
+        "independent_runtime_files": null,
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-source-unit4-legacy-oct24-r1.gate.json",
+          "sha256": "60e6f8ca3076ef4f1bc44c0d986e74102078a6c77beaa0a547e9321a33cce8d0"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-source-unit4-legacy-oct24-r1.log",
+          "sha256": "d5844012a76f4011800b099b52900329b365152367659e8197517c7f9d4d533e"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-source-unit4-legacy-oct24-r1.memory.json",
+          "sha256": "385f89b3b000dd9aea3b8f27c5bdfba903ef59be77589bfcb4fc42951002bffa"
+        },
+        "peak_bytes": 486690816,
+        "required": [
+          "TestModernBattleSurfaceHDSourceAndAtomic",
+          "TestModernBattleSurfacePhysicalNativeReconstruction"
+        ]
+      },
+      {
+        "name": "forest-coast-source-unit6-candidate-oct24-r1",
+        "kind": "source-unit",
+        "surface": 6,
+        "enemy": false,
+        "independent_runtime_files": null,
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-source-unit6-candidate-oct24-r1.gate.json",
+          "sha256": "0e4e23226e4ec352b806c6412f746ed7878f3b78cf7438a0db77803f701534cd"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-source-unit6-candidate-oct24-r1.log",
+          "sha256": "1c8e580d6a1fdbb6a72ba5db6eca82958a615da20882272ba20c35c19090a00d"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-source-unit6-candidate-oct24-r1.memory.json",
+          "sha256": "6272bec350e1556d6c58ca475f7b13859dc777daaaed5a395e20c5778bf21559"
+        },
+        "peak_bytes": 477315072,
+        "required": [
+          "TestModernBattleSurfaceHDSourceAndAtomic",
+          "TestModernBattleSurfacePhysicalNativeReconstruction"
+        ]
+      },
+      {
+        "name": "forest-coast-source-unit6-runtime-oct24-r1",
+        "kind": "source-unit",
+        "surface": 6,
+        "enemy": false,
+        "independent_runtime_files": 5555,
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-source-unit6-runtime-oct24-r1.gate.json",
+          "sha256": "1f946425e76373ee323c82fb4a5d5afe8a0a777298bb912677b9a57a9e895c4d"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-source-unit6-runtime-oct24-r1.log",
+          "sha256": "11156e7eba4cab97f38ede302f5449acfdf87c2b7fe8c5ea972352b855efdf65"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-source-unit6-runtime-oct24-r1.memory.json",
+          "sha256": "a2e9bc5e379ec43ad82a895cda785cc1e01034e332a658241997bdee6dc8127d"
+        },
+        "peak_bytes": 484286464,
+        "required": [
+          "TestModernBattleSurfaceHDSourceAndAtomic",
+          "TestModernBattleSurfacePhysicalNativeReconstruction"
+        ]
+      },
+      {
+        "name": "forest-coast-source4-legacy-oct24-r1",
+        "kind": "source",
+        "surface": 4,
+        "enemy": false,
+        "independent_runtime_files": null,
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-source4-legacy-oct24-r1.gate.json",
+          "sha256": "c24bd829b68c866323cc679170d522ed86718607c48625ff2f8b1b2ab54c5ff5"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-source4-legacy-oct24-r1.log",
+          "sha256": "80272b6a8fe99ba32a187d893a315d8ff4f39fbc366503289afd2d8169b3dba9"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-source4-legacy-oct24-r1.memory.json",
+          "sha256": "78765f74b5f97484e32cd89aa081ddc5830b0faa8e951afd4999e1ab02596fbc"
+        },
+        "peak_bytes": 1415700480,
+        "required": [
+          "TestModernBattleSurfaceHDGPU"
+        ]
+      },
+      {
+        "name": "forest-coast-source5-candidate-oct24-r1",
+        "kind": "source",
+        "surface": 5,
+        "enemy": false,
+        "independent_runtime_files": null,
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-source5-candidate-oct24-r1.gate.json",
+          "sha256": "eaa7c8f9a13c9cd6742e097a98639868a798b7a1da227628ca10ebc6f940a115"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-source5-candidate-oct24-r1.log",
+          "sha256": "8842d3b9c43718e0bd3fec7967b52001adddc98b6f186a99ced0e465791aa745"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-source5-candidate-oct24-r1.memory.json",
+          "sha256": "4000d0b0750bfa05e3ff353a23c85192319f56298820860b49580231cd367e53"
+        },
+        "peak_bytes": 1437466624,
+        "required": [
+          "TestModernBattleSurfaceHDGPU"
+        ]
+      },
+      {
+        "name": "forest-coast-source5-runtime-oct24-r1",
+        "kind": "source",
+        "surface": 5,
+        "enemy": false,
+        "independent_runtime_files": 5555,
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-source5-runtime-oct24-r1.gate.json",
+          "sha256": "95c810429e42cb4c772cacbc1eb4fc1271b40eadf38fd94897d968337fd04f49"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-source5-runtime-oct24-r1.log",
+          "sha256": "fcb05809b1b4e4d3d31d8c37943f517e3c8dcbb649665d31805b350107b366e0"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-source5-runtime-oct24-r1.memory.json",
+          "sha256": "94bfa7b3e3bb14fb4f4cfef7314b9d5a8daab5ca39302c3a08d97f6891e59ca2"
+        },
+        "peak_bytes": 1384546304,
+        "required": [
+          "TestModernBattleSurfaceHDGPU"
+        ]
+      },
+      {
+        "name": "forest-coast-source6-candidate-oct24-r1",
+        "kind": "source",
+        "surface": 6,
+        "enemy": false,
+        "independent_runtime_files": null,
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-source6-candidate-oct24-r1.gate.json",
+          "sha256": "c7b60f86cc12a392bf27fbfab5a5ce7997b801972693bcb06b80924db3c595dc"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-source6-candidate-oct24-r1.log",
+          "sha256": "69cfccf03a5dca4ff147ec563ef93c47f3f12744465ef2313a67134189c01186"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-source6-candidate-oct24-r1.memory.json",
+          "sha256": "c039bac1fc278da8c986e8250bbf5a3ed19eb9cbcf59b3c7e39242aad6caf4c2"
+        },
+        "peak_bytes": 1350144000,
+        "required": [
+          "TestModernBattleSurfaceHDGPU"
+        ]
+      },
+      {
+        "name": "forest-coast-source6-formal-oct24-r1",
+        "kind": "source",
+        "surface": 6,
+        "enemy": false,
+        "independent_runtime_files": null,
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-source6-formal-oct24-r1.gate.json",
+          "sha256": "5b7f9215cdc897b434d6b54acc9914c5a1e3ecaae732b1acac7f18be117f9428"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-source6-formal-oct24-r1.log",
+          "sha256": "baaf104a7d39e90aa0aa02923229988f90e3d511dca6144c97cdd99f3fe7ccec"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-source6-formal-oct24-r1.memory.json",
+          "sha256": "1d11a16e61d6382055a69f711a6b687b1f2e3d3337b3488af07589f002201da9"
+        },
+        "peak_bytes": 1266638848,
+        "required": [
+          "TestModernBattleSurfaceHDGPU"
+        ]
+      },
+      {
+        "name": "forest-coast-source6-runtime-oct24-r1",
+        "kind": "source",
+        "surface": 6,
+        "enemy": false,
+        "independent_runtime_files": 5555,
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-source6-runtime-oct24-r1.gate.json",
+          "sha256": "10c265b2bfcb2b3d34523104d16810e43ba01189757ac255f9adfc2d39a56c32"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-source6-runtime-oct24-r1.log",
+          "sha256": "279d4899987a845f220ed1d476676265217dfc26d42f0f89b0468e7b7638b828"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-source6-runtime-oct24-r1.memory.json",
+          "sha256": "06d0044eef53a1f0f5a7048b704b5513c46bad11229087e4e2e123ea382a1db7"
+        },
+        "peak_bytes": 1470574592,
+        "required": [
+          "TestModernBattleSurfaceHDGPU"
+        ]
+      },
+      {
+        "name": "forest-coast-unit5-candidate-oct24-r2",
+        "kind": "unit",
+        "surface": 5,
+        "enemy": false,
+        "independent_runtime_files": null,
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-unit5-candidate-oct24-r2.gate.json",
+          "sha256": "85526071a72e964e69315f863c699f33fc7912eaa030c19836a04345f224fd26"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-unit5-candidate-oct24-r2.log",
+          "sha256": "993a45e6f41e46a49dd366b02df2fd3160b0b6cebded8c221f4e0332af8078b9"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-unit5-candidate-oct24-r2.memory.json",
+          "sha256": "1e4b986a5f5519321922e6e30f38fcb033284197839953b7424814e153318f54"
+        },
+        "peak_bytes": 1285844992,
+        "required": [
+          "TestModernBattleSurfaceCompleteTheme",
+          "TestModernBattleSurfaceHDSourceAndAtomic",
+          "TestModernBattleSurfacePhysicalNativeReconstruction"
+        ]
+      },
+      {
+        "name": "forest-coast-unit5-formal-oct24-r1",
+        "kind": "unit",
+        "surface": 5,
+        "enemy": false,
+        "independent_runtime_files": null,
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-unit5-formal-oct24-r1.gate.json",
+          "sha256": "8a0f3a382a14b33bc2baa3c6fb18bb6fffc67d3663618e12e0aa2b183e707700"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-unit5-formal-oct24-r1.log",
+          "sha256": "fbb8b5e7908f3c34a93cbd5d7c99c7a3915eb583b2c247dee88a41181096cc7d"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-unit5-formal-oct24-r1.memory.json",
+          "sha256": "171b0e13f211a469336dd6ef9efac2000027f62ddd96e00203b6f3219efc87ca"
+        },
+        "peak_bytes": 2064437248,
+        "required": [
+          "TestModernBattleSurfaceCompleteTheme",
+          "TestModernBattleSurfaceHDSourceAndAtomic",
+          "TestModernBattleSurfacePhysicalNativeReconstruction"
+        ]
+      },
+      {
+        "name": "forest-coast-unit5-runtime-oct24-r1",
+        "kind": "unit",
+        "surface": 5,
+        "enemy": false,
+        "independent_runtime_files": 5555,
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-unit5-runtime-oct24-r1.gate.json",
+          "sha256": "214631b9d1bfd07551feb6ab79d30bbfab3f8dae4a01bf9330522c62d15e26a7"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-unit5-runtime-oct24-r1.log",
+          "sha256": "b9afd79fcdc3b81454d764fbf1708af2b50016b07208d7f1e852b406f06476e9"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-unit5-runtime-oct24-r1.memory.json",
+          "sha256": "eda6222d15862aa325125b55b29d88930a7b2b09fd8cd3c28640da9d691b05db"
+        },
+        "peak_bytes": 1796182016,
+        "required": [
+          "TestModernBattleSurfaceCompleteTheme",
+          "TestModernBattleSurfaceHDSourceAndAtomic",
+          "TestModernBattleSurfacePhysicalNativeReconstruction"
+        ]
+      }
+    ],
+    "games": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-game5-candidate-player-oct24-r1-capture/receipt.json",
+        "sha256": "fe9fa2246f995e6f37615e4884fc07e4ffba908e2490f7fc1eed5472f7aba102",
+        "surface": 5,
+        "side": "player",
+        "pack": "candidate",
+        "captures": 15,
+        "f2_round_trips": 3
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-game5-runtime-player-oct24-r1-capture/receipt.json",
+        "sha256": "9eb29d694a2413aa33c9f6446352f1d0daafffb9e3eef543f591f8254909200f",
+        "surface": 5,
+        "side": "player",
+        "pack": "runtime",
+        "captures": 15,
+        "f2_round_trips": 3
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-game5-candidate-enemy-oct24-r1-capture/receipt.json",
+        "sha256": "7788aa89e4a1647b1e5d46ad2d5f3966b56256a1e6a03fe7c2ae9fbaf83c45bb",
+        "surface": 5,
+        "side": "enemy",
+        "pack": "candidate",
+        "captures": 13,
+        "f2_round_trips": 3
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-game5-runtime-enemy-oct24-r1-capture/receipt.json",
+        "sha256": "6b11d7142e7421310e229880488d66829fa59448d97c68bcfecb4148539a9c8e",
+        "surface": 5,
+        "side": "enemy",
+        "pack": "runtime",
+        "captures": 13,
+        "f2_round_trips": 3
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-game6-candidate-player-oct24-r1-capture/receipt.json",
+        "sha256": "227bc7bbc93a18053895d965e3d3acc9dbdbbd7de8d0999420033d376b10fb10",
+        "surface": 6,
+        "side": "player",
+        "pack": "candidate",
+        "captures": 15,
+        "f2_round_trips": 3
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-game6-runtime-player-oct24-r1-capture/receipt.json",
+        "sha256": "b9ba3b804537781dce5d657ce22bf15c10b64e75c88f17114cf917c86fe0811f",
+        "surface": 6,
+        "side": "player",
+        "pack": "runtime",
+        "captures": 15,
+        "f2_round_trips": 3
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-game6-candidate-enemy-oct24-r1-capture/receipt.json",
+        "sha256": "c46d3468f14e0c69f8e2398ae0f47d026d4d34b79200805f51b5999b6380f1f4",
+        "surface": 6,
+        "side": "enemy",
+        "pack": "candidate",
+        "captures": 13,
+        "f2_round_trips": 3
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-game6-runtime-enemy-oct24-r1-capture/receipt.json",
+        "sha256": "1e2c85c641cddcda046bcf57ec8746e18680fcd7aa21ff87e4a9e6bbadf15092",
+        "surface": 6,
+        "side": "enemy",
+        "pack": "runtime",
+        "captures": 13,
+        "f2_round_trips": 3
+      }
+    ],
+    "cross_pack_identical_captures": [
+      {
+        "surface": 5,
+        "side": "player",
+        "source": "000-00",
+        "sha256": "31c891d4c160f133d91b6b20ace7af3f953103fc177e3663266301d450d151b9"
+      },
+      {
+        "surface": 5,
+        "side": "player",
+        "source": "000-01",
+        "sha256": "e43e3175d85590498ebc4e959942f9194fed5bd968acd8fa63620e2d9073fbad"
+      },
+      {
+        "surface": 5,
+        "side": "player",
+        "source": "000-02",
+        "sha256": "a6f3701e0605fcdd7f331298a23ddadfaf4efe7daca09a40703fc5201b7f6398"
+      },
+      {
+        "surface": 5,
+        "side": "player",
+        "source": "000-03",
+        "sha256": "d62532be6f6a43dab5977fad38f65568219575f87cca2ecfb384ee91b310a307"
+      },
+      {
+        "surface": 5,
+        "side": "player",
+        "source": "001-00",
+        "sha256": "e550aed87e0171716d9059b474f4667512115b83c35e8ea931a6e56a5b97f341"
+      },
+      {
+        "surface": 5,
+        "side": "player",
+        "source": "001-01",
+        "sha256": "0e73f00d9ca1cd49cc0f717b08c56f8f82810baf9c8069b7fa23ea157e368ce7"
+      },
+      {
+        "surface": 5,
+        "side": "player",
+        "source": "001-02",
+        "sha256": "d63715ed7a4b2ed9f19d306381804dbb78d52d20b85229b10ae09234080f6812"
+      },
+      {
+        "surface": 5,
+        "side": "player",
+        "source": "001-03",
+        "sha256": "15149cff5cecae3a666cd9cd49106d4753d658507a710e1ae5866ff69852eb2c"
+      },
+      {
+        "surface": 5,
+        "side": "player",
+        "source": "001-04",
+        "sha256": "1147c6faeb903dd8b738f559639410cc89f859eeeb58e977a2745c742b9e7088"
+      },
+      {
+        "surface": 5,
+        "side": "player",
+        "source": "001-05",
+        "sha256": "69fa5cf7570314422515f0f65af7a6ccbbb82d0fafea1026e83dbcf2d6aa25f6"
+      },
+      {
+        "surface": 5,
+        "side": "player",
+        "source": "001-06",
+        "sha256": "6d830076ddcaf5a9e5b8985722f541b87a0d0a83882f61799119707e0141b4a3"
+      },
+      {
+        "surface": 5,
+        "side": "player",
+        "source": "001-07",
+        "sha256": "3c30ae35ccabdd90b240b0a5cb1a2f74a752154c9afb54992eca1afff1b245d3"
+      },
+      {
+        "surface": 5,
+        "side": "player",
+        "source": "001-08",
+        "sha256": "3f234c26390fa31a87a00e08d4c9d96f5ab690e5b87432f09c3a9f41a738a58e"
+      },
+      {
+        "surface": 5,
+        "side": "player",
+        "source": "001-09",
+        "sha256": "d14d8ed554387dbb60f9781a676e0164914666064bc4f2159ca21a3aa9d12b6b"
+      },
+      {
+        "surface": 5,
+        "side": "player",
+        "source": "001-10",
+        "sha256": "d74fbbf6d8f933edb8a28781824b99c2ce3911990707f31c8ddb54387c1245ce"
+      },
+      {
+        "surface": 5,
+        "side": "enemy",
+        "source": "228-00",
+        "sha256": "26e3c306ebe54df3a8655704a5491645691f50171b0f408ede505a4988883068"
+      },
+      {
+        "surface": 5,
+        "side": "enemy",
+        "source": "228-01",
+        "sha256": "dc8b63549e3569e1ca69bd9cfe70a9468de94db4a8771e33be7f3aae916c0e45"
+      },
+      {
+        "surface": 5,
+        "side": "enemy",
+        "source": "228-02",
+        "sha256": "c353f8b478c0281eb62f337c547ad3b09b25023bd1cfdc7241b6c657aef881df"
+      },
+      {
+        "surface": 5,
+        "side": "enemy",
+        "source": "228-03",
+        "sha256": "d9414573ea7e9041ce4b28b9ecebe27aef3fd58f68e09818c778cd55e6e123f7"
+      },
+      {
+        "surface": 5,
+        "side": "enemy",
+        "source": "229-00",
+        "sha256": "e550aed87e0171716d9059b474f4667512115b83c35e8ea931a6e56a5b97f341"
+      },
+      {
+        "surface": 5,
+        "side": "enemy",
+        "source": "229-01",
+        "sha256": "5c1b073731b908e9eb96b5b8543786ad1e1f79de73a3b0a1033845f1f299acc4"
+      },
+      {
+        "surface": 5,
+        "side": "enemy",
+        "source": "229-02",
+        "sha256": "a8b623ee12e790237ed8afbe4b1f10711035fe8e5be9cc38bf928979c5a9448c"
+      },
+      {
+        "surface": 5,
+        "side": "enemy",
+        "source": "229-03",
+        "sha256": "43fdeaae19e9c146b31eb5fdfd4e98e148ba405080870e8078b1d63a30a40920"
+      },
+      {
+        "surface": 5,
+        "side": "enemy",
+        "source": "229-04",
+        "sha256": "c46b6d0d043b11f845d4aea77e96807264ebb8a245f758b4c7cb576acfc9819e"
+      },
+      {
+        "surface": 5,
+        "side": "enemy",
+        "source": "229-05",
+        "sha256": "c46b6d0d043b11f845d4aea77e96807264ebb8a245f758b4c7cb576acfc9819e"
+      },
+      {
+        "surface": 5,
+        "side": "enemy",
+        "source": "229-06",
+        "sha256": "bc7d9c566471d71d24d165916e71273449539e92ee744fcc04458770e155cb61"
+      },
+      {
+        "surface": 5,
+        "side": "enemy",
+        "source": "229-07",
+        "sha256": "3b158eea529aa729161788d229b6d9b4d212cbd7a8b6feb7a821d50eac754c65"
+      },
+      {
+        "surface": 5,
+        "side": "enemy",
+        "source": "229-08",
+        "sha256": "f5856d4c537f2bdb66a051944e3c3135b50b8c44b2384849466b76d7d8f7cc01"
+      },
+      {
+        "surface": 6,
+        "side": "player",
+        "source": "000-00",
+        "sha256": "8b9a803bc0c622186f0543910bdda7d0fdf818d8071831b81e2bdcfbd74f6e15"
+      },
+      {
+        "surface": 6,
+        "side": "player",
+        "source": "000-01",
+        "sha256": "0d1f050f88e2f3db0d7efc11bfdaa8eaa2c4a9f0c93509ed616fca916219d056"
+      },
+      {
+        "surface": 6,
+        "side": "player",
+        "source": "000-02",
+        "sha256": "a749c8b1b6a0e97547ec18df5b7582451076b74da31bbf35a006cd646cdd10a5"
+      },
+      {
+        "surface": 6,
+        "side": "player",
+        "source": "000-03",
+        "sha256": "37ba1590f118b3bd37b69bb41822fbe2e9c7874c9e9a19d49981b86fa1f097b1"
+      },
+      {
+        "surface": 6,
+        "side": "player",
+        "source": "001-00",
+        "sha256": "2aabac5f7d13439b24162aa6c8f7e83ffdccda4239320b869fe46e0f8a4e2a1b"
+      },
+      {
+        "surface": 6,
+        "side": "player",
+        "source": "001-01",
+        "sha256": "2a481ac951c42492d2482afa90b9eba81e4582ad76b2664a9a7cfaf77e170894"
+      },
+      {
+        "surface": 6,
+        "side": "player",
+        "source": "001-02",
+        "sha256": "2d0335b82d6a9fd39f2aa3f22167d5324e51d43e3901a622880dca446fb4b20d"
+      },
+      {
+        "surface": 6,
+        "side": "player",
+        "source": "001-03",
+        "sha256": "3e9139b5d3933bc10e78fffb282ef362ac687570dee6eb31c1f6b5ca80ff9b7a"
+      },
+      {
+        "surface": 6,
+        "side": "player",
+        "source": "001-04",
+        "sha256": "34d33323dc2ede5d50401a95e9bf5fe8acf7e4cca3206e30fa01287b2fa27778"
+      },
+      {
+        "surface": 6,
+        "side": "player",
+        "source": "001-05",
+        "sha256": "6ab9e6d4f871da7852427d82e4f4889c1a8ae53a715393dba26b329910beb339"
+      },
+      {
+        "surface": 6,
+        "side": "player",
+        "source": "001-06",
+        "sha256": "3e6d0e0029592077134f292c8b1b5faafacb26bc3d0043e9dbfed1202f9adea7"
+      },
+      {
+        "surface": 6,
+        "side": "player",
+        "source": "001-07",
+        "sha256": "e566ae3a7e27cfb0caf136d714981154b871dac813a666289cbedde6cc668bb6"
+      },
+      {
+        "surface": 6,
+        "side": "player",
+        "source": "001-08",
+        "sha256": "6c73586763df023647ad9b17c9f5404bc2d6324f1985c4d3a3ee1e5b6bceb237"
+      },
+      {
+        "surface": 6,
+        "side": "player",
+        "source": "001-09",
+        "sha256": "89759bcab0929bdcd5b84607dfae8e71acc160a4f6e35a79e352de1335b5ce3b"
+      },
+      {
+        "surface": 6,
+        "side": "player",
+        "source": "001-10",
+        "sha256": "c64a83317bd8a2cf20441c88981ce2c5eab60841c375762cece86b95f6188b16"
+      },
+      {
+        "surface": 6,
+        "side": "enemy",
+        "source": "228-00",
+        "sha256": "8720c9b3a7b7fe69df7c9599c7d641101b34c7f97a1e3c9b7078b59f6f73898f"
+      },
+      {
+        "surface": 6,
+        "side": "enemy",
+        "source": "228-01",
+        "sha256": "ad544bceaf4543001060ffcf2cfaeeb2c33e4b08357b051363d516efbfcd9426"
+      },
+      {
+        "surface": 6,
+        "side": "enemy",
+        "source": "228-02",
+        "sha256": "4e78da948ac94783af9cef0b84439b61a39a6ac7399f053130b46ffd796c93f7"
+      },
+      {
+        "surface": 6,
+        "side": "enemy",
+        "source": "228-03",
+        "sha256": "8922dafa761d3111f4dfc5f2771983b170104345ee34adfb91a8a939e3574521"
+      },
+      {
+        "surface": 6,
+        "side": "enemy",
+        "source": "229-00",
+        "sha256": "2aabac5f7d13439b24162aa6c8f7e83ffdccda4239320b869fe46e0f8a4e2a1b"
+      },
+      {
+        "surface": 6,
+        "side": "enemy",
+        "source": "229-01",
+        "sha256": "220e028e271a05d9d733548fce2f86496e99ec7d750926a3d01a2df666b52498"
+      },
+      {
+        "surface": 6,
+        "side": "enemy",
+        "source": "229-02",
+        "sha256": "0ded4ac10904790f9ba1bbb93b0c93c17323e1631a3c113697bb9c35f6bb0093"
+      },
+      {
+        "surface": 6,
+        "side": "enemy",
+        "source": "229-03",
+        "sha256": "8a98e92ef148c5aead4f6f9e22f0c8c893bb78a4d4044da568267996a58a0505"
+      },
+      {
+        "surface": 6,
+        "side": "enemy",
+        "source": "229-04",
+        "sha256": "ed8ec5ce479656d850b5d6e5e35eebf9d59416a23eda9115c61e93c30a71dd60"
+      },
+      {
+        "surface": 6,
+        "side": "enemy",
+        "source": "229-05",
+        "sha256": "ed8ec5ce479656d850b5d6e5e35eebf9d59416a23eda9115c61e93c30a71dd60"
+      },
+      {
+        "surface": 6,
+        "side": "enemy",
+        "source": "229-06",
+        "sha256": "d1efe39459f2a55d7d873e6cf371f1f5cc825a445b3a394961a951d684daeee6"
+      },
+      {
+        "surface": 6,
+        "side": "enemy",
+        "source": "229-07",
+        "sha256": "6b8268c9297447b93e0f1aad4624c51a06ef406007eff1f6a2f20b00ee97a466"
+      },
+      {
+        "surface": 6,
+        "side": "enemy",
+        "source": "229-08",
+        "sha256": "b8242b3c83d1315d2b3c0384d7ca8799a9b1c75096d331b9f3657f0ce68735b7"
+      }
+    ],
+    "base_catalog": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-base-catalog-oct24-r1.json",
+      "sha256": "7d172a3daa6e5bcadfd944147d9c552e7d2e1824f9e22a08b8da7f8c3c2c362a",
+      "asset_count": 677
+    },
+    "added_files": [
+      {
+        "sha256": "53595fbfbebe10f905378d2bf26ba1487759d99c66a51748fb3af5163de34056",
+        "name": "battle-bg.-005-hd6-oct24-r1.png"
+      },
+      {
+        "sha256": "b44abef167088399efeb6b29b79b580bca35cf38a0a9317743c1885e605370b4",
+        "name": "battle-bg.-005-master-oct24-r1.png"
+      },
+      {
+        "sha256": "e5806b66181250c6d34443f64059a5dec725b4ed46e5b636ff9fae4063eee7e6",
+        "name": "battle-bg.-006-hd6-oct24-r1.png"
+      },
+      {
+        "sha256": "31eac0f429c0ca2802116ff84d77d120cace506c36cfc9500ad122e23dfd6cef",
+        "name": "battle-bg.-006-master-oct24-r1.png"
+      },
+      {
+        "sha256": "c1685faaef7a05ca08ced5dda02e76e21cc8ef554e39051c02746e3a10d217b3",
+        "name": "battle-tai-005-hd6-oct24-r1.png"
+      },
+      {
+        "sha256": "564bc98a9ed7fb35808fec64d5d380273cf163aff82b826ea866fb2616299b05",
+        "name": "battle-tai-005-master-oct24-r1.png"
+      },
+      {
+        "sha256": "6f829ae35552a375f1e6ead1305d0eb6bfa636d9b2e069cf1f4ca3524709301e",
+        "name": "battle-tai-006-hd6-oct24-r1.png"
+      },
+      {
+        "sha256": "63f7feaeeb13f646ee01a30fba6eef8fb1ad2dbfbf54d08b81051d72b804fc50",
+        "name": "battle-tai-006-master-oct24-r1.png"
+      }
+    ],
+    "old_asset_prefix_unchanged": true,
+    "production_go_changes": 0,
+    "shader_changes": 0,
+    "formal_catalog_sha256": "4c0ee9558fb586deae1e3791413cff1d62ece755ae7025e6dec3d4b2920a0d6a",
+    "fixture": {
+      "native_terrain_control_2": [
+        5,
+        6
+      ],
+      "figures": [
+        0,
+        76
+      ],
+      "forced_attack_damage": 7,
+      "forced_counter_damage": 9,
+      "native_return_map": "completeNativeMapFrameFixture",
+      "normal_player": false
+    },
+    "reproduce_inputs": "Recreate the pinned pre-batch catalog from formal catalog assets[:677] and its unchanged private_root, verify base_catalog SHA; serialize art_recipe.inline with JSON indent2/newline, verify SHA; restore each recipe master from private pack master_file to its recorded master path before invoking build_fd2_battle_surface_hd.py --recipe. Preserve original PNG bytes.",
+    "formal_coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-formal-coverage-oct24-r1.json",
+      "sha256": "9c02dc792269afc884541b7adb2544f5a1c189ea239c4ed165a6be6dc20e9448"
+    },
+    "private_sync": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-private-sync-oct24-r1.json",
+      "sha256": "62d4a30d131626cb30eea640c42c65cf457f500b3e25dfd3cf4bb0085e500832"
+    },
+    "memory_scope": "Per-container Go test peaks with complete theme or retained GPU plans; not a normal-player memory measurement.",
+    "top_level_required_test_runs": 36,
+    "runtime_sources": [
+      {
+        "file": "tools/build_fd2_battle_surface_hd.py",
+        "sha256": "8613043641a3913e13b333011f3fa811493c2cc7f6118ffbee56f23d97cbe836"
+      },
+      {
+        "file": "tools/verify_fd2_battle_surface_hd.py",
+        "sha256": "99347d94a4f245fd45f9b110cce9b3628108c6ffb82d3f99cf07a3fa2d80f7e3"
+      },
+      {
+        "file": "tools/audit_fd2_battle_hd_coverage.py",
+        "sha256": "52d39007c6942bc5405dfacd6f16cef9772f1faf6be45d01c36573c870346910"
+      },
+      {
+        "file": "tools/audit_fd2_battle_background_sources.py",
+        "sha256": "0e0ba3fa1e9fff786714368564b9f6e3828e199d7f1237e8ea7d10395817bf0c"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_surface_test.go",
+        "sha256": "2da72bbc2387301f6882fc1cc6847844b78ba2c1718a3e56c22589743d5cfc82"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_lifecycle_test.go",
+        "sha256": "5b9edce3667048c658b12502b7b6ac9c5e728a4193f2a21af9960aebce71fdd0"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_surface.go",
+        "sha256": "d65991ea66fe745a97f8b70601783fc09fcdc9360ea2432357e70a744eabf26e"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_runtime.go",
+        "sha256": "ba5452be44c24ed7eec0db977eb989c66e94e90415751661da076a6705b8817c"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_gpu.go",
+        "sha256": "6c0290a699d09fb098fb155b579dd7a9d3061ce2daafa62a8a868f1a8b52808d"
+      }
+    ],
+    "remaining": [
+      "other BG/TAI sources",
+      "scroll and command callers",
+      "other map spell/item tails",
+      "battle HUD",
+      "normal/manual/platform review",
+      "source408 remains blocked"
+    ],
+    "readme_figure": {
+      "output": {
+        "file": "docs/figures/hd-battle-forest-coast.png",
+        "sha256": "5ea4da59b6f377d79cb0a9b36db7e63162bab50f26451608c35d3398406a4aeb"
+      },
+      "sources": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-game5-candidate-player-oct24-r1-capture/001-04.png",
+          "sha256": "1147c6faeb903dd8b738f559639410cc89f859eeeb58e977a2745c742b9e7088"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-game6-candidate-player-oct24-r1-capture/001-04.png",
+          "sha256": "34d33323dc2ede5d50401a95e9bf5fe8acf7e4cca3206e30fa01287b2fa27778"
+        }
+      ],
+      "recipe": "two complete 1920x1200 actual Game.Draw captures, LANCZOS half size side by side; no crop or repaint",
+      "scope": "controlled terrain selector and fixed attack/counter results, native HUD; not normal-player or original oracle"
+    },
+    "cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-runtime-cleanup-oct24-r1.json",
+      "sha256": "315d95b51cacc7021a3e1635b24a1f25e398050bc90bc1e29875d69da7577105",
+      "removed_duplicate_allocated_bytes": 1626701824,
+      "runtime_current_is_independent": false,
+      "raw_sources_and_receipts_kept": true
+    },
+    "validated_runtime_files": 5555,
+    "private_git": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-private-git-oct24-r1.json",
+      "sha256": "25f54dafca202dfca50a354180eade7cd03d42447658b1a667fb529be16e2796",
+      "head_equal": true,
+      "worktree_clean": true,
+      "no_private_commit_id_in_public": true
+    },
+    "compiler_replay": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-compiler-replay-oct24-r1.json",
+      "sha256": "abd20300bad0722e0ca29f5518f96f159821ed765071b37539873d93eb89350e"
+    },
+    "public_git_verification_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/forest-coast-public-git-oct24-r1.json",
+    "issue": {
+      "number": 263,
+      "url": "https://github.com/wicanr2/fd2_re/issues/263",
+      "state": "OPEN"
+    }
   }
 }

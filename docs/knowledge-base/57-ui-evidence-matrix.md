@@ -1,5 +1,7 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
+森林內部／海岸的背景與台座已接共用物理，限定CONFORMED-SCOPED／RUNTIME-E1。兩包八完整攻防、24次F2、56跨包PNG相同、原生重組與來源GPU、舊來源及正式載入通過；原框、層序、聲音／節拍與規則保持。數量只見[58](58-fd2-exe-re-coverage.md)，重跑與手繪近似依[61](61-modern-theme-runtime-spec.md)及[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的forest_coast_surface_followup_20261024；其他來源／caller及正常／集中人工／平台仍待。
+
 戰後物品／金錢成功訊息已接HD世界、清晰文字與480頭像，限定CONFORMED-SCOPED／RUNTIME-E1。四項驗證批次通過，含兩完整Game.Draw共26拍／26次F2、開收框及restore、金額數字、原生獎勵交易與HUD回交。使用受控頭像／獎勵值，正常玩家及人工／平台仍待；清冊與素材保持，依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的reward_message_hd_followup_20261023及[61](61-modern-theme-runtime-spec.md)。
 
 指令13～16回復的前導、淡藍環、HD輪廓閃光、綠色數字與等待已接入，限定CONFORMED-SCOPED／RUNTIME-E1。兩包各八完整Game.Draw、88次F2、一次結算／續行與四指令非空HD地形變色通過；48張跨包畫面SHA相同。固定種子7與受控記錄／角色位置明示，未新增正常玩家、原版RGB或PLAYER-E2。其他效果／指令owner、背景／台座／HUD與集中正常／人工／平台仍待。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，主證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的heal13_16_map_hd_followup_20261023。

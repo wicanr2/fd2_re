@@ -188,11 +188,13 @@ HD高解析呈現仍未全部完成。本項保持開啟；目前狀態與唯一
 
 全部戰鬥HD仍未完成，本項保持開啟。使用者定案先完成全部HD串接，再集中正常玩家抽驗與人工造型確認；原驗收條件保持。唯一數量與缺口依[58](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)，契約依[61](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/61-modern-theme-runtime-spec.md)。
 
-已登錄FIGANI人物與FDOTHER效果、指令9／10～12及13～16地圖回復、森林BG_004與TAI_004等來源的實際接入及驗證，逐批依[HD主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-battlefield-20261019.json)。13～16兩包完整回復流程、F2與一次交易已通過，不能再列為未接入；正常／人工／平台驗收仍待。
+已登錄FIGANI人物與FDOTHER效果、指令9／10～12及13～16地圖回復等來源的接入與驗證，逐批依[HD主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-battlefield-20261019.json)。行動收尾的物品／金錢成功訊息HD已接入，詳reward_message_hd_followup_20261023及#204；不擴稱所有戰鬥介面已HD。
 
-本輪補上行動收尾的物品／金錢成功訊息HD，詳reward_message_hd_followup_20261023；兩受控Game.Draw、26拍／26次F2、HD頭像朝向／移動裁切與一次續行通過，原獎勵／金額／HUD回交順序保持，無新素材。此成功提示進度同步#204，不擴稱所有戰鬥介面已HD。
+森林小屋BG004／TAI004原證據保持。新森林內部與海岸BG005／006及TAI005／006已正式接入共用物理caller，四份原稿與成品同步私人白名單。兩包八完整Game.Draw攻防、24次F2、64／65 DAC與一次返回通過；56組跨包PNG逐SHA相同。兩包各兩來源原生畫布重組、50世界GPU與冷錯件原子性通過；同步後正式載入及舊4來源回歸成功，共21份Go閘門無SKIP／逾時／OOM。Renderer、shader、規則與保存不改。主收據forest_coast_surface_followup_20261024保存來源、完整配方inline及永久重跑入口。
 
-仍待來源408、其他效果／指令caller、其餘BG／TAI與捲動、完整HUD、18／19第三銀行合法caller、狀態致死與普通召喚的正常GUI、集中人工及平台效能。混合背景反擊限制沿#265；凱麗右腳#269及蓋亞手腕#268維持集中人工待辦。沒有新原版parity、整章E2、Release或完整HD聲明。
+手繪構圖／材質、海岸全框比例與台座alpha核心裁切屬現代美術近似。完整Game.Draw使用明示地形索引與固定攻防結果，正常玩家與集中人工仍待，不新增原版RGB對拍或造型定稿聲明。最初unit5拒收源自測試保留資源4／154寬度斷言，修正為所選來源與native.Width後乾淨重跑；正式圖源與選取規則不設特例。編製重跑八份新檔逐SHA相同，原稿、PNG與拒收收據保持。
+
+仍待其餘BG／TAI、捲動／指令caller、其他效果尾段及完整HUD、18／19第三銀行合法caller、狀態致死與普通召喚的正常GUI、集中人工與平台效能。來源408保留原有未知／阻擋等級，不由已登錄素材數外推完成。混合背景反擊限制沿#265；凱麗右腳#269及蓋亞手腕#268維持集中人工待辦。本批沒有新Release或完整HD聲明。
 
 怎樣算做完：建立由正式consumer到FIGANI人物及共同效果的可重跑覆蓋清冊；完成可達戰鬥動畫HD素材、原始位置／層序／節拍／命中與音效標記的正式呈現，缺件明示；正常玩家抽驗攻擊、受擊／反擊、法術／效果、死亡與戰場返回，F2、保存冷讀與代表性效能通過；已登錄素材同步私人庫，保留原版像素模式。資料測試及離線PNG不能取代正式GUI。
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""在既有 Go Docker 驗證 BG_004／TAI_004 候選，拒收 SKIP、缺項、OOM 或逾時。"""
+"""在既有 Go Docker 驗證明示 BG／TAI 候選，拒收 SKIP、缺項、OOM 或逾時。"""
 import argparse
 import hashlib
 import json
@@ -12,6 +12,7 @@ from verify_fd2_player9_map_hd import check_real_runtime
 
 ROOT = Path(__file__).resolve().parents[1]
 REQUIRED = {
+    'source-unit': {'TestModernBattleSurfaceHDSourceAndAtomic', 'TestModernBattleSurfacePhysicalNativeReconstruction'},
     'unit': {'TestModernBattleSurfaceHDSourceAndAtomic', 'TestModernBattleSurfacePhysicalNativeReconstruction', 'TestModernBattleSurfaceCompleteTheme'},
     'source': {'TestModernBattleSurfaceHDGPU'},
     'legacy-gpu': {'TestModernHDBattleGPUBridge'},
@@ -30,6 +31,7 @@ def main():
     p.add_argument('--pack', type=Path, required=True)
     p.add_argument('--out', type=Path, required=True)
     p.add_argument('--enemy', action='store_true')
+    p.add_argument('--surface', type=int, choices=[4,5,6], default=4)
     p.add_argument('--with-pedestal', action='store_true')
     p.add_argument('--require-real-runtime', action='store_true')
     p.add_argument('--timeout', type=int, default=1200)
@@ -44,9 +46,10 @@ def main():
     env.update(FD2_MUTE='1', FD2_TEST_MODERN_BATTLE_CATALOG=str(a.catalog.resolve()), FD2_TEST_MODERN_BATTLE_PACK=str(a.pack.resolve()))
     for name in ['FD2_HD_BATTLE_LIFECYCLE_GPU','FD2_HD_BATTLE_REAL','FD2_HD_BATTLE_ENEMY_ACTOR','FD2_HD_SURFACE_GPU','FD2_HD_BATTLE_BACKGROUND','FD2_HD_BATTLE_PEDESTAL']:
         env.pop(name,None)
-    if a.with_pedestal: env['FD2_HD_BATTLE_PEDESTAL']='4'
+    env['FD2_HD_BATTLE_SURFACE_INDEX']=str(a.surface)
+    if a.with_pedestal: env['FD2_HD_BATTLE_PEDESTAL']=str(a.surface)
     if a.kind == 'game':
-        env.update(FD2_HD_BATTLE_LIFECYCLE_GPU='1',FD2_HD_BATTLE_REAL='1',FD2_HD_BATTLE_BACKGROUND='4',
+        env.update(FD2_HD_BATTLE_LIFECYCLE_GPU='1',FD2_HD_BATTLE_REAL='1',FD2_HD_BATTLE_BACKGROUND=str(a.surface),
                    FD2_TEST_MODERN_BATTLE_FIGURE='76' if a.enemy else '0',FD2_TEST_HD_BATTLE_OUT=str(a.out)+'-capture')
         if a.enemy: env['FD2_HD_BATTLE_ENEMY_ACTOR']='1'
     elif a.kind == 'source': env['FD2_HD_SURFACE_GPU']='1'
@@ -72,13 +75,13 @@ export DISPLAY=:99
         raise SystemExit('必要測試缺項、SKIP 或失敗')
     if a.kind == 'game':
         receipt = json.loads(Path(str(a.out)+'-capture/receipt.json').read_text())
-        if receipt.get('background_selection',{}).get('BaseBG') != 4 or not receipt.get('background_hd_sha256') or receipt['continuations'] != 1:
-            raise SystemExit('缺少實際 BG_004 Game.Draw 或一次返回')
-        if a.with_pedestal and (receipt.get('background_selection',{}).get('TAI') != 4 or not receipt.get('pedestal_hd_sha256')):
-            raise SystemExit('缺少實際 TAI_004 Game.Draw')
+        if receipt.get('background_selection',{}).get('BaseBG') != a.surface or not receipt.get('background_hd_sha256') or receipt['continuations'] != 1:
+            raise SystemExit('缺少所選 BG Game.Draw 或一次返回')
+        if a.with_pedestal and (receipt.get('background_selection',{}).get('TAI') != a.surface or not receipt.get('pedestal_hd_sha256')):
+            raise SystemExit('缺少所選 TAI Game.Draw')
     report = dict(status='PASS',kind=a.kind,enemy=a.enemy,required=sorted(REQUIRED[a.kind]),
                   catalog_sha256=hashlib.sha256(a.catalog.read_bytes()).hexdigest(),
-                  catalog=str(a.catalog.resolve()),pack=str(a.pack.resolve()),with_pedestal=a.with_pedestal,
+                  catalog=str(a.catalog.resolve()),pack=str(a.pack.resolve()),with_pedestal=a.with_pedestal,surface=a.surface,
                   independent_runtime_files=independent, memory=str(a.out)+'.memory.json',log=str(a.out)+'.log',
                   scope='固定來源／GPU／明示物理戰鬥fixture，非正常玩家或新原版RGB對拍')
     Path(str(a.out)+'.gate.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')

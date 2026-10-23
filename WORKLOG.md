@@ -3012,3 +3012,13 @@ TAI_004候選675項編製及單元通過，原框154×42轉924×252透明圖，�
 2026-10-24 成功訊息限定CONFORMED-SCOPED／RUNTIME-E1：最終unit r3、game r3、八項regression及兩項hud四批13項必要Go測試通過，無SKIP／逾時／OOM。物品192與金額123456各六開、等ACK、五收與restore，共26完整Game.Draw與26次F2；頭像selector9為受控fixture，原生面板框外HD世界、鏡向／移動裁切、金額0及123456789逐字、HP／MP／RNG／owner／原final與一次續行通過。關框後才加金幣與HUD回交保持。清冊677項及全部美術／私人白名單未改；README雙圖由兩張完整1920×1200等待畫面半縮並排，不裁切或重畫。其他成功問句、到期訊息、HUD／地形、背景／caller、浮出工具列／速度及正常／集中人工／平台仍待，不宣稱完整HD或新原版parity。
 
 收尾核對：#204與#263已更新遠端內文、原驗收條件保持且皆OPEN，提交前重新拉24項worklist並render／verify，可能已完成0項。322條教訓／188 guard通過；41項SHA引用、八份來源指紋、2431個本地Markdown目標、gofmt與本批輸出UID1000:1000通過。完整主題加兩個保留測試Game的峰值3430088704 bytes，只作測試資源量測，不外推正常玩家效能。本批沒有錄影、Release、新映像／volume或大型素材複本，十張通過PNG、兩張拒收PNG與原始log／收據保存。FD2測試容器已退出；公開提交／遠端核對另記reward-hd-public-git-oct24-r1.json。
+
+2026-10-24 從73bca93e主線建立hd/forest-coast-20261024，回到戰鬥HD背景缺口。新增BG005森林內部／006海岸與TAI005／006四原稿，沿已核准手繪風格。原始P圖預覽為灰階，構圖參考原圖、配色沿固定色盤總覽與明示材質；原RGBA、黑白alpha合成與縮小配方保留。61先DRAFT再依審圖／透明端點升READY，既有編製器追加固定配方批次，候選681項、舊677項保持；8新增白名單檔，舊檔連結共用。獨立runtime建立5555實檔。
+
+森林source GPU首批50世界／CPU Over容差1已通過；unit5首輪冷來源／錯件與完整681主題已通過，但原生重組仍含source.Resource!=4的舊斷言而整包拒收。只把測試來源與155寬度改為實際所選5／6與native.Width，正式renderer／shader不改，舊失敗保留。接著依序驗兩來源、兩包、雙側完整Game.Draw與舊4回歸，最多兩Go工作並行；未完成前不登錄正式清冊。
+
+2026-10-24 森林內部／海岸場景限定CONFORMED-SCOPED／RUNTIME-E1：19份候選／5555獨立實檔包／舊4來源Go閘門，以及同步後正式unit與GPU兩份，共21份通過，無SKIP／逾時／OOM。八完整Game.Draw、24次F2、64／65 DAC與一次返回，56組跨包PNG逐SHA相同；兩包各兩來源原生重組與50世界GPU、冷錯件原子性通過。原Go renderer／shader／規則／保存不改，新增4個battle_surface_hd項目，舊677項及6452私人檔保持，新四原稿／四成品皆私人白名單，6460實檔／SHA／UID通過。README雙圖取兩個同段落的完整最終Game.Draw半縮並排，不裁切／重畫，像素HUD及手繪構圖／比例近似明示。正常／集中人工／平台及其他來源／caller仍待，完整HD目標保持active。
+
+私人6460實檔已獨立提交推送，主機核對本機／遠端main相同、工作樹乾淨；公開資料只存核對結果，不公開私人提交識別碼。編製器以固定基底／原稿重跑，八份新檔及正式assets陣列完全相同，inline配方與前677項基底均可精確重建原SHA。5555份runtime實檔與兩份候選各八新實檔，在正式／私人來源逐SHA核對後原子改為同SHA相對連結，移除重複配置1626701824 bytes，不當共享主機淨可用空間量測。原稿、全部PNG、recipe／manifest／log／拒收與通過收據保留，已去重runtime不能再作獨立驗收。沒有新影片、Release、映像或volume。
+
+森林／海岸最後檢查通過101項SHA引用、九份來源指紋、2443個本地Markdown目標、gofmt及本批輸出1000:1000。README除明示現況句及新雙圖外逐字保持；323條教訓／188個guard通過。遠端24項worklist已pull／render／verify，#263保持OPEN，集中人工#268／#269不關閉。FD2測試容器全部退出，沒有新映像或volume；最終收據為forest-coast-final-check-oct24-r1.json。公開提交／遠端核對保存於forest-coast-public-git-oct24-r1.json，完整HD目標保持active。
