@@ -8,6 +8,7 @@ import (
 )
 
 type NativeCommand9RenderedFrame struct {
+	Sources            NativeCommandSources
 	Pixels             []byte
 	HPStage            int
 	PlaySub1, PlaySub2 bool
@@ -125,7 +126,12 @@ func BuildNativeCommand9AISequence(in NativeCommand9AIInput) (NativeCommand9AISe
 		if err != nil {
 			return NativeCommand9AISequence{}, err
 		}
-		out.SlideIn = append(out.SlideIn, NativeCommand9RenderedFrame{Pixels: pixels})
+		actorFrame := 0
+		if k == in.Schedule.ActorSlideIn-1 {
+			actorFrame = -1
+		}
+		out.SlideIn = append(out.SlideIn, NativeCommand9RenderedFrame{Pixels: pixels,
+			Sources: NativeCommandSources{Base: in.BeforeBase, ActorFrame: actorFrame, ActorOffsetX: -10 * k, TargetFrame: 0, Phase: "command9-slide-in"}})
 	}
 	state := figani.NewNativeCommand9AIState()
 	for index := 0; index < in.Schedule.FrontFrames; index++ {
@@ -137,7 +143,8 @@ func BuildNativeCommand9AISequence(in NativeCommand9AIInput) (NativeCommand9AISe
 		if err != nil {
 			return NativeCommand9AISequence{}, err
 		}
-		out.Front = append(out.Front, NativeCommand9RenderedFrame{Pixels: pixels})
+		out.Front = append(out.Front, NativeCommand9RenderedFrame{Pixels: pixels,
+			Sources: NativeCommandSources{Base: in.BeforeBase, ActorFrame: -1, TargetFrame: 0, Before: nativeCommand9SourceLayers(frame.EffectFrames), Phase: "command9-front"}})
 		state = frame.Next
 	}
 	planned, state, err := figani.BuildNativeCommand9AITargetSequence(state, in.Schedule)
@@ -153,7 +160,9 @@ func BuildNativeCommand9AISequence(in NativeCommand9AIInput) (NativeCommand9AISe
 		if err != nil {
 			return NativeCommand9AISequence{}, fmt.Errorf("battlepresent: command9 target frame %d: %w", index, err)
 		}
-		out.Target = append(out.Target, NativeCommand9RenderedFrame{Pixels: pixels, HPStage: frame.HPStage, PlaySub1: frame.PlaySub1, PlaySub2: frame.PlaySub2})
+		out.Target = append(out.Target, NativeCommand9RenderedFrame{Pixels: pixels, HPStage: frame.HPStage, PlaySub1: frame.PlaySub1, PlaySub2: frame.PlaySub2,
+			Sources: NativeCommandSources{Base: in.TargetBases[hpStage], ActorFrame: -1, TargetFrame: idleFrame,
+				Before: nativeCommand9SourceLayers(frame.EffectFrames[:1]), After: nativeCommand9SourceLayers(frame.EffectFrames[1:]), Phase: "command9-target"}})
 		if in.Target.Frames[idleFrame].Delay <= 0 {
 			return NativeCommand9AISequence{}, errors.New("battlepresent: command9 target idle delay unavailable")
 		}
@@ -172,7 +181,8 @@ func BuildNativeCommand9AISequence(in NativeCommand9AIInput) (NativeCommand9AISe
 		if err != nil {
 			return NativeCommand9AISequence{}, err
 		}
-		out.Tail = append(out.Tail, NativeCommand9RenderedFrame{Pixels: pixels})
+		out.Tail = append(out.Tail, NativeCommand9RenderedFrame{Pixels: pixels,
+			Sources: NativeCommandSources{Base: in.AfterBase, ActorFrame: -1, TargetFrame: idleFrame, Before: nativeCommand9SourceLayers(frame.EffectFrames), Phase: "command9-tail"}})
 		state = frame.Next
 	}
 	for k := in.Schedule.ActorSlideOut - 1; k >= 0; k-- {
@@ -180,8 +190,17 @@ func BuildNativeCommand9AISequence(in NativeCommand9AIInput) (NativeCommand9AISe
 		if err != nil {
 			return NativeCommand9AISequence{}, err
 		}
-		out.SlideOut = append(out.SlideOut, NativeCommand9RenderedFrame{Pixels: pixels})
+		out.SlideOut = append(out.SlideOut, NativeCommand9RenderedFrame{Pixels: pixels,
+			Sources: NativeCommandSources{Base: in.AfterBase, ActorFrame: 0, ActorOffsetX: -10 * k, TargetFrame: idleFrame, Phase: "command9-slide-out"}})
 	}
 	out.NextIdleFrame, out.NextIdleRepeat = idleFrame, idleRepeat
 	return out, nil
+}
+
+func nativeCommand9SourceLayers(indices []int) []NativeCommandEffectSource {
+	out := make([]NativeCommandEffectSource, 0, len(indices))
+	for _, index := range indices {
+		out = append(out, NativeCommandEffectSource{Frame: index})
+	}
+	return out
 }

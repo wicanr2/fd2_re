@@ -53,6 +53,9 @@ func loadModernBattleHDAsset(set *modernStoryPortraitSet, asset modernThemeAsset
 }
 
 func modernBattleHDContract(asset modernThemeAsset) (prefix, consumer, cycle, layout string, ok bool) {
+	if asset.Role == "battle_effect_hd_set" && asset.SourceArchive == "FDOTHER.DAT" && asset.SourceResource == 44 {
+		return "FDOTHER", "native_fdother_command9_ai_rgba_hd6_v1", "native_command9_ai_frames", "native_descriptor_hd6", true
+	}
 	if asset.Role == "battle_animation_hd_set" && asset.SourceArchive == "FIGANI.DAT" && asset.SourceResource >= 0 && asset.SourceResource < 409 {
 		return "FIGANI", "native_figani_rgba_hd6_v1", "native_descriptor_key_poses", "contain_native_descriptor_hd6_candidate", true
 	}
@@ -86,6 +89,10 @@ func loadModernBattleHDAssetWithNative(set *modernStoryPortraitSet, asset modern
 		len(asset.NativeHeader) != 3 || asset.NativeHeader[0] != int(native.HeaderByte1) ||
 		asset.NativeHeader[1] != int(native.HeaderByte2) || asset.NativeHeader[2] != int(native.HeaderByte4) {
 		return errors.New("modern HD battle: incomplete or mismatched animation")
+	}
+	if asset.SourceArchive == "FDOTHER.DAT" && asset.SourceResource == 44 &&
+		(len(native.Frames) != 31 || native.HeaderByte1 != 0 || native.HeaderByte2 != 31 || native.HeaderByte4 != 0) {
+		return errors.New("modern HD battle: command9 AI native shape differs")
 	}
 	var entries map[int]*modernBattleHDResource
 	if asset.SourceArchive == "FDOTHER.DAT" {
@@ -143,7 +150,9 @@ func loadModernBattleHDAssetWithNative(set *modernStoryPortraitSet, asset modern
 		for _, value := range frame.Mask {
 			fullMask = fullMask && value != 0
 		}
-		nativeEmpty := asset.SourceArchive == "FIGANI.DAT" && len(frame.Mask) == frame.Width*frame.Height && bytes.Count(frame.Mask, []byte{0}) == len(frame.Mask)
+		emptyAllowed := asset.SourceArchive == "FIGANI.DAT" ||
+			(asset.SourceArchive == "FDOTHER.DAT" && asset.SourceResource == 44 && len(native.Frames) == 31 && index == 30)
+		nativeEmpty := emptyAllowed && len(frame.Mask) == frame.Width*frame.Height && bytes.Count(frame.Mask, []byte{0}) == len(frame.Mask)
 		if nativeEmpty && visible {
 			return fmt.Errorf("modern HD battle: frame %d adds ink to empty native frame", index)
 		}

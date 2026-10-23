@@ -177,7 +177,7 @@ func TestModernHDOrdinaryRemainingRuntimeGPU(t *testing.T) {
 		t.Skip("dedicated ordinary GPU process required")
 	}
 	command, err := strconv.Atoi(os.Getenv("FD2_TEST_ORDINARY_COMMAND"))
-	if err != nil || (command != 2 && command != 3 && command != 6 && command != 7 && command != 8) {
+	if err != nil || (command != 2 && command != 3 && command != 6 && command != 7 && command != 8 && command != 9) {
 		t.Fatal("explicit ordinary command required")
 	}
 	t.Setenv("FD2_MUTE", "1")
@@ -220,6 +220,9 @@ func TestModernHDOrdinaryRemainingRuntimeGPU(t *testing.T) {
 	if command != 6 {
 		phases = append(phases, "tail")
 	}
+	if command == 9 {
+		phases = []string{"prelude", "actor", "actor-pulse", "command9-slide-in", "command9-front", "command9-target", "command9-tail", "command9-slide-out", "tail"}
+	}
 	for _, phase := range phases {
 		if p.phases[phase] == 0 || p.switches[phase] != 1 {
 			t.Fatalf("missing HD/F2 in %s", phase)
@@ -228,7 +231,7 @@ func TestModernHDOrdinaryRemainingRuntimeGPU(t *testing.T) {
 	if len(p.job.plan.Results) > 1 && (p.phases["transition"] == 0 || p.switches["transition"] != 1) {
 		t.Fatal("missing multi-target HD/F2 transition")
 	}
-	stages := map[int]int{2: 6, 3: 13, 6: 5, 7: 5, 8: 16}[command]
+	stages := map[int]int{2: 6, 3: 13, 6: 5, 7: 5, 8: 16, 9: 20}[command]
 	for _, result := range p.job.plan.Results {
 		if result.Target.HP != result.HPAfter {
 			t.Fatal("target settlement differs")

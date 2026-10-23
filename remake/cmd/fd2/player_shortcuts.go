@@ -107,7 +107,13 @@ func (g *Game) applyTheme(set *modernStoryPortraitSet) error {
 		}
 	}
 	if resource := g.modernCompoundEffectResource(); set != nil && resource >= 0 {
+		// 共用複合指令與指令9的owner各自預備，不共用資源索引。
 		if err := set.prepareBattleHDBanks(g.modernCompoundFigureResources(), []int{resource}); err != nil {
+			return err
+		}
+	}
+	if set != nil && g.nativeCmd9AIPresentation != nil {
+		if err := prepareModernHDCommandBanks(set, g.nativeCmd9AIPresentation.hd); err != nil {
 			return err
 		}
 	}

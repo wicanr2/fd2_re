@@ -54,7 +54,9 @@ func bindModernHDOrdinarySources(sources []battlepresent.NativeCommandSources, a
 			return nil, err
 		}
 		if s.ActorFrame >= 0 {
-			layers = append(layers, modernHDCommandFigure(actor, actorID, s.ActorFrame))
+			actorLayer := modernHDCommandFigure(actor, actorID, s.ActorFrame)
+			actorLayer.DX = s.ActorOffsetX
+			layers = append(layers, actorLayer)
 		}
 		if !s.TargetBeforeEffects && !s.OmitTarget {
 			layers = append(layers, target)
@@ -69,6 +71,30 @@ func bindModernHDOrdinarySources(sources []battlepresent.NativeCommandSources, a
 
 func (f *modernHDOrdinaryFrames) resources() []int {
 	return modernCompoundFigureResources(f.sourceFrames())
+}
+
+func (j *nativeCommand9AIPresentationJob) modernFrame() *nativeCompoundPresentedFrame {
+	if j == nil || j.hd == nil || j.hd.opening == nil {
+		return nil
+	}
+	var frames []nativeCompoundPresentedFrame
+	switch j.phase {
+	case nativeCommand9AICommonPrelude:
+		frames = j.hd.opening.prelude
+	case nativeCommand9AIActor:
+		frames = j.hd.opening.actor
+		if j.frame >= 0 && j.frame < len(j.actorSpecs) && j.actorSpecs[j.frame].Pulse && !j.pulseBlack {
+			frames = j.hd.opening.pulse
+		}
+	case nativeCommand9AIHandler:
+		frames = j.hd.handler
+	case nativeCommand9AICommonTail:
+		frames = j.hd.tail
+	}
+	if j.frame < 0 || j.frame >= len(frames) {
+		return nil
+	}
+	return &frames[j.frame]
 }
 
 func (f *modernHDOrdinaryFrames) sourceFrames() []nativeCompoundPresentedFrame {

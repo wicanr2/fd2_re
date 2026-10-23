@@ -238,10 +238,12 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
             cycle = 'native_compound_frames' if effect else 'native_descriptor_key_poses'
             if effect and type(resource) is int and resource in ORDINARY_EFFECT_RESOURCES:
                 consumer, cycle = 'native_fdother_ordinary_rgba_hd6_v1', 'native_ordinary_frames'
+            if effect and resource == 44:
+                consumer, cycle = 'native_fdother_command9_ai_rgba_hd6_v1', 'native_command9_ai_frames'
             layout = 'native_descriptor_hd6' if effect else 'contain_native_descriptor_hd6_candidate'
             if (entry['status'] not in {'runtime_candidate', 'runtime_ready'} or
                     entry['consumer_contract'] != consumer or
-                    entry['source_archive'] != source or type(resource) is not int or resource not in (ORDINARY_EFFECT_RESOURCES | set(range(65,69)) if effect else range(409)) or
+                    entry['source_archive'] != source or type(resource) is not int or resource not in (ORDINARY_EFFECT_RESOURCES | {44} | set(range(65,69)) if effect else range(409)) or
                     (source,resource) in battle_resources or entry['alpha_contract'] != 'coverage' or
                     entry['cycle_policy'] != cycle or entry['layout_policy'] != layout or
                     (entry['width'], entry['height']) != (1920, 1200) or
@@ -250,6 +252,8 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
                 raise ValueError(f'invalid HD battle resource: {asset_id}')
             battle_resources.add((source,resource))
             header, frames = entry['native_header'], entry['native_frames']
+            if effect and resource == 44 and (count != 31 or header != [0,31,0]):
+                raise ValueError(f'invalid command9 AI shape: {asset_id}')
             if (not isinstance(header, list) or len(header) != 3 or any(type(x) is not int or x not in range(256) for x in header)
                     or (header[0] != 0 and header[1] > count) or not isinstance(frames, list) or len(frames) != count):
                 raise ValueError(f'invalid HD battle descriptors: {asset_id}')

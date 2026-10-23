@@ -30,6 +30,12 @@ func ordinaryRemainingHDTestGame(t *testing.T, command int) (*Game, *battle.Unit
 		mode = 2
 	case 8:
 		actor.BattleFig = 21
+	case 9:
+		actor.Camp, target.Camp = battle.Enemy, battle.Own
+		actor.NativeRecordByte6, target.NativeRecordByte6 = 0, 2
+		actor.HasNativeRecordByte6, target.HasNativeRecordByte6 = true, true
+		actor.BattleFig, target.BattleFig = 90, 0
+		g.nativeRNGState = 3
 	default:
 		t.Fatal("unsupported ordinary test command")
 	}
@@ -49,6 +55,8 @@ func startOrdinaryRemainingHD(g *Game, command int, actor, target *battle.Unit, 
 		return g.startNativeCommand7Presentation(actor, target, then)
 	case 8:
 		return g.startNativeCommand8Presentation(actor, target, then)
+	case 9:
+		return g.startNativeCommand9AIPresentation(actor, target, then)
 	}
 	return fmt.Errorf("unsupported ordinary command")
 }
@@ -66,6 +74,15 @@ type ordinaryRemainingTestOwner struct {
 
 func ordinaryRemainingOwner(g *Game, command int) ordinaryRemainingTestOwner {
 	switch command {
+	case 9:
+		j := g.nativeCmd9AIPresentation
+		if j == nil {
+			return ordinaryRemainingTestOwner{}
+		}
+		return ordinaryRemainingTestOwner{owner: j, hd: j.hd, plan: j.plan, step: g.stepNativeCommand9AIPresentation,
+			active: func() bool { return g.nativeCmd9AIPresentation != nil }, modern: j.modernFrame,
+			position:     func() (int, int, bool) { return int(j.phase), j.frame, j.pulseBlack },
+			acknowledged: func() bool { return j.drawn }}
 
 	case 2:
 		j := g.nativeCmd2Presentation
@@ -130,7 +147,7 @@ func TestModernHDOrdinaryRemainingPreflightAndF2Atomic(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, command := range []int{2, 3, 6, 7, 8} {
+	for _, command := range []int{2, 3, 6, 7, 8, 9} {
 		t.Run(fmt.Sprint(command), func(t *testing.T) {
 			g, actor, target := ordinaryRemainingHDTestGame(t, command)
 			set := cloneModernHDBanksForTest(template)

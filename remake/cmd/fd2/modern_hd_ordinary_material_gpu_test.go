@@ -115,6 +115,13 @@ func TestModernHDDragonAllFramesGPU(t *testing.T) {
 	testModernHDOrdinaryFramesGPU(t, []int{26, 27}, 36, "PASS-DRAGON-36-SOURCE-GPU")
 }
 
+func TestModernHDCommand9AIAllFramesGPU(t *testing.T) {
+	if os.Getenv("FD2_HD_COMMAND9_AI_GPU") != "1" {
+		t.Skip("dedicated command9 AI source GPU process required")
+	}
+	testModernHDOrdinaryFramesGPU(t, []int{44}, 31, "PASS-COMMAND9-AI-31-SOURCE-GPU")
+}
+
 func testModernHDOrdinaryFramesGPU(t *testing.T, resources []int, frameCount int, status string) {
 	t.Helper()
 	testModernHDRegisteredFramesGPU(t, "FDOTHER.DAT", resources, frameCount, status)

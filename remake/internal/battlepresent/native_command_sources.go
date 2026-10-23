@@ -7,6 +7,7 @@ import "github.com/wicanr2/fd2_re/remake/internal/figani"
 type NativeCommandSources struct {
 	Base                                                   []byte
 	ActorFrame                                             int
+	ActorOffsetX                                           int
 	TargetIndex, TargetFrame, TargetOffsetX, TargetOffsetY int
 	Before, After                                          []NativeCommandEffectSource
 	Phase                                                  string

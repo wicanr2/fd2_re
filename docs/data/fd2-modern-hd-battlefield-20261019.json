@@ -98455,7 +98455,7 @@
     },
     "private_remote_verification": "Independent private repository commit pushed; actual git ls-remote refs/heads/main re-read equals local HEAD. Private commit identity is not published."
   },
-  "latest_hd_batch": "remaining_figani_33_followup_20261023",
+  "latest_hd_batch": "command9_battle_hd_followup_20261023",
   "monks28_31_mage29_followup_20261022": {
     "status": "CONFORMED-SCOPED-RUNTIME-E1",
     "date": "2026-10-22",
@@ -199237,5 +199237,1617 @@
       ],
       "source": "主機gh實際回讀，官方build_snapshot／write_snapshot及render生成，未手改快照。"
     }
+  },
+  "command9_battle_hd_followup_20261023": {
+    "status": "CONFORMED-SCOPED-RUNTIME-E1",
+    "base_commit": "bc8259af3c68b91103fb4e008e300ba7f4109912",
+    "date": "2026-10-23",
+    "base_catalog": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-base-catalog-oct23-r1.json",
+      "sha256": "5bf16b483102ce82c213a9c697cfe79302056404ed8771455744467a48fcf199"
+    },
+    "native_reference": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-ai-native-controlled-oct23-r1.json",
+      "sha256": "7ebec7dd32d116c750c86db6d8f26c10341b61c15b41ea5bd95d52c2e85b608e"
+    },
+    "evidence": [
+      {
+        "file": "docs/data/ida/fd2_command9_player_ai_presentation_ida.txt",
+        "sha256": "00f115e71002ed3e19c525ffce9d6d4c35893a931bfb5af977e38ecfec0edab7"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-preimage-remake_internal_figani_native_command9.go",
+        "sha256": "eb066fc1932b73bde2295677350dfcd07037f34c51d549f46e65d108f9778f44",
+        "original_file": "remake/internal/figani/native_command9.go"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-preimage-remake_internal_battlepresent_native_command9.go",
+        "sha256": "00a83156b768259a7fee79c807785a3a85b6d221cf2fadd4f09feb78e390e10c",
+        "original_file": "remake/internal/battlepresent/native_command9.go"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-preimage-remake_cmd_fd2_native_command9_ai_presentation.go",
+        "sha256": "ed7bb3a616711c21c560f73178c68abaae3a07a97398f7c536a22ba6828b78a6",
+        "original_file": "remake/cmd/fd2/native_command9_ai_presentation.go"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-preimage-remake_cmd_fd2_native_command9_player_presentation.go",
+        "sha256": "b9b4227555d4898f412844f9ab52782efb78a297e2e4423486c0136764e0707b",
+        "original_file": "remake/cmd/fd2/native_command9_player_presentation.go"
+      }
+    ],
+    "scope": "補既有敵方指令9整條HD演出：前導／施術／119 handler／尾段與FDOTHER44全部31來源。玩家指令9的FDOTHER6地圖演出是獨立owner，另列後續，不能拿敵方效果代替。完整戰鬥HD目標不縮減。",
+    "required_checks": [
+      "固定31來源及描述子／標記／原0延遲保持；不把119呈現等同31圖源。",
+      "沿既有typed producer附加來源；層序、idle循環、11滑入／20前導／60目標／20尾段／8滑出與20段HP、MP一次／RNG／聲音／一次續行保持。",
+      "受驗stage兩包來源GPU；全部實際Game.Draw／F2、31特效與人物核心；來源、缺件、owner／交易原子性及舊路徑回歸。",
+      "既有手繪風格，母稿與透明度保持；全部驗證後正式清冊／私人庫／README及#263更新。"
+    ],
+    "formal_registered": true,
+    "private_synced": true,
+    "normal_player": false,
+    "human_review": false,
+    "full_battle_hd_complete": false,
+    "rules_and_save_changed": false,
+    "recordings_created": false,
+    "native_reference_inputs": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-native-reference-00-oct23-r1.png",
+        "sha256": "8fc86210ff3fdab2cf0c96965e317f1261e69bf61a1c98e0806995aa795d71e4",
+        "native_frame": 0
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-native-reference-06-oct23-r1.png",
+        "sha256": "b3b97b5bf15ca6babb28570c4b369353b41588faabdb1388e43d0596886dcfed",
+        "native_frame": 6
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-native-reference-16-oct23-r1.png",
+        "sha256": "a56d0906bfc0cc6340e60b6c2e4c907c2aa02dda5982fcda80c0c5f89e887d1f",
+        "native_frame": 16
+      }
+    ],
+    "native_blank_frames": [
+      30
+    ],
+    "native_empty_contract": "只對FDOTHER44、固定原Mask全0的第30幀允許全透明；其他FDOTHER與所有非空幀的255核心門檻保持。原空拍須同次Draw，不以GUI全黑或未畫到冒充。",
+    "generation": [
+      {
+        "key": "reaper",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-reaper-original-r1.png",
+        "sha256": "28021dc30800cdb940e6560851c18b01ddb06149464fb83be48520e82d539957",
+        "imagegen_source": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-dd89fe57-680a-42e7-a1db-b29f5c665e35.png",
+        "args": {
+          "transparent_background": true,
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-native-reference-00-oct23-r1.png",
+            "/home/anr2/cht/fd2/docs/figures/hd-remaining-figani-battle.png"
+          ],
+          "prompt": "Use case: stylized-concept. Production transparent RGBA combat sprite for an existing hand-painted classic tactical RPG remake. Image1 is the exact original pose/identity reference, image2 is the approved paint/rendering style only. Redraw ONLY the reaper apparition from image1: dark midnight blue bony body and skull face, long tattered crimson hood/cloak and scarf wrapping the torso and streaming broadly to image-right along the bottom. Flying slightly forward, angled scythe shaft from lower-left to upper-right, large curved pale silver blade at upper-right, gold socket, two hands grasping the shaft naturally. Match the compact diagonal pose and broad low trailing cloth silhouette, preserving the entire blade, fingers, both feet and cloth tips with generous transparent margins. Confident clean brush-painted shading, crisp contour, readable blue anatomical planes and deep red cloth folds. Full subject isolated, landscape 3:2 composition; opaque painted interior with real alpha transparency outside and normal soft edge only. No ground, background, aura, border, runes, writing or UI. Exactly one apparition, one scythe, two arms/hands/legs; retain the original pose rather than adding a new action."
+        },
+        "size": [
+          1536,
+          1024
+        ],
+        "alpha_extrema": [
+          0,
+          254
+        ],
+        "nonzero_bbox": [
+          0,
+          0,
+          1535,
+          1024
+        ],
+        "high_bbox": [
+          9,
+          2,
+          1498,
+          1012
+        ],
+        "high_edge_pixels": 0,
+        "alpha_modified": false
+      },
+      {
+        "key": "columnplain",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-columnplain-original-r1.png",
+        "sha256": "9da69c6bd35c293e7bacc16d1b1eb45e3d56310add867ef23e0a498e5d36f450",
+        "imagegen_source": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-b2cc36e9-cc6d-4b37-91b7-19db88f1c12e.png",
+        "args": {
+          "transparent_background": true,
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-native-reference-16-oct23-r1.png",
+            "/home/anr2/cht/fd2/docs/figures/hd-remaining-figani-battle.png"
+          ],
+          "prompt": "Use case: stylized-concept. One standalone hand-painted RGBA magical green cylinder effect for a tactical RPG. Image1 establishes the original green cylindrical veil geometry, image2 establishes approved hand-painted shading only. Draw a clean FACELESS version: a broad vertical acid/olive-green cylindrical energy curtain with straight parallel sides, subtly curved elliptical bottom, softly rounded upper cap and dark olive side shading. Width-to-height of the entire cylinder about 0.80. Bright yellow-green central illumination, painterly flowing vertical striations very restrained, most interior opaque green as in the original, dark olive edge shadows. No face, eyes, mouth, humanoid, skeleton or separate object. Portrait 4:5 canvas, whole cylinder fully inside with transparent padding all around, no ground shadow, sparks or glow outside the silhouette. True transparent background and painted opaque interior suitable for covering the original target, with natural antialiasing only at the contour. No text/UI/runes."
+        },
+        "size": [
+          1122,
+          1402
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "nonzero_bbox": [
+          0,
+          17,
+          1121,
+          1382
+        ],
+        "high_bbox": [
+          148,
+          29,
+          973,
+          1352
+        ],
+        "high_edge_pixels": 0,
+        "alpha_modified": false
+      },
+      {
+        "key": "columnface",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-columnface-original-r1.png",
+        "sha256": "7117ff3c08e09f4b51979ea9db91fcdccc846f13c7b6982038c7f95797429b6c",
+        "imagegen_source": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-1653c046-6a04-4f68-b5d4-eea5917ffee9.png",
+        "args": {
+          "transparent_background": true,
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-native-reference-16-oct23-r1.png",
+            "/home/anr2/cht/fd2/docs/figures/hd-remaining-figani-battle.png"
+          ],
+          "prompt": "Use case: stylized-concept. One standalone hand-painted RGBA magical green cylinder with a ghost face, for the same RPG remake. Image1 is the original composition and spectral facial pattern; image2 is approved crisp brush-painted rendering style only. Preserve original wide vertical olive/lime-green cylindrical veil (whole width/height about0.80), parallel sides and gently elliptical base, dark olive side shading and brighter green center. Inside the cylinder paint the spectral face from image1 as dark green flame-like cutouts: two long pointed eyes with small luminous yellow-green centers, a ragged angular open mouth and sharp irregular upper/lower teeth, a small yellow-green light deep inside mouth. Keep this face integrated into the opaque green veil, not a detached human skull or head. Strong clear hand-painted contours, smooth shading, restrained vertical energy streaks. Whole cylinder on portrait4:5 canvas with transparent padding and no cropped contour. True alpha transparent outside, predominantly fully opaque interior. No separate characters, objects, scenery, glow outside, text, sigils, watermarks or UI."
+        },
+        "size": [
+          1122,
+          1402
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "nonzero_bbox": [
+          31,
+          0,
+          1094,
+          1402
+        ],
+        "high_bbox": [
+          152,
+          15,
+          973,
+          1380
+        ],
+        "high_edge_pixels": 0,
+        "alpha_modified": false
+      },
+      {
+        "key": "faceglyph",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-faceglyph-original-r1.png",
+        "sha256": "85429202696b2ab2ae8c5575139043b63652a680b9e2f6768ec7d153ad671e14",
+        "imagegen_source": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-8b5945b0-64d2-4959-acfc-65bbc3c7753a.png",
+        "args": {
+          "transparent_background": true,
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-columnface-original-r1.png"
+          ],
+          "prompt": "Use case: background-extraction / precise-object-edit. This is an RPG effect asset, not a character portrait. Extract and redraw ONLY the spectral FACE MOTIF from the reference painted green cylinder: two dark olive-green pointed flaming eye sockets with small yellow-green inner lights, the small dark nose slits, and the ragged dark-green angular open mouth with irregular sharp flame teeth and tiny luminous yellow-green inner light. Keep the same brush-painted contours and ominous facial arrangement. REMOVE the cylinder body, all green curtain surface, the top and bottom ellipses, and any rectangular patch. Transparent between and around the disconnected eyes/nose/mouth; the dark motif shapes themselves have painted opaque interiors. No solid human/skull head, no framing face outline, no cylinder, no green background or haze. Single front-facing facial motif centered with generous transparent margin, portrait composition, complete tips/teeth inside canvas, true alpha transparency. No text, UI, symbols, watermark or other objects."
+        },
+        "size": [
+          1122,
+          1402
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "nonzero_bbox": [
+          0,
+          0,
+          1104,
+          1402
+        ],
+        "high_bbox": [
+          144,
+          53,
+          971,
+          1329
+        ],
+        "high_edge_pixels": 0,
+        "alpha_modified": false
+      },
+      {
+        "key": "pool",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-pool-original-r1.png",
+        "sha256": "214acb2abbffd6328fd2b0e8eef3b1bff1b4dfa05bc5a5c7c7fea5ea90b96d13",
+        "imagegen_source": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-559d4621-0d93-4135-bd16-1235d33834ec.png",
+        "args": {
+          "transparent_background": true,
+          "referenced_image_paths": [
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-columnplain-original-r1.png",
+            "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-ai-native-oct23-r1.png"
+          ],
+          "prompt": "Use case: stylized-concept. One small low elliptical magical green pool/portal combat sprite in the approved hand-painted style. Image1 is MATERIAL/PALETTE reference only, Image2 original contact sheet: use ONLY FDOTHER44 frames01..04, the low horizontal green ellipse, NOT the reaper or tall cylinders. Make ONE flattened filled oval, about4.5times wider than high, shallow perspective matching that original effect. Bright yellow-lime-green center with smooth olive-green gradient shading toward a dark olive/charcoal soft rim, subtle painted energy texture. No hole in the center, no multiple rings, no stone structure, no cylinder height, no face or objects. Entire ellipse with generous transparent space around it in a landscape canvas, predominantly opaque colored interior and naturally antialiased oval contour; actual alpha transparency outside. No surrounding glow, shadow, scenery, text, runes, UI or borders."
+        },
+        "size": [
+          2167,
+          725
+        ],
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "nonzero_bbox": [
+          0,
+          0,
+          2159,
+          725
+        ],
+        "high_bbox": [
+          114,
+          191,
+          2054,
+          581
+        ],
+        "high_edge_pixels": 0,
+        "alpha_modified": false
+      }
+    ],
+    "generation_ledgers": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-initial-generation-oct23-r1.json",
+        "sha256": "86df1cce512e8edb77750f6587a154d56784ba35c7f11ce3c89af8bc7ae702c7"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-second-generation-oct23-r1.json",
+        "sha256": "2285887e819e18f8487ece8646d99dcf60fd42177b35da2667e1ebf984cbb204"
+      }
+    ],
+    "alpha_previews": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-initial-alpha-review-oct23-r1.png",
+        "sha256": "cf48d5eecceace2c977f8c1438445b5ab068bd9903ce630aa433b98b021d92a5"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-second-alpha-review-oct23-r1.png",
+        "sha256": "11aa65911e8bffecee24bc04261d83c468645a044ba1de4db2099e5243ca479e"
+      }
+    ],
+    "initial_native_reference": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-ai-native-oct23-r1.json",
+      "sha256": "5a627882a34143029c42f1dfdcbcf52225732d631087ddace53277b4bb17fb57"
+    },
+    "runtime_bridge_spec": {
+      "status": "CONFORMED-SCOPED-RUNTIME-E1",
+      "evidence_review": "既有IDA閉合證據＋固定分離包的受版控31幀稽核。只增加來源描述與HD呈現，保留現有排程與規則。",
+      "source_auditor": {
+        "file": "tools/audit_fd2_command9_effect_source.py",
+        "sha256": "a2f132bfacbad567847867384e2538d78bb33fc74298ddd6a2457cfaa7bc1a27"
+      },
+      "typed_input": "NativeCommandSources增ActorOffsetX，零預設不改既有owner。NativeCommand9RenderedFrame附Sources，由同次indexed producer記錄Base／Before／actor／target／After及原生索引，不重排或重抽亂數。",
+      "handler": "11滑入ActorIdle[0] DX=-10*k、末幀省actor；20前導可選effect0再target；60目標effect0→當次target idle→effect(counter>>1)；20尾段同前導；8滑出DX=-10*k。119幀逐筆與indexed重組對照。",
+      "owner": "前導／施術採共用opening；handler的actor來源是idle而非cast；共用尾段採實際零header fallback cast來源。全job建立與GPU預備後才發布。F2切入前全來源預檢，不改先前主題／job／HP／MP。",
+      "effect_bank": "僅FDOTHER44，contract=native_fdother_command9_ai_rgba_hd6_v1，cycle=native_command9_ai_frames，geometry=native_descriptor_hd6，31完整描述子／原始0 delay及標記保持；不能套FIGANI skip-zero-delay。",
+      "blank": "僅44第30幀，native Mask全0證明後容許全透明；其餘30幀與所有既有FDOTHER仍須不透明核心。固定包全部PNG／Mask SHA由manifest綁定。",
+      "error": "缺圖、改SHA、錯描述子、非法索引、來源非固定包、錯原生空拍、錯contract拒收；失敗不發布job或theme。",
+      "vertical_chain": "固定包→typed動畫／既有數值plan→同次Sources→HD GPU Draw／F2；MP一次、20HP、聲音、RNG、500ms hold與續行保持；存檔格式及player9 map不變。",
+      "verification": "31來源GPU在工作樹與獨立封包各一次；119幀indexed獨立重組；完整Game.Draw生命週期／F2／MP1／HP20／RNG／續行及拒收交易；既有0..8及compound最小回歸。只聲明RUNTIME-E1，非新增PLAYER-E2／原版RGB parity。",
+      "art_status": "DRAFT，母稿透明度預覽後，先製作可丟棄31幀recipe，再審查與提升美術子規格；不直接登錄正式。",
+      "rights": "完整母稿及31圖層私人；公開庫僅程式／規格／SHA及核准總覽。玩家9map、其他地圖／HUD與集中人工抽驗保留待辦。"
+    },
+    "art_spec": {
+      "status": "CONFORMED-SCOPED-RUNTIME-E1",
+      "recipe": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-ai-recipe-oct23-r1.json",
+        "sha256": "0acbd8e8855791786de2cd39ba35291ae1aa3ca4b46c8e5b112de2ede052480c"
+      },
+      "review": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-ai-art-prototype-oct23-r2.png",
+        "sha256": "3ea2bf4b51560b343c8c45054e6622d71c67c0a16419e8a2fc940a855d55970f"
+      },
+      "selected_masters": [
+        "reaper",
+        "pool",
+        "columnplain",
+        "faceglyph"
+      ],
+      "unused_draft": "columnface",
+      "coverage": "31來源=30非空＋1原生空拍；單張幽影、4低橢圓、25光柱，其中12..23附面紋。",
+      "approximation": "手繪母稿矩形crop／LANCZOS縮放／Over疊層，column依原矩形伸縮；面紋位置是可編輯視覺近似，不稱原RGB parity。末27..29以固定原Mask的LANCZOS覆蓋度乘alpha保留向上消散，不更改母稿。",
+      "validation": "31幀固定索引、矩形、delay0與標記；原空拍禁止任何墨跡，30非空須有255核心；原始RGBA逐檔SHA不變。"
+    },
+    "compiled": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-ai-compiled-oct23-r1/compiled.json",
+      "sha256": "ea0da0c87649e7e7bffd77ffcb86aad3bd0d2ae039db793312a87d99a9047bb7"
+    },
+    "public_overview": {
+      "file": "docs/figures/hd-command9-ai-battle.png",
+      "sha256": "b6781c914577d9b7ffc9db0f11c4d3d3dff27ff5e22229afc2969ab33ec59a4f",
+      "cells": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-ai-runtime-candidate-oct23-r1-capture/command9-front-011.png",
+          "sha256": "f14b520e16d396373e6073e71dd78c684043af37d50368edb0c09de54f88cc46",
+          "phase": "command9-front",
+          "label": "Reaper"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-ai-runtime-candidate-oct23-r1-capture/command9-target-036.png",
+          "sha256": "501649057e3c6065651d1bf3093f2f2e2816ee429110b7331053ab9155ddc6f8",
+          "phase": "command9-target",
+          "label": "Pool"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-ai-runtime-candidate-oct23-r1-capture/command9-target-043.png",
+          "sha256": "3742b1381aad7d6aa64abfcfd1a38c53ae61cb78cea31ce61d742f25f51bbc41",
+          "phase": "command9-target",
+          "label": "Rising veil"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-ai-runtime-candidate-oct23-r1-capture/command9-target-063.png",
+          "sha256": "babb95f789e0a3d85078ef752fa05cf03fea8c986931949b49f2d858913411e8",
+          "phase": "command9-target",
+          "label": "Spectral face"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-ai-runtime-candidate-oct23-r1-capture/command9-target-088.png",
+          "sha256": "b4a5ad1ec18b9690fbd25db5923199bf6077723a6d26bcc2280fafdcde69a2d8",
+          "phase": "command9-target",
+          "label": "Dissolving"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-ai-runtime-candidate-oct23-r1-capture/command9-target-090.png",
+          "sha256": "2e43999e997b67e9a0a504d38f6ad30bcdabefc93b7d4312c7042703ea381e91",
+          "phase": "command9-target",
+          "label": "Native empty effect / target visible"
+        }
+      ],
+      "source_receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-ai-runtime-candidate-oct23-r1-capture/receipt.json",
+        "sha256": "fccc7a175e4704b42d9d494ddee3b735266f31f2da927474d0f0716f6a7deb52"
+      },
+      "gpu_proof": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-ai-final-gpu-oct23-r1.json",
+        "sha256": "0c058fe0eea2e6e3fcd20e06872dcb65332af45bbb7d6614025ac0f2d43a3960"
+      },
+      "scope": "六格實際Game.Draw與最終GPU縮圖，非原圖源拼貼、正常玩家或原版對拍。"
+    },
+    "recipe_inline": {
+      "schema_version": 1,
+      "reference_sha256": "7ebec7dd32d116c750c86db6d8f26c10341b61c15b41ea5bd95d52c2e85b608e",
+      "masters": {
+        "reaper": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-reaper-original-r1.png",
+          "sha256": "28021dc30800cdb940e6560851c18b01ddb06149464fb83be48520e82d539957",
+          "crop": [
+            1,
+            0,
+            1506,
+            1020
+          ]
+        },
+        "columnplain": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-columnplain-original-r1.png",
+          "sha256": "9da69c6bd35c293e7bacc16d1b1eb45e3d56310add867ef23e0a498e5d36f450",
+          "crop": [
+            140,
+            21,
+            981,
+            1360
+          ]
+        },
+        "faceglyph": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-faceglyph-original-r1.png",
+          "sha256": "85429202696b2ab2ae8c5575139043b63652a680b9e2f6768ec7d153ad671e14",
+          "crop": [
+            136,
+            45,
+            979,
+            1337
+          ]
+        },
+        "pool": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-pool-original-r1.png",
+          "sha256": "214acb2abbffd6328fd2b0e8eef3b1bff1b4dfa05bc5a5c7c7fea5ea90b96d13",
+          "crop": [
+            106,
+            183,
+            2062,
+            589
+          ]
+        }
+      },
+      "frames": [
+        {
+          "frame": 0,
+          "native_empty": false,
+          "clip_native_mask": false,
+          "layers": [
+            {
+              "master": "reaper",
+              "crop": [
+                1,
+                0,
+                1506,
+                1020
+              ],
+              "box": [
+                6,
+                41,
+                1206,
+                817
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 1,
+          "native_empty": false,
+          "clip_native_mask": false,
+          "layers": [
+            {
+              "master": "pool",
+              "crop": [
+                106,
+                183,
+                2062,
+                589
+              ],
+              "box": [
+                0,
+                0,
+                930,
+                210
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 2,
+          "native_empty": false,
+          "clip_native_mask": false,
+          "layers": [
+            {
+              "master": "pool",
+              "crop": [
+                106,
+                183,
+                2062,
+                589
+              ],
+              "box": [
+                0,
+                0,
+                930,
+                222
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 3,
+          "native_empty": false,
+          "clip_native_mask": false,
+          "layers": [
+            {
+              "master": "pool",
+              "crop": [
+                106,
+                183,
+                2062,
+                589
+              ],
+              "box": [
+                0,
+                0,
+                930,
+                234
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 4,
+          "native_empty": false,
+          "clip_native_mask": false,
+          "layers": [
+            {
+              "master": "pool",
+              "crop": [
+                106,
+                183,
+                2062,
+                589
+              ],
+              "box": [
+                0,
+                0,
+                930,
+                246
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 5,
+          "native_empty": false,
+          "clip_native_mask": false,
+          "layers": [
+            {
+              "master": "columnplain",
+              "crop": [
+                140,
+                21,
+                981,
+                1360
+              ],
+              "box": [
+                0,
+                0,
+                930,
+                720
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 6,
+          "native_empty": false,
+          "clip_native_mask": false,
+          "layers": [
+            {
+              "master": "columnplain",
+              "crop": [
+                140,
+                21,
+                981,
+                1360
+              ],
+              "box": [
+                0,
+                0,
+                930,
+                1122
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 7,
+          "native_empty": false,
+          "clip_native_mask": false,
+          "layers": [
+            {
+              "master": "columnplain",
+              "crop": [
+                140,
+                21,
+                981,
+                1360
+              ],
+              "box": [
+                0,
+                0,
+                930,
+                1152
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 8,
+          "native_empty": false,
+          "clip_native_mask": false,
+          "layers": [
+            {
+              "master": "columnplain",
+              "crop": [
+                140,
+                21,
+                981,
+                1360
+              ],
+              "box": [
+                0,
+                0,
+                930,
+                1152
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 9,
+          "native_empty": false,
+          "clip_native_mask": false,
+          "layers": [
+            {
+              "master": "columnplain",
+              "crop": [
+                140,
+                21,
+                981,
+                1360
+              ],
+              "box": [
+                0,
+                0,
+                930,
+                1152
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 10,
+          "native_empty": false,
+          "clip_native_mask": false,
+          "layers": [
+            {
+              "master": "columnplain",
+              "crop": [
+                140,
+                21,
+                981,
+                1360
+              ],
+              "box": [
+                0,
+                0,
+                930,
+                1152
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 11,
+          "native_empty": false,
+          "clip_native_mask": false,
+          "layers": [
+            {
+              "master": "columnplain",
+              "crop": [
+                140,
+                21,
+                981,
+                1360
+              ],
+              "box": [
+                0,
+                0,
+                930,
+                1152
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 12,
+          "native_empty": false,
+          "clip_native_mask": false,
+          "layers": [
+            {
+              "master": "columnplain",
+              "crop": [
+                140,
+                21,
+                981,
+                1360
+              ],
+              "box": [
+                0,
+                0,
+                930,
+                1152
+              ]
+            },
+            {
+              "master": "faceglyph",
+              "crop": [
+                136,
+                45,
+                979,
+                620
+              ],
+              "box": [
+                240,
+                330,
+                444,
+                288
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 13,
+          "native_empty": false,
+          "clip_native_mask": false,
+          "layers": [
+            {
+              "master": "columnplain",
+              "crop": [
+                140,
+                21,
+                981,
+                1360
+              ],
+              "box": [
+                0,
+                0,
+                930,
+                1152
+              ]
+            },
+            {
+              "master": "faceglyph",
+              "crop": [
+                136,
+                45,
+                979,
+                620
+              ],
+              "box": [
+                228,
+                318,
+                468,
+                348
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 14,
+          "native_empty": false,
+          "clip_native_mask": false,
+          "layers": [
+            {
+              "master": "columnplain",
+              "crop": [
+                140,
+                21,
+                981,
+                1360
+              ],
+              "box": [
+                0,
+                0,
+                930,
+                1152
+              ]
+            },
+            {
+              "master": "faceglyph",
+              "crop": [
+                136,
+                45,
+                979,
+                1337
+              ],
+              "box": [
+                198,
+                282,
+                528,
+                714
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 15,
+          "native_empty": false,
+          "clip_native_mask": false,
+          "layers": [
+            {
+              "master": "columnplain",
+              "crop": [
+                140,
+                21,
+                981,
+                1360
+              ],
+              "box": [
+                0,
+                0,
+                930,
+                1152
+              ]
+            },
+            {
+              "master": "faceglyph",
+              "crop": [
+                136,
+                45,
+                979,
+                1337
+              ],
+              "box": [
+                186,
+                240,
+                552,
+                750
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 16,
+          "native_empty": false,
+          "clip_native_mask": false,
+          "layers": [
+            {
+              "master": "columnplain",
+              "crop": [
+                140,
+                21,
+                981,
+                1360
+              ],
+              "box": [
+                0,
+                0,
+                930,
+                1152
+              ]
+            },
+            {
+              "master": "faceglyph",
+              "crop": [
+                136,
+                45,
+                979,
+                1337
+              ],
+              "box": [
+                174,
+                180,
+                576,
+                816
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 17,
+          "native_empty": false,
+          "clip_native_mask": false,
+          "layers": [
+            {
+              "master": "columnplain",
+              "crop": [
+                140,
+                21,
+                981,
+                1360
+              ],
+              "box": [
+                0,
+                0,
+                930,
+                1152
+              ]
+            },
+            {
+              "master": "faceglyph",
+              "crop": [
+                136,
+                45,
+                979,
+                1337
+              ],
+              "box": [
+                162,
+                138,
+                600,
+                864
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 18,
+          "native_empty": false,
+          "clip_native_mask": false,
+          "layers": [
+            {
+              "master": "columnplain",
+              "crop": [
+                140,
+                21,
+                981,
+                1360
+              ],
+              "box": [
+                0,
+                0,
+                906,
+                1146
+              ]
+            },
+            {
+              "master": "faceglyph",
+              "crop": [
+                136,
+                45,
+                979,
+                1337
+              ],
+              "box": [
+                156,
+                132,
+                588,
+                822
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 19,
+          "native_empty": false,
+          "clip_native_mask": false,
+          "layers": [
+            {
+              "master": "columnplain",
+              "crop": [
+                140,
+                21,
+                981,
+                1360
+              ],
+              "box": [
+                0,
+                0,
+                882,
+                1140
+              ]
+            },
+            {
+              "master": "faceglyph",
+              "crop": [
+                136,
+                45,
+                979,
+                1337
+              ],
+              "box": [
+                150,
+                108,
+                570,
+                750
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 20,
+          "native_empty": false,
+          "clip_native_mask": false,
+          "layers": [
+            {
+              "master": "columnplain",
+              "crop": [
+                140,
+                21,
+                981,
+                1360
+              ],
+              "box": [
+                0,
+                0,
+                858,
+                1134
+              ]
+            },
+            {
+              "master": "faceglyph",
+              "crop": [
+                136,
+                45,
+                979,
+                1337
+              ],
+              "box": [
+                150,
+                78,
+                534,
+                654
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 21,
+          "native_empty": false,
+          "clip_native_mask": false,
+          "layers": [
+            {
+              "master": "columnplain",
+              "crop": [
+                140,
+                21,
+                981,
+                1360
+              ],
+              "box": [
+                0,
+                0,
+                834,
+                1128
+              ]
+            },
+            {
+              "master": "faceglyph",
+              "crop": [
+                136,
+                45,
+                979,
+                1337
+              ],
+              "box": [
+                144,
+                48,
+                492,
+                480
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 22,
+          "native_empty": false,
+          "clip_native_mask": false,
+          "layers": [
+            {
+              "master": "columnplain",
+              "crop": [
+                140,
+                21,
+                981,
+                1360
+              ],
+              "box": [
+                0,
+                0,
+                810,
+                1122
+              ]
+            },
+            {
+              "master": "faceglyph",
+              "crop": [
+                136,
+                45,
+                979,
+                620
+              ],
+              "box": [
+                156,
+                24,
+                408,
+                312
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 23,
+          "native_empty": false,
+          "clip_native_mask": false,
+          "layers": [
+            {
+              "master": "columnplain",
+              "crop": [
+                140,
+                21,
+                981,
+                1360
+              ],
+              "box": [
+                0,
+                0,
+                786,
+                1116
+              ]
+            },
+            {
+              "master": "faceglyph",
+              "crop": [
+                136,
+                45,
+                979,
+                620
+              ],
+              "box": [
+                180,
+                6,
+                306,
+                138
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 24,
+          "native_empty": false,
+          "clip_native_mask": false,
+          "layers": [
+            {
+              "master": "columnplain",
+              "crop": [
+                140,
+                21,
+                981,
+                1360
+              ],
+              "box": [
+                0,
+                0,
+                762,
+                1110
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 25,
+          "native_empty": false,
+          "clip_native_mask": false,
+          "layers": [
+            {
+              "master": "columnplain",
+              "crop": [
+                140,
+                21,
+                981,
+                1360
+              ],
+              "box": [
+                0,
+                0,
+                738,
+                1104
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 26,
+          "native_empty": false,
+          "clip_native_mask": false,
+          "layers": [
+            {
+              "master": "columnplain",
+              "crop": [
+                140,
+                21,
+                981,
+                1360
+              ],
+              "box": [
+                0,
+                0,
+                714,
+                1098
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 27,
+          "native_empty": false,
+          "clip_native_mask": true,
+          "layers": [
+            {
+              "master": "columnplain",
+              "crop": [
+                140,
+                21,
+                981,
+                1360
+              ],
+              "box": [
+                0,
+                0,
+                690,
+                726
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 28,
+          "native_empty": false,
+          "clip_native_mask": true,
+          "layers": [
+            {
+              "master": "columnplain",
+              "crop": [
+                140,
+                21,
+                981,
+                1360
+              ],
+              "box": [
+                0,
+                0,
+                666,
+                492
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 29,
+          "native_empty": false,
+          "clip_native_mask": true,
+          "layers": [
+            {
+              "master": "columnplain",
+              "crop": [
+                140,
+                21,
+                981,
+                1360
+              ],
+              "box": [
+                0,
+                0,
+                642,
+                288
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 30,
+          "native_empty": true,
+          "clip_native_mask": false,
+          "layers": []
+        }
+      ],
+      "policy": "RGBA母稿矩形取樣／LANCZOS縮放／Over疊層；原始母稿及alpha不修改。column伸縮及face手設位置屬手繪近似，不宣稱原RGB parity。"
+    },
+    "source_master_catalog_mapping": {
+      "reaper": "command9-ai-reaper-hd6-master-v1.png",
+      "columnplain": "command9-ai-columnplain-hd6-master-v1.png",
+      "faceglyph": "command9-ai-faceglyph-hd6-master-v1.png",
+      "pool": "command9-ai-pool-hd6-master-v1.png"
+    },
+    "checks": [
+      {
+        "kind": "unit-candidate",
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-ai-unit-candidate-oct23-r1.memory.json",
+          "sha256": "f3d7fcb3f664fbf4db50063efc3ad552acd855db839d4e1eb6cf5df84fde9fc0"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-ai-unit-candidate-oct23-r1.log",
+          "sha256": "eb3656fb99127ee2d803c7133a812020c1f445e00daea35680f61905dec6ee4c"
+        }
+      },
+      {
+        "kind": "source-candidate",
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-ai-source-candidate-oct23-r1.memory.json",
+          "sha256": "3712ba8d4679197986be57d665a92ca719c70ad60e2590c26fc5ddd14447919f"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-ai-source-candidate-oct23-r1.log",
+          "sha256": "34cce038cb7da5dbef3705139ef7f35be024964b0f23716c9a392efe94d3bcb4"
+        }
+      },
+      {
+        "kind": "source-runtime",
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-ai-source-runtime-oct23-r1.memory.json",
+          "sha256": "0a4f1ff02975719d5296dfcfc3201df8dee516c212032e0c5c3e87a706be9015"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-ai-source-runtime-oct23-r1.log",
+          "sha256": "7a832268b619e46cb28f703eb72def46c06c075b5c4e8f267de14f702c28d8f7"
+        }
+      },
+      {
+        "kind": "runtime-candidate",
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-ai-runtime-candidate-oct23-r1.memory.json",
+          "sha256": "2e2595780172e9a1ee7e6bd0c4f3ffbbdabeac4695cb0febb9ffa32e0a3af60c"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-ai-runtime-candidate-oct23-r1.log",
+          "sha256": "d6a3f208c463e4e195311fab5fde2bb31406492276f85644e320b40393f3e6b0"
+        }
+      },
+      {
+        "kind": "preflight-candidate",
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-ai-preflight-candidate-oct23-r1.memory.json",
+          "sha256": "19198ee7794e7c4f27369d4dff74a2ddea3d24b3705a559e3a6461e3a4946bd4"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-ai-preflight-candidate-oct23-r1.log",
+          "sha256": "111d5276eb5853cabdef422aff399f81678407512994fe6ac3878bb392dbad19"
+        }
+      },
+      {
+        "kind": "preflight-runtime",
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-ai-preflight-runtime-oct23-r1.memory.json",
+          "sha256": "c59b73962df463257b02f8db3d8f066de7b6106bf0312fc3791971fa488025b7"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-ai-preflight-runtime-oct23-r1.log",
+          "sha256": "d5e6a73152b4339e02d2f5e5141b00a8a02401ce93e77eed49e3a62bfe1308c7"
+        }
+      },
+      {
+        "kind": "legacy-preflight-candidate",
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-ai-legacy-preflight-candidate-oct23-r1.memory.json",
+          "sha256": "b8ea070ddcc69a2462e815315843bef9c9965f93b714a08aaeac66e3319a3bc5"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-ai-legacy-preflight-candidate-oct23-r1.log",
+          "sha256": "622e2fba2e7008683f5ce48fa3efebe9e918ac4b849fd354283b4cf80095c2c0"
+        }
+      },
+      {
+        "kind": "internal-regression",
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-ai-internal-regression-oct23-r1.memory.json",
+          "sha256": "a6424735f18c6eb3847e916c89ece76ea6ce3ee8d5411bebce7057f7cfb5b6e7"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-ai-internal-regression-oct23-r1.log",
+          "sha256": "fc32b2aaa3ecd378bf67e41e35bd237316c54ed50626be40e1be0a23fafeba1b"
+        }
+      },
+      {
+        "kind": "PASS-COMMAND9-COMPILER-REFUSAL",
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-ai-compiler-refusal-oct23-r1/receipt.json",
+          "sha256": "8303483d0ec3d5e368a78ca2cac5fdbdfdf2644281f0c29aed16c8c2ce1ae58f"
+        }
+      },
+      {
+        "kind": "PASS-COMMAND9-AI-FINAL-GPU",
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-ai-final-gpu-oct23-r1.json",
+          "sha256": "0c058fe0eea2e6e3fcd20e06872dcb65332af45bbb7d6614025ac0f2d43a3960"
+        }
+      },
+      {
+        "kind": "PASS-COMMAND9-GPU-VERIFIER-REFUSAL",
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-ai-gpu-refusal-oct23-r1/receipt.json",
+          "sha256": "2ee7e5522f10678c06d934a93b032a17ba84d038372a5eceb4c9d7d0eb95c93d"
+        }
+      },
+      {
+        "kind": "README-and-changed-doc-links",
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-ai-links-oct23-r1.json",
+          "sha256": "628f153b4863f99fcf042324892a8b75e8eb4247a8ef7f9fa791411a4f60f8c1"
+        }
+      }
+    ],
+    "formal_catalog": {
+      "file": "remake/assets/themes/modern/catalog.json",
+      "sha256": "ed2171455f92a6a58a9b57d79757883526c7354ebaa03a380d70df754d7f49db"
+    },
+    "staged_formal_catalog": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-ai-staged-formal-catalog-oct23-r1.json",
+      "sha256": "ed2171455f92a6a58a9b57d79757883526c7354ebaa03a380d70df754d7f49db"
+    },
+    "preserved_base": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-ai-preserved-base-oct23-r1.json",
+      "sha256": "6f6fb43d03cd16a4d187b004ca47dc060ce8940c0d5e7b1a059ed6e41f733778"
+    },
+    "formal_new_files": [
+      "command9-ai-columnplain-hd6-master-v1.png",
+      "command9-ai-faceglyph-hd6-master-v1.png",
+      "command9-ai-pool-hd6-master-v1.png",
+      "command9-ai-reaper-hd6-master-v1.png",
+      "fdother-044-hd6-v1-f00.png",
+      "fdother-044-hd6-v1-f01.png",
+      "fdother-044-hd6-v1-f02.png",
+      "fdother-044-hd6-v1-f03.png",
+      "fdother-044-hd6-v1-f04.png",
+      "fdother-044-hd6-v1-f05.png",
+      "fdother-044-hd6-v1-f06.png",
+      "fdother-044-hd6-v1-f07.png",
+      "fdother-044-hd6-v1-f08.png",
+      "fdother-044-hd6-v1-f09.png",
+      "fdother-044-hd6-v1-f10.png",
+      "fdother-044-hd6-v1-f11.png",
+      "fdother-044-hd6-v1-f12.png",
+      "fdother-044-hd6-v1-f13.png",
+      "fdother-044-hd6-v1-f14.png",
+      "fdother-044-hd6-v1-f15.png",
+      "fdother-044-hd6-v1-f16.png",
+      "fdother-044-hd6-v1-f17.png",
+      "fdother-044-hd6-v1-f18.png",
+      "fdother-044-hd6-v1-f19.png",
+      "fdother-044-hd6-v1-f20.png",
+      "fdother-044-hd6-v1-f21.png",
+      "fdother-044-hd6-v1-f22.png",
+      "fdother-044-hd6-v1-f23.png",
+      "fdother-044-hd6-v1-f24.png",
+      "fdother-044-hd6-v1-f25.png",
+      "fdother-044-hd6-v1-f26.png",
+      "fdother-044-hd6-v1-f27.png",
+      "fdother-044-hd6-v1-f28.png",
+      "fdother-044-hd6-v1-f29.png",
+      "fdother-044-hd6-v1-f30.png"
+    ],
+    "formal_asset_count": 671,
+    "full_private_files": 6362,
+    "runtime_only_files": 5492,
+    "memory": {
+      "go_checks": 8,
+      "all_returncode_zero": true,
+      "all_timeout_false": true,
+      "oom_kill_events": 0,
+      "maximum_peak_bytes": 3000705024
+    },
+    "initial_state": {
+      "figani_hd_source_complete": true,
+      "ordinary_0_to_8_effects_already_registered": true,
+      "enemy_command9_pixels_only": true,
+      "enemy_effect44_unregistered": true,
+      "player_command9_map_pixels_only": true
+    },
+    "current_state": {
+      "figani_hd_source_complete": true,
+      "ordinary_0_to_8_effects_already_registered": true,
+      "enemy_command9_hd_runtime_e1": true,
+      "enemy_effect44_registered": true,
+      "player_command9_map_pixels_only": true
+    },
+    "implementation_files": [
+      {
+        "file": "tools/audit_fd2_command9_effect_source.py",
+        "sha256": "a2f132bfacbad567847867384e2538d78bb33fc74298ddd6a2457cfaa7bc1a27"
+      },
+      {
+        "file": "tools/build_fd2_command9_effect_hd.py",
+        "sha256": "7b4db9754e8de8e611c4dcb704e686db7836c0787aa7ac7b364e7f735147e0ea"
+      },
+      {
+        "file": "tools/test_fd2_command9_effect_hd.py",
+        "sha256": "e471407b3fd583b338215492f63ef74bebca5c6fd2c92e9c1fd59206fc582003"
+      },
+      {
+        "file": "tools/verify_fd2_command9_hd_gpu.py",
+        "sha256": "e98d8016c3546d07970ea453e574aceef1be2f5e8610bb3b055d01f9d8ecb367"
+      },
+      {
+        "file": "tools/test_fd2_command9_hd_gpu.py",
+        "sha256": "17f5b1c9706b2ba6161e5cd5dc7dbe649cee77d94475d0923efc829d2b4ee3a5"
+      },
+      {
+        "file": "tools/validate_modern_theme_catalog.py",
+        "sha256": "250134af427a215304c2a3cd0d3b3a6b22233a8c7473dc1ca6380e50a778a4a2"
+      },
+      {
+        "file": "tools/audit_fd2_battle_hd_coverage.py",
+        "sha256": "33f8b1b5003b57e5e1818002b61e5dfe13aae032b3261d27cf4890974c7b89bc"
+      },
+      {
+        "file": "remake/internal/battlepresent/native_command_sources.go",
+        "sha256": "be8213dfff8f4833dbcde189d5d37be78fef94a39382b140fbd8f209333a4bf9"
+      },
+      {
+        "file": "remake/internal/battlepresent/native_command9.go",
+        "sha256": "565fc08c7af2ef58d3336d4f8b6dcb4a872e6fcb58b11bfb4316a068a7e0d754"
+      },
+      {
+        "file": "remake/internal/battlepresent/native_command9_test.go",
+        "sha256": "fc00c9e7a4c1474dd58cc434e41d142bcbcc8c6a2bcb965df8e2fa6c5e79226b"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command9_ai_presentation.go",
+        "sha256": "3be861ae88d5cd3eba8391f7211b4db4b51a70518ba2610e1d9c44a4806f3c24"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_ordinary.go",
+        "sha256": "25090720694a576fecef4e964127f238ffc401184f938a5e7c86f0d6aac757ab"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_assets.go",
+        "sha256": "8234338a0e2c29625609658d54124349f2711b5309c022758788c5ca337b5b1f"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_runtime.go",
+        "sha256": "2ca26b414439ee78d07d775265ec7b5bae86a30cdef6a93bb1fbc00b335b4c09"
+      },
+      {
+        "file": "remake/cmd/fd2/player_shortcuts.go",
+        "sha256": "c710ca8cfc866f9e85c2c115cc05640e2a30488161dc59ac5fc623b4d142f9f8"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_command9_test.go",
+        "sha256": "89caa87fc0ca078a63ce996418d889f3f7a08d3b92a459e9b3e6edc6637c5ca7"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_ordinary_test.go",
+        "sha256": "b5dd679887a57d71bdf7b12d99f28ad79653597e1228d494f759ea9ecfa2001a"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_ordinary_lifecycle_test.go",
+        "sha256": "494f51e6d022ed9d8fee6003989dcd3a74687e654e543b119567d90a88392cf5"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_ordinary_material_gpu_test.go",
+        "sha256": "f9bb039811a7f5afc7030edfa7340a69da9bad716a5eea386928ea6857cbb9ab"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_ordinary_effect_test.go",
+        "sha256": "08cfe81044d5b27cd565dcefbcbb666ccb7c6c2ecf1285197379645684f97645"
+      }
+    ],
+    "reproduce": [
+      "在fd2-assets-local:20260829-sfx、user1000:1000、固定原包/original唯讀重生：python3 tools/audit_fd2_command9_effect_source.py --original-pack /original --out <新前綴>。",
+      "recipe_inline與source_master_catalog_mapping提供全部配方及私包母稿。依SHA復原到配方file，再執行python3 tools/build_fd2_command9_effect_hd.py --original-pack /original --reference <稽核json> --recipe <配方json> --base-catalog <本批670項base_catalog> --out <新候選目錄>。",
+      "python3 tools/test_fd2_command9_effect_hd.py --original-pack /original --reference <稽核json> --recipe <配方json> --compiled <候選目錄> --out <新反例目錄>。",
+      "使用fd2-go-test-local:latest、HOME=/tmp、GOMAXPROCS=2／LP_NUM_THREADS=2、FD2_ASSET_PACK=FD2_TEST_ORIGINAL_PACK=/original。明示FD2_TEST_MODERN_EFFECT_CATALOG／PACK／OUT。with-xvfb go test ./cmd/fd2 -count=1 -run ^TestModernHDCommand9AIAllFramesGPU$ -v，另設FD2_HD_COMMAND9_AI_GPU=1；工作樹與runtime-only包各一次。",
+      "FD2_HD_ORDINARY_GPU=1／FD2_TEST_ORDINARY_COMMAND=9：with-xvfb go test ./cmd/fd2 -count=1 -timeout=600s -run ^TestModernHDOrdinaryRemainingRuntimeGPU$ -v。完整Game.Draw與F2使用原119幀排程，不縮短hold。",
+      "with-xvfb go test ./cmd/fd2 -count=1 -timeout=1200s -run ^TestModernHDCommand9EffectPreflightAndF2Atomic$ -v：兩包各一次；TestModernHDOrdinaryRemainingPreflightAndF2Atomic回歸2／3／6／7／8／9的完整冷template。",
+      "python3 tools/verify_fd2_command9_hd_gpu.py及tools/test_fd2_command9_hd_gpu.py：明示--receipt <Draw收據> --catalog <候選> --source <候選包> --original-pack /original --inventory docs/data/fd2-battle-hd-source-inventory-20261019.json，分別加--report <新json>／--out <新反例目錄>。",
+      "go test ./internal/battlepresent ./internal/figani -count=1；TestModernHDCommand9ContractAndNativeBlank及既有NativeCommand9／ModernHDOrdinaryEffectContract／ModernHDBattleAssetsCompleteAndAtomic以with-xvfb聚焦回歸。工具、完整log及各次記憶體收據見checks。"
+    ],
+    "failure_history": [
+      {
+        "kind": "audit-assumption",
+        "detail": "可丟棄初稽核誤設31幀皆非空，第30幀中止且未產出收據；固定Mask確認後由受版控稽核器重跑，保留原空拍。"
+      },
+      {
+        "kind": "test-expectation",
+        "detail": "首次119幀來源重組已逐幀一致，末幀次數斷言誤設2；既有60幀目標排程只呈現一次第30空拍，訂正測試為1，不改產品。"
+      },
+      {
+        "kind": "verification-invocation",
+        "detail": "Markdown CLI僅掃目錄rglob，誤傳README檔案得0目標；該輸出不計驗收。改用相同parser逐檔，五份文件各非零目標通過。"
+      }
+    ],
+    "formal_coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-ai-formal-coverage-oct23-r1.json",
+      "sha256": "62fefb786ae38aba53668994258e1fbb4267f0f48f61609ea5e4ca52e04a24ab"
+    },
+    "duplicate_candidate_cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-ai-duplicate-cleanup-oct23-r1.json",
+      "sha256": "77b92b6a7499d1337f6ed82b2833668e76b5fe70f264985e1fdd26fc3502392d",
+      "files": 5527,
+      "duplicate_regular_bytes_removed": 1632604288
+    },
+    "private_remote_verified": true,
+    "private_visibility_verified": true,
+    "private_publication": "已獨立提交推送，實際遠端main與本機相同且PRIVATE；不公開私人提交識別碼。",
+    "issue_sync": {
+      "issue": 263,
+      "state": "OPEN",
+      "worklist_open_items": 24,
+      "gaia_issue_268": "OPEN",
+      "kylie_issue_269": "OPEN",
+      "acceptance_changed": false
+    },
+    "tool_versions": {
+      "assets_image": "fd2-assets-local:20260829-sfx",
+      "assets_image_id": "sha256:e59237a31d4b5f7a62c59ac37b780bd93f17c99fda97be8f5ca0c53978b878bc",
+      "go_image": "fd2-go-test-local:latest",
+      "go_image_id": "sha256:e4a805c52a3ad5d8c22cf23f2bcf51c6924e5ad6b99554f1b02761903c725433",
+      "python": "3.12.15",
+      "pillow": "11.3.0",
+      "go": "1.22.12"
+    },
+    "scope_limits": [
+      "玩家9地圖owner仍像素；其他效果／地圖回復／背景／HUD、來源408及合法caller未知保持待辦。",
+      "#268蓋亞手腕與#269凱麗右腳／正常GIF待集中人工；本批不聲明造型定稿、原版RGB parity、PLAYER-E2或完整HD。",
+      "八項Go閘門為本批必要檢查及內部兩套件回歸，不宣稱全Go專案、全平台或正常玩家已重跑。",
+      "獨立實檔runtime包於驗證後才改相對連結去重，當次測試證據與現在儲存方式分開。"
+    ],
+    "publication_checks": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command9-ai-publication-checks-oct23-r1.json",
+      "sha256": "54ba86e9828c7e2db077ff898f7877eb6e058a04dfbd6dc9fc777e32b5d51c85"
+    },
+    "publication_audit_scope": "僅核唯一latest_hd_batch。最初全歷史遞迴把明示已刪執行檔、舊工具版本SHA與53份未修改root-owned歷史檔當成目前產物，非產品缺陷；改以本批完整SHA／所有修改檔與輸出1000:1000檢查。舊670項及6327素材另有逐SHA保持收據，歷史不改寫、不全庫chown。"
   }
 }

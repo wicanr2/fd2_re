@@ -39,7 +39,7 @@ func TestModernHDOrdinaryEffectContract(t *testing.T) {
 			}
 		})
 	}
-	for _, resource := range []int{-1, 0, 5, 17, 29, 31, 34, 36, 40, 42, 44, 64, 69, 409} {
+	for _, resource := range []int{-1, 0, 5, 17, 29, 31, 34, 36, 40, 42, 64, 69, 409} {
 		_, _, _, _, ok := modernBattleHDContract(modernThemeAsset{Role: "battle_effect_hd_set", SourceArchive: "FDOTHER.DAT", SourceResource: resource})
 		if ok {
 			t.Fatalf("unproved effect %d admitted", resource)

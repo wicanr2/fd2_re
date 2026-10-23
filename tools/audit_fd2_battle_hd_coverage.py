@@ -21,7 +21,10 @@ def check_pngs(asset, source, full_masks=None, empty_masks=None):
                 raise ValueError('已登錄成品形狀或alpha不同')
             low, high = im.getchannel('A').getextrema()
             full_mask = asset['source_archive'] == 'FDOTHER.DAT' and full_masks is not None and full_masks[index]
-            native_empty = asset['source_archive'] == 'FIGANI.DAT' and empty_masks is not None and empty_masks[index]
+            empty_allowed = asset['source_archive'] == 'FIGANI.DAT' or (
+                asset['source_archive'] == 'FDOTHER.DAT' and asset['source_resource'] == 44
+                and asset['frame_count'] == 31 and index == 30)
+            native_empty = empty_allowed and empty_masks is not None and empty_masks[index]
             if native_empty and high != 0:
                 raise ValueError('原生空白幀新增了墨跡')
             if not native_empty and (high != 255 or low != 0 and not full_mask):
@@ -106,8 +109,9 @@ def main():
                 if im.size != (frame['width'], frame['height']) or pixels.mode != 'P' or pixels.size != im.size:
                     raise SystemExit('原生效果PNG或遮罩形狀不同')
                 full = im.convert('L').getextrema()[0] != 0
-            masks.append({'sha256': mask_row['sha256'], 'full_source_mask': full})
-        check_pngs(asset, args.source, [m['full_source_mask'] for m in masks])
+                empty = im.convert('L').getextrema()[1] == 0
+            masks.append({'sha256': mask_row['sha256'], 'full_source_mask': full, 'empty_source_mask': empty})
+        check_pngs(asset, args.source, [m['full_source_mask'] for m in masks], [m['empty_source_mask'] for m in masks])
         effects.append({'resource': resource, 'registered_hd_frames': asset['frame_count'],
             'asset_status': 'REGISTERED-ASSET' if stage == 'registered-worktree' else 'CATALOG-CANDIDATE', 'native_masks': masks})
     decoded = [r for r in rows if r['source_status'] == 'decoded']
@@ -119,7 +123,7 @@ def main():
             'remaining_decoded_resources': [r['resource'] for r in decoded if not r['registered_hd_frames']],
             'source_blocked_resources': [r['resource'] for r in rows if r['asset_status'] == 'SOURCE-BLOCKED'], 'resources': rows},
         'registered_fdother_effects': effects,
-        'opaque_effect_contract': '沿modern_hd_battle_assets.go：FDOTHER原生Mask每像素寫入時可無透明像素。FIGANI完整原生Mask全0時只能全透明，其他幀仍須透明背景及255核心；不以成品自承空白。',
+        'opaque_effect_contract': '沿modern_hd_battle_assets.go：FDOTHER原生Mask每像素寫入時可無透明像素。FIGANI及FDOTHER44第30幀完整原生Mask全0時只能全透明；其餘幀仍須255核心，不以成品自承空白。',
         'scope': '完整FIGANI來源盤點對正式catalog、原版metadata及實際HD PNG的資料覆蓋；非原版oracle。'
                  'header資格不等於caller已接線，FDOTHER只核已登錄效果，不假定四種效果涵蓋全部共同效果。'
                  '一般玩家、所有caller、其他法術／死亡／背景、效能與平台須另有證據。',

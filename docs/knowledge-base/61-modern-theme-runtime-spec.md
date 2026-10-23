@@ -3795,3 +3795,20 @@ R1編製總覽發現龍息接在上顎，以及空中連片被放成大光球。
 126／127的獨立施術像素驗證使用明示--verifier-timeout 300；驅動器預設90保持，輸入範圍1～600並記入收據。126成本診斷約950萬核心點、147.565秒，峰值約1.69GB且無OOM；原90秒失敗保留。兩者各七守衛與正對照在新有界預算下通過，全部34施術幀與全像素／1000點／RGBA門檻保持，正式遊戲無此參數。這些Python失敗不混入三十組Go通過的聲明。
 
 四施術冷預檢改共用一份完整、未預載的主題template，每人物仍各自複製paths及全nil Frames，成功set與晚期F2 reload隔離，其他來源欄位只讀共用。載入後及每人物結束均驗template無預載幀。所有缺末幀、恢復成功、F2、owner／HP／RNG與未Draw不結算assert保持，兩包以原1200秒／8GiB／4CPU通過。舊精簡包逐人物重讀R1在第四次PNG解碼觸及20分鐘上限，無OOM；候選包同型舊程序受控取消，部分log與取消原因保留，137不當作OOM。三十項必要Go通過與這兩個歷史嘗試分開記錄；正式遊戲載入流程沒有此測試批次化。
+
+
+### 敵方指令 9 的 HD 來源橋接（2026-10-23，CONFORMED-SCOPED／RUNTIME-E1）
+
+本子規格沿用既有 [指令 9 原版證據](../data/ida/fd2_command9_player_ai_presentation_ida.txt)，不重開已閉合 RE。固定版本、來源審查、輸入與失敗條件保存於 [HD 現況資料](../data/fd2-modern-hd-battlefield-20261019.json) 的 `command9_battle_hd_followup_20261023.runtime_bridge_spec`。
+
+- [受版控圖源稽核器](../../tools/audit_fd2_command9_effect_source.py) 以 `--original-pack <固定分離包> --out <新輸出前綴>` 在 Docker 重生 31 幀描述子、PNG／Mask SHA 及原生空拍證明。只對 FDOTHER44 第 30 幀允許全透明。
+- 合成器同次記錄實際圖源。11 滑入、20 前導、60 目標、20 尾段、8 滑出共 119 幀；保留效果／人物層序與 actor 水平位移。共用前導、施術與尾段分別綁定既有 producer。
+- 新契約 `native_fdother_command9_ai_rgba_hd6_v1` 僅接 FDOTHER44，保留全部原 0 延遲，不能以 FIGANI 的零延遲跳幀規則處理。F2 及 job 發布前完整預備；錯來源、缺件或非空幀空白須原子拒收。
+- 驗收限定 RUNTIME-E1。兩包 31 來源 GPU、119 幀獨立 indexed 重組、正式 Game.Draw 全週期與 F2、MP 一次／HP 20 段／RNG／聲音／續行及舊路徑回歸通過後，才登錄清冊。玩家指令 9 的地圖演出另列，不以敵方效果替代。
+- 美術 recipe 仍為 DRAFT；原始 RGBA 不修 alpha，不由此聲明完整戰鬥 HD 或正常玩家抽驗完成。
+
+美術子規格已審查為 READY，配方及原型 SHA 見同筆 `art_spec`。採四份未修改 RGBA 母稿，以矩形取樣、LANCZOS 縮放及 Over 疊層編製 30 非空來源；第 30 幀保留空拍。27..29 依固定原 Mask 覆蓋度乘 alpha，保留向上消散。光柱伸縮與面紋位置明示為手繪近似，不能宣稱原 RGB parity。未採用的整柱鬼臉草稿保留在研究輸出，不進正式包。編譯器入口為 [build_fd2_command9_effect_hd.py](../../tools/build_fd2_command9_effect_hd.py)，使用 `--original-pack`、`--reference`、`--recipe`、`--base-catalog` 與新 `--out` 候選目錄。
+
+驗證入口：[真實圖源與配方反例](../../tools/test_fd2_command9_effect_hd.py)、[最終GPU核對器](../../tools/verify_fd2_command9_hd_gpu.py)、[GPU核對器正負控制](../../tools/test_fd2_command9_hd_gpu.py)。各工具以 `--help` 列出必須明示的收據、清冊、素材包、固定原包與新輸出位置。完整配方保存在主收據的 `recipe_inline`，母稿與私人包檔名對照見 `source_master_catalog_mapping`；從私人包依SHA復原母稿至配方路徑，再使用固定工具映像重生圖源稽核及31張PNG，不能依賴未版控的臨時執行器。
+
+驗收：31來源在工作樹與獨立runtime-only包的完整GPU世界，均對獨立CPU Over逐RGBA核對至容差1。既有119幀排程附Sources後，以獨立indexed覆寫器逐幀重組一致。正式Game.Draw完成199次HD呈現、九階段F2、MP一次、20段HP與一次返回；最後留白幀另核固定原Mask全0、HD alpha全0及同次可見目標核心。31個效果與11個施術來源各具至少1000個可見高覆蓋核心。完整主題冷預檢在兩包各驗晚期缺件的啟動與F2原子拒收，既有2／3／6／7／8與內部圖源／合成器回歸通過。33項編製與15項核對器反例均有實檔正對照，八項Go閘門無SKIP或OOM。正式清冊與受驗stage相同，新增35檔，舊670項及6327檔SHA保持；私人同步及現行覆蓋收據見主收據。此結論只限圖源與既有演出擁有者，不新增正常玩家、原版RGB或PLAYER-E2聲明。

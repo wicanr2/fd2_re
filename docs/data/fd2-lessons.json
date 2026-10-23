@@ -3830,6 +3830,21 @@
         ],
         "pattern": "\"cast126_verifier_budget_review\":\\s*\\{"
       }
+    },
+    {
+      "id": "animation-zero-delay-is-consumer-specific",
+      "date": "2026-10-23",
+      "area": "HD來源與排程",
+      "rule": "零延遲圖源依實際consumer判斷是否呈現。FIGANI物理尾段的skip-zero-delay不得套到FDOTHER44敵方指令9；該owner保留31個delay0來源，最後第30幀固定Mask全0仍須同次Draw。入口為tools/audit_fd2_command9_effect_source.py --original-pack <固定包> --out <新前綴>與tools/verify_fd2_command9_hd_gpu.py；契約見docs/knowledge-base/61-modern-theme-runtime-spec.md的敵方指令9子規格。",
+      "why": "FDOTHER44全部31幀的原始delay皆0，但既有指令9 scheduler按counter呈現全部來源。若沿FIGANI物理尾段跳幀會消除整套效果；若誤設所有來源非空，會替第30原生空拍補墨跡。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#command9_battle_hd_followup_20261023",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/audit_fd2_command9_effect_source.py"
+        ],
+        "pattern": "固定來源只有第30幀為空拍"
+      }
     }
   ]
 }
