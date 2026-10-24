@@ -205,6 +205,7 @@ func (g *Game) startNativeCommand24Presentation(actor, target *battle.Unit, then
 	if err != nil {
 		return err
 	}
+	var panelText []*modernBattlePanelText
 	panelAssets, err := battle.LoadNativeItemPanelDataAssets(separatedAssetPath(""))
 	if err != nil {
 		return err
@@ -257,17 +258,11 @@ func (g *Game) startNativeCommand24Presentation(actor, target *battle.Unit, then
 	if err != nil {
 		return err
 	}
-	actorBaseBefore, err := g.localizedNativeCommand24BackgroundBase(
-		actorBG, panelAssets, actorRecordBefore, actorIndex, g.handlerChapter,
-		actorPlatform,
-	)
+	actorBaseBefore, err := g.localizedNativeCommand24CapturedBase(actorBG, panelAssets, actorRecordBefore, actorIndex, g.handlerChapter, actorPlatform, &panelText)
 	if err != nil {
 		return err
 	}
-	actorPreludeBase, err := g.localizedNativeCommand24BackgroundBase(
-		actorBG, panelAssets, actorRecordBefore, actorIndex, g.handlerChapter,
-		nil,
-	)
+	actorPreludeBase, err := g.localizedNativeCommand24CapturedBase(actorBG, panelAssets, actorRecordBefore, actorIndex, g.handlerChapter, nil, &panelText)
 	if err != nil {
 		return err
 	}
@@ -282,10 +277,7 @@ func (g *Game) startNativeCommand24Presentation(actor, target *battle.Unit, then
 	if err != nil {
 		return err
 	}
-	actorBaseAfter, err := g.localizedNativeCommand24BackgroundBase(
-		actorBG, panelAssets, actorRecordAfter, actorIndex, g.handlerChapter,
-		actorPlatform,
-	)
+	actorBaseAfter, err := g.localizedNativeCommand24CapturedBase(actorBG, panelAssets, actorRecordAfter, actorIndex, g.handlerChapter, actorPlatform, &panelText)
 	if err != nil {
 		return err
 	}
@@ -293,17 +285,11 @@ func (g *Game) startNativeCommand24Presentation(actor, target *battle.Unit, then
 	if err := effect.Frames[schedule.TargetStart-1].BlitAt(sourceBase, 320); err != nil {
 		return err
 	}
-	targetBaseBefore, err := g.localizedNativeCommand24BackgroundBase(
-		targetBG, panelAssets, targetRecordBefore, targetIndex, g.handlerChapter,
-		nil,
-	)
+	targetBaseBefore, err := g.localizedNativeCommand24CapturedBase(targetBG, panelAssets, targetRecordBefore, targetIndex, g.handlerChapter, nil, &panelText)
 	if err != nil {
 		return err
 	}
-	targetBaseAfter, err := g.localizedNativeCommand24BackgroundBase(
-		targetBG, panelAssets, targetRecordAfter, targetIndex, g.handlerChapter,
-		nil,
-	)
+	targetBaseAfter, err := g.localizedNativeCommand24CapturedBase(targetBG, panelAssets, targetRecordAfter, targetIndex, g.handlerChapter, nil, &panelText)
 	if err != nil {
 		return err
 	}
@@ -354,6 +340,7 @@ func (g *Game) startNativeCommand24Presentation(actor, target *battle.Unit, then
 	if err != nil {
 		return err
 	}
+	hd.bindPanelText(&panelText)
 	if err := hd.addTarget(targetBaseBefore, targetBaseAfter, targetIdle, target.BattleFig*3,
 		hd.actorEndSources(), transitionPresents, bgLayers, targetScenery...); err != nil {
 		return err

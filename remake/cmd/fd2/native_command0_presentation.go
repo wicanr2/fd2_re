@@ -276,6 +276,7 @@ func (g *Game) startNativeCommand0Presentation(actor, target *battle.Unit, then 
 	if !osMuteOrShot(g) && (len(g.sfxCommand0Actor) == 0 || len(g.sfxCommand0Target) == 0) {
 		return errors.New("native command0 converted #82 samples unavailable")
 	}
+	var panelText []*modernBattlePanelText
 	panelAssets, err := battle.LoadNativeItemPanelDataAssets(separatedAssetPath(""))
 	if err != nil {
 		return err
@@ -311,16 +312,16 @@ func (g *Game) startNativeCommand0Presentation(actor, target *battle.Unit, then 
 		if err != nil {
 			return err
 		}
-		bases[stage], err = g.localizedNativeCommand0Base(background, panelAssets, actorAfterRecord, targetRecords[stage], actorIndex, targetIndex, g.handlerChapter, &platform)
+		bases[stage], err = g.localizedNativeCommand0Base(background, panelAssets, actorAfterRecord, targetRecords[stage], actorIndex, targetIndex, g.handlerChapter, &platform, &panelText)
 		if err != nil {
 			return err
 		}
 	}
-	preludeBase, err := g.localizedNativeCommand0Base(background, panelAssets, actorRecord, targetRecords[0], actorIndex, targetIndex, g.handlerChapter, nil)
+	preludeBase, err := g.localizedNativeCommand0Base(background, panelAssets, actorRecord, targetRecords[0], actorIndex, targetIndex, g.handlerChapter, nil, &panelText)
 	if err != nil {
 		return err
 	}
-	actorBaseBefore, err := g.localizedNativeCommand0Base(background, panelAssets, actorRecord, targetRecords[0], actorIndex, targetIndex, g.handlerChapter, &platform)
+	actorBaseBefore, err := g.localizedNativeCommand0Base(background, panelAssets, actorRecord, targetRecords[0], actorIndex, targetIndex, g.handlerChapter, &platform, &panelText)
 	if err != nil {
 		return err
 	}
@@ -387,6 +388,7 @@ func (g *Game) startNativeCommand0Presentation(actor, target *battle.Unit, then 
 	if err != nil {
 		return err
 	}
+	bindModernBattlePanelBank(panelText, hd)
 	if set := g.modernStoryPortraits; set != nil {
 		if err := prepareModernHDCommandBanks(set, hd); err != nil {
 			return err

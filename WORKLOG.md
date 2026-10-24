@@ -3088,3 +3088,11 @@ GitHub連接器無權查私人素材庫；沿用主機Git已登入路徑fetch成
 提交前程式審查補修拒收分支：bindModernPhysicalScenery的defer原會在來源失敗時也附加typed面板；改為只有成功才綁定，補真實尺寸但缺raw的BG拒收案例。最終panel-unit r6三項、physical-regression r2七項及字串r3八項乾淨重跑通過，109筆分類保持。有效繪製、捲動與shader完全未改，因此保留六場成功GPU收據並保存其原始碼快照，不重新擴跑無關畫面；最終來源與差異界線見hud-final-verification-oct24-r2.json。
 
 拒收分支補修後最終核對hud-final-check-oct24-r4.json通過：17來源、72 PNG、2390本地目標、176本輪來源／輸出擁有權；51歷史root檔保持。提交前host gh重新拉24項，官方snapshot／render／verify及324教訓／189 guard通過；最新origin/main仍為本輪基底aa156fa0。
+
+2026-10-24 共用戰鬥指令面板HD文字接線，限定CONFORMED-SCOPED／RUNTIME-E1。依路由的規格先行入口，沿核准Noto與1920畫布，先將61及主收據列READY；重用已閉合面板writer／origin與指令producer，不開新RE。15個presenter涵蓋0～8、敵方9、24／29與32～35；4／5共用presenter。collector本次owner私有，base建構與巢狀stage helper明示傳遞，失敗不發布。逐次typed數值與raw姓名凍結、原生base逐byte匹配後附加，24／29先附加再捲動／裁切。全色盤演出的文字取當幀palette，人物專用subtract／mix不作用於面板。原框、bar、overflow、交易、RNG、音效與保存保持。
+
+16來源分片1993幀含1486戰鬥幀、147快照，原生圖／單位／RNG對照相同；16完整Game.Draw共1590次文字GPU回讀、598330匹配像素、104次F2及346 PNG通過。39 HD閘門／53必要頂層測試、八字串回歸，最大記憶體峰值3461398528 bytes，無SKIP、逾時或OOM；是受控Linux測試，不推定正常／人工／其他平台效能。24／29全部145畫布另對Pillow容差1，各30拒收通過；物理雙側回歸與四語字形／GPU保持。官方字串遷移只更新inventory SHA與LV標籤來源行號，109分類保持。README新增四語完整半縮圖，逐SHA重生且標籤位於遊戲區外；測試隊伍名稱與替換圖源差異明示。固定清冊761項及私人美術保持，沒有新素材或私人同步需求。
+
+過程失敗如實保留：初次編譯因command6巢狀helper未明示傳collector而拒收，補完整傳遞後全16來源／Game.Draw重跑；24首次擷取被舊exporter誤判typed面板為原生負resource，修正測試序列化及獨立驗證器後同流程通過；新增錯位／尺寸反例先被既有矩形guard拒收，修反例為內部一致矩形，再驗面板來源guard，未放寬產品或色差；初次字串測試在官方遷移前綁舊SHA而拒收，遷移後八項通過。來源、重跑及最終收據依主收據command_panel_text_followup_20261024與command-hud-verification-oct24-r1.json。完整HUD美術、其餘背景caller／效果、浮出工具列／速度及集中正常／人工／平台仍待；完整HD目標保持active。Issue、清理與公開推送另於收尾核對。
+
+最終核對command-hud-final-check-oct24-r1.json通過490項SHA引用、39份來源指紋、346 PNG、2506個本地Markdown目標與本輪1000:1000擁有權。325教訓／190 guard通過；host gh更新#263／#204並拉24條，官方snapshot／render／verify同步，可能已完成0條，原acceptance保持，#268／#269仍OPEN。廣域自檢仍為51份歷史root-owned原資料／圖片，與本輪寫入無交集，另存SHA並保持未動，沒有遞迴chown。全部本輪Go／Xvfb／Pillow容器已退出且--rm；私人庫乾淨，沒有新image、volume、錄影或Release。通過及拒收收據、346最終PNG與兩份小型初版失敗PNG保留；未刪原始參考來源。公開提交與遠端HEAD另核。

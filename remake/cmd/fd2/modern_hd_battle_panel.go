@@ -29,14 +29,41 @@ type modernBattlePanelText struct {
 	key         string
 }
 
+func stageModernBattlePanelText(collectors []*[]*modernBattlePanelText) (*[]*modernBattlePanelText, func(), error) {
+	if len(collectors) == 0 {
+		return nil, func() {}, nil
+	}
+	if len(collectors) != 1 || collectors[0] == nil {
+		return nil, nil, fmt.Errorf("modern HD panel: invalid collector")
+	}
+	staged := append([]*modernBattlePanelText(nil), (*collectors[0])...)
+	return &staged, func() { *collectors[0] = staged }, nil
+}
+
+func bindModernBattlePanelFrames(panels []*modernBattlePanelText, groups ...[]nativeCompoundPresentedFrame) {
+	for _, group := range groups {
+		for _, frame := range group {
+			bindModernBattlePanelText(panels, frame.hdSources)
+		}
+	}
+}
+
+func bindModernBattlePanelBank(panels []*modernBattlePanelText, bank modernHDCommandBankSource) {
+	bindModernBattlePanelFrames(panels, bank.sourceFrames())
+}
+
 func (g *Game) renderPhysicalBattlePanel(scene *nativePhysicalScene, record, dst []byte, index int) error {
-	if err := g.renderLocalizedNativeBattlePanel(scene.panelAssets, record, dst, index, g.handlerChapter); err != nil {
+	return g.renderBattlePanelText(scene.panelAssets, record, dst, index, g.handlerChapter, &scene.hdPanelText)
+}
+
+func (g *Game) renderBattlePanelText(assets battle.NativeItemPanelDataAssets, record, dst []byte, index, chapter int, collected *[]*modernBattlePanelText) error {
+	if err := g.renderLocalizedNativeBattlePanel(assets, record, dst, index, chapter); err != nil {
 		return err
 	}
-	if g.font == nil || g.localeEntities == nil {
+	if collected == nil || g.font == nil || g.localeEntities == nil {
 		return nil
 	}
-	x, y, err := battle.NativeBattlePanelOrigin(record, index, g.handlerChapter)
+	x, y, err := battle.NativeBattlePanelOrigin(record, index, chapter)
 	if err != nil {
 		return err
 	}
@@ -48,10 +75,10 @@ func (g *Game) renderPhysicalBattlePanel(scene *nativePhysicalScene, record, dst
 	if regional := f.hdFonts[g.localeID]; regional != nil {
 		f = regional
 	}
-	p := &modernBattlePanelText{font: f, name: name, background: scene.panelAssets.BattlePanel.Pixels[10*149+100]}
+	p := &modernBattlePanelText{font: f, name: name, background: assets.BattlePanel.Pixels[10*149+100]}
 	for i, base := range []int{31, 42} {
 		counts := [256]int{}
-		frame := scene.panelAssets.Frames[base]
+		frame := assets.Frames[base]
 		for k, pixel := range frame.Indexed {
 			if frame.Mask[k] != 0 && pixel != p.background {
 				counts[pixel]++
@@ -73,26 +100,33 @@ func (g *Game) renderPhysicalBattlePanel(scene *nativePhysicalScene, record, dst
 	}
 	word := func(offset int) int { return int(int16(binary.LittleEndian.Uint16(record[offset:]))) }
 	p.values = battle.NativeBattlePanelValues{Level: int(record[0x21]), HP: word(0x40), MaxHP: word(0x42), MP: word(0x44), MaxMP: word(0x46)}
+	for _, previous := range *collected {
+		if previous.native.X == x && previous.native.Y == y && previous.name == p.name && previous.values == p.values && previous.font == p.font && bytes.Equal(previous.native.Pixels, p.native.Pixels) {
+			return nil
+		}
+	}
 	// Validate before publishing this scene or committing any combat state.
 	if _, _, err := p.raster(g.nativeUIPalette); err != nil {
 		return err
 	}
-	for _, previous := range scene.hdPanelText {
-		if previous.native.X == x && previous.native.Y == y && bytes.Equal(previous.native.Pixels, p.native.Pixels) {
-			return nil
-		}
-	}
-	scene.hdPanelText = append(scene.hdPanelText, p)
+	*collected = append(*collected, p)
 	return nil
 }
 
 // Bind only a complete, byte-identical panel at its proven native origin.
 // Partial scroll views inherit the explicit layer and clip from their producer.
 func bindModernPhysicalPanelText(scene *nativePhysicalScene, sources *modernHDBattleSources) {
-	if scene == nil || sources == nil || len(sources.Base) != 64000 {
+	if scene != nil {
+		bindModernBattlePanelText(scene.hdPanelText, sources)
+	}
+}
+
+func bindModernBattlePanelText(panels []*modernBattlePanelText, sources *modernHDBattleSources) {
+	if sources == nil || len(sources.Base) != 64000 {
 		return
 	}
-	for _, p := range scene.hdPanelText {
+	cloned := false
+	for _, p := range panels {
 		f := p.native
 		matches := true
 		for row := 0; row < f.Height; row++ {
@@ -105,13 +139,17 @@ func bindModernPhysicalPanelText(scene *nativePhysicalScene, sources *modernHDBa
 			continue
 		}
 		found := false
-		for _, layer := range sources.BaseScenery {
-			if layer.PanelText == p {
+		for _, layer := range append(append([]modernHDBattleSource(nil), sources.BaseScenery...), sources.Layers...) {
+			if layer.PanelText == p && layer.DX == 0 && layer.DY == 0 {
 				found = true
 				break
 			}
 		}
 		if !found {
+			if !cloned {
+				sources.BaseScenery = append([]modernHDBattleSource(nil), sources.BaseScenery...)
+				cloned = true
+			}
 			sources.BaseScenery = append(sources.BaseScenery, modernHDBattleSource{Frame: f, Resource: -1, Fill: -1, PanelText: p})
 		}
 	}
@@ -169,7 +207,7 @@ func (p *modernBattlePanelText) raster(palette color.Palette) (image.Image, stri
 			erase = image.Rect(4*6, 4*6, 132*6, 21*6)
 		}
 		draw.Draw(canvas, erase, image.NewUniform(palette[p.background]), image.Point{}, draw.Src)
-		if err := drawModernBattlePanelInk(canvas, p.font, field.value, r, field.size, modernHDNativeTextColor(palette, field.colour)); err != nil {
+		if err := drawModernBattlePanelInk(canvas, p.font, field.value, r, field.size, nativePaletteColor(palette, field.colour, color.RGBA{240, 244, 255, 255})); err != nil {
 			return nil, "", err
 		}
 	}

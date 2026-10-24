@@ -114,6 +114,7 @@ func (g *Game) startNativeCommand29Presentation(actor, confirmed *battle.Unit, t
 			return err
 		}
 	}
+	var panelText []*modernBattlePanelText
 	panelAssets, err := battle.LoadNativeItemPanelDataAssets(separatedAssetPath(""))
 	if err != nil {
 		return err
@@ -156,15 +157,15 @@ func (g *Game) startNativeCommand29Presentation(actor, confirmed *battle.Unit, t
 	if err != nil {
 		return err
 	}
-	actorBaseBefore, err := g.localizedNativeCommand24BackgroundBase(actorBG, panelAssets, actorRecordBefore, actorIndex, g.handlerChapter, platform)
+	actorBaseBefore, err := g.localizedNativeCommand24CapturedBase(actorBG, panelAssets, actorRecordBefore, actorIndex, g.handlerChapter, platform, &panelText)
 	if err != nil {
 		return err
 	}
-	actorBaseAfter, err := g.localizedNativeCommand24BackgroundBase(actorBG, panelAssets, actorRecordAfter, actorIndex, g.handlerChapter, platform)
+	actorBaseAfter, err := g.localizedNativeCommand24CapturedBase(actorBG, panelAssets, actorRecordAfter, actorIndex, g.handlerChapter, platform, &panelText)
 	if err != nil {
 		return err
 	}
-	preludeBase, err := g.localizedNativeCommand24BackgroundBase(actorBG, panelAssets, actorRecordBefore, actorIndex, g.handlerChapter, nil)
+	preludeBase, err := g.localizedNativeCommand24CapturedBase(actorBG, panelAssets, actorRecordBefore, actorIndex, g.handlerChapter, nil, &panelText)
 	if err != nil {
 		return err
 	}
@@ -195,6 +196,7 @@ func (g *Game) startNativeCommand29Presentation(actor, confirmed *battle.Unit, t
 	if err != nil {
 		return err
 	}
+	hd.bindPanelText(&panelText)
 	sourceHD := hd.actorEndSources()
 	source := append([]byte(nil), actorBaseAfter...)
 	if err := effect.Frames[schedule.TargetStart-1].BlitAt(source, 320); err != nil {
@@ -243,11 +245,11 @@ func (g *Game) startNativeCommand29Presentation(actor, confirmed *battle.Unit, t
 		if recordErr != nil {
 			return recordErr
 		}
-		baseBefore, baseErr := g.localizedNativeCommand24BackgroundBase(background, panelAssets, recordBefore, unitIndex, g.handlerChapter, nil)
+		baseBefore, baseErr := g.localizedNativeCommand24CapturedBase(background, panelAssets, recordBefore, unitIndex, g.handlerChapter, nil, &panelText)
 		if baseErr != nil {
 			return baseErr
 		}
-		baseAfter, baseErr := g.localizedNativeCommand24BackgroundBase(background, panelAssets, recordAfter, unitIndex, g.handlerChapter, nil)
+		baseAfter, baseErr := g.localizedNativeCommand24CapturedBase(background, panelAssets, recordAfter, unitIndex, g.handlerChapter, nil, &panelText)
 		if baseErr != nil {
 			return baseErr
 		}

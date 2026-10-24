@@ -54,6 +54,9 @@ func (g *Game) modernHDBattleWanted(scene *nativePhysicalScene) bool {
 	if set == nil || !set.hasHD || scene == nil || scene.bodyResources == nil || scene.bodyResources.attack == nil {
 		return false
 	}
+	if len(scene.hdPanelText) != 0 {
+		return true
+	}
 	if scene.selection.HasSeparateBackgrounds {
 		for index := 0; index < 3; index++ {
 			if set.battleSurfaces["BG.DAT"][index] != nil {

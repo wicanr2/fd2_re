@@ -1,6 +1,6 @@
 # 56 — FD2 remake 系統設計規格（SDD，2026-08-09）
 
-物理戰鬥面板姓名、LV、HP／MP標籤與數字已直接接1920畫布的Noto文字，限定CONFORMED-SCOPED／RUNTIME-E1。原始框、bar、overflow符號、逐次HP快照與遮擋／捲動保持；四語共背景及雙側分離背景、F2、一次返回與舊合成回歸通過。沒有新美術或保存格式變更；完整HUD美術及其他caller、普通／集中人工／平台仍待。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約與工具依[61](61-modern-theme-runtime-spec.md)，證據見[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`battle_panel_text_followup_20261024`。
+戰鬥面板的高解析Noto文字已由物理攻防延伸至法術、分段打擊與四種召喚，限定CONFORMED-SCOPED／RUNTIME-E1。逐次raw姓名、typed數值、原生source、層序、色盤及捲動裁切保持；正式Game.Draw、各階段F2、交易／RNG、物理回歸與獨立合成拒收已驗。沒有新美術或保存欄位；框線、血條、其餘背景caller／效果及集中正常／人工／平台仍待。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約與工具依[61](61-modern-theme-runtime-spec.md)，證據見[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`command_panel_text_followup_20261024`；先前物理切片依`battle_panel_text_followup_20261024`。
 
 森林內部／海岸的背景與台座已接共用物理，限定CONFORMED-SCOPED／RUNTIME-E1。兩包八完整攻防、24次F2、56跨包PNG相同、原生重組與來源GPU、舊來源及正式載入通過；原框、層序、聲音／節拍與規則保持。數量只見[58](58-fd2-exe-re-coverage.md)，重跑與手繪近似依[61](61-modern-theme-runtime-spec.md)及[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的forest_coast_surface_followup_20261024；其他來源／caller及正常／集中人工／平台仍待。
 

@@ -12,6 +12,9 @@ from verify_fd2_player9_map_hd import check_real_runtime
 
 ROOT = Path(__file__).resolve().parents[1]
 REQUIRED = {
+    'command-panel-unit': {'TestModernCommandPanelCollectorAtomic','TestModernCommandPanelPalette'},
+    'command-panel-owner': {'TestModernCommandPanelAllOwners'},
+    'command-panel-game': set(),
 	'panel-unit': {'TestModernBattlePanelTextFrozenSources', 'TestModernBattlePanelTextFourLocaleInk', 'TestModernBattlePanelTextFourLocalePreview'},
 	'panel-source': {'TestModernBattlePanelTextGPU'},
 	'panel-game': {'TestModernHDBattleRuntimeGPU'},
@@ -51,6 +54,7 @@ def main():
     p.add_argument('--out', type=Path, required=True)
     p.add_argument('--enemy', action='store_true')
     p.add_argument('--panel-locale', choices=['zh-Hant','zh-Hans','ja','en'], default='zh-Hant')
+    p.add_argument('--panel-owner',type=int,choices=[0,1,2,3,4,5,6,7,8,9,24,29,32,33,34,35],default=0)
     p.add_argument('--surface', type=int, choices=range(56), default=4)
     p.add_argument('--scenery-start',type=int,default=0)
     p.add_argument('--scenery-limit',type=int,default=16)
@@ -63,6 +67,9 @@ def main():
     p.add_argument('--require-real-runtime', action='store_true')
     p.add_argument('--timeout', type=int, default=1200)
     a = p.parse_args()
+    if a.kind=='command-panel-game':
+        name={0:'TestModernHDCommand0RuntimeGPU',1:'TestModernHDCommand1RuntimeGPU',4:'TestModernHDCommand5RuntimeGPU',5:'TestModernHDCommand5RuntimeGPU',24:'TestModernHDSplitStrikeRuntimeGPU',29:'TestModernHDSplitStrikeRuntimeGPU',32:'TestModernHDCompoundRuntimeGPU',33:'TestModernHDFairyRuntimeGPU',34:'TestModernHDStagedSummonRuntimeGPU',35:'TestModernHDStagedSummonRuntimeGPU'}.get(a.panel_owner,'TestModernHDOrdinaryRemainingRuntimeGPU')
+        REQUIRED[a.kind]={name}
     if not Path('/.dockerenv').exists() or not 60 <= a.timeout <= 1800 or not a.out.parent.is_dir():
         raise SystemExit('Docker 內使用有界時間與既有輸出父目錄')
     for suffix in ['.gate.json','.log','.memory.json']:
@@ -81,6 +88,17 @@ def main():
     env.pop('FD2_HD_TRANSITION_GPU',None)
     env.pop('FD2_HD_SCENERY_BATCH',None)
     for name in ['FD2_HD_PANEL_GPU','FD2_HD_PANEL_TEXT','FD2_HD_PANEL_LOCALE','FD2_HD_PANEL_PREVIEW']:env.pop(name,None)
+    for name in ['FD2_HD_COMMAND_PANEL_OWNER','FD2_HD_COMMAND_PANEL_REPORT','FD2_HD_COMMAND_PANEL_TEXT']:env.pop(name,None)
+    if a.kind=='command-panel-owner':env.update(FD2_HD_COMMAND_PANEL_OWNER=str(a.panel_owner),FD2_HD_COMMAND_PANEL_REPORT=str(a.out)+'.owner.json')
+    if a.kind=='command-panel-game':
+        env.update(FD2_HD_COMMAND_PANEL_TEXT='1',FD2_HD_PANEL_LOCALE=a.panel_locale,FD2_HD_COMMAND_PANEL_OWNER=str(a.panel_owner),
+                   FD2_TEST_MODERN_EFFECT_CATALOG=str(a.catalog.resolve()),FD2_TEST_MODERN_EFFECT_PACK=str(a.pack.resolve()),FD2_TEST_MODERN_EFFECT_OUT=str(a.out)+'-capture')
+        if a.panel_owner in [0,1,4,5]:env[f'FD2_HD_COMMAND{5 if a.panel_owner==4 else a.panel_owner}_GPU']='1'
+        elif a.panel_owner in [2,3,6,7,8,9]:env.update(FD2_HD_ORDINARY_GPU='1',FD2_TEST_ORDINARY_COMMAND=str(a.panel_owner))
+        elif a.panel_owner in [24,29]:env.update(FD2_HD_SPLIT_STRIKE_GPU='1',FD2_TEST_SPLIT_STRIKE_COMMAND=str(a.panel_owner))
+        elif a.panel_owner==32:env['FD2_HD_COMPOUND_GPU']='1'
+        elif a.panel_owner==33:env['FD2_HD_FAIRY_GPU']='1'
+        else:env['FD2_HD_STAGED_COMMAND']=str(a.panel_owner)
     if a.kind=='panel-unit':env['FD2_HD_PANEL_PREVIEW']=str(a.out)+'.png'
     if a.kind=='panel-source':env['FD2_HD_PANEL_GPU']='1'
     if a.kind in ['panel-game','panel-scroll']:env.update(FD2_HD_PANEL_TEXT='1',FD2_HD_PANEL_LOCALE=a.panel_locale)
@@ -131,6 +149,18 @@ export DISPLAY=:99
     passed = {e.get('Test') for e in events if e.get('Action')=='pass'}
     if not REQUIRED[a.kind] <= passed or any(e.get('Action') in {'skip','fail'} for e in events):
         raise SystemExit('必要測試缺項、SKIP 或失敗')
+    if a.kind=='command-panel-owner':
+        receipt=json.loads(Path(str(a.out)+'.owner.json').read_text())
+        if (receipt.get('status')!='PASS-TYPED-COMMAND-PANEL' or receipt.get('command_id')!=a.panel_owner
+                or receipt.get('bound_battle_frames',0)<=0 or not receipt.get('native_sources_equal')
+                or not receipt.get('unit_state_equal') or not receipt.get('rng_equal')):
+            raise SystemExit('缺少指令面板原生來源、狀態或RNG核對')
+    if a.kind=='command-panel-game':
+        receipt=json.loads(Path(str(a.out)+'-capture/receipt.json').read_text())
+        panel=receipt.get('panel_text',{})
+        if (panel.get('locale')!=a.panel_locale or panel.get('audited_draws',0)<=0 or panel.get('matched_rgba_pixels',0)<100
+                or receipt.get('continuations')!=1):
+            raise SystemExit('缺少實際Game.Draw面板字形核對或一次續行')
     if a.kind in ['game','panel-game']:
         receipt = json.loads(Path(str(a.out)+'-capture/receipt.json').read_text())
         if receipt.get('background_selection',{}).get('BaseBG') != a.surface or not receipt.get('background_hd_sha256') or receipt['continuations'] != 1:
@@ -185,6 +215,7 @@ export DISPLAY=:99
                   catalog=str(a.catalog.resolve()),pack=str(a.pack.resolve()),with_pedestal=a.with_pedestal,surface=a.surface,pair=a.pair,
                   command_id=a.command,triple=a.triple,hashes_only=a.hashes_only,transition_required=a.transition,
                   panel_locale=a.panel_locale,
+                  panel_owner=a.panel_owner,
                   scenery_start=a.scenery_start,scenery_limit=a.scenery_limit,
                   independent_runtime_files=independent, memory=str(a.out)+'.memory.json',log=str(a.out)+'.log',
                   scope='固定來源／GPU／明示物理戰鬥fixture，非正常玩家或新原版RGB對拍')

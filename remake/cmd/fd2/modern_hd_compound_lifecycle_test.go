@@ -142,6 +142,10 @@ func (p *modernHDCompoundProbe) Draw(screen *ebiten.Image) {
 		return
 	}
 	p.g.Draw(screen)
+	if err := auditCommandPanelGPU(p.g, f); err != nil {
+		p.err = err
+		return
+	}
 	if p.g.loadErr != "" {
 		p.err = fmt.Errorf("Game.Draw: %s", p.g.loadErr)
 		return
@@ -172,7 +176,7 @@ func (p *modernHDCompoundProbe) Draw(screen *ebiten.Image) {
 	p.phaseDraws[f.hdPhase]++
 	last := f.hdSources.Layers[len(f.hdSources.Layers)-1]
 	label := fmt.Sprintf("%s-present-%03d", f.hdPhase, index)
-	if last.DX != 0 || p.shots[label] || p.out == "" {
+	if last.DX != 0 || p.shots[label] || p.out == "" || !wantCommandPanelCapture(f) {
 		return
 	}
 	// 真正RunGame內呼叫正式最終合成器並回讀1920 GPU；不是X11或一般玩家收據。
@@ -297,6 +301,7 @@ func TestModernHDCompoundRuntimeGPU(t *testing.T) {
 	report := map[string]any{"status": "PASS-SCOPED-RUNTIME-E1", "scope": "原始分離素材的既有class19／BattleFig4 fixture；修改隊伍位置與command32資料，非一般玩家、建構槽章收據或新oracle。保留原始frame delays及hold。",
 		"present_count": len(probe.seen), "hd_draws": probe.hd, "faithful_draws": probe.faithful, "final_draws": probe.finals, "continuations": callbacks, "screenshots": probe.shots, "hd_phase_draws": probe.phaseDraws, "phase_f2_switches": probe.phaseSwitches, "source_shots": probe.sourceShots, "hp": target.HP, "mp": actor.MP, "native_rng": g.nativeRNGState, "go_rng_unchanged": true}
 	if probe.out != "" {
+		appendCommandPanelGPUReport(t, report)
 		raw, _ := json.MarshalIndent(report, "", "  ")
 		if err := os.WriteFile(filepath.Join(probe.out, "receipt.json"), append(raw, '\n'), 0644); err != nil {
 			t.Fatal(err)

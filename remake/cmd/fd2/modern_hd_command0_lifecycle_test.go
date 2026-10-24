@@ -104,6 +104,10 @@ func (p *modernHDCommand0Probe) Draw(screen *ebiten.Image) {
 		return
 	}
 	p.g.Draw(screen)
+	if err := auditCommandPanelGPU(p.g, f); err != nil {
+		p.err = err
+		return
+	}
 	if p.g.loadErr != "" || !p.owner.drawn {
 		p.err = fmt.Errorf("Game.Draw failed: %s", p.g.loadErr)
 		return
@@ -123,7 +127,7 @@ func (p *modernHDCommand0Probe) Draw(screen *ebiten.Image) {
 	p.phases[f.hdPhase]++
 	label := fmt.Sprintf("%s-%03d", f.hdPhase, p.owner.frame)
 	p.seen[label] = true
-	if p.out == "" || p.sourceShots[label+".png"] != nil {
+	if p.out == "" || p.sourceShots[label+".png"] != nil || !wantCommandPanelCapture(f) {
 		return
 	}
 	final := ebiten.NewImage(1920, 1200)
@@ -215,6 +219,7 @@ func TestModernHDCommand0RuntimeGPU(t *testing.T) {
 		"mp_publications": probe.mpChanges, "hp_publications": probe.hpChanges, "rng": g.nativeRNGState,
 		"scope": "沿既有原始素材及明示BattleFig建構raw placement與command0資料的完整Game.Draw fixture；非正常玩家、原版oracle或PLAYER-E2。"}
 	if probe.out != "" {
+		appendCommandPanelGPUReport(t, report)
 		raw, _ := json.MarshalIndent(report, "", "  ")
 		if err := os.WriteFile(filepath.Join(probe.out, "receipt.json"), append(raw, '\n'), 0644); err != nil {
 			t.Fatal(err)

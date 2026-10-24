@@ -218835,5 +218835,297 @@
       "sha256": "0cf75fd29d775b5842d72bce2b4e2a3b58d2f18eaabd5eec18f7335c59842d16"
     },
     "last_change_scope": "Only rejected-scene binding now skips typed panel metadata; successful render/scroll paths unchanged. Final panel-unit and physical regression rerun; six successful GPU flows retain their actual earlier source snapshots."
+  },
+  "command_panel_text_followup_20261024": {
+    "status": "CONFORMED-SCOPED/RUNTIME-E1",
+    "date": "2026-10-24",
+    "base_commit": "8c9b38950868b140aa7fee6ade2d8e4f2253c25f",
+    "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+    "scope": "all shared battle command panel consumers 0-8, AI9,24,29,32-35; command4 shares presenter5; map HUD and complete artwork remain separate",
+    "original_exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "new_re": false,
+    "new_art_assets": 0,
+    "full_hd_complete": false,
+    "normal_player_verified": false,
+    "catalog_changed": false,
+    "private_asset_sync_required": false,
+    "command_branches": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      24,
+      29,
+      32,
+      33,
+      34,
+      35
+    ],
+    "verification": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command-hud-verification-oct24-r1.json",
+      "sha256": "6e6b28dc6d9283c3e0030e87a27739f39101c098f7f04d9c3b92617d6b38980c"
+    },
+    "summary": {
+      "command_branches": 16,
+      "presenters": 15,
+      "source_frames": 1993,
+      "bound_battle_frames": 1486,
+      "frozen_snapshots": 147,
+      "actual_command_flows": 16,
+      "audited_command_draws": 1590,
+      "matched_glyph_pixels": 598330,
+      "f2": 104,
+      "screens": 346,
+      "hd_gates": 39,
+      "required_tests": 53,
+      "peak_bytes": 3461398528
+    },
+    "implementation_sources": [
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_panel.go",
+        "sha256": "883f87937abe3472b8f9c238a352c3de069dd2d3977de388be32f653e5f3608c"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_runtime.go",
+        "sha256": "6617e28ee5517fc9f4704ff305c23687bb5ee3b629ca85b61dab0cc081d30a89"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_command0_lifecycle_test.go",
+        "sha256": "42a0d3b6f459d479c8706fbe1b9de8a7a5e2248fa61abcbe63a796fc6ea584f5"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_command1_lifecycle_test.go",
+        "sha256": "b04e5bc9a9e1bd7de6a4bed881917a040e569cd8234c42fdf38f60d5d097e481"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_command5_lifecycle_test.go",
+        "sha256": "cc729f05394970c1e7afe226abe387b1d347adf343021c27ede08e149cbc63ac"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_command_panel_test.go",
+        "sha256": "374e04bdf819bb0fcb371a4ad15d00405cf01e23a5ffe7adea924619a5dd8b82"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_compound.go",
+        "sha256": "7fbfc0ebaa70aa0cccbba6afb8d56d5690cb6a7bf219755cbf0cac80c94b3c47"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_compound_lifecycle_test.go",
+        "sha256": "f260331578bad4e0c8284229d12774eb782a90961d36d0fa53cf6ad51936ead9"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_fairy_lifecycle_test.go",
+        "sha256": "28871e033d3c3c30b8c49b4c92405ddb97d29324e3fef94ac8ae50b117516f9c"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_ordinary_lifecycle_test.go",
+        "sha256": "b4e5a8c6ae7e54bd615ee79521471656c1b3a7cd760f56815461cf752085aaf1"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_split_strike.go",
+        "sha256": "a3adea829ba79fdd7551ca27ba73604babbddd1b14b138729b5b37bed05f42d2"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_split_strike_lifecycle_test.go",
+        "sha256": "b1d84683eb8c19ad31d0b87bc915bb97739cc0b8a048e9e5d59dc726b582a745"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_staged_summon_lifecycle_test.go",
+        "sha256": "6243f0f3c80eecc6dc8b0bb3d49996ee17ea8b64784805997c67e336ba90dfdc"
+      },
+      {
+        "file": "remake/cmd/fd2/native_battle_panel_locale.go",
+        "sha256": "d3c798e7020fcbb4560e702e8e53a3655970653e9f69a341df435d33f9ffb3e0"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command0_presentation.go",
+        "sha256": "3980aa6a52da77d90df88b7836515297b338acc8c91b67f31fd0f93f58a338ae"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command1_presentation.go",
+        "sha256": "76440c2ac768d7ff59b362fc941b132f8619aa361ca7dc266b142012fc32370a"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command24_presentation.go",
+        "sha256": "fd8f0e6a84574b1ea17b3e00f30b2083406fcd4fcf1204f0569387d6d83f7511"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command24_presentation_test.go",
+        "sha256": "cca68500127281899fa58f4428d74580e98bb3bc225076135148c2aa963e40ba"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command29_presentation.go",
+        "sha256": "cf663f803f68d5171ed292cb8ea08cba46907a82bb4cfea35b97608567b2899a"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command29_presentation_test.go",
+        "sha256": "124f8bd5cc794b20d04fd19c968459a54d1fdc9f63c69407c2665e6fa03c29be"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command2_presentation.go",
+        "sha256": "7a8caeefe5a0f495f644c4ef82e9029f15fe4e0e8f548cdf6270d589ca0da260"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command32_presentation.go",
+        "sha256": "1b4c56802e2ebd5b85c0ba362b5cb5a13fea74babade2c69b41be50a1fc24563"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command32_presentation_test.go",
+        "sha256": "7879b13373ef35cea56e9c357ba1b521af7845c34be2bfa4b7a44629d508feea"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command33_presentation.go",
+        "sha256": "6a363d1a106255ebb040168acc6f5e98f75f9093566ff2b6f227c501e3d40ea1"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command33_presentation_test.go",
+        "sha256": "bd91a5f98ed43766915e7ba8cfe5bb709f5e0e1df757a1f3238a5ffd011b7d8d"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command34_presentation.go",
+        "sha256": "b37b84d496e27b7070c7618a3841a53959d3b458048f3d82b1189f13ede8908a"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command34_presentation_test.go",
+        "sha256": "b26265e162329509b44d8b63f27d60f63f3e46c8fbad02710a93a23cf0f9ad62"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command35_presentation.go",
+        "sha256": "023d31be2a97ce823e745cedee87cbea4bd23590a2d5e64a7813ff6f0747b316"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command35_presentation_test.go",
+        "sha256": "4ebc4783cb1c1165f9f3d75183b0b92d960348e076f7f91b90c4fea34e27ae59"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command3_presentation.go",
+        "sha256": "ad93faaf961fd72c0eb5de3378be70c10da1a6a98e5d2cb8ff5da438694861c4"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command5_presentation.go",
+        "sha256": "bbdb63a18096e11e95331992b8a7ab88d096872611b260bc8984fde6eb22528a"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command6_presentation.go",
+        "sha256": "da68ed24b5bdbd7e35f1c6dc8eed01ee2a4c9c9adde56d99656a60352ac28c8e"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command7_presentation.go",
+        "sha256": "df76fed892f5b6f7e770f9dd76f2f96bb7780adfd1ed7d88ed5299042e279a35"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command8_presentation.go",
+        "sha256": "06b52fd26d7463873ae8cae426d594c43fcfc19448fbba543491cf14bb04fc99"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command9_ai_presentation.go",
+        "sha256": "b8b339080aaa4f49b1c98f1f76cd2c058494775e37163ec9c33600c3ddc7fb7e"
+      },
+      {
+        "file": "tools/build_fd2_battle_panel_gallery.py",
+        "sha256": "dafb29f33c459d47f1dbd65b9a39b6aa23bd893d951564a15f05fa91dd7cfbdc"
+      },
+      {
+        "file": "tools/test_fd2_split_strike_gpu.py",
+        "sha256": "1e4d21f62e5e922586e16ff0624fd4a7ee55d4b4f9e253a39f872f009eee92c8"
+      },
+      {
+        "file": "tools/verify_fd2_battle_surface_hd.py",
+        "sha256": "73ea1280e63aa8a371e15a50f410c88f598900db7066b8c328b6b476122b5709"
+      },
+      {
+        "file": "tools/verify_fd2_split_strike_gpu.py",
+        "sha256": "5706d60ecd1f51cbe36b75543fd04ba0698bf5d57ea8074c0bb97ec1ec2d8938"
+      }
+    ],
+    "gallery": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command-hud-readme-oct24-r1.json",
+      "sha256": "70dc6796b25246a89904dc81f0671ad82a91b095d4eb9d00023069f08af04a9a"
+    },
+    "pillow": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command-hud-split24-pillow-oct24-r1.json",
+        "sha256": "fe632c1e652e3c510062ea515e12c0fd186faa0a548e76c51133b4c7cc1c4bc2"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command-hud-split29-pillow-oct24-r1.json",
+        "sha256": "1daf8055bf3d40cc3bd96a86514023efb4afd6a42f39706fa33aee5ff68644fc"
+      }
+    ],
+    "negative_guards": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command-hud-guards24-oct24-r2/guards.json",
+        "sha256": "8860133665cd5e3a97623603fb505088651b29891327f8f0cbc5a0d5cc15cc46"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command-hud-guards29-oct24-r2/guards.json",
+        "sha256": "691ff25fb83f834303b6e29234cab40d18df344798bbbfb661be679144601e9d"
+      }
+    ],
+    "string_review": {
+      "inventory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command-hud-string-inventory-oct24-r1.json",
+        "sha256": "ce71b50de750208a9654dcbe617458654f79a7912073304924e253c529b735d8"
+      },
+      "review": {
+        "file": "docs/data/fd2-string-review.json",
+        "sha256": "c91687a02890737ac1ba541b2f6e20cd5479a51d6704628c20decf560ad6a714"
+      },
+      "tests": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command-hud-string-tests-oct24-r2.log",
+        "sha256": "482ab032264ae5c612733f3a088243a572614083dada36143be403b9b0ceefc8"
+      },
+      "dispositions": 109
+    },
+    "remaining": [
+      "complete battle panel frame and bar artwork",
+      "other scenery callers and effect tails",
+      "normal-player and concentrated manual-art review after all HD integration",
+      "platform and representative performance acceptance",
+      "floating toolbar and actual game speed under issue204"
+    ],
+    "known_differences": [
+      "HD Noto glyphs replace native bitmap glyphs, actual frame palette retained",
+      "raw +8 fixture names may differ from substituted figure art",
+      "map HUD and command9 player map owner use separate consumers"
+    ],
+    "corrections": [
+      "command6 nested stage-base helper requires explicit collector forwarding",
+      "panel glyphs use actual palette index; fixed HD-white exception does not follow summon palette",
+      "24/29 exporter and Pillow verifier recognize typed panel RGBA separately from native negative-resource layers",
+      "negative origin and size cases keep rectangles self-consistent to reach panel-source guards",
+      "initial string test rejected old inventory binding; official migration preserves all109 dispositions"
+    ],
+    "github_issues": [
+      263,
+      204,
+      268,
+      269
+    ],
+    "issue_acceptance_preserved": true,
+    "final_check": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command-hud-final-check-oct24-r1.json",
+      "sha256": "a3f6da4b786b6348c2fd9d19c9f6987b3127fc1048aeb7792f6a8fab4897805d"
+    },
+    "worklist_open": 24,
+    "github_issues_verified_open": [
+      204,
+      263,
+      268,
+      269
+    ],
+    "docker_cleanup_verified": true,
+    "cleanup": {
+      "new_images_volumes_videos_release": false,
+      "all_current_outputs_uid_gid": "1000:1000",
+      "historical_root_owned_unchanged_files": 51,
+      "preserved_failed_receipts": true
+    }
   }
 }

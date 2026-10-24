@@ -218,6 +218,7 @@ func (g *Game) startNativeCommand45Presentation(actor, confirmed *battle.Unit, c
 	if !osMuteOrShot(g) && (len(actorSFX) == 0 || len(targetSFX) == 0) {
 		return fmt.Errorf("native command%d converted samples unavailable", commandID)
 	}
+	var panelText []*modernBattlePanelText
 	panelAssets, err := battle.LoadNativeItemPanelDataAssets(separatedAssetPath(""))
 	if err != nil {
 		return err
@@ -254,7 +255,7 @@ func (g *Game) startNativeCommand45Presentation(actor, confirmed *battle.Unit, c
 			if err != nil {
 				return err
 			}
-			targetBases[targetIndex][stage], err = g.localizedNativeCommand0Base(background, panelAssets, actorAfterRecord, record, actorIndex, runtimeIndex, g.handlerChapter, &platform)
+			targetBases[targetIndex][stage], err = g.localizedNativeCommand0Base(background, panelAssets, actorAfterRecord, record, actorIndex, runtimeIndex, g.handlerChapter, &platform, &panelText)
 			if err != nil {
 				return err
 			}
@@ -272,11 +273,11 @@ func (g *Game) startNativeCommand45Presentation(actor, confirmed *battle.Unit, c
 	if err != nil {
 		return err
 	}
-	preludeBase, err := g.localizedNativeCommand0Base(background, panelAssets, actorRecord, firstTargetRecord, actorIndex, firstTargetIndex, g.handlerChapter, nil)
+	preludeBase, err := g.localizedNativeCommand0Base(background, panelAssets, actorRecord, firstTargetRecord, actorIndex, firstTargetIndex, g.handlerChapter, nil, &panelText)
 	if err != nil {
 		return err
 	}
-	actorBaseBefore, err := g.localizedNativeCommand0Base(background, panelAssets, actorRecord, firstTargetRecord, actorIndex, firstTargetIndex, g.handlerChapter, &platform)
+	actorBaseBefore, err := g.localizedNativeCommand0Base(background, panelAssets, actorRecord, firstTargetRecord, actorIndex, firstTargetIndex, g.handlerChapter, &platform, &panelText)
 	if err != nil {
 		return err
 	}
@@ -401,6 +402,7 @@ func (g *Game) startNativeCommand45Presentation(actor, confirmed *battle.Unit, c
 	if err != nil {
 		return err
 	}
+	bindModernBattlePanelBank(panelText, hd)
 	if g.modernStoryPortraits != nil {
 		if err := prepareModernHDCommandBanks(g.modernStoryPortraits, hd); err != nil {
 			return err

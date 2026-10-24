@@ -105,6 +105,10 @@ func (p *modernHDOrdinaryProbe) Draw(screen *ebiten.Image) {
 		return
 	}
 	p.g.Draw(screen)
+	if err := auditCommandPanelGPU(p.g, f); err != nil {
+		p.err = err
+		return
+	}
 	if p.g.loadErr != "" || !p.job.acknowledged() {
 		p.err = fmt.Errorf("Game.Draw failed: %s", p.g.loadErr)
 		return
@@ -132,7 +136,7 @@ func (p *modernHDOrdinaryProbe) Draw(screen *ebiten.Image) {
 			}
 		}
 	}
-	if p.out == "" || p.sourceShots[label+".png"] != nil {
+	if p.out == "" || p.sourceShots[label+".png"] != nil || !wantCommandPanelCapture(f) {
 		return
 	}
 	final := ebiten.NewImage(1920, 1200)
@@ -276,6 +280,7 @@ func TestModernHDOrdinaryRemainingRuntimeGPU(t *testing.T) {
 		report["packed_colour_contract"] = "native guide + four-nearest RGB colour delta; alpha preserved; modern-art approximation"
 	}
 	if p.out != "" {
+		appendCommandPanelGPUReport(t, report)
 		raw, _ := json.MarshalIndent(report, "", "  ")
 		if err := os.WriteFile(filepath.Join(p.out, "receipt.json"), append(raw, '\n'), 0644); err != nil {
 			t.Fatal(err)

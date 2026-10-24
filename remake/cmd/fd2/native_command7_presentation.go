@@ -166,6 +166,7 @@ func (g *Game) startNativeCommand7Presentation(actor, confirmed *battle.Unit, th
 	if !osMuteOrShot(g) && (len(g.sfxCommand7Actor) == 0 || len(g.sfxCommand7Target) == 0) {
 		return errors.New("native command7 converted #88 samples unavailable")
 	}
+	var panelText []*modernBattlePanelText
 	panelAssets, err := battle.LoadNativeItemPanelDataAssets(separatedAssetPath(""))
 	if err != nil {
 		return err
@@ -202,7 +203,7 @@ func (g *Game) startNativeCommand7Presentation(actor, confirmed *battle.Unit, th
 			if err != nil {
 				return err
 			}
-			targetBases[targetIndex][stage], err = g.localizedNativeCommand0Base(background, panelAssets, actorAfterRecord, record, actorIndex, runtimeIndex, g.handlerChapter, &platform)
+			targetBases[targetIndex][stage], err = g.localizedNativeCommand0Base(background, panelAssets, actorAfterRecord, record, actorIndex, runtimeIndex, g.handlerChapter, &platform, &panelText)
 			if err != nil {
 				return err
 			}
@@ -220,11 +221,11 @@ func (g *Game) startNativeCommand7Presentation(actor, confirmed *battle.Unit, th
 	if err != nil {
 		return err
 	}
-	preludeBase, err := g.localizedNativeCommand0Base(background, panelAssets, actorRecord, firstTargetRecord, actorIndex, firstTargetIndex, g.handlerChapter, nil)
+	preludeBase, err := g.localizedNativeCommand0Base(background, panelAssets, actorRecord, firstTargetRecord, actorIndex, firstTargetIndex, g.handlerChapter, nil, &panelText)
 	if err != nil {
 		return err
 	}
-	actorBaseBefore, err := g.localizedNativeCommand0Base(background, panelAssets, actorRecord, firstTargetRecord, actorIndex, firstTargetIndex, g.handlerChapter, &platform)
+	actorBaseBefore, err := g.localizedNativeCommand0Base(background, panelAssets, actorRecord, firstTargetRecord, actorIndex, firstTargetIndex, g.handlerChapter, &platform, &panelText)
 	if err != nil {
 		return err
 	}
@@ -347,6 +348,7 @@ func (g *Game) startNativeCommand7Presentation(actor, confirmed *battle.Unit, th
 	if err != nil {
 		return err
 	}
+	bindModernBattlePanelBank(panelText, hd)
 	if set := g.modernStoryPortraits; set != nil {
 		if err := prepareModernHDCommandBanks(set, hd); err != nil {
 			return err

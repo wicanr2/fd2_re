@@ -175,6 +175,7 @@ func (g *Game) startNativeCommand32Presentation(actor, confirmed *battle.Unit, t
 	if err != nil {
 		return err
 	}
+	var panelText []*modernBattlePanelText
 	panelAssets, err := battle.LoadNativeItemPanelDataAssets(separatedAssetPath(""))
 	if err != nil {
 		return err
@@ -195,11 +196,11 @@ func (g *Game) startNativeCommand32Presentation(actor, confirmed *battle.Unit, t
 		}
 		platform = &frame
 	}
-	actorBase, err := g.localizedNativeCommand24BackgroundBase(background, panelAssets, actorRecord, actorIndex, g.handlerChapter, platform)
+	actorBase, err := g.localizedNativeCommand24CapturedBase(background, panelAssets, actorRecord, actorIndex, g.handlerChapter, platform, &panelText)
 	if err != nil {
 		return err
 	}
-	preludeBase, err := g.localizedNativeCommand24BackgroundBase(background, panelAssets, actorRecord, actorIndex, g.handlerChapter, nil)
+	preludeBase, err := g.localizedNativeCommand24CapturedBase(background, panelAssets, actorRecord, actorIndex, g.handlerChapter, nil, &panelText)
 	if err != nil {
 		return err
 	}
@@ -389,6 +390,7 @@ func (g *Game) startNativeCommand32Presentation(actor, confirmed *battle.Unit, t
 		}
 	}
 	publishHD()
+	bindModernBattlePanelFrames(panelText, frames)
 	g.nativeCmd32Presentation = &nativeCommand32PresentationJob{
 		actor: actor, plan: plan, frames: frames, publishAt: publishAt,
 		rngBefore:    g.nativeRNGState,

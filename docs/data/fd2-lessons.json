@@ -3944,6 +3944,21 @@
         ],
         "pattern": "erase = image.Rect\\(4\\*6, 4\\*6, 132\\*6, 21\\*6\\)"
       }
+    },
+    {
+      "id": "hd-panel-glyph-follows-live-palette",
+      "date": "2026-10-24",
+      "area": "HD文字",
+      "rule": "全色盤演出的HD面板文字取當幀palette索引，不沿一般介面的固定白色例外；面板與人物的subtract／mix分開。入口remake/cmd/fd2/modern_hd_battle_panel.go的raster及modern_hd_battle_gpu.go的PreservePalette；在規格61的Go Docker流程跑tools/verify_fd2_battle_surface_hd.py --kind command-panel-unit與command-panel-game --panel-owner 32 --panel-locale ja，分別驗合成變色及實際Game.Draw。",
+      "why": "共用文字原先沿modernHDNativeTextColor的205固定白色，無法追隨召喚整個palette的變色。改由當幀色盤取色，保留原生框／bar，再用合成palette與實際GPU驗字形色值。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/modern_hd_battle_panel.go"
+        ],
+        "pattern": "nativePaletteColor\\(palette, field.colour"
+      }
     }
   ]
 }

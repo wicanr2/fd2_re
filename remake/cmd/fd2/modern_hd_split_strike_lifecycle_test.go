@@ -184,6 +184,10 @@ func (p *modernHDSplitStrikeProbe) Draw(screen *ebiten.Image) {
 		return
 	}
 	p.g.Draw(screen)
+	if err := auditCommandPanelGPU(p.g, f); err != nil {
+		p.err = err
+		return
+	}
 	if p.g.loadErr != "" || !p.cursor().Drawn {
 		p.err = fmt.Errorf("Game.Draw failed: %s", p.g.loadErr)
 		return
@@ -262,6 +266,14 @@ func (p *modernHDSplitStrikeProbe) Draw(screen *ebiten.Image) {
 				return
 			}
 			v["native_file"], v["native_sha256"] = file, digest
+		} else if source.PanelText != nil {
+			file, digest, err := p.saveImage("panel", layer.HD)
+			if err != nil {
+				p.err = err
+				return
+			}
+			v["panel_file"], v["panel_sha256"], v["preserve_palette"] = file, digest, true
+			v["panel_name"], v["panel_values"] = source.PanelText.name, source.PanelText.values
 		} else if source.Resource < 0 {
 			p.err = fmt.Errorf("native layer unexpectedly has registered HD")
 			return
@@ -422,6 +434,7 @@ func TestModernHDSplitStrikeRuntimeGPU(t *testing.T) {
 			report["transition_required"] = true
 		}
 	}
+	appendCommandPanelGPUReport(t, report)
 	data, err := json.MarshalIndent(report, "", "  ")
 	if err != nil {
 		t.Fatal(err)

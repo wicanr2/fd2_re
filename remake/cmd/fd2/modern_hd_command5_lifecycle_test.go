@@ -104,6 +104,10 @@ func (p *modernHDCommand5Probe) Draw(screen *ebiten.Image) {
 		return
 	}
 	p.g.Draw(screen)
+	if err := auditCommandPanelGPU(p.g, f); err != nil {
+		p.err = err
+		return
+	}
 	if p.g.loadErr != "" || !p.owner.drawn {
 		p.err = fmt.Errorf("Game.Draw failed: %s", p.g.loadErr)
 		return
@@ -123,7 +127,7 @@ func (p *modernHDCommand5Probe) Draw(screen *ebiten.Image) {
 	p.phases[f.hdPhase]++
 	label := fmt.Sprintf("%s-%03d", f.hdPhase, p.owner.frame)
 	p.seen[label] = true
-	if p.out == "" || p.sourceShots[label+".png"] != nil {
+	if p.out == "" || p.sourceShots[label+".png"] != nil || !wantCommandPanelCapture(f) {
 		return
 	}
 	final := ebiten.NewImage(1920, 1200)
@@ -156,6 +160,13 @@ func TestModernHDCommand5RuntimeGPU(t *testing.T) {
 	}
 	t.Setenv("FD2_MUTE", "1")
 	g, actor, target := ordinaryCommand5HDTestGame(t)
+	command := 5
+	if os.Getenv("FD2_HD_COMMAND_PANEL_TEXT") == "1" && os.Getenv("FD2_HD_COMMAND_PANEL_OWNER") == "4" {
+		command = 4
+		record := g.st.NativeCommandBook[5]
+		record.ID = 4
+		g.st.NativeCommandBook[4] = record
+	}
 	set, err := loadModernStoryPortraitSet(os.Getenv("FD2_TEST_MODERN_EFFECT_CATALOG"), os.Getenv("FD2_TEST_MODERN_EFFECT_PACK"))
 	if err != nil {
 		t.Fatal(err)
@@ -168,7 +179,7 @@ func TestModernHDCommand5RuntimeGPU(t *testing.T) {
 			t.Fatal(err)
 		}
 	}
-	if err := g.startNativeCommand5Presentation(actor, target, func([]battle.NativeCommandDamageResult) { probe.callbacks++; probe.finished = true }); err != nil {
+	if err := g.startNativeCommand45Presentation(actor, target, command, func([]battle.NativeCommandDamageResult) { probe.callbacks++; probe.finished = true }); err != nil {
 		t.Fatal(err)
 	}
 	probe.owner, probe.presentation = g.nativeCmd5Presentation, &modernHDPresentation{Game: g}
@@ -213,12 +224,13 @@ func TestModernHDCommand5RuntimeGPU(t *testing.T) {
 	if g.modernHDBattleGPU.owner != nil || len(g.modernHDBattleGPU.sources) != 0 {
 		t.Fatal("completed command0 retained textures")
 	}
-	report := map[string]any{"status": "PASS-ORDINARY-COMMAND5-FIXTURE-RUNTIME-E1", "command_id": 5, "continuations": probe.callbacks, "go_rng_unchanged": true,
+	report := map[string]any{"status": fmt.Sprintf("PASS-ORDINARY-COMMAND%d-FIXTURE-RUNTIME-E1", command), "command_id": command, "continuations": probe.callbacks, "go_rng_unchanged": true,
 		"actor_figure": actor.BattleFig, "target_figure": target.BattleFig,
 		"hd_draws": probe.draws, "final_draws": probe.finals, "hd_phase_draws": probe.phases, "phase_f2_switches": probe.switches, "source_shots": probe.sourceShots,
 		"mp_publications": probe.mpChanges, "hp_publications": probe.hpChanges, "rng": g.nativeRNGState,
 		"scope": "沿既有原始素材及明示BattleFig建構raw placement與command5資料的完整Game.Draw fixture；非正常玩家、原版oracle或PLAYER-E2。"}
 	if probe.out != "" {
+		appendCommandPanelGPUReport(t, report)
 		raw, _ := json.MarshalIndent(report, "", "  ")
 		if err := os.WriteFile(filepath.Join(probe.out, "receipt.json"), append(raw, '\n'), 0644); err != nil {
 			t.Fatal(err)

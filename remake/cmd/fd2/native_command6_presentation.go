@@ -192,6 +192,7 @@ func (g *Game) startNativeCommand6PresentationAtCursor(actor *battle.Unit, curso
 	if !osMuteOrShot(g) && (len(g.sfxCommand6Actor) == 0 || len(g.sfxCommand6Target) == 0 || len(g.sfxCommand6Front) == 0 || len(g.sfxCommand6Tail) == 0) {
 		return errors.New("native command6 converted #87 samples unavailable")
 	}
+	var panelText []*modernBattlePanelText
 	panelAssets, err := battle.LoadNativeItemPanelDataAssets(separatedAssetPath(""))
 	if err != nil {
 		return err
@@ -215,7 +216,7 @@ func (g *Game) startNativeCommand6PresentationAtCursor(actor *battle.Unit, curso
 		return err
 	}
 
-	targetBases, err := g.nativeCommand6StageBases(background, platform, panelAssets, actorAfterRecord, actorIndex, plan)
+	targetBases, err := g.nativeCommand6StageBases(background, platform, panelAssets, actorAfterRecord, actorIndex, plan, &panelText)
 	if err != nil {
 		return err
 	}
@@ -231,11 +232,11 @@ func (g *Game) startNativeCommand6PresentationAtCursor(actor *battle.Unit, curso
 	if err != nil {
 		return err
 	}
-	preludeBase, err := g.localizedNativeCommand0Base(background, panelAssets, actorRecord, preludeTargetRecord, actorIndex, firstTargetIndex, g.handlerChapter, nil)
+	preludeBase, err := g.localizedNativeCommand0Base(background, panelAssets, actorRecord, preludeTargetRecord, actorIndex, firstTargetIndex, g.handlerChapter, nil, &panelText)
 	if err != nil {
 		return err
 	}
-	actorBaseBefore, err := g.localizedNativeCommand0Base(background, panelAssets, actorRecord, preludeTargetRecord, actorIndex, firstTargetIndex, g.handlerChapter, &platform)
+	actorBaseBefore, err := g.localizedNativeCommand0Base(background, panelAssets, actorRecord, preludeTargetRecord, actorIndex, firstTargetIndex, g.handlerChapter, &platform, &panelText)
 	if err != nil {
 		return err
 	}
@@ -357,6 +358,7 @@ func (g *Game) startNativeCommand6PresentationAtCursor(actor *battle.Unit, curso
 	if len(handler) == 0 || len(hd.handler) != len(handler) {
 		return errors.New("native command6 handler frames unavailable")
 	}
+	bindModernBattlePanelBank(panelText, hd)
 	if set := g.modernStoryPortraits; set != nil {
 		if err := prepareModernHDCommandBanks(set, hd); err != nil {
 			return err
@@ -375,9 +377,17 @@ func (g *Game) startNativeCommand6PresentationAtCursor(actor *battle.Unit, curso
 
 // nativeCommand6StageBases 保留sub_2B659的LUT15與每段HP對應的持續base。
 // actor sprite由每張caller組圖重畫，不烘入背景或改寫來源frame。
-func (g *Game) nativeCommand6StageBases(background, platform fdother.Frame, panels battle.NativeItemPanelDataAssets, actorRecord []byte, actorIndex int, plan *battle.NativeCommandDamagePlan) ([][][]byte, error) {
+func (g *Game) nativeCommand6StageBases(background, platform fdother.Frame, panels battle.NativeItemPanelDataAssets, actorRecord []byte, actorIndex int, plan *battle.NativeCommandDamagePlan, panelText ...*[]*modernBattlePanelText) ([][][]byte, error) {
 	if g == nil || g.st == nil || plan == nil || len(plan.Results) == 0 || len(g.nativeMapAssets.LUTs) <= 15 || len(g.nativeMapAssets.LUTs[15]) != 256 {
 		return nil, errors.New("native command6 base LUT15 unavailable")
+	}
+	text, commit, err := stageModernBattlePanelText(panelText)
+	if err != nil {
+		return nil, err
+	}
+	var capture []*[]*modernBattlePanelText
+	if text != nil {
+		capture = append(capture, text)
 	}
 	bases := make([][][]byte, len(plan.Results))
 	for targetIndex, result := range plan.Results {
@@ -393,7 +403,7 @@ func (g *Game) nativeCommand6StageBases(background, platform fdother.Frame, pane
 			if err != nil {
 				return nil, err
 			}
-			base, err := g.localizedNativeCommand0Base(background, panels, actorRecord, record, actorIndex, runtimeIndex, g.handlerChapter, &platform)
+			base, err := g.localizedNativeCommand0Base(background, panels, actorRecord, record, actorIndex, runtimeIndex, g.handlerChapter, &platform, capture...)
 			if err != nil {
 				return nil, err
 			}
@@ -408,6 +418,7 @@ func (g *Game) nativeCommand6StageBases(background, platform fdother.Frame, pane
 			bases[targetIndex][stage] = base
 		}
 	}
+	commit()
 	return bases, nil
 }
 

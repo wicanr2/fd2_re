@@ -153,6 +153,7 @@ func (g *Game) startNativeCommand8Presentation(actor, confirmed *battle.Unit, th
 	if !osMuteOrShot(g) && (len(g.sfxCommand8Actor) == 0 || len(g.sfxCommand8Sub1) == 0 || len(g.sfxCommand8Sub2) == 0) {
 		return errors.New("native command8 converted #90 samples unavailable")
 	}
+	var panelText []*modernBattlePanelText
 	panelAssets, err := battle.LoadNativeItemPanelDataAssets(separatedAssetPath(""))
 	if err != nil {
 		return err
@@ -187,7 +188,7 @@ func (g *Game) startNativeCommand8Presentation(actor, confirmed *battle.Unit, th
 		if err != nil {
 			return err
 		}
-		targetBases[stage], err = g.localizedNativeCommand0Base(background, panelAssets, actorAfterRecord, record, actorIndex, targetIndex, g.handlerChapter, &platform)
+		targetBases[stage], err = g.localizedNativeCommand0Base(background, panelAssets, actorAfterRecord, record, actorIndex, targetIndex, g.handlerChapter, &platform, &panelText)
 		if err != nil {
 			return err
 		}
@@ -196,11 +197,11 @@ func (g *Game) startNativeCommand8Presentation(actor, confirmed *battle.Unit, th
 	if err != nil {
 		return err
 	}
-	preludeBase, err := g.localizedNativeCommand0Base(background, panelAssets, actorRecord, targetRecord, actorIndex, targetIndex, g.handlerChapter, nil)
+	preludeBase, err := g.localizedNativeCommand0Base(background, panelAssets, actorRecord, targetRecord, actorIndex, targetIndex, g.handlerChapter, nil, &panelText)
 	if err != nil {
 		return err
 	}
-	actorBaseBefore, err := g.localizedNativeCommand0Base(background, panelAssets, actorRecord, targetRecord, actorIndex, targetIndex, g.handlerChapter, &platform)
+	actorBaseBefore, err := g.localizedNativeCommand0Base(background, panelAssets, actorRecord, targetRecord, actorIndex, targetIndex, g.handlerChapter, &platform, &panelText)
 	if err != nil {
 		return err
 	}
@@ -297,6 +298,7 @@ func (g *Game) startNativeCommand8Presentation(actor, confirmed *battle.Unit, th
 	if err != nil {
 		return err
 	}
+	bindModernBattlePanelBank(panelText, hd)
 	if set := g.modernStoryPortraits; set != nil {
 		if err := prepareModernHDCommandBanks(set, hd); err != nil {
 			return err

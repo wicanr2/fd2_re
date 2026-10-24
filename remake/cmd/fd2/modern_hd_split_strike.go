@@ -97,6 +97,7 @@ func modernSplitStrikeScenery(background fdother.Frame, selector int, platform *
 
 // 消費既有24／29 owner的索引及乾淨base，不寫入排程或交易。
 type modernHDSplitStrike struct {
+	panelText                        *[]*modernBattlePanelText
 	prelude                          []nativeCompoundPresentedFrame
 	effect                           *figani.Animation
 	effectID                         int
@@ -105,6 +106,27 @@ type modernHDSplitStrike struct {
 	palette                          color.Palette
 	targets                          []modernHDSplitStrikeTarget
 	actorScenery                     []modernHDBattleSource
+}
+
+func (h *modernHDSplitStrike) bindPanelText(panels *[]*modernBattlePanelText) {
+	h.panelText = panels
+	for _, frame := range h.prelude {
+		h.withPanelSources(frame.hdSources)
+	}
+}
+
+func (h *modernHDSplitStrike) withPanelSources(sources *modernHDBattleSources) *modernHDBattleSources {
+	if h != nil && h.panelText != nil {
+		bindModernBattlePanelText(*h.panelText, sources)
+	}
+	return sources
+}
+
+func (h *modernHDSplitStrike) withPanelFrame(frame *nativeCompoundPresentedFrame) *nativeCompoundPresentedFrame {
+	if frame != nil {
+		h.withPanelSources(frame.hdSources)
+	}
+	return frame
 }
 
 type modernHDSplitStrikeTarget struct {
@@ -158,8 +180,8 @@ func bindModernHDSplitStrike(prelude battlepresent.NativeCommandPreludeInput,
 }
 
 func (h *modernHDSplitStrike) actorEndSources() *modernHDBattleSources {
-	return &modernHDBattleSources{Base: h.actorAfter, BaseScenery: h.actorScenery,
-		Layers: []modernHDBattleSource{modernHDCommandFigure(h.effect, h.effectID, h.targetStart-1)}}
+	return h.withPanelSources(&modernHDBattleSources{Base: h.actorAfter, BaseScenery: h.actorScenery,
+		Layers: []modernHDBattleSource{modernHDCommandFigure(h.effect, h.effectID, h.targetStart-1)}})
 }
 
 func (h *modernHDSplitStrike) addTarget(before, after []byte, idle *figani.Animation, idleID int,
@@ -174,6 +196,7 @@ func (h *modernHDSplitStrike) addTarget(before, after []byte, idle *figani.Anima
 	if err := bindModernPhysicalBaseScenery(cleanAfter, scenery); err != nil {
 		return err
 	}
+	h.withPanelSources(cleanBefore)
 	sources, err := modernHDBattleScrollScenerySources(presents, source, cleanBefore, idle.Frames[0], idleID, bg)
 	if err != nil {
 		return err
@@ -193,10 +216,10 @@ func (h *modernHDSplitStrike) addTarget(before, after []byte, idle *figani.Anima
 
 func (h *modernHDSplitStrike) targetEndSources(targetIndex, idleFrame int) *modernHDBattleSources {
 	t := &h.targets[targetIndex]
-	return &modernHDBattleSources{Base: t.after, BaseScenery: t.scenery, Layers: []modernHDBattleSource{
+	return h.withPanelSources(&modernHDBattleSources{Base: t.after, BaseScenery: t.scenery, Layers: []modernHDBattleSource{
 		modernHDCommandFigure(t.idle, t.idleID, idleFrame),
 		modernHDCommandFigure(h.effect, h.effectID, len(h.effect.Frames)-1),
-	}}
+	}})
 }
 
 func (h *modernHDSplitStrike) sourceFrames() []nativeCompoundPresentedFrame {
@@ -213,6 +236,9 @@ func (h *modernHDSplitStrike) sourceFrames() []nativeCompoundPresentedFrame {
 		f.hdSources.BaseScenery = target.scenery
 		frames = append(frames, f)
 	}
+	for _, frame := range frames {
+		h.withPanelSources(frame.hdSources)
+	}
 	return frames
 }
 
@@ -221,14 +247,14 @@ func (h *modernHDSplitStrike) frame(prelude, transition, target, effect, idle in
 		return nil
 	}
 	if prelude >= 0 && prelude < len(h.prelude) {
-		return &h.prelude[prelude]
+		return h.withPanelFrame(&h.prelude[prelude])
 	}
 	t := &h.targets[target]
 	if transition >= 0 {
 		if transition >= len(t.transitions) {
 			return nil
 		}
-		return &t.transitions[transition]
+		return h.withPanelFrame(&t.transitions[transition])
 	}
 	base, phase := h.actorBefore, "actor"
 	scenery := h.actorScenery
@@ -253,7 +279,7 @@ func (h *modernHDSplitStrike) frame(prelude, transition, target, effect, idle in
 	layers = append(layers, modernHDCommandFigure(h.effect, h.effectID, effect))
 	f := modernHDCommandFrame(base, layers, h.palette, phase)
 	f.hdSources.BaseScenery = scenery
-	return &f
+	return h.withPanelFrame(&f)
 }
 
 func (j *nativeCommand24PresentationJob) modernFrame() *nativeCompoundPresentedFrame {

@@ -213,6 +213,7 @@ func TestModernHDStagedSummonRuntimeGPU(t *testing.T) {
 		"present_count": count, "hd_draws": probe.hd, "faithful_draws": probe.faithful, "final_draws": probe.finals, "continuations": callbacks,
 		"stages": seenStages, "screenshots": probe.shots, "hd_phase_draws": probe.phaseDraws, "phase_f2_switches": probe.phaseSwitches, "source_shots": probe.sourceShots, "actor_hp": actor.HP, "target_hp": target.HP, "mp": actor.MP, "native_rng": g.nativeRNGState, "go_rng_unchanged": true}
 	if probe.out != "" {
+		appendCommandPanelGPUReport(t, report)
 		raw, _ := json.MarshalIndent(report, "", "  ")
 		if err := os.WriteFile(filepath.Join(probe.out, "receipt.json"), append(raw, '\n'), 0644); err != nil {
 			t.Fatal(err)

@@ -61,12 +61,17 @@ func (g *Game) localizedNativeCommand0Base(
 	actorRecord, targetRecord []byte,
 	actorIndex, targetIndex, chapter int,
 	platform *fdother.Frame,
+	panelText ...*[]*modernBattlePanelText,
 ) ([]byte, error) {
-	base := make([]byte, 320*200)
-	if err := g.renderLocalizedNativeBattlePanel(panelAssets, actorRecord, base, actorIndex, chapter); err != nil {
+	text, commit, err := stageModernBattlePanelText(panelText)
+	if err != nil {
 		return nil, err
 	}
-	if err := g.renderLocalizedNativeBattlePanel(panelAssets, targetRecord, base, targetIndex, chapter); err != nil {
+	base := make([]byte, 320*200)
+	if err := g.renderBattlePanelText(panelAssets, actorRecord, base, actorIndex, chapter, text); err != nil {
+		return nil, err
+	}
+	if err := g.renderBattlePanelText(panelAssets, targetRecord, base, targetIndex, chapter, text); err != nil {
 		return nil, err
 	}
 	background.X, background.Y = 0, 50
@@ -80,6 +85,7 @@ func (g *Game) localizedNativeCommand0Base(
 			return nil, err
 		}
 	}
+	commit()
 	return base, nil
 }
 
@@ -91,12 +97,25 @@ func (g *Game) localizedNativeCommand24BackgroundBase(
 	platform *fdother.Frame,
 	overlays ...figani.Frame,
 ) ([]byte, error) {
+	return g.localizedNativeCommand24CapturedBase(background, panelAssets, panelRecord, unitIndex, rawChapter, platform, nil, overlays...)
+}
+
+func (g *Game) localizedNativeCommand24CapturedBase(background fdother.Frame, panelAssets battle.NativeItemPanelDataAssets,
+	panelRecord []byte, unitIndex, rawChapter int, platform *fdother.Frame, panelText *[]*modernBattlePanelText, overlays ...figani.Frame) ([]byte, error) {
+	var collectors []*[]*modernBattlePanelText
+	if panelText != nil {
+		collectors = append(collectors, panelText)
+	}
+	text, commit, err := stageModernBattlePanelText(collectors)
+	if err != nil {
+		return nil, err
+	}
 	base := make([]byte, 320*200)
 	background.X, background.Y = 0, 50
 	if err := background.Blit(base, 320, -1); err != nil {
 		return nil, err
 	}
-	if err := g.renderLocalizedNativeBattlePanel(panelAssets, panelRecord, base, unitIndex, rawChapter); err != nil {
+	if err := g.renderBattlePanelText(panelAssets, panelRecord, base, unitIndex, rawChapter, text); err != nil {
 		return nil, err
 	}
 	if platform != nil {
@@ -111,5 +130,6 @@ func (g *Game) localizedNativeCommand24BackgroundBase(
 			return nil, err
 		}
 	}
+	commit()
 	return base, nil
 }

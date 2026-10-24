@@ -30,6 +30,7 @@ def main():
         folder.mkdir()
         for shot in base['source_shots'].values():
             files = [shot['file'], shot['base_file']]+[l['native_file'] for l in shot['layers'] if 'native_file' in l]
+            files += [l['panel_file'] for l in shot['layers'] if 'panel_file' in l]
             for filename in files:
                 path = folder/filename
                 if not path.exists():
@@ -68,6 +69,24 @@ def main():
     reject('changed-descriptor', lambda d: figure(d).update(x=0, rect=[0, 0, 6, 6]), '目的矩形')
     reject('changed-hd-source', lambda d: figure(d).update(hd_sha256='bad'), 'HD來源SHA')
     reject('hidden-hd', lambda d: figure(d).update(clip=[0, 0, 0, 0]), '完整GPU')
+    panel_layers = [(name, i) for name, shot in base['source_shots'].items()
+                    for i, layer in enumerate(shot['layers']) if 'panel_file' in layer]
+    if panel_layers:
+        panel_shot, panel_index = panel_layers[0]
+        def panel(doc):
+            return doc['source_shots'][panel_shot]['layers'][panel_index]
+        reject('panel-sprite-palette', lambda d: panel(d).update(preserve_palette=False), '面板來源')
+        def changed_panel_origin(doc):
+            layer=panel(doc);layer['x']+=1;layer['rect'][0]+=6;layer['rect'][2]+=6
+        def changed_panel_size(doc):
+            layer=panel(doc);layer['width']-=1;layer['rect'][2]-=6
+        reject('panel-wrong-origin', changed_panel_origin, '面板來源')
+        reject('panel-wrong-size', changed_panel_size, '面板來源')
+        reject('panel-missing-values', lambda d: panel(d).pop('panel_values'), '凍結數值')
+        reject('panel-noninteger-values', lambda d: panel(d)['panel_values'].update(HP=1.5), '凍結數值')
+        reject('panel-wrong-content-key', lambda d: panel(d).update(hd_sha256='panel-text/bad'), 'RGBA內容')
+        reject('panel-wrong-png-sha', lambda d: panel(d).update(panel_sha256='bad'), '圖片路徑或SHA')
+        reject('panel-outside-path', lambda d: panel(d).update(panel_file='../outside.png'), '圖片路徑或SHA')
     if any(l.get('archive') in ('BG.DAT','TAI.DAT') for l in base['source_shots'][first]['layers']):
         def surface(doc):return next(l for l in doc['source_shots'][first]['layers'] if l.get('archive')=='BG.DAT')
         reject('wrong-surface-sha',lambda d:surface(d).update(hd_sha256='bad'),'場景原描述子')

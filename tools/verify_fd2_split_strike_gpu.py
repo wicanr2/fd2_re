@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """核對24／29完整最終GPU、固定FIGANI來源及原生空拍。須在資產Docker執行。"""
 import argparse
+import hashlib
 import json
 from functools import lru_cache
 from pathlib import Path
@@ -51,6 +52,21 @@ def checked_image(root, name, sha, size=None):
         if size is not None and im.size != size:
             raise ValueError('圖片尺寸不同')
         return im.convert('RGBA')
+
+
+def panel_channels(receipt,layer):
+    if (layer.get('archive')!='' or layer.get('resource')!=-1 or layer.get('frame')!=0
+            or [layer.get('width'),layer.get('height')]!=[149,42] or layer.get('preserve_palette') is not True
+            or 'native_file' in layer or [layer.get('x'),layer.get('y')] not in ([0,154],[171,4])
+            or not isinstance(layer.get('panel_name'),str)):
+        raise ValueError('HD文字面板來源或不變色色盤契約不同')
+    values=layer.get('panel_values',{})
+    if set(values)!={'Level','HP','MaxHP','MP','MaxMP'} or any(type(v) is not int for v in values.values()):
+        raise ValueError('HD文字面板缺少凍結數值')
+    picture=checked_image(receipt.parent,layer.get('panel_file'),layer.get('panel_sha256'),(894,252))
+    if picture.getchannel('A').getextrema()!=(255,255) or layer.get('hd_sha256')!='panel-text/'+hashlib.sha256(picture.tobytes()).hexdigest():
+        raise ValueError('HD文字面板RGBA內容或GPU鍵不同')
+    return shader_channels(picture,0)
 
 
 def native_transition_channels(receipt,sample,layer,original_pack,row):
@@ -170,6 +186,8 @@ def verify(receipt, catalog, source, original_pack, inventory, runtime_receipt=N
                         pictures[key]=shader_channels(checked_image(source,asset['file'],asset['sha256'],(w*6,h*6)),subtract)
                     picture=pictures[key];used_surfaces.add((archive,rid))
                 surface_proofs[f'{archive}:{rid}']=row['metadata_sha256']
+            elif 'panel_file' in layer:
+                picture=panel_channels(receipt,layer)
             elif rid >= 0:
                 native, registered = bank(rid)
                 if not 0 <= frame < len(native['frames']):

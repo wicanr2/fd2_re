@@ -46,6 +46,7 @@ func newNativeCommand29PresentationTestGame(t *testing.T) (*Game, *battle.Unit, 
 		st: st, rng: rand.New(rand.NewSource(29)), nativeUIPalette: loadNativeUIPalette(),
 	}
 	attachOfficialLocale(t, g)
+	maybeAttachCommandPanelHDTest(t, g)
 	return g, actor, targets
 }
 

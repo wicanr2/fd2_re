@@ -80,6 +80,7 @@ func nativeCommand32PresentationFixture(t *testing.T) (*Game, *battle.Unit, *bat
 		t.Fatal(err)
 	}
 	g.nativeRNGState = 7
+	maybeAttachCommandPanelHDTest(t, g)
 	return g, actor, target
 }
 

@@ -18,6 +18,7 @@ def main():
                         help='依繁中、簡中、日文、英文順序給四個capture目錄')
     parser.add_argument('--out', type=Path, required=True)
     parser.add_argument('--receipt', type=Path, required=True)
+    parser.add_argument('--command-panels', action='store_true', help='選法術actor階段；完整PNG先記SHA，原收據有SHA時再核對')
     args = parser.parse_args()
     if not Path('/.dockerenv').exists():
         raise SystemExit('限Docker內執行')
@@ -32,13 +33,16 @@ def main():
         receipt = json.loads((folder / 'receipt.json').read_text())
         if receipt.get('panel_text', {}).get('locale') != locale or receipt.get('continuations') != 1:
             raise SystemExit('缺少該語系完整面板流程收據')
+        phase = 'actor' if args.command_panels else 'body'
         candidates = sorted((key, shot) for key, shot in receipt['source_shots'].items()
-                            if shot['phase'] == 'body')
-        key, shot = candidates[0]
-        if Path(shot['file']).name != shot['file']:
+                            if shot['phase'] == phase)
+        key, shot = candidates[-1] if args.command_panels else candidates[0]
+        filename = shot.get('file', key) if args.command_panels else shot['file']
+        if Path(filename).name != filename:
             raise SystemExit('圖片檔名不得跨目錄')
-        source = folder / shot['file']
-        if hashlib.sha256(source.read_bytes()).hexdigest() != shot['sha256']:
+        source = folder / filename
+        digest = hashlib.sha256(source.read_bytes()).hexdigest()
+        if not args.command_panels and 'sha256' not in shot or 'sha256' in shot and digest != shot['sha256']:
             raise SystemExit('實際PNG與收據雜湊不符')
         picture = Image.open(source).convert('RGB')
         if picture.size != (1920, 1200):
@@ -47,7 +51,7 @@ def main():
         draw.text((x + 8, y + 2), label, font=font, fill='#e4eaf2')
         canvas.paste(picture.resize((960, 600), Image.Resampling.LANCZOS), (x, y + 24))
         rows.append(dict(locale=locale, source=str(source.resolve().relative_to(ROOT)),
-                         sha256=shot['sha256'], shot=key,
+                         sha256=digest, shot=key, phase=phase, upstream_sha256_supplied='sha256' in shot,
                          operation='whole-frame half-size; label outside game area'))
     canvas.save(args.out)
     result = dict(file=str(args.out.resolve().relative_to(ROOT)),

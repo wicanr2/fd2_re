@@ -98,6 +98,7 @@ func (g *Game) drawModernHDCompoundFrame(screen *ebiten.Image, frame *nativeComp
 	}
 	wanted := false
 	for _, layer := range append(append([]modernHDBattleSource(nil), frame.hdSources.BaseScenery...), frame.hdSources.Layers...) {
+		wanted = wanted || layer.PanelText != nil
 		if layer.Resource < 0 {
 			continue
 		}
