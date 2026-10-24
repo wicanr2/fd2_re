@@ -25,6 +25,8 @@ type modernStoryPortraitFrame struct {
 }
 
 type modernStoryPortraitSet struct {
+	skyKeyFD34        *modernSkyKeyHDBank
+	skyKeyANI         *modernSkyKeyHDBank
 	mapStages         map[int]*modernMapStageHD
 	hasHD             bool
 	portraits         map[int]*modernStoryPortraitFrame
@@ -44,6 +46,9 @@ type modernStoryPortraitSet struct {
 }
 
 type modernThemeAsset struct {
+	MasterFile           string                     `json:"master_file"`
+	SourceFiles          []string                   `json:"source_files"`
+	SourceSHA256         []string                   `json:"source_sha256"`
 	Role                 string                     `json:"role"`
 	Status               string                     `json:"status"`
 	File                 string                     `json:"file"`
@@ -104,6 +109,12 @@ func loadModernStoryPortraitSet(catalogPath, packRoot string) (*modernStoryPortr
 	}
 	hdPortraits := make(map[int]image.Image)
 	for _, asset := range catalog.Assets {
+		if asset.Role == "story_animation_hd_set" {
+			if err := loadModernSkyKeyHDAsset(set, asset, packRoot); err != nil {
+				return nil, err
+			}
+			continue
+		}
 		if asset.Role == "map_stage_hd" {
 			if err := loadModernMapStageHD(set, asset, packRoot); err != nil {
 				return nil, err
@@ -411,6 +422,9 @@ func loadModernStoryPortraitSet(catalogPath, packRoot string) (*modernStoryPortr
 		return nil, err
 	}
 	hasPlayer9Results := set.mapOverlays != nil && set.mapOverlays.frames[94] != nil
+	if (set.skyKeyFD34 == nil) != (set.skyKeyANI == nil) {
+		return nil, errors.New("modern sky key: animation pair is incomplete")
+	}
 	if (set.mapEffects != nil) != hasPlayer9Results {
 		return nil, errors.New("modern HD player9 effect/result group is incomplete")
 	}

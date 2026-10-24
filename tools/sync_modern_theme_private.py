@@ -42,11 +42,13 @@ def main() -> None:
             runtime_hashes[asset["file"]] = asset["sha256"]
         if "master_file" in asset and not args.runtime_only:
             names.add(asset["master_file"])
-        if not args.runtime_only:
+        if not args.runtime_only or asset.get('role')=='story_animation_hd_set':
             sources, hashes = asset.get('source_files', []), asset.get('source_sha256', [])
             if len(sources) != len(hashes):
                 raise SystemExit('source provenance length mismatch')
             for name, sha256 in zip(sources, hashes):
+                if args.runtime_only and Path(name).suffix!='.json':
+                    continue
                 if name in runtime_hashes and runtime_hashes[name] != sha256:
                     raise SystemExit(f'conflicting source digest: {name}')
                 names.add(name)

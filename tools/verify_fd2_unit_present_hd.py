@@ -13,6 +13,10 @@ from verify_fd2_player9_map_hd import check_real_runtime
 
 ROOT=Path(__file__).resolve().parents[1]
 REQUIRED={
+    'sky-game':{'TestModernHDSkyKeyGameGPU'},
+    'sky-source':{'TestModernHDSkyKeySourceBanks'},
+    'sky-unit':{'TestModernHDSkyKeyFullSequenceNativeControl','TestModernHDSkyKeyThemeTransactionRejects','TestModernHDSkyKeyFailureAndLegacy'},
+    'sky-native':{'TestNativeCh20SkyKeyPlayerAssetsMatchRecoveredContract','TestNativeCh20SkyKeyAssetValidationRejectsIncompleteANI','TestNativeCh20SkyKeyBeatRejectsEditedPayloadBeforeMutation','TestNativeCh20SkyKeyFailureRestoresPublishedMapTransaction','TestChapterTwentyOneSkyKeyBattleResultReachesTownAndSaveBoundary','TestChapterTwentyOneSkyKeyInsufficientBranchUsesNativeDialogueAndTownSave'},
     'stage-game':{'TestModernHDCh23StageGameGPU'},
     'stage-source':{'TestModernHDCh23StageLoader'},
     'stage-failure':{'TestModernHDCh23LateNativeFailureRestoresBothThemes'},
@@ -89,8 +93,30 @@ REQUIRED={
 }
 
 
+REQUIRED['sky-core']=REQUIRED['sky-source'] | REQUIRED['sky-unit'] | REQUIRED['stage-unit'] | REQUIRED['story-unit']
+
 def check_receipt(kind, prefix):
     receipt=json.loads(Path(str(prefix)+'-capture/receipt.json').read_text())
+    if kind=='sky-game':
+        rows=receipt.get('rows',[])
+        if (receipt.get('status')!='PASS-SKY-KEY-HD-GAME' or receipt.get('fixed_clock_unix')!=1000
+                or receipt.get('native_seed')!=7 or receipt.get('rgba_tolerance')!=2 or receipt.get('map_index')!=20
+                or receipt.get('f2_round_trips')!=12 or receipt.get('continuations')!=1
+                or receipt.get('native_control_unchanged') is not True or len(rows)!=202):
+            raise ValueError('天空之鑰完整流程、GPU、F2或控制組缺項')
+        expected={0:4,1:68,2:96,3:1,4:1,5:32}
+        for phase,count in expected.items():
+            selected=[r for r in rows if r.get('phase')==phase]
+            if len(selected)!=count:
+                raise ValueError('天空之鑰階段缺項')
+            if phase in {1,2,5} and [r.get('frame') for r in selected]!=list(range({1:1,2:0,5:69}[phase],{1:69,2:96,5:101}[phase])):
+                raise ValueError('天空之鑰畫格順序不同')
+            for row in selected:
+                if row.get('rng')!=7 or any(not re.fullmatch('[0-9a-f]{64}',row.get(k,'')) for k in ['final_sha256','native_vga_sha256','dac_sha256']):
+                    raise ValueError('天空之鑰狀態或圖面缺項')
+        pngs=list(Path(str(prefix)+'-capture').glob('*.png'))
+        if len(pngs)!=13:raise ValueError('天空之鑰抽樣PNG缺項')
+        return
     if kind=='stage-game':
         rows=receipt.get('rows',[]); returns=receipt.get('returns',[])
         if (receipt.get('status')!='PASS-CH23-STAGE-HD-GAME' or receipt.get('fixed_clock_unix')!=1000
@@ -239,11 +265,12 @@ def main():
             raise ValueError('不可覆寫收據')
     independent=check_real_runtime(a.pack,json.loads(a.catalog.read_text())) if a.require_real_runtime else None
     env=os.environ.copy()
-    for name in ['FD2_HD_UNIT_PRESENT_SOURCE','FD2_HD_UNIT_PRESENT_GPU','FD2_HD_UNIT_PRESENT_STORY_GPU','FD2_HD_STORY_MOTION_GPU','FD2_HD_INDEXED_TRANSITION_GPU','FD2_HD_ROW_SHAKE_GPU','FD2_HD_CH23_STAGE_GPU']:
+    for name in ['FD2_HD_UNIT_PRESENT_SOURCE','FD2_HD_UNIT_PRESENT_GPU','FD2_HD_UNIT_PRESENT_STORY_GPU','FD2_HD_STORY_MOTION_GPU','FD2_HD_INDEXED_TRANSITION_GPU','FD2_HD_ROW_SHAKE_GPU','FD2_HD_CH23_STAGE_GPU','FD2_HD_SKY_KEY_GPU']:
         env.pop(name,None)
     env.update(FD2_MUTE='1',FD2_TEST_UNIT_PRESENT_CATALOG=str(a.catalog.resolve()),
                FD2_TEST_UNIT_PRESENT_PACK=str(a.pack.resolve()),FD2_TEST_UNIT_PRESENT_OUT=str(a.out)+'-capture')
     if a.kind=='source':env['FD2_HD_UNIT_PRESENT_SOURCE']='1'
+    if a.kind=='sky-game':env['FD2_HD_SKY_KEY_GPU']='1'
     if a.kind=='stage-game':env['FD2_HD_CH23_STAGE_GPU']='1'
     if a.kind=='game':env['FD2_HD_UNIT_PRESENT_GPU']='1'
     if a.kind=='story-game':env['FD2_HD_UNIT_PRESENT_STORY_GPU']='1'
@@ -274,7 +301,7 @@ export DISPLAY=:99
     events=[json.loads(s) for s in Path(str(a.out)+'.log').read_text().splitlines() if s.startswith('{')]
     if not REQUIRED[a.kind]<={e.get('Test') for e in events if e.get('Action')=='pass'} or any(e.get('Action') in {'skip','fail'} for e in events):
         raise ValueError('必要測試缺項、SKIP或失敗')
-    if a.kind in {'source','game','story-game','motion-game','indexed-game','rowshake-game','stage-game'}:
+    if a.kind in {'source','game','story-game','motion-game','indexed-game','rowshake-game','stage-game','sky-game'}:
         check_receipt(a.kind,a.out)
     report=dict(status='PASS',kind=a.kind,required=sorted(REQUIRED[a.kind]),catalog=str(a.catalog.resolve()),
                 catalog_sha256=hashlib.sha256(a.catalog.read_bytes()).hexdigest(),pack=str(a.pack.resolve()),

@@ -225504,5 +225504,209 @@
       "uid": 1000,
       "gid": 1000
     }
+  },
+  "sky_key_hd_followup_20261025": {
+    "status": "CONFORMED-SCOPED / RUNTIME-E1",
+    "base_commit": "008a93f911c24f3d483184391ebceb281b40da14",
+    "full_hd_complete": false,
+    "normal_player_complete": false,
+    "production_changed": true,
+    "masters": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/sky-key-lock-master-oct25-r1.png",
+        "sha256": "f6a043c426ce9e720268af7ba844a1ff4d4e6e1fae292ff3d0c0774aba1144c6"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/sky-key-raised-master-oct25-r1.png",
+        "sha256": "79c5792c771dd3dd0ac024cd8d6f26bd7eacc75a98fe2ff1bd8f83309cb33c0c"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/sky-key-components-master-oct25-r2.png",
+        "sha256": "e87b715e79de0d775459f6a230a2fdcb7c2857bc06ea2648916e9c85562e2603"
+      }
+    ],
+    "source": "固定原包FDOTHER34的101個描述子及ANI0的96個逐幀索引／DAC；沿58及fd2_ch20_sky_key_sequence_ida.txt，不重開RE。",
+    "art_plan": "FDOTHER frame0仍是原生底圖補片；1..100用既有人物24及新抬手姿態、五色球／藍色物件／金鎖。ANI保留原生黑畫格與y20..162內容帶，依可見寶石錨點做仿射美術近似，缺足夠錨點的早期近景用明示有界縮遠延拓。",
+    "fidelity_limits": "仿射、近景延拓及新姿態均為美術近似，不稱原版3D參數、RGB或每frame一致；正式排程與交易不改。",
+    "alpha_policy": "元件r2的原生alpha為0..254，完整保留，不提升為255；原角色母稿0..255，ANI繪製到原本不透明黑畫布。r1帶殘留光暈不採用。",
+    "compiler": "tools/build_fd2_sky_key_hd.py",
+    "next_gate": "接續其他凍結caller來源綁定、其餘地形／HD2／HUD／介面與工具列；全部HD後集中正常／人工／平台。",
+    "candidate_catalog": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/sky-key-candidate-oct25-r3/catalog.json",
+      "sha256": "c3f8e331b3371337b7a0979c3d0a94d330476e207159a00fd5a67479c35423a0"
+    },
+    "art_review": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/sky-key-art-review-oct25-r1.json",
+      "sha256": "6c17e590a32985167e88597dfc0733eefe32553f7d39ed570cd1c9ef877f06cb"
+    },
+    "failed_candidates": [
+      "sky-key-candidate-oct25-r1"
+    ],
+    "corrected_candidate": "sky-key-candidate-oct25-r2 images identical to r3; r3 additionally binds two native canary canvases",
+    "registered_catalog_sha256": "495dbae95c59dbfe25135684cfcb9ab1872cb4ba2cab11eab8bc6eb1b5913b17",
+    "registered_assets": 768,
+    "private_files": 6943,
+    "independent_runtime_files": 5961,
+    "runtime_plan_policy": "兩份配置JSON是執行依賴，隨runtime包驗SHA攜帶；三份母稿只在候選與私人保存庫保存。",
+    "cache_policy": "冷載入整組196張RGBA成功後發布唯讀快取；開始、F2核整組，播放核當張檔案與快取像素SHA。",
+    "readme_overview": "docs/figures/hd-sky-key.png",
+    "readme_overview_sha256": "7b38d3d4810bdbd23022505a648a9bfc470353a91322028c9f4bddd1c4b5123f",
+    "prompt_backup": "僅三次本工作階段imagegen提示詞備份擷取被自動審查拒絕，等待使用者明確授權；未擷取私人session內容。其他美術來源與輸出SHA已保存。",
+    "gates": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/sky-key-core-formal-oct25-r2.gate.json",
+        "sha256": "5087a5d62bbd7ad8f35d1d3e212547c80140b146ece1ef224810c79a97b98fc4",
+        "kind": "sky-core",
+        "required": 15,
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/sky-key-core-formal-oct25-r2.memory.json",
+          "sha256": "8db9d95a19a35599b0973c434473f5630afe17174324c987f17b4603b94b9822"
+        }
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/sky-key-native-formal-oct25-r1.gate.json",
+        "sha256": "00daca2c55f031a93ffce7c71c275834b383e8173d2237391926689e361362be",
+        "kind": "sky-native",
+        "required": 6,
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/sky-key-native-formal-oct25-r1.memory.json",
+          "sha256": "46ebe363742031e3e416e232c74770e21ff81575500e87a33fdf4fee89dc6e7f"
+        }
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/sky-key-game-formal-oct25-r1.gate.json",
+        "sha256": "525e9ef39856c42fb4b5d75ed50656ff14e47dbe12a67bf6b485f67070db4643",
+        "kind": "sky-game",
+        "required": 1,
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/sky-key-game-formal-oct25-r1.memory.json",
+          "sha256": "f88ec5868b325526b86e58e19b38cf220013fc58d0e37b1ef9f3927e45671fc6"
+        }
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/sky-key-game-runtime-oct25-r1.gate.json",
+        "sha256": "e2b3333fca93284e896f695531a4b7be9f3fe324511a16446f33393b75ec7943",
+        "kind": "sky-game",
+        "required": 1,
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/sky-key-game-runtime-oct25-r1.memory.json",
+          "sha256": "46795de572be49323b7c2e86a4d8942f5ef6852cfd5e94e635feb18bdb706b87"
+        }
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/sky-key-stage-regression-oct25-r1.gate.json",
+        "sha256": "de8c02334847cfea364278fe3a18f7058187e0464cbcd3b74a621fede98b449f",
+        "kind": "stage-game",
+        "required": 1,
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/sky-key-stage-regression-oct25-r1.memory.json",
+          "sha256": "9159fc5799e347d0d574eb526f84903b9ed5dd77cee4592c1fff894ba376bb47"
+        }
+      }
+    ],
+    "required_test_executions": 24,
+    "unique_required_tests": 23,
+    "source_faithfulness": "沿閉合原生owner排程；原圖主題是同一remake的控制組，未重跑FD2.EXE，不新增正常玩家／每frame／硬體時鐘聲明。",
+    "known_remaining": "地圖20地形仍用像素。其他凍結caller來源綁定、其餘地形／HD2／完整HUD／介面獨立切換／浮出工具列／加速／海報、正常／集中人工／平台及#268／#269仍待。",
+    "cross_pack": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/sky-key-cross-pack-oct25-r1.json",
+      "sha256": "5da974240c131a7479af79ac01e75425783a21ff0d003d0c75ee3f8c4e6dbd9a"
+    },
+    "recompile": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/sky-key-recompile-check-oct25-r1.json",
+      "sha256": "6642dd8fedfeb2cdb10c2b6d5819c820947759c991cd428cef1dadd150d58a70"
+    },
+    "formal_coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/sky-key-formal-coverage-oct25-r1.json",
+      "sha256": "cf54bd257b2149075f456df9d844c1803e31faa2961a837ca09a968000a1eae3"
+    },
+    "old_stage_regression": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/sky-key-stage-regression-check-oct25-r1.json",
+      "sha256": "7c7e8c8d010151395be30c471e66aa37577dfabee6899179505a2a257d777561"
+    },
+    "string_inventory": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/sky-key-string-inventory-oct25-r2.json",
+      "sha256": "6cf32f62b0d3c11543188999fe77a2ac9f85a13e031d8ce014d805f944bfcef9"
+    },
+    "string_tests": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/sky-key-strings-oct25-r2.log",
+      "sha256": "13ef5189ee4f452453e26039189c607a993a8197ad261c447d0ea48ae119d6ba"
+    },
+    "string_test_count": 8,
+    "string_dispositions": 109,
+    "lessons": 340,
+    "lesson_guards": 204,
+    "source_snapshot": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/sky-key-source-snapshot-oct25-r1.json",
+      "sha256": "1da9fc9485deef204fa51730766293765066fe872d96f4671c8e0f8d1948dff4",
+      "file_count": 1107
+    },
+    "runtime_source": [
+      {
+        "file": "remake/cmd/fd2/main.go",
+        "sha256": "ce5d2ffbcd87af96d11b60d068cb7c028195e766c02eed2b09be0fda156b870e",
+        "test": false
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_map_gpu.go",
+        "sha256": "f3413089dcdbeef3abf2135b4f68daa41b4f72c0de67d8a7b69675df7af9878f",
+        "test": false
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_map_stage.go",
+        "sha256": "54efbe7d05d385766c5f1707c14f56e56cf17d67812b743529022391a7f56161",
+        "test": false
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_sky_key.go",
+        "sha256": "6c7c33baf505c42e93083a9faa2ebac007f35e5b3f74bc2f89d0b7010eb06c9d",
+        "test": false
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_sky_key_assets.go",
+        "sha256": "8cb5c9206abfaadbe5b28b1bdea14a16f754db2da59a238b460f7ee0bf9794b2",
+        "test": false
+      },
+      {
+        "file": "remake/cmd/fd2/modern_story_portrait.go",
+        "sha256": "136240e70830ac5edcca7181fcda1b7032ccb4a92469b8f9938534c29402d873",
+        "test": false
+      },
+      {
+        "file": "remake/cmd/fd2/native_ch20_sky_key.go",
+        "sha256": "7d1a9b9804f124a3a4568daba1d0e0f9e87356e56c90406c541769867393c009",
+        "test": false
+      },
+      {
+        "file": "remake/cmd/fd2/player_shortcuts.go",
+        "sha256": "90a1d4d18e9be341dfad2e8933706ad28a1284dcb6b5297a5c90358733023eb3",
+        "test": false
+      }
+    ],
+    "issue_update": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/sky-key-issue-edits-oct25-r1.json",
+      "sha256": "58a6a2e494bf025c1e7cceb1f07810b50afab14eaf61483f596f4b8429c39c96",
+      "open_worklist": 24,
+      "other_issues_unchanged": 22
+    },
+    "cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/sky-key-cleanup-oct25-r2.json",
+      "sha256": "04f5a22c8667b87c9bb050ed8346e293aab3550ff679632be43eabfda3e24bd9",
+      "removed_regular_files": 6791,
+      "removed_regular_bytes": 2508221485,
+      "removed_symlinks": 26968
+    },
+    "independent_runtime_removed_after_validation": true,
+    "candidate_images_removed_after_validation": true,
+    "ownership": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/sky-key-ownership-oct25-r2.json",
+      "sha256": "f0a96ab8dd506cee9abc6d1844037750c93588dd53e0c0ced17f2909fbf4a2ab",
+      "changed_files": 27,
+      "legacy_items": 2808,
+      "new_changed_root_owned": 0
+    },
+    "private_commit": "8720011fa0c665dfcbe8d0e663c2a6b3283b87b8",
+    "private_remote_head_verified": true,
+    "docker_cleanup": "所有本輪Go測試容器均以--rm結束並核對無殘留；未重建映像，未新增錄影。"
   }
 }

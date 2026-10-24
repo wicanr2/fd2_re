@@ -33,7 +33,10 @@ func recoveredCh20SkyKeySpec(t *testing.T) campaign.NativeCh20SkyKeySequence {
 }
 
 func TestNativeCh20SkyKeyPlayerAssetsMatchRecoveredContract(t *testing.T) {
-	pack := filepath.Clean("../../generated-assets/fd2-original-b97caf22")
+	pack := os.Getenv("FD2_TEST_ORIGINAL_PACK")
+	if pack == "" {
+		pack = filepath.Clean("../../generated-assets/fd2-original-b97caf22")
+	}
 	t.Setenv("FD2_ASSET_PACK", pack)
 	t.Setenv("FD2_ANI", filepath.Join(t.TempDir(), "missing-ANI.DAT"))
 	missing := t.TempDir()
@@ -145,7 +148,10 @@ func rosterHasItem(roster map[int]battle.Unit, itemID int) bool {
 func TestChapterTwentyOneSkyKeyBattleResultReachesTownAndSaveBoundary(t *testing.T) {
 	const base = "../../../org_game/炎龍騎士團/FLAME2"
 	t.Setenv("FD2_MUTE", "1")
-	pack := filepath.Clean("../../generated-assets/fd2-original-b97caf22")
+	pack := os.Getenv("FD2_TEST_ORIGINAL_PACK")
+	if pack == "" {
+		pack = filepath.Clean("../../generated-assets/fd2-original-b97caf22")
+	}
 	if _, err := os.Stat(filepath.Join(pack, "animations", "ANI_000", "animation.json")); err != nil {
 		t.Skipf("分離 ANI #0 unavailable: %v", err)
 	}

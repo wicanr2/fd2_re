@@ -30,10 +30,14 @@ const (
 // the white flash and baseline restore must recolour the final ANI indices,
 // not replace them with a generic RGBA overlay.
 type nativeCh20SkyKeyJob struct {
-	spec      campaign.NativeCh20SkyKeySequence
-	fdFrames  []fdother.Frame
-	aniPixels [][]byte
-	aniDAC    [][]byte
+	hdWorld    *modernSkyKeyWorld
+	hdFrame    *modernHDMapFrame
+	hdTheme    *modernStoryPortraitSet
+	hdInputErr error
+	spec       campaign.NativeCh20SkyKeySequence
+	fdFrames   []fdother.Frame
+	aniPixels  [][]byte
+	aniDAC     [][]byte
 
 	base    []byte
 	vga     []byte
@@ -105,6 +109,9 @@ func (g *Game) startNativeCh20SkyKeySequence(spec campaign.NativeCh20SkyKeySeque
 	if err := validateNativeCh20SkyKeyAssets(spec, frames, clip); err != nil {
 		return err
 	}
+	if err := g.preflightModernSkyKey(g.modernStoryPortraits, frames, clip); err != nil {
+		return err
+	}
 	rollback := snapshotNativeCh20SkyKeyState(g)
 
 	// 0x135DD 對每一格同時位移鏡頭與絕對游標，位移量相同，可見游標不動。
@@ -135,7 +142,12 @@ func (g *Game) startNativeCh20SkyKeySequence(spec campaign.NativeCh20SkyKeySeque
 		phase: nativeCh20SkyKeyPan, then: then, rollback: rollback,
 	}
 	g.nativeCh20SkyKey = job
-	if err := job.advancePan(g); err != nil {
+	err = job.advancePan(g)
+	if err == nil {
+		job.hdFrame, err = g.prepareModernHDSkyKey(job, g.modernStoryPortraits, false)
+		job.hdTheme = g.modernStoryPortraits
+	}
+	if err != nil {
 		job.rollback()
 		g.nativeCh20SkyKey = nil
 		return err
@@ -156,6 +168,10 @@ func snapshotNativeCh20SkyKeyState(g *Game) func() {
 	beforeDAC := append([]byte(nil), g.nativeMapDAC...)
 	beforeClock := g.nativeMapClock
 	beforePhase := g.nativeFDOTHERPalettePhase
+	beforeTick := g.nativeFDOTHERPaletteTick
+	beforeSource := g.nativeMapFrameSource
+	beforeHDFrame := g.modernHDMapFrame
+	beforeHDPresented := g.modernHDMapPresented
 	return func() {
 		if g.st == state {
 			*state = beforeState
@@ -167,6 +183,10 @@ func snapshotNativeCh20SkyKeyState(g *Game) func() {
 		g.nativeMapDAC = append(g.nativeMapDAC[:0], beforeDAC...)
 		g.nativeMapClock = beforeClock
 		g.nativeFDOTHERPalettePhase = beforePhase
+		g.nativeFDOTHERPaletteTick = beforeTick
+		g.nativeMapFrameSource = beforeSource
+		g.modernHDMapFrame = beforeHDFrame
+		g.modernHDMapPresented = beforeHDPresented
 	}
 }
 
@@ -206,6 +226,7 @@ func (j *nativeCh20SkyKeyJob) advancePan(g *Game) error {
 	if err := g.composeNativeMapFrame(); err != nil {
 		return fmt.Errorf("pan redraw: %w", err)
 	}
+	j.hdWorld, j.hdInputErr = freezeModernSkyKeyWorld(g)
 	j.vga = append(j.vga[:0], g.nativeMapVGA...)
 	j.dac = append(j.dac[:0], g.nativeMapDAC...)
 	j.ticks = 0
@@ -216,6 +237,7 @@ func (j *nativeCh20SkyKeyJob) beginFirstFrames(g *Game) error {
 	if len(g.nativeMapVGA) != indexedmap.NativeMapVGASize {
 		return errors.New("native 0x24336 baseline framebuffer is incomplete")
 	}
+	j.hdWorld, j.hdInputErr = freezeModernSkyKeyWorld(g)
 	j.base = append(j.base[:0], g.nativeMapVGA...)
 	if err := j.fdFrames[j.spec.BaseFrame].Blit(j.base, 320, -1); err != nil {
 		return fmt.Errorf("base frame %d: %w", j.spec.BaseFrame, err)
@@ -335,6 +357,11 @@ func (g *Game) stepNativeCh20SkyKey() {
 	default:
 		err = errors.New("unknown presentation phase")
 	}
+	if err == nil {
+		j.hdFrame, err = g.prepareModernHDSkyKey(j, g.modernStoryPortraits, false)
+		j.hdTheme = g.modernStoryPortraits
+	}
+
 	if err != nil {
 		g.failNativeCh20SkyKey(err)
 	}
@@ -344,6 +371,14 @@ func (g *Game) drawNativeCh20SkyKey(screen *ebiten.Image) bool {
 	j := g.nativeCh20SkyKey
 	if j == nil || len(j.vga) != indexedmap.NativeMapVGASize || len(j.palette) != 256 {
 		return false
+	}
+	if j.hdFrame != nil && j.hdTheme == g.modernStoryPortraits {
+		if !g.drawPreparedModernHDMapFrame(screen, j.hdFrame, false) {
+			g.failNativeCh20SkyKey(errors.New("HD frame unavailable"))
+			return false
+		}
+		j.drawn = true
+		return true
 	}
 	img := image.NewPaletted(image.Rect(0, 0, 320, 200), j.palette)
 	copy(img.Pix, j.vga)

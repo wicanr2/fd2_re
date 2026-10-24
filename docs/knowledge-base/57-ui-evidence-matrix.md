@@ -1,6 +1,8 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
-地圖23的FDOTHER42特殊背景已接入手繪HD紋理，限定CONFORMED-SCOPED／RUNTIME-E1。循環列位移、地形遮罩與當次DAC下的HD人物／HUD人物顏色同時接入，原生排程、規則及保存保持。兩包各300次完整Game.Draw、6次F2與兩段各一次續行通過；八張跨包PNG與完整收據相同，舊列位移四流程及十二張PNG保持。這是受控角色與實際map23資料的重製端驗證，未重跑原版執行器。天空之鑰、其他凍結caller的來源綁定、其餘地形／HD2／完整HUD／浮出工具列、加速、海報與集中正常／人工／平台仍待。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的special_scene_hd_followup_20261025。
+天空之鑰的FDOTHER34人物／元件與ANI0近景已接入HD，限定CONFORMED-SCOPED／RUNTIME-E1。原生鏡頭、等待、色盤閃白／還原、尾段與一次續行保持，兩包完整Game.Draw／F2及原圖主題控制組通過；來源拒收、凍結世界與交易回復、共享地圖／故事回歸保持。地圖20地形與介面框線仍用像素，金鎖仿射與早期縮遠延拓屬美術近似。本批未重跑FD2.EXE，不新增正常玩家、每frame或硬體時鐘聲明。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的sky_key_hd_followup_20261025。其餘凍結caller、地形／HD2／完整HUD／介面獨立切換／浮出工具列、加速、海報與集中正常／人工／平台仍待。
+
+地圖23的FDOTHER42特殊背景已接入手繪HD紋理，限定CONFORMED-SCOPED／RUNTIME-E1。循環列位移、地形遮罩與當次DAC下的HD人物／HUD人物顏色同時接入，原生排程、規則及保存保持。兩包各300次完整Game.Draw、6次F2與兩段各一次續行通過；八張跨包PNG與完整收據相同，舊列位移四流程及十二張PNG保持。這是受控角色與實際map23資料的重製端驗證，未重跑原版執行器。天空之鑰現況依本頁前言；其他凍結caller的來源綁定、其餘地形／HD2／完整HUD／浮出工具列、加速、海報與集中正常／人工／平台仍待。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的special_scene_hd_followup_20261025。
 
 既有0x24618的九階徑向、停留及baseline DAC加亮已接HD，限定CONFORMED-SCOPED／RUNTIME-E1。凍結同次地圖、selector、LUT與原生work歷史，逐byte重建後規劃HD；GPU調色以baseline的delta/63飽和加亮，alpha保持，屬明示顯示近似。兩包完整Game.Draw／F2、原圖主題控制組、一次返回及跨包畫面通過；原有故事走位、入場與返回畫面保持。沒有新美術、規則或保存欄位，原版執行器未在本批重跑。0x24B4D現況依本頁新前言；其他特殊背景、完整HD、正常／集中人工／平台仍待。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的indexed_transition_hd_followup_20261024；前批故事收據各自保留。
 

@@ -19,7 +19,7 @@ ROLES = PROTOTYPE_ROLES | {
     "story_portrait_frame", "story_portrait_hd_frame", "map_sprite_set", "map_tileset_set",
     "map_sprite_hd_set", "battlefield_tileset_concept", "battle_hud_panel", "battle_action_icon_set",
     "native_terrain_hd_set", "terrain_hd_master", "battle_animation_hd_set", "battle_effect_hd_set", "map_overlay_hd_set",
-    "facility_scene_hd", "battle_surface_hd", "map_stage_hd",
+    "facility_scene_hd", "battle_surface_hd", "map_stage_hd", "story_animation_hd_set",
 }
 STATUSES = {"prototype", "concept", "approved", "runtime_candidate", "runtime_ready"}
 # Fixed FDICON.B24 source-write inventory, independently checked by
@@ -28,7 +28,7 @@ NATIVE_FDICON_GROUP_COUNT = 140
 NO_SOURCE_WRITE_SELECTORS = {39, 57, 104, 105, 121, 127, 128, 129, 130, 131, 132, 136, 137, 138, 139}
 VISIBLE_FDICON_GROUPS = set(range(NATIVE_FDICON_GROUP_COUNT)) - NO_SOURCE_WRITE_SELECTORS
 SPRITE_ROLES = {"map_sprite_set", "map_sprite_hd_set"}
-MULTI_FILE_ROLES = SPRITE_ROLES | {"battle_action_icon_set", "native_terrain_hd_set", "battle_animation_hd_set", "battle_effect_hd_set", "map_overlay_hd_set"}
+MULTI_FILE_ROLES = SPRITE_ROLES | {"story_animation_hd_set", "battle_action_icon_set", "native_terrain_hd_set", "battle_animation_hd_set", "battle_effect_hd_set", "map_overlay_hd_set"}
 ORDINARY_EFFECT_RESOURCES = {18,19,20,21,22,23,24,25,26,27,28,30,32,33,37,38,39,43}
 
 
@@ -61,6 +61,7 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
     battle_resources = set()
     facility_resources = set()
     surface_resources = set()
+    story_resources = set()
     for entry in assets:
         required = {"asset_id", "role", "status", "file", "width", "height", "sha256", "source_refs"}
         candidate = {"master_file", "consumer_contract", "speaker_id", "frame", "mouth_state"}
@@ -79,7 +80,9 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
         }
         if not isinstance(entry, dict):
             raise ValueError("asset entry must be an object")
-        if entry.get("role") in {"battle_surface_hd", "map_stage_hd"}:
+        if entry.get("role") == "story_animation_hd_set":
+            expected = sprite_set - {"source_group", "cycle_policy"} | {"master_file", "source_archive", "source_resource", "source_metadata_sha256", "native_frames", "layout_policy", "source_files", "source_sha256"}
+        elif entry.get("role") in {"battle_surface_hd", "map_stage_hd"}:
             expected = required | {"master_file", "consumer_contract", "source_archive", "source_resource", "source_metadata_sha256", "source_files", "source_sha256", "native_frames", "alpha_contract", "layout_policy"}
         elif entry.get("role") == "facility_scene_hd":
             expected = required | {"master_file", "consumer_contract", "source_archive", "source_resource", "source_metadata_sha256", "source_files", "source_sha256"}
@@ -208,7 +211,43 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
             if len(entry["files"]) != 4 or len(set(entry["files"])) != 4 or (
                     len(entry["frame_sha256"]) != 4):
                 raise ValueError(f"invalid battle action icon files: {asset_id}")
-        if entry["role"] == "native_terrain_hd_set":
+        if entry['role']=='story_animation_hd_set':
+            source=(entry['source_archive'],entry['source_resource'])
+            contract={('FDOTHER.DAT',34):(100,'sky_key_fdother34_rgba_hd6_v1'),('ANI.DAT',0):(96,'sky_key_ani0_rgba_hd6_v1')}.get(source)
+            if (source in story_resources or not contract or type(source[1]) is not int
+                    or (entry['frame_count'],entry['consumer_contract'])!=contract
+                    or entry['status'] not in {'runtime_candidate','runtime_ready'}
+                    or entry['layout_policy']!='native_frame_xy_hd6' or entry['alpha_contract']!='coverage'
+                    or not SHA_RE.fullmatch(entry['source_metadata_sha256'])):
+                raise ValueError(f'invalid HD story contract: {asset_id}')
+            story_resources.add(source)
+            count=entry['frame_count'];frames=entry['native_frames']
+            if not isinstance(frames,list) or len(frames)!=count:
+                raise ValueError(f'incomplete HD story descriptors: {asset_id}')
+            for frame in frames:
+                if (not isinstance(frame,dict) or set(frame)!={'x','y','width','height','delay_native','raw_byte_4','raw_byte_5','raw_byte_7'}
+                        or any(type(v) is not int for v in frame.values())
+                        or not 0<=frame['x']<320 or not 0<=frame['y']<200
+                        or not 1<=frame['width']<=320-frame['x'] or not 1<=frame['height']<=200-frame['y']
+                        or any(frame[k] for k in ['delay_native','raw_byte_4','raw_byte_5','raw_byte_7'])
+                        or source[0]=='ANI.DAT' and frame!=dict(x=0,y=0,width=320,height=200,delay_native=0,raw_byte_4=0,raw_byte_5=0,raw_byte_7=0)):
+                    raise ValueError(f'invalid HD story geometry: {asset_id}')
+            if (entry['width'],entry['height'])!=(max(f['width'] for f in frames)*6,max(f['height'] for f in frames)*6):
+                raise ValueError(f'invalid HD story bounds: {asset_id}')
+            for names,hashes,n in [(entry['files'],entry['frame_sha256'],count),(entry['source_files'],entry['source_sha256'],None)]:
+                if (not isinstance(names,list) or not names or len(set(names))!=len(names) or n is not None and len(names)!=n
+                        or not isinstance(hashes,list) or len(names)!=len(hashes)
+                        or any(not isinstance(h,str) or not SHA_RE.fullmatch(h) for h in hashes)):
+                    raise ValueError(f'invalid HD story files: {asset_id}')
+                for name,digest in zip(names,hashes):
+                    if not isinstance(name,str) or Path(name).name!=name or Path(name).suffix not in {'.png','.json'}:
+                        raise ValueError(f'unsafe HD story file: {asset_id}')
+                    if verify_private and hashlib.sha256((ROOT/private_root/name).read_bytes()).hexdigest()!=digest:
+                        raise ValueError(f'HD story source SHA mismatch: {asset_id}')
+            if entry['master_file'] not in entry['source_files'] or sum(Path(v).suffix=='.json' for v in entry['source_files'])!=1:
+                raise ValueError(f'HD story plan/master missing: {asset_id}')
+            file_paths=[Path(v) for v in entry['files']]
+        elif entry["role"] == "native_terrain_hd_set":
             count = entry["frame_count"]
             frames, semantics = entry["frame_ids"], entry["semantics"]
             if (entry["status"] not in {"runtime_candidate", "runtime_ready"}
@@ -440,7 +479,7 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
                 if not private_path.is_file():
                     raise ValueError(f"private asset missing: {private_path}")
                 expected_size = ((entry['native_frames'][frame_index]['width']*6, entry['native_frames'][frame_index]['height']*6)
-                                 if entry['role'] in {'battle_animation_hd_set','battle_effect_hd_set'} else (entry["width"],entry["height"]))
+                                 if entry['role'] in {'battle_animation_hd_set','battle_effect_hd_set','story_animation_hd_set'} else (entry["width"],entry["height"]))
                 if entry['role']=='map_overlay_hd_set':
                     frame=entry['native_lmi_frames'][frame_index]
                     expected_size=(frame['width']*6,frame['height']*6)
@@ -454,6 +493,11 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
                     alpha = Image.open(private_path).convert("RGBA").getchannel("A")
                     if not set(alpha.getdata()).issubset({0, 255}):
                         raise ValueError(f"non-binary alpha: {asset_id}/{file_path.name}")
+                elif entry['role']=='story_animation_hd_set':
+                    from PIL import Image
+                    alpha=Image.open(private_path).convert('RGBA').getchannel('A').getextrema()
+                    if alpha!=((0,255) if entry['source_archive']=='FDOTHER.DAT' else (255,255)):
+                        raise ValueError(f'invalid HD story alpha: {asset_id}/{file_path.name}')
                 elif entry['role'] == 'map_overlay_hd_set':
                     from PIL import Image
                     low, high = Image.open(private_path).convert('RGBA').getchannel('A').getextrema()
@@ -470,6 +514,8 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
                     alpha = Image.open(private_path).convert("RGBA").getchannel("A")
                     if set(alpha.getdata()) != {255}:
                         raise ValueError(f"non-opaque asset: {asset_id}/{file_path.name}")
+    if story_resources and story_resources!={('FDOTHER.DAT',34),('ANI.DAT',0)}:
+        raise ValueError('HD sky key pair incomplete')
     if facility_resources and facility_resources != {11, 61, 62, 12, 29, 63}:
         raise ValueError('facility scene group is incomplete')
     if (('LMI1',6,87) in battle_resources) != (('LMI1',5,94) in battle_resources):

@@ -4162,6 +4162,21 @@
         ],
         "pattern": "const phases = 20"
       }
+    },
+    {
+      "id": "negative-json-fixtures-decode-into-zero-value",
+      "date": "2026-10-25",
+      "area": "測試隔離",
+      "rule": "用JSON建立可修改反例時，解碼至全新零值，避免json.Unmarshal重用共用結構的slice底層陣列。入口remake/cmd/fd2/modern_hd_sky_key_test.go的TestModernHDSkyKeySourceBanks；以tools/verify_fd2_unit_present_hd.py --kind sky-core同程序重跑來源及後續流程。",
+      "why": "天空之鑰來源反例解碼至已有slice的結構，意外改到共用模板的描述子與來源SHA，讓後續交易被正確拒收；單獨跑測項看不出跨測項污染。只修反例隔離，正式素材與播放器保持。 教訓掃描器刻意排除測試檔，因此guard綁定同程序的來源加流程驗證入口，不修改掃描器排除契約。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_unit_present_hd.py"
+        ],
+        "pattern": "REQUIRED\\['sky-core'\\]\\s*=\\s*REQUIRED\\['sky-source'\\]\\s*\\|\\s*REQUIRED\\['sky-unit'\\]"
+      }
     }
   ]
 }

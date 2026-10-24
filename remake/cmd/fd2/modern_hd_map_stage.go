@@ -198,16 +198,24 @@ func shadeModernHDMapFigure(raw image.Image, native fdicon.Sprite, ctx modernTer
 			seen[native.Pixels[i]] = true
 		}
 	}
-	identity, black := true, true
 	for i, yes := range seen {
 		if yes {
 			colours = append(colours, byte(i))
-			identity = identity && ctx.Raw[i] == ctx.Base[i]
-			black = black && ctx.Raw[i] == [3]float64{}
 		}
 	}
-	if len(colours) == 0 {
-		return nil, errors.New("modern HD map stage: figure has no source writes")
+	return shadeModernHDImage(raw, colours, ctx)
+}
+
+// The native palette drives colour only. Authored HD coverage remains intact.
+func shadeModernHDImage(raw image.Image, colours []byte, ctx modernTerrainColourContext) (*image.RGBA, error) {
+	if raw == nil || raw.Bounds().Min != (image.Point{}) || raw.Bounds().Dx() > 1920 || raw.Bounds().Dy() > 1200 || len(colours) == 0 {
+		return nil, errors.New("modern HD palette: source absent or outside bounds")
+	}
+	identity, black, white := true, true, true
+	for _, i := range colours {
+		identity = identity && ctx.Raw[i] == ctx.Base[i]
+		black = black && ctx.Raw[i] == [3]float64{}
+		white = white && ctx.Raw[i] == [3]float64{255, 255, 255}
 	}
 	input := image.NewNRGBA(raw.Bounds())
 	draw.Draw(input, input.Bounds(), raw, image.Point{}, draw.Src)
@@ -221,7 +229,9 @@ func shadeModernHDMapFigure(raw image.Image, native fdicon.Sprite, ctx modernTer
 			key := uint32(p[0])<<16 | uint32(p[1])<<8 | uint32(p[2])
 			value, ok := values[key]
 			if !ok {
-				if !black {
+				if white {
+					value = [3]byte{255, 255, 255}
+				} else if !black {
 					w := terrainColourWeights(color.RGBA{p[0], p[1], p[2], 255}, colours, ctx.Base)
 					v := [3]float64{float64(p[0]), float64(p[1]), float64(p[2])}
 					for slot, weight := range w.Weights {
@@ -245,7 +255,7 @@ func shadeModernHDMapFigure(raw image.Image, native fdicon.Sprite, ctx modernTer
 }
 
 func (g *Game) colourModernHDStageFigures(frame *modernHDMapFrame, in indexedmap.NativeFrameInput, palette color.Palette) error {
-	ctx, err := terrainColourContext(23, g.nativeMapAssets.Palette, palette, in.Frame.LUT)
+	ctx, err := terrainColourContext(g.nativeMapAssets.MapIndex, g.nativeMapAssets.Palette, palette, in.Frame.LUT)
 	if err != nil {
 		return err
 	}

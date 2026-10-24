@@ -53,6 +53,10 @@
 
 地圖23的特殊背景已接入1872×1152手繪紋理，保留原生循環捲動；人物與資訊窗人物也隨當次色盤變暗。上排是起始與捲動，下排是調色中及返回。四格取自實際遊戲繪製的完整畫面半縮，使用受控角色與位置，並非正常章節通關；其他地形與HUD框線仍含像素素材。來源、近似與驗證範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)及[HD收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的`special_scene_hd_followup_20261025`。
 
+![天空之鑰合成、近景縮遠與返回的 HD 畫面](docs/figures/hd-sky-key.png)
+
+天空之鑰的五色球、金鎖近景、閃白與返回地圖已接入 HD。四格依序為合成、近景、尾段及返回，取自受控測試的完整遊戲畫面半縮。人物、金鎖與元件使用手繪素材，地圖20地形與介面框線仍是像素；金鎖縮遠採美術近似，保留原生演出順序。此圖不代表正常章節通關，來源與範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)及[HD收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的`sky_key_hd_followup_20261025`。
+
 ## HD2 設計基準
 
 後續HD2戰場沿下列斜角站姿人物與手繪地形設計，保留既有HD及原版主題。操作介面與人物主題獨立，海報從單列浮出工具列選擇；海報邊緣可漸層銜接戰場，並調整淡入時間。

@@ -28,6 +28,8 @@ def check_real_runtime(pack,catalog):
     for asset in catalog['assets']:
         if asset['role'] in excluded:continue
         rows=list(zip(asset.get('files',[]),asset.get('frame_sha256',[])))
+        if asset['role']=='story_animation_hd_set':
+            rows.extend((n,h) for n,h in zip(asset['source_files'],asset['source_sha256']) if Path(n).suffix=='.json')
         if asset.get('file'):rows.append((asset['file'],asset['sha256']))
         for name,digest in rows:
             if Path(name).name!=name or name in wanted and wanted[name]!=digest:

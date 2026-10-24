@@ -4268,7 +4268,7 @@ README四格由已核對的完整Game.Draw半縮，保留像素面板，未裁�
 
 ### 特殊地圖圖層與天空之鑰HD
 
-狀態：部分閉合。FDOTHER #42依下方子切片達CONFORMED-SCOPED／RUNTIME-E1；天空之鑰FDOTHER #34及ANI #0仍DRAFT。raw ch23 loop對應玩家第24戰；不以只接一個圖層宣稱全部HD完成。沿58已閉合caller、docs/data/fd2_ch23_stage_assets_evidence.txt與IDA9.4線性位址0x10652／0x24D22／0x24C1E。固定FD2.EXE SHA-256仍為222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f；FDOTHER #42 raw SHA-256為4bef756aaf78b95cf97949785c71b4c3e04822a497741f468e6863d61da38d2d。
+狀態：FDOTHER #42及天空之鑰FDOTHER #34／ANI #0各自達CONFORMED-SCOPED／RUNTIME-E1，驗收範圍分列於下方子切片。raw ch23 loop對應玩家第24戰；不以只接一個圖層宣稱全部HD完成。沿58已閉合caller、docs/data/fd2_ch23_stage_assets_evidence.txt與IDA9.4線性位址0x10652／0x24D22／0x24C1E。固定FD2.EXE SHA-256仍為222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f；FDOTHER #42 raw SHA-256為4bef756aaf78b95cf97949785c71b4c3e04822a497741f468e6863d61da38d2d。
 
 圖源原框312×192、stride312與既有末列循環至頂列的consumer已證實。高階美術名稱維持未知；當章baseline色盤解碼為綠色流紋，只描述可見外觀。初段8組各30次、調色段5組各12次、latch／BIOS gate／DAC及一次續行沿原owner。重繪只新增圖源與HD呈現，不更改規則、保存或原圖模式；新稿與循環／遮擋／調色方法審查後才升READY並接正式路徑。
 
@@ -4276,7 +4276,7 @@ README四格由已核對的完整Game.Draw半縮，保留像素面板，未裁�
 
 #### FDOTHER #42 圖層切片
 
-狀態：CONFORMED-SCOPED／RUNTIME-E1。此切片先經READY-ART-REVIEWED再實作及驗證；天空之鑰仍DRAFT。已審母稿完整RGB1599×984，依原框全圖LANCZOS至1872×1152，不裁切或重畫alpha。細流紋及筆觸屬美術近似，不賦予未證實的故事名稱。
+狀態：CONFORMED-SCOPED／RUNTIME-E1。此切片先經READY-ART-REVIEWED再實作及驗證；天空之鑰現況依下方專節。已審母稿完整RGB1599×984，依原框全圖LANCZOS至1872×1152，不裁切或重畫alpha。細流紋及筆觸屬美術近似，不賦予未證實的故事名稱。
 
 - catalog新增可選map_stage_hd，固定FDOTHER.DAT resource42，consumer_contract為native_map_stage_rgba_hd6_v1、layout_policy為native_map_stage_hd6、alpha_contract為coverage。沿既有單圖descriptor欄位，NativeFrames恰一筆312×192，metadata／原稿／成品SHA固定。來源Mask已驗為全255，因此成品全框必須不透明；缺件、重覆來源、錯原框／SHA及非42一律拒收。舊主題完全未登錄時保留原圖。
 - 原生adapter只附加顯示用rowShift，所有已證實循環列搬移共用一次更新，模192累積；每次準備HD先重播原始索引圖的循環搬移，核對adapter.staging全部bytes。不以重覆紋理猜目前旋轉量，不改原生staging或tick門檻。
@@ -4292,3 +4292,29 @@ FDOTHER42的HD準備明示接收同次唯讀adapter複本，正常合成器、lo
 新成品與未修改母稿登錄可選map_stage_hd並同步私人白名單，舊項逐SHA保持。角色保留既有inactive色帶0.55／0.55／0.6與alpha。地圖幾何測具從battle.Load載入map23可變事件緩衝，不沿用map0；正式地形20相位消費LUT0..10，固定原包23份查表，不能從演出次數推斷需32份。失敗log、輸入與最終來源快照保留在同筆主收據。
 
 重跑在既有Go Docker使用 `tools/verify_fd2_unit_present_hd.py --kind stage-native|stage-unit|stage-source|stage-failure|stage-game --catalog ABS --pack ABS --out FRESH_PREFIX --timeout 900`；stage-game必須獨立程序。新實檔包用 `tools/sync_modern_theme_private.py --catalog ABS --source ABS --destination FRESH_DIR --runtime-only` 建立，再加 `--require-real-runtime`，驗後清理的包不得重用。編製在Pillow11.3.0素材Docker使用 `tools/build_fd2_map_stage_hd.py --original-pack ABS --master ABS --base-catalog BASE765 --out FRESH_DIR`；BASE765取00e300be的remake/assets/themes/modern/catalog.json，SHA為9c25de7a2e5a9723e6f97cf608c3fc09c6bf41b82a32d86b9a44438d3131bc9d。母稿可從私人白名單的map-stage-fdother042-master-oct25-r1.png取得，固定配方重編兩檔逐SHA相同。
+
+#### 天空之鑰圖組與近景縮遠（CONFORMED-SCOPED／RUNTIME-E1）
+
+本段保留編製階段記錄：當時為DRAFT-ART-COMPILATION，尚未接正式程式；目前已達本節標題所列範圍。沿既有0x24336契約與固定FD2.EXE／FDOTHER.DAT／ANI.DAT，原版證據及雜湊見58與HD主收據sky_key_hd_followup_20261025。FDOTHER34的frame0是底圖補片，正式仍保留原生來源；新圖組只對應frames1..100。ANI0的96張全畫布保留實際黑畫格與y20..162內容帶，不補造原圖以外的內容。
+
+候選由新金鎖、同角色抬手姿態與五色球／藍色輪廓物件母稿編製。人物前段沿已登錄人物24的HD正面圖；元件位置、白閃、出現／消失及金鎖下落從原生mask、色帶與圖框取得。ANI先用可見寶石重心擬合仿射，早期不足三個錨點時用明示有界延拓，屬新美術詮釋，不當作原版3D參數。所有配方、錨點及來源SHA保存，不能用模糊放大原圖代替新圖。元件r2的alpha上限254保持，角色與ANI黑畫布有255核心，不強改原稿alpha。
+
+編製入口為素材Docker內 `python3 tools/build_fd2_sky_key_hd.py --original-pack ABS --source ABS --catalog BASE766 --masters ABS --out FRESH_DIR`；BASE766為008a93f9的正式清冊，母稿名稱及SHA依同筆HD主收據。工具只寫新候選，不改正式清冊。審查完整圖組與動態之後，才定READY消費契約及開始Go實作；後續須覆蓋pan、68個前段畫格、96個ANI、flash／restore與32個尾段、完整來源／F2拒收及冷／晚回復、兩包與原圖主題控制組。正常玩家／人工與平台仍依全部HD後集中政策。
+
+天空之鑰消費切片在實作前達READY-ART-REVIEWED，實作後驗收範圍依本節末段。196張候選逐SHA與已審r2相同，白閃五球數量1→5、前20張及60..69不誤畫金鎖、13張原生黑畫格、每張PNG／圖框／coverage alpha通過。衣袍與金鎖的同色區用已知無鎖姿態分離；小於40點的藍色高光不能作ANI寶石錨點，避免近景跳圖。此為固定來源的美術編製規則，不修改遊戲語意。
+
+- 新增可選且成對的story_animation_hd_set：FDOTHER.DAT#34只對應1..100，contract為sky_key_fdother34_rgba_hd6_v1；ANI.DAT#0對應0..95，contract為sky_key_ani0_rgba_hd6_v1。NativeFrames固定原始描述子，layout為native_frame_xy_hd6，alpha為coverage，PNG恰原框六倍。FD34須0與255核心；ANI須全不透明，原生黑畫格仍為黑。source_files保存原稿與layout JSON，逐SHA核對；兩組缺一拒收，兩組皆無的舊主題保留原圖序列。
+- 冷載入在發布主題前核全部PNG／來源JSON／metadata／描述子／alpha，PNG先核DecodeConfig再配置；播放開始及F2重核全部檔案雜湊與原生來源。FD34以全0及全255兩個底色Blit的完整VGA SHA核對寫入／跳過遮罩；ANI核所有索引畫布與DAC。不得靠圖樣或後來Game狀態猜畫格。
+- pan每格與結束時凍結同次typed map input、selector／HUD cache及work／VGA，私有合成HD世界，不額外採時鐘或RNG。FD34維持同一凍結地圖，先覆原生frame0補片，再疊當張HD人物／效果，位置為原x/y六倍；地圖與人物依當次DAC映色並保alpha。ANI覆完整1920畫布，flash沿既有63加亮，restore依baseline映色，tail回同一凍結世界；不重播或改寫原版規則。
+- 正式owner保留原pan、68前段、96ANI、flash100ms／restore500ms、32尾段、Draw確認與原等待及一次續行。只有HD準備全數成功才發布畫面；F2先預備所有owner再一起發布。冷失敗與晚失敗回復原有state/view、work／VGA／DAC、clock、FDOTHER phase及palette tick與來源指標，不能留下相機移動或半套主題。
+- 驗收須包含原生成功／不足臂與城鎮保存回歸、完整動態及每階段F2、同一重製程式原圖控制組、CPU／GPU與1920最終畫布、兩包相同畫面、正確HD返回、來源與破壞測試及舊場景回歸。不新增原版oracle或正常玩家聲明；全部HD後集中人工／平台。
+
+天空之鑰配置 JSON 是必要執行期資料，依清冊來源雜湊隨 runtime 包攜帶。PNG 母圖只在候選／私人保存庫驗證與保存，不是播放依賴；播放器只讀取配置 JSON 與196張正式畫格。
+
+天空之鑰在冷載入時一次解碼並驗證全部196張畫格，整組成功後才發布唯讀快取。播放沿用快取，每次準備仍核對當張PNG雜湊、解碼像素雜湊及尺寸；開始與F2核對整組。調色只寫呼叫者自己的影像，不改快取。此為既定交易契約內的效能實作。
+
+## 天空之鑰HD驗收範圍（CONFORMED-SCOPED／RUNTIME-E1）
+
+前述READY契約已接入正式owner。兩包完整演出與F2、原圖主題控制組及返回通過；已驗證的完整畫面與收據相同。母稿、元件分類、仿射近似、來源雜湊、固定配方與驗證入口均依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的sky_key_hd_followup_20261025，唯一數量依[58](58-fd2-exe-re-coverage.md)。來源與交易、共享地圖23及故事隔離通過，地圖23舊畫面與收據保持。
+
+重跑入口為tools/verify_fd2_unit_present_hd.py的sky-core、sky-native與sky-game；皆在既有Go Docker執行並明示--catalog、--pack、--out及固定原包。獨立執行包由tools/sync_modern_theme_private.py --runtime-only依清冊建立，sky-game加--require-real-runtime。工具會拒收缺項、SKIP、逾時與OOM；它驗證受控重製端範圍，不是正常玩家或原版執行器收據。完整HD與後續人工／平台閘門保持開啟。
