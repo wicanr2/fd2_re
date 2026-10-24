@@ -219127,5 +219127,141 @@
       "historical_root_owned_unchanged_files": 51,
       "preserved_failed_receipts": true
     }
+  },
+  "compound_scenery_followup_20261024": {
+    "status": "CONFORMED-SCOPED/RUNTIME-E1",
+    "date": "2026-10-24",
+    "base_commit": "758e299eb0cc0b317d159f7a525687d5d5d2ca7c",
+    "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+    "scope": "registered BG/TAI on compound32-35 battle stages; map tails and ordinary LUT callers excluded",
+    "original_exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "new_re": false,
+    "new_art_assets": 0,
+    "catalog_changed": false,
+    "full_hd_complete": false,
+    "normal_player_verified": false,
+    "verification": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-scenery-verification-oct24-r1.json",
+      "sha256": "bd4c1bdbff5fe4f4ae04c461a77d07f91567e468107e589d0f2cc4a590620a4a"
+    },
+    "summary": {
+      "source_cases": 8,
+      "source_total_frames": 1620,
+      "bound_battle_frames": 606,
+      "platform_frames": 303,
+      "actual_flows": 8,
+      "audited_draws": 720,
+      "matched_scenery_pixels": 2630763,
+      "matched_platform_pixels": 1787,
+      "f2": 44,
+      "screens": 44,
+      "gates": 18,
+      "required_tests": 21,
+      "peak_bytes": 4548190208
+    },
+    "implementation_sources": [
+      {
+        "file": "remake/cmd/fd2/modern_hd_command_panel_test.go",
+        "sha256": "3504746019eafa2245f1519f392e0df0d3c83282a2d3dedc3addbe3336222fd7"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_compound.go",
+        "sha256": "bcaeb0a989c98938a8d7d0436ef6e86a5700af190079487c293601f6813d2450"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_compound_scenery_test.go",
+        "sha256": "e2ce2d56b66c3f6d8b2aa0121c122623fff5302090063d569a2894f1dda42994"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command32_presentation.go",
+        "sha256": "d55bd88545e05cac8445099b54911e733aba1eb5793936f66fd68f942647f2d6"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command33_presentation.go",
+        "sha256": "cce330ee273185c13276b736808dcc9f3326bc43be145eb0f6378bac65d282ce"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command34_presentation.go",
+        "sha256": "e964e34ed528256ffe54f05c2a88585993b79909e5c7301f1e98d985b2a3f085"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command35_presentation.go",
+        "sha256": "b4fe4c77804bb49ec7a01d3e8d0b251ae13dd3955d08dc7d6887b0e9a981be1c"
+      },
+      {
+        "file": "tools/build_fd2_battle_panel_gallery.py",
+        "sha256": "2a366046d570baee531f7ac7455d9e31eff0297206a47d20a00ca97e5662b4c6"
+      },
+      {
+        "file": "tools/verify_fd2_battle_surface_hd.py",
+        "sha256": "56d634ca64e9195c3f805825912f2f39bbbaad3766f928516f68cd579985de11"
+      }
+    ],
+    "gallery": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-scenery-readme-oct24-r1.json",
+      "sha256": "c9a8549a6b4986ab3ed0c6548f979f9356f1d4d4120823b4ff90ec3097175027"
+    },
+    "string_inventory": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-scenery-string-inventory-oct24-r1.json",
+      "sha256": "0d4941145820212924c17e53f1b926829259bb6ba2f5316080b483ec19753499"
+    },
+    "string_review": {
+      "file": "docs/data/fd2-string-review.json",
+      "sha256": "637d004918a5621c45e5b4b0c03a66fd98b299ef213ad37f2270f5f55e213cc8"
+    },
+    "string_tests": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-scenery-string-tests-oct24-r1.log",
+      "sha256": "a9c10861a36cc93430740beee7778c8299797c5451c90c85c9c338fe32ad5637"
+    },
+    "private_asset_sync_required": false,
+    "remaining": [
+      "ordinary0-9 scenery LUT callers",
+      "compound map tails and other effects",
+      "complete HUD frame and bars",
+      "concentrated normal-player/manual-art and platform review",
+      "floating toolbar and actual speed"
+    ],
+    "fixture_policy": {
+      "raw_side": [
+        0,
+        2
+      ],
+      "surface": 4,
+      "terrain_selection": "replace actor cell with existing original-control tile selecting requested surface; original NativeTerrainControl retained",
+      "camp_unchanged": true,
+      "seeds": "existing fixture setup; command source comparator fixes native seed7 before preparation",
+      "native_scope": "base reconstruction is byte exact; HD RGB uses previously approved subtract/mix approximation"
+    },
+    "corrections": [
+      "initial source fixture selected BG0 and legitimate empty TAI0; source metadata alone did not prove visible HD platform",
+      "first surface override changed NativeTerrainControl and was rejected by existing editable-field/original-FDSHAP consistency guard; use existing tile instead, without weakening production checks",
+      "side0 r1 batch intentionally stopped after command32 BG0 pass; exit137 was operator cancellation, memory probe showed no OOM for completed command32",
+      "r2 GPU completed with same invalid-control rejection before attempted stop; no live container remained"
+    ],
+    "github_issues": [
+      263,
+      204,
+      268,
+      269
+    ],
+    "issue_acceptance_preserved": true,
+    "final_check": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-scenery-final-check-oct24-r1.json",
+      "sha256": "638974799bdebf453745fde41fcd838ac94acf13c11d2004053687eceffc927d"
+    },
+    "worklist_open": 24,
+    "github_issues_verified_open": [
+      204,
+      263,
+      268,
+      269
+    ],
+    "docker_cleanup_verified": true,
+    "cleanup": {
+      "historical_root_owned_unchanged_files": 51,
+      "current_outputs_uid_gid": "1000:1000",
+      "new_images_volumes_videos_release": false,
+      "failed_receipts_and_final_pngs_preserved": true
+    }
   }
 }

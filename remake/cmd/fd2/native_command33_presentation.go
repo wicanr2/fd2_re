@@ -354,6 +354,9 @@ func (g *Game) startNativeCommand33Presentation(actor, confirmed *battle.Unit, t
 			}
 		}
 	}
+	if err := bindModernHDCompoundScenery(frames, background, actorSelector, platform, g.modernStoryPortraits); err != nil {
+		return err
+	}
 	publishHD()
 	bindModernBattlePanelFrames(panelText, frames)
 	g.nativeCmd33Presentation = &nativeCommand33PresentationJob{

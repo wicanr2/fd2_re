@@ -19,9 +19,12 @@ def main():
     parser.add_argument('--out', type=Path, required=True)
     parser.add_argument('--receipt', type=Path, required=True)
     parser.add_argument('--command-panels', action='store_true', help='選法術actor階段；完整PNG先記SHA，原收據有SHA時再核對')
+    parser.add_argument('--phase', choices=['actor', 'effect-main'], help='明示法術／召喚階段，須搭配--command-panels')
     args = parser.parse_args()
     if not Path('/.dockerenv').exists():
         raise SystemExit('限Docker內執行')
+    if args.phase and not args.command_panels:
+        raise SystemExit('--phase須搭配--command-panels')
     for path in [args.out, args.receipt]:
         if not path.parent.is_dir() or path.exists():
             raise SystemExit('輸出父目錄須存在，不覆寫既有檔案')
@@ -33,9 +36,11 @@ def main():
         receipt = json.loads((folder / 'receipt.json').read_text())
         if receipt.get('panel_text', {}).get('locale') != locale or receipt.get('continuations') != 1:
             raise SystemExit('缺少該語系完整面板流程收據')
-        phase = 'actor' if args.command_panels else 'body'
+        phase = (args.phase or 'actor') if args.command_panels else 'body'
         candidates = sorted((key, shot) for key, shot in receipt['source_shots'].items()
                             if shot['phase'] == phase)
+        if not candidates:
+            raise SystemExit('收據缺少指定階段')
         key, shot = candidates[-1] if args.command_panels else candidates[0]
         filename = shot.get('file', key) if args.command_panels else shot['file']
         if Path(filename).name != filename:

@@ -32,6 +32,7 @@ func maybeAttachCommandPanelHDTest(t *testing.T, g *Game) {
 	commandPanelGPUStats.Draws, commandPanelGPUStats.Samples = 0, 0
 	commandPanelGPUStats.Phases = make(map[string]int)
 	commandPanelGPUStats.Captures = make(map[string]bool)
+	initCompoundSceneryFixture(t, g)
 }
 
 // All presents are audited. PNGs retain each typed state and scroll half,
@@ -64,6 +65,7 @@ func appendCommandPanelGPUReport(t *testing.T, report map[string]any) {
 		t.Fatal("missing actual GPU panel glyph samples", commandPanelGPUStats)
 	}
 	report["panel_text"] = map[string]any{"locale": os.Getenv("FD2_HD_PANEL_LOCALE"), "audited_draws": commandPanelGPUStats.Draws, "matched_rgba_pixels": commandPanelGPUStats.Samples, "sampled_phases": commandPanelGPUStats.Phases, "scope": "actual battle World readback; only unoccluded glyph pixels; fixture only"}
+	appendModernCompoundSceneryReport(t, report)
 }
 
 func commandPanelOccluded(layers []modernHDBattleLayer, point image.Point) bool {
@@ -154,7 +156,7 @@ func auditCommandPanelGPU(g *Game, frame *nativeCompoundPresentedFrame) error {
 		commandPanelGPUStats.Phases[frame.hdPhase] += len(points)
 	}
 	commandPanelGPUStats.Draws++
-	return nil
+	return auditModernCompoundSceneryGPU(g, frame, plan)
 }
 
 func attachCommandPanelHDTest(t *testing.T, g *Game) {

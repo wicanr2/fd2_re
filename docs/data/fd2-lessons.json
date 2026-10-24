@@ -3959,6 +3959,21 @@
         ],
         "pattern": "nativePaletteColor\\(palette, field.colour"
       }
+    },
+    {
+      "id": "hd-scenery-fixture-retains-native-controls",
+      "date": "2026-10-24",
+      "area": "HD場景驗證",
+      "rule": "戰鬥背景fixture在原生控制表中選已有圖塊，保留NativeTerrainControl與assets.Controls相同；另外確認台座原始mask可見，再談實際HD像素。入口remake/cmd/fd2/native_map_frame_input.go的buildNativeMapFrameInput及modern_hd_compound_scenery_test.go的initCompoundSceneryFixture；在規格61的Go Docker跑tools/verify_fd2_battle_surface_hd.py --kind compound-scenery-source或compound-scenery-game，給--panel-owner 32 --surface 4，另一側加--enemy。",
+      "why": "原召喚fixture選到合法空白TAI0，metadata雖有台座但不能驗HD。直接改控制表又被正式FDSHAP一致性guard拒收；改選原表中BG4的既有圖塊後，八個雙側來源與八完整Game.Draw通過，未改正式規則或放寬guard。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/native_map_frame_input.go"
+        ],
+        "pattern": "!bytes\\.Equal\\(field.NativeTerrainControl, assets.Controls\\)"
+      }
     }
   ]
 }

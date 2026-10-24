@@ -3096,3 +3096,11 @@ GitHub連接器無權查私人素材庫；沿用主機Git已登入路徑fetch成
 過程失敗如實保留：初次編譯因command6巢狀helper未明示傳collector而拒收，補完整傳遞後全16來源／Game.Draw重跑；24首次擷取被舊exporter誤判typed面板為原生負resource，修正測試序列化及獨立驗證器後同流程通過；新增錯位／尺寸反例先被既有矩形guard拒收，修反例為內部一致矩形，再驗面板來源guard，未放寬產品或色差；初次字串測試在官方遷移前綁舊SHA而拒收，遷移後八項通過。來源、重跑及最終收據依主收據command_panel_text_followup_20261024與command-hud-verification-oct24-r1.json。完整HUD美術、其餘背景caller／效果、浮出工具列／速度及集中正常／人工／平台仍待；完整HD目標保持active。Issue、清理與公開推送另於收尾核對。
 
 最終核對command-hud-final-check-oct24-r1.json通過490項SHA引用、39份來源指紋、346 PNG、2506個本地Markdown目標與本輪1000:1000擁有權。325教訓／190 guard通過；host gh更新#263／#204並拉24條，官方snapshot／render／verify同步，可能已完成0條，原acceptance保持，#268／#269仍OPEN。廣域自檢仍為51份歷史root-owned原資料／圖片，與本輪寫入無交集，另存SHA並保持未動，沒有遞迴chown。全部本輪Go／Xvfb／Pillow容器已退出且--rm；私人庫乾淨，沒有新image、volume、錄影或Release。通過及拒收收據、346最終PNG與兩份小型初版失敗PNG保留；未刪原始參考來源。公開提交與遠端HEAD另核。
+
+2026-10-24 四種召喚戰鬥場景HD接線，限定CONFORMED-SCOPED／RUNTIME-E1。前一批758e299e已由main推送並核對遠端相同，host gh於#263留言提交；完整HD目標保持active。新分支從該main建立，61與主收據先列READY，沿既有原生producer、完整已登錄BG／TAI圖源及HD扣色／插色契約，不新增RE、美術或清冊／保存欄位。32～35在圖庫及owner發布前，先在私有副本拆出來源並以原生圖逐byte重組base，整批成功才發布。前導原生台座層只標記已驗來源，保留stage位移；其餘戰鬥階段沿原位置拆出場景，地圖尾段保持。
+
+八來源分片1620幀含606戰鬥幀及303可見TAI來源幀，八完整Game.Draw／720實際回讀、2630763場景像素含1787台座核心像素、44次F2與44最終PNG通過。18個HD閘門／21必要頂層測試及八字串回歸無SKIP／逾時／OOM，最大測試峰值4548190208 bytes，不宣稱正式遊戲或其他平台效能。背景及台座取樣只涵蓋未被後層遮擋的不透明核心；原生base重組檢查涵蓋全部戰鬥來源。字串官方遷移只改inventory綁定，109處置保持；README新四語完整半縮圖與既有圖組重生相同SHA均驗證。唯一來源、源碼指紋與重跑依主收據compound_scenery_followup_20261024及compound-scenery-verification-oct24-r1.json。清冊761項及私人美術保持，沒有新私人同步需求；完整HD未完成。
+
+失敗與勘誤保留：R1來源是BG0及合法空白TAI0，metadata出現台座不能當作可見HD；R1 side2的Go繪製通過但永久驗證器因缺可見TAI拒收，不改寫成成功。R1 side0在command32 BG0通過後，為改用可見fixture而停止自有批次，外層137屬有意取消，已完成command32收據無OOM；未冒稱產品signal killed。R2直接覆寫NativeTerrainControl被既有editable-field／FDSHAP一致性guard拒收，連續失敗後重新載入規格先行入口，修fixture為選原控制表已有圖塊，保留正式檢查。R2 GPU在嘗試停止前已自行以同錯誤結束，查無容器，沒有刪到其他工作。R3以BG4／TAI4、raw side0／2完整重跑通過，seed與Camp保持既有fixture政策。初版失敗log及收據不刪；沒有因此修改原版語意或放寬色差。普通0～9的LUT caller、地圖尾段／其他效果、完整HUD與浮出工具列／速度及集中正常／人工／平台仍待；Issue及清理於收尾另核。
+
+召喚場景收尾核對compound-scenery-final-check-oct24-r1.json通過112項SHA引用、九份來源指紋、44 PNG、2521本地Markdown目標與本輪1000:1000擁有權。326教訓／191 guard及24遠端worklist通過，可能已完成0條；#263／#204已更新且原acceptance保持，#268／#269仍OPEN。51歷史root檔與前批逐SHA相同，沒有chown或刪除。所有本批Go／Xvfb／Pillow容器已退出且--rm，保留失敗記錄與最終畫面，沒有新image、volume、錄影或Release；私人庫無本輪變更。公開提交與遠端HEAD另核。

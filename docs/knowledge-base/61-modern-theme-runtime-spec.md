@@ -2,6 +2,19 @@
 
 狀態：現代主題仍為部分覆蓋；目前分層與缺口依[58](58-fd2-exe-re-coverage.md)。
 
+## 四種召喚的戰鬥背景與台座（CONFORMED-SCOPED／RUNTIME-E1，2026-10-24）
+
+本節實作前為READY。沿用已核准的BG／TAI圖源與原位置，接入32～35既有caller；不新增美術、清冊格式、規則或保存欄位。原生來源重用本檔共用召喚的已閉合`BuildNativeCommandPreludeFrames`、`BuildNativeCompoundCommonFrames`與各正式presenter；固定檔案沿`fd2-reference-files.json`。前導全palette扣色、效果尾段插色沿既有HD近似，不開新硬體RE。普通0～9的背景LUT另列，這個切片不猜補其色彩轉換。
+
+- 依同次caller的`background`、`actorSelector`與可選`platform`建立明示來源，逐metadata與原始pixels／mask預檢已登錄圖源。沒有登錄的整項維持原圖回退。
+- 前導只將背景附加到base；原生負resource台座層須與同次TAI逐byte相符，才標記其來源，保留原stage位移與層序。其餘戰鬥階段沿同一base拆出BG／TAI，再以原生source重組，必須與原base逐byte相同。地圖尾段沒有戰鬥來源，保持原路徑。
+- 完整候選先在私有副本完成預檢及原生重組，再一次發布所有frame的來源；失敗不發布owner、圖庫或半套來源。文字仍以同次base匹配附加，免於人物扣色／插色；背景及台座沿既有GPU公式。
+- 驗收包含四caller／兩side、原生重組、錯來源及缺圖拒收、正式Game.Draw的實際圖源像素、各階段F2、交易／RNG及一次返回。受控fixture只到RUNTIME-E1，普通／集中人工／平台仍待。
+
+來源與結果沿[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`compound_scenery_followup_20261024`；實作沿[召喚來源](../../remake/cmd/fd2/modern_hd_compound.go)，[來源／GPU測試](../../remake/cmd/fd2/modern_hd_compound_scenery_test.go)由既有[永久驗證器](../../tools/verify_fd2_battle_surface_hd.py)的`compound-scenery-unit`、`compound-scenery-source`與`compound-scenery-game`驅動。source／game以`--panel-owner`選32、33、34或35，`--surface`明示測試槽的背景／台座索引，預設4。fixture只替施術者格選取原生控制表中已有的圖塊，不改`NativeTerrainControl`；實際資源索引另寫入收據核對。原測試槽的0台座合法空白，不能用來宣稱可見台座HD。`--enemy`只切換明示fixture的raw side 2，保留Camp與規則；省略時為side 0。`compound-scenery-regression`另驗四個既有原生呈現入口。沿既有Go Docker、原包與唯讀org_game掛載，傳正式`--catalog --pack --out`及有界`--timeout`，不得覆寫收據。
+
+四caller的雙側來源與完整Game.Draw、實際背景／台座RGB、各階段F2、原交易與一次返回通過，數量唯一見[58](58-fd2-exe-re-coverage.md)。取樣限未被後層遮擋的不透明核心；前導及尾段用既有HD扣色／插色公式核對，不宣稱原版RGB。四個原生呈現入口及錯來源原子拒收回歸通過，清冊與私人素材保持。[完整畫面圖組工具](../../tools/build_fd2_battle_panel_gallery.py)可用`--command-panels --phase effect-main`與四語`--captures`重生展示圖；不能裁切遊戲畫面或把測試隊伍當成普通玩家收據。完整HUD、普通指令LUT／其他效果及集中正常／人工／平台仍待。
+
 ## 其餘戰鬥指令面板直接繪字（CONFORMED-SCOPED／RUNTIME-E1，2026-10-24）
 
 本節實作前為READY。沿用物理戰鬥切片的原生面板契約、1920畫布及Noto字形安全範圍。原版語意重用`NativeBattlePanelRecordForUnit`、`NativeBattlePanelOrigin`與各已閉合指令producer，不新增RE、交易或保存欄位。唯一來源沿[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`command_panel_text_followup_20261024`。

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"sort"
 
@@ -9,6 +10,67 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 	"github.com/wicanr2/fd2_re/remake/internal/figani"
 )
+
+// 先以原生來源重組每個base，再一次發布整批背景metadata。
+// 地圖尾段沒有hdSources，不參與這條戰鬥背景路徑。
+func bindModernHDCompoundScenery(frames []nativeCompoundPresentedFrame, background fdother.Frame, selector int,
+	platform *fdother.Frame, set *modernStoryPortraitSet) error {
+	scenery, err := modernSplitStrikeScenery(background, selector, platform)
+	if err != nil || len(scenery) == 0 {
+		return err
+	}
+	for _, source := range scenery {
+		if _, _, err := set.battleSurfaceHD(source); err != nil {
+			return err
+		}
+	}
+	staged := make([]*modernHDBattleSources, len(frames))
+	for index, frame := range frames {
+		if frame.hdSources == nil {
+			continue
+		}
+		sources := *frame.hdSources
+		sources.Layers = append([]modernHDBattleSource(nil), sources.Layers...)
+		selected := scenery
+		if frame.hdPhase == "prelude" {
+			selected = scenery[:1]
+			for i, layer := range sources.Layers {
+				if layer.Resource >= 0 || layer.PanelText != nil {
+					continue
+				}
+				if len(scenery) != 2 || layer.Archive != "" || layer.Fill != -1 ||
+					layer.Frame.X != scenery[1].Frame.X || layer.Frame.Y != scenery[1].Frame.Y ||
+					layer.Frame.Width != scenery[1].Frame.Width || layer.Frame.Height != scenery[1].Frame.Height ||
+					!bytes.Equal(layer.Frame.Pixels, scenery[1].Frame.Pixels) || !bytes.Equal(layer.Frame.Mask, scenery[1].Frame.Mask) {
+					return fmt.Errorf("modern HD compound scenery: prelude platform source differs")
+				}
+				layer.Archive, layer.Resource = "TAI.DAT", selector
+				sources.Layers[i] = layer
+			}
+		}
+		if err := bindModernPhysicalBaseScenery(&sources, append([]modernHDBattleSource(nil), selected...)); err != nil {
+			return err
+		}
+		rebuilt := append([]byte(nil), sources.Base...)
+		for _, source := range sources.BaseScenery {
+			if source.PanelText == nil {
+				if err := source.Frame.BlitAt(rebuilt, 320); err != nil {
+					return err
+				}
+			}
+		}
+		if !bytes.Equal(rebuilt, frame.hdSources.Base) {
+			return fmt.Errorf("modern HD compound scenery: native base reconstruction differs")
+		}
+		staged[index] = &sources
+	}
+	for index, sources := range staged {
+		if sources != nil {
+			frames[index].hdSources = sources
+		}
+	}
+	return nil
+}
 
 // 只附加0x27FC9已閉合的圖源，不重建或推進任何交易／音效／present排程。
 func bindModernHDCompoundFrames(frames []nativeCompoundPresentedFrame, base []byte, effect *figani.Animation,

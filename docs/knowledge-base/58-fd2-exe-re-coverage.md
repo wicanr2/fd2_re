@@ -4,6 +4,7 @@
 
 | 項目 | 目前可證明的狀態 | 下一閘門 |
 |---|---|---|
+| 四種召喚的HD背景與台座 | CONFORMED-SCOPED／RUNTIME-E1：32～35雙側八來源分片1620幀含606戰鬥幀、303台座幀；八完整Game.Draw、720次實際回讀、2630763場景像素含1787台座像素、44次F2與44 PNG通過。18份HD閘門／21必要測試及八字串回歸無SKIP／逾時／OOM | 原控制表保持，fixture只選已有BG4／TAI4圖塊；原生base逐byte重組後原子發布，保留前導台座位移與既有HD扣色／插色近似。普通0～9的LUT caller、地圖尾段／其他效果／HUD及集中正常／人工／平台仍待；來源與重跑依主收據compound_scenery_followup_20261024及61 |
 | 全部共用戰鬥指令面板HD文字 | CONFORMED-SCOPED／RUNTIME-E1：15個presenter／16指令分支，1993來源幀含1486戰鬥幀及147凍結快照，原生圖、單位與RNG對照相同；16完整Game.Draw、1590次文字GPU回讀、598330像素、104次F2及346實際PNG。39份HD閘門／53次必要頂層測試、八字串測試，24／29共145完整畫布獨立合成容差1及各30拒收通過，無SKIP／逾時／OOM | 原框、bar、overflow與palette保留；物理雙側回歸通過。其他背景caller／效果、完整HUD及集中正常／人工／平台仍待，非原版RGB或PLAYER-E2。唯一來源與重跑見主收據command_panel_text_followup_20261024及61 |
 | 物理戰鬥面板HD文字 | CONFORMED-SCOPED／RUNTIME-E1：四語共228姓名ink、24 GPU畫布；四語共背景與雙側分離背景合計六完整Game.Draw、24次F2及72實際PNG。11份HD Go閘門／24必要測試，另七原生面板與八字串回歸通過，無SKIP／逾時／OOM | 逐次typed紀錄保留當時HP與raw姓名；原版框線、bar及overflow符號保持。完整HUD美術及集中正常／人工／平台仍待；指令caller見上列。唯一來源與重跑見主收據battle_panel_text_followup_20261024及61 |
 | 主題工具列與城鎮／商店 | RUNTIME-E1：遊戲外工具列保留F2與四語；三種城鎮及三種商店場景／店員已接HD，既有隊伍480頭像接裝備開窗。114個GPU案例、全部十二開窗位置、真實滑鼠／F2／F4及兩包載入通過 | 原生選單框、游標與交易效果保留；其他設施、普通玩家及人工造型集中全部HD後。依HD主收據facility_scene_followup_20261021，非完整HD或新Release |

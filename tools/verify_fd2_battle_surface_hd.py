@@ -12,6 +12,13 @@ from verify_fd2_player9_map_hd import check_real_runtime
 
 ROOT = Path(__file__).resolve().parents[1]
 REQUIRED = {
+    'compound-scenery-unit': {'TestModernCompoundSceneryAtomic'},
+    'compound-scenery-regression': {'TestStartNativeCommand32PresentationUsesOriginalAssetsEndToEnd',
+                                    'TestStartNativeCommand33PresentationUsesOriginalAssetsEndToEnd',
+                                    'TestStartNativeCommand34PresentationUsesOriginalAssetsEndToEnd',
+                                    'TestStartNativeCommand35PresentationUsesOriginalAssetsEndToEnd'},
+    'compound-scenery-source': {'TestModernCompoundScenerySources'},
+    'compound-scenery-game': set(),
     'command-panel-unit': {'TestModernCommandPanelCollectorAtomic','TestModernCommandPanelPalette'},
     'command-panel-owner': {'TestModernCommandPanelAllOwners'},
     'command-panel-game': set(),
@@ -67,7 +74,9 @@ def main():
     p.add_argument('--require-real-runtime', action='store_true')
     p.add_argument('--timeout', type=int, default=1200)
     a = p.parse_args()
-    if a.kind=='command-panel-game':
+    if a.kind in ['compound-scenery-source','compound-scenery-game'] and a.panel_owner not in [32,33,34,35]:
+        raise SystemExit('召喚背景需要明示32～35的owner')
+    if a.kind in ['command-panel-game','compound-scenery-game']:
         name={0:'TestModernHDCommand0RuntimeGPU',1:'TestModernHDCommand1RuntimeGPU',4:'TestModernHDCommand5RuntimeGPU',5:'TestModernHDCommand5RuntimeGPU',24:'TestModernHDSplitStrikeRuntimeGPU',29:'TestModernHDSplitStrikeRuntimeGPU',32:'TestModernHDCompoundRuntimeGPU',33:'TestModernHDFairyRuntimeGPU',34:'TestModernHDStagedSummonRuntimeGPU',35:'TestModernHDStagedSummonRuntimeGPU'}.get(a.panel_owner,'TestModernHDOrdinaryRemainingRuntimeGPU')
         REQUIRED[a.kind]={name}
     if not Path('/.dockerenv').exists() or not 60 <= a.timeout <= 1800 or not a.out.parent.is_dir():
@@ -89,8 +98,13 @@ def main():
     env.pop('FD2_HD_SCENERY_BATCH',None)
     for name in ['FD2_HD_PANEL_GPU','FD2_HD_PANEL_TEXT','FD2_HD_PANEL_LOCALE','FD2_HD_PANEL_PREVIEW']:env.pop(name,None)
     for name in ['FD2_HD_COMMAND_PANEL_OWNER','FD2_HD_COMMAND_PANEL_REPORT','FD2_HD_COMMAND_PANEL_TEXT']:env.pop(name,None)
+    for name in ['FD2_HD_COMPOUND_SCENERY','FD2_HD_COMPOUND_SCENERY_SIDE','FD2_HD_COMPOUND_SCENERY_SURFACE']:env.pop(name,None)
+    if a.kind in ['compound-scenery-source','compound-scenery-game']:
+        env.update(FD2_HD_COMPOUND_SCENERY='1',FD2_HD_COMPOUND_SCENERY_SIDE='2' if a.enemy else '0',FD2_HD_COMPOUND_SCENERY_SURFACE=str(a.surface),
+                   FD2_HD_COMMAND_PANEL_TEXT='1',FD2_HD_COMMAND_PANEL_OWNER=str(a.panel_owner),FD2_HD_PANEL_LOCALE=a.panel_locale)
+    if a.kind=='compound-scenery-source':env['FD2_HD_COMMAND_PANEL_REPORT']=str(a.out)+'.owner.json'
     if a.kind=='command-panel-owner':env.update(FD2_HD_COMMAND_PANEL_OWNER=str(a.panel_owner),FD2_HD_COMMAND_PANEL_REPORT=str(a.out)+'.owner.json')
-    if a.kind=='command-panel-game':
+    if a.kind in ['command-panel-game','compound-scenery-game']:
         env.update(FD2_HD_COMMAND_PANEL_TEXT='1',FD2_HD_PANEL_LOCALE=a.panel_locale,FD2_HD_COMMAND_PANEL_OWNER=str(a.panel_owner),
                    FD2_TEST_MODERN_EFFECT_CATALOG=str(a.catalog.resolve()),FD2_TEST_MODERN_EFFECT_PACK=str(a.pack.resolve()),FD2_TEST_MODERN_EFFECT_OUT=str(a.out)+'-capture')
         if a.panel_owner in [0,1,4,5]:env[f'FD2_HD_COMMAND{5 if a.panel_owner==4 else a.panel_owner}_GPU']='1'
@@ -155,12 +169,28 @@ export DISPLAY=:99
                 or receipt.get('bound_battle_frames',0)<=0 or not receipt.get('native_sources_equal')
                 or not receipt.get('unit_state_equal') or not receipt.get('rng_equal')):
             raise SystemExit('缺少指令面板原生來源、狀態或RNG核對')
-    if a.kind=='command-panel-game':
+    if a.kind=='compound-scenery-source':
+        receipt=json.loads(Path(str(a.out)+'.owner.json').read_text())
+        if (receipt.get('status')!='PASS-COMPOUND-SCENERY-SOURCES' or receipt.get('command')!=a.panel_owner
+                or receipt.get('surface')!=a.surface
+                or receipt.get('side')!=(2 if a.enemy else 0) or receipt.get('battle_frames',0)<=0
+                or receipt.get('platform_frames')!=(receipt['battle_frames'] if a.enemy else 0)):
+            raise SystemExit('缺少雙側召喚背景／台座來源核對')
+    if a.kind in ['command-panel-game','compound-scenery-game']:
         receipt=json.loads(Path(str(a.out)+'-capture/receipt.json').read_text())
         panel=receipt.get('panel_text',{})
         if (panel.get('locale')!=a.panel_locale or panel.get('audited_draws',0)<=0 or panel.get('matched_rgba_pixels',0)<100
                 or receipt.get('continuations')!=1):
             raise SystemExit('缺少實際Game.Draw面板字形核對或一次續行')
+        if a.kind=='compound-scenery-game':
+            scenery=receipt.get('compound_scenery',{})
+            phases=receipt.get('hd_phase_draws',{})
+            if (scenery.get('side')!=('2' if a.enemy else '0') or scenery.get('surface')!=str(a.surface) or scenery.get('audited_draws',0)<=0
+                    or scenery.get('matched_pixels',0)<100 or not scenery.get('sources')
+                    or any(scenery.get('sampled_phases',{}).get(p,0)<=0 for p in phases)
+                    or scenery['sources'].get(f'BG.DAT:{a.surface}',0)<=0
+                    or (a.enemy and scenery['sources'].get(f'TAI.DAT:{a.surface}',0)<=0)):
+                raise SystemExit('缺少召喚各階段的實際HD背景／台座像素')
     if a.kind in ['game','panel-game']:
         receipt = json.loads(Path(str(a.out)+'-capture/receipt.json').read_text())
         if receipt.get('background_selection',{}).get('BaseBG') != a.surface or not receipt.get('background_hd_sha256') or receipt['continuations'] != 1:
