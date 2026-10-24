@@ -2,9 +2,26 @@
 
 狀態：現代主題仍為部分覆蓋；目前分層與缺口依[58](58-fd2-exe-re-coverage.md)。
 
+## 故事入場與返回HD世界（CONFORMED-SCOPED／RUNTIME-E1）
+
+本節實作前為READY。正式與私人實檔包的故事staging、直接單位出現及返回HD世界均已通過，原生故事來源不因Draw改變；舊玩家23與戰場staging完整回歸保持。只限下列具型別載體及受控流程，正常玩家與其他故事／特殊效果仍待。
+
+上一批已接共用0x22253，但一般世界的HD admission只接受battle.State；故事呼叫者使用storyNativeMapState，效果結束後仍回正規化像素世界。本節沿原生故事載體與既有0x11CAC具型別地圖，不新增構造器語意。來源與原版固定雜湊依[58](58-fd2-exe-re-coverage.md)、[故事地圖實作](../../remake/cmd/fd2/native_story_map.go)及[地形模式與故事連續性證據](../data/ida/fd2_terrain_mode3_review_20261001.json)。限已存在完整storyNativeMapState、storyBG及六欄視圖的場景；其他故事場景與天空之鑰／章節徑向／第23章特殊效果另列，不能因此宣稱全部HD。
+
+- 故事世界從同一LOADCH地形、storyActors、selector cache、視圖與時鐘建立私有繪製複本，沿原生故事compositor及既有HD世界層序產生圖框。只有鏡頭與raw view對齊且沒有storyWalkJob時啟用；既有故事走位先寫正規化終點與OffX／OffY，完成後才同步原生座標，不可把中間拍當作原生靜止站位。走位及未對齊移鏡保持既有呈現，另列HD接線。原生故事的未知race／class仍只在私有複本依既有明示政策處理，不回寫角色或保存。
+- HD繪製只發布HD圖框與圖層快取，不發布私有複本的work／VGA、DAC、原生時鐘或故事cycle值，避免一次Draw多推進故事狀態。清晰對話與人物頭像沿現有疊層；故事HUD保持隱藏，不顯示戰場指令環或橫幅。
+- F2在換圖前同次預檢故事穩定世界及共用轉場的活動／待啟動工作。缺圖、錯尺寸或不完整來源須在發布前拒收；原主題、故事資料、鏡頭、RNG、待啟動工作及對話進度保持。繪製不載入檔案、不推進劇本或續行。
+- 受控GPU驗證必須實際呼叫故事staging，從focus待啟動、11前導、6收縮、24列橋接與10展開，回到故事HD世界；補直接單位出現呼叫者，保留17號寫入。固定時鐘與seed，原圖控制組逐步比較故事角色／視圖／原生緩衝及一次續行，各階段F2前後最終畫布保持。另驗同來源正常世界與GPU獨立合成、缺件原子拒收及既有戰場傳送回歸。
+
+本切片不新增素材或清冊／保存欄位；正式與私人實檔包分別驗證。正常玩家、故事移動／特殊背景的全部覆蓋與集中人工／平台仍依既定工作清單。唯一來源／收據入口為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的story_map_hd_followup_20261024。
+
+正式接線位於[故事HD消費端](../../remake/cmd/fd2/modern_hd_story_map.go)，來源隔離、缺件與F2拒收由[故事測試](../../remake/cmd/fd2/modern_hd_story_map_test.go)驗證。沿[單位轉場驗證器](../../tools/verify_fd2_unit_present_hd.py)的`--kind story-unit`與`--kind story-game`，其餘Docker掛載、素材環境變數與有界參數同下節；私人包加`--require-real-runtime`。故事GPU專用程序與舊`--kind game`分開，避免同程序重開Ebiten。圖組沿[既有總覽工具](../../tools/build_fd2_battle_panel_gallery.py)的`--story-unit-present-receipt <capture/receipt.json>`，入場及返回畫面均先核對最終RGBA雜湊，再完整半縮。
+
 ## 單位消失／出現轉場HD（CONFORMED-SCOPED／RUNTIME-E1）
 
 本節實作前為工程READY、美術DRAFT；第二版編製總覽審閱後提升美術READY。已接入共用轉場及玩家23兩段、故事／戰場staging的待啟動主題預檢。實際GPU流程限玩家23與戰場staging，故事呼叫者沿原生回歸，不外推正常玩家或全部HD完成。唯一收據、數量及來源SHA依下列HD主收據。
+
+上段記錄前批收據範圍；故事GPU及返回世界已由本頁「故事入場與返回HD世界」補驗，原生回歸限制不再代表目前故事接線狀態。兩批收據各自保留，不合併成新的正常玩家聲明。
 
 本節沿58已閉合的0x22253與玩家23兩次呼叫，不重解callee。來源為固定FD2.EXE 357074 bytes、MD5 b97caf2239a27a896069d03549d96e1e、SHA-256 222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f，以及固定FDOTHER.DAT的6號LMI。原始位址、caller與證據入口依[終段轉場](../data/ida/fd2_ch29_terminal_body_ida.txt)、[戰後呼叫者](../data/ida/fd2_ch28_post_ida.txt)及58；工具為既有IDA9.4 LE線性位址。新實作只提升HD消費端，來源／工具SHA、母稿與收據記在[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的unit_present_hd_followup_20261024。
 

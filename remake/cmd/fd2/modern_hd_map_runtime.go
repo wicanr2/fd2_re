@@ -38,6 +38,9 @@ type modernHDMapOverlayDraw struct {
 }
 
 func (g *Game) modernHDMapFrameAdmission(story, battleView bool) bool {
+	if story && g.hasModernHDStoryMapSource() {
+		return g.modernStoryPortraits != nil && len(g.modernStoryPortraits.mapSpritesHD) == 125
+	}
 	if g == nil || story || !battleView || g.modernStoryPortraits == nil ||
 		len(g.modernStoryPortraits.mapSpritesHD) != 125 || !nativeMapAssetsAvailable(g.nativeMapAssets) ||
 		g.st == nil || !g.st.HasNativeMapViewState {

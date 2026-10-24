@@ -224123,5 +224123,254 @@
       "guards": 196,
       "full_hd_complete": false
     }
+  },
+  "story_map_hd_followup_20261024": {
+    "status": "CONFORMED-SCOPED-RUNTIME-E1",
+    "base_commit": "71cebf6c17f52add6cc61da121ab8360dad39b76",
+    "scope": "完整原生故事載體的私有HD繪製、staging focus及0x22253後返回世界；不新增素材、規則或保存欄位。",
+    "catalog_assets": 765,
+    "catalog_unchanged": true,
+    "source_policy": "沿既有native_story_map.go的私有race/class近似，不新增或回寫推定。",
+    "full_hd_complete": false,
+    "remaining_native_only_owners": [
+      {
+        "file": "remake/cmd/fd2/native_24b4d.go",
+        "sha256": "e67fffca380c75a87d93e0a2c0ea40cb5e7545005382f7568b8967a612927665",
+        "function": "drawNative24B4D",
+        "status": "NATIVE-ONLY-SOURCE-REVIEW",
+        "scope": "目前正式Draw函式整幀原圖；此清單不是全部caller的閉合聲明"
+      },
+      {
+        "file": "remake/cmd/fd2/native_indexed_transition.go",
+        "sha256": "2e51aa6e8633305f3c940f75ae04a2033f60f97eb6d9807022e3db76cf28d470",
+        "function": "drawNativeIndexedTransition",
+        "status": "NATIVE-ONLY-SOURCE-REVIEW",
+        "scope": "目前正式Draw函式整幀原圖；此清單不是全部caller的閉合聲明"
+      },
+      {
+        "file": "remake/cmd/fd2/native_ch20_sky_key.go",
+        "sha256": "6410d1616658e3f977bda379ad46d8dae92ba56a487d514934b860305fb8e6f4",
+        "function": "drawNativeCh20SkyKey",
+        "status": "NATIVE-ONLY-SOURCE-REVIEW",
+        "scope": "目前正式Draw函式整幀原圖；此清單不是全部caller的閉合聲明"
+      },
+      {
+        "file": "remake/cmd/fd2/native_ch23_post.go",
+        "sha256": "e5bbeb652965ea3c8e74e8020591755dbb63ff6bf727825fdb4cbfbce71ca852",
+        "function": "drawNativeCh23Loop",
+        "status": "NATIVE-ONLY-SOURCE-REVIEW",
+        "scope": "目前正式Draw函式整幀原圖；此清單不是全部caller的閉合聲明"
+      }
+    ],
+    "normal_player_complete": false,
+    "catalog": {
+      "file": "remake/assets/themes/modern/catalog.json",
+      "sha256": "9c25de7a2e5a9723e6f97cf608c3fc09c6bf41b82a32d86b9a44438d3131bc9d"
+    },
+    "source_snapshot": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-map-source-snapshot-oct24-r2.json",
+      "sha256": "6fbc27666ca6e631b2084ebe90334d992049fbfe59f9cb46bb92b8d1b289503c"
+    },
+    "tool_sources": [
+      {
+        "file": "tools/verify_fd2_unit_present_hd.py",
+        "sha256": "949e74b2b17298678960701d95f7e8bb85137434fa20a61e51776bda4d8f6df8"
+      },
+      {
+        "file": "tools/build_fd2_battle_panel_gallery.py",
+        "sha256": "96aeb5ec2aea2d5d6242d4ef1c30d241744cd27d3625b87c518a298c49a6d063"
+      }
+    ],
+    "evidence": [
+      {
+        "file": "docs/data/fd2-reference-files.json",
+        "sha256": "9946b7506620069ce9b7bb8e4b1f7fed36e7a9389b634ef62064727d89579c5e"
+      },
+      {
+        "file": "docs/data/ida/fd2_terrain_mode3_review_20261001.json",
+        "sha256": "6ba874a16adf3cb0fca81c6ee46c98553d05770e85d51e1e318c16a2f3f68fcd"
+      },
+      {
+        "file": "remake/cmd/fd2/native_story_map.go",
+        "sha256": "927d30fec6b790c99b639cbf58938354e3ca4401b224e6be576f43514a5496b6"
+      },
+      {
+        "file": "remake/cmd/fd2/native_staging_present.go",
+        "sha256": "462148342917886242880461a72b3d262c06503efb3b40449e416f4f50bf3671"
+      },
+      {
+        "file": "remake/cmd/fd2/native_unit_present.go",
+        "sha256": "74e410ff2e5ba33eaef6fb789b5a10a8be7ab1b3191b8beb686318ffdba75e17"
+      }
+    ],
+    "story_evidence_scope": "既有followups[0].story_frame_continuity只證實ch12原生focus與交接；本批只作私有繪圖、不擴大原生緩衝交接或原版精確聲明。",
+    "gates": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-map-story-unit-final-oct24-r3.gate.json",
+        "sha256": "7eb2b9a9fa49f7b690ae44dd897571ab178bf97c50b474c2bfb78d98685d923a"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-map-native-final-oct24-r1.gate.json",
+        "sha256": "07086d56637a4259da770c8cc4a23cabf2d4ca40bfcdc951119d55508f9cabde"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-map-unit-final-oct24-r1.gate.json",
+        "sha256": "906de1c6ef8245618ce368a0f9371c3fec97ff64db04a88bff5f07331ebdbd34"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-map-regression-final-oct24-r1.gate.json",
+        "sha256": "80f267c61f53263c0535c7cd72973165daf58b05381c3f625b8dd8eb193edf57"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-map-formal-game-oct24-r2.gate.json",
+        "sha256": "6669276205cfa9bb0f7dc68f5ef9797d39ec79538d896d3319cbbb856cd2fcfa"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-map-private-game-oct24-r2.gate.json",
+        "sha256": "be3ccd7e2d214a9337dff0af99a3153ec0a65769e35a1307981607ad68068745"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-map-player-regression-oct24-r1.gate.json",
+        "sha256": "78de2b5444a24def899a8af85ec8ee8ad4d58d0e2dc5d8bbb5172b929118f999"
+      }
+    ],
+    "memory": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-map-story-unit-final-oct24-r3.memory.json",
+        "sha256": "4a85806df45ab071508fa3278f1c7d72f84fd12f8c285bffafdb39069815868c"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-map-native-final-oct24-r1.memory.json",
+        "sha256": "351b47114d0c0b32430e37619f79a2ddfc7400609e89fddff421dd6427a68f0a"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-map-unit-final-oct24-r1.memory.json",
+        "sha256": "45e0fcac0b60eaf320f2b6f630f03a2c8d6d82d482350ca72c07160e4919cc9e"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-map-regression-final-oct24-r1.memory.json",
+        "sha256": "eb32c7ec8efc7baa181f0cfaf554f66d62297d543214a536532a3a25ecaa1897"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-map-formal-game-oct24-r2.memory.json",
+        "sha256": "a3db4bdc0fe8a4bb2b04d987c4b22ce5cca2b7bfa0ce01a12b4c732fc6617827"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-map-private-game-oct24-r2.memory.json",
+        "sha256": "c893b941c7e2d2108b0114baf693c370b136021983925136a62a92d8c7ba7075"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-map-player-regression-oct24-r1.memory.json",
+        "sha256": "eb31bdd8f5c942d5ca131d87398914dc5db139eb01971311b75f2a7949174846"
+      }
+    ],
+    "receipts": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-map-formal-game-oct24-r2-capture/receipt.json",
+        "sha256": "dbe4038beff17638f03f247880dad5219be87d568792c1566ca5375c39aefb1b"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-map-private-game-oct24-r2-capture/receipt.json",
+        "sha256": "dbe4038beff17638f03f247880dad5219be87d568792c1566ca5375c39aefb1b"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-map-player-regression-oct24-r1-capture/receipt.json",
+        "sha256": "52362e09fe1cb63edc098e248f03b922ea7e3496090e2741e105f93709046a4c"
+      }
+    ],
+    "cross_pack": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-map-cross-pack-oct24-r2.json",
+      "sha256": "917849ac6c9c2a11f9b6eb7a42bc33c4c2e9349e845b3b143e7bb83d12d6fae2"
+    },
+    "readme": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-map-readme-oct24-r2.json",
+      "sha256": "f7995f0641cf31301b8835eafbae898ab62ba71c8bfe3b0244799b07c5aad1a7"
+    },
+    "string_review": {
+      "inventory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-map-string-inventory-oct24-r2.json",
+        "sha256": "72e99f37b98f917d272e27efbcf0723dcd6601577f10679701b6dcdd97bb2c99"
+      },
+      "review": {
+        "file": "docs/data/fd2-string-review.json",
+        "sha256": "76f9ad368675a5c5e7912dc49142fb0450f6b00aa269412f2e1f29fc6f18a4df"
+      },
+      "tests": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-map-strings-oct24-r2.log",
+        "sha256": "46fde68183f92d74edf70cc43af6b492d2790a976ecb90586e376902b6f91865"
+      },
+      "dispositions_preserved": 109,
+      "tests_passed": 8
+    },
+    "verified_scope": {
+      "story_gpu_runs": 2,
+      "cases": [
+        "story-staging",
+        "battle-present"
+      ],
+      "per_run": {
+        "draws": 198,
+        "return_gpu_worlds": 2,
+        "f2_round_trips": 19,
+        "source_gpu_worlds": 22,
+        "pngs": 12,
+        "clock_unix": 1000,
+        "seed": 7,
+        "rgba_tolerance": 2
+      },
+      "existing_player_regression": {
+        "cases": [
+          "command23",
+          "staging"
+        ],
+        "draws": 299,
+        "f2_round_trips": 30,
+        "source_gpu_worlds": 22,
+        "pngs": 16
+      },
+      "gate_executions": 7,
+      "required_test_executions": 28,
+      "unique_tests": 27,
+      "story_atomic_source_rejections": 5,
+      "story_theme_rejection_test": true,
+      "private_runtime_files": 5762,
+      "new_assets": 0,
+      "old_private_files_unchanged": 6740,
+      "normal_player_proof_added": false
+    },
+    "limits": [
+      "只限已有完整原生故事載體；其餘故事世界及特殊效果未藉此取得HD。",
+      "無新原版對拍、一般玩家、集中人工或平台驗收；原生race/class近似保持私有。",
+      "本批只補世界接線與其實際GPU驗證，不宣稱完整戰鬥HD或介面完成。",
+      "r1快照誤序列化含callback的battle.State；改為實際render來源。r2誤把空Viewport當錯誤且破壞非消費端地形；修正測試為有效預設視窗與實際故事載體，規則與色差門檻未改。"
+    ],
+    "next_gate": "補故事插值走位／移鏡的HD位置與幀選擇，再接共用0x24618徑向／調色尾段；其他特殊背景、全部caller與正常／人工／平台仍待。",
+    "admission_followup": {
+      "status": "CONFORMED-SCOPED-RUNTIME-E1",
+      "reason": "stepStoryWalks在插值期間只更新正規化終點及OffX/OffY，完成後才寫原生座標；不把中間拍投影成靜態原生站位。",
+      "gate": "沒有storyWalkJob，且鏡頭像素與六欄raw view對齊，才顯示故事HD；走位及未對齊移鏡保留既有呈現，完整HD仍待。",
+      "native_state_or_rules_changed": false,
+      "before_source_snapshot": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-map-source-snapshot-oct24-r1.json",
+        "sha256": "a6c915a435f03838bfb373619b6ddf9fd504c318c9b5896ecf0bca1de0c489a8"
+      }
+    },
+    "next_gate_sources": {
+      "file": "remake/cmd/fd2/main.go",
+      "sha256": "ddcbaa06e4175e373ca9735b42066da228b4b1102fdcfa170e9e9a9be80aba85",
+      "level": "CURRENT-GO-SOURCE; not new original RE",
+      "functions": [
+        "stepStoryWalks",
+        "drawUnitSprite"
+      ],
+      "current_interpolation": "X/Y先掛終點，OffX/OffY逐拍給出目前位置，完成後SetMapPlacement同步原生座標。",
+      "current_sprite_selection": "phase=(g.frame/8)%3; frame=u.Dir*3+phase; frame超出銀行則phase%len; y-=4; Acted縮放RGB0.55/0.55/0.6。",
+      "required_next": "保留原controller及原生資料不變，先把既有插值位置、選圖與裁切接HD，再補連續移鏡。"
+    },
+    "regression_source_note": "既有玩家／戰場完整回歸在加故事走位邊界前執行；其battle.State分支不進入故事條件。最終故事四項與正式／私人完整故事GPU均已以最終來源重跑；兩版12張穩定PNG完全相同。",
+    "public_figure": {
+      "file": "docs/figures/hd-story-unit-present.png",
+      "sha256": "1ea0475d21f57697050d5ab9660eff8bfe880d67e973a842043bb0ac61cb8635"
+    }
   }
 }

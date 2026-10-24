@@ -31,6 +31,13 @@ REQUIRED={
     },
     'source':{'TestModernHDUnitPresentActualSources'},
     'game':{'TestModernHDUnitPresentCompleteGameGPU'},
+    'story-unit':{
+        'TestModernHDStoryMapPrivateComposition',
+        'TestModernHDStoryMapAdmission',
+        'TestModernHDStoryMapRejectsBeforePublication',
+        'TestModernHDStoryMapThemeSwitchAtomic',
+    },
+    'story-game':{'TestModernHDUnitPresentStoryGameGPU'},
     'regression':{
         'TestPlayerNativeCommand13RunsCursorTransactionThroughConfirm',
         'TestDisabledFullPresentationFailsClosedBeforeAnyCommandTransaction',
@@ -56,19 +63,25 @@ def check_receipt(kind, prefix):
             raise ValueError('實際11張來源、原生幀或拒收測試缺項')
         return
     cases=receipt.get('cases',[])
-    if (receipt.get('status')!='PASS-UNIT-PRESENT-HD-GAME' or receipt.get('fixed_clock_unix')!=1000
+    story=kind=='story-game'
+    expected_cases={'story-staging','battle-present'} if story else {'command23','staging'}
+    expected_status='PASS-UNIT-PRESENT-HD-STORY-GAME' if story else 'PASS-UNIT-PRESENT-HD-GAME'
+    if (receipt.get('status')!=expected_status or receipt.get('fixed_clock_unix')!=1000
             or receipt.get('native_seed')!=7 or receipt.get('rgba_tolerance')!=2
             or len(sources)!=22 or {(r.get('entry'),r.get('placement')) for r in sources}!={(i,p) for i in range(114,125) for p in range(2)}
-            or len(cases)!=2 or {r.get('name') for r in cases}!={'command23','staging'}):
+            or len(cases)!=2 or {r.get('name') for r in cases}!=expected_cases):
         raise ValueError('完整遊戲、固定條件或22個來源繪製缺項')
     rows=receipt.get('rows',[])
     for case in cases:
         name=case['name']; legs=2 if name=='command23' else 1
+        f2=20 if name=='command23' else 9 if name=='battle-present' else 10
         selected=[r for r in rows if r.get('case')==name]
         if (case.get('legs')!=legs or case.get('continuations')!=1 or case.get('native_control_unchanged') is not True
-                or case.get('f2_round_trips')!=(20 if legs==2 else 10) or case.get('draws')!=len(selected)
+                or case.get('f2_round_trips')!=f2 or case.get('draws')!=len(selected)
                 or any(r.get('rng')!=7 or not re.fullmatch('[0-9a-f]{64}',r.get('final_sha256','')) for r in selected)):
             raise ValueError('轉場、續行、主題切換或原生控制組缺項')
+        if story and not re.fullmatch('[0-9a-f]{64}',case.get('return_final_sha256','')):
+            raise ValueError('缺少回到HD世界的完整GPU畫布')
         keys={r['key'] for r in selected}
         if name=='command23' and not {f'palette/{i}' for i in range(8)}<=keys:
             raise ValueError('命令23前導閃光缺項')
@@ -99,12 +112,13 @@ def main():
             raise ValueError('不可覆寫收據')
     independent=check_real_runtime(a.pack,json.loads(a.catalog.read_text())) if a.require_real_runtime else None
     env=os.environ.copy()
-    for name in ['FD2_HD_UNIT_PRESENT_SOURCE','FD2_HD_UNIT_PRESENT_GPU']:
+    for name in ['FD2_HD_UNIT_PRESENT_SOURCE','FD2_HD_UNIT_PRESENT_GPU','FD2_HD_UNIT_PRESENT_STORY_GPU']:
         env.pop(name,None)
     env.update(FD2_MUTE='1',FD2_TEST_UNIT_PRESENT_CATALOG=str(a.catalog.resolve()),
                FD2_TEST_UNIT_PRESENT_PACK=str(a.pack.resolve()),FD2_TEST_UNIT_PRESENT_OUT=str(a.out)+'-capture')
     if a.kind=='source':env['FD2_HD_UNIT_PRESENT_SOURCE']='1'
     if a.kind=='game':env['FD2_HD_UNIT_PRESENT_GPU']='1'
+    if a.kind=='story-game':env['FD2_HD_UNIT_PRESENT_STORY_GPU']='1'
     pattern='^('+'|'.join(sorted(REQUIRED[a.kind]))+')$'
     shell='''set -euo pipefail
 Xvfb :99 -screen 0 1920x1200x24 -nolisten tcp >/tmp/fd2-unit-present-xvfb.log 2>&1 &
@@ -129,7 +143,7 @@ export DISPLAY=:99
     events=[json.loads(s) for s in Path(str(a.out)+'.log').read_text().splitlines() if s.startswith('{')]
     if not REQUIRED[a.kind]<={e.get('Test') for e in events if e.get('Action')=='pass'} or any(e.get('Action') in {'skip','fail'} for e in events):
         raise ValueError('必要測試缺項、SKIP或失敗')
-    if a.kind in {'source','game'}:
+    if a.kind in {'source','game','story-game'}:
         check_receipt(a.kind,a.out)
     report=dict(status='PASS',kind=a.kind,required=sorted(REQUIRED[a.kind]),catalog=str(a.catalog.resolve()),
                 catalog_sha256=hashlib.sha256(a.catalog.read_bytes()).hexdigest(),pack=str(a.pack.resolve()),

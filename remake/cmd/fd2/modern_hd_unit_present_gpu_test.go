@@ -17,6 +17,7 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
+	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 	xdraw "golang.org/x/image/draw"
 )
 
@@ -103,6 +104,7 @@ type unitPresentGPUCase struct {
 	shots                       map[string]bool
 	draws                       int
 	focusSwitched               bool
+	returnSHA                   string
 }
 
 type unitPresentGPUProbe struct {
@@ -117,6 +119,24 @@ type unitPresentGPUProbe struct {
 	final         *ebiten.Image
 	controlScreen *ebiten.Image
 	presentation  *modernHDPresentation
+}
+
+func unitPresentGPUState(g *Game) any {
+	if g.st == nil {
+		return storyHDNativeSnapshot(g)
+	}
+	return compoundMapUnitSnapshot(g)
+}
+
+func unitPresentGPUExpected(name string) (int, int) {
+	switch name {
+	case "command23":
+		return 20, 2
+	case "staging", "story-staging":
+		return 10, 1
+	default:
+		return 9, 1
+	}
 }
 
 func (p *unitPresentGPUProbe) Update() error {
@@ -163,7 +183,7 @@ func (p *unitPresentGPUProbe) checkWorld(g *Game, frame *modernHDMapFrame, want 
 }
 
 func (p *unitPresentGPUProbe) f2(c *unitPresentGPUCase, screen *ebiten.Image, key string, frame *modernHDMapFrame, want *image.RGBA, digest [32]byte) bool {
-	units, rng := compoundMapUnitSnapshot(c.g), c.g.nativeRNGState
+	units, rng := unitPresentGPUState(c.g), c.g.nativeRNGState
 	work, vga := append([]byte(nil), c.g.nativeMapWork...), append([]byte(nil), c.g.nativeMapVGA...)
 	job, palette, focus := c.g.nativeUnitPresent, c.g.nativeModifierPresentation, c.g.focusJob
 	if err := c.g.applyTheme(nil); err != nil {
@@ -180,7 +200,7 @@ func (p *unitPresentGPUProbe) f2(c *unitPresentGPUCase, screen *ebiten.Image, ke
 		return false
 	}
 	c.g.Draw(screen)
-	if c.g.nativeUnitPresent != job || c.g.nativeModifierPresentation != palette || c.g.focusJob != focus || rng != c.g.nativeRNGState || !reflect.DeepEqual(units, compoundMapUnitSnapshot(c.g)) || !bytes.Equal(work, c.g.nativeMapWork) || !bytes.Equal(vga, c.g.nativeMapVGA) {
+	if c.g.nativeUnitPresent != job || c.g.nativeModifierPresentation != palette || c.g.focusJob != focus || rng != c.g.nativeRNGState || !reflect.DeepEqual(units, unitPresentGPUState(c.g)) || !bytes.Equal(work, c.g.nativeMapWork) || !bytes.Equal(vga, c.g.nativeMapVGA) {
 		p.err = fmt.Errorf("F2 changed transaction/owner")
 		return false
 	}
@@ -274,7 +294,7 @@ func (p *unitPresentGPUProbe) Draw(screen *ebiten.Image) {
 	if g.focusJob != nil {
 		if !c.focusSwitched {
 			focus, job := g.focusJob, g.focusJob.unitPresent
-			units, rng := compoundMapUnitSnapshot(g), g.nativeRNGState
+			units, rng := unitPresentGPUState(g), g.nativeRNGState
 			if err := g.applyTheme(nil); err != nil {
 				p.err = err
 				return
@@ -287,7 +307,7 @@ func (p *unitPresentGPUProbe) Draw(screen *ebiten.Image) {
 				p.err = err
 				return
 			}
-			if g.focusJob != focus || len(job.hdFrames) == 0 || rng != g.nativeRNGState || !reflect.DeepEqual(units, compoundMapUnitSnapshot(g)) {
+			if g.focusJob != focus || len(job.hdFrames) == 0 || rng != g.nativeRNGState || !reflect.DeepEqual(units, unitPresentGPUState(g)) {
 				p.err = fmt.Errorf("pending focus F2 mutated state")
 				return
 			}
@@ -381,7 +401,7 @@ func (p *unitPresentGPUProbe) Draw(screen *ebiten.Image) {
 		err = png.Encode(file, pic)
 		closeErr := file.Close()
 		if err != nil {
-			p.err = closeErr
+			p.err = err
 			return
 		}
 		if closeErr != nil {
@@ -399,7 +419,7 @@ func (p *unitPresentGPUProbe) Draw(screen *ebiten.Image) {
 		g.stepNativeUnitPresent()
 		control.stepNativeUnitPresent()
 	}
-	if !reflect.DeepEqual(compoundMapUnitSnapshot(g), compoundMapUnitSnapshot(control)) || g.nativeRNGState != control.nativeRNGState || !bytes.Equal(g.nativeMapWork, control.nativeMapWork) || !bytes.Equal(g.nativeMapVGA, control.nativeMapVGA) {
+	if !reflect.DeepEqual(unitPresentGPUState(g), unitPresentGPUState(control)) || g.nativeRNGState != control.nativeRNGState || !bytes.Equal(g.nativeMapWork, control.nativeMapWork) || !bytes.Equal(g.nativeMapVGA, control.nativeMapVGA) {
 		p.err = fmt.Errorf("%s native control diverged", key)
 		return
 	}
@@ -410,10 +430,7 @@ func (p *unitPresentGPUProbe) Draw(screen *ebiten.Image) {
 		return
 	}
 	if g.nativeUnitPresent == nil && g.nativeModifierPresentation == nil && g.focusJob == nil {
-		wantF2, wantLegs := 20, 2
-		if c.name == "staging" {
-			wantF2, wantLegs = 10, 1
-		}
+		wantF2, wantLegs := unitPresentGPUExpected(c.name)
 		if len(c.f2) != wantF2 || len(c.legs) != wantLegs || *c.continued != 1 || *c.controlContinued != 1 {
 			p.err = fmt.Errorf("%s incomplete F2/legs/continuation: %d/%d/%d/%d", c.name, len(c.f2), len(c.legs), *c.continued, *c.controlContinued)
 			return
@@ -422,11 +439,37 @@ func (p *unitPresentGPUProbe) Draw(screen *ebiten.Image) {
 			p.err = fmt.Errorf("relocation final transaction differs")
 			return
 		}
+		beforeReturn := unitPresentGPUState(g)
 		g.frame++
 		g.Draw(screen)
 		if !g.modernHDWorldVisible || g.loadErr != "" {
 			p.err = fmt.Errorf("HD map did not return: %s", g.loadErr)
 			return
+		}
+		if c.name == "story-staging" || c.name == "battle-present" {
+			if c.name == "story-staging" && !reflect.DeepEqual(beforeReturn, unitPresentGPUState(g)) {
+				p.err = fmt.Errorf("story return Draw changed canonical state")
+				return
+			}
+			frame := g.modernHDMapPresented
+			pixels, ok := p.checkWorld(g, frame, healHDCPUWorld(frame, p.set), screen, c.name+"/return")
+			if !ok {
+				return
+			}
+			c.returnSHA = fmt.Sprintf("%x", sha256.Sum256(pixels))
+			pic := image.NewRGBA(image.Rect(0, 0, 1920, 1200))
+			copy(pic.Pix, pixels)
+			file, err := os.Create(filepath.Join(p.out, c.name+"-return.png"))
+			if err != nil {
+				p.err = err
+				return
+			}
+			err = png.Encode(file, pic)
+			closeErr := file.Close()
+			if err != nil || closeErr != nil {
+				p.err = fmt.Errorf("return PNG: %v %v", err, closeErr)
+				return
+			}
 		}
 		fmt.Printf("unit present %s complete draws=%d f2=%d legs=%d continuation=1\n", c.name, c.draws, len(c.f2), len(c.legs))
 		p.index++
@@ -438,6 +481,18 @@ func TestModernHDUnitPresentCompleteGameGPU(t *testing.T) {
 	if os.Getenv("FD2_HD_UNIT_PRESENT_GPU") != "1" {
 		t.Skip("dedicated complete unit-present GPU process")
 	}
+	runModernHDUnitPresentGPU(t, false)
+}
+
+func TestModernHDUnitPresentStoryGameGPU(t *testing.T) {
+	if os.Getenv("FD2_HD_UNIT_PRESENT_STORY_GPU") != "1" {
+		t.Skip("dedicated story unit-present GPU process")
+	}
+	runModernHDUnitPresentGPU(t, true)
+}
+
+func runModernHDUnitPresentGPU(t *testing.T, story bool) {
+	t.Helper()
 	t.Setenv("FD2_MUTE", "1")
 	catalog, pack, out := os.Getenv("FD2_TEST_UNIT_PRESENT_CATALOG"), os.Getenv("FD2_TEST_UNIT_PRESENT_PACK"), os.Getenv("FD2_TEST_UNIT_PRESENT_OUT")
 	if out == "" {
@@ -454,11 +509,15 @@ func TestModernHDUnitPresentCompleteGameGPU(t *testing.T) {
 		t.Fatal("all eleven actual HD effects required")
 	}
 	p := &unitPresentGPUProbe{set: set, out: out}
-	for _, name := range []string{"command23", "staging"} {
+	names := []string{"command23", "staging"}
+	if story {
+		names = []string{"story-staging", "battle-present"}
+	}
+	for _, name := range names {
 		g, actor, target := unitPresentHDRelocationGame(t, set)
 		control, _, _ := unitPresentHDRelocationGame(t, nil)
 		continued, controlContinued := new(int), new(int)
-		if name == "staging" {
+		if name != "command23" {
 			// Discard only these preflighted fixture jobs, then use the real
 			// battle staging/focus wrapper with the same original map assets.
 			for _, game := range []*Game{g, control} {
@@ -474,11 +533,40 @@ func TestModernHDUnitPresentCompleteGameGPU(t *testing.T) {
 					t.Fatal(err)
 				}
 			}
-			if err := g.startNativeBattleStagingPresent(&battle.NativeStagingPlacement{Slot: 1, X: 6, Y: 3}, func() { *continued++ }); err != nil {
-				t.Fatal(err)
-			}
-			if err := control.startNativeBattleStagingPresent(&battle.NativeStagingPlacement{Slot: 1, X: 6, Y: 3}, func() { *controlContinued++ }); err != nil {
-				t.Fatal(err)
+			for i, game := range []*Game{g, control} {
+				count := continued
+				if i == 1 {
+					count = controlContinued
+				}
+				switch name {
+				case "story-staging":
+					source := game.st
+					game.storyActors = make([]battle.Unit, len(source.Units))
+					for n, unit := range source.Units {
+						game.storyActors[n] = *unit
+					}
+					game.storyNativeMapView, game.hasStoryNativeMapView = source.NativeMapViewState, true
+					game.storyBG, game.st = true, nil
+					if err := game.materializeNativeStoryMapState(source); err != nil {
+						t.Fatal(err)
+					}
+					if err := game.composeNativeStoryMapFrame(); err != nil {
+						t.Fatal(err)
+					}
+					if err := game.startNativeStagingPresent(campaign.NativeStagingPresent{Slot: 1, X: 6, Y: 3}); err != nil {
+						t.Fatal(err)
+					}
+					game.focusJob.unitPresent.then = func() { *count++ }
+				case "battle-present":
+					spec := campaign.NativeUnitPresent{LastRuntimeSlot: true, NewX: 8, NewY: 5, VisualX: 8, VisualY: 5}
+					if err := game.startNativeUnitPresent(spec, func() { *count++ }); err != nil {
+						t.Fatal(err)
+					}
+				default:
+					if err := game.startNativeBattleStagingPresent(&battle.NativeStagingPlacement{Slot: 1, X: 6, Y: 3}, func() { *count++ }); err != nil {
+						t.Fatal(err)
+					}
+				}
 			}
 		} else {
 			j := g.nativeModifierPresentation.unitPresent.hdNext
@@ -500,9 +588,13 @@ func TestModernHDUnitPresentCompleteGameGPU(t *testing.T) {
 	}
 	var cases []map[string]any
 	for _, c := range p.cases {
-		cases = append(cases, map[string]any{"name": c.name, "draws": c.draws, "f2_round_trips": len(c.f2), "legs": len(c.legs), "continuations": *c.continued, "native_control_unchanged": true, "shots": len(c.shots)})
+		cases = append(cases, map[string]any{"name": c.name, "draws": c.draws, "f2_round_trips": len(c.f2), "legs": len(c.legs), "continuations": *c.continued, "native_control_unchanged": true, "shots": len(c.shots), "return_final_sha256": c.returnSHA})
 	}
-	report := map[string]any{"status": "PASS-UNIT-PRESENT-HD-GAME", "cases": cases, "sources": p.sources, "rows": p.rows, "fixed_clock_unix": 1000, "native_seed": 7, "rgba_tolerance": 2, "scope": "actual native target/destination handlers and Game.Draw, controlled records/placement; staging focus preflight plus unit animation; no new original oracle or normal-player proof"}
+	status := "PASS-UNIT-PRESENT-HD-GAME"
+	if story {
+		status = "PASS-UNIT-PRESENT-HD-STORY-GAME"
+	}
+	report := map[string]any{"status": status, "cases": cases, "sources": p.sources, "rows": p.rows, "fixed_clock_unix": 1000, "native_seed": 7, "rgba_tolerance": 2, "scope": "actual target/destination or story staging/direct-unit handlers and Game.Draw, controlled records/placement; no new original oracle or normal-player proof"}
 	raw, err := json.MarshalIndent(report, "", "  ")
 	if err != nil {
 		t.Fatal(err)

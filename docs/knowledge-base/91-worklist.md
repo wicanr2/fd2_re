@@ -168,7 +168,15 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 `modern-theme-highres-prototype` · 工作 · [#204](https://github.com/wicanr2/fd2_re/issues/204) · 仍未完成 · 要人判
 
-單位消失／出現與玩家23完整傳送已接入HD，限定CONFORMED-SCOPED／RUNTIME-E1。候選、正式與私人各22來源GPU世界、兩條完整Game.Draw共299次繪製及30次F2通過；兩包16張完整PNG及全部流程收據相同。原單位／RNG／work／VGA、MP／Acted、17號座標寫入及一次返回保持。兩種45／51幀條帶、跨列、缺件／錯尺寸原子拒收、晚失敗回滾及待啟動focus已驗；共用回復13單／多目標兩條與玩家9／HUD／字串回歸通過。11新成品及未修改母稿依私人白名單保存，原764項／6728檔保持；現正式765項、LMI九組196張。筆畫、材質／高光及HD查表為明示美術近似。故事只沿原生回歸，不新增故事GPU或正常玩家證據。其他HD、完整HUD、HD2／六組合、浮出工具列／速度／海報及集中正常／人工／平台仍待，#268／#269保持；本項不關閉。來源、SHA及永久重跑入口依[58](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)、[61](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/61-modern-theme-runtime-spec.md)與[HD主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-battlefield-20261019.json)的unit_present_hd_followup_20261024。
+最終顯示邊界：本批故事HD只在原生載體完整、鏡頭與raw view對齊且沒有storyWalkJob時啟用。現有故事插值先寫正規化終點與OffX／OffY，完成後才寫原生座標；這些走位及未對齊移鏡先保留既有呈現，不把中間拍當成靜態站位。新增走位／鏡頭邊界反例後，最終四項故事測試及正式／私人完整GPU已重跑通過，12張穩定PNG與前版完全相同。下一步先補故事插值走位／移鏡HD，再接共用0x24618徑向與調色尾段；整體HD及集中正常／人工／平台仍未完成。
+
+原生故事世界與入場後返回HD已接入，限定CONFORMED-SCOPED／RUNTIME-E1。只限具備完整storyNativeMapState的場景，沿既有故事compositor在私有複本產圖，不發布原生時鐘、DAC、work／VGA或角色變更。故事staging及直接單位出現，正式與私人各兩完整Game.Draw、198次繪製、兩個返回GPU世界、19次F2及22來源世界通過；12張跨包PNG及完整收據相同。四項故事來源隔離／缺件／F2拒收、7原生、5轉場與9共用回歸通過；既有玩家23與戰場staging完整299次繪製／30次F2保持，八字串回歸與109處置保持。沒有新素材、清冊或保存欄位，私人6740檔及765清冊保持。前批故事僅原生回歸的限制已由本批補齊，仍不新增正常玩家或原版RGB聲明。
+
+已查目前正式Draw仍整段原圖的來源包含0x24618徑向、0x24B4D、天空之鑰與第23章特殊背景；下一步先補故事插值走位／移鏡HD，再接0x24618及完整調色尾段。這是具體後續清單，不是其他caller全部完成的聲明。完整HUD、HD2／六組合、浮出工具列／速度／海報、其他故事及全部caller、普通流程／集中人工／平台與#268／#269仍待，本項保持開啟。來源、SHA及重跑依[58](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)、[61](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/61-modern-theme-runtime-spec.md)與[HD主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-battlefield-20261019.json)的story_map_hd_followup_20261024。
+
+以下保留既有切片記錄，歷史數量以58最新現況為準。
+
+單位消失／出現與玩家23完整傳送已接入HD，限定CONFORMED-SCOPED／RUNTIME-E1。候選、正式與私人各22來源GPU世界、兩條完整Game.Draw共299次繪製及30次F2通過；兩包16張完整PNG及全部流程收據相同。原單位／RNG／work／VGA、MP／Acted、17號座標寫入及一次返回保持。兩種45／51幀條帶、跨列、缺件／錯尺寸原子拒收、晚失敗回滾及待啟動focus已驗；共用回復13單／多目標兩條與玩家9／HUD／字串回歸通過。11新成品及未修改母稿依私人白名單保存，原764項／6728檔保持；現正式765項、LMI九組196張。筆畫、材質／高光及HD查表為明示美術近似。此段屬前批，故事GPU已由最新切片取代；仍不新增正常玩家證據。其他HD、完整HUD、HD2／六組合、浮出工具列／速度／海報及集中正常／人工／平台仍待，#268／#269保持；本項不關閉。來源、SHA及永久重跑入口依[58](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)、[61](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/61-modern-theme-runtime-spec.md)與[HD主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-battlefield-20261019.json)的unit_present_hd_followup_20261024。
 
 以下保留既有切片記錄，歷史數量以58最新現況為準。
 
@@ -202,7 +210,15 @@ HD高解析呈現仍未全部完成。本項保持開啟；目前狀態與唯一
 
 `modern-battle-animation-hd` · 工作 · [#263](https://github.com/wicanr2/fd2_re/issues/263) · 仍未完成 · 要人判
 
-單位消失／出現與玩家23完整傳送已接入HD，限定CONFORMED-SCOPED／RUNTIME-E1。候選、正式與私人各22來源GPU世界、兩條完整Game.Draw共299次繪製及30次F2通過；兩包16張完整PNG及全部流程收據相同。原單位／RNG／work／VGA、MP／Acted、17號座標寫入及一次返回保持。兩種45／51幀條帶、跨列、缺件／錯尺寸原子拒收、晚失敗回滾及待啟動focus已驗；共用回復13單／多目標兩條與玩家9／HUD／字串回歸通過。11新成品及未修改母稿依私人白名單保存，原764項／6728檔保持；現正式765項、LMI九組196張。筆畫、材質／高光及HD查表為明示美術近似。故事只沿原生回歸，不新增故事GPU或正常玩家證據。其他HD、完整HUD、HD2／六組合、浮出工具列／速度／海報及集中正常／人工／平台仍待，#268／#269保持；本項不關閉。來源、SHA及永久重跑入口依[58](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)、[61](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/61-modern-theme-runtime-spec.md)與[HD主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-battlefield-20261019.json)的unit_present_hd_followup_20261024。
+最終顯示邊界：本批故事HD只在原生載體完整、鏡頭與raw view對齊且沒有storyWalkJob時啟用。現有故事插值先寫正規化終點與OffX／OffY，完成後才寫原生座標；這些走位及未對齊移鏡先保留既有呈現，不把中間拍當成靜態站位。新增走位／鏡頭邊界反例後，最終四項故事測試及正式／私人完整GPU已重跑通過，12張穩定PNG與前版完全相同。下一步先補故事插值走位／移鏡HD，再接共用0x24618徑向與調色尾段；整體HD及集中正常／人工／平台仍未完成。
+
+原生故事世界與入場後返回HD已接入，限定CONFORMED-SCOPED／RUNTIME-E1。只限具備完整storyNativeMapState的場景，沿既有故事compositor在私有複本產圖，不發布原生時鐘、DAC、work／VGA或角色變更。故事staging及直接單位出現，正式與私人各兩完整Game.Draw、198次繪製、兩個返回GPU世界、19次F2及22來源世界通過；12張跨包PNG及完整收據相同。四項故事來源隔離／缺件／F2拒收、7原生、5轉場與9共用回歸通過；既有玩家23與戰場staging完整299次繪製／30次F2保持，八字串回歸與109處置保持。沒有新素材、清冊或保存欄位，私人6740檔及765清冊保持。前批故事僅原生回歸的限制已由本批補齊，仍不新增正常玩家或原版RGB聲明。
+
+已查目前正式Draw仍整段原圖的來源包含0x24618徑向、0x24B4D、天空之鑰與第23章特殊背景；下一步先補故事插值走位／移鏡HD，再接0x24618及完整調色尾段。這是具體後續清單，不是其他caller全部完成的聲明。完整HUD、HD2／六組合、浮出工具列／速度／海報、其他故事及全部caller、普通流程／集中人工／平台與#268／#269仍待，本項保持開啟。來源、SHA及重跑依[58](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)、[61](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/61-modern-theme-runtime-spec.md)與[HD主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-battlefield-20261019.json)的story_map_hd_followup_20261024。
+
+以下保留既有切片記錄，歷史數量以58最新現況為準。
+
+單位消失／出現與玩家23完整傳送已接入HD，限定CONFORMED-SCOPED／RUNTIME-E1。候選、正式與私人各22來源GPU世界、兩條完整Game.Draw共299次繪製及30次F2通過；兩包16張完整PNG及全部流程收據相同。原單位／RNG／work／VGA、MP／Acted、17號座標寫入及一次返回保持。兩種45／51幀條帶、跨列、缺件／錯尺寸原子拒收、晚失敗回滾及待啟動focus已驗；共用回復13單／多目標兩條與玩家9／HUD／字串回歸通過。11新成品及未修改母稿依私人白名單保存，原764項／6728檔保持；現正式765項、LMI九組196張。筆畫、材質／高光及HD查表為明示美術近似。此段屬前批，故事GPU已由最新切片取代；仍不新增正常玩家證據。其他HD、完整HUD、HD2／六組合、浮出工具列／速度／海報及集中正常／人工／平台仍待，#268／#269保持；本項不關閉。來源、SHA及永久重跑入口依[58](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)、[61](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/61-modern-theme-runtime-spec.md)與[HD主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-battlefield-20261019.json)的unit_present_hd_followup_20261024。
 
 以下保留既有切片記錄，歷史數量以58最新現況為準。
 

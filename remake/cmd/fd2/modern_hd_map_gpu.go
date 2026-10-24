@@ -119,9 +119,14 @@ func (g *Game) drawModernHDMapFrame(screen *ebiten.Image) bool {
 			return g.drawPreparedModernHDMapFrame(screen, message.hdWorld, false)
 		}
 	}
-	g.modernHDMapComposing = true
-	err := g.composeNativeMapFrame()
-	g.modernHDMapComposing = false
+	var err error
+	if g.hasModernHDStoryMapSource() {
+		g.modernHDMapFrame, err = g.prepareModernHDStoryMapFrame(g.modernStoryPortraits)
+	} else {
+		g.modernHDMapComposing = true
+		err = g.composeNativeMapFrame()
+		g.modernHDMapComposing = false
+	}
 	if err != nil {
 		g.loadErr = err.Error()
 		screen.Clear()

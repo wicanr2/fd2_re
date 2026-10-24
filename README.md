@@ -33,6 +33,10 @@
 
 傳送與增援入場已接入HD光效及人物，保留原有消失、逐列轉場與出現順序。四格取自受控隊伍、位置與道具資料的實際遊戲繪製，完整畫面半縮；地形與邊框仍含像素素材。F2中途切換及原交易已驗，正常玩家與集中人工驗收仍待。來源、近似與範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)及[HD收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的`unit_present_hd_followup_20261024`。
 
+![故事角色入場與直接出現後返回HD世界](docs/figures/hd-story-unit-present.png)
+
+原生座標已對齊的故事靜態畫面，也已接入HD人物與已登錄地形，入場光效結束後繼續顯示HD世界。四格為受控故事／戰場資料的完整遊戲畫面半縮，並非正常通關；故事插值走位、其他背景與特殊演出仍待接入。繪製不推進故事時鐘或改寫角色，驗證範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)及[HD收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的`story_map_hd_followup_20261024`。
+
 ## HD2 設計基準
 
 後續HD2戰場沿下列斜角站姿人物與手繪地形設計，保留既有HD及原版主題。操作介面與人物主題獨立，海報從單列浮出工具列選擇；海報邊緣可漸層銜接戰場，並調整淡入時間。

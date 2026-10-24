@@ -52,6 +52,10 @@ func (g *Game) applyTheme(set *modernStoryPortraitSet) error {
 	if err != nil {
 		return err
 	}
+	storyWorld, err := g.prepareModernHDStoryMapFrame(set)
+	if err != nil {
+		return err
+	}
 	var rewardWorld *modernHDMapFrame
 	if state := g.nativeSystemEndTurnUI; set != nil && state != nil && state.rewardMessage != nil {
 		var err error
@@ -187,6 +191,9 @@ func (g *Game) applyTheme(set *modernStoryPortraitSet) error {
 		}
 	}
 	g.modernStoryPortraits = set
+	if g.hasModernHDStoryMapSource() {
+		g.modernHDMapFrame = storyWorld
+	}
 	publishUnitPresent()
 	publishCompoundMap()
 	if state := g.nativeSystemEndTurnUI; state != nil && state.rewardMessage != nil {

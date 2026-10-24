@@ -1,5 +1,7 @@
 # 56 — FD2 remake 系統設計規格（SDD，2026-08-09）
 
+具備完整原生故事載體、鏡頭對齊且沒有故事插值走位的場景已接HD世界，限定CONFORMED-SCOPED／RUNTIME-E1。故事staging與直接單位出現的完整Game.Draw、各階段F2、17號座標寫入與返回HD世界通過，兩包完整畫面相同；原生故事角色、時鐘、緩衝與RNG不因私有HD繪製改變。前批故事只驗原生的限制由本段取代，既有玩家23／戰場staging完整回歸保持。沒有新美術或保存欄位，其他故事／特殊效果與正常／人工／平台仍待。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的story_map_hd_followup_20261024。
+
 共用單位消失／出現轉場已接HD世界與光形，限定CONFORMED-SCOPED／RUNTIME-E1。玩家23正式確認後完整調色、消失、出現與MP／Acted結算，以及戰場staging待啟動焦點、各階段F2、原單位／RNG／work／VGA控制組均通過。故事呼叫者已接同一預檢，沿原生回歸，不新增故事GPU或正常玩家聲明。正式及私人實檔包的完整畫面相同；舊主題缺整組時可回退原圖光形，部分宣告仍拒收。原生排程、保存與規則保持。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約及重跑依[61](61-modern-theme-runtime-spec.md)，主證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的unit_present_hd_followup_20261024。其餘效果、完整HUD與正常／集中人工／平台仍待。
 
 HD2的斜角站姿戰場、單列浮出工具列與雙側海報已建立公開設計基準。海報漸層及淡入只完成可操作瀏覽器原型；海報正式Go、HD2圖源與六組合驗證仍待。既有HD主題的地圖資訊窗人物已補接高解析圖源，範圍依58及61的HUD人物切片。入口依[61](61-modern-theme-runtime-spec.md)、[設計清冊](../data/fd2-hd2-concept-design-20261024.json)及[58現況](58-fd2-exe-re-coverage.md)，不外推遊戲完成。

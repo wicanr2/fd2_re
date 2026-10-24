@@ -48,11 +48,13 @@ def modifier_gallery(args):
 
 def unit_present_gallery(args):
     from verify_fd2_unit_present_hd import check_receipt
-    prefix=args.unit_present_receipt.parent
+    receipt=args.story_unit_present_receipt or args.unit_present_receipt
+    story=args.story_unit_present_receipt is not None
+    prefix=receipt.parent
     if not prefix.name.endswith('-capture'):
         raise SystemExit('須給完整轉場capture/receipt.json')
-    check_receipt('game',prefix.with_name(prefix.name[:-8]))
-    data=json.loads(args.unit_present_receipt.read_text())
+    check_receipt('story-game' if story else 'game',prefix.with_name(prefix.name[:-8]))
+    data=json.loads(receipt.read_text())
     canvas=Image.new('RGB',(1920,1248),'#191d23')
     paint=ImageDraw.Draw(canvas)
     font=ImageFont.load_default(size=18)
@@ -61,12 +63,19 @@ def unit_present_gallery(args):
              ('command23-003-contract.png','command23','contract','Transport / contraction'),
              ('command23-004-bridge.png','command23','bridge','Transport / row bridge'),
              ('staging-001-intro.png','staging','intro','Staging / arrival')]
+    if story:
+        choices=[('story-staging-001-intro.png','story-staging','intro','Story / arrival'),
+                 ('story-staging-return.png','story-staging','return','Story / HD world restored'),
+                 ('battle-present-001-intro.png','battle-present','intro','Unit presentation / intro'),
+                 ('battle-present-return.png','battle-present','return','Unit presentation / HD world restored')]
     for i,(name,case,phase,label) in enumerate(choices):
         source=prefix/name
         with Image.open(source) as im:
             picture=im.convert('RGBA')
         raw_sha=hashlib.sha256(picture.tobytes()).hexdigest()
         matches=[r for r in data['rows'] if r['case']==case and r['phase']==phase and r['final_sha256']==raw_sha]
+        if phase=='return':
+            matches=[dict(key='return') for r in data['cases'] if r['name']==case and r['return_final_sha256']==raw_sha]
         if picture.size!=(1920,1200) or not matches:
             raise SystemExit('圖片不是已驗證的完整Game.Draw畫面')
         x,y=i%2*960,i//2*624
@@ -77,9 +86,9 @@ def unit_present_gallery(args):
                          operation='whole-frame half-size; label outside game area'))
     canvas.save(args.out)
     result=dict(file=str(args.out.resolve().relative_to(ROOT)),sha256=hashlib.sha256(args.out.read_bytes()).hexdigest(),
-                size=list(canvas.size),sources=rows,receipt=str(args.unit_present_receipt.resolve().relative_to(ROOT)),
-                receipt_sha256=hashlib.sha256(args.unit_present_receipt.read_bytes()).hexdigest(),
-                scope='controlled command23 and battle staging Game.Draw; not ordinary player or original RGB parity')
+                size=list(canvas.size),sources=rows,receipt=str(receipt.resolve().relative_to(ROOT)),
+                receipt_sha256=hashlib.sha256(receipt.read_bytes()).hexdigest(),
+                scope='controlled story/direct-unit or command23/battle-staging Game.Draw; not ordinary player or original RGB parity')
     args.receipt.write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
     print(json.dumps(dict(sha256=result['sha256'],sources=len(rows))))
 
@@ -90,6 +99,7 @@ def main():
                         help='依繁中、簡中、日文、英文順序給四個capture目錄')
     parser.add_argument('--modifier-receipts', type=Path, nargs=3, help='依玩家25、20、21順序給三份.game.json，選已驗證圓環及兩色菱形')
     parser.add_argument('--unit-present-receipt',type=Path,help='單位轉場完整Game.Draw收據，選傳送與增援四格')
+    parser.add_argument('--story-unit-present-receipt',type=Path,help='故事／直接出現收據，選入場及返回HD世界四格')
     parser.add_argument('--out', type=Path, required=True)
     parser.add_argument('--receipt', type=Path, required=True)
     parser.add_argument('--command-panels', action='store_true', help='選法術actor階段；完整PNG先記SHA，原收據有SHA時再核對')
@@ -104,9 +114,11 @@ def main():
     for path in [args.out, args.receipt]:
         if not path.parent.is_dir() or path.exists():
             raise SystemExit('輸出父目錄須存在，不覆寫既有檔案')
-    if args.unit_present_receipt:
+    if args.unit_present_receipt or args.story_unit_present_receipt:
         if args.captures or args.modifier_receipts or args.command_panels or args.phase or args.lmi_entries:
             raise SystemExit('單位轉場不可混用其他總覽選項')
+        if args.unit_present_receipt and args.story_unit_present_receipt:
+            raise SystemExit('兩種轉場總覽須分別輸出')
         unit_present_gallery(args)
         return
     if args.modifier_receipts:

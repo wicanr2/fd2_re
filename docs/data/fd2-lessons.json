@@ -4057,6 +4057,21 @@
         ],
         "pattern": "terrain\\[workOffset:\\]"
       }
+    },
+    {
+      "id": "story-hd-draw-keeps-native-carrier-private",
+      "date": "2026-10-24",
+      "area": "HD故事世界",
+      "rule": "故事HD的Draw使用私有原生載體產圖，不發布額外的故事時鐘、DAC、work／VGA或角色近似。沿remake/cmd/fd2/modern_hd_story_map.go複製state與selector cache，再呼叫既有故事compositor；用tools/verify_fd2_unit_present_hd.py --kind story-unit及story-game核對重複Draw、F2與轉場返回。",
+      "why": "共用0x22253已接HD，但原HD admission只接受battle.State，故事轉場後回像素世界。直接借用原故事state重繪會額外發布Draw時鐘；本輪改私有副本，來源隔離及兩包完整故事／返回GPU通過，原native緩衝交接規格不擴張。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/modern_hd_story_map.go"
+        ],
+        "pattern": "state.NativeMapSelectorCache = state.NativeMapSelectorCache.Clone\\(\\)"
+      }
     }
   ]
 }
