@@ -4027,6 +4027,21 @@
         ],
         "pattern": "fringe_rgb = extend_rgb\\(blended\\)"
       }
+    },
+    {
+      "id": "poster-blend-extends-world-without-hud",
+      "date": "2026-10-24",
+      "area": "HD海報銜接",
+      "rule": "海報漸層的底層使用未疊UI的世界；概念預覽只有合成PNG時，只延伸乾淨地形區，排除HUD與文字。入口docs/figures/hd2-posters-preview.html的CLEAN_TERRAIN_BOTTOM與tools/verify_fd2_poster_blend_prototype.mjs的邊緣像素核對，重跑契約在規格61。",
+      "why": "首輪中央核心保持且控制通過，但完整邊緣鏡射把地形資訊窗及HP框倒映到海報上。改為600列前乾淨地形延伸後，兩組各22560個邊緣像素與來源核對，視覺倒影消失。file協定的Canvas讀回另改由無外網容器loopback同來源測試，沒有放寬使用者瀏覽器安全設定。",
+      "evidence": "docs/data/fd2-hd2-concept-design-20261024.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "docs/data/fd2-modern-hd-battlefield-20261019.json"
+        ],
+        "pattern": "clean_terrain_extension_pixels_per_set"
+      }
     }
   ]
 }

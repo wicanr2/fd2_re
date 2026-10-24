@@ -6,6 +6,9 @@
 <style>
 *{box-sizing:border-box}body{margin:0;background:#101722;color:#eef0e7;font-family:"Noto Sans CJK TC","Noto Sans CJK JP","WenQuanYi Zen Hei",sans-serif}main{max-width:1248px;margin:auto;padding:18px 24px}h1{font-size:25px;margin:0 0 7px}p{margin:6px 0 12px;color:#c5cfda;font-size:16px}.review{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}.review button{font-size:16px;padding:7px 14px}.stage{position:relative;background:#05070a;border:1px solid #43546a}.scene{display:block;width:100%;height:auto}.hotzone{position:absolute;top:0;left:0;right:0;height:8px;z-index:4;background:#b39958;opacity:.3}.toolbar{--factor:1.5;--font:33px;position:absolute;top:0;left:0;right:0;z-index:5;background:rgb(22,38,58);padding:10px;border-bottom:2px solid #9aafc2;box-shadow:0 6px 14px #0008}.toolbar.hidden{visibility:hidden;pointer-events:none}.stage.docked .toolbar{position:relative;box-shadow:none}.stage.docked .hotzone{display:none}.controls{display:grid;gap:8px;grid-template-columns:repeat(4,minmax(0,1fr)) 82px}.controls button,.options button{font:inherit;font-size:var(--font);white-space:nowrap;min-width:0;min-height:calc(44px * var(--factor));padding:5px 10px;color:rgb(187,199,207);background:rgb(37,53,71);border:1px solid #bbc7cf;border-radius:3px;cursor:pointer}.controls button.selected,.options button.selected{color:rgb(242,218,162);border-color:rgb(242,218,162);background:#39444f}.controls button:focus-visible,.options button:focus-visible{outline:3px solid #ffe4a0;outline-offset:1px}.size{grid-column:5;grid-row:1 / span 2;font-size:24px!important}.size span{display:block;font-size:16px}.speed{grid-column:1 / span 2;grid-row:2}.original{grid-column:3;grid-row:2}.hd{grid-column:4;grid-row:2}.toolbar.compact{--factor:1;--font:22px}.compact .controls{grid-template-columns:repeat(4,minmax(0,.8fr)) 1.15fr 1.3fr 1.15fr 64px}.compact .size,.compact .speed,.compact .original,.compact .hd{grid-column:auto;grid-row:auto}.compact .size{font-size:20px!important}.compact .size span{font-size:11px}.options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:9px}.compact .options{grid-template-columns:repeat(6,minmax(0,1fr))}.options[hidden]{display:none}.toolbar-note{font-size:14px;color:#b9c9d8;margin-top:8px}.demo{background:#1a2635;border:1px solid #465a70;padding:12px;margin-top:12px;font-size:15px}.demo meter{width:100%;height:14px;display:block;margin-top:8px}.legend{color:#dbc490}.review .active{outline:2px solid #ead095}button{font-family:inherit;color:#e9edf2;background:#26384c;border:1px solid #8397ab;border-radius:3px}.status{font-size:14px;color:#a7b7c9;margin-top:10px;min-height:20px}
 </style>
+<style>
+.ui-controls{grid-column:1 / -1;display:grid;grid-template-columns:1fr 1fr;gap:8px}.ui-controls[hidden],#display-modes[hidden]{display:none}.modes{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:14px}.mode-card{padding:12px;border:1px solid #516178;background:#182435;cursor:pointer}.mode-card.selected{outline:2px solid #ead095}.mode-card h3{font-size:18px;font-weight:500;margin:0 0 9px}.mode-panel{position:relative;aspect-ratio:320 / 200;background:#000;overflow:hidden}.mode-panel>svg,.mode-panel>.native-panel{display:block;width:100%;height:100%}.native-panel{image-rendering:pixelated}.mode-portrait{position:absolute;left:1.875%;top:4%;width:25%;height:40%;object-fit:fill}.mode-portrait.original{image-rendering:pixelated}.mode-title{margin-top:20px;font-size:22px}#display-modes>p{line-height:1.6}.mode-note{font-size:14px;color:#b9c9d8;line-height:1.5;margin:8px 0 0}.controls .ui-controls button{grid-column:auto;grid-row:auto}.mode-panel svg text{font-family:inherit}.mode-panel svg .value{fill:#e9eced}.mode-panel svg .muted{fill:#c1d1e7}.mode-panel svg .item{fill:#ebedf2}@media(max-width:760px){.modes{grid-template-columns:1fr}}
+</style>
 <main>
 <h1>FD2 工具列操作原型</h1>
 <p>遊戲畫面是固定擷圖。此頁可操作工具列；主題、語系與速度尚未接入正式遊戲。</p>
@@ -16,6 +19,7 @@
 <div class="controls">
 <button class="locale" data-locale="zh-Hant">繁體中文</button><button class="locale" data-locale="zh-Hans">简体中文</button><button class="locale" data-locale="en">English</button><button class="locale" data-locale="ja">日本語</button>
 <button id="speed" class="speed" aria-expanded="false">遊戲速度 1× ▾</button><button id="original" class="original">原版像素</button><button id="hd" class="hd">HD 手繪</button><button id="size" class="size">A+<span>150%</span></button>
+<div class="ui-controls" id="ui-controls" hidden><button id="ui-original">操作介面：原版</button><button id="ui-hd">操作介面：HD</button></div>
 </div>
 <div class="options" id="options" hidden aria-label="遊戲速度"><button data-speed="1">1×</button><button data-speed="2">2×</button><button data-speed="4">4×</button><button data-speed="8">8×</button><button data-speed="16">16×</button><button data-speed="32">32×</button></div>
 <div class="toolbar-note" id="hint">F2 切換主題 · F4 切換語系 · 字級只影響工具列</div>
@@ -24,35 +28,70 @@
 </section>
 <div class="demo"><span class="legend">倍率操作示意</span> <span id="demo-label">1×</span>；下方僅示意計時快慢，不代表遊戲效能或實際加速結果。<meter id="meter" min="0" max="100" value="0"></meter></div>
 <div class="status" id="status" aria-live="polite"></div>
+<section id="display-modes" hidden>
+<h2 class="mode-title">兩個選項，四種組合</h2>
+<p>以下為操作介面樣式原型。原版面板取自已保存的重製端索引圖，HD面板以向量框線與清晰字型示意。人物圖示依「主題」替換，與「操作介面」分開；背景擷圖固定，沒有連接遊戲。</p>
+<div class="modes" id="mode-cards"></div>
+<p>主題同時控制頭像、人物圖示及戰鬥動畫。本原型只示範人物圖示，沒有播放或替換正式戰鬥動畫。</p>
+</section>
 </main>
 <script>
 const $=id=>document.getElementById(id);
+const displayAssets=__DISPLAY_MODE_ASSETS__;
 const query=new URLSearchParams(location.search);
-const state={mode:query.get('mode')==='dock'?'dock':'float',size:Number(query.get('size'))||150,locale:'zh-Hant',hd:true,speed:1,open:query.get('open')==='1',menu:false,events:[]};
+const state={mode:query.get('mode')==='dock'?'dock':'float',size:Number(query.get('size'))||150,locale:'zh-Hant',hd:true,uiHD:true,speed:1,open:query.get('open')==='1',menu:false,events:[]};
 const labels={
  'zh-Hant':['遊戲速度','原版像素','HD 手繪','F2 切換主題 · F4 切換語系 · 字級只影響工具列'],
  'zh-Hans':['游戏速度','原版像素','HD 手绘','F2 切换主题 · F4 切换语言 · 字号只影响工具栏'],
  en:['Game speed','Original pixels','HD artwork','F2: theme · F4: language · Text size affects toolbar only'],
  ja:['ゲーム速度','オリジナル','HDイラスト','F2：テーマ · F4：言語 · 文字サイズはツールバーのみ']
 };
-function record(kind){state.events.push({kind,mode:state.mode,size:state.size,locale:state.locale,hd:state.hd,speed:state.speed,open:state.open,menu:state.menu});$('status').textContent=`原型狀態：${state.locale}／${state.hd?'HD':'原版'}／${state.speed}×／字級 ${state.size}%`}
+function record(kind){state.events.push({kind,mode:state.mode,size:state.size,locale:state.locale,hd:state.hd,uiHD:state.uiHD,speed:state.speed,open:state.open,menu:state.menu});$('status').textContent=`原型狀態：${state.locale}／主題 ${state.hd?'HD':'原版'}／介面 ${state.uiHD?'HD':'原版'}／${state.speed}×／字級 ${state.size}%`}
+const modeLabels={
+ 'zh-Hant':['主題：原版','主題：HD','操作介面：原版','操作介面：HD','F2 主題 · F4 語系 · F11 操作介面 · A+ 僅工具列'],
+ 'zh-Hans':['主题：原版','主题：HD','操作界面：原版','操作界面：HD','F2 主题 · F4 语言 · F11 操作界面 · A+ 仅工具栏'],
+ en:['Theme: Original','Theme: HD','Interface: Original','Interface: HD','F2: theme · F4: language · F11: interface · A+: toolbar only'],
+ ja:['原版テーマ','HDテーマ','操作UI：オリジナル','操作UI：HD','F2：テーマ · F4：言語 · F11：操作UI · A+：ツールバーのみ']
+};
+function modePanel(ui,hd){
+ const icon=hd?displayAssets.hdPortrait:displayAssets.originalPortrait;
+ if(!ui)return `<img class="native-panel" src="${displayAssets.originalPanel}" alt="原版版面的索引面板樣本"><img class="mode-portrait ${hd?'hd':'original'}" src="${icon}" alt="索爾的${hd?'HD':'原版'}人物圖示">`;
+ return `<svg viewBox="0 0 320 200" role="img" aria-label="HD介面向量樣式示意"><rect x="5" y="7" width="310" height="184" fill="#35517e" stroke="#afc3d6" stroke-width="1"/><path d="M7 93H313 M91 8V91" fill="none" stroke="#b9cedb" stroke-width="1"/><image href="${icon}" x="6" y="8" width="80" height="80" style="image-rendering:${hd?'auto':'pixelated'}"/><g class="value" font-size="10"><text x="97" y="25" font-size="12">索爾</text><text x="97" y="41">LV 12　EX 00</text><text x="97" y="57">DX 345　MV 00</text><text x="97" y="72">HIT 076　AP 123</text><text x="97" y="87">EV 054　DP 098</text><text x="228" y="25" font-size="12">劍士</text></g><g class="muted" font-size="10"><text x="181" y="41">HP</text><text x="181" y="65">MP</text></g><rect x="201" y="33" width="103" height="6" fill="#1d2d48"/><rect x="201" y="33" width="82" height="6" fill="#ed943f"/><rect x="201" y="57" width="103" height="6" fill="#1d2d48"/><rect x="201" y="57" width="51" height="6" fill="#9bcb3c"/><g class="value" font-size="10"><text x="252" y="50">080/100</text><text x="252" y="74">020/040</text></g><g class="item" font-size="13"><text x="18" y="115">⚔　短劍</text><text x="18" y="141">⚔　光束砲</text></g><g class="value" font-size="10"><text x="116" y="115">＋AP 010</text><text x="116" y="141">＋AP 450</text></g><rect x="9" y="99" width="301" height="24" fill="none" stroke="#e1c275" stroke-width="1"/></svg>`;
+}
+function renderModes(){
+ if(!displayAssets)return;
+ const l=modeLabels[state.locale],compact=state.size===100;const short={en:['Original','HD'],ja:['原版','HD'],'zh-Hant':['原版主題','HD主題'],'zh-Hans':['原版主题','HD主题']}[state.locale];$('original').textContent=compact?short[0]:l[0];$('hd').textContent=compact?short[1]:l[1];$('original').title=l[0];$('hd').title=l[1];$('ui-original').textContent=l[2];$('ui-hd').textContent=l[3];$('hint').textContent=l[4];
+ $('ui-original').classList.toggle('selected',!state.uiHD);$('ui-hd').classList.toggle('selected',state.uiHD);
+ document.querySelectorAll('[data-combination]').forEach(card=>card.classList.toggle('selected',card.dataset.ui===String(state.uiHD)&&card.dataset.theme===String(state.hd)));
+}
 function render(){
  const t=$('toolbar');t.classList.toggle('hidden',state.mode==='float'&&!state.open);t.classList.toggle('compact',state.size===100);t.style.setProperty('--factor',state.size/100);t.style.setProperty('--font',22*state.size/100+'px');
  $('stage').classList.toggle('docked',state.mode==='dock');$('float').classList.toggle('active',state.mode==='float');$('dock').classList.toggle('active',state.mode==='dock');
  $('instructions').textContent=state.mode==='float'?'滑鼠移到遊戲頂端可顯示工具列，移開即隱藏。':'工具列在遊戲畫面外固定顯示，不遮住內容。';
  const l=labels[state.locale];const speedName=state.size===100?({en:'Speed',ja:'速度'}[state.locale]||l[0]):l[0];$('speed').textContent=`${speedName} ${state.speed}× ▾`;$('speed').title=l[0];$('original').textContent=l[1];$('hd').textContent=l[2];$('hint').textContent=l[3];$('original').classList.toggle('selected',!state.hd);$('hd').classList.toggle('selected',state.hd);$('size').innerHTML=`A+<span>${state.size}%</span>`;
  document.querySelectorAll('[data-locale]').forEach(b=>b.classList.toggle('selected',b.dataset.locale===state.locale));document.querySelectorAll('[data-speed]').forEach(b=>b.classList.toggle('selected',Number(b.dataset.speed)===state.speed));$('options').hidden=!state.menu;$('speed').setAttribute('aria-expanded',String(state.menu));$('demo-label').textContent=state.speed+'×';
+ renderModes();
 }
 for(const mode of ['float','dock'])$(mode).onclick=()=>{state.mode=mode;state.open=true;state.menu=false;record('layout');render()};
 $('stage').addEventListener('pointermove',e=>{if(state.mode!=='float')return;const s=$('stage').getBoundingClientRect(),bar=$('toolbar').getBoundingClientRect();if(e.clientY-s.top<8){state.open=true;render()}else if(state.open&&e.clientY>bar.bottom){state.open=false;state.menu=false;render()}});
 $('stage').addEventListener('pointerleave',()=>{if(state.mode==='float'){state.open=false;state.menu=false;render()}});
 document.querySelectorAll('[data-locale]').forEach(b=>b.onclick=()=>{state.locale=b.dataset.locale;record('locale');render()});
 for(const hd of [false,true])$(hd?'hd':'original').onclick=()=>{state.hd=hd;record('theme');render()};
+for(const hd of [false,true])$(hd?'ui-hd':'ui-original').onclick=()=>{state.uiHD=hd;record('interface');render()};
 $('size').onclick=()=>{state.size=state.size===100?125:state.size===125?150:100;record('size');render()};
 $('speed').onclick=()=>{state.menu=!state.menu;record('speed-menu');render()};
 document.querySelectorAll('[data-speed]').forEach(b=>b.onclick=()=>{state.speed=Number(b.dataset.speed);state.menu=false;record('speed');render()});
 addEventListener('keydown',e=>{if(e.repeat)return;if(e.key==='F2'){e.preventDefault();state.hd=!state.hd;record('F2');render()}if(e.key==='F4'){e.preventDefault();const ids=Object.keys(labels);state.locale=ids[(ids.indexOf(state.locale)+1)%ids.length];record('F4');render()}});
+addEventListener('keydown',e=>{if(displayAssets&&!e.repeat&&e.key==='F11'){e.preventDefault();state.uiHD=!state.uiHD;record('F11');render()}});
+if(displayAssets){
+ $('ui-controls').hidden=false;$('display-modes').hidden=false;
+ for(const ui of [false,true])for(const hd of [false,true]){
+  const card=document.createElement('article');card.className='mode-card';card.dataset.combination='';card.dataset.ui=String(ui);card.dataset.theme=String(hd);card.tabIndex=0;card.setAttribute('role','button');card.setAttribute('aria-label',`介面${ui?'HD':'原版'}、主題${hd?'HD':'原版'}`);
+  card.innerHTML=`<h3>介面 ${ui?'HD':'原版'} ／ 主題 ${hd?'HD':'原版'}</h3><div class="mode-panel">${modePanel(ui,hd)}</div><p class="mode-note">人物圖示：${hd?'HD':'原版'}；${ui?'向量介面樣式示意':'已保存的索引介面樣本'}。</p>`;
+  const select=()=>{state.uiHD=ui;state.hd=hd;record('combination');render()};card.onclick=select;card.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();select()}};$('mode-cards').append(card);
+ }
+}
 let last=performance.now(),value=0;function animate(now){value=(value+Math.min(now-last,100)*state.speed/100)%100;last=now;$('meter').value=value;requestAnimationFrame(animate)}
-window.fd2Prototype={state,render,record,layout:()=>({canvas:$('scene').getBoundingClientRect().toJSON(),toolbar:$('toolbar').getBoundingClientRect().toJSON(),controls:[...document.querySelectorAll('.controls button')].map(b=>({id:b.id||b.dataset.locale,rect:b.getBoundingClientRect().toJSON(),overflow:b.scrollWidth>b.clientWidth}))})};render();record('initial');requestAnimationFrame(animate);
+window.fd2Prototype={state,render,record,displayModes:!!displayAssets,layout:()=>({canvas:$('scene').getBoundingClientRect().toJSON(),toolbar:$('toolbar').getBoundingClientRect().toJSON(),controls:[...document.querySelectorAll('.controls button')].filter(b=>b.getClientRects().length).map(b=>({id:b.id||b.dataset.locale,rect:b.getBoundingClientRect().toJSON(),overflow:b.scrollWidth>b.clientWidth}))})};render();record('initial');requestAnimationFrame(animate);
 </script>
 </html>

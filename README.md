@@ -25,6 +25,16 @@
 蓋亞的故事頭像與四方向戰場小人已依原版壯碩機兵重新設計，採用灰綠厚甲與藍色結構。大型戰鬥的待機與拳擊也已接入HD圖組，驗證範圍見下方戰鬥畫面與現代主題規格。
 素材要求及驗證範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。此功能尚未加入上述正式第一版。
 
+## HD2 設計基準
+
+後續HD2戰場沿下列斜角站姿人物與手繪地形設計，保留既有HD及原版主題。操作介面與人物主題獨立，海報從單列浮出工具列選擇；海報邊緣可漸層銜接戰場，並調整淡入時間。
+
+![第一組HD海報的漸層概念：索爾與悠妮朝右，空魔神與四天王在右側](docs/figures/fd2-hd2-poster-blend-set1.png)
+
+![第二組原稿重繪海報的漸層概念](docs/figures/fd2-hd2-poster-blend-set2.png)
+
+以上是已選定美術的瀏覽器概念原型，尚未接入正式遊戲。第二組依使用者提供的原稿重繪，並非原始掃描。下載儲存庫後，可用瀏覽器開啟[海報漸層預覽](docs/figures/hd2-posters-preview.html)，調整邊緣寬度與淡入時間。未修改原稿、提示詞及驗證範圍見[設計清冊](docs/data/fd2-hd2-concept-design-20261024.json)與[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
+
 ## 忠實像素模式與多語系
 
 | 繁體中文 | 简体中文 |

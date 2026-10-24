@@ -222699,5 +222699,330 @@
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-issue-sync-oct24-r1.json",
       "sha256": "0358542cabf388a9fcad81cbe7fad5f02a319f3752f3cb7f447af617921d75b1"
     }
+  },
+  "ui_theme_split_20261024": {
+    "status": "HISTORICAL-FOUR-COMBINATION-PROTOTYPE / DESIGN-SUPERSEDED-BY-HD2 / PRODUCTION-DRAFT",
+    "base_commit": "b5953ff4a9972c7832fbc40d8a6f9161928a721e",
+    "production_changed": false,
+    "full_hd_complete": false,
+    "confirmed_by_user": [
+      "操作介面也要HD；工具列分開提供操作介面原版／HD與THEME HD／原版。",
+      "操作介面中的人物icon依theme是否選HD顯示不同圖源。",
+      "theme包含頭像與戰鬥動畫；兩選項形成四種可用組合。",
+      "沿用先前已選定的頂端浮出、自動隱藏工具列。"
+    ],
+    "proposal_pending": {
+      "hd_interface": "沿原版藍底及主要配置，以清晰框線、文字及按鈕重繪；待使用者看概念圖後確認。",
+      "prototype_shortcuts": [
+        "F2 theme",
+        "F4 locale",
+        "F11 interface"
+      ],
+      "production_shortcuts_implemented": false
+    },
+    "prototype": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ui-theme-split-prototype-oct24-r4.json",
+      "sha256": "75c701838859c5296d3e88e3e55c09ae91bbb10efc99d8fe046d781a6b30a4e4"
+    },
+    "html": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ui-theme-split-prototype-oct24-r4.html",
+      "sha256": "d60bc59fddddf29653110e623ff26c4603b0db02481948c4d250ade6a0884249"
+    },
+    "browser": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ui-theme-split-browser-oct24-r5.browser.json",
+      "sha256": "72c8eac9fd349357817bab4450730acbd549401bf3dd4e9e7b71e455aa3ca4e2"
+    },
+    "four_combinations": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ui-theme-split-browser-oct24-r5-four-combinations.png",
+      "sha256": "da5c57b5a18d203ec0e6b4384e449f4ac8f2cd6b3e58c3bb4f9681874283e762"
+    },
+    "toolbar_preview": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ui-theme-split-browser-oct24-r5-toolbar-only.png",
+      "sha256": "4878429cc5beab1a779b6f5dc8cf9c8beb4dac3a9d468eab9758cddc5d9765ae"
+    },
+    "tools": [
+      {
+        "file": "tools/build_fd2_toolbar_mm3_prototype.py",
+        "sha256": "9a949a93a7ca9313f99de8c83072a4fd9557c01286bf2c1b0bd93d65b504c97e"
+      },
+      {
+        "file": "tools/fd2_toolbar_mm3_prototype.html",
+        "sha256": "363bb4c497e449bb0acb2cde27b958d64ada16d6a30e5d30318ec68d786ac36b"
+      },
+      {
+        "file": "tools/verify_fd2_toolbar_mm3_prototype.mjs",
+        "sha256": "40c78d158e6e701a5d6f6cc1d436ea146bf4489fbd26690ce4937dbcdf0b6736"
+      }
+    ],
+    "verification": {
+      "layouts": 12,
+      "display_combinations": 4,
+      "character_icons_independent_of_ui": true,
+      "ui_selector_preserved_when_theme_changes": true,
+      "independent_F2_F11": true,
+      "legacy_prototype_regression": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ui-theme-split-legacy-browser-oct24-r1.browser.json",
+        "sha256": "6b00bbfd47b6c7ff6806240b0faf873616cd4531e25bbee7cd3a8e93384c24f0"
+      }
+    },
+    "limits": [
+      "HTML操作原型，不是正式Game.Draw或正常玩家收據。",
+      "四語驗證只涵蓋工具列，面板樣式示意固定繁中。",
+      "原版面板來源為已保存的重製端索引樣本，HD面板是SVG樣式示意；沒有新原版對拍。",
+      "人物示意使用同一索爾DATO_000及登錄480頭像；本原型沒有播放戰鬥動畫。",
+      "正式介面／主題拆分、完整HUD及浮出工具列、加速、正常玩家與人工／平台驗證仍未完成。"
+    ],
+    "next_implementation_checks": [
+      "拆分HD文字條件與人物主題條件，不只增加兩個工具列按鈕。",
+      "原版介面＋HD主題仍須呈現HD人物圖示與頭像；HD介面＋原版主題保留原版人物。",
+      "物品／狀態開收框、成功提示、對話與戰鬥面板均抽測四組合。",
+      "切換不得重設位置、選項、交易、演出進度或存檔；缺件維持既有原子拒收。"
+    ],
+    "command23_independent_next": {
+      "owner": "nativeUnitPresentJob",
+      "known_gap": "drawNativeUnitPresent只畫原生VGA；指令23離場與入場共用0x22253，也供戰役staging使用。",
+      "native_schedule": "11 intro + 6 contract + strip bridge + 10 release，mutationAt17保持。",
+      "evidence": "58已閉合0x22253，重用native_unit_present.go與typed frame/schedule；不得只為指令23另造一個分身。",
+      "status": "HD整合未開始，不改既有RE結論。"
+    },
+    "latest_scope_followup": "hd2_poster_blend_design_20261024"
+  },
+  "ui_poster_hd2_followup_20261024": {
+    "status": "HD2-STYLE-REFERENCE-USER-SELECTED / CONCEPTS-ARCHIVED-BY-FOLLOWUP / PRODUCTION-DRAFT",
+    "base_commit": "b5953ff4a9972c7832fbc40d8a6f9161928a721e",
+    "production_changed": false,
+    "catalog_changed": false,
+    "full_hd_complete": false,
+    "confirmed_user_scope": [
+      "A頂端浮出、自動隱藏；工具列盡量維持單列。",
+      "操作介面原版／HD獨立；人物icon、頭像、戰鬥動畫及既有世界圖源依主題。",
+      "游標指敵人時，資訊窗與地圖的同一人物須一致呈現HD。",
+      "地圖素材也要HD。",
+      "遊戲兩側加入可選海報；第一組左為索爾＋悠妮朝右，右為空魔神＋四天王。",
+      "第二組使用使用者提供的原稿重繪，三張原圖完整另存。",
+      "明確選定ui-poster-concept-oct24-r1中間戰場的斜角站立人物與地形美術，新增獨立HD2。"
+    ],
+    "display_axes": {
+      "interface": [
+        "original",
+        "HD"
+      ],
+      "theme": [
+        "original",
+        "HD",
+        "HD2"
+      ],
+      "posters": [
+        "off",
+        "HD-set1",
+        "original-redrawn-set2"
+      ],
+      "six_ui_theme_combinations": "required, not production-verified"
+    },
+    "hd2_style_reference": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ui-poster-concept-oct24-r1.png",
+      "sha256": "a18f75cf8a72a11367fb26a11098a2dc11b282a1063acd9991980d6c87c36f5b"
+    },
+    "selected_region": "central battlefield and standing three-quarter-view character style; original Sol/Kylie side posters superseded",
+    "new_posters": {
+      "set1": {
+        "image": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ui-hd2-poster-set1-oct24-r1.png",
+          "sha256": "0899058cd5fcb458305e1b6db6fe5880e10e9193a082ec2aa3616aca659b5308"
+        },
+        "left": "Sol + Yuni, both facing right",
+        "right": "Sky + Earth + Water + Wind + Fire, five distinct original character designs"
+      },
+      "set2": {
+        "image": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ui-hd2-poster-set2-oct24-r1.png",
+          "sha256": "55285013e44390c187ae85535ccdab27ab8f9040485559cc6800a94be343df3d"
+        },
+        "source": "user supplied reference1 red artwork, reference2 dragon/knight artwork; reference3 is detail of reference1",
+        "classification": "reference-guided generative redraw, not original scans"
+      }
+    },
+    "preview": {
+      "file": "work/hd2-posters-preview.html",
+      "sha256": "44b8adec10eb56d0d0b2ac02bb67411b9d2d47de7f1721f769395dd6530373e6"
+    },
+    "prompts": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ui-hd2-poster-prompts-oct24-r1.json",
+      "sha256": "915ea671e3306788b8a45683493e1205b3bbfc864b6493f9afe6509f8ccd17d7"
+    },
+    "initial_prompt": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ui-poster-concept-oct24-r1-prompt.json",
+      "sha256": "38071ee64cf4366a78f65f51aea3f96b37f20b1a7785c12ba444c035336b761d"
+    },
+    "original_references": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/poster-original-user-references-oct24-r1.json",
+      "sha256": "8b3939997e26f844da872ecb77141ba67cc18366df053a3588c4b74a8c756cac"
+    },
+    "native_five_boss_reference": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/fd2-five-boss-reference-oct24-r1.json",
+      "sha256": "de323821568e8df57526d5b2813772336c15722df143aa884bd9c3ec69c3d319"
+    },
+    "contact_sheet": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/fd2-five-boss-reference-oct24-r1.png",
+      "sha256": "34654b9522aa13b3a3240cf725da85f5003dae9fb5b34c542f5e4c0def7c0f29"
+    },
+    "entity_name_source": {
+      "file": "remake/assets/locales/zh-Hant/entities.json",
+      "sha256": "504782335f160884f5efbb52743e653b9d51d8e37ad48ae121cffd4950896851"
+    },
+    "enemy_reference_ids": {
+      "earth": 122,
+      "water": 123,
+      "wind": 124,
+      "fire": 125,
+      "sky": 126
+    },
+    "native_portrait_references": [
+      {
+        "file": "remake/assets/portraits/DATO_122_m0.png",
+        "sha256": "6e42ec3335b2664fedf30a297ee514777f666572a0d72fd3b8fd9ed6b8ef73fe"
+      },
+      {
+        "file": "remake/assets/portraits/DATO_123_m0.png",
+        "sha256": "1eeb3686c1dc90ff554e1f7c3c7caeb2c018491d6a59cd859e4ec01643c2915f"
+      },
+      {
+        "file": "remake/assets/portraits/DATO_124_m0.png",
+        "sha256": "b7133c5ab8ae8027c2c8963472633b529fc97cf9f34b35819ae1a46f1e3b55dd"
+      },
+      {
+        "file": "remake/assets/portraits/DATO_125_m0.png",
+        "sha256": "1123b427bcd1b45e771b77d58d822289149ef76fe87150df33629823793397c4"
+      },
+      {
+        "file": "remake/assets/portraits/DATO_126_m0.png",
+        "sha256": "124eec6c3d550ef398c91778d9dfe0c74af34f27d4caf5d0fd9ae47ff3f08e05"
+      }
+    ],
+    "hud_source_audit": {
+      "level": "confirmed source-code integration gap; not a new original-binary claim",
+      "sources": [
+        {
+          "file": "remake/cmd/fd2/modern_hd_map_runtime.go",
+          "sha256": "fdc4b54cfe8305dc75ed84c746cc0b9e982b4ec51bac5aed5f92455ac04f920e"
+        },
+        {
+          "file": "remake/cmd/fd2/main.go",
+          "sha256": "98724abcf0fbce188eb43e02628db71c12ac65122568219be745a73763c66c1a"
+        }
+      ],
+      "finding": "HD world composes high-resolution map sprites separately, but its UI still calls indexedmap.BlitNativeMapHUD with original HUDUnits. Optional unit uses typed SelectorSlot and raw Idle. No HD icon replacement is added in that path.",
+      "next": "preserve typed unit eligibility/selector and correct theme-specific icon binding; enlarged portrait panel in concept is a separate UI proposal"
+    },
+    "visual_review": {
+      "set1": "Sol/Yuni face right; five villains visible; single toolbar row; consistent bandit HUD; standing angled HD2 map style retained",
+      "set2": "both original-art compositions redrawn, source titles retained; same HD2 direction",
+      "not_tested": [
+        "no live Game.Draw integration",
+        "no six-combination GUI tests",
+        "no production floating/speed/poster control",
+        "no asset/performance/platform/normal-player acceptance"
+      ]
+    },
+    "sources_searched": [
+      "https://www.soft-world.com/News/NewsDetail?Sn=25",
+      "https://zh.wikipedia.org/wiki/炎龍騎士團系列角色列表",
+      "https://tw.carousell.com/p/絕版稀有-炎龍騎士團2-簽名海報-1414992196/"
+    ],
+    "source_priority": "user explicitly selected three supplied images; web results are background only, no unverified image was substituted",
+    "remaining": [
+      "HD2 reusable terrain and standing character asset production",
+      "third theme data/catalog/loader support",
+      "independent UI and theme controls with HD HUD icons",
+      "single-row floating toolbar and safe input ownership",
+      "poster assets, aspect ratio and layout behavior",
+      "normal player/manual/platform validation"
+    ],
+    "scope_boundary": "visual theme; native logical square-grid coordinates, movement/range/collision and saves retain current rules. Generated wide concept is not an exact geometry contract.",
+    "published_design": "hd2_poster_blend_design_20261024"
+  },
+  "hd2_poster_blend_design_20261024": {
+    "status": "DESIGN-BASELINE-ACCEPTED / BROWSER-PROTOTYPE-CONFORMED / GAME-PRODUCTION-DRAFT",
+    "base_commit": "b5953ff4a9972c7832fbc40d8a6f9161928a721e",
+    "user_request": "海報淡入與遊戲邊緣漸層可由工具列設定；保存概念至GitHub，後續HD2依此設計。",
+    "design_manifest": {
+      "file": "docs/data/fd2-hd2-concept-design-20261024.json",
+      "sha256": "f5de8d421d4bf44c833c565f631925d23f32d5a418562fbd95132e8d1f3c63cc"
+    },
+    "browser_receipt": {
+      "file": "docs/data/fd2-hd2-poster-blend-browser-20261024.json",
+      "sha256": "079409d2f4f8b542388e7ad02534a1000fa60d9820446f5cb2b0c90ed4dfa5ba"
+    },
+    "images": [
+      {
+        "file": "docs/figures/fd2-hd2-style-reference.png",
+        "sha256": "a18f75cf8a72a11367fb26a11098a2dc11b282a1063acd9991980d6c87c36f5b"
+      },
+      {
+        "file": "docs/figures/fd2-hd2-poster-set1-source.png",
+        "sha256": "0899058cd5fcb458305e1b6db6fe5880e10e9193a082ec2aa3616aca659b5308"
+      },
+      {
+        "file": "docs/figures/fd2-hd2-poster-set2-source.png",
+        "sha256": "55285013e44390c187ae85535ccdab27ab8f9040485559cc6800a94be343df3d"
+      },
+      {
+        "file": "docs/figures/fd2-hd2-poster-blend-set1.png",
+        "sha256": "ff17f260e18c99044df968cd87f679aac63efbacfb3393ce8c4a945450085e99"
+      },
+      {
+        "file": "docs/figures/fd2-hd2-poster-blend-set2.png",
+        "sha256": "740d77b9372ef19c68133d278d5d7764f8372c0a8fc2a3ed4044e8a576352945"
+      }
+    ],
+    "preview": {
+      "file": "docs/figures/hd2-posters-preview.html",
+      "sha256": "770d2fc9ffd649b669bf690326a5c6db02ed83deb329a0433ca98a846abcd007"
+    },
+    "verifier": {
+      "file": "tools/verify_fd2_poster_blend_prototype.mjs",
+      "sha256": "01ce5502d47a94b2399f5f57dfcdb60a0a53472693bf50b281af4555f3bd2b05"
+    },
+    "defaults": {
+      "spatial_width_concept_pixels": 48,
+      "temporal_fade_ms": 600,
+      "width_range": [
+        0,
+        96
+      ],
+      "duration_options_ms": [
+        0,
+        300,
+        600,
+        1200
+      ]
+    },
+    "verified": {
+      "poster_sets": 2,
+      "viewport_widths": [
+        1800,
+        720
+      ],
+      "single_row": true,
+      "actual_pointer_and_keyboard": true,
+      "hard_middle_wide_pixels_differ": true,
+      "temporal_fade_starts_and_completes": true,
+      "poster_off": true,
+      "central_core_bytes_per_sample": 3218400,
+      "central_core_original_pixels_unchanged": true,
+      "clean_terrain_extension_pixels_per_set": 22560,
+      "no_reflected_hud": true,
+      "auto_hide_and_hot_edge_reveal": true
+    },
+    "approximation": "concept-only mirrored clean terrain extension at side edges; production must use the uncomposited world below UI. No new gameplay/geometry/original parity claim.",
+    "production_changed": false,
+    "catalog_changed": false,
+    "remaining": [
+      "reusable HD2 terrain and standing character asset production",
+      "third-theme loader/catalog support and six-combination GUI",
+      "native HUD icon/theme binding",
+      "production toolbar input ownership, poster blending and persisted settings",
+      "normal-player/manual/platform validation"
+    ]
   }
 }

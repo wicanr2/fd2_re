@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="zh-Hant">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>炎龍騎士團2 HD2 海報漸層概念</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#081321;color:#eee;font:16px "Noto Sans CJK TC",sans-serif}main{max-width:1920px;margin:auto;padding:18px}h1{font-size:21px;margin:0 0 7px}p{font-size:14px;line-height:1.6;color:#b5c4d5;margin:5px 0 12px}a{color:#ecd19a}.stage{position:relative;overflow:hidden;line-height:0}canvas{display:block;width:100%;height:auto}.edge{position:absolute;top:0;left:17.7%;right:17.7%;height:4%;z-index:4}.toolbar{position:absolute;left:17.35%;right:17.35%;top:3.1%;z-index:5;display:flex;flex-wrap:nowrap;align-items:center;justify-content:space-between;gap:4px;padding:6px 9px;background:linear-gradient(#10243a,#061322);border:1px solid #c5a56b;border-radius:5px;line-height:1.2;box-shadow:0 3px 9px #0007;transition:opacity .15s}.toolbar.hidden{opacity:0;visibility:hidden;pointer-events:none}.toolbar button,.toolbar select{flex:0 0 auto;white-space:nowrap;color:#f1e6d2;background:#14263b;border:1px solid #566271;border-radius:3px;padding:6px;font:inherit;font-size:clamp(9px,1.05vw,19px);min-height:30px}.toolbar select{max-width:24%}.toolbar button{cursor:pointer}.toolbar button:hover{border-color:#e7c47e}.toolbar button[aria-expanded=true]{border-color:#f0cc85;background:#334354}.popover{position:absolute;top:calc(100% + 7px);right:0;width:300px;background:#102137;border:1px solid #b49a67;border-radius:5px;padding:16px;box-shadow:0 8px 24px #0009;color:#e8e4db;font-size:14px;line-height:1.6;max-width:90vw}.popover[hidden]{display:none}.popover label{display:block;margin-bottom:12px}.popover input{width:100%;accent-color:#d4b471}.popover select{font-size:14px;max-width:100%;margin-top:5px;width:100%}.popover small{color:#b9c8d7}.footer{margin-top:12px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;font-size:14px;color:#bac9d9}.footer button{font:inherit;padding:7px 14px;color:#eee;background:#1b3147;border:1px solid #63778e;border-radius:4px;cursor:pointer}.status{min-height:23px;margin-top:7px;font-size:14px;color:#dbc591}.scroller{display:contents}@media(max-width:850px){main{padding:8px}.toolbar{padding:3px;gap:2px;justify-content:flex-start;overflow:visible}.scroller{display:flex;flex-wrap:nowrap;gap:3px;overflow-x:auto;width:100%;scrollbar-width:thin}.toolbar select{max-width:none}.toolbar button,.toolbar select{font-size:10px;min-height:25px;padding:3px}.popover{width:260px}.footer{font-size:12px}}
+</style>
+<style>.scroller{display:flex;flex-wrap:nowrap;align-items:center;justify-content:space-between;gap:4px;overflow-x:auto;width:100%;scrollbar-width:thin}</style>
+<main>
+<h1>HD2 海報漸層概念</h1>
+<p>滑鼠移到遊戲頂端可喚出單列工具列。「銜接」可調整海報邊緣漸層與淡入時間。這是已選定美術的瀏覽器原型，尚未接入正式遊戲。</p>
+<section class="stage" id="stage" aria-label="海報與戰場概念預覽">
+<canvas id="scene" width="1672" height="941" aria-label="HD2斜角站姿戰場及雙側海報"></canvas>
+<div id="edge" class="edge" aria-label="頂端工具列熱區"></div>
+<nav id="toolbar" class="toolbar" aria-label="單列浮出工具列">
+<div class="scroller">
+<select id="locale" aria-label="工具列語系"><option value="zh-Hant">繁中</option><option value="zh-Hans">简中</option><option value="en">English</option><option value="ja">日本語</option></select>
+<button id="speed" title="速度示意，沒有加速遊戲">速度 1× ▾</button>
+<button id="interface" title="此頁只展示HD介面概念">介面 HD ▾</button>
+<button id="theme" title="此頁為HD2美術設計基準">主題 HD2 ▾</button>
+<select id="posters" aria-label="海報組別"><option value="1">海報 HD1</option><option value="2">海報 原稿2</option><option value="off">海報 關</option></select>
+<button id="blend" aria-expanded="false" aria-controls="blend-settings">銜接 48px ▾</button>
+<button id="size" title="工具列字級示意">A+</button>
+<button id="fullscreen">全螢幕</button>
+</div>
+<div id="blend-settings" class="popover" hidden>
+<label id="width-label" for="width">邊緣漸層：<output id="width-value">48</output> px<input id="width" type="range" min="0" max="96" step="1" value="48"></label>
+<label id="duration-label" for="duration">海報淡入時間<select id="duration"><option value="0">立即顯示</option><option value="300">0.3 秒</option><option value="600" selected>0.6 秒</option><option value="1200">1.2 秒</option></select></label>
+<small id="settings-note">0px 保留明確邊界；寬度越大，海報越柔和地銜接戰場。中央人物與資訊窗不淡出。</small>
+</div>
+</nav>
+</section>
+<div class="footer"><button id="replay">重播海報淡入</button><a id="source" href="fd2-hd2-poster-set1-source.png">查看未修改原概念稿</a><a href="../knowledge-base/61-modern-theme-runtime-spec.md">設計規格</a><span id="caption">第一組：索爾＋悠妮向右／空魔神＋四天王</span></div>
+<div id="status" class="status" role="status" aria-live="polite">圖片載入中</div>
+</main>
+<script>
+'use strict';
+const $=id=>document.getElementById(id);
+const W=1672,H=941,LEFT=296,RIGHT=1376,TOP=90,BOTTOM=835,POSTER_BOTTOM=900,CLEAN_TERRAIN_BOTTOM=600;
+const state={poster:'1',width:48,duration:600,progress:1,open:true,locale:'zh-Hant',fontPercent:100,events:[],loaded:false};
+const sources=['fd2-hd2-poster-set1-source.png','fd2-hd2-poster-set2-source.png'];
+const images=sources.map(src=>{const im=new Image();im.src=src;return im});
+const canvas=$('scene'),ctx=canvas.getContext('2d',{willReadFrequently:true});
+const masks=[document.createElement('canvas'),document.createElement('canvas')];
+for(const c of masks){c.width=W;c.height=H}
+let animationStart=0,animationSerial=0,preparedKey='';
+const labels={
+ 'zh-Hant':['速度 1× ▾','介面 HD ▾','主題 HD2 ▾','海報 HD1','海報 原稿2','海報 關','銜接','全螢幕'],
+ 'zh-Hans':['速度 1× ▾','界面 HD ▾','主题 HD2 ▾','海报 HD1','海报 原稿2','海报 关','衔接','全屏'],
+ en:['Speed 1× ▾','UI HD ▾','Theme HD2 ▾','Posters HD1','Posters Classic2','Posters Off','Blend','Fullscreen'],
+ ja:['速度 1× ▾','UI HD ▾','テーマ HD2 ▾','ポスター HD1','原画ポスター2','ポスターなし','境界','全画面']
+};
+function record(kind){state.events.push({kind,poster:state.poster,width:state.width,duration:state.duration,progress:state.progress,open:state.open});if(state.events.length>256)state.events.shift()}
+function reveal(open){state.open=open;$('toolbar').classList.toggle('hidden',!open);if(!open){$('blend-settings').hidden=true;$('blend').setAttribute('aria-expanded','false')}}
+function prepare(){
+ const index=state.poster==='2'?1:0,key=index+':'+state.width;
+ if(preparedKey===key)return;
+ const im=images[index];
+ for(let side=0;side<2;side++){
+  const m=masks[side].getContext('2d');m.clearRect(0,0,W,H);m.globalCompositeOperation='source-over';
+  const x=side===0?0:RIGHT,width=side===0?LEFT:W-RIGHT;
+  m.drawImage(im,x,0,width,POSTER_BOTTOM,x,0,width,POSTER_BOTTOM);
+  if(state.width>0){
+   const fade=m.createLinearGradient(side===0?LEFT-state.width:RIGHT,0,side===0?LEFT:RIGHT+state.width,0);
+   fade.addColorStop(0,side===0?'rgba(0,0,0,1)':'rgba(0,0,0,0)');
+   fade.addColorStop(.5,'rgba(0,0,0,.25)');
+   fade.addColorStop(1,side===0?'rgba(0,0,0,0)':'rgba(0,0,0,1)');
+   m.globalCompositeOperation='destination-in';m.fillStyle=fade;m.fillRect(x,0,width,POSTER_BOTTOM);m.globalCompositeOperation='source-over';
+  }
+ }
+ preparedKey=key;
+}
+function render(progress=state.progress){
+ if(!state.loaded)return;
+ state.progress=progress;
+ const im=images[state.poster==='2'?1:0];ctx.globalAlpha=1;ctx.drawImage(im,0,0);
+ // Replace the baked toolbar by terrain continuation; the real HTML row owns controls.
+ ctx.save();ctx.translate(0,180);ctx.scale(1,-1);ctx.drawImage(im,LEFT,90,RIGHT-LEFT,60,LEFT,90,RIGHT-LEFT,60);ctx.restore();
+ ctx.fillStyle='#081321';ctx.fillRect(0,0,LEFT,POSTER_BOTTOM);ctx.fillRect(RIGHT,0,W-RIGHT,POSTER_BOTTOM);
+ if(state.poster!=='off'){
+  prepare();
+  if(state.width>0){
+   // Extend clean terrain only. The baked source below y600 contains HUD panels.
+   for(const side of [0,1]){
+    const edge=side===0?LEFT:RIGHT,x=side===0?LEFT:RIGHT-state.width;
+    ctx.save();ctx.translate(edge*2,0);ctx.scale(-1,1);
+    ctx.drawImage(im,x,TOP,state.width,CLEAN_TERRAIN_BOTTOM-TOP,x,TOP,state.width,CLEAN_TERRAIN_BOTTOM-TOP);
+    ctx.translate(0,CLEAN_TERRAIN_BOTTOM*2);ctx.scale(1,-1);
+    const lower=CLEAN_TERRAIN_BOTTOM*2-BOTTOM;
+    ctx.drawImage(im,x,lower,state.width,BOTTOM-CLEAN_TERRAIN_BOTTOM,x,lower,state.width,BOTTOM-CLEAN_TERRAIN_BOTTOM);ctx.restore();
+   }
+  }
+  ctx.globalAlpha=progress;for(const m of masks)ctx.drawImage(m,0,0);ctx.globalAlpha=1;
+ }
+ // Caption is live HTML, so the baked footer cannot claim a stale poster selection.
+ ctx.fillStyle='#081321';ctx.fillRect(0,900,W,H-900);
+ ctx.font='16px "Noto Sans CJK TC",sans-serif';ctx.textAlign='center';ctx.fillStyle='#d7c393';ctx.fillText('HD2 海報漸層概念稿 · 尚未接入正式遊戲',W/2,927);
+ $('status').textContent=`概念預覽：${state.poster==='off'?'海報關閉':state.poster==='1'?'第一組HD海報':'第二組原稿重繪'}，漸層 ${state.width}px，淡入 ${state.duration/1000} 秒。未連接正式遊戲。`;
+}
+function animate(){
+ const serial=++animationSerial;animationStart=performance.now();
+ if(state.duration===0||state.poster==='off'){render(1);return}
+ render(0);
+ const step=now=>{if(serial!==animationSerial)return;const t=Math.min(1,(now-animationStart)/state.duration);render(t*t*(3-2*t));if(t<1)requestAnimationFrame(step)};requestAnimationFrame(step);
+}
+function updateLabels(){
+ const l=labels[state.locale];$('speed').textContent=l[0];$('interface').textContent=l[1];$('theme').textContent=l[2];
+ [...$('posters').options].forEach((o,i)=>o.textContent=l[3+i]);$('blend').textContent=`${l[6]} ${state.width}px ▾`;$('fullscreen').textContent=l[7];
+}
+$('posters').onchange=()=>{state.poster=$('posters').value;preparedKey='';$('source').href=sources[state.poster==='2'?1:0];$('source').hidden=state.poster==='off';$('caption').textContent=state.poster==='1'?'第一組：索爾＋悠妮向右／空魔神＋四天王':state.poster==='2'?'第二組：使用者給定原稿的重繪概念':'海報關閉，保留中央戰場';record('poster');animate()};
+$('blend').onclick=()=>{const open=$('blend-settings').hidden;$('blend-settings').hidden=!open;$('blend').setAttribute('aria-expanded',String(open));record('settings')};
+$('width').oninput=()=>{state.width=Number($('width').value);$('width-value').value=state.width;preparedKey='';updateLabels();record('width');render()};
+$('duration').onchange=()=>{state.duration=Number($('duration').value);record('duration');animate()};
+$('replay').onclick=()=>{record('replay');animate()};
+$('locale').onchange=()=>{state.locale=$('locale').value;updateLabels();record('locale')};
+$('size').onclick=()=>{state.fontPercent=state.fontPercent===100?125:state.fontPercent===125?150:100;$('toolbar').style.fontSize=state.fontPercent+'%';document.querySelectorAll('.scroller>button,.scroller>select').forEach(e=>e.style.fontSize=`clamp(9px,${1.05*state.fontPercent/100}vw,${19*state.fontPercent/100}px)`);record('size')};
+$('fullscreen').onclick=async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await $('stage').requestFullscreen()}catch{ $('status').textContent='此瀏覽器未允許全螢幕；概念預覽可繼續使用。' }};
+for(const id of ['speed','interface','theme'])$(id).onclick=()=>{$('status').textContent='此按鈕保留正式工具列位置；本頁只實作海報與漸層預覽。'};
+$('edge').onpointerenter=()=>reveal(true);
+$('stage').onpointermove=e=>{const stage=$('stage').getBoundingClientRect(),bar=$('toolbar').getBoundingClientRect(),menu=$('blend-settings').getBoundingClientRect();if(e.clientY-stage.top<stage.height*.04&&e.clientX>bar.left&&e.clientX<bar.right)reveal(true);else if(state.open&&e.clientY>Math.max(bar.bottom,$('blend-settings').hidden?0:menu.bottom))reveal(false)};
+$('stage').onpointerleave=()=>reveal(false);
+addEventListener('keydown',e=>{if(e.key==='Escape'){$('blend-settings').hidden=true;$('blend').setAttribute('aria-expanded','false')}});
+const ready=Promise.all(images.map(im=>new Promise((resolve,reject)=>{const done=()=>im.naturalWidth===W&&im.naturalHeight===H?resolve():reject(Error('概念圖尺寸不符'));if(im.complete&&im.naturalWidth)done();else{im.onload=done;im.onerror=()=>reject(Error('概念圖載入失敗'))}}))).then(()=>{state.loaded=true;record('ready');animate();return true}).catch(e=>{$('status').textContent=e.message;throw e});
+window.fd2PosterPrototype={state,ready,render,reveal,coreRect:[LEFT,TOP,RIGHT-LEFT,BOTTOM-TOP],sourceImages:images,
+ layout:()=>({toolbar:$('toolbar').getBoundingClientRect().toJSON(),controls:[...document.querySelectorAll('.scroller>button,.scroller>select')].map(e=>({id:e.id,rect:e.getBoundingClientRect().toJSON()})),stage:$('stage').getBoundingClientRect().toJSON()})};
+</script>
+</html>
