@@ -155,6 +155,10 @@ func (p *modernHDCompoundProbe) Draw(screen *ebiten.Image) {
 		return
 	}
 	p.seen[index] = true
+	if f.hdMap != nil && os.Getenv("FD2_HD_COMPOUND_MAP") == "1" {
+		p.drawCompoundMapTail(f, index, screen)
+		return
+	}
 	if f.hdSources == nil {
 		if p.g.modernHDBattleVisible {
 			p.err = fmt.Errorf("HD battle leaked into native phase")
@@ -302,6 +306,7 @@ func TestModernHDCompoundRuntimeGPU(t *testing.T) {
 		"present_count": len(probe.seen), "hd_draws": probe.hd, "faithful_draws": probe.faithful, "final_draws": probe.finals, "continuations": callbacks, "screenshots": probe.shots, "hd_phase_draws": probe.phaseDraws, "phase_f2_switches": probe.phaseSwitches, "source_shots": probe.sourceShots, "hp": target.HP, "mp": actor.MP, "native_rng": g.nativeRNGState, "go_rng_unchanged": true}
 	if probe.out != "" {
 		appendCommandPanelGPUReport(t, report)
+		appendCompoundMapGPUReport(t, report)
 		raw, _ := json.MarshalIndent(report, "", "  ")
 		if err := os.WriteFile(filepath.Join(probe.out, "receipt.json"), append(raw, '\n'), 0644); err != nil {
 			t.Fatal(err)

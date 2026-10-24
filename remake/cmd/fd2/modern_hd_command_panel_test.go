@@ -33,6 +33,7 @@ func maybeAttachCommandPanelHDTest(t *testing.T, g *Game) {
 	commandPanelGPUStats.Phases = make(map[string]int)
 	commandPanelGPUStats.Captures = make(map[string]bool)
 	initCompoundSceneryFixture(t, g)
+	initCompoundMapFixture(t, g)
 }
 
 // All presents are audited. PNGs retain each typed state and scroll half,

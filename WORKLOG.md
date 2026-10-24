@@ -3112,3 +3112,19 @@ GitHub連接器無權查私人素材庫；沿用主機Git已登入路徑fetch成
 失敗及勘誤保留：R1指令0 Go完整繪製通過，但固定31×23網格沒有抽到TAI4的584個alpha255點，永久驗證器拒收；Pillow確認483可見點而網格命中0，改依實際alpha選點並保容差1，R2同流程通過。來源矩陣的AI9 side2被既有raw-side-zero actor guard拒收，確認0x15311既有owner範圍後，規格改列19合法來源加非法側原子拒收，未解鎖原版沒有的路徑。反側R2遇TAI3未登錄，核對固定原包10×3、raw_size7及全零mask，改分列已證實原生空白；任何可見但缺HD的來源仍拒收，R3反側完整重跑通過。F2快取另補兩內容項與最後繪製者保留，驗多候選不會移除當前內容；不借用不同原圖SHA／查表／palette的圖。兩次apply_patch空白context不符在寫入前停止，依gofmt後實檔修補，沒有產品變更遺失。全部原始失敗log／收據保持。完整HD、其他效果尾段／HUD及集中正常／人工／平台仍待，目標保持active。
 
 2026-10-24 本批收尾：507個收據／源碼／圖片引用、2425個文件本地連結、761清冊、109字串分類及gofmt通過。官方快照由主機gh讀回24個開啟Issue後以官方build_snapshot／write_snapshot產生，render／verify顯示可能已完成0，#204／#263驗收保持，#268／#269未關閉。327教訓／191 guard通過。51歷史root檔逐SHA保持，新檔與修改檔1000:1000，沒有新增異常md目錄。私人庫乾淨，兩種FD2測試image無殘留容器；沒有新錄影、image、volume或美術候選。最終完整性首次在登入shell遺失Go PATH時未找到gofmt，改用同一Go image的直接Python入口後乾淨通過；彙整PNG沿現有Pillow image，未裝主機套件。完整性證據依主收據final_integrity。
+
+2026-10-24 接續a6fe4734，從main建hd/compound-map-tail-20261024；上一輪分類為已推送進度。載入規格先行路由、重製技能與交接reference，主機gh auth通過，官方快照24個開啟Issue。61與HD主收據先列READY，再接32～35全部地圖尾段。原生WithSources、image、delay、聲音、publishAt、500ms hold、RNG及一次續行保持。33七環與既有數字直接HD，其餘未登錄效果仍原生。沒有新美術／清冊或保存欄位。
+
+每階段凍結input／work／VGA／palette，逐byte重組後才發布候選。F2失敗保留當前圖；GPU依凍結scene清理紋理，普通地圖nil owner回收本次尾段內容。34／35偶數mask用初始完整VGA，奇數用該階段work，不提前顯示後段狀態。
+
+{"source_cases": 8, "all_native_frames": 1620, "map_frames": 1014, "source_atomic_rejections": 16, "actual_flows": 8, "audited_map_draws": 3069, "matched_pixels": 49963320, "registered_overlay_pixels": 106179, "changed_overlay_pixels": 106179, "f2_roundtrips": 100, "screens": 264, "hd_gates": 21, "required_tests": 36, "peak_bytes": 6442450944, "required_lmi_effects": 84, "registered_required_lmi_effects": 7, "remaining_visible_lmi_effects": 77}。HD閘門無SKIP／逾時／OOM，字串八項保持；原生三套件日誌另記通過與略過，不混稱HD必要測試。記憶體峰值只代表本批Linux容器，不外推平台效能。來源、源碼指紋與重跑依主收據compound_map_tail_followup_20261024。
+
+固定原包110項LMI逐raw／Pmode／manifest驗證，84光效與26數字相關來源均非空。尚缺64～75、126～190共77份光效，下一步優先補美術。README新增四語完整半縮圖，取R1真實流程；32～34主側另R2補強HD圖層核心，較弱收據保持。清冊761與私人庫未改，不需私人同步。
+
+修正記錄：未用import在編譯時拒收，移除後同工具鏈通過。相對out被remake cwd的驗證器拒收，改絕對out乾淨重跑。完整GPU格點通過後，再補已登錄alpha255核心及原生像素差。盤點工具固定四列與stdout27／13讓110項參考圖截斷；原數據仍有效，改動態列數／實際筆數後R2重生，預設玩家9入口另通過。apply_patch空白context與腳本新增hunk格式錯誤均於寫入前拒收，修正後再執行，無產品狀態遺失。
+
+其餘owner／HUD、來源408、18／19第三銀行合法caller及集中正常／人工／平台仍待；#268／#269依原排程。完整HD目標保持active。
+
+2026-10-24 記憶體限制：既有完整回復GPU回歸在6GiB限制碰到memory.max並回收389次，419.444秒完成，oom／oom_kill均0；未因觀測時間延遲重啟。這是測試工作負載的壓力證據，不稱平台效能或可用餘裕已驗，入口見主收據memory_context。原生三套件365個必要頂層pass、0 skip；八字串維持109分類。
+
+2026-10-24 最終完整性：373份收據／源碼／圖片引用、2437本地連結、761清冊、109字串分類、24個遠端開啟Issue與gofmt通過。#204／#263驗收保持，#268／#269未關閉；工作清單可能已完成0。328教訓／192 guard通過。51歷史root檔逐SHA保持，新檔與修改檔1000:1000，無新異常md目錄。私人庫乾淨；本批兩種FD2 image無殘留容器，無新增image／volume或錄影。README四語圖已逐SHA回查來源並目視，人物與部分地形／數字HD，其餘地形與HUD原生如圖說。完整性入口依主收據final_integrity。

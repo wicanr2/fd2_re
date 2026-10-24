@@ -214,14 +214,18 @@ func (g *Game) startNativeCommand33Presentation(actor, confirmed *battle.Unit, t
 			effectTargets = append(effectTargets, target)
 		}
 	}
+	frozenMapInput, mapInputErr := g.freezeNativeCommand9MapInput()
 	baselineWork, baselineVGA := append([]byte(nil), g.nativeMapWork...), append([]byte(nil), g.nativeMapVGA...)
+	var effectSources, digitSources [][]indexedmap.NativeCommandTailLayer
 	tailEffectPixels := make([][]byte, 0, tailSchedule.EffectFrames)
 	for frame := 0; frame < tailSchedule.EffectFrames; frame++ {
 		work, vga := append([]byte(nil), baselineWork...), append([]byte(nil), baselineVGA...)
-		if err := indexedmap.ComposeNativeCommandHealEffectFrame(work, vga, baselineWork, a.FDOTHER6[tailSchedule.EffectStart+frame], effectTargets, view.CameraX, view.CameraY); err != nil {
+		layers, err := indexedmap.ComposeNativeCommandHealEffectFrameWithSources(work, vga, baselineWork, a.FDOTHER6[tailSchedule.EffectStart+frame], effectTargets, view.CameraX, view.CameraY, 6, tailSchedule.EffectStart+frame)
+		if err != nil {
 			return err
 		}
 		tailEffectPixels = append(tailEffectPixels, vga)
+		effectSources = append(effectSources, layers)
 	}
 	roster, err := g.st.NativeMapFrameRoster()
 	if err != nil {
@@ -261,15 +265,19 @@ func (g *Game) startNativeCommand33Presentation(actor, confirmed *battle.Unit, t
 	digitPixels := make([][]byte, 0, tailSchedule.DigitFrames)
 	for frame := 0; frame < tailSchedule.DigitFrames; frame++ {
 		work, vga := append([]byte(nil), postWork...), append([]byte(nil), postVGA...)
-		if err := indexedmap.ComposeNativeCommandHealDigitFrame(work, vga, postWork, a.CommandHealDigits, queue, tailTargets, view.CameraX, view.CameraY, tailSchedule.DigitVertical, frame); err != nil {
+		layers, err := indexedmap.ComposeNativeCommandHealDigitFrameWithSources(work, vga, postWork, a.CommandHealDigits, queue, tailTargets, view.CameraX, view.CameraY, tailSchedule.DigitVertical, frame)
+		if err != nil {
 			return err
 		}
 		digitPixels = append(digitPixels, vga)
+		digitSources = append(digitSources, layers)
 	}
 	mapPalette, err := fdother.VGAPaletteFromDAC(g.nativeMapDAC)
 	if err != nil {
 		return err
 	}
+	mapBefore := newModernHDCompoundMapScene(frozenMapInput, baselineWork, baselineVGA, mapPalette, mapInputErr)
+	mapAfter := newModernHDCompoundMapScene(postInput, postWork, postVGA, mapPalette, nil)
 	tailEffectImages, err := nativeCommand24IndexedImages(tailEffectPixels, mapPalette)
 	if err != nil {
 		return err
@@ -330,7 +338,11 @@ func (g *Game) startNativeCommand33Presentation(actor, confirmed *battle.Unit, t
 		return err
 	}
 	frames[mainStart+commonSchedule.Sample1Frame-1].sound = g.separatedCommandSound(92, 1)
+	rampStart := len(frames)
 	if frames, err = appendNativeCompoundFrames(frames, rampImages, 6); err != nil {
+		return err
+	}
+	if err := bindModernHDCompoundMapRamp(frames[rampStart:], mapBefore, rampPixels, commonSchedule.PaletteRGB); err != nil {
 		return err
 	}
 	effectStart := len(frames)
@@ -338,13 +350,22 @@ func (g *Game) startNativeCommand33Presentation(actor, confirmed *battle.Unit, t
 		return err
 	}
 	frames[effectStart].sound = g.separatedCommandSound(80, 12)
+	if err := bindModernHDCompoundMap(frames[effectStart:], mapBefore, tailEffectPixels, effectSources, nil, 0, true, "map-effect"); err != nil {
+		return err
+	}
 	maskStart := len(frames)
 	for index := 0; index < tailSchedule.MaskPairs*2+1; index++ {
 		frames = append(frames, nativeCompoundPresentedFrame{image: maskImages[index%2], delay: 1})
 	}
 	frames[maskStart].sound = g.separatedCommandSound(80, 1)
+	if err := bindModernHDCompoundMapMask(frames[maskStart:], mapBefore, baselineVGA, maskVGA, effectTargets, byte(tailSchedule.MaskIndex), "map-mask"); err != nil {
+		return err
+	}
 	publishAt := len(frames)
 	if frames, err = appendNativeCompoundFrames(frames, digitImages, 1); err != nil {
+		return err
+	}
+	if err := bindModernHDCompoundMap(frames[publishAt:], mapAfter, digitPixels, digitSources, nil, 0, true, "map-digits"); err != nil {
 		return err
 	}
 	if !osMuteOrShot(g) {
@@ -357,7 +378,12 @@ func (g *Game) startNativeCommand33Presentation(actor, confirmed *battle.Unit, t
 	if err := bindModernHDCompoundScenery(frames, background, actorSelector, platform, g.modernStoryPortraits); err != nil {
 		return err
 	}
+	publishMap, err := g.stageModernHDCompoundMap(frames, g.modernStoryPortraits)
+	if err != nil {
+		return err
+	}
 	publishHD()
+	publishMap()
 	bindModernBattlePanelFrames(panelText, frames)
 	g.nativeCmd33Presentation = &nativeCommand33PresentationJob{
 		actor: actor, plan: plan, frames: frames, publishAt: publishAt,

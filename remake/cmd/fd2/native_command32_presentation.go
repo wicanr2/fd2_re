@@ -14,6 +14,7 @@ import (
 )
 
 type nativeCompoundPresentedFrame struct {
+	hdMap       *modernHDCompoundMapSource
 	hdSources   *modernHDBattleSources
 	hdPalette   color.Palette
 	hdResource  int
@@ -292,10 +293,13 @@ func (g *Game) startNativeCommand32Presentation(actor, confirmed *battle.Unit, t
 	if err != nil {
 		return err
 	}
+	frozenMapInput, mapInputErr := g.freezeNativeCommand9MapInput()
 	mapPalette, err := fdother.VGAPaletteFromDAC(g.nativeMapDAC)
 	if err != nil {
 		return err
 	}
+	mapBefore := newModernHDCompoundMapScene(frozenMapInput, g.nativeMapWork, g.nativeMapVGA, mapPalette, mapInputErr)
+	mapAfter := newModernHDCompoundMapScene(postInput, postWork, postVGA, mapPalette, nil)
 	tailEffectImages, err := nativeCommand24IndexedImages(tail.Effect, mapPalette)
 	if err != nil {
 		return err
@@ -367,7 +371,11 @@ func (g *Game) startNativeCommand32Presentation(actor, confirmed *battle.Unit, t
 	for index := 0; index < len(commonTailImages); index += 2 {
 		frames[tailStart+index].sound = commonSample1
 	}
+	rampStart := len(frames)
 	if frames, err = appendNativeCompoundFrames(frames, rampImages, 6); err != nil {
+		return err
+	}
+	if err := bindModernHDCompoundMapRamp(frames[rampStart:], mapBefore, rampPixels, commonSchedule.PaletteRGB); err != nil {
 		return err
 	}
 	effectStart := len(frames)
@@ -375,11 +383,21 @@ func (g *Game) startNativeCommand32Presentation(actor, confirmed *battle.Unit, t
 		return err
 	}
 	frames[effectStart].sound = g.separatedCommandSound(80, 9)
+	if err := bindModernHDCompoundMap(frames[effectStart:], mapBefore, tail.Effect, tail.EffectSources, nil, 0, true, "map-effect"); err != nil {
+		return err
+	}
+	toggleStart := len(frames)
 	if frames, err = appendNativeCompoundFrames(frames, toggleImages, nativeDelayTicks(tailSchedule.ToggleDelayMS)); err != nil {
+		return err
+	}
+	if err := bindModernHDCompoundMap(frames[toggleStart:], mapBefore, tail.Toggle, tail.ToggleSources, nil, 0, true, "map-toggle"); err != nil {
 		return err
 	}
 	publishAt := len(frames)
 	if frames, err = appendNativeCompoundFrames(frames, resultImages, 1); err != nil {
+		return err
+	}
+	if err := bindModernHDCompoundMap(frames[publishAt:], mapAfter, tail.Result, tail.ResultSources, nil, 0, true, "map-digits"); err != nil {
 		return err
 	}
 	if !osMuteOrShot(g) {
@@ -392,7 +410,12 @@ func (g *Game) startNativeCommand32Presentation(actor, confirmed *battle.Unit, t
 	if err := bindModernHDCompoundScenery(frames, background, actorSelector, platform, g.modernStoryPortraits); err != nil {
 		return err
 	}
+	publishMap, err := g.stageModernHDCompoundMap(frames, g.modernStoryPortraits)
+	if err != nil {
+		return err
+	}
 	publishHD()
+	publishMap()
 	bindModernBattlePanelFrames(panelText, frames)
 	g.nativeCmd32Presentation = &nativeCommand32PresentationJob{
 		actor: actor, plan: plan, frames: frames, publishAt: publishAt,

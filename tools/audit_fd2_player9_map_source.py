@@ -95,20 +95,27 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--original-pack', type=Path, required=True)
     p.add_argument('--out', type=Path, required=True)
+    p.add_argument('--compound-tails', action='store_true', help='核對32～35既有typed尾段的全部LMI索引，包含原始空拍')
     args = p.parse_args()
     report, sheet = [Path(str(args.out)+suffix) for suffix in ['.json', '.png']]
     if not Path('/.dockerenv').exists() or report.exists() or sheet.exists() or report.parent.stat().st_uid != os.getuid():
         raise SystemExit('Docker內使用本人擁有的新輸出前綴')
-    data, pictures = audit(args.original_pack)
-    canvas = Image.new('RGB', (1200, 800), '#151721'); draw = ImageDraw.Draw(canvas)
+    ranges = None
+    if args.compound_tails:
+        ranges = {5: [74,75,76]+list(range(94,104))+list(range(105,115))+[116,117,118],
+                  6: list(range(57,76))+list(range(126,191))}
+    data, pictures = audit(args.original_pack, ranges)
+    canvas = Image.new('RGB', (1200, ((len(pictures)+9)//10)*200), '#151721'); draw = ImageDraw.Draw(canvas)
     for n, (resource, row, im) in enumerate(pictures):
         x, y = n % 10*120, n//10*200
-        picture = im.resize((im.width*4, im.height*4), Image.Resampling.NEAREST)
+        scale = min(4, 116/im.width, 150/im.height) if args.compound_tails else 4
+        picture = im.resize((max(1,int(im.width*scale)), max(1,int(im.height*scale))), Image.Resampling.NEAREST)
         cell = Image.new('RGBA', (120, 200), '#151721'); cell.alpha_composite(picture, ((120-picture.width)//2, 45)); canvas.paste(cell.convert('RGB'), (x, y))
         draw.text((x+4, y+4), f'{resource}:{row["index"]} {row["width"]}x{row["height"]}', fill='white')
     canvas.save(sheet); data['reference_png_sha256'] = digest(sheet)
     report.write_text(json.dumps(data, ensure_ascii=False, indent=2)+'\n')
-    print({'status': data['status'], 'effect_frames': 27, 'numeric_sources': 13})
+    counts = {r['resource']:len(r['frames']) for r in data['resources']}
+    print({'status': data['status'], 'effect_frames': counts.get(6,0), 'numeric_sources': counts.get(5,0)})
 
 
 if __name__ == '__main__': main()

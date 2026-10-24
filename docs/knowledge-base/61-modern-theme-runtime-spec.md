@@ -2,6 +2,22 @@
 
 狀態：現代主題仍為部分覆蓋；目前分層與缺口依[58](58-fd2-exe-re-coverage.md)。
 
+## 四召喚返回地圖的HD世界與既有尾段圖源（CONFORMED-SCOPED／RUNTIME-E1，2026-10-24）
+
+本節實作前為READY。範圍為32～35共用大型段之後的41張地圖色盤漸變、各自原生effect／toggle或mask／數字與hold；沿已核准1920畫布、原生位置及既有HD圖源。原始來源固定版本依`fd2-reference-files.json`；重用58的`fd2_command32_tail_presentation_ida.txt`、`fd2_command33_tail_presentation_ida.txt`、`fd2_command34_tail_presentation_ida.txt`、`fd2_command35_tail_presentation_ida.txt`及已閉合typed producer。原生32的0x2111A／0x1CAC7、33的0x211A4、34的17→18→19及35的26→22→27順序保持，不重開RE。
+
+- 凍結同次typed地圖input、work／VGA、palette及原生WithSources成功寫入的LMI來源。事件幀保留原viewport複製的(-4,-4)偏移；ramp則沿完整steady畫布。原生幀保留為fallback與驗證，不由現時已結算單位重算較早畫面。
+- 所有HD候選在正式owner發布或F2切入前完成；原始來源、尺寸、metadata及已登錄圖片不符即拒收，不發布半套主題或交易。Draw只讀準備好的圖，禁補讀及補算。32～35全部地圖幀共用此入口，不只挑有既有素材的33。
+- 33的七環與綠數字、32／35紅數字及MISS沿既有清冊，mask沿同次raw selector／idle cycle的HD輪廓及原palette單色。其餘未登錄LMI暫留明示原生圖層；這是缺美術待辦，不能因世界HD或catalog驗證通過就稱全部尾段HD完成。34第三階段失敗queue的十進位74／75／76保留原始索引，不能誤寫成0x74／0x75／0x76。
+- 地圖ramp沿原生delta0～40及既有RGB端點，使用與大型段相同的全圖線性插色近似；不宣稱索引palette與HD逐RGB一致。交易／MP／HP／RNG、階段publishAt、500ms hold及一次續行保持，保存格式不變。
+- 驗收包含四caller全部地圖幀的typed來源及原生重組、來源／尺寸拒收、各階段實際Game.Draw／F2／HD人物與圖層回讀、一次返回與既有大型段／回復／字串回歸。受控fixture僅RUNTIME-E1，集中正常／人工／平台仍待。主收據沿`compound_map_tail_followup_20261024`；實作入口為`modern_hd_compound_map.go`，永久驗證器沿`tools/verify_fd2_battle_surface_hd.py`新增compound-map-unit／source／game。
+
+本批只完成四召喚尾段的HD世界與既有圖源接線。34／35的偶數mask拍沿初始完整baseline，奇數拍沿該階段work並複製viewport；不可一律套事件偏移，也不可把後段狀態提前代入。GPU沿凍結scene控制快取，普通地圖owner為nil，回到普通地圖時釋放本次尾段紋理。
+
+實作見[地圖尾段](../../remake/cmd/fd2/modern_hd_compound_map.go)及[來源與實際GPU檢查](../../remake/cmd/fd2/modern_hd_compound_map_test.go)。`compound-map-unit`驗原子綁定及無owner的主題相容；`compound-map-source`／`compound-map-game`以`--panel-owner 32|33|34|35`、`--surface 4`、`--panel-locale`選四語，反側加`--enemy`。沿既有Go Docker、正式catalog／pack、唯讀org_game及有界out／timeout。前者驗全部native重組及失敗候選；後者實際Game.Draw／F2、CPU全畫布格點容差2與HD數字／光環核心，另核對原生像素確有差異。初輪格點收據保持，32～34主側另R2補驗核心。唯一數量依58與主收據，不由HD世界推定全部效果HD。
+
+[固定LMI盤點](../../tools/audit_fd2_player9_map_source.py)新增`--compound-tails`，在既有Pillow Docker、唯讀合法`--original-pack`與既有父目錄的全新`--out`前綴核對全部尾段索引。57～63已登錄；其餘64～75與126～190共77份都有原生可見像素，仍需HD美術。動態列數參考圖涵蓋110項，預設玩家9入口保持。README圖以`build_fd2_battle_panel_gallery.py --command-panels --phase map-result`沿四capture目錄重生，遊戲區不裁切；R1展示圖與最終R2加強收據分列。
+
 ## 一般指令背景、台座與查表變色（CONFORMED-SCOPED／RUNTIME-E1，2026-10-24）
 
 本節實作前為READY。範圍為0～8及敵方9的共用戰鬥場景，4／5共用presenter；沿已核准BG／TAI圖源及1920畫布，不新增美術、清冊或保存欄位。原生資料重用`fd2-reference-files.json`固定版本、已閉合`fdother.Frame.BlitLUTAt`的0x4E583契約、`NativeCommand0ActorInput`與各正式presenter的11～15查表輸入。HD四色差加權沿`modern_hd_terrain.go`的既有近似，不稱原版RGB恢復；原生模式、交易、RNG、音效與節拍保持。

@@ -12,7 +12,7 @@ import (
 )
 
 // 先以原生來源重組每個base，再一次發布整批背景metadata。
-// 地圖尾段沒有hdSources，不參與這條戰鬥背景路徑。
+// 地圖尾段由hdMap獨立呈現，不參與這條戰鬥背景路徑。
 func bindModernHDCompoundScenery(frames []nativeCompoundPresentedFrame, background fdother.Frame, selector int,
 	platform *fdother.Frame, set *modernStoryPortraitSet) error {
 	scenery, err := modernSplitStrikeScenery(background, selector, platform)
@@ -154,6 +154,9 @@ func (g *Game) modernCompoundEffectResource() int {
 }
 
 func (g *Game) drawModernHDCompoundFrame(screen *ebiten.Image, frame *nativeCompoundPresentedFrame) (bool, error) {
+	if frame.hdMap != nil {
+		return g.drawModernHDCompoundMapFrame(screen, frame)
+	}
 	set := g.modernStoryPortraits
 	if frame.hdSources == nil || set == nil || !set.hasHD {
 		return false, nil

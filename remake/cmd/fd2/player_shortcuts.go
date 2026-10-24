@@ -57,6 +57,10 @@ func (g *Game) applyTheme(set *modernStoryPortraitSet) error {
 		}
 	}
 	var healFrames *modernHDHealFrames
+	publishCompoundMap, err := g.stageModernHDCompoundMap(g.modernCompoundMapFrames(), set)
+	if err != nil {
+		return err
+	}
 	if set != nil && g.nativeHealPresentation != nil {
 		var err error
 		healFrames, err = g.prepareModernHDHeal(g.nativeHealPresentation, set)
@@ -179,6 +183,7 @@ func (g *Game) applyTheme(set *modernStoryPortraitSet) error {
 		}
 	}
 	g.modernStoryPortraits = set
+	publishCompoundMap()
 	if state := g.nativeSystemEndTurnUI; state != nil && state.rewardMessage != nil {
 		state.rewardMessage.hdWorld, state.rewardMessage.hdTheme = rewardWorld, set
 	}

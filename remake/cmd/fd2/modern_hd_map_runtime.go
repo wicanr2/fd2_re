@@ -27,6 +27,7 @@ type modernHDMapFrame struct {
 	Overlays         []modernHDMapOverlayDraw
 	Viewport         image.Rectangle
 	OverlaysAboveUI  bool
+	CompoundOwner    *modernHDCompoundMapScene
 }
 
 type modernHDMapOverlayDraw struct {

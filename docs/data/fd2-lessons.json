@@ -3982,6 +3982,21 @@
       "rule": "GPU圖源取樣先依實際alpha選點，再排除後層遮擋；固定幾何網格可能錯過稀少的不透明核心。可見來源仍要求實際匹配像素，原始mask全零者另列native blank，不用缺取樣掩蓋缺HD。入口remake/cmd/fd2/modern_hd_ordinary_scenery_test.go的ordinarySceneryOpaquePoints及auditModernOrdinarySceneryGPU，重跑tools/verify_fd2_battle_surface_hd.py --kind ordinary-scenery-game --panel-owner 0，Docker與四語／side契約見規格61。",
       "why": "TAI4有584個alpha255點，Pillow確認483點未被兩角色遮擋，但31×23固定網格命中0。改依alpha取點後同流程通過且保持容差1。反側TAI3另由固定原包證實10×3全透明，保留原生空白；可見但未登錄的來源仍拒收。",
       "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json"
+    },
+    {
+      "id": "hd-map-cache-follows-frozen-event-scene",
+      "date": "2026-10-24",
+      "area": "HD地圖快取",
+      "rule": "地圖事件的GPU圖層快取同時依凍結scene與地形色彩脈絡分界；普通地圖用nil owner，避免已結束事件的臨時RGBA一直留在紋理表。入口remake/cmd/fd2/modern_hd_map_gpu.go的drawPreparedModernHDMapFrame及modern_hd_compound_map.go；用tools/verify_fd2_battle_surface_hd.py --kind compound-map-game驗32～35各階段與F2，Go Docker及參數依規格61。",
+      "why": "四召喚的各階段地圖共用色彩脈絡，但光環、mask及數字使用不同臨時RGBA；只看TerrainColourKey無法界定這些圖層的生命週期。新接線明示scene owner，切階段或回普通地圖時清理前一組，完整雙側Game.Draw與共用回復回歸通過。測試記憶體壓力另以收據記錄，不用無OOM推論平台餘裕。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/modern_hd_map_gpu.go"
+        ],
+        "pattern": "r\\.CompoundOwner != frame\\.CompoundOwner"
+      }
     }
   ]
 }

@@ -109,6 +109,7 @@ func TestModernHDFairyRuntimeGPU(t *testing.T) {
 		"native_rng": g.nativeRNGState, "go_rng_unchanged": true}
 	if probe.out != "" {
 		appendCommandPanelGPUReport(t, report)
+		appendCompoundMapGPUReport(t, report)
 		raw, _ := json.MarshalIndent(report, "", "  ")
 		if err := os.WriteFile(filepath.Join(probe.out, "receipt.json"), append(raw, '\n'), 0644); err != nil {
 			t.Fatal(err)

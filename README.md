@@ -104,6 +104,10 @@
 
 物理戰鬥的姓名、LV、HP／MP標籤及數字已直接採用六倍Noto黑體，保留原有框線、血條與逐步扣血。四格取自Linux四語受控攻防的完整Game.Draw半縮圖，語系標籤在遊戲區域外；不是一般玩家或原版同狀態對拍。完整HUD美術及集中人工／平台抽驗仍待，來源與驗證依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)及[HD主收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的`battle_panel_text_followup_20261024`。
 
+![四語系召喚返回地圖後的HD人物與數字](docs/figures/hd-compound-map-tail.png)
+
+四種召喚返回地圖後也會保留HD人物、已登錄地形與數字，回復光環及角色閃光沿原節拍呈現。四格取自Linux四語受控流程的完整Game.Draw半縮圖，使用測試隊伍與邊界位置；不是一般玩家或原版對拍。其餘地形、HUD與尚未重繪的光效仍含原生素材，集中人工與平台抽驗仍待。來源及範圍依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)及[HD主收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的compound_map_tail_followup_20261024。
+
 ![四語系的一般法術HD背景、台座與效果](docs/figures/hd-ordinary-battle-scenery.png)
 
 一般法術也已接入手繪戰鬥背景與台座，施術及退場的查表變色採用既有HD四色加權近似。四格為Linux四語受控流程的完整Game.Draw半縮圖，角色圖源與面板沿測試隊伍；框線、血條與部分光效輪廓仍含像素素材。原生模式保留精確查表，正常玩家及集中人工／平台抽驗仍待。來源與範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)與[HD主收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的`ordinary_scenery_followup_20261024`。

@@ -24,6 +24,9 @@ type modernHDMapGPU struct {
 	TerrainImages         map[*image.RGBA]*ebiten.Image
 	TerrainKey            [32]byte
 	Range                 *ebiten.Image
+	CompoundMix           *ebiten.Image
+	CompoundShader        *ebiten.Shader
+	CompoundOwner         *modernHDCompoundMapScene
 }
 
 func (r *modernHDMapGPU) terrainImage(picture *image.RGBA) *ebiten.Image {
@@ -135,12 +138,13 @@ func (g *Game) drawPreparedModernHDMapFrame(screen *ebiten.Image, frame *modernH
 		g.modernHDMapGPU = r
 	}
 	r.World.Clear()
-	if r.TerrainKey != frame.TerrainColourKey {
+	if r.TerrainKey != frame.TerrainColourKey || r.CompoundOwner != frame.CompoundOwner {
 		for _, texture := range r.TerrainImages {
 			texture.Dispose()
 		}
 		r.TerrainImages = nil
 		r.TerrainKey = frame.TerrainColourKey
+		r.CompoundOwner = frame.CompoundOwner
 	}
 	r.Background.WritePixels(frame.Background.Pix)
 	op := &ebiten.DrawImageOptions{}

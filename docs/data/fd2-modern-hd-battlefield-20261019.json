@@ -219444,5 +219444,244 @@
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ordinary-scenery-final-integrity-oct24-r1.json",
       "sha256": "7dba3d84d6b831165144e4ecbada76fa8a0ffdd638e7c5cd9ba610895c1eacc2"
     }
+  },
+  "compound_map_tail_followup_20261024": {
+    "status": "CONFORMED-SCOPED/RUNTIME-E1",
+    "base_commit": "a6fe4734a35e2fe29f59cb824bb62d6d3e86a24a",
+    "scope": "32～35全部地圖尾段的HD世界、mask、既有LMI與數字接線；未登錄77可見效果仍為明示原生fallback，完整HD未完成",
+    "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+    "existing_native_contracts": [
+      "docs/data/ida/fd2_command32_tail_presentation_ida.txt",
+      "docs/data/ida/fd2_command33_tail_presentation_ida.txt",
+      "docs/data/ida/fd2_command34_tail_presentation_ida.txt",
+      "docs/data/ida/fd2_command35_tail_presentation_ida.txt"
+    ],
+    "new_art": false,
+    "save_format_changed": false,
+    "verification": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-map-verification-oct24-r1.json",
+      "sha256": "50e4d748ad0b63b855b16ab29282890086f3d1938b4c7effe5569b3ce2e0c744"
+    },
+    "summary": {
+      "source_cases": 8,
+      "all_native_frames": 1620,
+      "map_frames": 1014,
+      "source_atomic_rejections": 16,
+      "actual_flows": 8,
+      "audited_map_draws": 3069,
+      "matched_pixels": 49963320,
+      "registered_overlay_pixels": 106179,
+      "changed_overlay_pixels": 106179,
+      "f2_roundtrips": 100,
+      "screens": 264,
+      "hd_gates": 21,
+      "required_tests": 36,
+      "peak_bytes": 6442450944,
+      "required_lmi_effects": 84,
+      "registered_required_lmi_effects": 7,
+      "remaining_visible_lmi_effects": 77
+    },
+    "implementation_sources": [
+      {
+        "file": "remake/cmd/fd2/modern_hd_command_panel_test.go",
+        "sha256": "f17016b10bfbc74aa18720d8405c40a48d7e47d1231d900c3120163b59050222"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_compound.go",
+        "sha256": "ff0f29f89d86daefe63f614d6577435a552617f7acc3206e1385035a78ae2bbe"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_compound_lifecycle_test.go",
+        "sha256": "ff87314f8efa888e43a86c41534f3151d888574257485b32d68ee03db3e80ed6"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_compound_map.go",
+        "sha256": "33f7ae2372aa7eeca7ef1db9519e7e264588a247ec3979821123802b95c36fab"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_compound_map_test.go",
+        "sha256": "873c9b8e94b5511af4550b40feb4af293066d62fcbcc2d52295627d362e97db6"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_fairy_lifecycle_test.go",
+        "sha256": "bac4b2c34a10665809af181773d556aa7d6a5325817d66af98168774ef737ccf"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_map_gpu.go",
+        "sha256": "cd3e4e2848317eb76e475ef9583350e7f70d5c48113817af4c535a5f65a0493e"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_map_runtime.go",
+        "sha256": "fdc4b54cfe8305dc75ed84c746cc0b9e982b4ec51bac5aed5f92455ac04f920e"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_staged_summon_lifecycle_test.go",
+        "sha256": "a6aff096fc1818abb2e1908a9ad4ff4cfbf7773c01e7b6c765af0c2a0067b5b1"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command32_presentation.go",
+        "sha256": "79f0361f8dc1ee6f7a3b5afc83090c260cd96ed4b1f78ef2393f6829ab27854a"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command33_presentation.go",
+        "sha256": "7418e8c8082145404a047ef3cbfb735c65f9cbbb1d3156174540ebf0b4bdc963"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command34_presentation.go",
+        "sha256": "144053676fa1c3f2659dc6a5fb1be7c4ce8ebe2c887bfff94dd4c57529822f40"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command35_presentation.go",
+        "sha256": "899bc775425d068ebc1aceb89b98e230502d8751923419bb6c7866bf9e9e0fff"
+      },
+      {
+        "file": "remake/cmd/fd2/player_shortcuts.go",
+        "sha256": "87d30bd28c3fe1c8b2a5c88a963f98400639a16c5c5981d88670362deaa204eb"
+      },
+      {
+        "file": "remake/internal/battlepresent/native_command32_tail.go",
+        "sha256": "1bd02fd0f9ad4db33e1593cb884a7ecc32bd67f13a3b145239ad3842aa810731"
+      },
+      {
+        "file": "tools/audit_fd2_player9_map_source.py",
+        "sha256": "066f74b0899561b0e206d225fe9fdf30aeacab1bf694bf92e087526361c82c47"
+      },
+      {
+        "file": "tools/build_fd2_battle_panel_gallery.py",
+        "sha256": "6a78ff1b042fd6c6b6fb67e840ac366b240abdb3d57b419ef8daa5ccc32e9b16"
+      },
+      {
+        "file": "tools/verify_fd2_battle_surface_hd.py",
+        "sha256": "2c80cc29b3e22ba108fd3a3eac0b2f7c8d72ab09cb09a691d7ebf99d6877249f"
+      }
+    ],
+    "pinned_lmi_sources": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-map-lmi-sources-oct24-r2.json",
+      "sha256": "f1f5c12a628b0132b6195be2ce4a6222310e8ae0700f65e88eb1c161797cf3c4"
+    },
+    "remaining_visible_lmi_indices": {
+      "5": [],
+      "6": [
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        126,
+        127,
+        128,
+        129,
+        130,
+        131,
+        132,
+        133,
+        134,
+        135,
+        136,
+        137,
+        138,
+        139,
+        140,
+        141,
+        142,
+        143,
+        144,
+        145,
+        146,
+        147,
+        148,
+        149,
+        150,
+        151,
+        152,
+        153,
+        154,
+        155,
+        156,
+        157,
+        158,
+        159,
+        160,
+        161,
+        162,
+        163,
+        164,
+        165,
+        166,
+        167,
+        168,
+        169,
+        170,
+        171,
+        172,
+        173,
+        174,
+        175,
+        176,
+        177,
+        178,
+        179,
+        180,
+        181,
+        182,
+        183,
+        184,
+        185,
+        186,
+        187,
+        188,
+        189,
+        190
+      ]
+    },
+    "gallery": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-map-readme-oct24-r1.json",
+      "sha256": "de3a150a0296a9bd593a3c89e51f88e562d956c36f4ddff1c1c1c633ba7ac245"
+    },
+    "string_inventory": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-map-string-inventory-oct24-r1.json",
+      "sha256": "abf649d88040271f31856f7365a9c2074e7635fd33f298e5a3394319dcb99da1"
+    },
+    "string_review": {
+      "file": "docs/data/fd2-string-review.json",
+      "sha256": "668169d67babdd5f8dba7979cb2ff68f8117dcae148ef5cffc4a34edacfe193e"
+    },
+    "private_asset_sync_required": false,
+    "policy": {
+      "fixtures": "raw sides0/2, fixed original control table tile selecting4, native seed7 and unchanged Go RNG; controlled, not normal-player or original oracle",
+      "event_geometry": "LMI viewport(-4,-4); ramp/unmasked snapshots full steady;34/35 even masks initial baseline, odd masks each stage",
+      "colour": "same HD linear tint approximation as compound battle; no original RGB claim",
+      "publication": "prepare all candidates before owner/F2; failed candidate keeps active theme; require native reconstruction",
+      "texture_lifetime": "reset GPU overlay textures when frozen scene or terrain-colour context changes; ordinary map has nil owner"
+    },
+    "remaining": [
+      "77 visible FDOTHER6 LMI effect source images need HD art and registration",
+      "other command/map effect owners and complete HUD",
+      "source408 and legitimate third-bank18/19 consumers",
+      "concentrated normal-player/manual-art/platform and listening validation",
+      "floating toolbar and actual game speed"
+    ],
+    "github_issues": [
+      263,
+      204,
+      268,
+      269
+    ],
+    "issue_acceptance_preserved": true,
+    "memory_context": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-map-memory-context-oct24-r1.json",
+      "sha256": "32ce7c029785d04e27cee7738f1433a6dd361efbdd0358e8da8a969784527645"
+    },
+    "final_integrity": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-map-final-integrity-oct24-r1.json",
+      "sha256": "f1800107cc9a232ffe18cf83c56cd177542b629a304abdb9708232e171fc2834"
+    }
   }
 }

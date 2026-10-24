@@ -16,10 +16,11 @@ type NativeCommand32TailResult struct {
 }
 
 type NativeCommand32TailFrames struct {
-	Effect [][]byte
-	Toggle [][]byte
-	Result [][]byte
-	Queue  []battle.NativePresentationDigit
+	Effect                                      [][]byte
+	Toggle                                      [][]byte
+	Result                                      [][]byte
+	Queue                                       []battle.NativePresentationDigit
+	EffectSources, ToggleSources, ResultSources [][]indexedmap.NativeCommandTailLayer
 }
 
 type NativeAIItemType21TailResult = NativeCommand32TailResult
@@ -98,27 +99,30 @@ func buildNative1CAC7TailFrames(
 		Toggle: make([][]byte, 0, togglePairs*2),
 		Result: make([][]byte, 0, digitFrames),
 	}
-	compose := func(snapshot, initialVGA []byte, descriptor int, visible []indexedmap.NativeCommandHealTailTarget) ([]byte, error) {
+	compose := func(snapshot, initialVGA []byte, descriptor int, visible []indexedmap.NativeCommandHealTailTarget) ([]byte, []indexedmap.NativeCommandTailLayer, error) {
 		work, vga := append([]byte(nil), snapshot...), append([]byte(nil), initialVGA...)
-		if err := indexedmap.ComposeNativeCommandHealEffectFrame(work, vga, snapshot, effect[descriptor], visible, cameraX, cameraY); err != nil {
-			return nil, err
+		layers, err := indexedmap.ComposeNativeCommandHealEffectFrameWithSources(work, vga, snapshot, effect[descriptor], visible, cameraX, cameraY, 6, descriptor)
+		if err != nil {
+			return nil, nil, err
 		}
-		return vga, nil
+		return vga, layers, nil
 	}
 	for frame := 0; frame < effectFrames; frame++ {
-		vga, err := compose(baselineWork, baselineVGA, effectStart+frame, visibleEffect)
+		vga, layers, err := compose(baselineWork, baselineVGA, effectStart+frame, visibleEffect)
 		if err != nil {
 			return NativeCommand32TailFrames{}, fmt.Errorf("battlepresent: command32 effect %d: %w", frame, err)
 		}
 		out.Effect = append(out.Effect, vga)
+		out.EffectSources = append(out.EffectSources, layers)
 	}
 	for pair := 0; pair < togglePairs; pair++ {
 		for _, descriptor := range []int{toggleA, toggleB} {
-			vga, err := compose(baselineWork, baselineVGA, descriptor, visibleEffect)
+			vga, layers, err := compose(baselineWork, baselineVGA, descriptor, visibleEffect)
 			if err != nil {
 				return NativeCommand32TailFrames{}, fmt.Errorf("battlepresent: command32 toggle %#x: %w", descriptor, err)
 			}
 			out.Toggle = append(out.Toggle, vga)
+			out.ToggleSources = append(out.ToggleSources, layers)
 		}
 	}
 	for index, result := range results {
@@ -140,10 +144,12 @@ func buildNative1CAC7TailFrames(
 	}
 	for frame := 0; frame < digitFrames; frame++ {
 		work, vga := append([]byte(nil), postTransactionWork...), append([]byte(nil), postTransactionVGA...)
-		if err := indexedmap.ComposeNativeCommandHealDigitFrame(work, vga, postTransactionWork, digits, out.Queue, targets, cameraX, cameraY, digitVertical, frame); err != nil {
+		layers, err := indexedmap.ComposeNativeCommandHealDigitFrameWithSources(work, vga, postTransactionWork, digits, out.Queue, targets, cameraX, cameraY, digitVertical, frame)
+		if err != nil {
 			return NativeCommand32TailFrames{}, fmt.Errorf("battlepresent: command32 result %d: %w", frame, err)
 		}
 		out.Result = append(out.Result, vga)
+		out.ResultSources = append(out.ResultSources, layers)
 	}
 	return out, nil
 }
