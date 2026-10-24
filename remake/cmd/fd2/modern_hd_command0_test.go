@@ -9,6 +9,7 @@ import (
 	"strconv"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/battlepresent"
@@ -120,9 +121,9 @@ func appendModernCommand0GPUCases(t *testing.T, cases []modernHDBattleGPUCase) [
 	return cases
 }
 
-func ordinaryCommand0HDTestGame(t *testing.T) (*Game, *battle.Unit, *battle.Unit) {
+func ordinaryCommand0HDTestGame(t *testing.T, clocks ...func() time.Time) (*Game, *battle.Unit, *battle.Unit) {
 	t.Helper()
-	g, actor, target := nativeCommand32PresentationFixture(t)
+	g, actor, target := nativeCommand32PresentationFixture(t, clocks...)
 	actor.BattleFig, target.BattleFig = 9, 0
 	if value := os.Getenv("FD2_TEST_COMMAND_ACTOR_FIGURE"); value != "" {
 		figure, err := strconv.Atoi(value)

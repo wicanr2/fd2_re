@@ -246,6 +246,10 @@ func (g *Game) stageModernHDCompoundMap(frames []nativeCompoundPresentedFrame, s
 
 func (g *Game) modernCompoundMapFrames() []nativeCompoundPresentedFrame {
 	switch {
+	case g.nativeModifierPresentation != nil:
+		return g.nativeModifierPresentation.hdFrames
+	case g.nativeAICommandModifier != nil:
+		return g.nativeAICommandModifier.frames
 	case g.nativeCmd32Presentation != nil:
 		return g.nativeCmd32Presentation.frames
 	case g.nativeCmd33Presentation != nil:

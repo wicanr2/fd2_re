@@ -96,19 +96,23 @@ def main():
     p.add_argument('--original-pack', type=Path, required=True)
     p.add_argument('--out', type=Path, required=True)
     p.add_argument('--compound-tails', action='store_true', help='核對32～35既有typed尾段的全部LMI索引，包含原始空拍')
+    p.add_argument('--modifier-tails', action='store_true', help='核對17～22／25～27既有狀態尾段的全部LMI索引')
     args = p.parse_args()
     report, sheet = [Path(str(args.out)+suffix) for suffix in ['.json', '.png']]
     if not Path('/.dockerenv').exists() or report.exists() or sheet.exists() or report.parent.stat().st_uid != os.getuid():
         raise SystemExit('Docker內使用本人擁有的新輸出前綴')
     ranges = None
+    if args.compound_tails and args.modifier_tails:raise SystemExit('一次只選一個明示來源集合')
     if args.compound_tails:
         ranges = {5: [74,75,76]+list(range(94,104))+list(range(105,115))+[116,117,118],
                   6: list(range(57,76))+list(range(126,191))}
+    if args.modifier_tails:
+        ranges = {5:[74,75,76]+list(range(94,104))+list(range(105,115)),6:list(range(126,230))}
     data, pictures = audit(args.original_pack, ranges)
     canvas = Image.new('RGB', (1200, ((len(pictures)+9)//10)*200), '#151721'); draw = ImageDraw.Draw(canvas)
     for n, (resource, row, im) in enumerate(pictures):
         x, y = n % 10*120, n//10*200
-        scale = min(4, 116/im.width, 150/im.height) if args.compound_tails else 4
+        scale = min(4, 116/im.width, 150/im.height) if args.compound_tails or args.modifier_tails else 4
         picture = im.resize((max(1,int(im.width*scale)), max(1,int(im.height*scale))), Image.Resampling.NEAREST)
         cell = Image.new('RGBA', (120, 200), '#151721'); cell.alpha_composite(picture, ((120-picture.width)//2, 45)); canvas.paste(cell.convert('RGB'), (x, y))
         draw.text((x+4, y+4), f'{resource}:{row["index"]} {row["width"]}x{row["height"]}', fill='white')

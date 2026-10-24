@@ -5,6 +5,7 @@ import (
 	"math/rand"
 	"path/filepath"
 	"testing"
+	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
@@ -21,7 +22,7 @@ func nativeCommand32PresentationPlan(t *testing.T) (*battle.NativeCompoundComman
 	return plan, actor, target
 }
 
-func nativeCommand32PresentationFixture(t *testing.T) (*Game, *battle.Unit, *battle.Unit) {
+func nativeCommand32PresentationFixture(t *testing.T, clocks ...func() time.Time) (*Game, *battle.Unit, *battle.Unit) {
 	t.Helper()
 	base := filepath.Clean("../../../org_game/炎龍騎士團/FLAME2")
 	paths := map[string]string{
@@ -38,6 +39,12 @@ func nativeCommand32PresentationFixture(t *testing.T) (*Game, *battle.Unit, *bat
 	}
 	t.Setenv("FD2_ORIGINAL_FIGANI", filepath.Join(t.TempDir(), "missing.dat"))
 	g := &Game{rng: rand.New(rand.NewSource(32)), nativeUIPalette: loadNativeUIPalette()}
+	if len(clocks) > 1 {
+		t.Fatal("one explicit fixture clock required")
+	}
+	if len(clocks) == 1 {
+		g.nativeMapFrozenNow = clocks[0]
+	}
 	attachOfficialLocale(t, g)
 	if err := g.loadMap("assets/maps/map0"); err != nil {
 		t.Fatal(err)

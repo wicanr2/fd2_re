@@ -3144,3 +3144,23 @@ GitHub連接器無權查私人素材庫；沿用主機Git已登入路徑fetch成
 2026-10-24 最終完整性：{"status": "PASS", "sha_references": 80, "local_links": 2453, "historical_root_files_unchanged": 51, "new_files_uid_gid": 1000, "output_root_root_owned_or_md_directories": [], "readme_cultural_entries_present": true, "gallery_sources_verified": 4, "python_sources_compile": true, "issues": {"open": 24, "manual": 16, "possibly_done": 0, "parents_204_263_and_art_268_269_open": true}, "lessons": 328, "guards": 192}。私人庫乾淨且兩種FD2工具image無殘留容器；無新image／volume。Issue讀回只規範末尾換行差異，原驗收／id／verify.kind保持，官方工具產生快照與render，未手改產生區。來源與重跑依主收據final_integrity。
 
 2026-10-24 正式覆蓋重生：audit_fd2_battle_hd_coverage.py對固定原包、正式763清冊與實際PNG通過，LMI七組146張。264個已解碼FIGANI／2118幀保持，來源408仍阻擋；資料覆蓋不提升caller或玩家證據。完整參數與SHA見本批formal_coverage。gofmt、git diff --check通過。
+
+## 2026-10-24 狀態法術HD地圖接線
+
+從652e36c2的main建立hd/modifier-map-20261024，沿規格先行路由與重製技能恢復。61及主收據先列READY，再將玩家獨立調色owner與玩家／敵方狀態尾段接入共享HD地圖。原生WithSources只補定位資料，原始像素、聲音、delay、publishAt、500ms hold、交易、取消、RNG及保存格式保持。玩家23只涵蓋調色前導，後續消失／出現仍待；沒有新增敵方25入口。
+
+固定原包127個LMI來源逐raw／Pmode／manifest核對。5:74～76已屬既有死亡HD組的火焰，不能誤稱MISS字母或待補美術；失敗queue仍保留原始十進位索引。正式763清冊保持，只有6:191～229共39份尚未登錄。以內建imagegen生成兩份透明菱形母稿，原RGBA與完整提示詞保存於既有work根。39幀可丟棄編製候選仍為DRAFT，部分次要實心菱形有條紋狀材質接縫，未登錄或同步私人庫。目視時一度懷疑192右側褐色直線，固定原圖也有相同筆畫，因此撤回該疑慮並保留原位置。候選、原圖與勘誤見主收據next_art_candidates。
+
+初輪獨立GPU流程在map-palette出現像素差，曾懷疑多Game批次；改獨立程序仍重現。原生控制再次compose也差1018點，查到composeNativeMapFrameForCaller會取樣真實時鐘並推進地形／待機／色盤。測試改為初始化前固定兩側Unix1000，額外compose與獨立控制相同，推翻先前批次假說；正式遊戲時鐘不變。來源及GPU矩陣固定seed7，另沿既有AI26正例預先指定seed0補驗成功，不重擲或取代seed7的失敗結果。錯誤及修正收據分開保存。
+
+其他驗證環境修正：AI直接建構缺少正式派發脈絡，改走executeNativeAIActionWithContinuation；原始己方紀錄缺AI raw欄位，改用原敵方4／5紀錄並明示位置、Camp、class與狀態，目的地同步建構位置。這些只改測試條件。六案例GPU分片在750秒到期，峰值4228853760 bytes，oom／oom_kill均0；保留失敗收據，拆成三案例且不降低檢查條件。先前未固定時鐘的通過收據不算本批最終矩陣。
+
+Docker恢復時首次受sandbox拒絕連線，改用已授權的隔離Docker控制面；既有素材image的entrypoint是Python，補明示entrypoint後讀取成功，沒有另建image。教訓守衛預設排除_test檔，首次掛測試檔時被拒收，改掛既有永久驗證器後329教訓／193守衛通過。完整HD目標仍active，其他owner、39份光效、完整HUD、未知來源與集中正常／人工／平台仍待。
+
+本批最終矩陣：21來源／846原生幀、42原子拒收、21固定seed7流程及一固定seed0套用成功流程；1333次Game.Draw回讀、21701240格點像素、210193已登錄HD圖層核心含210178異於原生像素、84次F2往返、278張完整1920×1200 PNG通過。12份HD閘門／21項必要頂層測試，另365原生producer及8字串回歸通過，最終必要矩陣沒有SKIP／逾時／OOM。117次原生圖層回退是未登錄39份來源在本矩陣的繪製次數，不是117份缺件。Linux容器最高4098408448 bytes；同容器順序測試的memory.peak為累計值，不外推平台效能。失敗六案例分片另列，不混入通過矩陣。
+
+字串回歸首次只有審核綁定SHA失敗。使用已保存且匹配舊審核SHA的盤點，經官方migrate_string_review.py遷移座標；逐分類比較role／text／file／function與數量保持，109筆仍為34玩家可見／62內部診斷／9開發／4未知，沒有drop或新分類。八項字串測試R2全部通過。原始失敗log與遷移收據保留，未放寬測試。README新增未修圖的完整敵方17 Game.Draw與明示fixture圖說；正式清冊與私人素材庫保持，沒有新Release、錄影、image或volume。
+
+字串差異進一步定位：完整5226筆的語意簽名及數量相同，真正移位的是modern_hd_compound_map與native_command_modifier_presentation六筆runtime_ui座標。109筆go_review的ID本身未變，review只更新其綁定的完整inventory SHA，分類與處置內容保持。Issue #204／#263已讀回確認新進度，原驗收／id／verify區塊保持；#268／#269內文未動且仍開啟。官方快照與render／verify更新後，24個開啟項、可能已完成0。完整性核對涵蓋本批收據、來源、圖片、文件連結與擁有權，51個歷史root檔逐SHA保持；既有README文化入口保持。
+
+最終完整性通過350項SHA引用、2574個選定文件本地連結、329教訓／193守衛及Go格式。新增與修改檔、本批modifier輸出均1000:1000，沒有異常md目錄；私人庫乾淨，兩種FD2工具image均無執行中或停止殘留容器。沒有新增image／volume或錄影，不需刪除正式或原始素材。唯一重跑與收據入口為HD主收據modifier_map_hd_followup_20261024；其他HD待辦保持，目標active。

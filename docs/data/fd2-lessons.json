@@ -3997,6 +3997,21 @@
         ],
         "pattern": "r\\.CompoundOwner != frame\\.CompoundOwner"
       }
+    },
+    {
+      "id": "freeze-native-map-clock-before-fixture-initialization",
+      "area": "HD驗證",
+      "date": "2026-10-24",
+      "rule": "獨立地圖／HD對照先固定兩側的時鐘與RNG，再初始化地圖。額外compose會消費BIOS、地形與待機時鐘；同seed不保證同畫面。入口remake/cmd/fd2/modern_hd_modifier_map_test.go的TestModernModifierMapControlSnapshot及native_command32_presentation_test.go的可選clock fixture。",
+      "why": "狀態法術的兩獨立程序仍有map-palette像素差；控制實驗證明原生再次compose也差1018點。初始化前固定Unix1000後，額外compose與獨立控制相同，推翻先前把差異歸於多Game批次的假說。正式遊戲時鐘保持。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_battle_surface_hd.py"
+        ],
+        "pattern": "TestModernModifierMapControlSnapshot"
+      }
     }
   ]
 }

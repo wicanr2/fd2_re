@@ -12,6 +12,14 @@ from verify_fd2_player9_map_hd import check_real_runtime
 
 ROOT = Path(__file__).resolve().parents[1]
 REQUIRED = {
+    'modifier-map-fixture': {'TestModernModifierMapFixtureAdmission','TestModernModifierMapControlSnapshot'},
+    'modifier-map-source': {'TestModernModifierMapSourcesAndAtomic'},
+    'modifier-map-game': {'TestModernModifierMapRuntimeGPU'},
+    'modifier-map-zero-seed': {'TestModernModifierMapZeroSeedApplicationGPU'},
+    'modifier-map-batch': {'TestModernModifierMapBatchGPU'},
+    'modifier-map-regression': {'TestExecuteNativeAICommand17UsesOriginalIndexedTail','TestNativeAICommandModifierLateCancelRollsBack',
+                                'TestExecuteNativeAICommand20UsesOriginalIndexedTail','TestExecuteNativeAICommand26UsesOriginalIndexedTail',
+                                'TestPlayerNativeCommand20UsesPaletteThenOriginalIndexedTail','TestPlayerNativeCommand25UsesOriginalTailWithoutEmptyNumericHold'},
     'compound-tail-art-source': {'TestModernCompoundTailArtAtomic','TestModernCompoundTailArtSourceGPU'},
     'compound-map-unit': {'TestModernCompoundMapBindingAtomic'},
     'compound-map-source': {'TestModernCompoundMapAllSources'},
@@ -69,6 +77,10 @@ def main():
     p.add_argument('--pack', type=Path, required=True)
     p.add_argument('--out', type=Path, required=True)
     p.add_argument('--enemy', action='store_true')
+    p.add_argument('--modifier-command',type=int,choices=[17,18,19,20,21,22,23,25,26,27],default=17)
+    p.add_argument('--modifier-failed',action='store_true')
+    p.add_argument('--modifier-start',type=int,choices=range(21),default=0)
+    p.add_argument('--modifier-limit',type=int,choices=range(1,7),default=6)
     p.add_argument('--panel-locale', choices=['zh-Hant','zh-Hans','ja','en'], default='zh-Hant')
     p.add_argument('--panel-owner',type=int,choices=[0,1,2,3,4,5,6,7,8,9,24,29,32,33,34,35],default=0)
     p.add_argument('--surface', type=int, choices=range(56), default=4)
@@ -84,6 +96,10 @@ def main():
     p.add_argument('--all-compound-effects', action='store_true', help='四召喚地圖尾段不允許任何可見LMI回退')
     p.add_argument('--timeout', type=int, default=1200)
     a = p.parse_args()
+    if a.kind=='modifier-map-zero-seed' and (a.modifier_command!=26 or not a.enemy or a.modifier_failed):
+        raise SystemExit('固定0補測只使用既有敵方26正例')
+    if a.kind=='modifier-map-batch' and a.modifier_start+a.modifier_limit>21:
+        raise SystemExit('狀態法術分片越界')
     if a.all_compound_effects and a.kind!='compound-map-game':raise SystemExit('--all-compound-effects只用於compound-map-game')
     if a.kind in ['ordinary-scenery-source','ordinary-scenery-game'] and a.panel_owner not in range(10):
         raise SystemExit('一般場景需要明示0～9的owner，9只指敵方戰鬥')
@@ -102,6 +118,19 @@ def main():
     independent = check_real_runtime(a.pack, catalog) if a.require_real_runtime else None
     env = os.environ.copy()
     env.update(FD2_MUTE='1', FD2_TEST_MODERN_BATTLE_CATALOG=str(a.catalog.resolve()), FD2_TEST_MODERN_BATTLE_PACK=str(a.pack.resolve()))
+    for name in ['FD2_HD_MODIFIER_MAP_UNIT','FD2_HD_MODIFIER_MAP_GPU','FD2_HD_MODIFIER_MAP_REPORT','FD2_HD_MODIFIER_MAP_FIXTURE','FD2_HD_MODIFIER_MAP_ZERO','FD2_HD_MODIFIER_MAP_BATCH']:env.pop(name,None)
+    if a.kind=='modifier-map-fixture':env['FD2_HD_MODIFIER_MAP_FIXTURE']='1'
+    if a.kind=='modifier-map-source':
+        env.update(FD2_HD_MODIFIER_MAP_UNIT='1',FD2_HD_MODIFIER_MAP_REPORT=str(a.out),
+                   FD2_TEST_MODERN_EFFECT_CATALOG=str(a.catalog.resolve()),FD2_TEST_MODERN_EFFECT_PACK=str(a.pack.resolve()))
+    if a.kind in ['modifier-map-game','modifier-map-zero-seed','modifier-map-batch']:
+        env.update(FD2_HD_MODIFIER_MAP_GPU='1',FD2_HD_MODIFIER_COMMAND=str(a.modifier_command),
+                   FD2_HD_MODIFIER_PLAYER='0' if a.enemy else '1',FD2_HD_MODIFIER_FAILED='1' if a.modifier_failed else '0',
+                   FD2_HD_MODIFIER_MAP_REPORT=str(a.out),FD2_HD_MODIFIER_CAPTURE=str(a.out)+'-capture',
+                   FD2_TEST_MODERN_EFFECT_CATALOG=str(a.catalog.resolve()),FD2_TEST_MODERN_EFFECT_PACK=str(a.pack.resolve()))
+        if a.kind=='modifier-map-zero-seed':env['FD2_HD_MODIFIER_MAP_ZERO']='1'
+        if a.kind=='modifier-map-batch':
+            env.update(FD2_HD_MODIFIER_MAP_BATCH='1',FD2_HD_MODIFIER_START=str(a.modifier_start),FD2_HD_MODIFIER_LIMIT=str(a.modifier_limit))
     for name in ['FD2_HD_BATTLE_LIFECYCLE_GPU','FD2_HD_BATTLE_REAL','FD2_HD_BATTLE_ENEMY_ACTOR','FD2_HD_SURFACE_GPU','FD2_HD_BATTLE_BACKGROUND','FD2_HD_BATTLE_PEDESTAL']:
         env.pop(name,None)
     for name in ['FD2_HD_SCROLL_SIDE','FD2_HD_SCROLL_SCENERY','FD2_HD_SCROLL_SCENERY_GPU','FD2_HD_SCROLL_REAL','FD2_HD_SCROLL_TARGET','FD2_HD_SCROLL_PROJECTILES','FD2_HD_SCROLL_TARGET_FRAMES']:
@@ -312,12 +341,45 @@ export DISPLAY=:99
                 or {c['index'] for c in d['cases']}!=required
                 or any({c['placement'] for c in d['cases'] if c['index']==i}!={0,1} for i in required)):
             raise SystemExit('77份尾段光效缺少全部GPU來源或邊界取樣')
+    if a.kind=='modifier-map-source':
+        d=json.loads(Path(str(a.out)+'.sources.json').read_text())
+        wanted={(i,True,False) for i in [17,18,19,20,21,22,23,25,26,27]}|{(i,False,False) for i in [17,18,19,20,21,22,26,27]}|{(i,True,True) for i in [20,22,25]}
+        rows=d.get('cases',[])
+        if (len(rows)!=21 or {(r['case']['ID'],r['case']['Player'],r['case']['Failed']) for r in rows}!=wanted
+                or any(r.get('frames',0)<8 or r.get('atomic_rejections')!=2 for r in rows)):
+            raise SystemExit('狀態法術缺少完整來源或錯來源原子拒收')
+    if a.kind in ['modifier-map-game','modifier-map-zero-seed','modifier-map-batch']:
+        suffix='.batch.json' if a.kind=='modifier-map-batch' else '.game.json'
+        report_data=json.loads(Path(str(a.out)+suffix).read_text())
+        rows=report_data.get('cases',[]) if a.kind=='modifier-map-batch' else [report_data]
+        expected={(a.modifier_command,not a.enemy,a.modifier_failed)}
+        if a.kind=='modifier-map-batch':
+            cases=[]
+            for i in [17,18,19,20,21,22,23,25,26,27]:
+                cases.append((i,True,False))
+                if i not in [23,25]:cases.append((i,False,False))
+            cases += [(i,True,True) for i in [20,22,25]]
+            expected=set(cases[a.modifier_start:a.modifier_start+a.modifier_limit])
+        if len(rows)!=len(expected) or {(d['case']['ID'],d['case']['Player'],d['case']['Failed']) for d in rows}!=expected:
+            raise SystemExit('狀態法術缺少明示的全部流程')
+        for d in rows:
+            seed=0 if a.kind=='modifier-map-zero-seed' else 7
+            if a.kind=='modifier-map-zero-seed' and d.get('application_successes',0)<=0:
+                raise SystemExit('固定0補測未觸發狀態套用')
+            if (d.get('seed')!=seed or d.get('native_control_seed')!=seed or d.get('clock_unix_seconds')!=1000 or d.get('continuations')!=1
+                or not d.get('native_control_units_rng_equal_after_every_step') or d.get('audited_draws',0)<8
+                or d.get('matched_pixels',0)<10000 or d.get('different_native_hd_lattice_pixels',0)<=0
+                or d.get('faithful_palette_pixels',0)<64000 or not d.get('phase_f2_switches')
+                or not all(d['phase_f2_switches'].values()) or not d.get('source_shots')):
+                raise SystemExit('狀態法術缺少實際GPU、原生對照、F2或返回')
     report = dict(status='PASS',kind=a.kind,enemy=a.enemy,required=sorted(REQUIRED[a.kind]),
                   catalog_sha256=hashlib.sha256(a.catalog.read_bytes()).hexdigest(),
                   catalog=str(a.catalog.resolve()),pack=str(a.pack.resolve()),with_pedestal=a.with_pedestal,surface=a.surface,pair=a.pair,
                   command_id=a.command,triple=a.triple,hashes_only=a.hashes_only,transition_required=a.transition,
                   panel_locale=a.panel_locale,
                   panel_owner=a.panel_owner,
+                  modifier_command=a.modifier_command,modifier_failed=a.modifier_failed,
+                  modifier_start=a.modifier_start,modifier_limit=a.modifier_limit,
                   all_compound_effects=a.all_compound_effects,
                   scenery_start=a.scenery_start,scenery_limit=a.scenery_limit,
                   independent_runtime_files=independent, memory=str(a.out)+'.memory.json',log=str(a.out)+'.log',

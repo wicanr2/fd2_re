@@ -220315,5 +220315,1774 @@
       "sha256": "e170120bfd025c436fbd1f675c52ade3683aea3eda26f66710832aea15000db0",
       "command": "python3 tools/audit_fd2_battle_hd_coverage.py --inventory docs/data/fd2-battle-hd-source-inventory-20261019.json --original-pack /original --catalog remake/assets/themes/modern/catalog.json --source remake/generated-assets/modern-theme-prototypes --report <new-report>; maintained Pillow Docker, original pack read-only"
     }
+  },
+  "modifier_map_hd_followup_20261024": {
+    "status": "CONFORMED-SCOPED / RUNTIME-E1",
+    "base_commit": "652e36c2123d6163d17a2e46ab178a85f419764f",
+    "scope": "existing player palette owner plus AI17-22/26/27 and player20-22/25-27 map handler owners; no new gameplay or save format",
+    "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+    "native_evidence": [
+      "docs/data/ida/fd2_command_modifier_palette_ida.txt",
+      "docs/data/ida/fd2_command20_22_player_ai_presentation_ida.txt",
+      "docs/data/ida/fd2_command25_27_player_ai_presentation_ida.txt"
+    ],
+    "new_art": false,
+    "unregistered_lmi_indices": [
+      191,
+      192,
+      193,
+      194,
+      195,
+      196,
+      197,
+      198,
+      199,
+      200,
+      201,
+      202,
+      203,
+      204,
+      205,
+      206,
+      207,
+      208,
+      209,
+      210,
+      211,
+      212,
+      213,
+      214,
+      215,
+      216,
+      217,
+      218,
+      219,
+      220,
+      221,
+      222,
+      223,
+      224,
+      225,
+      226,
+      227,
+      228,
+      229
+    ],
+    "palette_policy": "reuse player9 HD contract: indexed planes follow actual palette, terrain existing four-colour-difference approximation, authored HD unit RGB retained; not whole-world tint or original RGB parity",
+    "next_art_candidates": {
+      "status": "DRAFT-UNREGISTERED",
+      "mother_assets": {
+        "status": "DRAFT-UNREGISTERED",
+        "tool": "built-in image_gen",
+        "masters": [
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-lime-diamond-master-oct24-r1.png",
+            "sha256": "b5d97e5b7874b105cf5afd94cecd68207774afc3e9d3e53fe53c84d295695594",
+            "size": [
+              1254,
+              1254
+            ],
+            "alpha_extrema": [
+              0,
+              254
+            ],
+            "unmodified": true
+          },
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-blue-diamond-master-oct24-r1.png",
+            "sha256": "0509468ec9698df027a537da8ffd6f401812f0fc1145e55ae1d29976f25a78b2",
+            "size": [
+              1254,
+              1254
+            ],
+            "alpha_extrema": [
+              0,
+              254
+            ],
+            "unmodified": true
+          }
+        ],
+        "prompts": "modifier-art-generation-prompts-oct24-r1.json",
+        "full_prompt_set": {
+          "tool": "built-in image_gen",
+          "transparent_background": true,
+          "status": "prototype only; not catalogued",
+          "prompts": [
+            {
+              "id": "lime-diamond",
+              "prompt": "Use case: stylized-concept. Asset type: one production hand-painted game VFX mother sprite, not a scene. On a TRUE TRANSPARENT background create exactly ONE centered luminous hollow diamond-shaped magical ring, with exactly four sharp points at top/right/bottom/left. A continuous thin faceted diamond ribbon surrounds a large clean transparent central hole. The main colour is luminous yellow-green/chartreuse with yellow-white bright brushstroke cores and subtle warm lime edge glows. Match a polished hand-painted classic Taiwanese fantasy strategy RPG remake: readable luminous paint, restrained soft bloom, visible flowing brush texture, crisp structural tips. It must remain a hollow diamond ring, not a filled gem and not an eight-ray star. Keep the entire ring and faint glow inside the central 60 percent of a square image with generous fully transparent padding on all sides. No ground, pedestal, characters, background, lettering, labels, border, additional objects, extra rings, lens flares or scattered detached sparkles. All areas outside the single diamond and its soft fading edge glow must have true alpha transparency. This mother sprite will be fitted into original game VFX silhouettes by the asset compiler; provide rich luminous RGB texture without a black or white matte."
+            },
+            {
+              "id": "blue-diamond",
+              "prompt": "Use case: stylized-concept. Asset type: one production hand-painted game VFX mother sprite, not a scene. On a TRUE TRANSPARENT background create exactly ONE centered luminous hollow diamond-shaped magical ring, with exactly four sharp points at top/right/bottom/left. A continuous thin faceted diamond ribbon surrounds a large clean transparent central hole. The main colour is pale ice-blue/periwinkle with blue-white bright brushstroke cores and subtle cobalt-blue edge glows. Match a polished hand-painted classic Taiwanese fantasy strategy RPG remake: readable luminous paint, restrained soft bloom, visible flowing brush texture, crisp structural tips. It must remain a hollow diamond ring, not a filled gem and not an eight-ray star. Keep the entire ring and faint glow inside the central 60 percent of a square image with generous fully transparent padding on all sides. No ground, pedestal, characters, background, lettering, labels, border, additional objects, extra rings, lens flares or scattered detached sparkles. All areas outside the single diamond and its soft fading edge glow must have true alpha transparency. This mother sprite will be fitted into original game VFX silhouettes by the asset compiler; provide rich luminous RGB texture without a black or white matte."
+            }
+          ]
+        }
+      },
+      "native_reference": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-art-reference-oct24-r1.png",
+      "remaining": {
+        "5": [],
+        "6": [
+          191,
+          192,
+          193,
+          194,
+          195,
+          196,
+          197,
+          198,
+          199,
+          200,
+          201,
+          202,
+          203,
+          204,
+          205,
+          206,
+          207,
+          208,
+          209,
+          210,
+          211,
+          212,
+          213,
+          214,
+          215,
+          216,
+          217,
+          218,
+          219,
+          220,
+          221,
+          222,
+          223,
+          224,
+          225,
+          226,
+          227,
+          228,
+          229
+        ]
+      },
+      "ring_policy": "reuse approved heal1316-ring-master-oct23-r1.png; component fitting still needs prototype and READY review",
+      "production_catalog_changed": false,
+      "prototype_review": {
+        "status": "DRAFT-NEEDS-REVISION",
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-art-prototype-r1/prototype.json",
+          "sha256": "34f41a1d57108b814f44a4ac3ab72a517bfe1e76af46646172e208e3c1da921f"
+        },
+        "overview": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-art-prototype-r1/overview.png",
+          "sha256": "d68b9bd032064cd6cf38452182867d15a8230167c88856578d2213a45bdb569b"
+        },
+        "frames": 39,
+        "observations": [
+          "Some secondary filled diamonds have stripe-like RGB seams and need a material fitting revision before registration.",
+          "The brown vertical stroke beside native LMI6 entry192 is present in the pinned original source and must be preserved; initial visual suspicion is withdrawn."
+        ],
+        "production_catalog_changed": false,
+        "private_sync_performed": false
+      }
+    },
+    "pinned_lmi_sources": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-lmi-sources-oct24-r1.json",
+      "sha256": "5209e43e78b4fceb0c5941c3eb9f9f42517b81391f9ec32bbf62884e88cff72f"
+    },
+    "clock_policy": {
+      "unix_seconds": 1000,
+      "installed_before_load_map": true,
+      "source_control_diff_before_fix": 1018,
+      "production_clock_unchanged": true,
+      "evidence": "modifier-map-fixture-oct24-r3.log counterexample and r4.log fixed result",
+      "go_runtime_parallelism": 3,
+      "docker_cpu_quota": 3
+    },
+    "summary": {
+      "source_cases": 21,
+      "source_native_frames": 846,
+      "source_atomic_rejections": 42,
+      "seed7_actual_flows": 21,
+      "seed0_supplemental_flows": 1,
+      "seed0_application_successes": 1,
+      "audited_draws": 1333,
+      "matched_pixels": 21701240,
+      "registered_overlay_pixels": 210193,
+      "changed_overlay_pixels": 210178,
+      "native_fallback_layers": 117,
+      "f2_roundtrips": 84,
+      "actual_full_pngs": 278,
+      "hd_gates": 12,
+      "required_top_level_tests": 21,
+      "peak_bytes": 4098408448,
+      "extra_tests": {
+        "producers": {
+          "pass": 365,
+          "skip": 0,
+          "fail": 0
+        },
+        "string-tests": {
+          "pass": 8,
+          "skip": 0,
+          "fail": 0
+        }
+      },
+      "catalog_assets": 763,
+      "unregistered_effect_frames": 39
+    },
+    "verification": {
+      "gates": [
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-fixture-oct24-r4.gate.json",
+            "sha256": "43b71f43116f9f63d4ff84914a8efbc5926b9680694e38fd27523a3b42c9b6b1"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-fixture-oct24-r4.memory.json",
+            "sha256": "fc55e6a520f119d65dd68584dde7639747d3ccec2c890386ee004a29cdc91090"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-fixture-oct24-r4.log",
+            "sha256": "68c27626f217abbb86c7ca1a323cb30887daa8bc82d1fd226c1a2a94d54a6a44"
+          }
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-source-oct24-r5.gate.json",
+            "sha256": "1b050437edd5591ed54ae007b0d7e930f9ff61415903bc04c5fd1772775c5e5c"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-source-oct24-r5.memory.json",
+            "sha256": "270e05696fa36e3f4846b9c7fdd3b6366db4d3c142a3fe8c64e2c167908e1a78"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-source-oct24-r5.log",
+            "sha256": "8f1293d47dd4b71f18ebb14d9d647888ea46c462bcea7238027aeda7c38498b9"
+          }
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1.gate.json",
+            "sha256": "a7fd96d5bfb8061f45cbc30f63902658f02dd406074d9f3e129429f30be92d32"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1.memory.json",
+            "sha256": "f8c121b3200338f572a701041f90e4fe5728ddce79d3855263e034ce0546c0ca"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1.log",
+            "sha256": "99e2628df7b611d49c919de1c5a7075d1a56445fc62b0211f20f5cc10623e1e6"
+          }
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1.gate.json",
+            "sha256": "11044ef0e59d143e5b8f272d71cfb72e5694791c1edb1b290e198fe9e85ef1f6"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1.memory.json",
+            "sha256": "1747f3bbe22d2c5fda47d0a472894c4f970338e933096435a1054881fd59615c"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1.log",
+            "sha256": "eb43b1aa1bb65aa05eeb6818046806bd6041f8c592980e2aeae57399e88a1a27"
+          }
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1.gate.json",
+            "sha256": "e79c678eeae780866aad2cb9b1b55f7c19853e28485cb7f8af00f2a5c31b4abb"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1.memory.json",
+            "sha256": "6f419348c58c8c2a76a3c068e99d133f806d401af1cb1fcb7eeeb083f9a230f7"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1.log",
+            "sha256": "688165690cd7bac2483f9b0cf804a15c455e4a6a71ea5fe2195af260b9ea82b9"
+          }
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-12-3-oct24-r1.gate.json",
+            "sha256": "853ad301e0702d2d209083d338860c76a2f59a365652bc7f9c03d60bcad417a4"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-12-3-oct24-r1.memory.json",
+            "sha256": "8bc5dd0555ccf4d4fd384d0b367cf075572dc8fcd1334c92e3035999a150886c"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-12-3-oct24-r1.log",
+            "sha256": "e85432253478e577d960b1c30cac681ee9c16b4032de140647f3074a6e250c20"
+          }
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1.gate.json",
+            "sha256": "5a84f0d056c21aa6ed8a23b84366c2905ca3f9737a075c6789c41657fd188425"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1.memory.json",
+            "sha256": "7ee89a964dc240fec2deb9d58f0d2851f3d7fcfda2d76f2d70efb34b61a94f0b"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1.log",
+            "sha256": "a125f8cfe29af691665b9069ac46b4b7de75a066eac6d695aea8641d38b7191a"
+          }
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1.gate.json",
+            "sha256": "e4106f315eca117ff059069ddd0968263f2adee820dfe3f347751fd27045da29"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1.memory.json",
+            "sha256": "65d02733353733e1b639fb7e83f17ea35f1b909d7e62740fe16e85f67f87c892"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1.log",
+            "sha256": "234fb94446a19f301143bbe452f8617d5618d355815fbb843f5f9619e0b04d37"
+          }
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-game-ai26-seed0-oct24-r1.gate.json",
+            "sha256": "bf6fc7cf67546cac2914a6a3f62fd5c442de76c64985394bab9850bc2421b752"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-game-ai26-seed0-oct24-r1.memory.json",
+            "sha256": "c301d267ae2ef8a42854e4389fd4b0df21db2f7fb0c5adb6f175eafe04636dfc"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-game-ai26-seed0-oct24-r1.log",
+            "sha256": "e0432908d6a8d9161ae98c011fd140c36bd859a5eee9eae5dce5720e46f062bd"
+          }
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-final-modifier-map-regression-oct24-r1.gate.json",
+            "sha256": "d529f3b78ddfc5d5954d90cf98e5c3a1c6a87108e9b8c8360c0d5dc5e4325dc7"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-final-modifier-map-regression-oct24-r1.memory.json",
+            "sha256": "78d92a51ad7c7823cb5d48532bbe5665ff42abae63a069e8f424d1cae9fe4362"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-final-modifier-map-regression-oct24-r1.log",
+            "sha256": "3f8213730c22f7e303350cbb9a40598ee46945648d01dcf911c76f0a06235717"
+          }
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-final-compound-scenery-regression-oct24-r1.gate.json",
+            "sha256": "9bf6f5229d085e9d603fc0ceff8f9aa6f537295f00dd287bc63a9cc4ccee6e7a"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-final-compound-scenery-regression-oct24-r1.memory.json",
+            "sha256": "41ea76579e3c0554d1f7029d42a58f0409a8949e3c566a1495e3274172daa6a4"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-final-compound-scenery-regression-oct24-r1.log",
+            "sha256": "f5ee3b44b9f3d541e83e36dec0caac8080809f0a39b6c3c9a5a3b30ff3d185c9"
+          }
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-final-compound-map-unit-oct24-r1.gate.json",
+            "sha256": "d59fd5e4331c7316c659b58e2b1d10af99dd6ca9ccb2f19e524357a4d0dd98dc"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-final-compound-map-unit-oct24-r1.memory.json",
+            "sha256": "fb54bdc53b1854faa8d73603ae4706861a7427fbb1959ac2e66578d28a8cf696"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-final-compound-map-unit-oct24-r1.log",
+            "sha256": "431753d88fdad5d21953e1f2b87f4faf7e11525bface180d4c8b529b392158e4"
+          }
+        }
+      ],
+      "source": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-source-oct24-r5.sources.json",
+        "sha256": "fa2c7e2333ae84b6f8839ffb7b20a74bab55a9c927dc58a73db8e14eb150013b"
+      },
+      "gpu_batches": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1.batch.json",
+          "sha256": "2f12556d6a16528b5dff7755ac0c57056015ca7e328afe512ca64e97eb8b4a21"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1.batch.json",
+          "sha256": "9f837e072526caec1b2a651038a3b810201cf4937572851748697e5bcda7c39c"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1.batch.json",
+          "sha256": "04885d0760efc5c8de38500ac83bbfce41757ceb11740d6ff799860a20e1d581"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-12-3-oct24-r1.batch.json",
+          "sha256": "45341334556e00bea9ee1096b6e73324cb448d2c51d1314c11941bead1c2887d"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1.batch.json",
+          "sha256": "72261758cb246d99517ac7cd7df20eaa5d4deceb8e25c037093332212c6725d1"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1.batch.json",
+          "sha256": "c44543d5b3c6968b825f8572bd8b325de96598b3bea82c7057d7a9b2bcfb3504"
+        }
+      ],
+      "seed0_supplement": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-game-ai26-seed0-oct24-r1.game.json",
+        "sha256": "368e033a2fc4f06d6178af2b16967afa61abb94d688929d4ca595f8a35f2a17b"
+      },
+      "extra_tests": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-final-extra-oct24-r1.json",
+        "sha256": "2316f8146e4520cd1c5597e624c7e1834c692b1a19e44a0bdccd305702181bfd"
+      },
+      "extra_artifacts": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-producers-oct24-r1.log",
+          "sha256": "d85bd760c79f9354b42cbc4628061191c30b55af76fa51992e4aad327693fe05"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-string-tests-oct24-r2.log",
+          "sha256": "60dbef1f20f7663eef276f2f94e7318a7975a11c23c6c01451c6fc97aba540c2"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-string-inventory-oct24-r1.json",
+          "sha256": "91f3bd1e0410a18d215de2d64b2fbe708817b08b21ed44b9d86d79eb30258cd3"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-string-rebind-oct24-r1.json",
+          "sha256": "69fddf89a16fe5da9aad83a7f05e9986a9951333df8a74725ad25978f5a926f3"
+        }
+      ],
+      "memory_note": "memory.peak is cumulative within a container; final checks ran sequentially in one container. The maximum is a Linux test workload observation, not a platform performance acceptance.",
+      "catalog": {
+        "file": "remake/assets/themes/modern/catalog.json",
+        "sha256": "547360baea9b85487c4096dd2596e6878880868135672bef2aaed77abb87638f"
+      },
+      "captures": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1-capture/command17-playertrue-failedfalse/map-palette-present-001.png",
+          "sha256": "c4267e34efdc9e096c4ac773be129c4cb8245517bea451e48947781e0f876611"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1-capture/command17-playerfalse-failedfalse/map-digits-present-019.png",
+          "sha256": "848da6aafccacf4b1bd24f0f3a46af7adc10f5f2caac49c854c01fec509548bd"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1-capture/command17-playerfalse-failedfalse/map-effect-present-000.png",
+          "sha256": "fd4e60ff782ccf9d83e60ad2276984cf642f73829a7cd727f59161ccd8473feb"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1-capture/command17-playerfalse-failedfalse/map-effect-present-001.png",
+          "sha256": "5374ada4eb5e3c21eeaad52832b44ba82425fa3bed296e3f46b7813a016a0613"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1-capture/command17-playerfalse-failedfalse/map-effect-present-002.png",
+          "sha256": "070201d85923c69fd5b49540ae1bf5c97ffcd5179b0e5b2f39193d74cc0c9694"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1-capture/command17-playerfalse-failedfalse/map-effect-present-003.png",
+          "sha256": "a04c80ee5705c93875c5ea2cc3d8fe59a35c7520cbdbcf14c1ef4e46e872871a"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1-capture/command17-playerfalse-failedfalse/map-effect-present-004.png",
+          "sha256": "dac83a0dbe9f6671c192a0c7b6f22be6c710b296489b907d4d0da5e9b035f5e6"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1-capture/command17-playerfalse-failedfalse/map-effect-present-005.png",
+          "sha256": "73a272905dcb6fe9b6fe58d25f7108e9088449e5add29515401d36834472dc46"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1-capture/command17-playerfalse-failedfalse/map-effect-present-006.png",
+          "sha256": "121e4432398d3681d097db68d463f7eadaec3445d6f77ea148ee3d59ace69f62"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1-capture/command17-playerfalse-failedfalse/map-effect-present-007.png",
+          "sha256": "1aed3b18604087963dca21936575991c319589a496f565e80a1035b479040686"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1-capture/command17-playerfalse-failedfalse/map-mask-present-008.png",
+          "sha256": "13ee7ba3e3df5e7613d7a0f09f1e4922353de51e651498e0a9ce99e3df078b25"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1-capture/command17-playerfalse-failedfalse/map-mask-present-009.png",
+          "sha256": "a3c940c66c8fff7fd78685d395e04f7f43966a51c30dbb83447044a272e20e6f"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1-capture/command18-playertrue-failedfalse/map-palette-present-000.png",
+          "sha256": "c4267e34efdc9e096c4ac773be129c4cb8245517bea451e48947781e0f876611"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1-capture/command18-playerfalse-failedfalse/map-digits-present-023.png",
+          "sha256": "9cec44d7a9f68c22bfdca4c87872112c0b5c116ba7fcb38270ff6d230e9fc5ed"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1-capture/command18-playerfalse-failedfalse/map-effect-present-000.png",
+          "sha256": "4472ec0abfe77f717caaa3d6e21637871c3e545daa288f1fea9c9375a7a5cc1b"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1-capture/command18-playerfalse-failedfalse/map-effect-present-001.png",
+          "sha256": "7f093701239da11f40d1d7a9161ed01c2e6f7a9606381056964f45f6dcc215c4"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1-capture/command18-playerfalse-failedfalse/map-effect-present-002.png",
+          "sha256": "08126c2a7d2603ef5f167dfd8e37bcdceb57abd3b141a9f91164528a9c428ad2"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1-capture/command18-playerfalse-failedfalse/map-effect-present-003.png",
+          "sha256": "a710a7ed0d2821e895769f7cfcf4663a14741b6d3631fe5707fcc537ad95bc9c"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1-capture/command18-playerfalse-failedfalse/map-effect-present-004.png",
+          "sha256": "8f914baff48dfa08374a7481175ebbe25b729ef3618ae1b9f56785b9039dec41"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1-capture/command18-playerfalse-failedfalse/map-effect-present-005.png",
+          "sha256": "d13eb146097cace41b1be2f4d1857e9ffb91ca282cf40a05a413b6c449120b8a"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1-capture/command18-playerfalse-failedfalse/map-effect-present-006.png",
+          "sha256": "fc6e2b61a4563c9817459e25d19508b75e1b1e7184511c1eccf5238e633066e3"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1-capture/command18-playerfalse-failedfalse/map-effect-present-007.png",
+          "sha256": "9fcac9ac903034864f9e13ae8e392f9f8e02885204c1c135b36b9f560ec517ec"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1-capture/command18-playerfalse-failedfalse/map-effect-present-008.png",
+          "sha256": "c183c3f634f7af368ff27e8aa78441fc161e344031a7c791122a6de8da250585"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1-capture/command18-playerfalse-failedfalse/map-effect-present-009.png",
+          "sha256": "b8bc9682bc6fb32fb2c00f429dc1fe15dbb298c3f8a634d17524e73ef4f9c303"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1-capture/command18-playerfalse-failedfalse/map-effect-present-010.png",
+          "sha256": "2bd000fbc095c21580c4ce18c39b59dd694d96175094ae63ead305092d2e4639"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1-capture/command18-playerfalse-failedfalse/map-effect-present-011.png",
+          "sha256": "497e0d8016ea79c1ca025584d25bfc24a602e48f44fa05a2e4925ec888993783"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1-capture/command18-playerfalse-failedfalse/map-mask-present-012.png",
+          "sha256": "13ee7ba3e3df5e7613d7a0f09f1e4922353de51e651498e0a9ce99e3df078b25"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1-capture/command18-playerfalse-failedfalse/map-mask-present-013.png",
+          "sha256": "ff8c572e2f8cdb369cfb7e0565d6ecc1b3a6dab0341e2c98851b52d318a58cf0"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1-capture/command19-playertrue-failedfalse/map-palette-present-000.png",
+          "sha256": "c4267e34efdc9e096c4ac773be129c4cb8245517bea451e48947781e0f876611"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1-capture/command19-playerfalse-failedfalse/map-digits-present-022.png",
+          "sha256": "72f74b056b21f40588ae1ddfa8e642de022799e6024c32318de18cc246d99a55"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1-capture/command19-playerfalse-failedfalse/map-effect-present-000.png",
+          "sha256": "5247dfe38b8180eedaba3f603ccb97bb6c8f178de50c44416bcf1cc505430f89"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1-capture/command19-playerfalse-failedfalse/map-effect-present-001.png",
+          "sha256": "a6b91033a617f0086f8c1d024ce3330e1f6e3bdc335f3d71f7ceae077c13a297"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1-capture/command19-playerfalse-failedfalse/map-effect-present-002.png",
+          "sha256": "7a9281bd2a90869b34bab9a6cdfd217cb5ce4acc1c71e09b708f3429e2b7c102"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1-capture/command19-playerfalse-failedfalse/map-effect-present-003.png",
+          "sha256": "18169accca9324da3dbc02e8dbdd63bd31fcb0bbaf06c6716a523b5625c0fda8"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1-capture/command19-playerfalse-failedfalse/map-effect-present-004.png",
+          "sha256": "ef5a63a379dcd07803478b591cc57d16f06799053f6f7cf894c3a1903a6ccf8f"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1-capture/command19-playerfalse-failedfalse/map-effect-present-005.png",
+          "sha256": "7a9281bd2a90869b34bab9a6cdfd217cb5ce4acc1c71e09b708f3429e2b7c102"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1-capture/command19-playerfalse-failedfalse/map-effect-present-006.png",
+          "sha256": "c29fc700ceaf43502eab39705fd75a2d26a71178751cd87dba0b755d4be2702e"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1-capture/command19-playerfalse-failedfalse/map-effect-present-007.png",
+          "sha256": "ef5a63a379dcd07803478b591cc57d16f06799053f6f7cf894c3a1903a6ccf8f"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1-capture/command19-playerfalse-failedfalse/map-effect-present-008.png",
+          "sha256": "7a9281bd2a90869b34bab9a6cdfd217cb5ce4acc1c71e09b708f3429e2b7c102"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1-capture/command19-playerfalse-failedfalse/map-effect-present-009.png",
+          "sha256": "097a1206e92f641e79e89a6f0c991cfbccd714bc8c7413a73c85c0eead954713"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1-capture/command19-playerfalse-failedfalse/map-effect-present-010.png",
+          "sha256": "f7828b3cc6c1ffcb8a77ac4f356a74560bc6eeb3039b2b06aab3a070d64c2488"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1-capture/command19-playerfalse-failedfalse/map-mask-present-011.png",
+          "sha256": "13ee7ba3e3df5e7613d7a0f09f1e4922353de51e651498e0a9ce99e3df078b25"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1-capture/command19-playerfalse-failedfalse/map-mask-present-012.png",
+          "sha256": "57161e6f07bb3ae90a3e1ab9fda7759f16658435976d3b9a8c68d333481c083d"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command20-playertrue-failedfalse/map-digits-present-033.png",
+          "sha256": "e50cd6f36f4f2300db408ad47ee9c462e67df739a88969362184dd909fea6e10"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command20-playertrue-failedfalse/map-effect-present-009.png",
+          "sha256": "87565970717be4d39b4dc3be70786a33ba9eef65127df79673319134bdd863ee"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command20-playertrue-failedfalse/map-effect-present-010.png",
+          "sha256": "99bc8ca0315769b067c1f4e30558d921960604e6df2cb0f671dc749b829aca09"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command20-playertrue-failedfalse/map-effect-present-011.png",
+          "sha256": "1ca693e143b1936bc05cb823dffa6344fb903e2be29f225f2747c9c14c882e79"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command20-playertrue-failedfalse/map-effect-present-012.png",
+          "sha256": "f68cdf655f752305b5cf452b3d3099885548b39e5848e9fe0b9eb3026f9bfc37"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command20-playertrue-failedfalse/map-effect-present-013.png",
+          "sha256": "4b50ad5f99718aca7dd9684bb3f3004f1cc85c4402781a0f513d5a87969d8aab"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command20-playertrue-failedfalse/map-effect-present-014.png",
+          "sha256": "961181c596fdc6abd104ebc6c94b368a287a6ecef7289d21f6c6034d54863df3"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command20-playertrue-failedfalse/map-effect-present-015.png",
+          "sha256": "87d101d2390e09074d192c24f2d0a3efc6871076ee4f3e506a56aede8506dd33"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command20-playertrue-failedfalse/map-effect-present-016.png",
+          "sha256": "89979dfea5243e18af9ecb66d22e235028b58baa91efd62c051c8fca2b8a201c"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command20-playertrue-failedfalse/map-effect-present-017.png",
+          "sha256": "3e366c66d694a0813a02d611970b53a2b22b158c40d42f83f21d0bc579f031c7"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command20-playertrue-failedfalse/map-effect-present-018.png",
+          "sha256": "6114e14b0fa0841df4dd06a230e75c89e93bdd3e30f0359afde31238a3719ffe"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command20-playertrue-failedfalse/map-effect-present-019.png",
+          "sha256": "abad6c459061af1a1e4bfb78eb8556d708a2fb1686712e2f59a1749df07c3a20"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command20-playertrue-failedfalse/map-effect-present-020.png",
+          "sha256": "2c0d2c00ddc9e791262c367f29c731e76b351afe1ed40ef5506383fd5eedc9c2"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command20-playertrue-failedfalse/map-effect-present-021.png",
+          "sha256": "9825a79ec817298363d28423deb5cf28e29746d2268c59550dfc701bf591711f"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command20-playertrue-failedfalse/map-mask-present-022.png",
+          "sha256": "13ee7ba3e3df5e7613d7a0f09f1e4922353de51e651498e0a9ce99e3df078b25"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command20-playertrue-failedfalse/map-mask-present-023.png",
+          "sha256": "2dab92718098ca309b73ef20f6cdd2c92430ba100bd046f8ffbaf6541c66b68b"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command20-playertrue-failedfalse/map-palette-present-001.png",
+          "sha256": "804bed58832941e768cd35161530b8ff186020e22d9e4293afb4b9b46b0d7080"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command20-playerfalse-failedfalse/map-digits-present-024.png",
+          "sha256": "9e399fbe0ec5bc14c85473bf2e3be4f2fc587987794c00e0f7d2cde72d916eb9"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command20-playerfalse-failedfalse/map-effect-present-000.png",
+          "sha256": "4a6f89113d926ad4f1b67abca281dc0facf58fcc3955a15383d55540574ee9e1"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command20-playerfalse-failedfalse/map-effect-present-001.png",
+          "sha256": "5c2ce0da583b940fa4c1d7f6e975ff7f230b413c8924fb0795b229d044d8d4b1"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command20-playerfalse-failedfalse/map-effect-present-002.png",
+          "sha256": "4cf115c5083667917f8170e933e93810d8063fc520f22216533c2c52e6e48f7e"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command20-playerfalse-failedfalse/map-effect-present-003.png",
+          "sha256": "b17496444ee6e32ce46e9c1eb8334ca463b3c33ef77186baa8ac968e00d14295"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command20-playerfalse-failedfalse/map-effect-present-004.png",
+          "sha256": "03a0877d65deff52a92a9c77adf9195a93a3571ef6c6b562128e9aa4131c1a67"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command20-playerfalse-failedfalse/map-effect-present-005.png",
+          "sha256": "1967ea77809788eb90a66d7bd26d7d53515f26f7df340781c50f213c6fbb1351"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command20-playerfalse-failedfalse/map-effect-present-006.png",
+          "sha256": "7d91e6f1db0ea9fc7ce495e63cbea694af66aa1e459891fb071ef8a9318bca5b"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command20-playerfalse-failedfalse/map-effect-present-007.png",
+          "sha256": "cf89a9f5c1c2cfc429eb575d6ac2a9aafb34d3d8b68c48830a2bbaca09eb9562"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command20-playerfalse-failedfalse/map-effect-present-008.png",
+          "sha256": "a3c86da9a95986c98bd1e3907026c36f46316d1aa5e53d17e7a8260bed34ae06"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command20-playerfalse-failedfalse/map-effect-present-009.png",
+          "sha256": "eda42468308cf8e8fc66359a7e250ebe1f73dc8b2d019363d02670453144c430"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command20-playerfalse-failedfalse/map-effect-present-010.png",
+          "sha256": "fec0c50102c7e6029433cfed32ea24663f9c2a9b6a9049d6186567c2401829f3"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command20-playerfalse-failedfalse/map-effect-present-011.png",
+          "sha256": "463d5b7647b2ba7e38aa44b19b1af4710b0189093cf5cafc9e4d92c5fbaaa233"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command20-playerfalse-failedfalse/map-effect-present-012.png",
+          "sha256": "5c42ee608b4451bcef6afd550a1a5e5c4554b3386980f4a10c2d53e19c23f8ab"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command20-playerfalse-failedfalse/map-mask-present-013.png",
+          "sha256": "13ee7ba3e3df5e7613d7a0f09f1e4922353de51e651498e0a9ce99e3df078b25"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command20-playerfalse-failedfalse/map-mask-present-014.png",
+          "sha256": "676fbf98acc121974426908d43fb711c44af1f22faf60bceab6413b8c5a204f9"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command21-playertrue-failedfalse/map-digits-present-034.png",
+          "sha256": "e50cd6f36f4f2300db408ad47ee9c462e67df739a88969362184dd909fea6e10"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command21-playertrue-failedfalse/map-effect-present-010.png",
+          "sha256": "d866d9ea5c6546e908f2a0a4a8f80825ac92d8fa98bb8d92a0082f19bfbc2f4a"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command21-playertrue-failedfalse/map-effect-present-011.png",
+          "sha256": "3acc8daee360cc52e4f50df736f8a96cbc4f2c30ec7d560a6352653cbe28ad36"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command21-playertrue-failedfalse/map-effect-present-012.png",
+          "sha256": "47517885d1ad19a44322c66098f1a87f256153db1f0b1359e2ecb5a93cdeed4d"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command21-playertrue-failedfalse/map-effect-present-013.png",
+          "sha256": "fb22322c856f83d3a0b2b8b03fa266282ed36ed849033c39283ca4d0946ffdb8"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command21-playertrue-failedfalse/map-effect-present-014.png",
+          "sha256": "facb4f34139c7024d251eb1ca3b33cfa57f2a937dd3a8dbae3f428fa9ba7f0da"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command21-playertrue-failedfalse/map-effect-present-015.png",
+          "sha256": "bc3ca5caff0f121a87070eb39f23fd43bc95aff2c52f95bfa6ec4564f51a7e76"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command21-playertrue-failedfalse/map-effect-present-016.png",
+          "sha256": "9b9f55144914879e60ed41983a3617df7029d03291451596d7c13900f43f2a17"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command21-playertrue-failedfalse/map-effect-present-017.png",
+          "sha256": "b370dca670fa25b2fdd365ad079477445a337fcdd05250fd96b83a28ce8fae2c"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command21-playertrue-failedfalse/map-effect-present-018.png",
+          "sha256": "ca7e6eb22c1fa482e9285cb42c804563927cde07019b2be2cd3796bd9c82cf4d"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command21-playertrue-failedfalse/map-effect-present-019.png",
+          "sha256": "6f1cbb0deb20aeb2b5c7d5236340aa3cddbf4e90b965547953c79598ca248dd3"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command21-playertrue-failedfalse/map-effect-present-020.png",
+          "sha256": "ee4e086dc4b600a60b907ae8c2a24e974d44337a22d31a15d4b9d1622dd2a370"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command21-playertrue-failedfalse/map-effect-present-021.png",
+          "sha256": "4bddf47b3904b26ece3522b1b9ab37f2e8cc66b42a9c5ca85c1c7ec6a853c0d5"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command21-playertrue-failedfalse/map-effect-present-022.png",
+          "sha256": "76dcc1091f201526fbc2d2f233afdd15f0db36d5428cc71787f7936c76d3bff2"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command21-playertrue-failedfalse/map-mask-present-023.png",
+          "sha256": "13ee7ba3e3df5e7613d7a0f09f1e4922353de51e651498e0a9ce99e3df078b25"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command21-playertrue-failedfalse/map-mask-present-024.png",
+          "sha256": "2dab92718098ca309b73ef20f6cdd2c92430ba100bd046f8ffbaf6541c66b68b"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-3-oct24-r1-capture/command21-playertrue-failedfalse/map-palette-present-002.png",
+          "sha256": "804bed58832941e768cd35161530b8ff186020e22d9e4293afb4b9b46b0d7080"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command21-playerfalse-failedfalse/map-digits-present-025.png",
+          "sha256": "9e399fbe0ec5bc14c85473bf2e3be4f2fc587987794c00e0f7d2cde72d916eb9"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command21-playerfalse-failedfalse/map-effect-present-001.png",
+          "sha256": "ed10345c363b4359f68a5d36d9756a2f5347dcff6e182fd74ff5ab0a59e6c29f"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command21-playerfalse-failedfalse/map-effect-present-002.png",
+          "sha256": "f54ad971cdceb092999ddfbda2930eea7265473b98d57c8293d4dd18248dd3f7"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command21-playerfalse-failedfalse/map-effect-present-003.png",
+          "sha256": "4494b80e19686b5b23eb40d4dd10217bfdc7141db0f98f1586a8bf3a59562971"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command21-playerfalse-failedfalse/map-effect-present-004.png",
+          "sha256": "0fd3e15e48144ede381c020ddb038ac9c19096734ed6ca6f80eb95cc0130f98c"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command21-playerfalse-failedfalse/map-effect-present-005.png",
+          "sha256": "470a2fc9507bba30f3e227a99d8b6f1271dfae40c5427285285ab6edb3381ec6"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command21-playerfalse-failedfalse/map-effect-present-006.png",
+          "sha256": "f3359a96ba2fd9d54bf9cc3b59f00176c385e7a6bdb066aa59bd8249ccac2a28"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command21-playerfalse-failedfalse/map-effect-present-007.png",
+          "sha256": "12ab9c026edb0d8c0baade1b629a692727e57b784ed8d1e1d81cacae87e33160"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command21-playerfalse-failedfalse/map-effect-present-008.png",
+          "sha256": "4a654e801180455e13c0e236bd8a7693d85a3fcea504cab90ead7ce627722ed9"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command21-playerfalse-failedfalse/map-effect-present-009.png",
+          "sha256": "52f0a420c1c5363c84693d8784b1a8e977bc972714f62614404fd641cb7da3cb"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command21-playerfalse-failedfalse/map-effect-present-010.png",
+          "sha256": "95babc8227c364351424051a9a35fd02a25e2f1a496af465eb3afe66e5839b09"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command21-playerfalse-failedfalse/map-effect-present-011.png",
+          "sha256": "cb8bc997ef6764a908c7c9e804f219c0fc7833cb4187c1648d1c18fa83e566ce"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command21-playerfalse-failedfalse/map-effect-present-012.png",
+          "sha256": "26c73452d11d7341b633d046c6bb59b33f0eda6c280f054e3619198ccf17533c"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command21-playerfalse-failedfalse/map-effect-present-013.png",
+          "sha256": "f9b66b713a00561914d49b1b6ce8a59ec752409413df311128e52e452632615a"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command21-playerfalse-failedfalse/map-mask-present-014.png",
+          "sha256": "13ee7ba3e3df5e7613d7a0f09f1e4922353de51e651498e0a9ce99e3df078b25"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command21-playerfalse-failedfalse/map-mask-present-015.png",
+          "sha256": "676fbf98acc121974426908d43fb711c44af1f22faf60bceab6413b8c5a204f9"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command22-playertrue-failedfalse/map-digits-present-032.png",
+          "sha256": "2082772b987306d84b2d0da1e897f26f4909dcc642219a7ce8782a5330b20ee4"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command22-playertrue-failedfalse/map-effect-present-008.png",
+          "sha256": "6c1d423be2b5f4dc102a158846099f99fbd62f64869fdf8356ea191ddc4fa667"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command22-playertrue-failedfalse/map-effect-present-009.png",
+          "sha256": "b6ebef6f103bbcf380954dda9d0e1ab9bcd56c9276cc7e46339e5cdeb65f2ed7"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command22-playertrue-failedfalse/map-effect-present-010.png",
+          "sha256": "550edbf21a29fe786f7ca00a5475054d20ec18ff6a8ce68f951cae8d4a8cbc99"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command22-playertrue-failedfalse/map-effect-present-011.png",
+          "sha256": "c804a20a1f559f42175485f52be3dee69407a7f5e2a11a1a34a703e293fd5908"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command22-playertrue-failedfalse/map-effect-present-012.png",
+          "sha256": "632b63a4d7297dc82aa8cff0a96905d54bdcea355a4d99668e4bbfb4dc7a3e2e"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command22-playertrue-failedfalse/map-effect-present-013.png",
+          "sha256": "6a447b6aa2c613c8dd89cb436cf4f887d5f70e6ccbb45b0e4c60609688c9d468"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command22-playertrue-failedfalse/map-effect-present-014.png",
+          "sha256": "25b2d17fd4e038fa5c1a00baee57fb02e8c48130b4663d48a24f3926a2f86566"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command22-playertrue-failedfalse/map-effect-present-015.png",
+          "sha256": "cc56b84b8efc1ad4df8d77c83631e43bdefff035147c96188dad8f086ecca017"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command22-playertrue-failedfalse/map-effect-present-016.png",
+          "sha256": "4a4ca191e7e592dd06dedaae3350bb39fc1c6c9e12cfe17d7f084c5fd5601e62"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command22-playertrue-failedfalse/map-effect-present-017.png",
+          "sha256": "b701a4f51a9be8f4537830fc180ffac6e16e89e82485e3c05713572407b629b8"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command22-playertrue-failedfalse/map-effect-present-018.png",
+          "sha256": "a2c2af161cde2d9795569c7efbf4f8592218753c4af069dacafbeb2c0801cc95"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command22-playertrue-failedfalse/map-effect-present-019.png",
+          "sha256": "297582d12863598fb41c7a54184885355e6a7bc69d15d40fd23042d3287e0797"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command22-playertrue-failedfalse/map-effect-present-020.png",
+          "sha256": "9f10c833a7ff55b8c6248cb0736df7009864d36cb635a0593a4e133fbb71bea2"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command22-playertrue-failedfalse/map-mask-present-021.png",
+          "sha256": "13ee7ba3e3df5e7613d7a0f09f1e4922353de51e651498e0a9ce99e3df078b25"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command22-playertrue-failedfalse/map-mask-present-022.png",
+          "sha256": "7ad226b6a612bdade00392f863c5a8595fba12f686881f3dd873ec890973b88f"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command22-playertrue-failedfalse/map-palette-present-000.png",
+          "sha256": "5493fa41c12c7b24fa8c8c083f23e4744922bf1a0e66b42f8b0484ecbdfb293b"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command22-playerfalse-failedfalse/map-digits-present-024.png",
+          "sha256": "06d121fc04093e4a70472f47d25c747cfde064291a06e6fce65f086d2c0f6153"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command22-playerfalse-failedfalse/map-effect-present-000.png",
+          "sha256": "f092997d5456bd34a4984de6bfeb74053066a9cc0b5b225ad6532276104fde61"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command22-playerfalse-failedfalse/map-effect-present-001.png",
+          "sha256": "0061bb47db274607d8e58bd0e791d8ac317d4a090da1ac68305c93b93a9b02e4"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command22-playerfalse-failedfalse/map-effect-present-002.png",
+          "sha256": "52382746149833d80a0cf10c11743fb2cd918155cfd09d47b427f3730bc4dc53"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command22-playerfalse-failedfalse/map-effect-present-003.png",
+          "sha256": "ccad8a4f286b233a84ba619338a67b41ae3ac16db5b2ba774644f46fc17a3152"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command22-playerfalse-failedfalse/map-effect-present-004.png",
+          "sha256": "203ede1db73f7203ab2b13d985e1833a9d840253325b19e2b90b11f279139676"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command22-playerfalse-failedfalse/map-effect-present-005.png",
+          "sha256": "07e024e352098d2ce66acb776e019ceae9bf01c4ba42755fa61f1c8f06a8c18c"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command22-playerfalse-failedfalse/map-effect-present-006.png",
+          "sha256": "0e6c5e6217ff206204b8e5d2d5e8932c906ff12abae2ef9b4ee59621875073f1"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command22-playerfalse-failedfalse/map-effect-present-007.png",
+          "sha256": "5f3b02677138aec761124d9b781c78ec6c28a27609087995ddb48473a5a9d47c"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command22-playerfalse-failedfalse/map-effect-present-008.png",
+          "sha256": "22ed395b1fdd7ee74d5060028607080e24d308356ae0ad27f09309566b75df88"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command22-playerfalse-failedfalse/map-effect-present-009.png",
+          "sha256": "cdc5594d7dc01f2565ac384b4b4b01c7cc5a3baff2bfc1434587144a8f639114"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command22-playerfalse-failedfalse/map-effect-present-010.png",
+          "sha256": "7432b1f54ae83885b6c76314b7d850957a0fe27a1d5cf7b88191a0641de87c11"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command22-playerfalse-failedfalse/map-effect-present-011.png",
+          "sha256": "423831b6ecc779f493c3583f03f8e30673d50565cfcfec69bba93221ee23b518"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command22-playerfalse-failedfalse/map-effect-present-012.png",
+          "sha256": "729c10cc1a7401457f8592903420f8616ac0d2fe011adc993fb596db0cdc7f7f"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command22-playerfalse-failedfalse/map-mask-present-013.png",
+          "sha256": "13ee7ba3e3df5e7613d7a0f09f1e4922353de51e651498e0a9ce99e3df078b25"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-9-3-oct24-r1-capture/command22-playerfalse-failedfalse/map-mask-present-014.png",
+          "sha256": "a154b055e88bf788e1fb5e77a7e5191f090e730f00f3a8c57abc76e728c2cc6a"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-12-3-oct24-r1-capture/command23-playertrue-failedfalse/map-palette-present-001.png",
+          "sha256": "93418e9b66ce4c47d3dc9427b9ef1108edd8d830d5f5486a0c97d63b641b0a4a"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-12-3-oct24-r1-capture/command25-playertrue-failedfalse/map-effect-present-008.png",
+          "sha256": "01ee8a6deeefdeec892e1864b2ae7a88f0b84378eab96bed69fdfe3f5abde268"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-12-3-oct24-r1-capture/command25-playertrue-failedfalse/map-effect-present-009.png",
+          "sha256": "9160a1cc8f63ac667bcca72f8959c0071b4d494d58f3018004f72e14faff0d9a"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-12-3-oct24-r1-capture/command25-playertrue-failedfalse/map-effect-present-010.png",
+          "sha256": "f3916a44d15a9e19cf9e46213a27b04a6179dcbe705cb7b4d81cfe90b3beeee8"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-12-3-oct24-r1-capture/command25-playertrue-failedfalse/map-effect-present-011.png",
+          "sha256": "90d8c0aa84944403308c40fe7dfd9c83a3ca957fb445c9ae196ca3ceaeb1a510"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-12-3-oct24-r1-capture/command25-playertrue-failedfalse/map-effect-present-012.png",
+          "sha256": "0a67db48e308e9fc5baa83df83d2c78c50dfdfeeda76184f0b0788fb475e9048"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-12-3-oct24-r1-capture/command25-playertrue-failedfalse/map-effect-present-013.png",
+          "sha256": "18f04ef3f19c4f9e87de99891f8a8e1aaec85c081e6331708ee9bd884b73fb41"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-12-3-oct24-r1-capture/command25-playertrue-failedfalse/map-effect-present-014.png",
+          "sha256": "096d538a3ff0fe53e99a15b514e64f67f845908c6103bcb2313fbde2b29bdf1b"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-12-3-oct24-r1-capture/command25-playertrue-failedfalse/map-effect-present-015.png",
+          "sha256": "0a67db48e308e9fc5baa83df83d2c78c50dfdfeeda76184f0b0788fb475e9048"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-12-3-oct24-r1-capture/command25-playertrue-failedfalse/map-effect-present-016.png",
+          "sha256": "18f04ef3f19c4f9e87de99891f8a8e1aaec85c081e6331708ee9bd884b73fb41"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-12-3-oct24-r1-capture/command25-playertrue-failedfalse/map-effect-present-017.png",
+          "sha256": "df8a2f14d7f47b5d235bdc5f6cc3e0411facd4d41c8dd507ab3421b456c53c1d"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-12-3-oct24-r1-capture/command25-playertrue-failedfalse/map-effect-present-018.png",
+          "sha256": "c703f1b912cb1f9836f1d335b5a3b84fbacd4a493ae9e8f6081379a5717ca8b0"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-12-3-oct24-r1-capture/command25-playertrue-failedfalse/map-effect-present-019.png",
+          "sha256": "5200623d56ff3e685fe66ac5d5de4b3aa05bfb6aa4ad9b709e84b5f760e5edd5"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-12-3-oct24-r1-capture/command25-playertrue-failedfalse/map-effect-present-020.png",
+          "sha256": "c543ca876fa2f05066e942fff291833cc8cfc180231e3a06265660a94190389e"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-12-3-oct24-r1-capture/command25-playertrue-failedfalse/map-mask-present-021.png",
+          "sha256": "4f82cccb43f63424e2dace0174b0b9ebea0736735fa50de1ec84dc9076e17111"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-12-3-oct24-r1-capture/command25-playertrue-failedfalse/map-mask-present-022.png",
+          "sha256": "61ac600531a3252853e5f835ff35f3f3793337a16880b1b04f1fc5152787ae2b"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-12-3-oct24-r1-capture/command25-playertrue-failedfalse/map-palette-present-000.png",
+          "sha256": "e61324009c580038650b342af2ec98818f65027759b062c6393b4e96e50b9965"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-12-3-oct24-r1-capture/command26-playertrue-failedfalse/map-digits-present-028.png",
+          "sha256": "2082772b987306d84b2d0da1e897f26f4909dcc642219a7ce8782a5330b20ee4"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-12-3-oct24-r1-capture/command26-playertrue-failedfalse/map-effect-present-008.png",
+          "sha256": "d7e1e00380649a137ab175cec4109f45b0009e4764bd54f8d8842d18ec4b7d6e"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-12-3-oct24-r1-capture/command26-playertrue-failedfalse/map-effect-present-009.png",
+          "sha256": "d7e1e00380649a137ab175cec4109f45b0009e4764bd54f8d8842d18ec4b7d6e"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-12-3-oct24-r1-capture/command26-playertrue-failedfalse/map-effect-present-010.png",
+          "sha256": "39ef2210179a45772ead247f5e0cf3574169f44f9cffb03400136c3c1e64a1d3"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-12-3-oct24-r1-capture/command26-playertrue-failedfalse/map-effect-present-011.png",
+          "sha256": "140a5a22ca4dc8264f55d7c82934f4f70cf4aba8f4e4e2ddd2ac470fc4ab6fdd"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-12-3-oct24-r1-capture/command26-playertrue-failedfalse/map-effect-present-012.png",
+          "sha256": "6b6c98c2466038bba152d6cfaea2dc2781afd44b576c4efb1ff48d6c03d03a6a"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-12-3-oct24-r1-capture/command26-playertrue-failedfalse/map-effect-present-013.png",
+          "sha256": "fdce1dd21aece2e14f3f4cdba117b710711edf1b93a6796fb8db6ae955978322"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-12-3-oct24-r1-capture/command26-playertrue-failedfalse/map-effect-present-014.png",
+          "sha256": "9f1dad43999608ddd2b59bac0f734002029740b85875fee6bb43cad16fec20a4"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-12-3-oct24-r1-capture/command26-playertrue-failedfalse/map-effect-present-015.png",
+          "sha256": "cf85d15cc0a2b8182793c47a3d27a89c394926909707e59e2fc0a737e56a2e39"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-12-3-oct24-r1-capture/command26-playertrue-failedfalse/map-effect-present-016.png",
+          "sha256": "a2e5701c1d70ad5849dec7f242092b0db7c25960dcd3d5827b227158b5f640cc"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-12-3-oct24-r1-capture/command26-playertrue-failedfalse/map-mask-present-017.png",
+          "sha256": "13ee7ba3e3df5e7613d7a0f09f1e4922353de51e651498e0a9ce99e3df078b25"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-12-3-oct24-r1-capture/command26-playertrue-failedfalse/map-mask-present-018.png",
+          "sha256": "2dab92718098ca309b73ef20f6cdd2c92430ba100bd046f8ffbaf6541c66b68b"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-12-3-oct24-r1-capture/command26-playertrue-failedfalse/map-palette-present-000.png",
+          "sha256": "20232c2ac1b5012d0f3dfc1b29103dde0b4a274a1d95d32d297c56a30e644821"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1-capture/command26-playerfalse-failedfalse/map-digits-present-021.png",
+          "sha256": "06d121fc04093e4a70472f47d25c747cfde064291a06e6fce65f086d2c0f6153"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1-capture/command26-playerfalse-failedfalse/map-effect-present-001.png",
+          "sha256": "fbb328afa35d1604d25bee73e32c4f47554e3d7b4e77331b8fe944cd277e7d0a"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1-capture/command26-playerfalse-failedfalse/map-effect-present-002.png",
+          "sha256": "fbb328afa35d1604d25bee73e32c4f47554e3d7b4e77331b8fe944cd277e7d0a"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1-capture/command26-playerfalse-failedfalse/map-effect-present-003.png",
+          "sha256": "f074c22d83c523da75fab4de559e27d00f0a48c93f3d9bc2e56db9c092047fbe"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1-capture/command26-playerfalse-failedfalse/map-effect-present-004.png",
+          "sha256": "4d41c75b27bf1154790224e5fb67d8bfb0cf248c7359e60737035c823588caa3"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1-capture/command26-playerfalse-failedfalse/map-effect-present-005.png",
+          "sha256": "c23a3e2c47eadb7a016beff2bab854a55846f23e9c83d69ad8042eaa2d11f80b"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1-capture/command26-playerfalse-failedfalse/map-effect-present-006.png",
+          "sha256": "1513b601fd5595f11d52219cbdae3cf75d2b2e17ce534dde6a3553045cc12671"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1-capture/command26-playerfalse-failedfalse/map-effect-present-007.png",
+          "sha256": "6596988f1893414b7b7e8d80eee9168f48c4a96fe75b76a10ed0469442e07de9"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1-capture/command26-playerfalse-failedfalse/map-effect-present-008.png",
+          "sha256": "cba836de2451a7aa8fd34ae5fe384508029d4a480f4468f7746cc1cd964be5ff"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1-capture/command26-playerfalse-failedfalse/map-effect-present-009.png",
+          "sha256": "a09099b8b8dd5eaa873863fccbbfd1ae2bbc9a44f37f4d24aa21132c4339b152"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1-capture/command26-playerfalse-failedfalse/map-mask-present-010.png",
+          "sha256": "13ee7ba3e3df5e7613d7a0f09f1e4922353de51e651498e0a9ce99e3df078b25"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1-capture/command26-playerfalse-failedfalse/map-mask-present-011.png",
+          "sha256": "676fbf98acc121974426908d43fb711c44af1f22faf60bceab6413b8c5a204f9"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1-capture/command27-playertrue-failedfalse/map-digits-present-032.png",
+          "sha256": "2082772b987306d84b2d0da1e897f26f4909dcc642219a7ce8782a5330b20ee4"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1-capture/command27-playertrue-failedfalse/map-effect-present-009.png",
+          "sha256": "564e11b47db0d4160b222db7dec09f1bd233cbaa0f07935e4651b2d7cfc77d6d"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1-capture/command27-playertrue-failedfalse/map-effect-present-010.png",
+          "sha256": "32fcec13504161d94468ad72b3c93516d2a2e2f0aa23d25364e5ce5227844396"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1-capture/command27-playertrue-failedfalse/map-effect-present-011.png",
+          "sha256": "efef10ab9de650013f121a739e09f02a81f453a417e6f445327740010b112981"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1-capture/command27-playertrue-failedfalse/map-effect-present-012.png",
+          "sha256": "6aa0fd7c7121918862bb73682540fdfb39ab048834ccc6f3b4c5bd34159bdbcd"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1-capture/command27-playertrue-failedfalse/map-effect-present-013.png",
+          "sha256": "8cee9aae795005d2ebd99909bb8a7bb6696e9addc10546cdfb7528cca1f20c59"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1-capture/command27-playertrue-failedfalse/map-effect-present-014.png",
+          "sha256": "952971d51e39cbc83e83771003b87f89653df77b30fbc736c842668aa17b5d7d"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1-capture/command27-playertrue-failedfalse/map-effect-present-015.png",
+          "sha256": "eebb66fe6fb09f04e5737e51b650d9d068e57b82c1b3596273aa496b9509ab6e"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1-capture/command27-playertrue-failedfalse/map-effect-present-016.png",
+          "sha256": "19896b7573216e66c3042da4be4b357264aad7c7772bdd22b4d09efdbf403d3d"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1-capture/command27-playertrue-failedfalse/map-effect-present-017.png",
+          "sha256": "0fe9e2c35033fb7ca535465aa3a8116b1044998ed8d4efbe9bb58f4929c8d144"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1-capture/command27-playertrue-failedfalse/map-effect-present-018.png",
+          "sha256": "b02d14678ec7144c4f14be0d26e8b9d3e8267e7c3b84232d66d5e7b665639d84"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1-capture/command27-playertrue-failedfalse/map-effect-present-019.png",
+          "sha256": "9ba70f34d7779cf73bc03d3afe1fe1b76cd49f8f6cd4e0cce13cb6e0b8f17a88"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1-capture/command27-playertrue-failedfalse/map-effect-present-020.png",
+          "sha256": "112ffd493211ddc31e1c349bd87526f566e3726afacee3a178eb51fcb3a160ce"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1-capture/command27-playertrue-failedfalse/map-mask-present-021.png",
+          "sha256": "13ee7ba3e3df5e7613d7a0f09f1e4922353de51e651498e0a9ce99e3df078b25"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1-capture/command27-playertrue-failedfalse/map-mask-present-022.png",
+          "sha256": "2dab92718098ca309b73ef20f6cdd2c92430ba100bd046f8ffbaf6541c66b68b"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1-capture/command27-playertrue-failedfalse/map-palette-present-001.png",
+          "sha256": "a88659130a8f4330602e844a1167e5b22a281c25b1721dbf0ecbaaa22fc460d0"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1-capture/command27-playerfalse-failedfalse/map-digits-present-023.png",
+          "sha256": "06d121fc04093e4a70472f47d25c747cfde064291a06e6fce65f086d2c0f6153"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1-capture/command27-playerfalse-failedfalse/map-effect-present-000.png",
+          "sha256": "b261b6e26e02c1eb33f59bb850f08a72cde6a5bd5061a1cae7e94ee9a195f06e"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1-capture/command27-playerfalse-failedfalse/map-effect-present-001.png",
+          "sha256": "9fe64cac563c581dd5d30b6904fa4f3e0a3187a1bafcc7a7da94b55a3fb7c282"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1-capture/command27-playerfalse-failedfalse/map-effect-present-002.png",
+          "sha256": "74a7fad0e1fa9f6d9b732cfc8bbb876e218eec5c2b9cbd64a3607ac747357d33"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1-capture/command27-playerfalse-failedfalse/map-effect-present-003.png",
+          "sha256": "304934c95bdae3539304c93172ab726ae6933618f7ec123ebd3ed8ee1363f3ae"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1-capture/command27-playerfalse-failedfalse/map-effect-present-004.png",
+          "sha256": "a67b11fc4a9bd6b444a18312f40314033cf044d32384404a232fedd9154100b5"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1-capture/command27-playerfalse-failedfalse/map-effect-present-005.png",
+          "sha256": "40ade2726891d3ffd946ff34916c2b774d9e4ad4d5c51c5d963b2adddb1eff63"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1-capture/command27-playerfalse-failedfalse/map-effect-present-006.png",
+          "sha256": "d3e7c2cdf4141556628e02093150828d400f411e281bf32b8783a5a1206a2457"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1-capture/command27-playerfalse-failedfalse/map-effect-present-007.png",
+          "sha256": "34c88f54577b726d7c0d9a97b3a7e36b4f2a083b9ea13654343d3ac30183eeca"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1-capture/command27-playerfalse-failedfalse/map-effect-present-008.png",
+          "sha256": "f76ff96edf5a85481aa71d79236638101577db3906c57b39f6ece5e7ad795a5e"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1-capture/command27-playerfalse-failedfalse/map-effect-present-009.png",
+          "sha256": "40b48e42b7310494f93af80c2e72a105e624f33f191dc98db8f7540b40734c1d"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1-capture/command27-playerfalse-failedfalse/map-effect-present-010.png",
+          "sha256": "af49d998f6d4acf18f9d0be884cf0b2f3214e6b889cf2505312047699094a1b1"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1-capture/command27-playerfalse-failedfalse/map-effect-present-011.png",
+          "sha256": "c832ef80f2e707051d6384d4931878859fa887f8e472f02a1b6a82c4c38a9d7f"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1-capture/command27-playerfalse-failedfalse/map-mask-present-012.png",
+          "sha256": "13ee7ba3e3df5e7613d7a0f09f1e4922353de51e651498e0a9ce99e3df078b25"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-15-3-oct24-r1-capture/command27-playerfalse-failedfalse/map-mask-present-013.png",
+          "sha256": "676fbf98acc121974426908d43fb711c44af1f22faf60bceab6413b8c5a204f9"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command20-playertrue-failedtrue/map-digits-present-033.png",
+          "sha256": "2082772b987306d84b2d0da1e897f26f4909dcc642219a7ce8782a5330b20ee4"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command20-playertrue-failedtrue/map-effect-present-009.png",
+          "sha256": "87565970717be4d39b4dc3be70786a33ba9eef65127df79673319134bdd863ee"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command20-playertrue-failedtrue/map-effect-present-010.png",
+          "sha256": "99bc8ca0315769b067c1f4e30558d921960604e6df2cb0f671dc749b829aca09"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command20-playertrue-failedtrue/map-effect-present-011.png",
+          "sha256": "1ca693e143b1936bc05cb823dffa6344fb903e2be29f225f2747c9c14c882e79"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command20-playertrue-failedtrue/map-effect-present-012.png",
+          "sha256": "f68cdf655f752305b5cf452b3d3099885548b39e5848e9fe0b9eb3026f9bfc37"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command20-playertrue-failedtrue/map-effect-present-013.png",
+          "sha256": "4b50ad5f99718aca7dd9684bb3f3004f1cc85c4402781a0f513d5a87969d8aab"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command20-playertrue-failedtrue/map-effect-present-014.png",
+          "sha256": "961181c596fdc6abd104ebc6c94b368a287a6ecef7289d21f6c6034d54863df3"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command20-playertrue-failedtrue/map-effect-present-015.png",
+          "sha256": "87d101d2390e09074d192c24f2d0a3efc6871076ee4f3e506a56aede8506dd33"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command20-playertrue-failedtrue/map-effect-present-016.png",
+          "sha256": "89979dfea5243e18af9ecb66d22e235028b58baa91efd62c051c8fca2b8a201c"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command20-playertrue-failedtrue/map-effect-present-017.png",
+          "sha256": "3e366c66d694a0813a02d611970b53a2b22b158c40d42f83f21d0bc579f031c7"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command20-playertrue-failedtrue/map-effect-present-018.png",
+          "sha256": "6114e14b0fa0841df4dd06a230e75c89e93bdd3e30f0359afde31238a3719ffe"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command20-playertrue-failedtrue/map-effect-present-019.png",
+          "sha256": "abad6c459061af1a1e4bfb78eb8556d708a2fb1686712e2f59a1749df07c3a20"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command20-playertrue-failedtrue/map-effect-present-020.png",
+          "sha256": "2c0d2c00ddc9e791262c367f29c731e76b351afe1ed40ef5506383fd5eedc9c2"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command20-playertrue-failedtrue/map-effect-present-021.png",
+          "sha256": "9825a79ec817298363d28423deb5cf28e29746d2268c59550dfc701bf591711f"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command20-playertrue-failedtrue/map-mask-present-022.png",
+          "sha256": "13ee7ba3e3df5e7613d7a0f09f1e4922353de51e651498e0a9ce99e3df078b25"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command20-playertrue-failedtrue/map-mask-present-023.png",
+          "sha256": "2dab92718098ca309b73ef20f6cdd2c92430ba100bd046f8ffbaf6541c66b68b"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command20-playertrue-failedtrue/map-palette-present-001.png",
+          "sha256": "804bed58832941e768cd35161530b8ff186020e22d9e4293afb4b9b46b0d7080"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command22-playertrue-failedtrue/map-digits-present-032.png",
+          "sha256": "2082772b987306d84b2d0da1e897f26f4909dcc642219a7ce8782a5330b20ee4"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command22-playertrue-failedtrue/map-effect-present-008.png",
+          "sha256": "6c1d423be2b5f4dc102a158846099f99fbd62f64869fdf8356ea191ddc4fa667"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command22-playertrue-failedtrue/map-effect-present-009.png",
+          "sha256": "b6ebef6f103bbcf380954dda9d0e1ab9bcd56c9276cc7e46339e5cdeb65f2ed7"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command22-playertrue-failedtrue/map-effect-present-010.png",
+          "sha256": "550edbf21a29fe786f7ca00a5475054d20ec18ff6a8ce68f951cae8d4a8cbc99"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command22-playertrue-failedtrue/map-effect-present-011.png",
+          "sha256": "c804a20a1f559f42175485f52be3dee69407a7f5e2a11a1a34a703e293fd5908"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command22-playertrue-failedtrue/map-effect-present-012.png",
+          "sha256": "632b63a4d7297dc82aa8cff0a96905d54bdcea355a4d99668e4bbfb4dc7a3e2e"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command22-playertrue-failedtrue/map-effect-present-013.png",
+          "sha256": "6a447b6aa2c613c8dd89cb436cf4f887d5f70e6ccbb45b0e4c60609688c9d468"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command22-playertrue-failedtrue/map-effect-present-014.png",
+          "sha256": "25b2d17fd4e038fa5c1a00baee57fb02e8c48130b4663d48a24f3926a2f86566"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command22-playertrue-failedtrue/map-effect-present-015.png",
+          "sha256": "cc56b84b8efc1ad4df8d77c83631e43bdefff035147c96188dad8f086ecca017"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command22-playertrue-failedtrue/map-effect-present-016.png",
+          "sha256": "4a4ca191e7e592dd06dedaae3350bb39fc1c6c9e12cfe17d7f084c5fd5601e62"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command22-playertrue-failedtrue/map-effect-present-017.png",
+          "sha256": "b701a4f51a9be8f4537830fc180ffac6e16e89e82485e3c05713572407b629b8"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command22-playertrue-failedtrue/map-effect-present-018.png",
+          "sha256": "a2c2af161cde2d9795569c7efbf4f8592218753c4af069dacafbeb2c0801cc95"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command22-playertrue-failedtrue/map-effect-present-019.png",
+          "sha256": "297582d12863598fb41c7a54184885355e6a7bc69d15d40fd23042d3287e0797"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command22-playertrue-failedtrue/map-effect-present-020.png",
+          "sha256": "9f10c833a7ff55b8c6248cb0736df7009864d36cb635a0593a4e133fbb71bea2"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command22-playertrue-failedtrue/map-mask-present-021.png",
+          "sha256": "13ee7ba3e3df5e7613d7a0f09f1e4922353de51e651498e0a9ce99e3df078b25"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command22-playertrue-failedtrue/map-mask-present-022.png",
+          "sha256": "7ad226b6a612bdade00392f863c5a8595fba12f686881f3dd873ec890973b88f"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command22-playertrue-failedtrue/map-palette-present-000.png",
+          "sha256": "5493fa41c12c7b24fa8c8c083f23e4744922bf1a0e66b42f8b0484ecbdfb293b"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command25-playertrue-failedtrue/map-digits-present-032.png",
+          "sha256": "2082772b987306d84b2d0da1e897f26f4909dcc642219a7ce8782a5330b20ee4"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command25-playertrue-failedtrue/map-effect-present-008.png",
+          "sha256": "33eeb2c24a1c2279eb595d39bf47540e894d6a56472075b93837c72bfc885deb"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command25-playertrue-failedtrue/map-effect-present-009.png",
+          "sha256": "82b5dc5fce2765686c071e4b94ed14d4188dbbd675cc1776c0410abaa874a079"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command25-playertrue-failedtrue/map-effect-present-010.png",
+          "sha256": "380a85d248877d6d26df473c9be41bf189785f8eef0468a13c493dda6eef13cc"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command25-playertrue-failedtrue/map-effect-present-011.png",
+          "sha256": "7ca9a746ac744f4428da90937e4750a87c69eca4c0d8776870a84dfb9163a32f"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command25-playertrue-failedtrue/map-effect-present-012.png",
+          "sha256": "56b9685def7105e146a957598b6ba6b91c6b7bec0181794b47c4495e83ca9e4a"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command25-playertrue-failedtrue/map-effect-present-013.png",
+          "sha256": "b54b3a3ce5d9f702ee9996fd8483b7b098aaba1f3b147204c365227b8bdaadfc"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command25-playertrue-failedtrue/map-effect-present-014.png",
+          "sha256": "c73c2a34ce1a2bba826cc060a89ab4ecce7f4adf51abd63c17d4b48d61a91f2f"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command25-playertrue-failedtrue/map-effect-present-015.png",
+          "sha256": "56b9685def7105e146a957598b6ba6b91c6b7bec0181794b47c4495e83ca9e4a"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command25-playertrue-failedtrue/map-effect-present-016.png",
+          "sha256": "b54b3a3ce5d9f702ee9996fd8483b7b098aaba1f3b147204c365227b8bdaadfc"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command25-playertrue-failedtrue/map-effect-present-017.png",
+          "sha256": "d877be7607bcb34796411f08272ce6ec231b8cd633d53306a9aff08aa949d1f8"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command25-playertrue-failedtrue/map-effect-present-018.png",
+          "sha256": "ca02826d037d5585ae9cde6fa7eecd48cd491400eb274eea6081222de312611c"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command25-playertrue-failedtrue/map-effect-present-019.png",
+          "sha256": "9add5e1a4995a5525df9410f3a85bea93cb5b71e9713c84410ee543a9b6310cd"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command25-playertrue-failedtrue/map-effect-present-020.png",
+          "sha256": "07420a0bbdae46b593ea9dcfff669463a21b705c323f5233baf7a1075b2aecb0"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command25-playertrue-failedtrue/map-mask-present-021.png",
+          "sha256": "13ee7ba3e3df5e7613d7a0f09f1e4922353de51e651498e0a9ce99e3df078b25"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command25-playertrue-failedtrue/map-mask-present-022.png",
+          "sha256": "2dab92718098ca309b73ef20f6cdd2c92430ba100bd046f8ffbaf6541c66b68b"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-18-3-oct24-r1-capture/command25-playertrue-failedtrue/map-palette-present-000.png",
+          "sha256": "7fa9687823bc0c23c0ed73e3ff060ed8890e71b5fe51b4812c850db2386c5a6f"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-game-ai26-seed0-oct24-r1-capture/map-digits-present-021.png",
+          "sha256": "ca56afe6306e29aa09a5641dd656a3f389585e57adc26003a8990fbfae719768"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-game-ai26-seed0-oct24-r1-capture/map-effect-present-001.png",
+          "sha256": "fbb328afa35d1604d25bee73e32c4f47554e3d7b4e77331b8fe944cd277e7d0a"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-game-ai26-seed0-oct24-r1-capture/map-effect-present-002.png",
+          "sha256": "fbb328afa35d1604d25bee73e32c4f47554e3d7b4e77331b8fe944cd277e7d0a"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-game-ai26-seed0-oct24-r1-capture/map-effect-present-003.png",
+          "sha256": "f074c22d83c523da75fab4de559e27d00f0a48c93f3d9bc2e56db9c092047fbe"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-game-ai26-seed0-oct24-r1-capture/map-effect-present-004.png",
+          "sha256": "4d41c75b27bf1154790224e5fb67d8bfb0cf248c7359e60737035c823588caa3"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-game-ai26-seed0-oct24-r1-capture/map-effect-present-005.png",
+          "sha256": "c23a3e2c47eadb7a016beff2bab854a55846f23e9c83d69ad8042eaa2d11f80b"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-game-ai26-seed0-oct24-r1-capture/map-effect-present-006.png",
+          "sha256": "1513b601fd5595f11d52219cbdae3cf75d2b2e17ce534dde6a3553045cc12671"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-game-ai26-seed0-oct24-r1-capture/map-effect-present-007.png",
+          "sha256": "6596988f1893414b7b7e8d80eee9168f48c4a96fe75b76a10ed0469442e07de9"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-game-ai26-seed0-oct24-r1-capture/map-effect-present-008.png",
+          "sha256": "cba836de2451a7aa8fd34ae5fe384508029d4a480f4468f7746cc1cd964be5ff"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-game-ai26-seed0-oct24-r1-capture/map-effect-present-009.png",
+          "sha256": "a09099b8b8dd5eaa873863fccbbfd1ae2bbc9a44f37f4d24aa21132c4339b152"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-game-ai26-seed0-oct24-r1-capture/map-mask-present-010.png",
+          "sha256": "13ee7ba3e3df5e7613d7a0f09f1e4922353de51e651498e0a9ce99e3df078b25"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-game-ai26-seed0-oct24-r1-capture/map-mask-present-011.png",
+          "sha256": "676fbf98acc121974426908d43fb711c44af1f22faf60bceab6413b8c5a204f9"
+        }
+      ],
+      "toolchain": {
+        "go": "1.22.12",
+        "ebiten": "2.6.6",
+        "gpu_image": "fd2-go-test-local:latest",
+        "asset_image": "fd2-assets-local:20260829-sfx",
+        "pillow": "11.3.0",
+        "user": "1000:1000",
+        "network": "none",
+        "memory_limit_bytes": 6442450944,
+        "cpus": 3,
+        "GOMAXPROCS": 3
+      },
+      "commands": {
+        "entry": "tools/verify_fd2_battle_surface_hd.py",
+        "common": [
+          "--catalog",
+          "/repo/remake/assets/themes/modern/catalog.json",
+          "--pack",
+          "/repo/remake/generated-assets/modern-theme-prototypes",
+          "--timeout",
+          "780"
+        ],
+        "batches": [
+          {
+            "kind": "modifier-map-batch",
+            "modifier_start": 0,
+            "modifier_limit": 6
+          },
+          {
+            "kind": "modifier-map-batch",
+            "modifier_start": 6,
+            "modifier_limit": 3
+          },
+          {
+            "kind": "modifier-map-batch",
+            "modifier_start": 9,
+            "modifier_limit": 3
+          },
+          {
+            "kind": "modifier-map-batch",
+            "modifier_start": 12,
+            "modifier_limit": 3
+          },
+          {
+            "kind": "modifier-map-batch",
+            "modifier_start": 15,
+            "modifier_limit": 3
+          },
+          {
+            "kind": "modifier-map-batch",
+            "modifier_start": 18,
+            "modifier_limit": 3
+          }
+        ],
+        "single_kinds": [
+          "modifier-map-fixture",
+          "modifier-map-source",
+          "modifier-map-regression",
+          "compound-scenery-regression",
+          "compound-map-unit"
+        ],
+        "supplement": [
+          "--kind",
+          "modifier-map-zero-seed",
+          "--modifier-command",
+          "26",
+          "--enemy"
+        ],
+        "extra_go_packages": [
+          "./internal/battlepresent",
+          "./internal/fdother",
+          "./internal/indexedmap",
+          "./cmd/fd2-string-inventory"
+        ]
+      }
+    },
+    "implementation_sources": [
+      {
+        "file": "remake/cmd/fd2/modern_hd_modifier_map.go",
+        "sha256": "f26bd21f7ddc52d10aaafea6172065643bfa71b28eb79be75141cfbd89f36b52"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_modifier_map_test.go",
+        "sha256": "34c26729871ba7a7500c37d0d77f170d1fc8d77b12a88cb147781c97815675df"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_modifier_map_gpu_test.go",
+        "sha256": "632942cd658ca9bd2412d3c4035e50be97a79d20d03b8a62aaf12b818a9cb10c"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_compound_map.go",
+        "sha256": "12bb95fe43ae4a778f0dd6f9f5b3093d76d76e16f619011e6d5f6704f0f79835"
+      },
+      {
+        "file": "remake/cmd/fd2/native_ai_modifier_presentation.go",
+        "sha256": "c30a4a96f5c30e543f3a2e1d5932398c6b2df425760eb98fd9c3b84d34341944"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command_modifier_presentation.go",
+        "sha256": "7429edfb05455c24a026e6d867353c739b7ff129684524238ea903d0785c1ae7"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_command0_test.go",
+        "sha256": "8d7dd07e6f4ae307d1da3170569294baf7389f5d6ba82fb94ab1e4eaddb21b4f"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command32_presentation_test.go",
+        "sha256": "7677cc7f1726d13f513ad849e97be86380d88650ae584b424320bc45843696a2"
+      },
+      {
+        "file": "tools/audit_fd2_player9_map_source.py",
+        "sha256": "dd061e88de70775346c8d3e559c64ae97df3bd885634c44e0d5b41d0e20bfe95"
+      },
+      {
+        "file": "tools/verify_fd2_battle_surface_hd.py",
+        "sha256": "1dbbd11e0d7a27c3da9b4d02ae696b64a08c36b6ba86f9aa1da68836b2b1132d"
+      }
+    ],
+    "fixture_policy": {
+      "original_records": [
+        4,
+        5
+      ],
+      "map": 0,
+      "positions": [
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          3
+        ]
+      ],
+      "class": 1,
+      "HP": 50,
+      "MaxHP": 100,
+      "AP": [
+        100,
+        200
+      ],
+      "DP": 50,
+      "HIT": 80,
+      "EV": 30,
+      "MP": 80,
+      "native_byte5_byte6_and_transient": "explicit per-case controlled flags in modifierHDTestGame",
+      "command_records": "explicit controlled book; ID10 damage10, normalMP2, ID18 MP4, ID17 MP99 but native debit follows18",
+      "rng_seed": 7,
+      "clock_unix_seconds": 1000,
+      "installed_before_map_initialization": true,
+      "player23": "palette prelude only; no disappearance/appearance claim",
+      "seed0_supplement": "separate existing native AI26 positive control; no rerolls"
+    },
+    "diagnostics": {
+      "record": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-diagnostics-oct24-r1.json",
+        "sha256": "691b2aae610a7c56e4816e8f652decfb02c461aadb9db8d48b89d203d9eee82f"
+      },
+      "timed_out_six_case_batch": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-6-6-oct24-r1.memory.json",
+        "sha256": "e44b33e5269a667b0ea9246e2d216acce673d49909aadc37f675af300f1f75d7"
+      },
+      "timeout_seconds": 750,
+      "timed_out_batch_peak_bytes": 4228853760,
+      "timed_out_batch_oom_kill": 0,
+      "disposition": "Keep failed receipts. Independent native controls also differed before fixing initialization clocks; batch size was not the cause of the pixel mismatch. Split the timed-out six-case group into bounded three-case runs without lowering checks.",
+      "string_inventory_rebind": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-string-rebind-oct24-r1.json",
+        "sha256": "69fddf89a16fe5da9aad83a7f05e9986a9951333df8a74725ad25978f5a926f3"
+      }
+    },
+    "gallery": {
+      "file": {
+        "file": "docs/figures/hd-modifier-map-effect.png",
+        "sha256": "070201d85923c69fd5b49540ae1bf5c97ffcd5179b0e5b2f39193d74cc0c9694"
+      },
+      "source": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-batch-0-6-oct24-r1-capture/command17-playerfalse-failedfalse/map-effect-present-002.png",
+        "sha256": "070201d85923c69fd5b49540ae1bf5c97ffcd5179b0e5b2f39193d74cc0c9694"
+      },
+      "unmodified_full_canvas": true,
+      "size": [
+        1920,
+        1200
+      ],
+      "case": {
+        "ID": 17,
+        "Player": false,
+        "Failed": false
+      },
+      "seed": 7,
+      "clock_unix_seconds": 1000
+    },
+    "remaining": [
+      "39 new LMI6 art frames191-229 require revised material fitting, READY, reproducible compiler and runtime validation before registration/private sync",
+      "AI items and other map owners, command23 disappearance/appearance",
+      "complete HUD and remaining terrain",
+      "unknown408 and legitimate third-bank18/19 callers",
+      "normal player/manual/platform gates and issues268/269"
+    ],
+    "github_issues": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-github-sync-oct24-r1.json",
+      "sha256": "cada3a45f68d7b05c977c3b727cd2bff585738c785714a3c981787acc5195558"
+    },
+    "final_integrity": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-final-integrity-oct24-r1.json",
+      "sha256": "689db698863c56c8edcaeb79ff793d009d03cc077e23a2f68089d9f181f221f3"
+    }
   }
 }

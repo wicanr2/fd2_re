@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"image"
+	"image/color"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
@@ -142,13 +143,17 @@ func (g *Game) startNativeCommand2022Presentation(actor, confirmed *battle.Unit,
 	if err != nil {
 		return err
 	}
+	initialHD := g.freezeModernHDModifierScene(mapPalette)
 	effectPixels := make([][]byte, 0, schedule.EffectFrames)
+	effectSources := make([][]indexedmap.NativeCommandTailLayer, 0, schedule.EffectFrames)
 	for frame := 0; frame < schedule.EffectFrames; frame++ {
 		work, vga := append([]byte(nil), baselineWork...), append([]byte(nil), baselineVGA...)
-		if err := indexedmap.ComposeNativeCommandHealEffectFrame(work, vga, baselineWork, g.nativeMapAssets.FDOTHER6[schedule.EffectStart+frame], effectTargets, view.CameraX, view.CameraY); err != nil {
+		sources, err := indexedmap.ComposeNativeCommandHealEffectFrameWithSources(work, vga, baselineWork, g.nativeMapAssets.FDOTHER6[schedule.EffectStart+frame], effectTargets, view.CameraX, view.CameraY, 6, schedule.EffectStart+frame)
+		if err != nil {
 			return err
 		}
 		effectPixels = append(effectPixels, vga)
+		effectSources = append(effectSources, sources)
 	}
 	maskWork, maskVGA := append([]byte(nil), baselineWork...), append([]byte(nil), baselineVGA...)
 	if err := indexedmap.ComposeNativeCommandHealMaskFrame(maskWork, maskVGA, baselineWork, g.nativeMapAssets.Units, g.st.NativeMapSelectorCache, effectTargets, view.CameraX, view.CameraY, roster.Cycles.Idle, byte(schedule.MaskIndex)); err != nil {
@@ -203,14 +208,17 @@ func (g *Game) startNativeCommand2022Presentation(actor, confirmed *battle.Unit,
 			}
 		}
 	}
+	digitSources := make([][]indexedmap.NativeCommandTailLayer, 0, schedule.DigitFrames)
 	digitPixels := make([][]byte, 0, schedule.DigitFrames)
 	if len(queue) > 0 {
 		for frame := 0; frame < schedule.DigitFrames; frame++ {
 			work, vga := append([]byte(nil), postWork...), append([]byte(nil), postVGA...)
-			if err := indexedmap.ComposeNativeCommandHealDigitFrame(work, vga, postWork, g.nativeMapAssets.CommandHealDigits, queue, tailTargets, view.CameraX, view.CameraY, schedule.DigitVertical, frame); err != nil {
+			sources, err := indexedmap.ComposeNativeCommandHealDigitFrameWithSources(work, vga, postWork, g.nativeMapAssets.CommandHealDigits, queue, tailTargets, view.CameraX, view.CameraY, schedule.DigitVertical, frame)
+			if err != nil {
 				return err
 			}
 			digitPixels = append(digitPixels, vga)
+			digitSources = append(digitSources, sources)
 		}
 	}
 	effectImages, err := nativeCommand24IndexedImages(effectPixels, mapPalette)
@@ -228,6 +236,7 @@ func (g *Game) startNativeCommand2022Presentation(actor, confirmed *battle.Unit,
 			return err
 		}
 	}
+	var hdPalettes []color.Palette
 	frames := make([]nativeCompoundPresentedFrame, 0, 8+len(effectImages)+schedule.MaskPairs*2+1+len(digitImages))
 	if player {
 		if g.nativeCommandPaletteFlash == nil || (!osMuteOrShot(g) && len(g.sfxCommandModifier) == 0) {
@@ -244,6 +253,7 @@ func (g *Game) startNativeCommand2022Presentation(actor, confirmed *battle.Unit,
 			if paletteErr != nil {
 				return paletteErr
 			}
+			hdPalettes = append(hdPalettes, palette)
 			indexed := image.NewPaletted(image.Rect(0, 0, 320, 200), palette)
 			copy(indexed.Pix, baselineVGA)
 			frames = append(frames, nativeCompoundPresentedFrame{image: ebiten.NewImageFromImage(indexed), delay: 1})
@@ -276,6 +286,19 @@ func (g *Game) startNativeCommand2022Presentation(actor, confirmed *battle.Unit,
 	if !osMuteOrShot(g) && (len(effectSample) == 0 || len(frames[maskStart].sound) == 0) {
 		return errors.New("native command tail raw sample unavailable")
 	}
+	postHD := newModernHDCompoundMapScene(postInput, postWork, postVGA, mapPalette, nil)
+	if err := bindModernHDModifierFrames(frames, modernHDModifierSources{
+		initial: initialHD, post: postHD, palettes: hdPalettes,
+		effects: effectPixels, effectSources: effectSources, digits: digitPixels, digitSources: digitSources,
+		targets: effectTargets, mask: maskVGA, maskIndex: byte(schedule.MaskIndex),
+	}); err != nil {
+		return err
+	}
+	publishHD, err := g.stageModernHDCompoundMap(frames, g.modernStoryPortraits)
+	if err != nil {
+		return err
+	}
+	publishHD()
 	g.nativeAICommandModifier = &nativeAICommandModifierPresentationJob{actor: actor, plan2022: plan, frames: frames, publishAt: publishAt, endAt: len(frames), skipHold: len(digitImages) == 0, rngBefore: g.nativeRNGState, baselineWork: baselineWork, baselineVGA: baselineVGA, stageWork: postWork, stageVGA: postVGA, then2022: then}
 	return nil
 }
@@ -346,13 +369,17 @@ func (g *Game) startNativeAICommandModifierPresentation(actor *battle.Unit, comm
 		return err
 	}
 
+	initialHD := g.freezeModernHDModifierScene(mapPalette)
 	effectPixels := make([][]byte, 0, schedule.EffectFrames)
+	effectSources := make([][]indexedmap.NativeCommandTailLayer, 0, schedule.EffectFrames)
 	for frame := 0; frame < schedule.EffectFrames; frame++ {
 		work, vga := append([]byte(nil), baselineWork...), append([]byte(nil), baselineVGA...)
-		if err := indexedmap.ComposeNativeCommandHealEffectFrame(work, vga, baselineWork, g.nativeMapAssets.FDOTHER6[schedule.EffectStart+frame], effectTargets, view.CameraX, view.CameraY); err != nil {
+		sources, err := indexedmap.ComposeNativeCommandHealEffectFrameWithSources(work, vga, baselineWork, g.nativeMapAssets.FDOTHER6[schedule.EffectStart+frame], effectTargets, view.CameraX, view.CameraY, 6, schedule.EffectStart+frame)
+		if err != nil {
 			return err
 		}
 		effectPixels = append(effectPixels, vga)
+		effectSources = append(effectSources, sources)
 	}
 	maskWork, maskVGA := append([]byte(nil), baselineWork...), append([]byte(nil), baselineVGA...)
 	if err := indexedmap.ComposeNativeCommandHealMaskFrame(maskWork, maskVGA, baselineWork, g.nativeMapAssets.Units, g.st.NativeMapSelectorCache, effectTargets, view.CameraX, view.CameraY, roster.Cycles.Idle, byte(schedule.MaskIndex)); err != nil {
@@ -390,13 +417,16 @@ func (g *Game) startNativeAICommandModifierPresentation(actor *battle.Unit, comm
 			}
 		}
 	}
+	digitSources := make([][]indexedmap.NativeCommandTailLayer, 0, schedule.DigitFrames)
 	digitPixels := make([][]byte, 0, schedule.DigitFrames)
 	for frame := 0; frame < schedule.DigitFrames; frame++ {
 		work, vga := append([]byte(nil), postWork...), append([]byte(nil), postVGA...)
-		if err := indexedmap.ComposeNativeCommandHealDigitFrame(work, vga, postWork, g.nativeMapAssets.CommandHealDigits, queue, tailTargets, view.CameraX, view.CameraY, schedule.DigitVertical, frame); err != nil {
+		sources, err := indexedmap.ComposeNativeCommandHealDigitFrameWithSources(work, vga, postWork, g.nativeMapAssets.CommandHealDigits, queue, tailTargets, view.CameraX, view.CameraY, schedule.DigitVertical, frame)
+		if err != nil {
 			return err
 		}
 		digitPixels = append(digitPixels, vga)
+		digitSources = append(digitSources, sources)
 	}
 	effectImages, err := nativeCommand24IndexedImages(effectPixels, mapPalette)
 	if err != nil {
@@ -434,6 +464,19 @@ func (g *Game) startNativeAICommandModifierPresentation(actor *battle.Unit, comm
 	if !osMuteOrShot(g) && (len(effectSample) == 0 || len(frames[maskStart].sound) == 0) {
 		return errors.New("native AI command modifier raw sample unavailable")
 	}
+	postHD := newModernHDCompoundMapScene(postInput, postWork, postVGA, mapPalette, nil)
+	if err := bindModernHDModifierFrames(frames, modernHDModifierSources{
+		initial: initialHD, post: postHD, palettes: nil,
+		effects: effectPixels, effectSources: effectSources, digits: digitPixels, digitSources: digitSources,
+		targets: effectTargets, mask: maskVGA, maskIndex: byte(schedule.MaskIndex),
+	}); err != nil {
+		return err
+	}
+	publishHD, err := g.stageModernHDCompoundMap(frames, g.modernStoryPortraits)
+	if err != nil {
+		return err
+	}
+	publishHD()
 	g.nativeAICommandModifier = &nativeAICommandModifierPresentationJob{
 		actor: actor, plan: plan, frames: frames, publishAt: publishAt, endAt: len(frames), rngBefore: g.nativeRNGState,
 		baselineWork: baselineWork, baselineVGA: baselineVGA, stageWork: postWork, stageVGA: postVGA, then: then,
@@ -550,6 +593,12 @@ func (g *Game) drawNativeAICommandModifierPresentation(screen *ebiten.Image) boo
 	j := g.nativeAICommandModifier
 	if j == nil || j.frame < 0 || j.frame >= len(j.frames) || j.frames[j.frame].image == nil {
 		return false
+	}
+	if drawn, err := g.drawModernHDCompoundMapFrame(screen, &j.frames[j.frame]); err != nil {
+		return false
+	} else if drawn {
+		j.drawn = true
+		return true
 	}
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Scale(2, 2)

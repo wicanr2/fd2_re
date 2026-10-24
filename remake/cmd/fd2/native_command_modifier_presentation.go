@@ -18,6 +18,7 @@ type nativeCommandModifierPresentationJob struct {
 	drawn       bool
 	transaction func() error
 	then        func()
+	hdFrames    []nativeCompoundPresentedFrame
 }
 
 // startNativeCommandPalettePresentation owns the recovered player-only
@@ -68,12 +69,23 @@ func (g *Game) startNativeCommandPalettePresentation(
 		}
 		palettes = append(palettes, palette)
 	}
+	frames := make([]nativeCompoundPresentedFrame, len(palettes))
+	scene := g.freezeModernHDModifierScene(palettes[0])
+	if err := bindModernHDModifierPalette(frames, scene, palettes); err != nil {
+		return err
+	}
+	publishHD, err := g.stageModernHDCompoundMap(frames, g.modernStoryPortraits)
+	if err != nil {
+		return err
+	}
+	publishHD()
 	g.nativeModifierPresentation = &nativeCommandModifierPresentationJob{
 		commandID:   commandID,
 		baseline:    append([]byte(nil), g.nativeMapVGA...),
 		palettes:    palettes,
 		transaction: transaction,
 		then:        then,
+		hdFrames:    frames,
 	}
 	g.playRaw(g.sfxCommandModifier)
 	return nil
@@ -106,6 +118,14 @@ func (g *Game) drawNativeCommandModifierPresentation(screen *ebiten.Image) bool 
 	if j == nil || j.phase < 0 || j.phase >= len(j.palettes) ||
 		len(j.baseline) != indexedmap.NativeMapVGASize || len(j.palettes[j.phase]) != 256 {
 		return false
+	}
+	if j.phase < len(j.hdFrames) {
+		if drawn, err := g.drawModernHDCompoundMapFrame(screen, &j.hdFrames[j.phase]); err != nil {
+			return false
+		} else if drawn {
+			j.drawn = true
+			return true
+		}
 	}
 	img := image.NewPaletted(image.Rect(0, 0, 320, 200), j.palettes[j.phase])
 	copy(img.Pix, j.baseline)

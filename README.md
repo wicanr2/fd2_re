@@ -108,6 +108,10 @@
 
 四種召喚返回地圖後也會保留HD人物、已登錄地形與數字，回復光環及角色閃光沿原節拍呈現。四格取自Linux四語受控流程的完整Game.Draw半縮圖，使用測試隊伍與邊界位置；不是一般玩家或原版對拍。其餘地形、HUD與尚未重繪的光效仍含原生素材，集中人工與平台抽驗仍待。來源及範圍依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)及[HD主收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的compound_map_tail_followup_20261024。
 
+![狀態法術的HD地圖人物與已登錄光效](docs/figures/hd-modifier-map-effect.png)
+
+狀態法術演出也接入HD地圖世界，保留原節拍、角色閃光、結果數字與主題切換。上圖為敵方指令17受控測試的完整1920×1200 Game.Draw畫面，使用兩筆原始敵方紀錄建構位置、職業與狀態，固定種子7及地圖時鐘；不是一般遊玩或原版對拍。部分地形、HUD及尚未登錄的狀態光效仍使用原版素材。玩家23目前只驗調色前導。範圍及重跑見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)與[HD主收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的modifier_map_hd_followup_20261024。
+
 ![四語系召喚地圖尾段的HD光柱、光環、冰晶與交叉斬痕](docs/figures/hd-compound-tail-effects.png)
 
 四種召喚返回地圖後的光效已接入手繪HD圖源。四格取自四語受控邊界場景的完整Game.Draw半縮圖，保留原本的畫面邊界裁切；部分地形與HUD仍為像素素材。光形、材質、羽化與亮度是現代美術近似，正常玩家及人工造型仍待集中確認。來源與重跑見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)及[HD主收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的compound_tail_art_followup_20261024。

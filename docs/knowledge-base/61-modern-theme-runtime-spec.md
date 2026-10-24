@@ -2,6 +2,19 @@
 
 狀態：現代主題仍為部分覆蓋；目前分層與缺口依[58](58-fd2-exe-re-coverage.md)。
 
+## 狀態法術的HD地圖呈現（CONFORMED-SCOPED／RUNTIME-E1，2026-10-24）
+
+本節實作前為READY。沿既有玩家`startNativeCommandPalettePresentation`與玩家／敵方`nativeAICommandModifierPresentationJob`，接17～23與25～27既有可達演出。玩家17～19及23保留現行獨立八相位調色owner；玩家20～22／25～27保留八相位後的原生handler尾段；敵方17～22／26～27保留各自單段尾段，沒有玩家調色前導，不新增敵方25入口。原始語意重用58已閉合的`fd2_command_modifier_palette_ida.txt`、`fd2_command20_22_player_ai_presentation_ida.txt`、`fd2_command25_27_player_ai_presentation_ida.txt`與34共用typed排程，固定版本依`fd2-reference-files.json`。不重開原版RE，不改交易、RNG、聲音、delay、mask／數字段publishAt、500ms hold、取消回復或存檔。
+
+- 在既有owner內凍結實際已發布的前置地圖、私有交易後地圖與各自typed來源。含選取圖層的前置來源沿既有玩家9的閉包凍結及整幀逐byte重組，不丟棄選取圖層；後置來源仍沿既有無閉包typed建構器。光效及數字改用既有WithSources producer，只補定位資料，不改原生pixels。mask的偶數拍取原始baseline，奇數拍取同一baseline work的viewport與HD角色輪廓，不提前代入交易後狀態。
+- 調色八相位沿既有玩家9的HD契約：原生底圖／介面依當相位palette，HD地形沿既有四色差近似，HD角色RGB保持。只改DAC entry0的原生效果不可解讀為整個HD世界單色閃爍，不新增全圖染色。這是既有現代主題近似，非原版RGB／索引palette等價。
+- 所有候選在owner發布或F2切入前逐來源預檢並一次發布；錯尺寸、來源、已登錄LMI或typed VGA即拒收，Draw不得補讀檔案或才準備HD。缺整組未登錄光效沿共用地圖契約明示原圖回退，不能稱全部光效HD。FDOTHER6 191～229美術尚未登錄，另列後續；126～190與既有數字／MISS沿已登錄圖源，保留34家族failure queue的十進位74／75／76原始索引。
+- 驗收包含全部合法owner來源／原生重組、正式Game.Draw、交易前後／無數字成功25／失敗queue、各階段F2、取消／錯來源原子拒收、原結算／RNG／一次續行及共用召喚回歸。獨立八相位入口驗正式呼叫的17～19及23，不擴增呼叫端；23只驗調色前導，不推定後續消失／出現演出完成。原版像素模式與無HD舊主題保持。受控測試只到RUNTIME-E1，正常玩家、集中人工與平台仍待。
+
+主證據入口沿[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`modifier_map_hd_followup_20261024`。實作沿[玩家調色owner](../../remake/cmd/fd2/native_command_modifier_presentation.go)、[共享狀態尾段owner](../../remake/cmd/fd2/native_ai_modifier_presentation.go)、[共享HD地圖](../../remake/cmd/fd2/modern_hd_compound_map.go)與[F2預檢](../../remake/cmd/fd2/player_shortcuts.go)。
+
+來源與主要GPU矩陣固定seed7，兩側地圖時鐘在初始化前固定於Unix1000；另沿既有`TestExecuteNativeAICommand26UsesOriginalIndexedTail`的固定seed0正例補驗套用成功。這是兩份明示初始條件，seed7失敗結果保持，不以重擲替換。每份均對獨立原生重製流程逐步核對單位／RNG，沒有新增原版oracle聲明。[來源及拒收測試](../../remake/cmd/fd2/modern_hd_modifier_map_test.go)與[Game.Draw測試](../../remake/cmd/fd2/modern_hd_modifier_map_gpu_test.go)由[永久驗證器](../../tools/verify_fd2_battle_surface_hd.py)的`modifier-map-fixture`、`modifier-map-source`、`modifier-map-game`、`modifier-map-batch`與`modifier-map-zero-seed`驅動。game以`--modifier-command`選指令、`--enemy`選敵方、`--modifier-failed`選明示狀態失敗槽；固定0補測限定敵方26。沿既有Go Docker、唯讀原包／org_game，給正式`--catalog --pack --out`與有界`--timeout`；每次ebiten.RunGame使用獨立程序，batch以--modifier-start／--modifier-limit選最多六個fixture。全部LMI來源盤點用[固定圖源工具](../../tools/audit_fd2_player9_map_source.py)的`--modifier-tails`，不與`--compound-tails`混用。
+
 ## 四召喚77份尾段光效美術（CONFORMED-SCOPED／RUNTIME-E1，2026-10-24）
 
 本節實作前為READY。沿已閉合四召喚typed來源及下節地圖接線，補FDOTHER6索引64～75、126～190，固定來源／raw／Pmode／manifest雜湊沿compound_map_tail_followup_20261024的pinned_lmi_sources；不重開RE、不改原生層序、MP／HP／RNG、節拍、保存與像素模式。九格母稿用內建imagegen依原版形狀參考及已核准光環風格生成，原稿及alpha原樣保存。光柱、地面碎光、074圖樣、冰晶、紅印記、六芒光、赤色彎刃／斬痕及藍光球分組，不把未知圖樣提升成技能語意。
