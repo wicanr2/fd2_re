@@ -4318,3 +4318,55 @@ FDOTHER42的HD準備明示接收同次唯讀adapter複本，正常合成器、lo
 前述READY契約已接入正式owner。兩包完整演出與F2、原圖主題控制組及返回通過；已驗證的完整畫面與收據相同。母稿、元件分類、仿射近似、來源雜湊、固定配方與驗證入口均依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的sky_key_hd_followup_20261025，唯一數量依[58](58-fd2-exe-re-coverage.md)。來源與交易、共享地圖23及故事隔離通過，地圖23舊畫面與收據保持。
 
 重跑入口為tools/verify_fd2_unit_present_hd.py的sky-core、sky-native與sky-game；皆在既有Go Docker執行並明示--catalog、--pack、--out及固定原包。獨立執行包由tools/sync_modern_theme_private.py --runtime-only依清冊建立，sky-game加--require-real-runtime。工具會拒收缺項、SKIP、逾時與OOM；它驗證受控重製端範圍，不是正常玩家或原版執行器收據。完整HD與後續人工／平台閘門保持開啟。
+
+## 玩家／AI物品地圖演出與凍結背景（DRAFT-SOURCE-AUDIT）
+
+範圍為既有nativeAIItemPresentationJob共用的type5／13、20／24與21正式路徑。原生交易與三家尾段已依58的fd2_ai_item_restore_presentation_owner.txt、fd2_ai_item_damage_1cd17_owner.txt、fd2_ai_item_type21_1cac7_owner.txt閉合；不重開RE。程式目前只畫原生影像，尚未加入共用HD地圖尾段；49..56八張光效也未登錄。來源、圖組及狀態依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的item_map_hd_followup_20261025。
+
+同時處理modernHDCompoundMapScene共用的同次地圖23背景快照，供物品、狀態法術與召喚使用；不能讀播放時的live stage替代凍結來源。現有其他回復／玩家9／徑向／列位移／死亡caller仍須各自綁定，不因本切片完成而外推。先以受控來源探針重現缺口，審核新光效與混色近似，完成READY及驗收契約後才接正式程式。正式規則、資料與保存格式不變。
+
+### 物品地圖與共用凍結背景消費契約（READY-ART-REVIEWED）
+
+三個DRAFT探針已重現原生40幀／publishAt18而無HD來源、八張缺圖及相同typed input/work/palette下的背景缺接。加回同次stage seed後，完整native work／VGA可逐byte重建。新白色閃光原稿及八張HD候選已目視，保留擴大、裂散與消失的原框六倍座標；母稿alpha0..254檔案不改，LANCZOS重採樣可自然產生255。原版只存bbox／點數／SHA摘要，直接從唯讀原包編製新美術，不另存原始像素陣列或新原圖contact。來源、工具、提示詞與候選SHA依同筆HD主收據。
+
+- 適用正式共享物品owner的type5／13、20／24、21三個renderer。五種類別須保留同一原生交易、原生frames／delay／sample／publishAt與尾停；玩家與AI兩路都接，效果／mask或blend／toggle／結果段完整覆蓋。HD準備在owner發布前完成；錯圖、描述子或快照在結算前拒收。沒有新增規則、存檔欄位或未證實原版語意。
+- 原生effect與digit blitter改用既有WithSources版本取得同一份typed LMI來源；它們的work／VGA輸出必須與原版blitter相同。21類型沿已閉合buildNative1CAC7TailFrames的EffectSources／ToggleSources／ResultSources。新49..56只擴充既有native_lmi1_rgba_hd6_v1分組，不另創執行器或PNG查找捷徑；57..75與數字／MISS沿已登錄圖源。部分宣告失效仍拒收，舊主題整組未宣告時保留既有明示原圖fallback；正式新包的可見LMI不得回退。
+- type5／13沿同一11張原生mask交替。type20／24沿原十張blend值7,6,5,4,3,2,1,0,7,6，原索引映射為((index+blend)&7)+0x20；HD用既有四色差RGB方法映色到當時DAC並保alpha，覆蓋相同slot／pose0／idleCycle與原x/y。此為美術顯示近似，不能稱逐RGB一致。21類型保留0x4A／0x4B四組toggle及90ms等待，不借用其他指令的排程。
+- modernHDCompoundMapScene保存不可變typed input、獨立selector／HUD cache、work／VGA與palette。同次map23的nativeCh23State另存完整clone；post-transaction來源由相同native stage seed直接ComposeNativeFrame而來，不讀播放當時的live stage。凍結來源密封雜湊後，HD準備與F2重核來源、immutable bank、原生重建及stage raw row。palette0派生場景只在既有允許範圍內重封，不能把後來Game狀態當來源。
+- 共用scene的來源建構改由Game捕捉，物品、狀態法術與四召喚同時消費。HD地圖經明示stage入口繪製，包含透明／literal／destination-remap分權、範圍層、前景、HUD人物與當時DAC。已登錄LMI依當時DAC映色保alpha，identity時沿原圖源，不新增非必要轉換。其他回復／玩家9／徑向／列位移／死亡caller仍另列，不外推為全部背景已綁定。
+- F2把物品owner加入既有modernCompoundMapFrames集合，所有owner先私下預備再一併發布。cached來源也重驗密封與原生重建。每次Draw只確認顯示，原生Update才推進；退出、晚失敗、roster變動與交易回復仍沿原owner，不增加source消耗或重複續行。
+- 驗收至少涵蓋五type、21的三個command路由、玩家與AI、單／多目標、命中／MISS、全部phase、原等待／publishAt與一次續行；正式／獨立runtime兩包Game.Draw、1920畫布獨立CPU比較與F2、無可見LMI回退、正常HD返回。map23凍結背景需實際typed幾何／stage並證明修改live stage不影響凍結畫面、來源／圖組反例及原圖主題控制組。共用四召喚／狀態及舊天空之鑰／地圖23選最小充分回歸。無SKIP／逾時／OOM；正常玩家／集中人工／平台仍依全部HD後政策，不能由探針、受控角色或素材數代替。
+
+物品消費端勘誤：`applyNativeTargetItem` 的玩家 type5／13 在目前正式程式直接結算，不啟動 `nativeAIItemPresentation`。本切片保留該路徑，以兩項即時結算控制驗證；完整播放器矩陣改為 AI 回復兩項，以及玩家／AI 傷害與特殊效果十二項，共十四項。首輪兩項失敗是測試預期錯誤，不據此改正式規則，也不宣稱玩家回復道具已有 HD 動畫。其餘 READY 契約保持，玩家回復演出的原版 caller 與後續呈現另依 58 的證據入口確認。
+
+### 物品地圖與共用凍結背景（CONFORMED-SCOPED／RUNTIME-E1）
+
+AI type5／13回復，以及玩家／AI type20／24傷害、type21指令1／6／7，已接上完整HD世界、光效、mask／blend／toggle與數字。玩家type5／13的直接結算另以控制組保持，本批沒有替它新增動畫。原生交易、道具消耗與保留、RNG、音效選擇、Draw確認、publishAt16／18、500ms尾停及一次續行保持。RGB映色與新材質沿既有美術近似，alpha保持。
+
+共用compound場景凍結typed input、selector／HUD快取、work／VGA、palette及地圖23當次staging／rowShift／latch／tick。來源簽章與原生重組在每次F2準備時重驗，完整預檢後才發布。背景播放不讀取後續live stage；物品、modifier與召喚32～35使用此來源。真實map23及合成場景的快照、隔離與拒收已驗，這不等同每種caller在map23的正常玩家驗收。其他凍結消費端仍待接入。
+
+固定時鐘1000與seed7的兩包完整Game.Draw、三階段F2、全部光效來源、MISS、結算時點及返回通過；完整收據與50張PNG逐檔相同。來源、統計、實際輸入與失敗分類依HD主收據`item_map_hd_followup_20261025`，唯一數量表為58。這是受控RUNTIME-E1，不新增原版RGB、正常玩家、音訊聽感或平台聲明。
+
+重跑入口為`python3 tools/verify_fd2_unit_present_hd.py --help`，提供`--catalog`、`--pack`、不存在的`--out`前綴與有界`--timeout`。`--kind item-unit`驗來源與交易，`--kind item-native`驗既有原生流程，`--kind item-game`驗完整繪圖。既有收據以`--check-existing`稽核，兩包比較加`--compare-with`另一個輸出前綴；獨立圖包加`--require-real-runtime`。使用維護中的`fd2-go-test-local:latest`，user1000、network none、6GiB／2CPU／256 pids；Xvfb由工具有界管理。原版分離包唯讀掛到`/original`，並設定`FD2_ASSET_PACK`與`FD2_TEST_ORIGINAL_PACK`。詳細輸出前綴及映像指紋由主收據承載。
+
+八張新圖由`tools/build_fd2_item_map_hd.py`編製。基底取自提交`8343e958`的768項清冊，固定SHA為`495dbae95c59dbfe25135684cfcb9ab1872cb4ba2cab11eab8bc6eb1b5913b17`；母稿與原包指紋由工具及主收據固定。候選輸出會改寫自己的`private_root`，正式登錄須恢復`remake/generated-assets/modern-theme-prototypes`，再跑`tools/validate_modern_theme_catalog.py --verify-private`與`tools/test_modern_theme_catalog.py`。正式清冊的預設與明示路徑都有拒收反例。私人素材依`tools/sync_modern_theme_private.py`的catalog白名單同步，不含拒收草稿。
+
+完整GPU矩陣逐組建立一個HD／原生遊戲對，完成後解除引用。這次預建十四組造成的OOM已由cgroup確認；逐組版本在同配額下通過。峰值及回收事件逐次保留，不能由此宣稱所有平台的記憶體餘裕。玩家回復動畫、其他凍結背景、其餘地形、HD2、完整HUD、獨立介面切換、浮出工具列／加速／海報及集中正常／人工／平台仍待。
+
+## 未命中字母索引勘誤與實作規格（2026-10-25）
+
+本切片為 READY。既有[主證據](../data/ida/fd2_command9_player_ai_presentation_ida.txt)
+已證實 `sub_1E1DC` 讀取線性位址 `0x5204A` 的四個原始位元組
+`74 75 76 76`，其十進位索引為 116、117、118、118。輸入與工具版本沿該證據；
+本輪以 `tools/disasm_le.py data 5204A 4` 機械式複核，雜湊相同。
+
+道具、狀態效果與召喚 34／35 的部分重製佇列誤用了十進位 74、75、76，
+導致重製的像素與 HD 模式都顯示煙霧。這是重製轉錄錯誤，未推翻原版主證據。
+統一使用保留十六進位常數的共用佇列，位置碼仍為 2、8、12、17。
+保留各呼叫端的命中、可視範圍、交易與時序條件。
+
+驗收須同時檢查四個字母與位置碼、實際道具與狀態／召喚呼叫端，
+以及完整 Game.Draw 收據中的 FDOTHER #5 索引。禁止只用相同錯誤的
+重製端對照組判定通過。此修正不宣稱新增原版執行器對拍或 PLAYER-E2。
+
+前述 READY 已實作並通過受控 RUNTIME-E1。共用佇列六項回歸、真實狀態與召喚未命中分支、十四條完整物品演出與兩包全部畫面通過；選定閘門及數量依58與主收據，不沿用修正前的煙霧收據。獨立素材包完成驗證後已清理，重跑須以私人清冊重新同步。

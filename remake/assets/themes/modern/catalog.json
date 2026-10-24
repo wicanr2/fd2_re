@@ -64743,6 +64743,102 @@
         "docs/knowledge-base/61-modern-theme-runtime-spec.md",
         "docs/data/ida/fd2_ch20_sky_key_sequence_ida.txt"
       ]
+    },
+    {
+      "asset_id": "item-map-fdother006-049-056-hd6",
+      "role": "map_overlay_hd_set",
+      "status": "runtime_candidate",
+      "files": [
+        "item-map-fdother006-049-hd6-r1.png",
+        "item-map-fdother006-050-hd6-r1.png",
+        "item-map-fdother006-051-hd6-r1.png",
+        "item-map-fdother006-052-hd6-r1.png",
+        "item-map-fdother006-053-hd6-r1.png",
+        "item-map-fdother006-054-hd6-r1.png",
+        "item-map-fdother006-055-hd6-r1.png",
+        "item-map-fdother006-056-hd6-r1.png"
+      ],
+      "width": 1920,
+      "height": 1200,
+      "frame_count": 8,
+      "frame_sha256": [
+        "96f3e385228ef8eed3ad2a85507b478b33f005a473f1540d6450d827c0db8cdb",
+        "5c55cb6bd28224501bcf849e96afcaf5e85d259ca0214e32a87586d44c46bca6",
+        "6110a639a6df1f5e57bd7972aa2f59da8a4f2aa098f8996462a8efecf33ee1c0",
+        "c3854ddc39fcd3f0f6d63bdb3036e2f7c8b658e73346e6d5bc1b9a6c1c95ddba",
+        "830e2bf879b06b004b242aa7ef6eeb9990e18ba1dfd94a15d4dcebfd5b76006e",
+        "56625315bc1cf53667e340d64e8794390d2d0d8fb71c1a84f519ee4cd64141b6",
+        "e7e5555a714f01ab14e6660497dcb5867ec12b95649c60127916d2e8df893df5",
+        "07b15b816cc4f1c1df6deccfcfe84b7c9688a7b185153f2e9ebda0b0071d403f"
+      ],
+      "consumer_contract": "native_lmi1_rgba_hd6_v1",
+      "alpha_contract": "coverage",
+      "cycle_policy": "native_lmi1_entries",
+      "source_archive": "FDOTHER.DAT",
+      "source_resource": 6,
+      "source_metadata_sha256": "88680097b2b64585613699c5593f19dee143f044e893de54ee486cd93465e675",
+      "native_lmi_frames": [
+        {
+          "index": 49,
+          "width": 14,
+          "height": 14,
+          "pixels_sha256": "e1ce2435c10a398204e08c46b42e861a7ddb31c8d53937f0a280d04476cce19f"
+        },
+        {
+          "index": 50,
+          "width": 15,
+          "height": 15,
+          "pixels_sha256": "a66b3d8f92cae09b6fde721b5f164e4543181a76b182bfb512205bd3b1df4c95"
+        },
+        {
+          "index": 51,
+          "width": 21,
+          "height": 21,
+          "pixels_sha256": "b25b660d4485502512e012362ffeb41835580eaecc44efc38b6de0827c34ce03"
+        },
+        {
+          "index": 52,
+          "width": 22,
+          "height": 23,
+          "pixels_sha256": "fd09b27df3937e3051310b6d3f2fa4bda49f6b423f2ac1f2891f22a8e2422f26"
+        },
+        {
+          "index": 53,
+          "width": 24,
+          "height": 24,
+          "pixels_sha256": "b80416ac5c40d081eae38f2e3f2161d0aae34d7860ecd6ac8bb41be35b35e042"
+        },
+        {
+          "index": 54,
+          "width": 24,
+          "height": 24,
+          "pixels_sha256": "1221ff4a43433049d59b6d296e68453510901fab00b226f7b7c645787e942660"
+        },
+        {
+          "index": 55,
+          "width": 23,
+          "height": 24,
+          "pixels_sha256": "6a45a865e02188df16c3b875032397b0fc9dc005c5de1cdcde7e9a192a1f11da"
+        },
+        {
+          "index": 56,
+          "width": 23,
+          "height": 24,
+          "pixels_sha256": "ef35ed2e3d8b2dc8b20b2e7b0701332cb62d3413d2168b7628335763b2f8bcae"
+        }
+      ],
+      "layout_policy": "native_lmi1_rect_hd6",
+      "source_files": [
+        "item-map-white-flash-master-oct25-r1.png"
+      ],
+      "source_sha256": [
+        "0d90cc18c6de7750d1092d55be1356ead94726110fce94f28bab69d3eeb38e1c"
+      ],
+      "source_refs": [
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+        "docs/data/ida/fd2_ai_item_damage_1cd17_owner.txt",
+        "tools/build_fd2_item_map_hd.py"
+      ]
     }
   ]
 }

@@ -104,10 +104,10 @@ def main():
     ranges = None
     if args.compound_tails and args.modifier_tails:raise SystemExit('一次只選一個明示來源集合')
     if args.compound_tails:
-        ranges = {5: [74,75,76]+list(range(94,104))+list(range(105,115))+[116,117,118],
+        ranges = {5: list(range(94,104))+list(range(105,115))+[116,117,118],
                   6: list(range(57,76))+list(range(126,191))}
     if args.modifier_tails:
-        ranges = {5:[74,75,76]+list(range(94,104))+list(range(105,115)),6:list(range(126,230))}
+        ranges = {5:list(range(94,104))+list(range(105,115))+[116,117,118],6:list(range(126,230))}
     data, pictures = audit(args.original_pack, ranges)
     canvas = Image.new('RGB', (1200, ((len(pictures)+9)//10)*200), '#151721'); draw = ImageDraw.Draw(canvas)
     for n, (resource, row, im) in enumerate(pictures):

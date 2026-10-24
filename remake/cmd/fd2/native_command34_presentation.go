@@ -239,7 +239,7 @@ func (g *Game) startNativeCommand34Presentation(actor, confirmed *battle.Unit, t
 	var stageWork, stageVGA [3][]byte
 	stageBaseWork, stageBaseVGA := baselineWork, baselineVGA
 	for stageIndex, schedule := range tailSchedule {
-		mapBeforeStage[stageIndex] = newModernHDCompoundMapScene(stageInput, stageBaseWork, stageBaseVGA, mapPalette, stageInputErr)
+		mapBeforeStage[stageIndex] = g.newModernHDCompoundMapScene(stageInput, stageBaseWork, stageBaseVGA, mapPalette, stageInputErr)
 		effectPixels := make([][]byte, 0, schedule.EffectFrames)
 		for frame := 0; frame < schedule.EffectFrames; frame++ {
 			work, vga := append([]byte(nil), stageBaseWork...), append([]byte(nil), stageBaseVGA...)
@@ -267,7 +267,7 @@ func (g *Game) startNativeCommand34Presentation(actor, confirmed *battle.Unit, t
 			return err
 		}
 		stageWork[stageIndex], stageVGA[stageIndex] = postWork, postVGA
-		mapAfterStage[stageIndex] = newModernHDCompoundMapScene(postInput, postWork, postVGA, mapPalette, nil)
+		mapAfterStage[stageIndex] = g.newModernHDCompoundMapScene(postInput, postWork, postVGA, mapPalette, nil)
 		stageInput, stageInputErr = postInput, nil
 		stageBaseWork, stageBaseVGA = postWork, postVGA
 		queue := make([]battle.NativePresentationDigit, 0, len(tailTargets)*4)
@@ -285,9 +285,7 @@ func (g *Game) startNativeCommand34Presentation(actor, confirmed *battle.Unit, t
 					return err
 				}
 			} else if inCamera {
-				for slot, glyph := range [...]int{74, 75, 76, 76} {
-					queue = append(queue, battle.NativePresentationDigit{PositionCode: [...]int{2, 8, 12, 17}[slot], Target: target.RecordIndex, Digit: glyph})
-				}
+				queue = battle.AppendNativePresentationMiss(queue, target.RecordIndex)
 			}
 		}
 		digitPixels := make([][]byte, 0, schedule.DigitFrames)

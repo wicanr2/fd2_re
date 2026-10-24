@@ -11,6 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 CATALOG = ROOT / "remake/assets/themes/modern/catalog.json"
+FORMAL_PRIVATE_ROOT = Path("remake/generated-assets/modern-theme-prototypes")
 ID_RE = re.compile(r"^[a-z0-9]+(?:[._-][a-z0-9]+)+$")
 SHA_RE = re.compile(r"^[0-9a-f]{64}$")
 SOURCE_ASSET_RE = re.compile(r"^asset:[A-Za-z0-9][A-Za-z0-9._-]+$")
@@ -50,6 +51,8 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
     private_root = Path(data["private_root"])
     if private_root.is_absolute() or ".." in private_root.parts:
         raise ValueError("private_root must be a safe repository-relative path")
+    if (catalog_path or CATALOG).resolve() == CATALOG.resolve() and private_root != FORMAL_PRIVATE_ROOT:
+        raise ValueError(f"tracked catalog must use private_root {FORMAL_PRIVATE_ROOT}")
     assets = data["assets"]
     if not isinstance(assets, list) or not assets:
         raise ValueError("assets must be a non-empty list")
@@ -281,6 +284,7 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
                        list(range(94,104))+[116,117,118] if resource == 5 and count == 13 else
                        list(range(87,114)) if resource == 6 and count == 27 else
                        list(range(105,115)) if resource == 5 and count == 10 else
+                       list(range(49,57)) if resource == 6 and count == 8 else
                        list(range(57,64)) if resource == 6 and count == 7 else
                        list(range(64,76)) if resource == 6 and count == 12 else
                        list(range(126,191)) if resource == 6 and count == 65 else

@@ -105,16 +105,16 @@ func (g *Game) startNativeTargetItemPresentation(plan *battle.AIPlan, then func(
 	baselineWork := append([]byte(nil), g.nativeMapWork...)
 	baselineVGA := append([]byte(nil), g.nativeMapVGA...)
 	effectPixels := make([][]byte, 0, schedule.EffectFrames)
+	effectSources := make([][]indexedmap.NativeCommandTailLayer, 0, schedule.EffectFrames)
 	for frame := 0; frame < schedule.EffectFrames; frame++ {
 		work := append([]byte(nil), baselineWork...)
 		vga := append([]byte(nil), baselineVGA...)
-		if err := indexedmap.ComposeNativeCommandHealEffectFrame(
-			work, vga, baselineWork, a.FDOTHER6[schedule.EffectStart+frame],
-			effectTargets, view.CameraX, view.CameraY,
-		); err != nil {
+		layers, err := indexedmap.ComposeNativeCommandHealEffectFrameWithSources(work, vga, baselineWork, a.FDOTHER6[schedule.EffectStart+frame], effectTargets, view.CameraX, view.CameraY, 6, schedule.EffectStart+frame)
+		if err != nil {
 			return false, err
 		}
 		effectPixels = append(effectPixels, vga)
+		effectSources = append(effectSources, layers)
 	}
 	roster, err := g.st.NativeMapFrameRoster()
 	if err != nil {
@@ -158,21 +158,24 @@ func (g *Game) startNativeTargetItemPresentation(plan *battle.AIPlan, then func(
 		}
 	}
 	digitPixels := make([][]byte, 0, schedule.DigitFrames)
+	digitSources := make([][]indexedmap.NativeCommandTailLayer, 0, schedule.DigitFrames)
 	for frame := 0; frame < schedule.DigitFrames; frame++ {
 		work := append([]byte(nil), postWork...)
 		vga := append([]byte(nil), postVGA...)
-		if err := indexedmap.ComposeNativeCommandHealDigitFrame(
-			work, vga, postWork, a.CommandHealDigits, queue, tailTargets,
-			view.CameraX, view.CameraY, schedule.DigitVertical, frame,
-		); err != nil {
+		layers, err := indexedmap.ComposeNativeCommandHealDigitFrameWithSources(work, vga, postWork, a.CommandHealDigits, queue, tailTargets, view.CameraX, view.CameraY, schedule.DigitVertical, frame)
+		if err != nil {
 			return false, err
 		}
 		digitPixels = append(digitPixels, vga)
+		digitSources = append(digitSources, layers)
 	}
 	palette, err := fdother.VGAPaletteFromDAC(g.nativeMapDAC)
 	if err != nil {
 		return false, err
 	}
+	frozenMapInput, mapInputErr := g.freezeNativeCommand9MapInput()
+	mapBefore := g.newModernHDCompoundMapScene(frozenMapInput, baselineWork, baselineVGA, palette, mapInputErr)
+	mapAfter := g.newModernHDCompoundMapScene(postInput, postWork, postVGA, palette, nil)
 	effectImages, err := nativeCommand24IndexedImages(effectPixels, palette)
 	if err != nil {
 		return false, err
@@ -202,6 +205,20 @@ func (g *Game) startNativeTargetItemPresentation(plan *battle.AIPlan, then func(
 	if !osMuteOrShot(g) && (len(frames[0].sound) == 0 || len(frames[maskStart].sound) == 0) {
 		return false, errors.New("native AI item required raw sample unavailable")
 	}
+	if err := bindModernHDCompoundMap(frames[:maskStart], mapBefore, effectPixels, effectSources, nil, 0, true, "item-effect"); err != nil {
+		return false, err
+	}
+	if err := bindModernHDCompoundMapMask(frames[maskStart:publishAt], mapBefore, baselineVGA, maskVGA, effectTargets, byte(schedule.MaskIndex), "item-mask"); err != nil {
+		return false, err
+	}
+	if err := bindModernHDCompoundMap(frames[publishAt:], mapAfter, digitPixels, digitSources, nil, 0, true, "item-digits"); err != nil {
+		return false, err
+	}
+	publishHD, err := g.stageModernHDCompoundMap(frames, g.modernStoryPortraits)
+	if err != nil {
+		return false, err
+	}
+	publishHD()
 	g.nativeAIItemPresentation = &nativeAIItemPresentationJob{
 		transaction: tx, frames: frames, publishAt: publishAt,
 		baselineWork: baselineWork, baselineVGA: baselineVGA,
@@ -286,6 +303,9 @@ func (g *Game) startNativeAIItemType21Presentation(tx *nativeAIItemTransaction, 
 	if err != nil {
 		return false, err
 	}
+	frozenMapInput, mapInputErr := g.freezeNativeCommand9MapInput()
+	mapBefore := g.newModernHDCompoundMapScene(frozenMapInput, baselineWork, baselineVGA, palette, mapInputErr)
+	mapAfter := g.newModernHDCompoundMapScene(postInput, postWork, postVGA, palette, nil)
 	effectImages, err := nativeCommand24IndexedImages(tail.Effect, palette)
 	if err != nil {
 		return false, err
@@ -313,6 +333,21 @@ func (g *Game) startNativeAIItemType21Presentation(tx *nativeAIItemTransaction, 
 	if !osMuteOrShot(g) && len(frames[0].sound) == 0 {
 		return false, errors.New("native AI item required raw sample unavailable")
 	}
+	effectEnd := len(tail.Effect)
+	if err := bindModernHDCompoundMap(frames[:effectEnd], mapBefore, tail.Effect, tail.EffectSources, nil, 0, true, "item-effect"); err != nil {
+		return false, err
+	}
+	if err := bindModernHDCompoundMap(frames[effectEnd:publishAt], mapBefore, tail.Toggle, tail.ToggleSources, nil, 0, true, "item-toggle"); err != nil {
+		return false, err
+	}
+	if err := bindModernHDCompoundMap(frames[publishAt:], mapAfter, tail.Result, tail.ResultSources, nil, 0, true, "item-digits"); err != nil {
+		return false, err
+	}
+	publishHD, err := g.stageModernHDCompoundMap(frames, g.modernStoryPortraits)
+	if err != nil {
+		return false, err
+	}
+	publishHD()
 	g.nativeAIItemPresentation = &nativeAIItemPresentationJob{
 		transaction: tx, frames: frames, publishAt: publishAt,
 		baselineWork: baselineWork, baselineVGA: baselineVGA,
@@ -374,13 +409,15 @@ func (g *Game) startNativeAIItemDamagePresentation(tx *nativeAIItemTransaction, 
 	baselineWork := append([]byte(nil), g.nativeMapWork...)
 	baselineVGA := append([]byte(nil), g.nativeMapVGA...)
 	effectPixels := make([][]byte, 0, schedule.EffectFrames)
+	effectSources := make([][]indexedmap.NativeCommandTailLayer, 0, schedule.EffectFrames)
 	for frame := 0; frame < schedule.EffectFrames; frame++ {
 		work, vga := append([]byte(nil), baselineWork...), append([]byte(nil), baselineVGA...)
-		if err := indexedmap.ComposeNativeCommandHealEffectFrame(work, vga, baselineWork,
-			a.FDOTHER6[schedule.EffectStart+frame], visible, view.CameraX, view.CameraY); err != nil {
+		layers, err := indexedmap.ComposeNativeCommandHealEffectFrameWithSources(work, vga, baselineWork, a.FDOTHER6[schedule.EffectStart+frame], visible, view.CameraX, view.CameraY, 6, schedule.EffectStart+frame)
+		if err != nil {
 			return false, err
 		}
 		effectPixels = append(effectPixels, vga)
+		effectSources = append(effectSources, layers)
 	}
 	blendPixels := make([][]byte, 0, schedule.BlendFrames)
 	for frame := 0; frame < schedule.BlendFrames; frame++ {
@@ -420,27 +457,27 @@ func (g *Game) startNativeAIItemDamagePresentation(tx *nativeAIItemTransaction, 
 				return false, err
 			}
 		} else if inCamera {
-			for slot, glyph := range [...]int{74, 75, 76, 76} {
-				queue = append(queue, battle.NativePresentationDigit{
-					PositionCode: [...]int{2, 8, 12, 17}[slot], Target: target.RecordIndex, Digit: glyph,
-				})
-			}
+			queue = battle.AppendNativePresentationMiss(queue, target.RecordIndex)
 		}
 	}
 	digitPixels := make([][]byte, 0, schedule.DigitFrames)
+	digitSources := make([][]indexedmap.NativeCommandTailLayer, 0, schedule.DigitFrames)
 	for frame := 0; frame < schedule.DigitFrames; frame++ {
 		work, vga := append([]byte(nil), postWork...), append([]byte(nil), postVGA...)
-		if err := indexedmap.ComposeNativeCommandHealDigitFrame(work, vga, postWork,
-			a.CommandHealDigits, queue, tailTargets, view.CameraX, view.CameraY,
-			schedule.DigitVertical, frame); err != nil {
+		layers, err := indexedmap.ComposeNativeCommandHealDigitFrameWithSources(work, vga, postWork, a.CommandHealDigits, queue, tailTargets, view.CameraX, view.CameraY, schedule.DigitVertical, frame)
+		if err != nil {
 			return false, err
 		}
 		digitPixels = append(digitPixels, vga)
+		digitSources = append(digitSources, layers)
 	}
 	palette, err := fdother.VGAPaletteFromDAC(g.nativeMapDAC)
 	if err != nil {
 		return false, err
 	}
+	frozenMapInput, mapInputErr := g.freezeNativeCommand9MapInput()
+	mapBefore := g.newModernHDCompoundMapScene(frozenMapInput, baselineWork, baselineVGA, palette, mapInputErr)
+	mapAfter := g.newModernHDCompoundMapScene(postInput, postWork, postVGA, palette, nil)
 	effectImages, err := nativeCommand24IndexedImages(effectPixels, palette)
 	if err != nil {
 		return false, err
@@ -468,6 +505,21 @@ func (g *Game) startNativeAIItemDamagePresentation(tx *nativeAIItemTransaction, 
 	if !osMuteOrShot(g) && len(frames[0].sound) == 0 {
 		return false, errors.New("native AI item required raw sample unavailable")
 	}
+	effectEnd := len(effectPixels)
+	if err := bindModernHDCompoundMap(frames[:effectEnd], mapBefore, effectPixels, effectSources, nil, 0, true, "item-effect"); err != nil {
+		return false, err
+	}
+	if err := bindModernHDItemDamage(frames[effectEnd:publishAt], mapBefore, blendPixels, visible, schedule.Blend, byte(schedule.RawBase)); err != nil {
+		return false, err
+	}
+	if err := bindModernHDCompoundMap(frames[publishAt:], mapAfter, digitPixels, digitSources, nil, 0, true, "item-digits"); err != nil {
+		return false, err
+	}
+	publishHD, err := g.stageModernHDCompoundMap(frames, g.modernStoryPortraits)
+	if err != nil {
+		return false, err
+	}
+	publishHD()
 	g.nativeAIItemPresentation = &nativeAIItemPresentationJob{
 		transaction: tx, frames: frames, publishAt: publishAt,
 		baselineWork: baselineWork, baselineVGA: baselineVGA,
@@ -573,6 +625,17 @@ func (g *Game) stepNativeAIItemPresentation() {
 func (g *Game) drawNativeAIItemPresentation(screen *ebiten.Image) bool {
 	j := g.nativeAIItemPresentation
 	if j == nil || j.frame < 0 || j.frame >= len(j.frames) || j.frames[j.frame].image == nil {
+		return false
+	}
+	if drawn, err := g.drawModernHDCompoundMapFrame(screen, &j.frames[j.frame]); err != nil {
+		g.failNativeAIItemPresentation(err)
+		return false
+	} else if drawn {
+		j.drawn = true
+		return true
+	}
+	if g.modernStoryPortraits != nil && len(g.modernStoryPortraits.mapSpritesHD) == 125 {
+		g.failNativeAIItemPresentation(errors.New("HD item frame unavailable"))
 		return false
 	}
 	op := &ebiten.DrawImageOptions{}

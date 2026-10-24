@@ -153,3 +153,10 @@ index、command ID、final target count、target-index array；本函式：
 重開條件只有輸入雜湊不同、直接指令／table bytes 反證、同狀態執行結果矛盾，或
 本主證據缺少它聲稱已具有的 writer／consumer。後續先寫規格，再依規格接 runtime；
 不再重解上述函式。
+
+## 2026-10-25 索引記法勘誤
+
+本文的 raw glyph `74 75 76 76` 是十六進位位元組，十進位索引為116、117、118、118。
+主證據為 `fd2_command9_player_ai_presentation_ida.txt` 的 `sub_1E1DC`／線性 `0x5204A`；
+本輪僅機械式複核四個位元組與既定輸入雜湊。先前部分重製端誤抄成十進位而畫成煙霧，
+問題追蹤 #270。原版表格結論維持已證實，未重新開啟逆向分析。

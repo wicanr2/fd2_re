@@ -298,8 +298,8 @@ func (g *Game) startNativeCommand32Presentation(actor, confirmed *battle.Unit, t
 	if err != nil {
 		return err
 	}
-	mapBefore := newModernHDCompoundMapScene(frozenMapInput, g.nativeMapWork, g.nativeMapVGA, mapPalette, mapInputErr)
-	mapAfter := newModernHDCompoundMapScene(postInput, postWork, postVGA, mapPalette, nil)
+	mapBefore := g.newModernHDCompoundMapScene(frozenMapInput, g.nativeMapWork, g.nativeMapVGA, mapPalette, mapInputErr)
+	mapAfter := g.newModernHDCompoundMapScene(postInput, postWork, postVGA, mapPalette, nil)
 	tailEffectImages, err := nativeCommand24IndexedImages(tail.Effect, mapPalette)
 	if err != nil {
 		return err

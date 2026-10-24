@@ -12,6 +12,10 @@ import (
 
 // A scene belongs to one frozen pre/post-transaction map, not the live state.
 type modernHDCompoundMapScene struct {
+	mapIndex  int
+	stage     *nativeCh23AdapterState
+	signature [32]byte
+	sealed    bool
 	input     indexedmap.NativeFrameInput
 	work, vga []byte
 	palette   color.Palette
@@ -19,30 +23,32 @@ type modernHDCompoundMapScene struct {
 }
 
 type modernHDCompoundMapSource struct {
-	scene       *modernHDCompoundMapScene
-	pixels      []byte
-	layers      []indexedmap.NativeCommandTailLayer
-	maskTargets []indexedmap.NativeCommandHealTailTarget
-	maskIndex   byte
-	event       bool
-	mix         float32
-	target      [3]float32
-	prepared    *modernHDMapFrame
-	theme       *modernStoryPortraitSet
+	signature     [32]byte
+	sealed        bool
+	damage        bool
+	damageTargets []indexedmap.NativeCommandHealTailTarget
+	damageBlend   int
+	damageBase    byte
+	scene         *modernHDCompoundMapScene
+	pixels        []byte
+	layers        []indexedmap.NativeCommandTailLayer
+	maskTargets   []indexedmap.NativeCommandHealTailTarget
+	maskIndex     byte
+	event         bool
+	mix           float32
+	target        [3]float32
+	prepared      *modernHDMapFrame
+	theme         *modernStoryPortraitSet
 }
 
 func newModernHDCompoundMapScene(in indexedmap.NativeFrameInput, work, vga []byte, palette color.Palette, inputErr error) *modernHDCompoundMapScene {
 	s := &modernHDCompoundMapScene{work: append([]byte(nil), work...), vga: append([]byte(nil), vga...), palette: append(color.Palette(nil), palette...), err: inputErr}
 	if s.err == nil {
-		s.input, s.err = freezeModernHDCommandGeometry(in)
+		s.input, s.err = freezeCompoundMapInput(in)
 	}
-	if s.err == nil {
-		w, v := append([]byte(nil), work...), append([]byte(nil), vga...)
-		s.err = indexedmap.ComposeNativeFrame(w, v, s.input)
-		if s.err == nil && !bytes.Equal(v, vga) {
-			s.err = fmt.Errorf("modern HD compound map: frozen input differs from native VGA")
-		}
-	}
+	// The Game factory attaches map-specific staging before native replay.
+	// Replaying here would apply destination LUTs to an already composed stage.
+	s.seal()
 	return s
 }
 
@@ -62,6 +68,9 @@ func bindModernHDCompoundMap(frames []nativeCompoundPresentedFrame, scene *moder
 		if layers != nil {
 			s.layers = append([]indexedmap.NativeCommandTailLayer(nil), layers[i]...)
 		}
+		if err := s.seal(); err != nil {
+			return err
+		}
 		frames[i].hdMap, frames[i].hdPhase = s, phase
 	}
 	return nil
@@ -78,6 +87,9 @@ func bindModernHDCompoundMapRamp(frames []nativeCompoundPresentedFrame, scene *m
 		frames[i].hdMap.mix = 1 - float32(i)/40
 		for c, v := range rgb {
 			frames[i].hdMap.target[c] = float32((v<<2)|(v>>4)) / 255
+		}
+		if err := frames[i].hdMap.seal(); err != nil {
+			return err
 		}
 	}
 	return nil
@@ -114,6 +126,7 @@ func (g *Game) stageModernHDCompoundMap(frames []nativeCompoundPresentedFrame, s
 	}
 	type preparedScene struct{ steady, event *modernHDMapFrame }
 	scenes := make(map[*modernHDCompoundMapScene]preparedScene)
+	validated := make(map[*modernHDCompoundMapScene]bool)
 	type imageKey struct {
 		scene           *modernHDCompoundMapScene
 		resource, index int
@@ -125,23 +138,19 @@ func (g *Game) stageModernHDCompoundMap(frames []nativeCompoundPresentedFrame, s
 		if s == nil {
 			continue
 		}
-		if s.theme == set && s.prepared != nil {
-			prepared[s] = s.prepared
-			continue
-		}
 		scene := s.scene
-		if scene == nil {
-			return nil, fmt.Errorf("modern HD compound map: frozen source absent")
+		if !validated[scene] {
+			if err := scene.validate(g); err != nil {
+				return nil, err
+			}
+			validated[scene] = true
 		}
-		if scene.err != nil {
-			return nil, fmt.Errorf("modern HD compound map: frozen source unavailable: %w", scene.err)
-		}
-		if len(scene.palette) != 256 || len(scene.work) != indexedmap.NativeUnitPresentWorkSize || len(scene.vga) != 64000 {
-			return nil, fmt.Errorf("modern HD compound map: incomplete snapshot")
+		if err := s.validate(); err != nil {
+			return nil, err
 		}
 		base, ok := scenes[scene]
 		if !ok {
-			steady, err := g.prepareModernHDCommandSteady(scene.input, scene.work, scene.vga, scene.palette, set)
+			steady, err := g.prepareModernHDCommandSteadyStage(scene.input, scene.work, scene.vga, scene.palette, set, scene.stage)
 			if err != nil {
 				return nil, err
 			}
@@ -179,6 +188,13 @@ func (g *Game) stageModernHDCompoundMap(frames []nativeCompoundPresentedFrame, s
 						if im == nil || bank.native[source.Entry] != modernLMIHDDescription(source.Entry, entry) || im.Bounds() != image.Rect(0, 0, entry.Width*6, entry.Height*6) {
 							return nil, fmt.Errorf("modern HD compound map: changed declared LMI source %d:%d", source.Resource, source.Entry)
 						}
+					}
+				}
+				if im != nil {
+					var err error
+					im, err = g.colourModernHDMapLMI(im, entry.Pixels, scene.palette)
+					if err != nil {
+						return nil, err
 					}
 				}
 				if im == nil {
@@ -227,6 +243,10 @@ func (g *Game) stageModernHDCompoundMap(frames []nativeCompoundPresentedFrame, s
 				y := (target.Y-in.CameraY)*24 - 6
 				picture.Overlays = append(picture.Overlays, modernHDMapOverlayDraw{Entry: -1, Image: mask, Rect: mask.Bounds().Add(image.Pt(x*6, y*6))})
 			}
+		} else if s.damage {
+			if err := g.prepareModernHDItemDamage(s, &picture, work, vga, set); err != nil {
+				return nil, err
+			}
 		} else if s.event {
 			if err := indexedmap.CopyNativeUnitPresentViewport(vga, work); err != nil {
 				return nil, err
@@ -246,6 +266,8 @@ func (g *Game) stageModernHDCompoundMap(frames []nativeCompoundPresentedFrame, s
 
 func (g *Game) modernCompoundMapFrames() []nativeCompoundPresentedFrame {
 	switch {
+	case g.nativeAIItemPresentation != nil:
+		return g.nativeAIItemPresentation.frames
 	case g.nativeModifierPresentation != nil:
 		return g.nativeModifierPresentation.hdFrames
 	case g.nativeAICommandModifier != nil:

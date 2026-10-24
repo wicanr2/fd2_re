@@ -57,6 +57,10 @@
 
 天空之鑰的五色球、金鎖近景、閃白與返回地圖已接入 HD。四格依序為合成、近景、尾段及返回，取自受控測試的完整遊戲畫面半縮。人物、金鎖與元件使用手繪素材，地圖20地形與介面框線仍是像素；金鎖縮遠採美術近似，保留原生演出順序。此圖不代表正常章節通關，來源與範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)及[HD收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的`sky_key_hd_followup_20261025`。
 
+![物品回復、傷害、特殊效果與未命中的 HD 演出](docs/figures/hd-item-map.png)
+
+物品演出已接入 HD 人物、光效與數字。上排為 AI 回復與玩家傷害，下排為特殊效果與未命中，取自受控測試的完整重製畫面半縮。玩家回復道具維持既有直接結算；部分地形及介面仍用像素。此圖不代表正常章節通關，來源與範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)及[HD收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的`item_map_hd_followup_20261025`。
+
 ## HD2 設計基準
 
 後續HD2戰場沿下列斜角站姿人物與手繪地形設計，保留既有HD及原版主題。操作介面與人物主題獨立，海報從單列浮出工具列選擇；海報邊緣可漸層銜接戰場，並調整淡入時間。

@@ -37,9 +37,13 @@ func freezeModernHDCommandGeometry(in indexedmap.NativeFrameInput) (indexedmap.N
 }
 
 func (g *Game) prepareModernHDCommandSteady(in indexedmap.NativeFrameInput, work, vga []byte, palette color.Palette, set *modernStoryPortraitSet) (*modernHDMapFrame, error) {
+	return g.prepareModernHDCommandSteadyStage(in, work, vga, palette, set, nil)
+}
+
+func (g *Game) prepareModernHDCommandSteadyStage(in indexedmap.NativeFrameInput, work, vga []byte, palette color.Palette, set *modernStoryPortraitSet, stage *nativeCh23AdapterState) (*modernHDMapFrame, error) {
 	view := *g
 	view.modernStoryPortraits = set
-	frame, err := view.prepareModernHDMapFrameMode(in, work, palette, true)
+	frame, err := view.prepareModernHDMapFrameStageLayout(in, work, palette, true, -1, stage)
 	if err != nil {
 		return nil, err
 	}

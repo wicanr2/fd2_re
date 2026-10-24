@@ -203,9 +203,7 @@ func (g *Game) startNativeCommand2022Presentation(actor, confirmed *battle.Unit,
 				return err
 			}
 		} else if inCamera {
-			for slot, glyph := range [...]int{74, 75, 76, 76} {
-				queue = append(queue, battle.NativePresentationDigit{PositionCode: [...]int{2, 8, 12, 17}[slot], Target: record, Digit: glyph})
-			}
+			queue = battle.AppendNativePresentationMiss(queue, record)
 		}
 	}
 	digitSources := make([][]indexedmap.NativeCommandTailLayer, 0, schedule.DigitFrames)
@@ -286,7 +284,7 @@ func (g *Game) startNativeCommand2022Presentation(actor, confirmed *battle.Unit,
 	if !osMuteOrShot(g) && (len(effectSample) == 0 || len(frames[maskStart].sound) == 0) {
 		return errors.New("native command tail raw sample unavailable")
 	}
-	postHD := newModernHDCompoundMapScene(postInput, postWork, postVGA, mapPalette, nil)
+	postHD := g.newModernHDCompoundMapScene(postInput, postWork, postVGA, mapPalette, nil)
 	if err := bindModernHDModifierFrames(frames, modernHDModifierSources{
 		initial: initialHD, post: postHD, palettes: hdPalettes,
 		effects: effectPixels, effectSources: effectSources, digits: digitPixels, digitSources: digitSources,
@@ -412,9 +410,7 @@ func (g *Game) startNativeAICommandModifierPresentation(actor *battle.Unit, comm
 				return err
 			}
 		} else if inCamera {
-			for slot, glyph := range [...]int{74, 75, 76, 76} {
-				queue = append(queue, battle.NativePresentationDigit{PositionCode: [...]int{2, 8, 12, 17}[slot], Target: target.RecordIndex, Digit: glyph})
-			}
+			queue = battle.AppendNativePresentationMiss(queue, target.RecordIndex)
 		}
 	}
 	digitSources := make([][]indexedmap.NativeCommandTailLayer, 0, schedule.DigitFrames)
@@ -464,7 +460,7 @@ func (g *Game) startNativeAICommandModifierPresentation(actor *battle.Unit, comm
 	if !osMuteOrShot(g) && (len(effectSample) == 0 || len(frames[maskStart].sound) == 0) {
 		return errors.New("native AI command modifier raw sample unavailable")
 	}
-	postHD := newModernHDCompoundMapScene(postInput, postWork, postVGA, mapPalette, nil)
+	postHD := g.newModernHDCompoundMapScene(postInput, postWork, postVGA, mapPalette, nil)
 	if err := bindModernHDModifierFrames(frames, modernHDModifierSources{
 		initial: initialHD, post: postHD, palettes: nil,
 		effects: effectPixels, effectSources: effectSources, digits: digitPixels, digitSources: digitSources,

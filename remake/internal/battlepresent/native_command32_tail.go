@@ -135,11 +135,7 @@ func buildNative1CAC7TailFrames(
 				return NativeCommand32TailFrames{}, err
 			}
 		} else if inCamera {
-			for slot, descriptor := range [...]int{0x74, 0x75, 0x76, 0x76} {
-				out.Queue = append(out.Queue, battle.NativePresentationDigit{
-					PositionCode: [...]int{2, 8, 12, 17}[slot], Target: result.TargetRecord, Digit: descriptor,
-				})
-			}
+			out.Queue = battle.AppendNativePresentationMiss(out.Queue, result.TargetRecord)
 		}
 	}
 	for frame := 0; frame < digitFrames; frame++ {

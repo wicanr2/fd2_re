@@ -2,6 +2,25 @@ package battle
 
 import "testing"
 
+func TestAppendNativePresentationMissUsesOriginalHexTable(t *testing.T) {
+	first := NativePresentationDigit{PositionCode: 7, Target: 1, Digit: 94}
+	queue := AppendNativePresentationMiss([]NativePresentationDigit{first}, 9)
+	want := []NativePresentationDigit{first,
+		{PositionCode: 2, Target: 9, Digit: 116},
+		{PositionCode: 8, Target: 9, Digit: 117},
+		{PositionCode: 12, Target: 9, Digit: 118},
+		{PositionCode: 17, Target: 9, Digit: 118},
+	}
+	if len(queue) != len(want) {
+		t.Fatalf("queue=%v", queue)
+	}
+	for i := range want {
+		if queue[i] != want[i] {
+			t.Fatalf("entry %d=%+v, want %+v", i, queue[i], want[i])
+		}
+	}
+}
+
 func TestAppendNativePresentationDigitsRightAlignsRawDigits(t *testing.T) {
 	queue, err := AppendNativePresentationDigits(nil, 12, '0', 7, true)
 	if err != nil {

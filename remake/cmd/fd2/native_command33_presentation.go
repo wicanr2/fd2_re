@@ -276,8 +276,8 @@ func (g *Game) startNativeCommand33Presentation(actor, confirmed *battle.Unit, t
 	if err != nil {
 		return err
 	}
-	mapBefore := newModernHDCompoundMapScene(frozenMapInput, baselineWork, baselineVGA, mapPalette, mapInputErr)
-	mapAfter := newModernHDCompoundMapScene(postInput, postWork, postVGA, mapPalette, nil)
+	mapBefore := g.newModernHDCompoundMapScene(frozenMapInput, baselineWork, baselineVGA, mapPalette, mapInputErr)
+	mapAfter := g.newModernHDCompoundMapScene(postInput, postWork, postVGA, mapPalette, nil)
 	tailEffectImages, err := nativeCommand24IndexedImages(tailEffectPixels, mapPalette)
 	if err != nil {
 		return err

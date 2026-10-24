@@ -75,6 +75,10 @@ func modernMapOverlayHDIndices(resource, count int) []int {
 		for i := 105; i <= 114; i++ {
 			indices = append(indices, i)
 		}
+	case resource == 6 && count == 8:
+		for i := 49; i <= 56; i++ {
+			indices = append(indices, i)
+		}
 	case resource == 6 && count == 7:
 		for i := 57; i <= 63; i++ {
 			indices = append(indices, i)

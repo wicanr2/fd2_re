@@ -4177,6 +4177,62 @@
         ],
         "pattern": "REQUIRED\\['sky-core'\\]\\s*=\\s*REQUIRED\\['sky-source'\\]\\s*\\|\\s*REQUIRED\\['sky-unit'\\]"
       }
+    },
+    {
+      "id": "registered-theme-catalog-keeps-formal-private-root",
+      "date": "2026-10-25",
+      "area": "HD素材登錄",
+      "rule": "登錄候選清冊時保留正式private_root為remake/generated-assets/modern-theme-prototypes；使用tools/validate_modern_theme_catalog.py --verify-private與tools/test_modern_theme_catalog.py驗證。候選輸出目錄由--catalog明示，不能帶進remake/assets/themes/modern/catalog.json。",
+      "why": "八張物品光效內容及宣告重編相同，但直接複製候選清冊會帶入work路徑；只驗候選目錄會掩蓋正式路徑錯誤。已在發布前修正，停止舊輸入工作並以新清冊重跑；預設與明示正式路徑皆有拒收反例。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#item_map_hd_followup_20261025",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/validate_modern_theme_catalog.py"
+        ],
+        "pattern": "FORMAL_PRIVATE_ROOT"
+      }
+    },
+    {
+      "id": "full-hd-gpu-matrix-keeps-one-active-game-pair",
+      "date": "2026-10-25",
+      "area": "HD測試資源",
+      "rule": "完整HD的Game.Draw矩陣逐組建立遊戲與控制組，結束後解除兩個Game及最終合成器的引用，再建立下一組。入口remake/cmd/fd2/modern_hd_item_map_gpu_test.go；用tools/verify_fd2_unit_present_hd.py --kind item-game在既有Go Docker保存同配額的memory.events與峰值。",
+      "why": "同時預建十四組物品演出在6GiB內發生oom_kill=1。逐組建立並回收後，候選完整矩陣通過；獨立圖包的十四組完整演出亦通過，峰值5081739264 bytes且max／oom／oom_kill均無增加。這是測試生命週期的結果，不推論所有正常場景或平台的記憶體餘裕。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#item_map_hd_followup_20261025"
+    },
+    {
+      "id": "stage-native-replay-follows-same-compose-seed",
+      "date": "2026-10-25",
+      "area": "HD凍結場景",
+      "rule": "帶目的映射的地圖23凍結場景，先附上同次staging，再在scene.validate內SeedNativeCh23Staging及ComposeNativeFrame。global constructor只凍結來源；以tools/verify_fd2_unit_present_hd.py --kind item-stage-source在Go Docker驗BlitMode0的非恆等LUT，反例須先證明未重新seed的重播會不同。",
+      "why": "第一次短測試繼承0xff直接繪製分支而通過，沒有覆蓋目的映射。明示BlitMode0後，來源在附加stage前重組而失敗；移除提早重組後同一反例通過。既有目的映射與staging契約已足以修正，不需要重開RE或改正式規則。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#item_map_hd_followup_20261025.late_stage_remap_regression",
+      "guard": {
+        "kind": "absent",
+        "paths": [
+          "remake/cmd/fd2/modern_hd_compound_map.go"
+        ],
+        "pattern": "s\\.err = indexedmap\\.ComposeNativeFrame"
+      }
+    },
+    {
+      "id": "miss-descriptor-table-preserves-hexadecimal-bytes",
+      "date": "2026-10-25",
+      "area": "原版表格轉錄",
+      "rule": "轉錄原版raw byte表時在Go保留0x常數，另以十進位來源清冊與實際畫面交叉核對。MISS入口為remake/internal/battle/native_presentation_queue.go的AppendNativePresentationMiss；tools/verify_fd2_unit_present_hd.py --kind item-miss及item-game驗實際消費端與Game.Draw。",
+      "why": "既有IDA主證據早已指出0x5204A的74 75 76 76是十六進位，五個重製迴圈卻抄成十進位。相同錯誤的原圖主題控制組及CPU畫布仍一致，最後由總覽目視看到煙霧才發現。驗證器改為接受116/117/118並拒絕74/75/76。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#item_map_hd_followup_20261025.miss_radix_correction",
+      "guard": {
+        "kind": "absent",
+        "paths": [
+          "remake/cmd/fd2/native_ai_item_presentation.go",
+          "remake/cmd/fd2/native_ai_modifier_presentation.go",
+          "remake/cmd/fd2/native_command34_presentation.go",
+          "remake/cmd/fd2/native_command35_presentation.go"
+        ],
+        "pattern": "74, 75, 76, 76"
+      }
     }
   ]
 }

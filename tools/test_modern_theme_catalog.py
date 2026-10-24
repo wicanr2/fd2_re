@@ -8,11 +8,24 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest import mock
 
 import validate_modern_theme_catalog as validator
 
 
 class ModernThemeCatalogTests(unittest.TestCase):
+    def test_tracked_catalog_rejects_candidate_root(self):
+        data = validator.validate(False)
+        data['private_root'] = 'work/disposable-hd-candidate'
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp)/'catalog.json'
+            path.write_text(json.dumps(data))
+            validator.validate(False, path)  # An explicitly selected candidate is allowed.
+            with mock.patch.object(validator, 'CATALOG', path):
+                for selected in [None, path]:
+                    with self.subTest(selected=selected), self.assertRaisesRegex(ValueError, 'tracked catalog must use private_root'):
+                        validator.validate(False, selected)
+
     def test_lmi_overlay_bank_requires_ordered_complete_descriptors(self):
         base = validator.validate(False)
         base['assets'] = [a for a in base['assets'] if a['role'] != 'map_overlay_hd_set']

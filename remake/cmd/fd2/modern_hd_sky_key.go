@@ -116,7 +116,7 @@ func (g *Game) prepareModernHDSkyKey(j *nativeCh20SkyKeyJob, set *modernStoryPor
 			if err != nil {
 				return nil, err
 			}
-			ctx, err := terrainColourContext(g.nativeMapAssets.MapIndex, base, j.palette, skyKeyIdentityLUT())
+			ctx, err := terrainColourContext(g.nativeMapAssets.MapIndex, base, j.palette, modernHDIdentityLUT())
 			if err != nil {
 				return nil, err
 			}
@@ -192,7 +192,7 @@ func (g *Game) prepareModernHDSkyKey(j *nativeCh20SkyKeyJob, set *modernStoryPor
 	if err != nil {
 		return nil, err
 	}
-	ctx, err := terrainColourContext(s.mapIndex, g.nativeMapAssets.Palette, j.palette, skyKeyIdentityLUT())
+	ctx, err := terrainColourContext(s.mapIndex, g.nativeMapAssets.Palette, j.palette, modernHDIdentityLUT())
 	if err != nil {
 		return nil, err
 	}
@@ -203,14 +203,6 @@ func (g *Game) prepareModernHDSkyKey(j *nativeCh20SkyKeyJob, set *modernStoryPor
 	d = j.fdFrames[j.frame]
 	frame.Overlays = append(frame.Overlays, modernHDMapOverlayDraw{Image: picture, Rect: picture.Bounds().Add(image.Pt(d.X*6, d.Y*6))})
 	return frame, nil
-}
-
-func skyKeyIdentityLUT() []byte {
-	lut := make([]byte, 256)
-	for i := range lut {
-		lut[i] = byte(i)
-	}
-	return lut
 }
 
 func (g *Game) stageModernHDSkyKey(set *modernStoryPortraitSet) (func(), error) {

@@ -11,6 +11,18 @@ type NativePresentationDigit struct {
 	Digit        int
 }
 
+// AppendNativePresentationMiss preserves sub_1E1DC's raw descriptor table at
+// LE linear 0x5204A. The bytes 74 75 76 76 are hexadecimal, not decimal.
+// See docs/data/ida/fd2_command9_player_ai_presentation_ida.txt.
+func AppendNativePresentationMiss(queue []NativePresentationDigit, target int) []NativePresentationDigit {
+	for slot, descriptor := range [...]int{0x74, 0x75, 0x76, 0x76} {
+		queue = append(queue, NativePresentationDigit{
+			PositionCode: [...]int{2, 8, 12, 17}[slot], Target: target, Digit: descriptor,
+		})
+	}
+	return queue
+}
+
 // AppendNativePresentationDigits reproduces the data-only part of 0x1e0db.
 // The native caller performs the camera test before entering the formatter;
 // inCamera therefore controls the native no-op path. Digits are right

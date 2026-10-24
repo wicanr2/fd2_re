@@ -290,3 +290,11 @@ func (a *modernTerrainHDAsset) shade(ctx modernTerrainColourContext, raw bool) *
 	a.ShadeOrder = append(a.ShadeOrder, key)
 	return picture
 }
+
+func modernHDIdentityLUT() []byte {
+	lut := make([]byte, 256)
+	for i := range lut {
+		lut[i] = byte(i)
+	}
+	return lut
+}

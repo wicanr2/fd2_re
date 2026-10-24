@@ -11,9 +11,7 @@ import (
 // A failed capture remains attached to the candidate until HD admission.
 func (g *Game) freezeModernHDModifierScene(palette color.Palette) *modernHDCompoundMapScene {
 	in, err := g.freezeNativeCommand9MapInput()
-	return &modernHDCompoundMapScene{input: in, err: err,
-		work: append([]byte(nil), g.nativeMapWork...), vga: append([]byte(nil), g.nativeMapVGA...),
-		palette: append(color.Palette(nil), palette...)}
+	return g.newModernHDCompoundMapScene(in, g.nativeMapWork, g.nativeMapVGA, palette, err)
 }
 
 func bindModernHDModifierPalette(frames []nativeCompoundPresentedFrame, scene *modernHDCompoundMapScene, palettes []color.Palette) error {
@@ -41,6 +39,7 @@ func bindModernHDModifierPalette(frames []nativeCompoundPresentedFrame, scene *m
 		if coloured == nil {
 			copy := *scene
 			copy.palette = append(color.Palette(nil), palette...)
+			copy.seal()
 			coloured = &copy
 			scenes[key] = coloured
 		}

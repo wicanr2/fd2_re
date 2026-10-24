@@ -13,6 +13,11 @@ from verify_fd2_player9_map_hd import check_real_runtime
 
 ROOT=Path(__file__).resolve().parents[1]
 REQUIRED={
+    'item-miss':{'TestNativeMissDescriptorConsumers'},
+    'item-stage-source':{'TestModernHDCompoundStageRemapStartsFromSeed'},
+    'item-game':{'TestModernHDItemMapGameGPU'},
+    'item-native':{'TestExecuteNativeAIItemRestoreUsesOriginalIndexedTail','TestExecuteNativeAIItemDamageUsesOriginalIndexed1CD17Tail','TestPlayerDamageItemsUseOriginalIndexedTails','TestExecuteNativeAIItemType21UsesOriginalIndexed1CAC7Tail','TestNativeAIItemPresentationLateCancelRollsBack','TestNativeAIItemDamagePresentationMissingIndexedContextIsAtomic','TestNativeAIItemPresentationRosterChangeCancelsWithoutPanic'},
+    'item-unit':{'TestModernHDItemMapNativeControl','TestModernHDPlayerRestoreKeepsNativeRoute','TestModernHDItemMapRejectsAndF2','TestModernHDCompoundFrozenStage','TestModernHDCompoundActualStage','TestModernHDCompoundStageRemapStartsFromSeed','TestModernHDItemMapFailureRestoresTransaction','TestModernHDItemMapMultipleTargets','TestModernHDItemMapPalettePreservesAlpha'},
     'sky-game':{'TestModernHDSkyKeyGameGPU'},
     'sky-source':{'TestModernHDSkyKeySourceBanks'},
     'sky-unit':{'TestModernHDSkyKeyFullSequenceNativeControl','TestModernHDSkyKeyThemeTransactionRejects','TestModernHDSkyKeyFailureAndLegacy'},
@@ -97,6 +102,40 @@ REQUIRED['sky-core']=REQUIRED['sky-source'] | REQUIRED['sky-unit'] | REQUIRED['s
 
 def check_receipt(kind, prefix):
     receipt=json.loads(Path(str(prefix)+'-capture/receipt.json').read_text())
+    if kind=='item-game':
+        cases=receipt.get('cases',[]); rows=receipt.get('rows',[])
+        names={f'{name}-player-{player}' for name in ['restore5','restore13','damage20','damage20-command0','damage24','type21-command1','type21-command6','type21-command7'] for player in ['false','true'] if not (name.startswith('restore') and player=='true')}
+        if (receipt.get('status')!='PASS-ITEM-MAP-HD-GAME' or receipt.get('fixed_clock_unix')!=1000
+                or receipt.get('native_seed')!=7 or receipt.get('rgba_tolerance')!=2
+                or receipt.get('map_index')!=0 or receipt.get('initial_actor_tile')!=[4,3]
+                or receipt.get('initial_target_tile')!=[5,3] or receipt.get('camera_tile')!=[0,0]
+                or len(cases)!=14 or {r.get('case') for r in cases}!=names or len(rows)!=556):
+            raise ValueError('物品玩家／AI完整流程或固定條件缺項')
+        for c in cases:
+            count=38 if c['case'].startswith('type21-command1-') else 40
+            selected=[r for r in rows if r.get('case')==c['case']]
+            if (c.get('frames')!=count or c.get('updates',0)<=count or c.get('f2_round_trips')!=3
+                    or c.get('continuations')!=1 or c.get('native_control_unchanged') is not True
+                    or len(selected)!=count or {r.get('frame') for r in selected}!=set(range(count))
+                    or not re.fullmatch('[0-9a-f]{64}',c.get('return_final_sha256',''))):
+                raise ValueError('物品拍數、停留、主題往返、續行或返回畫布缺項')
+            if any(any(not re.fullmatch('[0-9a-f]{64}',r.get(k,'')) for k in ['final_sha256','native_vga_sha256']) for r in selected):
+                raise ValueError('物品逐幀收據缺項')
+            source6={l['Entry'] for r in selected for l in (r.get('sources') or []) if l['Resource']==6}
+            expected=(set(range(57,64)) if c['case'].startswith('restore') else
+                      set(range(64,76)) if c['case'].startswith(('type21-command6-','type21-command7-')) else
+                      set(range(49,57)) | ({74,75} if c['case'].startswith('type21-') else set()))
+            if source6!=expected:
+                raise ValueError('物品逐流程的光效／切換來源缺項')
+            publish=16 if c['case'].startswith('type21-command1-') else 18
+            if any(r.get('published')!=(r['frame']>=publish) for r in selected):
+                raise ValueError('物品結算時點與逐幀收據不同')
+        if len(list(Path(str(prefix)+'-capture').glob('*.png')))!=50:
+            raise ValueError('物品三階段抽樣圖缺項')
+        digits={l['Entry'] for r in rows for l in (r.get('sources') or []) if l['Resource']==5}
+        if not {116,117,118}<=digits or digits & {74,75,76}:
+            raise ValueError('未命中字樣的實際繪圖來源缺項')
+        return dict(source6_indices=list(range(49,76)),miss_indices=[116,117,118],published_boundaries=[16,18],frames=556)
     if kind=='sky-game':
         rows=receipt.get('rows',[])
         if (receipt.get('status')!='PASS-SKY-KEY-HD-GAME' or receipt.get('fixed_clock_unix')!=1000
@@ -257,7 +296,10 @@ def main():
     p.add_argument('--timeout',type=int,default=900)
     p.add_argument('--check-existing',action='store_true',help='以目前嚴格檢查器另存稽核，不重跑或覆寫既有收據')
     p.add_argument('--require-real-runtime',action='store_true')
+    p.add_argument('--compare-with',type=Path,help='僅item-game既有收據稽核：比較另一個輸出前綴的完整收據與50張PNG')
     a=p.parse_args()
+    if a.compare_with and (a.kind!='item-game' or not a.check_existing):
+        raise ValueError('--compare-with只用於item-game --check-existing')
     if not Path('/.dockerenv').exists() or not 60<=a.timeout<=1800 or not a.out.parent.is_dir() or not a.catalog.is_file() or not a.pack.is_dir():
         raise ValueError('Docker內使用有效輸入、既有工作根與有界時間')
     for suffix in (['.audit.json'] if a.check_existing else ['.gate.json','.memory.json','.log']):
@@ -265,11 +307,12 @@ def main():
             raise ValueError('不可覆寫收據')
     independent=check_real_runtime(a.pack,json.loads(a.catalog.read_text())) if a.require_real_runtime else None
     env=os.environ.copy()
-    for name in ['FD2_HD_UNIT_PRESENT_SOURCE','FD2_HD_UNIT_PRESENT_GPU','FD2_HD_UNIT_PRESENT_STORY_GPU','FD2_HD_STORY_MOTION_GPU','FD2_HD_INDEXED_TRANSITION_GPU','FD2_HD_ROW_SHAKE_GPU','FD2_HD_CH23_STAGE_GPU','FD2_HD_SKY_KEY_GPU']:
+    for name in ['FD2_HD_UNIT_PRESENT_SOURCE','FD2_HD_UNIT_PRESENT_GPU','FD2_HD_UNIT_PRESENT_STORY_GPU','FD2_HD_STORY_MOTION_GPU','FD2_HD_INDEXED_TRANSITION_GPU','FD2_HD_ROW_SHAKE_GPU','FD2_HD_CH23_STAGE_GPU','FD2_HD_SKY_KEY_GPU','FD2_HD_ITEM_MAP_GPU','FD2_HD_ITEM_MAP_PROBE']:
         env.pop(name,None)
     env.update(FD2_MUTE='1',FD2_TEST_UNIT_PRESENT_CATALOG=str(a.catalog.resolve()),
                FD2_TEST_UNIT_PRESENT_PACK=str(a.pack.resolve()),FD2_TEST_UNIT_PRESENT_OUT=str(a.out)+'-capture')
     if a.kind=='source':env['FD2_HD_UNIT_PRESENT_SOURCE']='1'
+    if a.kind=='item-game':env['FD2_HD_ITEM_MAP_GPU']='1'
     if a.kind=='sky-game':env['FD2_HD_SKY_KEY_GPU']='1'
     if a.kind=='stage-game':env['FD2_HD_CH23_STAGE_GPU']='1'
     if a.kind=='game':env['FD2_HD_UNIT_PRESENT_GPU']='1'
@@ -301,12 +344,26 @@ export DISPLAY=:99
     events=[json.loads(s) for s in Path(str(a.out)+'.log').read_text().splitlines() if s.startswith('{')]
     if not REQUIRED[a.kind]<={e.get('Test') for e in events if e.get('Action')=='pass'} or any(e.get('Action') in {'skip','fail'} for e in events):
         raise ValueError('必要測試缺項、SKIP或失敗')
-    if a.kind in {'source','game','story-game','motion-game','indexed-game','rowshake-game','stage-game','sky-game'}:
-        check_receipt(a.kind,a.out)
+    receipt_evidence=None
+    if a.kind in {'source','game','story-game','motion-game','indexed-game','rowshake-game','stage-game','sky-game','item-game'}:
+        receipt_evidence=check_receipt(a.kind,a.out)
     report=dict(status='PASS',kind=a.kind,required=sorted(REQUIRED[a.kind]),catalog=str(a.catalog.resolve()),
                 catalog_sha256=hashlib.sha256(a.catalog.read_bytes()).hexdigest(),pack=str(a.pack.resolve()),
                 log=str(a.out)+'.log',memory=str(a.out)+'.memory.json',scope='受控轉場與Game.Draw；不新增正常玩家或原版RGB對拍')
     report['independent_runtime_files']=independent
+    if receipt_evidence is not None:report['receipt_evidence']=receipt_evidence
+    if a.compare_with:
+        other=json.loads(Path(str(a.compare_with)+'.gate.json').read_text())
+        if other.get('status')!='PASS' or other.get('kind')!=a.kind or other.get('catalog_sha256')!=report['catalog_sha256']:
+            raise ValueError('另一包的閘門或清冊不同')
+        check_receipt(a.kind,a.compare_with)
+        left,right=Path(str(a.out)+'-capture'),Path(str(a.compare_with)+'-capture')
+        if (left/'receipt.json').read_bytes()!=(right/'receipt.json').read_bytes():
+            raise ValueError('兩包完整流程收據不同')
+        pngs=lambda root:{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in root.glob('*.png')}
+        if pngs(left)!=pngs(right):raise ValueError('兩包完整PNG不同')
+        report['cross_pack']=dict(other=str(a.compare_with),pngs=50,frames=556,
+                                 receipt_sha256=hashlib.sha256((left/'receipt.json').read_bytes()).hexdigest())
     report['verifier_sha256']=hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
     Path(str(a.out)+('.audit.json' if a.check_existing else '.gate.json')).write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
     print(json.dumps({'status':'PASS','kind':a.kind,'required':len(REQUIRED[a.kind])}))

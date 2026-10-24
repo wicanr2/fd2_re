@@ -225708,5 +225708,420 @@
     "private_commit": "8720011fa0c665dfcbe8d0e663c2a6b3283b87b8",
     "private_remote_head_verified": true,
     "docker_cleanup": "所有本輪Go測試容器均以--rm結束並核對無殘留；未重建映像，未新增錄影。"
+  },
+  "item_map_hd_followup_20261025": {
+    "status": "CONFORMED-SCOPED",
+    "base_commit": "8343e958b8a176071693533cf92e8a174e1cb4e9",
+    "full_hd_complete": false,
+    "production_changed": true,
+    "scope": "AI type5/13回復與玩家／AI type20/24傷害、type21三種效果的十四條完整地圖演出；玩家type5/13既有直接結算保持，另測兩條。共用compound場景攜帶同次地圖23背景快照。",
+    "original_evidence": [
+      "docs/data/ida/fd2_ai_item_restore_presentation_owner.txt",
+      "docs/data/ida/fd2_ai_item_damage_1cd17_owner.txt",
+      "docs/data/ida/fd2_ai_item_type21_1cac7_owner.txt",
+      "docs/data/fd2_ch23_stage_assets_evidence.txt",
+      "docs/data/ida/fd2_command9_player_ai_presentation_ida.txt"
+    ],
+    "art_source_rows": [
+      {
+        "index": 49,
+        "path": "effects/fdother_006_lmi1_opaque/entry_049/frame.png",
+        "sha256": "689a3fa96f39ec312e4c782b11f33a7b292d496e7811a4871e88ff19a2c1a452"
+      },
+      {
+        "index": 50,
+        "path": "effects/fdother_006_lmi1_opaque/entry_050/frame.png",
+        "sha256": "5c80d478d83f766611e1d5f5264284645744638b243249dde651dd2e7562ea93"
+      },
+      {
+        "index": 51,
+        "path": "effects/fdother_006_lmi1_opaque/entry_051/frame.png",
+        "sha256": "55c2ce2fec8354606352faea8834d24b63120ed6b7338041a9a1997236242eea"
+      },
+      {
+        "index": 52,
+        "path": "effects/fdother_006_lmi1_opaque/entry_052/frame.png",
+        "sha256": "48348f55030f3993d568a65526246f57195a18bc64630e93be379cfa0461295e"
+      },
+      {
+        "index": 53,
+        "path": "effects/fdother_006_lmi1_opaque/entry_053/frame.png",
+        "sha256": "e1e01cb9b5205d6768aadd054872e83be1b5c5802fb85c24bf4a0d95bd39839b"
+      },
+      {
+        "index": 54,
+        "path": "effects/fdother_006_lmi1_opaque/entry_054/frame.png",
+        "sha256": "c47e0b672ee3a802ed7373ac28094c69c26dd7d06a2029c806746f2d254d9263"
+      },
+      {
+        "index": 55,
+        "path": "effects/fdother_006_lmi1_opaque/entry_055/frame.png",
+        "sha256": "06c120ea09fdad80288a0b4336365bba89eb95ea030b5dab006f2ef4212e27ec"
+      },
+      {
+        "index": 56,
+        "path": "effects/fdother_006_lmi1_opaque/entry_056/frame.png",
+        "sha256": "2995bc78c109d714c5caaef1166276d31caf73dda558c2cc803b51bd0c82ef91"
+      }
+    ],
+    "art_source_contact": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-map-native-contact-oct25-r1.png",
+      "sha256": "b8c02273d2d3784d83bf13c337257a4ea8904b864c2a2aa3fe8cd2896f2d8054"
+    },
+    "native_contract": "沿58已閉合owner與typed schedules，不改item交易、效果／blend／toggle順序、音效、Draw確認、publishAt、500ms尾停、RNG或保存。",
+    "approximation": "傷害blend用既有四色差RGB映色保留HD alpha；((index+blend)&7)+0x20原生規則保持。新光效依原生圖框／色帶編製，屬美術近似。",
+    "next_gate": "提交本切片並清理可重生副本後，接續其他凍結背景消費端與其餘HD；完整HD及集中正常／人工／平台仍未完成。",
+    "source_summary": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-map-native-shape-summary-oct25-r1.json",
+      "sha256": "dca3e8988a09b644c8ab799003c3601b057984876a16936da2579872229215b1"
+    },
+    "source_summary_policy": "只保存bbox、非零點數與SHA。未寫像素陣列或新原圖contact；編製直接讀唯讀原包。原圖聯絡表新輸出被自動審查拒絕後已取消，不以其他形式繞過。",
+    "art_master": {
+      "file": "remake/generated-assets/modern-theme-prototypes/item-map-white-flash-master-oct25-r1.png",
+      "sha256": "0d90cc18c6de7750d1092d55be1356ead94726110fce94f28bab69d3eeb38e1c",
+      "size": [
+        1268,
+        1240
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        254
+      ]
+    },
+    "art_prompt": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-map-art-prompt-oct25-r1.json",
+      "sha256": "c97bc173d4903c60b2b633c2644a82094307de897a01273c7d1398fa1a11b9f9",
+      "inline": "Create one high-resolution hand-painted fantasy RPG VFX master on a truly transparent background. A compact frontal circular flash of white energy: a dense opaque white center, pearly ivory and light-silver brush grain, a softly uneven circular edge, and a tight fringe of short wisps and powdery particles hugging the disc. Almost entirely white, with restrained light-gray shading that gives painterly texture. The disc is completely filled. Flat front-facing visual effect with no physical holder or ground plane. Center it with about 15 percent transparent breathing room and keep every wisp fully contained. One coherent complete flash, since a separate deterministic compiler will resize and dissolve it for animation. No text, symbols, borders, characters, weapons, multiple phases, hollow ring, drop shadow, checkerboard, black backdrop, or colored backdrop. Clean alpha transparency outside the painted light. Soft detailed brushwork consistent with hand-painted tactical-RPG spell effects, readable at small game size."
+    },
+    "source_probe": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-map-source-probe-oct25-r2.gate.json",
+      "sha256": "f02b4f7e9f7349c0a3b22c4bcb9ba1c4253f5b1c35314c11555e1024828e352f",
+      "required": 3,
+      "scope": "歷史DRAFT診斷；可丟棄probe已由最終測試取代，不作完成閘門。"
+    },
+    "art_review": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-map-art-review-oct25-r1.json",
+      "sha256": "d917023937424cd23ef6c16beed7b0e244186ebe57026cced89a7c00fca41869",
+      "contact": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-map-hd-contact-oct25-r1.png"
+    },
+    "candidate_catalog": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-map-candidate-oct25-r2/catalog.json",
+      "sha256": "d82d11bb339fead0eb0a8ff329d1f0729dcfddc09e6d09ee806de8ae57ff977a"
+    },
+    "compiler": "tools/build_fd2_item_map_hd.py",
+    "alpha_policy": "母稿0..254檔案保持；LANCZOS重採樣可自然產生255，未人為拉滿alpha。新成品coverage0..255，八張皆可見。",
+    "consumer_correction": {
+      "source": "remake/cmd/fd2/native_item_panel_ui.go:applyNativeTargetItem; remake/cmd/fd2/native_ai_item_presentation.go:startNativeTargetItemPresentation",
+      "finding": "玩家type5/13在既有路徑直接結算，不啟動nativeAIItemPresentation；AI type5/13及玩家／AI type20/24/21才走本次播放器。保留現行規則。",
+      "validation": "十四組完整播放器加兩項玩家回復即時結算控制；不宣稱玩家回復已有HD動畫。",
+      "first_run": "item-map-unit-candidate-oct25-r1：十四播放器case通過，兩項玩家回復因錯誤owner預期失敗；拒收／F2及凍結stage通過，無OOM或逾時。"
+    },
+    "evidence_level": "RUNTIME-E1",
+    "normal_player_complete": false,
+    "initial_known_facts": [
+      "nativeAIItemPresentationJob已持有完整原生frames與publishAt，但drawNativeAIItemPresentation只畫native image，modernCompoundMapFrames尚未含此owner。",
+      "FDOTHER6[57..63]與[64..75]及FDOTHER5數字／MISS來源已登錄；新物品傷害光效[49..56]八張尚未登錄。",
+      "共用凍結畫面呼叫prepareModernHDCommandSteady，落到StageLayout(...,nil)，因此未帶地圖23背景快照。"
+    ],
+    "registered_catalog_sha256": "c1b2c20ee56bf2e45324155829f9778bfff14a25d9edce9d06dc56f2074d42df",
+    "registered_assets": 769,
+    "private_files": 6952,
+    "independent_runtime_files": 5969,
+    "gates": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-map-native-formal-oct25-r4.gate.json",
+        "sha256": "4df2abcb30ce1f97f28daa4a3ef699d5f7502fd57c6995abcfa9a6428a9d8517",
+        "required": 7
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-map-unit-formal-oct25-r4.gate.json",
+        "sha256": "c2b8c05cb7f68afe76144b895062e3c9d3dab6bc50a89e9ce80eebcea000fca6",
+        "required": 9
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-map-miss-formal-oct25-r1.gate.json",
+        "sha256": "12c0b1b632b131e79c5a611d04432610f619e2b253ee5ef728b9f08f1e06b49e",
+        "required": 1
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-map-game-formal-oct25-r4.gate.json",
+        "sha256": "9ab28828cfe2d47e90a9f50b24027d3a67d9a42ba4d575c4a30e5ccb6cd2fd83",
+        "required": 1
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-map-game-runtime-oct25-r4.gate.json",
+        "sha256": "fc694f6524929d526bb7c408f947f4b741d831adacc6cbe978ea553c51036674",
+        "required": 1
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-map-compound32-formal-oct25-r4.gate.json",
+        "sha256": "1a4e21280347eba4eb492ce6f42ea269b33265e54cd4b96b93abe0f72e6f2488",
+        "required": 1
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-map-compound33-formal-oct25-r4.gate.json",
+        "sha256": "8c5bdfae6c2c89926ff57bd35030f61b03bfe847d78bf3930c579c03e5f6bc3b",
+        "required": 1
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-map-compound34-formal-oct25-r4.gate.json",
+        "sha256": "2d29452b88f3405543878a401016ab718879885bda676baf1e9266ee487421f9",
+        "required": 1
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-map-compound35-formal-oct25-r4.gate.json",
+        "sha256": "a67b369ec6bd262622a3c5797d43fd247073191bd47c42686256e20d5c70fece",
+        "required": 1
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-map-modifier-source-formal-oct25-r4.gate.json",
+        "sha256": "8427426403927ab492d4c73d3f598702c50b6e4056e31b4bea16d5f7df26f270",
+        "required": 1
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-map-sky-unit-formal-oct25-r4.gate.json",
+        "sha256": "6868e2f9ba33826a88c84aada57becb9beff4990751f48b94f540dd46f3a3339",
+        "required": 3
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-map-strings-oct25-r4.gate.json",
+        "sha256": "55e198b9da504ee0c9dade762ac4bfcb0849a28d2fbca4330a5030a1ccadbba4",
+        "required": 8
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-map-queue-shared-oct25-r1.gate.json",
+        "sha256": "6e8f3fac2ac647291869b1092596ca8c16703bce3271f422f68b45d2e88cc4d1",
+        "required": 6
+      }
+    ],
+    "required_test_executions": 41,
+    "unique_required_tests": 37,
+    "string_dispositions": 109,
+    "lessons": 344,
+    "lesson_guards": 207,
+    "cross_pack": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-map-game-formal-oct25-r4.audit.json",
+      "sha256": "a4590063147ab2fdf2487e800ebc2eb61f59931c100fc65ac88dda33485ed37b"
+    },
+    "formal_coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-map-formal-coverage-oct25-r1.json",
+      "sha256": "1690f354ae4f2384771b8078c42dad3d119167419a038179c707ecd0c0462598"
+    },
+    "recompile": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-map-recompile-check-oct25-r1.json",
+      "sha256": "4a6d56979c03c15682256baf6c0ba150d0837de264c543a0423a97ea69e2bb3f"
+    },
+    "source_snapshot": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-map-source-snapshot-oct25-r4.json",
+      "sha256": "6ff25f55b3a18f099f9a406094f18ff9fa5dbedcdf442e8cd4bb871389855399",
+      "file_count": 1517
+    },
+    "formal_root_correction": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-map-formal-catalog-correction-oct25-r1.json",
+      "sha256": "881c866d6a1e5cd2555b5adea9159ff802cc4d82d1970daa209f196047878285"
+    },
+    "private_sync": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-map-private-sync-oct25-r1.json",
+      "sha256": "366f7c95aba87ea9686b632be2a814f8fe8de669fc6b2e891eb9d6540259851f"
+    },
+    "readme_overview_recipe": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-map-readme-overview-oct25-r2.json",
+      "sha256": "8b590849194f6826c4570d59bf2b1713efd90c4018e6b36aeb1d66fb439dcc05"
+    },
+    "string_inventory": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-map-string-inventory-oct25-r4.json",
+      "sha256": "b309eea9c38944253de55d3ecefeb661cb0e6bf54a0489ec8b4881d6c8bcf0dc"
+    },
+    "string_review": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-map-strings-oct25-r4.gate.json",
+      "sha256": "55e198b9da504ee0c9dade762ac4bfcb0849a28d2fbca4330a5030a1ccadbba4"
+    },
+    "readme_overview": "docs/figures/hd-item-map.png",
+    "readme_overview_sha256": "48646f62744b7fa911b5471cfad97b4341e00af54c1d384b9bb1113fae8e00ad",
+    "validation_summary": {
+      "game_cases_per_pack": 14,
+      "frames_per_pack": 556,
+      "pngs_per_pack": 50,
+      "f2_round_trips_per_pack": 42,
+      "continuations_per_pack": 14,
+      "source6_indices": [
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75
+      ],
+      "miss_glyph_indices": [
+        116,
+        117,
+        118
+      ],
+      "source_unit_tests": 9,
+      "native_regressions": 7,
+      "catalog_tests": 13,
+      "code_and_tool_files": 1517,
+      "miss_consumer_tests": 1,
+      "shared_queue_tests": 6
+    },
+    "source_faithfulness": "沿既有RE與typed schedule；原生work/VGA、RNG、道具消耗與保留、publishAt16/18、Draw確認、500ms尾停及一次續行保持。兩包完整收據與50 PNG相同。未重跑FD2.EXE，不新增原版RGB或正常玩家聲明。 未命中索引依既有原版表修正為116/117/118，不把修正前煙霧VGA作為基準。獨立執行包已驗後清理，重跑須由私人白名單重建。",
+    "memory_policy": {
+      "initial_prebuilt_matrix_oom_kill": 1,
+      "streamed_game_pair": true,
+      "candidate_peak_bytes": 6442450944,
+      "candidate_memory_max_events": 62,
+      "formal_peak_bytes": 4781895680,
+      "runtime_peak_bytes": 5191749632,
+      "final_oom_kill": 0,
+      "platform_headroom_claimed": false
+    },
+    "stage_binding_scope": "modifier/player/AI、召喚32～35與新物品的共用compound場景；真實map23及合成stage來源重組／隔離／拒收通過。未新增map23逐種caller的正常玩家收據。",
+    "known_remaining": [
+      "玩家type5/13在既有正式路徑直接結算，本批未新增其動畫；原版caller與後續呈現另核。",
+      "其他凍結消費端的地圖23來源，例如回復、指令10/12、玩家9、單位轉場、徑向與獎勵訊息。",
+      "其餘HD地形、HD2、完整HUD／操作介面獨立切換、單列浮出工具列、加速、海報與漸層。",
+      "集中正常玩家、人工造型及平台效能；#268蓋亞手腕與#269凱麗右腳保持人工待辦。"
+    ],
+    "issue_update": {
+      "status": "PASS",
+      "open_worklist_count": 24,
+      "issues": [
+        204,
+        263
+      ],
+      "closed_defect": 270,
+      "acceptance_unchanged": true,
+      "other_22_unchanged": true,
+      "comparison_scope": "title/body/label names",
+      "source": "host gh api direct REST list; search list had closing lag",
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-map-issues-verified-oct25-r4.json",
+      "sha256": "6bc819de330e43bf0fe07ee0d86cac13b22557aa819bf904f289c02449ca81bf"
+    },
+    "cleanup": {
+      "status": "CLEANED",
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-map-cleanup-oct25-r1.json",
+      "sha256": "da71ee052de8deaca11e60e547b16ee9a1e514f03dafdb5d567ed9ec2deeaf71",
+      "regular_files": 6144,
+      "symlinks": 20829,
+      "regular_bytes": 2070819356
+    },
+    "private_commit": "06e09c2750c8be449d187a80807e0159930adebe",
+    "private_remote_head_verified": true,
+    "late_stage_remap_regression": {
+      "finding": "BlitMode0及非恆等LUT會對已合成stage重套查表；global constructor預檢早於Game factory附加快照。",
+      "first_probe": "BlitMode0xff直接分支通過，但未覆蓋目的映射。",
+      "covered_before": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-map-stage-remap-before-oct25-r2.log",
+      "fix": "移除無stage脈絡的提早重組，沿既有scene.validate在SeedNativeCh23Staging之後重組。",
+      "cleanup_plan_executed": true,
+      "after": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-map-stage-remap-after-oct25-r1.gate.json",
+        "sha256": "48145617b74d20e12dcd0965e5369004b0358b3f50b16c5321e44ec44feaefc8"
+      }
+    },
+    "miss_radix_correction": {
+      "issue": 270,
+      "original_linear": "0x5204A",
+      "raw_hex": "74 75 76 76",
+      "decimal": [
+        116,
+        117,
+        118,
+        118
+      ],
+      "evidence": "docs/data/ida/fd2_command9_player_ai_presentation_ida.txt",
+      "scope": "既有主證據，機械式複核；重製轉錄修正，先前錯誤總覽與收據不作最終驗收",
+      "status": "CONFORMED-SCOPED",
+      "mechanical_recheck": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-miss-table-oct25-r1.txt",
+        "sha256": "679a6fffe414b2f0e411c2c9691ae909e7ff1427aef98f5d8b608dce971aa7fc"
+      },
+      "affected_loops": 5,
+      "shared_queue": "remake/internal/battle/native_presentation_queue.go:AppendNativePresentationMiss",
+      "native_and_hd_consumer_regression": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-map-miss-formal-oct25-r1.gate.json",
+        "sha256": "12c0b1b632b131e79c5a611d04432610f619e2b253ee5ef728b9f08f1e06b49e"
+      },
+      "old_wrong_smoke_receipts": "歷史診斷；不作最終驗收，舊總覽SHA及診斷樣本保留"
+    },
+    "historical_pre_correction_gates": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-map-native-candidate-oct25-r1.gate.json",
+        "sha256": "80f6862b44d301ab06b81ee4c499bfd03bf2097f7455e1594c5aa1c808367b89",
+        "required": 7
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-map-unit-formal-oct25-r2.gate.json",
+        "sha256": "6d28233de14f4c812fabb326fb4aec62d75de1b0c22b28870fc43e247763f215",
+        "required": 8
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-map-game-formal-oct25-r2.audit.json",
+        "sha256": "535fb7d208111ff1fae3be099124be659f5af28bb0b76ccdd739c2133db81329",
+        "required": 1
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-map-game-runtime-oct25-r2.audit.json",
+        "sha256": "8f630fae7e79dcfb069dbebbf39aade959803616d11783f44cb323e5822d4893",
+        "required": 1
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-map-compound32-candidate-oct25-r1.gate.json",
+        "sha256": "cc098f83ffd08d0d84744c84109c78fe8b934b8d1f37b6694109d645deb0bee4",
+        "required": 1
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-map-compound33-candidate-oct25-r1.gate.json",
+        "sha256": "9ebd5491c1ab35adbc847bd3cb4ed7a1cc6ff621d3d38fb9ef2d4642e4ce0679",
+        "required": 1
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-map-compound34-candidate-oct25-r1.gate.json",
+        "sha256": "73c4fd30e7c8d0fc75b7d92003d721f06e5937b97826e686b0447d2c11a132ef",
+        "required": 1
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-map-compound35-candidate-oct25-r1.gate.json",
+        "sha256": "9edefe894b1ef448835cca432f4c405980399ee7fd80df9542aa12ebd0b44378",
+        "required": 1
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-map-modifier-source-formal-oct25-r2.gate.json",
+        "sha256": "bd5f74f961d0d95fb2fc5ae5c7fc63f7f2d71f0582d72fd0bc16999f90714644",
+        "required": 1
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-map-sky-unit-formal-oct25-r2.gate.json",
+        "sha256": "86af65fd9e40afe43d8b9e6f8ade2063600f1cbfb2ef4280317fb8d65d2c7e13",
+        "required": 3
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-map-strings-oct25-r2.gate.json",
+        "sha256": "7e403a9e34ff1830250e395847782902fe2714bc7cb2184ed69317ceb5d20843",
+        "required": 8
+      }
+    ],
+    "validation_environment_correction": "清冊測試初次外層45秒中止，當時八項已執行且未報錯；相同映像與命令以360秒外層乾淨重跑，13項43.945秒通過。Go最終收據均無逾時或OOM。"
   }
 }
