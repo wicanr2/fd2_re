@@ -13,6 +13,9 @@ from verify_fd2_player9_map_hd import check_real_runtime
 
 ROOT=Path(__file__).resolve().parents[1]
 REQUIRED={
+    'rowshake-game':{'TestModernHDRowShakeGameGPU'},
+    'rowshake-native':{'TestNative24B4DPublishesThirtyAlternatingFramesBeforeContinuation','TestNative24B4DFailsBeforeMutationWithoutNinthTerrainRow','TestNative24B4DStoryPresentationKeepsBattleStateAbsent'},
+    'rowshake-unit':{'TestModernHDRowShakeNativeControlAndCadence','TestModernHDRowShakeLayersAndIncomingRow','TestModernHDRowShakeRejectsSourceAndThemeAtomically','TestModernHDRowShakeStoryColdFailureRestoresInitialization','TestModernHDRowShakeStagesAllOwnersBeforePublish','TestModernHDRowShakeRuntimeFailureRestoresBuffers'},
     'indexed-native':{
         'TestResolveNativeIndexedTransitionUsesProvenRelativeCursor',
         'TestResolveNativeIndexedTransitionUsesLoadCHSceneView',
@@ -83,6 +86,24 @@ REQUIRED={
 
 def check_receipt(kind, prefix):
     receipt=json.loads(Path(str(prefix)+'-capture/receipt.json').read_text())
+    if kind=='rowshake-game':
+        cases=receipt.get('cases',[]); rows=receipt.get('rows',[])
+        expected={'battle-20':20,'battle-30':30,'story-20':20,'story-30':30}
+        if (receipt.get('status')!='PASS-ROW-SHAKE-HD-GAME' or receipt.get('fixed_clock_unix')!=1000
+                or receipt.get('native_seed')!=7 or receipt.get('rgba_tolerance')!=2
+                or len(cases)!=4 or {c.get('name') for c in cases}!=set(expected) or len(rows)!=100):
+            raise ValueError('交替列位移矩陣或固定條件缺項')
+        for c in cases:
+            count=expected[c['name']]; selected=[r for r in rows if r.get('case')==c['name']]
+            if (c.get('draws')!=count or c.get('f2_round_trips')!=3 or c.get('continuations')!=1
+                    or c.get('native_control_unchanged') is not True or len(selected)!=count
+                    or {r.get('step') for r in selected}!=set(range(count))
+                    or not re.fullmatch('[0-9a-f]{64}',c.get('return_final_sha256',''))):
+                raise ValueError('20／30拍、F2或返回缺項')
+            for r in selected:
+                if r.get('row')!=r['step']%2 or r.get('rng')!=7 or any(not re.fullmatch('[0-9a-f]{64}',r.get(k,'')) for k in ['final_sha256','native_vga_sha256']):
+                    raise ValueError('列位移、亂數或完整圖面缺項')
+        return
     if kind=='indexed-game':
         cases=receipt.get('cases',[]); rows=receipt.get('rows',[]); alpha=receipt.get('alpha_sources',[])
         if (receipt.get('status')!='PASS-INDEXED-TRANSITION-HD-GAME' or receipt.get('fixed_clock_unix')!=1000
@@ -192,7 +213,7 @@ def main():
             raise ValueError('不可覆寫收據')
     independent=check_real_runtime(a.pack,json.loads(a.catalog.read_text())) if a.require_real_runtime else None
     env=os.environ.copy()
-    for name in ['FD2_HD_UNIT_PRESENT_SOURCE','FD2_HD_UNIT_PRESENT_GPU','FD2_HD_UNIT_PRESENT_STORY_GPU','FD2_HD_STORY_MOTION_GPU','FD2_HD_INDEXED_TRANSITION_GPU']:
+    for name in ['FD2_HD_UNIT_PRESENT_SOURCE','FD2_HD_UNIT_PRESENT_GPU','FD2_HD_UNIT_PRESENT_STORY_GPU','FD2_HD_STORY_MOTION_GPU','FD2_HD_INDEXED_TRANSITION_GPU','FD2_HD_ROW_SHAKE_GPU']:
         env.pop(name,None)
     env.update(FD2_MUTE='1',FD2_TEST_UNIT_PRESENT_CATALOG=str(a.catalog.resolve()),
                FD2_TEST_UNIT_PRESENT_PACK=str(a.pack.resolve()),FD2_TEST_UNIT_PRESENT_OUT=str(a.out)+'-capture')
@@ -200,6 +221,7 @@ def main():
     if a.kind=='game':env['FD2_HD_UNIT_PRESENT_GPU']='1'
     if a.kind=='story-game':env['FD2_HD_UNIT_PRESENT_STORY_GPU']='1'
     if a.kind=='motion-game':env['FD2_HD_STORY_MOTION_GPU']='1'
+    if a.kind=='rowshake-game':env['FD2_HD_ROW_SHAKE_GPU']='1'
     if a.kind=='indexed-game':env['FD2_HD_INDEXED_TRANSITION_GPU']='1'
     pattern='^('+'|'.join(sorted(REQUIRED[a.kind]))+')$'
     shell='''set -euo pipefail
@@ -225,7 +247,7 @@ export DISPLAY=:99
     events=[json.loads(s) for s in Path(str(a.out)+'.log').read_text().splitlines() if s.startswith('{')]
     if not REQUIRED[a.kind]<={e.get('Test') for e in events if e.get('Action')=='pass'} or any(e.get('Action') in {'skip','fail'} for e in events):
         raise ValueError('必要測試缺項、SKIP或失敗')
-    if a.kind in {'source','game','story-game','motion-game','indexed-game'}:
+    if a.kind in {'source','game','story-game','motion-game','indexed-game','rowshake-game'}:
         check_receipt(a.kind,a.out)
     report=dict(status='PASS',kind=a.kind,required=sorted(REQUIRED[a.kind]),catalog=str(a.catalog.resolve()),
                 catalog_sha256=hashlib.sha256(a.catalog.read_bytes()).hexdigest(),pack=str(a.pack.resolve()),

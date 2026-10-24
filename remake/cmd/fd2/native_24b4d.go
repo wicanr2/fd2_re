@@ -7,11 +7,12 @@ import (
 	"image/color"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 	"github.com/wicanr2/fd2_re/remake/internal/indexedmap"
 )
 
-func (g *Game) startNative24B4D(frameCount, delayMs int, then func()) error {
+func (g *Game) startNative24B4D(frameCount, delayMs int, then func()) (err error) {
 	if g == nil || g.transitionReveal != nil || g.native2189A != nil ||
 		g.nativeCh20SkyKey != nil || g.nativeCh23Loop != nil || g.indexedTransition != nil {
 		return errors.New("native 0x24B4D presentation is already active")
@@ -19,6 +20,27 @@ func (g *Game) startNative24B4D(frameCount, delayMs int, then func()) error {
 	if frameCount <= 0 || frameCount > 255 || delayMs != 20 {
 		return errors.New("native 0x24B4D frame count or 20ms delay differs from recovered ABI")
 	}
+	// Story initialization writes actor provenance, timing and indexed buffers.
+	// A failed late HD/native preflight must restore that whole boundary.
+	before := *g
+	actors := append([]battle.Unit(nil), g.storyActors...)
+	var storyState battle.State
+	if before.storyNativeMapState != nil {
+		storyState = *before.storyNativeMapState
+	}
+	oldWork, oldVGA, oldDAC := append([]byte(nil), g.nativeMapWork...), append([]byte(nil), g.nativeMapVGA...), append([]byte(nil), g.nativeMapDAC...)
+	defer func() {
+		if err != nil {
+			copy(before.storyActors, actors)
+			if before.storyNativeMapState != nil {
+				*before.storyNativeMapState = storyState
+			}
+			copy(before.nativeMapWork, oldWork)
+			copy(before.nativeMapVGA, oldVGA)
+			copy(before.nativeMapDAC, oldDAC)
+			*g = before
+		}
+	}()
 	// 第25章在 LOADCH 故事中呼叫 0x24B4D，沿用場景的原生地圖載體。
 	// 借用只限輸入組裝，非同步呈現不把故事角色變成可操作戰鬥。
 	if g.st == nil {
@@ -46,6 +68,13 @@ func (g *Game) startNative24B4D(frameCount, delayMs int, then func()) error {
 	if err != nil {
 		return err
 	}
+	frozen, err := freezeModernHDCommandGeometry(in)
+	if err != nil {
+		return err
+	}
+	frozen.Frame.SelectorCache = in.Frame.SelectorCache.Clone()
+	frozen.HUDCache = frozen.Frame.SelectorCache
+	seed, initialVGA := append([]byte(nil), g.nativeMapWork...), append([]byte(nil), g.nativeMapVGA...)
 	work := append([]byte(nil), g.nativeMapWork...)
 	if err := indexedmap.ComposeNative24B4DStaging(work, nativeTransitionInput(in)); err != nil {
 		return err
@@ -79,8 +108,19 @@ func (g *Game) startNative24B4D(frameCount, delayMs int, then func()) error {
 	beforeWork, beforeVGA := append([]byte(nil), g.nativeMapWork...), append([]byte(nil), g.nativeMapVGA...)
 	job := &transitionRevealJob{
 		work: work, frames: frames, palette: palette,
+		hdSource:  &modernHDRowShakeSource{Input: frozen, Seed: seed, InitialVGA: initialVGA, MapIndex: g.nativeMapAssets.MapIndex},
 		remaining: frameCount, delay: delay, then: then,
 	}
+	job.hdSource.Signature, err = job.modernHDRowShakeSignature()
+	if err != nil {
+		return err
+	}
+	job.hdSource.Sealed = true
+	job.hdFrames, err = g.prepareModernHDRowShake(job, g.modernStoryPortraits)
+	if err != nil {
+		return err
+	}
+	job.hdTheme = g.modernStoryPortraits
 	job.rollback = func() {
 		g.nativeMapWork = append(g.nativeMapWork[:0], beforeWork...)
 		g.nativeMapVGA = append(g.nativeMapVGA[:0], beforeVGA...)
@@ -103,6 +143,14 @@ func (g *Game) drawNative24B4D(screen *ebiten.Image) bool {
 	job := g.transitionReveal
 	if job == nil || len(job.palette) != 256 || len(g.nativeMapVGA) != indexedmap.NativeMapVGASize {
 		return false
+	}
+	if job.hdFrames != nil && job.hdTheme == g.modernStoryPortraits {
+		if job.index < 0 || job.index >= len(job.hdFrames) || !g.drawPreparedModernHDMapFrame(screen, job.hdFrames[job.index], false) {
+			g.failNative24B4D(errors.New("HD row frame is unavailable"))
+			return false
+		}
+		job.drawn = true
+		return true
 	}
 	img := image.NewPaletted(image.Rect(0, 0, 320, 200), job.palette)
 	copy(img.Pix, g.nativeMapVGA)

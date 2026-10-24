@@ -4117,6 +4117,36 @@
         ],
         "pattern": "img := g\\.baseMapTileset"
       }
+    },
+    {
+      "id": "hud-fixtures-synchronize-both-cursor-carriers",
+      "date": "2026-10-25",
+      "area": "HUD測具",
+      "rule": "含HUD人物的測具同時設定Game.curX／curY與State.NativeMapViewState，並確認地形控制及角色raw欄位確實產生前景。入口remake/cmd/fd2/main.go的nativeMapHUDInput與modern_hd_row_shake_test.go的rowShakeHDTestGame；重跑tools/verify_fd2_unit_present_hd.py --kind rowshake-unit。",
+      "why": "列位移測具只改raw view時HUD仍查舊游標；修正游標後發現原合成地形控制0沒有前景，改用既有0x88及完整十二圖bank明示補測。正式引擎及拒收門檻保持。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/main.go"
+        ],
+        "pattern": "g\\.st\\.UnitAt\\(g\\.curX, g\\.curY\\)"
+      }
+    },
+    {
+      "id": "verifier-flags-preserve-existing-child-environment",
+      "date": "2026-10-25",
+      "area": "驗證入口",
+      "rule": "擴充驗證器旗標時，保留既有模式的單一字串環境鍵，新增旗標用獨立賦值。修改後審查既有分支並重跑受影響的真實子程序；入口tools/verify_fd2_unit_present_hd.py，徑向模式為--kind indexed-game。",
+      "why": "新增rowshake旗標的字串替換也改到indexed-game賦值，形成tuple鍵；最後差異審查發現後還原，重跑完整徑向GPU。原先rowshake測項不走該分支，不能代替舊入口驗證。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "absent",
+        "paths": [
+          "tools/verify_fd2_unit_present_hd.py"
+        ],
+        "pattern": "env\\[[^\\]\\n]*,[^\\]\\n]*\\]\\s*="
+      }
     }
   ]
 }

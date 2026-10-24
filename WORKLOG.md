@@ -3316,3 +3316,13 @@ README保留文化保存入口，新增HD2設計基準及兩組概念，61限定
 - 依跨包SHA清理16張私人重複PNG，釋放30686124 bytes，紀錄在indexed-hd-cleanup-oct24-r1.json；正式PNG、全部log／收據保留，沒有新增錄影。765清冊與私人6740檔保持，私人main仍e9f5403961415e4a785f9e1b31d3dffa33620ce7，沒有新私人同步、工具映像或Release。一次性FD2容器完成後移除，收尾另檢查清理狀態。
 
 主證據為HD主收據indexed_transition_hd_followup_20261024，原生owner的實作前SHA以dfee7fad綁定，實作後來源以indexed-hd-source-snapshot-oct24-r1.json定位。永久入口沿tools/verify_fd2_unit_present_hd.py的indexed-native／indexed-unit／indexed-game，完整GPU帶--catalog ABS --pack ABS --out FRESH_PREFIX --timeout 1200，私人包另帶--require-real-runtime；舊故事沿story-game。下一閘門接0x24B4D及天空之鑰／第23章特殊背景；其餘地形、HD2、完整HUD、浮出工具列／加速及全部HD後的正常／集中人工／平台仍待。程式與規格由本段所在提交及origin/main追溯，完整HD目標保持。
+
+## 2026-10-25 交替列位移演出HD
+
+- 從be687d30主線建立hd/row-shake-20261025。沿58既有0x24B4D證據先升規格61為READY，再接戰鬥與故事兩列HD，保留第九列、HUD人物圖示、原生節拍與一次續行；起動失敗補回故事初始化，F2先預備全部owner再發布。
+- 十份最終Go閘門39次必要頂層測試與八字串測試通過，109項處置保持。兩包各四流程、100次Draw與12次F2，12張PNG及完整收據相同；舊故事12張及收據保持，原徑向README總覽重生SHA保持。無SKIP／逾時／OOM；峰值4937691136 bytes只作有界測試量測。
+- 最初兩次單元拒收來自合成測具沒有同步Game游標及缺前景控制；改測具明示輸入，正式規則與門檻保持。最後補強未物化故事角色的冷失敗回復並重跑六項單元，正式程式與GPU測項保持。
+- 清冊765、私人6740檔與原始素材保持，沒有新美術／Release／原版執行器或正常玩家聲明。現況依58、規格61及docs/data/fd2-modern-hd-battlefield-20261019.json的rowshake_hd_followup_20261025。天空之鑰、第23章特殊背景、其餘地形／HD2／HUD／浮出工具列及集中正常／人工／平台仍待。
+- 核SHA後刪41份重複PNG，釋放67450093 bytes；保留正式擷取、原始log與完整收據，未產生錄影。清理逐檔紀錄在work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/rowshake-hd-cleanup-oct25-r2.json。Docker收尾及遠端HEAD於提交前後核對。
+
+- 末輪審查修復驗證器的既有indexed-game旗標誤改，另真實重跑288次Draw／32次F2，16張PNG及完整收據保持；六模式與新guard正反控制通過。舊九閘門以最後檢查器另存audit，未重計Go次數。正式Go及字串來源保持，最後來源快照為rowshake-hd-source-snapshot-oct25-r2.json。

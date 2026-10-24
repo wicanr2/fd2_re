@@ -689,6 +689,9 @@ type storyFade struct {
 // viewports. The address-specific constructor validates and prepares every
 // buffer before this blocking job can become visible.
 type transitionRevealJob struct {
+	hdSource  *modernHDRowShakeSource
+	hdFrames  []*modernHDMapFrame
+	hdTheme   *modernStoryPortraitSet
 	work      []byte
 	frames    [2][]byte
 	palette   color.Palette

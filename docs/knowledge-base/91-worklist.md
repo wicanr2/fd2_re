@@ -168,6 +168,12 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 `modern-theme-highres-prototype` · 工作 · [#204](https://github.com/wicanr2/fd2_re/issues/204) · 仍未完成 · 要人判
 
+交替列位移地圖演出HD已接入，限定CONFORMED-SCOPED／RUNTIME-E1。兩包各四完整Game.Draw、100次繪製與12次F2，涵蓋戰鬥／故事20與30拍、原圖主題控制組、底部真實第九列、人物／前景／範圍／HUD圖示同步及一次返回。12張跨包PNG與完整收據相同，舊故事12張與收據保持；十份Go閘門、字串回歸及109處置保持，無SKIP／逾時／OOM。清冊與私人素材不變，沒有新美術或原版執行器／正常玩家聲明。來源與重跑依[58](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)、[61](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/61-modern-theme-runtime-spec.md)及[HD主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-battlefield-20261019.json)的rowshake_hd_followup_20261025。
+
+下一步為天空之鑰與第23章特殊背景，其餘地形、HD2、操作介面獨立切換、完整HUD、單列浮出工具列／加速／海報及集中正常／人工／平台仍待。#268蓋亞手腕與#269凱麗右腳保持人工待辦。本項保持開啟。
+
+以下保留較早切片與設計紀錄，後續安排以本段及58最新狀態為準。
+
 最終顯示邊界：本批故事HD只在原生載體完整、鏡頭與raw view對齊且沒有storyWalkJob時啟用。現有故事插值先寫正規化終點與OffX／OffY，完成後才寫原生座標；這些走位及未對齊移鏡先保留既有呈現，不把中間拍當成靜態站位。新增走位／鏡頭邊界反例後，最終四項故事測試及正式／私人完整GPU已重跑通過，12張穩定PNG與前版完全相同。下一步先補故事插值走位／移鏡HD，再接共用0x24618徑向與調色尾段；整體HD及集中正常／人工／平台仍未完成。
 
 原生故事世界與入場後返回HD已接入，限定CONFORMED-SCOPED／RUNTIME-E1。只限具備完整storyNativeMapState的場景，沿既有故事compositor在私有複本產圖，不發布原生時鐘、DAC、work／VGA或角色變更。故事staging及直接單位出現，正式與私人各兩完整Game.Draw、198次繪製、兩個返回GPU世界、19次F2及22來源世界通過；12張跨包PNG及完整收據相同。四項故事來源隔離／缺件／F2拒收、7原生、5轉場與9共用回歸通過；既有玩家23與戰場staging完整299次繪製／30次F2保持，八字串回歸與109處置保持。沒有新素材、清冊或保存欄位，私人6740檔及765清冊保持。前批故事僅原生回歸的限制已由本批補齊，仍不新增正常玩家或原版RGB聲明。
@@ -209,6 +215,12 @@ HD高解析呈現仍未全部完成。本項保持開啟；目前狀態與唯一
 ### P1 大型戰鬥動畫HD：人物、效果與正常玩家呈現
 
 `modern-battle-animation-hd` · 工作 · [#263](https://github.com/wicanr2/fd2_re/issues/263) · 仍未完成 · 要人判
+
+交替列位移地圖演出HD已接入，限定CONFORMED-SCOPED／RUNTIME-E1。兩包各四完整Game.Draw、100次繪製與12次F2，涵蓋戰鬥／故事20與30拍、原圖主題控制組、底部真實第九列、人物／前景／範圍／HUD圖示同步及一次返回。12張跨包PNG與完整收據相同，舊故事12張與收據保持；十份Go閘門、字串回歸及109處置保持，無SKIP／逾時／OOM。清冊與私人素材不變，沒有新美術或原版執行器／正常玩家聲明。來源與重跑依[58](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)、[61](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/61-modern-theme-runtime-spec.md)及[HD主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-battlefield-20261019.json)的rowshake_hd_followup_20261025。
+
+下一步為天空之鑰與第23章特殊背景，其餘地形、HD2、操作介面獨立切換、完整HUD、單列浮出工具列／加速／海報及集中正常／人工／平台仍待。#268蓋亞手腕與#269凱麗右腳保持人工待辦。本項保持開啟。
+
+以下保留較早切片與設計紀錄，後續安排以本段及58最新狀態為準。
 
 最終顯示邊界：本批故事HD只在原生載體完整、鏡頭與raw view對齊且沒有storyWalkJob時啟用。現有故事插值先寫正規化終點與OffX／OffY，完成後才寫原生座標；這些走位及未對齊移鏡先保留既有呈現，不把中間拍當成靜態站位。新增走位／鏡頭邊界反例後，最終四項故事測試及正式／私人完整GPU已重跑通過，12張穩定PNG與前版完全相同。下一步先補故事插值走位／移鏡HD，再接共用0x24618徑向與調色尾段；整體HD及集中正常／人工／平台仍未完成。
 

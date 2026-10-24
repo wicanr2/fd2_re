@@ -11,7 +11,7 @@
 - 凍結當次具型別地圖、selector、原始色盤與九份LUT。保留每個原生work／VGA與完整歷史順序，逐byte重建後才發布HD；背景不得把前一階完整work誤換成新的空白種子。九階半徑與原始座標直接沿既有builder，不依欄位名稱補倍率。HD人物／已登錄地形沿共用徑向遮罩，工作基底為完整work的0，與單位轉場的0x8088分開。原生第一remap、單位／前景、第二remap及矩形順序保持；HD查表色彩沿既有四色差近似。
 - 既有owner保留九個可見present、500ms停留及32個DAC變更，delta=0..62、步進2。`ApplyVGAPaletteDelta`由baseline加亮、飽和於63，不是累加當前色盤。HD以原九階最後圖面為底，每階RGBA通道加 `delta/63` 後飽和，alpha保持，且只作用在本次遊戲世界。這是現代美術顯示近似；原圖主題仍以原生DAC的bit replication顯示，不宣稱HD逐RGB相同。
 - 冷啟動與F2預檢同一凍結來源、九階與全部32階，全部通過才換圖。缺圖、錯尺寸、來源變動或不完整宣告在發布前拒收；主題、owner、角色、RNG、原生圖面與進度保持。Draw只承認已顯示，不推進phase或回呼；停留與一次續行由原owner負責，保存格式不變。新GPU調色欄位預設零，既有owner沿原繪製契約。
-- 驗收包含九階native完整重建、work位址與圖層遮罩、全部32個baseline DAC、原子拒收／F2、四個完整Game.Draw與前後續行。三個既有caller及一個明示幾何測具分列；正式與私人包逐圖／收據核對，GPU對獨立RGBA8合成，另驗半透明alpha與既有故事／轉場回歸。原圖控制組使用相同重製程式，不等於原版執行器；本切片只到受控RUNTIME-E1。其他caller、0x24B4D、特殊背景、完整HD與正常／集中人工／平台仍待。
+- 驗收包含九階native完整重建、work位址與圖層遮罩、全部32個baseline DAC、原子拒收／F2、四個完整Game.Draw與前後續行。三個既有caller及一個明示幾何測具分列；正式與私人包逐圖／收據核對，GPU對獨立RGBA8合成，另驗半透明alpha與既有故事／轉場回歸。原圖控制組使用相同重製程式，不等於原版執行器；本切片只到受控RUNTIME-E1。此批初始不含0x24B4D，現況依本檔「交替列位移地圖演出HD」；其他caller、特殊背景、完整HD與正常／集中人工／平台仍待。
 
 實作入口為[HD徑向消費端](../../remake/cmd/fd2/modern_hd_indexed_transition.go)、[來源與拒收測試](../../remake/cmd/fd2/modern_hd_indexed_transition_test.go)及[完整GPU流程](../../remake/cmd/fd2/modern_hd_indexed_transition_gpu_test.go)，沿既有[單位與轉場驗證器](../../tools/verify_fd2_unit_present_hd.py)擴充`indexed-native`、`indexed-unit`及`indexed-game`。完整GPU用`--kind indexed-game --catalog ABS --pack ABS --out FRESH_PREFIX --timeout 1200`，須獨立程序，私人包加`--require-real-runtime`；掛載與素材環境沿下節。原生owner與共享GPU的新調色欄位預設零，舊故事與轉場各自回歸。README總覽沿`build_fd2_battle_panel_gallery.py --indexed-transition-receipt capture/receipt.json`，先核完整RGBA雜湊再整框半縮，幾何測具不當成新的正常caller。
 
@@ -4247,3 +4247,21 @@ BG0..2三份原稿及完整六倍預覽已審查：皆為深藍水平刷紋，�
 完整流程使用game配--surface 3、34、37、47，3不帶--with-pedestal；其餘帶台座，另一側加--enemy。scroll-game配--pair 7:10、34:36、36:37及--transition；split-game配--command 24或29、--triple 7:9:10、34:36:37、40:43:47及--transition。獨立包由sync_modern_theme_private.py --runtime-only全新複製，再以--require-real-runtime驗；分段runtime可--hashes-only但仍逐張回讀與編碼。獨立Pillow及反例沿verify_fd2_split_strike_gpu.py／test_fd2_split_strike_gpu.py，完整命令與收據見同筆主收據。去重後的包不得重用為獨立實檔證據。
 
 README四格由已核對的完整Game.Draw半縮，保留像素面板，未裁切或重畫遊戲區。手繪構圖細節、材質、全框適配及台座輪廓是美術近似；資料來源補齊不等於全部指令caller、普通玩家、人工造型或平台完成。其餘效果尾段／指令場景、HUD、浮出工具列與加速及集中正常／人工／平台仍待，不新增原版RGB parity或PLAYER-E2。
+
+### 交替列位移地圖演出 HD
+
+狀態：CONFORMED-SCOPED／RUNTIME-E1。範圍限既有 `startNative24B4D` 的戰鬥及故事載體。原版證據沿58及 `docs/data/ida/fd2_ch22_post_ida.txt`、`fd2_ch28_post_ida.txt`，固定 FD2.EXE 為357074 bytes、SHA-256 `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`，IDA9.4線性位址0x24B4D。13×9地形暫存、正常圖層合成、相差456 bytes的兩張312×192視窗及20ms節拍，沿既有typed consumer，不重開RE。
+
+- 起動時凍結當次typed輸入、selector cache、初始work／VGA、palette及兩張結果。HD預檢重播原生合成，逐bytes核對完整work及兩張VGA。缺第九列、來源不符或部分HD圖源，均在發布owner前拒收。
+- HD以六倍原錨點繪製13×9地形。第二張viewport起點增加一列，人物、前景、範圍、HUD與HUD人物圖示共同上移6個HD像素。底部新進的一列從真正第九列取得，不補黑或拉伸。外框沿當次原生VGA。
+- 保留既有20／30拍、Draw確認、等待、一次續行及原圖路徑。HD只消費凍結來源，不重採時鐘、亂數或改規則／保存。故事起動預檢失敗時回復起動前的角色、故事載體、時序及原生緩衝；播放中失敗沿原有work／VGA回復。
+- F2先預備兩張完整候選再發布；其他owner預檢失敗時也不可發布半套。每次預備均核來源及選定HD人物，不以快取略過。HD顏色沿既有地形近似，不宣稱原版RGB相同。
+- 驗收包含20／30拍、故事／戰鬥、底部與HUD位移、完整原生控制組、獨立CPU合成對GPU、F2往返、冷拒收與晚期失敗回復。沿既有 `tools/verify_fd2_unit_present_hd.py` 擴充rowshake測項，在既有Go Docker內執行；完整主題與獨立實檔包分開驗。這些受控入口屬RUNTIME-E1，全部HD後的集中正常玩家／人工抽驗仍待。
+
+來源與收據依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的 `rowshake_hd_followup_20261025`。不新增美術、清冊格式、存檔格式或發行聲明。
+
+正式與私人素材各四完整Game.Draw通過，包含戰鬥／故事的20／30拍、每拍原圖主題控制組、兩列獨立CPU合成對GPU容差2、三階段F2與一次返回。兩包完整收據與12張PNG逐SHA相同，既有故事12張與完整收據保持。第九列確有已登錄HD圖源，重疊區每個HD像素恰上移6列；合成測具另明示0x88前景控制，核對前景與HUD人物圖示位移。部分主題、錯圖框、凍結來源／palette／兩張VGA損壞均原子拒收，故事新載體與既有載體的冷失敗回復通過。
+
+永久入口在既有Go Docker使用 `tools/verify_fd2_unit_present_hd.py --kind rowshake-native|rowshake-unit|rowshake-game --catalog ABS --pack ABS --out FRESH_PREFIX --timeout 900`；私人實檔包另加 `--require-real-runtime`。既有indexed-unit、story-unit、motion-unit、regression及story-game沿相同入口重跑。九份最終Go閘門、字串與資源數量只依58及主收據，沒有SKIP／逾時／OOM。本批只補強測具的游標與前景控制，未為合成測具更改正式規則；較早兩次拒收log保留。README總覽由已驗證完整畫面半縮，既有徑向總覽重生後SHA保持。清冊與私人素材不變，沒有新發行。
+
+末輪差異審查另發現驗證器新增旗標的文字替換誤改舊indexed-game環境鍵；恢復既有單一字串鍵，正式Go保持。舊徑向完整GPU真實重跑，16張PNG及完整收據與前批相同；六模式旗標及tuple鍵guard正反控制通過。先前九份閘門另由最後嚴格檢查器重審，不把重審計成新的Go執行。最後來源快照與十份Go閘門依同筆主收據。

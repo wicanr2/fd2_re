@@ -111,7 +111,12 @@ func (g *Game) prepareModernHDMapFrame(in indexedmap.NativeFrameInput, seed []by
 }
 
 func (g *Game) prepareModernHDMapFrameMode(in indexedmap.NativeFrameInput, seed []byte, palette color.Palette, event bool) (*modernHDMapFrame, error) {
-	if g.modernStoryPortraits == nil || len(palette) != 256 || len(seed) != indexedmap.NativeUnitPresentWorkSize {
+	return g.prepareModernHDMapFrameLayout(in, seed, palette, event, -1)
+}
+
+// row is -1 for the steady owner, or 0/1 for the recovered 0x24B4D source row.
+func (g *Game) prepareModernHDMapFrameLayout(in indexedmap.NativeFrameInput, seed []byte, palette color.Palette, event bool, row int) (*modernHDMapFrame, error) {
+	if row < -1 || row > 1 || g.modernStoryPortraits == nil || len(palette) != 256 || len(seed) != indexedmap.NativeUnitPresentWorkSize {
 		return nil, errors.New("modern HD world: incomplete published sources")
 	}
 	frame := in.Frame
@@ -135,6 +140,12 @@ func (g *Game) prepareModernHDMapFrameMode(in indexedmap.NativeFrameInput, seed 
 	}
 	var err error
 	terrainBase, terrainCameraY, terrainRows := base, frame.CameraY, 8
+	if row >= 0 {
+		terrainRows, viewportBase = 9, base+row*fdicon.NativeMapStride
+		if err = indexedmap.ComposeNative24B4DStaging(work, nativeTransitionInput(in)); err != nil {
+			return nil, err
+		}
+	}
 	if up {
 		terrainBase, terrainCameraY, terrainRows, viewportBase, err = indexedmap.NativeUpStepLayout(background, unitY, motion)
 		if err != nil {
@@ -225,7 +236,11 @@ func (g *Game) prepareModernHDMapFrameMode(in indexedmap.NativeFrameInput, seed 
 	draw.Draw(bg, bg.Bounds(), image.NewUniform(color.Black), image.Point{}, draw.Src)
 	for y := 4; y < 196; y++ {
 		for x := 4; x < 316; x++ {
-			bg.Set(x, y, palette[vga[y*320+x]])
+			if row >= 0 {
+				bg.Set(x, y, palette[work[viewportBase+(y-4)*fdicon.NativeMapStride+x-4]])
+			} else {
+				bg.Set(x, y, palette[vga[y*320+x]])
+			}
 		}
 	}
 	ui := image.NewRGBA(bg.Bounds())
@@ -241,7 +256,7 @@ func (g *Game) prepareModernHDMapFrameMode(in indexedmap.NativeFrameInput, seed 
 		if err != nil {
 			return nil, err
 		}
-		ui, err = modernHDNativeViewportPixels(pixels, base)
+		ui, err = modernHDNativeViewportPixels(pixels, viewportBase)
 		if err != nil {
 			return nil, err
 		}
@@ -267,6 +282,9 @@ func (g *Game) prepareModernHDMapFrameMode(in indexedmap.NativeFrameInput, seed 
 		hudUnit, err = g.prepareModernHDMapHUDUnit(in, palette)
 		if err != nil {
 			return nil, err
+		}
+		if row >= 0 && hudUnit != nil {
+			hudUnit.Unit.Rect = hudUnit.Unit.Rect.Add(image.Pt(0, -row*6))
 		}
 		clearModernHDHUDUnitPixels(ui, hudUnit)
 	}

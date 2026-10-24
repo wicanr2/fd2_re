@@ -224138,7 +224138,8 @@
         "sha256": "e67fffca380c75a87d93e0a2c0ea40cb5e7545005382f7568b8967a612927665",
         "function": "drawNative24B4D",
         "status": "NATIVE-ONLY-SOURCE-REVIEW",
-        "scope": "目前正式Draw函式整幀原圖；此清單不是全部caller的閉合聲明"
+        "scope": "目前正式Draw函式整幀原圖；此清單不是全部caller的閉合聲明",
+        "superseded_by": "rowshake_hd_followup_20261025"
       },
       {
         "file": "remake/cmd/fd2/native_indexed_transition.go",
@@ -224805,6 +224806,252 @@
     "final_audit": {
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/indexed-hd-final-audit-oct24-r1.json",
       "sha256": "05fb932455be457b99f6cf3674e96d292b8ab36e9257a0b429a5bc6da5631925"
+    },
+    "next_gate_superseded_by": "rowshake_hd_followup_20261025"
+  },
+  "rowshake_hd_followup_20261025": {
+    "status": "CONFORMED-SCOPED-RUNTIME-E1",
+    "base_commit": "be687d3069b312777e394cccce5261cc504299c9",
+    "evidence": [
+      {
+        "sha256": "9946b7506620069ce9b7bb8e4b1f7fed36e7a9389b634ef62064727d89579c5e",
+        "file": "docs/data/fd2-reference-files.json"
+      },
+      {
+        "sha256": "51ad4d74cc62876f69c2b9e5a31610c41e76a8d9a4453291593795649710fdc7",
+        "file": "docs/data/ida/fd2_ch22_post_ida.txt"
+      },
+      {
+        "sha256": "e8f1669a85a06412c51450ce9d2fc761981fc2d793b3fc6fca3421eb98cc5e3a",
+        "file": "docs/data/ida/fd2_ch28_post_ida.txt"
+      },
+      {
+        "sha256": "e67fffca380c75a87d93e0a2c0ea40cb5e7545005382f7568b8967a612927665",
+        "path_at_base_commit": "remake/cmd/fd2/native_24b4d.go",
+        "git_revision": "be687d3069b312777e394cccce5261cc504299c9"
+      },
+      {
+        "sha256": "a7f21d5703b4ac3db2e55948c13dab8e0cf96bb42d31ad2b3e9191adbb2a0aab",
+        "file": "remake/internal/indexedmap/frame.go"
+      }
+    ],
+    "scope": "既有0x24B4D兩列地圖演出HD；不新增原版語意",
+    "catalog_unchanged": true,
+    "new_art": false,
+    "full_hd_complete": false,
+    "normal_player_complete": false,
+    "verified_date": "2026-10-25",
+    "catalog": {
+      "file": "remake/assets/themes/modern/catalog.json",
+      "sha256": "9c25de7a2e5a9723e6f97cf608c3fc09c6bf41b82a32d86b9a44438d3131bc9d"
+    },
+    "source_snapshot": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/rowshake-hd-source-snapshot-oct25-r2.json",
+      "sha256": "ab8304b48f95101993714293d4f5a4df39122b84b03cbfa67283007bbc553735"
+    },
+    "gates": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/rowshake-hd-unit-oct25-r4.gate.json",
+        "sha256": "d890e219119900452124595d142f0dfd5a3b9874d39605ce1a120d054a9b50e8"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/rowshake-hd-final-rowshake-native-oct25-r1.gate.json",
+        "sha256": "aaa161ffaf4f583cfa97a0cfc40a0a2334661e973082407389d9ca8af938d355"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/rowshake-hd-final-indexed-unit-oct25-r1.gate.json",
+        "sha256": "995983ed4d5674cb8f3fea50da6df16f379fd9cf5b2a8a7f24827968dfec9470"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/rowshake-hd-final-story-unit-oct25-r1.gate.json",
+        "sha256": "1c552e1c586eb30412bc47bbc84ebe2970a2a968ba62e20e62aaee9e03b83bd2"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/rowshake-hd-final-motion-unit-oct25-r1.gate.json",
+        "sha256": "a61e4ee07ad79f9f624928b9bde02b963bbe86324e4b0407272ca213dcb3de0c"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/rowshake-hd-final-regression-oct25-r1.gate.json",
+        "sha256": "e167baa440cf2476b91bd7250a8c0a9b893dc8c0f49c28366c5cd32f58b3fcb4"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/rowshake-hd-formal-game-oct25-r1.gate.json",
+        "sha256": "5a85fd35f014ed2d096b08301d87c3b95808e43e570aee5f275176401336095c"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/rowshake-hd-private-game-oct25-r1.gate.json",
+        "sha256": "1912c01a300d9ba217449e3174a0a6fcd62dbadcba7928048e2e25b87b62e20c"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/rowshake-hd-story-regression-oct25-r1.gate.json",
+        "sha256": "aefe4e477f2fb3da6e681b8edb3a81d902c5e94ba9ccd5d61178e3408fef35e1"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/rowshake-hd-indexed-regression-oct25-r1.gate.json",
+        "sha256": "e08f7b7669e209d727e7c179ac476a9783d7e812ffe48128bb6e60a2e54372bd"
+      }
+    ],
+    "memory": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/rowshake-hd-unit-oct25-r4.memory.json",
+        "sha256": "f1987619644e796f2c5e5ad00d03e786c2e8d5006c88a30c11a6d4c4e6386b31"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/rowshake-hd-final-rowshake-native-oct25-r1.memory.json",
+        "sha256": "fb58f5e38e11802852b9cfab4030105d6c8359fb517de60e6a212f842d5a03fa"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/rowshake-hd-final-indexed-unit-oct25-r1.memory.json",
+        "sha256": "458d43bcdae1cc787c2999be71973ec56d651c4df596b1a7b21ac4616cd50871"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/rowshake-hd-final-story-unit-oct25-r1.memory.json",
+        "sha256": "04f8090f17faa54fa2046af424b1c7b96249c0468cff7ee2860cb30e92bc7c71"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/rowshake-hd-final-motion-unit-oct25-r1.memory.json",
+        "sha256": "448f31ac0bdd5d648d9be064acc968dc54e09047611c27786e21362f723e0729"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/rowshake-hd-final-regression-oct25-r1.memory.json",
+        "sha256": "470ac37a543693e2fdd6bd5c5f8dff10fcddb42d28c1aaee16564bde509cc7ee"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/rowshake-hd-formal-game-oct25-r1.memory.json",
+        "sha256": "7a0d9870a8b18533497dd784a930059e119851efa27d115c182eb15ea8fab3e2"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/rowshake-hd-private-game-oct25-r1.memory.json",
+        "sha256": "528959be0e667abe72acc3d009bf460c2a0ba44a1ae3dce0cc20bd1875ed4865"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/rowshake-hd-story-regression-oct25-r1.memory.json",
+        "sha256": "8b2bc55f4ea92d518e0b5c92c274f32456cdc379044b34d5f44915ccba6ead0c"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/rowshake-hd-indexed-regression-oct25-r1.memory.json",
+        "sha256": "f371cad38ed81265954570b719989327af671734a6fdafe8d533fb613e548ab7"
+      }
+    ],
+    "cross_pack": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/rowshake-hd-cross-pack-oct25-r2.json",
+      "sha256": "98d2ce61ccd64efbc002a03b28ca504029e150ce019e3d4215fed7304d2252d0"
+    },
+    "readme": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/rowshake-hd-readme-oct25-r1.json",
+      "sha256": "41ee3ffee22eb1494ff94a660a443946dba57d51ed1096619def03ecb5c30a43"
+    },
+    "public_figure": {
+      "file": "docs/figures/hd-row-shake.png",
+      "sha256": "8753ceb834ab8ba5e5145e1c89115919299de1d29390525070bdcd959fedf8cb"
+    },
+    "receipts": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/rowshake-hd-formal-game-oct25-r1-capture/receipt.json",
+        "sha256": "bffc7827cdcff87998b9caf548793227dde1443414caf58250bdaa010facdf48"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/rowshake-hd-private-game-oct25-r1-capture/receipt.json",
+        "sha256": "bffc7827cdcff87998b9caf548793227dde1443414caf58250bdaa010facdf48"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/rowshake-hd-story-regression-oct25-r1-capture/receipt.json",
+        "sha256": "dbe4038beff17638f03f247880dad5219be87d568792c1566ca5375c39aefb1b"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/rowshake-hd-indexed-regression-oct25-r1-capture/receipt.json",
+        "sha256": "4605b9d21014e9f91c340067f25bd581e3a8cb2171d36cea46f52fe9b86e1e19"
+      }
+    ],
+    "string_review": {
+      "inventory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/rowshake-hd-string-inventory-oct25-r1.json",
+        "sha256": "ab2885ce4a31482e975cb20cd6bea140b5137303cbb2460b457d8d9a093d1649"
+      },
+      "review": {
+        "file": "docs/data/fd2-string-review.json",
+        "sha256": "b0b80ab1eaf59f6c6436007cb67c29b2040c234956d30a101efbc87b4e66e4c8"
+      },
+      "tests": 8,
+      "dispositions": 109
+    },
+    "verified_scope": {
+      "go_gates": 10,
+      "required_executions": 39,
+      "unique_required_tests": 38,
+      "per_pack_cases": 4,
+      "per_pack_draws": 100,
+      "per_pack_f2_round_trips": 12,
+      "equal_png": 12,
+      "legacy_story_equal_png": 12,
+      "independent_runtime_files": 5762,
+      "memory_peak_bytes": 4937691136,
+      "legacy_indexed_equal_png": 16,
+      "legacy_indexed_draws": 288,
+      "legacy_indexed_f2_round_trips": 32
+    },
+    "limits": [
+      "受控戰鬥／故事20與30拍，原圖控制組是同一重製程式；未重跑原版執行器，不新增PLAYER-E2或RGB parity。",
+      "原20ms沿既有60Hz的一更新投影；不宣稱硬體wall-clock或每frame相同。",
+      "HD顏色沿既有近似，未登錄地形與HUD框線仍為原圖。",
+      "本批無新美術，清冊與私人保存庫保持；集中正常玩家／人工／平台待全部HD串接後驗。"
+    ],
+    "next_gate": "天空之鑰與第23章特殊背景；其餘地形、HD2、完整HUD、浮出工具列／加速／海報與集中正常／人工／平台。",
+    "failed_runs": [
+      "rowshake-hd-unit-oct25-r1",
+      "rowshake-hd-unit-oct25-r2"
+    ],
+    "failure_note": "合成測具先缺少同步Game游標，之後缺前景地形控制；只補明示測具，正式程式與門檻不作對應特例。",
+    "cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/rowshake-hd-cleanup-oct25-r2.json",
+      "sha256": "27ffc4e705e93c1298812264ac771586a501405aeaf926ad3e388178a9b14024"
+    },
+    "worklist": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/rowshake-hd-worklist-oct25-r2.json",
+      "sha256": "94c01e17bcb2c5338a10af64f1a939bd3aaa5cc454990f3d0a0aa1d6cd08d556"
+    },
+    "strict_rechecks": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/rowshake-hd-unit-oct25-r4.audit.json",
+        "sha256": "d2bbdeeadf2760b46118f963d1cab2aa9b320996fbdc6a3f77682ae4257698e0"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/rowshake-hd-final-rowshake-native-oct25-r1.audit.json",
+        "sha256": "719a4217f188a989bb91fd10d75c87410b189b27c64a0d4736e9176b742a313a"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/rowshake-hd-final-indexed-unit-oct25-r1.audit.json",
+        "sha256": "435b7dbda80c6de8fdde6f883c58672791948f7661dd3c01dc258ac1a3a19de0"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/rowshake-hd-final-story-unit-oct25-r1.audit.json",
+        "sha256": "455f794890f3b13537a188612a7e15c204b88b349595eb7a5a49898900bd9c59"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/rowshake-hd-final-motion-unit-oct25-r1.audit.json",
+        "sha256": "c2df8ecdaf205435946e10455e31a4811765fd65ae75211115d21852913d6705"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/rowshake-hd-final-regression-oct25-r1.audit.json",
+        "sha256": "1b385c3a8d97ce4c62f66c6d4a7cd060a099abd548bec1305ec98f1ee343b0e8"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/rowshake-hd-formal-game-oct25-r1.audit.json",
+        "sha256": "6658fb0d6b40414b5ea7a907c6170e3da871b02e35e3973c57c1ecc4144ff7e8"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/rowshake-hd-private-game-oct25-r1.audit.json",
+        "sha256": "3a24639793129d6dab459b04031fcff031f62c92f042d5e69c3b41371cc06656"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/rowshake-hd-story-regression-oct25-r1.audit.json",
+        "sha256": "5cb810bb8fcdf500d7d0cef2073d6b83c9098be75ed01027f47f2662789e8fcc"
+      }
+    ],
+    "verifier_review_fix": "末輪差異審查發現新增旗標的字串替換誤改既有indexed-game環境鍵；還原單一字串鍵，六模式對映與guard正反控制核對，另真實重跑徑向完整GPU，16張PNG及完整收據與前批相同。正式Go不變。",
+    "final_audit": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/rowshake-hd-final-audit-oct25-r2.json",
+      "sha256": "df3e1d40bf41fda3179113d9129ca4d8706efb0f69d812be259ef645ad3261e8"
     }
   }
 }

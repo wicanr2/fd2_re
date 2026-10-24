@@ -1,6 +1,8 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
-既有0x24618的九階徑向、停留及baseline DAC加亮已接HD，限定CONFORMED-SCOPED／RUNTIME-E1。凍結同次地圖、selector、LUT與原生work歷史，逐byte重建後規劃HD；GPU調色以baseline的delta/63飽和加亮，alpha保持，屬明示顯示近似。兩包完整Game.Draw／F2、原圖主題控制組、一次返回及跨包畫面通過；原有故事走位、入場與返回畫面保持。沒有新美術、規則或保存欄位，原版執行器未在本批重跑。下一閘門接0x24B4D及其他特殊背景，完整HD、正常／集中人工／平台仍待。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的indexed_transition_hd_followup_20261024；前批故事收據各自保留。
+既有0x24B4D的交替列位移演出已接HD，限定CONFORMED-SCOPED／RUNTIME-E1。兩個來源列共同驅動人物、已登錄地形、前景、範圍、HUD與HUD人物圖示，保留第九列及原生Draw確認／一次續行。戰鬥與故事的20／30拍、兩包完整繪製／F2、原圖主題控制組、冷拒收／回復及跨包畫面通過，舊故事與徑向回歸保持。沒有新美術、規則或保存欄位，原版執行器未重跑。下一閘門為天空之鑰及第23章特殊背景；全部HD、正常／集中人工／平台仍待。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，證據依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的rowshake_hd_followup_20261025。
+
+既有0x24618的九階徑向、停留及baseline DAC加亮已接HD，限定CONFORMED-SCOPED／RUNTIME-E1。凍結同次地圖、selector、LUT與原生work歷史，逐byte重建後規劃HD；GPU調色以baseline的delta/63飽和加亮，alpha保持，屬明示顯示近似。兩包完整Game.Draw／F2、原圖主題控制組、一次返回及跨包畫面通過；原有故事走位、入場與返回畫面保持。沒有新美術、規則或保存欄位，原版執行器未在本批重跑。0x24B4D現況依本頁新前言；其他特殊背景、完整HD、正常／集中人工／平台仍待。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的indexed_transition_hd_followup_20261024；前批故事收據各自保留。
 
 共用單位消失／出現轉場已接HD世界與光形，限定CONFORMED-SCOPED／RUNTIME-E1。玩家23正式確認後完整調色、消失、出現與MP／Acted結算，以及戰場staging待啟動焦點、各階段F2、原單位／RNG／work／VGA控制組均通過。故事呼叫者已接同一預檢，沿原生回歸，不新增故事GPU或正常玩家聲明。正式及私人實檔包的完整畫面相同；舊主題缺整組時可回退原圖光形，部分宣告仍拒收。原生排程、保存與規則保持。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約及重跑依[61](61-modern-theme-runtime-spec.md)，主證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的unit_present_hd_followup_20261024。其餘效果、完整HUD與正常／集中人工／平台仍待。
 
