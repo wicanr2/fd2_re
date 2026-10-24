@@ -19,12 +19,14 @@ def main():
     parser.add_argument('--out', type=Path, required=True)
     parser.add_argument('--receipt', type=Path, required=True)
     parser.add_argument('--command-panels', action='store_true', help='選法術actor階段；完整PNG先記SHA，原收據有SHA時再核對')
-    parser.add_argument('--phase', choices=['actor', 'effect-main', 'target', 'map-result'], help='明示法術／召喚階段；target涵蓋command1-target，map-result涵蓋各段map-digits，須搭配--command-panels')
+    parser.add_argument('--phase', choices=['actor', 'effect-main', 'target', 'map-result', 'map-effects'], help='明示法術／召喚階段；map-effects沿--lmi-entries選實際LMI來源，須搭配--command-panels')
+    parser.add_argument('--lmi-entries',type=int,nargs=4,help='map-effects依四語順序選FDOTHER6來源')
     args = parser.parse_args()
     if not Path('/.dockerenv').exists():
         raise SystemExit('限Docker內執行')
     if args.phase and not args.command_panels:
         raise SystemExit('--phase須搭配--command-panels')
+    if (args.phase=='map-effects')!=(args.lmi_entries is not None):raise SystemExit('map-effects須配四個--lmi-entries')
     for path in [args.out, args.receipt]:
         if not path.parent.is_dir() or path.exists():
             raise SystemExit('輸出父目錄須存在，不覆寫既有檔案')
@@ -39,7 +41,9 @@ def main():
         phase = (args.phase or 'actor') if args.command_panels else 'body'
         candidates = sorted((key, shot) for key, shot in receipt['source_shots'].items()
                             if shot['phase'] == phase or phase == 'target' and shot['phase'] == 'command1-target'
-                            or phase == 'map-result' and shot['phase'].startswith('map-digits'))
+                            or phase == 'map-result' and shot['phase'].startswith('map-digits')
+                            or phase == 'map-effects' and shot['phase'].startswith(('map-effect','map-toggle'))
+                            and any(s.get('Resource')==6 and s.get('Entry')==args.lmi_entries[len(rows)] for s in shot.get('layers',[])))
         if not candidates:
             raise SystemExit('收據缺少指定階段')
         key, shot = candidates[-1] if args.command_panels else candidates[0]

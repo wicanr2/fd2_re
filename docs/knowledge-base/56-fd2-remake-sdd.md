@@ -1,6 +1,6 @@
 # 56 — FD2 remake 系統設計規格（SDD，2026-08-09）
 
-四召喚返回地圖的漸變、光環／toggle或mask、數字與hold已串接HD世界，限定CONFORMED-SCOPED／RUNTIME-E1。逐階段凍結typed地圖、work／VGA及來源，候選原子預檢，保留原生結算／RNG／返回。33回復環與既有紅綠數字直接HD，其餘未登錄LMI仍明示原生；固定原包證實還缺77份可見光效美術。雙側、四語完整繪製、F2及圖層核心依[58](58-fd2-exe-re-coverage.md)，契約及永久重跑依[61](61-modern-theme-runtime-spec.md)，主證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的compound_map_tail_followup_20261024。全部HD與集中正常／人工／平台仍待。
+四召喚尾段原先缺少的77份可見LMI光效已接入正式HD圖包，限定CONFORMED-SCOPED／RUNTIME-E1。雙側四語完整Game.Draw沒有可見LMI原生回退，保留F2、結算／RNG與一次返回；舊主題仍可原圖回退。母稿材質、原生輪廓支撐、羽化與亮度屬明示美術近似。正式與獨立素材包已驗，已登錄素材同步私人白名單庫。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約及重跑依[61](61-modern-theme-runtime-spec.md)，主收據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的compound_tail_art_followup_20261024。其他效果owner、完整HUD、未知來源及集中正常／人工／平台仍待。
 
 一般指令0～8與敵方9的戰鬥背景及台座已接入HD，限定CONFORMED-SCOPED／RUNTIME-E1。當幀來源須匹配原始或11～15查表後的全部可見像素，再原子附加；HD以既有四色差近似處理查表並保alpha。合法雙側／AI9單側完整Game.Draw、變色、F2、原交易及返回通過；AI9非法側維持拒收，全透明TAI3維持原生空白。沒有新美術或清冊／保存欄位；其餘效果尾段、HUD及集中正常／人工／平台仍待。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約與重跑依[61](61-modern-theme-runtime-spec.md)及[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`ordinary_scenery_followup_20261024`。
 

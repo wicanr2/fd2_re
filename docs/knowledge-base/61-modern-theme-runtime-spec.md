@@ -2,6 +2,17 @@
 
 狀態：現代主題仍為部分覆蓋；目前分層與缺口依[58](58-fd2-exe-re-coverage.md)。
 
+## 四召喚77份尾段光效美術（CONFORMED-SCOPED／RUNTIME-E1，2026-10-24）
+
+本節實作前為READY。沿已閉合四召喚typed來源及下節地圖接線，補FDOTHER6索引64～75、126～190，固定來源／raw／Pmode／manifest雜湊沿compound_map_tail_followup_20261024的pinned_lmi_sources；不重開RE、不改原生層序、MP／HP／RNG、節拍、保存與像素模式。九格母稿用內建imagegen依原版形狀參考及已核准光環風格生成，原稿及alpha原樣保存。光柱、地面碎光、074圖樣、冰晶、紅印記、六芒光、赤色彎刃／斬痕及藍光球分組，不把未知圖樣提升成技能語意。
+
+- 以固定九格裁切及實際alpha核心界定母稿；原始LMI非零像素只作位置／空洞／碎裂及色彩區域指引。六倍LANCZOS與小半徑羽化構成平滑支撐，RGB材質來自手繪母稿，透明部位依最近有墨跡位置延拓材質色，避免平色替代。冰晶與彎刃依固定八方向對原生支撐的重合選方向；交叉斬痕組合兩道反向母稿。幀邊兩個HD像素羽化至透明，含原生全填滿光柱；這是明示美術近似，不稱原生alpha或RGB逐點一致。微小棕色筆畫保持原位置並依原色區域調色。
+- 既有map_overlay_hd_set只新增resource6／count12對64～75及count65對126～190兩組，逐index、尺寸、raw pixels SHA、metadata SHA與PNG SHA拒收。舊五組索引／761項及私人檔逐SHA保持；舊主題維持原生回退。工具為[編製器](../../tools/build_fd2_compound_tail_hd.py)，不新增外部保存格式。
+- 候選先在既有work根編製，不直接覆蓋正式圖。驗全部77來源的CPU／GPU完整畫布與透明邊、冷載入及錯根／錯metadata／錯尺寸／缺檔拒收、八個雙側四語Game.Draw／逐階段F2／結算返回及既有來源／字串回歸。正常玩家、人工造型與平台依既有排程另驗。
+- 通過後原子登錄正式catalog／pack，以catalog allow-list同步唯一私人庫並分別核對兩庫遠端HEAD。母稿、編製配方、工具／輸入／輸出雜湊存主收據compound_tail_art_followup_20261024；README只放已授權實際Game.Draw總覽，不放完整可重組圖包。
+
+[冷載入拒收測試](../../remake/cmd/fd2/modern_hd_compound_tail_art_test.go)與[全部來源GPU測試](../../remake/cmd/fd2/modern_hd_compound_tail_art_gpu_test.go)由[永久驗證器](../../tools/verify_fd2_battle_surface_hd.py)的`compound-tail-art-source`驅動，給`--catalog --pack --out`與有界`--timeout`。77來源各驗中央及負座標裁切，完整1920×1200逐RGBA核對容差2。`compound-map-game --panel-owner 32..35 --panel-locale <語系> --all-compound-effects`要求尾段沒有可見LMI原生回退，`--enemy`驗另一側。獨立實檔包另加`--require-real-runtime`；正式開發包沿既有連結，不冒稱獨立實檔。編製器給唯讀`--original-pack`、未修改`--master`、保存的761項`--base-catalog`及全新`--out`，沿既有Pillow Docker重生；不以已擴充的763項清冊當舊輸入。
+
 ## 四召喚返回地圖的HD世界與既有尾段圖源（CONFORMED-SCOPED／RUNTIME-E1，2026-10-24）
 
 本節實作前為READY。範圍為32～35共用大型段之後的41張地圖色盤漸變、各自原生effect／toggle或mask／數字與hold；沿已核准1920畫布、原生位置及既有HD圖源。原始來源固定版本依`fd2-reference-files.json`；重用58的`fd2_command32_tail_presentation_ida.txt`、`fd2_command33_tail_presentation_ida.txt`、`fd2_command34_tail_presentation_ida.txt`、`fd2_command35_tail_presentation_ida.txt`及已閉合typed producer。原生32的0x2111A／0x1CAC7、33的0x211A4、34的17→18→19及35的26→22→27順序保持，不重開RE。
@@ -16,7 +27,7 @@
 
 實作見[地圖尾段](../../remake/cmd/fd2/modern_hd_compound_map.go)及[來源與實際GPU檢查](../../remake/cmd/fd2/modern_hd_compound_map_test.go)。`compound-map-unit`驗原子綁定及無owner的主題相容；`compound-map-source`／`compound-map-game`以`--panel-owner 32|33|34|35`、`--surface 4`、`--panel-locale`選四語，反側加`--enemy`。沿既有Go Docker、正式catalog／pack、唯讀org_game及有界out／timeout。前者驗全部native重組及失敗候選；後者實際Game.Draw／F2、CPU全畫布格點容差2與HD數字／光環核心，另核對原生像素確有差異。初輪格點收據保持，32～34主側另R2補驗核心。唯一數量依58與主收據，不由HD世界推定全部效果HD。
 
-[固定LMI盤點](../../tools/audit_fd2_player9_map_source.py)新增`--compound-tails`，在既有Pillow Docker、唯讀合法`--original-pack`與既有父目錄的全新`--out`前綴核對全部尾段索引。57～63已登錄；其餘64～75與126～190共77份都有原生可見像素，仍需HD美術。動態列數參考圖涵蓋110項，預設玩家9入口保持。README圖以`build_fd2_battle_panel_gallery.py --command-panels --phase map-result`沿四capture目錄重生，遊戲區不裁切；R1展示圖與最終R2加強收據分列。
+[固定LMI盤點](../../tools/audit_fd2_player9_map_source.py)新增`--compound-tails`，在既有Pillow Docker、唯讀合法`--original-pack`與既有父目錄的全新`--out`前綴核對全部尾段索引。本接線批次當時只有57～63已登錄；64～75與126～190共77份的HD美術後續由本檔首節補齊，舊收據保留原生回退狀態。動態列數參考圖涵蓋110項，預設玩家9入口保持。README圖以`build_fd2_battle_panel_gallery.py --command-panels --phase map-result`沿四capture目錄重生，遊戲區不裁切；R1展示圖與最終R2加強收據分列。
 
 ## 一般指令背景、台座與查表變色（CONFORMED-SCOPED／RUNTIME-E1，2026-10-24）
 

@@ -12,6 +12,7 @@ from verify_fd2_player9_map_hd import check_real_runtime
 
 ROOT = Path(__file__).resolve().parents[1]
 REQUIRED = {
+    'compound-tail-art-source': {'TestModernCompoundTailArtAtomic','TestModernCompoundTailArtSourceGPU'},
     'compound-map-unit': {'TestModernCompoundMapBindingAtomic'},
     'compound-map-source': {'TestModernCompoundMapAllSources'},
     'compound-map-game': set(),
@@ -80,8 +81,10 @@ def main():
     p.add_argument('--hashes-only',action='store_true')
     p.add_argument('--with-pedestal', action='store_true')
     p.add_argument('--require-real-runtime', action='store_true')
+    p.add_argument('--all-compound-effects', action='store_true', help='四召喚地圖尾段不允許任何可見LMI回退')
     p.add_argument('--timeout', type=int, default=1200)
     a = p.parse_args()
+    if a.all_compound_effects and a.kind!='compound-map-game':raise SystemExit('--all-compound-effects只用於compound-map-game')
     if a.kind in ['ordinary-scenery-source','ordinary-scenery-game'] and a.panel_owner not in range(10):
         raise SystemExit('一般場景需要明示0～9的owner，9只指敵方戰鬥')
     if a.kind in ['ordinary-scenery-source','ordinary-scenery-game'] and a.panel_owner==9 and a.enemy:
@@ -115,6 +118,11 @@ def main():
     env.pop('FD2_HD_ORDINARY_LUT_FALLBACK_GPU',None)
     env.pop('FD2_HD_COMPOUND_MAP',None)
     env.pop('FD2_HD_COMPOUND_MAP_REPORT',None)
+    for name in ['FD2_HD_COMPOUND_TAIL_ART_UNIT','FD2_HD_COMPOUND_TAIL_ART_GPU','FD2_HD_COMPOUND_TAIL_ART_REPORT']:env.pop(name,None)
+    if a.kind=='compound-tail-art-source':
+        env.update(FD2_HD_COMPOUND_TAIL_ART_UNIT='1',FD2_HD_COMPOUND_TAIL_ART_GPU='1',
+                   FD2_HD_COMPOUND_TAIL_ART_REPORT=str(a.out)+'.source.json',
+                   FD2_TEST_MODERN_EFFECT_CATALOG=str(a.catalog.resolve()),FD2_TEST_MODERN_EFFECT_PACK=str(a.pack.resolve()))
     if a.kind in ['compound-map-source','compound-map-game']:
         if a.panel_owner not in [32,33,34,35]:raise SystemExit('需要32～35召喚owner')
         env.update(FD2_HD_COMPOUND_MAP='1',FD2_HD_COMPOUND_MAP_REPORT=str(a.out)+'.map-owner.json',
@@ -295,12 +303,22 @@ export DISPLAY=:99
         if (m.get('audited_draws',0)<80 or m.get('matched_pixels',0)<10000 or m.get('registered_layers',0)<=0
                 or m.get('registered_overlay_pixels',0)<=0 or m.get('changed_overlay_pixels',0)<=0):
             raise SystemExit('召喚尾段缺實際HD世界與GPU回讀')
+        if a.all_compound_effects and m.get('native_fallback_layers')!=0:
+            raise SystemExit('召喚尾段仍有原生LMI回退')
+    if a.kind=='compound-tail-art-source':
+        d=json.loads(Path(str(a.out)+'.source.json').read_text())
+        required=set(range(64,76))|set(range(126,191))
+        if (d.get('sources')!=77 or d.get('worlds')!=154 or len(d.get('cases',[]))!=154
+                or {c['index'] for c in d['cases']}!=required
+                or any({c['placement'] for c in d['cases'] if c['index']==i}!={0,1} for i in required)):
+            raise SystemExit('77份尾段光效缺少全部GPU來源或邊界取樣')
     report = dict(status='PASS',kind=a.kind,enemy=a.enemy,required=sorted(REQUIRED[a.kind]),
                   catalog_sha256=hashlib.sha256(a.catalog.read_bytes()).hexdigest(),
                   catalog=str(a.catalog.resolve()),pack=str(a.pack.resolve()),with_pedestal=a.with_pedestal,surface=a.surface,pair=a.pair,
                   command_id=a.command,triple=a.triple,hashes_only=a.hashes_only,transition_required=a.transition,
                   panel_locale=a.panel_locale,
                   panel_owner=a.panel_owner,
+                  all_compound_effects=a.all_compound_effects,
                   scenery_start=a.scenery_start,scenery_limit=a.scenery_limit,
                   independent_runtime_files=independent, memory=str(a.out)+'.memory.json',log=str(a.out)+'.log',
                   scope='固定來源／GPU／明示物理戰鬥fixture，非正常玩家或新原版RGB對拍')

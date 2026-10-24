@@ -3128,3 +3128,19 @@ GitHub連接器無權查私人素材庫；沿用主機Git已登入路徑fetch成
 2026-10-24 記憶體限制：既有完整回復GPU回歸在6GiB限制碰到memory.max並回收389次，419.444秒完成，oom／oom_kill均0；未因觀測時間延遲重啟。這是測試工作負載的壓力證據，不稱平台效能或可用餘裕已驗，入口見主收據memory_context。原生三套件365個必要頂層pass、0 skip；八字串維持109分類。
 
 2026-10-24 最終完整性：373份收據／源碼／圖片引用、2437本地連結、761清冊、109字串分類、24個遠端開啟Issue與gofmt通過。#204／#263驗收保持，#268／#269未關閉；工作清單可能已完成0。328教訓／192 guard通過。51歷史root檔逐SHA保持，新檔與修改檔1000:1000，無新異常md目錄。私人庫乾淨；本批兩種FD2 image無殘留容器，無新增image／volume或錄影。README四語圖已逐SHA回查來源並目視，人物與部分地形／數字HD，其餘地形與HUD原生如圖說。完整性入口依主收據final_integrity。
+
+## 2026-10-24 四召喚77份尾段光效HD
+
+路由沿spec-gated入口及README標準，61／主收據先READY後實作。內建imagegen以固定原版形狀及核准回復環風格生成九格母稿；R1因邊界裁切／相鄰光暈拒收，R2原RGBA與alpha保存。首份編製出現冰晶／彎刃／交叉斬痕平色缺口，先補READY材質契約，再以固定八方向貼合、最近墨跡RGB延拓與鏡像第二道斬痕修正。原生支撐、1.1HDpx羽化、2HDpx邊緣、亮度及棕區調色均明示近似，不稱原版RGB／alpha相同。77份從舊761清冊可重生且逐SHA相同。
+
+{"new_lmi_frames": 77, "catalog_assets": 763, "lmi_groups": 7, "lmi_frames": 146, "required_compound_lmi_registered": 84, "required_compound_lmi_native_fallback": 0, "hd_gates": 16, "required_top_level_tests": 29, "source_gpu_worlds": 462, "cold_group_rejections_per_source_run": 18, "actual_independent_flows": 8, "formal_path_flows": 1, "legacy_theme_flows": 1, "audited_map_draws": 3051, "map_grid_pixels": 49670280, "registered_overlay_pixels": 153856, "changed_overlay_pixels": 153840, "f2_roundtrips": 100, "actual_pngs": 264, "peak_bytes": 3426471936, "producer_tests": {"pass": 365}, "string_tests": {"pass": 8}}。全部HD閘門無SKIP／逾時／OOM；三套件365與字串8頂層pass。八雙側四語流程保留結算／RNG／一次續行且無可見LMI回退，正式路徑另驗32、舊761另驗34原圖回退。正式開發包既有symlink不符合獨立實檔旗標，首次啟動於檢查階段拒收；依正式契約重跑，獨立5712實檔包另列，不放寬檢查器。README圖R1冰晶128貼邊不清，R2改取同真實流程132；整幀半縮、邊界裁切如實保留。
+
+正式763清冊新增77PNG與原母稿，原761項／6609檔保持。私人6687檔逐SHA與正式相同且UID/GID1000，私人提交7015f54d6f8467ae4daa36e2a3104aa5846ca26e已推送並核對local／origin／remote HEAD。GitHub connector對私人庫404，僅用認證Git讀取與未認證不能讀取核對既有私有邊界，沒有取得API visibility欄位或更動公開設定。
+
+收據、完整提示詞、源碼指紋與重跑入口依主收據compound_tail_art_followup_20261024。其他owner／HUD、408、18／19合法caller、集中正常／人工／平台及#268／#269保持待辦，全部HD目標仍active。
+
+2026-10-24 空間清理：獨立實檔包完成全部驗證且正式／私人包逐SHA相同後，核對5712實檔雜湊，保留catalog／manifest與全部測試收據，再刪除可重生的單一測試副本，共1712476731 bytes。未產生錄影；母稿、必要PNG、原版來源及正式圖包保留。重生入口與逐檔清理清冊見主收據runtime_copy_cleanup。
+
+2026-10-24 最終完整性：{"status": "PASS", "sha_references": 80, "local_links": 2453, "historical_root_files_unchanged": 51, "new_files_uid_gid": 1000, "output_root_root_owned_or_md_directories": [], "readme_cultural_entries_present": true, "gallery_sources_verified": 4, "python_sources_compile": true, "issues": {"open": 24, "manual": 16, "possibly_done": 0, "parents_204_263_and_art_268_269_open": true}, "lessons": 328, "guards": 192}。私人庫乾淨且兩種FD2工具image無殘留容器；無新image／volume。Issue讀回只規範末尾換行差異，原驗收／id／verify.kind保持，官方工具產生快照與render，未手改產生區。來源與重跑依主收據final_integrity。
+
+2026-10-24 正式覆蓋重生：audit_fd2_battle_hd_coverage.py對固定原包、正式763清冊與實際PNG通過，LMI七組146張。264個已解碼FIGANI／2118幀保持，來源408仍阻擋；資料覆蓋不提升caller或玩家證據。完整參數與SHA見本批formal_coverage。gofmt、git diff --check通過。

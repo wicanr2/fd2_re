@@ -219682,6 +219682,638 @@
     "final_integrity": {
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-map-final-integrity-oct24-r1.json",
       "sha256": "f1800107cc9a232ffe18cf83c56cd177542b629a304abdb9708232e171fc2834"
+    },
+    "subsequent_art_completion": "compound_tail_art_followup_20261024 supersedes historical remaining77; original receipt retained"
+  },
+  "compound_tail_art_followup_20261024": {
+    "status": "CONFORMED-SCOPED / RUNTIME-E1",
+    "base_commit": "203d0ca15a0d73b4ef71ac2f5aa474bf9d57b6a8",
+    "scope": "FDOTHER6 64-75 and126-190,77 visible LMI sources; style/silhouette/material approximation; preserve rules/timing and faithful mode",
+    "master": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-nine-master-oct24-r2.png",
+      "sha256": "ab708abd1dfff7b2e928d69873afb53652cf59ecfe9ba550abe9d8172ada4de3",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alpha_max": 254,
+      "unmodified": true,
+      "formal_file": "remake/generated-assets/modern-theme-prototypes/compound-tail-nine-master-oct24-r2.png"
+    },
+    "cells": [
+      {
+        "slot": 0,
+        "cell": [
+          0,
+          0,
+          418,
+          418
+        ],
+        "core64": [
+          138,
+          105,
+          310,
+          408
+        ],
+        "alpha": [
+          0,
+          253
+        ]
+      },
+      {
+        "slot": 1,
+        "cell": [
+          418,
+          0,
+          836,
+          418
+        ],
+        "core64": [
+          84,
+          195,
+          351,
+          412
+        ],
+        "alpha": [
+          0,
+          253
+        ]
+      },
+      {
+        "slot": 2,
+        "cell": [
+          836,
+          0,
+          1254,
+          418
+        ],
+        "core64": [
+          91,
+          127,
+          339,
+          408
+        ],
+        "alpha": [
+          0,
+          254
+        ]
+      },
+      {
+        "slot": 3,
+        "cell": [
+          0,
+          418,
+          418,
+          836
+        ],
+        "core64": [
+          109,
+          125,
+          333,
+          364
+        ],
+        "alpha": [
+          0,
+          254
+        ]
+      },
+      {
+        "slot": 4,
+        "cell": [
+          418,
+          418,
+          836,
+          836
+        ],
+        "core64": [
+          74,
+          104,
+          341,
+          377
+        ],
+        "alpha": [
+          0,
+          254
+        ]
+      },
+      {
+        "slot": 5,
+        "cell": [
+          836,
+          418,
+          1254,
+          836
+        ],
+        "core64": [
+          72,
+          118,
+          352,
+          370
+        ],
+        "alpha": [
+          0,
+          254
+        ]
+      },
+      {
+        "slot": 6,
+        "cell": [
+          0,
+          836,
+          418,
+          1254
+        ],
+        "core64": [
+          88,
+          43,
+          360,
+          328
+        ],
+        "alpha": [
+          0,
+          253
+        ]
+      },
+      {
+        "slot": 7,
+        "cell": [
+          418,
+          836,
+          836,
+          1254
+        ],
+        "core64": [
+          86,
+          44,
+          361,
+          324
+        ],
+        "alpha": [
+          0,
+          253
+        ]
+      },
+      {
+        "slot": 8,
+        "cell": [
+          836,
+          836,
+          1254,
+          1254
+        ],
+        "core64": [
+          71,
+          55,
+          351,
+          329
+        ],
+        "alpha": [
+          0,
+          253
+        ]
+      }
+    ],
+    "generation": {
+      "tool": "built-in image_gen",
+      "reference": "compound-tail-art-reference-oct24-r1.png",
+      "revision2": "preserve all nine designs, shrink each within3x3 cells with transparent spacing",
+      "rejected_revision1": "outer clipping and inter-cell glow overlap",
+      "full_prompt_set": {
+        "tool": "built-in image_gen",
+        "transparent_background": true,
+        "prompts": [
+          "Use case: stylized-concept. Create one production game VFX mother-atlas on a TRUE TRANSPARENT background, square 3 by 3 equal cells, no drawn grid, no labels, no lettering, no background. Reference image 1 is a shape/colour/layout reference ONLY: its nine cells identify nine different original DOS spell shapes. Reference image 2 is the already approved hand-painted ice-blue glow style and brush softness. Redraw all nine effects as clean hand-painted high-resolution sprites with luminous brushwork, sharp readable cores and softly fading transparent edges. Do NOT enlarge the original pixel art. Keep objects separated and fully inside their cells with generous 12 percent margins. Exact cell order from left to right, top to bottom: (1) narrow tall straight pale ice-blue vertical light column with a white core, no ground or pedestal; (2) low wide ice-blue ground spark/wisp cluster with upward flickering thin tongues; (3) faithfully reproduce the distinctive intricate pale-blue contour motif from reference slot 3, including its round dark upper cavity, curved side strokes, narrow horizontal middle bands, and two curled lower strokes, transparent holes, do not turn it into invented writing or a different icon; (4) one elongated faceted ice-blue crystal shard pointing northeast, wide at upper right and narrowing to lower left, no extra loose shards; (5) a frontal deep red round skull emblem exactly matching the general round rim and black eye/nose/jaw silhouette in reference slot 5, painterly luminous crimson, transparent outside; (6) six separate slender pale-blue rays pointing outward from a transparent centre, horizontal left/right and four diagonals, exactly six rays with large central gap as reference slot 6; (7) a thick curved crimson crescent slash open toward upper left, matching reference slot 7, transparent centre, no pole from the reference; (8) one long narrow curved crimson slash rising from lower left to upper right, bright sharp core, no cross or extra blades; (9) one soft spherical ice-blue energy orb with bright white-blue centre and smooth transparent outer glow, no ring or pedestal. Preserve pale blue/white vs crimson colours. All nine cells same painterly game-effect family. Nothing else. Aim for a 2048 square atlas. References are support inputs; the output is new hand-painted artwork.",
+          "Edit this atlas, preserving the nine effect designs, their order, colours, brushwork and true transparent alpha. Correct only the layout: each of the nine sprites must be considerably SMALLER, centred inside its own equal square of an exact 3 by 3 grid. Each sprite including every glow and loose particle must fit within the central 65 percent of its cell. Leave the outer 17 percent of every cell on all four sides fully transparent. No overlap between cells, no clipping at the outer image border, no streaks crossing cell boundaries, no background, no grid lines, no lettering. Ensure the light column top and bottom, the motif curls, crescent ends and entire orb all remain visible and surrounded by transparent space. Keep all nine complete, visually separated sprites. This is a game source-art atlas, not a composition of overlapping effects."
+        ],
+        "selected": "compound-tail-nine-master-oct24-r2.png",
+        "source_result": "exec-9ff645cb-0e6c-45e7-b176-d41195468b6a.png",
+        "rejected": "revision1 touched outer boundaries and had inter-cell glow overlap; not catalogued"
+      },
+      "prompt_receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-generation-prompts-oct24-r1.json",
+        "sha256": "b7e6f3db4796f115c8c29b004856fe0d1ef5e750e2d05e6fd35aa3cde9ae4f1e"
+      }
+    },
+    "fixed_sources": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-map-lmi-sources-oct24-r2.json",
+      "sha256": "f1f5c12a628b0132b6195be2ce4a6222310e8ae0700f65e88eb1c161797cf3c4"
+    },
+    "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+    "private_asset_sync_required": true,
+    "summary": {
+      "new_lmi_frames": 77,
+      "catalog_assets": 763,
+      "lmi_groups": 7,
+      "lmi_frames": 146,
+      "required_compound_lmi_registered": 84,
+      "required_compound_lmi_native_fallback": 0,
+      "hd_gates": 16,
+      "required_top_level_tests": 29,
+      "source_gpu_worlds": 462,
+      "cold_group_rejections_per_source_run": 18,
+      "actual_independent_flows": 8,
+      "formal_path_flows": 1,
+      "legacy_theme_flows": 1,
+      "audited_map_draws": 3051,
+      "map_grid_pixels": 49670280,
+      "registered_overlay_pixels": 153856,
+      "changed_overlay_pixels": 153840,
+      "f2_roundtrips": 100,
+      "actual_pngs": 264,
+      "peak_bytes": 3426471936,
+      "producer_tests": {
+        "pass": 365
+      },
+      "string_tests": {
+        "pass": 8
+      }
+    },
+    "verification": {
+      "gates": [
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-final-compound-scenery-regression-oct24-r1.gate.json",
+            "sha256": "819ed0ce532d81c79290866f615a935c238df77d5e2909caf87eac7e3258acd5"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-final-compound-scenery-regression-oct24-r1.memory.json",
+            "sha256": "5572e5ea7aa0fd5c1d638837d9e9e6b8af68d7ef105f66b884272f3d0719f27f"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-final-compound-scenery-regression-oct24-r1.log",
+            "sha256": "c9ea121a56bb213fe030004b847b61e1d666f27798e673546a9383dc95bc156d"
+          }
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-final-regression-oct24-r1.gate.json",
+            "sha256": "2ba0c853376e9b32c06d26b22f9ba551613e0298b5c4882ee688092693eba25f"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-final-regression-oct24-r1.memory.json",
+            "sha256": "bcca99648a287d81fcf83789be9f4fc8e1dd110285b4929979026b6531db7559"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-final-regression-oct24-r1.log",
+            "sha256": "6148fc74d21521304814e767fa84f21d7cc5a5f88c63c5787878f1e1a150f388"
+          }
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-formal-compound-map-game-oct24-r1.gate.json",
+            "sha256": "a6775a12001cef7d69b6300019570dbcc96d2d9d074c7cea03ffbff765161895"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-formal-compound-map-game-oct24-r1.memory.json",
+            "sha256": "f7fb1551df94c3011745f7e8c2b015a5438bd98af5966a27702e1c07294a21db"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-formal-compound-map-game-oct24-r1.log",
+            "sha256": "6a350bd31d6b3b125c6d2cf2e2aa50dbe599e3e80966587a17a139730a600f41"
+          }
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-formal-compound-tail-art-source-oct24-r1.gate.json",
+            "sha256": "45f6854e738a680ac1d45e2691bf411e899366081da741736f7f69c3b14183ee"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-formal-compound-tail-art-source-oct24-r1.memory.json",
+            "sha256": "4ee41df8e47bd3ca4fa74a73737ab23199bcfa269f93b3544f2c2dc79337335b"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-formal-compound-tail-art-source-oct24-r1.log",
+            "sha256": "9e5041eb8c8e98d974ab46a1ae33429aea64e09e4d89e87eb3a0ae407d506833"
+          }
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-game-32-side0-zh-Hant-oct24-r1.gate.json",
+            "sha256": "fe5824d56f2b5d76e3d44cea660f17801553477300d54ca5491e1a36b98733e9"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-game-32-side0-zh-Hant-oct24-r1.memory.json",
+            "sha256": "9368a29565acda93d0c3168ff037bde428093e11eaa303ea013c695d599a113d"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-game-32-side0-zh-Hant-oct24-r1.log",
+            "sha256": "4a4e29b491f19d8252275bf5de60b66acd0e3d3b57236d56d26e3e6aa1942551"
+          }
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-game-32-side2-zh-Hant-oct24-r1.gate.json",
+            "sha256": "bba42b3abfdc49d048299ca51dcbe3f9fca69dac9deda090ffaa2b89e73597b2"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-game-32-side2-zh-Hant-oct24-r1.memory.json",
+            "sha256": "18ddd0a0118d3d2fc612d9a7bb544dfca4d1345c0f460e195a25b3917a588ea4"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-game-32-side2-zh-Hant-oct24-r1.log",
+            "sha256": "456ed88fa7dfe4052cf10abdfaa175f8ab8b6cb337bf2ec86422228544d56a50"
+          }
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-game-33-side0-zh-Hans-oct24-r1.gate.json",
+            "sha256": "68f87cc525c997e13ecd212c434fc1dd7a4369b64aea912bb4f34afd333f1b79"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-game-33-side0-zh-Hans-oct24-r1.memory.json",
+            "sha256": "b5564ac0740aedca69b009851714fac15ec88ce051905eec018303830b018b1b"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-game-33-side0-zh-Hans-oct24-r1.log",
+            "sha256": "d78219533239ca8083f2c9c6949f77ca7a6430ce937ea38c9362d2f64d1c4e7c"
+          }
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-game-33-side2-zh-Hans-oct24-r1.gate.json",
+            "sha256": "5f513293dd2a40824e07b3d20278f5b63155cb94eca0480f2af827ef69dccc50"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-game-33-side2-zh-Hans-oct24-r1.memory.json",
+            "sha256": "c8de35b22ce3b46e886f61b57c6e305570c57c3b26e872bdd5e71502cdf9a2a4"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-game-33-side2-zh-Hans-oct24-r1.log",
+            "sha256": "d527f15851a967a0a2413d40b88489728af7ae9a193cb3618567dffd52177c3f"
+          }
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-game-34-side0-ja-oct24-r1.gate.json",
+            "sha256": "858d09fe03c4cb0cdefd994f198d047639abd2b6e155fb3befe2779956773bde"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-game-34-side0-ja-oct24-r1.memory.json",
+            "sha256": "b940aadb5361142893e93ae9104d83ef5d02482a694f6f60a185c2e93023098d"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-game-34-side0-ja-oct24-r1.log",
+            "sha256": "c8f2f3b08ce741fc1b5c7e3af0ad2640f2d9d01e52d12d5984fed3b416207f90"
+          }
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-game-34-side2-ja-oct24-r1.gate.json",
+            "sha256": "cc6af96cc197e0a664cc6d7f9ad7b74d805f3208511b21fc730a57e63125b922"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-game-34-side2-ja-oct24-r1.memory.json",
+            "sha256": "1020edc0de785ec1b8a4bd52d8dc52eb8bb1d1fe332d68d2ae38c8d067c0a717"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-game-34-side2-ja-oct24-r1.log",
+            "sha256": "fc4e0414c2143a557a1ff5da81aa9bc68397d946e5ac5ed572dd6eb9c21ee208"
+          }
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-game-35-side0-en-oct24-r1.gate.json",
+            "sha256": "bc5cd6224c7ae8c693a97524151085731493eb92ba70871925bd425ef5d45098"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-game-35-side0-en-oct24-r1.memory.json",
+            "sha256": "a929e8865cf2a9d9822ce875410b53c89a2618f13a3f3151b4410fe224e5c05d"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-game-35-side0-en-oct24-r1.log",
+            "sha256": "a57884a018b4f9caf866aee8727d6cf4698c69d15a06c5b57573ae927776842e"
+          }
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-game-35-side2-en-oct24-r1.gate.json",
+            "sha256": "cd0ed32e8bef600b68866e2ec7bc78828fcfc3758ba50e0b881a4a93e086e1fc"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-game-35-side2-en-oct24-r1.memory.json",
+            "sha256": "a2e3049db93156a2d02937fa4c273ee5ee2163b12f8f3275be94e056412fe42c"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-game-35-side2-en-oct24-r1.log",
+            "sha256": "1f1a6ddcf845dcaa50bdcd6bf1c4deced666702b1061a29ed1cdd4bfc7d200f5"
+          }
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-heal-source-regression-oct24-r1.gate.json",
+            "sha256": "376683280ece8bc0fa3a0c2ea74d6b14b04f8b3bbffb696fdb57b17a6c14709e"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-heal-source-regression-oct24-r1.memory.json",
+            "sha256": "f23720778842f4f8e7a836e9b67bad1b392c00d3d7ec95430da6a1e2d649910c"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-heal-source-regression-oct24-r1.log",
+            "sha256": "79a7be350d87cef69d91b3980a111ac4af54d7f5f2d2219fca9647bce745c7d9"
+          }
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-legacy-game34-oct24-r1.gate.json",
+            "sha256": "eef86ee8df25b9fd8f0f751160211f6b3c23590444df1f71d4679ba6a58d3d37"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-legacy-game34-oct24-r1.memory.json",
+            "sha256": "e690b4644814b01fe9032add7179064a5ef2bd67255241928a6207e8ac2d746e"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-legacy-game34-oct24-r1.log",
+            "sha256": "8c836d1047b9408c6444e23a38463f3b5f38c9692e9c43a5fe529c06189222df"
+          }
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-source-candidate-oct24-r1.gate.json",
+            "sha256": "3c08ee8bfbab51de78b2a71e1e7f67089d277312cfddd72c150cd5319031224e"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-source-candidate-oct24-r1.memory.json",
+            "sha256": "de1a91f93fdb33606a48ed0fdc882ccb91c1c83c3fb8b3690f79c094a9324649"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-source-candidate-oct24-r1.log",
+            "sha256": "40dce977b9841a482d6b561554ace5511390e14898fd5178a188f62e9b46d16b"
+          }
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-source-independent-oct24-r1.gate.json",
+            "sha256": "a29a31e3250e3d8e6ab8f78cfd2a3a2fc78335f623b5b3f6f99501759142b8da"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-source-independent-oct24-r1.memory.json",
+            "sha256": "0692d593544ab533e41f7ed29532141ed27aaf51905061dec4243efd04cb2793"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-source-independent-oct24-r1.log",
+            "sha256": "4a35ef0b59b2c62c6b9ffa4f4ad9275d5065165bd16c0c8e9a87a68fbe2e203c"
+          }
+        }
+      ],
+      "source_gpu": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-source-candidate-oct24-r1.source.json",
+          "sha256": "edb694e9a25a88ee4532cb76f218cc3deed7bc98ea31b72336a57928f16109e8"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-source-independent-oct24-r1.source.json",
+          "sha256": "edb694e9a25a88ee4532cb76f218cc3deed7bc98ea31b72336a57928f16109e8"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-formal-compound-tail-art-source-oct24-r1.source.json",
+          "sha256": "edb694e9a25a88ee4532cb76f218cc3deed7bc98ea31b72336a57928f16109e8"
+        }
+      ],
+      "independent_flows": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-game-32-side0-zh-Hant-oct24-r1-capture/receipt.json",
+          "sha256": "bdd54fc539be1cfc513a34ba4faeb0931a186f15e427a45500a554a73d09346c"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-game-32-side2-zh-Hant-oct24-r1-capture/receipt.json",
+          "sha256": "3663c960065ff613c8b39833c2801c530457af4ceb0e829189e89f12d2429565"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-game-33-side0-zh-Hans-oct24-r1-capture/receipt.json",
+          "sha256": "dce753952e1f48f43bd14a522b1fdca540a1891b05ded409ff3c92b2696c1d85"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-game-33-side2-zh-Hans-oct24-r1-capture/receipt.json",
+          "sha256": "4792271a38d3a689ee5e471992b6b575047d510ec9729294aa77a71988f933dc"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-game-34-side0-ja-oct24-r1-capture/receipt.json",
+          "sha256": "67310c213a1f58eb1bec0fc6051cb357254a6b1d154478d0d6561bc5e6cb7ed8"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-game-34-side2-ja-oct24-r1-capture/receipt.json",
+          "sha256": "b74216dbb27c4731f1b74711a1f9c863cc8584448187a24088c5a00cae4cc0fe"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-game-35-side0-en-oct24-r1-capture/receipt.json",
+          "sha256": "c8f071f82eb7caab0b4b681654adce494566eb99111e814e373520d4ddab886e"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-game-35-side2-en-oct24-r1-capture/receipt.json",
+          "sha256": "d8eeceacf3fed6a514ea52a0f72a0d6b85a7a91c881030deb2ff79f45613fa76"
+        }
+      ],
+      "formal_flow": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-formal-compound-map-game-oct24-r1-capture/receipt.json",
+        "sha256": "e27e6fee80a4a79963f8dd2582b5e3783ab50a12ef0aa47bf1c55a5547073b80"
+      },
+      "legacy_flow": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-legacy-game34-oct24-r1-capture/receipt.json",
+        "sha256": "b61c5d46e499fb2111e170b73dd848bf62b04c6b8616cd3676c1290908f070eb"
+      },
+      "rebuild": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-rebuild-check-oct24-r1.json",
+        "sha256": "b30f268b147a60fbd03c9353753881c51d9dcb6e75661fc91027643b555d4fa3"
+      },
+      "adoption": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-adoption-oct24-r1.json",
+        "sha256": "1f6cf7a5cb563babe6ea84dab8b26c12f9f9efe81bafecc33f7067321ae11238"
+      },
+      "compiled_recipe": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-candidate-r2/compiled.json",
+        "sha256": "1ebef6a204f9a6762d5c8cb890ca5418256768a127713e2e8128eec1af095852"
+      },
+      "base_catalog": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-base-catalog-oct24-r1.json",
+        "sha256": "fddaedd0de52551b33df0efabd57c3035aff08d2af8043e4a591b08f10eb1894"
+      },
+      "producer_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-producers-oct24-r1.log",
+        "sha256": "c91ad6e6f8da84e622fa070c06280468ac852e56c969627b929a97a5eb098734"
+      },
+      "string_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-string-tests-oct24-r1.log",
+        "sha256": "03eadedb67f48c2a3536b0943f9b0e4096c327c3fae45db8940e14e955a9e8d7"
+      }
+    },
+    "private_sync": {
+      "repository": "wicanr2/fd2-assets-private",
+      "commit": "7015f54d6f8467ae4daa36e2a3104aa5846ca26e",
+      "local_origin_and_remote_head_equal": true,
+      "verify": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-private-sync-verify-oct24-r1.json",
+        "sha256": "5b9156823dd85aab0fd896313d0be5ff13e59ff1f52f80a0d6ec96f0ac12cff0"
+      },
+      "visibility": "existing private repository; authenticated git verified; GitHub connector metadata inaccessible; no visibility change"
+    },
+    "gallery": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-readme-oct24-r2.json",
+      "sha256": "cb8e8880dedef0eebdd9c264cf1e946602c042c06e2de91afc3f70070ebdcfa8"
+    },
+    "implementation_sources": [
+      {
+        "file": "tools/build_fd2_compound_tail_hd.py",
+        "sha256": "be7a80ad3fd9ab8ea5331e0a82a40040d0fe0d9c9feb339f3080e29b32817a64"
+      },
+      {
+        "file": "tools/validate_modern_theme_catalog.py",
+        "sha256": "82028f8030e6d578e3d719f5321a3cd9a1611a6415623eedabf706441d368524"
+      },
+      {
+        "file": "tools/verify_fd2_battle_surface_hd.py",
+        "sha256": "c4c444f698f1f50fac6b874ef14aa766635a656d595c0a2d17a42d6d0f01f6ac"
+      },
+      {
+        "file": "tools/build_fd2_battle_panel_gallery.py",
+        "sha256": "ecfc7101606c710c62ef7c5773332e5ccdb50f3ce1dc3e90a18d95a21e1b7f4a"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_map_overlay_assets.go",
+        "sha256": "37c52861cc5c1235b56ee2ee58cce037f5fb1e23d8447dca8715c758775c9ed3"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_compound_tail_art_test.go",
+        "sha256": "299a32e6d56986a6261c3b7e600c5ffa74886917f11b811bc3e6f5a1d5908392"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_compound_tail_art_gpu_test.go",
+        "sha256": "914cc1a4e5812e319647f7b711f06cdb927823c2386129296b8ef4093729d143"
+      }
+    ],
+    "policy": {
+      "save_format_changed": false,
+      "rules_changed": false,
+      "evidence": "controlled fixture and isolated source GPU only; not original RGB/alpha parity or PLAYER-E2",
+      "approximation": "painted RGB with original support, sixfold Lanczos plus blur1.1HDpx and border2HDpx fade, native relative brightness/brown-region tint, eight-angle material fit, mirrored second slash",
+      "runtime_pack": "5712 independent real runtime files; formal development assets may contain existing symlinks",
+      "remaining": [
+        "other effect owners and complete HUD",
+        "unknown source408 and third-bank18/19 legitimate caller",
+        "normal-player, concentrated manual art and platform performance checks",
+        "Gaia wrist #268, Kylie foot #269 and toolbar/speed #204"
+      ]
+    },
+    "runtime_copy_cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-runtime-cleanup-oct24-r1.json",
+      "sha256": "0111c9bf803d2358183e61b852c582098120062b98975f82db26fb596441c8d5"
+    },
+    "final_integrity": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-final-integrity-oct24-r1.json",
+      "sha256": "557a831296ee3f70b77be751ebbc382c87afa0a6c87a112aebbc34430564a935"
+    },
+    "github_issues": {
+      "progress_updated": [
+        204,
+        263
+      ],
+      "acceptance_id_and_kind_unchanged": true,
+      "open_count": 24
+    },
+    "formal_coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/compound-tail-art-formal-coverage-oct24-r1.json",
+      "sha256": "e170120bfd025c436fbd1f675c52ade3683aea3eda26f66710832aea15000db0",
+      "command": "python3 tools/audit_fd2_battle_hd_coverage.py --inventory docs/data/fd2-battle-hd-source-inventory-20261019.json --original-pack /original --catalog remake/assets/themes/modern/catalog.json --source remake/generated-assets/modern-theme-prototypes --report <new-report>; maintained Pillow Docker, original pack read-only"
     }
   }
 }
