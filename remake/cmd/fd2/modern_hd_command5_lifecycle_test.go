@@ -160,6 +160,7 @@ func TestModernHDCommand5RuntimeGPU(t *testing.T) {
 	}
 	t.Setenv("FD2_MUTE", "1")
 	g, actor, target := ordinaryCommand5HDTestGame(t)
+	initOrdinarySceneryFixture(t, g, actor, target)
 	command := 5
 	if os.Getenv("FD2_HD_COMMAND_PANEL_TEXT") == "1" && os.Getenv("FD2_HD_COMMAND_PANEL_OWNER") == "4" {
 		command = 4

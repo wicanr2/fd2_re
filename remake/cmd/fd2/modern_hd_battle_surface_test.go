@@ -430,6 +430,9 @@ func surfaceIndexedReference(s *modernHDBattleSources) []byte {
 					continue
 				}
 				v := f.Pixels[y*f.Width+x]
+				if l.SurfaceLUT != nil {
+					v = l.SurfaceLUT.lookup[v]
+				}
 				if l.Fill == 33 {
 					v = 33
 				}

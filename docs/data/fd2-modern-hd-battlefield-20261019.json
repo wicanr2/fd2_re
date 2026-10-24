@@ -219263,5 +219263,186 @@
       "new_images_volumes_videos_release": false,
       "failed_receipts_and_final_pngs_preserved": true
     }
+  },
+  "ordinary_scenery_followup_20261024": {
+    "status": "CONFORMED-SCOPED/RUNTIME-E1",
+    "date": "2026-10-24",
+    "base_commit": "f0145bcac0d11ccc7269a12d23d9012bdb99a3c2",
+    "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+    "scope": "ordinary0-8 and AI9 BG/TAI surfaces, original and LUT11-15; existing nearest-four RGB delta approximation",
+    "original_exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "original_evidence": [
+      "remake/internal/fdother/frame.go:Frame.BlitLUTAt",
+      "remake/internal/battlepresent/native_command0_actor.go",
+      "remake/cmd/fd2/native_command0_presentation.go",
+      "remake/cmd/fd2/native_command6_presentation.go"
+    ],
+    "new_re": false,
+    "new_art_assets": 0,
+    "catalog_changed": false,
+    "full_hd_complete": false,
+    "normal_player_verified": false,
+    "verification": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ordinary-scenery-verification-oct24-r1.json",
+      "sha256": "31608b81a89317a7617ece90d9876f6ed9c53d2c76b66e7a32de51cab3c0a6c8"
+    },
+    "summary": {
+      "source_cases": 19,
+      "source_frames": 1970,
+      "battle_frames": 1970,
+      "frozen_panel_snapshots": 243,
+      "actual_flows": 19,
+      "audited_draws": 1829,
+      "matched_pixels": 1802422,
+      "changed_lut_pixels": 474686,
+      "matched_tai_pixels": 417998,
+      "blank_source_draws": 1014,
+      "f2": 129,
+      "screens": 328,
+      "hd_gates": 43,
+      "required_tests": 58,
+      "native_fallback_worlds": 10,
+      "illegal_ai9_side_rejected": true,
+      "peak_bytes": 3627274240
+    },
+    "implementation_sources": [
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_runtime.go",
+        "sha256": "540a989abc936051f1b72628520f31ad7f0e382f6621f2d7663ac4297610aa38"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_surface_lut.go",
+        "sha256": "6aa06eecb71458b23ba314a77c852967ddfa27ce9a86b29c0e0515bbf5ecfaa4"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_surface_test.go",
+        "sha256": "b95fb9a1e451dbaa676f7a7601639753b28e6d2d285695b44b686fb3df1d36df"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_command0_lifecycle_test.go",
+        "sha256": "7202b2da532f849bfb40faceaa1a579bdd17abc6443905003e254872215aa622"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_command1_lifecycle_test.go",
+        "sha256": "3a06639204a472faf3756a40c80400746668e8515ca58ea18b224efff0edb7f7"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_command5_lifecycle_test.go",
+        "sha256": "dd40904b1acbd0d21f44decd47287a53a39fdf85c7d2f230a408793c2670984c"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_command_panel_test.go",
+        "sha256": "a9517c8a901f62a71a9b7b4c9816479dd778042266bfcfe0cc02131e257159d1"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_compound.go",
+        "sha256": "b79ed2cdf02786e7f5d48e920b2f4d84503acf9c723b3097c82f912fd25ec048"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_ordinary_lifecycle_test.go",
+        "sha256": "18fe9a0f9e4baae2688a3561a998fff1ab64c933ef440cb0d4b996366e4a2fb9"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_ordinary_scenery.go",
+        "sha256": "b12ce10a79e6eb39ab01dd35a3f2d0af8e5c59bb549be8c388cc46634b0509c9"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_ordinary_scenery_test.go",
+        "sha256": "673e32509246e96dd674ca79eff6d8e3a605b6cfae2deb8ac24f85947bc6159a"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command0_presentation.go",
+        "sha256": "af69c9063bdb7b340a02d5c4bba9d30b5f0a890945ac662c0cef17e50378c9c1"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command1_presentation.go",
+        "sha256": "fd86dcefeb85af63ea14e384a92b97d7d5881490c3a59baba9af8527f3122648"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command2_presentation.go",
+        "sha256": "8f6e6ea89fda48f8352f633b5beb298cd75a5259c85060e87fa463379021ea66"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command3_presentation.go",
+        "sha256": "485aa249f7249da1453b8f252bdacf6f564e1b67aad8211132a768e809940912"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command5_presentation.go",
+        "sha256": "ccbc10e22556a7624b8359604251bed2b55d04b77d7f64315b68d496ad82b31f"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command6_presentation.go",
+        "sha256": "5624696531d50a85e63079693e1d342ce8b706c27da34d54c735f63b60b6b2cc"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command7_presentation.go",
+        "sha256": "7b835407a7e253ff641a9b1d105a44d1760280dd8b24bcd412b353d0a34607e5"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command8_presentation.go",
+        "sha256": "7a06f08176a75104f337ed1588ebca0a565b7123fefb2361bf3627e852b329ed"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command9_ai_presentation.go",
+        "sha256": "c25dc8c6113c488598ac78bbd2686d337e5d7119e1c0ee875dfe4d303bcdd389"
+      },
+      {
+        "file": "tools/build_fd2_battle_panel_gallery.py",
+        "sha256": "c2549b2381a7a79c6c87a56adbd793226aadc371c01e20cc708d8a839fd09dce"
+      },
+      {
+        "file": "tools/verify_fd2_battle_surface_hd.py",
+        "sha256": "f9fcb28414603c9685cec999e6adff2f46ff41fd4f4e76643d72b1a477de7f80"
+      }
+    ],
+    "gallery": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ordinary-scenery-readme-oct24-r1.json",
+      "sha256": "5bb89b192dba7a2b16dac174f998bed2672779d7f998fd40d84e1008c59d05a8"
+    },
+    "string_inventory": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ordinary-scenery-string-inventory-oct24-r1.json",
+      "sha256": "0d4941145820212924c17e53f1b926829259bb6ba2f5316080b483ec19753499"
+    },
+    "string_review": {
+      "file": "docs/data/fd2-string-review.json",
+      "sha256": "637d004918a5621c45e5b4b0c03a66fd98b299ef213ad37f2270f5f55e213cc8"
+    },
+    "string_tests": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ordinary-scenery-string-tests-oct24-r1.log",
+      "sha256": "53f948bb37184a77866a4c53fd1aa221500de7ed058bbfc57ba4760143b4f18c"
+    },
+    "private_asset_sync_required": false,
+    "fixture_policy": {
+      "control_surface": 4,
+      "raw_sides": "0-8:0/2; AI9:0; AI9:2 strictly rejected by existing guard",
+      "controls": "unchanged original table; choose existing tile",
+      "actual_selectors": "recorded per source and frame; initial scene may select BG3 or legitimate empty TAI3",
+      "native_seed": "7 for0-8;3 forAI9, fixed before both preparations"
+    },
+    "colour_approximation": "same nearest-four inverse-squared RGB delta contract as terrain, using frozen battle palette; alpha preserved; black/white endpoints explicit; existing scalar prelude subtraction and mix retained; no complete per-index palette-pulse RGB equivalence",
+    "corrections": [
+      "fixed31x23 sampler missed all584 fully opaque TAI4 pixels; choose points from actual alpha==255 and retain tolerance1",
+      "AI9 side2 is rejected by existing raw-side-zero owner; keep guard and explicitly test unchanged owner/unit/RNG",
+      "TAI3 is fixed original10x3 fully transparent surface, raw_size7; retain native blank, never fabricate HD",
+      "content cache keeps active derived image and one candidate by validated raw SHA and frozen palette/LUT; failed F2 candidates cannot evict active content"
+    ],
+    "remaining": [
+      "compound map tails and other effects",
+      "complete HUD frame and bars",
+      "unconfirmed resource408 and legitimate third-bank callers18/19",
+      "concentrated normal-player/manual-art and platform validation",
+      "floating toolbar and actual speed"
+    ],
+    "github_issues": [
+      263,
+      204,
+      268,
+      269
+    ],
+    "issue_acceptance_preserved": true,
+    "final_integrity": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ordinary-scenery-final-integrity-oct24-r1.json",
+      "sha256": "7dba3d84d6b831165144e4ecbada76fa8a0ffdd638e7c5cd9ba610895c1eacc2"
+    }
   }
 }

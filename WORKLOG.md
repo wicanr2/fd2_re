@@ -3104,3 +3104,11 @@ GitHub連接器無權查私人素材庫；沿用主機Git已登入路徑fetch成
 失敗與勘誤保留：R1來源是BG0及合法空白TAI0，metadata出現台座不能當作可見HD；R1 side2的Go繪製通過但永久驗證器因缺可見TAI拒收，不改寫成成功。R1 side0在command32 BG0通過後，為改用可見fixture而停止自有批次，外層137屬有意取消，已完成command32收據無OOM；未冒稱產品signal killed。R2直接覆寫NativeTerrainControl被既有editable-field／FDSHAP一致性guard拒收，連續失敗後重新載入規格先行入口，修fixture為選原控制表已有圖塊，保留正式檢查。R2 GPU在嘗試停止前已自行以同錯誤結束，查無容器，沒有刪到其他工作。R3以BG4／TAI4、raw side0／2完整重跑通過，seed與Camp保持既有fixture政策。初版失敗log及收據不刪；沒有因此修改原版語意或放寬色差。普通0～9的LUT caller、地圖尾段／其他效果、完整HUD與浮出工具列／速度及集中正常／人工／平台仍待；Issue及清理於收尾另核。
 
 召喚場景收尾核對compound-scenery-final-check-oct24-r1.json通過112項SHA引用、九份來源指紋、44 PNG、2521本地Markdown目標與本輪1000:1000擁有權。326教訓／191 guard及24遠端worklist通過，可能已完成0條；#263／#204已更新且原acceptance保持，#268／#269仍OPEN。51歷史root檔與前批逐SHA相同，沒有chown或刪除。所有本批Go／Xvfb／Pillow容器已退出且--rm，保留失敗記錄與最終畫面，沒有新image、volume、錄影或Release；私人庫無本輪變更。公開提交與遠端HEAD另核。
+
+2026-10-24 一般指令背景／台座與查表HD接線，限定CONFORMED-SCOPED／RUNTIME-E1。由乾淨f0145bca主線建分支，載入規格先行路由及逆向重製技能，61與主收據先列READY。審查九presenter涵蓋0～8及敵方9，4／5共用，確認actor用11、尾段12～14、6的stage用15；原始raw／查表僅在當幀base全部可見mask逐byte相符後附加，完整重組成功才發布。原frame不覆寫，native fallback精確映射索引；HD沿terrain既有四色差、直通alpha及黑白端點近似，owner私有共享權重與最多兩個內容圖，預備於發布／F2前，不在Draw補讀或算圖。
+
+19合法來源／1970戰鬥幀、19完整Game.Draw／1829實際回讀、1802422場景像素含474686變色像素、129次F2及328 PNG通過。43 HD閘門／58必要頂層測試、十完整原生fallback世界及八字串回歸無SKIP／逾時／OOM，峰值3627274240 bytes為本批容器測試範圍，不外推正式／平台效能。清冊761項及私人美術保持，沒有新素材或私人同步需求。README新四語完整半縮圖逐SHA記錄；字串處置沿官方遷移，109分類保持。唯一來源、源碼指紋及重跑依主收據ordinary_scenery_followup_20261024與ordinary-scenery-verification-oct24-r1.json。
+
+失敗及勘誤保留：R1指令0 Go完整繪製通過，但固定31×23網格沒有抽到TAI4的584個alpha255點，永久驗證器拒收；Pillow確認483可見點而網格命中0，改依實際alpha選點並保容差1，R2同流程通過。來源矩陣的AI9 side2被既有raw-side-zero actor guard拒收，確認0x15311既有owner範圍後，規格改列19合法來源加非法側原子拒收，未解鎖原版沒有的路徑。反側R2遇TAI3未登錄，核對固定原包10×3、raw_size7及全零mask，改分列已證實原生空白；任何可見但缺HD的來源仍拒收，R3反側完整重跑通過。F2快取另補兩內容項與最後繪製者保留，驗多候選不會移除當前內容；不借用不同原圖SHA／查表／palette的圖。兩次apply_patch空白context不符在寫入前停止，依gofmt後實檔修補，沒有產品變更遺失。全部原始失敗log／收據保持。完整HD、其他效果尾段／HUD及集中正常／人工／平台仍待，目標保持active。
+
+2026-10-24 本批收尾：507個收據／源碼／圖片引用、2425個文件本地連結、761清冊、109字串分類及gofmt通過。官方快照由主機gh讀回24個開啟Issue後以官方build_snapshot／write_snapshot產生，render／verify顯示可能已完成0，#204／#263驗收保持，#268／#269未關閉。327教訓／191 guard通過。51歷史root檔逐SHA保持，新檔與修改檔1000:1000，沒有新增異常md目錄。私人庫乾淨，兩種FD2測試image無殘留容器；沒有新錄影、image、volume或美術候選。最終完整性首次在登入shell遺失Go PATH時未找到gofmt，改用同一Go image的直接Python入口後乾淨通過；彙整PNG沿現有Pillow image，未裝主機套件。完整性證據依主收據final_integrity。

@@ -12,6 +12,11 @@ from verify_fd2_player9_map_hd import check_real_runtime
 
 ROOT = Path(__file__).resolve().parents[1]
 REQUIRED = {
+    'ordinary-scenery-unit': {'TestModernBattleSurfaceLUTColourAndAlpha','TestModernBattleSurfaceLUTEndpoints',
+                             'TestModernBattleSurfaceLUTIdentityAndSourceGuard','TestModernOrdinarySceneryAtomic','TestModernOrdinaryAI9OppositeSideRejected'},
+    'ordinary-scenery-fallback': {'TestModernBattleSurfaceLUTFallbackGPU'},
+    'ordinary-scenery-source': {'TestModernCommandPanelAllOwners'},
+    'ordinary-scenery-game': set(),
     'compound-scenery-unit': {'TestModernCompoundSceneryAtomic'},
     'compound-scenery-regression': {'TestStartNativeCommand32PresentationUsesOriginalAssetsEndToEnd',
                                     'TestStartNativeCommand33PresentationUsesOriginalAssetsEndToEnd',
@@ -74,9 +79,13 @@ def main():
     p.add_argument('--require-real-runtime', action='store_true')
     p.add_argument('--timeout', type=int, default=1200)
     a = p.parse_args()
+    if a.kind in ['ordinary-scenery-source','ordinary-scenery-game'] and a.panel_owner not in range(10):
+        raise SystemExit('一般場景需要明示0～9的owner，9只指敵方戰鬥')
+    if a.kind in ['ordinary-scenery-source','ordinary-scenery-game'] and a.panel_owner==9 and a.enemy:
+        raise SystemExit('敵方9原owner只接受raw side0；另一側由ordinary-scenery-unit驗原子拒收')
     if a.kind in ['compound-scenery-source','compound-scenery-game'] and a.panel_owner not in [32,33,34,35]:
         raise SystemExit('召喚背景需要明示32～35的owner')
-    if a.kind in ['command-panel-game','compound-scenery-game']:
+    if a.kind in ['command-panel-game','compound-scenery-game','ordinary-scenery-game']:
         name={0:'TestModernHDCommand0RuntimeGPU',1:'TestModernHDCommand1RuntimeGPU',4:'TestModernHDCommand5RuntimeGPU',5:'TestModernHDCommand5RuntimeGPU',24:'TestModernHDSplitStrikeRuntimeGPU',29:'TestModernHDSplitStrikeRuntimeGPU',32:'TestModernHDCompoundRuntimeGPU',33:'TestModernHDFairyRuntimeGPU',34:'TestModernHDStagedSummonRuntimeGPU',35:'TestModernHDStagedSummonRuntimeGPU'}.get(a.panel_owner,'TestModernHDOrdinaryRemainingRuntimeGPU')
         REQUIRED[a.kind]={name}
     if not Path('/.dockerenv').exists() or not 60 <= a.timeout <= 1800 or not a.out.parent.is_dir():
@@ -99,12 +108,19 @@ def main():
     for name in ['FD2_HD_PANEL_GPU','FD2_HD_PANEL_TEXT','FD2_HD_PANEL_LOCALE','FD2_HD_PANEL_PREVIEW']:env.pop(name,None)
     for name in ['FD2_HD_COMMAND_PANEL_OWNER','FD2_HD_COMMAND_PANEL_REPORT','FD2_HD_COMMAND_PANEL_TEXT']:env.pop(name,None)
     for name in ['FD2_HD_COMPOUND_SCENERY','FD2_HD_COMPOUND_SCENERY_SIDE','FD2_HD_COMPOUND_SCENERY_SURFACE']:env.pop(name,None)
+    for name in ['FD2_HD_ORDINARY_SCENERY','FD2_HD_ORDINARY_SCENERY_SIDE','FD2_HD_ORDINARY_SCENERY_SURFACE']:env.pop(name,None)
+    env.pop('FD2_HD_ORDINARY_LUT_FALLBACK_GPU',None)
+    if a.kind=='ordinary-scenery-fallback':env['FD2_HD_ORDINARY_LUT_FALLBACK_GPU']='1'
+    if a.kind in ['ordinary-scenery-source','ordinary-scenery-game']:
+        env.update(FD2_HD_ORDINARY_SCENERY='1',FD2_HD_ORDINARY_SCENERY_SIDE='2' if a.enemy else '0',
+                   FD2_HD_ORDINARY_SCENERY_SURFACE=str(a.surface),FD2_HD_COMMAND_PANEL_TEXT='1',
+                   FD2_HD_COMMAND_PANEL_OWNER=str(a.panel_owner),FD2_HD_PANEL_LOCALE=a.panel_locale)
     if a.kind in ['compound-scenery-source','compound-scenery-game']:
         env.update(FD2_HD_COMPOUND_SCENERY='1',FD2_HD_COMPOUND_SCENERY_SIDE='2' if a.enemy else '0',FD2_HD_COMPOUND_SCENERY_SURFACE=str(a.surface),
                    FD2_HD_COMMAND_PANEL_TEXT='1',FD2_HD_COMMAND_PANEL_OWNER=str(a.panel_owner),FD2_HD_PANEL_LOCALE=a.panel_locale)
     if a.kind=='compound-scenery-source':env['FD2_HD_COMMAND_PANEL_REPORT']=str(a.out)+'.owner.json'
-    if a.kind=='command-panel-owner':env.update(FD2_HD_COMMAND_PANEL_OWNER=str(a.panel_owner),FD2_HD_COMMAND_PANEL_REPORT=str(a.out)+'.owner.json')
-    if a.kind in ['command-panel-game','compound-scenery-game']:
+    if a.kind in ['command-panel-owner','ordinary-scenery-source']:env.update(FD2_HD_COMMAND_PANEL_OWNER=str(a.panel_owner),FD2_HD_COMMAND_PANEL_REPORT=str(a.out)+'.owner.json')
+    if a.kind in ['command-panel-game','compound-scenery-game','ordinary-scenery-game']:
         env.update(FD2_HD_COMMAND_PANEL_TEXT='1',FD2_HD_PANEL_LOCALE=a.panel_locale,FD2_HD_COMMAND_PANEL_OWNER=str(a.panel_owner),
                    FD2_TEST_MODERN_EFFECT_CATALOG=str(a.catalog.resolve()),FD2_TEST_MODERN_EFFECT_PACK=str(a.pack.resolve()),FD2_TEST_MODERN_EFFECT_OUT=str(a.out)+'-capture')
         if a.panel_owner in [0,1,4,5]:env[f'FD2_HD_COMMAND{5 if a.panel_owner==4 else a.panel_owner}_GPU']='1'
@@ -163,12 +179,19 @@ export DISPLAY=:99
     passed = {e.get('Test') for e in events if e.get('Action')=='pass'}
     if not REQUIRED[a.kind] <= passed or any(e.get('Action') in {'skip','fail'} for e in events):
         raise SystemExit('必要測試缺項、SKIP 或失敗')
-    if a.kind=='command-panel-owner':
+    if a.kind in ['command-panel-owner','ordinary-scenery-source']:
         receipt=json.loads(Path(str(a.out)+'.owner.json').read_text())
         if (receipt.get('status')!='PASS-TYPED-COMMAND-PANEL' or receipt.get('command_id')!=a.panel_owner
                 or receipt.get('bound_battle_frames',0)<=0 or not receipt.get('native_sources_equal')
                 or not receipt.get('unit_state_equal') or not receipt.get('rng_equal')):
             raise SystemExit('缺少指令面板原生來源、狀態或RNG核對')
+        if a.kind=='ordinary-scenery-source':
+            scenery=receipt.get('ordinary_scenery',{})
+            counts=scenery.get('sources',{})
+            if (scenery.get('side')!=('2' if a.enemy else '0') or scenery.get('control_surface')!=str(a.surface)
+                    or sum(v for k,v in counts.items() if k.startswith('BG.DAT:'))!=receipt['bound_battle_frames']
+                    or sum(v for k,v in counts.items() if k.startswith('TAI.DAT:'))!=receipt['bound_battle_frames']):
+                raise SystemExit('缺少一般指令每幀的BG／TAI來源')
     if a.kind=='compound-scenery-source':
         receipt=json.loads(Path(str(a.out)+'.owner.json').read_text())
         if (receipt.get('status')!='PASS-COMPOUND-SCENERY-SOURCES' or receipt.get('command')!=a.panel_owner
@@ -176,12 +199,22 @@ export DISPLAY=:99
                 or receipt.get('side')!=(2 if a.enemy else 0) or receipt.get('battle_frames',0)<=0
                 or receipt.get('platform_frames')!=(receipt['battle_frames'] if a.enemy else 0)):
             raise SystemExit('缺少雙側召喚背景／台座來源核對')
-    if a.kind in ['command-panel-game','compound-scenery-game']:
+    if a.kind in ['command-panel-game','compound-scenery-game','ordinary-scenery-game']:
         receipt=json.loads(Path(str(a.out)+'-capture/receipt.json').read_text())
         panel=receipt.get('panel_text',{})
         if (panel.get('locale')!=a.panel_locale or panel.get('audited_draws',0)<=0 or panel.get('matched_rgba_pixels',0)<100
                 or receipt.get('continuations')!=1):
             raise SystemExit('缺少實際Game.Draw面板字形核對或一次續行')
+        if a.kind=='ordinary-scenery-game':
+            scenery=receipt.get('ordinary_scenery',{})
+            phases=receipt.get('hd_phase_draws',{})
+            if (scenery.get('side')!=('2' if a.enemy else '0') or scenery.get('control_surface')!=str(a.surface)
+                    or scenery.get('audited_draws',0)<=0 or scenery.get('matched_pixels',0)<100 or scenery.get('changed_lut_pixels',0)<100
+                    or not phases or any(scenery.get('sampled_phases',{}).get(p,0)<=0 for p in phases)
+                    or not any(k.startswith('BG.DAT:') and v>0 for k,v in scenery.get('sources',{}).items())
+                    or not (any(k.startswith('TAI.DAT:') and v>0 for k,v in scenery.get('sources',{}).items())
+                            or any(k.startswith('TAI.DAT:') and v>0 for k,v in scenery.get('native_blank_sources',{}).items()))):
+                raise SystemExit('缺少一般指令各階段HD場景／實際查表變色')
         if a.kind=='compound-scenery-game':
             scenery=receipt.get('compound_scenery',{})
             phases=receipt.get('hd_phase_draws',{})

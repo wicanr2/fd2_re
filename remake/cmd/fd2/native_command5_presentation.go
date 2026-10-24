@@ -402,6 +402,9 @@ func (g *Game) startNativeCommand45Presentation(actor, confirmed *battle.Unit, c
 	if err != nil {
 		return err
 	}
+	if err := bindModernHDOrdinaryScenery(hd, background, int(bgSelector), platform, int(taiSelector), g.nativeUIPalette, g.nativeMapAssets.LUTs); err != nil {
+		return err
+	}
 	bindModernBattlePanelBank(panelText, hd)
 	if g.modernStoryPortraits != nil {
 		if err := prepareModernHDCommandBanks(g.modernStoryPortraits, hd); err != nil {

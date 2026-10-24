@@ -290,6 +290,9 @@ func (g *Game) startNativeCommand9AIPresentation(actor, confirmed *battle.Unit, 
 	if err != nil {
 		return err
 	}
+	if err := bindModernHDOrdinaryScenery(hd, background, int(bgSelector), platform, int(taiSelector), g.nativeUIPalette, g.nativeMapAssets.LUTs); err != nil {
+		return err
+	}
 	bindModernBattlePanelBank(panelText, hd)
 	if set := g.modernStoryPortraits; set != nil {
 		if err := prepareModernHDCommandBanks(set, hd); err != nil {

@@ -160,6 +160,7 @@ func TestModernHDCommand0RuntimeGPU(t *testing.T) {
 	}
 	t.Setenv("FD2_MUTE", "1")
 	g, actor, target := ordinaryCommand0HDTestGame(t)
+	initOrdinarySceneryFixture(t, g, actor, target)
 	set, err := loadModernStoryPortraitSet(os.Getenv("FD2_TEST_MODERN_EFFECT_CATALOG"), os.Getenv("FD2_TEST_MODERN_EFFECT_PACK"))
 	if err != nil {
 		t.Fatal(err)

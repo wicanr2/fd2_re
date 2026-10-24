@@ -13,6 +13,7 @@ import (
 
 type modernHDBattleSource struct {
 	PanelText                     *modernBattlePanelText
+	SurfaceLUT                    *modernBattleSurfaceLUT
 	Archive                       string
 	Frame                         figani.Frame
 	Resource, Index, DX, DY, Fill int
@@ -133,6 +134,9 @@ func (g *Game) modernHDBattlePlan(sources *modernHDBattleSources, palette color.
 	ordered = append(ordered, sources.BaseScenery...)
 	ordered = append(ordered, sources.Layers...)
 	for _, source := range ordered {
+		if source.SurfaceLUT != nil && source.Archive != "BG.DAT" && source.Archive != "TAI.DAT" {
+			return modernHDBattlePlan{}, fmt.Errorf("modern HD battle: LUT requires a surface source")
+		}
 		if (source.Archive == "BG.DAT" || source.Archive == "TAI.DAT") && source.Resource < 0 {
 			return modernHDBattlePlan{}, fmt.Errorf("modern HD battle: invalid surface resource")
 		}
@@ -157,6 +161,12 @@ func (g *Game) modernHDBattlePlan(sources *modernHDBattleSources, palette color.
 				if err != nil {
 					return modernHDBattlePlan{}, err
 				}
+				if source.SurfaceLUT != nil {
+					picture, key, err = source.SurfaceLUT.prepared(g.modernStoryPortraits, picture, key, source.Frame)
+					if err != nil {
+						return modernHDBattlePlan{}, err
+					}
+				}
 			case "", "FIGANI.DAT":
 			case "FDOTHER.DAT":
 				if g.modernStoryPortraits != nil {
@@ -175,7 +185,10 @@ func (g *Game) modernHDBattlePlan(sources *modernHDBattleSources, palette color.
 				}
 			}
 		}
-		f := source.Frame
+		f, err := modernBattleSurfaceNativeFrame(source)
+		if err != nil {
+			return modernHDBattlePlan{}, err
+		}
 		rect := image.Rect((f.X+source.DX)*6, (f.Y+source.DY)*6, (f.X+source.DX+f.Width)*6, (f.Y+source.DY+f.Height)*6)
 		var clip *image.Rectangle
 		if source.Clip != nil {

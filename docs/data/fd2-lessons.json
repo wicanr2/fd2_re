@@ -3974,6 +3974,14 @@
         ],
         "pattern": "!bytes\\.Equal\\(field.NativeTerrainControl, assets.Controls\\)"
       }
+    },
+    {
+      "id": "gpu-sample-selects-actual-opaque-alpha",
+      "date": "2026-10-24",
+      "area": "GPU像素驗證",
+      "rule": "GPU圖源取樣先依實際alpha選點，再排除後層遮擋；固定幾何網格可能錯過稀少的不透明核心。可見來源仍要求實際匹配像素，原始mask全零者另列native blank，不用缺取樣掩蓋缺HD。入口remake/cmd/fd2/modern_hd_ordinary_scenery_test.go的ordinarySceneryOpaquePoints及auditModernOrdinarySceneryGPU，重跑tools/verify_fd2_battle_surface_hd.py --kind ordinary-scenery-game --panel-owner 0，Docker與四語／side契約見規格61。",
+      "why": "TAI4有584個alpha255點，Pillow確認483點未被兩角色遮擋，但31×23固定網格命中0。改依alpha取點後同流程通過且保持容差1。反側TAI3另由固定原包證實10×3全透明，保留原生空白；可見但未登錄的來源仍拒收。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json"
     }
   ]
 }

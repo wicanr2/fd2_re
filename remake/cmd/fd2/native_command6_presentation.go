@@ -358,6 +358,9 @@ func (g *Game) startNativeCommand6PresentationAtCursor(actor *battle.Unit, curso
 	if len(handler) == 0 || len(hd.handler) != len(handler) {
 		return errors.New("native command6 handler frames unavailable")
 	}
+	if err := bindModernHDOrdinaryScenery(hd, background, int(bgSelector), platform, int(taiSelector), g.nativeUIPalette, g.nativeMapAssets.LUTs); err != nil {
+		return err
+	}
 	bindModernBattlePanelBank(panelText, hd)
 	if set := g.modernStoryPortraits; set != nil {
 		if err := prepareModernHDCommandBanks(set, hd); err != nil {

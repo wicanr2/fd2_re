@@ -300,7 +300,7 @@ func prepareModernHDCommandBanks(set *modernStoryPortraitSet, source modernHDCom
 		}
 		for _, layer := range append(append([]modernHDBattleSource(nil), frame.hdSources.BaseScenery...), frame.hdSources.Layers...) {
 			if layer.Archive == "BG.DAT" || layer.Archive == "TAI.DAT" {
-				if _, _, err := set.battleSurfaceHD(layer); err != nil {
+				if err := prepareModernBattleSurfaceSource(set, layer); err != nil {
 					return err
 				}
 			}

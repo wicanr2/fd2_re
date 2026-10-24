@@ -19,7 +19,7 @@ def main():
     parser.add_argument('--out', type=Path, required=True)
     parser.add_argument('--receipt', type=Path, required=True)
     parser.add_argument('--command-panels', action='store_true', help='選法術actor階段；完整PNG先記SHA，原收據有SHA時再核對')
-    parser.add_argument('--phase', choices=['actor', 'effect-main'], help='明示法術／召喚階段，須搭配--command-panels')
+    parser.add_argument('--phase', choices=['actor', 'effect-main', 'target'], help='明示法術／召喚階段；target也涵蓋command1-target，須搭配--command-panels')
     args = parser.parse_args()
     if not Path('/.dockerenv').exists():
         raise SystemExit('限Docker內執行')
@@ -38,7 +38,7 @@ def main():
             raise SystemExit('缺少該語系完整面板流程收據')
         phase = (args.phase or 'actor') if args.command_panels else 'body'
         candidates = sorted((key, shot) for key, shot in receipt['source_shots'].items()
-                            if shot['phase'] == phase)
+                            if shot['phase'] == phase or phase == 'target' and shot['phase'] == 'command1-target')
         if not candidates:
             raise SystemExit('收據缺少指定階段')
         key, shot = candidates[-1] if args.command_panels else candidates[0]
@@ -56,7 +56,7 @@ def main():
         draw.text((x + 8, y + 2), label, font=font, fill='#e4eaf2')
         canvas.paste(picture.resize((960, 600), Image.Resampling.LANCZOS), (x, y + 24))
         rows.append(dict(locale=locale, source=str(source.resolve().relative_to(ROOT)),
-                         sha256=digest, shot=key, phase=phase, upstream_sha256_supplied='sha256' in shot,
+                         sha256=digest, shot=key, phase=shot['phase'], upstream_sha256_supplied='sha256' in shot,
                          operation='whole-frame half-size; label outside game area'))
     canvas.save(args.out)
     result = dict(file=str(args.out.resolve().relative_to(ROOT)),

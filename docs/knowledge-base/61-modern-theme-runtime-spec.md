@@ -2,6 +2,22 @@
 
 狀態：現代主題仍為部分覆蓋；目前分層與缺口依[58](58-fd2-exe-re-coverage.md)。
 
+## 一般指令背景、台座與查表變色（CONFORMED-SCOPED／RUNTIME-E1，2026-10-24）
+
+本節實作前為READY。範圍為0～8及敵方9的共用戰鬥場景，4／5共用presenter；沿已核准BG／TAI圖源及1920畫布，不新增美術、清冊或保存欄位。原生資料重用`fd2-reference-files.json`固定版本、已閉合`fdother.Frame.BlitLUTAt`的0x4E583契約、`NativeCommand0ActorInput`與各正式presenter的11～15查表輸入。HD四色差加權沿`modern_hd_terrain.go`的既有近似，不稱原版RGB恢復；原生模式、交易、RNG、音效與節拍保持。
+
+- caller明示BG及TAI索引與原始frame。綁定器只接受當幀base與原始或11～15查表後的來源在全部可見mask逐byte相符；多個查表若在該來源已用索引上相同，視為等價映射，不推論實際呼叫哪一張表。無匹配即拒收，不用相近色或場景名稱猜補。
+- 前導保留台座原本在base或移動layer的位置。移動台座只在完整描述子／pixels／mask相符後標記來源；其餘場景先拆出BG／TAI，再以精確查表重組原生base。完整候選先驗證，再一次發布所有來源。
+- 可選內部查表描述子凍結256-byte查表及同次原生戰鬥palette，原始frame不覆寫。原生fallback精確映射索引；HD依原來源實際使用的色盤索引計算四個最近色、反距離權重與RGB差值，夾於0～255並保留alpha。全黑／白映射依既有契約直接達端點。前導扣色及既有全圖插色仍由原GPU公式處理，不重複套入CPU映射；單一色盤索引的閃色不宣稱等同新RGB圖的完整重映射。
+- 查表圖與權重只由本次owner持有，跨幀共用；正式發布或F2切入前預備，Draw不得補讀檔案或才生成變色圖。原始圖、查表、palette或已登錄素材不一致即拒收，缺整項登錄沿原生fallback。跨主題先核原始圖SHA與凍結來源／查表／palette，只有相同內容可重用。每個查表最多保留兩個圖源內容項，保留最後已繪製者供失敗F2回復；owner釋放後可回收。
+- 驗收包括0～8雙側及敵方9的既有合法raw side0來源，9的side2須在原guard原子拒收，不另造反向owner；再驗精確base重組、LUT／alpha／端點及冷拒收、實際Game.Draw的查表變色與可見台座、各階段F2、原交易／RNG與一次返回。既有物理、分段與召喚保持。受控fixture不提升正常玩家或原版對拍；全部HD後再集中正常／人工／平台抽驗。
+
+來源與結果沿[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`ordinary_scenery_followup_20261024`；新[查表圖源](../../remake/cmd/fd2/modern_hd_battle_surface_lut.go)與[一般指令場景綁定](../../remake/cmd/fd2/modern_hd_ordinary_scenery.go)接既有正式presenter。[查表／alpha／原子綁定測試](../../remake/cmd/fd2/modern_hd_ordinary_scenery_test.go)由[永久驗證器](../../tools/verify_fd2_battle_surface_hd.py)的`ordinary-scenery-unit`驅動，沿既有Go Docker、合法分離包與唯讀org_game，傳正式`--catalog --pack --out`及有界`--timeout`。其餘來源及完整Game.Draw收據接續記錄於主收據。
+
+全部合法來源與完整Game.Draw、查表變色、F2及原交易／返回通過，數量唯一見[58](58-fd2-exe-re-coverage.md)。`ordinary-scenery-source`與`ordinary-scenery-game`以`--panel-owner`選0～9、`--surface`選測試控制圖塊，省略`--enemy`為raw side0，加上則為side2；敵方9僅允許side0，非法side2由unit驗原子拒收。actual BG／TAI索引依原scene gate，不能把`--surface`回顯當作兩者實際索引。`--panel-locale`選四語，其餘Docker及合法素材掛載沿上節入口。
+
+TAI4僅有少量alpha255核心，驗證依實際alpha選點後再排除後層遮擋，仍用容差1；全透明TAI3分列原生空白收據，可見但缺HD的來源仍拒收。`ordinary-scenery-fallback`以獨立程序檢查BG／TAI五種查表的完整原生GPU畫布；既有physical／scroll／分段原子回復及共用GPU回歸保持。[展示圖工具](../../tools/build_fd2_battle_panel_gallery.py)以`--command-panels --phase target`與四語`--captures`重生完整半縮圖；target包含指令1的command1-target，收據仍記實際phase。地圖尾段、其他效果／HUD與集中正常／人工／平台仍待。
+
 ## 四種召喚的戰鬥背景與台座（CONFORMED-SCOPED／RUNTIME-E1，2026-10-24）
 
 本節實作前為READY。沿用已核准的BG／TAI圖源與原位置，接入32～35既有caller；不新增美術、清冊格式、規則或保存欄位。原生來源重用本檔共用召喚的已閉合`BuildNativeCommandPreludeFrames`、`BuildNativeCompoundCommonFrames`與各正式presenter；固定檔案沿`fd2-reference-files.json`。前導全palette扣色、效果尾段插色沿既有HD近似，不開新硬體RE。普通0～9的背景LUT另列，這個切片不猜補其色彩轉換。

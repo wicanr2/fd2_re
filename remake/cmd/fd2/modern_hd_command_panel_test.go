@@ -66,6 +66,7 @@ func appendCommandPanelGPUReport(t *testing.T, report map[string]any) {
 	}
 	report["panel_text"] = map[string]any{"locale": os.Getenv("FD2_HD_PANEL_LOCALE"), "audited_draws": commandPanelGPUStats.Draws, "matched_rgba_pixels": commandPanelGPUStats.Samples, "sampled_phases": commandPanelGPUStats.Phases, "scope": "actual battle World readback; only unoccluded glyph pixels; fixture only"}
 	appendModernCompoundSceneryReport(t, report)
+	appendModernOrdinarySceneryReport(t, report)
 }
 
 func commandPanelOccluded(layers []modernHDBattleLayer, point image.Point) bool {
@@ -156,7 +157,10 @@ func auditCommandPanelGPU(g *Game, frame *nativeCompoundPresentedFrame) error {
 		commandPanelGPUStats.Phases[frame.hdPhase] += len(points)
 	}
 	commandPanelGPUStats.Draws++
-	return auditModernCompoundSceneryGPU(g, frame, plan)
+	if err := auditModernCompoundSceneryGPU(g, frame, plan); err != nil {
+		return err
+	}
+	return auditModernOrdinarySceneryGPU(g, frame, plan)
 }
 
 func attachCommandPanelHDTest(t *testing.T, g *Game) {
@@ -209,6 +213,7 @@ func commandPanelTestFrames(t *testing.T, command int, hd bool) (*Game, []native
 	default:
 		t.Fatal("unsupported command", command)
 	}
+	initOrdinarySceneryFixture(t, g, actor, target)
 	if hd {
 		attachCommandPanelHDTest(t, g)
 	}
@@ -354,7 +359,11 @@ func TestModernCommandPanelAllOwners(t *testing.T) {
 		if command == 9 {
 			seed = 3
 		}
-		data, _ := json.MarshalIndent(map[string]any{"status": "PASS-TYPED-COMMAND-PANEL", "command_id": command, "frames": len(frames), "bound_battle_frames": bound, "phases": phases, "snapshots": values, "native_sources_equal": true, "unit_state_equal": true, "rng_equal": true, "native_seed_before": seed, "native_seed_control_before": seed, "native_rng_after": g.nativeRNGState, "seed_setup": "assigned before either preparation; fixed fixtures only"}, "", "  ")
+		report := map[string]any{"status": "PASS-TYPED-COMMAND-PANEL", "command_id": command, "frames": len(frames), "bound_battle_frames": bound, "phases": phases, "snapshots": values, "native_sources_equal": true, "unit_state_equal": true, "rng_equal": true, "native_seed_before": seed, "native_seed_control_before": seed, "native_rng_after": g.nativeRNGState, "seed_setup": "assigned before either preparation; fixed fixtures only"}
+		if os.Getenv("FD2_HD_ORDINARY_SCENERY") == "1" {
+			report["ordinary_scenery"] = ordinaryScenerySourceReport(t, g, frames)
+		}
+		data, _ := json.MarshalIndent(report, "", "  ")
 		f, err := os.OpenFile(out, os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0644)
 		if err != nil {
 			t.Fatal(err)
