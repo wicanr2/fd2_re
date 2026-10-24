@@ -224371,6 +224371,202 @@
     "public_figure": {
       "file": "docs/figures/hd-story-unit-present.png",
       "sha256": "1ea0475d21f57697050d5ab9660eff8bfe880d67e973a842043bb0ac61cb8635"
-    }
+    },
+    "next_gate_superseded_by": "story_motion_hd_followup_20261024"
+  },
+  "story_motion_hd_followup_20261024": {
+    "status": "CONFORMED-SCOPED-RUNTIME-E1",
+    "base_commit": "473dcf199431bf61f6137ca8244f35e738ea90b6",
+    "scope": "既有故事控制器的HD視覺插值，不新增原版行為或保存欄位",
+    "source_policy": "main.go stepStoryWalks／stepCamPan／drawUnitSprite；私有selector及原生地圖沿已閉合契約。錨點／視差／像素取整是明示顯示近似。",
+    "evidence": [
+      {
+        "file": "remake/cmd/fd2/main.go",
+        "sha256": "ddcbaa06e4175e373ca9735b42066da228b4b1102fdcfa170e9e9a9be80aba85"
+      },
+      {
+        "file": "remake/cmd/fd2/native_story_map.go",
+        "sha256": "927d30fec6b790c99b639cbf58938354e3ca4401b224e6be576f43514a5496b6"
+      },
+      {
+        "file": "remake/internal/fdicon/fdicon.go",
+        "sha256": "f291b914eb755cf3fcd627770ab2e10388a13c9b2822df434d05f5333f665121"
+      },
+      {
+        "file": "remake/internal/fdother/map_parallax.go",
+        "sha256": "caa58b7c27d65d1b0913a3de417f8b563cb8ff5c029d0e340561edadaaeeab08"
+      }
+    ],
+    "catalog_unchanged": true,
+    "full_hd_complete": false,
+    "normal_player_complete": false,
+    "catalog": {
+      "file": "remake/assets/themes/modern/catalog.json",
+      "sha256": "9c25de7a2e5a9723e6f97cf608c3fc09c6bf41b82a32d86b9a44438d3131bc9d"
+    },
+    "source_snapshot": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-motion-source-snapshot-oct24-r1.json",
+      "sha256": "ca10eb788a92d64d33ef05377731eb3f6c8a5c2f030b8eb387e022d893e79725"
+    },
+    "gates": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-motion-final-motion-unit-oct24-r2.gate.json",
+        "sha256": "59b8651d3c2342446f09728160123068771ded6f2e60f15d7994c9af9f6da06d"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-motion-final-story-unit-oct24-r2.gate.json",
+        "sha256": "933f33a32d42dabcb407e3d15706f15d010763faaff21436028feb958c0feead"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-motion-final-native-oct24-r2.gate.json",
+        "sha256": "d00d0ec228aa04dbaad254710a49be2382e7b5c0b19a732f093dd8bc7feadc22"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-motion-final-unit-oct24-r2.gate.json",
+        "sha256": "744eb9f9d3ac52ed3fe65d176e510347bfeb8fa6c328d9b34d7cefbd7a1d8767"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-motion-final-regression-oct24-r2.gate.json",
+        "sha256": "314e672fc6b231d2fe404bd52a6ebefca44b9c811a77722cf3574fe5665058f3"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-motion-formal-game-oct24-r5.gate.json",
+        "sha256": "263022dbfe1f42f29be195b02ed98d59793e23afd4f6c10e711da69edc464ed1"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-motion-private-game-oct24-r2.gate.json",
+        "sha256": "9885fbf7e510b8fc5ce6f05043bac89893798bd9961838756e64558fb0d16203"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-motion-final-story-game-oct24-r2.gate.json",
+        "sha256": "b4c872a03004795cb6db7a00d2c9d7df9d764908d2cb2336e2aff98ec3370734"
+      }
+    ],
+    "memory": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-motion-final-motion-unit-oct24-r2.memory.json",
+        "sha256": "1655bd4fc404dc3670202b523eeffa4035e7239f4557b3035cb00f95e908de10"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-motion-final-story-unit-oct24-r2.memory.json",
+        "sha256": "445c1dc234a97308ccbc7029a3237a925ea145bf78ff3e9a00c7a8fb65582dbf"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-motion-final-native-oct24-r2.memory.json",
+        "sha256": "a4330dbe5233b58bed0af98efd5175d769fc096004ebb08796fb1115e7b4476f"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-motion-final-unit-oct24-r2.memory.json",
+        "sha256": "2738979b2e9a2bb124d03f93cdb4c1b7e47128ad10785e18cfe69b15f4b8c756"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-motion-final-regression-oct24-r2.memory.json",
+        "sha256": "333f191cd01b619ebd1e0c611d3d8b18ddbe50a85ebc606b7df2d4f4260fe178"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-motion-formal-game-oct24-r5.memory.json",
+        "sha256": "7da30ab5d6c9c858d6c164642d2a0ea825f3baeae7c1cfae058c64474b1bf338"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-motion-private-game-oct24-r2.memory.json",
+        "sha256": "201fa33d288c530044fca2b7a9df4cba5e8fa44974e7fe5f183a8cb409c92160"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-motion-final-story-game-oct24-r2.memory.json",
+        "sha256": "03497e56f3f4b064a3cdaae9501332bfe9eb3c2f2ae1cc91b8940ff1764aefa1"
+      }
+    ],
+    "receipts": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-motion-formal-game-oct24-r5-capture/receipt.json",
+        "sha256": "22905cfb1326f51b707463179c1892757ebf960f923c8a33102953c696d12b57"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-motion-private-game-oct24-r2-capture/receipt.json",
+        "sha256": "22905cfb1326f51b707463179c1892757ebf960f923c8a33102953c696d12b57"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-motion-final-story-game-oct24-r2-capture/receipt.json",
+        "sha256": "dbe4038beff17638f03f247880dad5219be87d568792c1566ca5375c39aefb1b"
+      }
+    ],
+    "cross_pack": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-motion-cross-pack-oct24-r1.json",
+      "sha256": "6700a3c3e255864a1e43893bc68a3d11df9fd8a3abe4d9898ce193c262535a00"
+    },
+    "readme": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-motion-readme-oct24-r2.json",
+      "sha256": "b93cbb53803049dea558d7a526dee5e062cfd128e6a1e72076f80c102e59c557"
+    },
+    "readme_image": {
+      "file": "docs/figures/hd-story-motion.png",
+      "sha256": "2a1a760132cab6d5e6d2081c5632399b734ec84c2fd2177a6f31fd874a799f73"
+    },
+    "string_inventory": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-motion-string-inventory-oct24-r2.json",
+      "sha256": "23de9cca7c0e658bf2c892f395313c2c902b581caf919bcd3504cc743d8ce54d"
+    },
+    "string_review": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-motion-string-review-oct24-r2.json",
+      "sha256": "7528ebde5d324cf3c498773920111e7f70834cf5c9a11437b0e05cee3f00368e"
+    },
+    "strings_log": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-motion-strings-oct24-r2.log",
+      "sha256": "864e6609755ce21cfaab6786ecd92f7c6061acc8cd4d910bceb40ecda63fef6d"
+    },
+    "strings_memory": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-motion-strings-oct24-r2.memory.json",
+      "sha256": "4ecf72147390c41dcbddbe08bd3da6377cbacc3189b17e32290c69db40a1723a"
+    },
+    "test_executions": 34,
+    "unique_tests": 33,
+    "string_tests": 8,
+    "string_dispositions": 109,
+    "motion_cases_per_pack": 8,
+    "draws_per_motion_pack": 112,
+    "f2_per_motion_pack": 24,
+    "native_story_regression": {
+      "draws": 198,
+      "f2_round_trips": 19,
+      "sources": 22,
+      "pngs_unchanged": 12,
+      "receipt_unchanged": true
+    },
+    "private_runtime_files": 5762,
+    "private_unchanged_commit": "e9f5403961415e4a785f9e1b31d3dffa33620ce7",
+    "new_art": false,
+    "approximation": "故事控制器的重製顯示插值；沿靜止原生錨點，視差每格3／2並以輸出像素取樣。不是原版逐幀或RGB parity。",
+    "parallax_fixture": "原版FDOTHER16／17接map0載體，只驗繪製與控制器，不證實第18章正常可達性。",
+    "native_state_unchanged": true,
+    "save_format_unchanged": true,
+    "next_gate": "接0x24618完整徑向／調色，再補0x24B4D與其他特殊背景；HD2、完整HUD、浮出工具列／加速、全部HD後的正常／集中人工／平台仍待。",
+    "issue_updates": {
+      "numbers": [
+        204,
+        263
+      ],
+      "other_issues_unchanged": 22,
+      "acceptance_unchanged": true,
+      "issues_remain_open": true
+    },
+    "toolchain": {
+      "image": "fd2-go-test-local:latest",
+      "image_id": "sha256:e4a805c52a3ad5d8c22cf23f2bcf51c6924e5ad6b99554f1b02761903c725433",
+      "go": "1.22.12",
+      "ebiten": "2.6.6",
+      "limits": "6GiB／2CPU／256pids／900s，network none，uid1000",
+      "no_oom": true
+    },
+    "cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-motion-cleanup-oct24-r1.json",
+      "sha256": "41a465b12ca41256b64d06728592039503d1c73649718b7f4eb23dc9ce88bfa4"
+    },
+    "temporary_capture_policy": "私人與先前輪次PNG依cross_pack及cleanup逐SHA去重；正式包PNG、完整收據及log保留。",
+    "final_audit": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/story-motion-final-audit-oct24-r1.json",
+      "sha256": "f3233a88db0001350094dd9202941da1fd1d99b2942feaa9c3ed82be83d66c53"
+    },
+    "control_definition": "同一重製程式、同初始狀態與原圖主題的控制組；本批未執行原版FD2.EXE對拍。",
+    "original_executable_rerun": false
   }
 }

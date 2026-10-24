@@ -79,7 +79,7 @@ func TestModernHDStoryMapAdmission(t *testing.T) {
 	if !g.modernHDMapFrameAdmission(true, false) {
 		t.Fatal("complete native story source was not admitted")
 	}
-	for _, missing := range []string{"story", "view", "carrier", "theme", "walking", "camera"} {
+	for _, missing := range []string{"story", "view", "carrier", "theme"} {
 		bad := *g
 		switch missing {
 		case "story":
@@ -90,14 +90,15 @@ func TestModernHDStoryMapAdmission(t *testing.T) {
 			bad.storyNativeMapState = nil
 		case "theme":
 			bad.modernStoryPortraits = nil
-		case "walking":
-			bad.storyWalks = []*storyWalkJob{{actor: 0}}
-		case "camera":
-			bad.camX++
 		}
 		if bad.modernHDMapFrameAdmission(true, false) {
 			t.Fatal("unsupported story source admitted:", missing)
 		}
+	}
+	g.storyWalks = []*storyWalkJob{{actor: 0}}
+	g.camX++
+	if !g.modernHDMapFrameAdmission(true, false) {
+		t.Fatal("interpolated story world was not admitted")
 	}
 	if (*Game)(nil).modernHDMapFrameAdmission(true, false) {
 		t.Fatal("nil game admitted")

@@ -35,7 +35,11 @@
 
 ![故事角色入場與直接出現後返回HD世界](docs/figures/hd-story-unit-present.png)
 
-原生座標已對齊的故事靜態畫面，也已接入HD人物與已登錄地形，入場光效結束後繼續顯示HD世界。四格為受控故事／戰場資料的完整遊戲畫面半縮，並非正常通關；故事插值走位、其他背景與特殊演出仍待接入。繪製不推進故事時鐘或改寫角色，驗證範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)及[HD收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的`story_map_hd_followup_20261024`。
+原生故事場景已接入HD人物與已登錄地形，入場光效結束後繼續顯示HD世界。上圖為受控故事／戰場資料的完整遊戲畫面半縮，並非正常通關。驗證範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)及[HD收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的`story_map_hd_followup_20261024`。
+
+![故事人物走位、轉彎與跟隨移鏡的HD實際畫面](docs/figures/hd-story-motion.png)
+
+故事人物走位、轉彎與插值移鏡也已接上HD，沿既有事件控制器推進。四格依序為往東、往北、轉彎及跟隨移鏡，皆為受控測試的完整遊戲畫面半縮。未登錄地形保留像素圖源，其他背景、特殊演出與集中玩家驗收仍待。繪製及主題切換不改寫故事進度，範圍依同份收據的`story_motion_hd_followup_20261024`。
 
 ## HD2 設計基準
 

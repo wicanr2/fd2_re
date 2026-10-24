@@ -38,6 +38,15 @@ REQUIRED={
         'TestModernHDStoryMapThemeSwitchAtomic',
     },
     'story-game':{'TestModernHDUnitPresentStoryGameGPU'},
+    'motion-unit':{
+        'TestModernHDStoryMotionControllerAndIsolation',
+        'TestModernHDStoryMotionCameraOverscanAndParallax',
+        'TestModernHDStoryMotionF2RejectsWithoutProgress',
+        'TestModernHDStoryMotionTerrainRemapsOnce',
+        'TestModernHDStoryMotionKeepsIdleNativePlacement',
+        'TestModernHDStoryMotionParallaxSubpixels',
+    },
+    'motion-game':{'TestModernHDStoryMotionGameGPU'},
     'regression':{
         'TestPlayerNativeCommand13RunsCursorTransactionThroughConfirm',
         'TestDisabledFullPresentationFailsClosedBeforeAnyCommandTransaction',
@@ -54,6 +63,28 @@ REQUIRED={
 
 def check_receipt(kind, prefix):
     receipt=json.loads(Path(str(prefix)+'-capture/receipt.json').read_text())
+    if kind=='motion-game':
+        cases=receipt.get('cases',[])
+        if (receipt.get('status')!='PASS-STORY-MOTION-HD-GAME' or receipt.get('fixed_clock_unix')!=1000
+                or receipt.get('native_seed')!=7 or receipt.get('rgba_tolerance')!=2
+                or receipt.get('parallax_fixture')!='pan: original FDOTHER 16/17 on map-zero carrier; controlled RUNTIME-E1'
+                or len(cases)!=8 or {r.get('name') for r in cases}!= {'east','west','north','south','turn-x','turn-y','pan','follow'}
+                or any(r.get('draws')!=14 or r.get('continuations')!=1 or r.get('f2_round_trips')!=3
+                       or r.get('native_control_unchanged') is not True for r in cases)
+                or len(receipt.get('rows',[]))!=112
+                or any(not re.fullmatch('[0-9a-f]{64}',r.get('final_sha256','')) for r in receipt['rows'])):
+            raise ValueError('故事走位、移鏡、GPU、續行或F2矩陣缺項')
+        for case in cases:
+            rows=[r for r in receipt['rows'] if r.get('case')==case['name']]
+            if len(rows)!=14 or {r.get('step') for r in rows}!=set(range(14)) or any(r.get('units',0)<=0 for r in rows):
+                raise ValueError('逐流程14次實際畫布缺項')
+        endpoints={'east':(216,120),'west':(72,120),'north':(144,72),'south':(144,192),
+                   'turn-x':(216,144),'turn-y':(168,192),'pan':(144,120),'follow':(144,48)}
+        for row in receipt['rows']:
+            expected=(144,120) if row['step']==0 else endpoints[row['case']] if row['step']==13 else None
+            if expected and (row['actor_x'],row['actor_y'])!=expected:
+                raise ValueError('控制器起終點與流程契約不同')
+        return
     sources=receipt.get('sources',[])
     if kind=='source':
         if (receipt.get('status')!='PASS-UNIT-PRESENT-HD-SOURCES'
@@ -112,13 +143,14 @@ def main():
             raise ValueError('不可覆寫收據')
     independent=check_real_runtime(a.pack,json.loads(a.catalog.read_text())) if a.require_real_runtime else None
     env=os.environ.copy()
-    for name in ['FD2_HD_UNIT_PRESENT_SOURCE','FD2_HD_UNIT_PRESENT_GPU','FD2_HD_UNIT_PRESENT_STORY_GPU']:
+    for name in ['FD2_HD_UNIT_PRESENT_SOURCE','FD2_HD_UNIT_PRESENT_GPU','FD2_HD_UNIT_PRESENT_STORY_GPU','FD2_HD_STORY_MOTION_GPU']:
         env.pop(name,None)
     env.update(FD2_MUTE='1',FD2_TEST_UNIT_PRESENT_CATALOG=str(a.catalog.resolve()),
                FD2_TEST_UNIT_PRESENT_PACK=str(a.pack.resolve()),FD2_TEST_UNIT_PRESENT_OUT=str(a.out)+'-capture')
     if a.kind=='source':env['FD2_HD_UNIT_PRESENT_SOURCE']='1'
     if a.kind=='game':env['FD2_HD_UNIT_PRESENT_GPU']='1'
     if a.kind=='story-game':env['FD2_HD_UNIT_PRESENT_STORY_GPU']='1'
+    if a.kind=='motion-game':env['FD2_HD_STORY_MOTION_GPU']='1'
     pattern='^('+'|'.join(sorted(REQUIRED[a.kind]))+')$'
     shell='''set -euo pipefail
 Xvfb :99 -screen 0 1920x1200x24 -nolisten tcp >/tmp/fd2-unit-present-xvfb.log 2>&1 &
@@ -143,7 +175,7 @@ export DISPLAY=:99
     events=[json.loads(s) for s in Path(str(a.out)+'.log').read_text().splitlines() if s.startswith('{')]
     if not REQUIRED[a.kind]<={e.get('Test') for e in events if e.get('Action')=='pass'} or any(e.get('Action') in {'skip','fail'} for e in events):
         raise ValueError('必要測試缺項、SKIP或失敗')
-    if a.kind in {'source','game','story-game'}:
+    if a.kind in {'source','game','story-game','motion-game'}:
         check_receipt(a.kind,a.out)
     report=dict(status='PASS',kind=a.kind,required=sorted(REQUIRED[a.kind]),catalog=str(a.catalog.resolve()),
                 catalog_sha256=hashlib.sha256(a.catalog.read_bytes()).hexdigest(),pack=str(a.pack.resolve()),

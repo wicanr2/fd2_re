@@ -4072,6 +4072,36 @@
         ],
         "pattern": "state.NativeMapSelectorCache = state.NativeMapSelectorCache.Clone\\(\\)"
       }
+    },
+    {
+      "id": "story-motion-keeps-pre-terrain-underlay",
+      "date": "2026-10-24",
+      "area": "HD故事走位",
+      "rule": "插值重繪從地形前底圖開始，再套當次地形；不以已完成的TerrainSeed重畫目的色重映射。入口remake/cmd/fd2/modern_hd_story_motion.go與modern_hd_map_runtime.go的TerrainUnderlay，重跑tools/verify_fd2_unit_present_hd.py --kind motion-unit。",
+      "why": "首版規劃曾複用地形完成後的緩衝，會讓RLE模式3再次映射目的色。改為保存地形前種子，含目的色像素的測具對原生一次合成逐點核對。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/modern_hd_story_motion.go"
+        ],
+        "pattern": "frame.TerrainUnderlay"
+      }
+    },
+    {
+      "id": "story-parallax-samples-output-pixels",
+      "date": "2026-10-24",
+      "area": "HD故事移鏡",
+      "rule": "慢速視差在輸出像素精度取樣，再依原生來源寫入／目的色重映射遮罩覆地形；不先量化到原生地形像素再反向補相機。入口remake/cmd/fd2/modern_hd_story_motion.go的modernHDStoryParallaxBackdrop；tools/verify_fd2_unit_present_hd.py --kind motion-unit核半像素與整格原生對照，motion-game核GPU。",
+      "why": "原生像素平面先取整、再補地形相機位移，會在每個原生像素邊界引入六倍顯示的跳動。輸出精度取樣保留每格3／2的比例，整格與原生消費端相同；插值仍標為重製顯示近似。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/modern_hd_story_motion.go"
+        ],
+        "pattern": "func modernHDStoryParallaxBackdrop"
+      }
     }
   ]
 }

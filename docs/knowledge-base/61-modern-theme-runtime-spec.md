@@ -2,13 +2,28 @@
 
 狀態：現代主題仍為部分覆蓋；目前分層與缺口依[58](58-fd2-exe-re-coverage.md)。
 
+## 故事走位與插值移鏡HD（CONFORMED-SCOPED／RUNTIME-E1）
+
+本節實作前為READY。正式與私人實檔包的四方向、兩種轉彎、雙軸移鏡及跟隨捲動完整GPU／F2、一次續行與原生控制組均通過，完整收據與圖片相同；前批靜態故事轉場畫面保持。唯一數量依[58](58-fd2-exe-re-coverage.md)，實測收據依下列主收據，不擴稱全部HD或正常玩家。
+
+本批控制組使用同一重製程式的原圖主題與相同初始狀態，核對HD繪製前後的控制器及資料。原版FD2.EXE未在本批重跑，原版語意沿既有閉合證據。
+
+本切片延伸下節的私有故事載體。來源為既有 `stepStoryWalks`、`stepCamPan` 與 `drawUnitSprite`，以及已閉合的原生地圖／選圖契約。工程入口沿[故事HD消費端](../../remake/cmd/fd2/modern_hd_story_map.go)與[單位轉場驗證器](../../tools/verify_fd2_unit_present_hd.py)，收據登錄於[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)。不新增原版行為推論。
+
+- 直接讀取控制器目前的 X／Y、OffX／OffY 與相機像素，不預先提交終點，也不推進工作。走位角色沿既有方向與三幀節拍，圖源身分仍由具型別 selector 決定。保留靜止原生錨點，避免進出走位時跳動；這是重製端顯示近似，不聲稱原版逐幀相同。
+- 相機以整格私有視圖配合殘餘像素位移，地形補足右／下邊緣的一欄／一列並在既有視窗裁切。HD 地形沿原 tile、控制、LUT 與當次色盤；未登錄地形保留原生圖源。視差沿既有每格 X=3／Y=2 的比例插值，不能跟著地形等速平移。HD 座標四捨五入到一個輸出像素，誤差最多 1/12 原生像素。
+- 前景只使用私有視覺座標重新規劃，保持既有未知 race／class 近似邊界。Draw 與 F2 都不得回寫原生位置、視圖、時鐘、色盤、RNG 或事件。缺圖或來源錯誤在發布前拒收。暫時圖面的 GPU 資源須有界回收，不能逐幀累積。
+- 驗收覆蓋四方向、長短軸轉彎、跟隨捲動、雙軸插值移鏡、邊界裁切、一次續行、主題往返與缺件拒收。實際 Game.Draw 對獨立 CPU 合成，兩包來源核對並回歸原靜態故事／轉場與戰場流程。只到受控 RUNTIME-E1，全部HD及正常玩家／集中人工驗收另列。
+
+實作位於[走位與移鏡消費端](../../remake/cmd/fd2/modern_hd_story_motion.go)，[來源測試](../../remake/cmd/fd2/modern_hd_story_motion_test.go)與[完整GPU流程](../../remake/cmd/fd2/modern_hd_story_motion_gpu_test.go)沿既有驗證器的`--kind motion-unit`及`--kind motion-game`重跑。參數為`--catalog ABS --pack ABS --out FRESH_PREFIX --timeout 900`，私人實檔包加`--require-real-runtime`。移鏡測具將固定FDOTHER16／17視差圖面接到map0載體，只驗繪製，不代表第18章正常可達性。README總覽沿既有工具`build_fd2_battle_panel_gallery.py --story-motion-receipt capture/receipt.json`，先核完整RGBA雜湊再整框半縮。
+
 ## 故事入場與返回HD世界（CONFORMED-SCOPED／RUNTIME-E1）
 
 本節實作前為READY。正式與私人實檔包的故事staging、直接單位出現及返回HD世界均已通過，原生故事來源不因Draw改變；舊玩家23與戰場staging完整回歸保持。只限下列具型別載體及受控流程，正常玩家與其他故事／特殊效果仍待。
 
 上一批已接共用0x22253，但一般世界的HD admission只接受battle.State；故事呼叫者使用storyNativeMapState，效果結束後仍回正規化像素世界。本節沿原生故事載體與既有0x11CAC具型別地圖，不新增構造器語意。來源與原版固定雜湊依[58](58-fd2-exe-re-coverage.md)、[故事地圖實作](../../remake/cmd/fd2/native_story_map.go)及[地形模式與故事連續性證據](../data/ida/fd2_terrain_mode3_review_20261001.json)。限已存在完整storyNativeMapState、storyBG及六欄視圖的場景；其他故事場景與天空之鑰／章節徑向／第23章特殊效果另列，不能因此宣稱全部HD。
 
-- 故事世界從同一LOADCH地形、storyActors、selector cache、視圖與時鐘建立私有繪製複本，沿原生故事compositor及既有HD世界層序產生圖框。只有鏡頭與raw view對齊且沒有storyWalkJob時啟用；既有故事走位先寫正規化終點與OffX／OffY，完成後才同步原生座標，不可把中間拍當作原生靜止站位。走位及未對齊移鏡保持既有呈現，另列HD接線。原生故事的未知race／class仍只在私有複本依既有明示政策處理，不回寫角色或保存。
+- 故事世界從同一LOADCH地形、storyActors、selector cache、視圖與時鐘建立私有繪製複本，沿原生故事compositor及既有HD世界層序產生圖框。本節初始收據只涵蓋鏡頭與raw view對齊且沒有storyWalkJob的畫面；故事走位先寫正規化終點與OffX／OffY，完成後才同步原生座標，不可把中間拍當作原生靜止站位。插值走位與未對齊移鏡的現況依上節，不沿用初始限制。原生故事的未知race／class仍只在私有複本依既有明示政策處理，不回寫角色或保存。
 - HD繪製只發布HD圖框與圖層快取，不發布私有複本的work／VGA、DAC、原生時鐘或故事cycle值，避免一次Draw多推進故事狀態。清晰對話與人物頭像沿現有疊層；故事HUD保持隱藏，不顯示戰場指令環或橫幅。
 - F2在換圖前同次預檢故事穩定世界及共用轉場的活動／待啟動工作。缺圖、錯尺寸或不完整來源須在發布前拒收；原主題、故事資料、鏡頭、RNG、待啟動工作及對話進度保持。繪製不載入檔案、不推進劇本或續行。
 - 受控GPU驗證必須實際呼叫故事staging，從focus待啟動、11前導、6收縮、24列橋接與10展開，回到故事HD世界；補直接單位出現呼叫者，保留17號寫入。固定時鐘與seed，原圖控制組逐步比較故事角色／視圖／原生緩衝及一次續行，各階段F2前後最終畫布保持。另驗同來源正常世界與GPU獨立合成、缺件原子拒收及既有戰場傳送回歸。

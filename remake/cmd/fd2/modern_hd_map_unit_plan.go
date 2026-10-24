@@ -24,6 +24,10 @@ func modernHDMapViewport() image.Rectangle {
 // The caller owns the viewport source, including known shifted walking copies.
 // This plan neither advances animation clocks nor publishes game state.
 func buildModernHDMapUnitPlan(in indexedmap.FrameInput, viewportBase int, frameCounts map[int]int) ([]modernHDMapUnitDraw, error) {
+	return buildModernHDMapUnitRegionPlan(in, viewportBase, frameCounts, 12, 8)
+}
+
+func buildModernHDMapUnitRegionPlan(in indexedmap.FrameInput, viewportBase int, frameCounts map[int]int, xmax, ymax int) ([]modernHDMapUnitDraw, error) {
 	stride := fdicon.NativeMapStride
 	view := modernHDMapViewport()
 	if in.UnitBank == nil || in.SelectorCache == nil || viewportBase < 0 ||
@@ -33,7 +37,7 @@ func buildModernHDMapUnitPlan(in indexedmap.FrameInput, viewportBase int, frameC
 	}
 	commands := make([]modernHDMapUnitDraw, 0, len(in.Units))
 	for _, unit := range in.Units {
-		if unit.Inactive || unit.X < in.CameraX-1 || unit.X > in.CameraX+12 || unit.Y < in.CameraY-1 || unit.Y > in.CameraY+8 {
+		if unit.Inactive || unit.X < in.CameraX-1 || unit.X > in.CameraX+xmax || unit.Y < in.CameraY-1 || unit.Y > in.CameraY+ymax {
 			continue
 		}
 		cycle, err := fdicon.NativeFrameIndex(unit.MotionOffset, unit.ForceBase, in.IdleCycle, in.MovingCycle)

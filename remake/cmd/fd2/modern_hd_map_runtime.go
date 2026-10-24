@@ -21,6 +21,7 @@ type modernHDMapFrame struct {
 	Units            []modernHDMapUnitDraw
 	Foreground       []modernHDMapForegroundDraw
 	TerrainSeed      []byte
+	TerrainUnderlay  []byte
 	Terrain          []modernHDTerrainDraw
 	Range            *image.RGBA
 	TerrainColourKey [32]byte
@@ -29,6 +30,7 @@ type modernHDMapFrame struct {
 	OverlaysAboveUI  bool
 	CompoundOwner    *modernHDCompoundMapScene
 	HUDUnit          *modernHDMapHUDUnit
+	TransientTerrain bool
 }
 
 type modernHDMapOverlayDraw struct {
@@ -268,5 +270,5 @@ func (g *Game) prepareModernHDMapFrameMode(in indexedmap.NativeFrameInput, seed 
 		clearModernHDHUDUnitPixels(ui, hudUnit)
 	}
 	return &modernHDMapFrame{Background: bg, UI: ui, Units: units, Foreground: foreground, TerrainSeed: terrainSeed,
-		Terrain: terrain, Range: rangeLayer, TerrainColourKey: colours.Key, HUDUnit: hudUnit}, nil
+		TerrainUnderlay: append([]byte(nil), seed...), Terrain: terrain, Range: rangeLayer, TerrainColourKey: colours.Key, HUDUnit: hudUnit}, nil
 }

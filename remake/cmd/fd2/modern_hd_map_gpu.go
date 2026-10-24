@@ -69,7 +69,14 @@ func (r *modernHDMapGPU) drawTerrain(picture *image.RGBA, rect image.Rectangle) 
 }
 
 func (r *modernHDMapGPU) drawTerrainClipped(picture *image.RGBA, rect, clip image.Rectangle) {
+	r.drawTerrainRegion(picture, rect, clip, false)
+}
+
+func (r *modernHDMapGPU) drawTerrainRegion(picture *image.RGBA, rect, clip image.Rectangle, scale bool) {
 	op := &ebiten.DrawImageOptions{}
+	if scale {
+		op.GeoM.Scale(float64(rect.Dx())/float64(picture.Bounds().Dx()), float64(rect.Dy())/float64(picture.Bounds().Dy()))
+	}
 	op.GeoM.Translate(float64(rect.Min.X), float64(rect.Min.Y))
 	r.World.SubImage(clip).(*ebiten.Image).DrawImage(r.terrainImage(picture), op)
 }
@@ -168,7 +175,7 @@ func (g *Game) drawPreparedModernHDMapFrame(screen *ebiten.Image, frame *modernH
 		g.modernHDMapGPU = r
 	}
 	r.World.Clear()
-	if r.TerrainKey != frame.TerrainColourKey || r.CompoundOwner != frame.CompoundOwner {
+	if frame.TransientTerrain || r.TerrainKey != frame.TerrainColourKey || r.CompoundOwner != frame.CompoundOwner {
 		for _, texture := range r.TerrainImages {
 			texture.Dispose()
 		}
@@ -181,7 +188,7 @@ func (g *Game) drawPreparedModernHDMapFrame(screen *ebiten.Image, frame *modernH
 	op.GeoM.Scale(6, 6)
 	r.World.DrawImage(r.Background, op)
 	for _, terrain := range frame.Terrain {
-		r.drawTerrainClipped(terrain.Image, terrain.Rect, clip)
+		r.drawTerrainRegion(terrain.Image, terrain.Rect, clip, terrain.ScaleToRect)
 	}
 	if frame.Range != nil {
 		if r.Range == nil {

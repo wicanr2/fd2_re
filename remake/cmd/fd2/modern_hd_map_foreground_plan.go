@@ -21,6 +21,10 @@ type modernHDMapForegroundDraw struct {
 // Source masks, rather than pixel differences, preserve even same-color
 // foreground writes. Native 0x4dd52 leaves destination-remap spans untouched.
 func buildModernHDMapForegroundPlan(in indexedmap.FrameInput, viewportBase int, palette color.Palette) ([]modernHDMapForegroundDraw, error) {
+	return buildModernHDMapForegroundRegionPlan(in, viewportBase, palette, 12, 8)
+}
+
+func buildModernHDMapForegroundRegionPlan(in indexedmap.FrameInput, viewportBase int, palette color.Palette, xmax, ymax int) ([]modernHDMapForegroundDraw, error) {
 	stride := fdicon.NativeMapStride
 	view := modernHDMapViewport()
 	if in.ForegroundBank == nil || in.MapWidth <= 0 || len(in.Cells)%in.MapWidth != 0 ||
@@ -36,7 +40,7 @@ func buildModernHDMapForegroundPlan(in indexedmap.FrameInput, viewportBase int, 
 		}
 		coords, count := fdicon.NativeForegroundRedrawCells(unit.X, unit.Y, unit.Pose, unit.MotionOffset)
 		for _, coord := range coords[:count] {
-			if coord.X < in.CameraX-1 || coord.X > in.CameraX+12 || coord.Y < in.CameraY-1 || coord.Y > in.CameraY+8 ||
+			if coord.X < in.CameraX-1 || coord.X > in.CameraX+xmax || coord.Y < in.CameraY-1 || coord.Y > in.CameraY+ymax ||
 				coord.X < 0 || coord.Y < 0 || coord.X >= in.MapWidth || coord.Y >= len(in.Cells)/in.MapWidth {
 				continue
 			}
