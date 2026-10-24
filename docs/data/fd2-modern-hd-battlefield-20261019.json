@@ -220370,7 +220370,7 @@
     ],
     "palette_policy": "reuse player9 HD contract: indexed planes follow actual palette, terrain existing four-colour-difference approximation, authored HD unit RGB retained; not whole-world tint or original RGB parity",
     "next_art_candidates": {
-      "status": "DRAFT-UNREGISTERED",
+      "status": "HISTORICAL-DRAFT-RESOLVED-BY-FOLLOWUP",
       "mother_assets": {
         "status": "DRAFT-UNREGISTERED",
         "tool": "built-in image_gen",
@@ -220483,7 +220483,8 @@
         ],
         "production_catalog_changed": false,
         "private_sync_performed": false
-      }
+      },
+      "resolved_by": "modifier_tail_art_followup_20261024"
     },
     "pinned_lmi_sources": {
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-lmi-sources-oct24-r1.json",
@@ -222083,6 +222084,620 @@
     "final_integrity": {
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-final-integrity-oct24-r1.json",
       "sha256": "689db698863c56c8edcaeb79ff793d009d03cc077e23a2f68089d9f181f221f3"
+    },
+    "followup_resolution": {
+      "registered39_lmi_frames": "modifier_tail_art_followup_20261024",
+      "other_remaining_items_still_open": true
+    }
+  },
+  "modifier_tail_art_followup_20261024": {
+    "status": "CONFORMED-SCOPED / RUNTIME-E1",
+    "base_commit": "de45ee02225c2d16f51dd9ab120774b498e1c1c9",
+    "base_catalog": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-base-763-oct24-r1.json",
+      "sha256": "547360baea9b85487c4096dd2596e6878880868135672bef2aaed77abb87638f"
+    },
+    "scope": "39LMI6 frames191-229; player/AI20/21 and player25 existing owners; same approved handpainted style, source placement/rules/save unchanged",
+    "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+    "fixed_sources": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-map-lmi-sources-oct24-r1.json",
+      "sha256": "5209e43e78b4fceb0c5941c3eb9f9f42517b81391f9ec32bbf62884e88cff72f"
+    },
+    "masters": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal1316-ring-master-oct23-r1.png",
+        "sha256": "98942583781dc9cedb1145fa7ca857778fa1dce659df3b239c849093930afe1d",
+        "crop32": [
+          178,
+          181,
+          1078,
+          1070
+        ],
+        "size": [
+          1254,
+          1254
+        ],
+        "alpha_extrema": [
+          0,
+          254
+        ],
+        "formal_file": {
+          "file": "remake/generated-assets/modern-theme-prototypes/heal1316-ring-master-oct23-r1.png",
+          "sha256": "98942583781dc9cedb1145fa7ca857778fa1dce659df3b239c849093930afe1d"
+        }
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-lime-diamond-master-oct24-r1.png",
+        "sha256": "b5d97e5b7874b105cf5afd94cecd68207774afc3e9d3e53fe53c84d295695594",
+        "crop32": [
+          96,
+          71,
+          1159,
+          1183
+        ],
+        "size": [
+          1254,
+          1254
+        ],
+        "alpha_extrema": [
+          0,
+          254
+        ],
+        "formal_file": {
+          "file": "remake/generated-assets/modern-theme-prototypes/modifier-lime-diamond-master-oct24-r1.png",
+          "sha256": "b5d97e5b7874b105cf5afd94cecd68207774afc3e9d3e53fe53c84d295695594"
+        }
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-blue-diamond-master-oct24-r1.png",
+        "sha256": "0509468ec9698df027a537da8ffd6f401812f0fc1145e55ae1d29976f25a78b2",
+        "crop32": [
+          95,
+          80,
+          1160,
+          1152
+        ],
+        "size": [
+          1254,
+          1254
+        ],
+        "alpha_extrema": [
+          0,
+          254
+        ],
+        "formal_file": {
+          "file": "remake/generated-assets/modern-theme-prototypes/modifier-blue-diamond-master-oct24-r1.png",
+          "sha256": "0509468ec9698df027a537da8ffd6f401812f0fc1145e55ae1d29976f25a78b2"
+        }
+      }
+    ],
+    "prototype_review": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-art-prototype-r3/prototype.json",
+        "sha256": "e5a4764e83aedc3c7d7eafc67dc7380b7e4bb70f84c86cf80e3dc1fb5b21e31c"
+      },
+      "overview": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-art-prototype-r3/overview.png",
+        "sha256": "a5c1b599bbe4abcc7f72afa28c56dc5553110b58dd3ba9f596098c82f3f93d3b"
+      },
+      "R1": "rectangular material overlaps and post-resize transparent RGB thresholds produced seams",
+      "R2": "independent quantized component masks lacked RGB for faint union fringe; stopped before promotion",
+      "R3": "coverage-weighted components; extend missing fringe RGB without changing union alpha",
+      "quantized_fringe_pixels": 340,
+      "quantized_fringe_alpha_max": 1,
+      "technical_preview_checked": true,
+      "normal_manual_art_review_pending": true,
+      "label_note": "R3 directory receipt retains an R2 status label; exact receipt SHA and all39 PNG hashes identify the reviewed output; historical receipt not rewritten."
+    },
+    "policy": "native8-connected components, master-resolution nearest RGB extension and Gaussian3px, weighted component RGB; native6x Lanczos support blur1.1HDpx/border2HDpx; native group-relative brightness and brown region tint; artistic approximation",
+    "private_sync_required": true,
+    "new_catalog_groups": 1,
+    "new_pngs": 39,
+    "new_original_mothers": 2,
+    "reproduction": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-reproduction-oct24-r1.json",
+      "sha256": "1244d9ce2aae8301d9ffc6c398c3f19e604d637102d375728e97b329639d1a62"
+    },
+    "candidate_catalog": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-candidate-r1/catalog.json",
+      "sha256": "52d1950fa666178d03efe0d2f4390afa04f1b68c7f41a86d5cba9e4768e711a9"
+    },
+    "compiled": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-reproduce-r2/compiled.json",
+      "sha256": "c7bda3cab755bff3fecedd9db5aa952c86654a729c28a4e3a29f8e6106f3958c"
+    },
+    "old_files_baseline": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-old-files-6687-oct24-r1.json",
+      "sha256": "2ca532725dc0f7327f9b072d3eaccf33fe0f1b99b48bf334549c555b87ec95fa"
+    },
+    "formal_promotion": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-formal-promotion-oct24-r1.json",
+      "sha256": "b6950be7f3d85a40de9be759a7174e26f7c09b0a1c4116889cd8d8eaf21283f8"
+    },
+    "private_sync": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-private-sync-oct24-r1.json",
+      "sha256": "793647a6d66a74e710bf11eb65922b196926fff746890e02c6f62c6fc078867f"
+    },
+    "summary": {
+      "new_lmi_frames": 39,
+      "catalog_assets": 764,
+      "lmi_groups": 8,
+      "lmi_frames": 185,
+      "source_gpu_runs": 3,
+      "source_gpu_worlds": 234,
+      "cold_group_rejections_per_source_run": 9,
+      "all_owner_source_cases": 21,
+      "all_owner_native_frames": 846,
+      "all_owner_atomic_rejections": 42,
+      "actual_affected_flows": 7,
+      "formal_path_flows": 1,
+      "private_real_path_flows": 1,
+      "audited_draws": 581,
+      "map_grid_pixels": 9458680,
+      "registered_overlay_pixels": 51110,
+      "changed_overlay_pixels": 51110,
+      "native_fallback_layers": 0,
+      "f2_roundtrips": 41,
+      "actual_full_pngs": 149,
+      "legacy_theme_full_pngs": 16,
+      "legacy_theme_native_fallback_layers": 13,
+      "cross_pack_source_worlds_same_sha256": 78,
+      "cross_pack_effect_pngs_same_sha256": 13,
+      "hd_gates": 17,
+      "required_top_level_tests": 26,
+      "peak_bytes": 3138428928,
+      "old77_source_gpu_worlds": 154,
+      "producer_tests": {
+        "pass": 365,
+        "skip": 0,
+        "fail": 0
+      },
+      "string_tests": {
+        "pass": 8,
+        "skip": 0,
+        "fail": 0
+      }
+    },
+    "formal_coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-formal-coverage-oct24-r1.json",
+      "sha256": "f7f33c5e09e82c8b569d3ce55a115596abc885c7a926198ded1cc56597477f47",
+      "command": "python3 tools/audit_fd2_battle_hd_coverage.py --inventory docs/data/fd2-battle-hd-source-inventory-20261019.json --original-pack /original --catalog remake/assets/themes/modern/catalog.json --source remake/generated-assets/modern-theme-prototypes --report <new-report>; maintained Pillow Docker, original pack read-only"
+    },
+    "verification": {
+      "gates": [
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-source-candidate-oct24-r1.gate.json",
+            "sha256": "ea6219370da574b219847ed62a2b83cd5d2a2eb888352791bf6a805f5eb88cf9"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-source-candidate-oct24-r1.memory.json",
+            "sha256": "cfe660eb7d1fd095147c19941a9a11a03ab7d7f290a6691950fe0c875f9cada4"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-source-candidate-oct24-r1.log",
+            "sha256": "4ed5fcdd3def216d43a05715886ebdabf7d51a1b38581cdf6747100790109c02"
+          }
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-game-player20-oct24-r1.gate.json",
+            "sha256": "06d2b37e6284a685908640af4e5b937e54dc09189918e020d2f0c32005ce2abe"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-game-player20-oct24-r1.memory.json",
+            "sha256": "bd9c20abf71f13433a72b9b72ed5d1aedbe395a06c29c2bb93058de29b4e2492"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-game-player20-oct24-r1.log",
+            "sha256": "eee26ad414cd0e1a06b32793bd75aa7d6264ff7fd205e9c916851225c7a77cef"
+          }
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-game-ai20-oct24-r1.gate.json",
+            "sha256": "d52ecfe4128c6a57bb6dfc19848e5321f1c9843a5a81373f8ffe17bafa2baeb6"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-game-ai20-oct24-r1.memory.json",
+            "sha256": "188176ad41ce20a6803b450c82da688b065239f261081d51686edf0dd02e1e9f"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-game-ai20-oct24-r1.log",
+            "sha256": "5385c3d26cf1b80ecd2105e4bc8c192a14fcab1cf4bb48517fa05b354fb377b1"
+          }
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-game-player21-oct24-r1.gate.json",
+            "sha256": "ec561727081478f7f250c1209eddd173d82b261c677575835d34fb07feaaa540"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-game-player21-oct24-r1.memory.json",
+            "sha256": "06528d9128740df7b95816eae2d63047db3b51f3a8feb189d7f81377767bf042"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-game-player21-oct24-r1.log",
+            "sha256": "b2d6517b512029cf2274c60c6ea7b70e30631ebb69736d7a37405bdc24748c49"
+          }
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-game-ai21-oct24-r1.gate.json",
+            "sha256": "74f036007081af3922974deacfce3486ecf51ce8b1f817b5d3ea3696942a9f2d"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-game-ai21-oct24-r1.memory.json",
+            "sha256": "ed227934c7aadd34cbf9ac0a0cc283748de4630acf843b463d6c162ccfca1765"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-game-ai21-oct24-r1.log",
+            "sha256": "0286b87113614a545529a30eae26ccce7730cf752c89b1de607bf0fa2a4edb37"
+          }
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-game-player25-oct24-r1.gate.json",
+            "sha256": "e036dcd0bfa4138e3f18e16225f5ccc12271a020d6c0f73233d986a53f9f7ca8"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-game-player25-oct24-r1.memory.json",
+            "sha256": "60c04d3d7740c84da08116a5388f9b02ec5ee0cce5d89a4f8d59f2c80563903c"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-game-player25-oct24-r1.log",
+            "sha256": "1cd7c361c90ff8b174895e82a37bd004f475164b7059232c772ed6cb542495ac"
+          }
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-game-player20-failed-oct24-r1.gate.json",
+            "sha256": "40beb2786cfe109a764b2e72ec917db7b27b9fec9e638f38e5ec7c041e306391"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-game-player20-failed-oct24-r1.memory.json",
+            "sha256": "5d086b6f8da624e472d1ab75165610e9a2024f8c99841559b34d0bfb7593c9f6"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-game-player20-failed-oct24-r1.log",
+            "sha256": "2acc5b8051f9e07ae7b6e07b1774cc4f88daabbd38e3348ea6f9c26089c13ac5"
+          }
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-game-player25-failed-oct24-r1.gate.json",
+            "sha256": "9d7f1ade11e74e1d0cbf9fd78a9369efe39fbfa44a691cfea203d9c8304e003f"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-game-player25-failed-oct24-r1.memory.json",
+            "sha256": "e3e4d3374307e2a278562818e8d4ada6436eadca3890f59e36eb6768f647fea5"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-game-player25-failed-oct24-r1.log",
+            "sha256": "172fcf8a18d7c2f4e3412cf3319256a52b3af67b192182ca93e77d86ea20d431"
+          }
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-formal-all-owner-sources-oct24-r1.gate.json",
+            "sha256": "b905cf631c9d2930dd923b94face04dbf62856e70e709c7b53bbc7c8fe5b8640"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-formal-all-owner-sources-oct24-r1.memory.json",
+            "sha256": "6aea8146b7f075314d9787045dd58cb2778cc1fff84d6330effc3fda45560b9b"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-formal-all-owner-sources-oct24-r1.log",
+            "sha256": "fdc3e400922ff2addaf675b7884c9e8fc6ff2b4fabf0c27dd2730fd56aca842f"
+          }
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-old77-source-regression-oct24-r1.gate.json",
+            "sha256": "d193055a0e9698725e7972143735c3224354b5db3ff8437e63677062ef490e2e"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-old77-source-regression-oct24-r1.memory.json",
+            "sha256": "496c6fa7f7d73f80022095171f871ecdff33a9b4cf6607bde2d05d3b1d4513b3"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-old77-source-regression-oct24-r1.log",
+            "sha256": "45ac2db86bf1afb303ae113f565a984f0f62366064aacd3f79bd00a20428ca2d"
+          }
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-native-regression-oct24-r1.gate.json",
+            "sha256": "4ea75ef08ef526d47d069cf431be6cdd852502425b541462f5a4aab1d7ee2c24"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-native-regression-oct24-r1.memory.json",
+            "sha256": "75c015eedf2896c68e7f280ce3f708db45bab7884b3a88ab967d6b2e32acbb8f"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-native-regression-oct24-r1.log",
+            "sha256": "35806329053352e2b753ef650a76112ab4f47f1773f23f23822c3244a6668123"
+          }
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-shared-map-regression-oct24-r1.gate.json",
+            "sha256": "23fa9dbf59d0361838ac97ae94f528ca326556dc3563fe5db3823b814f4c353b"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-shared-map-regression-oct24-r1.memory.json",
+            "sha256": "62fd7a30cd4d37bde4c08407f904ee4817469d822ef34ef61776bae455cbe552"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-shared-map-regression-oct24-r1.log",
+            "sha256": "d1582046bd572fa52792203943cc323622d5c239316f7752d59bdf1e7562a05e"
+          }
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-source-formal-oct24-r1.gate.json",
+            "sha256": "270d766236e54b740ebd74a09524ad388bdef23f89e593cf1ce3c0ccc99b5883"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-source-formal-oct24-r1.memory.json",
+            "sha256": "53a351805186a3e86da670a458ae8e7d4000933ece0a90d2a979ad0e5639f004"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-source-formal-oct24-r1.log",
+            "sha256": "83c1269a75803b0ad5a30480b7d86e711198316c8e81e33926d99cbf3e8342c2"
+          }
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-game-formal-ai21-oct24-r1.gate.json",
+            "sha256": "351c7dcf3ca478fdfb6d2ac56cd86697c35496852d2ff0711a0b819b1d85b99f"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-game-formal-ai21-oct24-r1.memory.json",
+            "sha256": "0e807a61595a4596ac9889652bb222d3e1fa50c2a37048ae2f9a5607f377e456"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-game-formal-ai21-oct24-r1.log",
+            "sha256": "7cf88c29e507fdc2a7a55869ea2449dffddd4a47d5b8d4c0b7bfd8acf0a6b0fc"
+          }
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-game-legacy763-player25-oct24-r1.gate.json",
+            "sha256": "d3047db0d09c45668d560a3fb311102fc3daf984796201522bf6da9b2c8ef4ff"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-game-legacy763-player25-oct24-r1.memory.json",
+            "sha256": "d8eafd2b2b2671d8802c5b4d45668d7db08b4c358897e1600cb8808dbece735c"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-game-legacy763-player25-oct24-r1.log",
+            "sha256": "4a3a3ddf5c99118f3be81d700d6faf6f99e5fb3a37e6b291c93859780f5897b1"
+          }
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-source-private-real-oct24-r1.gate.json",
+            "sha256": "60e4a38e73466f5d8d4437d38572c2c7ecbaafb6dc69ef9823c83d67a3ceb381"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-source-private-real-oct24-r1.memory.json",
+            "sha256": "52b6cb85d100c1743a36b2ac728e3eafc5880a4449f1e5d34b69783360109352"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-source-private-real-oct24-r1.log",
+            "sha256": "728262f2982cdab12047790c295835e304ddebf5221cad97884f2c8535835f19"
+          }
+        },
+        {
+          "gate": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-game-private-player25-failed-oct24-r1.gate.json",
+            "sha256": "9ccc73b4c4b1cb32a6dafdbc60e93d09e8cd531869b868009377d5f8e01ae803"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-game-private-player25-failed-oct24-r1.memory.json",
+            "sha256": "da0e1285494dd4dee0f63fb98e8688366bb8197d488fd3a7169791ad41240629"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-game-private-player25-failed-oct24-r1.log",
+            "sha256": "96a43d19e9d798135b2aebdacba3fbca574551a7a2782df6ba5e30fc4c1ce7cd"
+          }
+        }
+      ],
+      "source": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-formal-all-owner-sources-oct24-r1.sources.json",
+        "sha256": "2d28e2e345c6a7af815f534255a792f35e178a1a14986ac9553a1a53ad1da43e"
+      },
+      "gpu_source_reports": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-source-candidate-oct24-r1.source.json",
+          "sha256": "4f880165705999c6bfeb729de561920028045da48bbe148398a5d8f37e77a273"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-source-formal-oct24-r1.source.json",
+          "sha256": "4f880165705999c6bfeb729de561920028045da48bbe148398a5d8f37e77a273"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-source-private-real-oct24-r1.source.json",
+          "sha256": "4f880165705999c6bfeb729de561920028045da48bbe148398a5d8f37e77a273"
+        }
+      ],
+      "capture_manifest": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-capture-manifest-oct24-r1.json",
+        "sha256": "fb563d797634dee9921a3641dfe40b3847ece6dc2c828e8128b1a3280b8ebc44"
+      },
+      "extra_tests": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-extra-tests-oct24-r1.json",
+        "sha256": "2316f8146e4520cd1c5597e624c7e1834c692b1a19e44a0bdccd305702181bfd"
+      },
+      "extra_logs": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-producers-oct24-r1.log",
+          "sha256": "102e971208352df9bdc3d2d4693bc5d4f79ed4330c0a5cb7fc8ac1d60c2a9fa1"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-string-tests-oct24-r1.log",
+          "sha256": "c04be6e23749b4c10343ee161fac5a1570d8b4057325cebf5084340d80ee2efc"
+        }
+      ],
+      "scope": "controlled original-record fixtures, fixed seed7 and clockUnix1000 before initialization; independent native-remake units/RNG compared; no new original RGB or ordinary-player claim",
+      "toolchain": {
+        "go": "1.22.12",
+        "ebiten": "2.6.6",
+        "pillow": "11.3.0",
+        "gpu_image": "fd2-go-test-local:latest",
+        "assets_image": "fd2-assets-local:20260829-sfx",
+        "memory_limit_bytes": 6442450944,
+        "cpus": 3,
+        "GOMAXPROCS": 3,
+        "user": "1000:1000",
+        "network": "none"
+      },
+      "commands": {
+        "verifier": "tools/verify_fd2_battle_surface_hd.py",
+        "source_kind": "modifier-tail-art-source",
+        "game_kind": "modifier-map-game --all-modifier-effects",
+        "cases": [
+          {
+            "ID": 20,
+            "Player": true,
+            "Failed": false
+          },
+          {
+            "ID": 20,
+            "Player": false,
+            "Failed": false
+          },
+          {
+            "ID": 21,
+            "Player": true,
+            "Failed": false
+          },
+          {
+            "ID": 21,
+            "Player": false,
+            "Failed": false
+          },
+          {
+            "ID": 25,
+            "Player": true,
+            "Failed": false
+          },
+          {
+            "ID": 20,
+            "Player": true,
+            "Failed": true
+          },
+          {
+            "ID": 25,
+            "Player": true,
+            "Failed": true
+          }
+        ],
+        "source_all_owners": "modifier-map-source --all-modifier-effects",
+        "private_pack": "/private-modern --require-real-runtime",
+        "legacy_catalog": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-base-763-oct24-r1.json",
+          "sha256": "547360baea9b85487c4096dd2596e6878880868135672bef2aaed77abb87638f"
+        },
+        "out_policy": "new absolute prefix under existing work root; --timeout780"
+      },
+      "memory_note": "sequential calls in one container share cumulative memory.peak; Linux workload observation, not platform performance acceptance"
+    },
+    "implementation_sources": [
+      {
+        "file": "tools/build_fd2_modifier_tail_hd.py",
+        "sha256": "d896efd155e6b83fd7986e91a5c87e2b58a26c36bfd1d9c45b33cf5b1e25e335"
+      },
+      {
+        "file": "tools/build_fd2_compound_tail_hd.py",
+        "sha256": "be7a80ad3fd9ab8ea5331e0a82a40040d0fe0d9c9feb339f3080e29b32817a64"
+      },
+      {
+        "file": "tools/build_fd2_battle_panel_gallery.py",
+        "sha256": "2dc6b1692832ef3b49c5f8a17258bfb7d4764fdcddfdc470814f991c01414013"
+      },
+      {
+        "file": "tools/validate_modern_theme_catalog.py",
+        "sha256": "62c831b9745820cf61bb318b0ed76fc629467e9376ad32610db74843c5c81baa"
+      },
+      {
+        "file": "tools/verify_fd2_battle_surface_hd.py",
+        "sha256": "dd79252942a20758dbf0db798e4d8d973ac6d22b3d40d6d6828dcb27d3ddbab7"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_map_overlay_assets.go",
+        "sha256": "09eece8c4b6b1f89a8b0596cfe4baad494aba4c0dcb16aa9ac61a378ad96ff2f"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_compound_tail_art_test.go",
+        "sha256": "73acc7f20c148c819c672d6e29b2d7bf5d6e58835157f99b0adc960f431a5ad8"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_compound_tail_art_gpu_test.go",
+        "sha256": "233a0f49ace61b65342f0d0c10c7078708bfa63c97bdbb0dd7354a1680d6f559"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_modifier_tail_art_test.go",
+        "sha256": "5a46f5ea4504f683fda1987052370cb148bc13ee7b8394d0cf1aa2e2c424eda9"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_modifier_map_gpu_test.go",
+        "sha256": "de5a3e940704363777840560f26dceba8e254440378620d47a22bb03fa8e6ead"
+      }
+    ],
+    "generation": {
+      "tool": "built-in image_gen in prior turn; no new images generated on resume",
+      "prompt_set": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-art-generation-prompts-oct24-r1.json",
+        "sha256": "72e5627c006ab2a5fcc49d237ae367ee5550385d07b7e3aa2fbe9846701c28b1"
+      },
+      "original_mothers_unmodified": true
+    },
+    "remaining": [
+      "other map owners including command23 disappearance/appearance and AI items",
+      "complete HUD and remaining terrain",
+      "unknown408 and legitimate third-bank18/19 callers",
+      "normal-player/manual/platform gates and issues268/269"
+    ],
+    "gallery": {
+      "image": {
+        "file": "docs/figures/hd-modifier-tail-effects.png",
+        "sha256": "03b57a71ba82c820939a6fcaa1e926c15ae62132c61f744be1fbe56a5cb57e22"
+      },
+      "recipe": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-gallery-oct24-r1.json",
+        "sha256": "1a5e035a5b04dc997686239ef71369d669ef85c270e5c64d2978a1ad241c5a00"
+      },
+      "source_images": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-game-player25-oct24-r1-capture/map-effect-present-013.png",
+          "sha256": "065e1e795879f193cc023737fe81ae7c18f160604c14fba290b99330d51cb16f"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-game-player20-oct24-r1-capture/map-effect-present-015.png",
+          "sha256": "69b2fea71a1e3c45f28ad87323883e4dd6fa6320b95db6cfb3087a44513f4993"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-game-player21-oct24-r1-capture/map-effect-present-015.png",
+          "sha256": "f4ea771bfd858de60f512b691162b44f381e1120f4b604dd6c1b5678fd18a2ea"
+        }
+      ],
+      "operation": "three separate actual fullGame.Draw images at half size; labels outside game area",
+      "tool": "tools/build_fd2_battle_panel_gallery.py --modifier-receipts <player25.game.json> <player20.game.json> <player21.game.json> --out <new-image> --receipt <new-json>"
+    },
+    "cleanup_resolution": {
+      "receipt": {
+        "file": "work/workspace-cleanup-reproduction-copies-20261024-r1.json",
+        "sha256": "c8e106dbccc6d47f992cb21491ec81a750ae28d0503b47eab80bfe6a8149b593"
+      },
+      "removed_only_verified_reproduction_png_copies_and_aliases": true,
+      "compiled_and_catalog_receipts_retained": true,
+      "primary_candidate_formal_private_and_mothers_retained": true
+    },
+    "issue_sync": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/modifier-tail-art-issue-sync-oct24-r1.json",
+      "sha256": "0358542cabf388a9fcad81cbe7fad5f02a319f3752f3cb7f447af617921d75b1"
     }
   }
 }

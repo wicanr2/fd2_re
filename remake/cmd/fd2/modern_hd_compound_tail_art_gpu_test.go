@@ -93,13 +93,18 @@ func TestModernCompoundTailArtSourceGPU(t *testing.T) {
 	if os.Getenv("FD2_HD_COMPOUND_TAIL_ART_GPU") != "1" {
 		t.Skip("dedicated77-source GPU process required")
 	}
-	set, err := loadModernStoryPortraitSet(os.Getenv("FD2_TEST_MODERN_EFFECT_CATALOG"), os.Getenv("FD2_TEST_MODERN_EFFECT_PACK"))
-	if err != nil {
-		t.Fatal(err)
-	}
 	indices := append(modernMapOverlayHDIndices(6, 12), modernMapOverlayHDIndices(6, 65)...)
 	if len(indices) != 77 {
 		t.Fatal("wrong source domain")
+	}
+	runModernTailArtSourceGPU(t, indices, "PASS-COMPOUND-TAIL-ART-SOURCE-GPU", "FD2_HD_COMPOUND_TAIL_ART_REPORT")
+}
+
+func runModernTailArtSourceGPU(t *testing.T, indices []int, status, reportEnv string) {
+	t.Helper()
+	set, err := loadModernStoryPortraitSet(os.Getenv("FD2_TEST_MODERN_EFFECT_CATALOG"), os.Getenv("FD2_TEST_MODERN_EFFECT_PACK"))
+	if err != nil {
+		t.Fatal(err)
 	}
 	p := &compoundTailArtGPUProbe{g: &Game{modernStoryPortraits: set}, indices: indices, background: image.NewRGBA(image.Rect(0, 0, 320, 200)), ui: image.NewRGBA(image.Rect(0, 0, 320, 200)), pixels: make([]byte, 1920*1200*4)}
 	draw.Draw(p.background, p.background.Bounds(), &image.Uniform{C: color.RGBA{20, 30, 40, 255}}, image.Point{}, draw.Src)
@@ -108,11 +113,11 @@ func TestModernCompoundTailArtSourceGPU(t *testing.T) {
 	if err := ebiten.RunGame(p); err != nil {
 		t.Fatal(err)
 	}
-	if p.err != nil || len(p.rows) != 154 {
+	if p.err != nil || len(p.rows) != len(indices)*2 {
 		t.Fatal("source GPU", p.err, len(p.rows))
 	}
-	report := map[string]any{"status": "PASS-COMPOUND-TAIL-ART-SOURCE-GPU", "sources": 77, "worlds": len(p.rows), "rgba_bytes_per_world": 1920 * 1200 * 4, "tolerance": 2, "cases": p.rows, "scope": "isolated prepared-map GPU source-over and clipping; actual Game.Draw verified separately"}
-	if out := os.Getenv("FD2_HD_COMPOUND_TAIL_ART_REPORT"); out != "" {
+	report := map[string]any{"status": status, "sources": len(indices), "worlds": len(p.rows), "rgba_bytes_per_world": 1920 * 1200 * 4, "tolerance": 2, "cases": p.rows, "scope": "isolated prepared-map GPU source-over and clipping; actual Game.Draw verified separately"}
+	if out := os.Getenv(reportEnv); out != "" {
 		raw, _ := json.MarshalIndent(report, "", "  ")
 		if err := os.WriteFile(out, append(raw, '\n'), 0644); err != nil {
 			t.Fatal(err)

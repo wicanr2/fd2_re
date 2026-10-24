@@ -21,6 +21,7 @@ REQUIRED = {
                                 'TestExecuteNativeAICommand20UsesOriginalIndexedTail','TestExecuteNativeAICommand26UsesOriginalIndexedTail',
                                 'TestPlayerNativeCommand20UsesPaletteThenOriginalIndexedTail','TestPlayerNativeCommand25UsesOriginalTailWithoutEmptyNumericHold'},
     'compound-tail-art-source': {'TestModernCompoundTailArtAtomic','TestModernCompoundTailArtSourceGPU'},
+    'modifier-tail-art-source': {'TestModernModifierTailArtAtomic','TestModernModifierTailArtSourceGPU'},
     'compound-map-unit': {'TestModernCompoundMapBindingAtomic'},
     'compound-map-source': {'TestModernCompoundMapAllSources'},
     'compound-map-game': set(),
@@ -94,6 +95,7 @@ def main():
     p.add_argument('--with-pedestal', action='store_true')
     p.add_argument('--require-real-runtime', action='store_true')
     p.add_argument('--all-compound-effects', action='store_true', help='四召喚地圖尾段不允許任何可見LMI回退')
+    p.add_argument('--all-modifier-effects', action='store_true', help='狀態法術地圖尾段不允許任何可見LMI回退')
     p.add_argument('--timeout', type=int, default=1200)
     a = p.parse_args()
     if a.kind=='modifier-map-zero-seed' and (a.modifier_command!=26 or not a.enemy or a.modifier_failed):
@@ -101,6 +103,8 @@ def main():
     if a.kind=='modifier-map-batch' and a.modifier_start+a.modifier_limit>21:
         raise SystemExit('狀態法術分片越界')
     if a.all_compound_effects and a.kind!='compound-map-game':raise SystemExit('--all-compound-effects只用於compound-map-game')
+    if a.all_modifier_effects and a.kind not in ['modifier-map-source','modifier-map-game','modifier-map-zero-seed','modifier-map-batch']:
+        raise SystemExit('--all-modifier-effects只用於狀態法術來源或GPU流程')
     if a.kind in ['ordinary-scenery-source','ordinary-scenery-game'] and a.panel_owner not in range(10):
         raise SystemExit('一般場景需要明示0～9的owner，9只指敵方戰鬥')
     if a.kind in ['ordinary-scenery-source','ordinary-scenery-game'] and a.panel_owner==9 and a.enemy:
@@ -118,7 +122,8 @@ def main():
     independent = check_real_runtime(a.pack, catalog) if a.require_real_runtime else None
     env = os.environ.copy()
     env.update(FD2_MUTE='1', FD2_TEST_MODERN_BATTLE_CATALOG=str(a.catalog.resolve()), FD2_TEST_MODERN_BATTLE_PACK=str(a.pack.resolve()))
-    for name in ['FD2_HD_MODIFIER_MAP_UNIT','FD2_HD_MODIFIER_MAP_GPU','FD2_HD_MODIFIER_MAP_REPORT','FD2_HD_MODIFIER_MAP_FIXTURE','FD2_HD_MODIFIER_MAP_ZERO','FD2_HD_MODIFIER_MAP_BATCH']:env.pop(name,None)
+    for name in ['FD2_HD_MODIFIER_MAP_UNIT','FD2_HD_MODIFIER_MAP_GPU','FD2_HD_MODIFIER_MAP_REPORT','FD2_HD_MODIFIER_MAP_FIXTURE','FD2_HD_MODIFIER_MAP_ZERO','FD2_HD_MODIFIER_MAP_BATCH','FD2_HD_MODIFIER_REQUIRE_EFFECTS']:env.pop(name,None)
+    if a.all_modifier_effects:env['FD2_HD_MODIFIER_REQUIRE_EFFECTS']='1'
     if a.kind=='modifier-map-fixture':env['FD2_HD_MODIFIER_MAP_FIXTURE']='1'
     if a.kind=='modifier-map-source':
         env.update(FD2_HD_MODIFIER_MAP_UNIT='1',FD2_HD_MODIFIER_MAP_REPORT=str(a.out),
@@ -151,6 +156,11 @@ def main():
     if a.kind=='compound-tail-art-source':
         env.update(FD2_HD_COMPOUND_TAIL_ART_UNIT='1',FD2_HD_COMPOUND_TAIL_ART_GPU='1',
                    FD2_HD_COMPOUND_TAIL_ART_REPORT=str(a.out)+'.source.json',
+                   FD2_TEST_MODERN_EFFECT_CATALOG=str(a.catalog.resolve()),FD2_TEST_MODERN_EFFECT_PACK=str(a.pack.resolve()))
+    for name in ['FD2_HD_MODIFIER_TAIL_ART_UNIT','FD2_HD_MODIFIER_TAIL_ART_GPU','FD2_HD_MODIFIER_TAIL_ART_REPORT']:env.pop(name,None)
+    if a.kind=='modifier-tail-art-source':
+        env.update(FD2_HD_MODIFIER_TAIL_ART_UNIT='1',FD2_HD_MODIFIER_TAIL_ART_GPU='1',
+                   FD2_HD_MODIFIER_TAIL_ART_REPORT=str(a.out)+'.source.json',
                    FD2_TEST_MODERN_EFFECT_CATALOG=str(a.catalog.resolve()),FD2_TEST_MODERN_EFFECT_PACK=str(a.pack.resolve()))
     if a.kind in ['compound-map-source','compound-map-game']:
         if a.panel_owner not in [32,33,34,35]:raise SystemExit('需要32～35召喚owner')
@@ -348,6 +358,15 @@ export DISPLAY=:99
         if (len(rows)!=21 or {(r['case']['ID'],r['case']['Player'],r['case']['Failed']) for r in rows}!=wanted
                 or any(r.get('frames',0)<8 or r.get('atomic_rejections')!=2 for r in rows)):
             raise SystemExit('狀態法術缺少完整來源或錯來源原子拒收')
+        if a.all_modifier_effects and any(r.get('native_fallback_layers')!=0 for r in rows):
+            raise SystemExit('狀態法術來源仍有原生LMI回退')
+    if a.kind=='modifier-tail-art-source':
+        d=json.loads(Path(str(a.out)+'.source.json').read_text())
+        required=set(range(191,230))
+        if (d.get('sources')!=39 or d.get('worlds')!=78 or len(d.get('cases',[]))!=78
+                or {c['index'] for c in d['cases']}!=required
+                or any({c['placement'] for c in d['cases'] if c['index']==i}!={0,1} for i in required)):
+            raise SystemExit('39份狀態光效缺少完整GPU來源或邊界取樣')
     if a.kind in ['modifier-map-game','modifier-map-zero-seed','modifier-map-batch']:
         suffix='.batch.json' if a.kind=='modifier-map-batch' else '.game.json'
         report_data=json.loads(Path(str(a.out)+suffix).read_text())
@@ -363,6 +382,8 @@ export DISPLAY=:99
         if len(rows)!=len(expected) or {(d['case']['ID'],d['case']['Player'],d['case']['Failed']) for d in rows}!=expected:
             raise SystemExit('狀態法術缺少明示的全部流程')
         for d in rows:
+            if a.all_modifier_effects and d.get('native_fallback_layers')!=0:
+                raise SystemExit('狀態法術尾段仍有原生LMI回退')
             seed=0 if a.kind=='modifier-map-zero-seed' else 7
             if a.kind=='modifier-map-zero-seed' and d.get('application_successes',0)<=0:
                 raise SystemExit('固定0補測未觸發狀態套用')
@@ -381,6 +402,7 @@ export DISPLAY=:99
                   modifier_command=a.modifier_command,modifier_failed=a.modifier_failed,
                   modifier_start=a.modifier_start,modifier_limit=a.modifier_limit,
                   all_compound_effects=a.all_compound_effects,
+                  all_modifier_effects=a.all_modifier_effects,
                   scenery_start=a.scenery_start,scenery_limit=a.scenery_limit,
                   independent_runtime_files=independent, memory=str(a.out)+'.memory.json',log=str(a.out)+'.log',
                   scope='固定來源／GPU／明示物理戰鬥fixture，非正常玩家或新原版RGB對拍')

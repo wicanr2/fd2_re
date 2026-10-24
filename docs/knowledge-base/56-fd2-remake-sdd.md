@@ -1,6 +1,6 @@
 # 56 — FD2 remake 系統設計規格（SDD，2026-08-09）
 
-狀態法術既有玩家調色與玩家／敵方尾段已接共享HD地圖，限定CONFORMED-SCOPED／RUNTIME-E1。交易前後凍結來源、原生逐byte重組、各階段Game.Draw／F2、失敗提示、無數字成功及原結算／RNG／一次續行通過；初始化前固定兩側時鐘與種子，另列固定0套用成功控制。玩家23僅驗調色前導。191～229光效尚未登錄，保留明示原生回退；兩份新菱形母稿與編製候選仍為DRAFT，未改正式763清冊或私人庫。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約及重跑依[61](61-modern-theme-runtime-spec.md)，主收據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的modifier_map_hd_followup_20261024。其他owner、完整HUD及集中正常／人工／平台仍待。
+狀態法術的既有HD地圖接線與191～229光效已接入正式主題，限定CONFORMED-SCOPED／RUNTIME-E1。圓環及兩色菱形沿未修改手繪母稿，保留原生位置、孔洞、亮度節拍、失敗提示與25無數字成功；逐來源GPU、正式與私人實檔流程、F2、原單位／RNG及一次續行通過。舊763主題保持原生光效回退。私有白名單已同步，舊資產逐SHA保持；分量材質、羽化及調色是明示美術近似。玩家23仍只驗調色前導。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約及重跑依[61](61-modern-theme-runtime-spec.md)，證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的modifier_tail_art_followup_20261024與較早modifier_map_hd_followup_20261024。其他owner、完整HUD與集中正常／人工／平台仍待。
 
 四召喚尾段原先缺少的77份可見LMI光效已接入正式HD圖包，限定CONFORMED-SCOPED／RUNTIME-E1。雙側四語完整Game.Draw沒有可見LMI原生回退，保留F2、結算／RNG與一次返回；舊主題仍可原圖回退。母稿材質、原生輪廓支撐、羽化與亮度屬明示美術近似。正式與獨立素材包已驗，已登錄素材同步私人白名單庫。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約及重跑依[61](61-modern-theme-runtime-spec.md)，主收據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的compound_tail_art_followup_20261024。其他效果owner、完整HUD、未知來源及集中正常／人工／平台仍待。
 

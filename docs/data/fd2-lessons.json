@@ -4012,6 +4012,21 @@
         ],
         "pattern": "TestModernModifierMapControlSnapshot"
       }
+    },
+    {
+      "id": "vfx-component-material-uses-coverage-weights",
+      "area": "HD美術",
+      "date": "2026-10-24",
+      "rule": "分離光效分量先各自延拓母稿RGB，再依覆蓋權重混合；不直接疊各分量的矩形材質。濾波後聯集有alpha、各分量卻量化為零時，只延拓缺少的RGB，保留已審查的聯集alpha。入口tools/build_fd2_modifier_tail_hd.py的compile_frame與61狀態光效規格。",
+      "why": "39幀狀態候選R1因矩形重疊與縮放後RGB切換產生接縫。R2改分量後遇聯集量化邊緣缺RGB；R3以覆蓋權重及鄰近RGB延拓修正，340個此類點alpha上限1，原alpha未改。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/build_fd2_modifier_tail_hd.py"
+        ],
+        "pattern": "fringe_rgb = extend_rgb\\(blended\\)"
+      }
     }
   ]
 }

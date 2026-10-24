@@ -15,6 +15,11 @@ func TestModernCompoundTailArtAtomic(t *testing.T) {
 	if os.Getenv("FD2_HD_COMPOUND_TAIL_ART_UNIT") != "1" {
 		t.Skip("explicit healing catalog/pack")
 	}
+	checkModernTailArtGroups(t, []int{12, 65}, 77)
+}
+
+func checkModernTailArtGroups(t *testing.T, counts []int, sources int) {
+	t.Helper()
 	pack := os.Getenv("FD2_TEST_MODERN_EFFECT_PACK")
 	raw, err := os.ReadFile(os.Getenv("FD2_TEST_MODERN_EFFECT_CATALOG"))
 	if err != nil {
@@ -26,7 +31,11 @@ func TestModernCompoundTailArtAtomic(t *testing.T) {
 	}
 	groups := 0
 	for _, asset := range catalog.Assets {
-		if asset.Role != "map_overlay_hd_set" || !(asset.SourceResource == 6 && (asset.FrameCount == 12 || asset.FrameCount == 65)) {
+		selected := false
+		for _, count := range counts {
+			selected = selected || asset.FrameCount == count
+		}
+		if asset.Role != "map_overlay_hd_set" || asset.SourceResource != 6 || !selected {
 			continue
 		}
 		groups++
@@ -90,8 +99,8 @@ func TestModernCompoundTailArtAtomic(t *testing.T) {
 			}
 		}
 	}
-	if groups != 2 {
-		t.Fatal("missing two healing source groups")
+	if groups != len(counts) {
+		t.Fatal("missing declared LMI source groups", groups, counts)
 	}
-	t.Log("all77 real LMI PNGs plus18 invalid cold-group cases passed atomically")
+	t.Logf("all%d real LMI PNGs plus%d invalid cold-group cases passed atomically", sources, groups*9)
 }

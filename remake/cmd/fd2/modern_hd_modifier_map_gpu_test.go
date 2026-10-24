@@ -191,6 +191,9 @@ func (p *modifierMapGPUProbe) result() (map[string]any, error) {
 		return nil, fmt.Errorf("modifier GPU: %v %v", p.err, base.err)
 	}
 	stats := compoundMapGPUStats
+	if os.Getenv("FD2_HD_MODIFIER_REQUIRE_EFFECTS") == "1" && stats.NativeLayers != 0 {
+		return nil, fmt.Errorf("modifier still has %d native LMI layers", stats.NativeLayers)
+	}
 	if stats.Draws < 8 || stats.Pixels < 10000 || p.changedPixels == 0 || *p.done != 1 || *p.referenceDone != 1 {
 		return nil, fmt.Errorf("missing actual HD/native/return coverage")
 	}

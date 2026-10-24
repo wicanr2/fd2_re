@@ -2,13 +2,27 @@
 
 狀態：現代主題仍為部分覆蓋；目前分層與缺口依[58](58-fd2-exe-re-coverage.md)。
 
+## 狀態法術39份尾段光效（CONFORMED-SCOPED／RUNTIME-E1，2026-10-24）
+
+本節實作前為READY。沿下節已閉合的狀態法術地圖來源，補FDOTHER6索引191～229三組各十三幀：圓環、黃綠菱形與淡藍菱形。固定來源仍依`fd2-reference-files.json`及下節127項盤點，不新增技能語意或重開RE。消費端為玩家／敵方20、21及玩家25，包含既有失敗分支；沒有敵方25入口。原規則、保存格式、座標、節拍、聲音、交易及忠實像素模式保持。
+
+- 沿已核准手繪光效風格，圓環重用既有回復環母稿，菱形使用前批已保存的兩份內建imagegen透明母稿；不改原RGBA。原生非零像素的八連通分量只作位置、孔洞及碎裂指引。母稿alpha32界定材質裁切，先在母稿解析度延拓RGB並以3px平滑，再逐分量縮放；依各自覆蓋權重混合RGB，避免矩形範圍互相覆寫。
+- 透明度沿原生聯集六倍LANCZOS、1.1HDpx羽化及2HDpx幀邊衰減，亮度沿三組原圖峰值比例；褐色筆畫依原位置平滑調色，包含192右側原有直線。分量各自濾波的量化邊緣以鄰近有效RGB延拓，聯集alpha不變；已量測原型340個此類點的alpha上限1。這些屬明示美術近似，非原版RGB／alpha逐點等價。
+- 既有`map_overlay_hd_set`只新增resource6／count39，精確限制191～229；每份仍核對原始pixels SHA、metadata SHA、尺寸、PNG SHA及透明背景。保留763舊項及其全部檔案雜湊，候選只新增39PNG與兩份未修改菱形母稿。新組引用既有圓環，不另存重複來源；正式資料格式不變。
+- 候選先在既有work根建立。驗全部39來源中央／負座標裁切的完整GPU畫布、冷載入及metadata／來源／契約／count／descriptor／缺件／SHA／路徑／錯尺寸原子拒收；七條受影響Game.Draw流程須無可見LMI原生回退，含失敗提示、25無數字成功、各階段F2、原單位／RNG及一次續行。另驗正式載入、舊763主題回退與既有召喚／字串回歸。正常玩家與集中人工／平台仍依既定排程。
+- 全部通過後才登錄正式清冊，再依catalog白名單同步唯一私人素材庫，逐檔SHA及兩庫遠端HEAD核對。拒收原型不進正式或私人包。主證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`modifier_tail_art_followup_20261024`，不得由本批外推全部HD完成。
+
+永久編製入口為[狀態光效編製器](../../tools/build_fd2_modifier_tail_hd.py)，使用既有Pillow Docker、唯讀`--original-pack`、保存的763項`--base-catalog`與既有父目錄下的全新`--out`。可給`--master-root`從私人素材包讀取同名未修改母稿，避免依賴工作目錄副本；母稿與固定裁切由主收據查驗，不以已擴充清冊代替基底。來源及GPU驗證沿[永久驗證器](../../tools/verify_fd2_battle_surface_hd.py)的`modifier-tail-art-source`；流程沿既有`modifier-map-game`加`--all-modifier-effects`，以`--modifier-command`、`--enemy`及`--modifier-failed`選上述合法分支。獨立實檔包加`--require-real-runtime`，正式開發包的既有連結不冒稱實檔包。
+
+README總覽沿[既有圖組工具](../../tools/build_fd2_battle_panel_gallery.py)的`--modifier-receipts`，依玩家25／20／21給三份`.game.json`，選來源195／210／223；完整畫面半縮，標籤放在遊戲區外。所有來源PNG先核SHA，跨包核對另列主收據。
+
 ## 狀態法術的HD地圖呈現（CONFORMED-SCOPED／RUNTIME-E1，2026-10-24）
 
 本節實作前為READY。沿既有玩家`startNativeCommandPalettePresentation`與玩家／敵方`nativeAICommandModifierPresentationJob`，接17～23與25～27既有可達演出。玩家17～19及23保留現行獨立八相位調色owner；玩家20～22／25～27保留八相位後的原生handler尾段；敵方17～22／26～27保留各自單段尾段，沒有玩家調色前導，不新增敵方25入口。原始語意重用58已閉合的`fd2_command_modifier_palette_ida.txt`、`fd2_command20_22_player_ai_presentation_ida.txt`、`fd2_command25_27_player_ai_presentation_ida.txt`與34共用typed排程，固定版本依`fd2-reference-files.json`。不重開原版RE，不改交易、RNG、聲音、delay、mask／數字段publishAt、500ms hold、取消回復或存檔。
 
 - 在既有owner內凍結實際已發布的前置地圖、私有交易後地圖與各自typed來源。含選取圖層的前置來源沿既有玩家9的閉包凍結及整幀逐byte重組，不丟棄選取圖層；後置來源仍沿既有無閉包typed建構器。光效及數字改用既有WithSources producer，只補定位資料，不改原生pixels。mask的偶數拍取原始baseline，奇數拍取同一baseline work的viewport與HD角色輪廓，不提前代入交易後狀態。
 - 調色八相位沿既有玩家9的HD契約：原生底圖／介面依當相位palette，HD地形沿既有四色差近似，HD角色RGB保持。只改DAC entry0的原生效果不可解讀為整個HD世界單色閃爍，不新增全圖染色。這是既有現代主題近似，非原版RGB／索引palette等價。
-- 所有候選在owner發布或F2切入前逐來源預檢並一次發布；錯尺寸、來源、已登錄LMI或typed VGA即拒收，Draw不得補讀檔案或才準備HD。缺整組未登錄光效沿共用地圖契約明示原圖回退，不能稱全部光效HD。FDOTHER6 191～229美術尚未登錄，另列後續；126～190與既有數字／MISS沿已登錄圖源，保留34家族failure queue的十進位74／75／76原始索引。
+- 所有候選在owner發布或F2切入前逐來源預檢並一次發布；錯尺寸、來源、已登錄LMI或typed VGA即拒收，Draw不得補讀檔案或才準備HD。缺整組未登錄光效沿共用地圖契約明示原圖回退，不能稱全部光效HD。本接線收據當時FDOTHER6 191～229美術未登錄，後續由上一節補齊；126～190與既有數字／MISS沿已登錄圖源，保留34家族failure queue的十進位74／75／76原始索引。
 - 驗收包含全部合法owner來源／原生重組、正式Game.Draw、交易前後／無數字成功25／失敗queue、各階段F2、取消／錯來源原子拒收、原結算／RNG／一次續行及共用召喚回歸。獨立八相位入口驗正式呼叫的17～19及23，不擴增呼叫端；23只驗調色前導，不推定後續消失／出現演出完成。原版像素模式與無HD舊主題保持。受控測試只到RUNTIME-E1，正常玩家、集中人工與平台仍待。
 
 主證據入口沿[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`modifier_map_hd_followup_20261024`。實作沿[玩家調色owner](../../remake/cmd/fd2/native_command_modifier_presentation.go)、[共享狀態尾段owner](../../remake/cmd/fd2/native_ai_modifier_presentation.go)、[共享HD地圖](../../remake/cmd/fd2/modern_hd_compound_map.go)與[F2預檢](../../remake/cmd/fd2/player_shortcuts.go)。
