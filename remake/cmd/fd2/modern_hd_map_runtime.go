@@ -31,6 +31,7 @@ type modernHDMapFrame struct {
 	CompoundOwner    *modernHDCompoundMapScene
 	HUDUnit          *modernHDMapHUDUnit
 	TransientTerrain bool
+	PaletteAdd6      int
 }
 
 type modernHDMapOverlayDraw struct {

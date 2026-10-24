@@ -224145,7 +224145,8 @@
         "sha256": "2e51aa6e8633305f3c940f75ae04a2033f60f97eb6d9807022e3db76cf28d470",
         "function": "drawNativeIndexedTransition",
         "status": "NATIVE-ONLY-SOURCE-REVIEW",
-        "scope": "目前正式Draw函式整幀原圖；此清單不是全部caller的閉合聲明"
+        "scope": "目前正式Draw函式整幀原圖；此清單不是全部caller的閉合聲明",
+        "superseded_by": "indexed_transition_hd_followup_20261024"
       },
       {
         "file": "remake/cmd/fd2/native_ch20_sky_key.go",
@@ -224567,6 +224568,243 @@
       "sha256": "f3233a88db0001350094dd9202941da1fd1d99b2942feaa9c3ed82be83d66c53"
     },
     "control_definition": "同一重製程式、同初始狀態與原圖主題的控制組；本批未執行原版FD2.EXE對拍。",
-    "original_executable_rerun": false
+    "original_executable_rerun": false,
+    "next_gate_superseded_by": "indexed_transition_hd_followup_20261024"
+  },
+  "indexed_transition_hd_followup_20261024": {
+    "status": "CONFORMED-SCOPED-RUNTIME-E1",
+    "base_commit": "dfee7fade52a5be812f2300a9aede7ce37aa8e33",
+    "scope": "既有0x24618九階徑向、停留與32階baseline DAC加亮的HD消費端；不新增原版語意。",
+    "evidence": [
+      {
+        "file": "docs/data/fd2-reference-files.json",
+        "sha256": "9946b7506620069ce9b7bb8e4b1f7fed36e7a9389b634ef62064727d89579c5e"
+      },
+      {
+        "file": "docs/data/ida/fd2_ch22_pre_ida.txt",
+        "sha256": "67cdd9fe85bceaa87728814a7d0154f772993c327f27be20c451ede72d92e34d"
+      },
+      {
+        "file": "docs/data/ida/fd2_ch27_ch28_pre_owner_ida.txt",
+        "sha256": "aeca879b9465deb77a60639983b814bc312798b60429a8e6b2a1eaae5cb67617"
+      },
+      {
+        "sha256": "2e51aa6e8633305f3c940f75ae04a2033f60f97eb6d9807022e3db76cf28d470",
+        "path_at_base_commit": "remake/cmd/fd2/native_indexed_transition.go",
+        "git_revision": "dfee7fade52a5be812f2300a9aede7ce37aa8e33"
+      },
+      {
+        "file": "remake/internal/indexedmap/frame.go",
+        "sha256": "a7f21d5703b4ac3db2e55948c13dab8e0cf96bb42d31ad2b3e9191adbb2a0aab"
+      },
+      {
+        "file": "remake/internal/fdother/indexed_transition_pass.go",
+        "sha256": "7988cc1fb214de0ae7aa6e9f7e582e0f79cd8673b627407e994668bc83225059"
+      },
+      {
+        "file": "remake/internal/fdother/indexed_transition_schedule.go",
+        "sha256": "487679acc32310c27fba71f9cbe882fc7ab67137123a3f473adde9babc3f6192"
+      },
+      {
+        "file": "remake/internal/fdother/palette.go",
+        "sha256": "fa19219053485b43a85b2ec8ae9c1510b653902c3c3d5f99921c4e4dd482f8f5"
+      }
+    ],
+    "palette_approximation": "HD通道飽和加delta/63，alpha保持；原圖主題沿精確DAC與bit replication，控制組為同一重製程式。",
+    "catalog_unchanged": true,
+    "new_art": false,
+    "full_hd_complete": false,
+    "normal_player_complete": false,
+    "started_date": "2026-10-24",
+    "verified_date": "2026-10-25",
+    "catalog": {
+      "file": "remake/assets/themes/modern/catalog.json",
+      "sha256": "9c25de7a2e5a9723e6f97cf608c3fc09c6bf41b82a32d86b9a44438d3131bc9d"
+    },
+    "source_snapshot": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/indexed-hd-source-snapshot-oct24-r1.json",
+      "sha256": "254e9695f41abffcdc5c90c899d1ffab93fa38846f73c5f32392728b401240d8"
+    },
+    "gates": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/indexed-hd-final-indexed-native-oct24-r1.gate.json",
+        "sha256": "30bd98ea7d9e556e3197cbdbf9598150c9836f6d9a3b7b47ce24ae8dde10b5d7"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/indexed-hd-final-indexed-unit-oct24-r1.gate.json",
+        "sha256": "58dcc66ac7a4b55c19ca71a4635ea71add001dd7c6208e4b32ab2a859edafeb9"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/indexed-hd-final-native-oct24-r1.gate.json",
+        "sha256": "ad7e34f86bd6c3bca6723f118ea949608f99bdc082a2dfe4cb96e1cbf69d5f5f"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/indexed-hd-final-unit-oct24-r1.gate.json",
+        "sha256": "0f28bcfdab5a12ef7759682bd30a9c62269ba66b2f94eef92d0ef9cbe649bb7f"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/indexed-hd-final-story-unit-oct24-r1.gate.json",
+        "sha256": "8dbe1c3e0103ea4bb39b4e517bc5577870e1b56d22368ce6f9e9c375a5067a03"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/indexed-hd-final-motion-unit-oct24-r1.gate.json",
+        "sha256": "011a06ff029710e92d92a9bb94814c421e4ab2856c9b3e435f1add4c8a082288"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/indexed-hd-final-regression-oct24-r1.gate.json",
+        "sha256": "1c52ab68b7fc840e1bc8b9292ba5bf8779edab1e977dbb22a89468935586190a"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/indexed-hd-formal-game-oct24-r2.gate.json",
+        "sha256": "a675deb278844cd520f3c118e986432e482410dfb12c7da88f2713fd021df9be"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/indexed-hd-private-game-oct24-r1.gate.json",
+        "sha256": "ae4da4495e90e497a6c4d28477380de414de21c9b7e4ecdfee6a28865a99a8d1"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/indexed-hd-story-regression-oct24-r1.gate.json",
+        "sha256": "75697873bf002b58c0d5f1ef2990aebd350593e43abcfcb2504c8ab4358091cc"
+      }
+    ],
+    "memory": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/indexed-hd-final-indexed-native-oct24-r1.memory.json",
+        "sha256": "7307299794b115e759d43a67390ac3016d9dfd8f04363ecf390d959773be2324"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/indexed-hd-final-indexed-unit-oct24-r1.memory.json",
+        "sha256": "f3ee12780752d000988e3846c9998bbd3c3fab9fd3bb7e96e5c5f5e56ffa75b7"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/indexed-hd-final-native-oct24-r1.memory.json",
+        "sha256": "df696ee39c76afdf502a234774aa2b1acf156472dc50fe7e6e7e8e0f8d9c24d4"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/indexed-hd-final-unit-oct24-r1.memory.json",
+        "sha256": "ab46f7a04055ab9728f86ade458e3b62db611346af2ecc7ea3a037c99c927da2"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/indexed-hd-final-story-unit-oct24-r1.memory.json",
+        "sha256": "15bca20cc945c7b36c35c058511b76218a4dc1d5364980f5f2bd31e681b5ea4b"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/indexed-hd-final-motion-unit-oct24-r1.memory.json",
+        "sha256": "5d8e525842db3cb6d5a5117b4691f9e98cd420c8f28014a0acba8430793a6f8d"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/indexed-hd-final-regression-oct24-r1.memory.json",
+        "sha256": "b7f736276ec76b49d1a1cbf875f225a88ddaa15f9d53b4deb512b022306d1d99"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/indexed-hd-formal-game-oct24-r2.memory.json",
+        "sha256": "cb42c97704c2dba85d42b9ca07905a39cd646e5fe154a73afafa5d5391128d76"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/indexed-hd-private-game-oct24-r1.memory.json",
+        "sha256": "0fe26f497f85a9be365bcf006bf93a01ad3b0f9964d04636af3e238c2312ad47"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/indexed-hd-story-regression-oct24-r1.memory.json",
+        "sha256": "eb7bbb4ed2d8be26da3f494ff0bb39dcb7997bfa5086f59a7246c974e4591c59"
+      }
+    ],
+    "receipts": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/indexed-hd-formal-game-oct24-r2-capture/receipt.json",
+        "sha256": "4605b9d21014e9f91c340067f25bd581e3a8cb2171d36cea46f52fe9b86e1e19"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/indexed-hd-private-game-oct24-r1-capture/receipt.json",
+        "sha256": "4605b9d21014e9f91c340067f25bd581e3a8cb2171d36cea46f52fe9b86e1e19"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/indexed-hd-story-regression-oct24-r1-capture/receipt.json",
+        "sha256": "dbe4038beff17638f03f247880dad5219be87d568792c1566ca5375c39aefb1b"
+      }
+    ],
+    "cross_pack": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/indexed-hd-cross-pack-oct24-r1.json",
+      "sha256": "f79be9804ed8cddff3bf8bf73cf406f419637f45ed10d19349e8c63f3ff0af37"
+    },
+    "readme": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/indexed-hd-readme-oct24-r1.json",
+      "sha256": "0b97fa175f4b08d9c4ebb4cdcf180e202c4b648ce40e58a30d5c8653acee9462"
+    },
+    "readme_image": {
+      "file": "docs/figures/hd-indexed-transition.png",
+      "sha256": "be41988ccf560a495693aa9c58bf79a0ecca366a24bd918ce597ab2eec27b0c2"
+    },
+    "string_inventory": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/indexed-hd-string-inventory-oct24-r1.json",
+      "sha256": "d449e42a9d0bceddc90aed5fc128a99a83113ae3af4ca6bfbd391e577d70539e"
+    },
+    "string_review": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/indexed-hd-string-review-oct24-r1.json",
+      "sha256": "f793d0393751e3ca3522efac2dae54b78797403ce43785185a149b6d2cdde663"
+    },
+    "strings_log": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/indexed-hd-strings-oct24-r1.log",
+      "sha256": "7ec5c66e4e811a9b66bf2bfbef3611e6d6d95262da88a51172d169663f764b87"
+    },
+    "strings_memory": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/indexed-hd-strings-oct24-r1.memory.json",
+      "sha256": "ea106e2feb99f7d57b5ee675b891c70be6f212e217e1e5d4bd083eefba8203af"
+    },
+    "test_executions": 49,
+    "unique_tests": 48,
+    "string_tests": 8,
+    "string_dispositions": 109,
+    "cases_per_pack": 4,
+    "draws_per_pack": 288,
+    "f2_per_pack": 32,
+    "alpha_worlds_per_pack": 3,
+    "native_radial_presents_per_case": 9,
+    "palette_steps_per_case": 32,
+    "tail_updates_per_case": 31,
+    "private_runtime_files": 5762,
+    "original_executable_rerun": false,
+    "control_definition": "相同重製程式、初始狀態、時鐘及seed，HD與原圖主題控制組比較；不新增原版執行器對拍。",
+    "native_state_unchanged": true,
+    "save_format_unchanged": true,
+    "next_gate": "接0x24B4D及天空之鑰／第23章特殊背景；其餘地形、HD2、完整HUD、浮出工具列／加速，與全部HD後的正常／集中人工／平台仍待。",
+    "old_story_regression": {
+      "draws": 198,
+      "f2_round_trips": 19,
+      "source_worlds": 22,
+      "pngs_unchanged": 12,
+      "receipt_unchanged": true
+    },
+    "cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/indexed-hd-cleanup-oct24-r1.json",
+      "sha256": "553713adc6e0bf8f9c8f1ccb74d53a44040b5f11a8705dc79de1ee7fb1cdc8c9"
+    },
+    "temporary_capture_policy": "私人PNG依cross_pack與cleanup逐SHA去重，正式PNG、全部收據與log保留。",
+    "issue_updates": {
+      "numbers": [
+        204,
+        263
+      ],
+      "acceptance_unchanged": true,
+      "other_issues_unchanged": 22,
+      "issues_remain_open": true
+    },
+    "private_unchanged_commit": "e9f5403961415e4a785f9e1b31d3dffa33620ce7",
+    "toolchain": {
+      "image": "fd2-go-test-local:latest",
+      "image_id": "sha256:e4a805c52a3ad5d8c22cf23f2bcf51c6924e5ad6b99554f1b02761903c725433",
+      "go": "1.22.12",
+      "ebiten": "2.6.6",
+      "memory_limit": "6GiB",
+      "gpu_timeout_seconds": 1200,
+      "regression_gpu_timeout_seconds": 900,
+      "network": "none",
+      "uid": 1000,
+      "no_oom": true
+    },
+    "final_audit": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/indexed-hd-final-audit-oct24-r1.json",
+      "sha256": "05fb932455be457b99f6cf3674e96d292b8ab36e9257a0b429a5bc6da5631925"
+    }
   }
 }

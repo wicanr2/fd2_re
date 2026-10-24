@@ -13,6 +13,26 @@ from verify_fd2_player9_map_hd import check_real_runtime
 
 ROOT=Path(__file__).resolve().parents[1]
 REQUIRED={
+    'indexed-native':{
+        'TestResolveNativeIndexedTransitionUsesProvenRelativeCursor',
+        'TestResolveNativeIndexedTransitionUsesLoadCHSceneView',
+        'TestResolveNativeIndexedTransitionUsesChapter27TwoAxisOffset',
+        'TestChapter27IndexedTransitionCallersKeepDistinctOffsets',
+        'TestResolveNativeIndexedTransitionRejectsMissingOrUnprovenCursor',
+        'TestNativeIndexedTransitionRequiresEveryDrawBeforeContinuation',
+        'TestNativeIndexedTransitionStartFailsClosedOnMissingRawAssets',
+        'TestNativeIndexedTransitionPreflightsAllNineLUTsBeforePublish',
+    },
+    'indexed-unit':{
+        'TestModernHDIndexedTransitionFrozenFramesAndNativeControl',
+        'TestModernHDIndexedTransitionUsesPreviousNativeWork',
+        'TestModernHDIndexedTransitionMaskKeepsFullWorkOrigin',
+        'TestModernHDIndexedTransitionRejectsBeforePublication',
+        'TestModernHDIndexedTransitionStagesAllOwnersAtomically',
+        'TestModernHDIndexedTransitionCachedF2Revalidates',
+        'TestModernHDIndexedTransitionColdStartRejects',
+    },
+    'indexed-game':{'TestModernHDIndexedTransitionGameGPU'},
     'native':{
         'TestNativeUnitPresentMutatesOnlyAfterContractAndCompletesAllFrames',
         'TestNativeUnitPresentPreflightFailureLeavesStateAndBuffersUntouched',
@@ -63,6 +83,35 @@ REQUIRED={
 
 def check_receipt(kind, prefix):
     receipt=json.loads(Path(str(prefix)+'-capture/receipt.json').read_text())
+    if kind=='indexed-game':
+        cases=receipt.get('cases',[]); rows=receipt.get('rows',[]); alpha=receipt.get('alpha_sources',[])
+        if (receipt.get('status')!='PASS-INDEXED-TRANSITION-HD-GAME' or receipt.get('fixed_clock_unix')!=1000
+                or receipt.get('native_seed')!=7 or receipt.get('rgba_tolerance')!=2
+                or len(cases)!=4 or {r.get('name') for r in cases}!={'ch21','ch22','ch27','geometry'}
+                or len(rows)!=288 or len(alpha)!=3 or {r.get('delta') for r in alpha}!={0,16,62}
+                or any(r.get('alphas')!=[0,128,255] or not re.fullmatch('[0-9a-f]{64}',r.get('world_sha256','')) for r in alpha)):
+            raise ValueError('徑向／DAC完整流程、固定條件或alpha來源缺項')
+        expected_sources={'ch21':'0x245ce','ch22':'0x336e5','ch27':'0x33ce2','geometry':''}
+        for case in cases:
+            if (case.get('source')!=expected_sources[case['name']] or case.get('draws')!=72
+                    or case.get('f2_round_trips')!=8 or case.get('tail_updates')!=31 or case.get('continuations')!=1
+                    or case.get('native_control_unchanged') is not True
+                    or not re.fullmatch('[0-9a-f]{64}',case.get('return_final_sha256',''))):
+                raise ValueError('caller、一次續行、停留、主題往返或HD返回缺項')
+            selected=[r for r in rows if r.get('case')==case['name']]
+            expected={f'pass/{i}' for i in range(9)}|{f'tail/{i}' for i in range(31)}|{f'palette/{i}' for i in range(32)}
+            if len(selected)!=72 or {r.get('key') for r in selected}!=expected:
+                raise ValueError('九階、31停留tick或32階DAC缺項')
+            final_vga=next(r['native_vga_sha256'] for r in selected if r['key']=='pass/8')
+            for row in selected:
+                if (row.get('key')!=f"{row.get('phase')}/{row.get('number')}" or row.get('rng')!=7
+                        or any(not re.fullmatch('[0-9a-f]{64}',row.get(k,'')) for k in ['final_sha256','native_vga_sha256','dac_sha256'])
+                        or row.get('palette_add6')!=(row['number']*2 if row['phase']=='palette' else 0)
+                        or row['phase']!='pass' and row['native_vga_sha256']!=final_vga):
+                    raise ValueError('原始圖面、GPU或baseline DAC階段不一致')
+            if len({r['dac_sha256'] for r in selected if r['phase']=='palette'})!=32:
+                raise ValueError('32個實際DAC快照缺項')
+        return
     if kind=='motion-game':
         cases=receipt.get('cases',[])
         if (receipt.get('status')!='PASS-STORY-MOTION-HD-GAME' or receipt.get('fixed_clock_unix')!=1000
@@ -143,7 +192,7 @@ def main():
             raise ValueError('不可覆寫收據')
     independent=check_real_runtime(a.pack,json.loads(a.catalog.read_text())) if a.require_real_runtime else None
     env=os.environ.copy()
-    for name in ['FD2_HD_UNIT_PRESENT_SOURCE','FD2_HD_UNIT_PRESENT_GPU','FD2_HD_UNIT_PRESENT_STORY_GPU','FD2_HD_STORY_MOTION_GPU']:
+    for name in ['FD2_HD_UNIT_PRESENT_SOURCE','FD2_HD_UNIT_PRESENT_GPU','FD2_HD_UNIT_PRESENT_STORY_GPU','FD2_HD_STORY_MOTION_GPU','FD2_HD_INDEXED_TRANSITION_GPU']:
         env.pop(name,None)
     env.update(FD2_MUTE='1',FD2_TEST_UNIT_PRESENT_CATALOG=str(a.catalog.resolve()),
                FD2_TEST_UNIT_PRESENT_PACK=str(a.pack.resolve()),FD2_TEST_UNIT_PRESENT_OUT=str(a.out)+'-capture')
@@ -151,6 +200,7 @@ def main():
     if a.kind=='game':env['FD2_HD_UNIT_PRESENT_GPU']='1'
     if a.kind=='story-game':env['FD2_HD_UNIT_PRESENT_STORY_GPU']='1'
     if a.kind=='motion-game':env['FD2_HD_STORY_MOTION_GPU']='1'
+    if a.kind=='indexed-game':env['FD2_HD_INDEXED_TRANSITION_GPU']='1'
     pattern='^('+'|'.join(sorted(REQUIRED[a.kind]))+')$'
     shell='''set -euo pipefail
 Xvfb :99 -screen 0 1920x1200x24 -nolisten tcp >/tmp/fd2-unit-present-xvfb.log 2>&1 &
@@ -175,7 +225,7 @@ export DISPLAY=:99
     events=[json.loads(s) for s in Path(str(a.out)+'.log').read_text().splitlines() if s.startswith('{')]
     if not REQUIRED[a.kind]<={e.get('Test') for e in events if e.get('Action')=='pass'} or any(e.get('Action') in {'skip','fail'} for e in events):
         raise ValueError('必要測試缺項、SKIP或失敗')
-    if a.kind in {'source','game','story-game','motion-game'}:
+    if a.kind in {'source','game','story-game','motion-game','indexed-game'}:
         check_receipt(a.kind,a.out)
     report=dict(status='PASS',kind=a.kind,required=sorted(REQUIRED[a.kind]),catalog=str(a.catalog.resolve()),
                 catalog_sha256=hashlib.sha256(a.catalog.read_bytes()).hexdigest(),pack=str(a.pack.resolve()),

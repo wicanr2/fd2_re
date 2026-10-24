@@ -48,15 +48,16 @@ def modifier_gallery(args):
 
 def unit_present_gallery(args):
     from verify_fd2_unit_present_hd import check_receipt
-    receipt=args.story_motion_receipt or args.story_unit_present_receipt or args.unit_present_receipt
+    receipt=args.indexed_transition_receipt or args.story_motion_receipt or args.story_unit_present_receipt or args.unit_present_receipt
+    indexed=args.indexed_transition_receipt is not None
     motion=args.story_motion_receipt is not None
     story=args.story_unit_present_receipt is not None
     prefix=receipt.parent
     if not prefix.name.endswith('-capture'):
         raise SystemExit('須給完整轉場capture/receipt.json')
-    check_receipt('motion-game' if motion else 'story-game' if story else 'game',prefix.with_name(prefix.name[:-8]))
+    check_receipt('indexed-game' if indexed else 'motion-game' if motion else 'story-game' if story else 'game',prefix.with_name(prefix.name[:-8]))
     data=json.loads(receipt.read_text())
-    canvas=Image.new('RGB',(1920,1248),'#191d23')
+    canvas=Image.new('RGB',(1920,1200) if indexed else (1920,1248),'#191d23')
     paint=ImageDraw.Draw(canvas)
     font=ImageFont.load_default(size=18)
     rows=[]
@@ -73,6 +74,9 @@ def unit_present_gallery(args):
         choices=[(name+'.png',name,'motion',label) for name,label in
                  [('east','Story / walking east'),('north','Story / walking north'),
                   ('turn-x','Story / turning'),('follow','Story / camera follows')]]
+    if indexed:
+        choices=[('geometry-pass-00.png','geometry','pass',''),('geometry-pass-08.png','geometry','pass',''),
+                 ('geometry-palette-15.png','geometry','palette',''),('geometry-return.png','geometry','return','')]
     for i,(name,case,phase,label) in enumerate(choices):
         source=prefix/name
         with Image.open(source) as im:
@@ -83,19 +87,24 @@ def unit_present_gallery(args):
             matches=[dict(key='return') for r in data['cases'] if r['name']==case and r['return_final_sha256']==raw_sha]
         if motion:
             matches=[dict(key='step/6') for r in data['rows'] if r['case']==case and r['step']==6 and r['final_sha256']==raw_sha]
+        if indexed and phase!='return':
+            key=phase+'/'+str(int(Path(name).stem.rsplit('-',1)[1]))
+            matches=[r for r in data['rows'] if r['case']==case and r['key']==key and r['final_sha256']==raw_sha]
         if picture.size!=(1920,1200) or not matches:
             raise SystemExit('圖片不是已驗證的完整Game.Draw畫面')
-        x,y=i%2*960,i//2*624
-        paint.text((x+8,y+2),label,font=font,fill='#e4eaf2')
-        canvas.paste(picture.convert('RGB').resize((960,600),Image.Resampling.LANCZOS),(x,y+24))
+        x,y=i%2*960,i//2*(600 if indexed else 624)
+        if not indexed:
+            paint.text((x+8,y+2),label,font=font,fill='#e4eaf2')
+        canvas.paste(picture.convert('RGB').resize((960,600),Image.Resampling.LANCZOS),(x,y if indexed else y+24))
         rows.append(dict(source=str(source.resolve().relative_to(ROOT)),sha256=hashlib.sha256(source.read_bytes()).hexdigest(),
                          raw_rgba_sha256=raw_sha,key=matches[0]['key'],case=case,phase=phase,
-                         operation='whole-frame half-size; label outside game area'))
+                         operation='whole-frame half-size; no crop or overlays' if indexed else 'whole-frame half-size; label outside game area'))
     canvas.save(args.out)
     result=dict(file=str(args.out.resolve().relative_to(ROOT)),sha256=hashlib.sha256(args.out.read_bytes()).hexdigest(),
                 size=list(canvas.size),sources=rows,receipt=str(receipt.resolve().relative_to(ROOT)),
                 receipt_sha256=hashlib.sha256(receipt.read_bytes()).hexdigest(),
-                scope='controlled story-motion Game.Draw; not ordinary player or original RGB parity' if motion else
+                scope='controlled indexed-transition geometry fixture Game.Draw; not normal player or original RGB parity' if indexed else
+                'controlled story-motion Game.Draw; not ordinary player or original RGB parity' if motion else
                 'controlled story/direct-unit or command23/battle-staging Game.Draw; not ordinary player or original RGB parity')
     args.receipt.write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
     print(json.dumps(dict(sha256=result['sha256'],sources=len(rows))))
@@ -109,6 +118,7 @@ def main():
     parser.add_argument('--unit-present-receipt',type=Path,help='單位轉場完整Game.Draw收據，選傳送與增援四格')
     parser.add_argument('--story-unit-present-receipt',type=Path,help='故事／直接出現收據，選入場及返回HD世界四格')
     parser.add_argument('--story-motion-receipt',type=Path,help='故事走位收據，選四方向／轉彎／跟隨的已驗畫面')
+    parser.add_argument('--indexed-transition-receipt',type=Path,help='九階徑向轉場收據，選起始／徑向末階／加亮／返回四格')
     parser.add_argument('--out', type=Path, required=True)
     parser.add_argument('--receipt', type=Path, required=True)
     parser.add_argument('--command-panels', action='store_true', help='選法術actor階段；完整PNG先記SHA，原收據有SHA時再核對')
@@ -123,10 +133,10 @@ def main():
     for path in [args.out, args.receipt]:
         if not path.parent.is_dir() or path.exists():
             raise SystemExit('輸出父目錄須存在，不覆寫既有檔案')
-    if args.unit_present_receipt or args.story_unit_present_receipt or args.story_motion_receipt:
+    if args.unit_present_receipt or args.story_unit_present_receipt or args.story_motion_receipt or args.indexed_transition_receipt:
         if args.captures or args.modifier_receipts or args.command_panels or args.phase or args.lmi_entries:
             raise SystemExit('單位轉場不可混用其他總覽選項')
-        if sum(v is not None for v in [args.unit_present_receipt,args.story_unit_present_receipt,args.story_motion_receipt])!=1:
+        if sum(v is not None for v in [args.unit_present_receipt,args.story_unit_present_receipt,args.story_motion_receipt,args.indexed_transition_receipt])!=1:
             raise SystemExit('兩種轉場總覽須分別輸出')
         unit_present_gallery(args)
         return

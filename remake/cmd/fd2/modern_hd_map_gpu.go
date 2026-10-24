@@ -28,6 +28,45 @@ type modernHDMapGPU struct {
 	CompoundShader        *ebiten.Shader
 	CompoundOwner         *modernHDCompoundMapScene
 	HUDBase, HUDAbove     *ebiten.Image
+	PaletteSource         *ebiten.Image
+	PaletteShader         *ebiten.Shader
+}
+
+const modernHDMapPaletteAddSource = `//kage:unit pixels
+package main
+var Add float
+func Fragment(position vec4, texCoord vec2, color vec4) vec4 {
+    c:=imageSrc0At(texCoord)
+    return vec4(min(c.rgb+vec3(Add)*c.a,vec3(c.a)),c.a)
+}`
+
+// The native owner still writes exact six-bit DAC entries. HD art receives
+// the declared uniform channel approximation only after its world is drawn.
+func (r *modernHDMapGPU) addPalette(delta int) error {
+	if delta < 0 || delta > 63 {
+		return errors.New("modern HD world: palette addition outside six bits")
+	}
+	if delta == 0 {
+		return nil
+	}
+	if r.PaletteSource == nil {
+		r.PaletteSource = ebiten.NewImage(modernHDWidth, modernHDHeight)
+	}
+	if r.PaletteShader == nil {
+		var err error
+		r.PaletteShader, err = ebiten.NewShader([]byte(modernHDMapPaletteAddSource))
+		if err != nil {
+			return err
+		}
+	}
+	r.PaletteSource.Clear()
+	r.PaletteSource.DrawImage(r.World, nil)
+	r.World.Clear()
+	op := &ebiten.DrawRectShaderOptions{}
+	op.Images[0] = r.PaletteSource
+	op.Uniforms = map[string]interface{}{"Add": float32(delta) / 63}
+	r.World.DrawRectShader(modernHDWidth, modernHDHeight, r.PaletteShader, op)
+	return nil
 }
 
 func (r *modernHDMapGPU) drawHUDUnit(patch *modernHDMapHUDUnit, clip image.Rectangle) {
@@ -265,6 +304,10 @@ func (g *Game) drawPreparedModernHDMapFrame(screen *ebiten.Image, frame *modernH
 		uiop := &ebiten.DrawImageOptions{}
 		uiop.GeoM.Scale(2, 2)
 		screen.DrawImage(r.UI, uiop)
+	}
+	if err := r.addPalette(frame.PaletteAdd6); err != nil {
+		g.loadErr = err.Error()
+		return false
 	}
 	g.modernHDWorldVisible = true
 	g.modernHDMapPresentedFrame = g.frame

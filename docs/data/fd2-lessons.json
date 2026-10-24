@@ -4102,6 +4102,21 @@
         ],
         "pattern": "func modernHDStoryParallaxBackdrop"
       }
+    },
+    {
+      "id": "theme-switch-fixtures-supply-normalized-base-atlas",
+      "date": "2026-10-25",
+      "area": "主題切換測具",
+      "rule": "會呼叫applyTheme(nil)的測具先提供與地形格尺寸一致的baseMapTileset。只建立nativeMapAssets不會初始化正規化底圖；入口remake/cmd/fd2/player_shortcuts.go的refreshThemeVisuals及modern_hd_indexed_transition_test.go的indexedHDTestGame，重跑tools/verify_fd2_unit_present_hd.py --kind indexed-unit。 guard核對正式切換仍依賴此欄位，測具完整性由indexed-unit實測；教訓掃描器刻意不讀_test.go。",
+      "why": "徑向HD的快取F2測具只備原生bank，切回原圖時NewImageFromImage收到nil；補成實際baseMapTileset欄位後同命令通過。正式loader已物化此資源，沒有為測具在正式路徑猜補底圖。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/player_shortcuts.go"
+        ],
+        "pattern": "img := g\\.baseMapTileset"
+      }
     }
   ]
 }

@@ -2,6 +2,19 @@
 
 狀態：現代主題仍為部分覆蓋；目前分層與缺口依[58](58-fd2-exe-re-coverage.md)。
 
+## 九階徑向轉場與調色HD（CONFORMED-SCOPED／RUNTIME-E1）
+
+本節實作前為READY。兩包各三個既有caller與一個幾何測具的完整GPU流程、F2、原圖主題控制組與一次返回均通過，圖片及完整收據相同；透明度、baseline DAC及原生work／VGA保持。原生、HD來源與舊故事／轉場回歸通過；唯一數量依[58](58-fd2-exe-re-coverage.md)。本批沒有重跑原版執行器，圖組與保存格式不變。
+
+本切片接上既有 `nativeIndexedTransitionJob` 的0x24618繪製，不改原生輸入、位址解析或事件續行。固定原版雜湊與閉合callee／caller入口依[58](58-fd2-exe-re-coverage.md)、[第22章證據](../data/ida/fd2_ch22_pre_ida.txt)與[第27／28章證據](../data/ida/fd2_ch27_ch28_pre_owner_ida.txt)。來源為既有[原生owner](../../remake/cmd/fd2/native_indexed_transition.go)、`indexedmap.ComposeNativeTransitionFrame`及`fdother.BuildNativeIndexedTransitionSchedule`；只新增HD消費端，不重解參數。來源雜湊與最終收據集中[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的indexed_transition_hd_followup_20261024。
+
+- 凍結當次具型別地圖、selector、原始色盤與九份LUT。保留每個原生work／VGA與完整歷史順序，逐byte重建後才發布HD；背景不得把前一階完整work誤換成新的空白種子。九階半徑與原始座標直接沿既有builder，不依欄位名稱補倍率。HD人物／已登錄地形沿共用徑向遮罩，工作基底為完整work的0，與單位轉場的0x8088分開。原生第一remap、單位／前景、第二remap及矩形順序保持；HD查表色彩沿既有四色差近似。
+- 既有owner保留九個可見present、500ms停留及32個DAC變更，delta=0..62、步進2。`ApplyVGAPaletteDelta`由baseline加亮、飽和於63，不是累加當前色盤。HD以原九階最後圖面為底，每階RGBA通道加 `delta/63` 後飽和，alpha保持，且只作用在本次遊戲世界。這是現代美術顯示近似；原圖主題仍以原生DAC的bit replication顯示，不宣稱HD逐RGB相同。
+- 冷啟動與F2預檢同一凍結來源、九階與全部32階，全部通過才換圖。缺圖、錯尺寸、來源變動或不完整宣告在發布前拒收；主題、owner、角色、RNG、原生圖面與進度保持。Draw只承認已顯示，不推進phase或回呼；停留與一次續行由原owner負責，保存格式不變。新GPU調色欄位預設零，既有owner沿原繪製契約。
+- 驗收包含九階native完整重建、work位址與圖層遮罩、全部32個baseline DAC、原子拒收／F2、四個完整Game.Draw與前後續行。三個既有caller及一個明示幾何測具分列；正式與私人包逐圖／收據核對，GPU對獨立RGBA8合成，另驗半透明alpha與既有故事／轉場回歸。原圖控制組使用相同重製程式，不等於原版執行器；本切片只到受控RUNTIME-E1。其他caller、0x24B4D、特殊背景、完整HD與正常／集中人工／平台仍待。
+
+實作入口為[HD徑向消費端](../../remake/cmd/fd2/modern_hd_indexed_transition.go)、[來源與拒收測試](../../remake/cmd/fd2/modern_hd_indexed_transition_test.go)及[完整GPU流程](../../remake/cmd/fd2/modern_hd_indexed_transition_gpu_test.go)，沿既有[單位與轉場驗證器](../../tools/verify_fd2_unit_present_hd.py)擴充`indexed-native`、`indexed-unit`及`indexed-game`。完整GPU用`--kind indexed-game --catalog ABS --pack ABS --out FRESH_PREFIX --timeout 1200`，須獨立程序，私人包加`--require-real-runtime`；掛載與素材環境沿下節。原生owner與共享GPU的新調色欄位預設零，舊故事與轉場各自回歸。README總覽沿`build_fd2_battle_panel_gallery.py --indexed-transition-receipt capture/receipt.json`，先核完整RGBA雜湊再整框半縮，幾何測具不當成新的正常caller。
+
 ## 故事走位與插值移鏡HD（CONFORMED-SCOPED／RUNTIME-E1）
 
 本節實作前為READY。正式與私人實檔包的四方向、兩種轉彎、雙軸移鏡及跟隨捲動完整GPU／F2、一次續行與原生控制組均通過，完整收據與圖片相同；前批靜態故事轉場畫面保持。唯一數量依[58](58-fd2-exe-re-coverage.md)，實測收據依下列主收據，不擴稱全部HD或正常玩家。

@@ -27,22 +27,29 @@ const (
 // Draw acknowledges every native present so multiple 5/4ms operations cannot
 // collapse into an unobservable final frame on the host's 60Hz update clock.
 type nativeIndexedTransitionJob struct {
-	input    indexedmap.NativeTransitionFrameInput
-	schedule fdother.NativeIndexedTransitionSchedule
-	spec     campaign.HandlerIndexedTransition
-	work     []byte
-	vga      []byte
-	frameVGA [][]byte
-	dac      []byte
-	baseline []byte
-	palette  color.Palette
+	input     indexedmap.NativeTransitionFrameInput
+	schedule  fdother.NativeIndexedTransitionSchedule
+	spec      campaign.HandlerIndexedTransition
+	work      []byte
+	vga       []byte
+	frameVGA  [][]byte
+	frameWork [][]byte
+	dac       []byte
+	baseline  []byte
+	palette   color.Palette
 
-	phase       nativeIndexedTransitionPhase
-	frame       int
-	paletteStep int
-	tailTicks   int
-	drawn       bool
-	then        func()
+	phase         nativeIndexedTransitionPhase
+	frame         int
+	paletteStep   int
+	tailTicks     int
+	drawn         bool
+	then          func()
+	hdSource      *modernHDIndexedTransitionSource
+	hdSignature   [32]byte
+	hdFrames      []*modernHDMapFrame
+	hdTheme       *modernStoryPortraitSet
+	hdCached      []*modernHDMapFrame
+	hdCachedTheme *modernStoryPortraitSet
 }
 
 func nativeDelayTicks(ms int) int {
@@ -214,6 +221,15 @@ func (g *Game) startNativeIndexedTransition(spec campaign.HandlerIndexedTransiti
 	}
 	job.frame, job.palette, job.drawn = 0, palette, false
 	copy(job.vga, job.frameVGA[0])
+	if err := g.freezeModernHDIndexedTransition(job); err != nil {
+		return err
+	}
+	frames, err := g.prepareModernHDIndexedTransition(job, g.modernStoryPortraits)
+	if err != nil {
+		return err
+	}
+	job.hdFrames, job.hdTheme = frames, g.modernStoryPortraits
+	job.hdCached, job.hdCachedTheme = frames, g.modernStoryPortraits
 	g.indexedTransition = job
 	return nil
 }
@@ -237,6 +253,7 @@ func (j *nativeIndexedTransitionJob) composePass(index int, luts [][]byte) error
 		return err
 	}
 	j.frameVGA = append(j.frameVGA, append([]byte(nil), j.vga...))
+	j.frameWork = append(j.frameWork, append([]byte(nil), j.work...))
 	return nil
 }
 
@@ -315,6 +332,24 @@ func (g *Game) drawNativeIndexedTransition(screen *ebiten.Image) bool {
 	j := g.indexedTransition
 	if j == nil || len(j.vga) != indexedmap.NativeMapVGASize || len(j.palette) != 256 {
 		return false
+	}
+	if set := g.modernStoryPortraits; set != nil && len(set.mapSpritesHD) == 125 {
+		index := j.frame
+		switch j.phase {
+		case nativeTransitionTail:
+			index = 8
+		case nativeTransitionPalette:
+			index = 9 + j.paletteStep
+		}
+		if j.hdTheme != set || index < 0 || index >= len(j.hdFrames) {
+			g.loadErr = "modern HD indexed transition: active frame unavailable"
+			return false
+		}
+		if !g.drawPreparedModernHDMapFrame(screen, j.hdFrames[index], false) {
+			return false
+		}
+		j.drawn = true
+		return true
 	}
 	img := image.NewPaletted(image.Rect(0, 0, 320, 200), j.palette)
 	copy(img.Pix, j.vga)

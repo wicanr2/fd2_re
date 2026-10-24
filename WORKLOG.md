@@ -3301,3 +3301,18 @@ README保留文化保存入口，新增HD2設計基準及兩組概念，61限定
 - 核SHA後清理44張本輪重複／失敗測具暫存圖，釋放81930089 bytes，紀錄在story-motion-cleanup-oct24-r1.json；保留正式畫面、全部log及收據，沒有新錄影。765清冊與私人6740檔保持，私人main仍e9f5403961415e4a785f9e1b31d3dffa33620ce7，沒有新私人同步或Release。FD2一次性容器均已移除，沒有重建工具映像。
 
 本切片是重製顯示近似，只到受控RUNTIME-E1。視差測具將原版FDOTHER16／17接到map0，不代表第18章正常玩家可達性；未登錄地形仍用原圖。下一閘門接0x24618完整徑向／調色，再補0x24B4D與特殊背景；HD2、完整HUD、浮出工具列／加速及全部HD後的正常玩家／集中人工／平台仍待。程式、規格與README以本段所在Git提交及origin/main追溯，未另發版。
+
+
+## 2026-10-25 九階徑向轉場與baseline加亮HD
+
+從dfee7fad的main建立hd/indexed-transition-20261024，跨日完成本批。先依重製規格閘門將既有0x24618繪製切片寫成READY，再接HD消費端；原始caller解析、九階排程、停留、DAC與一次續行由既有owner保留，沒有重開RE或新增玩法。
+
+- 冷啟動凍結同次地圖／selector／色盤、九個LUT與每階work／VGA。HD預檢逐byte重建原生九階，背景從前一階完整work續接，保留目的色重映射歷史。徑向遮罩使用完整work基底0，沿已核准四色差近似繪HD人物及已登錄地形。新檔modern_hd_indexed_transition.go承接消費端。
+- 核對ApplyVGAPaletteDelta後確認是從baseline加亮、飽和於63。HD的32階只改PaletteAdd6，世界重組後以GPU飽和加delta/63，alpha保持；每階由同一最後徑向圖面開始，避免累加前一張圖。這是HD色彩近似，原圖主題保留精確DAC與bit replication。Draw只承認顯示，F2全部預檢後一起發布，回到正常世界時新欄位為零。
+- 十份Go閘門49次必要頂層測試通過，另八字串回歸及109個既有審校處置保持。兩包各四完整Game.Draw、288次繪製與32次F2，完整九階／31停留更新／32個DAC／一次續行及HD返回通過；各三個GPU世界另核alpha0／128／255。兩包16張PNG與完整收據相同，5762私人獨立runtime檔通過。原圖主題控制組為同一重製程式，本批未重跑原版FD2.EXE；三個既有caller及一個直接幾何測具分列，不外推新caller或PLAYER-E2。
+- 8原生indexed、7HD來源／拒收、7原生入場、5HD轉場、4故事來源、6故事走位及9共用回歸通過。舊故事完整GPU兩流程198次繪製、19次F2與22來源世界保持，12張PNG及完整收據與前批相同。全批無SKIP、逾時或OOM；峰值5396979712 bytes低於6GiB容器限額。這些數字是受控回讀測試，不是正式玩家效能測量。
+- 首輪快取F2測具只備原生bank，缺少正規化baseMapTileset而panic；中間一次欄位名稱誤寫造成編譯失敗。回查refreshThemeVisuals後補齊測具，同命令乾淨重跑通過，正式路徑沒有猜補底圖。失敗log與記憶體收據保留，新增可重用教訓；336教訓／200個guard通過。
+- README四格從已驗證完整RGBA畫布半縮，順序為幾何起始、徑向末階、加亮及返回，PNG SHA為be41988ccf560a495693aa9c58bf79a0ecca366a24bd918ce597ab2eec27b0c2。唯一數量及現況依58，契約61提升CONFORMED-SCOPED／RUNTIME-E1；56／57與GitHub #204／#263同步，acceptance及其他22項保持。24開啟／16人工／0可能已完成，未關閉整體HD議題。
+- 依跨包SHA清理16張私人重複PNG，釋放30686124 bytes，紀錄在indexed-hd-cleanup-oct24-r1.json；正式PNG、全部log／收據保留，沒有新增錄影。765清冊與私人6740檔保持，私人main仍e9f5403961415e4a785f9e1b31d3dffa33620ce7，沒有新私人同步、工具映像或Release。一次性FD2容器完成後移除，收尾另檢查清理狀態。
+
+主證據為HD主收據indexed_transition_hd_followup_20261024，原生owner的實作前SHA以dfee7fad綁定，實作後來源以indexed-hd-source-snapshot-oct24-r1.json定位。永久入口沿tools/verify_fd2_unit_present_hd.py的indexed-native／indexed-unit／indexed-game，完整GPU帶--catalog ABS --pack ABS --out FRESH_PREFIX --timeout 1200，私人包另帶--require-real-runtime；舊故事沿story-game。下一閘門接0x24B4D及天空之鑰／第23章特殊背景；其餘地形、HD2、完整HUD、浮出工具列／加速及全部HD後的正常／集中人工／平台仍待。程式與規格由本段所在提交及origin/main追溯，完整HD目標保持。
