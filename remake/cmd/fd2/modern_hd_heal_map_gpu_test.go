@@ -11,6 +11,7 @@ import (
 	"math"
 	"os"
 	"path/filepath"
+	"strconv"
 	"testing"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -81,8 +82,21 @@ func healHDCPUWorld(frame *modernHDMapFrame, set *modernStoryPortraitSet) *image
 	if frame.OverlaysAboveUI {
 		paint(frame.UI, out.Bounds(), out.Bounds(), one)
 	}
+	paintHUD := func() {
+		if h := frame.HUDUnit; h != nil {
+			paint(h.Base, h.Unit.Rect, clip, one)
+			paint(set.mapSpritesHD[h.Unit.Group][h.Unit.Frame], h.Unit.Rect, clip, one)
+			paint(h.Above, h.Unit.Rect, clip, one)
+		}
+	}
+	if frame.OverlaysAboveUI {
+		paintHUD()
+	}
 	for _, layer := range frame.Overlays {
 		paint(layer.Image, layer.Rect, clip, one)
+	}
+	if !frame.OverlaysAboveUI {
+		paintHUD()
 	}
 	return out
 }
@@ -273,6 +287,20 @@ func TestModernHDHealCompleteGameGPU(t *testing.T) {
 		t.Skip("dedicated GPU process required")
 	}
 	t.Setenv("FD2_MUTE", "1")
+	start, limit := 0, 8
+	for name, dst := range map[string]*int{"FD2_HD_HEAL_START": &start, "FD2_HD_HEAL_LIMIT": &limit} {
+		if value := os.Getenv(name); value != "" {
+			n, err := strconv.Atoi(value)
+			if err != nil {
+				t.Fatal(name, err)
+			}
+			*dst = n
+		}
+	}
+	if start < 0 || start >= 8 || limit < 1 || limit > 8 {
+		t.Fatal("invalid healing GPU batch")
+	}
+	end := min(8, start+limit)
 	set := healHDTestTheme(t)
 	out := os.Getenv("FD2_TEST_HEAL_OUT")
 	if out == "" {
@@ -284,6 +312,13 @@ func TestModernHDHealCompleteGameGPU(t *testing.T) {
 	p := &healHDGPUProbe{set: set, out: out, pixels: make([]byte, 1920*1200*4), worlds: make(map[string]*image.RGBA)}
 	for _, id := range []int{13, 14, 15, 16} {
 		for _, multi := range []bool{false, true} {
+			index := (id - 13) * 2
+			if multi {
+				index++
+			}
+			if index < start || index >= end {
+				continue
+			}
 			command := id // go.mod may retain pre-1.22 range closure semantics.
 			g, actor, target, targets := healHDTestGame(t, id, multi)
 			g.modernStoryPortraits = set
@@ -309,10 +344,23 @@ func TestModernHDHealCompleteGameGPU(t *testing.T) {
 	if err := ebiten.RunGame(p); err != nil {
 		t.Fatal(err)
 	}
-	if p.err != nil || p.index != 8 || p.source != 17 {
-		t.Fatalf("heal GPU %d/8 source%d: %v", p.index, p.source, p.err)
+	if p.err != nil || p.index != end-start || p.source != 17 {
+		t.Fatalf("heal GPU %d/%d source%d: %v", p.index, end-start, p.source, p.err)
 	}
-	report := map[string]any{"status": "PASS-HEAL1316-HD-RUNTIME-E1", "cases": 8, "source_gpu_frames": 17, "commands": []int{13, 14, 15, 16}, "f2_round_trips": 88, "rgba_tolerance": 2, "rows": p.rows, "normal_player_verified": false, "scope": "Real native map/LMI and complete Game.Draw; controlled command records/placement, native RNG before transaction, capped and multi-target healing. Not original oracle or normal-player proof."}
+	completed := make([]map[string]any, 0, len(p.cases))
+	f2 := 0
+	for _, c := range p.cases {
+		index := (c.id - 13) * 2
+		if c.multi {
+			index++
+		}
+		if *c.calls != 1 || *c.done != 1 || len(c.f2) != 11 {
+			t.Fatal("healing case incomplete", index)
+		}
+		f2 += len(c.f2)
+		completed = append(completed, map[string]any{"index": index, "command": c.id, "multi": c.multi, "transactions": *c.calls, "continuations": *c.done, "f2_round_trips": len(c.f2)})
+	}
+	report := map[string]any{"status": "PASS-HEAL1316-HD-RUNTIME-E1", "cases": len(completed), "case_start": start, "case_end": end, "completed_cases": completed, "source_gpu_frames": 17, "f2_round_trips": f2, "rgba_tolerance": 2, "rows": p.rows, "normal_player_verified": false, "scope": "Real native map/LMI and complete Game.Draw; controlled command records/placement, native RNG before transaction, capped and multi-target healing. Not original oracle or normal-player proof."}
 	b, err := json.MarshalIndent(report, "", "  ")
 	if err != nil {
 		t.Fatal(err)
@@ -320,5 +368,5 @@ func TestModernHDHealCompleteGameGPU(t *testing.T) {
 	if err := os.WriteFile(filepath.Join(out, "receipt.json"), append(b, '\n'), 0644); err != nil {
 		t.Fatal(err)
 	}
-	t.Logf("eight complete healing cases, 17 source GPU frames, %d actual HD rows and88 F2 round trips; one transaction/continuation per case", len(p.rows))
+	t.Logf("healing cases [%d,%d), 17 source GPU frames, %d actual HD rows and %d F2 round trips; one transaction/continuation per case", start, end, len(p.rows), f2)
 }

@@ -24,7 +24,8 @@
     "hd_battle_background": "CONFORMED-SCOPED／RUNTIME-E1：森林小屋／內部／海岸，以及BG0..2過渡已接共用／分離物理與24／29的已驗caller；原生位移、遮罩與節拍保持。其他來源／caller仍待，依transition_backgrounds_followup_20261024。",
     "hd_battle_pedestal": "CONFORMED-SCOPED／RUNTIME-E1：已登錄草地、森林裸土及海岸沙地TAI接共用物理的靜態／移位進場、攻防／restore／淡出。原框、層序與節拍保持，其他來源及caller仍待，依forest_coast_surface_followup_20261024。",
     "hd_heal_map": "CONFORMED-SCOPED／RUNTIME-E1：13～16的前導、七張光環、HD輪廓閃光、十個綠數字及等待接入；兩包各八完整Game.Draw／88次F2、一次交易／續行與非空HD地形變色通過。來源及限制見heal13_16_map_hd_followup_20261023，正常／人工／平台仍待。",
-    "hd_reward_message": "CONFORMED-SCOPED／RUNTIME-E1：物品／金錢成功訊息的HD世界、Noto文字與480頭像接入；兩完整Game.Draw共26拍／26次F2、原生開收框遮罩、動態金額、HUD回交及一次續行通過。受控頭像選擇與獎勵值，正常／人工／平台仍待；依reward_message_hd_followup_20261023。"
+    "hd_reward_message": "CONFORMED-SCOPED／RUNTIME-E1：物品／金錢成功訊息的HD世界、Noto文字與480頭像接入；兩完整Game.Draw共26拍／26次F2、原生開收框遮罩、動態金額、HUD回交及一次續行通過。受控頭像選擇與獎勵值，正常／人工／平台仍待；依reward_message_hd_followup_20261023。",
+    "hd_map_hud_unit": "CONFORMED-SCOPED／RUNTIME-E1：既有HD主題的資訊窗人物已接144圖源，原selector、狀態3轉1、位置及HP層序保持；來源、數量及回歸依hud_unit_icon_hd_followup_20261024。HD2／完整介面與正常玩家仍待。"
   },
   "runtime_source": {
     "binary": {
@@ -222912,7 +222913,9 @@
         }
       ],
       "finding": "HD world composes high-resolution map sprites separately, but its UI still calls indexedmap.BlitNativeMapHUD with original HUDUnits. Optional unit uses typed SelectorSlot and raw Idle. No HD icon replacement is added in that path.",
-      "next": "preserve typed unit eligibility/selector and correct theme-specific icon binding; enlarged portrait panel in concept is a separate UI proposal"
+      "next": "preserve typed unit eligibility/selector and correct theme-specific icon binding; enlarged portrait panel in concept is a separate UI proposal",
+      "scope_at_capture": "ecabe2e2的設計前來源定位，保留舊finding與當時SHA，不能當作本輪後的現況。",
+      "resolved_by": "hud_unit_icon_hd_followup_20261024：已補既有HD圖示；概念放大窗、HD2及六組合仍待。"
     },
     "visual_review": {
       "set1": "Sol/Yuni face right; five villains visible; single toolbar row; consistent bandit HUD; standing angled HD2 map style retained",
@@ -223024,5 +223027,532 @@
       "production toolbar input ownership, poster blending and persisted settings",
       "normal-player/manual/platform validation"
     ]
+  },
+  "hud_unit_icon_hd_followup_20261024": {
+    "status": "CONFORMED-SCOPED-RUNTIME-E1",
+    "base_commit": "ecabe2e2f41fb4ae6a6d760114655a9ada923928",
+    "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md#地圖hud人物圖示的hd圖源",
+    "source_reuse": "重用58已閉合HUD 0x1acf3、indexedmap/hud.go與fdicon/terrain.go；不新增反組譯語意。",
+    "native_asset_source": {
+      "file": "FDOTHER.DAT",
+      "resource": 5,
+      "size": 3382481,
+      "md5": "22f56e5027edc7c766ad34ca4e5aca93",
+      "sha256": "a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce",
+      "raw_size": 44181
+    },
+    "panel_entry": {
+      "index": 130,
+      "codec": "four_mode_frame",
+      "width": 69,
+      "height": 34,
+      "frame": "entry_130/frame.png",
+      "mask": "entry_130/mask.png"
+    },
+    "panel_mask_sha256": "c0e06ac27ba69f50269e0cf2b52f9c10647e8a25bb8db1dc41001d83b045a0b5",
+    "panel_icon_roi": [
+      6,
+      5,
+      30,
+      29
+    ],
+    "roi_mask_extrema": [
+      255,
+      255
+    ],
+    "scope": "既有原版／HD主題沿相同selector來源與原24像素框，使用已登錄144像素圖源並保持HP層序；不包含HD2、放大頭像窗、正常玩家或平台驗收。",
+    "formal_catalog_changed": false,
+    "validation": {
+      "hud_unit": {
+        "status": "PASS",
+        "kind": "hud-unit",
+        "enemy": false,
+        "required": [
+          "TestModernHDHUDUnitAdmissionAndEventShift",
+          "TestModernHDHUDUnitSelectionAndHP",
+          "TestModernHDMapRejectedArtDoesNotPublishNativeState",
+          "TestModernHDMapTransactionUsesOneNativeClockAndIndependentTerrain"
+        ],
+        "catalog_sha256": "b0dfffc33203247b07afbd7c62a78822a18b9dee9fb5fe0be1c9c720e7e8ef67",
+        "catalog": "/repo/remake/assets/themes/modern/catalog.json",
+        "pack": "/repo/remake/generated-assets/modern-theme-prototypes",
+        "with_pedestal": false,
+        "surface": 4,
+        "pair": "4:5",
+        "command_id": 24,
+        "triple": "4:5:6",
+        "hashes_only": false,
+        "transition_required": false,
+        "panel_locale": "zh-Hant",
+        "panel_owner": 0,
+        "modifier_command": 17,
+        "modifier_failed": false,
+        "modifier_start": 0,
+        "modifier_limit": 6,
+        "all_compound_effects": false,
+        "all_modifier_effects": false,
+        "scenery_start": 0,
+        "scenery_limit": 16,
+        "independent_runtime_files": null,
+        "memory": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-unit-r3.memory.json",
+        "log": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-unit-r3.log",
+        "scope": "固定來源／GPU／明示物理戰鬥fixture，非正常玩家或新原版RGB對拍"
+      },
+      "hud_game": {
+        "cases": [
+          {
+            "case": "game-anchor1-cursor0",
+            "f2": true,
+            "final_sha256": "b02264608fce9cc7a6a7dc49c42f945f7502ed3ca0cf5ca7f7cafeec31432ef2",
+            "frame": 0,
+            "game_draw": true,
+            "group": 0,
+            "rect": {
+              "Min": {
+                "X": 66,
+                "Y": 996
+              },
+              "Max": {
+                "X": 210,
+                "Y": 1140
+              }
+            },
+            "rgba_tolerance": 2
+          },
+          {
+            "case": "game-anchor1-cursor1",
+            "f2": true,
+            "final_sha256": "6ae463f35eba8ebc981ee7a9bbb5418eb6655554bd70f73a53d3f701f7114d14",
+            "frame": 0,
+            "game_draw": true,
+            "group": 96,
+            "rect": {
+              "Min": {
+                "X": 66,
+                "Y": 996
+              },
+              "Max": {
+                "X": 210,
+                "Y": 1140
+              }
+            },
+            "rgba_tolerance": 2
+          },
+          {
+            "case": "game-anchor242-cursor0",
+            "f2": true,
+            "final_sha256": "0f52882dd81403c86f83f37c6c7334e3039bd5e02b5fcfa876c52e2eda4ba80c",
+            "frame": 0,
+            "game_draw": true,
+            "group": 0,
+            "rect": {
+              "Min": {
+                "X": 1512,
+                "Y": 996
+              },
+              "Max": {
+                "X": 1656,
+                "Y": 1140
+              }
+            },
+            "rgba_tolerance": 2
+          },
+          {
+            "case": "game-anchor242-cursor1",
+            "f2": true,
+            "final_sha256": "8d3cd249223163424d8330fc5587157df5602cd0d6ce8c47758b56e6db0aa0d2",
+            "frame": 0,
+            "game_draw": true,
+            "group": 96,
+            "rect": {
+              "Min": {
+                "X": 1512,
+                "Y": 996
+              },
+              "Max": {
+                "X": 1656,
+                "Y": 1140
+              }
+            },
+            "rgba_tolerance": 2
+          },
+          {
+            "case": "ring-restore",
+            "f2": false,
+            "final_sha256": "8d3cd249223163424d8330fc5587157df5602cd0d6ce8c47758b56e6db0aa0d2",
+            "frame": 0,
+            "game_draw": false,
+            "group": 96,
+            "rect": {
+              "Min": {
+                "X": 1512,
+                "Y": 996
+              },
+              "Max": {
+                "X": 1656,
+                "Y": 1140
+              }
+            },
+            "rgba_tolerance": 2
+          },
+          {
+            "case": "event-effect-above-hud",
+            "f2": false,
+            "final_sha256": "9960842082549cfa6dfb6677aa0b6614028c727fa303d3ba56cb9e5e4b8041e1",
+            "frame": 0,
+            "game_draw": false,
+            "group": 96,
+            "rect": {
+              "Min": {
+                "X": 1488,
+                "Y": 972
+              },
+              "Max": {
+                "X": 1632,
+                "Y": 1116
+              }
+            },
+            "rgba_tolerance": 2
+          }
+        ],
+        "fixed_clock_unix": 1000,
+        "groups": 125,
+        "native_rng_seed": 7,
+        "scope": "controlled Game.Draw, not a new original parity receipt",
+        "source_states": 500,
+        "status": "PASS-HUD-UNIT-HD-RUNTIME-E1"
+      },
+      "healing": {
+        "status": "PASS-HEAL1316-HD-ALL-BATCHES",
+        "cases": 8,
+        "f2_round_trips": 88,
+        "source_gpu_frames_per_part": 17,
+        "parts": [
+          "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-heal-batch-0-r2",
+          "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-heal-batch-2-r2",
+          "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-heal-batch-4-r2",
+          "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-heal-batch-6-r2"
+        ],
+        "completed_cases": [
+          {
+            "command": 13,
+            "continuations": 1,
+            "f2_round_trips": 11,
+            "index": 0,
+            "multi": false,
+            "transactions": 1
+          },
+          {
+            "command": 13,
+            "continuations": 1,
+            "f2_round_trips": 11,
+            "index": 1,
+            "multi": true,
+            "transactions": 1
+          },
+          {
+            "command": 14,
+            "continuations": 1,
+            "f2_round_trips": 11,
+            "index": 2,
+            "multi": false,
+            "transactions": 1
+          },
+          {
+            "command": 14,
+            "continuations": 1,
+            "f2_round_trips": 11,
+            "index": 3,
+            "multi": true,
+            "transactions": 1
+          },
+          {
+            "command": 15,
+            "continuations": 1,
+            "f2_round_trips": 11,
+            "index": 4,
+            "multi": false,
+            "transactions": 1
+          },
+          {
+            "command": 15,
+            "continuations": 1,
+            "f2_round_trips": 11,
+            "index": 5,
+            "multi": true,
+            "transactions": 1
+          },
+          {
+            "command": 16,
+            "continuations": 1,
+            "f2_round_trips": 11,
+            "index": 6,
+            "multi": false,
+            "transactions": 1
+          },
+          {
+            "command": 16,
+            "continuations": 1,
+            "f2_round_trips": 11,
+            "index": 7,
+            "multi": true,
+            "transactions": 1
+          }
+        ],
+        "catalog_sha256": "b0dfffc33203247b07afbd7c62a78822a18b9dee9fb5fe0be1c9c720e7e8ef67",
+        "scope": "全部八條受控Game.Draw；不新增正常玩家或原版RGB對拍"
+      },
+      "processes": [
+        {
+          "prefix": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-unit-r3",
+          "tests": [
+            "TestModernHDHUDUnitSelectionAndHP",
+            "TestModernHDHUDUnitAdmissionAndEventShift",
+            "TestModernHDMapTransactionUsesOneNativeClockAndIndependentTerrain",
+            "TestModernHDMapRejectedArtDoesNotPublishNativeState"
+          ],
+          "elapsed_seconds": 31.743,
+          "oom": false,
+          "timeout": false
+        },
+        {
+          "prefix": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-game-r1",
+          "tests": [
+            "TestModernHDHUDUnitSourcesAndGameGPU"
+          ],
+          "elapsed_seconds": 237.561,
+          "oom": false,
+          "timeout": false
+        },
+        {
+          "prefix": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-player9-game-r1",
+          "tests": [
+            "TestModernHDPlayer9MapCompleteGameGPU"
+          ],
+          "elapsed_seconds": 297.207,
+          "oom": false,
+          "timeout": false
+        },
+        {
+          "prefix": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-modifier17-game-r1",
+          "tests": [
+            "TestModernModifierMapRuntimeGPU"
+          ],
+          "elapsed_seconds": 163.003,
+          "oom": false,
+          "timeout": false
+        },
+        {
+          "prefix": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-owner-regression-r1",
+          "tests": [
+            "TestModernHDDeathAssetLoader",
+            "TestModernHDPlayer9FrozenInputMatchesSnapshot",
+            "TestModernHDPlayer9FrozenInputRejectsDifferentSnapshot",
+            "TestDisabledFullPresentationFailsClosedBeforeAnyCommandTransaction",
+            "TestPlayerNativeCommand13RunsCursorTransactionThroughConfirm",
+            "TestNativeCommand1012PublishesOnlyAtRecoveredBoundaries",
+            "TestNativeCommand1012RollsBackLatePublishFailure"
+          ],
+          "elapsed_seconds": 11.669,
+          "oom": false,
+          "timeout": false
+        },
+        {
+          "prefix": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-heal-batch-0-r2",
+          "tests": [
+            "TestModernHDHealCompleteGameGPU"
+          ],
+          "elapsed_seconds": 491.824,
+          "oom": false,
+          "timeout": false
+        },
+        {
+          "prefix": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-heal-batch-2-r2",
+          "tests": [
+            "TestModernHDHealCompleteGameGPU"
+          ],
+          "elapsed_seconds": 481.75,
+          "oom": false,
+          "timeout": false
+        },
+        {
+          "prefix": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-heal-batch-4-r2",
+          "tests": [
+            "TestModernHDHealCompleteGameGPU"
+          ],
+          "elapsed_seconds": 386.342,
+          "oom": false,
+          "timeout": false
+        },
+        {
+          "prefix": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-heal-batch-6-r2",
+          "tests": [
+            "TestModernHDHealCompleteGameGPU"
+          ],
+          "elapsed_seconds": 395.447,
+          "oom": false,
+          "timeout": false
+        },
+        {
+          "prefix": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-native-r1",
+          "tests": [
+            "TestNativeMapHUDUnitFrameIndexMatches1AE4D",
+            "TestNativeMapHUDLayoutForMatches1ACF3",
+            "TestComposeFrameRejectsMissingHUDBeforeMutation",
+            "TestComposeNativeFrameBindsRecoveredHUDInsteadOfCallback",
+            "TestComposeNativeStepFrameOmitsRangeAndHUD",
+            "TestSeparatedNativeMapHUDFramesMatchFixedArchive",
+            "TestSeparatedNativeMapHUDFramesFailClosed",
+            "TestAdvanceNativeMapHUDAnchorMatches1AD2A",
+            "TestAdvanceNativeMapHUDStateMatches1297D",
+            "TestNativeMapHUDOptionalUnitEligibleMatches1AE2A",
+            "TestBlitNativeMapHUDPanelGatesAndOrigin",
+            "TestBlitNativeMapHUDPanelRejectsInvalidEntryBeforeWrite",
+            "TestBlitNativeMapHUDComposesRecoveredSubpassesAtomically",
+            "TestBlitNativeMapHUDTerrainIconUses12E38TileAtPanelPlus6",
+            "TestBlitNativeMapHUDUnitIconUsesCacheAndAliasesStateThree",
+            "TestNativeMapHUDTerrainAPDPMatches1ACF3Tables",
+            "TestBlitNativeMapHUDTerrainAPDPUsesLayoutAndIsAtomic",
+            "TestBlitNativeMapHUDHPMatches1875DAnd187D6",
+            "TestBlitNativeMapHUDSignedNumberSelectsSignAndAbsoluteValue",
+            "TestBlitNativeMapHUDSignedNumberIsAtomicOnDigitFailure",
+            "TestBlitNativeMapHUDTwoDigitNumberMatches187D6CallSlice",
+            "TestDecodeNativeMapHUDFramesUsesFourModeDirectoryEntries"
+          ],
+          "elapsed_seconds": 3.542,
+          "oom": false,
+          "timeout": false
+        },
+        {
+          "prefix": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-string-regression-r1",
+          "tests": [
+            "TestBuildCollectsControlledJSONAndGoUIWithoutNotesOrErrors",
+            "TestBuildIsDeterministicAndJSONSerializable",
+            "TestBuildRejectsDuplicateExistingStringID",
+            "TestMultipleTextFieldsDoNotReuseOneExistingStringID",
+            "TestVariablesIncludeWrappedErrorPlaceholder",
+            "TestDrawFunctionContextIncludesIndirectASCIIAndFunctionName",
+            "TestDrawFunctionContextSkipsLocaleKeys",
+            "TestReviewedGoCandidatesMatchCurrentInventory"
+          ],
+          "elapsed_seconds": 3.553,
+          "oom": false,
+          "timeout": false
+        }
+      ],
+      "passed_test_executions": 48,
+      "unique_top_level_tests": 45,
+      "hd_go_gates": 9
+    },
+    "source_sha256": {
+      "remake/cmd/fd2/modern_hd_map_hud.go": "dd689c89a8e212ed48fa3c375865501599003299f59e644536064e05313bffd4",
+      "remake/cmd/fd2/modern_hd_map_hud_test.go": "339db4ed27e962ceebbf564c808d1133d688d2493b4d2adda3d21b17bc4ed512",
+      "remake/cmd/fd2/modern_hd_map_hud_gpu_test.go": "b500da74a67ee126904d91477a8fc39eecd18796344469ef563ae82889ba485a",
+      "remake/cmd/fd2/modern_hd_map_runtime.go": "456a252301f73fc5b86f5ff6710adc9a4184e9dddf190eaaff73cac5c7197c7a",
+      "remake/cmd/fd2/modern_hd_map_gpu.go": "e35337b5623c5f7c4ab6a160e62bc9378256192be415cc7d82319df0d7b1d616",
+      "remake/cmd/fd2/modern_hd_player9_map.go": "a8788f9e4f5d178fb4ee586cf62a26555a2033fb1cfe7cd1cbd85e45942d151d",
+      "remake/cmd/fd2/modern_hd_commands10_12_map.go": "007c0b675f4db6071ef768f478e3a0e7ad76e4a45b699dcb06cc763340668473",
+      "remake/cmd/fd2/modern_hd_player9_map_gpu_test.go": "bc34935c73d25e942904fbffc25b477188555ecaa17340859aa73874904d3395",
+      "remake/cmd/fd2/modern_hd_heal_map_gpu_test.go": "1b50a3d68ffc0b865d7f81685393394e37e6c52da63c9018c5d8a4e5e883440d",
+      "tools/verify_fd2_battle_surface_hd.py": "b01acdec5560ecd03536129e808a7f622eb7f845895604a7429f1aa4c969bc7f",
+      "tools/verify_fd2_heal_map_hd.py": "9b580ad60f8d087e9b68ee697003aca5bc994d5e6d58614c58e636ea4b0cbf77"
+    },
+    "catalog_sha256": "b0dfffc33203247b07afbd7c62a78822a18b9dee9fb5fe0be1c9c720e7e8ef67",
+    "artifacts": {
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-game-r1-capture/event-effect-above-hud.png": "426cc1828892681562f7875d39a7d1f7753317b849aeab5c75e1e78d20726cf4",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-game-r1-capture/game-anchor1-cursor0.png": "a4ee67175b913c80b8f170e8288aa4b8888d03406c0842b112b629a087e21760",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-game-r1-capture/game-anchor1-cursor1.png": "66822a38f9ea5e3cb5234dcd4b6599b76aaad787f3cdf33111a0fba5262b1793",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-game-r1-capture/game-anchor242-cursor0.png": "e087429ce54a5e0f2632b525e0162c38a5296a9d3e3c801b8b9a59f529c4d189",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-game-r1-capture/game-anchor242-cursor1.png": "13e8199b1cb7bf06fa1b0d6e586d5f16b051e878ceda43b845bb10b9e903ac29",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-game-r1-capture/gpu.json": "7be28e4d618e5711250432841606168b9653810b877da117d78ff8bb281f62bc",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-game-r1-capture/ring-restore.png": "13e8199b1cb7bf06fa1b0d6e586d5f16b051e878ceda43b845bb10b9e903ac29"
+    },
+    "readme_preview": {
+      "path": "docs/figures/hd-map-hud-unit.png",
+      "sha256": "cae5234a51a93d98516b7c1c82252d7b2392a5b612cca5ba63566a457626d496",
+      "source": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-game-r1-capture/game-anchor242-cursor1.png",
+      "method": "1920x1200 actual Game.Draw to 960x600 Lanczos, no paintover",
+      "state": "map0 controlled unit positions, cursor(1,0), anchor242, fixedUnix1000, native seed7; not new normal-player or original-parity evidence"
+    },
+    "source_sha256_at_initial_gpu": {
+      "remake/cmd/fd2/modern_hd_map_hud.go": "dd689c89a8e212ed48fa3c375865501599003299f59e644536064e05313bffd4",
+      "remake/cmd/fd2/modern_hd_map_hud_test.go": "d817175d54e89f56e0e4c3be0449c10955f127f7735e414674c20964019ab075",
+      "remake/cmd/fd2/modern_hd_map_hud_gpu_test.go": "b500da74a67ee126904d91477a8fc39eecd18796344469ef563ae82889ba485a",
+      "remake/cmd/fd2/modern_hd_map_runtime.go": "456a252301f73fc5b86f5ff6710adc9a4184e9dddf190eaaff73cac5c7197c7a",
+      "remake/cmd/fd2/modern_hd_map_gpu.go": "e35337b5623c5f7c4ab6a160e62bc9378256192be415cc7d82319df0d7b1d616",
+      "remake/cmd/fd2/modern_hd_player9_map.go": "a8788f9e4f5d178fb4ee586cf62a26555a2033fb1cfe7cd1cbd85e45942d151d",
+      "remake/cmd/fd2/modern_hd_commands10_12_map.go": "007c0b675f4db6071ef768f478e3a0e7ad76e4a45b699dcb06cc763340668473",
+      "remake/cmd/fd2/modern_hd_player9_map_gpu_test.go": "bc34935c73d25e942904fbffc25b477188555ecaa17340859aa73874904d3395",
+      "remake/cmd/fd2/modern_hd_heal_map_gpu_test.go": "a197f5e699100b97a351fa5e9401d7d1fada663caf796e6b0aff3c825d9238aa",
+      "tools/verify_fd2_battle_surface_hd.py": "b01acdec5560ecd03536129e808a7f622eb7f845895604a7429f1aa4c969bc7f"
+    },
+    "runtime_unchanged_after_initial_gpu": true,
+    "receipt_sha256": {
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-unit-r3.log": "0a8bc1900d30910d72ec56959c443b984db3defac055a7a6c3ab6a3246b7bc4f",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-unit-r3.memory.json": "eb41b05b072be48436c95842d8350408cecf66ea7066d4ec572ff34ee945286a",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-unit-r3.gate.json": "5754b3a915ae47c1310f831d66b897c19a6307675ed2636d4f3fb424fc8e17e3",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-game-r1.log": "df3b44f421d68ad3e0afb919d7c1b3356dad12a08ead620e8b1bf166524ef559",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-game-r1.memory.json": "2b1c3656bf64ccf76ba094f4b602834fcdc7c34e95117a77669b7f1c4f8e9013",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-game-r1.gate.json": "a7736e9547072553993d99dd4e0c1dfaf3049b48e858b09ad8fad66b9c06853e",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-player9-game-r1.log": "60a847a8d99ad132cc487dfa9b0cd8d67597e26d95f3aa0db8c221fc755b6909",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-player9-game-r1.memory.json": "6cb93702fb6007973b29bf8a1f76819bb2e9704a83661bafb4e9dffa557ec7a4",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-player9-game-r1.gate.json": "0c2651b8af94e5ee31fb9cc2726bab44f4885e4786fdca2cb146abadd7f3cc8b",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-modifier17-game-r1.log": "1bb62ec367c563af5852b1df76307d58fab363850a6f730fdb238453015aeea6",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-modifier17-game-r1.memory.json": "a60f682dc4f97a7ee8106d0fd0209e6c7ca295f9e0ba513423647d27465847ad",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-modifier17-game-r1.gate.json": "7c3e31bc5887ff39caa49b1feea28f6b7d97121ccd0b8d5eacfe6ed4fbaef9b8",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-owner-regression-r1.log": "1300c0ae7876bd6e1915920bdb135170118a86a370eb9fd60ddda1c039692409",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-owner-regression-r1.memory.json": "009e8438eecabbc735301ffcd2ebef09337601cf16b8c41e7595288b509730b5",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-owner-regression-r1.gate.json": "7f309ac68179e646bbd4304a7232a48bf650e5106722ed9a660291281df3a9ed",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-heal-batch-0-r2.log": "e836221014d8a8410f7815ffa02ddbd107bcccf393c07de96aaeca7d73bccc9b",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-heal-batch-0-r2.memory.json": "034292d2bdefc66e8f75691e0f004779b8df7700a2de13e9bcbdd71c257ac73c",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-heal-batch-0-r2.gate.json": "906451473542a2b3cce2eb26fdc79cc1b4a957150335b64d5fbacb211244f7f5",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-heal-batch-2-r2.log": "4be2f0cd3e0d412a451b070b372c3d66f71f32b7d15be53f39dccbf330b94d31",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-heal-batch-2-r2.memory.json": "751a933e5621a4759a19730af619ff9d7d917a0189ef133bc4187d53ffa1b000",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-heal-batch-2-r2.gate.json": "b354cabec35892ea3f728d727b1babc7f2d17dbb7e6507a9581b6e0951d3b021",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-heal-batch-4-r2.log": "a878d7111f3c3a425d56860987ab6db0806863bb62420337776349075b2006af",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-heal-batch-4-r2.memory.json": "8e9de3788bf0b0d4a0aeab3e94b389a25802ba7f9c75033f327cce99a6a4a6e3",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-heal-batch-4-r2.gate.json": "a7bb01b91104fe223ae0381e01ad2d3a0c71b61df70c4cc1f08e65bf3c710a49",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-heal-batch-6-r2.log": "86ad0fe58b18ad2b382a5aafbfefcc24c3f7407227a9457b1b6955404504060a",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-heal-batch-6-r2.memory.json": "9c8d9a82a94792d711dbd317e66be4e72f7d22487a1435fc223db74283464865",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-heal-batch-6-r2.gate.json": "da3d8102776494c3f4276a92cc724196f42adcd22df8ef50be1c0fe0c4ac8a05",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-native-r1.log": "12e9afcc56532c6e06f8f60774e52d0983497da2620a39caec59b41b7c4e3c9a",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-native-r1.memory.json": "a59f362c2a89ea1f40dee5ee137286eeaf933829d024d7fe19b54dc972b10213",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-string-regression-r1.log": "df48ed38fee6a929847684f67e35bc234423d8f188bcdc0f52adc777e23f891a",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-string-regression-r1.memory.json": "dcd840e9528f4eb2fe88a3147b36727a4e58d0a82e1fb6d3fcc31b1a687e207d",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-heal-all-r2.gate.json": "fcfeebfb42338dd918c637aa52147d20af5ad70eeab3ea8afef9ce26e7cf9de4",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-heal-merge-rejections.json": "accb1a48107460dc8b29a85affe70bce6bd901396093499deff7d819c7edb55f",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-heal-interrupted-cleanup.json": "af4ae3f807f2efb7835a36568b2f2c0694d0c2d3f49a40b96cf69fda30386ba0",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-player9-game-r1-capture/gpu.json": "cb468ff29a1a7e1f62f580bbfeb16b3e66f097e144236b8a616133b0076d3f7d",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-modifier17-game-r1.game.json": "85f93373643ccd53ed5939e8b84cd42cc722b0e163a111e3ae7d724a5b578f1b",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-heal-batch-0-r2-capture/receipt.json": "12e82cf4bbb1150fbf2355e8979bb33fd31e51be68cacb808cc0c2038e0fc629",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-heal-batch-2-r2-capture/receipt.json": "825e5afabe7838e102620e5dd6cca35b116d8da7bdb5fdd74599bb0a2ad4852d",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-heal-batch-4-r2-capture/receipt.json": "16110459a8044c1d879952cc6865b8b61d9fade399df79b3b8dedcc501ba3bc3",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-heal-batch-6-r2-capture/receipt.json": "42fa61363a4f7668d815d1c5008175dc5b68e34b318cf57ae9ea925f86298700"
+    },
+    "cleanup": {
+      "interrupted_run": "hud-heal-game-r1主動docker stop，退出137，不是產品OOM，不計通過；24張部分PNG逐檔核對SHA後刪除，釋放29992977 bytes。",
+      "manifest": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hud-heal-interrupted-cleanup.json",
+      "videos_created": 0,
+      "private_asset_changes": false
+    },
+    "native_reference_manifest": {
+      "path": "docs/data/fd2-reference-files.json",
+      "sha256": "9946b7506620069ce9b7bb8e4b1f7fed36e7a9389b634ef62064727d89579c5e"
+    },
+    "docker": {
+      "image": "fd2-go-test-local:latest",
+      "image_id": "sha256:e4a805c52a3ad5d8c22cf23f2bcf51c6924e5ad6b99554f1b02761903c725433",
+      "user": "1000:1000",
+      "network": "none",
+      "batch_limits": {
+        "memory": "5g",
+        "cpus": 2,
+        "pids_limit": 160,
+        "inner_timeout_seconds": 780,
+        "outer_two_batch_timeout_seconds": 1680
+      },
+      "mounts": "工作樹/repo可寫；/original及/repo/org_game唯讀；--rm；Xvfb由驗證器trap清理。",
+      "reproduce": "規格61的地圖HUD人物圖示的HD圖源，工具verify_fd2_battle_surface_hd.py的hud-unit／hud-game，回歸verify_fd2_player9_map_hd.py、verify_fd2_heal_map_hd.py及modifier-map-game17；四批治療須合併後才算全八條通過。"
+    }
   }
 }

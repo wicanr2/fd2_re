@@ -168,6 +168,8 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 `modern-theme-highres-prototype` · 工作 · [#204](https://github.com/wicanr2/fd2_re/issues/204) · 仍未完成 · 要人判
 
+地圖HUD人物圖示已補接正式HD圖源，限定CONFORMED-SCOPED／RUNTIME-E1。沿原selector、HUD狀態3轉第1幀、24像素框與HP覆蓋順序，地圖與游標下敵人資訊窗使用同一角色圖組；原生畫面、時鐘與F2狀態保持。125組／500狀態、四個實際Game.Draw與F2、兩個層序GPU樣本及玩家9命中／未命中、狀態17、交易回滾回歸通過；治療四批覆蓋全八條／88次F2，每條一次交易及返回，合併器另拒絕缺項與重複。9份HD閘門／18次必要測試、22原生及8字串回歸無SKIP／逾時／OOM。README新增實際半縮圖，無新美術、清冊或保存欄位。完整HUD、HD2／六組合、浮出工具列／速度／海報及正常／人工／平台仍待，#268／#269保持。現況依[58](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)、[61](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/61-modern-theme-runtime-spec.md)與[HD主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-battlefield-20261019.json)的hud_unit_icon_hd_followup_20261024；本項保持開啟。
+
 HD高解析呈現仍未全部完成。本項保持開啟；目前狀態與唯一數量依[58](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)，介面覆蓋依57、呈現契約依61。使用者定案先完成全部HD串接，再集中正常玩家與人工確認。
 
 狀態法術的39份圓環、黃綠與淡藍菱形光效已接入正式HD清冊，限定CONFORMED-SCOPED／RUNTIME-E1。七條受影響流程加正式與私人實檔抽樣，共581次Game.Draw回讀、41次F2與149張完整PNG，無可見LMI原圖回退；三次各78個來源GPU世界及九個冷啟動拒收通過，跨包78個世界及13張光效PNG雜湊一致。17個閘門／26項必要測試及365項原生、8項字串回歸通過。正式清冊764項、LMI八組185張；舊763項／6687檔保持，舊主題原圖回退亦通過。私人白名單6728檔已推送a8516596。手繪材質與輪廓羽化為美術近似，不新增原版RGB或正常玩家聲明。玩家23仍只驗調色前導，其餘光效／HUD、未知來源、正常流程、集中人工／平台及#268／#269仍待，本項保持開啟。來源與重跑依[58](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)、[61](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/61-modern-theme-runtime-spec.md)與[HD主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-battlefield-20261019.json)的modifier_tail_art_followup_20261024；較早接線收據仍保留。

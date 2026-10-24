@@ -2,6 +2,22 @@
 
 狀態：現代主題仍為部分覆蓋；目前分層與缺口依[58](58-fd2-exe-re-coverage.md)。
 
+## 地圖HUD人物圖示的HD圖源
+
+狀態：CONFORMED-SCOPED／RUNTIME-E1。唯一數量、收據及下一閘門依[58現況](58-fd2-exe-re-coverage.md)與[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的hud_unit_icon_hd_followup_20261024。下列READY契約已實作並完成受控驗證；不外推正常玩家、HD2或全HD完成。
+
+本切片補目前原版／HD主題的資訊窗人物，沿用既有已閉合的`0x1acf3`與`BlitNativeMapHUD`，不新增角色身份或改版面。來源為固定原版包的`FDOTHER.DAT`資源5圖框130與FDICON選圖快取；已檢查分離圖框遮罩，圖示區相對`[6,30)×[5,29)`全部不透明。現代圖源重用正式清冊的125組144像素人物圖，不新增素材或保存欄位。
+
+- 保留雙顯示閘門、`OptionalUnit`的原始可顯示條件及selector slot；以`KeyForSlot`回查圖組，HUD的raw state3仍轉用第1幀，方向固定0。世界圖與HUD各自遵守既有幀選擇，不猜兩者應使用相同幀；HUD人物不套世界的palette-band旗標。
+- 先依原呼叫順序建構「原生圖框＋地形＋AP／DP」底層，再取同次HP覆蓋層，將144像素人物夾在兩者之間。圖示24×24原框與原HP遮蔽保持；原320×200透明UI只在這24×24區域留洞，其他像素保持。
+- 高解析HUD區塊在世界的HUD層呈現；普通指令環上方再恢復同一不透明區塊，演出LMI沿既有`OverlaysAboveUI`順序可覆蓋它。事件視窗的四像素偏移同時套到圖示；明示清空UI的取樣畫面不繼承固定HUD。
+- 缺圖、錯尺寸、無效原始state／slot及非不透明圖框底層須在發布前拒收，原生work、VGA、時鐘、單位及既有HD畫面保持。合法原生空白圖組保持空白。繪製不讀檔、不重新選角色、不改HP／RNG。
+- 驗收包含左右錨點與raw state0～3、HP相等／不同／溢位、兩個顯示閘門與無人物、125個實際圖組與缺件／尺寸／slot原子拒收、原生資料保持、事件偏移及指令環層序；正式`Game.Draw`與F2抽測、既有地圖／回復／玩家9／狀態法術回歸。只到受控RUNTIME-E1，正常玩家、HD2圖源、完整HD介面及平台仍依主工作清單。
+
+本切片的[來源及層序測試](../../remake/cmd/fd2/modern_hd_map_hud_test.go)與[實際Game.Draw測試](../../remake/cmd/fd2/modern_hd_map_hud_gpu_test.go)由[既有HD驗證器](../../tools/verify_fd2_battle_surface_hd.py)的`--kind hud-unit`及`--kind hud-game`執行。用維護中的`fd2-go-test-local:latest`，可寫工作樹掛`/repo`，原版分離包掛`/original:ro`，`org_game`另唯讀覆蓋；設定`FD2_ASSET_PACK=/original`與`FD2_TEST_ORIGINAL_PACK=/original`。容器使用目前UID／GID、`--rm --memory 6g --cpus 3 --pids-limit 192 --network none`，外層逾時大於內層至少60秒。驗證器自行擁有並清理Xvfb。共同參數為`--catalog /repo/remake/assets/themes/modern/catalog.json --pack /repo/remake/generated-assets/modern-theme-prototypes --out <既有輸出目錄下的全新絕對前綴> --timeout 420`，Go快取沿既有工作根。
+
+治療回歸沿[回復HD驗證器](../../tools/verify_fd2_heal_map_hd.py)，`--kind game --case-start 0／2／4／6 --case-limit 2`分別為四次執行，每批使用不同前綴及`--timeout 780`。可用兩個各`--memory 5g --cpus 2 --pids-limit 160`的有界容器分別順序跑0／4與2／6，其餘掛載契約相同。最後以`--kind game --merge-game-parts <四個已通過前綴>`及新的`--out`核對完整八個身份、每條11次F2及一次交易／續行、同清冊、必要測試與無SKIP／OOM。只完成部分批次不能當作八條回歸通過；未給批次參數時仍預設全八條。其他回歸與工具版本、來源／輸出SHA依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`hud_unit_icon_hd_followup_20261024`。
+
 ## HD2海報漸層與公開設計基準（瀏覽器原型CONFORMED，遊戲執行期DRAFT）
 
 使用者已接受前節兩組海報方向，新增可由工具列設定的海報淡入／戰場銜接，並明確要求完成後將概念圖保存至GitHub，作為後續HD2戰場設計基準。本節先實作可重跑的瀏覽器概念原型，既有Go執行路徑與正式素材清冊保持。
@@ -30,7 +46,7 @@
 
 已產生兩張1672×941概念圖，來源、提示詞、SHA與使用者選定的未修改HD2基準在[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`ui_poster_hd2_followup_20261024`。最新統一入口為[漸層預覽頁](../figures/hd2-posters-preview.html)；[初版雙組圖頁](../../work/hd2-posters-preview.html)保留本機歷史，可選組別、查看及下載圖片。預覽頁只切圖片，沒有連接正式遊戲或遊戲加速。
 
-游標指到敵人時，地圖角色與資訊窗的人物必須依同一主題一致呈現。已確認現行HD世界另畫高解析人物，但UI仍直接消費原生`indexedmap.BlitNativeMapHUD`的`HUDUnits`，缺少人物圖示的HD替換。接線須沿原typed selector、人物可顯示條件與idle，不以固定角色頭像覆蓋所有敵人。概念圖右下放大頭像窗屬新介面提案，仍須實作、同狀態與六組合驗證。
+游標指到敵人時，地圖角色與資訊窗的人物必須依同一主題一致呈現。設計輪次已確認HD世界另畫高解析人物，但UI當時仍直接消費原生`indexedmap.BlitNativeMapHUD`的`HUDUnits`。這項缺接線已依本頁HUD人物切片補齊；本段保留原先定位脈絡。接線須沿原typed selector、人物可顯示條件與idle，不以固定角色頭像覆蓋所有敵人。概念圖右下放大頭像窗屬新介面提案，仍須實作、同狀態與六組合驗證。
 
 後續先建立HD2可重用地形、人物圖源與載入邊界，再處理單列浮出輸入所有權、介面／主題／海報獨立切換及四語。素材及正式消費端未驗證前，本節維持DRAFT；沒有新增Game.Draw、正常玩家或原版對拍完成聲明。
 

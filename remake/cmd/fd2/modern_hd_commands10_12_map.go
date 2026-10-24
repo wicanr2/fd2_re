@@ -57,6 +57,7 @@ func (g *Game) prepareModernHDCommandSteady(in indexedmap.NativeFrameInput, work
 func commandHDObjectFrame(normal *modernHDMapFrame, terrainVGA []byte, palette color.Palette) *modernHDMapFrame {
 	frame := modernPlayer9EventFrame(normal, terrainVGA, palette)
 	frame.UI = image.NewRGBA(image.Rect(0, 0, 320, 200))
+	frame.HUDUnit = nil
 	frame.Range, frame.Terrain = nil, nil
 	for y := 0; y < 200; y++ {
 		for x := 0; x < 320; x++ {

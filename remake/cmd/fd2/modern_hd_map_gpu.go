@@ -27,6 +27,31 @@ type modernHDMapGPU struct {
 	CompoundMix           *ebiten.Image
 	CompoundShader        *ebiten.Shader
 	CompoundOwner         *modernHDCompoundMapScene
+	HUDBase, HUDAbove     *ebiten.Image
+}
+
+func (r *modernHDMapGPU) drawHUDUnit(patch *modernHDMapHUDUnit, clip image.Rectangle) {
+	if patch == nil {
+		return
+	}
+	region := patch.Unit.Rect.Intersect(clip).Intersect(r.World.Bounds())
+	if region.Empty() {
+		return
+	}
+	if r.HUDBase == nil {
+		r.HUDBase, r.HUDAbove = ebiten.NewImage(24, 24), ebiten.NewImage(24, 24)
+	}
+	r.HUDBase.WritePixels(patch.Base.Pix)
+	r.HUDAbove.WritePixels(patch.Above.Pix)
+	target := r.World.SubImage(region).(*ebiten.Image)
+	op := &ebiten.DrawImageOptions{}
+	op.GeoM.Scale(6, 6)
+	op.GeoM.Translate(float64(patch.Unit.Rect.Min.X), float64(patch.Unit.Rect.Min.Y))
+	target.DrawImage(r.HUDBase, op)
+	unit := &ebiten.DrawImageOptions{}
+	unit.GeoM.Translate(float64(patch.Unit.Rect.Min.X), float64(patch.Unit.Rect.Min.Y))
+	target.DrawImage(r.unit(patch.Unit.Group, patch.Unit.Frame), unit)
+	target.DrawImage(r.HUDAbove, op)
 }
 
 func (r *modernHDMapGPU) terrainImage(picture *image.RGBA) *ebiten.Image {
@@ -219,10 +244,12 @@ func (g *Game) drawPreparedModernHDMapFrame(screen *ebiten.Image, frame *modernH
 		// buffer. Keep that order at full resolution; the final logical UI
 		// plane remains transparent and cannot cover the effect again.
 		r.World.DrawImage(r.UI, op)
+		r.drawHUDUnit(frame.HUDUnit, clip)
 		for _, overlay := range frame.Overlays {
 			r.drawTerrainClipped(overlay.Image, overlay.Rect, clip)
 		}
 	} else {
+		r.drawHUDUnit(frame.HUDUnit, clip)
 		uiop := &ebiten.DrawImageOptions{}
 		uiop.GeoM.Scale(2, 2)
 		screen.DrawImage(r.UI, uiop)
@@ -324,9 +351,13 @@ func (g *Game) drawModernHDMapRing() error {
 			for _, plan := range plans {
 				r.drawUnit(plan)
 			}
+			r.drawHUDUnit(g.modernHDMapFrame.HUDUnit, modernHDMapViewport())
 			g.markActionOverlayDrawn()
 			return nil
 		}
+	}
+	if g.modernHDMapFrame != nil {
+		r.drawHUDUnit(g.modernHDMapFrame.HUDUnit, modernHDMapViewport())
 	}
 	g.markActionOverlayDrawn()
 	return nil

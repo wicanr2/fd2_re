@@ -69,8 +69,23 @@ func player9CPUWorld(frame *modernHDMapFrame, set *modernStoryPortraitSet) *imag
 	if frame.OverlaysAboveUI {
 		scale(frame.UI, out.Bounds())
 	}
+	paintHUD := func() {
+		if h := frame.HUDUnit; h != nil {
+			for _, src := range []image.Image{h.Base, set.mapSpritesHD[h.Unit.Group][h.Unit.Frame], h.Above} {
+				pic := image.NewRGBA(h.Unit.Rect.Sub(h.Unit.Rect.Min))
+				xdraw.NearestNeighbor.Scale(pic, pic.Bounds(), src, src.Bounds(), draw.Src, nil)
+				paint(pic, h.Unit.Rect)
+			}
+		}
+	}
+	if frame.OverlaysAboveUI {
+		paintHUD()
+	}
 	for _, f := range frame.Overlays {
 		paint(f.Image, f.Rect)
+	}
+	if !frame.OverlaysAboveUI {
+		paintHUD()
 	}
 	return out
 }

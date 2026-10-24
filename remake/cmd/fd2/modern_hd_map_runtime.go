@@ -28,6 +28,7 @@ type modernHDMapFrame struct {
 	Viewport         image.Rectangle
 	OverlaysAboveUI  bool
 	CompoundOwner    *modernHDCompoundMapScene
+	HUDUnit          *modernHDMapHUDUnit
 }
 
 type modernHDMapOverlayDraw struct {
@@ -255,6 +256,14 @@ func (g *Game) prepareModernHDMapFrameMode(in indexedmap.NativeFrameInput, seed 
 			}
 		}
 	}
+	var hudUnit *modernHDMapHUDUnit
+	if !step {
+		hudUnit, err = g.prepareModernHDMapHUDUnit(in, palette)
+		if err != nil {
+			return nil, err
+		}
+		clearModernHDHUDUnitPixels(ui, hudUnit)
+	}
 	return &modernHDMapFrame{Background: bg, UI: ui, Units: units, Foreground: foreground, TerrainSeed: terrainSeed,
-		Terrain: terrain, Range: rangeLayer, TerrainColourKey: colours.Key}, nil
+		Terrain: terrain, Range: rangeLayer, TerrainColourKey: colours.Key, HUDUnit: hudUnit}, nil
 }

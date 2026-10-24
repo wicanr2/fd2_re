@@ -12,6 +12,9 @@ from verify_fd2_player9_map_hd import check_real_runtime
 
 ROOT = Path(__file__).resolve().parents[1]
 REQUIRED = {
+    'hud-unit': {'TestModernHDHUDUnitSelectionAndHP','TestModernHDHUDUnitAdmissionAndEventShift',
+                 'TestModernHDMapTransactionUsesOneNativeClockAndIndependentTerrain','TestModernHDMapRejectedArtDoesNotPublishNativeState'},
+    'hud-game': {'TestModernHDHUDUnitSourcesAndGameGPU'},
     'modifier-map-fixture': {'TestModernModifierMapFixtureAdmission','TestModernModifierMapControlSnapshot'},
     'modifier-map-source': {'TestModernModifierMapSourcesAndAtomic'},
     'modifier-map-game': {'TestModernModifierMapRuntimeGPU'},
@@ -121,6 +124,11 @@ def main():
     catalog = json.loads(a.catalog.read_text())
     independent = check_real_runtime(a.pack, catalog) if a.require_real_runtime else None
     env = os.environ.copy()
+    env.pop('FD2_HD_HUD_GPU',None)
+    env.pop('FD2_HD_HUD_OUT',None)
+    if a.kind=='hud-game':
+        env.update(FD2_HD_HUD_GPU='1',FD2_HD_HUD_OUT=str(a.out)+'-capture',
+                   FD2_TEST_MODERN_EFFECT_CATALOG=str(a.catalog.resolve()),FD2_TEST_MODERN_EFFECT_PACK=str(a.pack.resolve()))
     env.update(FD2_MUTE='1', FD2_TEST_MODERN_BATTLE_CATALOG=str(a.catalog.resolve()), FD2_TEST_MODERN_BATTLE_PACK=str(a.pack.resolve()))
     for name in ['FD2_HD_MODIFIER_MAP_UNIT','FD2_HD_MODIFIER_MAP_GPU','FD2_HD_MODIFIER_MAP_REPORT','FD2_HD_MODIFIER_MAP_FIXTURE','FD2_HD_MODIFIER_MAP_ZERO','FD2_HD_MODIFIER_MAP_BATCH','FD2_HD_MODIFIER_REQUIRE_EFFECTS']:env.pop(name,None)
     if a.all_modifier_effects:env['FD2_HD_MODIFIER_REQUIRE_EFFECTS']='1'
@@ -237,6 +245,13 @@ export DISPLAY=:99
     passed = {e.get('Test') for e in events if e.get('Action')=='pass'}
     if not REQUIRED[a.kind] <= passed or any(e.get('Action') in {'skip','fail'} for e in events):
         raise SystemExit('必要測試缺項、SKIP 或失敗')
+    if a.kind=='hud-game':
+        d=json.loads((Path(str(a.out)+'-capture')/'gpu.json').read_text())
+        rows=d.get('cases',[])
+        if (d.get('status')!='PASS-HUD-UNIT-HD-RUNTIME-E1' or d.get('groups')!=125 or d.get('source_states')!=500
+                or d.get('fixed_clock_unix')!=1000 or d.get('native_rng_seed')!=7 or len(rows)!=6
+                or sum(r.get('game_draw',False) and r.get('f2',False) for r in rows)!=4):
+            raise SystemExit('HUD缺少完整圖源、Game.Draw或F2驗證')
     if a.kind in ['command-panel-owner','ordinary-scenery-source']:
         receipt=json.loads(Path(str(a.out)+'.owner.json').read_text())
         if (receipt.get('status')!='PASS-TYPED-COMMAND-PANEL' or receipt.get('command_id')!=a.panel_owner
