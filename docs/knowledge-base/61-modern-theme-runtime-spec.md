@@ -2,6 +2,26 @@
 
 狀態：現代主題仍為部分覆蓋；目前分層與缺口依[58](58-fd2-exe-re-coverage.md)。
 
+## 單位消失／出現轉場HD（CONFORMED-SCOPED／RUNTIME-E1）
+
+本節實作前為工程READY、美術DRAFT；第二版編製總覽審閱後提升美術READY。已接入共用轉場及玩家23兩段、故事／戰場staging的待啟動主題預檢。實際GPU流程限玩家23與戰場staging，故事呼叫者沿原生回歸，不外推正常玩家或全部HD完成。唯一收據、數量及來源SHA依下列HD主收據。
+
+本節沿58已閉合的0x22253與玩家23兩次呼叫，不重解callee。來源為固定FD2.EXE 357074 bytes、MD5 b97caf2239a27a896069d03549d96e1e、SHA-256 222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f，以及固定FDOTHER.DAT的6號LMI。原始位址、caller與證據入口依[終段轉場](../data/ida/fd2_ch29_terminal_body_ida.txt)、[戰後呼叫者](../data/ida/fd2_ch28_post_ida.txt)及58；工具為既有IDA9.4 LE線性位址。新實作只提升HD消費端，來源／工具SHA、母稿與收據記在[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的unit_present_hd_followup_20261024。
+
+- 原生契約保持11個LMI前導、6個contract、18或24列直接VGA橋接、10個release，共45或51畫面。座標只在17號橋接邊界更新。光形沿VisualX／VisualY，徑向中心沿VisibleCursorX／VisibleCursorY，兩者分開凍結。
+- 凍結before／after的具型別地圖、選圖快取、原始色盤、LUT、LMI與terrain snapshot。重組全部work／VGA、等待與metadata後才預備HD；缺來源或矛盾在第一畫面前拒收，不猜補。
+- LMI位於地形之上、人物與前景之下。兩段徑向與矩形沿既有回復HD的四色差近似，native fallback精確查表；HD alpha、原生非空與空白規則保持。事件畫布沿0,0的312×192來源，不帶四像素穩定邊距或HUD。原生回復在完整work套用pass，單位轉場則在work+0x8088套用；共享HD遮罩必須明示WorkOffset，不能混用位址空間。
+- 條帶按原456→320位元組位址計算。先合成after的局部HD，再以已完成列覆在最後contract畫面。跨VGA列、源／目的窗外及最上排18列依原始位址處理；窗外保留實際native像素，不自行改成整塊淡出或瞬移。
+- 活動工作、玩家23調色前導持有的兩段工作、focus待啟動的staging均參與F2同次預檢，全部通過才換圖。新指標只保存預備繪製資料，不更改原交易、取消、roll back與一次續行。繪製不讀檔、不消費RNG、不推進工作。
+- 美術沿原版114～124共11張，大小各為原框六倍。未修改透明母稿只提供筆觸，原始非零支撐、孔洞及黃轉紅／暗紅節拍控制輪廓與色彩；母稿alpha完整保存。編製與圖審查通過才升美術READY，逐來源GPU及正式／私人包驗過後才登錄。只缺整組的舊主題可明示回退原圖光形；宣告部分或缺件拒收。
+- 驗收包含來源重組、兩種條帶、分離的定位輸入、11來源與獨立GPU合成、玩家23正式確認後的完整兩段與MP／Acted／一次返回、各階段F2、待啟動focus、晚失敗回滾及共用回復／玩家9／HUD回歸。資料、規則與保存格式不變；正常玩家、集中人工及平台另列，不外推全HD完成。
+
+永久編製入口為[單位轉場編製器](../../tools/build_fd2_unit_present_hd.py)，在既有Pillow Docker使用`--original-pack /original --base-catalog <固定764項清冊> --master-root <私人素材包> --out <既有工作根下全新目錄>`。固定基底可由主收據指定的base_commit執行`git show <base_commit>:remake/assets/themes/modern/catalog.json`取得，SHA必須相符。原版輸入唯讀；固定來源報告已內嵌主收據，不依賴工作目錄副本。未修改母稿與成品均依正式catalog白名單保存私人庫，拒收第一版不登錄。
+
+使用[永久驗證器](../../tools/verify_fd2_unit_present_hd.py)的`--kind native／unit／source／game／regression`分別驗原生排程、凍結／條帶／原子拒收、11實際來源、完整Game.Draw與共用回歸。容器沿本頁HUD段落的既有Go映像、原版唯讀掛載與兩個素材環境變數；共同參數為`--catalog <清冊> --pack <圖源目錄> --out <全新前綴> --timeout 900`。完整GPU使用`--memory 6g --cpus 3 --pids-limit 192`，外層逾時至少960秒；驗證器自行擁有Xvfb。私人包加`--require-real-runtime`逐檔拒絕連結、硬連結及SHA差異。`--check-existing`以目前檢查器另存audit，核對全部45／51幀身份、22來源世界、固定時鐘／seed、兩條流程與F2，不覆寫原收據。
+
+README四格由[既有總覽工具](../../tools/build_fd2_battle_panel_gallery.py)的`--unit-present-receipt <capture/receipt.json>`產生；每張先對完整最終RGBA的GPU雜湊，再完整半縮，標籤在畫面外。共用回復只重跑13的單／多目標兩條Game.Draw，其餘指令的既有八條收據保持，不稱本輪重跑全八條。
+
 ## 地圖HUD人物圖示的HD圖源
 
 狀態：CONFORMED-SCOPED／RUNTIME-E1。唯一數量、收據及下一閘門依[58現況](58-fd2-exe-re-coverage.md)與[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的hud_unit_icon_hd_followup_20261024。下列READY契約已實作並完成受控驗證；不外推正常玩家、HD2或全HD完成。

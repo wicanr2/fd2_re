@@ -16,19 +16,28 @@ type modernHDHealFrames struct {
 }
 
 func healHDCounts(pass fdother.IndexedTransitionPass) ([]byte, []byte, error) {
+	return modernHDRadialCounts(pass, 0)
+}
+
+// WorkOffset is explicit: heal applies its pass to the full buffer, while
+// unit-present applies the same geometry primitives to work+0x8088.
+func modernHDRadialCounts(pass fdother.IndexedTransitionPass, workOffset int) ([]byte, []byte, error) {
+	if workOffset < 0 || workOffset >= indexedmap.NativeUnitPresentWorkSize {
+		return nil, nil, errors.New("modern HD radial: invalid work offset")
+	}
 	terrain, objects := make([]byte, indexedmap.NativeUnitPresentWorkSize), make([]byte, indexedmap.NativeUnitPresentWorkSize)
 	add := make([]byte, 256)
 	for i := range add {
 		add[i] = byte(i + 1)
 	}
-	if err := fdother.ApplyRadialLUTRemap(terrain, 456, add, pass.FirstRadial); err != nil {
+	if err := fdother.ApplyRadialLUTRemap(terrain[workOffset:], 456, add, pass.FirstRadial); err != nil {
 		return nil, nil, err
 	}
 	for _, dst := range [][]byte{terrain, objects} {
-		if err := fdother.ApplyRadialLUTRemap(dst, 456, add, pass.SecondRadial); err != nil {
+		if err := fdother.ApplyRadialLUTRemap(dst[workOffset:], 456, add, pass.SecondRadial); err != nil {
 			return nil, nil, err
 		}
-		if err := fdother.ApplyCenteredRectLUTRemap(dst, 456, add, pass.FinalRect); err != nil {
+		if err := fdother.ApplyCenteredRectLUTRemap(dst[workOffset:], 456, add, pass.FinalRect); err != nil {
 			return nil, nil, err
 		}
 	}
@@ -81,19 +90,49 @@ func validateHealHDBanks(g *Game, set *modernStoryPortraitSet) (bool, error) {
 
 // Native masks operate in the actual work-buffer address space. Counts are
 // sampled only after the same 0x8088 viewport offset as the native producer.
+type modernHDRadialGroundLayer struct {
+	Image  *image.RGBA
+	Native *fdother.LMI1Entry
+	Rect   image.Rectangle
+}
+
+type modernHDRadialMapSpec struct {
+	Input      indexedmap.NativeFrameInput
+	Palette    color.Palette
+	Pass       fdother.IndexedTransitionPass
+	LUT        []byte
+	WorkOffset int
+	Background []byte
+	Ground     []modernHDRadialGroundLayer
+}
+
 func (g *Game) healHDFront(j *nativeCommandHealPresentationJob, set *modernStoryPortraitSet, normal *modernHDMapFrame, index int) (*modernHDMapFrame, error) {
-	pass, lut := j.hdPasses[index], j.hdLUTs[index]
-	tc, oc, err := healHDCounts(pass)
+	return g.prepareModernHDRadialMap(modernHDRadialMapSpec{Input: j.hdInput, Palette: j.palette, Pass: j.hdPasses[index], LUT: j.hdLUTs[index]}, set, normal, nil)
+}
+
+func (g *Game) prepareModernHDRadialMap(spec modernHDRadialMapSpec, set *modernStoryPortraitSet, normal *modernHDMapFrame, weights map[uint32]modernTerrainColourWeights) (*modernHDMapFrame, error) {
+	pass, lut := spec.Pass, spec.LUT
+	input, palette := spec.Input, spec.Palette
+	tc, oc, err := modernHDRadialCounts(pass, spec.WorkOffset)
 	if err != nil {
 		return nil, err
 	}
-	in := nativeTransitionInput(j.hdInput)
+	in := nativeTransitionInput(input)
 	in.Units, in.ForegroundUnits = nil, nil
-	work, vga := make([]byte, indexedmap.NativeUnitPresentWorkSize), make([]byte, 64000)
-	if err := indexedmap.ComposeNativeTransitionFrame(work, vga, in, pass, lut); err != nil {
-		return nil, err
+	vga := spec.Background
+	if vga == nil {
+		if spec.WorkOffset != 0 {
+			return nil, errors.New("modern HD radial: offset source requires its own background producer")
+		}
+		work := make([]byte, indexedmap.NativeUnitPresentWorkSize)
+		vga = make([]byte, indexedmap.NativeMapVGASize)
+		if err := indexedmap.ComposeNativeTransitionFrame(work, vga, in, pass, lut); err != nil {
+			return nil, err
+		}
+	} else if len(vga) != indexedmap.NativeMapVGASize {
+		return nil, errors.New("modern HD radial: invalid source background")
 	}
-	f := commandHDObjectFrame(normal, vga, j.palette)
+	f := commandHDObjectFrame(normal, vga, palette)
 	var luts [4][]byte
 	for count := 0; count < 4; count++ {
 		luts[count] = make([]byte, 256)
@@ -111,20 +150,20 @@ func (g *Game) healHDFront(j *nativeCommandHealPresentationJob, set *modernStory
 		col, row := tile.Rect.Min.X/144, tile.Rect.Min.Y/144
 		// Normal rectangles include the native four-pixel inset.
 		col, row = (tile.Rect.Min.X-24)/144, (tile.Rect.Min.Y-24)/144
-		at := (j.hdInput.Frame.CameraY+row)*j.hdInput.Frame.MapWidth + j.hdInput.Frame.CameraX + col
-		if at < 0 || at >= len(j.hdInput.Frame.Cells) {
+		at := (input.Frame.CameraY+row)*input.Frame.MapWidth + input.Frame.CameraX + col
+		if at < 0 || at >= len(input.Frame.Cells) {
 			return nil, errors.New("modern HD heal: terrain cell absent")
 		}
-		cell := j.hdInput.Frame.Cells[at]
+		cell := input.Frame.Cells[at]
 		var shades [4]*image.RGBA
 		for count := 0; count < 4; count++ {
 			mapped := append([]byte(nil), luts[count]...)
 			if cell.BlitMode != 0xff {
 				for n := range mapped {
-					mapped[n] = luts[count][j.hdInput.Frame.LUT[n]]
+					mapped[n] = luts[count][input.Frame.LUT[n]]
 				}
 			}
-			ctx, e := terrainColourContext(g.nativeMapAssets.MapIndex, g.nativeMapAssets.Palette, j.palette, mapped)
+			ctx, e := terrainColourContext(g.nativeMapAssets.MapIndex, g.nativeMapAssets.Palette, palette, mapped)
 			if e != nil {
 				return nil, e
 			}
@@ -143,7 +182,7 @@ func (g *Game) healHDFront(j *nativeCommandHealPresentationJob, set *modernStory
 	// original order: all units, then the actual foreground. No GPU API changes.
 	f.Units = nil
 	f.Foreground = nil
-	ctx, e := terrainColourContext(0, j.palette, j.palette, lut)
+	ctx, e := terrainColourContext(0, palette, palette, lut)
 	if e != nil {
 		return nil, e
 	}
@@ -151,8 +190,10 @@ func (g *Game) healHDFront(j *nativeCommandHealPresentationJob, set *modernStory
 	for i := range colours {
 		colours[i] = byte(i)
 	}
-	weights := make(map[uint32]modernTerrainColourWeights)
-	shade := func(src image.Image, rect image.Rectangle, band bool) *image.RGBA {
+	if weights == nil {
+		weights = make(map[uint32]modernTerrainColourWeights)
+	}
+	shade := func(src image.Image, rect image.Rectangle, band bool, counts []byte) *image.RGBA {
 		out := image.NewRGBA(image.Rect(0, 0, rect.Dx(), rect.Dy()))
 		for y := 0; y < rect.Dy(); y++ {
 			for x := 0; x < rect.Dx(); x++ {
@@ -165,7 +206,7 @@ func (g *Game) healHDFront(j *nativeCommandHealPresentationJob, set *modernStory
 					v.G = byte(math.Round(float64(v.G) * .55))
 					v.B = byte(math.Round(float64(v.B) * .6))
 				}
-				count := healHDCountAt(oc, (rect.Min.X+x)/6, (rect.Min.Y+y)/6)
+				count := healHDCountAt(counts, (rect.Min.X+x)/6, (rect.Min.Y+y)/6)
 				if count != 0 {
 					key := uint32(v.R)<<16 | uint32(v.G)<<8 | uint32(v.B)
 					w, ok := weights[key]
@@ -176,7 +217,7 @@ func (g *Game) healHDFront(j *nativeCommandHealPresentationJob, set *modernStory
 					values := [3]float64{float64(v.R), float64(v.G), float64(v.B)}
 					for k, weight := range w.Weights {
 						n := w.Indices[k]
-						r, gg, b, _ := j.palette[luts[count][n]].RGBA()
+						r, gg, b, _ := palette[luts[count][n]].RGBA()
 						to := [3]float64{float64(r >> 8), float64(gg >> 8), float64(b >> 8)}
 						for c := range values {
 							values[c] += weight * (to[c] - ctx.Base[n][c])
@@ -190,18 +231,44 @@ func (g *Game) healHDFront(j *nativeCommandHealPresentationJob, set *modernStory
 		}
 		return out
 	}
+	for _, layer := range spec.Ground {
+		var picture *image.RGBA
+		if layer.Native == nil {
+			if layer.Image == nil || layer.Image.Bounds().Size() != layer.Rect.Size() {
+				return nil, errors.New("modern HD radial: invalid HD ground layer")
+			}
+			picture = shade(layer.Image, layer.Rect, false, tc)
+		} else {
+			entry := layer.Native
+			if entry.Width*6 != layer.Rect.Dx() || entry.Height*6 != layer.Rect.Dy() || len(entry.Pixels) != entry.Width*entry.Height {
+				return nil, errors.New("modern HD radial: invalid indexed ground layer")
+			}
+			picture = image.NewRGBA(image.Rect(0, 0, layer.Rect.Dx(), layer.Rect.Dy()))
+			for y := 0; y < picture.Rect.Dy(); y++ {
+				for x := 0; x < picture.Rect.Dx(); x++ {
+					v := entry.Pixels[y/6*entry.Width+x/6]
+					if v == 0 {
+						continue
+					}
+					count := healHDCountAt(tc, (layer.Rect.Min.X+x)/6, (layer.Rect.Min.Y+y)/6)
+					picture.Set(x, y, palette[luts[count][v]])
+				}
+			}
+		}
+		f.Terrain = append(f.Terrain, modernHDTerrainDraw{Image: picture, Rect: layer.Rect})
+	}
 	for _, u := range normal.Units {
 		rect := u.Rect.Add(image.Pt(-24, -24))
-		f.Foreground = append(f.Foreground, modernHDMapForegroundDraw{HDImage: shade(set.mapSpritesHD[u.Group][u.Frame], rect, u.PaletteBand), Rect: rect})
+		f.Foreground = append(f.Foreground, modernHDMapForegroundDraw{HDImage: shade(set.mapSpritesHD[u.Group][u.Frame], rect, u.PaletteBand, oc), Rect: rect})
 	}
 	for _, fg := range normal.Foreground {
 		rect := fg.Rect.Add(image.Pt(-24, -24))
 		picture := fg.HDImage
 		if picture != nil {
-			picture = shade(picture, rect, false)
+			picture = shade(picture, rect, false, oc)
 		} else {
 			picture = image.NewRGBA(image.Rect(0, 0, 144, 144))
-			sprite := j.hdInput.Frame.ForegroundBank.Sprites[fg.SourceFrame]
+			sprite := input.Frame.ForegroundBank.Sprites[fg.SourceFrame]
 			for y := 0; y < 144; y++ {
 				for x := 0; x < 144; x++ {
 					at := y/6*24 + x/6
@@ -210,10 +277,10 @@ func (g *Game) healHDFront(j *nativeCommandHealPresentationJob, set *modernStory
 					}
 					v := sprite.Pixels[at]
 					if fg.BlitMode != 0xff {
-						v = j.hdInput.Frame.LUT[v]
+						v = input.Frame.LUT[v]
 					}
 					v = luts[healHDCountAt(oc, (rect.Min.X+x)/6, (rect.Min.Y+y)/6)][v]
-					picture.Set(x, y, j.palette[v])
+					picture.Set(x, y, palette[v])
 				}
 			}
 		}

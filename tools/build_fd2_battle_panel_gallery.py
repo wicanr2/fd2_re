@@ -46,11 +46,50 @@ def modifier_gallery(args):
     print(json.dumps(dict(sha256=result['sha256'], sources=len(rows))))
 
 
+def unit_present_gallery(args):
+    from verify_fd2_unit_present_hd import check_receipt
+    prefix=args.unit_present_receipt.parent
+    if not prefix.name.endswith('-capture'):
+        raise SystemExit('須給完整轉場capture/receipt.json')
+    check_receipt('game',prefix.with_name(prefix.name[:-8]))
+    data=json.loads(args.unit_present_receipt.read_text())
+    canvas=Image.new('RGB',(1920,1248),'#191d23')
+    paint=ImageDraw.Draw(canvas)
+    font=ImageFont.load_default(size=18)
+    rows=[]
+    choices=[('command23-002-intro.png','command23','intro','Transport / intro'),
+             ('command23-003-contract.png','command23','contract','Transport / contraction'),
+             ('command23-004-bridge.png','command23','bridge','Transport / row bridge'),
+             ('staging-001-intro.png','staging','intro','Staging / arrival')]
+    for i,(name,case,phase,label) in enumerate(choices):
+        source=prefix/name
+        with Image.open(source) as im:
+            picture=im.convert('RGBA')
+        raw_sha=hashlib.sha256(picture.tobytes()).hexdigest()
+        matches=[r for r in data['rows'] if r['case']==case and r['phase']==phase and r['final_sha256']==raw_sha]
+        if picture.size!=(1920,1200) or not matches:
+            raise SystemExit('圖片不是已驗證的完整Game.Draw畫面')
+        x,y=i%2*960,i//2*624
+        paint.text((x+8,y+2),label,font=font,fill='#e4eaf2')
+        canvas.paste(picture.convert('RGB').resize((960,600),Image.Resampling.LANCZOS),(x,y+24))
+        rows.append(dict(source=str(source.resolve().relative_to(ROOT)),sha256=hashlib.sha256(source.read_bytes()).hexdigest(),
+                         raw_rgba_sha256=raw_sha,key=matches[0]['key'],case=case,phase=phase,
+                         operation='whole-frame half-size; label outside game area'))
+    canvas.save(args.out)
+    result=dict(file=str(args.out.resolve().relative_to(ROOT)),sha256=hashlib.sha256(args.out.read_bytes()).hexdigest(),
+                size=list(canvas.size),sources=rows,receipt=str(args.unit_present_receipt.resolve().relative_to(ROOT)),
+                receipt_sha256=hashlib.sha256(args.unit_present_receipt.read_bytes()).hexdigest(),
+                scope='controlled command23 and battle staging Game.Draw; not ordinary player or original RGB parity')
+    args.receipt.write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
+    print(json.dumps(dict(sha256=result['sha256'],sources=len(rows))))
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--captures', type=Path, nargs=4,
                         help='依繁中、簡中、日文、英文順序給四個capture目錄')
     parser.add_argument('--modifier-receipts', type=Path, nargs=3, help='依玩家25、20、21順序給三份.game.json，選已驗證圓環及兩色菱形')
+    parser.add_argument('--unit-present-receipt',type=Path,help='單位轉場完整Game.Draw收據，選傳送與增援四格')
     parser.add_argument('--out', type=Path, required=True)
     parser.add_argument('--receipt', type=Path, required=True)
     parser.add_argument('--command-panels', action='store_true', help='選法術actor階段；完整PNG先記SHA，原收據有SHA時再核對')
@@ -65,6 +104,11 @@ def main():
     for path in [args.out, args.receipt]:
         if not path.parent.is_dir() or path.exists():
             raise SystemExit('輸出父目錄須存在，不覆寫既有檔案')
+    if args.unit_present_receipt:
+        if args.captures or args.modifier_receipts or args.command_panels or args.phase or args.lmi_entries:
+            raise SystemExit('單位轉場不可混用其他總覽選項')
+        unit_present_gallery(args)
+        return
     if args.modifier_receipts:
         if args.captures or args.command_panels or args.phase or args.lmi_entries:
             raise SystemExit('狀態光效總覽不可混用四語面板選項')

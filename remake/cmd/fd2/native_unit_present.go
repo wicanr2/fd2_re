@@ -33,6 +33,16 @@ type nativeUnitPresentJob struct {
 	mutated    bool
 	then       func()
 	rollback   func()
+
+	hdSource       *modernHDUnitPresentSource
+	hdSignature    [32]byte
+	hdFrames       []*modernHDMapFrame
+	hdTheme        *modernStoryPortraitSet
+	hdCached       []*modernHDMapFrame
+	hdCachedTheme  *modernStoryPortraitSet
+	hdCachedBridge *modernHDMapFrame
+	// Asset preflight follows the next leg without executing its callback.
+	hdNext *nativeUnitPresentJob
 }
 
 func nativeUnitPresentAssetsAvailable(a *nativeMapAssets) bool {
@@ -237,6 +247,20 @@ func (g *Game) buildNativeUnitPresentJob(
 		job.mutationAt != 17 || len(job.vgaFrames) < 45 {
 		return nil, errors.New("native 0x22253 preflight produced an invalid schedule")
 	}
+	job.hdSource, err = g.freezeModernHDUnitPresentSource(call, view, beforeInput, afterInput,
+		terrainSnapshot, lutSnapshot, initialVGA, lutFrames, bridgeLUT)
+	if err != nil {
+		return nil, err
+	}
+	job.hdSignature, err = job.hdSource.signature(job.palette)
+	if err != nil {
+		return nil, err
+	}
+	job.hdFrames, err = g.prepareModernHDUnitPresent(job, g.modernStoryPortraits)
+	if err != nil {
+		return nil, err
+	}
+	job.hdTheme = g.modernStoryPortraits
 	return job, nil
 }
 
@@ -307,6 +331,13 @@ func (g *Game) drawNativeUnitPresent(screen *ebiten.Image) bool {
 	j := g.nativeUnitPresent
 	if j == nil || len(j.palette) != 256 || len(g.nativeMapVGA) != indexedmap.NativeMapVGASize {
 		return false
+	}
+	if g.modernStoryPortraits != nil && j.hdTheme == g.modernStoryPortraits && j.frame < len(j.hdFrames) {
+		if !g.drawPreparedModernHDMapFrame(screen, j.hdFrames[j.frame], false) {
+			return false
+		}
+		j.drawn = true
+		return true
 	}
 	img := image.NewPaletted(image.Rect(0, 0, 320, 200), j.palette)
 	copy(img.Pix, g.nativeMapVGA)

@@ -867,6 +867,7 @@ func (g *Game) applyNativeRelocationDestination(x, y int) (bool, error) {
 		g.nativeUnitPresent = appearJob
 		g.publishNativeUnitPresentFrame()
 	}
+	disappearJob.hdNext = appearJob
 	err = g.startNativeCommandPalettePresentation(23, func() error { return nil }, func() error {
 		g.nativeUnitPresent = disappearJob
 		g.publishNativeUnitPresentFrame()
@@ -875,6 +876,7 @@ func (g *Game) applyNativeRelocationDestination(x, y int) (bool, error) {
 	if err != nil {
 		return false, err
 	}
+	g.nativeModifierPresentation.unitPresent = disappearJob
 	return true, nil
 }
 

@@ -230,7 +230,8 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
                        list(range(57,64)) if resource == 6 and count == 7 else
                        list(range(64,76)) if resource == 6 and count == 12 else
                        list(range(126,191)) if resource == 6 and count == 65 else
-                       list(range(191,230)) if resource == 6 and count == 39 else [])
+                       list(range(191,230)) if resource == 6 and count == 39 else
+                       list(range(114,125)) if resource == 6 and count == 11 else [])
             if (entry['status'] not in {'runtime_candidate', 'runtime_ready'} or
                     entry['consumer_contract'] != 'native_lmi1_rgba_hd6_v1' or entry['source_archive'] != 'FDOTHER.DAT' or
                     type(resource) is not int or not indices or

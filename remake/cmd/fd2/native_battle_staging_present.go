@@ -65,7 +65,7 @@ func (g *Game) startNativeBattleStagingPresent(spec *battle.NativeStagingPlaceme
 		g.camX, g.camY, g.curX, g.curY = beforeCamX, beforeCamY, beforeCurX, beforeCurY
 		g.nativeMapWork, g.nativeMapVGA = beforeWork, beforeVGA
 	}
-	g.focusJob = &focusUnitJob{targetX: spec.X, targetY: spec.Y, nativeView: true, then: func() {
+	g.focusJob = &focusUnitJob{targetX: spec.X, targetY: spec.Y, nativeView: true, unitPresent: job, then: func() {
 		g.nativeUnitPresent = job
 		g.publishNativeUnitPresentFrame()
 	}}

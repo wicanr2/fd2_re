@@ -19,6 +19,7 @@ type nativeCommandModifierPresentationJob struct {
 	transaction func() error
 	then        func()
 	hdFrames    []nativeCompoundPresentedFrame
+	unitPresent *nativeUnitPresentJob
 }
 
 // startNativeCommandPalettePresentation owns the recovered player-only

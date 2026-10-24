@@ -223554,5 +223554,574 @@
       "mounts": "工作樹/repo可寫；/original及/repo/org_game唯讀；--rm；Xvfb由驗證器trap清理。",
       "reproduce": "規格61的地圖HUD人物圖示的HD圖源，工具verify_fd2_battle_surface_hd.py的hud-unit／hud-game，回歸verify_fd2_player9_map_hd.py、verify_fd2_heal_map_hd.py及modifier-map-game17；四批治療須合併後才算全八條通過。"
     }
+  },
+  "unit_present_hd_followup_20261024": {
+    "status": "CONFORMED-SCOPED-RUNTIME-E1",
+    "art_status": "CONFORMED-SCOPED-RUNTIME-E1",
+    "base_commit": "5b2f5d34acbe05642772af4357883eaede39835a",
+    "scope": "共用0x22253單位出現／消失，含玩家23的兩段、焦點待啟動及故事／戰場staging呼叫者。正式規則、座標寫入邊界、等待與保存格式保持；不新增原版RGB或正常玩家聲明。",
+    "base_catalog": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-present-base-catalog-764-oct24.json",
+      "sha256": "b0dfffc33203247b07afbd7c62a78822a18b9dee9fb5fe0be1c9c720e7e8ef67",
+      "assets": 764,
+      "source_file": "remake/assets/themes/modern/catalog.json"
+    },
+    "fixed_sources": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-present-lmi-source-oct24-r1.json",
+      "sha256": "9e8570998d4598b8eb6be79e5222a0e6e2228c1f6a32b893bf12a020c0f33363",
+      "report": {
+        "status": "PASS-PINNED-LMI-SOURCES",
+        "source_file": {
+          "file": "FDOTHER.DAT",
+          "size": 3382481,
+          "md5": "22f56e5027edc7c766ad34ca4e5aca93",
+          "sha256": "a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce"
+        },
+        "pack_manifest_sha256": "5eec2ecacc4fe97c4d0f27838e7dbecf18d1cf4b309b35800d50afd173cacca5",
+        "palette_sha256": "404db1ca72ffc19fa7404fbc59bde98cdf239f63fe3375ec248a8142073a28bf",
+        "palette_resource": 0,
+        "resources": [
+          {
+            "resource": 6,
+            "metadata_sha256": "88680097b2b64585613699c5593f19dee143f044e893de54ee486cd93465e675",
+            "metadata_manifested": true,
+            "raw_sha256": "47cc4f7136b553879f960e9902d223c9f7e4462d726fb7ea3124bf51c912f71c",
+            "frames": [
+              {
+                "index": 114,
+                "width": 12,
+                "height": 21,
+                "pixels_sha256": "cb1c97b3c925389d152747a26d5121dc2f12088284666ce121b25bb22f6d3e2b",
+                "png_sha256": "2b28cf7c8867db19ffc3074a8e4ee3832d6024290a58f974db3610ae86d8da52",
+                "visible_pixels": 8,
+                "ink_box": [
+                  4,
+                  13,
+                  12,
+                  21
+                ],
+                "native_empty": false
+              },
+              {
+                "index": 115,
+                "width": 20,
+                "height": 22,
+                "pixels_sha256": "8d6fc67788dc987989d95c044eb477ec97bdbcb4ed2e853d5360aa84413eda31",
+                "png_sha256": "4124c1a440b1cc8f405421d3f8d53563c60fe4625dc7b2c66987b07b9ca42e85",
+                "visible_pixels": 23,
+                "ink_box": [
+                  4,
+                  13,
+                  20,
+                  22
+                ],
+                "native_empty": false
+              },
+              {
+                "index": 116,
+                "width": 20,
+                "height": 22,
+                "pixels_sha256": "aea60fd7b39a690d95bb8f775f94cc908f986b56070a8c32908f2b7674ab0c38",
+                "png_sha256": "73fdeda580203ca95a13903fc09883e0d09df71b4b15fb7cb4848ab319e16104",
+                "visible_pixels": 30,
+                "ink_box": [
+                  4,
+                  13,
+                  20,
+                  22
+                ],
+                "native_empty": false
+              },
+              {
+                "index": 117,
+                "width": 20,
+                "height": 22,
+                "pixels_sha256": "13d7050c2e747b6a6943e6398479587d6d951c8aa704d5e30f7230c2eaa195b6",
+                "png_sha256": "e65d7bda404627f2072854bc6925bd37b0c9a1ea70ff31ca186285dce912b228",
+                "visible_pixels": 42,
+                "ink_box": [
+                  4,
+                  13,
+                  20,
+                  22
+                ],
+                "native_empty": false
+              },
+              {
+                "index": 118,
+                "width": 20,
+                "height": 22,
+                "pixels_sha256": "20aaea4ea272b18909770a23e05089c525e1f402d2d0c9aaa1e89ceadcb0cade",
+                "png_sha256": "2edec73507526eff0d851c10e41bc185443886a78de79e09609734b52b3549d6",
+                "visible_pixels": 46,
+                "ink_box": [
+                  4,
+                  13,
+                  20,
+                  22
+                ],
+                "native_empty": false
+              },
+              {
+                "index": 119,
+                "width": 20,
+                "height": 22,
+                "pixels_sha256": "15a1226032d39bb2b5bbb95689a6ce6f305e19b955bdb0992e35b440634904e9",
+                "png_sha256": "f1478b07a367714fa18c2158d0f8e6fae79909bb57897d29835e69779cf203bb",
+                "visible_pixels": 50,
+                "ink_box": [
+                  4,
+                  13,
+                  20,
+                  22
+                ],
+                "native_empty": false
+              },
+              {
+                "index": 120,
+                "width": 20,
+                "height": 22,
+                "pixels_sha256": "177946fbf98c44907575439010a92f56eefbafa21c2d0a8195c2bf57bc6dae44",
+                "png_sha256": "a0328ba5d79767684a089be24abb710f01afae99c0e1b3c1f16ccd58817af721",
+                "visible_pixels": 50,
+                "ink_box": [
+                  4,
+                  13,
+                  20,
+                  22
+                ],
+                "native_empty": false
+              },
+              {
+                "index": 121,
+                "width": 20,
+                "height": 22,
+                "pixels_sha256": "a35c578f9e41c49357313bce52aaf752fbcbadd352e3788a809d1200d394425d",
+                "png_sha256": "53742ea881d67647a35fc9f12f34886d3ededaa51cbdfa6ea577a041bd452b3b",
+                "visible_pixels": 50,
+                "ink_box": [
+                  4,
+                  13,
+                  20,
+                  22
+                ],
+                "native_empty": false
+              },
+              {
+                "index": 122,
+                "width": 20,
+                "height": 22,
+                "pixels_sha256": "177946fbf98c44907575439010a92f56eefbafa21c2d0a8195c2bf57bc6dae44",
+                "png_sha256": "a0328ba5d79767684a089be24abb710f01afae99c0e1b3c1f16ccd58817af721",
+                "visible_pixels": 50,
+                "ink_box": [
+                  4,
+                  13,
+                  20,
+                  22
+                ],
+                "native_empty": false
+              },
+              {
+                "index": 123,
+                "width": 20,
+                "height": 22,
+                "pixels_sha256": "15a1226032d39bb2b5bbb95689a6ce6f305e19b955bdb0992e35b440634904e9",
+                "png_sha256": "f1478b07a367714fa18c2158d0f8e6fae79909bb57897d29835e69779cf203bb",
+                "visible_pixels": 50,
+                "ink_box": [
+                  4,
+                  13,
+                  20,
+                  22
+                ],
+                "native_empty": false
+              },
+              {
+                "index": 124,
+                "width": 24,
+                "height": 23,
+                "pixels_sha256": "142f658fc8479f5c02fcb587c9a55b95b02a06ba4febfdbff62c49d885ef6b50",
+                "png_sha256": "3684d9bfd49b09babc67130e0c3d6863048cdd19d98c5457af5433a50b3f6974",
+                "visible_pixels": 100,
+                "ink_box": [
+                  0,
+                  12,
+                  24,
+                  23
+                ],
+                "native_empty": false
+              }
+            ]
+          }
+        ],
+        "tool": {
+          "file": "tools/audit_fd2_player9_map_source.py",
+          "sha256": "dd061e88de70775346c8d3e559c64ae97df3bd885634c44e0d5b41d0e20bfe95"
+        },
+        "scope": "固定解碼LMI1圖源，index0透明依既有BlitAt(false)契約。非新增RE或原版oracle。"
+      }
+    },
+    "evidence": [
+      {
+        "file": "docs/data/ida/fd2_ch29_terminal_body_ida.txt",
+        "sha256": "f3ebfbef12fa124b0480162e37f6fa26783bcd8c10112dead4733fe36cbf4f14"
+      },
+      {
+        "file": "docs/data/ida/fd2_ch28_post_ida.txt",
+        "sha256": "e8f1669a85a06412c51450ce9d2fc761981fc2d793b3fc6fca3421eb98cc5e3a"
+      },
+      {
+        "file": "docs/data/fd2-reference-files.json",
+        "sha256": "9946b7506620069ce9b7bb8e4b1f7fed36e7a9389b634ef62064727d89579c5e"
+      }
+    ],
+    "masters": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-present-hourglass-master-oct24-r1.png",
+        "sha256": "2506c0ab2a50409eddd3fb6028f7fb1228adeae70db012bd996e25bdcd1329f4",
+        "size": [
+          1774,
+          887
+        ],
+        "alpha_extrema": [
+          0,
+          254
+        ],
+        "crop32": [
+          189,
+          173,
+          1588,
+          709
+        ],
+        "unmodified_generated_source": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-8a9c23bd-5180-4dca-94b1-ab1904c549e4.png"
+      }
+    ],
+    "prompt": "Use case: stylized-concept. Asset type: one transparent RGBA magical transport-effect master for the Flame Dragon Knights 2 hand-painted HD remake. Reference image 1 is a decoded original animation contact sheet, to guide the silhouette only: two small opposing open triangles / an hourglass lattice, with a horizontal top and bottom stroke and a flattened red elliptical outer ring in the final state. Reference image 2 is a style reference only for softly feathered painted light and a bright narrow core. Create ONE centered complete luminous red-orange hourglass-shaped lattice within a flattened elliptical ring, viewed almost front-on like original source 124, with thin red crimson energy strokes, restrained amber-white highlights, soft brush texture, transparent interior holes and subtle transparent edge glow. Keep the original simple geometry readable and open; do not fill either triangle. This is a reusable isolated effect texture, not a contact sheet or scene. No ground, no characters, no runes, no text, no labels, no frame, no black or colored background, no extra particles outside the small ring. Plenty of transparent margin; nothing cropped. Existing source geometry and yellow-to-dark-red timing will be reconstructed deterministically by the engine, so avoid adding animation panels.",
+    "native_schedule": {
+      "intro": 11,
+      "contract": 6,
+      "mutation_at": 17,
+      "bridge_rows": [
+        18,
+        24
+      ],
+      "release": 10,
+      "total_frames": [
+        45,
+        51
+      ]
+    },
+    "runtime_contract": [
+      "凍結原生before／after input、camera／visible cursor、LMI、LUT、色盤與原始work／VGA；完整producer重組後才發布HD。",
+      "LMI先於人物及前景；兩徑向加矩形使用既有四色差近似，原生圖源精確查表，HD alpha保持。",
+      "逐列橋接沿456→320原始位元組位址，先完整合成after局部，再把已完成列覆在最後contract畫面；跨列、視窗外及top-row18列保留原生幾何。",
+      "F2一次預檢活動工作、palette前導持有的兩段工作與focus待啟動工作；任一來源錯誤整批拒收，交易及callback不前進。",
+      "新組只接受FDOTHER6 114..124全部11張；缺整組的舊主題明示原圖光形回退，部分、錯尺寸、缺件一律拒收。",
+      "WorkOffset明示0或0x8088；回復原完整work規則保持，單位轉場在view切片套pass，遮罩落回同一完整work位址。"
+    ],
+    "art_contract": "重用已核准手繪光效風格，未修改母稿只提供材質；native非零支撐、孔洞與native色盤黃到紅／暗紅節拍控制輸出。編製及圖審查後才升READY並登錄，不能用前導接線宣稱整組HD。",
+    "acceptance": [
+      "固定來源重組全部45／51幀及17寫入邊界，兩種條帶與visual／visible-cursor分離、取消與晚失敗回滾。",
+      "11個實際HD來源GPU、左右及邊界位置、透明混合獨立CPU核對；部分清冊及缺件／錯尺寸／原生來源變更拒收。",
+      "玩家23從正式確認路徑完整palette→消失→出現→MP／Acted提交與一次返回；F2覆蓋前導、兩段、條帶與release。",
+      "故事／戰場staging與focus待啟動、既有回復／玩家9／HUD回歸；正式與私人實檔核對並同步已登錄母稿與成品。"
+    ],
+    "full_hd_complete": false,
+    "art_review": {
+      "accepted": "unit-present-art-oct24-r2",
+      "rejected": "unit-present-art-oct24-r1",
+      "reason": "首版放大遮罩有階梯；第二版以四倍超取樣重建連通筆畫與圓接，保留原支撐、孔洞、黃紅及暗紅節拍。已檢視11來源總覽及實際Game.Draw。",
+      "approximation": "中心線、圓接、兩個HD像素外緣、母稿材質與高光為美術近似；不是原版RGB對拍。"
+    },
+    "compiled": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-present-art-oct24-r2/compiled.json",
+      "sha256": "e1d35bf0bf18389c4ff1ad5e6cf4e4330c238d1ad3213ab5e2a2bb2e0c1dccf9"
+    },
+    "reproduction": {
+      "compiled": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-present-rebuild-oct24-r1/compiled.json",
+        "sha256": "7f77155a1d5b0f3d9430b1b71b6d90599cca7c893411cab39126e232de8fa6bf"
+      },
+      "eleven_records_sha_equal": true,
+      "master_root": "fd2-assets-private/packs/fd2-modern-handpainted-a",
+      "fixed_sources_embedded": true,
+      "base_catalog_snapshot": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-present-base-catalog-764-oct24.json",
+        "sha256": "b0dfffc33203247b07afbd7c62a78822a18b9dee9fb5fe0be1c9c720e7e8ef67"
+      }
+    },
+    "formal_catalog": {
+      "file": "remake/assets/themes/modern/catalog.json",
+      "sha256": "9c25de7a2e5a9723e6f97cf608c3fc09c6bf41b82a32d86b9a44438d3131bc9d",
+      "assets": 765,
+      "lmi_groups": 9,
+      "lmi_frames": 196
+    },
+    "formal_coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-present-formal-coverage-oct24-r1.json",
+      "sha256": "97c4c5d974e272b8c8a67ff947e7911c5ac6143500d042ddbffdad313964f395",
+      "command": "python3 tools/audit_fd2_battle_hd_coverage.py --inventory docs/data/fd2-battle-hd-source-inventory-20261019.json --original-pack /original --catalog remake/assets/themes/modern/catalog.json --source remake/generated-assets/modern-theme-prototypes --report <new-report>; maintained Pillow Docker, original pack read-only"
+    },
+    "source_snapshots": [
+      {
+        "file": "remake/cmd/fd2/modern_hd_unit_present.go",
+        "sha256": "21fb8c88d8d8cf13aa192a57947d7e1625f7e096c1ce250f995f0f735fa6ccdc"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_unit_present_test.go",
+        "sha256": "fb51d8a24280b2e624fba03b5153a07abdd3f5e1a9a7d28da5e46bd0a6ebdd63"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_unit_present_source_test.go",
+        "sha256": "64d7a7c99c28c1f0d76c604ec9b949a5ff1aa786c9b88775ea8047178a535d30"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_unit_present_gpu_test.go",
+        "sha256": "be7342eff3f80b78214d00a574aec284469bde709e0022d60276a0a7826beb20"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_heal_map.go",
+        "sha256": "32fe6ef90f3a1e46cadb4e603433841b9f95877ec3cfa4cb2fb7410b397b5103"
+      },
+      {
+        "file": "remake/cmd/fd2/native_unit_present.go",
+        "sha256": "74e410ff2e5ba33eaef6fb789b5a10a8be7ab1b3191b8beb686318ffdba75e17"
+      },
+      {
+        "file": "remake/cmd/fd2/native_item_panel_ui.go",
+        "sha256": "a39ef2dcd29f547514080864cce69c51cd5740367ae7bef63601e4eb9647e83a"
+      },
+      {
+        "file": "remake/cmd/fd2/native_staging_present.go",
+        "sha256": "462148342917886242880461a72b3d262c06503efb3b40449e416f4f50bf3671"
+      },
+      {
+        "file": "remake/cmd/fd2/native_battle_staging_present.go",
+        "sha256": "c43297bb0e3c32f98282651ab37e60a30236f3be9e2b8491907e6e3fc7d6c994"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command_modifier_presentation.go",
+        "sha256": "7a81b6591f906db7f51c08552df2ce03c56aead37cc4641838696190a30ac6cc"
+      },
+      {
+        "file": "remake/cmd/fd2/main.go",
+        "sha256": "ddcbaa06e4175e373ca9735b42066da228b4b1102fdcfa170e9e9a9be80aba85"
+      },
+      {
+        "file": "remake/cmd/fd2/player_shortcuts.go",
+        "sha256": "1b87825b491e1b1917a0c2c964b3a97bbed408fdd182b910a962cc73d2b29db7"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_map_overlay_assets.go",
+        "sha256": "61c2ae792b0711f8c8117c53ea44d0c1461ec2952deed16d4cf0982bda61c096"
+      },
+      {
+        "file": "remake/cmd/fd2/native_unit_present_test.go",
+        "sha256": "f926b617f66e7c69db8d39c2ee6c27fb97bf5d394f1aa49df1eb97ad2856ee9c"
+      },
+      {
+        "file": "tools/build_fd2_unit_present_hd.py",
+        "sha256": "95b0e04aec6ff9abe1c6a1aac3ee2b59af53ee0723db6ef5dd22cc4ecc710d45"
+      },
+      {
+        "file": "tools/verify_fd2_unit_present_hd.py",
+        "sha256": "da52b3340a3f456a63af88f8938a09b58fc06d1c6d27d39532ca78ab86f750d8"
+      },
+      {
+        "file": "tools/build_fd2_battle_panel_gallery.py",
+        "sha256": "58ec091cce28600c7ede4329051d85540718065a6daa1fc7030eeb0354017df4"
+      },
+      {
+        "file": "tools/validate_modern_theme_catalog.py",
+        "sha256": "545034835dddf74171219e24f12631f5eb01733faf2b28ae0bb220998f3a044b"
+      }
+    ],
+    "gates": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-present-unit-r1.gate.json",
+        "sha256": "bb07363f18c0d0bbe19774252ae90948084231bb4d87fd0ca8320301f2550b57"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-present-source-r1.gate.json",
+        "sha256": "9465131e234c4e73e2bab4b1a11b881d71305a1dd1e03bc1e4ba8d7c50bcf2b4"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-present-game-r1.gate.json",
+        "sha256": "3f25b0c579e040374ba7b079e18ba28c23120832028d8cc297a6591f9d07e277"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-present-formal-game-r1.gate.json",
+        "sha256": "b47d285092b8e03e2324a987bdb3f02984777b7757d61f74818e43599c7aa96e"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-present-private-game-r1.gate.json",
+        "sha256": "2058ca0380c0d9116f4842c5ac05a96ba721a0b85af9d92fbde6a99a4661444f"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-present-private-native-r1.gate.json",
+        "sha256": "8c9d8c0a52d779fb1a0b588b9c13b324a6e3159b9c965ee2ecc680548b1c5012"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-present-private-unit-r1.gate.json",
+        "sha256": "66068f51972b9f1b05d7124d57e486db7dad002119b7a4e6f20ad6ea993b0a7e"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-present-private-source-r1.gate.json",
+        "sha256": "4107c9d7d9c47fae9ac5b6ba6d03bbd24cd7e7d6fe2b7214590b7a41c962ac6c"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-present-regression-r1.gate.json",
+        "sha256": "3e437d1b794fc8254b85da0e276e22b470c43c09cd21fff7130c9e23097c2eba"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-present-heal-game-r2.gate.json",
+        "sha256": "23617a9bc684c4f01835a683a477b76ef449516f792173b894f04ebb99ca7076"
+      }
+    ],
+    "memory": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-present-unit-r1.memory.json",
+        "sha256": "7cf89897857cb392fcc48eeba46884d55fd30cda1d92a1936c3b34e21f7d7f42"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-present-source-r1.memory.json",
+        "sha256": "52c562d40b658654f4768ba9d8d076f91ff902feacfc288f3ce00b6a34548247"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-present-game-r1.memory.json",
+        "sha256": "6829955c4b790d3a600d1a316290cf3b66b192110f61aeeea2fe4d5beb3632df"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-present-formal-game-r1.memory.json",
+        "sha256": "c00a00c36c0a61cac429e0aded9948370b239c93b27d3d42f89eb689433ce8c9"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-present-private-game-r1.memory.json",
+        "sha256": "ca089a48c676c5a105e45087f417cfadc1cedf5cf535a53707800b668821698c"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-present-private-native-r1.memory.json",
+        "sha256": "198fb0c103735951fdc0cd014bb7d7f1596be3814e0d1c632bb8f4a1ce05878a"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-present-private-unit-r1.memory.json",
+        "sha256": "764e61ce92396766c6d54495ba2f76d25bec4b7814224a19260c1a8a85a731f3"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-present-private-source-r1.memory.json",
+        "sha256": "3f8a3968bd5bd5703bbfe1ced84351188d1f42a0d3854c820f873fa065fd39f8"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-present-regression-r1.memory.json",
+        "sha256": "ff1512a04329d569aa30faedbe70846f78728777d81214c9ff5a723533d09604"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-present-heal-game-r2.memory.json",
+        "sha256": "8c8ff2f035b41faa5ff1fd8bf1f1e1909156190acbef73dc818c5154fd701d78"
+      }
+    ],
+    "receipts": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-present-source-r1-capture/receipt.json",
+        "sha256": "577b903efd2a258a5d03b090d2b98d92452a866252964ebea875d4968c84ba8d"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-present-game-r1-capture/receipt.json",
+        "sha256": "a8f9ff16a358f37e807ac24148f7170ee1a103140e33954081ea991ab8ad506b"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-present-formal-game-r1-capture/receipt.json",
+        "sha256": "a8f9ff16a358f37e807ac24148f7170ee1a103140e33954081ea991ab8ad506b"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-present-private-game-r1-capture/receipt.json",
+        "sha256": "a8f9ff16a358f37e807ac24148f7170ee1a103140e33954081ea991ab8ad506b"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-present-private-source-r1-capture/receipt.json",
+        "sha256": "577b903efd2a258a5d03b090d2b98d92452a866252964ebea875d4968c84ba8d"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-present-heal-game-r2-capture/receipt.json",
+        "sha256": "12e82cf4bbb1150fbf2355e8979bb33fd31e51be68cacb808cc0c2038e0fc629"
+      }
+    ],
+    "cross_pack": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-present-cross-pack-oct24-r1.json",
+      "sha256": "cee896499479d6122596a0b11a20477cd134f72a600190afa5f70f641d2ad8e6"
+    },
+    "readme": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-present-readme-oct24-r1.json",
+      "sha256": "8ccd002624e5395f6af55a85a66075436150e0872b9ffef1349d7ec91d29a1dc"
+    },
+    "string_review": {
+      "inventory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-present-string-inventory-oct24-r1.json",
+        "sha256": "157a264a0c75b3df6668f4ae858c878e856c57d37ab58d29f4a4ca18c4fd7468"
+      },
+      "review": {
+        "file": "docs/data/fd2-string-review.json",
+        "sha256": "e5b0f45985de928f94716731a9e597f197a5f7b4140bc8a896071d5459b16937"
+      },
+      "tests": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-present-strings-r1.log",
+        "sha256": "b0d4e0a22108874465fb837589184c77a0571840f129a998a7d550a4608645ae"
+      },
+      "required": 8,
+      "dispositions_preserved": 109
+    },
+    "verified_scope": {
+      "unit_gpu_runs": 3,
+      "per_run": {
+        "actual_sources": 11,
+        "source_gpu_worlds": 22,
+        "cases": [
+          "command23",
+          "staging"
+        ],
+        "game_draws": 299,
+        "f2_round_trips": 30,
+        "pngs": 16,
+        "clock_unix": 1000,
+        "native_seed": 7,
+        "rgba_tolerance": 2
+      },
+      "cross_pack_pngs": 16,
+      "native_control": "unit/RNG/work/VGA equal after every actual step; native waits and Draw acknowledgement preserved",
+      "story": "shared production preflight connected; native regression only, no new story GPU or normal-player proof",
+      "heal_regression": {
+        "command": 13,
+        "single_and_multi": 2,
+        "f2_round_trips": 22,
+        "scope": "two affected shared-renderer paths; other six existing receipts were not rerun"
+      },
+      "legacy": "whole missing11group retains HD world with original LMI; partial group rejected in unit test; no new full legacy Game.Draw"
+    },
+    "private_sync": {
+      "repo": "wicanr2/fd2-assets-private",
+      "is_private": true,
+      "commit": "e9f5403961415e4a785f9e1b31d3dffa33620ce7",
+      "remote_head_verified": true,
+      "files": 6740,
+      "old_files_unchanged": 6728,
+      "new_files": 12,
+      "independent_runtime_files": 5762
+    },
+    "limits": [
+      "正常玩家、故事GPU、集中人工與跨平台仍待；不宣稱全HD或新原版RGB對拍。",
+      "來源408與18／19第三銀行caller限制沿原工作清單，不由新素材推升。",
+      "HD2圖源、六組合、浮出工具列／速度／海報及完整HUD未完成。",
+      "首輪回復測試漏FD2_ASSET_PACK，來源metadata未找到，屬環境失敗；同映像補環境乾淨r2通過，未修改規則。",
+      "候選完整GPU記憶體峰值約5.31GB；正式3.71GB、私人3.02GB、共用回復5.60GB均無OOM，這不是跨平台效能驗收。"
+    ],
+    "next_gate": "先補故事0x22253的實際HD流程，再依正式consumer稽核其餘原圖回退；正常玩家、人工造型與平台維持全部串接後集中。",
+    "final_checks": {
+      "sha_references": 61,
+      "changed_markdown_local_links_before_worklog_append": 2525,
+      "lessons": 332,
+      "guards": 196,
+      "full_hd_complete": false
+    }
   }
 }

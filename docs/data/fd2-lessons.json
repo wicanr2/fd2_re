@@ -4042,6 +4042,21 @@
         ],
         "pattern": "clean_terrain_extension_pixels_per_set"
       }
+    },
+    {
+      "id": "shared-radial-remap-keeps-caller-work-offset",
+      "area": "HD轉場",
+      "date": "2026-10-24",
+      "rule": "共用徑向查表保留呼叫者的工作緩衝基底。回復在完整work套pass，單位轉場在work+0x8088套pass；HD遮罩以明示WorkOffset對應同一完整位址，不能把中心座標混成一種。入口remake/cmd/fd2/modern_hd_heal_map.go的modernHDRadialCounts與modern_hd_unit_present_test.go的獨立幾何核對；重跑依規格61及tools/verify_fd2_unit_present_hd.py --kind unit。",
+      "why": "單位轉場沿相同徑向primitive，callee卻接收到已偏移的view切片；既有回復直接傳完整work。直接沿用回復遮罩會把0x8088偏移套錯。新實作明示兩種基底，以全部312×192點獨立核對，未變更舊回復語意。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/modern_hd_heal_map.go"
+        ],
+        "pattern": "terrain\\[workOffset:\\]"
+      }
     }
   ]
 }

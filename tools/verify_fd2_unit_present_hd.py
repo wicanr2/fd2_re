@@ -1,0 +1,144 @@
+#!/usr/bin/env python3
+"""在既有Go Docker嚴格驗證單位轉場HD，拒收缺項、SKIP、OOM及逾時。"""
+import argparse
+import hashlib
+import json
+import os
+import re
+from pathlib import Path
+import subprocess
+import sys
+
+from verify_fd2_player9_map_hd import check_real_runtime
+
+ROOT=Path(__file__).resolve().parents[1]
+REQUIRED={
+    'native':{
+        'TestNativeUnitPresentMutatesOnlyAfterContractAndCompletesAllFrames',
+        'TestNativeUnitPresentPreflightFailureLeavesStateAndBuffersUntouched',
+        'TestNativeUnitPresentRuntimeFailureRollsBackCoordinateAndBuffers',
+        'TestNativeStagingFocusUsesOneStoryViewAfterLoadCH',
+        'TestNativeStagingPresentFocusesXYThenMutatesStorySlotAtBridge',
+        'TestNativeStagingPresentPreflightFailureStartsNoFocus',
+        'TestNativeRelocationUsesSeparateDestinationCursorAndMode6Legality',
+    },
+    'unit':{
+        'TestModernHDUnitPresentCountsUseExplicitWorkOffset',
+        'TestModernHDUnitPresentFrozenFramesAndNativeControl',
+        'TestModernHDUnitPresentRejectsBeforePublication',
+        'TestModernHDUnitPresentStagesPendingLegsAtomically',
+        'TestModernHDUnitPresentLegacyEffectAndLinearRowWrap',
+    },
+    'source':{'TestModernHDUnitPresentActualSources'},
+    'game':{'TestModernHDUnitPresentCompleteGameGPU'},
+    'regression':{
+        'TestPlayerNativeCommand13RunsCursorTransactionThroughConfirm',
+        'TestDisabledFullPresentationFailsClosedBeforeAnyCommandTransaction',
+        'TestModernHDDeathAssetLoader',
+        'TestModernHDPlayer9FrozenInputMatchesSnapshot',
+        'TestModernHDPlayer9FrozenInputRejectsDifferentSnapshot',
+        'TestNativeCommand1012PublishesOnlyAtRecoveredBoundaries',
+        'TestNativeCommand1012RollsBackLatePublishFailure',
+        'TestModernHDHUDUnitSelectionAndHP',
+        'TestModernHDHUDUnitAdmissionAndEventShift',
+    },
+}
+
+
+def check_receipt(kind, prefix):
+    receipt=json.loads(Path(str(prefix)+'-capture/receipt.json').read_text())
+    sources=receipt.get('sources',[])
+    if kind=='source':
+        if (receipt.get('status')!='PASS-UNIT-PRESENT-HD-SOURCES'
+                or receipt.get('frames')!=11 or receipt.get('native_frames')!=45 or receipt.get('rejections')!=5
+                or len(sources)!=11 or {r.get('index') for r in sources}!=set(range(114,125))
+                or any(r.get('varying_native_blocks',0)<=0 for r in sources)):
+            raise ValueError('實際11張來源、原生幀或拒收測試缺項')
+        return
+    cases=receipt.get('cases',[])
+    if (receipt.get('status')!='PASS-UNIT-PRESENT-HD-GAME' or receipt.get('fixed_clock_unix')!=1000
+            or receipt.get('native_seed')!=7 or receipt.get('rgba_tolerance')!=2
+            or len(sources)!=22 or {(r.get('entry'),r.get('placement')) for r in sources}!={(i,p) for i in range(114,125) for p in range(2)}
+            or len(cases)!=2 or {r.get('name') for r in cases}!={'command23','staging'}):
+        raise ValueError('完整遊戲、固定條件或22個來源繪製缺項')
+    rows=receipt.get('rows',[])
+    for case in cases:
+        name=case['name']; legs=2 if name=='command23' else 1
+        selected=[r for r in rows if r.get('case')==name]
+        if (case.get('legs')!=legs or case.get('continuations')!=1 or case.get('native_control_unchanged') is not True
+                or case.get('f2_round_trips')!=(20 if legs==2 else 10) or case.get('draws')!=len(selected)
+                or any(r.get('rng')!=7 or not re.fullmatch('[0-9a-f]{64}',r.get('final_sha256','')) for r in selected)):
+            raise ValueError('轉場、續行、主題切換或原生控制組缺項')
+        keys={r['key'] for r in selected}
+        if name=='command23' and not {f'palette/{i}' for i in range(8)}<=keys:
+            raise ValueError('命令23前導閃光缺項')
+        for leg in range(legs):
+            found={int(m[2]):m[1] for key in keys if (m:=re.fullmatch(r'leg'+str(leg)+r'/(intro|contract|bridge|release)/(\d+)',key))}
+            count=len(found)
+            if count not in {45,51} or set(found)!=set(range(count)):
+                raise ValueError('原生45／51幀轉場缺項')
+            for index,phase in found.items():
+                expected='intro' if index<11 else 'contract' if index<17 else 'bridge' if index<count-10 else 'release'
+                if phase!=expected:
+                    raise ValueError('轉場階段或橋接列數不同')
+
+
+def main():
+    p=argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--kind',choices=REQUIRED,required=True)
+    for name in ['catalog','pack','out']:
+        p.add_argument('--'+name,type=Path,required=True)
+    p.add_argument('--timeout',type=int,default=900)
+    p.add_argument('--check-existing',action='store_true',help='以目前嚴格檢查器另存稽核，不重跑或覆寫既有收據')
+    p.add_argument('--require-real-runtime',action='store_true')
+    a=p.parse_args()
+    if not Path('/.dockerenv').exists() or not 60<=a.timeout<=1800 or not a.out.parent.is_dir() or not a.catalog.is_file() or not a.pack.is_dir():
+        raise ValueError('Docker內使用有效輸入、既有工作根與有界時間')
+    for suffix in (['.audit.json'] if a.check_existing else ['.gate.json','.memory.json','.log']):
+        if Path(str(a.out)+suffix).exists():
+            raise ValueError('不可覆寫收據')
+    independent=check_real_runtime(a.pack,json.loads(a.catalog.read_text())) if a.require_real_runtime else None
+    env=os.environ.copy()
+    for name in ['FD2_HD_UNIT_PRESENT_SOURCE','FD2_HD_UNIT_PRESENT_GPU']:
+        env.pop(name,None)
+    env.update(FD2_MUTE='1',FD2_TEST_UNIT_PRESENT_CATALOG=str(a.catalog.resolve()),
+               FD2_TEST_UNIT_PRESENT_PACK=str(a.pack.resolve()),FD2_TEST_UNIT_PRESENT_OUT=str(a.out)+'-capture')
+    if a.kind=='source':env['FD2_HD_UNIT_PRESENT_SOURCE']='1'
+    if a.kind=='game':env['FD2_HD_UNIT_PRESENT_GPU']='1'
+    pattern='^('+'|'.join(sorted(REQUIRED[a.kind]))+')$'
+    shell='''set -euo pipefail
+Xvfb :99 -screen 0 1920x1200x24 -nolisten tcp >/tmp/fd2-unit-present-xvfb.log 2>&1 &
+fd2_xvfb_pid=$!
+trap 'kill "$fd2_xvfb_pid" 2>/dev/null || true; wait "$fd2_xvfb_pid" 2>/dev/null || true' EXIT
+export DISPLAY=:99
+"$@"
+'''
+    command=[sys.executable,str(ROOT/'tools/fd2_go_test_memory_probe.py'),'--out',str(a.out),'--timeout',str(a.timeout),'--',
+             'bash','-c',shell,'fd2-unit-present','go','test','-json','-count=1',f'-timeout={a.timeout-30}s','./cmd/fd2','-run',pattern]
+    if not a.check_existing:
+        result=subprocess.run(command,cwd=ROOT/'remake',env=env)
+        if result.returncode:
+            raise SystemExit(result.returncode)
+    else:
+        old=json.loads(Path(str(a.out)+'.gate.json').read_text())
+        if old.get('status')!='PASS' or old.get('kind')!=a.kind or old.get('catalog_sha256')!=hashlib.sha256(a.catalog.read_bytes()).hexdigest():
+            raise ValueError('原閘門身份或清冊不同')
+    memory=json.loads(Path(str(a.out)+'.memory.json').read_text())
+    if memory['returncode'] or memory['timeout'] or memory['after']['memory.events']['oom'] or memory['after']['memory.events']['oom_kill']:
+        raise ValueError('失敗、逾時或OOM')
+    events=[json.loads(s) for s in Path(str(a.out)+'.log').read_text().splitlines() if s.startswith('{')]
+    if not REQUIRED[a.kind]<={e.get('Test') for e in events if e.get('Action')=='pass'} or any(e.get('Action') in {'skip','fail'} for e in events):
+        raise ValueError('必要測試缺項、SKIP或失敗')
+    if a.kind in {'source','game'}:
+        check_receipt(a.kind,a.out)
+    report=dict(status='PASS',kind=a.kind,required=sorted(REQUIRED[a.kind]),catalog=str(a.catalog.resolve()),
+                catalog_sha256=hashlib.sha256(a.catalog.read_bytes()).hexdigest(),pack=str(a.pack.resolve()),
+                log=str(a.out)+'.log',memory=str(a.out)+'.memory.json',scope='受控轉場與Game.Draw；不新增正常玩家或原版RGB對拍')
+    report['independent_runtime_files']=independent
+    report['verifier_sha256']=hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
+    Path(str(a.out)+('.audit.json' if a.check_existing else '.gate.json')).write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+    print(json.dumps({'status':'PASS','kind':a.kind,'required':len(REQUIRED[a.kind])}))
+
+
+if __name__=='__main__':
+    main()

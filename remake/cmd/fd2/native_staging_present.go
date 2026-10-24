@@ -170,7 +170,7 @@ func (g *Game) startNativeStagingPresent(spec campaign.NativeStagingPresent) err
 	// transaction. Publish the story carrier's absolute cursor to the generic
 	// focus owner before its first step; both represent the same raw globals.
 	g.curX, g.curY = g.storyNativeMapView.CursorX, g.storyNativeMapView.CursorY
-	g.focusJob = &focusUnitJob{targetX: spec.X, targetY: spec.Y, nativeView: true, then: func() {
+	g.focusJob = &focusUnitJob{targetX: spec.X, targetY: spec.Y, nativeView: true, unitPresent: job, then: func() {
 		g.nativeUnitPresent = job
 		g.publishNativeUnitPresentFrame()
 	}}

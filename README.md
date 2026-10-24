@@ -29,6 +29,10 @@
 
 上圖為開發版實際1920×1200遊戲畫面的半尺寸縮圖。游標指向強盜時，資訊窗也使用HD人物，保留原框與血量覆蓋順序；F2可切回像素主題。這是第一章受控位置的繪製驗證，非正常通關或原版對拍；固定時鐘、種子及來源見[HD收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的`hud_unit_icon_hd_followup_20261024`。
 
+![HD傳送前導、收縮、逐列轉場與增援入場](docs/figures/hd-unit-present.png)
+
+傳送與增援入場已接入HD光效及人物，保留原有消失、逐列轉場與出現順序。四格取自受控隊伍、位置與道具資料的實際遊戲繪製，完整畫面半縮；地形與邊框仍含像素素材。F2中途切換及原交易已驗，正常玩家與集中人工驗收仍待。來源、近似與範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)及[HD收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的`unit_present_hd_followup_20261024`。
+
 ## HD2 設計基準
 
 後續HD2戰場沿下列斜角站姿人物與手繪地形設計，保留既有HD及原版主題。操作介面與人物主題獨立，海報從單列浮出工具列選擇；海報邊緣可漸層銜接戰場，並調整淡入時間。

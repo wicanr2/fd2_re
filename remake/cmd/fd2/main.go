@@ -730,6 +730,7 @@ type focusUnitJob struct {
 	then             func()
 	nativeView       bool
 	started          bool // 0x12CEA 開頭的 0x11CAC(0) 已經做過
+	unitPresent      *nativeUnitPresentJob
 }
 
 // actPoseJob 承接 beat「act」。acting 非空時按原版 0x1366a 規則播放：正常 frame

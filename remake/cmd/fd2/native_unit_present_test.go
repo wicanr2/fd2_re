@@ -4,12 +4,13 @@ import (
 	"bytes"
 	"reflect"
 	"testing"
+	"time"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 )
 
-func completeNativeUnitPresentGame(t *testing.T) *Game {
+func completeNativeUnitPresentGame(t *testing.T, clocks ...func() time.Time) *Game {
 	t.Helper()
 	assets, field, state := completeNativeMapFrameFixture(t)
 	field.W, field.H = 20, 15
@@ -44,6 +45,12 @@ func completeNativeUnitPresentGame(t *testing.T) *Game {
 	g := &Game{
 		nativeMapAssets: assets, m: field, st: state,
 		camX: 4 * 24, camY: 3 * 24,
+	}
+	if len(clocks) > 1 {
+		t.Fatal("one explicit fixture clock required")
+	}
+	if len(clocks) == 1 {
+		g.nativeMapFrozenNow = clocks[0]
 	}
 	attachOfficialTestLocale(t, g, "zh-Hant")
 	if err := g.composeNativeMapFrame(); err != nil {
