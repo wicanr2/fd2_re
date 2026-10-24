@@ -168,9 +168,9 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 `modern-theme-highres-prototype` · 工作 · [#204](https://github.com/wicanr2/fd2_re/issues/204) · 仍未完成 · 要人判
 
-交替列位移地圖演出HD已接入，限定CONFORMED-SCOPED／RUNTIME-E1。兩包各四完整Game.Draw、100次繪製與12次F2，涵蓋戰鬥／故事20與30拍、原圖主題控制組、底部真實第九列、人物／前景／範圍／HUD圖示同步及一次返回。12張跨包PNG與完整收據相同，舊故事12張與收據保持；十份Go閘門、字串回歸及109處置保持，無SKIP／逾時／OOM。清冊與私人素材不變，沒有新美術或原版執行器／正常玩家聲明。來源與重跑依[58](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)、[61](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/61-modern-theme-runtime-spec.md)及[HD主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-battlefield-20261019.json)的rowshake_hd_followup_20261025。
+地圖23的FDOTHER42特殊背景已接入手繪HD紋理，限定CONFORMED-SCOPED／RUNTIME-E1。兩包各300次完整Game.Draw、6次F2與兩段各一次續行通過，循環列位移、地形遮罩、完整DAC下的HD人物／HUD人物顏色及原圖主題控制組保持。八張跨包PNG及完整收據相同，舊列位移四流程十二張PNG與收據保持。來源、故事私有隔離、冷拒收及晚失敗回復通過；十一份最終Go閘門43次必要測試、八字串與109處置保持，無SKIP／逾時／OOM。新成品與母稿登錄並同步私人白名單，舊項逐SHA保持。來源與重跑依[58](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)、[61](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/61-modern-theme-runtime-spec.md)及[HD主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-battlefield-20261019.json)的special_scene_hd_followup_20261025。
 
-下一步為天空之鑰與第23章特殊背景，其餘地形、HD2、操作介面獨立切換、完整HUD、單列浮出工具列／加速／海報及集中正常／人工／平台仍待。#268蓋亞手腕與#269凱麗右腳保持人工待辦。本項保持開啟。
+本批使用實際map23資料與受控角色，未重跑FD2.EXE，不新增正常玩家或每frame一致聲明。天空之鑰只有金鎖母稿，FDOTHER34／ANI0尚待HD；其他凍結caller的來源綁定、其餘地形、HD2、操作介面獨立切換、完整HUD、單列浮出工具列／加速／海報及集中正常／人工／平台仍待。#268蓋亞手腕與#269凱麗右腳保持人工待辦。本項保持開啟。
 
 以下保留較早切片與設計紀錄，後續安排以本段及58最新狀態為準。
 
@@ -216,9 +216,9 @@ HD高解析呈現仍未全部完成。本項保持開啟；目前狀態與唯一
 
 `modern-battle-animation-hd` · 工作 · [#263](https://github.com/wicanr2/fd2_re/issues/263) · 仍未完成 · 要人判
 
-交替列位移地圖演出HD已接入，限定CONFORMED-SCOPED／RUNTIME-E1。兩包各四完整Game.Draw、100次繪製與12次F2，涵蓋戰鬥／故事20與30拍、原圖主題控制組、底部真實第九列、人物／前景／範圍／HUD圖示同步及一次返回。12張跨包PNG與完整收據相同，舊故事12張與收據保持；十份Go閘門、字串回歸及109處置保持，無SKIP／逾時／OOM。清冊與私人素材不變，沒有新美術或原版執行器／正常玩家聲明。來源與重跑依[58](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)、[61](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/61-modern-theme-runtime-spec.md)及[HD主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-battlefield-20261019.json)的rowshake_hd_followup_20261025。
+地圖23的FDOTHER42特殊背景已接入手繪HD紋理，限定CONFORMED-SCOPED／RUNTIME-E1。兩包各300次完整Game.Draw、6次F2與兩段各一次續行通過，循環列位移、地形遮罩、完整DAC下的HD人物／HUD人物顏色及原圖主題控制組保持。八張跨包PNG及完整收據相同，舊列位移四流程十二張PNG與收據保持。來源、故事私有隔離、冷拒收及晚失敗回復通過；十一份最終Go閘門43次必要測試、八字串與109處置保持，無SKIP／逾時／OOM。新成品與母稿登錄並同步私人白名單，舊項逐SHA保持。來源與重跑依[58](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)、[61](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/61-modern-theme-runtime-spec.md)及[HD主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-battlefield-20261019.json)的special_scene_hd_followup_20261025。
 
-下一步為天空之鑰與第23章特殊背景，其餘地形、HD2、操作介面獨立切換、完整HUD、單列浮出工具列／加速／海報及集中正常／人工／平台仍待。#268蓋亞手腕與#269凱麗右腳保持人工待辦。本項保持開啟。
+本批使用實際map23資料與受控角色，未重跑FD2.EXE，不新增正常玩家或每frame一致聲明。天空之鑰只有金鎖母稿，FDOTHER34／ANI0尚待HD；其他凍結caller的來源綁定、其餘地形、HD2、操作介面獨立切換、完整HUD、單列浮出工具列／加速／海報及集中正常／人工／平台仍待。#268蓋亞手腕與#269凱麗右腳保持人工待辦。本項保持開啟。
 
 以下保留較早切片與設計紀錄，後續安排以本段及58最新狀態為準。
 

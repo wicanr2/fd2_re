@@ -89,7 +89,13 @@ func (r *modernHDMapGPU) drawHUDUnit(patch *modernHDMapHUDUnit, clip image.Recta
 	target.DrawImage(r.HUDBase, op)
 	unit := &ebiten.DrawImageOptions{}
 	unit.GeoM.Translate(float64(patch.Unit.Rect.Min.X), float64(patch.Unit.Rect.Min.Y))
-	target.DrawImage(r.unit(patch.Unit.Group, patch.Unit.Frame), unit)
+	var picture *ebiten.Image
+	if patch.Unit.ColourImage != nil {
+		picture = r.terrainImage(patch.Unit.ColourImage)
+	} else {
+		picture = r.unit(patch.Unit.Group, patch.Unit.Frame)
+	}
+	target.DrawImage(picture, unit)
 	target.DrawImage(r.HUDAbove, op)
 }
 
@@ -155,7 +161,13 @@ func (r *modernHDMapGPU) drawUnitClipped(unit modernHDMapUnitDraw, clip image.Re
 	if unit.PaletteBand {
 		op.ColorScale.Scale(0.55, 0.55, 0.6, 1)
 	}
-	r.World.SubImage(clip).(*ebiten.Image).DrawImage(r.unit(unit.Group, unit.Frame), op)
+	var picture *ebiten.Image
+	if unit.ColourImage != nil {
+		picture = r.terrainImage(unit.ColourImage)
+	} else {
+		picture = r.unit(unit.Group, unit.Frame)
+	}
+	r.World.SubImage(clip).(*ebiten.Image).DrawImage(picture, op)
 }
 
 func (g *Game) drawModernHDMapFrame(screen *ebiten.Image) bool {

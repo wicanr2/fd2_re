@@ -10,6 +10,7 @@ import (
 )
 
 type modernHDMapUnitDraw struct {
+	ColourImage  *image.RGBA
 	Group, Frame int
 	Rect         image.Rectangle
 	WorkOffset   int

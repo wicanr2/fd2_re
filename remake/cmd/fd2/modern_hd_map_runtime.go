@@ -116,6 +116,10 @@ func (g *Game) prepareModernHDMapFrameMode(in indexedmap.NativeFrameInput, seed 
 
 // row is -1 for the steady owner, or 0/1 for the recovered 0x24B4D source row.
 func (g *Game) prepareModernHDMapFrameLayout(in indexedmap.NativeFrameInput, seed []byte, palette color.Palette, event bool, row int) (*modernHDMapFrame, error) {
+	return g.prepareModernHDMapFrameStageLayout(in, seed, palette, event, row, nil)
+}
+
+func (g *Game) prepareModernHDMapFrameStageLayout(in indexedmap.NativeFrameInput, seed []byte, palette color.Palette, event bool, row int, stage *nativeCh23AdapterState) (*modernHDMapFrame, error) {
 	if row < -1 || row > 1 || g.modernStoryPortraits == nil || len(palette) != 256 || len(seed) != indexedmap.NativeUnitPresentWorkSize {
 		return nil, errors.New("modern HD world: incomplete published sources")
 	}
@@ -218,8 +222,12 @@ func (g *Game) prepareModernHDMapFrameLayout(in indexedmap.NativeFrameInput, see
 			f.HDImage = asset.shade(colours, f.BlitMode == 0xff)
 		}
 	}
+	stageImage, err := g.prepareModernHDMapStage(in.Frame, palette, row, stage)
+	if err != nil {
+		return nil, err
+	}
 	var rangeLayer *image.RGBA
-	if len(terrain) > 0 && !step && frame.RangeMode != 0 && frame.RangeMode != 6 {
+	if (len(terrain) > 0 || stageImage != nil) && !step && frame.RangeMode != 0 && frame.RangeMode != 6 {
 		pixels, err := modernHDOverwriteLayer(len(work), palette, func(dst []byte) error {
 			return fdother.BlitNativeRangeOverlay(frame.RangeBank, dst, frame.CameraX, frame.CameraY, 13, 8,
 				frame.RangeMode, frame.CursorX, frame.CursorY)
@@ -288,6 +296,17 @@ func (g *Game) prepareModernHDMapFrameLayout(in indexedmap.NativeFrameInput, see
 		}
 		clearModernHDHUDUnitPixels(ui, hudUnit)
 	}
-	return &modernHDMapFrame{Background: bg, UI: ui, Units: units, Foreground: foreground, TerrainSeed: terrainSeed,
-		TerrainUnderlay: append([]byte(nil), seed...), Terrain: terrain, Range: rangeLayer, TerrainColourKey: colours.Key, HUDUnit: hudUnit}, nil
+	result := &modernHDMapFrame{Background: bg, UI: ui, Units: units, Foreground: foreground, TerrainSeed: terrainSeed,
+		TerrainUnderlay: append([]byte(nil), seed...), Terrain: terrain, Range: rangeLayer, TerrainColourKey: colours.Key, HUDUnit: hudUnit}
+	if stageImage != nil {
+		result.Terrain = append([]modernHDTerrainDraw{{Image: stageImage, Rect: modernHDMapViewport()}}, result.Terrain...)
+		result.TransientTerrain = true
+	}
+	if stage != nil && g.nativeMapAssets != nil && g.nativeMapAssets.MapIndex == 23 {
+		result.TransientTerrain = true
+		if err := g.colourModernHDStageFigures(result, in, palette); err != nil {
+			return nil, err
+		}
+	}
+	return result, nil
 }

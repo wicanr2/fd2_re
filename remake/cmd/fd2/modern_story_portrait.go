@@ -25,6 +25,7 @@ type modernStoryPortraitFrame struct {
 }
 
 type modernStoryPortraitSet struct {
+	mapStages         map[int]*modernMapStageHD
 	hasHD             bool
 	portraits         map[int]*modernStoryPortraitFrame
 	mapSprites        map[int][]image.Image
@@ -103,6 +104,12 @@ func loadModernStoryPortraitSet(catalogPath, packRoot string) (*modernStoryPortr
 	}
 	hdPortraits := make(map[int]image.Image)
 	for _, asset := range catalog.Assets {
+		if asset.Role == "map_stage_hd" {
+			if err := loadModernMapStageHD(set, asset, packRoot); err != nil {
+				return nil, err
+			}
+			continue
+		}
 		if asset.Role == "battle_surface_hd" {
 			if err := loadModernBattleSurfaceHD(set, asset, packRoot); err != nil {
 				return nil, err

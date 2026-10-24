@@ -19,7 +19,7 @@ ROLES = PROTOTYPE_ROLES | {
     "story_portrait_frame", "story_portrait_hd_frame", "map_sprite_set", "map_tileset_set",
     "map_sprite_hd_set", "battlefield_tileset_concept", "battle_hud_panel", "battle_action_icon_set",
     "native_terrain_hd_set", "terrain_hd_master", "battle_animation_hd_set", "battle_effect_hd_set", "map_overlay_hd_set",
-    "facility_scene_hd", "battle_surface_hd",
+    "facility_scene_hd", "battle_surface_hd", "map_stage_hd",
 }
 STATUSES = {"prototype", "concept", "approved", "runtime_candidate", "runtime_ready"}
 # Fixed FDICON.B24 source-write inventory, independently checked by
@@ -79,7 +79,7 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
         }
         if not isinstance(entry, dict):
             raise ValueError("asset entry must be an object")
-        if entry.get("role") == "battle_surface_hd":
+        if entry.get("role") in {"battle_surface_hd", "map_stage_hd"}:
             expected = required | {"master_file", "consumer_contract", "source_archive", "source_resource", "source_metadata_sha256", "source_files", "source_sha256", "native_frames", "alpha_contract", "layout_policy"}
         elif entry.get("role") == "facility_scene_hd":
             expected = required | {"master_file", "consumer_contract", "source_archive", "source_resource", "source_metadata_sha256", "source_files", "source_sha256"}
@@ -155,6 +155,21 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
             surface_resources.add(source)
             if verify_private and hashlib.sha256((ROOT/private_root/entry['master_file']).read_bytes()).hexdigest() != entry['source_sha256'][0]:
                 raise ValueError(f'battle surface master sha256 mismatch: {asset_id}')
+        if entry['role'] == 'map_stage_hd':
+            source=(entry['source_archive'],entry['source_resource'])
+            descriptor=dict(x=0,y=0,width=312,height=192,delay_native=0,raw_byte_4=0,raw_byte_5=0,raw_byte_7=0)
+            if (source!=('FDOTHER.DAT',42) or type(source[1]) is not int or source in surface_resources
+                    or entry['consumer_contract']!='native_map_stage_rgba_hd6_v1'
+                    or entry['layout_policy']!='native_map_stage_hd6' or entry['alpha_contract']!='coverage'
+                    or entry['status'] not in {'runtime_candidate','runtime_ready'}
+                    or (entry['width'],entry['height'])!=(1872,1152) or entry['native_frames']!=[descriptor]
+                    or not SHA_RE.fullmatch(entry['source_metadata_sha256'])
+                    or entry['source_files']!=[entry['master_file']] or len(entry['source_sha256'])!=1
+                    or not SHA_RE.fullmatch(entry['source_sha256'][0])):
+                raise ValueError(f'invalid map stage contract: {asset_id}')
+            surface_resources.add(source)
+            if verify_private and hashlib.sha256((ROOT/private_root/entry['master_file']).read_bytes()).hexdigest()!=entry['source_sha256'][0]:
+                raise ValueError(f'map stage master SHA mismatch: {asset_id}')
         if entry['role'] == 'facility_scene_hd':
             resource = entry['source_resource']
             if (resource not in {11, 61, 62, 12, 29, 63} or resource in facility_resources

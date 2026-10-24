@@ -34,6 +34,9 @@ func completeNativeCh23Game(t *testing.T) (*Game, time.Time) {
 		t.Skip("player-provided FDOTHER.DAT is unavailable")
 	}
 	assetPack := filepath.Clean("../../generated-assets/fd2-original-b97caf22")
+	if explicit := os.Getenv("FD2_TEST_ORIGINAL_PACK"); explicit != "" {
+		assetPack = explicit
+	}
 	if _, err := os.Stat(filepath.Join(assetPack, "surfaces", "FDOTHER_042", "resource.json")); err != nil {
 		t.Skip("separated FDOTHER #42 is unavailable")
 	}

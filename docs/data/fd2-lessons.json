@@ -4147,6 +4147,21 @@
         ],
         "pattern": "env\\[[^\\]\\n]*,[^\\]\\n]*\\]\\s*="
       }
+    },
+    {
+      "id": "map-stage-fixtures-load-real-geometry-and-lut-range",
+      "date": "2026-10-25",
+      "area": "地圖測具",
+      "rule": "跨地圖測具用battle.Load載入新地圖的可變事件緩衝、blit modes與地形控制；查表需求沿NativeTerrainLUTIndex的實際索引，不從演出次數猜bank大小。入口remake/cmd/fd2/modern_hd_ch23_gpu_test.go的stage42ActualGame及remake/internal/fdother/terrain_lut.go；重跑tools/verify_fd2_unit_present_hd.py --kind stage-game。",
+      "why": "第23號地圖GPU測具曾誤要求32份查表；固定原包實有23份，20相位只消費0..10。修正後又抓到測具保留map0可變事件緩衝，改從正式battle.Load一併載入幾何。失敗收據保留，未改正式規則。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/internal/fdother/terrain_lut.go"
+        ],
+        "pattern": "const phases = 20"
+      }
     }
   ]
 }

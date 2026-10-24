@@ -48,6 +48,10 @@ func (g *Game) cycleTheme() {
 // applyTheme validates the current typed speaker before publishing any resource.
 // Rebinding only the portrait preserves the active dialogue's pages and progress.
 func (g *Game) applyTheme(set *modernStoryPortraitSet) error {
+	publishCh23, err := g.stageModernHDCh23(set)
+	if err != nil {
+		return err
+	}
 	publishRowShake, err := g.stageModernHDRowShake(set)
 	if err != nil {
 		return err
@@ -202,6 +206,7 @@ func (g *Game) applyTheme(set *modernStoryPortraitSet) error {
 	if g.hasModernHDStoryMapSource() {
 		g.modernHDMapFrame = storyWorld
 	}
+	publishCh23()
 	publishRowShake()
 	publishUnitPresent()
 	publishIndexedTransition()

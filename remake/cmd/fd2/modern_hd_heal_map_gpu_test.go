@@ -70,7 +70,11 @@ func healHDCPUWorld(frame *modernHDMapFrame, set *modernStoryPortraitSet) *image
 		if u.PaletteBand {
 			scale = [3]float64{.55, .55, .6}
 		}
-		paint(set.mapSpritesHD[u.Group][u.Frame], u.Rect, clip, scale)
+		picture := set.mapSpritesHD[u.Group][u.Frame]
+		if u.ColourImage != nil {
+			picture = u.ColourImage
+		}
+		paint(picture, u.Rect, clip, scale)
 	}
 	for _, fg := range frame.Foreground {
 		var src image.Image = fg.Image
@@ -85,7 +89,11 @@ func healHDCPUWorld(frame *modernHDMapFrame, set *modernStoryPortraitSet) *image
 	paintHUD := func() {
 		if h := frame.HUDUnit; h != nil {
 			paint(h.Base, h.Unit.Rect, clip, one)
-			paint(set.mapSpritesHD[h.Unit.Group][h.Unit.Frame], h.Unit.Rect, clip, one)
+			picture := set.mapSpritesHD[h.Unit.Group][h.Unit.Frame]
+			if h.Unit.ColourImage != nil {
+				picture = h.Unit.ColourImage
+			}
+			paint(picture, h.Unit.Rect, clip, one)
 			paint(h.Above, h.Unit.Rect, clip, one)
 		}
 	}

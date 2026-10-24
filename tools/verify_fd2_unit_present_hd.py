@@ -13,6 +13,11 @@ from verify_fd2_player9_map_hd import check_real_runtime
 
 ROOT=Path(__file__).resolve().parents[1]
 REQUIRED={
+    'stage-game':{'TestModernHDCh23StageGameGPU'},
+    'stage-source':{'TestModernHDCh23StageLoader'},
+    'stage-failure':{'TestModernHDCh23LateNativeFailureRestoresBothThemes'},
+    'stage-native':{'TestNativeCh23LoopsPreserveSetterTickPaletteAndContinuation','TestNativeCh23FailureRollsBackFirstVisibleDraw','TestNativeCh23RejectsMissingRawFrameBeforeMutation','TestNativeCh23SteadyStageTickAndPostOwner','TestNativeCh23SteadyStageFailureIsAtomic','TestNativeCh23RejectsMissingSeparatedStageBeforeMutation'},
+    'stage-unit':{'TestModernHDCh23StageRowsAndTerrainMasks','TestModernHDCh23FigurePalettePreservesAlpha','TestModernHDCh23FullLoopsMatchNativeControl','TestModernHDCh23F2RejectsAndStagesAllOwners','TestModernHDCh23ColdFailureRestoresNativeBoundary','TestModernHDCh23LegacyThemeKeepsNativeStage','TestModernHDCh23StoryPrivateStage'},
     'rowshake-game':{'TestModernHDRowShakeGameGPU'},
     'rowshake-native':{'TestNative24B4DPublishesThirtyAlternatingFramesBeforeContinuation','TestNative24B4DFailsBeforeMutationWithoutNinthTerrainRow','TestNative24B4DStoryPresentationKeepsBattleStateAbsent'},
     'rowshake-unit':{'TestModernHDRowShakeNativeControlAndCadence','TestModernHDRowShakeLayersAndIncomingRow','TestModernHDRowShakeRejectsSourceAndThemeAtomically','TestModernHDRowShakeStoryColdFailureRestoresInitialization','TestModernHDRowShakeStagesAllOwnersBeforePublish','TestModernHDRowShakeRuntimeFailureRestoresBuffers'},
@@ -86,6 +91,27 @@ REQUIRED={
 
 def check_receipt(kind, prefix):
     receipt=json.loads(Path(str(prefix)+'-capture/receipt.json').read_text())
+    if kind=='stage-game':
+        rows=receipt.get('rows',[]); returns=receipt.get('returns',[])
+        if (receipt.get('status')!='PASS-CH23-STAGE-HD-GAME' or receipt.get('fixed_clock_unix')!=1000
+                or receipt.get('native_seed')!=7 or receipt.get('rgba_tolerance')!=2
+                or receipt.get('map_index')!=23 or receipt.get('f2_round_trips')!=6
+                or receipt.get('continuations')!=2 or receipt.get('native_control_unchanged') is not True
+                or len(rows)!=300 or len(returns)!=2):
+            raise ValueError('場景完整流程、GPU、F2或控制組缺項')
+        for phase,count,continuations in [('initial',240,1),('palette',60,2)]:
+            selected=[r for r in rows if r.get('phase')==phase]
+            end=[r for r in returns if r.get('phase')==phase]
+            if (len(selected)!=count or {r.get('draw') for r in selected}!=set(range(count))
+                    or len(end)!=1 or end[0].get('draws')!=count or end[0].get('continuations')!=continuations
+                    or not re.fullmatch('[0-9a-f]{64}',end[0].get('final_sha256',''))):
+                raise ValueError('240／60次演出或正常繪圖返回缺項')
+            for row in selected:
+                if (row.get('rng')!=7 or not 0<=row.get('row_shift',-1)<192
+                        or row.get('raw_esi')!=(row['draw'] if phase=='palette' else 0)
+                        or any(not re.fullmatch('[0-9a-f]{64}',row.get(k,'')) for k in ['final_sha256','native_vga_sha256','dac_sha256'])):
+                    raise ValueError('循環列位移、DAC或完整圖面缺項')
+        return
     if kind=='rowshake-game':
         cases=receipt.get('cases',[]); rows=receipt.get('rows',[])
         expected={'battle-20':20,'battle-30':30,'story-20':20,'story-30':30}
@@ -213,11 +239,12 @@ def main():
             raise ValueError('不可覆寫收據')
     independent=check_real_runtime(a.pack,json.loads(a.catalog.read_text())) if a.require_real_runtime else None
     env=os.environ.copy()
-    for name in ['FD2_HD_UNIT_PRESENT_SOURCE','FD2_HD_UNIT_PRESENT_GPU','FD2_HD_UNIT_PRESENT_STORY_GPU','FD2_HD_STORY_MOTION_GPU','FD2_HD_INDEXED_TRANSITION_GPU','FD2_HD_ROW_SHAKE_GPU']:
+    for name in ['FD2_HD_UNIT_PRESENT_SOURCE','FD2_HD_UNIT_PRESENT_GPU','FD2_HD_UNIT_PRESENT_STORY_GPU','FD2_HD_STORY_MOTION_GPU','FD2_HD_INDEXED_TRANSITION_GPU','FD2_HD_ROW_SHAKE_GPU','FD2_HD_CH23_STAGE_GPU']:
         env.pop(name,None)
     env.update(FD2_MUTE='1',FD2_TEST_UNIT_PRESENT_CATALOG=str(a.catalog.resolve()),
                FD2_TEST_UNIT_PRESENT_PACK=str(a.pack.resolve()),FD2_TEST_UNIT_PRESENT_OUT=str(a.out)+'-capture')
     if a.kind=='source':env['FD2_HD_UNIT_PRESENT_SOURCE']='1'
+    if a.kind=='stage-game':env['FD2_HD_CH23_STAGE_GPU']='1'
     if a.kind=='game':env['FD2_HD_UNIT_PRESENT_GPU']='1'
     if a.kind=='story-game':env['FD2_HD_UNIT_PRESENT_STORY_GPU']='1'
     if a.kind=='motion-game':env['FD2_HD_STORY_MOTION_GPU']='1'
@@ -247,7 +274,7 @@ export DISPLAY=:99
     events=[json.loads(s) for s in Path(str(a.out)+'.log').read_text().splitlines() if s.startswith('{')]
     if not REQUIRED[a.kind]<={e.get('Test') for e in events if e.get('Action')=='pass'} or any(e.get('Action') in {'skip','fail'} for e in events):
         raise ValueError('必要測試缺項、SKIP或失敗')
-    if a.kind in {'source','game','story-game','motion-game','indexed-game','rowshake-game'}:
+    if a.kind in {'source','game','story-game','motion-game','indexed-game','rowshake-game','stage-game'}:
         check_receipt(a.kind,a.out)
     report=dict(status='PASS',kind=a.kind,required=sorted(REQUIRED[a.kind]),catalog=str(a.catalog.resolve()),
                 catalog_sha256=hashlib.sha256(a.catalog.read_bytes()).hexdigest(),pack=str(a.pack.resolve()),

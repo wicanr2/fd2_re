@@ -62281,6 +62281,44 @@
         "docs/knowledge-base/61-modern-theme-runtime-spec.md",
         "tools/build_fd2_unit_present_hd.py"
       ]
+    },
+    {
+      "asset_id": "modern.map.fdother042.stage.hd6",
+      "role": "map_stage_hd",
+      "status": "runtime_candidate",
+      "file": "map-stage-fdother042-hd6-oct25-r1.png",
+      "width": 1872,
+      "height": 1152,
+      "sha256": "deef0f47e5bd112338df433b87c83c4747fbec509a3e09659b6aa48e4cc21efc",
+      "master_file": "map-stage-fdother042-master-oct25-r1.png",
+      "consumer_contract": "native_map_stage_rgba_hd6_v1",
+      "source_archive": "FDOTHER.DAT",
+      "source_resource": 42,
+      "source_metadata_sha256": "c1a6e3913e56b95f6bbd7f30f783466bc90e1f19056464d66260dfb2cf50595a",
+      "source_files": [
+        "map-stage-fdother042-master-oct25-r1.png"
+      ],
+      "source_sha256": [
+        "9c93739214e40758c37fa7c68a21369c23393b4a5a42d086573fda00ff88623b"
+      ],
+      "native_frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 312,
+          "height": 192,
+          "delay_native": 0,
+          "raw_byte_4": 0,
+          "raw_byte_5": 0,
+          "raw_byte_7": 0
+        }
+      ],
+      "alpha_contract": "coverage",
+      "layout_policy": "native_map_stage_hd6",
+      "source_refs": [
+        "asset:FDOTHER_042",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
     }
   ]
 }

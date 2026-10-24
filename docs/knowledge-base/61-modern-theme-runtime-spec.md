@@ -4265,3 +4265,30 @@ README四格由已核對的完整Game.Draw半縮，保留像素面板，未裁�
 永久入口在既有Go Docker使用 `tools/verify_fd2_unit_present_hd.py --kind rowshake-native|rowshake-unit|rowshake-game --catalog ABS --pack ABS --out FRESH_PREFIX --timeout 900`；私人實檔包另加 `--require-real-runtime`。既有indexed-unit、story-unit、motion-unit、regression及story-game沿相同入口重跑。九份最終Go閘門、字串與資源數量只依58及主收據，沒有SKIP／逾時／OOM。本批只補強測具的游標與前景控制，未為合成測具更改正式規則；較早兩次拒收log保留。README總覽由已驗證完整畫面半縮，既有徑向總覽重生後SHA保持。清冊與私人素材不變，沒有新發行。
 
 末輪差異審查另發現驗證器新增旗標的文字替換誤改舊indexed-game環境鍵；恢復既有單一字串鍵，正式Go保持。舊徑向完整GPU真實重跑，16張PNG及完整收據與前批相同；六模式旗標及tuple鍵guard正反控制通過。先前九份閘門另由最後嚴格檢查器重審，不把重審計成新的Go執行。最後來源快照與十份Go閘門依同筆主收據。
+
+### 特殊地圖圖層與天空之鑰HD
+
+狀態：部分閉合。FDOTHER #42依下方子切片達CONFORMED-SCOPED／RUNTIME-E1；天空之鑰FDOTHER #34及ANI #0仍DRAFT。raw ch23 loop對應玩家第24戰；不以只接一個圖層宣稱全部HD完成。沿58已閉合caller、docs/data/fd2_ch23_stage_assets_evidence.txt與IDA9.4線性位址0x10652／0x24D22／0x24C1E。固定FD2.EXE SHA-256仍為222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f；FDOTHER #42 raw SHA-256為4bef756aaf78b95cf97949785c71b4c3e04822a497741f468e6863d61da38d2d。
+
+圖源原框312×192、stride312與既有末列循環至頂列的consumer已證實。高階美術名稱維持未知；當章baseline色盤解碼為綠色流紋，只描述可見外觀。初段8組各30次、調色段5組各12次、latch／BIOS gate／DAC及一次續行沿原owner。重繪只新增圖源與HD呈現，不更改規則、保存或原圖模式；新稿與循環／遮擋／調色方法審查後才升READY並接正式路徑。
+
+來源與後續收據依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的special_scene_hd_followup_20261025。圖源完整性、同次原生work重建、原生控制組、完整Game.Draw、F2原子拒收與返回、兩包及既有回歸是驗收閘門；正常玩家／集中人工／平台仍待全部HD後集中。
+
+#### FDOTHER #42 圖層切片
+
+狀態：CONFORMED-SCOPED／RUNTIME-E1。此切片先經READY-ART-REVIEWED再實作及驗證；天空之鑰仍DRAFT。已審母稿完整RGB1599×984，依原框全圖LANCZOS至1872×1152，不裁切或重畫alpha。細流紋及筆觸屬美術近似，不賦予未證實的故事名稱。
+
+- catalog新增可選map_stage_hd，固定FDOTHER.DAT resource42，consumer_contract為native_map_stage_rgba_hd6_v1、layout_policy為native_map_stage_hd6、alpha_contract為coverage。沿既有單圖descriptor欄位，NativeFrames恰一筆312×192，metadata／原稿／成品SHA固定。來源Mask已驗為全255，因此成品全框必須不透明；缺件、重覆來源、錯原框／SHA及非42一律拒收。舊主題完全未登錄時保留原圖。
+- 原生adapter只附加顯示用rowShift，所有已證實循環列搬移共用一次更新，模192累積；每次準備HD先重播原始索引圖的循環搬移，核對adapter.staging全部bytes。不以重覆紋理猜目前旋轉量，不改原生staging或tick門檻。
+- HD圖層在原生312×192 viewport四像素內框，向下位移rowShift×6並由尾端循環。以實際FDSHAP source-write mask保留地形literal；mode3目的映射只在原consumer選LUT臂的像素用同一LUT四色差近似，其餘透明span保留圖層。之後依原順序繪製範圍、HD人物、前景及HUD；已登錄HD地形仍在圖層上方。
+- 圖層色彩沿既有terrainColourContext／shade的baseline與當次palette／LUT四色差近似。其他HD人物也須依當次完整DAC明示變色；不得讓原圖已變暗而HD人物保持全亮，也不得對已映射的原生fallback再次扣色。alpha保持，原圖模式仍用實際DAC。
+- 起動／每次原生更新／F2先準備完整候選再發布，失敗保持舊主題、原生緩衝及owner；Draw只消費同次frame並確認呈現。既有240與60次排程、三次Update等待、palette cycle、一次續行及保存保持。loop／正常map23／故事私有繪製共用同一圖層消費端；缺可比原生來源即拒收。
+- 驗收核原始圖源及raw、循環0／1／191與跨界、literal／mode3／前景遮擋、DAC與非空HD變色、完整300次來源繪製／F2／一次返回、缺件冷拒收及晚失敗回復。完整主題與獨立實檔包分開驗；沿tools/verify_fd2_unit_present_hd.py擴充stage測項。編製入口為tools/build_fd2_map_stage_hd.py，先候選後正式清冊及私人白名單同步；兩工具在既有Go／素材Docker執行，輸入唯讀、輸出使用新prefix。
+
+FDOTHER42的HD準備明示接收同次唯讀adapter複本，正常合成器、loop及故事私有合成各自交付來源；不從Game的後來狀態猜凍結畫面。其他指令的舊凍結steady入口沒有此companion時保留原有呈現，其餘caller的來源綁定仍待，不算本切片完成。native第193列不屬42圖源時保留原生來源，不擅自循環補畫。
+
+正式驗收：兩包各300次Game.Draw、6次F2、兩段各一次續行與正常HD返回，原圖主題控制組及獨立CPU合成對GPU容差2通過。八張PNG及完整收據跨包相同，候選八張也保持。原生／來源／冷拒收／晚失敗、故事私有隔離與共用回歸通過；十一份最終Go閘門43次必要測試，另八字串及109處置保持。舊列位移四流程100次Draw、12次F2、十二張PNG與完整收據保持。沒有SKIP、逾時或OOM；峰值只作有界測試量測，不當正式玩家效能。
+
+新成品與未修改母稿登錄可選map_stage_hd並同步私人白名單，舊項逐SHA保持。角色保留既有inactive色帶0.55／0.55／0.6與alpha。地圖幾何測具從battle.Load載入map23可變事件緩衝，不沿用map0；正式地形20相位消費LUT0..10，固定原包23份查表，不能從演出次數推斷需32份。失敗log、輸入與最終來源快照保留在同筆主收據。
+
+重跑在既有Go Docker使用 `tools/verify_fd2_unit_present_hd.py --kind stage-native|stage-unit|stage-source|stage-failure|stage-game --catalog ABS --pack ABS --out FRESH_PREFIX --timeout 900`；stage-game必須獨立程序。新實檔包用 `tools/sync_modern_theme_private.py --catalog ABS --source ABS --destination FRESH_DIR --runtime-only` 建立，再加 `--require-real-runtime`，驗後清理的包不得重用。編製在Pillow11.3.0素材Docker使用 `tools/build_fd2_map_stage_hd.py --original-pack ABS --master ABS --base-catalog BASE765 --out FRESH_DIR`；BASE765取00e300be的remake/assets/themes/modern/catalog.json，SHA為9c25de7a2e5a9723e6f97cf608c3fc09c6bf41b82a32d86b9a44438d3131bc9d。母稿可從私人白名單的map-stage-fdother042-master-oct25-r1.png取得，固定配方重編兩檔逐SHA相同。

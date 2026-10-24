@@ -12447,9 +12447,13 @@ func (g *Game) composeNativeMapFrameAtWithPaletteCycle(now time.Time, closedActi
 		if g.modernHDMapTerrainAssets != a || g.modernHDMapTerrainState != g.st || len(seed) != indexedmap.NativeUnitPresentWorkSize {
 			seed = make([]byte, indexedmap.NativeUnitPresentWorkSize)
 		}
-		if stage != nil {
+		stageForHD := stage
+		if stageForHD == nil && a.MapIndex == 23 {
+			stageForHD = g.nativeCh23State
+		}
+		if stageForHD != nil {
 			seed = append([]byte(nil), seed...)
-			if err := indexedmap.SeedNativeCh23Staging(seed, stage.staging); err != nil {
+			if err := indexedmap.SeedNativeCh23Staging(seed, stageForHD.staging); err != nil {
 				return err
 			}
 		}
@@ -12457,7 +12461,9 @@ func (g *Game) composeNativeMapFrameAtWithPaletteCycle(now time.Time, closedActi
 		if err != nil {
 			return err
 		}
-		modernFrame, err = g.prepareModernHDMapFrame(in, seed, palette)
+		view := *g
+		view.nativeCh23State = stageForHD
+		modernFrame, err = view.prepareModernHDMapFrameStageLayout(in, seed, palette, false, -1, stageForHD)
 		if err != nil {
 			return err
 		}

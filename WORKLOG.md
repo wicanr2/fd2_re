@@ -3326,3 +3326,17 @@ README保留文化保存入口，新增HD2設計基準及兩組概念，61限定
 - 核SHA後刪41份重複PNG，釋放67450093 bytes；保留正式擷取、原始log與完整收據，未產生錄影。清理逐檔紀錄在work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/rowshake-hd-cleanup-oct25-r2.json。Docker收尾及遠端HEAD於提交前後核對。
 
 - 末輪審查修復驗證器的既有indexed-game旗標誤改，另真實重跑288次Draw／32次F2，16張PNG及完整收據保持；六模式與新guard正反控制通過。舊九閘門以最後檢查器另存audit，未重計Go次數。正式Go及字串來源保持，最後來源快照為rowshake-hd-source-snapshot-oct25-r2.json。
+
+## 2026-10-25 地圖23特殊背景與完整DAC下的HD人物
+
+- 從00e300be的main建立hd/special-scenes-20261025。沿既有FDOTHER42／raw ch23 post證據，先寫DRAFT及READY-ART-REVIEWED，再實作原生循環列位移的HD紋理與同次來源綁定。raw ch23對應玩家第24戰，沒有新增故事名稱或重開RE。天空之鑰只生成金鎖母稿，FDOTHER34／ANI0仍DRAFT。
+- 新增1872×1152背景與未修改1599×984母稿，正式清冊766項、私人6742檔，舊765項及6740檔逐SHA保持。完整提示、原圖／母稿／配方與SHA依HD主收據special_scene_hd_followup_20261025；固定基底重編兩檔相同。私人獨立提交已推送main並核對遠端HEAD，公開庫只加規格、工具與總覽圖。
+- 正式與5763檔獨立runtime各300次完整Game.Draw、6次F2、兩段各一次續行及正常HD返回通過。八張PNG與完整收據跨包及對候選相同；literal／目的色映射／透明區分權、循環0／1／191、alpha、HUD人物、故事私有隔離、冷拒收與晚失敗回復通過。控制組是同一重製程式的原圖主題，本批未重跑FD2.EXE，不新增PLAYER-E2、每frame或硬體時鐘一致聲明。
+- 十一份選定最終Go閘門43次必要頂層測試、42個不同測項通過，另八字串回歸與109處置保持。舊列位移四流程100次Draw／12次F2、十二張PNG與完整收據保持。全批無SKIP／逾時／OOM；最終峰值3060375552 bytes，低於6GiB測試限額，不能當正式玩家效能。最後程式／測試／工具1102檔指紋在special-scenes-source-snapshot-oct25-r1.json。
+- 早期精簡測具只有LUT0..9，第33次需索引10；補到正式20相位所需0..10，另以十份截短bank作晚失敗反例。GPU測具曾誤要求32份，實際原包23份；後續又抓到改尺寸卻保留map0事件緩衝，改用battle.Load完整載入map23幾何。只修測具，不改正式規則，失敗log與記憶體收據保留。彙整腳本另依正式memory.peak欄位修正，沒有重計Go測試。
+- 58唯一狀態表、56／57／61與README同步。README四格從已驗證完整1920畫面半縮，SHA為e0101f719ea8363e7004bbe28fd614af98f841e67484b7fd6adaa643843fdf71。GitHub #204／#263精確回讀後只改最新進度與verify.note，驗收條件及其他22項保持；官方快照／91由工具重生，24開啟／16人工／0可能已完成。339教訓／203個guard通過。
+- 核逐檔SHA後刪除5763個獨立runtime檔、28張重複擷取、兩個重編副本及6740個重編連結，釋放1748223812 bytes。保留正式與私人素材、正式畫面、所有log／manifest／收據及未使用金鎖草稿，沒有新錄影。明細在special-scenes-cleanup-oct25-r1.json；已清理包不能重用作獨立實檔證據，需由私人同步工具新建。一次性FD2 Go容器全部移除，沒有重建工具映像或新增Release。
+
+下一步為天空之鑰FDOTHER34／ANI0及其他凍結caller的地圖23來源綁定。其餘地形、HD2、完整HUD、操作介面獨立控制、單列浮出工具列／加速／海報，與全部HD後的正常玩家、蓋亞手腕／凱麗右腳人工確認及平台效能仍待。完整HD目標保持。
+
+- 收尾擁有權掃描列出2808個既有歷史項，均不在本批變更內；本批31個變更檔全部UID1000。只記錄舊檔清單，未遞迴改權限。入口為special-scenes-ownership-oct25-r1.json。

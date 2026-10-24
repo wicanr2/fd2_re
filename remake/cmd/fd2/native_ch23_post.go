@@ -19,12 +19,17 @@ import (
 // timer contracts, not a higher-level transition meaning.
 type nativeCh23AdapterState struct {
 	staging         []byte
+	rowShift        int
 	latch           int
 	tickSnapshot    int
 	initialComplete bool
 }
 
 type nativeCh23LoopJob struct {
+	hdSource   *modernHDCh23Source
+	hdFrame    *modernHDMapFrame
+	hdTheme    *modernStoryPortraitSet
+	hdInputErr error
 	spec       fdother.NativeCh23LoopSpec
 	stage      int
 	draw       int
@@ -34,6 +39,14 @@ type nativeCh23LoopJob struct {
 	palette    color.Palette
 	then       func()
 	rollback   func()
+}
+
+func (s *nativeCh23AdapterState) rotateRows(latch int) error {
+	if err := fdother.RotateNativeCh23Rows(s.staging, latch); err != nil {
+		return err
+	}
+	s.rowShift = (s.rowShift + latch) % 192
+	return nil
 }
 
 func cloneNativeCh23AdapterState(src *nativeCh23AdapterState) *nativeCh23AdapterState {
@@ -65,11 +78,11 @@ func (g *Game) prepareNativeCh23SteadyStage(rawTick int) (*nativeCh23AdapterStat
 			return nil, err
 		}
 		// 0x10842 的 loader 尾端先執行一次 sub_24D22(0)。
-		if err := fdother.RotateNativeCh23Rows(state.staging, state.latch); err != nil {
+		if err := state.rotateRows(state.latch); err != nil {
 			return nil, err
 		}
 	} else if state.tickSnapshot != rawTick {
-		if err := fdother.RotateNativeCh23Rows(state.staging, state.latch); err != nil {
+		if err := state.rotateRows(state.latch); err != nil {
 			return nil, err
 		}
 		state.tickSnapshot = rawTick
@@ -152,7 +165,7 @@ func (g *Game) startNativeCh23Loop(loop campaign.NativeCh23Loop, then func()) er
 
 	job := &nativeCh23LoopJob{spec: spec, then: then, rollback: rollback}
 	g.nativeCh23Loop = job
-	if err := g.prepareNativeCh23Draw(time.Now()); err != nil {
+	if err := g.prepareNativeCh23Draw(g.nativeCh23Now()); err != nil {
 		g.failNativeCh23Loop(err)
 		return err
 	}
@@ -179,7 +192,7 @@ func (g *Game) prepareNativeCh23Draw(now time.Time) error {
 	candidateGame.nativeMapDAC = append([]byte(nil), g.nativeMapDAC...)
 	rawTick := candidateGame.nativeMapClock.Sample(now)
 	if rawTick != candidateAdapter.tickSnapshot {
-		if err := fdother.RotateNativeCh23Rows(candidateAdapter.staging, candidateAdapter.latch); err != nil {
+		if err := candidateAdapter.rotateRows(candidateAdapter.latch); err != nil {
 			return err
 		}
 		candidateAdapter.tickSnapshot = rawTick
@@ -194,10 +207,21 @@ func (g *Game) prepareNativeCh23Draw(now time.Time) error {
 	if err := indexedmap.SeedNativeCh23Staging(candidateGame.nativeMapWork, candidateAdapter.staging); err != nil {
 		return err
 	}
+	seed, initialVGA := append([]byte(nil), candidateGame.nativeMapWork...), append([]byte(nil), candidateGame.nativeMapVGA...)
+	candidateGame.nativeCh23State = candidateAdapter
+	candidateGame.modernHDMapComposing = false
 	if err := candidateGame.composeNativeMapFrameAt(now); err != nil {
 		return fmt.Errorf("indexed draw: %w", err)
 	}
 	palette, err := fdother.VGAPaletteFromDAC(candidateGame.nativeMapDAC)
+	if err != nil {
+		return err
+	}
+
+	source, sourceErr := freezeModernHDCh23Source(&candidateGame, candidateAdapter, seed, initialVGA, palette)
+	pending := *j
+	pending.hdSource, pending.hdInputErr = source, sourceErr
+	frame, err := g.prepareModernHDCh23(&pending, g.modernStoryPortraits)
 	if err != nil {
 		return err
 	}
@@ -210,6 +234,7 @@ func (g *Game) prepareNativeCh23Draw(now time.Time) error {
 	g.nativeMapDAC = candidateGame.nativeMapDAC
 	g.nativeFDOTHERPalettePhase = candidateGame.nativeFDOTHERPalettePhase
 	g.nativeFDOTHERPaletteTick = candidateGame.nativeFDOTHERPaletteTick
+	j.hdSource, j.hdInputErr, j.hdFrame, j.hdTheme = source, sourceErr, frame, g.modernStoryPortraits
 	j.palette = palette
 	j.waitFrames = 3
 	j.drawn = false
@@ -268,14 +293,29 @@ func (g *Game) stepNativeCh23LoopAt(now time.Time) {
 	}
 }
 
+func (g *Game) nativeCh23Now() time.Time {
+	if g.nativeMapFrozenNow != nil {
+		return g.nativeMapFrozenNow()
+	}
+	return time.Now()
+}
+
 func (g *Game) stepNativeCh23Loop() {
-	g.stepNativeCh23LoopAt(time.Now())
+	g.stepNativeCh23LoopAt(g.nativeCh23Now())
 }
 
 func (g *Game) drawNativeCh23Loop(screen *ebiten.Image) bool {
 	j := g.nativeCh23Loop
 	if j == nil || len(j.palette) != 256 || len(g.nativeMapVGA) != indexedmap.NativeMapVGASize {
 		return false
+	}
+	if j.hdFrame != nil && j.hdTheme == g.modernStoryPortraits {
+		if !g.drawPreparedModernHDMapFrame(screen, j.hdFrame, false) {
+			g.failNativeCh23Loop(errors.New("HD frame unavailable"))
+			return false
+		}
+		j.drawn = true
+		return true
 	}
 	img := image.NewPaletted(image.Rect(0, 0, 320, 200), j.palette)
 	copy(img.Pix, g.nativeMapVGA)
