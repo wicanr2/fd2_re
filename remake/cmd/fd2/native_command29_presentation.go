@@ -43,6 +43,7 @@ type nativeCommand29PresentationJob struct {
 	actorMPBefore                   int
 	actorActedBefore                bool
 	sfxActor, sfxTarget             []byte
+	actorCues                       map[int][]byte
 	then                            func([]battle.NativeCommand24Damage)
 }
 
@@ -65,47 +66,79 @@ func nativeCommand29FinalIdleFrame(delays []int, schedule figani.NativeCommandDe
 }
 
 func (g *Game) startNativeCommand29Presentation(actor, confirmed *battle.Unit, then func([]battle.NativeCommand24Damage)) error {
+	return g.startNativeDerivedStrikePresentation(actor, confirmed, 29, battle.Cell{}, battle.Cell{}, then)
+}
+
+func (g *Game) startNativeDerivedStrikePresentation(actor, confirmed *battle.Unit, command int, savedCursor, confirmedCursor battle.Cell, then func([]battle.NativeCommand24Damage)) error {
 	if !g.nativeFullPresentationEnabled() {
 		return errors.New("native abbreviated presentation owner unavailable")
 	}
 	if g == nil || g.st == nil || g.rng == nil || actor == nil || confirmed == nil ||
 		g.nativeCmd29Presentation != nil || g.nativeCmd24Presentation != nil || g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil || g.nativeCmd2Presentation != nil || g.nativeCmd3Presentation != nil || g.nativeCmd5Presentation != nil || g.nativeCmd6Presentation != nil || g.nativeCmd7Presentation != nil || g.nativeCmd8Presentation != nil || g.nativeCmd9AIPresentation != nil ||
 		g.nativeHealPresentation != nil || g.nativeModifierPresentation != nil || g.atk != nil {
-		return errors.New("native command29 presentation context unavailable")
+		return fmt.Errorf("native command%d presentation context unavailable", command)
 	}
-	if !actor.HasBattleFig || actor.BattleFig != 34 || len(g.nativeUIPalette) < 256 {
-		return errors.New("native command29 requires proven selector34 actor and indexed palette")
+	expectedFig, expectedAudio, expectedActorSample, expectedTargetSample := 34, 50, 1, 4
+	if command == 30 {
+		expectedFig, expectedAudio, expectedActorSample, expectedTargetSample = 18, 49, 4, 3
+	} else if command != 29 {
+		return errors.New("native derived-strike presentation command unavailable")
+	}
+	if !actor.HasBattleFig || actor.BattleFig != expectedFig || len(g.nativeUIPalette) < 256 {
+		return fmt.Errorf("native command%d requires proven selector%d actor and indexed palette", command, expectedFig)
 	}
 	animationRoot := separatedAssetPath("animations")
 	effect, err := figani.LoadSeparatedResource(animationRoot, actor.BattleFig*3+2)
 	if err != nil {
 		return err
 	}
-	schedule, err := figani.BuildNativeCommandDerivedStrikeSchedule(effect, 29)
+	schedule, err := figani.BuildNativeCommandDerivedStrikeSchedule(effect, command)
 	if err != nil {
 		return err
 	}
-	if schedule.CommandID != 29 || schedule.AudioResource != 50 || schedule.ActorSample != 1 ||
-		schedule.TargetSample != 4 || schedule.PreludeMode != 1 || !schedule.UsesBGTransition || schedule.UsesTargetBase {
-		return errors.New("native command29 resource104 presentation signature mismatch")
+	if schedule.CommandID != command || schedule.AudioResource != expectedAudio || schedule.ActorSample != expectedActorSample ||
+		schedule.TargetSample != expectedTargetSample || schedule.PreludeMode != 1 || !schedule.UsesBGTransition || schedule.UsesTargetBase {
+		return fmt.Errorf("native command%d resource%d presentation signature mismatch", command, actor.BattleFig*3+2)
 	}
-	if err := g.requireSeparatedCommandSounds(schedule.AudioResource, schedule.ActorSample, schedule.TargetSample); err != nil {
+	samples := []int{schedule.TargetSample}
+	for _, cue := range schedule.ActorCues {
+		samples = append(samples, cue.Sample)
+	}
+	if err := g.requireSeparatedCommandSounds(schedule.AudioResource, samples...); err != nil {
 		return err
 	}
 	actorIdle, err := figani.LoadSeparatedResource(animationRoot, actor.BattleFig*3)
 	if err != nil || len(actorIdle.Frames) == 0 {
-		return errors.New("native command29 actor idle FIGANI unavailable")
+		return fmt.Errorf("native command%d actor idle FIGANI unavailable", command)
 	}
-	publishHD, err := g.stageModernHDSplitStrikeBanks(actor, confirmed, 29)
-	if err != nil {
-		return err
+	var publishHD func()
+	var plan *battle.NativeCommandDerivedStrikePlan
+	if command == 30 {
+		selected, e := g.st.NativeCommand30EffectTargets(actor, savedCursor, confirmedCursor)
+		if e != nil {
+			return e
+		}
+		if len(selected) == 0 {
+			return errors.New("native command30 final target list is empty")
+		}
+		if e := g.preflightNativeCommand30Sources(actor, selected, effect); e != nil {
+			return e
+		}
+		publishHD, err = g.stageModernHDSplitStrikeTargetBanks(actor, selected)
+		if err == nil {
+			plan, err = g.st.PlanNativeCommand30(actor, savedCursor, confirmedCursor, g.rng)
+		}
+	} else {
+		publishHD, err = g.stageModernHDSplitStrikeBanks(actor, confirmed, command)
+		if err == nil {
+			plan, err = g.st.PlanNativeCommandDerivedStrike(actor, confirmed, command, g.rng)
+		}
 	}
-	plan, err := g.st.PlanNativeCommandDerivedStrike(actor, confirmed, 29, g.rng)
 	if err != nil {
 		return err
 	}
 	if len(plan.Results) == 0 {
-		return errors.New("native command29 final target list is empty")
+		return fmt.Errorf("native command%d final target list is empty", command)
 	}
 	var bgLayers [3]fdother.Frame
 	for i := range bgLayers {
@@ -206,16 +239,16 @@ func (g *Game) startNativeCommand29Presentation(actor, confirmed *battle.Unit, t
 	for resultIndex, result := range plan.Results {
 		target := result.Target
 		if target == nil || !target.HasBattleFig {
-			return fmt.Errorf("native command29 target %d BattleFig unavailable", resultIndex)
+			return fmt.Errorf("native command%d target %d BattleFig unavailable", command, resultIndex)
 		}
 		idle, decodeErr := figani.LoadSeparatedResource(animationRoot, target.BattleFig*3)
 		if decodeErr != nil || len(idle.Frames) == 0 {
-			return fmt.Errorf("native command29 target %d idle FIGANI unavailable", resultIndex)
+			return fmt.Errorf("native command%d target %d idle FIGANI unavailable", command, resultIndex)
 		}
 		delays := make([]int, len(idle.Frames))
 		for i, frame := range idle.Frames {
 			if frame.Delay <= 0 {
-				return fmt.Errorf("native command29 target %d idle frame %d delay invalid", resultIndex, i)
+				return fmt.Errorf("native command%d target %d idle frame %d delay invalid", command, resultIndex, i)
 			}
 			delays[i] = frame.Delay
 		}
@@ -298,8 +331,12 @@ func (g *Game) startNativeCommand29Presentation(actor, confirmed *battle.Unit, t
 	}
 	sfxActor := g.separatedCommandSound(schedule.AudioResource, schedule.ActorSample)
 	sfxTarget := g.separatedCommandSound(schedule.AudioResource, schedule.TargetSample)
+	actorCues := make(map[int][]byte, len(schedule.ActorCues))
+	for _, cue := range schedule.ActorCues {
+		actorCues[cue.Frame] = g.separatedCommandSound(schedule.AudioResource, cue.Sample)
+	}
 	if !osMuteOrShot(g) && (len(sfxActor) == 0 || len(sfxTarget) == 0) {
-		return errors.New("native command29 FDOTHER #50 samples1/4 unavailable")
+		return fmt.Errorf("native command%d FDOTHER #%d samples unavailable", command, schedule.AudioResource)
 	}
 	publishHD()
 	g.nativeCmd29Presentation = &nativeCommand29PresentationJob{
@@ -307,7 +344,7 @@ func (g *Game) startNativeCommand29Presentation(actor, confirmed *battle.Unit, t
 		actor: actor, plan: plan, schedule: schedule, effectFrames: effectImages, effectPositions: effectPositions,
 		preludeFrames: preludeImages, actorBaseBefore: actorBases[0], actorBaseAfter: actorBases[1],
 		targets: targetPresentations, transitionFrame: -1, actorMPBefore: actor.MP,
-		actorActedBefore: actor.Acted, sfxActor: sfxActor, sfxTarget: sfxTarget, then: then,
+		actorActedBefore: actor.Acted, sfxActor: sfxActor, sfxTarget: sfxTarget, actorCues: actorCues, then: then,
 	}
 	return nil
 }
@@ -325,8 +362,13 @@ func (g *Game) failNativeCommand29Presentation(err error) {
 			target.unit.NativeRecordByte5 = target.rawByte5Before
 		}
 	}
+	battle.RestoreNativeCommand30Targets(j.plan)
 	g.nativeCmd29Presentation = nil
-	g.loadErr = "native command29 presentation: " + err.Error()
+	command := 29
+	if j.plan != nil && j.plan.CommandID == 30 {
+		command = 30
+	}
+	g.loadErr = fmt.Sprintf("native command%d presentation: %v", command, err)
 }
 
 func (g *Game) stepNativeCommand29Presentation() {
@@ -352,7 +394,14 @@ func (g *Game) stepNativeCommand29Presentation() {
 			return
 		}
 		j.mpPublished = true
-		g.playRaw(j.sfxActor)
+		if j.actorCues == nil {
+			g.playRaw(j.sfxActor)
+		}
+	}
+	if j.frame < j.schedule.TargetStart && j.repeat == 0 {
+		if cue, ok := j.actorCues[j.frame]; ok {
+			g.playRaw(cue)
+		}
 	}
 	if j.frame >= j.schedule.TargetStart {
 		target := &j.targets[j.targetIndex]

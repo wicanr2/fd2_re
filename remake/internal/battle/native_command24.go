@@ -16,6 +16,8 @@ type NativeCommand24Damage struct {
 	HPAfter                 int
 	NativeRecordByte5Before byte
 	NativeRecordByte5After  byte
+	deathFlagBefore         byte
+	deathFlagValidBefore    bool
 }
 
 // NativeCommandDerivedStrikePlan is a mutation-free result of the recovered
@@ -181,11 +183,32 @@ func ApplyNativeCommandDerivedStrikeTarget(plan *NativeCommandDerivedStrikePlan,
 		(result.Target.HasNativeRecordByte5 && result.Target.NativeRecordByte5 != result.NativeRecordByte5Before) {
 		return fmt.Errorf("native derived-strike target publish state changed")
 	}
+	if plan.CommandID == 30 {
+		result.Target.ApplyHPDamage(result.HPBefore - result.HPAfter)
+		return nil
+	}
 	result.Target.HP = result.HPAfter
 	if result.Target.HasNativeRecordByte5 {
 		result.Target.NativeRecordByte5 = result.NativeRecordByte5After
 	}
 	return nil
+}
+
+// RestoreNativeCommand30Targets restores the death-presentation provenance as
+// well as HP/raw +5. It is confined to the ID30 owner transaction.
+func RestoreNativeCommand30Targets(plan *NativeCommandDerivedStrikePlan) {
+	if plan == nil || plan.CommandID != 30 {
+		return
+	}
+	for _, result := range plan.Results {
+		if result.Target == nil {
+			continue
+		}
+		result.Target.HP = result.HPBefore
+		result.Target.NativeRecordByte5 = result.NativeRecordByte5Before
+		result.Target.nativeDeathFlagBefore = result.deathFlagBefore
+		result.Target.nativeDeathFlagValid = result.deathFlagValidBefore
+	}
 }
 
 func CompleteNativeCommandDerivedStrike(plan *NativeCommandDerivedStrikePlan) error {
@@ -204,14 +227,14 @@ func CompleteNativeCommandDerivedStrike(plan *NativeCommandDerivedStrikePlan) er
 	return nil
 }
 
-// ExecuteNativeCommand30 is the bounded player state slice for command 30:
+// NativeCommand30EffectTargets validates the bounded player selector for command30:
 // 0x1CFF0 first validates a normal 0x14818 candidate, then 0x149F8 traces
 // from the saved pre-confirm cursor toward the confirmed cursor for
 // record+3-0x10 steps, before 0x2A6BD -> 0x276EC applies multiplier 18.
 // Its indexed multi-hit presentation and UI cursor lifecycle remain outside
 // this method; callers must supply both recovered cursor positions.
-func (s *State) ExecuteNativeCommand30(actor *Unit, savedCursor, confirmedCursor Cell, rng *rand.Rand) ([]NativeCommand24Damage, error) {
-	if s == nil || actor == nil || rng == nil || len(s.NativeCommandBook) != 36 || s.NativeCommandBook[30].ID != 30 {
+func (s *State) NativeCommand30EffectTargets(actor *Unit, savedCursor, confirmedCursor Cell) ([]*Unit, error) {
+	if s == nil || actor == nil || len(s.NativeCommandBook) != 36 || s.NativeCommandBook[30].ID != 30 {
 		return nil, fmt.Errorf("native command 30 state unavailable")
 	}
 	record := s.NativeCommandBook[30]
@@ -239,10 +262,55 @@ func (s *State) ExecuteNativeCommand30(actor *Unit, savedCursor, confirmedCursor
 	if !confirmed {
 		return nil, fmt.Errorf("confirmed cursor is not a native command 30 candidate")
 	}
-	targets, err := NativeCommand30Targets(s.W, s.H, savedCursor, confirmedCursor, record.SelectionMode-0x10, s.Units)
+	return NativeCommand30Targets(s.W, s.H, savedCursor, confirmedCursor, record.SelectionMode-0x10, s.Units)
+}
+
+// PlanNativeCommand30 shares the proven selector with the existing state-only
+// control, while freezing each HP result for the indexed/HD marker publisher.
+func (s *State) PlanNativeCommand30(actor *Unit, savedCursor, confirmedCursor Cell, rng *rand.Rand) (*NativeCommandDerivedStrikePlan, error) {
+	if rng == nil {
+		return nil, fmt.Errorf("native command 30 rng unavailable")
+	}
+	targets, err := s.NativeCommand30EffectTargets(actor, savedCursor, confirmedCursor)
 	if err != nil {
 		return nil, err
 	}
+	record := s.NativeCommandBook[30]
+	if actor.Acted || record.MPCost < 0 || actor.MP < record.MPCost {
+		return nil, fmt.Errorf("native command 30 insufficient MP or completed actor")
+	}
+	plan := &NativeCommandDerivedStrikePlan{Actor: actor, CommandID: 30, MPBefore: actor.MP, MPAfter: actor.MP - record.MPCost}
+	for _, target := range targets {
+		amount, damage, err := ResolveNativeCommandDerivedStrikeDamage(actor.AP, target.DP, 18, rng)
+		if err != nil {
+			return nil, err
+		}
+		applied := damage
+		if applied < 0 {
+			applied = 0
+		}
+		if applied > target.HP {
+			applied = target.HP
+		}
+		after := target.NativeRecordByte5
+		if applied > 0 && target.HP-applied == 0 && target.HasNativeRecordByte5 {
+			after = 1
+		}
+		// Damage keeps the existing ID30 state-only result's unclamped roll.
+		plan.Results = append(plan.Results, NativeCommand24Damage{Target: target, Amount: amount, Damage: damage, HPBefore: target.HP, HPAfter: target.HP - applied, NativeRecordByte5Before: target.NativeRecordByte5, NativeRecordByte5After: after, deathFlagBefore: target.nativeDeathFlagBefore, deathFlagValidBefore: target.nativeDeathFlagValid})
+	}
+	return plan, nil
+}
+
+func (s *State) ExecuteNativeCommand30(actor *Unit, savedCursor, confirmedCursor Cell, rng *rand.Rand) ([]NativeCommand24Damage, error) {
+	if rng == nil {
+		return nil, fmt.Errorf("native command 30 state unavailable")
+	}
+	targets, err := s.NativeCommand30EffectTargets(actor, savedCursor, confirmedCursor)
+	if err != nil {
+		return nil, err
+	}
+	record := s.NativeCommandBook[30]
 	if !SpendNativeCommandMP(actor, record.MPCost) {
 		return nil, fmt.Errorf("native command 30 insufficient MP")
 	}

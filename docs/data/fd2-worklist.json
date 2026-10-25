@@ -383,6 +383,20 @@
         "note": "技術接入、20幀來源／Game.Draw、兩包及新普通第九章流程、README GIF已通過；待全部HD後集中人工確認右腳承重、膝踝與收勢自然度，確認前保持OPEN。"
       },
       "issue": 269
+    },
+    {
+      "id": "native-command30-player-hd",
+      "layer": "runtime",
+      "category": "缺陷",
+      "title": "P1 蜜蒂音速刃可正常學會，玩家入口與HD播放缺接",
+      "body": "固定原版growth18指向learn5，Lv2授予ID30；FDFIELD map16 slot36是raw camp2、selector18、Lv1的蜜蒂。原始bytes已核對，受控正式建構與升級未直接改command bit，seed7一次300 EXP後實際取得30、Lv4 MaxMP29。但基準9f386e80的玩家target admission拒收30，沒有正式indexed／HD owner。原2026-08-25無學招來源停止線已被反證，保留歷史並追加勘誤。\n\n既有FIGANI54／56與14幀HD素材已登錄；需要連接原始四格、X優先的特殊target selector，以及frame2 sample2、frame4 MP／sample4、frame11 damage／sample3。重用24／29的已閉合背景與呈現primitive，不猜28／31或新增AI30。主證據是既有IDA writer／consumer與固定原版bytes，不新增逐frame原版對拍或自然章節聲明。",
+      "acceptance": "從真實selector18名冊、正式升級與raw mask取得30，玩家選招保留進入target modal前的游標，沿原始四格／X優先篩選全部敵人。完成14幀及九張前導／每目標20張轉場的原生與HD完整Game.Draw、三次音效標記、MP一次與逐目標HP發布、F2、缺件零交易、晚期回復及一次返回。既有state-only數值／RNG控制及24／29回歸保持，保存冷讀保留30；受控與正常玩家範圍分開記錄，原版動態與集中人工／平台不由內部測試外推。",
+      "evidence": "docs/data/ida/fd2_command30_player_acquisition_20261025.json",
+      "verify": {
+        "kind": "manual",
+        "note": "原bytes與正式升級已反證舊停止線；正式玩家選取、indexed／HD播放與保存返回正在補接。"
+      },
+      "issue": 277
     }
   ]
 }

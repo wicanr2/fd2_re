@@ -39,6 +39,8 @@ func splitStrikeHDTestGame(t *testing.T, command int) (*Game, *battle.Unit, []*b
 		targets = []*battle.Unit{target}
 	} else if command == 29 {
 		g, actor, targets = newNativeCommand29PresentationTestGame(t)
+	} else if command == 30 {
+		g, actor, targets = newNativeCommand30PresentationTestGame(t)
 	} else {
 		t.Fatal("unsupported split strike command")
 	}
@@ -92,6 +94,9 @@ func startSplitStrikeHD(g *Game, command int, actor, target *battle.Unit, then f
 	if command == 24 {
 		return g.startNativeCommand24Presentation(actor, target, then)
 	}
+	if command == 30 {
+		return g.startNativeCommand30PresentationAtCursor(actor, battle.Cell{X: actor.X, Y: actor.Y}, battle.Cell{X: target.X, Y: target.Y}, then)
+	}
 	return g.startNativeCommand29Presentation(actor, target, then)
 }
 
@@ -104,12 +109,12 @@ func TestModernHDSplitStrikePreflightAndF2Atomic(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, command := range []int{24, 29} {
+	for _, command := range []int{24, 29, 30} {
 		t.Run(fmt.Sprint(command), func(t *testing.T) {
 			g, actor, targets := splitStrikeHDTestGame(t, command)
 			seed64 := int64(2)
-			if command == 29 {
-				seed64 = 29
+			if command != 24 {
+				seed64 = int64(command)
 			}
 			rngSource := &splitStrikeCountedSource{Source: rand.NewSource(seed64)}
 			g.rng = rand.New(rngSource)
@@ -163,7 +168,7 @@ func TestModernHDSplitStrikePreflightAndF2Atomic(t *testing.T) {
 			}
 			planningCalls := rngSource.calls
 			var owner any = g.nativeCmd24Presentation
-			if command == 29 {
+			if command != 24 {
 				owner = g.nativeCmd29Presentation
 			}
 			if err := g.applyTheme(nil); err != nil {
@@ -175,7 +180,7 @@ func TestModernHDSplitStrikePreflightAndF2Atomic(t *testing.T) {
 			if err := g.applyTheme(cold); err == nil || g.modernStoryPortraits != nil || !stable() || !empty(cold) {
 				t.Fatal("failed F2 changed theme, units, RNG or a partial HD bank")
 			}
-			if command == 24 && g.nativeCmd24Presentation != owner || command == 29 && g.nativeCmd29Presentation != owner {
+			if command == 24 && g.nativeCmd24Presentation != owner || command != 24 && g.nativeCmd29Presentation != owner {
 				t.Fatal("failed F2 replaced the active owner")
 			}
 			if err := g.applyTheme(set); err != nil {

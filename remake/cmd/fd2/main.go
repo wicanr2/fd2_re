@@ -590,6 +590,7 @@ type Game struct {
 	playerLocaleRequested               bool
 	playerToolbarTouchBlocked           bool
 	playerViewportTop                   int
+	nativeCommand30SavedCursor          *battle.Cell
 	modernHDText                        *modernHDTextFrame
 	nativeDialogueArrowTicks            int
 
@@ -5903,12 +5904,10 @@ func (g *Game) ringInput() bool {
 					return true
 				}
 				if _, err := g.nativeCommandTargetUnitsFor(id); err == nil {
-					if err := g.materializeNativeCommandTargetField(record); err != nil {
+					if err := g.beginNativeCommandTargetSelection(id); err != nil {
 						g.msg = fmt.Sprintf("原始指令 %d：target grid 無法 materialize", id)
 						return true
 					}
-					g.nativeCommandOpen, g.nativeCommand0Targeting = false, true
-					g.nativeCommandTargetID = id
 					g.msg = fmt.Sprintf("原始指令 %d：選擇目標", id)
 					return true
 				}
@@ -6055,7 +6054,7 @@ func (g *Game) ringInput() bool {
 // transaction owner; other command labels remain visible but fail closed at confirm.
 func (g *Game) nativeCommandTargetSupported(id int) bool {
 	switch id {
-	case 0, 1, 2, 6, 8, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 24, 25, 26, 27, 28, 29, 31, 32, 33, 34, 35:
+	case 0, 1, 2, 6, 8, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35:
 		return true
 	default:
 		return false
@@ -6118,6 +6117,32 @@ func (g *Game) materializeNativeCommandTargetField(record battle.NativeCommandRe
 	}
 	copy(g.st.NativeTileBlitModes, fieldBytes)
 	return nil
+}
+
+func (g *Game) beginNativeCommandTargetSelection(id int) error {
+	if g == nil || g.st == nil || len(g.st.NativeCommandBook) != 36 || !g.nativeCommandTargetSupported(id) {
+		return fmt.Errorf("native command target context unavailable")
+	}
+	if err := g.materializeNativeCommandTargetField(g.st.NativeCommandBook[id]); err != nil {
+		return err
+	}
+	g.nativeCommandOpen, g.nativeCommand0Targeting = false, true
+	g.nativeCommandTargetID = id
+	g.nativeCommand30SavedCursor = nil
+	if id == 30 {
+		saved := battle.Cell{X: g.curX, Y: g.curY}
+		g.nativeCommand30SavedCursor = &saved
+	}
+	return nil
+}
+
+func (g *Game) cancelNativeCommandTargetSelection() {
+	if g.nativeCommand0Targeting && g.st != nil {
+		g.resetNativeTargetField()
+		g.st.MaterializeNativeMapRangeMode(1)
+	}
+	g.castSp, g.nativeCommand0Targeting, g.nativeCommandOpen = nil, false, true
+	g.nativeCommand30SavedCursor = nil
 }
 
 func (g *Game) resetNativeTargetField() bool {
@@ -7979,9 +8004,9 @@ func (g *Game) confirm() {
 				g.msg = "原始指令 6：indexed 演出不可用 (" + err.Error() + ")"
 			}
 			return
-		case id == 29:
+		case id == 29 || id == 30:
 			actor := g.sel
-			err := g.startNativeCommand29Presentation(actor, tgt, func(results []battle.NativeCommand24Damage) {
+			then := func(results []battle.NativeCommand24Damage) {
 				total := 0
 				for _, result := range results {
 					total += result.Damage
@@ -7990,16 +8015,27 @@ func (g *Game) confirm() {
 					}
 				}
 				actor.SetMapPose(dirToward(actor.X, actor.Y, g.curX, g.curY))
-				g.msg = fmt.Sprintf("原始指令 29：傷害 %d", total)
+				g.msg = fmt.Sprintf("原始指令 %d：傷害 %d", id, total)
 				g.finishSuccessfulUnitAction(actor, func() {
 					g.resetNativeTargetField()
 					g.st.MaterializeNativeMapRangeMode(1)
 					g.nativeCommand0Targeting, g.nativeCommandTargetID, g.sel, g.reach, g.moved = false, 0, nil, nil, false
+					g.nativeCommand30SavedCursor = nil
 				})
 				g.checkResult()
-			})
+			}
+			var err error
+			if id == 30 {
+				if g.nativeCommand30SavedCursor == nil {
+					g.msg = "原始指令 30：缺少選取前游標"
+					return
+				}
+				err = g.startNativeCommand30PresentationAtCursor(actor, *g.nativeCommand30SavedCursor, battle.Cell{X: g.curX, Y: g.curY}, then)
+			} else {
+				err = g.startNativeCommand29Presentation(actor, tgt, then)
+			}
 			if err != nil {
-				g.msg = "原始指令 29：indexed 演出不可用 (" + err.Error() + ")"
+				g.msg = fmt.Sprintf("原始指令 %d：indexed 演出不可用 (%v)", id, err)
 			}
 			return
 		case id == 28 || id == 31:
@@ -8894,11 +8930,7 @@ func (g *Game) Update() error {
 	}
 	if g.castSp != nil || g.nativeCommand0Targeting { // native target selection: ESC 回 command grid
 		if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
-			if g.nativeCommand0Targeting && g.st != nil {
-				g.resetNativeTargetField()
-				g.st.MaterializeNativeMapRangeMode(1)
-			}
-			g.castSp, g.nativeCommand0Targeting, g.nativeCommandOpen = nil, false, true
+			g.cancelNativeCommandTargetSelection()
 			return nil
 		}
 	}

@@ -1,0 +1,1757 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_command30_player_source_recheck",
+  "status": "RE-CLOSED-DATA-CORRECTION / CONFORMED-SCOPED / RUNTIME-E1",
+  "source_inputs": [
+    {
+      "file": "FD2.EXE",
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    {
+      "file": "FDFIELD.DAT",
+      "size": 243169,
+      "md5": "ecdb0436d26adfe5d107f2713fa7e9a2",
+      "sha256": "b0cf75d94f58603f091c7462c0494f0e83bd6edfb04c1acbf83ed4d938c7a513"
+    },
+    {
+      "file": "FIGANI.DAT",
+      "size": 15279582,
+      "md5": "7da21ec0ad9917455459f1acb970bdf4",
+      "sha256": "e909314ce37b70701238fd24febc8f61603bbe8d81a9ecbf8f289c97a5b67a1f"
+    },
+    {
+      "file": "FDOTHER.DAT",
+      "size": 3382481,
+      "md5": "22f56e5027edc7c766ad34ca4e5aca93",
+      "sha256": "a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce"
+    }
+  ],
+  "tool_sha256": "564a4b0a75e846025dd8628ea0d72af702cf64a817aba11fddad0ded748a8aa3",
+  "tables": [
+    {
+      "file": "docs/data/exe_tables/character_defaults.json",
+      "sha256": "cf6d2ed1cb72d1608d16be67bed1eeee7d06b6d6a0100eff156eb28525f9311b"
+    },
+    {
+      "file": "remake/assets/data/class_change_growth.json",
+      "sha256": "d7dac4e21e07ad0efc3fce00654aad4abb0ebe095d17e2ced14b73bbbcbd78fe"
+    },
+    {
+      "file": "remake/assets/data/command_learn.json",
+      "sha256": "c84861b1b8a101b519a39f5e360aef2ebe8c6e16bfffb98d34c07d4274684a67"
+    },
+    {
+      "file": "remake/assets/spells.json",
+      "sha256": "b5c7dd55d4b2dd83d4714dfc740a99ac48f201068011367cf1b586816c7f9613"
+    }
+  ],
+  "raw_table_rows": [
+    {
+      "kind": "constructor",
+      "address_space": "FD2.EXE file offset",
+      "offset": "0x55d51",
+      "raw_hex": "010901180108000500000000078affffffffaa0082002d00"
+    },
+    {
+      "kind": "growth",
+      "address_space": "FD2.EXE file offset",
+      "offset": "0x55f67",
+      "raw_hex": "090f070b02040c10060805"
+    },
+    {
+      "kind": "learn",
+      "address_space": "FD2.EXE file offset",
+      "offset": "0x564ef",
+      "raw_hex": "021effffffffffffffffffff"
+    },
+    {
+      "kind": "command",
+      "address_space": "FD2.EXE file offset",
+      "offset": "0x558cf",
+      "raw_hex": "00000014001800"
+    }
+  ],
+  "learn_grants": {
+    "28": [],
+    "30": [
+      {
+        "row": 5,
+        "required_level": 2,
+        "command_id": 30
+      }
+    ],
+    "31": []
+  },
+  "selector18_original_roster_rows": [
+    {
+      "map": 15,
+      "slot": 49,
+      "camp_raw": 1,
+      "level": 1,
+      "initial_command_mask": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "group": 0,
+      "mode_raw": 130,
+      "source_resource": 46,
+      "source_resource_sha256": "534849a460854e3706607f0c3e2159adf6f19a1f8ae54226505086719790162e",
+      "address_space": "FDFIELD.DAT file offset",
+      "record_offset": "0x188bc",
+      "raw_hex": "0112010101078ac2c2c4ffffff00000000820000000003010000",
+      "roster": {
+        "file": "remake/assets/maps/map15/map15_units.json",
+        "sha256": "2bc91631b51811ede69de5e3c6a4ad33c80e0c626669a7418ef67f9f2b86b218"
+      }
+    },
+    {
+      "map": 16,
+      "slot": 36,
+      "camp_raw": 2,
+      "level": 1,
+      "initial_command_mask": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "group": 1,
+      "mode_raw": 128,
+      "source_resource": 49,
+      "source_resource_sha256": "62e6972110ae3baf0afbf89ee2c99e71b1722f00c690a584f7491185f1c1589e",
+      "address_space": "FDFIELD.DAT file offset",
+      "record_offset": "0x1b02b",
+      "raw_hex": "0212010101078affffffffffff000000008000000001ff000000",
+      "roster": {
+        "file": "remake/assets/maps/map16/map16_units.json",
+        "sha256": "5484bfa8e7891e5f382c274f4bafac97fdfcb248cd59adbbf2adaff3701a5b81"
+      }
+    },
+    {
+      "map": 31,
+      "slot": 5,
+      "camp_raw": 1,
+      "level": 2,
+      "initial_command_mask": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "group": 255,
+      "mode_raw": 0,
+      "source_resource": 94,
+      "source_resource_sha256": "ac8fa7aa99fbe39aecad990e56d7cc5465ea43f575adfd7c73b74d7668d0bbff",
+      "address_space": "FDFIELD.DAT file offset",
+      "record_offset": "0x39ee2",
+      "raw_hex": "01120101020080ffffffffffff0000000000000000ffff000000",
+      "roster": {
+        "file": "remake/assets/maps/map31/map31_units.json",
+        "sha256": "fbeda22ce3930de43c3cbdc96fdef6ada1ffe38fd807528ab06b23e848e83ec9"
+      }
+    }
+  ],
+  "figani_source_inventory": {
+    "file": "docs/data/fd2-battle-hd-source-inventory-20261019.json",
+    "sha256": "d019e2cb233d8bbe8d6b6d688221fdc2fecadc78bf39142e5e3c2f6b57375f51"
+  },
+  "effect_resource": 56,
+  "effect_frames": 14,
+  "effect_metadata_sha256": "fc83f27d5bd6671739401b397368d07b5dc0c260117c23d660d0f2df1cc096eb",
+  "effect_events": [
+    {
+      "frame": 2,
+      "impact": 0,
+      "sample": 2,
+      "delay": 2
+    },
+    {
+      "frame": 4,
+      "impact": 1,
+      "sample": 4,
+      "delay": 2
+    },
+    {
+      "frame": 11,
+      "impact": 1,
+      "sample": 3,
+      "delay": 2
+    }
+  ],
+  "sound_resource": 49,
+  "sound_resource_sha256": "c245a6db4307f9cdae32b988ed4a4381d8648d03e1657381396a8ed846de5181",
+  "sound_cues": [
+    {
+      "frame": 2,
+      "subresource": 2,
+      "address_space": "FDOTHER.DAT file offset",
+      "offset": "0x1ab0a4",
+      "byte_count": 3036,
+      "pcm_sha256": "37be4c65aca9c96fa0c2b1a4536650f5d17a152ac8d8042c7dcea81847d4fe82"
+    },
+    {
+      "frame": 4,
+      "subresource": 4,
+      "address_space": "FDOTHER.DAT file offset",
+      "offset": "0x1acccf",
+      "byte_count": 3354,
+      "pcm_sha256": "6281c86b9f0f6fb7e9578a1a2753cefe74a136b4b17607e3200a1c6947779ba4"
+    },
+    {
+      "frame": 11,
+      "subresource": 3,
+      "address_space": "FDOTHER.DAT file offset",
+      "offset": "0x1abc80",
+      "byte_count": 4175,
+      "pcm_sha256": "8c043a43b05bd900fba75211e52f9160f9448cb0bcf952c091284f4fc64ee8f7"
+    }
+  ],
+  "catalog": {
+    "file": "remake/assets/themes/modern/catalog.json",
+    "sha256": "c1b2c20ee56bf2e45324155829f9778bfff14a25d9edce9d06dc56f2074d42df"
+  },
+  "hd_asset": "modern.figani.056.hd6.v1",
+  "closed_writer_evidence": "docs/data/ida/fd2_command28_31_reachability_ida.txt: sub_1E292 -> sub_4E4D1 -> sub_4E4A2 -> sub_1D79C; IDA Pro 9.4 linear addresses retained",
+  "reopen_reason": "Fixed original bytes contradict the 2026-08-25 claim that no learn row grants ID30. Selector18 uses learn5, level2 grants30, and original map16 slot36 is player camp2 selector18 level1.",
+  "evidence_level": {
+    "raw_tables_and_rosters": "confirmed",
+    "normal_level_up_producer": "strong inference from original data and closed writer; remake runtime probe recorded separately"
+  },
+  "original_runtime_executed": false,
+  "normal_campaign_verified": false,
+  "scope": "原始資料取得來源勘誤與受控RUNTIME-E1：正式建構／升級、目標確認／取消、原生及雙側HD完整Game.Draw、獨立CPU與拒收、current-save新程序cold adapter。沒有新原版動態、自然整章、集中人工或平台聲明。",
+  "base_commit": "9f386e80e29525038bd365588781a0ed5b7f1f67",
+  "runtime_probe": {
+    "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-acquisition-before-r1.json",
+    "sha256": "ea6123b70b94f37951f2ac096e2619e2899c3bf779ecb7c1d7cadcaa18d06753",
+    "scope": "300 controlled EXP through production constructor and native level-up; no command bit injection; not full normal chapter proof"
+  },
+  "baseline_defect": "Miti learns ID30 at level2 from learn5, but Game.nativeCommandTargetSupported rejects30 and no native/HD presentation owner is wired.",
+  "current_status": "蜜蒂正式學招與target admission、保存游標、原生／HD播放器及FDOTHER49已接入；受控RUNTIME-E1通過。正常鍵盤、真正地圖返回、人工與平台依父工單集中抽驗。",
+  "issue": "https://github.com/wicanr2/fd2_re/issues/277",
+  "runtime_checks": [
+    {
+      "name": "command30-final-core-r1",
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-final-core-r1.log",
+        "sha256": "af04b6818e2bb5825928de4408594e5e232667b766f5995ececede7b73fb299f"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-final-core-r1.memory.json",
+        "sha256": "b4fc3fbf6a99b00e16f72769cd9ac3e8eaf73e8fe686d26a815d6cef319fdeeb"
+      },
+      "elapsed_seconds": 35.062,
+      "tests": [
+        {
+          "test": "TestNativeCommand29PresentationPublishesMultipleTargetsInOrder",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand29PresentationRollsBackAllTargetsOnLateFailure",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand29PresentationRejectsUnprovenSelectorWithoutMutation",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand30PresentationMatchesStateControlAndDrawMarkers",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand30PresentationColdRejectAndLateRollback",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand30FixedSourceScheduleIncludesEarlyCue",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand30PlayerTargetModalSavesCursorAndCancels",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand30MitiAcquisitionAndPlayerEntry",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeContinueTitleCallerPublishesRealCurrentSnapshot",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCurrentSaveBuildAndAtomicReplaceRoundTrip",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCurrentSaveFailureLeavesOriginalFileUnchanged",
+          "result": "pass"
+        },
+        {
+          "test": "TestPlanNativeCommand30MatchesStateOnlyClampAndDeath",
+          "result": "pass"
+        },
+        {
+          "test": "TestExecuteNativeCommand24UsesDerivedStatsAndOneMPDebit",
+          "result": "pass"
+        },
+        {
+          "test": "TestExecuteNativeCommand24RejectsInvalidBookBeforeMutation",
+          "result": "pass"
+        },
+        {
+          "test": "TestPlanNativeCommand24PublishesMPDamageAndCompletionAtSeparateMarkers",
+          "result": "pass"
+        },
+        {
+          "test": "TestPlanNativeCommand24PreservesDamageClampAndDeathProjection",
+          "result": "pass"
+        },
+        {
+          "test": "TestPlanNativeCommand24DoesNotTurnNegativeDamageIntoHealing",
+          "result": "pass"
+        },
+        {
+          "test": "TestExecuteNativeCommandDerivedStrikeUsesRecoveredID28MultiplierAndDenominator",
+          "result": "pass"
+        },
+        {
+          "test": "TestExecuteNativeCommandDerivedStrikeUsesRecoveredID29And31Multipliers",
+          "result": "pass"
+        },
+        {
+          "test": "TestExecuteNativeCommandDerivedStrikeRejectsSpecialSelectorID30",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand30TargetsUsesSavedCursorAndXPriority",
+          "result": "pass"
+        },
+        {
+          "test": "TestExecuteNativeCommand30UsesSpecialLineAndOneMPDebit",
+          "result": "pass"
+        },
+        {
+          "test": "TestExecuteNativeCommand30RejectsNonCandidateBeforeMP",
+          "result": "pass"
+        }
+      ],
+      "peak_bytes": 1264410624,
+      "oom": 0,
+      "timeout": false
+    },
+    {
+      "name": "command30-hd-atomic-r1",
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-hd-atomic-r1.log",
+        "sha256": "2f1f48772a80f0d88c652a17ad52075062d47ab82a836e88b7065945e6ee1b98"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-hd-atomic-r1.memory.json",
+        "sha256": "556eaf61e5d85ef8a8ca7a06dfa3fb9c4cacb84b7b419d8d8bbe093d48343465"
+      },
+      "elapsed_seconds": 161.845,
+      "tests": [
+        {
+          "test": "TestModernHDSplitStrikePreflightAndF2Atomic",
+          "result": "pass"
+        },
+        {
+          "test": "TestModernHDSplitStrikeLateFailureRestoresTransaction",
+          "result": "pass"
+        }
+      ],
+      "peak_bytes": 4656185344,
+      "oom": 0,
+      "timeout": false
+    },
+    {
+      "name": "command30-save-child-r1",
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-save-child-r1.log",
+        "sha256": "66f32d1e52e72b66b59820f1db4bdb691635a57ef55bdf66c854eef4396e2d69"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-save-child-r1.memory.json",
+        "sha256": "05b15c9f571debcd1a2638af29c27b014548dd22c8ef2e60efb4362db04ea573"
+      },
+      "elapsed_seconds": 24.582,
+      "tests": [
+        {
+          "test": "TestNativeCommand30MitiAcquisitionAndPlayerEntry",
+          "result": "pass"
+        }
+      ],
+      "peak_bytes": 1277353984,
+      "oom": 0,
+      "timeout": false
+    },
+    {
+      "name": "command30-figani-strings-r1",
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-figani-strings-r1.log",
+        "sha256": "e3cd75781be111156f2c914413d7b8ecb2b0d6bff1ced165be0a2184d357e218"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-figani-strings-r1.memory.json",
+        "sha256": "8ebc9804c7b02ab2f03b0918f3a6e1df4d1d1f1061573970c67162f77c020ee0"
+      },
+      "elapsed_seconds": 1.003,
+      "tests": [
+        {
+          "test": "TestBlitAtBaseLastRowSpan",
+          "result": "pass"
+        },
+        {
+          "test": "TestBlitAtBaseInvalidSpanPreservesDestination",
+          "result": "pass"
+        },
+        {
+          "test": "TestBuildCollectsControlledJSONAndGoUIWithoutNotesOrErrors",
+          "result": "pass"
+        },
+        {
+          "test": "TestBuildIsDeterministicAndJSONSerializable",
+          "result": "pass"
+        },
+        {
+          "test": "TestBuildRejectsDuplicateExistingStringID",
+          "result": "pass"
+        },
+        {
+          "test": "TestMultipleTextFieldsDoNotReuseOneExistingStringID",
+          "result": "pass"
+        },
+        {
+          "test": "TestVariablesIncludeWrappedErrorPlaceholder",
+          "result": "pass"
+        },
+        {
+          "test": "TestDrawFunctionContextIncludesIndirectASCIIAndFunctionName",
+          "result": "pass"
+        },
+        {
+          "test": "TestDrawFunctionContextSkipsLocaleKeys",
+          "result": "pass"
+        },
+        {
+          "test": "TestOriginalFIGANI51FitsRightWorkPane",
+          "result": "pass"
+        },
+        {
+          "test": "TestParsePreservesTransparentAndDitherPixels",
+          "result": "pass"
+        },
+        {
+          "test": "TestParseTreatsPreludeFlagAsByteNotFrameCountHighByte",
+          "result": "pass"
+        },
+        {
+          "test": "TestDecodeOriginalFIGANIResource",
+          "result": "pass"
+        },
+        {
+          "test": "TestDecodeOriginalFIGANIPreludeResource",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand24ScheduleMatchesSelector32Resource98",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand29ScheduleMatchesGrowthSelector34Resource104",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand28ScheduleKeepsCallerSpecificPresentationBranches",
+          "result": "pass"
+        },
+        {
+          "test": "TestDecodeOriginalPlayerClass19HeaderFlags",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeSchedulerInitializesWithoutRenderingAndAdvancesAfterRender",
+          "result": "pass"
+        },
+        {
+          "test": "TestDisplaySchedulerHonoursNativeDelaysAndScale",
+          "result": "pass"
+        },
+        {
+          "test": "TestDisplaySchedulerRejectsUnknownDelayState",
+          "result": "pass"
+        },
+        {
+          "test": "TestDisplaySchedulerPresentsZeroDelayFrameOnce",
+          "result": "pass"
+        },
+        {
+          "test": "TestFrameBlitAtBaseShiftsNativeWorkSurface",
+          "result": "pass"
+        },
+        {
+          "test": "TestFrameBlitTranslatedClipsAndCanOverrideOpaquePixels",
+          "result": "pass"
+        },
+        {
+          "test": "TestBuildNativeCommand0PresentationSchedulePreservesRawTables",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand0StaggerAndImpactMarkers",
+          "result": "pass"
+        },
+        {
+          "test": "TestBuildNativeCommand0PresentationScheduleRejectsMalformedBank",
+          "result": "pass"
+        },
+        {
+          "test": "TestOriginalFDOTHERCommand0EffectBanksMatchRecoveredSignatures",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand1SchedulePreservesRawTablesAndSides",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand1ModeFramesAndMarkers",
+          "result": "pass"
+        },
+        {
+          "test": "TestOriginalFDOTHERCommand1EffectBanksMatchRecoveredSignatures",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand2RNGWalkMatchesChapter18FourTargetBoundary",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand2RNGWalkMissSkipsHitMarkers",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand2SequencesPreservePhaseBudgetsAndMarkers",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand2SchedulePreservesRawResources",
+          "result": "pass"
+        },
+        {
+          "test": "TestOriginalFDOTHERCommand2EffectBanksMatchRecoveredSignatures",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand3SchedulePreservesResourcesAndTables",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand3Mode0IsDeterministic",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand3ToggleRepeatsBeforeAdvance",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand3FirstTargetMarkersAndSamples",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand3TransitionAndTailPreserveState",
+          "result": "pass"
+        },
+        {
+          "test": "TestOriginalFDOTHERCommand3ResourcesMatchRecoveredSignatures",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand4ScheduleAndMarkers",
+          "result": "pass"
+        },
+        {
+          "test": "TestOriginalFDOTHERCommand4ResourcesMatchRecoveredSignatures",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand5SchedulePreservesSideResourcesAndOffsets",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand5Mode0ConsumesSixRNGSteps",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand5FrontAndTargetPreserveMarkersAndSamples",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand5TransitionCarriesStateAndTailStopsReseeding",
+          "result": "pass"
+        },
+        {
+          "test": "TestOriginalFDOTHERCommand5ResourcesMatchRecoveredSignatures",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand6SchedulePreservesRawSideTables",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand6CoordinatesPreserveFivePointFormula",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand6TargetsPreserveMode3GeometryAndState",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand6OrbitPlansPreserveModeOrderAndSideSplit",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand6TargetPlanMarksNumericBoundaryWithoutEndingLoop",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand6TargetPlanRunsMode3TwelveFrameBudget",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand6TargetSequenceConsumesOnlyFirstFiveMarkers",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand6TransitionSequencePreservesNineFrameSlide",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand6ZeroSideDrawsOnlyMode5Main",
+          "result": "pass"
+        },
+        {
+          "test": "TestOriginalFDOTHERCommand6ResourcesMatchRecoveredSignatures",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand6RNGRejectsInvalidInputBeforeResolve",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand6CoordinatesMatchOriginalPlayerTargets",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand6TargetDisplayMatchesOriginalPlayerCast",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand7SchedulePreservesResourcesAndOffsets",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand7Mode0PreservesUnusedFourthGroup",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand7ToggleRepeatsBeforeAdvance",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand7FirstTargetMarkersAndSamples",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand7TransitionAndTailPreserveState",
+          "result": "pass"
+        },
+        {
+          "test": "TestOriginalFDOTHERCommand7ResourcesMatchRecoveredSignatures",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand7RNGWalkRejectsUnavailableInputs",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand8ScheduleAndMode0",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand8FirstTargetMarkersAndSamples",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand8TransitionAndTail",
+          "result": "pass"
+        },
+        {
+          "test": "TestOriginalFDOTHERCommand8ResourcesMatchRecoveredShapes",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand9AIScheduleFailsClosedByRawSideAndShape",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand9AITargetMarkersAndSamples",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand9AIOrbitAlternatesFrameZero",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCommand9AIOriginalAssets",
+          "result": "pass"
+        },
+        {
+          "test": "TestBuildNativeCompoundPresentationSchedulePreservesRawTables",
+          "result": "pass"
+        },
+        {
+          "test": "TestNativeCompoundPresentationOriginalResources",
+          "result": "pass"
+        },
+        {
+          "test": "TestLoadNativeCommandIndexedEntryTablePreservesCorrectedLinearEntries",
+          "result": "pass"
+        },
+        {
+          "test": "TestLoadNativeCommandIndexedEntryTableRejectsRawUnrelocatedAddress",
+          "result": "pass"
+        },
+        {
+          "test": "TestWalkNativeCommand4RNGMatchesR4Receipt",
+          "result": "pass"
+        },
+        {
+          "test": "TestWalkNativeCommand0RNGMatchesR4Receipt",
+          "result": "pass"
+        },
+        {
+          "test": "TestWalkNativeCommand0RNGMissConsumesOnlyTheHitRoll",
+          "result": "pass"
+        },
+        {
+          "test": "TestWalkNativeCommand4RNGMissSkipsMarkerShake",
+          "result": "pass"
+        },
+        {
+          "test": "TestSeparatedOriginalPackAllFIGANIFrames",
+          "result": "skip"
+        },
+        {
+          "test": "TestSeparatedOriginalCompoundFDOTHERFrames",
+          "result": "skip"
+        },
+        {
+          "test": "TestSeparatedResourceMatchesOriginalIndexedAnimation",
+          "result": "pass"
+        },
+        {
+          "test": "TestSeparatedZeroHeaderFallbackMatchesOriginalPreviousResource",
+          "result": "pass"
+        },
+        {
+          "test": "TestSeparatedFDOTHERAnimationMatchesOriginalResource",
+          "result": "pass"
+        },
+        {
+          "test": "TestSeparatedResourceFailsClosed",
+          "result": "pass"
+        },
+        {
+          "test": "TestSeparatedZeroHeaderFallbackRequiresConfirmedStatus",
+          "result": "pass"
+        },
+        {
+          "test": "TestReviewedGoCandidatesMatchCurrentInventory",
+          "result": "pass"
+        }
+      ],
+      "peak_bytes": 122372096,
+      "oom": 0,
+      "timeout": false
+    },
+    {
+      "name": "command30-original-frames-r1",
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-original-frames-r1.log",
+        "sha256": "f8ed4a4c2169f294abbcbad84d766605b0b097108bdf1d3ce040a7ac90af9af3"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-original-frames-r1.memory.json",
+        "sha256": "2350cb2aef8df378ce30d94f33ce82711b26c6a09c3a0bec5c57b104c0a3f801"
+      },
+      "elapsed_seconds": 1.003,
+      "tests": [
+        {
+          "test": "TestSeparatedOriginalPackAllFIGANIFrames",
+          "result": "pass"
+        },
+        {
+          "test": "TestSeparatedOriginalCompoundFDOTHERFrames",
+          "result": "pass"
+        }
+      ],
+      "peak_bytes": 76488704,
+      "oom": 0,
+      "timeout": false
+    }
+  ],
+  "resolved_skips": "figani-strings初輪未指定FD2_TEST_ORIGINAL_PACK，兩個全素材測試SKIP；original-frames-r1明示原版唯讀包後兩者均PASS。其餘選定回歸無SKIP。",
+  "gpu_runs": [
+    {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-hd-game-r1-capture/receipt.json",
+        "sha256": "fff80651c9335ecbce07585eb58c9b8320bc8b38d6bf0bc85357832ab8f3bedd"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-hd-game-r1.log",
+        "sha256": "43bfc6aa590e27edcfbc0171357979191d7d685eae02cc2a18542e3195740aec"
+      },
+      "gate": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-hd-game-r1.gate.json",
+        "sha256": "bdd4df1009ee5f52e43c79bd007614c41ab8a2dbf8d3c45621abd1bf5ee330cb"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-hd-game-r1.memory.json",
+        "sha256": "b551c229161605b3d74e7ab83202bc383da90530a3acd6f11448a3a1251959a0"
+      },
+      "peak_bytes": 1824948224,
+      "summary": {
+        "actor_figure": 18,
+        "catalog_sha256": "c1b2c20ee56bf2e45324155829f9778bfff14a25d9edce9d06dc56f2074d42df",
+        "command_id": 30,
+        "continuations": 1,
+        "final_draws": 121,
+        "go_rng_next_matches_native_plan": true,
+        "go_rng_planning_calls": 2,
+        "go_seed": 30,
+        "gpu_sources_cleared": true,
+        "hashes_only": false,
+        "hd_draws": 108,
+        "hp_after": [
+          27,
+          46
+        ],
+        "hp_before": [
+          210,
+          220
+        ],
+        "hp_changes": [
+          1,
+          1
+        ],
+        "mp_after": 5,
+        "mp_before": 29,
+        "mp_changes": 1,
+        "native_rng": 0,
+        "owner_released": true,
+        "phase_draws": {
+          "actor": 26,
+          "prelude": 10,
+          "target-0": 14,
+          "target-1": 14,
+          "transition-in-0": 11,
+          "transition-in-1": 11,
+          "transition-out-0": 11,
+          "transition-out-1": 11
+        },
+        "phase_f2": {
+          "actor": 1,
+          "prelude": 1,
+          "target-0": 1,
+          "target-1": 1,
+          "transition-in-0": 1,
+          "transition-in-1": 1,
+          "transition-out-0": 1,
+          "transition-out-1": 1
+        },
+        "scenery_side": "2",
+        "scenery_triple": "4:5:6",
+        "scope": "Controlled command24/29/30 fixtures with real Game.Draw and1920 final GPU; no normal player/original oracle/PLAYER-E2 or manual-art claim.",
+        "status": "PASS-SPLIT-STRIKE-RUNTIME-E1",
+        "transition_required": true
+      },
+      "screen_count": 78,
+      "build_scope": "首批受控繪圖與README來源，早於最後死亡暫態及raw roster測具補齊；雙側最終程式及死亡回復由後續r2／final-core及atomic收據驗證。"
+    },
+    {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-hd-game-r2-capture/receipt.json",
+        "sha256": "2096c1b261a5be8c68fbbb3da87dcf57e376acbd66c267df8a35a73c782f97b3"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-hd-game-r2.log",
+        "sha256": "1ac366f00d3c5f76468cce3e7f68ed2c467899f7dae5c69a09d23fb2ae92c3d1"
+      },
+      "gate": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-hd-game-r2.gate.json",
+        "sha256": "fba19cbefc1223bc5b6725ee0111400204b0cecb932057ecd3d167f3c5f7dd59"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-hd-game-r2.memory.json",
+        "sha256": "3189adfa6bc63691562f468c2209e7e7736b3155002cb8df3e41c09dd2ba4d9d"
+      },
+      "peak_bytes": 1639124992,
+      "summary": {
+        "actor_figure": 18,
+        "catalog_sha256": "c1b2c20ee56bf2e45324155829f9778bfff14a25d9edce9d06dc56f2074d42df",
+        "command_id": 30,
+        "continuations": 1,
+        "final_draws": 120,
+        "go_rng_next_matches_native_plan": true,
+        "go_rng_planning_calls": 2,
+        "go_seed": 30,
+        "gpu_sources_cleared": true,
+        "hashes_only": false,
+        "hd_draws": 108,
+        "hp_after": [
+          27,
+          46
+        ],
+        "hp_before": [
+          210,
+          220
+        ],
+        "hp_changes": [
+          1,
+          1
+        ],
+        "mp_after": 5,
+        "mp_before": 29,
+        "mp_changes": 1,
+        "native_rng": 0,
+        "owner_released": true,
+        "phase_draws": {
+          "actor": 26,
+          "prelude": 10,
+          "target-0": 14,
+          "target-1": 14,
+          "transition-in-0": 11,
+          "transition-in-1": 11,
+          "transition-out-0": 11,
+          "transition-out-1": 11
+        },
+        "phase_f2": {
+          "actor": 1,
+          "prelude": 1,
+          "target-0": 1,
+          "target-1": 1,
+          "transition-in-0": 1,
+          "transition-in-1": 1,
+          "transition-out-0": 1,
+          "transition-out-1": 1
+        },
+        "scenery_side": "0",
+        "scenery_triple": "4:5:6",
+        "scope": "Controlled command24/29/30 fixtures with real Game.Draw and1920 final GPU; no normal player/original oracle/PLAYER-E2 or manual-art claim.",
+        "status": "PASS-SPLIT-STRIKE-RUNTIME-E1",
+        "transition_required": true
+      },
+      "screen_count": 78
+    },
+    {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command29-hd-regression-r1-capture/receipt.json",
+        "sha256": "a1c55133fbeddc968a564eb09c8ea5204fb88d63fc2ac1c356deaa5a198eefa1"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command29-hd-regression-r1.log",
+        "sha256": "d7fcfcad39d28d65692a3f40dd95f02a79ac4669ad598d240367524641213e18"
+      },
+      "gate": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command29-hd-regression-r1.gate.json",
+        "sha256": "81773db6e676c0679820c473cd96ccd10d2bcfb1fceb5cde21e5a9c70377902c"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command29-hd-regression-r1.memory.json",
+        "sha256": "67dcc65ab0f24ee2c2c8ff6ca5a60403e701fc6fe5b45498783b285e6e26cb86"
+      },
+      "peak_bytes": 1588805632,
+      "summary": {
+        "actor_figure": 34,
+        "catalog_sha256": "c1b2c20ee56bf2e45324155829f9778bfff14a25d9edce9d06dc56f2074d42df",
+        "command_id": 29,
+        "continuations": 1,
+        "final_draws": 160,
+        "go_rng_next_matches_native_plan": true,
+        "go_rng_planning_calls": 2,
+        "go_seed": 29,
+        "gpu_sources_cleared": true,
+        "hashes_only": false,
+        "hd_draws": 152,
+        "hp_after": [
+          90,
+          104
+        ],
+        "hp_before": [
+          210,
+          220
+        ],
+        "hp_changes": [
+          1,
+          1
+        ],
+        "mp_after": 14,
+        "mp_before": 40,
+        "mp_changes": 1,
+        "native_rng": 0,
+        "owner_released": true,
+        "phase_draws": {
+          "actor": 46,
+          "prelude": 10,
+          "target-0": 26,
+          "target-1": 26,
+          "transition-in-0": 11,
+          "transition-in-1": 11,
+          "transition-out-0": 11,
+          "transition-out-1": 11
+        },
+        "phase_f2": {
+          "actor": 1,
+          "prelude": 1,
+          "target-0": 1,
+          "target-1": 1,
+          "transition-in-0": 1,
+          "transition-in-1": 1,
+          "transition-out-0": 1,
+          "transition-out-1": 1
+        },
+        "scenery_side": "2",
+        "scenery_triple": "4:5:6",
+        "scope": "Controlled command24/29/30 fixtures with real Game.Draw and1920 final GPU; no normal player/original oracle/PLAYER-E2 or manual-art claim.",
+        "status": "PASS-SPLIT-STRIKE-RUNTIME-E1",
+        "transition_required": true
+      },
+      "screen_count": 88
+    },
+    {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-hd-text-r1-capture/receipt.json",
+        "sha256": "43944eef9f01dcfdc22c6d94f4fcc59fc03d01ee467162357688030a1a181ea2"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-hd-text-r1.memory.json",
+        "sha256": "b3cc358bdf7b65e8b4f96596101374e06c6c6724621abd7b54ee3ac440d95a7e"
+      },
+      "gate": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-hd-text-r1.gate.json",
+        "sha256": "cf950b3c7d577308556262ed3e79ec13690315575c76836321da96901ec324fb"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-hd-text-r1.log",
+        "sha256": "8e6cd7c928a0708dc09e5d48f5f6af8313d8ffd810deac13220c4324199194ff"
+      },
+      "summary": {
+        "actor_figure": 18,
+        "catalog_sha256": "c1b2c20ee56bf2e45324155829f9778bfff14a25d9edce9d06dc56f2074d42df",
+        "command_id": 30,
+        "continuations": 1,
+        "final_draws": 108,
+        "go_rng_next_matches_native_plan": true,
+        "go_rng_planning_calls": 2,
+        "go_seed": 30,
+        "gpu_sources_cleared": true,
+        "hashes_only": false,
+        "hd_draws": 99,
+        "hp_after": [
+          27,
+          46
+        ],
+        "hp_before": [
+          210,
+          220
+        ],
+        "hp_changes": [
+          1,
+          1
+        ],
+        "mp_after": 5,
+        "mp_before": 29,
+        "mp_changes": 1,
+        "native_rng": 0,
+        "owner_released": true,
+        "panel_text": {
+          "audited_draws": 99,
+          "locale": "zh-Hant",
+          "matched_rgba_pixels": 17632,
+          "sampled_phases": {
+            "actor": 4635,
+            "prelude": 2434,
+            "target-0": 3159,
+            "target-1": 3151,
+            "transition-in-0": 810,
+            "transition-in-1": 808,
+            "transition-out-0": 625,
+            "transition-out-1": 2010
+          },
+          "scope": "actual battle World readback; only unoccluded glyph pixels; fixture only"
+        },
+        "phase_draws": {
+          "actor": 19,
+          "prelude": 10,
+          "target-0": 13,
+          "target-1": 13,
+          "transition-in-0": 11,
+          "transition-in-1": 11,
+          "transition-out-0": 11,
+          "transition-out-1": 11
+        },
+        "phase_f2": {
+          "actor": 1,
+          "prelude": 1,
+          "target-0": 1,
+          "target-1": 1,
+          "transition-in-0": 1,
+          "transition-in-1": 1,
+          "transition-out-0": 1,
+          "transition-out-1": 1
+        },
+        "scenery_side": "2",
+        "scenery_triple": "4:5:6",
+        "scope": "Controlled command24/29/30 fixtures with real Game.Draw and1920 final GPU; no normal player/original oracle/PLAYER-E2 or manual-art claim.",
+        "status": "PASS-SPLIT-STRIKE-RUNTIME-E1",
+        "transition_required": true
+      },
+      "screen_count": 78,
+      "peak_bytes": 2308915200
+    }
+  ],
+  "independent_gpu_checks": [
+    {
+      "report": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-cpu-rejections-r2/positive.json",
+        "sha256": "ba145a3386a345774c0de6715823d2e251fd1368ba83dc426d0956484017508c"
+      },
+      "screens": 78,
+      "worst_channel_error": 1,
+      "blank": {
+        "resource": 56,
+        "frame": 13,
+        "native_mask_sha256": "47b3592047bc4fd2154578a5615e3235cdce0d0637b01d892a19a241274d2f18",
+        "source_sha256": "4307258131382f9bb0e15c7dcaaa5c3f81d05b3622dc6e47f8701954108ea8f2",
+        "delay_native": 4,
+        "width": 320,
+        "height": 200
+      },
+      "phase_indices": {
+        "prelude": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "actor": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "target-1": [
+          9,
+          10,
+          11,
+          12,
+          13
+        ],
+        "transition-in-1": [
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ],
+        "target-0": [
+          9,
+          10,
+          11,
+          12,
+          13
+        ],
+        "transition-out-0": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "transition-out-1": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "transition-in-0": [
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ]
+      }
+    },
+    {
+      "report": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-cpu-side0-r1.json",
+        "sha256": "9201c205564d31e7f942181827285687da091f01b593196cac8736d3ef3bd8bd"
+      },
+      "screens": 78,
+      "worst_channel_error": 1,
+      "blank": {
+        "resource": 56,
+        "frame": 13,
+        "native_mask_sha256": "47b3592047bc4fd2154578a5615e3235cdce0d0637b01d892a19a241274d2f18",
+        "source_sha256": "4307258131382f9bb0e15c7dcaaa5c3f81d05b3622dc6e47f8701954108ea8f2",
+        "delay_native": 4,
+        "width": 320,
+        "height": 200
+      },
+      "phase_indices": {
+        "actor": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "transition-in-0": [
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ],
+        "prelude": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "transition-in-1": [
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ],
+        "transition-out-0": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "target-1": [
+          9,
+          10,
+          11,
+          12,
+          13
+        ],
+        "target-0": [
+          9,
+          10,
+          11,
+          12,
+          13
+        ],
+        "transition-out-1": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ]
+      }
+    }
+  ],
+  "guard_checks": {
+    "report": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-cpu-rejections-r2/guards.json",
+      "sha256": "a1a5167a8698eb5a08a3c12ed392617325cad5e7dbcf34f8fc5e5482302a6611"
+    },
+    "checks": [
+      {
+        "case": "wrong-command",
+        "status": "PASS-REJECTED",
+        "reason": "需要24／29／30收據"
+      },
+      {
+        "case": "missing-f2",
+        "status": "PASS-REJECTED",
+        "reason": "生命週期／F2／標記／亂數／返回收據不完整"
+      },
+      {
+        "case": "missing-continuation",
+        "status": "PASS-REJECTED",
+        "reason": "生命週期／F2／標記／亂數／返回收據不完整"
+      },
+      {
+        "case": "retained-owner",
+        "status": "PASS-REJECTED",
+        "reason": "生命週期／F2／標記／亂數／返回收據不完整"
+      },
+      {
+        "case": "changed-mp",
+        "status": "PASS-REJECTED",
+        "reason": "生命週期／F2／標記／亂數／返回收據不完整"
+      },
+      {
+        "case": "missing-hp",
+        "status": "PASS-REJECTED",
+        "reason": "生命週期／F2／標記／亂數／返回收據不完整"
+      },
+      {
+        "case": "extra-rng",
+        "status": "PASS-REJECTED",
+        "reason": "生命週期／F2／標記／亂數／返回收據不完整"
+      },
+      {
+        "case": "wrong-seed",
+        "status": "PASS-REJECTED",
+        "reason": "生命週期／F2／標記／亂數／返回收據不完整"
+      },
+      {
+        "case": "wrong-screen-sha",
+        "status": "PASS-REJECTED",
+        "reason": "圖片路徑或SHA不同"
+      },
+      {
+        "case": "changed-origin",
+        "status": "PASS-REJECTED",
+        "reason": "圖層目的矩形或填色不同"
+      },
+      {
+        "case": "changed-descriptor",
+        "status": "PASS-REJECTED",
+        "reason": "圖層目的矩形或填色不同"
+      },
+      {
+        "case": "changed-hd-source",
+        "status": "PASS-REJECTED",
+        "reason": "HD來源SHA或來源類別不同"
+      },
+      {
+        "case": "hidden-hd",
+        "status": "PASS-REJECTED",
+        "reason": "完整GPU與獨立CPU Over不同：actor-000-idle0-shake0，最大差253"
+      },
+      {
+        "case": "wrong-surface-sha",
+        "status": "PASS-REJECTED",
+        "reason": "場景原描述子／metadata／HD身分不同"
+      },
+      {
+        "case": "surface-frame-out-of-range",
+        "status": "PASS-REJECTED",
+        "reason": "場景來源或單圖索引不同"
+      },
+      {
+        "case": "hidden-surface",
+        "status": "PASS-REJECTED",
+        "reason": "完整GPU與獨立CPU Over不同：actor-000-idle0-shake0，最大差239"
+      },
+      {
+        "case": "self-consistent-surface-origin",
+        "status": "PASS-REJECTED",
+        "reason": "場景原描述子／metadata／HD身分不同"
+      },
+      {
+        "case": "wrong-transition-sha",
+        "status": "PASS-REJECTED",
+        "reason": "場景原描述子／metadata／HD身分不同"
+      },
+      {
+        "case": "self-consistent-transition-origin",
+        "status": "PASS-REJECTED",
+        "reason": "場景原描述子／metadata／HD身分不同"
+      },
+      {
+        "case": "missing-native-blank",
+        "status": "PASS-REJECTED",
+        "reason": "完整原生相位、來源幀或空拍缺少實際Draw"
+      },
+      {
+        "case": "missing-transition",
+        "status": "PASS-REJECTED",
+        "reason": "完整原生相位、來源幀或空拍缺少實際Draw"
+      },
+      {
+        "case": "self-consistent-wrong-gpu",
+        "status": "PASS-REJECTED",
+        "reason": "完整GPU與獨立CPU Over不同：actor-000-idle0-shake0，最大差255"
+      }
+    ]
+  },
+  "save_scope": "真實map16蜜蒂經正式constructor／native level-up取得30；把學後狀態放入受控current-save邊界，原子保存完整FD2.SAV；啟動45秒有界的新測試程序，由正式解碼／field／runtime adapter冷讀技能與身分。非標題鍵盤或自然章節。persistent roster按原契約保留baseline。",
+  "source_bindings": [
+    {
+      "file": "remake/cmd/fd2/main.go",
+      "sha256": "27e1544dfc4ba7f35b875945f437f10eb7d03edd087164cfb786d6bdf5c3a7e3"
+    },
+    {
+      "file": "remake/cmd/fd2/audio.go",
+      "sha256": "d660695fb5618ac3746d1099daefab8a0db35eb1b95973deefbbe64365e7b159"
+    },
+    {
+      "file": "remake/cmd/fd2/native_command29_presentation.go",
+      "sha256": "b72b41f365da6e6e563d99afcfdc2ec1c4684dd3342e99ef8c17aee7bc96aba4"
+    },
+    {
+      "file": "remake/cmd/fd2/native_command30_presentation.go",
+      "sha256": "0f0f3ead907f15ade915589497fec237da420726ac3c3d256ac01850b12a9c69"
+    },
+    {
+      "file": "remake/cmd/fd2/modern_hd_split_strike.go",
+      "sha256": "e604020d2180807e69db855e46a6b3e1e2ec8404b5b0d074fed997ae8583b854"
+    },
+    {
+      "file": "remake/internal/battle/native_command24.go",
+      "sha256": "ed433ed1c1c2182877d2e9daa21e76784d7eb03357a3fd72d825633b2d8c372d"
+    },
+    {
+      "file": "remake/internal/figani/native_command24.go",
+      "sha256": "6415ccd7ef34f751f528a1a9897aea4df01fc9f16b7a2851ffbecba5afad7acd"
+    },
+    {
+      "file": "remake/cmd/fd2/native_command30_presentation_test.go",
+      "sha256": "2591bae539d9af28f3a85a873f5cdce428a3eab2a21691c3ef81d7a080c4dcb4"
+    },
+    {
+      "file": "remake/cmd/fd2/native_command30_reachability_test.go",
+      "sha256": "93436edf04395a7fddb07b81ebd92df48d6aa52e74acb4650f1ce34ddd88c66e"
+    },
+    {
+      "file": "remake/cmd/fd2/modern_hd_split_strike_test.go",
+      "sha256": "ca4baf6d88ed99a08d964e5211f611913003c7ff34c797ec2ba3a107a5627e8b"
+    },
+    {
+      "file": "remake/cmd/fd2/modern_hd_split_strike_lifecycle_test.go",
+      "sha256": "d6797bdd4bf8fb6443ff5dfa08df114ffcc5c12b9a96085bf81ad0722e9cac0a"
+    },
+    {
+      "file": "remake/internal/battle/native_command24_test.go",
+      "sha256": "c1b6dd2ef9a3eae357960db232eec51a80a055d19d0230b443f598087e6e1566"
+    },
+    {
+      "file": "tools/verify_fd2_battle_surface_hd.py",
+      "sha256": "3f43c93a82aaa46f1f37c611652a35193ced643d75f57c79e65527a1d1a814ee"
+    },
+    {
+      "file": "tools/verify_fd2_split_strike_gpu.py",
+      "sha256": "6458810c253049962e9a2871923c8e1b4ac9f1305542346a97bd5f51e2449978"
+    },
+    {
+      "file": "tools/test_fd2_split_strike_gpu.py",
+      "sha256": "120f10f8a91aac7931ddcc74b0a3faf409e8a7dcecd51fc8579471c7648109d8"
+    },
+    {
+      "file": "tools/audit_fd2_command30_player_source.py",
+      "sha256": "564a4b0a75e846025dd8628ea0d72af702cf64a817aba11fddad0ded748a8aa3"
+    }
+  ],
+  "string_review": {
+    "inventory": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-string-inventory-r2.json",
+      "sha256": "57e1d0f7c2c48e9ca35c7e53cf7d672e78e22324405402ef1ce33f613ceaaccc"
+    },
+    "review": {
+      "file": "docs/data/fd2-string-review.json",
+      "sha256": "7fcd00208d50f555106923465646951f743869060817ab2ebca3117875886eab"
+    },
+    "reviewed": 112,
+    "dispositions_changed": false
+  },
+  "overview": {
+    "file": "docs/figures/hd-miti-sonic-blade.png",
+    "sha256": "b39a3ad2c5f0094bdd31ac7c98538d4da2e2c52fa73bb5b6e7a807c217b9f1fb",
+    "sources": [
+      {
+        "label": "actor-002-idle0-shake0",
+        "source": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-hd-text-r1-capture/screen-008bae9efc4db5ee5884c8468a80879bef915aceb68fa332a7e0e9f0d3c95579.png",
+        "sha256": "008bae9efc4db5ee5884c8468a80879bef915aceb68fa332a7e0e9f0d3c95579"
+      },
+      {
+        "label": "actor-004-idle0-shake0",
+        "source": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-hd-text-r1-capture/screen-bef046e5faaf868e8b57d74b95f9ec4e55d46a22531a6645f6c22280c66c9e88.png",
+        "sha256": "bef046e5faaf868e8b57d74b95f9ec4e55d46a22531a6645f6c22280c66c9e88"
+      },
+      {
+        "label": "target-0-011-idle2-shake0",
+        "source": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-hd-text-r1-capture/screen-9a383fb17f2cea3f6dd7469145c6b02fad02fb8416492da2e62a9a0cc454d634.png",
+        "sha256": "9a383fb17f2cea3f6dd7469145c6b02fad02fb8416492da2e62a9a0cc454d634"
+      },
+      {
+        "label": "target-1-011-idle2-shake-1",
+        "source": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-hd-text-r1-capture/screen-cca2696a341b82fab9ef1d620c03bc73c9b0b1c335fb27b23c812e188cfa643c.png",
+        "sha256": "cca2696a341b82fab9ef1d620c03bc73c9b0b1c335fb27b23c812e188cfa643c"
+      }
+    ],
+    "scope": "四張受控Game.Draw的高解析字型版完整最終GPU畫面等比四分之一縮圖；無裁切或補畫，非正常章節或人工造型完成聲明"
+  },
+  "pending_panel_style": {
+    "status": "DRAFT-AWAITING-USER-CHOICE",
+    "test": {
+      "file": "remake/cmd/fd2/modern_hd_battle_panel_style_prototype_test.go",
+      "sha256": "4c7906fa261a483d0a551a3f65947845e75f973a5b1edd050f696b1c89e95f72"
+    },
+    "image": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-panel-style-prototype-r2/comparison.png",
+      "sha256": "76fef35fc12ebac52ed98de461825cd60f3206fb6ff036cbc3251cef247a75a9"
+    },
+    "production_connected": false,
+    "scope": "右側清晰藍框／HP及MP血條原型；左側現行樣式。保持同數值、比率、缺損紅區及數字變色；未收到選定回覆。"
+  },
+  "remaining": [
+    "全部HD接上後的正常鍵盤／真正戰場返回／保存LOAD集中抽驗",
+    "人工造型與音訊聽感",
+    "HD框線、完整操作介面／HUD、地形與HD2",
+    "工具列字級、加速、海報與漸層正式控制",
+    "跨平台HD驗收"
+  ],
+  "toolchain": {
+    "go_image": "fd2-go-test-local:latest",
+    "go_image_id": "sha256:e4a805c52a3ad5d8c22cf23f2bcf51c6924e5ad6b99554f1b02761903c725433",
+    "assets_image": "fd2-assets-local:20260829-sfx",
+    "assets_image_id": "sha256:e59237a31d4b5f7a62c59ac37b780bd93f17c99fda97be8f5ca0c53978b878bc",
+    "scope": "Go1.22.12／Ebiten2.6.6，Pillow11.3.0；Docker只讀原版及私人現代包，UID1000，網路關閉，CPU／記憶體／PID／時間有界。"
+  },
+  "final_document_check": {
+    "status": "PASS",
+    "local_targets": 2797,
+    "source_bindings": 16,
+    "readme_culture_and_locales": true,
+    "historical_scope": "舊handoff／history只驗本次追加勘誤；不把早已清理的歷史本機封包連結當產品缺陷。"
+  },
+  "hd_text_guard_checks": {
+    "report": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-hd-text-guards-r1/guards.json",
+      "sha256": "e3593b4a837eb0fa6a03ec056bce64f6fd0f0e6d8468cd16a493ca719dfc162a"
+    },
+    "positive": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-hd-text-guards-r1/positive.json",
+      "sha256": "63f7f2116c05ab071f4fc121984e4dc173fb3cc522e3dc89cb80cf3a8819a677"
+    },
+    "checks": [
+      {
+        "case": "wrong-command",
+        "status": "PASS-REJECTED",
+        "reason": "需要24／29／30收據"
+      },
+      {
+        "case": "missing-f2",
+        "status": "PASS-REJECTED",
+        "reason": "生命週期／F2／標記／亂數／返回收據不完整"
+      },
+      {
+        "case": "missing-continuation",
+        "status": "PASS-REJECTED",
+        "reason": "生命週期／F2／標記／亂數／返回收據不完整"
+      },
+      {
+        "case": "retained-owner",
+        "status": "PASS-REJECTED",
+        "reason": "生命週期／F2／標記／亂數／返回收據不完整"
+      },
+      {
+        "case": "changed-mp",
+        "status": "PASS-REJECTED",
+        "reason": "生命週期／F2／標記／亂數／返回收據不完整"
+      },
+      {
+        "case": "missing-hp",
+        "status": "PASS-REJECTED",
+        "reason": "生命週期／F2／標記／亂數／返回收據不完整"
+      },
+      {
+        "case": "extra-rng",
+        "status": "PASS-REJECTED",
+        "reason": "生命週期／F2／標記／亂數／返回收據不完整"
+      },
+      {
+        "case": "wrong-seed",
+        "status": "PASS-REJECTED",
+        "reason": "生命週期／F2／標記／亂數／返回收據不完整"
+      },
+      {
+        "case": "wrong-screen-sha",
+        "status": "PASS-REJECTED",
+        "reason": "圖片路徑或SHA不同"
+      },
+      {
+        "case": "changed-origin",
+        "status": "PASS-REJECTED",
+        "reason": "圖層目的矩形或填色不同"
+      },
+      {
+        "case": "changed-descriptor",
+        "status": "PASS-REJECTED",
+        "reason": "圖層目的矩形或填色不同"
+      },
+      {
+        "case": "changed-hd-source",
+        "status": "PASS-REJECTED",
+        "reason": "HD來源SHA或來源類別不同"
+      },
+      {
+        "case": "hidden-hd",
+        "status": "PASS-REJECTED",
+        "reason": "完整GPU與獨立CPU Over不同：actor-000-idle0-shake0，最大差253"
+      },
+      {
+        "case": "panel-sprite-palette",
+        "status": "PASS-REJECTED",
+        "reason": "HD文字面板來源或不變色色盤契約不同"
+      },
+      {
+        "case": "panel-wrong-origin",
+        "status": "PASS-REJECTED",
+        "reason": "HD文字面板來源或不變色色盤契約不同"
+      },
+      {
+        "case": "panel-wrong-size",
+        "status": "PASS-REJECTED",
+        "reason": "HD文字面板來源或不變色色盤契約不同"
+      },
+      {
+        "case": "panel-missing-values",
+        "status": "PASS-REJECTED",
+        "reason": "HD文字面板缺少凍結數值"
+      },
+      {
+        "case": "panel-noninteger-values",
+        "status": "PASS-REJECTED",
+        "reason": "HD文字面板缺少凍結數值"
+      },
+      {
+        "case": "panel-wrong-content-key",
+        "status": "PASS-REJECTED",
+        "reason": "HD文字面板RGBA內容或GPU鍵不同"
+      },
+      {
+        "case": "panel-wrong-png-sha",
+        "status": "PASS-REJECTED",
+        "reason": "圖片路徑或SHA不同"
+      },
+      {
+        "case": "panel-outside-path",
+        "status": "PASS-REJECTED",
+        "reason": "圖片路徑或SHA不同"
+      },
+      {
+        "case": "wrong-surface-sha",
+        "status": "PASS-REJECTED",
+        "reason": "場景原描述子／metadata／HD身分不同"
+      },
+      {
+        "case": "surface-frame-out-of-range",
+        "status": "PASS-REJECTED",
+        "reason": "場景來源或單圖索引不同"
+      },
+      {
+        "case": "hidden-surface",
+        "status": "PASS-REJECTED",
+        "reason": "完整GPU與獨立CPU Over不同：actor-000-idle0-shake0，最大差239"
+      },
+      {
+        "case": "self-consistent-surface-origin",
+        "status": "PASS-REJECTED",
+        "reason": "場景原描述子／metadata／HD身分不同"
+      },
+      {
+        "case": "wrong-transition-sha",
+        "status": "PASS-REJECTED",
+        "reason": "場景原描述子／metadata／HD身分不同"
+      },
+      {
+        "case": "self-consistent-transition-origin",
+        "status": "PASS-REJECTED",
+        "reason": "場景原描述子／metadata／HD身分不同"
+      },
+      {
+        "case": "missing-native-blank",
+        "status": "PASS-REJECTED",
+        "reason": "完整原生相位、來源幀或空拍缺少實際Draw"
+      },
+      {
+        "case": "missing-transition",
+        "status": "PASS-REJECTED",
+        "reason": "完整原生相位、來源幀或空拍缺少實際Draw"
+      },
+      {
+        "case": "self-consistent-wrong-gpu",
+        "status": "PASS-REJECTED",
+        "reason": "完整GPU與獨立CPU Over不同：actor-000-idle0-shake0，最大差255"
+      }
+    ],
+    "screens": 78,
+    "worst_channel_error": 1
+  }
+}

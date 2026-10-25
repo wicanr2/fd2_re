@@ -92,7 +92,8 @@ def main():
     p.add_argument('--scenery-limit',type=int,default=16)
     p.add_argument('--transition',action='store_true',help='要求BG0..2真實HD來源與完整過渡擷取')
     p.add_argument('--pair', choices=['4:5','5:6','6:4','7:10','34:36','36:37'], default='4:5')
-    p.add_argument('--command',type=int,choices=[24,29],default=24)
+    p.add_argument('--command',type=int,choices=[24,29,30],default=24)
+    p.add_argument('--with-panel-text',action='store_true',help='split-game同時驗既有高解析面板字型')
     p.add_argument('--triple',choices=['4:5:6','5:6:4','6:4:5','7:9:10','34:36:37','40:43:47'],default='4:5:6')
     p.add_argument('--hashes-only',action='store_true')
     p.add_argument('--with-pedestal', action='store_true')
@@ -101,6 +102,8 @@ def main():
     p.add_argument('--all-modifier-effects', action='store_true', help='狀態法術地圖尾段不允許任何可見LMI回退')
     p.add_argument('--timeout', type=int, default=1200)
     a = p.parse_args()
+    if a.with_panel_text and a.kind!='split-game':
+        raise SystemExit('--with-panel-text只用於split-game')
     if a.kind=='modifier-map-zero-seed' and (a.modifier_command!=26 or not a.enemy or a.modifier_failed):
         raise SystemExit('固定0補測只使用既有敵方26正例')
     if a.kind=='modifier-map-batch' and a.modifier_start+a.modifier_limit>21:
@@ -225,6 +228,8 @@ def main():
         env.update(FD2_HD_SPLIT_STRIKE_GPU='1',FD2_TEST_MODERN_EFFECT_OUT=str(a.out)+'-capture')
     if a.kind=='split-game':
         env.update(FD2_TEST_SPLIT_STRIKE_COMMAND=str(a.command),FD2_HD_SPLIT_SCENERY=a.triple,FD2_HD_SPLIT_SCENERY_SIDE='2' if a.enemy else '0')
+        if a.with_panel_text:
+            env.update(FD2_HD_COMMAND_PANEL_TEXT='1',FD2_HD_COMMAND_PANEL_OWNER=str(a.command),FD2_HD_PANEL_LOCALE=a.panel_locale)
         if a.hashes_only:env['FD2_SPLIT_HASHES_ONLY']='1'
     pattern = '^('+'|'.join(sorted(REQUIRED[a.kind]))+')$'
     shell = '''set -euo pipefail
@@ -323,13 +328,15 @@ export DISPLAY=:99
             raise SystemExit('缺少六階段實際HD面板')
     if a.kind=='split-game':
         receipt=json.loads(Path(str(a.out)+'-capture/receipt.json').read_text())
+        if a.with_panel_text and (receipt.get('panel_text',{}).get('locale')!=a.panel_locale or receipt.get('panel_text',{}).get('matched_rgba_pixels',0)<100):
+            raise SystemExit('缺少實際GPU高解析面板字型')
         if (receipt.get('scenery_triple')!=a.triple or receipt.get('scenery_side')!=('2' if a.enemy else '0')
                 or receipt.get('command_id')!=a.command or receipt.get('continuations')!=1
                 or receipt.get('mp_changes')!=1 or receipt.get('hp_changes')!=([1] if a.command==24 else [1,1])
                 or len(receipt.get('phase_f2',{}))!=(5 if a.command==24 else 8)
                 or any(v!=1 for v in receipt.get('phase_f2',{}).values()) or not receipt.get('scenery_actual_sources')
                 or receipt.get('catalog_sha256')!=hashlib.sha256(a.catalog.read_bytes()).hexdigest()):
-            raise SystemExit('缺少24／29完整場景Game.Draw／F2／交易／一次續行')
+            raise SystemExit('缺少24／29／30完整場景Game.Draw／F2／交易／一次續行')
         if a.transition and receipt.get('transition_required') is not True:
             raise SystemExit('缺少全部三個過渡來源的實際Draw')
     if a.kind=='scenery-source':

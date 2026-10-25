@@ -1,3 +1,5 @@
+2026-10-25優先勘誤：ID30停止線已被固定原始位元組反證，見本文末節及fd2_command30_player_acquisition_20261025.json。ID28／31的原停止線保持。
+
 FD2 command 28／31 一般玩家取得路徑窄稽核（IDA Pro 9.4）
 ============================================================
 
@@ -75,3 +77,12 @@ FD2 command 28／31 一般玩家取得路徑窄稽核（IDA Pro 9.4）
 - 因此「ID30目前沒有已證實正常玩家或敵方producer」為**強推論**，不是死碼宣告；
   state-only相容核心保留，正式UI／演出不列交付阻擋。重開條件同上，另加未修改
   敵方回合實際進入command30 scorer／owner。
+
+2026-10-25 勘誤：撤回ID30無學招來源的判斷
+------------------------------------------
+
+固定原EXE的file offset 0x564EF有02 1E，learn5明示Lv2授予ID30。growth18（file offset 0x55F67）最後byte為05，直接連到這列。固定FDFIELD map16 resource49 roster slot36是raw camp2、selector18、Lv1的蜜蒂；map15／31另有相同selector的友軍來源。原文2026-08-25「完整command_learn.json沒有ID30」敘述不成立，不沿用其玩家停止線。原資料及原說法留作形成原因，現況以本勘誤優先。
+
+受控重製實驗不直接授予command bit：從固定map16載入並materialize建構器，seed7固定一次，經AwardExpNative給300 EXP，正式學招writer於Lv2加入30；Lv4 MaxMP29高於cost24。Game.nativeCommandTargetSupported仍拒收30，是已重現的玩家流程缺陷。實驗不是原版動態或完整正常章節證據。原版學招writer／cursor四步／X-first及0x276EC分支不重解；只重開被原bytes直接反證的取得停止線與缺失consumer。
+
+主證據：fd2_command30_player_acquisition_20261025.json。重跑：tools/audit_fd2_command30_player_source.py --original-dir <唯讀原檔目錄> --report <全新JSON>，只在素材Docker內；runtime反例為TestNativeCommand30MitiAcquisitionAndPlayerEntry，使用Go Docker及明示FD2_COMMAND30_ACQUISITION_OUT。未新增28／31或AI30入口，不由此宣稱所有指令已完成。

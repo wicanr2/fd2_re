@@ -81,6 +81,10 @@
 
 滿背包領取獎勵時，問句、放棄回覆與物品選擇已接上 HD 字型、頭像及背景。四格依序為問句、放棄回覆、丟棄選擇器與取消後回覆，取自受控測試的完整遊戲畫面半縮。介面圖示、框線、YES／NO 與城堡地形仍為像素。來源與範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)及[HD收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的`full_inventory_reward_hd_followup_20261025`，不代表正常章節通關。
 
+![蜜蒂音速刃的HD出招與逐目標命中](docs/figures/hd-miti-sonic-blade.png)
+
+蜜蒂升級學到的音速刃已接上原版像素與 HD 播放。上排為出招與耗魔，下排為兩名目標依序受擊，取自受控測試的完整遊戲畫面縮圖。人物、效果、背景與面板文字使用 HD，框線與血條仍為像素。取得來源、保存冷讀與驗證範圍見[音速刃證據](docs/data/ida/fd2_command30_player_acquisition_20261025.json)及[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)；完整正常玩家與人工造型仍待集中抽驗。
+
 ## HD2 設計基準
 
 後續HD2戰場沿下列斜角站姿人物與手繪地形設計，保留既有HD及原版主題。操作介面與人物主題獨立，海報從單列浮出工具列選擇；海報邊緣可漸層銜接戰場，並調整淡入時間。

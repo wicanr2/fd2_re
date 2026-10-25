@@ -3,7 +3,7 @@ package figani
 import "fmt"
 
 // NativeCommandDerivedStrikeSchedule preserves the dynamic FIGANI contract
-// shared by 0x276EC commands 24, 28, 29 and 31.  Unlike the selector32-only
+// shared by 0x276EC commands 24 and 28..31. Unlike the selector32-only
 // command24 schedule, it does not assign an actor selector: the caller must
 // supply the actor raw +7 resource and retain that provenance.
 type NativeCommandDerivedStrikeSchedule struct {
@@ -14,6 +14,7 @@ type NativeCommandDerivedStrikeSchedule struct {
 	DamageDenominator int
 	AudioResource     int
 	ActorSample       int
+	ActorCues         []NativeCommandFrameCue
 	TargetSample      int
 	FrameDelays       []int
 	UsesTargetBase    bool
@@ -21,6 +22,8 @@ type NativeCommandDerivedStrikeSchedule struct {
 	UsesBGTransition  bool
 	ShakeOffsets      [6]int
 }
+
+type NativeCommandFrameCue struct{ Frame, Sample int }
 
 // BuildNativeCommandDerivedStrikeSchedule extracts only directly consumed
 // header/marker fields.  Every fixed-version reachable effect has exactly one
@@ -33,7 +36,7 @@ func BuildNativeCommandDerivedStrikeSchedule(animation *Animation, commandID int
 	}
 	denominator, usesTargetBase, preludeMode, usesTransition := 1, false, byte(1), true
 	switch commandID {
-	case 24, 29, 31:
+	case 24, 29, 30, 31:
 	case 28:
 		denominator, usesTargetBase, preludeMode, usesTransition = 8, true, 0, false
 	default:
@@ -42,11 +45,15 @@ func BuildNativeCommandDerivedStrikeSchedule(animation *Animation, commandID int
 	targetStart := int(animation.HeaderByte2)
 	actorImpact, targetImpact := -1, -1
 	delays := make([]int, len(animation.Frames))
+	var actorCues []NativeCommandFrameCue
 	for i, frame := range animation.Frames {
 		if frame.Delay <= 0 || frame.Delay > 0xff {
 			return NativeCommandDerivedStrikeSchedule{}, fmt.Errorf("figani: derived-strike frame %d delay=%d", i, frame.Delay)
 		}
 		delays[i] = frame.Delay
+		if i < targetStart && frame.RawByte5 != 0 {
+			actorCues = append(actorCues, NativeCommandFrameCue{Frame: i, Sample: int(frame.RawByte5)})
+		}
 		if frame.RawByte4 != 1 {
 			continue
 		}
@@ -71,6 +78,7 @@ func BuildNativeCommandDerivedStrikeSchedule(animation *Animation, commandID int
 		DamageDenominator: denominator,
 		AudioResource:     47 + int(animation.HeaderByte4),
 		ActorSample:       int(animation.Frames[actorImpact].RawByte5),
+		ActorCues:         actorCues,
 		TargetSample:      int(animation.Frames[targetImpact].RawByte5),
 		FrameDelays:       delays, UsesTargetBase: usesTargetBase, PreludeMode: preludeMode,
 		UsesBGTransition: usesTransition, ShakeOffsets: [6]int{0, 4, 9, 14, 18, 14},

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""以真實24／29畫面正對照核對生命週期、圖源與最終畫面拒收。"""
+"""以真實24／29／30畫面正對照核對生命週期、圖源與最終畫面拒收。"""
 import argparse
 import copy
 import json
@@ -116,7 +116,7 @@ def main():
             reject('self-consistent-native-transition-rgb',lambda d:None,'原生過渡回退與固定來源',corrupt_native_transition)
 
     def missing_blank(doc):
-        end = 14 if doc['command_id'] == 24 else 17
+        end = {24: 14, 29: 17, 30: 13}[doc['command_id']]
         doc['source_shots'] = {k: v for k, v in doc['source_shots'].items()
                                if not (v['phase'].startswith('target-') and v['cursor']['Effect'] == end)}
     reject('missing-native-blank', missing_blank, '來源幀或空拍缺少')

@@ -142,6 +142,9 @@ func (p *modernHDSplitStrikeProbe) Update() error {
 			if p.command == 29 {
 				impact = 14
 			}
+			if p.command == 30 {
+				impact = 11
+			}
 			if c.Target != i || c.Transition >= 0 || c.Effect != impact || p.hpChanges[i] != 1 {
 				p.err = fmt.Errorf("HP publication outside original target marker%d", i)
 			}
@@ -289,8 +292,8 @@ func TestModernHDSplitStrikeRuntimeGPU(t *testing.T) {
 		t.Skip("dedicated split strike lifecycle process required")
 	}
 	command, err := strconv.Atoi(os.Getenv("FD2_TEST_SPLIT_STRIKE_COMMAND"))
-	if err != nil || command != 24 && command != 29 {
-		t.Fatal("explicit command24 or29 required")
+	if err != nil || command != 24 && command != 29 && command != 30 {
+		t.Fatal("explicit command24,29 or30 required")
 	}
 	g, actor, targets := splitStrikeHDTestGame(t, command)
 	var set *modernStoryPortraitSet
@@ -308,8 +311,8 @@ func TestModernHDSplitStrikeRuntimeGPU(t *testing.T) {
 	}
 	g.modernStoryPortraits, g.modernThemeCache = set, set
 	seed := int64(2)
-	if command == 29 {
-		seed = 29
+	if command != 24 {
+		seed = int64(command)
 	}
 	rng := &splitStrikeCountedSource{Source: rand.NewSource(seed)}
 	g.rng = rand.New(rng)
@@ -402,7 +405,7 @@ func TestModernHDSplitStrikeRuntimeGPU(t *testing.T) {
 		"hp_before": p.beforeHP, "hp_after": after, "hp_changes": p.hpChanges,
 		"continuations": p.callbacks, "owner_released": true, "gpu_sources_cleared": true,
 		"phase_draws": p.phases, "phase_f2": p.switches, "hd_draws": p.hd, "final_draws": p.finals,
-		"source_shots": p.shots, "scope": "Existing indexed command24/29 fixtures with real Game.Draw and1920 final GPU; no normal player/original oracle/PLAYER-E2 or manual-art claim."}
+		"source_shots": p.shots, "scope": "Controlled command24/29/30 fixtures with real Game.Draw and1920 final GPU; no normal player/original oracle/PLAYER-E2 or manual-art claim."}
 	if scenery := os.Getenv("FD2_HD_SPLIT_SCENERY"); scenery != "" {
 		report["scenery_triple"], report["scenery_side"] = scenery, os.Getenv("FD2_HD_SPLIT_SCENERY_SIDE")
 		used := map[string]int{}

@@ -29,6 +29,14 @@ func (g *Game) stageModernHDSplitStrikeBanks(actor, confirmed *battle.Unit, comm
 	if err != nil {
 		return nil, err
 	}
+	return g.stageModernHDSplitStrikeTargetBanks(actor, targets)
+}
+
+// ID30 supplies its actual four-cell list instead of EffectMode0's cursor unit.
+func (g *Game) stageModernHDSplitStrikeTargetBanks(actor *battle.Unit, targets []*battle.Unit) (func(), error) {
+	if g.modernStoryPortraits == nil {
+		return func() {}, nil
+	}
 	resources := []int{actor.BattleFig * 3, actor.BattleFig*3 + 2}
 	for _, target := range targets {
 		if target == nil || !target.HasBattleFig {

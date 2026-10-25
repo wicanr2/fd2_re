@@ -83,6 +83,28 @@ README四格由[既有總覽工具](../../tools/build_fd2_battle_panel_gallery.p
 
 治療回歸沿[回復HD驗證器](../../tools/verify_fd2_heal_map_hd.py)，`--kind game --case-start 0／2／4／6 --case-limit 2`分別為四次執行，每批使用不同前綴及`--timeout 780`。可用兩個各`--memory 5g --cpus 2 --pids-limit 160`的有界容器分別順序跑0／4與2／6，其餘掛載契約相同。最後以`--kind game --merge-game-parts <四個已通過前綴>`及新的`--out`核對完整八個身份、每條11次F2及一次交易／續行、同清冊、必要測試與無SKIP／OOM。只完成部分批次不能當作八條回歸通過；未給批次參數時仍預設全八條。其他回歸與工具版本、來源／輸出SHA依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`hud_unit_icon_hd_followup_20261024`。
 
+## 蜜蒂音速刃指令30：正常學招與戰鬥呈現（CONFORMED-SCOPED／RUNTIME-E1）
+
+原2026-08-25停止線被固定原始位元組直接反證。本節只補蜜蒂selector18學到指令30後的既有玩家流程，不新增28／31或敵方30入口，不改傷害公式、原學招表、職業、保存格式或其他指令。主證據為[取得來源勘誤](../data/ida/fd2_command30_player_acquisition_20261025.json)，舊[取得研究](../data/ida/fd2_command28_31_reachability_ida.txt)保留歷史並追加勘誤。
+
+- 原版固定檔案大小、MD5與SHA依主證據及`fd2-reference-files.json`。本批為已知file offset的機械核對；既有IDA Pro9.4線性位址`sub_1E292→sub_4E4D1→sub_4E4A2→sub_1D79C`學招鏈不重解。growth18的learn_idx5、learn5的Lv2／ID30及map16資源49的raw camp2／selector18／Lv1名冊均已對原始bytes核對。受控300 EXP／seed7只證明正式writer與UI拒收反例，不冒稱正常章節或原版動態PLAYER-E2。
+- 玩家選招以實際已學會的raw mask及原始record30為準。加入target admission，record30是`00 00 00 14 00 18 00`，MPCost24；沿既有候選選擇，進入target modal前保存當時游標，確認後以既有`NativeCommand30Targets`從保存位置朝確認位置走四格、X優先、逐格取第一個有效敵人。不可改用一般EffectMode0的單目標名單。取消仍回原指令框，不扣MP或改HP。
+- 專屬actor只接受已證實selector18，讀FIGANI54待機及56效果。原始14幀，targetStart9、actor MP marker4、target damage marker11、分母1；沿已閉合`0x276EC`及`0x2B659`的mode1九張前導與每目標20張背景轉場。重用24／29的typed來源及繪製primitive，不另造一套像素或HD播放器。
+- FDOTHER49：actor frame2的raw+5播放sample2，frame4播放sample4並發布一次MP；每目標frame11播放sample3並發布一次傷害。非impact的frame2音效不能遺漏；每次frame第一次Draw確認後才發布，不因重複Draw或F2重播。傷害沿原state-only ID30的multiplier18及現有Go RNG條件，固定測試seed，不要求與原版內部骰序相同。
+- 先從相同四格目標名單預檢全部原生與HD銀行、BG／TAI、panel來源及聲音，再建立交易。缺件不能先扣MP、改HP或發布半套HD；晚期取消／來源錯誤沿既有交易回復所有目標與actor acted。保留State及Unit身分，最後只續行一次；不宣稱可回捲任意Go RNG物件或硬體音訊wall-clock。
+- HD使用既有已登錄54／56、各目標idle與背景／台座／面板文字，沿原矩形、層序與Draw節拍。所有前導、actor、逐目標轉場／受擊及返回都能F2往返；原版像素模式沿相同交易與排程。固定血條／框線的HD樣式另由下方原型確認，不使本功能依賴新介面樣式。
+- 驗收：原始bytes與真實名冊學招反例修復；四方向／X優先／同格／邊界／首個占位及空名單；完整原生及HD Game.Draw、frame2／4／11事件、不同idle delay、四格多目標順序、MP一次與HP時點、下一次RNG與state-only控制相同、F2／重複Draw、缺件／晚期回復與一次返回。保存及新程序冷讀須保留真正學到的30。原版動態、完整正常玩家、人工造型、音訊聽感及平台仍依既定集中驗收，不以本切片外推完整HD。
+
+來源重跑入口為[原始資料稽核器](../../tools/audit_fd2_command30_player_source.py)，在`fd2-assets-local:20260829-sfx`容器以`--original-dir <唯讀原檔目錄> --report <既有工作區的新JSON>`執行，包含FDOTHER49的三個原始PCM子資源雜湊。正式升級來源及保存回歸為[TestNativeCommand30MitiAcquisitionAndPlayerEntry](../../remake/cmd/fd2/native_command30_reachability_test.go)，由真實map16建構器與seed7的一次300 EXP取得技能，再保存完整FD2.SAV，啟動有界新測試程序冷讀；runtime roster發布新技能，persistent roster沿既有baseline保持。這是冷讀adapter驗證，沒有冒稱標題鍵盤或正常整章。
+
+[原生與目標操作回歸](../../remake/cmd/fd2/native_command30_presentation_test.go)涵蓋正式確認／取消、保存游標、state-only數值與下一次Go RNG、原生Draw標記、冷來源拒收及包含死亡暫態的晚期回復。[現有HD檢查器](../../tools/verify_fd2_battle_surface_hd.py)以`--kind split-game --command 30 --triple 4:5:6 --transition`與可選`--enemy`驗雙側；其餘Docker、唯讀原版與主題包、既有工作根下全新絕對`--out`、`--require-real-runtime`及570秒界線沿本文件既有約定。每側完整1920×1200畫面由[獨立CPU比對器](../../tools/verify_fd2_split_strike_gpu.py)驗，參數為`--receipt <capture/receipt.json> --catalog <catalog.json> --source <HD包> --original-pack <原版分離包> --inventory docs/data/fd2-battle-hd-source-inventory-20261019.json --report <全新JSON>`；[反例檢查器](../../tools/test_fd2_split_strike_gpu.py)採相同來源參數、以`--out <全新目錄>`替代`--report`。
+
+已驗範圍為雙側全畫面、所有相位F2、兩個目標HP各一次、MP一次、一次續行及GPU owner釋放；CPU合成最大單色差1。共用24／29原子預檢與29實際HD流程保持。正常鍵盤全鏈、真正戰場返回的集中抽驗、原版動態、音訊聽感及平台仍未提升；圖源登錄數不因本次串接改變。
+
+血條與框線的右側藍框樣式仍為DRAFT，尚待使用者回覆。[可丟棄原型測試](../../remake/cmd/fd2/modern_hd_battle_panel_style_prototype_test.go)以`FD2_PANEL_STYLE_PROTOTYPE_OUT=<全新既有工作根>`顯示三種凍結HP／MP，沒有接入Game.Draw。重跑與狀態記於音速刃主證據的`pending_panel_style`；此樣式不阻擋本次既有HD素材串接。
+
+同一`split-game`入口加`--with-panel-text --panel-locale zh-Hant`可啟用既有HD面板文字驗證，不改框線樣式。實際八相位姓名、等級與HP／MP已由GPU逐字墨跡採樣；最終畫面與面板來源亦由上述獨立CPU／反例檢查器驗證。README採此版本的完整GPU縮圖，保留框線及血條像素的明示範圍。
+
 ## 單列浮出工具列：主題與語系（CONFORMED-SCOPED／RUNTIME-E1）
 
 本切片沿使用者選定的 A 頂端浮出、自動隱藏方式，取代正式啟動入口的固定列。既有兩個主題按鈕與 F2 保持，加入語系按鈕沿 F4 的相同條件循環四語。介面獨立切換、HD2、加速、海報及工具列字級另行接入，不顯示尚未可用的控制。

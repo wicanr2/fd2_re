@@ -3,8 +3,46 @@ package battle
 import (
 	"fmt"
 	"math/rand"
+	"reflect"
 	"testing"
 )
+
+func TestPlanNativeCommand30MatchesStateOnlyClampAndDeath(t *testing.T) {
+	for _, c := range []struct{ ap, dp, hp int }{{1, 100, 20}, {1000, 0, 5}} {
+		t.Run(fmt.Sprintf("%d/%d/%d", c.ap, c.dp, c.hp), func(t *testing.T) {
+			makeState := func() (*State, *Unit, *Unit) {
+				a := &Unit{Camp: Own, OnField: true, X: 0, Y: 0, HP: 40, AP: c.ap, MP: 29}
+				b := &Unit{Camp: Enemy, OnField: true, X: 1, Y: 0, HP: c.hp, MaxHP: c.hp, DP: c.dp, HasNativeRecordByte5: true}
+				book := nativeCommand24Book()
+				book[30] = NativeCommandRecord{ID: 30, SelectionMode: 0x14, MPCost: 24}
+				return &State{W: 2, H: 1, Units: []*Unit{a, b}, NativeCompositionEventBytes: make([]byte, 2), NativeCommandBook: book}, a, b
+			}
+			st, a, b := makeState()
+			control, ca, cb := makeState()
+			rng, crng := rand.New(rand.NewSource(30)), rand.New(rand.NewSource(30))
+			plan, err := st.PlanNativeCommand30(a, Cell{}, Cell{X: 1}, rng)
+			if err != nil || len(plan.Results) != 1 || a.MP != 29 || a.Acted || b.HP != c.hp {
+				t.Fatalf("planning mutation: %v", err)
+			}
+			want, err := control.ExecuteNativeCommand30(ca, Cell{}, Cell{X: 1}, crng)
+			if err != nil || plan.Results[0].Damage != want[0].Damage || plan.Results[0].Amount != want[0].Amount {
+				t.Fatalf("old state-only result changed: %v", err)
+			}
+			if err := ApplyNativeCommandDerivedStrikeMP(plan); err != nil {
+				t.Fatal(err)
+			}
+			if err := ApplyNativeCommandDerivedStrikeTarget(plan, 0); err != nil {
+				t.Fatal(err)
+			}
+			if err := CompleteNativeCommandDerivedStrike(plan); err != nil {
+				t.Fatal(err)
+			}
+			if !reflect.DeepEqual(a, ca) || !reflect.DeepEqual(b, cb) || rng.Int63() != crng.Int63() {
+				t.Fatal("planned final HP/MP/death or RNG differs from state-only control")
+			}
+		})
+	}
+}
 
 func nativeCommand24Book() []NativeCommandRecord {
 	book := make([]NativeCommandRecord, 36)

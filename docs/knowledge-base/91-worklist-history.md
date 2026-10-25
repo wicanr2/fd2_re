@@ -5757,3 +5757,7 @@ HD工作仍依#200～#204既有優先序與核准主題，全面matching保持�
 ## 2026-10-19 FDICON全圖庫分母勘誤
 
 本檔2026-09-05等歷史段落的96組／94組分母只涵蓋selector0..95子集，不能當作全FDICON。固定B24 header及既有1680幀loader已直接反證；第一章實際名冊的96在HD候選拒收。舊素材及子集資料證據保留，不重寫歷史。現行全圖庫盤點、#259與接續閘門見[58目前狀態](58-fd2-exe-re-coverage.md)、[61](61-modern-theme-runtime-spec.md)及[HD戰場主收據](../data/fd2-modern-hd-battlefield-20261019.json)。工作進度繼續只寫WORKLOG，未完成項以遠端Issue為準。
+
+## 2026-10-25 歷史勘誤：ID30的玩家學招
+
+舊表對ID30無固定學招來源的說法失效。原始growth18→learn5在Lv2授予30，map16我方蜜蒂可沿正式升級取得。舊快照不作待辦或現況依據；完整原始bytes、保留舊推論與本次原生／HD受控驗證見[音速刃主證據](../data/ida/fd2_command30_player_acquisition_20261025.json)。目前未完成項仍以遠端Issue與工具產生的91為準。

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""核對24／29完整最終GPU、固定FIGANI來源及原生空拍。須在資產Docker執行。"""
+"""核對24／29／30完整最終GPU、固定FIGANI來源及原生空拍。須在資產Docker執行。"""
 import argparse
 import hashlib
 import json
@@ -98,9 +98,11 @@ def verify(receipt, catalog, source, original_pack, inventory, runtime_receipt=N
     surfaces = {(a['source_archive'],a['source_resource']):a for a in doc['assets'] if a['role']=='battle_surface_hd'}
     d = json.loads(receipt.read_text())
     command = d.get('command_id')
-    if command not in (24, 29):
-        raise ValueError('需要24／29收據')
-    figure, count, start, target_count, seed, mp_cost = (32, 15, 9, 1, 2, 22) if command == 24 else (34, 18, 11, 2, 29, 26)
+    profiles = {24: (32, 15, 9, 1, 2, 22), 29: (34, 18, 11, 2, 29, 26),
+                30: (18, 14, 9, 2, 30, 24)}
+    if command not in profiles:
+        raise ValueError('需要24／29／30收據')
+    figure, count, start, target_count, seed, mp_cost = profiles[command]
     resource = figure*3+2
     phases = {'prelude', 'actor'} | {p+str(i) for i in range(target_count)
                                                 for p in ('transition-out-', 'transition-in-', 'target-')}
