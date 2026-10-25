@@ -9,7 +9,7 @@
     "native_viewport": "CONFORMED-SCOPED：穩定1920世界沿原生(4,4)、312×192窗格；死亡事件前25拍依既有producer從VGA0,0開始，最後steady回4,4。不同caller分列，不新增DOS位址parity。",
     "hd_sprite_data": "DATA-READY：完整125組1455張HD及31組372張新增24父項已登錄；舊1083張父項及HD bytes保持。",
     "hd_world_renderer": "CONFORMED-SCOPED：144人物已接Game.Draw；首章34張正常GPU、4張實際走行、兩次物理攻擊及保存／新程序LOAD通過。",
-    "private_assets": "私人正式白名單6742實檔逐SHA／UID通過；舊6740檔保持。5763獨立runtime曾分開驗完整流程，後續清理狀態依本批cleanup。",
+    "private_assets": "本批私人素材未變；版本與完整／runtime數量依58唯一目前狀態及其同步收據，不沿用早期快照。",
     "quickload_battle_owner": "CONFORMED-SCOPED：成功JSON LOAD丟棄舊經驗owner與移動計畫；拒收保留。",
     "timed_dialogue": "CONFORMED-SCOPED-RUNTIME-E1：計時FFEC開收框保留HD世界，EXP99普通鍵盤／F2與保存冷讀通過；其他caller未驗。",
     "hd_terrain": "CONFORMED-SCOPED：map0六組53槽；新增圓頂綠色／褐色雙塊四底圖在兩張正常GPU全部相符，短長組合與保存冷讀通過；草地及其他地形仍待HD化。",
@@ -18,15 +18,15 @@
     "hd_battle_animation": "已解碼FIGANI264資源2118幀與全部可見BG／TAI圖源已登錄，數量及caller限制依58與本批formal_coverage；未因此宣稱全部caller、正常玩家或完整HD完成。",
     "native_purchase_equip": "CONFORMED-SCOPED：#266原生購買立即裝備保留ignored原始格，29項商店回歸與正常購弓F5／章首射程通過；不改格式或數值規則。",
     "hd_event_death": "共用事件、普通行動與狀態致死已接HD；三種26拍／F2通過。正常章23事件與普通擊殺已抽驗，狀態致死正常GUI仍待；來源依death_consumers_followup_20261021。",
-    "theme_toolbar": "現有固定工具列仍為 CONFORMED-SCOPED-RUNTIME-E1；新 A 頂端浮出／四語／A+／速度操作原型已選定，正式串接 DRAFT，依 background_toolbar_prototype_20261023。",
+    "theme_toolbar": "CONFORMED-SCOPED／RUNTIME-E1：正式預設單列頂端浮出、自動隱藏，主題與四語按鈕沿F2／F4閘門；完整遊戲幾何保持。其餘控制未完成，依floating_toolbar_followup_20261025。",
     "hd_facility_scene": "CONFORMED-SCOPED-RUNTIME-E1：三種城鎮與三種商店靜態HD場景／店員，以及既有隊伍HD頭像接入裝備面板；114個GPU案例及兩包載入通過，集中普通／人工仍待。",
-    "assets": "正式766項；新FDOTHER42成品與未修改母稿同步私人白名單6742檔，舊765項／6740檔保持。統計由audit_fd2_battle_hd_coverage.py重生，依special_scene_hd_followup_20261025.formal_coverage。",
+    "assets": "正式素材清冊與實際圖源已重跑核對，本批未改美術；唯一目前數量依58及floating_toolbar_followup_20261025.formal_coverage。",
     "hd_battle_background": "CONFORMED-SCOPED／RUNTIME-E1：森林小屋／內部／海岸，以及BG0..2過渡已接共用／分離物理與24／29的已驗caller；原生位移、遮罩與節拍保持。其他來源／caller仍待，依transition_backgrounds_followup_20261024。",
     "hd_battle_pedestal": "CONFORMED-SCOPED／RUNTIME-E1：已登錄草地、森林裸土及海岸沙地TAI接共用物理的靜態／移位進場、攻防／restore／淡出。原框、層序與節拍保持，其他來源及caller仍待，依forest_coast_surface_followup_20261024。",
     "hd_heal_map": "CONFORMED-SCOPED／RUNTIME-E1：13～16的前導、七張光環、HD輪廓閃光、十個綠數字及等待接入；兩包各八完整Game.Draw／88次F2、一次交易／續行與非空HD地形變色通過。來源及限制見heal13_16_map_hd_followup_20261023，正常／人工／平台仍待。",
     "hd_reward_message": "CONFORMED-SCOPED／RUNTIME-E1：物品／金錢成功訊息的HD世界、Noto文字與480頭像接入；兩完整Game.Draw共26拍／26次F2、原生開收框遮罩、動態金額、HUD回交及一次續行通過。受控頭像選擇與獎勵值，正常／人工／平台仍待；依reward_message_hd_followup_20261023。",
     "hd_map_hud_unit": "CONFORMED-SCOPED／RUNTIME-E1：既有HD主題的資訊窗人物已接144圖源，原selector、狀態3轉1、位置及HP層序保持；來源、數量及回歸依hud_unit_icon_hd_followup_20261024。HD2／完整介面與正常玩家仍待。",
-    "hd_map_stage": "CONFORMED-SCOPED／RUNTIME-E1：FDOTHER42手繪紋理、同次循環列位移與DAC下人物／HUD人物顏色已接入；兩包各300次Game.Draw、6次F2與兩段續行通過。天空之鑰仍待。"
+    "hd_map_stage": "FDOTHER42背景與同次循環列位移／DAC已接HD；天空之鑰與其後凍結consumer依各自較晚followup，不沿用早期仍待說法。其他地形及完整HD仍待。"
   },
   "runtime_source": {
     "binary": {
@@ -297,10 +297,9 @@
     "all_four_documents_unchanged": true
   },
   "remaining": [
-    "天空之鑰FDOTHER34／ANI0及其他凍結caller的map23來源綁定",
-    "其他HD地形、HD2與完整HUD",
-    "操作介面／主題獨立切換、單列浮出工具列、遊戲加速與雙側海報",
-    "全部HD後集中正常玩家、蓋亞手腕／凱麗右腳人工確認及跨平台效能"
+    "工具列字級、加速、操作介面獨立控制、HD2及海報尚未接入。",
+    "其餘地形、完整HUD與操作介面仍待HD化。",
+    "全部HD後集中正常玩家、蓋亞手腕及凱麗右腳人工確認與平台驗收。"
   ],
   "cleanup": {
     "recording_created": false,
@@ -227960,5 +227959,343 @@
       "images_rebuilt": false,
       "other_projects_touched": false
     }
+  },
+  "floating_toolbar_followup_20261025": {
+    "status": "CONFORMED-SCOPED / RUNTIME-E1",
+    "base_commit": "d086b9db2ad18df74dd9f046d54d38383ec160f0",
+    "contract": "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+    "runtime_sources": [
+      {
+        "file": "remake/cmd/fd2/main.go",
+        "sha256": "6f6402c1a96a530a759af4e1a933b3200b509205283d4c486c9f30e6b598753a"
+      },
+      {
+        "file": "remake/cmd/fd2/player_toolbar.go",
+        "sha256": "57a3e0373216e5d4c70f247f0fc4a2fd0649d493da3de06291f8fc0d03fe7a6b"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_presentation.go",
+        "sha256": "66328e39674a812d6139edaed0442270e84a6c0caa9147bde9365d91ca21054f"
+      },
+      {
+        "file": "remake/cmd/fd2/player_toolbar_floating_test.go",
+        "sha256": "c33f7e5a96a80a279a1023338a2bf24327655984cc6b7c954e762f8c2cee1e7c"
+      },
+      {
+        "file": "remake/cmd/fd2/player_toolbar_test.go",
+        "sha256": "a7d7d357a101b530b8f64bf39ca099d0feed716322474e1361eb591742b9637e"
+      },
+      {
+        "file": "tools/verify_fd2_floating_toolbar.py",
+        "sha256": "751728d2a2ddc411ad1b61b1017c11d6dff68b6b8375b8f24869e31d69b4fcb4"
+      },
+      {
+        "file": "tools/docker/fd2-xtest-input.c",
+        "sha256": "70a1b8179948227607aced8b41d8d6fca6b76ef665c311ececbba584ffa83292"
+      },
+      {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "299b6c55e748247922bf5c354d953fe48798989cfe4d583662c5a96b753c933d"
+      }
+    ],
+    "design_authority": "使用者已選定 A 頂端浮出、自動隱藏與單列，保留 F2 與四語；本批只接主題與語系。",
+    "native_evidence": "重製介面設計；沿既有 Game.Update F2/F4 閘門，未新增 FD2.EXE 語意或原版 oracle。",
+    "logical_canvas": [
+      640,
+      400
+    ],
+    "hd_window": [
+      1920,
+      1200
+    ],
+    "hot_edge_height": 4,
+    "toolbar_height": 24,
+    "hide_update_ticks": 90,
+    "legacy_fixed_mode": "FD2_TOOLBAR_LAYOUT=fixed；舊 --player-toolbar 擷取器明示設定，固定模式仍為 640x424 / 1920x1272。",
+    "input_ownership": "顯示列與喚出觸控不交給地圖；浮出模式不扣除觸控座標，請求只存活當次 Update，F2/F4 共用既有閘門。",
+    "verification": {
+      "floating-toolbar-unit-r2": {
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/floating-toolbar-unit-r2.log",
+          "sha256": "95d47fc110e97842cb4c0f95ce83151a00c4a9d15fb469480ff047b5ef02a261"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/floating-toolbar-unit-r2.memory.json",
+          "sha256": "a7e8fa3c6374480d7604d20d7d5fb092652ac6451f7513e1fa0b20738f491653"
+        },
+        "top_level_passed": [
+          {
+            "package": "github.com/wicanr2/fd2_re/remake/cmd/fd2",
+            "test": "TestFloatingToolbarGeometryAndOwnership"
+          },
+          {
+            "package": "github.com/wicanr2/fd2_re/remake/cmd/fd2",
+            "test": "TestFloatingToolbarLocaleTextBounds"
+          }
+        ]
+      },
+      "floating-toolbar-game-r4": {
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/floating-toolbar-game-r4.log",
+          "sha256": "5c57ece6c85cfca92e45476f928537efad204bc6398a7041c7fe73e2980f5705"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/floating-toolbar-game-r4.memory.json",
+          "sha256": "df965d29e4d71d7bf08dfc42826f870a76d8fd50bb8b87cba094e1a72bc99acd"
+        },
+        "top_level_passed": [
+          {
+            "package": "github.com/wicanr2/fd2_re/remake/cmd/fd2",
+            "test": "TestFloatingToolbarRealInputGPU"
+          }
+        ]
+      },
+      "floating-toolbar-fixed-r3": {
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/floating-toolbar-fixed-r3.log",
+          "sha256": "59b0f79c6febe793945eed3dc4edbf5b44c8f907a012eeb0600924a2168ef85f"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/floating-toolbar-fixed-r3.memory.json",
+          "sha256": "7bdc828792a9653374a7a364b062d7434bc38c3f78adfe3c6fc4607ff24df25d"
+        },
+        "top_level_passed": [
+          {
+            "package": "github.com/wicanr2/fd2_re/remake/cmd/fd2",
+            "test": "TestPlayerThemeToolbarRealInputGPU"
+          }
+        ]
+      },
+      "floating-toolbar-regression-r1": {
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/floating-toolbar-regression-r1.log",
+          "sha256": "6b75c261fffe8ff925adaad9d16e561fcaba20be978b87e5b5c7d44d5fddb7f0"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/floating-toolbar-regression-r1.memory.json",
+          "sha256": "28c137e8f9a6619381035e0fbf61cb2c7487f62cfbd217a04a487ce3bc753c36"
+        },
+        "top_level_passed": [
+          {
+            "package": "github.com/wicanr2/fd2_re/remake/cmd/fd2",
+            "test": "TestModernHDFinalPreservesDetailScaleAndAnchors"
+          },
+          {
+            "package": "github.com/wicanr2/fd2_re/remake/cmd/fd2",
+            "test": "TestModernHDDrawClearsPreviousDialogueOverlay"
+          },
+          {
+            "package": "github.com/wicanr2/fd2_re/remake/cmd/fd2",
+            "test": "TestModernHDNormalizedDialoguePreservesMirroringAndBounds"
+          },
+          {
+            "package": "github.com/wicanr2/fd2_re/remake/cmd/fd2",
+            "test": "TestModernHDFinalSuppressesPortraitUnderModalAndDAC"
+          },
+          {
+            "package": "github.com/wicanr2/fd2_re/remake/cmd/fd2-string-inventory",
+            "test": "TestReviewedGoCandidatesMatchCurrentInventory"
+          },
+          {
+            "package": "github.com/wicanr2/fd2_re/remake/cmd/fd2",
+            "test": "TestRefreshThemeVisualsKeepsLiveBattleState"
+          },
+          {
+            "package": "github.com/wicanr2/fd2_re/remake/cmd/fd2",
+            "test": "TestApplyThemeRebindsActiveDialogueWithoutReset"
+          },
+          {
+            "package": "github.com/wicanr2/fd2_re/remake/cmd/fd2",
+            "test": "TestApplyThemeRejectsMissingActiveSpeakerBeforePublication"
+          },
+          {
+            "package": "github.com/wicanr2/fd2_re/remake/cmd/fd2",
+            "test": "TestCycleThemeReusesValidatedPackAfterReturningToFaithful"
+          },
+          {
+            "package": "github.com/wicanr2/fd2_re/remake/cmd/fd2",
+            "test": "TestFloatingToolbarGeometryAndOwnership"
+          },
+          {
+            "package": "github.com/wicanr2/fd2_re/remake/cmd/fd2",
+            "test": "TestFloatingToolbarLocaleTextBounds"
+          },
+          {
+            "package": "github.com/wicanr2/fd2_re/remake/cmd/fd2",
+            "test": "TestCampaignSaveLoadRestoresTownBoundaryAndParty"
+          }
+        ]
+      }
+    },
+    "game_receipt": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/floating-toolbar-game-r4-capture/receipt.json",
+      "sha256": "69c6e11e90b022f134ef71f27920b3c97fcc0f2ce3a31aec4b289d99b6d56eba"
+    },
+    "game_images": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/floating-toolbar-game-r4-capture/floating-00.png",
+        "sha256": "a25f10625907621b19ac9aeff22f2aa700dc255ca54b36014bd4303944e06ab0"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/floating-toolbar-game-r4-capture/floating-01.png",
+        "sha256": "d7d3df71e43f6c09d968c69e0e380ab43ba62216aab45e3230839b531d7c60f4"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/floating-toolbar-game-r4-capture/floating-02.png",
+        "sha256": "7b71e764d1b6c3f70304dffdedd26c9037b999b6ec7e588e1fbe0dc88c4e8e78"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/floating-toolbar-game-r4-capture/floating-03.png",
+        "sha256": "c2cd127d3fd474c96ac32382fb48f80358c592ae24faee8e6912f5d6702e56df"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/floating-toolbar-game-r4-capture/floating-04.png",
+        "sha256": "7b71e764d1b6c3f70304dffdedd26c9037b999b6ec7e588e1fbe0dc88c4e8e78"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/floating-toolbar-game-r4-capture/floating-05.png",
+        "sha256": "33fccfeb9960b72eeb94a1ce3e8d90786ddb56e5728c35db1f5d081ef4504f59"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/floating-toolbar-game-r4-capture/floating-06.png",
+        "sha256": "29c3d50b313805937d554c7a304dae75e944d6c4872190f17f6cf25d8b5d78f1"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/floating-toolbar-game-r4-capture/floating-07.png",
+        "sha256": "989e0ae93e28bb9cd719def07248db5b2557756429d5f8d59a953acb1e1617b4"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/floating-toolbar-game-r4-capture/floating-08.png",
+        "sha256": "d7d3df71e43f6c09d968c69e0e380ab43ba62216aab45e3230839b531d7c60f4"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/floating-toolbar-game-r4-capture/floating-09.png",
+        "sha256": "213ceb30f7e81891bb314e89a25ec578f21d9140c4b20505bb25dae5787e50cd"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/floating-toolbar-game-r4-capture/floating-10.png",
+        "sha256": "213ceb30f7e81891bb314e89a25ec578f21d9140c4b20505bb25dae5787e50cd"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/floating-toolbar-game-r4-capture/floating-11.png",
+        "sha256": "213ceb30f7e81891bb314e89a25ec578f21d9140c4b20505bb25dae5787e50cd"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/floating-toolbar-game-r4-capture/floating-12.png",
+        "sha256": "7b71e764d1b6c3f70304dffdedd26c9037b999b6ec7e588e1fbe0dc88c4e8e78"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/floating-toolbar-game-r4-capture/floating-13.png",
+        "sha256": "4f085aff31a61d4f6b6abaa9191ce8bfc4cff55e16291f6bb95f1e85ef2d5458"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/floating-toolbar-game-r4-capture/floating-14.png",
+        "sha256": "3b8c2190c722df11fd573de68da8fd85ec327c805a5174894d4243c6828358eb"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/floating-toolbar-game-r4-capture/floating-15.png",
+        "sha256": "4f085aff31a61d4f6b6abaa9191ce8bfc4cff55e16291f6bb95f1e85ef2d5458"
+      }
+    ],
+    "overview": {
+      "file": "docs/figures/hd-floating-toolbar.png",
+      "sha256": "e8a67265d6ed9e0f764f188dd01cf8b350ae103b7e51db7ecf25769bfa346a76"
+    },
+    "formal_coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-hd-coverage-current-r1.json",
+      "sha256": "1690f354ae4f2384771b8078c42dad3d119167419a038179c707ecd0c0462598"
+    },
+    "string_review": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/floating-toolbar-string-review-check-r1.json",
+      "sha256": "50e2d034be6933ed0458f100ccf43b6ae608ed736a511070193c73a56cfa10b8"
+    },
+    "controlled_gui_steps": 16,
+    "complete_save_bytes_unchanged": 13780,
+    "visible_outside_row_equal_bytes_per_step": 8663040,
+    "hidden_equal_bytes_per_step": 9216000,
+    "fixed_receipt": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/floating-toolbar-fixed-r3-capture/receipt.json",
+      "sha256": "c861c6f10201539359f5d0b5b239cd6533888534a6d03595d934a9d001f4dea2"
+    },
+    "fixed_images": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/floating-toolbar-fixed-r3-capture/floating-00.png",
+        "sha256": "5385b73d64b7080b1e14847fdc0f51e518862811f7ae15ed782b6725b9fe1548"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/floating-toolbar-fixed-r3-capture/floating-01.png",
+        "sha256": "e22f413f44ac12fdb5519feffdefb31b77ee2c2d8ab25ebd166353cd830b55e5"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/floating-toolbar-fixed-r3-capture/floating-02.png",
+        "sha256": "74699e21aa937fe3aece31b119243f0ba9b2b8f9f1c121c97db78323c55b145b"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/floating-toolbar-fixed-r3-capture/floating-03.png",
+        "sha256": "e22f413f44ac12fdb5519feffdefb31b77ee2c2d8ab25ebd166353cd830b55e5"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/floating-toolbar-fixed-r3-capture/floating-04.png",
+        "sha256": "74699e21aa937fe3aece31b119243f0ba9b2b8f9f1c121c97db78323c55b145b"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/floating-toolbar-fixed-r3-capture/floating-05.png",
+        "sha256": "395f7f65caa99d0719ffb249b1b6bfc4a6ae060c43a96761ee6ca90eef208c19"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/floating-toolbar-fixed-r3-capture/floating-06.png",
+        "sha256": "5385b73d64b7080b1e14847fdc0f51e518862811f7ae15ed782b6725b9fe1548"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/floating-toolbar-fixed-r3-capture/floating-07.png",
+        "sha256": "350f268f97be2cac070dedf6e472f92ee458dfd2ab481d27b07c63f42a8c9893"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/floating-toolbar-fixed-r3-capture/floating-08.png",
+        "sha256": "538f9b56b9136a258c0e7fda05e2f2012ecc1c1cda6e859afae4871e25586e80"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/floating-toolbar-fixed-r3-capture/floating-09.png",
+        "sha256": "56f9ab8e36da28f4393e04c66d7d8dcb9927461734f33a0daebc77f4d7167269"
+      }
+    ],
+    "failures": [
+      {
+        "run": "floating-toolbar-unit-r1",
+        "classification": "產品字界缺陷",
+        "cause": "舊工具列字形靠近下框，實際黑體墨跡超出安全區一個 HD 像素；改依字形上下界置中。"
+      },
+      {
+        "run": "floating-toolbar-game-r1",
+        "classification": "測具順序錯誤",
+        "cause": "既有語系循環為繁中、簡中、日文、英文；測具誤排英文、日文，修正後重跑。"
+      },
+      {
+        "run": "floating-toolbar-game-r2",
+        "classification": "測具時間基準錯誤",
+        "cause": "90 次 Update 的顯隱契約不能由 GPU 回讀期間的兩秒等待推定；改有界等待實際 Update，沒有改產品時序。Xvfb 另明示完整 HD 尺寸。"
+      },
+      {
+        "run": "floating-toolbar-fixed-r1",
+        "classification": "舊測具未等GPU確認",
+        "cause": "連續F4只用固定延遲，最後語系未收齊。"
+      },
+      {
+        "run": "floating-toolbar-fixed-r2",
+        "classification": "舊測具整段主題輸入仍未同步",
+        "cause": "只替F4加確認，前面的主題切換仍成批送入，等待語系的40秒內層context逾時，僅擷取到繁中。改用和浮出列相同的逐輸入Update及GPU確認，固定十步各自驗主題／語系與畫面；不調高產品或測試延遲、不補送按鍵。"
+      }
+    ],
+    "remaining": [
+      "工具列字級、加速、操作介面獨立控制、HD2及海報尚未接入。",
+      "其餘地形、完整HUD與操作介面仍待HD化。",
+      "全部HD後集中正常玩家、蓋亞手腕及凱麗右腳人工確認與平台驗收。"
+    ],
+    "catalog_changed": false,
+    "private_assets_changed": false,
+    "original_oracle_run": false,
+    "normal_campaign_complete": false,
+    "platform_complete": false,
+    "full_hd_complete": false
   }
 }

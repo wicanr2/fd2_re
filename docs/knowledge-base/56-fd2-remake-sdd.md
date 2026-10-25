@@ -1,5 +1,7 @@
 # 56 — FD2 remake 系統設計規格（SDD，2026-08-09）
 
+單列頂端浮出工具列已接入正式啟動入口，主題／語系按鈕沿既有F2／F4閘門，遊戲及HD最終層不平移。顯隱、觸控所有權、四語字界、真實滑鼠與說明頁阻擋、完整保存bytes及固定列相容回歸通過，限定CONFORMED-SCOPED／RUNTIME-E1。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的floating_toolbar_followup_20261025。其餘工具列控制、地形／HD2／完整介面與集中正常／人工／平台仍待。
+
 共用死亡動畫已補齊同次地圖23背景及HUD邊界，限定CONFORMED-SCOPED／RUNTIME-E1。原生姿勢／B段／最後重畫先恢復stage；HD前25拍不另疊穩定HUD人物，最後才恢復。事件、普通擊殺與完整狀態訊息caller、F2／返回及舊一般地圖逐RGB診斷通過。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的death_stage_hd_followup_20261025。混合反擊正常可達性仍未知，守衛保持；完整HD與集中正常／人工／平台仍待。
 
 滿背包獎勵的問句、逐字放棄回覆與八槽選擇器銜接已接HD，限定CONFORMED-SCOPED／RUNTIME-E1。沿既有原生規則與密封背景，HD字型、480頭像、F2與返回保持同一流程；物品仍只在選擇器關閉後替換。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的full_inventory_reward_hd_followup_20261025。框線與YESNO仍為像素；其他提示／HUD、地形／HD2／工具列及全部HD後集中正常／人工／平台仍待。

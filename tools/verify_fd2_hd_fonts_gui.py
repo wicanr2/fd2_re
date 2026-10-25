@@ -176,6 +176,7 @@ def main():
                FD2_THEME='modern-handpainted-a', FD2_LOCALE='zh-Hant',
                FD2_MODERN_THEME_PACK=str(args.modern_pack), FD2_ASSET_PACK=str(args.original_pack),
                FD2_INPUT_AUDIT_LOG=str(audit), FD2_INPUT_AUDIT_INTERVAL='2')
+    env['FD2_TOOLBAR_LAYOUT'] = 'fixed' if args.player_toolbar else 'floating'
     for key in ['FD2_TITLE','FD2_CAMPAIGN','FD2_CAMP_NODE','FD2_SHOT','FD2_SHOT_FRAME',
                 'FD2_NATIVE_SAVE','FD2_SAVE_CURRENT','FD2_ENDING_PREFIX']:
         env.pop(key,None)

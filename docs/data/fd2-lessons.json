@@ -4256,6 +4256,14 @@
         ],
         "pattern": "frame.HUDUnit = nil"
       }
+    },
+    {
+      "id": "toolbar-input-waits-for-update-and-gpu",
+      "date": "2026-10-25",
+      "area": "GUI驗證",
+      "rule": "以Update次數定義的顯隱，用實際Update次數驗證；重複同一快捷鍵時，逐次等待實際GPU擷取完成才送下一次。入口remake/cmd/fd2/player_toolbar_floating_test.go及player_toolbar_test.go；在Go Docker用tools/verify_fd2_floating_toolbar.py --kind floating或fixed重跑，契約見規格61。",
+      "why": "GPU回讀時間不能保證已經過90次Update；舊固定列連續F4的固定暫停也未保證四語畫面都已擷取。測具改有界等待Update及逐筆GPU確認，沒有改正式顯隱節拍或補送按鍵。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#floating_toolbar_followup_20261025"
     }
   ]
 }

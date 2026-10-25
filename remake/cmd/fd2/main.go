@@ -587,6 +587,8 @@ type Game struct {
 	modernHDScene                       *modernFacilitySceneOverlay
 	modernHDPanelPortraits              []*modernHDOverlay
 	playerThemeRequested                bool
+	playerLocaleRequested               bool
+	playerToolbarTouchBlocked           bool
 	playerViewportTop                   int
 	modernHDText                        *modernHDTextFrame
 	nativeDialogueArrowTicks            int
@@ -8216,7 +8218,7 @@ func (g *Game) tileAt(idx int) *ebiten.Image {
 }
 
 func (g *Game) Update() error {
-	defer func() { g.playerThemeRequested = false }()
+	defer func() { g.playerThemeRequested, g.playerLocaleRequested = false, false }()
 	defer g.recordInputAuditState()
 	g.frame++
 	if g.nativeDefeat != nil {
@@ -8265,7 +8267,7 @@ func (g *Game) Update() error {
 	if g.nativeEnding == nil && !nativeModifierHeld() && inpututil.IsKeyJustPressed(ebiten.KeyF3) { // 全域：切換音源
 		g.cycleBGMSource()
 	}
-	if g.nativeEnding == nil && !nativeModifierHeld() && inpututil.IsKeyJustPressed(ebiten.KeyF4) { // 全域：切換官方語系
+	if g.nativeEnding == nil && !nativeModifierHeld() && (g.playerLocaleRequested || inpututil.IsKeyJustPressed(ebiten.KeyF4)) { // 全域：切換官方語系
 		g.cycleLocale()
 	}
 	if g.nativeEnding == nil && !nativeModifierHeld() && inpututil.IsKeyJustPressed(ebiten.KeyF7) { // 全域：切換字級
@@ -8919,10 +8921,10 @@ func (g *Game) Update() error {
 	// 觸控:點哪格移到哪格
 	for _, id := range inpututil.AppendJustPressedTouchIDs(nil) {
 		tx, ty := ebiten.TouchPosition(id)
-		if ty < g.playerViewportTop {
+		tx, ty, accepted := g.playerTouchCoordinates(tx, ty)
+		if !accepted {
 			continue
 		}
-		ty -= g.playerViewportTop
 		targetX := (int(g.camX) + tx) / g.m.TileW
 		targetY := (int(g.camY) + ty) / g.m.TileH
 		if targetX < 0 {
@@ -13187,14 +13189,19 @@ func main() {
 		return
 	}
 	applyPackagedPlayerDefaults()
-	ebiten.SetWindowSize(logicalW*2, (logicalH+playerToolbarHeight)*2)
+	floatingToolbar := os.Getenv("FD2_TOOLBAR_LAYOUT") != "fixed"
+	height := logicalH
+	if !floatingToolbar {
+		height += playerToolbarHeight
+	}
+	ebiten.SetWindowSize(logicalW*2, height*2)
 	ebiten.SetWindowTitle(fmt.Sprintf("炎龍騎士團2 重製 (fd2_re %s)", buildVersion))
 	ebiten.SetWindowResizingMode(ebiten.WindowResizingModeEnabled)
 	g := loadGame()
 	defer g.closeAudioPlayers()
-	player := &modernHDPresentation{Game: g, toolbar: true, faithfulWidth: logicalW * 2, faithfulHeight: (logicalH + playerToolbarHeight) * 2}
+	player := &modernHDPresentation{Game: g, toolbar: true, floatingToolbar: floatingToolbar, faithfulWidth: logicalW * 2, faithfulHeight: height * 2}
 	if g.modernStoryPortraits != nil && g.modernStoryPortraits.hasHD {
-		ebiten.SetWindowSize(modernHDWidth, modernHDHeight+playerToolbarHeight*3)
+		ebiten.SetWindowSize(modernHDWidth, modernHDHeight+player.toolbarOffset()*3)
 	}
 	if err := ebiten.RunGame(player); err != nil {
 		log.Fatal(err)

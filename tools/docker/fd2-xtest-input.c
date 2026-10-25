@@ -129,10 +129,11 @@ int main(int argc, char **argv) {
             delay_ms = atoi(colon + 1);
             if (delay_ms < 0) delay_ms = 0;
         }
-        if (!strncmp(spec, "Click=", 6)) {
+        int click = !strncmp(spec, "Click=", 6);
+        if (click || !strncmp(spec, "Move=", 5)) {
             int x, y, logical_w, logical_h;
             char trailing;
-            if (sscanf(spec, "Click=%d,%d@%dx%d%c", &x, &y, &logical_w, &logical_h, &trailing) != 4 ||
+            if (sscanf(spec + (click ? 6 : 5), "%d,%d@%dx%d%c", &x, &y, &logical_w, &logical_h, &trailing) != 4 ||
                 logical_w <= 0 || logical_h <= 0 || x < 0 || y < 0 || x >= logical_w || y >= logical_h) {
                 fprintf(stderr, "invalid logical click in %s\n", argv[i]);
                 free(spec);
@@ -155,11 +156,13 @@ int main(int argc, char **argv) {
             int py = root_y + (int)((attrs.height-logical_h*scale)/2 + y*scale);
             XTestFakeMotionEvent(dpy, DefaultScreen(dpy), px, py, CurrentTime);
             XSync(dpy, False);
-            XTestFakeButtonEvent(dpy, 1, True, CurrentTime);
-            XSync(dpy, False);
-            usleep(60000);
-            XTestFakeButtonEvent(dpy, 1, False, CurrentTime);
-            XSync(dpy, False);
+            if (click) {
+                XTestFakeButtonEvent(dpy, 1, True, CurrentTime);
+                XSync(dpy, False);
+                usleep(60000);
+                XTestFakeButtonEvent(dpy, 1, False, CurrentTime);
+                XSync(dpy, False);
+            }
             usleep((useconds_t)delay_ms * 1000U);
             free(spec);
             continue;

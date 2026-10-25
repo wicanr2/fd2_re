@@ -17,12 +17,16 @@ type modernHDPresentation struct {
 	textSurface                   *ebiten.Image
 	faithfulWidth, faithfulHeight int
 	toolbar                       bool
+	floatingToolbar               bool
+	toolbarTicks                  int
 	gameSurface, toolbarSurface   *ebiten.Image
 }
 
 func (p *modernHDPresentation) Update() error {
 	if p.toolbar {
-		p.Game.playerViewportTop = playerToolbarHeight
+		p.Game.playerViewportTop = p.toolbarOffset()
+		p.updateToolbarVisibility()
+		p.Game.playerToolbarTouchBlocked = p.floatingToolbar && p.toolbarTicks > 0
 		p.queueToolbarInput()
 	}
 	before := p.modernStoryPortraits != nil && p.modernStoryPortraits.hasHD
@@ -37,16 +41,12 @@ func (p *modernHDPresentation) Update() error {
 	if after {
 		p.faithfulWidth, p.faithfulHeight = w, h
 		height := modernHDHeight
-		if p.toolbar {
-			height += playerToolbarHeight * 3
-		}
+		height += p.toolbarOffset() * 3
 		ebiten.SetWindowSize(modernHDWidth, height)
 	} else {
 		if p.faithfulWidth <= 0 || p.faithfulHeight <= 0 {
 			p.faithfulWidth, p.faithfulHeight = logicalW*2, logicalH*2
-			if p.toolbar {
-				p.faithfulHeight += playerToolbarHeight * 2
-			}
+			p.faithfulHeight += p.toolbarOffset() * 2
 		}
 		ebiten.SetWindowSize(p.faithfulWidth, p.faithfulHeight)
 	}
@@ -109,9 +109,9 @@ func drawModernHDOverlay(target modernHDImageTarget,
 func (p *modernHDPresentation) DrawFinalScreen(screen ebiten.FinalScreen,
 	offscreen *ebiten.Image, geometry ebiten.GeoM) {
 	contentGeometry := geometry
-	if p.toolbar {
+	if offset := p.toolbarOffset(); offset > 0 {
 		contentGeometry.Reset()
-		contentGeometry.Translate(0, playerToolbarHeight)
+		contentGeometry.Translate(0, float64(offset))
 		contentGeometry.Concat(geometry)
 	}
 	p.drawModernFacilityScene(screen, contentGeometry)
@@ -153,7 +153,7 @@ func (p *modernHDPresentation) DrawFinalScreen(screen ebiten.FinalScreen,
 		!(g.nativeDefeat == nil && g.titlePhase == "" && g.nativePaletteRamp == nil && nativeDACIsBlack(g.nativeMapDAC)) {
 		p.drawModernHDText(screen, contentGeometry, brightness)
 	}
-	if p.toolbar {
+	if p.toolbarVisible() {
 		p.drawThemeToolbar(screen, geometry)
 	}
 }
