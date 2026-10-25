@@ -104,6 +104,7 @@ func (g *Game) runPendingNativeDeathRewards(then func()) bool {
 	}
 	prompt.hd = &modernHDFullReward{scene: g.newModernHDCompoundMapScene(in, g.nativeMapWork, source, palette, inputErr),
 		ui: ui, question: question, canceled: canceled, kind: fullRewardOpening}
+	prompt.hd.chrome, prompt.hd.chromeErr = freezeModernHDDialogueChrome(ui.dialogue, g.nativeClassUI.palette)
 	prompt.hd.seal = modernHDFullRewardSeal(prompt)
 	if g.modernStoryPortraits != nil {
 		prompt.hd.world, err = g.prepareModernHDFullRewardWorld(prompt, g.modernStoryPortraits)

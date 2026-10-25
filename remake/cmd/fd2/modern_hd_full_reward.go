@@ -31,15 +31,17 @@ type modernHDGlyphWrite struct {
 }
 
 type modernHDFullReward struct {
-	scene    *modernHDCompoundMapScene
-	world    *modernHDMapFrame
-	theme    *modernStoryPortraitSet
-	ui       *nativePreparationUIAssets
-	question []byte
-	canceled [][]byte
-	seal     [32]byte
-	job      *nativeClassUIJob
-	kind     fullRewardPhase
+	scene     *modernHDCompoundMapScene
+	world     *modernHDMapFrame
+	theme     *modernStoryPortraitSet
+	ui        *nativePreparationUIAssets
+	question  []byte
+	canceled  [][]byte
+	seal      [32]byte
+	job       *nativeClassUIJob
+	kind      fullRewardPhase
+	chrome    *modernHDDialogueChrome
+	chromeErr error
 }
 
 func modernHDFullRewardSeal(p *nativeDeathRewardUIState) [32]byte {
@@ -143,6 +145,17 @@ func fullRewardFrameAt(frames [][]byte, index, shift int, err error) ([]byte, in
 }
 
 func (g *Game) prepareModernHDFullRewardWorld(p *nativeDeathRewardUIState, set *modernStoryPortraitSet) (*modernHDMapFrame, error) {
+	if set != nil && set.hasHD {
+		if p == nil || p.hd == nil {
+			return nil, errors.New("modern HD full reward: dialogue chrome unavailable")
+		}
+		if p.hd.chromeErr != nil {
+			return nil, p.hd.chromeErr
+		}
+		if p.hd.chrome == nil {
+			return nil, errors.New("modern HD full reward: dialogue chrome unavailable")
+		}
+	}
 	if set == nil || len(set.mapSpritesHD) != 125 {
 		return nil, nil
 	}
@@ -312,6 +325,7 @@ func (g *Game) drawModernHDFullReward(screen *ebiten.Image) bool {
 		g.presentNativeClassFrame(screen, frame)
 	}
 	if !region.Empty() {
+		g.appendModernHDDialogueChrome(p.hd.chrome, shift)
 		clip := image.Rect(region.Min.X*2, region.Min.Y*2, region.Max.X*2, region.Max.Y*2)
 		for _, run := range modernHDWrittenRuns(capture) {
 			run.y += float64(shift * 2)

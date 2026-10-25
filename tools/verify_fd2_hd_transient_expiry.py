@@ -9,7 +9,7 @@ import json
 import itertools
 from pathlib import Path
 
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageChops, ImageDraw, ImageFont, ImageOps
 
 ROOT = Path(__file__).resolve().parent.parent
 LOCALES = ("zh-Hant", "zh-Hans", "en", "ja")
@@ -73,6 +73,8 @@ def check_chrome_png(picture: Image.Image, source: dict, shift: int, height: int
 
 
 def validate(data: dict, directory: Path, images: bool = True, require_chrome: bool = False) -> dict:
+    if data.get("status") == "PASS-FULL-REWARD-HD-RUNTIME-E1":
+        return validate_full_reward(data, directory, images, require_chrome)
     if data.get("status") == "PASS-REWARD-HD-RUNTIME-E1":
         return validate_reward(data, directory, images, require_chrome)
     require(data.get("status") == "PASS-EXPIRY-HD-RUNTIME-E1", "收據狀態錯誤")
@@ -180,7 +182,87 @@ def validate_reward(data: dict, directory: Path, images: bool, require_chrome: b
             "normal_player_verified": False}
 
 
+def validate_full_reward(data: dict, directory: Path, images: bool, require_chrome: bool) -> dict:
+    require(data.get("normal_player_verified") is False, "滿背包建構槽不得冒稱正常玩家")
+    require(data.get("cases") == 5 and data.get("continuations") == 5, "滿背包五分支或續行缺項")
+    rows = data.get("rows", [])
+    require(0 < len(rows) <= 800 and data.get("game_frames") == len(rows), "滿背包完整畫布資料不足")
+    require(data.get("native_seed") == 7 and data.get("fixed_clock_unix") == 1000, "滿背包測試條件不同")
+    source = chrome_profile(data, require_chrome)
+    require(source is not None and data.get("legacy_chrome_rejected") is True, "滿背包新舊框線缺少正反對照")
+    captures, total, png_total, f2 = [], 0, 0, 0
+    for case in range(5):
+        selected = [row for row in rows if row.get("case") == case]
+        phases = {row.get("phase") for row in selected}
+        needed = {"job-0", "job-2", "job-3", "yes-no", "return"}
+        needed |= {"item-open", "item-choice", "item-close"} if case in (2, 3) else {"job-4", "response-hold"}
+        if case == 3:
+            needed |= {"job-5", "job-6", "response-hold"}
+        require(needed <= phases, "滿背包分支缺少必要轉場")
+    require(all(type(row.get("case")) is int and 0 <= row["case"] < 5 for row in rows), "滿背包分支索引錯誤")
+    for row in rows:
+        require(row.get("native_control_unchanged") is True, "滿背包原生狀態不同")
+        require(type(row.get("f2_roundtrip")) is bool, "滿背包F2紀錄缺件")
+        f2 += row["f2_roundtrip"]
+        shift, height = row.get("dialogue_chrome_shift"), row.get("dialogue_chrome_height")
+        require((shift, height) in {(0, 0), (0, 86), (13, 75), (26, 62), (39, 49), (52, 36), (65, 23)}, "滿背包框線位移／裁切錯誤")
+        if row["phase"].startswith("item-") or row["phase"] == "return":
+            require(height == 0, "選擇器或返回殘留對話框")
+        if row["phase"] in {"yes-no", "response-hold"}:
+            require((shift, height) == (0, 86) and row.get("text_runs", 0) > 0, "滿背包穩定訊息缺少框線或文字")
+        require(row.get("dialogue_chrome_pixels") == chrome_count(height*6), "滿背包框線核對範圍錯誤")
+        total += row["dialogue_chrome_pixels"]
+        if not row.get("capture"):
+            continue
+        name = f"case{row['case']}-{row['phase']}.png"
+        require(row["capture"] == name, "滿背包截圖路徑錯誤")
+        path = directory/name
+        if images:
+            with Image.open(path) as picture:
+                require(picture.size == (1920, 1200), "滿背包截圖不是完整畫布")
+                picture = picture.convert("RGBA")
+                require(hashlib.sha256(picture.tobytes()).hexdigest() == row.get("final_sha256"), "滿背包PNG與畫布不同")
+                if height:
+                    png_total += check_chrome_png(picture, source, shift, height*6)
+            captures.append({"file": name, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()})
+    require(data.get("f2_boundaries") == f2 and f2 >= 30, "滿背包F2邊界不足")
+    require(data.get("chrome_pixels") == total and total > 0, "滿背包細框核對總量錯誤")
+    expected = {f"case{case}-{phase}.png" for case, phases in ((0, ("yes-no", "response-hold", "return")), (2, ("yes-no", "item-choice", "return")), (3, ("yes-no", "item-choice", "response-hold", "return"))) for phase in phases}
+    require({row.get("capture") for row in rows if row.get("capture")} == expected, "滿背包代表截圖缺件")
+    return {"status": "PASS-FULL-REWARD-HD-INDEPENDENT-CAPTURE-CHECK", "frames": len(rows), "f2_boundaries": f2,
+            "captures": captures, "dialogue_chrome_pixels": total, "png_dialogue_chrome_pixels": png_total,
+            "normal_player_verified": False}
+
+
 def rejection_checks(data: dict, directory: Path, require_chrome: bool = False) -> int:
+    if data.get("status") == "PASS-FULL-REWARD-HD-RUNTIME-E1":
+        mutations = (
+            lambda x: x.update(normal_player_verified=True),
+            lambda x: x.update(continuations=0),
+            lambda x: x.update(f2_boundaries=0),
+            lambda x: x["rows"].pop(),
+            lambda x: x["rows"][0].update(dialogue_chrome_pixels=0),
+            lambda x: x["rows"][0].update(dialogue_chrome_shift=99),
+            lambda x: x.update(legacy_chrome_rejected=False),
+        )
+        for mutate in mutations:
+            candidate = copy.deepcopy(data)
+            mutate(candidate)
+            try:
+                validate(candidate, directory, images=False, require_chrome=require_chrome)
+            except ValueError:
+                continue
+            raise ValueError("滿背包反例未被拒收")
+        for mutate in (lambda x: x["chrome_source"]["background"].__setitem__(0, (x["chrome_source"]["background"][0]+64) % 256),
+                       lambda x: next(row for row in x["rows"] if row.get("capture")).update(final_sha256="0"*64)):
+            candidate = copy.deepcopy(data)
+            mutate(candidate)
+            try:
+                validate(candidate, directory, require_chrome=require_chrome)
+            except ValueError:
+                continue
+            raise ValueError("滿背包PNG反例未被拒收")
+        return len(mutations)+2
     if data.get("status") == "PASS-REWARD-HD-RUNTIME-E1":
         mutations = (
             lambda x: x.update(normal_player_verified=True),
@@ -256,13 +338,46 @@ def rejection_checks(data: dict, directory: Path, require_chrome: bool = False) 
     return count
 
 
-def overview(directory: Path, output: Path, reward: bool = False) -> None:
+def check_full_reward_portraits(data: dict, directory: Path, pack: Path) -> dict:
+    # The five existing full-reward fixtures use DATO0, at native (8,115).
+    require(data.get("status") == "PASS-FULL-REWARD-HD-RUNTIME-E1", "頭像抽驗只適用滿背包五分支收據")
+    catalog = json.loads((ROOT/"remake/assets/themes/modern/catalog.json").read_text())
+    assets = [a for a in catalog["assets"] if a.get("role") == "story_portrait_hd_frame" and a.get("speaker_id") == 0]
+    require(len(assets) == 1, "索爾HD頭像清冊缺件或重複")
+    asset = assets[0]
+    require(Path(asset["file"]).name == asset["file"], "頭像路徑不安全")
+    source = pack/asset["file"]
+    require(hashlib.sha256(source.read_bytes()).hexdigest() == asset["sha256"], "頭像圖源SHA不同")
+    with Image.open(source) as picture:
+        wanted = ImageOps.mirror(picture.convert("RGBA"))
+    require(wanted.size == (480, 480), "頭像不是已登錄480圖源")
+    points, captures = 0, 0
+    for row in data["rows"]:
+        if not row.get("capture") or not row["dialogue_chrome_height"]:
+            continue
+        top = (115+row["dialogue_chrome_shift"])*6
+        height = min(480, 1200-top)
+        with Image.open(directory/row["capture"]) as picture:
+            actual = picture.convert("RGBA").crop((48, top, 528, top+height))
+        difference = ImageChops.difference(actual, wanted.crop((0, 0, 480, height)))
+        require(max(high for low, high in difference.getextrema()) <= 2, "最終畫面未使用同次HD頭像或鏡射錯誤")
+        points += 480*height
+        captures += 1
+    require(captures >= 5 and points > 0, "頭像實際PNG核對不足")
+    return {"portrait_source_points": points, "portrait_captures": captures,
+            "portrait_source": {"file": asset["file"], "sha256": asset["sha256"]}}
+
+
+def overview(directory: Path, output: Path, reward: bool = False, full_reward: bool = False) -> None:
     result = Image.new("RGB", (1920, 1264), "#121a2b")
     font = ImageFont.load_default(size=22)
     draw = ImageDraw.Draw(result)
     samples = [(locale, f"expiry-{locale}-counter0-frame05.png") for locale in LOCALES]
     if reward:
         samples = [(label, f"reward-kind{kind}-phase{phase:02d}.png") for label, kind, phase in (("ITEM", 0, 6), ("GOLD", 1, 6), ("CLOSING", 1, 9), ("RESTORE", 1, 12))]
+    if full_reward:
+        samples = [("FULL INVENTORY", "case0-yes-no.png"), ("DECLINE", "case0-response-hold.png"),
+                   ("ITEM SELECTOR", "case2-item-choice.png"), ("CANCEL SELECTOR", "case3-response-hold.png")]
     for i, (label, name) in enumerate(samples):
         x, y = (i % 2) * 960, (i // 2) * 632
         draw.text((x + 12, y + 2), label, font=font, fill="white")
@@ -277,15 +392,19 @@ def main() -> None:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--overview", type=Path)
     parser.add_argument("--self-test", action="store_true")
+    parser.add_argument("--portrait-pack", type=Path, help="以正式私人包獨立核對滿背包最終頭像")
     parser.add_argument("--require-chrome", action="store_true", help="新細框驗收，舊收據維持預設相容")
     args = parser.parse_args()
     data = json.loads(args.receipt.read_text())
     report = validate(data, args.receipt.parent, require_chrome=args.require_chrome)
     report["receipt_sha256"] = hashlib.sha256(args.receipt.read_bytes()).hexdigest()
+    if args.portrait_pack:
+        report.update(check_full_reward_portraits(data, args.receipt.parent, args.portrait_pack))
     if args.self_test:
         report["rejection_checks"] = rejection_checks(data, args.receipt.parent, args.require_chrome)
     if args.overview:
-        overview(args.receipt.parent, args.overview, data.get("status") == "PASS-REWARD-HD-RUNTIME-E1")
+        overview(args.receipt.parent, args.overview, data.get("status") == "PASS-REWARD-HD-RUNTIME-E1",
+                 data.get("status") == "PASS-FULL-REWARD-HD-RUNTIME-E1")
         report["overview_sha256"] = hashlib.sha256(args.overview.read_bytes()).hexdigest()
     args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
     print(f"{report['status']}: {len(report['captures'])} PNG，{report['frames']}拍")

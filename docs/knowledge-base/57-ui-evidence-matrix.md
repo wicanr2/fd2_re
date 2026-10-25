@@ -20,7 +20,7 @@
 
 共用死亡動畫已補齊同次地圖23背景及HUD邊界，限定CONFORMED-SCOPED／RUNTIME-E1。原生姿勢／B段／最後重畫先恢復stage；HD前25拍不另疊穩定HUD人物，最後才恢復。事件、普通擊殺與完整狀態訊息caller、F2／返回及舊一般地圖逐RGB診斷通過。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的death_stage_hd_followup_20261025。混合反擊正常可達性仍未知，守衛保持；完整HD與集中正常／人工／平台仍待。
 
-滿背包獎勵的問句、逐字放棄回覆與八槽選擇器銜接已接HD，限定CONFORMED-SCOPED／RUNTIME-E1。沿既有原生規則與密封背景，HD字型、480頭像、F2與返回保持同一流程；物品仍只在選擇器關閉後替換。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的full_inventory_reward_hd_followup_20261025。框線與YESNO仍為像素；其他提示／HUD、地形／HD2／工具列及全部HD後集中正常／人工／平台仍待。
+滿背包獎勵的問句、逐字放棄回覆與八槽選擇器銜接已接HD，限定CONFORMED-SCOPED／RUNTIME-E1。沿既有原生規則與密封背景，HD字型、480頭像、F2與返回保持同一流程；物品仍只在選擇器關閉後替換。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的full_inventory_reward_hd_followup_20261025。對話細框現況依HD主收據full_reward_chrome_followup_20261026；YESNO與選擇器框線／圖示仍為像素；其他提示／HUD、地形／HD2／工具列及全部HD後集中正常／人工／平台仍待。
 
 戰後物品／金錢成功訊息已接上同次地圖23背景，限定CONFORMED-SCOPED／RUNTIME-E1。沿既有密封場景保存原生before-acted來源，每次F2驗簽章、原生重組與面板底圖。完整開框／等待／關框、文字與480頭像裁切、結算、原圖控制組及HD返回通過。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的reward_message_stage_hd_followup_20261025。原版RE與規則保持，沒有新素材／清冊；滿背包問句現況依本頁新摘要，其他提示／HUD、地形、HD2與全部HD後集中正常／人工／平台仍待。
 

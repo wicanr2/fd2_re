@@ -3,6 +3,17 @@
 狀態：現代主題仍為部分覆蓋；目前分層與缺口依[58](58-fd2-exe-re-coverage.md)。
 
 
+## 滿背包獎勵對話HD細框（CONFORMED-SCOPED／RUNTIME-E1，2026-10-26）
+
+- 範圍沿已閉合滿背包獎勵原版證據[IDA紀錄](../data/ida/fd2_death_reward_full_inventory_ida.txt)，固定FD2.EXE的SHA-256為222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f。正式消費端為runPendingNativeDeathRewards、modernHDFrame及drawModernHDFullReward，不重開規則RE。
+- 問句、NO／Escape回覆、YES後取消選擇的對話框，沿既有modernHDDialogueChrome的同來源取色、18像素舊邊帶清除及目標1920×1200三像素細框。保持原生310×86框、位移、裁切、文字／頭像及YES／NO來源。八格選擇器沿既有呈現，不由本節宣稱其框線或圖示已完成HD。
+- owner建立時由實際整備對話格與同次class色盤凍結細框。來源不符時，HD在移出待處理佇列與發布互動狀態前拒收；F2仍整組預備後發布。原生模式不因HD細框來源檢查而受阻。
+- 只在實際顯示對話框時附加HD細框；restore、八格物品面板及返回不得殘留。保留原生七種呈現phase、Draw確認後推進、五條分支的庫存／RNG／一次續行，不改保存、輸入與遊戲規則。
+- 沿既有完整Game.Draw測具驗NO、Escape、YES後丟棄第4槽、YES後選擇器Escape、兩筆獎勵依序Escape。完整畫面與代表F2階段核對原始raw cell框線RGB、舊邊帶、框外HD、文字頭像及原生狀態控制組；獨立核對PNG並拒收舊粗框。壞來源須保持佇列／庫存且可使用原生路徑，舊到期與成功獎勵提示回歸保持。
+- 驗證入口沿[滿背包HD執行器](../../tools/verify_fd2_reward_message_hd.py)及[共用框線像素檢查](../../tools/verify_fd2_hd_transient_expiry.py)。使用現行正式私人圖包、明示受控來源及新輸出目錄；限定RUNTIME-E1，不新增原版、正常玩家或平台完成聲明。完整HD及全部串接後集中人工排程保持。
+
+本節實作前為READY。五分支的實際完整畫面、F2、庫存與一次續行、原生正對照及壞來源拒收已驗；獨立PNG核對細框及同次480頭像，舊粗框實圖與收據反例拒收。數量、來源及完整命令依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的full_reward_chrome_followup_20261026。獨立驗證器以--portrait-pack指定正式私人包核對最終頭像，不以尺寸或掛勾存在代替實際像素證據。
+
 ## 戰鬥提示框的HD細框（CONFORMED-SCOPED／RUNTIME-E1，2026-10-26）
 
 - 沿用到期提示與戰後物品／金錢成功訊息的現行owner。原始資料是FDOTHER#5 raw cell1..17，固定來源見[原版檔案清單](../data/fd2-reference-files.json)，原生幾何依 `PlanNativeDialogueFrameGrid(320,5,112,19,5)` 及 `ComposeNativeChurchDialogueOverlayAt`；固定FD2.EXE的SHA-256為 `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。這是已閉合對話格的美術呈現，不重開RE。
@@ -4667,7 +4678,7 @@ AI來源補充（READY）：受控AI11／12實測，演出前可見底圖與2189
 
 精確前綴、來源快照、修改前反例、跨包比較與記憶體事件依HD主收據reward_message_stage_hd_followup_20261025，唯一數量表為58。像素主題控制組仍是同一remake，未新增原版執行器、正常通關或平台聲明；城堡地形與介面框線仍為像素，完整HD與集中人工驗收未完成。
 
-## 滿背包獎勵問句與回覆的 HD 呈現（READY，2026-10-25）
+## 滿背包獎勵問句與回覆的 HD 呈現（CONFORMED-SCOPED／RUNTIME-E1，2026-10-25）
 
 沿用 `docs/data/ida/fd2_death_reward_full_inventory_ida.txt` 的 `sub_1AA56`、
 既有 typed campaign 產生器及 `fd2_ch23_post_ida.txt` 的背景契約。
@@ -4686,7 +4697,7 @@ HD 問句與回覆明示綁定原生工作的階段，不從畫面猜測。使�
 重新合成可清除原生字墨的面板，另捕捉向量文字；逐字回覆只發布已寫入的字。
 後寫的原生 16×16 清底區裁掉較早的 HD 字墨，保留原生陰影邊界。
 移動面板同步位移並裁切文字與頭像。以兩種初始背景證明實際覆寫範圍，
-只讓這些像素覆蓋 HD 世界。框線與 YES／NO 沿原生素材，完整介面美術另列。
+只讓這些像素覆蓋 HD 世界。對話細框現況依上方滿背包HD細框規格；YES／NO與選擇器框線／圖示沿原生素材，完整介面美術另列。
 
 場景沿既有密封 compound 快照，保存 typed input、work／VGA、palette 與 map23
 當次 staging。問句及回覆使用同次背景；八槽選擇器沿既有正常地圖重繪與 HD 面板。

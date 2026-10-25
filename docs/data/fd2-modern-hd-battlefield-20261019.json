@@ -227557,7 +227557,7 @@
     },
     "limits": [
       "受控RUNTIME-E1，像素控制組是同一remake，未新增原版oracle、正常玩家或平台聲明",
-      "城堡與框線／YESNO仍為原生像素；HD材質與RGB沿既有美術近似",
+      "城堡與YESNO仍為原生像素；對話細框現況依full_reward_chrome_followup_20261026。HD材質與RGB沿既有美術近似",
       "完整HUD、其他提示、地形／HD2、獨立介面控制、浮出工具列／加速／海報及集中正常／人工／平台仍待"
     ],
     "ownership": {
@@ -236112,6 +236112,263 @@
         263
       ],
       "state": "OPEN",
+      "snapshot_refreshed": true
+    }
+  },
+  "full_reward_chrome_followup_20261026": {
+    "status": "CONFORMED-SCOPED",
+    "evidence_level": "RUNTIME-E1",
+    "date": "2026-10-26",
+    "base_commit": "0590f27d312e783baa4a96c3c02eb0e7e94aad9a",
+    "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+    "full_hd_complete": false,
+    "normal_player_verified": false,
+    "new_re": false,
+    "original_runtime_executed": false,
+    "new_art_assets": false,
+    "catalog_changed": false,
+    "private_asset_sync_required": false,
+    "catalog": {
+      "file": "remake/assets/themes/modern/catalog.json",
+      "sha256": "40bf4d83a2c13b606e84c66e2f7dddb383ca581904cdeb1f8aeabd61717d232a"
+    },
+    "original_exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "source_snapshot": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/full-reward-chrome-source-r2.json",
+      "sha256": "89b4ba7775ba0054dfefbe4c56e81a55116d0e3f9a72e7d78e4ff6d9afea54f0"
+    },
+    "tested_go_snapshot": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/full-reward-chrome-source-r1.json",
+      "sha256": "4b71e1b19db55bea6cf0d27a42ea5603d2e96406ba01c29d240f23f87f9b4bc3"
+    },
+    "implementation_sources": [
+      {
+        "file": "remake/cmd/fd2/modern_hd_full_reward.go",
+        "sha256": "fc7925d1328ed6067503f430fc0081afa4f920d610671f6624de4b641e586243"
+      },
+      {
+        "file": "remake/cmd/fd2/native_death_reward_ui.go",
+        "sha256": "84bc33bd66575b4dadc3a344a89e20417756104ffface449742d9dad91618068"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_full_reward_test.go",
+        "sha256": "c43c07cdebfd586ea6af0d0826058e5ec1f027e85e3a7f52df25d14466872442"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_full_reward_gpu_test.go",
+        "sha256": "ac962a869831406c8252db791108820fbe3e59878544cd544e7474945d1f1324"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_dialogue_chrome.go",
+        "sha256": "3e7c2bbd90da2adcdf45d2a57337b9ec871f6599ed40ea6cf31666ea8da564fb"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_dialogue_chrome_test.go",
+        "sha256": "d4c59f01dd7e60acddd831307cd93b12dc946f11697806d7401e196c99f9473b"
+      },
+      {
+        "file": "remake/internal/campaign/native_class_confirm.go",
+        "sha256": "76b9d7392c76e8e25d634a6ee1eedaa9768bcdc455ee7273ac5a170ae5308b87"
+      },
+      {
+        "file": "remake/internal/campaign/native_church_scene.go",
+        "sha256": "86838d9f4810ec1c22630df74134ce99a7d1b62dfbcd7aab55e85b87234cce85"
+      },
+      {
+        "file": "tools/verify_fd2_reward_message_hd.py",
+        "sha256": "95610dc5c65086ca39433fa8ecb316c6698bb029627f0f3e8c41a6e558ceec31"
+      },
+      {
+        "file": "tools/verify_fd2_hd_transient_expiry.py",
+        "sha256": "4afaa4c3d92dce95eb52a436b69824f237a0df048555b0efbdf32419962d5322"
+      },
+      {
+        "file": "tools/fd2_go_test_memory_probe.py",
+        "sha256": "8e7c9c55b85aa72a5026b944233b94f7c0787f51b3f5ebb178ed54cc333e40f2"
+      },
+      {
+        "file": "docs/data/ida/fd2_death_reward_full_inventory_ida.txt",
+        "sha256": "424d4ffa34174a980c65b8ce146f34481e66e4f8840bf870b83829dcbea03c3b"
+      }
+    ],
+    "commands": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/full-reward-chrome-commands-r1.json",
+      "sha256": "db627eb6091c898024e1563580d3ae83d4283410aa73d5d0e5583b8b850f9e29"
+    },
+    "go_runs": [
+      {
+        "kind": "unit",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/full-reward-chrome-unit-r1.gate.json",
+          "sha256": "c527ec6f8d86e031641acc393f0ea117dd273bbc36a1846c926722ba917a1911"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/full-reward-chrome-unit-r1.memory.json",
+          "sha256": "f7b47589ba21ba51210c53feaea99495e0586f7bfe3d6601f2cc5a84dbb6b7e5"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/full-reward-chrome-unit-r1.log",
+          "sha256": "9662d4b76cc4016bed469eaf0080ff3c0cb9290a55f3911e19354559d1588d88"
+        },
+        "named_passes": 4,
+        "elapsed_seconds": 203.237,
+        "peak_bytes": 4964741120,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "kind": "regression",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/full-reward-chrome-regression-r1.gate.json",
+          "sha256": "d52bcb1d8e0cf82e7df4f8c313beae346983149cf3e7e7767e6215099d747fbd"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/full-reward-chrome-regression-r1.memory.json",
+          "sha256": "15bc093d52b9f44fa6d267758f78c61956882a6037ab79e9a6981e10af87eb59"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/full-reward-chrome-regression-r1.log",
+          "sha256": "ed8caa26b620618d74f8c19940918f0d4f68b00bb4aa8f1d9da20c37eab839f9"
+        },
+        "named_passes": 8,
+        "elapsed_seconds": 23.107,
+        "peak_bytes": 681779200,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "kind": "game",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/full-reward-chrome-game-r1.gate.json",
+          "sha256": "dce96c576c68903835e24f1822286568291541d0032bfd9606b7abf53cb52a8d"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/full-reward-chrome-game-r1.memory.json",
+          "sha256": "57477366dcdf8bf4c4f440b58f0c7dd455e93a8c6bbf121645b77c827451158d"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/full-reward-chrome-game-r1.log",
+          "sha256": "4833fb7bfcf3f5d58e50d8afdcddc2faaabe18840fd799ca865046b85aa217e4"
+        },
+        "named_passes": 1,
+        "elapsed_seconds": 348.386,
+        "peak_bytes": 5696036864,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      }
+    ],
+    "summary": {
+      "named_go_passes": 13,
+      "cases": 5,
+      "game_frames": 291,
+      "f2_boundaries": 40,
+      "continuations": 5,
+      "dialogue_chrome_pixels": 16601760,
+      "png_dialogue_chrome_pixels": 421200,
+      "portrait_source_points": 1152000,
+      "captures": 10,
+      "rejection_checks": 9,
+      "independent_runtime_files": 6062
+    },
+    "receipt": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/full-reward-chrome-game-r1-capture/receipt.json",
+      "sha256": "3c129c137e9c849d2d78505d19976e2d5343f6c20c58e535716e76de4e34f930"
+    },
+    "independent_capture_check": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/full-reward-chrome-independent-r2.json",
+      "sha256": "d2525d88c01d989ac85715744fb1f58ed135003573eede8d7ea8ea6d7385203c"
+    },
+    "portrait_and_old_frame_control": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/full-reward-chrome-portrait-source-r1.json",
+      "sha256": "f3a5c0e1b58abd9586f8d07e3fc863d624fa06601aeb17562cc545313e272418"
+    },
+    "overview": {
+      "file": "docs/figures/hd-full-inventory-reward-chrome.png",
+      "sha256": "4860b30125777684c6ed0f2254f8e5fcb0e0500b997aa295fd36d5099ea1fbdc"
+    },
+    "cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/full-reward-chrome-cleanup-r1.json",
+      "sha256": "0b5cdc30824ae1454ad4d64eb5f4f7133ad9c1625670085d300c82072ae0456d"
+    },
+    "construction_policy": {
+      "fixture": "rewardStageGame + makeNativeDeathRewardKiller",
+      "map_index": 23,
+      "map_selector_key": 0,
+      "portrait_dato": 0,
+      "inventory": [
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      "item": 211,
+      "queued_item": 212,
+      "native_seed": 7,
+      "fixed_clock_unix": 1000
+    },
+    "cases": [
+      "NO",
+      "Escape",
+      "YES後丟棄第4槽",
+      "YES後選擇器Escape",
+      "兩筆獎勵依序Escape"
+    ],
+    "unchanged": [
+      "庫存／裝備旗標與關框後替換",
+      "原生輸入／七種phase／RNG／一次續行",
+      "保存格式、正式清冊及私人圖包"
+    ],
+    "known_differences": [
+      "三像素細框在1920×1200目標定義，隨視窗幾何縮放，屬美術近似。",
+      "YESNO、選擇器框線／圖示及城堡地形仍為原生；本批沒有新重繪頭像。",
+      "受控RUNTIME-E1，不新增原版oracle、正常玩家、冷讀或平台聲明。"
+    ],
+    "remaining": [
+      "其餘介面、地形及HD2圖源",
+      "主題／介面獨立六組合、工具列字級／加速／海報",
+      "全部串接後集中正常玩家、人工及平台確認"
+    ],
+    "setup_failures": [
+      "Markdown反引號使JavaScript字面值在執行前解析失敗，無任何寫入；調整引號後相同規格寫入。",
+      "登入shell重設Go映像PATH，格式化未啟動；改用映像既有非登入shell後通過，未重建映像。"
+    ],
+    "final_checks": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/full-reward-chrome-final-checks-r1.json",
+      "sha256": "2e45f7bc231856c93a56107681a4ecbe57abdb4e11bac18100a7c0e1e9fdc08c"
+    },
+    "github": {
+      "open_issues": [
+        4,
+        201,
+        202,
+        204,
+        263
+      ],
       "snapshot_refreshed": true
     }
   }

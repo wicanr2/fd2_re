@@ -30,6 +30,33 @@ type fullRewardGPUProbe struct {
 	final, controlScreen       *ebiten.Image
 	pixels, world              []byte
 	checker                    unitPresentGPUProbe
+	chromeSource               dialogueChromeSource
+	chromePoints               int
+	legacyChromeRejected       bool
+}
+
+// Derive coverage from the existing native job, independently of the new panel list.
+func fullRewardChromeRegion(g *Game) (int, image.Rectangle) {
+	if g.nativeDeathRewardUI == nil || g.itemOpen {
+		return 0, image.Rectangle{}
+	}
+	shift := 0
+	if job := g.nativeClassUIJob; job != nil {
+		if job.frame == len(job.frames) && len(job.restore) != 0 {
+			return 0, image.Rectangle{}
+		}
+		switch g.nativeDeathRewardUI.hd.kind {
+		case fullRewardOpening:
+			if job.frame < 6 {
+				shift = (5 - job.frame) * 13
+			}
+		case fullRewardBlankClosing, fullRewardCancelClosing:
+			shift = (job.frame + 1) * 13
+		case fullRewardCancelOpening:
+			shift = (5 - job.frame) * 13
+		}
+	}
+	return shift, image.Rect(5, 112+shift, 315, 198+shift)
 }
 
 func (p *fullRewardGPUProbe) Layout(int, int) (int, int) { return 640, 400 }
@@ -151,6 +178,17 @@ func (p *fullRewardGPUProbe) Draw(screen *ebiten.Image) {
 	presentation.DrawFinalScreen(p.final, screen, geom)
 	p.final.ReadPixels(p.pixels)
 	digest := sha256.Sum256(p.pixels)
+	shift, chromeRect := fullRewardChromeRegion(g)
+	chromePoints, err := checkDialogueChromePixels(p.pixels, p.chromeSource, chromeRect)
+	wantPanels := 0
+	if !chromeRect.Empty() {
+		wantPanels = 1
+	}
+	if err != nil || len(g.modernHDText.panels) != wantPanels {
+		p.err = fmt.Errorf("%s dialogue chrome: %v", key, err)
+		return
+	}
+	p.chromePoints += chromePoints
 	// The modal never writes above native y=112; item regions have a separate
 	// producer, checked by the existing panel tests and native state controller.
 	outside := 0
@@ -187,6 +225,16 @@ func (p *fullRewardGPUProbe) Draw(screen *ebiten.Image) {
 			p.err = fmt.Errorf("%s retained HD in pixel mode", key)
 			return
 		}
+		if !chromeRect.Empty() && !p.legacyChromeRejected && phase == "yes-no" {
+			p.final.Clear()
+			presentation.DrawFinalScreen(p.final, screen, geom)
+			p.final.ReadPixels(p.pixels)
+			if _, err := checkDialogueChromePixels(p.pixels, p.chromeSource, chromeRect); err == nil {
+				p.err = fmt.Errorf("native enlarged border passed HD chrome check")
+				return
+			}
+			p.legacyChromeRejected = true
+		}
 		if err := g.applyTheme(p.set); err != nil {
 			p.err = err
 			return
@@ -201,7 +249,7 @@ func (p *fullRewardGPUProbe) Draw(screen *ebiten.Image) {
 		}
 		p.seen[key] = true
 	}
-	row := map[string]any{"case": p.index, "phase": phase, "f2_roundtrip": f2, "native_control_unchanged": true, "world_sha256": fmt.Sprintf("%x", sha256.Sum256(p.world)), "final_sha256": fmt.Sprintf("%x", digest), "outside_hd_pixels": outside, "text_runs": len(g.modernHDText.runs)}
+	row := map[string]any{"case": p.index, "phase": phase, "f2_roundtrip": f2, "native_control_unchanged": true, "world_sha256": fmt.Sprintf("%x", sha256.Sum256(p.world)), "final_sha256": fmt.Sprintf("%x", digest), "outside_hd_pixels": outside, "text_runs": len(g.modernHDText.runs), "dialogue_chrome_pixels": chromePoints, "dialogue_chrome_shift": shift, "dialogue_chrome_height": chromeRect.Intersect(image.Rect(0, 0, 320, 200)).Dy()}
 	if f2 && (p.index == 0 || p.index == 2 || p.index == 3) && (phase == "yes-no" || phase == "response-hold" || phase == "item-choice" || phase == "return") {
 		name := key + ".png"
 		pic := image.NewRGBA(image.Rect(0, 0, 1920, 1200))
@@ -293,14 +341,15 @@ func TestModernHDFullRewardGameGPU(t *testing.T) {
 		t.Fatal(err)
 	}
 	p := &fullRewardGPUProbe{t: t, set: set, g: g, control: control, out: out, seen: map[string]bool{}, final: ebiten.NewImage(1920, 1200), controlScreen: ebiten.NewImage(640, 400), pixels: make([]byte, 1920*1200*4), world: make([]byte, 1920*1200*4)}
+	p.chromeSource = nativeDialogueChromeSource(g.nativePreparationUI.dialogue, g.nativeClassUI.palette)
 	ebiten.SetVsyncEnabled(false)
 	if err := ebiten.RunGame(p); err != nil {
 		t.Fatal(err)
 	}
-	if p.err != nil || p.index != 5 {
+	if p.err != nil || p.index != 5 || !p.legacyChromeRejected {
 		t.Fatal("incomplete full inventory flow", p.index, p.err)
 	}
-	d := map[string]any{"status": "PASS-FULL-REWARD-HD-RUNTIME-E1", "cases": 5, "map_index": 23, "native_seed": 7, "fixed_clock_unix": 1000, "rgba_tolerance": 2, "normal_player_verified": false, "rows": p.rows, "f2_boundaries": len(p.seen), "continuations": p.calls}
+	d := map[string]any{"status": "PASS-FULL-REWARD-HD-RUNTIME-E1", "cases": 5, "map_index": 23, "native_seed": 7, "fixed_clock_unix": 1000, "rgba_tolerance": 2, "normal_player_verified": false, "rows": p.rows, "game_frames": len(p.rows), "f2_boundaries": len(p.seen), "continuations": p.calls, "dialogue_chrome": true, "chrome_source": p.chromeSource, "chrome_pixels": p.chromePoints, "legacy_chrome_rejected": p.legacyChromeRejected}
 	raw, _ := json.MarshalIndent(d, "", "  ")
 	if err := os.WriteFile(filepath.Join(out, "receipt.json"), append(raw, '\n'), 0644); err != nil {
 		t.Fatal(err)

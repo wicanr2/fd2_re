@@ -13,7 +13,7 @@ from verify_fd2_player9_map_hd import check_real_runtime
 
 ROOT = Path(__file__).resolve().parents[1]
 REQUIRED = {
-    "full-unit": {"TestModernHDFullRewardQuestion", "TestModernHDFullRewardGlyphClears", "TestModernHDFullRewardSource"},
+    "full-unit": {"TestModernHDFullRewardQuestion", "TestModernHDFullRewardGlyphClears", "TestModernHDFullRewardSource", "TestModernHDFullRewardChromeRejectsBeforeQueue"},
     "full-game": {"TestModernHDFullRewardGameGPU"},
     "stage-unit": {"TestModernHDRewardStageSource"},
     "stage-game": {"TestModernHDRewardStageGameGPU"},
@@ -74,7 +74,8 @@ def main():
         if (d.get("status") != "PASS-FULL-REWARD-HD-RUNTIME-E1" or d.get("cases") != 5
                 or d.get("map_index") != 23 or d.get("native_seed") != 7 or d.get("fixed_clock_unix") != 1000
                 or d.get("normal_player_verified") is not False or d.get("continuations") != 5
-                or d.get("f2_boundaries", 0) < 30):
+                or d.get("f2_boundaries", 0) < 30 or d.get("dialogue_chrome") is not True
+                or d.get("legacy_chrome_rejected") is not True or d.get("chrome_pixels", 0) <= 0):
             raise ValueError("滿背包五分支或F2邊界缺項")
         for case in range(5):
             rows = [r for r in d.get("rows", []) if r.get("case") == case]

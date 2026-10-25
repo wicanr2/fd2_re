@@ -4,11 +4,13 @@ import (
 	"bytes"
 	"image"
 	"reflect"
+	"strings"
 	"testing"
 	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
+	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 	"github.com/wicanr2/fd2_re/remake/internal/fdtxt"
 )
 
@@ -69,6 +71,36 @@ func TestModernHDFullRewardGlyphClears(t *testing.T) {
 	writes[1].background = false
 	if len(modernHDWrittenRuns(c)) != 2 {
 		t.Fatal("transparent glyph erased older ink")
+	}
+}
+
+func TestModernHDFullRewardChromeRejectsBeforeQueue(t *testing.T) {
+	t.Setenv("FD2_MUTE", "1")
+	for _, hd := range []bool{false, true} {
+		g, _ := rewardStageGame(t, nil)
+		a := makeNativeDeathRewardKiller(t, g)
+		ui := *g.nativePreparationUI
+		ui.dialogue = append([]fdother.RawCell(nil), ui.dialogue...)
+		ui.dialogue[13].Pixels = append([]byte(nil), ui.dialogue[13].Pixels...)
+		ui.dialogue[13].Pixels[0] ^= 1 // Native compositor accepts this nonuniform fill.
+		g.nativePreparationUI = &ui
+		g.pendingNativeDeathRewards = []pendingNativeDeathReward{{killer: a, item: 211}}
+		before := *a
+		seed := g.nativeRNGState
+		if hd {
+			g.modernStoryPortraits = &modernStoryPortraitSet{hasHD: true}
+		}
+		g.runPendingNativeDeathRewards(nil)
+		if !reflect.DeepEqual(before, *a) || g.nativeRNGState != seed {
+			t.Fatal("chrome preflight changed inventory or RNG")
+		}
+		if hd {
+			if !strings.Contains(g.loadErr, "background is not uniform") || len(g.pendingNativeDeathRewards) != 1 || g.nativeDeathRewardUI != nil || g.nativeSystemEndTurnUI != nil || g.nativeClassUIJob != nil || g.nativeItemPanel != nil {
+				t.Fatal("bad HD chrome published modal or consumed queue", g.loadErr)
+			}
+		} else if g.loadErr != "" || len(g.pendingNativeDeathRewards) != 0 || g.nativeDeathRewardUI == nil {
+			t.Fatal("HD-only source check blocked native mode", g.loadErr)
+		}
 	}
 }
 

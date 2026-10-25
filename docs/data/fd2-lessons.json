@@ -4367,8 +4367,8 @@
       "id": "script-generation-keeps-language-boundaries",
       "date": "2026-10-26",
       "area": "工具腳本",
-      "rule": "用JavaScript產生Python或shell命令時，以json.loads解碼JSON文字，不把含true／false的JSON直接當Python字面值。String.replace替換內容含$時使用函式回呼，shell語法先在Docker用bash -n核對。命令實例與失敗分類由docs/data/fd2-modern-hd-battlefield-20261019.json的battle_dialogue_chrome_followup_20261026.commands定位。",
-      "why": "彙整腳本把JSON false直接嵌入Python而NameError；另一個替換字串含shell的$符號，被JavaScript當替換語法展開而使Bash語法錯誤。兩次均在測試前停止，改解碼與函式回呼後沿原輸入通過，未改正式遊戲規則。",
+      "rule": "用JavaScript產生Python或shell命令時，以json.loads解碼JSON文字，不把含true／false的JSON直接當Python字面值。String.replace替換內容含$時使用函式回呼，shell語法先在Docker用bash -n核對。命令實例與失敗分類由docs/data/fd2-modern-hd-battlefield-20261019.json的battle_dialogue_chrome_followup_20261026.commands定位。 Markdown內容的反引號以資料參數處理，不直接嵌入JavaScript樣板；段落用真正換行，寫入後核對沒有意外的字面換行轉義。",
+      "why": "彙整腳本把JSON false直接嵌入Python而NameError；另一個替換字串含shell的$符號，被JavaScript當替換語法展開而使Bash語法錯誤。兩次均在測試前停止，改解碼與函式回呼後沿原輸入通過，未改正式遊戲規則。 本批Markdown反引號亦使JavaScript在執行前中止，雙重轉義則在新段落留下字面換行；已在提交前限縮範圍修正，沒有改寫原有程式碼範例。",
       "evidence": "WORKLOG.md#2026-10-26-戰鬥提示框hd細框"
     }
   ]
