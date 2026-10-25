@@ -226458,5 +226458,275 @@
       "images_rebuilt": false,
       "other_projects_touched": false
     }
+  },
+  "commands1012_stage_hd_followup_20261025": {
+    "status": "CONFORMED-SCOPED",
+    "base_commit": "818e832c86e1d5ae645e8adbcf159997ccc2bfe5",
+    "scope": "指令10～12的同次特殊背景與11／12前奏單次徑向遮罩",
+    "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+    "evidence": [
+      "docs/data/ida/fd2_command10_12_presentation_ida.txt",
+      "docs/data/ida/fd2_ch22_post_ida.txt",
+      "docs/data/ida/fd2_ch23_post_ida.txt"
+    ],
+    "full_hd_complete": false,
+    "normal_player_complete": false,
+    "art_unchanged": true,
+    "issue": 272,
+    "source_snapshot": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/commands1012-stage-source-snapshot-oct25-r3.json",
+      "sha256": "2c5581923825e5a415b49209082e6154c7d40ec44e1697bc0f45cb7e53a39efd"
+    },
+    "source_before": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/commands1012-stage-before-oct25-r1.log",
+    "formal_case_ids": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "private_case_ids": [
+      0,
+      8
+    ],
+    "scope_notes": [
+      "原生反例使用非恆等LUT／目的映色暴露重複合成；完整GPU矩陣保持原始map23 banks。",
+      "AI首輪缺class19抗性資料，正式規則正確拒收；改用既有AI command10測具的明示class5／抗性10，不猜補原版表。",
+      "AI第二輪揭露最後重繪誤用舊基準輸入，新增獨立密封hdSteady來源；停止舊formal R1，保留診斷，正式驗收R3重跑，不將R1收據當最終成果。",
+      "R3核心實測AI11／12 units_equal=true、hud_equal=false；先前姿勢假說訂正為HUD來源差異。獨立hdSteady使五項核心通過。"
+    ],
+    "first_unit_probe": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/commands1012-stage-unit-oct25-r1.gate.json",
+    "core_gate": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/commands1012-stage-core-oct25-r3.gate.json",
+      "sha256": "408a1854281537edc044fccb392fce7608398eca38aced4dd55ca8bff830851e"
+    },
+    "evidence_level": "RUNTIME-E1",
+    "gates": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/commands1012-stage-core-oct25-r3.gate.json",
+        "sha256": "408a1854281537edc044fccb392fce7608398eca38aced4dd55ca8bff830851e",
+        "required": 5
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/commands1012-stage-native-oct25-r3.gate.json",
+        "sha256": "d296bd8da7512d8ea620eb38b9c54f8c2dc4687313c93997a5de7448f0d67a6f",
+        "required": 15
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/commands1012-stage-ordinary-oct25-r3.gate.json",
+        "sha256": "c9f08282c67c1f2ce687c15cc07e08df83132f957cc78617367fa7fdff556417",
+        "required": 2
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/commands1012-stage-game-formal-oct25-r3.gate.json",
+        "sha256": "c24f4422f49112bd82f5de118d7b14da6d27ddaf7b45276ab50207ef68f44462",
+        "required": 1
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/commands1012-stage-game-private-oct25-r3.gate.json",
+        "sha256": "4e7c34a2230105f4de30e0f5120a7041c59c996701449404772a80c6deff9078",
+        "required": 1
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/commands1012-stage-strings-oct25-r1.gate.json",
+        "sha256": "f3b5984b7f8b0bbc74dc92dc806490f333f6b519b52694365857ebbd0e61df50",
+        "required": 8
+      }
+    ],
+    "required_test_executions": 32,
+    "unique_required_tests": 31,
+    "cross_pack": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/commands1012-stage-cross-pack-oct25-r3.json",
+      "sha256": "fd93a740ea6b02e7fb663bf985ea899309b5405bf840f09931b9cac56669572e"
+    },
+    "readme_overview": {
+      "file": "docs/figures/hd-commands1012-stage.png",
+      "sha256": "8e344c77fedc5359e9aa84aabd63594d641576e9e8ecba457f65aef7df7416f1"
+    },
+    "readme_recipe": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/commands1012-stage-readme-overview-oct25-r3.json",
+      "sha256": "e00c37b0e85b6915dc59cf6c498c7fa1319bd973780ef784fb21ef319972165b"
+    },
+    "string_inventory": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/commands1012-stage-string-inventory-oct25-r3.json",
+      "sha256": "b309eea9c38944253de55d3ecefeb661cb0e6bf54a0489ec8b4881d6c8bcf0dc"
+    },
+    "string_dispositions": 109,
+    "catalog_sha256": "c1b2c20ee56bf2e45324155829f9778bfff14a25d9edce9d06dc56f2074d42df",
+    "validation_summary": {
+      "formal_cases": 9,
+      "formal_draws": 1083,
+      "formal_f2": 90,
+      "formal_returns": 9,
+      "formal_pngs": 63,
+      "private_cases": [
+        0,
+        8
+      ],
+      "private_draws": 237,
+      "private_f2": 19,
+      "private_returns": 2,
+      "private_pngs": 13,
+      "core_tests": 5,
+      "native_regressions": 15,
+      "ordinary_tests": 2,
+      "string_tests": 8
+    },
+    "maximum_test_peak_bytes": 6159302656,
+    "memory": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/commands1012-stage-core-oct25-r3.memory.json",
+        "peak": 3830738944,
+        "delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/commands1012-stage-native-oct25-r3.memory.json",
+        "peak": 553115648,
+        "delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/commands1012-stage-ordinary-oct25-r3.memory.json",
+        "peak": 3390119936,
+        "delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/commands1012-stage-game-formal-oct25-r3.memory.json",
+        "peak": 5362774016,
+        "delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/commands1012-stage-game-private-oct25-r3.memory.json",
+        "peak": 6159302656,
+        "delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/commands1012-stage-strings-oct25-r1.memory.json",
+        "peak": 67612672,
+        "delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      }
+    ],
+    "no_final_skip_timeout_oom": true,
+    "memory_scope": "記錄cgroup memory.events.max，不把觸及6GiB後可回收且無OOM的測試宣稱有記憶體餘裕。平台與正常玩家效能待集中驗收。",
+    "private_pack_mode": "直接唯讀私人保存庫的5969個runtime實體檔，不另複製大型素材包；無新美術／清冊／私人提交。",
+    "private_commit": "06e09c2750c8be449d187a80807e0159930adebe",
+    "visual_review": "已檢視前奏、基準底圖、雙目標916／986與返回。綠色背景、人物及數字為HD，城堡及框線仍為像素。",
+    "known_remaining": [
+      "其他徑向、單位轉場及獎勵等特殊背景消費端。",
+      "其餘HD地形、HD2、完整HUD／介面獨立控制、浮出工具列／加速／海報。",
+      "全部HD後的集中正常玩家、蓋亞手腕與凱麗右腳人工確認及平台效能。"
+    ],
+    "cleanup": {
+      "status": "CLEANED",
+      "regular_files": 76,
+      "regular_bytes": 35948151,
+      "video_files": 0,
+      "plan": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/commands1012-stage-cleanup-plan-oct25-r3.json",
+      "plan_sha256": "b6e0362fc45447e41e0c18c98a218882626a0c161bc2d9cefa5cd51948564fbf",
+      "preserved_diagnostics": [],
+      "scope": "只刪除與正式63張逐SHA相同的私人／舊版診斷PNG，保留正式畫面與全部收據／log；原版及私人素材保持",
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/commands1012-stage-cleanup-oct25-r3.json",
+      "sha256": "fd3dfd531bb2c621ef17bda55273a6116825944a5d0ccdaa157e891b3e17f1eb"
+    },
+    "issue_update": {
+      "status": "PASS",
+      "closed_issue": 272,
+      "open_worklist_count": 24,
+      "acceptance_unchanged": true,
+      "other_22_unchanged": true,
+      "comparison_scope": "title/body/label names",
+      "unchanged": [
+        269,
+        201,
+        268,
+        202,
+        4,
+        265,
+        9,
+        239,
+        33,
+        224,
+        198,
+        206,
+        11,
+        10,
+        7,
+        197,
+        52,
+        41,
+        15,
+        12,
+        8,
+        6
+      ],
+      "source": "host gh REST sort=updated, Cache-Control no-cache; directGET272 closed; initial list cache still included272",
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/commands1012-stage-issues-verified-oct25-r3.json",
+      "sha256": "5fb3f0c9cdb646c474ac4657cbd9b3d5f8e00942d0b16528a45abb95aad18271"
+    },
+    "links": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/commands1012-stage-links-oct25-r3.json",
+      "sha256": "6b2e977473f58059e5edd70b81af15a9000c93b98c7f7de6cbe582fa3582147d"
+    },
+    "ownership": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/commands1012-stage-ownership-oct25-r3.json",
+      "sha256": "292c2cb00e4ef27f85032f56cd80de2dec563ff760c7444da39b155ca6532b81"
+    },
+    "docker_cleanup": {
+      "status": "PASS",
+      "unexpected_go_or_asset_containers": 0,
+      "images_rebuilt": false,
+      "other_projects_touched": false
+    }
   }
 }

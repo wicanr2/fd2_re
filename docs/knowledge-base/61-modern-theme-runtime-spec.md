@@ -4425,3 +4425,24 @@ RUNTIME-E1，不新增正常玩家或原版執行器對拍。回復與其他徑�
 重跑入口為維護中Go Docker內的`python3 tools/verify_fd2_unit_present_hd.py --help`。使用`--kind heal-stage-source`驗原生背景、`--kind heal-stage-unit`驗遮罩／快照／失敗回復、`--kind heal-stage-game`跑八組完整Game.Draw，明示`--catalog`、`--pack`、不存在的`--out`前綴與有界`--timeout`。私人實體包唯讀掛載，加`--require-real-runtime --heal-stage-sample`只跑13單目標及16多目標兩端；不能稱為兩包完整八組。既有收據可用`--check-existing`稽核。固定原包、seed7及clock1000，user1000、network none、6GiB／2CPU／256 pids，Xvfb由工具有界管理。
 
 來源快照、精確輸出前綴、測試峰值與跨包比較依HD主收據`heal_stage_hd_followup_20261025`，唯一數量表為58。RGB映色與新材質屬既有美術近似；控制組是同一remake的像素主題，未重跑FD2.EXE。正常玩家、集中人工及平台驗收仍待全部HD串接後執行，城堡地形與介面框線尚未HD。
+
+
+## 指令10～12與前奏的特殊背景來源（READY，2026-10-25）
+
+既有fd2_command10_12_presentation_ida.txt已證實三個wrapper與共用21548；fd2_ch22_post_ida.txt已證實2189A先以11EEE建立一次地形快照，再以十份LUT與不同半徑調色、重畫物件，最後11CAC恢復。地圖23的11EEE staging分支依fd2_ch23_post_ida.txt。輸入雜湊、IDA版本及線性位址沿三份主證據，不重開callee。
+
+章節23在啟動前捕捉同次背景，2189A地形快照與最後普通重繪先恢復staging，避免對已合成目的重映色。主段底圖與結果／hold沿同次密封場景；三張1F558衍生surface仍只取原始地形像素，不額外塞入特殊背景或改取樣表。HD前奏的整張背景使用原生單次徑向遮罩，人物不變色。RGB映色沿既有近似與alpha，不改規則、MP／HP／RNG、音效、節拍、Draw確認或一次續行。
+
+主段與前奏分別密封typed input、原生work／VGA、同次staging、幾何、LUT與原生預建畫面。每次F2重驗來源與原生重組，不能讀後續live stage或因已有快取省略驗證。缺背景／素材與快照修改原子拒收；沿既有1012晚失敗交易回復，不猜補原版未知行為。
+
+驗收以真實map23固定clock1000與seed7，三種指令各命中、MISS及雙目標完整Game.Draw，像素主題控制組、全部前奏／取樣／結果／hold與HD返回，以及冷拒收、來源隔離、AI正式入口及一般地圖回歸。私人實體圖包重跑兩端抽樣並逐SHA核圖，不稱兩包完整矩陣。限定受控RUNTIME-E1，未重跑FD2.EXE；其他徑向／單位轉場／獎勵、其餘地形與全部HD後的集中正常／人工／平台仍待。
+
+AI來源補充（READY）：受控AI11／12實測，演出前可見底圖與2189A最後11CAC重繪的物件名冊相同，HUD來源不同。前者沿原快照，後者另封存該次buildNativeMapFrameInput的typed input／work／VGA與同次stage，不能以舊底圖的HUD驗新重繪。兩份來源都重驗簽章與原生重組，AI正式入口驗收包含此邊界。這是重製端來源校驗修正，原生producer與規則保持。
+
+### 指令10～12特殊背景驗證範圍（CONFORMED-SCOPED／RUNTIME-E1）
+
+前述READY已實作。主段與前奏共用同次背景，AI最後普通重繪另保存當下typed input／work／VGA，不能用演出前的物件／HUD資料代替。每次F2驗來源簽章與原生重組；遮罩內外、冷來源缺失、修改封存來源及既有交易回復通過。三張衍生surface仍只取原始地形，沒有把綠色背景塞入原版未使用它的取樣路徑。
+
+重跑在維護中的Go Docker使用`python3 tools/verify_fd2_unit_present_hd.py --help`。`--kind commands1012-stage-core`驗五個來源／AI測項；`--kind commands1012-stage-game`驗九組完整Game.Draw。明示`--catalog`、`--pack`、不存在的`--out`前綴與有界`--timeout`；私人實體圖包唯讀掛載並加`--require-real-runtime --commands1012-stage-sample`，只跑10單目標與12雙目標。固定原包、seed7、clock1000，user1000、network none、6GiB／2CPU／256 pids。既有普通地圖／原生回歸沿`tools/verify_fd2_commands10_12_hd.py --kind unit|regression`。Xvfb由工具有界管理。
+
+精確來源、執行前綴、跨包比較與記憶體事件依HD主收據commands1012_stage_hd_followup_20261025，唯一數量表為58。控制組是同一remake的像素主題，RGB為既有美術近似；未重跑FD2.EXE，不新增正常玩家、音訊聽感或平台聲明。其餘徑向／單位轉場／獎勵、地形／HD2／完整介面與集中驗收仍待。

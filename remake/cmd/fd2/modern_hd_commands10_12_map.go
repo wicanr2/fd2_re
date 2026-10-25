@@ -141,6 +141,9 @@ func (g *Game) prepareModernHDCommand1012(j *nativeCommand1012Job, set *modernSt
 	if j.hdInputErr != nil {
 		return nil, j.hdInputErr
 	}
+	if err := g.validateModernHDCommand1012Source(j); err != nil {
+		return nil, err
+	}
 	if set.mapOverlays == nil {
 		return nil, errors.New("modern HD command10-12: result bank unavailable")
 	}
@@ -153,11 +156,11 @@ func (g *Game) prepareModernHDCommand1012(j *nativeCommand1012Job, set *modernSt
 			return nil, errors.New("modern HD command10-12: result bank geometry changed")
 		}
 	}
-	steady, err := g.prepareModernHDCommandSteady(j.hdBaseline, j.baselineWork, j.baselineVGA, j.palette, set)
+	steady, err := g.prepareModernHDCommandSteadyStage(j.hdBaseline, j.baselineWork, j.baselineVGA, j.palette, set, j.hdScene.stage)
 	if err != nil {
 		return nil, err
 	}
-	objects, err := g.prepareModernHDCommandSteady(j.hdInput, j.baselineWork, j.baselineVGA, j.palette, set)
+	objects, err := g.prepareModernHDCommandSteadyStage(j.hdInput, j.baselineWork, j.baselineVGA, j.palette, set, j.hdScene.stage)
 	if err != nil {
 		return nil, err
 	}
@@ -207,7 +210,10 @@ func (g *Game) prepareModernHDCommandPrelude(j *native2189AJob, set *modernStory
 	if set == nil || len(set.mapSpritesHD) != 125 {
 		return nil, errors.New("modern HD prelude: incomplete HD world")
 	}
-	normal, err := g.prepareModernHDCommandSteady(j.hdInput, j.hdTerrain, j.vgaFrames[10], j.palette, set)
+	if err := g.validateModernHDCommandPreludeSource(j); err != nil {
+		return nil, err
+	}
+	normal, err := g.prepareModernHDCommandSteadyStage(j.hdSteady.input, j.hdSteady.work, j.hdSteady.vga, j.palette, set, j.mapStage)
 	if err != nil {
 		return nil, err
 	}
@@ -230,6 +236,31 @@ func (g *Game) prepareModernHDCommandPrelude(j *native2189AJob, set *modernStory
 		plane := image.NewRGBA(image.Rect(0, 0, 312*6, 192*6))
 		for _, terrain := range normal.Terrain {
 			rect := terrain.Rect.Add(image.Pt(-24, -24))
+			if terrain.Stage {
+				palette := make(color.Palette, 256)
+				for n := range palette {
+					palette[n] = j.palette[j.hdLUTs[i][n]]
+				}
+				view := *g
+				view.modernStoryPortraits = set
+				mapped, err := view.prepareModernHDMapStage(j.hdInput.Frame, palette, -1, j.mapStage)
+				if err != nil {
+					return nil, err
+				}
+				if mapped == nil || mapped.Bounds() != terrain.Image.Bounds() {
+					return nil, errors.New("modern HD prelude: whole stage art absent")
+				}
+				clip := rect.Intersect(plane.Rect)
+				draw.Draw(plane, clip, terrain.Image, clip.Min.Sub(rect.Min), draw.Src)
+				for y := clip.Min.Y; y < clip.Max.Y; y++ {
+					for x := clip.Min.X; x < clip.Max.X; x++ {
+						if mask[(y/6)*456+x/6] != 0 {
+							plane.SetRGBA(x, y, mapped.RGBAAt(x-rect.Min.X, y-rect.Min.Y))
+						}
+					}
+				}
+				continue
+			}
 			col, row := rect.Min.X/144, rect.Min.Y/144
 			cell := j.hdInput.Frame.Cells[(j.hdInput.Frame.CameraY+row)*j.hdInput.Frame.MapWidth+j.hdInput.Frame.CameraX+col]
 			lut := make([]byte, 256)

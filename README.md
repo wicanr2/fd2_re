@@ -347,6 +347,10 @@
 
 四格取自指令10～12的實際遊戲繪製，保留完整遊戲區並縮為一半大小：地形取樣、另一取樣位置、徑向前導與雙目標結果。使用固定種子7、受控傷害與命中參數及移位角色，屬測試場景，尚未作正常玩家抽驗。人物與已重繪地形保持HD，其餘地形及HUD仍含像素素材；高解析子像素取樣與變色為現代呈現近似。來源及範圍見[HD驗證紀錄](docs/data/fd2-modern-hd-battlefield-20261019.json)的`commands10_12_map_hd_followup_20261023`。
 
+![地圖23法術前奏、底圖、雙目標傷害與返回的HD畫面](docs/figures/hd-commands1012-stage.png)
+
+指令10～12已保留同次手繪背景，四格依序為前奏、底圖、雙目標傷害與返回。畫面取自固定種子與受控角色位置的完整遊戲繪製半縮；人物、綠色背景與數字使用 HD，城堡及介面框線仍為像素。來源及範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)與[HD收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的`commands1012_stage_hd_followup_20261025`，尚未作正常玩家抽驗。
+
 ![玩家第九類攻擊的HD地圖效果與結果](docs/figures/hd-player9-map-effects.png)
 
 四格取自重製遊戲實際繪製的測試場景，依序為幽影升起、揮刃、命中與 MISS；只裁切效果周圍區域。固定亂數種子7，角色位置為(1,6)、目標為(2,6)，命中與 MISS 採受控測試參數，尚未作正常玩家抽驗。地圖人物保持HD，HUD與多數地形仍含像素素材；升起裁切、共用母稿與光形是手繪近似。來源與驗證範圍見[HD驗證紀錄](docs/data/fd2-modern-hd-battlefield-20261019.json)的`player9_map_hd_followup_20261023`。

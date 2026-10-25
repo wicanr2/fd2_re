@@ -16,20 +16,24 @@ import (
 // The address-shaped name is deliberate: evidence proves its buffer schedule,
 // not a universal gameplay or narrative meaning.
 type native2189AJob struct {
-	workFrames [][]byte
-	vgaFrames  [][]byte
-	palette    color.Palette
-	index      int
-	drawn      bool
-	then       func()
-	rollback   func()
-	hdInput    indexedmap.NativeFrameInput
-	hdInputErr error
-	hdTerrain  []byte
-	hdRadial   []fdother.RadialLUTRemap
-	hdLUTs     [][]byte
-	hdFrames   []*modernHDMapFrame
-	hdTheme    *modernStoryPortraitSet
+	workFrames  [][]byte
+	vgaFrames   [][]byte
+	palette     color.Palette
+	index       int
+	drawn       bool
+	then        func()
+	rollback    func()
+	hdInput     indexedmap.NativeFrameInput
+	hdInputErr  error
+	hdTerrain   []byte
+	hdRadial    []fdother.RadialLUTRemap
+	hdLUTs      [][]byte
+	hdFrames    []*modernHDMapFrame
+	hdTheme     *modernStoryPortraitSet
+	mapStage    *nativeCh23AdapterState
+	hdScene     *modernHDCompoundMapScene
+	hdSteady    *modernHDCompoundMapScene
+	hdSignature [32]byte
 }
 
 func nativeTransitionInput(in indexedmap.NativeFrameInput) indexedmap.NativeTransitionFrameInput {
@@ -83,8 +87,20 @@ func (g *Game) startNative2189A(loop campaign.Native2189ALoop, then func()) erro
 		return err
 	}
 	transition := nativeTransitionInput(in)
+	var stage *nativeCh23AdapterState
+	if g.nativeMapAssets.MapIndex == 23 {
+		stage = cloneNativeCh23AdapterState(g.nativeCh23State)
+		if stage == nil {
+			return errors.New("native 0x2189A same-compose stage absent")
+		}
+	}
 	snapshot := make([]byte, indexedmap.NativeUnitPresentWorkSize)
 	copy(snapshot, g.nativeMapWork)
+	if stage != nil {
+		if err := indexedmap.SeedNativeCh23Staging(snapshot, stage.staging); err != nil {
+			return err
+		}
+	}
 	if err := indexedmap.ComposeNativeUnitPresentTerrainSnapshot(snapshot, transition); err != nil {
 		return err
 	}
@@ -96,10 +112,11 @@ func (g *Game) startNative2189A(loop campaign.Native2189ALoop, then func()) erro
 			palette = current
 		}
 	}
-	job := &native2189AJob{palette: palette, then: then}
+	job := &native2189AJob{palette: palette, then: then, mapStage: stage}
 	if g.nativeCmd1012 != nil {
 		job.hdInput, job.hdInputErr = freezeModernHDCommandGeometry(in)
 		job.hdTerrain = append([]byte(nil), snapshot...)
+		job.hdScene = g.nativeCmd1012.hdScene
 	}
 	for i := 0; i < 10; i++ {
 		work := append([]byte(nil), snapshot...)
@@ -129,11 +146,33 @@ func (g *Game) startNative2189A(loop campaign.Native2189ALoop, then func()) erro
 	// so a tail failure cannot leave a partially completed beat.
 	steadyWork := append([]byte(nil), g.nativeMapWork...)
 	steadyVGA := append([]byte(nil), g.nativeMapVGA...)
+	if stage != nil {
+		if err := indexedmap.SeedNativeCh23Staging(steadyWork, stage.staging); err != nil {
+			return err
+		}
+	}
 	if err := indexedmap.ComposeNativeFrame(steadyWork, steadyVGA, in); err != nil {
 		return fmt.Errorf("native 0x2189A steady restore: %w", err)
 	}
 	job.workFrames = append(job.workFrames, steadyWork)
 	job.vgaFrames = append(job.vgaFrames, steadyVGA)
+	if g.nativeCmd1012 != nil {
+		frozen, freezeErr := freezeCompoundMapInput(in)
+		job.hdSteady = g.freezeModernHDHealScene(frozen, steadyWork, steadyVGA, palette, stage, freezeErr)
+	}
+	if g.nativeCmd1012 != nil && job.hdInputErr == nil {
+		if job.hdScene == nil {
+			job.hdInputErr = errors.New("modern HD prelude: scene absent")
+		} else {
+			job.hdInputErr = job.hdScene.err
+		}
+		if job.hdInputErr == nil {
+			job.hdInputErr = job.hdSteady.err
+		}
+		if job.hdInputErr == nil {
+			job.hdSignature, job.hdInputErr = commandPreludeSourceDigest(job)
+		}
+	}
 	beforeWork, beforeVGA := append([]byte(nil), g.nativeMapWork...), append([]byte(nil), g.nativeMapVGA...)
 	job.rollback = func() {
 		g.nativeMapWork = append(g.nativeMapWork[:0], beforeWork...)

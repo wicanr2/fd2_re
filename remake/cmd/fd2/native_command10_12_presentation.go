@@ -40,6 +40,8 @@ type nativeCommand1012Job struct {
 	resultSources             [][]indexedmap.NativeCommandTailLayer
 	hdInput, hdBaseline       indexedmap.NativeFrameInput
 	hdInputErr                error
+	hdScene                   *modernHDCompoundMapScene
+	hdSignature               [32]byte
 	hdFrames                  *modernHDCommand1012Frames
 	hdTheme                   *modernStoryPortraitSet
 }
@@ -152,6 +154,13 @@ func (g *Game) startNativeCommand1012Presentation(actor, confirmed *battle.Unit,
 	job.hdInput, err = freezeModernHDCommandGeometry(in)
 	if err != nil {
 		job.hdInputErr = err
+	}
+	job.hdScene = g.freezeModernHDHealScene(job.hdBaseline, baselineWork, baselineVGA, palette, g.nativeCh23State, job.hdInputErr)
+	if job.hdInputErr == nil {
+		job.hdInputErr = job.hdScene.err
+	}
+	if job.hdInputErr == nil {
+		job.hdSignature, job.hdInputErr = command1012SourceDigest(job)
 	}
 	if g.modernStoryPortraits != nil {
 		job.hdFrames, err = g.prepareModernHDCommand1012(job, g.modernStoryPortraits)

@@ -1,5 +1,7 @@
 # 56 — FD2 remake 系統設計規格（SDD，2026-08-09）
 
+指令10～12的基準底圖、結果與11／12前奏已接同次地圖23背景，限定CONFORMED-SCOPED／RUNTIME-E1。前奏原生重組先恢復staging，前底圖與AI最後重繪各自密封來源，F2重驗；三張衍生surface保留原始地形取樣。完整矩陣、私人兩端抽樣、AI入口、原子拒收及一般地圖回歸通過。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的commands1012_stage_hd_followup_20261025。未重跑FD2.EXE，城堡及框線仍為像素；其他消費端與全部HD後的集中正常／人工／平台仍待。
+
 回復13～16已接同次地圖23背景快照與整張HD徑向遮罩，限定CONFORMED-SCOPED／RUNTIME-E1。中段停格保留第九張，原生來源、HP／MP／RNG及一次續行已驗；冷來源缺失與晚期重繪失敗原子回復。正式完整矩陣與私人兩端抽樣、F2、AI入口及既有一般地圖／共用徑向回歸通過。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的heal_stage_hd_followup_20261025。城堡及框線仍為像素；未重跑FD2.EXE，不新增正常玩家或平台聲明。其餘凍結消費端與全部HD後的集中驗收仍待。
 
 玩家第9號法術已接同次地圖23手繪背景，完成受控命中／MISS全流程、F2、來源隔離與原子拒收。來源及唯一數量依[58](58-fd2-exe-re-coverage.md)、[61](61-modern-theme-runtime-spec.md)與HD主收據player9_stage_hd_followup_20261025；其他凍結消費端及集中正常／人工／平台仍待。
