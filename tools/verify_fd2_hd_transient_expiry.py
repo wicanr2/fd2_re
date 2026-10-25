@@ -215,6 +215,10 @@ def validate_full_reward(data: dict, directory: Path, images: bool, require_chro
         if not row.get("capture"):
             continue
         name = f"case{row['case']}-{row['phase']}.png"
+        if data.get("item_panel_chrome") and row["phase"] in {"item-open", "item-close"}:
+            steps = {0, 5, 8} if row["phase"] == "item-open" else {0, 6, 11}
+            require(row["case"] == 2 and type(row.get("item_anim_step")) is int and row["item_anim_step"] in steps, "物品開收截圖位置錯誤")
+            name = f"case2-{row['phase']}-step{row['item_anim_step']}.png"
         require(row["capture"] == name, "滿背包截圖路徑錯誤")
         path = directory/name
         if images:
@@ -228,6 +232,8 @@ def validate_full_reward(data: dict, directory: Path, images: bool, require_chro
     require(data.get("f2_boundaries") == f2 and f2 >= 30, "滿背包F2邊界不足")
     require(data.get("chrome_pixels") == total and total > 0, "滿背包細框核對總量錯誤")
     expected = {f"case{case}-{phase}.png" for case, phases in ((0, ("yes-no", "response-hold", "return")), (2, ("yes-no", "item-choice", "return")), (3, ("yes-no", "item-choice", "response-hold", "return"))) for phase in phases}
+    if data.get("item_panel_chrome"):
+        expected |= {f"case2-{phase}-step{step}.png" for phase, steps in (("item-open", (0, 5, 8)), ("item-close", (0, 6, 11))) for step in steps}
     require({row.get("capture") for row in rows if row.get("capture")} == expected, "滿背包代表截圖缺件")
     return {"status": "PASS-FULL-REWARD-HD-INDEPENDENT-CAPTURE-CHECK", "frames": len(rows), "f2_boundaries": f2,
             "captures": captures, "dialogue_chrome_pixels": total, "png_dialogue_chrome_pixels": png_total,

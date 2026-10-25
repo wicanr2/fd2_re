@@ -126,6 +126,9 @@ func (g *Game) beginNativePlayerStatus(u *battle.Unit) error {
 	if !ok || len(g.nativeUIPalette) != 256 {
 		return fmt.Errorf("native player status: panel resources unavailable")
 	}
+	if !g.preflightModernHDItemPanel(data, g.nativeUIPalette) {
+		return fmt.Errorf("native player status: %s", g.loadErr)
+	}
 	if err := g.composeNativeMapFrame(); err != nil {
 		return fmt.Errorf("native player status: %w", err)
 	}

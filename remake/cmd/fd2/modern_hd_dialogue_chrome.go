@@ -25,6 +25,8 @@ type modernHDDialogueChrome struct {
 type modernHDDialoguePanel struct {
 	chrome *modernHDDialogueChrome
 	rect   image.Rectangle // Frozen native 320x200 coordinates, before clipping.
+	clip   image.Rectangle
+	status bool // Status/item panels remain visible while the status owner is active.
 }
 
 func freezeModernHDDialogueChrome(cells []fdother.RawCell, palette color.Palette) (*modernHDDialogueChrome, error) {
@@ -95,7 +97,10 @@ func freezeModernHDDialogueChrome(cells []fdother.RawCell, palette color.Palette
 }
 
 func (c *modernHDDialogueChrome) patch() *image.RGBA {
-	const width, height = 310 * 6, 86 * 6
+	return c.patchFor(310*6, 86*6)
+}
+
+func (c *modernHDDialogueChrome) patchFor(width, height int) *image.RGBA {
 	canvas := image.NewRGBA(image.Rect(0, 0, width, height))
 	fill := func(rect image.Rectangle, ink color.RGBA) {
 		draw.Draw(canvas, rect, image.NewUniform(ink), image.Point{}, draw.Src)
@@ -130,13 +135,19 @@ func (p *modernHDPresentation) drawModernHDDialogueChrome(screen ebiten.FinalScr
 		return
 	}
 	for _, panel := range frame.panels {
+		if !panel.status && p.Game.nativePlayerStatus != nil {
+			continue
+		}
 		visible := panel.rect.Intersect(image.Rect(0, 0, 320, 200))
+		if !panel.clip.Empty() {
+			visible = visible.Intersect(panel.clip)
+		}
 		if visible.Empty() || panel.chrome == nil {
 			continue
 		}
 		chrome := panel.chrome
 		if chrome.gpu == nil {
-			chrome.gpu = ebiten.NewImageFromImage(chrome.patch())
+			chrome.gpu = ebiten.NewImageFromImage(chrome.patchFor(panel.rect.Dx()*6, panel.rect.Dy()*6))
 		}
 		local := visible.Sub(panel.rect.Min)
 		source := chrome.gpu.SubImage(image.Rect(local.Min.X*6, local.Min.Y*6, local.Max.X*6, local.Max.Y*6)).(*ebiten.Image)

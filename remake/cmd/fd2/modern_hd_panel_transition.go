@@ -102,6 +102,9 @@ func (g *Game) composeModernHDUnitStatus(data *nativeUnitStatusData, commands bo
 	if g.modernHDText == nil || g.font == nil || data == nil {
 		return nil, nil, false
 	}
+	if !g.ensureModernHDItemPanelChrome(data, palette) {
+		return nil, nil, false
+	}
 	capture := &modernHDIndexedText{palette: palette}
 	previous := g.font.indexedHD
 	g.font.indexedHD = capture
@@ -130,6 +133,7 @@ func (g *Game) drawModernHDStatusRegions(screen *ebiten.Image, source []byte, da
 	}
 	g.presentNativeClassFrameWithPalette(screen, frame, palette)
 	g.modernHDText.runs = append(g.modernHDText.runs, modernHDPanelRegionText(runs, regions)...)
+	g.appendModernHDItemPanelChrome(data, regions)
 	g.addModernHDPanelPortrait(data.record, regions)
 	return true
 }
@@ -168,6 +172,8 @@ func (g *Game) drawModernBattlePlayerStatus(screen *ebiten.Image, s *nativePlaye
 	var runs []modernHDTextRun
 	if hd, text, valid := g.composeModernHDUnitStatus(data, commands, g.nativeUIPalette); valid {
 		panel, runs = hd, text
+	} else if g.loadErr != "" {
+		return false
 	}
 	if len(panel) != 64000 {
 		return false
@@ -191,6 +197,7 @@ func (g *Game) drawModernBattlePlayerStatus(screen *ebiten.Image, s *nativePlaye
 		g.modernHDText.runs = append(g.modernHDText.runs, modernHDPanelRegionText(runs, regions)...)
 	}
 	if data != nil {
+		g.appendModernHDItemPanelChrome(data, regions)
 		g.addModernHDPanelPortrait(data.record, regions)
 	}
 	return true

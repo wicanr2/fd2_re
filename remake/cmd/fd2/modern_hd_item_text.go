@@ -47,6 +47,9 @@ func (g *Game) composeModernHDItemPanel() (*ebiten.Image, []modernHDTextRun, boo
 	if g.modernHDText == nil || g.font == nil || d == nil || len(d.data.base) != 64000 {
 		return nil, nil, false
 	}
+	if !g.ensureModernHDItemPanelChrome(&d.data, g.nativeUIPalette) {
+		return nil, nil, false
+	}
 	capture := &modernHDIndexedText{palette: g.nativeUIPalette}
 	previous := g.font.indexedHD
 	g.font.indexedHD = capture
@@ -74,6 +77,19 @@ func (g *Game) clearModernHDTextRegion(covered image.Rectangle) {
 	if g.modernHDText == nil || covered.Empty() {
 		return
 	}
+	var panels []modernHDDialoguePanel
+	for _, panel := range g.modernHDText.panels {
+		visible := panel.rect
+		if !panel.clip.Empty() {
+			visible = visible.Intersect(panel.clip)
+		}
+		for _, outside := range modernHDSubtractRect(visible, image.Rect(covered.Min.X/2, covered.Min.Y/2, covered.Max.X/2, covered.Max.Y/2)) {
+			part := panel
+			part.clip = outside
+			panels = append(panels, part)
+		}
+	}
+	g.modernHDText.panels = panels
 	var kept []modernHDTextRun
 	for _, run := range g.modernHDText.runs {
 		clip := run.clip

@@ -3,6 +3,17 @@
 狀態：現代主題仍為部分覆蓋；目前分層與缺口依[58](58-fd2-exe-re-coverage.md)。
 
 
+## 共用三區物品／狀態面板細框（CONFORMED-SCOPED／RUNTIME-E1，2026-10-26）
+
+- 本切片沿已閉合[0x17EEF原生面板來源](../../remake/internal/battle/native_item_panel_render.go)、[資料覆寫](../../remake/internal/battle/native_item_panel_data_render.go)與[0x18409三區位移](../../remake/internal/battle/native_item_selector.go)，固定輸入雜湊依[參考清單](../data/fd2-reference-files.json)。不重開規則RE。
+- 完整複製矩形為頭像區(5,7)到(91,93)、狀態區(92,7)到(315,93)、列表區(5,94)到(315,196)。實檔resource.json及entry020／021 PNG已核對：圖框分別為223×86及310×99；下方框圖止於y193，複製範圍多出的三列padding保持。HD框線必須依圖框尺寸，不能用102列複製高度推論美術形狀。每次使用正式NativeItemPanelRegion的來源／目的位移，先取得完整矩形再套原生可見範圍。上／左滑出及下方裁切保持，不能把切邊誤畫成新的外框。
+- 沿已確認的三目標像素HD細框。邊色、四角與清除舊18目標像素邊帶的底色取同次FDOTHER#5原格；原內部文字、頭像、圖示與HP／MP條保持。此項是美術近似，不宣稱原生框線逐像素一致；圖示及其他尚未HD的部分另列，不把本項當作完整介面完成。
+- 共用細框元件支援明示尺寸及裁切矩形，既有310×86對話預設保持。三區面板來源與色盤綁定快照，只快取已驗證來源；來源變造拒收，F2預檢不得部分發布新主題或改動遊戲狀態。
+- 正式接點為物品八槽、共用狀態面板與戰場玩家狀態。原生模式保持原始圖；HD框在原生面板之後、頭像與文字之前繪製。幫助、狀態頁與淡出依實際面板擁有者遮擋，不能因一般對話的遮擋條件漏掉狀態頁細框。
+- 驗原生十二位置、開收與可見範圍、完整墨跡／頭像不被侵占、無殘留及來源凍結。完整Game.Draw驗滿背包五分支與玩家狀態／指令頁、原生控制、代表F2及返回；最終PNG由獨立CPU或Pillow核對細框與舊邊帶，既有對話細框及四語確認選項回歸保持。受控測具限定RUNTIME-E1；全部HD後集中正常／人工／平台的排程保持。
+
+本節先為READY。實際圖框與複製範圍已分開，原生十二位置、31項頂層Go、物品五分支與玩家狀態兩頁已驗；來源與唯一數量依[58](58-fd2-exe-re-coverage.md)及[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的item_panel_chrome_followup_20261026。永久重跑由[Go入口](../../tools/verify_fd2_reward_message_hd.py)的item-panel-unit／item-panel-regression／item-panel-status及full-game，和[獨立PNG工具](../../tools/verify_fd2_hd_item_panel_chrome.py)定位；完整容器命令、配額及輸入雜湊保存於主收據commands。原生資料回歸另由fd2_go_test_memory_probe.py記錄。新工具的--previous驗舊粗框及框外保持，--reject-picture驗實際錯用102框高的原型，不把生成假設當作原圖尺寸。
+
 ## 滿背包四語確認選項（CONFORMED-SCOPED／RUNTIME-E1，2026-10-26）
 
 - 沿已閉合的[原生確認來源](../../remake/internal/campaign/native_class_confirm.go)及[滿背包IDA證據](../data/ida/fd2_death_reward_full_inventory_ida.txt)。固定FD2.EXE的SHA-256為222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f。FDOTHER.DAT的固定來源見[參考清單](../data/fd2-reference-files.json)，選項為resource2的action_cells。
@@ -4709,7 +4720,7 @@ HD 問句與回覆明示綁定原生工作的階段，不從畫面猜測。使�
 重新合成可清除原生字墨的面板，另捕捉向量文字；逐字回覆只發布已寫入的字。
 後寫的原生 16×16 清底區裁掉較早的 HD 字墨，保留原生陰影邊界。
 移動面板同步位移並裁切文字與頭像。以兩種初始背景證明實際覆寫範圍，
-只讓這些像素覆蓋 HD 世界。對話細框現況依上方滿背包HD細框規格；滿背包YES／NO現況依上方四語確認選項；其他確認caller及選擇器框線／圖示沿原生素材，完整介面美術另列。
+只讓這些像素覆蓋 HD 世界。對話細框現況依上方滿背包HD細框規格；滿背包YES／NO現況依上方四語確認選項；共用三區框線依本頁新節；其他確認caller及圖示沿原生素材，完整介面美術另列。
 
 場景沿既有密封 compound 快照，保存 typed input、work／VGA、palette 與 map23
 當次 staging。問句及回覆使用同次背景；八槽選擇器沿既有正常地圖重繪與 HD 面板。

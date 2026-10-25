@@ -11,11 +11,13 @@ import (
 )
 
 type NativeItemPanelDataAssets struct {
-	BattlePanel fdother.LMI1Entry
-	RawCells    map[int]fdother.RawCell
-	Frames      map[int]fdother.Frame
-	Strings     *fdtxt.Strings
-	Font        *fdtxt.Font
+	BattlePanel     fdother.LMI1Entry
+	ItemPanelUpper  fdother.LMI1Entry
+	ItemPanelBottom fdother.LMI1Entry
+	RawCells        map[int]fdother.RawCell
+	Frames          map[int]fdother.Frame
+	Strings         *fdtxt.Strings
+	Font            *fdtxt.Font
 }
 
 // LoadNativeBattlePanelValueAssets只載入0x18C6D框、bar與digit consumer需要的
@@ -408,8 +410,10 @@ func LoadNativeItemPanelDataAssets(assetPackRoot string) (NativeItemPanelDataAss
 		return NativeItemPanelDataAssets{}, err
 	}
 	assets := NativeItemPanelDataAssets{
-		RawCells: entries.Raw,
-		Frames:   entries.Frames,
+		RawCells:        entries.Raw,
+		Frames:          entries.Frames,
+		ItemPanelUpper:  entries.Opaque[20],
+		ItemPanelBottom: entries.Opaque[21],
 	}
 	var ok bool
 	assets.BattlePanel, ok = entries.Opaque[22]
@@ -438,6 +442,14 @@ func LoadNativeItemPanelDataAssetsArchive(fdotherPath, fdtxtPath string) (Native
 	assets := NativeItemPanelDataAssets{
 		RawCells: make(map[int]fdother.RawCell),
 		Frames:   make(map[int]fdother.Frame),
+	}
+	assets.ItemPanelUpper, err = fdother.ParseLMI1OpaqueEntry(raw, 20)
+	if err != nil {
+		return NativeItemPanelDataAssets{}, err
+	}
+	assets.ItemPanelBottom, err = fdother.ParseLMI1OpaqueEntry(raw, 21)
+	if err != nil {
+		return NativeItemPanelDataAssets{}, err
 	}
 	assets.BattlePanel, err = fdother.ParseLMI1OpaqueEntry(raw, 22)
 	if err != nil {

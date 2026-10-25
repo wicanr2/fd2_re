@@ -13,6 +13,14 @@ from verify_fd2_player9_map_hd import check_real_runtime
 
 ROOT = Path(__file__).resolve().parents[1]
 REQUIRED = {
+    "item-panel-unit": {"TestModernHDItemPanelChromeSourceAndGeometry", "TestModernHDItemPanelChromeFreezeAndStaging", "TestModernHDDialogueChromeSourceAndPatch"},
+    "item-panel-regression": {"TestModernHDStatusSnapshotMatchesLegacyComposition", "TestModernHDStatusChurchAndPlayerKeepIndexedTransitions",
+                              "TestModernHDPanelRegionsMoveBothTextAndClip", "TestModernHDStatusTransitionsKeepSnapshotAndIndexedCache",
+                              "TestModernHDItemEveryTransitionPassHasTranslatedText", "TestModernBattleStatusPreservesUncoveredTextAndFaithfulCache",
+                              "TestModernHDItemSelectionUsesRawSlotsAndKeepsIndexedCache", "TestModernHDItemEmptyAndEquipRollbackKeepSnapshot",
+                              "TestModernHDItemOcclusionKeepsExactlyTheOuterArea", "TestNativePlayerStatusTwoPagesWaitForDrawAndRestore",
+                              "TestNativeChurchPanelLifecycleMatches17AEDSchedules"},
+    "item-panel-status": {"TestModernHDItemPanelStatusGameGPU"},
     "confirmation-unit": {"TestModernHDConfirmationNativePlansAndText", "TestModernHDConfirmationRejectsAndFreezesSource"},
     "full-unit": {"TestModernHDFullRewardQuestion", "TestModernHDFullRewardGlyphClears", "TestModernHDFullRewardSource", "TestModernHDFullRewardChromeRejectsBeforeQueue"},
     "full-game": {"TestModernHDFullRewardGameGPU"},
@@ -47,11 +55,13 @@ def main():
     env = os.environ.copy()
     env.pop("FD2_HD_REWARD_STAGE_GPU", None)
     env.pop("FD2_HD_FULL_REWARD_GPU", None)
+    env.pop("FD2_HD_ITEM_PANEL_STATUS_GPU", None)
     env.update(FD2_MUTE="1", FD2_HD_REWARD_GPU="1", FD2_TEST_REWARD_CATALOG=str(a.catalog.resolve()),
                FD2_TEST_REWARD_PACK=str(a.pack.resolve()), FD2_TEST_REWARD_OUT=str(a.out)+"-capture")
     env.update(FD2_TEST_UNIT_PRESENT_CATALOG=str(a.catalog.resolve()), FD2_TEST_UNIT_PRESENT_PACK=str(a.pack.resolve()))
     if a.kind == "stage-game": env["FD2_HD_REWARD_STAGE_GPU"] = "1"
     if a.kind == "full-game": env["FD2_HD_FULL_REWARD_GPU"] = "1"
+    if a.kind == "item-panel-status": env["FD2_HD_ITEM_PANEL_STATUS_GPU"] = "1"
     physical = check_real_runtime(a.pack, json.loads(a.catalog.read_text())) if a.require_real_runtime else None
     command = [sys.executable, str(ROOT/"tools/fd2_go_test_memory_probe.py"), "--out", str(a.out),
                "--timeout", str(a.timeout), "--", "with-xvfb", "go", "test", "-json", "-count=1",
@@ -115,7 +125,9 @@ def main():
                 raise ValueError("密封場景或同次stage來源缺項")
     report = dict(status="PASS", kind=a.kind, required=sorted(REQUIRED[a.kind]),
                   catalog_sha256=hashlib.sha256(a.catalog.read_bytes()).hexdigest(), pack=str(a.pack.resolve()),
-                  scope="受控物品／金錢成功訊息；不是正常玩家或原版對拍證據")
+                  scope=("受控三區物品／狀態面板；不是正常玩家或原版對拍證據" if a.kind.startswith("item-panel-") else
+                         "受控滿背包確認選項與交易；不是正常玩家或原版對拍證據" if a.kind.startswith("full-") or a.kind == "confirmation-unit" else
+                         "受控物品／金錢成功訊息；不是正常玩家或原版對拍證據"))
     report["independent_runtime_files"] = physical
     report["verifier_sha256"] = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
     Path(str(a.out)+".gate.json").write_text(json.dumps(report, ensure_ascii=False, indent=2)+"\n")

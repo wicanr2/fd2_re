@@ -56,6 +56,9 @@ func (g *Game) prepareNativeItemPanelMode(unit *battle.Unit, allowEmpty bool) bo
 	if !ok {
 		return false
 	}
+	if !g.preflightModernHDItemPanel(&text.data, g.nativeUIPalette) {
+		return false
+	}
 	g.nativeItemPanelText = text
 	g.nativeItemPanelBase = pixels
 	g.nativeItemPanelRecord = record
@@ -139,6 +142,9 @@ func (g *Game) rebuildNativeItemPanelContents(unit *battle.Unit, allowEmpty bool
 	}
 	text, ok := prepareNativeItemPanelText(record, *g.nativeItemPanelAssets, g.nativeItemEffectRows)
 	if !ok {
+		return false
+	}
+	if !g.preflightModernHDItemPanel(&text.data, g.nativeUIPalette) {
 		return false
 	}
 	g.nativeItemPanelText = text
@@ -902,6 +908,8 @@ func (g *Game) drawNativeItemPanel(screen *ebiten.Image) bool {
 	var text []modernHDTextRun
 	if hd, runs, ok := g.composeModernHDItemPanel(); ok {
 		panel, text = hd, runs
+	} else if g.loadErr != "" {
+		return false
 	}
 	regions := []battle.NativeItemPanelRegion{pass.Left, pass.Upper, pass.Bottom}
 	for _, region := range []battle.NativeItemPanelRegion{pass.Left, pass.Upper, pass.Bottom} {
@@ -922,6 +930,9 @@ func (g *Game) drawNativeItemPanel(screen *ebiten.Image) bool {
 	}
 	if g.modernHDText != nil {
 		g.modernHDText.runs = append(g.modernHDText.runs, modernHDPanelRegionText(text, regions)...)
+		if g.nativeItemPanelText != nil {
+			g.appendModernHDItemPanelChrome(&g.nativeItemPanelText.data, regions)
+		}
 	}
 	g.addModernHDPanelPortrait(g.nativeItemPanelRecord, regions)
 	return true

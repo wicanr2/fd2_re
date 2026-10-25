@@ -142,7 +142,7 @@ func (p *modernHDPresentation) DrawFinalScreen(screen ebiten.FinalScreen,
 			brightness = 1 - brightness
 		}
 	}
-	if !g.helpVisible && g.nativePlayerStatus == nil && !g.nativeFullDACWhite && !g.nativeFullDACBlack &&
+	if !g.helpVisible && !g.nativeFullDACWhite && !g.nativeFullDACBlack &&
 		!(g.nativeDefeat == nil && g.titlePhase == "" && g.nativePaletteRamp == nil && nativeDACIsBlack(g.nativeMapDAC)) {
 		p.drawModernHDDialogueChrome(screen, contentGeometry, brightness)
 		p.drawModernHDConfirmation(screen, contentGeometry, brightness)

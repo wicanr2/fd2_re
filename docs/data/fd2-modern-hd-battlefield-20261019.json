@@ -236345,7 +236345,7 @@
     ],
     "known_differences": [
       "三像素細框在1920×1200目標定義，隨視窗幾何縮放，屬美術近似。",
-      "滿背包確認選項依full_reward_confirmation_followup_20261026；選擇器框線／圖示及城堡地形仍為原生；本批沒有新重繪頭像。",
+      "滿背包確認選項依full_reward_confirmation_followup_20261026；共用選擇器細框依item_panel_chrome_followup_20261026；圖示及城堡地形仍為原生；本批沒有新重繪頭像。",
       "受控RUNTIME-E1，不新增原版oracle、正常玩家、冷讀或平台聲明。"
     ],
     "remaining": [
@@ -236692,13 +236692,460 @@
       "GPU內嵌48組UI與16次額外主題往返的集中測試觸及8GiB，memory.events.max=243，oom／oom_kill皆零；不推論正常平台餘裕。"
     ],
     "remaining": [
-      "其他確認caller、選擇器框線與圖示",
+      "其他確認caller與圖示；共用三區框線依item_panel_chrome_followup_20261026",
       "其餘地形、HD2、完整介面及獨立UI／theme六組合",
       "工具列字級／加速／雙側海報及全部HD後集中正常／人工／平台確認"
     ],
     "final_checks": {
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/confirmation-final-checks-r1.json",
       "sha256": "9879899da4ff574af7174efd72e8c8854df0983cd0d46904e463df2bb1397255"
+    }
+  },
+  "item_panel_chrome_followup_20261026": {
+    "status": "CONFORMED-SCOPED",
+    "evidence_level": "RUNTIME-E1",
+    "date": "2026-10-26",
+    "base_commit": "bb10dd9b5bd259d4b9f2a02a32bf4dba5876e6aa",
+    "full_hd_complete": false,
+    "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+    "source_contracts": [
+      "remake/internal/battle/native_item_panel_render.go",
+      "remake/internal/battle/native_item_panel_data_render.go",
+      "remake/internal/battle/native_item_selector.go"
+    ],
+    "native_rectangles": [
+      [
+        5,
+        7,
+        91,
+        93
+      ],
+      [
+        92,
+        7,
+        315,
+        93
+      ],
+      [
+        5,
+        94,
+        315,
+        196
+      ]
+    ],
+    "scope": "共用三區細框，沿既有原生滑動裁切。圖示與其他介面仍待，不改原生規則或保存。",
+    "artwork_rectangles": [
+      [
+        5,
+        7,
+        91,
+        93
+      ],
+      [
+        92,
+        7,
+        315,
+        93
+      ],
+      [
+        5,
+        94,
+        315,
+        193
+      ]
+    ],
+    "source_geometry_evidence": {
+      "metadata": {
+        "file": "/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22/ui/fdother_005_item_panel/resource.json",
+        "sha256": "a547f2f593b980fd9c1b269d1ba95be8727562d7ed31b44015615775d991efd3"
+      },
+      "entries": [
+        [
+          20,
+          223,
+          86
+        ],
+        [
+          21,
+          310,
+          99
+        ]
+      ],
+      "reason": "310×102是複製範圍；實際entry21只有99列。"
+    },
+    "normal_player_verified": false,
+    "original_runtime_executed": false,
+    "new_re": false,
+    "new_art_assets": false,
+    "catalog_changed": false,
+    "private_asset_sync_required": false,
+    "save_format_changed": false,
+    "implementation_and_evidence_sources": [
+      {
+        "file": "remake/cmd/fd2/modern_hd_dialogue_chrome.go",
+        "sha256": "4dc60b8d47e0c123ac3cbd575e226d864b6a419be71c41b7d073c39f52cb1c47"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_presentation.go",
+        "sha256": "159ff34e3a32e311214488aefb5849bcaa73b0274eaf635798cbb6406c7f04c4"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_status_text.go",
+        "sha256": "8f24b50feb42c358606057b77091d6c3f8c5d9cad8b90f3ea251b33e287adaf3"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_item_panel_chrome.go",
+        "sha256": "3f45755c498a41c2670a5725468c70add2d2f0c8b880d8b53ed642b2e09a6dcc"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_item_text.go",
+        "sha256": "e52e7b0e2f4684edbad7c733413a150f94b11f40bf1880ad0f1b7dc753bc9d76"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_panel_transition.go",
+        "sha256": "4bf3d5d51abb55cbeefdba5b2ea436a238a7fdb75959c85925d23e5a7823833a"
+      },
+      {
+        "file": "remake/cmd/fd2/native_item_panel_ui.go",
+        "sha256": "be6dbab4f5ca7d07de6e68ece7574f214615ff22d9e226fe92d6160f59baa88d"
+      },
+      {
+        "file": "remake/cmd/fd2/native_player_input.go",
+        "sha256": "6ba4dfbb31640d1a6a8c374a4f838d5f37f189b4287897dd14325ac0bb81c061"
+      },
+      {
+        "file": "remake/cmd/fd2/native_church_status_ui.go",
+        "sha256": "99dd5cedf160f0203bb855cf377aceb902b4c8a3f37388704cedc59fa06902ec"
+      },
+      {
+        "file": "remake/cmd/fd2/player_shortcuts.go",
+        "sha256": "ce57a6b0f0ec7a3772bcdca1a3ac26feb8acba3b87aff90d19fe63e60ef2a6ec"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_item_panel_chrome_test.go",
+        "sha256": "5c3c29d34f3e8c4611ce17fdd35d9f1d3a45356fd1a96b06c005fc58ae9f42dc"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_item_panel_chrome_gpu_test.go",
+        "sha256": "1639ab3cd90e95312356d345a30c7e1f5609c1855bd91f7aac82c0d7f1061aba"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_item_panel_status_gpu_test.go",
+        "sha256": "5abba260a574f17053c714ec355086e15c48329bfe67db79f7d6b3481eb4b324"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_full_reward_gpu_test.go",
+        "sha256": "a377af1435c025559eef76e149655d0f7075ebce8026883f45612cc0e245fb92"
+      },
+      {
+        "file": "remake/internal/battle/native_item_panel_data_render.go",
+        "sha256": "91cd60414bd893dccf40f78ba34969740191e5c098c0becf766f81f43c9ef8f1"
+      },
+      {
+        "file": "tools/verify_fd2_reward_message_hd.py",
+        "sha256": "d751a17ba1c4ee002a532fba93479e3ecc3f3331129e425a3313eb94b90123bd"
+      },
+      {
+        "file": "tools/fd2_go_test_memory_probe.py",
+        "sha256": "8e7c9c55b85aa72a5026b944233b94f7c0787f51b3f5ebb178ed54cc333e40f2"
+      },
+      {
+        "file": "remake/internal/battle/native_item_panel_render.go",
+        "sha256": "e3a307673c104080eb4ed7c00fac6333b1d2bf8390b31377c9b94a37caac1878"
+      },
+      {
+        "file": "remake/internal/battle/native_item_selector.go",
+        "sha256": "526522da76ffd3b58faf14b93ed78e17fe8d5957db04536640ada7ecc533ffc3"
+      },
+      {
+        "file": "remake/internal/fdother/separated_item_panel.go",
+        "sha256": "ee8faecbbd75e97c13b9a10e1355e82168d9b471ba3cefa774e8cf5cbfbe4efd"
+      },
+      {
+        "file": "remake/internal/battle/native_command_overlay_render.go",
+        "sha256": "726527aa2503c9903dfb2a7d1fd5f9e9474b927e4d08d74e0fdecd843469cc26"
+      },
+      {
+        "file": "tools/verify_fd2_hd_item_panel_chrome.py",
+        "sha256": "cc5f593f3838a6de3aebb6b31ae75ca3752775de8c988e94e4f1cf380d5e9edc"
+      },
+      {
+        "file": "tools/verify_fd2_hd_transient_expiry.py",
+        "sha256": "f1883cbdec84c1e209ba93a9e7143486e7d117abc79eabc517e0f44660e7d126"
+      },
+      {
+        "file": "docs/data/fd2-reference-files.json",
+        "sha256": "9946b7506620069ce9b7bb8e4b1f7fed36e7a9389b634ef62064727d89579c5e"
+      }
+    ],
+    "source_metadata": {
+      "file": "/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22/ui/fdother_005_item_panel/resource.json",
+      "sha256": "a547f2f593b980fd9c1b269d1ba95be8727562d7ed31b44015615775d991efd3"
+    },
+    "catalog": {
+      "file": "remake/assets/themes/modern/catalog.json",
+      "sha256": "40bf4d83a2c13b606e84c66e2f7dddb383ca581904cdeb1f8aeabd61717d232a"
+    },
+    "commands": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-chrome-commands-r1.json",
+      "sha256": "76dc4d6183267ebb1fd5b353696237afb7187eb9a4abb229287dcdc1e2f9d70a"
+    },
+    "source_snapshot": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-chrome-go-sources-r3.json",
+      "sha256": "359eff664cdb74c583230dab26d5efb5854d24904f8ad476a01e5c9efe8cf9cb"
+    },
+    "go_runs": [
+      {
+        "kind": "unit-r2",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-chrome-unit-r2.gate.json",
+          "sha256": "cbfcd4c714bd15fd734c6afe4815362cc17117dbe9b73134f080aebc89b21cf7"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-chrome-unit-r2.memory.json",
+          "sha256": "6acfec63752cf6df311fe440c26417221766c015e6051ead1de17ffa1e6036b7"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-chrome-unit-r2.log",
+          "sha256": "04277797999f412bc5e3053de696d552ade7e2779ccec986522cf8b8ccf1643f"
+        },
+        "named_passes": 3,
+        "elapsed_seconds": 16.682,
+        "peak_bytes": 1172656128,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "kind": "regression-r2",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-chrome-regression-r2.gate.json",
+          "sha256": "a6aecb94a7dbaf624184af637d98081008396842ce7ae660ec025990a61672e5"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-chrome-regression-r2.memory.json",
+          "sha256": "45f34f93b28200753bdd491dadab2dddcd13342732f6920f0d767f959d83d7c2"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-chrome-regression-r2.log",
+          "sha256": "d9c41b87bff24e8e55da2d44f88973444c6572a03c7477eb2a114c735fb0c573"
+        },
+        "named_passes": 11,
+        "elapsed_seconds": 5.012,
+        "peak_bytes": 548790272,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "kind": "native-r1",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-chrome-native-r1.gate.json",
+          "sha256": "6bfaa120527816eb61a375f303a58d6e372e3775a20493ca488b555613a00603"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-chrome-native-r1.memory.json",
+          "sha256": "8642f2822680956e1e8844a319b891272353d59ff4e8a45edcf3a11f5be4993e"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-chrome-native-r1.log",
+          "sha256": "6fc5b69a84aa7cabc666c2c4ad6e97ef23db9c94470340fabe06b01ae91b7781"
+        },
+        "named_passes": 15,
+        "elapsed_seconds": 3.007,
+        "peak_bytes": 255221760,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "kind": "game-r2",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-chrome-game-r2.gate.json",
+          "sha256": "b16fb7fa305fb483c6abcbb36b0101ec453621ee6535ae8ce58f5011bece5f40"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-chrome-game-r2.memory.json",
+          "sha256": "24857939ed78f4427a4d11b87f3a61215c1f8930423e10c3433634fb5e390340"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-chrome-game-r2.log",
+          "sha256": "8a91354e5a321962c06ace54a74c92ec08f30ad9eb1de9ea9f9cf5e9651bfac2"
+        },
+        "named_passes": 1,
+        "elapsed_seconds": 295.819,
+        "peak_bytes": 7154675712,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "kind": "status-r4",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-chrome-status-r4.gate.json",
+          "sha256": "3d36b3cdf86ea240a55e8217fb34f913859c73266041674f5c193a229429d1c3"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-chrome-status-r4.memory.json",
+          "sha256": "5921fb89f79b74e465abc44d8107bbc1f6e1f74ef3f520f5c42fe356548d0ec5"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-chrome-status-r4.log",
+          "sha256": "fb0b7f9b2efbf02356716aa2d4b2fdabcdc1f0fb4078494962350c3501ee05e7"
+        },
+        "named_passes": 1,
+        "elapsed_seconds": 98.887,
+        "peak_bytes": 4808806400,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      }
+    ],
+    "summary": {
+      "named_go_passes": 31,
+      "main_game_frames": 291,
+      "player_status_frames": 41,
+      "main_f2_boundaries": 40,
+      "status_f2_boundaries": 9,
+      "confirmation_samples": 48,
+      "confirmation_f2": 16,
+      "full_reward_pngs": 16,
+      "confirmation_pngs": 8,
+      "status_pngs": 9,
+      "total_pngs": 33,
+      "item_chrome_pixels": 8984952,
+      "png_item_chrome_pixels": 2023920,
+      "stable_non_border_pixels_unchanged": 2115648,
+      "receipt_rejections": 37,
+      "actual_picture_rejections": 2,
+      "independent_runtime_files": 6062
+    },
+    "receipts": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-chrome-game-r2-capture/receipt.json",
+        "sha256": "3e4da997ed625ad36068504f684b18b722687b535182e9d725aae3a4101d1103"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-chrome-status-r4-capture/receipt.json",
+        "sha256": "08117e7f3f55b07a1dc24f461686dfcb9ee9a39306552175ae075aa4f3e9c3fd"
+      }
+    ],
+    "independent_checks": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-chrome-independent-final-r2.json",
+        "sha256": "660c264d703ab5401737e7796b8d1b7933edba4a6d212f665048810ad557bc5a"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-chrome-existing-independent-r1.json",
+        "sha256": "153a0b82e97c87c22d0d4dc902bdee697a6ebe424884978e1f9013cefe88a99d"
+      }
+    ],
+    "wrong_padding_counterexample": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-chrome-wrong-padding-rejected-r1.json",
+      "sha256": "a2e70611f9428fcc3b869566ea840e5ee227246463d148acd14d90ae2a80c15e"
+    },
+    "overview": {
+      "file": "docs/figures/hd-item-status-panel-chrome.png",
+      "sha256": "82c9382a9ea2c50c0effddd0e01aa1acbafdc16c2625daaa893acb61bd25b074"
+    },
+    "cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-chrome-cleanup-r1.json",
+      "sha256": "db01825bc6496f6e141786d3ff933e5d1473508964a7f88d055fa73fd1e80fd7"
+    },
+    "construction_policy": {
+      "fixture": "rewardStageGame + makeNativeDeathRewardKiller",
+      "map_index": 23,
+      "map_selector_key": 0,
+      "portrait_dato": 0,
+      "inventory": [
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      "item": 211,
+      "queued_item": 212,
+      "native_seed": 7,
+      "clock_unix": 1000,
+      "status_command_mask": [
+        0,
+        2,
+        0,
+        0,
+        0
+      ],
+      "status_command_book": "existing State.NativeCommandBook[9] supplied at Game.nativeCommandBook[9]; controlled UI fixture, not natural acquisition"
+    },
+    "images": {
+      "go": "sha256:e4a805c52a3ad5d8c22cf23f2bcf51c6924e5ad6b99554f1b02761903c725433",
+      "assets": "sha256:e59237a31d4b5f7a62c59ac37b780bd93f17c99fda97be8f5ca0c53978b878bc"
+    },
+    "known_differences": [
+      "HD以三目標像素重畫框線並清除舊18像素邊帶；同來源色盤與原生複製範圍保持，屬明示美術近似。",
+      "下方美術框99列與原生102列複製範圍分列；padding保留，不按複製高度猜圖框。",
+      "受控Game.Draw與直接controller操作，不新增一般鍵盤玩家、自然取得指令或平台驗收聲明。",
+      "圖示、英數標籤與狀態頁HP／MP條仍沿既有原生圖源；其他確認caller及完整介面、HD2、獨立控制與工具列仍待。",
+      "GPU配額各8GiB／2CPU，兩個最終流程及單元／回歸memory.events皆零，不由峰值推論平台餘裕。"
+    ],
+    "diagnostics": [
+      {
+        "run": "game-r1",
+        "classification": "首版Go與同假設PNG核對通過，但目視發現下框殘帶；回查實際entry21=310×99後撤回102框高假設，最終工具拒收其真實PNG。"
+      },
+      {
+        "runs": [
+          "status-r1",
+          "status-r2"
+        ],
+        "classification": "獎勵測具缺Game指令清單，其後單筆ID9又置於長度1陣列；依RenderNativeCommandOverlay的book[commandID]契約補既有row至索引9。"
+      },
+      {
+        "run": "status-r3",
+        "classification": "測具以fmt格式比較結構；改沿既有滿背包測具的JSON值表示，r4通過41畫格及9次F2。未發現玩法缺陷。"
+      }
+    ],
+    "remaining": [
+      "物品／狀態圖示、英數標籤及HP／MP條的HD呈現",
+      "其他確認caller、其餘操作介面、地形與HD2",
+      "獨立UI／theme、工具列字級／加速／海報及全部HD後集中正常／人工／平台確認"
+    ],
+    "final_checks": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-chrome-final-checks-r1.json",
+      "sha256": "d00b0fcd159653ce22d6c43e22870179ec11cbb75845a1a8ba9450f49d5fe951"
     }
   }
 }

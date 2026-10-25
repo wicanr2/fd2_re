@@ -3712,3 +3712,27 @@ README新增物品、金錢、關框及返回四格實圖，原文化入口與�
 
 - 清理後重新核對本批來源、15項頂層Go結果與NO／Escape兩個子測試、18張PNG及3878份保護清冊，沿既有通過收據，不重跑GPU。GitHub #4／201／202／204／263已更新並讀回，原驗收及OPEN狀態保持；官方解析器重建遠端快照並render／verify通過，25項中18項待人判、0項訊號消失。355教訓／214守衛通過。
 - 私人素材庫本機與遠端main均為377197837c6566d553ca2895335becba1067b482，工作樹乾淨。沒有新素材或私人提交需求。來源、文化入口、README圖片與連結、存檔及原包保持的最終結果見[收尾核對](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/confirmation-final-checks-r1.json)。重大且驗證成功的本批同步main，精確提交與遠端一致性以Git收尾核對為準；完整HD仍持續。
+
+
+## 2026-10-26 共用三區物品與狀態面板HD細框
+
+- 從bb10dd9b的main建立feat/hd-item-panel-chrome-20261026。沿既有0x17EEF、0x17FC0與0x18409資料與consumer，先登錄READY，再將同來源三像素細框接到八槽物品、共用狀態及戰場狀態頁；保留三區原生來源／目的位移、裁切、文字、480頭像與交易。原生模式保持，沒有新美術、保存格式、平衡或RE。
+- 先前以原生310×102複製區當成下框，首版Go與同假設像素檢查通過，目視仍見舊邊帶。回查固定原包resource.json與entry21 PNG確認310×99，分開99列美術與102列複製padding後修正。新獨立工具於48,1140拒收首版真實PNG；亦於31,42拒收更早原生粗框，保留錯圖及來源，不把自洽測具當作原圖形狀證據。
+- 最終31項頂層Go通過：三來源／細框、十一既有介面、十五原生資料／布局及兩個獨立GPU程序，無SKIP／失敗。物品五分支291畫格、40個F2及五次續行；狀態／指令兩頁41畫格、9個F2，另四語確認48組／16次F2保持。直接唯讀私人6062份獨立runtime，不另複製測試包。
+- 33張完整PNG獨立核對，Go框線8984952點、PNG框線2023920點；穩定物品畫面框外2115648個RGBA像素對前版完全相同。37個收據反例及兩張真實錯框拒收，舊對話細框、四語選項、同次頭像與原生控制保持。受控map23、selector0、DATO0、八槽16..23、seed7與clock1000明示，狀態指令9來自既有State行並置於Game清單索引9，不宣稱自然取得、正常鍵盤或PLAYER-E2。
+- GPU295.819秒／7154675712 bytes，狀態98.887秒／4808806400 bytes；兩者各8GiB／2CPU。最終來源16.682秒／1172656128 bytes、介面回歸5.012秒／548790272 bytes、原生回歸3.007秒／255221760 bytes。五組memory.events皆零，沒有OOM或逾時，不推論平台餘裕。
+- 狀態前三輪為測具診斷：先缺Game指令清單，再把ID9放進長度1陣列，最後以fmt比較結構；按實際book[commandID] consumer及既有JSON值快照修正，未改正式規則。收尾原生計數曾誤估十項及抄錯一個名稱，實際正規式選到十五項，依原始日誌核對後建閘門；不報為產品失敗。三項可重用規則寫入fd2-lessons.json。
+- 來源、全部命令、記憶體、兩份最終收據與獨立核對均由HD主收據item_panel_chrome_followup_20261026索引；永久入口為tools/verify_fd2_reward_message_hd.py及tools/verify_fd2_hd_item_panel_chrome.py。Go來源快照與最終實檔一致，後續只擴充獨立圖片反例並沿原PNG重跑，未重跑GPU。
+- README保存四場景完整畫面總覽，56／57／58／61同步已過期框線限制。23份逐SHA相同圖片改相對別名，釋放配置bytes依item-panel-chrome-cleanup-r1.json；不同內容的診斷圖保持。沒有錄影或留存驗證執行檔，現用Go快取保留，所有容器--rm、init、UID1000、network none及有界。
+- 完整HD仍持續：其他確認caller、圖示、英數標籤／狀態條、其餘地形、HD2、獨立UI／theme、工具列字級／加速／海報，以及全部HD後集中正常／人工／平台確認仍待。沒有新Release或完整HD完成聲明。
+
+## 2026-10-26 清理舊追蹤日誌與反例圖片
+
+- 依使用者要求先清理空間，保留目前分支所有未提交的HD修改。載入復古重製技能與文件職責，沿用既有工作區。
+- [清理計畫](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/space-cleanup-request-20261026-r4-plan.json)限定舊大型JSONL與反例測試圖片。JSONL先無損壓縮，再逐解壓SHA核對後移除展開檔；檔名對照及原內容SHA保存於[逐檔稽核](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/space-cleanup-request-20261026-r4-audit.jsonl.gz)。往後讀取這批歸檔使用對照中的.gz路徑並先解壓，不把壓縮檔當作原JSONL直接讀取。
+- [保護清冊](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/space-cleanup-request-20261026-r4-protected.json)包含受版控檔案、原版來源、正式交付、存檔與目前HD收據。保留原版畫面、正式素材、現用Go快取及文字測試結果。[清理腳本](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/space-cleanup-request-20261026-r4.py)依plan、apply、verify執行，禁止覆寫既有報告。
+- 刪1468張過期反例圖片，72份大型JSONL壓縮後逐解壓SHA驗證。4430份保護檔案逐大小與SHA複查通過。GNU du相同命令的專案配置從46567473152降至44051001344 bytes，扣稽核開銷後減少2516471808 bytes，約2.52GB；數值不把相同實體檔的硬連結路徑重複加總。完整結果見[清理摘要](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/space-cleanup-request-20261026-r4-final.json)。
+- 一次舊HD目錄的Python細部分類到90秒上限，未寫入或刪除；沿已完成的有界find、du與明確反例目錄建立逐檔計畫，不拿未完成掃描當刪除依據。沒有新增遊戲功能或重跑GPU，也未提交尚待收尾的HD修改。
+- Docker使用既有工具映像，全部清理容器均--rm、init、無網路、UID1000及有界。沒有確認過期的FD2映像、容器或volume，保留現用工具鏈及其他專案資源。擁有權、意外.md目錄及殘留壓縮暫存檔核對皆無異常。
+
+- 收尾讀回GitHub #4／201／202／204／263，五項維持OPEN；遠端25項由官方解析器重建，18項待人判、0項機器訊號消失。358教訓／216守衛通過。私人庫本機與遠端main均為377197837c6566d553ca2895335becba1067b482且工作樹乾淨，沒有新素材同步需求。31項Go及33張PNG沿既有收據重新核對來源與SHA，沒有重跑GPU；[最終核對](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-chrome-final-checks-r1.json)保存結果。原包清冊首用錯誤檔名，改依實檔manifest.json後同雜湊重跑，不是素材缺件。清理後目前HD證據保持；本批提交與推送後另核對本機／遠端HEAD。

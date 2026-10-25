@@ -4370,6 +4370,44 @@
       "rule": "用JavaScript產生Python或shell命令時，以json.loads解碼JSON文字，不把含true／false的JSON直接當Python字面值。String.replace替換內容含$時使用函式回呼，shell語法先在Docker用bash -n核對。命令實例與失敗分類由docs/data/fd2-modern-hd-battlefield-20261019.json的battle_dialogue_chrome_followup_20261026.commands定位。 Markdown內容的反引號以資料參數處理，不直接嵌入JavaScript樣板；段落用真正換行，寫入後核對沒有意外的字面換行轉義。",
       "why": "彙整腳本把JSON false直接嵌入Python而NameError；另一個替換字串含shell的$符號，被JavaScript當替換語法展開而使Bash語法錯誤。兩次均在測試前停止，改解碼與函式回呼後沿原輸入通過，未改正式遊戲規則。 本批Markdown反引號亦使JavaScript在執行前中止，雙重轉義則在新段落留下字面換行；已在提交前限縮範圍修正，沒有改寫原有程式碼範例。",
       "evidence": "WORKLOG.md#2026-10-26-戰鬥提示框hd細框"
+    },
+    {
+      "id": "ui-artwork-geometry-is-independent-of-copy-regions",
+      "date": "2026-10-26",
+      "area": "HD介面來源",
+      "rule": "介面外框依實際素材寬高定位，原生複製範圍只決定來源與裁切。保留兩者的尺寸及證據；FDOTHER#5 entry21為310×99，NativeItemPanelFrameFor的310×102另含三列padding。入口remake/internal/battle/native_item_panel_data_render.go的ItemPanelBottom、remake/cmd/fd2/modern_hd_item_panel_chrome.go及tools/verify_fd2_hd_item_panel_chrome.py。",
+      "why": "首版沿102列複製高度畫框，像素檢查依相同假設通過，但目視仍見y190..192的舊邊帶。回查固定原包resource.json及PNG尺寸為99列，分開兩種矩形後舊真實PNG於48,1140被獨立工具拒收。",
+      "evidence": "docs/knowledge-base/61-modern-theme-runtime-spec.md；HD主收據item_panel_chrome_followup_20261026",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/internal/battle/native_item_panel_data_render.go"
+        ],
+        "pattern": "ItemPanelBottom"
+      }
+    },
+    {
+      "id": "native-command-ui-book-is-id-indexed",
+      "date": "2026-10-26",
+      "area": "介面測具",
+      "rule": "狀態指令頁的測具提供以指令ID索引的陣列，且book[commandID].ID與索引一致；不把單筆ID9放在長度1的陣列。入口remake/internal/battle/native_command_overlay_render.go的RenderNativeCommandOverlay，受控狀態測具見remake/cmd/fd2/modern_hd_item_panel_status_gpu_test.go。",
+      "why": "獎勵測具只在State載入指令9，Game狀態頁清單原為空；補單筆仍不符consumer的索引契約。按原生book[9]契約提供既有行後通過，不改正式指令規則。",
+      "evidence": "remake/internal/battle/native_command_overlay_render.go",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/internal/battle/native_command_overlay_render.go"
+        ],
+        "pattern": "book\\[commandID\\]\\.ID"
+      }
+    },
+    {
+      "id": "control-state-comparison-serializes-values",
+      "date": "2026-10-26",
+      "area": "測試狀態比較",
+      "rule": "兩個遊戲實例比較狀態時，以明示欄位及JSON值表示比較，不以fmt字串比較含內部表示的結構。將phase、frame、Draw確認、原始緩衝與單位／RNG等實際契約欄位明列。入口remake/cmd/fd2/modern_hd_item_panel_status_gpu_test.go的itemPanelStatusGPUState及既有modern_hd_full_reward_gpu_test.go。",
+      "why": "狀態測具原用fmt組合快照，無法區分值與內部表示；改沿既有滿背包測具的JSON值表示後，41畫格及9次F2原生控制相同。先前比較失敗保留為測具診斷，不報成玩法缺陷。",
+      "evidence": "remake/cmd/fd2/modern_hd_item_panel_status_gpu_test.go"
     }
   ]
 }

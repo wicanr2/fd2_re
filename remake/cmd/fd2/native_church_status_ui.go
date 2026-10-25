@@ -75,6 +75,9 @@ func (g *Game) beginNativeChurchStatus(id int) bool {
 	if !ok {
 		return false
 	}
+	if !g.preflightModernHDItemPanel(data, g.nativeClassUI.palette) {
+		return false
+	}
 	source, ok := g.composeNativeChurchSourceFrame()
 	if !ok {
 		return false

@@ -36,6 +36,7 @@ type fullRewardGPUProbe struct {
 	confirmationRows           []map[string]any
 	confirmationSeen           map[string]bool
 	confirmationF2             int
+	itemChromePoints           int
 }
 
 // Derive coverage from the existing native job, independently of the new panel list.
@@ -194,11 +195,23 @@ func (p *fullRewardGPUProbe) Draw(screen *ebiten.Image) {
 	if !chromeRect.Empty() {
 		wantPanels = 1
 	}
-	if err != nil || len(g.modernHDText.panels) != wantPanels {
+	dialoguePanels := 0
+	for _, panel := range g.modernHDText.panels {
+		if !panel.status {
+			dialoguePanels++
+		}
+	}
+	if err != nil || dialoguePanels != wantPanels {
 		p.err = fmt.Errorf("%s dialogue chrome: %v", key, err)
 		return
 	}
 	p.chromePoints += chromePoints
+	itemPoints, err := checkItemPanelChromeGamePixels(g, p.pixels, p.chromeSource)
+	if err != nil {
+		p.err = fmt.Errorf("%s item chrome: %w", key, err)
+		return
+	}
+	p.itemChromePoints += itemPoints
 	// The modal never writes above native y=112; item regions have a separate
 	// producer, checked by the existing panel tests and native state controller.
 	outside := 0
@@ -260,8 +273,13 @@ func (p *fullRewardGPUProbe) Draw(screen *ebiten.Image) {
 		p.seen[key] = true
 	}
 	row := map[string]any{"case": p.index, "phase": phase, "f2_roundtrip": f2, "native_control_unchanged": true, "world_sha256": fmt.Sprintf("%x", sha256.Sum256(p.world)), "final_sha256": fmt.Sprintf("%x", digest), "outside_hd_pixels": outside, "text_runs": len(g.modernHDText.runs), "dialogue_chrome_pixels": chromePoints, "dialogue_chrome_shift": shift, "dialogue_chrome_height": chromeRect.Intersect(image.Rect(0, 0, 320, 200)).Dy()}
-	if f2 && (p.index == 0 || p.index == 2 || p.index == 3) && (phase == "yes-no" || phase == "response-hold" || phase == "item-choice" || phase == "return") {
+	row["item_panel_chrome_pixels"], row["item_anim_step"], row["item_closing"] = itemPoints, g.itemAnimStep, g.itemClosing
+	itemCapture := p.index == 2 && (phase == "item-open" && (g.itemAnimStep == 0 || g.itemAnimStep == 5 || g.itemAnimStep == 8) || phase == "item-close" && (g.itemAnimStep == 0 || g.itemAnimStep == 6 || g.itemAnimStep == 11))
+	if itemCapture || f2 && (p.index == 0 || p.index == 2 || p.index == 3) && (phase == "yes-no" || phase == "response-hold" || phase == "item-choice" || phase == "return") {
 		name := key + ".png"
+		if itemCapture {
+			name = fmt.Sprintf("%s-step%d.png", key, g.itemAnimStep)
+		}
 		pic := image.NewRGBA(image.Rect(0, 0, 1920, 1200))
 		copy(pic.Pix, p.pixels)
 		f, err := os.Create(filepath.Join(p.out, name))
@@ -362,6 +380,7 @@ func TestModernHDFullRewardGameGPU(t *testing.T) {
 	}
 	d := map[string]any{"status": "PASS-FULL-REWARD-HD-RUNTIME-E1", "cases": 5, "map_index": 23, "native_seed": 7, "fixed_clock_unix": 1000, "rgba_tolerance": 2, "normal_player_verified": false, "rows": p.rows, "game_frames": len(p.rows), "f2_boundaries": len(p.seen), "continuations": p.calls, "dialogue_chrome": true, "chrome_source": p.chromeSource, "chrome_pixels": p.chromePoints, "legacy_chrome_rejected": p.legacyChromeRejected}
 	d["hd_confirmation"], d["confirmation_rows"], d["confirmation_f2"] = true, p.confirmationRows, p.confirmationF2
+	d["item_panel_chrome"], d["item_panel_chrome_pixels"] = true, p.itemChromePoints
 	raw, _ := json.MarshalIndent(d, "", "  ")
 	if err := os.WriteFile(filepath.Join(out, "receipt.json"), append(raw, '\n'), 0644); err != nil {
 		t.Fatal(err)
