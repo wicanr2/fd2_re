@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 25 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 24 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -168,6 +168,8 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 `modern-theme-highres-prototype` · 工作 · [#204](https://github.com/wicanr2/fd2_re/issues/204) · 仍未完成 · 要人判
 
+蜜蒂音速刃已補正式學招後的玩家入口、保存游標四格選取、原生／HD動畫與音效49。雙側受控Game.Draw、F2、死亡回復、獨立CPU畫面及新程序存檔冷讀通過；來源為docs/data/ida/fd2_command30_player_acquisition_20261025.json與規格61。限定RUNTIME-E1，完整正常鍵盤、真正戰場返回與人工／平台仍依本工單集中抽驗。
+
 正式啟動入口已改成單列頂端浮出、自動隱藏工具列，主題與語系按鈕沿既有F2／F4閘門；遊戲區與HD最終繪圖不平移。真實滑鼠、四語、說明頁阻擋、完整保存內容及固定列相容回歸已驗，限定CONFORMED-SCOPED／RUNTIME-E1。來源為HD主收據floating_toolbar_followup_20261025與規格61，唯一目前數量依58。
 
 先前人物／效果／可見戰鬥背景、地圖法術與物品、故事演出、滿背包獎勵及死亡同次背景／HUD邊界等切片保持。完整圖源盤點已重跑；資料齊全不推定全部caller或正常玩家完成。歷史fixed工具列仍可明示重跑，不再作正式預設。
@@ -182,6 +184,8 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 `modern-battle-animation-hd` · 工作 · [#263](https://github.com/wicanr2/fd2_re/issues/263) · 仍未完成 · 要人判
 
+蜜蒂音速刃已補正式學招後的玩家入口、保存游標四格選取、原生／HD動畫與音效49。雙側受控Game.Draw、F2、死亡回復、獨立CPU畫面及新程序存檔冷讀通過；來源為docs/data/ida/fd2_command30_player_acquisition_20261025.json與規格61。限定RUNTIME-E1，完整正常鍵盤、真正戰場返回與人工／平台仍依本工單集中抽驗。
+
 正式啟動入口已改成單列頂端浮出、自動隱藏工具列，主題與語系按鈕沿既有F2／F4閘門；遊戲區與HD最終繪圖不平移。真實滑鼠、四語、說明頁阻擋、完整保存內容及固定列相容回歸已驗，限定CONFORMED-SCOPED／RUNTIME-E1。來源為HD主收據floating_toolbar_followup_20261025與規格61，唯一目前數量依58。
 
 先前人物／效果／可見戰鬥背景、地圖法術與物品、故事演出、滿背包獎勵及死亡同次背景／HUD邊界等切片保持。完整圖源盤點已重跑；資料齊全不推定全部caller或正常玩家完成。歷史fixed工具列仍可明示重跑，不再作正式預設。
@@ -191,18 +195,6 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 怎樣算做完：建立由正式consumer到FIGANI人物及共同效果的可重跑覆蓋清冊；完成可達戰鬥動畫HD素材、原始位置／層序／節拍／命中與音效標記的正式呈現，缺件明示；正常玩家抽驗攻擊、受擊／反擊、法術／效果、死亡與戰場返回，F2、保存冷讀與代表性效能通過；已登錄素材同步私人庫，保留原版像素模式。資料測試及離線PNG不能取代正式GUI。
 
 證據：`docs/data/fd2-modern-hd-battlefield-20261019.json`
-
-### P1 蜜蒂音速刃可正常學會，玩家入口與HD播放缺接
-
-`native-command30-player-hd` · 缺陷 · [#277](https://github.com/wicanr2/fd2_re/issues/277) · 仍未完成 · 要人判
-
-固定原版growth18指向learn5，Lv2授予ID30；FDFIELD map16 slot36是raw camp2、selector18、Lv1的蜜蒂。原始bytes已核對，受控正式建構與升級未直接改command bit，seed7一次300 EXP後實際取得30、Lv4 MaxMP29。但基準9f386e80的玩家target admission拒收30，沒有正式indexed／HD owner。原2026-08-25無學招來源停止線已被反證，保留歷史並追加勘誤。
-
-既有FIGANI54／56與14幀HD素材已登錄；需要連接原始四格、X優先的特殊target selector，以及frame2 sample2、frame4 MP／sample4、frame11 damage／sample3。重用24／29的已閉合背景與呈現primitive，不猜28／31或新增AI30。主證據是既有IDA writer／consumer與固定原版bytes，不新增逐frame原版對拍或自然章節聲明。
-
-怎樣算做完：從真實selector18名冊、正式升級與raw mask取得30，玩家選招保留進入target modal前的游標，沿原始四格／X優先篩選全部敵人。完成14幀及九張前導／每目標20張轉場的原生與HD完整Game.Draw、三次音效標記、MP一次與逐目標HP發布、F2、缺件零交易、晚期回復及一次返回。既有state-only數值／RNG控制及24／29回歸保持，保存冷讀保留30；受控與正常玩家範圍分開記錄，原版動態與集中人工／平台不由內部測試外推。
-
-證據：`docs/data/ida/fd2_command30_player_acquisition_20261025.json`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
