@@ -273,10 +273,14 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
                     raise ValueError(f"duplicate native HD terrain identity: {asset_id}")
                 terrain_frames.add(identity)
             files, hashes = entry["files"], entry["frame_sha256"]
-            if (not isinstance(files, list) or len(files) != count or len(set(files)) != count
+            if (not isinstance(files, list) or len(files) != count
                     or not isinstance(hashes, list) or len(hashes) != count
                     or any(not isinstance(value, str) or not SHA_RE.fullmatch(value) for value in hashes)):
                 raise ValueError(f"invalid native HD terrain files: {asset_id}")
+            # The runtime keys by native frame identity. Identical native
+            # sources may share one painted PNG, with one consistent digest.
+            if len(set(zip(files, hashes))) != len(set(files)):
+                raise ValueError(f"conflicting native HD terrain file hashes: {asset_id}")
             file_paths = [Path(value) for value in files]
         elif entry["role"] == "map_overlay_hd_set":
             resource, count = entry['source_resource'], entry['frame_count']

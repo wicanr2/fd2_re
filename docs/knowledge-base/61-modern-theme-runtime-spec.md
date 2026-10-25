@@ -2,6 +2,20 @@
 
 狀態：現代主題仍為部分覆蓋；目前分層與缺口依[58](58-fd2-exe-re-coverage.md)。
 
+## 平地底材與三種剩餘草泥交界（CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI）
+
+沿既有原生來源匯出，map0:52與244三層內容相同，53為另一份完整來源，160／164／165為三份剩餘交界。已目視原生RGBA，五種來源共十八圖52個實際selector槽，均全opaque且沒有remap。來源及全部目標綁定於[底材配方](../../remake/assets/themes/modern/ground-bases-hd.recipe.json)，只共用三層原生內容SHA相同的槽，不擴張通行語意。
+
+- 沿前批已目視的草地與泥土母稿、144週期材質及相同藝術索引分組。52只呈草，53只呈土，其他三種沿既有半徑2柔化與最外一HD像素的原始分類；每張alpha須等於原生opaque六倍。母稿與既有793清冊項目保持，不生成新母稿。新材質替換與柔化為明示美術近似。
+- 編製器與登錄器增加明示底材模式，固定五來源、52槽、十八圖；前批十四交界／十一純草模式保持原驗收。底材新增五PNG與十八個既有稀疏地形集合，不新增母稿清冊。來源、既有實檔與全部新圖在候選中預檢，拒收不得發布部分正式清冊。
+- map0:52／244以相同原生三層來源及同一張新PNG共用。既有Go載入器以唯一frame身分、逐幀SHA／尺寸／alpha驗證，已通過本批GPU；清冊驗證器刪除每幀必須不同檔名的舊限制，改驗同檔名的SHA一致。重複frame、危險路徑與錯實檔仍拒收，沒有變更清冊格式或正式Go。
+- 驗十八圖各六種穩定／上移端點／LUT／黑白GPU世界對獨立CPU，另驗原樣首章Game.Draw／F2可見52及53。每個實際bank／selector與五圖源都核對，十八錯遮罩及來源／登錄反例拒收；舊交界與純草模式做最小回歸。普通首章標題LOAD、實際移鏡頭、F2及來源槽保存／新程序LOAD另驗，不能外推十八章或自然戰鬥返回。
+- 不改正式Go、地圖資料、規則、角色位置、節拍／RNG或保存格式。通過後才登錄與按白名單同步私人庫，核對舊檔保持與兩庫遠端；README可更新完整實際畫面。其餘地形／水岸、HD2、完整介面／工具列與集中人工／平台仍待。
+
+主收據入口為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的ground_bases_followup_20261025。編製沿[既有材質編製器](../../tools/build_fd2_hd_ground_edges.py)，`--recipe`指定上述底材配方、`--base-catalog`固定793項、`--base-pack`與`--earth-master`為私人包唯讀來源，`--out`是既有work父目錄下新目錄。GPU與反例仍沿[既有測具](../../remake/cmd/fd2/modern_hd_ground_edges_gpu_test.go)及[來源／登錄反例](../../tools/test_fd2_hd_ground_edges.py)的底材模式，登錄依[共用工具](../../tools/register_fd2_hd_ground.py)，保留Docker有界與來源唯讀政策。
+
+本節實作前為READY。五來源、52槽與全部GPU／拒收通過，正式清冊及實檔驗證通過。正常首章兩張完整PNG各核對54／54塊相符，52與53均完整可比，未使用補取景。GUI258.182秒、峰值4116852736 bytes，無OOM／逾時，不推論平台餘裕。來源保存及兩主題bytes保持；本批未抽攻擊或自然返回。五新圖已同步私人白名單，原6969檔保持；全部HD後集中人工政策不變。原配方引用錯誤、驗證器限制與修正收據依主收據failed_attempts追溯。
+
 ## 十四種草泥交界、十一圖同源槽（CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI）
 
 本切片沿既有原生來源匯出及稀疏HD地形，補map0實際使用的145～151、153～159共十四種草泥交界。同一三層內容SHA的其他圖槽列於[製圖配方](../../remake/assets/themes/modern/ground-grass-earth-hd.recipe.json)，共十一圖141槽；未使用152不列入。

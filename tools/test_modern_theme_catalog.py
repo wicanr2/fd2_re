@@ -14,6 +14,27 @@ import validate_modern_theme_catalog as validator
 
 
 class ModernThemeCatalogTests(unittest.TestCase):
+    def test_native_terrain_shared_png_keeps_unique_frames_and_consistent_hash(self):
+        catalog = validator.validate(False)
+        entry = next(a for a in catalog['assets'] if a['asset_id']=='modern.terrain.ground_bases.map00.native_hd')
+        first, repeated = entry['frame_ids'].index(52), entry['frame_ids'].index(244)
+        self.assertEqual(entry['files'][first], entry['files'][repeated])
+        self.assertEqual(entry['frame_sha256'][first], entry['frame_sha256'][repeated])
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp)/'catalog.json'
+            for case in ('positive', 'hash', 'frame', 'path'):
+                bad = copy.deepcopy(catalog)
+                item = next(a for a in bad['assets'] if a['asset_id']==entry['asset_id'])
+                if case=='hash':item['frame_sha256'][repeated]='0'*64
+                if case=='frame':item['frame_ids'][repeated]=52
+                if case=='path':item['files'][repeated]='../bad.png'
+                path.write_text(json.dumps(bad))
+                with self.subTest(case=case):
+                    if case=='positive':validator.validate(False,path)
+                    else:
+                        with self.assertRaisesRegex(ValueError, 'conflicting native HD|native HD terrain identity|unsafe private file'):
+                            validator.validate(False,path)
+
     def test_tracked_catalog_rejects_candidate_root(self):
         data = validator.validate(False)
         data['private_root'] = 'work/disposable-hd-candidate'

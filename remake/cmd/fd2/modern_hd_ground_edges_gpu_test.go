@@ -19,11 +19,25 @@ import (
 )
 
 func TestModernHDGroundEdgesRealBanksAndGPU(t *testing.T) {
-	if os.Getenv("FD2_HD_GROUND_EDGES_GPU") != "1" {
+	testModernHDGroundMaterialsRealBanksAndGPU(t, false)
+}
+
+func TestModernHDGroundBasesRealBanksAndGPU(t *testing.T) {
+	testModernHDGroundMaterialsRealBanksAndGPU(t, true)
+}
+
+func testModernHDGroundMaterialsRealBanksAndGPU(t *testing.T, bases bool) {
+	env, recipeName, status := "FD2_HD_GROUND_EDGES", "ground-grass-earth-hd.recipe.json", "PASS-GROUND-EDGES-GPU"
+	groups, slots, maps := 14, 141, 11
+	if bases {
+		env, recipeName, status = "FD2_HD_GROUND_BASES", "ground-bases-hd.recipe.json", "PASS-GROUND-BASES-GPU"
+		groups, slots, maps = 5, 52, 18
+	}
+	if os.Getenv(env+"_GPU") != "1" {
 		t.Skip("dedicated real-bank ground-edge process")
 	}
 	t.Setenv("FD2_MUTE", "1")
-	out := os.Getenv("FD2_HD_GROUND_EDGES_OUT")
+	out := os.Getenv(env + "_OUT")
 	if out == "" {
 		t.Fatal("fresh output required")
 	}
@@ -38,7 +52,7 @@ func TestModernHDGroundEdgesRealBanksAndGPU(t *testing.T) {
 	if e != nil {
 		t.Fatal(e)
 	}
-	recipePath := "../../assets/themes/modern/ground-grass-earth-hd.recipe.json"
+	recipePath := "../../assets/themes/modern/" + recipeName
 	recipeInput, e := os.ReadFile(recipePath)
 	if e != nil {
 		t.Fatal(e)
@@ -53,7 +67,7 @@ func TestModernHDGroundEdgesRealBanksAndGPU(t *testing.T) {
 	if e = json.Unmarshal(recipeInput, &recipe); e != nil {
 		t.Fatal(e)
 	}
-	if len(recipe.Groups) != 14 {
+	if len(recipe.Groups) != groups {
 		t.Fatal("complete edge groups required")
 	}
 	set := modifierHDTestTheme(t)
@@ -73,7 +87,7 @@ func TestModernHDGroundEdgesRealBanksAndGPU(t *testing.T) {
 			targets++
 		}
 	}
-	if targets != 141 || len(byMap) != 11 {
+	if targets != slots || len(byMap) != maps {
 		t.Fatal("incomplete real source scope", targets, len(byMap))
 	}
 	mapIDs := []int{}
@@ -206,17 +220,20 @@ func TestModernHDGroundEdgesRealBanksAndGPU(t *testing.T) {
 			}
 		}
 	}
-	if len(visible) < 8 {
+	if bases && (!visible[52] || !visible[53]) {
+		t.Fatal("real Game.Draw omitted grass/earth bases", visible)
+	}
+	if !bases && len(visible) < 8 {
 		t.Fatal("real Game.Draw has insufficient new edges", len(visible))
 	}
-	p.cases = append(p.cases, sharedGroundGPUCase{g: g, name: "game-map00", mapID: 0, source: 145, keepPNG: true})
+	p.cases = append(p.cases, sharedGroundGPUCase{g: g, name: "game-map00", mapID: 0, source: recipe.Groups[0].Anchor[1], keepPNG: true})
 	ebiten.SetWindowSize(640, 400)
 	ebiten.SetVsyncEnabled(false)
 	if e = ebiten.RunGame(p); e != nil {
 		t.Fatal(e)
 	}
-	if p.err != nil || p.index != 67 {
-		t.Fatalf("edge GPU %d/67: %v", p.index, p.err)
+	if p.err != nil || p.index != maps*6+1 {
+		t.Fatalf("ground GPU %d/%d: %v", p.index, maps*6+1, p.err)
 	}
 	for i, c := range p.cases {
 		frame := c.frame
@@ -242,7 +259,7 @@ func TestModernHDGroundEdgesRealBanksAndGPU(t *testing.T) {
 	if e != nil || !bytes.Equal(current, catalogInput) {
 		t.Fatal("catalog changed during edge GPU", e)
 	}
-	report := map[string]any{"status": "PASS-GROUND-EDGES-GPU", "catalog_sha256": fmt.Sprintf("%x", sha256.Sum256(catalogInput)), "recipe_sha256": fmt.Sprintf("%x", sha256.Sum256(recipeInput)), "painted_frames_rgba": painted, "maps": 11, "source_groups": 14, "target_slots": targets, "source_worlds": 66, "game_draws": 1, "f2": 1, "wrong_bank_masks_rejected": 11, "native_rng_seed": 7, "fixed_clock_unix": 1000, "cases": p.rows, "scope": "141個實際bank／selector來源；十一圖完整交界圖源測具與一個原樣map0 Game.Draw／F2。非十一章正常玩家或原版RGB對拍。"}
+	report := map[string]any{"status": status, "catalog_sha256": fmt.Sprintf("%x", sha256.Sum256(catalogInput)), "recipe_sha256": fmt.Sprintf("%x", sha256.Sum256(recipeInput)), "painted_frames_rgba": painted, "maps": maps, "source_groups": groups, "target_slots": targets, "source_worlds": maps * 6, "game_draws": 1, "f2": 1, "wrong_bank_masks_rejected": maps, "native_rng_seed": 7, "fixed_clock_unix": 1000, "cases": p.rows, "scope": "實際bank／selector來源、完整地形圖源測具及原樣map0 Game.Draw／F2。非各章正常玩家或原版RGB對拍。"}
 	raw, e := json.MarshalIndent(report, "", "  ")
 	if e != nil {
 		t.Fatal(e)

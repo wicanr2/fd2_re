@@ -4294,6 +4294,21 @@
         ],
         "pattern": "source\\.samefile\\(target\\)"
       }
+    },
+    {
+      "id": "ground-candidate-validates-complete-catalog-before-publish",
+      "date": "2026-10-25",
+      "area": "地形編製與清冊",
+      "rule": "tools/build_fd2_hd_ground_edges.py在暫存候選完成後、原子發布前呼叫tools/validate_modern_theme_catalog.py的validate(False, candidate_catalog)。source_refs使用現有檔案路徑或asset:識別，不自行加#片段。以tools/test_fd2_hd_ground_edges.py底材模式的invalid_source_ref_atomic_rejection核對錯引用不留下候選且不改基底。",
+      "why": "新底材首輪GPU及正常GUI通過後，完整清冊檢查才發現新source_refs帶不支援的片段，造成重新編製與重跑。另有原生地形不同frame共用同檔的有效契約，驗證器依Go唯一frame及同檔SHA對齊，不能用檔名唯一代替來源驗證。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#ground_bases_followup_20261025",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/build_fd2_hd_ground_edges.py"
+        ],
+        "pattern": "validate_catalog\\(False,temporary"
+      }
     }
   ]
 }

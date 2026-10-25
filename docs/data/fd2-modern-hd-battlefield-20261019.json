@@ -9,10 +9,10 @@
     "native_viewport": "CONFORMED-SCOPED：穩定1920世界沿原生(4,4)、312×192窗格；死亡事件前25拍依既有producer從VGA0,0開始，最後steady回4,4。不同caller分列，不新增DOS位址parity。",
     "hd_sprite_data": "DATA-READY：完整125組1455張HD及31組372張新增24父項已登錄；舊1083張父項及HD bytes保持。",
     "hd_world_renderer": "CONFORMED-SCOPED：144人物已接Game.Draw；首章34張正常GPU、4張實際走行、兩次物理攻擊及保存／新程序LOAD通過。",
-    "private_assets": "已登錄新圖源依白名單同步唯一私人庫；目前版本及數量依58與grass_earth_edges_followup_20261025.private_assets。",
+    "private_assets": "已登錄圖源按白名單同步唯一私人庫；目前版本及數量依ground_bases_followup_20261025.private_assets。",
     "quickload_battle_owner": "CONFORMED-SCOPED：成功JSON LOAD丟棄舊經驗owner與移動計畫；拒收保留。",
     "timed_dialogue": "CONFORMED-SCOPED-RUNTIME-E1：計時FFEC開收框保留HD世界，EXP99普通鍵盤／F2與保存冷讀通過；其他caller未驗。",
-    "hd_terrain": "CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI：十一圖同源純草地及十四種草泥交界已接入。唯一數量依58與grass_earth_edges_followup_20261025；其他平地、道路、水岸與HD2仍待。",
+    "hd_terrain": "CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI：已接同源純草／純土、草泥交界及既有物件；唯一數量依58及ground_bases_followup_20261025。其他地形／水岸與HD2仍待。",
     "ai_player_input_lock": "CONFORMED-SCOPED：AI換手期間拒絕玩家地圖輸入重入；普通END／增援對話及相關／完整Go回歸通過。",
     "gaia_redesign": "CONFORMED-SCOPED：新版頭像與四方向圖組已登錄；正常START／Gaia北移取消／F2／冷讀分段驗證。相位差異與序章尾端失敗明示，非逐幀parity。",
     "hd_battle_animation": "已解碼FIGANI264資源2118幀與全部可見BG／TAI圖源已登錄，數量及caller限制依58與本批formal_coverage；未因此宣稱全部caller、正常玩家或完整HD完成。",
@@ -20,7 +20,7 @@
     "hd_event_death": "共用事件、普通行動與狀態致死已接HD；三種26拍／F2通過。正常章23事件與普通擊殺已抽驗，狀態致死正常GUI仍待；來源依death_consumers_followup_20261021。",
     "theme_toolbar": "CONFORMED-SCOPED／RUNTIME-E1：正式預設單列頂端浮出、自動隱藏，主題與四語按鈕沿F2／F4閘門；完整遊戲幾何保持。其餘控制未完成，依floating_toolbar_followup_20261025。",
     "hd_facility_scene": "CONFORMED-SCOPED-RUNTIME-E1：三種城鎮與三種商店靜態HD場景／店員，以及既有隊伍HD頭像接入裝備面板；114個GPU案例及兩包載入通過，集中普通／人工仍待。",
-    "assets": "正式清冊及實檔來源已核對，本批新增地形圖源；目前清冊數量依58及grass_earth_edges_followup_20261025。",
+    "assets": "目前清冊與圖源依58及ground_bases_followup_20261025；保留歷史各切片數量的範圍。",
     "hd_battle_background": "CONFORMED-SCOPED／RUNTIME-E1：森林小屋／內部／海岸，以及BG0..2過渡已接共用／分離物理與24／29的已驗caller；原生位移、遮罩與節拍保持。其他來源／caller仍待，依transition_backgrounds_followup_20261024。",
     "hd_battle_pedestal": "CONFORMED-SCOPED／RUNTIME-E1：已登錄草地、森林裸土及海岸沙地TAI接共用物理的靜態／移位進場、攻防／restore／淡出。原框、層序與節拍保持，其他來源及caller仍待，依forest_coast_surface_followup_20261024。",
     "hd_heal_map": "CONFORMED-SCOPED／RUNTIME-E1：13～16的前導、七張光環、HD輪廓閃光、十個綠數字及等待接入；兩包各八完整Game.Draw／88次F2、一次交易／續行與非空HD地形變色通過。來源及限制見heal13_16_map_hd_followup_20261023，正常／人工／平台仍待。",
@@ -230429,7 +230429,8 @@
         "sha256": "92959c1822edf2a9783f68af4ceb957f76d31999764bea4e9656f319dcae36b1"
       },
       "transform": "完整1920×1200 PNG逐byte複製，未裁切、去字或補畫。",
-      "scope": "首章正常取景及F2切回HD，草泥交界與既有物件；其他平地／道路／水岸及HUD仍含像素。"
+      "scope": "首章正常取景及F2切回HD，草泥交界與既有物件；其他平地／道路／水岸及HUD仍含像素。",
+      "superseded_by": "ground_bases_followup_20261025.readme；原始來源PNG與Git 982839c4保留。"
     },
     "private_assets": {
       "commit": "1f5b75f18e4d50e6c611b85ebec7305a1c2e1e3d",
@@ -230567,6 +230568,450 @@
       "manual_items": 18,
       "possibly_done": 0,
       "scope": "主機gh讀回後由官方build_snapshot／write_snapshot及render／verify產生。人工268／269與傷害278保持。"
+    }
+  },
+  "ground_bases_followup_20261025": {
+    "status": "CONFORMED-SCOPED / RUNTIME-E1 / NORMAL-GUI",
+    "base_commit": "982839c489af041fa2bfbcededb29c1edb89a12e",
+    "issue": 201,
+    "runtime_integrated": true,
+    "full_hd_complete": false,
+    "rules_changed": false,
+    "source_groups": 5,
+    "target_slots": 52,
+    "maps": [
+      0,
+      1,
+      2,
+      3,
+      6,
+      7,
+      10,
+      11,
+      12,
+      13,
+      14,
+      17,
+      20,
+      22,
+      23,
+      30,
+      31,
+      32
+    ],
+    "catalog_assets": 811,
+    "sparse_terrain_slots": 257,
+    "recipe": {
+      "file": "remake/assets/themes/modern/ground-bases-hd.recipe.json",
+      "sha256": "b3bb281a96a75329ce2e72c9da1a0116155db789875a0009c8ee8b37fe7297d4"
+    },
+    "catalog": {
+      "file": "remake/assets/themes/modern/catalog.json",
+      "sha256": "b8e4e1761321c995ab6ca6311c3b11a597c546f59bc6d00f7ad04a3f356a40f6"
+    },
+    "candidate": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ground-bases-candidate-r3/manifest.json",
+      "sha256": "3c7c37d8f05b4bb06cd11c27695de41a3bd20715c6a3108d00ad4ef9c8dac559"
+    },
+    "gpu": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ground-bases-gpu-r2-capture/gpu.json",
+      "sha256": "0de8047deabc61d5a9103bc6a42f002f33f41759b27a44fafe12526404f64e5b"
+    },
+    "guards": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ground-bases-guards-r2.json",
+      "sha256": "8ac7d867b8a47aea9ef750d09143a581bdd668e2b8c650d9d5259d3b13e8ed39"
+    },
+    "legacy_edge_guards": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ground-bases-legacy-edges-guards-r1.json",
+      "sha256": "a1a6710e61123bb4ea6b107923a13318ca0ae3fd7a060ec6a1071bcf06a075e6"
+    },
+    "legacy_grass_guards": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ground-bases-legacy-grass-guards-r1.json",
+      "sha256": "f23f6b2be6bb7bd3f272f8b2b5d9b1fb792c0805e28e38442acf5b1921ed6089"
+    },
+    "registration": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ground-bases-registration-r2.json",
+      "sha256": "b2cbe9a054623f20f01640a1c81a7e200639ce429610b567c55bf4bc803950f3"
+    },
+    "private_sync": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ground-bases-private-sync-r3.json",
+      "sha256": "48d0276958c943fd22cbea2551854644b193d8d8fbb66f4da5d57a92ca8aaae8"
+    },
+    "native_art_review": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ground-bases-source-review-r1.png",
+      "sha256": "0787b430d5730a45c2aabab58e5d4939c50b008b8f26965dc0afa89171537b1d"
+    },
+    "art_review": "五份原生來源RGBA已目視；全opaque且無remap。52草與53土沿既有兩份母稿，三種補交界沿既有藝術遮罩，不混原版RGB。新候選五圖已目視，不新增母稿或變更風格。",
+    "human_review": "先全部HD串接，再集中人工確認。",
+    "failed_attempts": [
+      {
+        "name": "ground-bases-build-r1",
+        "category": "compiler local variable shadow",
+        "reason": "新增模式把maps路徑參數遮蔽成圖數；改成map_count後同資料／預算重跑通過，正式Go未改。"
+      },
+      {
+        "name": "legacy-grass-guards-first-invocation",
+        "category": "validation command path",
+        "reason": "舊GPU目錄名稱誤植，未產生收據；由既有主收據取得實際gpu.file後同工具重跑通過。"
+      },
+      {
+        "name": "candidate-r1-catalog-validation",
+        "category": "validator mismatch and invalid source reference",
+        "reason": "舊唯一檔名限制與Go按frame唯一的共用PNG契約不一致，改同檔SHA一致並保留frame唯一及實檔守衛。接著完整清冊驗證指出配方的source_refs誤用#片段；修正檔案路徑、編製器加入發布前完整預檢，使用新候選重跑GPU及正常GUI。第一輪GUI實際已PASS且容器自行退出，不標產品失敗；舊清冊收據不冒充修正清冊。",
+        "original_recipe": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ground-bases-rejected-recipe-r1.json",
+          "sha256": "75c293aa9838f6f25a788b5b5e56f6ede2a1c0949c1bd616cd361c4ec8ef8524"
+        }
+      },
+      {
+        "name": "private-sync-r2-verifier",
+        "category": "verification scope",
+        "reason": "同步完成且內容相同，驗證器卻把本批五個新PNG重複複製的mtime也當成既有檔應保持；改驗原有6969檔bytes／mtime，五新檔另驗SHA與擁有權後通過，未放寬舊素材保留要求。"
+      }
+    ],
+    "not_claimed": [
+      "十八章正常玩家或原版parity",
+      "本批自然攻擊返回／戰後變更保存",
+      "完整HD、HD2或人工造型完成"
+    ],
+    "remaining": "其他地形／水岸、HD2、完整介面／工具列、全部HD後集中正常／人工／平台仍待。",
+    "catalog_tests": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ground-bases-catalog-tests-r2.log",
+      "sha256": "3cee5b45f60ae9ba8841788814edcad3ff831aebe0c748211ce20e34ba2343e7",
+      "status": "PASS",
+      "tests": 14
+    },
+    "source_files": [
+      {
+        "file": "tools/build_fd2_hd_ground_edges.py",
+        "sha256": "5c002ec88ff67dc37e490620a656674e33348daff5d5944dc069aba50967989f"
+      },
+      {
+        "file": "tools/test_fd2_hd_ground_edges.py",
+        "sha256": "63123ee3cad5bffc605f0735592f8801d4a2a978ac5fae97d075e3eaff82ebf3"
+      },
+      {
+        "file": "tools/register_fd2_hd_ground.py",
+        "sha256": "3a4e5138117e374324449f435a50c5eea64122cb375626763e457345e0d95922"
+      },
+      {
+        "file": "tools/validate_modern_theme_catalog.py",
+        "sha256": "880d0b1e7ccea6cc5c2aa38db13728ea9ba6ccfb13d7d9d0793c271b22d10204"
+      },
+      {
+        "file": "tools/test_modern_theme_catalog.py",
+        "sha256": "3370260ee7bbcd58504de9cb57726729f50778f65afc4b0ee0e361bee8f0c97f"
+      },
+      {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "d9e12515fd4a473d37eef889b52716446f3bc4b8e9716d919ad8a4a2ca22b360"
+      },
+      {
+        "file": "tools/verify_fd2_hd_terrain_gpu.py",
+        "sha256": "48a51ee258630ad4896e235b8f21986b5ca7de4513817776b10fd95be56c518f"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_ground_edges_gpu_test.go",
+        "sha256": "111aa1209589a651e780e150e01c6c2b50de466c58b1f3d0d9a399ddb5f1fde9"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_ground_gpu_test.go",
+        "sha256": "f53334902138ff07e9446e1df5309b8779d421018db6b289b166f6df736273a8"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_terrain.go",
+        "sha256": "100be1cd405646fb9aceb505e2de1db93e679ba898f3891e4ea13fd1028a03c9"
+      }
+    ],
+    "bounded_runs": [
+      {
+        "name": "ground-bases-build-r4",
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ground-bases-build-r4.log",
+          "sha256": "16f1141f26d4bcee414959e71ca700f3c0c91f10c4df55e7cc8bc933addef868"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ground-bases-build-r4.memory.json",
+          "sha256": "ec34568cafa2de8afdbeb2897245e254b4eb2f853ee248c6d7e14b2649888df9"
+        },
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 20.588,
+        "peak_bytes": 245878784,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "command": [
+          "python3",
+          "tools/build_fd2_hd_ground_edges.py",
+          "--original-pack",
+          "/original",
+          "--maps",
+          "remake/assets/maps",
+          "--sources",
+          "work/promo-cadence-20261018/hd-fonts/native-terrain-sources-r2",
+          "--base-catalog",
+          "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ground-bases-base793-r1.json",
+          "--base-pack",
+          "/private",
+          "--earth-master",
+          "/private/earth-loam-hd-v1-master.png",
+          "--recipe",
+          "remake/assets/themes/modern/ground-bases-hd.recipe.json",
+          "--out",
+          "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ground-bases-candidate-r3"
+        ]
+      },
+      {
+        "name": "ground-bases-binary-r1",
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ground-bases-binary-r1.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ground-bases-binary-r1.memory.json",
+          "sha256": "8d93b0c740d00d51fb955e96f540cffb61e479d16da8c7b38ea0db9b414f9910"
+        },
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 23.086,
+        "peak_bytes": 511774720,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "command": [
+          "go",
+          "build",
+          "-o",
+          "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ground-bases-current-r1",
+          "./cmd/fd2"
+        ]
+      },
+      {
+        "name": "ground-bases-gpu-r2",
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ground-bases-gpu-r2.log",
+          "sha256": "45d90e570375abc1b58cfe3b9186714dbb21e2a6d52929a6dce4cc06d2791f0a"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ground-bases-gpu-r2.memory.json",
+          "sha256": "fe1e104aeb5c6a542fd510a60046090ec5ea39a74279ea25725c1cd81e51bee2"
+        },
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 137.896,
+        "peak_bytes": 4151083008,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "command": [
+          "with-xvfb",
+          "go",
+          "test",
+          "-json",
+          "-count=1",
+          "-timeout=900s",
+          "./cmd/fd2",
+          "-run",
+          "^TestModernHDGroundBasesRealBanksAndGPU$"
+        ]
+      },
+      {
+        "name": "ground-bases-normal-r2",
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ground-bases-normal-r2.log",
+          "sha256": "b45d52082c08e38c85574b6225318f88b560afa5c3930fcd80441432d90a8a69"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ground-bases-normal-r2.memory.json",
+          "sha256": "959aaa3e980c36e7ae021b00d88d9241bdbc06c18f49979dc0db0e61f602ce78"
+        },
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 258.182,
+        "peak_bytes": 4116852736,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "command": [
+          "python3",
+          "tools/verify_fd2_hd_fonts_gui.py",
+          "--binary",
+          "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ground-bases-current-r1",
+          "--assets",
+          "/repo/remake",
+          "--original-pack",
+          "/original",
+          "--modern-pack",
+          "/modern",
+          "--town-save",
+          "/source/fd2_save.json",
+          "--out",
+          "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ground-bases-normal-r2-capture",
+          "--battle-status",
+          "--terrain",
+          "--terrain-frames",
+          "52,53",
+          "--terrain-label",
+          "ground-bases",
+          "--terrain-focus",
+          "6",
+          "23",
+          "--startup-timeout",
+          "180"
+        ]
+      }
+    ],
+    "gui": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ground-bases-normal-r2-capture/receipt.json",
+      "sha256": "c19158d7a27fd42ecdf51b41e896f188fe88f96ccd0b4b7b8d532e6e06b123e0"
+    },
+    "normal_pixel_core": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ground-bases-normal-core-r2.json",
+      "sha256": "944ad217f43ee6a884ef31602f775647da27957d3847503bd7e09b204e6ef7f3"
+    },
+    "normal_summary": {
+      "seed": 1,
+      "source_save_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "pngs": 19,
+      "operations": 75,
+      "terrain_focus": [
+        6,
+        23
+      ],
+      "terrain_frames": [
+        52,
+        53
+      ],
+      "matching_tiles": [
+        54,
+        54
+      ],
+      "new_base_tiles": [
+        {
+          "52": 14,
+          "53": 14
+        },
+        {
+          "52": 14,
+          "53": 14
+        }
+      ],
+      "source_save_bytes_equal": true,
+      "theme_save_bytes_equal": true,
+      "new_process_title_load": true,
+      "natural_attack_return_checked": false,
+      "post_battle_save_checked": false,
+      "node_boundary_save_checked": false,
+      "scope": "正常標題LOAD、方向鍵取景、F2、狀態／命令面板、來源保存及新程序冷讀。此批沒有抽驗攻擊、自然返回或戰後變更保存，未注入座標／狀態。"
+    },
+    "private_assets": {
+      "commit": "86e59b00c81d68f4575564c0c7fd584716eabe1c",
+      "remote_head_verified": "86e59b00c81d68f4575564c0c7fd584716eabe1c",
+      "is_private_verified": true,
+      "files": 6974,
+      "old_files_unchanged": 6969,
+      "old_mtimes_preserved": true,
+      "new_files": 5,
+      "manifest_sha256": "0614d913e73ccf8483028f00059c60143bbb946c44099f4973f624dae5431b83"
+    },
+    "scope_details": {
+      "source_banks": 33,
+      "source_frames": 8256,
+      "source_groups": 5,
+      "target_slots": 52,
+      "maps": 18,
+      "source_gpu_worlds": 108,
+      "controlled_game_draws": 1,
+      "f2": 1,
+      "wrong_bank_masks_rejected": 18,
+      "source_guards": 10,
+      "registration_rejections": 5,
+      "invalid_source_ref_atomic_rejection": true,
+      "composite_pixels": 103680,
+      "existing_catalog_assets_unchanged": 793,
+      "catalog_assets": 811,
+      "sparse_terrain_slots": 257,
+      "production_go_changed": false,
+      "recordings_created": false,
+      "normal_attacks_sampled_this_batch": false
+    },
+    "readme": {
+      "image": {
+        "file": "docs/figures/hd-shared-grass.png",
+        "sha256": "d8a7742bad079a5d585c2d9bb15a65ec600d0a30f759e55376bc49d5f6cf33b3"
+      },
+      "source": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ground-bases-normal-r2-capture/terrain-hd-ground-bases-restored.png",
+        "sha256": "d8a7742bad079a5d585c2d9bb15a65ec600d0a30f759e55376bc49d5f6cf33b3"
+      },
+      "transform": "完整1920×1200原始視窗PNG逐byte複製，未裁切、補畫或去字。"
+    },
+    "reproduce": {
+      "build": "tools/build_fd2_hd_ground_edges.py --original-pack /original --maps remake/assets/maps --sources work/promo-cadence-20261018/hd-fonts/native-terrain-sources-r2 --base-catalog <ground-bases-base793-r1.json或git 982839c4清冊> --base-pack /private --earth-master /private/earth-loam-hd-v1-master.png --recipe remake/assets/themes/modern/ground-bases-hd.recipe.json --out <既有work父目錄下新目錄>；Pillow Docker，2GiB／2CPU／96PID及180秒外層限制，原包與完整私人包唯讀。",
+      "gpu": "Go Docker：FD2_ASSET_PACK=/original FD2_TEST_ORIGINAL_PACK=/original FD2_TEST_MODERN_EFFECT_CATALOG=<候選/catalog.json> FD2_TEST_MODERN_EFFECT_PACK=<候選/pack> FD2_HD_GROUND_BASES_GPU=1 FD2_HD_GROUND_BASES_OUT=<新目錄>；命令依bounded_runs的gpu，6GiB／2CPU／256PID、1020秒外層限制。",
+      "guards": "tools/test_fd2_hd_ground_edges.py --original-pack /original --sources <原生來源匯出> --recipe <底材配方> --candidate <新候選> --base-pack /private --base-catalog <793基底> --gpu <gpu.json> --report <新JSON>；含錯來源引用原子發布反例。",
+      "register": "tools/register_fd2_hd_ground.py --candidate <候選> --gpu <gpu.json> --guards <guards.json> --catalog <尚未登錄的793清冊> --asset-root <正式素材目錄> --report <新JSON>；同步沿sync_modern_theme_private.py，舊素材以同inode跳過。",
+      "normal_gui": "fd2-promo:20261017-r1 Docker內依bounded_runs的normal完整command，FD2_SEED=1；原包／私人包／來源槽唯讀，6GiB／2CPU／256PID、780秒外層限制。",
+      "normal_pixels": "tools/verify_fd2_hd_terrain_gpu.py --receipt <正常GUI/receipt.json> --report <新JSON>；預設逐圖必含完整52及53，不需補驗視圖。",
+      "catalog": "Pillow Docker內於tools執行python3 -m unittest test_modern_theme_catalog；完整私人包唯讀掛至正式private_root，十四項含實檔、同圖共用及拒收。"
+    },
+    "cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ground-bases-cleanup-r1.json",
+      "sha256": "a6b3a399fc03157d6535a12753e0e3fb9769f54e9c78a51174aa42cf03ef0346",
+      "removed_regular_bytes": 21378822
+    },
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ground-bases-final-checks-r1.json",
+      "sha256": "bc7b3294ad7cfaa73179faed223b16138ac30af312113ed38ef86196d0e68f51",
+      "status": "PASS-GROUND-BASES-FINAL-CHECKS",
+      "source_and_receipt_bindings": 35,
+      "python_sources": 7,
+      "local_links": 2838,
+      "old_catalog_assets_unchanged": 793,
+      "catalog_assets": 811,
+      "sparse_terrain_slots": 257,
+      "batch_ownership_no_root_or_md_directory": true,
+      "cleanup_verified": true,
+      "readme_culture_and_locales_retained": true
+    },
+    "worklist_issues": {
+      "updated": [
+        4,
+        201,
+        202,
+        204,
+        263
+      ],
+      "kept_open": true,
+      "open_items": 25,
+      "manual_items": 18,
+      "possibly_done": 0,
+      "scope": "主機gh讀回，由官方build_snapshot／write_snapshot及render／verify產生；完整HD與集中人工268／269保持。"
     }
   }
 }

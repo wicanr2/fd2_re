@@ -12,14 +12,26 @@ import tempfile
 from PIL import Image, ImageFilter
 from build_fd2_hd_ground import make_tile
 from verify_fd2_terrain_sources import verify, check_binding, sha
+from validate_modern_theme_catalog import validate as validate_catalog
+
+
+def ground_profile(recipe):
+    if recipe.get('kind') == 'fd2_grass_earth_hd_v1':
+        return 14, 141, 11, False
+    if recipe.get('kind') == 'fd2_ground_bases_hd_v1':
+        return 5, 52, 18, True
+    raise ValueError('交界配方契約不符')
 
 
 def validate_sources(pack, manifest, recipe):
-    if (recipe.get('schema_version'),recipe.get('kind'),recipe.get('size'))!=(1,'fd2_grass_earth_hd_v1',144):
+    count, slots, maps, bases = ground_profile(recipe)
+    if (recipe.get('schema_version'),recipe.get('size'))!=(1,144):
         raise ValueError('交界配方契約不符')
     groups=recipe['groups'];classes=recipe['index_groups']
-    if len(groups)!=14 or len({tuple(g['anchor']) for g in groups})!=14:
+    if len(groups)!=count or len({tuple(g['anchor']) for g in groups})!=count:
         raise ValueError('交界來源組數或身分不符')
+    if bases and {tuple(g['anchor']) for g in groups}!={(0,f) for f in (52,53,160,164,165)}:
+        raise ValueError('底材來源身分不符')
     a,b=classes['grass'],classes['earth']
     if (not a or not b or any(type(v) is not int or not 0<=v<=255 for v in a+b) or
             len(set(a+b))!=len(a+b)):
@@ -47,7 +59,8 @@ def validate_sources(pack, manifest, recipe):
         if Path(group['file']).name!=group['file'] or not group['file'].endswith('.png'):
             raise ValueError('交界檔名越界')
         out.append({'group':group,'pixels':anchor_pixels,'bindings':binding})
-    if len(seen)!=141:raise ValueError('交界完整141槽缺少')
+    if len(seen)!=slots or len({m for m,f in seen})!=maps:
+        raise ValueError('交界完整槽位缺少')
     return out
 
 
@@ -68,6 +81,7 @@ def composite_materials(raw,grass,earth,recipe):
 def build(pack,maps,sources,base_catalog,base_pack,earth_master,recipe_path,out):
     if os.path.lexists(out) or not out.parent.is_dir():raise ValueError('輸出須為既有父目錄下的新目錄')
     r=json.loads(recipe_path.read_text())
+    count,slots,map_count,bases=ground_profile(r)
     if sha(base_catalog)!=r['base_catalog_sha256'] or sha(sources/'manifest.json')!=r['source_manifest_sha256']:
         raise ValueError('交界基底綁定不同')
     grass_master=base_pack/r['grass_master_file']
@@ -90,15 +104,20 @@ def build(pack,maps,sources,base_catalog,base_pack,earth_master,recipe_path,out)
             raise ValueError('基底圖源缺少或不同：'+name)
     targets={tuple(t) for g in r['groups'] for t in g['targets']};old={(a['map_id'],f) for a in catalog['assets'] if a['role']=='native_terrain_hd_set' for f in a['frame_ids']}
     if old&targets:raise ValueError('拒絕覆寫既有地形槽')
-    newnames={g['file'] for g in r['groups']}|{r['earth_master_file']}
-    if len(newnames)!=15 or names&newnames or any(Path(n).name!=n for n in newnames):raise ValueError('新交界圖源身分衝突')
+    newnames={g['file'] for g in r['groups']} | (set() if bases else {r['earth_master_file']})
+    if len(newnames)!=count+(not bases) or names&newnames or any(Path(n).name!=n for n in newnames):raise ValueError('新交界圖源身分衝突')
+    if bases:
+        masters=[a for a in catalog['assets'] if a['asset_id']==r['earth_master_asset_id']]
+        if len(masters)!=1 or masters[0].get('file')!=r['earth_master_file'] or masters[0].get('sha256')!=sha(earth_master):
+            raise ValueError('底材既有泥土母稿不符')
     temporary=Path(tempfile.mkdtemp(prefix='.ground-edges-',dir=out.parent))
     try:
         assets=temporary/'pack';assets.mkdir()
         for name in names:(assets/name).symlink_to((base_pack/name).resolve())
-        shutil.copyfile(earth_master,assets/r['earth_master_file'])
-        master_id=r['asset_id']+'.earth.master';master_size=Image.open(earth_master).size
-        additions=[{'asset_id':master_id,'role':'terrain_hd_master','status':'concept','file':r['earth_master_file'],'width':master_size[0],'height':master_size[1],'sha256':sha(earth_master),'source_refs':r['source_refs']}]
+        if not bases:shutil.copyfile(earth_master,assets/r['earth_master_file'])
+        master_id=r['earth_master_asset_id'] if bases else r['asset_id']+'.earth.master'
+        master_size=Image.open(earth_master).size
+        additions=[] if bases else [{'asset_id':master_id,'role':'terrain_hd_master','status':'concept','file':r['earth_master_file'],'width':master_size[0],'height':master_size[1],'sha256':sha(earth_master),'source_refs':r['source_refs']}]
         entries=[];by_map={};preview=Image.new('RGBA',(7*144,2*144));edge_data=[]
         for i,item in enumerate(checked):
             group=item['group'];picture,mask=composite_materials(item['pixels'],grass,earth,r);name=group['file'];picture.save(assets/name);preview.paste(picture,(i%7*144,i//7*144));edge_data.append((picture,mask))
@@ -116,8 +135,10 @@ def build(pack,maps,sources,base_catalog,base_pack,earth_master,recipe_path,out)
             items.sort();additions.append({'asset_id':r['asset_id']+f'.map{map_id:02d}.native_hd','role':'native_terrain_hd_set','status':'runtime_candidate','consumer_contract':'fdshap_native_hd_sparse_v1','map_id':map_id,'width':144,'height':144,'frame_count':len(items),'frame_ids':[x[0] for x in items],'files':[x[1] for x in items],'frame_sha256':[x[2] for x in items],'semantics':['terrain']*len(items),'alpha_contract':'native_mask_nearest_6','cycle_policy':'native_selector','source_refs':['asset:'+master_id,'asset:modern.terrain.grass_olive.master',*r['source_refs']]})
         if {a['asset_id'] for a in catalog['assets']}&{a['asset_id'] for a in additions}:raise ValueError('交界清冊身分已存在')
         candidate=copy.deepcopy(catalog);candidate['assets'].extend(additions)
-        (temporary/'catalog.json').write_text(json.dumps(candidate,ensure_ascii=False,indent=2)+'\n');preview.save(temporary/'preview.png')
-        report={'status':'PASS-GROUND-EDGES-CANDIDATE','runtime_integrated':False,'base_catalog_sha256':sha(base_catalog),'recipe_sha256':sha(recipe_path),'source_manifest_sha256':sha(sources/'manifest.json'),'source_verification':source_report,'source_groups':len(entries),'target_slots':len(targets),'maps':sorted(by_map),'frames':entries,'earth_master':{'file':r['earth_master_file'],'sha256':sha(earth_master)},'grass_master':{'file':r['grass_master_file'],'sha256':sha(grass_master)},'edge_calibration':{'grass':grass_edge,'earth':earth_edge,'equal_material_edge_pixels':same_checks,'outer_hd_pixels':1,'mask_blur_hd_pixels':2},'catalog_assets':len(candidate['assets']),'base_assets_unchanged':len(catalog['assets']),'scope':'新手繪草／土材質與明示藝術遮罩；非玩法分類、原版RGB或正常玩家證據。'}
+        (temporary/'catalog.json').write_text(json.dumps(candidate,ensure_ascii=False,indent=2)+'\n')
+        validate_catalog(False,temporary/'catalog.json')
+        preview.save(temporary/'preview.png')
+        report={'status':'PASS-GROUND-BASES-CANDIDATE' if bases else 'PASS-GROUND-EDGES-CANDIDATE','runtime_integrated':False,'base_catalog_sha256':sha(base_catalog),'recipe_sha256':sha(recipe_path),'source_manifest_sha256':sha(sources/'manifest.json'),'source_verification':source_report,'source_groups':len(entries),'target_slots':len(targets),'maps':sorted(by_map),'frames':entries,'earth_master':{'file':r['earth_master_file'],'sha256':sha(earth_master)},'grass_master':{'file':r['grass_master_file'],'sha256':sha(grass_master)},'edge_calibration':{'grass':grass_edge,'earth':earth_edge,'equal_material_edge_pixels':same_checks,'outer_hd_pixels':1,'mask_blur_hd_pixels':2},'catalog_assets':len(candidate['assets']),'base_assets_unchanged':len(catalog['assets']),'scope':'新手繪草／土材質與明示藝術遮罩；非玩法分類、原版RGB或正常玩家證據。'}
         (temporary/'manifest.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n');temporary.rename(out)
     except BaseException:shutil.rmtree(temporary,ignore_errors=True);raise
     return report

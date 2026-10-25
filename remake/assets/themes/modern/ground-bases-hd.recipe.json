@@ -1,0 +1,299 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_ground_bases_hd_v1",
+  "asset_id": "modern.terrain.ground_bases",
+  "base_catalog_sha256": "7c1dbf5d4c8e549cc4594b34bca3f65d47cd3935880c4bfb85f726faa845871e",
+  "source_manifest_sha256": "a19a3da393294ad6e1c4ad1dccdb9a911d26ed1f3d7008046eddda2398f938f5",
+  "grass_master_file": "grass-olive-hd-v1-master.png",
+  "grass_master_sha256": "ed29eb9da12adae641c612d28b848c186dd2986ac1ee3fa4e35e65b72e864c29",
+  "earth_master_file": "earth-loam-hd-v1-master.png",
+  "earth_master_sha256": "0281b4878c6be106ad4a6db211452219a2015278f415321f9deeb9e2af264563",
+  "size": 144,
+  "edge_blend": 8,
+  "mask_blur_hd_pixels": 2,
+  "exact_outer_edge_hd_pixels": 1,
+  "index_groups": {
+    "grass": [
+      68,
+      69,
+      70,
+      71,
+      140,
+      141
+    ],
+    "earth": [
+      112,
+      113,
+      114,
+      115,
+      116,
+      117
+    ]
+  },
+  "groups": [
+    {
+      "anchor": [
+        0,
+        52
+      ],
+      "native_content_sha256": "91c188f496eacb86127fb5bcba1b4940f9df5be1044705c184c3b18baa78e0c5",
+      "file": "ground-base-052-hd-v1.png",
+      "targets": [
+        [
+          0,
+          52
+        ],
+        [
+          0,
+          244
+        ],
+        [
+          1,
+          153
+        ],
+        [
+          3,
+          20
+        ],
+        [
+          6,
+          145
+        ],
+        [
+          7,
+          381
+        ],
+        [
+          10,
+          161
+        ],
+        [
+          11,
+          168
+        ],
+        [
+          13,
+          174
+        ],
+        [
+          14,
+          174
+        ],
+        [
+          17,
+          168
+        ],
+        [
+          30,
+          161
+        ],
+        [
+          31,
+          73
+        ],
+        [
+          32,
+          140
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        53
+      ],
+      "native_content_sha256": "948bed71b8c155620744db6c564c785ec8cb55ecaa94b19c36128d0fbf2d543b",
+      "file": "ground-base-053-hd-v1.png",
+      "targets": [
+        [
+          0,
+          53
+        ],
+        [
+          2,
+          177
+        ],
+        [
+          3,
+          143
+        ],
+        [
+          6,
+          146
+        ],
+        [
+          10,
+          162
+        ],
+        [
+          12,
+          99
+        ],
+        [
+          13,
+          177
+        ],
+        [
+          14,
+          177
+        ],
+        [
+          20,
+          33
+        ],
+        [
+          22,
+          17
+        ],
+        [
+          23,
+          43
+        ],
+        [
+          30,
+          162
+        ],
+        [
+          31,
+          72
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        160
+      ],
+      "native_content_sha256": "72527b01ae50ed1ed31174def76c786d1589834a7e07d64f87df8b50ae8ecefc",
+      "file": "ground-base-160-hd-v1.png",
+      "targets": [
+        [
+          0,
+          160
+        ],
+        [
+          3,
+          104
+        ],
+        [
+          6,
+          64
+        ],
+        [
+          10,
+          64
+        ],
+        [
+          11,
+          160
+        ],
+        [
+          13,
+          16
+        ],
+        [
+          14,
+          16
+        ],
+        [
+          30,
+          64
+        ],
+        [
+          31,
+          48
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        164
+      ],
+      "native_content_sha256": "dcea18fffd306935a48a8cf2a556721c7938801da48633db693ca76f9e7c1116",
+      "file": "ground-base-164-hd-v1.png",
+      "targets": [
+        [
+          0,
+          164
+        ],
+        [
+          3,
+          108
+        ],
+        [
+          6,
+          68
+        ],
+        [
+          10,
+          68
+        ],
+        [
+          11,
+          164
+        ],
+        [
+          17,
+          164
+        ],
+        [
+          30,
+          68
+        ],
+        [
+          31,
+          52
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        165
+      ],
+      "native_content_sha256": "3b65aeb33702259024167ed482545655fece43c1bd032e66544cfacf423268f0",
+      "file": "ground-base-165-hd-v1.png",
+      "targets": [
+        [
+          0,
+          165
+        ],
+        [
+          3,
+          109
+        ],
+        [
+          6,
+          69
+        ],
+        [
+          10,
+          69
+        ],
+        [
+          11,
+          165
+        ],
+        [
+          17,
+          165
+        ],
+        [
+          30,
+          69
+        ],
+        [
+          31,
+          53
+        ]
+      ]
+    }
+  ],
+  "source_refs": [
+    "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+    "docs/data/fd2-modern-hd-battlefield-20261019.json"
+  ],
+  "semantics": "literal palette-index groups are art masks, not newly inferred game rules",
+  "earth_master_asset_id": "modern.terrain.grass_earth.earth.master"
+}

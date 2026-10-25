@@ -17,20 +17,24 @@ def register(candidate, gpu_path, guards_path, catalog_path, asset_root):
     catalog=json.loads((candidate/'catalog.json').read_text())
     base=json.loads(catalog_path.read_text())
     gpu=json.loads(gpu_path.read_text());guards=json.loads(guards_path.read_text())
-    edges=proof['status']=='PASS-GROUND-EDGES-CANDIDATE'
-    if proof['status'] not in ('PASS-GROUND-CANDIDATE','PASS-GROUND-EDGES-CANDIDATE') or sha(catalog_path)!=proof['base_catalog_sha256']:
+    bases=proof['status']=='PASS-GROUND-BASES-CANDIDATE'
+    edges=proof['status'] in ('PASS-GROUND-EDGES-CANDIDATE','PASS-GROUND-BASES-CANDIDATE')
+    maps,groups,slots,additions_count=(18,5,52,18) if bases else (11,14,141,12)
+    if proof['status'] not in ('PASS-GROUND-CANDIDATE','PASS-GROUND-EDGES-CANDIDATE','PASS-GROUND-BASES-CANDIDATE') or sha(catalog_path)!=proof['base_catalog_sha256']:
         raise ValueError('正式清冊已變或候選未通過')
-    if catalog['assets'][:len(base['assets'])]!=base['assets'] or len(catalog['assets'])!=len(base['assets'])+12:
+    if catalog['assets'][:len(base['assets'])]!=base['assets'] or len(catalog['assets'])!=len(base['assets'])+additions_count:
         raise ValueError('草地候選改動既有資產或新增範圍不符')
-    expected_gpu='PASS-GROUND-EDGES-GPU' if edges else 'PASS-SHARED-GROUND-GPU'
+    expected_gpu='PASS-GROUND-BASES-GPU' if bases else 'PASS-GROUND-EDGES-GPU' if edges else 'PASS-SHARED-GROUND-GPU'
     if (gpu.get('status')!=expected_gpu or gpu.get('catalog_sha256')!=sha(candidate/'catalog.json') or
-        gpu.get('maps')!=11 or gpu.get('source_worlds')!=66 or gpu.get('game_draws')!=1 or
-        gpu.get('f2')!=1 or gpu.get('wrong_bank_masks_rejected')!=11 or len(gpu.get('cases',[]))!=67):
+        gpu.get('maps')!=maps or gpu.get('source_worlds')!=maps*6 or gpu.get('game_draws')!=1 or
+        gpu.get('f2')!=1 or gpu.get('wrong_bank_masks_rejected')!=maps or len(gpu.get('cases',[]))!=maps*6+1):
         raise ValueError('缺少同清冊完整草地GPU收據')
     expected={(e['map'],e['frame']) for group in proof['frames'] for e in group['targets']} if edges else {(e['map'],e['frame']) for e in proof['targets']}
+    if edges and (len(proof['frames'])!=groups or len(expected)!=slots or len({m for m,f in expected})!=maps):
+        raise ValueError('候選實際來源組數或槽位不完整')
     rows=gpu['cases'];modes={'steady','up1','up6','lut','black','white'}
     if edges:
-        if gpu.get('source_groups')!=14 or gpu.get('target_slots')!=141 or gpu.get('recipe_sha256')!=proof['recipe_sha256']:
+        if gpu.get('source_groups')!=groups or gpu.get('target_slots')!=slots or gpu.get('recipe_sha256')!=proof['recipe_sha256']:
             raise ValueError('交界GPU來源或配方不同')
         for m in {m for m,f in expected}:
             frames={f for map_id,f in expected if map_id==m}
@@ -41,10 +45,12 @@ def register(candidate, gpu_path, guards_path, catalog_path, asset_root):
         for m,f in expected:
             names={r['case'] for r in rows if r['map']==m and r['source_frame']==f and not r['game_draw']}
             if names!={f'map{m:02d}-{mode}' for mode in modes}:raise ValueError('GPU實際圖源範圍不完整')
-    expected_guards='PASS-GROUND-EDGES-GUARDS' if edges else 'PASS-GROUND-GUARDS'
+    expected_guards='PASS-GROUND-BASES-GUARDS' if bases else 'PASS-GROUND-EDGES-GUARDS' if edges else 'PASS-GROUND-GUARDS'
     if guards.get('status')!=expected_guards or guards.get('recipe_sha256')!=proof['recipe_sha256'] or len(guards.get('checks',[]))!=10:
         raise ValueError('缺少同配方完整草地反例檢查')
-    files=[proof['earth_master'],*proof['frames']] if edges else [proof['master'],proof['tile']]
+    if bases and guards.get('invalid_source_ref_atomic_rejection') is not True:
+        raise ValueError('缺少底材清冊來源引用原子拒收')
+    files=proof['frames'] if bases else [proof['earth_master'],*proof['frames']] if edges else [proof['master'],proof['tile']]
     for entry in files:
         if Path(entry['file']).name!=entry['file'] or sha(candidate/'pack'/entry['file'])!=entry['sha256']:
             raise ValueError('候選圖源不同')
