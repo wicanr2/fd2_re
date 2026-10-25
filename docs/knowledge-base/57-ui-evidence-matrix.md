@@ -1,5 +1,7 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
+玩家第9號法術已接同次地圖23手繪背景，完成受控命中／MISS全流程、F2、來源隔離與原子拒收。來源及唯一數量依[58](58-fd2-exe-re-coverage.md)、[61](61-modern-theme-runtime-spec.md)與HD主收據player9_stage_hd_followup_20261025；其他凍結消費端及集中正常／人工／平台仍待。
+
 物品地圖演出已接入HD，限定CONFORMED-SCOPED／RUNTIME-E1。範圍為AI回復及玩家／AI傷害、三種特殊效果；原生結算、道具消耗與保留、RNG、Draw確認、尾停及一次返回保持。玩家type5/13仍走既有直接結算。MISS佇列依既有原版十六進位表修正，像素與HD模式皆改用正確字母，來源及實際消費端已回歸。共用compound場景新增同次地圖23背景快照與來源簽章，四召喚及狀態法術來源回歸通過。兩包完整Game.Draw、F2及相同畫面已驗，來源與數量依[58](58-fd2-exe-re-coverage.md)、契約依[61](61-modern-theme-runtime-spec.md)及[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的item_map_hd_followup_20261025。美術與RGB映色為近似，未重跑FD2.EXE；其餘凍結消費端及完整HD、正常／集中人工／平台仍待。
 
 天空之鑰的FDOTHER34人物／元件與ANI0近景已接入HD，限定CONFORMED-SCOPED／RUNTIME-E1。原生鏡頭、等待、色盤閃白／還原、尾段與一次續行保持，兩包完整Game.Draw／F2及原圖主題控制組通過；來源拒收、凍結世界與交易回復、共享地圖／故事回歸保持。地圖20地形與介面框線仍用像素，金鎖仿射與早期縮遠延拓屬美術近似。本批未重跑FD2.EXE，不新增正常玩家、每frame或硬體時鐘聲明。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的sky_key_hd_followup_20261025。其餘凍結caller、地形／HD2／完整HUD／介面獨立切換／浮出工具列、加速、海報與集中正常／人工／平台仍待。

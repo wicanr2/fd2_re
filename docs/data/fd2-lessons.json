@@ -4205,7 +4205,7 @@
       "id": "stage-native-replay-follows-same-compose-seed",
       "date": "2026-10-25",
       "area": "HD凍結場景",
-      "rule": "帶目的映射的地圖23凍結場景，先附上同次staging，再在scene.validate內SeedNativeCh23Staging及ComposeNativeFrame。global constructor只凍結來源；以tools/verify_fd2_unit_present_hd.py --kind item-stage-source在Go Docker驗BlitMode0的非恆等LUT，反例須先證明未重新seed的重播會不同。",
+      "rule": "帶目的映射的地圖23凍結場景，先附上同次staging，再在scene.validate內SeedNativeCh23Staging及ComposeNativeFrame。global constructor只凍結來源；以tools/verify_fd2_unit_present_hd.py --kind item-stage-source在Go Docker驗BlitMode0的非恆等LUT，反例須先證明未重新seed的重播會不同。 共用凍結輸入freezeNativeCommand9MapInput也先恢復同次staging再重播；以tools/verify_fd2_unit_present_hd.py --kind player9-stage-unit驗原生映射與實際背景隔離。",
       "why": "第一次短測試繼承0xff直接繪製分支而通過，沒有覆蓋目的映射。明示BlitMode0後，來源在附加stage前重組而失敗；移除提早重組後同一反例通過。既有目的映射與staging契約已足以修正，不需要重開RE或改正式規則。",
       "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#item_map_hd_followup_20261025.late_stage_remap_regression",
       "guard": {

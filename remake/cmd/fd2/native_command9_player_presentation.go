@@ -37,6 +37,7 @@ type nativeCommand9PlayerJob struct {
 	effectSources, resultSources  [][]indexedmap.NativeCommandTailLayer
 	hdInput                       indexedmap.NativeFrameInput
 	hdInputErr                    error
+	hdScene                       *modernHDCompoundMapScene
 	hdFrames                      *modernHDPlayer9Frames
 	hdTheme                       *modernStoryPortraitSet
 }
@@ -139,6 +140,11 @@ func (g *Game) startNativeCommand9PlayerPresentation(actor, confirmed *battle.Un
 		effectSources: effectSources, resultSources: resultSources,
 	}
 	job.hdInput, job.hdInputErr = g.freezeNativeCommand9MapInput()
+	palette, err := fdother.VGAPaletteFromDAC(g.nativeMapDAC)
+	if err != nil {
+		return err
+	}
+	job.hdScene = g.newModernHDCompoundMapScene(job.hdInput, baselineWork, baselineVGA, palette, job.hdInputErr)
 	if g.modernStoryPortraits != nil {
 		job.hdFrames, err = g.prepareModernHDPlayer9Frames(job, g.modernStoryPortraits)
 		if err != nil {

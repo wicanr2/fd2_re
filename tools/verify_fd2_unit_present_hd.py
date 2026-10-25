@@ -13,6 +13,8 @@ from verify_fd2_player9_map_hd import check_real_runtime
 
 ROOT=Path(__file__).resolve().parents[1]
 REQUIRED={
+    'player9-stage-game':{'TestModernHDPlayer9StageGameGPU'},
+    'player9-stage-unit':{'TestModernHDPlayer9StageFreezeUsesSeed','TestModernHDPlayer9ActualStage','TestModernHDPlayer9StageRejectsEditedSource'},
     'item-miss':{'TestNativeMissDescriptorConsumers'},
     'item-stage-source':{'TestModernHDCompoundStageRemapStartsFromSeed'},
     'item-game':{'TestModernHDItemMapGameGPU'},
@@ -102,6 +104,14 @@ REQUIRED['sky-core']=REQUIRED['sky-source'] | REQUIRED['sky-unit'] | REQUIRED['s
 
 def check_receipt(kind, prefix):
     receipt=json.loads(Path(str(prefix)+'-capture/receipt.json').read_text())
+    if kind=='player9-stage-game':
+        d=json.loads(Path(str(prefix)+'-capture/receipt.json').read_text())
+        cases=d.get('cases',[])
+        if d.get('status')!='PASS-PLAYER9-STAGE-HD-GAME' or d.get('map_index')!=23 or d.get('seed')!=7 or d.get('clock_unix')!=1000 or d.get('rgba_tolerance')!=2 or len(cases)!=2 or len(d.get('rows',[]))!=116:
+            raise ValueError('player9 stage identity or complete frames missing')
+        if {c.get('hit') for c in cases}!={True,False} or any(c.get('frames')!=58 or c.get('f2_round_trips')!=8 or c.get('continuations')!=1 or c.get('native_control_unchanged') is not True for c in cases) or len(list(Path(str(prefix)+'-capture').glob('*.png')))!=18:
+            raise ValueError('player9 stage F2, return or captures missing')
+        return dict(frames=116,cases=2,f2_round_trips=16,pngs=18)
     if kind=='item-game':
         cases=receipt.get('cases',[]); rows=receipt.get('rows',[])
         names={f'{name}-player-{player}' for name in ['restore5','restore13','damage20','damage20-command0','damage24','type21-command1','type21-command6','type21-command7'] for player in ['false','true'] if not (name.startswith('restore') and player=='true')}
@@ -307,12 +317,13 @@ def main():
             raise ValueError('不可覆寫收據')
     independent=check_real_runtime(a.pack,json.loads(a.catalog.read_text())) if a.require_real_runtime else None
     env=os.environ.copy()
-    for name in ['FD2_HD_UNIT_PRESENT_SOURCE','FD2_HD_UNIT_PRESENT_GPU','FD2_HD_UNIT_PRESENT_STORY_GPU','FD2_HD_STORY_MOTION_GPU','FD2_HD_INDEXED_TRANSITION_GPU','FD2_HD_ROW_SHAKE_GPU','FD2_HD_CH23_STAGE_GPU','FD2_HD_SKY_KEY_GPU','FD2_HD_ITEM_MAP_GPU','FD2_HD_ITEM_MAP_PROBE']:
+    for name in ['FD2_HD_UNIT_PRESENT_SOURCE','FD2_HD_UNIT_PRESENT_GPU','FD2_HD_UNIT_PRESENT_STORY_GPU','FD2_HD_STORY_MOTION_GPU','FD2_HD_INDEXED_TRANSITION_GPU','FD2_HD_ROW_SHAKE_GPU','FD2_HD_CH23_STAGE_GPU','FD2_HD_SKY_KEY_GPU','FD2_HD_ITEM_MAP_GPU','FD2_HD_ITEM_MAP_PROBE','FD2_HD_PLAYER9_STAGE_GPU']:
         env.pop(name,None)
     env.update(FD2_MUTE='1',FD2_TEST_UNIT_PRESENT_CATALOG=str(a.catalog.resolve()),
                FD2_TEST_UNIT_PRESENT_PACK=str(a.pack.resolve()),FD2_TEST_UNIT_PRESENT_OUT=str(a.out)+'-capture')
     if a.kind=='source':env['FD2_HD_UNIT_PRESENT_SOURCE']='1'
     if a.kind=='item-game':env['FD2_HD_ITEM_MAP_GPU']='1'
+    if a.kind=='player9-stage-game':env['FD2_HD_PLAYER9_STAGE_GPU']='1'
     if a.kind=='sky-game':env['FD2_HD_SKY_KEY_GPU']='1'
     if a.kind=='stage-game':env['FD2_HD_CH23_STAGE_GPU']='1'
     if a.kind=='game':env['FD2_HD_UNIT_PRESENT_GPU']='1'
@@ -345,7 +356,7 @@ export DISPLAY=:99
     if not REQUIRED[a.kind]<={e.get('Test') for e in events if e.get('Action')=='pass'} or any(e.get('Action') in {'skip','fail'} for e in events):
         raise ValueError('必要測試缺項、SKIP或失敗')
     receipt_evidence=None
-    if a.kind in {'source','game','story-game','motion-game','indexed-game','rowshake-game','stage-game','sky-game','item-game'}:
+    if a.kind in {'source','game','story-game','motion-game','indexed-game','rowshake-game','stage-game','sky-game','item-game','player9-stage-game'}:
         receipt_evidence=check_receipt(a.kind,a.out)
     report=dict(status='PASS',kind=a.kind,required=sorted(REQUIRED[a.kind]),catalog=str(a.catalog.resolve()),
                 catalog_sha256=hashlib.sha256(a.catalog.read_bytes()).hexdigest(),pack=str(a.pack.resolve()),

@@ -7,7 +7,6 @@ import (
 	"image"
 	"image/color"
 
-	"github.com/wicanr2/fd2_re/remake/internal/fdicon"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 	"github.com/wicanr2/fd2_re/remake/internal/indexedmap"
 )
@@ -31,48 +30,20 @@ func (g *Game) freezeNativeCommand9MapInput() (indexedmap.NativeFrameInput, erro
 			return in, err
 		}
 	}
-	f := &in.Frame
-	f.Cells = append([]fdicon.NativeTerrainCell(nil), f.Cells...)
-	f.Units = append([]fdicon.NativeUnitLayerEntry(nil), f.Units...)
-	f.ForegroundUnits = append([]fdicon.NativeForegroundLayerEntry(nil), f.ForegroundUnits...)
-	f.Controls, f.LUT = append([]byte(nil), f.Controls...), append([]byte(nil), f.LUT...)
-	if in.HUD.OptionalUnit != nil {
-		unit := *in.HUD.OptionalUnit
-		in.HUD.OptionalUnit = &unit
-	}
-	if f.SelectionOverlay != nil {
-		first := make([]byte, indexedmap.NativeUnitPresentWorkSize)
-		second := bytes.Repeat([]byte{255}, len(first))
-		base := indexedmap.NativeUnitPresentStripLayoutFor(0, 0, 0, 0).WorkOffset
-		if err := f.SelectionOverlay(first, fdicon.NativeMapStride, base); err != nil {
-			return in, err
-		}
-		if err := f.SelectionOverlay(second, fdicon.NativeMapStride, base); err != nil {
-			return in, err
-		}
-		type write struct {
-			at    int
-			value byte
-		}
-		var writes []write
-		for i, value := range first {
-			if value == second[i] {
-				writes = append(writes, write{i, value})
-			} else if value != 0 || second[i] != 255 {
-				return in, errors.New("modern HD player9: destination-dependent selection source")
-			}
-		}
-		f.SelectionOverlay = func(dst []byte, stride, viewportBase int) error {
-			if len(dst) != len(first) || stride != fdicon.NativeMapStride || viewportBase != base {
-				return errors.New("modern HD player9: frozen selection geometry changed")
-			}
-			for _, w := range writes {
-				dst[w.at] = w.value
-			}
-			return nil
-		}
+	var err error
+	in, err = freezeCompoundMapInput(in)
+	if err != nil {
+		return in, err
 	}
 	work, vga := append([]byte(nil), g.nativeMapWork...), append([]byte(nil), g.nativeMapVGA...)
+	if g.nativeMapAssets != nil && g.nativeMapAssets.MapIndex == 23 {
+		if g.nativeCh23State == nil {
+			return in, errors.New("modern HD player9: same-compose stage absent")
+		}
+		if err := indexedmap.SeedNativeCh23Staging(work, g.nativeCh23State.staging); err != nil {
+			return in, err
+		}
+	}
 	if err := indexedmap.ComposeNativeFrame(work, vga, in); err != nil {
 		return in, err
 	}
@@ -141,10 +112,18 @@ func (g *Game) prepareModernHDPlayer9Frames(job *nativeCommand9PlayerJob, set *m
 	if len(job.palettes) != 8 || len(job.effectFrames) != 27 || len(job.resultFrames) != 22 || len(job.effectSources) != 27 || len(job.resultSources) != 22 {
 		return nil, errors.New("modern HD player9: incomplete native producer")
 	}
-	palette, err := fdother.VGAPaletteFromDAC(g.nativeMapDAC)
-	if err != nil {
+	scene := job.hdScene
+	if err := scene.validate(g); err != nil {
 		return nil, err
 	}
+	// Check the owners original producer as well as the independent snapshot.
+	probe := *scene
+	probe.input, probe.work, probe.vga = job.hdInput, job.baselineWork, job.baselineVGA
+	digest, err := probe.digest()
+	if err != nil || digest != scene.signature {
+		return nil, errors.New("modern HD player9: owner producer changed")
+	}
+	palette := scene.palette
 	hasEffects := set.mapEffects != nil
 	hasResults := set.mapOverlays != nil && set.mapOverlays.frames[94] != nil
 	if hasEffects != hasResults {
@@ -170,7 +149,7 @@ func (g *Game) prepareModernHDPlayer9Frames(job *nativeCommand9PlayerJob, set *m
 	view := *g
 	view.modernStoryPortraits = set
 	prepare := func(p color.Palette) (*modernHDMapFrame, error) {
-		frame, e := view.prepareModernHDMapFrameMode(job.hdInput, job.baselineWork, p, true)
+		frame, e := view.prepareModernHDMapFrameStageLayout(scene.input, scene.work, p, true, -1, scene.stage)
 		if e != nil {
 			return nil, e
 		}

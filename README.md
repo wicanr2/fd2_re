@@ -61,6 +61,10 @@
 
 物品演出已接入 HD 人物、光效與數字。上排為 AI 回復與玩家傷害，下排為特殊效果與未命中，取自受控測試的完整重製畫面半縮。玩家回復道具維持既有直接結算；部分地形及介面仍用像素。此圖不代表正常章節通關，來源與範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)及[HD收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的`item_map_hd_followup_20261025`。
 
+![第9號法術在地圖23保留同次HD背景](docs/figures/hd-player9-stage.png)
+
+第9號法術已保留同次手繪背景，四格依序為調色、命中數字、未命中與返回地圖。畫面取自受控測試的完整重製畫面半縮；綠色背景、人物與數字使用 HD，城堡地形及介面框線仍為像素。來源與範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)及[HD收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的`player9_stage_hd_followup_20261025`，不代表正常章節通關。
+
 ## HD2 設計基準
 
 後續HD2戰場沿下列斜角站姿人物與手繪地形設計，保留既有HD及原版主題。操作介面與人物主題獨立，海報從單列浮出工具列選擇；海報邊緣可漸層銜接戰場，並調整淡入時間。

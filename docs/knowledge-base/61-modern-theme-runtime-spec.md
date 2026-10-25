@@ -4370,3 +4370,22 @@ AI type5／13回復，以及玩家／AI type20／24傷害、type21指令1／6／
 重製端對照組判定通過。此修正不宣稱新增原版執行器對拍或 PLAYER-E2。
 
 前述 READY 已實作並通過受控 RUNTIME-E1。共用佇列六項回歸、真實狀態與召喚未命中分支、十四條完整物品演出與兩包全部畫面通過；選定閘門及數量依58與主收據，不沿用修正前的煙霧收據。獨立素材包完成驗證後已清理，重跑須以私人清冊重新同步。
+## 玩家第9號法術的地圖23背景來源（READY，2026-10-25）
+
+沿用 `fd2_command9_player_ai_presentation_ida.txt` 的已閉合玩家 owner、
+既有地圖23 staging 證據及本規格的背景材質契約。這次只補顯示來源，不重開 RE。
+目前第9號法術建立 HD 畫面時未傳入同次 staging，會失去特殊背景；
+共用凍結輸入亦對已合成畫面直接重播，須先恢復同次 staging 才能驗證目的映射。
+
+正式 owner 凍結現有 compound 場景，保存 typed input、原生 work／VGA、palette、
+selector／HUD 快取與地圖23狀態。完整 HD 與 F2 預檢重驗來源簽章及原生重組，
+八張 palette、hold、27張效果與22張結果共用同次背景。播放不讀後續 live stage。
+主題缺件、快照修改或來源變更須原子拒收；像素模式、交易、RNG、音效、節拍、
+Draw 確認與續行保持。一般地圖仍重跑既有控制組。
+
+先以非恆等 LUT／BlitMode0 反例確認凍結來源，再用真實 map23 的命中與未命中
+完整 Game.Draw、每階段 F2、背景／人物／HUD 同步與返回驗證。這是受控
+RUNTIME-E1，不新增正常玩家或原版執行器對拍。回復與其他徑向消費端仍須
+分別驗證整張背景的原生遮罩，不能由此切片推定完成。
+
+前述 READY 已實作，限定 CONFORMED-SCOPED／RUNTIME-E1。完整 Game.Draw 與實體私人素材回歸、來源簽章拒收、非恆等LUT及舊一般地圖／物品回歸通過。重跑使用 tools/verify_fd2_unit_present_hd.py 的 player9-stage-unit 與 player9-stage-game，明示 --catalog、--pack、--out；維護中Go Docker、固定原包、seed7及clock1000。私人圖包唯讀掛載並加 --require-real-runtime，驗收值、峰值與18張圖的比較依主收據。城堡原生圖塊與框線尚未HD，不能由此宣布完整HD或正常玩家完成。

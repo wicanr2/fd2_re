@@ -226123,5 +226123,117 @@
       }
     ],
     "validation_environment_correction": "清冊測試初次外層45秒中止，當時八項已執行且未報錯；相同映像與命令以360秒外層乾淨重跑，13項43.945秒通過。Go最終收據均無逾時或OOM。"
+  },
+  "player9_stage_hd_followup_20261025": {
+    "status": "CONFORMED-SCOPED",
+    "base_commit": "1868fc9f8fd62e4b3c0b60fbda7bb902deab0739",
+    "scope": "玩家第9號全階段同次地圖23背景；共用凍結輸入以原生stage seed重播",
+    "evidence": [
+      "docs/data/ida/fd2_command9_player_ai_presentation_ida.txt",
+      "docs/data/fd2_ch23_stage_assets_evidence.txt"
+    ],
+    "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+    "evidence_level": "RUNTIME-E1",
+    "full_hd_complete": false,
+    "normal_player_complete": false,
+    "production_changed": true,
+    "source_snapshot": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-stage-source-snapshot-oct25-r1.json",
+      "sha256": "5b9a384adc8c047461bbac1180ae89fb6d3843bc7e7421ff4dc0d625b104780d"
+    },
+    "source_probe_before": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-stage-before-oct25-r1.log",
+    "first_after_two_tests": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-stage-after-oct25-r1.gate.json",
+    "art_unchanged": true,
+    "private_pack_mode": "直接唯讀私人保存庫的實體檔；不另複製圖包，無新美術與私人提交",
+    "gates": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-stage-unit-oct25-r2.gate.json",
+        "sha256": "5a661b18f53ea8e4b8c08412887c9c763eae19e79154d61fa4e9eeb43f233763",
+        "required": 3
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-stage-game-formal-oct25-r1.gate.json",
+        "sha256": "f6f0756b452c6788d0d9bd4c95eafe10bd4dee89aaadfed7d0a1c5a6dca7960e",
+        "required": 1
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-stage-game-private-oct25-r1.gate.json",
+        "sha256": "41a3ffacd9cae85872bea9e0342a2a1ccb5226304b5576e75c66c7b8c92a6dff",
+        "required": 1
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-stage-ordinary-unit-oct25-r1.gate.json",
+        "sha256": "ecc6ecdae5266a689b0195b615f879556b452e3165d06cf58b132ad80457b16d",
+        "required": 5
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-stage-item-unit-oct25-r1.gate.json",
+        "sha256": "dda63120c0656e718d1203b45c831f3ee2ebbb2a195cde2a5231877d178e0f2a",
+        "required": 9
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-stage-strings-oct25-r1.gate.json",
+        "sha256": "520a2da9db81ea297ee4e5932c2d111fe7d9dbb399c5f90a9efa226b2dd4537e",
+        "required": 8
+      }
+    ],
+    "required_test_executions": 27,
+    "unique_required_tests": 26,
+    "cross_pack": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-stage-cross-pack-oct25-r1.json",
+      "sha256": "c1c89ab5edea63b8c0122995818b75f4458e48bc395f0a60beb8b69073520690"
+    },
+    "readme_overview": {
+      "file": "docs/figures/hd-player9-stage.png",
+      "sha256": "a1d6886a46530a45f1c0afde48a15de2d8cae8e3d6ba0a55bd0301d9fe4db23f"
+    },
+    "readme_recipe": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-stage-readme-overview-oct25-r2.json",
+      "sha256": "8729a07fa77a6feb6ab68982813279e69a1dbb1d3955d3ab35f9bb4ed1c13210"
+    },
+    "string_inventory": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-stage-string-inventory-oct25-r1.json",
+      "sha256": "b309eea9c38944253de55d3ecefeb661cb0e6bf54a0489ec8b4881d6c8bcf0dc"
+    },
+    "string_dispositions": 109,
+    "catalog_sha256": "c1b2c20ee56bf2e45324155829f9778bfff14a25d9edce9d06dc56f2074d42df",
+    "validation_summary": {
+      "cases_per_pack": 2,
+      "frames_per_pack": 116,
+      "f2_per_pack": 16,
+      "continuations_per_pack": 2,
+      "pngs_per_pack": 18,
+      "source_tests": 3,
+      "ordinary_player9_tests": 5,
+      "item_regressions": 9,
+      "string_tests": 8
+    },
+    "maximum_test_peak_bytes": 5714178048,
+    "no_final_skip_timeout_oom": true,
+    "private_commit": "06e09c2750c8be449d187a80807e0159930adebe",
+    "visual_review": "已確認命中986與MISS分支；手繪綠色背景可見，城堡原生圖塊與框線仍為像素",
+    "known_remaining": [
+      "回復、10/12前奏、徑向、單位轉場與獎勵等凍結消費端的地圖23來源及遮罩。",
+      "其餘HD地形、HD2、完整HUD、介面獨立切換、浮出工具列／加速／海報。",
+      "集中正常玩家、人工造型與平台效能；蓋亞手腕與凱麗右腳仍依原工單。"
+    ],
+    "cleanup": {
+      "status": "CLEANED",
+      "regular_files": 18,
+      "regular_bytes": 10054996,
+      "plan": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-stage-cleanup-plan-oct25-r1.json",
+      "video_files": 0,
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-stage-cleanup-oct25-r1.json",
+      "sha256": "a8f2a8d7ee1ec79e70db88b5d5ea1580c02cf7e360af514ef7c5c86cb16c266a"
+    },
+    "issue_update": {
+      "status": "PASS",
+      "open_worklist_count": 24,
+      "acceptance_unchanged": true,
+      "other_22_unchanged": true,
+      "comparison_scope": "title/body/label names",
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-stage-issues-verified-oct25-r1.json",
+      "sha256": "208438ea6faf036c9f8643413c64f81a5c793050c980b38166a726473df656d1"
+    }
   }
 }
