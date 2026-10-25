@@ -17,6 +17,7 @@ import (
 const unitPresentHDBase = 0x8088
 
 type modernHDUnitPresentSource struct {
+	Stage                         *nativeCh23AdapterState
 	Call                          fdother.NativeUnitPresentCall
 	Cursor                        image.Point
 	MapIndex                      int
@@ -41,7 +42,7 @@ func (g *Game) unitPresentHDInput(in indexedmap.NativeTransitionFrameInput) (ind
 
 func (g *Game) freezeModernHDUnitPresentSource(call fdother.NativeUnitPresentCall, view battle.NativeMapViewState,
 	before, after indexedmap.NativeTransitionFrameInput, terrain, snapshot, initialVGA []byte,
-	passes []fdother.UnitPresentLUTFrame, bridgeLUT []byte) (*modernHDUnitPresentSource, error) {
+	passes []fdother.UnitPresentLUTFrame, bridgeLUT []byte, stage *nativeCh23AdapterState) (*modernHDUnitPresentSource, error) {
 	a, err := g.unitPresentHDInput(before)
 	if err != nil {
 		return nil, err
@@ -50,7 +51,7 @@ func (g *Game) freezeModernHDUnitPresentSource(call fdother.NativeUnitPresentCal
 	if err != nil {
 		return nil, err
 	}
-	s := &modernHDUnitPresentSource{Call: call, Cursor: image.Pt(view.VisibleCursorX, view.VisibleCursorY), MapIndex: g.nativeMapAssets.MapIndex,
+	s := &modernHDUnitPresentSource{Stage: cloneNativeCh23AdapterState(stage), Call: call, Cursor: image.Pt(view.VisibleCursorX, view.VisibleCursorY), MapIndex: g.nativeMapAssets.MapIndex,
 		Before: a, After: b, Terrain: append([]byte(nil), terrain...), Snapshot: append([]byte(nil), snapshot...), InitialVGA: append([]byte(nil), initialVGA...),
 		Passes: append([]fdother.UnitPresentLUTFrame(nil), passes...), BridgeLUT: append([]byte(nil), bridgeLUT...)}
 	for index := 114; index <= 124; index++ {
@@ -85,7 +86,7 @@ func (s *modernHDUnitPresentSource) signature(palette color.Palette) ([32]byte, 
 		}
 		return []any{f.Cells, f.Controls, f.LUT, f.Units, f.ForegroundUnits, keys, f.MapWidth, f.CameraX, f.CameraY, f.Flip, f.TerrainCycle, f.IdleCycle, f.MovingCycle, f.PixelShift, f.ParallaxScrollX, f.ParallaxScrollY}
 	}
-	raw, err := json.Marshal([]any{s.Call, s.Cursor, s.MapIndex, identity(s.Before), identity(s.After), s.Entries, s.Passes, s.LUTs, s.BridgeLUT, palette})
+	raw, err := json.Marshal([]any{s.Call, s.Cursor, s.MapIndex, commandStageIdentity(s.Stage), identity(s.Before), identity(s.After), s.Entries, s.Passes, s.LUTs, s.BridgeLUT, palette})
 	if err != nil {
 		return [32]byte{}, err
 	}
@@ -122,6 +123,14 @@ func (g *Game) validateModernHDUnitPresentSource(j *nativeUnitPresentJob) error 
 	}
 	before, after := nativeTransitionInput(s.Before), nativeTransitionInput(s.After)
 	terrain := make([]byte, indexedmap.NativeUnitPresentWorkSize)
+	if s.MapIndex == 23 {
+		if s.Stage == nil {
+			return errors.New("modern HD unit present: frozen stage absent")
+		}
+		if err := indexedmap.SeedNativeCh23Staging(terrain, s.Stage.staging); err != nil {
+			return err
+		}
+	}
 	if err := indexedmap.ComposeNativeUnitPresentTerrainSnapshot(terrain, before); err != nil {
 		return err
 	}
@@ -273,17 +282,18 @@ func (g *Game) prepareModernHDUnitPresent(j *nativeUnitPresentJob, set *modernSt
 			}
 		}
 	}
+	s := j.hdSource
+	before, err := g.prepareModernHDCommandSteadyStage(s.Before, s.Terrain, s.InitialVGA, j.palette, set, s.Stage)
+	if err != nil {
+		return nil, err
+	}
+	after, err := g.prepareModernHDCommandSteadyStage(s.After, s.Terrain, s.InitialVGA, j.palette, set, s.Stage)
+	if err != nil {
+		return nil, err
+	}
+	// Validate the stage even when the frame set is already cached.
 	if j.hdCachedTheme == set && len(j.hdCached) == len(j.vgaFrames) {
 		return j.hdCached, nil
-	}
-	s := j.hdSource
-	before, err := g.prepareModernHDCommandSteady(s.Before, s.Terrain, s.InitialVGA, j.palette, set)
-	if err != nil {
-		return nil, err
-	}
-	after, err := g.prepareModernHDCommandSteady(s.After, s.Terrain, s.InitialVGA, j.palette, set)
-	if err != nil {
-		return nil, err
 	}
 	terrainVGA := append([]byte(nil), s.InitialVGA...)
 	if err := indexedmap.CopyNativeUnitPresentViewport(terrainVGA, s.Terrain); err != nil {
@@ -309,7 +319,7 @@ func (g *Game) prepareModernHDUnitPresent(j *nativeUnitPresentJob, set *modernSt
 		if err := indexedmap.ComposeNativeUnitPresentLUTFrame(work, vga, s.Terrain, lut, in, pass); err != nil {
 			return nil, err
 		}
-		return g.prepareModernHDRadialMap(modernHDRadialMapSpec{Input: input, Palette: j.palette, Pass: pass.Pass, LUT: lut, WorkOffset: unitPresentHDBase, Background: vga, Ground: []modernHDRadialGroundLayer{ground}}, set, normal, weights)
+		return g.prepareModernHDRadialMap(modernHDRadialMapSpec{Stage: s.Stage, Input: input, Palette: j.palette, Pass: pass.Pass, LUT: lut, WorkOffset: unitPresentHDBase, Background: vga, Ground: []modernHDRadialGroundLayer{ground}}, set, normal, weights)
 	}
 	for i, p := range s.Passes[:6] {
 		f, err := radial(s.Before, before, p, s.LUTs[i])

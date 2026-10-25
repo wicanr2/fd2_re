@@ -4446,3 +4446,22 @@ AI來源補充（READY）：受控AI11／12實測，演出前可見底圖與2189
 重跑在維護中的Go Docker使用`python3 tools/verify_fd2_unit_present_hd.py --help`。`--kind commands1012-stage-core`驗五個來源／AI測項；`--kind commands1012-stage-game`驗九組完整Game.Draw。明示`--catalog`、`--pack`、不存在的`--out`前綴與有界`--timeout`；私人實體圖包唯讀掛載並加`--require-real-runtime --commands1012-stage-sample`，只跑10單目標與12雙目標。固定原包、seed7、clock1000，user1000、network none、6GiB／2CPU／256 pids。既有普通地圖／原生回歸沿`tools/verify_fd2_commands10_12_hd.py --kind unit|regression`。Xvfb由工具有界管理。
 
 精確來源、執行前綴、跨包比較與記憶體事件依HD主收據commands1012_stage_hd_followup_20261025，唯一數量表為58。控制組是同一remake的像素主題，RGB為既有美術近似；未重跑FD2.EXE，不新增正常玩家、音訊聽感或平台聲明。其餘徑向／單位轉場／獎勵、地形／HD2／完整介面與集中驗收仍待。
+
+
+## 單位轉場22253的特殊背景來源（READY，2026-10-25）
+
+既有callee主證據未列出地形snapshot writer，本輪只對22253做狹義複核。新IDA9.4匯出fd2_unit_present_stage_20261025.json證實0x222aa呼叫11EEE；0x222a4加8088h，前列push保留456／13／8與camera全域。Capstone5.0.3同範圍一致，固定EXE雜湊與位址空間沿匯出。command23及移位物品的正式雙段caller已存在，優先補玩家可達的map23來源，不把純幾何測具當新caller。
+
+每個22253 job在建立地形snapshot前凍結同次staging／rowShift／latch／tick，恢復stage種子後才繪地形。離場與入場兩job各保存前後typed input、terrain／LMI snapshot、初始VGA與原排程；Stage明示傳入整張HD背景與徑向compositor，不能當一般144圖塊。每次F2重驗原生重組、密封來源及Stage素材，即使已有warm cache。
+
+11張intro、六張收縮、18／24-row bridge及十張釋放沿原生順序，座標只在第17張後首個bridge列寫入，條帶逐列覆蓋與一次續行保持。共享RGB映色與alpha沿既有近似；不改MP、道具消耗、RNG、HUD或保存格式。缺背景、簽章改動與缺件在發布前原子拒收，雙段預檢失敗不扣MP、不移人；沿既有晚失敗回復。
+
+驗收以真實map23、seed7及clock1000走正式物品target／destination控制器，18→24及24→18兩種雙段流程，各驗完整Game.Draw、逐條帶獨立CPU／GPU、F2、原圖主題控制、一次結算及HD返回；兩份實體素材來源逐SHA核圖。另驗背景原生反例、非空色盤標記、live來源隔離、冷／warm拒收及既有普通地圖／故事caller最小回歸。限定受控RUNTIME-E1，未跑原版執行器或新增PLAYER-E2；一般玩家／人工／平台仍依全部HD後政策。
+
+### 單位轉場特殊背景驗證範圍（CONFORMED-SCOPED／RUNTIME-E1）
+
+前述READY已實作。原生地形snapshot與每段HD來源保留同次stage，intro、收縮、條帶與釋放都綁定整張背景。冷來源缺失、pending第二段快照改動、錯尺寸素材及warm cache原子拒收通過；live背景不污染已封存來源。獨立色盤標記核對可見背景與原生索引圖，原生矩形與第二徑向區互斥，這個caller只有0～2次疊色，不要求不可達的第三次。兩種移位方向、F2、獨立條帶CPU／GPU、MP／物品／RNG／落點、一次續行及HD返回通過。普通地圖與故事caller保持。
+
+重跑在維護中的Go Docker使用`python3 tools/verify_fd2_unit_present_hd.py --help`。`--kind unit-stage-core`驗四項來源／色彩／拒收測試；`--kind unit-stage-game --unit-stage-case 0`及`1`分別驗18→24與24→18。明示`--catalog`、`--pack`、不存在的`--out`前綴與有界`--timeout`，私人實體包唯讀掛載並加`--require-real-runtime`，兩包各跑完整兩組。既有回歸用`--kind native`、`unit`、`story-unit`。固定原包、seed7、clock1000，user1000、network none、6GiB／2CPU／256 pids；Xvfb由工具有界管理。
+
+精確來源、峰值、跨包比較與清理依HD主收據unit_present_stage_hd_followup_20261025，唯一數量表為58。這份補充關閉前述「單位轉場待驗」中的玩家移位map23範圍，不把未證實可達的其他caller擴成必跑矩陣。RGB沿美術近似，像素主題是同一remake控制組；原版執行器、正常玩家與全部HD後集中人工／平台仍待。

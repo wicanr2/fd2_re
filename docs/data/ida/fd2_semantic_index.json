@@ -335,9 +335,10 @@
       "confidence": "已證實",
       "evidence": [
         "docs/data/ida/fd2_ch29_terminal_body_ida.txt",
-        "docs/knowledge-base/54-acting-pose-semantics.md"
+        "docs/knowledge-base/54-acting-pose-semantics.md",
+        "docs/data/ida/fd2_unit_present_stage_20261025.json"
       ],
-      "scope": "callee 排程；caller payload 形狀不同，完整 ABI／renderer 組合仍未閉合"
+      "scope": "callee 排程與 work+0x8088 地形 snapshot；caller-specific 分支、原版逐幀及正常玩家驗收另證"
     },
     {
       "address": "0x24336",
@@ -897,6 +898,16 @@
         "docs/data/ida/fd2_pending_code1_return_title_20261001.json"
       ],
       "scope": "保留原始mov dword_53ECC,1；消費端main→22E5C→完整標題"
+    },
+    {
+      "address": "0x222aa",
+      "classification": "product",
+      "semantic": "呼叫 sub_11EEE，在 work+0x8088 以 stride456 建立13×8地形snapshot",
+      "confidence": "已證實",
+      "evidence": [
+        "docs/data/ida/fd2_unit_present_stage_20261025.json"
+      ],
+      "scope": "0x2228f..0x222aa參數writer與callee呼叫；後續0x22470／0x22046消費該snapshot，不宣稱原版執行期畫面相同"
     }
   ]
 }

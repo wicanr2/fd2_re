@@ -6359,9 +6359,10 @@
           "confidence": "已證實",
           "evidence": [
             "docs/data/ida/fd2_ch29_terminal_body_ida.txt",
-            "docs/knowledge-base/54-acting-pose-semantics.md"
+            "docs/knowledge-base/54-acting-pose-semantics.md",
+            "docs/data/ida/fd2_unit_present_stage_20261025.json"
           ],
-          "scope": "callee 排程；caller payload 形狀不同，完整 ABI／renderer 組合仍未閉合"
+          "scope": "callee 排程與 work+0x8088 地形 snapshot；caller-specific 分支、原版逐幀及正常玩家驗收另證"
         }
       ]
     },

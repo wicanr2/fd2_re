@@ -105,6 +105,7 @@ type unitPresentGPUCase struct {
 	draws                       int
 	focusSwitched               bool
 	returnSHA                   string
+	finalDestination            *image.Point
 }
 
 type unitPresentGPUProbe struct {
@@ -435,7 +436,11 @@ func (p *unitPresentGPUProbe) Draw(screen *ebiten.Image) {
 			p.err = fmt.Errorf("%s incomplete F2/legs/continuation: %d/%d/%d/%d", c.name, len(c.f2), len(c.legs), *c.continued, *c.controlContinued)
 			return
 		}
-		if c.name == "command23" && (c.actor.MP != 10 || !c.actor.Acted || c.target.X != 8 || c.target.Y != 7 || g.sel != nil || g.nativeItemRelocating) {
+		destination := image.Pt(8, 7)
+		if c.finalDestination != nil {
+			destination = *c.finalDestination
+		}
+		if c.name == "command23" && (c.actor.MP != 10 || !c.actor.Acted || c.target.X != destination.X || c.target.Y != destination.Y || g.sel != nil || g.nativeItemRelocating) {
 			p.err = fmt.Errorf("relocation final transaction differs")
 			return
 		}
@@ -446,7 +451,7 @@ func (p *unitPresentGPUProbe) Draw(screen *ebiten.Image) {
 			p.err = fmt.Errorf("HD map did not return: %s", g.loadErr)
 			return
 		}
-		if c.name == "story-staging" || c.name == "battle-present" {
+		if c.name == "story-staging" || c.name == "battle-present" || c.finalDestination != nil {
 			if c.name == "story-staging" && !reflect.DeepEqual(beforeReturn, unitPresentGPUState(g)) {
 				p.err = fmt.Errorf("story return Draw changed canonical state")
 				return

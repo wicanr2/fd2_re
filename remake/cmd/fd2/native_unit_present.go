@@ -161,6 +161,16 @@ func (g *Game) buildNativeUnitPresentJob(
 	}
 
 	terrainSnapshot := make([]byte, indexedmap.NativeUnitPresentWorkSize)
+	var stage *nativeCh23AdapterState
+	if g.nativeMapAssets.MapIndex == 23 {
+		stage = cloneNativeCh23AdapterState(g.nativeCh23State)
+		if stage == nil {
+			return nil, errors.New("native 0x22253 same-compose stage absent")
+		}
+		if err := indexedmap.SeedNativeCh23Staging(terrainSnapshot, stage.staging); err != nil {
+			return nil, err
+		}
+	}
 	if err := indexedmap.ComposeNativeUnitPresentTerrainSnapshot(terrainSnapshot, beforeInput); err != nil {
 		return nil, err
 	}
@@ -248,7 +258,7 @@ func (g *Game) buildNativeUnitPresentJob(
 		return nil, errors.New("native 0x22253 preflight produced an invalid schedule")
 	}
 	job.hdSource, err = g.freezeModernHDUnitPresentSource(call, view, beforeInput, afterInput,
-		terrainSnapshot, lutSnapshot, initialVGA, lutFrames, bridgeLUT)
+		terrainSnapshot, lutSnapshot, initialVGA, lutFrames, bridgeLUT, stage)
 	if err != nil {
 		return nil, err
 	}

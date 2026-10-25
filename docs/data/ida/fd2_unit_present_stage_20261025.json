@@ -1,0 +1,1463 @@
+{
+  "schema_version": 1,
+  "input": {
+    "file": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+  },
+  "database_input_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+  "tool": {
+    "name": "IDA Pro",
+    "version": "9.4",
+    "address_space": "IDA LE loader linear address"
+  },
+  "exporter_sha256": "104aa793d0e156fb04f324bbbb7886e9696549b11d736a4ebe7e15555d63dd58",
+  "database_function_count": 1305,
+  "imagebase": 0,
+  "function": {
+    "start": "0x22253",
+    "end": "0x22470",
+    "original_name": "sub_22253",
+    "semantic_annotations": [
+      {
+        "address": "0x22253",
+        "classification": "product",
+        "semantic": "共用 11＋6＋10 次索引呈現排程",
+        "confidence": "已證實",
+        "evidence": [
+          "docs/data/ida/fd2_ch29_terminal_body_ida.txt",
+          "docs/knowledge-base/54-acting-pose-semantics.md"
+        ],
+        "scope": "callee 排程；caller payload 形狀不同，完整 ABI／renderer 組合仍未閉合"
+      }
+    ],
+    "callers": [
+      {
+        "ida_linear_address": "0x221fd",
+        "function_start": "0x2218a",
+        "original_instruction": "call    sub_22253"
+      },
+      {
+        "ida_linear_address": "0x2223f",
+        "function_start": "0x2218a",
+        "original_instruction": "call    sub_22253"
+      },
+      {
+        "ida_linear_address": "0x2541f",
+        "function_start": "0x250cc",
+        "original_instruction": "call    sub_22253"
+      },
+      {
+        "ida_linear_address": "0x25535",
+        "function_start": "0x2548c",
+        "original_instruction": "call    sub_22253"
+      },
+      {
+        "ida_linear_address": "0x33fa6",
+        "function_start": "0x33f78",
+        "original_instruction": "call    sub_22253"
+      }
+    ],
+    "instructions": [
+      {
+        "ida_linear_address": "0x22253",
+        "original_name": "sub_22253",
+        "raw_bytes": "684c000000",
+        "original_instruction": "push    4Ch ; 'L'",
+        "semantic_annotations": [
+          {
+            "address": "0x22253",
+            "classification": "product",
+            "semantic": "共用 11＋6＋10 次索引呈現排程",
+            "confidence": "已證實",
+            "evidence": [
+              "docs/data/ida/fd2_ch29_terminal_body_ida.txt",
+              "docs/knowledge-base/54-acting-pose-semantics.md"
+            ],
+            "scope": "callee 排程；caller payload 形狀不同，完整 ABI／renderer 組合仍未閉合"
+          }
+        ],
+        "semantic_confidence": "已證實",
+        "unconfirmed_semantics": false
+      },
+      {
+        "ida_linear_address": "0x22258",
+        "original_name": "",
+        "raw_bytes": "e87a4a0100",
+        "original_instruction": "call    sub_36CD7",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x2225d",
+        "original_name": "",
+        "raw_bytes": "53",
+        "original_instruction": "push    ebx",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x2225e",
+        "original_name": "",
+        "raw_bytes": "56",
+        "original_instruction": "push    esi",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x2225f",
+        "original_name": "",
+        "raw_bytes": "57",
+        "original_instruction": "push    edi",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22260",
+        "original_name": "",
+        "raw_bytes": "55",
+        "original_instruction": "push    ebp",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22261",
+        "original_name": "",
+        "raw_bytes": "83ec1c",
+        "original_instruction": "sub     esp, 1Ch",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22264",
+        "original_name": "",
+        "raw_bytes": "c644241800",
+        "original_instruction": "mov     [esp+2Ch+var_14], 0",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22269",
+        "original_name": "",
+        "raw_bytes": "6a51",
+        "original_instruction": "push    51h ; 'Q'",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x2226b",
+        "original_name": "",
+        "raw_bytes": "6a00",
+        "original_instruction": "push    0",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x2226d",
+        "original_name": "",
+        "raw_bytes": "684d1a0500",
+        "original_instruction": "push    offset aFdotherDat; \"FDOTHER.DAT\"",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22272",
+        "original_name": "",
+        "raw_bytes": "e843effeff",
+        "original_instruction": "call    sub_111BA",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22277",
+        "original_name": "",
+        "raw_bytes": "83c40c",
+        "original_instruction": "add     esp, 0Ch",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x2227a",
+        "original_name": "",
+        "raw_bytes": "89442408",
+        "original_instruction": "mov     [esp+2Ch+var_24], eax",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x2227e",
+        "original_name": "",
+        "raw_bytes": "6880560200",
+        "original_instruction": "push    (offset loc_2567F+1)",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22283",
+        "original_name": "",
+        "raw_bytes": "e88e4a0100",
+        "original_instruction": "call    malloc",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22288",
+        "original_name": "",
+        "raw_bytes": "89c6",
+        "original_instruction": "mov     esi, eax",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x2228a",
+        "original_name": "",
+        "raw_bytes": "83c404",
+        "original_instruction": "add     esp, 4",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x2228d",
+        "original_name": "",
+        "raw_bytes": "89c5",
+        "original_instruction": "mov     ebp, eax",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x2228f",
+        "original_name": "",
+        "raw_bytes": "ff35ad3a0500",
+        "original_instruction": "push    dword_53AAD",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22295",
+        "original_name": "",
+        "raw_bytes": "ff35a93a0500",
+        "original_instruction": "push    dword_53AA9",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x2229b",
+        "original_name": "",
+        "raw_bytes": "6a08",
+        "original_instruction": "push    8",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x2229d",
+        "original_name": "",
+        "raw_bytes": "6a0d",
+        "original_instruction": "push    0Dh",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x2229f",
+        "original_name": "",
+        "raw_bytes": "68c8010000",
+        "original_instruction": "push    1C8h",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x222a4",
+        "original_name": "",
+        "raw_bytes": "0588800000",
+        "original_instruction": "add     eax, 8088h",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x222a9",
+        "original_name": "",
+        "raw_bytes": "50",
+        "original_instruction": "push    eax",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x222aa",
+        "original_name": "",
+        "raw_bytes": "e83ffcfeff",
+        "original_instruction": "call    sub_11EEE",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x222af",
+        "original_name": "",
+        "raw_bytes": "83c418",
+        "original_instruction": "add     esp, 18h",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x222b2",
+        "original_name": "",
+        "raw_bytes": "8b5c2430",
+        "original_instruction": "mov     ebx, [esp+arg_2C]",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x222b6",
+        "original_name": "",
+        "raw_bytes": "89d8",
+        "original_instruction": "mov     eax, ebx",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x222b8",
+        "original_name": "",
+        "raw_bytes": "c1e002",
+        "original_instruction": "shl     eax, 2",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x222bb",
+        "original_name": "",
+        "raw_bytes": "01d8",
+        "original_instruction": "add     eax, ebx",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x222bd",
+        "original_name": "",
+        "raw_bytes": "c1e004",
+        "original_instruction": "shl     eax, 4",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x222c0",
+        "original_name": "",
+        "raw_bytes": "8b1d453a0500",
+        "original_instruction": "mov     ebx, dword_53A45",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x222c6",
+        "original_name": "",
+        "raw_bytes": "01c3",
+        "original_instruction": "add     ebx, eax",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x222c8",
+        "original_name": "",
+        "raw_bytes": "56",
+        "original_instruction": "push    esi",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x222c9",
+        "original_name": "",
+        "raw_bytes": "ff742444",
+        "original_instruction": "push    [esp+4+arg_3C]",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x222cd",
+        "original_name": "",
+        "raw_bytes": "ff742444",
+        "original_instruction": "push    [esp+8+arg_38]",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x222d1",
+        "original_name": "",
+        "raw_bytes": "e89a010000",
+        "original_instruction": "call    sub_22470",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x222d6",
+        "original_name": "",
+        "raw_bytes": "83c40c",
+        "original_instruction": "add     esp, 0Ch",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x222d9",
+        "original_name": "",
+        "raw_bytes": "a1d13a0500",
+        "original_instruction": "mov     eax, dword_53AD1",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x222de",
+        "original_name": "",
+        "raw_bytes": "8b90f6010000",
+        "original_instruction": "mov     edx, [eax+1F6h]",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x222e4",
+        "original_name": "",
+        "raw_bytes": "01c2",
+        "original_instruction": "add     edx, eax",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x222e6",
+        "original_name": "",
+        "raw_bytes": "89542404",
+        "original_instruction": "mov     [esp+arg_0], edx",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x222ea",
+        "original_name": "",
+        "raw_bytes": "6b05b93a050018",
+        "original_instruction": "imul    eax, dword_53AB9, 18h",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x222f1",
+        "original_name": "",
+        "raw_bytes": "83c00c",
+        "original_instruction": "add     eax, 0Ch",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x222f4",
+        "original_name": "",
+        "raw_bytes": "89442410",
+        "original_instruction": "mov     [esp+arg_C], eax",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x222f8",
+        "original_name": "",
+        "raw_bytes": "6b05bd3a050018",
+        "original_instruction": "imul    eax, dword_53ABD, 18h",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x222ff",
+        "original_name": "",
+        "raw_bytes": "83c00f",
+        "original_instruction": "add     eax, 0Fh",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22302",
+        "original_name": "",
+        "raw_bytes": "8944240c",
+        "original_instruction": "mov     [esp+arg_8], eax",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22306",
+        "original_name": "",
+        "raw_bytes": "8b442434",
+        "original_instruction": "mov     eax, [esp+arg_30]",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x2230a",
+        "original_name": "",
+        "raw_bytes": "3b44243c",
+        "original_instruction": "cmp     eax, [esp+arg_38]",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x2230e",
+        "original_name": "",
+        "raw_bytes": "750f",
+        "original_instruction": "jnz     short loc_2231F",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22310",
+        "original_name": "",
+        "raw_bytes": "8b442438",
+        "original_instruction": "mov     eax, [esp+arg_34]",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22314",
+        "original_name": "",
+        "raw_bytes": "3b442440",
+        "original_instruction": "cmp     eax, [esp+arg_3C]",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22318",
+        "original_name": "",
+        "raw_bytes": "7505",
+        "original_instruction": "jnz     short loc_2231F",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x2231a",
+        "original_name": "",
+        "raw_bytes": "c644241801",
+        "original_instruction": "mov     [esp+arg_14], 1",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x2231f",
+        "original_name": "loc_2231F",
+        "raw_bytes": "6a01",
+        "original_instruction": "push    1",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22321",
+        "original_name": "",
+        "raw_bytes": "0fb644241c",
+        "original_instruction": "movzx   eax, [esp+4+arg_14]",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22326",
+        "original_name": "",
+        "raw_bytes": "50",
+        "original_instruction": "push    eax",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22327",
+        "original_name": "",
+        "raw_bytes": "ff742410",
+        "original_instruction": "push    [esp+8+arg_4]",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x2232b",
+        "original_name": "",
+        "raw_bytes": "e866370000",
+        "original_instruction": "call    sub_25A96",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22330",
+        "original_name": "",
+        "raw_bytes": "83c40c",
+        "original_instruction": "add     esp, 0Ch",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22333",
+        "original_name": "",
+        "raw_bytes": "ff742404",
+        "original_instruction": "push    [esp+arg_0]",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22337",
+        "original_name": "",
+        "raw_bytes": "ff742410",
+        "original_instruction": "push    [esp+4+arg_8]",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x2233b",
+        "original_name": "",
+        "raw_bytes": "ff742418",
+        "original_instruction": "push    [esp+8+arg_C]",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x2233f",
+        "original_name": "",
+        "raw_bytes": "55",
+        "original_instruction": "push    ebp",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22340",
+        "original_name": "",
+        "raw_bytes": "ff742450",
+        "original_instruction": "push    [esp+10h+arg_3C]",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22344",
+        "original_name": "",
+        "raw_bytes": "ff742450",
+        "original_instruction": "push    [esp+14h+arg_38]",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22348",
+        "original_name": "",
+        "raw_bytes": "e8fa010000",
+        "original_instruction": "call    sub_22547",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x2234d",
+        "original_name": "",
+        "raw_bytes": "89c6",
+        "original_instruction": "mov     esi, eax",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x2234f",
+        "original_name": "",
+        "raw_bytes": "83c418",
+        "original_instruction": "add     esp, 18h",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22352",
+        "original_name": "",
+        "raw_bytes": "890424",
+        "original_instruction": "mov     [esp+0], eax",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22355",
+        "original_name": "",
+        "raw_bytes": "8a442434",
+        "original_instruction": "mov     al, byte ptr [esp+arg_30]",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22359",
+        "original_name": "",
+        "raw_bytes": "8803",
+        "original_instruction": "mov     [ebx], al",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x2235b",
+        "original_name": "",
+        "raw_bytes": "8a442438",
+        "original_instruction": "mov     al, byte ptr [esp+arg_34]",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x2235f",
+        "original_name": "",
+        "raw_bytes": "884301",
+        "original_instruction": "mov     [ebx+1], al",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22362",
+        "original_name": "",
+        "raw_bytes": "6880560200",
+        "original_instruction": "push    (offset loc_2567F+1)",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22367",
+        "original_name": "",
+        "raw_bytes": "55",
+        "original_instruction": "push    ebp",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22368",
+        "original_name": "",
+        "raw_bytes": "ff35493a0500",
+        "original_instruction": "push    dword_53A49",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x2236e",
+        "original_name": "",
+        "raw_bytes": "e851500100",
+        "original_instruction": "call    memmove",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22373",
+        "original_name": "",
+        "raw_bytes": "83c40c",
+        "original_instruction": "add     esp, 0Ch",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22376",
+        "original_name": "",
+        "raw_bytes": "56",
+        "original_instruction": "push    esi",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22377",
+        "original_name": "",
+        "raw_bytes": "68c0000000",
+        "original_instruction": "push    0C0h",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x2237c",
+        "original_name": "",
+        "raw_bytes": "6a00",
+        "original_instruction": "push    0",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x2237e",
+        "original_name": "",
+        "raw_bytes": "6a0b",
+        "original_instruction": "push    0Bh",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22380",
+        "original_name": "",
+        "raw_bytes": "ff74241c",
+        "original_instruction": "push    [esp+10h+arg_8]",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22384",
+        "original_name": "",
+        "raw_bytes": "ff742424",
+        "original_instruction": "push    [esp+14h+arg_C]",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22388",
+        "original_name": "",
+        "raw_bytes": "e8b9fcffff",
+        "original_instruction": "call    sub_22046",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x2238d",
+        "original_name": "",
+        "raw_bytes": "83c418",
+        "original_instruction": "add     esp, 18h",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22390",
+        "original_name": "",
+        "raw_bytes": "8b7c243c",
+        "original_instruction": "mov     edi, [esp+arg_38]",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22394",
+        "original_name": "",
+        "raw_bytes": "2b3da93a0500",
+        "original_instruction": "sub     edi, dword_53AA9",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x2239a",
+        "original_name": "",
+        "raw_bytes": "6bff18",
+        "original_instruction": "imul    edi, 18h",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x2239d",
+        "original_name": "",
+        "raw_bytes": "a1493a0500",
+        "original_instruction": "mov     eax, dword_53A49",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x223a2",
+        "original_name": "",
+        "raw_bytes": "0588800000",
+        "original_instruction": "add     eax, 8088h",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x223a7",
+        "original_name": "",
+        "raw_bytes": "8d1438",
+        "original_instruction": "lea     edx, [eax+edi]",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x223aa",
+        "original_name": "",
+        "raw_bytes": "8b742440",
+        "original_instruction": "mov     esi, [esp+arg_3C]",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x223ae",
+        "original_name": "",
+        "raw_bytes": "2b35ad3a0500",
+        "original_instruction": "sub     esi, dword_53AAD",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x223b4",
+        "original_name": "",
+        "raw_bytes": "89f0",
+        "original_instruction": "mov     eax, esi",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x223b6",
+        "original_name": "",
+        "raw_bytes": "c1e002",
+        "original_instruction": "shl     eax, 2",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x223b9",
+        "original_name": "",
+        "raw_bytes": "01f0",
+        "original_instruction": "add     eax, esi",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x223bb",
+        "original_name": "",
+        "raw_bytes": "c1e002",
+        "original_instruction": "shl     eax, 2",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x223be",
+        "original_name": "",
+        "raw_bytes": "29f0",
+        "original_instruction": "sub     eax, esi",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x223c0",
+        "original_name": "",
+        "raw_bytes": "c1e006",
+        "original_instruction": "shl     eax, 6",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x223c3",
+        "original_name": "",
+        "raw_bytes": "89c3",
+        "original_instruction": "mov     ebx, eax",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x223c5",
+        "original_name": "",
+        "raw_bytes": "c1e003",
+        "original_instruction": "shl     eax, 3",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x223c8",
+        "original_name": "",
+        "raw_bytes": "01d8",
+        "original_instruction": "add     eax, ebx",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x223ca",
+        "original_name": "",
+        "raw_bytes": "01d0",
+        "original_instruction": "add     eax, edx",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x223cc",
+        "original_name": "",
+        "raw_bytes": "8d9850f5ffff",
+        "original_instruction": "lea     ebx, [eax-0AB0h]",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x223d2",
+        "original_name": "",
+        "raw_bytes": "89f0",
+        "original_instruction": "mov     eax, esi",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x223d4",
+        "original_name": "",
+        "raw_bytes": "c1e004",
+        "original_instruction": "shl     eax, 4",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x223d7",
+        "original_name": "",
+        "raw_bytes": "29f0",
+        "original_instruction": "sub     eax, esi",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x223d9",
+        "original_name": "",
+        "raw_bytes": "c1e009",
+        "original_instruction": "shl     eax, 9",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x223dc",
+        "original_name": "",
+        "raw_bytes": "8db784fd0900",
+        "original_instruction": "lea     esi, [edi+9FD84h]",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x223e2",
+        "original_name": "",
+        "raw_bytes": "01c6",
+        "original_instruction": "add     esi, eax",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x223e4",
+        "original_name": "",
+        "raw_bytes": "c644241418",
+        "original_instruction": "mov     byte ptr [esp+arg_10], 18h",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x223e9",
+        "original_name": "",
+        "raw_bytes": "8b442440",
+        "original_instruction": "mov     eax, [esp+arg_3C]",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x223ed",
+        "original_name": "",
+        "raw_bytes": "3b05ad3a0500",
+        "original_instruction": "cmp     eax, dword_53AAD",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x223f3",
+        "original_name": "",
+        "raw_bytes": "7511",
+        "original_instruction": "jnz     short loc_22406",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x223f5",
+        "original_name": "",
+        "raw_bytes": "c644241412",
+        "original_instruction": "mov     byte ptr [esp+arg_10], 12h",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x223fa",
+        "original_name": "",
+        "raw_bytes": "81c3b00a0000",
+        "original_instruction": "add     ebx, 0AB0h",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22400",
+        "original_name": "",
+        "raw_bytes": "81c680070000",
+        "original_instruction": "add     esi, 780h",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22406",
+        "original_name": "loc_22406",
+        "raw_bytes": "31ff",
+        "original_instruction": "xor     edi, edi",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22408",
+        "original_name": "",
+        "raw_bytes": "eb23",
+        "original_instruction": "jmp     short loc_2242D",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x2240a",
+        "original_name": "loc_2240A",
+        "raw_bytes": "6a18",
+        "original_instruction": "push    18h",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x2240c",
+        "original_name": "",
+        "raw_bytes": "53",
+        "original_instruction": "push    ebx",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x2240d",
+        "original_name": "",
+        "raw_bytes": "56",
+        "original_instruction": "push    esi",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x2240e",
+        "original_name": "",
+        "raw_bytes": "e8b14f0100",
+        "original_instruction": "call    memmove",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22413",
+        "original_name": "",
+        "raw_bytes": "83c40c",
+        "original_instruction": "add     esp, 0Ch",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22416",
+        "original_name": "",
+        "raw_bytes": "6a0a",
+        "original_instruction": "push    0Ah",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22418",
+        "original_name": "",
+        "raw_bytes": "81c640010000",
+        "original_instruction": "add     esi, 140h",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x2241e",
+        "original_name": "",
+        "raw_bytes": "81c3c8010000",
+        "original_instruction": "add     ebx, 1C8h",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22424",
+        "original_name": "",
+        "raw_bytes": "e889510100",
+        "original_instruction": "call    j___delay",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22429",
+        "original_name": "",
+        "raw_bytes": "83c404",
+        "original_instruction": "add     esp, 4",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x2242c",
+        "original_name": "",
+        "raw_bytes": "47",
+        "original_instruction": "inc     edi",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x2242d",
+        "original_name": "loc_2242D",
+        "raw_bytes": "0fb6442414",
+        "original_instruction": "movzx   eax, byte ptr [esp+arg_10]",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22432",
+        "original_name": "",
+        "raw_bytes": "39c7",
+        "original_instruction": "cmp     edi, eax",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22434",
+        "original_name": "",
+        "raw_bytes": "7cd4",
+        "original_instruction": "jl      short loc_2240A",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22436",
+        "original_name": "",
+        "raw_bytes": "ff3424",
+        "original_instruction": "push    dword ptr [esp+0]",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22439",
+        "original_name": "",
+        "raw_bytes": "ff742408",
+        "original_instruction": "push    [esp+4+arg_0]",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x2243d",
+        "original_name": "",
+        "raw_bytes": "ff742414",
+        "original_instruction": "push    [esp+8+arg_8]",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22441",
+        "original_name": "",
+        "raw_bytes": "ff74241c",
+        "original_instruction": "push    [esp+0Ch+arg_C]",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22445",
+        "original_name": "",
+        "raw_bytes": "55",
+        "original_instruction": "push    ebp",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22446",
+        "original_name": "",
+        "raw_bytes": "ff742454",
+        "original_instruction": "push    [esp+14h+arg_3C]",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x2244a",
+        "original_name": "",
+        "raw_bytes": "ff742454",
+        "original_instruction": "push    [esp+18h+arg_38]",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x2244e",
+        "original_name": "",
+        "raw_bytes": "e803020000",
+        "original_instruction": "call    sub_22656",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22453",
+        "original_name": "",
+        "raw_bytes": "83c41c",
+        "original_instruction": "add     esp, 1Ch",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22456",
+        "original_name": "",
+        "raw_bytes": "55",
+        "original_instruction": "push    ebp",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22457",
+        "original_name": "",
+        "raw_bytes": "e8ba4f0100",
+        "original_instruction": "call    free",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x2245c",
+        "original_name": "",
+        "raw_bytes": "83c404",
+        "original_instruction": "add     esp, 4",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x2245f",
+        "original_name": "",
+        "raw_bytes": "ff742408",
+        "original_instruction": "push    [esp+arg_4]",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22463",
+        "original_name": "",
+        "raw_bytes": "e8ae4f0100",
+        "original_instruction": "call    free",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x22468",
+        "original_name": "",
+        "raw_bytes": "83c404",
+        "original_instruction": "add     esp, 4",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      },
+      {
+        "ida_linear_address": "0x2246b",
+        "original_name": "",
+        "raw_bytes": "e91864ffff",
+        "original_instruction": "jmp     loc_18888",
+        "semantic_annotations": [],
+        "semantic_confidence": "未知",
+        "unconfirmed_semantics": true
+      }
+    ]
+  }
+}

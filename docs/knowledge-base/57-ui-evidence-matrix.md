@@ -1,5 +1,7 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
+移位物品的雙段單位轉場已保留同次地圖23背景，限定CONFORMED-SCOPED／RUNTIME-E1。每段各自封存stage、地形及LMI快照；F2即使已有快取也重驗背景。兩種18／24列順序的完整Game.Draw、獨立CPU條帶、結算與HD返回，以及普通地圖／故事caller回歸通過。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的unit_present_stage_hd_followup_20261025。原生背景writer經狹義IDA複核，未重跑FD2.EXE；其他可達消費端、地形、HD2與全部串接後的集中正常／人工／平台仍待。
+
 指令10～12的基準底圖、結果與11／12前奏已接同次地圖23背景，限定CONFORMED-SCOPED／RUNTIME-E1。前奏原生重組先恢復staging，前底圖與AI最後重繪各自密封來源，F2重驗；三張衍生surface保留原始地形取樣。完整矩陣、私人兩端抽樣、AI入口、原子拒收及一般地圖回歸通過。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的commands1012_stage_hd_followup_20261025。未重跑FD2.EXE，城堡及框線仍為像素；其他消費端與全部HD後的集中正常／人工／平台仍待。
 
 回復13～16已接同次地圖23背景快照與整張HD徑向遮罩，限定CONFORMED-SCOPED／RUNTIME-E1。中段停格保留第九張，原生來源、HP／MP／RNG及一次續行已驗；冷來源缺失與晚期重繪失敗原子回復。正式完整矩陣與私人兩端抽樣、F2、AI入口及既有一般地圖／共用徑向回歸通過。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的heal_stage_hd_followup_20261025。城堡及框線仍為像素；未重跑FD2.EXE，不新增正常玩家或平台聲明。其餘凍結消費端與全部HD後的集中驗收仍待。

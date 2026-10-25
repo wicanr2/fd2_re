@@ -226728,5 +226728,288 @@
       "images_rebuilt": false,
       "other_projects_touched": false
     }
+  },
+  "unit_present_stage_hd_followup_20261025": {
+    "status": "CONFORMED-SCOPED",
+    "base_commit": "df96572dba9df76777e25ada68b8ba3e5b08ed77",
+    "scope": "玩家物品移位的雙段22253特殊背景來源；其餘caller依可達性稽核",
+    "full_hd_complete": false,
+    "normal_player_complete": false,
+    "reopen_reason": "既有主證據未列出其宣稱的地形snapshot writer，狹義複核22253。",
+    "exporter": "tools/ida_export_fd2_present_stage.py",
+    "art_unchanged": true,
+    "evidence": [
+      {
+        "file": "docs/data/ida/fd2_unit_present_stage_20261025.json",
+        "sha256": "b44fb79a81a79e420fc89f8373055af447e5daf468bc88ce944114b1bd82cf38"
+      }
+    ],
+    "writer": {
+      "confidence": "已證實",
+      "ida_linear_address": "0x222aa",
+      "original_instruction": "call sub_11EEE",
+      "argument_writers": [
+        "0x2229b push8",
+        "0x2229d push0Dh",
+        "0x2229f push1C8h",
+        "0x222a4 add eax,8088h",
+        "0x222a9 push eax"
+      ],
+      "meaning": "22253在工作區+0x8088以stride456建立13x8地形snapshot，再播放既有排程；地圖23分支依11EEE既有staging證據。",
+      "source": "docs/data/ida/fd2_unit_present_stage_20261025.json"
+    },
+    "crosscheck": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-stage-capstone-writer-oct25-r1.txt",
+      "sha256": "bc0ed316ba8d2c83cc7cb9273549b94a49c988177821a0ab6845ed629a6f7d11",
+      "tool": "Capstone5.0.3",
+      "address_space": "Capstone LE loaded linear addresses"
+    },
+    "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+    "evidence_level": "RUNTIME-E1",
+    "source_snapshot": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-stage-source-snapshot-oct25-r4.json",
+      "sha256": "517d469d220ee9f5102407daad49f70d62c432ccfa610f1908b700648e494816"
+    },
+    "gates": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-stage-core-oct25-r4.gate.json",
+        "sha256": "da2a940dcaf26394f22eb3fe86f41b18242fa095fe422ae288d6fa99ac80353b",
+        "required": 4
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-stage-native-oct25-r4.gate.json",
+        "sha256": "cdd4d8233ee537b28eebdb57471ce759c25d60994a6206f10963d91ff6ce7f1f",
+        "required": 7
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-stage-unit-oct25-r4.gate.json",
+        "sha256": "4690ea7b41fce633a01b2d216743642f5d6a9ffe82cca5660befbf50f7b872cb",
+        "required": 5
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-stage-story-unit-oct25-r4.gate.json",
+        "sha256": "22eab040a457930f3c735bb63de8b167cb5452b13ec54b39ecb6c69c7c3a5a4f",
+        "required": 4
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-stage-game-formal-0-oct25-r4.gate.json",
+        "sha256": "4d760a9e80695854b1f276064384f27722e3bca8e08ff7f667ff49abed9f98c5",
+        "required": 1
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-stage-game-formal-1-oct25-r4.gate.json",
+        "sha256": "11000bcb4171fdf2b18bb7acf3aa9871bbe695feaf1f2a717154d133e317cfe2",
+        "required": 1
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-stage-game-private-0-oct25-r4.gate.json",
+        "sha256": "50af0459b706bdc14a35ed594af4f490046a53ccc127a6b4a0de615fa8722434",
+        "required": 1
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-stage-game-private-1-oct25-r4.gate.json",
+        "sha256": "94c94943fa5ee8c4b8f65a9386de3dbd22637d76e8316ed080f3fc8802fd57c1",
+        "required": 1
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-stage-strings-oct25-r4.gate.json",
+        "sha256": "e7a9d7d330ab0257cc362c3f5442e2e74bfcea4d0620872cae54b623e87650bc",
+        "required": 8
+      }
+    ],
+    "required_test_instances": 32,
+    "distinct_required_tests": 29,
+    "cross_pack": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-stage-cross-pack-oct25-r4.json",
+      "sha256": "cebe28dda063d678814c6eca4707665beea74f150ca64645d8368577d63d978c"
+    },
+    "readme_overview": {
+      "file": "docs/figures/hd-unit-stage.png",
+      "sha256": "b1a10512f27217063c4c51f6a26369e06f325f7796459601e630060d2cf38610"
+    },
+    "readme_recipe": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-stage-readme-overview-oct25-r4.json",
+      "sha256": "55746bf4672b2ab91b0d4501c6313f4710a6e25aa9ed85d21ea4f580d36aa55b"
+    },
+    "string_inventory": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-stage-string-inventory-oct25-r4.json",
+      "sha256": "b309eea9c38944253de55d3ecefeb661cb0e6bf54a0489ec8b4881d6c8bcf0dc"
+    },
+    "memory": [
+      {
+        "prefix": "unit-stage-core-oct25-r4",
+        "peak_bytes": 4359499776,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "prefix": "unit-stage-native-oct25-r4",
+        "peak_bytes": 4359499776,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "prefix": "unit-stage-unit-oct25-r4",
+        "peak_bytes": 4359499776,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "prefix": "unit-stage-story-unit-oct25-r4",
+        "peak_bytes": 4359499776,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "prefix": "unit-stage-game-formal-0-oct25-r4",
+        "peak_bytes": 5559390208,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "prefix": "unit-stage-game-formal-1-oct25-r4",
+        "peak_bytes": 5375180800,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "prefix": "unit-stage-game-private-0-oct25-r4",
+        "peak_bytes": 5439430656,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "prefix": "unit-stage-game-private-1-oct25-r4",
+        "peak_bytes": 6442450944,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 585,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "prefix": "unit-stage-strings-oct25-r4",
+        "peak_bytes": 70426624,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      }
+    ],
+    "unchanged": {
+      "art": true,
+      "catalog": true,
+      "private_head": "06e09c2750c8be449d187a80807e0159930adebe",
+      "save_format": true,
+      "game_rules": true
+    },
+    "limitations": [
+      "像素控制組是同一remake，未重跑FD2.EXE；新IDA只驗snapshot writer",
+      "RGB映色與HD材質沿既有美術近似",
+      "受控角色／道具／位置，未新增正常玩家、人工、音訊或平台驗收",
+      "城堡地形及框線仍為像素；完整HD與集中驗收未完成"
+    ],
+    "semantic_index": {
+      "file": "docs/data/ida/fd2_semantic_index.json",
+      "sha256": "369350b7340c7b84cd36258040c41c0b80e45842604ca468ccc778e71f9044e4"
+    },
+    "function_inventory": {
+      "file": "docs/data/ida/fd2_function_inventory.json",
+      "sha256": "7ee159a81b9cda5d0b07ddcc2edc853e0904314b7217fdf048d34dfb2aa5e8c0"
+    },
+    "semantic_index_tests": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-stage-semantic-index-oct25-r4-verified.log",
+      "sha256": "8a145622297f6b03a25566354aff75179cec496e0c2fc2bf0af5e97a9dce086c"
+    },
+    "memory_scope": "memory.peak為容器生命週期累計；native／unit／story-unit沿核心容器共用，不能解讀為各測試的獨立峰值",
+    "cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-stage-cleanup-oct25-r4.json",
+      "sha256": "30dfcf2d440f7eca603f6011a375ad570c6b722c9ccff78eae0e0cef2a941703"
+    },
+    "issue_update": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-stage-issue-update-oct25-r4.json",
+      "sha256": "867f217e59d1ea50ebb36cebb02035891e26cac516e3c9e28cd7740c99033236"
+    },
+    "links": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-stage-links-oct25-r4.json",
+      "sha256": "102d802c7cfe17ed40fb76dbeeb260cb5f43d9212a9c3b7028a2a1fe933087c5"
+    },
+    "ownership": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-stage-ownership-oct25-r4.json",
+      "sha256": "547769a2440a90817e56c7c00384c84c4334fb2d72e30198571ef3608b8375d3"
+    },
+    "docker_cleanup": {
+      "status": "PASS",
+      "unexpected_go_or_asset_containers": 0,
+      "images_rebuilt": false,
+      "other_projects_touched": false
+    },
+    "semantic_index_note": "IDA原始匯出取df96572d的既有索引註記；semantic_index為本輪回填後的查詢入口，原始匯出不改寫。",
+    "worklist_verify": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-stage-worklist-oct25-r4.log",
+      "sha256": "e79d11a27482e9cc12c4e999fa07e97f07ee544b5952cb8172731e116b8f7af3"
+    },
+    "lesson_guards": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-stage-lessons-oct25-r4.log",
+      "sha256": "5b4ed4bf4b31d338663168cbf64fe41c6bf66e33879f9e76e219d407dcf3af49"
+    }
   }
 }

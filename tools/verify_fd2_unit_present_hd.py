@@ -13,6 +13,8 @@ from verify_fd2_player9_map_hd import check_real_runtime
 
 ROOT=Path(__file__).resolve().parents[1]
 REQUIRED={
+    'unit-stage-core':{'TestNativeUnitPresentStageUsesSnapshotSeed','TestModernHDUnitStageRelocationSourcesAndReject','TestNativeUnitStageMissingSourceIsAtomic','TestModernHDUnitStageRemapMatchesNativeMarker'},
+    'unit-stage-game':{'TestModernHDUnitStageCompleteGameGPU'},
     'commands1012-stage-core':{'TestNativeCommandPreludeStageUsesSingleSnapshot','TestModernHDCommand1012StageIsolationAndReject','TestModernHDCommand1012StageColdReject','TestModernHDCommandPreludeStageMarker','TestModernHDCommand1012StageAIEntryControl'},
     'commands1012-stage-ai':{'TestModernHDCommand1012StageAIEntryControl'},
     'commands1012-stage-game':{'TestModernHDCommand1012StageGameGPU'},
@@ -111,6 +113,28 @@ REQUIRED['sky-core']=REQUIRED['sky-source'] | REQUIRED['sky-unit'] | REQUIRED['s
 
 def check_receipt(kind, prefix):
     receipt=json.loads(Path(str(prefix)+'-capture/receipt.json').read_text())
+    if kind=='unit-stage-game':
+        d=receipt; rows=d.get('rows',[]); case=d.get('case_id'); sources=d.get('sources',[])
+        bridge=[18,24] if case==0 else [24,18]
+        if (d.get('status')!='PASS-UNIT-STAGE-HD-GAME' or case not in [0,1] or d.get('map_index')!=23
+                or d.get('fixed_clock_unix')!=1000 or d.get('native_seed')!=7 or d.get('rgba_tolerance')!=2
+                or d.get('bridge_rows')!=bridge or d.get('f2_round_trips')!=20 or d.get('continuations')!=1
+                or d.get('native_control_unchanged') is not True or d.get('shots')!=11
+                or d.get('draws')!=len(rows) or not 104<=len(rows)<=900
+                or not re.fullmatch('[0-9a-f]{64}',d.get('return_final_sha256',''))):
+            raise ValueError('移位特殊背景雙段、返回、主題往返或控制組缺項')
+        expected={f'palette/{i}' for i in range(8)}
+        for leg,count in enumerate(bridge):
+            for index in range(count+27):
+                phase='intro' if index<11 else 'contract' if index<17 else 'bridge' if index<17+count else 'release'
+                expected.add(f'leg{leg}/{phase}/{index}')
+        if {r.get('key') for r in rows}!=expected or any(r.get('rng')!=7 or r.get('case')!='command23' or not re.fullmatch('[0-9a-f]{64}',r.get('final_sha256','')) for r in rows):
+            raise ValueError('移位104個實際階段、固定亂數或GPU圖面缺項')
+        if (len(sources)!=22 or {(r.get('entry'),r.get('placement')) for r in sources}!={(i,p) for i in range(114,125) for p in range(2)}
+                or any(not re.fullmatch('[0-9a-f]{64}',r.get('gpu_sha256','')) for r in sources)
+                or len(list(Path(str(prefix)+'-capture').glob('*.png')))!=12):
+            raise ValueError('移位光效來源或完整圖面缺項')
+        return dict(case_id=case,bridge_rows=bridge,unique_keys=len(expected),draws=len(rows),pngs=12)
     if kind=='commands1012-stage-game':
         d=receipt; ids=d.get('case_ids',[]); cases=d.get('cases',[]); rows=d.get('rows',[])
         if d.get('status')!='PASS-COMMAND1012-STAGE-GAME' or d.get('map_index')!=23 or d.get('seed')!=7 or d.get('clock_unix')!=1000 or d.get('rgba_tolerance')!=2 or ids not in [list(range(9)),[0,8]] or [c.get('case') for c in cases]!=ids:
@@ -343,10 +367,12 @@ def main():
     p.add_argument('--timeout',type=int,default=900)
     p.add_argument('--heal-stage-sample',action='store_true')
     p.add_argument('--commands1012-stage-sample',action='store_true')
+    p.add_argument('--unit-stage-case',type=int,choices=[0,1])
     p.add_argument('--check-existing',action='store_true',help='以目前嚴格檢查器另存稽核，不重跑或覆寫既有收據')
     p.add_argument('--require-real-runtime',action='store_true')
     p.add_argument('--compare-with',type=Path,help='僅item-game既有收據稽核：比較另一個輸出前綴的完整收據與50張PNG')
     a=p.parse_args()
+    if (a.unit_stage_case is not None)!=(a.kind=='unit-stage-game'):raise ValueError('unit stage game requires explicit case0/1')
     if a.heal_stage_sample and a.kind!='heal-stage-game':raise ValueError('heal stage sample only')
     if a.commands1012_stage_sample and a.kind!='commands1012-stage-game':raise ValueError('commands1012 stage sample only')
     if a.compare_with and (a.kind!='item-game' or not a.check_existing):
@@ -358,13 +384,16 @@ def main():
             raise ValueError('不可覆寫收據')
     independent=check_real_runtime(a.pack,json.loads(a.catalog.read_text())) if a.require_real_runtime else None
     env=os.environ.copy()
-    for name in ['FD2_HD_COMMAND1012_STAGE_GPU','FD2_HD_COMMAND1012_STAGE_CASES']:
+    for name in ['FD2_HD_COMMAND1012_STAGE_GPU','FD2_HD_COMMAND1012_STAGE_CASES','FD2_HD_UNIT_STAGE_GPU','FD2_HD_UNIT_STAGE_CASE']:
         env.pop(name,None)
     for name in ['FD2_HD_UNIT_PRESENT_SOURCE','FD2_HD_UNIT_PRESENT_GPU','FD2_HD_UNIT_PRESENT_STORY_GPU','FD2_HD_STORY_MOTION_GPU','FD2_HD_INDEXED_TRANSITION_GPU','FD2_HD_ROW_SHAKE_GPU','FD2_HD_CH23_STAGE_GPU','FD2_HD_SKY_KEY_GPU','FD2_HD_ITEM_MAP_GPU','FD2_HD_ITEM_MAP_PROBE','FD2_HD_PLAYER9_STAGE_GPU','FD2_HD_HEAL_STAGE_GPU','FD2_HD_HEAL_STAGE_CASES']:
         env.pop(name,None)
     env.update(FD2_MUTE='1',FD2_TEST_UNIT_PRESENT_CATALOG=str(a.catalog.resolve()),
                FD2_TEST_UNIT_PRESENT_PACK=str(a.pack.resolve()),FD2_TEST_UNIT_PRESENT_OUT=str(a.out)+'-capture')
     if a.kind=='source':env['FD2_HD_UNIT_PRESENT_SOURCE']='1'
+    if a.kind=='unit-stage-game':
+        env['FD2_HD_UNIT_STAGE_GPU']='1'
+        env['FD2_HD_UNIT_STAGE_CASE']=str(a.unit_stage_case)
     if a.kind=='item-game':env['FD2_HD_ITEM_MAP_GPU']='1'
     if a.kind=='player9-stage-game':env['FD2_HD_PLAYER9_STAGE_GPU']='1'
     if a.kind=='commands1012-stage-game':
@@ -405,8 +434,9 @@ export DISPLAY=:99
     if not REQUIRED[a.kind]<={e.get('Test') for e in events if e.get('Action')=='pass'} or any(e.get('Action') in {'skip','fail'} for e in events):
         raise ValueError('必要測試缺項、SKIP或失敗')
     receipt_evidence=None
-    if a.kind in {'source','game','story-game','motion-game','indexed-game','rowshake-game','stage-game','sky-game','item-game','player9-stage-game','heal-stage-game','commands1012-stage-game'}:
+    if a.kind in {'source','game','story-game','motion-game','indexed-game','rowshake-game','stage-game','sky-game','item-game','player9-stage-game','heal-stage-game','commands1012-stage-game','unit-stage-game'}:
         receipt_evidence=check_receipt(a.kind,a.out)
+        if a.kind=='unit-stage-game' and receipt_evidence['case_id']!=a.unit_stage_case:raise ValueError('unit stage case differs from request')
         if a.kind=='commands1012-stage-game' and receipt_evidence['case_ids']!=([0,8] if a.commands1012_stage_sample else list(range(9))):raise ValueError('commands1012 stage sample differs from request')
         if a.kind=='heal-stage-game' and receipt_evidence['case_ids']!=([0,7] if a.heal_stage_sample else list(range(8))):raise ValueError('heal stage sample differs from request')
     report=dict(status='PASS',kind=a.kind,required=sorted(REQUIRED[a.kind]),catalog=str(a.catalog.resolve()),
