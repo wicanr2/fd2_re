@@ -65,6 +65,10 @@
 
 第9號法術已保留同次手繪背景，四格依序為調色、命中數字、未命中與返回地圖。畫面取自受控測試的完整重製畫面半縮；綠色背景、人物與數字使用 HD，城堡地形及介面框線仍為像素。來源與範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)及[HD收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的`player9_stage_hd_followup_20261025`，不代表正常章節通關。
 
+![回復法術的HD背景、停格、群體數字與返回](docs/figures/hd-heal-stage.png)
+
+回復法術已接上同次 HD 背景與徑向調色。四格依序為前段、中段停格、群體回復數字與返回，取自受控測試的完整重製畫面半縮。人物、綠色背景與數字使用 HD，城堡地形與介面框線仍為像素。來源與範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)及[HD收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的`heal_stage_hd_followup_20261025`，不代表正常章節通關。
+
 ## HD2 設計基準
 
 後續HD2戰場沿下列斜角站姿人物與手繪地形設計，保留既有HD及原版主題。操作介面與人物主題獨立，海報從單列浮出工具列選擇；海報邊緣可漸層銜接戰場，並調整淡入時間。
@@ -394,7 +398,7 @@ HD 背景、敵方與面板仍含像素素材。來源與可重跑方式見
 
 第九章希莉亞射擊僧侶時的實際視窗，未編修。灰袍、面布、藍腰飾與羽形杖依原圖重繪，背景與面板仍含像素素材。
 待機與揮杖已保留原版六幀節奏；完整攻擊限測試場景，普通流程抽驗受擊、返回、F2及章節邊界冷讀。
-抽樣沿章前加血來源，回復法術的地圖特效仍待HD化，範圍見[現況矩陣](docs/knowledge-base/58-fd2-exe-re-coverage.md)。
+抽樣沿章前加血來源；回復法術的地圖特效已有受控 HD 驗證，正常玩家抽驗仍待，範圍見[現況矩陣](docs/knowledge-base/58-fd2-exe-re-coverage.md)。
 
 ![洛娜旋槍前刺的HD弧光](docs/figures/hd-lorna-spear-arc.png)
 

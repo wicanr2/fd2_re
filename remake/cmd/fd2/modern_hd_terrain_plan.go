@@ -9,6 +9,7 @@ import (
 )
 
 type modernHDTerrainDraw struct {
+	Stage       bool
 	Image       *image.RGBA
 	Rect        image.Rectangle
 	Frame       int

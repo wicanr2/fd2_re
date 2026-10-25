@@ -226235,5 +226235,228 @@
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/player9-stage-issues-verified-oct25-r1.json",
       "sha256": "208438ea6faf036c9f8643413c64f81a5c793050c980b38166a726473df656d1"
     }
+  },
+  "heal_stage_hd_followup_20261025": {
+    "status": "CONFORMED-SCOPED",
+    "base_commit": "6e671bbbf3395ee5ef47fd83f3b8bb893d8a1951",
+    "issue": 271,
+    "evidence": [
+      "docs/data/ida/fd2_command13_21eb1_presentation_ida.txt",
+      "docs/data/ida/fd2_ch23_post_ida.txt"
+    ],
+    "scope": "回復13～16前段原生背景種子與HD徑向遮罩、前後快照與晚失敗回復",
+    "full_hd_complete": false,
+    "normal_player_complete": false,
+    "production_changed": true,
+    "source_snapshot": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-stage-source-snapshot-oct25-r2.json",
+      "sha256": "c98f891242b06722abf6077fea9f116922c9d9fba7e245b6b11c29442d8be45f"
+    },
+    "source_before": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-stage-before-oct25-r1.log",
+    "source_after_first": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-stage-source-after-oct25-r1.gate.json",
+    "unit_first_final": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-stage-unit-oct25-r2.gate.json",
+    "middle_hold_correction": "原版第九張後只等待200ms，0x11CAC在十六張後；兩種主題中段改保留Front[8]",
+    "formal_case_ids": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "private_case_ids": [
+      0,
+      7
+    ],
+    "art_unchanged": true,
+    "scope_notes": [
+      "色盤標記初測只覆蓋實際城堡可見的0/2次；受控透明／目的映射bank及自訂重疊幾何補足0～3次，原生色盤逐點一致。此為測試來源，不進production。",
+      "GPU初測把停格要求新的Draw確認，修正為只檢查四個動畫階段；另修正已知原版中段畫面，正式重跑r2。",
+      "AI初測含沒有AI原生欄位的正規化玩家名冊；依既有modifier測具只用兩筆原版敵方名冊，不猜補來源。",
+      "既有MaskPairs=5，含初始底圖為11張，總59張。R2所有私人兩端流程完成但最後誤用57而失敗；formal R2確認同一舊斷言後有界停止，保存部分畫面，正式收據重跑R3，不冒稱通過。"
+    ],
+    "frames_per_case": 59,
+    "formal_frames": 472,
+    "private_frames": 118,
+    "f2_per_case": 11,
+    "final_formal_prefix": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-stage-game-formal-oct25-r3",
+    "final_private_prefix": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-stage-game-private-oct25-r3",
+    "cold_source_test": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-stage-cold-oct25-r1.log",
+    "evidence_level": "RUNTIME-E1",
+    "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+    "gates": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-stage-source-after-oct25-r2.gate.json",
+        "sha256": "2854fe7a9b843ec9685a776ee3a41f81af17b35a704ee9065d1dd548a0acc447",
+        "required": 1
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-stage-unit-oct25-r2.gate.json",
+        "sha256": "cf50a18f2bd63466ca5e61056696658ca0101bd3808d9f6513b68e2717db6acc",
+        "required": 3
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-stage-ai-entry-oct25-r2.gate.json",
+        "sha256": "34e17981c93cb4b0f168c57f5031d36e0ed931378ac8ea56046f1e8c2f3f5f77",
+        "required": 1
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-stage-cold-oct25-r1.gate.json",
+        "sha256": "e94eadf36a43461a6181bd616dc42803b1a29d8121f75245a8bc420eda4438b3",
+        "required": 1
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-stage-ordinary-unit-oct25-r2.gate.json",
+        "sha256": "c99264a333034e5a2acd9728e75b85884d535834d1d325da8f2e75260eeb3201",
+        "required": 2
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-stage-native-regression-oct25-r2.gate.json",
+        "sha256": "fd34bab61404e6d524af0f64906a8dabed16520fc0fe2b128ffb9659c11b96e5",
+        "required": 7
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-stage-strings-oct25-r1.gate.json",
+        "sha256": "63fbc322ec6169d0ffed282d97b3aee4d124b0e0ca8f57f5f71c4d091e3a5c5d",
+        "required": 8
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-stage-shared-radial-oct25-r1.gate.json",
+        "sha256": "845c13845dcfa69a98a83293345aa807424d818820c825542d4b1c09dfee6e17",
+        "required": 7
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-stage-game-formal-oct25-r3.gate.json",
+        "sha256": "a567438a2c09251e42154cd8fff04a37b124d1d497e646cb9cf48097f66bf846",
+        "required": 1
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-stage-game-private-oct25-r3.gate.json",
+        "sha256": "4c8ea767f3cd481385312f3b0d60635b13976725ee7a3b211ef23da474d45b84",
+        "required": 1
+      }
+    ],
+    "required_test_executions": 32,
+    "unique_required_tests": 31,
+    "cross_pack": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-stage-cross-pack-oct25-r1.json",
+      "sha256": "4a68c4f5ea4438b44f4d4720aa69a0a726deb5b83859281398859caba8806101"
+    },
+    "readme_overview": {
+      "file": "docs/figures/hd-heal-stage.png",
+      "sha256": "ecc57a8799353e144b82ade3a3c97214d161900bbd711c015e70a154a5f4c160"
+    },
+    "readme_recipe": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-stage-readme-overview-oct25-r2.json",
+      "sha256": "36c74e8684d0b1ec6dbda8054a31a85c6099d1abac5c65ef51074a2a12b9346e"
+    },
+    "string_inventory": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-stage-string-inventory-oct25-r1.json",
+      "sha256": "b309eea9c38944253de55d3ecefeb661cb0e6bf54a0489ec8b4881d6c8bcf0dc"
+    },
+    "string_dispositions": 109,
+    "catalog_sha256": "c1b2c20ee56bf2e45324155829f9778bfff14a25d9edce9d06dc56f2074d42df",
+    "maximum_test_peak_bytes": 6052179968,
+    "no_final_skip_timeout_oom": true,
+    "private_pack_mode": "直接唯讀私人保存庫；正式八組，私人實體素材只重跑兩端抽樣，無新增素材或私人提交",
+    "private_commit": "06e09c2750c8be449d187a80807e0159930adebe",
+    "validation_summary": {
+      "formal_cases": 8,
+      "formal_frames": 472,
+      "formal_f2": 88,
+      "formal_returns": 8,
+      "formal_pngs": 72,
+      "private_cases": [
+        0,
+        7
+      ],
+      "private_frames": 118,
+      "private_f2": 22,
+      "private_returns": 2,
+      "private_pngs": 18,
+      "native_front_frames": 64,
+      "ai_entry_tests": 1,
+      "shared_radial_tests": 7,
+      "string_tests": 8
+    },
+    "visual_review": "已檢視前段與第九張停格、群體回復69／69及返回；手繪背景與人物、數字可見，城堡與框線仍為像素。",
+    "known_remaining": [
+      "10／12前奏、其他徑向、單位轉場與獎勵等凍結消費端的地圖23來源及遮罩。",
+      "其餘HD地形、HD2、完整HUD、介面獨立切換、浮出工具列／加速／海報。",
+      "全部HD後的集中正常玩家、人工造型與平台效能；蓋亞手腕與凱麗右腳仍依原工單。"
+    ],
+    "cleanup": {
+      "status": "CLEANED",
+      "regular_files": 96,
+      "regular_bytes": 137173186,
+      "video_files": 0,
+      "plan": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-stage-cleanup-plan-oct25-r1.json",
+      "plan_sha256": "172c20da734ae28e9ef6a4b7a707196fd83162eb9b2c0a183ead115aa3a15bf0",
+      "preserved_diagnostics": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-stage-game-formal-oct25-r1-capture/case-0-phase-1-frame-8.png",
+          "sha256": "f2631ec778f3cb94fc1b3695163eed69f57056a6799240b06ee5dd74510b592c",
+          "reason": "與最終畫面不同，保留診斷"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-stage-game-private-oct25-r1-capture/case-0-phase-1-frame-8.png",
+          "sha256": "f2631ec778f3cb94fc1b3695163eed69f57056a6799240b06ee5dd74510b592c",
+          "reason": "與最終畫面不同，保留診斷"
+        }
+      ],
+      "scope": "只刪除與正式72張逐SHA相同的私人／診斷重複PNG；保留正式畫面、所有收據與log、原版／私人素材",
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-stage-cleanup-oct25-r1.json",
+      "sha256": "2fd1985e45f7e24fdef94c17a84994261a8dd98039704519d566d4b25e291e96"
+    },
+    "issue_update": {
+      "status": "PASS",
+      "closed_issue": 271,
+      "open_worklist_count": 24,
+      "acceptance_unchanged": true,
+      "other_22_unchanged": true,
+      "unchanged": [
+        269,
+        268,
+        265,
+        239,
+        224,
+        206,
+        202,
+        201,
+        198,
+        197,
+        52,
+        41,
+        33,
+        15,
+        12,
+        11,
+        10,
+        9,
+        8,
+        7,
+        6,
+        4
+      ],
+      "comparison_scope": "title/body/label names",
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-stage-issues-verified-oct25-r1.json",
+      "sha256": "29b87f4316514e1865b119b30dc4ce8732aafb1ecdde5813a3b9a8cebc538d86"
+    },
+    "links": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-stage-links-oct25-r3.json",
+      "sha256": "b4e3fed23978c734570accc85add77cc75b2ebb6986e4d34a10b068ce212a455"
+    },
+    "ownership": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-stage-ownership-oct25-r3.json",
+      "sha256": "3c4e1191efc90de99ba641ff4464b9424fa447f8a5d16f395a2f28a940cdaaf7"
+    },
+    "docker_cleanup": {
+      "status": "PASS",
+      "unexpected_go_or_asset_containers": 0,
+      "images_rebuilt": false,
+      "other_projects_touched": false
+    }
   }
 }

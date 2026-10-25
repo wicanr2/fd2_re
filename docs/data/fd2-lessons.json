@@ -4233,6 +4233,14 @@
         ],
         "pattern": "74, 75, 76, 76"
       }
+    },
+    {
+      "id": "animation-holds-and-frame-counts-follow-typed-schedule",
+      "date": "2026-10-25",
+      "area": "動畫驗收",
+      "rule": "動畫矩陣的畫格數與閃爍邊界依具型別排程計算；停格與動畫階段分開判斷Draw確認。回復入口remake/internal/fdother/native_command_heal_tail.go的MaskPairs，完整驗證用tools/verify_fd2_unit_present_hd.py --kind heal-stage-game；中段另直接核對原生第九張像素。",
+      "why": "回復測具曾把五次閃爍少算成九張，實際含底圖是十一張；兩條私人流程完成後才被錯誤總數拒收。初測也把既有停格當成新動畫，要求不存在的Draw確認。修正測具後完整重跑，沒有改正式等待或閃爍排程。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#heal_stage_hd_followup_20261025"
     }
   ]
 }

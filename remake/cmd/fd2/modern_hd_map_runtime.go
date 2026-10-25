@@ -299,7 +299,7 @@ func (g *Game) prepareModernHDMapFrameStageLayout(in indexedmap.NativeFrameInput
 	result := &modernHDMapFrame{Background: bg, UI: ui, Units: units, Foreground: foreground, TerrainSeed: terrainSeed,
 		TerrainUnderlay: append([]byte(nil), seed...), Terrain: terrain, Range: rangeLayer, TerrainColourKey: colours.Key, HUDUnit: hudUnit}
 	if stageImage != nil {
-		result.Terrain = append([]modernHDTerrainDraw{{Image: stageImage, Rect: modernHDMapViewport()}}, result.Terrain...)
+		result.Terrain = append([]modernHDTerrainDraw{{Image: stageImage, Rect: modernHDMapViewport(), Stage: true}}, result.Terrain...)
 		result.TransientTerrain = true
 	}
 	if stage != nil && g.nativeMapAssets != nil && g.nativeMapAssets.MapIndex == 23 {

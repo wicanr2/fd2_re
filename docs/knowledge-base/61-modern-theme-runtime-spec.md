@@ -4389,3 +4389,39 @@ RUNTIME-E1，不新增正常玩家或原版執行器對拍。回復與其他徑�
 分別驗證整張背景的原生遮罩，不能由此切片推定完成。
 
 前述 READY 已實作，限定 CONFORMED-SCOPED／RUNTIME-E1。完整 Game.Draw 與實體私人素材回歸、來源簽章拒收、非恆等LUT及舊一般地圖／物品回歸通過。重跑使用 tools/verify_fd2_unit_present_hd.py 的 player9-stage-unit 與 player9-stage-game，明示 --catalog、--pack、--out；維護中Go Docker、固定原包、seed7及clock1000。私人圖包唯讀掛載並加 --require-real-runtime，驗收值、峰值與18張圖的比較依主收據。城堡原生圖塊與框線尚未HD，不能由此宣布完整HD或正常玩家完成。
+## 回復演出的特殊背景快照與徑向遮罩（READY，2026-10-25）
+
+沿用 `fd2_command13_21eb1_presentation_ida.txt` 的已證實順序：`sub_21EB1`
+先呼叫 `sub_11EEE` 建立一次 `0x25680` 背景，十六張效果各還原該快照。
+`fd2_ch23_post_ida.txt` 已證實 `sub_11EEE` 的 chapter23 分支複製 staging，
+輸入雜湊、IDA版本、位址空間及原始定位沿兩份主證據，不重開已閉合函式。
+現有回復產生器從零緩衝建立前段，漏掉地圖23來源，另見對應缺陷工單。
+
+章節23於冷預檢凍結同次staging，依原生規則播種各張私有工作區；
+尾段一般地圖重繪也先恢復同次種子，避免重複目的映射。保存前段與交易後
+兩份typed input／work／VGA／palette來源，HD與F2重驗簽章及原生重組。
+不依播放時的live stage取代快照，不額外推進BIOS／RNG或背景旋轉。
+
+整張HD特殊背景須明示圖層身分，不能當成144×144一般圖塊取樣。
+沿既有原生寫入／跳過遮罩與徑向計數，分別套用0至3次LUT；色盤映射保持
+既有RGB美術近似與alpha，人物、前景、HUD及效果順序保持。缺來源、素材或
+快照被修改時原子拒收。交易後重繪失敗須恢復回復交易影響的單位欄位、RNG
+及原生畫面，不留下已扣MP卻中斷的行動。
+
+驗收涵蓋四種回復的十六張原生背景、真實map23完整Game.Draw、單／多目標、
+每階段F2、背景與人物、結算與續行，以及冷／晚失敗與既有一般地圖回歸。
+只限受控RUNTIME-E1；BIOS tick與畫格時長沿既有近似，不新增原版執行器、
+硬體時鐘或正常玩家聲明。其他徑向消費端仍各自驗證，完整HD目標保持。
+回復中段停格的來源補充（READY）：同一 `sub_21EB1` 主證據顯示，九張之後
+只有200ms等待，`sub_11CAC(0)`在全部十六張結束後才呼叫。因此中段保留第九張，
+尾段停格才用一般戰場。兩種主題沿同一來源；停格不要求新的Draw確認。
+完整測試須直接核對中段原生像素，不能用相同錯誤的控制組判定通過。
+
+
+### 回復特殊背景的驗證範圍（CONFORMED-SCOPED／RUNTIME-E1）
+
+前述READY已實作。原生前段重建、整張HD背景的徑向遮罩、交易前後兩份密封來源及F2重驗通過；中段保留第九張，兩種主題直接核對同一原生來源。冷來源缺失拒收，交易後重繪失敗恢復單位欄位、RNG及原生工作區。四種回復的單／多目標完整流程、AI正式入口及既有一般地圖／共用徑向回歸通過。這裡修正了前述舊切片所列「回復背景仍待」的範圍，其他徑向與凍結消費端仍各自驗證。
+
+重跑入口為維護中Go Docker內的`python3 tools/verify_fd2_unit_present_hd.py --help`。使用`--kind heal-stage-source`驗原生背景、`--kind heal-stage-unit`驗遮罩／快照／失敗回復、`--kind heal-stage-game`跑八組完整Game.Draw，明示`--catalog`、`--pack`、不存在的`--out`前綴與有界`--timeout`。私人實體包唯讀掛載，加`--require-real-runtime --heal-stage-sample`只跑13單目標及16多目標兩端；不能稱為兩包完整八組。既有收據可用`--check-existing`稽核。固定原包、seed7及clock1000，user1000、network none、6GiB／2CPU／256 pids，Xvfb由工具有界管理。
+
+來源快照、精確輸出前綴、測試峰值與跨包比較依HD主收據`heal_stage_hd_followup_20261025`，唯一數量表為58。RGB映色與新材質屬既有美術近似；控制組是同一remake的像素主題，未重跑FD2.EXE。正常玩家、集中人工及平台驗收仍待全部HD串接後執行，城堡地形與介面框線尚未HD。

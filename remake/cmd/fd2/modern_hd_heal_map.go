@@ -97,6 +97,7 @@ type modernHDRadialGroundLayer struct {
 }
 
 type modernHDRadialMapSpec struct {
+	Stage      *nativeCh23AdapterState
 	Input      indexedmap.NativeFrameInput
 	Palette    color.Palette
 	Pass       fdother.IndexedTransitionPass
@@ -107,7 +108,18 @@ type modernHDRadialMapSpec struct {
 }
 
 func (g *Game) healHDFront(j *nativeCommandHealPresentationJob, set *modernStoryPortraitSet, normal *modernHDMapFrame, index int) (*modernHDMapFrame, error) {
-	return g.prepareModernHDRadialMap(modernHDRadialMapSpec{Input: j.hdInput, Palette: j.palette, Pass: j.hdPasses[index], LUT: j.hdLUTs[index]}, set, normal, nil)
+	ground := nativeTransitionInput(j.hdInput)
+	ground.Units, ground.ForegroundUnits = nil, nil
+	work, vga := make([]byte, indexedmap.NativeUnitPresentWorkSize), make([]byte, indexedmap.NativeMapVGASize)
+	if j.mapStage != nil {
+		if err := indexedmap.SeedNativeCh23Staging(work, j.mapStage.staging); err != nil {
+			return nil, err
+		}
+	}
+	if err := indexedmap.ComposeNativeTransitionFrame(work, vga, ground, j.hdPasses[index], j.hdLUTs[index]); err != nil {
+		return nil, err
+	}
+	return g.prepareModernHDRadialMap(modernHDRadialMapSpec{Input: j.hdInput, Palette: j.palette, Pass: j.hdPasses[index], LUT: j.hdLUTs[index], Background: vga, Stage: j.mapStage}, set, normal, nil)
 }
 
 func (g *Game) prepareModernHDRadialMap(spec modernHDRadialMapSpec, set *modernStoryPortraitSet, normal *modernHDMapFrame, weights map[uint32]modernTerrainColourWeights) (*modernHDMapFrame, error) {
@@ -146,6 +158,14 @@ func (g *Game) prepareModernHDRadialMap(spec modernHDRadialMapSpec, set *modernS
 	}
 	assets := set.terrainHD[g.nativeMapAssets.MapIndex]
 	for _, tile := range normal.Terrain {
+		if tile.Stage {
+			picture, err := g.prepareModernHDRadialStage(spec, set, tc, luts)
+			if err != nil {
+				return nil, err
+			}
+			f.Terrain = append(f.Terrain, modernHDTerrainDraw{Image: picture, Rect: tile.Rect.Add(image.Pt(-24, -24)), Stage: true})
+			continue
+		}
 		rect := tile.Rect.Add(image.Pt(-24, -24))
 		col, row := tile.Rect.Min.X/144, tile.Rect.Min.Y/144
 		// Normal rectangles include the native four-pixel inset.
@@ -309,14 +329,14 @@ func (g *Game) prepareModernHDHeal(j *nativeCommandHealPresentationJob, set *mod
 	if len(j.hdPasses) != 16 || len(j.hdLUTs) != 16 || len(j.effectSources) != 7 {
 		return nil, errors.New("modern HD heal: incomplete producer")
 	}
-	if j.hdCachedTheme == set && j.hdCached != nil && len(j.hdCached.Digits) == len(j.digitFrames) {
-		return j.hdCached, nil
+	if err := g.validateModernHDHealSource(j); err != nil {
+		return nil, err
 	}
-	steady, err := g.prepareModernHDCommandSteady(j.hdBaseline, j.baselineWork, j.baselineVGA, j.palette, set)
+	steady, err := g.prepareModernHDCommandSteadyStage(j.hdBaseline, j.baselineWork, j.baselineVGA, j.palette, set, j.hdScene.stage)
 	if err != nil {
 		return nil, err
 	}
-	objects, err := g.prepareModernHDCommandSteady(j.hdInput, j.baselineWork, j.baselineVGA, j.palette, set)
+	objects, err := g.prepareModernHDCommandSteadyStage(j.hdInput, j.hdBefore.work, j.hdBefore.vga, j.palette, set, j.hdBefore.stage)
 	if err != nil {
 		return nil, err
 	}

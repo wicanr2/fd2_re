@@ -43,6 +43,9 @@ type nativeCommandHealPresentationJob struct {
 	transaction                 func() ([]battle.NativeCommandHealResult, error)
 	results                     []battle.NativeCommandHealResult
 	then                        func([]battle.NativeCommandHealResult)
+	mapStage                    *nativeCh23AdapterState
+	hdBefore, hdScene           *modernHDCompoundMapScene
+	hdSignature                 [32]byte
 	hdInput, hdBaseline         indexedmap.NativeFrameInput
 	hdInputErr                  error
 	hdPasses                    []fdother.IndexedTransitionPass
@@ -120,6 +123,13 @@ func (g *Game) startNativeCommandHealPresentation(commandID int, targetUnits []*
 			view.VisibleCursorX, view.VisibleCursorY)
 	}
 	centerX, centerY := 24*view.VisibleCursorX+12, 24*view.VisibleCursorY+16
+	var mapStage *nativeCh23AdapterState
+	if a.MapIndex == 23 {
+		mapStage = cloneNativeCh23AdapterState(g.nativeCh23State)
+		if mapStage == nil {
+			return errors.New("native command heal same-compose stage absent")
+		}
+	}
 	frontFrames := make([][]byte, 0, len(front.Frames))
 	var hdPasses []fdother.IndexedTransitionPass
 	var hdLUTs [][]byte
@@ -134,6 +144,11 @@ func (g *Game) startNativeCommandHealPresentation(commandID int, targetUnits []*
 		}
 		work := make([]byte, indexedmap.NativeUnitPresentWorkSize)
 		vga := make([]byte, indexedmap.NativeMapVGASize)
+		if mapStage != nil {
+			if err := indexedmap.SeedNativeCh23Staging(work, mapStage.staging); err != nil {
+				return err
+			}
+		}
 		if err := indexedmap.ComposeNativeTransitionFrame(work, vga, in, pass, lut); err != nil {
 			return fmt.Errorf("native command heal presentation frame %d: %w", index, err)
 		}
@@ -176,6 +191,11 @@ func (g *Game) startNativeCommandHealPresentation(commandID int, targetUnits []*
 		return err
 	}
 	preflightWork, preflightVGA := append([]byte(nil), baselineWork...), append([]byte(nil), baselineVGA...)
+	if mapStage != nil {
+		if err := indexedmap.SeedNativeCh23Staging(preflightWork, mapStage.staging); err != nil {
+			return err
+		}
+	}
 	if err := indexedmap.ComposeNativeFrame(preflightWork, preflightVGA, steady); err != nil {
 		return fmt.Errorf("native command heal post-transaction redraw preflight: %w", err)
 	}
@@ -216,6 +236,15 @@ func (g *Game) startNativeCommandHealPresentation(commandID int, targetUnits []*
 		hdPasses: hdPasses, hdLUTs: hdLUTs, effectSources: effectSources, effectTargets: effectTargets,
 	}
 	job.hdInput, job.hdBaseline, job.hdInputErr = g.freezeHealHDInput(in)
+	job.mapStage = mapStage
+	job.hdBefore = g.freezeModernHDHealScene(job.hdBaseline, baselineWork, baselineVGA, job.palette, mapStage, job.hdInputErr)
+	job.hdScene = job.hdBefore
+	if job.hdInputErr == nil {
+		job.hdInputErr = job.hdBefore.err
+	}
+	if job.hdInputErr == nil {
+		job.hdSignature, job.hdInputErr = modernHealSourceDigest(job)
+	}
 	if g.modernStoryPortraits != nil {
 		job.hdFrames, err = g.prepareModernHDHeal(job, g.modernStoryPortraits)
 		if err != nil {
@@ -239,6 +268,11 @@ func (g *Game) buildNativeCommandHealDigitFrames(j *nativeCommandHealPresentatio
 	}
 	redrawnWork := append([]byte(nil), j.baselineWork...)
 	redrawnVGA := append([]byte(nil), j.baselineVGA...)
+	if j.mapStage != nil {
+		if err := indexedmap.SeedNativeCh23Staging(redrawnWork, j.mapStage.staging); err != nil {
+			return err
+		}
+	}
 	if err := indexedmap.ComposeNativeFrame(redrawnWork, redrawnVGA, steady); err != nil {
 		return fmt.Errorf("native command heal post-transaction redraw: %w", err)
 	}
@@ -285,6 +319,13 @@ func (g *Game) buildNativeCommandHealDigitFrames(j *nativeCommandHealPresentatio
 	j.digitFrames = frames
 	j.digitSources = sources
 	j.hdBaseline, j.hdInputErr = freezeModernHDCommandGeometry(steady)
+	j.hdScene = g.freezeModernHDHealScene(j.hdBaseline, redrawnWork, redrawnVGA, j.palette, j.mapStage, j.hdInputErr)
+	if j.hdInputErr == nil {
+		j.hdInputErr = j.hdScene.err
+	}
+	if j.hdInputErr == nil {
+		j.hdSignature, j.hdInputErr = modernHealSourceDigest(j)
+	}
 	if g.modernStoryPortraits != nil {
 		j.hdFrames, err = g.prepareModernHDHeal(j, g.modernStoryPortraits)
 		if err != nil {
@@ -348,13 +389,23 @@ func (g *Game) stepNativeCommandHealPresentation() {
 			j.drawn = false
 			return
 		}
+		if j.hdInputErr == nil {
+			if err := g.validateModernHDHealSource(j); err != nil {
+				g.loadErr = err.Error()
+				g.nativeHealPresentation = nil
+				return
+			}
+		}
+		rollback := g.nativeHealRollback()
 		results, err := j.transaction()
 		if err != nil {
+			rollback()
 			g.loadErr = "native command heal post-presentation transaction: " + err.Error()
 			g.nativeHealPresentation = nil
 			return
 		}
 		if err := g.buildNativeCommandHealDigitFrames(j, results); err != nil {
+			rollback()
 			g.loadErr = err.Error()
 			g.nativeHealPresentation = nil
 			return
@@ -394,7 +445,7 @@ func (g *Game) drawNativeCommandHealPresentation(screen *ebiten.Image) bool {
 	if j.hdFrames != nil && j.hdTheme == g.modernStoryPortraits && g.modernStoryPortraits != nil {
 		frame := j.hdFrames.Steady
 		switch j.phase {
-		case nativeCommandHealFrames:
+		case nativeCommandHealFrames, nativeCommandHealMidHold:
 			if j.frame < 0 || j.frame >= len(j.hdFrames.Front) {
 				return false
 			}
@@ -423,7 +474,7 @@ func (g *Game) drawNativeCommandHealPresentation(screen *ebiten.Image) bool {
 	}
 	pixels := j.baselineVGA
 	switch j.phase {
-	case nativeCommandHealFrames:
+	case nativeCommandHealFrames, nativeCommandHealMidHold:
 		if j.frame < 0 || j.frame >= len(j.frontFrames) {
 			return false
 		}

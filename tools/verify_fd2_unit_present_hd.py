@@ -13,6 +13,9 @@ from verify_fd2_player9_map_hd import check_real_runtime
 
 ROOT=Path(__file__).resolve().parents[1]
 REQUIRED={
+    'heal-stage-game':{'TestModernHDHealStageGameGPU'},
+    'heal-stage-unit':{'TestModernHDHealStageRemapMatchesNativeMarker','TestModernHDHealStageSourceIsolationAndReject','TestNativeHealStageLateFailureRestoresTransaction'},
+    'heal-stage-source':{'TestNativeHealStageFrontUsesOriginalSnapshot'},
     'player9-stage-game':{'TestModernHDPlayer9StageGameGPU'},
     'player9-stage-unit':{'TestModernHDPlayer9StageFreezeUsesSeed','TestModernHDPlayer9ActualStage','TestModernHDPlayer9StageRejectsEditedSource'},
     'item-miss':{'TestNativeMissDescriptorConsumers'},
@@ -104,6 +107,20 @@ REQUIRED['sky-core']=REQUIRED['sky-source'] | REQUIRED['sky-unit'] | REQUIRED['s
 
 def check_receipt(kind, prefix):
     receipt=json.loads(Path(str(prefix)+'-capture/receipt.json').read_text())
+    if kind=='heal-stage-game':
+        d=json.loads(Path(str(prefix)+'-capture/receipt.json').read_text())
+        ids=d.get('case_ids',[]);cases=d.get('cases',[]);rows=d.get('rows',[])
+        if d.get('status')!='PASS-HEAL-STAGE-HD-GAME' or d.get('map_index')!=23 or d.get('seed')!=7 or d.get('clock_unix')!=1000 or d.get('rgba_tolerance')!=2 or ids not in [list(range(8)),[0,7]] or len(cases)!=len(ids) or len(rows)!=59*len(ids):
+            raise ValueError('heal stage identity or full frame coverage missing')
+        if [c.get('case') for c in cases]!=ids or any(c.get('command')!=13+c['case']//2 or c.get('multi')!=(c['case']%2==1) or c.get('frames')!=59 or c.get('f2_round_trips')!=11 or c.get('transactions')!=1 or c.get('continuations')!=1 or c.get('native_control_unchanged') is not True for c in cases):
+            raise ValueError('heal stage final state or branches missing')
+        for case in ids:
+            selected=[r for r in rows if r.get('case')==case]
+            if any(r.get('mid_hold_native_verified') is not True for r in selected if r['phase']==1):raise ValueError('heal native middle hold not verified')
+            if len(selected)!=59 or {p:len([r for r in selected if r['phase']==p]) for p in range(7)}!={0:16,1:1,2:1,3:7,4:11,5:22,6:1} or any(r['transactions']!=(1 if r['phase'] in [5,6] else 0) for r in selected):
+                raise ValueError('heal stage phase or transaction boundary missing')
+        if len(list(Path(str(prefix)+'-capture').glob('*.png')))!=9*len(ids):raise ValueError('heal stage captures missing')
+        return dict(case_ids=ids,frames=59*len(ids),f2_round_trips=11*len(ids),pngs=9*len(ids))
     if kind=='player9-stage-game':
         d=json.loads(Path(str(prefix)+'-capture/receipt.json').read_text())
         cases=d.get('cases',[])
@@ -304,10 +321,12 @@ def main():
     for name in ['catalog','pack','out']:
         p.add_argument('--'+name,type=Path,required=True)
     p.add_argument('--timeout',type=int,default=900)
+    p.add_argument('--heal-stage-sample',action='store_true')
     p.add_argument('--check-existing',action='store_true',help='以目前嚴格檢查器另存稽核，不重跑或覆寫既有收據')
     p.add_argument('--require-real-runtime',action='store_true')
     p.add_argument('--compare-with',type=Path,help='僅item-game既有收據稽核：比較另一個輸出前綴的完整收據與50張PNG')
     a=p.parse_args()
+    if a.heal_stage_sample and a.kind!='heal-stage-game':raise ValueError('heal stage sample only')
     if a.compare_with and (a.kind!='item-game' or not a.check_existing):
         raise ValueError('--compare-with只用於item-game --check-existing')
     if not Path('/.dockerenv').exists() or not 60<=a.timeout<=1800 or not a.out.parent.is_dir() or not a.catalog.is_file() or not a.pack.is_dir():
@@ -317,13 +336,16 @@ def main():
             raise ValueError('不可覆寫收據')
     independent=check_real_runtime(a.pack,json.loads(a.catalog.read_text())) if a.require_real_runtime else None
     env=os.environ.copy()
-    for name in ['FD2_HD_UNIT_PRESENT_SOURCE','FD2_HD_UNIT_PRESENT_GPU','FD2_HD_UNIT_PRESENT_STORY_GPU','FD2_HD_STORY_MOTION_GPU','FD2_HD_INDEXED_TRANSITION_GPU','FD2_HD_ROW_SHAKE_GPU','FD2_HD_CH23_STAGE_GPU','FD2_HD_SKY_KEY_GPU','FD2_HD_ITEM_MAP_GPU','FD2_HD_ITEM_MAP_PROBE','FD2_HD_PLAYER9_STAGE_GPU']:
+    for name in ['FD2_HD_UNIT_PRESENT_SOURCE','FD2_HD_UNIT_PRESENT_GPU','FD2_HD_UNIT_PRESENT_STORY_GPU','FD2_HD_STORY_MOTION_GPU','FD2_HD_INDEXED_TRANSITION_GPU','FD2_HD_ROW_SHAKE_GPU','FD2_HD_CH23_STAGE_GPU','FD2_HD_SKY_KEY_GPU','FD2_HD_ITEM_MAP_GPU','FD2_HD_ITEM_MAP_PROBE','FD2_HD_PLAYER9_STAGE_GPU','FD2_HD_HEAL_STAGE_GPU','FD2_HD_HEAL_STAGE_CASES']:
         env.pop(name,None)
     env.update(FD2_MUTE='1',FD2_TEST_UNIT_PRESENT_CATALOG=str(a.catalog.resolve()),
                FD2_TEST_UNIT_PRESENT_PACK=str(a.pack.resolve()),FD2_TEST_UNIT_PRESENT_OUT=str(a.out)+'-capture')
     if a.kind=='source':env['FD2_HD_UNIT_PRESENT_SOURCE']='1'
     if a.kind=='item-game':env['FD2_HD_ITEM_MAP_GPU']='1'
     if a.kind=='player9-stage-game':env['FD2_HD_PLAYER9_STAGE_GPU']='1'
+    if a.kind=='heal-stage-game':
+        env['FD2_HD_HEAL_STAGE_GPU']='1'
+        if a.heal_stage_sample:env['FD2_HD_HEAL_STAGE_CASES']='0,7'
     if a.kind=='sky-game':env['FD2_HD_SKY_KEY_GPU']='1'
     if a.kind=='stage-game':env['FD2_HD_CH23_STAGE_GPU']='1'
     if a.kind=='game':env['FD2_HD_UNIT_PRESENT_GPU']='1'
@@ -356,8 +378,9 @@ export DISPLAY=:99
     if not REQUIRED[a.kind]<={e.get('Test') for e in events if e.get('Action')=='pass'} or any(e.get('Action') in {'skip','fail'} for e in events):
         raise ValueError('必要測試缺項、SKIP或失敗')
     receipt_evidence=None
-    if a.kind in {'source','game','story-game','motion-game','indexed-game','rowshake-game','stage-game','sky-game','item-game','player9-stage-game'}:
+    if a.kind in {'source','game','story-game','motion-game','indexed-game','rowshake-game','stage-game','sky-game','item-game','player9-stage-game','heal-stage-game'}:
         receipt_evidence=check_receipt(a.kind,a.out)
+        if a.kind=='heal-stage-game' and receipt_evidence['case_ids']!=([0,7] if a.heal_stage_sample else list(range(8))):raise ValueError('heal stage sample differs from request')
     report=dict(status='PASS',kind=a.kind,required=sorted(REQUIRED[a.kind]),catalog=str(a.catalog.resolve()),
                 catalog_sha256=hashlib.sha256(a.catalog.read_bytes()).hexdigest(),pack=str(a.pack.resolve()),
                 log=str(a.out)+'.log',memory=str(a.out)+'.memory.json',scope='受控轉場與Game.Draw；不新增正常玩家或原版RGB對拍')
