@@ -258,7 +258,7 @@ README四格由[既有總覽工具](../../tools/build_fd2_battle_panel_gallery.p
 
 游標指到敵人時，地圖角色與資訊窗的人物必須依同一主題一致呈現。設計輪次已確認HD世界另畫高解析人物，但UI當時仍直接消費原生`indexedmap.BlitNativeMapHUD`的`HUDUnits`。這項缺接線已依本頁HUD人物切片補齊；本段保留原先定位脈絡。接線須沿原typed selector、人物可顯示條件與idle，不以固定角色頭像覆蓋所有敵人。概念圖右下放大頭像窗屬新介面提案，仍須實作、同狀態與六組合驗證。
 
-後續先建立HD2可重用地形、人物圖源與載入邊界，再處理單列浮出輸入所有權、介面／主題／海報獨立切換及四語。素材及正式消費端未驗證前，本節維持DRAFT；沒有新增Game.Draw、正常玩家或原版對拍完成聲明。
+後續先建立HD2可重用地形、人物圖源與載入邊界，再處理介面／主題／海報獨立切換及其餘控制。單列浮出輸入所有權與四語主題／語系列依本頁已驗切片。素材及正式消費端未驗證前，本節維持DRAFT；沒有新增Game.Draw、正常玩家或原版對拍完成聲明。
 
 ## 操作介面與人物主題獨立控制（DRAFT，等待視覺原型確認）
 
@@ -4389,7 +4389,7 @@ BG0..2三份原稿及完整六倍預覽已審查：皆為深藍水平刷紋，�
 
 完整流程使用game配--surface 3、34、37、47，3不帶--with-pedestal；其餘帶台座，另一側加--enemy。scroll-game配--pair 7:10、34:36、36:37及--transition；split-game配--command 24或29、--triple 7:9:10、34:36:37、40:43:47及--transition。獨立包由sync_modern_theme_private.py --runtime-only全新複製，再以--require-real-runtime驗；分段runtime可--hashes-only但仍逐張回讀與編碼。獨立Pillow及反例沿verify_fd2_split_strike_gpu.py／test_fd2_split_strike_gpu.py，完整命令與收據見同筆主收據。去重後的包不得重用為獨立實檔證據。
 
-README四格由已核對的完整Game.Draw半縮，保留像素面板，未裁切或重畫遊戲區。手繪構圖細節、材質、全框適配及台座輪廓是美術近似；資料來源補齊不等於全部指令caller、普通玩家、人工造型或平台完成。其餘效果尾段／指令場景、HUD、浮出工具列與加速及集中正常／人工／平台仍待，不新增原版RGB parity或PLAYER-E2。
+README四格由已核對的完整Game.Draw半縮，保留像素面板，未裁切或重畫遊戲區。手繪構圖細節、材質、全框適配及台座輪廓是美術近似；資料來源補齊不等於全部指令caller、普通玩家、人工造型或平台完成。其餘效果尾段／指令場景、HUD、工具列其餘控制與加速及集中正常／人工／平台仍待，不新增原版RGB parity或PLAYER-E2。
 
 ### 交替列位移地圖演出 HD
 
@@ -4494,7 +4494,7 @@ AI type5／13回復，以及玩家／AI type20／24傷害、type21指令1／6／
 
 八張新圖由`tools/build_fd2_item_map_hd.py`編製。基底取自提交`8343e958`的768項清冊，固定SHA為`495dbae95c59dbfe25135684cfcb9ab1872cb4ba2cab11eab8bc6eb1b5913b17`；母稿與原包指紋由工具及主收據固定。候選輸出會改寫自己的`private_root`，正式登錄須恢復`remake/generated-assets/modern-theme-prototypes`，再跑`tools/validate_modern_theme_catalog.py --verify-private`與`tools/test_modern_theme_catalog.py`。正式清冊的預設與明示路徑都有拒收反例。私人素材依`tools/sync_modern_theme_private.py`的catalog白名單同步，不含拒收草稿。
 
-完整GPU矩陣逐組建立一個HD／原生遊戲對，完成後解除引用。這次預建十四組造成的OOM已由cgroup確認；逐組版本在同配額下通過。峰值及回收事件逐次保留，不能由此宣稱所有平台的記憶體餘裕。玩家回復動畫、其他凍結背景、其餘地形、HD2、完整HUD、獨立介面切換、浮出工具列／加速／海報及集中正常／人工／平台仍待。
+完整GPU矩陣逐組建立一個HD／原生遊戲對，完成後解除引用。這次預建十四組造成的OOM已由cgroup確認；逐組版本在同配額下通過。峰值及回收事件逐次保留，不能由此宣稱所有平台的記憶體餘裕。玩家回復與凍結背景現況依58對應切片；其餘地形、HD2、完整HUD、獨立介面切換、工具列其餘控制／加速／海報及集中正常／人工／平台仍待。
 
 ## 未命中字母索引勘誤與實作規格（2026-10-25）
 

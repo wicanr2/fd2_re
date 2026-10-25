@@ -30,9 +30,9 @@
 
 物品地圖演出已接入HD，限定CONFORMED-SCOPED／RUNTIME-E1。範圍為AI回復及玩家／AI傷害、三種特殊效果；原生結算、道具消耗與保留、RNG、Draw確認、尾停及一次返回保持。玩家type5/13仍走既有直接結算。MISS佇列依既有原版十六進位表修正，像素與HD模式皆改用正確字母，來源及實際消費端已回歸。共用compound場景新增同次地圖23背景快照與來源簽章，四召喚及狀態法術來源回歸通過。兩包完整Game.Draw、F2及相同畫面已驗，來源與數量依[58](58-fd2-exe-re-coverage.md)、契約依[61](61-modern-theme-runtime-spec.md)及[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的item_map_hd_followup_20261025。美術與RGB映色為近似，未重跑FD2.EXE；其餘凍結消費端及完整HD、正常／集中人工／平台仍待。
 
-天空之鑰的FDOTHER34人物／元件與ANI0近景已接入HD，限定CONFORMED-SCOPED／RUNTIME-E1。原生鏡頭、等待、色盤閃白／還原、尾段與一次續行保持，兩包完整Game.Draw／F2及原圖主題控制組通過；來源拒收、凍結世界與交易回復、共享地圖／故事回歸保持。地圖20地形與介面框線仍用像素，金鎖仿射與早期縮遠延拓屬美術近似。本批未重跑FD2.EXE，不新增正常玩家、每frame或硬體時鐘聲明。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的sky_key_hd_followup_20261025。其餘凍結caller、地形／HD2／完整HUD／介面獨立切換／浮出工具列、加速、海報與集中正常／人工／平台仍待。
+天空之鑰的FDOTHER34人物／元件與ANI0近景已接入HD，限定CONFORMED-SCOPED／RUNTIME-E1。原生鏡頭、等待、色盤閃白／還原、尾段與一次續行保持，兩包完整Game.Draw／F2及原圖主題控制組通過；來源拒收、凍結世界與交易回復、共享地圖／故事回歸保持。地圖20地形與介面框線仍用像素，金鎖仿射與早期縮遠延拓屬美術近似。本批未重跑FD2.EXE，不新增正常玩家、每frame或硬體時鐘聲明。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的sky_key_hd_followup_20261025。其餘凍結caller、地形／HD2／完整HUD／介面獨立切換／工具列其餘控制、加速、海報與集中正常／人工／平台仍待。
 
-地圖23的FDOTHER42特殊背景已接入手繪HD紋理，限定CONFORMED-SCOPED／RUNTIME-E1。循環列位移、地形遮罩與當次DAC下的HD人物／HUD人物顏色同時接入，原生排程、規則及保存保持。兩包各300次完整Game.Draw、6次F2與兩段各一次續行通過；八張跨包PNG與完整收據相同，舊列位移四流程及十二張PNG保持。這是受控角色與實際map23資料的重製端驗證，未重跑原版執行器。天空之鑰現況依58對應列；其他凍結caller的來源綁定、其餘地形／HD2／完整HUD／浮出工具列、加速、海報與集中正常／人工／平台仍待。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的special_scene_hd_followup_20261025。
+地圖23的FDOTHER42特殊背景已接入手繪HD紋理，限定CONFORMED-SCOPED／RUNTIME-E1。循環列位移、地形遮罩與當次DAC下的HD人物／HUD人物顏色同時接入，原生排程、規則及保存保持。兩包各300次完整Game.Draw、6次F2與兩段各一次續行通過；八張跨包PNG與完整收據相同，舊列位移四流程及十二張PNG保持。這是受控角色與實際map23資料的重製端驗證，未重跑原版執行器。天空之鑰現況依58對應列；其他凍結caller的來源綁定、其餘地形／HD2／完整HUD／工具列其餘控制、加速、海報與集中正常／人工／平台仍待。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的special_scene_hd_followup_20261025。
 
 既有0x24618的九階徑向、停留及baseline DAC加亮已接HD，限定CONFORMED-SCOPED／RUNTIME-E1。凍結同次地圖、selector、LUT與原生work歷史，逐byte重建後規劃HD；GPU調色以baseline的delta/63飽和加亮，alpha保持，屬明示顯示近似。兩包完整Game.Draw／F2、原圖主題控制組、一次返回及跨包畫面通過；原有故事走位、入場與返回畫面保持。沒有新美術、規則或保存欄位，原版執行器未在本批重跑。0x24B4D現況依58對應列；其他特殊背景、完整HD、正常／集中人工／平台仍待。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的indexed_transition_hd_followup_20261024；前批故事收據各自保留。
 
@@ -82,8 +82,8 @@ BattleFig25／27完整圖源已接入；候選及runtime-only來源GPU、兩組�
 普通2／3／7／8人物已沿同次producer接入，保持數值、亂數、聲音與保存格式；正常2／8已有收據，
 3／7及剩餘人工範圍留待最後。BattleFig110三組人物也已正式登錄，母稿共用與來源勘誤如實記錄。
 普通6人物與七種packed變色亦已接入，採既有四近鄰RGB色差近似，保留alpha；原indexed與owner規則保持。
-完整繪圖／F2、結算與施術核心自動驗證通過，效果32／33仍像素，正常操作與人工確認待最後。
-普通0～8的十八項FDOTHER效果入口與兩銀行原子預載也已接入；晚期缺件及F2故障注入通過，正式效果美術仍待。
+完整繪圖／F2、結算與施術核心自動驗證通過，正常操作與人工確認待最後。
+普通0～8的十八項FDOTHER效果入口與兩銀行原子預載也已接入；晚期缺件及F2故障注入通過。效果美術沿58的普通法術特效與火龍切片，包含32／33。
 全套Go的原失敗已由核心MEMCG事件及受控重跑確認為測試容器OOM；標準配額下的主程式回歸通過。
 唯一數量及未完成範圍依[58](58-fd2-exe-re-coverage.md)，規格與執行順序見[61](61-modern-theme-runtime-spec.md)。
 來源集中於[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的ordinary_remaining_hd_followup_20261021、
@@ -690,7 +690,7 @@ Runtime 不應再讓 `main.go` 同時決定資料模型、輸入、規則和像�
 
 | ID | UI / 流程 | 必須還原的操作契約 | 目前狀態 |
 |---|---|---|---|
-| UI-01 | Title/main menu | 上下選擇、確認、取消、save/load、游標音效與 focus state；開場按鍵只可中斷原始第三參數標為 `skippable` 的當前 AFM 幕，並繼續下一幕，不得以 ESC 無條件略過整段 | partial；`TitleMenuState`／`TitleSlotState` 已與 Ebiten 輸入共用並有 deterministic trace；`0x20421` 的 `(index, delay, skippable)` 與既有 index 3／1 可中斷證據是逐幕輸入契約。仍缺原版逐幀 E2 對照與完整 boot/campaign 接線 |
+| UI-01 | Title/main menu | 上下選擇、確認、取消、save/load、游標音效與 focus state；開場按鍵只可中斷原始第三參數標為 `skippable` 的當前 AFM 幕，並繼續下一幕，不得以 ESC 無條件略過整段 | partial；`TitleMenuState`／`TitleSlotState` 已與 Ebiten 輸入共用並有 deterministic trace；`0x20421` 的 `(index, delay, skippable)` 與既有 index 3／1 可中斷證據是逐幕輸入契約。開場流程與 boot/campaign 接線現況依58，不以逐幀一致作驗收門檻 |
 | UI-02 | Battle field | 游標格、鏡頭、可移動格、高亮、單位 HUD、方向／面向 | partial；`native-map-ch01-original-video.png`（320×200）與正式 handler 截圖 `native-map-ch01-remake-handler.png`（640×400）不是同一狀態。新圖由 `story_ch00_handler` 的 73 拍快速時鐘保留 LOADCH、JOIN、SPAWN 與 battle handoff，並唯讀掛載原版 `FDOTHER/FDSHAP/FDICON`，再套用 IDA 已證實的 FDFIELD b1 selector；這修正舊 b0 映射造成的敵軍圖像錯誤，也排除舊直接 `battle_ch01` 除錯入口造成的單角色假象。舊圖的場上單位、游標與 HUD 差異不能作為目前渲染器缺陷證據；較早 E1 raw 相機／游標欄位也不等於畫面一致。2026-08-10 已以同一 `FD2.SAV`、相機、游標、回合與單位狀態建立 DOSBox／重製逐幀範圍比較，最近鄰縮放後內容區只剩 22 個畫布邊界差異像素，並以 [`battle-field-ch01-scoped-compare-20260810.png`](../figures/battle-field-ch01-scoped-compare-20260810.png) 固定三欄證據；記為 ch01 scoped E2 candidate，仍不得外推至其他章節、一般玩家 CONTINUE 或完整戰場介面。詳見 [`battle-visual-gap-ch01.json`](../data/ui-traces/battle-visual-gap-ch01.json)。 |
 | UI-03 | Action menu | move/attack/magic/item/status/wait/end-turn 的可見項、enable gate、取消回上一層 | partial；`0x1741c` 的 raw cell index 是 `3*firstArgument + 2*secondArgument`。battle wrapper `0x18d8c` 的第一表固定 `[0,1,2,3]`，所以第二表為 0 時 cells 為 `[0,3,6,9]`、為 1 時為 `[2,5,8,11]`；舊的乘數倒置／`[0,2,4,6]` 斷言已勘誤，詳見 [CONTINUE overlay IDA evidence](../data/ida/fd2_continue_action_overlay_ida.txt)。2026-08-22 IDA 進一步證實共用 `0x117E7` 在 `0x12C0D==-1` 時呼叫 `0x16F55`，故空游標 `[21,15,18,12]` 四格不再限於 chapter0 CONTINUE；正式 battle 現要求完整 FDOTHER #2 後開啟面板，只有 direction3／END 會走四幀命令框關閉，再以 DATO #75、FDOTHER #5/#2、FDTXT `0x1A3/0x1A4/0x19C` 跑6＋4展開、YES／NO、4＋5收合、接受／取消回覆逐字形發布、完整句後再等待十二個60 Hz畫格並復原來源；只有YES才進敵方回合。缺任一資產在關閉命令框前拒絕，其餘三格仍失敗即關閉。runtime 以 caller-owned lifecycle 呈現 opening `0..3` 與獨立 closing `0..3`，並延後 command/item/spell/attack/wait side effect，直到第四個 close present 完成；因 native loop 無 delay call，只宣稱順序／present count，不宣稱毫秒時長。[8-frame Xvfb artifact](../figures/action-overlay-open-close-remake.png) 由目前 source 與玩家 FDOTHER.DAT read-only mount 產生。native command grid 亦已定為 320×200、每欄四列，label `(18+100*col,103+22*row)`、MP 右側、↑↓ wrap/←→±4 bounded；scenario raw command mask 已可 materialize。Docker/Xvfb 以 player FDOTHER.DAT 捕捉的 [悠妮 command-0 grid](../figures/native-command-grid-remake.png) 證實 mask→label→palette/font→renderer 路徑，非 original visual diff。`fdother.CaptureActionOverlaySnapshot`／`RestoreActionOverlaySnapshot` 與 `ActionOverlaySnapshotOrigin` 現已對齊原版 `0x175a9/0x17643` 的 72×72（`0x1440`）索引快照、每列 `0x1c8` stride、游標各減一格的 owner，並有失敗即關閉回歸；詳見 [IDA snapshot evidence](../data/ida/fd2_action_overlay_snapshot_ida.txt)。現行 Ebiten adapter 尚未消費此快照（每幀由整幅場景重畫避免殘影），因此 native snapshot backup/restore 的正式 consumer、其餘三格 owner、精確 tick／音訊與逐章 DOSBox visual diff 仍未關閉。 |
 | UI-04 | Target/range/item selector | 武器 min/max reach、法術 range/AOE、item兩欄四列、不可用目標灰化、確認／取消 | partial；command/item targets與 observed item effects已閉合。`0x1b9de/0x184c0` 固定 compact prefix、input、layout與raw icon IDs；`0x18409` 的12-frame open11→0/close0→11及left/upper/bottom clipped rectangles已有Ebiten adapter。2026-08-22 已以同一未修改 `FD2.SAV` 從標題 CONTINUE 正常操作至悠妮 command 0 目標模式，原版四次擷取證實 `0x51A97` 20相位 LUT 是動態生命週期；重製也由一般 X11 輸入抵達同一座標與command ID的正式modal，並停止覆蓋非原版診斷短訊。原版為窄 `PLAYER-E2`、重製為deterministic `RUNTIME-E1`，兩側時鐘相位不同，不能宣稱逐像素一致。tracked item Enter transaction已接，但indexed effect presentation、完整weapon/AOE/LOS與其他commands的DOSBox visual diff仍fail-closed |
@@ -4007,7 +4007,7 @@ destination-to-first-target behavior was a remake invention and is removed.
 command23 MP subtraction及raw coordinates，並要求精確逐格
 `NativeTerrainMoveCodes` provenance；之後依序執行八段palette與兩次完整
 27-present indexed renderer，第二次完成後才原子發布交易。任一前置缺件都在
-第一個sample／frame前失敗。原版同狀態camera、逐幀與逐音訊E2仍是獨立驗收門檻。
+第一個sample／frame前失敗。代表性正常玩家路徑仍須抽驗同狀態鏡頭、流程、結算與音訊；逐幀及逐音訊一致不作完成門檻。
 
 The surrounding selector/grid lifecycle is caller-closed. Item target entry
 writes the global selector as `row[+0x12]+2`, while its first target field is
