@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"crypto/sha256"
+	"encoding/binary"
 	"encoding/json"
 	"fmt"
 	"image"
@@ -14,6 +15,7 @@ import (
 	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/fdicon"
 	"github.com/wicanr2/fd2_re/remake/internal/indexedmap"
 )
@@ -34,8 +36,44 @@ func TestModernHDReliefRealBanksAndGPU(t *testing.T) {
 	testModernHDGroundMaterialsRealBanksAndGPU(t, "relief")
 }
 
+func TestModernHDPropsRealBanksAndGPU(t *testing.T) {
+	testModernHDGroundMaterialsRealBanksAndGPU(t, "props")
+}
+
+func modernHDPropsOpenedCells(t *testing.T, controls []byte, width, height int, tiles []uint16, modes, events []byte) []fdicon.NativeTerrainCell {
+	t.Helper()
+	if len(tiles) != width*height || len(modes) != len(tiles) || len(events) != len(tiles) {
+		t.Fatal("complete native composition required")
+	}
+	st := &battle.State{W: width, H: height, NativeTerrainControl: controls,
+		HasNativeMapEventGrid: true, NativeMapEventGrid: make([]byte, 4+4*len(tiles))}
+	st.NativeMapEventGrid[0], st.NativeMapEventGrid[2] = byte(width), byte(height)
+	for i, word := range tiles {
+		off := 4 + i*4
+		binary.LittleEndian.PutUint16(st.NativeMapEventGrid[off:off+2], word)
+		st.NativeMapEventGrid[off+2], st.NativeMapEventGrid[off+3] = events[i], modes[i]
+	}
+	for i := range st.NativeEventState {
+		st.NativeEventState[i] = 1
+	}
+	if !st.CompleteTreasureMapUpdate() {
+		t.Fatal("formal event-grid writer rejected real composition")
+	}
+	before := append([]byte(nil), st.NativeMapEventGrid...)
+	if !st.CompleteTreasureMapUpdate() || !bytes.Equal(before, st.NativeMapEventGrid) {
+		t.Fatal("opened props advanced twice")
+	}
+	cells := make([]fdicon.NativeTerrainCell, len(tiles))
+	for i := range cells {
+		off := 4 + i*4
+		cells[i] = fdicon.NativeTerrainCell{Tile: binary.LittleEndian.Uint16(st.NativeMapEventGrid[off : off+2]), BlitMode: st.NativeMapEventGrid[off+3]}
+	}
+	return cells
+}
+
 func testModernHDGroundMaterialsRealBanksAndGPU(t *testing.T, profile string) {
 	bases, shore, relief := profile == "bases", profile == "shore", profile == "relief"
+	props := profile == "props"
 	env, recipeName, status := "FD2_HD_GROUND_EDGES", "ground-grass-earth-hd.recipe.json", "PASS-GROUND-EDGES-GPU"
 	groups, slots, maps := 14, 141, 11
 	if bases {
@@ -49,6 +87,11 @@ func testModernHDGroundMaterialsRealBanksAndGPU(t *testing.T, profile string) {
 	if relief {
 		env, recipeName, status = "FD2_HD_RELIEF", "relief-hd.recipe.json", "PASS-RELIEF-GPU"
 		groups, slots, maps = 34, 139, 14
+	}
+	gameDraws := 1
+	if props {
+		env, recipeName, status = "FD2_HD_PROPS", "props-hd.recipe.json", "PASS-PROPS-GPU"
+		groups, slots, maps, gameDraws = 6, 10, 2, 2
 	}
 	if os.Getenv(env+"_GPU") != "1" {
 		t.Skip("dedicated real-bank ground-edge process")
@@ -132,8 +175,11 @@ func testModernHDGroundMaterialsRealBanksAndGPU(t *testing.T, profile string) {
 			t.Fatal("wrong native mask admitted", mapID)
 		}
 		var data struct {
-			Tiles []uint16 `json:"tiles"`
-			Modes []byte   `json:"native_tile_blit_modes"`
+			Width  int      `json:"w"`
+			Height int      `json:"h"`
+			Tiles  []uint16 `json:"tiles"`
+			Modes  []byte   `json:"native_tile_blit_modes"`
+			Events []byte   `json:"native_composition_event_bytes"`
 		}
 		raw, e := os.ReadFile(fmt.Sprintf("../../assets/maps/map%d/map.json", mapID))
 		if e != nil {
@@ -146,6 +192,10 @@ func testModernHDGroundMaterialsRealBanksAndGPU(t *testing.T, profile string) {
 			t.Fatal("native blit modes missing", mapID)
 		}
 		cells := []fdicon.NativeTerrainCell{}
+		var opened []fdicon.NativeTerrainCell
+		if props {
+			opened = modernHDPropsOpenedCells(t, controls, data.Width, data.Height, data.Tiles, data.Modes, data.Events)
+		}
 		for _, frame := range frames {
 			if set.terrainHD[mapID][frame] == nil {
 				t.Fatal("missing real frame", mapID, frame)
@@ -157,6 +207,17 @@ func testModernHDGroundMaterialsRealBanksAndGPU(t *testing.T, profile string) {
 					cells = append(cells, fdicon.NativeTerrainCell{Tile: word, BlitMode: data.Modes[i]})
 					found = true
 					break
+				}
+			}
+			if !found {
+				for _, cell := range opened {
+					tile := int(cell.Tile & 0x3ff)
+					idx, err := fdicon.NativeTerrainFrameIndex(tile, controls[tile*4], 0, 0)
+					if err == nil && idx == frame {
+						cells = append(cells, cell)
+						found = true
+						break
+					}
 				}
 			}
 			if !found {
@@ -225,6 +286,11 @@ func testModernHDGroundMaterialsRealBanksAndGPU(t *testing.T, profile string) {
 		v.CursorX, v.CursorY = 6, 0
 		v.VisibleCursorX, v.VisibleCursorY = 6, 0
 	}
+	if props {
+		v.CameraX, v.CameraY = 0, 8
+		v.CursorX, v.CursorY = 6, 14
+		v.VisibleCursorX, v.VisibleCursorY = 6, 6
+	}
 	if e = g.st.MaterializeNativeMapViewState(v); e != nil {
 		t.Fatal(e)
 	}
@@ -250,17 +316,57 @@ func testModernHDGroundMaterialsRealBanksAndGPU(t *testing.T, profile string) {
 	if shore && (!visible[49] || !visible[50]) {
 		t.Fatal("real Game.Draw omitted water/sand bases", visible)
 	}
-	if !bases && !shore && len(visible) < 8 {
+	if props && (!visible[248] || !visible[250] || !visible[274] || !visible[275]) {
+		t.Fatal("real Game.Draw omitted closed props", visible)
+	}
+	if !bases && !shore && !props && len(visible) < 8 {
 		t.Fatal("real Game.Draw has insufficient new edges", len(visible))
 	}
 	p.cases = append(p.cases, sharedGroundGPUCase{g: g, name: "game-map00", mapID: 0, source: recipe.Groups[0].Anchor[1], keepPNG: true})
+	if props {
+		openedGame, _, _ := ordinaryCommand0HDTestGame(t, func() time.Time { return time.Unix(1000, 0) })
+		if e = openedGame.st.MaterializeNativeMapViewState(v); e != nil {
+			t.Fatal(e)
+		}
+		openedGame.curX, openedGame.curY = v.CursorX, v.CursorY
+		units, err := json.Marshal(openedGame.st.Units)
+		if err != nil {
+			t.Fatal(err)
+		}
+		rng := openedGame.nativeRNGState
+		for i := range openedGame.st.NativeEventState {
+			openedGame.st.NativeEventState[i] = 1
+		}
+		if !openedGame.st.CompleteTreasureMapUpdate() {
+			t.Fatal("formal open writer refused")
+		}
+		after, err := json.Marshal(openedGame.st.Units)
+		if err != nil || !bytes.Equal(units, after) || rng != openedGame.nativeRNGState {
+			t.Fatal("open-source fixture mutated units/RNG")
+		}
+		if e = openedGame.applyTheme(set); e != nil {
+			t.Fatal(e)
+		}
+		openedGame.modernHDMapComposing = true
+		if e = openedGame.composeNativeMapFrame(); e != nil {
+			t.Fatal(e)
+		}
+		seen := map[int]bool{}
+		for _, tile := range openedGame.modernHDMapFrame.Terrain {
+			seen[tile.Frame] = true
+		}
+		if !seen[249] || !seen[251] || !seen[274] || !seen[275] || seen[248] || seen[250] {
+			t.Fatal("real Game.Draw omitted opened props", seen)
+		}
+		p.cases = append(p.cases, sharedGroundGPUCase{g: openedGame, name: "game-map00-opened", mapID: 0, source: 249, keepPNG: true})
+	}
 	ebiten.SetWindowSize(640, 400)
 	ebiten.SetVsyncEnabled(false)
 	if e = ebiten.RunGame(p); e != nil {
 		t.Fatal(e)
 	}
-	if p.err != nil || p.index != maps*6+1 {
-		t.Fatalf("ground GPU %d/%d: %v", p.index, maps*6+1, p.err)
+	if p.err != nil || p.index != maps*6+gameDraws {
+		t.Fatalf("ground GPU %d/%d: %v", p.index, maps*6+gameDraws, p.err)
 	}
 	for i, c := range p.cases {
 		frame := c.frame
@@ -286,7 +392,11 @@ func testModernHDGroundMaterialsRealBanksAndGPU(t *testing.T, profile string) {
 	if e != nil || !bytes.Equal(current, catalogInput) {
 		t.Fatal("catalog changed during edge GPU", e)
 	}
-	report := map[string]any{"status": status, "catalog_sha256": fmt.Sprintf("%x", sha256.Sum256(catalogInput)), "recipe_sha256": fmt.Sprintf("%x", sha256.Sum256(recipeInput)), "painted_frames_rgba": painted, "maps": maps, "source_groups": groups, "target_slots": targets, "source_worlds": maps * 6, "game_draws": 1, "f2": 1, "wrong_bank_masks_rejected": maps, "native_rng_seed": 7, "fixed_clock_unix": 1000, "cases": p.rows, "scope": "實際bank／selector來源、完整地形圖源測具及原樣map0 Game.Draw／F2。非各章正常玩家或原版RGB對拍。"}
+	report := map[string]any{"status": status, "catalog_sha256": fmt.Sprintf("%x", sha256.Sum256(catalogInput)), "recipe_sha256": fmt.Sprintf("%x", sha256.Sum256(recipeInput)), "painted_frames_rgba": painted, "maps": maps, "source_groups": groups, "target_slots": targets, "source_worlds": maps * 6, "game_draws": gameDraws, "f2": gameDraws, "wrong_bank_masks_rejected": maps, "native_rng_seed": 7, "fixed_clock_unix": 1000, "cases": p.rows, "scope": "實際bank／selector來源、完整地形圖源測具及原樣map0 Game.Draw／F2。非各章正常玩家或原版RGB對拍。"}
+	if props {
+		report["opened_selector_writer"] = "battle.State.CompleteTreasureMapUpdate"
+		report["second_update_idempotent"] = true
+	}
 	raw, e := json.MarshalIndent(report, "", "  ")
 	if e != nil {
 		t.Fatal(e)

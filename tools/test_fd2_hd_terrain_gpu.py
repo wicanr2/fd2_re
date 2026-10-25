@@ -13,6 +13,7 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--receipt', type=Path, required=True)
     p.add_argument('--legacy-receipt', type=Path, required=True)
+    p.add_argument('--custom-receipt', type=Path)
     p.add_argument('--report', type=Path, required=True)
     a = p.parse_args()
     if a.report.exists():
@@ -68,6 +69,24 @@ def main():
                     s['hd_world_terrain'] = [t for t in s['hd_world_terrain'] if t['frame'] != 148]
             run(name, r, flags, expected)
         run('legacy-default-positive', original, [], source=a.legacy_receipt)
+        if a.custom_receipt:
+            custom=json.loads(a.custom_receipt.read_text())
+            run('explicit-props-prefix-positive',custom,[],source=a.custom_receipt)
+            for name in custom['screenshots']:
+                if not (tmp/name).exists():(tmp/name).symlink_to((a.custom_receipt.parent/name).resolve())
+            missing=copy.deepcopy(custom)
+            for name,item in missing['screenshots'].items():
+                if name.startswith('terrain-hd-'):
+                    for key in ('gpu_before','state'):
+                        item[key]['hd_world_terrain']=[t for t in item[key]['hd_world_terrain'] if t['frame']!=248]
+            run('explicit-props-keeps-required',missing,[],'明示範圍')
+            legacy=copy.deepcopy(custom);old_label=legacy.pop('terrain_expectation')['label'];renamed={}
+            for name,item in legacy['screenshots'].items():
+                new_name=name.replace(old_label,'props') if name.startswith(('terrain-hd-','terrain-faithful-')) else name
+                renamed[new_name]=item
+                if new_name!=name:(tmp/new_name).symlink_to((a.custom_receipt.parent/name).resolve())
+            legacy['screenshots']=renamed
+            run('legacy-props-keeps-nine',legacy,[],'九張新物件')
     a.report.write_text(json.dumps({'status': 'PASS-TERRAIN-GUI-GUARDS', 'checks': results,
                                    'scope': '既有正常PNG及收據；不重播遊戲，不新增原版對拍。'},
                                   ensure_ascii=False, indent=2)+'\n')

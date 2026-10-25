@@ -1,0 +1,228 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_native_props_hd_v1",
+  "asset_id": "modern.terrain.props",
+  "base_catalog_sha256": "df32ef952324b3d6f1f01fd973eac6c1bcdebcdc3e2eb1361f63442fa2691075",
+  "source_manifest_sha256": "a19a3da393294ad6e1c4ad1dccdb9a911d26ed1f3d7008046eddda2398f938f5",
+  "size": 144,
+  "grass_master_file": "grass-olive-hd-v1-master.png",
+  "grass_master_sha256": "ed29eb9da12adae641c612d28b848c186dd2986ac1ee3fa4e35e65b72e864c29",
+  "masters": {
+    "chests": {
+      "file": "chests-blue-gold-silver-hd-v1-master.png",
+      "sha256": "9dadfb76b12db8b8a6e01fcccd3e4038e85221c076f562f27b4a545ca737de5b",
+      "size": [
+        1536,
+        1024
+      ]
+    },
+    "rocks": {
+      "file": "rocks-small-pair-hd-v1-master.png",
+      "sha256": "e7e430bdbc0e62b752f06b0215910c005a314c73268aa5b57cbaf22452389eba",
+      "size": [
+        1918,
+        820
+      ]
+    }
+  },
+  "grass_indices": [
+    68,
+    69,
+    70,
+    71
+  ],
+  "shadow_indices": [
+    137,
+    138,
+    139,
+    140,
+    141,
+    142
+  ],
+  "shadow_level": 153,
+  "shadow_blur_hd_pixels": 2,
+  "groups": [
+    {
+      "anchor": [
+        0,
+        248
+      ],
+      "native_content_sha256": "5c1b8e8365fc15ab2453f2e463338ceb2330f019bd74673dc69d10ba1c6d78f0",
+      "file": "props-248-hd-v1.png",
+      "master": "chests",
+      "painted_crop": [
+        199,
+        169,
+        719,
+        468
+      ],
+      "native_bbox": [
+        1,
+        4,
+        23,
+        18
+      ],
+      "targets": [
+        [
+          0,
+          248
+        ],
+        [
+          14,
+          180
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        249
+      ],
+      "native_content_sha256": "5a670e113230c5315beae8344703a348de7ce1561541b9fe3a4a763281eaab9c",
+      "file": "props-249-hd-v1.png",
+      "master": "chests",
+      "painted_crop": [
+        842,
+        57,
+        1340,
+        475
+      ],
+      "native_bbox": [
+        1,
+        0,
+        23,
+        18
+      ],
+      "targets": [
+        [
+          0,
+          249
+        ],
+        [
+          14,
+          181
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        250
+      ],
+      "native_content_sha256": "62c8c902c82fce5af1eb903dd6934cb2ce06d887d10117a62a1f1d1fbc0d3835",
+      "file": "props-250-hd-v1.png",
+      "master": "chests",
+      "painted_crop": [
+        199,
+        636,
+        721,
+        937
+      ],
+      "native_bbox": [
+        1,
+        4,
+        23,
+        18
+      ],
+      "targets": [
+        [
+          0,
+          250
+        ],
+        [
+          14,
+          182
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        251
+      ],
+      "native_content_sha256": "66949f309c740aac51f71cb37003072a5ad8f07eaea4804f64937806e0f911f9",
+      "file": "props-251-hd-v1.png",
+      "master": "chests",
+      "painted_crop": [
+        840,
+        525,
+        1341,
+        947
+      ],
+      "native_bbox": [
+        1,
+        0,
+        23,
+        18
+      ],
+      "targets": [
+        [
+          0,
+          251
+        ],
+        [
+          14,
+          183
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        274
+      ],
+      "native_content_sha256": "0af45608388bc31d207fd55c1fc960580a2992d298aa3dadc467d9ead2a4e845",
+      "file": "props-274-hd-v1.png",
+      "master": "rocks",
+      "painted_crop": [
+        311,
+        315,
+        750,
+        617
+      ],
+      "native_bbox": [
+        7,
+        6,
+        17,
+        14
+      ],
+      "targets": [
+        [
+          0,
+          274
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        275
+      ],
+      "native_content_sha256": "f6cd11535f133aacb285d8e32fd4b0639740c4dd26445474e304ebdd8dacce0f",
+      "file": "props-275-hd-v1.png",
+      "master": "rocks",
+      "painted_crop": [
+        1250,
+        253,
+        1657,
+        647
+      ],
+      "native_bbox": [
+        9,
+        9,
+        21,
+        20
+      ],
+      "targets": [
+        [
+          0,
+          275
+        ]
+      ]
+    }
+  ],
+  "source_refs": [
+    "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+    "docs/data/fd2-modern-hd-battlefield-20261019.json"
+  ]
+}

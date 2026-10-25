@@ -4332,6 +4332,36 @@
         ],
         "pattern": "digest\\(target\\) == actual"
       }
+    },
+    {
+      "id": "terrain-inventory-includes-event-updated-frames",
+      "date": "2026-10-25",
+      "area": "地形HD覆蓋",
+      "rule": "盤點地形HD來源時，分列原始地圖selector與正式writer更新後的圖號。tools/build_fd2_hd_props.py的eligible_frames沿既有remake/internal/battle/native_ai_mode5.go的control&0x60==0x20與word+1契約，GPU再以CompleteTreasureMapUpdate實際重生。原始selected_terrain_frames不證明事件後圖源齊全；不從相鄰圖片外觀猜用途。",
+      "why": "原始首章盤點只剩248／250兩箱與274／275兩物件，但現有writer還會產生249／251開箱，map14同源181／183亦須納入。只補原始四槽會在開箱後回退像素。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#props_followup_20261025",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/build_fd2_hd_props.py"
+        ],
+        "pattern": "0x60 == 0x20"
+      }
+    },
+    {
+      "id": "terrain-gpu-requirements-follow-declared-scope",
+      "date": "2026-10-25",
+      "area": "地形GPU驗證",
+      "rule": "tools/verify_fd2_hd_terrain_gpu.py以正常收據terrain_expectation.frames作明示圖源範圍。舊無明示清單的props取景才套九物件守衛，不由新圖名的props前綴猜內容。tools/test_fd2_hd_terrain_gpu.py以--custom-receipt驗新前綴正對照、漏來源拒收與舊九物件門檻保持。",
+      "why": "新寶箱／石塊普通圖名props-complete已有明示四來源，舊startswith條件仍套40／42／43等九物件而誤拒收。修正作用範圍後同PNG通過，每張四來源仍須完整RGB相同，不降像素門檻。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#props_followup_20261025",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_hd_terrain_gpu.py"
+        ],
+        "pattern": "not expectation and label=='props'"
+      }
     }
   ]
 }

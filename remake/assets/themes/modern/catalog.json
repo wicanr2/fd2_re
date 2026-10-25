@@ -68090,6 +68090,126 @@
         "docs/knowledge-base/61-modern-theme-runtime-spec.md",
         "docs/data/fd2-modern-hd-battlefield-20261019.json"
       ]
+    },
+    {
+      "asset_id": "modern.terrain.props.chests.master",
+      "role": "terrain_hd_master",
+      "status": "concept",
+      "file": "chests-blue-gold-silver-hd-v1-master.png",
+      "sha256": "9dadfb76b12db8b8a6e01fcccd3e4038e85221c076f562f27b4a545ca737de5b",
+      "width": 1536,
+      "height": 1024,
+      "source_refs": [
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+        "docs/data/fd2-modern-hd-battlefield-20261019.json"
+      ]
+    },
+    {
+      "asset_id": "modern.terrain.props.rocks.master",
+      "role": "terrain_hd_master",
+      "status": "concept",
+      "file": "rocks-small-pair-hd-v1-master.png",
+      "sha256": "e7e430bdbc0e62b752f06b0215910c005a314c73268aa5b57cbaf22452389eba",
+      "width": 1918,
+      "height": 820,
+      "source_refs": [
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+        "docs/data/fd2-modern-hd-battlefield-20261019.json"
+      ]
+    },
+    {
+      "asset_id": "modern.terrain.props.map00.native_hd",
+      "role": "native_terrain_hd_set",
+      "status": "runtime_candidate",
+      "consumer_contract": "fdshap_native_hd_sparse_v1",
+      "map_id": 0,
+      "width": 144,
+      "height": 144,
+      "frame_count": 6,
+      "frame_ids": [
+        248,
+        249,
+        250,
+        251,
+        274,
+        275
+      ],
+      "files": [
+        "props-248-hd-v1.png",
+        "props-249-hd-v1.png",
+        "props-250-hd-v1.png",
+        "props-251-hd-v1.png",
+        "props-274-hd-v1.png",
+        "props-275-hd-v1.png"
+      ],
+      "frame_sha256": [
+        "b0ff35fb2b2a223ffa798595b0d8559145d5701b6d430e12e8fe19978168c06e",
+        "9dc3a94001bf667af83e3b3f0230632498dc1bd51e889b3555862b8c4c332b53",
+        "21b19328909d089c03b7ed06e94782e53993ef181a8832f10c0bcb6e2f39ad3b",
+        "5a3ec3a51c2a64d4f54726e50c2cd694e95bb5156da1bed0d1672c4f2edd779a",
+        "2868a46df3299fa19268d713a5ec019e852036a4155f041ae87863067fe6dff0",
+        "33edb32fc7cedbe0fc89e6f1e7a4030d9e6bb543e6bd42daf907f0f493c01507"
+      ],
+      "semantics": [
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain"
+      ],
+      "alpha_contract": "native_mask_nearest_6",
+      "cycle_policy": "native_selector",
+      "source_refs": [
+        "asset:modern.terrain.props.chests.master",
+        "asset:modern.terrain.props.rocks.master",
+        "asset:modern.terrain.grass_olive.master",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+        "docs/data/fd2-modern-hd-battlefield-20261019.json"
+      ]
+    },
+    {
+      "asset_id": "modern.terrain.props.map14.native_hd",
+      "role": "native_terrain_hd_set",
+      "status": "runtime_candidate",
+      "consumer_contract": "fdshap_native_hd_sparse_v1",
+      "map_id": 14,
+      "width": 144,
+      "height": 144,
+      "frame_count": 4,
+      "frame_ids": [
+        180,
+        181,
+        182,
+        183
+      ],
+      "files": [
+        "props-248-hd-v1.png",
+        "props-249-hd-v1.png",
+        "props-250-hd-v1.png",
+        "props-251-hd-v1.png"
+      ],
+      "frame_sha256": [
+        "b0ff35fb2b2a223ffa798595b0d8559145d5701b6d430e12e8fe19978168c06e",
+        "9dc3a94001bf667af83e3b3f0230632498dc1bd51e889b3555862b8c4c332b53",
+        "21b19328909d089c03b7ed06e94782e53993ef181a8832f10c0bcb6e2f39ad3b",
+        "5a3ec3a51c2a64d4f54726e50c2cd694e95bb5156da1bed0d1672c4f2edd779a"
+      ],
+      "semantics": [
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain"
+      ],
+      "alpha_contract": "native_mask_nearest_6",
+      "cycle_policy": "native_selector",
+      "source_refs": [
+        "asset:modern.terrain.props.chests.master",
+        "asset:modern.terrain.props.rocks.master",
+        "asset:modern.terrain.grass_olive.master",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+        "docs/data/fd2-modern-hd-battlefield-20261019.json"
+      ]
     }
   ]
 }

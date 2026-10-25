@@ -106,7 +106,7 @@ def main():
     samples = []
     for name in names:
         sample = sample_image(args.receipt, receipt, name, required - supplemental)
-        if name.startswith('terrain-hd-props') and not {40,42,43,203,204,205,206,207,208}.issubset({t['frame'] for t in sample['matching_tiles']}):
+        if not expectation and label=='props' and not {40,42,43,203,204,205,206,207,208}.issubset({t['frame'] for t in sample['matching_tiles']}):
             raise ValueError(f"{name}缺少九張新物件的完整GPU相符圖塊")
         samples.append(sample)
     _, reference = load_image(args.receipt, receipt, 'terrain-faithful-'+label+'.png', (1280, 800))

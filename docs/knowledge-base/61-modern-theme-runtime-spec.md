@@ -2,6 +2,18 @@
 
 狀態：現代主題仍為部分覆蓋；目前分層與缺口依[58](58-fd2-exe-re-coverage.md)。
 
+## 首章寶箱開合與小石塊（CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI）
+
+沿已閉合0x12263／取寶與AI mode5規則，補首章原始地圖的248／250兩箱、274／275兩物件，以及正式writer在事件非零且control低位符合0x20時產生的249／251開箱圖。寫入端為`advanceNativeAIMode5EventGrid`，呼叫沿`CompleteTreasureMapUpdate`；消費端為既有NativeTerrainFrameIndex及稀疏HD圖層。原始來源匯出的selected_terrain_frames只涵蓋初始地圖，不證明變動狀態齊全。同一三層內容的map14:180～183亦接入，共六來源、十槽、兩圖，不新增原版語意。
+
+- 兩份內建image_gen透明母稿已目視：一份四格金／銀箱開合，一份兩格小物件。原RGBA完整保存，alpha最高254仍沿既有高覆蓋>=250檢查，不量化母稿。明示裁切保留主體並排除極淡外暈，雙三次／LANCZOS取樣至原生物件bbox六倍，底部與原位置一致。新圖與既有草材合成，原草陰影採明示153／255及半徑2柔化；不混原版RGB，輸出alpha保持原生全opaque。裁切、比例、形狀與陰影為美術近似。
+- 來源以原生清冊、固定palette／FDSHAP及目前837清冊SHA綁定；原生bbox由非草／陰影索引獨立核對。正式writer可推進的raw tile+1單獨盤點，不能從相鄰幀外觀推測用途。來源錯誤、缺件、裁切／bbox／控制表改變、錯alpha／remap、引用及不完整GPU收據在正式清冊前拒收。舊837項保持，新增兩母稿與兩稀疏集合，不改正式Go、規則、事件、位置、節拍、RNG或保存。
+- 驗兩圖實際bank及原始／事件更新後selector，六種來源GPU世界對獨立CPU、原樣首章閉箱與開箱Game.Draw／F2及原事件一次更新；正常首章普通取景、F2、面板與來源保存／新程序LOAD另錄。受控開箱不冒稱正常取寶。通過後依白名單同步私人庫，原7044檔bytes及mtime保持並核對遠端；完整HD、其他地形／HD2／介面及集中正常／人工／平台仍待。
+
+配方為[props-hd.recipe.json](../../remake/assets/themes/modern/props-hd.recipe.json)，來源及重跑集中[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的props_followup_20261025。編製沿[透明物件編製器](../../tools/build_fd2_hd_props.py)，給定`--original-pack /original --maps remake/assets/maps --sources <native-terrain-sources-r2> --base-catalog <837基底或Git c3ff379c清冊> --base-pack /private --recipe remake/assets/themes/modern/props-hd.recipe.json --master-root <保存母稿或私人包> --out <新目錄>`。[來源與登錄反例](../../tools/test_fd2_hd_props.py)綁同候選、GPU及基底；[共用GPU測具](../../remake/cmd/fd2/modern_hd_ground_edges_gpu_test.go)以FD2_HD_PROPS_GPU／OUT及既有素材環境跑TestModernHDPropsRealBanksAndGPU，含兩個完整Game.Draw。登錄沿[共用登錄器](../../tools/register_fd2_hd_ground.py)，私人同步沿[白名單工具](../../tools/sync_modern_theme_private.py)。原版與私人基底唯讀、有界Docker、UID1000及既有work根的新輸出前綴政策保持。
+
+本節實作前為READY。十二來源GPU世界與閉／開兩個完整Game.Draw及F2、正式writer二次更新不變、十來源／七登錄拒收、重編一致、舊起伏地形及十四項實檔清冊回歸通過。正常首章焦點(6,9)、F2、面板、來源保存與新程序LOAD通過；兩PNG各93／96完整塊相符，248／250／274／275每張均可驗，無補取景。GUI357.237秒、峰值5440737280 bytes，無OOM／逾時，不推論平台餘裕。像素驗證器刪除對新props前綴誤套九物件的條件，改按明示terrain_expectation檢查；十五項新舊守衛通過。普通取寶、完整HD與集中人工／平台仍待。
+
 ## 首章陰影、土脊與石路（CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI）
 
 沿已核對的原生來源匯出及稀疏HD地形，補首章剩餘35槽連續地形，共34種內容。原生彩色接觸表已目視，包含36～39陰影、51及120～143的實際石路、82～95及215～217的實際土脊；精確圖號與跨圖槽位依[配方](../../remake/assets/themes/modern/relief-hd.recipe.json)。來源三層內容相同才共用，共十四圖139槽，全部opaque且無remap。用途不明的其他藍色圖源、寶箱與小石塊不混入本批。
