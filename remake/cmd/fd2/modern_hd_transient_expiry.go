@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"image"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -56,11 +57,14 @@ type nativeTransientExpiryPresentation struct {
 	scene             *modernHDCompoundMapScene
 	world             *modernHDMapFrame
 	theme             *modernStoryPortraitSet
+	chrome            *modernHDDialogueChrome
+	chromeErr         error
 }
 
 func (g *Game) newNativeTransientExpiryPresentation(unit *battle.Unit, counter int, portrait dato.Frame) (*nativeTransientExpiryPresentation, error) {
 	p := &nativeTransientExpiryPresentation{selector: unit.BattleFig, counter: counter,
 		portrait: portrait, source: append([]byte(nil), g.nativeMapVGA...)}
+	p.chrome, p.chromeErr = freezeModernHDDialogueChrome(g.nativeClassUI.dialogue, g.nativeClassUI.palette)
 	in, inputErr := g.freezeNativeCommand9MapInput()
 	palette, paletteErr := fdother.VGAPaletteFromDAC(g.nativeMapDAC)
 	if inputErr == nil {
@@ -76,6 +80,17 @@ func (g *Game) newNativeTransientExpiryPresentation(unit *battle.Unit, counter i
 }
 
 func (g *Game) prepareModernHDTransientExpiryWorld(p *nativeTransientExpiryPresentation, set *modernStoryPortraitSet) (*modernHDMapFrame, error) {
+	if set != nil && set.hasHD {
+		if p == nil {
+			return nil, fmt.Errorf("modern HD expiry: dialogue chrome unavailable")
+		}
+		if p.chromeErr != nil {
+			return nil, fmt.Errorf("modern HD expiry: %w", p.chromeErr)
+		}
+		if p.chrome == nil {
+			return nil, fmt.Errorf("modern HD expiry: dialogue chrome unavailable")
+		}
+	}
 	if set == nil || len(set.mapSpritesHD) == 0 {
 		return nil, nil // Original and legacy portrait-only themes retain their world.
 	}
@@ -92,7 +107,7 @@ func (g *Game) prepareModernHDTransientExpiryWorld(p *nativeTransientExpiryPrese
 // Check the new HD sources on private states before publishing the countdown.
 // Activation seals them again after the actual damage/death/focus sequence.
 func (g *Game) preflightModernHDTransientExpiry(candidate *battle.State, expired []battle.NativeTransientExpiry, damage []battle.NativeTransientDamage) error {
-	if len(expired) == 0 || g.modernStoryPortraits == nil || len(g.modernStoryPortraits.mapSpritesHD) == 0 {
+	if len(expired) == 0 || g.modernStoryPortraits == nil || (!g.modernStoryPortraits.hasHD && len(g.modernStoryPortraits.mapSpritesHD) == 0) {
 		return nil
 	}
 	preview, err := g.nativeTransientDeathPreview(candidate, damage)
@@ -210,6 +225,7 @@ func (g *Game) drawModernHDTransientExpiryMessage(screen *ebiten.Image, job *nat
 		g.presentNativeClassFrame(screen, frame)
 	}
 	if capture != nil {
+		g.appendModernHDDialogueChrome(p.chrome, shift)
 		clip := image.Rect(region.Min.X*2, region.Min.Y*2, region.Max.X*2, region.Max.Y*2)
 		for _, run := range capture.runs {
 			run.y += float64(shift * 2)

@@ -196,6 +196,8 @@ type rewardHDGPUProbe struct {
 	final        *ebiten.Image
 	pixels       []byte
 	world        []byte
+	chromeSource dialogueChromeSource
+	chromePoints int
 }
 
 func (p *rewardHDGPUProbe) Layout(int, int) (int, int) { return 640, 400 }
@@ -230,9 +232,26 @@ func (p *rewardHDGPUProbe) Draw(screen *ebiten.Image) {
 	presentation.DrawFinalScreen(p.final, screen, geom)
 	p.final.ReadPixels(p.pixels)
 	digest := sha256.Sum256(p.pixels)
-	_, region, ok := modernHDRewardRegion(m, job)
+	shift, region, ok := modernHDRewardRegion(m, job)
 	if !ok {
 		p.err = fmt.Errorf("unknown panel phase")
+		return
+	}
+	chromePoints := 0
+	if !region.Empty() {
+		if len(g.modernHDText.panels) != 1 {
+			p.err = fmt.Errorf("HD reward chrome missing")
+			return
+		}
+		var err error
+		chromePoints, err = checkDialogueChromePixels(p.pixels, p.chromeSource, image.Rect(5, 112+shift, 315, 198+shift))
+		if err != nil {
+			p.err = err
+			return
+		}
+		p.chromePoints += chromePoints
+	} else if len(g.modernHDText.panels) != 0 {
+		p.err = fmt.Errorf("HD reward chrome survived restore")
 		return
 	}
 	g.modernHDMapGPU.World.ReadPixels(p.world)
@@ -313,7 +332,7 @@ func (p *rewardHDGPUProbe) Draw(screen *ebiten.Image) {
 		p.err = fmt.Errorf("F2 changed owner/state/frame")
 		return
 	}
-	row := map[string]any{"kind": c.kind, "value": c.value, "phase_index": p.frame, "outside_hd_pixels": outside, "portrait_source_points": portraitPoints, "text_runs": len(g.modernHDText.runs), "final_sha256": fmt.Sprintf("%x", digest), "f2_roundtrip": true}
+	row := map[string]any{"kind": c.kind, "value": c.value, "phase_index": p.frame, "outside_hd_pixels": outside, "portrait_source_points": portraitPoints, "dialogue_chrome_pixels": chromePoints, "text_runs": len(g.modernHDText.runs), "final_sha256": fmt.Sprintf("%x", digest), "f2_roundtrip": true}
 	if p.frame == 0 || p.frame == 5 || p.frame == 6 || p.frame == 9 || p.frame == 12 {
 		name := fmt.Sprintf("reward-kind%d-phase%02d.png", c.kind, p.frame)
 		f, e := os.Create(filepath.Join(p.out, name))
@@ -383,6 +402,7 @@ func TestModernHDRewardCompleteGameGPU(t *testing.T) {
 	p := &rewardHDGPUProbe{set: set, out: out, final: ebiten.NewImage(1920, 1200), pixels: make([]byte, 1920*1200*4), world: make([]byte, 1920*1200*4)}
 	for _, spec := range [][2]int{{0, 192}, {1, 123456}} {
 		g, actor := rewardHDTestGame(t)
+		p.chromeSource = nativeDialogueChromeSource(g.nativeClassUI.dialogue, g.nativeClassUI.palette)
 		g.modernStoryPortraits = set
 		calls := new(int)
 		if err = g.beginNativeDeathRewardMessage(pendingNativeDeathRewardMessage{killer: actor, kind: spec[0], value: spec[1]}, actor, func() { *calls++ }); err != nil {
@@ -401,7 +421,7 @@ func TestModernHDRewardCompleteGameGPU(t *testing.T) {
 	if p.err != nil || p.index != 2 || len(p.rows) != 26 {
 		t.Fatalf("reward GPU cases%d rows%d: %v", p.index, len(p.rows), p.err)
 	}
-	b, _ := json.MarshalIndent(map[string]any{"status": "PASS-REWARD-HD-RUNTIME-E1", "cases": 2, "game_frames": 26, "f2_round_trips": 26, "rows": p.rows, "normal_player_verified": false}, "", "  ")
+	b, _ := json.MarshalIndent(map[string]any{"status": "PASS-REWARD-HD-RUNTIME-E1", "cases": 2, "game_frames": 26, "f2_round_trips": 26, "dialogue_chrome": true, "chrome_source": p.chromeSource, "chrome_pixels": p.chromePoints, "rows": p.rows, "normal_player_verified": false}, "", "  ")
 	if err = os.WriteFile(filepath.Join(out, "receipt.json"), append(b, '\n'), 0644); err != nil {
 		t.Fatal(err)
 	}

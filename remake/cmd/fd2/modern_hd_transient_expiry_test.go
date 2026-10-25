@@ -148,30 +148,34 @@ func TestModernHDTransientExpiryNativeChain(t *testing.T) {
 }
 
 type expiryHDGPUProbe struct {
-	t               *testing.T
-	set             *modernStoryPortraitSet
-	g               *Game
-	unit            *battle.Unit
-	before          battle.Unit
-	rng             uint16
-	calls           int
-	localeIndex     int
-	expiryFrames    int
-	prefixFrames    int
-	err             error
-	out             string
-	final           *ebiten.Image
-	pixels, world   []byte
-	withoutText     []byte
-	rows            []map[string]any
-	rejectedSources int
-	f2RoundTrips    int
+	t                    *testing.T
+	set                  *modernStoryPortraitSet
+	g                    *Game
+	unit                 *battle.Unit
+	before               battle.Unit
+	rng                  uint16
+	calls                int
+	localeIndex          int
+	expiryFrames         int
+	prefixFrames         int
+	err                  error
+	out                  string
+	final                *ebiten.Image
+	pixels, world        []byte
+	withoutText          []byte
+	rows                 []map[string]any
+	rejectedSources      int
+	f2RoundTrips         int
+	chromeSource         dialogueChromeSource
+	chromePoints         int
+	legacyChromeRejected bool
 }
 
 var expiryHDLocales = []string{"zh-Hant", "zh-Hans", "en", "ja"}
 
 func (p *expiryHDGPUProbe) startCase() {
 	p.g, p.unit = expiryHDTestGame(p.t, p.set, expiryHDLocales[p.localeIndex])
+	p.chromeSource = nativeDialogueChromeSource(p.g.nativeClassUI.dialogue, p.g.nativeClassUI.palette)
 	p.calls, p.expiryFrames, p.prefixFrames = 0, 0, 0
 	if err := p.g.beginNativeTransientPhases([]byte{2}, func() { p.calls++ }); err != nil {
 		p.err = err
@@ -248,9 +252,40 @@ func (p *expiryHDGPUProbe) Draw(screen *ebiten.Image) {
 	presentation.DrawFinalScreen(p.final, screen, geometry)
 	p.final.ReadPixels(p.pixels)
 	digest := sha256.Sum256(p.pixels)
-	_, region, ok := modernHDTransientExpiryRegion(job)
+	shift, region, ok := modernHDTransientExpiryRegion(job)
 	if !ok {
 		p.err = fmt.Errorf("unknown expiry phase")
+		return
+	}
+	chromePoints := 0
+	if !region.Empty() {
+		if len(g.modernHDText.panels) != 1 {
+			p.err = fmt.Errorf("HD expiry chrome not staged")
+			return
+		}
+		full := image.Rect(5, 112+shift, 315, 198+shift)
+		var err error
+		chromePoints, err = checkDialogueChromePixels(p.pixels, p.chromeSource, full)
+		if err != nil {
+			p.err = err
+			return
+		}
+		p.chromePoints += chromePoints
+		if p.localeIndex == 0 && p.expiryFrames == 5 {
+			panels := g.modernHDText.panels
+			g.modernHDText.panels = nil
+			p.final.Clear()
+			presentation.DrawFinalScreen(p.final, screen, geometry)
+			p.final.ReadPixels(p.withoutText)
+			g.modernHDText.panels = panels
+			if _, err := checkDialogueChromePixels(p.withoutText, p.chromeSource, full); err == nil {
+				p.err = fmt.Errorf("legacy enlarged dialogue border accepted")
+				return
+			}
+			p.legacyChromeRejected = true
+		}
+	} else if len(g.modernHDText.panels) != 0 {
+		p.err = fmt.Errorf("HD expiry chrome survived restore")
 		return
 	}
 	g.modernHDMapGPU.World.ReadPixels(p.world)
@@ -375,7 +410,7 @@ func (p *expiryHDGPUProbe) Draw(screen *ebiten.Image) {
 		}
 		p.f2RoundTrips++
 	}
-	row := map[string]any{"locale": expiryHDLocales[p.localeIndex], "counter": job.expiryText.counter, "frame": job.frame, "outside_hd_pixels": outside, "portrait_source_points": portraitPoints, "text_runs": len(g.modernHDText.runs), "actual_text_pixels": textPixels, "visible_text": visibleText.String(), "f2_roundtrip": f2, "final_rgba_sha256": fmt.Sprintf("%x", digest)}
+	row := map[string]any{"locale": expiryHDLocales[p.localeIndex], "counter": job.expiryText.counter, "frame": job.frame, "outside_hd_pixels": outside, "portrait_source_points": portraitPoints, "dialogue_chrome_pixels": chromePoints, "text_runs": len(g.modernHDText.runs), "actual_text_pixels": textPixels, "visible_text": visibleText.String(), "f2_roundtrip": f2, "final_rgba_sha256": fmt.Sprintf("%x", digest)}
 	if job.frame == 5 || job.expiryText.counter == 0 && (job.frame == 0 || job.frame == 9 || job.frame == 11) {
 		name := fmt.Sprintf("expiry-%s-counter%d-frame%02d.png", expiryHDLocales[p.localeIndex], job.expiryText.counter, job.frame)
 		f, err := os.Create(filepath.Join(p.out, name))
@@ -441,10 +476,10 @@ func TestModernHDTransientExpiryCompleteGameGPU(t *testing.T) {
 	if err = ebiten.RunGame(p); err != nil {
 		t.Fatal(err)
 	}
-	if p.err != nil || p.localeIndex != 4 || len(p.rows) != 288 || p.rejectedSources != 3 || p.f2RoundTrips != 36 {
+	if p.err != nil || p.localeIndex != 4 || len(p.rows) != 288 || p.rejectedSources != 3 || p.f2RoundTrips != 36 || !p.legacyChromeRejected || p.chromePoints == 0 {
 		t.Fatalf("locales%d frames%d: %v", p.localeIndex, len(p.rows), p.err)
 	}
-	data, _ := json.MarshalIndent(map[string]any{"status": "PASS-EXPIRY-HD-RUNTIME-E1", "locales": expiryHDLocales, "counters": 6, "game_frames": 288, "f2_roundtrips": p.f2RoundTrips, "rejected_sources": p.rejectedSources, "normal_player_verified": false, "constructor": "six typed counters=1, selector2, HP100/100, base AP100/DP60/DX20; actual damage message then expiry chain", "rows": p.rows}, "", "  ")
+	data, _ := json.MarshalIndent(map[string]any{"status": "PASS-EXPIRY-HD-RUNTIME-E1", "locales": expiryHDLocales, "counters": 6, "game_frames": 288, "f2_roundtrips": p.f2RoundTrips, "rejected_sources": p.rejectedSources, "dialogue_chrome": true, "chrome_source": p.chromeSource, "chrome_pixels": p.chromePoints, "legacy_chrome_rejected": p.legacyChromeRejected, "normal_player_verified": false, "constructor": "six typed counters=1, selector2, HP100/100, base AP100/DP60/DX20; actual damage message then expiry chain", "rows": p.rows}, "", "  ")
 	if err = os.WriteFile(filepath.Join(out, "receipt.json"), append(data, '\n'), 0644); err != nil {
 		t.Fatal(err)
 	}

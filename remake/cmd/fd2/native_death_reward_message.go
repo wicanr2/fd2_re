@@ -32,6 +32,8 @@ type nativeDeathRewardMessageState struct {
 	hdWorld          *modernHDMapFrame
 	hdTheme          *modernStoryPortraitSet
 	opening, closing *nativeClassUIJob
+	chrome           *modernHDDialogueChrome
+	chromeErr        error
 }
 
 // composeNativeDeathRewardMessageOn 把同一則訊息（對話格＋頭像＋文字）疊在另一張
@@ -116,6 +118,7 @@ func (g *Game) beginNativeDeathRewardMessage(pending pendingNativeDeathRewardMes
 		killer: pending.killer, actor: actor, final: final, then: then,
 		portrait: portraits[0], portraits: portraits, kind: pending.kind, value: pending.value,
 	}
+	message.chrome, message.chromeErr = freezeModernHDDialogueChrome(ui.dialogue, g.nativeClassUI.palette)
 	in, inputErr := g.freezeNativeCommand9MapInput()
 	palette, paletteErr := fdother.VGAPaletteFromDAC(g.nativeMapDAC)
 	if inputErr == nil {

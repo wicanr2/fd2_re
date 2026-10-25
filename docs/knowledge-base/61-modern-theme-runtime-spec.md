@@ -3,6 +3,18 @@
 狀態：現代主題仍為部分覆蓋；目前分層與缺口依[58](58-fd2-exe-re-coverage.md)。
 
 
+## 戰鬥提示框的HD細框（CONFORMED-SCOPED／RUNTIME-E1，2026-10-26）
+
+- 沿用到期提示與戰後物品／金錢成功訊息的現行owner。原始資料是FDOTHER#5 raw cell1..17，固定來源見[原版檔案清單](../data/fd2-reference-files.json)，原生幾何依 `PlanNativeDialogueFrameGrid(320,5,112,19,5)` 及 `ComposeNativeChurchDialogueOverlayAt`；固定FD2.EXE的SHA-256為 `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。這是已閉合對話格的美術呈現，不重開RE。
+- 原生310×86框與全部開收框位移／裁切保持。採既有HD面板的1920×1200目標畫布的三像素細框尺度；四邊取raw cell9／10／11／12中段的三色帶，四角取cell1／2／3／4的3×3，底色取單色16×16 cell13。將原18像素寬的放大邊帶還原為底色，再畫三像素細框。這是明示HD美術近似，不宣稱原版逐像素相同。
+- 框線資料與色盤在owner建立時凍結，來源形狀／單色底或palette不符時，HD在交易或F2發布前拒收。原生模式保持原資料路徑；不以無效HD來源阻塞原生呈現。框線patch只覆寫原邊帶，內部頭像／文字區不變。
+- 最終層序為世界、原生介面、HD框線、HD頭像、Noto文字、工具列。框線先依同次原生框區裁切，再沿既有contentGeometry定位；幫助頁、角色狀態、全DAC白／黑及淡出遵守現行遮擋順序。restore不保留框線，F2不改job、frame、狀態／RNG與一次續行。
+- 驗收走六到期提示四語及戰後物品／金錢兩條完整Game.Draw，抽驗開框、完整框、收框與恢復的F2；以原始cell直接算新框RGB、18像素舊邊帶清除、四角與裁切，獨立核對PNG並拒收舊粗框、錯色／錯寬／缺來源。原生交易、冷讀保存、全黑／白、字型與頭像回歸保持。
+- 只將這兩個現有caller接上細框，完整操作介面與主題／介面獨立控制仍依本規格其他節。沒有新圖包、保存欄位或平衡改動；正常取得狀態與全部HD後集中人工／平台的排程保持。驗證入口沿[到期HD工具](../../tools/verify_fd2_hd_transient_expiry.py)，擴充時保留舊收據預設相容，新的細框驗收明示require-chrome。
+
+
+完整重跑與數量依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的battle_dialogue_chrome_followup_20261026。兩個caller、完整畫布與PNG、舊粗框拒收及八種最終層序通過；保留舊收據預設相容。到期GPU觸及6GiB限制，memory.events.max=429，OOM／kill皆零；獎勵峰值另記主收據，不推論平台餘裕。
+
 ## 狀態到期提示的HD世界、頭像與文字（CONFORMED-SCOPED／RUNTIME-E1，2026-10-26）
 
 - 範圍為現行 `beginNativeTransientPhases` 的六個到期提示。原版來源沿[到期呈現IDA證據](../data/ida/fd2_transient_expiry_presentation_ida.txt)與[58](58-fd2-exe-re-coverage.md)的 `0x1A866→0x1DB65` 索引。輸入固定為357074 bytes的FD2.EXE，MD5 `b97caf2239a27a896069d03549d96e1e`，SHA-256 `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`；位址為IDA Pro 9.4的DOS/4GW LE線性位址。raw +7選DATO，+0x22..+0x27歸零選FDTXT0x1E1..0x1E6及VGA offset0x9F23，均沿已閉合證據，不重開RE。

@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"image"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -10,6 +11,17 @@ import (
 )
 
 func (g *Game) prepareModernHDRewardWorld(message *nativeDeathRewardMessageState, source []byte, set *modernStoryPortraitSet) (*modernHDMapFrame, error) {
+	if set != nil && set.hasHD {
+		if message == nil {
+			return nil, errors.New("modern HD reward: dialogue chrome unavailable")
+		}
+		if message.chromeErr != nil {
+			return nil, fmt.Errorf("modern HD reward: %w", message.chromeErr)
+		}
+		if message.chrome == nil {
+			return nil, errors.New("modern HD reward: dialogue chrome unavailable")
+		}
+	}
 	if set == nil || len(set.mapSpritesHD) != 125 {
 		return nil, nil // Existing portrait-only themes retain the native world.
 	}
@@ -108,6 +120,7 @@ func (g *Game) drawModernHDRewardMessage(screen *ebiten.Image) bool {
 		g.presentNativeClassFrame(screen, frame)
 	}
 	if capture != nil {
+		g.appendModernHDDialogueChrome(message.chrome, shift)
 		clip := image.Rect(region.Min.X*2, region.Min.Y*2, region.Max.X*2, region.Max.Y*2)
 		for _, run := range capture.runs {
 			run.y += float64(shift * 2)

@@ -68,9 +68,13 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 `modern-theme-prototype-status` · 工作 · [#4](https://github.com/wicanr2/fd2_re/issues/4) · 仍未完成 · 要人判
 
+到期提示與戰後物品／金錢訊息已接目標1920×1200的三像素HD細框，從原始對話格取色，清除舊放大邊帶。314張完整Game.Draw、62次F2、八個最終繪製情境、13646880框線／清邊像素通過；46張PNG獨立核對2834784個新框RGB點，22項收據反例及真實舊粗框拒收通過。32筆具名Go驗證通過，舊收據預設相容。
+
+限定CONFORMED-SCOPED／RUNTIME-E1。原生位置、頭像／文字區、開收框、恢復與一次續行保持；使用既有受控狀態／獎勵槽，沒有新增正常取得狀態或PLAYER-E2。到期GPU觸及6GiB但OOM／kill零，不推論平台餘裕。來源、完整指令與範圍為58、61及HD主收據battle_dialogue_chrome_followup_20261026；README已保存四語細框總覽。其他介面、HD2、主題／介面獨立控制、工具列／加速／海報及集中正常／人工／平台仍待。
+
 六種狀態到期提示已接同次HD世界、480頭像與Noto文字，新增六則四語內容。四語完整Game.Draw、代表階段F2、原生倒數／扣血／死亡順序、一次恢復、損壞來源拒收及保存冷讀回歸通過；獨立核對最終PNG與實際文字。來源及永久重跑為58、61及HD主收據transient_expiry_hd_followup_20261026。
 
-限定CONFORMED-SCOPED／RUNTIME-E1：使用明示seed7、selector2、六counter=1、HP100/100及基礎AP100／DP60／DX20的typed槽；DATO9與位置沿受控fixture，不宣稱正常角色配置或取得狀態。GPU207.025秒、峰值6363865088 bytes，接近6GiB且無OOM，不能推論平台餘裕。README新增四語完整畫面總覽；原生框線、其他地形／HD2／完整介面／工具列及集中正常／人工／平台仍待。
+限定CONFORMED-SCOPED／RUNTIME-E1：使用明示seed7、selector2、六counter=1、HP100/100及基礎AP100／DP60／DX20的typed槽；DATO9與位置沿受控fixture，不宣稱正常角色配置或取得狀態。GPU207.025秒、峰值6363865088 bytes，接近6GiB且無OOM，不能推論平台餘裕。README新增四語完整畫面總覽；其他框線、地形／HD2／完整介面／工具列及集中正常／人工／平台仍待。
 
 共用戰鬥面板框線、分隔線與HP／MP條已直接HD繪製，保留原點、凍結數值、當次色盤、層序及捲動。十六來源入口、24來源GPU、八組原生bar邊界、31份Go閘門與十二完整流程通過；24／29／30共223完整畫布獨立合成、累計40面板／色盤組與十五反例通過。規則、保存、清冊及私人素材包未改。
 
@@ -134,9 +138,13 @@ FDFIELD回合事件由完整具型別處理器降成正式劇本，保留增援�
 
 `modern-theme-player-asset-coverage` · 工作 · [#201](https://github.com/wicanr2/fd2_re/issues/201) · 仍未完成 · 要人判
 
+到期提示與戰後物品／金錢訊息已接目標1920×1200的三像素HD細框，從原始對話格取色，清除舊放大邊帶。314張完整Game.Draw、62次F2、八個最終繪製情境、13646880框線／清邊像素通過；46張PNG獨立核對2834784個新框RGB點，22項收據反例及真實舊粗框拒收通過。32筆具名Go驗證通過，舊收據預設相容。
+
+限定CONFORMED-SCOPED／RUNTIME-E1。原生位置、頭像／文字區、開收框、恢復與一次續行保持；使用既有受控狀態／獎勵槽，沒有新增正常取得狀態或PLAYER-E2。到期GPU觸及6GiB但OOM／kill零，不推論平台餘裕。來源、完整指令與範圍為58、61及HD主收據battle_dialogue_chrome_followup_20261026；README已保存四語細框總覽。其他介面、HD2、主題／介面獨立控制、工具列／加速／海報及集中正常／人工／平台仍待。
+
 六種狀態到期提示已接同次HD世界、480頭像與Noto文字，新增六則四語內容。四語完整Game.Draw、代表階段F2、原生倒數／扣血／死亡順序、一次恢復、損壞來源拒收及保存冷讀回歸通過；獨立核對最終PNG與實際文字。來源及永久重跑為58、61及HD主收據transient_expiry_hd_followup_20261026。
 
-限定CONFORMED-SCOPED／RUNTIME-E1：使用明示seed7、selector2、六counter=1、HP100/100及基礎AP100／DP60／DX20的typed槽；DATO9與位置沿受控fixture，不宣稱正常角色配置或取得狀態。GPU207.025秒、峰值6363865088 bytes，接近6GiB且無OOM，不能推論平台餘裕。README新增四語完整畫面總覽；原生框線、其他地形／HD2／完整介面／工具列及集中正常／人工／平台仍待。
+限定CONFORMED-SCOPED／RUNTIME-E1：使用明示seed7、selector2、六counter=1、HP100/100及基礎AP100／DP60／DX20的typed槽；DATO9與位置沿受控fixture，不宣稱正常角色配置或取得狀態。GPU207.025秒、峰值6363865088 bytes，接近6GiB且無OOM，不能推論平台餘裕。README新增四語完整畫面總覽；其他框線、地形／HD2／完整介面／工具列及集中正常／人工／平台仍待。
 
 共用戰鬥面板框線、分隔線與HP／MP條已直接HD繪製，保留原點、凍結數值、當次色盤、層序及捲動。十六來源入口、24來源GPU、八組原生bar邊界、31份Go閘門與十二完整流程通過；24／29／30共223完整畫布獨立合成、累計40面板／色盤組與十五反例通過。規則、保存、清冊及私人素材包未改。
 
@@ -182,9 +190,13 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 `modern-theme-highres-prototype` · 工作 · [#204](https://github.com/wicanr2/fd2_re/issues/204) · 仍未完成 · 要人判
 
+到期提示與戰後物品／金錢訊息已接目標1920×1200的三像素HD細框，從原始對話格取色，清除舊放大邊帶。314張完整Game.Draw、62次F2、八個最終繪製情境、13646880框線／清邊像素通過；46張PNG獨立核對2834784個新框RGB點，22項收據反例及真實舊粗框拒收通過。32筆具名Go驗證通過，舊收據預設相容。
+
+限定CONFORMED-SCOPED／RUNTIME-E1。原生位置、頭像／文字區、開收框、恢復與一次續行保持；使用既有受控狀態／獎勵槽，沒有新增正常取得狀態或PLAYER-E2。到期GPU觸及6GiB但OOM／kill零，不推論平台餘裕。來源、完整指令與範圍為58、61及HD主收據battle_dialogue_chrome_followup_20261026；README已保存四語細框總覽。其他介面、HD2、主題／介面獨立控制、工具列／加速／海報及集中正常／人工／平台仍待。
+
 六種狀態到期提示已接同次HD世界、480頭像與Noto文字，新增六則四語內容。四語完整Game.Draw、代表階段F2、原生倒數／扣血／死亡順序、一次恢復、損壞來源拒收及保存冷讀回歸通過；獨立核對最終PNG與實際文字。來源及永久重跑為58、61及HD主收據transient_expiry_hd_followup_20261026。
 
-限定CONFORMED-SCOPED／RUNTIME-E1：使用明示seed7、selector2、六counter=1、HP100/100及基礎AP100／DP60／DX20的typed槽；DATO9與位置沿受控fixture，不宣稱正常角色配置或取得狀態。GPU207.025秒、峰值6363865088 bytes，接近6GiB且無OOM，不能推論平台餘裕。README新增四語完整畫面總覽；原生框線、其他地形／HD2／完整介面／工具列及集中正常／人工／平台仍待。
+限定CONFORMED-SCOPED／RUNTIME-E1：使用明示seed7、selector2、六counter=1、HP100/100及基礎AP100／DP60／DX20的typed槽；DATO9與位置沿受控fixture，不宣稱正常角色配置或取得狀態。GPU207.025秒、峰值6363865088 bytes，接近6GiB且無OOM，不能推論平台餘裕。README新增四語完整畫面總覽；其他框線、地形／HD2／完整介面／工具列及集中正常／人工／平台仍待。
 
 共用戰鬥面板框線、分隔線與HP／MP條已直接HD繪製，保留原點、凍結數值、當次色盤、層序及捲動。十六來源入口、24來源GPU、八組原生bar邊界、31份Go閘門與十二完整流程通過；24／29／30共223完整畫布獨立合成、累計40面板／色盤組與十五反例通過。規則、保存、清冊及私人素材包未改。
 
@@ -210,9 +222,13 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 `modern-battle-animation-hd` · 工作 · [#263](https://github.com/wicanr2/fd2_re/issues/263) · 仍未完成 · 要人判
 
+到期提示與戰後物品／金錢訊息已接目標1920×1200的三像素HD細框，從原始對話格取色，清除舊放大邊帶。314張完整Game.Draw、62次F2、八個最終繪製情境、13646880框線／清邊像素通過；46張PNG獨立核對2834784個新框RGB點，22項收據反例及真實舊粗框拒收通過。32筆具名Go驗證通過，舊收據預設相容。
+
+限定CONFORMED-SCOPED／RUNTIME-E1。原生位置、頭像／文字區、開收框、恢復與一次續行保持；使用既有受控狀態／獎勵槽，沒有新增正常取得狀態或PLAYER-E2。到期GPU觸及6GiB但OOM／kill零，不推論平台餘裕。來源、完整指令與範圍為58、61及HD主收據battle_dialogue_chrome_followup_20261026；README已保存四語細框總覽。其他介面、HD2、主題／介面獨立控制、工具列／加速／海報及集中正常／人工／平台仍待。
+
 六種狀態到期提示已接同次HD世界、480頭像與Noto文字，新增六則四語內容。四語完整Game.Draw、代表階段F2、原生倒數／扣血／死亡順序、一次恢復、損壞來源拒收及保存冷讀回歸通過；獨立核對最終PNG與實際文字。來源及永久重跑為58、61及HD主收據transient_expiry_hd_followup_20261026。
 
-限定CONFORMED-SCOPED／RUNTIME-E1：使用明示seed7、selector2、六counter=1、HP100/100及基礎AP100／DP60／DX20的typed槽；DATO9與位置沿受控fixture，不宣稱正常角色配置或取得狀態。GPU207.025秒、峰值6363865088 bytes，接近6GiB且無OOM，不能推論平台餘裕。README新增四語完整畫面總覽；原生框線、其他地形／HD2／完整介面／工具列及集中正常／人工／平台仍待。
+限定CONFORMED-SCOPED／RUNTIME-E1：使用明示seed7、selector2、六counter=1、HP100/100及基礎AP100／DP60／DX20的typed槽；DATO9與位置沿受控fixture，不宣稱正常角色配置或取得狀態。GPU207.025秒、峰值6363865088 bytes，接近6GiB且無OOM，不能推論平台餘裕。README新增四語完整畫面總覽；其他框線、地形／HD2／完整介面／工具列及集中正常／人工／平台仍待。
 
 共用戰鬥面板框線、分隔線與HP／MP條已直接HD繪製，保留原點、凍結數值、當次色盤、層序及捲動。十六來源入口、24來源GPU、八組原生bar邊界、31份Go閘門與十二完整流程通過；24／29／30共223完整畫布獨立合成、累計40面板／色盤組與十五反例通過。規則、保存、清冊及私人素材包未改。
 
@@ -290,9 +306,13 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 `modern-theme-normal-player-validation` · 工作 · [#202](https://github.com/wicanr2/fd2_re/issues/202) · 仍未完成 · 要人判
 
+到期提示與戰後物品／金錢訊息已接目標1920×1200的三像素HD細框，從原始對話格取色，清除舊放大邊帶。314張完整Game.Draw、62次F2、八個最終繪製情境、13646880框線／清邊像素通過；46張PNG獨立核對2834784個新框RGB點，22項收據反例及真實舊粗框拒收通過。32筆具名Go驗證通過，舊收據預設相容。
+
+限定CONFORMED-SCOPED／RUNTIME-E1。原生位置、頭像／文字區、開收框、恢復與一次續行保持；使用既有受控狀態／獎勵槽，沒有新增正常取得狀態或PLAYER-E2。到期GPU觸及6GiB但OOM／kill零，不推論平台餘裕。來源、完整指令與範圍為58、61及HD主收據battle_dialogue_chrome_followup_20261026；README已保存四語細框總覽。其他介面、HD2、主題／介面獨立控制、工具列／加速／海報及集中正常／人工／平台仍待。
+
 六種狀態到期提示已接同次HD世界、480頭像與Noto文字，新增六則四語內容。四語完整Game.Draw、代表階段F2、原生倒數／扣血／死亡順序、一次恢復、損壞來源拒收及保存冷讀回歸通過；獨立核對最終PNG與實際文字。來源及永久重跑為58、61及HD主收據transient_expiry_hd_followup_20261026。
 
-限定CONFORMED-SCOPED／RUNTIME-E1：使用明示seed7、selector2、六counter=1、HP100/100及基礎AP100／DP60／DX20的typed槽；DATO9與位置沿受控fixture，不宣稱正常角色配置或取得狀態。GPU207.025秒、峰值6363865088 bytes，接近6GiB且無OOM，不能推論平台餘裕。README新增四語完整畫面總覽；原生框線、其他地形／HD2／完整介面／工具列及集中正常／人工／平台仍待。
+限定CONFORMED-SCOPED／RUNTIME-E1：使用明示seed7、selector2、六counter=1、HP100/100及基礎AP100／DP60／DX20的typed槽；DATO9與位置沿受控fixture，不宣稱正常角色配置或取得狀態。GPU207.025秒、峰值6363865088 bytes，接近6GiB且無OOM，不能推論平台餘裕。README新增四語完整畫面總覽；其他框線、地形／HD2／完整介面／工具列及集中正常／人工／平台仍待。
 
 共用戰鬥面板框線、分隔線與HP／MP條已直接HD繪製，保留原點、凍結數值、當次色盤、層序及捲動。十六來源入口、24來源GPU、八組原生bar邊界、31份Go閘門與十二完整流程通過；24／29／30共223完整畫布獨立合成、累計40面板／色盤組與十五反例通過。規則、保存、清冊及私人素材包未改。
 
