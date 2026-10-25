@@ -62,27 +62,21 @@ FD2 command 28／31 一般玩家取得路徑窄稽核（IDA Pro 9.4）
   command-mask writer，或同一 actor state 同時提供raw `+7`與command bit。未達
   其中之一前，state-only相容交易可保留，正式演出維持失敗即關閉。
 
-2026-08-25 補充勘誤：ID30採相同取得停止線
-------------------------------------------
+ID30既有游標及敵方AI證據
+------------------------
 
-- 重新機械檢查同一份32筆 `character_defaults.json` 與完整
-  `command_learn.json`，ID30（byte3 bit6）同樣沒有任何固定授予列。上述唯一已知
-  command-mask OR writer／level-up caller證據沒有改變。
 - `0x1D287..0x1D364` 與 `sub_149F8 0x149F8..0x14B1A` 另由本日IDA Pro 9.4及
   Capstone重核，仍證實ID30的saved／confirmed cursor、`record+3-16`四步、X-first
   cardinal line與enemy filter；這只證明相容控制流，不證明玩家取得來源。
 - map13 index0雖有byte3 bit6，但raw AI mode低四位為8，既有
   [`fd2_ai_mode_dispatch_ida.txt`](fd2_ai_mode_dispatch_ida.txt)已固定它直接走
   `0x1317D`，不進command scorer／`0x15311`。
-- 因此「ID30目前沒有已證實正常玩家或敵方producer」為**強推論**，不是死碼宣告；
-  state-only相容核心保留，正式UI／演出不列交付阻擋。重開條件同上，另加未修改
-  敵方回合實際進入command30 scorer／owner。
 
 2026-10-25 勘誤：撤回ID30無學招來源的判斷
 ------------------------------------------
 
-固定原EXE的file offset 0x564EF有02 1E，learn5明示Lv2授予ID30。growth18（file offset 0x55F67）最後byte為05，直接連到這列。固定FDFIELD map16 resource49 roster slot36是raw camp2、selector18、Lv1的蜜蒂；map15／31另有相同selector的友軍來源。原文2026-08-25「完整command_learn.json沒有ID30」敘述不成立，不沿用其玩家停止線。原資料及原說法留作形成原因，現況以本勘誤優先。
+固定原EXE的file offset 0x564EF有02 1E，learn5明示Lv2授予ID30。growth18（file offset 0x55F67）最後byte為05，直接連到這列。固定FDFIELD map16 resource49 roster slot36是raw camp2、selector18、Lv1的蜜蒂；map15／31另有相同selector的友軍來源。已刪除被原始bytes反證的玩家取得停止線。原始定位、游標及敵方mode8證據保留。
 
-受控重製實驗不直接授予command bit：從固定map16載入並materialize建構器，seed7固定一次，經AwardExpNative給300 EXP，正式學招writer於Lv2加入30；Lv4 MaxMP29高於cost24。Game.nativeCommandTargetSupported仍拒收30，是已重現的玩家流程缺陷。實驗不是原版動態或完整正常章節證據。原版學招writer／cursor四步／X-first及0x276EC分支不重解；只重開被原bytes直接反證的取得停止線與缺失consumer。
+受控重製實驗不直接授予command bit：從固定map16載入並materialize建構器，seed7固定一次，經AwardExpNative給300 EXP，正式學招writer於Lv2加入30；Lv4 MaxMP29高於cost24。修正前Game.nativeCommandTargetSupported拒收30的反例，已由bda7119e的正式玩家入口、原生／HD分段打擊及保存冷讀修正。實驗不是原版動態或完整正常章節證據。原版學招writer／cursor四步／X-first及0x276EC分支不重解；只重開被原bytes直接反證的取得停止線與缺失consumer。
 
 主證據：fd2_command30_player_acquisition_20261025.json。重跑：tools/audit_fd2_command30_player_source.py --original-dir <唯讀原檔目錄> --report <全新JSON>，只在素材Docker內；runtime反例為TestNativeCommand30MitiAcquisitionAndPlayerEntry，使用Go Docker及明示FD2_COMMAND30_ACQUISITION_OUT。未新增28／31或AI30入口，不由此宣稱所有指令已完成。

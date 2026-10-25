@@ -21,7 +21,7 @@ def main():
     p.add_argument('--proven-occlusion',action='store_true')
     p.add_argument('--original-pack',type=Path)
     p.add_argument('--inventory',type=Path)
-    p.add_argument('--sample-group',choices=['attack','target','end','flow','fixture','idle-end','idle-fixture'],default='attack')
+    p.add_argument('--sample-group',choices=['attack','target','end','flow','fixture','idle-end','idle-fixture','normal-action'],default='attack')
     for name in ['receipt', 'catalog', 'source', 'baseline', 'negative-receipt', 'out']:
         p.add_argument('--'+name, type=Path, required=True)
     args = p.parse_args()
@@ -30,10 +30,12 @@ def main():
     fixture_group=args.sample_group in ('fixture','idle-fixture')
     flow_group=args.sample_group=='flow'
     end_group=args.sample_group in ('end','idle-end','flow')
+    action_group=args.sample_group=='normal-action'
     verifier = Path(__file__).with_name('verify_fd2_character_battle_gpu.py')
     baseline = json.loads(args.baseline.read_text())
     expected_status=('PASS-IDLE-TARGET-FIXTURE-GPU' if fixture_group else 'PASS-CHARACTER-NORMAL-IDLE-GPU') if idle_only else (
         'PASS-CHARACTER-NORMAL-TARGET-GPU' if target_group else 'PASS-CHARACTER-FIXTURE-GPU' if fixture_group else 'PASS-CHARACTER-NORMAL-FLOW-GPU' if flow_group else 'PASS-CHARACTER-NORMAL-ATTACK-GPU')
+    if action_group:expected_status='PASS-CHARACTER-NORMAL-ACTION-GPU'
     if (baseline.get('status') != expected_status
             or baseline.get('figure') != args.figure
             or baseline.get('core_profile', 'blue') != args.core_profile
@@ -53,6 +55,15 @@ def main():
     checks = []
 
     def check(name, path, expected, figure=None, source=None, inventory=None):
+        if action_group and path.parent!=args.receipt.parent:
+            # Every mutation retains the real, already verified save/capture
+            # context. A missing symlink must not stand in for pixel rejection.
+            for name_ in ['user-data',*receipt['screenshots'],
+                          *[s['file'] for key in ['commander_samples','portrait_samples','actor_art_samples']
+                            for s in receipt[key]]]:
+                if Path(name_).name!=name_:raise SystemExit('負向來源路徑越界')
+                target=path.parent/name_
+                if not target.exists():target.symlink_to((args.receipt.parent/name_).resolve(),target_is_directory=name_=='user-data')
         report = args.out/(name+'-report.json')
         argv = [sys.executable, str(verifier), '--figure', str(args.figure if figure is None else figure),
                 '--core-profile', args.core_profile if figure is None else args.other_core_profile,
@@ -74,7 +85,7 @@ def main():
     wrong = copy.deepcopy(receipt); wrong['catalog_sha256'] = '0'*64
     path = args.out/'wrong-receipt.json'; path.write_text(json.dumps(wrong))
     fixture_error='需要完整目標待機Game.Draw測試收據' if idle_only else '需要完整人物Game.Draw測試收據'
-    check('wrong-receipt', path, fixture_error if fixture_group else '需要同份普通攻防完整GUI收據及清冊')
+    check('wrong-receipt', path, '需要完整普通攻擊／戰後／保存冷讀收據' if action_group else fixture_error if fixture_group else '需要同份普通攻防完整GUI收據及清冊')
     if fixture_group and not idle_only and receipt.get('phase_f2', {}).get('departure') == 1:
         wrong = copy.deepcopy(receipt)
         wrong['phase_f2']['departure'] = 0
@@ -99,7 +110,7 @@ def main():
     attack_error='未在普通攻擊GPU核對到所選目標的待機' if target_group else '未在普通END GPU核對到所選目標的待機' if idle_only else (
         '未在普通流程END GPU核對到所選人物的攻擊動作' if flow_group else
         '未在普通END GPU核對到所選人物的攻擊動作' if end_group else '未在普通攻防GPU核對到所選人物的攻擊動作')
-    check('wrong-figure', args.receipt, fixture_error if fixture_group else (
+    check('wrong-figure', args.receipt, '需要明示普通蓋亞攻擊者圖源樣本' if action_group else fixture_error if fixture_group else (
         '需要明示待機目標的普通END擷取範圍' if idle_only else attack_error), figure=args.other_figure)
     shadow = args.out/'wrong-source'; shadow.mkdir()
     names = {name for a in catalog['assets'] if a['role'] == 'battle_animation_hd_set' for name in a['files']}
@@ -108,7 +119,45 @@ def main():
     other = next(name for name in sorted(names) if digest(args.source/name) != digest(args.source/first))
     for name in sorted(names):
         (shadow/name).symlink_to((args.source/(other if name == first else name)).resolve())
+    if action_group:
+        portrait=next(a for a in catalog['assets'] if a['role']=='story_portrait_hd_frame' and a['speaker_id']==116)
+        (shadow/portrait['file']).symlink_to((args.source/portrait['file']).resolve())
     check('wrong-source', args.receipt, '圖源雜湊不同', source=shadow)
+    if action_group:
+        for label,update,expected in [
+                ('missing-actor',{'actor_art_samples':[]},'需要明示普通蓋亞'),
+                ('not-declared',{'actor_art':False},'需要明示普通蓋亞'),
+                ('missing-cold-load',{'operations':[o for o in receipt['operations'] if o.get('process_epoch')!=1]},'需要完整普通攻擊')]:
+            wrong=copy.deepcopy(receipt);wrong.update(update)
+            path=args.out/(label+'.json');path.write_text(json.dumps(wrong))
+            check(label,path,expected)
+        for label,predicate in [('charge',lambda m:m['resource']==91 and 1<=m['frame']<=5),
+                                 ('punch',lambda m:m['resource']==91 and m['frame']>=6)]:
+            matching={m['file'] for m in baseline['matches'] if predicate(m)}
+            if not matching:raise AssertionError('正對照沒有'+label)
+            wrong=copy.deepcopy(receipt)
+            wrong['actor_art_samples']=[s for s in wrong['actor_art_samples'] if s['file'] not in matching]
+            path=args.out/('missing-'+label+'.json');path.write_text(json.dumps(wrong))
+            check('missing-'+label,path,'普通攻擊缺少實際PNG圖源類別：'+label)
+        from PIL import Image
+        for label in ['black-actor-pixels','wrong-actor-translation']:
+            folder=args.out/label;folder.mkdir();wrong=copy.deepcopy(receipt)
+            for sample in wrong['actor_art_samples']:
+                path=folder/sample['file']
+                if label=='black-actor-pixels':
+                    Image.new('RGB',(1920,1200),(0,0,0)).save(path);sample['sha256']=digest(path)
+                else:
+                    for state in [sample['before'],sample['after']]:
+                        for layer in state.get('battle_source_layers') or []:
+                            if layer['resource'] in (90,91):layer['x']+=37
+            path=folder/'receipt.json';path.write_text(json.dumps(wrong))
+            check(label,path,attack_error)
+        report={'status':'PASS-CHARACTER-GPU-GUARDS','sample_group':args.sample_group,
+                'baseline_sha256':digest(args.baseline),'tool_sha256':digest(Path(__file__)),
+                'checks':checks,'scope':'同份普通攻擊正對照的缺來源、缺姿勢類別、偽造PNG及錯位拒收；不新增正常玩家或原版收據。'}
+        (args.out/'guards.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+        print(json.dumps({'status':report['status'],'guards':len(checks)}))
+        return
     if target_group:
         wrong=copy.deepcopy(receipt);wrong['battle_art_samples']=[]
         path=args.out/'missing-target-pixels.json';path.write_text(json.dumps(wrong))

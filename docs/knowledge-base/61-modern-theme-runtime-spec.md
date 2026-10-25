@@ -2,6 +2,14 @@
 
 狀態：現代主題仍為部分覆蓋；目前分層與缺口依[58](58-fd2-exe-re-coverage.md)。
 
+## 傷害公式可調整（DRAFT／後續需求）
+
+使用者2026-10-25確認傷害公式之後須允許調整。忠實模式保留已還原的原版預設公式；擴充方向包含物理、法術及絕招的可編輯計算參數。這是後續工作，本批沒有變更傷害或遊戲平衡。
+
+實作前先盤點正式規則與玩家消費端，再定義設定、相容性及驗收。預設設定須通過既有規則與保存回歸；自訂設定須能追溯使用值，並在相同初始狀態與固定亂數條件下重播。資料格式、調整介面與存檔方式尚未選定，不以本需求預先決定架構。工作入口為[#278](https://github.com/wicanr2/fd2_re/issues/278)及[56](56-fd2-remake-sdd.md)，不是HD串接的新增停止線。
+
+已接HD且有目前原版證據支持流程一致的絕招，沿用已驗範圍；過期停止線直接刪除。其餘HD串接與集中人工抽驗照原計畫推進，不以逐幀一致或未影響玩家流程的原版未知細節阻擋。
+
 ## 九階徑向轉場與調色HD（CONFORMED-SCOPED／RUNTIME-E1）
 
 本節實作前為READY。兩包各三個既有caller與一個幾何測具的完整GPU流程、F2、原圖主題控制組與一次返回均通過，圖片及完整收據相同；透明度、baseline DAC及原生work／VGA保持。原生、HD來源與舊故事／轉場回歸通過；唯一數量依[58](58-fd2-exe-re-coverage.md)。本批沒有重跑原版執行器，圖組與保存格式不變。
@@ -83,9 +91,26 @@ README四格由[既有總覽工具](../../tools/build_fd2_battle_panel_gallery.p
 
 治療回歸沿[回復HD驗證器](../../tools/verify_fd2_heal_map_hd.py)，`--kind game --case-start 0／2／4／6 --case-limit 2`分別為四次執行，每批使用不同前綴及`--timeout 780`。可用兩個各`--memory 5g --cpus 2 --pids-limit 160`的有界容器分別順序跑0／4與2／6，其餘掛載契約相同。最後以`--kind game --merge-game-parts <四個已通過前綴>`及新的`--out`核對完整八個身份、每條11次F2及一次交易／續行、同清冊、必要測試與無SKIP／OOM。只完成部分批次不能當作八條回歸通過；未給批次參數時仍預設全八條。其他回歸與工具版本、來源／輸出SHA依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`hud_unit_icon_hd_followup_20261024`。
 
+## 蓋亞v2普通攻擊與自然返回補驗（CONFORMED-SCOPED／NORMAL-GUI）
+
+沿已審查第23章來源槽與現行蓋亞v2，補普通鍵盤選角、進軍、END、攻擊116隊長、共用死亡、自然戰後與第24章整備保存／新程序LOAD。來源為`shared-death-player-ch23-r1/source-gui-r1/user-data/fd2_re/fd2_save.json`，SHA-256 `5d64f3a0bf9aa56f7e77f51e8cfe45fe8c14ab78f2703b966fbc0e142e7bd871`；章前AP+5000／DP+300／DX+60／MaxHP+1000及保留傷亡沿原manifest揭露，不在章內注入。既有`fd2_hd_death_gui.py`與GUI主控制器擁有真實X11按鍵、F2、存檔、程序及背景程序生命週期。
+
+- 只擴充唯讀取樣與核對工具，不改正式遊戲、圖源、節拍、規則或保存格式。可選`--death-actor-art`依實際`battle_source_layers`收集攻擊者FIGANI90／91，最多48張完整1920×1200視窗PNG；保留擷取前後audit及SHA，不以觀測索引宣稱畫格精確。工具列採目前floating，沒有影像裁切或視窗外推。
+- 通用人物核對器增加明示`normal-action`分組，先重新驗證同份普通隊長／死亡／F2／保存／新程序LOAD收據，再逐PNG核對來源核心。圖庫、尺寸與位移依已登錄原始描述子；姿勢由實際RGBA核心找相容候選，不把擷取前audit索引當唯一相位。
+- 本切片必須辨認v2待機或91:0、91:1..5蓄力，以及91:6..10出拳三類；每類至少一張實際PNG且至少1000個高覆蓋核心點。多個相同圖源相容時保留候選集合。聲音人耳、完整十五幀／每frame、造型自然度、自然難度及原版動態不由本次普通取樣外推。
+- 核對來源槽與清冊SHA、冷讀實檔、F2保存bytes；缺圖、錯catalog、錯來源、缺蓄力／出拳與偽造GPU須拒收。既有隊長待機／116頭像、死亡核心及通用人物核對器舊分組回歸保持。無錄影，檢查後清理可重建執行檔與重複中間圖。
+
+重跑沿`tools/verify_fd2_hd_fonts_gui.py --battle-status --world --battle-hd --battle-node battle_ch23 --death-event 53 --death-kind action --death-commander-hd --death-actor-art --startup-timeout 180`。既有`fd2-promo:20261017-r1`若已清理，先從`tools/docker/fd2-promo.Dockerfile`恢復同一工具鏈；GUI在UID1000、網路關閉、有界記憶體／CPU／PID及外層時間下執行。原版與私人素材包唯讀，來源槽唯讀，只有既有work根下明示輸出可寫。技術與普通播放驗證不提前關閉#268的集中人工造型確認。
+
+已以現行主題與floating工具列完成普通流程，來源槽及清冊保持。新版[通用人物核對器](../../tools/verify_fd2_character_battle_gpu.py)以`--figure 30 --core-profile opaque --sample-group normal-action --receipt <普通GUI/receipt.json> --catalog <現行清冊> --source <私人現代包> --report <全新JSON>`重驗同份戰後／保存冷讀，再核對實際PNG的相容姿勢集合。對應[反例檢查器](../../tools/test_fd2_character_battle_gpu.py)採相同來源參數，另給`--other-figure 34 --baseline <正對照JSON> --negative-receipt <同份GUI/receipt.json> --out <新守衛目錄>`；`normal-action`不使用歷史負向收據參數，沿既有CLI保留該欄。
+
+舊fixture模式亦以目前圖包完成完整十五幀Game.Draw／F2與逐圖核心回歸，保留64個戰鬥DAC及65個地圖返回DAC；49.557秒與12.020秒兩份收據均無OOM／逾時。十五幀是fixture來源覆蓋，普通GUI仍只聲明上述五張取樣。
+
+獨立[死亡來源核對器](../../tools/verify_fd2_hd_death_normal.py)及[隊長／頭像反例](../../tools/test_verify_fd2_commander_normal.py)同份收據保持通過。來源、SHA、實際記憶體、相容姿勢與永久重跑資訊記入[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`gaia_v2_normal_followup_20261025`；唯一數量依58。README只把舊版蓋亞圖換成新版完整普通GUI PNG，沒有裁切或補畫。#268仍待集中人工確認；本輪不是自然難度、完整十五幀逐frame、END參戰、平台或原版動態驗收。
+
 ## 蜜蒂音速刃指令30：正常學招與戰鬥呈現（CONFORMED-SCOPED／RUNTIME-E1）
 
-原2026-08-25停止線被固定原始位元組直接反證。本節只補蜜蒂selector18學到指令30後的既有玩家流程，不新增28／31或敵方30入口，不改傷害公式、原學招表、職業、保存格式或其他指令。主證據為[取得來源勘誤](../data/ida/fd2_command30_player_acquisition_20261025.json)，舊[取得研究](../data/ida/fd2_command28_31_reachability_ida.txt)保留歷史並追加勘誤。
+原2026-08-25停止線被固定原始位元組直接反證。本節只補蜜蒂selector18學到指令30後的既有玩家流程，不新增28／31或敵方30入口，不改傷害公式、原學招表、職業、保存格式或其他指令。主證據為[取得來源勘誤](../data/ida/fd2_command30_player_acquisition_20261025.json)，舊[取得研究](../data/ida/fd2_command28_31_reachability_ida.txt)已刪除失效停止線並保留原始證據。
 
 - 原版固定檔案大小、MD5與SHA依主證據及`fd2-reference-files.json`。本批為已知file offset的機械核對；既有IDA Pro9.4線性位址`sub_1E292→sub_4E4D1→sub_4E4A2→sub_1D79C`學招鏈不重解。growth18的learn_idx5、learn5的Lv2／ID30及map16資源49的raw camp2／selector18／Lv1名冊均已對原始bytes核對。受控300 EXP／seed7只證明正式writer與UI拒收反例，不冒稱正常章節或原版動態PLAYER-E2。
 - 玩家選招以實際已學會的raw mask及原始record30為準。加入target admission，record30是`00 00 00 14 00 18 00`，MPCost24；沿既有候選選擇，進入target modal前保存當時游標，確認後以既有`NativeCommand30Targets`從保存位置朝確認位置走四格、X優先、逐格取第一個有效敵人。不可改用一般EffectMode0的單目標名單。取消仍回原指令框，不扣MP或改HP。

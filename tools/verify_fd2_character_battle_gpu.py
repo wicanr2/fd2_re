@@ -16,7 +16,7 @@ def main():
     p.add_argument('--core-profile', choices=['blue', 'gold', 'purple', 'warm', 'sage', 'opaque'], default='blue',
                    help='已知圖源服裝的取樣色域；只影響驗證，不影響遊戲')
     p.add_argument('--body-frames', help='只核對明示本體幀，格式為24:0,25:0-13；空白與投射物另驗')
-    p.add_argument('--sample-group',choices=['attack','target','end','flow','fixture','trace','idle-end','idle-fixture'],default='attack')
+    p.add_argument('--sample-group',choices=['attack','target','end','flow','fixture','trace','idle-end','idle-fixture','normal-action'],default='attack')
     p.add_argument('--inventory', type=Path, default=Path(__file__).resolve().parents[1]/
                    'docs/data/fd2-battle-hd-source-inventory-20261019.json',
                    help='idle-only範圍需固定原始盤點，核對attack／cast兩項零header')
@@ -50,6 +50,7 @@ def main():
     flow_group=args.sample_group=='flow'
     end_group=args.sample_group in ('end','idle-end','flow')
     fixture_group=args.sample_group in ('fixture','idle-fixture')
+    action_group=args.sample_group=='normal-action'
     scene_names=['world-hd','world-hd-replay']
     repetitions=receipt.get('battle_repetitions',2)
     if args.sample_group in ('attack','target','end','idle-end','flow') and repetitions!=2:
@@ -69,6 +70,16 @@ def main():
             validate_receipt(receipt, args.receipt, args.catalog)
         except (ValueError, KeyError, OSError) as error:
             raise SystemExit('需要可重驗的普通攻防／保存追蹤收據：'+str(error))
+    elif action_group:
+        from verify_fd2_commander_normal import verify as verify_normal_action
+        try:
+            normal_action_proof=verify_normal_action(args.receipt,args.catalog,args.source)
+        except (ValueError,KeyError,OSError) as error:
+            raise SystemExit('需要完整普通攻擊／戰後／保存冷讀收據：'+str(error))
+        if (not receipt.get('actor_art') or receipt.get('actor_figure')!=args.figure
+                or args.figure!=30 or not receipt.get('actor_art_samples')):
+            raise SystemExit('需要明示普通蓋亞攻擊者圖源樣本')
+        scene_names=['gaia-commander']
     elif fixture_group:
         phases=['prelude','body'] if idle_only else ['prelude','body','counter']
         expected='PASS-IDLE-TARGET-FIXTURE-RUNTIME-E1' if idle_only else 'PASS-CHARACTER-FIXTURE-RUNTIME-E1'
@@ -179,6 +190,7 @@ def main():
         samples=[dict(s,sample_origin='end') for s in receipt['battle_end_art_samples']]
         samples += [dict(s,sample_origin='attack') for s in receipt['battle_art_samples']]
     if fixture_group:samples=list(receipt.get('source_shots',{}).values())
+    if action_group:samples=list(receipt['actor_art_samples'])
     if args.sample_group=='attack':
         for scene in scene_names:
             name = scene+'-physical-scene.png'; shot = receipt['screenshots'][name]
@@ -199,7 +211,7 @@ def main():
             rgb = im.convert('RGB').load()
             for resource, index, name, sha, frame, points, total in candidates:
                 positions=[(frame['x']*6,frame['y']*6,None,[])]
-                if end_group or fixture_group or target_group:
+                if end_group or fixture_group or target_group or action_group:
                     positions=[]
                     for state in (sample['before'],sample['after']):
                         source_layers=state.get('battle_source_layers') or []
@@ -258,6 +270,13 @@ def main():
         for resource,index,*_ in candidates:
             if not any(x['resource']==resource and x['frame']==index for x in found):
                 raise SystemExit(f'未核對到實際人物GPU圖源：{resource}/{index}')
+    if action_group:
+        required={'idle':lambda x:x['resource']==90 or x['resource']==91 and x['frame']==0,
+                  'charge':lambda x:x['resource']==91 and 1<=x['frame']<=5,
+                  'punch':lambda x:x['resource']==91 and 6<=x['frame']<=10}
+        for phase,predicate in required.items():
+            if not any(predicate(x) for x in found):
+                raise SystemExit('普通攻擊缺少實際PNG圖源類別：'+phase)
     if args.proven_occlusion and not fixture_group:
         raise SystemExit('來源遮擋排除目前只接受精確索引fixture')
     groups = {}
@@ -286,6 +305,10 @@ def main():
                                                'cropped_samples':toolbar_cropped_samples}
     if target_group:
         report['scope']='target只驗普通攻擊中的目標待機；仍要求完整待機及攻擊清冊，但不宣稱普通揮杖或反擊。'+report['scope']
+    if action_group:
+        report['status']='PASS-CHARACTER-NORMAL-ACTION-GPU'
+        report['normal_action_proof']=normal_action_proof
+        report['scope']='正常第23章蓋亞v2待機／蓄力／出拳與完整戰後保存冷讀；保留相容姿勢集合，非每幀、人工造型或原版parity。'+report['scope']
     if args.proven_occlusion:
         report['source_occlusion']={'enabled':True,'inventory_sha256':digest(args.inventory),
             'original_manifest_sha256':digest(args.original_pack/'manifest.json'),

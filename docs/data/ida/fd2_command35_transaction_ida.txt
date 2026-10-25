@@ -52,8 +52,11 @@ Remake contract
 - Publish HP, raw markers, final RNG and actor Acted only after every target
   passes preflight and all three private stages complete. Record35 MP is an
   availability gate and is not debited for these five proven player sources.
-- **Unknown/fail-closed:** 0x27FC9 indexed frames, exact SFX/palette timing,
-  score/EXP, AI owner, other BattleFig sources and gameplay/status names.
+- 玩家0x27FC9共用演出及ID35尾段已閉合並接原生／HD消費端，見
+  fd2_command32_35_presentation_ida.txt、fd2_command35_tail_presentation_ida.txt
+  及../../knowledge-base/61-modern-theme-runtime-spec.md。原始交易定位保留，不以舊畫格未知停止。
+- score/EXP、AI owner與其他BattleFig來源保持已證實範圍；精確硬體音訊／
+  色盤時序只保留證據限制，不作HD串接停止線。
 
 Verification
 ------------

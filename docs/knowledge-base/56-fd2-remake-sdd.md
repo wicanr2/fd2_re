@@ -1,5 +1,9 @@
 # 56 — FD2 remake 系統設計規格（SDD，2026-08-09）
 
+已接HD且有目前原版證據支持流程一致的絕招，維持已驗範圍，過期停止線直接刪除。傷害公式後續可調整，原版預設保留；需求與驗收方向見[61](61-modern-theme-runtime-spec.md)及[#278](https://github.com/wicanr2/fd2_re/issues/278)。
+
+蓋亞v2已補現行圖包的第23章普通鍵盤進軍、攻擊、死亡演出、戰後及保存新程序LOAD，限定CONFORMED-SCOPED／NORMAL-GUI。實際PNG辨認待機／蓄力／出拳的相容圖源，沒有把audit索引當唯一畫格。README舊版圖已替換；原版、規則、素材與保存格式未改。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約與重跑依[61](61-modern-theme-runtime-spec.md)及HD主收據`gaia_v2_normal_followup_20261025`。#268的造型人工確認保持開啟。
+
 蜜蒂音速刃的既有玩家入口已補入原生／HD共用分段打擊播放器。固定growth18→learn5的Lv2授招反證舊ID30停止線；四格保存游標、正式確認、依序HP／MP、缺件回復及存檔冷讀已受控驗證。這是RUNTIME-E1，完整正常玩家、原版動態、音訊聽感與人工／平台仍待集中驗收。唯一目前狀態依[58](58-fd2-exe-re-coverage.md)，READY契約與重跑入口依[61](61-modern-theme-runtime-spec.md)，證據為[取得與播放紀錄](../data/ida/fd2_command30_player_acquisition_20261025.json)。28／31停止線及正式保存格式保持。
 
 單列頂端浮出工具列已接入正式啟動入口，主題／語系按鈕沿既有F2／F4閘門，遊戲及HD最終層不平移。顯隱、觸控所有權、四語字界、真實滑鼠與說明頁阻擋、完整保存bytes及固定列相容回歸通過，限定CONFORMED-SCOPED／RUNTIME-E1。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的floating_toolbar_followup_20261025。其餘工具列控制、地形／HD2／完整介面與集中正常／人工／平台仍待。
@@ -1582,7 +1586,7 @@ actor raw completion writer。它與 ID20/21「借 record10」的 clear/restore 
 | 22 | `0x1CFF0→1D6C8→22BE1→22D1B`，#80 selector0＋八個DAC phases，class/RNG gate、base10 經第二 RNG 實際9 HP、第三 RNG write `+0x27` | `ExecuteNativeCommandApplication`；完整preflight後才允許玩家演出與交易 | 玩家grid＋八phase palette／sample已接E1；status名稱、expiry UI、精確tick／逐音訊E2未接 |
 | 23 | `0x1CFF0→1D6C8→2218A→22253×2` special relocation selector | first target→mode-6 destination cursor、八段palette、離場／入場兩次完整indexed presenter及延後raw transaction已接 | 玩家正式`RUNTIME-E1`；缺同狀態逐幀／逐音訊E2與精確camera choreography核對 |
 | 24 | 玩家 `2A6BD→276EC→2B659/1CA89→1C81F`：`actor +48 * 15/10 - target +4a`；selector32 resource98、FDOTHER #53 samples3／2、damage denominator1；AI table 另別名 `22153`，不可混用 | `ExecuteNativeCommand24`＋正式marker交易 | indexed actor／target base、前導、轉場與SFX已達E1；精確時序／音訊與E2待接 |
-| 28, 29, 31 | 同玩家 `276EC` derived-strike route，倍率分別20、12、18；28的target writer分母8且略過`29C90`，29／31分母1並保留逐target轉場 | `ExecuteNativeCommandDerivedStrike`；28已修正為單一可達impact marker發布roll的1/8，29／31補有獨立倍率回歸；`BuildNativeCommandDerivedStrikeSchedule`保存command-specific header／marker／audio／base／prelude／transition契約 | typed schedule已就緒；正式indexed owner／SFX播放與E2未接，不得借用command24 resource98 |
+| 28, 29, 31 | 同玩家 `276EC` derived-strike route，倍率分別20、12、18；28的target writer分母8且略過`29C90`，29／31分母1並保留逐target轉場 | `ExecuteNativeCommandDerivedStrike`；28已修正為單一可達impact marker發布roll的1/8，29／31補有獨立倍率回歸；`BuildNativeCommandDerivedStrikeSchedule`保存command-specific header／marker／audio／base／prelude／transition契約 | 29原生／HD分段owner及SFX已接，見61；28／31無已證實正常來源，維持原取得範圍；不得借用command24 resource98，集中正常玩家驗收依58 |
 
 指令 29 的玩家演出採獨立、原子化的多目標契約。只有 actor 的原始
 `BattleFig=34`、FIGANI resource104、FDOTHER #50 sample1／4、完整 raw command
@@ -1603,7 +1607,7 @@ player constructor defaults都不含ID28／31。因此目前只能把兩者列�
 selector18排除猜測補演出。若未修改玩家動態路徑出現兩者、發現另一個mask writer，
 或取得同一actor的raw `+7`與command bit，才重開正式owner。完整證據見
 [`fd2_command28_31_reachability_ida.txt`](../data/ida/fd2_command28_31_reachability_ida.txt)。
-| 30 | `1CFF0→14818→115B6` 先確認 record+3 candidate；再以 saved cursor→confirmed cursor 進 `149F8`，`count=record+3-16`、X-first cardinal line、只收 enemy，最後 `2A6BD→276EC` default倍率18 | `ExecuteNativeCommand30`（顯式兩 cursor、state-only final delta） | native cursor lifecycle／multi-hit／SFX／indexed UI 未接 |
+| 30 | `1CFF0→14818→115B6` 先確認 record+3 candidate；再以 saved cursor→confirmed cursor 進 `149F8`，`count=record+3-16`、X-first cardinal line、只收 enemy，最後 `2A6BD→276EC` default倍率18 | `ExecuteNativeCommand30`與`startNativeCommand30PresentationAtCursor`，保留顯式兩cursor規則 | 正式玩家選取、原生／HD分段打擊、音效49、F2與保存冷讀已達受控`RUNTIME-E1`；集中正常玩家／人工／平台驗收依58與61 |
 | 25 | `0x1CFF0→1D6C8→22C04`，#80 selector0＋八個DAC phases後清raw target `+5 bit7` | `ExecuteNativeCommand25`要求raw +5 provenance，只清`0x80`而不混用`Acted` | 玩家grid＋palette／sample已接E1；原版feedback／逐音訊E2未接 |
 | 26–27 | `0x1CFF0→1D6C8→22CBF/22E41→22D1B`，分別 write `+0x25/+0x26` | `ExecuteNativeCommandApplication`；完整preflight後才交易 | 玩家grid＋palette／sample已接E1；status名稱、expiry UI與逐音訊E2未接 |
 | 32 | `2A6BD→27FC9→2111A→1C75E` numeric per-final-target；選單 MP gate已知但此 chain 未見 debit | `NativeCompoundCommandPlan(32)` 僅保存 raw callee 順序 | 未接 |

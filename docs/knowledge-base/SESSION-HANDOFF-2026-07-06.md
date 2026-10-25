@@ -553,9 +553,9 @@ slot6 active 條件、SPAWN2、兩段 PAN、800/200ms 與 FDTXT_003 #4 七句也
 - 2026-07-26 native damage route correction for IDs0..12（official IDA 9.4 ASM）：`0x21548` 開頭 `0x1CA89(actor,id)` 扣 MP，尾端 final target loop 直接 `0x1C75E(target,id)`；ID10 `0x21527`、ID11 `0x2185F`、ID12 `0x21A9E` 皆可閉合 numeric core，ID9 亦 direct `1CA89→1C75E`，IDs0..8 則是 `2A6BD→2B659/1C75E` direct family。`ExecuteNativeCommandDamage` bounded range 恢復 0..12；presentation/SFX 不推論相同。
 - 2026-07-26 official IDA xref export unblocked：使用者合法 `ida-pro-9.4-ver2` local Docker image 以 `/tmp/fd2-ida-analysis` 保存 IDA sidecar、repo 只接收 address-only report。IDA 9.4/Hex-Rays batch 已完成並輸出 `docs/data/ida/fd2_xrefs.json`；`tools/ida_export_fd2_xrefs.py` 移除 IDA 9.4 不存在的 `ida_xref.get_xref_type` 呼叫。repo Dockerfile 仍不含 license；為 IDAPython 安裝的授權 image overlay 只留本機 Docker cache、不可提交。report 僅驗 call graph，不能獨立命名 handler／status 語意。
 - 2026-07-26 modifier MP ABI correction（official IDA 9.4 ASM + raw rows）：jump-table ID17 `0x226EA` 與 ID18 `0x2282F` 都呼叫 `0x1CA89(actor,0x12)`；records17/18 的 seven-byte raw row 完全相同（`00000004020501`），所以可觀察 debit 相同，但不可泛化成 handler 一律傳自身 command ID。ID19 `0x22960` 明確傳 `0x13`。modifier writers／duration 的既有結論不變；這只撤回會污染後續 executor 的 transaction 便利假設。
-- 2026-07-26 ID24 player/AI dispatcher split（official IDA 9.4 ASM + Docker Capstone）：撤回「`funcs_1541f[24]=0x22153` 因此玩家 ID24 是 ID16 heal alias」的錯誤捷徑。該 table 只在 `0x15311` AI／自動 dispatcher 使用，確實會把 ID16 傳入共同 heal tail；玩家 `0x1cff0` 則對 `0x18` 直入 `0x2a6bd→0x276ec`，不經此 table。後者的 `0x2b659` 明確以 `0x1ca89(actor,0x18)` 扣 record24 MP，再以 `trunc(actor.+0x48*15/10)-target.+0x4a` 呼 `0x1c81f`；多段畫面先暫存並復原 HP，最後等份扣至相同 delta。`ExecuteNativeCommand24` 已只接 final non-UI state slice；multi-hit/presentation/SFX/UI 仍未接。同步刪除 doc37 將 `0x2a6bd` 說成武器專用、與 command 無關的舊斷言。
-- 2026-07-26 0x276EC family expansion（official IDA 9.4 ASM）：同一 player handler 對 ID28 選倍率20、ID29 選12、ID31（default）選18，均沿一般 two-stage selector 與 `0x2b659→0x1ca89(actor,id)`；`ExecuteNativeCommandDerivedStrike` 因此將 24/28/29/31 限定接成 state-only final delta。ID30 改走 `0x149f8`，但後續完整 push/arg trace 已關閉其 special selector：先 normal candidate confirm，再從 saved cursor 朝 confirmed cursor 走 `record+3-0x10`（ID30=4）格，X-first／同 X 才 Y、僅 native camp0；最後 `0x2a6bd→0x276ec` default倍率18。`ExecuteNativeCommand30` 已接 explicit-cursor state slice；UI、multi-hit、SFX/indexed renderer 仍未接。IDs32..35 走 `0x27fc9`。
-- 2026-07-26 IDs32..35 compound-handler closure（superseded wording）：`0x27fc9` 對 ID32→`0x2111a→0x1c75e`、ID33 對每 final target 清 `+0x25..+0x27` 後以固定 800 進 `0x211a4→0x1c916`、ID34 順序呼三個 modifier writers `0x22721/0x22866/0x22997`、ID35 順序以 IDs26/22/27 呼 application helper `0x22d1b` 寫 `+0x25/+0x27/+0x26`。早期「wrapper 未見 `0x1ca89`」文字已由後續 `0x2b659` resource-gated callsite correction supersede；不可聲稱免費施放或由 remake 猜扣 MP，四 ID 仍 fail-closed。
+- 2026-07-26 ID24 player/AI dispatcher split（official IDA 9.4 ASM + Docker Capstone）：撤回「`funcs_1541f[24]=0x22153` 因此玩家 ID24 是 ID16 heal alias」的錯誤捷徑。該 table 只在 `0x15311` AI／自動 dispatcher 使用，確實會把 ID16 傳入共同 heal tail；玩家 `0x1cff0` 則對 `0x18` 直入 `0x2a6bd→0x276ec`，不經此 table。後者的 `0x2b659` 明確以 `0x1ca89(actor,0x18)` 扣 record24 MP，再以 `trunc(actor.+0x48*15/10)-target.+0x4a` 呼 `0x1c81f`；多段畫面先暫存並復原 HP，最後等份扣至相同 delta。`ExecuteNativeCommand24`保留規則核心；正式分段演出／SFX及HD已接，現況見58、61。同步刪除 doc37 將 `0x2a6bd` 說成武器專用、與 command 無關的舊斷言。
+- 2026-07-26 0x276EC family expansion（official IDA 9.4 ASM）：同一 player handler 對 ID28 選倍率20、ID29 選12、ID31（default）選18，均沿一般 two-stage selector 與 `0x2b659→0x1ca89(actor,id)`；`ExecuteNativeCommandDerivedStrike` 因此將 24/28/29/31 限定接成 state-only final delta。ID30 改走 `0x149f8`，但後續完整 push/arg trace 已關閉其 special selector：先 normal candidate confirm，再從 saved cursor 朝 confirmed cursor 走 `record+3-0x10`（ID30=4）格，X-first／同 X 才 Y、僅 native camp0；最後 `0x2a6bd→0x276ec` default倍率18。ID30正式玩家入口、原生／HD分段打擊與SFX已接，現況依58、61及fd2_command30_player_acquisition_20261025.json。IDs32..35 走 `0x27fc9`。
+- 2026-07-26 IDs32..35 compound-handler closure（superseded wording）：`0x27fc9` 對 ID32→`0x2111a→0x1c75e`、ID33 對每 final target 清 `+0x25..+0x27` 後以固定 800 進 `0x211a4→0x1c916`、ID34 順序呼三個 modifier writers `0x22721/0x22866/0x22997`、ID35 順序以 IDs26/22/27 呼 application helper `0x22d1b` 寫 `+0x25/+0x27/+0x26`。早期「wrapper 未見 `0x1ca89`」文字已由後續 `0x2b659` resource-gated callsite correction supersede；不可聲稱免費施放或由 remake 猜扣 MP；四ID已接受限class19玩家原生／HD演出，現況見58、61。
 - 2026-07-27 compound raw plan：canonical Docker Capstone 重新固定唯一 caller `0x2a7ce`（由 `0x2a6bd` selector `>=0x20` 進入），新增 `battle.NativeCompoundCommandPlan` 保存 ID32..35 helper order、ID33 inline clear offsets 與 amount `0x320`。這是 editable evidence-only plan；不執行 MP/target/transaction/UI，也不替 raw offsets 命名效果。
 - 2026-07-27 expansion-document assertion audit：撤回 `17-scenario-expansion-evaluation.md` 的「原版評分式 AI 已還原、可照搬」；現以 `11` raw dispatcher/candidate/score slices、完整 AI runtime 未閉合為準。另將 `50` 的 persistence claim 限定為 remake 自有 JSON projection，明確不等於原版 `FD2.SAV` byte identity。
 - 2026-07-26 legacy-status audit correction：`42` 不再把 `TickStatus`／`BuffTurns` 標成原版 status 完成。它們是可玩的 normalized approximation；native `0x1a866` 對 `+0x22..+0x27` 每 camp、逐 byte遞減、歸零才 `0x1b750` 重算，且 raw bytes 的玩法名稱/UI仍未證實。`99` 早期「反組譯研究主體完成」也降為資產 codec 的歷史快照，現況以 SDD/worklist 為準。
@@ -604,7 +604,7 @@ slot6 active 條件、SPAWN2、兩段 PAN、800/200ms 與 FDTXT_003 #4 七句也
 - 2026-07-26 figure displacement closure（Docker Capstone）：`0x2935b` 以 `frameIndex*4+8` 取 animation descriptor 的 relative frame pointer，讀 frame header `u16 +0/+2` 作 X/Y，payload `+9` 交 `0x4e63d`。故逐幀 swing／前傾／後仰是 frame metadata，不是 `0x29f72` 或 unit runtime stat；(164,157) 僅是特定 figure/台座 caller anchor。worklist 將 displacement source 收為完成，保留 caller schedule／攻守配對為未閉合。
 - 2026-07-26 FIGANI placement export regression：新增 `cmd/fd2/TestFIGANIMetaMatchesNativeFrameHeaders`，逐一 decode player `FIGANI.DAT` 中 `meta.json` 的 22 個 resources，對每個 frame 比對 header signed X/Y。實跑通過；runtime PNG/meta bridge 因此可驗證為 native placement data，非手動 layout。
 - 2026-07-26 generic command renderer schedule closure（Docker Capstone）：`0x523b9` 的 `funcs_2ac25` 是 command-indexed handler bank，ID0=`0x26152`。`0x2a6bd` mode0 取 handler step count，640-stride loop per step 依序 mode2、`0x11eb0` 320×200 present、`0x17aa9(1)` tick、mode1，cleanup再 mode4。`0x2b9a1` 讀 frame descriptor byte+6 delay，推 `0x540fc/0x540fd` subframe counters/reset。這閉合 generic schedule，command-specific artwork/effect 意義仍待。
-- 2026-07-26 IDs32..35 player MP-path closure（Docker Capstone + archive）：`0x27fc9` 唯一由 `0x2a6bd` 呼叫，並在 `0x28189` 進共同 `0x2b659`；後者唯一 `0x1ca89` site 以 FIGANI container header `byte+4==1` gate。command-learn row19 的 IDs32..35 可由 player group4..7 optional class19 與 group20 initial class19 得到；其 `group*3+1` resources #13/#16/#19/#22/#61 的 byte4=`2/2/2/5/5`，archive regression 固定此結果。故這些玩家可達路徑繞過**已知** debit sink（仍有 selector MP gate），撤回「每個 spell gate 都代表 deducted」暗示；但 AI／其他 group、未知 writer、compound effects/UI仍未閉合，engine 維持 fail-closed。
+- 2026-07-26 IDs32..35 player MP-path closure（Docker Capstone + archive）：`0x27fc9` 唯一由 `0x2a6bd` 呼叫，並在 `0x28189` 進共同 `0x2b659`；後者唯一 `0x1ca89` site 以 FIGANI container header `byte+4==1` gate。command-learn row19 的 IDs32..35 可由 player group4..7 optional class19 與 group20 initial class19 得到；其 `group*3+1` resources #13/#16/#19/#22/#61 的 byte4=`2/2/2/5/5`，archive regression 固定此結果。故這些玩家可達路徑繞過**已知** debit sink（仍有 selector MP gate），撤回「每個 spell gate 都代表 deducted」暗示；AI／其他group及未知writer仍限於已證實來源；四召喚玩家compound演出／UI已接，依58、61。
 - 2026-07-26 visual-selector field split（Docker Capstone）：`0x127e0` 直接讀 `unit+2`，以 `×12 + pose×3 + cycle` 選 FDICON map sprite；`0x287b5` 則讀 `unit+7`，`0x2884c` 以其 `×3` 載 FIGANI。撤回 runtime 註解中「unit+7 就是 FDICON group／同一欄」的錯誤；已驗證 roster 中兩 visual ids 可相等，並不使 raw ABI 等價。SDD/worklist 將 map／battle selector 明確分開，待 exporter 保存兩欄後才能宣稱所有 runtime unit 的 battle visual 完整。
 - 2026-07-26 battle visual selector bridge correction（final）：完整 stack-slot trace 更正上一輪的誤讀：`0x10d7f` 將 FDFIELD `b1` 放入 local `+8`，`0x10e3a` 以它呼 `0x4e4d1`，`0x10ef8` 再直接寫 runtime `unit+7/+8`；故 FDFIELD `b1→unit+7` 已閉合。`export_units.py` 恢復輸出 `battle_fig=b1`，舊 JSON 才 fallback `fig`。map `unit+2` 的 source 仍未閉合，兩 selector 不可 alias。
 - 2026-07-26 visible terrain pass ABI closure（Docker Capstone `0x11cac`）：standard redraw 以 `0x11eee(buffer+0x8088,0x1c8,13,8,camX,camY)` 先畫地形，接 `0x122dc` range overlay、`0x127a9` unit/foreground layers。新增 `fdicon.Bank.BlitNativeTerrainRegion` 作純 row-major terrain pass，輸入 raw cells/control table/origin/LUT、bounds fail-closed；不將後續 overlay schedule 偷接入。
@@ -5814,7 +5814,7 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
   `+0x22..+0x24`、derived `+0x48..+0x4E`與actor `Acted`。缺任一stage零修改。
 - 正式command whitelist現開放ID34；command grid→target confirm→三段交易測試與
   selector／target fail-closed測試通過。此為`RUNTIME-E1` state slice；
-  `0x27FC9` indexed presentation、EXP、ID32／33／35、AI與E2仍未完成。
+  `0x27FC9`及ID32／33／35玩家原生／HD演出已接，現況見58、61；EXP、AI與完整正常玩家驗收另依目前證據。
 
 ## 2026-08-23：command33 受限玩家 raw clear＋HP restore transaction
 
@@ -6200,10 +6200,9 @@ raw `+3/+5` writes，不是generic redraw；原資源presenter、group9完整tra
 
 # 2026-08-25：指令 30 取得停止線與 32–35 共用演出
 
-- 指令30的特殊雙游標／四格cardinal line與`0x276EC` default倍率18仍為已證實
-  相容核心；但32筆player defaults及固定learn table都沒有ID30，唯一敵方bit30
-  又屬mode8而不進command scorer。因此目前不猜接正式UI，列為無正常producer的
-  強推論；出現動態反證才重開。
+- 指令30的特殊雙游標／四格cardinal line與`0x276EC` default倍率18為已證實規則。
+  固定growth18→learn5於Lv2授予30，正式玩家入口及原生／HD演出已接；見58與61。
+  敵方bit30的mode8不進command scorer，這項敵方證據不推論玩家來源。
 - 授權Docker內IDA Pro 9.4與Capstone固定`0x27FC9`的#65..68 effect、#91..94
   sound、8張actor＋9張effect滑入、main frames、ID32／35的11張尾段、四組raw RGB
   palette及steady restore；完整證據見
@@ -10181,4 +10180,4 @@ SDK11個無重定位與九個原生連結來源重新接回新C基準，兩輪�
 
 ## 2026-10-25 勘誤：蜜蒂的音速刃取得來源
 
-本檔舊段落所稱固定learn table沒有ID30已被原始bytes反證，撤回玩家停止線。growth18的learn_idx5對應Lv2授予30；原始map16 slot36為我方蜜蒂。舊推論保留以回查形成原因，現在依[取得與播放主證據](../data/ida/fd2_command30_player_acquisition_20261025.json)及58、61。本輪已接原生／HD玩家呈現並通過受控RUNTIME-E1；AI mode8、28／31與完整正常／人工／平台的限制保持，不由此宣稱新原版動態。
+已刪除本檔被原始bytes反證的ID30玩家取得停止線。growth18的learn_idx5對應Lv2授予30；原始map16 slot36為我方蜜蒂。原始證據保留，現在依[取得與播放主證據](../data/ida/fd2_command30_player_acquisition_20261025.json)及58、61。本輪已接原生／HD玩家呈現並通過受控RUNTIME-E1；AI mode8、28／31與完整正常／人工／平台的限制保持，不由此宣稱新原版動態。

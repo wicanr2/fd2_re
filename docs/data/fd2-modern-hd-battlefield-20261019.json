@@ -31656,7 +31656,9 @@
           10
         ]
       ],
-      "scope": "正常第三章普通攻擊視窗；不判唯一相位，背景與面板仍含像素素材。"
+      "scope": "正常第三章普通攻擊視窗；不判唯一相位，背景與面板仍含像素素材。",
+      "current_readme_superseded_by": "gaia_v2_normal_followup_20261025",
+      "historical_note": "舊普通第三章圖為91:9／10收勢，這兩幀在v2保持；不可把它當成v2已改待機／蓄力手腕的普通取樣。本次改展示新版91:0待機姿勢，並非同相位前後對照。"
     },
     "catalog_fixture_correction": {
       "failed_log": {
@@ -74817,7 +74819,8 @@
     "lessons_check": {
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-arm-fd2_lessons.py-check-r1.log",
       "sha256": "8fd49356321724cf74452b63e747910b261c3eda6e99c45445d9b9dc6aecb8ef"
-    }
+    },
+    "normal_operation_followup": "gaia_v2_normal_followup_20261025"
   },
   "martial22_battle_followup_20261021": {
     "status": "CONFORMED-SCOPED-RUNTIME-E1",
@@ -228297,5 +228300,1430 @@
     "normal_campaign_complete": false,
     "platform_complete": false,
     "full_hd_complete": false
+  },
+  "gaia_v2_normal_followup_20261025": {
+    "status": "CONFORMED-SCOPED-NORMAL-GUI",
+    "base_commit": "f41856721c12bbfddb859db73e5d1a1f621b099e",
+    "issue": "https://github.com/wicanr2/fd2_re/issues/268",
+    "full_battle_hd_complete": false,
+    "date": "2026-10-25",
+    "production_go_changed": false,
+    "new_assets": false,
+    "catalog_changed": false,
+    "formal_v2_art": "gaia_guard_arm_followup_20261021",
+    "normal_source": {
+      "file": "work/promo-cadence-20261018/hd-fonts/shared-death-player-ch23-r1/source-gui-r1/user-data/fd2_re/fd2_save.json",
+      "sha256": "5d64f3a0bf9aa56f7e77f51e8cfe45fe8c14ab78f2703b966fbc0e142e7bd871"
+    },
+    "native_ancestor_manifest": {
+      "file": "work/promo-cadence-20261018/hd-fonts/shared-death-player-ch23-r1/boosted-slot/manifest.json",
+      "sha256": "56e41cc9857cee09bd4c5f28f670b9048b3f1ebe432b93fa01d8a1d04f9ed453"
+    },
+    "source_policy": {
+      "mode": "boost-only",
+      "target_completed_chapter": 22,
+      "base_ap_plus": 5000,
+      "base_dp_plus": 300,
+      "dx_plus": 60,
+      "max_hp_plus": 1000,
+      "preserve_dead": true,
+      "in_chapter_injection": false
+    },
+    "conditions": {
+      "FD2_SEED": "1",
+      "toolbar_layout": "floating",
+      "window": [
+        1920,
+        1200
+      ],
+      "state_injection": false,
+      "hp_lock": false,
+      "input": "actual X11 keys through Game.Update",
+      "normal_difficulty": false,
+      "original_runtime_executed": false
+    },
+    "gui": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-normal-r1-capture/receipt.json",
+        "sha256": "69051bba6788faf854059f5be357daef48e87219229b7c4d31019f2eb5b963ab"
+      },
+      "binary_sha256": "d7b9959f93c7582548a9883adcb49265cd0ea03d78ccb247d187df03b336840a",
+      "operations": 385,
+      "process_epochs": [
+        0,
+        1
+      ],
+      "progress": [
+        {
+          "action": "normal-move-wait-end",
+          "cell": [
+            20,
+            32
+          ]
+        },
+        {
+          "action": "normal-move-wait-end",
+          "cell": [
+            20,
+            28
+          ]
+        },
+        {
+          "action": "normal-move-wait-end",
+          "cell": [
+            20,
+            24
+          ]
+        },
+        {
+          "action": "normal-move-wait-end",
+          "cell": [
+            19,
+            22
+          ]
+        },
+        {
+          "action": "normal-attack-blocker",
+          "cell": [
+            18,
+            21
+          ]
+        },
+        {
+          "action": "normal-move-wait-end",
+          "cell": [
+            18,
+            21
+          ]
+        },
+        {
+          "action": "normal-move-wait-end",
+          "cell": [
+            19,
+            20
+          ]
+        },
+        {
+          "action": "normal-move-wait-end",
+          "cell": [
+            20,
+            19
+          ]
+        },
+        {
+          "action": "normal-attack-commander",
+          "cell": [
+            20,
+            18
+          ]
+        },
+        {
+          "action": "normal-victory-confirm",
+          "cell": null
+        }
+      ],
+      "final_node": "preparation_ch24",
+      "saved_sha256": "87e4e44b5c9862a727570d50889346147320a090e9b97dc83621380f865aa29b",
+      "actor_samples": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-normal-r1-capture/gaia30-action-00.png",
+          "sha256": "5227e7120484639ee60c24b630777fec46f3ce4956a1eab0414ac6fbd7f9c1a5"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-normal-r1-capture/gaia30-action-01.png",
+          "sha256": "b50cf89b31172205c059a7c5bf36c1e969bce81be9ce0b5adba766d5f1b4c93d"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-normal-r1-capture/gaia30-action-02.png",
+          "sha256": "b50cf89b31172205c059a7c5bf36c1e969bce81be9ce0b5adba766d5f1b4c93d"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-normal-r1-capture/gaia30-action-03.png",
+          "sha256": "ac2fe651655285e16ced22446e4250ae984dfc9ad30b0fd460de142e42e8da9d"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-normal-r1-capture/gaia30-action-04.png",
+          "sha256": "1a3fb7a9c5dd58dddccdb8e5fd92d778abf7e1c6619c46b1f8457ce2fa0cee65"
+        }
+      ],
+      "portrait_samples": 1,
+      "commander_samples": 2
+    },
+    "pixel_core": {
+      "report": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-normal-core-r1.json",
+        "sha256": "0b1ffcb5d1beaeff005f1a321f1339eb6c2de58e885e87251a81dd88506fb8aa"
+      },
+      "matches": [
+        {
+          "scene": "gaia-commander",
+          "file": "gaia30-action-00.png",
+          "sha256": "5227e7120484639ee60c24b630777fec46f3ce4956a1eab0414ac6fbd7f9c1a5",
+          "sample_origin": "normal-action",
+          "resource": 91,
+          "frame": 0,
+          "source_file": "figani-091-hd6-v2-f00.png",
+          "source_sha256": "361233138e2b6bc950670443150af1e9231c22e00656f0ce930a448c7b6a0e8d",
+          "checked_pixels": 270878,
+          "eligible_pixels": 270878,
+          "world_origin": [
+            1134,
+            294
+          ],
+          "clip": null,
+          "visible_eligible_pixels": 270878
+        },
+        {
+          "scene": "gaia-commander",
+          "file": "gaia30-action-01.png",
+          "sha256": "b50cf89b31172205c059a7c5bf36c1e969bce81be9ce0b5adba766d5f1b4c93d",
+          "sample_origin": "normal-action",
+          "resource": 91,
+          "frame": 2,
+          "source_file": "figani-091-hd6-v2-f02.png",
+          "source_sha256": "ebb62eaa7d611da26b34004e2fa46efa8a26ea92285faa4a82c387c384e64dc8",
+          "checked_pixels": 272028,
+          "eligible_pixels": 272028,
+          "world_origin": [
+            1134,
+            294
+          ],
+          "clip": null,
+          "visible_eligible_pixels": 272028
+        },
+        {
+          "scene": "gaia-commander",
+          "file": "gaia30-action-01.png",
+          "sha256": "b50cf89b31172205c059a7c5bf36c1e969bce81be9ce0b5adba766d5f1b4c93d",
+          "sample_origin": "normal-action",
+          "resource": 91,
+          "frame": 3,
+          "source_file": "figani-091-hd6-v2-f03.png",
+          "source_sha256": "ebb62eaa7d611da26b34004e2fa46efa8a26ea92285faa4a82c387c384e64dc8",
+          "checked_pixels": 272028,
+          "eligible_pixels": 272028,
+          "world_origin": [
+            1134,
+            294
+          ],
+          "clip": null,
+          "visible_eligible_pixels": 272028
+        },
+        {
+          "scene": "gaia-commander",
+          "file": "gaia30-action-01.png",
+          "sha256": "b50cf89b31172205c059a7c5bf36c1e969bce81be9ce0b5adba766d5f1b4c93d",
+          "sample_origin": "normal-action",
+          "resource": 91,
+          "frame": 4,
+          "source_file": "figani-091-hd6-v2-f04.png",
+          "source_sha256": "ebb62eaa7d611da26b34004e2fa46efa8a26ea92285faa4a82c387c384e64dc8",
+          "checked_pixels": 272028,
+          "eligible_pixels": 272028,
+          "world_origin": [
+            1134,
+            294
+          ],
+          "clip": null,
+          "visible_eligible_pixels": 272028
+        },
+        {
+          "scene": "gaia-commander",
+          "file": "gaia30-action-02.png",
+          "sha256": "b50cf89b31172205c059a7c5bf36c1e969bce81be9ce0b5adba766d5f1b4c93d",
+          "sample_origin": "normal-action",
+          "resource": 91,
+          "frame": 2,
+          "source_file": "figani-091-hd6-v2-f02.png",
+          "source_sha256": "ebb62eaa7d611da26b34004e2fa46efa8a26ea92285faa4a82c387c384e64dc8",
+          "checked_pixels": 272028,
+          "eligible_pixels": 272028,
+          "world_origin": [
+            1134,
+            294
+          ],
+          "clip": null,
+          "visible_eligible_pixels": 272028
+        },
+        {
+          "scene": "gaia-commander",
+          "file": "gaia30-action-02.png",
+          "sha256": "b50cf89b31172205c059a7c5bf36c1e969bce81be9ce0b5adba766d5f1b4c93d",
+          "sample_origin": "normal-action",
+          "resource": 91,
+          "frame": 3,
+          "source_file": "figani-091-hd6-v2-f03.png",
+          "source_sha256": "ebb62eaa7d611da26b34004e2fa46efa8a26ea92285faa4a82c387c384e64dc8",
+          "checked_pixels": 272028,
+          "eligible_pixels": 272028,
+          "world_origin": [
+            1134,
+            294
+          ],
+          "clip": null,
+          "visible_eligible_pixels": 272028
+        },
+        {
+          "scene": "gaia-commander",
+          "file": "gaia30-action-02.png",
+          "sha256": "b50cf89b31172205c059a7c5bf36c1e969bce81be9ce0b5adba766d5f1b4c93d",
+          "sample_origin": "normal-action",
+          "resource": 91,
+          "frame": 4,
+          "source_file": "figani-091-hd6-v2-f04.png",
+          "source_sha256": "ebb62eaa7d611da26b34004e2fa46efa8a26ea92285faa4a82c387c384e64dc8",
+          "checked_pixels": 272028,
+          "eligible_pixels": 272028,
+          "world_origin": [
+            1134,
+            294
+          ],
+          "clip": null,
+          "visible_eligible_pixels": 272028
+        },
+        {
+          "scene": "gaia-commander",
+          "file": "gaia30-action-03.png",
+          "sha256": "ac2fe651655285e16ced22446e4250ae984dfc9ad30b0fd460de142e42e8da9d",
+          "sample_origin": "normal-action",
+          "resource": 91,
+          "frame": 6,
+          "source_file": "figani-091-hd6-v1-f06.png",
+          "source_sha256": "a46839134587ad5953e9794eb2f0aad4d8114e3a51d5dafa003d192b714e0c6a",
+          "checked_pixels": 645728,
+          "eligible_pixels": 645728,
+          "world_origin": [
+            756,
+            270
+          ],
+          "clip": null,
+          "visible_eligible_pixels": 645728
+        },
+        {
+          "scene": "gaia-commander",
+          "file": "gaia30-action-04.png",
+          "sha256": "1a3fb7a9c5dd58dddccdb8e5fd92d778abf7e1c6619c46b1f8457ce2fa0cee65",
+          "sample_origin": "normal-action",
+          "resource": 91,
+          "frame": 9,
+          "source_file": "figani-091-hd6-v1-f09.png",
+          "source_sha256": "59488f3bf03d6a66f9bb0e94396e140f54fe0d91b572e68d847fe180b7358d1d",
+          "checked_pixels": 273074,
+          "eligible_pixels": 273074,
+          "world_origin": [
+            786,
+            270
+          ],
+          "clip": null,
+          "visible_eligible_pixels": 273074
+        },
+        {
+          "scene": "gaia-commander",
+          "file": "gaia30-action-04.png",
+          "sha256": "1a3fb7a9c5dd58dddccdb8e5fd92d778abf7e1c6619c46b1f8457ce2fa0cee65",
+          "sample_origin": "normal-action",
+          "resource": 91,
+          "frame": 10,
+          "source_file": "figani-091-hd6-v1-f10.png",
+          "source_sha256": "59488f3bf03d6a66f9bb0e94396e140f54fe0d91b572e68d847fe180b7358d1d",
+          "checked_pixels": 273074,
+          "eligible_pixels": 273074,
+          "world_origin": [
+            786,
+            270
+          ],
+          "clip": null,
+          "visible_eligible_pixels": 273074
+        }
+      ],
+      "ambiguous_source_candidates": {
+        "gaia30-action-01.png": [
+          {
+            "resource": 91,
+            "frame": 2
+          },
+          {
+            "resource": 91,
+            "frame": 3
+          },
+          {
+            "resource": 91,
+            "frame": 4
+          }
+        ],
+        "gaia30-action-02.png": [
+          {
+            "resource": 91,
+            "frame": 2
+          },
+          {
+            "resource": 91,
+            "frame": 3
+          },
+          {
+            "resource": 91,
+            "frame": 4
+          }
+        ],
+        "gaia30-action-04.png": [
+          {
+            "resource": 91,
+            "frame": 9
+          },
+          {
+            "resource": 91,
+            "frame": 10
+          }
+        ]
+      },
+      "minimum_checked_pixels": 270878,
+      "pose_groups": {
+        "idle_pose": [
+          [
+            91,
+            0
+          ]
+        ],
+        "charge_compatible": [
+          [
+            91,
+            2
+          ],
+          [
+            91,
+            3
+          ],
+          [
+            91,
+            4
+          ]
+        ],
+        "punch_and_follow": [
+          [
+            91,
+            6
+          ],
+          [
+            91,
+            9
+          ],
+          [
+            91,
+            10
+          ]
+        ]
+      },
+      "limits": "普通取樣辨認姿勢類別，不宣稱90待機銀行或十五幀皆在本次普通GUI逐一擷取；完整十五幀RUNTIME-E1沿前批。"
+    },
+    "guards": {
+      "report": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-normal-guards-r1/guards.json",
+        "sha256": "15e94a28804ef3e7eb4037cf59b2f9d86c94427da8eaab698d5f7e75cd26ee51"
+      },
+      "checks": [
+        {
+          "case": "wrong-receipt",
+          "argv": [
+            "/usr/local/bin/python3",
+            "/repo/tools/verify_fd2_character_battle_gpu.py",
+            "--figure",
+            "30",
+            "--core-profile",
+            "opaque",
+            "--receipt",
+            "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-normal-guards-r1/wrong-receipt.json",
+            "--catalog",
+            "/repo/remake/assets/themes/modern/catalog.json",
+            "--source",
+            "/private",
+            "--report",
+            "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-normal-guards-r1/wrong-receipt-report.json",
+            "--sample-group",
+            "normal-action"
+          ],
+          "status": "PASS-REJECTED",
+          "reason": "需要完整普通攻擊／戰後／保存冷讀收據：清冊SHA不同",
+          "output_published": false
+        },
+        {
+          "case": "wrong-figure",
+          "argv": [
+            "/usr/local/bin/python3",
+            "/repo/tools/verify_fd2_character_battle_gpu.py",
+            "--figure",
+            "34",
+            "--core-profile",
+            "blue",
+            "--receipt",
+            "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-normal-r1-capture/receipt.json",
+            "--catalog",
+            "/repo/remake/assets/themes/modern/catalog.json",
+            "--source",
+            "/private",
+            "--report",
+            "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-normal-guards-r1/wrong-figure-report.json",
+            "--sample-group",
+            "normal-action"
+          ],
+          "status": "PASS-REJECTED",
+          "reason": "需要明示普通蓋亞攻擊者圖源樣本",
+          "output_published": false
+        },
+        {
+          "case": "wrong-source",
+          "argv": [
+            "/usr/local/bin/python3",
+            "/repo/tools/verify_fd2_character_battle_gpu.py",
+            "--figure",
+            "30",
+            "--core-profile",
+            "opaque",
+            "--receipt",
+            "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-normal-r1-capture/receipt.json",
+            "--catalog",
+            "/repo/remake/assets/themes/modern/catalog.json",
+            "--source",
+            "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-normal-guards-r1/wrong-source",
+            "--report",
+            "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-normal-guards-r1/wrong-source-report.json",
+            "--sample-group",
+            "normal-action"
+          ],
+          "status": "PASS-REJECTED",
+          "reason": "圖源雜湊不同",
+          "output_published": false
+        },
+        {
+          "case": "missing-actor",
+          "argv": [
+            "/usr/local/bin/python3",
+            "/repo/tools/verify_fd2_character_battle_gpu.py",
+            "--figure",
+            "30",
+            "--core-profile",
+            "opaque",
+            "--receipt",
+            "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-normal-guards-r1/missing-actor.json",
+            "--catalog",
+            "/repo/remake/assets/themes/modern/catalog.json",
+            "--source",
+            "/private",
+            "--report",
+            "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-normal-guards-r1/missing-actor-report.json",
+            "--sample-group",
+            "normal-action"
+          ],
+          "status": "PASS-REJECTED",
+          "reason": "需要明示普通蓋亞攻擊者圖源樣本",
+          "output_published": false
+        },
+        {
+          "case": "not-declared",
+          "argv": [
+            "/usr/local/bin/python3",
+            "/repo/tools/verify_fd2_character_battle_gpu.py",
+            "--figure",
+            "30",
+            "--core-profile",
+            "opaque",
+            "--receipt",
+            "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-normal-guards-r1/not-declared.json",
+            "--catalog",
+            "/repo/remake/assets/themes/modern/catalog.json",
+            "--source",
+            "/private",
+            "--report",
+            "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-normal-guards-r1/not-declared-report.json",
+            "--sample-group",
+            "normal-action"
+          ],
+          "status": "PASS-REJECTED",
+          "reason": "需要明示普通蓋亞攻擊者圖源樣本",
+          "output_published": false
+        },
+        {
+          "case": "missing-cold-load",
+          "argv": [
+            "/usr/local/bin/python3",
+            "/repo/tools/verify_fd2_character_battle_gpu.py",
+            "--figure",
+            "30",
+            "--core-profile",
+            "opaque",
+            "--receipt",
+            "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-normal-guards-r1/missing-cold-load.json",
+            "--catalog",
+            "/repo/remake/assets/themes/modern/catalog.json",
+            "--source",
+            "/private",
+            "--report",
+            "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-normal-guards-r1/missing-cold-load-report.json",
+            "--sample-group",
+            "normal-action"
+          ],
+          "status": "PASS-REJECTED",
+          "reason": "需要完整普通攻擊／戰後／保存冷讀收據：沒有新程序正常LOAD紀錄",
+          "output_published": false
+        },
+        {
+          "case": "missing-charge",
+          "argv": [
+            "/usr/local/bin/python3",
+            "/repo/tools/verify_fd2_character_battle_gpu.py",
+            "--figure",
+            "30",
+            "--core-profile",
+            "opaque",
+            "--receipt",
+            "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-normal-guards-r1/missing-charge.json",
+            "--catalog",
+            "/repo/remake/assets/themes/modern/catalog.json",
+            "--source",
+            "/private",
+            "--report",
+            "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-normal-guards-r1/missing-charge-report.json",
+            "--sample-group",
+            "normal-action"
+          ],
+          "status": "PASS-REJECTED",
+          "reason": "普通攻擊缺少實際PNG圖源類別：charge",
+          "output_published": false
+        },
+        {
+          "case": "missing-punch",
+          "argv": [
+            "/usr/local/bin/python3",
+            "/repo/tools/verify_fd2_character_battle_gpu.py",
+            "--figure",
+            "30",
+            "--core-profile",
+            "opaque",
+            "--receipt",
+            "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-normal-guards-r1/missing-punch.json",
+            "--catalog",
+            "/repo/remake/assets/themes/modern/catalog.json",
+            "--source",
+            "/private",
+            "--report",
+            "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-normal-guards-r1/missing-punch-report.json",
+            "--sample-group",
+            "normal-action"
+          ],
+          "status": "PASS-REJECTED",
+          "reason": "普通攻擊缺少實際PNG圖源類別：punch",
+          "output_published": false
+        },
+        {
+          "case": "black-actor-pixels",
+          "argv": [
+            "/usr/local/bin/python3",
+            "/repo/tools/verify_fd2_character_battle_gpu.py",
+            "--figure",
+            "30",
+            "--core-profile",
+            "opaque",
+            "--receipt",
+            "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-normal-guards-r1/black-actor-pixels/receipt.json",
+            "--catalog",
+            "/repo/remake/assets/themes/modern/catalog.json",
+            "--source",
+            "/private",
+            "--report",
+            "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-normal-guards-r1/black-actor-pixels-report.json",
+            "--sample-group",
+            "normal-action"
+          ],
+          "status": "PASS-REJECTED",
+          "reason": "未在普通攻防GPU核對到所選人物的攻擊動作：gaia-commander",
+          "output_published": false
+        },
+        {
+          "case": "wrong-actor-translation",
+          "argv": [
+            "/usr/local/bin/python3",
+            "/repo/tools/verify_fd2_character_battle_gpu.py",
+            "--figure",
+            "30",
+            "--core-profile",
+            "opaque",
+            "--receipt",
+            "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-normal-guards-r1/wrong-actor-translation/receipt.json",
+            "--catalog",
+            "/repo/remake/assets/themes/modern/catalog.json",
+            "--source",
+            "/private",
+            "--report",
+            "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-normal-guards-r1/wrong-actor-translation-report.json",
+            "--sample-group",
+            "normal-action"
+          ],
+          "status": "PASS-REJECTED",
+          "reason": "未在普通攻防GPU核對到所選人物的攻擊動作：gaia-commander",
+          "output_published": false
+        }
+      ]
+    },
+    "commander_guard_regression": {
+      "report": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-commander-guards-r1.json",
+        "sha256": "eb47533ff1fe50cb2c48e2a70b7d370b6206039a039fd1a95309c0a34ac17fe8"
+      },
+      "checks": [
+        {
+          "case": "not-pass",
+          "reason": "需要完整正常隊長GUI收據"
+        },
+        {
+          "case": "state-injection",
+          "reason": "需要完整正常隊長GUI收據"
+        },
+        {
+          "case": "wrong-catalog",
+          "reason": "清冊SHA不同"
+        },
+        {
+          "case": "wrong-save",
+          "reason": "保存邊界不同"
+        },
+        {
+          "case": "missing-idle",
+          "reason": "沒有核對到普通攻擊目標348待機"
+        },
+        {
+          "case": "wrong-idle-png",
+          "reason": "圖片SHA不同"
+        },
+        {
+          "case": "missing-portrait",
+          "reason": "缺少116正常故事頭像"
+        },
+        {
+          "case": "wrong-speaker",
+          "reason": "頭像擷取跨越speaker或HD邊界"
+        },
+        {
+          "case": "wrong-rectangle",
+          "reason": "頭像觀測矩形不同"
+        },
+        {
+          "case": "missing-cold-load",
+          "reason": "沒有新程序正常LOAD紀錄"
+        }
+      ]
+    },
+    "death_core_regression": {
+      "report": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-death-core-r1.json",
+        "sha256": "b78260641c3299aeac50a82b1f41f720d8cd3a2cdafd0da1f5025414a86845bd"
+      },
+      "accepted": [
+        {
+          "file": "death23-event-16.png",
+          "candidates": [
+            {
+              "frame": 16,
+              "phase": "overlay_a",
+              "compared_pixels": 692,
+              "rgb_errors_gt3": 0
+            }
+          ]
+        },
+        {
+          "file": "death23-event-17.png",
+          "candidates": [
+            {
+              "frame": 17,
+              "phase": "overlay_a",
+              "compared_pixels": 1247,
+              "rgb_errors_gt3": 0
+            }
+          ]
+        },
+        {
+          "file": "death23-event-20.png",
+          "candidates": [
+            {
+              "frame": 20,
+              "phase": "overlay_b",
+              "compared_pixels": 2213,
+              "rgb_errors_gt3": 0
+            }
+          ]
+        }
+      ],
+      "other_observations": [
+        {
+          "file": "death23-event-00.png",
+          "candidates": []
+        },
+        {
+          "file": "death23-event-01.png",
+          "candidates": []
+        },
+        {
+          "file": "death23-event-02.png",
+          "candidates": []
+        },
+        {
+          "file": "death23-event-03.png",
+          "candidates": []
+        },
+        {
+          "file": "death23-event-04.png",
+          "candidates": []
+        },
+        {
+          "file": "death23-event-05.png",
+          "candidates": []
+        },
+        {
+          "file": "death23-event-06.png",
+          "candidates": []
+        },
+        {
+          "file": "death23-event-08.png",
+          "candidates": []
+        },
+        {
+          "file": "death23-event-09.png",
+          "candidates": []
+        },
+        {
+          "file": "death23-event-10.png",
+          "candidates": []
+        },
+        {
+          "file": "death23-event-12.png",
+          "candidates": [
+            {
+              "frame": 13,
+              "phase": "overlay_a",
+              "compared_pixels": 20,
+              "rgb_errors_gt3": 20
+            }
+          ]
+        },
+        {
+          "file": "death23-event-13.png",
+          "candidates": [
+            {
+              "frame": 13,
+              "phase": "overlay_a",
+              "compared_pixels": 20,
+              "rgb_errors_gt3": 0
+            },
+            {
+              "frame": 14,
+              "phase": "overlay_a",
+              "compared_pixels": 71,
+              "rgb_errors_gt3": 70
+            }
+          ]
+        },
+        {
+          "file": "death23-event-14.png",
+          "candidates": [
+            {
+              "frame": 14,
+              "phase": "overlay_a",
+              "compared_pixels": 71,
+              "rgb_errors_gt3": 0
+            },
+            {
+              "frame": 16,
+              "phase": "overlay_a",
+              "compared_pixels": 692,
+              "rgb_errors_gt3": 692
+            }
+          ]
+        },
+        {
+          "file": "death23-event-18.png",
+          "candidates": [
+            {
+              "frame": 18,
+              "phase": "overlay_a",
+              "compared_pixels": 3410,
+              "rgb_errors_gt3": 3153
+            },
+            {
+              "frame": 20,
+              "phase": "overlay_b",
+              "compared_pixels": 2213,
+              "rgb_errors_gt3": 2136
+            }
+          ]
+        },
+        {
+          "file": "death23-event-22.png",
+          "candidates": []
+        }
+      ],
+      "limits": "僅三張適用A／B不透明核心通過；十五張其他觀測不作此核心通過聲明。"
+    },
+    "bounded_runs": [
+      {
+        "name": "gaia-v2-normal-r1",
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-normal-r1.log",
+          "sha256": "b734c715f232f4ca09451c672f6924b2942378819027aaac8613cce74a7bc47b"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-normal-r1.memory.json",
+          "sha256": "22a46c17d84be92107ec4e5da25c0f30a838d6b31198dff753a6a8a3cd0a714a"
+        },
+        "elapsed_seconds": 595.558,
+        "peak_bytes": 5445234688,
+        "oom": 0,
+        "timeout": false
+      },
+      {
+        "name": "gaia-v2-normal-core-r1",
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-normal-core-r1.log",
+          "sha256": "e027079bf6903f806db632d6f51bb7750d3d144493dc349ca18dc3b16f90bbfb"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-normal-core-r1.memory.json",
+          "sha256": "cf601c0883557e64f3812afb99fb165987f6f3ca09c00b31fdfb13ef15900529"
+        },
+        "elapsed_seconds": 9.021,
+        "peak_bytes": 794017792,
+        "oom": 0,
+        "timeout": false
+      },
+      {
+        "name": "gaia-v2-death-core-r1",
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-death-core-r1.log",
+          "sha256": "e9578a9baf76eec02d8486feb194c5e9a917b94be0ddfc23174d98bd44b868e7"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-death-core-r1.memory.json",
+          "sha256": "4fe9551aae0d3b1e4abba24c3aa5be722fc9301a3e9e812231e08cfe5fbaad68"
+        },
+        "elapsed_seconds": 2.006,
+        "peak_bytes": 172834816,
+        "oom": 0,
+        "timeout": false
+      },
+      {
+        "name": "gaia-v2-commander-guards-r1",
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-commander-guards-r1.log",
+          "sha256": "1ced2bf86f9f197f60e55975d8d330e41ff60019efc56d50c69d3693ee5249e5"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-commander-guards-r1.memory.json",
+          "sha256": "51d90c6f42ecc1db4e8becec22c95c5ad1f5139b379041edd4d2644e913c3100"
+        },
+        "elapsed_seconds": 11.522,
+        "peak_bytes": 157933568,
+        "oom": 0,
+        "timeout": false
+      },
+      {
+        "name": "gaia-v2-normal-guards-r1",
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-normal-guards-r1.log",
+          "sha256": "8c0baa19e46bf4ab27bb27f59545f99428ec10b9499b7363935c46ba406d7b23"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-normal-guards-r1.memory.json",
+          "sha256": "cee0099ae0f0c1f84a28b688c9114eb6ea5d61010d5ab48096de821233297d99"
+        },
+        "elapsed_seconds": 36.591,
+        "peak_bytes": 988815360,
+        "oom": 0,
+        "timeout": false
+      },
+      {
+        "name": "gaia-v2-legacy-fixture-r1",
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-legacy-fixture-r1.log",
+          "sha256": "8f36eb877fa9624b49af2d2e5f87b12906b378e274a2cc43dfbebdc69f2dfc98"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-legacy-fixture-r1.memory.json",
+          "sha256": "3aa1766ebb715200d3fb2b0e0b655ac09dcb65e56dacd84833a118432a42d2e0"
+        },
+        "elapsed_seconds": 49.557,
+        "peak_bytes": 1329004544,
+        "oom": 0,
+        "timeout": false
+      },
+      {
+        "name": "gaia-v2-legacy-core-r1",
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-legacy-core-r1.log",
+          "sha256": "57655c1fff9a035e5cb38bc521d0c453155b323438260fb2c8e99092c8ac836a"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-legacy-core-r1.memory.json",
+          "sha256": "068be7f973f2b2447e6c6608e80262e2325d95b8bd19a53bdfe87d65ad4dc015"
+        },
+        "elapsed_seconds": 12.02,
+        "peak_bytes": 728256512,
+        "oom": 0,
+        "timeout": false
+      }
+    ],
+    "source_files": [
+      {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "61515a76e124d65461cff0d8df77a1c2557afe6e90af60ddca82d6ce6ba16a4d"
+      },
+      {
+        "file": "tools/fd2_hd_death_gui.py",
+        "sha256": "2670dcb3230d935ba74c20e142e046d82bfa1f8fccc39345c9dbf0ce01930bf0"
+      },
+      {
+        "file": "tools/verify_fd2_character_battle_gpu.py",
+        "sha256": "884eeb220c8562078fa7c82cf2137b3d9c8fe2e41af6d4bf8fbe6b53db6ec02a"
+      },
+      {
+        "file": "tools/test_fd2_character_battle_gpu.py",
+        "sha256": "a76129bfd8592b45adde5258cda00586298ee9e4f4ba19f44be03dc92f7b2a1e"
+      },
+      {
+        "file": "tools/verify_fd2_commander_normal.py",
+        "sha256": "4ee0fe4afaf5cb2a74d24fda858763f47ba4bfe22f5bfc0c8e29c05953fbae40"
+      },
+      {
+        "file": "tools/test_verify_fd2_commander_normal.py",
+        "sha256": "3daed84bb6e1cf0d8354a5a03ce4ae4707a1032edb406608c4deb6651161d532"
+      },
+      {
+        "file": "tools/verify_fd2_hd_death_normal.py",
+        "sha256": "29d771eca638c2c8656c074633884b60538201ea1d534841fcfb00413671d9c8"
+      },
+      {
+        "file": "tools/fd2_go_test_memory_probe.py",
+        "sha256": "8e7c9c55b85aa72a5026b944233b94f7c0787f51b3f5ebb178ed54cc333e40f2"
+      }
+    ],
+    "readme": {
+      "file": "docs/figures/hd-gaia-physical-attack.png",
+      "sha256": "5227e7120484639ee60c24b630777fec46f3ce4956a1eab0414ac6fbd7f9c1a5",
+      "source": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-normal-r1-capture/gaia30-action-00.png",
+      "previous_readme_sha256": "a74b6c8fd0a877a5a51c76b6819e46b56d7da0c1a1d23452a0a286e792ca55e5",
+      "operation": "byte-identical full1920x1200 normal GUI PNG; no crop, scale or repaint",
+      "scope": "第23章章前強化來源；v2待機姿勢的普通攻擊畫面，非人工造型完成或新原版對拍"
+    },
+    "toolchain": {
+      "go_image": "fd2-go-test-local:latest",
+      "go_image_id": "sha256:e4a805c52a3ad5d8c22cf23f2bcf51c6924e5ad6b99554f1b02761903c725433",
+      "gui_image": "fd2-promo:20261017-r1",
+      "gui_image_id": "sha256:2dd9f94a4a0e0134ca40fbe3e321b692ad40fd137b6adc43bed97c84f11b45cb",
+      "gui_image_restored_from": {
+        "file": "tools/docker/fd2-promo.Dockerfile",
+        "sha256": "ba3786131fbdaaa37d8cac3cdf74c0ec8a46894598a4779413401a4f008fe6b4"
+      },
+      "assets_image": "fd2-assets-local:20260829-sfx",
+      "assets_image_id": "sha256:e59237a31d4b5f7a62c59ac37b780bd93f17c99fda97be8f5ca0c53978b878bc",
+      "scope": "原GUI映像已清理；檢查Go映像缺件後恢復既有Dockerfile同一標籤，沒有建立功能重複的新工具鏈。執行皆UID1000、network none、CPU／記憶體／PID及時間有界。"
+    },
+    "reproduce": {
+      "binary": "Go1.22既有映像中go build ./cmd/fd2，產物只放既有work輸出，驗後清理。",
+      "gui_args": [
+        "--battle-status",
+        "--world",
+        "--battle-hd",
+        "--battle-node",
+        "battle_ch23",
+        "--death-event",
+        "53",
+        "--death-kind",
+        "action",
+        "--death-commander-hd",
+        "--death-actor-art",
+        "--startup-timeout",
+        "180"
+      ],
+      "source_flags": "--town-save <normal_source> --binary <新建Go執行檔> --assets /repo/remake --original-pack /original --modern-pack /private --out <既有work根下新目錄>",
+      "isolated": "6GiB／2CPU／256pids；memory probe1050s，GUI外層1020s；原版與私人現代包唯讀。",
+      "pixel_args": [
+        "--figure",
+        "30",
+        "--core-profile",
+        "opaque",
+        "--sample-group",
+        "normal-action"
+      ],
+      "entry": "規格61：蓋亞v2普通攻擊與自然返回補驗"
+    },
+    "scope": "第23章章前強化來源的普通鍵盤選角、移動、END、清阻擋敵軍、蓋亞攻擊隊長、死亡、自然戰後、F2、保存與新程序LOAD；實際PNG匹配目前v2圖源。",
+    "human_review": "PENDING per user decision: after all HD integration; no per-character approval request",
+    "remaining": [
+      "集中人工確認手腕／拳頭自然度",
+      "蓋亞普通END參戰圖源抽樣",
+      "其餘完整HD及跨平台驗收"
+    ],
+    "not_claimed": [
+      "自然難度",
+      "新原版動態或PLAYER-E2",
+      "普通GUI完整十五幀／唯一frame",
+      "人工造型或音訊聽感",
+      "平台效能餘裕"
+    ],
+    "recordings_created": false,
+    "private_assets_changed": false,
+    "legacy_fixture_regression": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-legacy-fixture-r1-capture/receipt.json",
+        "sha256": "d85a31ea751a972c6db147215588ee310ff1ce747bc51d6aad657ba161c9e2b5"
+      },
+      "pixel_core": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-legacy-core-r1.json",
+        "sha256": "71d6c1915b7cf6ed7a1929f5f8da7bf06c4fa3e0bdb604fff983a4848c8b32d8"
+      },
+      "status": "PASS-CHARACTER-FIXTURE-GPU",
+      "source_frames": 15,
+      "matches": [
+        {
+          "scene": "fixture",
+          "file": "090-00.png",
+          "sha256": "60f1120dfe92ea464608f5ae37f47c4304a1dc036ed6911d22d936d6bf84e1ab",
+          "sample_origin": "fixture",
+          "resource": 90,
+          "frame": 0,
+          "source_file": "figani-090-hd6-v2-f00.png",
+          "source_sha256": "361233138e2b6bc950670443150af1e9231c22e00656f0ce930a448c7b6a0e8d",
+          "checked_pixels": 270878,
+          "eligible_pixels": 270878,
+          "world_origin": [
+            1134,
+            294
+          ],
+          "clip": null,
+          "visible_eligible_pixels": 270878
+        },
+        {
+          "scene": "fixture",
+          "file": "090-01.png",
+          "sha256": "072c809ba9e85e783a0ca087ddea9d26bf5dd51eb225d18888baa91fdf65b193",
+          "sample_origin": "fixture",
+          "resource": 90,
+          "frame": 1,
+          "source_file": "figani-090-hd6-v2-f01.png",
+          "source_sha256": "580a70676cf82e5f4a5da20dc6cf2936f007046546b699eb123b14ec7260ef4b",
+          "checked_pixels": 267007,
+          "eligible_pixels": 267007,
+          "world_origin": [
+            1134,
+            300
+          ],
+          "clip": null,
+          "visible_eligible_pixels": 267007
+        },
+        {
+          "scene": "fixture",
+          "file": "090-02.png",
+          "sha256": "e29e7dd68665c8dbb4e1164706514b52b8bff48728e7af7c9514d55eebc2e2a7",
+          "sample_origin": "fixture",
+          "resource": 90,
+          "frame": 2,
+          "source_file": "figani-090-hd6-v2-f02.png",
+          "source_sha256": "eb822803d0fe8c1c048e5df9647215a0b08c88283c5f7ab7919ec2bd33c06743",
+          "checked_pixels": 263377,
+          "eligible_pixels": 263377,
+          "world_origin": [
+            1134,
+            306
+          ],
+          "clip": null,
+          "visible_eligible_pixels": 263377
+        },
+        {
+          "scene": "fixture",
+          "file": "090-03.png",
+          "sha256": "86e204abeefe4b43d3e4237b68792efaf20af875e39c8775f5a4635826d51ca3",
+          "sample_origin": "fixture",
+          "resource": 90,
+          "frame": 3,
+          "source_file": "figani-090-hd6-v2-f03.png",
+          "source_sha256": "580a70676cf82e5f4a5da20dc6cf2936f007046546b699eb123b14ec7260ef4b",
+          "checked_pixels": 267007,
+          "eligible_pixels": 267007,
+          "world_origin": [
+            1134,
+            300
+          ],
+          "clip": null,
+          "visible_eligible_pixels": 267007
+        },
+        {
+          "scene": "fixture",
+          "file": "091-00.png",
+          "sha256": "717b4d52baed407759f3f18d0602a5c8020b62a17c4c9a99df94d60726f0e70d",
+          "sample_origin": "fixture",
+          "resource": 91,
+          "frame": 0,
+          "source_file": "figani-091-hd6-v2-f00.png",
+          "source_sha256": "361233138e2b6bc950670443150af1e9231c22e00656f0ce930a448c7b6a0e8d",
+          "checked_pixels": 270878,
+          "eligible_pixels": 270878,
+          "world_origin": [
+            1134,
+            294
+          ],
+          "clip": null,
+          "visible_eligible_pixels": 270878
+        },
+        {
+          "scene": "fixture",
+          "file": "091-01.png",
+          "sha256": "2f264c0fb3c4e567b8ba5b7fda6422127892b1e8ca531e957270dd307b4d9d67",
+          "sample_origin": "fixture",
+          "resource": 91,
+          "frame": 1,
+          "source_file": "figani-091-hd6-v2-f01.png",
+          "source_sha256": "170d2db277545e8779b45bbcefbccd056e677aa8bfdf332ab690dff484631f0b",
+          "checked_pixels": 272028,
+          "eligible_pixels": 272028,
+          "world_origin": [
+            1134,
+            294
+          ],
+          "clip": null,
+          "visible_eligible_pixels": 272028
+        },
+        {
+          "scene": "fixture",
+          "file": "091-02.png",
+          "sha256": "234ffc3f036ec12e1714961f62ad8e18cef14a64ae96dff5764a2f66fe47f592",
+          "sample_origin": "fixture",
+          "resource": 91,
+          "frame": 2,
+          "source_file": "figani-091-hd6-v2-f02.png",
+          "source_sha256": "ebb62eaa7d611da26b34004e2fa46efa8a26ea92285faa4a82c387c384e64dc8",
+          "checked_pixels": 272028,
+          "eligible_pixels": 272028,
+          "world_origin": [
+            1134,
+            294
+          ],
+          "clip": null,
+          "visible_eligible_pixels": 272028
+        },
+        {
+          "scene": "fixture",
+          "file": "091-03.png",
+          "sha256": "83d6942cef5ea19f32a9333c99f5a60a5f5508b1a34de1ed25beae1acefa5899",
+          "sample_origin": "fixture",
+          "resource": 91,
+          "frame": 3,
+          "source_file": "figani-091-hd6-v2-f03.png",
+          "source_sha256": "ebb62eaa7d611da26b34004e2fa46efa8a26ea92285faa4a82c387c384e64dc8",
+          "checked_pixels": 272028,
+          "eligible_pixels": 272028,
+          "world_origin": [
+            1134,
+            294
+          ],
+          "clip": null,
+          "visible_eligible_pixels": 272028
+        },
+        {
+          "scene": "fixture",
+          "file": "091-04.png",
+          "sha256": "d6de3422a8aa60a62f18a4f797fead438201999cbc95696e45923c11d2c215e5",
+          "sample_origin": "fixture",
+          "resource": 91,
+          "frame": 4,
+          "source_file": "figani-091-hd6-v2-f04.png",
+          "source_sha256": "ebb62eaa7d611da26b34004e2fa46efa8a26ea92285faa4a82c387c384e64dc8",
+          "checked_pixels": 272028,
+          "eligible_pixels": 272028,
+          "world_origin": [
+            1134,
+            294
+          ],
+          "clip": null,
+          "visible_eligible_pixels": 272028
+        },
+        {
+          "scene": "fixture",
+          "file": "091-05.png",
+          "sha256": "9e29be4a197d327324381fa08947e3529323279d98dcf28a350a97f1fd522a57",
+          "sample_origin": "fixture",
+          "resource": 91,
+          "frame": 5,
+          "source_file": "figani-091-hd6-v2-f05.png",
+          "source_sha256": "d5eafd7a88286c808951f71a55ca780cd3ef1f5d914e3c9b8e03b8772a6130c2",
+          "checked_pixels": 272028,
+          "eligible_pixels": 272028,
+          "world_origin": [
+            1134,
+            294
+          ],
+          "clip": null,
+          "visible_eligible_pixels": 272028
+        },
+        {
+          "scene": "fixture",
+          "file": "091-06.png",
+          "sha256": "1c4ef9b95b29cb513a8c7fd4b6b73c3c492e3715d90fe1d421aae301722863ef",
+          "sample_origin": "fixture",
+          "resource": 91,
+          "frame": 6,
+          "source_file": "figani-091-hd6-v1-f06.png",
+          "source_sha256": "a46839134587ad5953e9794eb2f0aad4d8114e3a51d5dafa003d192b714e0c6a",
+          "checked_pixels": 645728,
+          "eligible_pixels": 645728,
+          "world_origin": [
+            756,
+            270
+          ],
+          "clip": null,
+          "visible_eligible_pixels": 645728
+        },
+        {
+          "scene": "fixture",
+          "file": "091-07.png",
+          "sha256": "3ce70661cbe9909625c60f589279ec1f74cd630110cbb6661e5d4310a358dccb",
+          "sample_origin": "fixture",
+          "resource": 91,
+          "frame": 7,
+          "source_file": "figani-091-hd6-v1-f07.png",
+          "source_sha256": "b5efc1bae99cb8d077b026abd5d1d34660a0c950fd597d13ef8c662d2b786ab3",
+          "checked_pixels": 271253,
+          "eligible_pixels": 271253,
+          "world_origin": [
+            774,
+            276
+          ],
+          "clip": null,
+          "visible_eligible_pixels": 271253
+        },
+        {
+          "scene": "fixture",
+          "file": "091-08.png",
+          "sha256": "95958075d6af93c523292faa3b7fc2c2540aec16b214f36891b9c86b46939278",
+          "sample_origin": "fixture",
+          "resource": 91,
+          "frame": 8,
+          "source_file": "figani-091-hd6-v1-f08.png",
+          "source_sha256": "a72164c7260530ee63fafc70e382bd094587fe491caee5357d9bbc73a79f6baa",
+          "checked_pixels": 274859,
+          "eligible_pixels": 274859,
+          "world_origin": [
+            780,
+            270
+          ],
+          "clip": null,
+          "visible_eligible_pixels": 274859
+        },
+        {
+          "scene": "fixture",
+          "file": "091-09.png",
+          "sha256": "ecbb8a25fbe5ce99f691fd665e4e5f029f0225ef0a90cd8d40760da5a77d73df",
+          "sample_origin": "fixture",
+          "resource": 91,
+          "frame": 9,
+          "source_file": "figani-091-hd6-v1-f09.png",
+          "source_sha256": "59488f3bf03d6a66f9bb0e94396e140f54fe0d91b572e68d847fe180b7358d1d",
+          "checked_pixels": 273074,
+          "eligible_pixels": 273074,
+          "world_origin": [
+            786,
+            270
+          ],
+          "clip": null,
+          "visible_eligible_pixels": 273074
+        },
+        {
+          "scene": "fixture",
+          "file": "091-10.png",
+          "sha256": "62e508608fe837d5fe6c7ef3556d0ff8d396e327528928514ba1ad5a9f442bf9",
+          "sample_origin": "fixture",
+          "resource": 91,
+          "frame": 10,
+          "source_file": "figani-091-hd6-v1-f10.png",
+          "source_sha256": "59488f3bf03d6a66f9bb0e94396e140f54fe0d91b572e68d847fe180b7358d1d",
+          "checked_pixels": 273074,
+          "eligible_pixels": 273074,
+          "world_origin": [
+            786,
+            270
+          ],
+          "clip": null,
+          "visible_eligible_pixels": 273074
+        }
+      ],
+      "battle_dac_steps": 64,
+      "map_dac_steps": 65,
+      "phase_hd_draws": {
+        "body": 89,
+        "counter": 74,
+        "fade": 64,
+        "prelude": 10,
+        "restore": 21
+      },
+      "scope": "舊fixture核對模式及全部15個來源幀回歸；不是普通玩家15幀或人工造型批准。"
+    },
+    "cleanup": {
+      "removed_rebuildable_binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-normal-current-r1",
+        "sha256": "d7b9959f93c7582548a9883adcb49265cd0ea03d78ccb247d187df03b336840a"
+      },
+      "bytes": 20618216,
+      "reason": "普通GUI收據與來源已保存，依使用者空間政策移除可重建執行檔；正式交付與圖源不變。",
+      "recordings_created": false,
+      "docker_containers": "本批一次性容器皆已退出並由--rm清除，無非預期FD2容器。其他專案容器未動。",
+      "docker_images": "保留五項目前FD2工具鏈；本輪恢復GUI使用既有標籤，無新增重複版本。"
+    },
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-normal-final-validation-r1.json",
+      "sha256": "55806a9ca38e6f31667410f98896be591d698fcc050ad30585f5ac3402c619f1",
+      "status": "PASS"
+    }
+  },
+  "retired_stoplines_20261025": {
+    "source": "使用者本對話明示：與使用者指示衝突或已過期的停止線直接刪除；已接HD且流程與原版一致的絕招不因舊斷言重開。",
+    "retired_topics": [
+      "ID30玩家無固定學招來源",
+      "ID30玩家游標／多目標演出／音效未接",
+      "ID32–35 indexed演出未接",
+      "高解析目標未定案",
+      "蓋亞大型FIGANI仍為原版",
+      "ID24／29分段演出與SFX未接",
+      "ID32–35原生演出仍全面拒收",
+      "ID35 indexed畫格未知作為HD停止線"
+    ],
+    "current_evidence": [
+      "docs/data/ida/fd2_command30_player_acquisition_20261025.json",
+      "docs/data/fd2-modern-hd-battlefield-20261019.json#compound_scenery_followup_20261024",
+      "docs/data/fd2-modern-hd-battlefield-20261019.json#gaia_v2_normal_followup_20261025"
+    ],
+    "updated_documents": [
+      "AGENTS.md",
+      "WORKLOG.md",
+      "docs/data/ida/fd2_command28_31_reachability_ida.txt",
+      "docs/data/ida/fd2_command35_transaction_ida.txt",
+      "docs/knowledge-base/13-battle-menu-system.md",
+      "docs/knowledge-base/56-fd2-remake-sdd.md",
+      "docs/knowledge-base/57-ui-evidence-matrix.md",
+      "docs/knowledge-base/58-fd2-exe-re-coverage.md",
+      "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+      "docs/knowledge-base/91-worklist-history.md",
+      "docs/knowledge-base/SESSION-HANDOFF-2026-07-06.md"
+    ],
+    "updated_issues": [
+      4,
+      201,
+      202,
+      204,
+      263,
+      268
+    ],
+    "damage_formula_future_issue": 278,
+    "damage_formula_status": "DRAFT／後續可調整，原版預設保留；本批未改平衡／保存格式或設定架構。",
+    "not_reopened": [
+      "ID28／31未證實正常來源",
+      "敵方ID30 mode8",
+      "混合header反擊#265"
+    ],
+    "human_review": "全部HD串接後集中人工確認，維持#268／#269開啟。"
   }
 }

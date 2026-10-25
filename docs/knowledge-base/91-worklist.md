@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 24 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 25 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -66,17 +66,17 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 ### P1 HD／現代主題總項：素材覆蓋、正常路徑與交付驗收
 
-`modern-theme-prototype-status` · 工作 · [#4](https://github.com/wicanr2/fd2_re/issues/4) · 仍未完成 · 自承還在 remake/assets/themes/modern/catalog.json
+`modern-theme-prototype-status` · 工作 · [#4](https://github.com/wicanr2/fd2_re/issues/4) · 仍未完成 · 要人判
 
-排程：P1，與P0戰役主線交錯推進。沿用61已核准的modern-handpainted-a手繪風格、靜態閉嘴與原子預檢契約。
+使用者已選1920×1200畫布、480×480頭像及清晰黑體，並確認HD2斜角站姿、雙側海報與單列頂端浮出工具列方向。刪除高解析範圍尚未選定及僅有原生尺寸候選的過期停止線。
 
-目前是原生尺寸重繪候選，不宣稱已完成高解析呈現。清冊、實體檔案及consumer核對結果只見 [58](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md) 與 [61](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/61-modern-theme-runtime-spec.md)。selector39／57是純目的地重映射，不列缺人物圖。
+現行頭像、字型、人物／戰鬥演出、部分地形與HUD已分切片接入並驗證；浮出工具列主題／四語系與蓋亞v2正常流程已有目前收據。目前狀態依[58](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)，契約及重跑入口依[61](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/61-modern-theme-runtime-spec.md)，主收據為docs/data/fd2-modern-hd-battlefield-20261019.json。
 
-拆成可驗收子項：全玩家路徑素材覆蓋與缺件報告；早／中／晚期正常操作及戰場返回的現代呈現；高解析呈現範圍確認與可丟棄原型。高解析倍率、幾何與素材資料格式未定案前不改production；不把目前24×24／80×80圖直接放大當作新增HD細節。
+仍需其餘地形、HD2圖源、完整HUD與操作介面、介面／主題獨立控制、字級／加速／海報漸層，以及全部HD後集中正常玩家／人工／平台與封包驗收。總項保持開啟。子項以#201、#202、#204與#263為入口，不沿用已關閉工具鏈工單作阻擋。
 
-公開庫只存引擎、清冊、證據及已獲准總覽；素材沿allow-list同步唯一私人保存庫，維持private。
+使用者2026-10-25定案：已接HD且有目前原版證據支持流程一致的絕招，維持已驗範圍。過期或與指示衝突的停止線直接刪除，不以逐幀一致重開；傷害公式允許後續調整，原版預設值保留。全部HD先接上，再集中人工確認。
 
-執行子項：#201 素材需求、#202 正常玩家驗收、#204 高解析範圍／原型；#203 提供正式回歸環境。
+素材沿清冊白名單保存於唯一私人庫；公開庫只放引擎、清冊、收據與已授權總覽。
 
 怎樣算做完：素材覆蓋及正常路徑子項完成；高解析範圍經使用者確認並依其規格驗收；catalog／loader／同步工具的正式狀態一致；私人包與封包驗收通過後才將總項結案。
 
@@ -126,15 +126,13 @@ FDFIELD回合事件由完整具型別處理器降成正式劇本，保留增援�
 
 `modern-theme-player-asset-coverage` · 工作 · [#201](https://github.com/wicanr2/fd2_re/issues/201) · 仍未完成 · 要人判
 
-全部HD仍未完成，本項保持開啟。使用者2026-10-21定案：先確認signal: killed，完成全部HD串接後，再集中人工確認與回報，不逐人物插入人工進軍。原驗收條件保持。唯一覆蓋數量及缺口依[58現況矩陣](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)，契約見61。
+全部HD尚未完成。先完成全部HD串接，再集中人工確認與回報。目前狀態依[58](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)，契約及重跑入口依[61](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/61-modern-theme-runtime-spec.md)，主收據為docs/data/fd2-modern-hd-battlefield-20261019.json。
 
-普通2／3／7／8人物已沿同次typed producer接入，保持數值、亂數、聲音與保存格式；四者完整Game.Draw／F2、MP一次／HP6、13、5、16段與一次續行通過，來源重組1891張GPU畫布相符。正常2／8施法、取消／返回、F2與章節邊界冷讀在暫停前已通過；3／7及集中人工確認待全部HD串接後執行。FDOTHER特效仍有像素來源，沒有把fixture升格為正常玩家或新原版parity。
+人物、指令與效果的目前覆蓋以受版控consumer盤點及實際清冊為準，已驗切片不因舊缺件列表重開。原signal: killed已定位4 GiB核心OOM；既有標準8 GiB／4 CPU回歸及後續有界切片收據保留，不要求為同一歷史失敗反覆重跑。
 
-全套Go原失敗已由同時刻核心MEMCG事件及4 GB受控重跑oom_kill=1確認。8 GB比較輪無OOM但碰650秒總時限，保留非PASS；標準8 GB／4 CPU、1200秒的主程式重跑通過，峰值約7.04 GiB，其他19套件沿比較輪通過。這是分輪彙整，沒有冒稱單一完整命令全部成功；專用GPU略過與獨立執行另列。標準測試入口補足總時限、外層終止、真實失敗碼及Docker內基線分析。
+仍須補其餘地形、HD2人物及地形圖源、完整HUD與操作介面、工具列其餘控制。來源要沿正式consumer接入，缺件明示且切換原子；登錄後同步私人庫。正常玩家及集中人工／平台依#202、#204與#263，來源齊全不等於所有玩家流程已驗。
 
-BattleFig110的330／331／332三組原24幀已正式登錄。物理16張及施術21張最終GPU取樣核心符合，包含全部八張施術來源；332:0..7原始PNG／Mask／尺寸逐項等於331:0..7，來源誤判已在spec追加勘誤。六姿勢共用、12個高覆蓋裁切像素與原RGBA保持均明示；完整及runtime-only載入／缺件與F2原子性通過。完整圖板與六張來源沿清冊白名單存入私人庫6cb283ebd99d84471e1ca57e4210cd95a9e1d164，實際遠端HEAD已核相同，維持private。
-
-其餘人物、指令6及其他未列指令／效果、地形／前景、背景、完整介面與平台效能仍待。來源集中於[HD主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-battlefield-20261019.json)的ordinary_remaining_hd_followup_20261021、winged110_battle_followup_20261021及hd_integration_order_20261021。沒有新Release或完整HD完成聲明。
+使用者2026-10-25定案：已接HD且有目前原版證據支持流程一致的絕招，維持已驗範圍。過期或與指示衝突的停止線直接刪除，不以逐幀一致重開；傷害公式允許後續調整，原版預設值保留。全部HD先接上，再集中人工確認。
 
 怎樣算做完：受版控需求盤點可重跑，列出來源與consumer；既有已核准現代替換範圍零非預期缺件，其他畫面各有明示分類與決策；缺件拒收與原子切換回歸通過，私人包雜湊及遠端HEAD可核對。
 
@@ -168,6 +166,8 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 `modern-theme-highres-prototype` · 工作 · [#204](https://github.com/wicanr2/fd2_re/issues/204) · 仍未完成 · 要人判
 
+蓋亞手腕v2已補第23章正常鍵盤操作：選角、進軍八回合、攻擊116隊長、死亡、自然戰後至第24章整備，F2、保存及新程序標題LOAD通過。五張實際PNG涵蓋新版待機／蓄力／出拳，人物與既有隊長守衛共20項反例拒收；舊fixture模式十五幀Game.Draw／F2與逐圖核心回歸也通過。章前強化來源及seed如實登錄，章內無鎖血；不由此宣稱自然難度或原版逐幀一致。GUI約596秒、峰值約5.07 GiB，6 GiB／2 CPU下無OOM／逾時，不能推論平台餘裕。README已更新成現行v2完整普通GUI畫面。
+
 蜜蒂音速刃已補正式學招後的玩家入口、保存游標四格選取、原生／HD動畫與音效49。雙側受控Game.Draw、F2、死亡回復、獨立CPU畫面及新程序存檔冷讀通過；來源為docs/data/ida/fd2_command30_player_acquisition_20261025.json與規格61。限定RUNTIME-E1，完整正常鍵盤、真正戰場返回與人工／平台仍依本工單集中抽驗。
 
 正式啟動入口已改成單列頂端浮出、自動隱藏工具列，主題與語系按鈕沿既有F2／F4閘門；遊戲區與HD最終繪圖不平移。真實滑鼠、四語、說明頁阻擋、完整保存內容及固定列相容回歸已驗，限定CONFORMED-SCOPED／RUNTIME-E1。來源為HD主收據floating_toolbar_followup_20261025與規格61，唯一目前數量依58。
@@ -175,6 +175,8 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 先前人物／效果／可見戰鬥背景、地圖法術與物品、故事演出、滿背包獎勵及死亡同次背景／HUD邊界等切片保持。完整圖源盤點已重跑；資料齊全不推定全部caller或正常玩家完成。歷史fixed工具列仍可明示重跑，不再作正式預設。
 
 仍須完成其餘地形、HD2斜角站姿圖源、完整HUD與操作介面、介面／主題獨立六組合，以及工具列字級、遊戲加速、雙側海報與漸層控制。全部HD接上後集中正常玩家、蓋亞手腕及凱麗右腳人工確認、存讀檔與平台效能。混合header反擊#265正常可達性仍未知，原守衛保持；不以錯誤裝備測具開新RE。完整HD總項維持開啟，沒有新Release、原版對拍或平台完成聲明。
+
+使用者2026-10-25定案：已接HD且有目前原版證據支持流程一致的絕招，維持已驗範圍。過期或與指示衝突的停止線直接刪除，不以逐幀一致重開；傷害公式允許後續調整，原版預設值保留。全部HD先接上，再集中人工確認。
 
 怎樣算做完：既有HD頭像／黑體／穩定頁／整備問句／金幣／角色物品轉場及首章角色狀態覆蓋已抽驗。接續其他設施轉場、成功演出、圖示與未列畫面，再完成角色／地形真正高解析素材、戰場交界及跨平台HD效能；完整HD仍未完成。 工具列須分開控制操作介面原版／HD與人物主題原版／HD，原版／HD／HD2三種人物主題與兩種介面共六組合互不改寫；介面內人物圖示、頭像與戰鬥動畫跟主題切換，HD介面樣式先經原型確認。 新增使用者已選的HD2斜角站姿／HD地形主題，游標下敵人的地圖與HUD人物圖示一致；單列頂端浮出、自動隱藏工具列提供獨立海報控制。第一組左索爾＋悠妮朝右、右空魔神＋四天王；第二組依使用者給定原稿重繪並保留來源。 海報內緣漸層及淡入可由單列工具列調整，切海報與漸層不得影響戰場／HUD；保存已選概念至GitHub作HD2設計基準。
 
@@ -184,6 +186,8 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 `modern-battle-animation-hd` · 工作 · [#263](https://github.com/wicanr2/fd2_re/issues/263) · 仍未完成 · 要人判
 
+蓋亞手腕v2已補第23章正常鍵盤操作：選角、進軍八回合、攻擊116隊長、死亡、自然戰後至第24章整備，F2、保存及新程序標題LOAD通過。五張實際PNG涵蓋新版待機／蓄力／出拳，人物與既有隊長守衛共20項反例拒收；舊fixture模式十五幀Game.Draw／F2與逐圖核心回歸也通過。章前強化來源及seed如實登錄，章內無鎖血；不由此宣稱自然難度或原版逐幀一致。GUI約596秒、峰值約5.07 GiB，6 GiB／2 CPU下無OOM／逾時，不能推論平台餘裕。README已更新成現行v2完整普通GUI畫面。
+
 蜜蒂音速刃已補正式學招後的玩家入口、保存游標四格選取、原生／HD動畫與音效49。雙側受控Game.Draw、F2、死亡回復、獨立CPU畫面及新程序存檔冷讀通過；來源為docs/data/ida/fd2_command30_player_acquisition_20261025.json與規格61。限定RUNTIME-E1，完整正常鍵盤、真正戰場返回與人工／平台仍依本工單集中抽驗。
 
 正式啟動入口已改成單列頂端浮出、自動隱藏工具列，主題與語系按鈕沿既有F2／F4閘門；遊戲區與HD最終繪圖不平移。真實滑鼠、四語、說明頁阻擋、完整保存內容及固定列相容回歸已驗，限定CONFORMED-SCOPED／RUNTIME-E1。來源為HD主收據floating_toolbar_followup_20261025與規格61，唯一目前數量依58。
@@ -192,9 +196,23 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 仍須完成其餘地形、HD2斜角站姿圖源、完整HUD與操作介面、介面／主題獨立六組合，以及工具列字級、遊戲加速、雙側海報與漸層控制。全部HD接上後集中正常玩家、蓋亞手腕及凱麗右腳人工確認、存讀檔與平台效能。混合header反擊#265正常可達性仍未知，原守衛保持；不以錯誤裝備測具開新RE。完整HD總項維持開啟，沒有新Release、原版對拍或平台完成聲明。
 
+使用者2026-10-25定案：已接HD且有目前原版證據支持流程一致的絕招，維持已驗範圍。過期或與指示衝突的停止線直接刪除，不以逐幀一致重開；傷害公式允許後續調整，原版預設值保留。全部HD先接上，再集中人工確認。
+
 怎樣算做完：建立由正式consumer到FIGANI人物及共同效果的可重跑覆蓋清冊；完成可達戰鬥動畫HD素材、原始位置／層序／節拍／命中與音效標記的正式呈現，缺件明示；正常玩家抽驗攻擊、受擊／反擊、法術／效果、死亡與戰場返回，F2、保存冷讀與代表性效能通過；已登錄素材同步私人庫，保留原版像素模式。資料測試及離線PNG不能取代正式GUI。
 
 證據：`docs/data/fd2-modern-hd-battlefield-20261019.json`
+
+### P2 傷害公式可調整：保留原版預設並支援後續自訂
+
+`damage-formula-editability` · 工作 · [#278](https://github.com/wicanr2/fd2_re/issues/278) · 仍未完成 · 要人判
+
+使用者2026-10-25要求傷害公式之後允許調整。先完成現行HD串接，此項記錄後續擴充，不是新增HD停止線。
+
+物理、法術及絕招計算須可按正式規格調整；忠實模式保留已還原的原版預設。先盤點正式規則及玩家consumer，再定義設定、相容性與驗收。資料格式、調整介面與存檔方式尚未選定，不先行改平衡。規格入口為61「傷害公式可調整」。
+
+怎樣算做完：完成規則與consumer盤點並取得READY規格；可編輯設定進入正式玩家路徑，原版預設通過既有規則及保存回歸；自訂設定可追溯使用值，於相同狀態與固定亂數條件下可重播，並完成相關UI／保存及抽樣驗證。
+
+證據：`docs/knowledge-base/61-modern-theme-runtime-spec.md`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
@@ -240,17 +258,15 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 `modern-theme-normal-player-validation` · 工作 · [#202](https://github.com/wicanr2/fd2_re/issues/202) · 仍未完成 · 要人判
 
-蓋亞已依使用者核准的原版導向第二版造型重製，恢復灰綠厚甲、藍色結構與壯碩四肢。僅替換身分30的80/480故事頭像與第30組24/144四方向十二幀，核准概念原圖保存在私人庫；其他360項清冊保持，清冊現為365項。大型FIGANI仍為原版。
+HD正常玩家驗證按早／中／晚期及正式消費端分別記錄。目前狀態依[58](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)，契約及重跑入口依[61](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/61-modern-theme-runtime-spec.md)，主收據為docs/data/fd2-modern-hd-battlefield-20261019.json。
 
-正常START已到首章97拍，七名480頭像GPU核對相同；尾端F9短按未取得ACK，原執行器r2失敗保持。分段工具只核對START與原始PNG，保存冷讀另由完整34張首章GUI通過，不冒稱同次長流程全通。蓋亞另抽普通Z選角、北移三格／取消、F2及新程序標題LOAD；來源與保存bytes保持，沒有狀態注入或鎖血。
+蓋亞手腕v2已補第23章正常鍵盤操作：選角、進軍八回合、攻擊116隊長、死亡、自然戰後至第24章整備，F2、保存及新程序標題LOAD通過。五張實際PNG涵蓋新版待機／蓄力／出拳，人物與既有隊長守衛共20項反例拒收；舊fixture模式十五幀Game.Draw／F2與逐圖核心回歸也通過。章前強化來源及seed如實登錄，章內無鎖血；不由此宣稱自然難度或原版逐幀一致。GUI約596秒、峰值約5.07 GiB，6 GiB／2 CPU下無OOM／逾時，不能推論平台餘裕。README已更新成現行v2完整普通GUI畫面。
 
-角色GPU只辨識同方向三個登錄步態中的唯一圖源。兩張實際frame0/2而觀測皆報1，第三張跨相位列不可比，原因未知，沒有修改遊戲時序或宣稱同幀。不透明像素330/329個精確相同，高覆蓋像素8157/8053個符合source-over界限，低覆蓋邊緣不作聲明。錯範圍、錯角色及索爾冒充圖源均拒收。
+既有首章頭像／對話、普通施術、城鎮／商店、戰場返回及保存冷讀各自沿目前收據，不把獨立抽樣合併成未跑過的完整章節。刪除蓋亞大型FIGANI仍為原版的過期敘述，現行人物與圖源依清冊。
 
-登錄後相關Go回歸48.429秒，十項清冊測試及250條教訓／131守衛通過；全部993份Go來源保持。私人包3268檔逐檔核對，3239項原記錄保持，29檔新增、28舊檔自現行包移除但保留於Git歷史；runtime-only3063檔。私人提交984b284bda84023462785b6260c1bca7dee53117已推送且真正遠端相同，保持private。
+其他未驗正常玩家分支、END參戰、故事／效果交界及平台仍待；全部HD接上後集中人工確認蓋亞手腕及凱麗右腳。本項保持開啟。
 
-前批地形仍為map0六組53槽，原本圓頂綠色／褐色雙塊的四底圖GPU與72/74完整圖塊證據保持。草地、其他地形、完整HUD、其他索引演出與平台HD仍待完成。唯一現況依58，契約見61，完整來源、提示、差異與重跑入口在docs/data/fd2-modern-hd-battlefield-20261019.json的gaia_redesign_followup_20261019與WORKLOG。沒有錄影、新公開圖片、新oracle、matching、整章E2或Release。
-
-本項保持開啟：其他前景、上移、早中晚期、故事／法術／死亡與跨平台仍待正常玩家抽驗。
+使用者2026-10-25定案：已接HD且有目前原版證據支持流程一致的絕招，維持已驗範圍。過期或與指示衝突的停止線直接刪除，不以逐幀一致重開；傷害公式允許後續調整，原版預設值保留。全部HD先接上，再集中人工確認。
 
 怎樣算做完：受版控計畫及目前正式runtime的正常鍵盤／GPU收據涵蓋早中晚期與上述主要交界；存檔可冷讀回，忠實主題抽樣回歸通過；已登錄素材顯示與catalog一致，未驗範圍明示。
 
@@ -272,9 +288,13 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 `gaia-hd-guard-wrist-review` · 缺陷 · [#268](https://github.com/wicanr2/fd2_re/issues/268) · 仍未完成 · 要人判
 
-使用者指出蓋亞大型戰鬥站姿的手有反折感。檢視現行待機與蓄力母稿後，近側前臂、手腕及拳頭的朝向銜接不自然，需修正母稿並重編相關影格。保留原版厚甲造型、朝向、原始描述子、節拍及規則。修正版的來源與實際遊戲呈現自動驗證先完成，造型人工確認依既有決定留待全部HD串接後集中處理，不另設逐角色批准流程。
+蓋亞v2保留原版厚甲造型，已修正待機與蓄力的前臂／手腕朝向，十幀更新，出拳後五幀保持。
 
-技術修正已接入v2：待機／蓄力十幀更新，出拳後五幀PNG保持；完整十五幀實際繪製、F2與返回地圖通過。正式及精簡素材包的載入與缺件原子性通過，這輪沒有OOM。這是技術接入驗證，新造型人工確認仍按全部HD後集中處理，本議題保持開啟。
+蓋亞手腕v2已補第23章正常鍵盤操作：選角、進軍八回合、攻擊116隊長、死亡、自然戰後至第24章整備，F2、保存及新程序標題LOAD通過。五張實際PNG涵蓋新版待機／蓄力／出拳，人物與既有隊長守衛共20項反例拒收；舊fixture模式十五幀Game.Draw／F2與逐圖核心回歸也通過。章前強化來源及seed如實登錄，章內無鎖血；不由此宣稱自然難度或原版逐幀一致。GUI約596秒、峰值約5.07 GiB，6 GiB／2 CPU下無OOM／逾時，不能推論平台餘裕。README已更新成現行v2完整普通GUI畫面。
+
+目前狀態依[58](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)，契約及重跑入口依[61](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/61-modern-theme-runtime-spec.md)，主收據為docs/data/fd2-modern-hd-battlefield-20261019.json。
+
+新造型人工確認仍按使用者決定，留待全部HD串接後集中處理，不另設逐角色批准流程。本議題只剩集中造型確認，保持開啟。
 
 怎樣算做完：修正待機與蓄力母稿的連續肩肘、前臂、手腕與拳頭結構，接入全部受影響影格，完整Game.Draw、F2及缺件原子性通過；集中人工確認時檢查站姿自然度，確認後才關閉。
 

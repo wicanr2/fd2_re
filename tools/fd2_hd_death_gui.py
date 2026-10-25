@@ -11,11 +11,26 @@ def run_ch23_death_event(args,audit,key,wait,shot,saved,command,window,restart,o
     source_hash=digest(args.town_save)
     progress=[]; samples=[]; commander_samples=[]; portrait_samples=[]; commander_seen=set()
     commander_hd=args.death_commander_hd
+    actor_art=getattr(args,'death_actor_art',False)
+    actor_samples=[]; actor_seen=set()
     command('xdotool','windowsize',window,'1920','1200')
     def checkpoint():
         (args.out/'death-observation.json').write_text(json.dumps(dict(
             progress=progress,samples=samples,commander_samples=commander_samples,
-            portrait_samples=portrait_samples,state=latest(audit),state_injection=False),ensure_ascii=False,indent=2)+'\n')
+            portrait_samples=portrait_samples,actor_art=actor_art,actor_art_samples=actor_samples,
+            state=latest(audit),state_injection=False),ensure_ascii=False,indent=2)+'\n')
+    def sample_actor(s):
+        layers=[l for l in s.get('battle_source_layers') or []
+                if l.get('archive','') in ('','FIGANI.DAT') and l['resource'] in (90,91) and l['fill']==-1]
+        signature=(s.get('battle_owner'),s.get('battle_phase'),
+                   tuple((l['resource'],l['frame'],l['x'],l['y']) for l in layers))
+        if (not actor_art or not s.get('battle_scene') or not s.get('hd_battle')
+                or not layers or signature in actor_seen or len(actor_samples)>=48):return
+        actor_seen.add(signature)
+        path=args.out/f'gaia30-action-{len(actor_samples):02d}.png'
+        command('import','-window',window,str(path))
+        actor_samples.append(dict(scene='gaia-commander',file=path.name,sha256=digest(path),before=s,after=latest(audit)))
+        checkpoint()
     def sample_commander(s):
         layers=[l for l in s.get('battle_source_layers') or []
                 if l.get('archive','') in ('','FIGANI.DAT') and l['resource']==348 and l['fill']==-1]
@@ -105,7 +120,7 @@ def run_ch23_death_event(args,audit,key,wait,shot,saved,command,window,restart,o
     while time.monotonic()<deadline:
         s=latest(audit)
         if s.get('error'):raise RuntimeError(s['error'])
-        sample_commander(s);sample_portrait(s)
+        sample_actor(s);sample_commander(s);sample_portrait(s)
         if s.get('unit_death_scene') and s.get('unit_death_kind')==args.death_kind:
             event_seen=True
             if not hd_on:
@@ -157,6 +172,8 @@ def run_ch23_death_event(args,audit,key,wait,shot,saved,command,window,restart,o
     assert digest(args.town_save)==source_hash
     if commander_hd:
         assert commander_samples and len(portrait_samples)==1,'隊長待機或116故事頭像未取得正常視窗樣本'
+    if actor_art:
+        assert len(actor_samples)>=3,'缺少普通蓋亞攻擊觀測樣本'
     checkpoint()
     (args.out/'receipt.json').write_text(json.dumps(dict(
         schema='fd2-shared-death-normal-gui-v1',status='PASS',binary_sha256=digest(args.binary),
@@ -164,6 +181,7 @@ def run_ch23_death_event(args,audit,key,wait,shot,saved,command,window,restart,o
         source_file=str(args.town_save),saved_sha256=faithful_hash,samples=samples,progress=progress,
         operations=operations,screenshots=shots,event_id=53,death_kind=args.death_kind,state_injection=False,recording_created=False,
         commander_hd=commander_hd,commander_samples=commander_samples,portrait_samples=portrait_samples,
+        actor_art=actor_art,actor_figure=30,actor_art_samples=actor_samples,
         catalog_sha256=digest(args.assets/'assets/themes/modern/catalog.json'),
         final_node=latest(audit)['node'],scope='章前強化來源；正常移動、END、攻擊隊長與死亡事件抽樣、自然戰後、整備F2和保存冷讀。非自然難度、整章E2或新原版對拍。'),ensure_ascii=False,indent=2)+'\n')
 
