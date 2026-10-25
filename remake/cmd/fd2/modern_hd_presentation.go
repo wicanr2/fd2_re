@@ -130,7 +130,7 @@ func (p *modernHDPresentation) DrawFinalScreen(screen ebiten.FinalScreen,
 	p.drawDefaultFinalScreen(screen, offscreen, geometry)
 	g := p.Game
 	overlay := g.modernHDOverlay
-	if g.helpVisible || g.nativePlayerStatus != nil || g.transientUI ||
+	if g.helpVisible || g.nativePlayerStatus != nil || (g.transientUI && !g.modernHDTransientExpiryPortraitAllowed()) ||
 		g.nativeFullDACWhite || g.nativeFullDACBlack ||
 		(g.nativeDefeat == nil && g.titlePhase == "" && g.nativePaletteRamp == nil && nativeDACIsBlack(g.nativeMapDAC)) {
 		overlay = nil

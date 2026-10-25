@@ -15,6 +15,12 @@ type localeEntryContract struct {
 }
 
 var officialLocaleContract = map[string]localeEntryContract{
+	"battle.status.expiry.attack":         {[]string{}, "FDTXT_000/string_0481"},
+	"battle.status.expiry.defence":        {[]string{}, "FDTXT_000/string_0482"},
+	"battle.status.expiry.speed":          {[]string{}, "FDTXT_000/string_0483"},
+	"battle.status.expiry.poison":         {[]string{}, "FDTXT_000/string_0484"},
+	"battle.status.expiry.paralysis":      {[]string{}, "FDTXT_000/string_0485"},
+	"battle.status.expiry.silence":        {[]string{}, "FDTXT_000/string_0486"},
 	"battle.attack.miss":                  {[]string{"%s", "%s"}, "legacy.go.remake.cmd.fd2.main.l5973-c22"},
 	"battle.attack.hit":                   {[]string{"%s", "%s", "%d"}, "legacy.go.remake.cmd.fd2.main.l5975-c25"},
 	"battle.attack.critical_suffix":       {[]string{}, "legacy.go.remake.cmd.fd2.main.l5977-c14"},

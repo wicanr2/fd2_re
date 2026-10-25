@@ -53,6 +53,10 @@ func (g *Game) modernHDMapFrameAdmission(story, battleView bool) bool {
 		state.rewardMessage.hdWorld != nil && state.rewardMessage.hdTheme == g.modernStoryPortraits {
 		return true
 	}
+	if job := g.nativeClassUIJob; g.transientUI && job != nil && job.expiryText != nil &&
+		job.expiryText.world != nil && job.expiryText.theme == g.modernStoryPortraits {
+		return true
+	}
 	if g.spellOpen || g.itemOpen || g.castSp != nil {
 		if p := g.nativeDeathRewardUI; g.itemOpen && p != nil && p.hd != nil && p.hd.world != nil && p.hd.theme == g.modernStoryPortraits {
 			return true

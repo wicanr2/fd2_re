@@ -3305,7 +3305,7 @@
       "date": "2026-10-20",
       "area": "驗證工具",
       "rule": "反例測試先以同一環境與參數跑有效基底正對照，再逐項核對預期拒收原因。路徑、環境或語法錯誤不列作功能拒收。",
-      "why": "指令0一次反例命令誤傳不存在的inventory，舊harness把六次共同FileNotFound當通過。該輪已撤回，加入正對照與原因比對後重跑十二項。",
+      "why": "指令0一次反例命令誤傳不存在的inventory，舊harness把六次共同FileNotFound當通過。該輪已撤回，加入正對照與原因比對後重跑十二項。 2026-10-26的到期HD測試槽缺EquipmentBaseSet，使早期反例在到達HD來源守衛前就因基礎攻防來源不足拒收。補齊明示AP／DP／DX，先跑完整扣血及六提示正對照，再要求錯誤包含modern HD expiry；未放寬正式來源守衛。",
       "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#ordinary_command0_followup_20261020；tools/test_fd2_command0_hd_gpu.py",
       "guard_limitation": "現行fd2_lessons.scannable刻意略過test_檔案；本條由含正對照的實際fixture／普通反例收據驗證，不另繞過排除契約。"
     },

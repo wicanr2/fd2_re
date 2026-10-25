@@ -59,9 +59,8 @@ func (g *Game) beginNativeTransientPhases(selectors []byte, then func()) error {
 			return errors.New("native transient presentation: DATO portrait is unavailable")
 		}
 		// 先合成一次確認字串與框素材齊全；正式幀在聚焦重繪後重合成。
-		if _, err := campaign.ComposeNativeTransientExpiryFrame(
-			g.nativeMapVGA, g.nativeClassUI.dialogue, portraits[0],
-			g.nativeClassUI.strings, g.nativeClassUI.font, counterIndex,
+		if _, err := g.composeNativeTransientExpiryFrame(
+			g.nativeMapVGA, portraits[0], counterIndex, g.nativeClassUI.font,
 		); err != nil {
 			return err
 		}
@@ -83,6 +82,9 @@ func (g *Game) beginNativeTransientPhases(selectors []byte, then func()) error {
 			return err
 		}
 		damagePages[index], damageWaits[index] = pages, wait
+	}
+	if err := g.preflightModernHDTransientExpiry(candidate, expired, damage); err != nil {
+		return err
 	}
 	remap := g.adoptNativeStateCandidate(candidate)
 	resolve := func(unit *battle.Unit) *battle.Unit {
@@ -108,9 +110,8 @@ func (g *Game) beginNativeTransientPhases(selectors []byte, then func()) error {
 			return
 		}
 		source := append([]byte(nil), g.nativeMapVGA...)
-		final, err := campaign.ComposeNativeTransientExpiryFrame(
-			source, g.nativeClassUI.dialogue, presentation.portrait,
-			g.nativeClassUI.strings, g.nativeClassUI.font, presentation.counterIndex,
+		final, err := g.composeNativeTransientExpiryFrame(
+			source, presentation.portrait, presentation.counterIndex, g.nativeClassUI.font,
 		)
 		var opening, closing [][]byte
 		if err == nil {
@@ -125,11 +126,18 @@ func (g *Game) beginNativeTransientPhases(selectors []byte, then func()) error {
 			return
 		}
 		frames := append(opening, closing...)
+		expiryText, err := g.newNativeTransientExpiryPresentation(resolve(presentation.unit), presentation.counterIndex, presentation.portrait)
+		if err != nil {
+			g.transientUI = false
+			g.loadErr = "native transient presentation: " + err.Error()
+			return
+		}
 		g.transientUI = true
 		g.nativeClassUIJob = &nativeClassUIJob{
-			frames:  frames,
-			restore: source,
-			after:   func() { runExpiry(index + 1) },
+			frames:     frames,
+			restore:    source,
+			after:      func() { runExpiry(index + 1) },
+			expiryText: expiryText,
 		}
 	}
 	var runDamage func(int)

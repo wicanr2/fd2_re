@@ -1,5 +1,7 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
+狀態效果到期的提示已接同次HD世界、480頭像與Noto文字，新增六則四語內容；原生倒數、扣血／死亡順序、Draw確認、恢復與一次續行保持。限定CONFORMED-SCOPED／RUNTIME-E1，使用明示建構的狀態與角色欄位；未新增正常取得狀態或PLAYER-E2。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約與永久驗證器依[61](61-modern-theme-runtime-spec.md)，來源為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的transient_expiry_hd_followup_20261026。原生框線、其他介面／HD2／工具列與集中正常／人工／平台仍待。
+
 共用戰鬥面板的框、分隔線與HP／MP條已直接以六倍解析度繪製，限定CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI。當次色盤、凍結HP、原生來源、字區、層序及捲動保持；全部十六來源入口與十二完整流程、223全畫布獨立合成及十五反例通過。首章普通攻防、自然返回、F2與保存／新程序LOAD通過。唯一數量與範圍依[58](58-fd2-exe-re-coverage.md)，契約及工具依[61](61-modern-theme-runtime-spec.md)，主收據為battle_panel_chrome_followup_20261026。完整介面、HD2、工具列其餘控制與全部HD後集中人工／平台仍待。
 
 首章寶箱開合與兩種小石塊已接入既有稀疏HD地形。初始地圖之外的開箱圖源，沿已閉合0x12263 writer實際重生；完整來源GPU與閉箱／開箱Game.Draw／F2、單次更新、來源及登錄拒收、舊地形相容性與完整私人包已驗。普通標題LOAD、方向鍵取景、F2、面板及保存／新程序LOAD已通過，正常取寶待集中抽驗。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約及重跑依[61](61-modern-theme-runtime-spec.md)，主收據為props_followup_20261025。其他地形、HD2、完整介面／工具列及集中人工／平台保持未完成。

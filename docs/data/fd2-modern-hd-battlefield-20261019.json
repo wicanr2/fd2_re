@@ -235492,5 +235492,344 @@
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-final-checks-r1.json",
       "sha256": "d1c55cce494530eacdbd073e23430abbce467e86085da5fc15fee0401b4bc8bd"
     }
+  },
+  "transient_expiry_hd_followup_20261026": {
+    "status": "CONFORMED-SCOPED",
+    "evidence_level": "RUNTIME-E1",
+    "date": "2026-10-26",
+    "base_commit": "07c1f6d780334c16a8592a926b5e8a600884fbce",
+    "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+    "full_hd_complete": false,
+    "original_runtime_executed": false,
+    "normal_player_verified": false,
+    "new_re": false,
+    "new_art_assets": false,
+    "private_asset_sync_required": false,
+    "catalog_changed": false,
+    "original_exe": {
+      "file": "org_game/炎龍騎士團/FLAME2/FD2.EXE",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "original_evidence": [
+      {
+        "file": "docs/data/ida/fd2_transient_expiry_presentation_ida.txt",
+        "sha256": "0d35b656458fb2905cb662eb3b0b9115b03a9495a7d10f6f8888b4af32e575c4"
+      },
+      {
+        "file": "docs/data/ida/fd2_status_death_ida.txt",
+        "sha256": "2cc69cc89b89805af566106dbe74f68280b10747114b5390058641fedb5019d1"
+      }
+    ],
+    "catalog": {
+      "file": "remake/assets/themes/modern/catalog.json",
+      "sha256": "40bf4d83a2c13b606e84c66e2f7dddb383ca581904cdeb1f8aeabd61717d232a"
+    },
+    "implementation_sources": [
+      {
+        "file": "remake/cmd/fd2/modern_hd_transient_expiry.go",
+        "sha256": "655e5442f36029d080f1a28baa56d2f1eb36931e48ddb6bd29f9d93370cbde02"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_transient_expiry_test.go",
+        "sha256": "6a8c7e0dfe5baf7e73bd33ff348df03b9a1bf5f8edc20a5437b5c37583856d3f"
+      },
+      {
+        "file": "remake/cmd/fd2/native_transient_presentation.go",
+        "sha256": "62885f300e557c0399ca17f21f467aa5e5cd21e250102ec3a7b2503b7e7af525"
+      },
+      {
+        "file": "remake/cmd/fd2/native_class_ui_lifecycle.go",
+        "sha256": "4704b26884b9b4d2e2217c7a20531d80644b34358d7e249211dcceea3e699401"
+      },
+      {
+        "file": "remake/cmd/fd2/native_action_death_present.go",
+        "sha256": "1996927c93c4863c6faaea2b1968f778eb48ee97ef2a1a959707b41155021f71"
+      },
+      {
+        "file": "remake/cmd/fd2/player_shortcuts.go",
+        "sha256": "e04b238e7ab3a7c16a201b79afe85fb991f519d32d4445c99ce451ee791839a1"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_map_runtime.go",
+        "sha256": "fd4f293d113bba032ebffaebb00ba55fc8fcc91c640cf556dbe536d1fb62d28e"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_map_gpu.go",
+        "sha256": "f598de7246eb5833260c60ef32cdb294cef9833f5327c5dcdc4ad0af1812e09b"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_presentation.go",
+        "sha256": "24a33e7bb6211f2606f2c529d510efe237ac3c24e0003b4a26e394dd130f5acf"
+      },
+      {
+        "file": "remake/cmd/fd2/locale.go",
+        "sha256": "465bd40b31352895efac99510a0e7b3725d9e1ce34aa7c3ff1377a63953f4867"
+      },
+      {
+        "file": "remake/internal/campaign/native_transient_expiry.go",
+        "sha256": "78013726ae616110427428ac88386eccc607e39677605feb9e11696091642895"
+      },
+      {
+        "file": "tools/verify_fd2_hd_transient_expiry.py",
+        "sha256": "1d60e0060742f84c893fbc839be6a32872a5023ec4c182a2636c45ed2f67aa31"
+      },
+      {
+        "file": "remake/assets/locales/zh-Hant/pack.json",
+        "sha256": "1cf4beecde840d839d0dee158151df4d63bae874c7bae2b2b18850c6aabae3e1"
+      },
+      {
+        "file": "remake/assets/locales/zh-Hans/pack.json",
+        "sha256": "9ec8d265a6267ee18ade33d9e982dd3e1412769eecf63effd5d422e23a409fb3"
+      },
+      {
+        "file": "remake/assets/locales/en/pack.json",
+        "sha256": "8ce238fbfa2af64e9f2eba1e176b7284f5f69a424a4da64d26674da5d038b7ff"
+      },
+      {
+        "file": "remake/assets/locales/ja/pack.json",
+        "sha256": "79cb79f42f1b2fcbf9a7410f0e7f1624044b778a0e6168b8752d81b18432a0b1"
+      }
+    ],
+    "commands": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/expiry-commands-r1.json",
+      "sha256": "8d563f5bdd4bc2ab0ae86a00d434b0e752b07a26591077077b23a4907732c890"
+    },
+    "summary": {
+      "counter_count": 6,
+      "locales": [
+        "zh-Hant",
+        "zh-Hans",
+        "en",
+        "ja"
+      ],
+      "full_game_draw_frames": 288,
+      "f2_roundtrips": 36,
+      "frozen_source_rejections": 3,
+      "native_coverage_points": 768000,
+      "outside_hd_pixels": 509276160,
+      "portrait_source_points": 4147200,
+      "actual_text_pixels": 577438,
+      "png_count": 36,
+      "receipt_rejections": 10,
+      "go_named_passes": 70
+    },
+    "go_runs": [
+      {
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/expiry-native-final-r1.jsonl",
+          "sha256": "322b233c774ee96d853f6f9906f279f39f2fd677f3b13783b1d57292a39348d0"
+        },
+        "passed_tests": [
+          "TestModernHDRewardPanelCoverage",
+          "TestModernHDRewardTextAndNativeAssets",
+          "TestModernHDTransientExpiryNativeCoverage",
+          "TestModernHDTransientExpiryRejectsBeforeCountdown",
+          "TestModernHDTransientExpiryNativeChain",
+          "TestNativeActionDeathPresentationRetainsSettlementAndContinuesOnce",
+          "TestNativeActionDeathPresentationRejectsBeforeInactiveWrite",
+          "TestNativeActionDeathPresentationSkipsOffscreenAndOldInactive",
+          "TestNativeTransientDeathOwnerRunsAfterMessageWithoutRewards",
+          "TestNativeTransientDeathPreflightRejectsBeforeHPTransaction",
+          "TestNativeTransientDeathPreviewMatchesFocusWithoutPublishingOrTracing",
+          "TestNativeCurrentSaveBuildAndAtomicReplaceRoundTrip",
+          "TestNativeCurrentSaveFailureLeavesOriginalFileUnchanged",
+          "TestNativeTransientPhaseExpiresAndRecomputesAtomically",
+          "TestNativeTransientPhaseTypedSweepWithoutRawProjection",
+          "TestNativeTransientPhasePersistsDecrementWithoutEarlyRecalc",
+          "TestNativeTransientPhasesPreserveSelectorOrderAtomically",
+          "TestNativeTransientPhasesRejectDuplicateSelectorAtomically",
+          "TestNativeTransientStatusDeathsNeverDispatchDeathEffectsOrBorrowNextActor",
+          "TestCompleteTurnPlayerPhaseTicksRawSelector2BeforeInput",
+          "TestEndTurnTicksRawSelectorsOneThenZeroBeforeEnemyPhase",
+          "TestNativeTransientPresentationFailsClosedBeforeCountdown",
+          "TestNativeTransientDamagePresentationFailsClosedBeforeHPWrite",
+          "TestNativeMessagePagesSplitsDamageTextLines",
+          "TestNativeTransientPresentationUsesOriginalIndexedAssets",
+          "TestNativeTransientOffscreenRebuildsInvalidatedMapBeforeExpiry",
+          "TestOfficialLocalesCoverSystemAndSaveMessages"
+        ],
+        "passed_count": 27,
+        "package_results": [
+          {
+            "package": "github.com/wicanr2/fd2_re/remake/cmd/fd2",
+            "seconds": 13.745
+          }
+        ]
+      },
+      {
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/expiry-locale-final-r1.jsonl",
+          "sha256": "92caec01936a472081e9f22b26b9c07e87c92f1db3118439921856d1c8cdbb27"
+        },
+        "passed_tests": [
+          "TestOfficialContentAssetsLoadAndResolveStory",
+          "TestStoryTextFailsClosed",
+          "TestLoadOfficialContentRejectsUnknownField",
+          "TestOfficialEntityCatalogsShareItemIdentity",
+          "TestEntityCatalogClassLookupPreservesPlaceholdersAndFailsClosed",
+          "TestEntityCatalogCharacterLookupFailsClosed",
+          "TestEntityCatalogRejectsConfirmedEmptyItemIDs",
+          "TestEntityCatalogRejectsConfirmedEmptyBattleNameIDs",
+          "TestEntityCatalogRejectsConfirmedEmptyCommandID",
+          "TestEntityCatalogRejectsFutureFields",
+          "TestLoadAndFormat",
+          "TestFormatFailsClosed",
+          "TestLoadRejectsUnknownAndUnsafeFields/unknown_entry",
+          "TestLoadRejectsUnknownAndUnsafeFields/unsafe_font",
+          "TestLoadRejectsUnknownAndUnsafeFields/legacy_key",
+          "TestLoadRejectsUnknownAndUnsafeFields/unknown_top-level",
+          "TestLoadRejectsUnknownAndUnsafeFields",
+          "TestCommunityBaseLocaleRules",
+          "TestLoadOfficialUsesLocalePathAndIdentity",
+          "TestOfficialLocaleAssetsLoad"
+        ],
+        "passed_count": 20,
+        "package_results": [
+          {
+            "package": "github.com/wicanr2/fd2_re/remake/internal/localization",
+            "seconds": 0.157
+          }
+        ]
+      },
+      {
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/expiry-rules-final-r1.jsonl",
+          "sha256": "6efa1acc7a02954cb858624827a48bc47741cb0b2a605ed8d349cea0dadc3c87"
+        },
+        "passed_tests": [
+          "TestNativeAIMode5PickupBecomesExecutableDeathReward",
+          "TestNativeDeathRewardUsesDiscardAndAbandonIndices",
+          "TestScoreNativeAISpellZeroFlagUsesTransientOffsets",
+          "TestNativeJoinConstructorClearsItemFlagsAndTransientOverResidual",
+          "TestNativeTransientExpiryTextContract",
+          "TestNativeTransientExpiryRejectsUnknownCounterBeforeAssets",
+          "TestNativeDeathRewardMessageTextContract",
+          "TestApplyNativeRuntimeEquipmentRecalcUsesTransientModifiers",
+          "TestMaterializeNativeFutureConstructorClearsTransientsAndRecomputes",
+          "TestCounterattackReadsTheRealTransientByte",
+          "TestNativeTransientStorageIsBoundedByOriginalOffsets",
+          "TestTickNativeTransientsUsesRawGates",
+          "TestTickNativeTransientsCampWrapperFailsClosed",
+          "TestAdvanceNativeTransientPhaseAppliesDamageBeforeCountdown",
+          "TestAdvanceNativeTransientPhaseFatalDamageMarksInactiveAndSkipsCountdown/exact",
+          "TestAdvanceNativeTransientPhaseFatalDamageMarksInactiveAndSkipsCountdown/clamped",
+          "TestAdvanceNativeTransientPhaseFatalDamageMarksInactiveAndSkipsCountdown",
+          "TestAdvanceNativeTransientPhaseZeroDamageStillCountsDown",
+          "TestAdvanceNativeTransientPhaseUsesSelectorAndInactiveGates",
+          "TestAdvanceNativeTransientPhaseMarksMultipleDeathsWithoutDispatchState",
+          "TestAdvanceNativeTransientPhaseFailsClosedOnRawMismatch",
+          "TestComposeNativeDeathRewardMessageExpandsItemNameAndGold"
+        ],
+        "passed_count": 22,
+        "package_results": [
+          {
+            "package": "github.com/wicanr2/fd2_re/remake/internal/battle",
+            "seconds": 0.007
+          },
+          {
+            "package": "github.com/wicanr2/fd2_re/remake/internal/campaign",
+            "seconds": 0.01
+          }
+        ]
+      },
+      {
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/expiry-gpu-r3.jsonl",
+          "sha256": "ec8653d8ed0221c04435115156687b92b1f4ad5efbdd5b653718c8eb412c3e02"
+        },
+        "passed_tests": [
+          "TestModernHDTransientExpiryCompleteGameGPU"
+        ],
+        "passed_count": 1,
+        "package_results": [
+          {
+            "package": "github.com/wicanr2/fd2_re/remake/cmd/fd2",
+            "seconds": 207.025
+          }
+        ]
+      }
+    ],
+    "gpu_receipt": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/expiry-gpu-r3-capture/receipt.json",
+      "sha256": "119e2a0a4298dcf5d654185f3bd05ebb81cd53079783c0ec4a4222f96b0f54fc"
+    },
+    "independent_verification": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/expiry-independent-r1.json",
+      "sha256": "a493b9f507082d5ed93e28e84d3327c784a0af1c064278ee2396d511a33a7e92"
+    },
+    "gpu_memory": {
+      "peak_bytes": 6363865088,
+      "limit_bytes": 6442450944,
+      "events": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/expiry-gpu-r3.memory-events.txt",
+        "sha256": "0a2d4e7982066cc7dc914627e7b195ccba88b82a5a996201809e529142d2f380"
+      },
+      "platform_headroom_claimed": false
+    },
+    "native_memory": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/expiry-native-final-r1.memory.txt",
+      "sha256": "016cfbc4b0854d4a6c44b7e4cd6b6e380c24ed1295fb7191d1897a3c54ed565f"
+    },
+    "source_save_unchanged": {
+      "file": "work/promo-cadence-20261018/hd-fonts/hd-world-gui-r7/user-data/fd2_re/fd2_save.json",
+      "sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2"
+    },
+    "overview": {
+      "file": "docs/figures/hd-transient-expiry-locales.png",
+      "sha256": "7dfbea365e7e646a2090e7e5e234bfc83d502045b46d4f3f0f38820f1c79637c"
+    },
+    "constructor": {
+      "kind": "明示建構的typed狀態，沒有透過一般玩家取得效果",
+      "seed": 7,
+      "seed_source": "nativeCommand32PresentationFixture",
+      "selector": 2,
+      "raw_counters": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "HP": 100,
+      "MaxHP": 100,
+      "BaseAP": 100,
+      "BaseDP": 60,
+      "DX": 20,
+      "post_poison_HP": 90,
+      "DATO_selector": 9,
+      "map_placement": "沿既有受控fixture，不是正常角色站位"
+    },
+    "known_differences": [
+      "既有原生面板底圖保持，本切片替換世界、頭像與文字。",
+      "繁中保留原FDTXT字模位置；其他語系在原文字原點以最多三行換行。",
+      "沒有新原版oracle、正常取得狀態、PLAYER-E2、人工美術或平台聲明。"
+    ],
+    "remaining": [
+      "正常玩家取得狀態後的到期抽樣",
+      "其他地形與HD2",
+      "完整操作介面及主題／介面獨立控制",
+      "其餘工具列、加速與海報",
+      "集中人工及平台抽驗"
+    ],
+    "final_checks": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/expiry-final-checks-r1.json",
+      "sha256": "b5e95e2a9e8adf965f27a55c6b777c42ed815bc8f80f7d421e5ef45b3c041821"
+    },
+    "cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/expiry-cleanup-r1.json",
+      "sha256": "530470f09cfd7ca5f6f8ffd8911d4b3a7be47de69388271ec410bef94e3f7197"
+    },
+    "github": {
+      "issues": [
+        4,
+        201,
+        202,
+        204,
+        263
+      ],
+      "state": "OPEN",
+      "official_snapshot_refreshed": true
+    }
   }
 }

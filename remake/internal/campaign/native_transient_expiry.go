@@ -30,9 +30,7 @@ func ComposeNativeTransientExpiryFrame(
 	if counterIndex < 0 || counterIndex >= NativeTransientExpiryTextCount {
 		return nil, errors.New("campaign: native transient counter index is invalid")
 	}
-	frame, err := ComposeNativeChurchDialogueOverlayAt(
-		background, dialogueCells, portrait, nativeLowerPortraitRightEdge,
-	)
+	frame, err := ComposeNativeTransientExpiryDialogue(background, dialogueCells, portrait)
 	if err != nil {
 		return nil, err
 	}
@@ -41,6 +39,12 @@ func ComposeNativeTransientExpiryFrame(
 		NativeTransientExpiryTextBase+counterIndex,
 		NativeTransientExpiryTextOffset,
 	)
+}
+
+// ComposeNativeTransientExpiryDialogue retains the original lower-left DATO
+// placement while allowing the UI adapter to replace only translated text.
+func ComposeNativeTransientExpiryDialogue(background []byte, dialogueCells []fdother.RawCell, portrait dato.Frame) ([]byte, error) {
+	return ComposeNativeChurchDialogueOverlayAt(background, dialogueCells, portrait, nativeLowerPortraitRightEdge)
 }
 
 const (

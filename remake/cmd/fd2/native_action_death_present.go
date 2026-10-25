@@ -108,6 +108,15 @@ func (g *Game) preflightNativeTransientDeath(candidate *battle.State, flags map[
 }
 
 func (g *Game) nativeTransientDeathPreview(candidate *battle.State, damage []battle.NativeTransientDamage) (*Game, error) {
+	slots := make([]int, len(damage))
+	for i, event := range damage {
+		slots[i] = event.Slot
+	}
+	return g.nativeTransientFocusPreview(candidate, slots)
+}
+
+// Private focus uses the same cursor primitives without emitting replay input.
+func (g *Game) nativeTransientFocusPreview(candidate *battle.State, slots []int) (*Game, error) {
 	preview := *g
 	state, err := cloneNativeCh28PostState(candidate)
 	if err != nil {
@@ -116,13 +125,13 @@ func (g *Game) nativeTransientDeathPreview(candidate *battle.State, damage []bat
 	preview.st = state
 	preview.nativeMapWork = append([]byte(nil), g.nativeMapWork...)
 	preview.nativeMapVGA = append([]byte(nil), g.nativeMapVGA...)
-	for _, event := range damage {
-		if event.Slot < 0 || event.Slot >= len(state.Units) || state.Units[event.Slot] == nil {
-			return nil, fmt.Errorf("native transient death preview: invalid slot%d", event.Slot)
+	for _, slot := range slots {
+		if slot < 0 || slot >= len(state.Units) || state.Units[slot] == nil {
+			return nil, fmt.Errorf("native transient death preview: invalid slot%d", slot)
 		}
-		unit := state.Units[event.Slot]
+		unit := state.Units[slot]
 		if unit.X < 0 || unit.X >= state.W || unit.Y < 0 || unit.Y >= state.H {
-			return nil, fmt.Errorf("native transient death preview: slot%d outside field", event.Slot)
+			return nil, fmt.Errorf("native transient death preview: slot%d outside field", slot)
 		}
 		viewBefore, hudBefore := state.NativeMapViewState, state.NativeMapHUDState
 		state.MaterializeNativeMapRangeMode(0)

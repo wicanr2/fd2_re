@@ -2,6 +2,20 @@
 
 狀態：現代主題仍為部分覆蓋；目前分層與缺口依[58](58-fd2-exe-re-coverage.md)。
 
+
+## 狀態到期提示的HD世界、頭像與文字（CONFORMED-SCOPED／RUNTIME-E1，2026-10-26）
+
+- 範圍為現行 `beginNativeTransientPhases` 的六個到期提示。原版來源沿[到期呈現IDA證據](../data/ida/fd2_transient_expiry_presentation_ida.txt)與[58](58-fd2-exe-re-coverage.md)的 `0x1A866→0x1DB65` 索引。輸入固定為357074 bytes的FD2.EXE，MD5 `b97caf2239a27a896069d03549d96e1e`，SHA-256 `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`；位址為IDA Pro 9.4的DOS/4GW LE線性位址。raw +7選DATO，+0x22..+0x27歸零選FDTXT0x1E1..0x1E6及VGA offset0x9F23，均沿已閉合證據，不重開RE。
+- 保留原生交易、焦點、六拍開框／五拍收框／restore與Draw確認後續行。狀態扣血、死亡、到期提示的順序不改；不新增等待、輸入或保存欄位。原版延時的既有近似維持，不要求逐幀或逐週期一致。
+- 每個到期job持有同次原生source、DATO／counter索引及封存的typed map input、work、VGA與色盤。HD世界從此快照建立；不以目前游標或較晚重組的背景取代。交易發布前私有預檢HD圖源及文字，啟動時按實際聚焦狀態再次封存。來源損壞或HD建立失敗不得發布部分主題。
+- 只覆蓋實際移動的原生框區，區外保持同次HD世界；文字沿既有Noto、FDTXT解碼與四語掛勾，位移及裁切隨同一開收框。已登錄480頭像沿raw +7、原鏡射與框內裁切。transientUI僅為這個已具型別owner放行頭像，不取消其他臨時介面的守衛。面板底圖維持既有來源，本節不宣稱整套操作介面完成。
+- 六則到期提示新增至既有四語pack.json，語意鍵為battle.status.expiry的attack／defence／speed／poison／paralysis／silence，來源逐一綁FDTXT_000/string_0481..0486。繁中保留原字模及offset；其他語系在原文字原點(99,127)內，以205像素寬、最多三行、行高19、既有0.78字級換行，超界或缺字拒收。翻譯僅顯示，不參與counter、查找、交易或保存鍵；不新增資料格式。
+- F2在開框、收框與restore均須保持job、frame、單位／raw狀態、RNG及一次續行。原生模式和舊頭像主題保持原入口；HD候選先完整預備再發布。
+- 永久核對入口為[到期HD收據驗證器](../../tools/verify_fd2_hd_transient_expiry.py)，以Python／Pillow容器執行，輸入完整GPU receipt.json，支援--self-test、--overview及--output；不以此工具新增正常玩家或原版逐幀聲明。
+- 驗收涵蓋六個counter、真實原生框覆寫區、完整Game.Draw與1920×1200最終畫面、HD區外像素與頭像來源、四語、F2、Draw未確認不推進，以及原有扣血／死亡／到期／多目標順序回歸。缺來源、封存來源遭改寫及損壞主題須拒收且保持交易／主題。保存格式保持並驗冷讀；受控狀態槽如實標示RUNTIME-E1，不能冒稱正常玩家或新PLAYER-E2。全部HD串接後的人工作業仍集中執行。
+
+驗證及完整重跑依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的transient_expiry_hd_followup_20261026。完整Game.Draw、最終PNG、文字實際墨跡、頭像鏡射／裁切、同次世界及三來源拒收通過；保存與原生狀態／死亡及四語套件回歸通過。建構槽以seed7、selector2、六counter=1、HP100/100及基礎AP100／DP60／DX20起跑，實際扣血訊息後再播六提示。DATO9及地圖位置沿受控fixture，不宣稱角色欄位與正常章節位置。GPU峰值接近6GiB限制且無OOM，不推論平台餘裕。
+
 ## 首章寶箱開合與小石塊（CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI）
 
 沿已閉合0x12263／取寶與AI mode5規則，補首章原始地圖的248／250兩箱、274／275兩物件，以及正式writer在事件非零且control低位符合0x20時產生的249／251開箱圖。寫入端為`advanceNativeAIMode5EventGrid`，呼叫沿`CompleteTreasureMapUpdate`；消費端為既有NativeTerrainFrameIndex及稀疏HD圖層。原始來源匯出的selected_terrain_frames只涵蓋初始地圖，不證明變動狀態齊全。同一三層內容的map14:180～183亦接入，共六來源、十槽、兩圖，不新增原版語意。
