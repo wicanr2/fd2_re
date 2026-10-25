@@ -4309,6 +4309,14 @@
         ],
         "pattern": "validate_catalog\\(False,temporary"
       }
+    },
+    {
+      "id": "gpu-required-terrain-frames-belong-to-sample-view",
+      "date": "2026-10-25",
+      "area": "地形GPU取景",
+      "rule": "昂貴GPU測試前，先以remake/assets/maps/map*/map.json的實際tile、已解碼control及remake/internal/fdicon/terrain.go的NativeTerrainFrameIndex確認必驗來源在目標13×8視圖內。既有GUI視圖只證明該次可見內容，不推定其他底材也在畫面；原生來源、完整來源GPU與普通取景分列。來源不在視圖時選資料能證明的合法視圖，不降低圖塊像素門檻。",
+      "why": "水岸測具先沿舊交界鏡頭，改沿南側普通視圖後仍找不到純沙50；實際50位於北岸(1..5,3..6)，南岸只有交界。查地圖證明(0,0)同時含49與50後，同候選保留門檻重跑通過。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#shore_followup_20261025"
     }
   ]
 }

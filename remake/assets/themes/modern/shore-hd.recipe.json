@@ -1,0 +1,681 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_shore_hd_v1",
+  "asset_id": "modern.terrain.shore",
+  "base_catalog_sha256": "b8e4e1761321c995ab6ca6311c3b11a597c546f59bc6d00f7ad04a3f356a40f6",
+  "source_manifest_sha256": "a19a3da393294ad6e1c4ad1dccdb9a911d26ed1f3d7008046eddda2398f938f5",
+  "grass_master_file": "grass-olive-hd-v1-master.png",
+  "grass_master_sha256": "ed29eb9da12adae641c612d28b848c186dd2986ac1ee3fa4e35e65b72e864c29",
+  "sand_master_file": "sand-warm-hd-v1-master.png",
+  "water_master_file": "water-cobalt-hd-v1-master.png",
+  "size": 144,
+  "edge_blend": 8,
+  "mask_blur_hd_pixels": 2,
+  "exact_outer_edge_hd_pixels": 1,
+  "index_groups": {
+    "grass": [
+      68,
+      69,
+      70,
+      71
+    ],
+    "sand": [
+      49,
+      50,
+      51,
+      52,
+      97,
+      113,
+      191
+    ],
+    "water": [
+      224,
+      225,
+      226,
+      227,
+      228,
+      229,
+      230,
+      231,
+      232,
+      233,
+      234,
+      235,
+      236,
+      237,
+      238
+    ]
+  },
+  "groups": [
+    {
+      "anchor": [
+        0,
+        49
+      ],
+      "native_content_sha256": "dc0918f0531484f9fdf6f6f085aa250eb0f0b77b901e2665740643b816356926",
+      "file": "shore-049-hd-v1.png",
+      "materials": [
+        "water"
+      ],
+      "targets": [
+        [
+          0,
+          49
+        ],
+        [
+          2,
+          173
+        ],
+        [
+          5,
+          275
+        ],
+        [
+          10,
+          72
+        ],
+        [
+          12,
+          101
+        ],
+        [
+          14,
+          173
+        ],
+        [
+          15,
+          105
+        ],
+        [
+          16,
+          105
+        ],
+        [
+          30,
+          72
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        50
+      ],
+      "native_content_sha256": "bed8a8fae4d1d196b3f432768dc336125cae391dfb51f186cd9c35ea908bda1f",
+      "file": "shore-050-hd-v1.png",
+      "materials": [
+        "sand"
+      ],
+      "targets": [
+        [
+          0,
+          50
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        64
+      ],
+      "native_content_sha256": "172d80e1b67aa3f82a2d037dd19a6f1faecb02e4fb5b915e70de2115ba5bd453",
+      "file": "shore-064-hd-v1.png",
+      "materials": [
+        "grass",
+        "sand"
+      ],
+      "targets": [
+        [
+          0,
+          64
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        65
+      ],
+      "native_content_sha256": "0d12bc3d9060ee9234e01b1fcb357171a25ff021747d1eff1c81becda72c0d54",
+      "file": "shore-065-hd-v1.png",
+      "materials": [
+        "grass",
+        "sand"
+      ],
+      "targets": [
+        [
+          0,
+          65
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        66
+      ],
+      "native_content_sha256": "8bfccc0a0a87675e42f71aa6b6b695a92d9e9cc6c017578c99b9dfbc24337bfa",
+      "file": "shore-066-hd-v1.png",
+      "materials": [
+        "grass",
+        "sand"
+      ],
+      "targets": [
+        [
+          0,
+          66
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        67
+      ],
+      "native_content_sha256": "80bb63ceb43b302f4090a081e09ab5d9e4d5332a2fcacfb00c72703cd8fc047f",
+      "file": "shore-067-hd-v1.png",
+      "materials": [
+        "grass",
+        "sand"
+      ],
+      "targets": [
+        [
+          0,
+          67
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        68
+      ],
+      "native_content_sha256": "3ef5fa65a4a65a61f84f832c2bbd6422daf446f602ff9b173c166d45fa2f4f98",
+      "file": "shore-068-hd-v1.png",
+      "materials": [
+        "grass",
+        "sand"
+      ],
+      "targets": [
+        [
+          0,
+          68
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        69
+      ],
+      "native_content_sha256": "52f367c15116ee558b5bb5f2ef5de9b8286bc48bac9cf7f5ea4b67cf8140cf0a",
+      "file": "shore-069-hd-v1.png",
+      "materials": [
+        "grass",
+        "sand"
+      ],
+      "targets": [
+        [
+          0,
+          69
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        70
+      ],
+      "native_content_sha256": "e4ec2bb3dba1aeb50535116030d21eda86c2b2202ca4ada5d796cb68b0cd5d93",
+      "file": "shore-070-hd-v1.png",
+      "materials": [
+        "grass",
+        "sand"
+      ],
+      "targets": [
+        [
+          0,
+          70
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        71
+      ],
+      "native_content_sha256": "7340cf8e3a57c44e6f2931b8dfbd53fa2b1a10106713b1e6a8f7b6e4fe7360cd",
+      "file": "shore-071-hd-v1.png",
+      "materials": [
+        "grass",
+        "sand"
+      ],
+      "targets": [
+        [
+          0,
+          71
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        72
+      ],
+      "native_content_sha256": "ce3353cac8712ac58bf274a4390bdc7dccab61da7214ce692d3320356de71085",
+      "file": "shore-072-hd-v1.png",
+      "materials": [
+        "grass",
+        "sand"
+      ],
+      "targets": [
+        [
+          0,
+          72
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        73
+      ],
+      "native_content_sha256": "2bdd985d7f7fe3b4568e107f88d9cf29e605a3e82943c784615a5ef7bf980721",
+      "file": "shore-073-hd-v1.png",
+      "materials": [
+        "grass",
+        "sand"
+      ],
+      "targets": [
+        [
+          0,
+          73
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        74
+      ],
+      "native_content_sha256": "068ea429d8e9e32d470718a0b51ba7ebf2d7e0fc7714421c0c1c43010086397c",
+      "file": "shore-074-hd-v1.png",
+      "materials": [
+        "grass",
+        "sand"
+      ],
+      "targets": [
+        [
+          0,
+          74
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        75
+      ],
+      "native_content_sha256": "5ecfd0d3a26ef6ba4e0655fa22e529795a4e8ccf2e1014989c21f52aad801eae",
+      "file": "shore-075-hd-v1.png",
+      "materials": [
+        "grass",
+        "sand"
+      ],
+      "targets": [
+        [
+          0,
+          75
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        76
+      ],
+      "native_content_sha256": "44c2b771585de1c5405b668ccd9cdd471307f403ab589ac7242bca3e9dd04f8a",
+      "file": "shore-076-hd-v1.png",
+      "materials": [
+        "grass",
+        "sand"
+      ],
+      "targets": [
+        [
+          0,
+          76
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        77
+      ],
+      "native_content_sha256": "35fa7be78ba1f95cb1d3b7f7ccc8e898d635f7bbdd00834681a9aadbb4e68c5d",
+      "file": "shore-077-hd-v1.png",
+      "materials": [
+        "grass",
+        "sand"
+      ],
+      "targets": [
+        [
+          0,
+          77
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        78
+      ],
+      "native_content_sha256": "ef5588536684cc024bb044855f7da4b448371826492eb8e37832e255e1ac555e",
+      "file": "shore-078-hd-v1.png",
+      "materials": [
+        "grass",
+        "sand"
+      ],
+      "targets": [
+        [
+          0,
+          78
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        79
+      ],
+      "native_content_sha256": "057f8cbd669131816b0eacb389b309a566cb4b6a75626c3c4bdaaef5197d9d34",
+      "file": "shore-079-hd-v1.png",
+      "materials": [
+        "grass",
+        "sand"
+      ],
+      "targets": [
+        [
+          0,
+          79
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        96
+      ],
+      "native_content_sha256": "074e39014dcd47ee2c24d4985c12af15360f0485d214ff615899d1e2d5dae020",
+      "file": "shore-096-hd-v1.png",
+      "materials": [
+        "sand",
+        "water"
+      ],
+      "targets": [
+        [
+          0,
+          96
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        97
+      ],
+      "native_content_sha256": "8b9dc58e224589a4cefc43415fd94edc8b2b3ae746a7530606018a595215f5dc",
+      "file": "shore-097-hd-v1.png",
+      "materials": [
+        "sand",
+        "water"
+      ],
+      "targets": [
+        [
+          0,
+          97
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        98
+      ],
+      "native_content_sha256": "01797923733a44858f7f0617b000cf016f6acb47ed01f09556c9513f557c7bf4",
+      "file": "shore-098-hd-v1.png",
+      "materials": [
+        "sand",
+        "water"
+      ],
+      "targets": [
+        [
+          0,
+          98
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        99
+      ],
+      "native_content_sha256": "9c40dd3d23668fb6bab81b0601c818b0d88885fdd12b06d977b6980da0a1ceb3",
+      "file": "shore-099-hd-v1.png",
+      "materials": [
+        "sand",
+        "water"
+      ],
+      "targets": [
+        [
+          0,
+          99
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        100
+      ],
+      "native_content_sha256": "df6c87acabe0af50fc668cdc393b5137381d9309d0346bd3fc45d8a984a75b44",
+      "file": "shore-100-hd-v1.png",
+      "materials": [
+        "sand",
+        "water"
+      ],
+      "targets": [
+        [
+          0,
+          100
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        101
+      ],
+      "native_content_sha256": "493f334a8f421be08d1c0a2bb789e8a6b6d54f97d7869f0b390d64871d4aa133",
+      "file": "shore-101-hd-v1.png",
+      "materials": [
+        "sand",
+        "water"
+      ],
+      "targets": [
+        [
+          0,
+          101
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        102
+      ],
+      "native_content_sha256": "ee1260020a9d3312b335b4374c226b9047f2990366d90c44da1e888191fc6fee",
+      "file": "shore-102-hd-v1.png",
+      "materials": [
+        "sand",
+        "water"
+      ],
+      "targets": [
+        [
+          0,
+          102
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        105
+      ],
+      "native_content_sha256": "57027abfc0cd1f73984bd32021a4821ec9efe12e97f7efbece86200f97418f94",
+      "file": "shore-105-hd-v1.png",
+      "materials": [
+        "sand",
+        "water"
+      ],
+      "targets": [
+        [
+          0,
+          105
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        106
+      ],
+      "native_content_sha256": "d7beb3d8a925c2b09ee8c47a8fe2571ca9de2ebc90fab10a5d60c773759c69b3",
+      "file": "shore-106-hd-v1.png",
+      "materials": [
+        "sand",
+        "water"
+      ],
+      "targets": [
+        [
+          0,
+          106
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        108
+      ],
+      "native_content_sha256": "ba767139c625ffaaec1c583a073d0a60890ec1b757db2e09c7c93873b0315bd2",
+      "file": "shore-108-hd-v1.png",
+      "materials": [
+        "sand",
+        "water"
+      ],
+      "targets": [
+        [
+          0,
+          108
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        109
+      ],
+      "native_content_sha256": "5ee820e9bdd37c2272b7c2630419d07ff8ad13447b52f83e006ea8be4754c323",
+      "file": "shore-109-hd-v1.png",
+      "materials": [
+        "sand",
+        "water"
+      ],
+      "targets": [
+        [
+          0,
+          109
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        110
+      ],
+      "native_content_sha256": "ee999c264dda99605d77b4874aa40c631f1ad209e8447d750ab11c355696f8ce",
+      "file": "shore-110-hd-v1.png",
+      "materials": [
+        "sand",
+        "water"
+      ],
+      "targets": [
+        [
+          0,
+          110
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        111
+      ],
+      "native_content_sha256": "7b191ad6d4f0c2fcaa1fa6d635b5f3df38bf7d469872e305be034ec3286e0295",
+      "file": "shore-111-hd-v1.png",
+      "materials": [
+        "sand",
+        "water"
+      ],
+      "targets": [
+        [
+          0,
+          111
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        113
+      ],
+      "native_content_sha256": "51b311d99e504fb9366aa6a0937edab88a3a997c6ee5a45947f5bbcd2a5ee4e0",
+      "file": "shore-113-hd-v1.png",
+      "materials": [
+        "sand",
+        "water"
+      ],
+      "targets": [
+        [
+          0,
+          113
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        114
+      ],
+      "native_content_sha256": "d1b640157862d807aa2d84e2a65f3ffcf4f8fbfecba48e0ffc7afeefebee0bde",
+      "file": "shore-114-hd-v1.png",
+      "materials": [
+        "sand",
+        "water"
+      ],
+      "targets": [
+        [
+          0,
+          114
+        ]
+      ]
+    }
+  ],
+  "source_refs": [
+    "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+    "docs/data/fd2-modern-hd-battlefield-20261019.json"
+  ],
+  "sand_master_sha256": "729ef1abaf7779905946508a117014ee9285cb72bc386d4964eb814c7bfb09a2",
+  "water_master_sha256": "e7900474401d0c35b88a994f22412721e07cb0fac6a17a45106d5fa1deeef541"
+}

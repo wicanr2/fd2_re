@@ -19,19 +19,28 @@ import (
 )
 
 func TestModernHDGroundEdgesRealBanksAndGPU(t *testing.T) {
-	testModernHDGroundMaterialsRealBanksAndGPU(t, false)
+	testModernHDGroundMaterialsRealBanksAndGPU(t, "edges")
 }
 
 func TestModernHDGroundBasesRealBanksAndGPU(t *testing.T) {
-	testModernHDGroundMaterialsRealBanksAndGPU(t, true)
+	testModernHDGroundMaterialsRealBanksAndGPU(t, "bases")
 }
 
-func testModernHDGroundMaterialsRealBanksAndGPU(t *testing.T, bases bool) {
+func TestModernHDShoreRealBanksAndGPU(t *testing.T) {
+	testModernHDGroundMaterialsRealBanksAndGPU(t, "shore")
+}
+
+func testModernHDGroundMaterialsRealBanksAndGPU(t *testing.T, profile string) {
+	bases, shore := profile == "bases", profile == "shore"
 	env, recipeName, status := "FD2_HD_GROUND_EDGES", "ground-grass-earth-hd.recipe.json", "PASS-GROUND-EDGES-GPU"
 	groups, slots, maps := 14, 141, 11
 	if bases {
 		env, recipeName, status = "FD2_HD_GROUND_BASES", "ground-bases-hd.recipe.json", "PASS-GROUND-BASES-GPU"
 		groups, slots, maps = 5, 52, 18
+	}
+	if shore {
+		env, recipeName, status = "FD2_HD_SHORE", "shore-hd.recipe.json", "PASS-SHORE-GPU"
+		groups, slots, maps = 33, 41, 9
 	}
 	if os.Getenv(env+"_GPU") != "1" {
 		t.Skip("dedicated real-bank ground-edge process")
@@ -201,6 +210,13 @@ func testModernHDGroundMaterialsRealBanksAndGPU(t *testing.T, bases bool) {
 	v.CameraX, v.CameraY = 6, 15
 	v.CursorX, v.VisibleCursorX = 6, 6
 	v.CursorY, v.VisibleCursorY = 22, 22
+	if shore {
+		// Map0 contains both water49 and sand50 in the northern 13x8 view.
+		// The former southern view has shoreline mixtures but no pure sand50.
+		v.CameraX, v.CameraY = 0, 0
+		v.CursorX, v.CursorY = 6, 0
+		v.VisibleCursorX, v.VisibleCursorY = 6, 0
+	}
 	if e = g.st.MaterializeNativeMapViewState(v); e != nil {
 		t.Fatal(e)
 	}
@@ -223,7 +239,10 @@ func testModernHDGroundMaterialsRealBanksAndGPU(t *testing.T, bases bool) {
 	if bases && (!visible[52] || !visible[53]) {
 		t.Fatal("real Game.Draw omitted grass/earth bases", visible)
 	}
-	if !bases && len(visible) < 8 {
+	if shore && (!visible[49] || !visible[50]) {
+		t.Fatal("real Game.Draw omitted water/sand bases", visible)
+	}
+	if !bases && !shore && len(visible) < 8 {
 		t.Fatal("real Game.Draw has insufficient new edges", len(visible))
 	}
 	p.cases = append(p.cases, sharedGroundGPUCase{g: g, name: "game-map00", mapID: 0, source: recipe.Groups[0].Anchor[1], keepPNG: true})

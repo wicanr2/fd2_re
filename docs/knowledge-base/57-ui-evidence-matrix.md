@@ -1,6 +1,6 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
-純草、純泥及三種補接交界已接十八張地圖的同源槽，沿既有144稀疏地形。實際bank／selector、GPU對CPU、F2、來源／登錄與清冊反例，以及首章普通取景、面板與來源槽冷讀通過；不新增原版對拍或整章E2。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約與重跑依[61](61-modern-theme-runtime-spec.md)，主收據為ground_bases_followup_20261025。其他地形／水岸、HD2、完整介面／工具列與集中人工／平台仍待。
+水面、沙地與首章全部實際使用的草沙／沙水交界已接既有144稀疏地形。來源與完整GPU、F2、拒收、清冊及首章普通北岸取景／面板／來源槽冷讀通過；既有兩材質模式重編逐byte相同，純草模式回歸保持。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約與重跑依[61](61-modern-theme-runtime-spec.md)，主收據為shore_followup_20261025。其他地形、HD2、完整介面／工具列與集中人工／平台仍待。
 
 蓋亞手腕v2的普通操作已用現行圖包補驗，限定CONFORMED-SCOPED／NORMAL-GUI。普通攻擊、死亡、戰後整備、F2、保存及新程序LOAD通過，實際畫面核到新版待機／蓄力／出拳的相容姿勢。README不再以舊版圖代表現行蓋亞。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源依HD主收據`gaia_v2_normal_followup_20261025`；自然度、END參戰、平台與完整HD仍待，#268保持開啟。
 

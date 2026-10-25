@@ -9,10 +9,10 @@
     "native_viewport": "CONFORMED-SCOPED：穩定1920世界沿原生(4,4)、312×192窗格；死亡事件前25拍依既有producer從VGA0,0開始，最後steady回4,4。不同caller分列，不新增DOS位址parity。",
     "hd_sprite_data": "DATA-READY：完整125組1455張HD及31組372張新增24父項已登錄；舊1083張父項及HD bytes保持。",
     "hd_world_renderer": "CONFORMED-SCOPED：144人物已接Game.Draw；首章34張正常GPU、4張實際走行、兩次物理攻擊及保存／新程序LOAD通過。",
-    "private_assets": "已登錄圖源按白名單同步唯一私人庫；目前版本及數量依ground_bases_followup_20261025.private_assets。",
+    "private_assets": "已登錄圖源沿白名單同步唯一私人庫；目前版本與數量依shore_followup_20261025.private_assets。",
     "quickload_battle_owner": "CONFORMED-SCOPED：成功JSON LOAD丟棄舊經驗owner與移動計畫；拒收保留。",
     "timed_dialogue": "CONFORMED-SCOPED-RUNTIME-E1：計時FFEC開收框保留HD世界，EXP99普通鍵盤／F2與保存冷讀通過；其他caller未驗。",
-    "hd_terrain": "CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI：已接同源純草／純土、草泥交界及既有物件；唯一數量依58及ground_bases_followup_20261025。其他地形／水岸與HD2仍待。",
+    "hd_terrain": "CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI：已接既有草泥、首章水／沙與草沙／沙水交界；目前數量依58及shore_followup_20261025。其他地形／異色或平藍來源與HD2仍待。",
     "ai_player_input_lock": "CONFORMED-SCOPED：AI換手期間拒絕玩家地圖輸入重入；普通END／增援對話及相關／完整Go回歸通過。",
     "gaia_redesign": "CONFORMED-SCOPED：新版頭像與四方向圖組已登錄；正常START／Gaia北移取消／F2／冷讀分段驗證。相位差異與序章尾端失敗明示，非逐幀parity。",
     "hd_battle_animation": "已解碼FIGANI264資源2118幀與全部可見BG／TAI圖源已登錄，數量及caller限制依58與本批formal_coverage；未因此宣稱全部caller、正常玩家或完整HD完成。",
@@ -20,7 +20,7 @@
     "hd_event_death": "共用事件、普通行動與狀態致死已接HD；三種26拍／F2通過。正常章23事件與普通擊殺已抽驗，狀態致死正常GUI仍待；來源依death_consumers_followup_20261021。",
     "theme_toolbar": "CONFORMED-SCOPED／RUNTIME-E1：正式預設單列頂端浮出、自動隱藏，主題與四語按鈕沿F2／F4閘門；完整遊戲幾何保持。其餘控制未完成，依floating_toolbar_followup_20261025。",
     "hd_facility_scene": "CONFORMED-SCOPED-RUNTIME-E1：三種城鎮與三種商店靜態HD場景／店員，以及既有隊伍HD頭像接入裝備面板；114個GPU案例及兩包載入通過，集中普通／人工仍待。",
-    "assets": "目前清冊與圖源依58及ground_bases_followup_20261025；保留歷史各切片數量的範圍。",
+    "assets": "清冊及實檔依58與shore_followup_20261025；各舊切片數字保留其範圍。",
     "hd_battle_background": "CONFORMED-SCOPED／RUNTIME-E1：森林小屋／內部／海岸，以及BG0..2過渡已接共用／分離物理與24／29的已驗caller；原生位移、遮罩與節拍保持。其他來源／caller仍待，依transition_backgrounds_followup_20261024。",
     "hd_battle_pedestal": "CONFORMED-SCOPED／RUNTIME-E1：已登錄草地、森林裸土及海岸沙地TAI接共用物理的靜態／移位進場、攻防／restore／淡出。原框、層序與節拍保持，其他來源及caller仍待，依forest_coast_surface_followup_20261024。",
     "hd_heal_map": "CONFORMED-SCOPED／RUNTIME-E1：13～16的前導、七張光環、HD輪廓閃光、十個綠數字及等待接入；兩包各八完整Game.Draw／88次F2、一次交易／續行與非空HD地形變色通過。來源及限制見heal13_16_map_hd_followup_20261023，正常／人工／平台仍待。",
@@ -230969,7 +230969,8 @@
         "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ground-bases-normal-r2-capture/terrain-hd-ground-bases-restored.png",
         "sha256": "d8a7742bad079a5d585c2d9bb15a65ec600d0a30f759e55376bc49d5f6cf33b3"
       },
-      "transform": "完整1920×1200原始視窗PNG逐byte複製，未裁切、補畫或去字。"
+      "transform": "完整1920×1200原始視窗PNG逐byte複製，未裁切、補畫或去字。",
+      "superseded_by": "shore_followup_20261025.readme；原始來源PNG與Git 707fa898保留。"
     },
     "reproduce": {
       "build": "tools/build_fd2_hd_ground_edges.py --original-pack /original --maps remake/assets/maps --sources work/promo-cadence-20261018/hd-fonts/native-terrain-sources-r2 --base-catalog <ground-bases-base793-r1.json或git 982839c4清冊> --base-pack /private --earth-master /private/earth-loam-hd-v1-master.png --recipe remake/assets/themes/modern/ground-bases-hd.recipe.json --out <既有work父目錄下新目錄>；Pillow Docker，2GiB／2CPU／96PID及180秒外層限制，原包與完整私人包唯讀。",
@@ -231012,6 +231013,492 @@
       "manual_items": 18,
       "possibly_done": 0,
       "scope": "主機gh讀回，由官方build_snapshot／write_snapshot及render／verify產生；完整HD與集中人工268／269保持。"
+    }
+  },
+  "shore_followup_20261025": {
+    "status": "CONFORMED-SCOPED / RUNTIME-E1 / NORMAL-GUI",
+    "base_commit": "707fa898a00ef2e62daf36f7c190900daff68262",
+    "issue": 201,
+    "runtime_integrated": true,
+    "full_hd_complete": false,
+    "rules_changed": false,
+    "recipe": {
+      "file": "remake/assets/themes/modern/shore-hd.recipe.json",
+      "sha256": "1c2d864b6e60e038eb3ad0be54469610058a68a93ea6d89038ba3b241a3c7be4"
+    },
+    "candidate": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shore-candidate-r1/manifest.json",
+      "sha256": "f1135d92677a6efded55dafbd823a0adf04c49218011ea690b76acc0321cc9e3"
+    },
+    "source_guards": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shore-source-guards-r1.json",
+      "sha256": "b69a7989904f40557e8164ca5b2b8e166bc7b1b00590ffb1601b9a82b7c303ed",
+      "superseded_by": "guards；此為較早來源單驗，完整來源與登錄以最終guards為準。"
+    },
+    "source_groups": 33,
+    "target_slots": 41,
+    "maps": [
+      0,
+      2,
+      5,
+      10,
+      12,
+      14,
+      15,
+      16,
+      30
+    ],
+    "generation": {
+      "mode": "built-in image_gen",
+      "prompts": [
+        [
+          "water",
+          "Create ONE opaque square seamless hand-painted overhead blue-water material for a 1995 tactical RPG remake. This is a flat texture asset, not a scene or screenshot. Restrained gouache/digital brushwork, small soft brush shapes, suitable beside olive-green painted grass and warm umber painted earth. Calm medium cobalt/slate blue water, base around RGB(47,77,145), variation about RGB(38,66,133) to RGB(60,90,158). Fine short understated overlapping ripple strokes across the ENTIRE tile, evenly distributed, very low contrast, no white highlights. Orthographic straight overhead, uniform diffuse light, no horizon, perspective, shore, land, plants, rocks, objects, text, symbols, grid or frame. No bright caustics, glints, foam, waves, reflections, gradients or vignette. Filled edge to edge with a consistent quiet water material; matching density/color at all four edges for tiling. Ideally 1024x1024. Hand-painted, not photographic, not pixel art. Fully opaque."
+        ],
+        [
+          "sand",
+          "Create ONE opaque square seamless hand-painted overhead pale sandy-ground material for a 1995 tactical RPG remake. This is a flat texture asset, not a scene or screenshot. Restrained gouache/digital brushwork, tiny soft irregular brush daubs and fine low-contrast grains, suitable beside olive-green painted grass and warm umber painted earth. Medium warm beige sand, base around RGB(185,162,117), highlights RGB(201,180,139), shadows RGB(163,141,100). Subtle evenly distributed small grit, quiet and compact ground. Orthographic straight overhead, uniform diffuse light, no horizon, perspective, water, shore shape, plants, roots, large stones, footprints, cracks, dunes, objects, text, symbols, grid or frame. No directional shadows, gradients or vignette. Filled edge to edge with consistent density/color at all four edges for tiling, fine painted details still readable when reduced to 144x144. Ideally 1024x1024. Hand-painted, not photographic, not pixel art. Fully opaque."
+        ]
+      ],
+      "prompt_file": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shore-generation-prompts-r1.json",
+        "sha256": "1af6e859d951cc9ba27b5568272471966575cc3e9a18b373ed071c4ce77ec936"
+      },
+      "water": {
+        "original": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-4d29ebfd-3040-431c-b822-b3447cc75637.png",
+        "saved": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/water-cobalt-hd-v1-master.png",
+          "sha256": "e7900474401d0c35b88a994f22412721e07cb0fac6a17a45106d5fa1deeef541"
+        }
+      },
+      "sand": {
+        "original": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-2bdbf7c3-d5c6-4e44-b9c6-07d651df3a4e.png",
+        "saved": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/sand-warm-hd-v1-master.png",
+          "sha256": "729ef1abaf7779905946508a117014ee9285cb72bc386d4964eb814c7bfb09a2"
+        }
+      },
+      "art_review": "兩母稿與33圖預覽已目視，沿既有手繪風格；草沿原母稿。新RGB、索引分類、柔化及接縫為美術近似。"
+    },
+    "failed_attempts": [
+      {
+        "name": "shore-gpu-r1",
+        "category": "controlled view missing source",
+        "reason": "沿舊交界相機(6,15)，正式Draw只見交界而沒有純水49／沙50。"
+      },
+      {
+        "name": "shore-gpu-r2",
+        "category": "incorrect sampling assumption",
+        "reason": "沿前批普通南側視圖(0,16)後可見49，但純沙50只在北側(1..5,3..6)，不在該視圖。第二次後已回讀戰術幾何路由，逐格查實際map0坐標；改用合法北側(0,0)並保留純水／沙門檻，不調規則或掩蔽像素。"
+      }
+    ],
+    "other_blue_sources": {
+      "review": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shore-water-variants-review-r1.png",
+        "sha256": "16e7293ad64b292b88b60d2a90deaa6d3cc48de0548916249895f13f0cbd73db"
+      },
+      "scope": "另有map7:364、map26:75／27:122／28:146／29:5及map29:163／164三組不同原始內容，包含幾乎全平藍色；尚未依實際場景定義美術，不從相同色盤宣稱全部都是水，不併入本配方。"
+    },
+    "human_review": "全部HD接上後集中人工確認。",
+    "not_claimed": [
+      "九章正常玩家或原版RGB一致",
+      "其他藍色來源用途或全遊戲水岸完成",
+      "自然戰鬥返回及戰後變更保存",
+      "完整HD、HD2或人工美術完成"
+    ],
+    "catalog_assets": 822,
+    "sparse_terrain_slots": 298,
+    "catalog": {
+      "file": "remake/assets/themes/modern/catalog.json",
+      "sha256": "0ef42a19045ca6907770f415322cc6509e759ee4d5e8f135509cb34b959fccd5"
+    },
+    "gpu": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shore-gpu-r3-capture/gpu.json",
+      "sha256": "3617e37d84bbf4d718ea609bd34624c81d96bd1e6fa41e2a32b9bcf479dfbd8c"
+    },
+    "guards": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shore-guards-r2.json",
+      "sha256": "c5142373a0f488cd6816cfc20a751dcfba40090c9a8f4b958eece79de76a7aff"
+    },
+    "registration": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shore-registration-r1.json",
+      "sha256": "f913bcb6d7b897227afc493c18e0a7c40de6fb13fb39244acfb008f554807d0e"
+    },
+    "private_sync": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shore-private-sync-r1.json",
+      "sha256": "9f0e582943811f379e6e9e04337e651072469da1bbbd11fa92714c15dd4ec4bc"
+    },
+    "legacy_bases": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shore-legacy-bases-r1.json",
+      "sha256": "c96c36bf2ee1e08d6cd3db0d1692abac0e73ed33693b8b8277321c2bffc3a0b6"
+    },
+    "legacy_edges": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shore-legacy-edges-r1.json",
+      "sha256": "477e2ed57871a651194d3beb9017dbbb59ce11124c10562ef520839a7349ecfd"
+    },
+    "legacy_grass": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shore-legacy-grass-r1.json",
+      "sha256": "f23f6b2be6bb7bd3f272f8b2b5d9b1fb792c0805e28e38442acf5b1921ed6089"
+    },
+    "source_files": [
+      {
+        "file": "tools/build_fd2_hd_ground_edges.py",
+        "sha256": "c33458dbe710afe6ddfc1599ed09de8a07b8b815473b4717ca42928f0ffcc95f"
+      },
+      {
+        "file": "tools/test_fd2_hd_ground_edges.py",
+        "sha256": "6d8d631b4da75f7a2af3e3e47f2be859a5e19cdd494da49fce2adb1777efbdc7"
+      },
+      {
+        "file": "tools/register_fd2_hd_ground.py",
+        "sha256": "2555a2261865e6a834616e92ab2691b4db7df6fe72a33fd10abf6b78e0d69c96"
+      },
+      {
+        "file": "tools/sync_modern_theme_private.py",
+        "sha256": "d45b80987545d4649f0c6c952a67cdd472a9fdb4c458976602c8dcb98d82dc04"
+      },
+      {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "d9e12515fd4a473d37eef889b52716446f3bc4b8e9716d919ad8a4a2ca22b360"
+      },
+      {
+        "file": "tools/verify_fd2_hd_terrain_gpu.py",
+        "sha256": "48a51ee258630ad4896e235b8f21986b5ca7de4513817776b10fd95be56c518f"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_ground_edges_gpu_test.go",
+        "sha256": "ccdd65e269b18249f2f5a657bb98213e5dc77912edadf11c36c70a6cff146e22"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_ground_gpu_test.go",
+        "sha256": "f53334902138ff07e9446e1df5309b8779d421018db6b289b166f6df736273a8"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_terrain.go",
+        "sha256": "100be1cd405646fb9aceb505e2de1db93e679ba898f3891e4ea13fd1028a03c9"
+      },
+      {
+        "file": "remake/internal/fdicon/terrain.go",
+        "sha256": "f5565cd7d0f7b9de11a6ee5fec806326ba4df7f9d8852153433b68754e6e3a21"
+      },
+      {
+        "file": "tools/validate_modern_theme_catalog.py",
+        "sha256": "880d0b1e7ccea6cc5c2aa38db13728ea9ba6ccfb13d7d9d0793c271b22d10204"
+      },
+      {
+        "file": "tools/test_modern_theme_catalog.py",
+        "sha256": "3370260ee7bbcd58504de9cb57726729f50778f65afc4b0ee0e361bee8f0c97f"
+      },
+      {
+        "file": "tools/build_fd2_hd_ground.py",
+        "sha256": "da81c7657fb4880fbcf1a251ddc4d9f6c5fdb70870b55330fbfe626c2c73f2c9"
+      },
+      {
+        "file": "tools/verify_fd2_terrain_sources.py",
+        "sha256": "2ad1b68424541acb01c7efd38e3d89ac42ee2bd7e4e14e8f412056d605d61d44"
+      }
+    ],
+    "bounded_runs": [
+      {
+        "name": "shore-build-r1",
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shore-build-r1.log",
+          "sha256": "80a57522fa8f75dcd16c6e4982053747380af63d291eddfe699eece42673f0da"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shore-build-r1.memory.json",
+          "sha256": "538e68227fb762d05aa2bcfaf17e3691d8395fad39f061072dd0f75235de4cf0"
+        },
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 10.522,
+        "peak_bytes": 1024364544,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "command": [
+          "python3",
+          "tools/build_fd2_hd_ground_edges.py",
+          "--original-pack",
+          "/original",
+          "--maps",
+          "remake/assets/maps",
+          "--sources",
+          "work/promo-cadence-20261018/hd-fonts/native-terrain-sources-r2",
+          "--base-catalog",
+          "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shore-base811-r1.json",
+          "--base-pack",
+          "/private",
+          "--sand-master",
+          "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/sand-warm-hd-v1-master.png",
+          "--water-master",
+          "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/water-cobalt-hd-v1-master.png",
+          "--recipe",
+          "remake/assets/themes/modern/shore-hd.recipe.json",
+          "--out",
+          "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shore-candidate-r1"
+        ]
+      },
+      {
+        "name": "shore-binary-r1",
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shore-binary-r1.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shore-binary-r1.memory.json",
+          "sha256": "5c249f6d9570470b0ba7db8e1b14ec7dc943e93ef2e0bb96ff8b215ccab98438"
+        },
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 21.096,
+        "peak_bytes": 502534144,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "command": [
+          "go",
+          "build",
+          "-o",
+          "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shore-current-r1",
+          "./cmd/fd2"
+        ]
+      },
+      {
+        "name": "shore-gpu-r3",
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shore-gpu-r3.log",
+          "sha256": "6302aaa1ac4242c34c2f875aaa7d9a2ec326180065516107c245f7d9dd9b2eb6"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shore-gpu-r3.memory.json",
+          "sha256": "2b2ae6cb065202575407771f5c26e62982ddad5d0b00043e2377364b9d00dd85"
+        },
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 115.58,
+        "peak_bytes": 3841740800,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "command": [
+          "with-xvfb",
+          "go",
+          "test",
+          "-json",
+          "-count=1",
+          "-timeout=780s",
+          "./cmd/fd2",
+          "-run",
+          "^TestModernHDShoreRealBanksAndGPU$"
+        ]
+      },
+      {
+        "name": "shore-normal-r1",
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shore-normal-r1.log",
+          "sha256": "eb6d138d6dd755320bc19abc4dbb03f59319d5a6be05d869e05272c75f79ab16"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shore-normal-r1.memory.json",
+          "sha256": "2ac101aa17c30703eaf72503cb70764154f7775f34e0f09ca63f8397c17ccdca"
+        },
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 290.157,
+        "peak_bytes": 4013977600,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "command": [
+          "python3",
+          "tools/verify_fd2_hd_fonts_gui.py",
+          "--binary",
+          "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shore-current-r1",
+          "--assets",
+          "/repo/remake",
+          "--original-pack",
+          "/original",
+          "--modern-pack",
+          "/modern",
+          "--town-save",
+          "/source/fd2_save.json",
+          "--out",
+          "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shore-normal-r1-capture",
+          "--battle-status",
+          "--terrain",
+          "--terrain-frames",
+          "49,50",
+          "--terrain-label",
+          "shore",
+          "--terrain-focus",
+          "6",
+          "0",
+          "--startup-timeout",
+          "180"
+        ]
+      }
+    ],
+    "gui": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shore-normal-r1-capture/receipt.json",
+      "sha256": "c884027b041284891265aee4cb86767e9681a3e7da84395ff69314f79870807e"
+    },
+    "normal_pixel_core": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shore-normal-core-r1.json",
+      "sha256": "e7cda5b438e4f037ec3b9502d9f741d23f0097c6da84766eeb510cd393011962"
+    },
+    "catalog_tests": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shore-catalog-tests-r1.log",
+      "sha256": "01bc62ad41c40ff3ae8e73866608887739edc4238458a99c70b5e9c8e8351fac",
+      "status": "PASS",
+      "tests": 14
+    },
+    "normal_summary": {
+      "seed": 1,
+      "source_save_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "pngs": 19,
+      "operations": 83,
+      "focus": [
+        6,
+        0
+      ],
+      "frames": [
+        49,
+        50
+      ],
+      "matching_tiles": [
+        75,
+        78
+      ],
+      "pure_material_tiles": [
+        {
+          "49": 10,
+          "50": 8
+        },
+        {
+          "49": 10,
+          "50": 8
+        }
+      ],
+      "source_save_bytes_equal": true,
+      "theme_save_bytes_equal": true,
+      "new_process_title_load": true,
+      "natural_attack_return_checked": false,
+      "post_battle_save_checked": false,
+      "node_boundary_save_checked": false,
+      "scope": "正常標題LOAD、方向鍵至北側(6,0)、F2、狀態／命令面板及來源保存新程序冷讀。未注入坐標／狀態，本批不抽攻擊／自然返回。"
+    },
+    "private_assets": {
+      "commit": "ffce8d9e969e41460551eb0243b7f0f521c39c66",
+      "remote_head_verified": "ffce8d9e969e41460551eb0243b7f0f521c39c66",
+      "is_private_verified": true,
+      "files": 7009,
+      "old_files_unchanged": 6974,
+      "old_mtimes_preserved": true,
+      "new_files": 35,
+      "manifest_sha256": "c76605759f8d5397014e37c5bd9eb41a32579756f9b6bcb2fb73bdc79887e174"
+    },
+    "scope_details": {
+      "source_groups": 33,
+      "target_slots": 41,
+      "maps": 9,
+      "source_gpu_worlds": 54,
+      "game_draws": 1,
+      "f2": 1,
+      "wrong_bank_masks_rejected": 9,
+      "source_guards": 10,
+      "registration_rejections": 5,
+      "composite_pixels": 684288,
+      "existing_catalog_assets_unchanged": 811,
+      "catalog_assets": 822,
+      "sparse_terrain_slots": 298,
+      "production_go_changed": false,
+      "source_reference_atomic_rejection": true,
+      "two_legacy_modes_rebuild_bytes_equal": true,
+      "recordings_created": false
+    },
+    "readme": {
+      "image": {
+        "file": "docs/figures/hd-shared-grass.png",
+        "sha256": "ea5aa8f527197a69a6b2d9ac3cb8d914e7f5c0bc83eb80c67026b80f5973bf10"
+      },
+      "source": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shore-normal-r1-capture/terrain-hd-shore-restored.png",
+        "sha256": "ea5aa8f527197a69a6b2d9ac3cb8d914e7f5c0bc83eb80c67026b80f5973bf10"
+      },
+      "transform": "完整1920×1200實際視窗逐byte複製；未裁切、補畫或去字。"
+    },
+    "reproduce": {
+      "build": "Pillow Docker，tools/build_fd2_hd_ground_edges.py --original-pack /original --maps remake/assets/maps --sources <native-terrain-sources-r2> --base-catalog <shore-base811-r1.json或Git 707fa898清冊> --base-pack /private --sand-master <sand-warm-hd-v1-master.png> --water-master <water-cobalt-hd-v1-master.png> --recipe remake/assets/themes/modern/shore-hd.recipe.json --out <既有work父目錄下新目錄>。2GiB／2CPU／96PID、240秒外層，原包及完整私人包唯讀。",
+      "gpu": "Go Docker獨立程序：FD2_ASSET_PACK=/original FD2_TEST_ORIGINAL_PACK=/original FD2_TEST_MODERN_EFFECT_CATALOG=<候選/catalog.json> FD2_TEST_MODERN_EFFECT_PACK=<候選/pack> FD2_HD_SHORE_GPU=1 FD2_HD_SHORE_OUT=<新目錄>；命令依bounded_runs.gpu，6GiB／2CPU／256PID、900秒外層。",
+      "guards": "tools/test_fd2_hd_ground_edges.py --original-pack /original --sources <原生來源匯出> --recipe <水岸配方> --candidate <候選> --base-pack /private --base-catalog <811基底> --gpu <gpu.json> --report <新JSON>。舊兩模式加--rebuild-reference，逐byte核對清冊／PNG／preview，不需回滾正式清冊。",
+      "register": "tools/register_fd2_hd_ground.py --candidate <候選> --gpu <gpu.json> --guards <guards.json> --catalog <尚未登錄的811清冊> --asset-root <正式素材目錄> --report <新JSON>；同步沿sync_modern_theme_private.py白名單。",
+      "normal_gui": "fd2-promo:20261017-r1 Docker內依bounded_runs.normal完整command，FD2_SEED=1；原包、私人包、來源槽唯讀，6GiB／2CPU／256PID、780秒外層。來源為hd-world-gui-r7/user-data/fd2_re/fd2_save.json。",
+      "normal_pixels": "tools/verify_fd2_hd_terrain_gpu.py --receipt <正常GUI/receipt.json> --report <新JSON>，每圖均要求完整49與50，不使用補取景。",
+      "catalog": "Pillow Docker於tools執行python3 -m unittest test_modern_theme_catalog，完整私人包唯讀掛到正式private_root。"
+    },
+    "cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shore-cleanup-r1.json",
+      "sha256": "06106e22eaa4aa13eca3b8e32497f77bf7a8a11f7a872fed0b49e51c80d073c2",
+      "removed_regular_bytes": 26865252
+    },
+    "tool_images": {
+      "fd2-assets-local:20260829-sfx": "sha256:e59237a31d4b5f7a62c59ac37b780bd93f17c99fda97be8f5ca0c53978b878bc",
+      "fd2-go-test-local:latest": "sha256:e4a805c52a3ad5d8c22cf23f2bcf51c6924e5ad6b99554f1b02761903c725433",
+      "fd2-promo:20261017-r1": "sha256:2dd9f94a4a0e0134ca40fbe3e321b692ad40fd137b6adc43bed97c84f11b45cb"
+    },
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shore-final-checks-r1.json",
+      "sha256": "640cbf3e2f6d7348ff913cd2dae5246b636d6bfd4144cb297bee4b1b159457bb",
+      "status": "PASS-SHORE-FINAL-CHECKS",
+      "source_and_receipt_bindings": 43,
+      "python_sources": 10,
+      "local_links": 2844,
+      "old_catalog_assets_unchanged": 811,
+      "catalog_assets": 822,
+      "sparse_terrain_slots": 298,
+      "batch_ownership_no_root_or_md_directory": true,
+      "readme_culture_and_locales_retained": true,
+      "candidate_aliases_same_sha256": 35,
+      "docker_batches_terminal": true
+    },
+    "worklist_issues": {
+      "updated": [
+        4,
+        201,
+        202,
+        204,
+        263
+      ],
+      "kept_open": true,
+      "open_items": 25,
+      "manual_items": 18,
+      "possibly_done": 0,
+      "scope": "主機gh讀回後由官方build_snapshot／write_snapshot及render／verify產生；完整HD及人工268／269保持。"
     }
   }
 }

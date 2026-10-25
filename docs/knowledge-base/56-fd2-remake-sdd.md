@@ -1,6 +1,6 @@
 # 56 — FD2 remake 系統設計規格（SDD，2026-08-09）
 
-純草、純泥及三種補接交界已接十八張地圖的同源槽，沿既有144稀疏地形。實際bank／selector、GPU對CPU、F2、來源／登錄與清冊反例，以及首章普通取景、面板與來源槽冷讀通過；不新增原版對拍或整章E2。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約與重跑依[61](61-modern-theme-runtime-spec.md)，主收據為ground_bases_followup_20261025。其他地形／水岸、HD2、完整介面／工具列與集中人工／平台仍待。
+水面、沙地與首章全部實際使用的草沙／沙水交界已接既有144稀疏地形。來源與完整GPU、F2、拒收、清冊及首章普通北岸取景／面板／來源槽冷讀通過；既有兩材質模式重編逐byte相同，純草模式回歸保持。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約與重跑依[61](61-modern-theme-runtime-spec.md)，主收據為shore_followup_20261025。其他地形、HD2、完整介面／工具列與集中人工／平台仍待。
 
 已接HD且有目前原版證據支持流程一致的絕招，維持已驗範圍，過期停止線直接刪除。傷害公式後續可調整，原版預設保留；需求與驗收方向見[61](61-modern-theme-runtime-spec.md)及[#278](https://github.com/wicanr2/fd2_re/issues/278)。
 

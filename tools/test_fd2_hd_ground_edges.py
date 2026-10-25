@@ -19,26 +19,32 @@ from verify_fd2_terrain_sources import sha
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     for n in ['original-pack','sources','recipe','candidate','base-pack','base-catalog','report']:p.add_argument('--'+n,type=Path,required=True)
-    p.add_argument('--gpu',type=Path);a=p.parse_args()
+    p.add_argument('--gpu',type=Path)
+    p.add_argument('--rebuild-reference',action='store_true',help='完整重編並逐byte核對既有候選，驗共用編製器相容性')
+    a=p.parse_args()
     if a.report.exists():raise ValueError('不得覆寫交界收據')
     recipe=json.loads(a.recipe.read_text());manifest=json.loads((a.sources/'manifest.json').read_text());proof=json.loads((a.candidate/'manifest.json').read_text())
     count,slots,maps,bases=ground_profile(recipe)
+    shore=recipe['kind']=='fd2_shore_hd_v1'
     checked=validate_sources(a.original_pack,manifest,recipe);assert len(checked)==count and proof['target_slots']==slots
     anchor=recipe['groups'][0]['anchor'][1]
-    grass,_=make_tile(a.base_pack/recipe['grass_master_file'],144,8);earth,_=make_tile(a.candidate/'pack'/recipe['earth_master_file'],144,8)
+    keys=['grass','sand','water'] if shore else ['grass','earth']
+    materials={k:make_tile((a.base_pack if k=='grass' else a.candidate/'pack')/recipe[k+'_master_file'],144,8)[0] for k in keys}
     pixels=0
     for item in checked:
         tile=Image.open(a.candidate/'pack'/item['group']['file']).convert('RGBA');assert tile.size==(144,144) and tile.getextrema()[3]==(255,255)
+        pair=item['group'].get('materials',['grass','earth'])
+        if len(pair)==1:assert tile.tobytes()==materials[pair[0]].tobytes(),'純底材必須完整等於對應的新手繪材質'
         if bases and item['group']['anchor'][1] in (52,53):
-            expected=grass if item['group']['anchor'][1]==52 else earth
+            expected=materials['grass'] if item['group']['anchor'][1]==52 else materials['earth']
             assert tile.tobytes()==expected.tobytes(),'純底材必須完整等於對應的新手繪材質'
         for y in range(144):
             for x in range(144):
-                actual=tile.getpixel((x,y));u=grass.getpixel((x,y));v=earth.getpixel((x,y))
+                actual=tile.getpixel((x,y));u=materials[pair[0]].getpixel((x,y));v=materials[pair[-1]].getpixel((x,y))
                 assert all(min(s,t)<=c<=max(s,t) for c,s,t in zip(actual[:3],u[:3],v[:3]))
                 if x in (0,143) or y in (0,143):
-                    soil=item['pixels'][y//6*24+x//6] in recipe['index_groups']['earth']
-                    assert actual==(v if soil else u)
+                    label=next(k for k in pair if item['pixels'][y//6*24+x//6] in recipe['index_groups'][k])
+                    assert actual==materials[label].getpixel((x,y))
                 pixels+=1
     checks=[]
     def reject(name,call,text):
@@ -47,7 +53,7 @@ def main():
             assert text in str(e),(name,str(e));checks.append({'case':name,'error':str(e)})
         else:raise AssertionError('反例未拒收：'+name)
     for name,change,text in [
-        ('overlap-indices',lambda r:r['index_groups']['earth'].append(70),'分組'),
+        ('overlap-indices',lambda r:r['index_groups']['sand' if shore else 'earth'].append(70),'分組'),
         ('unknown-indices',lambda r:r['index_groups']['grass'].remove(70),'藝術索引'),
         ('missing-target',lambda r:r['groups'][0]['targets'].pop(),'consumer'),
         ('duplicate-group',lambda r:r['groups'][0].__setitem__('anchor',r['groups'][1]['anchor']),'組數'),
@@ -66,15 +72,24 @@ def main():
         changed=hashlib.sha256(raw+bytes(bool(v) for v in opaque)+bytes(bool(v) for v in remap)).hexdigest();fr['native_content_sha256']=changed;r['groups'][0]['native_content_sha256']=changed
         reject('wrong-native-mask',lambda:validate_sources(shadow,bad,r),'原生圖層')
         r=copy.deepcopy(recipe);r['mask_blur_hd_pixels']=10
-        reject('blur-budget',lambda:composite_materials(checked[0]['pixels'],grass,earth,r),'範圍')
+        reject('blur-budget',lambda:composite_materials(checked[0]['pixels'],materials[keys[0]],materials[keys[1]],r),'範圍')
         reject('existing-output',lambda:build(None,None,None,None,None,None,None,a.candidate),'新目錄')
-        if bases:
+        if a.rebuild_reference:
+            rebuilt=tmp/'rebuilt'
+            build(a.original_pack,Path(__file__).resolve().parents[1]/'remake/assets/maps',a.sources,a.base_catalog,
+                  a.base_pack,None if shore else a.candidate/'pack'/recipe['earth_master_file'],a.recipe,rebuilt,
+                  {k:a.candidate/'pack'/recipe[k+'_master_file'] for k in ['sand','water']} if shore else None)
+            assert (rebuilt/'catalog.json').read_bytes()==(a.candidate/'catalog.json').read_bytes()
+            assert (rebuilt/'preview.png').read_bytes()==(a.candidate/'preview.png').read_bytes()
+            for frame in proof['frames']:assert sha(rebuilt/'pack'/frame['file'])==frame['sha256']
+        if bases or shore:
             bad_recipe=copy.deepcopy(recipe);bad_recipe['source_refs']=['docs/data/fd2-modern-hd-battlefield-20261019.json#invalid']
             recipe_path=tmp/'bad-source-ref.json';recipe_path.write_text(json.dumps(bad_recipe));output=tmp/'rejected-candidate'
             before=sha(a.base_catalog)
             try:
                 build(a.original_pack,Path(__file__).resolve().parents[1]/'remake/assets/maps',a.sources,
-                      a.base_catalog,a.base_pack,a.candidate/'pack'/recipe['earth_master_file'],recipe_path,output)
+                      a.base_catalog,a.base_pack,None if shore else a.candidate/'pack'/recipe['earth_master_file'],recipe_path,output,
+                      {k:a.candidate/'pack'/recipe[k+'_master_file'] for k in ['sand','water']} if shore else None)
             except ValueError as error:assert 'invalid source_ref' in str(error),str(error)
             else:raise AssertionError('來源引用錯誤未阻擋候選發布')
             assert not output.exists() and sha(a.base_catalog)==before
@@ -90,17 +105,20 @@ def main():
             else:assert first==(sync_dest/'private-manifest.json').read_bytes()
         after=(sync_dest/'same.png').stat();assert before.st_ino==after.st_ino and before.st_mtime_ns==after.st_mtime_ns
         meta['assets'][1]['sha256']='0'*64;catalog.write_text(json.dumps(meta));result=subprocess.run(argv,capture_output=True,text=True,timeout=20);assert result.returncode!=0 and 'digest mismatch: new.png' in result.stderr
-    report={'status':'PASS-GROUND-BASES-GUARDS' if bases else 'PASS-GROUND-EDGES-GUARDS','recipe_sha256':sha(a.recipe),'tool_sha256':sha(Path(__file__)),'source_groups':count,'target_slots':slots,'checked_composite_pixels':pixels,'checks':checks,'frame_sha256':{f['file']:sha(a.candidate/'pack'/f['file']) for f in proof['frames']},'private_alias_sync':{'status':'PASS','same_inode_mtime_preserved':True,'idempotent_manifest_bytes':True,'wrong_digest_rejected':True},'scope':'來源及藝術遮罩／材質／同步反例；非原版RGB或正常玩家。'}
+    report={'status':'PASS-SHORE-GUARDS' if shore else 'PASS-GROUND-BASES-GUARDS' if bases else 'PASS-GROUND-EDGES-GUARDS','recipe_sha256':sha(a.recipe),'tool_sha256':sha(Path(__file__)),'source_groups':count,'target_slots':slots,'checked_composite_pixels':pixels,'checks':checks,'frame_sha256':{f['file']:sha(a.candidate/'pack'/f['file']) for f in proof['frames']},'private_alias_sync':{'status':'PASS','same_inode_mtime_preserved':True,'idempotent_manifest_bytes':True,'wrong_digest_rejected':True},'scope':'來源及藝術遮罩／材質／同步反例；非原版RGB或正常玩家。'}
     assert len(checks)==10
+    if a.rebuild_reference:report['rebuild_matches_reference']=True
     if bases:
         report['pure_material_frames']={'52':'exact grass material','53':'exact earth material'}
+    if shore:report['pure_material_frames']={'49':'exact water material','50':'exact sand material'}
+    if bases or shore:
         report['invalid_source_ref_atomic_rejection']=True
     if a.gpu:
         from register_fd2_hd_ground import register
         gpu=json.loads(a.gpu.read_text());original=a.base_catalog.read_bytes();rejected=[]
         with tempfile.TemporaryDirectory(dir=a.report.parent) as tmp:
             tmp=Path(tmp);catalog=tmp/'catalog.json';catalog.write_bytes(original);assets=tmp/'assets';assets.mkdir();guards=tmp/'guards.json';guards.write_text(json.dumps(report))
-            positive=register(a.candidate,a.gpu,guards,catalog,assets);assert positive['slots']==slots and len(list(assets.iterdir()))==count+(not bases)
+            positive=register(a.candidate,a.gpu,guards,catalog,assets);assert positive['slots']==slots and len(list(assets.iterdir()))==count+(2 if shore else not bases)
             for name in ['catalog','rgba','missing-case','missing-frame','guard-frame']:
                 catalog.write_bytes(original);bad=copy.deepcopy(gpu);badguards=copy.deepcopy(report)
                 first=proof['frames'][0]['file']
