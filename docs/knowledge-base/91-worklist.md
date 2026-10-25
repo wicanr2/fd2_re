@@ -68,9 +68,9 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 `modern-theme-prototype-status` · 工作 · [#4](https://github.com/wicanr2/fd2_re/issues/4) · 仍未完成 · 要人判
 
-滿背包獎勵的問句、放棄及選擇器取消對話已接共用HD細框，原位移／裁切、庫存替換與一次續行保持。五分支291次完整Game.Draw、40個F2邊界、五次續行與13筆具名Go通過；10張PNG獨立核對421200個框線RGB點、1152000個同次480頭像點，九收據反例及舊粗框真實PNG拒收通過。
+滿背包獎勵的YES／NO已接四語HD選項，沿原生24×16／20矩形、開收位置與左後右遮擋，改用40像素Noto及三像素原色細框。15項具名Go通過；五分支291主流程畫格、40個F2邊界及五次續行保持，另48組完整Game.Draw選項樣本與16次F2通過。18張PNG獨立核對、19收據反例及舊原生選項實圖拒收通過。
 
-限定CONFORMED-SCOPED／RUNTIME-E1，直接唯讀私人6062份獨立runtime。GPU348.386秒／5696036864 bytes，8GiB／2CPU下memory.events皆零，不推論平台餘裕。沒有新素材、保存格式、原版oracle或正常玩家聲明。來源及重跑依58、61與HD主收據full_reward_chrome_followup_20261026；README已保存四場景總覽。YESNO、選擇器框線／圖示與城堡地形仍為像素；其餘HD、HD2、獨立控制、工具列／加速／海報及全部串接後集中正常／人工／平台仍待。
+限定CONFORMED-SCOPED／RUNTIME-E1；UI矩陣由測具控制語系／選項／pulse，沒有新增正常F4或原版oracle聲明。直接唯讀私人6062份獨立runtime，沒有新素材或保存格式。集中GPU313.043秒，峰值觸及8GiB、memory.events.max=243而OOM／kill皆零，不推論平台餘裕。來源、數量與重跑依58、61及HD主收據full_reward_confirmation_followup_20261026，README保存四語總覽；總覽只驗選項翻譯，問句沿既有來源。其他確認caller、選擇器框線／圖示、其餘HD／HD2、獨立控制、工具列／加速／海報及全部串接後集中正常／人工／平台仍待。
 
 六種狀態到期提示已接同次HD世界、480頭像與Noto文字，新增六則四語內容。四語完整Game.Draw、代表階段F2、原生倒數／扣血／死亡順序、一次恢復、損壞來源拒收及保存冷讀回歸通過；獨立核對最終PNG與實際文字。來源及永久重跑為58、61及HD主收據transient_expiry_hd_followup_20261026。
 
@@ -138,9 +138,9 @@ FDFIELD回合事件由完整具型別處理器降成正式劇本，保留增援�
 
 `modern-theme-player-asset-coverage` · 工作 · [#201](https://github.com/wicanr2/fd2_re/issues/201) · 仍未完成 · 要人判
 
-滿背包獎勵的問句、放棄及選擇器取消對話已接共用HD細框，原位移／裁切、庫存替換與一次續行保持。五分支291次完整Game.Draw、40個F2邊界、五次續行與13筆具名Go通過；10張PNG獨立核對421200個框線RGB點、1152000個同次480頭像點，九收據反例及舊粗框真實PNG拒收通過。
+滿背包獎勵的YES／NO已接四語HD選項，沿原生24×16／20矩形、開收位置與左後右遮擋，改用40像素Noto及三像素原色細框。15項具名Go通過；五分支291主流程畫格、40個F2邊界及五次續行保持，另48組完整Game.Draw選項樣本與16次F2通過。18張PNG獨立核對、19收據反例及舊原生選項實圖拒收通過。
 
-限定CONFORMED-SCOPED／RUNTIME-E1，直接唯讀私人6062份獨立runtime。GPU348.386秒／5696036864 bytes，8GiB／2CPU下memory.events皆零，不推論平台餘裕。沒有新素材、保存格式、原版oracle或正常玩家聲明。來源及重跑依58、61與HD主收據full_reward_chrome_followup_20261026；README已保存四場景總覽。YESNO、選擇器框線／圖示與城堡地形仍為像素；其餘HD、HD2、獨立控制、工具列／加速／海報及全部串接後集中正常／人工／平台仍待。
+限定CONFORMED-SCOPED／RUNTIME-E1；UI矩陣由測具控制語系／選項／pulse，沒有新增正常F4或原版oracle聲明。直接唯讀私人6062份獨立runtime，沒有新素材或保存格式。集中GPU313.043秒，峰值觸及8GiB、memory.events.max=243而OOM／kill皆零，不推論平台餘裕。來源、數量與重跑依58、61及HD主收據full_reward_confirmation_followup_20261026，README保存四語總覽；總覽只驗選項翻譯，問句沿既有來源。其他確認caller、選擇器框線／圖示、其餘HD／HD2、獨立控制、工具列／加速／海報及全部串接後集中正常／人工／平台仍待。
 
 六種狀態到期提示已接同次HD世界、480頭像與Noto文字，新增六則四語內容。四語完整Game.Draw、代表階段F2、原生倒數／扣血／死亡順序、一次恢復、損壞來源拒收及保存冷讀回歸通過；獨立核對最終PNG與實際文字。來源及永久重跑為58、61及HD主收據transient_expiry_hd_followup_20261026。
 
@@ -190,9 +190,9 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 `modern-theme-highres-prototype` · 工作 · [#204](https://github.com/wicanr2/fd2_re/issues/204) · 仍未完成 · 要人判
 
-滿背包獎勵的問句、放棄及選擇器取消對話已接共用HD細框，原位移／裁切、庫存替換與一次續行保持。五分支291次完整Game.Draw、40個F2邊界、五次續行與13筆具名Go通過；10張PNG獨立核對421200個框線RGB點、1152000個同次480頭像點，九收據反例及舊粗框真實PNG拒收通過。
+滿背包獎勵的YES／NO已接四語HD選項，沿原生24×16／20矩形、開收位置與左後右遮擋，改用40像素Noto及三像素原色細框。15項具名Go通過；五分支291主流程畫格、40個F2邊界及五次續行保持，另48組完整Game.Draw選項樣本與16次F2通過。18張PNG獨立核對、19收據反例及舊原生選項實圖拒收通過。
 
-限定CONFORMED-SCOPED／RUNTIME-E1，直接唯讀私人6062份獨立runtime。GPU348.386秒／5696036864 bytes，8GiB／2CPU下memory.events皆零，不推論平台餘裕。沒有新素材、保存格式、原版oracle或正常玩家聲明。來源及重跑依58、61與HD主收據full_reward_chrome_followup_20261026；README已保存四場景總覽。YESNO、選擇器框線／圖示與城堡地形仍為像素；其餘HD、HD2、獨立控制、工具列／加速／海報及全部串接後集中正常／人工／平台仍待。
+限定CONFORMED-SCOPED／RUNTIME-E1；UI矩陣由測具控制語系／選項／pulse，沒有新增正常F4或原版oracle聲明。直接唯讀私人6062份獨立runtime，沒有新素材或保存格式。集中GPU313.043秒，峰值觸及8GiB、memory.events.max=243而OOM／kill皆零，不推論平台餘裕。來源、數量與重跑依58、61及HD主收據full_reward_confirmation_followup_20261026，README保存四語總覽；總覽只驗選項翻譯，問句沿既有來源。其他確認caller、選擇器框線／圖示、其餘HD／HD2、獨立控制、工具列／加速／海報及全部串接後集中正常／人工／平台仍待。
 
 六種狀態到期提示已接同次HD世界、480頭像與Noto文字，新增六則四語內容。四語完整Game.Draw、代表階段F2、原生倒數／扣血／死亡順序、一次恢復、損壞來源拒收及保存冷讀回歸通過；獨立核對最終PNG與實際文字。來源及永久重跑為58、61及HD主收據transient_expiry_hd_followup_20261026。
 
@@ -222,9 +222,9 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 `modern-battle-animation-hd` · 工作 · [#263](https://github.com/wicanr2/fd2_re/issues/263) · 仍未完成 · 要人判
 
-滿背包獎勵的問句、放棄及選擇器取消對話已接共用HD細框，原位移／裁切、庫存替換與一次續行保持。五分支291次完整Game.Draw、40個F2邊界、五次續行與13筆具名Go通過；10張PNG獨立核對421200個框線RGB點、1152000個同次480頭像點，九收據反例及舊粗框真實PNG拒收通過。
+滿背包獎勵的YES／NO已接四語HD選項，沿原生24×16／20矩形、開收位置與左後右遮擋，改用40像素Noto及三像素原色細框。15項具名Go通過；五分支291主流程畫格、40個F2邊界及五次續行保持，另48組完整Game.Draw選項樣本與16次F2通過。18張PNG獨立核對、19收據反例及舊原生選項實圖拒收通過。
 
-限定CONFORMED-SCOPED／RUNTIME-E1，直接唯讀私人6062份獨立runtime。GPU348.386秒／5696036864 bytes，8GiB／2CPU下memory.events皆零，不推論平台餘裕。沒有新素材、保存格式、原版oracle或正常玩家聲明。來源及重跑依58、61與HD主收據full_reward_chrome_followup_20261026；README已保存四場景總覽。YESNO、選擇器框線／圖示與城堡地形仍為像素；其餘HD、HD2、獨立控制、工具列／加速／海報及全部串接後集中正常／人工／平台仍待。
+限定CONFORMED-SCOPED／RUNTIME-E1；UI矩陣由測具控制語系／選項／pulse，沒有新增正常F4或原版oracle聲明。直接唯讀私人6062份獨立runtime，沒有新素材或保存格式。集中GPU313.043秒，峰值觸及8GiB、memory.events.max=243而OOM／kill皆零，不推論平台餘裕。來源、數量與重跑依58、61及HD主收據full_reward_confirmation_followup_20261026，README保存四語總覽；總覽只驗選項翻譯，問句沿既有來源。其他確認caller、選擇器框線／圖示、其餘HD／HD2、獨立控制、工具列／加速／海報及全部串接後集中正常／人工／平台仍待。
 
 六種狀態到期提示已接同次HD世界、480頭像與Noto文字，新增六則四語內容。四語完整Game.Draw、代表階段F2、原生倒數／扣血／死亡順序、一次恢復、損壞來源拒收及保存冷讀回歸通過；獨立核對最終PNG與實際文字。來源及永久重跑為58、61及HD主收據transient_expiry_hd_followup_20261026。
 
@@ -306,9 +306,9 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 `modern-theme-normal-player-validation` · 工作 · [#202](https://github.com/wicanr2/fd2_re/issues/202) · 仍未完成 · 要人判
 
-滿背包獎勵的問句、放棄及選擇器取消對話已接共用HD細框，原位移／裁切、庫存替換與一次續行保持。五分支291次完整Game.Draw、40個F2邊界、五次續行與13筆具名Go通過；10張PNG獨立核對421200個框線RGB點、1152000個同次480頭像點，九收據反例及舊粗框真實PNG拒收通過。
+滿背包獎勵的YES／NO已接四語HD選項，沿原生24×16／20矩形、開收位置與左後右遮擋，改用40像素Noto及三像素原色細框。15項具名Go通過；五分支291主流程畫格、40個F2邊界及五次續行保持，另48組完整Game.Draw選項樣本與16次F2通過。18張PNG獨立核對、19收據反例及舊原生選項實圖拒收通過。
 
-限定CONFORMED-SCOPED／RUNTIME-E1，直接唯讀私人6062份獨立runtime。GPU348.386秒／5696036864 bytes，8GiB／2CPU下memory.events皆零，不推論平台餘裕。沒有新素材、保存格式、原版oracle或正常玩家聲明。來源及重跑依58、61與HD主收據full_reward_chrome_followup_20261026；README已保存四場景總覽。YESNO、選擇器框線／圖示與城堡地形仍為像素；其餘HD、HD2、獨立控制、工具列／加速／海報及全部串接後集中正常／人工／平台仍待。
+限定CONFORMED-SCOPED／RUNTIME-E1；UI矩陣由測具控制語系／選項／pulse，沒有新增正常F4或原版oracle聲明。直接唯讀私人6062份獨立runtime，沒有新素材或保存格式。集中GPU313.043秒，峰值觸及8GiB、memory.events.max=243而OOM／kill皆零，不推論平台餘裕。來源、數量與重跑依58、61及HD主收據full_reward_confirmation_followup_20261026，README保存四語總覽；總覽只驗選項翻譯，問句沿既有來源。其他確認caller、選擇器框線／圖示、其餘HD／HD2、獨立控制、工具列／加速／海報及全部串接後集中正常／人工／平台仍待。
 
 六種狀態到期提示已接同次HD世界、480頭像與Noto文字，新增六則四語內容。四語完整Game.Draw、代表階段F2、原生倒數／扣血／死亡順序、一次恢復、損壞來源拒收及保存冷讀回歸通過；獨立核對最終PNG與實際文字。來源及永久重跑為58、61及HD主收據transient_expiry_hd_followup_20261026。
 

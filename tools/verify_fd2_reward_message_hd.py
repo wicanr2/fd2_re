@@ -13,6 +13,7 @@ from verify_fd2_player9_map_hd import check_real_runtime
 
 ROOT = Path(__file__).resolve().parents[1]
 REQUIRED = {
+    "confirmation-unit": {"TestModernHDConfirmationNativePlansAndText", "TestModernHDConfirmationRejectsAndFreezesSource"},
     "full-unit": {"TestModernHDFullRewardQuestion", "TestModernHDFullRewardGlyphClears", "TestModernHDFullRewardSource", "TestModernHDFullRewardChromeRejectsBeforeQueue"},
     "full-game": {"TestModernHDFullRewardGameGPU"},
     "stage-unit": {"TestModernHDRewardStageSource"},

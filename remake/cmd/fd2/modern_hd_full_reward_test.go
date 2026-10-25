@@ -150,6 +150,15 @@ func TestModernHDFullRewardSource(t *testing.T) {
 	job.frames = frames[:1]
 	check()
 	job.frames = frames
+	// Stable choice cells are not in the opening job, but they still belong
+	// to the same frozen modal and must be checked before a later F2 publish.
+	choices := append([]fdother.RawCell(nil), p.hd.ui.choices...)
+	originalChoices := p.hd.ui.choices
+	choices[49].Pixels = append([]byte(nil), choices[49].Pixels...)
+	choices[49].Pixels[5*24+3] ^= 1
+	p.hd.ui.choices = choices
+	check()
+	p.hd.ui.choices = originalChoices
 	bad := *set
 	bad.portraits = nil
 	if err := g.applyTheme(&bad); err == nil || p.hd.world != active {

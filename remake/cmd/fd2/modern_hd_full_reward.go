@@ -31,24 +31,31 @@ type modernHDGlyphWrite struct {
 }
 
 type modernHDFullReward struct {
-	scene     *modernHDCompoundMapScene
-	world     *modernHDMapFrame
-	theme     *modernStoryPortraitSet
-	ui        *nativePreparationUIAssets
-	question  []byte
-	canceled  [][]byte
-	seal      [32]byte
-	job       *nativeClassUIJob
-	kind      fullRewardPhase
-	chrome    *modernHDDialogueChrome
-	chromeErr error
+	scene           *modernHDCompoundMapScene
+	world           *modernHDMapFrame
+	theme           *modernStoryPortraitSet
+	ui              *nativePreparationUIAssets
+	question        []byte
+	canceled        [][]byte
+	seal            [32]byte
+	job             *nativeClassUIJob
+	kind            fullRewardPhase
+	chrome          *modernHDDialogueChrome
+	chromeErr       error
+	confirmation    *modernHDConfirmation
+	confirmationErr error
 }
 
 func modernHDFullRewardSeal(p *nativeDeathRewardUIState) [32]byte {
-	if p == nil || p.hd == nil || p.killer == nil {
+	if p == nil || p.hd == nil || p.killer == nil || p.hd.ui == nil || len(p.hd.ui.choices) <= 52 {
 		return [32]byte{}
 	}
-	b, _ := json.Marshal([]any{p.item, p.killer.BattleFig, p.portrait, p.source, p.dialogue, p.hd.question, p.hd.canceled})
+	var choices []any
+	for _, index := range modernHDConfirmationIndices {
+		cell := p.hd.ui.choices[index]
+		choices = append(choices, []any{index, cell.Width, cell.Height, cell.Pixels})
+	}
+	b, _ := json.Marshal([]any{p.item, p.killer.BattleFig, p.portrait, p.source, p.dialogue, p.hd.question, p.hd.canceled, choices})
 	return sha256.Sum256(b)
 }
 
@@ -154,6 +161,15 @@ func (g *Game) prepareModernHDFullRewardWorld(p *nativeDeathRewardUIState, set *
 		}
 		if p.hd.chrome == nil {
 			return nil, errors.New("modern HD full reward: dialogue chrome unavailable")
+		}
+		if p.hd.confirmationErr != nil {
+			return nil, p.hd.confirmationErr
+		}
+		if p.hd.confirmation == nil {
+			return nil, errors.New("modern HD full reward: confirmation unavailable")
+		}
+		if p.hd.ui == nil || p.hd.ui != g.nativePreparationUI || modernHDFullRewardSeal(p) != p.hd.seal {
+			return nil, errors.New("modern HD full reward: changed prompt source")
 		}
 	}
 	if set == nil || len(set.mapSpritesHD) != 125 {
@@ -339,6 +355,10 @@ func (g *Game) drawModernHDFullReward(screen *ebiten.Image) bool {
 			if portrait != nil && portrait.hdImage != nil {
 				g.modernHDOverlay = &modernHDOverlay{portrait: portrait, mirrorX: true, rect: image.Rect(16, (115+shift)*2, 176, (195+shift)*2), clip: clip}
 			}
+		}
+		if err := g.appendModernHDConfirmation(p.hd.confirmation, kind, index, state.choice, g.nativeClassUIPulse/2); err != nil {
+			g.loadErr = err.Error()
+			return false
 		}
 	}
 	if job != nil {

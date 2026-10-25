@@ -227557,7 +227557,7 @@
     },
     "limits": [
       "受控RUNTIME-E1，像素控制組是同一remake，未新增原版oracle、正常玩家或平台聲明",
-      "城堡與YESNO仍為原生像素；對話細框現況依full_reward_chrome_followup_20261026。HD材質與RGB沿既有美術近似",
+      "城堡及其他確認caller仍為原生；滿背包選項依full_reward_confirmation_followup_20261026；對話細框現況依full_reward_chrome_followup_20261026。HD材質與RGB沿既有美術近似",
       "完整HUD、其他提示、地形／HD2、獨立介面控制、浮出工具列／加速／海報及集中正常／人工／平台仍待"
     ],
     "ownership": {
@@ -236345,7 +236345,7 @@
     ],
     "known_differences": [
       "三像素細框在1920×1200目標定義，隨視窗幾何縮放，屬美術近似。",
-      "YESNO、選擇器框線／圖示及城堡地形仍為原生；本批沒有新重繪頭像。",
+      "滿背包確認選項依full_reward_confirmation_followup_20261026；選擇器框線／圖示及城堡地形仍為原生；本批沒有新重繪頭像。",
       "受控RUNTIME-E1，不新增原版oracle、正常玩家、冷讀或平台聲明。"
     ],
     "remaining": [
@@ -236370,6 +236370,335 @@
         263
       ],
       "snapshot_refreshed": true
+    }
+  },
+  "full_reward_confirmation_followup_20261026": {
+    "status": "CONFORMED-SCOPED",
+    "evidence_level": "RUNTIME-E1",
+    "date": "2026-10-26",
+    "base_commit": "484658fc0117c3fca132b2af3413cc4443d37662",
+    "full_hd_complete": false,
+    "normal_player_verified": false,
+    "original_runtime_executed": false,
+    "new_re": false,
+    "new_art_assets": false,
+    "catalog_changed": false,
+    "private_asset_sync_required": false,
+    "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+    "implementation_and_evidence_sources": [
+      {
+        "file": "remake/cmd/fd2/modern_hd_confirmation.go",
+        "sha256": "fd7fb95d459de06242edbb1774b50e9b5d4d4ad83047aa61bae6c3af7a234daf"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_confirmation_test.go",
+        "sha256": "a2551cefea4650de998b05549c6ad1a21671e38fe9ccf83779ba000e6eeeebca"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_confirmation_gpu_test.go",
+        "sha256": "8510a15afde0d5a555a267f88f33f2045ce7ec3d39af1a727f0cb891c3889d4b"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_full_reward.go",
+        "sha256": "cfa3297739852be9fcb5a6078dbad9811b7e68489e16b33d3ea55360a4efc2b2"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_full_reward_test.go",
+        "sha256": "34bba0a78e5407fdf8ffa6a86d33a79f4d55461fc1f869d171cf2788341f664c"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_full_reward_gpu_test.go",
+        "sha256": "a92e13c6006a12eae9ce4f0e1d080afec45aed1f0a6f5c5c91487efeb09a78b7"
+      },
+      {
+        "file": "remake/cmd/fd2/native_death_reward_ui.go",
+        "sha256": "674790b72a4f492977761a1b34201e27eebebc7be56755f7e6400c2aa3f9ee93"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_text.go",
+        "sha256": "0697ab4e87e62db6e2b30a66a81cd9da0ee27ae9f9965214ce87459a3ac08a23"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_presentation.go",
+        "sha256": "c8bc0a5078729bad815536bef307b9db35a8390e73b632cdaa8e4527c58caa58"
+      },
+      {
+        "file": "remake/cmd/fd2/font.go",
+        "sha256": "4a7572ec1f904605a14929a1bd29e27e10092f8d505470591e7177a8c7e3d11f"
+      },
+      {
+        "file": "remake/cmd/fd2/locale.go",
+        "sha256": "465bd40b31352895efac99510a0e7b3725d9e1ce34aa7c3ff1377a63953f4867"
+      },
+      {
+        "file": "remake/internal/campaign/native_class_confirm.go",
+        "sha256": "76b9d7392c76e8e25d634a6ee1eedaa9768bcdc455ee7273ac5a170ae5308b87"
+      },
+      {
+        "file": "docs/data/fd2-reference-files.json",
+        "sha256": "9946b7506620069ce9b7bb8e4b1f7fed36e7a9389b634ef62064727d89579c5e"
+      },
+      {
+        "file": "docs/data/ida/fd2_death_reward_full_inventory_ida.txt",
+        "sha256": "424d4ffa34174a980c65b8ce146f34481e66e4f8840bf870b83829dcbea03c3b"
+      },
+      {
+        "file": "tools/verify_fd2_reward_message_hd.py",
+        "sha256": "5b5b180fed314d34485c2f400c759a66e24aa05f75a6bf96df431d7f15d584fe"
+      },
+      {
+        "file": "tools/verify_fd2_hd_transient_expiry.py",
+        "sha256": "d352802ce1ee6a12c401b65335450e18d035a0018c99116090fdb6bfd9507b81"
+      },
+      {
+        "file": "tools/fd2_go_test_memory_probe.py",
+        "sha256": "8e7c9c55b85aa72a5026b944233b94f7c0787f51b3f5ebb178ed54cc333e40f2"
+      },
+      {
+        "file": "remake/assets/locales/zh-Hant/pack.json",
+        "sha256": "1cf4beecde840d839d0dee158151df4d63bae874c7bae2b2b18850c6aabae3e1"
+      },
+      {
+        "file": "remake/assets/locales/zh-Hans/pack.json",
+        "sha256": "9ec8d265a6267ee18ade33d9e982dd3e1412769eecf63effd5d422e23a409fb3"
+      },
+      {
+        "file": "remake/assets/locales/en/pack.json",
+        "sha256": "8ce238fbfa2af64e9f2eba1e176b7284f5f69a424a4da64d26674da5d038b7ff"
+      },
+      {
+        "file": "remake/assets/locales/ja/pack.json",
+        "sha256": "79cb79f42f1b2fcbf9a7410f0e7f1624044b778a0e6168b8752d81b18432a0b1"
+      }
+    ],
+    "catalog": {
+      "file": "remake/assets/themes/modern/catalog.json",
+      "sha256": "40bf4d83a2c13b606e84c66e2f7dddb383ca581904cdeb1f8aeabd61717d232a"
+    },
+    "commands": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/confirmation-commands-r1.json",
+      "sha256": "1186ff0ca046a9f78d6437e6b665ab5b5589de779d8e858d4797a7e9f7e0dcbb"
+    },
+    "go_runs": [
+      {
+        "kind": "source-unit",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/confirmation-source-unit-r1.gate.json",
+          "sha256": "bfabb1c1b09ca99a27fcae5a04dfd34d0a0adeae3e0721cbd6cdf4324b81ae60"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/confirmation-source-unit-r1.memory.json",
+          "sha256": "8e9670f8ee7bdc4d42c26a03bb7fc4439c088c28c8502ef080d1441abd2e1f4d"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/confirmation-source-unit-r1.log",
+          "sha256": "d84385867d81feef1d8ab621e05c50529287164a0d4aeb1acac3c91b84cb5193"
+        },
+        "named_passes": 2,
+        "elapsed_seconds": 14.726,
+        "peak_bytes": 1116639232,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "kind": "full-unit",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/confirmation-full-unit-r1.gate.json",
+          "sha256": "4cfb7573e0e941e09717fc66060352e1c392fb59e00d08e838cedf27d077df00"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/confirmation-full-unit-r1.memory.json",
+          "sha256": "92ac15a8f7bdaa856729290f17850748998b8576304e0d795c0496a6face1dcb"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/confirmation-full-unit-r1.log",
+          "sha256": "a5953f2f6a2964d8ee6b0396fde8a5552ed15ec00acb963348f2bb3522402d6a"
+        },
+        "named_passes": 4,
+        "elapsed_seconds": 72.699,
+        "peak_bytes": 3382808576,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "kind": "regression",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/confirmation-regression-r1.gate.json",
+          "sha256": "24e153992986113e6d813dfb7d9ea6dcf32ce7c9eecd1990d1605986f4b67aa2"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/confirmation-regression-r1.memory.json",
+          "sha256": "519ee291e51b5238e5842c47bd375e4d9ab00632ec7eeefc5e87abf22a096eec"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/confirmation-regression-r1.log",
+          "sha256": "1646d66e736c4fb27999b00b99e7e68e2d6a9db1692b97d7c9dd6bf99478d754"
+        },
+        "named_passes": 8,
+        "elapsed_seconds": 13.539,
+        "peak_bytes": 839790592,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "kind": "game",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/confirmation-game-r1.gate.json",
+          "sha256": "6a2d826aca3be2f2d4bb02ecbf81d4e1d0c4e7ca1db0f724eae0eedbb5d10037"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/confirmation-game-r1.memory.json",
+          "sha256": "312aabbd954b3ecd3d8e9a39d4762651c84cafccd849ce4e87a850dd70d01e56"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/confirmation-game-r1.log",
+          "sha256": "7afba258f1af9846e6337113edcd35ebb3ab96ffb71e70ce167efad1088bfc5e"
+        },
+        "named_passes": 1,
+        "elapsed_seconds": 313.043,
+        "peak_bytes": 8589934592,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 243,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      }
+    ],
+    "summary": {
+      "named_go_passes": 15,
+      "main_game_frames": 291,
+      "main_f2_boundaries": 40,
+      "continuations": 5,
+      "confirmation_samples": 48,
+      "confirmation_f2": 16,
+      "confirmation_cpu_pixels": 110592000,
+      "confirmation_png_geometry_pixels": 78336,
+      "confirmation_png_ink_pixels": 11543,
+      "main_pngs": 10,
+      "confirmation_pngs": 8,
+      "receipt_rejections": 19,
+      "old_native_picture_rejected": true,
+      "portrait_source_points": 1152000,
+      "independent_runtime_files": 6062
+    },
+    "receipt": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/confirmation-game-r1-capture/receipt.json",
+      "sha256": "00174d1ad6c1f62f447e885805acf234083b96845083fdc66f99a4d2587b4d19"
+    },
+    "independent_capture_check": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/confirmation-independent-r2.json",
+      "sha256": "a63fae0f106afb53b9f90b01f790a2c6c57dafe2576785e6388868d34a1ab99b"
+    },
+    "old_native_counterexample": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/confirmation-old-native-rejection-r1.json",
+      "sha256": "acb29491fc971f3f0d462ada35804ce17b9d3702f0cf0b5b4243a6ebb4dd5e8c"
+    },
+    "overview": {
+      "file": "docs/figures/hd-full-inventory-confirmation-locales.png",
+      "sha256": "8d23597000080d6a42f3de805d8dbbecf6e147d6441bad780bcdc1d10920c6f5"
+    },
+    "cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/confirmation-cleanup-r1.json",
+      "sha256": "bb24df45384a31313c536b18715eecd28afeb5cf43bf4ce1f6cb6b25316c4ca6"
+    },
+    "construction_policy": {
+      "fixture": "rewardStageGame + makeNativeDeathRewardKiller",
+      "map_index": 23,
+      "map_selector_key": 0,
+      "portrait_dato": 0,
+      "inventory": [
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      "item": 211,
+      "queued_item": 212,
+      "native_seed": 7,
+      "clock_unix": 1000,
+      "ui_controls": "48額外樣本由測具控制localeID、choice與pulse，不推進原生job，完成後恢復狀態"
+    },
+    "font_policy": {
+      "font": "既有區域Noto字型",
+      "target_pixels": 40,
+      "text_safe_inset_pixels": 12,
+      "pulse_shift_pixels": 6,
+      "translation_keys": [
+        "common.yes",
+        "common.no"
+      ]
+    },
+    "source_geometry": {
+      "raw_cells": [
+        16,
+        17,
+        48,
+        49,
+        51,
+        52
+      ],
+      "native_width": 24,
+      "opening_closing_height": 20,
+      "steady_height": 16,
+      "native_y": 168,
+      "native_x_base": 248,
+      "spread_open": [
+        4,
+        8,
+        12,
+        16
+      ],
+      "spread_close": [
+        12,
+        8,
+        4,
+        0
+      ],
+      "border_target_pixels": 3
+    },
+    "known_differences": [
+      "在原格矩形內以同來源色盤清底與畫三像素細框，原嵌入glyph改現行四語文字，屬HD美化近似。",
+      "開收時每格文字及底圖先合成再按左後右繪製；重疊屬原生遮擋，不以clip掩蓋文字溢位。",
+      "四語圖只驗選項翻譯與字型；問句沿既有受控來源，不宣稱整個原生確認流程已翻譯。",
+      "GPU內嵌48組UI與16次額外主題往返的集中測試觸及8GiB，memory.events.max=243，oom／oom_kill皆零；不推論正常平台餘裕。"
+    ],
+    "remaining": [
+      "其他確認caller、選擇器框線與圖示",
+      "其餘地形、HD2、完整介面及獨立UI／theme六組合",
+      "工具列字級／加速／雙側海報及全部HD後集中正常／人工／平台確認"
+    ],
+    "final_checks": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/confirmation-final-checks-r1.json",
+      "sha256": "9879899da4ff574af7174efd72e8c8854df0983cd0d46904e463df2bb1397255"
     }
   }
 }

@@ -338,6 +338,132 @@ def rejection_checks(data: dict, directory: Path, require_chrome: bool = False) 
     return count
 
 
+def confirmation_rgba(ink: dict) -> tuple[int, ...]:
+    require(isinstance(ink, dict) and set(ink) == {"R", "G", "B", "A"}, "選項色盤資料錯誤")
+    result = tuple(ink[k] for k in ("R", "G", "B", "A"))
+    require(all(type(v) is int and 0 <= v <= 255 for v in result) and result[3] == 255, "選項色盤不是不透明RGBA")
+    return result
+
+
+def check_confirmation_picture(picture: Image.Image, buttons: list) -> tuple[int, int]:
+    pixels = picture.load()
+    checked, ink_points = 0, 0
+    for i, button in enumerate(buttons):
+        x0, y0, x1, y1 = button["rect"]
+        background, ink, shadow = (confirmation_rgba(button[k]) for k in ("background", "ink", "shadow"))
+        visible_ink = []
+        later = [b["rect"] for b in buttons[i+1:]]
+        for y in range(y0, y1):
+            for x in range(x0, x1):
+                if any(a <= x < c and b <= y < d for a, b, c, d in later):
+                    continue
+                actual = pixels[x, y]
+                if x0+12 <= x < x1-12 and y0+12 <= y < y1-12:
+                    if max(abs(a-b) for a, b in zip(actual[:3], background[:3])) > 3:
+                        visible_ink.append((x, y))
+                    continue
+                dx, dy, height = x-x0, y-y0, y1-y0
+                expected = ink if dx < 3 or dx >= 141 or dy < 3 or dy >= height-3 else shadow if dx == 140 or dy == height-4 else background
+                require(all(abs(a-b) <= 2 for a, b in zip(actual, expected)), f"HD選項細框或舊格清除錯誤：{x},{y}")
+                checked += 1
+        overlap = any(max(x0, a) < min(x1, c) and max(y0, b) < min(y1, d) for a, b, c, d in later)
+        if not overlap:
+            require(len(visible_ink) >= 30, "HD選項文字未抵達最終PNG")
+            actual_rect = (min(x for x, y in visible_ink), min(y for x, y in visible_ink), max(x for x, y in visible_ink)+1, max(y for x, y in visible_ink)+1)
+            desired = button["ink_rect"]
+            require(all(actual_rect[j] >= desired[j]-1 for j in (0, 1)) and all(actual_rect[j] <= desired[j]+1 for j in (2, 3)), "選項實際字形超出量測墨跡")
+            require(abs(actual_rect[0]+actual_rect[2]-desired[0]-desired[2]) <= 4 and abs(actual_rect[1]+actual_rect[3]-desired[1]-desired[3]) <= 4, "選項字形置中或pulse位置錯誤")
+        ink_points += len(visible_ink)
+    require(checked > 0, "HD選項實際PNG核對為空")
+    return checked, ink_points
+
+
+def validate_confirmation(data: dict, directory: Path, images: bool = True) -> dict:
+    require(data.get("hd_confirmation") is True, "沒有HD確認選項收據")
+    rows = data.get("confirmation_rows", [])
+    require(len(rows) == 48 and data.get("confirmation_f2") == 16, "四語選項／開收矩陣或F2不完整")
+    expected = {(locale, "steady", -1, choice, pulse) for locale in LOCALES for choice in range(2) for pulse in range(2)}
+    expected |= {(locale, phase, index, 0, 0) for locale in LOCALES for phase, indices in (("opening", range(6, 10)), ("closing", range(4))) for index in indices}
+    seen, captures, geometry, ink_points = set(), [], 0, 0
+    packs = {locale: json.loads((ROOT/"remake/assets/locales"/locale/"pack.json").read_text())["entries"] for locale in LOCALES}
+    for row in rows:
+        locale, phase, index, choice, pulse = (row.get(k) for k in ("locale", "phase", "index", "choice", "pulse"))
+        require(locale in LOCALES and phase in {"steady", "opening", "closing"} and choice in (0, 1) and pulse in (0, 1), "選項狀態欄位錯誤")
+        key = (locale, phase, index, choice, pulse) if phase == "steady" else (locale, phase, index, 0, 0)
+        require(key in expected and key not in seen, "選項矩陣錯誤或重複")
+        seen.add(key)
+        require(row.get("full_rgba_pixels") == 1920*1200 and row.get("native_state_unchanged") is True, "完整畫布／原生狀態核對缺件")
+        require(row.get("f2_roundtrip") is (phase == "steady"), "四語穩定選項F2不足")
+        spread = 16 if phase == "steady" else (index-5)*4 if phase == "opening" else 12-index*4
+        height = 96 if phase == "steady" else 120
+        buttons = row.get("buttons", [])
+        require(len(buttons) == 2, "選項左右兩格缺件")
+        for option, button in enumerate(buttons):
+            x = (248 + (-spread if option == 0 else spread))*6
+            rect = [x, 1008, x+144, 1008+height]
+            source_index = 16+option if phase != "steady" else (48, 51)[option] + (pulse if option == choice else 0)
+            require(button.get("rect") == rect and button.get("source_index") == source_index, "選項原生格、位置或疊畫順序錯誤")
+            require(button.get("pulse") == (pulse if phase == "steady" and option == choice else 0), "選項文字pulse錯誤")
+            require(button.get("label") == packs[locale][("common.yes", "common.no")[option]]["text"], "選項文字沒有切換到正式語系")
+            ink = button.get("ink_rect", [])
+            require(len(ink) == 4 and all(type(v) is int for v in ink) and x+12 <= ink[0] < ink[2] <= x+132 and 1020 <= ink[1] < ink[3] <= rect[3]-12, "選項字形超過文字安全區")
+            for k in ("background", "ink", "shadow"):
+                confirmation_rgba(button.get(k))
+        capture = phase == "steady" and choice == 0 and pulse == 0 or locale == "zh-Hant" and (phase == "opening" and index in (6, 9) or phase == "closing" and index in (0, 3))
+        require(bool(row.get("capture")) == capture, "四語選項／開收代表截圖缺件")
+        if not capture:
+            continue
+        name = f"confirmation-{locale}-{phase}{index}-c{choice}-p{pulse}.png"
+        require(row["capture"] == name, "選項截圖路徑錯誤")
+        path = directory/name
+        if images:
+            with Image.open(path) as picture:
+                require(picture.size == (1920, 1200), "選項不是完整HD畫布")
+                picture = picture.convert("RGBA")
+                require(hashlib.sha256(picture.tobytes()).hexdigest() == row.get("final_sha256"), "選項PNG與完整畫布不同")
+                count, points = check_confirmation_picture(picture, buttons)
+                geometry += count
+                ink_points += points
+            captures.append({"file": name, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()})
+    require(seen == expected and (not images or len(captures) == 8), "四語選項矩陣或圖片不足")
+    return {"confirmation_samples": 48, "confirmation_f2": 16, "confirmation_cpu_pixels": 48*1920*1200,
+            "confirmation_png_geometry_pixels": geometry, "confirmation_png_ink_pixels": ink_points, "confirmation_captures": captures}
+
+
+def confirmation_rejection_checks(data: dict, directory: Path) -> int:
+    mutations = (
+        lambda x: x.update(hd_confirmation=False),
+        lambda x: x["confirmation_rows"].pop(),
+        lambda x: x.update(confirmation_f2=0),
+        lambda x: x["confirmation_rows"][0].update(native_state_unchanged=False),
+        lambda x: x["confirmation_rows"][0].update(full_rgba_pixels=0),
+        lambda x: x["confirmation_rows"][0]["buttons"][0]["rect"].__setitem__(0, 0),
+        lambda x: x["confirmation_rows"][0]["buttons"][0].update(label="wrong"),
+        lambda x: x["confirmation_rows"][0]["buttons"][0]["ink_rect"].__setitem__(2, 99999),
+    )
+    for mutate in mutations:
+        candidate = copy.deepcopy(data)
+        mutate(candidate)
+        try:
+            validate_confirmation(candidate, directory, images=False)
+        except ValueError:
+            continue
+        raise ValueError("HD選項反例未被拒收")
+    for field in ("final_sha256", "background"):
+        candidate = copy.deepcopy(data)
+        row = next(r for r in candidate["confirmation_rows"] if r.get("capture"))
+        if field == "final_sha256":
+            row[field] = "0"*64
+        else:
+            row["buttons"][1][field]["R"] ^= 127
+        try:
+            validate_confirmation(candidate, directory)
+        except ValueError:
+            continue
+        raise ValueError("HD選項實際PNG反例未被拒收")
+    return len(mutations)+2
+
+
 def check_full_reward_portraits(data: dict, directory: Path, pack: Path) -> dict:
     # The five existing full-reward fixtures use DATO0, at native (8,115).
     require(data.get("status") == "PASS-FULL-REWARD-HD-RUNTIME-E1", "頭像抽驗只適用滿背包五分支收據")
@@ -368,7 +494,7 @@ def check_full_reward_portraits(data: dict, directory: Path, pack: Path) -> dict
             "portrait_source": {"file": asset["file"], "sha256": asset["sha256"]}}
 
 
-def overview(directory: Path, output: Path, reward: bool = False, full_reward: bool = False) -> None:
+def overview(directory: Path, output: Path, reward: bool = False, full_reward: bool = False, confirmation: bool = False) -> None:
     result = Image.new("RGB", (1920, 1264), "#121a2b")
     font = ImageFont.load_default(size=22)
     draw = ImageDraw.Draw(result)
@@ -378,6 +504,8 @@ def overview(directory: Path, output: Path, reward: bool = False, full_reward: b
     if full_reward:
         samples = [("FULL INVENTORY", "case0-yes-no.png"), ("DECLINE", "case0-response-hold.png"),
                    ("ITEM SELECTOR", "case2-item-choice.png"), ("CANCEL SELECTOR", "case3-response-hold.png")]
+    if confirmation:
+        samples = [(locale, f"confirmation-{locale}-steady-1-c0-p0.png") for locale in LOCALES]
     for i, (label, name) in enumerate(samples):
         x, y = (i % 2) * 960, (i // 2) * 632
         draw.text((x + 12, y + 2), label, font=font, fill="white")
@@ -394,20 +522,26 @@ def main() -> None:
     parser.add_argument("--self-test", action="store_true")
     parser.add_argument("--portrait-pack", type=Path, help="以正式私人包獨立核對滿背包最終頭像")
     parser.add_argument("--require-chrome", action="store_true", help="新細框驗收，舊收據維持預設相容")
+    parser.add_argument("--require-confirmation", action="store_true", help="要求四語HD確認選項，舊收據預設相容")
     args = parser.parse_args()
     data = json.loads(args.receipt.read_text())
     report = validate(data, args.receipt.parent, require_chrome=args.require_chrome)
     report["receipt_sha256"] = hashlib.sha256(args.receipt.read_bytes()).hexdigest()
+    if args.require_confirmation or data.get("hd_confirmation"):
+        report.update(validate_confirmation(data, args.receipt.parent))
+        if args.self_test:
+            report["confirmation_rejection_checks"] = confirmation_rejection_checks(data, args.receipt.parent)
     if args.portrait_pack:
         report.update(check_full_reward_portraits(data, args.receipt.parent, args.portrait_pack))
     if args.self_test:
         report["rejection_checks"] = rejection_checks(data, args.receipt.parent, args.require_chrome)
     if args.overview:
         overview(args.receipt.parent, args.overview, data.get("status") == "PASS-REWARD-HD-RUNTIME-E1",
-                 data.get("status") == "PASS-FULL-REWARD-HD-RUNTIME-E1")
+                 data.get("status") == "PASS-FULL-REWARD-HD-RUNTIME-E1", data.get("hd_confirmation") is True)
         report["overview_sha256"] = hashlib.sha256(args.overview.read_bytes()).hexdigest()
     args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
-    print(f"{report['status']}: {len(report['captures'])} PNG，{report['frames']}拍")
+    pictures = len(report["captures"]) + len(report.get("confirmation_captures", []))
+    print(f"{report['status']}: {pictures} PNG，{report['frames']}主流程畫格")
 
 
 if __name__ == "__main__":

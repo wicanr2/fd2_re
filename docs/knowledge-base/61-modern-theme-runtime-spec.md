@@ -3,10 +3,22 @@
 狀態：現代主題仍為部分覆蓋；目前分層與缺口依[58](58-fd2-exe-re-coverage.md)。
 
 
+## 滿背包四語確認選項（CONFORMED-SCOPED／RUNTIME-E1，2026-10-26）
+
+- 沿已閉合的[原生確認來源](../../remake/internal/campaign/native_class_confirm.go)及[滿背包IDA證據](../data/ida/fd2_death_reward_full_inventory_ida.txt)。固定FD2.EXE的SHA-256為222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f。FDOTHER.DAT的固定來源見[參考清單](../data/fd2-reference-files.json)，選項為resource2的action_cells。
+- 新共用HD選項元件先接滿背包owner。原生穩定格48／49與51／52為24×16；開收格16／17為24×20。沿原本x=248±spread、y=168與四步spread控制、左後右的疊畫順序，不改原生格、controller、鍵盤命中、YES／NO語意、庫存或保存。
+- 每個格凍結實際底色、金色邊／字色與陰影色。HD在原格矩形內清除原放大圖，再畫三個目標1920×1200像素的細框；嵌入原格的字形改為現行common.yes／common.no四語字串。開收格也按左右選項語意顯示四語文字，此為明示美術／文字現代化，不宣稱原格glyph或逐像素一致。
+- 文字沿既有Noto家族，以40個目標HD像素描繪。依實際字形墨跡置中，四周保留12個HD像素文字安全區。原有pulse=1以文字下移6個HD像素呈現；包含陰影的完整墨跡須在安全區，缺字或放不下時在發布前拒收，不靠裁切掩蓋溢位。
+- 六格圖源、色盤取色、四語字串及字型先預檢再發布。原生模式保持原格；HD壞來源不得移出待處理佇列。owner簽章加入實際六格來源，F2時重新核對，原生timeline、文字／頭像及一次續行保持。
+- 最終層序沿對話細框、HD選項底圖、頭像、HD文字與工具列；幫助、狀態頁、黑白與淡出依現行遮擋。只在開收選項及等待選擇階段附加按鈕；回覆、空框關閉、物品選擇與返回不得殘留。
+- 驗四語、兩選項與兩pulse的完整Game.Draw及四步開收位置，量測最終字形、細框及原按鈕區外不變；另跑既有滿背包五分支、F2、壞來源原子拒收與原生交易回歸。來源字串只供顯示，不參與交易；受控收據限定RUNTIME-E1。其他確認caller、選擇器及完整HD／集中人工仍待。
+
+本節實作前為READY。原生producer的十二組位置／疊畫bytes、四語字形、安全區、來源凍結與拒收、原生交易及五分支已驗。最終字圖對獨立CPU完整合成，實際PNG另以Pillow核對邊色、清底、墨跡與遮擋；重跑與數量依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的full_reward_confirmation_followup_20261026。以[獨立工具](../../tools/verify_fd2_hd_transient_expiry.py)的--require-confirmation驗四語矩陣，--portrait-pack驗同次頭像；舊收據預設相容。
+
 ## 滿背包獎勵對話HD細框（CONFORMED-SCOPED／RUNTIME-E1，2026-10-26）
 
 - 範圍沿已閉合滿背包獎勵原版證據[IDA紀錄](../data/ida/fd2_death_reward_full_inventory_ida.txt)，固定FD2.EXE的SHA-256為222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f。正式消費端為runPendingNativeDeathRewards、modernHDFrame及drawModernHDFullReward，不重開規則RE。
-- 問句、NO／Escape回覆、YES後取消選擇的對話框，沿既有modernHDDialogueChrome的同來源取色、18像素舊邊帶清除及目標1920×1200三像素細框。保持原生310×86框、位移、裁切、文字／頭像及YES／NO來源。八格選擇器沿既有呈現，不由本節宣稱其框線或圖示已完成HD。
+- 問句、NO／Escape回覆、YES後取消選擇的對話框，沿既有modernHDDialogueChrome的同來源取色、18像素舊邊帶清除及目標1920×1200三像素細框。保持原生310×86框、位移、裁切與文字／頭像；YES／NO現況依上方四語確認選項。八格選擇器沿既有呈現，不由本節宣稱其框線或圖示已完成HD。
 - owner建立時由實際整備對話格與同次class色盤凍結細框。來源不符時，HD在移出待處理佇列與發布互動狀態前拒收；F2仍整組預備後發布。原生模式不因HD細框來源檢查而受阻。
 - 只在實際顯示對話框時附加HD細框；restore、八格物品面板及返回不得殘留。保留原生七種呈現phase、Draw確認後推進、五條分支的庫存／RNG／一次續行，不改保存、輸入與遊戲規則。
 - 沿既有完整Game.Draw測具驗NO、Escape、YES後丟棄第4槽、YES後選擇器Escape、兩筆獎勵依序Escape。完整畫面與代表F2階段核對原始raw cell框線RGB、舊邊帶、框外HD、文字頭像及原生狀態控制組；獨立核對PNG並拒收舊粗框。壞來源須保持佇列／庫存且可使用原生路徑，舊到期與成功獎勵提示回歸保持。
@@ -4697,7 +4709,7 @@ HD 問句與回覆明示綁定原生工作的階段，不從畫面猜測。使�
 重新合成可清除原生字墨的面板，另捕捉向量文字；逐字回覆只發布已寫入的字。
 後寫的原生 16×16 清底區裁掉較早的 HD 字墨，保留原生陰影邊界。
 移動面板同步位移並裁切文字與頭像。以兩種初始背景證明實際覆寫範圍，
-只讓這些像素覆蓋 HD 世界。對話細框現況依上方滿背包HD細框規格；YES／NO與選擇器框線／圖示沿原生素材，完整介面美術另列。
+只讓這些像素覆蓋 HD 世界。對話細框現況依上方滿背包HD細框規格；滿背包YES／NO現況依上方四語確認選項；其他確認caller及選擇器框線／圖示沿原生素材，完整介面美術另列。
 
 場景沿既有密封 compound 快照，保存 typed input、work／VGA、palette 與 map23
 當次 staging。問句及回覆使用同次背景；八槽選擇器沿既有正常地圖重繪與 HD 面板。

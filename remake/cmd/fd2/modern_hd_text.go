@@ -22,9 +22,10 @@ type modernHDTextRun struct {
 }
 
 type modernHDTextFrame struct {
-	scene  *ebiten.Image
-	runs   []modernHDTextRun
-	panels []modernHDDialoguePanel
+	scene   *ebiten.Image
+	runs    []modernHDTextRun
+	panels  []modernHDDialoguePanel
+	choices []modernHDConfirmationPlacement
 }
 
 type modernHDIndexedText struct {

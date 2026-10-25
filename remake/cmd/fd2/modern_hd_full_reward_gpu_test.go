@@ -33,6 +33,9 @@ type fullRewardGPUProbe struct {
 	chromeSource               dialogueChromeSource
 	chromePoints               int
 	legacyChromeRejected       bool
+	confirmationRows           []map[string]any
+	confirmationSeen           map[string]bool
+	confirmationF2             int
 }
 
 // Derive coverage from the existing native job, independently of the new panel list.
@@ -157,6 +160,13 @@ func (p *fullRewardGPUProbe) Draw(screen *ebiten.Image) {
 	c.frame++
 	g.Draw(screen)
 	c.Draw(p.controlScreen)
+	if p.index == 0 && g.modernHDText != nil && len(g.modernHDText.choices) != 0 {
+		p.checkConfirmationModes(screen)
+		if p.err != nil {
+			return
+		}
+		g.Draw(screen)
+	}
 	if g.loadErr != "" || c.loadErr != "" || !g.modernHDWorldVisible || !reflect.DeepEqual(fullRewardGPUState(g), fullRewardGPUState(c)) {
 		p.err = fmt.Errorf("%s native control / world mismatch %s %s", key, g.loadErr, c.loadErr)
 		return
@@ -341,15 +351,17 @@ func TestModernHDFullRewardGameGPU(t *testing.T) {
 		t.Fatal(err)
 	}
 	p := &fullRewardGPUProbe{t: t, set: set, g: g, control: control, out: out, seen: map[string]bool{}, final: ebiten.NewImage(1920, 1200), controlScreen: ebiten.NewImage(640, 400), pixels: make([]byte, 1920*1200*4), world: make([]byte, 1920*1200*4)}
+	p.confirmationSeen = map[string]bool{}
 	p.chromeSource = nativeDialogueChromeSource(g.nativePreparationUI.dialogue, g.nativeClassUI.palette)
 	ebiten.SetVsyncEnabled(false)
 	if err := ebiten.RunGame(p); err != nil {
 		t.Fatal(err)
 	}
-	if p.err != nil || p.index != 5 || !p.legacyChromeRejected {
+	if p.err != nil || p.index != 5 || !p.legacyChromeRejected || len(p.confirmationRows) != 48 || p.confirmationF2 != 16 {
 		t.Fatal("incomplete full inventory flow", p.index, p.err)
 	}
 	d := map[string]any{"status": "PASS-FULL-REWARD-HD-RUNTIME-E1", "cases": 5, "map_index": 23, "native_seed": 7, "fixed_clock_unix": 1000, "rgba_tolerance": 2, "normal_player_verified": false, "rows": p.rows, "game_frames": len(p.rows), "f2_boundaries": len(p.seen), "continuations": p.calls, "dialogue_chrome": true, "chrome_source": p.chromeSource, "chrome_pixels": p.chromePoints, "legacy_chrome_rejected": p.legacyChromeRejected}
+	d["hd_confirmation"], d["confirmation_rows"], d["confirmation_f2"] = true, p.confirmationRows, p.confirmationF2
 	raw, _ := json.MarshalIndent(d, "", "  ")
 	if err := os.WriteFile(filepath.Join(out, "receipt.json"), append(raw, '\n'), 0644); err != nil {
 		t.Fatal(err)
