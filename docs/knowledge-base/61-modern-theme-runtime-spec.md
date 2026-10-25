@@ -2,6 +2,23 @@
 
 狀態：現代主題仍為部分覆蓋；目前分層與缺口依[58](58-fd2-exe-re-coverage.md)。
 
+## 十四種草泥交界、十一圖同源槽（CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI）
+
+本切片沿既有原生來源匯出及稀疏HD地形，補map0實際使用的145～151、153～159共十四種草泥交界。同一三層內容SHA的其他圖槽列於[製圖配方](../../remake/assets/themes/modern/ground-grass-earth-hd.recipe.json)，共十一圖141槽；未使用152不列入。
+
+- 原生索引68～71、140／141與112～117分成兩組製圖遮罩。此為已目視的草／土藝術分類，不創設玩法欄位或推斷通行語意；其餘索引、非全opaque、有remap或內容不同的槽拒收。每張HD的alpha仍等於原生opaque六倍。
+- 草沿已登錄母稿與144週期材質；新泥土母稿已目視，完整保存。每份來源的24×24二元藝術遮罩六倍後雙三次取樣，於HD座標做半徑2的柔化；最外一HD像素按原遮罩最近鄰保留。RGB由兩份新材質合成，不混入原版RGB。材質邊緣沿既有八像素帶校準；相鄰端點屬相同藝術分組時RGB一致，不把原本不同的地表邊界改成同色。柔化與材質屬明示美術近似。
+- 沿既有fdshap_native_hd_sparse_v1，每圖一集合、十四張PNG按內容相同共用；不覆寫上一批草地或既有781清冊項目，不改地形規則、位置、角色、色盤／LUT、節拍、RNG或保存。來源與全部新圖私下預檢後才原子登錄。
+- 驗141實際bank／selector、全部十四圖源、十一圖各六種steady／上移端點／LUT／黑白GPU世界對獨立CPU及原樣首章Game.Draw／F2，另驗來源／錯遮罩／漏槽及登錄反例。正常首章依實際可見範圍抽游標、F2與來源槽冷讀，不能外推十一章或本批自然戰鬥返回。通過後按白名單同步私人庫，核對原檔保持及兩庫遠端。
+
+重跑及來源主收據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的grass_earth_edges_followup_20261025；編製沿[草泥交界編製器](../../tools/build_fd2_hd_ground_edges.py)與[來源／登錄及同步反例](../../tools/test_fd2_hd_ground_edges.py)，以`--base-catalog`固定781項、`--base-pack`完整私人包、`--earth-master`新泥土及上述配方，輸出既有work根下的新目錄。實際繪製沿[交界GPU測具](../../remake/cmd/fd2/modern_hd_ground_edges_gpu_test.go)，登錄沿[共用登錄器](../../tools/register_fd2_hd_ground.py)，私人同步沿[白名單工具](../../tools/sync_modern_theme_private.py)的同檔跳過分支。原生來源唯讀與GPU／GUI有界Docker政策保持。其他地形、HD2、介面及集中人工／平台仍待，不縮減完整HD目標。
+
+本節實作前為READY。十四種交界、141個實際同源槽已登錄，既有781清冊項目保持。十一圖共66個完整GPU世界與原樣首章Game.Draw／F2對獨立CPU通過，十一份錯遮罩、十來源及五登錄反例拒收；材質合成290304個RGBA像素保持新圖源與原生遮罩契約。
+
+正常首章標題LOAD、普通游標(6,23)、F2、走行／取消／兩次攻擊取樣及來源槽新程序LOAD通過。兩張主取景各20個完整圖塊相符，新增146／150／153／156各自可驗；148在該視圖被人物遮擋，未算通過。同次指令環的另一組F2前後各27塊相符，各含一塊完整148。補驗沿[地形GPU核對器](../../tools/verify_fd2_hd_terrain_gpu.py)的明示supplemental三圖參數，須同次收據、相同單位／視圖、HD→原圖→HD及來源SHA；[十二項補驗檢查](../../tools/test_fd2_hd_terrain_gpu.py)含舊預設正對照與缺圖／來源／狀態／漏幀拒收。預設仍要求每張圖片完整覆蓋明示範圍，不掩蔽不相符像素。
+
+GUI536.904秒、峰值4687286272 bytes，6GiB／2CPU下無OOM／逾時。來源與F2保存bytes保持；F9來源回載不宣稱自然戰鬥返回或戰後狀態保存，未新增原版對拍或整章E2。十五份新圖源依白名單同步私人庫，舊6954檔bytes與mtime保持。README沿完整原始GUI圖片更新；其他平地、道路／水岸、HD2、完整介面與集中人工／平台仍待。
+
 ## 十一圖共用純草地（CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI）
 
 首章map0:144的原生24×24索引、opaque及destination-remap三層內容SHA-256為`e4c2b6995211b34519acb83e540eea5ac0ee65e08b3e2560a267e99f3879c0bd`。既有Go來源匯出器及獨立回讀確認，同一內容被map0／2／3／6／10／11／13／14／17／30／31的正式terrain selector使用；各圖幀號列於[配方](../../remake/assets/themes/modern/ground-olive-hd.recipe.json)。只共用這十一槽，不因外觀相近擴及其他草地、邊界或動畫。
@@ -1356,7 +1373,7 @@ r6的`native_ink`因此只是已登錄現代24成品的輪廓，不能解讀為�
 
 #### HD人物清冊載入（READY，世界繪製與美術驗收另列）
 
-本節只覆蓋既有selector0..95清冊子集；#259已證實實際圖庫更大，尚未擴充正式範圍。
+本節記錄最初selector0..95清冊子集；完整人物圖庫已依#259擴充，現況與主收據依[58](58-fd2-exe-re-coverage.md)。
 新增`map_sprite_hd_set`附加圖源，既有24人物與正式保存格式不改。
 12幀契約為`fdicon_hd_map_sprite_12x144_v1`，3相契約為
 `fdicon_hd_static_sprite_3x144_v1`；尺寸144×144、`alpha_contract: coverage`，
@@ -1365,15 +1382,15 @@ r6的`native_ink`因此只是已登錄現代24成品的輪廓，不能解讀為�
 只要清冊有HD人物，就必須完整94組，排除已證實無來源寫入的39／57；同份清冊也須有
 完整對應24組。逐組frame_count、cycle_policy及全部重複幀等價關係須與24父項相同。
 重複圖組、缺件、錯誤幾何、來源雜湊或週期均原子拒收整個主題，不部分發布。
-沒有HD人物的既有清冊仍沿原路徑；本項只載入圖源，不能自行啟用DRAFT世界層。
+沒有HD人物的既有清冊仍沿原路徑。世界繪製依已接入的原生HD稀疏地形與人物契約。
 驗證完整清冊、缺組／重複、父項不符、錯誤來源、透明度與相位，並跑既有現代主題回歸。
 
-#### HD單位的原生座標計畫（READY，尚未啟用世界層）
+#### HD單位的原生座標計畫
 
 輸入只沿`indexedmap.FrameInput`的UnitBank、SelectorCache、raw Units、相機、週期與pixelShift，
 及該caller的viewport來源位移。定位與可見閘門沿`fdicon.BlitNativeUnitLayerWithBaseShift`、
 `NativeFrameIndex`和`NativePlacementOffset`既有已證實契約；原版雜湊與位址基準沿固定清單，
-不重新推定u.Dir、人物ID或已行動狀態。正式世界啟用仍依上節DRAFT與美術／GUI閘門。
+不重新推定u.Dir、人物ID或已行動狀態。正式世界已接入，驗證範圍依[58](58-fd2-exe-re-coverage.md)。
 
 - 使用原版cache slot取得group，按pose×3加原週期選幀，forceBase、cycle3→1及bit7原樣保留。
 - 原始work位移先通過同一非負及工作緩衝邊界；以絕對位移和viewport base各自除／餘456，
@@ -1384,7 +1401,7 @@ r6的`native_ink`因此只是已登錄現代24成品的輪廓，不能解讀為�
   不把RemapMask當人物輪廓。有效來源卻缺HD group／frame時原子拒收計畫。
 - 對比既有原生單位pass的實際work寫入，涵蓋四方向、步長0..6、相機四邊、forceBase、
   週期、cache順序、純重映射／靜態保留幀與拒收；這是重製端座標轉接驗證，不新增oracle或E2。
-#### HD前景遮擋計畫（READY，尚未啟用世界層）
+#### HD前景遮擋計畫
 
 沿`fdicon.BlitNativeForegroundLayer`的資格、排程、相機／地圖邊界、control及frame selector，
 把同份原版Sprite的來源寫入轉成透明RGBA前景。只以Mask決定覆蓋，包含palette index 0；
@@ -1393,7 +1410,7 @@ r6的`native_ink`因此只是已登錄現代24成品的輪廓，不能解讀為�
 保留mode-3目的地，故RemapMask不產生前景覆蓋。座標沿上一節絕對work位移與viewport差值，
 只在最終畫布裁切。任何缺bank、control、LUT、幾何或palette均原子拒收。
 以既有native foreground blitter的實際寫入驗證順序、移動鄰格、負邊界、資格、flip、
-LUT、零色來源及透明洞。這項只增加繪製計畫，不新增地形美術或啟用正式HD世界。
+LUT、零色來源及透明洞。
 
 #### HD世界候選合成器（READY，限較早CPU候選）
 
@@ -1405,11 +1422,7 @@ HD單位依上一節計畫與名冊順序合成，再貼來源Mask形成的前�
 raw bit7沿既有現代主題的變暗係數`0.55／0.55／0.6`呈現，不宣稱原版palette-band逐色一致。
 39／57在本raw單位pass只有mode-3透明跨度，沿已證實的`BlitForNativeFlagsAtOffset`
 保持無來源寫入；不把它誤套成地形BlitLUT的目的地重映射。
-地形與前景仍是原生素材放大，本項不聲稱完成HD地形。UI、HUD、走行caller、橫幅、
-戰鬥返回及Game.Draw啟用仍由上層DRAFT追蹤；候選合成圖只列重製端驗證。
-
-正式READY前須完成全部來源／透明度與姿態審查、純目的地重映射的保留方法，並界定正常世界、
-範圍、前景、HUD與戰鬥返回。尚未接正式runtime，不宣稱整體HD完成。
+此段為早期CPU候選的合成契約。已接入的HD地形、前景、人物與正式Game.Draw，依[58](58-fd2-exe-re-coverage.md)及本檔各CONFORMED切片驗證；候選圖本身只列重製端證據。
 
 [HD圖源載入](../../remake/cmd/fd2/modern_hd_map_sprite_assets.go)、
 [單位計畫](../../remake/cmd/fd2/modern_hd_map_unit_plan.go)、
@@ -1425,7 +1438,6 @@ raw bit7沿既有現代主題的變暗係數`0.55／0.55／0.6`呈現，不宣�
 明示本機輸入／輸出，再於既有Go測試容器執行`go test ./cmd/fd2 -count=1 -run TestModernHDMapActualCandidateWorld`。
 尚未登錄的完整父項清冊另以`FD2_HD_PARENT_CATALOG`明示，不覆寫正式清冊來測候選。
 此次94組實檔預檢後，第一章世界因96拒收，失敗與來源快照保留；標準回歸略過此外部候選測試。
-下一閘門是#259素材／清冊範圍，再接正式世界、透明介面與正常玩家GPU。
 
 ### 2026-10-19 戰鬥後JSON LOAD暫態（CONFORMED-SCOPED，#260）
 

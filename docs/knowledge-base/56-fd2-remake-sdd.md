@@ -1,6 +1,6 @@
 # 56 — FD2 remake 系統設計規格（SDD，2026-08-09）
 
-十一圖同源純草地已接既有144稀疏地形。實際bank／selector、GPU對CPU、F2、來源／登錄反例與首章正常取景／來源槽冷讀通過；不新增原版對拍或整章E2。唯一數量與限制依[58](58-fd2-exe-re-coverage.md)，契約與重跑依[61](61-modern-theme-runtime-spec.md)，主收據為shared_grass_followup_20261025。其他草地、地形／HD2及集中人工／平台仍待。
+十四種草泥交界已接十一張地圖的同源槽，沿既有144稀疏地形。實際bank／selector、GPU對CPU、F2、來源／登錄反例與首章正常取景／來源槽冷讀通過；被人物遮擋的一種圖塊由同輪另一組F2前後完整畫面補驗。唯一數量與限制依[58](58-fd2-exe-re-coverage.md)，契約與重跑依[61](61-modern-theme-runtime-spec.md)，主收據為grass_earth_edges_followup_20261025。其他地形／HD2、完整介面／工具列及集中人工／平台仍待。
 
 已接HD且有目前原版證據支持流程一致的絕招，維持已驗範圍，過期停止線直接刪除。傷害公式後續可調整，原版預設保留；需求與驗收方向見[61](61-modern-theme-runtime-spec.md)及[#278](https://github.com/wicanr2/fd2_re/issues/278)。
 
@@ -10056,7 +10056,7 @@ Draw確認後續行，delta0回復baseline，VGA indices不變，等待仍由typ
 
 來源、READY規格、失敗與重跑入口見[首章主契約](../data/ida/fd2_ch01_flow_20261017.json)。[#200](https://github.com/wicanr2/fd2_re/issues/200)保持開啟；全面matching暫停。
 
-第1章完整流程追加現況（2026-10-17）：正常START、T3..T6四事件、哈諾死亡後哈瓦特電腦控制、T7後111清敵、戰後羅德鎮及五建築，原版full-r4與Game full-r8行為／節點通過；55筆AI零順序差。#242補原始phase metadata，#243移除GUI增援的額外Acted標記。保存仍由#244阻擋：START只寫JSON，嚴格SAV gate失敗。測試側提案可正常LOAD冷讀已知玩家狀態，但2228個完整byte差異尚待使用者確認，未接正式路徑。根契約及逐筆清單見[首章主證據](../data/ida/fd2_ch01_flow_20261017.json)；正式章台帳不提升。
+第1章完整流程追加現況（2026-10-17）：正常START、T3..T6四事件、哈諾死亡後哈瓦特電腦控制、T7後111清敵、戰後羅德鎮及五建築，原版full-r4與Game full-r8行為／節點通過；55筆AI零順序差。#242補原始phase metadata，#243移除GUI增援的額外Acted標記。根契約及逐筆清單見[首章主證據](../data/ida/fd2_ch01_flow_20261017.json)。
 
 首章保存定案與正式驗收（2026-10-17）：使用者明確允許已展示差異，隨後要求matching技巧輔助。START既有C物件重連結與固定原版663 bytes相同；酒店完整C尚未匹配，沿既有IDA直接writer證據。有效紀錄65個差異在本章人物首次出現到保存均原值保留，未使用名冊2160個與衍生檢查碼3個全部逐筆列出。正式START初存已接酒店owner，Game full-r10實際寫SAV並以新Game正常LOAD冷讀5人已知能力／物品、章節1、gold1000及選項。嚴格比較仍failed；明示本份政策後行為／節點／交易passed，正式收據為[parity-ch01](../data/ui-traces/parity-ch01.json)。第1章依111列PLAYER-E2，正式台帳28章，第2、3章保留未完成；不宣稱全SAV bytes相同或未知producer已閉合。
 
@@ -10067,7 +10067,7 @@ Draw確認後續行，delta0回復baseline，VGA indices不變，等待仍由typ
 
 battle_ch02原缺view及繼承HUD來源，第一次正常移動遭預檢拒收；依原版起手及既有LOAD writer補正式資料、生成器及canonical，保持非零顯示gate與最終raw B未直接擷取的限制。完整Game r4的53筆AI全消費、零順序分岔；行為與節點通過，正常保存及新Game正式LOAD冷讀保留六人已知玩家狀態。本份一名村民死亡，未驗全員存活的力量藥水分支；無新增強化或HP鎖，抽樣後依111清敵。
 
-整檔SAV仍差希莉亞persistent index5的+0x28..+0x30九byte及兩個檢查碼。使用者要求matching輔助確認原因，未接受第2章保存例外，嚴格交易gate保持failed；不以冷讀或近似C提升章PLAYER-E2。主證據、逐筆差異及來源查核見[第2章契約](../data/ida/fd2_ch02_flow_20261017.json)，未完成項見[#245](https://github.com/wicanr2/fd2_re/issues/245)、[#246](https://github.com/wicanr2/fd2_re/issues/246)及[#247](https://github.com/wicanr2/fd2_re/issues/247)。目前章台帳統一依58。
+整檔SAV仍差希莉亞persistent index5的+0x28..+0x30九byte及兩個檢查碼。主證據、逐筆差異及來源查核見[第2章契約](../data/ida/fd2_ch02_flow_20261017.json)，目前章台帳統一依58。
 
 第2章保存定案與正式驗收追加（2026-10-17）：有界唯讀觀察在runtime27建構前已讀到3ffe6d136c866dfe3f，10C50保留九byte；camp、identity及HP的三個直接writer均有正對照。11506整筆複製及30012保存沿已閉合IDA證據，重製BuildNativeChapterSlot的新入隊紀錄則使用零基底。局部副本只補九byte並重算checksum即重現原版整檔，未改寫正式SAV。matching重連結的九個完整112A5 C候選全部未匹配；更早記憶體內容producer及全部用途仍未知。
 
@@ -10092,7 +10092,7 @@ battle_ch02原缺view及繼承HUD來源，第一次正常移動遭預檢拒收�
 
 BattleFig15／17已沿61「隊伍BattleFig15與17圖源」正式接入；唯一收據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的party15_17_battle_followup_20261021。全部34幀Game.Draw核心、F2／返回、來源拒收及正式／runtime-only原子預檢通過，限RUNTIME-E1。共用關鍵姿勢與少量原框裁切明示；人工與正常玩家依全部HD集中排程，完整HD仍未完成。
 
-蓋亞待機／蓄力腕拳修正已沿61「蓋亞待機手腕修正」接入v2；十五幀Game.Draw核心、F2／返回、來源拒收與兩包原子預檢通過，限定RUNTIME-E1。舊Gaia普通流程與截圖是v1歷史證據，新造型正常操作及人工確認由#268在全部HD後集中處理。唯一當前收據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的gaia_guard_arm_followup_20261021，其他HD缺口仍開啟。
+蓋亞待機／蓄力腕拳修正已沿61「蓋亞待機手腕修正」接入v2；十五幀Game.Draw核心、F2／返回、來源拒收與兩包原子預檢通過，限定RUNTIME-E1。新版普通操作依本檔較新的gaia_v2_normal_followup_20261025收據；#268僅保留全部HD後集中人工確認。初始接線收據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的gaia_guard_arm_followup_20261021，其他HD缺口仍開啟。
 
 BattleFig22武者已依61「BattleFig22武者圖源」正式接入；唯一收據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的martial22_battle_followup_20261021。二十一幀實際Game.Draw核心、F2／返回、來源拒收及完整／runtime-only原子預檢通過，限RUNTIME-E1。共用姿勢、弧光旋轉、光束局部RGBA裁切及原框裁切逐筆揭露。正常操作與人工造型依全部HD後集中確認，完整HD仍未完成。
 

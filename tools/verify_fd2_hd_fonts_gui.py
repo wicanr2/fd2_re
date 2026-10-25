@@ -1222,7 +1222,9 @@ def main():
                              + (f'含普通走行、指令環、取消、{args.battle_repetitions}場{action_label}演出與正常戰場返回。'+('含經驗對話中F9。' if args.battle_repetitions==2 else '') if args.world else '')
                              + '不注入座標或狀態，不宣稱原版對拍或完整戰役。')}
             if args.terrain_frames:
-                report['terrain_expectation']={'label':args.terrain_label,'frames':sorted(args.terrain_frames),'view_y':8}
+                report['terrain_expectation']={'label':args.terrain_label,'frames':sorted(args.terrain_frames),
+                                              'view_y':args.terrain_focus[1] if args.terrain_focus else 8,
+                                              'focus':args.terrain_focus}
             (args.out/'receipt.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
             return
         if args.preparation:

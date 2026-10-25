@@ -4279,6 +4279,21 @@
         ],
         "pattern": "nativeCommand30SavedCursor"
       }
+    },
+    {
+      "id": "private-theme-alias-sync-preserves-existing-inodes",
+      "date": "2026-10-25",
+      "area": "私人素材同步",
+      "rule": "候選包以symlink重用私人檔案時，先核對清冊SHA，再由tools/sync_modern_theme_private.py以source.samefile(target)略過同inode的copyfile。現行支援既有file／files／source_files白名單，SHA及manifest照常驗證；清冊仍由獨立的公開catalog指定。用tools/test_fd2_hd_ground_edges.py的private_alias_sync正反例驗同inode、mtime、重跑manifest與錯SHA拒收。",
+      "why": "直接copyfile別名會報SameFileError，前批曾另做3GB實檔包；同檔跳過後可直接補十五圖，6954個既有檔的bytes及mtime保持，無需建立重複完整包。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#grass_earth_edges_followup_20261025",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/sync_modern_theme_private.py"
+        ],
+        "pattern": "source\\.samefile\\(target\\)"
+      }
     }
   ]
 }

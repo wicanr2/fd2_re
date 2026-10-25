@@ -1,0 +1,744 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_grass_earth_hd_v1",
+  "asset_id": "modern.terrain.grass_earth",
+  "base_catalog_sha256": "ea271c763f6e3856dfb4b5f295f38facaa01be84bf6d27254495c9a597516d27",
+  "source_manifest_sha256": "a19a3da393294ad6e1c4ad1dccdb9a911d26ed1f3d7008046eddda2398f938f5",
+  "grass_master_file": "grass-olive-hd-v1-master.png",
+  "grass_master_sha256": "ed29eb9da12adae641c612d28b848c186dd2986ac1ee3fa4e35e65b72e864c29",
+  "earth_master_file": "earth-loam-hd-v1-master.png",
+  "earth_master_sha256": "0281b4878c6be106ad4a6db211452219a2015278f415321f9deeb9e2af264563",
+  "size": 144,
+  "edge_blend": 8,
+  "mask_blur_hd_pixels": 2,
+  "exact_outer_edge_hd_pixels": 1,
+  "index_groups": {
+    "grass": [
+      68,
+      69,
+      70,
+      71,
+      140,
+      141
+    ],
+    "earth": [
+      112,
+      113,
+      114,
+      115,
+      116,
+      117
+    ]
+  },
+  "groups": [
+    {
+      "anchor": [
+        0,
+        145
+      ],
+      "native_content_sha256": "2fce55a8da0348f539e03630b178e5c0f7e8adacbe37895b9946430aba53505c",
+      "targets": [
+        [
+          0,
+          145
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          3,
+          113
+        ],
+        [
+          10,
+          49
+        ],
+        [
+          11,
+          145
+        ],
+        [
+          13,
+          1
+        ],
+        [
+          14,
+          1
+        ],
+        [
+          17,
+          145
+        ],
+        [
+          30,
+          49
+        ],
+        [
+          31,
+          1
+        ]
+      ],
+      "file": "grass-earth-145-hd-v1.png"
+    },
+    {
+      "anchor": [
+        0,
+        146
+      ],
+      "native_content_sha256": "ef8af95d0646434fac70cd9bed86f4ba019ebd7b1da688fdebcbcd75383ff1de",
+      "targets": [
+        [
+          0,
+          146
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          3,
+          114
+        ],
+        [
+          10,
+          50
+        ],
+        [
+          11,
+          146
+        ],
+        [
+          13,
+          2
+        ],
+        [
+          14,
+          2
+        ],
+        [
+          17,
+          146
+        ],
+        [
+          30,
+          50
+        ],
+        [
+          31,
+          2
+        ]
+      ],
+      "file": "grass-earth-146-hd-v1.png"
+    },
+    {
+      "anchor": [
+        0,
+        147
+      ],
+      "native_content_sha256": "7a7fde1a7b2701047f2316b46fc418d8cc10976dac46266c2efa35bc2570702f",
+      "targets": [
+        [
+          0,
+          147
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          115
+        ],
+        [
+          6,
+          51
+        ],
+        [
+          10,
+          51
+        ],
+        [
+          11,
+          147
+        ],
+        [
+          13,
+          3
+        ],
+        [
+          14,
+          3
+        ],
+        [
+          17,
+          147
+        ],
+        [
+          30,
+          51
+        ],
+        [
+          31,
+          3
+        ]
+      ],
+      "file": "grass-earth-147-hd-v1.png"
+    },
+    {
+      "anchor": [
+        0,
+        148
+      ],
+      "native_content_sha256": "699c30a3633bb6c2fca07cbf5f1cceb65db5a1809d472829a7925e0d45891bc3",
+      "targets": [
+        [
+          0,
+          148
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          116
+        ],
+        [
+          6,
+          52
+        ],
+        [
+          10,
+          52
+        ],
+        [
+          11,
+          148
+        ],
+        [
+          13,
+          4
+        ],
+        [
+          14,
+          4
+        ],
+        [
+          30,
+          52
+        ],
+        [
+          31,
+          4
+        ]
+      ],
+      "file": "grass-earth-148-hd-v1.png"
+    },
+    {
+      "anchor": [
+        0,
+        149
+      ],
+      "native_content_sha256": "42a91eccd960454eac23aeedad262e1c297ce62a0139959312189a7a97c79874",
+      "targets": [
+        [
+          0,
+          149
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          117
+        ],
+        [
+          6,
+          53
+        ],
+        [
+          10,
+          53
+        ],
+        [
+          11,
+          149
+        ],
+        [
+          13,
+          5
+        ],
+        [
+          14,
+          5
+        ],
+        [
+          17,
+          149
+        ],
+        [
+          30,
+          53
+        ],
+        [
+          31,
+          5
+        ]
+      ],
+      "file": "grass-earth-149-hd-v1.png"
+    },
+    {
+      "anchor": [
+        0,
+        150
+      ],
+      "native_content_sha256": "d3693eef335db6ef238fc3b12345039d414d0a40ccfa4de2092450a86014a8de",
+      "targets": [
+        [
+          0,
+          150
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          3,
+          118
+        ],
+        [
+          6,
+          54
+        ],
+        [
+          10,
+          54
+        ],
+        [
+          11,
+          150
+        ],
+        [
+          13,
+          6
+        ],
+        [
+          14,
+          6
+        ],
+        [
+          17,
+          150
+        ],
+        [
+          30,
+          54
+        ],
+        [
+          31,
+          6
+        ]
+      ],
+      "file": "grass-earth-150-hd-v1.png"
+    },
+    {
+      "anchor": [
+        0,
+        151
+      ],
+      "native_content_sha256": "c04d9ec90101f7d4a30af71ac7143f9737a3524ea5418fc6c30179be206cbbb0",
+      "targets": [
+        [
+          0,
+          151
+        ],
+        [
+          3,
+          119
+        ],
+        [
+          6,
+          55
+        ],
+        [
+          10,
+          55
+        ],
+        [
+          11,
+          151
+        ],
+        [
+          13,
+          7
+        ],
+        [
+          14,
+          7
+        ],
+        [
+          30,
+          55
+        ],
+        [
+          31,
+          7
+        ]
+      ],
+      "file": "grass-earth-151-hd-v1.png"
+    },
+    {
+      "anchor": [
+        0,
+        153
+      ],
+      "native_content_sha256": "14d8d333080322434ce193050f4ed84b973ff14841a5f1df248eb1e8b892009b",
+      "targets": [
+        [
+          0,
+          153
+        ],
+        [
+          2,
+          9
+        ],
+        [
+          3,
+          121
+        ],
+        [
+          6,
+          57
+        ],
+        [
+          10,
+          57
+        ],
+        [
+          11,
+          153
+        ],
+        [
+          13,
+          9
+        ],
+        [
+          14,
+          9
+        ],
+        [
+          30,
+          57
+        ],
+        [
+          31,
+          9
+        ]
+      ],
+      "file": "grass-earth-153-hd-v1.png"
+    },
+    {
+      "anchor": [
+        0,
+        154
+      ],
+      "native_content_sha256": "c4c4363daccd22ad1f3468aa015f25e1fd71826d688115d6058b408cfdde9891",
+      "targets": [
+        [
+          0,
+          154
+        ],
+        [
+          2,
+          10
+        ],
+        [
+          3,
+          122
+        ],
+        [
+          6,
+          58
+        ],
+        [
+          10,
+          58
+        ],
+        [
+          11,
+          154
+        ],
+        [
+          13,
+          10
+        ],
+        [
+          14,
+          10
+        ],
+        [
+          17,
+          154
+        ],
+        [
+          30,
+          58
+        ],
+        [
+          31,
+          10
+        ]
+      ],
+      "file": "grass-earth-154-hd-v1.png"
+    },
+    {
+      "anchor": [
+        0,
+        155
+      ],
+      "native_content_sha256": "1b68802cef9ee8ebe74b1555c83fba603c8928df31bceec04ee9714c8a026fa0",
+      "targets": [
+        [
+          0,
+          155
+        ],
+        [
+          3,
+          123
+        ],
+        [
+          6,
+          59
+        ],
+        [
+          11,
+          155
+        ],
+        [
+          13,
+          11
+        ],
+        [
+          14,
+          11
+        ],
+        [
+          31,
+          11
+        ]
+      ],
+      "file": "grass-earth-155-hd-v1.png"
+    },
+    {
+      "anchor": [
+        0,
+        156
+      ],
+      "native_content_sha256": "eacec9116311dc94134dbb24822daa9a9ce63d840597794c5a7a4fd39b7ec4b6",
+      "targets": [
+        [
+          0,
+          156
+        ],
+        [
+          2,
+          12
+        ],
+        [
+          3,
+          124
+        ],
+        [
+          6,
+          60
+        ],
+        [
+          10,
+          60
+        ],
+        [
+          11,
+          156
+        ],
+        [
+          13,
+          12
+        ],
+        [
+          14,
+          12
+        ],
+        [
+          17,
+          156
+        ],
+        [
+          30,
+          60
+        ],
+        [
+          31,
+          12
+        ]
+      ],
+      "file": "grass-earth-156-hd-v1.png"
+    },
+    {
+      "anchor": [
+        0,
+        157
+      ],
+      "native_content_sha256": "a36173cad366328ce48e0632d2c3587b79f39a13ba5ef25b1335c226464029c0",
+      "targets": [
+        [
+          0,
+          157
+        ],
+        [
+          2,
+          13
+        ],
+        [
+          3,
+          125
+        ],
+        [
+          6,
+          61
+        ],
+        [
+          10,
+          61
+        ],
+        [
+          13,
+          13
+        ],
+        [
+          14,
+          13
+        ],
+        [
+          30,
+          61
+        ],
+        [
+          31,
+          13
+        ]
+      ],
+      "file": "grass-earth-157-hd-v1.png"
+    },
+    {
+      "anchor": [
+        0,
+        158
+      ],
+      "native_content_sha256": "597f6fe0b1e4616cf2266959adc6346b115ea59e6cb510c54f755bf2cbbfe96f",
+      "targets": [
+        [
+          0,
+          158
+        ],
+        [
+          2,
+          14
+        ],
+        [
+          3,
+          126
+        ],
+        [
+          6,
+          62
+        ],
+        [
+          10,
+          62
+        ],
+        [
+          11,
+          158
+        ],
+        [
+          13,
+          14
+        ],
+        [
+          14,
+          14
+        ],
+        [
+          30,
+          62
+        ],
+        [
+          31,
+          14
+        ]
+      ],
+      "file": "grass-earth-158-hd-v1.png"
+    },
+    {
+      "anchor": [
+        0,
+        159
+      ],
+      "native_content_sha256": "c0701329fad75647fe4c98bd20f925c69ef5f8149005dddd5281462ca746b4e7",
+      "targets": [
+        [
+          0,
+          159
+        ],
+        [
+          2,
+          15
+        ],
+        [
+          3,
+          127
+        ],
+        [
+          6,
+          63
+        ],
+        [
+          10,
+          63
+        ],
+        [
+          11,
+          159
+        ],
+        [
+          13,
+          15
+        ],
+        [
+          14,
+          15
+        ],
+        [
+          17,
+          159
+        ],
+        [
+          30,
+          63
+        ],
+        [
+          31,
+          15
+        ]
+      ],
+      "file": "grass-earth-159-hd-v1.png"
+    }
+  ],
+  "source_refs": [
+    "docs/data/fd2-modern-hd-battlefield-20261019.json",
+    "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+  ],
+  "semantics": "literal palette-index groups are art masks, not newly inferred game rules"
+}

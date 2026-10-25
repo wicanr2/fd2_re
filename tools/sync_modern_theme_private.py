@@ -70,7 +70,11 @@ def main() -> None:
         if expected and actual != expected:
             raise SystemExit(f"digest mismatch: {name}: {actual} != {expected}")
         target = args.destination / name
-        shutil.copyfile(source, target)
+        # A candidate pack can reuse existing private files through symlinks.
+        # The digest was checked above; preserve the identical inode rather
+        # than copying it onto itself or rewriting all unchanged assets.
+        if not (target.exists() and source.samefile(target)):
+            shutil.copyfile(source, target)
         records.append({"file": name, "sha256": actual, "size": source.stat().st_size})
 
     shutil.copyfile(args.catalog, args.destination / "catalog.json")
