@@ -16,6 +16,13 @@ func (g *Game) prepareModernHDDeathFrames(job *nativeCh28PostPresentJob, set *mo
 		len(job.workFrames) != 26 || len(job.vgaFrames) != 26 || g.nativeMapAssets == nil {
 		return nil, errors.New("modern HD death: incomplete sources")
 	}
+	if err := g.validateModernHDDeathStageSource(job); err != nil {
+		return nil, err
+	}
+	var stage *nativeCh23AdapterState
+	if job.hdStage != nil {
+		stage = job.hdStage.stage
+	}
 	bank := set.mapOverlays
 	for index := 68; index <= 79; index++ {
 		if index >= len(g.nativeMapAssets.CommandHealDigits) {
@@ -38,7 +45,14 @@ func (g *Game) prepareModernHDDeathFrames(job *nativeCh28PostPresentJob, set *mo
 			// only the final steady compose invokes the ChapterAux writer again.
 			input.Frame.ChapterAux = nil
 		}
-		frame, err := view.prepareModernHDMapFrameMode(input, job.workFrames[i], job.palette, true)
+		seed := job.workFrames[i]
+		if stage != nil {
+			seed = append([]byte(nil), seed...)
+			if err := job.hdStage.seed(seed); err != nil {
+				return nil, err
+			}
+		}
+		frame, err := view.prepareModernHDMapFrameStageLayout(input, seed, job.palette, true, -1, stage)
 		if err != nil {
 			return nil, fmt.Errorf("modern HD death frame %d: %w", i, err)
 		}
@@ -59,6 +73,7 @@ func (g *Game) prepareModernHDDeathFrames(job *nativeCh28PostPresentJob, set *mo
 		frame.Background = background
 		if i < 25 {
 			frame.UI = image.NewRGBA(image.Rect(0, 0, 320, 200))
+			frame.HUDUnit = nil
 			frame.Viewport = image.Rect(0, 0, 312*6, 192*6)
 			shift := image.Pt(-24, -24)
 			for k := range frame.Units {

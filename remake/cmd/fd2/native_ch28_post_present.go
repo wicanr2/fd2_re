@@ -28,6 +28,7 @@ type nativeCh28PostPresentJob struct {
 	then           func()
 	rollback       func()
 	hdInputs       []indexedmap.NativeFrameInput
+	hdStage        *modernHDDeathStageSource
 	hdTargets      []battle.NativeCh28PostOverlayTarget
 	hdFrames       []*modernHDMapFrame
 	hdTheme        *modernStoryPortraitSet
@@ -112,12 +113,27 @@ func (g *Game) startNativeUnitDeathPresentMode(prelude func(*battle.State) error
 	if retainState {
 		job.retainedState = g.st
 	}
+	if g.nativeMapAssets.MapIndex == 23 {
+		stage := cloneNativeCh23AdapterState(g.nativeCh23State)
+		if stage == nil {
+			return errors.New("native death: same-compose stage unavailable")
+		}
+		job.hdStage = &modernHDDeathStageSource{stage: stage,
+			baselineWork: append([]byte(nil), g.nativeMapWork...), baselineVGA: append([]byte(nil), g.nativeMapVGA...)}
+	}
 	if len(g.nativeMapDAC) == 256*3 {
 		if current, paletteErr := fdother.VGAPaletteFromDAC(g.nativeMapDAC); paletteErr == nil {
 			job.palette = current
 		}
 	}
 	appendFrame := func(work, vga []byte, state *battle.State, wait int, input indexedmap.NativeFrameInput) error {
+		if job.hdStage != nil {
+			var freezeErr error
+			input, freezeErr = freezeCompoundMapInput(modernHDDeathInput(input, len(job.hdInputs)))
+			if freezeErr != nil {
+				return freezeErr
+			}
+		}
 		snapshot, cloneErr := cloneNativeCh28PostState(state)
 		if cloneErr != nil {
 			return cloneErr
@@ -145,6 +161,9 @@ func (g *Game) startNativeUnitDeathPresentMode(prelude func(*battle.State) error
 			return err
 		}
 		transition := nativeTransitionInput(in)
+		if err := job.hdStage.seed(work); err != nil {
+			return err
+		}
 		if err := indexedmap.ComposeNativeUnitPresentTerrainSnapshot(work, transition); err != nil {
 			return fmt.Errorf("native 0x1DB65 pose frame %d terrain: %w", frame, err)
 		}
@@ -168,6 +187,9 @@ func (g *Game) startNativeUnitDeathPresentMode(prelude func(*battle.State) error
 	}
 	transition := nativeTransitionInput(afterInput)
 	staged := make([]byte, indexedmap.NativeUnitPresentWorkSize)
+	if err := job.hdStage.seed(staged); err != nil {
+		return err
+	}
 	if err := indexedmap.ComposeNativeUnitPresentTerrainSnapshot(staged, transition); err != nil {
 		return fmt.Errorf("native 0x1DB65 staged terrain: %w", err)
 	}
@@ -206,6 +228,9 @@ func (g *Game) startNativeUnitDeathPresentMode(prelude func(*battle.State) error
 	if err != nil {
 		return err
 	}
+	if err := job.hdStage.seed(steadyWork); err != nil {
+		return err
+	}
 	if err := indexedmap.ComposeNativeFrame(steadyWork, steadyVGA, afterInput); err != nil {
 		return fmt.Errorf("native 0x1DB65 final steady redraw: %w", err)
 	}
@@ -215,6 +240,16 @@ func (g *Game) startNativeUnitDeathPresentMode(prelude func(*battle.State) error
 	if len(job.vgaFrames) != 26 || len(job.workFrames) != len(job.vgaFrames) ||
 		len(job.stateFrames) != len(job.vgaFrames) || len(job.waits) != len(job.vgaFrames) {
 		return errors.New("native 0x1DB65 preflight produced an invalid 13+6+6+steady schedule")
+	}
+	if job.hdStage != nil {
+		job.hdStage.signature, err = job.deathStageDigest()
+		if err != nil {
+			return err
+		}
+		job.hdStage.sealed = true
+		if err := g.validateModernHDDeathStageSource(job); err != nil {
+			return err
+		}
 	}
 	if hasModernHDDeathBank(g.modernStoryPortraits) {
 		frames, err := g.prepareModernHDDeathFrames(job, g.modernStoryPortraits)

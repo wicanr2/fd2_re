@@ -4522,3 +4522,49 @@ F2 在發布前重驗場景、原生面板工作與來源，不能讀後續 live
 前述READY已實作。問句、逐字放棄回覆、選擇器取消回覆、HD頭像與同次背景已串接，原生交易與時點保持。兩包完整Game.Draw、像素控制、F2、返回及來源拒收通過；一般地圖來源亦驗證。唯一數量、來源快照、記憶體事件及診斷分類依58與HD主收據`full_inventory_reward_hd_followup_20261025`。
 
 重跑使用維護中的Go Docker與`python3 tools/verify_fd2_reward_message_hd.py --help`；`full-unit`驗文字／來源，`full-game`跑五分支，`regression`、`unit`與`hud`保留原有交易及共用介面。明示`--catalog`、`--pack`、不存在的`--out`前綴及有界`--timeout`；原包唯讀掛到`/original`，私人實體包唯讀掛到`/private`並加`--require-real-runtime`。完整矩陣採user1000、network none、6GiB／2CPU／256 pids，Xvfb生命週期由工具管理。框線與YESNO未HD，完整HD與集中正常／人工／平台仍未完成。
+
+## 共用死亡動畫的特殊背景快照（READY，2026-10-25）
+
+沿既有 `fd2_ch28_post_ida.txt` 的 `sub_1DB65`，原始邊界為 IDA9.4 LE
+線性 `0x1DB65..0x1DEBE`。十三拍姿勢與離場物件重繪呼叫 `sub_11EEE`，
+兩段各六張疊圖後以 `sub_11CAC(0)` 還原。普通擊殺與狀態致死的 caller
+沿 `fd2_status_death_ida.txt`，地圖23的 staging writer 沿 `fd2_ch23_post_ida.txt`。
+這些既有已證實證據均綁定357074-byte FD2.EXE，SHA-256
+`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。
+不重開已閉合函式，不研究硬體等待細節。
+
+正式共用 owner 在 map23 冷預檢捕捉同次 staging、rowShift、latch 與 tick。
+十三次地形重畫、inactive 後的 B 段底圖及最後 steady 重畫，先恢復同次 staging
+再沿既有原生產生器合成。A 段保留第十三拍人物並累積68～73；B 段每拍從
+同一 inactive 底圖加入74～79。VGA 的前二十五拍維持零位移視窗拷貝，最後
+一拍才回到4,4。原始未覆寫區與既有 ChapterAux 邊界保持。
+
+前二十五拍只消費當次事件工作區，不另疊穩定 HUD 人物；最後 steady 重畫
+才恢復 HUD 人物。實圖與最小反例已確認舊 HD compositor 清空 UI 後仍保留
+HUDUnit 的額外繪製，本切片一併修正，不改原生像素。
+
+保存凍結 typed input、baseline work／VGA、二十六份 work／VGA、palette、
+目標與等待。每次 HD／F2 預備均重驗密封與獨立原生重組，不能讀播放時的
+live staging 代替來源。缺快照、來源修改或素材不符，全部預備成功前不得發布。
+普通擊殺沿原有已結算邊界，不新增 HP／RNG 回滾聲明；狀態扣血的原預檢與
+失敗回復、事件的私有狀態及正常返回均保持。
+
+HD 世界明示消費同次 stage，人物、前景與煙霧沿原層序；前二十五拍的
+24px 高解析位移與視窗裁切同步作用於整張背景。HD 預備先恢復原生 stage，
+避免對已合成目的重映色。字串、裝備、保存、傷害、亂數、sample3、等待與
+Draw 確認不改。一般地圖保留既有契約，原版像素模式同樣修正背景來源。
+
+驗收包括修改前原生 B 段反例、完整原生重組、來源／live stage 隔離、冷／暖
+原子拒收，以及普通擊殺、狀態致死與事件三個 caller。以真實 map23 資料、
+seed7 與 clock1000 驗二十六拍、各階段 F2、獨立 CPU 世界／最終畫布、
+像素控制組與一次返回；正式及私人實體圖包交叉核圖。既有一般地圖死亡、
+狀態預檢與共用背景回歸保持。限定受控 RUNTIME-E1，不新增原版執行器、
+正常章節或平台驗收；完整 HD 及全部串接後集中人工閘門維持。
+
+### 死亡特殊背景與HUD的驗證範圍（CONFORMED-SCOPED／RUNTIME-E1）
+
+前述READY已實作。兩項產品反例已修正；三caller的26拍、狀態訊息前綴、保留身分、原生控制組、F2與返回通過。兩包完整畫面與收據相同，九類來源破壞、live隔離、錯素材與冷拒收、一般地圖26拍逐RGB診斷及原死亡／狀態回歸通過。數量、來源快照、記憶體事件與診斷分類依58及HD主收據`death_stage_hd_followup_20261025`。
+
+重跑使用維護中的Go Docker與`python3 tools/verify_fd2_death_hd.py --help`，`native`驗原生stage／冷拒收／HUD邊界，`unit`驗來源與F2拒收，`regression`驗原死亡／狀態，`game`驗三caller完整繪圖。明示`--catalog`、`--pack`、不存在的`--out`與有界`--timeout`；原包唯讀掛到`/original`並設`FD2_ASSET_PACK`與`FD2_TEST_ORIGINAL_PACK`。私人實體圖包唯讀掛到`/private`並加`--require-real-runtime`。完整矩陣user1000、network none、6GiB／2CPU／256 pids，Xvfb由工具有界管理。
+
+此為受控RUNTIME-E1，沒有新原版oracle、正常玩家、音訊聽感或平台驗收。沒有新美術／清冊／私人提交；其餘HD與全部串接後集中正常／人工／平台保持開啟。

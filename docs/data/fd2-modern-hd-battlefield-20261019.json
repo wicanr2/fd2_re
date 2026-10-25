@@ -227592,5 +227592,373 @@
       "images_rebuilt": false,
       "other_projects_touched": false
     }
+  },
+  "death_stage_hd_followup_20261025": {
+    "status": "CONFORMED-SCOPED",
+    "layer": "RUNTIME-E1",
+    "full_hd_complete": false,
+    "normal_player_complete": false,
+    "base_commit": "8e36718dc5a348ab493fac69370c0dc922466c1e",
+    "issue": 276,
+    "source_snapshot": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/death-stage-source-snapshot-r2.json",
+      "sha256": "60ff84753db1cdfd2254cff3f9adedbb3165e2dd462afbf7a3ae9f50be402955"
+    },
+    "source_files": 1135,
+    "gates": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/death-stage-native-r2.gate.json",
+        "sha256": "00c2c028086ff0386b1bb238ab0969235bf547a85e62633bfff76b8c7210a10c"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/death-stage-unit-r2.gate.json",
+        "sha256": "abf70e0a8391a07011fc17bb33395e523192cc10ccb9212e1ee9ba94f286ce4e"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/death-stage-regression-r2.gate.json",
+        "sha256": "633a4490d5b6f7e62c5888938d8e139a045b853fa105c75ae948f792d6077885"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/death-stage-game-r2.gate.json",
+        "sha256": "d622efd7aeedaddd2ba41987a8376876be7ad4b9c79da35ab6bc5aba2ce9d493"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/death-stage-private-game-r2.gate.json",
+        "sha256": "949e35a6916aa5dc1e07a434aa17b82879f1c80e55b65b28c44a3a6f8af11167"
+      }
+    ],
+    "evidence": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/death-stage-native-r2.log",
+        "sha256": "5376fd4175f4fe8124777baea14907e356246de4a4f914894f0958dc9ad054d0"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/death-stage-native-r2.memory.json",
+        "sha256": "f93d195584b8038242af307336aec767ea8678b28c8717a8717426d3905bf37a"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/death-stage-unit-r2.log",
+        "sha256": "f451e719ade08a7e4737b4c8f94dcb88fcc02b81d8adaad9be70c93d57dd7824"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/death-stage-unit-r2.memory.json",
+        "sha256": "5203a86ce2b33b18e8c429d574a659e40d49e310c3c6c79c94d5a2ff19d4ff0a"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/death-stage-regression-r2.log",
+        "sha256": "756c4c35e957c0553c3225e32007195078d5784a850a93cc80552eca4ed94528"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/death-stage-regression-r2.memory.json",
+        "sha256": "0c43bb868d768130dd3fd4e9d478371a90430c3871dc26e7dc094236cbe1ca63"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/death-stage-game-r2.log",
+        "sha256": "44d62f665fffcdf2b7542dbfd3103cb0888f2ccd4a7d96b153d2e938db30e097"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/death-stage-game-r2.memory.json",
+        "sha256": "62fdfa253b5f450bd8e59852ac77866234ea5531601b8e1ae89b578d31b1a971"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/death-stage-private-game-r2.log",
+        "sha256": "51ea04a4f8be59078d4697c58a9591c4bf94178f0b4d2460709889bb4d0d605c"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/death-stage-private-game-r2.memory.json",
+        "sha256": "573152dac290bd7ff41c7e4e7739f69bab662b8990851fd6885ef808fe01f858"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/death-stage-legacy-r2.log",
+        "sha256": "01c88a123efe575b033272a680fcd11a7a1d55e880fd8c5dabff697b97bf115e"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/death-stage-legacy-r2.memory.json",
+        "sha256": "de4a4d893b0f3a39284a5fffded793376712931663e5766c4738046f5b30aeb9"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/death-stage-string-r2.log",
+        "sha256": "e4c14205cfb742b3e526808225ac71db632f2bea2eabbc0852e42823c886cf86"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/death-stage-string-r2.memory.json",
+        "sha256": "b6c7f56a0becb988542bb17f8da19a8e581795bc533e25c3bf7f6f9150923faa"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/death-stage-game-r2-capture/receipt.json",
+        "sha256": "25ce4bb6f68d6a80559a8a4bf2e44d5cbd01399f18f0a718da48e2f31106b3f0"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/death-stage-private-game-r2-capture/receipt.json",
+        "sha256": "25ce4bb6f68d6a80559a8a4bf2e44d5cbd01399f18f0a718da48e2f31106b3f0"
+      }
+    ],
+    "test_instances": 29,
+    "distinct_tests": 28,
+    "memory": {
+      "death-stage-native-r2": {
+        "peak_bytes": 1270206464,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "death-stage-unit-r2": {
+        "peak_bytes": 2973003776,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "death-stage-regression-r2": {
+        "peak_bytes": 1263706112,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "death-stage-game-r2": {
+        "peak_bytes": 6442455040,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 1287,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "death-stage-private-game-r2": {
+        "peak_bytes": 6442455040,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 358,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "death-stage-legacy-r2": {
+        "peak_bytes": 581861376,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "death-stage-string-r2": {
+        "peak_bytes": 61607936,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      }
+    },
+    "coverage": {
+      "cases": 3,
+      "unique_death_frames": 78,
+      "returns": 3,
+      "game_draws_per_pack": 231,
+      "status_prefix_draws": 20,
+      "f2_round_trips_per_pack": 24,
+      "pngs_per_pack": 18
+    },
+    "cross_pack": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/death-stage-cross-pack-r2.json",
+      "sha256": "914761ce575b5aab74006550deb2ccbccbebcd381617710464913b1a1b40545e"
+    },
+    "readme_overview": {
+      "file": "docs/figures/hd-death-stage.png",
+      "sha256": "89db05829ba5a61e339b367a0973e35be437d8c020aeda34b8ebcbb5cd889604"
+    },
+    "readme_recipe": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/death-stage-overview-r2.json",
+      "sha256": "80ca95bb2ef319fd335ab936c51bdcb3d354d53799ad4350931577de92480a97"
+    },
+    "counterexample": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/death-stage-before-r1.log",
+        "sha256": "7c65825ca117e8e89ededd283e80954a0a07e10f0f79f302c77b9ecee51e981b"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/death-stage-before-r1.memory.json",
+        "sha256": "da66c2913d371d4fdd231d6555c58c25488f43c3fe2bd42a2d8c0fd1f39c1e13"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/death-stage-hud-before-r1.log",
+        "sha256": "f3c2026c2ea6e79ba0159e8de8ceb1bcea95d074fc70c11951883449642faea8"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/death-stage-hud-before-r1.memory.json",
+        "sha256": "354b96aae74d5142d184f90dac45af2d2025ffc2b3df2255825fe429a6c22bcb"
+      }
+    ],
+    "diagnostic": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/death-stage-game-r1.log",
+        "sha256": "70696cd202460f753e2d0f220bc1c3e09dced97daca2485508f6305e231992bf"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/death-stage-game-r1.memory.json",
+        "sha256": "f4463157ea322be81cb60bb3e815b9ec56ac1d33c525cc471533132fb1b1438c"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/death-stage-source-snapshot-r1.json",
+        "sha256": "3875dea2501bb98369328148db1308f96a19fb490938efa2ca9044a08960deed"
+      }
+    ],
+    "diagnostic_notes": [
+      "base_commit原生B段未seed當次stage，最小反例失敗；HUD反例在r1背景修正實作上新增測試，證明前25拍另疊穩定人物。",
+      "r1完整畫面在最後steady的非空檢查誤用空Viewport；正式renderer依預設viewport正常，測具改用相同預設契約。兩項產品缺陷與一項測具錯誤分開記錄。",
+      "r2全部選定檢查均重跑，未重用r1通過結果。"
+    ],
+    "original": {
+      "file": "FD2.EXE",
+      "bytes": 357074,
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+      "evidence": [
+        {
+          "file": "docs/data/ida/fd2_ch28_post_ida.txt",
+          "sha256": "e8f1669a85a06412c51450ce9d2fc761981fc2d793b3fc6fca3421eb98cc5e3a"
+        },
+        {
+          "file": "docs/data/ida/fd2_status_death_ida.txt",
+          "sha256": "2cc69cc89b89805af566106dbe74f68280b10747114b5390058641fedb5019d1"
+        },
+        {
+          "file": "docs/data/ida/fd2_ch23_post_ida.txt",
+          "sha256": "a12b1002e92d89bf8e82bff17371decc068270dd6651866c18221d1d951ef731"
+        }
+      ],
+      "scope": "沿既有IDA9.4 LE線性1DB65..1DEBE與11EEE已證實證據；本輪未重開RE或重跑EXE",
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "tool": "IDA Pro 9.4",
+      "address_space": "IDA LE linear"
+    },
+    "initial_state": {
+      "fixture": "rewardStageGame + deathStageFullGame",
+      "map_index": 23,
+      "controlled_visible_slots": [
+        0,
+        4
+      ],
+      "off_camera_continuation_guards": [
+        1,
+        5
+      ],
+      "actor_map_key": 0,
+      "actor_portrait_dato": 0,
+      "gold": 123,
+      "seed": 7,
+      "clock_unix": 1000
+    },
+    "callers": [
+      "startNativeHPClear(4)",
+      "ApplyHPDamage → queueNativeActionDeathPresentation → finishSuccessfulUnitAction",
+      "beginNativeTransientPhases(selector2) → actual damage message → status death owner"
+    ],
+    "runtime_contract": {
+      "native": "每次11EEE及最後11CAC重畫先seed同次stage；A累積、B每張還原；完整26份work/VGA獨立重組",
+      "hd": "明示stage、前25拍零位移viewport、最後4,4；前25拍不額外疊HUDUnit",
+      "freeze": "typed inputs/cache/work/VGA/palette/targets/waits/stage密封，F2重驗後原子發布",
+      "transactions": "不重放HP/RNG/獎勵；action/status保留State與Unit身分，原有狀態預檢與回復保持"
+    },
+    "replay": {
+      "tool": "tools/verify_fd2_death_hd.py",
+      "kinds": [
+        "native",
+        "unit",
+        "regression",
+        "game"
+      ],
+      "go_image": "fd2-go-test-local:latest",
+      "image_id": "sha256:e4a805c52a3ad5d8c22cf23f2bcf51c6924e5ad6b99554f1b02761903c725433",
+      "uid": 1000,
+      "network": "none",
+      "cpus": 2,
+      "memory": "6GiB",
+      "pids_limit": 256,
+      "timeout_seconds": 1200,
+      "original_mount": "/original:ro",
+      "private_mount": "/private:ro",
+      "independent_runtime_files": 5969
+    },
+    "unchanged": {
+      "catalog_sha256": "c1b2c20ee56bf2e45324155829f9778bfff14a25d9edce9d06dc56f2074d42df",
+      "private_head": "06e09c2750c8be449d187a80807e0159930adebe",
+      "art": true,
+      "save_format": true,
+      "damage_rng_rules": true
+    },
+    "limits": [
+      "受控RUNTIME-E1，像素控制組是同一remake；未新增原版oracle、正常章節或平台聲明",
+      "維持既有HD材質與RGB近似；城堡與部分介面仍像素",
+      "混合反擊#265的正常可達性未知，原守衛保持；其餘HUD、地形、HD2、工具列及集中正常／人工／平台仍待"
+    ],
+    "ownership": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/death-stage-ownership-r2.json",
+      "sha256": "21114b5b1379afe9e17fcb811e5e14ef686539c325bc6087bcf9d5d880ce77aa"
+    },
+    "links": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/death-stage-links-r2.json",
+      "sha256": "40452dcca992fb5cdb9e7efa95ea8d76ee6728687f2addd2024bc76bd332b843"
+    },
+    "cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/death-stage-cleanup-r2.json",
+      "sha256": "deb0af8f3519e0f2524eb3045a0833a0412c625685ac265622a922ac25f61f0f"
+    },
+    "issue_update": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/death-stage-issue-check-r2.json",
+      "sha256": "834e1f39c86a938b950c1375c044316b41d8e74b59eaae9006743447f7a81d38"
+    },
+    "worklist_verify": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/death-stage-worklist-r2.log",
+      "sha256": "e79d11a27482e9cc12c4e999fa07e97f07ee544b5952cb8172731e116b8f7af3"
+    },
+    "lesson_guards": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/death-stage-lessons-r2.log",
+      "sha256": "14a14380c14ff34482f8b200242a5760d2598726b4c632d721b9230163dc62c5"
+    },
+    "string_review": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/death-stage-string-review-check-r1.json",
+      "sha256": "f4b03c9cd8de70a5356215ce92cc5b3a419279711ecfd45861088ff9b21e636f"
+    },
+    "retained_diagnostic_figure": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/death-stage-game-r1-capture/script-frame20.png",
+      "sha256": "15f1739d250650e034cc3569966350f017ad499335a99dc47f629865189089b5"
+    },
+    "docker_cleanup": {
+      "status": "PASS",
+      "unexpected_test_containers": 0,
+      "images_rebuilt": false,
+      "other_projects_touched": false
+    }
   }
 }

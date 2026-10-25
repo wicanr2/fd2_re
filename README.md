@@ -492,6 +492,10 @@ HD 背景、敵方與面板仍含像素素材。來源與可重跑方式見
 完整 26 拍另由繪製測試核對。狀態扣血致死也已接入相同呈現，正常玩家抽樣仍待；
 範圍見[現況矩陣](docs/knowledge-base/58-fd2-exe-re-coverage.md)。
 
+![特殊背景下的HD死亡動畫與返回](docs/figures/hd-death-stage.png)
+
+特殊背景下的死亡動畫已保留同次 HD 背景，人物消散期間不再提早疊入狀態人物。四格依序為普通擊殺的最後姿勢、煙霧累積、消散與返回，取自受控繪製測試的完整遊戲畫面半縮。事件與狀態致死也通過相同流程；城堡及部分介面仍含像素。這不取代上方正常章節抽樣。範圍見[現況矩陣](docs/knowledge-base/58-fd2-exe-re-coverage.md)與[HD收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的`death_stage_hd_followup_20261025`。
+
 ## 遊戲介紹
 
 《炎龍騎士團 2》是 1990 年代華文單機戰略角色扮演遊戲（SRPG）的代表作之一。
