@@ -1,5 +1,7 @@
 # 56 — FD2 remake 系統設計規格（SDD，2026-08-09）
 
+十一圖同源純草地已接既有144稀疏地形。實際bank／selector、GPU對CPU、F2、來源／登錄反例與首章正常取景／來源槽冷讀通過；不新增原版對拍或整章E2。唯一數量與限制依[58](58-fd2-exe-re-coverage.md)，契約與重跑依[61](61-modern-theme-runtime-spec.md)，主收據為shared_grass_followup_20261025。其他草地、地形／HD2及集中人工／平台仍待。
+
 已接HD且有目前原版證據支持流程一致的絕招，維持已驗範圍，過期停止線直接刪除。傷害公式後續可調整，原版預設保留；需求與驗收方向見[61](61-modern-theme-runtime-spec.md)及[#278](https://github.com/wicanr2/fd2_re/issues/278)。
 
 蓋亞v2已補現行圖包的第23章普通鍵盤進軍、攻擊、死亡演出、戰後及保存新程序LOAD，限定CONFORMED-SCOPED／NORMAL-GUI。實際PNG辨認待機／蓄力／出拳的相容圖源，沒有把audit索引當唯一畫格。README舊版圖已替換；原版、規則、素材與保存格式未改。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約與重跑依[61](61-modern-theme-runtime-spec.md)及HD主收據`gaia_v2_normal_followup_20261025`。#268的造型人工確認保持開啟。

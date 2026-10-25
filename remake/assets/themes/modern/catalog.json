@@ -64839,6 +64839,338 @@
         "docs/data/ida/fd2_ai_item_damage_1cd17_owner.txt",
         "tools/build_fd2_item_map_hd.py"
       ]
+    },
+    {
+      "asset_id": "modern.terrain.grass_olive.master",
+      "role": "terrain_hd_master",
+      "status": "concept",
+      "file": "grass-olive-hd-v1-master.png",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "ed29eb9da12adae641c612d28b848c186dd2986ac1ee3fa4e35e65b72e864c29",
+      "source_refs": [
+        "docs/data/fd2-modern-hd-battlefield-20261019.json",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
+    },
+    {
+      "asset_id": "modern.terrain.grass_olive.map00.native_hd",
+      "role": "native_terrain_hd_set",
+      "status": "runtime_candidate",
+      "consumer_contract": "fdshap_native_hd_sparse_v1",
+      "map_id": 0,
+      "width": 144,
+      "height": 144,
+      "frame_count": 1,
+      "frame_ids": [
+        144
+      ],
+      "files": [
+        "grass-olive-hd-v1.png"
+      ],
+      "frame_sha256": [
+        "82a9bc2dc5a9b3e615b5457df1e04b993ed3217015dbdd748bb705ff4a3fb58a"
+      ],
+      "semantics": [
+        "terrain"
+      ],
+      "alpha_contract": "native_mask_nearest_6",
+      "cycle_policy": "native_selector",
+      "source_refs": [
+        "asset:modern.terrain.grass_olive.master",
+        "docs/data/fd2-modern-hd-battlefield-20261019.json",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
+    },
+    {
+      "asset_id": "modern.terrain.grass_olive.map02.native_hd",
+      "role": "native_terrain_hd_set",
+      "status": "runtime_candidate",
+      "consumer_contract": "fdshap_native_hd_sparse_v1",
+      "map_id": 2,
+      "width": 144,
+      "height": 144,
+      "frame_count": 1,
+      "frame_ids": [
+        0
+      ],
+      "files": [
+        "grass-olive-hd-v1.png"
+      ],
+      "frame_sha256": [
+        "82a9bc2dc5a9b3e615b5457df1e04b993ed3217015dbdd748bb705ff4a3fb58a"
+      ],
+      "semantics": [
+        "terrain"
+      ],
+      "alpha_contract": "native_mask_nearest_6",
+      "cycle_policy": "native_selector",
+      "source_refs": [
+        "asset:modern.terrain.grass_olive.master",
+        "docs/data/fd2-modern-hd-battlefield-20261019.json",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
+    },
+    {
+      "asset_id": "modern.terrain.grass_olive.map03.native_hd",
+      "role": "native_terrain_hd_set",
+      "status": "runtime_candidate",
+      "consumer_contract": "fdshap_native_hd_sparse_v1",
+      "map_id": 3,
+      "width": 144,
+      "height": 144,
+      "frame_count": 1,
+      "frame_ids": [
+        112
+      ],
+      "files": [
+        "grass-olive-hd-v1.png"
+      ],
+      "frame_sha256": [
+        "82a9bc2dc5a9b3e615b5457df1e04b993ed3217015dbdd748bb705ff4a3fb58a"
+      ],
+      "semantics": [
+        "terrain"
+      ],
+      "alpha_contract": "native_mask_nearest_6",
+      "cycle_policy": "native_selector",
+      "source_refs": [
+        "asset:modern.terrain.grass_olive.master",
+        "docs/data/fd2-modern-hd-battlefield-20261019.json",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
+    },
+    {
+      "asset_id": "modern.terrain.grass_olive.map06.native_hd",
+      "role": "native_terrain_hd_set",
+      "status": "runtime_candidate",
+      "consumer_contract": "fdshap_native_hd_sparse_v1",
+      "map_id": 6,
+      "width": 144,
+      "height": 144,
+      "frame_count": 1,
+      "frame_ids": [
+        48
+      ],
+      "files": [
+        "grass-olive-hd-v1.png"
+      ],
+      "frame_sha256": [
+        "82a9bc2dc5a9b3e615b5457df1e04b993ed3217015dbdd748bb705ff4a3fb58a"
+      ],
+      "semantics": [
+        "terrain"
+      ],
+      "alpha_contract": "native_mask_nearest_6",
+      "cycle_policy": "native_selector",
+      "source_refs": [
+        "asset:modern.terrain.grass_olive.master",
+        "docs/data/fd2-modern-hd-battlefield-20261019.json",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
+    },
+    {
+      "asset_id": "modern.terrain.grass_olive.map10.native_hd",
+      "role": "native_terrain_hd_set",
+      "status": "runtime_candidate",
+      "consumer_contract": "fdshap_native_hd_sparse_v1",
+      "map_id": 10,
+      "width": 144,
+      "height": 144,
+      "frame_count": 1,
+      "frame_ids": [
+        48
+      ],
+      "files": [
+        "grass-olive-hd-v1.png"
+      ],
+      "frame_sha256": [
+        "82a9bc2dc5a9b3e615b5457df1e04b993ed3217015dbdd748bb705ff4a3fb58a"
+      ],
+      "semantics": [
+        "terrain"
+      ],
+      "alpha_contract": "native_mask_nearest_6",
+      "cycle_policy": "native_selector",
+      "source_refs": [
+        "asset:modern.terrain.grass_olive.master",
+        "docs/data/fd2-modern-hd-battlefield-20261019.json",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
+    },
+    {
+      "asset_id": "modern.terrain.grass_olive.map11.native_hd",
+      "role": "native_terrain_hd_set",
+      "status": "runtime_candidate",
+      "consumer_contract": "fdshap_native_hd_sparse_v1",
+      "map_id": 11,
+      "width": 144,
+      "height": 144,
+      "frame_count": 1,
+      "frame_ids": [
+        144
+      ],
+      "files": [
+        "grass-olive-hd-v1.png"
+      ],
+      "frame_sha256": [
+        "82a9bc2dc5a9b3e615b5457df1e04b993ed3217015dbdd748bb705ff4a3fb58a"
+      ],
+      "semantics": [
+        "terrain"
+      ],
+      "alpha_contract": "native_mask_nearest_6",
+      "cycle_policy": "native_selector",
+      "source_refs": [
+        "asset:modern.terrain.grass_olive.master",
+        "docs/data/fd2-modern-hd-battlefield-20261019.json",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
+    },
+    {
+      "asset_id": "modern.terrain.grass_olive.map13.native_hd",
+      "role": "native_terrain_hd_set",
+      "status": "runtime_candidate",
+      "consumer_contract": "fdshap_native_hd_sparse_v1",
+      "map_id": 13,
+      "width": 144,
+      "height": 144,
+      "frame_count": 1,
+      "frame_ids": [
+        0
+      ],
+      "files": [
+        "grass-olive-hd-v1.png"
+      ],
+      "frame_sha256": [
+        "82a9bc2dc5a9b3e615b5457df1e04b993ed3217015dbdd748bb705ff4a3fb58a"
+      ],
+      "semantics": [
+        "terrain"
+      ],
+      "alpha_contract": "native_mask_nearest_6",
+      "cycle_policy": "native_selector",
+      "source_refs": [
+        "asset:modern.terrain.grass_olive.master",
+        "docs/data/fd2-modern-hd-battlefield-20261019.json",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
+    },
+    {
+      "asset_id": "modern.terrain.grass_olive.map14.native_hd",
+      "role": "native_terrain_hd_set",
+      "status": "runtime_candidate",
+      "consumer_contract": "fdshap_native_hd_sparse_v1",
+      "map_id": 14,
+      "width": 144,
+      "height": 144,
+      "frame_count": 1,
+      "frame_ids": [
+        0
+      ],
+      "files": [
+        "grass-olive-hd-v1.png"
+      ],
+      "frame_sha256": [
+        "82a9bc2dc5a9b3e615b5457df1e04b993ed3217015dbdd748bb705ff4a3fb58a"
+      ],
+      "semantics": [
+        "terrain"
+      ],
+      "alpha_contract": "native_mask_nearest_6",
+      "cycle_policy": "native_selector",
+      "source_refs": [
+        "asset:modern.terrain.grass_olive.master",
+        "docs/data/fd2-modern-hd-battlefield-20261019.json",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
+    },
+    {
+      "asset_id": "modern.terrain.grass_olive.map17.native_hd",
+      "role": "native_terrain_hd_set",
+      "status": "runtime_candidate",
+      "consumer_contract": "fdshap_native_hd_sparse_v1",
+      "map_id": 17,
+      "width": 144,
+      "height": 144,
+      "frame_count": 1,
+      "frame_ids": [
+        144
+      ],
+      "files": [
+        "grass-olive-hd-v1.png"
+      ],
+      "frame_sha256": [
+        "82a9bc2dc5a9b3e615b5457df1e04b993ed3217015dbdd748bb705ff4a3fb58a"
+      ],
+      "semantics": [
+        "terrain"
+      ],
+      "alpha_contract": "native_mask_nearest_6",
+      "cycle_policy": "native_selector",
+      "source_refs": [
+        "asset:modern.terrain.grass_olive.master",
+        "docs/data/fd2-modern-hd-battlefield-20261019.json",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
+    },
+    {
+      "asset_id": "modern.terrain.grass_olive.map30.native_hd",
+      "role": "native_terrain_hd_set",
+      "status": "runtime_candidate",
+      "consumer_contract": "fdshap_native_hd_sparse_v1",
+      "map_id": 30,
+      "width": 144,
+      "height": 144,
+      "frame_count": 1,
+      "frame_ids": [
+        48
+      ],
+      "files": [
+        "grass-olive-hd-v1.png"
+      ],
+      "frame_sha256": [
+        "82a9bc2dc5a9b3e615b5457df1e04b993ed3217015dbdd748bb705ff4a3fb58a"
+      ],
+      "semantics": [
+        "terrain"
+      ],
+      "alpha_contract": "native_mask_nearest_6",
+      "cycle_policy": "native_selector",
+      "source_refs": [
+        "asset:modern.terrain.grass_olive.master",
+        "docs/data/fd2-modern-hd-battlefield-20261019.json",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
+    },
+    {
+      "asset_id": "modern.terrain.grass_olive.map31.native_hd",
+      "role": "native_terrain_hd_set",
+      "status": "runtime_candidate",
+      "consumer_contract": "fdshap_native_hd_sparse_v1",
+      "map_id": 31,
+      "width": 144,
+      "height": 144,
+      "frame_count": 1,
+      "frame_ids": [
+        0
+      ],
+      "files": [
+        "grass-olive-hd-v1.png"
+      ],
+      "frame_sha256": [
+        "82a9bc2dc5a9b3e615b5457df1e04b993ed3217015dbdd748bb705ff4a3fb58a"
+      ],
+      "semantics": [
+        "terrain"
+      ],
+      "alpha_contract": "native_mask_nearest_6",
+      "cycle_policy": "native_selector",
+      "source_refs": [
+        "asset:modern.terrain.grass_olive.master",
+        "docs/data/fd2-modern-hd-battlefield-20261019.json",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
     }
   ]
 }

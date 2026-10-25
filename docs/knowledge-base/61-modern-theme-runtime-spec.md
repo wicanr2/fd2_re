@@ -2,6 +2,24 @@
 
 狀態：現代主題仍為部分覆蓋；目前分層與缺口依[58](58-fd2-exe-re-coverage.md)。
 
+## 十一圖共用純草地（CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI）
+
+首章map0:144的原生24×24索引、opaque及destination-remap三層內容SHA-256為`e4c2b6995211b34519acb83e540eea5ac0ee65e08b3e2560a267e99f3879c0bd`。既有Go來源匯出器及獨立回讀確認，同一內容被map0／2／3／6／10／11／13／14／17／30／31的正式terrain selector使用；各圖幀號列於[配方](../../remake/assets/themes/modern/ground-olive-hd.recipe.json)。只共用這十一槽，不因外觀相近擴及其他草地、邊界或動畫。
+
+- 新不透明草地母稿沿已核准手繪風格，已目視。RGB只取新母稿，LANCZOS縮至144×144後在相對邊緣各八像素帶做對稱混色，使首末列／行一致。此為美術與接縫近似，不宣稱原版草紋逐像素相同。原始母稿保留不改。
+- 沿既有`fdshap_native_hd_sparse_v1`載入器，各圖一份清冊集合共用同一PNG；alpha仍須等於原生opaque六倍，原生三層實際內容雜湊相同、全opaque且無remap才收。既有清冊項目、地形幾何／規則、選取層、角色、字型、節拍、RNG及保存格式保持。
+- 編製前綁定769項基底清冊與完整原生來源清冊，預檢全來源及白名單圖源，候選原子發布；錯來源／遮罩／未使用槽／缺圖／既有輸出均拒收。舊主題沒有新宣告時沿原行為，正式新包不得漏掉已登錄草地。
+- 驗十一圖實際bank及選取、identity／LUT／DAC、GPU世界對獨立CPU、主題往返、上移／前景／選取層與來源失敗原子性。代表性首章正常標題LOAD／移鏡頭／F2／保存冷讀另錄，受控全圖驗證不冒稱十一章正常玩家。候選通過再登錄，依白名單同步私人庫並核對兩庫遠端。
+
+來源與重跑主收據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`shared_grass_followup_20261025`。製圖沿[純地形編製器](../../tools/build_fd2_hd_ground.py)，用既有Pillow Docker、原包與來源唯讀、`--base-catalog`固定769項基底、`--base-pack`完整現代包、`--master`新母稿及`--recipe`上述配方，`--out`必須是既有work父目錄下的新目錄。 [來源與登錄反例](../../tools/test_fd2_hd_ground.py)核對實際來源與寫入原子性；[實際GPU測具](../../remake/cmd/fd2/modern_hd_ground_gpu_test.go)沿現行世界繪製及獨立CPU合成。反例可用`--base-catalog <已保存769項基底>`於正式登錄後重跑，無須改回目前清冊。通過後由[正式登錄工具](../../tools/register_fd2_hd_ground.py)核對同清冊／同RGBA的67項GPU與反例收據再發布，不手改清冊。完整／正常玩家、其他地形及集中人工／平台仍依既有總項，不以本切片縮小目標。
+
+
+本節實作前為READY。正式781項清冊新增十一個稀疏槽，共用一張144草地；原有769項保持。66個實際bank／selector重複草地GPU世界及一個原樣map0 Game.Draw／F2對獨立CPU通過，十一份錯原生遮罩拒收；十來源與五登錄反例通過。首輪測具誤用NativeFrameInput成員及反例暫存檔撞名已各自修正，未改正式程式或調參掩蓋失敗。
+
+獨立完整實檔包經標題LOAD、普通游標(23,10)取景、F2、走行／兩次攻擊取樣及新程序LOAD。兩張PNG各核到兩塊新草地，共82944個RGBA像素；44／46塊總匹配包含既有房屋及物件，不全算本批新增。來源槽與F2保存bytes保持，F9回載及來源冷讀不冒稱自然戰鬥返回／戰後變更保存。GUI447.993秒、峰值5394677760 bytes，6GiB／2CPU下無OOM／逾時，不推論平台餘裕。收據的view_y=8是舊預設欄位，本次實際焦點以輸入及PNG前後audit的(23,10)為準。
+
+兩份新PNG及清冊已同步私人白名單，6954實檔全數核SHA，原6952檔保持；正式清冊的私人實檔檢查通過。母稿、原始提示、編製接縫近似、來源與CLI集中上述主收據；README只保存完整普通GUI截圖。其他地形／HD2、完整介面、工具列及集中人工／平台仍待。
+
 ## 傷害公式可調整（DRAFT／後續需求）
 
 使用者2026-10-25確認傷害公式之後須允許調整。忠實模式保留已還原的原版預設公式；擴充方向包含物理、法術及絕招的可編輯計算參數。這是後續工作，本批沒有變更傷害或遊戲平衡。
@@ -1914,10 +1932,11 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
 這推翻「圖集尺寸及格數相同即可沿用原生幾何」的推定，尚未判定解碼或來源歷史根因。
 原有資料與工具保留，以便回查。[#261](https://github.com/wicanr2/fd2_re/issues/261)追蹤逐幀來源閉合。
 
-後續原生HD契約仍為DRAFT：從正式`tilesets/fdshap/map_XX/bank.json`及其frame、mask、remap_mask建立圖源，
-沿既有`fdicon.NativeTerrainFrameIndex`與`NativeForegroundFrameIndex`選取；不能忽略動畫、前景或目的地remap。
-須先定義現代色彩對LUT的處理與逐幀驗收，再進READY及正式renderer。
-這不是新增原版RE或matching前置；已有typed selector與既有來源證據先沿用。
+原生HD現已採正式`tilesets/fdshap/map_XX/bank.json`及其frame、mask、remap_mask，
+沿既有`fdicon.NativeTerrainFrameIndex`與`NativeForegroundFrameIndex`選取，並消費`native_terrain_hd_set`。
+LUT／DAC的四色差映射、遮罩及正式renderer已在下文房屋／物件與十一圖共用純草地切片驗證；
+範圍依58及各切片收據。未製作的地形列為美術缺口，不再沿用最初DRAFT或新增RE／matching前置。
+動畫、前景及目的地remap仍沿既有原生契約，不能以正規化圖集替代。
 
 製圖用原生來源匯出（CONFORMED，限離線工具及DATA-READY）：
 
@@ -4380,11 +4399,11 @@ FDOTHER42的HD準備明示接收同次唯讀adapter複本，正常合成器、lo
 
 重跑入口為tools/verify_fd2_unit_present_hd.py的sky-core、sky-native與sky-game；皆在既有Go Docker執行並明示--catalog、--pack、--out及固定原包。獨立執行包由tools/sync_modern_theme_private.py --runtime-only依清冊建立，sky-game加--require-real-runtime。工具會拒收缺項、SKIP、逾時與OOM；它驗證受控重製端範圍，不是正常玩家或原版執行器收據。完整HD與後續人工／平台閘門保持開啟。
 
-## 玩家／AI物品地圖演出與凍結背景（DRAFT-SOURCE-AUDIT）
+## 玩家／AI物品地圖演出與凍結背景（CONFORMED-SCOPED／RUNTIME-E1）
 
-範圍為既有nativeAIItemPresentationJob共用的type5／13、20／24與21正式路徑。原生交易與三家尾段已依58的fd2_ai_item_restore_presentation_owner.txt、fd2_ai_item_damage_1cd17_owner.txt、fd2_ai_item_type21_1cac7_owner.txt閉合；不重開RE。程式目前只畫原生影像，尚未加入共用HD地圖尾段；49..56八張光效也未登錄。來源、圖組及狀態依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的item_map_hd_followup_20261025。
+範圍為既有nativeAIItemPresentationJob共用的type5／13、20／24與21正式路徑。原生交易與三家尾段已依58的fd2_ai_item_restore_presentation_owner.txt、fd2_ai_item_damage_1cd17_owner.txt、fd2_ai_item_type21_1cac7_owner.txt閉合；不重開RE。共用HD地圖尾段及49..56八張光效已接入並登錄，實作與範圍依下方CONFORMED收據。來源、圖組及狀態依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的item_map_hd_followup_20261025。
 
-同時處理modernHDCompoundMapScene共用的同次地圖23背景快照，供物品、狀態法術與召喚使用；不能讀播放時的live stage替代凍結來源。現有其他回復／玩家9／徑向／列位移／死亡caller仍須各自綁定，不因本切片完成而外推。先以受控來源探針重現缺口，審核新光效與混色近似，完成READY及驗收契約後才接正式程式。正式規則、資料與保存格式不變。
+同時處理modernHDCompoundMapScene共用的同次地圖23背景快照，供物品、狀態法術與召喚使用；不能讀播放時的live stage替代凍結來源。其他回復／玩家9／徑向／列位移／死亡caller的後續接入依58目前收據，不沿用初始缺件清單作停止線。本節保留來源探針、READY契約及後續CONFORMED驗證。正式規則、資料與保存格式不變。
 
 ### 物品地圖與共用凍結背景消費契約（READY-ART-REVIEWED）
 
@@ -4404,7 +4423,7 @@ FDOTHER42的HD準備明示接收同次唯讀adapter複本，正常合成器、lo
 
 AI type5／13回復，以及玩家／AI type20／24傷害、type21指令1／6／7，已接上完整HD世界、光效、mask／blend／toggle與數字。玩家type5／13的直接結算另以控制組保持，本批沒有替它新增動畫。原生交易、道具消耗與保留、RNG、音效選擇、Draw確認、publishAt16／18、500ms尾停及一次續行保持。RGB映色與新材質沿既有美術近似，alpha保持。
 
-共用compound場景凍結typed input、selector／HUD快取、work／VGA、palette及地圖23當次staging／rowShift／latch／tick。來源簽章與原生重組在每次F2準備時重驗，完整預檢後才發布。背景播放不讀取後續live stage；物品、modifier與召喚32～35使用此來源。真實map23及合成場景的快照、隔離與拒收已驗，這不等同每種caller在map23的正常玩家驗收。其他凍結消費端仍待接入。
+共用compound場景凍結typed input、selector／HUD快取、work／VGA、palette及地圖23當次staging／rowShift／latch／tick。來源簽章與原生重組在每次F2準備時重驗，完整預檢後才發布。背景播放不讀取後續live stage；物品、modifier與召喚32～35使用此來源。真實map23及合成場景的快照、隔離與拒收已驗，這不等同每種caller在map23的正常玩家驗收。其他凍結消費端依58各自的後續接入收據。
 
 固定時鐘1000與seed7的兩包完整Game.Draw、三階段F2、全部光效來源、MISS、結算時點及返回通過；完整收據與50張PNG逐檔相同。來源、統計、實際輸入與失敗分類依HD主收據`item_map_hd_followup_20261025`，唯一數量表為58。這是受控RUNTIME-E1，不新增原版RGB、正常玩家、音訊聽感或平台聲明。
 

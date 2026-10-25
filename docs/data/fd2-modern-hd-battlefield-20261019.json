@@ -229725,5 +229725,454 @@
       "混合header反擊#265"
     ],
     "human_review": "全部HD串接後集中人工確認，維持#268／#269開啟。"
+  },
+  "shared_grass_followup_20261025": {
+    "status": "CONFORMED-SCOPED / RUNTIME-E1 / NORMAL-GUI-SAMPLED",
+    "base_commit": "a234b1c7470f2362c0cae3fc1bff32762f383d0f",
+    "runtime_integrated": true,
+    "source_manifest_sha256": "a19a3da393294ad6e1c4ad1dccdb9a911d26ed1f3d7008046eddda2398f938f5",
+    "native_content_sha256": "e4c2b6995211b34519acb83e540eea5ac0ee65e08b3e2560a267e99f3879c0bd",
+    "targets": [
+      [
+        0,
+        144
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        3,
+        112
+      ],
+      [
+        6,
+        48
+      ],
+      [
+        10,
+        48
+      ],
+      [
+        11,
+        144
+      ],
+      [
+        13,
+        0
+      ],
+      [
+        14,
+        0
+      ],
+      [
+        17,
+        144
+      ],
+      [
+        30,
+        48
+      ],
+      [
+        31,
+        0
+      ]
+    ],
+    "master": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/grass-olive-hd-v1-master.png",
+      "sha256": "ed29eb9da12adae641c612d28b848c186dd2986ac1ee3fa4e35e65b72e864c29"
+    },
+    "generation": {
+      "prompt": "Create ONE new square seamless repeatable grass terrain texture for a hand-painted 2D tactical RPG HD remake. Use the attached cottage painting only as the ART STYLE and COLOR reference, especially its olive-green grass visible around the cottage; DO NOT redraw or include the cottage. A completely flat overhead orthographic carpet of short, dense, slightly irregular olive, moss and yellow-green grass, small clustered brush strokes and individual bent blades visible at game scale, warm restrained storybook gouache/digital painting, subtle naturally varied texture. Keep the average value close to the medium olive grass of the reference. Even diffuse overhead lighting; no directional shadows, no perspective, no horizon, no rocks, no flowers, no paths, no tufts taller than the rest, no large forms, no building, no symbols, no lettering, no border, no grid, no vignetting. All four edges must repeat cleanly, with uniform density and brightness across opposite edges. Full opaque square canvas filled completely by grass, ideally 1024 by 1024. The game will downsample this new painting to a 144 by 144 grass tile. It must remain organic and readable at that size, not noisy microtexture or enlarged pixel art.",
+      "reference": "map00-house-hd-v2-master.png",
+      "output": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-59138ddc-013e-444c-8e85-df05ddb77417.png",
+      "transparent_background": false
+    },
+    "art_review": "新草地母稿已目視，沿既有房屋周圍的橄欖綠手繪筆觸，無人物、字、建築或地形邊界；不是HD2斜角素材。",
+    "scope": "十一圖各一個完全同原生索引／opaque／remap內容的純草地；其他地形保持，正式格式及遊戲規則不改。",
+    "human_review": "沿使用者先全部HD接入後集中人工確認。",
+    "full_hd_complete": false,
+    "source_audit": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shared-grass-candidate-r1/manifest.json",
+      "sha256": "ff884675ad8a6c70149f7b3176c8fd1d539a50858542793f39c3f0c40840ec60"
+    },
+    "base_catalog": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shared-grass-base769-r1.json",
+      "sha256": "c1b2c20ee56bf2e45324155829f9778bfff14a25d9edce9d06dc56f2074d42df"
+    },
+    "catalog": {
+      "file": "remake/assets/themes/modern/catalog.json",
+      "sha256": "ea271c763f6e3856dfb4b5f295f38facaa01be84bf6d27254495c9a597516d27"
+    },
+    "recipe": {
+      "file": "remake/assets/themes/modern/ground-olive-hd.recipe.json",
+      "sha256": "9d7641f01e5910363feeec65f8c629f5391f1678ff155d2dcc9d53d1a0ca271f"
+    },
+    "gpu": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shared-grass-gpu-candidate-r2-capture/gpu.json",
+      "sha256": "c21cab6e5f2c3dc1a02cca8e0f2fa8b843f30300014d05691c687f9224443377"
+    },
+    "guards": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shared-grass-guards-r3.json",
+      "sha256": "217ef20987e02711970cc348a51fb88b60d5b23d7073ab3a1a3706b17bc61db3"
+    },
+    "registration": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shared-grass-registration-r1.json",
+      "sha256": "2ec37b4debd066472acf93f43cc38a627728e71bb5d9ab10b231fb73e2770b3c"
+    },
+    "private_sync": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shared-grass-private-sync-r1.json",
+      "sha256": "26fcee575538a537778e4484f7261eb0dd9abdebca6e89750240566b96cab9e8"
+    },
+    "bounded_runs": [
+      {
+        "name": "shared-grass-build-r1",
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shared-grass-build-r1.memory.json",
+          "sha256": "f1931b1908ea0c7d635363e6f1ef5378a25fa6aee42e749f9056ed7c4d76100d"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shared-grass-build-r1.log",
+          "sha256": "a3128e636bbbb1290124bfdec43a3e2e1541b7b2b0219c089ed843b60b5be435"
+        },
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 30.718,
+        "peak_bytes": 2147483648,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 1532,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "name": "shared-grass-core-r1",
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shared-grass-core-r1.memory.json",
+          "sha256": "b8e650f934f7bd2971d5114b5a2a45f0cb99eba782e3d06838b312ac4ea4544e"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shared-grass-core-r1.log",
+          "sha256": "ebd126e2f49543f308f96ba0cc30d74e082cbcc90510eabd791c97f16a67c162"
+        },
+        "returncode": 1,
+        "timeout": false,
+        "elapsed_seconds": 4.062,
+        "peak_bytes": 328663040,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "name": "shared-grass-core-r2",
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shared-grass-core-r2.memory.json",
+          "sha256": "08cd685bdf5559457f4bf43919cbb3df920cc6993c3b680aeed17607cd209c8a"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shared-grass-core-r2.log",
+          "sha256": "5fe4d3258ef4ce29a723da5df78ea8ab12e04d5aac734bbafe011609c797bd19"
+        },
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 33.581,
+        "peak_bytes": 1160871936,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "name": "shared-grass-gpu-candidate-r1",
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shared-grass-gpu-candidate-r1.memory.json",
+          "sha256": "cf7796692145f08fd6d98cb6cb469a0c32a2f454ee79c0838a8af817f2a3f8d7"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shared-grass-gpu-candidate-r1.log",
+          "sha256": "a6123c40c457ac80796dd0bc281a53676b57ceffcebae26cf95db64feb48ece7"
+        },
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 134.561,
+        "peak_bytes": 5014667264,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "name": "shared-grass-gpu-candidate-r2",
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shared-grass-gpu-candidate-r2.memory.json",
+          "sha256": "afdd328fd4f127e1b40b238d82b5028ee72f57c1c1a04168f7c625e47f27c493"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shared-grass-gpu-candidate-r2.log",
+          "sha256": "7f4a48f8e275512899d2dc14b4c8b37036ceadb96154d40c2841ad55df3444a1"
+        },
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 230.65,
+        "peak_bytes": 4595118080,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "name": "shared-grass-normal-r1",
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shared-grass-normal-r1.memory.json",
+          "sha256": "2fefbbef13ed347fb22cad46ec11e9fce2fea03cc123f460c073b74124ce9cfc"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shared-grass-normal-r1.log",
+          "sha256": "37f8c92f30d5a7e27fccf3691fa187a8c3a6829999e6f93bb0c74a5814c0bfa6"
+        },
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 447.993,
+        "peak_bytes": 5394677760,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      }
+    ],
+    "failed_attempts": [
+      {
+        "run": "shared-grass-core-r1",
+        "category": "new-test API error",
+        "reason": "NativeFrameInput的內部FrameInput是Frame成員；只修測具後用相同容器與預算重跑。",
+        "production_changed": false
+      },
+      {
+        "run": "shared-grass-registration-guards-r2",
+        "category": "new-test path collision",
+        "reason": "變造GPU輸入catalog.json與目標catalog.json撞名；改為gpu-前綴後十來源及五登錄反例通過。",
+        "production_changed": false
+      }
+    ],
+    "scope_details": {
+      "native_source_banks": 33,
+      "native_source_frames": 8256,
+      "source_gpu_worlds": 66,
+      "controlled_game_draws": 1,
+      "controlled_f2": 1,
+      "wrong_bank_masks_rejected": 11,
+      "source_guards": 10,
+      "registration_rejections": 5,
+      "existing_catalog_assets_unchanged": 769,
+      "catalog_assets": 781,
+      "sparse_terrain_slots": 64,
+      "private_old_files_unchanged": 6952,
+      "private_files": 6954,
+      "catalog_validator": "validated 781 modern-theme asset(s), --verify-private, actual private pack mounted at formal private_root",
+      "production_go_changed": false,
+      "recordings_created": false
+    },
+    "gui": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shared-grass-normal-r1-capture/receipt.json",
+      "sha256": "914e0c7c36be6db812b06710f2f7305dbc3fc1aabcf9b32641b316eb1075a83c"
+    },
+    "normal_pixel_core": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shared-grass-normal-core-r1.json",
+      "sha256": "0bc8b359b254159c4b9e0bb54df23707d962358500a92365d8ce9f73731be6be"
+    },
+    "normal_summary": {
+      "source_save_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "saved_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "source_save_bytes_equal": true,
+      "theme_save_bytes_equal": true,
+      "new_process_title_load": true,
+      "loaded_units_equal": true,
+      "cold_loaded_units_equal": true,
+      "natural_attack_return_checked": false,
+      "post_battle_save_checked": false,
+      "node_boundary_save_checked": false,
+      "battle_repetitions": 2,
+      "recording_created": false,
+      "operations": 126,
+      "screenshots": 37,
+      "requested_focus": [
+        23,
+        10
+      ],
+      "observed_focus": [
+        23,
+        10
+      ],
+      "legacy_receipt_view_y": {
+        "value": 8,
+        "meaning": "舊工具保留的預設取景模板值，不是本次--terrain-focus要求或實際camera；實際輸入及PNG前後audit為23,10。"
+      },
+      "new_grass_matching_tiles_per_image": [
+        2,
+        2
+      ],
+      "all_hd_matching_tiles_per_image": [
+        44,
+        46
+      ],
+      "new_grass_checked_pixels": 82944,
+      "limits": "普通LOAD、移鏡頭、F2、走行／攻擊取樣及來源槽冷讀；F9回載保持來源，未驗本批自然戰鬥返回或戰後變更保存。不是整章E2。"
+    },
+    "readme": {
+      "image": {
+        "file": "docs/figures/hd-shared-grass.png",
+        "sha256": "b5ffd0bb0967780ce4dc886d97560d122dfe34df4aeda0f00ad1327fed9d348a"
+      },
+      "source": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shared-grass-normal-r1-capture/terrain-hd-grass-restored.png",
+        "sha256": "b5ffd0bb0967780ce4dc886d97560d122dfe34df4aeda0f00ad1327fed9d348a"
+      },
+      "transform": "完整1920×1200 PNG逐byte複製，未裁切、去字或補畫。",
+      "scope": "正常首章取景與F2回HD後的實際視窗。其餘草地／道路及HUD仍含像素；不是全地形HD展示。"
+    },
+    "source_files": [
+      {
+        "file": "tools/build_fd2_hd_ground.py",
+        "sha256": "da81c7657fb4880fbcf1a251ddc4d9f6c5fdb70870b55330fbfe626c2c73f2c9"
+      },
+      {
+        "file": "tools/register_fd2_hd_ground.py",
+        "sha256": "601d633749ec354d6b16c95ad97436f6f8343ff2e1c16cb03e7c65183718ee8e"
+      },
+      {
+        "file": "tools/test_fd2_hd_ground.py",
+        "sha256": "f8a9c9ad1e34003af92c30e4f1c7bbf525094aa2e3e704dcdf4525046f111272"
+      },
+      {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "ab50952b6176fb19ae8be119e3dae1a6f1e9f2be5285af150e4a69a4291e4740"
+      },
+      {
+        "file": "tools/verify_fd2_hd_terrain_gpu.py",
+        "sha256": "46dd7cd98dfe26a7feb3ab5001c4398d24e03870a1ca2d4040a4c31492f207cb"
+      },
+      {
+        "file": "tools/verify_fd2_terrain_sources.py",
+        "sha256": "2ad1b68424541acb01c7efd38e3d89ac42ee2bd7e4e14e8f412056d605d61d44"
+      },
+      {
+        "file": "tools/sync_modern_theme_private.py",
+        "sha256": "d4c38cf4d6a86890986e30a857265d4e3514575e6249005e85d78cf99b8f63c9"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_ground_gpu_test.go",
+        "sha256": "f53334902138ff07e9446e1df5309b8779d421018db6b289b166f6df736273a8"
+      }
+    ],
+    "private_assets": {
+      "commit": "9618f47e22eeb971b7196ac6cff25328bd963459",
+      "is_private_verified": true,
+      "old_files_unchanged": 6952,
+      "files": 6954,
+      "new_files": [
+        "grass-olive-hd-v1-master.png",
+        "grass-olive-hd-v1.png"
+      ],
+      "scope": "獨立實檔包完成GUI；私人包6954檔逐項相同，另通過正式--verify-private。原版固定包不變。",
+      "remote_head_verified": "9618f47e22eeb971b7196ac6cff25328bd963459"
+    },
+    "reproduce": {
+      "build": "Pillow Docker內 tools/build_fd2_hd_ground.py --original-pack /original --maps /repo/remake/assets/maps --sources <native-terrain-sources-r2> --base-catalog <shared-grass-base769-r1.json，亦可由git a234b1c7匯出> --base-pack /private --master <私人包/grass-olive-hd-v1-master.png> --recipe /repo/remake/assets/themes/modern/ground-olive-hd.recipe.json --out <既有work父目錄下全新目錄>；/private為完整私人包唯讀掛載。",
+      "gpu": "Go Docker獨立程序：FD2_ASSET_PACK=/original FD2_TEST_MODERN_EFFECT_CATALOG=<候選/catalog.json> FD2_TEST_MODERN_EFFECT_PACK=<候選/pack> FD2_HD_SHARED_GROUND_GPU=1 FD2_HD_SHARED_GROUND_OUT=<新目錄> with-xvfb go test -json -count=1 -timeout=660s ./cmd/fd2 -run ^TestModernHDSharedGroundRealBanksAndGPU$；原包唯讀，6GiB／2CPU／256 PID及780秒外層限制。",
+      "guards": "tools/test_fd2_hd_ground.py --original-pack /original --sources <來源匯出> --recipe <配方> --candidate <候選> --master <母稿> --base-catalog <已保存769項基底或git a234b1c7匯出清冊> --gpu <GPU/gpu.json> --report <新JSON>；登錄後也可用同一基底驗證，不需回滾正式清冊。",
+      "register": "tools/register_fd2_hd_ground.py --candidate <候選> --gpu <GPU/gpu.json> --guards <守衛JSON> --catalog <尚未登錄的769清冊> --asset-root <正式素材目錄> --report <新JSON>；再以tools/sync_modern_theme_private.py按白名單同步私人庫。",
+      "normal_gui": "既有fd2-promo:20261017-r1容器：tools/verify_fd2_hd_fonts_gui.py --binary <目前遊戲> --assets /repo/remake --original-pack /original --modern-pack <781清冊的完整實檔包> --town-save <hd-world-gui-r7/user-data/fd2_re/fd2_save.json> --out <新目錄> --battle-status --terrain --terrain-frames 144 --terrain-label grass --terrain-focus 23 10 --world --battle-hd --startup-timeout 180；來源槽唯讀，FD2_SEED=1，GUI內清除直接進場環境，6GiB／2CPU／256PID及1080秒外層限制。",
+      "normal_pixels": "tools/verify_fd2_hd_terrain_gpu.py --receipt <正常GUI/receipt.json> --report <新JSON>；兩PNG各兩塊新草地、共82944個RGBA像素；其餘匹配屬既有HD地形。"
+    },
+    "not_claimed": [
+      "其餘草地／道路／水岸／完整HD地形或HD2",
+      "十一章正常玩家",
+      "本批普通攻擊自然返回或戰後變更保存",
+      "新原版執行器／逐RGB對拍",
+      "人工造型／跨平台效能或新Release"
+    ],
+    "remaining": [
+      "其餘地形與HD2圖源",
+      "完整HUD及介面／主題獨立控制",
+      "字級、加速、海報與漸層正式控制",
+      "全部HD後集中正常玩家／人工／平台驗收"
+    ],
+    "cleanup": {
+      "removed_duplicate_materialized_pack": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shared-grass-real-pack-r1",
+      "preserved_manifest": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shared-grass-materialized-pack-manifest-r1.json",
+        "sha256": "01321a5324980162505a648f33f7dcc336bfaec21ee5b8f43a128c2376637790"
+      },
+      "verified_pack_files_before_removal": 6954,
+      "verified_private_copies": true,
+      "removed_rebuildable_inputs": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shared-grass-current-r1",
+          "sha256": "3e41df6f5fdcac047799f90fbe14e8d4272584aba240ab1866054b9232dc4aaa",
+          "bytes": 20618216
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/terrain-grass-source-current-r1.png",
+          "sha256": "82d1722c555bb1870ac3c66e84cdeeaff29fe14e2e2e633c8ab9106873406755",
+          "bytes": 4966
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/terrain-grass-selected-source-current-r1.png",
+          "sha256": "4de7030e29796e57a9eebac1e0b0f296b64536d6dcaab1d5f6e5d069b6ff9217",
+          "bytes": 31989
+        }
+      ],
+      "removed_bytes": 3199469251,
+      "recordings_created": false,
+      "reason": "GUI及像素收據已保存，完整實檔包與私人commit逐檔相同；保留私人原稿／成品及必要PNG、收據，刪除3GB重複包、可重建執行檔與一次性參照。",
+      "docker_containers": "本批Go／GPU／GUI／Pillow一次性容器皆退出並由--rm移除，最終三種FD2映像的容器清單為空。",
+      "docker_images": "沿既有三項工具鏈，沒有新建映像或Docker volume。"
+    },
+    "guard_regression_after_registration": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shared-grass-guards-r4.json",
+      "sha256": "f23f6b2be6bb7bd3f272f8b2b5d9b1fb792c0805e28e38442acf5b1921ed6089",
+      "reason": "明示已保存769項基底，正式登錄後也能重跑現行反例工具。實際登錄仍如實引用r3守衛，不改寫歷史收據。"
+    },
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/shared-grass-final-validation-r1.json",
+      "sha256": "9af5db2e1838593a24eb7f75ac365f99ef01bb472e1f06a64c5a324ba70ad8d7"
+    },
+    "worklist_issues": [
+      4,
+      201,
+      202,
+      204,
+      263
+    ]
   }
 }

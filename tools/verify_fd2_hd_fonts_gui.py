@@ -94,6 +94,8 @@ def main():
     parser.add_argument('--terrain-props-view', action='store_true', help='普通游標取景綠色與褐色物件九個底圖；需--terrain')
     parser.add_argument('--terrain-frames', type=terrain_frame_ids, default=set(), help='明示本次取景必須包含的frame；需--terrain與--terrain-label')
     parser.add_argument('--terrain-label', help='本次取景的ASCII標籤；需--terrain-frames')
+    parser.add_argument('--terrain-focus', type=int, nargs=2, metavar=('X','Y'),
+                        help='以普通方向鍵移動游標至指定地形取景格；需--terrain-frames')
     parser.add_argument('--timed-dialogue', action='store_true', help='加驗計時對話開收框、穩定HD文字與F2；需--world與明示章前EXP校準槽')
     parser.add_argument('--battle-advance', action='store_true', help='無射程目標時沿正式可達集合前進並待機，再正常END')
     parser.add_argument('--battle-advance-column', type=int, help='只限定正常END前的進軍縱列，最終攻擊仍沿正式可達集合')
@@ -156,6 +158,10 @@ def main():
     assert not args.terrain_roof_view or args.terrain
     assert not args.terrain_props_view or args.terrain and not args.terrain_roof_view
     assert not args.terrain_frames or args.terrain and not (args.terrain_roof_view or args.terrain_props_view)
+    if args.terrain_focus:
+        assert args.terrain_frames, '--terrain-focus需明示地形frame'
+        geometry=json.loads((args.assets/'assets/maps/map0/map.json').read_text())
+        assert 0<=args.terrain_focus[0]<geometry['w'] and 0<=args.terrain_focus[1]<geometry['h'], '地形取景格越界'
     assert not args.timed_dialogue or args.world
     assert not args.transition_frames or args.preparation
     assert not args.panel_transitions or args.status or args.items
@@ -701,7 +707,10 @@ def main():
                         key(direction)
                     raise AssertionError(('普通游標未抵達房屋觀測位置',latest(audit)['cursor'],destination))
                 view_y=8 if args.terrain_frames or args.terrain_props_view else (2 if args.terrain_roof_view else 5)
-                pan_to([15,view_y]);pan_to([10,view_y])
+                if args.terrain_focus:
+                    pan_to(args.terrain_focus)
+                else:
+                    pan_to([15,view_y]);pan_to([10,view_y])
                 required=(args.terrain_frames if args.terrain_frames else
                           {40,42,43,203,204,205,206,207,208} if args.terrain_props_view else
                           ({28,30,32,33,34,35,272,273} if args.terrain_roof_view else set()))

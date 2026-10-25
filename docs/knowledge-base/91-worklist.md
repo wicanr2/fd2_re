@@ -68,6 +68,10 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 `modern-theme-prototype-status` · 工作 · [#4](https://github.com/wicanr2/fd2_re/issues/4) · 仍未完成 · 要人判
 
+十一圖共用的一種純草地已正式接入HD，沿同一原生索引／opaque／remap內容授權共用。跨圖來源與GPU、原樣首章Game.Draw／F2、來源及登錄反例、獨立實檔包正常LOAD／取景／來源冷讀通過，兩份新PNG已推送唯一私人庫；舊素材保持。
+
+首章兩張正常PNG各核到兩塊新草地。F9回載及來源槽冷讀不冒稱本批自然戰鬥返回／戰後變更保存，也不提升十一章玩家E2。其餘草地、道路、水岸與完整地形仍待。來源與範圍依58、61及HD主收據shared_grass_followup_20261025。
+
 使用者已選1920×1200畫布、480×480頭像及清晰黑體，並確認HD2斜角站姿、雙側海報與單列頂端浮出工具列方向。刪除高解析範圍尚未選定及僅有原生尺寸候選的過期停止線。
 
 現行頭像、字型、人物／戰鬥演出、部分地形與HUD已分切片接入並驗證；浮出工具列主題／四語系與蓋亞v2正常流程已有目前收據。目前狀態依[58](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)，契約及重跑入口依[61](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/61-modern-theme-runtime-spec.md)，主收據為docs/data/fd2-modern-hd-battlefield-20261019.json。
@@ -126,6 +130,10 @@ FDFIELD回合事件由完整具型別處理器降成正式劇本，保留增援�
 
 `modern-theme-player-asset-coverage` · 工作 · [#201](https://github.com/wicanr2/fd2_re/issues/201) · 仍未完成 · 要人判
 
+十一圖共用的一種純草地已正式接入HD，沿同一原生索引／opaque／remap內容授權共用。跨圖來源與GPU、原樣首章Game.Draw／F2、來源及登錄反例、獨立實檔包正常LOAD／取景／來源冷讀通過，兩份新PNG已推送唯一私人庫；舊素材保持。
+
+首章兩張正常PNG各核到兩塊新草地。F9回載及來源槽冷讀不冒稱本批自然戰鬥返回／戰後變更保存，也不提升十一章玩家E2。其餘草地、道路、水岸與完整地形仍待。來源與範圍依58、61及HD主收據shared_grass_followup_20261025。
+
 全部HD尚未完成。先完成全部HD串接，再集中人工確認與回報。目前狀態依[58](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)，契約及重跑入口依[61](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/61-modern-theme-runtime-spec.md)，主收據為docs/data/fd2-modern-hd-battlefield-20261019.json。
 
 人物、指令與效果的目前覆蓋以受版控consumer盤點及實際清冊為準，已驗切片不因舊缺件列表重開。原signal: killed已定位4 GiB核心OOM；既有標準8 GiB／4 CPU回歸及後續有界切片收據保留，不要求為同一歷史失敗反覆重跑。
@@ -166,6 +174,10 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 `modern-theme-highres-prototype` · 工作 · [#204](https://github.com/wicanr2/fd2_re/issues/204) · 仍未完成 · 要人判
 
+十一圖共用的一種純草地已正式接入HD，沿同一原生索引／opaque／remap內容授權共用。跨圖來源與GPU、原樣首章Game.Draw／F2、來源及登錄反例、獨立實檔包正常LOAD／取景／來源冷讀通過，兩份新PNG已推送唯一私人庫；舊素材保持。
+
+首章兩張正常PNG各核到兩塊新草地。F9回載及來源槽冷讀不冒稱本批自然戰鬥返回／戰後變更保存，也不提升十一章玩家E2。其餘草地、道路、水岸與完整地形仍待。來源與範圍依58、61及HD主收據shared_grass_followup_20261025。
+
 蓋亞手腕v2已補第23章正常鍵盤操作：選角、進軍八回合、攻擊116隊長、死亡、自然戰後至第24章整備，F2、保存及新程序標題LOAD通過。五張實際PNG涵蓋新版待機／蓄力／出拳，人物與既有隊長守衛共20項反例拒收；舊fixture模式十五幀Game.Draw／F2與逐圖核心回歸也通過。章前強化來源及seed如實登錄，章內無鎖血；不由此宣稱自然難度或原版逐幀一致。GUI約596秒、峰值約5.07 GiB，6 GiB／2 CPU下無OOM／逾時，不能推論平台餘裕。README已更新成現行v2完整普通GUI畫面。
 
 蜜蒂音速刃已補正式學招後的玩家入口、保存游標四格選取、原生／HD動畫與音效49。雙側受控Game.Draw、F2、死亡回復、獨立CPU畫面及新程序存檔冷讀通過；來源為docs/data/ida/fd2_command30_player_acquisition_20261025.json與規格61。限定RUNTIME-E1，完整正常鍵盤、真正戰場返回與人工／平台仍依本工單集中抽驗。
@@ -185,6 +197,10 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 ### P1 大型戰鬥動畫HD：人物、效果與正常玩家呈現
 
 `modern-battle-animation-hd` · 工作 · [#263](https://github.com/wicanr2/fd2_re/issues/263) · 仍未完成 · 要人判
+
+十一圖共用的一種純草地已正式接入HD，沿同一原生索引／opaque／remap內容授權共用。跨圖來源與GPU、原樣首章Game.Draw／F2、來源及登錄反例、獨立實檔包正常LOAD／取景／來源冷讀通過，兩份新PNG已推送唯一私人庫；舊素材保持。
+
+首章兩張正常PNG各核到兩塊新草地。F9回載及來源槽冷讀不冒稱本批自然戰鬥返回／戰後變更保存，也不提升十一章玩家E2。其餘草地、道路、水岸與完整地形仍待。來源與範圍依58、61及HD主收據shared_grass_followup_20261025。
 
 蓋亞手腕v2已補第23章正常鍵盤操作：選角、進軍八回合、攻擊116隊長、死亡、自然戰後至第24章整備，F2、保存及新程序標題LOAD通過。五張實際PNG涵蓋新版待機／蓄力／出拳，人物與既有隊長守衛共20項反例拒收；舊fixture模式十五幀Game.Draw／F2與逐圖核心回歸也通過。章前強化來源及seed如實登錄，章內無鎖血；不由此宣稱自然難度或原版逐幀一致。GUI約596秒、峰值約5.07 GiB，6 GiB／2 CPU下無OOM／逾時，不能推論平台餘裕。README已更新成現行v2完整普通GUI畫面。
 
@@ -257,6 +273,10 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 ### P1 HD正常路徑：早中晚期操作、戰場返回與存讀檔
 
 `modern-theme-normal-player-validation` · 工作 · [#202](https://github.com/wicanr2/fd2_re/issues/202) · 仍未完成 · 要人判
+
+十一圖共用的一種純草地已正式接入HD，沿同一原生索引／opaque／remap內容授權共用。跨圖來源與GPU、原樣首章Game.Draw／F2、來源及登錄反例、獨立實檔包正常LOAD／取景／來源冷讀通過，兩份新PNG已推送唯一私人庫；舊素材保持。
+
+首章兩張正常PNG各核到兩塊新草地。F9回載及來源槽冷讀不冒稱本批自然戰鬥返回／戰後變更保存，也不提升十一章玩家E2。其餘草地、道路、水岸與完整地形仍待。來源與範圍依58、61及HD主收據shared_grass_followup_20261025。
 
 HD正常玩家驗證按早／中／晚期及正式消費端分別記錄。目前狀態依[58](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)，契約及重跑入口依[61](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/61-modern-theme-runtime-spec.md)，主收據為docs/data/fd2-modern-hd-battlefield-20261019.json。
 

@@ -1395,9 +1395,9 @@
       "id": "verification-output-paths-are-distinct",
       "area": "驗證工具",
       "date": "2026-10-04",
-      "rule": "每輪驗證所有JSON、PNG與log輸出彼此不同，且不覆寫上一輪；執行前核對完整參數與重新導向。原型清冊與玩家狀態收據也使用各自路徑。",
-      "why": "#160同源探針的JavaScript replace只替換第一個輸出參數，第二輪log覆寫第一輪。第二輪原log已保留；第一次只能回查工具輸出，不能重建文字冒稱原log。 本輪#154原型r1的清冊與cursor JSON同名，後者覆寫前者；r2起分開，正式受版控全圖收據r5可重跑。",
-      "evidence": "docs/data/ida/fd2_player_command6_cursor_center_20261004.json implementation.validation.probe_failure；docs/data/ida/fd2_ch24_command6_work_bounds_20261004.json followups issue161 prototype local_diagnostic_attempts"
+      "rule": "每輪驗證與反例的來源、變造輸入、目標清冊、JSON、PNG與log使用不同完整路徑，不覆寫上一輪；執行前核對完整參數與重新導向。原型清冊與玩家狀態收據也使用各自路徑。",
+      "why": "#160同源探針的JavaScript replace只替換第一個輸出參數，第二輪log覆寫第一輪。第二輪原log已保留；第一次只能回查工具輸出，不能重建文字冒稱原log。 本輪#154原型r1的清冊與cursor JSON同名，後者覆寫前者；r2起分開，正式受版控全圖收據r5可重跑。 草地登錄反例曾以catalog.json命名變造GPU輸入，覆寫同名目標清冊；改為gpu-前綴後，正對照與五項原子拒收通過。",
+      "evidence": "docs/data/ida/fd2_player_command6_cursor_center_20261004.json implementation.validation.probe_failure；docs/data/ida/fd2_ch24_command6_work_bounds_20261004.json followups issue161 prototype local_diagnostic_attempts；docs/data/fd2-modern-hd-battlefield-20261019.json#shared_grass_followup_20261025"
     },
     {
       "id": "fistp-checks-chp-control-word",

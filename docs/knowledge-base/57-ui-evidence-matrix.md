@@ -1,5 +1,7 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
+十一圖同源純草地已接既有144稀疏地形。實際bank／selector、GPU對CPU、F2、來源／登錄反例與首章正常取景／來源槽冷讀通過；不新增原版對拍或整章E2。唯一數量與限制依[58](58-fd2-exe-re-coverage.md)，契約與重跑依[61](61-modern-theme-runtime-spec.md)，主收據為shared_grass_followup_20261025。其他草地、地形／HD2及集中人工／平台仍待。
+
 蓋亞手腕v2的普通操作已用現行圖包補驗，限定CONFORMED-SCOPED／NORMAL-GUI。普通攻擊、死亡、戰後整備、F2、保存及新程序LOAD通過，實際畫面核到新版待機／蓄力／出拳的相容姿勢。README不再以舊版圖代表現行蓋亞。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源依HD主收據`gaia_v2_normal_followup_20261025`；自然度、END參戰、平台與完整HD仍待，#268保持開啟。
 
 蜜蒂音速刃已接入指令框、保存游標確認與原生／HD分段播放器，限定CONFORMED-SCOPED／RUNTIME-E1。出招前音效、耗魔及逐目標命中、F2、原子拒收與保存冷讀已受控驗證。介面框線與血條仍為像素，右側藍框提案尚未定版；不據此提升完整正常玩家、原版動態或人工／平台。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約及重跑依[61](61-modern-theme-runtime-spec.md)，來源為[音速刃主證據](../data/ida/fd2_command30_player_acquisition_20261025.json)。
