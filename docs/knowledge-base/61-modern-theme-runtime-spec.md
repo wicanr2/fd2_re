@@ -260,11 +260,11 @@ README四格由[既有總覽工具](../../tools/build_fd2_battle_panel_gallery.p
 
 後續先建立HD2可重用地形、人物圖源與載入邊界，再處理介面／主題／海報獨立切換及其餘控制。單列浮出輸入所有權與四語主題／語系列依本頁已驗切片。素材及正式消費端未驗證前，本節維持DRAFT；沒有新增Game.Draw、正常玩家或原版對拍完成聲明。
 
-## 操作介面與人物主題獨立控制（DRAFT，等待視覺原型確認）
+## 操作介面與人物主題獨立控制（DRAFT，待拆分現行呈現條件）
 
 使用者已明示工具列分成「操作介面：原版／HD」與「主題：原版／HD」。兩者互不改寫，四種組合均須可用。介面中的人物圖示、頭像與戰鬥動畫跟主題選項；不能因操作介面切回原版而回退人物圖源。既有地圖／場景主題範圍不因此縮減。工具列沿先前已選定的頂端浮出、自動隱藏方向。
 
-視覺提案仍為DRAFT：保留原版藍底及主要配置，以清晰框線、字型與按鈕重繪，待使用者看到概念圖後確認。原型使用同一索爾原版DATO_000及已登錄480頭像，原版介面取自保存的重製端索引樣本，HD介面為SVG示意。不是正式遊戲畫面、正常玩家或新原版對拍；沒有播放戰鬥動畫。主題／語系浮出列現況依前節；兩模式拆分、完整HUD與加速仍未完成。
+視覺沿既有原型保留原版藍底及主要配置，以清晰框線、字型與按鈕重繪。依使用者已定案排程，先完成全部HD串接，再集中人工確認。原型使用同一索爾原版DATO_000及已登錄480頭像，原版介面取自保存的重製端索引樣本，HD介面為SVG示意。不是正式遊戲畫面、正常玩家或新原版對拍；沒有播放戰鬥動畫。主題／語系浮出列現況依前節；兩模式拆分、完整HUD與加速仍未完成。
 
 在既有Pillow容器沿[原型建構器](../../tools/build_fd2_toolbar_mm3_prototype.py)，以`--image <既有Game.Draw PNG> --out <既有工作目錄下全新前綴> --display-modes`重生。版面在[HTML來源](../../tools/fd2_toolbar_mm3_prototype.html)，由[瀏覽器檢查器](../../tools/verify_fd2_toolbar_mm3_prototype.mjs)於既有Playwright1.56.1容器核對。F2主題、F4語系與F11介面僅為此原型操作；四語／三字級、四組合、人物圖示獨立性及舊原型回歸已驗，不能提升為正式功能。來源、SHA與概念圖在[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`ui_theme_split_20261024`。
 
@@ -368,9 +368,22 @@ TAI4僅有少量alpha255核心，驗證依實際alpha選點後再排除後層遮
 
 全部來源逐byte重組、typed快照、交易及RNG對照與完整Game.Draw通過；數量唯一見[58](58-fd2-exe-re-coverage.md)。[獨立Pillow核對](../../tools/verify_fd2_split_strike_gpu.py)另重組24／29全部最終畫布；[拒收工具](../../tools/test_fd2_split_strike_gpu.py)各驗來源、矩形、色盤、凍結數值、SHA、內容鍵、F2、空拍與錯GPU。兩工具沿既有素材Docker，傳`--receipt --catalog --source --original-pack --inventory`，前者用`--report`，後者用新的`--out`；不能用字串欄位或自報布林取代實檔核對。[展示圖工具](../../tools/build_fd2_battle_panel_gallery.py)新增`--command-panels`，沿四個`--captures`與既有輸出父目錄，依上游SHA或明示首份SHA重生完整半縮圖。清冊與私人素材未改；完整框線美術、其餘背景caller／效果及集中正常／人工／平台仍待。
 
+## 戰鬥面板HD框線與HP／MP條（CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI，2026-10-26）
+
+沿使用者「全部HD先串接，再集中人工確認」及既有藍色介面原型，本切片把物理、普通法術、分段打擊與召喚共用的149×42面板直接繪成894×252。保持原生原點、圖層、捲動裁切、字區、資料及排程；介面與人物主題獨立控制仍依既有切片，不在此批改保存格式或增設選項。
+
+- 原版來源重用已閉合的`NativeBattlePanelRecordForUnit`→`NativeBattlePanelOrigin`→`RenderNativeBattlePanel`及`blitNativeItemPanelBar`。固定包依`fd2-reference-files.json`。同次raw姓名、typed數值、完整原生面板與色盤仍是凍結來源，原生逐byte重組及像素模式保持；不重開絕招RE。
+- 既有[面板樣式原型](../../remake/cmd/fd2/modern_hd_battle_panel_style_prototype_test.go)只作清晰框線構圖參考。正式HD以同次原版藍底、母版亮框及raw bar色盤索引直接填色，三HD像素外框、兩像素分隔線、一像素bar框；不改用原型固定RGB，保留當次DAC。這是可集中人工調整的呈現近似，不稱原版RGB或框線逐像素一致。
+- HP／MP槽原點沿(21,22)／(21,31)，長103個原像素，HD槽高6個原像素。最大值或當前值為0時留空槽；其他值沿既有整數量化`101*current/maximum+1`及左右端帽的佔位，顯示裁切在槽內。負值及超上限仍按原生計算佔位，不改正式數值。須以實際indexed輸出核對空、滿、部分、極小、負值、超上限與max=0，不能只測複製公式。
+- 原生兩位／三位溢位marker仍從同次凍結面板保留，不把未知符號改成一般數字。姓名、標籤及正常數字沿既有regional Noto字區與溢位政策。先畫整個HD底板、框與bar，再繪字，不重留原像素陰影或擦掉新分隔線。
+- 接線與重跑入口為[面板呈現](../../remake/cmd/fd2/modern_hd_battle_panel.go)、[HD框線](../../remake/cmd/fd2/modern_hd_battle_panel_chrome.go)、[面板測具](../../remake/cmd/fd2/modern_hd_battle_panel_test.go)及[既有驗證驅動器](../../tools/verify_fd2_battle_surface_hd.py)。須驗來源凍結、四語字形、色盤變化、原子拒收、來源GPU、實際Game.Draw／F2／返回及至少物理／法術／分段／召喚主要owner；原生控制組、HP／MP／RNG與保存不變。獨立CPU核對須包含框、槽、填條與文字，不能只驗文字。
+- 正常玩家與集中人工／平台仍依全部HD後排程；本批自動與受控GUI只聲明實際範圍，不以此宣稱全部HUD、六組合、完整HD或PLAYER-E2。來源、命令、圖像與記憶體收據集中既有[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`battle_panel_chrome_followup_20261026`。
+
+實作與驗證已通過上述範圍。獨立[面板核對器](../../tools/verify_fd2_battle_panel_chrome.py)以「--receipt ABS/receipt.json --original-pack ABS --out FRESH.json」核對凍結框／條，「--normal-gui」另驗普通攻擊收據的兩面板72個未遮擋幾何點；[十五項反例](../../tools/test_fd2_battle_panel_chrome.py)可加「--gui-receipt ABS/receipt.json」重跑。完整223個1920畫布沿既有[分段GPU核對器](../../tools/verify_fd2_split_strike_gpu.py)，沒有遮蔽像素。當次色盤直接繪製、框與槽高屬HD呈現近似；正常F5仍沿既有章節邊界保存，不宣稱跨章通關。正式清冊、私人圖包、規則、音效、亂數與保存格式未改；集中人工仍待全部HD後。
+
 ## 戰鬥面板六倍直接繪字（CONFORMED-SCOPED／RUNTIME-E1，2026-10-24）
 
-本切片沿已定案1920×1200與Noto清晰黑體，只替換物理攻擊面板文字。原框、HP／MP條、位置、人物遮擋、節拍、交易及保存保持。完整HUD美術仍待，指令caller後續見上節；不外推PLAYER-E2。唯一收據沿[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`battle_panel_text_followup_20261024`。
+本節記錄早期文字切片；現行框線與HP／MP條依上節。本切片沿已定案1920×1200與Noto清晰黑體，只替換物理攻擊面板文字。原框、HP／MP條、位置、人物遮擋、節拍、交易及保存保持。完整HUD美術仍待，指令caller後續見上節；不外推PLAYER-E2。唯一收據沿[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`battle_panel_text_followup_20261024`。
 
 - 原版契約重用已閉合`NativeBattlePanelRecordForUnit`→`NativeBattlePanelOrigin`→`RenderNativeBattlePanel`及已登錄物理caller，固定執行檔依`fd2-reference-files.json`。不新增原版語意或RE聲明。
 - 每次成功繪製保存該次typed數值、raw +8語系名稱、原點與149×42原生圖，掛在本次scene；不得讀取交易後單位取代較早幀的HP。候選圖須與source base同一原點逐byte相同，才可附加文字層。

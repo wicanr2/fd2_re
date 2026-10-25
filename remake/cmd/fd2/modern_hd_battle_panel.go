@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"image"
 	"image/color"
-	"image/draw"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/figani"
@@ -21,6 +20,7 @@ type modernBattlePanelText struct {
 	native      figani.Frame
 	name        string
 	values      battle.NativeBattlePanelValues
+	chrome      modernBattlePanelChrome
 	background  byte
 	digitInk    [2]byte
 	font        *Font
@@ -100,8 +100,12 @@ func (g *Game) renderBattlePanelText(assets battle.NativeItemPanelDataAssets, re
 	}
 	word := func(offset int) int { return int(int16(binary.LittleEndian.Uint16(record[offset:]))) }
 	p.values = battle.NativeBattlePanelValues{Level: int(record[0x21]), HP: word(0x40), MaxHP: word(0x42), MP: word(0x44), MaxMP: word(0x46)}
+	p.chrome, err = freezeModernBattlePanelChrome(assets, p.values)
+	if err != nil {
+		return err
+	}
 	for _, previous := range *collected {
-		if previous.native.X == x && previous.native.Y == y && previous.name == p.name && previous.values == p.values && previous.font == p.font && bytes.Equal(previous.native.Pixels, p.native.Pixels) {
+		if previous.native.X == x && previous.native.Y == y && previous.name == p.name && previous.values == p.values && previous.chrome == p.chrome && previous.font == p.font && bytes.Equal(previous.native.Pixels, p.native.Pixels) {
 			return nil
 		}
 	}
@@ -168,11 +172,8 @@ func (p *modernBattlePanelText) raster(palette color.Palette) (image.Image, stri
 		return nil, "", fmt.Errorf("modern HD panel: frozen source unavailable")
 	}
 	canvas := image.NewRGBA(image.Rect(0, 0, 894, 252))
-	for y := 0; y < 42; y++ {
-		for x := 0; x < 149; x++ {
-			c := palette[p.native.Pixels[y*149+x]]
-			draw.Draw(canvas, image.Rect(x*6, y*6, (x+1)*6, (y+1)*6), image.NewUniform(c), image.Point{}, draw.Src)
-		}
+	if err := p.chrome.paint(canvas, palette, p.background); err != nil {
+		return nil, "", err
 	}
 	type field struct {
 		value  string
@@ -186,6 +187,7 @@ func (p *modernBattlePanelText) raster(palette color.Palette) (image.Image, stri
 		{p.values.Level, 99, 2, 132, 4}, {p.values.HP, 999, 3, 126, 21}, {p.values.MP, 999, 3, 126, 30},
 	} {
 		if v.value > v.max {
+			p.preserveNativePanelMarker(canvas, palette, image.Rect(v.x, v.y, 147, v.y+9))
 			continue
 		} // Keep the original overflow glyph.
 		value := v.value
@@ -198,15 +200,8 @@ func (p *modernBattlePanelText) raster(palette color.Palette) (image.Image, stri
 		}
 		fields = append(fields, field{fmt.Sprintf("%0*d", v.width, value), image.Rect(v.x, v.y, v.x+v.width*6+1, v.y+9), 48, ink})
 	}
-	for i, field := range fields {
+	for _, field := range fields {
 		r := image.Rectangle{Min: field.rect.Min.Mul(6), Max: field.rect.Max.Mul(6)}
-		erase := r
-		if i == 0 {
-			// BlitNativeGlyph writes shadow at (x-1,y+1), including row20.
-			// Clear the full former name and LV-label band; leave LV digits.
-			erase = image.Rect(4*6, 4*6, 132*6, 21*6)
-		}
-		draw.Draw(canvas, erase, image.NewUniform(palette[p.background]), image.Point{}, draw.Src)
 		if err := drawModernBattlePanelInk(canvas, p.font, field.value, r, field.size, nativePaletteColor(palette, field.colour, color.RGBA{240, 244, 255, 255})); err != nil {
 			return nil, "", err
 		}

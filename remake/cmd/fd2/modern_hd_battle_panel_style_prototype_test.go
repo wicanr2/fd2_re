@@ -1,6 +1,7 @@
 package main
 
-// Disposable visual proposal. Nothing in the production renderer calls this.
+// Historical fixed-color proposal beside the current production panel.
+// Nothing in the production renderer calls the proposal painter.
 import (
 	"crypto/sha256"
 	"encoding/binary"
@@ -103,8 +104,8 @@ func TestBattlePanelStyleDisposablePrototype(t *testing.T) {
 		value string
 		rect  image.Rectangle
 	}{
-		{"目前：HD文字，像素框線／血條", image.Rect(24, 18, 918, 80)},
-		{"HD提案：清晰藍框與HP／MP條", image.Rect(942, 18, 1836, 80)},
+		{"目前遊戲的HD面板", image.Rect(24, 18, 918, 80)},
+		{"早期固定配色樣式原型", image.Rect(942, 18, 1836, 80)},
 	} {
 		if err := drawModernBattlePanelInk(canvas, g.font, label.value, label.rect, 42, color.RGBA{242, 240, 226, 255}); err != nil {
 			t.Fatal(err)
@@ -133,7 +134,7 @@ func TestBattlePanelStyleDisposablePrototype(t *testing.T) {
 		draw.Draw(canvas, image.Rect(942, y, 1836, y+252), proposal, image.Point{}, draw.Src)
 		samples = append(samples, map[string]any{"values": p.values, "name": p.name, "native_origin": []int{p.native.X, p.native.Y}, "current_rgba_sha256": fmt.Sprintf("%x", sha256.Sum256(old.(*image.RGBA).Pix)), "proposal_rgba_sha256": fmt.Sprintf("%x", sha256.Sum256(proposal.Pix))})
 	}
-	if err := drawModernBattlePanelInk(canvas, g.font, "同一份具型別面板資料。右側為樣式原型，尚未接入遊戲。", image.Rect(24, 1010, 1836, 1045), 32, color.RGBA{199, 210, 226, 255}); err != nil {
+	if err := drawModernBattlePanelInk(canvas, g.font, "同一份具型別面板資料。左側為現行HD；右側保留早期固定配色原型。", image.Rect(24, 1010, 1836, 1045), 32, color.RGBA{199, 210, 226, 255}); err != nil {
 		t.Fatal(err)
 	}
 	file, err := os.Create(filepath.Join(out, "comparison.png"))

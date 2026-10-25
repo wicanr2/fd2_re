@@ -66,7 +66,7 @@ func TestModernBattlePanelTextFrozenSources(t *testing.T) {
 		if err != nil || len(plan.Layers) != 1 || !plan.Layers[0].PreservePalette || plan.Layers[0].HD == nil {
 			t.Fatal("HD panel plan lost source or palette exemption", err)
 		}
-		for y := 4; y < 21; y++ {
+		for y := 4; y < 20; y++ {
 			if plan.Layers[0].HD.At(4*6, y*6) != color.RGBAModel.Convert(g.nativeUIPalette[s.BaseScenery[0].PanelText.background]) {
 				t.Fatal("native name left-shadow survived")
 			}
@@ -116,6 +116,112 @@ func TestModernBattlePanelTextFrozenSources(t *testing.T) {
 	scene.hdPanelText = nil
 	if err := g.renderPhysicalBattlePanel(scene, record, base, 0); err != nil || len(scene.hdPanelText) != 0 || !bytes.Equal(before, base) {
 		t.Fatal("native fontless path changed", err)
+	}
+}
+
+// The expected fill span comes from the real indexed renderer, including its
+// end caps, rather than a second copy of the HD width calculation.
+func TestModernBattlePanelChromeNativeSpans(t *testing.T) {
+	g, actor, _ := physicalSceneTestGame(t)
+	attachOfficialLocale(t, g)
+	g.font = loadFont()
+	assets, err := battle.LoadNativeItemPanelDataAssets(separatedAssetPath(""))
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, sample := range []struct{ hp, mp, maxHP, maxMP int }{
+		{80, 30, 80, 30}, {73, 23, 80, 30}, {0, 0, 80, 30},
+		{1, 1, 80, 30}, {-1, -1, 80, 30}, {81, 31, 80, 30},
+		{10, 7, 0, 0}, {10, 7, -80, -30},
+	} {
+		record, err := battle.NativeBattlePanelRecordForUnit(actor)
+		if err != nil {
+			t.Fatal(err)
+		}
+		for offset, value := range map[int]int{0x40: sample.hp, 0x42: sample.maxHP, 0x44: sample.mp, 0x46: sample.maxMP} {
+			binary.LittleEndian.PutUint16(record[offset:], uint16(value))
+		}
+		scene := &nativePhysicalScene{panelAssets: assets}
+		if err := g.renderPhysicalBattlePanel(scene, record, make([]byte, 64000), 0); err != nil {
+			t.Fatal(err)
+		}
+		p := scene.hdPanelText[0]
+		picture, _, err := p.raster(g.nativeUIPalette)
+		if err != nil {
+			t.Fatal(err)
+		}
+		for i, y := range []int{22, 31} {
+			colored := map[byte]bool{}
+			for _, entry := range []int{23 + 3*i, 24 + 3*i, 25 + 3*i} {
+				for _, index := range assets.RawCells[entry].Pixels {
+					colored[index] = true
+				}
+			}
+			for x := 0; x < 103; x++ {
+				wantIndex := p.chrome.track
+				if colored[p.native.Pixels[(y+2)*149+21+x]] {
+					wantIndex = p.chrome.ink[i]
+				}
+				if got, want := picture.At((21+x)*6+3, y*6+3), color.RGBAModel.Convert(g.nativeUIPalette[wantIndex]); got != want {
+					t.Fatalf("%+v bar%d column%d: HD %v native-span %v", sample, i, x, got, want)
+				}
+			}
+		}
+		for point, index := range map[image.Point]byte{
+			{2, 60}: p.chrome.border, {3, 60}: p.background,
+			{600, 120}: p.chrome.border, {600, 122}: p.background,
+			{126, 132}: p.chrome.border, {743, 221}: p.chrome.border,
+		} {
+			if picture.At(point.X, point.Y) != color.RGBAModel.Convert(g.nativeUIPalette[index]) {
+				t.Fatalf("fine HD chrome missing at %v", point)
+			}
+		}
+	}
+}
+
+func TestModernBattlePanelChromeFrozenPaletteAndReject(t *testing.T) {
+	g, actor, _ := physicalSceneTestGame(t)
+	attachOfficialLocale(t, g)
+	g.font = loadFont()
+	assets, err := battle.LoadNativeItemPanelDataAssets(separatedAssetPath(""))
+	if err != nil {
+		t.Fatal(err)
+	}
+	record, _ := battle.NativeBattlePanelRecordForUnit(actor)
+	scene := &nativePhysicalScene{panelAssets: assets}
+	if err := g.renderPhysicalBattlePanel(scene, record, make([]byte, 64000), 0); err != nil {
+		t.Fatal(err)
+	}
+	p := scene.hdPanelText[0]
+	first, key, err := p.raster(g.nativeUIPalette)
+	if err != nil {
+		t.Fatal(err)
+	}
+	// No live asset pointers remain in the frozen HD chrome.
+	assets.RawCells[24].Pixels[1] ^= 1
+	p.picture = nil
+	second, nextKey, err := p.raster(g.nativeUIPalette)
+	if err != nil || key != nextKey || !bytes.Equal(first.(*image.RGBA).Pix, second.(*image.RGBA).Pix) {
+		t.Fatal("live asset changed frozen chrome", err)
+	}
+	palette := append(color.Palette(nil), g.nativeUIPalette...)
+	palette[p.chrome.border] = color.RGBA{17, 28, 39, 255}
+	palette[p.chrome.ink[0]] = color.RGBA{41, 52, 63, 255}
+	third, thirdKey, err := p.raster(palette)
+	if err != nil || thirdKey == nextKey || third.At(2, 60) != palette[p.chrome.border] || third.At(300, 150) != palette[p.chrome.ink[0]] {
+		t.Fatal("fixed RGB chrome ignored current palette", err)
+	}
+	broken := *p
+	broken.picture = nil
+	broken.chrome.ready = false
+	if _, _, err := broken.raster(palette); err == nil || broken.picture != nil {
+		t.Fatal("incomplete chrome published")
+	}
+	cell := assets.RawCells[27]
+	cell.Height = 4
+	assets.RawCells[27] = cell
+	if _, err := freezeModernBattlePanelChrome(assets, p.values); err == nil {
+		t.Fatal("malformed raw source admitted")
 	}
 }
 

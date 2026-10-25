@@ -9,10 +9,10 @@
     "native_viewport": "CONFORMED-SCOPED：穩定1920世界沿原生(4,4)、312×192窗格；死亡事件前25拍依既有producer從VGA0,0開始，最後steady回4,4。不同caller分列，不新增DOS位址parity。",
     "hd_sprite_data": "DATA-READY：完整125組1455張HD及31組372張新增24父項已登錄；舊1083張父項及HD bytes保持。",
     "hd_world_renderer": "CONFORMED-SCOPED：144人物已接Game.Draw；首章34張正常GPU、4張實際走行、兩次物理攻擊及保存／新程序LOAD通過。",
-    "private_assets": "已登錄圖源沿白名單同步唯一私人庫；目前版本與數量依shore_followup_20261025.private_assets。",
+    "private_assets": "已登錄圖源沿白名單同步唯一私人庫；目前版本與數量依props_followup_20261025及58。本批面板為直接繪製，未改素材包。",
     "quickload_battle_owner": "CONFORMED-SCOPED：成功JSON LOAD丟棄舊經驗owner與移動計畫；拒收保留。",
     "timed_dialogue": "CONFORMED-SCOPED-RUNTIME-E1：計時FFEC開收框保留HD世界，EXP99普通鍵盤／F2與保存冷讀通過；其他caller未驗。",
-    "hd_terrain": "CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI：已接既有草泥、首章水／沙與草沙／沙水交界；目前數量依58及shore_followup_20261025。其他地形／異色或平藍來源與HD2仍待。",
+    "hd_terrain": "已接草泥、水沙／岸線、首章陰影／土脊／石路及寶箱開合／小石塊；目前數量依58及props_followup_20261025。其他地形與HD2仍待。",
     "ai_player_input_lock": "CONFORMED-SCOPED：AI換手期間拒絕玩家地圖輸入重入；普通END／增援對話及相關／完整Go回歸通過。",
     "gaia_redesign": "CONFORMED-SCOPED：新版頭像與四方向圖組已登錄；正常START／Gaia北移取消／F2／冷讀分段驗證。相位差異與序章尾端失敗明示，非逐幀parity。",
     "hd_battle_animation": "已解碼FIGANI264資源2118幀與全部可見BG／TAI圖源已登錄，數量及caller限制依58與本批formal_coverage；未因此宣稱全部caller、正常玩家或完整HD完成。",
@@ -26,7 +26,8 @@
     "hd_heal_map": "CONFORMED-SCOPED／RUNTIME-E1：13～16的前導、七張光環、HD輪廓閃光、十個綠數字及等待接入；兩包各八完整Game.Draw／88次F2、一次交易／續行與非空HD地形變色通過。來源及限制見heal13_16_map_hd_followup_20261023，正常／人工／平台仍待。",
     "hd_reward_message": "CONFORMED-SCOPED／RUNTIME-E1：物品／金錢成功訊息的HD世界、Noto文字與480頭像接入；兩完整Game.Draw共26拍／26次F2、原生開收框遮罩、動態金額、HUD回交及一次續行通過。受控頭像選擇與獎勵值，正常／人工／平台仍待；依reward_message_hd_followup_20261023。",
     "hd_map_hud_unit": "CONFORMED-SCOPED／RUNTIME-E1：既有HD主題的資訊窗人物已接144圖源，原selector、狀態3轉1、位置及HP層序保持；來源、數量及回歸依hud_unit_icon_hd_followup_20261024。HD2／完整介面與正常玩家仍待。",
-    "hd_map_stage": "FDOTHER42背景與同次循環列位移／DAC已接HD；天空之鑰與其後凍結consumer依各自較晚followup，不沿用早期仍待說法。其他地形及完整HD仍待。"
+    "hd_map_stage": "FDOTHER42背景與同次循環列位移／DAC已接HD；天空之鑰與其後凍結consumer依各自較晚followup，不沿用早期仍待說法。其他地形及完整HD仍待。",
+    "hd_battle_panel_chrome": "CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI：共用戰鬥面板HD框線／HP與MP條已接；來源、實際流程、獨立CPU及首章普通攻防保存冷讀依battle_panel_chrome_followup_20261026。其他介面與集中人工／平台仍待。"
   },
   "runtime_source": {
     "binary": {
@@ -234484,5 +234485,1012 @@
       204,
       263
     ]
+  },
+  "battle_panel_chrome_followup_20261026": {
+    "status": "CONFORMED-SCOPED/RUNTIME-E1/NORMAL-GUI",
+    "date": "2026-10-26",
+    "started_date": "2026-10-25",
+    "base_commit": "d5f149d8ab716baf97f3b91c16d80e445a386547",
+    "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+    "scope": "共用戰鬥面板直接繪製HD框、分隔線與HP／MP槽；保持凍結來源、原點、字區、捲動、當次色盤、規則與保存。",
+    "full_hd_complete": false,
+    "new_re": false,
+    "original_runtime_executed": false,
+    "new_art_assets": 0,
+    "catalog_changed": false,
+    "private_asset_sync_required": false,
+    "original_manifest_sha256": "5eec2ecacc4fe97c4d0f27838e7dbecf18d1cf4b309b35800d50afd173cacca5",
+    "original_exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "catalog": {
+      "file": "remake/assets/themes/modern/catalog.json",
+      "sha256": "40bf4d83a2c13b606e84c66e2f7dddb383ca581904cdeb1f8aeabd61717d232a"
+    },
+    "source_inputs": [
+      {
+        "file": "remake/internal/battle/native_battle_panel.go",
+        "sha256": "478f445988a42571752143b179c643115105e5fcd1cfdd583078bdf30ceba798"
+      },
+      {
+        "file": "remake/internal/battle/native_item_panel_data_render.go",
+        "sha256": "049cffb1ed59320d2449259de5875361194b93bea06bdfa6ddbf675aea8d257f"
+      }
+    ],
+    "implementation_sources": [
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_panel.go",
+        "sha256": "30a7efa9e5d712d479d2ca05d2cd97486feff2fa0eb368acf18e9b98bd162f23"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_panel_chrome.go",
+        "sha256": "f57fd3578057ab460ee6f8e376ffb59c12d1ccd026ce044b289dfa99da3bcdb6"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_panel_test.go",
+        "sha256": "f9dae61ab4ea6a561758a62cc8d1fe278446c394b50859ca64a83a19b8086737"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_command_panel_test.go",
+        "sha256": "7ea4afc70964ac2d8dde9418556c6f3d39ac846d882dc987c2c3ce636e8d247a"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_lifecycle_test.go",
+        "sha256": "da462ddfe71f10f69f44df828cda17b7aeb1d0a066503eae208540fbe75abf0c"
+      },
+      {
+        "file": "tools/verify_fd2_battle_surface_hd.py",
+        "sha256": "3fc9651986677d5086fb2f29b93baf4dfa4f63bbc0dba71bf41cf5b5bb98f7b5"
+      },
+      {
+        "file": "tools/verify_fd2_battle_panel_chrome.py",
+        "sha256": "5f9f32c958c26abe65da1e4979264996718bb1f3648598fcaf1c285c1dd4b39a"
+      },
+      {
+        "file": "tools/test_fd2_battle_panel_chrome.py",
+        "sha256": "1266c5a8bfff49e47d0003fdbc4b32f38440b85898dc4230094d720554cf6e3f"
+      }
+    ],
+    "summary": {
+      "shared_source_commands": 16,
+      "source_gpu_cases": 24,
+      "native_bar_test_cases": 8,
+      "native_bar_columns_checked": 1648,
+      "go_test_commands": 31,
+      "go_top_level_passes": 36,
+      "full_game_flows": 12,
+      "audited_command_draws": 849,
+      "matched_chrome_pixels": 6316223,
+      "matched_glyph_pixels": 260463,
+      "independent_full_screens": 223,
+      "independent_panel_palette_pairs_across_receipts": 40,
+      "independent_chrome_pixels": 5113440,
+      "independent_rejections": 15,
+      "normal_gui_geometry_points": 72,
+      "peak_bytes_container_cumulative": 6442455040
+    },
+    "source_summary": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-source-summary-r1.json",
+      "sha256": "08652f2d3d3224906414c035018565eec8f237011ed50ede5b0e4b86e43bc6ce"
+    },
+    "go_runs": [
+      {
+        "label": "unit",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-unit-r1.gate.json",
+          "sha256": "d367696280eb02eb806abd42ff42482a13a506dc2d1ab2045bae044f11ae5987"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-unit-r1.memory.json",
+          "sha256": "802f37b19a7f3927bf29a435c7ecbf057b5cca0f41bcb447d65a528b628c0d94"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-unit-r1.log",
+          "sha256": "39bf11d82a53c097dbbae1430c2f0b0ffc32f15c2e9e14149012443e32604f52"
+        },
+        "seconds": 40.316,
+        "container_cumulative_peak_bytes": 1468952576
+      },
+      {
+        "label": "source",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-source-r1.gate.json",
+          "sha256": "62708d08dcfe456e21a439d8a0c313fe4af2722a1d6fed5ebba4eefb4093fdab"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-source-r1.memory.json",
+          "sha256": "28d6db4189e9a67182df401fff2159eddd8cc80229a7225e71f0fe3b4049bb44"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-source-r1.log",
+          "sha256": "73544ca9bcd9a29d6b99571a6fb73360c594bc0c1ba3facd253699bd69c0531a"
+        },
+        "seconds": 6.53,
+        "container_cumulative_peak_bytes": 722460672
+      },
+      {
+        "label": "atomic",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-atomic-r1.gate.json",
+          "sha256": "5c6bb22680f5523374db2929ac4c25fc18445dc0ec6aeafe0a84c7a898f27447"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-atomic-r1.memory.json",
+          "sha256": "3b57e3891d3cffe15f4cd96abe7195fe6e2e14404b46753539e834a72c569c38"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-atomic-r1.log",
+          "sha256": "655b13329f57a01a0da989124bcaf381dde9e0353006181a10379a4577fc4655"
+        },
+        "seconds": 4.043,
+        "container_cumulative_peak_bytes": 722460672
+      },
+      {
+        "label": "owner-0",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-0-r1.gate.json",
+          "sha256": "dfe406f35298cd37147561bef89c95ac1ccd06c10614a651617cac1fb4abf40c"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-0-r1.memory.json",
+          "sha256": "4bc8bf6be61f8877eb3e151a33d62eaf9ddb72b058085ce8a4ce847435adcf58"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-0-r1.log",
+          "sha256": "860064dae1fe633712f01ffc087067974d0418a5f6eab1567356baee5209837e"
+        },
+        "seconds": 9.526,
+        "container_cumulative_peak_bytes": 722460672
+      },
+      {
+        "label": "owner-1",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-1-r1.gate.json",
+          "sha256": "0228d9b6b2d8f2c9d77438ccdbc98aecddebb804a6119eb6d8974995fc01a734"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-1-r1.memory.json",
+          "sha256": "bbe48fbf75c6d96b45795ae246ef769d0e015ded82ecbfc1d2385e7ab66c9c21"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-1-r1.log",
+          "sha256": "f810d30b268f865d40b1945d489feed126f5ec704fb01bf5a16d54eb4202fd38"
+        },
+        "seconds": 17.089,
+        "container_cumulative_peak_bytes": 722460672
+      },
+      {
+        "label": "owner-2",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-2-r1.gate.json",
+          "sha256": "eb673f5c242dbe239f9d0474d793ad5184603a732abdef71af0bea3dbb83ebc6"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-2-r1.memory.json",
+          "sha256": "204152a567922aa1d0a86a06b558d5b0f21cf48143c92cb9ec85a3bddcf4d20d"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-2-r1.log",
+          "sha256": "4cbe94baa7edd7ced216006722a78ca51d1aa9982c31951f97fcae12c07b699e"
+        },
+        "seconds": 20.181,
+        "container_cumulative_peak_bytes": 722460672
+      },
+      {
+        "label": "owner-3",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-3-r1.gate.json",
+          "sha256": "954f49d91bbe6db3c6459e6acf4ec7de47e51a803c7f2e7278430afb650ecd94"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-3-r1.memory.json",
+          "sha256": "d895d6a7b8e43a564310e0c850aae57b7e7122fb2787a9de19d9c7ba4bf343c3"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-3-r1.log",
+          "sha256": "4350ed784ab6657e33ff7671b6c6d503fbdc36f96740d4990c9b9f8d8b464815"
+        },
+        "seconds": 20.221,
+        "container_cumulative_peak_bytes": 722460672
+      },
+      {
+        "label": "owner-4",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-4-r1.gate.json",
+          "sha256": "16692084402573de3ac8a169fa4bc6610d475f6263b59370954aaa8f168bf740"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-4-r1.memory.json",
+          "sha256": "b4b58e11177fcb111dd87fc9d6e89ba4b7d3075487ca46aa66b1d268b7ab2b58"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-4-r1.log",
+          "sha256": "247e03a0af958fe6ab4dcfe7df2de997858d6be44fd7abf4fc570d969d426e9b"
+        },
+        "seconds": 21.315,
+        "container_cumulative_peak_bytes": 722460672
+      },
+      {
+        "label": "owner-5",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-5-r1.gate.json",
+          "sha256": "a75cb8767b14b195f66ac3854d14134b47b9720caa7ba8041f774197d88a0697"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-5-r1.memory.json",
+          "sha256": "ec4409af6ab8875395deaa17e6f97d1c3e48fa29eef968b08b5ca12fa70423f9"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-5-r1.log",
+          "sha256": "504ae99e822e7fab6db641da748d89243d1a3f89e1c0cc0df5313863aa2883d2"
+        },
+        "seconds": 22.315,
+        "container_cumulative_peak_bytes": 722460672
+      },
+      {
+        "label": "owner-6",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-6-r1.gate.json",
+          "sha256": "6c7cac184980d84e129dc2aea346bbaf0dd9d797b65bbc21b803e997de416575"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-6-r1.memory.json",
+          "sha256": "1c05709142e0c4c076ae31f611bddca38a0db7051303122002f8c202ec84fdf3"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-6-r1.log",
+          "sha256": "d76c40cdbe624254ab1c9e9b5188f127852e6baae7475c4f722824d679ea1a9e"
+        },
+        "seconds": 24.915,
+        "container_cumulative_peak_bytes": 722460672
+      },
+      {
+        "label": "owner-7",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-7-r1.gate.json",
+          "sha256": "9f3ba2ad6639da2a9e38bf2be2817338aaf6df0ba016dbf185f8387428c91c75"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-7-r1.memory.json",
+          "sha256": "78ed1ee5f6c53ec5e91a2af0992c5de88698ae6569ea4e56aad6b5a7425d0709"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-7-r1.log",
+          "sha256": "62fae95bf775655d4b8bb3ca6c2658d3b4498ad5945855833d636265f6150a59"
+        },
+        "seconds": 23.857,
+        "container_cumulative_peak_bytes": 722460672
+      },
+      {
+        "label": "owner-8",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-8-r1.gate.json",
+          "sha256": "41b9374124d021b0f9ddc4abb2e8d26162f6c409a891a3a7dfe503b71c519f00"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-8-r1.memory.json",
+          "sha256": "8645d0e5364c14757ca8850d29a589f30363af45957d5f6857a325e248e600a3"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-8-r1.log",
+          "sha256": "b0f85b39d5a40ed06b0ebf0fd6e0bd6a9c1e52eaf51f320ae88b553947a22a40"
+        },
+        "seconds": 10.58,
+        "container_cumulative_peak_bytes": 722460672
+      },
+      {
+        "label": "owner-9",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-9-r1.gate.json",
+          "sha256": "2ba057672573bf8b9eba71ab8d46b562d6216d3871d690f99ab836149e701f71"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-9-r1.memory.json",
+          "sha256": "d58dc0e2726d594459936ee08c2d09e88f709b370311aa0f6783cb9539e53210"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-9-r1.log",
+          "sha256": "e26ec594739df0deeeeb2bdad489c20796c758f8d5f35b7338f22d8916203075"
+        },
+        "seconds": 10.569,
+        "container_cumulative_peak_bytes": 722460672
+      },
+      {
+        "label": "owner-24",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-24-r1.gate.json",
+          "sha256": "742d16ed2dee865f434bcf47c5b1f611fba16c96bf8a19d4d55e5e19af625208"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-24-r1.memory.json",
+          "sha256": "7dc89b895ce2a8e90bead7c0fde8abe5b4938f7c867738419e9af3fbb9552b12"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-24-r1.log",
+          "sha256": "0a8a5226d63a4b4cf8ee37b2da75581a01c15f6c814ad062dd7670e675b5d3c0"
+        },
+        "seconds": 16.628,
+        "container_cumulative_peak_bytes": 722460672
+      },
+      {
+        "label": "owner-29",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-29-r1.gate.json",
+          "sha256": "17e13be8efaf1f4ee7e02499fd94d579a4bfd82ae05ad5e8665ebd0c818bccc4"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-29-r1.memory.json",
+          "sha256": "32455ff8b5237acd6a991cd305506154eac5fdccade39f6a983eae8712d77037"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-29-r1.log",
+          "sha256": "dcd11a8914e7151b9e773a55d83abfac117a6ae290a207e6272f2524d8d56674"
+        },
+        "seconds": 21.828,
+        "container_cumulative_peak_bytes": 722460672
+      },
+      {
+        "label": "owner-32",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-32-r1.gate.json",
+          "sha256": "2f5936411814fdba6c035e1043d9ecf2d143acd2087197d33a9d82ed632f0f68"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-32-r1.memory.json",
+          "sha256": "a3539ec2a633d8b531b21b092b9096575dcc64d838db660f5e3205da382b99c6"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-32-r1.log",
+          "sha256": "4255406e2f533847095f09624cdf22de9c9b291ad415a3b83bdf5ec6e4e5be21"
+        },
+        "seconds": 21.718,
+        "container_cumulative_peak_bytes": 722460672
+      },
+      {
+        "label": "owner-33",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-33-r1.gate.json",
+          "sha256": "17c246fb862e1561c5b1bb3becd06ae370860dd70ec39b0611487c763379ce0d"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-33-r1.memory.json",
+          "sha256": "ddf2fb8d49d54fd46720bb04bebdeb2564568a1b8e9c28cad85ed44f01c63d55"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-33-r1.log",
+          "sha256": "a1998331202cf25f92f4099ea2d4ef882a7202a5332dd90b7c210be65f5bc249"
+        },
+        "seconds": 24.834,
+        "container_cumulative_peak_bytes": 722460672
+      },
+      {
+        "label": "owner-34",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-34-r1.gate.json",
+          "sha256": "860458aa8f7e323055e2dc6a3c18725b06b3c5c9ad725d43f6144b99b30742cf"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-34-r1.memory.json",
+          "sha256": "80232ec5a39020addd7388f59e0616ee2dbe10173be1070eb1607e1ff29191b7"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-34-r1.log",
+          "sha256": "eff0e61ee442d4935fe250a255a7311e368fa0e1d0947a664791918f4436d28a"
+        },
+        "seconds": 23.445,
+        "container_cumulative_peak_bytes": 728375296
+      },
+      {
+        "label": "owner-35",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-35-r1.gate.json",
+          "sha256": "04f2df08ad6c8820b697db98fc264dd08e312c0a007a98eca47f7187680d8b62"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-35-r1.memory.json",
+          "sha256": "437c72e0c8c67f6dce003b194c4083f98980bbf203acc68a8f202f2ff938c000"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-owner-35-r1.log",
+          "sha256": "ec1cf81a76c7e190fefe66085691dbecf448b8038af566174193d10c4045a34e"
+        },
+        "seconds": 21.714,
+        "container_cumulative_peak_bytes": 728375296
+      },
+      {
+        "label": "physical-player",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-physical-player-r1.gate.json",
+          "sha256": "cb7f7b5e9e1126aae7bb67d88e0f13da7ceb1db28a9f84ba25fd79f01259aa4b"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-physical-player-r1.memory.json",
+          "sha256": "9c4fd51614bae0e8ed5afc8b21b3e5583a2bdd7d1697114ec1520bc8bd5fb5bf"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-physical-player-r1.log",
+          "sha256": "d893feb7f4c7964598d878369ee134cbf73f82918600c67fdc9b20560a006b6d"
+        },
+        "seconds": 125.874,
+        "container_cumulative_peak_bytes": 2113646592,
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-physical-player-r1-capture/receipt.json",
+          "sha256": "5b175fa009fd78af7741e0f6456f7927a3aa184e4187e8ba51563116f2ef820e"
+        },
+        "panel": {
+          "actual_gpu_draws": 156,
+          "frozen_snapshots": 4,
+          "locale": "zh-Hant",
+          "scope": "direct HD text, frame and HP/MP bars; frozen native source and values retained"
+        }
+      },
+      {
+        "label": "physical-enemy",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-physical-enemy-r1.gate.json",
+          "sha256": "fc4139322d1edf3588bb86a5c5466fdb7e05e35fb9586e187a38126be6eeca81"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-physical-enemy-r1.memory.json",
+          "sha256": "19039eda89f2e4d2033ecf818010aaee50e8a89be14620c65400a1fbfa39c470"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-physical-enemy-r1.log",
+          "sha256": "957c85fa61de4883814e299f2387dbbdbe96e08fb234ccfccbae4f6054bec82b"
+        },
+        "seconds": 83.433,
+        "container_cumulative_peak_bytes": 3054395392,
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-physical-enemy-r1-capture/receipt.json",
+          "sha256": "7165d602a17f4900cbc3c7a1946cfc01461487f344fe96c85d35cbeb2d2f4903"
+        },
+        "panel": {
+          "actual_gpu_draws": 161,
+          "frozen_snapshots": 4,
+          "locale": "en",
+          "scope": "direct HD text, frame and HP/MP bars; frozen native source and values retained"
+        }
+      },
+      {
+        "label": "scroll-player",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-scroll-player-r1.gate.json",
+          "sha256": "1eb1eb60ac6feb30743e1f0b8048001e332539f6610dae99284033ae5659b388"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-scroll-player-r1.memory.json",
+          "sha256": "dba126e79ca41e982c1fb63881f13a989549ab410924fdbda3955823512c6262"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-scroll-player-r1.log",
+          "sha256": "bb8fb77d1aba769d558643f9df4185851c836ca05273f2ad80b63a5dc041aa8d"
+        },
+        "seconds": 97.756,
+        "container_cumulative_peak_bytes": 3054395392,
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-scroll-player-r1-capture/receipt.json",
+          "sha256": "22b6ae51dd92f0075778050f45a992b5f5f376bbe0183915067d78c39e77a015"
+        },
+        "panel": {
+          "actual_gpu_phase_draws": {
+            "body": 81,
+            "counter": 77,
+            "departure": 192,
+            "prelude": 9,
+            "scroll-in": 15,
+            "scroll-out": 12
+          },
+          "frozen_snapshots": 5,
+          "locale": "zh-Hans"
+        }
+      },
+      {
+        "label": "scroll-enemy",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-scroll-enemy-r1.gate.json",
+          "sha256": "50ecdaca527d61d5bd48f45f6df315364a5d9f6a4785add5e4bb1f2da38e0ebb"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-scroll-enemy-r1.memory.json",
+          "sha256": "3f6d2180e05a537401a93930da9d41cf191341cc36e1ffb1ae1ed772e86059e3"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-scroll-enemy-r1.log",
+          "sha256": "884bcf5dbd411e10571da9986dca3174b7468a6df92fe32eb0361537a1c25b2f"
+        },
+        "seconds": 64.198,
+        "container_cumulative_peak_bytes": 3054395392,
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-scroll-enemy-r1-capture/receipt.json",
+          "sha256": "31f27ebf478c7875c78c2888df9ff39cf63df3b2cc5c401a31ad95c54aa052cd"
+        },
+        "panel": {
+          "actual_gpu_phase_draws": {
+            "body": 82,
+            "counter": 79,
+            "departure": 236,
+            "prelude": 9,
+            "scroll-in": 15,
+            "scroll-out": 13
+          },
+          "frozen_snapshots": 5,
+          "locale": "ja"
+        }
+      },
+      {
+        "label": "command-0",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-command-0-r1.gate.json",
+          "sha256": "ecf2015402cfe69e65c1828dd2e13f12161760f8250c4d64b24dad3ced42d162"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-command-0-r1.memory.json",
+          "sha256": "91523710f588f7d735a0cc544ff7a0fbac2093e1378cd8ea417bae54f73c3e55"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-command-0-r1.log",
+          "sha256": "0bfc443eb96a305fd749a5dee811666717ccab7223b3de4dff9a390297d908a9"
+        },
+        "seconds": 112.989,
+        "container_cumulative_peak_bytes": 5920407552,
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-command-0-r1-capture/receipt.json",
+          "sha256": "fc310e4ec06babdb32ee491c24935c25b4c35ea4eaceab203e20173da0a5e1d1"
+        },
+        "panel": {
+          "audited_draws": 74,
+          "chrome_rgba_pixels": 886476,
+          "locale": "ja",
+          "matched_rgba_pixels": 921276,
+          "sampled_phases": {
+            "actor": 286319,
+            "actor-pulse": 87150,
+            "prelude": 124440,
+            "tail": 62265,
+            "target": 361102
+          },
+          "scope": "actual battle World readback; unoccluded glyph, frame, divider and HP/MP bar pixels; fixture only"
+        }
+      },
+      {
+        "label": "command-6",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-command-6-r1.gate.json",
+          "sha256": "4525c0922205d198deecc5deadf64024b8f602335c6205d63b0b0433abba8615"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-command-6-r1.memory.json",
+          "sha256": "32253f4b8be5b5e05e1b90fee0c1b6688f546ec6180881c7bfde2042eaba2844"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-command-6-r1.log",
+          "sha256": "bb60eecf875148434c39157a443dc80938c10a18c72787551b9c292e1ad89790"
+        },
+        "seconds": 138.103,
+        "container_cumulative_peak_bytes": 6164525056,
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-command-6-r1-capture/receipt.json",
+          "sha256": "25b9892f697bbc8f458d58dad2328601e59b44fbf81f51bc6737a79e0915b5e6"
+        },
+        "panel": {
+          "audited_draws": 91,
+          "chrome_rgba_pixels": 1085999,
+          "locale": "en",
+          "matched_rgba_pixels": 1128703,
+          "sampled_phases": {
+            "actor": 286309,
+            "actor-pulse": 87143,
+            "handler-front": 99551,
+            "handler-tail": 98969,
+            "prelude": 124437,
+            "target": 308904,
+            "transition": 123390
+          },
+          "scope": "actual battle World readback; unoccluded glyph, frame, divider and HP/MP bar pixels; fixture only"
+        }
+      },
+      {
+        "label": "command-9",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-command-9-r1.gate.json",
+          "sha256": "39e85f605baa572a9a2b0f68c889271780e28c62b51d83cb65207c35db154c34"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-command-9-r1.memory.json",
+          "sha256": "68f6615af002a8b5be54097644141acd0556f6a561ea1ff6f1b2ac15250109d5"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-command-9-r1.log",
+          "sha256": "ac1ea9885144f09b17ef2b90d39df084680d50e36d606fcf9e97f813dde98370"
+        },
+        "seconds": 175.83,
+        "container_cumulative_peak_bytes": 6442455040,
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-command-9-r1-capture/receipt.json",
+          "sha256": "bc39b710dca0e4b9d0ca308c5418911a9f10e4e63a1a49989037dcbd7802f098"
+        },
+        "panel": {
+          "audited_draws": 199,
+          "chrome_rgba_pixels": 2114478,
+          "locale": "zh-Hant",
+          "matched_rgba_pixels": 2201731,
+          "sampled_phases": {
+            "actor": 286479,
+            "actor-pulse": 87185,
+            "command9-front": 260895,
+            "command9-slide-in": 523110,
+            "command9-slide-out": 112113,
+            "command9-tail": 260937,
+            "command9-target": 484231,
+            "prelude": 124496,
+            "tail": 62285
+          },
+          "scope": "actual battle World readback; unoccluded glyph, frame, divider and HP/MP bar pixels; fixture only"
+        }
+      },
+      {
+        "label": "split-24",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-split-24-r1.gate.json",
+          "sha256": "d11a67079a17cf45ad13d41fc09f8ae371644e0f4fa697d24a3dee0d2c98f8f3"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-split-24-r1.memory.json",
+          "sha256": "680e2ff222807c692207f761c16d52e78055ee52026bd15138b1c613ceb8c113"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-split-24-r1.log",
+          "sha256": "10cf53e36a3fbc904f1a3927b0a61be00b8ae126936d2ae018382d3dc43b4322"
+        },
+        "seconds": 45.633,
+        "container_cumulative_peak_bytes": 6442455040,
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-split-24-r1-capture/receipt.json",
+          "sha256": "3b3d8eaadaaf88fa8cfa762d80b5bd4f0559a3b7ec7473dc38d65bdf6f7fbd8f"
+        },
+        "panel": {
+          "audited_draws": 82,
+          "chrome_rgba_pixels": 432352,
+          "locale": "zh-Hans",
+          "matched_rgba_pixels": 450705,
+          "sampled_phases": {
+            "actor": 193160,
+            "prelude": 61480,
+            "target-0": 93259,
+            "transition-in-0": 51517,
+            "transition-out-0": 51289
+          },
+          "scope": "actual battle World readback; unoccluded glyph, frame, divider and HP/MP bar pixels; fixture only"
+        }
+      },
+      {
+        "label": "split-29",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-split-29-r1.gate.json",
+          "sha256": "9b29dbdaaae4462cab41e8d5dec6c2d82ed56bc505c6b88a068c7393310b2224"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-split-29-r1.memory.json",
+          "sha256": "b048552b659edff1628b6799f60378cd1551f1680eaf0404d3218a3a12486e1f"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-split-29-r1.log",
+          "sha256": "73b790b987110c4fb9ec31b363d837efa2c5ab04f52ce55d6b60c9362e37b8d0"
+        },
+        "seconds": 71.772,
+        "container_cumulative_peak_bytes": 6442455040,
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-split-29-r1-capture/receipt.json",
+          "sha256": "8dd48a8a4d5f0f893e6d9b3b059f6322f986b084810cdc7b2417f160d99a1e81"
+        },
+        "panel": {
+          "audited_draws": 133,
+          "chrome_rgba_pixels": 630730,
+          "locale": "en",
+          "matched_rgba_pixels": 655932,
+          "sampled_phases": {
+            "actor": 229706,
+            "prelude": 61534,
+            "target-0": 130732,
+            "target-1": 130767,
+            "transition-in-0": 17366,
+            "transition-in-1": 17381,
+            "transition-out-0": 17187,
+            "transition-out-1": 51259
+          },
+          "scope": "actual battle World readback; unoccluded glyph, frame, divider and HP/MP bar pixels; fixture only"
+        }
+      },
+      {
+        "label": "split-30",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-split-30-r1.gate.json",
+          "sha256": "e2965d02f1060015379fa5e88b721c93014d5fb5e7561330b7933fa3c54a229f"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-split-30-r1.memory.json",
+          "sha256": "b1a10cd4afcad8adf0396653c2d7c0a97eba7343e365cc5b591a4aa2f3fd8859"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-split-30-r1.log",
+          "sha256": "3c5070ab2dc520253bf1e3c283a3b3249a022615b21fee4a71ec8cf397f21867"
+        },
+        "seconds": 68.329,
+        "container_cumulative_peak_bytes": 6442455040,
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-split-30-r1-capture/receipt.json",
+          "sha256": "da8c849d989b5b6646577e6a1acc3e9364c4616130b564036913dc858913aedb"
+        },
+        "panel": {
+          "audited_draws": 99,
+          "chrome_rgba_pixels": 459513,
+          "locale": "zh-Hant",
+          "matched_rgba_pixels": 479215,
+          "sampled_phases": {
+            "actor": 100645,
+            "prelude": 60592,
+            "target-0": 73213,
+            "target-1": 73247,
+            "transition-in-0": 51496,
+            "transition-in-1": 51528,
+            "transition-out-0": 51307,
+            "transition-out-1": 17187
+          },
+          "scope": "actual battle World readback; unoccluded glyph, frame, divider and HP/MP bar pixels; fixture only"
+        }
+      },
+      {
+        "label": "summon-32",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-summon-32-r1.gate.json",
+          "sha256": "fadce2a465a2bfd06977cf456cf9339d9712dda795148b4dea6bae1e1ee9f7e2"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-summon-32-r1.memory.json",
+          "sha256": "6232fbec198ff5d13543b85acb338efd3f6d8848b3064feaf4b18daf6c5f4d3f"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-summon-32-r1.log",
+          "sha256": "c804f3caf93ff83c09739518f371f167337d06cdaeaa35d17f6a254e25e2d3c4"
+        },
+        "seconds": 178.796,
+        "container_cumulative_peak_bytes": 6442455040,
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-summon-32-r1-capture/receipt.json",
+          "sha256": "8cd612a8b4d1f9c736f101c4762644615137d1724053723426cfe6e72578e695"
+        },
+        "panel": {
+          "audited_draws": 92,
+          "chrome_rgba_pixels": 327067,
+          "locale": "ja",
+          "matched_rgba_pixels": 342862,
+          "sampled_phases": {
+            "actor": 210779,
+            "actor-slide": 43589,
+            "effect-main": 2252,
+            "effect-slide": 31315,
+            "effect-tail": 5149,
+            "prelude": 49778
+          },
+          "scope": "actual battle World readback; unoccluded glyph, frame, divider and HP/MP bar pixels; fixture only"
+        }
+      },
+      {
+        "label": "summon-34",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-summon-34-r1.gate.json",
+          "sha256": "024b139f066ac8ff838eba36049864704c761ee60f575b5b41ef19d0ef3f6810"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-summon-34-r1.memory.json",
+          "sha256": "48bf0ad8fadcc015653d95d77abf79706aac464013645bddf8b92b1d22dcf884"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-summon-34-r1.log",
+          "sha256": "5fd047124502600fb0096f9bbae8559b5f817fa34407376c822784a7a9513914"
+        },
+        "seconds": 157.904,
+        "container_cumulative_peak_bytes": 6442455040,
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-summon-34-r1-capture/receipt.json",
+          "sha256": "f35175174e458061b61c2782fccc8ffe5298035b6611ce99406462dc95aae42f"
+        },
+        "panel": {
+          "audited_draws": 79,
+          "chrome_rgba_pixels": 379608,
+          "locale": "zh-Hans",
+          "matched_rgba_pixels": 396262,
+          "sampled_phases": {
+            "actor": 210861,
+            "actor-slide": 43603,
+            "effect-main": 48337,
+            "effect-slide": 43659,
+            "prelude": 49802
+          },
+          "scope": "actual battle World readback; unoccluded glyph, frame, divider and HP/MP bar pixels; fixture only"
+        }
+      }
+    ],
+    "independent_cpu": [
+      {
+        "command": 24,
+        "full_screen": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-full-24-r1.json",
+          "sha256": "d0ccd0e4404b408234a63aa2fced5ebd4a5bfb9034390961ca1eb0fcee1989fa"
+        },
+        "screens": 57,
+        "worst_channel_error": 1,
+        "chrome": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-independent-24-r2.json",
+          "sha256": "977696adac0cb09d558d21edfa0b13ca1ad3697b98cb3cb9a77d0ff28c41b27a"
+        },
+        "panel_palette_pairs": 12,
+        "chrome_pixels": 1534032
+      },
+      {
+        "command": 29,
+        "full_screen": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-full-29-r1.json",
+          "sha256": "e7838761595a8dfe2c6f7b23553560bf2459b03805cbec93ad2a0caf95b5785f"
+        },
+        "screens": 88,
+        "worst_channel_error": 1,
+        "chrome": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-independent-29-r2.json",
+          "sha256": "1e73371bfd116af46cfdc1c07f6760892fa3be9e2b1b9952ade8a1bd321bcdbd"
+        },
+        "panel_palette_pairs": 14,
+        "chrome_pixels": 1789704
+      },
+      {
+        "command": 30,
+        "full_screen": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-full-30-r1.json",
+          "sha256": "9fe4e9e752a47139a7842c326943432627f457ec7957d5233316affd63151baa"
+        },
+        "screens": 78,
+        "worst_channel_error": 1,
+        "chrome": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-independent-30-r2.json",
+          "sha256": "8538f2858609fa26796e53b31aecc6a663120d46c4ea5badb1a9175a4187c3cd"
+        },
+        "panel_palette_pairs": 14,
+        "chrome_pixels": 1789704
+      }
+    ],
+    "rejections": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-cpu-rejections-r2.json",
+      "sha256": "9b9dc68b9d47d4d408f11d0c331b1b42ffb7a3bb30cb49ba9658e809341ad05f"
+    },
+    "legacy_pixel_panel_rejected": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-cpu-legacy-r1.json",
+      "sha256": "0d91124c3e2a37c871c24e12b589d02b6b0d909cbd99542c0d61c7b65848de85"
+    },
+    "normal_gui": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-normal-r1-capture/receipt.json",
+        "sha256": "c29a251db7081a416bdf3113b889635e17f0ee2b42e2a93e4573b0b726cfd243"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-normal-r1.memory.json",
+        "sha256": "fef7ae03ce654f7c5880cb028689051ff0fd05b4183ff656cc012d3006bacb65"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-normal-r1.log",
+        "sha256": "df309089992f436be35db6a463f550d1eea4078ed992b45614509f976aafb976"
+      },
+      "geometry": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-normal-core-r1.json",
+        "sha256": "8702a759b4d4704a9257350d3c658494761e8bff23586ca78ab7d9b665abb9b5"
+      },
+      "source_save_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "binary_sha256": "1ea276c44add75e04f3e80e5232ab1d36058f2290407c07298d8269062af564a",
+      "seconds": 295.292,
+      "peak_bytes": 4775550976,
+      "screenshots": 19,
+      "natural_attack_return": true,
+      "new_process_title_load": true,
+      "scope": "既有JSON來源槽經標題LOAD與正常鍵盤攻防、F2、自然返回及保存冷讀。F5沿章節邊界保存語意，不保存戰中位置／Acted／敵方HP；未以此宣稱跨章節或新PLAYER-E2。",
+      "source_save": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hd-world-gui-r7/user-data/fd2_re/fd2_save.json",
+        "sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2"
+      }
+    },
+    "overview": {
+      "file": "docs/figures/hd-battle-panel-chrome.png",
+      "sha256": "cb7d37e595acf493cd691863609e31293697a99f7beacaa39a86212ac9a7ae5d",
+      "source": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-normal-r1-capture/world-hd-physical-scene.png",
+        "sha256": "cb7d37e595acf493cd691863609e31293697a99f7beacaa39a86212ac9a7ae5d"
+      },
+      "operation": "完整1920×1200正常GUI原PNG逐byte保存，未裁切或重繪"
+    },
+    "toolchain": [
+      {
+        "tags": [
+          "fd2-assets-local:20260829-sfx"
+        ],
+        "id": "sha256:e59237a31d4b5f7a62c59ac37b780bd93f17c99fda97be8f5ca0c53978b878bc"
+      },
+      {
+        "tags": [
+          "fd2-go-test-local:latest"
+        ],
+        "id": "sha256:e4a805c52a3ad5d8c22cf23f2bcf51c6924e5ad6b99554f1b02761903c725433"
+      },
+      {
+        "tags": [
+          "fd2-promo:20261017-r1"
+        ],
+        "id": "sha256:2dd9f94a4a0e0134ca40fbe3e321b692ad40fd137b6adc43bed97c84f11b45cb"
+      }
+    ],
+    "remaining": [
+      "其他HUD／介面與獨立切換",
+      "其他地形及HD2",
+      "工具列其餘控制、速度與海報",
+      "全部HD後集中人工與平台驗收"
+    ],
+    "memory_note": "Go實際流程共用單一有界容器，各記憶體峰值是容器累計上界；曾達6GiB限額並回收快取，無OOM或逾時，不宣稱平台餘裕。",
+    "cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-cleanup-r1.json",
+      "sha256": "e49b7aa2bf70eb7ee953e330680b42a7b6d59bcfbb1d21c1b29212f864a71f9d",
+      "regular_bytes_freed": 20618256
+    },
+    "prototype_label_refresh": {
+      "test": {
+        "file": "remake/cmd/fd2/modern_hd_battle_panel_style_prototype_test.go",
+        "sha256": "2a176c6c391f231e0537ff7902911bd8fb5767dd478f74941d9207d472a97cb1"
+      },
+      "image": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-panel-style-prototype-r3/comparison.png",
+        "sha256": "aeef9246d64403f6a5a8541d6231b510eafba3cbce4a8929b24e083d914c5e30"
+      },
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-panel-style-prototype-r3/receipt.json",
+        "sha256": "5054c213092f1aa5178a0c66e0f340b578aba807dcd1592812af1511c7e2ffd0"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-prototype-label-r1.memory.json",
+        "sha256": "fce9f95d0aa193dc62c3ddfa411f17f38cbd44fb657c1b7f45a0da6c5a298125"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-prototype-label-r1.log",
+        "sha256": "88fd60d35a4298f4ab6474a078c2df2b786fb94055b7c7524cee100785c92bb6"
+      },
+      "scope": "只修正過期的左側像素標籤；右側保留歷史提案，非新樣式選定或正式畫面驗收。"
+    },
+    "lesson_guard": {
+      "data": {
+        "file": "docs/data/fd2-lessons.json",
+        "sha256": "3669416d4c0d1952c50c6482fb279d4fa54f7dc1aca9fc8084780f7a3597f0df"
+      },
+      "id": "hd-text-clear-native-shadow-footprint",
+      "recheck": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-lessons-final-r2.log",
+        "sha256": "520b99d921c0caee7544f81e06097aca2ce9f9e996ca532595c83db1511c7347"
+      },
+      "replaced": "舊局部erase矩形pattern",
+      "current": "p.chrome.paint(canvas, palette, p.background)；整張底板先重繪"
+    },
+    "private_assets_unchanged": {
+      "head": "377197837c6566d553ca2895335becba1067b482",
+      "remote_main_matches": true,
+      "local_status_clean": true,
+      "scope": "本輪僅新增直接繪製程式，未更改素材清冊或私人包"
+    },
+    "github": {
+      "issues": [
+        4,
+        201,
+        202,
+        204,
+        263
+      ],
+      "state": "OPEN",
+      "scope": "完整HD及集中人工／平台仍待；只更新本輪進度與取消過期樣式前置等待。"
+    },
+    "final_checks": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/panel-chrome-final-checks-r1.json",
+      "sha256": "d1c55cce494530eacdbd073e23430abbce467e86085da5fc15fee0401b4bc8bd"
+    }
   }
 }

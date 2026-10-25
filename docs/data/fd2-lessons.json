@@ -3934,15 +3934,15 @@
       "id": "hd-text-clear-native-shadow-footprint",
       "date": "2026-10-24",
       "area": "HD文字",
-      "rule": "替換原生點陣文字時，清除範圍沿producer實際寫入足跡，含陰影／外框；新字的ink安全矩形另量寬高。入口remake/internal/fdtxt/fdtxt.go的Font.BlitNativeGlyph及remake/cmd/fd2/modern_hd_battle_panel.go的raster；戰鬥姓名會寫到左一欄及下一列，LV數字與overflow區域須保留。重跑tools/verify_fd2_battle_surface_hd.py --kind panel-unit，Docker契約依規格61。",
-      "why": "四語字形與GPU位置測試通過後，實際Game.Draw仍見姓名左緣殘留；原字模陰影在x-1,y+1。將姓名／LV標籤清除區擴至原writer足跡，再重跑實際畫面；沒有改原版glyph ABI或保存格式。",
+      "rule": "替換原生點陣文字時，先覆蓋producer實際寫入的完整文字與陰影足跡；直接重繪HD底板時，先填滿整個底板，再繪框／條與新字。ink安全矩形另量寬高，原生數字溢位marker只保留其原區域。入口remake/internal/fdtxt/fdtxt.go的Font.BlitNativeGlyph、remake/cmd/fd2/modern_hd_battle_panel.go的raster及modern_hd_battle_panel_chrome.go的paint；支援既有149×42戰鬥面板。重跑tools/verify_fd2_battle_surface_hd.py --kind panel-unit及panel-source，實際Game.Draw沿panel-game與command-panel-game；Docker契約依規格61。",
+      "why": "四語字形與GPU位置測試通過後，實際Game.Draw仍見姓名左緣殘留；原字模陰影在x-1,y+1。將姓名／LV標籤清除區擴至原writer足跡，再重跑實際畫面；沒有改原版glyph ABI或保存格式。 2026-10-26整張HD底板重繪已取代局部erase；舊guard硬綁擦字矩形而誤報。改綁實際整張重繪入口，既有陰影／溢位、原生來源與獨立框／條／文字像素驗證保持。",
       "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
       "guard": {
         "kind": "present",
         "paths": [
           "remake/cmd/fd2/modern_hd_battle_panel.go"
         ],
-        "pattern": "erase = image.Rect\\(4\\*6, 4\\*6, 132\\*6, 21\\*6\\)"
+        "pattern": "p\\.chrome\\.paint\\(canvas, palette, p\\.background\\)"
       }
     },
     {

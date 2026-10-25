@@ -43,7 +43,7 @@ REQUIRED = {
     'command-panel-unit': {'TestModernCommandPanelCollectorAtomic','TestModernCommandPanelPalette'},
     'command-panel-owner': {'TestModernCommandPanelAllOwners'},
     'command-panel-game': set(),
-	'panel-unit': {'TestModernBattlePanelTextFrozenSources', 'TestModernBattlePanelTextFourLocaleInk', 'TestModernBattlePanelTextFourLocalePreview'},
+	'panel-unit': {'TestModernBattlePanelTextFrozenSources', 'TestModernBattlePanelTextFourLocaleInk', 'TestModernBattlePanelTextFourLocalePreview', 'TestModernBattlePanelChromeNativeSpans', 'TestModernBattlePanelChromeFrozenPaletteAndReject'},
 	'panel-source': {'TestModernBattlePanelTextGPU'},
 	'panel-game': {'TestModernHDBattleRuntimeGPU'},
     'panel-scroll': {'TestModernHDScrollRuntimeGPU'},
@@ -280,9 +280,9 @@ export DISPLAY=:99
     if a.kind in ['command-panel-game','compound-scenery-game','ordinary-scenery-game','compound-map-game']:
         receipt=json.loads(Path(str(a.out)+'-capture/receipt.json').read_text())
         panel=receipt.get('panel_text',{})
-        if (panel.get('locale')!=a.panel_locale or panel.get('audited_draws',0)<=0 or panel.get('matched_rgba_pixels',0)<100
+        if (panel.get('locale')!=a.panel_locale or panel.get('audited_draws',0)<=0 or panel.get('matched_rgba_pixels',0)<100 or panel.get('chrome_rgba_pixels',0)<100
                 or receipt.get('continuations')!=1):
-            raise SystemExit('缺少實際Game.Draw面板字形核對或一次續行')
+            raise SystemExit('缺少實際Game.Draw面板字形、框線／血條核對或一次續行')
         if a.kind=='ordinary-scenery-game':
             scenery=receipt.get('ordinary_scenery',{})
             phases=receipt.get('hd_phase_draws',{})

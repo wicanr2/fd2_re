@@ -19,9 +19,9 @@ import (
 )
 
 var commandPanelGPUStats struct {
-	Draws, Samples int
-	Phases         map[string]int
-	Captures       map[string]bool
+	Draws, Samples, ChromeSamples int
+	Phases                        map[string]int
+	Captures                      map[string]bool
 }
 
 func maybeAttachCommandPanelHDTest(t *testing.T, g *Game) {
@@ -30,6 +30,7 @@ func maybeAttachCommandPanelHDTest(t *testing.T, g *Game) {
 	}
 	attachCommandPanelHDTest(t, g)
 	commandPanelGPUStats.Draws, commandPanelGPUStats.Samples = 0, 0
+	commandPanelGPUStats.ChromeSamples = 0
 	commandPanelGPUStats.Phases = make(map[string]int)
 	commandPanelGPUStats.Captures = make(map[string]bool)
 	initCompoundSceneryFixture(t, g)
@@ -62,10 +63,10 @@ func appendCommandPanelGPUReport(t *testing.T, report map[string]any) {
 	if os.Getenv("FD2_HD_COMMAND_PANEL_TEXT") != "1" {
 		return
 	}
-	if commandPanelGPUStats.Draws == 0 || commandPanelGPUStats.Samples < 100 {
+	if commandPanelGPUStats.Draws == 0 || commandPanelGPUStats.Samples < 100 || commandPanelGPUStats.ChromeSamples < 100 {
 		t.Fatal("missing actual GPU panel glyph samples", commandPanelGPUStats)
 	}
-	report["panel_text"] = map[string]any{"locale": os.Getenv("FD2_HD_PANEL_LOCALE"), "audited_draws": commandPanelGPUStats.Draws, "matched_rgba_pixels": commandPanelGPUStats.Samples, "sampled_phases": commandPanelGPUStats.Phases, "scope": "actual battle World readback; only unoccluded glyph pixels; fixture only"}
+	report["panel_text"] = map[string]any{"locale": os.Getenv("FD2_HD_PANEL_LOCALE"), "audited_draws": commandPanelGPUStats.Draws, "matched_rgba_pixels": commandPanelGPUStats.Samples, "chrome_rgba_pixels": commandPanelGPUStats.ChromeSamples, "sampled_phases": commandPanelGPUStats.Phases, "scope": "actual battle World readback; unoccluded glyph, frame, divider and HP/MP bar pixels; fixture only"}
 	appendModernCompoundSceneryReport(t, report)
 	appendModernOrdinarySceneryReport(t, report)
 }
@@ -121,7 +122,7 @@ func auditCommandPanelGPU(g *Game, frame *nativeCompoundPresentedFrame) error {
 		var points []image.Point
 		for _, rect := range []image.Rectangle{image.Rect(5, 4, 114, 20), image.Rect(115, 4, 131, 13), image.Rect(132, 4, 147, 13), image.Rect(3, 21, 20, 30), image.Rect(126, 21, 147, 30), image.Rect(3, 30, 20, 39), image.Rect(126, 30, 147, 39)} {
 			var glyph []image.Point
-			background := layer.HD.At(100*6, 20*6)
+			background := layer.HD.At(100*6, 20*6+4) // Below the two-HD-pixel divider.
 			for y := rect.Min.Y * 6; y < rect.Max.Y*6; y += 2 {
 				for x := rect.Min.X * 6; x < rect.Max.X*6; x += 2 {
 					p := image.Pt(x+layer.Rect.Min.X, y+layer.Rect.Min.Y)
@@ -136,6 +137,22 @@ func auditCommandPanelGPU(g *Game, frame *nativeCompoundPresentedFrame) error {
 			}
 			for k := 0; k < len(glyph); k += stride {
 				points = append(points, glyph[k])
+			}
+		}
+		glyphCount := len(points)
+		for _, rect := range []image.Rectangle{
+			image.Rect(0, 0, 894, 3), image.Rect(0, 249, 894, 252),
+			image.Rect(0, 0, 3, 252), image.Rect(891, 0, 894, 252),
+			image.Rect(24, 120, 870, 122),
+			image.Rect(126, 132, 744, 168), image.Rect(126, 186, 744, 222),
+		} {
+			for y := rect.Min.Y; y < rect.Max.Y; y += 3 {
+				for x := rect.Min.X; x < rect.Max.X; x += 3 {
+					point := image.Pt(x+layer.Rect.Min.X, y+layer.Rect.Min.Y)
+					if point.In(clip) && !commandPanelOccluded(plan.Layers[i+1:], point) {
+						points = append(points, point)
+					}
+				}
 			}
 		}
 		if len(points) == 0 {
@@ -155,6 +172,7 @@ func auditCommandPanelGPU(g *Game, frame *nativeCompoundPresentedFrame) error {
 			}
 		}
 		commandPanelGPUStats.Samples += len(points)
+		commandPanelGPUStats.ChromeSamples += len(points) - glyphCount
 		commandPanelGPUStats.Phases[frame.hdPhase] += len(points)
 	}
 	commandPanelGPUStats.Draws++

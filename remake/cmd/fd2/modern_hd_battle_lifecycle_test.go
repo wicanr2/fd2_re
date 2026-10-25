@@ -633,7 +633,7 @@ func TestModernHDBattleRuntimeGPU(t *testing.T) {
 			if panelDraws == 0 {
 				t.Fatal("no actual panel GPU draws")
 			}
-			report["panel_text"] = map[string]any{"locale": g.localeID, "frozen_snapshots": len(scene.hdPanelText), "actual_gpu_draws": panelDraws, "scope": "direct HD text; native panel frame and bars retained"}
+			report["panel_text"] = map[string]any{"locale": g.localeID, "frozen_snapshots": len(scene.hdPanelText), "actual_gpu_draws": panelDraws, "scope": "direct HD text, frame and HP/MP bars; frozen native source and values retained"}
 		}
 		if len(zeroDelaySources) != 0 {
 			report["zero_delay_sources"] = zeroDelaySources

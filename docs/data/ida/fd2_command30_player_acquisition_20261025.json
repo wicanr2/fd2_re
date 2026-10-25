@@ -1557,17 +1557,28 @@
     "scope": "四張受控Game.Draw的高解析字型版完整最終GPU畫面等比四分之一縮圖；無裁切或補畫，非正常章節或人工造型完成聲明"
   },
   "pending_panel_style": {
-    "status": "DRAFT-AWAITING-USER-CHOICE",
+    "status": "INTEGRATED-PENDING-CONCENTRATED-ART-REVIEW",
     "test": {
       "file": "remake/cmd/fd2/modern_hd_battle_panel_style_prototype_test.go",
-      "sha256": "4c7906fa261a483d0a551a3f65947845e75f973a5b1edd050f696b1c89e95f72"
+      "sha256": "2a176c6c391f231e0537ff7902911bd8fb5767dd478f74941d9207d472a97cb1"
     },
     "image": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-panel-style-prototype-r3/comparison.png",
+      "sha256": "aeef9246d64403f6a5a8541d6231b510eafba3cbce4a8929b24e083d914c5e30"
+    },
+    "production_connected": true,
+    "scope": "現行HD框線已依先串接、最後集中人工確認的排程接入。比較圖左側為沿當次原色盤的正式HD；右側只保留早期固定配色提案。原R2圖與舊測具SHA、Git版本另存，沒有採用原型固定RGB。",
+    "historical_status": "DRAFT-AWAITING-USER-CHOICE",
+    "superseded_by": "docs/data/fd2-modern-hd-battlefield-20261019.json#battle_panel_chrome_followup_20261026",
+    "historical_test": {
+      "file": "remake/cmd/fd2/modern_hd_battle_panel_style_prototype_test.go",
+      "sha256": "4c7906fa261a483d0a551a3f65947845e75f973a5b1edd050f696b1c89e95f72",
+      "git_revision": "d5f149d8ab716baf97f3b91c16d80e445a386547"
+    },
+    "historical_image": {
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-panel-style-prototype-r2/comparison.png",
       "sha256": "76fef35fc12ebac52ed98de461825cd60f3206fb6ff036cbc3251cef247a75a9"
-    },
-    "production_connected": false,
-    "scope": "右側清晰藍框／HP及MP血條原型；左側現行樣式。保持同數值、比率、缺損紅區及數字變色；未收到選定回覆。"
+    }
   },
   "remaining": [
     "全部HD接上後的正常鍵盤／真正戰場返回／保存LOAD集中抽驗",

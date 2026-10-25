@@ -1,5 +1,7 @@
 # 56 — FD2 remake 系統設計規格（SDD，2026-08-09）
 
+共用戰鬥面板的框、分隔線與HP／MP條已直接以六倍解析度繪製，限定CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI。當次色盤、凍結HP、原生來源、字區、層序及捲動保持；全部十六來源入口與十二完整流程、223全畫布獨立合成及十五反例通過。首章普通攻防、自然返回、F2與保存／新程序LOAD通過。唯一數量與範圍依[58](58-fd2-exe-re-coverage.md)，契約及工具依[61](61-modern-theme-runtime-spec.md)，主收據為battle_panel_chrome_followup_20261026。完整介面、HD2、工具列其餘控制與全部HD後集中人工／平台仍待。
+
 首章寶箱開合與兩種小石塊已接入既有稀疏HD地形。初始地圖之外的開箱圖源，沿已閉合0x12263 writer實際重生；完整來源GPU與閉箱／開箱Game.Draw／F2、單次更新、來源及登錄拒收、舊地形相容性與完整私人包已驗。普通標題LOAD、方向鍵取景、F2、面板及保存／新程序LOAD已通過，正常取寶待集中抽驗。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約及重跑依[61](61-modern-theme-runtime-spec.md)，主收據為props_followup_20261025。其他地形、HD2、完整介面／工具列及集中人工／平台保持未完成。
 
 首章陰影、土脊與石路已接入手繪稀疏HD地形。完整來源GPU、原樣Game.Draw／F2、來源與暗部拒收、登錄原子性及實檔清冊通過；舊底材與水岸重編逐byte保持。普通標題LOAD、方向鍵取景、F2、面板、保存及新程序LOAD已通過；未抽本批攻擊或戰後返回。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約與重跑依[61](61-modern-theme-runtime-spec.md)，主收據為relief_followup_20261025。私人同步已補普通副本的相同內容跳過；初次mtime變更如實揭露。完整HD與集中人工／平台仍待。
@@ -48,7 +50,7 @@ HD2的斜角站姿戰場、單列浮出工具列與雙側海報已建立公開�
 
 四種召喚32～35的戰鬥背景及可選台座已接入既有HD圖源，限定CONFORMED-SCOPED／RUNTIME-E1。前導保留台座滑入、其餘戰鬥幀原子拆出背景／台座，原生base逐byte重組相同；八個雙側完整Game.Draw、實際RGB、F2、原交易與返回及原生入口回歸通過。fixture選固定控制表已有圖塊，不改原生控制表；HD扣色／插色沿既有近似。沒有新美術或清冊／保存格式；一般指令LUT依後續切片；其餘尾段圖源／其他效果、HUD及集中正常／人工／平台仍待。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約與重跑依[61](61-modern-theme-runtime-spec.md)及[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`compound_scenery_followup_20261024`。
 
-戰鬥面板的高解析Noto文字已由物理攻防延伸至法術、分段打擊與四種召喚，限定CONFORMED-SCOPED／RUNTIME-E1。逐次raw姓名、typed數值、原生source、層序、色盤及捲動裁切保持；正式Game.Draw、各階段F2、交易／RNG、物理回歸與獨立合成拒收已驗。沒有新美術或保存欄位；框線、血條、其餘背景caller／效果及集中正常／人工／平台仍待。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約與工具依[61](61-modern-theme-runtime-spec.md)，證據見[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`command_panel_text_followup_20261024`；先前物理切片依`battle_panel_text_followup_20261024`。
+戰鬥面板的高解析Noto文字已由物理攻防延伸至法術、分段打擊與四種召喚，限定CONFORMED-SCOPED／RUNTIME-E1。逐次raw姓名、typed數值、原生source、層序、色盤及捲動裁切保持；正式Game.Draw、各階段F2、交易／RNG、物理回歸與獨立合成拒收已驗。沒有新美術或保存欄位；本段為文字切片，框線與血條現況依本頁新摘要；其餘背景caller／效果及集中正常／人工／平台仍待。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約與工具依[61](61-modern-theme-runtime-spec.md)，證據見[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`command_panel_text_followup_20261024`；先前物理切片依`battle_panel_text_followup_20261024`。
 
 森林內部／海岸的背景與台座已接共用物理，限定CONFORMED-SCOPED／RUNTIME-E1。兩包八完整攻防、24次F2、56跨包PNG相同、原生重組與來源GPU、舊來源及正式載入通過；原框、層序、聲音／節拍與規則保持。數量只見[58](58-fd2-exe-re-coverage.md)，重跑與手繪近似依[61](61-modern-theme-runtime-spec.md)及[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的forest_coast_surface_followup_20261024；其他來源／caller及正常／集中人工／平台仍待。
 
