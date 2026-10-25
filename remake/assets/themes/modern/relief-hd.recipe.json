@@ -1,0 +1,1147 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_relief_hd_v1",
+  "asset_id": "modern.terrain.relief",
+  "base_catalog_sha256": "0ef42a19045ca6907770f415322cc6509e759ee4d5e8f135509cb34b959fccd5",
+  "source_manifest_sha256": "a19a3da393294ad6e1c4ad1dccdb9a911d26ed1f3d7008046eddda2398f938f5",
+  "size": 144,
+  "edge_blend": 8,
+  "mask_blur_hd_pixels": 2,
+  "exact_outer_edge_hd_pixels": 1,
+  "index_groups": {
+    "grass": [
+      68,
+      69,
+      70,
+      71,
+      137,
+      138,
+      139,
+      140,
+      141,
+      142
+    ],
+    "earth": [
+      39,
+      51,
+      52,
+      53,
+      54,
+      55,
+      112,
+      113,
+      114,
+      115,
+      116,
+      117,
+      118,
+      119
+    ],
+    "stone": [
+      99,
+      100,
+      101,
+      102,
+      107,
+      108,
+      109,
+      111
+    ]
+  },
+  "index_shades": {
+    "68": 255,
+    "69": 255,
+    "70": 255,
+    "71": 255,
+    "137": 153,
+    "138": 153,
+    "139": 153,
+    "140": 153,
+    "141": 153,
+    "142": 153,
+    "39": 153,
+    "51": 255,
+    "52": 255,
+    "53": 255,
+    "54": 255,
+    "55": 255,
+    "112": 255,
+    "113": 255,
+    "114": 255,
+    "115": 204,
+    "116": 204,
+    "117": 204,
+    "118": 153,
+    "119": 153,
+    "99": 166,
+    "100": 166,
+    "101": 166,
+    "102": 166,
+    "107": 255,
+    "108": 255,
+    "109": 255,
+    "111": 115
+  },
+  "groups": [
+    {
+      "anchor": [
+        0,
+        36
+      ],
+      "native_content_sha256": "24a01747afb8854bd3da660e8ee8c644c9d376a9406f04f0b64247392463dc51",
+      "file": "relief-036-hd-v1.png",
+      "materials": [
+        "grass"
+      ],
+      "targets": [
+        [
+          0,
+          36
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        37
+      ],
+      "native_content_sha256": "8955e9a66b31ec14ba835f9d82efcb001e0f1f50246b67a0af7c646eabced1ed",
+      "file": "relief-037-hd-v1.png",
+      "materials": [
+        "grass"
+      ],
+      "targets": [
+        [
+          0,
+          37
+        ],
+        [
+          0,
+          38
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        39
+      ],
+      "native_content_sha256": "0be26c98d102291ff73c62a3003c08e93b3c200e8388c8ba602b5408c9f56aae",
+      "file": "relief-039-hd-v1.png",
+      "materials": [
+        "grass"
+      ],
+      "targets": [
+        [
+          0,
+          39
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        51
+      ],
+      "native_content_sha256": "7d20da4a8536a849ec33b333fc18a00e403d135eede21b01bd9ff092c1fdb168",
+      "file": "relief-051-hd-v1.png",
+      "materials": [
+        "grass",
+        "earth",
+        "stone"
+      ],
+      "targets": [
+        [
+          0,
+          51
+        ],
+        [
+          1,
+          152
+        ],
+        [
+          5,
+          100
+        ],
+        [
+          7,
+          100
+        ],
+        [
+          7,
+          214
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        82
+      ],
+      "native_content_sha256": "fa817d54d7814d93c09490e3601dfbdc1ecd4a527d5094eef3b4869e3f459942",
+      "file": "relief-082-hd-v1.png",
+      "materials": [
+        "grass",
+        "earth"
+      ],
+      "targets": [
+        [
+          0,
+          82
+        ],
+        [
+          3,
+          2
+        ],
+        [
+          6,
+          98
+        ],
+        [
+          10,
+          98
+        ],
+        [
+          13,
+          138
+        ],
+        [
+          14,
+          138
+        ],
+        [
+          30,
+          98
+        ],
+        [
+          32,
+          146
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        83
+      ],
+      "native_content_sha256": "766dc7a1092c564e8ef52fe5bd6558082834805fe174d3dec97c7cd01bb3a020",
+      "file": "relief-083-hd-v1.png",
+      "materials": [
+        "grass",
+        "earth"
+      ],
+      "targets": [
+        [
+          0,
+          83
+        ],
+        [
+          3,
+          3
+        ],
+        [
+          6,
+          99
+        ],
+        [
+          10,
+          99
+        ],
+        [
+          11,
+          259
+        ],
+        [
+          13,
+          139
+        ],
+        [
+          14,
+          139
+        ],
+        [
+          17,
+          259
+        ],
+        [
+          30,
+          99
+        ],
+        [
+          32,
+          147
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        85
+      ],
+      "native_content_sha256": "b2cd328ed7bdec88f72bfae77846af43705afe5a409e6f882fef2fdeb62b30ca",
+      "file": "relief-085-hd-v1.png",
+      "materials": [
+        "grass",
+        "earth"
+      ],
+      "targets": [
+        [
+          0,
+          85
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          6,
+          101
+        ],
+        [
+          10,
+          101
+        ],
+        [
+          11,
+          261
+        ],
+        [
+          13,
+          141
+        ],
+        [
+          14,
+          141
+        ],
+        [
+          17,
+          261
+        ],
+        [
+          30,
+          101
+        ],
+        [
+          32,
+          149
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        87
+      ],
+      "native_content_sha256": "afa8825fcdafe1f5dca1a41025707c1c9bdf52da5f8cf26762a97c90ae01ff68",
+      "file": "relief-087-hd-v1.png",
+      "materials": [
+        "grass",
+        "earth"
+      ],
+      "targets": [
+        [
+          0,
+          87
+        ],
+        [
+          3,
+          7
+        ],
+        [
+          6,
+          103
+        ],
+        [
+          10,
+          103
+        ],
+        [
+          11,
+          263
+        ],
+        [
+          13,
+          143
+        ],
+        [
+          14,
+          143
+        ],
+        [
+          17,
+          263
+        ],
+        [
+          30,
+          103
+        ],
+        [
+          32,
+          151
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        89
+      ],
+      "native_content_sha256": "7414f6191a92940e37b52cb0d110760261a16ac39b08fbe9781edd66c48269a2",
+      "file": "relief-089-hd-v1.png",
+      "materials": [
+        "grass",
+        "earth"
+      ],
+      "targets": [
+        [
+          0,
+          89
+        ],
+        [
+          3,
+          9
+        ],
+        [
+          6,
+          105
+        ],
+        [
+          10,
+          105
+        ],
+        [
+          11,
+          265
+        ],
+        [
+          13,
+          145
+        ],
+        [
+          14,
+          145
+        ],
+        [
+          17,
+          265
+        ],
+        [
+          30,
+          105
+        ],
+        [
+          32,
+          153
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        91
+      ],
+      "native_content_sha256": "1b59127b292444fefdd2c19b7578ddcb82b51e7dad3dbab54804a870a9bcdd87",
+      "file": "relief-091-hd-v1.png",
+      "materials": [
+        "grass",
+        "earth"
+      ],
+      "targets": [
+        [
+          0,
+          91
+        ],
+        [
+          3,
+          11
+        ],
+        [
+          6,
+          107
+        ],
+        [
+          10,
+          107
+        ],
+        [
+          11,
+          267
+        ],
+        [
+          13,
+          147
+        ],
+        [
+          14,
+          147
+        ],
+        [
+          17,
+          267
+        ],
+        [
+          30,
+          107
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        93
+      ],
+      "native_content_sha256": "4852dc50bd151c0f46fd0012fcbce8281f603b88d5121332211f506a0bb9faa8",
+      "file": "relief-093-hd-v1.png",
+      "materials": [
+        "grass",
+        "earth"
+      ],
+      "targets": [
+        [
+          0,
+          93
+        ],
+        [
+          2,
+          149
+        ],
+        [
+          3,
+          13
+        ],
+        [
+          6,
+          109
+        ],
+        [
+          10,
+          109
+        ],
+        [
+          11,
+          269
+        ],
+        [
+          13,
+          149
+        ],
+        [
+          14,
+          149
+        ],
+        [
+          17,
+          269
+        ],
+        [
+          30,
+          109
+        ],
+        [
+          32,
+          157
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        95
+      ],
+      "native_content_sha256": "2ede213d757de67ba041019a57653057d9d54db8ff4bc5644d2a5fd1c9ccf368",
+      "file": "relief-095-hd-v1.png",
+      "materials": [
+        "grass",
+        "earth"
+      ],
+      "targets": [
+        [
+          0,
+          95
+        ],
+        [
+          2,
+          151
+        ],
+        [
+          3,
+          15
+        ],
+        [
+          6,
+          111
+        ],
+        [
+          10,
+          111
+        ],
+        [
+          11,
+          271
+        ],
+        [
+          13,
+          151
+        ],
+        [
+          14,
+          151
+        ],
+        [
+          17,
+          271
+        ],
+        [
+          30,
+          111
+        ],
+        [
+          32,
+          159
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        120
+      ],
+      "native_content_sha256": "e9bf565cd85ce1a4750d0e18a17d7bbeeac69837b143ceacaf6f21fb227fa1ad",
+      "file": "relief-120-hd-v1.png",
+      "materials": [
+        "grass",
+        "earth",
+        "stone"
+      ],
+      "targets": [
+        [
+          0,
+          120
+        ],
+        [
+          1,
+          144
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        121
+      ],
+      "native_content_sha256": "f4f6bb01f0543871b27ba6e7e81d54e23b5262908b602489b7d099b39b90b290",
+      "file": "relief-121-hd-v1.png",
+      "materials": [
+        "grass",
+        "earth",
+        "stone"
+      ],
+      "targets": [
+        [
+          0,
+          121
+        ],
+        [
+          1,
+          145
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        124
+      ],
+      "native_content_sha256": "882749501235e7f62b8d1fad1aa7e881bf4d4d999d7170c249d51659d637d744",
+      "file": "relief-124-hd-v1.png",
+      "materials": [
+        "grass",
+        "earth",
+        "stone"
+      ],
+      "targets": [
+        [
+          0,
+          124
+        ],
+        [
+          1,
+          148
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        125
+      ],
+      "native_content_sha256": "e976b311683c2d832185a4e7d8f49c8211729d70ab9b44360adb1307cdef903f",
+      "file": "relief-125-hd-v1.png",
+      "materials": [
+        "grass",
+        "earth",
+        "stone"
+      ],
+      "targets": [
+        [
+          0,
+          125
+        ],
+        [
+          1,
+          149
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        128
+      ],
+      "native_content_sha256": "702b33aa1c84f10c35c059fa49486cb991da4b26975c913713164e2d4b2c68c1",
+      "file": "relief-128-hd-v1.png",
+      "materials": [
+        "grass",
+        "earth",
+        "stone"
+      ],
+      "targets": [
+        [
+          0,
+          128
+        ],
+        [
+          1,
+          96
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        129
+      ],
+      "native_content_sha256": "805bb6be4c39b6189c4a081125147565a25768d2397d78829db26c1898ba9767",
+      "file": "relief-129-hd-v1.png",
+      "materials": [
+        "grass",
+        "earth",
+        "stone"
+      ],
+      "targets": [
+        [
+          0,
+          129
+        ],
+        [
+          1,
+          97
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        130
+      ],
+      "native_content_sha256": "0de1a9c9d52cc30f46386543f7761d618960f06c5497875c429d1701d2b9f89c",
+      "file": "relief-130-hd-v1.png",
+      "materials": [
+        "grass",
+        "earth",
+        "stone"
+      ],
+      "targets": [
+        [
+          0,
+          130
+        ],
+        [
+          1,
+          98
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        131
+      ],
+      "native_content_sha256": "6eb89a8adfe140298159f80c298a33e125aae883b1440205594b4f9ffd859f6b",
+      "file": "relief-131-hd-v1.png",
+      "materials": [
+        "grass",
+        "earth",
+        "stone"
+      ],
+      "targets": [
+        [
+          0,
+          131
+        ],
+        [
+          1,
+          99
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        132
+      ],
+      "native_content_sha256": "ccd55d185497182790116b536ed1eab0a46276d47c28b9f6bef4b6185539132d",
+      "file": "relief-132-hd-v1.png",
+      "materials": [
+        "grass",
+        "earth",
+        "stone"
+      ],
+      "targets": [
+        [
+          0,
+          132
+        ],
+        [
+          1,
+          100
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        134
+      ],
+      "native_content_sha256": "41ee4cf38a21c4c4474458d498914b04458c40ea4f8ecd480bd6e82413587adc",
+      "file": "relief-134-hd-v1.png",
+      "materials": [
+        "grass",
+        "earth",
+        "stone"
+      ],
+      "targets": [
+        [
+          0,
+          134
+        ],
+        [
+          1,
+          102
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        135
+      ],
+      "native_content_sha256": "48d5cc07d56c684d03bad525180570160f4a6960991f11a73f7c95bd473dd4a1",
+      "file": "relief-135-hd-v1.png",
+      "materials": [
+        "grass",
+        "earth",
+        "stone"
+      ],
+      "targets": [
+        [
+          0,
+          135
+        ],
+        [
+          1,
+          103
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        136
+      ],
+      "native_content_sha256": "2255683d94853d94d51b5c0fb654f1820d7e7200266a42b7c041522903df8e4a",
+      "file": "relief-136-hd-v1.png",
+      "materials": [
+        "grass",
+        "earth",
+        "stone"
+      ],
+      "targets": [
+        [
+          0,
+          136
+        ],
+        [
+          1,
+          104
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        137
+      ],
+      "native_content_sha256": "172c9a0fc447ccf8cca540207aa487f06bb4567d82f1250a7ffcd690d8132f74",
+      "file": "relief-137-hd-v1.png",
+      "materials": [
+        "grass",
+        "earth",
+        "stone"
+      ],
+      "targets": [
+        [
+          0,
+          137
+        ],
+        [
+          1,
+          105
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        138
+      ],
+      "native_content_sha256": "436eea66493f7f384a495ee9d30dc15189cb2785502d33f73013a0e13ff3da5e",
+      "file": "relief-138-hd-v1.png",
+      "materials": [
+        "grass",
+        "earth",
+        "stone"
+      ],
+      "targets": [
+        [
+          0,
+          138
+        ],
+        [
+          1,
+          106
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        139
+      ],
+      "native_content_sha256": "22cd1960dda604e805360ffb618e182ea757b63e32e73f8cec05299e7960fcf7",
+      "file": "relief-139-hd-v1.png",
+      "materials": [
+        "grass",
+        "earth",
+        "stone"
+      ],
+      "targets": [
+        [
+          0,
+          139
+        ],
+        [
+          1,
+          107
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        140
+      ],
+      "native_content_sha256": "20875c7ec38d59c21fb849ee73abbce1c7292e0cfedf51fcff39999af6758266",
+      "file": "relief-140-hd-v1.png",
+      "materials": [
+        "grass",
+        "earth",
+        "stone"
+      ],
+      "targets": [
+        [
+          0,
+          140
+        ],
+        [
+          1,
+          108
+        ],
+        [
+          7,
+          300
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        141
+      ],
+      "native_content_sha256": "ee54542ea25f47430702fd12439db980e8b7f6046fc241b7ca2c8ce82c7e4b91",
+      "file": "relief-141-hd-v1.png",
+      "materials": [
+        "grass",
+        "earth",
+        "stone"
+      ],
+      "targets": [
+        [
+          0,
+          141
+        ],
+        [
+          1,
+          109
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        142
+      ],
+      "native_content_sha256": "753fa0839f54a94b8d47fe6cf700cf047c26188d3c56c9349b4998bcd3d9ce97",
+      "file": "relief-142-hd-v1.png",
+      "materials": [
+        "grass",
+        "earth",
+        "stone"
+      ],
+      "targets": [
+        [
+          0,
+          142
+        ],
+        [
+          1,
+          110
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        143
+      ],
+      "native_content_sha256": "8e35af224f372228cb2e425bd697dbeafb3525cdf7cb286d487ff58daa04039b",
+      "file": "relief-143-hd-v1.png",
+      "materials": [
+        "grass",
+        "earth",
+        "stone"
+      ],
+      "targets": [
+        [
+          0,
+          143
+        ],
+        [
+          1,
+          111
+        ],
+        [
+          7,
+          303
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        215
+      ],
+      "native_content_sha256": "2df7c1902ea4745706cee801bc3ec9ef0a79ed95f35546a83de25e499fe6dc99",
+      "file": "relief-215-hd-v1.png",
+      "materials": [
+        "grass",
+        "earth"
+      ],
+      "targets": [
+        [
+          0,
+          215
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        216
+      ],
+      "native_content_sha256": "1a549fd79420fedaf21beaee525d9973ad9f80438eafd597da836ddc6a879757",
+      "file": "relief-216-hd-v1.png",
+      "materials": [
+        "grass",
+        "earth"
+      ],
+      "targets": [
+        [
+          0,
+          216
+        ],
+        [
+          6,
+          148
+        ],
+        [
+          10,
+          116
+        ],
+        [
+          11,
+          276
+        ],
+        [
+          30,
+          116
+        ]
+      ]
+    },
+    {
+      "anchor": [
+        0,
+        217
+      ],
+      "native_content_sha256": "18009290fa9146990df6adc0791d72d6bfa4c005420c0040b925c81c30ec4071",
+      "file": "relief-217-hd-v1.png",
+      "materials": [
+        "grass",
+        "earth"
+      ],
+      "targets": [
+        [
+          0,
+          217
+        ],
+        [
+          10,
+          117
+        ],
+        [
+          11,
+          277
+        ],
+        [
+          13,
+          153
+        ],
+        [
+          30,
+          117
+        ]
+      ]
+    }
+  ],
+  "source_refs": [
+    "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+    "docs/data/fd2-modern-hd-battlefield-20261019.json"
+  ],
+  "grass_master_file": "grass-olive-hd-v1-master.png",
+  "grass_master_sha256": "ed29eb9da12adae641c612d28b848c186dd2986ac1ee3fa4e35e65b72e864c29",
+  "earth_master_file": "earth-loam-hd-v1-master.png",
+  "earth_master_sha256": "0281b4878c6be106ad4a6db211452219a2015278f415321f9deeb9e2af264563",
+  "stone_master_file": "stone-slate-hd-v1-master.png",
+  "stone_master_sha256": "0664d982925fdaf3574534daaafd70680314c7e0a5f85eff58a90d4c8aa1514e",
+  "earth_master_asset_id": "modern.terrain.grass_earth.earth.master"
+}

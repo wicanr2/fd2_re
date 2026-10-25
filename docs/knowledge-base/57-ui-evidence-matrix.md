@@ -1,5 +1,7 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
+首章陰影、土脊與石路已接入手繪稀疏HD地形。完整來源GPU、原樣Game.Draw／F2、來源與暗部拒收、登錄原子性及實檔清冊通過；舊底材與水岸重編逐byte保持。普通標題LOAD、方向鍵取景、F2、面板、保存及新程序LOAD已通過；未抽本批攻擊或戰後返回。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約與重跑依[61](61-modern-theme-runtime-spec.md)，主收據為relief_followup_20261025。私人同步已補普通副本的相同內容跳過；初次mtime變更如實揭露。完整HD與集中人工／平台仍待。
+
 水面、沙地與首章全部實際使用的草沙／沙水交界已接既有144稀疏地形。來源與完整GPU、F2、拒收、清冊及首章普通北岸取景／面板／來源槽冷讀通過；既有兩材質模式重編逐byte相同，純草模式回歸保持。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約與重跑依[61](61-modern-theme-runtime-spec.md)，主收據為shore_followup_20261025。其他地形、HD2、完整介面／工具列與集中人工／平台仍待。
 
 蓋亞手腕v2的普通操作已用現行圖包補驗，限定CONFORMED-SCOPED／NORMAL-GUI。普通攻擊、死亡、戰後整備、F2、保存及新程序LOAD通過，實際畫面核到新版待機／蓄力／出拳的相容姿勢。README不再以舊版圖代表現行蓋亞。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源依HD主收據`gaia_v2_normal_followup_20261025`；自然度、END參戰、平台與完整HD仍待，#268保持開啟。

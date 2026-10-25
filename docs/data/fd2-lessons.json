@@ -4314,9 +4314,24 @@
       "id": "gpu-required-terrain-frames-belong-to-sample-view",
       "date": "2026-10-25",
       "area": "地形GPU取景",
-      "rule": "昂貴GPU測試前，先以remake/assets/maps/map*/map.json的實際tile、已解碼control及remake/internal/fdicon/terrain.go的NativeTerrainFrameIndex確認必驗來源在目標13×8視圖內。既有GUI視圖只證明該次可見內容，不推定其他底材也在畫面；原生來源、完整來源GPU與普通取景分列。來源不在視圖時選資料能證明的合法視圖，不降低圖塊像素門檻。",
-      "why": "水岸測具先沿舊交界鏡頭，改沿南側普通視圖後仍找不到純沙50；實際50位於北岸(1..5,3..6)，南岸只有交界。查地圖證明(0,0)同時含49與50後，同候選保留門檻重跑通過。",
+      "rule": "昂貴GPU測試前，先以remake/assets/maps/map*/map.json的實際tile、已解碼control及remake/internal/fdicon/terrain.go的NativeTerrainFrameIndex確認必驗來源在目標13×8視圖內。既有GUI視圖只證明該次可見內容，不推定其他底材也在畫面；原生來源、完整來源GPU與普通取景分列。來源不在視圖時選資料能證明的合法視圖，不降低圖塊像素門檻。 正常GUI的游標焦點不等於相機原點；以tools/verify_fd2_hd_fonts_gui.py的input-audit.jsonl及terrain-observation.json核對實際view，再選取能完整含必驗圖源的合法焦點。",
+      "why": "水岸測具先沿舊交界鏡頭，改沿南側普通視圖後仍找不到純沙50；實際50位於北岸(1..5,3..6)，南岸只有交界。查地圖證明(0,0)同時含49與50後，同候選保留門檻重跑通過。 本批普通焦點(18,22)實際相機為(7,16)，排除了位於第15列的120；依相同原生鏡頭邊界改用(17,21)，不調整像素門檻。",
       "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#shore_followup_20261025"
+    },
+    {
+      "id": "private-sync-preserves-identical-regular-files",
+      "date": "2026-10-25",
+      "area": "私人素材同步",
+      "rule": "tools/sync_modern_theme_private.py以catalog白名單及來源SHA預檢後，同時跳過samefile別名與SHA相同的普通目標副本；不為內容相同的素材重寫mtime。清冊file_count包含所有登錄檔，不等同PNG數。tools/test_fd2_hd_ground_edges.py以equal_regular_file_inode_mtime_preserved驗普通副本的inode及mtime。",
+      "why": "本批誤將7009清冊檔當7009PNG，修正後沿正式素材根同步；舊工具只保護samefile，導致部分舊普通副本的mtime更新。私人庫Git基底逐SHA證明7009檔bytes保持，修正後7044檔重跑mtime保持。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#relief_followup_20261025",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/sync_modern_theme_private.py"
+        ],
+        "pattern": "digest\\(target\\) == actual"
+      }
     }
   ]
 }

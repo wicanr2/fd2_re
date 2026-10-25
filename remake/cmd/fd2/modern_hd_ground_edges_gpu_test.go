@@ -30,8 +30,12 @@ func TestModernHDShoreRealBanksAndGPU(t *testing.T) {
 	testModernHDGroundMaterialsRealBanksAndGPU(t, "shore")
 }
 
+func TestModernHDReliefRealBanksAndGPU(t *testing.T) {
+	testModernHDGroundMaterialsRealBanksAndGPU(t, "relief")
+}
+
 func testModernHDGroundMaterialsRealBanksAndGPU(t *testing.T, profile string) {
-	bases, shore := profile == "bases", profile == "shore"
+	bases, shore, relief := profile == "bases", profile == "shore", profile == "relief"
 	env, recipeName, status := "FD2_HD_GROUND_EDGES", "ground-grass-earth-hd.recipe.json", "PASS-GROUND-EDGES-GPU"
 	groups, slots, maps := 14, 141, 11
 	if bases {
@@ -41,6 +45,10 @@ func testModernHDGroundMaterialsRealBanksAndGPU(t *testing.T, profile string) {
 	if shore {
 		env, recipeName, status = "FD2_HD_SHORE", "shore-hd.recipe.json", "PASS-SHORE-GPU"
 		groups, slots, maps = 33, 41, 9
+	}
+	if relief {
+		env, recipeName, status = "FD2_HD_RELIEF", "relief-hd.recipe.json", "PASS-RELIEF-GPU"
+		groups, slots, maps = 34, 139, 14
 	}
 	if os.Getenv(env+"_GPU") != "1" {
 		t.Skip("dedicated real-bank ground-edge process")
