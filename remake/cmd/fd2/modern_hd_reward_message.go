@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"errors"
 	"image"
 
@@ -12,13 +13,17 @@ func (g *Game) prepareModernHDRewardWorld(message *nativeDeathRewardMessageState
 	if set == nil || len(set.mapSpritesHD) != 125 {
 		return nil, nil // Existing portrait-only themes retain the native world.
 	}
-	if message == nil || len(source) != 64000 || len(message.hdWork) == 0 || len(message.hdPalette) != 256 {
+	if message == nil || len(source) != 64000 || message.hdScene == nil {
 		return nil, errors.New("modern HD reward: frozen sources unavailable")
 	}
-	if message.hdInputErr != nil {
-		return nil, message.hdInputErr
+	scene := message.hdScene
+	if err := scene.validate(g); err != nil {
+		return nil, err
 	}
-	return g.prepareModernHDCommandSteady(message.hdInput, message.hdWork, source, message.hdPalette, set)
+	if !bytes.Equal(source, scene.vga) {
+		return nil, errors.New("modern HD reward: native panel source changed")
+	}
+	return g.prepareModernHDCommandSteadyStage(scene.input, scene.work, source, scene.palette, set, scene.stage)
 }
 
 // Returns the actual source-to-destination shift of the existing native job.

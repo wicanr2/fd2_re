@@ -2,13 +2,11 @@ package main
 
 import (
 	"errors"
-	"image/color"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 	"github.com/wicanr2/fd2_re/remake/internal/dato"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
-	"github.com/wicanr2/fd2_re/remake/internal/indexedmap"
 )
 
 // pendingNativeDeathRewardMessage 是 0x1AA1D 物品型態 0／1 成功臂要播的訊息：
@@ -30,10 +28,7 @@ type nativeDeathRewardMessageState struct {
 	portrait         dato.Frame
 	portraits        []dato.Frame // 0x16559 等待期間店主式眨眼／嘴型各幀，重播端各出一張變體
 	kind, value      int
-	hdInput          indexedmap.NativeFrameInput
-	hdInputErr       error
-	hdWork           []byte
-	hdPalette        color.Palette
+	hdScene          *modernHDCompoundMapScene
 	hdWorld          *modernHDMapFrame
 	hdTheme          *modernStoryPortraitSet
 	opening, closing *nativeClassUIJob
@@ -121,12 +116,12 @@ func (g *Game) beginNativeDeathRewardMessage(pending pendingNativeDeathRewardMes
 		killer: pending.killer, actor: actor, final: final, then: then,
 		portrait: portraits[0], portraits: portraits, kind: pending.kind, value: pending.value,
 	}
-	message.hdInput, message.hdInputErr = g.freezeNativeCommand9MapInput()
-	message.hdWork = append([]byte(nil), g.nativeMapWork...)
-	message.hdPalette, err = fdother.VGAPaletteFromDAC(g.nativeMapDAC)
-	if err != nil && message.hdInputErr == nil {
-		message.hdInputErr = err
+	in, inputErr := g.freezeNativeCommand9MapInput()
+	palette, paletteErr := fdother.VGAPaletteFromDAC(g.nativeMapDAC)
+	if inputErr == nil {
+		inputErr = paletteErr
 	}
+	message.hdScene = g.newModernHDCompoundMapScene(in, g.nativeMapWork, source, palette, inputErr)
 	if g.modernStoryPortraits != nil {
 		message.hdWorld, err = g.prepareModernHDRewardWorld(message, source, g.modernStoryPortraits)
 		if err != nil {

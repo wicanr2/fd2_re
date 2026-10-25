@@ -1,5 +1,7 @@
 # 56 — FD2 remake 系統設計規格（SDD，2026-08-09）
 
+戰後物品／金錢成功訊息已接上同次地圖23背景，限定CONFORMED-SCOPED／RUNTIME-E1。沿既有密封場景保存原生before-acted來源，每次F2驗簽章、原生重組與面板底圖。完整開框／等待／關框、文字與480頭像裁切、結算、原圖控制組及HD返回通過。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的reward_message_stage_hd_followup_20261025。原版RE與規則保持，沒有新素材／清冊；滿背包問句、其他提示／HUD、地形、HD2與全部HD後集中正常／人工／平台仍待。
+
 移位物品的雙段單位轉場已保留同次地圖23背景，限定CONFORMED-SCOPED／RUNTIME-E1。每段各自封存stage、地形及LMI快照；F2即使已有快取也重驗背景。兩種18／24列順序的完整Game.Draw、獨立CPU條帶、結算與HD返回，以及普通地圖／故事caller回歸通過。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的unit_present_stage_hd_followup_20261025。原生背景writer經狹義IDA複核，未重跑FD2.EXE；其他可達消費端、地形、HD2與全部串接後的集中正常／人工／平台仍待。
 
 指令10～12的基準底圖、結果與11／12前奏已接同次地圖23背景，限定CONFORMED-SCOPED／RUNTIME-E1。前奏原生重組先恢復staging，前底圖與AI最後重繪各自密封來源，F2重驗；三張衍生surface保留原始地形取樣。完整矩陣、私人兩端抽樣、AI入口、原子拒收及一般地圖回歸通過。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的commands1012_stage_hd_followup_20261025。未重跑FD2.EXE，城堡及框線仍為像素；其他消費端與全部HD後的集中正常／人工／平台仍待。

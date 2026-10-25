@@ -227011,5 +227011,284 @@
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/unit-stage-lessons-oct25-r4.log",
       "sha256": "5b4ed4bf4b31d338663168cbf64fe41c6bf66e33879f9e76e219d407dcf3af49"
     }
+  },
+  "reward_message_stage_hd_followup_20261025": {
+    "status": "CONFORMED-SCOPED",
+    "base_commit": "5cf81a7460d8e81ffe1bc594235702b5f6824385",
+    "scope": "物品／金錢成功訊息的map23同次HD背景、原子F2與返回",
+    "full_hd_complete": false,
+    "normal_player_complete": false,
+    "art_unchanged": true,
+    "existing_contract": "reward_message_hd_followup_20261023",
+    "evidence": [
+      {
+        "file": "docs/data/ida/fd2_ch23_post_ida.txt",
+        "sha256": "a12b1002e92d89bf8e82bff17371decc068270dd6651866c18221d1d951ef731"
+      },
+      {
+        "file": "remake/internal/campaign/native_transient_expiry.go",
+        "sha256": "3de6def6039838b7ff9d03b324288a8695feb0ec21b20b0d18a5bf453280b2ee"
+      }
+    ],
+    "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+    "re_unchanged": true,
+    "baseline_sources": [
+      {
+        "file": "remake/cmd/fd2/native_death_reward_message.go",
+        "sha256": "6818c336f2bd1207f32741f089054f41e0c1f3b76a157850affb7d957fd61993"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_compound_map_source.go",
+        "sha256": "74bf408bf1bf5d31e59f442c6a613e35d802b5081281722c1bf8173c082fad37"
+      }
+    ],
+    "evidence_level": "RUNTIME-E1",
+    "source_snapshot": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/reward-stage-source-snapshot-oct25-r3.json",
+      "sha256": "4c14557b6e6b5e9379dd89eb24632969b9ab2a5ca600cb85c502a627f92e2a2a"
+    },
+    "gates": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/reward-stage-stage-unit-oct25-r3.gate.json",
+        "sha256": "b32ce96f305a6186eef6bcc9c38c923e7deebf09c4e86f2eaaabef373edbd27f",
+        "required": 1
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/reward-stage-unit-oct25-r2.gate.json",
+        "sha256": "128105e10d96f605e2c1687ee1912434db9f9014460f35cb6eb53d33ebf1c8db",
+        "required": 2
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/reward-stage-hud-oct25-r2.gate.json",
+        "sha256": "32cbd7027086f1a2d2f310db48152361b9c1a711f3dfdcdd2c5763cfd9916207",
+        "required": 2
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/reward-stage-regression-oct25-r2.gate.json",
+        "sha256": "73bc488066139c9c6c06bb4d9ca1fde107e90d4a41151cc49a976ca18057df24",
+        "required": 8
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/reward-stage-game-formal-oct25-r3.gate.json",
+        "sha256": "044250af7a26261a0b5f71aca692d8abe2b7c33c26b440d3076102c877f9d45e",
+        "required": 1
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/reward-stage-game-ordinary-oct25-r2.gate.json",
+        "sha256": "3e80db3fb9a9da7c0eb3d351858b73c7a2adf27a8f51394f424af0da90211bb7",
+        "required": 1
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/reward-stage-game-private-oct25-r3.gate.json",
+        "sha256": "03d7394e0fff1b6eb4da83c997323715deba41f2fc41c70f1835106de9564ba2",
+        "required": 1
+      }
+    ],
+    "required_test_instances": 16,
+    "distinct_required_tests": 15,
+    "cross_pack": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/reward-stage-cross-pack-oct25-r2.json",
+      "sha256": "758805a99a96bec350a67a145ea66edaf79a0f2b990aab05ec62897908ddf41b"
+    },
+    "readme_overview": {
+      "file": "docs/figures/hd-reward-stage.png",
+      "sha256": "c0b991a63b4019e39b16a06862167cd4173c761b2be6f696d92c949b27237acd"
+    },
+    "readme_recipe": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/reward-stage-readme-overview-oct25-r2.json",
+      "sha256": "4da169a3c3cb8b33e1789e4c2cbebff400a3a3f03a95f56e4e420be831ad5ad2"
+    },
+    "string_inventory": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/reward-stage-string-inventory-oct25-r2.json",
+      "sha256": "b309eea9c38944253de55d3ecefeb661cb0e6bf54a0489ec8b4881d6c8bcf0dc"
+    },
+    "memory": [
+      {
+        "prefix": "reward-stage-stage-unit-oct25-r3",
+        "peak_bytes": 3494658048,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "prefix": "reward-stage-unit-oct25-r2",
+        "peak_bytes": 3039895552,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "prefix": "reward-stage-hud-oct25-r2",
+        "peak_bytes": 3039895552,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "prefix": "reward-stage-regression-oct25-r2",
+        "peak_bytes": 3039895552,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "prefix": "reward-stage-game-formal-oct25-r3",
+        "peak_bytes": 4947238912,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "prefix": "reward-stage-game-ordinary-oct25-r2",
+        "peak_bytes": 4792713216,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "prefix": "reward-stage-game-private-oct25-r3",
+        "peak_bytes": 6442450944,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 228,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      }
+    ],
+    "memory_scope": "memory.peak是容器累計，四個核心／舊回歸共用一個容器，不當作各測試的獨立峰值",
+    "counterexample": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/reward-stage-before-oct25-r1.log",
+        "sha256": "92d18831b36528798ea4f23319693418557ca409fa37c9eb9c962474cbf0ce3c"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/reward-stage-before-oct25-r1.memory.json",
+        "sha256": "175c88006a93cfa6c86d9082fae97a37af4fac8f0fa807ae89ed1da1db37369a"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/reward-stage-before-source-oct25-r1.json",
+        "sha256": "5389cceb662782c72550db20f4bef508d9806758851f438f79ae247650e739f0"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/reward-stage-before-test-oct25-r1.go",
+        "sha256": "78edc094504cef9288680a48b5a5bb8bb0576d5c5af23945f72fd95acf154ffc"
+      }
+    ],
+    "baseline_sources_note": "baseline_sources記錄base_commit的來源雜湊，並非目前工作樹的檔案雜湊",
+    "unchanged": {
+      "catalog": true,
+      "art": true,
+      "private_head": "06e09c2750c8be449d187a80807e0159930adebe",
+      "save_format": true,
+      "game_rules": true
+    },
+    "remaining": [
+      "滿背包問句／其他提示與HUD",
+      "其他地形、HD2及浮出工具列",
+      "全部HD串接後集中正常／人工／平台驗收"
+    ],
+    "limits": [
+      "控制組是同一remake像素主題，未重跑FD2.EXE",
+      "受控角色、原始map23幾何及正式pending佇列，不是正常通關",
+      "RGB及材質沿既有美術近似，城堡與框線仍為像素"
+    ],
+    "reused_gate_source_snapshot": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/reward-stage-source-snapshot-oct25-r2.json",
+      "sha256": "1786fddf531853f9494df9dfce90288a55c8091ee624393bafb152b06f5e6e5e"
+    },
+    "fixture_identity": {
+      "map_selector_key": 0,
+      "portrait_dato": 0,
+      "reason": "共用法術測具的BattleFig9覆寫不適用於索爾獎勵展示；只修測具，不改正式規則"
+    },
+    "portrait_source_check": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/reward-stage-portrait-source-oct25-r3.json",
+      "sha256": "a170706f02710b633881835eb9ee4969f7681f21634fa62a275560ac1ed726ef"
+    },
+    "diagnostic_rounds": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/reward-stage-game-formal-oct25-r2.gate.json",
+        "sha256": "044250af7a26261a0b5f71aca692d8abe2b7c33c26b440d3076102c877f9d45e"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/reward-stage-game-formal-oct25-r2-capture/receipt.json",
+        "sha256": "9beb654f6c0f5ed54a58a748e3d24c4d935f58d5582e287c6a85784f4b9f5fa9"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/reward-stage-game-private-oct25-r2.memory.json",
+        "sha256": "b0a9d5808b5a3dfa1668e0041d7d70eb78fb38d4a8ee82fad4924c29a16e0a75"
+      }
+    ],
+    "reuse_note": "r2到r3只改rewardStageGame的DATO0及一致性斷言；只有stage-unit／兩包stage-game受影響而重跑，一般地圖／unit／hud／regression保留r2來源收據。",
+    "cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/reward-stage-cleanup-oct25-r3.json",
+      "sha256": "893e95f83cd483080fda8665196610e85a856c379e1144f189cd79e866a66107"
+    },
+    "issue_update": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/reward-stage-issue-update-oct25-r3.json",
+      "sha256": "e515ad25bed0b47428417c967cd7689ff9a47108aa634f3d4cff6a9f44ed0126"
+    },
+    "worklist_verify": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/reward-stage-worklist-oct25-r3.log",
+      "sha256": "e79d11a27482e9cc12c4e999fa07e97f07ee544b5952cb8172731e116b8f7af3"
+    },
+    "lesson_guards": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/reward-stage-lessons-oct25-r3.log",
+      "sha256": "5b4ed4bf4b31d338663168cbf64fe41c6bf66e33879f9e76e219d407dcf3af49"
+    },
+    "links": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/reward-stage-links-oct25-r3.json",
+      "sha256": "24d59892239ca2e3aedc53477090fe4de804000696ef906d38ace204f11e710a"
+    },
+    "ownership": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/reward-stage-ownership-oct25-r3.json",
+      "sha256": "34a73bef13cd57f2ef99425bea2aad7b9e54e8ab49b30da5f0ee6229491c1e62"
+    },
+    "docker_cleanup": {
+      "status": "PASS",
+      "unexpected_go_or_asset_containers": 0,
+      "images_rebuilt": false,
+      "other_projects_touched": false
+    }
   }
 }

@@ -114,8 +114,11 @@ func TestModernHDRewardTextAndNativeAssets(t *testing.T) {
 			t.Fatal(err)
 		}
 		m := g.nativeSystemEndTurnUI.rewardMessage
-		if m.hdInputErr != nil {
-			t.Fatal(m.hdInputErr)
+		if m.hdScene == nil {
+			t.Fatal("reward scene unavailable")
+		}
+		if m.hdScene.err != nil {
+			t.Fatal(m.hdScene.err)
 		}
 		before := append([]byte(nil), m.final...)
 		state := *actor
@@ -162,7 +165,7 @@ func TestModernHDRewardTextAndNativeAssets(t *testing.T) {
 			t.Fatal("message did not continue exactly once")
 		}
 	}
-	broken := &nativeDeathRewardMessageState{hdInputErr: fmt.Errorf("fixed source mismatch"), hdWork: make([]byte, 1), hdPalette: g.nativeClassUI.palette}
+	broken := &nativeDeathRewardMessageState{hdScene: &modernHDCompoundMapScene{err: fmt.Errorf("fixed source mismatch")}}
 	old := g.modernStoryPortraits
 	g.nativeSystemEndTurnUI = &nativeSystemEndTurnUIState{source: make([]byte, 64000), rewardMessage: broken}
 	bad := &modernStoryPortraitSet{mapSpritesHD: make(map[int][]image.Image)}

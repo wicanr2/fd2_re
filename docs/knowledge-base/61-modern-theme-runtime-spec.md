@@ -4465,3 +4465,22 @@ AI來源補充（READY）：受控AI11／12實測，演出前可見底圖與2189
 重跑在維護中的Go Docker使用`python3 tools/verify_fd2_unit_present_hd.py --help`。`--kind unit-stage-core`驗四項來源／色彩／拒收測試；`--kind unit-stage-game --unit-stage-case 0`及`1`分別驗18→24與24→18。明示`--catalog`、`--pack`、不存在的`--out`前綴與有界`--timeout`，私人實體包唯讀掛載並加`--require-real-runtime`，兩包各跑完整兩組。既有回歸用`--kind native`、`unit`、`story-unit`。固定原包、seed7、clock1000，user1000、network none、6GiB／2CPU／256 pids；Xvfb由工具有界管理。
 
 精確來源、峰值、跨包比較與清理依HD主收據unit_present_stage_hd_followup_20261025，唯一數量表為58。這份補充關閉前述「單位轉場待驗」中的玩家移位map23範圍，不把未證實可達的其他caller擴成必跑矩陣。RGB沿美術近似，像素主題是同一remake控制組；原版執行器、正常玩家與全部HD後集中人工／平台仍待。
+
+
+## 戰後成功訊息的特殊背景來源（READY，2026-10-25）
+
+沿既有戰後物品／金錢成功訊息契約，不重開1956B／196CB／1AA1D。原版固定EXE雜湊依本文件前節，map23的11EEE staging分支依fd2_ch23_post_ida.txt；原生before-acted組圖與成功訊息已在reward_message_hd_followup_20261023驗證。當前HD成功訊息未傳入同次stage，這是既有背景消費端的接線缺口。
+
+成功訊息在原生composeNativeMapFrameBeforeActed後，沿已驗證modernHDCompoundMapScene保存typed input／work／VGA／palette、map index及同次staging／rowShift／tick／latch。原生背景與actor未灰化的來源保持，訊息不讀後續live stage。F2先驗場景簽章、原生重組與來源VGA一致，再以明示stage準備整張HD背景，全部成功才發布；缺背景／錯圖源／密封資料改動原子拒收，像素主題及舊頭像主題保持。
+
+六張開框、等待ACK、五張關框及還原的既有矩形、文字、480頭像、位移與裁切保持。物品已結算狀態不重發，金額只在關框後加入，一次續行；HP／MP／RNG、行動灰化時點與保存格式不改。還原後須回到當下正常HD世界，不能留下凍結的未灰化人物。
+
+驗收使用真實map23幾何與素材、seed7、clock1000，經正式pending訊息佇列測型態0／1。每類驗13張完整Game.Draw、每拍F2、獨立CPU世界合成、頭像／文字／裁切、原圖控制組、一筆結算、一次續行與正常HD返回。正式與私人實體包各驗完整兩類並逐SHA比較；來源隔離、密封資料修改、冷拒收與舊普通地圖訊息／HUD關框及滿背包交易回歸須通過。RGB與材質沿既有美術近似，限定受控RUNTIME-E1，未新增原版執行器、一般玩家或平台聲明。完整HD與集中人工驗收保持原範圍。
+
+### 成功訊息特殊背景驗證範圍（CONFORMED-SCOPED／RUNTIME-E1）
+
+前述READY已實作。獎勵訊息改用已驗證密封場景，保留同次typed input／work／VGA／palette與stage，F2重驗來源後才發布。live背景不污染訊息，八種密封來源破壞及錯尺寸素材冷／暖拒收通過。物品／金錢各13個訊息邊界與正常HD返回、每邊界F2、非空背景、獨立CPU世界、原圖控制組、頭像朝向／裁切、原交易與一次續行通過。一般地圖與滿背包原交易保持。這份補充關閉前述「獎勵背景待驗」中的成功訊息範圍，滿背包問句及其他訊息另列。
+
+重跑入口為維護中Go Docker內的`python3 tools/verify_fd2_reward_message_hd.py --help`。`--kind stage-unit`驗來源／隔離／拒收，`--kind stage-game`驗兩類完整Game.Draw；`unit`、`hud`、`regression`與`game`保留舊一般地圖、文字／頭像、HUD及滿背包交易回歸。明示`--catalog`、`--pack`、不存在的`--out`前綴與有界`--timeout`。私人實體包唯讀掛載並加`--require-real-runtime`，兩包皆完整跑兩類。固定原包、seed7、clock1000，user1000、network none、6GiB／2CPU／256 pids，Xvfb由工具有界管理。
+
+精確前綴、來源快照、修改前反例、跨包比較與記憶體事件依HD主收據reward_message_stage_hd_followup_20261025，唯一數量表為58。像素主題控制組仍是同一remake，未新增原版執行器、正常通關或平台聲明；城堡地形與介面框線仍為像素，完整HD與集中人工驗收未完成。

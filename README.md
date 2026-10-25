@@ -73,6 +73,10 @@
 
 移位物品的消失、收縮、出現與返回戰場已接上同次 HD 背景。四格依序為消失前導、收縮、出現尾段與返回，取自兩組受控測試的完整遊戲畫面半縮；人物、光效及綠色背景使用 HD，城堡地形與介面框線仍為像素。F2 切換、扣款與落點已驗證，來源與範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)及[HD收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的`unit_present_stage_hd_followup_20261025`，不代表正常章節通關。
 
+![戰後物品與金錢訊息保留HD背景](docs/figures/hd-reward-stage.png)
+
+戰後成功訊息的開框、等待與關框已保留同次 HD 背景，結束後回到目前戰場。四格依序為物品訊息、金錢訊息、關框與返回，取自受控測試的完整遊戲畫面半縮。文字、頭像與綠色背景使用 HD，城堡地形及框線仍為像素。來源與範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)及[HD收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的`reward_message_stage_hd_followup_20261025`，不代表正常章節通關。
+
 ## HD2 設計基準
 
 後續HD2戰場沿下列斜角站姿人物與手繪地形設計，保留既有HD及原版主題。操作介面與人物主題獨立，海報從單列浮出工具列選擇；海報邊緣可漸層銜接戰場，並調整淡入時間。
