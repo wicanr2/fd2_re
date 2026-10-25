@@ -31,6 +31,10 @@ func (g *Game) modernHDFacilityFont(source *fdtxt.Font, capture *modernHDIndexed
 	}
 	var buffer sfnt.Buffer
 	return source.WithNativePresenter(func(stride, base, index int, style fdtxt.NativeGlyphStyle) bool {
+		if capture.writes != nil {
+			*capture.writes = append(*capture.writes, modernHDGlyphWrite{start: len(capture.runs),
+				clear: image.Rect(base%stride*2, base/stride*2, (base%stride+16)*2, (base/stride+16)*2), background: style.Background != 0})
+		}
 		key, ok := keys[index]
 		x, y := base%stride, base/stride
 		if !ok || ambiguous[index] || stride != 320 || x < 1 || x+16 > 320 || y+17 > 200 {

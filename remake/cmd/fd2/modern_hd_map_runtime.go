@@ -54,7 +54,16 @@ func (g *Game) modernHDMapFrameAdmission(story, battleView bool) bool {
 		return true
 	}
 	if g.spellOpen || g.itemOpen || g.castSp != nil {
+		if p := g.nativeDeathRewardUI; g.itemOpen && p != nil && p.hd != nil && p.hd.world != nil && p.hd.theme == g.modernStoryPortraits {
+			return true
+		}
 		return false
+	}
+	if state := g.nativeSystemEndTurnUI; state != nil && state.deathReward != nil {
+		p := state.deathReward
+		if p.hd != nil && p.hd.world != nil && p.hd.theme == g.modernStoryPortraits {
+			return true
+		}
 	}
 	return g.sel == nil || g.nativeCommand0Targeting || g.nativeItemTargeting ||
 		g.nativeItemRelocating || g.ring || g.nativeCommandOpen || g.nativeMovePlan != nil

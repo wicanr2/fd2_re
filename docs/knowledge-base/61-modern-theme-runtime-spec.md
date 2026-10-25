@@ -4484,3 +4484,41 @@ AI來源補充（READY）：受控AI11／12實測，演出前可見底圖與2189
 重跑入口為維護中Go Docker內的`python3 tools/verify_fd2_reward_message_hd.py --help`。`--kind stage-unit`驗來源／隔離／拒收，`--kind stage-game`驗兩類完整Game.Draw；`unit`、`hud`、`regression`與`game`保留舊一般地圖、文字／頭像、HUD及滿背包交易回歸。明示`--catalog`、`--pack`、不存在的`--out`前綴與有界`--timeout`。私人實體包唯讀掛載並加`--require-real-runtime`，兩包皆完整跑兩類。固定原包、seed7、clock1000，user1000、network none、6GiB／2CPU／256 pids，Xvfb由工具有界管理。
 
 精確前綴、來源快照、修改前反例、跨包比較與記憶體事件依HD主收據reward_message_stage_hd_followup_20261025，唯一數量表為58。像素主題控制組仍是同一remake，未新增原版執行器、正常通關或平台聲明；城堡地形與介面框線仍為像素，完整HD與集中人工驗收未完成。
+
+## 滿背包獎勵問句與回覆的 HD 呈現（READY，2026-10-25）
+
+沿用 `docs/data/ida/fd2_death_reward_full_inventory_ida.txt` 的 `sub_1AA56`、
+既有 typed campaign 產生器及 `fd2_ch23_post_ida.txt` 的背景契約。
+原版輸入為 FD2.EXE，357074 bytes，SHA-256
+`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。
+IDA 版本、原始線性位址、指令與呼叫關係依上述主證據，屬已證實的既有規則。
+本切片只替換顯示來源，不新增原版語意或重新反組譯。
+
+原始字串與 DATO → 既有解碼器 → 原生問句／逐字回覆／八槽選擇器 →
+HD 字型、480 頭像與同次凍結世界。原生十張開框、四張選項收合、五張關框與
+還原、十二拍回覆等待、十二張選擇器開關及關閉後才替換物品的規則保持。
+拒絕與 Escape 不改物品；選擇器 Escape 重新展開放棄訊息；多筆獎勵逐筆續行。
+不改存檔欄位、結算、RNG、選項位置或輸入。
+
+HD 問句與回覆明示綁定原生工作的階段，不從畫面猜測。使用既有原生產生器
+重新合成可清除原生字墨的面板，另捕捉向量文字；逐字回覆只發布已寫入的字。
+後寫的原生 16×16 清底區裁掉較早的 HD 字墨，保留原生陰影邊界。
+移動面板同步位移並裁切文字與頭像。以兩種初始背景證明實際覆寫範圍，
+只讓這些像素覆蓋 HD 世界。框線與 YES／NO 沿原生素材，完整介面美術另列。
+
+場景沿既有密封 compound 快照，保存 typed input、work／VGA、palette 與 map23
+當次 staging。問句及回覆使用同次背景；八槽選擇器沿既有正常地圖重繪與 HD 面板。
+F2 在發布前重驗場景、原生面板工作與來源，不能讀後續 live stage 取代問句快照。
+來源或工作不符原子拒收，舊像素／頭像主題保留。
+
+驗收包含問句、NO、Escape、接受並丟棄、選擇器取消、多筆佇列、文字逐字遮蓋、
+各轉場與返回、F2 原子拒收、同程式像素控制及 map23 凍結隔離。
+正式 Game.Draw 與最終 1920 畫布抽樣需核對背景、頭像與文字。
+限定受控 RUNTIME-E1；不新增 FD2.EXE 對拍、正常玩家或平台聲明。
+完整 HD、集中人工與平台閘門維持開啟。
+
+### 滿背包HD的驗證範圍（CONFORMED-SCOPED／RUNTIME-E1）
+
+前述READY已實作。問句、逐字放棄回覆、選擇器取消回覆、HD頭像與同次背景已串接，原生交易與時點保持。兩包完整Game.Draw、像素控制、F2、返回及來源拒收通過；一般地圖來源亦驗證。唯一數量、來源快照、記憶體事件及診斷分類依58與HD主收據`full_inventory_reward_hd_followup_20261025`。
+
+重跑使用維護中的Go Docker與`python3 tools/verify_fd2_reward_message_hd.py --help`；`full-unit`驗文字／來源，`full-game`跑五分支，`regression`、`unit`與`hud`保留原有交易及共用介面。明示`--catalog`、`--pack`、不存在的`--out`前綴及有界`--timeout`；原包唯讀掛到`/original`，私人實體包唯讀掛到`/private`並加`--require-real-runtime`。完整矩陣採user1000、network none、6GiB／2CPU／256 pids，Xvfb生命週期由工具管理。框線與YESNO未HD，完整HD與集中正常／人工／平台仍未完成。

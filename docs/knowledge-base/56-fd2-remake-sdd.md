@@ -1,6 +1,8 @@
 # 56 — FD2 remake 系統設計規格（SDD，2026-08-09）
 
-戰後物品／金錢成功訊息已接上同次地圖23背景，限定CONFORMED-SCOPED／RUNTIME-E1。沿既有密封場景保存原生before-acted來源，每次F2驗簽章、原生重組與面板底圖。完整開框／等待／關框、文字與480頭像裁切、結算、原圖控制組及HD返回通過。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的reward_message_stage_hd_followup_20261025。原版RE與規則保持，沒有新素材／清冊；滿背包問句、其他提示／HUD、地形、HD2與全部HD後集中正常／人工／平台仍待。
+滿背包獎勵的問句、逐字放棄回覆與八槽選擇器銜接已接HD，限定CONFORMED-SCOPED／RUNTIME-E1。沿既有原生規則與密封背景，HD字型、480頭像、F2與返回保持同一流程；物品仍只在選擇器關閉後替換。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的full_inventory_reward_hd_followup_20261025。框線與YESNO仍為像素；其他提示／HUD、地形／HD2／工具列及全部HD後集中正常／人工／平台仍待。
+
+戰後物品／金錢成功訊息已接上同次地圖23背景，限定CONFORMED-SCOPED／RUNTIME-E1。沿既有密封場景保存原生before-acted來源，每次F2驗簽章、原生重組與面板底圖。完整開框／等待／關框、文字與480頭像裁切、結算、原圖控制組及HD返回通過。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的reward_message_stage_hd_followup_20261025。原版RE與規則保持，沒有新素材／清冊；滿背包問句現況依本頁新摘要，其他提示／HUD、地形、HD2與全部HD後集中正常／人工／平台仍待。
 
 移位物品的雙段單位轉場已保留同次地圖23背景，限定CONFORMED-SCOPED／RUNTIME-E1。每段各自封存stage、地形及LMI快照；F2即使已有快取也重驗背景。兩種18／24列順序的完整Game.Draw、獨立CPU條帶、結算與HD返回，以及普通地圖／故事caller回歸通過。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的unit_present_stage_hd_followup_20261025。原生背景writer經狹義IDA複核，未重跑FD2.EXE；其他可達消費端、地形、HD2與全部串接後的集中正常／人工／平台仍待。
 

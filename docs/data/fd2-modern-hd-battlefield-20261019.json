@@ -227290,5 +227290,307 @@
       "images_rebuilt": false,
       "other_projects_touched": false
     }
+  },
+  "full_inventory_reward_hd_followup_20261025": {
+    "status": "CONFORMED-SCOPED",
+    "layer": "RUNTIME-E1",
+    "full_hd_complete": false,
+    "normal_player_complete": false,
+    "base_commit": "e6168f2e956b65ce6a245847ed1bb6d2c0f1694a",
+    "issue": 275,
+    "source_snapshot": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/full-reward-source-snapshot-r4.json",
+      "sha256": "76a932b5bf9e66e69ed05ff4a0ea2521da61d2d58dbf899d402f53557fd244c7"
+    },
+    "source_files": 1132,
+    "gates": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/full-reward-unit-r2.gate.json",
+        "sha256": "0fe94bb187134cc75a470639d712287095af4b737667b51b0b4df8bcffd09cbd"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/full-reward-game-r4.gate.json",
+        "sha256": "d9907405af18943dd5f83fcecb671c133476013bc51db4b6f5c4de687ac7cb35"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/full-reward-private-game-r4.gate.json",
+        "sha256": "a7141abe52c1d1244cf32dc470b20a9041c2285f393d9f45c4d0c2fec64712df"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/full-reward-regression-r1.gate.json",
+        "sha256": "a57649487a4205282de6935cd5d7695e6d66e709fbb9f7f08c01887a8db759f7"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/full-reward-unit-r3.gate.json",
+        "sha256": "d3fd6ebaf723b96ab686331e418bbd6534d08116726457e16c7ec28c2a2fed11"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/full-reward-hud-r3.gate.json",
+        "sha256": "dc292ac67c24be3e01b7ec497b3fecd91f3f90ad326113cf1e6621ed1ec4e956"
+      }
+    ],
+    "test_instances": 25,
+    "distinct_tests": 24,
+    "string_tests": {
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/full-reward-string-tests-r3.memory.json",
+        "sha256": "3c206905d0a1ae07c949d4411d87befd80f18a3efa434e4aa70cf69d816996de"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/full-reward-string-tests-r3.log",
+        "sha256": "eb184215fcb026ece8feb8ec4805950e138d0bcb3b5255a036a68194f1571ea4"
+      }
+    },
+    "coverage": {
+      "cases": 5,
+      "game_frames": 291,
+      "f2_boundaries": 40,
+      "continuations": 5,
+      "pngs": 10
+    },
+    "evidence": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/full-reward-game-r4-capture/receipt.json",
+        "sha256": "d4cfa34265d8daf58a160851ad907a071a403d5f30de6cab5b4e33fe060112a2"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/full-reward-private-game-r4-capture/receipt.json",
+        "sha256": "d4cfa34265d8daf58a160851ad907a071a403d5f30de6cab5b4e33fe060112a2"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/full-reward-cross-pack-r3.json",
+        "sha256": "84e6bdce2afc4532680d1429177bf4af342f9bacb5774a98eb2b034955a14a30"
+      }
+    ],
+    "cross_pack": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/full-reward-cross-pack-r3.json",
+      "sha256": "84e6bdce2afc4532680d1429177bf4af342f9bacb5774a98eb2b034955a14a30"
+    },
+    "readme_overview": {
+      "file": "docs/figures/hd-full-inventory-reward.png",
+      "sha256": "55259c261c52daf9a64864cea41633f849588f56bc1e4434dfc38f3c4b92414b"
+    },
+    "readme_recipe": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/full-reward-overview-r3.json",
+      "sha256": "9c826b65cb799407a12eeb6c673518ae05f8cc5638312c07eeb49250c9ad313e"
+    },
+    "memory": {
+      "full-reward-unit-r2": {
+        "peak_bytes": 3721220096,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "full-reward-game-r4": {
+        "peak_bytes": 5508820992,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "full-reward-private-game-r4": {
+        "peak_bytes": 6442455040,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 614,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "full-reward-regression-r1": {
+        "peak_bytes": 1282256896,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "full-reward-unit-r3": {
+        "peak_bytes": 576540672,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "full-reward-hud-r3": {
+        "peak_bytes": 622366720,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "full-reward-string-tests-r3": {
+        "peak_bytes": 70561792,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      }
+    },
+    "counterexample": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/full-reward-before-r2.log",
+        "sha256": "1a16a3e1f53b52ea6a4bd222497fbc2652a65cfe55ba7cfbec7a58e78ff6baf3"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/full-reward-before-r2.memory.json",
+        "sha256": "4719a2141725e7955513461392c4ec97fee5ea0ad75a837fde18bdc3501413a3"
+      }
+    ],
+    "diagnostics": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/full-reward-before-r1.log",
+        "sha256": "93b85cacf7db11899ac07f782b2d252f1617de3252b870819e48da8234e69820"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/full-reward-private-game-r1.log",
+        "sha256": "dd93a2cb7241108582d010d9d740f2a6d3080924530cdf5b6235fd057a9abf21"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/full-reward-private-game-r1.memory.json",
+        "sha256": "b1882b8255a810d4353e519d676e8a5c98f57624df401fa261ea9567a6fed32d"
+      }
+    ],
+    "diagnostic_notes": [
+      "before-r1因未提供明示圖包而SKIP，不作反例；before-r2在base_commit原程式重現問句缺HD文字／頭像。",
+      "private-game-r1因Go1.21迴圈閉包誤捕捉控制組而續行計數失敗；只修測具。game-r2提前停止避免重複已知失敗；保留原日誌。",
+      "r2到r4只改GPU測具的迴圈區域副本及NO取消路由；r3誤用無條件接受介面而提前停止；full-unit-r2沿同一正式程式，其他選定回歸不使用該GPU測具。"
+    ],
+    "initial_state": {
+      "fixture": "rewardStageGame + makeNativeDeathRewardKiller",
+      "map_index": 23,
+      "map_selector_key": 0,
+      "portrait_dato": 0,
+      "inventory": [
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      "item": 211,
+      "queued_item": 212,
+      "gold": 123,
+      "native_seed": 7,
+      "fixed_clock_unix": 1000
+    },
+    "cases": [
+      "NO",
+      "Escape",
+      "YES後丟棄第4槽",
+      "YES後選擇器Escape",
+      "兩筆獎勵依序Escape"
+    ],
+    "original": {
+      "file": "FD2.EXE",
+      "bytes": 357074,
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+      "evidence": "docs/data/ida/fd2_death_reward_full_inventory_ida.txt",
+      "level": "沿既有已證實RE；本輪未重跑EXE"
+    },
+    "replay": {
+      "tool": "tools/verify_fd2_reward_message_hd.py",
+      "kinds": [
+        "full-unit",
+        "full-game",
+        "regression",
+        "unit",
+        "hud"
+      ],
+      "go_image": "fd2-go-test-local:latest",
+      "image_id": "sha256:e4a805c52a3ad5d8c22cf23f2bcf51c6924e5ad6b99554f1b02761903c725433",
+      "network": "none",
+      "uid": 1000,
+      "cpus": 2,
+      "memory": "6GiB",
+      "pids_limit": 256,
+      "timeout_seconds": 1200,
+      "original_mount": "/original:ro",
+      "private_mount": "/private:ro",
+      "independent_runtime_required": true
+    },
+    "unchanged": {
+      "catalog_sha256": "c1b2c20ee56bf2e45324155829f9778bfff14a25d9edce9d06dc56f2074d42df",
+      "private_head": "06e09c2750c8be449d187a80807e0159930adebe",
+      "art": true,
+      "game_rules": true,
+      "save_format": true
+    },
+    "limits": [
+      "受控RUNTIME-E1，像素控制組是同一remake，未新增原版oracle、正常玩家或平台聲明",
+      "城堡與框線／YESNO仍為原生像素；HD材質與RGB沿既有美術近似",
+      "完整HUD、其他提示、地形／HD2、獨立介面控制、浮出工具列／加速／海報及集中正常／人工／平台仍待"
+    ],
+    "ownership": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/full-reward-ownership-r4.json",
+      "sha256": "eedd4b6959f2253d8216539e8164056ca2a0cbad13639c5c07679292bcdfd715"
+    },
+    "links": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/full-reward-links-r4.json",
+      "sha256": "f82220c515d23fce5643c6a9bb1d2541945e70060d14dcba27804ff8f59e10d7"
+    },
+    "cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/full-reward-cleanup-r4.json",
+      "sha256": "5b7ded49f14cbb4698db4141adb8e7c1e30c5ec33c06ebc113628e441d083de5"
+    },
+    "issue_update": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/full-reward-issue-check-r4.json",
+      "sha256": "dbcd0cc25f453348f4828f77ce0ed7c5c12ef3f38aa452633ffaa3051e8244eb"
+    },
+    "worklist_verify": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/full-reward-worklist-r4.log",
+      "sha256": "e79d11a27482e9cc12c4e999fa07e97f07ee544b5952cb8172731e116b8f7af3"
+    },
+    "lesson_guards": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/full-reward-lessons-r4.log",
+      "sha256": "5b4ed4bf4b31d338663168cbf64fe41c6bf66e33879f9e76e219d407dcf3af49"
+    },
+    "string_inventory": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/full-reward-string-inventory-r1.json",
+      "sha256": "1f1fe1c5157180a8e29d4b20c49c907540160df1915bcb4086af1b7472c212b3"
+    },
+    "string_review_sha256": "e62d0478c6aa38da21dfb35fea04a76348e7417db9611224b9a34c29db60f6a2",
+    "docker_cleanup": {
+      "status": "PASS",
+      "unexpected_test_containers": 0,
+      "images_rebuilt": false,
+      "other_projects_touched": false
+    }
   }
 }

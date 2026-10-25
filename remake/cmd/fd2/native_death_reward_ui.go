@@ -4,6 +4,7 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 	"github.com/wicanr2/fd2_re/remake/internal/dato"
+	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 )
 
 type pendingNativeDeathReward struct {
@@ -17,6 +18,7 @@ type nativeDeathRewardUIState struct {
 	portrait          dato.Frame
 	item, selected    int
 	source, dialogue  []byte
+	hd                *modernHDFullReward
 }
 
 type nativeDeathRewardInput struct {
@@ -95,6 +97,23 @@ func (g *Game) runPendingNativeDeathRewards(then func()) bool {
 		killer: pending.killer, previousSelection: g.sel, portrait: portraits[0],
 		item: pending.item, selected: -1, source: source, dialogue: dialogue,
 	}
+	in, inputErr := g.freezeNativeCommand9MapInput()
+	palette, paletteErr := fdother.VGAPaletteFromDAC(g.nativeMapDAC)
+	if inputErr == nil {
+		inputErr = paletteErr
+	}
+	prompt.hd = &modernHDFullReward{scene: g.newModernHDCompoundMapScene(in, g.nativeMapWork, source, palette, inputErr),
+		ui: ui, question: question, canceled: canceled, kind: fullRewardOpening}
+	prompt.hd.seal = modernHDFullRewardSeal(prompt)
+	if g.modernStoryPortraits != nil {
+		prompt.hd.world, err = g.prepareModernHDFullRewardWorld(prompt, g.modernStoryPortraits)
+		if err != nil {
+			g.clearNativeItemPanel()
+			g.loadErr = "modern HD full reward: " + err.Error()
+			return true
+		}
+		prompt.hd.theme = g.modernStoryPortraits
+	}
 	g.pendingNativeDeathRewards = g.pendingNativeDeathRewards[1:]
 	g.nativeDeathRewardUI = prompt
 	g.nativeDeathRewardThen = then
@@ -109,6 +128,7 @@ func (g *Game) runPendingNativeDeathRewards(then func()) bool {
 	g.msg = ""
 	g.resetNativeClassUIPulse()
 	g.nativeClassUIJob = &nativeClassUIJob{frames: frames}
+	g.bindModernHDFullReward(fullRewardOpening)
 	return true
 }
 
@@ -213,6 +233,7 @@ func (g *Game) beginNativeDeathRewardSelectorCancel(prompt *nativeDeathRewardUIS
 	g.nativeClassUIJob = &nativeClassUIJob{frames: frames, after: func() {
 		g.nativeSystemEndTurnDelay = nativeSystemEndTurnDelayFrames
 	}}
+	g.bindModernHDFullReward(fullRewardCancelOpening)
 }
 
 func (g *Game) finishNativeDeathRewardUI() {

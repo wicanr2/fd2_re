@@ -29,6 +29,7 @@ type modernHDTextFrame struct {
 type modernHDIndexedText struct {
 	runs    []modernHDTextRun
 	palette color.Palette
+	writes  *[]modernHDGlyphWrite
 }
 
 func modernHDNativeTextColor(palette color.Palette, index byte) color.RGBA {

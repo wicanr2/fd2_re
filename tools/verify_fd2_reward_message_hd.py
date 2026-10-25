@@ -13,6 +13,8 @@ from verify_fd2_player9_map_hd import check_real_runtime
 
 ROOT = Path(__file__).resolve().parents[1]
 REQUIRED = {
+    "full-unit": {"TestModernHDFullRewardQuestion", "TestModernHDFullRewardGlyphClears", "TestModernHDFullRewardSource"},
+    "full-game": {"TestModernHDFullRewardGameGPU"},
     "stage-unit": {"TestModernHDRewardStageSource"},
     "stage-game": {"TestModernHDRewardStageGameGPU"},
     "hud": {"TestNativeMessageCloseRedrawsHUDAfterRestoreDraw", "TestInputAuditTracksDeathRewardMessageOwner"},
@@ -43,10 +45,12 @@ def main():
         raise ValueError("不覆寫收據")
     env = os.environ.copy()
     env.pop("FD2_HD_REWARD_STAGE_GPU", None)
+    env.pop("FD2_HD_FULL_REWARD_GPU", None)
     env.update(FD2_MUTE="1", FD2_HD_REWARD_GPU="1", FD2_TEST_REWARD_CATALOG=str(a.catalog.resolve()),
                FD2_TEST_REWARD_PACK=str(a.pack.resolve()), FD2_TEST_REWARD_OUT=str(a.out)+"-capture")
     env.update(FD2_TEST_UNIT_PRESENT_CATALOG=str(a.catalog.resolve()), FD2_TEST_UNIT_PRESENT_PACK=str(a.pack.resolve()))
     if a.kind == "stage-game": env["FD2_HD_REWARD_STAGE_GPU"] = "1"
+    if a.kind == "full-game": env["FD2_HD_FULL_REWARD_GPU"] = "1"
     physical = check_real_runtime(a.pack, json.loads(a.catalog.read_text())) if a.require_real_runtime else None
     command = [sys.executable, str(ROOT/"tools/fd2_go_test_memory_probe.py"), "--out", str(a.out),
                "--timeout", str(a.timeout), "--", "with-xvfb", "go", "test", "-json", "-count=1",
@@ -65,6 +69,23 @@ def main():
         receipt = json.loads(Path(str(a.out)+"-capture/receipt.json").read_text())
         if receipt["status"] != "PASS-REWARD-HD-RUNTIME-E1" or receipt["cases"] != 2 or receipt["game_frames"] != 26 or receipt["f2_round_trips"] != 26:
             raise ValueError("完整兩種成功訊息缺項")
+    if a.kind == "full-game":
+        d = json.loads(Path(str(a.out)+"-capture/receipt.json").read_text())
+        if (d.get("status") != "PASS-FULL-REWARD-HD-RUNTIME-E1" or d.get("cases") != 5
+                or d.get("map_index") != 23 or d.get("native_seed") != 7 or d.get("fixed_clock_unix") != 1000
+                or d.get("normal_player_verified") is not False or d.get("continuations") != 5
+                or d.get("f2_boundaries", 0) < 30):
+            raise ValueError("滿背包五分支或F2邊界缺項")
+        for case in range(5):
+            rows = [r for r in d.get("rows", []) if r.get("case") == case]
+            phases = {r.get("phase") for r in rows}
+            required = {"yes-no", "return", "job-0", "job-2", "job-3"}
+            required |= {"item-open", "item-choice", "item-close"} if case in (2, 3) else {"job-4", "response-hold"}
+            if case == 3: required |= {"job-5", "job-6", "response-hold"}
+            if not required <= phases or any(r.get("native_control_unchanged") is not True for r in rows):
+                raise ValueError("滿背包分支轉場或原圖控制組缺項")
+            if any(not re.fullmatch("[0-9a-f]{64}", r.get(k, "")) for r in rows for k in ("world_sha256", "final_sha256")):
+                raise ValueError("滿背包畫布雜湊缺項")
     if a.kind == "stage-game":
         capture = Path(str(a.out)+"-capture")
         d = json.loads((capture/"receipt.json").read_text())

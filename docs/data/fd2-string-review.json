@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
   "kind": "fd2_string_review",
-  "inventory_sha256": "b309eea9c38944253de55d3ecefeb661cb0e6bf54a0489ec8b4881d6c8bcf0dc",
+  "inventory_sha256": "1f1fe1c5157180a8e29d4b20c49c907540160df1915bcb4086af1b7472c212b3",
   "reviewed_role": "go_review",
   "dispositions": {
     "player_visible": {
       "rationale": "會由正式視窗、戰鬥訊息、結局提示或玩家錯誤回饋消費。",
       "string_ids": [
         "legacy.go.remake.cmd.fd2.action_overlay_runtime.l414-c15",
-        "legacy.go.remake.cmd.fd2.action_overlay_runtime.l637-c17",
+        "legacy.go.remake.cmd.fd2.action_overlay_runtime.l638-c17",
         "legacy.go.remake.cmd.fd2.ai_spell_execute.l80-c22",
         "legacy.go.remake.cmd.fd2.ending_preview.l815-c10",
         "legacy.go.remake.cmd.fd2.ending_preview.l818-c10",
@@ -127,7 +127,7 @@
     "unknown": {
       "rationale": "消費端或正式文字角色尚未證實，維持失敗即關閉且不建立正式翻譯鍵。",
       "string_ids": [
-        "legacy.go.remake.cmd.fd2.action_overlay_runtime.l693-c19",
+        "legacy.go.remake.cmd.fd2.action_overlay_runtime.l696-c19",
         "legacy.go.remake.cmd.fd2.main.l3299-c16",
         "legacy.go.remake.cmd.fd2.main.l3299-c47",
         "legacy.go.remake.cmd.fd2.main.l8011-c26"

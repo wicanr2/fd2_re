@@ -73,6 +73,13 @@ func (g *Game) applyTheme(set *modernStoryPortraitSet) error {
 		return err
 	}
 	var rewardWorld *modernHDMapFrame
+	var fullRewardWorld *modernHDMapFrame
+	if p := g.nativeDeathRewardUI; set != nil && p != nil {
+		fullRewardWorld, err = g.prepareModernHDFullRewardWorld(p, set)
+		if err != nil {
+			return err
+		}
+	}
 	if state := g.nativeSystemEndTurnUI; set != nil && state != nil && state.rewardMessage != nil {
 		var err error
 		rewardWorld, err = g.prepareModernHDRewardWorld(state.rewardMessage, state.source, set)
@@ -216,6 +223,9 @@ func (g *Game) applyTheme(set *modernStoryPortraitSet) error {
 	publishUnitPresent()
 	publishIndexedTransition()
 	publishCompoundMap()
+	if p := g.nativeDeathRewardUI; p != nil && p.hd != nil {
+		p.hd.world, p.hd.theme = fullRewardWorld, set
+	}
 	if state := g.nativeSystemEndTurnUI; state != nil && state.rewardMessage != nil {
 		state.rewardMessage.hdWorld, state.rewardMessage.hdTheme = rewardWorld, set
 	}

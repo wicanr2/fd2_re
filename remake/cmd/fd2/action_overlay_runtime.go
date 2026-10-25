@@ -627,6 +627,7 @@ func (g *Game) finishNativeSystemEndTurnChoice(accepted bool) {
 				g.itemClosing = false
 				g.itemOpen = true
 			}}
+			g.bindModernHDFullReward(fullRewardBlankClosing)
 			return
 		}
 		if accepted && state.saveCurrent {
@@ -659,7 +660,9 @@ func (g *Game) finishNativeSystemEndTurnChoice(accepted bool) {
 			}
 			g.nativeSystemEndTurnDelay = nativeSystemEndTurnDelayFrames
 		}}
+		g.bindModernHDFullReward(fullRewardResponse)
 	}}
+	g.bindModernHDFullReward(fullRewardChoiceClosing)
 }
 
 func (g *Game) stepNativeSystemEndTurn() {
@@ -707,6 +710,11 @@ func (g *Game) stepNativeSystemEndTurn() {
 				}
 			}
 		}}
+		kind := fullRewardBlankClosing
+		if state.deathReward != nil && state.deathReward.hd != nil && state.deathReward.hd.kind == fullRewardCancelOpening {
+			kind = fullRewardCancelClosing
+		}
+		g.bindModernHDFullReward(kind)
 	}
 }
 
@@ -784,6 +792,9 @@ func (g *Game) drawNativeSystemEndTurn(screen *ebiten.Image) bool {
 		return false
 	}
 	if g.drawModernHDRewardMessage(screen) {
+		return true
+	}
+	if g.drawModernHDFullReward(screen) {
 		return true
 	}
 	if g.drawNativeClassUIJob(screen) {
