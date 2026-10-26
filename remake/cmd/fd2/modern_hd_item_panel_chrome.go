@@ -73,7 +73,13 @@ func (g *Game) ensureModernHDItemPanelChrome(d *nativeUnitStatusData, palette co
 		g.loadErr = err.Error()
 		return false
 	}
+	values, err := prepareModernHDItemPanelValues(d, palette, g.font)
+	if err != nil {
+		g.loadErr = err.Error()
+		return false
+	}
 	d.itemChrome = frame
+	d.itemValues = values
 	return true
 }
 
@@ -86,7 +92,16 @@ func (g *Game) preflightModernHDItemPanel(d *nativeUnitStatusData, palette color
 		g.loadErr = err.Error()
 		return false
 	}
+	var values *modernHDItemPanelValues
+	if g.font != nil {
+		values, err = prepareModernHDItemPanelValues(d, palette, g.font)
+		if err != nil {
+			g.loadErr = err.Error()
+			return false
+		}
+	}
 	d.itemChrome = art
+	d.itemValues = values
 	return true
 }
 
@@ -119,7 +134,13 @@ func modernHDItemPanelPlacements(c *modernHDItemPanelChrome, regions []battle.Na
 
 func (g *Game) appendModernHDItemPanelChrome(d *nativeUnitStatusData, regions []battle.NativeItemPanelRegion) {
 	if g.modernHDText != nil && d != nil {
-		g.modernHDText.panels = append(g.modernHDText.panels, modernHDItemPanelPlacements(d.itemChrome, regions)...)
+		panels := modernHDItemPanelPlacements(d.itemChrome, regions)
+		for i := range panels {
+			if panels[i].chrome == &d.itemChrome.frames[1] {
+				panels[i].values = d.itemValues
+			}
+		}
+		g.modernHDText.panels = append(g.modernHDText.panels, panels...)
 	}
 }
 
@@ -128,8 +149,9 @@ func (g *Game) stageModernHDItemPanels(set *modernStoryPortraitSet) (func(), err
 		return func() {}, nil
 	}
 	type pending struct {
-		data *nativeUnitStatusData
-		art  *modernHDItemPanelChrome
+		data   *nativeUnitStatusData
+		art    *modernHDItemPanelChrome
+		values *modernHDItemPanelValues
 	}
 	var staged []pending
 	add := func(data *nativeUnitStatusData, palette color.Palette) error {
@@ -137,8 +159,12 @@ func (g *Game) stageModernHDItemPanels(set *modernStoryPortraitSet) (func(), err
 			return nil
 		}
 		art, err := prepareModernHDItemPanelChrome(data, palette)
+		var values *modernHDItemPanelValues
+		if err == nil && g.font != nil {
+			values, err = prepareModernHDItemPanelValues(data, palette, g.font)
+		}
 		if err == nil {
-			staged = append(staged, pending{data, art})
+			staged = append(staged, pending{data, art, values})
 		}
 		return err
 	}
@@ -170,6 +196,7 @@ func (g *Game) stageModernHDItemPanels(set *modernStoryPortraitSet) (func(), err
 	return func() {
 		for _, item := range staged {
 			item.data.itemChrome = item.art
+			item.data.itemValues = item.values
 		}
 	}, nil
 }

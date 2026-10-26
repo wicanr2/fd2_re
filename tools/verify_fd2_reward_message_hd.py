@@ -13,6 +13,7 @@ from verify_fd2_player9_map_hd import check_real_runtime
 
 ROOT = Path(__file__).resolve().parents[1]
 REQUIRED = {
+    "item-values-unit": {"TestModernHDItemPanelValuesSourcesAndBounds", "TestModernHDItemPanelValuesFreezeAndAtomicTheme", "TestModernHDItemPanelChromeSourceAndGeometry", "TestModernHDItemPanelChromeFreezeAndStaging", "TestModernHDDialogueChromeSourceAndPatch"},
     "item-panel-unit": {"TestModernHDItemPanelChromeSourceAndGeometry", "TestModernHDItemPanelChromeFreezeAndStaging", "TestModernHDDialogueChromeSourceAndPatch"},
     "item-panel-regression": {"TestModernHDStatusSnapshotMatchesLegacyComposition", "TestModernHDStatusChurchAndPlayerKeepIndexedTransitions",
                               "TestModernHDPanelRegionsMoveBothTextAndClip", "TestModernHDStatusTransitionsKeepSnapshotAndIndexedCache",
@@ -98,6 +99,12 @@ def main():
                 raise ValueError("滿背包分支轉場或原圖控制組缺項")
             if any(not re.fullmatch("[0-9a-f]{64}", r.get(k, "")) for r in rows for k in ("world_sha256", "final_sha256")):
                 raise ValueError("滿背包畫布雜湊缺項")
+        if d.get("item_values") is not True or d.get("item_values_pixels", 0) <= 0:
+            raise ValueError("物品面板HD血條核對缺項")
+    if a.kind == "item-panel-status":
+        d = json.loads(Path(str(a.out)+"-capture/receipt.json").read_text())
+        if d.get("item_values") is not True or d.get("item_values_pixels", 0) <= 0 or d.get("frames") != 41 or d.get("f2_roundtrips") != 9:
+            raise ValueError("完整狀態面板HD數值流程缺項")
     if a.kind == "stage-game":
         capture = Path(str(a.out)+"-capture")
         d = json.loads((capture/"receipt.json").read_text())
@@ -125,7 +132,7 @@ def main():
                 raise ValueError("密封場景或同次stage來源缺項")
     report = dict(status="PASS", kind=a.kind, required=sorted(REQUIRED[a.kind]),
                   catalog_sha256=hashlib.sha256(a.catalog.read_bytes()).hexdigest(), pack=str(a.pack.resolve()),
-                  scope=("受控三區物品／狀態面板；不是正常玩家或原版對拍證據" if a.kind.startswith("item-panel-") else
+                  scope=("受控三區物品／狀態面板；不是正常玩家或原版對拍證據" if a.kind.startswith(("item-panel-", "item-values-")) else
                          "受控滿背包確認選項與交易；不是正常玩家或原版對拍證據" if a.kind.startswith("full-") or a.kind == "confirmation-unit" else
                          "受控物品／金錢成功訊息；不是正常玩家或原版對拍證據"))
     report["independent_runtime_files"] = physical

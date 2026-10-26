@@ -3736,3 +3736,19 @@ README新增物品、金錢、關框及返回四格實圖，原文化入口與�
 - Docker使用既有工具映像，全部清理容器均--rm、init、無網路、UID1000及有界。沒有確認過期的FD2映像、容器或volume，保留現用工具鏈及其他專案資源。擁有權、意外.md目錄及殘留壓縮暫存檔核對皆無異常。
 
 - 收尾讀回GitHub #4／201／202／204／263，五項維持OPEN；遠端25項由官方解析器重建，18項待人判、0項機器訊號消失。358教訓／216守衛通過。私人庫本機與遠端main均為377197837c6566d553ca2895335becba1067b482且工作樹乾淨，沒有新素材同步需求。31項Go及33張PNG沿既有收據重新核對來源與SHA，沒有重跑GPU；[最終核對](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-chrome-final-checks-r1.json)保存結果。原包清冊首用錯誤檔名，改依實檔manifest.json後同雜湊重跑，不是素材缺件。清理後目前HD證據保持；本批提交與推送後另核對本機／遠端HEAD。
+
+
+## 2026-10-26 共用狀態面板固定標籤與血條HD
+
+- 從b100468a的main建立feat/hd-item-panel-values-20261026。先寫61的READY，再沿已閉合0x17EEF／0x17FC0、typed plan與現行上框實圖接十個固定縮寫、兩斜線及HP／MP條。既有數字與溢位符號保持；本批不包含圖示、物品列加成縮寫或完整介面。沒有新素材、平衡、保存格式或原版RE。
+- 上框223×86補繪只覆蓋量測安全區。Noto沿既有有界48到24目標像素，十標籤／兩斜線取各自原圖最亮非底色；條長沿signed原生規則，只裁切呈現。record、原框、raw23..30與色盤封存，F2先全部預備後發布；補繪跟同一原生copy區位移及裁切。
+- 首版Go自洽核對通過，實際PNG卻有深色方塊與低對比；entry13對話底色與entry20上框不同，一般字模205亦不代表固定標籤墨色。按原圖改取上框local(100,70)及實際glyph bbox，補直接背景回歸；原錯圖保留作反例，不把首版當成果。兩個仍存活的r1 GPU明確停止後退出143，不報產品signal killed或OOM。
+- 首兩次容器預檢使用不存在的runtime子目錄與相對輸出路徑，Go尚未執行；沿先前正式包根與絕對路徑修正。修正後的[命令與診斷](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-values-commands-r1.json)及[Go來源快照](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-values-go-sources-r2.json)保留。最終環境明示GOMAXPROCS=2與LP_NUM_THREADS=2配合2CPU容器，屬驗證資源設定，不是玩家規則或平台效能聲明。
+- 最終28項頂層Go通過，零SKIP／失敗，含兩項正式JSON原子保存／新實例LOAD。兩條完整Game.Draw共332畫格／49個主要F2邊界及五次續行，另48組四語確認／16次F2；只讀私人6062份獨立runtime，無新圖包。
+- 33張完整PNG獨立核對，Go血條2910600點、PNG血條582120點與標籤墨跡110860點。25張圖替換區外56350368個RGBA像素與前版相同；53個收據反例、兩張真實舊圖及首版錯底色圖均拒收。獨立反例曾選到條被裁掉的零點畫格，改選可見條的正對照後同PNG通過，只改Python檢查器，未重跑GPU。
+- 集中GPU560.709秒、峰值8589934592 bytes觸8GiB配額，memory.events.max=243，OOM／kill零；狀態411.081秒／4983775232 bytes，8GiB／2CPU且events全零。來源104.519秒／1424879616 bytes、介面105.723秒／1401401344 bytes、交易146.031秒／1511899136 bytes，4GiB／2CPU且events全零。保存回歸另依主收據，沒有由集中測試推論平台餘裕。
+- 61由READY轉CONFORMED-SCOPED／RUNTIME-E1；56／57／58與README同步現況。README將同一物品／狀態總覽入口換成當前標籤／條，舊圖仍由先前主收據保存，文化內容與145張圖片數量保持。正式清冊、原包、EXE、來源槽及私人庫保持，沒有新美術同步需求。
+- [本批主收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的item_panel_values_followup_20261026索引來源、完整命令、兩條收據、獨立PNG核對、實圖反例及[清理紀錄](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-values-cleanup-r1.json)。相同歸檔輸出按SHA合併，33路徑內容驗證保持；沒有錄影或留存測試執行檔，現用Go快取保留。圖示、物品／指令列縮寫與其他HD、全部串接後集中正常／人工／平台仍待，完整目標保持。
+- 收尾五張GitHub工單已逐內文讀回並維持OPEN，原acceptance／evidence／verify未改；官方解析器重建25項，18項待人判、0項機器訊號消失。359教訓／217守衛通過。工單準備曾誤把parse_issue的(item,error)視為字典，只續跑準備段修正，收據、文件登錄與清理未重做。私人庫本機／遠端main均為377197837c6566d553ca2895335becba1067b482且工作樹乾淨。
+- [最終核對](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-values-final-checks-r1.json)保存來源、28項Go、33張PNG、文化入口與連結結果。現況過期標籤／條限制搜尋為零，僅一筆當時工作歷程仍記舊待辦，不據此重開。沒有非預期FD2容器；本批重大更新提交／推送main後另核對本機／遠端HEAD，完整HD目標保持。
+- 工單最終差異審查發現首版更新覆蓋了原說明後段，已由更新前遠端原文恢復，只替換本批進度前兩段。五張工單各保留9／8／9／10／10段既有說明與使用者定案，逐段讀回相同；原驗收欄位未變。官方重新pull／render／verify通過，[工單讀回](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-values-issue-readback-r2.json)及[取代前版的最終核對](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-values-final-checks-r2.json)保存結果。Go、PNG及原始輸入保持，不重跑GPU。

@@ -18,6 +18,7 @@ type nativeUnitStatusData struct {
 	commandIDs             []int
 	commandBook            []battle.NativeCommandRecord
 	itemChrome             *modernHDItemPanelChrome
+	itemValues             *modernHDItemPanelValues
 }
 
 func (d *nativeUnitStatusData) compose(assets battle.NativeItemPanelDataAssets, commands bool) ([]byte, bool) {

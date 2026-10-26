@@ -237118,7 +237118,7 @@
       "HD以三目標像素重畫框線並清除舊18像素邊帶；同來源色盤與原生複製範圍保持，屬明示美術近似。",
       "下方美術框99列與原生102列複製範圍分列；padding保留，不按複製高度猜圖框。",
       "受控Game.Draw與直接controller操作，不新增一般鍵盤玩家、自然取得指令或平台驗收聲明。",
-      "圖示、英數標籤與狀態頁HP／MP條仍沿既有原生圖源；其他確認caller及完整介面、HD2、獨立控制與工具列仍待。",
+      "圖示與物品列加成縮寫仍沿原生圖源；上框固定標籤及HP／MP條現況依item_panel_values_followup_20261026；其他確認caller及完整介面、HD2、獨立控制與工具列仍待。",
       "GPU配額各8GiB／2CPU，兩個最終流程及單元／回歸memory.events皆零，不由峰值推論平台餘裕。"
     ],
     "diagnostics": [
@@ -237139,13 +237139,448 @@
       }
     ],
     "remaining": [
-      "物品／狀態圖示、英數標籤及HP／MP條的HD呈現",
+      "圖示與物品列加成縮寫仍待；上框固定標籤及HP／MP條依item_panel_values_followup_20261026",
       "其他確認caller、其餘操作介面、地形與HD2",
       "獨立UI／theme、工具列字級／加速／海報及全部HD後集中正常／人工／平台確認"
     ],
     "final_checks": {
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-chrome-final-checks-r1.json",
       "sha256": "d00b0fcd159653ce22d6c43e22870179ec11cbb75845a1a8ba9450f49d5fe951"
+    }
+  },
+  "item_panel_values_followup_20261026": {
+    "status": "CONFORMED-SCOPED / RUNTIME-E1",
+    "scope": "共用物品／狀態面板十固定標籤、兩斜線與HP／MP條",
+    "full_hd_complete": false,
+    "source_evidence": [
+      {
+        "file": "remake/internal/battle/native_item_selector.go",
+        "sha256": "526522da76ffd3b58faf14b93ed78e17fe8d5957db04536640ada7ecc533ffc3"
+      },
+      {
+        "file": "remake/internal/battle/native_item_panel_data_render.go",
+        "sha256": "91cd60414bd893dccf40f78ba34969740191e5c098c0becf766f81f43c9ef8f1"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_panel.go",
+        "sha256": "30a7efa9e5d712d479d2ca05d2cd97486feff2fa0eb368acf18e9b98bd162f23"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_panel_chrome.go",
+        "sha256": "f57fd3578057ab460ee6f8e376ffb59c12d1ccd026ce044b289dfa99da3bcdb6"
+      }
+    ],
+    "original_exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "source_metadata_sha256": "a547f2f593b980fd9c1b269d1ba95be8727562d7ed31b44015615775d991efd3",
+    "normal_player_verified": false,
+    "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+    "sources": [
+      {
+        "file": "remake/cmd/fd2/modern_hd_item_panel_values.go",
+        "sha256": "ba9128f6461198534ca8faa8513861c08538e14fae4c1b0c1b194e1a9d9be9c3"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_item_panel_values_test.go",
+        "sha256": "1ba177b978b92646dc824efd1265e8b5eeff894666d43ce7087951ff0be88998"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_item_panel_values_gpu_test.go",
+        "sha256": "5ec03b835d2a8d1b5eaa0cbc1894c88e69b5cf804be3f09773dc7750a8fce0e2"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_item_panel_chrome.go",
+        "sha256": "4ca93ee67f1caef94c82203818ce26f3ad641310b42d700f8bd7d601c56f38b8"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_status_text.go",
+        "sha256": "f0048f867a4fff9166bccdb01bef74d8703e398c4435f052271e78bd7118295e"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_dialogue_chrome.go",
+        "sha256": "6ebe2233e5716b58e3772e2535e8de895947787e983bee28a161b1c06f2ea17c"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_full_reward_gpu_test.go",
+        "sha256": "872937cabe486b8579e68b48a117e79db1f6cb768d74ac80e91424d02d216068"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_item_panel_status_gpu_test.go",
+        "sha256": "938c11abbaede5b18ffade94b554ac8f49f7f9a8853c62d32d263b360825cd1b"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_item_text.go",
+        "sha256": "e52e7b0e2f4684edbad7c733413a150f94b11f40bf1880ad0f1b7dc753bc9d76"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_panel_transition.go",
+        "sha256": "4bf3d5d51abb55cbeefdba5b2ea436a238a7fdb75959c85925d23e5a7823833a"
+      },
+      {
+        "file": "remake/cmd/fd2/native_item_panel_ui.go",
+        "sha256": "be6dbab4f5ca7d07de6e68ece7574f214615ff22d9e226fe92d6160f59baa88d"
+      },
+      {
+        "file": "remake/cmd/fd2/player_shortcuts.go",
+        "sha256": "ce57a6b0f0ec7a3772bcdca1a3ac26feb8acba3b87aff90d19fe63e60ef2a6ec"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_panel.go",
+        "sha256": "30a7efa9e5d712d479d2ca05d2cd97486feff2fa0eb368acf18e9b98bd162f23"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_panel_chrome.go",
+        "sha256": "f57fd3578057ab460ee6f8e376ffb59c12d1ccd026ce044b289dfa99da3bcdb6"
+      },
+      {
+        "file": "tools/verify_fd2_reward_message_hd.py",
+        "sha256": "7a17a95f6d5d061f76f9bf3a09aa3a06272ec013a25c00e2e7ca12432fc0d2e3"
+      },
+      {
+        "file": "tools/fd2_go_test_memory_probe.py",
+        "sha256": "8e7c9c55b85aa72a5026b944233b94f7c0787f51b3f5ebb178ed54cc333e40f2"
+      },
+      {
+        "file": "tools/verify_fd2_hd_item_panel_values.py",
+        "sha256": "5f0bf3d6232bcc018c5a9ad130eecb78fde0dbdd0581c71bbca65ccdb5605396"
+      },
+      {
+        "file": "tools/verify_fd2_hd_item_panel_chrome.py",
+        "sha256": "cc5f593f3838a6de3aebb6b31ae75ca3752775de8c988e94e4f1cf380d5e9edc"
+      },
+      {
+        "file": "tools/verify_fd2_hd_transient_expiry.py",
+        "sha256": "f1883cbdec84c1e209ba93a9e7143486e7d117abc79eabc517e0f44660e7d126"
+      },
+      {
+        "file": "remake/cmd/fd2/save_test.go",
+        "sha256": "ca3c591b542f3b361bfe8211fd50c5f40441739d8cebc69b8bb95facb0fbb11c"
+      },
+      {
+        "file": "remake/internal/battle/native_item_selector.go",
+        "sha256": "526522da76ffd3b58faf14b93ed78e17fe8d5957db04536640ada7ecc533ffc3"
+      },
+      {
+        "file": "remake/internal/battle/native_item_panel_data_render.go",
+        "sha256": "91cd60414bd893dccf40f78ba34969740191e5c098c0becf766f81f43c9ef8f1"
+      },
+      {
+        "file": "/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22/palette/fdother_000.json",
+        "sha256": "404db1ca72ffc19fa7404fbc59bde98cdf239f63fe3375ec248a8142073a28bf"
+      },
+      {
+        "file": "/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22/ui/fdother_005_item_panel/resource.json",
+        "sha256": "a547f2f593b980fd9c1b269d1ba95be8727562d7ed31b44015615775d991efd3"
+      },
+      {
+        "file": "/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22/ui/fdother_005_item_panel/entry_020/frame.png",
+        "sha256": "bf8a6703cd0ac63748b3fcaebd2829d04ca0ec44ab6d3f208c11c7d5c7ec77c8"
+      },
+      {
+        "file": "/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22/ui/fdother_005_item_panel/entry_023/frame.png",
+        "sha256": "524362c20ae759ae5052db4cde196c77680587702447b1ee86ad070a3ca7483f"
+      },
+      {
+        "file": "/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22/ui/fdother_005_item_panel/entry_024/frame.png",
+        "sha256": "d3f99e3f58a72bbf5b4cb60de5a61952205b6046dd427c52702b72f7c31f6411"
+      },
+      {
+        "file": "/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22/ui/fdother_005_item_panel/entry_025/frame.png",
+        "sha256": "258eb5a082ff28c9bd3ff38439e09e37f2db8adcfed3c3a8ed6fa7d14568e97b"
+      },
+      {
+        "file": "/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22/ui/fdother_005_item_panel/entry_026/frame.png",
+        "sha256": "9d70fd9050c106d494c0038d23bcbe061fc30806bf6712fec7cf513f9262985d"
+      },
+      {
+        "file": "/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22/ui/fdother_005_item_panel/entry_027/frame.png",
+        "sha256": "095daa452440bd2db65543644ed8159c50b32d5451e1044e05cbb0e4e16b95e1"
+      },
+      {
+        "file": "/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22/ui/fdother_005_item_panel/entry_028/frame.png",
+        "sha256": "169e97e2bc9af28e69090b1dd7af3a6bc5402de92994f256b706e90864b922ee"
+      },
+      {
+        "file": "/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22/ui/fdother_005_item_panel/entry_029/frame.png",
+        "sha256": "e23fdd3482ffe27b4cc4b640b6bd71b30ceb96fd4a8897f9ea1ecf1e79119cfa"
+      },
+      {
+        "file": "/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22/ui/fdother_005_item_panel/entry_030/frame.png",
+        "sha256": "afe31884f8159ca7203cc4475b2b981610a955ee441510a5669f7397e0a78f19"
+      }
+    ],
+    "source_snapshot": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-values-go-sources-r2.json",
+      "sha256": "768e8e745d20029ba6c802356099041d6c83406793d7ed313f7aafe3f6520cd9"
+    },
+    "commands": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-values-commands-r1.json",
+      "sha256": "069c4bbdbee77336f4e25e7b6b0608749b76d3349a7579c51edf32ee33a1bf78"
+    },
+    "go_runs": [
+      {
+        "kind": "unit-r2",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-values-unit-r2.gate.json",
+          "sha256": "9f547c6813baec23c1e9df8efe92679281b01fad68792536e84ba5fe9b7dd040"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-values-unit-r2.memory.json",
+          "sha256": "e8fea9f8f941482ed66451b87c81892fe71b8e926c4491d4cdf0c6b29f38e739"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-values-unit-r2.log",
+          "sha256": "d17c703c5dde5c1f2c6fea125af0a1aeede43a8abc112e09e3691dd9a5aedc51"
+        },
+        "named_passes": 5,
+        "elapsed_seconds": 104.519,
+        "peak_bytes": 1424879616,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "kind": "regression-r2",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-values-regression-r2.gate.json",
+          "sha256": "7ce3e5368d2ce76edf505214723e0b7a1471307be3a160197287c2dff45f8555"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-values-regression-r2.memory.json",
+          "sha256": "d0597d138ae9365886d4c7246b8d93f250e24ce09b8dfe336cfac1867d6f9471"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-values-regression-r2.log",
+          "sha256": "db489e14a6fa9ae0d6a09ddbd05be2f52970541f6b3f9a81e33e96a21c1d9147"
+        },
+        "named_passes": 11,
+        "elapsed_seconds": 105.723,
+        "peak_bytes": 1401401344,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "kind": "transaction-r2",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-values-transaction-r2.gate.json",
+          "sha256": "27f98d163d481fdfbc005542bd59511500f823f1c154f1cf6bb5b2899a4d0631"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-values-transaction-r2.memory.json",
+          "sha256": "420284d55b82560fd9d93a333f7882c920bf40ce7bdd58f1987cb5b9ca967e92"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-values-transaction-r2.log",
+          "sha256": "0450c76cfe0c70aac3730bccb9146dafece8c70172bf8c8f0395873637e37ac1"
+        },
+        "named_passes": 8,
+        "elapsed_seconds": 146.031,
+        "peak_bytes": 1511899136,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "kind": "status-r2",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-values-status-r2.gate.json",
+          "sha256": "ef6347a1e557483936974609b670df2bac4b66a1ac6507a20b0406ad762691a8"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-values-status-r2.memory.json",
+          "sha256": "74cdce9e206de12a625dde65820d18eb1bc050264e6082bee9b8a367ac0845d7"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-values-status-r2.log",
+          "sha256": "b6389f4cf2d882ef8988647039de380e23a09b1d66ebb5474de535c5081b7da3"
+        },
+        "named_passes": 1,
+        "elapsed_seconds": 411.081,
+        "peak_bytes": 4983775232,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "kind": "game-r2",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-values-game-r2.gate.json",
+          "sha256": "16b6ad05ab5d8321d56f421ec6c694f6cb156070ba5721d04d15c330e2264694"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-values-game-r2.memory.json",
+          "sha256": "f43a60ca252e768934dc220210c313018c1435776edf06102198f14cf2a3e465"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-values-game-r2.log",
+          "sha256": "a9dec81d6d85b098fb46854e8956caa5f2a3b36f6c6ae94b6ee203fecfb18bd6"
+        },
+        "named_passes": 1,
+        "elapsed_seconds": 560.709,
+        "peak_bytes": 8589934592,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 243,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "kind": "save-r1",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-values-save-r1.gate.json",
+          "sha256": "2ea3a36f3c7b6b12456ed233489abd1c6849adf2988a14a7b6f8a17842b985a7"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-values-save-r1.memory.json",
+          "sha256": "f7333edcab79dfa725a98822163d066f6537c28e5132cd9ee14da6e46f925c5c"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-values-save-r1.log",
+          "sha256": "114dbcf554d203547222c9a4c0e435b91c850ea1f1d2746d0a49d0d8c851e740"
+        },
+        "named_passes": 2,
+        "elapsed_seconds": 3.007,
+        "peak_bytes": 829726720,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      }
+    ],
+    "summary": {
+      "named_go_passes": 28,
+      "main_game_frames": 291,
+      "player_status_frames": 41,
+      "main_f2_boundaries": 40,
+      "status_f2_boundaries": 9,
+      "confirmation_samples": 48,
+      "confirmation_f2": 16,
+      "total_pngs": 33,
+      "go_bar_pixels": 2910600,
+      "png_bar_pixels": 582120,
+      "label_ink_pixels": 110860,
+      "unchanged_pixels_across_25_pngs": 56350368,
+      "receipt_rejections": 53,
+      "actual_picture_rejections": 3,
+      "independent_runtime_files": 6062
+    },
+    "receipts": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-values-game-r2-capture/receipt.json",
+        "sha256": "9c0ff6e5a6f484e2849139f2a40a88456be98bac343e8794c8d4a4d21f6922b2"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-values-status-r2-capture/receipt.json",
+        "sha256": "465c931202b4516477916a33e22999ce0d61a7189135e3e1c217fe5394af6e4f"
+      }
+    ],
+    "independent_checks": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-values-game-independent-r1.json",
+        "sha256": "e010d53b2368eb17367b1b5db06e6c6a9161158f547c4c0c9d88d72aa2079394"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-values-status-independent-r1.json",
+        "sha256": "9d7d58f7dcdfd2030d586032dce782a56c4e3c786925252879c86ee64a458552"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-values-chrome-independent-r1.json",
+        "sha256": "fb92384a8427296932f6b28ba425abb28d33216fe91e2918f6626cd7ed4edd29"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-values-existing-independent-r1.json",
+        "sha256": "335c890ee2b689a3b32b9293fd0e2ad626585ccd0b34032c714ce7182061cd5d"
+      }
+    ],
+    "overview": {
+      "file": "docs/figures/hd-item-status-values.png",
+      "sha256": "ce6427cf422e48e9275871bf74e5fdb6cdc0e6738559b7775df2fdef399382d8"
+    },
+    "cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-values-cleanup-r1.json",
+      "sha256": "6e9ee27943207259ae3b7e138121c9a90bbdbc50e8fb3ad7ef56f9cf94fc1f24"
+    },
+    "catalog": {
+      "file": "remake/assets/themes/modern/catalog.json",
+      "sha256": "40bf4d83a2c13b606e84c66e2f7dddb383ca581904cdeb1f8aeabd61717d232a"
+    },
+    "construction_policy": {
+      "fixture": "rewardStageGame + makeNativeDeathRewardKiller",
+      "map_index": 23,
+      "map_selector_key": 0,
+      "portrait_dato": 0,
+      "native_seed": 7,
+      "clock_unix": 1000,
+      "hp_maxhp_mp_maxmp": [
+        100,
+        100,
+        100,
+        0
+      ],
+      "status_command_mask": [
+        0,
+        2,
+        0,
+        0,
+        0
+      ],
+      "status_command_source": "existing State.NativeCommandBook[9] supplied at Game.nativeCommandBook[9]; controlled fixture, not natural acquisition"
+    },
+    "images": {
+      "go": "sha256:e4a805c52a3ad5d8c22cf23f2bcf51c6924e5ad6b99554f1b02761903c725433",
+      "assets": "sha256:e59237a31d4b5f7a62c59ac37b780bd93f17c99fda97be8f5ca0c53978b878bc"
+    },
+    "known_differences": [
+      "固定標籤與血條為明示HD美術近似，保留原位置、signed條長與來源色。",
+      "上框用entry20自身底色與各glyph bbox的最亮非底色，不代用entry13或一般字模205。",
+      "受控Game.Draw及直接controller，不新增一般鍵盤、原版oracle、PLAYER-E2或平台效能聲明。",
+      "集中GPU560.709秒，峰值8GiB、memory.events.max=243、oom／kill零；狀態411.081秒／4983775232 bytes及其他回歸events全零，不推論平台餘裕。"
+    ],
+    "remaining": [
+      "物品／指令列的加成／消耗縮寫與圖示",
+      "其他確認caller及其餘操作介面、地形、HD2、獨立UI／theme、工具列",
+      "全部HD串接後集中正常／人工／音訊／平台驗收"
+    ],
+    "final_checks": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-values-final-checks-r2.json",
+      "sha256": "e045b9da0857025f396628b76cb804c7cbadf96e2799814c9bd8ea7e2855764b"
+    },
+    "issue_readback": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-values-issue-readback-r2.json",
+      "sha256": "3d345c9c31f1c97bff25f08df1eea325da63b0d0ebb3d7274a1288c6936b9507"
     }
   }
 }

@@ -27,6 +27,7 @@ type modernHDDialoguePanel struct {
 	rect   image.Rectangle // Frozen native 320x200 coordinates, before clipping.
 	clip   image.Rectangle
 	status bool // Status/item panels remain visible while the status owner is active.
+	values *modernHDItemPanelValues
 }
 
 func freezeModernHDDialogueChrome(cells []fdother.RawCell, palette color.Palette) (*modernHDDialogueChrome, error) {
@@ -158,5 +159,13 @@ func (p *modernHDPresentation) drawModernHDDialogueChrome(screen ebiten.FinalScr
 		v := float32(math.Max(0, math.Min(1, brightness)))
 		op.ColorScale.Scale(v, v, v, 1)
 		screen.DrawImage(source, op)
+		if panel.values != nil {
+			values := panel.values
+			if values.gpu == nil {
+				values.gpu = ebiten.NewImageFromImage(values.picture)
+			}
+			part := values.gpu.SubImage(image.Rect(local.Min.X*6, local.Min.Y*6, local.Max.X*6, local.Max.Y*6)).(*ebiten.Image)
+			screen.DrawImage(part, op)
+		}
 	}
 }

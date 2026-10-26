@@ -24,6 +24,7 @@ type itemPanelStatusGPUProbe struct {
 	rows                 []map[string]any
 	seen                 map[string]bool
 	f2, points           int
+	valuePoints          int
 	done                 bool
 	err                  error
 }
@@ -91,6 +92,20 @@ func (p *itemPanelStatusGPUProbe) Draw(screen *ebiten.Image) {
 		return
 	}
 	p.points += points
+	valuePoints := 0
+	var valuesData *nativeUnitStatusData
+	if s != nil {
+		valuesData = s.data
+		if len(s.frames) != 0 {
+			valuesData = &s.text.data
+		}
+		valuePoints, err = checkItemPanelValuesPixels(p.pixels, valuesData, g.nativeUIPalette, regions)
+		if err != nil {
+			p.err = err
+			return
+		}
+		p.valuePoints += valuePoints
+	}
 	key := phase
 	if s != nil && len(s.frames) != 0 {
 		if s.frame == len(s.frames)-1 {
@@ -126,6 +141,11 @@ func (p *itemPanelStatusGPUProbe) Draw(screen *ebiten.Image) {
 		p.f2++
 	}
 	row := map[string]any{"phase": phase, "frame": index, "regions": regions, "chrome_pixels": points, "f2_roundtrip": f2, "final_sha256": fmt.Sprintf("%x", digest), "native_control_unchanged": true}
+	row["item_values_pixels"] = valuePoints
+	if valuesData != nil {
+		row["item_values_record"] = fmt.Sprintf("%x", valuesData.record)
+		row["item_values_colors"] = itemPanelValuesColors(valuesData, g.nativeUIPalette)
+	}
 	if f2 {
 		name := "status-" + key + ".png"
 		pic := image.NewRGBA(image.Rect(0, 0, 1920, 1200))
@@ -195,10 +215,11 @@ func TestModernHDItemPanelStatusGameGPU(t *testing.T) {
 	if err := ebiten.RunGame(p); err != nil {
 		t.Fatal(err)
 	}
-	if p.err != nil || !p.done || p.f2 != 9 || len(p.rows) != 41 || p.points <= 0 {
+	if p.err != nil || !p.done || p.f2 != 9 || len(p.rows) != 41 || p.points <= 0 || p.valuePoints <= 0 {
 		t.Fatal("incomplete status lifecycle", p.err, p.f2, len(p.rows), p.points)
 	}
 	report := map[string]any{"status": "PASS-ITEM-PANEL-STATUS-HD-RUNTIME-E1", "rows": p.rows, "frames": len(p.rows), "f2_roundtrips": p.f2, "chrome_pixels": p.points, "chrome_source": p.colors, "normal_player_verified": false, "native_seed": 7, "fixed_clock_unix": 1000, "command_mask": []int{0, 2, 0, 0, 0}, "command_book_source": "State.NativeCommandBook[9] from existing player9StageGame fixture", "map_index": 23}
+	report["item_values"], report["item_values_pixels"] = true, p.valuePoints
 	raw, _ := json.MarshalIndent(report, "", "  ")
 	if err := os.WriteFile(filepath.Join(out, "receipt.json"), append(raw, '\n'), 0644); err != nil {
 		t.Fatal(err)

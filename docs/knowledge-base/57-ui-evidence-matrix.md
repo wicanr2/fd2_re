@@ -1,5 +1,7 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
+共用物品／狀態上框的十個固定標籤、兩斜線與HP／MP條已接HD，保留原生數值、來源色、位移及裁切。28項Go、兩條完整Game.Draw及33張PNG通過，範圍為CONFORMED-SCOPED／RUNTIME-E1；物品列加成縮寫、圖示與其他介面仍待。來源與單一數量見[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的item_panel_values_followup_20261026及[61](61-modern-theme-runtime-spec.md)。
+
 到期提示與戰後物品／金錢訊息已改用目標1920×1200的三像素HD細框，從原始對話格取色並清除舊放大邊帶。頭像、文字區、開收框位置、裁切及一次續行保持；限定CONFORMED-SCOPED／RUNTIME-E1。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約與工具依[61](61-modern-theme-runtime-spec.md)，證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的battle_dialogue_chrome_followup_20261026。其他介面、HD2、獨立控制及集中正常／人工／平台仍待。
 
 狀態效果到期的提示已接同次HD世界、480頭像與Noto文字，新增六則四語內容；原生倒數、扣血／死亡順序、Draw確認、恢復與一次續行保持。限定CONFORMED-SCOPED／RUNTIME-E1，使用明示建構的狀態與角色欄位；未新增正常取得狀態或PLAYER-E2。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約與永久驗證器依[61](61-modern-theme-runtime-spec.md)，來源為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的transient_expiry_hd_followup_20261026。其他介面／HD2／工具列與集中正常／人工／平台仍待。

@@ -4408,6 +4408,21 @@
       "rule": "兩個遊戲實例比較狀態時，以明示欄位及JSON值表示比較，不以fmt字串比較含內部表示的結構。將phase、frame、Draw確認、原始緩衝與單位／RNG等實際契約欄位明列。入口remake/cmd/fd2/modern_hd_item_panel_status_gpu_test.go的itemPanelStatusGPUState及既有modern_hd_full_reward_gpu_test.go。",
       "why": "狀態測具原用fmt組合快照，無法區分值與內部表示；改沿既有滿背包測具的JSON值表示後，41畫格及9次F2原生控制相同。先前比較失敗保留為測具診斷，不報成玩法缺陷。",
       "evidence": "remake/cmd/fd2/modern_hd_item_panel_status_gpu_test.go"
+    },
+    {
+      "id": "ui-redraw-colors-belong-to-consumed-artwork",
+      "date": "2026-10-26",
+      "area": "HD介面來源",
+      "rule": "重畫介面時，底色與墨色取實際消費的美術區域；同archive的對話底格、一般字模及狀態上框不互相代用。實作入口remake/cmd/fd2/modern_hd_item_panel_values.go的prepareModernHDItemPanelValues；來源與邊界見docs/knowledge-base/61-modern-theme-runtime-spec.md。",
+      "why": "首版將entry13對話底色用於entry20上框，又用一般字模205作固定標籤墨色；Go自洽檢查通過，實際PNG出現深色方塊及低對比。改取上框自身底色與各標籤bbox最亮非底色，並加入對實際上框背景的回歸。",
+      "evidence": "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/modern_hd_item_panel_values.go"
+        ],
+        "pattern": "ItemPanelUpper\\.Pixels\\[70\\*223\\+100\\]"
+      }
     }
   ]
 }

@@ -1,7 +1,23 @@
 # 61 — 現代美術主題正式執行期規格
 
+
+## 共用物品／狀態面板的固定標籤與血量條（CONFORMED-SCOPED／RUNTIME-E1）
+
+沿58已閉合0x17EEF／0x17FC0、NativeItemPanelDataPlanFor、blitNativeItemPanelBar及現行分離FDOTHER#5 entry20，不重開RE。固定EXE的SHA-256為222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f，位址為既有IDA線性位址；FDOTHER來源及entry20形狀綁原包resource.json與實圖。這是已知美術／型別資料的HD呈現，不新增原版語意。
+
+- 原生上框223×86，固定標籤實測bbox：LV139,33～156,41；EX139,44～156,52；MU138,55～156,63；DX99,55～116,63；HIT96,67～116,75；EV100,79～116,87；AP139,67～156,75；DP139,79～156,87；HP177,32～195,40；MP177,51～195,59。另兩個斜線位於286,41與286,59。均取原圖實測，不沿用猜測的99起點裁掉HIT。
+- HD在同次上框座標建立透明補繪圖，只將上述標籤安全矩形及原血條底框清為entry20自身底色，取local(100,70)。每個標籤墨色取其原始bbox內最亮的非底色索引；不能用對話entry13的另一階底色，也不能將一般字模205當成固定標籤原色。沿現有drawModernBattlePanelInk、Noto黑體、最大48目標像素與既有最小24的有界縮字；十標籤保留原縮寫及間隔點，兩斜線保持。文字安全區不得超出原數字、頭像或上下列。數字、溢位符號、比較／異常色與原生圖示仍走現有producer。
+- 兩血條使用原生(198,33)與(198,52)、103×5區域，原105×7粗底框清除後改1目標像素邊框。顏色取當次raw24／27／29及上框邊色；長度沿101*current/maximum+1及兩cap，非零負長度仍有兩cap，超出僅裁切顯示，current=0或maximum=0畫空槽。數值取同次80-byte record的+64/+66及+68/+70，不改正式規則。
+- 補繪圖與原生owner一同封存record、上框、raw23..30及色盤。變更來源、缺件、壞形狀／色盤或缺字在發布owner及F2主題前拒收。主題預檢完成後才一次發布；像素模式、交易、輸入、RNG、節拍與保存格式保持。新圖僅屬記憶體繪圖，不新增素材包或私人美術檔。
+- 補繪跟隨共用三區完整矩形的位移，之後才沿原生memmove區裁切。只掛上框；遮擋清理、幫助頁、黑白／淡出與狀態owner保持現有規則。八槽物品、共用／教會狀態、戰場狀態與指令轉頁共用此路徑。
+- 驗來源及signed邊界、12種原生位置、缺件／來源改寫及原子F2；最終完整Game.Draw抽物品與狀態兩條流程，保留原生控制組、五分支交易及正常返回。由獨立PNG檢查核對條長、標籤實際墨跡與框外保持；保存沿舊格式回歸。受控fixture仍為RUNTIME-E1，不新增一般玩家、原版逐像素或平台驗收聲明。人工造型集中全部HD串接後進行。
+
+實作與獨立核對入口為[固定標籤及血條](../../remake/cmd/fd2/modern_hd_item_panel_values.go)、[來源／邊界測試](../../remake/cmd/fd2/modern_hd_item_panel_values_test.go)及[完整PNG核對](../../tools/verify_fd2_hd_item_panel_values.py)。PNG工具使用--receipt新收據、--previous上一版同流程畫面目錄、--original-pack原包及--output新報告，可加--self-test。目前入口為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的item_panel_values_followup_20261026；既有[完整遊戲測試驅動](../../tools/verify_fd2_reward_message_hd.py)與[狀態流程測具](../../remake/cmd/fd2/modern_hd_item_panel_status_gpu_test.go)沿用。圖示、其他操作介面、地形、HD2、獨立UI／theme、工具列與集中正常／人工／平台驗收仍待。
+
 狀態：現代主題仍為部分覆蓋；目前分層與缺口依[58](58-fd2-exe-re-coverage.md)。
 
+
+本節實作前為READY。最終28項頂層Go通過，包含兩項既有JSON原子保存／新實例LOAD；五分支291畫格／40個F2與五次續行、狀態41畫格／9個F2，另四語48樣本／16次F2保持。33張完整PNG獨立核對，2910600個Go血條點、582120個PNG血條點及110860個標籤墨跡點通過。25張PNG替換區外共56350368個RGBA像素對前版相同；53收據反例與三張實際舊／錯底色圖拒收。集中GPU觸8GiB配額，max=243而OOM／kill零，不推論平台餘裕；來源、完整命令及限制依主收據。
 
 ## 共用三區物品／狀態面板細框（CONFORMED-SCOPED／RUNTIME-E1，2026-10-26）
 
