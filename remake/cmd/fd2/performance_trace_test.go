@@ -60,6 +60,27 @@ func TestPerformanceTraceWindowsAndExclusiveOutput(t *testing.T) {
 	}
 }
 
+func TestPerformanceTraceBattleReuseCounters(t *testing.T) {
+	player := &modernHDPresentation{Game: &Game{modernHDBattleGPU: &modernHDBattleGPU{rendered: 12, reused: 27}}}
+	trace, err := openPerformanceTrace(player, filepath.Join(t.TempDir(), "reuse.jsonl"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer trace.file.Close()
+	trace.sample(trace.started.Add(time.Second), false)
+	data, err := os.ReadFile(trace.file.Name())
+	if err != nil {
+		t.Fatal(err)
+	}
+	var row struct {
+		Rendered uint64 `json:"battle_gpu_rendered_total"`
+		Reused   uint64 `json:"battle_gpu_reused_total"`
+	}
+	if err := json.Unmarshal(data, &row); err != nil || row.Rendered != 12 || row.Reused != 27 {
+		t.Fatalf("render/reuse counters missing or converted to draw rate: %+v, %v", row, err)
+	}
+}
+
 func TestPerformanceTraceWriteFailureStopsObservation(t *testing.T) {
 	trace, err := openPerformanceTrace(nil, filepath.Join(t.TempDir(), "performance.jsonl"))
 	if err != nil {

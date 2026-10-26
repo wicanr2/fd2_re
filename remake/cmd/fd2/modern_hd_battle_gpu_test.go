@@ -31,6 +31,7 @@ type modernHDBattleGPUProbe struct {
 	index  int
 	gpu    modernHDBattleGPU
 	pixels []byte
+	repeat []byte
 	err    error
 }
 
@@ -52,6 +53,7 @@ func (p *modernHDBattleGPUProbe) Draw(screen *ebiten.Image) {
 	}
 	if p.pixels == nil {
 		p.pixels = make([]byte, 1920*1200*4)
+		p.repeat = make([]byte, len(p.pixels))
 	}
 	p.gpu.World.ReadPixels(p.pixels)
 	if c.want != nil {
@@ -116,6 +118,16 @@ func (p *modernHDBattleGPUProbe) Draw(screen *ebiten.Image) {
 				return
 			}
 		}
+	}
+	rendered, reused := p.gpu.rendered, p.gpu.reused
+	if err := p.gpu.draw(c.plan); err != nil {
+		p.err = fmt.Errorf("%s repeated plan: %w", c.name, err)
+		return
+	}
+	p.gpu.World.ReadPixels(p.repeat)
+	if p.gpu.rendered != rendered || p.gpu.reused != reused+1 || !bytes.Equal(p.pixels, p.repeat) {
+		p.err = fmt.Errorf("%s repeated plan changed published RGBA or recomposited", c.name)
+		return
 	}
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Scale(1.0/3, 1.0/3)
@@ -269,7 +281,7 @@ func TestModernHDBattleGPUBridge(t *testing.T) {
 	if packedTextures != 8 {
 		t.Fatalf("seven shades and changed palette need eight separate textures, got%d", packedTextures)
 	}
-	t.Logf("%d GPU cases: native complete-canvas exact; HD alpha/RGB shade tolerance1; no original-executable or player-path claim", len(cases))
+	t.Logf("%d GPU cases: native complete-canvas exact; HD alpha/RGB shade tolerance1; every repeated plan byte-exact without recomposition; no original-executable or player-path claim", len(cases))
 }
 
 func TestModernHDBattleEmptyFrameGPU(t *testing.T) {

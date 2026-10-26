@@ -41,6 +41,10 @@ type modernHDBattleGPU struct {
 	sources     map[string]*ebiten.Image
 	owner       any
 	theme       *modernStoryPortraitSet
+	frameKey    [32]byte
+	frameValid  bool
+	rendered    uint64
+	reused      uint64
 }
 
 const modernHDBattleShader = `//kage:unit pixels
@@ -60,10 +64,67 @@ func Fragment(position vec4, texCoord vec2, color vec4) vec4 {
 }`
 
 func (r *modernHDBattleGPU) resetSources() {
+	r.frameValid = false
 	for _, texture := range r.sources {
 		texture.Dispose()
 	}
 	r.sources = make(map[string]*ebiten.Image)
+}
+
+// The texture cache already treats HDKey as the verified image identity.
+// Copy all consumed mutable values into a digest, never retain caller slices.
+func modernHDBattleFrameKey(plan modernHDBattlePlan, palette []byte) [32]byte {
+	h := sha256.New()
+	var encoded [8]byte
+	integer := func(value int64) {
+		binary.LittleEndian.PutUint64(encoded[:], uint64(value))
+		h.Write(encoded[:])
+	}
+	data := func(value []byte) {
+		integer(int64(len(value)))
+		h.Write(value)
+	}
+	data(palette)
+	data(plan.Base)
+	for _, value := range []float32{plan.HDSubtract, plan.HDMix, plan.HDTarget[0], plan.HDTarget[1], plan.HDTarget[2]} {
+		integer(int64(math.Float32bits(value)))
+	}
+	integer(int64(len(plan.Layers)))
+	for _, layer := range plan.Layers {
+		f := layer.Native
+		integer(int64(f.Width))
+		integer(int64(f.Height))
+		data(f.Pixels)
+		data(f.Mask)
+		if layer.HD == nil {
+			integer(0)
+		} else {
+			integer(1)
+			integer(int64(layer.HD.Bounds().Dx()))
+			integer(int64(layer.HD.Bounds().Dy()))
+		}
+		data([]byte(layer.HDKey))
+		for _, value := range []int{layer.Rect.Min.X, layer.Rect.Min.Y, layer.Rect.Max.X, layer.Rect.Max.Y, layer.Fill, layer.PackedShader} {
+			integer(int64(value))
+		}
+		data(layer.PackedColours)
+		if layer.PreservePalette {
+			integer(1)
+		} else {
+			integer(0)
+		}
+		if layer.Clip == nil {
+			integer(0)
+		} else {
+			integer(1)
+			for _, value := range []int{layer.Clip.Min.X, layer.Clip.Min.Y, layer.Clip.Max.X, layer.Clip.Max.Y} {
+				integer(int64(value))
+			}
+		}
+	}
+	var key [32]byte
+	copy(key[:], h.Sum(nil))
+	return key
 }
 
 func (r *modernHDBattleGPU) close() {
@@ -147,6 +208,13 @@ func (r *modernHDBattleGPU) draw(plan modernHDBattlePlan) error {
 			return errors.New("modern HD battle: HD layer unavailable")
 		}
 	}
+	frameKey := modernHDBattleFrameKey(plan, palette)
+	if r.frameValid && r.World != nil && r.frameKey == frameKey {
+		r.reused++
+		return nil
+	}
+	// A later texture preparation failure cannot leave a partial frame cached.
+	r.frameValid = false
 	if r.shader == nil {
 		r.shader, err = ebiten.NewShader([]byte(modernHDBattleShader))
 		if err != nil {
@@ -228,5 +296,7 @@ func (r *modernHDBattleGPU) draw(plan modernHDBattlePlan) error {
 		draw.Uniforms = map[string]interface{}{"FillColor": fill, "Subtract": subtract, "Tint": plan.HDTarget[:], "Mix": mix}
 		destination.DrawRectShader(texture.Bounds().Dx(), texture.Bounds().Dy(), r.shader, draw)
 	}
+	r.frameKey, r.frameValid = frameKey, true
+	r.rendered++
 	return nil
 }

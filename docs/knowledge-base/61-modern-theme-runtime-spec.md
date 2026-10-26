@@ -1,5 +1,17 @@
 # 61 — 現代美術主題正式執行期規格
 
+## 戰鬥相同畫面重用（CONFORMED-SCOPED，2026-10-27）
+
+重構前`modernHDBattleGPU.draw`每次均清除1920×1200畫布、上傳原生base並合成所有圖層，即使演出仍停留同一呈現計畫。正式程式只有此方法寫入戰鬥World；`DrawFinalScreen`與`modernHDMapLogicalImage`只讀取。這是重製繪製路徑的等價重構，不新增原版行為推論。
+
+先完成既有整份計畫驗證，再對base、當次完整色盤、圖層順序、HD圖源鍵與形狀、原生像素／遮罩、位置、裁切、填色、packed參數及變色參數建立SHA-256。只保留上一張成功結果；指紋相同才重用，不持有呼叫者的可變切片。HD圖源沿既有已驗證texture key契約，不以記憶體位址當內容身分。owner／theme更換、resetSources或close立即使結果失效，失敗計畫仍照原驗證拒收。正式外部使用者不得寫入World，入口為`modern_hd_battle_gpu.go`、`modern_hd_battle_runtime.go`及`modern_hd_presentation.go`。
+
+不新增第二張1920畫布，不改Update、計時、演出序列、音效、數值、存檔或原版模式。既有頻率觀測另輸出累計實際合成／重用次數，以正常攻防核對是否真正使用；重用次數與繪製頻率分列，不能將快取命中當成遊戲加速或平台效能通過。
+
+驗收包含相同目的畫布及來源texture綁定下，重用與強制完整合成的RGBA逐位元組比對、所有消費參數變更與呼叫者切片原地修改、無效計畫不破壞已發布畫面、reset／close失效、既有GPU橋接、Game.Draw／F2及普通攻防返回／保存冷讀。獨立GPU目的畫布在非整數縮放邊緣有差異，同目標強制重畫則精確，診斷來源保留；不把不同目的畫布的光柵結果混入重用驗證。原有獨立CPU／原生來源的2087個GPU案例與其原生精確／HD容差1保持，重用控制不放寬容差。若正常路徑沒有重用，或畫面／資源證據不支持收益，保留結果並撤回實作，不由受控命中推定玩家流程改善。
+
+[重用回歸](../../remake/cmd/fd2/modern_hd_battle_reuse_test.go)由`FD2_HD_BATTLE_REUSE_GPU=1`執行`TestModernHDBattleFrameReuseGPU`；原有`TestModernHDBattleGPUBridge`也逐案重用比對。頻率工具`verify_fd2_battle_performance.py --frame-reuse --self-test`另核對累計單調、物理Draw上界、實際命中與九項反例。正式首章窗口確有合成與重用，普通返回／F2／保存冷讀通過；唯一目前數量與記憶體限制依58及主收據`battle_frame_reuse_followup_20261027`，不從命中率或無OOM宣稱平台通過。
+
 ## 戰鬥無變色圖層的等價繪製（實驗已撤回，2026-10-27）
 
 目前正常HD攻防的2秒同owner觀測中，llvmpipe兩執行緒合計約165% CPU，遊戲所有執行緒合計約185%；cgroup增量另記錄2CPU限制與節流。Go 30秒剖析只定位其可見堆疊，不將Go內部的音訊或地形百分比當作全程序主要原因。來源為本節下列CPU觀測工具及HD主收據的新批次，不新增原版行為推論。

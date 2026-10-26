@@ -4581,6 +4581,21 @@
         "pattern": "四個預配置讀回buffer，整輪計時結束後才比對最後畫布"
       },
       "evidence": "HD主收據battle_cpu_diagnostics_followup_20261027"
+    },
+    {
+      "id": "frame-reuse-oracle-keeps-gpu-bindings",
+      "date": "2026-10-27",
+      "area": "GPU重用驗證",
+      "rule": "驗證畫面重用時，固定同一目的畫布及來源texture，對照強制完整重畫，逐byte比較；另保留原有獨立來源／CPU的圖像正確性檢查。入口為規格61「戰鬥相同畫面重用」及TestModernHDBattleFrameReuseGPU。不同目的畫布的光柵差異不能直接歸因快取，也不據此放寬快取容差。",
+      "why": "新測具在非整數縮放邊緣出現16個bytes差異，最大14；共享來源texture仍不同，但同目標強制重畫精確。改固定綁定後26控制及2087來源案例的重用均逐byte精確。",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+        ],
+        "pattern": "相同目的畫布及來源texture綁定下"
+      },
+      "evidence": "HD主收據battle_frame_reuse_followup_20261027"
     }
   ]
 }

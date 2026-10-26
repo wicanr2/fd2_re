@@ -74,6 +74,7 @@ func (p *battleIdentityPerfProbe) Draw(screen *ebiten.Image) {
 			op.Uniforms = map[string]interface{}{"FillColor": []float32{0, 0, 0, 0},
 				"Subtract": plan.HDSubtract, "Mix": plan.HDMix, "Tint": plan.HDTarget[:]}
 			p.gpu.World.DrawRectShader(modernHDWidth, modernHDHeight, p.legacy, op)
+			p.gpu.frameValid = false // This test-only manual write bypasses draw's frame identity.
 		}
 		name = "legacy-" + name
 	} else {

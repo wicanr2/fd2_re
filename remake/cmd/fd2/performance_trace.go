@@ -49,6 +49,10 @@ func (p *performanceTrace) sample(now time.Time, final bool) {
 		default:
 		}
 	}
+	var rendered, reused uint64
+	if p.modernHDPresentation != nil && p.Game != nil && p.modernHDBattleGPU != nil {
+		rendered, reused = p.modernHDBattleGPU.rendered, p.modernHDBattleGPU.reused
+	}
 	p.err = p.encoder.Encode(struct {
 		ElapsedSeconds  float64        `json:"elapsed_seconds"`
 		IntervalSeconds float64        `json:"interval_seconds"`
@@ -60,8 +64,10 @@ func (p *performanceTrace) sample(now time.Time, final bool) {
 		Scenes          map[string]int `json:"draw_scenes"`
 		Final           bool           `json:"final"`
 		CPUFinished     bool           `json:"cpu_profile_finished,omitempty"`
+		BattleRendered  uint64         `json:"battle_gpu_rendered_total"`
+		BattleReused    uint64         `json:"battle_gpu_reused_total"`
 	}{now.Sub(p.started).Seconds(), interval, ebiten.ActualFPS(), ebiten.ActualTPS(),
-		p.updates, p.draws, p.finals, p.scenes, final, cpuFinished})
+		p.updates, p.draws, p.finals, p.scenes, final, cpuFinished, rendered, reused})
 	p.previous = now
 	p.updates, p.draws, p.finals = 0, 0, 0
 	p.scenes = make(map[string]int)

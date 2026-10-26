@@ -1,6 +1,8 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
-正常END反擊已補目前程式的實圖核對：敵方發動、我方反擊的角色／owner與攻擊圖源相符，普通攻擊自然返回、F2、章節邊界保存與新程序LOAD通過。測具戰後強制選索爾的錯誤斷言已修正，沿原生Z選取可行動者；同程式、來源與seed重跑通過，正式選人規則不變。快取owner的結構覆蓋另有可重跑AST索引。唯一數量及限制依[58](58-fd2-exe-re-coverage.md)，契約與入口依[61](61-modern-theme-runtime-spec.md)，[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)為`normal_counter_followup_20261027`。集中造型仍待。代表性效能已補有界CPU profile與同owner執行緒觀測，顯示軟體繪圖佔主要CPU樣本；2／4／8CPU資源實驗保留原始結果，沒有硬體GPU或平台通過聲明。未證實的繪圖優化已撤回，正式規則、時序與素材保持。最新程式、來源清冊及條件依同一主收據`battle_cpu_diagnostics_followup_20261027`；先前兩輪依`battle_performance_followup_20261027`保存。
+戰鬥同畫面重用已通過完整RGBA與失效邊界驗證，正式首章攻防確有重用，普通返回、F2、保存冷讀與蓋亞完整Game.Draw回歸通過。規則、演出節拍、音效與存檔保持。唯一數量、記憶體限制與分級依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)為`battle_frame_reuse_followup_20261027`。集中造型與平台效能仍待。
+
+正常END反擊已補目前程式的實圖核對：敵方發動、我方反擊的角色／owner與攻擊圖源相符，普通攻擊自然返回、F2、章節邊界保存與新程序LOAD通過。測具戰後強制選索爾的錯誤斷言已修正，沿原生Z選取可行動者；同程式、來源與seed重跑通過，正式選人規則不變。快取owner的結構覆蓋另有可重跑AST索引。唯一數量及限制依[58](58-fd2-exe-re-coverage.md)，契約與入口依[61](61-modern-theme-runtime-spec.md)，[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)為`normal_counter_followup_20261027`。集中造型仍待。代表性效能已補有界CPU profile與同owner執行緒觀測，顯示軟體繪圖佔主要CPU樣本；2／4／8CPU資源實驗保留原始結果，沒有硬體GPU或平台通過聲明。未證實的繪圖優化已撤回，正式規則、時序與素材保持。CPU定位與各配額條件依同一主收據`battle_cpu_diagnostics_followup_20261027`；目前程式與來源清冊依`battle_frame_reuse_followup_20261027`，先前兩輪依`battle_performance_followup_20261027`保存。
 
 音速刃已補受控章前組隊來源的普通鍵盤選人、十字目標、取消、施放、途中F2、自然返回與章節邊界保存／新程序LOAD；唯讀共用owner標記改讀正式指令ID。正式JOIN與升級writer取得技能，未直接授予或改章內規則。實際HD斬擊核對通過，跨相位觀測不當完整畫格證據。唯一數量及限制依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，主收據為`command30_normal_gui_followup_20261026`。完整戰鬥HD與集中人工／平台仍待。
 

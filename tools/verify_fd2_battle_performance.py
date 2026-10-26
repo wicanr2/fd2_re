@@ -55,11 +55,33 @@ def summarize(rows):
     }
 
 
+def summarize_frame_reuse(rows):
+    previous = (0, 0)
+    rendered = reused = windows = 0
+    for row in rows:
+        counts = tuple(row.get(key) for key in ('battle_gpu_rendered_total', 'battle_gpu_reused_total'))
+        require(all(type(value) is int and value >= 0 for value in counts), '缺有效合成／重用次數')
+        require(all(value >= old for value, old in zip(counts, previous)), '合成／重用累計倒退')
+        delta = tuple(value-old for value, old in zip(counts, previous))
+        physical = (not row['final'] and row['draws'] > 0
+                    and row['draw_scenes'].get('physical') == row['draws'])
+        if physical:
+            require(sum(delta) <= row['draws'], '物理重用次數超過實際Draw')
+            rendered += delta[0]
+            reused += delta[1]
+            windows += 1
+        previous = counts
+    return {'physical_windows': windows, 'rendered': rendered, 'reused': reused,
+            'reuse_fraction': reused/(rendered+reused) if rendered+reused else None,
+            'scope': '完整物理場景時間窗的累計增量；含入場、攻防與返回前段，不逐相位歸因，也不等同FPS。'}
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     for name in ('gui', 'manifest', 'binary', 'gui-tool', 'out'):
         p.add_argument('--'+name, type=Path, required=True)
     p.add_argument('--self-test', action='store_true')
+    p.add_argument('--frame-reuse', action='store_true', help='另核對正常物理場景確有重用，不接受舊收據缺少計數器')
     args = p.parse_args()
     require(not args.out.exists(), '輸出已存在')
     gui, manifest = [json.loads(path.read_text()) for path in (args.gui, args.manifest)]
@@ -84,6 +106,11 @@ def main():
         reports.append({'epoch': epoch, 'file': item['file'], 'sha256': item['sha256'],
                         'all_windows': summarize(rows), 'after_first_five_seconds': summarize(stable),
                         'physical_only_complete_windows': summarize(physical)})
+        if args.frame_reuse:
+            reuse = summarize_frame_reuse(rows)
+            if epoch == 0:
+                require(reuse['rendered'] > 0 and reuse['reused'] > 0, '正常物理場景沒有合成與重用證據')
+            reports[-1]['frame_reuse'] = reuse
         if epoch == 0:
             require(len(physical) >= 3, '缺代表性物理攻防的連續觀測窗')
         all_rows.extend(rows)
@@ -101,6 +128,26 @@ def main():
                 rejected.append(name)
             else:
                 raise ValueError('效能反例誤放行：'+name)
+        if args.frame_reuse:
+            for name in ('missing-reuse-count', 'negative-reuse-count', 'fractional-reuse-count',
+                         'decreasing-reuse-count', 'impossible-reuse-count'):
+                rows = json.loads(json.dumps(all_rows[:2]))
+                if name == 'missing-reuse-count': rows[0].pop('battle_gpu_reused_total')
+                elif name == 'negative-reuse-count': rows[0]['battle_gpu_reused_total'] = -1
+                elif name == 'fractional-reuse-count': rows[0]['battle_gpu_reused_total'] = .5
+                elif name == 'decreasing-reuse-count':
+                    for row, count in zip(rows, (2, 1)):
+                        row.update(draws=0, draw_scenes={}, battle_gpu_rendered_total=0,
+                                   battle_gpu_reused_total=count)
+                else:
+                    rows[0].update(draws=1, draw_scenes={'physical': 1},
+                                   battle_gpu_rendered_total=0, battle_gpu_reused_total=2)
+                try:
+                    summarize_frame_reuse(rows)
+                except ValueError:
+                    rejected.append(name)
+                else:
+                    raise ValueError('重用反例誤放行：'+name)
     result = {'status': 'PASS-PERFORMANCE-OBSERVATION',
               'gui_sha256': digest(args.gui), 'manifest_sha256': digest(args.manifest),
               'binary_sha256': digest(args.binary), 'verifier_sha256': digest(Path(__file__)),
