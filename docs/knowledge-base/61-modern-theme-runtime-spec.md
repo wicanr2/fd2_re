@@ -85,7 +85,7 @@ Ebiten的ActualFPS是交換buffer頻率，官方註解提醒部分環境的垂�
 - 新的唯讀區域轉接器直接消費原十二拍copy矩形，統一表達source／destination／clip；不另抄一套開收算式。源圖矩形依序為(109,19,102,17)、(75,37,170,117)、(75,155,170,16)、(129,172,63,15)。移動時先移整幅HD圖再裁切，不在裁切邊重畫新框。
 - 四面板在1920×1200直接繪製三像素細框。底色與邊色讀原圖的背景及bevel位置，數字讀原31／42圖組墨色，條件文字沿raw0xCD／0x4C。原MAP、TURN、ENEMY、FRIEND、NPC、美元符號及勝敗標題改用Noto直接繪字，語意和原來源相同。
 - 原12字換行及FFFE保留；每條最多兩行，條件文字限制於原面板內的160×16原生像素字區，各行獨立以實際字寬選擇不超出字區的字級。不得靠最後裁切截字。固定標籤及數字各有獨立安全矩形，保留前導零。原字表無對應、字型缺字、尺寸或顏色不符時，HD預檢整組拒絕，不發布半份資訊窗。F2進HD前亦須預檢。
-- HD圖與GPU紋理屬同一資訊owner，只保留目前字型與實際使用色彩的快取。DAC循環未改到使用色時重用，不逐幀建立全畫面圖片。本段最初只改繪圖，未改存檔、正式數值或原中文內容；後續四語翻譯與快取擴充依本檔首節。
+- HD圖與GPU紋理屬同一資訊owner，只保留目前字型與實際使用色彩的快取。DAC循環未改到使用色時重用，不逐幀建立全畫面圖片。本段最初只改繪圖，未改存檔、正式數值或原中文內容；後續四語翻譯與快取擴充依本檔「四種美術主題」。
 - 驗收涵蓋四圖／六數字、30章及章16分支、0／最大值、所有24個開收位置、缺字／壞圖／壞色拒收、原生buffer與owner節拍保持。完整Game.Draw、最終GPU畫面、F2及正常鍵盤開關、保存／新程序LOAD分別記錄；集中美術與平台驗收仍待。
 
 正式接點為[資訊視窗](../../remake/cmd/fd2/native_system_info_ui.go)、[原區域轉接器](../../remake/internal/fdother/system_info_transition.go)與[HD呈現](../../remake/cmd/fd2/modern_hd_system_info.go)。重跑與來源集中於既有工作根及HD主收據，不新增研究或交付目錄。
@@ -96,7 +96,7 @@ Ebiten的ActualFPS是交換buffer頻率，官方註解提醒部分環境的垂�
 
 正常鍵盤沿[GUI主控制](../../tools/verify_fd2_hd_fonts_gui.py)的`--system-info --battle-status --world --battle-node battle_ch23`及[專用輔助](../../tools/fd2_hd_system_info_gui.py)，容器內binary／assets／original-pack／modern-pack／town-save／out一律給絕對路徑。沿原版任意鍵收合，實際按F2亦會收窗；受控Draw邊界的F2不代表鍵盤F2可維持等待頁。三次普通開窗及F5章節邊界、F2保存bytes與新程序標題LOAD分別記錄，沒有章內注入或新整章E2。
 
-[獨立PNG核對器](../../tools/verify_fd2_hd_system_info.py)須給`--gpu --normal --binary --source --catalog --gui-tool --helper --out`；`--self-test`驗變造反例，`--old-hd`可給同資訊值的舊暗色HD實圖。GPU以Pillow從獨立地圖控制組及原拷貝區域合成，正常擷取則由四個不透明區域重建當次CPU圖並核SHA；真實像素主題與舊錯字色圖必須拒收。唯一數量與限制依58，來源及實測命令在主收據。本段為先前原中文繪製收據；四語內容依本檔首節與HD主收據system_info_locales_followup_20261026。
+[獨立PNG核對器](../../tools/verify_fd2_hd_system_info.py)須給`--gpu --normal --binary --source --catalog --gui-tool --helper --out`；`--self-test`驗變造反例，`--old-hd`可給同資訊值的舊暗色HD實圖。GPU以Pillow從獨立地圖控制組及原拷貝區域合成，正常擷取則由四個不透明區域重建當次CPU圖並核SHA；真實像素主題與舊錯字色圖必須拒收。唯一數量與限制依58，來源及實測命令在主收據。本段為先前原中文繪製收據；四語內容依本檔「四種美術主題」與HD主收據system_info_locales_followup_20261026。
 
 ## 回復術13～16的正常鍵盤與HD畫面補驗（CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI）
 
@@ -517,7 +517,7 @@ README四格由[既有總覽工具](../../tools/build_fd2_battle_panel_gallery.p
 
 ## 操作介面與人物主題獨立控制（DRAFT，待拆分現行呈現條件）
 
-使用者已明示工具列分成「操作介面：原版／HD」與獨立的美術主題。主題最新方向為本檔首節的原版／HD／HD2／HD-2D，目標八組合互不改寫。介面中的人物圖示、頭像與戰鬥動畫跟主題選項；不能因操作介面切回原版而回退人物圖源。既有地圖／場景主題範圍不因此縮減。工具列沿先前已選定的頂端浮出、自動隱藏方向。
+使用者已明示工具列分成「操作介面：原版／HD」與獨立的美術主題。主題最新方向為本檔「四種美術主題」的原版／HD／HD2／HD-2D，目標八組合互不改寫。介面中的人物圖示、頭像與戰鬥動畫跟主題選項；不能因操作介面切回原版而回退人物圖源。既有地圖／場景主題範圍不因此縮減。工具列沿先前已選定的頂端浮出、自動隱藏方向。
 
 視覺沿既有原型保留原版藍底及主要配置，以清晰框線、字型與按鈕重繪。依使用者已定案排程，先完成全部HD串接，再集中人工確認。原型使用同一索爾原版DATO_000及已登錄480頭像，原版介面取自保存的重製端索引樣本，HD介面為SVG示意。不是正式遊戲畫面、正常玩家或新原版對拍；沒有播放戰鬥動畫。主題／語系浮出列現況依前節；兩模式拆分、完整HUD與加速仍未完成。
 
@@ -577,7 +577,7 @@ README總覽沿[既有圖組工具](../../tools/build_fd2_battle_panel_gallery.p
 
 實作見[地圖尾段](../../remake/cmd/fd2/modern_hd_compound_map.go)及[來源與實際GPU檢查](../../remake/cmd/fd2/modern_hd_compound_map_test.go)。`compound-map-unit`驗原子綁定及無owner的主題相容；`compound-map-source`／`compound-map-game`以`--panel-owner 32|33|34|35`、`--surface 4`、`--panel-locale`選四語，反側加`--enemy`。沿既有Go Docker、正式catalog／pack、唯讀org_game及有界out／timeout。前者驗全部native重組及失敗候選；後者實際Game.Draw／F2、CPU全畫布格點容差2與HD數字／光環核心，另核對原生像素確有差異。初輪格點收據保持，32～34主側另R2補驗核心。唯一數量依58與主收據，不由HD世界推定全部效果HD。
 
-[固定LMI盤點](../../tools/audit_fd2_player9_map_source.py)新增`--compound-tails`，在既有Pillow Docker、唯讀合法`--original-pack`與既有父目錄的全新`--out`前綴核對全部尾段索引。本接線批次當時只有57～63已登錄；64～75與126～190共77份的HD美術後續由本檔首節補齊，舊收據保留原生回退狀態。動態列數參考圖涵蓋110項，預設玩家9入口保持。README圖以`build_fd2_battle_panel_gallery.py --command-panels --phase map-result`沿四capture目錄重生，遊戲區不裁切；R1展示圖與最終R2加強收據分列。
+[固定LMI盤點](../../tools/audit_fd2_player9_map_source.py)新增`--compound-tails`，在既有Pillow Docker、唯讀合法`--original-pack`與既有父目錄的全新`--out`前綴核對全部尾段索引。本接線批次當時只有57～63已登錄；64～75與126～190共77份的HD美術後續由本檔「四種美術主題」補齊，舊收據保留原生回退狀態。動態列數參考圖涵蓋110項，預設玩家9入口保持。README圖以`build_fd2_battle_panel_gallery.py --command-panels --phase map-result`沿四capture目錄重生，遊戲區不裁切；R1展示圖與最終R2加強收據分列。
 
 ## 一般指令背景、台座與查表變色（CONFORMED-SCOPED／RUNTIME-E1，2026-10-24）
 
