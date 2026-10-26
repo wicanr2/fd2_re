@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 26 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 25 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -67,6 +67,10 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 ### P1 HD／現代主題總項：素材覆蓋、正常路徑與交付驗收
 
 `modern-theme-prototype-status` · 工作 · [#4](https://github.com/wicanr2/fd2_re/issues/4) · 仍未完成 · 要人判
+
+音速刃已補受控章前來源的普通鍵盤選人、十字目標、取消／重選、施放、途中F2、自然返回及保存／新程序LOAD。共用owner觀測改讀真實指令ID，#281由提交6ac91c8c修正關閉；正式交易、排程、傷害及存檔格式保持。原始audit、實際HD斬擊與反例均核對，README改用普通遊玩總覽。唯一數量及限制依58／61及HD主收據command30_normal_gui_followup_20261026。
+
+章前來源經正式JOIN及原生升級writer取得技能，含明示強化政策，不代表自然招募、原版動態或完整章節。完整戰鬥HD與集中造型／效能等原驗收仍待；本父項保持OPEN。
 
 戰場資訊窗已補四語條件與固定標籤，沿原來源ID、章號分支、數值與開收流程；正常四語／兩主題開關、F2／F4、返回及保存冷讀通過。像素繁中保留原圖字，其餘語系保留原框，HD沿既有細框與字區。來源／長譯文、缺翻譯拒收、實際PNG及反例均已驗，工單#280由提交7bbce98f完成關閉。唯一數量與限制依58、61及HD主收據system_info_locales_followup_20261026，README新增四語實際遊戲總覽。
 
@@ -148,6 +152,10 @@ FDFIELD回合事件由完整具型別處理器降成正式劇本，保留增援�
 
 `modern-theme-player-asset-coverage` · 工作 · [#201](https://github.com/wicanr2/fd2_re/issues/201) · 仍未完成 · 要人判
 
+音速刃已補受控章前來源的普通鍵盤選人、十字目標、取消／重選、施放、途中F2、自然返回及保存／新程序LOAD。共用owner觀測改讀真實指令ID，#281由提交6ac91c8c修正關閉；正式交易、排程、傷害及存檔格式保持。原始audit、實際HD斬擊與反例均核對，README改用普通遊玩總覽。唯一數量及限制依58／61及HD主收據command30_normal_gui_followup_20261026。
+
+章前來源經正式JOIN及原生升級writer取得技能，含明示強化政策，不代表自然招募、原版動態或完整章節。完整戰鬥HD與集中造型／效能等原驗收仍待；本父項保持OPEN。
+
 戰場資訊窗已補四語條件與固定標籤，沿原來源ID、章號分支、數值與開收流程；正常四語／兩主題開關、F2／F4、返回及保存冷讀通過。像素繁中保留原圖字，其餘語系保留原框，HD沿既有細框與字區。來源／長譯文、缺翻譯拒收、實際PNG及反例均已驗，工單#280由提交7bbce98f完成關閉。唯一數量與限制依58、61及HD主收據system_info_locales_followup_20261026，README新增四語實際遊戲總覽。
 
 本輪沒有新美術包、改正式規則或存檔，也沒有新DOS原版動態對拍。其餘HD1介面、未登錄地形與集中人工／平台仍待；父項保持OPEN，未發布新版。
@@ -210,6 +218,10 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 `modern-theme-highres-prototype` · 工作 · [#204](https://github.com/wicanr2/fd2_re/issues/204) · 仍未完成 · 要人判
 
+音速刃已補受控章前來源的普通鍵盤選人、十字目標、取消／重選、施放、途中F2、自然返回及保存／新程序LOAD。共用owner觀測改讀真實指令ID，#281由提交6ac91c8c修正關閉；正式交易、排程、傷害及存檔格式保持。原始audit、實際HD斬擊與反例均核對，README改用普通遊玩總覽。唯一數量及限制依58／61及HD主收據command30_normal_gui_followup_20261026。
+
+章前來源經正式JOIN及原生升級writer取得技能，含明示強化政策，不代表自然招募、原版動態或完整章節。完整戰鬥HD與集中造型／效能等原驗收仍待；本父項保持OPEN。
+
 戰場資訊窗已補四語條件與固定標籤，沿原來源ID、章號分支、數值與開收流程；正常四語／兩主題開關、F2／F4、返回及保存冷讀通過。像素繁中保留原圖字，其餘語系保留原框，HD沿既有細框與字區。來源／長譯文、缺翻譯拒收、實際PNG及反例均已驗，工單#280由提交7bbce98f完成關閉。唯一數量與限制依58、61及HD主收據system_info_locales_followup_20261026，README新增四語實際遊戲總覽。
 
 本輪沒有新美術包、改正式規則或存檔，也沒有新DOS原版動態對拍。其餘HD1介面、未登錄地形與集中人工／平台仍待；父項保持OPEN，未發布新版。
@@ -251,6 +263,10 @@ HD1原生地圖資訊窗的細框、A／D、HP與已登錄地形縮圖已接入�
 ### P1 大型戰鬥動畫HD：人物、效果與正常玩家呈現
 
 `modern-battle-animation-hd` · 工作 · [#263](https://github.com/wicanr2/fd2_re/issues/263) · 仍未完成 · 要人判
+
+音速刃已補受控章前來源的普通鍵盤選人、十字目標、取消／重選、施放、途中F2、自然返回及保存／新程序LOAD。共用owner觀測改讀真實指令ID，#281由提交6ac91c8c修正關閉；正式交易、排程、傷害及存檔格式保持。原始audit、實際HD斬擊與反例均核對，README改用普通遊玩總覽。唯一數量及限制依58／61及HD主收據command30_normal_gui_followup_20261026。
+
+章前來源經正式JOIN及原生升級writer取得技能，含明示強化政策，不代表自然招募、原版動態或完整章節。完整戰鬥HD與集中造型／效能等原驗收仍待；本父項保持OPEN。
 
 戰場資訊窗已補四語條件與固定標籤，沿原來源ID、章號分支、數值與開收流程；正常四語／兩主題開關、F2／F4、返回及保存冷讀通過。像素繁中保留原圖字，其餘語系保留原框，HD沿既有細框與字區。來源／長譯文、缺翻譯拒收、實際PNG及反例均已驗，工單#280由提交7bbce98f完成關閉。唯一數量與限制依58、61及HD主收據system_info_locales_followup_20261026，README新增四語實際遊戲總覽。
 
@@ -345,6 +361,10 @@ HD1原生地圖資訊窗的細框、A／D、HP與已登錄地形縮圖已接入�
 ### P1 HD正常路徑：早中晚期操作、戰場返回與存讀檔
 
 `modern-theme-normal-player-validation` · 工作 · [#202](https://github.com/wicanr2/fd2_re/issues/202) · 仍未完成 · 要人判
+
+音速刃已補受控章前來源的普通鍵盤選人、十字目標、取消／重選、施放、途中F2、自然返回及保存／新程序LOAD。共用owner觀測改讀真實指令ID，#281由提交6ac91c8c修正關閉；正式交易、排程、傷害及存檔格式保持。原始audit、實際HD斬擊與反例均核對，README改用普通遊玩總覽。唯一數量及限制依58／61及HD主收據command30_normal_gui_followup_20261026。
+
+章前來源經正式JOIN及原生升級writer取得技能，含明示強化政策，不代表自然招募、原版動態或完整章節。完整戰鬥HD與集中造型／效能等原驗收仍待；本父項保持OPEN。
 
 戰場資訊窗已補四語條件與固定標籤，沿原來源ID、章號分支、數值與開收流程；正常四語／兩主題開關、F2／F4、返回及保存冷讀通過。像素繁中保留原圖字，其餘語系保留原框，HD沿既有細框與字區。來源／長譯文、缺翻譯拒收、實際PNG及反例均已驗，工單#280由提交7bbce98f完成關閉。唯一數量與限制依58、61及HD主收據system_info_locales_followup_20261026，README新增四語實際遊戲總覽。
 
@@ -539,15 +559,5 @@ HD正常玩家驗證按早／中／晚期及正式消費端分別記錄。目前
 怎樣算做完：受版控READY規格先於修正；相鄰兩個insideScreenWriter邊界的PNG都不丟失且來源／延後步數可追；保留CPU與輸入時序、不以中途畫面充數。正反向測試及固定原版重跑通過，既有前綴與畫面比較保持。
 
 證據：`docs/data/fd2-remake-toolchain-recovery-20261015.json`
-
-### P2 音速刃觀測漏掉演出owner並誤標為指令29
-
-`command30-input-audit-identity` · 缺陷 · [#281](https://github.com/wicanr2/fd2_re/issues/281) · 仍未完成 · 要人判
-
-音速刃沿nativeCmd29Presentation共用owner。現行input audit的command_scene只包含0～8，且此owner的command_id固定29，會使正常鍵盤驗證器漏看30或誤認為29。這是唯讀觀測缺陷，不能據此推定正式演出沒有接入。需依typed schedule輸出實際ID，納入正式owner的活動閘門，補正常施放與來源圖像收據，不改遊戲規則、交易或排程。
-
-怎樣算做完：正常鍵盤實際施放已學音速刃時，觀測正確標記command_scene與ID30；原29仍標29。原生／HD、MP唯一消耗、自然返回及保存冷讀通過，觀測不改正式交易。
-
-證據：`docs/knowledge-base/61-modern-theme-runtime-spec.md；HD主收據`
 
 <!-- END fd2_worklist.py render -->
