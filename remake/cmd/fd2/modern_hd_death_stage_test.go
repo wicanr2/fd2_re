@@ -135,14 +135,18 @@ func TestNativeDeathStageColdFailureIsAtomic(t *testing.T) {
 
 func TestModernHDDeathStageOmitsSteadyHUDUnit(t *testing.T) {
 	g := deathStageTestGame(t)
+	g.font = loadFont()
+	if g.font == nil {
+		t.Fatal("Noto font required")
+	}
 	g.modernStoryPortraits = deathHDTestSet(g)
 	startDeathStageScript(t, g)
 	j := g.nativeCh28PostPresent
-	if j.hdFrames[25].HUDUnit == nil {
+	if j.hdFrames[25].HUDUnit == nil || j.hdFrames[25].HUDPanel == nil {
 		t.Fatal("fixture lacks steady HUD unit")
 	}
 	for i, frame := range j.hdFrames[:25] {
-		if frame.HUDUnit != nil {
+		if frame.HUDUnit != nil || frame.HUDPanel != nil {
 			t.Fatal("death event added steady HUD unit before final redraw", i)
 		}
 	}

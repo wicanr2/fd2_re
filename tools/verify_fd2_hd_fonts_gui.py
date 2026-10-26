@@ -77,6 +77,8 @@ def main():
                         help='每場實際演出PNG取樣上限；完整逐幀Draw另驗')
     parser.add_argument('--startup-timeout', type=int, choices=[60,120,180,360], default=60,
                         help='明示等待真實視窗的上限，主流程與新程序冷讀共用')
+    parser.add_argument('--run-timeout', type=int, choices=[660,900,1200,1500,1800,2400],
+                        help='整輪有界秒數，包含兩次啟動與冷讀；省略時沿既有流程預算')
     parser.add_argument('--battle-target-figure', type=int,
                         help='只以普通鍵盤選擇指定敵方圖組；省略時維持最近目標')
     parser.add_argument('--battle-target-row-max', type=int,
@@ -109,6 +111,8 @@ def main():
     parser.add_argument('--battle-end-figures',type=terrain_frame_ids,default=set(),
                         help='同一普通END擷取多個明示figure，例如133,134；省略時維持單數參數')
     args = parser.parse_args()
+    run_limit = args.run_timeout or (2400 if args.battle_end_art else 1800 if args.battle_advance else
+                                    1200 if args.terrain_occlusion or args.battle_approach_rounds or args.revive_before_departure is not None else 660)
     window_height = '1272' if args.player_toolbar else '1200'
     assert not args.death_commander_hd or (args.death_event==53 and args.world and args.battle_hd)
     assert not args.death_actor_art or (args.death_commander_hd and args.death_kind=='action')
@@ -286,8 +290,7 @@ def main():
             state=latest(audit)
             if state.get('error'):raise RuntimeError(state['error'])
             if predicate(state):return state
-            limit=2400 if args.battle_end_art else 1800 if args.battle_advance else 1200 if args.terrain_occlusion or args.battle_approach_rounds or args.revive_before_departure is not None else 660
-            if time.monotonic()-started>limit:raise TimeoutError('整輪逾時')
+            if time.monotonic()-started>run_limit:raise TimeoutError('整輪逾時')
             time.sleep(.1)
         raise TimeoutError(str(latest(audit)))
 
@@ -1173,6 +1176,7 @@ def main():
                     assert battle_end_command_samples,'未取得明示指令的普通END施法樣本'
             assert digest(Path(__file__))==tool_source_sha256,'GUI工具執行中來源被修改'
             report={'schema':'fd2-hd-battle-status-gui-v1','status':'PASS',
+                    'run_timeout_seconds':run_limit,
                     'catalog_sha256':digest(args.assets/'assets/themes/modern/catalog.json'),
                     'gui_tool_sha256':tool_source_sha256,
                     'world_runtime_checked':args.world,'world_walk_gpu':world_shots,'world_walk_rejected':world_rejected,

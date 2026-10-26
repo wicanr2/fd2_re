@@ -1,5 +1,20 @@
 # 61 — 現代美術主題正式執行期規格
 
+## 原生地圖HUD細框、數字及地形縮圖（CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI）
+
+沿既有`indexedmap.BlitNativeMapHUD`、`fdicon.NativeMapHUDLayoutFor`及已閉合IDA線性0x1acf3／0x1aeb1／0x1875d／0x187d6，不重開RE。FD2.EXE版本依[固定參考清單](../data/fd2-reference-files.json)；FDOTHER5 metadata SHA仍為a547f2f593b980fd9c1b269d1ba95be8727562d7ed31b44015615775d991efd3。實圖、遮罩、來源碼及雜湊由[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`map_hud_hd_followup_20261026`索引。原圖130為69×34且完整不透明；既有149×42面板契約屬較早非原生介面，本項保留原生位置。
+
+- 兩顯示閘門沿原typed input；原生框在456 stride的(anchor,157)，穩定顯示加(4,4)，左右anchor1／242保持。人物／地形共用框內(6,5)的24×24槽；HP在(9,21)，地形A／D的sign在(43,8)及(43,19)，數字在sign右八像素，每位六像素。
+- 用原圖自身的底色、邊色及內框色，直接繪製414×204細框，不套用149×42概念或改變位置。A／D沿原字樣用Noto直接繪字，符號與各數字分別在原6×8字格內有界繪製。HP保持三位前導零、current與maximum相等／不等的兩組原色；大於999原圖41／52的字樣經原圖確認為三個問號，直接繪製`???`。A／D仍由原生control查表決定正負與兩位前導零，不改數值。
+- 層序保持框→原生terrain descriptor縮圖→A／D→可選人物→可選HP。縮圖有已登錄144地形時使用同一來源及raw取色，不使用世界LUT分支；沒有新圖時保留原圖。人物沿既有HUD selector及state3轉1，不發明新人物；無source-write圖組仍沿原生透明圖。缺顯示閘門不存取資產；既有缺字型相容路徑保留原生HUD。
+- 新框擁有原69×34不透明矩形，只清除同一區域的邏輯UI。行動環之後可重畫整框，不能反覆累積半透明邊緣。HP始終在人像上方；效果在HUD上方的caller保持原順序。事件viewport平移與逐列一像素移動時一起平移；sampled object及共用死亡前25拍省略整個HUD，最後steady恢復。
+- CPU圖源及字型快取只保留最近的框，不把逐幀HUD放入地形GPU指標快取。GPU使用固定尺寸可重寫紋理，舊凍結畫面引用的CPU圖片保持不可變。失敗不發布半份框或修改原生work／VGA、單位、RNG、交易及保存。
+- 驗左右位置、六個control、HP相等／不等、0／999／1000／65535、無人物／有HD人物、空閘門與壞圖／壞色盤／缺字型；驗快取重用與舊圖不變。實際Game.Draw、F2、行動環覆蓋、事件平移／省略、地形縮圖及正常首章操作／保存冷讀各自記錄。原色盤與美術材質映射為既有HD近似，不新增原版逐像素或完整平台聲明。
+
+正式接點為[原生HUD補繪](../../remake/cmd/fd2/modern_hd_map_hud_panel.go)及[完整來源／交易測試](../../remake/cmd/fd2/modern_hd_map_hud_panel_test.go)。沿[既有Docker驗證器](../../tools/verify_fd2_battle_surface_hd.py)的`hud-panel-unit`與`hud-game`，使用`--catalog`、`--pack`、既有父目錄下全新`--out`及有界`--timeout`；分離原圖由`FD2_ASSET_PACK`指定。獨立[PNG核對器](../../tools/verify_fd2_hd_map_hud_panel.py)以`--receipt`、`--previous`、`--catalog`、`--pack`及全新`--output`核對3像素細框、數字子像素、實際HD地形PNG與框外保持；`--self-test`驗收據反例，`--normal`改讀正常GUI收據。完整容器命令及來源雜湊集中於HD主收據，不在README重複。
+
+本項先定READY再實作。完整HUD及F2、六種地形修正與五種HP邊界通過，當次私人包的已登錄地形PNG亦逐像素核對。框外保持另由`hud-panel-clip`的[同來源控制組](../../remake/cmd/fd2/modern_hd_map_hud_clip_gpu_test.go)與PNG工具的`--clip-receipt`驗證；較早地形清冊的舊圖只作HUD樣式反例，不誤當框外基準。事件、逐列位移、走行省略及死亡末拍回交均有獨立檢查。正常首章標題LOAD、走行、Home狀態／指令頁、F2與保存冷讀通過；攻擊取樣及自然返回／戰後保存分列於主收據，不混為完整章節或新原版對拍。全部HD後集中人工與平台驗收仍待。
+
 ## HD1正式版整合
 
 使用者2026-10-26指定恢復HD1，先完成接線，再作正式版。現況集中於[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`hd1_release_integration_20261026`；HD2既定設計保持，這輪優先既有方格視角的HD1。完整地形、HUD、其餘操作介面及集中玩家／平台驗收仍有缺項，不以單一圖示切片代表正式版已完成。新增工具列控制是否列為本版發行門檻，另待使用者決定，既有接線照常推進。

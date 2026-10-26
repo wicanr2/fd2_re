@@ -10,6 +10,7 @@ import (
 	"image/png"
 	"os"
 	"path/filepath"
+	"sort"
 	"testing"
 	"time"
 
@@ -55,7 +56,7 @@ func (p *hudHDGPUProbe) Draw(screen *ebiten.Image) {
 		g.Draw(screen)
 	}
 	f := g.modernHDMapPresented
-	if f == nil || f.HUDUnit == nil || !g.modernHDWorldVisible {
+	if f == nil || f.HUDUnit == nil && f.HUDPanel == nil || !g.modernHDWorldVisible {
 		p.err = fmt.Errorf("%s missing actual HUD: %s", c.name, g.loadErr)
 		return
 	}
@@ -72,12 +73,18 @@ func (p *hudHDGPUProbe) Draw(screen *ebiten.Image) {
 	// A second opaque restore must erase a ring crossing this panel without
 	// doubling translucent edges. Compare against the independently rastered patch.
 	if c.frame != nil && !f.OverlaysAboveUI {
-		g.modernHDMapGPU.World.SubImage(f.HUDUnit.Unit.Rect).(*ebiten.Image).Fill(color.RGBA{0, 255, 0, 255})
-		g.modernHDMapGPU.drawHUDUnit(f.HUDUnit, modernHDMapViewport())
-		g.modernHDMapGPU.drawHUDUnit(f.HUDUnit, modernHDMapViewport())
+		var restore image.Rectangle
+		if f.HUDPanel != nil {
+			restore = f.HUDPanel.Rect
+		} else {
+			restore = f.HUDUnit.Unit.Rect
+		}
+		g.modernHDMapGPU.World.SubImage(restore).(*ebiten.Image).Fill(color.RGBA{0, 255, 0, 255})
+		g.modernHDMapGPU.drawHUD(f, modernHDMapViewport())
+		g.modernHDMapGPU.drawHUD(f, modernHDMapViewport())
 		g.modernHDMapGPU.World.ReadPixels(pixels)
-		for y := f.HUDUnit.Unit.Rect.Min.Y; y < f.HUDUnit.Unit.Rect.Max.Y; y++ {
-			for x := f.HUDUnit.Unit.Rect.Min.X; x < f.HUDUnit.Unit.Rect.Max.X; x++ {
+		for y := restore.Min.Y; y < restore.Max.Y; y++ {
+			for x := restore.Min.X; x < restore.Max.X; x++ {
 				for ch := 0; ch < 4; ch++ {
 					i := (y*1920+x)*4 + ch
 					d := int(pixels[i]) - int(want.Pix[i])
@@ -124,24 +131,6 @@ func (p *hudHDGPUProbe) Draw(screen *ebiten.Image) {
 	geom.Scale(3, 3)
 	presentation.DrawFinalScreen(final, screen, geom)
 	final.ReadPixels(pixels)
-	// Logical UI and other menus may add pixels elsewhere. The actual 144px
-	// icon footprint must survive the final screen unchanged, including HP.
-	r := f.HUDUnit.Unit.Rect
-	if f.OverlaysAboveUI {
-		r = r.Intersect(f.Viewport)
-	}
-	for y := r.Min.Y; y < r.Max.Y; y++ {
-		for x := r.Min.X; x < r.Max.X; x++ {
-			for ch := 0; ch < 4; ch++ {
-				i := (y*1920+x)*4 + ch
-				d := int(pixels[i]) - int(want.Pix[i])
-				if d < -2 || d > 2 {
-					p.err = fmt.Errorf("%s final HUD mismatch at %d,%d", c.name, x, y)
-					return
-				}
-			}
-		}
-	}
 	pic := image.NewRGBA(image.Rect(0, 0, 1920, 1200))
 	copy(pic.Pix, pixels)
 	file, e := os.Create(filepath.Join(p.out, c.name+".png"))
@@ -159,7 +148,34 @@ func (p *hudHDGPUProbe) Draw(screen *ebiten.Image) {
 		p.err = closeErr
 		return
 	}
-	p.rows = append(p.rows, map[string]any{"case": c.name, "group": f.HUDUnit.Unit.Group, "frame": f.HUDUnit.Unit.Frame, "rect": r, "game_draw": c.frame == nil, "f2": c.frame == nil, "final_sha256": fmt.Sprintf("%x", sha256.Sum256(pixels)), "rgba_tolerance": 2})
+	// Logical UI and other menus may add pixels elsewhere. The actual 144px
+	// icon footprint must survive the final screen unchanged, including HP.
+	var r image.Rectangle
+	if f.HUDPanel != nil {
+		r = f.HUDPanel.Rect
+	} else {
+		r = f.HUDUnit.Unit.Rect
+	}
+	if f.OverlaysAboveUI {
+		r = r.Intersect(f.Viewport)
+	}
+	for y := r.Min.Y; y < r.Max.Y; y++ {
+		for x := r.Min.X; x < r.Max.X; x++ {
+			for ch := 0; ch < 4; ch++ {
+				i := (y*1920+x)*4 + ch
+				d := int(pixels[i]) - int(want.Pix[i])
+				if d < -2 || d > 2 {
+					p.err = fmt.Errorf("%s final HUD mismatch at %d,%d channel%d got%d want%d logical%v msg%q text%+v", c.name, x, y, ch, pixels[i], want.Pix[i], screen.At(x/3, y/3), g.msg, g.modernHDText)
+					return
+				}
+			}
+		}
+	}
+	group, pose := -1, -1
+	if f.HUDUnit != nil {
+		group, pose = f.HUDUnit.Unit.Group, f.HUDUnit.Unit.Frame
+	}
+	p.rows = append(p.rows, map[string]any{"case": c.name, "group": group, "frame": pose, "rect": r, "panel_hd": f.HUDPanel != nil, "terrain_hd": f.HUDPanel != nil && f.HUDPanel.TerrainHD, "game_draw": c.frame == nil, "f2": c.frame == nil, "final_sha256": fmt.Sprintf("%x", sha256.Sum256(pixels)), "rgba_tolerance": 2})
 	final.Dispose()
 	p.index++
 }
@@ -215,6 +231,13 @@ func TestModernHDHUDUnitSourcesAndGameGPU(t *testing.T) {
 	for _, anchor := range []int{1, 242} {
 		for _, cursor := range []int{0, 1} {
 			g, _, _ := ordinaryCommand0HDTestGame(t, func() time.Time { return time.Unix(1000, 0) })
+			g.font = loadFont()
+			if g.font == nil {
+				t.Fatal("Noto font required")
+			}
+			// This controlled fixture starts at a neutral map, after the chapter
+			// dialogue. Loading a font must not expose its leftover opening line.
+			g.dialog = nil
 			view := g.st.NativeMapViewState
 			view.CursorX, view.VisibleCursorX = cursor, cursor
 			if e := g.st.MaterializeNativeMapViewState(view); e != nil {
@@ -247,6 +270,55 @@ func TestModernHDHUDUnitSourcesAndGameGPU(t *testing.T) {
 				}
 				event.Overlays = []modernHDMapOverlayDraw{{Image: overlay, Rect: overlay.Bounds().Add(event.HUDUnit.Unit.Rect.Min.Add(image.Pt(50, 70)))}}
 				p.cases = append(p.cases, hudHDGPUCase{g: g, frame: event, name: "event-effect-above-hud"})
+				in, err := g.nativeCh28PostFrameInput(g.st)
+				if err != nil {
+					t.Fatal(err)
+				}
+				for control := byte(0); control < 6; control++ {
+					input := in
+					input.HUD.TerrainControl = control
+					input.HUD.OptionalUnit = nil
+					panel, err := g.prepareModernHDMapHUDPanel(input, g.nativeMapAssets.Palette)
+					if err != nil {
+						t.Fatal(err)
+					}
+					terrain := f
+					terrain.HUDUnit, terrain.HUDPanel = nil, panel
+					p.cases = append(p.cases, hudHDGPUCase{g: g, frame: &terrain, name: fmt.Sprintf("terrain-control%d", control)})
+				}
+				var registered []int
+				for tile, asset := range set.terrainHD[0] {
+					if asset.supports("terrain") {
+						registered = append(registered, tile)
+					}
+				}
+				sort.Ints(registered)
+				if len(registered) == 0 {
+					t.Fatal("registered terrain required")
+				}
+				input := in
+				input.HUD.OptionalUnit = nil
+				input.HUD.TerrainDescriptor = registered[0]
+				panel, err := g.prepareModernHDMapHUDPanel(input, g.nativeMapAssets.Palette)
+				if err != nil || !panel.TerrainHD || panel.Terrain != set.terrainHD[0][registered[0]].Image {
+					t.Fatal("actual registered HUD terrain", err)
+				}
+				terrain := f
+				terrain.HUDUnit, terrain.HUDPanel = nil, panel
+				p.cases = append(p.cases, hudHDGPUCase{g: g, frame: &terrain, name: fmt.Sprintf("registered-terrain-%d", registered[0])})
+				for _, hp := range [][2]uint16{{0, 0}, {5, 10}, {999, 999}, {1000, 1000}, {65535, 65534}} {
+					input := in
+					u := *in.HUD.OptionalUnit
+					u.Current, u.Maximum = hp[0], hp[1]
+					input.HUD.OptionalUnit = &u
+					panel, err := g.prepareModernHDMapHUDPanel(input, g.nativeMapAssets.Palette)
+					if err != nil {
+						t.Fatal(err)
+					}
+					frozen := f
+					frozen.HUDPanel = panel
+					p.cases = append(p.cases, hudHDGPUCase{g: g, frame: &frozen, name: fmt.Sprintf("hp-%d-%d", hp[0], hp[1])})
+				}
 			}
 		}
 	}
@@ -255,10 +327,10 @@ func TestModernHDHUDUnitSourcesAndGameGPU(t *testing.T) {
 	if e := ebiten.RunGame(p); e != nil {
 		t.Fatal(e)
 	}
-	if p.err != nil || p.index != 6 {
-		t.Fatalf("HUD GPU %d/6: %v", p.index, p.err)
+	if p.err != nil || p.index != len(p.cases) {
+		t.Fatalf("HUD GPU %d/%d: %v", p.index, len(p.cases), p.err)
 	}
-	report := map[string]any{"status": "PASS-HUD-UNIT-HD-RUNTIME-E1", "groups": groups, "source_states": states, "fixed_clock_unix": 1000, "native_rng_seed": 7, "cases": p.rows, "scope": "controlled Game.Draw, not a new original parity receipt"}
+	report := map[string]any{"status": "PASS-HUD-PANEL-HD-RUNTIME-E1", "groups": groups, "source_states": states, "fixed_clock_unix": 1000, "native_rng_seed": 7, "cases": p.rows, "scope": "controlled Game.Draw, not a new original parity receipt"}
 	raw, e := json.MarshalIndent(report, "", "  ")
 	if e != nil {
 		t.Fatal(e)

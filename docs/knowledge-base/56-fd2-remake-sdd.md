@@ -1,6 +1,6 @@
 # 56 — FD2 remake 系統設計規格（SDD，2026-08-09）
 
-HD1目前優先完成正式接線。共用面板的分類／裝備與狀態圖示已接入，原生選擇、區域搬移、交易與保存保持；受控繪圖、獨立PNG及私人實際圖包載入通過。唯一數量依[58](58-fd2-exe-re-coverage.md)，規格及HD1剩餘項依[61](61-modern-theme-runtime-spec.md)，主收據為`item_panel_icons_hd_followup_20261026`與`hd1_release_integration_20261026`。完整地形／HUD與其餘介面、集中玩家／平台驗收仍待，未宣稱HD1正式版完成。
+HD1目前優先完成正式接線。原生地圖資訊窗的細框、A／D、HP及已登錄HD地形縮圖已接入，與既有HD人物保持原位置及層序；共用面板十圖示保持。受控完整繪圖、原生交易、同來源框外保持及正常首章LOAD／F2／面板／保存冷讀通過。唯一數量依[58](58-fd2-exe-re-coverage.md)，規格及剩餘項依[61](61-modern-theme-runtime-spec.md)，主收據為`map_hud_hd_followup_20261026`與`hd1_release_integration_20261026`。未登錄地形、其餘介面及集中玩家／平台驗收仍待，未宣稱HD1正式版完成。
 
 共用物品列表的+AP／+DP／+HP／+MP及指令頁-MP已接HD，沿原生資料、緊密排列與三區位移裁切，完整預檢後才切換主題。兩條完整Game.Draw及八格四類／十二指令／空列補樣、原生控制、F2、交易與JSON保存冷讀通過，限定CONFORMED-SCOPED／RUNTIME-E1。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約與重跑依[61](61-modern-theme-runtime-spec.md)，主證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的item_row_labels_followup_20261026。分類／裝備及角色狀態圖示、其餘介面／地形／HD2／工具列與全部HD後集中正常／人工／平台仍待。
 

@@ -90,6 +90,7 @@ type Game struct {
 	nativeMapFrameSource         *indexedmap.NativeFrameInput // Published with the successful steady snapshot.
 	modernHDMapFrame             *modernHDMapFrame
 	modernHDMapGPU               *modernHDMapGPU
+	modernHDMapHUDArt            *modernHDMapHUDArt
 	modernHDBattleGPU            *modernHDBattleGPU
 	modernHDBattleVisible        bool
 	modernHDWorldVisible         bool

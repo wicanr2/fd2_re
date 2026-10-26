@@ -74,6 +74,7 @@ func (g *Game) prepareModernHDDeathFrames(job *nativeCh28PostPresentJob, set *mo
 		if i < 25 {
 			frame.UI = image.NewRGBA(image.Rect(0, 0, 320, 200))
 			frame.HUDUnit = nil
+			frame.HUDPanel = nil
 			frame.Viewport = image.Rect(0, 0, 312*6, 192*6)
 			shift := image.Pt(-24, -24)
 			for k := range frame.Units {

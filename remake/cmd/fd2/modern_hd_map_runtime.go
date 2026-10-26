@@ -30,6 +30,7 @@ type modernHDMapFrame struct {
 	OverlaysAboveUI  bool
 	CompoundOwner    *modernHDCompoundMapScene
 	HUDUnit          *modernHDMapHUDUnit
+	HUDPanel         *modernHDMapHUDPanel
 	TransientTerrain bool
 	PaletteAdd6      int
 }
@@ -299,18 +300,27 @@ func (g *Game) prepareModernHDMapFrameStageLayout(in indexedmap.NativeFrameInput
 		}
 	}
 	var hudUnit *modernHDMapHUDUnit
+	var hudPanel *modernHDMapHUDPanel
 	if !step {
 		hudUnit, err = g.prepareModernHDMapHUDUnit(in, palette)
+		if err != nil {
+			return nil, err
+		}
+		hudPanel, err = g.prepareModernHDMapHUDPanel(in, palette)
 		if err != nil {
 			return nil, err
 		}
 		if row >= 0 && hudUnit != nil {
 			hudUnit.Unit.Rect = hudUnit.Unit.Rect.Add(image.Pt(0, -row*6))
 		}
+		if row >= 0 && hudPanel != nil {
+			hudPanel.Rect = hudPanel.Rect.Add(image.Pt(0, -row*6))
+		}
 		clearModernHDHUDUnitPixels(ui, hudUnit)
+		clearModernHDHUDPanelPixels(ui, hudPanel)
 	}
 	result := &modernHDMapFrame{Background: bg, UI: ui, Units: units, Foreground: foreground, TerrainSeed: terrainSeed,
-		TerrainUnderlay: append([]byte(nil), seed...), Terrain: terrain, Range: rangeLayer, TerrainColourKey: colours.Key, HUDUnit: hudUnit}
+		TerrainUnderlay: append([]byte(nil), seed...), Terrain: terrain, Range: rangeLayer, TerrainColourKey: colours.Key, HUDUnit: hudUnit, HUDPanel: hudPanel}
 	if stageImage != nil {
 		result.Terrain = append([]modernHDTerrainDraw{{Image: stageImage, Rect: modernHDMapViewport(), Stage: true}}, result.Terrain...)
 		result.TransientTerrain = true

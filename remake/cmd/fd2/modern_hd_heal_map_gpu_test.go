@@ -87,6 +87,22 @@ func healHDCPUWorld(frame *modernHDMapFrame, set *modernStoryPortraitSet) *image
 		paint(frame.UI, out.Bounds(), out.Bounds(), one)
 	}
 	paintHUD := func() {
+		if panel := frame.HUDPanel; panel != nil {
+			paint(panel.Base, panel.Rect, clip, one)
+			slot := image.Rectangle{Min: panel.Rect.Min.Add(image.Pt(36, 30)), Max: panel.Rect.Min.Add(image.Pt(180, 174))}
+			paint(panel.Terrain, slot, clip, one)
+			if h := frame.HUDUnit; h != nil {
+				picture := set.mapSpritesHD[h.Unit.Group][h.Unit.Frame]
+				if h.Unit.ColourImage != nil {
+					picture = h.Unit.ColourImage
+				}
+				paint(picture, h.Unit.Rect, clip, one)
+			} else if panel.NativeUnit != nil {
+				paint(panel.NativeUnit, slot, clip, one)
+			}
+			paint(panel.Above, panel.Rect, clip, one)
+			return
+		}
 		if h := frame.HUDUnit; h != nil {
 			paint(h.Base, h.Unit.Rect, clip, one)
 			picture := set.mapSpritesHD[h.Unit.Group][h.Unit.Frame]

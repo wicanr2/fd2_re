@@ -25,12 +25,12 @@
     "hd_battle_pedestal": "CONFORMED-SCOPED／RUNTIME-E1：已登錄草地、森林裸土及海岸沙地TAI接共用物理的靜態／移位進場、攻防／restore／淡出。原框、層序與節拍保持，其他來源及caller仍待，依forest_coast_surface_followup_20261024。",
     "hd_heal_map": "CONFORMED-SCOPED／RUNTIME-E1：13～16的前導、七張光環、HD輪廓閃光、十個綠數字及等待接入；兩包各八完整Game.Draw／88次F2、一次交易／續行與非空HD地形變色通過。來源及限制見heal13_16_map_hd_followup_20261023，正常／人工／平台仍待。",
     "hd_reward_message": "CONFORMED-SCOPED／RUNTIME-E1：物品／金錢成功訊息的HD世界、Noto文字與480頭像接入；兩完整Game.Draw共26拍／26次F2、原生開收框遮罩、動態金額、HUD回交及一次續行通過。受控頭像選擇與獎勵值，正常／人工／平台仍待；依reward_message_hd_followup_20261023。",
-    "hd_map_hud_unit": "CONFORMED-SCOPED／RUNTIME-E1：既有HD主題的資訊窗人物已接144圖源，原selector、狀態3轉1、位置及HP層序保持；來源、數量及回歸依hud_unit_icon_hd_followup_20261024。HD2／完整介面與正常玩家仍待。",
+    "hd_map_hud_unit": "CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI：原生69×34資訊窗的414×204細框、A／D、HP、既有144人物及已登錄地形縮圖接入；原位置、層序、事件位移及省略保持。唯一數量與來源依map_hud_hd_followup_20261026；不代表其他介面／完整HD完成。",
     "hd_map_stage": "FDOTHER42背景與同次循環列位移／DAC已接HD；天空之鑰與其後凍結consumer依各自較晚followup，不沿用早期仍待說法。其他地形及完整HD仍待。",
     "hd_battle_panel_chrome": "CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI：共用戰鬥面板HD框線／HP與MP條已接；來源、實際流程、獨立CPU及首章普通攻防保存冷讀依battle_panel_chrome_followup_20261026。其他介面與集中人工／平台仍待。",
     "hd_item_row_labels": "CONFORMED-SCOPED／RUNTIME-E1：物品加成四縮寫及指令-MP沿原生來源直接HD繪字；來源、數量、建構槽與限制依item_row_labels_followup_20261026。圖示現況依hd_item_panel_icons；完整HD／集中驗收仍待。",
     "hd_item_panel_icons": "CONFORMED-SCOPED／RUNTIME-E1：十個共用面板圖示已正式接線，兩包載入及物品／狀態完整繪製通過；唯一數量與分級依item_panel_icons_hd_followup_20261026。",
-    "hd1_release": "依2026-10-26指示優先完成既有HD1接線；完整地形／HUD與其餘介面仍待，不以圖示切片通過宣稱正式版已完成。"
+    "hd1_release": "優先完成既有HD1接線；原生地圖HUD與十個共用面板圖示已接。未登錄地形、其餘操作介面及集中人工／平台仍待，未宣稱正式版完成。"
   },
   "runtime_source": {
     "binary": {
@@ -238341,15 +238341,16 @@
       "source_save_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
       "binary_sha256": "6402a845e5e42e28cf74b80c8973fca7302f199dc2165b2c94f787eb76bd1cef",
       "screenshots": 34,
-      "natural_attack_return": true,
+      "natural_attack_return": false,
       "source_save_bytes_equal": true,
       "theme_save_bytes_equal": true,
       "new_process_title_load": true,
-      "scope": "正常標題LOAD既有普通START／F5首章JSON，Z聚焦、Home檢視、F2、狀態與命令、返回；含普通走行、指令環、取消、2場physical演出與正常戰場返回。含經驗對話中F9。不注入座標或狀態，不宣稱原版對拍或完整戰役。",
+      "scope": "正常標題LOAD既有普通START／F5首章JSON；走行／指令環、兩場演出取樣、經驗對話中F9、Home狀態與命令、F2與保存冷讀。不注入座標或狀態；不宣稱自然戰鬥返回、原版對拍或完整戰役。",
       "independent": {
         "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-normal-independent-r2.json",
         "sha256": "3f8f2cb2aba9ca3292d3328e18b0d25458d19dc47e20d386ec2ec7255bc272b7"
-      }
+      },
+      "scope_correction": "2026-10-26勘誤：原收據natural_attack_return_checked=false；兩場演出取樣後F9回載，不冒稱自然返回。保存／冷讀與面板驗證仍成立。"
     },
     "readme_overview": {
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-readme-r1.json",
@@ -238363,7 +238364,7 @@
     "source_branch": "feat/hd-panel-icons-20261026",
     "base_commit": "ea4fb3bdc78ea61e90b4ad8db7f90187c4a0cb9e",
     "release_ready": false,
-    "active_slice": "共用面板十個HD圖示已整合；正常玩家抽測依item_panel_icons_hd_followup_20261026.normal_gui",
+    "active_slice": "原生地圖HUD接線已驗；接續其餘操作介面與未登錄地形盤點",
     "components": [
       {
         "component": "人物、頭像、戰鬥動畫與場景既有圖源",
@@ -238373,6 +238374,11 @@
         "component": "物品／狀態面板圖示",
         "status": "CONFORMED-SCOPED/RUNTIME-E1",
         "evidence_key": "item_panel_icons_hd_followup_20261026"
+      },
+      {
+        "component": "原生地圖HUD",
+        "status": "CONFORMED-SCOPED-RUNTIME-E1-NORMAL-GUI",
+        "evidence_key": "map_hud_hd_followup_20261026"
       },
       {
         "component": "完整HUD與其餘操作介面",
@@ -238403,6 +238409,453 @@
       204,
       263
     ],
-    "release_scope_pending": "新增工具列控制是否須與HD1正式版同時完成，已用共同決策提問；不阻塞既有HD1接線。"
+    "release_scope_pending": "新增工具列控制是否須與HD1正式版同時完成，已用共同決策提問；不阻塞既有HD1接線。",
+    "latest_branch": "feat/hd-map-hud-20261026",
+    "latest_base_commit": "8a8a2adb10d9614d0de300c390418e28da187a48"
+  },
+  "map_hud_hd_followup_20261026": {
+    "status": "CONFORMED-SCOPED-RUNTIME-E1-NORMAL-GUI",
+    "full_hd_complete": false,
+    "source_evidence": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/map-hud-source-r1.json",
+      "sha256": "0e56a7537d61a910a3bbe836b4bcd202c1474f4aef2e7173e8df1563ba9f8b4f"
+    },
+    "source_addresses": "既有IDA線性0x1acf3／0x1aeb1／0x1875d／0x187d6與fdicon.NativeMapHUDLayoutFor，不重開RE",
+    "scope": "原生69×34 HUD細框、A／D、正負兩位數及HP三位／???、既有HD地形縮圖與人物層序",
+    "normal_player_verified": true,
+    "runtime_integrated": true,
+    "base_commit": "8a8a2adb10d9614d0de300c390418e28da187a48",
+    "source_branch": "feat/hd-map-hud-20261026",
+    "go_runs": [
+      {
+        "kind": "unit",
+        "tests": [
+          "TestModernHDHUDPanelFormattingAndFrozenCache",
+          "TestModernHDHUDPanelAdmissionGeometryAndEvents",
+          "TestModernHDHUDPanelNativeTransactionAndTerrain",
+          "TestModernHDHUDUnitSelectionAndHP",
+          "TestModernHDHUDUnitAdmissionAndEventShift",
+          "TestModernHDMapTransactionUsesOneNativeClockAndIndependentTerrain",
+          "TestModernHDMapRejectedArtDoesNotPublishNativeState"
+        ],
+        "skips_not_counted": [],
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/map-hud-unit-final-r1.memory.json",
+          "sha256": "28c9885a86385c4f6500f353800314f6a8e026a845313300fe46b5e0b8552079"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/map-hud-unit-final-r1.log",
+          "sha256": "c0878d278eeadd37d5b4b290102d0f2a473d4789844b6b8c9b46e58d2abbf3d3"
+        },
+        "seconds": 20.538,
+        "peak_bytes": 565178368,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "command": [
+          "bash",
+          "-c",
+          "set -euo pipefail\nXvfb :99 -screen 0 1920x1200x24 -nolisten tcp >/tmp/fd2-surface-xvfb.log 2>&1 &\nfd2_surface_xvfb=$!\ntrap 'kill \"$fd2_surface_xvfb\" 2>/dev/null || true; wait \"$fd2_surface_xvfb\" 2>/dev/null || true' EXIT\nexport DISPLAY=:99\n\"$@\"\n",
+          "fd2-background",
+          "go",
+          "test",
+          "-json",
+          "-count=1",
+          "-timeout=210s",
+          "./cmd/fd2",
+          "-run",
+          "^(TestModernHDHUDPanelAdmissionGeometryAndEvents|TestModernHDHUDPanelFormattingAndFrozenCache|TestModernHDHUDPanelNativeTransactionAndTerrain|TestModernHDHUDUnitAdmissionAndEventShift|TestModernHDHUDUnitSelectionAndHP|TestModernHDMapRejectedArtDoesNotPublishNativeState|TestModernHDMapTransactionUsesOneNativeClockAndIndependentTerrain)$"
+        ],
+        "cwd": "/repo/remake"
+      },
+      {
+        "kind": "full-gpu",
+        "tests": [
+          "TestModernHDHUDUnitSourcesAndGameGPU"
+        ],
+        "skips_not_counted": [],
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/map-hud-game-r4.memory.json",
+          "sha256": "929a15a0f5f3a65e51cadd61d5d40a234eb5d9b1354aa7ed9c8aff0cfdbb365f"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/map-hud-game-r4.log",
+          "sha256": "8bce0ed88f308e9665c574352921ed16d809caa80ad963476e19153bbd3d8017"
+        },
+        "seconds": 562.954,
+        "peak_bytes": 4930498560,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "command": [
+          "bash",
+          "-c",
+          "set -euo pipefail\nXvfb :99 -screen 0 1920x1200x24 -nolisten tcp >/tmp/fd2-surface-xvfb.log 2>&1 &\nfd2_surface_xvfb=$!\ntrap 'kill \"$fd2_surface_xvfb\" 2>/dev/null || true; wait \"$fd2_surface_xvfb\" 2>/dev/null || true' EXIT\nexport DISPLAY=:99\n\"$@\"\n",
+          "fd2-background",
+          "go",
+          "test",
+          "-json",
+          "-count=1",
+          "-timeout=810s",
+          "./cmd/fd2",
+          "-run",
+          "^(TestModernHDHUDUnitSourcesAndGameGPU)$"
+        ],
+        "cwd": "/repo/remake"
+      },
+      {
+        "kind": "clip-gpu",
+        "tests": [
+          "TestModernHDHUDPanelClipsFinalGPU"
+        ],
+        "skips_not_counted": [],
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/map-hud-clip-r1.memory.json",
+          "sha256": "a08e17b2c04fb2c454e661a3c0c8d5522102c84b202183a5f3b9155381144d0c"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/map-hud-clip-r1.log",
+          "sha256": "12467a0863dc2c5936e395af7dd484a592f503b09d06df07c2748d5fb2e27a91"
+        },
+        "seconds": 56.956,
+        "peak_bytes": 1398202368,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "command": [
+          "bash",
+          "-c",
+          "set -euo pipefail\nXvfb :99 -screen 0 1920x1200x24 -nolisten tcp >/tmp/fd2-surface-xvfb.log 2>&1 &\nfd2_surface_xvfb=$!\ntrap 'kill \"$fd2_surface_xvfb\" 2>/dev/null || true; wait \"$fd2_surface_xvfb\" 2>/dev/null || true' EXIT\nexport DISPLAY=:99\n\"$@\"\n",
+          "fd2-background",
+          "go",
+          "test",
+          "-json",
+          "-count=1",
+          "-timeout=210s",
+          "./cmd/fd2",
+          "-run",
+          "^(TestModernHDHUDPanelClipsFinalGPU)$"
+        ],
+        "cwd": "/repo/remake"
+      },
+      {
+        "kind": "owner",
+        "tests": [
+          "TestModernHDCommand1012SamplingIndependentCoordinates",
+          "TestModernHDDeathStageOmitsSteadyHUDUnit",
+          "TestModernHDPlayer9FrozenInputMatchesSnapshot",
+          "TestModernHDTerrainRGBIdentityMappingAndCollapse",
+          "TestModernHDTerrainSteadyAndUpStepProjection",
+          "TestModernHDUnitPresentCountsUseExplicitWorkOffset",
+          "TestModernHDUnitPresentFrozenFramesAndNativeControl",
+          "TestModernHDUnitPresentRejectsBeforePublication",
+          "TestModernHDUnitPresentStagesPendingLegsAtomically",
+          "TestModernHDUnitPresentLegacyEffectAndLinearRowWrap",
+          "TestWriteSaveFileReplacesCompleteJSONAtomically",
+          "TestCampaignSaveLoadRestoresTownBoundaryAndParty"
+        ],
+        "skips_not_counted": [
+          "TestModernHDCommand1012StageIsolationAndReject",
+          "TestModernHDDeathStageSourceAndReject"
+        ],
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/map-hud-owner-regression-r1.memory.json",
+          "sha256": "804b866d8e89130b3a2a5990184a1ed92c35ba5cf53b2e6c6230ac7e9bc14edf"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/map-hud-owner-regression-r1.log",
+          "sha256": "6e7378f3e9f3297f29b0c79db254ee1a3e4e1cce19fb15f0bae712ed6a682f28"
+        },
+        "seconds": 90.59,
+        "peak_bytes": 1304506368,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "command": [
+          "with-xvfb",
+          "go",
+          "test",
+          "-json",
+          "./cmd/fd2",
+          "-run",
+          "^(TestModernHDDeathStageOmitsSteadyHUDUnit|TestModernHDDeathStageSourceAndReject|TestModernHDUnitPresentCountsUseExplicitWorkOffset|TestModernHDUnitPresentFrozenFramesAndNativeControl|TestModernHDUnitPresentRejectsBeforePublication|TestModernHDUnitPresentStagesPendingLegsAtomically|TestModernHDUnitPresentLegacyEffectAndLinearRowWrap|TestModernHDCommand1012SamplingIndependentCoordinates|TestModernHDCommand1012StageIsolationAndReject|TestModernHDPlayer9FrozenInputMatchesSnapshot|TestModernHDTerrainRGBIdentityMappingAndCollapse|TestModernHDTerrainSteadyAndUpStepProjection|TestWriteSaveFileReplacesCompleteJSONAtomically|TestCampaignSaveLoadRestoresTownBoundaryAndParty)$",
+          "-count=1",
+          "-timeout",
+          "240s"
+        ],
+        "cwd": "/repo/remake"
+      },
+      {
+        "kind": "stage",
+        "tests": [
+          "TestModernHDDeathStageSourceAndReject"
+        ],
+        "skips_not_counted": [],
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/map-hud-stage-regression-r2.memory.json",
+          "sha256": "68198fcc9bdcd9a92a66db6f7b49dc235c799a8117f7fd45d10cf673cd52cb58"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/map-hud-stage-regression-r2.log",
+          "sha256": "11116de87539263b1741c189811a411f34a0b2835d981c7f263c39417a0958d0"
+        },
+        "seconds": 320.789,
+        "peak_bytes": 3076452352,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "command": [
+          "with-xvfb",
+          "go",
+          "test",
+          "-json",
+          "./cmd/fd2",
+          "-run",
+          "^TestModernHDDeathStageSourceAndReject$",
+          "-count=1",
+          "-timeout",
+          "600s"
+        ],
+        "cwd": "/repo/remake"
+      },
+      {
+        "kind": "strings",
+        "tests": [
+          "TestBuildCollectsControlledJSONAndGoUIWithoutNotesOrErrors",
+          "TestBuildIsDeterministicAndJSONSerializable",
+          "TestBuildRejectsDuplicateExistingStringID",
+          "TestMultipleTextFieldsDoNotReuseOneExistingStringID",
+          "TestVariablesIncludeWrappedErrorPlaceholder",
+          "TestDrawFunctionContextIncludesIndirectASCIIAndFunctionName",
+          "TestDrawFunctionContextSkipsLocaleKeys",
+          "TestReviewedGoCandidatesMatchCurrentInventory"
+        ],
+        "skips_not_counted": [],
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/map-hud-string-tests-r1.memory.json",
+          "sha256": "42178f7c6c48e598f5194a75c4ca63984684c2929563c0008863a159775168f3"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/map-hud-string-tests-r1.log",
+          "sha256": "ba94af8c078dba0c39c6ae9e867edacbb637330ce63820cb5152f41a585e4a8b"
+        },
+        "seconds": 4.699,
+        "peak_bytes": 72433664,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "command": [
+          "go",
+          "test",
+          "-json",
+          "./cmd/fd2-string-inventory",
+          "-count=1",
+          "-timeout",
+          "90s"
+        ],
+        "cwd": "/repo/remake"
+      }
+    ],
+    "independent_checks": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/map-hud-game-independent-r2.json",
+        "sha256": "5b2404dd7c78b633691a30df7f2074a35cd4acfd48044a23ae16346bb4e498ff"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/map-hud-normal-independent-r1.json",
+        "sha256": "16b7195d1dccc0518534b1f6147ce4a99a0a2deb3de9bb1b10a208de621549d0"
+      }
+    ],
+    "readme_overview": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/map-hud-readme-r1.json",
+      "sha256": "d850a04ca57b017d6c958e65151a4b74d842cd9a7c3ef4949ac678a0b61d5aae"
+    },
+    "rebuild": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/map-hud-rebuild-r1.json",
+      "sha256": "2e06331061dfc6c8e419813481eed79c7d30a122b86d3d28e54bddb239315a76"
+    },
+    "normal_gui": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/map-hud-normal-r1-capture/receipt.json",
+        "sha256": "cebf28fa5ac01634fc38827e4349200429e16543c301f3d20a42865ab1de93fc"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/map-hud-normal-r1.memory.json",
+        "sha256": "f41b826351068db8a033cbb7e6234af131962d444e115c8774cd0407ebf47974"
+      },
+      "screenshots": 34,
+      "seconds": 470.604,
+      "peak_bytes": 4800806912,
+      "memory_events_delta": {
+        "low": 0,
+        "high": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_kill": 0,
+        "oom_group_kill": 0,
+        "sock_throttled": 0
+      },
+      "binary_sha256": "581416a907e5f36750eb62429dbf36f45f3702e34ec1c3b27a3a2231e82d81dd",
+      "source_save_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "new_process_title_load": true,
+      "source_save_bytes_equal": true,
+      "theme_save_bytes_equal": true,
+      "natural_attack_return_checked": false,
+      "scope": "正常標題LOAD、走行／指令環／取消、兩場演出取樣及F9回載、Home狀態／指令、F2與保存／新程序LOAD；不宣稱本輪自然戰鬥返回或完整章節。"
+    },
+    "summary": {
+      "distinct_top_level_go_tests": 30,
+      "source_groups": 125,
+      "source_states": 500,
+      "full_gpu_cases": 18,
+      "f2_round_trips": 4,
+      "same_source_unchanged_pixels": 2219544,
+      "registered_terrain_pixels": 20736,
+      "receipt_rejections": 7,
+      "old_images_rejected": 2
+    },
+    "sources": {
+      "remake/cmd/fd2/modern_hd_map_hud_panel.go": "9b88d8a1033e7d2265b34bc2c67eafdb0a112e74d1c8d2e98b284bc5ca76c74c",
+      "remake/cmd/fd2/modern_hd_map_hud_panel_test.go": "f069ebee79c8662d5524340b22852a97daab3f481bbff08c591b71285d3d7246",
+      "remake/cmd/fd2/modern_hd_map_hud_clip_gpu_test.go": "8214d85005d17cff0ed07a1f62fe9f9763b3b4e49131a1400c44805cf111c967",
+      "remake/cmd/fd2/modern_hd_map_hud_gpu_test.go": "84f4ffd514375e4a5a5a9ab0c8e31f00d0e5e19c57cf25b6597e0d2b3c2f49d0",
+      "remake/cmd/fd2/modern_hd_map_gpu.go": "428d27fb9472077ceb7e4624beb808b209904c09077800db51c4a25fd25fba3e",
+      "remake/cmd/fd2/modern_hd_map_runtime.go": "362cfeff88a3bc51b370d2933a64db7fe7a8e4bc59ed17066c7320ce768f0355",
+      "remake/cmd/fd2/modern_hd_player9_map.go": "ff1e060732571931af5da92ebe7e691054c41764c9b37aec26c7545f12397593",
+      "remake/cmd/fd2/modern_hd_death_runtime.go": "61e348f795e3e1ca0e35972db02078e80dd743dbeeaef51d6688ef6c2ddf6bf3",
+      "remake/cmd/fd2/modern_hd_unit_present.go": "983583a0e06601827a4ffcab0fa05bbebf98b1c2fdc12b2c8f71fddc75ca8a23",
+      "remake/cmd/fd2/modern_hd_commands10_12_map.go": "009f2e0209518702356703abfdf2b19b5bd308f78f62572704a7921dc20cdce1",
+      "remake/cmd/fd2/main.go": "5d8eca0480563f70d16a76152e9ee3d1b488bb6e4738a2c7d8b69970be3f7f22",
+      "tools/verify_fd2_hd_map_hud_panel.py": "8e25f0c4972350243a36ee40541a3b0bb56ffa899e44f4276d9a29ad7b201697",
+      "tools/verify_fd2_battle_surface_hd.py": "f9a2831441c8daca5b276a6c2eee679f390a9c782e33e229713e82f804bc4501",
+      "tools/verify_fd2_hd_fonts_gui.py": "a1f2a7124e56953590db15a562dba416cf61d2fdc87621b19eeaf22fbe1ab4b5",
+      "remake/cmd/fd2/modern_hd_death_stage_test.go": "56a093346099da6836951a2396cd025b82704cc4f6a95a549bb8418e64c55be8",
+      "remake/cmd/fd2/modern_hd_heal_map_gpu_test.go": "300d19815fdc7be00eb4f8fd24b6caf4cde287ecf42010dd373ab853148fcaff",
+      "remake/cmd/fd2/modern_hd_map_hud.go": "dd689c89a8e212ed48fa3c375865501599003299f59e644536064e05313bffd4",
+      "remake/internal/indexedmap/hud.go": "3415cf9d6616a973673fbd512ce126b2b91372703c2acdd7b964eff9e2d7940d",
+      "remake/internal/fdicon/terrain.go": "f5565cd7d0f7b9de11a6ee5fec806326ba4df7f9d8852153433b68754e6e3a21",
+      "tools/fd2_go_test_memory_probe.py": "8e7c9c55b85aa72a5026b944233b94f7c0787f51b3f5ebb178ed54cc333e40f2"
+    },
+    "limits": [
+      "美術細框與字形是HD延伸，地形取色沿既有材質近似；不新增原版RGB或逐幀parity聲明。",
+      "原生地圖HUD以外的操作介面與未登錄地形、HD2及集中人工／平台驗收仍待。",
+      "owner初輪兩項舊場景測試缺顯式full-theme環境而SKIP，不列通過；死亡來源拒收已另補驗，1012 stage來源拒收不新增本輪範圍。",
+      "stage初輪在既有PNG載入器逾時，未進新HUD；同映像600秒有界重跑通過，不列產品缺陷。",
+      "正常normal-r1是兩場演出取樣及F9回載，不宣稱自然返回；normal-natural-r2自然返回後在冷啟動載入期遭900秒測試器終止，OOM為零，整輪不列通過。",
+      "normal-natural-r3暴露GUI工具內層整輪660秒，外層1500秒不會覆蓋它；只為受版控驗證器新增明示--run-timeout，有界1500秒乾淨重跑r4通過，遊戲程式SHA保持。"
+    ],
+    "container_contract": {
+      "go_image": "fd2-go-test-local:latest",
+      "gui_image": "fd2-promo:20261017-r1",
+      "image_processing": "fd2-assets-local:20260829-sfx",
+      "common": "--rm --init --network none --user 1000:1000 --cpus 2 --pids-limit 256；Go與GUI分別4/6GiB；GOMAXPROCS=2 LP_NUM_THREADS=2；原版及私人現代包唯讀掛至/original及/modern，repo掛至/repo，FD2_ASSET_PACK=/original；Go採既有offline GOCACHE與GOPROXY=off GOSUMDB=off。各run命令及cwd已列，重跑使用全新out。",
+      "natural_gui_arguments": "與normal_gui同binary、assets、original-pack、modern-pack、town-save；--battle-status --battle-only --world --battle-hd --battle-art --battle-repetitions 1 --battle-art-samples 32 --startup-timeout 360 --run-timeout 1500；外層memory probe1560秒／timeout1620秒，6GiB／2CPU。",
+      "image_ids": {
+        "fd2-go-test-local:latest": "sha256:e4a805c52a3ad5d8c22cf23f2bcf51c6924e5ad6b99554f1b02761903c725433",
+        "fd2-promo:20261017-r1": "sha256:2dd9f94a4a0e0134ca40fbe3e321b692ad40fd137b6adc43bed97c84f11b45cb",
+        "fd2-assets-local:20260829-sfx": "sha256:e59237a31d4b5f7a62c59ac37b780bd93f17c99fda97be8f5ca0c53978b878bc"
+      }
+    },
+    "normal_natural_return": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/map-hud-normal-natural-r4-capture/receipt.json",
+        "sha256": "35df71213f4598884d6ad6b6d402230c0fa6b78df519912ecf74263f36e665af"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/map-hud-normal-natural-r4.memory.json",
+        "sha256": "e23fea9a5bf0fdd0c84a532f63fc45940976526f237603953138868a389f200b"
+      },
+      "independent": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/map-hud-normal-natural-independent-r1.json",
+        "sha256": "21a7239a81e95e5839b9e887c02b545b2b501040727bb821002de3972a3f77ad"
+      },
+      "screenshots": 19,
+      "seconds": 392.414,
+      "peak_bytes": 5597827072,
+      "memory_events_delta": {
+        "low": 0,
+        "high": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_kill": 0,
+        "oom_group_kill": 0,
+        "sock_throttled": 0
+      },
+      "run_timeout_seconds": 1500,
+      "binary_sha256": "581416a907e5f36750eb62429dbf36f45f3702e34ec1c3b27a3a2231e82d81dd",
+      "source_save_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "saved_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "scope": "正常標題LOAD來源JSON，普通走行、1場攻防、F2及戰後保存／新程序LOAD；來源祖先另見建槽收據。未重驗字型面板。含普通走行、指令環、取消、1場physical演出與正常戰場返回。不注入座標或狀態，不宣稱原版對拍或完整戰役。",
+      "source_save_bytes_equal": true,
+      "save_contract": "F5保存章節邊界進度；LOAD重建戰場，不保存戰中位置、Acted或敵方HP。"
+    },
+    "issues_sync": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/map-hud-issues-verified-r1.json",
+      "sha256": "a96be2ad135e728d7846c2eda25d549790984e223d97a37fc0d7ebcb257e9dc4"
+    },
+    "lessons_check": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/map-hud-lessons-final-r1.log",
+      "sha256": "7cbbe1c628464ebf125eae9772cb7ca2fa987f8c03a221c143d4a4d33bcfff5f"
+    },
+    "worklist_check": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/map-hud-worklist-final-r1.log",
+      "sha256": "e4358c935b06938b3979a85e15835f700028819344ed4e2ec6f8960445186972"
+    },
+    "links_check": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/map-hud-links-r1.json",
+      "sha256": "fe10351d56fcb8729a44adbf9ec060f06b6f46326ba808454451c1dac19fd2d2"
+    },
+    "final_source_snapshot": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/map-hud-source-final-r1.json",
+      "sha256": "956815286935c2df84e38a26a7c0533c18701b27300bda457930b47925c26bb1"
+    },
+    "cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/map-hud-cleanup-r1.json",
+      "sha256": "1786e2c1ef4970392e61c0d5b8f67476c86d2d2016da97ec149066c1213adca5"
+    },
+    "ownership_check": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/map-hud-ownership-summary-r1.json",
+      "sha256": "749e682e7ba6d4f64f3b26f7e1997e02e32b2ff958340d1dd1745bcb8df73839",
+      "current_batch_wrong_owner": 0,
+      "historical_root_owned_entries": 2808
+    },
+    "private_head_unchanged": "fc70c3cdc0f0e35024c977f4fdcab0b8d09923ba",
+    "no_fd2_containers_remaining": true
   }
 }

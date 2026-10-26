@@ -3818,3 +3818,20 @@ README新增物品、金錢、關框及返回四格實圖，原文化入口與�
 - 已同步56／57／58／61、README及五張HD工單#4／201／202／204／263。工單只更新目前摘要與過期verify說明，原id／acceptance／evidence、標籤與OPEN狀態讀回一致。#279驗證後關閉，提交後補連結。官方解析器更新25項，18項待人判、0項機器訊號消失；3011個修改文件本地連結通過。最終程式來源見[來源快照](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-sources-final-r1.json)。
 - 全部工作沿既有Docker映像，UID1000、network none、有界預算與--rm／init；GUI背景程序由容器擁有，收尾沒有FD2容器或意外root-owned檔案。沒有錄影，[核雜湊後移除舊測試執行檔](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-cleanup-r1.json)，保留目前r4與必要收據。前面清理的3827份保護SHA是恢復HD前的快照；後續清理須依目前來源重建，不能把這輪合法修改誤判為檔案毀損。
 - 本批重大且已驗證的接線將提交／合入main並核對遠端。其餘HD1地形、HUD及操作介面、工具列新增控制與集中正常／人工／平台仍依唯一狀態表推進，不宣稱HD1正式版已發行。
+
+## 2026-10-26 HD1原生地圖資訊窗接線
+
+- 從main的8a8a2adb建立feat/hd-map-hud-20261026，先在61記READY，再接正式執行期。知識路由沿spec-gated workflow、戰術固定骨架、正常試玩與README標準；不重開已閉合的HUD反組譯。唯一目前狀態仍是58與[主收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的map_hud_hd_followup_20261026。
+- 實際FDOTHER5 entry130為69×34，不套用早期149×42概念面板。以原圖自身底色／框色直接繪製414×204細框、A／D、正負兩位數及HP三位數；原圖41／52經目視確認為三個問號，保留大於999的溢位字樣。地形沿實際descriptor與raw取色使用已登錄144圖源，人物沿既有selector與3轉1，HP最後覆蓋。六個地形control及數值規則、原生work／VGA、時鐘、RNG與保存格式保持。
+- 正常、行動環復原、事件平移、逐列位移、走行省略與死亡末拍回交均接入；取樣物件及死亡前25拍省略整個HUD。CPU只快取最近的不可變框圖，GPU使用固定可重寫紋理，不把逐幀HUD放入地形指標快取。
+- [單元閘門](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/map-hud-unit-final-r1.gate.json)、完整GPU、同來源裁切、owner／保存、死亡來源拒收及字串盤點共30項不同頂層Go通過。完整GPU驗125組／500原selector狀態及18組畫面、四次F2；實際已登錄地形20736像素、六個control、HP邊界、來源反例及凍結快取均通過。原圖字格與Noto的有界字形另作獨立期望，不以HUD自身格式器產生測試答案。
+- [獨立PNG核對](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/map-hud-game-independent-r2.json)通過細框、數字子像素、登錄地形與七種變造收據，兩張實際舊HUD拒收。舊hud-game-r1使用較早地形清冊，不能拿整張圖作本輪框外基準；另建同來源、同畫面的原生HUD控制組，實際GPU與PNG均確認矩形外2219544像素相同。此控制組是RUNTIME-E1幾何驗證，不是新原版對拍。
+- 早期診斷包含漏Xvfb／分離包環境、fixture未在場、穩定八列不足九列staging，以及誤把既有材質差值映射當成完全換色，均依實際來源修正測試，未改遊戲規則。補上字型也暴露受控Game.Draw槽殘留的開場對話；測試明示中立地圖狀態後，HUD最終顯示比較保持原條件。完整GPU最終562.954秒、峰值4930498560 bytes，6GiB下memory.events全零。
+- [正常面板流程](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/map-hud-normal-r1-capture/receipt.json)從原普通首章槽標題LOAD，走行／行動環／取消、兩場演出取樣及F9回載、Home狀態／指令、F2、保存與新程序LOAD通過。34張主擷取，四張HUD獨立核對；470.604秒、峰值4800806912 bytes，6GiB下events零。此組不宣稱自然返回。
+- [自然返回補驗](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/map-hud-normal-natural-r4-capture/receipt.json)沿同一來源、一場普通攻擊，自然返回、戰後F5、F2及新程序標題LOAD通過。19張主擷取，三張HUD獨立核對；392.414秒、峰值5597827072 bytes，6GiB下events零。F5仍是既有章節邊界保存，不宣稱保存戰中位置、Acted或敵方HP，不新增完整章節或原版parity。
+- 自然返回r1在啟動前缺battle-status參數；r2在冷啟動被外層900秒測試器終止，OOM零。r3加長外層後暴露內層整輪仍固定660秒。GUI工具新增明示且有界的--run-timeout，r4以1500秒預算乾淨重跑通過，遊戲SHA不變。死亡來源拒收初輪同樣在既有PNG載入期超過240秒，600秒有界重跑通過；不是新HUD錯誤。owner初輪兩項缺顯式主題環境而SKIP，不列通過；死亡已補驗，指令10～12 stage來源拒收不新增本輪驗證範圍。
+- **勘誤前一批自然返回敘述**：item-panel-icons-normal-r4的實際natural_attack_return_checked=false；前批主收據的true與本歷程「自然返回」文字過度推論。已修正目前主收據及58，原收據與歷史文字保留可追查。前批面板、保存／冷讀仍成立；本批另以真正自然返回收據補驗，不能倒推成前批已驗。
+- 本輪沒有新增素材或修改私人圖包，只新增公開README完整視窗總覽。清冊與私人HEAD保持。新的[README來源清單](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/map-hud-readme-r1.json)上排為普通讀檔／F2，下排為受控地形與溢位；全部保留完整視窗並半縮，沒有補畫。字串122候選重綁並通過八項檢查；目前來源乾淨重建與已驗binary SHA逐位元組相同。
+- 56／57／58／61及README同步；五張HD工單#4／201／202／204／263已更新，完整舊尾段、驗收條件、標籤及OPEN狀態讀回一致。官方解析器從主機gh現況更新25項、18項待人判、0項訊號消失。新增GUI預算教訓，362條／220守衛通過。未發布新版，未登錄地形、其餘操作介面與HD1集中人工／平台仍待。
+
+- 收尾依[清理記錄](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/map-hud-cleanup-r1.json)核SHA移除已被取代的前批binary，保留目前已驗程式與收據；未建立錄影。Docker沒有FD2容器殘留。本批修改與產物均為UID/GID1000，沒有錯型態md目錄；全庫另有2808個既有root-owned檔，不對全庫修權限。修改文件3029個本地檔案／圖片連結通過。

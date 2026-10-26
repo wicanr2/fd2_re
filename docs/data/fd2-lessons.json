@@ -4453,6 +4453,21 @@
         ],
         "pattern": "commandIDs = slices\\.Clone\\(data\\.commandIDs\\)"
       }
+    },
+    {
+      "id": "gui-budget-includes-both-startups",
+      "date": "2026-10-26",
+      "area": "正常GUI驗證",
+      "rule": "包含冷啟動的GUI流程同時對齊外層逾時、整輪預算與兩次啟動預算；延長外層不會延長內層。入口tools/verify_fd2_hd_fonts_gui.py的--run-timeout與--startup-timeout，以及tools/fd2_go_test_memory_probe.py的--timeout；整輪參數只接受660至2400秒的明示有界選項。",
+      "why": "自然攻擊返回與F5已走完，但舊GUI工具仍固定整輪660秒，外層改1500秒仍在冷讀等待標題時誤中止。原程式沒有OOM，不能把測試器整輪限制寫成遊戲崩潰。",
+      "evidence": "HD主收據map_hud_hd_followup_20261026；map-hud-normal-natural-r3.log",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_hd_fonts_gui.py"
+        ],
+        "pattern": "run_limit = args.run_timeout"
+      }
     }
   ]
 }

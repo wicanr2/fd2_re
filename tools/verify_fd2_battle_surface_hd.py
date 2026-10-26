@@ -12,9 +12,13 @@ from verify_fd2_player9_map_hd import check_real_runtime
 
 ROOT = Path(__file__).resolve().parents[1]
 REQUIRED = {
+    'hud-panel-unit': {'TestModernHDHUDPanelFormattingAndFrozenCache','TestModernHDHUDPanelAdmissionGeometryAndEvents','TestModernHDHUDPanelNativeTransactionAndTerrain',
+                       'TestModernHDHUDUnitSelectionAndHP','TestModernHDHUDUnitAdmissionAndEventShift',
+                       'TestModernHDMapTransactionUsesOneNativeClockAndIndependentTerrain','TestModernHDMapRejectedArtDoesNotPublishNativeState'},
     'hud-unit': {'TestModernHDHUDUnitSelectionAndHP','TestModernHDHUDUnitAdmissionAndEventShift',
                  'TestModernHDMapTransactionUsesOneNativeClockAndIndependentTerrain','TestModernHDMapRejectedArtDoesNotPublishNativeState'},
     'hud-game': {'TestModernHDHUDUnitSourcesAndGameGPU'},
+    'hud-panel-clip': {'TestModernHDHUDPanelClipsFinalGPU'},
     'modifier-map-fixture': {'TestModernModifierMapFixtureAdmission','TestModernModifierMapControlSnapshot'},
     'modifier-map-source': {'TestModernModifierMapSourcesAndAtomic'},
     'modifier-map-game': {'TestModernModifierMapRuntimeGPU'},
@@ -129,6 +133,9 @@ def main():
     env = os.environ.copy()
     env.pop('FD2_HD_HUD_GPU',None)
     env.pop('FD2_HD_HUD_OUT',None)
+    env.pop('FD2_HD_HUD_CLIP_GPU',None)
+    if a.kind=='hud-panel-clip':
+        env.update(FD2_HD_HUD_CLIP_GPU='1',FD2_HD_HUD_OUT=str(a.out)+'-capture')
     if a.kind=='hud-game':
         env.update(FD2_HD_HUD_GPU='1',FD2_HD_HUD_OUT=str(a.out)+'-capture',
                    FD2_TEST_MODERN_EFFECT_CATALOG=str(a.catalog.resolve()),FD2_TEST_MODERN_EFFECT_PACK=str(a.pack.resolve()))
@@ -253,9 +260,10 @@ export DISPLAY=:99
     if a.kind=='hud-game':
         d=json.loads((Path(str(a.out)+'-capture')/'gpu.json').read_text())
         rows=d.get('cases',[])
-        if (d.get('status')!='PASS-HUD-UNIT-HD-RUNTIME-E1' or d.get('groups')!=125 or d.get('source_states')!=500
-                or d.get('fixed_clock_unix')!=1000 or d.get('native_rng_seed')!=7 or len(rows)!=6
-                or sum(r.get('game_draw',False) and r.get('f2',False) for r in rows)!=4):
+        if (d.get('status')!='PASS-HUD-PANEL-HD-RUNTIME-E1' or d.get('groups')!=125 or d.get('source_states')!=500
+                or d.get('fixed_clock_unix')!=1000 or d.get('native_rng_seed')!=7 or len(rows)!=18
+                or sum(r.get('game_draw',False) and r.get('f2',False) for r in rows)!=4
+                or not all(r.get('panel_hd') is True for r in rows) or not any(r.get('terrain_hd') is True for r in rows)):
             raise SystemExit('HUD缺少完整圖源、Game.Draw或F2驗證')
     if a.kind in ['command-panel-owner','ordinary-scenery-source']:
         receipt=json.loads(Path(str(a.out)+'.owner.json').read_text())

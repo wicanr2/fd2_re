@@ -12,24 +12,26 @@ import (
 )
 
 type modernHDMapGPU struct {
-	World, Background, UI *ebiten.Image
-	Foreground            []*ebiten.Image
-	Units                 map[int]map[int]*ebiten.Image
-	Theme                 *modernStoryPortraitSet
-	Banner                *ebiten.Image
-	BannerName            string
-	Mosaic                *ebiten.Shader
-	Pixel                 *ebiten.Image
-	Dialogue              *ebiten.Image
-	TerrainImages         map[*image.RGBA]*ebiten.Image
-	TerrainKey            [32]byte
-	Range                 *ebiten.Image
-	CompoundMix           *ebiten.Image
-	CompoundShader        *ebiten.Shader
-	CompoundOwner         *modernHDCompoundMapScene
-	HUDBase, HUDAbove     *ebiten.Image
-	PaletteSource         *ebiten.Image
-	PaletteShader         *ebiten.Shader
+	World, Background, UI               *ebiten.Image
+	Foreground                          []*ebiten.Image
+	Units                               map[int]map[int]*ebiten.Image
+	Theme                               *modernStoryPortraitSet
+	Banner                              *ebiten.Image
+	BannerName                          string
+	Mosaic                              *ebiten.Shader
+	Pixel                               *ebiten.Image
+	Dialogue                            *ebiten.Image
+	TerrainImages                       map[*image.RGBA]*ebiten.Image
+	TerrainKey                          [32]byte
+	Range                               *ebiten.Image
+	CompoundMix                         *ebiten.Image
+	CompoundShader                      *ebiten.Shader
+	CompoundOwner                       *modernHDCompoundMapScene
+	HUDBase, HUDAbove                   *ebiten.Image
+	HUDPanelBase, HUDPanelAbove         *ebiten.Image
+	HUDPanelTerrain, HUDPanelNativeUnit *ebiten.Image
+	PaletteSource                       *ebiten.Image
+	PaletteShader                       *ebiten.Shader
 }
 
 const modernHDMapPaletteAddSource = `//kage:unit pixels
@@ -97,6 +99,45 @@ func (r *modernHDMapGPU) drawHUDUnit(patch *modernHDMapHUDUnit, clip image.Recta
 	}
 	target.DrawImage(picture, unit)
 	target.DrawImage(r.HUDAbove, op)
+}
+
+func (r *modernHDMapGPU) drawHUD(frame *modernHDMapFrame, clip image.Rectangle) {
+	panel := frame.HUDPanel
+	if panel == nil {
+		r.drawHUDUnit(frame.HUDUnit, clip)
+		return
+	}
+	region := panel.Rect.Intersect(clip).Intersect(r.World.Bounds())
+	if region.Empty() {
+		return
+	}
+	if r.HUDPanelBase == nil {
+		r.HUDPanelBase, r.HUDPanelAbove = ebiten.NewImage(414, 204), ebiten.NewImage(414, 204)
+		r.HUDPanelTerrain, r.HUDPanelNativeUnit = ebiten.NewImage(144, 144), ebiten.NewImage(144, 144)
+	}
+	r.HUDPanelBase.WritePixels(panel.Base.Pix)
+	r.HUDPanelAbove.WritePixels(panel.Above.Pix)
+	r.HUDPanelTerrain.WritePixels(panel.Terrain.Pix)
+	target := r.World.SubImage(region).(*ebiten.Image)
+	paint := func(pic *ebiten.Image, at image.Point) {
+		op := &ebiten.DrawImageOptions{}
+		op.GeoM.Translate(float64(at.X), float64(at.Y))
+		target.DrawImage(pic, op)
+	}
+	paint(r.HUDPanelBase, panel.Rect.Min)
+	slot := panel.Rect.Min.Add(image.Pt(36, 30))
+	paint(r.HUDPanelTerrain, slot)
+	if h := frame.HUDUnit; h != nil {
+		picture := r.unit(h.Unit.Group, h.Unit.Frame)
+		if h.Unit.ColourImage != nil {
+			picture = r.terrainImage(h.Unit.ColourImage)
+		}
+		paint(picture, h.Unit.Rect.Min)
+	} else if panel.NativeUnit != nil {
+		r.HUDPanelNativeUnit.WritePixels(panel.NativeUnit.Pix)
+		paint(r.HUDPanelNativeUnit, slot)
+	}
+	paint(r.HUDPanelAbove, panel.Rect.Min)
 }
 
 func (r *modernHDMapGPU) terrainImage(picture *image.RGBA) *ebiten.Image {
@@ -319,12 +360,12 @@ func (g *Game) drawPreparedModernHDMapFrame(screen *ebiten.Image, frame *modernH
 		// buffer. Keep that order at full resolution; the final logical UI
 		// plane remains transparent and cannot cover the effect again.
 		r.World.DrawImage(r.UI, op)
-		r.drawHUDUnit(frame.HUDUnit, clip)
+		r.drawHUD(frame, clip)
 		for _, overlay := range frame.Overlays {
 			r.drawTerrainClipped(overlay.Image, overlay.Rect, clip)
 		}
 	} else {
-		r.drawHUDUnit(frame.HUDUnit, clip)
+		r.drawHUD(frame, clip)
 		uiop := &ebiten.DrawImageOptions{}
 		uiop.GeoM.Scale(2, 2)
 		screen.DrawImage(r.UI, uiop)
@@ -430,13 +471,13 @@ func (g *Game) drawModernHDMapRing() error {
 			for _, plan := range plans {
 				r.drawUnit(plan)
 			}
-			r.drawHUDUnit(g.modernHDMapFrame.HUDUnit, modernHDMapViewport())
+			r.drawHUD(g.modernHDMapFrame, modernHDMapViewport())
 			g.markActionOverlayDrawn()
 			return nil
 		}
 	}
 	if g.modernHDMapFrame != nil {
-		r.drawHUDUnit(g.modernHDMapFrame.HUDUnit, modernHDMapViewport())
+		r.drawHUD(g.modernHDMapFrame, modernHDMapViewport())
 	}
 	g.markActionOverlayDrawn()
 	return nil

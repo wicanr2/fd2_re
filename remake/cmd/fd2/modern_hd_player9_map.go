@@ -74,6 +74,11 @@ func modernPlayer9EventFrame(normal *modernHDMapFrame, pixels []byte, palette co
 		}
 	}
 	shift := image.Pt(-24, -24)
+	if normal.HUDPanel != nil {
+		panel := *normal.HUDPanel
+		panel.Rect = panel.Rect.Add(shift)
+		frame.HUDPanel = &panel
+	}
 	if normal.HUDUnit != nil {
 		patch := *normal.HUDUnit
 		patch.Unit.Rect = patch.Unit.Rect.Add(shift)

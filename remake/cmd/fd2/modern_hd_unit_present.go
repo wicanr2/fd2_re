@@ -367,7 +367,7 @@ func (g *Game) prepareModernHDUnitPresent(j *nativeUnitPresentJob, set *modernSt
 // Only the bounded, UI-free after-world patch is rastered on the CPU. The
 // normal GPU renderer still owns every full frame and final presentation.
 func rasterUnitPresentHDRegion(frame *modernHDMapFrame, region image.Rectangle) (*image.RGBA, error) {
-	if len(frame.Units) != 0 || frame.Range != nil || frame.HUDUnit != nil || len(frame.Overlays) != 0 {
+	if len(frame.Units) != 0 || frame.Range != nil || frame.HUDUnit != nil || frame.HUDPanel != nil || len(frame.Overlays) != 0 {
 		return nil, errors.New("modern HD unit present: unsupported strip plane")
 	}
 	for i := 3; i < len(frame.UI.Pix); i += 4 {
