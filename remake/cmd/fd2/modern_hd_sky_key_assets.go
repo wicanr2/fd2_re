@@ -122,6 +122,7 @@ func loadModernSkyKeyHDAsset(set *modernStoryPortraitSet, asset modernThemeAsset
 	}
 	pictures := make([]*image.RGBA, asset.FrameCount)
 	pictureSHA := make([]string, asset.FrameCount)
+	shared := make(map[string]*image.RGBA)
 	maxW, maxH := 0, 0
 	for i, row := range b.plan.Frames {
 		if row.Index != i || len(row.Colours) == 0 || len(row.Colours) > 256 {
@@ -150,7 +151,7 @@ func loadModernSkyKeyHDAsset(set *modernStoryPortraitSet, asset modernThemeAsset
 		if desc.Height*6 > maxH {
 			maxH = desc.Height * 6
 		}
-		picture, err := b.picture(i)
+		picture, err := b.pictureWithSharedStorage(i, shared)
 		if err != nil {
 			return err
 		}
@@ -173,6 +174,12 @@ func loadModernSkyKeyHDAsset(set *modernStoryPortraitSet, asset modernThemeAsset
 // Return a validated immutable frame. Cold decoding uses private storage and
 // publishes only after the complete bank passes. Callers copy before editing.
 func (b *modernSkyKeyHDBank) picture(index int) (*image.RGBA, error) {
+	return b.pictureWithSharedStorage(index, nil)
+}
+
+// Only a cold loader owns shared; every path is still read and hashed, and
+// every descriptor/coverage condition is checked before sharing is published.
+func (b *modernSkyKeyHDBank) pictureWithSharedStorage(index int, shared map[string]*image.RGBA) (*image.RGBA, error) {
 	if b == nil {
 		return nil, errors.New("modern sky key: bank absent")
 	}
@@ -193,22 +200,30 @@ func (b *modernSkyKeyHDBank) picture(index int) (*image.RGBA, error) {
 	}
 	d := b.asset.NativeFrames[i]
 	w, h := d.Width*6, d.Height*6
+	if w <= 0 || h <= 0 || w > 1920 || h > 1200 {
+		return nil, errors.New("modern sky key: PNG geometry changed")
+	}
 	if len(b.pictures) > 0 {
 		if i >= len(b.pictures) || i >= len(b.pictureSHA) || b.pictures[i] == nil || b.pictures[i].Bounds() != image.Rect(0, 0, w, h) || skyKeySHA(b.pictures[i].Pix) != b.pictureSHA[i] {
 			return nil, errors.New("modern sky key: decoded frame changed")
 		}
 		return b.pictures[i], nil
 	}
-	c, _, err := image.DecodeConfig(bytes.NewReader(raw))
-	if err != nil || w <= 0 || h <= 0 || w > 1920 || h > 1200 || c.Width != w || c.Height != h {
+	out := shared[b.asset.FrameSHA256[i]]
+	if out == nil {
+		c, _, err := image.DecodeConfig(bytes.NewReader(raw))
+		if err != nil || c.Width != w || c.Height != h {
+			return nil, errors.New("modern sky key: PNG geometry changed")
+		}
+		im, _, err := image.Decode(bytes.NewReader(raw))
+		if err != nil {
+			return nil, err
+		}
+		out = image.NewRGBA(image.Rect(0, 0, w, h))
+		draw.Draw(out, out.Bounds(), im, image.Point{}, draw.Src)
+	} else if out.Bounds() != image.Rect(0, 0, w, h) {
 		return nil, errors.New("modern sky key: PNG geometry changed")
 	}
-	im, _, err := image.Decode(bytes.NewReader(raw))
-	if err != nil {
-		return nil, err
-	}
-	out := image.NewRGBA(image.Rect(0, 0, w, h))
-	draw.Draw(out, out.Bounds(), im, image.Point{}, draw.Src)
 	low, high := uint8(255), uint8(0)
 	nonblack := false
 	for n := 0; n < len(out.Pix); n += 4 {
@@ -223,6 +238,9 @@ func (b *modernSkyKeyHDBank) picture(index int) (*image.RGBA, error) {
 	}
 	if b.offset == 1 && (low != 0 || high != 255) || b.offset == 0 && (low != 255 || high != 255 || b.plan.Frames[index].Blank == nonblack) {
 		return nil, errors.New("modern sky key: coverage or native black frame changed")
+	}
+	if shared != nil {
+		shared[b.asset.FrameSHA256[i]] = out
 	}
 	return out, nil
 }

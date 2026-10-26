@@ -254,6 +254,9 @@ func (set *modernStoryPortraitSet) stageBattleHDBanks(figures, effects []int) (f
 func stageModernBattleHDResources(entries map[int]*modernBattleHDResource, resources ...int) (*modernBattleHDPending, error) {
 	requested := make(map[int]bool)
 	pending := make(map[int][]image.Image)
+	// Images are immutable. Share only newly decoded, verified sources within
+	// this transaction, retaining independent path/hash/geometry validation.
+	decoded := make(map[string]image.Image)
 	for _, resource := range resources {
 		if requested[resource] {
 			continue
@@ -279,11 +282,18 @@ func stageModernBattleHDResources(entries map[int]*modernBattleHDResource, resou
 			if hex.EncodeToString(digest[:]) != entry.hashes[index] {
 				return nil, fmt.Errorf("modern HD battle: resource %d frame %d changed before preflight", resource, index)
 			}
-			picture, _, err := image.Decode(bytes.NewReader(raw))
-			if err != nil || picture.Bounds() != entry.sizes[index] {
+			picture := decoded[entry.hashes[index]]
+			if picture == nil {
+				picture, _, err = image.Decode(bytes.NewReader(raw))
+				if err != nil {
+					return nil, fmt.Errorf("modern HD battle: resource %d frame %d cannot be preloaded", resource, index)
+				}
+			}
+			if picture.Bounds() != entry.sizes[index] {
 				return nil, fmt.Errorf("modern HD battle: resource %d frame %d cannot be preloaded", resource, index)
 			}
 			frames[index] = picture
+			decoded[entry.hashes[index]] = picture
 		}
 		pending[resource] = frames
 	}

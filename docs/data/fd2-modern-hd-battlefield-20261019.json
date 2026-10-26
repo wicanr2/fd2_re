@@ -15,7 +15,7 @@
     "hd_terrain": "已接草泥、水沙／岸線、首章陰影／土脊／石路及寶箱開合／小石塊；目前數量依58及props_followup_20261025。其他地形與HD2仍待。",
     "ai_player_input_lock": "CONFORMED-SCOPED：AI換手期間拒絕玩家地圖輸入重入；普通END／增援對話及相關／完整Go回歸通過。",
     "gaia_redesign": "CONFORMED-SCOPED：新版頭像與四方向圖組已登錄；正常START／Gaia北移取消／F2／冷讀分段驗證。相位差異與序章尾端失敗明示，非逐幀parity。",
-    "hd_battle_animation": "已補同畫面重用：2087既有來源案例逐案重用精確、26失效控制、蓋亞完整Game.Draw／F2及首章正常攻防／保存冷讀通過。來源與目前程式依battle_frame_reuse_followup_20261027，集中造型與平台效能仍待，未宣稱完整完成。",
+    "hd_battle_animation": "同畫面重用與解碼共享皆已接正式路徑，完整GPU／F2、蓋亞攻防返回與首章正常保存冷讀通過；目前圖源及指紋依battle_decoded_storage_followup_20261027。集中造型與平台仍待，未宣稱完整完成。",
     "native_purchase_equip": "CONFORMED-SCOPED：#266原生購買立即裝備保留ignored原始格，29項商店回歸與正常購弓F5／章首射程通過；不改格式或數值規則。",
     "hd_event_death": "共用事件、普通行動與狀態致死已接HD；三種26拍／F2通過。正常章23事件與普通擊殺已抽驗，狀態致死正常GUI仍待；來源依death_consumers_followup_20261021。",
     "theme_toolbar": "CONFORMED-SCOPED／RUNTIME-E1：正式預設單列頂端浮出、自動隱藏，主題與四語按鈕沿F2／F4閘門；完整遊戲幾何保持。其餘控制未完成，依floating_toolbar_followup_20261025。",
@@ -31,9 +31,11 @@
     "hd_item_row_labels": "CONFORMED-SCOPED／RUNTIME-E1：物品加成四縮寫及指令-MP沿原生來源直接HD繪字；來源、數量、建構槽與限制依item_row_labels_followup_20261026。圖示現況依hd_item_panel_icons；完整HD／集中驗收仍待。",
     "hd_item_panel_icons": "CONFORMED-SCOPED／RUNTIME-E1：十個共用面板圖示已正式接線，兩包載入及物品／狀態完整繪製通過；唯一數量與分級依item_panel_icons_hd_followup_20261026。",
     "hd1_release": "優先完成既有HD1接線；原生地圖HUD與十個共用面板圖示已接。未登錄地形、其餘操作介面及集中人工／平台仍待，未宣稱正式版完成。",
-    "hd_battle_consumer_inventory": "1172份目前Go來源重生21案例，與前批相同、19反例拒收，16快取owner／17建構保持；目前指紋依battle_frame_reuse_followup_20261027。其他地圖owner與可達性依既有分級。",
+    "hd_battle_consumer_inventory": "1173份目前Go來源重生21案例，與前批相同、19反例拒收，16快取owner／17建構保持；目前指紋依battle_decoded_storage_followup_20261027。其他地圖owner與可達性依既有分級。",
     "art_theme_direction": "使用者確認原版／HD／HD2／HD-2D四主題，介面原版／HD獨立。正式遊戲仍只有原版／HD；其餘依61「四種美術主題」DRAFT，HD-2D人物風格待選。",
-    "hd_battle_performance": "正常完整物理窗203次合成／165次重用，省約45%合成；Draw22.44Hz、更新51.09Hz僅為本輪軟體GPU觀測。6GiB觸限101次但無OOM，未宣稱平台通過。依battle_frame_reuse_followup_20261027；舊CPU定位及各配額觀測保留歷史。"
+    "hd_battle_performance": "目前正常物理窗203次合成／178次重用，Draw25.96Hz／更新53.60Hz；單輪軟體GPU觀測，非固定加速或平台驗收。峰值約5.82GiB、memory.events全零，前批觸限數據保留。依battle_decoded_storage_followup_20261027。",
+    "hd_battle_memory": "已補已驗證PNG唯讀共享，代表圖源223份配置降為158份、少約144MiB RGBA等價容量；回收後Go heap亦減約144MiB。正常同來源2CPU／6GiB峰值約5.82GiB、無觸限或OOM；不由單輪數字宣稱平台通過。依battle_decoded_storage_followup_20261027。",
+    "work_status": "使用者於2026-10-27暫停HD工作；本批已驗證程式、來源與進度整理提交。續作入口為battle_decoded_storage_followup_20261027；平台驗收與全部HD後集中造型確認仍待。"
   },
   "runtime_source": {
     "binary": {
@@ -243241,7 +243243,7 @@
     },
     "consumer_inventory": {
       "summary": {
-        "file": "docs/data/fd2-battle-hd-consumers.json",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-consumers-canonical-before-decoded-sharing-r1.json",
         "sha256": "334a44833706309e984dcc1bb054b83c1c55e34cb9e7d35a3d71b0c695133c46"
       },
       "previous_canonical": {
@@ -243398,6 +243400,417 @@
       "recordings_created": false,
       "temporary_recordings_to_remove": 0,
       "next_gate": "代表性平台效能／記憶體與全部HD後集中造型確認，未宣稱完整戰鬥HD。"
+    }
+  },
+  "battle_decoded_storage_followup_20261027": {
+    "status": "CONFORMED-SCOPED-RUNTIME-E1-NORMAL-GUI",
+    "date": "2026-10-27",
+    "base_commit": "d4a27e0a2bfdbf8ec084c01063ff853db1ae62bb",
+    "full_battle_hd_complete": false,
+    "platform_performance_accepted": false,
+    "source_files": [
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_assets.go",
+        "sha256": "6c8d28ef442ba59275f3d2437e4a4c64a1594ad33f1541aa316016fd5e2bc7fd"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_sky_key_assets.go",
+        "sha256": "7a434e4769a0603caa15a132553794960cbdafc6cd522b096d3916da0fd95f14"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_decode_memory_test.go",
+        "sha256": "a81371a3e556ddf2c649ce26057d698d11d371294296da97abb96d6abb25363a"
+      }
+    ],
+    "binary": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-20261027-r1-binary",
+      "sha256": "3d78f79998a842affe2fda968cf7b0d8620e298ae1cee9e8fbf263153e16eb8e"
+    },
+    "normal_source": {
+      "file": "work/promo-cadence-20261018/hd-fonts/command0-normal-gui-r2/user-data/fd2_re/fd2_save.json",
+      "sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2"
+    },
+    "contract": "只在天空之鑰單庫冷載入、戰鬥單次預備內，以當次讀檔已核對SHA共享新解碼唯讀圖片；每路徑與每畫格條件保持。表不跨交易常駐，不種入已發布圖片，原子發布／戰鬥圖庫釋放／天空之鑰像素SHA守衛保持。無新GC參數、品質或載入時機變更。",
+    "decoded_storage": {
+      "before": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-memory-before-r1.json",
+        "sha256": "d54114d4db7b95b157ea3f28c0f8fad7b5fa80f57e7fc12754a6bda1aa4dd5b4"
+      },
+      "after": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-memory-after-r1.json",
+        "sha256": "eb74d26815a051c4fb43fc2e251707b86409104a0761c0ff44143de307dbfae7"
+      },
+      "catalog_sha256": "5dd17043f274d86ba606f2a08c1559c40c94e4cb13f01464c32beb290b10f746",
+      "go_version": "go1.22.12",
+      "logical_images": 223,
+      "unique_images_before": 223,
+      "unique_images_after": 158,
+      "saved_rgba_equivalent_bytes": 150645888,
+      "post_gc_heap_alloc_before": 985042368,
+      "post_gc_heap_alloc_after": 834142096,
+      "scope": "兩組天空之鑰196畫格及代表性攻防27畫格；實際image身分／4-byte RGBA等價容量與Go heap。不是全圖源常駐容量，也不是全程序RSS／GPU。觀測函式before／after保持相同，後續另補了獨立來源及釋放控制。"
+    },
+    "guards": {
+      "test_functions": 2,
+      "named_cases": 11,
+      "independent_source_pixels": true,
+      "file_missing_or_changed_on_hit_rejected": true,
+      "shape_and_black_coverage_per_frame_checked": true,
+      "immutable_pixel_corruption_rejected": true,
+      "atomic_publication_and_eviction": true,
+      "no_cross_transaction_pool": true
+    },
+    "sky_key": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-sky-gpu-r1-capture/receipt.json",
+        "sha256": "79fdca427729f56dcce734b873174ba22e84278e16d0727c8d8965190f7887a0"
+      },
+      "presents": 202,
+      "f2_round_trips": 12,
+      "continuations": 1,
+      "native_control_unchanged": true,
+      "counts": {
+        "0": 4,
+        "1": 68,
+        "2": 96,
+        "3": 1,
+        "4": 1,
+        "5": 32
+      },
+      "rgba_tolerance": 2,
+      "seed": 7,
+      "fixed_clock_unix": 1000,
+      "source_and_transaction_cpu_tests": 3,
+      "cpu_named_cases": 12,
+      "scope": "實際map20分離圖庫／兩名受控角色，完整Game.Draw／最終GPU／原生控制，RUNTIME-E1，非新增原版或正常章節證據。",
+      "verified_png_files": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-sky-gpu-r1-capture/phase0-frame000.png",
+          "sha256": "c99f4cf02f251243263fd1990acbb4ac45e1e971619805142f37f74866271631"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-sky-gpu-r1-capture/phase1-frame001.png",
+          "sha256": "728215fbb65e372b73d66893317532af274de8a04a2ebd5a5496e88375b65ada"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-sky-gpu-r1-capture/phase1-frame034.png",
+          "sha256": "dd50fe07981354f1b8bac803af1b775b662b6934a22031ccad1fa82bab57434d"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-sky-gpu-r1-capture/phase1-frame068.png",
+          "sha256": "2e03c9a7e198ecb8d5760ebe8e356cfeb5b44ba960e695d0bf0eba40c8a16fe3"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-sky-gpu-r1-capture/phase2-frame000.png",
+          "sha256": "12c7582edb77f3c48e5da80faea2c8ce31dc2de22671356366c3dfb2a76a9b65"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-sky-gpu-r1-capture/phase2-frame048.png",
+          "sha256": "78eda6318c7ab58743a40c04da72aa9b34a500a46f549fc57e8c37d0a9b359d6"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-sky-gpu-r1-capture/phase2-frame095.png",
+          "sha256": "5158862c66afa112f9f2acfb670be34f07fb23f27a031cb7416ef02921f42df1"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-sky-gpu-r1-capture/phase3-frame095.png",
+          "sha256": "de4d4e05b1ab2dfd6a4086beed6bc6879776148863be27f78056488d8a17bb5e"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-sky-gpu-r1-capture/phase4-frame095.png",
+          "sha256": "5158862c66afa112f9f2acfb670be34f07fb23f27a031cb7416ef02921f42df1"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-sky-gpu-r1-capture/phase5-frame069.png",
+          "sha256": "29b61ee82640a701227c20f447a58a6e4a60706878826dbbf9c9a7260bc2143f"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-sky-gpu-r1-capture/phase5-frame085.png",
+          "sha256": "32fb728913aae2d4ff8d75819e09ef2ebfe475748ce91ee44bc4895dd897bf63"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-sky-gpu-r1-capture/phase5-frame100.png",
+          "sha256": "b4628a92db2724a69b56ad8d9d53b1f8413593374754c674300706ce4d135ffa"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-sky-gpu-r1-capture/return.png",
+          "sha256": "97b5115b1ba657a28e773afe3680c0b91ce27429d76dc7f9c0caea1eab180834"
+        }
+      ]
+    },
+    "physical": {
+      "real_figure": 30,
+      "game_draw_f2_full_battle_and_map_return": true,
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-physical-r1.log",
+        "sha256": "64ae3e2d2fca0322adbed14792cecfea50e9cc6b0289ef3e4df930c51e66c75c"
+      },
+      "scope": "沿既有真實HD圖源的受控物理生命週期。"
+    },
+    "normal_gui": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-normal-r1-capture/receipt.json",
+        "sha256": "db44b598121305ca49f5da37f2d3a8c13f1660862b1c6879d90bf94fde416773"
+      },
+      "conditions": {
+        "seed": 1,
+        "cpus": 2,
+        "memory": "6GiB",
+        "software_render_threads": 2,
+        "renderer": "Xvfb/Mesa llvmpipe",
+        "network": "none",
+        "new_gc_parameters": false,
+        "in_chapter_injection": false,
+        "hp_lock": false
+      },
+      "normal_attack_return_f2_save_cold_load": true,
+      "world_walk_gpu_rechecked": false,
+      "elapsed_seconds": 252.514,
+      "cgroup_peak_bytes": 6245777408,
+      "memory_events_delta": {
+        "low": 0,
+        "high": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_kill": 0,
+        "oom_group_kill": 0,
+        "sock_throttled": 0
+      },
+      "scope": "同一既有建構來源槽，普通LOAD／走行取消／攻防／F2／返回與章界保存／新程序LOAD；效能模式未重驗走行PNG。單次共享主機的記憶體／頻率不代表最低需求或平台餘裕。",
+      "selected_screenshots": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-normal-r1-capture/world-hd-physical-scene.png",
+          "sha256": "75198cee21624d4d0414d9bf4c008ab32999f8ec27ff6d5fef8d7e90b9654809"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-normal-r1-capture/world-hd-physical-return.png",
+          "sha256": "a094cd141838796e14deadd6feadc54a0bd57766f62c1de5e08bbc6824aa2bd8"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-normal-r1-capture/battle-cold-title-load.png",
+          "sha256": "635d85c03b7857b9025bccd70930c81d53db42a3d8ac6e8836daa805565c6528"
+        }
+      ]
+    },
+    "performance": {
+      "report": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-frequency-r1.json",
+        "sha256": "9852e952899252b426b6b66c80307d60cde852cbcc33ba0424130993516e871f"
+      },
+      "physical_complete_windows": {
+        "windows": 17,
+        "seconds": 17.799306623,
+        "update_hz_from_calls": 53.597593445986,
+        "draw_hz_from_calls": 25.956067266295108,
+        "final_draw_hz_from_calls": 25.956067266295108,
+        "actual_tps_median": 59.76745451485076,
+        "actual_tps_min": 7.791167775023424,
+        "actual_fps_median": 22.78998290082446,
+        "actual_fps_min": 2.921687915633784,
+        "longest_window_seconds": 1.5358121580000001
+      },
+      "frame_reuse": {
+        "physical_windows": 17,
+        "rendered": 203,
+        "reused": 178,
+        "reuse_fraction": 0.4671916010498688,
+        "scope": "完整物理場景時間窗的累計增量；含入場、攻防與返回前段，不逐相位歸因，也不等同FPS。"
+      },
+      "rejected_mutants": [
+        "negative-frequency",
+        "broken-time-window",
+        "wrong-scene-count",
+        "fractional-count",
+        "missing-reuse-count",
+        "negative-reuse-count",
+        "fractional-reuse-count",
+        "decreasing-reuse-count",
+        "impossible-reuse-count"
+      ]
+    },
+    "consumer_inventory": {
+      "summary": {
+        "file": "docs/data/fd2-battle-hd-consumers.json",
+        "sha256": "56b4a5cd0e36b704d3d73384e062d40606a58a0cdd41c15efee4c24c4ed59bbe"
+      },
+      "previous_canonical": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-consumers-canonical-before-decoded-sharing-r1.json",
+        "sha256": "334a44833706309e984dcc1bb054b83c1c55e34cb9e7d35a3d71b0c695133c46"
+      },
+      "observed": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-consumers-observed-r12.json",
+        "sha256": "9cd99a6e78ee01c0581483617850c1eb4ea2f5d82057bf0fb17a3a0449f81243"
+      },
+      "cases": 21,
+      "cases_equal_previous": true,
+      "go_source_files": 1173,
+      "go_source_tree_sha256": "57f86e464cfbe06fee80e7c254a14a0f88ca9bc347d37132884eb9c8873a509a",
+      "rejected_mutants": 19,
+      "owner_report": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-owner-coverage-20261027-r5.json",
+        "sha256": "85ba78e982d1f0c17f90a16da2dba3f31ab160250e4e69899cee8f67fc907019"
+      },
+      "cached_owners": 16,
+      "constructors": 17
+    },
+    "artifacts": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-memory-before-r1.json",
+        "sha256": "d54114d4db7b95b157ea3f28c0f8fad7b5fa80f57e7fc12754a6bda1aa4dd5b4"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-baseline-r1.log",
+        "sha256": "5ed9771f4732c263b242fff132772648b44153b1aab3103d231260935418bb47"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-baseline-r1.memory.json",
+        "sha256": "3badfc60df31b943228d85a489fa9bd1e4fa7edc0236ba00b24e3f2bd064be2e"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-memory-after-r1.json",
+        "sha256": "eb74d26815a051c4fb43fc2e251707b86409104a0761c0ff44143de307dbfae7"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-sharing-r1.log",
+        "sha256": "d6131ed4f0bffe01d9f1eef9c3323a39cb07f45318e2dbd541e26e41b5450f54"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-sharing-r1.memory.json",
+        "sha256": "04be860c08523416c40f866ff3832084bbb4ca82eebda790563c7004d8ab7633"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-guards-r2.log",
+        "sha256": "38ba97603c6389754b782d4d7a2591a223feb243988ac7e235e59c5d4b3bab9a"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-guards-r2.memory.json",
+        "sha256": "39817f59aff224f7e66c713d7ea188099c9b1ab8806b90fb902ff12989526a87"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-sky-cpu-r1.log",
+        "sha256": "b72e52f6da9e9ea92414c3d6e98cf10c016432f921cb3ce3f6e5f88ad21ba47c"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-sky-cpu-r1.memory.json",
+        "sha256": "cec6df37df70771b9645c8402c4949d8be46cf7dcbe85df1f72481ff1321d19c"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-sky-gpu-r1.log",
+        "sha256": "19f0ac63c5fefd51abdd5b2fd972ea06d77d303821cad31a0ae9ed3f3a2c4e06"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-sky-gpu-r1.memory.json",
+        "sha256": "4fe6c20297a0849a726ed6a66bd662b1f26bd717f7002adbac7af4a80b301597"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-sky-gpu-r1-capture/receipt.json",
+        "sha256": "79fdca427729f56dcce734b873174ba22e84278e16d0727c8d8965190f7887a0"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-physical-r1.log",
+        "sha256": "64ae3e2d2fca0322adbed14792cecfea50e9cc6b0289ef3e4df930c51e66c75c"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-physical-r1.memory.json",
+        "sha256": "cf01deb478c2bbbc36e006fc26b7e3518702c27059335ade5ee45255085374f6"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-normal-r1-capture/receipt.json",
+        "sha256": "db44b598121305ca49f5da37f2d3a8c13f1660862b1c6879d90bf94fde416773"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-normal-r1-capture/performance-manifest.json",
+        "sha256": "b9cd71bc7bd3a4db728b5c112abeabb64e9ca6736e5a154392a1cca8660155de"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-normal-r1-capture/performance-0.jsonl",
+        "sha256": "6efd713390335fa7b56507d8321db135cf8a7e7bffe1e484c9ba9be1e6a92a1f"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-normal-r1-capture/performance-1.jsonl",
+        "sha256": "e5c56457c9b420b30b71fcec6c85fab2993024079782f3eb569211ad02ff80d4"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-normal-r1.memory.json",
+        "sha256": "5def40d4acc5cb614f6db18b798e8744138491ed499a2076ba1c00e041fe3581"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-frequency-r1.json",
+        "sha256": "9852e952899252b426b6b66c80307d60cde852cbcc33ba0424130993516e871f"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-consumers-observed-r12.json",
+        "sha256": "9cd99a6e78ee01c0581483617850c1eb4ea2f5d82057bf0fb17a3a0449f81243"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-consumers-r1.log",
+        "sha256": "88834341c8059472156e90df2eb5aa12a77e8e837d65e299ccf4b9bb257630b4"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-consumers-r1.memory.json",
+        "sha256": "e83ea1f55e5fe4801982086f320ef42b3f7ed9d11c4447ae990b7d541fee3c3c"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-owner-coverage-20261027-r5.json",
+        "sha256": "85ba78e982d1f0c17f90a16da2dba3f31ab160250e4e69899cee8f67fc907019"
+      }
+    ],
+    "remaining": [
+      "既定全部HD後集中造型確認",
+      "代表性平台效能"
+    ],
+    "not_claimed": [
+      "全6560MiB戰鬥圖常駐",
+      "由圖源容量推論全程序RSS",
+      "固定加速比或平台完成",
+      "原版逐幀／時序parity",
+      "完整HD／全戰役",
+      "人工造型批准"
+    ],
+    "recordings_created": false,
+    "new_assets": false,
+    "private_assets_changed": false,
+    "final_validation": {
+      "remote_issue_readback": "#263 OPEN; original acceptance and labels unchanged; 25 open worklist items",
+      "official_checks": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-fd2_worklist-render-r1.log",
+          "sha256": "0759975c757c3a40a8c85613f0eb06898e472b9c0fc50891a00dbcd8f27b5fc2"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-fd2_worklist-verify-r1.log",
+          "sha256": "e4358c935b06938b3979a85e15835f700028819344ed4e2ec6f8960445186972"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-fd2_lessons-check-r1.log",
+          "sha256": "b69148f569f9040bacac7bf8f23aace89177a44669ef0a5481199235672caaf2"
+        }
+      ],
+      "current_sources_and_artifacts_sha256": "PASS",
+      "sky_png_geometry_and_decode": "13 PNG, 1920x1200, valid",
+      "scoped_ownership": {
+        "paths": 152,
+        "uid": 1000,
+        "bad_paths": [],
+        "scope": "本批變更及產物的lstat，既存root-owned基線未觸及，不全域chown。"
+      },
+      "recordings_created": false,
+      "temporary_recordings_to_remove": 0,
+      "full_battle_hd_complete": false,
+      "next_gate": "代表性平台效能與全部HD後集中造型確認。",
+      "user_requested_pause": true,
+      "publication_worklist_checks": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-publish-fd2_worklist-render-r1.log",
+          "sha256": "0759975c757c3a40a8c85613f0eb06898e472b9c0fc50891a00dbcd8f27b5fc2"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-publish-fd2_worklist-verify-r1.log",
+          "sha256": "e4358c935b06938b3979a85e15835f700028819344ed4e2ec6f8960445186972"
+        }
+      ],
+      "publication_open_issues": 25,
+      "container_cleanup": "收尾前無存活FD2測試或GUI容器；本次收尾容器使用--rm。"
     }
   }
 }

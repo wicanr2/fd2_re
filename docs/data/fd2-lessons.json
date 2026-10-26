@@ -4596,6 +4596,21 @@
         "pattern": "相同目的畫布及來源texture綁定下"
       },
       "evidence": "HD主收據battle_frame_reuse_followup_20261027"
+    },
+    {
+      "id": "cgroup-peak-is-not-live-image-storage",
+      "date": "2026-10-27",
+      "area": "記憶體定位",
+      "rule": "定位記憶體時，分開cgroup的anon／file、程序RSS、Go回收後heap與圖像配置；清冊解碼總容量不當成常駐量，按需圖庫只算實際請求。入口tools/fd2_go_test_memory_probe.py的memory.stat與largest_sample_processes，以及TestModernHDDecodedImageMemory。",
+      "why": "6GiB觸限樣本含約1.88GB檔案快取；戰鬥全圖源約6560MiB的清冊估值也不代表全量常駐。實際223份圖源配置共享後158份，CPU資料與整個GUI峰值分別量測。",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/fd2_go_test_memory_probe.py"
+        ],
+        "pattern": "memory.stat"
+      },
+      "evidence": "HD主收據battle_decoded_storage_followup_20261027"
     }
   ]
 }
