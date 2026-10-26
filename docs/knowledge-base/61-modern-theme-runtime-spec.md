@@ -1,6 +1,22 @@
 # 61 — 現代美術主題正式執行期規格
 
 
+## 物品加成與指令消耗縮寫HD（CONFORMED-SCOPED／RUNTIME-E1）
+
+沿58已閉合的0x184C0物品列及0x1CEED指令列、NativeItemSelectorCells與RenderNativeCommandOverlay，補五個原生raw字樣的HD呈現。固定FD2.EXE為SHA-256 222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f，位址為既有IDA線性位址；FDOTHER來源／形狀沿原包resource.json及原始PNG，不重開RE。
+
+- FDOTHER#5 raw64／65／66／67為21×8的+AP／+DP／+HP／+MP，raw92為20×8的-MP；已目視實圖，首像素底色皆為原生索引73，與entry21底圖一致。墨色取各自字格內最亮非底色，沿既有Noto、最大48到最小24目標像素的有界字區。保留每格位置及數字前空隙，不沿用一般字模205或對話底格作顏色。
+- 物品用既有raw flags與effect rows產生的緊密排列；文字區位於(LabelX+68,LabelY+4)，只覆蓋實際有加成值且StatIcon為64..67的21×8區域。raw41無數值標記、分類／裝備圖示、名稱、數字、空槽及選取色保持。指令依原始ID順序，每四行換欄，文字區(68+100*column,108+22*row)為20×8；實際MP數字及技能規則不變。
+- 在entry21的310×99完整座標建立透明補繪；先跟原生三區位移，再以原生102列複製區裁切，保留三列padding。物品／指令各有封存圖，空列不留下前一頁文字。記憶體圖片沿現有面板補繪層，不新增素材包或保存格式。
+- 封存80-byte record、itemRows、commandIDs／commandBook、下框、五字格及當次色盤。來源改寫、缺件、形狀／ID／位置不符或缺字，在owner發布與F2前拒收；完整主題預備成功才一次發布。共用八槽物品、教會／共用狀態與戰場狀態／指令頁接入，像素模式保持。
+- 驗四種來源、八格兩欄、空槽壓縮及三欄指令的位置與有界墨跡；缺件、來源改寫、超界與F2原子性有反例。完整Game.Draw保留物品五分支291拍、狀態41拍與主要F2／一次續行，另以明示typed快照補八格四類、十二指令及空列的完整Game.Draw／F2。實際原生控制組、JSON保存／新實例LOAD與獨立PNG區外保持均須通過。
+- typed補樣如實記錄原始item IDs、flags、command IDs、圖源與seed；不宣稱自然取得、正常鍵盤、原版oracle或新PLAYER-E2。圖示、其餘介面、HD2、獨立控制與工具列及全部HD後集中正常／人工／平台驗收仍待。
+
+現況、來源與重跑記於[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的item_row_labels_followup_20261026，原生消費端為[物品列](../../remake/internal/battle/native_item_panel_data_render.go)及[指令列](../../remake/internal/battle/native_command_overlay_render.go)，完整遊戲沿[既有驅動](../../tools/verify_fd2_reward_message_hd.py)。
+
+
+本節實作前為READY。最終30項頂層Go、39張PNG及55收據反例通過，舊像素縮寫實圖兩張均拒收。字區外64061208個RGBA像素對前版或同狀態HD控制組相同。完整來源、六組記憶體、建構政策及診斷依主收據；集中測試不推論平台餘裕。正式實作為[五縮寫補繪](../../remake/cmd/fd2/modern_hd_item_row_labels.go)，[來源／排列測試](../../remake/cmd/fd2/modern_hd_item_row_labels_test.go)、[三種完整繪製補樣](../../remake/cmd/fd2/modern_hd_item_row_labels_gpu_test.go)及[獨立PNG核對](../../tools/verify_fd2_hd_item_row_labels.py)均有可重跑入口。PNG工具使用--receipt新收據、--previous前版同流程目錄、--original-pack原包、--assets-root重製資料與--output新報告，可加--self-test。關閉指令頁維持-MP，返回後清除補繪；八格補樣只裝備首件武器／防具，未將回復道具標為裝備。
+
 ## 共用物品／狀態面板的固定標籤與血量條（CONFORMED-SCOPED／RUNTIME-E1）
 
 沿58已閉合0x17EEF／0x17FC0、NativeItemPanelDataPlanFor、blitNativeItemPanelBar及現行分離FDOTHER#5 entry20，不重開RE。固定EXE的SHA-256為222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f，位址為既有IDA線性位址；FDOTHER來源及entry20形狀綁原包resource.json與實圖。這是已知美術／型別資料的HD呈現，不新增原版語意。

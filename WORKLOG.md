@@ -3752,3 +3752,27 @@ README新增物品、金錢、關框及返回四格實圖，原文化入口與�
 - 收尾五張GitHub工單已逐內文讀回並維持OPEN，原acceptance／evidence／verify未改；官方解析器重建25項，18項待人判、0項機器訊號消失。359教訓／217守衛通過。工單準備曾誤把parse_issue的(item,error)視為字典，只續跑準備段修正，收據、文件登錄與清理未重做。私人庫本機／遠端main均為377197837c6566d553ca2895335becba1067b482且工作樹乾淨。
 - [最終核對](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-values-final-checks-r1.json)保存來源、28項Go、33張PNG、文化入口與連結結果。現況過期標籤／條限制搜尋為零，僅一筆當時工作歷程仍記舊待辦，不據此重開。沒有非預期FD2容器；本批重大更新提交／推送main後另核對本機／遠端HEAD，完整HD目標保持。
 - 工單最終差異審查發現首版更新覆蓋了原說明後段，已由更新前遠端原文恢復，只替換本批進度前兩段。五張工單各保留9／8／9／10／10段既有說明與使用者定案，逐段讀回相同；原驗收欄位未變。官方重新pull／render／verify通過，[工單讀回](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-values-issue-readback-r2.json)及[取代前版的最終核對](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-values-final-checks-r2.json)保存結果。Go、PNG及原始輸入保持，不重跑GPU。
+
+## 2026-10-26 清理過期連結與舊GPU中間截圖
+
+- 依使用者要求優先清理空間。載入復古重製技能、文件職責與交付目錄契約，保留分支目前未提交的HD工作。沒有新增遊戲功能、重跑測試、提交或推送。
+- [連結清單](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/space-cleanup-request-20261026-r5-plan.json.gz)限定2026-10-25前反例測試pack／runtime內的符號連結。刪139180個連結，實檔及連結目標不刪；[逐筆稽核](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/space-cleanup-request-20261026-r5-audit.jsonl.gz)保留原路徑及目標，可據以重建。計畫、刪除與核對使用[腳本](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/space-cleanup-request-20261026-r5.py)的plan／apply／verify入口，既有報告不覆寫。
+- [最終圖片計畫](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/space-cleanup-request-20261026-r5-captures-r4-plan.json)完整納入受版控文字與9.7MB的HD主證據，以檔名及輸出前綴排除仍有引用的驗證組。45組舊GPU輸出刪929張中間PNG，保留各組首／中／末抽樣、直接引用圖與全部文字收據；原版、目前HD及正式交付不刪。[圖片稽核](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/space-cleanup-request-20261026-r5-captures-r4-audit.jsonl.gz)逐檔保存原SHA-256；[腳本](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/space-cleanup-request-20261026-r5-captures.py)提供plan／apply／verify。較早三份圖片計畫只供診斷，未執行刪除。
+- [保護清冊](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/space-cleanup-request-20261026-r5-protected.json)4143份目前程式、存檔與HD證據逐大小及SHA-256複查通過。核對全部已刪路徑與保留抽樣，擁有權1000:1000；工作根未見root-owned檔案或意外.md目錄。原始資料與現用工具鏈、Go快取保持。
+- GNU du相同命令的專案實體配置由44356284416降至42893697024 bytes，扣除計畫與稽核開銷後淨減1462587392 bytes，約1.46GB；目前實體占用約42.89GB。硬連結只計一次，不把路徑大小加總當成實際占用。完整結果與可重跑核對入口見[最終摘要](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/space-cleanup-request-20261026-r5-final.json)及[核對腳本](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/space-cleanup-request-20261026-r5-final.py)。
+- 兩個廣域盤點達有界逾時，均未據此刪檔。圖片索引初版限制文件大小而漏載HD主證據，刪除前已取消限制，並補齊輸出前綴及多重副檔名引用；最終只執行r4圖片計畫。保護雜湊與既有未提交差異保持，不把環境或盤點腳本問題列為遊戲缺陷。
+- Docker均使用既有映像、有界、--rm、init、UID1000及無網路。未找到可確認過期的FD2映像、容器或volume，不清理其他專案或全域build cache；沒有殘留本批容器。完整HD目標保持。
+
+## 2026-10-26 物品加成與指令消耗縮寫HD
+
+- 從6edb334c的main建立feat/hd-panel-row-labels-20261026。沿已閉合0x184C0物品列及0x1CEED指令列，先登錄61的READY，再接raw64..67的+AP／+DP／+HP／+MP與raw92的-MP。固定字格取自己的底色與最亮墨色，以Noto沿既有48到24目標像素的有界字區直接繪製；名稱、數字、圖示、緊密排列與原生規則保持。
+- 補繪使用entry21的310×99完整美術座標，沿同次三區位移與102列複製範圍裁切。物品與指令各有密封圖，空列無補繪；record、typed表、下框、字格與色盤加入簽章，F2完整預檢後才發布。共用物品、狀態及指令頁接入既有繪製層，沒有新美術、資料包、保存格式或原版RE。
+- 最終六組共30項頂層Go通過，無SKIP／失敗，含兩項既有JSON原子保存／新實例LOAD。物品五分支291畫格／40個F2與五次續行、狀態41畫格／9個F2保持；另三個typed補樣涵蓋八格四類物品、十二指令與空列，各驗完整Game.Draw及F2。四語確認48樣本／16次F2保持。直接唯讀私人6062份獨立runtime，未複製測試包。
+- 補樣只裝備首件武器及防具，回復道具保持未裝備。三張before PNG是同typed狀態、只抑制新字樣的HD控制組，未冒充舊版或原版畫面。既有建構槽、seed7、clock1000與Game清單索引9的指令來源如實記錄；不新增一般鍵盤、自然取得、原版oracle或PLAYER-E2聲明。
+- 39張完整PNG由獨立原始23-byte列／7-byte指令表核對，450792個字區點與78912個實際墨跡點通過；字區外64061208個RGBA像素對前版或同狀態HD控制組相同。55收據反例與兩張真實舊縮寫圖拒收，既有細框、四語選項及480頭像保持。目視確認四類物品、三欄指令與滑入裁切，集中造型人工驗收仍依全部HD後排程。
+- 集中GPU425.581秒／7845679104 bytes、狀態183.095秒／5140938752 bytes，各8GiB／2CPU；來源44.753秒／1274863616 bytes、介面44.763秒／1352708096 bytes、交易57.271秒／1335476224 bytes、保存6.028秒／609255424 bytes，各4GiB／2CPU。六組memory.events皆零，無OOM或逾時，不推論平台效能餘裕。
+- unit-r1誤用assets/data/spells.json，改為既有assets/spells.json後unit-r2通過；審查補樣旗標後沿最終來源跑unit-r3與其餘五組。獨立狀態工具首版把關閉指令頁視為物品頁，依nativeStatusTransitionPass的commands來源修正，只重驗同PNG。彙整器曾誤用full收據的f2_roundtrips欄位，改讀實際f2_boundaries後續跑；既有保存閘門未覆寫，沒有重跑GPU或改正式規則。
+- 61轉為CONFORMED-SCOPED／RUNTIME-E1，56／57／58與README同步現況。[HD主收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的item_row_labels_followup_20261026索引來源、完整命令、建構政策、測試、獨立核對與[最終檢查](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-row-label-final-checks-r1.json)。20份凍結來源SHA保持，README145張圖片、文化入口及2848個本地連結通過；舊總覽仍由前批主收據保存。
+- GitHub #4／201／202／204／263只更新前兩段進度，原說明後段各9／8／9／10／10段、acceptance／evidence／verify、標籤與OPEN狀態逐張讀回相同。官方解析器重建25項，18項待人判、0項機器訊號消失；359教訓／217守衛通過。私人庫本機及遠端main皆為377197837c6566d553ca2895335becba1067b482且乾淨，無新素材同步需求。
+- [本批清理](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-row-label-cleanup-r1.json)將16份相同PNG合併為硬連結，釋放11816960配置bytes，39路徑內容SHA保持。未產生錄影或留存測試執行檔，保留現用Go快取；所有FD2容器皆有界、--rm、init、UID1000及network none，沿既有映像，收尾沒有非預期FD2容器。
+- 本批重大且已驗證的更新提交／推送main後另核對本機與遠端HEAD。分類／裝備及角色狀態圖示、其他介面／地形、HD2、獨立UI／theme、工具列其餘控制及全部HD串接後集中正常／人工／音訊／平台驗收仍待；完整目標保持。

@@ -286,6 +286,14 @@ func (p *fullRewardGPUProbe) Draw(screen *ebiten.Image) {
 		row["item_values_record"] = fmt.Sprintf("%x", g.nativeItemPanelText.data.record)
 		row["item_values_colors"] = itemPanelValuesColors(&g.nativeItemPanelText.data, g.nativeUIPalette)
 	}
+	var rowData *nativeUnitStatusData
+	if g.itemOpen && g.nativeItemPanelText != nil {
+		rowData = &g.nativeItemPanelText.data
+	}
+	if err := addRowLabelFrameMetadata(row, rowData, false); err != nil {
+		p.err = err
+		return
+	}
 	itemCapture := p.index == 2 && (phase == "item-open" && (g.itemAnimStep == 0 || g.itemAnimStep == 5 || g.itemAnimStep == 8) || phase == "item-close" && (g.itemAnimStep == 0 || g.itemAnimStep == 6 || g.itemAnimStep == 11))
 	if itemCapture || f2 && (p.index == 0 || p.index == 2 || p.index == 3) && (phase == "yes-no" || phase == "response-hold" || phase == "item-choice" || phase == "return") {
 		name := key + ".png"
@@ -394,6 +402,7 @@ func TestModernHDFullRewardGameGPU(t *testing.T) {
 	d["hd_confirmation"], d["confirmation_rows"], d["confirmation_f2"] = true, p.confirmationRows, p.confirmationF2
 	d["item_panel_chrome"], d["item_panel_chrome_pixels"] = true, p.itemChromePoints
 	d["item_values"], d["item_values_pixels"] = true, p.itemValuesPoints
+	d["row_labels"] = true
 	raw, _ := json.MarshalIndent(d, "", "  ")
 	if err := os.WriteFile(filepath.Join(out, "receipt.json"), append(raw, '\n'), 0644); err != nil {
 		t.Fatal(err)

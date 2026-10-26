@@ -25,13 +25,16 @@ type itemPanelStatusGPUProbe struct {
 	seen                 map[string]bool
 	f2, points           int
 	valuePoints          int
+	banks                []*nativeUnitStatusData
+	bankRows             []map[string]any
+	bankIndex            int
 	done                 bool
 	err                  error
 }
 
 func (p *itemPanelStatusGPUProbe) Layout(int, int) (int, int) { return 640, 400 }
 func (p *itemPanelStatusGPUProbe) Update() error {
-	if p.done || p.err != nil {
+	if p.done && p.bankIndex == len(p.banks) || p.err != nil {
 		return ebiten.Termination
 	}
 	return nil
@@ -52,7 +55,13 @@ func itemPanelStatusGPUState(g *Game) string {
 }
 
 func (p *itemPanelStatusGPUProbe) Draw(screen *ebiten.Image) {
-	if p.err != nil || p.done {
+	if p.err != nil {
+		return
+	}
+	if p.done {
+		if p.bankIndex < len(p.banks) {
+			p.drawRowLabelBank(screen)
+		}
 		return
 	}
 	g, c := p.g, p.control
@@ -146,6 +155,14 @@ func (p *itemPanelStatusGPUProbe) Draw(screen *ebiten.Image) {
 		row["item_values_record"] = fmt.Sprintf("%x", valuesData.record)
 		row["item_values_colors"] = itemPanelValuesColors(valuesData, g.nativeUIPalette)
 	}
+	commands := s != nil && s.phase == nativePlayerStatusCommands
+	if s != nil && len(s.frames) != 0 {
+		_, commands, _ = nativeStatusTransitionPass(s.text.kind, s.frame, s.text.commands)
+	}
+	if err := addRowLabelFrameMetadata(row, valuesData, commands); err != nil {
+		p.err = err
+		return
+	}
 	if f2 {
 		name := "status-" + key + ".png"
 		pic := image.NewRGBA(image.Rect(0, 0, 1920, 1200))
@@ -211,6 +228,17 @@ func TestModernHDItemPanelStatusGameGPU(t *testing.T) {
 		t.Fatal(err)
 	}
 	p := &itemPanelStatusGPUProbe{set: set, g: g, control: c, final: ebiten.NewImage(1920, 1200), controlScreen: ebiten.NewImage(640, 400), pixels: make([]byte, 1920*1200*4), out: out, seen: map[string]bool{}, colors: nativeDialogueChromeSource(g.nativePreparationUI.dialogue, g.nativeUIPalette)}
+	if os.Getenv("FD2_HD_ROW_LABEL_GPU") == "1" {
+		for i := 0; i < 3; i++ {
+			data := mixedHDRowLabelData(t, g.nativePlayerStatus.data)
+			if i == 2 {
+				for slot := 0; slot < 8; slot++ {
+					data.record[10+2*slot] = 0x80
+				}
+			}
+			p.banks = append(p.banks, data)
+		}
+	}
 	ebiten.SetVsyncEnabled(false)
 	if err := ebiten.RunGame(p); err != nil {
 		t.Fatal(err)
@@ -218,8 +246,12 @@ func TestModernHDItemPanelStatusGameGPU(t *testing.T) {
 	if p.err != nil || !p.done || p.f2 != 9 || len(p.rows) != 41 || p.points <= 0 || p.valuePoints <= 0 {
 		t.Fatal("incomplete status lifecycle", p.err, p.f2, len(p.rows), p.points)
 	}
+	if p.bankIndex != len(p.banks) || len(p.bankRows) != len(p.banks) {
+		t.Fatal("incomplete row label banks", p.bankIndex, len(p.banks))
+	}
 	report := map[string]any{"status": "PASS-ITEM-PANEL-STATUS-HD-RUNTIME-E1", "rows": p.rows, "frames": len(p.rows), "f2_roundtrips": p.f2, "chrome_pixels": p.points, "chrome_source": p.colors, "normal_player_verified": false, "native_seed": 7, "fixed_clock_unix": 1000, "command_mask": []int{0, 2, 0, 0, 0}, "command_book_source": "State.NativeCommandBook[9] from existing player9StageGame fixture", "map_index": 23}
 	report["item_values"], report["item_values_pixels"] = true, p.valuePoints
+	report["row_labels"], report["row_label_banks"] = true, p.bankRows
 	raw, _ := json.MarshalIndent(report, "", "  ")
 	if err := os.WriteFile(filepath.Join(out, "receipt.json"), append(raw, '\n'), 0644); err != nil {
 		t.Fatal(err)

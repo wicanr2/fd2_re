@@ -27,7 +27,8 @@
     "hd_reward_message": "CONFORMED-SCOPED／RUNTIME-E1：物品／金錢成功訊息的HD世界、Noto文字與480頭像接入；兩完整Game.Draw共26拍／26次F2、原生開收框遮罩、動態金額、HUD回交及一次續行通過。受控頭像選擇與獎勵值，正常／人工／平台仍待；依reward_message_hd_followup_20261023。",
     "hd_map_hud_unit": "CONFORMED-SCOPED／RUNTIME-E1：既有HD主題的資訊窗人物已接144圖源，原selector、狀態3轉1、位置及HP層序保持；來源、數量及回歸依hud_unit_icon_hd_followup_20261024。HD2／完整介面與正常玩家仍待。",
     "hd_map_stage": "FDOTHER42背景與同次循環列位移／DAC已接HD；天空之鑰與其後凍結consumer依各自較晚followup，不沿用早期仍待說法。其他地形及完整HD仍待。",
-    "hd_battle_panel_chrome": "CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI：共用戰鬥面板HD框線／HP與MP條已接；來源、實際流程、獨立CPU及首章普通攻防保存冷讀依battle_panel_chrome_followup_20261026。其他介面與集中人工／平台仍待。"
+    "hd_battle_panel_chrome": "CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI：共用戰鬥面板HD框線／HP與MP條已接；來源、實際流程、獨立CPU及首章普通攻防保存冷讀依battle_panel_chrome_followup_20261026。其他介面與集中人工／平台仍待。",
+    "hd_item_row_labels": "CONFORMED-SCOPED／RUNTIME-E1：物品加成四縮寫及指令-MP沿原生來源直接HD繪字；來源、數量、建構槽與限制依item_row_labels_followup_20261026。圖示及完整HD／集中驗收仍待。"
   },
   "runtime_source": {
     "binary": {
@@ -237570,7 +237571,7 @@
       "集中GPU560.709秒，峰值8GiB、memory.events.max=243、oom／kill零；狀態411.081秒／4983775232 bytes及其他回歸events全零，不推論平台餘裕。"
     ],
     "remaining": [
-      "物品／指令列的加成／消耗縮寫與圖示",
+      "分類／裝備與角色狀態圖示；物品／指令列縮寫已由item_row_labels_followup_20261026接入",
       "其他確認caller及其餘操作介面、地形、HD2、獨立UI／theme、工具列",
       "全部HD串接後集中正常／人工／音訊／平台驗收"
     ],
@@ -237581,6 +237582,397 @@
     "issue_readback": {
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-values-issue-readback-r2.json",
       "sha256": "3d345c9c31f1c97bff25f08df1eea325da63b0d0ebb3d7274a1288c6936b9507"
+    }
+  },
+  "item_row_labels_followup_20261026": {
+    "status": "CONFORMED-SCOPED/RUNTIME-E1",
+    "full_hd_complete": false,
+    "scope": "共用物品加成與指令消耗五個固定縮寫",
+    "source_evidence": [
+      {
+        "file": "remake/internal/battle/native_item_selector.go",
+        "sha256": "526522da76ffd3b58faf14b93ed78e17fe8d5957db04536640ada7ecc533ffc3"
+      },
+      {
+        "file": "remake/internal/battle/native_item_panel_data_render.go",
+        "sha256": "91cd60414bd893dccf40f78ba34969740191e5c098c0becf766f81f43c9ef8f1"
+      },
+      {
+        "file": "remake/internal/battle/native_command_overlay_render.go",
+        "sha256": "726527aa2503c9903dfb2a7d1fd5f9e9474b927e4d08d74e0fdecd843469cc26"
+      }
+    ],
+    "source_metadata_sha256": "a547f2f593b980fd9c1b269d1ba95be8727562d7ed31b44015615775d991efd3",
+    "normal_player_verified": false,
+    "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+    "source_snapshot": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-row-label-go-sources-r1.json",
+      "sha256": "393a76910263471753a0017bb0053994f0db94e82ba6eab26f3499043aeada15"
+    },
+    "commands": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-row-label-commands-r1.json",
+      "sha256": "ec2cabb77ccc5f7cfa5ea5a5051adebf906bc592be6212f878635bc58e445066"
+    },
+    "go_runs": [
+      {
+        "kind": "unit-r3",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-row-label-unit-r3.gate.json",
+          "sha256": "0094e6b189c6becf8a749bb2d79be644b03d177ce7a5b939e78e2e28f4ebc15f"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-row-label-unit-r3.memory.json",
+          "sha256": "02f1d95ea61a0cc44e472da021db47c4104f12434afa1d192a944a24abc80870"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-row-label-unit-r3.log",
+          "sha256": "27eb42b2f38bcc5b97fdbcc82144669d5c3ebafa21604e225ac36a852081f155"
+        },
+        "named_passes": 7,
+        "elapsed_seconds": 44.753,
+        "peak_bytes": 1274863616,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "kind": "regression-r1",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-row-label-regression-r1.gate.json",
+          "sha256": "eb4045a16f396db33d7c01b9c5f764806faa70ed107919c533c9a2244d391d30"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-row-label-regression-r1.memory.json",
+          "sha256": "d6c9162e574addb4fec0eec3e0a40e224177d08b782d39177f094c8c59f791fc"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-row-label-regression-r1.log",
+          "sha256": "cc02ebd1448711ff5481cad0710fc185db46b6467c56aa287e2979a78812bc5e"
+        },
+        "named_passes": 11,
+        "elapsed_seconds": 44.763,
+        "peak_bytes": 1352708096,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "kind": "transaction-r1",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-row-label-transaction-r1.gate.json",
+          "sha256": "f43a2acea9045c382c1c1590c1f0b6967439407fb8f9185a71462d1062b7b3ff"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-row-label-transaction-r1.memory.json",
+          "sha256": "36cfd53416736eb0510da7ce18d430eb8cd1cc89902e2c263d8672ac348d66d8"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-row-label-transaction-r1.log",
+          "sha256": "f41b67695da6a150b8228efdf02ab6dbe8569e784f82fade1531bf370ebb9a4e"
+        },
+        "named_passes": 8,
+        "elapsed_seconds": 57.271,
+        "peak_bytes": 1335476224,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "kind": "status-r1",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-row-label-status-r1.gate.json",
+          "sha256": "9aff2483d6f4b16a3130603b1e68371cf155d2881075c2ada470bd33568a470f"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-row-label-status-r1.memory.json",
+          "sha256": "7a4d0073a5f1c6c3ed26fde88774aeda3cb590d15f0ebc7ca0823cbb603add5f"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-row-label-status-r1.log",
+          "sha256": "2dfafb6dc5b49f89da703fbd66d2a247ee8ef774fa1ce05a6cb7312b9c6d0ad8"
+        },
+        "named_passes": 1,
+        "elapsed_seconds": 183.095,
+        "peak_bytes": 5140938752,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "kind": "game-r1",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-row-label-game-r1.gate.json",
+          "sha256": "c1b363830df4e06eb2e5da321c792fd2fb84f38191b1603b17d357d55233316a"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-row-label-game-r1.memory.json",
+          "sha256": "66536f1947fa9689e808865b2957ab94acda731fafcf49f05e6fbcdbc25acb0d"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-row-label-game-r1.log",
+          "sha256": "686b0bedcfb1c0e22a0b8e1bc40e529c50ae07397146c50eb2146cfc1a4e18c1"
+        },
+        "named_passes": 1,
+        "elapsed_seconds": 425.581,
+        "peak_bytes": 7845679104,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "kind": "save-r1",
+        "gate": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-row-label-save-r1.gate.json",
+          "sha256": "09862fe7789918c93f7ea393fc124598474caac5ea5cd92b17a9404d8d813402"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-row-label-save-r1.memory.json",
+          "sha256": "aaf33a9ad81d0e2232301c04e098cc7341ebbf2f7120d553cba260b92965ff03"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-row-label-save-r1.log",
+          "sha256": "e6b9af20e94b9476e7b0e87ff1f6837e6a83f480d22c37ea39692010ba06eb74"
+        },
+        "named_passes": 2,
+        "elapsed_seconds": 6.028,
+        "peak_bytes": 609255424,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      }
+    ],
+    "summary": {
+      "named_go_passes": 30,
+      "main_game_frames": 291,
+      "player_status_frames": 41,
+      "main_f2_boundaries": 40,
+      "status_f2_boundaries": 9,
+      "bank_samples": 3,
+      "bank_f2": 3,
+      "confirmation_samples": 48,
+      "confirmation_f2": 16,
+      "total_pngs": 39,
+      "visible_row_label_pixels": 450792,
+      "row_label_ink_pixels": 78912,
+      "unchanged_pixels": 64061208,
+      "receipt_rejections": 55,
+      "actual_old_picture_rejections": 2,
+      "independent_runtime_files": 6062
+    },
+    "receipts": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-row-label-game-r1-capture/receipt.json",
+        "sha256": "c02c3ef2547fc5c382e2950410719f86c73f7f520f30af847c6a93cab698cfc5"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-row-label-status-r1-capture/receipt.json",
+        "sha256": "87d567fb6f52bd2108ca285800c10ccd43996a86af6971571e4fe31634b73d4a"
+      }
+    ],
+    "independent_checks": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-row-label-game-independent-r2.json",
+        "sha256": "a9e62aa327ee25762ae3e57febe919d2b4efe213e93bcf93b7be79abafb6f88f"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-row-label-status-independent-r2.json",
+        "sha256": "d70257fecc14c9b8ffbc65225fa5cc35b7825fc536cc3be12cb458710ea78389"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-row-label-chrome-independent-r1.json",
+        "sha256": "8bd3589e1cffc751b31f4d7b7f87ac028a464e4c978d29ebbfc16ee1ef5cf68e"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-row-label-existing-independent-r1.json",
+        "sha256": "96a02cb29de5170928d88fa932d6a068013d2cd3e28ec172273495f0d9501deb"
+      }
+    ],
+    "overview": {
+      "file": "docs/figures/hd-item-row-labels.png",
+      "sha256": "9ac956b2407b3552eb8170859026759c0a136ee2187503a40b2180cfd226458b"
+    },
+    "png_manifest": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-row-label-pngs-r1.json",
+      "sha256": "21fc2a3f95ef2f7dd1511c656841b2bcc8352253f68d1f5573dc245acb4bc6b6"
+    },
+    "tools": [
+      {
+        "file": "tools/verify_fd2_hd_item_row_labels.py",
+        "sha256": "3bf06dca8678550caa7b5ce5e02737557ab67615a06a69c5c2aa3f062cb9c085"
+      },
+      {
+        "file": "tools/verify_fd2_reward_message_hd.py",
+        "sha256": "7122d277edfeb8f0a7da3fc3efe79455f5f68e168dda212cef164665d637c7b6"
+      }
+    ],
+    "catalog": {
+      "file": "remake/assets/themes/modern/catalog.json",
+      "sha256": "40bf4d83a2c13b606e84c66e2f7dddb383ca581904cdeb1f8aeabd61717d232a"
+    },
+    "images": {
+      "go": "sha256:e4a805c52a3ad5d8c22cf23f2bcf51c6924e5ad6b99554f1b02761903c725433",
+      "assets": "sha256:e59237a31d4b5f7a62c59ac37b780bd93f17c99fda97be8f5ca0c53978b878bc"
+    },
+    "construction_policy": {
+      "fixture": "rewardStageGame + makeNativeDeathRewardKiller",
+      "map_index": 23,
+      "map_selector_key": 0,
+      "portrait_dato": 0,
+      "native_seed": 7,
+      "clock_unix": 1000,
+      "hp_maxhp_mp_maxmp": [
+        100,
+        100,
+        100,
+        0
+      ],
+      "status_command_mask": [
+        0,
+        2,
+        0,
+        0,
+        0
+      ],
+      "status_command_source": "existing State.NativeCommandBook[9] supplied at Game.nativeCommandBook[9]; controlled fixture, not natural acquisition",
+      "row_banks": {
+        "item_ids": [
+          1,
+          123,
+          102,
+          206,
+          1,
+          123,
+          102,
+          206
+        ],
+        "item_flags": [
+          64,
+          64,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "selection": "first nonzero original item ID in each AP/DP/HP/MP class, repeated twice; equip first weapon and armor only",
+        "command_ids": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11
+        ],
+        "empty": "all eight item flag bytes 0x80",
+        "before_control": "same typed state and complete HD draw, suppressing only new row patches; these three controls are test-only",
+        "normal_player_verified": false
+      }
+    },
+    "original_cells": [
+      {
+        "file": "/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22/ui/fdother_005_item_panel/entry_021/frame.png",
+        "sha256": "ebee33ab5b0c42657369d2da7e3008e5dbe9da551a5a93709dec97644fbe9add"
+      },
+      {
+        "file": "/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22/ui/fdother_005_item_panel/entry_064/frame.png",
+        "sha256": "f8f4718f20c908db7b97cbd0fa73bc79392414eb86f426bb94541369a6a55939"
+      },
+      {
+        "file": "/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22/ui/fdother_005_item_panel/entry_065/frame.png",
+        "sha256": "e60c037972c15bc99c8ccc8ca47ee08abe93a00ecc731206da828de550d04829"
+      },
+      {
+        "file": "/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22/ui/fdother_005_item_panel/entry_066/frame.png",
+        "sha256": "7e5b833eb16091c61444f64fa32b666d45d9363130286e2d3f9593298932cdbe"
+      },
+      {
+        "file": "/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22/ui/fdother_005_item_panel/entry_067/frame.png",
+        "sha256": "be1034c7b9bfb8559024424d39b63db007ef8a4bab24f195e88d7fa3078bfb13"
+      },
+      {
+        "file": "/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22/ui/fdother_005_item_panel/entry_092/frame.png",
+        "sha256": "e81f108a38eb0fa99e01a63e57d254120223fa19d0556b84a257c6c67d3b3d16"
+      }
+    ],
+    "typed_sources": [
+      {
+        "file": "remake/assets/data/native_item_effect_rows.json",
+        "sha256": "1092f6ebb722dd5b89e4738bd10bd6ddd91a9e6d23fdfce24adcf641ef601048"
+      },
+      {
+        "file": "remake/assets/spells.json",
+        "sha256": "b5c7dd55d4b2dd83d4714dfc740a99ac48f201068011367cf1b586816c7f9613"
+      }
+    ],
+    "known_differences": [
+      "五縮寫沿既有Noto、原始字格底色與最亮墨色直接HD繪字，屬明示美術近似。",
+      "兩條完整Game.Draw與三個typed補樣直接操作controller，未新增正常鍵盤、自然取得、原版oracle、PLAYER-E2或平台效能聲明。",
+      "三個before PNG是同狀態HD抑制新補繪的測試控制組，未冒充舊版或原版畫面。",
+      "集中GPU425.581秒／7845679104 bytes、狀態183.095秒／5140938752 bytes，各8GiB／2CPU；最終六組memory.events全零，不推論平台餘裕。"
+    ],
+    "diagnostics": [
+      "unit-r1測具誤用assets/data/spells.json；改為既有assets/spells.json。unit-r2通過後修正建構旗標為僅裝備首件武器與防具，沿最終來源重跑unit-r3與其他五組。",
+      "獨立狀態檢查器首版把關閉指令頁視為物品頁，依nativeStatusTransitionPass的commands來源修正；只重驗相同PNG，Go來源未變。"
+    ],
+    "remaining": [
+      "分類／裝備與角色狀態圖示、其他確認caller及其餘操作介面",
+      "其餘地形、HD2、獨立UI／theme及工具列其餘控制",
+      "全部HD串接後集中正常／人工／音訊／平台驗收"
+    ],
+    "cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-row-label-cleanup-r1.json",
+      "sha256": "8467c3bae7f5e45c4c1c7b73cb1ddda2b753a71dfac73c6ee45bad8580eea360"
+    },
+    "issue_readback": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-row-label-issue-readback-r1.json",
+      "sha256": "b7066d9ca66172c93f5e08e8a7036093d9084e7f05615193306478e0d789950e"
+    },
+    "final_checks": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-row-label-final-checks-r1.json",
+      "sha256": "f5614d9d639abbd6945ed447b1ee5540343680886082a462ff01465cd2082da3"
     }
   }
 }

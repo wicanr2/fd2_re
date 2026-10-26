@@ -13,6 +13,10 @@ from verify_fd2_player9_map_hd import check_real_runtime
 
 ROOT = Path(__file__).resolve().parents[1]
 REQUIRED = {
+    "row-label-unit": {"TestModernHDRowLabelSourcesAndLayout", "TestModernHDRowLabelFreezeAndAtomicTheme",
+                       "TestModernHDItemPanelValuesSourcesAndBounds", "TestModernHDItemPanelValuesFreezeAndAtomicTheme",
+                       "TestModernHDItemPanelChromeSourceAndGeometry", "TestModernHDItemPanelChromeFreezeAndStaging", "TestModernHDDialogueChromeSourceAndPatch"},
+    "row-label-status": {"TestModernHDItemPanelStatusGameGPU"},
     "item-values-unit": {"TestModernHDItemPanelValuesSourcesAndBounds", "TestModernHDItemPanelValuesFreezeAndAtomicTheme", "TestModernHDItemPanelChromeSourceAndGeometry", "TestModernHDItemPanelChromeFreezeAndStaging", "TestModernHDDialogueChromeSourceAndPatch"},
     "item-panel-unit": {"TestModernHDItemPanelChromeSourceAndGeometry", "TestModernHDItemPanelChromeFreezeAndStaging", "TestModernHDDialogueChromeSourceAndPatch"},
     "item-panel-regression": {"TestModernHDStatusSnapshotMatchesLegacyComposition", "TestModernHDStatusChurchAndPlayerKeepIndexedTransitions",
@@ -57,12 +61,16 @@ def main():
     env.pop("FD2_HD_REWARD_STAGE_GPU", None)
     env.pop("FD2_HD_FULL_REWARD_GPU", None)
     env.pop("FD2_HD_ITEM_PANEL_STATUS_GPU", None)
+    env.pop("FD2_HD_ROW_LABEL_GPU", None)
     env.update(FD2_MUTE="1", FD2_HD_REWARD_GPU="1", FD2_TEST_REWARD_CATALOG=str(a.catalog.resolve()),
                FD2_TEST_REWARD_PACK=str(a.pack.resolve()), FD2_TEST_REWARD_OUT=str(a.out)+"-capture")
     env.update(FD2_TEST_UNIT_PRESENT_CATALOG=str(a.catalog.resolve()), FD2_TEST_UNIT_PRESENT_PACK=str(a.pack.resolve()))
     if a.kind == "stage-game": env["FD2_HD_REWARD_STAGE_GPU"] = "1"
     if a.kind == "full-game": env["FD2_HD_FULL_REWARD_GPU"] = "1"
     if a.kind == "item-panel-status": env["FD2_HD_ITEM_PANEL_STATUS_GPU"] = "1"
+    if a.kind == "row-label-status":
+        env["FD2_HD_ITEM_PANEL_STATUS_GPU"] = "1"
+        env["FD2_HD_ROW_LABEL_GPU"] = "1"
     physical = check_real_runtime(a.pack, json.loads(a.catalog.read_text())) if a.require_real_runtime else None
     command = [sys.executable, str(ROOT/"tools/fd2_go_test_memory_probe.py"), "--out", str(a.out),
                "--timeout", str(a.timeout), "--", "with-xvfb", "go", "test", "-json", "-count=1",
@@ -101,10 +109,20 @@ def main():
                 raise ValueError("滿背包畫布雜湊缺項")
         if d.get("item_values") is not True or d.get("item_values_pixels", 0) <= 0:
             raise ValueError("物品面板HD血條核對缺項")
-    if a.kind == "item-panel-status":
+        if d.get("row_labels") is not True or any(type(r.get("row_label_fields")) is not list for r in d["rows"]):
+            raise ValueError("物品列HD縮寫核對缺項")
+    if a.kind in ("item-panel-status", "row-label-status"):
         d = json.loads(Path(str(a.out)+"-capture/receipt.json").read_text())
         if d.get("item_values") is not True or d.get("item_values_pixels", 0) <= 0 or d.get("frames") != 41 or d.get("f2_roundtrips") != 9:
             raise ValueError("完整狀態面板HD數值流程缺項")
+        if a.kind == "row-label-status":
+            banks = d.get("row_label_banks", [])
+            if (d.get("row_labels") is not True or len(banks) != 3
+                    or [r.get("phase") for r in banks] != ["bank-items", "bank-commands", "bank-empty"]
+                    or [len(r.get("row_label_fields", [])) for r in banks] != [8, 12, 0]
+                    or {f["source"] for f in banks[0]["row_label_fields"]} != {64, 65, 66, 67}
+                    or any(r.get("f2_roundtrip") is not True or r.get("native_control_unchanged") is not True for r in banks)):
+                raise ValueError("四種物品／十二指令／空列HD完整Game.Draw缺項")
     if a.kind == "stage-game":
         capture = Path(str(a.out)+"-capture")
         d = json.loads((capture/"receipt.json").read_text())
@@ -132,7 +150,7 @@ def main():
                 raise ValueError("密封場景或同次stage來源缺項")
     report = dict(status="PASS", kind=a.kind, required=sorted(REQUIRED[a.kind]),
                   catalog_sha256=hashlib.sha256(a.catalog.read_bytes()).hexdigest(), pack=str(a.pack.resolve()),
-                  scope=("受控三區物品／狀態面板；不是正常玩家或原版對拍證據" if a.kind.startswith(("item-panel-", "item-values-")) else
+                  scope=("受控三區物品／狀態面板；不是正常玩家或原版對拍證據" if a.kind.startswith(("item-panel-", "item-values-", "row-label-")) else
                          "受控滿背包確認選項與交易；不是正常玩家或原版對拍證據" if a.kind.startswith("full-") or a.kind == "confirmation-unit" else
                          "受控物品／金錢成功訊息；不是正常玩家或原版對拍證據"))
     report["independent_runtime_files"] = physical

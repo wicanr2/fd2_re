@@ -102,9 +102,9 @@
 
 戰後成功訊息的開框、等待與關框已保留同次 HD 背景，結束後回到目前戰場。四格依序為物品訊息、金錢訊息、關框與返回，取自受控測試的完整遊戲畫面半縮。文字、頭像與綠色背景使用 HD。本圖保留先前原生框線，現行成功訊息細框見上方提示框總覽；城堡地形仍為像素。來源與範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)及[HD收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的`reward_message_stage_hd_followup_20261025`，不代表正常章節通關。
 
-![物品與角色狀態面板的HD標籤、血條與細框](docs/figures/hd-item-status-values.png)
+![物品加成與指令消耗字樣的HD呈現](docs/figures/hd-item-row-labels.png)
 
-物品列表與角色狀態／指令頁的固定狀態縮寫、HP／MP條及框線已直接HD繪製，保留原位置與滑入滑出裁切。四格為受控流程的完整遊戲畫面半縮；數字與頭像沿既有HD來源。圖示、物品列加成縮寫與完整介面仍待。來源與範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
+物品列表的+AP／+DP／+HP／+MP與指令頁的-MP已直接HD繪字，沿用清晰狀態標籤、血條及細框，保留原位置與滑入滑出裁切。四格為受控流程的完整遊戲畫面半縮；數字與頭像沿既有HD來源。分類／裝備圖示及完整介面仍待。來源與範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
 
 ![滿背包確認選項的四語HD字型與細框](docs/figures/hd-full-inventory-confirmation-locales.png)
 
