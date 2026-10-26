@@ -12,6 +12,40 @@ LOCALES = [('zh-Hant', 'Traditional Chinese'), ('zh-Hans', 'Simplified Chinese')
            ('ja', 'Japanese'), ('en', 'English')]
 
 
+def system_info_gallery(args):
+    path = args.system_info_receipt
+    receipt = json.loads(path.read_text())
+    if receipt.get('status') != 'PASS' or len(receipt.get('locale_cases', [])) != 8:
+        raise SystemExit('缺少四語／兩主題正常資訊窗收據')
+    canvas = Image.new('RGB', (1920, 1248), '#191d23')
+    draw = ImageDraw.Draw(canvas)
+    font = ImageFont.load_default(size=18)
+    rows = []
+    for i, (locale, label) in enumerate(LOCALES):
+        case = next(c for c in receipt['locale_cases'] if c['locale'] == locale and c['modern'])
+        name = case['screenshot']
+        if Path(name).name != name:
+            raise SystemExit('圖片檔名不得跨目錄')
+        source = path.parent/name
+        digest = hashlib.sha256(source.read_bytes()).hexdigest()
+        if digest != receipt['screenshots'][name]['sha256']:
+            raise SystemExit('實際PNG與收據雜湊不符')
+        picture = Image.open(source).convert('RGB')
+        if picture.size != (1920, 1200):
+            raise SystemExit('來源不是完整1920畫布')
+        x, y = i%2*960, i//2*624
+        draw.text((x+8, y+2), label, font=font, fill='#e4eaf2')
+        canvas.paste(picture.resize((960, 600), Image.Resampling.LANCZOS), (x, y+24))
+        rows.append(dict(locale=locale, source=str(source.resolve().relative_to(ROOT)), sha256=digest,
+                         operation='whole-frame half-size; label outside game area'))
+    canvas.save(args.out)
+    result = dict(file=str(args.out.resolve().relative_to(ROOT)), sha256=hashlib.sha256(args.out.read_bytes()).hexdigest(),
+                  size=list(canvas.size), sources=rows, receipt_sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
+                  scope='既有強化槽的正常鍵盤資訊窗，不是原版動態對拍或完整章節')
+    args.receipt.write_text(json.dumps(result, ensure_ascii=False, indent=2)+'\n')
+    print(json.dumps(dict(sha256=result['sha256'], sources=len(rows))))
+
+
 def modifier_gallery(args):
     canvas = Image.new('RGB', (960, 1872), '#191d23')
     draw = ImageDraw.Draw(canvas)
@@ -122,6 +156,7 @@ def main():
     parser.add_argument('--captures', type=Path, nargs=4,
                         help='依繁中、簡中、日文、英文順序給四個capture目錄')
     parser.add_argument('--modifier-receipts', type=Path, nargs=3, help='依玩家25、20、21順序給三份.game.json，選已驗證圓環及兩色菱形')
+    parser.add_argument('--system-info-receipt', type=Path, help='四語正常資訊窗收據，選四張HD完整視窗')
     parser.add_argument('--unit-present-receipt',type=Path,help='單位轉場完整Game.Draw收據，選傳送與增援四格')
     parser.add_argument('--story-unit-present-receipt',type=Path,help='故事／直接出現收據，選入場及返回HD世界四格')
     parser.add_argument('--story-motion-receipt',type=Path,help='故事走位收據，選四方向／轉彎／跟隨的已驗畫面')
@@ -141,6 +176,13 @@ def main():
     for path in [args.out, args.receipt]:
         if not path.parent.is_dir() or path.exists():
             raise SystemExit('輸出父目錄須存在，不覆寫既有檔案')
+    if args.system_info_receipt:
+        if any((args.captures, args.modifier_receipts, args.command_panels, args.phase, args.lmi_entries,
+                args.unit_present_receipt, args.story_unit_present_receipt, args.story_motion_receipt,
+                args.indexed_transition_receipt, args.rowshake_receipt)):
+            raise SystemExit('資訊窗總覽不可混用其他選項')
+        system_info_gallery(args)
+        return
     if args.unit_present_receipt or args.story_unit_present_receipt or args.story_motion_receipt or args.indexed_transition_receipt or args.rowshake_receipt:
         if args.captures or args.modifier_receipts or args.command_panels or args.phase or args.lmi_entries:
             raise SystemExit('單位轉場不可混用其他總覽選項')

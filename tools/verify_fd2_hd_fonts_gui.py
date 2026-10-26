@@ -61,6 +61,7 @@ def main():
     parser.add_argument('--battle-only', action='store_true', help='抽驗普通攻防、F2及保存冷讀，略過已另驗的狀態／命令字型；需--battle-hd')
     parser.add_argument('--heal-normal', action='store_true', help='正常第23章既有希爾法依次施放13～16，滿HP上限、HD效果、F2與保存冷讀；需--battle-status --world')
     parser.add_argument('--system-info', action='store_true', help='正常第23章空地系統環開關資訊，HD／原版、F2、返回與保存冷讀；需--battle-status --world')
+    parser.add_argument('--system-info-locales', action='store_true', help='搭配--system-info驗四語與兩主題資訊窗')
     parser.add_argument('--capture-native-battle-save', action='store_true', help='正常原生標題LOAD、出發及F5建立JSON來源槽；需--native-save與--battle-status')
     parser.add_argument('--native-entry-theme', choices=['hd','faithful'], default='hd', help='原生來源擷取的起始主題；第23章獨立整備目前明示使用faithful')
     parser.add_argument('--death-event', type=int, choices=[53], help='第23章普通進軍擊倒隊長，唯讀抽樣共用死亡HD；需--town-save')

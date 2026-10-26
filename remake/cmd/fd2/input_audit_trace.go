@@ -374,7 +374,10 @@ func (g *Game) recordInputAuditState() {
 		}
 		if s.hd != nil {
 			r["system_info_picture_sha256"] = fmt.Sprintf("%x", s.hd.digest)
+			r["system_info_captions"] = s.hd.captions
+			r["system_info_lines"] = s.hd.lines
 		}
+		r["system_info_text_index"] = s.textIndex
 	}
 	r["next_player_index"] = g.nativeNextPlayerIndex
 	r["system_end_turn_confirm"] = g.nativeSystemEndTurnConfirm

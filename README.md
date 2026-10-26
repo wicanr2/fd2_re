@@ -56,7 +56,11 @@
 
 ![戰場資訊的像素與HD主題、展開及收合](docs/figures/hd-system-info.png)
 
-戰場資訊窗的細框、章回數、金錢與勝敗條件已接入HD，開收時保留HD地圖。上排是同份存檔、資訊值一致的重製像素與HD兩種主題，下排是明示數值的受控開收測試；完整畫面半縮，沒有補畫，不代表DOS原版對拍或整章通關。正常開關、F2與保存冷讀已驗，條件文字的四語翻譯另列[#280](https://github.com/wicanr2/fd2_re/issues/280)。來源見[HD收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的`system_info_hd_followup_20261026`。
+戰場資訊窗的細框、章回數、金錢與勝敗條件已接入HD，開收時保留HD地圖。上排是同份存檔、資訊值一致的重製像素與HD兩種主題，下排是明示數值的受控開收測試；完整畫面半縮，沒有補畫，不代表DOS原版對拍或整章通關。來源見[HD收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的`system_info_hd_followup_20261026`。
+
+![戰場資訊的繁中、簡中、日文與英文實際HD畫面](docs/figures/hd-system-info-locales.png)
+
+資訊窗已接上四語勝敗條件與標籤。四格取自同份章前存檔的普通開窗操作，完整視窗半縮，沒有補畫；像素主題也已抽驗，繁中仍保留原始圖字。正常切換、返回與保存冷讀通過，完整HD1與平台驗收仍待。來源見[HD收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的`system_info_locales_followup_20261026`。
 
 ![四種回復術的正常操作HD畫面](docs/figures/hd-heal-normal.png)
 

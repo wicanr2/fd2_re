@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"image"
 	"image/color"
 	"os"
 
@@ -21,6 +22,7 @@ type nativeSystemInfoUIState struct {
 	dac         []byte
 	palette     color.Palette
 	input       campaign.NativeSystemInfoInput
+	textIndex   int
 	hd          *modernHDSystemInfo
 	hdPresented bool
 }
@@ -125,9 +127,9 @@ func (g *Game) prepareNativeSystemInfoUI() (*nativeSystemInfoUIState, error) {
 	}
 	state := &nativeSystemInfoUIState{
 		opening: opening, steady: steady, closing: closing,
-		phase: "opening", dac: dac, palette: palette, input: input,
+		phase: "opening", dac: dac, palette: palette, input: input, textIndex: textIndex,
 	}
-	if g.modernStoryPortraits != nil && g.modernStoryPortraits.hasHD {
+	if (g.modernStoryPortraits != nil && g.modernStoryPortraits.hasHD) || (g.localeID != "" && g.localeID != "zh-Hant") {
 		if err := g.prepareModernHDSystemInfo(state); err != nil {
 			return nil, err
 		}
@@ -203,6 +205,29 @@ func (g *Game) drawNativeSystemInfoUI(screen *ebiten.Image) bool {
 		return false
 	}
 	g.presentNativeClassFrameWithPalette(screen, frame, state.palette)
+	if g.localeID != "" && g.localeID != "zh-Hant" {
+		if err := g.prepareModernHDSystemInfo(state); err != nil {
+			g.loadErr = err.Error()
+			return true
+		}
+		regions, err := fdother.NativeSystemInfoRegions(state.phase, state.frame)
+		if err != nil {
+			g.loadErr = err.Error()
+			return true
+		}
+		art := state.hd
+		if art.gpu == nil {
+			art.gpu = ebiten.NewImageFromImage(art.picture)
+		}
+		for _, region := range regions {
+			r := region.Source
+			part := art.gpu.SubImage(image.Rect(r.Min.X*6, r.Min.Y*6, r.Max.X*6, r.Max.Y*6)).(*ebiten.Image)
+			op := &ebiten.DrawImageOptions{}
+			op.GeoM.Scale(1.0/3, 1.0/3)
+			op.GeoM.Translate(float64(region.Destination.X*2), float64(region.Destination.Y*2))
+			screen.DrawImage(part, op)
+		}
+	}
 	state.drawn = true
 	return true
 }

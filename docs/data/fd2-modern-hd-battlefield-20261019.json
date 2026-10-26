@@ -238364,7 +238364,7 @@
     "source_branch": "feat/hd-panel-icons-20261026",
     "base_commit": "ea4fb3bdc78ea61e90b4ad8db7f90187c4a0cb9e",
     "release_ready": false,
-    "active_slice": "戰場資訊四面板HD接線及普通開關／保存冷讀通過；其餘介面、未登錄地形與集中人工／平台仍待。",
+    "active_slice": "戰場資訊四語內容、兩主題與普通開關／保存冷讀通過；其餘介面、未登錄地形與集中人工／平台仍待。",
     "components": [
       {
         "component": "人物、頭像、戰鬥動畫與場景既有圖源",
@@ -238409,7 +238409,8 @@
         "component": "戰場資訊四面板",
         "status": "CONFORMED-SCOPED-RUNTIME-E1-NORMAL-GUI",
         "evidence_key": "system_info_hd_followup_20261026",
-        "localization_issue": 280
+        "localization_issue": 280,
+        "localization_evidence_key": "system_info_locales_followup_20261026"
       }
     ],
     "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md",
@@ -238421,8 +238422,8 @@
       263
     ],
     "release_scope_pending": "新增工具列控制是否須與HD1正式版同時完成，已用共同決策提問；不阻塞既有HD1接線。",
-    "latest_branch": "feat/hd-system-info-20261026",
-    "latest_base_commit": "03163469cba9f2de97be493d5c96d43cea4fec33"
+    "latest_branch": "feat/hd1-system-info-localization",
+    "latest_base_commit": "83941aada4236653a2831de8550b0e394be75ff9"
   },
   "map_hud_hd_followup_20261026": {
     "status": "CONFORMED-SCOPED-RUNTIME-E1-NORMAL-GUI",
@@ -239884,6 +239885,244 @@
       "manual_items": 19,
       "vanished_signals": 0,
       "fresh_host_gh": true
+    },
+    "later_localization_followup": "system_info_locales_followup_20261026"
+  },
+  "system_info_locales_followup_20261026": {
+    "status": "CONFORMED-SCOPED/RUNTIME-E1/NORMAL-GUI",
+    "base_commit": "83941aada4236653a2831de8550b0e394be75ff9",
+    "source_branch": "feat/hd1-system-info-localization",
+    "full_hd_complete": false,
+    "release_ready": false,
+    "source_evidence": [
+      "docs/data/ida/fd2_nested_system_menu_ida.txt",
+      "docs/data/ida/fd2_system_info_codec_20260907.json"
+    ],
+    "original_exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "fdtxt_source_sha256": "08699c562210d1f569bd57ec5311a0c38a0de285e5337d2469457cd75b6972d1",
+    "source_string_range": [
+      597,
+      656
+    ],
+    "condition_entries_per_locale": 60,
+    "caption_entries_per_locale": 8,
+    "chapter16_indices": {
+      "identity18_absent": [
+        627,
+        628
+      ],
+      "identity18_present": [
+        629,
+        630
+      ]
+    },
+    "locales": [
+      "zh-Hant",
+      "zh-Hans",
+      "en",
+      "ja"
+    ],
+    "both_themes_verified": true,
+    "native_zh_hant_policy": "保留原生繁中資訊窗及既有英文固定圖字；其他語系保留原圖框線並替換文字。",
+    "original_dynamic_parity_added": false,
+    "normal_keyboard_verified": true,
+    "source_files": [
+      {
+        "file": "remake/cmd/fd2/native_system_info_locale.go",
+        "sha256": "e947657410a0f5fc36af31b36011fb33afe4667ceb4400da92f64c38a5fa1e28"
+      },
+      {
+        "file": "remake/cmd/fd2/native_system_info_locale_test.go",
+        "sha256": "b3b4c64b823686af37f6db8bcf99e727160ce4366938ebbef8438cd6d033d772"
+      },
+      {
+        "file": "remake/cmd/fd2/native_system_info_ui.go",
+        "sha256": "7b436224314964b82cc021d6e60785218d96886c9aa4a7a13a54a78a393e07b8"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_system_info.go",
+        "sha256": "5dabed4983c79265978441c64b87d35b2371658e68414313fe80ffc6aa87786d"
+      },
+      {
+        "file": "remake/cmd/fd2/input_audit_trace.go",
+        "sha256": "444198917c3e582a815225cfde26aaa0360d5acf24433935f4a4d2fb5ccb47a8"
+      },
+      {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "be7b57203a154ba345c225ef4a58e35e6f67c2578f254cb187c63cbb00dc2aa1"
+      },
+      {
+        "file": "tools/fd2_hd_system_info_gui.py",
+        "sha256": "e559006d505b000893dabc8eb20a55e59c461e5024a5f9a502fb216a883f3004"
+      },
+      {
+        "file": "tools/verify_fd2_system_info_locales.py",
+        "sha256": "5f159acbafd956863b026b9f1bffb9c1ba565b987a59ad9b5c9defb2fca54a01"
+      },
+      {
+        "file": "tools/build_fd2_battle_panel_gallery.py",
+        "sha256": "cb53cebe8dbc268ff3295a664955499e497b61109cff980d8b45455f4e7b7bcb"
+      },
+      {
+        "file": "remake/assets/locales/zh-Hant/pack.json",
+        "sha256": "d263749d4c566ee7dd059a8b6966f7ba765d45d3472d21779e7ed48b7f292aaf"
+      },
+      {
+        "file": "remake/assets/locales/zh-Hans/pack.json",
+        "sha256": "190d0108470ba6bd542a1f2e53f5e489dff2f46aa80eb5979369928cd20c1d25"
+      },
+      {
+        "file": "remake/assets/locales/en/pack.json",
+        "sha256": "be8a05ab2d65d78d9acb028400747e845586f4ffba14e60491e1eaf4c43a41e1"
+      },
+      {
+        "file": "remake/assets/locales/ja/pack.json",
+        "sha256": "e8ec7ac3cb138d69f1e66841ae9a189e70e5570c24eeab162686ae0f0d808155"
+      }
+    ],
+    "distinct_top_level_go_tests": 59,
+    "go_passes": 64,
+    "go_runs": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/info-locale-regression-r1.log",
+        "sha256": "a5b2dc0cd0d9cee5d56a7de3b10808d78f4cc52578b5bcc1f10e91b9a333b368"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/info-locale-strings-r1.log",
+        "sha256": "b0e5c15805185cc048f6c9ff113147874beab8e08a0067d61d6dd3fd5366116f"
+      }
+    ],
+    "deliberately_not_enabled": [
+      "TestModernHDSystemInfoCompleteGameGPU",
+      "TestReviewedLatePreparationShotUsesProductionLoadOwner",
+      "TestReviewedLatePreparationShotRejectsInvalidSpritePhase"
+    ],
+    "normal": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/info-locale-normal-r2-capture/receipt.json",
+      "sha256": "6d8ede789cc39f97b1724dbfd882c906a56c65d68fdcda69724c90bb364decf1"
+    },
+    "normal_source_sha256": "5d64f3a0bf9aa56f7e77f51e8cfe45fe8c14ab78f2703b966fbc0e142e7bd871",
+    "source_policy": "沿既有第23章章前AP+5000／DP+300／DX+60／MaxHP+1000／preserve_dead來源；本輪無新注入，無戰鬥或重擲。",
+    "memory": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/info-locale-normal-r2.memory.json",
+      "sha256": "76ccdf3089c01544255e763bd3db094215371228965a13618f8edd5c4fc1fc46"
+    },
+    "elapsed_seconds": 436.502,
+    "memory_peak_bytes": 5469519872,
+    "memory_events_delta": {
+      "low": 0,
+      "high": 0,
+      "max": 0,
+      "oom": 0,
+      "oom_kill": 0,
+      "oom_group_kill": 0,
+      "sock_throttled": 0
+    },
+    "independent": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/info-locale-independent-r1.json",
+      "sha256": "63c9f1c5561400ffecec0cdea77ee6bb83dc83c3caf55ef18aaa1e31775d219b"
+    },
+    "independent_result": {
+      "status": "PASS-SYSTEM-INFO-FOUR-LOCALES",
+      "result": {
+        "cases": 8,
+        "hd_panel_pixels": 3641616,
+        "native_border_pixels": 418608,
+        "pack_sha256": {
+          "zh-Hant": "d263749d4c566ee7dd059a8b6966f7ba765d45d3472d21779e7ed48b7f292aaf",
+          "zh-Hans": "190d0108470ba6bd542a1f2e53f5e489dff2f46aa80eb5979369928cd20c1d25",
+          "en": "be8a05ab2d65d78d9acb028400747e845586f4ffba14e60491e1eaf4c43a41e1",
+          "ja": "e8ec7ac3cb138d69f1e66841ae9a189e70e5570c24eeab162686ae0f0d808155"
+        }
+      },
+      "rejected_counterexamples": [
+        "missing-case",
+        "wrong-language",
+        "wrong-source",
+        "wrong-content",
+        "wrong-caption",
+        "wrong-picture",
+        "actual-native-replaces-hd"
+      ]
+    },
+    "binary": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/info-locale-normal-r2-binary",
+      "sha256": "edd0e8f5a636d93387ca5c3f422e4cfaed0d5d7bc076aef4d086de46c16b3671"
+    },
+    "rebuild_sha256": "edd0e8f5a636d93387ca5c3f422e4cfaed0d5d7bc076aef4d086de46c16b3671",
+    "rebuild_bytes_equal": true,
+    "readme": {
+      "file": "docs/figures/hd-system-info-locales.png",
+      "sha256": "a310c482f8b525ae8a86f702a44a27055b3723bf84dd217683549389398e20a5"
+    },
+    "readme_sources": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/info-locale-readme-r1.json",
+      "sha256": "e8d8592209fed4ff8fa27d57d582c578de189b371231e18554e2e2c8f2cb3128"
+    },
+    "string_review": {
+      "candidates": 129,
+      "inventory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/info-locale-string-inventory-r1.json",
+        "sha256": "0acc3bc4f8d1e09977e15a2d1671d9507c07f1dfdbf4eecb778e086b5b366abd"
+      },
+      "binding": "0acc3bc4f8d1e09977e15a2d1671d9507c07f1dfdbf4eecb778e086b5b366abd"
+    },
+    "private_pack_changed": false,
+    "private_head": "fc70c3cdc0f0e35024c977f4fdcab0b8d09923ba",
+    "catalog_entries": 851,
+    "private_files": 7063,
+    "recording_created": false,
+    "container_limits": {
+      "memory": "6GiB",
+      "cpus": 2,
+      "pids": 256,
+      "network": "none",
+      "uid": 1000,
+      "gid": 1000
+    },
+    "scope": "各章來源與字形為受控測試；正常鍵盤限既有第23章強化槽，四語兩主題、返回及F5章節邊界／新程序標題LOAD。不是完整章節、自然難度、原版動態或平台驗收。",
+    "diagnostics": [
+      "第一輪拒收測試把不同章的第二行誤當相同來源，改用實際相同的0597／0601資料；未修改產品規則或放寬來源檢查。"
+    ],
+    "commands": {
+      "unit": "with-xvfb go test -json ./cmd/fd2 -run \"Locale|SystemInfo|ReviewedGo|Review\" -count=1 -timeout=540s",
+      "strings": "go test -json ./cmd/fd2-string-inventory ./internal/localization -count=1 -timeout=540s",
+      "gui": [
+        "python3",
+        "/repo/tools/verify_fd2_hd_fonts_gui.py",
+        "--binary",
+        "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/info-locale-normal-r2-binary",
+        "--assets",
+        "/repo/remake",
+        "--original-pack",
+        "/original",
+        "--modern-pack",
+        "/modern",
+        "--town-save",
+        "/source/fd2_save.json",
+        "--out",
+        "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/info-locale-normal-r2-capture",
+        "--battle-status",
+        "--world",
+        "--battle-node",
+        "battle_ch23",
+        "--system-info",
+        "--system-info-locales",
+        "--startup-timeout",
+        "360",
+        "--run-timeout",
+        "1800"
+      ],
+      "independent": "python3 tools/verify_fd2_system_info_locales.py --normal <capture>/receipt.json --binary <binary> --source <source>/fd2_save.json --catalog remake/assets/themes/modern/catalog.json --gui-tool tools/verify_fd2_hd_fonts_gui.py --helper tools/fd2_hd_system_info_gui.py --locales remake/assets/locales --out <fresh>.json --self-test",
+      "readme": "python3 tools/build_fd2_battle_panel_gallery.py --system-info-receipt <capture>/receipt.json --out docs/figures/hd-system-info-locales.png --receipt <fresh>.json"
+    },
+    "cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/info-locale-cleanup-r1.json",
+      "sha256": "7fa32c1da1ab386a7cf3b5c7f201ccda352b3ac2582f78721bdce2efc01248e1"
+    },
+    "hygiene": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/info-locale-hygiene-r1.json",
+      "sha256": "8b5494bb28f3439d5b5dacdebc5ec48e8f5ebe8d02cc53909bd23878b669d774"
     }
   }
 }

@@ -2,7 +2,7 @@
 
 回復術13～16已補上既有第23章存檔的正常選人、取消及施放驗證，另一次施放驗途中F2；HD光環、綠字、唯一扣MP邊界、返回地圖及新程序保存冷讀通過。來源全員滿血，僅證明演出與滿血上限；不新增原版動態、正回復量或完整章節聲明。現況數量依[58](58-fd2-exe-re-coverage.md)，規格依[61](61-modern-theme-runtime-spec.md)，主收據為`heal_normal_gui_followup_20261026`。HD1其餘接線及集中人工／平台仍待。
 
-HD1目前優先完成正式接線。戰場資訊四面板已接細框、數字、標題與條件文字，原生開收位置保持，矩形外保留HD地圖。完整GPU與普通鍵盤開關、F2、保存冷讀通過；原生地圖HUD及共用面板圖示保持已驗範圍。唯一數量依[58](58-fd2-exe-re-coverage.md)，規格依[61](61-modern-theme-runtime-spec.md)，主收據為`system_info_hd_followup_20261026`及`hd1_release_integration_20261026`。原中文條件的四語翻譯另列[#280](https://github.com/wicanr2/fd2_re/issues/280)；其餘介面、未登錄地形與集中人工／平台仍待，未宣稱HD1正式版完成。
+HD1目前優先完成正式接線。戰場資訊四面板已接細框、數字、標題與條件文字，原生開收位置保持，矩形外保留HD地圖。完整GPU與普通鍵盤開關、F2、保存冷讀通過；原生地圖HUD及共用面板圖示保持已驗範圍。唯一數量依[58](58-fd2-exe-re-coverage.md)，規格依[61](61-modern-theme-runtime-spec.md)，主收據為`system_info_hd_followup_20261026`及`hd1_release_integration_20261026`。資訊窗四語內容、兩主題正常開關與保存冷讀已補驗，來源依主收據`system_info_locales_followup_20261026`；其餘介面、未登錄地形與集中人工／平台仍待，未宣稱HD1正式版完成。
 
 共用物品列表的+AP／+DP／+HP／+MP及指令頁-MP已接HD，沿原生資料、緊密排列與三區位移裁切，完整預檢後才切換主題。兩條完整Game.Draw及八格四類／十二指令／空列補樣、原生控制、F2、交易與JSON保存冷讀通過，限定CONFORMED-SCOPED／RUNTIME-E1。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約與重跑依[61](61-modern-theme-runtime-spec.md)，主證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的item_row_labels_followup_20261026。分類／裝備及角色狀態圖示、其餘介面／地形／HD2／工具列與全部HD後集中正常／人工／平台仍待。
 

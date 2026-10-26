@@ -31,14 +31,19 @@ var modernSystemInfoSourceSHA = [4]string{
 }
 
 type modernHDSystemInfo struct {
-	input   campaign.NativeSystemInfoInput
-	lines   [2][]string
-	colours [10]byte // background, outer, light, dark, captions, text, shadow, numbers, gold, inner
-	font    *Font
-	palette [10]color.RGBA
-	picture *image.RGBA
-	digest  [32]byte
-	gpu     *ebiten.Image
+	input         campaign.NativeSystemInfoInput
+	lines         [2][]string
+	captions      [8]string
+	nativeChrome  bool
+	panels        [4][]byte
+	usedNative    [256]bool
+	nativePalette [256]color.RGBA
+	colours       [10]byte // background, outer, light, dark, captions, text, shadow, numbers, gold, inner
+	font          *Font
+	palette       [10]color.RGBA
+	picture       *image.RGBA
+	digest        [32]byte
+	gpu           *ebiten.Image
 }
 
 func modernSystemInfoLines(words []uint16, glyphs map[string]int) ([]string, error) {
@@ -103,6 +108,10 @@ func freezeModernHDSystemInfo(assets *campaign.NativeSystemInfoAssets, in campai
 		if fmt.Sprintf("%x", sha256.Sum256(pixels)) != modernSystemInfoSourceSHA[i] {
 			return nil, errors.New("modern HD system info: native panel pixels differ")
 		}
+		p.panels[i] = pixels
+		for _, index := range pixels {
+			p.usedNative[index] = true
+		}
 		if i == 0 {
 			// Baked captions use 169/173/177 for their bright face; 76 is
 			// the dark shadow. The native PNG seal above pins this source.
@@ -135,7 +144,23 @@ func (p *modernHDSystemInfo) compose(f *Font, palette color.Palette) error {
 		}
 		colours[i] = color.RGBA{byte(r >> 8), byte(g >> 8), byte(b >> 8), 255}
 	}
-	if p.picture != nil && p.font == f && p.palette == colours {
+	var nativeColours [256]color.RGBA
+	if p.nativeChrome {
+		for index, used := range p.usedNative {
+			if !used {
+				continue
+			}
+			if palette[index] == nil {
+				return errors.New("system info locale: native colour absent")
+			}
+			r, g, b, a := palette[index].RGBA()
+			if a != 65535 {
+				return errors.New("system info locale: native colour translucent")
+			}
+			nativeColours[index] = color.RGBA{byte(r >> 8), byte(g >> 8), byte(b >> 8), 255}
+		}
+	}
+	if p.picture != nil && p.font == f && p.palette == colours && p.nativePalette == nativeColours {
 		return nil
 	}
 	picture := image.NewRGBA(image.Rect(0, 0, 1920, 1200))
@@ -152,6 +177,18 @@ func (p *modernHDSystemInfo) compose(f *Font, palette color.Palette) error {
 			fill(image.Rect(x.Min.X, x.Max.Y-3, x.Max.X, x.Max.Y), c)
 			fill(image.Rect(x.Min.X, x.Min.Y, x.Min.X+3, x.Max.Y), c)
 			fill(image.Rect(x.Max.X-3, x.Min.Y, x.Max.X, x.Max.Y), c)
+		}
+	}
+	if p.nativeChrome {
+		for i, raw := range modernSystemInfoRects {
+			for y := 0; y < raw.Dy(); y++ {
+				for x := 0; x < raw.Dx(); x++ {
+					index := p.panels[i][y*raw.Dx()+x]
+					fill(image.Rect((raw.Min.X+x)*6, (raw.Min.Y+y)*6, (raw.Min.X+x+1)*6, (raw.Min.Y+y+1)*6), nativeColours[index])
+				}
+			}
+			inner := raw.Inset(3)
+			fill(image.Rect(inner.Min.X*6, inner.Min.Y*6, inner.Max.X*6, inner.Max.Y*6), colours[0])
 		}
 	}
 	ink := func(value string, rect image.Rectangle, maximum, colour int) error {
@@ -181,7 +218,10 @@ func (p *modernHDSystemInfo) compose(f *Font, palette color.Palette) error {
 		{"NPC·", image.Rect(204, 159, 228, 167), 48}, {"$", image.Rect(133, 176, 139, 184), 48},
 		{"·勝利條件·", image.Rect(119, 41, 202, 58), 84}, {"·失敗條件·", image.Rect(119, 96, 202, 113), 84},
 	}
-	for _, label := range labels {
+	for i, label := range labels {
+		if p.captions != [8]string{} {
+			label.text = p.captions[i]
+		}
 		if err := ink(label.text, label.rect, label.size, 4); err != nil {
 			return err
 		}
@@ -206,6 +246,7 @@ func (p *modernHDSystemInfo) compose(f *Font, palette color.Palette) error {
 		}
 	}
 	p.picture, p.font, p.palette = picture, f, colours
+	p.nativePalette = nativeColours
 	p.digest = sha256.Sum256(picture.Pix)
 	if p.gpu != nil {
 		p.gpu.WritePixels(picture.Pix)
@@ -215,12 +256,25 @@ func (p *modernHDSystemInfo) compose(f *Font, palette color.Palette) error {
 
 func (g *Game) prepareModernHDSystemInfo(s *nativeSystemInfoUIState) error {
 	p := s.hd
+	if p != nil {
+		candidate := *p
+		p = &candidate
+	}
 	if p == nil {
 		var err error
 		p, err = freezeModernHDSystemInfo(g.nativeSystemInfoAssets, s.input, g.nativeBattleGlyphs)
 		if err != nil {
 			return err
 		}
+	}
+	if g.localeID != "" {
+		if err := g.localizeSystemInfo(p, s.textIndex, g.localeCatalog); err != nil {
+			return err
+		}
+	}
+	nativeChrome := g.modernStoryPortraits == nil || !g.modernStoryPortraits.hasHD
+	if p.nativeChrome != nativeChrome {
+		p.nativeChrome, p.picture = nativeChrome, nil
 	}
 	f := g.font
 	if f != nil && f.hdFonts[g.localeID] != nil {

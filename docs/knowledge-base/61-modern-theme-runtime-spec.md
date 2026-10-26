@@ -1,5 +1,18 @@
 # 61 — 現代美術主題正式執行期規格
 
+## 戰場資訊四語內容（CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI，2026-10-26）
+
+沿本檔已閉合的資訊窗來源與原生章號16所對應的第17章分支，不重開反組譯。固定標籤及FDTXT_000/string_0597～0656共60條條件進官方四語pack.json，逐條保留來源ID；譯名沿各語entities.json。條件仍是顯示資料，不能改寫勝敗判定、數值、原生buffer、存檔或十二拍開收。
+
+- 先依正式producer選定的原始字串索引取得兩條譯文，再檢查與凍結原glyph words相符。章16未有identity18時仍用0627／0628，有時用0629／0630。缺翻譯、錯來源或空文字整窗拒收，不回退另一語言。
+- 保留每條至多兩行，人工安排語意斷行；每行以實際字形邊界縮入現有160×16原生字區。標籤與數字的安全區保持，數字、camp順序和前導零不變。四語均檢查真實字型與長譯文邊界。
+- HD使用既有細框與1920×1200直接繪字。像素主題繁中維持原始indexed資訊窗；其他語言保留原面板像素框與原色，在相同copy矩形內替換文字，呈現到640×400邏輯畫布。兩主題共用同一來源索引與翻譯，不修改原indexed實驗資料。
+- 語言切換沿原任意鍵收窗流程，下一次開窗使用新語言。受控Draw測試另驗活躍owner重新預檢與快取失效，不宣稱按F4可維持等待頁。正常鍵盤驗四語／兩主題開關、返回及保存冷讀；受控測試驗全部30章、章16分支、缺翻譯與錯來源。
+
+正式接點為[來源與翻譯轉接器](../../remake/cmd/fd2/native_system_info_locale.go)、[原資訊owner](../../remake/cmd/fd2/native_system_info_ui.go)及[共同畫面來源](../../remake/cmd/fd2/modern_hd_system_info.go)。[來源與拒收測試](../../remake/cmd/fd2/native_system_info_locale_test.go)驗實際字表、章16正式producer及兩種框線；原生繁中保留既有英文固定圖字，其餘語系在原框內替換文字，不把像素主題稱為HD。
+
+沿既有正常GUI工具，加入`--system-info-locales --system-info --battle-status --world --battle-node battle_ch23`。來源、素材及程式參數同本檔資訊窗原契約，所有路徑給容器內絕對路徑。[獨立核對器](../../tools/verify_fd2_system_info_locales.py)給`--normal --binary --source --catalog --gui-tool --helper --locales --out --self-test`，核實際HD圖、官方內容、像素原框及變造反例。[展示圖工具](../../tools/build_fd2_battle_panel_gallery.py)以`--system-info-receipt --out --receipt`重生四語完整半縮圖。唯一數量與限制依58，全部來源SHA、命令與收據在HD主收據`system_info_locales_followup_20261026`。沒有新增原版動態對拍、美術包或完整HD／平台聲明。
+
 ## 戰場資訊四面板HD（CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI，2026-10-26）
 
 沿[巢狀系統選單證據](../data/ida/fd2_nested_system_menu_ida.txt)、[資訊圖碼勘誤](../data/ida/fd2_system_info_codec_20260907.json)及現有`ComposeNativeSystemInfoSurface`／`NativeSystemInfoTransitionFrames`。FD2.EXE固定SHA為`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`，位址為既有IDA Pro9.4線性`0x19F03→0x1B1E7→0x1B41D`及四個copy consumer；不重開RE。四圖133～136、六組數字及FDTXT索引均沿現有型別。來源形狀、雜湊及全部60條條件字表覆蓋記於HD主收據`system_info_hd_followup_20261026`。
@@ -9,7 +22,7 @@
 - 新的唯讀區域轉接器直接消費原十二拍copy矩形，統一表達source／destination／clip；不另抄一套開收算式。源圖矩形依序為(109,19,102,17)、(75,37,170,117)、(75,155,170,16)、(129,172,63,15)。移動時先移整幅HD圖再裁切，不在裁切邊重畫新框。
 - 四面板在1920×1200直接繪製三像素細框。底色與邊色讀原圖的背景及bevel位置，數字讀原31／42圖組墨色，條件文字沿raw0xCD／0x4C。原MAP、TURN、ENEMY、FRIEND、NPC、美元符號及勝敗標題改用Noto直接繪字，語意和原來源相同。
 - 原12字換行及FFFE保留；每條最多兩行，條件文字限制於原面板內的160×16原生像素字區，各行獨立以實際字寬選擇不超出字區的字級。不得靠最後裁切截字。固定標籤及數字各有獨立安全矩形，保留前導零。原字表無對應、字型缺字、尺寸或顏色不符時，HD預檢整組拒絕，不發布半份資訊窗。F2進HD前亦須預檢。
-- HD圖與GPU紋理屬同一資訊owner，只保留目前字型與實際使用色彩的快取。DAC循環未改到使用色時重用，不逐幀建立全畫面圖片。不改存檔格式、正式數值或多語系內容；各語系可沿目前字型切換，但原勝敗條件仍為來源中文，不能聲明已完成其翻譯。
+- HD圖與GPU紋理屬同一資訊owner，只保留目前字型與實際使用色彩的快取。DAC循環未改到使用色時重用，不逐幀建立全畫面圖片。本段最初只改繪圖，未改存檔、正式數值或原中文內容；後續四語翻譯與快取擴充依本檔首節。
 - 驗收涵蓋四圖／六數字、30章及章16分支、0／最大值、所有24個開收位置、缺字／壞圖／壞色拒收、原生buffer與owner節拍保持。完整Game.Draw、最終GPU畫面、F2及正常鍵盤開關、保存／新程序LOAD分別記錄；集中美術與平台驗收仍待。
 
 正式接點為[資訊視窗](../../remake/cmd/fd2/native_system_info_ui.go)、[原區域轉接器](../../remake/internal/fdother/system_info_transition.go)與[HD呈現](../../remake/cmd/fd2/modern_hd_system_info.go)。重跑與來源集中於既有工作根及HD主收據，不新增研究或交付目錄。
@@ -20,7 +33,7 @@
 
 正常鍵盤沿[GUI主控制](../../tools/verify_fd2_hd_fonts_gui.py)的`--system-info --battle-status --world --battle-node battle_ch23`及[專用輔助](../../tools/fd2_hd_system_info_gui.py)，容器內binary／assets／original-pack／modern-pack／town-save／out一律給絕對路徑。沿原版任意鍵收合，實際按F2亦會收窗；受控Draw邊界的F2不代表鍵盤F2可維持等待頁。三次普通開窗及F5章節邊界、F2保存bytes與新程序標題LOAD分別記錄，沒有章內注入或新整章E2。
 
-[獨立PNG核對器](../../tools/verify_fd2_hd_system_info.py)須給`--gpu --normal --binary --source --catalog --gui-tool --helper --out`；`--self-test`驗變造反例，`--old-hd`可給同資訊值的舊暗色HD實圖。GPU以Pillow從獨立地圖控制組及原拷貝區域合成，正常擷取則由四個不透明區域重建當次CPU圖並核SHA；真實像素主題與舊錯字色圖必須拒收。唯一數量與限制依58，來源及實測命令在主收據。原中文內容的翻譯另外追蹤[#280](https://github.com/wicanr2/fd2_re/issues/280)，不以本次HD繪製宣稱翻譯完成。
+[獨立PNG核對器](../../tools/verify_fd2_hd_system_info.py)須給`--gpu --normal --binary --source --catalog --gui-tool --helper --out`；`--self-test`驗變造反例，`--old-hd`可給同資訊值的舊暗色HD實圖。GPU以Pillow從獨立地圖控制組及原拷貝區域合成，正常擷取則由四個不透明區域重建當次CPU圖並核SHA；真實像素主題與舊錯字色圖必須拒收。唯一數量與限制依58，來源及實測命令在主收據。本段為先前原中文繪製收據；四語內容依本檔首節與HD主收據system_info_locales_followup_20261026。
 
 ## 回復術13～16的正常鍵盤與HD畫面補驗（CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI）
 

@@ -52,6 +52,34 @@ def run_normal_system_info(args, audit, key, wait, shot, saved, command, window,
     key('Escape');returned = idle()
     assert units(returned) == units(initial) and returned['hd_world']
     shot('system-info-returned')
+    locale_cases = []
+    if args.system_info_locales:
+        for locale in ('zh-Hant', 'zh-Hans', 'en', 'ja'):
+            for _ in range(4):
+                if latest(audit)['locale'] == locale:
+                    break
+                previous = latest(audit)['locale']
+                key('F4');wait(lambda s: s['locale'] != previous and not s.get('error'), timeout=120)
+            assert latest(audit)['locale'] == locale
+            for modern in (True, False):
+                if bool(latest(audit)['hd_theme']) != modern:
+                    key('F2');wait(lambda s: bool(s['hd_theme']) == modern, timeout=180)
+                command('xdotool', 'windowsize', window, '1920', '1200')
+                name = f'system-info-{locale}-' + ('hd' if modern else 'native')
+                state = open_info(name)
+                assert state['locale'] == locale and state['system_info_values'] == hd['system_info_values']
+                assert state['system_info_text_index'] == 641
+                if modern or locale != 'zh-Hant':
+                    assert state['system_info_lines'] and state['system_info_captions']
+                locale_cases.append(dict(locale=locale, modern=modern, screenshot=name+'.png', state=state))
+                key('Escape');idle()
+        if not latest(audit)['hd_theme']:
+            key('F2');wait(lambda s: s['hd_theme'], timeout=180)
+        for _ in range(4):
+            if latest(audit)['locale'] == 'zh-Hant':
+                break
+            previous = latest(audit)['locale']
+            key('F4');wait(lambda s: s['locale'] != previous and not s.get('error'), timeout=120)
     key('F5');saved_hd = saved.read_bytes()
     key('F2');wait(lambda s: not s.get('hd_theme'))
     key('F5');assert saved.read_bytes() == saved_hd
@@ -68,8 +96,8 @@ def run_normal_system_info(args, audit, key, wait, shot, saved, command, window,
                   gui_tool_sha256=tool_hash, helper_sha256=helper_hash, saved_sha256=digest(saved),
                   initial=initial, hd=hd, faithful=faithful, restored=restored, returned=returned,
                   faithful_return=faithful_return, hd_return=hd_return, warm=warm, cold=cold,
-                  operations=operations, screenshots=shots, state_injection=False, recording_created=False,
+                  operations=operations, screenshots=shots, locale_cases=locale_cases, state_injection=False, recording_created=False,
                   theme_save_bytes_equal=True, new_process_title_load=True, cold_units_equal=True,
                   normal_rng_setting='FD2_SEED=1，無戰鬥與重擲，不作原版骰序對拍。',
-                  scope='既有第23章強化來源的普通鍵盤資訊窗、F2任意鍵收合、回地圖及章節邊界保存冷讀。原中文條件未新增翻譯。')
+                  scope='既有第23章強化來源的普通鍵盤資訊窗、F2任意鍵收合、回地圖及章節邊界保存冷讀。locale_cases另列四語／兩主題實際開窗，不宣稱原版動態對拍。')
     (args.out/'receipt.json').write_text(json.dumps(report, ensure_ascii=False, indent=2)+'\n')
