@@ -12,6 +12,38 @@ LOCALES = [('zh-Hant', 'Traditional Chinese'), ('zh-Hans', 'Simplified Chinese')
            ('ja', 'Japanese'), ('en', 'English')]
 
 
+def command30_normal_gallery(args):
+    path=args.command30_normal_receipt
+    receipt=json.loads(path.read_text());proof=json.loads(args.command30_normal_proof.read_text())
+    if (receipt.get('status')!='PASS' or receipt.get('battle_command_id')!=30
+            or proof.get('status')!='PASS-COMMAND30-NORMAL-SCOPED'
+            or proof.get('receipt_sha256')!=hashlib.sha256(path.read_bytes()).hexdigest()):
+        raise SystemExit('缺音速刃正常GUI與獨立核對收據')
+    chosen=next(s for s in proof['verified'] if any(c['resource']==56 for c in s['compatible']))
+    native=receipt['command30_theme_checks'][0]
+    rows=[];canvas=Image.new('RGB',(1920,1248),'#191d23');draw=ImageDraw.Draw(canvas);font=ImageFont.load_default(size=18)
+    shots=[('Normal target selection','world-hd-attack-target.png',receipt['screenshots']['world-hd-attack-target.png']['sha256']),
+           ('Pixel theme / same cast, different phase',native['file'],native['sha256']),
+           ('HD sonic blade / verified source core',chosen['file'],chosen['sha256']),
+           ('Returned battle map','world-hd-physical-return.png',receipt['screenshots']['world-hd-physical-return.png']['sha256'])]
+    for i,(label,name,sha) in enumerate(shots):
+        source=path.parent/name
+        if Path(name).name!=name or hashlib.sha256(source.read_bytes()).hexdigest()!=sha:
+            raise SystemExit('正常PNG路徑或雜湊不同')
+        picture=Image.open(source).convert('RGB')
+        if picture.width*5!=picture.height*8:raise SystemExit('完整遊戲長寬比不同')
+        x,y=i%2*960,i//2*624;draw.text((x+8,y+2),label,font=font,fill='#e4eaf2')
+        canvas.paste(picture.resize((960,600),Image.Resampling.LANCZOS),(x,y+24))
+        rows.append(dict(file=str(source.resolve().relative_to(ROOT)),sha256=sha,size=list(picture.size),operation='whole-frame proportional resize; label outside game area'))
+    canvas.save(args.out)
+    result=dict(file=str(args.out.resolve().relative_to(ROOT)),sha256=hashlib.sha256(args.out.read_bytes()).hexdigest(),
+                size=list(canvas.size),sources=rows,normal_receipt_sha256=proof['receipt_sha256'],
+                independent_sha256=hashlib.sha256(args.command30_normal_proof.read_bytes()).hexdigest(),
+                scope='受控章前來源的同一次普通施放，不同相位；重製兩主題，不是DOS原版動態對拍。')
+    args.receipt.write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
+    print(json.dumps(dict(sha256=result['sha256'],sources=len(rows))))
+
+
 def system_info_gallery(args):
     path = args.system_info_receipt
     receipt = json.loads(path.read_text())
@@ -157,6 +189,8 @@ def main():
                         help='依繁中、簡中、日文、英文順序給四個capture目錄')
     parser.add_argument('--modifier-receipts', type=Path, nargs=3, help='依玩家25、20、21順序給三份.game.json，選已驗證圓環及兩色菱形')
     parser.add_argument('--system-info-receipt', type=Path, help='四語正常資訊窗收據，選四張HD完整視窗')
+    parser.add_argument('--command30-normal-receipt',type=Path,help='音速刃正常GUI收據')
+    parser.add_argument('--command30-normal-proof',type=Path,help='音速刃獨立核對收據，須與正常GUI搭配')
     parser.add_argument('--unit-present-receipt',type=Path,help='單位轉場完整Game.Draw收據，選傳送與增援四格')
     parser.add_argument('--story-unit-present-receipt',type=Path,help='故事／直接出現收據，選入場及返回HD世界四格')
     parser.add_argument('--story-motion-receipt',type=Path,help='故事走位收據，選四方向／轉彎／跟隨的已驗畫面')
@@ -176,6 +210,15 @@ def main():
     for path in [args.out, args.receipt]:
         if not path.parent.is_dir() or path.exists():
             raise SystemExit('輸出父目錄須存在，不覆寫既有檔案')
+    if bool(args.command30_normal_receipt)!=bool(args.command30_normal_proof):
+        raise SystemExit('音速刃總覽須同時給正常GUI及獨立核對收據')
+    if args.command30_normal_receipt:
+        if any((args.system_info_receipt,args.captures,args.modifier_receipts,args.command_panels,args.phase,args.lmi_entries,
+                args.unit_present_receipt,args.story_unit_present_receipt,args.story_motion_receipt,
+                args.indexed_transition_receipt,args.rowshake_receipt)):
+            raise SystemExit('音速刃總覽不可混用其他選項')
+        command30_normal_gallery(args)
+        return
     if args.system_info_receipt:
         if any((args.captures, args.modifier_receipts, args.command_panels, args.phase, args.lmi_entries,
                 args.unit_present_receipt, args.story_unit_present_receipt, args.story_motion_receipt,

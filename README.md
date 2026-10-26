@@ -134,9 +134,9 @@
 
 滿背包領取獎勵時，問句、放棄回覆與物品選擇已接上 HD 字型、頭像及背景。四格依序為問句、放棄回覆、丟棄選擇器與取消後回覆，取自受控測試的完整遊戲畫面半縮。本圖記錄先前原生框線，現行對話細框見上圖；本圖的YES／NO為前版呈現；共用三區細框見上圖；介面圖示與城堡地形仍為像素。來源與範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)及[HD收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的`full_inventory_reward_hd_followup_20261025`，不代表正常章節通關。
 
-![蜜蒂音速刃的HD出招與逐目標命中](docs/figures/hd-miti-sonic-blade.png)
+![蜜蒂音速刃的普通選目標、像素與HD呈現及戰場返回](docs/figures/hd-miti-sonic-blade-normal.png)
 
-蜜蒂升級學到的音速刃已接上原版像素與 HD 播放。上排為出招與耗魔，下排為兩名目標依序受擊，取自受控測試的完整遊戲畫面縮圖。人物、效果、背景與面板文字使用 HD，框線與血條仍為像素。取得來源、保存冷讀與驗證範圍見[音速刃證據](docs/data/ida/fd2_command30_player_acquisition_20261025.json)及[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)；完整正常玩家與人工造型仍待集中抽驗。
+音速刃已接上重製的像素與 HD 主題。四格為普通選目標、施放中的像素主題、HD斬擊與返回戰場，皆保留完整視窗並等比例縮小。同一次施放的不同相位，不是DOS原版對拍。章前來源以正式加入與升級程式建構，帶有明示強化政策；章內經普通鍵盤完成施放、F2與保存冷讀，不代表自然招募或整章通關。取得來源見[音速刃證據](docs/data/ida/fd2_command30_player_acquisition_20261025.json)，畫面與驗證範圍見[HD收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的`command30_normal_gui_followup_20261026`。完整戰鬥HD與集中造型確認仍待。
 
 ## HD2 設計基準
 

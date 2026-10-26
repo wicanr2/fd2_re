@@ -374,6 +374,20 @@ README四格由[既有總覽工具](../../tools/build_fd2_battle_panel_gallery.p
 
 ## 蜜蒂音速刃指令30：正常學招與戰鬥呈現（CONFORMED-SCOPED／RUNTIME-E1）
 
+### 音速刃正常鍵盤補驗來源（CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI，2026-10-26）
+
+既有第23章JSON來源沒有蜜蒂；已核對既有工作區存檔，不能把其他角色改名冒充。測試來源沿固定map16第36筆selector18，先走正式JOIN建構器，再以一次EXP300及seed7走原生升級writer取得30，沿正式休息回復HP／MP。將這筆具身分的持續名冊加入既有第23章來源，其他角色、旗標、金錢與章號保持；明示這是受控章前組隊，不能宣稱自然招募或正常整章。
+
+蜜蒂章前AP+5000、DP+300、DX+60、HP／MaxHP+1000沿既有流程校準政策，逐欄保存前後值。不得直接設command mask、改章內座標、鎖血、關閉反擊或改正式平衡。遊戲由標題LOAD後，以Z選人、正式可達格移動、指令環、取消／重選與正式目標格施放；候選預篩沿selector20的十字四格，最終仍由原生selector及四步路徑接納。驗一次MP24、各目標一次傷害、F2、自然返回及章節邊界保存／新程序LOAD。
+
+音速刃共用29的演出owner，觀測器讀typed schedule的真實commandID，不能固定標29。唯讀scene閘門及既有HD來源／相位列入收據，不改演出、交易或聲音發布。已有完整受控14幀及marker證據保持，不以正常PNG要求逐幀原版一致。正常補驗沿同一來源與程式修正工具後通過，沒有用修改遊戲放行。
+
+來源由[受控章前匯出測試](../../remake/cmd/fd2/native_command30_gui_source_test.go)重生：既有Go容器、唯讀`FD2_COMMAND30_GUI_SOURCE_BASE`及全新既有工作根下的`FD2_COMMAND30_GUI_SOURCE_OUT`，執行`with-xvfb go test ./cmd/fd2 -run '^TestCommand30NormalGUISource$' -count=1`。正常玩家工具沿既有GUI主控制的`--battle-command 30 --battle-own-identity 18 --battle-only --battle-hd --world --battle-status`，來源與程式路徑皆用容器內絕對路徑；進軍、重複場數與取樣上限分別明示，沒有新增遊戲正式旗標。
+
+[唯讀取樣輔助](../../tools/fd2_hd_command30_gui.py)依同一owner記錄MP及各目標HP變化；正式選人只在施術階段指定identity18，戰後沿原可選角色集合返回。CLI補驗明示`--battle-repetitions 1 --battle-approach-rounds 6 --battle-advance --battle-art --battle-art-samples 32`，不改敵軍或動作節拍。[獨立核對器](../../tools/verify_fd2_command30_normal.py)給`--receipt --catalog --pack --binary --save --manifest --gui-tool --out --self-test`，同時讀首次程序原始audit、正式銀行及實際PNG。FIGANI圖層沿既有空archive辨別值，面板的resource-1另行排除；由before／after來源位置求相容幀，不拿audit單一frame當圖像真相。
+
+實際斬擊已核對正式56銀行；其餘跨相位PNG只列觀測，完整14幀、雙側及多目標仍沿既有受控GPU收據，不外推為正常全畫格覆蓋。來源、唯一數量與資源限制依58及HD主收據`command30_normal_gui_followup_20261026`。[展示圖工具](../../tools/build_fd2_battle_panel_gallery.py)以`--command30-normal-receipt --command30-normal-proof --out --receipt`重生完整視窗總覽，像素主題是重製模式且為不同相位，不冒稱DOS原版動態。
+
 原2026-08-25停止線被固定原始位元組直接反證。本節只補蜜蒂selector18學到指令30後的既有玩家流程，不新增28／31或敵方30入口，不改傷害公式、原學招表、職業、保存格式或其他指令。主證據為[取得來源勘誤](../data/ida/fd2_command30_player_acquisition_20261025.json)，舊[取得研究](../data/ida/fd2_command28_31_reachability_ida.txt)已刪除失效停止線並保留原始證據。
 
 - 原版固定檔案大小、MD5與SHA依主證據及`fd2-reference-files.json`。本批為已知file offset的機械核對；既有IDA Pro9.4線性位址`sub_1E292→sub_4E4D1→sub_4E4A2→sub_1D79C`學招鏈不重解。growth18的learn_idx5、learn5的Lv2／ID30及map16資源49的raw camp2／selector18／Lv1名冊均已對原始bytes核對。受控300 EXP／seed7只證明正式writer與UI拒收反例，不冒稱正常章節或原版動態PLAYER-E2。
@@ -388,7 +402,7 @@ README四格由[既有總覽工具](../../tools/build_fd2_battle_panel_gallery.p
 
 [原生與目標操作回歸](../../remake/cmd/fd2/native_command30_presentation_test.go)涵蓋正式確認／取消、保存游標、state-only數值與下一次Go RNG、原生Draw標記、冷來源拒收及包含死亡暫態的晚期回復。[現有HD檢查器](../../tools/verify_fd2_battle_surface_hd.py)以`--kind split-game --command 30 --triple 4:5:6 --transition`與可選`--enemy`驗雙側；其餘Docker、唯讀原版與主題包、既有工作根下全新絕對`--out`、`--require-real-runtime`及570秒界線沿本文件既有約定。每側完整1920×1200畫面由[獨立CPU比對器](../../tools/verify_fd2_split_strike_gpu.py)驗，參數為`--receipt <capture/receipt.json> --catalog <catalog.json> --source <HD包> --original-pack <原版分離包> --inventory docs/data/fd2-battle-hd-source-inventory-20261019.json --report <全新JSON>`；[反例檢查器](../../tools/test_fd2_split_strike_gpu.py)採相同來源參數、以`--out <全新目錄>`替代`--report`。
 
-已驗範圍為雙側全畫面、所有相位F2、兩個目標HP各一次、MP一次、一次續行及GPU owner釋放；CPU合成最大單色差1。共用24／29原子預檢與29實際HD流程保持。正常鍵盤全鏈、真正戰場返回的集中抽驗、原版動態、音訊聽感及平台仍未提升；圖源登錄數不因本次串接改變。
+已驗範圍為雙側全畫面、所有相位F2、兩個目標HP各一次、MP一次、一次續行及GPU owner釋放；CPU合成最大單色差1。共用24／29原子預檢與29實際HD流程保持。正常鍵盤、真正戰場返回及章節邊界保存冷讀由本節補驗來源與主收據證實；自然招募、完整章節、原版動態、音訊聽感及平台仍未提升。圖源登錄數不因本次串接改變。
 
 血條與框線已由本規格「戰鬥面板HD框線與HP／MP條」正式接入並完成分項驗證，取得來源主證據的`pending_panel_style`現為`INTEGRATED-PENDING-CONCENTRATED-ART-REVIEW`。較早的[可丟棄原型測試](../../remake/cmd/fd2/modern_hd_battle_panel_style_prototype_test.go)僅保留設計來源，不再代表待定案或未接Game.Draw。
 

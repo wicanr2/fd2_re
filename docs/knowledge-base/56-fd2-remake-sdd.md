@@ -1,5 +1,7 @@
 # 56 — FD2 remake 系統設計規格（SDD，2026-08-09）
 
+音速刃已補受控章前組隊來源的普通鍵盤選人、十字目標、取消、施放、途中F2、自然返回與章節邊界保存／新程序LOAD；唯讀共用owner標記改讀正式指令ID。正式JOIN與升級writer取得技能，未直接授予或改章內規則。實際HD斬擊核對通過，跨相位觀測不當完整畫格證據。唯一數量及限制依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，主收據為`command30_normal_gui_followup_20261026`。完整戰鬥HD與集中人工／平台仍待。
+
 回復術13～16已補上既有第23章存檔的正常選人、取消及施放驗證，另一次施放驗途中F2；HD光環、綠字、唯一扣MP邊界、返回地圖及新程序保存冷讀通過。來源全員滿血，僅證明演出與滿血上限；不新增原版動態、正回復量或完整章節聲明。現況數量依[58](58-fd2-exe-re-coverage.md)，規格依[61](61-modern-theme-runtime-spec.md)，主收據為`heal_normal_gui_followup_20261026`。HD1其餘接線及集中人工／平台仍待。
 
 HD1目前優先完成正式接線。戰場資訊四面板已接細框、數字、標題與條件文字，原生開收位置保持，矩形外保留HD地圖。完整GPU與普通鍵盤開關、F2、保存冷讀通過；原生地圖HUD及共用面板圖示保持已驗範圍。唯一數量依[58](58-fd2-exe-re-coverage.md)，規格依[61](61-modern-theme-runtime-spec.md)，主收據為`system_info_hd_followup_20261026`及`hd1_release_integration_20261026`。資訊窗四語內容、兩主題正常開關與保存冷讀已補驗，來源依主收據`system_info_locales_followup_20261026`；其餘介面、未登錄地形與集中人工／平台仍待，未宣稱HD1正式版完成。

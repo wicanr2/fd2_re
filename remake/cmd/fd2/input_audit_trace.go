@@ -34,7 +34,8 @@ func (g *Game) recordInputAuditState() {
 	r["battle_scene"] = g.atk != nil
 	g.recordNativeDeathAuditState(r)
 	r["command_scene"] = g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil || g.nativeCmd2Presentation != nil ||
-		g.nativeCmd3Presentation != nil || g.nativeCmd5Presentation != nil || g.nativeCmd6Presentation != nil || g.nativeCmd7Presentation != nil || g.nativeCmd8Presentation != nil
+		g.nativeCmd3Presentation != nil || g.nativeCmd5Presentation != nil || g.nativeCmd6Presentation != nil || g.nativeCmd7Presentation != nil || g.nativeCmd8Presentation != nil ||
+		g.nativeCmd24Presentation != nil || g.nativeCmd29Presentation != nil
 	r["command_targeting"] = g.nativeCommand0Targeting
 	r["command_grid"], r["command_selection"] = g.nativeCommandOpen, g.nativeCommandSel
 	r["command_target_id"] = g.nativeCommandTargetID
@@ -156,7 +157,8 @@ func (g *Game) recordInputAuditState() {
 		}
 	}
 	if j := g.nativeCmd29Presentation; j != nil {
-		r["command_id"], r["command_owner"] = 29, fmt.Sprintf("%p", j)
+		r["command_id"], r["command_owner"] = j.schedule.CommandID, fmt.Sprintf("%p", j)
+		r["command_mp_published"], r["command_target_count"] = j.mpPublished, len(j.targets)
 		r["command_actor_fig"], r["command_target_index"] = j.actor.BattleFig, j.targetIndex
 		if j.targetIndex >= 0 && j.targetIndex < len(j.targets) && j.targets[j.targetIndex].unit != nil {
 			r["command_target_fig"] = j.targets[j.targetIndex].unit.BattleFig

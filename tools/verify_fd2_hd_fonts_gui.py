@@ -17,6 +17,7 @@ from verify_fd2_gaia_focus import focus_gaia, sample_gaia
 from fd2_hd_death_gui import capture_standalone_ch23_source, run_ch23_death_event
 from fd2_hd_heal_gui import run_normal_heal
 from fd2_hd_system_info_gui import run_normal_system_info
+from fd2_hd_command30_gui import Command30Probe
 
 
 def terrain_frame_ids(value):
@@ -73,7 +74,7 @@ def main():
                         help='第二／三章原生來源出發前，經正常教會服務復活哈諾；需--capture-native-battle-save')
     parser.add_argument('--buy-bekwei-bow', action='store_true',
                         help='原生第九章出發前，普通購買黑暗弓並立即裝備貝克威')
-    parser.add_argument('--battle-command', type=int, choices=[0,1,2,8], help='改以正常指令0／1／2／8抽樣；原地候選再由正式目標格驗證，需--battle-only')
+    parser.add_argument('--battle-command', type=int, choices=[0,1,2,8,30], help='改以正常指令0／1／2／8／30抽樣；原地候選再由正式目標格驗證，需--battle-only')
     parser.add_argument('--battle-advance-route', type=battle_advance_route, default=[],
                         help='各次END前的明示進軍格，以x,y;x,y指定；每格仍須在當回合正式可達集合')
     parser.add_argument('--battle-repetitions', type=int, choices=[1,2], default=2,
@@ -92,6 +93,8 @@ def main():
                         help='普通進軍／待機至少幾次END後才出手，不改遊戲狀態')
     parser.add_argument('--battle-own-index', type=int, default=2,
                         help='普通攻擊時以Z選取的在場我方序號，預設2為既有亞雷斯；需--world')
+    parser.add_argument('--battle-own-identity', type=int, choices=range(32),
+                        help='以原生身分選取既有在場角色，優先於序號；只改鍵盤選人')
     parser.add_argument('--battle-approach-rounds', type=int, choices=[0,1,2,3,4,5,6], default=0,
                         help='沒有可達攻擊位置時，明示有界普通END次數；需--world')
     parser.add_argument('--gaia', action='store_true', help='首章普通選取蓋亞、北移／取消、F2與新程序LOAD；需--battle-status')
@@ -165,6 +168,8 @@ def main():
     assert args.battle_own_index == 2 or args.world
     assert not args.battle_approach_rounds or args.world
     battle_approach_steps=[]
+    command30_observations=[]
+    command30_theme_checks=[]
     assert not args.gaia or args.battle_status and not args.world and not args.terrain
     assert not args.terrain or args.battle_status
     assert not args.terrain_occlusion or args.terrain and args.world
@@ -786,9 +791,13 @@ def main():
                             return
                         key('Return')
                     raise TimeoutError('普通LOAD戰場對話尚未結束')
-                def focus_own(index):
+                def focus_own(index, identity=None):
                     state=latest(audit)
                     own=[u for u in state['units'] if u['camp']==0 and u['on_field'] and u['hp']>0]
+                    if identity is not None:
+                        matches=[i for i,u in enumerate(own) if u.get('native_identity')==identity]
+                        assert len(matches)==1,'指定原生角色必須唯一且正常在場'
+                        index=matches[0]
                     assert index < len(own), '指定我方序號不在目前正常在場名冊'
                     target=[own[index]['x'],own[index]['y']]
                     for _ in range(len(own)+1):
@@ -839,7 +848,7 @@ def main():
                         for _ in range(abs(destination[1]-current[1])):key('Down' if destination[1]>current[1] else 'Up')
                         assert latest(audit)['cursor']==destination
                     for approach in range(args.battle_approach_rounds+1):
-                        focus_own(args.battle_own_index)
+                        focus_own(args.battle_own_index,args.battle_own_identity)
                         shot(prefix+('-attacker-focused' if approach==0 else '-approached-attacker-focused'))
                         key('Return');wait(lambda s:s.get('move_preview') is True)
                         state=latest(audit)
@@ -857,9 +866,9 @@ def main():
                             assert args.battle_command in (attacker.get('command_ids') or []),'目前單位沒有指定正式指令'
                             record=next(r for r in json.loads((args.assets/'assets/spells.json').read_text()) if r['id']==args.battle_command)
                             assert attacker['mp']>=record['mp'],'目前MP不足'
-                            expected={0:(5,0,0,2),1:(5,0,0,6),2:(5,1,0,20),8:(8,0,0,24)}[args.battle_command]
+                            expected={0:(5,0,0,2),1:(5,0,0,6),2:(5,1,0,20),8:(8,0,0,24),30:(20,0,0,24)}[args.battle_command]
                             assert (record['dist'],record['range'],record['target'],record['mp'])==expected,'指定法術資料與已核契約不同'
-                            minimum,maximum=1,record['dist']  # 僅預篩；正式目標格仍須接納。
+                            minimum,maximum=1,(4 if args.battle_command==30 else record['dist'])  # 僅預篩；正式目標格仍須接納。
                         assert 1<=minimum<=maximum,'目前觀測的正式射程無效'
                         choices=[]
                         for target in targets:
@@ -870,7 +879,8 @@ def main():
                             # 沿0x18A5F的移動後禁用規則，只在本回合原地施法。
                             origin=state['cursor']
                             choices=[(0,origin,target) for target in targets
-                                     if minimum<=abs(origin[0]-target['x'])+abs(origin[1]-target['y'])<=maximum]
+                                     if minimum<=abs(origin[0]-target['x'])+abs(origin[1]-target['y'])<=maximum
+                                     and (args.battle_command!=30 or origin[0]==target['x'] or origin[1]==target['y'])]
                         command_sampled=(not args.battle_end_commands or any(
                             sample['before'].get('command_actor_fig') in end_figures
                             and sample['before'].get('command_id') in args.battle_end_commands
@@ -1009,7 +1019,22 @@ def main():
                     move_cursor([target['x'],target['y']]);shot(prefix+'-attack-target')
                     scene_started=time.monotonic()
                     scene_key='command_scene' if args.battle_command is not None else 'battle_scene'
+                    command30_probe=None
+                    if args.battle_command==30:
+                        command30_probe=Command30Probe(args.out,audit,lambda p:command('import','-window',window,str(p)),prefix)
+                        command30_probe.thread.start()
                     key('Return');wait(lambda s:s.get(scene_key) is True)
+                    if args.battle_command==30:
+                        entered=latest(audit)
+                        assert entered.get('command_id')==30 and entered.get('command_actor_fig')==18
+                        key('F2');native=wait(lambda s:not s.get('hd_theme'))
+                        assert native.get('command_id')==30 and native.get('command_owner')==entered['command_owner']
+                        native_path=args.out/f'{prefix}-command30-native-active.png'
+                        command('import','-window',window,str(native_path))
+                        key('F2');restored=wait(lambda s:s.get('hd_theme') and s.get('hd_battle'))
+                        assert restored.get('command_owner')==entered['command_owner'] and restored.get('command_id')==30
+                        command30_theme_checks.append(dict(entered=entered,native=native,restored=restored,
+                                                            file=native_path.name,sha256=digest(native_path)))
                     if args.battle_hd:
                         wait(lambda s:s.get(scene_key) and s.get('hd_battle'))
                     shot(prefix+'-'+action_label+'-scene')
@@ -1048,6 +1073,8 @@ def main():
                                 sample['sha256']=digest(path)
                     returned_scene=wait(lambda s:not s.get(scene_key) and not s.get('unit_death_scene') and not s.get('walking') and s.get('hd_world'),
                                         timeout=180 if args.battle_hd else 60)
+                    if command30_probe:
+                        command30_observations.append(command30_probe.finish())
                     if args.battle_hd:
                         battle_hd_scenes.append({'name':prefix,'elapsed_seconds':time.monotonic()-scene_started,
                                                  'presented':shots[prefix+'-'+action_label+'-scene.png']['state'],
@@ -1199,11 +1226,14 @@ def main():
                     'world_runtime_checked':args.world,'world_walk_gpu':world_shots,'world_walk_rejected':world_rejected,
                     'battle_hd_consumer_checked':args.battle_hd,
                     'battle_command_id':args.battle_command,
+                    'command30_observations':command30_observations,
+                    'command30_theme_checks':command30_theme_checks,
                     'battle_action_kind':action_label,
                     'battle_repetitions':args.battle_repetitions,'battle_art_sample_limit':args.battle_art_samples,
                     'battle_end_figures':end_figures,
                     'natural_attack_return_checked':args.battle_only,
                     'battle_own_index':args.battle_own_index,
+                    'battle_own_identity':args.battle_own_identity,
                     'battle_target_figure':args.battle_target_figure,
                     'battle_target_row_max':args.battle_target_row_max,
                     'battle_advance_column':args.battle_advance_column,

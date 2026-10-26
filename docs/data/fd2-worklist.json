@@ -393,6 +393,20 @@
         "note": "後續需求已確認，尚未選定設定／介面／保存規格或實作；保持原版預設，不阻擋目前HD串接。"
       },
       "issue": 278
+    },
+    {
+      "id": "command30-input-audit-identity",
+      "layer": "tooling",
+      "category": "缺陷",
+      "title": "P2 音速刃觀測漏掉演出owner並誤標為指令29",
+      "body": "音速刃沿nativeCmd29Presentation共用owner。現行input audit的command_scene只包含0～8，且此owner的command_id固定29，會使正常鍵盤驗證器漏看30或誤認為29。這是唯讀觀測缺陷，不能據此推定正式演出沒有接入。需依typed schedule輸出實際ID，納入正式owner的活動閘門，補正常施放與來源圖像收據，不改遊戲規則、交易或排程。",
+      "acceptance": "正常鍵盤實際施放已學音速刃時，觀測正確標記command_scene與ID30；原29仍標29。原生／HD、MP唯一消耗、自然返回及保存冷讀通過，觀測不改正式交易。",
+      "evidence": "docs/knowledge-base/61-modern-theme-runtime-spec.md；HD主收據",
+      "verify": {
+        "kind": "manual",
+        "note": "共用owner已存在，需修正只讀標記並以正常鍵盤收據確認。"
+      },
+      "issue": 281
     }
   ]
 }

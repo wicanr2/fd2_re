@@ -15,7 +15,7 @@
     "hd_terrain": "已接草泥、水沙／岸線、首章陰影／土脊／石路及寶箱開合／小石塊；目前數量依58及props_followup_20261025。其他地形與HD2仍待。",
     "ai_player_input_lock": "CONFORMED-SCOPED：AI換手期間拒絕玩家地圖輸入重入；普通END／增援對話及相關／完整Go回歸通過。",
     "gaia_redesign": "CONFORMED-SCOPED：新版頭像與四方向圖組已登錄；正常START／Gaia北移取消／F2／冷讀分段驗證。相位差異與序章尾端失敗明示，非逐幀parity。",
-    "hd_battle_animation": "已解碼FIGANI264資源2118幀與全部可見BG／TAI圖源已登錄，數量及caller限制依58與本批formal_coverage；未因此宣稱全部caller、正常玩家或完整HD完成。",
+    "hd_battle_animation": "已解碼人物及已登錄共同效果／背景保持；音速刃新增受控章前來源的普通鍵盤施放、F2、返回與保存冷讀。數量與caller限制依58及本批主收據，不推定全部caller、人工或完整HD完成。",
     "native_purchase_equip": "CONFORMED-SCOPED：#266原生購買立即裝備保留ignored原始格，29項商店回歸與正常購弓F5／章首射程通過；不改格式或數值規則。",
     "hd_event_death": "共用事件、普通行動與狀態致死已接HD；三種26拍／F2通過。正常章23事件與普通擊殺已抽驗，狀態致死正常GUI仍待；來源依death_consumers_followup_20261021。",
     "theme_toolbar": "CONFORMED-SCOPED／RUNTIME-E1：正式預設單列頂端浮出、自動隱藏，主題與四語按鈕沿F2／F4閘門；完整遊戲幾何保持。其餘控制未完成，依floating_toolbar_followup_20261025。",
@@ -238364,7 +238364,7 @@
     "source_branch": "feat/hd-panel-icons-20261026",
     "base_commit": "ea4fb3bdc78ea61e90b4ad8db7f90187c4a0cb9e",
     "release_ready": false,
-    "active_slice": "戰場資訊四語內容、兩主題與普通開關／保存冷讀通過；其餘介面、未登錄地形與集中人工／平台仍待。",
+    "active_slice": "音速刃正式普通鍵盤施放與HD圖源、F2、返回及保存冷讀通過；完整戰鬥HD／HD1及集中人工／平台仍待。",
     "components": [
       {
         "component": "人物、頭像、戰鬥動畫與場景既有圖源",
@@ -238412,6 +238412,11 @@
         "localization_issue": 280,
         "localization_evidence_key": "system_info_locales_followup_20261026",
         "localization_issue_state": "CLOSED"
+      },
+      {
+        "component": "音速刃正常鍵盤與戰場返回",
+        "status": "CONFORMED-SCOPED/RUNTIME-E1/NORMAL-GUI",
+        "evidence_key": "command30_normal_gui_followup_20261026"
       }
     ],
     "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md",
@@ -238423,8 +238428,8 @@
       263
     ],
     "release_scope_pending": "新增工具列控制是否須與HD1正式版同時完成，已用共同決策提問；不阻塞既有HD1接線。",
-    "latest_branch": "feat/hd1-system-info-localization",
-    "latest_base_commit": "83941aada4236653a2831de8550b0e394be75ff9"
+    "latest_branch": "feat/hd-command30-normal-gui",
+    "latest_base_commit": "94d6360da0d4ec29fd53c6b68f8bf276584bb1f1"
   },
   "map_hud_hd_followup_20261026": {
     "status": "CONFORMED-SCOPED-RUNTIME-E1-NORMAL-GUI",
@@ -240143,6 +240148,294 @@
       "open": 25,
       "manual": 18,
       "vanished": 0
+    }
+  },
+  "command30_normal_gui_followup_20261026": {
+    "status": "CONFORMED-SCOPED/RUNTIME-E1/NORMAL-GUI",
+    "date": "2026-10-26",
+    "goal_objective": "完成 fd2 戰鬥動畫hd",
+    "goal_complete": false,
+    "full_battle_hd_complete": false,
+    "base_commit": "94d6360da0d4ec29fd53c6b68f8bf276584bb1f1",
+    "source_branch": "feat/hd-command30-normal-gui",
+    "issue": 281,
+    "production_change": "唯讀觀測納入共用分段owner，ID取typed schedule；正式演出、規則、資料及保存格式未改。",
+    "source_files": [
+      {
+        "file": "remake/cmd/fd2/input_audit_trace.go",
+        "sha256": "733df0ea150d0ba20f3a1b81ab554e35a75356c51d53a8309b65a14295a9c067"
+      },
+      {
+        "file": "remake/cmd/fd2/native_command30_gui_source_test.go",
+        "sha256": "8f664c9536560d7731f9ae9135dfc8db7b43aca15ec6d888dcc15b3c609cf360"
+      },
+      {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "ef90bdf7a6bcae4cb3eb5bd8ee41b798d65402e0cbf885ae958a58412c456dc0"
+      },
+      {
+        "file": "tools/fd2_hd_command30_gui.py",
+        "sha256": "9d2cb4d6ce25fc00c0ccf373eed43251558215879984b0a43f6313695d80995b"
+      },
+      {
+        "file": "tools/verify_fd2_command30_normal.py",
+        "sha256": "532c0835f4311fc888444d494661d498055d7bc612600e2c97cd216c27972958"
+      },
+      {
+        "file": "tools/build_fd2_battle_panel_gallery.py",
+        "sha256": "abd8724c1ec941f5c62f36c6cb13e9120cb01aec847d9889322abdfe9b804d69"
+      },
+      {
+        "file": "docs/data/ida/fd2_command30_player_acquisition_20261025.json",
+        "sha256": "308715fdc52b142cafe5abe3c4016043071f4cc147e2958489095368bb8f730c"
+      }
+    ],
+    "formal_coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-completion-coverage-r1.json",
+      "sha256": "2a098e330b62786901bedf8b237899fed337a06f7889d335c81ab155493a7ce3"
+    },
+    "formal_coverage_scope": "264個已解碼FIGANI資源2118幀均有正式登錄；408仍SOURCE-BLOCKED。資料不推定全部caller或玩家已驗。",
+    "normal_source": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-normal-source-r2/fd2_save.json",
+      "sha256": "56aac676d2c8bd4da3c9315c700e721a72f658eb03577f3d3e658563907799a2"
+    },
+    "normal_source_manifest": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-normal-source-r2/manifest.json",
+      "sha256": "5a9e83a4ce3b1a14786f7a171f980abd7406618e9f9ec552d75be4c3637b2b40"
+    },
+    "source_policy": {
+      "controlled_prechapter_party": true,
+      "identity": 18,
+      "map": 16,
+      "slot": 36,
+      "join": "正式JOIN建構器",
+      "experience": 300,
+      "growth_seed": 7,
+      "rest": "正式持續名冊回復",
+      "boost": {
+        "base_ap": 5000,
+        "base_dp": 300,
+        "base_dx": 60,
+        "max_hp": 1000
+      },
+      "chapter": 23,
+      "other_roster_rows_preserved": true,
+      "direct_command_grant": false,
+      "in_chapter_state_injection": false,
+      "natural_recruitment_proven": false
+    },
+    "normal": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-normal-r3-capture/receipt.json",
+      "sha256": "1230c4ecb1775d440b46def607243e8afed80b9b5240acafeeefbaea200fdec1"
+    },
+    "memory": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-normal-r3.memory.json",
+      "sha256": "a3bfffb399077e32ec63f58f8124ed489af16aa75ca4dca1a0c6bb90c7b7a462"
+    },
+    "elapsed_seconds": 303.751,
+    "memory_peak_bytes": 4423667712,
+    "memory_events_delta": {
+      "low": 0,
+      "high": 0,
+      "max": 0,
+      "oom": 0,
+      "oom_kill": 0,
+      "oom_group_kill": 0,
+      "sock_throttled": 0
+    },
+    "normal_scene_rows": 37,
+    "approach_rounds": 2,
+    "mp_sequence": [
+      29,
+      5
+    ],
+    "hp_changes": {
+      "36": [
+        [
+          680,
+          0
+        ]
+      ]
+    },
+    "single_owner_f2": true,
+    "cancel_without_mp_cost": true,
+    "normal_return": true,
+    "node_boundary_save": true,
+    "new_process_title_load": true,
+    "learned_command_cold_preserved": true,
+    "battle_seed": "FD2_SEED=1，沿原GUI設定；兩輪工具修正未換程式、來源或seed，未挑選亂數結果。",
+    "independent": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-normal-independent-r3.json",
+      "sha256": "c111f018ed09bdcfcec3246e2a709b79effe0fdd572f967562047c5fdea00157"
+    },
+    "verified_pngs": 1,
+    "verified_core_points": 5264,
+    "actual_compatible_source": [
+      {
+        "file": "world-hd-command30-observed-02.png",
+        "sha256": "35f9c6d38a97dc9fe54ffc0b56e8ccf6b7ad3a14770ab6e876da4ff2dc79d2c9",
+        "compatible": [
+          {
+            "resource": 56,
+            "frame": 6,
+            "source": "figani-056-hd6-v1-f06.png",
+            "sha256": "961b59ab86500f6ac0868e4bc824069e71a81a4811dcaeb19dbf8adb44fa2e27",
+            "core_points": 5264,
+            "x": 384,
+            "y": 0
+          }
+        ]
+      }
+    ],
+    "unmatched_observations": [
+      "world-hd-command30-observed-01.png",
+      "world-hd-command30-observed-03.png"
+    ],
+    "source_frame_scope": "audit在actor7，實圖只與56:6相容，5264核心點通過。其餘兩張跨相位只作觀測，沒有宣稱正常完整14幀。原完整雙側／多目標14幀GPU證據保持。",
+    "counterexamples_rejected": [
+      "wrong-command",
+      "wrong-mp",
+      "wrong-damage",
+      "missing-cold",
+      "wrong-source",
+      "wrong-owner",
+      "actual-native"
+    ],
+    "native_counterexample_scope": "同一次施放的不同相位；像素主題原圖若非1920則最近鄰等比例至1920，僅作反例。",
+    "go_runs": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-normal-source-r2.log",
+        "sha256": "36cfa8c9dca95c9316b6cb1055ca06de8d7bc49487939b98850cc56cd1e1f7c2"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-normal-unit-r1.log",
+        "sha256": "c8769201a32282394e9b256fbd22d1cf84d7020badaa53a6f40f78658c0a80bd"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-normal-strings-r1.log",
+        "sha256": "ec4cd3066832f9ae7384c9bc18124d35c06ca9c331950e808174577e98fc7e73"
+      }
+    ],
+    "distinct_top_level_go_tests": 18,
+    "go_passes": 23,
+    "dedicated_not_directly_enabled": [
+      "TestCommand30NormalGUISource",
+      "TestCommand30IsolatedColdRead"
+    ],
+    "source_export_passed": true,
+    "isolated_cold_read_parent_passed": true,
+    "binary": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-normal-r1-binary",
+      "sha256": "62b6c940bc757d18ca690599de1a9d177d6ca1a6d7e7607ec52b9a6d9584e03c"
+    },
+    "rebuild_sha256": "62b6c940bc757d18ca690599de1a9d177d6ca1a6d7e7607ec52b9a6d9584e03c",
+    "rebuild_bytes_equal": true,
+    "readme": {
+      "file": "docs/figures/hd-miti-sonic-blade-normal.png",
+      "sha256": "a111820bdb3fe526bb8d07971e1bfa3eee07229f53be957519bee6c5d778768e"
+    },
+    "readme_sources": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-normal-readme-r1.json",
+      "sha256": "010feaa54f3f6219da17895ac42fecd13a006dedb8f74ef2a198182cc75f0451"
+    },
+    "original_dynamic_parity_added": false,
+    "normal_campaign_verified": false,
+    "recordings_created": false,
+    "new_assets": false,
+    "private_assets_changed": false,
+    "private_head": "fc70c3cdc0f0e35024c977f4fdcab0b8d09923ba",
+    "catalog_entries": 851,
+    "private_files": 7063,
+    "container_limits": {
+      "memory": "6GiB",
+      "cpus": 2,
+      "pids": 256,
+      "network": "none",
+      "uid": 1000,
+      "gid": 1000
+    },
+    "diagnostics": [
+      {
+        "run": "command30-normal-r1",
+        "category": "GUI工具預篩",
+        "result": "351.404秒，工具把十字誤當菱形，正式目標格拒收；產品無error，MP29未消耗。"
+      },
+      {
+        "run": "command30-normal-r2",
+        "category": "GUI工具選人範圍",
+        "result": "244.777秒，施放／F2／返回已通過；工具戰後仍強制Z選Acted蜜蒂，未走到保存，不列最終通過。"
+      },
+      {
+        "run": "command30-normal-independent-r1",
+        "category": "PNG核對器辨別值",
+        "result": "誤用FIGANI.DAT字串，正式primitive以空archive表示FIGANI；改核對器後重驗同份PNG，未重跑遊戲或放寬核心門檻。"
+      }
+    ],
+    "required_remaining": [
+      "#263其餘正式consumer覆蓋與集中正常／造型收斂仍依原驗收，不以資料盤點代替。",
+      "#268蓋亞與#269凱麗集中造型確認仍待；#265原版合法可達性未知另列，不重開已閉合指令。",
+      "代表性實機／平台及音訊聽感仍依各工單，沒有新Release。"
+    ],
+    "reproduce": {
+      "source": "with-xvfb go test ./cmd/fd2 -run ^TestCommand30NormalGUISource$ -count=1，FD2_COMMAND30_GUI_SOURCE_BASE及FD2_COMMAND30_GUI_SOURCE_OUT明示。",
+      "gui": [
+        "python3",
+        "/repo/tools/verify_fd2_hd_fonts_gui.py",
+        "--binary",
+        "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-normal-r1-binary",
+        "--assets",
+        "/repo/remake",
+        "--original-pack",
+        "/original",
+        "--modern-pack",
+        "/modern",
+        "--town-save",
+        "/source/fd2_save.json",
+        "--out",
+        "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-normal-r3-capture",
+        "--battle-status",
+        "--world",
+        "--battle-hd",
+        "--battle-only",
+        "--battle-art",
+        "--battle-command",
+        "30",
+        "--battle-own-identity",
+        "18",
+        "--battle-node",
+        "battle_ch23",
+        "--battle-repetitions",
+        "1",
+        "--battle-art-samples",
+        "32",
+        "--battle-approach-rounds",
+        "6",
+        "--battle-advance",
+        "--startup-timeout",
+        "360",
+        "--run-timeout",
+        "1800"
+      ],
+      "independent": "python3 tools/verify_fd2_command30_normal.py --receipt <capture>/receipt.json --catalog <catalog> --pack <modern> --binary <binary> --save <source>/fd2_save.json --manifest <source>/manifest.json --gui-tool tools/verify_fd2_hd_fonts_gui.py --out <fresh>.json --self-test",
+      "overview": "python3 tools/build_fd2_battle_panel_gallery.py --command30-normal-receipt <capture>/receipt.json --command30-normal-proof <independent>.json --out <new>.png --receipt <new>.json"
+    },
+    "failed_run_summaries": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-normal-failed-runs-r1.json",
+      "sha256": "bc170ac2eeb936827e071b12d88ec2b62150d5d029f20539ca70f6f51b4dcfb9"
+    },
+    "cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-normal-cleanup-r1.json",
+      "sha256": "b983f0f47be7c41c8971d900dac764666d6129a430db546d0fef00d0a187f829"
+    },
+    "hygiene": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-normal-hygiene-r1.json",
+      "sha256": "afe355415c7fcf1a5bb787dd7773eb4bef4d5b04c8f14f8067fdde9cf59e9654"
+    },
+    "lesson_checks": {
+      "lessons": 367,
+      "guards": 225,
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/command30-normal-lessons-r1.log",
+      "sha256": "480dcfce8dcafdc965c34fad1b79032bbc684276bf3c2edf4b47b4cbb0c8f53b"
     }
   }
 }

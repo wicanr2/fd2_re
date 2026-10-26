@@ -4498,6 +4498,51 @@
         ],
         "pattern": "p\\.colours = \\[10\\]byte\\{[^\\n]+169, 0xcd, 0x4c, 16, 169"
       }
+    },
+    {
+      "id": "gui-spell-candidates-match-native-shape",
+      "area": "正常法術驗證",
+      "rule": "GUI候選預篩沿正式selector形狀。音速刃selector20只取同行或同列四格，之後仍須通過正式command_target_cells。入口tools/verify_fd2_hd_fonts_gui.py的--battle-command 30；原生形狀由Game.materializeNativeCommandTargetField產生，不能用菱形距離替代。",
+      "why": "首輪音速刃工具選到距離四的斜角敵人，遊戲正式十字目標格正確拒收；修正工具預篩後，不改遊戲即可施放。",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_hd_fonts_gui.py"
+        ],
+        "pattern": "args\\.battle_command!=30\\ or\\ origin\\[0\\]==target\\['x'\\]\\ or\\ origin\\[1\\]==target\\['y'\\]"
+      },
+      "date": "2026-10-26",
+      "evidence": "HD主收據command30_normal_gui_followup_20261026"
+    },
+    {
+      "id": "gui-actor-identity-is-action-scoped",
+      "area": "正常選人驗證",
+      "rule": "指定原生角色只套用本次施術或攻擊，戰後保存前沿原可選角色集合聚焦。Z不選已行動角色，不能讓全域角色參數覆蓋戰後focus_own(0)。入口tools/verify_fd2_hd_fonts_gui.py的focus_own(index, identity=None)及--battle-own-identity。",
+      "why": "音速刃已完成並自然返回後，蜜蒂Acted為true。工具仍在戰後強制用Z選她，導致保存前失敗；將identity只傳給施術呼叫後，同程式與來源完成保存冷讀。",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_hd_fonts_gui.py"
+        ],
+        "pattern": "focus_own\\(args\\.battle_own_index,args\\.battle_own_identity\\)"
+      },
+      "date": "2026-10-26",
+      "evidence": "HD主收據command30_normal_gui_followup_20261026"
+    },
+    {
+      "id": "audit-command-id-comes-from-typed-schedule",
+      "area": "演出觀測身分",
+      "rule": "共用演出owner的觀測ID讀typed schedule，不由Go欄位名稱推定。nativeCmd29Presentation亦承接音速刃30，input_audit_trace.go須輸出j.schedule.CommandID，command_scene須包含實際owner。正常重跑入口為verify_fd2_hd_fonts_gui.py --battle-command 30。",
+      "why": "原觀測器漏掉共用分段owner，且固定輸出29，會把已接入的音速刃誤判成沒有演出或另一指令。正式排程與交易原已存在，本次只修唯讀標記並補普通GUI。",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/input_audit_trace.go"
+        ],
+        "pattern": "j\\.schedule\\.CommandID"
+      },
+      "date": "2026-10-26",
+      "evidence": "HD主收據command30_normal_gui_followup_20261026"
     }
   ]
 }

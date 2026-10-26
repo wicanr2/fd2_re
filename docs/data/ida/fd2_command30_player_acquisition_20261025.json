@@ -1581,11 +1581,9 @@
     }
   },
   "remaining": [
-    "全部HD接上後的正常鍵盤／真正戰場返回／保存LOAD集中抽驗",
-    "人工造型與音訊聽感",
-    "HD框線、完整操作介面／HUD、地形與HD2",
-    "工具列字級、加速、海報與漸層正式控制",
-    "跨平台HD驗收"
+    "自然招募與完整章節仍未由本份受控章前來源證明。",
+    "全部HD後集中人工造型、音訊聽感與平台驗收。",
+    "其他HUD／地形／HD2與工具列由各自工單追蹤，不作已接音速刃的新停止線。"
   ],
   "toolchain": {
     "go_image": "fd2-go-test-local:latest",
@@ -1773,5 +1771,23 @@
     "parents204_263": "OPEN; acceptance/evidence kept; progress and verify note updated",
     "other_open_issues_unchanged": 22,
     "open_worklist": 24
-  }
+  },
+  "normal_gui_followup_20261026": {
+    "status": "CONFORMED-SCOPED-RUNTIME-E1-NORMAL-GUI",
+    "evidence_file": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+    "evidence_key": "command30_normal_gui_followup_20261026",
+    "controlled_prechapter_party": true,
+    "in_chapter_state_injection": false,
+    "natural_recruitment_proven": false,
+    "original_runtime_executed": false,
+    "normal_campaign_verified": false,
+    "normal_keyboard_cast_return_and_cold_load_verified": true
+  },
+  "historical_remaining_before_normal_gui_20261026": [
+    "全部HD接上後的正常鍵盤／真正戰場返回／保存LOAD集中抽驗",
+    "人工造型與音訊聽感",
+    "HD框線、完整操作介面／HUD、地形與HD2",
+    "工具列字級、加速、海報與漸層正式控制",
+    "跨平台HD驗收"
+  ]
 }

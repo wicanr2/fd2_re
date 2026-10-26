@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 25 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 26 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -539,5 +539,15 @@ HD正常玩家驗證按早／中／晚期及正式消費端分別記錄。目前
 怎樣算做完：受版控READY規格先於修正；相鄰兩個insideScreenWriter邊界的PNG都不丟失且來源／延後步數可追；保留CPU與輸入時序、不以中途畫面充數。正反向測試及固定原版重跑通過，既有前綴與畫面比較保持。
 
 證據：`docs/data/fd2-remake-toolchain-recovery-20261015.json`
+
+### P2 音速刃觀測漏掉演出owner並誤標為指令29
+
+`command30-input-audit-identity` · 缺陷 · [#281](https://github.com/wicanr2/fd2_re/issues/281) · 仍未完成 · 要人判
+
+音速刃沿nativeCmd29Presentation共用owner。現行input audit的command_scene只包含0～8，且此owner的command_id固定29，會使正常鍵盤驗證器漏看30或誤認為29。這是唯讀觀測缺陷，不能據此推定正式演出沒有接入。需依typed schedule輸出實際ID，納入正式owner的活動閘門，補正常施放與來源圖像收據，不改遊戲規則、交易或排程。
+
+怎樣算做完：正常鍵盤實際施放已學音速刃時，觀測正確標記command_scene與ID30；原29仍標29。原生／HD、MP唯一消耗、自然返回及保存冷讀通過，觀測不改正式交易。
+
+證據：`docs/knowledge-base/61-modern-theme-runtime-spec.md；HD主收據`
 
 <!-- END fd2_worklist.py render -->
