@@ -54,6 +54,10 @@
 
 資訊窗保留原位置、左右切換與血量覆蓋順序，人物和地形縮圖使用同一主題來源。上排是首章普通讀檔與F2切回HD後的畫面，下排是已登錄地形縮圖及血量溢位的受控補樣。四格皆保留完整1920×1200畫面並半縮，沒有補畫；不代表完整章節通關或原版對拍。來源與範圍見[HD收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的`map_hud_hd_followup_20261026`。
 
+![四種回復術的正常操作HD畫面](docs/figures/hd-heal-normal.png)
+
+回復術已接入HD光環與綠色數字。四格依序為13～16，取自既有強化存檔經標題讀取、正常選人與施法的實際視窗，完整畫面半縮。取消、扣魔力、演出途中F2及保存冷讀已驗；來源全員滿血，這組只確認演出與滿血上限。受傷後的回復量、完整章節與集中人工驗收不由本圖證明。來源及範圍見[HD收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的`heal_normal_gui_followup_20261026`。
+
 ![HD傳送前導、收縮、逐列轉場與增援入場](docs/figures/hd-unit-present.png)
 
 傳送與增援入場已接入HD光效及人物，保留原有消失、逐列轉場與出現順序。四格取自受控隊伍、位置與道具資料的實際遊戲繪製，完整畫面半縮；地形與邊框仍含像素素材。F2中途切換及原交易已驗，正常玩家與集中人工驗收仍待。來源、近似與範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)及[HD收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的`unit_present_hd_followup_20261024`。

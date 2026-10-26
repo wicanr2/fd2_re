@@ -1,5 +1,18 @@
 # 61 — 現代美術主題正式執行期規格
 
+## 回復術13～16的正常鍵盤與HD畫面補驗（CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI）
+
+沿已閉合的NativeCommandHealTargets、startNativeCommandHealPresentation、原生13～16排程及既有HD來源，不重開RE、不改正式規則或存檔。來源採已審查第23章JSON槽，SHA-256為5d64f3a0bf9aa56f7e77f51e8cfe45fe8c14ab78f2703b966fbc0e142e7bd871，章前強化政策沿既有manifest。希爾法identity24已在出擊名單，原槽已學13／14／15／16且MP276；不授予技能、改座標或章內補血。本來源滿HP，限定正常滿血上限及演出補驗，正回復量沿既有受控收據，不外推自然難度或完整章節。
+
+- 標題LOAD後，以Z循環選人、普通移動確認與法術環進入四個實際技能，先取消再重選，確認自身必須通過正式目標格。四種完整演出各施放一次，另一次13專驗途中F2；各案例間明示F9重建同章，不挑選亂數結果。最後F5、F2與新程序標題LOAD保留既有章節邊界保存契約。
+- 只增加唯讀audit欄位：當前回復owner、實際commandID、phase／frame、目標record索引、已發布Restore，以及已呈現HD overlay的entry／矩形／RGBA雜湊。索引只定位取樣，PNG可能跨Draw相位；不能把audit索引當唯一畫格真相。無audit時不增加取樣工作，不改交易、繪製、音訊或輸入。
+- 在實際視窗有界擷取光環、輪廓與綠字，F2至少涵蓋施放中的原版／HD切換，MP只扣一次，正常返回後角色已行動；HP不得超上限。滿血來源預期Actual0，單體與範圍目標分列。完整輸入、原槽／清冊／程式SHA、受控seed設定、取樣前後狀態及新程序保存冷讀都寫入收據。
+- 獨立PNG核對使用正式清冊的FDOTHER6原57～63與FDOTHER5原105～114。以相容候選核對alpha至少100的核心，保留透明混色的可證明區間、畫面裁切及多目標層序；黑視窗、六倍像素化反例及錯圖／缺件／變造收據須拒收。六倍像素化反例由實際視窗降採樣建構，不冒稱原版擷取。正常鍵盤收據只證明實際抽到的相位，完整八條受控GPU／F2來源覆蓋保持，不要求每frame一致。
+
+主控制沿[正常GUI工具](../../tools/verify_fd2_hd_fonts_gui.py)，新增`--heal-normal`，須搭配`--battle-status --world --battle-node battle_ch23`，並給原有binary／assets／original-pack／modern-pack／town-save及全新out。專用[鍵盤輔助](../../tools/fd2_hd_heal_gui.py)與[獨立PNG核對](../../tools/verify_fd2_hd_heal_normal.py)的輸出集中於既有工作根及HD主收據heal_normal_gui_followup_20261026。Docker、唯讀素材／原槽、UID1000、有界資源、Xvfb／音訊程序清理及不錄影沿既有工具契約。
+
+獨立核對器必須給`--receipt --source --binary --catalog --pack --gui-tool --helper --out`，`--self-test`另驗變造收據及視窗反例。GUI的所有路徑用容器內絕對路徑，避免遊戲工作目錄與PulseAudio設定目錄誤解相對路徑。正式MP消耗為3／10／20／40，各次逐拍audit必須只有一次消耗；自身確認後目標數為1／4／4／5，滿血結果Actual均為0。F5仍只保存章節邊界，不宣稱保留戰中MP、位置或Acted。主收據保存實際PNG、兩程序audit、清冊／程式／工具SHA及重跑命令；README四格是完整視窗半縮。
+
 ## 原生地圖HUD細框、數字及地形縮圖（CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI）
 
 沿既有`indexedmap.BlitNativeMapHUD`、`fdicon.NativeMapHUDLayoutFor`及已閉合IDA線性0x1acf3／0x1aeb1／0x1875d／0x187d6，不重開RE。FD2.EXE版本依[固定參考清單](../data/fd2-reference-files.json)；FDOTHER5 metadata SHA仍為a547f2f593b980fd9c1b269d1ba95be8727562d7ed31b44015615775d991efd3。實圖、遮罩、來源碼及雜湊由[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`map_hud_hd_followup_20261026`索引。原圖130為69×34且完整不透明；既有149×42面板契約屬較早非原生介面，本項保留原生位置。
@@ -333,7 +346,7 @@ README四格由[既有總覽工具](../../tools/build_fd2_battle_panel_gallery.p
 - 專屬actor只接受已證實selector18，讀FIGANI54待機及56效果。原始14幀，targetStart9、actor MP marker4、target damage marker11、分母1；沿已閉合`0x276EC`及`0x2B659`的mode1九張前導與每目標20張背景轉場。重用24／29的typed來源及繪製primitive，不另造一套像素或HD播放器。
 - FDOTHER49：actor frame2的raw+5播放sample2，frame4播放sample4並發布一次MP；每目標frame11播放sample3並發布一次傷害。非impact的frame2音效不能遺漏；每次frame第一次Draw確認後才發布，不因重複Draw或F2重播。傷害沿原state-only ID30的multiplier18及現有Go RNG條件，固定測試seed，不要求與原版內部骰序相同。
 - 先從相同四格目標名單預檢全部原生與HD銀行、BG／TAI、panel來源及聲音，再建立交易。缺件不能先扣MP、改HP或發布半套HD；晚期取消／來源錯誤沿既有交易回復所有目標與actor acted。保留State及Unit身分，最後只續行一次；不宣稱可回捲任意Go RNG物件或硬體音訊wall-clock。
-- HD使用既有已登錄54／56、各目標idle與背景／台座／面板文字，沿原矩形、層序與Draw節拍。所有前導、actor、逐目標轉場／受擊及返回都能F2往返；原版像素模式沿相同交易與排程。固定血條／框線的HD樣式另由下方原型確認，不使本功能依賴新介面樣式。
+- HD使用既有已登錄54／56、各目標idle與背景／台座／面板文字，沿原矩形、層序與Draw節拍。所有前導、actor、逐目標轉場／受擊及返回都能F2往返；原版像素模式沿相同交易與排程。血條／框線沿已接入的「戰鬥面板HD框線與HP／MP條」規格，集中人工造型確認仍待。
 - 驗收：原始bytes與真實名冊學招反例修復；四方向／X優先／同格／邊界／首個占位及空名單；完整原生及HD Game.Draw、frame2／4／11事件、不同idle delay、四格多目標順序、MP一次與HP時點、下一次RNG與state-only控制相同、F2／重複Draw、缺件／晚期回復與一次返回。保存及新程序冷讀須保留真正學到的30。原版動態、完整正常玩家、人工造型、音訊聽感及平台仍依既定集中驗收，不以本切片外推完整HD。
 
 來源重跑入口為[原始資料稽核器](../../tools/audit_fd2_command30_player_source.py)，在`fd2-assets-local:20260829-sfx`容器以`--original-dir <唯讀原檔目錄> --report <既有工作區的新JSON>`執行，包含FDOTHER49的三個原始PCM子資源雜湊。正式升級來源及保存回歸為[TestNativeCommand30MitiAcquisitionAndPlayerEntry](../../remake/cmd/fd2/native_command30_reachability_test.go)，由真實map16建構器與seed7的一次300 EXP取得技能，再保存完整FD2.SAV，啟動有界新測試程序冷讀；runtime roster發布新技能，persistent roster沿既有baseline保持。這是冷讀adapter驗證，沒有冒稱標題鍵盤或正常整章。
@@ -342,7 +355,7 @@ README四格由[既有總覽工具](../../tools/build_fd2_battle_panel_gallery.p
 
 已驗範圍為雙側全畫面、所有相位F2、兩個目標HP各一次、MP一次、一次續行及GPU owner釋放；CPU合成最大單色差1。共用24／29原子預檢與29實際HD流程保持。正常鍵盤全鏈、真正戰場返回的集中抽驗、原版動態、音訊聽感及平台仍未提升；圖源登錄數不因本次串接改變。
 
-血條與框線的右側藍框樣式仍為DRAFT，尚待使用者回覆。[可丟棄原型測試](../../remake/cmd/fd2/modern_hd_battle_panel_style_prototype_test.go)以`FD2_PANEL_STYLE_PROTOTYPE_OUT=<全新既有工作根>`顯示三種凍結HP／MP，沒有接入Game.Draw。重跑與狀態記於音速刃主證據的`pending_panel_style`；此樣式不阻擋本次既有HD素材串接。
+血條與框線已由本規格「戰鬥面板HD框線與HP／MP條」正式接入並完成分項驗證，取得來源主證據的`pending_panel_style`現為`INTEGRATED-PENDING-CONCENTRATED-ART-REVIEW`。較早的[可丟棄原型測試](../../remake/cmd/fd2/modern_hd_battle_panel_style_prototype_test.go)僅保留設計來源，不再代表待定案或未接Game.Draw。
 
 同一`split-game`入口加`--with-panel-text --panel-locale zh-Hant`可啟用既有HD面板文字驗證，不改框線樣式。實際八相位姓名、等級與HP／MP已由GPU逐字墨跡採樣；最終畫面與面板來源亦由上述獨立CPU／反例檢查器驗證。README採此版本的完整GPU縮圖，保留框線及血條像素的明示範圍。
 

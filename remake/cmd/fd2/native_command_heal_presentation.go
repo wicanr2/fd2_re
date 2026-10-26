@@ -25,6 +25,7 @@ const (
 )
 
 type nativeCommandHealPresentationJob struct {
+	commandID                   int // Original wrapper identity, also used by read-only input audit.
 	frontSchedule               fdother.NativeCommandHealPresentationSchedule
 	tailSchedule                fdother.NativeCommandHealTailSchedule
 	frontFrames                 [][]byte
@@ -227,6 +228,7 @@ func (g *Game) startNativeCommandHealPresentation(commandID int, targetUnits []*
 		return errors.New("native command heal presentation palette unavailable")
 	}
 	job := &nativeCommandHealPresentationJob{
+		commandID:     commandID,
 		frontSchedule: front, tailSchedule: tail,
 		frontFrames: frontFrames, effectFrames: effectFrames, maskFrame: maskVGA,
 		baselineVGA: baselineVGA, baselineWork: baselineWork,

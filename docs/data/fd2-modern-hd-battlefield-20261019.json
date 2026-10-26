@@ -238364,7 +238364,7 @@
     "source_branch": "feat/hd-panel-icons-20261026",
     "base_commit": "ea4fb3bdc78ea61e90b4ad8db7f90187c4a0cb9e",
     "release_ready": false,
-    "active_slice": "原生地圖HUD接線已驗；接續其餘操作介面與未登錄地形盤點",
+    "active_slice": "回復術13～16正常鍵盤與HD演出補驗已通過；接續其餘HD1操作介面及未登錄地形，集中人工／平台仍待",
     "components": [
       {
         "component": "人物、頭像、戰鬥動畫與場景既有圖源",
@@ -238399,6 +238399,11 @@
       {
         "component": "HD2斜角主題及海報",
         "status": "保留既定設計，這輪優先HD1"
+      },
+      {
+        "component": "回復術13～16正常演出",
+        "status": "CONFORMED-SCOPED-RUNTIME-E1-NORMAL-GUI",
+        "evidence_key": "heal_normal_gui_followup_20261026"
       }
     ],
     "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md",
@@ -238410,8 +238415,8 @@
       263
     ],
     "release_scope_pending": "新增工具列控制是否須與HD1正式版同時完成，已用共同決策提問；不阻塞既有HD1接線。",
-    "latest_branch": "feat/hd-map-hud-20261026",
-    "latest_base_commit": "8a8a2adb10d9614d0de300c390418e28da187a48"
+    "latest_branch": "feat/hd-heal-normal-20261026",
+    "latest_base_commit": "0dad7c676daccdbf58db7fe10eac80a6fae19745"
   },
   "map_hud_hd_followup_20261026": {
     "status": "CONFORMED-SCOPED-RUNTIME-E1-NORMAL-GUI",
@@ -238857,5 +238862,512 @@
     },
     "private_head_unchanged": "fc70c3cdc0f0e35024c977f4fdcab0b8d09923ba",
     "no_fd2_containers_remaining": true
+  },
+  "heal_normal_gui_followup_20261026": {
+    "status": "CONFORMED-SCOPED-RUNTIME-E1-NORMAL-GUI",
+    "source_branch": "feat/hd-heal-normal-20261026",
+    "base_commit": "0dad7c676daccdbf58db7fe10eac80a6fae19745",
+    "full_hd_complete": false,
+    "normal_source": {
+      "file": "work/promo-cadence-20261018/hd-fonts/shared-death-player-ch23-r1/source-gui-r1/user-data/fd2_re/fd2_save.json",
+      "sha256": "5d64f3a0bf9aa56f7e77f51e8cfe45fe8c14ab78f2703b966fbc0e142e7bd871"
+    },
+    "source_policy": {
+      "mode": "boost-only",
+      "target_completed_chapter": 22,
+      "base_ap_plus": 5000,
+      "base_dp_plus": 300,
+      "dx_plus": 60,
+      "max_hp_plus": 1000,
+      "preserve_dead": true,
+      "in_chapter_injection": false
+    },
+    "actor_identity": 24,
+    "commands": [
+      13,
+      14,
+      15,
+      16
+    ],
+    "scope": "正常鍵盤滿血上限與HD演出；正回復量、所有畫格、原版動態、人工及平台不外推。",
+    "runtime_integrated": true,
+    "normal_keyboard_verified": true,
+    "normal_difficulty_verified": false,
+    "original_dynamic_parity_added": false,
+    "all_hd_complete": false,
+    "go_runs": [
+      {
+        "name": "heal-normal-source-r1",
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-normal-source-r1.log",
+          "sha256": "26e7b4b665eeadba4275a411a5a9f2dcc72f5153e786ee7cc25b7aef10996eb6"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-normal-source-r1.memory.json",
+          "sha256": "6b7eef04f6d86051111d9cbd2a55ec005d0e9b68cac09e1575b3dedeb6ccb7b5"
+        },
+        "tests": [
+          "TestModernHDHealNativeSourcesAndGeometry",
+          "TestModernHDHealLMIAtomic"
+        ],
+        "seconds": 6.015,
+        "peak_bytes": 1737719808,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "command": [
+          "bash",
+          "-c",
+          "set -euo pipefail\nXvfb :99 -screen 0 1920x1200x24 -nolisten tcp >/tmp/fd2-heal-xvfb.log 2>&1 &\nfd2_heal_xvfb=$!\ntrap 'kill \"$fd2_heal_xvfb\" 2>/dev/null || true; wait \"$fd2_heal_xvfb\" 2>/dev/null || true' EXIT\nexport DISPLAY=:99\n\"$@\"\n",
+          "fd2-heal",
+          "go",
+          "test",
+          "-json",
+          "-count=1",
+          "-timeout=270s",
+          "./cmd/fd2",
+          "-run",
+          "^(TestModernHDHealLMIAtomic|TestModernHDHealNativeSourcesAndGeometry)$"
+        ]
+      },
+      {
+        "name": "heal-normal-unit-r2",
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-normal-unit-r2.log",
+          "sha256": "fd0dc51e74d3bb7c2f0821030bb481c258c69d6a831b1c6daaffff0a8dd8c3c7"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-normal-unit-r2.memory.json",
+          "sha256": "5d01553c156221026633da1d510a603f15be41e34d9ad119af83a9b3167b9f9c"
+        },
+        "tests": [
+          "TestModernHDHealNativeSourcesAndGeometry",
+          "TestModernHDHealFullThemeAndAtomic"
+        ],
+        "seconds": 349.933,
+        "peak_bytes": 5925679104,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "command": [
+          "bash",
+          "-c",
+          "set -euo pipefail\nXvfb :99 -screen 0 1920x1200x24 -nolisten tcp >/tmp/fd2-heal-xvfb.log 2>&1 &\nfd2_heal_xvfb=$!\ntrap 'kill \"$fd2_heal_xvfb\" 2>/dev/null || true; wait \"$fd2_heal_xvfb\" 2>/dev/null || true' EXIT\nexport DISPLAY=:99\n\"$@\"\n",
+          "fd2-heal",
+          "go",
+          "test",
+          "-json",
+          "-count=1",
+          "-timeout=570s",
+          "./cmd/fd2",
+          "-run",
+          "^(TestModernHDHealFullThemeAndAtomic|TestModernHDHealNativeSourcesAndGeometry)$"
+        ]
+      },
+      {
+        "name": "heal-normal-regression-r1",
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-normal-regression-r1.log",
+          "sha256": "86ddb1e8aa9d8978da76249baf895426a3d134d45fc8e2d6b0589ee328dff28c"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-normal-regression-r1.memory.json",
+          "sha256": "9c331d569aad5e644507fdd6f5feca06dd287cb17cbda3b1930cada3b746d000"
+        },
+        "tests": [
+          "TestInputAuditTracksDeathRewardMessageOwner",
+          "TestPlayerNativeCommand13RunsCursorTransactionThroughConfirm"
+        ],
+        "seconds": 15.033,
+        "peak_bytes": 1704218624,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "command": [
+          "with-xvfb",
+          "go",
+          "test",
+          "-json",
+          "./cmd/fd2",
+          "-run",
+          "^(TestInputAudit.*|TestPlayerNativeCommand13.*|TestNativeCommandHeal.*)$",
+          "-count=1",
+          "-timeout",
+          "150s"
+        ]
+      },
+      {
+        "name": "heal-normal-regression-r2",
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-normal-regression-r2.log",
+          "sha256": "e858f818f32165f1d956fb4db18fbe84344fc3d41f80298cace1f708e80f54e8"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-normal-regression-r2.memory.json",
+          "sha256": "9705e514c1b5f0196f7c510e65120c5142428568b6206ba05a5157ee4425ea78"
+        },
+        "tests": [
+          "TestModernHDDeathAssetLoader",
+          "TestModernHDPlayer9FrozenInputMatchesSnapshot",
+          "TestModernHDPlayer9FrozenInputRejectsDifferentSnapshot",
+          "TestDisabledFullPresentationFailsClosedBeforeAnyCommandTransaction",
+          "TestPlayerNativeCommand13RunsCursorTransactionThroughConfirm",
+          "TestNativeCommand1012PublishesOnlyAtRecoveredBoundaries",
+          "TestNativeCommand1012RollsBackLatePublishFailure"
+        ],
+        "seconds": 4.031,
+        "peak_bytes": 1051193344,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "command": [
+          "bash",
+          "-c",
+          "set -euo pipefail\nXvfb :99 -screen 0 1920x1200x24 -nolisten tcp >/tmp/fd2-heal-xvfb.log 2>&1 &\nfd2_heal_xvfb=$!\ntrap 'kill \"$fd2_heal_xvfb\" 2>/dev/null || true; wait \"$fd2_heal_xvfb\" 2>/dev/null || true' EXIT\nexport DISPLAY=:99\n\"$@\"\n",
+          "fd2-heal",
+          "go",
+          "test",
+          "-json",
+          "-count=1",
+          "-timeout=270s",
+          "./cmd/fd2",
+          "-run",
+          "^(TestDisabledFullPresentationFailsClosedBeforeAnyCommandTransaction|TestModernHDDeathAssetLoader|TestModernHDPlayer9FrozenInputMatchesSnapshot|TestModernHDPlayer9FrozenInputRejectsDifferentSnapshot|TestNativeCommand1012PublishesOnlyAtRecoveredBoundaries|TestNativeCommand1012RollsBackLatePublishFailure|TestPlayerNativeCommand13RunsCursorTransactionThroughConfirm)$"
+        ]
+      },
+      {
+        "name": "heal-normal-strings-r1",
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-normal-strings-r1.log",
+          "sha256": "fc9f7901cee6185367a0b3e81894b4865629a673d28ade4213aeadbaa7e4681b"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-normal-strings-r1.memory.json",
+          "sha256": "b1b4ae6d2a3e7ec99882d65174d88db1fa6dc7706f4d65488c216accd89d4a39"
+        },
+        "tests": [
+          "TestBuildCollectsControlledJSONAndGoUIWithoutNotesOrErrors",
+          "TestBuildIsDeterministicAndJSONSerializable",
+          "TestBuildRejectsDuplicateExistingStringID",
+          "TestMultipleTextFieldsDoNotReuseOneExistingStringID",
+          "TestVariablesIncludeWrappedErrorPlaceholder",
+          "TestDrawFunctionContextIncludesIndirectASCIIAndFunctionName",
+          "TestDrawFunctionContextSkipsLocaleKeys",
+          "TestReviewedGoCandidatesMatchCurrentInventory"
+        ],
+        "seconds": 1.507,
+        "peak_bytes": 129519616,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "command": [
+          "go",
+          "test",
+          "-json",
+          "./cmd/fd2-string-inventory",
+          "-count=1",
+          "-timeout=90s"
+        ]
+      }
+    ],
+    "distinct_top_level_go_tests": 19,
+    "go_passes": 21,
+    "normal": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-normal-gui-r3-capture/receipt.json",
+        "sha256": "9ca74f1a12a5bc6f6319860f1db43bd3b8a755c1f9a31429d5ebb71f12e88ddc"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-normal-gui-r3.memory.json",
+        "sha256": "728b094c268336b12287bc1860ec17152f54e7f8dc386fa73b07b31045eeaf81"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-normal-gui-r3.log",
+        "sha256": "7fc8144883dcecc82c13c18149c0ff91044b1b7f435e6a17eccf87de589920b8"
+      },
+      "seconds": 442.467,
+      "peak_bytes": 4663193600,
+      "memory_events_delta": {
+        "low": 0,
+        "high": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_kill": 0,
+        "oom_group_kill": 0,
+        "sock_throttled": 0
+      },
+      "command": [
+        "python3",
+        "tools/verify_fd2_hd_fonts_gui.py",
+        "--binary",
+        "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-normal-r1-binary",
+        "--assets",
+        "/repo/remake",
+        "--original-pack",
+        "/original",
+        "--modern-pack",
+        "/modern",
+        "--town-save",
+        "/source/fd2_save.json",
+        "--out",
+        "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-normal-gui-r3-capture",
+        "--battle-status",
+        "--world",
+        "--battle-node",
+        "battle_ch23",
+        "--heal-normal",
+        "--startup-timeout",
+        "360",
+        "--run-timeout",
+        "1800"
+      ],
+      "main_screenshots": 19,
+      "samples": 46,
+      "source_actor_hp": 1253,
+      "source_actor_mp": 276,
+      "targets": [
+        1,
+        4,
+        4,
+        5,
+        1
+      ],
+      "command_cases": [
+        "heal13",
+        "heal14",
+        "heal15",
+        "heal16",
+        "heal13-f2"
+      ],
+      "f5_contract": "F5章節邊界保存；不聲明保存戰中MP、位置、Acted。",
+      "source_state_injection_this_run": false
+    },
+    "independent": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-normal-independent-r2.json",
+      "sha256": "6ce091c0271d199168c3583c2f1c53260159ed7bb96273c55ef7be2775a7c234"
+    },
+    "independent_tool": {
+      "file": "tools/verify_fd2_hd_heal_normal.py",
+      "sha256": "1850ef5396f80c5d976f8795e2d97b04b6083b5280e79dcf8c3f2ea2cf686957"
+    },
+    "png_core_matches": 26,
+    "png_core_points": 103286,
+    "counterexamples_rejected": [
+      "source_sha256",
+      "catalog_sha256",
+      "binary_sha256",
+      "missing-case",
+      "missing-png",
+      "wrong-mp",
+      "no-cold-load",
+      "wrong-theme",
+      "wrong-rect",
+      "wrong-presented-source",
+      "wrong-cold-unit",
+      "restarted-f2-owner",
+      "black-window",
+      "pixelated-window"
+    ],
+    "audit": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-normal-gui-r3-capture/input-audit-first-process.jsonl",
+      "sha256": "f4e2f53e88d7f8141f9d9f77bf4e17f7b7975aa93fd4b8d909a896893d7b2f43"
+    },
+    "cold_audit": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-normal-gui-r3-capture/input-audit.jsonl",
+      "sha256": "13ed63ba1e942d6d4b6ca2faf4d4faccfa47962f2493cf17f57991359899168a"
+    },
+    "readme": {
+      "file": "docs/figures/hd-heal-normal.png",
+      "sha256": "249bf9c72c5ada9fce42106343fb9808133f62fc79390ad46797f6fefa38869e"
+    },
+    "readme_sources": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-normal-readme-r1.json",
+      "sha256": "a5dd25d95f311f5d6c7ecbfbd770ec7a1541c3e022d0ff0551aefef796aaeabc"
+    },
+    "source_files": [
+      {
+        "file": "remake/cmd/fd2/native_command_heal_presentation.go",
+        "sha256": "2d5f5073d7bcbce4791e270ae0e0ecc2245bcd0c09365feb03c129964c8c23c2"
+      },
+      {
+        "file": "remake/cmd/fd2/input_audit_trace.go",
+        "sha256": "39d40e340280a7ee59d858f02f495e14ecc0fb6fcd96d5dd4aa177dc5220a05c"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_heal_map.go",
+        "sha256": "569887d2eeb1397ec940a911fe52f989f6b6fb7336e9694bd338668eab6d75d5"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_map_overlay_assets.go",
+        "sha256": "db29e3c9caa5876618388913fb6e2d6cc2876d2b97da4457de438e7331335144"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_heal_map_test.go",
+        "sha256": "8d2c5bc55ce3e330f39ad478c91cea490639f410a9c9280225d6f12224741f39"
+      },
+      {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "5eaf9cfb2411b1fb9eeb5dbcf2f1060dffa4f99eacd4badc1fb79561d0a0e20d"
+      },
+      {
+        "file": "tools/fd2_hd_heal_gui.py",
+        "sha256": "00eef7b76dd6613e4b025b79a0a23cab9912012498fc683351ab72d37bbfe3ca"
+      },
+      {
+        "file": "tools/verify_fd2_hd_heal_normal.py",
+        "sha256": "1850ef5396f80c5d976f8795e2d97b04b6083b5280e79dcf8c3f2ea2cf686957"
+      },
+      {
+        "file": "tools/verify_fd2_heal_map_hd.py",
+        "sha256": "9b580ad60f8d087e9b68ee697003aca5bc994d5e6d58614c58e636ea4b0cbf77"
+      },
+      {
+        "file": "remake/assets/themes/modern/catalog.json",
+        "sha256": "5dd17043f274d86ba606f2a08c1559c40c94e4cb13f01464c32beb290b10f746"
+      },
+      {
+        "file": "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+        "sha256": "5e384dca44eca0231238c284fb53d9cf7f7057485c635dae6fd182f0c362ad64"
+      }
+    ],
+    "string_review": {
+      "candidates": 122,
+      "inventory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-normal-string-inventory-r1.json",
+        "sha256": "25b4363f878ed3c7306cdfaee80a37fda4e0d4ee88609e9a02eee5b4f7f8a46d"
+      },
+      "binding_unchanged": true
+    },
+    "issues_readback": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-normal-issues-readback-r1.json",
+      "sha256": "f21460263981587fc5915c7b19c179f48f32bab020f86e98fa8fcad4dd2afae3"
+    },
+    "private_pack_changed": false,
+    "private_head": "fc70c3cdc0f0e35024c977f4fdcab0b8d09923ba",
+    "catalog_entries": 851,
+    "private_files": 7063,
+    "independent_runtime_files": 6072,
+    "binary": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-normal-r1-binary",
+      "sha256": "74863ad9688fb845aaf8a0477f61b73468095488920d0d239053e6fe08857ca8"
+    },
+    "recording_created": false,
+    "limitations": [
+      "滿HP來源，Actual0；不以此聲明正回復量",
+      "PNG可能跨CPU與GPU相位；46張觀測中26張有相容圖源核心，不要求每frame相同",
+      "保留既有八條受控GPU收據，不冒稱本輪重跑全部八條",
+      "F9案例間回載，沒有章內HP或技能改寫；不宣稱完整章節E2",
+      "集中人工、macOS／Windows／Linux實機及HD1其餘介面／地形仍待"
+    ],
+    "diagnostics": [
+      {
+        "run": "heal-normal-gui-r1",
+        "scope": "施放及保存通過，13在F2像素模式期間走完HD效果段，沒有完整HD樣本，不作四術PNG通過證據"
+      },
+      {
+        "run": "heal-normal-gui-r2",
+        "scope": "相對out導致PulseAudio設定目錄失敗，遊戲未啟動；沿既有絕對路徑教訓修正命令"
+      },
+      {
+        "run": "heal-normal-unit-r1",
+        "scope": "4GiB memory.max=535，OOM／kill零；270秒Go測試逾時，不列通過，6GiB／600秒同來源重跑通過"
+      }
+    ],
+    "docker_images": {
+      "fd2-assets-local:20260829-sfx": "sha256:e59237a31d4b5f7a62c59ac37b780bd93f17c99fda97be8f5ca0c53978b878bc",
+      "fd2-go-test-local:latest": "sha256:e4a805c52a3ad5d8c22cf23f2bcf51c6924e5ad6b99554f1b02761903c725433",
+      "fd2-promo:20261017-r1": "sha256:2dd9f94a4a0e0134ca40fbe3e321b692ad40fd137b6adc43bed97c84f11b45cb"
+    },
+    "cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-normal-cleanup-r1.json",
+      "sha256": "b247c091409edd4eaaa1b157843269befa9ef0d24353fce3ace467f8227a46a9"
+    },
+    "hygiene": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-normal-hygiene-r1.json",
+      "sha256": "f318673b2e6bbdaac32f7fd380f98ec4cb740d89b5733113e6b1820ecf7e22d2"
+    },
+    "rebuild": {
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-normal-build-final-r1.memory.json",
+        "sha256": "bf6c7168633af2e2a9f7a101a4cbbfc2a80748748b7d981bc136e67f40748ab5"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-normal-build-final-r1.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bitwise_equal": true,
+      "binary_sha256": "74863ad9688fb845aaf8a0477f61b73468095488920d0d239053e6fe08857ca8"
+    },
+    "validation_checks": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-normal-checks-r1.json",
+      "sha256": "a7a2fb08aebd26813845d67e486156e7d0757585a567a0e89e1e5367a30f1c2f"
+    },
+    "container_limits": {
+      "normal_and_full_theme": {
+        "memory": "6g",
+        "cpus": 2,
+        "pids_limit": 256,
+        "network": "none",
+        "user": "1000:1000"
+      },
+      "source_and_regression": {
+        "memory": "4g",
+        "cpus": 2,
+        "pids_limit": 256,
+        "network": "none",
+        "user": "1000:1000"
+      }
+    },
+    "independent_command": [
+      "python3",
+      "tools/verify_fd2_hd_heal_normal.py",
+      "--receipt",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-normal-gui-r3-capture/receipt.json",
+      "--source",
+      "work/promo-cadence-20261018/hd-fonts/shared-death-player-ch23-r1/source-gui-r1/user-data/fd2_re/fd2_save.json",
+      "--binary",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-normal-r1-binary",
+      "--catalog",
+      "remake/assets/themes/modern/catalog.json",
+      "--pack",
+      "/modern",
+      "--gui-tool",
+      "tools/verify_fd2_hd_fonts_gui.py",
+      "--helper",
+      "tools/fd2_hd_heal_gui.py",
+      "--out",
+      "<existing-work-root>/new-independent.json",
+      "--self-test"
+    ]
   }
 }

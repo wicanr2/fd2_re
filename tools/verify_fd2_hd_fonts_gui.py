@@ -15,6 +15,7 @@ from verify_fd2_hd_timed_dialogue import TimedDialogueProbe
 from verify_fd2_hd_terrain_walk import walk_behind_house
 from verify_fd2_gaia_focus import focus_gaia, sample_gaia
 from fd2_hd_death_gui import capture_standalone_ch23_source, run_ch23_death_event
+from fd2_hd_heal_gui import run_normal_heal
 
 
 def terrain_frame_ids(value):
@@ -57,6 +58,7 @@ def main():
                         help='以1920×1272完整擷取工具列視窗；戰鬥圖源另精確裁出下方1920×1200遊戲區')
     parser.add_argument('--battle-node', default='battle_ch01', help='來源槽的正式戰場節點，預設首章')
     parser.add_argument('--battle-only', action='store_true', help='抽驗普通攻防、F2及保存冷讀，略過已另驗的狀態／命令字型；需--battle-hd')
+    parser.add_argument('--heal-normal', action='store_true', help='正常第23章既有希爾法依次施放13～16，滿HP上限、HD效果、F2與保存冷讀；需--battle-status --world')
     parser.add_argument('--capture-native-battle-save', action='store_true', help='正常原生標題LOAD、出發及F5建立JSON來源槽；需--native-save與--battle-status')
     parser.add_argument('--native-entry-theme', choices=['hd','faithful'], default='hd', help='原生來源擷取的起始主題；第23章獨立整備目前明示使用faithful')
     parser.add_argument('--death-event', type=int, choices=[53], help='第23章普通進軍擊倒隊長，唯讀抽樣共用死亡HD；需--town-save')
@@ -114,6 +116,8 @@ def main():
     run_limit = args.run_timeout or (2400 if args.battle_end_art else 1800 if args.battle_advance else
                                     1200 if args.terrain_occlusion or args.battle_approach_rounds or args.revive_before_departure is not None else 660)
     window_height = '1272' if args.player_toolbar else '1200'
+    assert not args.heal_normal or (args.battle_status and args.world and args.battle_node=='battle_ch23'
+                                  and not any([args.death_event,args.battle_hd,args.gaia,args.terrain,args.battle_only]))
     assert not args.death_commander_hd or (args.death_event==53 and args.world and args.battle_hd)
     assert not args.death_actor_art or (args.death_commander_hd and args.death_kind=='action')
     assert args.revive_before_departure is None or args.capture_native_battle_save
@@ -677,6 +681,10 @@ def main():
             else:raise TimeoutError('首章LOAD對話未結束')
             wait(lambda s:not s.get('dialogues') and not s.get('banner_t'))
             shot('battle-hd-field')
+            if args.heal_normal:
+                run_normal_heal(args,audit,key,wait,shot,saved,command,window,
+                                restart_title_load,operations,shots,tool_source_sha256)
+                return
             if args.gaia:
                 roster=json.loads(args.town_save.read_text())['party_roster']['30']
                 assert roster['NativeIdentity']==30 and roster['Fig']==30 and roster['BattleFig']==30

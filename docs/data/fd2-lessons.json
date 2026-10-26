@@ -4468,6 +4468,21 @@
         ],
         "pattern": "run_limit = args.run_timeout"
       }
+    },
+    {
+      "id": "normal-animation-samples-separate-theme-toggle",
+      "date": "2026-10-26",
+      "area": "正常動畫驗證",
+      "rule": "完整HD演出與途中F2切換分成獨立案例。正常動畫比截圖與鍵盤確認短時，切到像素主題可能漏拍整段HD效果，不能據此宣稱缺件。入口tools/fd2_hd_heal_gui.py的四種完整演出及獨立13-F2案例；verify_fd2_hd_heal_normal.py逐例要求光環、數字及同owner往返。",
+      "why": "首輪13在原版主題期間走完HD光效段，施法與返回均通過卻沒有HD樣本。相同來源改成四個完整演出加獨立切換後，四種光環與綠字皆可獨立驗證；沒有改排程或挑選亂數。",
+      "evidence": "HD主收據heal_normal_gui_followup_20261026",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/fd2_hd_heal_gui.py"
+        ],
+        "pattern": "\\[\\(i, False\\) for i in range\\(13, 17\\)\\]\\+\\[\\(13, True\\)\\]"
+      }
     }
   ]
 }

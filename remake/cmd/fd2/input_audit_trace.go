@@ -37,6 +37,21 @@ func (g *Game) recordInputAuditState() {
 	r["command_targeting"] = g.nativeCommand0Targeting
 	r["command_grid"], r["command_selection"] = g.nativeCommandOpen, g.nativeCommandSel
 	r["command_target_id"] = g.nativeCommandTargetID
+	r["heal_scene"] = g.nativeHealPresentation != nil
+	if j := g.nativeHealPresentation; j != nil {
+		r["heal_command_id"], r["heal_owner"] = j.commandID, fmt.Sprintf("%p", j)
+		r["heal_phase"], r["heal_frame"] = int(j.phase), j.frame
+		targets := make([]int, len(j.targets))
+		for i, target := range j.targets {
+			targets[i] = target.RecordIndex
+		}
+		r["heal_target_indices"] = targets
+		results := make([]map[string]int, len(j.results))
+		for i, result := range j.results {
+			results[i] = map[string]int{"rolled": result.Restore.Rolled, "actual": result.Restore.Actual}
+		}
+		r["heal_results"] = results
+	}
 	if g.nativeCommand0Targeting && g.st != nil && g.st.W > 0 {
 		cells := make([][]int, 0)
 		for index, value := range g.st.NativeTileBlitModes {
@@ -234,6 +249,16 @@ func (g *Game) recordInputAuditState() {
 		}
 		r["hd_world_terrain_foreground"] = foreground
 		r["hd_world_terrain_foreground_draws"] = foregroundDraws
+		if g.nativeHealPresentation != nil {
+			overlays := make([]map[string]any, 0, len(g.modernHDMapPresented.Overlays))
+			for _, layer := range g.modernHDMapPresented.Overlays {
+				hash := sha256.Sum256(layer.Image.Pix)
+				overlays = append(overlays, map[string]any{"entry": layer.Entry,
+					"rect":        []int{layer.Rect.Min.X, layer.Rect.Min.Y, layer.Rect.Max.X, layer.Rect.Max.Y},
+					"rgba_sha256": fmt.Sprintf("%x", hash)})
+			}
+			r["hd_heal_overlays"] = overlays
+		}
 	}
 	r["locale"] = g.localeID
 	r["gold"] = g.gold
