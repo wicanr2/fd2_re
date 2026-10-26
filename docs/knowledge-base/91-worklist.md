@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 26 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 25 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -67,6 +67,10 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 ### P1 HD／現代主題總項：素材覆蓋、正常路徑與交付驗收
 
 `modern-theme-prototype-status` · 工作 · [#4](https://github.com/wicanr2/fd2_re/issues/4) · 仍未完成 · 要人判
+
+戰場資訊窗已補四語條件與固定標籤，沿原來源ID、章號分支、數值與開收流程；正常四語／兩主題開關、F2／F4、返回及保存冷讀通過。像素繁中保留原圖字，其餘語系保留原框，HD沿既有細框與字區。來源／長譯文、缺翻譯拒收、實際PNG及反例均已驗，工單#280由提交7bbce98f完成關閉。唯一數量與限制依58、61及HD主收據system_info_locales_followup_20261026，README新增四語實際遊戲總覽。
+
+本輪沒有新美術包、改正式規則或存檔，也沒有新DOS原版動態對拍。其餘HD1介面、未登錄地形與集中人工／平台仍待；父項保持OPEN，未發布新版。
 
 戰場資訊四面板已接入HD細框、數字、標題與條件文字，沿原生12拍開收及裁切位置，矩形外保留HD地圖。完整Game.Draw／F2、同frame獨立地圖控制組、最終GPU及正常PNG重建均通過；普通鍵盤空地系統環、巢狀資訊、三次開關、F2原任意鍵收合、返回與保存冷讀通過。唯一數量、來源與資源限制依58、61及HD主收據system_info_hd_followup_20261026，README新增實際遊戲總覽。
 
@@ -144,6 +148,10 @@ FDFIELD回合事件由完整具型別處理器降成正式劇本，保留增援�
 
 `modern-theme-player-asset-coverage` · 工作 · [#201](https://github.com/wicanr2/fd2_re/issues/201) · 仍未完成 · 要人判
 
+戰場資訊窗已補四語條件與固定標籤，沿原來源ID、章號分支、數值與開收流程；正常四語／兩主題開關、F2／F4、返回及保存冷讀通過。像素繁中保留原圖字，其餘語系保留原框，HD沿既有細框與字區。來源／長譯文、缺翻譯拒收、實際PNG及反例均已驗，工單#280由提交7bbce98f完成關閉。唯一數量與限制依58、61及HD主收據system_info_locales_followup_20261026，README新增四語實際遊戲總覽。
+
+本輪沒有新美術包、改正式規則或存檔，也沒有新DOS原版動態對拍。其餘HD1介面、未登錄地形與集中人工／平台仍待；父項保持OPEN，未發布新版。
+
 戰場資訊四面板已接入HD細框、數字、標題與條件文字，沿原生12拍開收及裁切位置，矩形外保留HD地圖。完整Game.Draw／F2、同frame獨立地圖控制組、最終GPU及正常PNG重建均通過；普通鍵盤空地系統環、巢狀資訊、三次開關、F2原任意鍵收合、返回與保存冷讀通過。唯一數量、來源與資源限制依58、61及HD主收據system_info_hd_followup_20261026，README新增實際遊戲總覽。
 
 此項保留原文字，四語勝敗條件及固定標籤另列#280，不冒稱翻譯完成。本輪沒有新增美術包、改遊戲規則或存檔格式，也沒有新的DOS原版動態對拍。其餘HD1操作介面、未登錄地形及集中人工／平台仍待；本項保持OPEN。
@@ -202,6 +210,10 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 `modern-theme-highres-prototype` · 工作 · [#204](https://github.com/wicanr2/fd2_re/issues/204) · 仍未完成 · 要人判
 
+戰場資訊窗已補四語條件與固定標籤，沿原來源ID、章號分支、數值與開收流程；正常四語／兩主題開關、F2／F4、返回及保存冷讀通過。像素繁中保留原圖字，其餘語系保留原框，HD沿既有細框與字區。來源／長譯文、缺翻譯拒收、實際PNG及反例均已驗，工單#280由提交7bbce98f完成關閉。唯一數量與限制依58、61及HD主收據system_info_locales_followup_20261026，README新增四語實際遊戲總覽。
+
+本輪沒有新美術包、改正式規則或存檔，也沒有新DOS原版動態對拍。其餘HD1介面、未登錄地形與集中人工／平台仍待；父項保持OPEN，未發布新版。
+
 戰場資訊四面板已接入HD細框、數字、標題與條件文字，沿原生12拍開收及裁切位置，矩形外保留HD地圖。完整Game.Draw／F2、同frame獨立地圖控制組、最終GPU及正常PNG重建均通過；普通鍵盤空地系統環、巢狀資訊、三次開關、F2原任意鍵收合、返回與保存冷讀通過。唯一數量、來源與資源限制依58、61及HD主收據system_info_hd_followup_20261026，README新增實際遊戲總覽。
 
 此項保留原文字，四語勝敗條件及固定標籤另列#280，不冒稱翻譯完成。本輪沒有新增美術包、改遊戲規則或存檔格式，也沒有新的DOS原版動態對拍。其餘HD1操作介面、未登錄地形及集中人工／平台仍待；本項保持OPEN。
@@ -239,6 +251,10 @@ HD1原生地圖資訊窗的細框、A／D、HP與已登錄地形縮圖已接入�
 ### P1 大型戰鬥動畫HD：人物、效果與正常玩家呈現
 
 `modern-battle-animation-hd` · 工作 · [#263](https://github.com/wicanr2/fd2_re/issues/263) · 仍未完成 · 要人判
+
+戰場資訊窗已補四語條件與固定標籤，沿原來源ID、章號分支、數值與開收流程；正常四語／兩主題開關、F2／F4、返回及保存冷讀通過。像素繁中保留原圖字，其餘語系保留原框，HD沿既有細框與字區。來源／長譯文、缺翻譯拒收、實際PNG及反例均已驗，工單#280由提交7bbce98f完成關閉。唯一數量與限制依58、61及HD主收據system_info_locales_followup_20261026，README新增四語實際遊戲總覽。
+
+本輪沒有新美術包、改正式規則或存檔，也沒有新DOS原版動態對拍。其餘HD1介面、未登錄地形與集中人工／平台仍待；父項保持OPEN，未發布新版。
 
 戰場資訊四面板已接入HD細框、數字、標題與條件文字，沿原生12拍開收及裁切位置，矩形外保留HD地圖。完整Game.Draw／F2、同frame獨立地圖控制組、最終GPU及正常PNG重建均通過；普通鍵盤空地系統環、巢狀資訊、三次開關、F2原任意鍵收合、返回與保存冷讀通過。唯一數量、來源與資源限制依58、61及HD主收據system_info_hd_followup_20261026，README新增實際遊戲總覽。
 
@@ -286,18 +302,6 @@ HD1原生地圖資訊窗的細框、A／D、HP與已登錄地形縮圖已接入�
 
 證據：`docs/knowledge-base/61-modern-theme-runtime-spec.md`
 
-### P2 戰場資訊四語系：固定標籤與各章勝敗條件
-
-`native-system-info-localization` · 工作 · [#280](https://github.com/wicanr2/fd2_re/issues/280) · 仍未完成 · 要人判
-
-戰場資訊視窗的HD接線沿原版四面板、章回／金錢／camp計數及12拍開收，資料仍來自原FDTXT勝敗條件。現行勝利／失敗標題與各章條件為原中文，MAP／TURN／ENEMY／FRIEND／NPC為原標籤，語系切換只改用目前字型，沒有切換這些內容。這是尚未完成的本地化範圍，不能用HD截圖宣稱四語勝敗條件已完成。
-
-需將固定標籤與FDTXT_000的0x255起各章條件接入官方四語內容，保留來源ID、章16分支、原始條件語意與數值。先完成READY規格，再處理詞彙及長譯文的字區；不改勝敗規則、存檔與原生節拍，也不重開已閉合RE。本項不阻擋既有原中文視窗HD接線。
-
-怎樣算做完：具備可追溯的來源與READY規格；四語條件及固定標籤進正式玩家路徑，30章與章16分支的內容一致；真實字形不超出勝敗欄位，兩主題、F2、正常開關及保存冷讀通過，缺翻譯不可靜默混語。
-
-證據：`docs/knowledge-base/61-modern-theme-runtime-spec.md；HD主收據system_info_hd_followup_20261026`
-
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
 ### 戰鬥交易缺代表性玩家路徑驗收
@@ -341,6 +345,10 @@ HD1原生地圖資訊窗的細框、A／D、HP與已登錄地形縮圖已接入�
 ### P1 HD正常路徑：早中晚期操作、戰場返回與存讀檔
 
 `modern-theme-normal-player-validation` · 工作 · [#202](https://github.com/wicanr2/fd2_re/issues/202) · 仍未完成 · 要人判
+
+戰場資訊窗已補四語條件與固定標籤，沿原來源ID、章號分支、數值與開收流程；正常四語／兩主題開關、F2／F4、返回及保存冷讀通過。像素繁中保留原圖字，其餘語系保留原框，HD沿既有細框與字區。來源／長譯文、缺翻譯拒收、實際PNG及反例均已驗，工單#280由提交7bbce98f完成關閉。唯一數量與限制依58、61及HD主收據system_info_locales_followup_20261026，README新增四語實際遊戲總覽。
+
+本輪沒有新美術包、改正式規則或存檔，也沒有新DOS原版動態對拍。其餘HD1介面、未登錄地形與集中人工／平台仍待；父項保持OPEN，未發布新版。
 
 戰場資訊四面板已接入HD細框、數字、標題與條件文字，沿原生12拍開收及裁切位置，矩形外保留HD地圖。完整Game.Draw／F2、同frame獨立地圖控制組、最終GPU及正常PNG重建均通過；普通鍵盤空地系統環、巢狀資訊、三次開關、F2原任意鍵收合、返回與保存冷讀通過。唯一數量、來源與資源限制依58、61及HD主收據system_info_hd_followup_20261026，README新增實際遊戲總覽。
 

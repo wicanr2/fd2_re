@@ -238410,7 +238410,8 @@
         "status": "CONFORMED-SCOPED-RUNTIME-E1-NORMAL-GUI",
         "evidence_key": "system_info_hd_followup_20261026",
         "localization_issue": 280,
-        "localization_evidence_key": "system_info_locales_followup_20261026"
+        "localization_evidence_key": "system_info_locales_followup_20261026",
+        "localization_issue_state": "CLOSED"
       }
     ],
     "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md",
@@ -240123,6 +240124,25 @@
     "hygiene": {
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/info-locale-hygiene-r1.json",
       "sha256": "8b5494bb28f3439d5b5dacdebc5ec48e8f5ebe8d02cc53909bd23878b669d774"
+    },
+    "issues_readback": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/info-locale-issue-readback-r1.json",
+      "sha256": "68ea2ac96856609aef4eef2caba520b0095b46a10d8f7ac954369b620e6327f0",
+      "closed_issue": 280,
+      "parents_open": [
+        4,
+        201,
+        202,
+        204,
+        263
+      ],
+      "acceptance_and_labels_preserved": true,
+      "implementation_commit": "7bbce98f"
+    },
+    "worklist": {
+      "open": 25,
+      "manual": 18,
+      "vanished": 0
     }
   }
 }
