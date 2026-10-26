@@ -21,6 +21,7 @@ ROLES = PROTOTYPE_ROLES | {
     "map_sprite_hd_set", "battlefield_tileset_concept", "battle_hud_panel", "battle_action_icon_set",
     "native_terrain_hd_set", "terrain_hd_master", "battle_animation_hd_set", "battle_effect_hd_set", "map_overlay_hd_set",
     "facility_scene_hd", "battle_surface_hd", "map_stage_hd", "story_animation_hd_set",
+    "native_ui_icon_hd",
 }
 STATUSES = {"prototype", "concept", "approved", "runtime_candidate", "runtime_ready"}
 # Fixed FDICON.B24 source-write inventory, independently checked by
@@ -65,6 +66,7 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
     facility_resources = set()
     surface_resources = set()
     story_resources = set()
+    ui_icon_indices = set()
     for entry in assets:
         required = {"asset_id", "role", "status", "file", "width", "height", "sha256", "source_refs"}
         candidate = {"master_file", "consumer_contract", "speaker_id", "frame", "mouth_state"}
@@ -83,7 +85,9 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
         }
         if not isinstance(entry, dict):
             raise ValueError("asset entry must be an object")
-        if entry.get("role") == "story_animation_hd_set":
+        if entry.get("role") == "native_ui_icon_hd":
+            expected = required | {"master_file", "consumer_contract", "alpha_contract", "layout_policy", "source_archive", "source_resource", "source_metadata_sha256", "native_raw_cell", "source_files", "source_sha256"}
+        elif entry.get("role") == "story_animation_hd_set":
             expected = sprite_set - {"source_group", "cycle_policy"} | {"master_file", "source_archive", "source_resource", "source_metadata_sha256", "native_frames", "layout_policy", "source_files", "source_sha256"}
         elif entry.get("role") in {"battle_surface_hd", "map_stage_hd"}:
             expected = required | {"master_file", "consumer_contract", "source_archive", "source_resource", "source_metadata_sha256", "source_files", "source_sha256", "native_frames", "alpha_contract", "layout_policy"}
@@ -201,6 +205,25 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
             if not isinstance(speaker, int) or speaker < 0 or speaker in hd_speakers:
                 raise ValueError(f'invalid or duplicate HD speaker: {asset_id}')
             hd_speakers.add(speaker)
+        if entry['role'] == 'native_ui_icon_hd':
+            cell = entry['native_raw_cell']
+            if (not isinstance(cell, dict) or set(cell) != {'index', 'width', 'height', 'pixels_sha256'}
+                    or type(cell['index']) is not int or cell['index'] not in {53,54,55,56,57,59,60,61,62,63}
+                    or cell['index'] in ui_icon_indices or type(cell['width']) is not int or type(cell['height']) is not int
+                    or (cell['width'], cell['height']) != ((29,24) if cell['index'] in {53,54} else (24,20))
+                    or not isinstance(cell['pixels_sha256'], str) or not SHA_RE.fullmatch(cell['pixels_sha256'])
+                    or (entry['width'], entry['height']) != (cell['width']*6, cell['height']*6)
+                    or entry['consumer_contract'] != 'native_raw_ui_icon_hd6_v1'
+                    or entry['source_archive'] != 'FDOTHER.DAT' or type(entry['source_resource']) is not int or entry['source_resource'] != 5
+                    or entry['source_metadata_sha256'] != 'a547f2f593b980fd9c1b269d1ba95be8727562d7ed31b44015615775d991efd3'
+                    or entry['layout_policy'] != 'native_raw_cell_rect_hd6' or entry['alpha_contract'] != 'opaque'
+                    or entry['status'] not in {'runtime_candidate','runtime_ready'}
+                    or entry['source_files'] != [entry['master_file']] or len(entry['source_sha256']) != 1
+                    or not SHA_RE.fullmatch(entry['source_sha256'][0])):
+                raise ValueError(f'invalid HD panel icon contract: {asset_id}')
+            ui_icon_indices.add(cell['index'])
+            if verify_private and hashlib.sha256((ROOT/private_root/entry['master_file']).read_bytes()).hexdigest() != entry['source_sha256'][0]:
+                raise ValueError(f'HD panel icon master SHA mismatch: {asset_id}')
         if entry["role"] == "battle_hud_panel":
             if entry["consumer_contract"] != "battle_status_panel_149x42_v1" or (
                     entry["width"], entry["height"]) != (149, 42):
@@ -517,11 +540,13 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
                         alpha = image.convert('RGBA').getchannel('A')
                         if alpha.getextrema() != (0, 255):
                             raise ValueError(f'invalid HD coverage alpha: {asset_id}/{file_path.name}')
-                elif entry["role"] in {"battle_action_icon_set", "story_portrait_hd_frame", "facility_scene_hd"}:
+                elif entry["role"] in {"battle_action_icon_set", "story_portrait_hd_frame", "facility_scene_hd", "native_ui_icon_hd"}:
                     from PIL import Image
                     alpha = Image.open(private_path).convert("RGBA").getchannel("A")
                     if set(alpha.getdata()) != {255}:
                         raise ValueError(f"non-opaque asset: {asset_id}/{file_path.name}")
+    if ui_icon_indices and ui_icon_indices != {53,54,55,56,57,59,60,61,62,63}:
+        raise ValueError('HD panel icon group incomplete')
     if story_resources and story_resources!={('FDOTHER.DAT',34),('ANI.DAT',0)}:
         raise ValueError('HD sky key pair incomplete')
     if facility_resources and facility_resources != {11, 61, 62, 12, 29, 63}:

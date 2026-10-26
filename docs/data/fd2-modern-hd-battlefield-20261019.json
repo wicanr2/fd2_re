@@ -9,7 +9,7 @@
     "native_viewport": "CONFORMED-SCOPED：穩定1920世界沿原生(4,4)、312×192窗格；死亡事件前25拍依既有producer從VGA0,0開始，最後steady回4,4。不同caller分列，不新增DOS位址parity。",
     "hd_sprite_data": "DATA-READY：完整125組1455張HD及31組372張新增24父項已登錄；舊1083張父項及HD bytes保持。",
     "hd_world_renderer": "CONFORMED-SCOPED：144人物已接Game.Draw；首章34張正常GPU、4張實際走行、兩次物理攻擊及保存／新程序LOAD通過。",
-    "private_assets": "已登錄圖源沿白名單同步唯一私人庫；目前版本與數量依props_followup_20261025及58。本批面板為直接繪製，未改素材包。",
+    "private_assets": "已登錄圖源沿白名單同步唯一私人庫；目前數量與圖示新檔、舊檔保持及實際載入依58與item_panel_icons_hd_followup_20261026。",
     "quickload_battle_owner": "CONFORMED-SCOPED：成功JSON LOAD丟棄舊經驗owner與移動計畫；拒收保留。",
     "timed_dialogue": "CONFORMED-SCOPED-RUNTIME-E1：計時FFEC開收框保留HD世界，EXP99普通鍵盤／F2與保存冷讀通過；其他caller未驗。",
     "hd_terrain": "已接草泥、水沙／岸線、首章陰影／土脊／石路及寶箱開合／小石塊；目前數量依58及props_followup_20261025。其他地形與HD2仍待。",
@@ -20,7 +20,7 @@
     "hd_event_death": "共用事件、普通行動與狀態致死已接HD；三種26拍／F2通過。正常章23事件與普通擊殺已抽驗，狀態致死正常GUI仍待；來源依death_consumers_followup_20261021。",
     "theme_toolbar": "CONFORMED-SCOPED／RUNTIME-E1：正式預設單列頂端浮出、自動隱藏，主題與四語按鈕沿F2／F4閘門；完整遊戲幾何保持。其餘控制未完成，依floating_toolbar_followup_20261025。",
     "hd_facility_scene": "CONFORMED-SCOPED-RUNTIME-E1：三種城鎮與三種商店靜態HD場景／店員，以及既有隊伍HD頭像接入裝備面板；114個GPU案例及兩包載入通過，集中普通／人工仍待。",
-    "assets": "清冊及實檔依58與shore_followup_20261025；各舊切片數字保留其範圍。",
+    "assets": "正式清冊與實檔依58及item_panel_icons_hd_followup_20261026；各舊切片數字只保留其當批範圍。",
     "hd_battle_background": "CONFORMED-SCOPED／RUNTIME-E1：森林小屋／內部／海岸，以及BG0..2過渡已接共用／分離物理與24／29的已驗caller；原生位移、遮罩與節拍保持。其他來源／caller仍待，依transition_backgrounds_followup_20261024。",
     "hd_battle_pedestal": "CONFORMED-SCOPED／RUNTIME-E1：已登錄草地、森林裸土及海岸沙地TAI接共用物理的靜態／移位進場、攻防／restore／淡出。原框、層序與節拍保持，其他來源及caller仍待，依forest_coast_surface_followup_20261024。",
     "hd_heal_map": "CONFORMED-SCOPED／RUNTIME-E1：13～16的前導、七張光環、HD輪廓閃光、十個綠數字及等待接入；兩包各八完整Game.Draw／88次F2、一次交易／續行與非空HD地形變色通過。來源及限制見heal13_16_map_hd_followup_20261023，正常／人工／平台仍待。",
@@ -28,7 +28,9 @@
     "hd_map_hud_unit": "CONFORMED-SCOPED／RUNTIME-E1：既有HD主題的資訊窗人物已接144圖源，原selector、狀態3轉1、位置及HP層序保持；來源、數量及回歸依hud_unit_icon_hd_followup_20261024。HD2／完整介面與正常玩家仍待。",
     "hd_map_stage": "FDOTHER42背景與同次循環列位移／DAC已接HD；天空之鑰與其後凍結consumer依各自較晚followup，不沿用早期仍待說法。其他地形及完整HD仍待。",
     "hd_battle_panel_chrome": "CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI：共用戰鬥面板HD框線／HP與MP條已接；來源、實際流程、獨立CPU及首章普通攻防保存冷讀依battle_panel_chrome_followup_20261026。其他介面與集中人工／平台仍待。",
-    "hd_item_row_labels": "CONFORMED-SCOPED／RUNTIME-E1：物品加成四縮寫及指令-MP沿原生來源直接HD繪字；來源、數量、建構槽與限制依item_row_labels_followup_20261026。圖示及完整HD／集中驗收仍待。"
+    "hd_item_row_labels": "CONFORMED-SCOPED／RUNTIME-E1：物品加成四縮寫及指令-MP沿原生來源直接HD繪字；來源、數量、建構槽與限制依item_row_labels_followup_20261026。圖示現況依hd_item_panel_icons；完整HD／集中驗收仍待。",
+    "hd_item_panel_icons": "CONFORMED-SCOPED／RUNTIME-E1：十個共用面板圖示已正式接線，兩包載入及物品／狀態完整繪製通過；唯一數量與分級依item_panel_icons_hd_followup_20261026。",
+    "hd1_release": "依2026-10-26指示優先完成既有HD1接線；完整地形／HUD與其餘介面仍待，不以圖示切片通過宣稱正式版已完成。"
   },
   "runtime_source": {
     "binary": {
@@ -237974,5 +237976,433 @@
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-row-label-final-checks-r1.json",
       "sha256": "f5614d9d639abbd6945ed447b1ee5540343680886082a462ff01465cd2082da3"
     }
+  },
+  "item_panel_icons_hd_followup_20261026": {
+    "status": "CONFORMED-SCOPED/RUNTIME-E1/NORMAL-GUI",
+    "full_hd_complete": false,
+    "scope": "FDOTHER#5 raw53/54、55/56/57、59..63共十個共用面板圖示",
+    "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+    "base_commit": "ea4fb3bdc78ea61e90b4ad8db7f90187c4a0cb9e",
+    "source_metadata_sha256": "a547f2f593b980fd9c1b269d1ba95be8727562d7ed31b44015615775d991efd3",
+    "source_addresses": "既有IDA線性0x17FC0、0x184C0；本批不重開RE",
+    "source_exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "candidate_catalog": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-candidate-catalog-r1.json",
+      "sha256": "5dd17043f274d86ba606f2a08c1559c40c94e4cb13f01464c32beb290b10f746"
+    },
+    "compiled": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-compiled-r1.json",
+      "sha256": "1362d0f772d87dedadd0d6738175ff0c83c5fce421323b814171a79059a76093"
+    },
+    "imagegen": {
+      "mode": "built-in",
+      "original_output": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-45912954-82d9-4687-9901-4057e47c002f.png",
+      "master_file": "remake/generated-assets/modern-theme-prototypes/item-panel-icons-hd6-master-20261026-r1.png",
+      "master_sha256": "5508cb81f19e8d273dad44f3c039931bad2d7daa88f218de8ac49fc9dc988662",
+      "prompt_brief": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-prompt-r1.txt"
+    },
+    "normal_player_verified": false,
+    "runtime_integrated": true,
+    "formal_catalog": {
+      "file": "remake/assets/themes/modern/catalog.json",
+      "sha256": "5dd17043f274d86ba606f2a08c1559c40c94e4cb13f01464c32beb290b10f746"
+    },
+    "source_snapshot": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-sources-r1.json",
+      "sha256": "96791300f69782aa87160cd2c2fc0b566367ada57669d924a4bdedaae059ec77"
+    },
+    "go_runs": [
+      {
+        "kind": "unit-r2",
+        "tests": [
+          "TestModernHDDialogueChromeSourceAndPatch",
+          "TestModernHDItemPanelChromeFreezeAndStaging",
+          "TestModernHDItemPanelChromeSourceAndGeometry",
+          "TestModernHDItemPanelValuesFreezeAndAtomicTheme",
+          "TestModernHDItemPanelValuesSourcesAndBounds",
+          "TestModernHDPanelIconsAssetLoader",
+          "TestModernHDPanelIconsFreezeAndAtomicTheme",
+          "TestModernHDPanelIconsSourcesAndLayout",
+          "TestModernHDRowLabelFreezeAndAtomicTheme",
+          "TestModernHDRowLabelSourcesAndLayout"
+        ],
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-unit-r2.memory.json",
+          "sha256": "85ed78348d8499e06fa7061bc7fcd2e34e4886ee118fbc6253381f125569ec22"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-unit-r2.log",
+          "sha256": "ca906880ebd2719b383c5f1c7ae6b024ea1fb2f7dd0a3097a33361aa2c0c21d9"
+        },
+        "seconds": 147.004,
+        "peak_bytes": 4294967296,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 117,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "kind": "regression-r2",
+        "tests": [
+          "TestModernBattleStatusPreservesUncoveredTextAndFaithfulCache",
+          "TestModernHDItemEmptyAndEquipRollbackKeepSnapshot",
+          "TestModernHDItemEveryTransitionPassHasTranslatedText",
+          "TestModernHDItemOcclusionKeepsExactlyTheOuterArea",
+          "TestModernHDItemSelectionUsesRawSlotsAndKeepsIndexedCache",
+          "TestModernHDPanelRegionsMoveBothTextAndClip",
+          "TestModernHDStatusChurchAndPlayerKeepIndexedTransitions",
+          "TestModernHDStatusSnapshotMatchesLegacyComposition",
+          "TestModernHDStatusTransitionsKeepSnapshotAndIndexedCache",
+          "TestNativeChurchPanelLifecycleMatches17AEDSchedules",
+          "TestNativePlayerStatusTwoPagesWaitForDrawAndRestore"
+        ],
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-regression-r2.memory.json",
+          "sha256": "7ee04924ef32236279a9fcbff154e6baaf005bf92eb33f36c3aa5e5006793b4d"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-regression-r2.log",
+          "sha256": "2e26f258049d7a1245f61432406239b080cc356261783c1b0302c753dd47192a"
+        },
+        "seconds": 38.676,
+        "peak_bytes": 1300672512,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "kind": "transaction-r2",
+        "tests": [
+          "TestModernHDPlayer9FrozenInputMatchesSnapshot",
+          "TestModernHDPreparationStableFramesRestoreNativeAssets",
+          "TestModernHDTimedDialogueCoverageMatchesNativeSnapshots",
+          "TestModernHDTimedDialogueFreezeAndAtomicRejection",
+          "TestNativeDeathRewardDiscardCommitsOnlyAfterItemPanelClose",
+          "TestNativeDeathRewardFullInventoryNoAndEscapeRemainAtomic",
+          "TestNativeDeathRewardMissingProvenanceFailsClosedWithoutMutation",
+          "TestNativeDeathRewardSelectorCancelAndSequentialQueue"
+        ],
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-transaction-r2.memory.json",
+          "sha256": "a72fdb594a1cac35b873f94d1eefba4c5a4f241f4d888290719d8ceb08c3ed7f"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-transaction-r2.log",
+          "sha256": "bba19f4c56ad401b19ac6f911df6e3e59a643ca60057b5eefe98c2d93d3a59f7"
+        },
+        "seconds": 50.19,
+        "peak_bytes": 1294336000,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "kind": "status-r1",
+        "tests": [
+          "TestModernHDItemPanelStatusGameGPU"
+        ],
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-status-r1.memory.json",
+          "sha256": "35303d1a8646177d117761e090051a4eb0825a9ac2c62b65cb7468b3a6e4b530"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-status-r1.log",
+          "sha256": "eb979e1f5db6a71677092e7f70cf8e2ed88a8793d7d3a3c3248c288130999a7b"
+        },
+        "seconds": 293.079,
+        "peak_bytes": 5052145664,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "kind": "game-r2",
+        "tests": [
+          "TestModernHDFullRewardGameGPU"
+        ],
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-game-r2.memory.json",
+          "sha256": "fe347d4170acac6554c4f3a614b0430495e6b00c4a7fe9d88f2a653798234347"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-game-r2.log",
+          "sha256": "ce595cc5f4d70867b5ef6de90297db783a68ba34d4431f8f12798dab83459393"
+        },
+        "seconds": 362.332,
+        "peak_bytes": 8589934592,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 651,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "kind": "save-r1",
+        "tests": [
+          "TestCampaignSaveLoadRestoresTownBoundaryAndParty",
+          "TestWriteSaveFileReplacesCompleteJSONAtomically"
+        ],
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-save-r1.memory.json",
+          "sha256": "d488e26562e616cd5ced0af22ecd3c842f39e36740de2c47990e13706e6d371f"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-save-r1.log",
+          "sha256": "12524c9ce8a1e9ea7d4641e1e9aa46671667d5ce5c3205cf6a23734f8ff4b63b"
+        },
+        "seconds": 8.588,
+        "peak_bytes": 561618944,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "kind": "private-unit-r1",
+        "tests": [
+          "TestModernHDDialogueChromeSourceAndPatch",
+          "TestModernHDItemPanelChromeFreezeAndStaging",
+          "TestModernHDItemPanelChromeSourceAndGeometry",
+          "TestModernHDItemPanelValuesFreezeAndAtomicTheme",
+          "TestModernHDItemPanelValuesSourcesAndBounds",
+          "TestModernHDPanelIconsAssetLoader",
+          "TestModernHDPanelIconsFreezeAndAtomicTheme",
+          "TestModernHDPanelIconsSourcesAndLayout",
+          "TestModernHDRowLabelFreezeAndAtomicTheme",
+          "TestModernHDRowLabelSourcesAndLayout"
+        ],
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-private-unit-r1.memory.json",
+          "sha256": "e00435fa58cf259805712931462b1f72113d98acfeeec82ec2c086031cd9f42f"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-private-unit-r1.log",
+          "sha256": "7e008e4a3814a2c63b4147781a02916abd81815f0b713ce87bc847bbd577c128"
+        },
+        "seconds": 89.715,
+        "peak_bytes": 3523723264,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      {
+        "kind": "empty-command-green-r2",
+        "tests": [
+          "TestModernHDRowLabelFreezeAndAtomicTheme",
+          "TestModernHDStatusSnapshotKeepsEmptyCommandCache",
+          "TestModernHDStatusTransitionsKeepSnapshotAndIndexedCache",
+          "TestNativeChurchPanelLifecycleMatches17AEDSchedules",
+          "TestNativePlayerStatusTwoPagesWaitForDrawAndRestore"
+        ],
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-empty-command-green-r2.memory.json",
+          "sha256": "c68bf591666e878b0c0ebc969f59ccc3a96119d1180035d69eab3efa22944b71"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-empty-command-green-r2.log",
+          "sha256": "ac6c814f58027dbcb47d7749deeb26bbf57dbf77e75e99f81cf788e09748f3e8"
+        },
+        "seconds": 20.545,
+        "peak_bytes": 1307545600,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      }
+    ],
+    "independent_checks": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-game-independent-r1.json",
+        "sha256": "e119fde9c8531cb981a324c78b0e7af0822ddf4fa32dff1eacfbecf19c4f0a12"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-status-independent-r1.json",
+        "sha256": "98d6496dc7de63195edd50a42bd681c2fc43a2be6e8e559393ed48ab0426c8bc"
+      }
+    ],
+    "private_sync": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-private-sync-r1.json",
+      "sha256": "ac366c06c6b1de16b36fed29ce38733bdc0878aef50fd466c1a29c20ddb319a8"
+    },
+    "formal_coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-formal-coverage-r1.json",
+      "sha256": "bab6c9a9f34fa5b3c97efb05a7a9f7f5c87f8b2c229cb8e5e80c0edece76fcc0"
+    },
+    "summary": {
+      "distinct_top_level_go_tests": 34,
+      "top_level_pass_executions": 48,
+      "game_frames": 291,
+      "status_frames": 41,
+      "bank_samples": 3,
+      "captures": 31,
+      "icon_pixels": 1542672,
+      "unchanged_pixels": 62969328,
+      "receipt_rejections": 19,
+      "old_picture_rejections": 2,
+      "independent_runtime_files": 6072,
+      "catalog_assets": 851,
+      "private_files": 7063,
+      "catalog_rejection_checks": 12
+    },
+    "receipts": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-game-r2-capture/receipt.json",
+        "sha256": "ad9e15855a19865404b943299f20e456a69ccaa9ff3134baa233493e89d747b9"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-status-r1-capture/receipt.json",
+        "sha256": "b1b5a740bb09805a2c303024b23faf134bb7e6cea4302d6db2e8eefd934e3c45"
+      }
+    ],
+    "limits": [
+      "原生布局、record欄位及交易保持；新圖示是明示手繪美術近似。",
+      "受控Game.Draw與補樣不新增原版oracle、自然取得狀態或平台完成聲明。",
+      "整段GPU觸8GiB且memory.events.max非零，OOM／kill為零；正式執行效能另驗。",
+      "暫停前game-r1由使用者停止，未列通過；normal-r1／r2為啟動前參數錯誤，不列產品缺陷。"
+    ],
+    "empty_command_snapshot": {
+      "issue": 279,
+      "status": "FIXED-UNIT-AND-NORMAL-GUI-PASS",
+      "cause": "NativeCommandIDs回傳非nil空清單；append到nil的快照將[]轉null，既有JSON封存簽章因此誤拒。",
+      "fix": "以slices.Clone保留空清單表示，不刪除或放寬來源守衛。",
+      "source": {
+        "file": "remake/cmd/fd2/modern_hd_panel_transition.go",
+        "sha256": "121a55701463dbd650c1cce499aadf4d60be09bae1504a09c44f1e985bf83924"
+      },
+      "before_normal_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-normal-r3.log",
+        "sha256": "6cc975915402c034e722d8808ff295ea2bfd99875b6f58700297e810417b40b3"
+      },
+      "regression_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-empty-command-green-r2.log",
+        "sha256": "ac6c814f58027dbcb47d7749deeb26bbf57dbf77e75e99f81cf788e09748f3e8"
+      },
+      "regression_memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-empty-command-green-r2.memory.json",
+        "sha256": "c68bf591666e878b0c0ebc969f59ccc3a96119d1180035d69eab3efa22944b71"
+      }
+    },
+    "final_source_snapshot": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-sources-final-r1.json",
+      "sha256": "88e4bced8e27dacd5d1f23d1f9f81b87bc4d4b03ee3a7bc565a85f695aa8d55c"
+    },
+    "normal_gui": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-normal-r4-capture/receipt.json",
+        "sha256": "cbd960d3fea78f187737180d3a49c032300502c87c937747056c936c24ed3fdc"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-normal-r4.memory.json",
+        "sha256": "9018ee9a4a7734789583ddb18f9c9a9e895865858bba083db91b81e6c367a6bf"
+      },
+      "source_save_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "binary_sha256": "6402a845e5e42e28cf74b80c8973fca7302f199dc2165b2c94f787eb76bd1cef",
+      "screenshots": 34,
+      "natural_attack_return": true,
+      "source_save_bytes_equal": true,
+      "theme_save_bytes_equal": true,
+      "new_process_title_load": true,
+      "scope": "正常標題LOAD既有普通START／F5首章JSON，Z聚焦、Home檢視、F2、狀態與命令、返回；含普通走行、指令環、取消、2場physical演出與正常戰場返回。含經驗對話中F9。不注入座標或狀態，不宣稱原版對拍或完整戰役。",
+      "independent": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-normal-independent-r2.json",
+        "sha256": "3f8f2cb2aba9ca3292d3328e18b0d25458d19dc47e20d386ec2ec7255bc272b7"
+      }
+    },
+    "readme_overview": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-readme-r1.json",
+      "sha256": "c065a4ef59b72d69ffa51ade9e13f47bb31314103b86569f03f1fd2f582e330e"
+    },
+    "private_git_commit": "fc70c3cdc0f0e35024c977f4fdcab0b8d09923ba"
+  },
+  "hd1_release_integration_20261026": {
+    "status": "IN-PROGRESS",
+    "user_request": "先完成HD1的接線，作為正式版",
+    "source_branch": "feat/hd-panel-icons-20261026",
+    "base_commit": "ea4fb3bdc78ea61e90b4ad8db7f90187c4a0cb9e",
+    "release_ready": false,
+    "active_slice": "共用面板十個HD圖示已整合；正常玩家抽測依item_panel_icons_hd_followup_20261026.normal_gui",
+    "components": [
+      {
+        "component": "人物、頭像、戰鬥動畫與場景既有圖源",
+        "status": "已接範圍沿61及目前主收據；集中正常／人工仍需收斂"
+      },
+      {
+        "component": "物品／狀態面板圖示",
+        "status": "CONFORMED-SCOPED/RUNTIME-E1",
+        "evidence_key": "item_panel_icons_hd_followup_20261026"
+      },
+      {
+        "component": "完整HUD與其餘操作介面",
+        "status": "PARTIAL，仍有原生圖樣與未列caller"
+      },
+      {
+        "component": "既有方格視角其餘地形",
+        "status": "PARTIAL，僅已登錄稀疏HD槽可宣稱接入"
+      },
+      {
+        "component": "正常玩家、保存冷讀、效能及平台",
+        "status": "既有切片保持；HD1正式版尚未集中驗收"
+      },
+      {
+        "component": "新增工具列控制",
+        "status": "既有主題／四語可用，其餘尚待；是否列為本版發行門檻待使用者決定"
+      },
+      {
+        "component": "HD2斜角主題及海報",
+        "status": "保留既定設計，這輪優先HD1"
+      }
+    ],
+    "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+    "issues": [
+      4,
+      201,
+      202,
+      204,
+      263
+    ],
+    "release_scope_pending": "新增工具列控制是否須與HD1正式版同時完成，已用共同決策提問；不阻塞既有HD1接線。"
   }
 }

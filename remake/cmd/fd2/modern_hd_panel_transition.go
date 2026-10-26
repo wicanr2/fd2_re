@@ -3,6 +3,7 @@ package main
 import (
 	"image"
 	"image/color"
+	"slices"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
@@ -31,8 +32,8 @@ func snapshotNativeStatusTransition(source []byte, data *nativeUnitStatusData, k
 	d.data.record = append([]byte(nil), data.record...)
 	d.data.base = append([]byte(nil), data.base...)
 	d.data.itemRows = append([]byte(nil), data.itemRows...)
-	d.data.commandIDs = append([]int(nil), data.commandIDs...)
-	d.data.commandBook = append([]battle.NativeCommandRecord(nil), data.commandBook...)
+	d.data.commandIDs = slices.Clone(data.commandIDs)
+	d.data.commandBook = slices.Clone(data.commandBook)
 	return d
 }
 

@@ -4423,6 +4423,36 @@
         ],
         "pattern": "ItemPanelUpper\\.Pixels\\[70\\*223\\+100\\]"
       }
+    },
+    {
+      "id": "separated-ui-loaders-receive-ui-root",
+      "date": "2026-10-26",
+      "area": "分離素材載入",
+      "rule": "分離素材載入器的根目錄依其內部join與既有caller確認，再傳入同層目錄。LoadSeparatedItemPanelEntries接收ui根目錄，不接已附加fdother_005_item_panel的子目錄。入口remake/internal/fdother/separated_item_panel.go及remake/cmd/fd2/modern_hd_item_panel_icons.go。",
+      "why": "HD圖示載入器已用完整子目錄讀resource.json，卻把相同子目錄傳給自行附加子目錄的既有API，造成路徑重複。只改caller傳filepath.Dir(dir)，原素材與正式規則不變。",
+      "evidence": "docs/knowledge-base/61-modern-theme-runtime-spec.md；HD主收據item_panel_icons_hd_followup_20261026",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/modern_hd_item_panel_icons.go"
+        ],
+        "pattern": "LoadSeparatedItemPanelEntries\\(filepath\\.Dir\\(dir\\)\\)"
+      }
+    },
+    {
+      "id": "frozen-snapshot-preserves-empty-slices",
+      "date": "2026-10-26",
+      "area": "HD介面快照",
+      "rule": "凍結簽章包含切片表示時，快照用slices.Clone保留nil與非nil空切片，並複製底層資料。不要用append到nil將合法空清單轉為null，也不要放寬來源守衛。入口remake/cmd/fd2/modern_hd_panel_transition.go及TestModernHDStatusSnapshotKeepsEmptyCommandCache。",
+      "why": "Unit.NativeCommandIDs對無法術角色回傳非nil空清單，狀態面板先預檢封存後，快照將[]轉為nil；JSON簽章因此拒絕未變的角色。正常首章Home抓到此缺陷，受控測試因有指令9未觸及。",
+      "evidence": "GitHub #279；HD主收據item_panel_icons_hd_followup_20261026",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/modern_hd_panel_transition.go"
+        ],
+        "pattern": "commandIDs = slices\\.Clone\\(data\\.commandIDs\\)"
+      }
     }
   ]
 }

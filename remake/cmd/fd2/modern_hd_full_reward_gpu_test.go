@@ -403,6 +403,7 @@ func TestModernHDFullRewardGameGPU(t *testing.T) {
 	d["item_panel_chrome"], d["item_panel_chrome_pixels"] = true, p.itemChromePoints
 	d["item_values"], d["item_values_pixels"] = true, p.itemValuesPoints
 	d["row_labels"] = true
+	d["panel_icons"] = len(set.uiPanelIcons) == 10
 	raw, _ := json.MarshalIndent(d, "", "  ")
 	if err := os.WriteFile(filepath.Join(out, "receipt.json"), append(raw, '\n'), 0644); err != nil {
 		t.Fatal(err)

@@ -25,6 +25,7 @@ type modernStoryPortraitFrame struct {
 }
 
 type modernStoryPortraitSet struct {
+	uiPanelIcons      map[int]*modernUIPanelIcon
 	skyKeyFD34        *modernSkyKeyHDBank
 	skyKeyANI         *modernSkyKeyHDBank
 	mapStages         map[int]*modernMapStageHD
@@ -46,6 +47,7 @@ type modernStoryPortraitSet struct {
 }
 
 type modernThemeAsset struct {
+	NativeRawCell        modernLMIHDDescriptor      `json:"native_raw_cell"`
 	MasterFile           string                     `json:"master_file"`
 	SourceFiles          []string                   `json:"source_files"`
 	SourceSHA256         []string                   `json:"source_sha256"`
@@ -109,6 +111,13 @@ func loadModernStoryPortraitSet(catalogPath, packRoot string) (*modernStoryPortr
 	}
 	hdPortraits := make(map[int]image.Image)
 	for _, asset := range catalog.Assets {
+		if asset.Role == "native_ui_icon_hd" {
+			if err := loadModernUIPanelIcon(set, asset, packRoot); err != nil {
+				return nil, err
+			}
+			set.hasHD = true
+			continue
+		}
 		if asset.Role == "story_animation_hd_set" {
 			if err := loadModernSkyKeyHDAsset(set, asset, packRoot); err != nil {
 				return nil, err
@@ -401,6 +410,9 @@ func loadModernStoryPortraitSet(catalogPath, packRoot string) (*modernStoryPortr
 	}
 	if len(set.portraits) == 0 {
 		return nil, errors.New("modern theme catalog has no story portrait")
+	}
+	if len(set.uiPanelIcons) != 0 && len(set.uiPanelIcons) != 10 {
+		return nil, errors.New("modern HD panel icon group is incomplete")
 	}
 	if len(set.facilityScenes) != 0 && len(set.facilityScenes) != 6 {
 		return nil, errors.New("modern facility scene group is incomplete")

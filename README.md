@@ -104,7 +104,11 @@
 
 ![物品加成與指令消耗字樣的HD呈現](docs/figures/hd-item-row-labels.png)
 
-物品列表的+AP／+DP／+HP／+MP與指令頁的-MP已直接HD繪字，沿用清晰狀態標籤、血條及細框，保留原位置與滑入滑出裁切。四格為受控流程的完整遊戲畫面半縮；數字與頭像沿既有HD來源。分類／裝備圖示及完整介面仍待。來源與範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
+物品列表的+AP／+DP／+HP／+MP與指令頁的-MP已直接HD繪字，沿用清晰狀態標籤、血條及細框，保留原位置與滑入滑出裁切。四格為受控流程的完整遊戲畫面半縮；數字與頭像沿既有HD來源。分類／裝備圖示的現況見下圖，其他介面仍待。來源與範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
+
+![HD1物品分類、裝備與角色狀態圖示](docs/figures/hd-item-panel-icons.png)
+
+分類、裝備與角色狀態圖示已接入HD1，保留原版位置、選取與開收框。上排是首章普通讀檔後的索爾狀態及悠妮指令頁；下排是分類／狀態補樣與滿背包物品選擇的受控畫面。四格均保留完整畫面並半縮。普通攻防、F2、保存與重開讀檔已抽驗；完整HD1的其他地形、HUD與介面仍在整合，尚未發行新版。來源與範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
 
 ![滿背包確認選項的四語HD字型與細框](docs/figures/hd-full-inventory-confirmation-locales.png)
 

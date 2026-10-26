@@ -83,9 +83,15 @@ func (g *Game) ensureModernHDItemPanelChrome(d *nativeUnitStatusData, palette co
 		g.loadErr = err.Error()
 		return false
 	}
+	icons, err := prepareModernHDItemPanelIcons(d, palette, g.modernStoryPortraits, values, rows)
+	if err != nil {
+		g.loadErr = err.Error()
+		return false
+	}
 	d.itemChrome = frame
 	d.itemValues = values
 	d.rowLabels = rows
+	d.itemIcons = icons
 	return true
 }
 
@@ -100,6 +106,7 @@ func (g *Game) preflightModernHDItemPanel(d *nativeUnitStatusData, palette color
 	}
 	var values *modernHDItemPanelValues
 	var rows *modernHDItemRowLabels
+	var icons *modernHDItemPanelIcons
 	if g.font != nil {
 		values, err = prepareModernHDItemPanelValues(d, palette, g.font)
 		if err != nil {
@@ -111,10 +118,16 @@ func (g *Game) preflightModernHDItemPanel(d *nativeUnitStatusData, palette color
 			g.loadErr = err.Error()
 			return false
 		}
+		icons, err = prepareModernHDItemPanelIcons(d, palette, g.modernStoryPortraits, values, rows)
+		if err != nil {
+			g.loadErr = err.Error()
+			return false
+		}
 	}
 	d.itemChrome = art
 	d.itemValues = values
 	d.rowLabels = rows
+	d.itemIcons = icons
 	return true
 }
 
@@ -151,11 +164,16 @@ func (g *Game) appendModernHDItemPanelChrome(d *nativeUnitStatusData, regions []
 		for i := range panels {
 			if panels[i].chrome == &d.itemChrome.frames[1] {
 				panels[i].values = d.itemValues
+				if d.itemIcons != nil {
+					panels[i].values = d.itemIcons.upper
+				}
 			}
 			if panels[i].chrome == &d.itemChrome.frames[2] && d.rowLabels != nil {
 				panels[i].values = d.rowLabels.items
 				if commands {
 					panels[i].values = d.rowLabels.commands
+				} else if d.itemIcons != nil {
+					panels[i].values = d.itemIcons.items
 				}
 			}
 		}
@@ -172,6 +190,7 @@ func (g *Game) stageModernHDItemPanels(set *modernStoryPortraitSet) (func(), err
 		art    *modernHDItemPanelChrome
 		values *modernHDItemPanelValues
 		rows   *modernHDItemRowLabels
+		icons  *modernHDItemPanelIcons
 	}
 	var staged []pending
 	add := func(data *nativeUnitStatusData, palette color.Palette) error {
@@ -181,14 +200,18 @@ func (g *Game) stageModernHDItemPanels(set *modernStoryPortraitSet) (func(), err
 		art, err := prepareModernHDItemPanelChrome(data, palette)
 		var values *modernHDItemPanelValues
 		var rows *modernHDItemRowLabels
+		var icons *modernHDItemPanelIcons
 		if err == nil && g.font != nil {
 			values, err = prepareModernHDItemPanelValues(data, palette, g.font)
 			if err == nil {
 				rows, err = prepareModernHDItemRowLabels(data, palette, g.font)
 			}
+			if err == nil {
+				icons, err = prepareModernHDItemPanelIcons(data, palette, set, values, rows)
+			}
 		}
 		if err == nil {
-			staged = append(staged, pending{data, art, values, rows})
+			staged = append(staged, pending{data, art, values, rows, icons})
 		}
 		return err
 	}
@@ -222,6 +245,7 @@ func (g *Game) stageModernHDItemPanels(set *modernStoryPortraitSet) (func(), err
 			item.data.itemChrome = item.art
 			item.data.itemValues = item.values
 			item.data.rowLabels = item.rows
+			item.data.itemIcons = item.icons
 		}
 	}, nil
 }

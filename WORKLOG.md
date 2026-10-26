@@ -3776,3 +3776,45 @@ README新增物品、金錢、關框及返回四格實圖，原文化入口與�
 - GitHub #4／201／202／204／263只更新前兩段進度，原說明後段各9／8／9／10／10段、acceptance／evidence／verify、標籤與OPEN狀態逐張讀回相同。官方解析器重建25項，18項待人判、0項機器訊號消失；359教訓／217守衛通過。私人庫本機及遠端main皆為377197837c6566d553ca2895335becba1067b482且乾淨，無新素材同步需求。
 - [本批清理](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-row-label-cleanup-r1.json)將16份相同PNG合併為硬連結，釋放11816960配置bytes，39路徑內容SHA保持。未產生錄影或留存測試執行檔，保留現用Go快取；所有FD2容器皆有界、--rm、init、UID1000及network none，沿既有映像，收尾沒有非預期FD2容器。
 - 本批重大且已驗證的更新提交／推送main後另核對本機與遠端HEAD。分類／裝備及角色狀態圖示、其他介面／地形、HD2、獨立UI／theme、工具列其餘控制及全部HD串接後集中正常／人工／音訊／平台驗收仍待；完整目標保持。
+
+## 2026-10-26 暫停HD與清理舊素材鏡像
+
+- 依使用者「本週先這樣，先暫停」指示，完整HD目標已設paused。狀態GPU恰好自然完成，293.079秒／5052145664 bytes，memory.events皆零；整段物品GPU由本次docker stop停止，退出143，沒有最終收據，不列產品signal killed或OOM。沒有啟動後續驗證、私人同步、提交或推送。
+- 暫停前的新圖示工作保存在feat/hd-panel-icons-20261026，基底main為ea4fb3bdc78ea61e90b4ad8db7f90187c4a0cb9e。imagegen內建工具依原版產生[八圖母稿](remake/generated-assets/modern-theme-prototypes/item-panel-icons-hd6-master-20261026-r1.png)，SHA-256為5508cb81f19e8d273dad44f3c039931bad2d7daa88f218de8ac49fc9dc988662；[提示詞摘要](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-prompt-r1.txt)與十張六倍圖示保留。正式清冊仍841項，851項候選與程式未定版，私人庫未更新。
+- 單元十項、介面十一項、交易八項、狀態GPU一項與保存兩項已通過。來源單元峰值觸4GiB、max=117、OOM／kill零，不推論平台餘裕。新載入器曾將素材子目錄再傳入會自行附加子目錄的API，依實際ui根契約修正後通過，教訓已記錄。完整限制與恢復步驟見[暫停交接](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-paused-20261026.json)，[命令](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-commands-paused-20261026.json)及27份來源快照保持。使用者恢復後，整段流程須用全新game-r2輸出；獨立PNG、正式清冊／私人保存、README／工單及提交仍待。
+- 清理沿既有work/，沒有新建workplace同義目錄。前兩個廣域計畫達有界逾時，未據此刪檔；實際改按445個已停用的pack／runtime／runtime-only鏡像目錄逐段處理，每個目錄先完整保存連結清冊再刪除。正式資產對這些目錄的依賴為零，原始資料、正式交付及目前新圖工作保留。
+- 清除1222913個PNG符號連結，[r3逐筆稽核](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/space-cleanup-pause-20261026-r3-audit.tsv.gz)保存原路徑及目標；[r3腳本](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/space-cleanup-pause-20261026-r3.py)的setup／clean／verify提供分段進度及核對。另刪40份與私人正式包逐SHA相同的實體PNG副本，[r4稽核](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/space-cleanup-pause-20261026-r4-audit.jsonl.gz)保存原SHA、大小與還原來源，[r4腳本](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/space-cleanup-pause-20261026-r4.py)提供相同三入口。獨有或不同內容的實檔不刪。
+- [保護清冊](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/space-cleanup-pause-20261026-r3-protected.json)3827份逐大小及SHA核對通過，兩批已刪路徑與40份保留來源亦複查通過。若要重跑舊鏡像，先於Docker使用[還原工具](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/space-cleanup-pause-20261026-restore.py)的--directory work/原鏡像相對目錄列出數量，再加--apply；只還原指定目錄，衝突或來源SHA不同時拒收。私人來源須唯讀掛為/private。
+- 已停止的專案Go編譯快取用維護中Go容器執行go clean -cache，由841564160降至12288配置bytes；下次恢復重新編譯。模組下載與現用Docker工具映像保留，沒有全域prune或清理其他專案。
+- 相同GNU du命令量測，專案實體配置由43009339392降至37383409664 bytes，淨減5625929728 bytes，約5.63GB，目前實體占用約37.38GB。含硬連結重複計算的檔案總大小為57548999890 bytes，約57.55GB。數值為收尾摘要寫入前量測，摘要與腳本僅增加少量記錄；[最終摘要](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/space-cleanup-pause-20261026-final.json)保存命令口徑與結果。
+- 清理容器均有界、--rm、init、UID1000及network none。工作根未見root-owned檔案或意外.md目錄，私人素材庫仍乾淨，沒有非預期FD2容器。所有未提交HD變更保持；目標維持paused，清理不代表恢復HD工作。
+
+## 2026-10-26 繼續合併重複工作資料
+
+- 依使用者「繼續刪除重複的」指示，只清理舊工作資料，HD目標維持paused。路由載入`~/.codex/knowledge-base/local/project-document-responsibilities.md`，沿用本檔及既有work輸出目錄，未修改正式清冊、私人素材庫或GitHub工單，沒有提交／推送。
+- [可重跑腳本](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/space-duplicates-20261026-r5.py)先以大小、檔首尾篩選，再逐SHA-256確認。掃描work內至少4096 bytes的圖片、歷史報告、紀錄及音畫等檔案；排除符號連結、已共用inode的副本、快取、程式來源、執行檔，以及名稱含save／state／overlay／manifest／catalog的可變資料與原保護清冊。初次較窄盤點未套用，最後按擴查後清冊處理。
+- [計畫](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/space-duplicates-20261026-r5-plan.json)共1519組、2023份重複副本。逐份再核對雜湊、大小、擁有權、權限及修改時間，將多餘儲存以原子替換合併成硬連結；所有路徑保留。主要節省來自46份相同contradictory-evidence.json及重複截圖。[逐筆稽核](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/space-duplicates-20261026-r5-audit.jsonl)保留來源、原mtime、大小與SHA。舊證據若需再寫入，先複製成獨立檔案，或使用全新輸出目錄，避免修改共用inode。
+- [核對結果](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/space-duplicates-20261026-r5-verified.json)為PASS：2023個替換路徑仍存在且與保留來源共用inode，1519組SHA及3827份受保護檔案逐份通過。GNU du實體配置由37383794688降至36337438720 bytes，實際淨減1046355968 bytes，約1.05GB，目前約36.34GB；計畫、稽核及摘要也計入實測。
+- 全部工作在既有素材工具Docker映像執行，--rm、init、network none、UID1000、1GiB、2CPU、pids-limit128及有界逾時。收尾檢查FD2容器與輸出擁有權，保留原本未提交HD變更。未重新啟動HD或遊戲測試。
+
+## 2026-10-26 第三輪重複副本清理
+
+- 依使用者「再做一輪」指示，沿用文件職責路由、既有work目錄與3827份保護清冊。HD維持paused，沒有修改正式程式、清冊或私人素材庫，沒有提交／推送。第一次純Python盤點55秒逾時，未改檔；改用容器內find分目錄盤點後正常完成。
+- [r6腳本](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/space-duplicates-20261026-r6.py)補查上輪未涵蓋的小型檔案、舊matching編譯／連結／反組譯輸出及jsonl。extracted與remake/generated-assets僅作保留來源，替換目標全在work，原始遊戲org_game及正式交付未納入。快取、資料庫、存檔／狀態／覆蓋層及目前圖示工作仍排除。
+- [計畫](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/space-duplicates-20261026-r6-plan.json)確認29002組、161570份逐SHA相同副本，來源與目標須同裝置、擁有權及權限。先完整保存並fsync[還原清冊](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/space-duplicates-20261026-r6-audit.jsonl.gz)，再分兩批以原子替換合併成硬連結，分別136888及24682份；中斷後以inode判定進度，不將僅列在清冊視為已完成。所有舊路徑保留，未跟隨符號連結。這些歷史輸出維持唯讀；需重跑時使用新目錄，需修改既有檔案時先複製成獨立檔案。
+- [驗證](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/space-duplicates-20261026-r6-verified.json)PASS：161570個路徑與保留來源共用inode，29002組SHA及3827份保護檔案逐份一致。GNU du實體配置由36337455104降至35291066368 bytes，含本輪計畫與稽核後，淨釋放1046388736 bytes，約1.05GB；目前約35.29GB。
+- 沿用既有素材工具映像，容器均--rm、init、UID1000、network none、1GiB／2CPU／pids-limit128及有界逾時。收尾檢查輸出UID/GID、意外root-owned檔案與FD2容器；未重啟HD測試，原有未提交工作保留。
+
+## 2026-10-26 恢復HD1正式接線與共用面板圖示
+
+- 使用者指定恢復HD1，先完成接線作正式版。依現有重製技能、規格閘門及正常玩家試玩路由恢復，唯一狀態表為HD主收據`hd1_release_integration_20261026`。HD2既定方向保留，新增工具列控制是否須隨HD1首版完成已提單一範圍問題；既有接線照常推進。完整HD1仍未完成，沒有修改版號、tag或Release。
+- 暫停前27份程式來源SHA一致，沿用已通過的單元／介面／交易／保存與狀態GPU收據；以全新game-r2完成使用者曾停止的物品五分支。十個raw53／54／55／56／57／59..63圖示進正式清冊851項，保留原生分類、裝備、旗標、座標及移動裁切，不重開RE。正式資料與完整結果見主收據`item_panel_icons_hd_followup_20261026`，規格61改CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI。
+- 選定34項不同頂層Go測試共48次通過，含私人實際包直接載入；受控五分支291畫格、狀態41畫格與三補樣通過。31PNG獨立核對1542672個圖示像素及矩形外62969328像素；19收據反例、兩張真實舊圖示及12個清冊反例拒收。物品GPU362.332秒、峰值8GiB、max=651、OOM／kill零，狀態GPU293.079秒／5052145664 bytes；單元曾觸4GiB，不能推論平台餘裕。
+- 正常GUI前兩次在啟動遊戲前因我設定不合法的採樣數及repetitions退出，不列產品缺陷。第三輪真的抓到[#279](https://github.com/wicanr2/fd2_re/issues/279)：Unit.NativeCommandIDs回傳非nil空陣列，snapshotNativeStatusTransition的append到nil複製將[]變null，rowLabels封存簽章因而誤拒。起初將其描述為舊快照殘留，後以直接資料流更正為空表示改變。改用slices.Clone保留兩種指令切片表示，不刪或放寬來源守衛。
+- 新回歸最初漏帶HD主題環境，兩個診斷輪次的nil錯誤不作修法證據；修正測試環境後，無指令及空commandBook、舊來源拒收、狀態快照／兩頁與教會生命週期五項通過。教訓新增為空切片快照規則，361條／219守衛通過；十四Python清冊回歸通過。字串盤點另補登先前已發布的十個LV／EX／MU／DX／HIT／EV／AP／DP／HP／MP中點縮寫為player_visible，122候選完整綁定，最終Go來源重建SHA一致。
+- [正常r4收據](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-normal-r4-capture/receipt.json)沿既有普通START／F5首章JSON，標題LOAD、走行／指令環／取消、兩場攻防、經驗對話中F9、Home無／有法術兩頁、F2、縮窗／說明頁、自然返回與保存／新程序LOAD通過；來源與兩主題保存bytes保持。34張主要擷取，388.105秒、峰值4950855680 bytes，6GiB限制下events全零。章前來源沿既有SHA，不注入座標或狀態，不新增完整章節或原版對拍聲明。
+- [正常視窗獨立核對](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-normal-independent-r2.json)四張圖的480頭像與頭徽共1021824像素逐來源一致。核對器起初把隊伍序號1當DATO1，改依實際游標下單位battle_fig導出0及9後通過，沒有改圖或放寬像素要求。[README總覽來源](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-readme-r1.json)上排用普通面板，下排用受控分類／旗標與滿背包，完整畫面半縮，原提示及來源頭像保持；不以總覽宣稱完整HD1。
+- 私人包7052舊檔SHA與mtime逐份保持，只新增十成品與一母稿，合計7063檔／6072獨立runtime；白名單同步及直接載入通過。私人提交fc70c3cdc0f0e35024c977f4fdcab0b8d09923ba已推送並核對遠端main，與公開引擎分開保存。公開庫只新增總覽、清冊／來源SHA及程式，不加入完整素材。
+- 已同步56／57／58／61、README及五張HD工單#4／201／202／204／263。工單只更新目前摘要與過期verify說明，原id／acceptance／evidence、標籤與OPEN狀態讀回一致。#279驗證後關閉，提交後補連結。官方解析器更新25項，18項待人判、0項機器訊號消失；3011個修改文件本地連結通過。最終程式來源見[來源快照](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-sources-final-r1.json)。
+- 全部工作沿既有Docker映像，UID1000、network none、有界預算與--rm／init；GUI背景程序由容器擁有，收尾沒有FD2容器或意外root-owned檔案。沒有錄影，[核雜湊後移除舊測試執行檔](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/item-panel-icons-cleanup-r1.json)，保留目前r4與必要收據。前面清理的3827份保護SHA是恢復HD前的快照；後續清理須依目前來源重建，不能把這輪合法修改誤判為檔案毀損。
+- 本批重大且已驗證的接線將提交／合入main並核對遠端。其餘HD1地形、HUD及操作介面、工具列新增控制與集中正常／人工／平台仍依唯一狀態表推進，不宣稱HD1正式版已發行。

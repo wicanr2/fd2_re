@@ -47,6 +47,7 @@ func (p *itemPanelStatusGPUProbe) drawRowLabelBank(screen *ebiten.Image) {
 	for _, g := range []*Game{p.g, p.control} {
 		d := *data
 		d.itemChrome, d.itemValues, d.rowLabels = nil, nil, nil
+		d.itemIcons = nil
 		status, ok := d.compose(d.assets, false)
 		if !ok {
 			p.err = fmt.Errorf("bank native item composition unavailable")
@@ -105,9 +106,22 @@ func (p *itemPanelStatusGPUProbe) drawRowLabelBank(screen *ebiten.Image) {
 		p.err = fmt.Errorf("bank HD row owner unavailable")
 		return
 	}
-	without := *prior
-	without.items, without.commands = nil, nil
-	owner.rowLabels = &without
+	priorIcons := owner.itemIcons
+	iconControl := os.Getenv("FD2_HD_PANEL_ICON_GPU") == "1"
+	if iconControl {
+		if priorIcons == nil {
+			p.err = fmt.Errorf("bank HD icon owner unavailable")
+			return
+		}
+		without := *priorIcons
+		without.upper, without.items = owner.itemValues, owner.rowLabels.items
+		owner.itemIcons = &without
+	} else {
+		without := *prior
+		without.items, without.commands = nil, nil
+		owner.rowLabels = &without
+		owner.itemIcons = nil // Recompose the combined layer without row labels.
+	}
 	p.g.Draw(screen)
 	p.final.Clear()
 	presentation.DrawFinalScreen(p.final, screen, geometry)
@@ -116,6 +130,7 @@ func (p *itemPanelStatusGPUProbe) drawRowLabelBank(screen *ebiten.Image) {
 	beforeFile := name + "-before.png"
 	err := save(beforeFile)
 	owner.rowLabels = prior
+	owner.itemIcons = priorIcons
 	if err != nil || state != itemPanelStatusGPUState(p.g) {
 		p.err = fmt.Errorf("bank control changed state or PNG failed: %v", err)
 		return
@@ -153,6 +168,15 @@ func (p *itemPanelStatusGPUProbe) drawRowLabelBank(screen *ebiten.Image) {
 	}
 	regions, _ := nativeChurchPanelRegions(0)
 	p.bankRows = append(p.bankRows, map[string]any{"phase": name, "capture": file, "before_capture": beforeFile, "before_sha256": fmt.Sprintf("%x", beforeDigest), "row_label_commands": commands, "regions": regions, "row_label_fields": fields, "row_label_record": fmt.Sprintf("%x", data.record), "row_label_command_ids": data.commandIDs, "f2_roundtrip": true, "native_control_unchanged": true, "final_sha256": fmt.Sprintf("%x", digest)})
+	bank := p.bankRows[len(p.bankRows)-1]
+	bank["control_kind"] = "HD-without-row-labels"
+	if iconControl {
+		bank["control_kind"] = "HD-without-panel-icons"
+	}
+	if err := addPanelIconFrameMetadata(bank, data, commands); err != nil {
+		p.err = err
+		return
+	}
 	p.g.nativePlayerStatus, p.control.nativePlayerStatus = nil, nil
 	p.bankIndex++
 }
@@ -164,6 +188,9 @@ func addRowLabelFrameMetadata(row map[string]any, data *nativeUnitStatusData, co
 	}
 	row["row_label_fields"] = fields
 	row["row_label_commands"] = commands
+	if err := addPanelIconFrameMetadata(row, data, commands); err != nil {
+		return err
+	}
 	if data != nil {
 		row["row_label_record"] = fmt.Sprintf("%x", data.record)
 		row["row_label_command_ids"] = data.commandIDs

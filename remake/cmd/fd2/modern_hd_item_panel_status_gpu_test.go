@@ -231,6 +231,10 @@ func TestModernHDItemPanelStatusGameGPU(t *testing.T) {
 	if os.Getenv("FD2_HD_ROW_LABEL_GPU") == "1" {
 		for i := 0; i < 3; i++ {
 			data := mixedHDRowLabelData(t, g.nativePlayerStatus.data)
+			if os.Getenv("FD2_HD_PANEL_ICON_GPU") == "1" {
+				data.record[6] = byte(i % 2)
+				data.record[37], data.record[38], data.record[39] = 1, 1, 1
+			}
 			if i == 2 {
 				for slot := 0; slot < 8; slot++ {
 					data.record[10+2*slot] = 0x80
@@ -252,6 +256,7 @@ func TestModernHDItemPanelStatusGameGPU(t *testing.T) {
 	report := map[string]any{"status": "PASS-ITEM-PANEL-STATUS-HD-RUNTIME-E1", "rows": p.rows, "frames": len(p.rows), "f2_roundtrips": p.f2, "chrome_pixels": p.points, "chrome_source": p.colors, "normal_player_verified": false, "native_seed": 7, "fixed_clock_unix": 1000, "command_mask": []int{0, 2, 0, 0, 0}, "command_book_source": "State.NativeCommandBook[9] from existing player9StageGame fixture", "map_index": 23}
 	report["item_values"], report["item_values_pixels"] = true, p.valuePoints
 	report["row_labels"], report["row_label_banks"] = true, p.bankRows
+	report["panel_icons"] = len(set.uiPanelIcons) == 10
 	raw, _ := json.MarshalIndent(report, "", "  ")
 	if err := os.WriteFile(filepath.Join(out, "receipt.json"), append(raw, '\n'), 0644); err != nil {
 		t.Fatal(err)

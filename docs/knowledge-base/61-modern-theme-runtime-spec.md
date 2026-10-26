@@ -1,5 +1,28 @@
 # 61 — 現代美術主題正式執行期規格
 
+## HD1正式版整合
+
+使用者2026-10-26指定恢復HD1，先完成接線，再作正式版。現況集中於[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`hd1_release_integration_20261026`；HD2既定設計保持，這輪優先既有方格視角的HD1。完整地形、HUD、其餘操作介面及集中玩家／平台驗收仍有缺項，不以單一圖示切片代表正式版已完成。新增工具列控制是否列為本版發行門檻，另待使用者決定，既有接線照常推進。
+
+## 共用面板分類／裝備與狀態圖示HD（CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI）
+
+沿已閉合0x17FC0、0x184C0及NativeItemPanelDataPlanFor／NativeItemSelectorCells，只替換可見圖示。固定EXE與原包沿[參考清單](../data/fd2-reference-files.json)；分離FDOTHER#5的resource.json為SHA-256 a547f2f593b980fd9c1b269d1ba95be8727562d7ed31b44015615775d991efd3。原始raw53／54為29×24，55／56／57／59／60／61／62／63為24×20，已逐PNG及實際色盤核對；未定義的58不假設存在。不賦予旗標或頭徽新的玩法語意。
+
+- raw53／54依record+6是否為零選擇，目的(101,30)。raw55／56／57沿record+37／+38／+39非零時顯示，目的(194,68)、(229,68)、(264,68)。分類圖示沿原生緊密排列及原始flags，目的(LabelX-29,LabelY-2)；59／60／61保留武器、護甲、袋子的辨識，62／63沿原有裝備旗標使用紅底。其他索引及不合法裝備狀態不猜補規則。
+- 使用imagegen內建工具依原版產生一張八圖透明母稿；兩頭徽、三個狀態符號及劍／護甲／袋子維持原輪廓、方向與主色。裝備版本共用同一母稿物件，只依原始紅／藍底色分開編譯。十張輸出各為原生尺寸六倍，限定原矩形，三目標像素細框及完整不透明底圖。繪圖與材質為明示美術近似，不宣稱原生逐像素一致。
+- 清冊新增native_ui_icon_hd角色，逐圖記錄native_raw_cell的index／width／height／pixels_sha256、FDOTHER.DAT資源5、固定metadata SHA、輸出file／SHA及母稿來源。consumer_contract為native_raw_ui_icon_hd6_v1，layout_policy為native_raw_cell_rect_hd6，alpha_contract為opaque。十索引必須整組齊全，路徑、重複、尺寸、SHA、來源改寫及透明圖拒收；完全沒有新角色的舊主題保留原圖。正式檔經清冊驗證後同步唯一私人庫。
+- 共用面板資料封存record、itemRows、實際raw圖格、色盤及HD素材簽章。上框圖示合成到既有標籤／血條補繪，下框分類合成到既有加成字樣補繪；共用原生完整座標、位移、裁切與遮擋，指令頁不殘留物品圖示。完整預檢後才發布owner或F2主題；像素模式、輸入、數值、RNG與保存格式保持。
+- 驗十來源、兩頭徽、三非零旗標、五分類／裝備圖、八槽兩欄／空槽壓縮及空列；缺件、變造、超界與原子F2有反例。完整Game.Draw沿五分支物品及狀態／指令流程，加明示typed補樣覆蓋兩頭徽與三旗標、F2、原生控制及JSON保存冷讀。獨立PNG按原始規則導出圖示位置，對已登錄HD PNG核對內容及矩形外保持，舊像素圖須被拒收。
+- 補樣、素材處理與重製端測試限定RUNTIME-E1，不新增自然取得、正常玩家、原版oracle或平台完成聲明。全部HD接入後集中造型／一般玩家／音訊／平台驗收的排程保持。
+
+入口為[圖示編譯器](../../tools/build_fd2_hd_item_panel_icons.py)、既有[原生資料consumer](../../remake/internal/battle/native_item_panel_data_render.go)及[來源／規則計畫](../../remake/internal/battle/native_item_selector.go)。清冊與來源核對沿[現代主題驗證器](../../tools/validate_modern_theme_catalog.py)，私人白名單同步沿[同步工具](../../tools/sync_modern_theme_private.py)。
+
+正式接點為[圖示載入及共用補繪](../../remake/cmd/fd2/modern_hd_item_panel_icons.go)，來源、排列及原子拒收沿[圖示測試](../../remake/cmd/fd2/modern_hd_item_panel_icons_test.go)。完整遊戲由[既有驅動](../../tools/verify_fd2_reward_message_hd.py)的panel-icon-unit／panel-icon-status／panel-icon-game重跑；[獨立PNG工具](../../tools/verify_fd2_hd_item_panel_icons.py)使用--receipt、--previous、--catalog、--pack、--original-pack、--assets-root及全新--output，可加--self-test。完整容器命令、來源與目前分層由HD主收據item_panel_icons_hd_followup_20261026索引。
+
+十圖已進正式清冊並同步私人保存，舊素材逐SHA與mtime保持。受控物品五分支、狀態／指令頁、八槽分類／裝備及三旗標補樣通過；獨立PNG核對圖示本身與矩形外畫面，實際舊圖示及變造收據拒收。實際私人包直接載入及原子切換通過。唯一數量、記憶體事件與正常玩家抽測依[58](58-fd2-exe-re-coverage.md)新列及同一主收據；不將受控補樣提升為自然取得狀態。
+
+正常首章來源經標題LOAD、普通走行／攻防、Home狀態、指令頁、F2、退出與保存冷讀通過。此路徑抓到[#279](https://github.com/wicanr2/fd2_re/issues/279)：無法術角色的非nil空commandIDs經append到nil複製後改變JSON封存簽章。快照改用slices.Clone保留空表示，原來源守衛保持；空commandBook及既有狀態生命週期回歸通過。獨立工具可加`--normal-receipt`，從實際游標下單位的battle_fig導出DATO，不以隊伍順序代替頭像索引。正常收據與受控補樣分級保存，不新增完整章節、原版oracle或平台聲明。
+
 
 ## 物品加成與指令消耗縮寫HD（CONFORMED-SCOPED／RUNTIME-E1）
 

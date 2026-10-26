@@ -42,6 +42,7 @@ func mixedHDRowLabelData(t *testing.T, source *nativeUnitStatusData) *nativeUnit
 	d := *source
 	d.record = append([]byte(nil), source.record...)
 	d.itemChrome, d.itemValues, d.rowLabels = nil, nil, nil
+	d.itemIcons = nil
 	var err error
 	d.itemRows, err = battle.LoadNativeItemEffectRowPrefix(assetPath("assets/data/native_item_effect_rows.json"))
 	if err != nil {
@@ -171,5 +172,39 @@ func TestModernHDRowLabelFreezeAndAtomicTheme(t *testing.T) {
 		}
 		// Each malformed case gets independent asset maps next time.
 		base, palette, f = itemPanelValuesTestSource(t)
+	}
+}
+
+func TestModernHDStatusSnapshotKeepsEmptyCommandCache(t *testing.T) {
+	for _, emptyBook := range []bool{false, true} {
+		t.Run(map[bool]string{false: "loaded-book", true: "empty-book"}[emptyBook], func(t *testing.T) {
+			base, palette, f := itemPanelValuesTestSource(t)
+			d := mixedHDRowLabelData(t, base)
+			d.commandIDs = (&battle.Unit{}).NativeCommandIDs()
+			if emptyBook {
+				d.commandBook = make([]battle.NativeCommandRecord, 0)
+			}
+			g := &Game{font: f, nativeUIPalette: palette, modernStoryPortraits: &modernStoryPortraitSet{hasHD: true}}
+			if !g.preflightModernHDItemPanel(d, palette) {
+				t.Fatal("empty command panel preflight", g.loadErr)
+			}
+			cached := d.rowLabels
+			transition := snapshotNativeStatusTransition(make([]byte, 64000), d, nativeStatusOpening, false)
+			if !g.ensureModernHDItemPanelChrome(&transition.data, palette) {
+				t.Fatal("unchanged empty command snapshot rejected", g.loadErr)
+			}
+			if transition.data.rowLabels != cached || cached.commands != nil || len(transition.data.commandIDs) != 0 {
+				t.Fatal("snapshot changed empty commands or discarded frozen art")
+			}
+			g.nativePlayerStatus = &nativePlayerStatusState{data: d, text: transition}
+			publish, err := g.stageModernHDItemPanels(&modernStoryPortraitSet{hasHD: true})
+			if err != nil || publish == nil {
+				t.Fatal("theme staging rejected empty command owner", err)
+			}
+			publish()
+			if transition.data.rowLabels != cached {
+				t.Fatal("theme staging replaced unchanged row cache")
+			}
+		})
 	}
 }

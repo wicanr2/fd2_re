@@ -20,6 +20,7 @@ type nativeUnitStatusData struct {
 	itemChrome             *modernHDItemPanelChrome
 	itemValues             *modernHDItemPanelValues
 	rowLabels              *modernHDItemRowLabels
+	itemIcons              *modernHDItemPanelIcons
 }
 
 func (d *nativeUnitStatusData) compose(assets battle.NativeItemPanelDataAssets, commands bool) ([]byte, bool) {
