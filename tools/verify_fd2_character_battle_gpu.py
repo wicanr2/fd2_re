@@ -10,6 +10,46 @@ from validate_modern_theme_catalog import validate
 from verify_fd2_ares_battle_gpu import matches
 
 
+def verify_normal_counter(found, samples, rows, figure, scenes):
+    """PNG proves the pose; the same owner's two audit boundaries prove the role."""
+    by_file = {sample['file']: sample for sample in samples}
+    confirmed = []
+    for match in found:
+        if match['resource'] != figure*3+1 or match['frame'] <= 0:
+            continue
+        sample = by_file[match['file']]
+        before, after = sample['before'], sample['after']
+        if not all(state.get('battle_scene') and state.get('hd_battle')
+                   and state.get('battle_phase') == 'counter'
+                   and state.get('battle_target_fig') == figure
+                   and isinstance(state.get('battle_actor_fig'),int)
+                   and state.get('battle_actor_fig') != figure for state in (before, after)):
+            continue
+        initiator=before['battle_actor_fig']
+        if initiator!=after['battle_actor_fig']:
+            continue
+        camps=lambda state,fig:{unit.get('camp') for unit in state.get('units',[]) if unit.get('battle_fig')==fig}
+        if not all(camps(state,initiator)=={2} and camps(state,figure)=={0} for state in (before,after)):
+            continue
+        owner = before.get('battle_owner')
+        if not owner or owner != after.get('battle_owner'):
+            continue
+        observed = [row for row in rows if row.get('battle_owner') == owner
+                    and row.get('battle_phase') == 'counter' and row.get('hd_battle') is True
+                    and row.get('battle_target_fig') == figure
+                    and row.get('battle_actor_fig') == initiator
+                    and any(layer.get('archive','') in ('','FIGANI.DAT')
+                            and layer.get('resource') == figure*3+1
+                            for layer in row.get('battle_source_layers') or [])]
+        if observed:
+            confirmed.append({**match, 'battle_owner': owner,
+                              'initiator_figure': initiator, 'initiator_camp': 2,
+                              'counter_figure': figure, 'counter_camp': 0, 'audit_rows': len(observed)})
+    if not all(any(match['scene'] == scene for match in confirmed) for scene in scenes):
+        raise ValueError('缺同owner正常反擊的PNG與原始audit證據')
+    return confirmed
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--figure', type=int, required=True)
@@ -26,7 +66,13 @@ def main():
     p.add_argument('--original-pack',type=Path)
     p.add_argument('--player-toolbar',action='store_true',
                    help='有完整工具列收據時，將1272高原視窗精確取下方1200遊戲區再核對')
+    p.add_argument('--require-counter',action='store_true',help='end取樣另要求同owner反擊角色與實際攻擊PNG')
+    p.add_argument('--counter-self-test',action='store_true',help='以本份正例核對反擊角色／階段／主題等變造反例')
     args = p.parse_args()
+    if args.require_counter and args.sample_group != 'end':
+        raise SystemExit('反擊核對只接受正常END取樣')
+    if args.counter_self_test and not args.require_counter:
+        raise SystemExit('反擊反例需要--require-counter')
     occluded=None
     if args.proven_occlusion:
         if args.original_pack is None or args.inventory is None:raise SystemExit('遮擋排除需要原始包及固定盤點')
@@ -315,6 +361,49 @@ def main():
             'helper_sha256':digest(Path(__file__).with_name('verify_fd2_compound_caster_gpu.py')),
             'minimum_visible_core_pixels':1000,'source_sha_and_clip_verified':True}
         report['scope']='明示fixture沿固定來源排除前景alpha／mask實際遮住的點；可見核心至少1000，RGB門檻保持。'+report['scope']
+    if args.require_counter:
+        audit_path=args.receipt.parent/'input-audit-first-process.jsonl'
+        if not audit_path.is_file():
+            raise SystemExit('缺正常GUI首程序原始audit')
+        rows=[json.loads(line) for line in audit_path.read_text().splitlines() if line.strip()]
+        try:
+            counter=verify_normal_counter(found,samples,rows,args.figure,scene_names)
+        except ValueError as error:
+            raise SystemExit(str(error))
+        rejected=[]
+        if args.counter_self_test:
+            from copy import deepcopy
+            for fault in ('body-phase','wrong-target','wrong-owner','idle-only','missing-audit','native-theme','missing-initiator','friendly-initiator'):
+                bad_samples=deepcopy(samples)
+                bad_found=found
+                bad_rows=rows
+                for sample in bad_samples:
+                    if fault=='body-phase':
+                        sample['before']['battle_phase']=sample['after']['battle_phase']='body'
+                    elif fault=='wrong-target':
+                        sample['before']['battle_target_fig']=sample['after']['battle_target_fig']=args.figure+1
+                    elif fault=='wrong-owner':
+                        sample['after']['battle_owner']='wrong-owner'
+                    elif fault=='native-theme':
+                        sample['before']['hd_battle']=sample['after']['hd_battle']=False
+                    elif fault=='missing-initiator':
+                        sample['before'].pop('battle_actor_fig',None)
+                        sample['after'].pop('battle_actor_fig',None)
+                    elif fault=='friendly-initiator':
+                        for state in (sample['before'],sample['after']):
+                            for unit in state.get('units',[]):
+                                if unit.get('battle_fig')==state.get('battle_actor_fig'):unit['camp']=0
+                if fault=='idle-only':bad_found=[match for match in found if match['resource']==args.figure*3]
+                if fault=='missing-audit':bad_rows=[]
+                try:
+                    verify_normal_counter(bad_found,bad_samples,bad_rows,args.figure,scene_names)
+                except ValueError:
+                    rejected.append(fault)
+                else:
+                    raise SystemExit('反擊反例未拒收：'+fault)
+        report['normal_counter']={'status':'PASS-NORMAL-COUNTER-SCOPED','matches':counter,
+            'audit_sha256':digest(audit_path),'rejected_mutants':rejected,
+            'scope':'正常END中由對方主動攻擊引發的反擊；PNG核實攻擊姿勢，兩側觀測與首程序audit只辨識角色與owner，不要求觀測frame等於GPU畫格。'}
     args.report.write_text(json.dumps(report, ensure_ascii=False, indent=2)+'\n')
     print(json.dumps({'status': report['status'], 'figure': args.figure, 'matched_pngs': len({x['file'] for x in found})}))
 

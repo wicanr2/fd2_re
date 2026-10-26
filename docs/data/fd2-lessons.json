@@ -4517,8 +4517,8 @@
     {
       "id": "gui-actor-identity-is-action-scoped",
       "area": "正常選人驗證",
-      "rule": "指定原生角色只套用本次施術或攻擊，戰後保存前沿原可選角色集合聚焦。Z不選已行動角色，不能讓全域角色參數覆蓋戰後focus_own(0)。入口tools/verify_fd2_hd_fonts_gui.py的focus_own(index, identity=None)及--battle-own-identity。",
-      "why": "音速刃已完成並自然返回後，蜜蒂Acted為true。工具仍在戰後強制用Z選她，導致保存前失敗；將identity只傳給施術呼叫後，同程式與來源完成保存冷讀。",
+      "rule": "指定原生角色只套用本次施術或攻擊。戰後保存前沿正式Z選人，不固定選索爾或剛行動的角色；Z不選已行動角色。入口tools/verify_fd2_hd_fonts_gui.py的focus_own(index, identity=None)、--battle-own-identity及battle_only收尾。",
+      "why": "音速刃已完成並自然返回後，蜜蒂Acted為true。工具仍在戰後強制用Z選她，導致保存前失敗；將identity只傳給施術呼叫後，同程式與來源完成保存冷讀。 2026-10-27正常反擊抽驗改由索爾主攻後，固定focus_own(0)也因Acted而失敗；收尾改成正式Z鍵，保留同程式／來源／seed後完整保存冷讀通過。",
       "guard": {
         "kind": "present",
         "paths": [
@@ -4527,7 +4527,7 @@
         "pattern": "focus_own\\(args\\.battle_own_index,args\\.battle_own_identity\\)"
       },
       "date": "2026-10-26",
-      "evidence": "HD主收據command30_normal_gui_followup_20261026"
+      "evidence": "HD主收據command30_normal_gui_followup_20261026及normal_counter_followup_20261027"
     },
     {
       "id": "audit-command-id-comes-from-typed-schedule",
@@ -4543,6 +4543,14 @@
       },
       "date": "2026-10-26",
       "evidence": "HD主收據command30_normal_gui_followup_20261026"
+    },
+    {
+      "id": "cleanup-ledger-before-mutation",
+      "date": "2026-10-27",
+      "area": "工作區清理",
+      "rule": "清理前先保存待刪項目的路徑、大小與SHA，再逐項變動並立即保存執行結果；衛生檢查失敗時保留已執行狀態，不只依賴記憶體清冊。入口為WORKLOG.md及docs/data/fd2-modern-hd-battlefield-20261019.json各批cleanup欄位。",
+      "why": "本批失敗PNG與audit清理後，衛生檢查跟隨既有斷鏈而中斷，尚未落盤的刪除清冊遺失；只能由原觀測與capture log部分補回，未知SHA明示未還原。有效收據及原始素材保持。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#battle_performance_followup_20261027"
     }
   ]
 }

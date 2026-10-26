@@ -1,5 +1,68 @@
 # 61 — 現代美術主題正式執行期規格
 
+## 戰鬥代表性效能觀測（CONFORMED-SCOPED／OBSERVATION-ONLY，效能未通過，2026-10-27）
+
+沿已鎖版Ebiten 2.6.6的`ActualFPS`及`ActualTPS`契約，加入預設關閉的`FD2_PERFORMANCE_REPORT=<全新JSONL路徑>`，GUI驗證指定絕對路徑。未設定時使用原本的`modernHDPresentation`；設定時以轉接器原樣呼叫Update、Draw、Layout與DrawFinalScreen，從loadGame完成後每秒記錄更新／Draw／最終繪製次數、API頻率、各繪製場景計數及實際間隔。關閉程序時保留最後不足一秒的樣本，IO失敗明示，不能覆寫既有檔案。輸出不讀寫玩法、亂數、保存或主題狀態。
+
+Ebiten的ActualFPS是交換buffer頻率，官方註解提醒部分環境的垂直同步會令數值不可靠；ActualTPS及本轉接器的實際計數分開報告。Draw回傳也不代表GPU全部完成，不以CPU提交耗時宣稱GPU延遲。使用正常GUI既有存檔、固定seed、實際鍵盤及HD／F2路徑，收據核對程式／來源／工具雜湊、相同玩法與保存結果。首段啟動、讀圖冷載入與穩態分列；含截圖、audit、Xvfb及軟體GPU的結果標示其開銷，不推論三平台硬體效能。正式觀測與來源入口由HD主收據索引，依目前資料決定是否還有需修正的卡頓。
+
+正式觀測接點為[效能轉接器](../../remake/cmd/fd2/performance_trace.go)與[窗口／失敗測試](../../remake/cmd/fd2/performance_trace_test.go)。[既有正常GUI工具](../../tools/verify_fd2_hd_fonts_gui.py)加`--performance`，各程序建立不同JSONL，停止後才封存`performance-manifest.json`。[獨立核對器](../../tools/verify_fd2_battle_performance.py)使用`--gui --manifest --binary --gui-tool --out`，可加`--self-test`；核來源SHA、兩程序時間窗、場景與實際計數，分開啟動五秒、後續及純物理窗口。不過濾慢窗口，也不把格式通過當作流暢度通過。程序由SIGTERM關閉時不保證末段不足一秒的樣本，已寫出的完整窗口逐SHA保存。
+
+兩項觀測窗／覆寫／IO失敗測試與兩輪正常攻防均通過，實際反擊PNG、F2、自然返回、保存及冷讀保持；來源與命令由[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`battle_performance_followup_20261027`索引。新增原碼後，來源清冊亦以目前程式重生，案例內容與前次相同。密集動畫PNG與關閉連續PNG兩輪在2CPU／Xvfb／llvmpipe下皆觀測到低頻，唯一數量及記憶體依[58](58-fd2-exe-re-coverage.md)。第二輪另開回收紀錄，不用兩輪差值宣稱唯一原因。CPU與軟體GPU負載待profile定位，效能門檻尚未通過；本機未具`/dev/dri`，不宣稱硬體GPU或三平台驗收。
+
+## 正常END反擊取樣（CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI，2026-10-27）
+
+沿現有物理owner、`physicalBattleAuditSources`及GUI工具的`--battle-end-art`，以目標人物攻擊圖庫`targetBattleFig*3+1`及`battle_phase=counter`辨識反擊。既有第1章指令0正常GUI原始audit用於定位敵96對我方4的反擊，目前程式的實圖與同owner原始audit另經下述核對。
+
+重用該輪保存的章前JSON，SHA-256為`089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2`，來源沿既有建槽紀錄，不宣稱未修改自然難度。固定`FD2_SEED=1`，原字節LOAD、普通END至多兩輪、只讀擷取figure4的待機／攻擊來源，每幀至多兩張。接續正常攻擊、返回、F2、章節邊界保存及新程序標題LOAD；原始audit、PNG、來源／程式／catalog指紋分別核對。
+
+觀測與PNG可跨相位，圖源以實際圖像核心核對，不能單憑audit的frame宣稱PNG為同幀。受擊與反擊的狀態轉移另依原始audit保留。這一輪只補正常按鍵證據，不改來源、章內狀態、規則、演出或保存格式；完整戰鬥與集中人工仍循原驗收。
+
+目前實圖、來源與完整命令集中於[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`battle_performance_followup_20261027`；`normal_counter_followup_20261027`保留觀測器加入前的有效收據及原碼快照。沿[GUI工具](../../tools/verify_fd2_hd_fonts_gui.py)的`--battle-end-art --battle-end-figures 4 --battle-end-samples-per-frame 2`，搭配`--battle-status --world --battle-hd --battle-only --battle-node battle_ch01 --battle-repetitions 1 --battle-art --battle-art-samples 32 --battle-approach-rounds 2 --battle-min-approach-rounds 1 --battle-own-index 0 --battle-target-figure 96`，給既有binary／assets／original-pack／modern-pack／town-save及全新絕對out。固定來源、seed及正式程式，正常反擊、普通攻擊與自然返回、F2、兩主題保存bytes與新程序標題LOAD均通過。章節邊界保存不宣稱保留戰中位置、Acted或敵方HP。
+
+[人物PNG核對器](../../tools/verify_fd2_character_battle_gpu.py)使用`--figure 4 --core-profile blue --sample-group end --require-counter --counter-self-test`及receipt／catalog／source／全新report。實際PNG須有反擊人物攻擊圖源的可見核心，前後觀測須為同一owner與counter階段、敵方發動及我方反擊，首程序原始audit另佐證相同角色與來源。八項角色／階段／owner／主題／缺證據反例拒收；不要求audit畫格等於PNG。唯一數量與資源限制依[58](58-fd2-exe-re-coverage.md)。
+
+初輪正式攻防已返回，但測具強制選索爾；當時索爾已行動，原生Z只選可行動者，因而錯報失敗。`battle_only`戰後改沿原生Z選取，指定角色只作用於攻擊；同binary、來源、seed及輸入策略乾淨重跑通過。此為GUI斷言修正，不改正式選人規則。代表性正式繪製效能與集中造型仍待，不能用軟體擷取總耗時或無OOM代替。
+
+正式快取owner另由[AST盤點器](../../tools/audit_fd2_battle_owners.go)核對：在既有Go映像內執行`go run /repo/tools/audit_fd2_battle_owners.go -root /repo -observed <來源觀測.json> -physical-normal <正常反擊核對.json> -out <全新報告.json>`。它讀`syncModernHDBattleOwner`的實際登錄與各建構器的發布，包含明示return轉接；缺owner、錯建構器及缺物理證據拒收。此結構清單只定位正式快取接點，不推論其他地圖owner、所有參數組合或正常可達性。盤點結果與三項反例亦由同一主收據索引。
+
+## 戰鬥HD正式消費端清冊（CONFORMED-SCOPED／CONTROLLED-SOURCE-AUDIT，2026-10-27）
+
+沿既有物理、普通指令、24／29／30及32～35正式排程與已閉合圖源，不新增原版行為推論。固定FD2.EXE仍依來源清單的SHA-256 `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`；FIGANI、FDOTHER、BG與TAI的來源雜湊由原版分離包manifest及來源清單核對。清冊的目的，是把正式建構器實際產生的HD來源連到已登錄資產，不能由資產齊全倒推正式入口完成。
+
+- 測試使用既有明示狀態與固定亂數的fixture，直接呼叫正式job建構器，匯出各階段的來源命名空間、資源／畫格、原生尺寸、位置、位移、裁切、填色、層序及來源像素／遮罩雜湊。空archive依正式分派記為FIGANI.DAT；FDOTHER同號資源不得混用。
+- 獨立核對器讀原版metadata、原版PNG與正式catalog，再核對每項來源與實際HD成品的雜湊、尺寸及登錄狀態。缺件逐項列出，不用關閉守衛、猜圖源或略過來源的方式變成通過。
+- 報告分開受控建構、GPU呈現與正常玩家證據。未抽樣的角色／分支、其他地圖owner、正常可達性及人工造型仍列未證明；此清冊不取代既有Game.Draw、音效節拍、F2、存讀檔與平台收據。
+- 工具與完整觀測留在既有工作根；正式消費端清冊由受版控工具重生並登記58及工單#263。驗收包括真實來源的命名空間／尺寸／雜湊核對，以及錯資源、缺HD登錄、錯畫格與錯來源雜湊反例。
+
+本切片只新增驗證與唯讀清冊，不改正式規則、排程、來源選擇、原生回退或保存格式。代表案例的清冊通過不宣稱全部戰鬥HD完成。
+
+正式入口為[受控匯出測試](../../remake/cmd/fd2/modern_hd_consumer_inventory_test.go)、[獨立核對器](../../tools/verify_fd2_battle_hd_consumers.py)及[生成清冊](../data/fd2-battle-hd-consumers.json)。Go測試在既有Go1.22.12映像的`remake/`內，以有界Xvfb、4GiB／2CPU／PID256、唯讀原版資料及`FD2_ASSET_PACK=/original`執行`go test -json ./cmd/fd2 -run '^TestModernHDBattleConsumerInventory$' -count=1 -timeout=360s`；`FD2_HD_CONSUMER_INVENTORY_OUT`須給全新絕對路徑。使用者原版目錄另唯讀掛至`/repo/org_game/炎龍騎士團/FLAME2`，供既有fixture取FDOTHER／FDTXT／BG／TAI，不改原檔。之後以Pillow映像執行核對器，給`--observed --original-pack --modern-pack --out --self-test`。預載`sourceFrames()`不當作分段絕招完整畫格；24／29／30沿正式owner逐拍取得`modernFrame()`，物理與召喚則明示為正式建構器預建來源。
+
+兩次固定輸入重播逐位元組一致，原始描述子座標／delay／raw欄位、像素、遮罩及實際HD成品核對通過。動畫遮罩依正式loader轉0／1，靜態背景保留0／255；packed轉色從原版母圖獨立計算。原全透明台座另列，不虛構HD成品。最初archive清冊已由下節擴充地圖尾段；非archive文字、Base內像素、整幅地形／HUD及正常可達性不由此宣稱完成。唯一數量依58及生成清冊，現行來源、命令與診斷依HD主收據`battle_consumer_map_inventory_followup_20261027`；較早的archive-only紀錄保留為歷史。
+
+### 召喚地圖尾段清冊擴充（CONFORMED-SCOPED／CONTROLLED-SOURCE-AUDIT，2026-10-27）
+
+沿既有`modernHDCompoundMapSource`、`stageModernHDCompoundMap`及四種正式召喚建構器。對原先沒有戰鬥archive來源的畫格，另觀測凍結地圖來源、LMI1覆蓋層及人物遮罩來源，不把另一呈現路徑誤列成缺圖，也不由非空`hdMap`宣稱HD已實際呈現。
+
+- 每個來源先走既有scene與frame seal核對，保存原生畫面雜湊、階段、LMI1資源／entry／位置／層序及原始pixels雜湊；人物遮罩記錄同一selector cache解出的group、實際cycle與原生sprite雜湊。動畫與LMI1分開命名空間，不能因同為FDOTHER而混用。
+- 獨立端沿既有LMI1來源核對器從固定raw重解，再對正式catalog的`native_lmi_frames`及實際HD PNG核對。原生人物來源依FDICON.B24分離包核對，遮罩HD圖依相同group／frame選取。凍結地圖的地形及一般HUD不由此擴充成全數驗收。
+- 四種召喚另重跑既有`TestModernCompoundMapAllSources`，核實際完整主題預備、原生畫面重建、HD覆蓋層及缺件原子拒收。清冊記錄受控來源驗證，既有GPU及正常玩家收據仍分開；缺LMI、錯型別、錯entry、錯來源像素及缺人物HD均須拒收。
+
+本擴充仍只改驗證工具與清冊，不改正式資料格式、來源選擇、交易、時序或保存；原有整體完成閘門保持。
+
+重跑既有`TestModernCompoundMapAllSources`時，給`FD2_HD_COMPOUND_MAP=1`、`FD2_HD_COMMAND_PANEL_OWNER=32`至`35`、`FD2_TEST_MODERN_EFFECT_CATALOG`、`FD2_TEST_MODERN_EFFECT_PACK`與全新`FD2_HD_COMPOUND_MAP_REPORT`，四種各一個有界程序。四份完整主題收據均通過原生重建、預備、狀態／RNG保持及缺件拒收，所列LMI覆蓋層沒有原生回退。它們沿既有helper固定原生seed7；來源匯出中35沿fixture的seed1，其餘為7。因此兩組數字圖源都核對，不混稱同狀態數值對拍。獨立核對器以四次`--map-preflight <收據>`一併核對額外字形，直接觀測與預備索引分列。
+
+包含地圖尾段的來源清冊重播仍逐位元組相同。另以既有`TestModernHDCompoundRuntimeGPU`抽驗32：給`FD2_HD_COMPOUND_GPU=1`、`FD2_HD_COMPOUND_MAP=1`、`FD2_HD_COMMAND_PANEL_TEXT=1`、`FD2_HD_PANEL_LOCALE=zh-Hant`及相同完整主題，`FD2_TEST_MODERN_EFFECT_OUT`給全新目錄，Go有界840秒並以既有記憶體觀測器包覆。實際Game.Draw、十階段F2、原始持續時間、一次續行及GPU地圖／面板取樣通過。地圖採確定性網格與已登錄覆蓋層核心核對，容差2；不稱全畫面逐像素對拍。這是既有class19／BattleFig4位置與command32資料經修改的測具，屬RUNTIME-E1，未增加正常玩家或原版動態證據。記憶體接近6GiB上限，未外推平台餘裕。
+
+## 四種美術主題（方向已定案，HD-2D設計DRAFT，2026-10-27）
+
+使用者明示保留「原版／HD／HD2／HD-2D」四種主題。HD2沿既有[定版斜角站姿參考](../figures/fd2-hd2-style-reference.png)及海報設計，HD-2D是另加的第四選項，不把HD2改名或合併。HD1正式接線與目前戰鬥驗收繼續，不因新主題重開已閉合指令。
+
+本節只記錄已確認的四種方向。HD-2D的人物解析度、地景投影、光影與鏡頭尚待可撤回原型比較；不得將候選造型、renderer架構、儲存格式或發行支援當成已定案。正式執行期目前仍只有已接的原版／HD主題，HD2與HD-2D不顯示成已可玩的選項。
+
+操作介面仍獨立選原版／HD，依四主題方向推得目標八組合。介面中的人物圖示、頭像與戰鬥動畫跟隨主題；地圖與HUD指到同一角色時不得混用人物來源。舊兩主題的四組合原型與早先三主題的六組合規劃，只能作各自當時範圍，不代表八組合已驗。主題切換須保留規則、格位、演出進度與存檔；正式拆分與新增接點另待READY規格。
+
 ## 戰場資訊四語內容（CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI，2026-10-26）
 
 沿本檔已閉合的資訊窗來源與原生章號16所對應的第17章分支，不重開反組譯。固定標籤及FDTXT_000/string_0597～0656共60條條件進官方四語pack.json，逐條保留來源ID；譯名沿各語entities.json。條件仍是顯示資料，不能改寫勝敗判定、數值、原生buffer、存檔或十二拍開收。
@@ -440,7 +503,7 @@ README四格由[既有總覽工具](../../tools/build_fd2_battle_panel_gallery.p
 
 ## HD2與雙側海報（風格基準已選定，執行期DRAFT）
 
-使用者明確選定`ui-poster-concept-oct24-r1.png`中間戰場的斜角站立人物及手繪地形，新增獨立HD2美術主題，保留既有HD與原版。操作介面仍為原版／HD；人物圖示、頭像、戰鬥動畫及世界圖源依原版／HD／HD2主題，共六種介面／主題組合。邏輯方格、移動／射程、碰撞與存檔沿既有規則；概念圖不作精確投影或座標契約。
+使用者明確選定`ui-poster-concept-oct24-r1.png`中間戰場的斜角站立人物及手繪地形，新增獨立HD2美術主題，保留既有HD與原版。操作介面仍為原版／HD；人物圖示、頭像、戰鬥動畫及世界圖源依原版／HD／HD2主題，為當時六種介面／主題組合；最新方向已由首節增列HD-2D為八組合。邏輯方格、移動／射程、碰撞與存檔沿既有規則；概念圖不作精確投影或座標契約。
 
 工具列採A頂端浮出、自動隱藏，新的版面以單列精簡選單呈現語系、速度、介面、主題、海報、A+與全螢幕。原三列HTML原型只保留為較早的控制測試，不能證明單列正式工具列、HD2或海報已接入。海報選擇與遊戲主題分開，提案包含關閉、第一組HD與第二組原稿重繪。
 
@@ -448,19 +511,19 @@ README四格由[既有總覽工具](../../tools/build_fd2_battle_panel_gallery.p
 
 已產生兩張1672×941概念圖，來源、提示詞、SHA與使用者選定的未修改HD2基準在[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`ui_poster_hd2_followup_20261024`。最新統一入口為[漸層預覽頁](../figures/hd2-posters-preview.html)；[初版雙組圖頁](../../work/hd2-posters-preview.html)保留本機歷史，可選組別、查看及下載圖片。預覽頁只切圖片，沒有連接正式遊戲或遊戲加速。
 
-游標指到敵人時，地圖角色與資訊窗的人物必須依同一主題一致呈現。設計輪次已確認HD世界另畫高解析人物，但UI當時仍直接消費原生`indexedmap.BlitNativeMapHUD`的`HUDUnits`。這項缺接線已依本頁HUD人物切片補齊；本段保留原先定位脈絡。接線須沿原typed selector、人物可顯示條件與idle，不以固定角色頭像覆蓋所有敵人。概念圖右下放大頭像窗屬新介面提案，仍須實作、同狀態與六組合驗證。
+游標指到敵人時，地圖角色與資訊窗的人物必須依同一主題一致呈現。設計輪次已確認HD世界另畫高解析人物，但UI當時仍直接消費原生`indexedmap.BlitNativeMapHUD`的`HUDUnits`。這項缺接線已依本頁HUD人物切片補齊；本段保留原先定位脈絡。接線須沿原typed selector、人物可顯示條件與idle，不以固定角色頭像覆蓋所有敵人。概念圖右下放大頭像窗屬新介面提案，仍須實作、同狀態與首節所定八組合驗證。
 
 後續先建立HD2可重用地形、人物圖源與載入邊界，再處理介面／主題／海報獨立切換及其餘控制。單列浮出輸入所有權與四語主題／語系列依本頁已驗切片。素材及正式消費端未驗證前，本節維持DRAFT；沒有新增Game.Draw、正常玩家或原版對拍完成聲明。
 
 ## 操作介面與人物主題獨立控制（DRAFT，待拆分現行呈現條件）
 
-使用者已明示工具列分成「操作介面：原版／HD」與「主題：原版／HD」。兩者互不改寫，四種組合均須可用。介面中的人物圖示、頭像與戰鬥動畫跟主題選項；不能因操作介面切回原版而回退人物圖源。既有地圖／場景主題範圍不因此縮減。工具列沿先前已選定的頂端浮出、自動隱藏方向。
+使用者已明示工具列分成「操作介面：原版／HD」與獨立的美術主題。主題最新方向為本檔首節的原版／HD／HD2／HD-2D，目標八組合互不改寫。介面中的人物圖示、頭像與戰鬥動畫跟主題選項；不能因操作介面切回原版而回退人物圖源。既有地圖／場景主題範圍不因此縮減。工具列沿先前已選定的頂端浮出、自動隱藏方向。
 
 視覺沿既有原型保留原版藍底及主要配置，以清晰框線、字型與按鈕重繪。依使用者已定案排程，先完成全部HD串接，再集中人工確認。原型使用同一索爾原版DATO_000及已登錄480頭像，原版介面取自保存的重製端索引樣本，HD介面為SVG示意。不是正式遊戲畫面、正常玩家或新原版對拍；沒有播放戰鬥動畫。主題／語系浮出列現況依前節；兩模式拆分、完整HUD與加速仍未完成。
 
 在既有Pillow容器沿[原型建構器](../../tools/build_fd2_toolbar_mm3_prototype.py)，以`--image <既有Game.Draw PNG> --out <既有工作目錄下全新前綴> --display-modes`重生。版面在[HTML來源](../../tools/fd2_toolbar_mm3_prototype.html)，由[瀏覽器檢查器](../../tools/verify_fd2_toolbar_mm3_prototype.mjs)於既有Playwright1.56.1容器核對。F2主題、F4語系與F11介面僅為此原型操作；四語／三字級、四組合、人物圖示獨立性及舊原型回歸已驗，不能提升為正式功能。來源、SHA與概念圖在[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`ui_theme_split_20261024`。
 
-正式實作須先拆分既有HD文字與主題條件，逐項盤點物品／狀態開收框、成功提示、對話及戰鬥面板的人物來源。四組合都須保留原交易、座標、語系、演出進度及存檔；操作介面原版與HD主題同時啟用時，不能因停用HD繪字而跳過人物覆蓋。原版介面沿既有忠實模式與多語呈現，不清除翻譯。本節尚未READY，不接入正式路徑。
+正式實作須先拆分既有HD文字與主題條件，逐項盤點物品／狀態開收框、成功提示、對話及戰鬥面板的人物來源。八組合都須保留原交易、座標、語系、演出進度及存檔；操作介面原版與HD主題同時啟用時，不能因停用HD繪字而跳過人物覆蓋。原版介面沿既有忠實模式與多語呈現，不清除翻譯。本節尚未READY，不接入正式路徑。
 
 ## 狀態法術39份尾段光效（CONFORMED-SCOPED／RUNTIME-E1，2026-10-24）
 

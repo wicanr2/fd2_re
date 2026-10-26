@@ -41,6 +41,7 @@ def main():
     for name in ['binary', 'assets', 'original-pack', 'modern-pack', 'out']:
         parser.add_argument('--'+name, type=Path, required=True)
     parser.add_argument('--town-save', type=Path, help='既有JSON來源槽；原生槽轉普通F5時不需指定')
+    parser.add_argument('--performance', action='store_true', help='各遊戲程序另輸出唯讀頻率觀測，關閉後封存清冊')
     facility = parser.add_mutually_exclusive_group()
     facility.add_argument('--hotel', action='store_true', help='只抽驗旅館固定文字、四槽及保存讀取')
     facility.add_argument('--church', action='store_true', help='抽驗教會即時文字、四語名冊、取消與保存')
@@ -221,6 +222,7 @@ def main():
     alsa.write_text('pcm.!default { type pulse }\nctl.!default { type pulse }\n')
     env['ALSA_CONFIG_PATH']=str(alsa)
     processes,streams,shots,operations=[],[],{},[]
+    performance_paths=[]
     battle_hd_scenes=[]
     battle_art_samples=[]
     battle_end_art_samples=[]
@@ -295,7 +297,13 @@ def main():
 
     def start(items,name,cwd=None):
         stream=(args.out/name).open('w');streams.append(stream)
-        proc=subprocess.Popen(items,env=env,cwd=cwd,stdout=stream,stderr=stream)
+        process_env=env.copy()
+        if args.performance and items[0]==str(args.binary):
+            path=args.out/f'performance-{len(performance_paths)}.jsonl'
+            assert not path.exists()
+            performance_paths.append(path)
+            process_env['FD2_PERFORMANCE_REPORT']=str(path)
+        proc=subprocess.Popen(items,env=process_env,cwd=cwd,stdout=stream,stderr=stream)
         processes.append(proc);return proc
 
     def wait(predicate,timeout=60):
@@ -1134,7 +1142,12 @@ def main():
                     else:break
                     battle_post_dialogue_cleanup.append({'before':state,'after':latest(audit),'key':'Escape','state_injection':False})
                 else:raise AssertionError('普通戰後狀態面板或選取尚未取消')
-                focus_own(0)
+                if args.battle_only:
+                    # The attacker may be Sol. Let the native Z selector choose
+                    # an eligible unit after the action instead of requiring Sol.
+                    key('z');wait(lambda s:not s.get('player_focus'))
+                else:
+                    focus_own(0)
                 wait(lambda s:s.get('hd_world') is True)
                 shot('world-hd-postbattle-before-save' if args.battle_only else 'world-hd-source-reloaded')
                 focused=latest(audit)
@@ -1720,6 +1733,15 @@ def main():
             try:proc.wait(timeout=5)
             except subprocess.TimeoutExpired:proc.kill();proc.wait()
         for stream in streams:stream.close()
+        if args.performance:
+            (args.out/'performance-manifest.json').write_text(json.dumps({
+                'status':'OBSERVATION-ONLY','binary_sha256':digest(args.binary),
+                'gui_tool_sha256':tool_source_sha256,
+                'reports':[{'file':path.name,'sha256':digest(path),'bytes':path.stat().st_size}
+                           for path in performance_paths if path.is_file()],
+                'missing_reports':[path.name for path in performance_paths if not path.is_file()],
+                'scope':'程序停止後封存；SIGTERM不保證最後不足一秒的視窗。Xvfb／llvmpipe／audit與PNG擷取開銷包含在量測內。'
+            },ensure_ascii=False,indent=2)+'\n')
 
 
 if __name__=='__main__':main()

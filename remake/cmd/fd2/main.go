@@ -13236,7 +13236,20 @@ func main() {
 	if g.modernStoryPortraits != nil && g.modernStoryPortraits.hasHD {
 		ebiten.SetWindowSize(modernHDWidth, modernHDHeight+player.toolbarOffset()*3)
 	}
-	if err := ebiten.RunGame(player); err != nil {
+	var runner ebiten.Game = player
+	if path := os.Getenv("FD2_PERFORMANCE_REPORT"); path != "" {
+		trace, err := openPerformanceTrace(player, path)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer func() {
+			if err := trace.Close(); err != nil {
+				log.Print("效能觀測結束：", err)
+			}
+		}()
+		runner = trace
+	}
+	if err := ebiten.RunGame(runner); err != nil {
 		log.Fatal(err)
 	}
 }

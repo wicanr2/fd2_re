@@ -3889,3 +3889,49 @@ README新增物品、金錢、關框及返回四格實圖，原文化入口與�
 - 沒有新增美術包，851項清冊、私人7063檔及私人HEAD保持。#263完整consumer、集中造型與效能等原驗收繼續；#268／269待集中自然度確認，#265合法caller原版oracle未知另列。未發布新版，Goal保持active。
 - 新增十字候選、動作範圍選人及typed排程識別教訓，367條／225守衛通過。核SHA後清掉重建複本、前版程式、重複來源及失敗輪次多餘PNG／audit，共95600006 bytes；保留失敗記憶體／log、末狀態診斷與必要PNG，正式第三輪完整保存。掃描5310個本地連結，本輪無新增缺檔；既有8個舊dist-all缺檔另列，不冒稱全庫連結存在。256個目前路徑UID/GID1000，歷史root-owned 2808個未動，沒有錯型態md目錄。
 - 2026-10-27收尾：實作6ac91c8c附證據後關閉#281，五個父項讀回保持OPEN，原驗收與標籤不變。#263觀測說明回到原戰鬥驗收範圍，未拿介面／工具列擴張完成閘門。官方解析器重生25項快照，18項待人判，零項訊號消失。
+
+## 2026-10-27 四種美術主題與HD-2D原型
+
+- 使用者明示保留原版／HD／HD2／HD-2D四個獨立選項；HD2定版斜角站姿與海報不改名、不合併。操作介面原版／HD獨立，目標八組合。61記錄已確認方向及未定的HD-2D人物、投影、鏡頭與架構，56／57／58同步；正式遊戲仍只有原版／HD，未新增production接點。
+- [可操作原型](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd2d-theme-prototype-20261027-r1.html)並列原像素人物與既有HD人物，地景、鏡頭與光影相同。以既有Playwright映像內Chromium的真實點擊核對四按鈕、1920／1024單列、敵方人物／右下圖示同步、光照與景深；[瀏覽器收據](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd2d-theme-prototype-20261027-r1.browser.json)標DRAFT、game_connected=false、style_confirmed=false。這是示意地景，不是原版地圖、玩法或正式八組合驗收。比較PNG原圖保留1920×1200，另等比例縮1152×720供對話預覽。
+- 來源、圖像雜湊及兩個原型工具留在既有工作根，沒有新增素材清冊或私人包。已展示兩候選並發出單題風格選擇，未以沉默採用建議。HD1與戰鬥驗收沿既定範圍繼續。
+- 主機gh更新#204的四主題／八組合要求，保留其餘驗收、標籤與OPEN狀態，遠端讀回一致；官方解析器重生25項快照並驗證。文件與原型工作留在feat/four-theme-hd2d-prototype，沒有新Release。
+- 收尾核對17個目前檔案UID/GID1000、三張瀏覽器PNG及HTML的SHA一致；工作清單25項／18項待人判／0項訊號消失。diff檢查通過，本批FD2及Playwright一次性容器沒有殘留。未新增錄影，未刪除其他專案容器。
+
+## 2026-10-27 戰鬥HD正式消費端圖源清冊
+
+- 上輪四主題規格及議題有實際更新，本輪回到原持續目標「完成fd2戰鬥動畫HD」。沿重製驗收與規格流程，先在61寫READY，再新增受控正式job匯出器及獨立核對器；沒有改正式交易、排程、素材、存檔或原版回退。
+- [生成清冊](docs/data/fd2-battle-hd-consumers.json)涵蓋物理共／分背景雙側、普通0～9、分段24／29／30與召喚32～35，唯一數量依58。普通與分段從正式owner逐拍取來源，物理與召喚明示預建來源；預載sourceFrames不冒稱完整畫格。分段初始targets以值複製，Go種子與原生seed明示，不把施放後HP當初始狀態。
+- [最終觀測](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-consumers-observed-r4.json)與第二次重播逐位元組相同，SHA為059a6f771901dbeba365c19219f2662f0d3550d470ead471c974f41232078947。兩輪各21個子案例，頂層30.56／44.06秒，4GiB／2CPU／PID256下無SKIP／失敗；不由容器成功推論平台記憶體餘裕。來源樹、正式清冊及原版manifest指紋綁定。
+- 獨立核對原生座標／尺寸／delay／raw4、5、7、像素與遮罩，以及實際HD檔案。414組HD成品及兩組原全透明TAI分列；12種錯命名空間、資源、畫格、像素、遮罩、缺案例、假GPU、缺HD、錯來源碼、指令、packed與描述子反例拒收。召喚地圖尾段、非archive圖層／Base像素、全部角色與分支、正常玩家、GPU最終畫面、人工造型與平台未由本清冊提升。完整戰鬥HD仍未完成。
+- 初版核對器將背景0／255遮罩當成動畫loader的0／1，另未區分全透明TAI與packed轉色；由正式loader及原始PNG確認後修正，未放寬來源SHA。來源樹另遇Path元件排序與Go完整字串排序不同，改為同一完整路徑字序；不是遊戲或來源異動。早期JSON只作診斷，最終收據以第四輪為準。
+- #263同步已驗範圍及限制，讀回保持OPEN、原驗收與標籤不變，明示工具／文件仍在本機工作樹，未冒稱已併main。官方解析器重生25項快照，工作清單18項待人判、零項訊號消失。61與58及HD主收據battle_consumer_inventory_followup_20261027同步。沒有新美術包、私人同步或Release，也沒有新的DOS動態對拍或逐幀要求。
+- [清理記錄](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-consumers-cleanup-r1.json)核SHA移除七份中間／重複JSON，共10773603 bytes；保留第四輪完整觀測、兩輪log、原始SHA及生成清冊。沒有新增錄影。HD-2D風格題仍待回覆，未阻擋此批HD1工作。
+- 收尾核對14個目前路徑擁有權、清冊／工具／log SHA、Go來源樹及新增文件入口通過；工作根find未發現root-owned檔或錯型態md目錄。私人庫乾淨且HEAD保持fc70c3cdc0f0e35024c977f4fdcab0b8d09923ba，FD2與Playwright工具鏈沒有殘留容器。現行變更留工作樹供後續完整驗收，未提交／推送或發布。
+
+## 2026-10-27 召喚地圖尾段來源與GPU32補驗
+
+- 前輪archive消費端清冊已落地，本輪接原持續目標的地圖尾段缺口。沿重製驗收／規格流程，先在61列READY擴充，再加入凍結scene／source核對、LMI1與同selector人物遮罩觀測。沒有改正式規則、來源選擇、交易、時序、素材或存檔。
+- [現行清冊](docs/data/fd2-battle-hd-consumers.json)涵蓋四召喚地圖尾段，唯一數量依58。第六輪與第七輪[原始觀測](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-consumers-observed-r6.json)逐位元組相同；21個子案例各跑一次，頂層51.67／38.64秒，無SKIP／失敗。原版LMI raw獨立重解、實際HD檔案與原人物來源核對，新增七個地圖／LMI／遮罩反例，與既有反例共19種均拒收。
+- 四次TestModernCompoundMapAllSources完整主題預備皆通過，原生重建、狀態／RNG保持與各兩個原子拒收保持；所列LMI沒有原生回退。此helper統一native seed7，而來源匯出35沿既有fixture seed1，故額外數字116／117／118也獨立核對。兩組狀態分列，不把不同數字當錯誤或宣稱同狀態對拍。
+- [GPU32](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-consumers-map32-gpu-r1-capture/receipt.json)走實際Game.Draw與最終繪製、十階段F2、158個present及一次續行；地圖網格／HD覆蓋核心與面板實際RGBA核對通過。233.922秒、峰值6424424448 bytes，6GiB／2CPU／PID256下memory.events全零。峰值接近上限，不能推論平台餘裕；網格容差2，不稱全畫面逐像素或DOS動態parity。保留21張受控GPU PNG，畫面邊界裁切是測具位置，未冒稱正常玩家。
+- 工具原碼另留SHA相同的追溯快照，正式重跑仍走repo入口；此快照不是第二個執行器。主收據新增battle_consumer_map_inventory_followup_20261027，舊archive-only摘要標歷史並保留原始第四輪觀測／log。現行同名生成摘要已更新，舊摘要SHA只記錄當時輸出，不宣稱現在檔案仍有舊SHA。
+- 58／61與#263同步，遠端讀回保留原驗收／標籤及OPEN；官方解析器重生25項快照，18項待人判、零項訊號消失。沒有新增原版對拍、正常玩家、私人美術包或Release。完整戰鬥HD仍未宣稱完成；接續核對原驗收的正常反擊證據與造型，不重複盤點已驗同族圖源。
+- [清理記錄](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-consumers-map-cleanup-r1.json)核SHA移除三份重播／中間JSON，共3585326 bytes；保留第六輪完整觀測、兩輪log、四個預備收據、GPU／記憶體收據及必要PNG。沒有新增錄影，當前變更仍留工作樹，未推送。
+- 收尾核對53個目前路徑、Go來源樹、工具快照、GPU PNG與收據SHA通過，UID/GID均1000；工作根未見root-owned或錯型態md目錄，FD2與Playwright工具鏈沒有殘留容器。私人庫乾淨且HEAD保持fc70c3cdc0f0e35024c977f4fdcab0b8d09923ba。28／31沿58既有非阻擋分類，本輪未重開RE，也未將未授予指令補成新正式動畫。
+
+## 2026-10-27 正常反擊與戰鬥呈現接點收尾
+
+- 以既有首章來源SHA `089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2`、seed1及目前正式程式重跑普通END、我方攻擊、自然返回、F2、章節邊界保存及新程序標題LOAD。[正常GUI](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/counter-normal-20261027-r2-capture/receipt.json)通過，沒有章內鎖血或狀態注入；不宣稱自然難度、DOS原版或整章E2。
+- [獨立PNG核對](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/counter-normal-core-20261027-r2.json)有七張敵96發動／我4反擊的攻擊圖源，17903個可見核心點；前後同owner與首程序74筆audit相符。十二張不同PNG共有十四個相容來源，不以audit幀號作GPU畫格真相。八項角色／owner／階段／主題與缺證據反例拒收。
+- 初輪攻防已自然返回，測具卻強制選已行動索爾而錯報失敗。戰後改沿原生Z選下一個可行動者，指定角色只作用於攻擊，同binary／來源／seed／策略重跑通過；正式選人規則不變。既有動作範圍教訓更新，367條／225守衛通過。
+- [AST盤點](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-owner-coverage-20261027-r1.json)將16個正式快取owner連到17筆建構案例及正常物理證據。第6指令由明示return轉接到cursor建構器，工具依實際呼叫關係補讀；缺第32指令、錯建構器與缺反擊三項反例拒收。這是結構覆蓋，不推論全部參數或其他地圖owner。
+- 蓋亞六及凱麗八個原圖／目前HD姿勢做助手離線抽看，未見明顯反折手腕或分離靴。[圖源與對照圖](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/pose-review-20261027-r1.json)保留，不提升為正式GUI或最終人工接受；#268／269保持OPEN。
+- 主收據新增`normal_counter_followup_20261027`，56／57／58／61同步。GUI298.292秒、峰值觸6GiB、memory.events.max=59且OOM／kill零；不能由此宣稱正式繪製效能。原始#263仍需代表性效能與集中造型，沒有將HD2或其他介面加入其原驗收。
+- 接續先於61寫READY，加入預設關閉的頻率觀測轉接器及GUI雙程序輸出；既有Ebiten 2.6.6註解明示ActualFPS的虛擬垂直同步限制。程式保留原Update／Draw／最終繪製與Layout，兩項觀測窗／覆寫拒收／IO失敗測試通過。正常同來源重跑及實測仍在進行，未先宣稱效能通過。
+
+- 效能觀測接線完成：目前程式重新跑正常反擊、十張攻擊PNG／25542核心點、八反例、F2／自然返回與保存冷讀通過；[GUI第三輪](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/counter-normal-20261027-r3-capture/receipt.json)282.645秒、峰值4988821504 bytes，6GiB下events全零。前一輪工具原碼已封存，舊收據仍有效，最新狀態改指battle_performance_followup_20261027。
+- [密集PNG觀測](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-performance-normal-r1.json)與[關閉連續PNG觀測](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-performance-no-art-r1.json)皆核兩程序、來源SHA、時間窗及各四反例。純物理Draw平均9.86／14.00Hz、更新14.87／35.56Hz。第二輪252.988秒、峰值5536264192 bytes，events零，另有GODEBUG回收紀錄。兩輪不是只差PNG的嚴格效能實驗，不從差值認定唯一原因；CPU與軟體GPU負載待profile，效能未通過。本機/dev/dri不存在，沒有硬體GPU驗收。
+- 新增觀測來源後重跑21個consumer案例，1168份Go來源，26.205秒，案例內容對r6完全相同；[更新清冊](docs/data/fd2-battle-hd-consumers.json)及19反例通過。先前同名摘要封存並修正主收據引用，避免舊SHA誤指目前輸出。16個快取owner／17建構索引也改用目前來源及反擊PNG，未重開原版RE或提升全部可達性。
+- GitHub #263更新讀回，原驗收、標籤與OPEN保持；官方快照25項／18待人判／零訊號消失，367教訓／225守衛通過。目前及前輪187個完整路徑參照、SHA與UID/GID1000核對通過，工作根無root-owned或錯型態md目錄。
+- [清理紀錄](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-performance-hygiene-r1.json)移除本批失敗PNG／audit，扣回保留尾段後共109781958 bytes；另以相同內容共用inode保留全部有效PNG路徑，估計少配置31711232 bytes。清理後的衛生檢查誤跟隨既有斷鏈，中斷了晚寫的清冊；由保留觀測與capture log補回，16份失敗PNG的原始SHA未落盤，明示未知。原始素材及正式有效收據保持，沒有錄影或新Release。後續清理先落盤再變動，斷鏈以lstat分列。
