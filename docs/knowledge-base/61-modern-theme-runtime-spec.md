@@ -1,6 +1,36 @@
 # 61 — 現代美術主題正式執行期規格
 
-## 戰鬥代表性效能觀測（CONFORMED-SCOPED／OBSERVATION-ONLY，效能未通過，2026-10-27）
+## 戰鬥無變色圖層的等價繪製（實驗已撤回，2026-10-27）
+
+目前正常HD攻防的2秒同owner觀測中，llvmpipe兩執行緒合計約165% CPU，遊戲所有執行緒合計約185%；cgroup增量另記錄2CPU限制與節流。Go 30秒剖析只定位其可見堆疊，不將Go內部的音訊或地形百分比當作全程序主要原因。來源為本節下列CPU觀測工具及HD主收據的新批次，不新增原版行為推論。
+
+沿`modernHDBattleGPU.draw`的完整驗證與既有texture cache，當實際Fill未啟用、Subtract=0且Mix=0時，圖層著色公式退化為原貼圖。候選改用Ebiten DrawImage，保留同一GeoM、目的clip、來源texture與預乘alpha；其餘填色33、淡出、混色仍用原著色器。完整計畫、SHA、source shape與失敗不發布等契約保持，不調時鐘、演出節拍、角色狀態、音效或保存。
+
+第一個候選已通過既有2087個GPU橋接案例與全透明圖層回歸，原生完整畫布精確、HD沿既有容差1。剩餘著色器也可直接在預乘alpha下計算：`max(src.rgb-Subtract*src.a,0)`再與`Tint*src.a`混合；填色先乘原alpha，alpha0仍回零。這與原先先除alpha再乘回的公式等價，候選移除逐像素除法。它仍須重新通過全部GPU案例與正常路徑，不從代數或軟體GPU熱負載直接宣稱效能改善。
+
+先驗既有原生／HD GPU橋接的完整RGBA、透明邊緣、裁切、填色／淡出／混色及既有物理生命週期F2，再以同來源／seed／2CPU／6GiB及無連續PNG的正常流程比較。GPU原語與觀測只證明所驗路徑；若實圖或效能不支持候選則撤回，不從公式等價直接宣稱流暢度改善。私人素材、原版像素模式與原驗收範圍保持。
+
+跨程序正常流程的共享主機負載會變動，另用[同程序GPU比較](../../remake/cmd/fd2/modern_hd_battle_identity_perf_test.go)交錯量測原著色器與候選。測試開關`FD2_HD_GPU_IDENTITY_PERF=1`、`FD2_HD_GPU_IDENTITY_REPORT=<新路徑>`，執行`TestModernHDBattleIdentityPerformanceGPU`；1920×1200合成RGBA、無變色與減色／混色各十二個暖機後樣本，兩側都含完整GPU讀回。原著色器取自7e4cdd70，基準省略圖層驗證／快取查找以避免不利於基準；逐RGBA容差1，結果只判GPU原語與局部成本，不當成正常玩家FPS通過。
+
+負控制首次顯示同一shader仍有約六倍中位數差，不能作候選有效與否的依據。原因之一是每次候選後才做未計時的逐RGBA比對，消耗CPU配額並影響下一個基準。測具已改為四個預配置讀回buffer，整輪計時結束後才比對最後畫布；需先以同碼負控制校準，早期數字只保留診斷，不稱可靠加速或無效證據。
+
+兩個候選都通過2087個GPU案例，正常候選流程也通過返回／F2／保存冷讀，但早期交錯時間無效。修正測具後，同碼負控制的RGBA差為零，四組中位數為86.7～92.7ms，樣本仍有雙峰。攻防執行緒另已確認cgroup節流，未據此推論雙峰的唯一原因。跨程序候選還有未修改的世界前段掉速，不能認定為GPU候選效果。未取得可靠加速證據，正式GPU程式已恢復7e4cdd70內容。候選原碼、binary與量測留在主收據，不以負面結果提升完成度；測具保留為前版／目前繪製的校準入口，另輸出目前shader是否與前版同碼，以便作負控制。
+
+## 戰鬥CPU效能定位（CONFORMED-SCOPED，平台效能仍待，2026-10-27）
+
+沿既有效能轉接器與Go 1.22.12的runtime/pprof，加入預設關閉的`FD2_PERFORMANCE_CPU_PROFILE=<全新路徑>`。只在已啟用頻率觀測且第一次普通物理Draw即將執行時啟動，30秒後停止並關檔；若程式先正常結束則提前關閉。輸出使用獨占建立，不覆寫舊檔；啟動失敗沿既有觀測錯誤明示。計時器只管理觀測檔，不改遊戲時鐘、演出、亂數或保存。
+
+既有GUI工具新增`--cpu-profile`，必須搭配`--performance`，兩程序各自指定新路徑。新程序LOAD未觸發物理Draw時不建立profile，清冊明列未啟動，不能當成缺件通過。正常流程先沿前輪同來源／seed／2CPU／6GiB與無連續動畫PNG條件，保留頻率、回收及保存冷讀收據；profile包含程序中其他執行緒與後續場景，不單憑總表認定唯一瓶頸。用既有Go映像的`go tool pprof -top`及必要呼叫鏈檢查，原始profile、binary與工具版本逐SHA保存；沒有硬體GPU或新原版parity聲明。
+
+[執行緒觀測](../../tools/fd2_profile_threads.py)在同一容器以`--binary-name --audit --out`等待HD物理body／counter，前後同owner才列正式樣本，`--seconds`為不超過10秒的有界增量。記錄/proc執行緒ticks及cgroup CPU統計，名稱只作導覽；首次冷載入樣本另列，不用來判攻防。正常GUI的`--render-threads 2|4|8`只控制軟體GPU測試，預設2保持；提高測試配額的目的，是區分資源限制與應用問題，不修改遊戲品質門檻、時鐘或最低需求。原始2CPU數字保留，不用較高配額覆蓋失敗或宣稱硬體平台通過。
+
+4CPU第一次量測在戰鬥前未取得有效走行PNG而停止，列驗證觀測不足，不當成遊戲或戰鬥效能失敗。`--performance-skip-walk-gpu`只允許無連續PNG的普通戰鬥效能模式：正常走行、取消與F2輸入仍執行，停用這次無關的走行截圖重驗；收據的world_runtime_checked／world_walk_gpu_rechecked明示false，另記skip及scope，不得拿來代替既有嚴格走行GPU收據。其他模式與原走行守衛保持。
+
+四項Go觀測測試、六項CLI錯用拒收、正常30秒profile關檔與新程序LOAD均通過。原繪製在2／4／8CPU的純物理完整窗口，Draw平均15.34／24.18／35.66Hz，更新35.74／48.21／54.48Hz；三輪均正常返回、F2、保存冷讀，6GiB下無OOM。提高配額的結果只顯示測試資源會影響觀測，不代表已找出全部瓶頸、最低需求或硬體GPU表現。唯一目前入口為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`battle_cpu_diagnostics_followup_20261027`，前兩輪頻率觀測保持歷史證據。
+
+## 戰鬥代表性效能觀測（先前兩輪，CONFORMED-SCOPED／OBSERVATION-ONLY，2026-10-27）
+
+本節保存最初兩輪軟體GPU觀測，不能單獨判定正式遊戲效能。後續定位與目前限制依上節「戰鬥CPU效能定位」及主收據`battle_cpu_diagnostics_followup_20261027`。
 
 沿已鎖版Ebiten 2.6.6的`ActualFPS`及`ActualTPS`契約，加入預設關閉的`FD2_PERFORMANCE_REPORT=<全新JSONL路徑>`，GUI驗證指定絕對路徑。未設定時使用原本的`modernHDPresentation`；設定時以轉接器原樣呼叫Update、Draw、Layout與DrawFinalScreen，從loadGame完成後每秒記錄更新／Draw／最終繪製次數、API頻率、各繪製場景計數及實際間隔。關閉程序時保留最後不足一秒的樣本，IO失敗明示，不能覆寫既有檔案。輸出不讀寫玩法、亂數、保存或主題狀態。
 

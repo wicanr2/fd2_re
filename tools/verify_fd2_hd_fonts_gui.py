@@ -42,6 +42,11 @@ def main():
         parser.add_argument('--'+name, type=Path, required=True)
     parser.add_argument('--town-save', type=Path, help='既有JSON來源槽；原生槽轉普通F5時不需指定')
     parser.add_argument('--performance', action='store_true', help='各遊戲程序另輸出唯讀頻率觀測，關閉後封存清冊')
+    parser.add_argument('--cpu-profile', action='store_true', help='搭配--performance，首個物理Draw開始30秒CPU效能觀測')
+    parser.add_argument('--render-threads', type=int, choices=[2,4,8], default=2,
+                        help='只控制本次軟體GPU測試執行緒，須與Docker CPU配額一同記錄')
+    parser.add_argument('--performance-skip-walk-gpu', action='store_true',
+                        help='只供戰鬥效能量測：正常走行／取消仍執行，不重驗既有走行PNG圖源')
     facility = parser.add_mutually_exclusive_group()
     facility.add_argument('--hotel', action='store_true', help='只抽驗旅館固定文字、四槽及保存讀取')
     facility.add_argument('--church', action='store_true', help='抽驗教會即時文字、四語名冊、取消與保存')
@@ -120,6 +125,12 @@ def main():
     parser.add_argument('--battle-end-figures',type=terrain_frame_ids,default=set(),
                         help='同一普通END擷取多個明示figure，例如133,134；省略時維持單數參數')
     args = parser.parse_args()
+    if args.cpu_profile and not args.performance:
+        parser.error('--cpu-profile需要--performance')
+    if args.performance_skip_walk_gpu and not (
+            args.performance and args.world and args.battle_only
+            and not args.battle_art and not args.battle_end_art):
+        parser.error('--performance-skip-walk-gpu只接受無連續PNG的普通戰鬥效能模式')
     run_limit = args.run_timeout or (2400 if args.battle_end_art else 1800 if args.battle_advance else
                                     1200 if args.terrain_occlusion or args.battle_approach_rounds or args.revive_before_departure is not None else 660)
     window_height = '1272' if args.player_toolbar else '1200'
@@ -198,14 +209,15 @@ def main():
     env = dict(os.environ, DISPLAY=':97', XDG_RUNTIME_DIR='/tmp/fd2-hd-font-pulse',
                XDG_DATA_HOME=str(args.out/'user-data'), XDG_CONFIG_HOME=str(args.out/'config'),
                XDG_CACHE_HOME=str(args.out/'cache'), LIBGL_ALWAYS_SOFTWARE='1',
-               GALLIUM_DRIVER='llvmpipe', GOMAXPROCS='2', LP_NUM_THREADS='2',
+               GALLIUM_DRIVER='llvmpipe', GOMAXPROCS='2', LP_NUM_THREADS=str(args.render_threads),
                PULSE_SERVER='unix:/tmp/fd2-hd-font-pulse/pulse/native',
                FD2_THEME='modern-handpainted-a', FD2_LOCALE='zh-Hant',
                FD2_MODERN_THEME_PACK=str(args.modern_pack), FD2_ASSET_PACK=str(args.original_pack),
                FD2_INPUT_AUDIT_LOG=str(audit), FD2_INPUT_AUDIT_INTERVAL='2')
     env['FD2_TOOLBAR_LAYOUT'] = 'fixed' if args.player_toolbar else 'floating'
     for key in ['FD2_TITLE','FD2_CAMPAIGN','FD2_CAMP_NODE','FD2_SHOT','FD2_SHOT_FRAME',
-                'FD2_NATIVE_SAVE','FD2_SAVE_CURRENT','FD2_ENDING_PREFIX']:
+                'FD2_NATIVE_SAVE','FD2_SAVE_CURRENT','FD2_ENDING_PREFIX',
+                'FD2_PERFORMANCE_REPORT','FD2_PERFORMANCE_CPU_PROFILE']:
         env.pop(key,None)
     native_saved = None
     native_source_hash = None
@@ -223,6 +235,7 @@ def main():
     env['ALSA_CONFIG_PATH']=str(alsa)
     processes,streams,shots,operations=[],[],{},[]
     performance_paths=[]
+    cpu_profile_paths=[]
     battle_hd_scenes=[]
     battle_art_samples=[]
     battle_end_art_samples=[]
@@ -303,6 +316,11 @@ def main():
             assert not path.exists()
             performance_paths.append(path)
             process_env['FD2_PERFORMANCE_REPORT']=str(path)
+            if args.cpu_profile:
+                profile=args.out/f'cpu-profile-{len(cpu_profile_paths)}.pprof'
+                assert not profile.exists()
+                cpu_profile_paths.append(profile)
+                process_env['FD2_PERFORMANCE_CPU_PROFILE']=str(profile)
         proc=subprocess.Popen(items,env=process_env,cwd=cwd,stdout=stream,stderr=stream)
         processes.append(proc);return proc
 
@@ -373,6 +391,8 @@ def main():
 
     def restart_title_load(node, gold, name):
         nonlocal game, window, audit_epoch
+        if args.cpu_profile and cpu_profile_paths and cpu_profile_paths[-1].exists():
+            wait(lambda _:latest(performance_paths[-1]).get('cpu_profile_finished') is True, timeout=45)
         game.terminate();game.wait(timeout=15)
         previous=args.out/'input-audit-first-process.jsonl'
         assert not previous.exists()
@@ -832,8 +852,9 @@ def main():
                 destination=latest(audit)['cursor']
                 assert destination in latest(audit).get('move_reachable',[]),'普通走行目的地不在正式可達集合'
                 shot('world-hd-move-destination')
-                world_thread=threading.Thread(target=capture_world_walk,daemon=True)
-                world_thread.start()
+                if not args.performance_skip_walk_gpu:
+                    world_thread=threading.Thread(target=capture_world_walk,daemon=True)
+                    world_thread.start()
                 key('Return');wait(lambda s:s.get('ring') is True and not s.get('walking'))
                 wait(lambda s:s.get('ring_phase')=='open')
                 shot('world-hd-ring')
@@ -844,8 +865,9 @@ def main():
                 key('Escape');wait(lambda s:not s.get('ring') and not s.get('walking'))
                 if latest(audit).get('move_preview'):key('Escape');wait(lambda s:not s.get('move_preview'))
                 shot('world-hd-move-cancelled')
-                world_stop.set();world_thread.join(timeout=15)
-                assert not world_thread.is_alive() and world_shots,'未取得有效實際走行GPU'
+                if not args.performance_skip_walk_gpu:
+                    world_stop.set();world_thread.join(timeout=15)
+                    assert not world_thread.is_alive() and world_shots,'未取得有效實際走行GPU'
                 key('F9');wait(lambda s:s.get('node')==args.battle_node and not s.get('ring') and not s.get('move_preview'))
                 settle_world_battle()
                 def ordinary_physical_attack(prefix):
@@ -1236,7 +1258,10 @@ def main():
                     'run_timeout_seconds':run_limit,
                     'catalog_sha256':digest(args.assets/'assets/themes/modern/catalog.json'),
                     'gui_tool_sha256':tool_source_sha256,
-                    'world_runtime_checked':args.world,'world_walk_gpu':world_shots,'world_walk_rejected':world_rejected,
+                    'world_runtime_checked':args.world and not args.performance_skip_walk_gpu,
+                    'world_walk_gpu_rechecked':args.world and not args.performance_skip_walk_gpu,
+                    'performance_skip_walk_gpu':args.performance_skip_walk_gpu,
+                    'world_walk_gpu':world_shots,'world_walk_rejected':world_rejected,
                     'battle_hd_consumer_checked':args.battle_hd,
                     'battle_command_id':args.battle_command,
                     'command30_observations':command30_observations,
@@ -1282,6 +1307,8 @@ def main():
                     'warm_units':warm_units,'loaded_units':loaded_units,'cold_units':cold_units,
                     'save_contract':'F5保存章節邊界進度；LOAD重建戰場，不保存戰中位置、Acted或敵方HP。',
                     'recording_created':False,'elapsed_seconds':time.monotonic()-started,
+                    'performance_scope_note':('本次戰鬥效能模式保留正常走行／取消輸入，未重驗走行PNG，不代表完整世界GPU驗收。'
+                                              if args.performance_skip_walk_gpu else ''),
                     'scope':((f'正常標題LOAD來源JSON，普通走行、{args.battle_repetitions}場攻防、F2及戰後保存／新程序LOAD；來源祖先另見建槽收據。未重驗字型面板。' if args.battle_only else '正常標題LOAD既有普通START／F5首章JSON，Z聚焦、Home檢視、F2、狀態與命令、返回；')
                              + (f'含普通走行、指令環、取消、{args.battle_repetitions}場{action_label}演出與正常戰場返回。'+('含經驗對話中F9。' if args.battle_repetitions==2 else '') if args.world else '')
                              + '不注入座標或狀態，不宣稱原版對拍或完整戰役。')}
@@ -1737,9 +1764,14 @@ def main():
             (args.out/'performance-manifest.json').write_text(json.dumps({
                 'status':'OBSERVATION-ONLY','binary_sha256':digest(args.binary),
                 'gui_tool_sha256':tool_source_sha256,
+                'software_render_threads':args.render_threads,
+                'walk_gpu_recheck_skipped':args.performance_skip_walk_gpu,
                 'reports':[{'file':path.name,'sha256':digest(path),'bytes':path.stat().st_size}
                            for path in performance_paths if path.is_file()],
                 'missing_reports':[path.name for path in performance_paths if not path.is_file()],
+                'cpu_profiles':[{'file':path.name,'sha256':digest(path),'bytes':path.stat().st_size}
+                                for path in cpu_profile_paths if path.is_file()],
+                'cpu_profile_not_started':[path.name for path in cpu_profile_paths if not path.is_file()],
                 'scope':'程序停止後封存；SIGTERM不保證最後不足一秒的視窗。Xvfb／llvmpipe／audit與PNG擷取開銷包含在量測內。'
             },ensure_ascii=False,indent=2)+'\n')
 

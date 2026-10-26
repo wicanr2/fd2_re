@@ -19,6 +19,8 @@ type performanceTrace struct {
 	updates, draws, finals int
 	scenes                 map[string]int
 	err                    error
+	cpuAttempted           bool
+	cpu                    *performanceCPUProfile
 }
 
 var _ ebiten.Game = (*performanceTrace)(nil)
@@ -39,6 +41,14 @@ func (p *performanceTrace) sample(now time.Time, final bool) {
 	if !final && interval < 1 || p.err != nil {
 		return
 	}
+	cpuFinished := false
+	if p.cpu != nil {
+		select {
+		case <-p.cpu.done:
+			cpuFinished = true
+		default:
+		}
+	}
 	p.err = p.encoder.Encode(struct {
 		ElapsedSeconds  float64        `json:"elapsed_seconds"`
 		IntervalSeconds float64        `json:"interval_seconds"`
@@ -49,8 +59,9 @@ func (p *performanceTrace) sample(now time.Time, final bool) {
 		FinalDraws      int            `json:"final_draws"`
 		Scenes          map[string]int `json:"draw_scenes"`
 		Final           bool           `json:"final"`
+		CPUFinished     bool           `json:"cpu_profile_finished,omitempty"`
 	}{now.Sub(p.started).Seconds(), interval, ebiten.ActualFPS(), ebiten.ActualTPS(),
-		p.updates, p.draws, p.finals, p.scenes, final})
+		p.updates, p.draws, p.finals, p.scenes, final, cpuFinished})
 	p.previous = now
 	p.updates, p.draws, p.finals = 0, 0, 0
 	p.scenes = make(map[string]int)
@@ -67,6 +78,15 @@ func (p *performanceTrace) Update() error {
 }
 
 func (p *performanceTrace) Draw(screen *ebiten.Image) {
+	if !p.cpuAttempted && p.modernHDPresentation.Game.atk != nil {
+		p.cpuAttempted = true
+		if path := os.Getenv("FD2_PERFORMANCE_CPU_PROFILE"); path != "" {
+			p.cpu, p.err = startPerformanceCPUProfile(path, 30*time.Second)
+			if p.err != nil {
+				return
+			}
+		}
+	}
 	p.modernHDPresentation.Draw(screen)
 	p.draws++
 	g := p.modernHDPresentation.Game
@@ -88,10 +108,17 @@ func (p *performanceTrace) DrawFinalScreen(screen ebiten.FinalScreen, offscreen 
 }
 
 func (p *performanceTrace) Close() error {
+	var cpuErr error
+	if p.cpu != nil {
+		cpuErr = p.cpu.Close()
+	}
 	p.sample(time.Now(), true)
 	err := p.file.Close()
 	if p.err != nil {
 		return p.err
+	}
+	if cpuErr != nil {
+		return cpuErr
 	}
 	return err
 }

@@ -15,7 +15,7 @@
     "hd_terrain": "已接草泥、水沙／岸線、首章陰影／土脊／石路及寶箱開合／小石塊；目前數量依58及props_followup_20261025。其他地形與HD2仍待。",
     "ai_player_input_lock": "CONFORMED-SCOPED：AI換手期間拒絕玩家地圖輸入重入；普通END／增援對話及相關／完整Go回歸通過。",
     "gaia_redesign": "CONFORMED-SCOPED：新版頭像與四方向圖組已登錄；正常START／Gaia北移取消／F2／冷讀分段驗證。相位差異與序章尾端失敗明示，非逐幀parity。",
-    "hd_battle_animation": "目前程式已補正常反擊實圖、自然返回、F2與保存冷讀；兩輪頻率觀測揭露軟體GPU下掉速，代表性效能待定位。集中造型待全部HD後確認，未宣稱完整完成。",
+    "hd_battle_animation": "正常攻擊／反擊實圖、自然返回、F2與保存冷讀通過；軟體GPU掉速已補CPU profile及同owner執行緒證據。增加測試配額有改善但無硬體平台通過；未證實的GPU優化已撤回。集中造型仍依全部HD後確認，未宣稱完整完成。",
     "native_purchase_equip": "CONFORMED-SCOPED：#266原生購買立即裝備保留ignored原始格，29項商店回歸與正常購弓F5／章首射程通過；不改格式或數值規則。",
     "hd_event_death": "共用事件、普通行動與狀態致死已接HD；三種26拍／F2通過。正常章23事件與普通擊殺已抽驗，狀態致死正常GUI仍待；來源依death_consumers_followup_20261021。",
     "theme_toolbar": "CONFORMED-SCOPED／RUNTIME-E1：正式預設單列頂端浮出、自動隱藏，主題與四語按鈕沿F2／F4閘門；完整遊戲幾何保持。其餘控制未完成，依floating_toolbar_followup_20261025。",
@@ -31,8 +31,9 @@
     "hd_item_row_labels": "CONFORMED-SCOPED／RUNTIME-E1：物品加成四縮寫及指令-MP沿原生來源直接HD繪字；來源、數量、建構槽與限制依item_row_labels_followup_20261026。圖示現況依hd_item_panel_icons；完整HD／集中驗收仍待。",
     "hd_item_panel_icons": "CONFORMED-SCOPED／RUNTIME-E1：十個共用面板圖示已正式接線，兩包載入及物品／狀態完整繪製通過；唯一數量與分級依item_panel_icons_hd_followup_20261026。",
     "hd1_release": "優先完成既有HD1接線；原生地圖HUD與十個共用面板圖示已接。未登錄地形、其餘操作介面及集中人工／平台仍待，未宣稱正式版完成。",
-    "hd_battle_consumer_inventory": "21個目前程式來源案例及16個正式快取owner已核對；來源指紋依battle_performance_followup_20261027，其他地圖owner與可達性仍依既有分級。",
-    "art_theme_direction": "使用者確認原版／HD／HD2／HD-2D四主題，介面原版／HD獨立。正式遊戲仍只有原版／HD；其餘依61「四種美術主題」DRAFT，HD-2D人物風格待選。"
+    "hd_battle_consumer_inventory": "21個目前程式來源案例與16快取owner／17建構案例已核對；1171份Go來源與19反例依battle_cpu_diagnostics_followup_20261027，案例內容與前批相同。其他地圖owner與可達性依既有分級。",
+    "art_theme_direction": "使用者確認原版／HD／HD2／HD-2D四主題，介面原版／HD獨立。正式遊戲仍只有原版／HD；其餘依61「四種美術主題」DRAFT，HD-2D人物風格待選。",
+    "hd_battle_performance": "目前診斷與2／4／8CPU軟體繪圖條件依battle_cpu_diagnostics_followup_20261027；觀測通過不等於效能或平台驗收通過。"
   },
   "runtime_source": {
     "binary": {
@@ -242249,7 +242250,7 @@
         "sha256": "c0797078c4ec9ee353f20ca3c53e72f3ad61a4760779dbc60b5d45d1859e238f"
       },
       "summary": {
-        "file": "docs/data/fd2-battle-hd-consumers.json",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-consumers-canonical-before-cpu-profile-r1.json",
         "sha256": "26c45b6e17de53226ddd4f12d60a41f6bc82f14a584e1d5427f68c98c43be5a3"
       },
       "go_source_files": 1168,
@@ -242299,7 +242300,7 @@
         "sha256": "9f0d8e4dc1a762760fa455514db6547af8034daccc19631585d3b539b91a35a6"
       },
       {
-        "file": "docs/data/fd2-battle-hd-consumers.json",
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-consumers-canonical-before-cpu-profile-r1.json",
         "sha256": "26c45b6e17de53226ddd4f12d60a41f6bc82f14a584e1d5427f68c98c43be5a3"
       },
       {
@@ -242690,5 +242691,374 @@
     },
     "source_commit": "1467242f8712d744e3b7d7c0583e1148ca7b912a",
     "public_remote_source_verified": true
+  },
+  "battle_cpu_diagnostics_followup_20261027": {
+    "status": "CONFORMED-SCOPED-DIAGNOSTICS; PERFORMANCE-OBSERVATION-ONLY",
+    "date": "2026-10-27",
+    "base_commit": "7e4cdd7014db8cd7fc4da8bda65d5c3bb7409ba5",
+    "full_battle_hd_complete": false,
+    "platform_performance_accepted": false,
+    "source_files": [
+      {
+        "file": "remake/cmd/fd2/performance_trace.go",
+        "sha256": "da71c839d3e8c5cb253b702dfb943ce20aabff389c041a0c63c7400f01e5c6f0"
+      },
+      {
+        "file": "remake/cmd/fd2/performance_cpu_profile.go",
+        "sha256": "3089ab725aefe8d62bf649bdb98fc2efce86b06420d0ca1b127c4fa63d876adb"
+      },
+      {
+        "file": "remake/cmd/fd2/performance_cpu_profile_test.go",
+        "sha256": "6d97a5e334ef1e85269c712f8c64d37a2cc95445b61a73337022df1bc5239d49"
+      },
+      {
+        "file": "tools/fd2_profile_threads.py",
+        "sha256": "32947523441d0ef207b3d957b70d064b21898dd9e582d2891252a704337717c6"
+      },
+      {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "488b4546fcc75b1db07b903a4d6840e89b8efb66167eae20b2f98fc397ddd716"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_battle_identity_perf_test.go",
+        "sha256": "110ca25a87e29dca5aee34509c79382c70c292ecdea864ee470e382428ea29af"
+      }
+    ],
+    "binary": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-profile-20261027-r2-binary",
+      "sha256": "09bfb1575f7e2739e18ff6d5147810a97a7162fdbfc78e67225b3198ce83118e"
+    },
+    "normal_source": {
+      "file": "work/promo-cadence-20261018/hd-fonts/command0-normal-gui-r2/user-data/fd2_re/fd2_save.json",
+      "sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2"
+    },
+    "conditions": {
+      "seed": 1,
+      "memory": "6GiB",
+      "renderer": "Xvfb/Mesa llvmpipe software",
+      "network": "none",
+      "in_chapter_injection": false,
+      "hp_lock": false,
+      "normal_keyboard": true
+    },
+    "cpu_profile": "首個物理Draw開始有界30秒，先停止關檔再新程序LOAD；新程序未進戰鬥則明示未啟動。Go樣本不涵蓋所有原生CPU。",
+    "thread_observation": {
+      "same_hd_physical_owner": true,
+      "seconds": 2.0024789,
+      "llvmpipe_cpu_percent": 165.2952,
+      "sum_game_threads_cpu_percent": 185.2704,
+      "scope": "兩次/proc增量及同owner body/counter；名稱不證明原生函式內部。"
+    },
+    "resource_observations": [
+      {
+        "cpus": 2,
+        "software_threads": 2,
+        "physical_draw_hz": 15.34435,
+        "physical_update_hz": 35.73874,
+        "full_walk_gpu_rechecked": true
+      },
+      {
+        "cpus": 4,
+        "software_threads": 4,
+        "physical_draw_hz": 24.1844,
+        "physical_update_hz": 48.20757,
+        "full_walk_gpu_rechecked": false
+      },
+      {
+        "cpus": 8,
+        "software_threads": 8,
+        "physical_draw_hz": 35.65961,
+        "physical_update_hz": 54.47807,
+        "full_walk_gpu_rechecked": false
+      }
+    ],
+    "resource_scope": "同來源、seed與原繪製。皆正常攻擊／返回／F2／章界保存／新程序LOAD。4與8CPU明示跳過走行PNG重驗，保留走行／取消鍵，不代替完整世界GPU證據。共享主機跨程序資料不能證明唯一瓶頸、硬體表現或最低需求。",
+    "rejected_optimization": {
+      "production_renderer": {
+        "file": "remake/cmd/fd2/modern_hd_battle_gpu.go",
+        "sha256": "5af6ffe5d4ff145e2c74dc30fcb59794cb52a1376bf1345ec04f8ab908998305"
+      },
+      "restored_to_commit": "7e4cdd7014db8cd7fc4da8bda65d5c3bb7409ba5",
+      "gpu_cases_passed": 2087,
+      "normal_gui_passed": true,
+      "performance_improvement_proven": false,
+      "invalid_early_measurements": "首次交錯測具有不對稱的計時外RGBA比對，早期中位數不能判定候選有效或無效。",
+      "corrected_negative_control": "同一shader，兩側RGBA精確；中位數約86.7至92.7ms且仍有雙峰。保留測具，不將原語時間當玩家FPS。"
+    },
+    "artifacts": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-profile-unit-r3.log",
+        "sha256": "99b0d71dcec94ffeb54402a348ce089f17692a532d0467751dd29107a2f310ce"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-profile-cli-guards-r1.json",
+        "sha256": "4537834c1d68b02b538c055c9123063430fde0b34c7d92f473f14eba86fb8fe3"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-profile-normal-r1-capture/receipt.json",
+        "sha256": "11ea94c207851ef2c52c9f31419e7cc893fc098e3639cc59bdc2a7df0ad7a067"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-profile-normal-r1.memory.json",
+        "sha256": "07b44446a01de660b82dca8d513508b53308ce983f9cfff2db23d5888690ec1c"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-profile-normal-r1-capture/cpu-profile-0.pprof",
+        "sha256": "e3469152d208dd1eb2bb8d5dd6436749da867b048dcdf100086e26ee3517d04b"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-profile-cpu-top-r1.txt",
+        "sha256": "cd2dffda0c68e5f287086e5a193eddb003a5bbbddc0ab160f95b38058bc7e01f"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-profile-threads-r2.json",
+        "sha256": "f4a52a0f7247770779118d3f3885bd376c1f5c77354b65dfe5ec93bd4005131c"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-threads-normal-r1-capture/receipt.json",
+        "sha256": "45986faccf91c8d39b4240884a5a3abd3f34c1aa10ea76fd87e91ea2aceeca32"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-threads-normal-r1.memory.json",
+        "sha256": "0eb3fa3db916f7ad117a10d6924190b88944028a739de7857d93bc77b532327e"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-threads-frequency-r1.json",
+        "sha256": "a24a12fdee52dc9085c18b7898b6606aa1304f47488ef399fe4d4c57c5d78b2f"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-profile-frequency-r1.json",
+        "sha256": "c6b5704afe52c78d766499707a5da12198ee860cf61ff8c201ebf6dfcd127bac"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-profile-cpu4-normal-r2-capture/receipt.json",
+        "sha256": "e6b358c9152eec61ca124722a4ad3b2ad148cd56e937bcf4514980b5e0800278"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-profile-cpu4-normal-r2.memory.json",
+        "sha256": "45f5616b47b1592119f8c6b90eecfcf52113f0a627347ac83988238d95abfec5"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-profile-cpu4-frequency-r2.json",
+        "sha256": "3d8d09c63d3b4f236aff64a8997fc5950ffb879ac9b319dd824aca3d0c19e1b5"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-profile-cpu8-normal-r1-capture/receipt.json",
+        "sha256": "1796e22f0cc44de28e1e8616d30f08b78fca2e7b13ff15c07ccfd61872a9e487"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-profile-cpu8-normal-r1.memory.json",
+        "sha256": "452ea713384100575c6684db8da68a9924c2fbbc7dfcb8e0353e1267bcc6949a"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-profile-cpu8-frequency-r1.json",
+        "sha256": "35b505918d7171011cc996481ad6c195a993cb69b98857dc5dbc165751cf4f04"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-identity-interleaved-control-r2.json",
+        "sha256": "2cb20c99f233385aca914521268a0e72ac9d6f9214b501990208634397c2f3dd"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-identity-interleaved-control-r2.memory.json",
+        "sha256": "60e224a685151e84b7031aae8439b59b3f1b7c6a6dab1738963c03ddafa79e17"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-identity-gpu-r2.log",
+        "sha256": "134eaafc3e7f0d41a9104d61c17aeb23d6de626c8570df76094cbc8059c35d27"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-identity-gpu-r2.memory.json",
+        "sha256": "c481ed82b982c44ea68b80d6d679c489494fe82aeecb463b31dbc06f359b45c5"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-identity-normal-r2-capture/receipt.json",
+        "sha256": "a358678174d94633642f7e740884e244ae229acbc03a5ca3fbac1a28be1e0d1b"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-identity-normal-r2.memory.json",
+        "sha256": "331c860313320564efe125d9c0454de96830ee3d4ad219b384f5d95f4a2b5ba6"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-profile-rejected-candidate-sources.json",
+        "sha256": "212d50edd83c1fb4ddd714099651b2749da297f8867be5a409b750be7bb9396d"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-identity-final-candidate.go.txt",
+        "sha256": "286ca7bd9828f4c12e6ec86a51a3d4fe110eaa3160a94a4a0d64d31c6aa300aa"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-profile-gui-before-render-threads.py",
+        "sha256": "5ecc7bc13848c338736f3be80a693adeea18fc91aa1acb8125f4654697edc0e7"
+      }
+    ],
+    "visual_materials": [
+      {
+        "character": "gaia",
+        "contact": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-runtime-pose-review-20261027-r1.png",
+          "sha256": "bcee3eb979d1338734eca7fc44f72e83078e28cad4e789157438232056bd6fca"
+        },
+        "inputs": [
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-normal-r1-capture/gaia30-action-00.png",
+            "sha256": "5227e7120484639ee60c24b630777fec46f3ce4956a1eab0414ac6fbd7f9c1a5"
+          },
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-normal-r1-capture/gaia30-action-01.png",
+            "sha256": "b50cf89b31172205c059a7c5bf36c1e969bce81be9ce0b5adba766d5f1b4c93d"
+          },
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-normal-r1-capture/gaia30-action-02.png",
+            "sha256": "b50cf89b31172205c059a7c5bf36c1e969bce81be9ce0b5adba766d5f1b4c93d"
+          },
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-normal-r1-capture/gaia30-action-03.png",
+            "sha256": "ac2fe651655285e16ced22446e4250ae984dfc9ad30b0fd460de142e42e8da9d"
+          },
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gaia-v2-normal-r1-capture/gaia30-action-04.png",
+            "sha256": "1a3fb7a9c5dd58dddccdb8e5fd92d778abf7e1c6619c46b1f8457ce2fa0cee65"
+          }
+        ],
+        "crop": [
+          750,
+          230,
+          1920,
+          1200
+        ],
+        "scope": "既有正常GUI畫面之代理程式目視抽驗素材；不代表使用者或人工已批准。"
+      },
+      {
+        "character": "kylie",
+        "contact": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-runtime-pose-review-20261027-r1.png",
+          "sha256": "d0e52b9733144ce43950709cad44b98df6ed06f23eb02fe0d7fe75cc40aaeb29"
+        },
+        "inputs": [
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-00.png",
+            "sha256": "5e21c7ff23892bb1475de2996460c5885e2fb5b4a66be1e4ff8dd95108f504cd"
+          },
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-03.png",
+            "sha256": "059d9805583562c57ed37904a9913113d22df7e4a33f8007867e509939339cf4"
+          },
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-09.png",
+            "sha256": "d3c9f7760bfdb1543e5c938bc4e7237b9033a95ccf65938621a468c312b0bf74"
+          },
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-14.png",
+            "sha256": "ff646e6949987b3ecec758336c815f54c6cc784de21e751d389724f37edb3031"
+          },
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-18.png",
+            "sha256": "0ceb735da5a283c6e67a37871eb2eb849088d93cd2a108c2840b0b1376c56ad9"
+          },
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-22.png",
+            "sha256": "a857fb1f629eee96fac7a4eeed0cbaa0a8c83ca34ff08ef256f266e2177c6831"
+          },
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-27.png",
+            "sha256": "6fa335a2551dce0296139c4542697658a1201317fbabebb9dd7b6f6144e6b9b6"
+          },
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/kylie-leg-normal-gui-oct22-r4/world-hd-art-30.png",
+            "sha256": "94f7ea91cf7b1c815f5b5f6336bc6aed7b484dbaf7b0ecccd36ab570f26f2344"
+          }
+        ],
+        "crop": [
+          950,
+          300,
+          1920,
+          1200
+        ],
+        "scope": "既有正常GUI畫面之代理程式目視抽驗素材；不代表使用者或人工已批准。"
+      }
+    ],
+    "remaining": [
+      "代表性硬體GPU／桌面平台效能抽驗",
+      "既定全部HD後集中人工造型確認"
+    ],
+    "not_claimed": [
+      "原版逐幀或硬體時序parity",
+      "全戰役或完整HD完成",
+      "使用者人工造型批准"
+    ],
+    "recordings_created": false,
+    "private_assets_changed": false,
+    "cleanup": "本批一次性容器已退出；沒有錄影。候選程式已撤回，保留可回查證據。",
+    "consumer_inventory": {
+      "summary": {
+        "file": "docs/data/fd2-battle-hd-consumers.json",
+        "sha256": "fadcaaae4335cbafd6daca49486b16a65d6fd1cc00b18b4d9958647d967e9593"
+      },
+      "observed": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-consumers-observed-r10.json",
+        "sha256": "4ddef4a386ce264cfc4431e5722970bccbc2bac2f9adc5750ebdb0e731ebb9f7"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-consumers-observed-r10.log",
+        "sha256": "14948e97a4f872bf6ba3f07ead5613a3435bd58806e1c4fb917af2a139539faf"
+      },
+      "cases": 21,
+      "source_files": 1171,
+      "rejected_mutants": 19,
+      "cases_equal_previous": true,
+      "source_tree_sha256": "8788746e1ed4340332b59d1085fc9334ff7608c5530b6f78428edf9d8093cd66",
+      "cached_owner_report": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-owner-coverage-20261027-r3.json",
+        "sha256": "d07a59b911bba919fdda5de4e76373f01e9351d0efe34759b393e30ce5f4bfff"
+      },
+      "cached_owners": 16,
+      "constructors": 17,
+      "previous_canonical": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-consumers-canonical-before-cpu-profile-r1.json",
+        "sha256": "26c45b6e17de53226ddd4f12d60a41f6bc82f14a584e1d5427f68c98c43be5a3"
+      }
+    },
+    "visual_review": {
+      "reviewer": "代理程式目視抽驗",
+      "user_or_human_approval": false,
+      "gaia": "正常GUI的待機／蓄力／出拳可見連續肩肘、前臂、手腕與拳頭；抽樣未見先前明顯反折。光效遮擋的單張不作完整手部判定。",
+      "kylie": "正常GUI的出拳／收勢可見右靴底貼地，抽樣未見先前鞋底朝鏡頭的懸空。只評已列截圖，不宣稱全動畫人工批准。",
+      "scope": "沿使用者全部HD後集中確認決定，#268／269維持OPEN，不另設逐角色批准。"
+    },
+    "diagnostic_failures": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-profile-cpu4-normal-r1.memory.json",
+        "sha256": "e97b7c11ed1a70df6a72e641814e42f182ae0baa17aefdad6043b514630a56ad"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-profile-cpu4-normal-r1-capture/world-observation.json",
+        "sha256": "47ea90051408b1c358d7c3d877fc54dd9b06be2335eaebc3cc54201488cecc1d"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-profile-threads-r1.json",
+        "sha256": "e0965450d5dd6dfe811e59193b54fcffbba985836a46dc9d6b5d789d7880c73a"
+      }
+    ],
+    "final_validation": {
+      "remote_issues_readback": "25 OPEN; #263/#204 acceptance and labels preserved",
+      "source_and_artifact_sha256": "all current diagnostic refs pass",
+      "worklist_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-profile-fd2_worklist-verify-r2.log",
+        "sha256": "e4358c935b06938b3979a85e15835f700028819344ed4e2ec6f8960445186972"
+      },
+      "lessons_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-profile-fd2_lessons-check-r2.log",
+        "sha256": "c4a52a0cfa52fa2c1a510ba79877f36f78611a7c27399554d0c5e89cf8c0ecca"
+      },
+      "hygiene": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-profile-hygiene-r2.json",
+        "sha256": "3d1d4cc3ebb5cec52cbc5c927be79af31be26efb8266a6b9fcfee8fa51b08daa"
+      },
+      "cleanup": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-profile-cleanup-r1.json",
+        "sha256": "0d5f165760ec71df0c3e4ab6f9f4434906e5c1f5edd66a40c011e61746ee9eff",
+        "removed_bytes": 42031840
+      }
+    }
   }
 }

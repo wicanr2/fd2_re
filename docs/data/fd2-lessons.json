@@ -4551,6 +4551,36 @@
       "rule": "清理前先保存待刪項目的路徑、大小與SHA，再逐項變動並立即保存執行結果；衛生檢查失敗時保留已執行狀態，不只依賴記憶體清冊。入口為WORKLOG.md及docs/data/fd2-modern-hd-battlefield-20261019.json各批cleanup欄位。",
       "why": "本批失敗PNG與audit清理後，衛生檢查跟隨既有斷鏈而中斷，尚未落盤的刪除清冊遺失；只能由原觀測與capture log部分補回，未知SHA明示未還原。有效收據及原始素材保持。",
       "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#battle_performance_followup_20261027"
+    },
+    {
+      "id": "thread-profile-bind-to-active-owner",
+      "date": "2026-10-27",
+      "area": "CPU效能驗證",
+      "rule": "執行緒CPU增量須綁定實際HD攻防owner與前後phase；入口tools/fd2_profile_threads.py --binary-name --audit --out，只有same_hd_physical_owner為true的樣本用於攻防結論。Go CPU profile的百分比僅指其可見樣本，不當作全程序原生CPU比例。",
+      "why": "首次無audit取樣落在冷LOAD；有相同二進位與高CPU也不能證明戰鬥瓶頸。重新綁定同owner才看到兩個軟體GPU執行緒的主要負載。",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/fd2_profile_threads.py"
+        ],
+        "pattern": "same_hd_physical_owner"
+      },
+      "evidence": "HD主收據battle_cpu_diagnostics_followup_20261027"
+    },
+    {
+      "id": "benchmark-symmetric-quota-work",
+      "date": "2026-10-27",
+      "area": "效能量測",
+      "rule": "交錯微量測在計時內外都維持對稱工作，以同程式負控制檢查量測偏差。完整RGBA比對放到計時序列之後；入口remake/cmd/fd2/modern_hd_battle_identity_perf_test.go及FD2_HD_GPU_IDENTITY_PERF，局部GPU時間不代表正常玩家FPS。",
+      "why": "只在候選後做未計時逐像素比對仍會消耗cgroup配額，下一個基準因此變慢，同一shader也出現約六倍中位數差。舊時間不能支持加速或無效結論。",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+        ],
+        "pattern": "四個預配置讀回buffer，整輪計時結束後才比對最後畫布"
+      },
+      "evidence": "HD主收據battle_cpu_diagnostics_followup_20261027"
     }
   ]
 }
