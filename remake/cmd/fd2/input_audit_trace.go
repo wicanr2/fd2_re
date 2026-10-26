@@ -8,6 +8,7 @@ import (
 	"strconv"
 
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
+	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 )
 
 // recordInputAuditState 是唯讀的普通輸入觀測器；不指定關卡、亂數或遊戲狀態。
@@ -38,6 +39,8 @@ func (g *Game) recordInputAuditState() {
 	r["command_grid"], r["command_selection"] = g.nativeCommandOpen, g.nativeCommandSel
 	r["command_target_id"] = g.nativeCommandTargetID
 	r["heal_scene"] = g.nativeHealPresentation != nil
+	r["system_cursor_overlay"] = g.nativeSystemCursorOverlay
+	r["system_nested_open"] = g.nativeSystemNestedOpen
 	if j := g.nativeHealPresentation; j != nil {
 		r["heal_command_id"], r["heal_owner"] = j.commandID, fmt.Sprintf("%p", j)
 		r["heal_phase"], r["heal_frame"] = int(j.phase), j.frame
@@ -363,6 +366,15 @@ func (g *Game) recordInputAuditState() {
 	if s := g.nativeSystemInfoUI; s != nil {
 		r["system_info_phase"] = s.phase
 		r["system_info_frame"] = s.frame
+		r["system_info_owner"] = fmt.Sprintf("%p", s)
+		r["system_info_hd"] = s.hdPresented
+		r["system_info_values"] = s.input
+		if regions, err := fdother.NativeSystemInfoRegions(s.phase, s.frame); err == nil {
+			r["system_info_regions"] = regions
+		}
+		if s.hd != nil {
+			r["system_info_picture_sha256"] = fmt.Sprintf("%x", s.hd.digest)
+		}
 	}
 	r["next_player_index"] = g.nativeNextPlayerIndex
 	r["system_end_turn_confirm"] = g.nativeSystemEndTurnConfirm

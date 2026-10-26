@@ -1,5 +1,27 @@
 # 61 — 現代美術主題正式執行期規格
 
+## 戰場資訊四面板HD（CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI，2026-10-26）
+
+沿[巢狀系統選單證據](../data/ida/fd2_nested_system_menu_ida.txt)、[資訊圖碼勘誤](../data/ida/fd2_system_info_codec_20260907.json)及現有`ComposeNativeSystemInfoSurface`／`NativeSystemInfoTransitionFrames`。FD2.EXE固定SHA為`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`，位址為既有IDA Pro9.4線性`0x19F03→0x1B1E7→0x1B41D`及四個copy consumer；不重開RE。四圖133～136、六組數字及FDTXT索引均沿現有型別。來源形狀、雜湊及全部60條條件字表覆蓋記於HD主收據`system_info_hd_followup_20261026`。
+
+- 玩家仍經空地的系統指令環、巢狀選單及向上資訊入口開窗，任一正式關窗鍵收合。十二次展開、等待／DAC循環及十二次收合仍由原owner推進；繪製、重複Draw與F2不能另加交易、RNG、鍵盤輸入或推進步數。
+- 開窗前凍結原章號、原回合、金錢、raw camp0／2／1數量及兩行原始glyph words。保留章16分支、不重新解釋camp標籤、位數或存檔。像素主題保持原生buffer；HD沿現有戰場狀態視窗的部分覆蓋方式，保留當次HD地圖，僅清除實際copy目的區域中的邏輯UI。
+- 新的唯讀區域轉接器直接消費原十二拍copy矩形，統一表達source／destination／clip；不另抄一套開收算式。源圖矩形依序為(109,19,102,17)、(75,37,170,117)、(75,155,170,16)、(129,172,63,15)。移動時先移整幅HD圖再裁切，不在裁切邊重畫新框。
+- 四面板在1920×1200直接繪製三像素細框。底色與邊色讀原圖的背景及bevel位置，數字讀原31／42圖組墨色，條件文字沿raw0xCD／0x4C。原MAP、TURN、ENEMY、FRIEND、NPC、美元符號及勝敗標題改用Noto直接繪字，語意和原來源相同。
+- 原12字換行及FFFE保留；每條最多兩行，條件文字限制於原面板內的160×16原生像素字區，各行獨立以實際字寬選擇不超出字區的字級。不得靠最後裁切截字。固定標籤及數字各有獨立安全矩形，保留前導零。原字表無對應、字型缺字、尺寸或顏色不符時，HD預檢整組拒絕，不發布半份資訊窗。F2進HD前亦須預檢。
+- HD圖與GPU紋理屬同一資訊owner，只保留目前字型與實際使用色彩的快取。DAC循環未改到使用色時重用，不逐幀建立全畫面圖片。不改存檔格式、正式數值或多語系內容；各語系可沿目前字型切換，但原勝敗條件仍為來源中文，不能聲明已完成其翻譯。
+- 驗收涵蓋四圖／六數字、30章及章16分支、0／最大值、所有24個開收位置、缺字／壞圖／壞色拒收、原生buffer與owner節拍保持。完整Game.Draw、最終GPU畫面、F2及正常鍵盤開關、保存／新程序LOAD分別記錄；集中美術與平台驗收仍待。
+
+正式接點為[資訊視窗](../../remake/cmd/fd2/native_system_info_ui.go)、[原區域轉接器](../../remake/internal/fdother/system_info_transition.go)與[HD呈現](../../remake/cmd/fd2/modern_hd_system_info.go)。重跑與來源集中於既有工作根及HD主收據，不新增研究或交付目錄。
+
+[來源與字色測試](../../remake/cmd/fd2/modern_hd_system_info_test.go)讀實際四圖、60條文字及原生章16分支。標題的原亮字面為169／173／177，76是陰影；現行HD取169，不自行換RGB。數字另以原位置、前導零及明示camp0／2／1順序獨立繪製期望，不以HD圖自身當取色答案。
+
+[完整遊戲GPU測試](../../remake/cmd/fd2/modern_hd_system_info_gpu_test.go)由`FD2_SYSTEM_INFO_GPU_OUT=<全新輸出>`啟用，另給`FD2_SYSTEM_INFO_CATALOG`及`FD2_SYSTEM_INFO_PACK`；在既有Go Docker、6GiB／2CPU／PID256、唯讀素材及Xvfb下執行`go test -json ./cmd/fd2 -run '^TestModernHDSystemInfoCompleteGameGPU$' -count=1 -timeout=840s`。同一遊戲frame另畫無資訊窗的HD地圖控制組，再以原copy矩形逐區合成，核對全部最終GPU像素；不是僅隱藏最後圖層的自比對。每個開收位置另驗F2原生buffer、RNG、owner與phase／frame不變。
+
+正常鍵盤沿[GUI主控制](../../tools/verify_fd2_hd_fonts_gui.py)的`--system-info --battle-status --world --battle-node battle_ch23`及[專用輔助](../../tools/fd2_hd_system_info_gui.py)，容器內binary／assets／original-pack／modern-pack／town-save／out一律給絕對路徑。沿原版任意鍵收合，實際按F2亦會收窗；受控Draw邊界的F2不代表鍵盤F2可維持等待頁。三次普通開窗及F5章節邊界、F2保存bytes與新程序標題LOAD分別記錄，沒有章內注入或新整章E2。
+
+[獨立PNG核對器](../../tools/verify_fd2_hd_system_info.py)須給`--gpu --normal --binary --source --catalog --gui-tool --helper --out`；`--self-test`驗變造反例，`--old-hd`可給同資訊值的舊暗色HD實圖。GPU以Pillow從獨立地圖控制組及原拷貝區域合成，正常擷取則由四個不透明區域重建當次CPU圖並核SHA；真實像素主題與舊錯字色圖必須拒收。唯一數量與限制依58，來源及實測命令在主收據。原中文內容的翻譯另外追蹤[#280](https://github.com/wicanr2/fd2_re/issues/280)，不以本次HD繪製宣稱翻譯完成。
+
 ## 回復術13～16的正常鍵盤與HD畫面補驗（CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI）
 
 沿已閉合的NativeCommandHealTargets、startNativeCommandHealPresentation、原生13～16排程及既有HD來源，不重開RE、不改正式規則或存檔。來源採已審查第23章JSON槽，SHA-256為5d64f3a0bf9aa56f7e77f51e8cfe45fe8c14ab78f2703b966fbc0e142e7bd871，章前強化政策沿既有manifest。希爾法identity24已在出擊名單，原槽已學13／14／15／16且MP276；不授予技能、改座標或章內補血。本來源滿HP，限定正常滿血上限及演出補驗，正回復量沿既有受控收據，不外推自然難度或完整章節。

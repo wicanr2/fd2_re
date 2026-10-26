@@ -146,6 +146,7 @@ func (p *modernHDPresentation) DrawFinalScreen(screen ebiten.FinalScreen,
 		!(g.nativeDefeat == nil && g.titlePhase == "" && g.nativePaletteRamp == nil && nativeDACIsBlack(g.nativeMapDAC)) {
 		p.drawModernHDDialogueChrome(screen, contentGeometry, brightness)
 		p.drawModernHDConfirmation(screen, contentGeometry, brightness)
+		p.drawModernHDSystemInfo(screen, contentGeometry, brightness)
 	}
 	drawModernHDOverlay(screen, contentGeometry, overlay, brightness)
 	if !g.helpVisible && !g.transientUI && !g.nativeFullDACWhite && !g.nativeFullDACBlack &&

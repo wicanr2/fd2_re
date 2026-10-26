@@ -1,6 +1,58 @@
 package fdother
 
-import "testing"
+import (
+	"bytes"
+	"testing"
+)
+
+func TestNativeSystemInfoRegionsUseAllOriginalCopies(t *testing.T) {
+	base, surface := make([]byte, 64000), make([]byte, 64000)
+	for i := range base {
+		base[i], surface[i] = byte(i%251), byte((i*7+31)%253)
+	}
+	opening, closing, err := NativeSystemInfoTransitionFrames(base, surface)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, phase := range []string{"opening", "closing", "steady"} {
+		count := 12
+		if phase == "steady" {
+			count = 1
+		}
+		for frame := 0; frame < count; frame++ {
+			regions, err := NativeSystemInfoRegions(phase, frame)
+			if err != nil {
+				t.Fatal(err)
+			}
+			out := append([]byte(nil), base...)
+			for _, region := range regions {
+				r := region.Source
+				for y := 0; y < r.Dy(); y++ {
+					copy(out[(region.Destination.Y+y)*320+region.Destination.X:][:r.Dx()], surface[(r.Min.Y+y)*320+r.Min.X:][:r.Dx()])
+				}
+			}
+			var want []byte
+			switch phase {
+			case "opening":
+				want = opening[frame]
+			case "closing":
+				want = closing[frame]
+			default:
+				want, err = NativeSystemInfoSteadyFrame(base, surface)
+			}
+			if err != nil || !bytes.Equal(out, want) {
+				t.Fatal(phase, frame, err)
+			}
+		}
+	}
+	for _, phase := range []string{"", "other", "steady", "opening", "closing"} {
+		for _, frame := range []int{-1, 12} {
+			if _, err := NativeSystemInfoRegions(phase, frame); err == nil {
+				t.Fatal("accepted invalid region", phase, frame)
+			}
+		}
+	}
+}
 
 func TestNativeSystemInfoSteadyPreservesBattlefieldOutsidePanels(t *testing.T) {
 	baseline := make([]byte, NativeSystemInfoBytes)

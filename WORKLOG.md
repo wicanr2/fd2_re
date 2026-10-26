@@ -3849,3 +3849,19 @@ README新增物品、金錢、關框及返回四格實圖，原文化入口與�
 - GitHub #4／201／202／204／263已更新並讀回，完整舊尾段、驗收、標籤與OPEN狀態保持。官方解析器從主機gh現況重生25項快照，18項待人判、零項訊號消失。新增動畫取樣教訓後363條／221守衛通過。字串盤點122候選及審查SHA保持，八項字串測試通過。
 - 素材清冊851項、私人7063檔及私人HEAD保持，無新圖包同步或正式發行。乾淨重建與已驗程式逐位元組相同，SHA為`74863ad9688fb845aaf8a0477f61b73468095488920d0d239053e6fe08857ca8`。[清理記錄](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/heal-normal-cleanup-r1.json)核SHA移除舊HUD程式、重建複本及49張被取代的初輪PNG，共63211087 bytes；保留正式第三輪圖片、收據、audit與目前程式。HD1其餘操作介面、未登錄地形及集中人工／平台仍待。
 - 收尾核對3053個本地文件／圖片連結及235個本輪輸出路徑通過，UID/GID均1000，沒有新增root-owned檔或錯型態md目錄。2808個舊root-owned路徑維持不動。三個FD2工具鏈映像沒有執行中或停止後殘留容器；私人庫乾淨且HEAD保持。
+
+## 2026-10-26 戰場資訊四面板HD接線
+
+- 從`03163469`建立`feat/hd-system-info-20261026`，沿重製驗證技能、規格流程與既有工作根。先核對`0x19F03→0x1B1E7→0x1B41D`的閉合證據、四圖133～136、60條原FDTXT條件及原區域copy，再將61寫為READY。沒有重開RE、改正式數值或保存格式；來源與結果集中於主收據`system_info_hd_followup_20261026`。
+- 四面板改用三像素原色細框及直接Noto繪字；保留MAP／TURN、ENEMY／FRIEND／NPC、貨幣、原前導零及兩行條件。原12字／FFFE換行保持，字區逐行量測及縮字，不截字。原章號、回合、金錢、raw camp0／2／1及glyph words在開窗前凍結，章16分支保持。GPU紋理與CPU圖只保留目前使用字型及色彩，不因不相干DAC pulse逐幀重建。
+- 新唯讀區域轉接器直接消費原十二拍開收算式，沒有再抄一套幾何。HD只覆蓋原copy目的區域，矩形外保留當次HD地圖；移動先移整幅來源再裁切，裁切邊不生成新框。像素模式保留原生buffer，F2進HD先預檢完整圖源、字型與顏色；失敗不發布半份視窗。
+- [來源及回歸](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/system-info-unit-r2.memory.json)與字串盤點共23項不同頂層Go通過，沒有SKIP／失敗。四圖像素seal、60條文字／零缺字、30章及章16分支、來源反例、原生十二開／等待／十二收、快取與凍結保持通過。六數字另以原位置、明示值、前導零及camp順序獨立畫期望，不調用HD自身格式器。
+- [完整GPU](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/system-info-game-r2-capture/receipt.json)驗25個位置及25次F2。每個g.frame暫不掛資訊owner，走完整Game.Draw及DrawFinalScreen產生HD地圖控制，再掛回同owner重畫；原生work／VGA、RNG與phase／frame保持。最終GPU及Pillow對原copy區域合成57600000像素，RGBA色差至多1。這是明示章0／回合255／金錢99999999／camp數12、34、56的受控測試，不是普通玩家或原版對拍。294.468秒、峰值4563124224 bytes，6GiB下memory.events零。
+- [普通鍵盤](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/system-info-normal-r2-capture/receipt.json)沿已審查第23章來源`5d64f3a0bf9aa56f7e77f51e8cfe45fe8c14ab78f2703b966fbc0e142e7bd871`，章前強化政策沿舊manifest，本輪沒有新注入。普通移游標至空地、系統環、巢狀選單及資訊入口共開窗三次；HD／像素資訊值一致，單位HP／MP／位置／Acted不變，原任意鍵收合保持。實際F2也會收窗，沒有將受控Draw的F2宣稱為按鍵可維持等待頁。
+- 普通流程的返回、F5章節邊界、兩主題保存bytes與新程序標題LOAD通過。7張主擷取，兩張HD四區重建1820808像素，與當次CPU預檢圖SHA完全相同。344.257秒、峰值5610127360 bytes，6GiB下events零。不宣稱自然難度、整章E2或戰中位置／Acted保存。
+- [獨立PNG核對](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/system-info-independent-r2.json)另拒收十種變造／缺幀、真實忠實像素主題及舊暗字HD實圖。兩個實圖反例與正式資訊值相同；它們是重製兩主題及前版HD，不是新跑的DOS原版執行收據。完整來源、工具與程式SHA均在主收據。
+- 第一輪來源與GPU自比對雖綠，實圖發現標題誤取陰影76。由原圖文字區及同次忠實像素視窗確認169／173／177為亮字面；現行取169，沒有另定RGB。新增獨立取色及數字期望後重跑全部來源、GPU與正常流程。初輪不列最終通過證據；保留一張錯字色HD圖作反例。教訓守衛原誤指測試檔，既有掃描契約排除測試檔，已改綁實際產品取色程式，不放寬掃描器。
+- README新增完整遊戲視窗半縮總覽，上排為資訊值一致的重製像素／HD主題普通流程，下排為明示數值的受控開收，無補畫。來源依[圖片清單](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/system-info-readme-r1.json)。56／57／58／61同步；原中文條件的四語內容另外以官方格式開[#280](https://github.com/wicanr2/fd2_re/issues/280)，未把HD繪製當成翻譯完成。
+- GitHub #4／201／202／204／263更新並讀回，舊內文、驗收區塊、標籤與OPEN保持。官方解析器以主機gh現況重生26項快照，19項待人判、零項訊號消失。新增取色教訓後364條／222守衛通過。七個原生標籤字串登錄為玩家可見；129候選重綁，八項字串測試通過。
+- 沒有新美術包，清冊851項、私人7063檔及私人HEAD保持。當前程式SHA為`7b301ab992d06742fab2a693d3c22cf8136112e9c51c8044d8957668ad7aebd3`，乾淨重建逐位元組相同。[清理記錄](work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/system-info-cleanup-r1.json)核SHA移除62個舊程式、重建複本、初輪重複PNG及audit，共184121437 bytes；正式第二輪完整保留，沒有錄影。未發布新版，HD1其餘介面／地形與集中人工／平台仍待。
+- 收尾核對3071個本地連結及224個本輪輸出路徑通過，UID/GID均1000，沒有新增root-owned檔或錯型態md目錄；2808個歷史root-owned路徑不動。首次find碰到掃描途中移除的環境隱藏目錄，改用GNU find的`-ignore_readdir_race`重跑，不略過目前檔案的擁有權檢查。三個FD2工具鏈沒有容器殘留，私人庫乾淨。

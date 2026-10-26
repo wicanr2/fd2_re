@@ -1,6 +1,9 @@
 package fdother
 
-import "errors"
+import (
+	"errors"
+	"image"
+)
 
 const (
 	NativeSystemInfoWidth  = 320
@@ -14,6 +17,46 @@ type nativeSystemInfoRect struct {
 	dstX, dstY int
 	width      int
 	height     int
+}
+
+// NativeSystemInfoRegion exposes the existing copy plan without changing its
+// order, clipping, or the independent closing pass.
+type NativeSystemInfoRegion struct {
+	Source      image.Rectangle
+	Destination image.Point
+}
+
+func NativeSystemInfoRegions(phase string, frame int) ([]NativeSystemInfoRegion, error) {
+	var raw []nativeSystemInfoRect
+	switch phase {
+	case "steady":
+		if frame != 0 {
+			return nil, errors.New("fdother: invalid steady information frame")
+		}
+		raw = nativeSystemInfoOpenRects(12)
+	case "opening", "closing":
+		if frame < 0 || frame >= NativeSystemInfoSteps {
+			return nil, errors.New("fdother: invalid information transition frame")
+		}
+		if phase == "opening" {
+			raw = nativeSystemInfoOpenRects(frame)
+		} else {
+			raw = nativeSystemInfoCloseRects(11 - frame)
+		}
+	default:
+		return nil, errors.New("fdother: invalid information phase")
+	}
+	regions := make([]NativeSystemInfoRegion, 0, len(raw))
+	for _, r := range raw {
+		if r.width <= 0 || r.height <= 0 {
+			continue
+		}
+		regions = append(regions, NativeSystemInfoRegion{
+			Source:      image.Rect(r.srcX, r.srcY, r.srcX+r.width, r.srcY+r.height),
+			Destination: image.Pt(r.dstX, r.dstY),
+		})
+	}
+	return regions, nil
 }
 
 func blitNativeSystemInfoRect(dst, src []byte, rect nativeSystemInfoRect) error {

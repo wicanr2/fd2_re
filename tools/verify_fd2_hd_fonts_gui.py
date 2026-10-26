@@ -16,6 +16,7 @@ from verify_fd2_hd_terrain_walk import walk_behind_house
 from verify_fd2_gaia_focus import focus_gaia, sample_gaia
 from fd2_hd_death_gui import capture_standalone_ch23_source, run_ch23_death_event
 from fd2_hd_heal_gui import run_normal_heal
+from fd2_hd_system_info_gui import run_normal_system_info
 
 
 def terrain_frame_ids(value):
@@ -59,6 +60,7 @@ def main():
     parser.add_argument('--battle-node', default='battle_ch01', help='來源槽的正式戰場節點，預設首章')
     parser.add_argument('--battle-only', action='store_true', help='抽驗普通攻防、F2及保存冷讀，略過已另驗的狀態／命令字型；需--battle-hd')
     parser.add_argument('--heal-normal', action='store_true', help='正常第23章既有希爾法依次施放13～16，滿HP上限、HD效果、F2與保存冷讀；需--battle-status --world')
+    parser.add_argument('--system-info', action='store_true', help='正常第23章空地系統環開關資訊，HD／原版、F2、返回與保存冷讀；需--battle-status --world')
     parser.add_argument('--capture-native-battle-save', action='store_true', help='正常原生標題LOAD、出發及F5建立JSON來源槽；需--native-save與--battle-status')
     parser.add_argument('--native-entry-theme', choices=['hd','faithful'], default='hd', help='原生來源擷取的起始主題；第23章獨立整備目前明示使用faithful')
     parser.add_argument('--death-event', type=int, choices=[53], help='第23章普通進軍擊倒隊長，唯讀抽樣共用死亡HD；需--town-save')
@@ -118,6 +120,8 @@ def main():
     window_height = '1272' if args.player_toolbar else '1200'
     assert not args.heal_normal or (args.battle_status and args.world and args.battle_node=='battle_ch23'
                                   and not any([args.death_event,args.battle_hd,args.gaia,args.terrain,args.battle_only]))
+    assert not args.system_info or (args.battle_status and args.world and args.battle_node=='battle_ch23'
+                                   and not any([args.heal_normal,args.death_event,args.battle_hd,args.gaia,args.terrain,args.battle_only,args.player_toolbar]))
     assert not args.death_commander_hd or (args.death_event==53 and args.world and args.battle_hd)
     assert not args.death_actor_art or (args.death_commander_hd and args.death_kind=='action')
     assert args.revive_before_departure is None or args.capture_native_battle_save
@@ -681,6 +685,10 @@ def main():
             else:raise TimeoutError('首章LOAD對話未結束')
             wait(lambda s:not s.get('dialogues') and not s.get('banner_t'))
             shot('battle-hd-field')
+            if args.system_info:
+                run_normal_system_info(args,audit,key,wait,shot,saved,command,window,
+                                       restart_title_load,operations,shots,tool_source_sha256)
+                return
             if args.heal_normal:
                 run_normal_heal(args,audit,key,wait,shot,saved,command,window,
                                 restart_title_load,operations,shots,tool_source_sha256)

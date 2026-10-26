@@ -12,14 +12,17 @@ import (
 )
 
 type nativeSystemInfoUIState struct {
-	opening [][]byte
-	steady  []byte
-	closing [][]byte
-	phase   string
-	frame   int
-	drawn   bool
-	dac     []byte
-	palette color.Palette
+	opening     [][]byte
+	steady      []byte
+	closing     [][]byte
+	phase       string
+	frame       int
+	drawn       bool
+	dac         []byte
+	palette     color.Palette
+	input       campaign.NativeSystemInfoInput
+	hd          *modernHDSystemInfo
+	hdPresented bool
 }
 
 func loadNativeSystemInfoAssets() (*campaign.NativeSystemInfoAssets, error) {
@@ -97,15 +100,13 @@ func (g *Game) prepareNativeSystemInfoUI() (*nativeSystemInfoUIState, error) {
 	if err != nil {
 		return nil, err
 	}
-	information, err := campaign.ComposeNativeSystemInfoSurface(
-		*g.nativeSystemInfoAssets,
-		campaign.NativeSystemInfoInput{
-			RawChapter: byte(g.handlerChapter),
-			RawRound:   byte(g.st.NativeRoundCounter),
-			Currency:   uint32(g.gold), RawCampCounts: counts,
-			Lines: [2][]uint16{line0, line1},
-		},
-	)
+	input := campaign.NativeSystemInfoInput{
+		RawChapter: byte(g.handlerChapter),
+		RawRound:   byte(g.st.NativeRoundCounter),
+		Currency:   uint32(g.gold), RawCampCounts: counts,
+		Lines: [2][]uint16{line0, line1},
+	}
+	information, err := campaign.ComposeNativeSystemInfoSurface(*g.nativeSystemInfoAssets, input)
 	if err != nil {
 		return nil, err
 	}
@@ -122,10 +123,16 @@ func (g *Game) prepareNativeSystemInfoUI() (*nativeSystemInfoUIState, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &nativeSystemInfoUIState{
+	state := &nativeSystemInfoUIState{
 		opening: opening, steady: steady, closing: closing,
-		phase: "opening", dac: dac, palette: palette,
-	}, nil
+		phase: "opening", dac: dac, palette: palette, input: input,
+	}
+	if g.modernStoryPortraits != nil && g.modernStoryPortraits.hasHD {
+		if err := g.prepareModernHDSystemInfo(state); err != nil {
+			return nil, err
+		}
+	}
+	return state, nil
 }
 
 func (g *Game) stepNativeSystemInfoUI() {
@@ -178,6 +185,10 @@ func (g *Game) drawNativeSystemInfoUI(screen *ebiten.Image) bool {
 	state := g.nativeSystemInfoUI
 	if state == nil {
 		return false
+	}
+	state.hdPresented = false
+	if g.drawModernHDSystemInfoUI(screen, state) {
+		return true
 	}
 	frame := state.steady
 	if state.phase == "opening" && state.frame < len(state.opening) {

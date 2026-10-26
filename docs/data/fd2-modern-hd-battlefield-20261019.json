@@ -238364,7 +238364,7 @@
     "source_branch": "feat/hd-panel-icons-20261026",
     "base_commit": "ea4fb3bdc78ea61e90b4ad8db7f90187c4a0cb9e",
     "release_ready": false,
-    "active_slice": "回復術13～16正常鍵盤與HD演出補驗已通過；接續其餘HD1操作介面及未登錄地形，集中人工／平台仍待",
+    "active_slice": "戰場資訊四面板HD接線及普通開關／保存冷讀通過；其餘介面、未登錄地形與集中人工／平台仍待。",
     "components": [
       {
         "component": "人物、頭像、戰鬥動畫與場景既有圖源",
@@ -238404,6 +238404,12 @@
         "component": "回復術13～16正常演出",
         "status": "CONFORMED-SCOPED-RUNTIME-E1-NORMAL-GUI",
         "evidence_key": "heal_normal_gui_followup_20261026"
+      },
+      {
+        "component": "戰場資訊四面板",
+        "status": "CONFORMED-SCOPED-RUNTIME-E1-NORMAL-GUI",
+        "evidence_key": "system_info_hd_followup_20261026",
+        "localization_issue": 280
       }
     ],
     "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md",
@@ -238415,8 +238421,8 @@
       263
     ],
     "release_scope_pending": "新增工具列控制是否須與HD1正式版同時完成，已用共同決策提問；不阻塞既有HD1接線。",
-    "latest_branch": "feat/hd-heal-normal-20261026",
-    "latest_base_commit": "0dad7c676daccdbf58db7fe10eac80a6fae19745"
+    "latest_branch": "feat/hd-system-info-20261026",
+    "latest_base_commit": "03163469cba9f2de97be493d5c96d43cea4fec33"
   },
   "map_hud_hd_followup_20261026": {
     "status": "CONFORMED-SCOPED-RUNTIME-E1-NORMAL-GUI",
@@ -239369,5 +239375,515 @@
       "<existing-work-root>/new-independent.json",
       "--self-test"
     ]
+  },
+  "system_info_hd_followup_20261026": {
+    "status": "CONFORMED-SCOPED-RUNTIME-E1-NORMAL-GUI",
+    "base_commit": "03163469cba9f2de97be493d5c96d43cea4fec33",
+    "source_branch": "feat/hd-system-info-20261026",
+    "full_hd_complete": false,
+    "source_evidence": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/system-info-source-r1.json",
+      "sha256": "e5b368b030684d14322d206f0df7eb19dff4c5abe51e77fd257d42d2bb095ae3"
+    },
+    "scope": "原生戰場資訊四面板、高清文字／細框、HD地圖部分覆蓋及原開收矩形；原文字未新增翻譯。",
+    "original_dynamic_parity_added": false,
+    "runtime_integrated": true,
+    "normal_keyboard_verified": true,
+    "go_runs": [
+      {
+        "name": "system-info-unit-r2",
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/system-info-unit-r2.memory.json",
+          "sha256": "667eddf34012a6ef2d5632b30bccf4c3408127f73ea893a9fab21f1cfe3e6ca2"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/system-info-unit-r2.log",
+          "sha256": "632192f6af0eb17b08cd3b9733ec97dc0da86ac1be2920ecf34dd39e2532e321"
+        },
+        "seconds": 54.867,
+        "peak_bytes": 1408299008,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "tests": [
+          "TestNativeSystemInfoRegionsUseAllOriginalCopies",
+          "TestNativeSystemInfoSteadyPreservesBattlefieldOutsidePanels",
+          "TestNativeSystemInfoTransitionMatches1B1E7TwelvePassOrder",
+          "TestNativeSystemInfoTransitionRejectsPartialSurfacesAtomically",
+          "TestModernHDSystemInfoOriginalInkAndNumbers",
+          "TestModernHDSystemInfoChapter16UsesNativePartyBranch",
+          "TestComposeNativeSystemInfoSurfaceUses1B41DPanelAndNumberAnchors",
+          "TestNativeSystemInfoCampCountsUsesRaw1B41DPredicate",
+          "TestComposeNativeSystemInfoSurfaceRejectsInvalidPanelBeforePublication",
+          "TestModernHDSystemInfoAllChapterSourcesAndFrozenData",
+          "TestModernHDSystemInfoRejectsSourcesAndPublishesAtomically",
+          "TestLoadNativeSystemInfoAssetsUsesSeparatedPackWithoutArchive",
+          "TestPrepareNativeSystemInfoUIRunsTwelveOpenWaitTwelveClose",
+          "TestPrepareNativeSystemInfoUIFailsBeforePublicationWithoutRawCount"
+        ],
+        "command": [
+          "with-xvfb",
+          "go",
+          "test",
+          "-json",
+          "./cmd/fd2",
+          "./internal/fdother",
+          "./internal/campaign",
+          "-run",
+          "^(TestModernHDSystemInfo(AllChapterSourcesAndFrozenData|RejectsSourcesAndPublishesAtomically|OriginalInkAndNumbers|Chapter16UsesNativePartyBranch)|Test.*NativeSystemInfo.*)$",
+          "-count=1",
+          "-timeout=180s"
+        ]
+      },
+      {
+        "name": "system-info-game-r2",
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/system-info-game-r2.memory.json",
+          "sha256": "9137925bb4b3bbdb45ec8231c850493afe2b2cdba0b3b040e9aebdd2a9e4dd76"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/system-info-game-r2.log",
+          "sha256": "90e7e46a3ccc065aa97171b9b855ed7ad9eafbf4c54a9c553d31bf7df8c43112"
+        },
+        "seconds": 294.468,
+        "peak_bytes": 4563124224,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "tests": [
+          "TestModernHDSystemInfoCompleteGameGPU"
+        ],
+        "command": [
+          "with-xvfb",
+          "go",
+          "test",
+          "-json",
+          "./cmd/fd2",
+          "-run",
+          "^TestModernHDSystemInfoCompleteGameGPU$",
+          "-count=1",
+          "-timeout=840s"
+        ]
+      },
+      {
+        "name": "system-info-strings-r1",
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/system-info-strings-r1.memory.json",
+          "sha256": "069b02e7bda4bcc090fc2e175500b874fba82d6e39a6e8846d5d60ff743d87d8"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/system-info-strings-r1.log",
+          "sha256": "4ddabf407e2f515b8d1333e2fbffc980c09b3ff61bf4927c35e1d641d5f69517"
+        },
+        "seconds": 1.006,
+        "peak_bytes": 74833920,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "tests": [
+          "TestBuildCollectsControlledJSONAndGoUIWithoutNotesOrErrors",
+          "TestBuildIsDeterministicAndJSONSerializable",
+          "TestBuildRejectsDuplicateExistingStringID",
+          "TestMultipleTextFieldsDoNotReuseOneExistingStringID",
+          "TestVariablesIncludeWrappedErrorPlaceholder",
+          "TestDrawFunctionContextIncludesIndirectASCIIAndFunctionName",
+          "TestDrawFunctionContextSkipsLocaleKeys",
+          "TestReviewedGoCandidatesMatchCurrentInventory"
+        ],
+        "command": [
+          "go",
+          "test",
+          "-json",
+          "./cmd/fd2-string-inventory",
+          "-count=1",
+          "-timeout=90s"
+        ]
+      }
+    ],
+    "distinct_top_level_go_tests": 23,
+    "go_passes": 23,
+    "normal_source": {
+      "file": "work/promo-cadence-20261018/hd-fonts/shared-death-player-ch23-r1/source-gui-r1/user-data/fd2_re/fd2_save.json",
+      "sha256": "5d64f3a0bf9aa56f7e77f51e8cfe45fe8c14ab78f2703b966fbc0e142e7bd871"
+    },
+    "source_policy": {
+      "mode": "boost-only",
+      "target_completed_chapter": 22,
+      "base_ap_plus": 5000,
+      "base_dp_plus": 300,
+      "dx_plus": 60,
+      "max_hp_plus": 1000,
+      "preserve_dead": true,
+      "in_chapter_injection": false
+    },
+    "normal": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/system-info-normal-r2-capture/receipt.json",
+        "sha256": "c1c1a55095e1967b2d3454bbab18db97f78765e39d1305e863cccdad842f9df5"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/system-info-normal-r2.log",
+        "sha256": "707210edf0fe46e52c6b6724a09457bbea6102b868e070625587fd7dd1c32065"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/system-info-normal-r2.memory.json",
+        "sha256": "04ee23de5a55f480aea74275046a157d9887096972e223ca0ecf18e6eaf160a3"
+      },
+      "command": [
+        "python3",
+        "tools/verify_fd2_hd_fonts_gui.py",
+        "--binary",
+        "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/system-info-normal-r2-binary",
+        "--assets",
+        "/repo/remake",
+        "--original-pack",
+        "/original",
+        "--modern-pack",
+        "/modern",
+        "--town-save",
+        "/source/fd2_save.json",
+        "--out",
+        "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/system-info-normal-r2-capture",
+        "--battle-status",
+        "--world",
+        "--battle-node",
+        "battle_ch23",
+        "--system-info",
+        "--startup-timeout",
+        "360",
+        "--run-timeout",
+        "1800"
+      ],
+      "seconds": 344.257,
+      "peak_bytes": 5610127360,
+      "memory_events_delta": {
+        "low": 0,
+        "high": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_kill": 0,
+        "oom_group_kill": 0,
+        "sock_throttled": 0
+      },
+      "screenshots": 7,
+      "info_values": {
+        "RawChapter": 22,
+        "RawRound": 1,
+        "Currency": 2009,
+        "RawCampCounts": [
+          24,
+          0,
+          9
+        ],
+        "Lines": [
+          [
+            113,
+            550,
+            144,
+            107,
+            140,
+            141
+          ],
+          [
+            36,
+            37,
+            515,
+            516,
+            181,
+            51,
+            37,
+            81,
+            515,
+            516,
+            65534,
+            79,
+            80,
+            45,
+            549,
+            74,
+            71,
+            75,
+            515,
+            516
+          ]
+        ]
+      },
+      "state_injection_this_run": false,
+      "f2_any_key_closes_preserved": true,
+      "new_process_title_load": true,
+      "theme_save_bytes_equal": true,
+      "cold_units_equal": true,
+      "save_contract": "F5章節邊界，不聲明保存戰中位置或Acted。"
+    },
+    "gpu": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/system-info-game-r2-capture/receipt.json",
+        "sha256": "028309d9238821b06263de5e1d911d8cca97e29e7472ad8f47db673cbf9a88c8"
+      },
+      "phases": 25,
+      "f2_round_trips": 25,
+      "full_canvas_pixels": 57600000,
+      "max_channel_difference": 1,
+      "control": "同一g.frame暫不掛資訊owner，完整Game.Draw及DrawFinalScreen產生HD地圖控制，再掛回同owner繪製。不是僅隱藏最後圖層。",
+      "controlled_input": {
+        "raw_chapter": 0,
+        "raw_round": 255,
+        "currency": 99999999,
+        "raw_camp_counts": [
+          12,
+          34,
+          56
+        ],
+        "clock": "Unix1000",
+        "fdtxt_indices": [
+          597,
+          598
+        ]
+      },
+      "randomness_scope": "只驗Draw／F2不改nativeRNGState；GUI沿FD2_SEED=1，沒有新亂數對拍。"
+    },
+    "independent": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/system-info-independent-r2.json",
+      "sha256": "3dbf7a212b5d9a6e68e68f9437b99cc7bfffff8c98a5c6b0eea6f2b705a9424a"
+    },
+    "normal_hd_reconstructed_pixels": 1820808,
+    "counterexamples_rejected": [
+      "source_sha256",
+      "catalog_sha256",
+      "binary_sha256",
+      "no-cold-load",
+      "changed-values",
+      "wrong-hd-picture",
+      "wrong-owner",
+      "actual-faithful-window",
+      "actual-old-dark-caption-window",
+      "missing-transition-frame"
+    ],
+    "old_dark_hd": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/system-info-normal-r1-capture/system-info-hd-steady.png",
+      "sha256": "d4592194a86ef91614bbd86ae391b60d299bbf14ba35e8acb6eff9df04cf4f36"
+    },
+    "old_dark_hd_info_values_equal": true,
+    "readme": {
+      "file": "docs/figures/hd-system-info.png",
+      "sha256": "0b4afda42ba14dcc600aefd92a7c846a75f982060b2b376bb8c7a29d992f4624"
+    },
+    "readme_sources": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/system-info-readme-r1.json",
+      "sha256": "3f18c74e74d6c5d12c0f9ab6f03cdb2f5472c65d775a36311307cda9b3ffe02d"
+    },
+    "source_files": [
+      {
+        "file": "remake/cmd/fd2/native_system_info_ui.go",
+        "sha256": "8cc10c0d5b4318f5d816e52b9a9370d5b7f42c2a3ec70e512ced7d2f77202ace"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_system_info.go",
+        "sha256": "1db54ee098358f60b391e2221de775617dbb8f3fc26c1bc0541f36106f885637"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_system_info_test.go",
+        "sha256": "eb8dba64862ba8e1759988edeaa02b7382ddce06624728e93ccb0577b6a374f3"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_system_info_gpu_test.go",
+        "sha256": "d71c36806e2d4c848293f326137a8330d7d1944eafd9b36f626f5c05960556b9"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_presentation.go",
+        "sha256": "42afa88311e602e2ebfb36c7daa47380a76a51c1e8e6b8609264bcd64f02196f"
+      },
+      {
+        "file": "remake/cmd/fd2/player_shortcuts.go",
+        "sha256": "9061d29e0ea55b5c00a6749d3cf52b30dde58d2f0f3f72b7f409c87acb0d3000"
+      },
+      {
+        "file": "remake/cmd/fd2/input_audit_trace.go",
+        "sha256": "9956d47a663327fcf25bf4f9dab28f6822d5a4ee262fa398e244eaa668256002"
+      },
+      {
+        "file": "remake/internal/fdother/system_info_transition.go",
+        "sha256": "85e85edfb69905395b00e0ce616ec2c14a94a2338a73d878710916111bc83766"
+      },
+      {
+        "file": "remake/internal/fdother/system_info_transition_test.go",
+        "sha256": "9cfb622e53f78a19e20d22326ce6a30bd089d1c16ed7d7169d9b413cf03f39a7"
+      },
+      {
+        "file": "remake/internal/campaign/native_system_info.go",
+        "sha256": "f7b2817b409f33c594c5dcc8a208d0472fc6b98e048eac20659519bf3542f919"
+      },
+      {
+        "file": "tools/verify_fd2_hd_system_info.py",
+        "sha256": "0e4af56cee465cfa6b254362e4529b5aeeff5fd9ece4b500dde807d6c62b0358"
+      },
+      {
+        "file": "tools/fd2_hd_system_info_gui.py",
+        "sha256": "8badfc6909c8a6f680830cfc09e39d8fe58ac0e380c82d6056612bc76de8a3e5"
+      },
+      {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "c2d5533e925990a4c453065dfa6a9901df460c44136271e69f115c5ddbd57fbf"
+      },
+      {
+        "file": "remake/assets/fonts/unicode_to_glyph.json",
+        "sha256": "6563115626de78cad69a54f1bb7fe6c5b659ff999324fd31b4d7d5fa80087e61"
+      },
+      {
+        "file": "remake/assets/themes/modern/catalog.json",
+        "sha256": "5dd17043f274d86ba606f2a08c1559c40c94e4cb13f01464c32beb290b10f746"
+      },
+      {
+        "file": "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+        "sha256": "243ab77ea1b9d7d1138efa319fbe22bf4b9bd1a7b2a14954bdd72df3fcc5c0c3"
+      }
+    ],
+    "source_glyphs": {
+      "condition_entries": 60,
+      "missing": 0,
+      "max_native_rows": 2,
+      "native_columns": 12,
+      "caption_face_index": 169,
+      "caption_shadow_index": 76
+    },
+    "binary": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/system-info-normal-r2-binary",
+      "sha256": "7b301ab992d06742fab2a693d3c22cf8136112e9c51c8044d8957668ad7aebd3"
+    },
+    "rebuild": {
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/system-info-rebuild-r1.memory.json",
+        "sha256": "db1d3d8b198a860a378cb755be5e34ee39f7463ebf2990cdb7826ebe8a168798"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/system-info-rebuild-r1.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bitwise_equal": true
+    },
+    "cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/system-info-cleanup-r1.json",
+      "sha256": "2b4559d9fede17a58c7f7da584c47d1c87562d3ea4160a9e666521eef3071bc4"
+    },
+    "checks": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/system-info-checks-r1.json",
+      "sha256": "ad9fe7cefae820f4f268bb9ca6548738ad4b2c50e301cb89a513627a4de118b4"
+    },
+    "issues_readback": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/system-info-issues-readback-r1.json",
+      "sha256": "91815029a0b98385d3f6adffe96b0e53dfbcd191b4d71684bdac58337478395b"
+    },
+    "localization_issue": 280,
+    "source_conditions_translated": false,
+    "private_pack_changed": false,
+    "private_head": "fc70c3cdc0f0e35024c977f4fdcab0b8d09923ba",
+    "catalog_entries": 851,
+    "private_files": 7063,
+    "string_review": {
+      "candidates": 129,
+      "old_candidates": 122,
+      "new_native_caption_candidates": 7,
+      "inventory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/system-info-string-inventory-r1.json",
+        "sha256": "98ad9f7531675281acc94245da0634ca62aecca43226a3ad3a7090acb6c50261"
+      },
+      "review": {
+        "file": "docs/data/fd2-string-review.json",
+        "sha256": "de7d9ad00e903996d4b20f945f886e84539727d421db27e4f272699e4e009ccd"
+      }
+    },
+    "recording_created": false,
+    "limits": [
+      "既有強化來源，不外推自然難度或完整章節E2",
+      "使用重製忠實像素主題與固定原資料，不是新DOS原版執行對拍",
+      "原中文資訊的本地化另列#280，未宣稱四語條件完成",
+      "其餘HD1介面／未登錄地形、集中人工與平台仍待"
+    ],
+    "diagnostics": [
+      {
+        "run": "system-info-game-r1 / system-info-normal-r1",
+        "scope": "自比對與普通流程綠，但實圖顯示標題誤用陰影76；不是最終通過證據。修正為原亮字169，新增獨立取色及數字期望，並以真正無資訊窗HD地圖控制重跑。",
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/system-info-game-r1.memory.json",
+          "sha256": "37037bf47b67b8e111e16975683ab3a9294acb4d719f2a5e437e55fa9d5dac5a"
+        },
+        "normal_memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/system-info-normal-r1.memory.json",
+          "sha256": "be987ae0eab01c1aef0837a7ddbadc1d45c91f32914bac959554a72143763657"
+        }
+      }
+    ],
+    "docker_images": {
+      "fd2-assets-local:20260829-sfx": "sha256:e59237a31d4b5f7a62c59ac37b780bd93f17c99fda97be8f5ca0c53978b878bc",
+      "fd2-go-test-local:latest": "sha256:e4a805c52a3ad5d8c22cf23f2bcf51c6924e5ad6b99554f1b02761903c725433",
+      "fd2-promo:20261017-r1": "sha256:2dd9f94a4a0e0134ca40fbe3e321b692ad40fd137b6adc43bed97c84f11b45cb"
+    },
+    "container_limits": {
+      "gpu_and_normal": {
+        "memory": "6g",
+        "cpus": 2,
+        "pids_limit": 256,
+        "network": "none",
+        "user": "1000:1000"
+      },
+      "unit": {
+        "memory": "4g",
+        "cpus": 2,
+        "pids_limit": 256,
+        "network": "none",
+        "user": "1000:1000"
+      }
+    },
+    "independent_command": [
+      "python3",
+      "tools/verify_fd2_hd_system_info.py",
+      "--gpu",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/system-info-game-r2-capture/receipt.json",
+      "--normal",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/system-info-normal-r2-capture/receipt.json",
+      "--binary",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/system-info-normal-r2-binary",
+      "--source",
+      "work/promo-cadence-20261018/hd-fonts/shared-death-player-ch23-r1/source-gui-r1/user-data/fd2_re/fd2_save.json",
+      "--catalog",
+      "remake/assets/themes/modern/catalog.json",
+      "--gui-tool",
+      "tools/verify_fd2_hd_fonts_gui.py",
+      "--helper",
+      "tools/fd2_hd_system_info_gui.py",
+      "--out",
+      "<existing-work-root>/new-system-info-independent.json",
+      "--self-test",
+      "--old-hd",
+      "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/system-info-normal-r1-capture/system-info-hd-steady.png"
+    ],
+    "hygiene": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/system-info-hygiene-r1.json",
+      "sha256": "b2cc19e3b13bd082cc2327741ef18f5d9031fb4e7702372ec23eb6e015089938"
+    },
+    "worklist": {
+      "open_items": 26,
+      "manual_items": 19,
+      "vanished_signals": 0,
+      "fresh_host_gh": true
+    }
   }
 }

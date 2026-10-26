@@ -4483,6 +4483,21 @@
         ],
         "pattern": "\\[\\(i, False\\) for i in range\\(13, 17\\)\\]\\+\\[\\(13, True\\)\\]"
       }
+    },
+    {
+      "id": "baked-caption-face-is-not-shadow",
+      "date": "2026-10-26",
+      "area": "HD文字取色",
+      "rule": "從烘焙標籤取色時，分開字面、抗鋸齒與陰影，並核對同次忠實像素主題的實際顏色。來源雜湊與HD自比對不能證明字色正確；驗收另用原字區及明示期望色。入口remake/cmd/fd2/modern_hd_system_info_test.go的TestModernHDSystemInfoOriginalInkAndNumbers，及tools/verify_fd2_hd_system_info.py。",
+      "why": "戰場資訊原圖的76是暗影，169／173／177才是亮字面。第一輪誤用76，完整GPU自比對仍綠；同次忠實像素視窗直接顯示標題應為亮色。修正為原169字面並新增獨立數字及取色測試，沒有自行改配色或遊戲規則。",
+      "evidence": "HD主收據system_info_hd_followup_20261026；system-info-normal-r1-capture",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/modern_hd_system_info.go"
+        ],
+        "pattern": "p\\.colours = \\[10\\]byte\\{[^\\n]+169, 0xcd, 0x4c, 16, 169"
+      }
     }
   ]
 }
