@@ -1,9 +1,195 @@
 """共用死亡HD的正常GUI輔助；由既有GUI主控制器擁有X11及程序生命週期。"""
 import json
+import copy
+import threading
 import time
 from pathlib import Path
 
 from verify_fd2_hd_gui import digest, latest
+
+
+STATUS_BASE_SHA = '089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2'
+
+
+def status_source(base):
+    """只修改已審查來源的兩欄；正式遊戲與來源檔保持不變。"""
+    source = json.loads(base.read_text())
+    if digest(base) != STATUS_BASE_SHA or source['node'] != 'battle_ch01':
+        raise ValueError('狀態來源須為已審查首章槽')
+    result = copy.deepcopy(source)
+    member = result['party_roster']['4']
+    if (member['native_transient'] != [0]*6 or member['HP'] != member['MaxHP']
+            or not member['has_native_record_byte5'] or member['native_record_byte6'] != 2):
+        raise ValueError('身分4的原始狀態不符')
+    member['HP'] = member['MaxHP']//10
+    member['native_transient'][3] = 2
+    changes = [dict(path='party_roster.4.'+field, before=source['party_roster']['4'][field], after=member[field])
+               for field in ('HP', 'native_transient')]
+    return result, dict(schema='fd2-hd-status-death-source-v1', base_file=str(base),
+                        base_sha256=digest(base), actor_identity=4, changes=changes,
+                        in_chapter_injection=False, hp_lock=False,
+                        scope='既有建構首章槽，另在章前設定低HP與原生中毒計時；不證明正常取得狀態或整章E2。')
+
+
+def run_status_death(args,audit,key,wait,shot,saved,command,window,
+                     restart,operations,shots,tool_hash):
+    source_hash = digest(args.town_save)
+    source = json.loads(args.town_save.read_text())
+    manifest_path = args.town_save.with_name('manifest.json')
+    manifest = json.loads(manifest_path.read_text())
+    assert manifest['schema'] == 'fd2-hd-status-death-source-v1'
+    assert manifest['base_sha256'] == STATUS_BASE_SHA and manifest['output_sha256'] == source_hash
+    assert manifest['in_chapter_injection'] is False and manifest['hp_lock'] is False
+    assert source['party_roster']['4']['native_transient'] == [0,0,0,2,0,0]
+    cases,samples,rejected,errors = [],[],[],[]
+    stop = threading.Event()
+    worker = None
+
+    def checkpoint():
+        (args.out/'status-death-observation.json').write_text(json.dumps(dict(
+            status='OBSERVATION-ONLY',cases=cases,samples=samples,rejected=rejected,errors=errors,
+            source_sha256=source_hash,source_manifest=manifest,
+            in_chapter_injection=False,hp_lock=False,recording_created=False),ensure_ascii=False,indent=2)+'\n')
+
+    def clean(s):
+        return not any(s.get(k) for k in ('dialogues','banner_t','class_ui_job','transient_ui',
+                    'battle_scene','command_scene','unit_death_scene','ai_busy','walking','system_end_turn_confirm'))
+
+    def actor(s):
+        rows=[u for u in s['units'] if u.get('native_identity')==4 and u['camp']==0]
+        assert len(rows)==1
+        return rows[0]
+
+    def idle():
+        deadline=time.monotonic()+240
+        while time.monotonic()<deadline:
+            s=latest(audit)
+            if s.get('error'):raise RuntimeError(s['error'])
+            if clean(s):return s
+            if s.get('dialogues') and not s.get('unit_death_scene'):key('Return')
+            else:time.sleep(.02)
+        raise TimeoutError('狀態致死未返回玩家操作')
+
+    def capture(label):
+        seen=set()
+        try:
+            while not stop.is_set():
+                before=latest(audit)
+                frame=before.get('unit_death_presented_frame',-1)
+                signature=(before.get('unit_death_owner'),frame,before.get('unit_death_presented_hd'))
+                if (not before.get('unit_death_scene') or before.get('unit_death_kind')!='status'
+                        or not before.get('unit_death_presented_hd') or frame<13 or frame>24
+                        or signature in seen or len(seen)>=16):
+                    stop.wait(.005);continue
+                seen.add(signature)
+                path=args.out/f'status-death-{label}-{frame:02d}.png'
+                command('import','-window',window,str(path))
+                after=latest(audit)
+                row=dict(case=label,file=path.name,sha256=digest(path),before=before,after=after)
+                if after.get('unit_death_owner')==before.get('unit_death_owner'):
+                    samples.append(row)
+                else:rejected.append(row)
+        except Exception as error:errors.append(str(error))
+
+    try:
+        for toggle in (False,True):
+            label='f2' if toggle else 'full'
+            if cases:
+                key('F9');wait(lambda s:s.get('node')==args.battle_node and not s.get('unit_death_scene'))
+            before=idle()
+            assert before.get('hd_world') and actor(before)['hp']==source['party_roster']['4']['HP']>0
+            # 首章西側敵軍可先攻擊低HP角色。沿真正可達集合向遠離敵軍處退避，
+            # 不提高防禦、不搬座標，也不把普通攻擊死亡當作status通過。
+            a=actor(before)
+            for _ in range(32):
+                if latest(audit)['cursor']==[a['x'],a['y']] and not latest(audit).get('player_focus'):break
+                key('z');wait(lambda s:not s.get('player_focus'))
+            else:raise AssertionError('Z未選到狀態測試角色')
+            key('Return');movement=wait(lambda s:s.get('move_preview'))
+            enemies=[u for u in movement['units'] if u['camp']==2 and u['hp']>0 and u['on_field']]
+            occupied={(u['x'],u['y']) for u in movement['units'] if u['hp']>0 and u['on_field']}
+            candidates=[p for p in movement['move_reachable'] if tuple(p) not in occupied]
+            distance=lambda p:min(abs(p[0]-u['x'])+abs(p[1]-u['y']) for u in enemies)
+            retreat=max(candidates,key=lambda p:(distance(p),p[0],p[1]))
+            assert distance(retreat)>distance([a['x'],a['y']]),'無正常安全退避格'
+            for axis,positive,negative in ((0,'Right','Left'),(1,'Down','Up')):
+                current=latest(audit)['cursor'][axis]
+                for _ in range(abs(retreat[axis]-current)):key(positive if retreat[axis]>current else negative)
+            key('Return');wait(lambda s:s.get('ring_phase')=='open' and not s.get('walking'))
+            key('Down');key('Return');wait(lambda s:not s.get('ring') and not s.get('move_preview') and not s.get('class_ui_job'))
+            moved=idle()
+            assert actor(moved)['hp']==actor(before)['hp'] and actor(moved)['acted']
+            assert [actor(moved)['x'],actor(moved)['y']]==retreat
+            shot(f'status-death-{label}-retreated')
+            before=moved
+            occupied={(u['x'],u['y']) for u in before['units'] if u['on_field'] and u['hp']>0}
+            # 取目前游標旁的空地；逐鍵移動，不改座標。
+            nodes=json.loads((args.assets/'assets/scenarios/campaign_full.json').read_text())['nodes']
+            grid=json.loads((args.assets/nodes[args.battle_node]['map']/'map.json').read_text())
+            empty=min(([x,y] for y in range(grid['h']) for x in range(grid['w']) if (x,y) not in occupied),
+                      key=lambda p:(abs(p[0]-before['cursor'][0])+abs(p[1]-before['cursor'][1]),p))
+            for axis,positive,negative in ((0,'Right','Left'),(1,'Down','Up')):
+                current=latest(audit)['cursor'][axis]
+                for _ in range(abs(empty[axis]-current)):key(positive if empty[axis]>current else negative)
+            key('Return');wait(lambda s:s.get('ring_phase')=='open')
+            key('Down');key('Return');wait(lambda s:s.get('system_end_turn_confirm') and not s.get('class_ui_job'))
+            stop.clear();worker=threading.Thread(target=capture,args=(label,),daemon=True);worker.start()
+            key('Return')
+            deadline=time.monotonic()+240
+            started=None
+            while time.monotonic()<deadline:
+                s=latest(audit)
+                if s.get('error'):raise RuntimeError(s['error'])
+                if s.get('unit_death_scene') and s.get('unit_death_kind')=='status':started=s;break
+                if s.get('dialogues'):key('Return')
+                else:time.sleep(.005)
+            assert started,'未觀測到正式狀態死亡owner'
+            toggles=[]
+            if toggle:
+                key('F2');faithful=wait(lambda s:not s.get('hd_theme'))
+                assert faithful.get('unit_death_scene') and faithful.get('unit_death_kind')=='status'
+                toggles.append(dict(theme='faithful',state=faithful))
+                key('F2');hd=wait(lambda s:s.get('hd_theme'))
+                assert hd.get('unit_death_scene') and hd.get('unit_death_kind')=='status'
+                toggles.append(dict(theme='hd',state=hd))
+            returned=idle()
+            stop.set();worker.join(timeout=20)
+            assert not worker.is_alive() and not errors,errors
+            assert actor(returned)['hp']==0 and returned.get('hd_world')
+            assert returned['turn']>before['turn'] and returned['gold']==before['gold']
+            assert [u['exp'] for u in returned['units']]==[u['exp'] for u in before['units']]
+            assert all(u['hp']>0 for u in returned['units'] if u['camp']==0 and u.get('native_identity')!=4)
+            assert not any(returned.get(k) for k in ('death_reward_ui','death_reward_message'))
+            shot(f'status-death-{label}-returned')
+            cases.append(dict(case=label,theme_toggle=toggle,before=before,movement=movement,retreat=retreat,
+                              started=started,returned=returned,f2=toggles))
+            checkpoint()
+        key('F5');wait(lambda s:s.get('frame',0)>cases[-1]['returned']['frame']+2)
+        saved_bytes=saved.read_bytes()
+        key('F2');wait(lambda s:not s.get('hd_theme'))
+        key('F9');wait(lambda s:s.get('node')==args.battle_node);idle()
+        key('F5');assert saved.read_bytes()==saved_bytes,'主題切換改變章界存檔'
+        key('F2');wait(lambda s:s.get('hd_theme'))
+        key('F9');wait(lambda s:s.get('node')==args.battle_node)
+        warm=idle()
+        restart(args.battle_node,warm['gold'],'status-death-cold-title-load')
+        cold=idle()
+        assert cold['units']==warm['units'] and saved.read_bytes()==saved_bytes
+        assert digest(args.town_save)==source_hash
+        checkpoint()
+        report=dict(schema='fd2-status-death-normal-gui-v1',status='PASS',death_kind='status',
+                    source_file=str(args.town_save),source_sha256=source_hash,source_manifest=manifest,
+                    binary_sha256=digest(args.binary),gui_tool_sha256=tool_hash,
+                    helper_sha256=digest(Path(__file__)),catalog_sha256=digest(args.assets/'assets/themes/modern/catalog.json'),
+                    cases=cases,samples=samples,rejected=rejected,operations=operations,screenshots=shots,
+                    saved_sha256=digest(saved),warm=warm,cold=cold,final_node=cold['node'],
+                    in_chapter_injection=False,hp_lock=False,recording_created=False,
+                    scope='明示章前低HP／中毒來源；正常LOAD、END／YES、狀態死亡及F2、返回，章界保存冷讀。非正常取得中毒、章內存檔、自然難度、整章E2或新DOS對拍。')
+        (args.out/'receipt.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+    finally:
+        stop.set()
+        if worker:worker.join(timeout=20)
+        checkpoint()
 
 
 def run_ch23_death_event(args,audit,key,wait,shot,saved,command,window,restart,operations,shots,tool_hash):
@@ -233,3 +419,20 @@ def capture_standalone_ch23_source(args,audit,key,wait,shot,saved,native_saved,s
                 recording_created=False,preparation_limit=limit,
                 scope='正常原生標題LOAD、獨立整備必選24、確認出發、章首與F5。章前強化與既有傷亡依manifest揭露；非自然難度或整章E2。')
     (args.out/'receipt.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+
+
+if __name__=='__main__':
+    import argparse
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--build-status-source',action='store_true',required=True)
+    parser.add_argument('--source',type=Path,required=True)
+    parser.add_argument('--out',type=Path,required=True)
+    args=parser.parse_args()
+    result,manifest=status_source(args.source)
+    assert not args.out.exists() and args.out.parent.is_dir()
+    args.out.mkdir()
+    output=args.out/'fd2_save.json'
+    output.write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
+    manifest['output_sha256']=digest(output)
+    (args.out/'manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
+    print(manifest['output_sha256'])

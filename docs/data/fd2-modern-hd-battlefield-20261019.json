@@ -17,13 +17,13 @@
     "gaia_redesign": "CONFORMED-SCOPED：新版頭像與四方向圖組已登錄；正常START／Gaia北移取消／F2／冷讀分段驗證。相位差異與序章尾端失敗明示，非逐幀parity。",
     "hd_battle_animation": "同畫面重用與解碼共享皆已接正式路徑，完整GPU／F2、蓋亞攻防返回與首章正常保存冷讀通過；目前圖源及指紋依battle_decoded_storage_followup_20261027。集中造型與平台仍待，未宣稱完整完成。",
     "native_purchase_equip": "CONFORMED-SCOPED：#266原生購買立即裝備保留ignored原始格，29項商店回歸與正常購弓F5／章首射程通過；不改格式或數值規則。",
-    "hd_event_death": "共用事件、普通行動與狀態致死已接HD；三種26拍／F2通過。正常章23事件與普通擊殺已抽驗，狀態致死正常GUI仍待；來源依death_consumers_followup_20261021。",
+    "hd_event_death": "共用事件、普通行動與狀態致死已接HD；三種26拍／F2保持。章23事件及普通擊殺、首章明示低HP／中毒來源的正常END狀態死亡、途中F2、返回及章界保存冷讀均通過。來源依status_death_normal_gui_followup_20261027；不證明正常取得狀態或整章E2。",
     "theme_toolbar": "CONFORMED-SCOPED／RUNTIME-E1：正式預設單列頂端浮出、自動隱藏，主題與四語按鈕沿F2／F4閘門；完整遊戲幾何保持。其餘控制未完成，依floating_toolbar_followup_20261025。",
     "hd_facility_scene": "CONFORMED-SCOPED-RUNTIME-E1：三種城鎮與三種商店靜態HD場景／店員，以及既有隊伍HD頭像接入裝備面板；114個GPU案例及兩包載入通過，集中普通／人工仍待。",
     "assets": "正式清冊與實檔依58及item_panel_icons_hd_followup_20261026；各舊切片數字只保留其當批範圍。",
     "hd_battle_background": "CONFORMED-SCOPED／RUNTIME-E1：森林小屋／內部／海岸，以及BG0..2過渡已接共用／分離物理與24／29的已驗caller；原生位移、遮罩與節拍保持。其他來源／caller仍待，依transition_backgrounds_followup_20261024。",
     "hd_battle_pedestal": "CONFORMED-SCOPED／RUNTIME-E1：已登錄草地、森林裸土及海岸沙地TAI接共用物理的靜態／移位進場、攻防／restore／淡出。原框、層序與節拍保持，其他來源及caller仍待，依forest_coast_surface_followup_20261024。",
-    "hd_heal_map": "CONFORMED-SCOPED／RUNTIME-E1：13～16的前導、七張光環、HD輪廓閃光、十個綠數字及等待接入；兩包各八完整Game.Draw／88次F2、一次交易／續行與非空HD地形變色通過。來源及限制見heal13_16_map_hd_followup_20261023，正常／人工／平台仍待。",
+    "hd_heal_map": "CONFORMED-SCOPED／RUNTIME-E1：13～16完整Game.Draw、F2及一次交易／續行保持；既有章23滿血來源的正常選人、取消、施放與章界保存冷讀已由heal_normal_gui_followup_20261026補驗。正回復量、人工及平台仍依各自證據，不重開已驗滿血演出。",
     "hd_reward_message": "CONFORMED-SCOPED／RUNTIME-E1：物品／金錢成功訊息的HD世界、Noto文字與480頭像接入；兩完整Game.Draw共26拍／26次F2、原生開收框遮罩、動態金額、HUD回交及一次續行通過。受控頭像選擇與獎勵值，正常／人工／平台仍待；依reward_message_hd_followup_20261023。",
     "hd_map_hud_unit": "CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI：原生69×34資訊窗的414×204細框、A／D、HP、既有144人物及已登錄地形縮圖接入；原位置、層序、事件位移及省略保持。唯一數量與來源依map_hud_hd_followup_20261026；不代表其他介面／完整HD完成。",
     "hd_map_stage": "FDOTHER42背景與同次循環列位移／DAC已接HD；天空之鑰與其後凍結consumer依各自較晚followup，不沿用早期仍待說法。其他地形及完整HD仍待。",
@@ -35,7 +35,7 @@
     "art_theme_direction": "使用者確認原版／HD／HD2／HD-2D四主題，介面原版／HD獨立。正式遊戲仍只有原版／HD；其餘依61「四種美術主題」DRAFT，HD-2D人物風格待選。",
     "hd_battle_performance": "目前正常物理窗203次合成／178次重用，Draw25.96Hz／更新53.60Hz；單輪軟體GPU觀測，非固定加速或平台驗收。峰值約5.82GiB、memory.events全零，前批觸限數據保留。依battle_decoded_storage_followup_20261027。",
     "hd_battle_memory": "已補已驗證PNG唯讀共享，代表圖源223份配置降為158份、少約144MiB RGBA等價容量；回收後Go heap亦減約144MiB。正常同來源2CPU／6GiB峰值約5.82GiB、無觸限或OOM；不由單輪數字宣稱平台通過。依battle_decoded_storage_followup_20261027。",
-    "work_status": "使用者於2026-10-27暫停HD工作；本批已驗證程式、來源與進度整理提交。續作入口為battle_decoded_storage_followup_20261027；平台驗收與全部HD後集中造型確認仍待。"
+    "work_status": "使用者於2026-10-27要求繼續，HD1工作已恢復。本輪狀態致死正常操作補驗完成；最新入口為status_death_normal_gui_followup_20261027。其他指令／召喚、平台與全部HD後集中造型仍待。"
   },
   "runtime_source": {
     "binary": {
@@ -243811,6 +243811,305 @@
       ],
       "publication_open_issues": 25,
       "container_cleanup": "收尾前無存活FD2測試或GUI容器；本次收尾容器使用--rm。"
+    }
+  },
+  "status_death_normal_gui_followup_20261027": {
+    "status": "CONFORMED-SCOPED-RUNTIME-E1-NORMAL-GUI",
+    "date": "2026-10-27",
+    "base_commit": "13e8196a278edd718d255955e345184d8de0faba",
+    "full_battle_hd_complete": false,
+    "issue": 263,
+    "source_files": [
+      {
+        "file": "tools/fd2_hd_death_gui.py",
+        "sha256": "89ac4d7805d910bc308ba2890cc5472f2869dbf457aaa8bf09b346bdff580f9b"
+      },
+      {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "255bea714478a7a5b30ee62f97e0f799687c020c623ba30f07d78350b6faa10c"
+      },
+      {
+        "file": "tools/verify_fd2_hd_death_normal.py",
+        "sha256": "6b9abce8b91235ab0d77eb4315540a550917b2eb10e06c3e5d547f684b7c7205"
+      },
+      {
+        "file": "tools/test_verify_fd2_status_death_normal.py",
+        "sha256": "3a529087492d99aa466e42917567136bf7fe1d4b9344128493f57317700ce669"
+      }
+    ],
+    "source_manifest": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/status-death-source-r1/manifest.json",
+      "sha256": "e169415a227356a524194167f376d23c11ce88dfdacbe692c2549ebc730fe227"
+    },
+    "source_policy": {
+      "schema": "fd2-hd-status-death-source-v1",
+      "base_file": "/repo/work/promo-cadence-20261018/hd-fonts/command0-normal-gui-r2/user-data/fd2_re/fd2_save.json",
+      "base_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "actor_identity": 4,
+      "changes": [
+        {
+          "path": "party_roster.4.HP",
+          "before": 48,
+          "after": 4
+        },
+        {
+          "path": "party_roster.4.native_transient",
+          "before": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "after": [
+            0,
+            0,
+            0,
+            2,
+            0,
+            0
+          ]
+        }
+      ],
+      "in_chapter_injection": false,
+      "hp_lock": false,
+      "scope": "既有建構首章槽，另在章前設定低HP與原生中毒計時；不證明正常取得狀態或整章E2。",
+      "output_sha256": "b50a54e86dc92cb452fd750bd7899339830f1576d9a29a0dccce3442e03a28ad"
+    },
+    "runtime_changed": false,
+    "production_rules_changed": false,
+    "save_format_changed": false,
+    "new_assets": false,
+    "private_assets_changed": false,
+    "binary": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-decode-20261027-r1-binary",
+      "sha256": "3d78f79998a842affe2fda968cf7b0d8620e298ae1cee9e8fbf263153e16eb8e"
+    },
+    "normal_gui": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/status-death-normal-r3-capture/receipt.json",
+        "sha256": "e5acb46a58449ecd97e7dd3cd88e76922f45a5fff82895f4112203a231fc61c0"
+      },
+      "cases": [
+        "complete-hd",
+        "active-f2"
+      ],
+      "input": "正常標題LOAD、Z選角、正式可達格退避／待機、空地系統環END／YES，固定seed1。",
+      "in_chapter_injection": false,
+      "hp_lock": false,
+      "retreats": [
+        [
+          11,
+          18
+        ],
+        [
+          11,
+          18
+        ]
+      ],
+      "status_hp": [
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          0
+        ]
+      ],
+      "caller": "selector2狀態扣血訊息後的共用status死亡owner，無killer／獎勵。",
+      "boundary_save_equal": true,
+      "new_process_title_load_equal": true,
+      "chapter_state_save_claimed": false,
+      "normal_poison_acquisition_claimed": false,
+      "player_e2_claimed": false
+    },
+    "independent": {
+      "cores": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/status-death-normal-cores-r1.json",
+        "sha256": "7c04cc4e05b21bbf0475aaf8064b6a40df60ea0b2d5dbde70316d6c4abb77dfe"
+      },
+      "accepted_samples": 2,
+      "rejected_samples": 1,
+      "phases": [
+        "overlay_a",
+        "overlay_b"
+      ],
+      "compared_opaque_pixels": 2396,
+      "source_only_two_fields": true,
+      "guards": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/status-death-normal-guards-r2.json",
+        "sha256": "a7c31714682ea0ebf10677ef330c2529b88d70e559ae01e7eab848ced3e017a5"
+      },
+      "counterexamples_rejected": 26,
+      "old_action_regression": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/status-death-old-action-regression-r2.json",
+        "sha256": "70af74c22bc60c2cf03b4379c85b0c094215fd15f04be9d71b1a3378e4be1088"
+      },
+      "initial_endpoint_only_rejected": true,
+      "window_witness_policy": "X11可落後Draw觀測。僅補同owner／原點／viewport、實際audit已呈現且恰為前一畫格的見證；26項反例含七項歷史見證拒收。RGB3與至少100個不透明點保持，不宣稱逐幀同步。"
+    },
+    "memory": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/status-death-normal-r3.memory.json",
+        "sha256": "da34f7b08b6a5a65958f2d21dccebbd3fbc26232eb3620488933e698aefb1a3a"
+      },
+      "elapsed_seconds": 231.4,
+      "peak_bytes": 5474689024,
+      "events_delta": {
+        "low": 0,
+        "high": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_kill": 0,
+        "oom_group_kill": 0,
+        "sock_throttled": 0
+      },
+      "conditions": "2 CPU／6GiB／Xvfb llvmpipe；不推論最低需求或平台餘裕。"
+    },
+    "rejected_experiments": [
+      {
+        "run": "status-death-normal-r1",
+        "classification": "驗證腳本路徑錯誤",
+        "reason": "誤寫map00；改讀正式campaign節點的map0，遊戲未改。"
+      },
+      {
+        "run": "status-death-normal-r2",
+        "classification": "輸入路徑未隔離欲驗條件",
+        "reason": "未退避時敵軍先普通擊殺低HP角色；action共57筆audit，不當成status通過。",
+        "stopped_explicitly": true,
+        "exit_code": 143
+      }
+    ],
+    "artifacts": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/status-death-normal-r3-capture/receipt.json",
+        "sha256": "e5acb46a58449ecd97e7dd3cd88e76922f45a5fff82895f4112203a231fc61c0"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/status-death-normal-r3-capture/input-audit-first-process.jsonl",
+        "sha256": "3ebcd4dc9c96fbb5292e918fb731508ad1a8e42fc00009f73a6a7f0a5ca67194"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/status-death-normal-r3-capture/input-audit.jsonl",
+        "sha256": "26c7656525e34bfe6032b1ba8485a83280e71ae4946ba32bbed69a19121810b3"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/status-death-normal-r3-capture/operations.json",
+        "sha256": "6d71938926c94063b1d55e9f0a613c621ef4af26635d5838f1ca1340a560e8ae"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/status-death-normal-r3-capture/status-death-observation.json",
+        "sha256": "72318c0c4ec19077d50449a9f78c8837e75f4ccaadb8070e4b62bb0fa6a687f5"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/status-death-source-r1/fd2_save.json",
+        "sha256": "b50a54e86dc92cb452fd750bd7899339830f1576d9a29a0dccce3442e03a28ad"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/status-death-source-r1/manifest.json",
+        "sha256": "e169415a227356a524194167f376d23c11ce88dfdacbe692c2549ebc730fe227"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/status-death-normal-cores-r1.json",
+        "sha256": "7c04cc4e05b21bbf0475aaf8064b6a40df60ea0b2d5dbde70316d6c4abb77dfe"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/status-death-normal-guards-r2.json",
+        "sha256": "a7c31714682ea0ebf10677ef330c2529b88d70e559ae01e7eab848ced3e017a5"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/status-death-old-action-regression-r2.json",
+        "sha256": "70af74c22bc60c2cf03b4379c85b0c094215fd15f04be9d71b1a3378e4be1088"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/status-death-normal-r3.memory.json",
+        "sha256": "da34f7b08b6a5a65958f2d21dccebbd3fbc26232eb3620488933e698aefb1a3a"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/status-death-normal-r3-capture/status-death-f2-16.png",
+        "sha256": "988cb2b680f2bcf32dd2c28167816b985ed2d3666de619a85854e68f7b8c6188"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/status-death-normal-r3-capture/status-death-f2-23.png",
+        "sha256": "f00bb0c8f852f014b977481c3f9c6ff86c1eedea9a29ee31f635818e65e92330"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/status-death-normal-r3-capture/status-death-f2-retreated.png",
+        "sha256": "845c815df267d6a56a7991b17c5475ed4efaf3e416462f59221446902b598f17"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/status-death-normal-r3-capture/battle-hd-field.png",
+        "sha256": "3df62229c010890289c3442d094821148ae0d6375530b72b2655691efbcd284a"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/status-death-normal-r3-capture/status-death-full-16.png",
+        "sha256": "b84563ac9d05602ef8284a94874ff5e2783d58c5f566f9c28a600e4160bfcf76"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/status-death-normal-r3-capture/status-death-full-20.png",
+        "sha256": "4959fc959a8645671933bb9b1cd9e2a1dedc4eedfea646b2b3f7e877dd7fe78d"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/status-death-normal-r3-capture/status-death-cold-title-load.png",
+        "sha256": "2548b27c7c0cfb28bd68ec6e27784b5504e3473439c7d3bc1e606fb8cce7b6ad"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/status-death-normal-r3-capture/status-death-full-returned.png",
+        "sha256": "d200284cfca928df601878b599440ff6c4eb3b450592aea1f95f6a6af5cbdc69"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/status-death-normal-r3-capture/status-death-full-retreated.png",
+        "sha256": "331e3192e62a8b684bfb3bcc8d9143473c83c7e3e79fb363901999fb495b6b33"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/status-death-normal-r3-capture/status-death-f2-returned.png",
+        "sha256": "58bfc82df519cec7fca7e807a37ba38cc1cc1ee89149a0cf2b8810cf2792b197"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/status-death-normal-r3-capture/status-death-f2-13.png",
+        "sha256": "31b46a93055fe5746087249fa19bc7cbe1a231ff26f729ac5e48e06f8e2e4554"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/status-death-normal-r3-capture/status-death-f2-19.png",
+        "sha256": "d665105cf26f67348ff844f3afe17449be01c85e2b9ab4a1acda0741f8d49b0e"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/status-death-normal-r3-capture/status-death-full-22.png",
+        "sha256": "457ccc8be7ba558ab2001186bf5fba0207fbd8540e04e64c61c0db7bdcaa9fbb"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/status-death-normal-r3-capture/battle-title-load.png",
+        "sha256": "24b61e7be474651e23bdaa4346980b2665e219e912647176e19c7b2af9450902"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/status-death-normal-r3-capture/status-death-full-13.png",
+        "sha256": "35ce3fef8c4896acda5460f0ca5fb33aad0ec4e4dee3941085c494af32426ea0"
+      }
+    ],
+    "recordings_created": false,
+    "scope": "明示章前HP與中毒來源的正常操作消費端；非自然取得狀態、自然難度、章內存檔、整章E2或新DOS動態對拍。",
+    "remaining": [
+      "正常取得狀態及其他可達指令／召喚抽驗",
+      "全部HD後集中造型確認",
+      "平台驗收"
+    ],
+    "final_validation": {
+      "status": "PASS",
+      "report": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/status-death-final-validation-r1.json",
+        "sha256": "f8326b99702006e339fbb1125032f6ada3e287aff1b43db1325573da7b1fe614"
+      },
+      "worklist_open": 25,
+      "manual_items": 18,
+      "vanished_signals": 0,
+      "lessons": 372,
+      "guards": 229,
+      "scoped_outputs_ownership_checked": 193,
+      "agent_visual_review": "代理程式目視抽驗實際A／B視窗，第二段HD煙環及角色消失符合本次呈現；不等同使用者人工批准。",
+      "unexpected_fd2_containers": 0,
+      "recordings_created": false
     }
   }
 }

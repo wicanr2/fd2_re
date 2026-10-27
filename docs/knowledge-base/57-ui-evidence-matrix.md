@@ -1,5 +1,7 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
+狀態致死已補明示章前低HP／中毒來源的正常鍵盤操作：首章退避／待機、END／YES、狀態死亡、途中F2、返回與章界保存新程序LOAD通過。僅驗狀態消費端，不證明正常取得中毒、章內存檔、自然難度或整章E2。唯一目前數量依[58](58-fd2-exe-re-coverage.md)，契約與重跑依[61](61-modern-theme-runtime-spec.md)，[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)為`status_death_normal_gui_followup_20261027`。正式遊戲未改，完整HD與集中造型／平台仍待。
+
 HD解碼圖片已補唯讀共享，當次讀檔／SHA、逐畫格尺寸與透明度、發布原子性保持。完整天空之鑰GPU／F2、蓋亞攻防與正常首章保存冷讀通過；數量、CPU儲存與程序記憶體分列於[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)為`battle_decoded_storage_followup_20261027`。集中造型與平台仍待。
 
 戰鬥同畫面重用已通過完整RGBA與失效邊界驗證，正式首章攻防確有重用，普通返回、F2、保存冷讀與蓋亞完整Game.Draw回歸通過。規則、演出節拍、音效與存檔保持。唯一數量、記憶體限制與分級依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)為`battle_frame_reuse_followup_20261027`。集中造型與平台效能仍待。
@@ -131,7 +133,7 @@ BattleFig111的333／334沿原14幀正式登錄，335固定零header不補造。
 普通行動與狀態扣血致死已沿共用26拍接正式consumer。私有演出保留實際扣血前+5，正式State／Unit指標、HP／RNG／獎勵與保存格式保持。
 狀態phase在扣血訊息後、到期提示前播放，不建立killer；預檢先在私有視圖走完扣血聚焦，不輸出正式focus trace或改live狀態。
 三種consumer各26張完整Draw／F2通過，78張PNG與獨立來源重組基底bytes相同。固定seed1的普通章23擊殺取得三張A／B核心，
-勝利確認／戰後／章24整備、F2及保存新程序LOAD通過；三份其他候選未對上或不足100點，保留拒收。狀態正常GUI尚待，不新增原版逐拍raw或整章E2。
+勝利確認／戰後／章24整備、F2及保存新程序LOAD通過；三份其他候選未對上或不足100點，保留拒收。狀態消費端的正常操作已由本頁新摘要補驗，章前狀態注入仍揭露，不新增原版逐拍raw或整章E2。
 來源與限制見[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的death_consumers_followup_20261021，契約依[61](61-modern-theme-runtime-spec.md)。
 
 洛娜BattleFig5的15／16待機、旋槍／前刺及弧光已沿原21項描述子正式登錄，17固定零header不補造。

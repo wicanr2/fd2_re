@@ -3647,6 +3647,16 @@ PNG核對修訂READY：十二張煙霧的alpha255像素為分散取樣，項68�
 
 目前狀態與來源集中於[HD戰場主收據](../data/fd2-modern-hd-battlefield-20261019.json)的death_consumers_followup_20261021。
 
+狀態致死正常操作補驗CONFORMED-SCOPED（2026-10-27）：沿既有首章JSON來源，僅在啟動前將非隊長身分4的HP設為MaxHP整除10，並將原生暫態六byte的第四項設為2。其餘欄位與原來源相同，不在章內寫入HP、座標或狀態。由[死亡GUI輔助](../../tools/fd2_hd_death_gui.py)的`--build-status-source`建立來源及逐欄差異清冊，再由[GUI控制器](../../tools/verify_fd2_hd_fonts_gui.py)的`--status-death-normal --battle-status --world`執行。正常標題LOAD、空地系統環END／YES、敵方回合與selector2扣血後，須由`unit_death_kind=status`觀測到死亡owner。來源是明示注入的狀態消費端測試，不證明正常取得中毒或整章PLAYER-E2。
+
+完整HD演出與途中F2分兩次從同一來源正常F9重開；必須取得實際視窗A／B效果核心、HP正值到0、其他我方存活、金錢與經驗值不增，以及返回玩家操作。F5沿既有章節邊界保存契約，不宣稱保存章內死亡狀態；兩主題保存bytes相同，新程序標題LOAD須恢復同一章界狀態。[死亡PNG核對器](../../tools/verify_fd2_hd_death_normal.py)須分辨這類收據與章23隊長事件，保持既有來源核心、裁切及RGB3容差，不借狀態收據放行章23條件。
+[收據反例檢查](../../tools/test_verify_fd2_status_death_normal.py)以`--receipt <正常GUI收據> --out <新JSON>`拒收來源多改欄位、錯誤owner、HP／金錢／冷讀、章內注入與缺少途中切換；不修改實際來源或正式收據。
+首章西側敵軍可在selector2前普通擊殺低HP角色，因此END前先用正常Z選角、正式移動候選及待機退避；取候選中距敵軍最遠的空格，收據保存實際候選及確認格。普通攻擊死亡不得替代status owner，也不為此改防禦、敵軍或鎖血。
+
+狀態致死正常操作結果（2026-10-27）：完整HD及途中F2兩次均由正式status owner返回；獨立來源核心與收據反例、既有章23普通擊殺PNG回歸通過。來源兩欄變更、受拒實驗、記憶體與永久收據見HD主收據`status_death_normal_gui_followup_20261027`。原有三caller完整26拍GPU不由本次視窗取樣取代。
+
+狀態死亡視窗核對補充CONFORMED-SCOPED：Draw觀測可先於X11顯示，正常截圖另允許觀測前一個已呈現畫格。該畫格必須實際存在同一程序audit，早於截圖前觀測、同一status owner、同一原點及viewport、HD主題，且恰為前一畫格；不合成假觀測、不搜索所有可能畫格。每個候選仍核完整圖源順序、原點、裁切、不透明核心至少100點與RGB3容差，保存audit SHA及實際見證序號，不宣稱逐幀同步。
+
 普通行動預檢位於已結算邊界，拒收不追加inactive或新owner，不聲稱回滾此前HP／RNG。
 保留既有提早inactive的正式投影，動畫用實際原旗標的私有快照；不新增原版逐拍raw相同的聲明。
 最終action／status／script各26張完整Draw、四階段F2與單次續行通過，78張PNG及收據與獨立重組基底bytes相同。

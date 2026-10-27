@@ -1,5 +1,7 @@
 # 56 — FD2 remake 系統設計規格（SDD，2026-08-09）
 
+狀態致死已補明示章前低HP／中毒來源的正常鍵盤操作：首章退避／待機、END／YES、狀態死亡、途中F2、返回與章界保存新程序LOAD通過。僅驗狀態消費端，不證明正常取得中毒、章內存檔、自然難度或整章E2。唯一目前數量依[58](58-fd2-exe-re-coverage.md)，契約與重跑依[61](61-modern-theme-runtime-spec.md)，[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)為`status_death_normal_gui_followup_20261027`。正式遊戲未改，完整HD與集中造型／平台仍待。
+
 HD解碼圖片已補唯讀共享，當次讀檔／SHA、逐畫格尺寸與透明度、發布原子性保持。完整天空之鑰GPU／F2、蓋亞攻防與正常首章保存冷讀通過；數量、CPU儲存與程序記憶體分列於[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)為`battle_decoded_storage_followup_20261027`。集中造型與平台仍待。
 
 戰鬥同畫面重用已通過完整RGBA與失效邊界驗證，正式首章攻防確有重用，普通返回、F2、保存冷讀與蓋亞完整Game.Draw回歸通過。規則、演出節拍、音效與存檔保持。唯一數量、記憶體限制與分級依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)為`battle_frame_reuse_followup_20261027`。集中造型與平台效能仍待。
