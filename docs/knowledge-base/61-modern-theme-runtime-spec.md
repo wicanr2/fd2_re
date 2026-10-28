@@ -310,6 +310,18 @@ HD1 milestone為[GitHub milestone 1](https://github.com/wicanr2/fd2_re/milestone
 
 ## HD1地形來源遮罩與洞窟石壁（CONFORMED-SCOPED／RUNTIME-E1，#282）
 
+### 洞窟地板（CONFORMED-SCOPED／RUNTIME-E1）
+
+- 沿同一FDSHAP與selector證據，補map9實際使用的80～95共16張平面地板，並沿相同三層內容接map24／25／26的43個同源槽，共59槽。
+
+- 原生彩色4×4參考已核圖；新手繪母稿沿4×4等格歸一576方形、逐格144，RGB只取新母稿，不套石壁深藍空洞延伸。全部原生來源Mask須為全覆蓋、RemapMask為零。沿既有稀疏地形角色、原生幾何、色盤／LUT與層序，不改規則或保存格式；分格、明暗及接縫屬美術近似，人工由使用者接手。
+
+- 既有洞窟編製器與測具擴充明示floor配方，保留石壁批的固定來源及拒收；須通過來源反例、全部16圖alpha、32個原色／LUT GPU與兩組map9完整Game.Draw、F2及保存保持，才同步私人庫。跨圖43槽另驗172個四種色盤GPU與兩組map24完整Game.Draw、F2及保存保持。
+
+- 追加登錄遇到同圖既有同源集合時，以新槽的內容摘要建立獨立身分，不改舊集合。來源與生成提示由[地板配方](../../remake/assets/themes/modern/cave-floor-hd.recipe.json)及HD主收據保存，其他地板及熔岩仍待。 32個新圖及172個跨圖來源GPU、四組完整Game.Draw／F2與邊界保存保持、27項Go、Linux建置及兩類編製器共12項Python頂層回歸通過。正式873項、私人7099檔，舊7082檔保持；來源、提示與重跑依HD主收據`hd1_cave_floor_followup_20261028`。
+
+- 地板重編用`FD2_CAVE_TEST_BATCH=floor`與868項基底；跨圖重編用`FD2_TEST_TERRAIN_REUSE_BATCH=floor`與870項中間基底。跨圖GPU設`FD2_HD_TERRAIN_REUSE_EXPECTED=43`及`FD2_HD_TERRAIN_REUSE_GAME=first`，其餘環境沿既有地形測具；完整命令由主收據memory.command保存。
+
 沿既有0x11EEE／0x4DCC6地形消費端及0x4DEDA原色分支，來源與IDA線性位址索引見58及[固定指紋](../data/fd2-reference-files.json)，不重開RE。FDSHAP.DAT的SHA-256為`901b70ea82d5d977192759fad510921ffe16a0ab6af6ab7c32757de03e30aa3c`。現有[原生blitter](../../remake/internal/fdicon/fdicon.go)已證實：Mask寫來源索引；LUT分支的RemapMask映射目的地；原色分支保留該區；一般透明洞保持目的地。原生compose先產出當次底圖，[地圖23的HD背景](../../remake/cmd/fd2/modern_hd_map_stage.go)亦已按同一遮罩選擇原色／映射背景。來源覆蓋與目的地重映射互斥。
 
 - 沿schema1及`fdshap_native_hd_sparse_v1`／`native_mask_nearest_6`，允許地形HD PNG只覆蓋來源Mask。144圖中每6×6區的alpha必須等於對應原生Mask；Mask與RemapMask均二元且不能重疊。刪除「地形必須全opaque、不能帶remap」的過時載入限制；缺bank、壞形狀、錯alpha、越界、缺檔／SHA及不完整組仍原子拒收。原版模式不因HD載入而受阻。

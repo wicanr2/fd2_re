@@ -245878,6 +245878,474 @@
     "final_validation": {
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-cave-reuse-final-validation-r1.json",
       "sha256": "41f3099d6157d46bbab72ea1a13bce95be81b905c808b65e47d5d634b737dcb9"
+    },
+    "current_coverage_superseded_by": "hd1_cave_floor_followup_20261028"
+  },
+  "hd1_cave_floor_followup_20261028": {
+    "date": "2026-10-28",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1",
+    "base_commit": "8fc04ea7a074888c86cf58e8d309e8259cbecc33",
+    "working_branch": "feat/hd1-cave-floor",
+    "issue": 282,
+    "scope": "新增map9:80..95共16張平面地板，map24／25／26另外43個同角色且原生三層完全相同的槽沿既有PNG共用。共59槽，未更改遊戲規則、保存、層序或原生時鐘。",
+    "coverage": {
+      "file": "docs/data/fd2-hd1-terrain-coverage.json",
+      "sha256": "2082c18c2ec4b38aae2d3a53b8787e778b774b206e05d9ae7ec093fe8e1c2b3e",
+      "summary": {
+        "maps": 33,
+        "missing-art": 3398,
+        "missing_unique_native_content": 2069,
+        "native-remap-only": 10,
+        "registered-hd": 590,
+        "required_slots": 3998,
+        "selector_checks": 617520
+      },
+      "method": "33圖正式selector與事件有效時的來源上界，非自然可達；來源／背景缺圖仍揭露。"
+    },
+    "art": {
+      "recipe": {
+        "file": "remake/assets/themes/modern/cave-floor-hd.recipe.json",
+        "sha256": "ad51189d8eeda3e2359cb4ff8509df261df8b74dd11d5e0a0b11f3ec9c35d863"
+      },
+      "tool": "image_gen.imagegen",
+      "mode": "builtin",
+      "master": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cave-floor-hd-v1-master.png",
+        "sha256": "39b4b9659a2b2d027dc1202168a8192270dfcdfdefd4f2e4cd7ef86f33e905fd"
+      },
+      "private_master": "packs/fd2-modern-handpainted-a/cave-floor-hd-v1-master.png",
+      "source_guide": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-cave-floor-80-95-guide-r1.png",
+        "sha256": "2824bcc72e43f64a977f0445ff07beee1010cd90fbb284ac60f514871e45ecd5"
+      },
+      "candidate": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-cave-floor-candidate-r1/manifest.json",
+        "sha256": "ead4e279d215be41d580c91fc62db16baaf70ee7546b94101e73db0efe7d293b"
+      },
+      "compiler": {
+        "file": "tools/build_fd2_hd_cave_rock.py",
+        "sha256": "c67fb2f77aaacdb2e420bbe6758e507daee5dc0dbd72dff8f8ca2ccf96c8478f"
+      },
+      "frames": [
+        {
+          "map": 9,
+          "frame": 80,
+          "file": "map09-frame0080-cave-floor-hd.png",
+          "native_content_sha256": "e0f837a2f80cf5bbb302abf9360c06e8646cdf27e22ad9088073471ee82f4954",
+          "source_pixels": 576,
+          "remap_pixels": 0,
+          "painted_void_edge_padding_pixels": 0,
+          "sha256": "53cfb0faff2de7508e89d7a318e396e41611c1f0f68dab9f43baab8923ac53aa"
+        },
+        {
+          "map": 9,
+          "frame": 81,
+          "file": "map09-frame0081-cave-floor-hd.png",
+          "native_content_sha256": "eaf33e07ed4605c86fbd6ab263f716303b9beda933f17c8f4c5d7a3308c0cbad",
+          "source_pixels": 576,
+          "remap_pixels": 0,
+          "painted_void_edge_padding_pixels": 0,
+          "sha256": "e346f9b6839f18e6d61e9ef1230523cf2cfd0e5fae4510e119f97af2c85d607c"
+        },
+        {
+          "map": 9,
+          "frame": 82,
+          "file": "map09-frame0082-cave-floor-hd.png",
+          "native_content_sha256": "4dd2bbcf4864cc156c5a6de38bc314c7e163c5202d30a84d00220cf1cfbf6d2f",
+          "source_pixels": 576,
+          "remap_pixels": 0,
+          "painted_void_edge_padding_pixels": 0,
+          "sha256": "2053b56c340ca0e1a5c3eed88e7506b9653e58ed3234fab6702d8bbcd3656412"
+        },
+        {
+          "map": 9,
+          "frame": 83,
+          "file": "map09-frame0083-cave-floor-hd.png",
+          "native_content_sha256": "6c09b76d012d626c0c15c9d017b11205fdc1e17c3af08b12e183cddd0d8460f6",
+          "source_pixels": 576,
+          "remap_pixels": 0,
+          "painted_void_edge_padding_pixels": 0,
+          "sha256": "b6026f39ac9d3cf143d9614c230a5cf85a551cab9423a2842587d5318ee1bb9d"
+        },
+        {
+          "map": 9,
+          "frame": 84,
+          "file": "map09-frame0084-cave-floor-hd.png",
+          "native_content_sha256": "8135e6a784f89c464cdc701f03fd7f52ad04606d298bbe688d3a631bbfeca2f0",
+          "source_pixels": 576,
+          "remap_pixels": 0,
+          "painted_void_edge_padding_pixels": 0,
+          "sha256": "c188042f2d556776b556a43a01bdc627adaa160c24fc96bc411f5aa6fcb717b4"
+        },
+        {
+          "map": 9,
+          "frame": 85,
+          "file": "map09-frame0085-cave-floor-hd.png",
+          "native_content_sha256": "4f6db9fb3494ff878991c155bf007d1cea8375df7ef32394d692f6bd55ff056f",
+          "source_pixels": 576,
+          "remap_pixels": 0,
+          "painted_void_edge_padding_pixels": 0,
+          "sha256": "883ac91e6d80904c4c539781a6f337e4df561c655046391d4e8c4ac477219a31"
+        },
+        {
+          "map": 9,
+          "frame": 86,
+          "file": "map09-frame0086-cave-floor-hd.png",
+          "native_content_sha256": "eab81f2264b6c0015d1adf9784026d98a655a326ff47a65bb57a3368f064ba48",
+          "source_pixels": 576,
+          "remap_pixels": 0,
+          "painted_void_edge_padding_pixels": 0,
+          "sha256": "8d4f2925c439313a2176d58b845f2f2f6b8eaf2bf94fbaf76bbbb7f22fa34593"
+        },
+        {
+          "map": 9,
+          "frame": 87,
+          "file": "map09-frame0087-cave-floor-hd.png",
+          "native_content_sha256": "c57e8706399d785c38f2b15194b30ae2b250849a7701fceb2be427eb5789fd92",
+          "source_pixels": 576,
+          "remap_pixels": 0,
+          "painted_void_edge_padding_pixels": 0,
+          "sha256": "b588513402e3a52b4cdf2218e16b9ab1930499c06f7f5cdaa9b08b87c9342f90"
+        },
+        {
+          "map": 9,
+          "frame": 88,
+          "file": "map09-frame0088-cave-floor-hd.png",
+          "native_content_sha256": "643b37bf0a5f46fffd6cd74a2b2c5223736df71388c236dfbe9306f0f50d0968",
+          "source_pixels": 576,
+          "remap_pixels": 0,
+          "painted_void_edge_padding_pixels": 0,
+          "sha256": "555a7ffc3ebce06c9511b7e159398aa83c47328fd5c94011b4dfa8a817ce3e8c"
+        },
+        {
+          "map": 9,
+          "frame": 89,
+          "file": "map09-frame0089-cave-floor-hd.png",
+          "native_content_sha256": "3bb963eb34c4791b79761d164c3513013712707f91c7f0f4d6f6b0ff297cd233",
+          "source_pixels": 576,
+          "remap_pixels": 0,
+          "painted_void_edge_padding_pixels": 0,
+          "sha256": "d8b659e5fc892c120d150dc7a58c147f549bedd8381f09b8907cfe9500d6078c"
+        },
+        {
+          "map": 9,
+          "frame": 90,
+          "file": "map09-frame0090-cave-floor-hd.png",
+          "native_content_sha256": "8e93f4cd24cbcf4fda568163ba15f6242c1328f5b2800aed85b5898a00466ee4",
+          "source_pixels": 576,
+          "remap_pixels": 0,
+          "painted_void_edge_padding_pixels": 0,
+          "sha256": "5ed455631c761fce7ab8e9282846196033a0d5123381b6a56af4f79f1a41bf3e"
+        },
+        {
+          "map": 9,
+          "frame": 91,
+          "file": "map09-frame0091-cave-floor-hd.png",
+          "native_content_sha256": "cf3d60a1f7782f2efee5886869f4525f01577089e0927c6d2d971722a1d3d8b7",
+          "source_pixels": 576,
+          "remap_pixels": 0,
+          "painted_void_edge_padding_pixels": 0,
+          "sha256": "e7513cb7355e660f792fe1067ea5c7381353d43e0e93a83d1abaff9332acbc7d"
+        },
+        {
+          "map": 9,
+          "frame": 92,
+          "file": "map09-frame0092-cave-floor-hd.png",
+          "native_content_sha256": "57b74f7f6634446f6743c17bc4ab86e3da101db5ec0e277430e65566426229bb",
+          "source_pixels": 576,
+          "remap_pixels": 0,
+          "painted_void_edge_padding_pixels": 0,
+          "sha256": "367f570acc879a844fde5739fd017b05c8f9b3c05ec69785e8e4f8eff5ab8435"
+        },
+        {
+          "map": 9,
+          "frame": 93,
+          "file": "map09-frame0093-cave-floor-hd.png",
+          "native_content_sha256": "90e296c293f62d14a7a42240d05315ba36d9679d8e003dd04c2b661429207b96",
+          "source_pixels": 576,
+          "remap_pixels": 0,
+          "painted_void_edge_padding_pixels": 0,
+          "sha256": "e153b857cf427c1ad2c2a75d709ad2deefd29a4e105fdab1c37c57a47cfe1df7"
+        },
+        {
+          "map": 9,
+          "frame": 94,
+          "file": "map09-frame0094-cave-floor-hd.png",
+          "native_content_sha256": "7263cba37aa0bb4fa340e93e8e84df2ee5ba6c7e7083cfd7f0e45bbb3b0fdbb0",
+          "source_pixels": 576,
+          "remap_pixels": 0,
+          "painted_void_edge_padding_pixels": 0,
+          "sha256": "9de2fbfe2c536d1b99a771017298e533c49c908f88c06c664a18e18b33be62e1"
+        },
+        {
+          "map": 9,
+          "frame": 95,
+          "file": "map09-frame0095-cave-floor-hd.png",
+          "native_content_sha256": "59e00a698069e16a275f8dab682b65f6ebb1223b85acb8e09d45e9e75a9f6259",
+          "source_pixels": 576,
+          "remap_pixels": 0,
+          "painted_void_edge_padding_pixels": 0,
+          "sha256": "e3e82a071689057ebf3fa29b4349ce5c6e2420cf9f5dd36c6749f194706776d4"
+        }
+      ],
+      "classification": "美術近似，非原版RGB或新通行規則。4×4母稿LANCZOS歸一576並切144，無石壁void延伸，native_mask_nearest_6全覆蓋；原稿完整保存。",
+      "prompt": "逐字提示保存在recipe.image_generation.prompt；使用內建工具，實際返回1254×1254不透明母稿。",
+      "candidate_rebuild": "候選後修正登錄回傳的floor狀態標籤，最終工具重編catalog.assets與候選保持，未重畫圖片。"
+    },
+    "reuse": {
+      "bindings": 43,
+      "new_sets": 3,
+      "maps": [
+        24,
+        25,
+        26
+      ],
+      "candidate": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-floor-reuse-candidate-r1/reuse-manifest.json",
+        "sha256": "5d7b6614790a10ef554470b568c09fa44dc5db6c5f9a72a955c0e58deed01fa6"
+      },
+      "intermediate_catalog": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-floor-reuse-base-catalog.json",
+        "sha256": "6b1003b222d450517f86446b7541e155b1ea83c4f0a3913c5c041fbd209fb190"
+      },
+      "intermediate_coverage": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-floor-reuse-coverage-before-r1.json",
+        "sha256": "dd19c9b57a1d50a17b129394337306929fea19aaba9e42cd09b630a36dda453e"
+      },
+      "compiler": {
+        "file": "tools/build_fd2_hd_terrain_reuse.py",
+        "sha256": "b3ec6b680fd76c0d54810869d6463e210490fde76ff5f43428586df9300bb09b"
+      },
+      "scope": "同角色、相同三層原生內容、來源SHA與selector見證才共用；map24既有集合身分保持，新集合以新槽內容摘要命名。"
+    },
+    "gpu": {
+      "new_art": {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-cave-floor-gpu-r1-capture/receipt.json",
+          "sha256": "c0a2d7c0f52c1c293249bc45d0ab24c55632ef5ebd50023c1d6a3d088894a1f6"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-cave-floor-gpu-r1.log",
+          "sha256": "6869ff45688591e6848bee9f9d419b16d7acc1dbe672fc89e1f3113797fb3fd5"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-cave-floor-gpu-r1.memory.json",
+          "sha256": "65485d1f566383da1bf067dd8b59380ddf52cd8e8fabc9d3357b768c9d9a7d4b",
+          "elapsed_seconds": 141.44,
+          "peak_bytes": 3433201664,
+          "memory_events_delta": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          }
+        },
+        "source_cases": 32,
+        "complete_game_cases": 2,
+        "save_bytes_unchanged": 166
+      },
+      "reuse": {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-floor-reuse-gpu-r1-capture/receipt.json",
+          "sha256": "790ba6c105df4f220dafdd7a7378fb0ec9a2a954769d4eb35b0ac0e9819a45c2"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-floor-reuse-gpu-r1.log",
+          "sha256": "1870b1270f02a10b175530d0ef88ae4c194117b4d6fae058da94a85cf1ca003e"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-floor-reuse-gpu-r1.memory.json",
+          "sha256": "658e16e4d192f83f2b08ea34b3271afedd96fc37cd20c74f9570937b8b87b152",
+          "elapsed_seconds": 190.742,
+          "peak_bytes": 5074731008,
+          "memory_events_delta": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          }
+        },
+        "source_cases": 172,
+        "complete_game_cases": 2,
+        "save_bytes_unchanged": 169
+      },
+      "scope": "GPU對獨立CPU容差2。map9／章10與map24／章25兩組介面、程式F2及邊界保存；鏡頭受控，map24第一單位位置經明示設定，不宣稱正常玩家、原版oracle或平台驗收。"
+    },
+    "go_regression": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-floor-final-r1.log",
+        "sha256": "44aad6436e6e5f84e8b1bb9d9fb34a32c351fa5dd88216ef6b40f31268f787f8"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-floor-final-r1.memory.json",
+        "sha256": "0f315b013da382912620a2eead6274e86ed5dfb1bb4ec1cb20afd7ce4e70edbe",
+        "elapsed_seconds": 90.96,
+        "peak_bytes": 1377591296,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "passed": [
+        "TestCoverageIncludesFormalEventWriterAndPreservesRawInput",
+        "TestCoverageOnlyReusesIdenticalNativeContentAndUniqueHD",
+        "TestCoverageRejectsWrongCatalogSHAAlphaAndDuplicates",
+        "TestCoverageSeparatesCompositeRequirementsFromMissingArt",
+        "TestSourceSelectorsRejectOutOfBankAndChangedControls",
+        "TestSourceSelectorsKeepRawWordMaskAndAllPhases",
+        "TestSourceExportPreservesExistingOutput",
+        "TestSourceExportFailureDoesNotPublish",
+        "TestModernHDBattleConsumerInventory",
+        "TestModernHDMapOverwriteCoverageAndDestinationDependency",
+        "TestModernHDMapTransactionUsesOneNativeClockAndIndependentTerrain",
+        "TestModernHDCh23StageLoader",
+        "TestModernHDExactTerrainReuseSourceTransactions",
+        "TestModernHDTerrainCatalogAtomicAndNativeMask",
+        "TestModernHDTerrainRGBIdentityMappingAndCollapse",
+        "TestModernHDTerrainSteadyAndUpStepProjection",
+        "TestModernHDTerrainKeepsClockAndRangeAbovePainting",
+        "TestIndependentInterfaceFourModesKeepArtworkAndBattle",
+        "TestPlayerPosterApprovedPixelsAndAtomicSourceRejection",
+        "TestBuildCollectsControlledJSONAndGoUIWithoutNotesOrErrors",
+        "TestBuildIsDeterministicAndJSONSerializable",
+        "TestBuildRejectsDuplicateExistingStringID",
+        "TestMultipleTextFieldsDoNotReuseOneExistingStringID",
+        "TestVariablesIncludeWrappedErrorPlaceholder",
+        "TestDrawFunctionContextIncludesIndirectASCIIAndFunctionName",
+        "TestDrawFunctionContextSkipsLocaleKeys",
+        "TestReviewedGoCandidatesMatchCurrentInventory"
+      ]
+    },
+    "python_guards": {
+      "new_floor": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-floor-tests-final.log",
+        "sha256": "f7fc76dd7a6d3536c8aa4d73b9ebbe4bea5802dd69e9c3bc83cc2c55ca873550"
+      },
+      "legacy_rock": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-floor-legacy-rock-tests-r1.log",
+        "sha256": "5c6900a685b85711da8c965c6d627f97e288566c2b22e86df2fe6649b9924d75"
+      },
+      "new_reuse": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-floor-reuse-tests-r1.log",
+        "sha256": "2878793c2d8b6558761287ac3c0c2b3349b99a356af046f032c8e2482712c5a1"
+      },
+      "legacy_reuse": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-floor-legacy-reuse-tests-r1.log",
+        "sha256": "0fd039246d0da151c1b6388263b1b1dffbe2fcb9b0a77bd4233ccc4dd604f89b"
+      },
+      "top_level_tests": 12,
+      "scope": "各批固定基底，完整重編等價、既有輸出拒覆寫，來源與登錄錯誤不發布部分資料或改寫清冊。"
+    },
+    "assets": {
+      "status": "PASS-PRIVATE-CAVE-FLOOR-SYNC",
+      "catalog_assets": 873,
+      "catalog_sha256": "463b6ef33d0052b8aa8e557365a7789d32c10d038709835d27c170a1da0c8579",
+      "preserved_files": 7082,
+      "new_pack_files": 17,
+      "file_count": 7099,
+      "uid_gid": [
+        1000,
+        1000
+      ],
+      "private_repository": "wicanr2/fd2-assets-private",
+      "private_commit": "20d874763ebcb981ecac67df5c87e6a0c6179ee2",
+      "private_remote_verified": true,
+      "private_still_private": true,
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-floor-private-sync-r1.json",
+        "sha256": "4708e05346fed05b445160ec968c156255023a75d14b646c41f0913905dfd297"
+      }
+    },
+    "current_consumer_inventory": {
+      "observed": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-floor-consumers-r1.json",
+        "sha256": "e42dd62e2931a1bb1d2cb472ce944a6109be0819c1278dcf7ed8a29b7b977f21"
+      },
+      "verified": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-floor-consumers-verify-r1.json",
+        "sha256": "22861ef528163bc85839ad52c4d9bc8b6e79f63532810974551bcac79836563b"
+      },
+      "source_file_count": 1189,
+      "source_tree_sha256": "d8c09c36803a9ea3db10879dafac92b7f190cc6a6efbb66904d603f16fe9594c",
+      "cases": 21,
+      "archive_frames": 416,
+      "rejected_mutants": [
+        "wrong-archive",
+        "wrong-resource",
+        "wrong-frame",
+        "wrong-pixels",
+        "wrong-mask",
+        "missing-case",
+        "false-gpu",
+        "missing-hd",
+        "wrong-code",
+        "wrong-command",
+        "wrong-packed",
+        "wrong-descriptor",
+        "missing-map-route",
+        "wrong-lmi-kind",
+        "wrong-lmi-pixels",
+        "wrong-lmi-entry",
+        "missing-lmi-hd",
+        "wrong-map-mask",
+        "missing-map-mask-hd"
+      ],
+      "scope": "目前Go受控來源回歸，不新增正常玩家或原版parity。"
+    },
+    "build": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-floor-binary-r1",
+      "sha256": "15d9ab2091a926f9d80f206deec9d8f392b39040862c97e7061b3fcbee75e23d"
+    },
+    "readme_image": {
+      "file": "docs/figures/hd1-cave-floor.png",
+      "sha256": "b5b181c9575f85ac4351f80aa76dda56cd4080852c01e702e2c33ed9ff9c5232",
+      "source": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-floor-reuse-gpu-r1-capture/game-map24-hd-ui.png",
+        "sha256": "b5b181c9575f85ac4351f80aa76dda56cd4080852c01e702e2c33ed9ff9c5232"
+      },
+      "method": "完整PNG逐byte複製，未裁切或重繪；保留前批證據圖片。"
+    },
+    "reproduce": [
+      "沿61的洞窟地板及同源批參數；868項基底由git show 8fc04ea7:remake/assets/themes/modern/catalog.json重取。先以固定母稿、recipe及native-terrain-sources-r2編製16張地板。",
+      "地板GPU沿FD2_HD_CAVE_ROCK_GPU=1、MANIFEST／OUT及FD2_ASSET_PACK／FD2_TEST_MODERN_EFFECT_CATALOG／PACK，執行TestModernHDCaveRockActualGameGPU；kind=fd2_cave_floor_hd明示來源80..95，舊石壁批保留。",
+      "地板登錄後重生coverage，固定870項中間清冊編製43同源槽，再以EXPECTED=43、GAME=first及既有同源GPU環境驗證TestModernHDExactTerrainReuseRealConsumersGPU。",
+      "Python地板以FD2_CAVE_TEST_BATCH=floor及868項基底；跨圖以FD2_TEST_TERRAIN_REUSE_BATCH=floor及870項基底。舊批不設新BATCH，分別使用864／853項的對應固定基底。",
+      "各memory.command記錄完整命令。維護中的Go1.22.12、2CPU／GPU7GiB、UID/GID1000、network none；with-xvfb與llvmpipe；原包唯讀。新輸出路徑須重跑配套GPU，不重用其他路徑SHA。",
+      "來源consumer由獨立Python --self-test核對；formal coverage只由Go重生。私人同步沿正式catalog allow-list及validate_modern_theme_catalog.py --verify-private。"
+    ],
+    "remaining": [
+      "#282仍缺3398個美術槽，10純目的地來源另列，尚未HD背景保持原生。沒有剩餘已知可重用槽。",
+      "#283其餘介面／城鎮行走人物與#284完整組合仍待。人工造型及實機操作由使用者接手。",
+      "HD2／HD-2D另期，無新Release。"
+    ],
+    "toolchain": {
+      "go": "go1.22.12 linux/amd64",
+      "go_image": "fd2-go-test-local:latest",
+      "go_image_id": "44c2bbcc2a00",
+      "pillow": "11.3.0",
+      "pillow_image": "sc-cht-hdtools:pillow11.3.0-r2",
+      "gpu": "llvmpipe，非平台效能驗收"
+    },
+    "cleanup": {
+      "unexpected_fd2_containers": 0,
+      "recordings_created": 0,
+      "new_pack_image_files": 17,
+      "scope": "本批容器--rm有界且均退出；既有root-owned基線不修整，來源／收據與重跑依賴保存，無新錄影。"
+    },
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-floor-final-validation-r1.json",
+      "sha256": "6d7f0db071aef34290e880b3bcc4b437c290f1a701557714211462f8aae161ea"
     }
   }
 }

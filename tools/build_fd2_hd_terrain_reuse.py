@@ -124,10 +124,16 @@ def prepare(catalog_path, pack, maps, sources, original, coverage_path, out):
     if len(bindings) != coverage['summary'].get('reusable_slots', 0) or not bindings:
         raise ValueError('候選少於完整同源盤點')
     additions = []
+    existing_ids = {a['asset_id'] for a in catalog['assets']}
     for map_id, frames in sorted(by_map.items()):
         ordered = [frames[i] for i in sorted(frames)]
         names, hashes = [f['file'] for f in ordered], [f['sha256'] for f in ordered]
-        additions.append({'asset_id': f'modern.terrain.exact_reuse.map{map_id:02d}.native_hd', 'role': 'native_terrain_hd_set',
+        asset_id = f'modern.terrain.exact_reuse.map{map_id:02d}.native_hd'
+        if asset_id in existing_ids:
+            identity = json.dumps([(f['frame'], f['role'], f['native_content_sha256'], f['sha256']) for f in ordered], separators=(',', ':'))
+            suffix = hashlib.sha256(identity.encode()).hexdigest()[:12]
+            asset_id = f'modern.terrain.exact_reuse.batch{suffix}.map{map_id:02d}.native_hd'
+        additions.append({'asset_id': asset_id, 'role': 'native_terrain_hd_set',
             'status': 'runtime_candidate', 'consumer_contract': 'fdshap_native_hd_sparse_v1', 'map_id': map_id,
             'width': 144, 'height': 144, 'frame_count': len(ordered), 'frame_ids': sorted(frames),
             'semantics': [f['role'] for f in ordered], 'files': names, 'frame_sha256': hashes,

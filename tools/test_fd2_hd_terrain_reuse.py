@@ -22,6 +22,11 @@ class TerrainReuseTest(unittest.TestCase):
         cls.coverage = cls.work / ('hd1-cave-reuse-coverage-before-r1.json' if cave else 'hd1-terrain-coverage-before-r1.json')
         cls.candidate = cls.work / ('hd1-cave-reuse-candidate-r1' if cave else 'hd1-terrain-reuse-candidate-r1')
         cls.gpu = cls.work / ('hd1-cave-reuse-gpu-r1-capture/receipt.json' if cave else 'hd1-terrain-reuse-gpu-r3-capture/receipt.json')
+        if os.environ.get('FD2_TEST_TERRAIN_REUSE_BATCH') == 'floor':
+            cls.expected = (43, 3, 873)
+            cls.coverage = cls.work / 'hd1-floor-reuse-coverage-before-r1.json'
+            cls.candidate = cls.work / 'hd1-floor-reuse-candidate-r1'
+            cls.gpu = cls.work / 'hd1-floor-reuse-gpu-r1-capture/receipt.json'
         cls.sources = cls.work.parent / 'native-terrain-sources-r2'
         cls.baseline = json.loads(cls.coverage.read_text())
 

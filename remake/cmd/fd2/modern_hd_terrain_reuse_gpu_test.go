@@ -209,9 +209,10 @@ func TestModernHDExactTerrainReuseRealConsumersGPU(t *testing.T) {
 	// Keep the historical roof fixture; the cave batch uses its actual map and
 	// selector witness. Both are controlled cameras, not normal player input.
 	gameMap, gameFrame, cell := 1, 177, 480
-	if expected == 22 {
+	firstSource := os.Getenv("FD2_HD_TERRAIN_REUSE_GAME") == "first"
+	if expected == 22 || firstSource {
 		first := receipt.Bindings[0]
-		if first.Map != 24 || first.Frame != 32 || first.Role != "terrain" || first.Selector.Pass != 0 {
+		if first.Role != "terrain" || first.Selector.Pass != 0 || expected == 22 && (first.Map != 24 || first.Frame != 32) {
 			t.Fatal("cave batch needs an initial map24 source")
 		}
 		gameMap, gameFrame, cell = first.Map, first.Frame, first.Selector.Cell
@@ -265,7 +266,7 @@ func TestModernHDExactTerrainReuseRealConsumersGPU(t *testing.T) {
 		t.Fatal(err)
 	}
 	found := false
-	if expected == 22 {
+	if expected == 22 || firstSource {
 		for _, tile := range g.modernHDMapFrame.Terrain {
 			found = found || tile.Frame == gameFrame && tile.Image != nil
 		}

@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_cave_floor_hd_recipe",
+  "base_catalog_sha256": "ac08d586c8ceeecca7bbb26073371f9c81cfaff1cb8c54b66b1a7c0809be81e6",
+  "map_id": 9,
+  "frame_ids": [
+    80,
+    81,
+    82,
+    83,
+    84,
+    85,
+    86,
+    87,
+    88,
+    89,
+    90,
+    91,
+    92,
+    93,
+    94,
+    95
+  ],
+  "master_file": "cave-floor-hd-v1-master.png",
+  "master_sha256": "39b4b9659a2b2d027dc1202168a8192270dfcdfdefd4f2e4cd7ef86f33e905fd",
+  "master_size": [
+    1254,
+    1254
+  ],
+  "atlas_columns": 4,
+  "atlas_rows": 4,
+  "output_cell_size": 144,
+  "resample": "LANCZOS",
+  "rgb_policy": "new painted master only, no void classification or colour extension",
+  "alpha_policy": "native source Mask nearest 6; all 576 source pixels must be covered; no destination remap",
+  "source_rgb_used": false,
+  "image_generation": {
+    "tool": "image_gen.imagegen",
+    "mode": "builtin",
+    "transparent_background": false,
+    "reference_guide_sha256": "2824bcc72e43f64a977f0445ff07beee1010cd90fbb284ac60f514871e45ecd5",
+    "prompt": "Use case: stylized-concept. Asset type: production HD1 cave-floor terrain atlas for the Flame Dragon Knights 2 remake. Reference image 1 is an exact mechanical 4 by 4 row-major arrangement of native map9 floor frames 80 through 95. Redraw these sixteen warm brown natural cave-floor cells into a detailed hand-painted fantasy RPG texture atlas. Match the existing HD cave-rock art with warm ochre and umber rock surfaces, small irregular flattened stones, worn fissures and subtle fine grit. This is FLAT WALKABLE GROUND seen directly from above, not a vertical cliff, raised wall or isometric diorama. Keep the reference's per-cell arrangement of larger stones, main fissures, relative light and dark regions and overall earthy color balance; retain continuous stone patterns across the 4 by 4 grid. Use soft diffuse overhead lighting and restrained contrast appropriate under game characters. Output one opaque square 4 by 4 atlas filling the image edge to edge, with exactly equal square cells and no gaps, borders, grid lines, labels or text. Do not add lava, flames, waterfalls, vegetation, coins, characters, structures, deep pits or perspective. Paint new detailed RGB, not enlarged pixel art. This is a terrain asset sheet, not a concept screenshot or UI. Preserve all sixteen cells in the same order and proportions as the reference."
+  },
+  "evidence_refs": [
+    "docs/data/fd2-reference-files.json",
+    "docs/data/fd2-hd1-terrain-coverage.json",
+    "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+  ]
+}

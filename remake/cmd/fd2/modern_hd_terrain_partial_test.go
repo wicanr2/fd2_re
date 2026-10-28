@@ -31,6 +31,10 @@ type partialTerrainSource struct {
 }
 
 func partialTerrainSources(t *testing.T) map[int][]partialTerrainSource {
+	return terrainSources(t, true)
+}
+
+func terrainSources(t *testing.T, partialOnly bool) map[int][]partialTerrainSource {
 	t.Helper()
 	raw, err := os.ReadFile("../../../docs/data/fd2-hd1-terrain-coverage.json")
 	if err != nil {
@@ -48,7 +52,7 @@ func partialTerrainSources(t *testing.T) map[int][]partialTerrainSource {
 	out := map[int][]partialTerrainSource{}
 	for _, m := range report.Maps {
 		for _, f := range m.Required {
-			if f.Role == "terrain" && f.Writes < 576 {
+			if f.Role == "terrain" && (!partialOnly || f.Writes < 576) {
 				out[m.Map] = append(out[m.Map], f)
 			}
 		}
@@ -235,6 +239,7 @@ func TestModernHDCaveRockActualGameGPU(t *testing.T) {
 		t.Fatal(err)
 	}
 	var manifest struct {
+		Kind       string `json:"kind"`
 		CatalogSHA string `json:"catalog_sha256"`
 		Frames     []struct {
 			Frame int `json:"frame"`
@@ -242,6 +247,17 @@ func TestModernHDCaveRockActualGameGPU(t *testing.T) {
 	}
 	if err = json.Unmarshal(raw, &manifest); err != nil || len(manifest.Frames) != 16 {
 		t.Fatal(err)
+	}
+	firstFrame, status := 32, "PASS-CAVE-ROCK-HD-GPU"
+	if manifest.Kind == "fd2_cave_floor_hd" {
+		firstFrame, status = 80, "PASS-CAVE-FLOOR-HD-GPU"
+	} else if manifest.Kind != "fd2_cave_rock_partial_hd" {
+		t.Fatal("unknown cave batch", manifest.Kind)
+	}
+	for i, frame := range manifest.Frames {
+		if frame.Frame != firstFrame+i {
+			t.Fatal("incomplete cave source range")
+		}
 	}
 	catalog, err := os.ReadFile(os.Getenv("FD2_TEST_MODERN_EFFECT_CATALOG"))
 	if err != nil || fmt.Sprintf("%x", sha256.Sum256(catalog)) != manifest.CatalogSHA {
@@ -263,11 +279,11 @@ func TestModernHDCaveRockActualGameGPU(t *testing.T) {
 	p := &sharedGroundGPUProbe{set: set, out: out}
 	sourceGame := &Game{modernStoryPortraits: set, nativeMapAssets: &nativeMapAssets{MapIndex: 9, Palette: a.Palette}}
 	var first partialTerrainSource
-	for _, s := range partialTerrainSources(t)[9] {
-		if s.Frame < 32 || s.Frame > 47 {
+	for _, s := range terrainSources(t, false)[9] {
+		if s.Frame < firstFrame || s.Frame >= firstFrame+16 {
 			continue
 		}
-		if s.Frame == 32 {
+		if s.Frame == firstFrame {
 			first = s
 		}
 		if !set.terrainHD[9][s.Frame].supports("terrain") {
@@ -337,7 +353,7 @@ func TestModernHDCaveRockActualGameGPU(t *testing.T) {
 	}
 	found := false
 	for _, tile := range g.modernHDMapFrame.Terrain {
-		found = found || tile.Frame >= 32 && tile.Frame <= 47
+		found = found || tile.Frame >= firstFrame && tile.Frame < firstFrame+16
 	}
 	if !found {
 		t.Fatal("real Game.Draw has no new cave")
@@ -352,13 +368,13 @@ func TestModernHDCaveRockActualGameGPU(t *testing.T) {
 	g.msg = ""
 	units, _ := json.Marshal(g.st.Units)
 	rng := g.nativeRNGState
-	p.cases = append(p.cases, sharedGroundGPUCase{g: g, name: "game-map09-hd-ui", mapID: 9, source: 32, keepPNG: true})
+	p.cases = append(p.cases, sharedGroundGPUCase{g: g, name: "game-map09-hd-ui", mapID: 9, source: firstFrame, keepPNG: true})
 	other := *g
 	other.interfaceMode = playerInterfaceOriginal
 	other.nativeMapWork = append([]byte(nil), g.nativeMapWork...)
 	other.nativeMapVGA = append([]byte(nil), g.nativeMapVGA...)
 	other.modernHDMapGPU = nil
-	p.cases = append(p.cases, sharedGroundGPUCase{g: &other, name: "game-map09-original-ui", mapID: 9, source: 32, keepPNG: true})
+	p.cases = append(p.cases, sharedGroundGPUCase{g: &other, name: "game-map09-original-ui", mapID: 9, source: firstFrame, keepPNG: true})
 	ebiten.SetWindowSize(640, 400)
 	ebiten.SetVsyncEnabled(false)
 	if err = ebiten.RunGame(p); err != nil {
@@ -379,10 +395,10 @@ func TestModernHDCaveRockActualGameGPU(t *testing.T) {
 		t.Fatal("art changed save", err)
 	}
 	frames := []int{}
-	for f := 32; f < 48; f++ {
+	for f := firstFrame; f < firstFrame+16; f++ {
 		frames = append(frames, f)
 	}
-	report := map[string]any{"status": "PASS-CAVE-ROCK-HD-GPU", "catalog_sha256": manifest.CatalogSHA, "manifest_sha256": fmt.Sprintf("%x", sha256.Sum256(raw)), "source_frames": frames, "source_cases": 32, "complete_game_cases": 2, "save_bytes_unchanged": len(saved), "cases": p.rows, "scope": "actual map9 art, controlled camera and chapter10 units; programmatic theme/UI controls, not normal player or original parity"}
+	report := map[string]any{"status": status, "catalog_sha256": manifest.CatalogSHA, "manifest_sha256": fmt.Sprintf("%x", sha256.Sum256(raw)), "source_frames": frames, "source_cases": 32, "complete_game_cases": 2, "save_bytes_unchanged": len(saved), "cases": p.rows, "scope": "actual map9 art, controlled camera and chapter10 units; programmatic theme/UI controls, not normal player or original parity"}
 	encoded, _ := json.MarshalIndent(report, "", "  ")
 	if err = os.WriteFile(filepath.Join(out, "receipt.json"), append(encoded, '\n'), 0644); err != nil {
 		t.Fatal(err)

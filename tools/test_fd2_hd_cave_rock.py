@@ -18,9 +18,13 @@ class CaveRockTest(unittest.TestCase):
         cls.root = Path(__file__).resolve().parents[1]
         cls.work = Path(os.environ['FD2_CAVE_TEST_ROOT'])
         cls.catalog = Path(os.environ.get('FD2_CAVE_BASE_CATALOG', str(cls.root / 'remake/assets/themes/modern/catalog.json')))
-        cls.recipe = cls.root / 'remake/assets/themes/modern/cave-rock-partial-hd.recipe.json'
+        floor = os.environ.get('FD2_CAVE_TEST_BATCH') == 'floor'
+        cls.recipe = cls.root / ('remake/assets/themes/modern/cave-floor-hd.recipe.json' if floor else 'remake/assets/themes/modern/cave-rock-partial-hd.recipe.json')
         cls.sources = cls.work.parent / 'native-terrain-sources-r2'
-        cls.master = cls.work / 'cave-rock-partial-hd-v1-master.png'
+        cls.master = cls.work / ('cave-floor-hd-v1-master.png' if floor else 'cave-rock-partial-hd-v1-master.png')
+        cls.candidate = cls.work / ('hd1-cave-floor-candidate-r1' if floor else 'hd1-cave-rock-candidate-r1')
+        cls.gpu = cls.work / ('hd1-cave-floor-gpu-r1-capture/receipt.json' if floor else 'hd1-cave-rock-game-gpu-r2-capture/receipt.json')
+        cls.first = 80 if floor else 32
 
     def compile(self, out, recipe=None, sources=None, master=None):
         return prepare(recipe or self.recipe, self.catalog, Path('/modern'), Path('/original'),
@@ -31,7 +35,7 @@ class CaveRockTest(unittest.TestCase):
         with tempfile.TemporaryDirectory(prefix='.cave-rebuild-', dir=self.work) as temp:
             out = Path(temp) / 'candidate'
             result = self.compile(out)
-            old = json.loads((self.work / 'hd1-cave-rock-candidate-r1/catalog.json').read_text())
+            old = json.loads((self.candidate / 'catalog.json').read_text())
             self.assertEqual(json.loads((out / 'catalog.json').read_text())['assets'], old['assets'])
             for frame in result['frames']:
                 p = next(x['file'] for x in native['frames'][frame['frame']]['input_layers'] if x['file'].endswith('/mask.png'))
@@ -54,9 +58,9 @@ class CaveRockTest(unittest.TestCase):
                 elif fault == 'recipe-frames':
                     recipe['frame_ids'].pop()
                 elif fault == 'native-content':
-                    source['maps'][9]['frames'][32]['native_content_sha256'] = 'wrong'
+                    source['maps'][9]['frames'][self.first]['native_content_sha256'] = 'wrong'
                 elif fault == 'overlapping-mask':
-                    source['maps'][9]['frames'][32]['input_layers'][2] = deepcopy(source['maps'][9]['frames'][32]['input_layers'][1])
+                    source['maps'][9]['frames'][self.first]['input_layers'][2] = deepcopy(source['maps'][9]['frames'][self.first]['input_layers'][1])
                 elif fault == 'master-geometry':
                     master = root / 'master.png'
                     Image.new('RGB', (1248, 1254)).save(master)
@@ -72,7 +76,7 @@ class CaveRockTest(unittest.TestCase):
                 self.assertFalse(out.exists())
 
     def test_registration_requires_real_complete_consumer_receipt(self):
-        original = self.work / 'hd1-cave-rock-game-gpu-r2-capture/receipt.json'
+        original = self.gpu
         for fault in ('valid', 'missing-case', 'wrong-source', 'wrong-hash', 'missing-save'):
             with self.subTest(fault=fault), tempfile.TemporaryDirectory(prefix='.cave-register-', dir=self.work) as temp:
                 root = Path(temp)
@@ -94,11 +98,11 @@ class CaveRockTest(unittest.TestCase):
                 report = root / 'gpu.json'
                 report.write_text(json.dumps(gpu))
                 if fault == 'valid':
-                    result = register(catalog, self.work / 'hd1-cave-rock-candidate-r1', report)
+                    result = register(catalog, self.candidate, report)
                     self.assertEqual(result['frames'], 16)
                 else:
                     with self.assertRaises(ValueError):
-                        register(catalog, self.work / 'hd1-cave-rock-candidate-r1', report)
+                        register(catalog, self.candidate, report)
                     self.assertEqual(catalog.read_bytes(), before)
 
 
