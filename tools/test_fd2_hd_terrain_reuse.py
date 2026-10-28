@@ -17,7 +17,11 @@ class TerrainReuseTest(unittest.TestCase):
         cls.work = Path(os.environ['FD2_TEST_TERRAIN_REUSE_ROOT'])
         cls.original, cls.pack = Path('/original'), Path('/modern')
         cls.catalog = Path(os.environ.get('FD2_TEST_TERRAIN_BASE_CATALOG', str(cls.repo / 'remake/assets/themes/modern/catalog.json')))
-        cls.coverage = cls.work / 'hd1-terrain-coverage-before-r1.json'
+        cave = os.environ.get('FD2_TEST_TERRAIN_REUSE_BATCH') == 'cave'
+        cls.expected = (22, 2, 868) if cave else (46, 11, 864)
+        cls.coverage = cls.work / ('hd1-cave-reuse-coverage-before-r1.json' if cave else 'hd1-terrain-coverage-before-r1.json')
+        cls.candidate = cls.work / ('hd1-cave-reuse-candidate-r1' if cave else 'hd1-terrain-reuse-candidate-r1')
+        cls.gpu = cls.work / ('hd1-cave-reuse-gpu-r1-capture/receipt.json' if cave else 'hd1-terrain-reuse-gpu-r3-capture/receipt.json')
         cls.sources = cls.work.parent / 'native-terrain-sources-r2'
         cls.baseline = json.loads(cls.coverage.read_text())
 
@@ -31,10 +35,10 @@ class TerrainReuseTest(unittest.TestCase):
             result = self.build(self.coverage, out)
             base = json.loads(self.catalog.read_text())
             candidate = json.loads((out / 'catalog.json').read_text())
-            prior = json.loads((self.work / 'hd1-terrain-reuse-candidate-r1/catalog.json').read_text())
+            prior = json.loads((self.candidate / 'catalog.json').read_text())
             self.assertEqual(base['assets'], candidate['assets'][:len(base['assets'])])
             self.assertEqual(prior['assets'], candidate['assets'])
-            self.assertEqual((len(result['bindings']), result['new_catalog_sets'], result['new_image_files']), (46, 11, 0))
+            self.assertEqual((len(result['bindings']), result['new_catalog_sets'], result['new_image_files']), (*self.expected[:2], 0))
             self.assertTrue(all(p.is_symlink() for p in out.glob('*.png')))
             with self.assertRaises(ValueError):
                 self.build(self.coverage, out)
@@ -71,7 +75,7 @@ class TerrainReuseTest(unittest.TestCase):
                 self.assertFalse(out.exists(), 'rejection published partial candidate')
 
     def test_registration_requires_complete_actual_gpu_and_preserved_save(self):
-        gpu_path = self.work / 'hd1-terrain-reuse-gpu-r3-capture/receipt.json'
+        gpu_path = self.gpu
         for fault in ('valid', 'catalog-sha', 'missing-case', 'wrong-source', 'missing-save'):
             with self.subTest(fault=fault), tempfile.TemporaryDirectory(prefix='.reuse-register-', dir=self.work) as temp:
                 root = Path(temp)
@@ -92,10 +96,10 @@ class TerrainReuseTest(unittest.TestCase):
                     gpu['save_bytes_unchanged'] = 0
                 altered = root / 'gpu.json'
                 altered.write_text(json.dumps(gpu))
-                args = catalog, self.work / 'hd1-terrain-reuse-candidate-r1', altered
+                args = catalog, self.candidate, altered
                 if fault == 'valid':
                     result = register(*args)
-                    self.assertEqual((result['registered_slots'], result['catalog_assets'], result['new_image_files']), (46, 864, 0))
+                    self.assertEqual((result['registered_slots'], result['catalog_assets'], result['new_image_files']), (self.expected[0], self.expected[2], 0))
                 else:
                     with self.assertRaises(ValueError):
                         register(*args)

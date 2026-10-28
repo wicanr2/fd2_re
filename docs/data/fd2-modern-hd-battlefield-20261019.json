@@ -245633,6 +245633,251 @@
     "final_validation": {
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-cave-final-validation-r1.json",
       "sha256": "cc4fe9d29166ca1500f2f6ddbf28e447454045890df63bed9317b600d5a948a6"
+    },
+    "current_coverage_superseded_by": "hd1_cave_reuse_followup_20261028"
+  },
+  "hd1_cave_reuse_followup_20261028": {
+    "date": "2026-10-28",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1",
+    "base_commit": "b3bda7476acdce8d2ad0a4019c53e94948835bd5",
+    "working_branch": "feat/hd1-cave-cross-map",
+    "issue": 282,
+    "scope": "只新增map24:32..47及map27:100/102/104/108..110，共22個同角色、原生三層完全相同的地形槽；沿map9既有HD PNG，不新增圖片、規則、背景或新的原版oracle。",
+    "coverage": {
+      "file": "docs/data/fd2-hd1-terrain-coverage.json",
+      "sha256": "ed6bf857f383c92f035637f3f1b1ede16d2565c92c1fc0bcc1aea6288e9891a1",
+      "summary": {
+        "maps": 33,
+        "missing-art": 3457,
+        "missing_unique_native_content": 2085,
+        "native-remap-only": 10,
+        "registered-hd": 531,
+        "required_slots": 3998,
+        "selector_checks": 617520
+      },
+      "method": "正式selector及全部事件有效時的來源上界，非自然可達。透明區依既有backdrop_policy保持已完成合成的原生或已登錄HD背景；未知背景仍未HD。"
+    },
+    "reuse": {
+      "bindings": 22,
+      "new_catalog_sets": 2,
+      "new_image_files": 0,
+      "maps": [
+        24,
+        27
+      ],
+      "candidate": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-cave-reuse-candidate-r1/reuse-manifest.json",
+        "sha256": "2a70358d5430525bcfb358168a0d28a8216214f5465275ff786d00d5d18759f1"
+      },
+      "base_catalog": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-cave-reuse-base-catalog.json",
+        "sha256": "37d15b37d6a87a129d37da5b8c5108b8c53fc4b0758ec85ce9c8640eba19b4d4"
+      },
+      "before_coverage": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-cave-reuse-coverage-before-r1.json",
+        "sha256": "c7914c548d18345e51967f853fa25aca60435a0f1fd5fff5bb5d05553d7764f8"
+      },
+      "native_manifest": {
+        "file": "work/promo-cadence-20261018/hd-fonts/native-terrain-sources-r2/manifest.json",
+        "sha256": "a19a3da393294ad6e1c4ad1dccdb9a911d26ed1f3d7008046eddda2398f938f5"
+      },
+      "compiler": {
+        "file": "tools/build_fd2_hd_terrain_reuse.py",
+        "sha256": "969c49f7fe2f88b122b8999fa8274405f515376b01c808218fcaebc0d976cc85"
+      },
+      "scope": "source indices、source Mask、destination RemapMask三層逐byte相同；144圖alpha逐點相同。沿既有內容SHA、角色、selector見證及成品SHA，不猜視覺相似。"
+    },
+    "gpu": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-cave-reuse-gpu-r1-capture/receipt.json",
+        "sha256": "d523f9f4a6509cd7c034762674d3edccbaf77fd78f7e84efa845370852a5c6b9"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-cave-reuse-gpu-r1.log",
+        "sha256": "a02f366d286cc6e6c0720d924f9e30959565529e8b9c9760d64a58ef18dc7806"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-cave-reuse-gpu-r1.memory.json",
+        "sha256": "e391a2e674682fd7cbf12904c60c4142c47f59b1721d58294e35fa09e8c0a967",
+        "elapsed_seconds": 154.477,
+        "peak_bytes": 5197500416,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "source_cases": 88,
+      "complete_game_cases": 2,
+      "save_bytes_unchanged": 169,
+      "scope": "controlled native selectors, actual terrain/foreground producer and map24 Game.Draw; theme/UI controls and saved boundary bytes; not normal chapter reachability or platform acceptance",
+      "camera_policy": "map24第一筆selector初始cell；第25章單位與第一單位移到該格，原版／HD介面、程式F2。非正常玩家或平台驗收。"
+    },
+    "go_regression": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-cave-reuse-final-r1.log",
+        "sha256": "49fe6ada2537270dd4b010ab34cbca392f3b65d7e42f940f4ec93546e683001d"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-cave-reuse-final-r1.memory.json",
+        "sha256": "fb96235d662d88b4fce09e29392689b9f59f5e669d2c81c86e3caf87186f9a77",
+        "elapsed_seconds": 49.61,
+        "peak_bytes": 1394319360,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "passed": [
+        "TestCoverageIncludesFormalEventWriterAndPreservesRawInput",
+        "TestCoverageOnlyReusesIdenticalNativeContentAndUniqueHD",
+        "TestCoverageRejectsWrongCatalogSHAAlphaAndDuplicates",
+        "TestCoverageSeparatesCompositeRequirementsFromMissingArt",
+        "TestSourceSelectorsRejectOutOfBankAndChangedControls",
+        "TestSourceSelectorsKeepRawWordMaskAndAllPhases",
+        "TestSourceExportPreservesExistingOutput",
+        "TestSourceExportFailureDoesNotPublish",
+        "TestModernHDBattleConsumerInventory",
+        "TestModernHDMapOverwriteCoverageAndDestinationDependency",
+        "TestModernHDMapTransactionUsesOneNativeClockAndIndependentTerrain",
+        "TestModernHDCh23StageLoader",
+        "TestModernHDExactTerrainReuseSourceTransactions",
+        "TestModernHDTerrainCatalogAtomicAndNativeMask",
+        "TestModernHDTerrainRGBIdentityMappingAndCollapse",
+        "TestModernHDTerrainSteadyAndUpStepProjection",
+        "TestModernHDTerrainKeepsClockAndRangeAbovePainting",
+        "TestIndependentInterfaceFourModesKeepArtworkAndBattle",
+        "TestPlayerPosterApprovedPixelsAndAtomicSourceRejection",
+        "TestBuildCollectsControlledJSONAndGoUIWithoutNotesOrErrors",
+        "TestBuildIsDeterministicAndJSONSerializable",
+        "TestBuildRejectsDuplicateExistingStringID",
+        "TestMultipleTextFieldsDoNotReuseOneExistingStringID",
+        "TestVariablesIncludeWrappedErrorPlaceholder",
+        "TestDrawFunctionContextIncludesIndirectASCIIAndFunctionName",
+        "TestDrawFunctionContextSkipsLocaleKeys",
+        "TestReviewedGoCandidatesMatchCurrentInventory"
+      ]
+    },
+    "tool_rejections": {
+      "new_batch_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-cave-reuse-tests-r1.log",
+        "sha256": "69fb2d5e4b293dab5dcb5c231af0059edf8b3dd9f9349ae460cbf28dbe5886bf"
+      },
+      "legacy_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-cave-reuse-legacy-tests-r1.log",
+        "sha256": "f39eb986916fac4fc652c665687494bf719aad6adc558106c42f9fc73281c7e9"
+      },
+      "top_level_tests": 6,
+      "per_batch_source_faults": 9,
+      "per_batch_registration_faults": 4,
+      "scope": "固定866／853基底，各批完整重編等價、拒覆寫，來源錯誤不發布候選；登錄缺項、錯清冊／來源、無保存拒收。"
+    },
+    "assets": {
+      "status": "PASS-PRIVATE-CAVE-REUSE-SYNC",
+      "catalog_assets": 868,
+      "catalog_sha256": "ac08d586c8ceeecca7bbb26073371f9c81cfaff1cb8c54b66b1a7c0809be81e6",
+      "preserved_files": 7082,
+      "new_image_files": 0,
+      "manifest_bytes_unchanged": true,
+      "uid_gid": [
+        1000,
+        1000
+      ],
+      "private_repository": "wicanr2/fd2-assets-private",
+      "private_commit": "af05b4d552319c59cdee8c21141cdfe699b25344",
+      "private_remote_verified": true,
+      "private_still_private": true,
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-cave-reuse-private-sync-r1.json",
+        "sha256": "eae79e97c53f0c5b4204c4efb80a9a185423c89d9b66d80b0f7895bda7176373"
+      }
+    },
+    "current_consumer_inventory": {
+      "observed": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-cave-reuse-consumers-r1.json",
+        "sha256": "9c23468732054806ece8403d41e5136c29a8452fef60e48c0969e24243c4c1a2"
+      },
+      "verified": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-cave-reuse-consumers-verify-r1.json",
+        "sha256": "8ee0c2841a00b2c95be5c00668d4f785760e6c936be6747745871536417c1e1c"
+      },
+      "source_file_count": 1189,
+      "source_tree_sha256": "d4bba633fc26ec668caaad5710e54dcf7c571cd5ab1c78de686e0737e5335e78",
+      "cases": 21,
+      "archive_frames": 416,
+      "rejected_mutants": [
+        "wrong-archive",
+        "wrong-resource",
+        "wrong-frame",
+        "wrong-pixels",
+        "wrong-mask",
+        "missing-case",
+        "false-gpu",
+        "missing-hd",
+        "wrong-code",
+        "wrong-command",
+        "wrong-packed",
+        "wrong-descriptor",
+        "missing-map-route",
+        "wrong-lmi-kind",
+        "wrong-lmi-pixels",
+        "wrong-lmi-entry",
+        "missing-lmi-hd",
+        "wrong-map-mask",
+        "missing-map-mask-hd"
+      ],
+      "scope": "目前Go受控正式來源回歸，不重新宣稱一般玩家或原版parity。"
+    },
+    "build": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-cave-reuse-binary-r1",
+      "sha256": "3960c95108fe54a776603c994c9a61741e295e8b485eb4f8e54c23ba3ebb7204"
+    },
+    "readme_image": {
+      "file": "docs/figures/hd1-cave-cross-map.png",
+      "sha256": "36e3699ade042d799beae41dc8056bb3fe226af880c1714de8cad47260e316ca",
+      "source": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-cave-reuse-gpu-r1-capture/game-map24-hd-ui.png",
+        "sha256": "36e3699ade042d799beae41dc8056bb3fe226af880c1714de8cad47260e316ca"
+      },
+      "method": "完整PNG逐byte複製，未裁切或重繪；人物與鏡頭明示受控。"
+    },
+    "reproduce": [
+      "維護中的Go1.22.12／fd2-go-test-local:latest，UID/GID1000，2CPU；GPU7GiB、最終CPU4GiB、停用網路。原包及現代素材唯讀；Xvfb沿with-xvfb，有界逾時。",
+      "編製器沿61同源批參數，866項基底由git show b3bda747取得；--coverage使用該基底的正式生成清單，--sources使用native-terrain-sources-r2。",
+      "GPU：FD2_HD_TERRAIN_REUSE_EXPECTED=22、FD2_HD_TERRAIN_REUSE_GPU=1、FD2_HD_TERRAIN_REUSE_MANIFEST=<候選/reuse-manifest.json>、FD2_HD_TERRAIN_REUSE_OUT=<新目錄>；沿FD2_ASSET_PACK及FD2_TEST_MODERN_EFFECT_CATALOG／PACK設定，with-xvfb go test ./cmd/fd2 -count=1 -timeout=390s -run ^TestModernHDExactTerrainReuseRealConsumersGPU$。",
+      "Python：FD2_TEST_TERRAIN_REUSE_BATCH=cave、FD2_TEST_TERRAIN_REUSE_ROOT=<既有工作根>、FD2_TEST_TERRAIN_BASE_CATALOG=<866項基底>，python3 -m unittest discover -s tools -p test_fd2_hd_terrain_reuse.py -v。舊批不設BATCH，使用853項基底。",
+      "候選／GPU SHA綁定輸出路徑，新路徑需取得對應GPU收據；最後CPU及build命令由go_regression.memory.command保存。coverage只由Go輸出更新，consumer由獨立Python --self-test核對。"
+    ],
+    "remaining": [
+      "#282仍缺3457個美術槽與未HD背景，10個純目的地來源另列，完整HD1尚未完成。",
+      "#283其餘介面／城鎮行走人物、#284完整組合保持待辦；人工造型及實機操作由使用者接手。",
+      "HD2／HD-2D另期，無新Release。"
+    ],
+    "toolchain": {
+      "go": "go1.22.12 linux/amd64",
+      "go_image": "fd2-go-test-local:latest",
+      "go_image_id": "44c2bbcc2a00",
+      "pillow_image": "sc-cht-hdtools:pillow11.3.0-r2",
+      "gpu": "llvmpipe，非平台效能驗收"
+    },
+    "cleanup": {
+      "unexpected_fd2_containers": 0,
+      "recordings_created": 0,
+      "new_pack_image_files": 0,
+      "scope": "本批--rm容器有界且退出；只新增清冊，不複製素材，不修整既有root-owned基線。"
+    },
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-cave-reuse-final-validation-r1.json",
+      "sha256": "41f3099d6157d46bbab72ea1a13bce95be81b905c808b65e47d5d634b737dcb9"
     }
   }
 }

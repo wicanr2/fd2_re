@@ -8,6 +8,7 @@ import (
 	"image/color"
 	"os"
 	"path/filepath"
+	"strconv"
 	"testing"
 	"time"
 
@@ -103,7 +104,14 @@ func TestModernHDExactTerrainReuseRealConsumersGPU(t *testing.T) {
 	if err = json.Unmarshal(raw, &receipt); err != nil {
 		t.Fatal(err)
 	}
-	if len(receipt.Bindings) != 46 {
+	expected := 46
+	if value := os.Getenv("FD2_HD_TERRAIN_REUSE_EXPECTED"); value != "" {
+		expected, err = strconv.Atoi(value)
+		if err != nil || expected <= 0 {
+			t.Fatal("invalid explicit reuse count", value)
+		}
+	}
+	if len(receipt.Bindings) != expected {
 		t.Fatal("complete fixed reuse scope required")
 	}
 	if _, err = os.Stat(out); !os.IsNotExist(err) {
@@ -198,12 +206,21 @@ func TestModernHDExactTerrainReuseRealConsumersGPU(t *testing.T) {
 				keepPNG: mode == "steady" && binding.Role == "foreground"})
 		}
 	}
-	// The complete renderer uses map1 data and chapter2 units. Its camera is a
-	// declared fixture at a new roof source, rather than a normal input claim.
-	if err = g.loadMap("assets/maps/map1"); err != nil {
+	// Keep the historical roof fixture; the cave batch uses its actual map and
+	// selector witness. Both are controlled cameras, not normal player input.
+	gameMap, gameFrame, cell := 1, 177, 480
+	if expected == 22 {
+		first := receipt.Bindings[0]
+		if first.Map != 24 || first.Frame != 32 || first.Role != "terrain" || first.Selector.Pass != 0 {
+			t.Fatal("cave batch needs an initial map24 source")
+		}
+		gameMap, gameFrame, cell = first.Map, first.Frame, first.Selector.Cell
+	}
+	mapPath := fmt.Sprintf("assets/maps/map%d", gameMap)
+	if err = g.loadMap(mapPath); err != nil {
 		t.Fatal(err)
 	}
-	g.resetBattle("assets/maps/map1/map1_units.json", "assets/scenarios/ch02.json")
+	g.resetBattle(fmt.Sprintf("%s/map%d_units.json", mapPath, gameMap), fmt.Sprintf("assets/scenarios/ch%02d.json", gameMap+1))
 	if g.loadErr != "" {
 		t.Fatal(g.loadErr)
 	}
@@ -212,14 +229,16 @@ func TestModernHDExactTerrainReuseRealConsumersGPU(t *testing.T) {
 		Height int      `json:"h"`
 		Tiles  []uint16 `json:"tiles"`
 	}
-	mapRaw, err := os.ReadFile("../../assets/maps/map1/map.json")
+	mapRaw, err := os.ReadFile(filepath.Join("../..", mapPath, "map.json"))
 	if err != nil {
 		t.Fatal(err)
 	}
 	if err = json.Unmarshal(mapRaw, &data); err != nil {
 		t.Fatal(err)
 	}
-	cell := 480
+	if cell < 0 || cell >= len(data.Tiles) {
+		t.Fatal("camera witness outside map")
+	}
 	x, y := cell%data.Width, cell/data.Width
 	v := g.st.NativeMapViewState
 	v.CameraX, v.CameraY = max(0, min(x-5, data.Width-13)), max(0, min(y-4, data.Height-8))
@@ -246,11 +265,17 @@ func TestModernHDExactTerrainReuseRealConsumersGPU(t *testing.T) {
 		t.Fatal(err)
 	}
 	found := false
-	for _, f := range g.modernHDMapFrame.Foreground {
-		found = found || f.SourceFrame == 177 && f.HDImage != nil
+	if expected == 22 {
+		for _, tile := range g.modernHDMapFrame.Terrain {
+			found = found || tile.Frame == gameFrame && tile.Image != nil
+		}
+	} else {
+		for _, f := range g.modernHDMapFrame.Foreground {
+			found = found || f.SourceFrame == gameFrame && f.HDImage != nil
+		}
 	}
 	if !found {
-		t.Fatal("complete map1 missed new roof foreground")
+		t.Fatal("complete map missed new HD source", gameMap, gameFrame)
 	}
 	if err = g.saveGameToSlot(0); err != nil {
 		t.Fatal(err)
@@ -262,13 +287,13 @@ func TestModernHDExactTerrainReuseRealConsumersGPU(t *testing.T) {
 	g.msg = ""
 	units, _ := json.Marshal(g.st.Units)
 	rng := g.nativeRNGState
-	probe.cases = append(probe.cases, sharedGroundGPUCase{g: g, name: "game-map01-hd-ui", mapID: 1, source: 177, keepPNG: true})
+	probe.cases = append(probe.cases, sharedGroundGPUCase{g: g, name: fmt.Sprintf("game-map%02d-hd-ui", gameMap), mapID: gameMap, source: gameFrame, keepPNG: true})
 	originalUI := *g
 	originalUI.interfaceMode = playerInterfaceOriginal
 	originalUI.nativeMapWork = append([]byte(nil), g.nativeMapWork...)
 	originalUI.nativeMapVGA = append([]byte(nil), g.nativeMapVGA...)
 	originalUI.modernHDMapGPU = nil
-	probe.cases = append(probe.cases, sharedGroundGPUCase{g: &originalUI, name: "game-map01-original-ui", mapID: 1, source: 177, keepPNG: true})
+	probe.cases = append(probe.cases, sharedGroundGPUCase{g: &originalUI, name: fmt.Sprintf("game-map%02d-original-ui", gameMap), mapID: gameMap, source: gameFrame, keepPNG: true})
 	ebiten.SetWindowSize(640, 400)
 	ebiten.SetVsyncEnabled(false)
 	if err = ebiten.RunGame(probe); err != nil {
@@ -290,7 +315,7 @@ func TestModernHDExactTerrainReuseRealConsumersGPU(t *testing.T) {
 	}
 	report := map[string]any{"status": "PASS-EXACT-TERRAIN-REUSE-GPU", "catalog_sha256": receipt.CatalogSHA, "manifest_sha256": fmt.Sprintf("%x", sha256.Sum256(raw)),
 		"bindings": len(receipt.Bindings), "source_cases": len(receipt.Bindings) * 4, "complete_game_cases": 2, "cases": probe.rows, "save_bytes_unchanged": len(saved),
-		"scope": "controlled native selectors, actual terrain/foreground producer and map1 Game.Draw; theme/UI controls and saved boundary bytes; not normal chapter reachability or platform acceptance"}
+		"scope": fmt.Sprintf("controlled native selectors, actual terrain/foreground producer and map%d Game.Draw; theme/UI controls and saved boundary bytes; not normal chapter reachability or platform acceptance", gameMap)}
 	encoded, err := json.MarshalIndent(report, "", "  ")
 	if err != nil {
 		t.Fatal(err)

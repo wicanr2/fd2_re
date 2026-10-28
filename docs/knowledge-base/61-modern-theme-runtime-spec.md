@@ -326,6 +326,8 @@ HD1 milestone為[GitHub milestone 1](https://github.com/wicanr2/fd2_re/milestone
 
 ## HD1全地圖地形盤點與同源接線（CONFORMED-SCOPED／RUNTIME-E1，#282保持OPEN）
 
+洞窟跨圖批（CONFORMED-SCOPED／RUNTIME-E1）：依目前866項清冊與生成覆蓋資料，只補map24的32～47及map27的100／102／104／108～110，共22個同角色、原生三層完全相同的槽，沿map9現有石壁PNG。不新增圖片或改背景政策。每槽須核對selector見證、來源與成品SHA、原生alpha；88個四種色盤GPU案例與map24完整Game.Draw、原版／HD介面、程式F2及保存保持通過後才登錄。原生背景仍可能是像素，完整HD地形與人工確認分列。舊46槽測具保留，新批透過明示測試範圍參數重跑，不把過去數量當成未來限制。 22槽、88來源GPU、兩組完整map24 Game.Draw及程式F2／保存保持通過；27項Go、Linux建置與六項Python頂層回歸通過。正式868項，私人7082檔及manifest bytes保持；現況依主收據`hd1_cave_reuse_followup_20261028`。重跑新批使用`FD2_HD_TERRAIN_REUSE_EXPECTED=22`，其餘GPU環境沿下文；Python使用`FD2_TEST_TERRAIN_REUSE_BATCH=cave`及`FD2_TEST_TERRAIN_BASE_CATALOG=<866項基底>`，固定基底由`git show b3bda747:remake/assets/themes/modern/catalog.json`重取。原批次預設46槽保持。
+
 本批沿已證實的`NativeTerrainFrameIndex`、`NativeForegroundFrameIndex`及`battle.State.CompleteTreasureMapUpdate`，不重開規則逆向。固定FDSHAP.DAT的SHA-256為`901b70ea82d5d977192759fad510921ffe16a0ab6af6ab7c32757de03e30aa3c`，EXE與FDFIELD來源依[參考清單](../data/fd2-reference-files.json)。既有IDA線性位址0x11EEE／0x12AC6分別是地形及前景消費端，0x12263／0x19268的更新沿共用writer；原始bytes與證據索引依58。這是已核准HD1範圍內的資料接線，不更改原版規則、世界座標、圖層順序、計時或保存。
 
 - 由既有[Go圖源工具](../../remake/cmd/fd2-terrain-sources/main.go)載入全部33張正式地圖與真實bank，逐圖核對控制表及來源層。盤點使用正式selector的兩flip及四cycle，另以正式事件writer在私人複本將事件表設為有效，收集更新後的selector。這是事件有效時的來源上界，不能宣稱每個事件自然可達；原始地圖與存檔不改寫。重複更新達穩定或拒收，不以相鄰圖號猜用途。
