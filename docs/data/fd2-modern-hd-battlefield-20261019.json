@@ -9,7 +9,7 @@
     "native_viewport": "CONFORMED-SCOPED：穩定1920世界沿原生(4,4)、312×192窗格；死亡事件前25拍依既有producer從VGA0,0開始，最後steady回4,4。不同caller分列，不新增DOS位址parity。",
     "hd_sprite_data": "DATA-READY：完整125組1455張HD及31組372張新增24父項已登錄；舊1083張父項及HD bytes保持。",
     "hd_world_renderer": "CONFORMED-SCOPED：144人物已接Game.Draw；首章34張正常GPU、4張實際走行、兩次物理攻擊及保存／新程序LOAD通過。",
-    "private_assets": "已登錄圖源沿白名單同步唯一私人庫；目前數量與圖示新檔、舊檔保持及實際載入依58與item_panel_icons_hd_followup_20261026。",
+    "private_assets": "兩組海報依白名單同步唯一私人庫；目前清冊、實檔、舊檔保持及正式載入依58及hd1_posters_followup_20261028。",
     "quickload_battle_owner": "CONFORMED-SCOPED：成功JSON LOAD丟棄舊經驗owner與移動計畫；拒收保留。",
     "timed_dialogue": "CONFORMED-SCOPED-RUNTIME-E1：計時FFEC開收框保留HD世界，EXP99普通鍵盤／F2與保存冷讀通過；其他caller未驗。",
     "hd_terrain": "已接草泥、水沙／岸線、首章陰影／土脊／石路及寶箱開合／小石塊；目前數量依58及props_followup_20261025。其他地形與HD2仍待。",
@@ -18,9 +18,9 @@
     "hd_battle_animation": "現有已登錄HD戰鬥人物／效果／背景接線及完整來源群組已核對，沒有缺少已解碼FIGANI的登錄；正式消費端與必要載入／缺件檢查見hd1_wiring_handoff_20261028。既有F2、攻防返回與保存冷讀收據保持，人工造型與逐場驗證由使用者接手，不重開已驗接線。不是全部HD1美術或原版動態完成聲明。",
     "native_purchase_equip": "CONFORMED-SCOPED：#266原生購買立即裝備保留ignored原始格，29項商店回歸與正常購弓F5／章首射程通過；不改格式或數值規則。",
     "hd_event_death": "共用事件、普通行動與狀態致死已接HD；三種26拍／F2保持。章23事件及普通擊殺、首章明示低HP／中毒來源的正常END狀態死亡、途中F2、返回及章界保存冷讀均通過。來源依status_death_normal_gui_followup_20261027；不證明正常取得狀態或整章E2。",
-    "theme_toolbar": "CONFORMED-SCOPED／RUNTIME-E1：單列浮出列已接獨立介面／美術、四語、字級、1～4倍速及全螢幕；海報尚未接。實際輸入、列外GPU及保存保持依hd1_controls_followup_20261028。",
+    "theme_toolbar": "CONFORMED-SCOPED／RUNTIME-E1：單列浮出工具列包含獨立介面／美術、四語、字級、1～4倍速、全螢幕及雙組海報／關閉、漸層、淡入與F10；必要技術檢查依hd1_posters_followup_20261028。",
     "hd_facility_scene": "CONFORMED-SCOPED-RUNTIME-E1：三種城鎮與三種商店靜態HD場景／店員，以及既有隊伍HD頭像接入裝備面板；114個GPU案例及兩包載入通過，集中普通／人工仍待。",
-    "assets": "正式清冊與實檔依58及item_panel_icons_hd_followup_20261026；各舊切片數字只保留其當批範圍。",
+    "assets": "目前正式清冊與私人實檔依58及hd1_posters_followup_20261028；各舊切片數字只保留其當批範圍。",
     "hd_battle_background": "CONFORMED-SCOPED／RUNTIME-E1：森林小屋／內部／海岸，以及BG0..2過渡已接共用／分離物理與24／29的已驗caller；原生位移、遮罩與節拍保持。其他來源／caller仍待，依transition_backgrounds_followup_20261024。",
     "hd_battle_pedestal": "CONFORMED-SCOPED／RUNTIME-E1：已登錄草地、森林裸土及海岸沙地TAI接共用物理的靜態／移位進場、攻防／restore／淡出。原框、層序與節拍保持，其他來源及caller仍待，依forest_coast_surface_followup_20261024。",
     "hd_heal_map": "CONFORMED-SCOPED／RUNTIME-E1：13～16完整Game.Draw、F2及一次交易／續行保持；既有章23滿血來源的正常選人、取消、施放與章界保存冷讀已由heal_normal_gui_followup_20261026補驗。正回復量、人工及平台仍依各自證據，不重開已驗滿血演出。",
@@ -30,12 +30,12 @@
     "hd_battle_panel_chrome": "CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI：共用戰鬥面板HD框線／HP與MP條已接；來源、實際流程、獨立CPU及首章普通攻防保存冷讀依battle_panel_chrome_followup_20261026。其他介面與集中人工／平台仍待。",
     "hd_item_row_labels": "CONFORMED-SCOPED／RUNTIME-E1：物品加成四縮寫及指令-MP沿原生來源直接HD繪字；來源、數量、建構槽與限制依item_row_labels_followup_20261026。圖示現況依hd_item_panel_icons；完整HD／集中驗收仍待。",
     "hd_item_panel_icons": "CONFORMED-SCOPED／RUNTIME-E1：十個共用面板圖示已正式接線，兩包載入及物品／狀態完整繪製通過；唯一數量與分級依item_panel_icons_hd_followup_20261026。",
-    "hd1_release": "milestone1涵蓋地形、介面、獨立控制與完整工具列；目前獨立控制及工具列主要控制已接。地形、其餘UI／城鎮行走人物與海報仍待；人工由使用者接手，未發布新版本。",
-    "hd_battle_consumer_inventory": "1179份目前Go來源重生21個受控案例，416張archive來源與19反例核對通過；目前指紋依hd1_controls_followup_20261028。既有快取owner結構與GPU證據沿battle_decoded_storage_followup_20261027，不外推其他caller。",
+    "hd1_release": "milestone1進行中；工具列接線與必要檢查完成，地形、其餘介面及完整組合仍依#282／283／284；人工由使用者接手，沒有新Release。",
+    "hd_battle_consumer_inventory": "1185份目前Go來源重生21個受控案例，416張archive來源與19反例核對通過；指紋依hd1_posters_followup_20261028。既有戰鬥驗證保持。",
     "art_theme_direction": "使用者確認原版／HD／HD2／HD-2D四主題，介面原版／HD獨立。正式遊戲仍只有原版／HD；其餘依61「四種美術主題」DRAFT，HD-2D人物風格待選。",
     "hd_battle_performance": "目前正常物理窗203次合成／178次重用，Draw25.96Hz／更新53.60Hz；單輪軟體GPU觀測，非固定加速或平台驗收。峰值約5.82GiB、memory.events全零，前批觸限數據保留。依battle_decoded_storage_followup_20261027。",
     "hd_battle_memory": "已補已驗證PNG唯讀共享，代表圖源223份配置降為158份、少約144MiB RGBA等價容量；回收後Go heap亦減約144MiB。正常同來源2CPU／6GiB峰值約5.82GiB、無觸限或OOM；不由單輪數字宣稱平台通過。依battle_decoded_storage_followup_20261027。",
-    "work_status": "HD1里程碑進行中，#282～285維持OPEN。接續補地形、其餘操作介面與海報；已驗證戰鬥圖源及使用者人工分工保持。現況依hd1_controls_followup_20261028及61。",
+    "work_status": "HD1里程碑進行中；#285工具列已接線並通過必要技術檢查，#282／283／284仍是實作工作；人工分工與現有戰鬥收據保持。",
     "manual_validation_owner": "使用者2026-10-28明示接手HD人工驗證；逐角色／逐章／平台人工試玩不阻擋接線完成。必要載入／缺件／建置與切換／保存相容性保持，實際缺接線另外列。",
     "interface_control": "CONFORMED-SCOPED／RUNTIME-E1：F2美術與F11介面獨立，設定相容與活躍面板預備已接；部分模態HUD與其餘原生UI仍依#283／284補接，不稱所有介面完成。"
   },
@@ -308,9 +308,9 @@
     "all_four_documents_unchanged": true
   },
   "remaining": [
-    "工具列字級、加速、操作介面獨立控制、HD2／HD-2D及海報尚未接入。",
-    "其餘地形、完整HUD與操作介面仍待HD化。",
-    "全部HD後集中正常玩家、蓋亞手腕及凱麗右腳人工確認與平台驗收。"
+    "HD1地形／前景與其餘操作介面、模態HUD、城鎮行走人物依#282／283。",
+    "所有介面完成後的獨立控制覆蓋依#284；本批不宣稱完整HD1或新Release。",
+    "人工造型與實機操作由使用者接手；HD2／HD-2D另期。"
   ],
   "cleanup": {
     "recording_created": false,
@@ -244554,6 +244554,317 @@
     "final_validation": {
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-controls-final-validation-r1.json",
       "sha256": "22b9c452c5cecb2a8a78434784d8e071f712e7471ead3e0d674e3471ecac627a"
+    },
+    "poster_resolution": "海報缺接線已由hd1_posters_followup_20261028補齊；此節其他數字保留原批範圍。"
+  },
+  "hd1_posters_followup_20261028": {
+    "date": "2026-10-28",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1",
+    "base_commit": "079368a14114a5d501c2ebfb8564c9d7d417822a",
+    "working_branch": "feat/hd1-poster-controls",
+    "issue": 285,
+    "implemented": [
+      "單列浮出工具列補上海報下拉設定；關閉、HD第一組及原稿重繪第二組獨立於美術與介面，F10循環。",
+      "兩側各132邏輯像素，中央640×400只平移；原位置、HUD、文字與遊戲比例保持。",
+      "內緣0～96來源像素，預設48；真實時間smoothstep淡入0／300／600／1200毫秒，預設600，另可重播。",
+      "接縫只消費乾淨設施圖或原生／HD地形；排除人物、範圍、對話與HUD，無來源時用深藍底。",
+      "滑鼠與觸控共用命中區，兩側與設定選單阻擋遊戲輸入；拖曳與Escape保持所有權。",
+      "舊設定相容；偏好獨立保存，來源與兩組完整性逐次核對，錯件原子拒收。"
+    ],
+    "assets": {
+      "status": "PASS-POSTER-PRIVATE-SYNC",
+      "old_files_unchanged": 7063,
+      "current_files": 7065,
+      "new_files": [
+        "poster-set1-composite.png",
+        "poster-set2-composite.png"
+      ],
+      "catalog_sha256": "00da6586fbddcf2541d4c722e3b881fcd48696b9b0c62611171ef15052f1a91c",
+      "private_manifest_sha256": "f0ebc1669030f825b666b2dd63c67319e706bb2aa9187e05d6f49b82fe736182",
+      "owner_uid_gid": [
+        1000,
+        1000
+      ],
+      "catalog_assets": 853,
+      "private_repository": "wicanr2/fd2-assets-private",
+      "private_commit": "a6513f06f68f44e527e7a2ab181de44b6f39ccb3",
+      "private_remote_verified": true,
+      "registration_tool": {
+        "file": "tools/register_fd2_poster_pair.py",
+        "sha256": "4d7d5b6b7399168bc4c10bffb5b3f42a40642b9ee5cbc05bf631cf70ea1a4967"
+      },
+      "reproduce_base_catalog": "git show 079368a1:remake/assets/themes/modern/catalog.json",
+      "formal_admission": "正式853項清冊／7065檔通過完整驗證，兩組由正式Go載入器逐像素核對批准原稿；舊7063檔SHA保持。"
+    },
+    "go_regression": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-poster-final-r2.log",
+        "sha256": "e97b0ce8f6b707d44c3764a1cb508dd82e041c398ad39e70ff3757e345619c9d"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-poster-final-r2.memory.json",
+        "sha256": "f1931a0e292e3300115272e81f07c0248151851e724ba95c6582254607cf4a9a",
+        "elapsed_seconds": 42.08,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "returncode": 0,
+        "timeout": false,
+        "memory_peak_bytes": 1486344192
+      },
+      "passed": [
+        "TestModernHDBattleConsumerInventory",
+        "TestModernHDMapOverwriteCoverageAndDestinationDependency",
+        "TestModernHDMapTransactionUsesOneNativeClockAndIndependentTerrain",
+        "TestPlayerGameClockChangesSpeedWithoutJump",
+        "TestPlayerSpeedIsSeparateFromCampaign",
+        "TestIndependentInterfaceFourModesKeepArtworkAndBattle",
+        "TestInterfaceRejectsBeforeChangingModeOrArtwork",
+        "TestInterfaceSettingsSurviveLocaleAndAudio",
+        "TestInterfaceBattlePanelSelectionKeepsNativePixels",
+        "TestInterfaceSystemInfoWithOriginalArtwork",
+        "TestInterfaceStatusWithOriginalArtwork",
+        "TestPlayerPosterApprovedPixelsAndAtomicSourceRejection",
+        "TestPlayerPosterGeometryInputAndBlocking",
+        "TestPlayerPosterMaskFadeAndSourceRemainIndependent",
+        "TestPlayerPosterPreferencesPreserveOtherSettingsAndRejectAtomically",
+        "TestPlayerPosterMenuLabelsFitAllLocales",
+        "TestHD1ToolbarControlsStayOneRowAndHaveBoundedLabels",
+        "TestHD1ToolbarQueuesOnlyTheSelectedControl",
+        "TestHD1FontEnlargementKeepsMovingCropGeometry",
+        "TestHD1ConfirmationFontScalePreservesWholeLabels",
+        "TestFloatingToolbarGeometryAndOwnership",
+        "TestFloatingToolbarLocaleTextBounds",
+        "TestSettingsRoundTripKeepsAudioAndLocaleOutsideSave",
+        "TestSettingsRejectUnsupportedLocale",
+        "TestBuildCollectsControlledJSONAndGoUIWithoutNotesOrErrors",
+        "TestBuildIsDeterministicAndJSONSerializable",
+        "TestBuildRejectsDuplicateExistingStringID",
+        "TestMultipleTextFieldsDoNotReuseOneExistingStringID",
+        "TestVariablesIncludeWrappedErrorPlaceholder",
+        "TestDrawFunctionContextIncludesIndirectASCIIAndFunctionName",
+        "TestDrawFunctionContextSkipsLocaleKeys",
+        "TestReviewedGoCandidatesMatchCurrentInventory"
+      ],
+      "count": 32
+    },
+    "formal_poster_unit": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-poster-formal-unit-r1.log",
+        "sha256": "59d882bbfd3fc21e65068c71661f960153b84479664080dc93274007099a4c8d"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-poster-formal-unit-r1.memory.json",
+        "sha256": "bef1b2d684a9df154bf6074d83b032d2b68cd89348b3a9759c91caa023743beb",
+        "elapsed_seconds": 21.551,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "returncode": 0,
+        "timeout": false,
+        "memory_peak_bytes": 1518116864
+      },
+      "gate": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-poster-formal-unit-r1.gate.json",
+        "sha256": "f52c4cd4b411d2524c17ea8ad6d323864dfe01ed2bafd17b8aff0e7e59df1d78"
+      }
+    },
+    "complete_game_gpu": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-poster-gpu-r1.log",
+        "sha256": "ba25336e279b4daed9c5ab754e5097eb584c1b0d6266441574f83614d438daf1"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-poster-gpu-r1.memory.json",
+        "sha256": "c23d2da447ebf6a64ea364c0d798be3085bb4b658fd4bdc3dfe51afb36279006",
+        "elapsed_seconds": 186.703,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "returncode": 0,
+        "timeout": false,
+        "memory_peak_bytes": 4274036736
+      },
+      "gate": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-poster-gpu-r1.gate.json",
+        "sha256": "bac70574720ab129954934588574b03e9587397f83dc69b2fb01ee06baafdded"
+      },
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-poster-gpu-r1-capture/receipt.json",
+        "sha256": "b737e029dc75d08b7acfa3cef5bc56b06c2a6fc8da228d99d88b394aa980145b"
+      },
+      "cases": 76,
+      "scope": "四組介面／美術、兩組海報及關閉、寬度0／48／96、淡入0／中間／完成。完整Game.Draw與最終GPU，中央1920×1200對無海報控制組逐byte保持。"
+    },
+    "clean_terrain_gpu": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-poster-terrain-r1.log",
+        "sha256": "6522689650c0272cd28e934b860b740a72b0596f243eef7266805d1bb47938a1"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-poster-terrain-r1.memory.json",
+        "sha256": "133417edef071303730616e29770643cc7b380dc75147d3fd7450fd2a9aa1956",
+        "elapsed_seconds": 26.121,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "returncode": 0,
+        "timeout": false,
+        "memory_peak_bytes": 1469431808
+      },
+      "gate": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-poster-terrain-r1.gate.json",
+        "sha256": "1c7844f937f084fe54d9d2fc7d01c57416827f378205a3376cc2e92f8aab0888"
+      },
+      "scope": "原生與HD純地形來源的每個viewport像素，排除人物、範圍、HUD；work、VGA、狀態與來源保持。"
+    },
+    "real_input": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-poster-input-r3.log",
+        "sha256": "5611406b0251c249e2aaea01750d54d0f36b9cbf43f0055f8e3d8dc105601843"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-poster-input-r3.memory.json",
+        "sha256": "28f9de85b66f22e245ce2617842da757b384a119a62098a5b0046bf543216f96",
+        "elapsed_seconds": 142.826,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "returncode": 0,
+        "timeout": false,
+        "memory_peak_bytes": 5904281600
+      },
+      "gate": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-poster-input-r3.gate.json",
+        "sha256": "5232863a9ce10cf3e7abdb5cc704385ee038245920fb12000231e92f9c23230e"
+      },
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-poster-input-r3-capture/receipt.json",
+        "sha256": "10e58033fc0fb07d0c604068038e4891474d2a4242af4cc236815a4ca3e34530"
+      },
+      "steps": 36,
+      "observed_input_edges": 72,
+      "save_bytes_unchanged": 13780,
+      "scope": "受控城鎮，真實XTest滑鼠、滑桿、四語、F10／Escape與四倍速下四組介面／美術；不是整章、原版或平台驗收。",
+      "subsequent_changes": "此後只補正式包CPU逐像素入場檢查與測具頂層測試計數；正式產品Go保持。"
+    },
+    "current_consumer_inventory": {
+      "observed": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-poster-consumers-r2.json",
+        "sha256": "ed92da1b61c073f261b7bd09ea02eb567425be53bace567e25a9412ee22963fe"
+      },
+      "verified": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-poster-consumers-verify-r1.json",
+        "sha256": "ae23614c12ce7e5a351d226fb455d90d42febe8ce34637373849c86d8fa5c2a0"
+      },
+      "source_file_count": 1185,
+      "source_tree_sha256": "2813de264e44020d01da5ab5461cef036419a392a32dd91c7bb62e23831f398d",
+      "cases": 21,
+      "archive_frames": 416,
+      "rejected_mutants": [
+        "wrong-archive",
+        "wrong-resource",
+        "wrong-frame",
+        "wrong-pixels",
+        "wrong-mask",
+        "missing-case",
+        "false-gpu",
+        "missing-hd",
+        "wrong-code",
+        "wrong-command",
+        "wrong-packed",
+        "wrong-descriptor",
+        "missing-map-route",
+        "wrong-lmi-kind",
+        "wrong-lmi-pixels",
+        "wrong-lmi-entry",
+        "missing-lmi-hd",
+        "wrong-map-mask",
+        "missing-map-mask-hd"
+      ],
+      "scope": "現有21個受控戰鬥來源重生，未重新開啟已驗戰鬥或新增原版parity。"
+    },
+    "build": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-poster-binary-r1",
+      "sha256": "e805a4b832d3fffc0c849b12db7a0872d5465fbf2c0ec9e7db7ea520c3747934"
+    },
+    "string_review": {
+      "inventory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-poster-string-inventory-r1.json",
+        "sha256": "8a5228b9e313bb5a10fce9b6cad1455cabe5b09dd6a2e512ad35bcb2c8ba8274"
+      },
+      "review": {
+        "file": "docs/data/fd2-string-review.json",
+        "sha256": "4d6378517b66cf47cac014858eced6bc313c85db782a6a03f0ace6ee10ae0c4d"
+      },
+      "reviewed_candidates": 155,
+      "new_player_labels": 27,
+      "method": "官方簽名／群組順序遷移，新增項逐筆審閱，無刪除既有分類。"
+    },
+    "readme_image": {
+      "file": "docs/figures/hd1-independent-toolbar.png",
+      "sha256": "1ab652246c34885d5f9ced3d31ba8b4c5628b9f4ec8365d8fed22bcf59e7a883",
+      "source": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-poster-input-r3-capture/floating-17.png",
+        "sha256": "2437f57a214e808a1ef8ddbce0b2784bad839cd5b2d92c62fb0c36deb8f4750d"
+      },
+      "operation": "完整實際GUI縮至1356×600，不裁切或重繪；受控城鎮行走人物仍為像素。"
+    },
+    "reproduce": [
+      "使用tools/docker/fd2-go-test.Dockerfile建立fd2-go-test-local:latest，原版與私人HD包唯讀掛載，FD2_ASSET_PACK與FD2_MODERN_THEME_PACK指向掛載點。",
+      "tools/verify_fd2_floating_toolbar.py --kind poster-unit|poster-gpu|poster-input|poster-terrain --catalog <清冊> --pack <唯讀HD包> --out <既有工作區新prefix>；原版FD2_ASSET_PACK必要，工具重建受版控XTest。",
+      "FD2_HD_CONSUMER_INVENTORY_OUT=<新JSON> with-xvfb go test ./cmd/fd2 -count=1 -run ^TestModernHDBattleConsumerInventory$；再用tools/verify_fd2_battle_hd_consumers.py --observed <JSON> --original-pack <原版包> --modern-pack <HD包> --out <新JSON> --self-test。",
+      "python3 tools/validate_modern_theme_catalog.py --verify-private；將已核SHA私人包唯讀掛載到catalog.private_root，沒有對原版圖源加工。"
+    ],
+    "diagnostics": [
+      "input-r1第15步連續F10未切換，舊測具沒有記錄實際按下／釋放，原因無法回溯。未改遊戲判斷；r3逐步握手確認72個實際邊緣，36步及保存保持通過。",
+      "input-r2缺FD2_ASSET_PACK，載入前失敗；補齊既有掛載後乾淨重跑，不列產品缺陷。",
+      "Go測試image被先前清理移除，本輪沿既有Dockerfile重建同名fd2-go-test-local:latest；沒有另建功能重複image。"
+    ],
+    "remaining": [
+      "HD1地形／前景與其餘操作介面、模態HUD、城鎮行走人物依#282／283。",
+      "所有介面完成後的獨立控制覆蓋依#284；本批不宣稱完整HD1或新Release。",
+      "人工造型與實機操作由使用者接手；HD2／HD-2D另期。"
+    ],
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-poster-final-validation-r1.json",
+      "sha256": "ddf2ba81f58ef9c4487843014074bdc293f679f6264028695fe1a7b29f37fe9f"
+    },
+    "cleanup": {
+      "recordings_created": 0,
+      "unexpected_fd2_containers": 0,
+      "toolchain": "fd2-go-test-local:latest rebuilt from tools/docker/fd2-go-test.Dockerfile; all owned jobs use --rm and have exited",
+      "ownership": "本批來源、收據與候選共7336路徑UID/GID1000；不改既存root-owned基線。"
     }
   }
 }

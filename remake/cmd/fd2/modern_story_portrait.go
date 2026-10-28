@@ -111,6 +111,9 @@ func loadModernStoryPortraitSet(catalogPath, packRoot string) (*modernStoryPortr
 	}
 	hdPortraits := make(map[int]image.Image)
 	for _, asset := range catalog.Assets {
+		if asset.Role == playerPosterAssetRole {
+			continue // Independent optional presentation assets load on selection.
+		}
 		if asset.Role == "native_ui_icon_hd" {
 			if err := loadModernUIPanelIcon(set, asset, packRoot); err != nil {
 				return nil, err

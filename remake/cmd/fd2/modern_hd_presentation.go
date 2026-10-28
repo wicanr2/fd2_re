@@ -13,28 +13,50 @@ const modernHDWidth, modernHDHeight = 1920, 1200
 // Faithful rendering retains the pinned Ebiten default screen filter.
 type modernHDPresentation struct {
 	*Game
-	screenShader                  *ebiten.Shader
-	textSurface                   *ebiten.Image
-	faithfulWidth, faithfulHeight int
-	toolbar                       bool
-	floatingToolbar               bool
-	toolbarTicks                  int
-	gameSurface, toolbarSurface   *ebiten.Image
-	interfaceHUDGPU               *modernHDMapGPU
-	appliedPlayerSpeed            int
+	screenShader                   *ebiten.Shader
+	textSurface                    *ebiten.Image
+	faithfulWidth, faithfulHeight  int
+	toolbar                        bool
+	floatingToolbar                bool
+	toolbarTicks                   int
+	gameSurface, toolbarSurface    *ebiten.Image
+	interfaceHUDGPU                *modernHDMapGPU
+	appliedPlayerSpeed             int
+	poster                         playerPosterPresentation
+	posterMenuSurface, posterPixel *ebiten.Image
 }
 
 func (p *modernHDPresentation) Update() error {
+	before := p.Game.hdPresentationEnabled()
+	beforeWidth := p.layoutWidth()
+	w, h := ebiten.WindowSize()
+	p.poster.consumeInput = false
+	if !p.Game.playerPosterControlsAllowed() {
+		p.poster.menuOpen = false
+	}
 	if p.toolbar {
+		p.Game.playerViewportLeft = p.posterOffset()
 		p.Game.playerViewportTop = p.toolbarOffset()
 		p.updateToolbarVisibility()
 		p.Game.playerToolbarTouchBlocked = p.floatingToolbar && p.toolbarTicks > 0
 		p.queueToolbarInput()
+		p.stepPosterControls()
 	}
-	before := p.Game.hdPresentationEnabled()
-	w, h := ebiten.WindowSize()
-	if err := p.Game.Update(); err != nil {
-		return err
+	p.Game.playerOverlayBlock = image.Rectangle{}
+	if p.poster.menuOpen {
+		p.Game.playerOverlayBlock = playerPosterMenu
+	}
+	if !p.poster.consumeInput {
+		if err := p.Game.Update(); err != nil {
+			return err
+		}
+		if p.Game.playerPosterCycleRequested {
+			p.cyclePosters()
+			p.Game.playerPosterCycleRequested = false
+		}
+	}
+	if !p.Game.playerPosterControlsAllowed() {
+		p.poster.menuOpen = false
 	}
 	speed := normalizePlayerSpeed(p.Game.playerSpeed)
 	if p.appliedPlayerSpeed != speed {
@@ -45,22 +67,30 @@ func (p *modernHDPresentation) Update() error {
 		p.appliedPlayerSpeed = speed
 	}
 	after := p.Game.hdPresentationEnabled()
-	if before == after || ebiten.IsFullscreen() {
+	if ebiten.IsFullscreen() {
 		return nil
 	}
-	if after {
-		p.faithfulWidth, p.faithfulHeight = w, h
-		height := modernHDHeight
-		height += p.toolbarOffset() * 3
-		ebiten.SetWindowSize(modernHDWidth, height)
-	} else {
+	if before != after && after {
+		p.faithfulWidth, p.faithfulHeight = w, h*beforeWidth/logicalW
+		ebiten.SetWindowSize(modernHDWidth, p.presentationHeight(modernHDWidth))
+	} else if before != after {
 		if p.faithfulWidth <= 0 || p.faithfulHeight <= 0 {
 			p.faithfulWidth, p.faithfulHeight = logicalW*2, logicalH*2
 			p.faithfulHeight += p.toolbarOffset() * 2
 		}
-		ebiten.SetWindowSize(p.faithfulWidth, p.faithfulHeight)
+		height := p.faithfulHeight
+		if p.posterOffset() != 0 {
+			height = p.presentationHeight(p.faithfulWidth)
+		}
+		ebiten.SetWindowSize(p.faithfulWidth, height)
+	} else if beforeWidth != p.layoutWidth() {
+		ebiten.SetWindowSize(w, p.presentationHeight(w))
 	}
 	return nil
+}
+
+func (p *modernHDPresentation) presentationHeight(width int) int {
+	return int(math.Round(float64(width) * float64(logicalH+p.toolbarOffset()) / float64(p.layoutWidth())))
 }
 
 type modernHDOverlay struct {
@@ -119,11 +149,12 @@ func drawModernHDOverlay(target modernHDImageTarget,
 func (p *modernHDPresentation) DrawFinalScreen(screen ebiten.FinalScreen,
 	offscreen *ebiten.Image, geometry ebiten.GeoM) {
 	contentGeometry := geometry
-	if offset := p.toolbarOffset(); offset > 0 {
+	if p.toolbarOffset() > 0 || p.posterOffset() > 0 {
 		contentGeometry.Reset()
-		contentGeometry.Translate(0, float64(offset))
+		contentGeometry.Translate(float64(p.posterOffset()), float64(p.toolbarOffset()))
 		contentGeometry.Concat(geometry)
 	}
+	p.drawPosters(screen, geometry)
 	p.drawModernFacilityScene(screen, contentGeometry)
 	if p.Game.modernHDBattleVisible && p.Game.modernHDBattleGPU != nil {
 		op := &ebiten.DrawImageOptions{Filter: ebiten.FilterLinear}
@@ -171,6 +202,10 @@ func (p *modernHDPresentation) DrawFinalScreen(screen ebiten.FinalScreen,
 		p.drawModernHDText(screen, contentGeometry, brightness)
 	}
 	if p.toolbarVisible() {
-		p.drawThemeToolbar(screen, geometry)
+		toolbarGeometry := ebiten.GeoM{}
+		toolbarGeometry.Translate(float64(p.posterOffset()), 0)
+		toolbarGeometry.Concat(geometry)
+		p.drawThemeToolbar(screen, toolbarGeometry)
+		p.drawPosterMenu(screen, toolbarGeometry)
 	}
 }

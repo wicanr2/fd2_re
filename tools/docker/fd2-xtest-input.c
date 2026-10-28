@@ -90,10 +90,34 @@ static KeySym key_symbol(const char *name) {
     return XStringToKeysym(name);
 }
 
+/* Optional test-consumer handshakes separate a physical pulse from the next
+ * event even when a software GPU or asset admission delays event polling. */
+static int wait_ack(const char *setting) {
+    const char *path = getenv(setting);
+    if (!path) return 1;
+    for (int i = 0; i < 500; ++i) {
+        if (access(path, F_OK) == 0) return 1;
+        usleep(10000);
+    }
+    fprintf(stderr, "input acknowledgement timeout: %s\n", setting);
+    return 0;
+}
+
 int main(int argc, char **argv) {
     if (argc < 2) {
         fprintf(stderr, "usage: %s Key:delay_ms [... ]\n", argv[0]);
         return 2;
+    }
+    int hold_ms = 60;
+    const char *hold_setting = getenv("FD2_XTEST_HOLD_MS");
+    if (hold_setting) {
+        char *end = NULL;
+        long value = strtol(hold_setting, &end, 10);
+        if (!*hold_setting || *end || value < 30 || value > 2000) {
+            fprintf(stderr, "FD2_XTEST_HOLD_MS must be 30..2000\n");
+            return 2;
+        }
+        hold_ms = (int)value;
     }
     Display *dpy = XOpenDisplay(NULL);
     if (!dpy) {
@@ -159,9 +183,13 @@ int main(int argc, char **argv) {
             if (click) {
                 XTestFakeButtonEvent(dpy, 1, True, CurrentTime);
                 XSync(dpy, False);
-                usleep(60000);
+                if (!wait_ack("FD2_XTEST_PRESS_ACK")) return 11;
+                usleep((useconds_t)hold_ms * 1000U);
                 XTestFakeButtonEvent(dpy, 1, False, CurrentTime);
                 XSync(dpy, False);
+                if (!wait_ack("FD2_XTEST_RELEASE_ACK")) return 11;
+            } else {
+                if (!wait_ack("FD2_XTEST_PRESS_ACK")) return 11;
             }
             usleep((useconds_t)delay_ms * 1000U);
             free(spec);
@@ -211,12 +239,14 @@ int main(int argc, char **argv) {
         }
         XTestFakeKeyEvent(dpy, code, True, CurrentTime);
         XSync(dpy, False);
-        usleep(60000);
+        if (!wait_ack("FD2_XTEST_PRESS_ACK")) return 11;
+        usleep((useconds_t)hold_ms * 1000U);
         XTestFakeKeyEvent(dpy, code, False, CurrentTime);
         if (modifier_code) {
             XTestFakeKeyEvent(dpy, modifier_code, False, CurrentTime);
         }
         XSync(dpy, False);
+        if (!wait_ack("FD2_XTEST_RELEASE_ACK")) return 11;
         usleep((useconds_t)delay_ms * 1000U);
     }
     XTestGrabControl(dpy, False);

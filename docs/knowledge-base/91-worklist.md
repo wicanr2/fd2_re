@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 29 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 28 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -367,16 +367,6 @@ HD1原生地圖資訊窗的細框、A／D、HP與已登錄地形縮圖已接入�
 使用者2026-10-28確認此項列入HD1 milestone。主規格為61，來源與進度依58及HD主收據；人工驗證由使用者接手。
 
 怎樣算做完：工具列分別控制介面原版／HD、美術主題原版／HD，四組合互不改寫；人物圖示、頭像及戰鬥動畫跟美術主題，字型／框線等跟介面。F2保留主題快捷鍵，補介面快捷鍵，設定與戰役存檔分開；為HD2／HD-2D保留後續擴充。必要原子切換及相容性檢查通過。
-
-證據：`docs/data/fd2-modern-hd-battlefield-20261019.json`
-
-### P1 HD1工具列：單列、字級、加速、海報與漸層控制
-
-`hd1-toolbar-complete` · 工作 · [#285](https://github.com/wicanr2/fd2_re/issues/285) · 仍未完成 · 要人判
-
-使用者2026-10-28確認此項列入HD1 milestone。主規格為61，來源與進度依58及HD主收據；人工驗證由使用者接手。
-
-怎樣算做完：完成頂端浮出、自動隱藏的單列工具列：四語、介面／美術主題、字級、遊戲加速、全螢幕、兩組獨立海報及關閉、邊緣漸層與淡入；保留快捷鍵、滑鼠／觸控與輸入阻擋，設定持久化但不寫戰役存檔。海報構圖與原型已選定，中央遊戲比例及HUD保持；必要切換／幾何／設定檢查通過，人工驗證由使用者接手。
 
 證據：`docs/data/fd2-modern-hd-battlefield-20261019.json`
 

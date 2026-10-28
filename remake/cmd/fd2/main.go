@@ -595,6 +595,10 @@ type Game struct {
 	playerSpeedRequested                bool
 	playerFontRequested                 bool
 	playerFullscreenRequested           bool
+	playerPosterCycleRequested          bool
+	playerViewportLeft                  int
+	playerOverlayBlock                  image.Rectangle
+	nativeMapPresented                  bool
 	nativeInterfaceHUD                  *modernHDMapHUDPanel
 	nativeInterfaceHUDVisible           bool
 	playerLocaleRequested               bool
@@ -8264,12 +8268,17 @@ func (g *Game) tileAt(idx int) *ebiten.Image {
 }
 
 func (g *Game) Update() error {
+	g.playerPosterCycleRequested = false
 	defer func() {
 		g.playerThemeRequested, g.playerLocaleRequested, g.playerInterfaceRequested = false, false, false
 		g.playerSpeedRequested, g.playerFontRequested, g.playerFullscreenRequested = false, false, false
 	}()
 	defer g.recordInputAuditState()
 	g.frame++
+	if g.playerPosterControlsAllowed() && inpututil.IsKeyJustPressed(ebiten.KeyF10) {
+		g.playerPosterCycleRequested = true
+		return nil // Presentation input must not also advance a dialogue or map.
+	}
 	if g.playerFullscreenRequested || (inpututil.IsKeyJustPressed(ebiten.KeyEnter) && (ebiten.IsKeyPressed(ebiten.KeyAlt) || ebiten.IsKeyPressed(ebiten.KeyAltLeft) || ebiten.IsKeyPressed(ebiten.KeyAltRight))) {
 		ebiten.SetFullscreen(!ebiten.IsFullscreen())
 		return nil
@@ -9239,6 +9248,7 @@ func (g *Game) nativeMapFrameAdmission(legacyViewport, campaignBattleView bool) 
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
+	g.nativeMapPresented = false
 	g.nativeInterfaceHUDVisible = false
 	g.modernHDOverlay = nil
 	g.modernHDScene = nil
@@ -12299,6 +12309,7 @@ func (g *Game) drawNativeMapFrame(screen *ebiten.Image) bool {
 	op.GeoM.Scale(2, 2)
 	screen.DrawImage(ebiten.NewImageFromImage(img), op)
 	g.nativeInterfaceHUDVisible = g.nativeInterfaceHUD != nil
+	g.nativeMapPresented = true
 	return true
 }
 
@@ -13301,8 +13312,11 @@ func main() {
 	g := loadGame()
 	defer g.closeAudioPlayers()
 	player := &modernHDPresentation{Game: g, toolbar: true, floatingToolbar: floatingToolbar, faithfulWidth: logicalW * 2, faithfulHeight: height * 2}
+	player.initPosters()
 	if g.hdPresentationEnabled() {
-		ebiten.SetWindowSize(modernHDWidth, modernHDHeight+player.toolbarOffset()*3)
+		ebiten.SetWindowSize(modernHDWidth, player.presentationHeight(modernHDWidth))
+	} else if player.posterOffset() > 0 {
+		ebiten.SetWindowSize(logicalW*2, player.presentationHeight(logicalW*2))
 	}
 	ebiten.SetTPS(60 * normalizePlayerSpeed(g.playerSpeed))
 	var runner ebiten.Game = player

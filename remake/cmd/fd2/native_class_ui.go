@@ -210,6 +210,7 @@ func (g *Game) presentNativeClassFrameWithPalette(
 	screen *ebiten.Image, frame []byte, palette color.Palette,
 ) {
 	g.nativeInterfaceHUDVisible = false
+	g.nativeMapPresented = false
 	g.clearModernHDText()
 	paletted := image.NewPaletted(image.Rect(0, 0, 320, 200), palette)
 	copy(paletted.Pix, frame)

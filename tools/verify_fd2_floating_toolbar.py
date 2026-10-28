@@ -13,6 +13,10 @@ TESTS = {
     "unit": {"TestFloatingToolbarGeometryAndOwnership", "TestFloatingToolbarLocaleTextBounds"},
     "floating": {"TestFloatingToolbarRealInputGPU"},
     "fixed": {"TestPlayerThemeToolbarRealInputGPU"},
+    "poster-unit": {"TestPlayerPosterApprovedPixelsAndAtomicSourceRejection", "TestPlayerPosterGeometryInputAndBlocking", "TestPlayerPosterMaskFadeAndSourceRemainIndependent", "TestPlayerPosterPreferencesPreserveOtherSettingsAndRejectAtomically", "TestPlayerPosterMenuLabelsFitAllLocales"},
+    "poster-gpu": {"TestPlayerPosterCompleteGameGPU"},
+    "poster-input": {"TestPlayerPosterToolbarRealInputGPU"},
+    "poster-terrain": {"TestPlayerPosterTerrainBackgroundGPU"},
 }
 
 
@@ -37,14 +41,18 @@ def main():
     env.update(FD2_MUTE="1", FD2_TEST_FACILITY_CATALOG=str(a.catalog.resolve()),
                FD2_TEST_FACILITY_PACK=str(a.pack.resolve()), FD2_TEST_TOOLBAR_OUT=str(a.out) + "-capture")
     env["WITH_XVFB_SCREEN"] = "1920x1272x24" if a.kind == "fixed" else "1920x1200x24"
-    for key in ("FD2_TOOLBAR_INPUT_GPU", "FD2_FLOATING_TOOLBAR_GPU"):
+    for key in ("FD2_TOOLBAR_INPUT_GPU", "FD2_FLOATING_TOOLBAR_GPU", "FD2_POSTER_GPU", "FD2_POSTER_INPUT_GPU", "FD2_POSTER_TERRAIN_GPU"):
         env.pop(key, None)
-    if a.kind != "unit":
+    if a.kind in {"floating", "fixed", "poster-input"}:
         driver = Path(str(a.out) + ".xtest")
         subprocess.run(["cc", "-O2", "-Wall", "-Wextra", "-Werror", str(ROOT / "tools/docker/fd2-xtest-input.c"),
                         "-lX11", "-lXtst", "-o", str(driver)], check=True, timeout=30)
         env["FD2_TEST_XTEST_INPUT"] = str(driver.resolve())
-        env["FD2_FLOATING_TOOLBAR_GPU" if a.kind == "floating" else "FD2_TOOLBAR_INPUT_GPU"] = "1"
+        env[{"floating": "FD2_FLOATING_TOOLBAR_GPU", "fixed": "FD2_TOOLBAR_INPUT_GPU", "poster-input": "FD2_POSTER_INPUT_GPU"}[a.kind]] = "1"
+    if a.kind == "poster-gpu":
+        env["FD2_POSTER_GPU"] = "1"
+    if a.kind == "poster-terrain":
+        env["FD2_POSTER_TERRAIN_GPU"] = "1"
     command = [sys.executable, str(ROOT / "tools/fd2_go_test_memory_probe.py"), "--out", str(a.out),
                "--timeout", str(a.timeout), "--", "with-xvfb", "go", "test", "-json", "-count=1",
                f"-timeout={a.timeout - 30}s", "./cmd/fd2", "-run", "^(" + "|".join(sorted(TESTS[a.kind])) + ")$"]
@@ -53,7 +61,7 @@ def main():
     if memory["returncode"] or memory["timeout"] or any(memory["memory_events_delta"].get(k, 0) for k in ("oom", "oom_kill")):
         raise ValueError("失敗、逾時或 OOM")
     events = [json.loads(l) for l in Path(str(a.out) + ".log").read_text().splitlines() if l.startswith("{")]
-    passed = {e.get("Test") for e in events if e.get("Action") == "pass" and e.get("Test")}
+    passed = {e["Test"] for e in events if e.get("Action") == "pass" and e.get("Test") and "/" not in e["Test"]}
     if any(e.get("Action") in ("skip", "fail") for e in events) or passed != TESTS[a.kind]:
         raise ValueError(f"測試缺項或拒收：{passed}")
     result = {"status": "PASS-FLOATING-TOOLBAR-GATE", "kind": a.kind, "passed": sorted(passed),

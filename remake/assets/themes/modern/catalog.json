@@ -68540,6 +68540,40 @@
         "docs/data/fd2-reference-files.json",
         "docs/knowledge-base/61-modern-theme-runtime-spec.md"
       ]
+    },
+    {
+      "asset_id": "modern.poster.set1",
+      "role": "presentation_poster_pair",
+      "status": "runtime_candidate",
+      "file": "poster-set1-composite.png",
+      "width": 1672,
+      "height": 941,
+      "sha256": "0899058cd5fcb458305e1b6db6fe5880e10e9193a082ec2aa3616aca659b5308",
+      "frame": 0,
+      "consumer_contract": "composite_poster_sides_v1",
+      "layout_policy": "native_game_center_sides_v1",
+      "alpha_contract": "opaque",
+      "source_refs": [
+        "docs/figures/fd2-hd2-poster-set1-source.png",
+        "docs/data/fd2-hd2-concept-design-20261024.json"
+      ]
+    },
+    {
+      "asset_id": "modern.poster.set2",
+      "role": "presentation_poster_pair",
+      "status": "runtime_candidate",
+      "file": "poster-set2-composite.png",
+      "width": 1672,
+      "height": 941,
+      "sha256": "55285013e44390c187ae85535ccdab27ab8f9040485559cc6800a94be343df3d",
+      "frame": 1,
+      "consumer_contract": "composite_poster_sides_v1",
+      "layout_policy": "native_game_center_sides_v1",
+      "alpha_contract": "opaque",
+      "source_refs": [
+        "docs/figures/fd2-hd2-poster-set2-source.png",
+        "docs/data/fd2-hd2-concept-design-20261024.json"
+      ]
     }
   ]
 }

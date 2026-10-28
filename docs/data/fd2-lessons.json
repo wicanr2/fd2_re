@@ -4626,6 +4626,21 @@
         "pattern": "只補未完成項"
       },
       "evidence": "HD主收據hd1_wiring_handoff_20261028"
+    },
+    {
+      "id": "xtest-records-observed-input-edges",
+      "date": "2026-10-28",
+      "area": "GUI輸入驗證",
+      "rule": "軟體GPU下的連續XTest檢查逐筆記錄遊戲實際觀測到的按下與釋放，再送下一事件；不以固定等待宣稱按鍵已送達。入口tools/docker/fd2-xtest-input.c的FD2_XTEST_PRESS_ACK／FD2_XTEST_RELEASE_ACK及player_toolbar_floating_test.go的inputAcks；只確認實體輸入，不等待期望遊戲結果。",
+      "why": "海報input-r1第15步F10未切換，缺少實際邊緣紀錄而無法回溯原因。未改產品判斷，r3確認72個按下／釋放及36步結果通過；環境缺素材路徑的r2另列載入失敗。",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/docker/fd2-xtest-input.c"
+        ],
+        "pattern": "FD2_XTEST_RELEASE_ACK"
+      },
+      "evidence": "HD主收據hd1_posters_followup_20261028"
     }
   ]
 }

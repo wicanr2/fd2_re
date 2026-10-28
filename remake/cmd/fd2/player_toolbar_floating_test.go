@@ -10,10 +10,12 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 	"testing"
 	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/hajimehoshi/ebiten/v2/text"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 )
@@ -107,6 +109,10 @@ type floatingToolbarStep struct {
 	speed             int
 	fontScale         float64
 	fullscreen        string
+	poster            string
+	posterMenu        string
+	posterEdge        *int
+	posterFade        *int
 }
 type floatingToolbarProbe struct {
 	p                         *modernHDPresentation
@@ -120,6 +126,26 @@ type floatingToolbarProbe struct {
 	err                       error
 	checks                    []map[string]any
 	changes                   []bool
+	inputAcks, pressObserved  bool
+	inputTrace                []map[string]any
+}
+
+func (q *floatingToolbarProbe) observeInput() (bool, bool) {
+	spec := strings.Split(q.steps[q.index].input, ":")[0]
+	if strings.HasPrefix(spec, "Click=") {
+		return inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft), !ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft)
+	}
+	if strings.HasPrefix(spec, "Move=") {
+		var x, y, w, h int
+		_, err := fmt.Sscanf(spec, "Move=%d,%d@%dx%d", &x, &y, &w, &h)
+		cx, cy := ebiten.CursorPosition()
+		return err == nil && cx >= x-1 && cx <= x+1 && cy >= y-1 && cy <= y+1, true
+	}
+	if i := strings.LastIndex(spec, "+"); i >= 0 {
+		spec = spec[i+1:]
+	}
+	key, ok := map[string]ebiten.Key{"F1": ebiten.KeyF1, "F2": ebiten.KeyF2, "F4": ebiten.KeyF4, "F7": ebiten.KeyF7, "F8": ebiten.KeyF8, "F10": ebiten.KeyF10, "F11": ebiten.KeyF11, "Escape": ebiten.KeyEscape, "Enter": ebiten.KeyEnter}[spec]
+	return ok && inpututil.IsKeyJustPressed(key), ok && !ebiten.IsKeyPressed(key)
 }
 
 func (q *floatingToolbarProbe) Update() error {
@@ -137,22 +163,46 @@ func (q *floatingToolbarProbe) Update() error {
 	if q.ready && !q.started {
 		q.started = true
 		input := q.steps[q.index].input
+		index := q.index
 		go func() {
-			ctx, cancel := context.WithTimeout(context.Background(), 8*time.Second)
+			ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 			defer cancel()
-			raw, err := exec.CommandContext(ctx, q.driver, input).CombinedOutput()
-			if writeErr := os.WriteFile(filepath.Join(q.out, fmt.Sprintf("input-%02d.log", q.index)), raw, 0644); err == nil {
+			command := exec.CommandContext(ctx, q.driver, input)
+			if q.inputAcks {
+				command.Env = append(os.Environ(), "FD2_XTEST_PRESS_ACK="+filepath.Join(q.out, fmt.Sprintf("press-%02d.ack", index)), "FD2_XTEST_RELEASE_ACK="+filepath.Join(q.out, fmt.Sprintf("release-%02d.ack", index)))
+			}
+			raw, err := command.CombinedOutput()
+			if writeErr := os.WriteFile(filepath.Join(q.out, fmt.Sprintf("input-%02d.log", index)), raw, 0644); err == nil {
 				err = writeErr
 			}
 			q.done <- err
 		}()
 	}
 	g := q.p.Game
+	pressed, released := q.observeInput()
 	before := g.modernStoryPortraits
 	gold, rng, node, curX, curY := g.gold, g.nativeRNGState, g.camp.Node(), g.curX, g.curY
 	if err := q.p.Update(); err != nil {
 		q.err = err
 		return ebiten.Termination
+	}
+	if q.inputAcks && q.started {
+		phase := ""
+		if !q.pressObserved && pressed {
+			q.pressObserved, phase = true, "press"
+		} else if q.pressObserved && released {
+			phase = "release"
+		}
+		if phase != "" {
+			path := filepath.Join(q.out, fmt.Sprintf("%s-%02d.ack", phase, q.index))
+			if _, err := os.Stat(path); os.IsNotExist(err) {
+				q.inputTrace = append(q.inputTrace, map[string]any{"step": q.index, "phase": phase, "controls_allowed": g.playerPosterControlsAllowed(), "poster": q.p.poster.settings.Set, "message": g.msg})
+				if err := os.WriteFile(path, []byte("observed\n"), 0644); err != nil {
+					q.err = err
+					return ebiten.Termination
+				}
+			}
+		}
 	}
 	if before != g.modernStoryPortraits {
 		q.changes = append(q.changes, g.modernStoryPortraits != nil)
@@ -188,6 +238,13 @@ func (q *floatingToolbarProbe) Update() error {
 		q.err = fmt.Errorf("step %d: UI=%s speed=%d font=%g fullscreen=%v; expected %+v", q.index, g.interfaceMode, g.playerSpeed, g.fontScale, ebiten.IsFullscreen(), s)
 		return ebiten.Termination
 	}
+	if s.poster != "" && q.p.poster.settings.Set != s.poster ||
+		s.posterMenu != "" && q.p.poster.menuOpen != (s.posterMenu == "on") ||
+		s.posterEdge != nil && q.p.poster.settings.Edge != *s.posterEdge ||
+		s.posterFade != nil && q.p.poster.settings.FadeMS != *s.posterFade {
+		q.err = fmt.Errorf("step %d: poster=%+v menu=%v allowed=%v physical=%v; expected %+v", q.index, q.p.poster.settings, q.p.poster.menuOpen, g.playerPosterControlsAllowed(), q.inputTrace, s)
+		return ebiten.Termination
+	}
 	q.completed = true // DrawFinalScreen checks and records before advancing.
 	return nil
 }
@@ -195,12 +252,16 @@ func (q *floatingToolbarProbe) Layout(w, h int) (int, int) { return q.p.Layout(w
 func (q *floatingToolbarProbe) Draw(screen *ebiten.Image)  { q.p.Draw(screen) }
 func (q *floatingToolbarProbe) DrawFinalScreen(screen ebiten.FinalScreen, offscreen *ebiten.Image, geometry ebiten.GeoM) {
 	q.p.DrawFinalScreen(screen, offscreen, geometry)
+	if offscreen.Bounds().Dx() != q.p.layoutWidth() || offscreen.Bounds().Dy() != logicalH+q.p.toolbarOffset() {
+		return // Let Ebiten publish the new logical size before comparing it.
+	}
 	q.ready = true
 	if !q.completed || q.err != nil {
 		return
 	}
 	offset := q.p.toolbarOffset() * 3
-	final, control := ebiten.NewImage(1920, 1200+offset), ebiten.NewImage(1920, 1200)
+	width, left := q.p.layoutWidth()*3, q.p.posterOffset()*3
+	final, control := ebiten.NewImage(width, 1200+offset), ebiten.NewImage(1920, 1200)
 	defer final.Dispose()
 	defer control.Dispose()
 	var m ebiten.GeoM
@@ -208,32 +269,41 @@ func (q *floatingToolbarProbe) DrawFinalScreen(screen ebiten.FinalScreen, offscr
 	q.p.DrawFinalScreen(final, offscreen, m)
 	base := &modernHDPresentation{Game: q.p.Game}
 	controlSource := offscreen
-	if offset > 0 {
+	if offset > 0 || left > 0 {
 		controlSource = q.p.gameSurface
 	}
 	base.DrawFinalScreen(control, controlSource, m)
-	a, b := make([]byte, 1920*(1200+offset)*4), make([]byte, 1920*1200*4)
+	a, b := make([]byte, width*(1200+offset)*4), make([]byte, 1920*1200*4)
 	final.ReadPixels(a)
 	control.ReadPixels(b)
-	cut := offset * 1920 * 4
-	if offset == 0 && q.p.toolbarVisible() {
-		cut = 1920 * 72 * 4
-		if bytes.Equal(a[:cut], b[:cut]) {
-			q.err = fmt.Errorf("visible toolbar absent")
-			return
+	unchanged, toolbarDiff, menuDiff := 0, false, false
+	menu := image.Rect(playerPosterMenu.Min.X*3, playerPosterMenu.Min.Y*3-offset, playerPosterMenu.Max.X*3, playerPosterMenu.Max.Y*3-offset)
+	for y := 0; y < 1200; y++ {
+		for x := 0; x < 1920; x++ {
+			ai, bi := ((y+offset)*width+left+x)*4, (y*1920+x)*4
+			equal := bytes.Equal(a[ai:ai+4], b[bi:bi+4])
+			if offset == 0 && q.p.toolbarVisible() && y < 72 {
+				toolbarDiff = toolbarDiff || !equal
+				continue
+			}
+			if q.p.poster.menuOpen && image.Pt(x, y).In(menu) {
+				menuDiff = menuDiff || !equal
+				continue
+			}
+			if !equal {
+				q.err = fmt.Errorf("toolbar or poster changed game outside controls at %d,%d", x, y)
+				return
+			}
+			unchanged += 4
 		}
 	}
-	controlCut := 0
-	if offset == 0 {
-		controlCut = cut
-	}
-	if !bytes.Equal(a[cut:], b[controlCut:]) {
-		q.err = fmt.Errorf("toolbar displaced or changed game outside its row")
+	if offset == 0 && q.p.toolbarVisible() && !toolbarDiff || q.p.poster.menuOpen && !menuDiff {
+		q.err = fmt.Errorf("visible toolbar or menu absent")
 		return
 	}
 	file, err := os.Create(filepath.Join(q.out, fmt.Sprintf("floating-%02d.png", q.index)))
 	if err == nil {
-		err = png.Encode(file, &image.RGBA{Pix: a, Stride: 1920 * 4, Rect: image.Rect(0, 0, 1920, 1200+offset)})
+		err = png.Encode(file, &image.RGBA{Pix: a, Stride: width * 4, Rect: image.Rect(0, 0, width, 1200+offset)})
 		closeErr := file.Close()
 		if err == nil {
 			err = closeErr
@@ -243,12 +313,13 @@ func (q *floatingToolbarProbe) DrawFinalScreen(screen ebiten.FinalScreen, offscr
 		q.err = err
 		return
 	}
-	q.checks = append(q.checks, map[string]any{"step": q.index, "input": q.steps[q.index].input, "locale": q.p.localeID, "hd": q.p.modernStoryPortraits != nil, "visible": q.p.toolbarVisible(), "interface_mode": q.p.interfaceMode, "speed": q.p.playerSpeed, "font_scale": q.p.fontScale, "fullscreen": ebiten.IsFullscreen(), "help": q.p.helpVisible, "unchanged_game_bytes": len(a) - cut})
+	q.checks = append(q.checks, map[string]any{"step": q.index, "input": q.steps[q.index].input, "locale": q.p.localeID, "hd": q.p.modernStoryPortraits != nil, "visible": q.p.toolbarVisible(), "interface_mode": q.p.interfaceMode, "speed": q.p.playerSpeed, "font_scale": q.p.fontScale, "fullscreen": ebiten.IsFullscreen(), "help": q.p.helpVisible, "unchanged_game_bytes": unchanged, "poster": q.p.poster.settings, "poster_menu": q.p.poster.menuOpen, "width": width, "backdrop": q.p.poster.backdropSource})
 	q.index++
 	if q.index < len(q.steps) {
 		q.completed = false
 		q.started = false
 		q.inputDone = false
+		q.pressObserved = false
 		q.hideWait = 0
 	}
 }

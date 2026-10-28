@@ -22,6 +22,7 @@ ROLES = PROTOTYPE_ROLES | {
     "native_terrain_hd_set", "terrain_hd_master", "battle_animation_hd_set", "battle_effect_hd_set", "map_overlay_hd_set",
     "facility_scene_hd", "battle_surface_hd", "map_stage_hd", "story_animation_hd_set",
     "native_ui_icon_hd",
+    "presentation_poster_pair",
 }
 STATUSES = {"prototype", "concept", "approved", "runtime_candidate", "runtime_ready"}
 # Fixed FDICON.B24 source-write inventory, independently checked by
@@ -67,6 +68,7 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
     surface_resources = set()
     story_resources = set()
     ui_icon_indices = set()
+    poster_sets = set()
     for entry in assets:
         required = {"asset_id", "role", "status", "file", "width", "height", "sha256", "source_refs"}
         candidate = {"master_file", "consumer_contract", "speaker_id", "frame", "mouth_state"}
@@ -85,7 +87,9 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
         }
         if not isinstance(entry, dict):
             raise ValueError("asset entry must be an object")
-        if entry.get("role") == "native_ui_icon_hd":
+        if entry.get("role") == "presentation_poster_pair":
+            expected = required | {"consumer_contract", "frame", "layout_policy", "alpha_contract"}
+        elif entry.get("role") == "native_ui_icon_hd":
             expected = required | {"master_file", "consumer_contract", "alpha_contract", "layout_policy", "source_archive", "source_resource", "source_metadata_sha256", "native_raw_cell", "source_files", "source_sha256"}
         elif entry.get("role") == "story_animation_hd_set":
             expected = sprite_set - {"source_group", "cycle_policy"} | {"master_file", "source_archive", "source_resource", "source_metadata_sha256", "native_frames", "layout_policy", "source_files", "source_sha256"}
@@ -130,6 +134,16 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
             raise ValueError(f"invalid status: {entry['status']!r}")
         if entry["status"] == "prototype" and entry["role"] != "map_sprite_set":
             raise ValueError(f"prototype status is restricted to sprite sets: {asset_id}")
+        if entry['role'] == 'presentation_poster_pair':
+            if (type(entry['frame']) is not int or entry['frame'] not in (0, 1)
+                    or entry['frame'] in poster_sets
+                    or entry['consumer_contract'] != 'composite_poster_sides_v1'
+                    or entry['layout_policy'] != 'native_game_center_sides_v1'
+                    or entry['alpha_contract'] != 'opaque'
+                    or (entry['width'], entry['height']) != (1672, 941)
+                    or entry['status'] not in {'runtime_candidate', 'runtime_ready'}):
+                raise ValueError(f'invalid poster pair: {asset_id}')
+            poster_sets.add(entry['frame'])
         if "master_file" in entry:
             master = Path(entry["master_file"])
             if master.is_absolute() or len(master.parts) != 1 or master.suffix.lower() != ".png":
@@ -540,11 +554,13 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
                         alpha = image.convert('RGBA').getchannel('A')
                         if alpha.getextrema() != (0, 255):
                             raise ValueError(f'invalid HD coverage alpha: {asset_id}/{file_path.name}')
-                elif entry["role"] in {"battle_action_icon_set", "story_portrait_hd_frame", "facility_scene_hd", "native_ui_icon_hd"}:
+                elif entry["role"] in {"battle_action_icon_set", "story_portrait_hd_frame", "facility_scene_hd", "native_ui_icon_hd", "presentation_poster_pair"}:
                     from PIL import Image
                     alpha = Image.open(private_path).convert("RGBA").getchannel("A")
                     if set(alpha.getdata()) != {255}:
                         raise ValueError(f"non-opaque asset: {asset_id}/{file_path.name}")
+    if poster_sets and poster_sets != {0, 1}:
+        raise ValueError('poster pair must contain both approved sets')
     if ui_icon_indices and ui_icon_indices != {53,54,55,56,57,59,60,61,62,63}:
         raise ValueError('HD panel icon group incomplete')
     if story_resources and story_resources!={('FDOTHER.DAT',34),('ANI.DAT',0)}:

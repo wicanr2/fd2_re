@@ -1,8 +1,8 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
-HD1範圍已定為地形、介面、獨立控制與完整工具列，歸入[里程碑1](https://github.com/wicanr2/fd2_re/milestone/1)。獨立介面／美術、語系、字級、加速與全螢幕已接主要路徑；海報、其餘地形／介面及城鎮行走人物仍是實作工作。技術驗證與限制依[58](58-fd2-exe-re-coverage.md)、[61](61-modern-theme-runtime-spec.md)及[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`hd1_controls_followup_20261028`；人工驗證仍由使用者接手。
+HD1範圍已定為地形、介面、獨立控制與完整工具列，歸入[里程碑1](https://github.com/wicanr2/fd2_re/milestone/1)。單列工具列已接獨立介面／美術、語系、字級、加速、全螢幕與雙組海報、漸層及淡入；其餘地形／介面及城鎮行走人物仍是實作工作。技術驗證與限制依[58](58-fd2-exe-re-coverage.md)、[61](61-modern-theme-runtime-spec.md)及[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`hd1_posters_followup_20261028`；人工驗證仍由使用者接手。
 
-HD接線與人工驗證已分工：使用者接手造型、逐章操作及平台人工試玩，這些不再阻擋接線完成。現有已登錄圖源與正式消費端、載入／缺件保護已核對；實際未製作地形、其餘介面與海報仍列實作工作。唯一數量與限制依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)「HD1接線與人工驗證交接」，[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)為`hd1_wiring_handoff_20261028`。不宣稱全部HD1完成。
+HD接線與人工驗證已分工：使用者接手造型、逐章操作及平台人工試玩，這些不再阻擋接線完成。現有已登錄圖源與正式消費端、載入／缺件保護已核對；實際未製作地形與其餘介面仍列實作工作；海報現況依上述入口。唯一數量與限制依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)「HD1接線與人工驗證交接」，[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)為`hd1_wiring_handoff_20261028`。不宣稱全部HD1完成。
 
 狀態致死已補明示章前低HP／中毒來源的正常鍵盤操作：首章退避／待機、END／YES、狀態死亡、途中F2、返回與章界保存新程序LOAD通過。僅驗狀態消費端，不證明正常取得中毒、章內存檔、自然難度或整章E2。唯一目前數量依[58](58-fd2-exe-re-coverage.md)，契約與重跑依[61](61-modern-theme-runtime-spec.md)，[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)為`status_death_normal_gui_followup_20261027`。正式遊戲未改，完整HD與集中造型／平台仍待。
 
@@ -56,15 +56,15 @@ HD1目前優先完成正式接線。戰場資訊四面板已接細框、數字�
 
 物品地圖演出已接入HD，限定CONFORMED-SCOPED／RUNTIME-E1。範圍為AI回復及玩家／AI傷害、三種特殊效果；原生結算、道具消耗與保留、RNG、Draw確認、尾停及一次返回保持。玩家type5/13仍走既有直接結算。MISS佇列依既有原版十六進位表修正，像素與HD模式皆改用正確字母，來源及實際消費端已回歸。共用compound場景新增同次地圖23背景快照與來源簽章，四召喚及狀態法術來源回歸通過。兩包完整Game.Draw、F2及相同畫面已驗，來源與數量依[58](58-fd2-exe-re-coverage.md)、契約依[61](61-modern-theme-runtime-spec.md)及[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的item_map_hd_followup_20261025。美術與RGB映色為近似，未重跑FD2.EXE；其餘凍結消費端及完整HD、正常／集中人工／平台仍待。
 
-天空之鑰的FDOTHER34人物／元件與ANI0近景已接入HD，限定CONFORMED-SCOPED／RUNTIME-E1。原生鏡頭、等待、色盤閃白／還原、尾段與一次續行保持，兩包完整Game.Draw／F2及原圖主題控制組通過；來源拒收、凍結世界與交易回復、共享地圖／故事回歸保持。地圖20地形與介面框線仍用像素，金鎖仿射與早期縮遠延拓屬美術近似。本批未重跑FD2.EXE，不新增正常玩家、每frame或硬體時鐘聲明。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的sky_key_hd_followup_20261025。其餘凍結caller、地形／HD2／完整HUD／介面獨立切換／工具列其餘控制、加速、海報與集中正常／人工／平台仍待。
+天空之鑰的FDOTHER34人物／元件與ANI0近景已接入HD，限定CONFORMED-SCOPED／RUNTIME-E1。原生鏡頭、等待、色盤閃白／還原、尾段與一次續行保持，兩包完整Game.Draw／F2及原圖主題控制組通過；來源拒收、凍結世界與交易回復、共享地圖／故事回歸保持。地圖20地形與介面框線仍用像素，金鎖仿射與早期縮遠延拓屬美術近似。本批未重跑FD2.EXE，不新增正常玩家、每frame或硬體時鐘聲明。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的sky_key_hd_followup_20261025。其餘凍結caller、地形／HD2／完整HUD仍待；工具列現況依本檔入口，人工與平台由使用者驗證。
 
-地圖23的FDOTHER42特殊背景已接入手繪HD紋理，限定CONFORMED-SCOPED／RUNTIME-E1。循環列位移、地形遮罩與當次DAC下的HD人物／HUD人物顏色同時接入，原生排程、規則及保存保持。兩包各300次完整Game.Draw、6次F2與兩段各一次續行通過；八張跨包PNG與完整收據相同，舊列位移四流程及十二張PNG保持。這是受控角色與實際map23資料的重製端驗證，未重跑原版執行器。天空之鑰現況依58對應列；其他凍結caller的來源綁定、其餘地形／HD2／完整HUD／工具列其餘控制、加速、海報與集中正常／人工／平台仍待。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的special_scene_hd_followup_20261025。
+地圖23的FDOTHER42特殊背景已接入手繪HD紋理，限定CONFORMED-SCOPED／RUNTIME-E1。循環列位移、地形遮罩與當次DAC下的HD人物／HUD人物顏色同時接入，原生排程、規則及保存保持。兩包各300次完整Game.Draw、6次F2與兩段各一次續行通過；八張跨包PNG與完整收據相同，舊列位移四流程及十二張PNG保持。這是受控角色與實際map23資料的重製端驗證，未重跑原版執行器。天空之鑰現況依58對應列；其他凍結caller的來源綁定、其餘地形／HD2／完整HUD仍待；工具列現況依本檔入口，人工與平台由使用者驗證。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的special_scene_hd_followup_20261025。
 
 既有0x24618的九階徑向、停留及baseline DAC加亮已接HD，限定CONFORMED-SCOPED／RUNTIME-E1。凍結同次地圖、selector、LUT與原生work歷史，逐byte重建後規劃HD；GPU調色以baseline的delta/63飽和加亮，alpha保持，屬明示顯示近似。兩包完整Game.Draw／F2、原圖主題控制組、一次返回及跨包畫面通過；原有故事走位、入場與返回畫面保持。沒有新美術、規則或保存欄位，原版執行器未在本批重跑。0x24B4D現況依58對應列；其他特殊背景、完整HD、正常／集中人工／平台仍待。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的indexed_transition_hd_followup_20261024；前批故事收據各自保留。
 
 共用單位消失／出現轉場已接HD世界與光形，限定CONFORMED-SCOPED／RUNTIME-E1。玩家23正式確認後完整調色、消失、出現與MP／Acted結算，以及戰場staging待啟動焦點、各階段F2、原單位／RNG／work／VGA控制組均通過。故事呼叫者已接同一預檢，沿原生回歸，不新增故事GPU或正常玩家聲明。正式及私人實檔包的完整畫面相同；舊主題缺整組時可回退原圖光形，部分宣告仍拒收。原生排程、保存與規則保持。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約及重跑依[61](61-modern-theme-runtime-spec.md)，主證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的unit_present_hd_followup_20261024。其餘效果、完整HUD與正常／集中人工／平台仍待。
 
-HD2的斜角站姿戰場、單列浮出工具列與雙側海報已建立公開設計基準。海報漸層及淡入只完成可操作瀏覽器原型；海報正式Go、HD2圖源仍待。使用者已增列HD-2D為第四主題，操作介面原版／HD獨立，共八組合；人物風格與正式接線仍依61「四種美術主題」的DRAFT，不把原型當成遊戲完成。既有HD主題的地圖資訊窗人物已補接高解析圖源，範圍依58及61的HUD人物切片。入口依[61](61-modern-theme-runtime-spec.md)、[設計清冊](../data/fd2-hd2-concept-design-20261024.json)及[58現況](58-fd2-exe-re-coverage.md)，不外推遊戲完成。
+HD2的斜角站姿戰場、單列浮出工具列與雙側海報已建立公開設計基準。海報已沿選定原稿接入HD1正式Go，漸層及淡入的必要技術檢查依上述入口；HD2戰場圖源仍待。使用者已增列HD-2D為第四主題，操作介面原版／HD獨立，共八組合；人物風格與正式接線仍依61「四種美術主題」的DRAFT，不把原型當成遊戲完成。既有HD主題的地圖資訊窗人物已補接高解析圖源，範圍依58及61的HUD人物切片。入口依[61](61-modern-theme-runtime-spec.md)、[設計清冊](../data/fd2-hd2-concept-design-20261024.json)及[58現況](58-fd2-exe-re-coverage.md)，不外推遊戲完成。
 
 狀態法術的既有HD地圖接線與191～229光效已接入正式主題，限定CONFORMED-SCOPED／RUNTIME-E1。圓環及兩色菱形沿未修改手繪母稿，保留原生位置、孔洞、亮度節拍、失敗提示與25無數字成功；逐來源GPU、正式與私人實檔流程、F2、原單位／RNG及一次續行通過。舊763主題保持原生光效回退。私有白名單已同步，舊資產逐SHA保持；分量材質、羽化及調色是明示美術近似。本段為較早接線；玩家23完整兩段轉場依上列新切片。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約及重跑依[61](61-modern-theme-runtime-spec.md)，證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的modifier_tail_art_followup_20261024與較早modifier_map_hd_followup_20261024。其他owner、完整HUD與集中正常／人工／平台仍待。
 

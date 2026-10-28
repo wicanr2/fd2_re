@@ -41,12 +41,13 @@ var fontScales = []float64{0.8, 0.9, 1.0, 1.1, 1.25}
 const defaultFontScale = 1.0
 
 type settings struct {
-	BGMSource     string  `json:"bgm_source"` // "fm"(預設)或 "mt32"
-	LocaleID      string  `json:"locale_id"`  // BCP 47；不屬於戰役存檔
-	FontScale     float64 `json:"font_scale"` // 字級倍率；0 或不合法值視同 1.0
-	InterfaceMode string  `json:"interface_mode,omitempty"`
-	ThemeID       string  `json:"theme_id,omitempty"`
-	GameSpeed     int     `json:"game_speed,omitempty"`
+	BGMSource     string                `json:"bgm_source"` // "fm"(預設)或 "mt32"
+	LocaleID      string                `json:"locale_id"`  // BCP 47；不屬於戰役存檔
+	FontScale     float64               `json:"font_scale"` // 字級倍率；0 或不合法值視同 1.0
+	InterfaceMode string                `json:"interface_mode,omitempty"`
+	ThemeID       string                `json:"theme_id,omitempty"`
+	GameSpeed     int                   `json:"game_speed,omitempty"`
+	Poster        *playerPosterSettings `json:"poster,omitempty"`
 }
 
 // normalizeFontScale 把設定值收斂到 fontScales 裡最接近的一格。舊的設定檔沒有
@@ -72,6 +73,10 @@ func loadSettings() settings {
 	}
 	s.FontScale = normalizeFontScale(s.FontScale)
 	s.GameSpeed = normalizePlayerSpeed(s.GameSpeed)
+	if s.Poster != nil {
+		normalized := normalizePlayerPosters(s.Poster)
+		s.Poster = &normalized
+	}
 	if s.InterfaceMode != playerInterfaceOriginal && s.InterfaceMode != playerInterfaceHD {
 		s.InterfaceMode = ""
 	}

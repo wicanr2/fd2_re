@@ -24,7 +24,9 @@ var playerPosterButton = image.Rect(470, 3, 540, 21)
 var playerFullscreenButton = image.Rect(544, 3, 632, 21)
 
 func (g *Game) playerTouchCoordinates(x, y int) (int, int, bool) {
-	if y < g.playerViewportTop || g.playerToolbarTouchBlocked && y < playerToolbarHeight {
+	x -= g.playerViewportLeft
+	if x < 0 || x >= logicalW || y < g.playerViewportTop || y >= g.playerViewportTop+logicalH ||
+		g.playerToolbarTouchBlocked && y < playerToolbarHeight || image.Pt(x, y).In(g.playerOverlayBlock) {
 		return 0, 0, false
 	}
 	return x, y - g.playerViewportTop, true
@@ -51,21 +53,29 @@ func (p *modernHDPresentation) stepToolbarVisibility(pointer image.Point, touche
 		zone.Max.Y = playerToolbarHeight
 	}
 	active := pointer.In(zone)
+	if p.poster.menuOpen {
+		active = active || pointer.In(playerPosterMenu) || p.poster.sliderMouse || p.poster.sliderTouch
+	}
 	for _, touch := range touches {
-		active = active || touch.In(zone)
+		active = active || touch.In(zone) || p.poster.menuOpen && touch.In(playerPosterMenu)
 	}
 	if active {
 		p.toolbarTicks = playerToolbarHideTicks * normalizePlayerSpeed(p.Game.playerSpeed)
 	} else if p.toolbarTicks > 0 {
 		p.toolbarTicks--
+		if p.toolbarTicks == 0 {
+			p.poster.menuOpen = false
+		}
 	}
 }
 
 func (p *modernHDPresentation) updateToolbarVisibility() {
 	x, y := ebiten.CursorPosition()
+	x -= p.posterOffset()
 	var touches []image.Point
-	for _, id := range inpututil.AppendJustPressedTouchIDs(nil) {
+	for _, id := range ebiten.AppendTouchIDs(nil) {
 		tx, ty := ebiten.TouchPosition(id)
+		tx -= p.posterOffset()
 		touches = append(touches, image.Pt(tx, ty))
 	}
 	p.stepToolbarVisibility(image.Pt(x, y), touches)
@@ -97,17 +107,24 @@ func (p *modernHDPresentation) queueToolbarInput() {
 	}
 	if inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
 		x, y := ebiten.CursorPosition()
-		p.queueToolbarPoint(image.Pt(x, y))
+		p.queueToolbarPoint(image.Pt(x-p.posterOffset(), y))
 		return
 	}
 	for _, id := range inpututil.AppendJustPressedTouchIDs(nil) {
 		x, y := ebiten.TouchPosition(id)
-		p.queueToolbarPoint(image.Pt(x, y))
+		point := image.Pt(x-p.posterOffset(), y)
+		p.queueToolbarPoint(point)
+		if p.poster.menuOpen && point.In(playerPosterSlider) {
+			p.poster.sliderTouch, p.poster.touchID = true, id
+		}
 		return
 	}
 }
 
 func (p *modernHDPresentation) queueToolbarPoint(point image.Point) {
+	if p.queuePosterPoint(point) {
+		return
+	}
 	if hd, ok := playerThemeAt(point.X, point.Y); ok {
 		p.requestToolbarTheme(hd)
 		return
@@ -127,11 +144,11 @@ func (p *modernHDPresentation) queueToolbarPoint(point image.Point) {
 }
 
 func (p *modernHDPresentation) Layout(int, int) (int, int) {
-	return logicalW, logicalH + p.toolbarOffset()
+	return p.layoutWidth(), logicalH + p.toolbarOffset()
 }
 
 func (p *modernHDPresentation) Draw(screen *ebiten.Image) {
-	if p.toolbarOffset() == 0 {
+	if p.toolbarOffset() == 0 && p.posterOffset() == 0 {
 		p.Game.Draw(screen)
 		return
 	}
@@ -140,8 +157,9 @@ func (p *modernHDPresentation) Draw(screen *ebiten.Image) {
 	}
 	p.gameSurface.Clear()
 	p.Game.Draw(p.gameSurface)
+	screen.Clear()
 	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Translate(0, float64(p.toolbarOffset()))
+	op.GeoM.Translate(float64(p.posterOffset()), float64(p.toolbarOffset()))
 	screen.DrawImage(p.gameSurface, op)
 }
 
@@ -203,6 +221,7 @@ func (p *modernHDPresentation) drawThemeToolbar(screen ebiten.FinalScreen, geome
 	p.drawCompactToolbarButton(surface, playerLocaleButton, playerLocaleLabel(p.Game.localeID), false)
 	p.drawCompactToolbarButton(surface, playerFontButton, fmt.Sprintf("A+ %.0f%%", normalizeFontScale(p.Game.fontScale)*100), false)
 	p.drawCompactToolbarButton(surface, playerSpeedButton, fmt.Sprintf("%d× F8", normalizePlayerSpeed(p.Game.playerSpeed)), p.Game.playerSpeed > 1)
+	p.drawCompactToolbarButton(surface, playerPosterButton, p.posterLabels().button, p.posterOffset() > 0 || p.poster.menuOpen)
 	full := "全螢幕"
 	switch p.Game.localeID {
 	case "en":
