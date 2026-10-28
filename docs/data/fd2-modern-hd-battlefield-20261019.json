@@ -15,7 +15,7 @@
     "hd_terrain": "已接草泥、水沙／岸線、首章陰影／土脊／石路及寶箱開合／小石塊；目前數量依58及props_followup_20261025。其他地形與HD2仍待。",
     "ai_player_input_lock": "CONFORMED-SCOPED：AI換手期間拒絕玩家地圖輸入重入；普通END／增援對話及相關／完整Go回歸通過。",
     "gaia_redesign": "CONFORMED-SCOPED：新版頭像與四方向圖組已登錄；正常START／Gaia北移取消／F2／冷讀分段驗證。相位差異與序章尾端失敗明示，非逐幀parity。",
-    "hd_battle_animation": "同畫面重用與解碼共享皆已接正式路徑，完整GPU／F2、蓋亞攻防返回與首章正常保存冷讀通過；目前圖源及指紋依battle_decoded_storage_followup_20261027。集中造型與平台仍待，未宣稱完整完成。",
+    "hd_battle_animation": "現有已登錄HD戰鬥人物／效果／背景接線及完整來源群組已核對，沒有缺少已解碼FIGANI的登錄；正式消費端與必要載入／缺件檢查見hd1_wiring_handoff_20261028。既有F2、攻防返回與保存冷讀收據保持，人工造型與逐場驗證由使用者接手，不重開已驗接線。不是全部HD1美術或原版動態完成聲明。",
     "native_purchase_equip": "CONFORMED-SCOPED：#266原生購買立即裝備保留ignored原始格，29項商店回歸與正常購弓F5／章首射程通過；不改格式或數值規則。",
     "hd_event_death": "共用事件、普通行動與狀態致死已接HD；三種26拍／F2保持。章23事件及普通擊殺、首章明示低HP／中毒來源的正常END狀態死亡、途中F2、返回及章界保存冷讀均通過。來源依status_death_normal_gui_followup_20261027；不證明正常取得狀態或整章E2。",
     "theme_toolbar": "CONFORMED-SCOPED／RUNTIME-E1：正式預設單列頂端浮出、自動隱藏，主題與四語按鈕沿F2／F4閘門；完整遊戲幾何保持。其餘控制未完成，依floating_toolbar_followup_20261025。",
@@ -30,12 +30,13 @@
     "hd_battle_panel_chrome": "CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI：共用戰鬥面板HD框線／HP與MP條已接；來源、實際流程、獨立CPU及首章普通攻防保存冷讀依battle_panel_chrome_followup_20261026。其他介面與集中人工／平台仍待。",
     "hd_item_row_labels": "CONFORMED-SCOPED／RUNTIME-E1：物品加成四縮寫及指令-MP沿原生來源直接HD繪字；來源、數量、建構槽與限制依item_row_labels_followup_20261026。圖示現況依hd_item_panel_icons；完整HD／集中驗收仍待。",
     "hd_item_panel_icons": "CONFORMED-SCOPED／RUNTIME-E1：十個共用面板圖示已正式接線，兩包載入及物品／狀態完整繪製通過；唯一數量與分級依item_panel_icons_hd_followup_20261026。",
-    "hd1_release": "優先完成既有HD1接線；原生地圖HUD與十個共用面板圖示已接。未登錄地形、其餘操作介面及集中人工／平台仍待，未宣稱正式版完成。",
+    "hd1_release": "優先完成現有HD1接線，人工驗證由使用者接手。現有已登錄圖源依hd1_wiring_handoff_20261028核對；未登錄地形、其餘介面及獨立控制仍屬實作缺項，未宣稱完整正式版完成。",
     "hd_battle_consumer_inventory": "1173份目前Go來源重生21案例，與前批相同、19反例拒收，16快取owner／17建構保持；目前指紋依battle_decoded_storage_followup_20261027。其他地圖owner與可達性依既有分級。",
     "art_theme_direction": "使用者確認原版／HD／HD2／HD-2D四主題，介面原版／HD獨立。正式遊戲仍只有原版／HD；其餘依61「四種美術主題」DRAFT，HD-2D人物風格待選。",
     "hd_battle_performance": "目前正常物理窗203次合成／178次重用，Draw25.96Hz／更新53.60Hz；單輪軟體GPU觀測，非固定加速或平台驗收。峰值約5.82GiB、memory.events全零，前批觸限數據保留。依battle_decoded_storage_followup_20261027。",
     "hd_battle_memory": "已補已驗證PNG唯讀共享，代表圖源223份配置降為158份、少約144MiB RGBA等價容量；回收後Go heap亦減約144MiB。正常同來源2CPU／6GiB峰值約5.82GiB、無觸限或OOM；不由單輪數字宣稱平台通過。依battle_decoded_storage_followup_20261027。",
-    "work_status": "使用者於2026-10-27要求繼續，HD1工作已恢復。本輪狀態致死正常操作補驗完成；最新入口為status_death_normal_gui_followup_20261027。其他指令／召喚、平台與全部HD後集中造型仍待。"
+    "work_status": "使用者2026-10-28定案先完成HD接線，人工驗證由使用者接手。本輪只核現有圖源及正式載入／缺件保護；後續補實際缺接線與未製作素材，不再為集中人工抽驗反覆開新驗證輪。唯一入口為hd1_wiring_handoff_20261028及61「HD1接線與人工驗證交接」。",
+    "manual_validation_owner": "使用者2026-10-28明示接手HD人工驗證；逐角色／逐章／平台人工試玩不阻擋接線完成。必要載入／缺件／建置與切換／保存相容性保持，實際缺接線另外列。"
   },
   "runtime_source": {
     "binary": {
@@ -244111,5 +244112,178 @@
       "unexpected_fd2_containers": 0,
       "recordings_created": false
     }
+  },
+  "hd1_wiring_handoff_20261028": {
+    "status": "CURRENT-WIRING-AUDIT-PASS-MANUAL-HANDED-TO-USER",
+    "date": "2026-10-28",
+    "base_commit": "cf0e2986f9c8545bcdb00013a4c5cbd26a3fc541",
+    "layer": "RUNTIME-E1",
+    "user_decision": "HD接線完成即可，剩下由使用者人工驗證。",
+    "scope": "核對現有已登錄HD1圖源與既有正式消費端；未製作地形、其餘介面、獨立控制與HD2／HD-2D另外列實作工作，不冒稱全部HD1完成。",
+    "runtime_changed": false,
+    "new_assets": false,
+    "private_assets_changed": false,
+    "full_hd1_complete": false,
+    "new_original_parity": false,
+    "new_player_e2": false,
+    "manual_validation_owner": "user",
+    "manual_validation_blocks_wiring": false,
+    "manual_scope": [
+      "造型與動畫觀感",
+      "各章普通操作",
+      "音畫感受",
+      "實機平台表現",
+      "蓋亞手腕與凱麗右腳修訂確認"
+    ],
+    "asset_registration_complete_for_decoded_figani": true,
+    "assets": {
+      "report": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd-wiring-20261028-assets-r2.json",
+        "sha256": "2a098e330b62786901bedf8b237899fed337a06f7889d335c81ab155493a7ce3"
+      },
+      "catalog_assets": 851,
+      "figani_resources": 264,
+      "figani_frames": 2118,
+      "remaining_decoded_resources": [],
+      "source_limitations": [
+        408
+      ],
+      "fdother_banks": 23,
+      "lmi_banks": 10,
+      "surface_sources": 86,
+      "catalog_sha256": "5dd17043f274d86ba606f2a08c1559c40c94e4cb13f01464c32beb290b10f746"
+    },
+    "consumer_bindings": {
+      "report": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd-wiring-20261028-consumers-r2.json",
+        "sha256": "d2d8c6e9a3278706fec2a304ac04f2cc6d029e3a0bb04eef35f13f85a43d7062"
+      },
+      "cases": 21,
+      "rejected_mutants": 19,
+      "go_source_tree_sha256": "57f86e464cfbe06fee80e7c254a14a0f88ca9bc347d37132884eb9c8873a509a",
+      "scope": "受控正式建構器及逐拍owner的archive與召喚地圖尾段LMI／人物遮罩來源核對；未新增GPU或正常玩家收據。",
+      "unobserved": [
+        "other map-only owners",
+        "map-tail whole terrain/world/HUD coverage beyond overlays and masks",
+        "all caster/target identities and sides",
+        "counter eligibility and damage rules",
+        "normal player reachability",
+        "GPU final pixels",
+        "manual shape and platform acceptance",
+        "non-archive layers and pixels baked into Base are not asset-coverage claims"
+      ]
+    },
+    "runtime_checks": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd-wiring-20261028-go-r2.memory.json",
+        "sha256": "80ba091fee4c3bcf04c568d797eb312849933738ba56475f7a0d50b7f7b1edbc"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd-wiring-20261028-go-r2.log",
+        "sha256": "d288db0beb83ed18498422b4107c57078574ca0d561ac72f74c5d8213ba0105f"
+      },
+      "tests": [
+        "TestModernHDBattleAssetsCompleteAndAtomic",
+        "TestModernHDBattleAssetsLazySetAtomic",
+        "TestModernHDBattleBatchAssetsAndPreflight",
+        "TestNativePhysicalHDPreflightStopsBeforeSettlement",
+        "TestLoadModernHDMapSpritesCompleteCoverageAndSoftEdges",
+        "TestModernHDPrivateCatalogIncludesEveryPortrait",
+        "TestModernHDTerrainCatalogAtomicAndNativeMask",
+        "TestModernThemePrivateCatalogAdmitsAllMaps"
+      ],
+      "skips": 0,
+      "initial_receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd-wiring-20261028-go-r1.memory.json",
+        "sha256": "9ab19f4d72c24b5c09c19b5674c1eecee0429495bb9e47838dc9781eafda3290"
+      },
+      "initial_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd-wiring-20261028-go-r1.log",
+        "sha256": "3f6e1e2b3f26331386d18da4713672e649bed28c417782b898ab6b09a2c8e1c8"
+      },
+      "initial_passed_tests": [
+        "TestModernHDBattleAssetsCompleteAndAtomic",
+        "TestModernHDBattleAssetsLazySetAtomic",
+        "TestModernHDBattleBatchAssetsAndPreflight",
+        "TestNativePhysicalHDPreflightStopsBeforeSettlement",
+        "TestLoadModernHDMapSpritesCompleteCoverageAndSoftEdges",
+        "TestModernHDPrivateCatalogIncludesEveryPortrait",
+        "TestModernHDTerrainCatalogAtomicAndNativeMask"
+      ],
+      "elapsed_seconds": 506.87199999999996,
+      "peak_bytes": 3920683008,
+      "memory_events_delta": {
+        "low": 0,
+        "high": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_kill": 0,
+        "oom_group_kill": 0,
+        "sock_throttled": 0
+      },
+      "initial_memory_events_delta": {
+        "low": 0,
+        "high": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_kill": 0,
+        "oom_group_kill": 0,
+        "sock_throttled": 0
+      },
+      "reproduce": {
+        "image": "fd2-go-test-local:latest",
+        "user": "1000:1000",
+        "cpus": 2,
+        "memory": "6GiB",
+        "network": "none",
+        "cwd": "/repo/remake",
+        "display": "有界Xvfb :96、1920x1200x24，EXIT trap收尾",
+        "env": {
+          "GOPROXY": "off",
+          "GOSUMDB": "off",
+          "GOMAXPROCS": "2",
+          "FD2_ASSET_PACK": "/original",
+          "FD2_TEST_ORIGINAL_PACK": "/original",
+          "FD2_TEST_MODERN_PACK": "/modern",
+          "FD2_TEST_MODERN_BATTLE_PACK": "/modern",
+          "FD2_TEST_MODERN_BATTLE_CATALOG": "/repo/remake/assets/themes/modern/catalog.json",
+          "FD2_TEST_MODERN_BATTLE_FIGURES": "0,9,4,30"
+        },
+        "command": "go test ./cmd/fd2 -count=1 -timeout=420s -v -run \"^(TestModernHDBattleAssetsCompleteAndAtomic|TestModernHDBattleAssetsLazySetAtomic|TestModernHDBattleBatchAssetsAndPreflight|TestNativePhysicalHDPreflightStopsBeforeSettlement|TestLoadModernHDMapSpritesCompleteCoverageAndSoftEdges|TestModernHDPrivateCatalogIncludesEveryPortrait|TestModernHDTerrainCatalogAtomicAndNativeMask|TestModernThemePrivateCatalogAdmitsAllMaps)$\"",
+        "partition": "八測試可分程序執行。首批七項PASS，最後地圖項因整批預算耗盡，以相同條件單獨補驗PASS。"
+      },
+      "scope": "正式私人頭像／33地圖載入、125組人物集合、地形群組、四角色雙銀行、按需載入、兩行動入口缺件原子性；Xvfb供Ebiten初始化，沒有新增人工GUI試玩或平台通過聲明。"
+    },
+    "retained_evidence": [
+      "battle_decoded_storage_followup_20261027",
+      "status_death_normal_gui_followup_20261027",
+      "battle_consumer_map_inventory_followup_20261027"
+    ],
+    "actual_remaining_implementation": [
+      "未登錄的真正HD地形",
+      "其餘原生操作介面",
+      "原版／HD介面與人物主題獨立控制",
+      "工具列額外控制／海報",
+      "HD2／HD-2D圖源及呈現"
+    ],
+    "diagnostics": [
+      {
+        "run": "hd-wiring-20261028-assets-r1",
+        "classification": "容器來源掛載問題",
+        "reason": "清冊驗證器依private_root取檔；只掛/modern時找不到檔案。按原工具契約將同一私人包唯讀掛到catalog指定目錄後通過；沒有修改遊戲或素材。"
+      },
+      {
+        "run": "hd-wiring-20261028-go-r1",
+        "classification": "整批測試時間預算耗盡",
+        "reason": "七項測試已PASS，最後全地圖載入中超過420秒整批預算；無OOM。保留七項結果，只把未完成的相同地圖檢查拆出補驗，沒有改程式或品質期望。"
+      }
+    ],
+    "recordings_created": false,
+    "new_release": false,
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd-wiring-20261028-final-validation-r1.json",
+      "sha256": "f104bf76862bfabe89eeb6d338f09abb2b338a657f3ae03acb08904dedd1e606"
+    },
+    "policy_lesson": "full-pack-checks-retain-passed-tests"
   }
 }

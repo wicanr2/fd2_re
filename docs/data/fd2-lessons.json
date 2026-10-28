@@ -4611,6 +4611,21 @@
         "pattern": "memory.stat"
       },
       "evidence": "HD主收據battle_decoded_storage_followup_20261027"
+    },
+    {
+      "id": "full-pack-checks-retain-passed-tests",
+      "date": "2026-10-28",
+      "area": "測試預算",
+      "rule": "批次測試會重複冷載大型私人包時，按單次載入成本分程序安排有界預算。批次逾時但前項已有PASS時，保留該批證據，只補未完成項，不改遊戲或降低檢查。入口tools/fd2_go_test_memory_probe.py與規格61「HD1接線與人工驗證交接」。",
+      "why": "八項接線檢查共用420秒整批預算，七項PASS後最後全地圖載入逾時；同條件只補該項84.191秒通過，兩批無OOM。",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+        ],
+        "pattern": "只補未完成項"
+      },
+      "evidence": "HD主收據hd1_wiring_handoff_20261028"
     }
   ]
 }

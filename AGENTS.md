@@ -31,6 +31,7 @@
 
 ## 已確認的HD收尾與規則擴充方向
 
+- 使用者2026-10-28定案：先完成HD接線，後續人工驗證由使用者接手。接線仍須通過素材載入、缺件處理、建置與相關切換／保存相容性檢查；不再把逐角色造型、逐章操作或平台人工試玩列為接線停止線。實際未接功能、未製作素材與人工待驗分列，不能只因移交人工就宣稱完整HD完成。現況入口為[58](docs/knowledge-base/58-fd2-exe-re-coverage.md)與[61](docs/knowledge-base/61-modern-theme-runtime-spec.md)「HD1接線與人工驗證交接」。
 - 使用者2026-10-25定案：絕招已接HD且有目前原版證據支持流程一致時，維持已完成範圍。不得以舊停止線或未影響玩家流程的未知細節重開。
 - 與使用者指示衝突，或已被目前程式及驗證取代的停止線，直接刪除。保留原始bytes、位址、來源與文化保存內容；此項優先於本文通則中保留舊斷言的要求。現況入口為[58](docs/knowledge-base/58-fd2-exe-re-coverage.md)、[61](docs/knowledge-base/61-modern-theme-runtime-spec.md)及遠端worklist工單。
 - 傷害公式允許後續調整，忠實模式保留原版預設值。需求及驗收方向記於[61](docs/knowledge-base/61-modern-theme-runtime-spec.md)「傷害公式可調整」。未確認的新格式與操作方式另走規格；此要求不授權現在自行改動平衡。
