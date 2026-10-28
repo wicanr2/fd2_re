@@ -68574,6 +68574,454 @@
         "docs/figures/fd2-hd2-poster-set2-source.png",
         "docs/data/fd2-hd2-concept-design-20261024.json"
       ]
+    },
+    {
+      "asset_id": "modern.terrain.exact_reuse.map01.native_hd",
+      "role": "native_terrain_hd_set",
+      "status": "runtime_candidate",
+      "consumer_contract": "fdshap_native_hd_sparse_v1",
+      "map_id": 1,
+      "width": 144,
+      "height": 144,
+      "frame_count": 19,
+      "frame_ids": [
+        85,
+        87,
+        89,
+        91,
+        92,
+        93,
+        135,
+        136,
+        138,
+        139,
+        177,
+        178,
+        179,
+        180,
+        181,
+        182,
+        183,
+        184,
+        185
+      ],
+      "semantics": [
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain",
+        "foreground",
+        "terrain",
+        "foreground",
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain"
+      ],
+      "files": [
+        "map00-frame0203-hd.png",
+        "map00-frame0204-hd.png",
+        "map00-frame0205-hd.png",
+        "map00-frame0206-hd.png",
+        "map00-frame0207-hd.png",
+        "map00-frame0208-hd.png",
+        "map00-frame0040-hd.png",
+        "map00-frame0042-hd.png",
+        "map00-frame0044-hd.png",
+        "map00-frame0046-hd.png",
+        "map00-frame0029-hd.png",
+        "map00-frame0030-hd.png",
+        "map00-frame0031-hd.png",
+        "map00-frame0272-hd.png",
+        "map00-frame0273-hd.png",
+        "map00-frame0032-hd.png",
+        "map00-frame0033-hd.png",
+        "map00-frame0034-hd.png",
+        "map00-frame0035-hd.png"
+      ],
+      "frame_sha256": [
+        "825394715766595c8a9f4f8415cf68b401c412f06f2aa2a1cff73c9ec9cfeadc",
+        "3ccfdf2f953563d6f00b547bee2299df4499666674bc503fac6cbc22d5d1f606",
+        "35953f867ace00f7a46196bdf80c8bd5a2d783900b877ee5780130c83b8e19b9",
+        "ce6b99c8747565a27529f2cf1dc050436d90f6beb1453c8b215f9c41a738adde",
+        "bbcbe95eea6d5988d49e190e43acd14a895b29f3606493eee5c5f502c9f7c717",
+        "415420d27d8d6eb01e7f4dfc4d129c4b6c1ebb482f257dc2765031575c1cfef5",
+        "be5d79c5bcc78e91adb681655774a4e417033975bf2cd5b6907b1c8de65b63cc",
+        "5ad152fef4b402b9d7126935fa3a6a91e2b60d05fc040c0f2238049342b611d3",
+        "73b26f1a68014e1d015ded469bc6ab59d2f6332f334e0f1ba7029d53a3f19571",
+        "4c3fc656c2861c74f43a8f839eeb571556287f83fa31221c4a01118d9ad577ef",
+        "278810180a12da0e433816f484aa250a6bac893956d2f83fbe63a4661ec30ebf",
+        "7bf12812cc17a5811dab18e2ef24ac576a30d6a8511068d41bca0854eae85d89",
+        "a8c401f2c1b35c7dc6dd377f124674be79cab455fca3c5e865a5f648b9350606",
+        "f6da27804345163d0fd22c880907ada3178d29208fc570dfeb8fb33efbe6365b",
+        "20f661065b8d5b610228bb8b6ce009a99a7d115dca8aa1f4f640d6310fbc83b8",
+        "ee33b74453f8934215839663722b3821299d284415ea9fc49f52f1768521b468",
+        "cf478145496510211d90b17ae9b42b8d918424e46909861d483d1ce08c5234a9",
+        "b7362bad6515c2b78120531ef7e55c061962a4a7191c0e6d4a2d25e332f82203",
+        "73c936d5b3fe7014604f0df68e8d665c0826cd213f4ec70c0f793ee094e4a468"
+      ],
+      "alpha_contract": "native_mask_nearest_6",
+      "cycle_policy": "native_selector",
+      "source_refs": [
+        "docs/data/fd2-hd1-terrain-coverage.json",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
+    },
+    {
+      "asset_id": "modern.terrain.exact_reuse.map02.native_hd",
+      "role": "native_terrain_hd_set",
+      "status": "runtime_candidate",
+      "consumer_contract": "fdshap_native_hd_sparse_v1",
+      "map_id": 2,
+      "width": 144,
+      "height": 144,
+      "frame_count": 3,
+      "frame_ids": [
+        72,
+        73,
+        77
+      ],
+      "semantics": [
+        "terrain",
+        "terrain",
+        "terrain"
+      ],
+      "files": [
+        "map00-frame0044-hd.png",
+        "map00-frame0040-hd.png",
+        "map00-frame0042-hd.png"
+      ],
+      "frame_sha256": [
+        "73b26f1a68014e1d015ded469bc6ab59d2f6332f334e0f1ba7029d53a3f19571",
+        "be5d79c5bcc78e91adb681655774a4e417033975bf2cd5b6907b1c8de65b63cc",
+        "5ad152fef4b402b9d7126935fa3a6a91e2b60d05fc040c0f2238049342b611d3"
+      ],
+      "alpha_contract": "native_mask_nearest_6",
+      "cycle_policy": "native_selector",
+      "source_refs": [
+        "docs/data/fd2-hd1-terrain-coverage.json",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
+    },
+    {
+      "asset_id": "modern.terrain.exact_reuse.map03.native_hd",
+      "role": "native_terrain_hd_set",
+      "status": "runtime_candidate",
+      "consumer_contract": "fdshap_native_hd_sparse_v1",
+      "map_id": 3,
+      "width": 144,
+      "height": 144,
+      "frame_count": 4,
+      "frame_ids": [
+        128,
+        129,
+        133,
+        134
+      ],
+      "semantics": [
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain"
+      ],
+      "files": [
+        "map00-frame0044-hd.png",
+        "map00-frame0046-hd.png",
+        "map00-frame0040-hd.png",
+        "map00-frame0042-hd.png"
+      ],
+      "frame_sha256": [
+        "73b26f1a68014e1d015ded469bc6ab59d2f6332f334e0f1ba7029d53a3f19571",
+        "4c3fc656c2861c74f43a8f839eeb571556287f83fa31221c4a01118d9ad577ef",
+        "be5d79c5bcc78e91adb681655774a4e417033975bf2cd5b6907b1c8de65b63cc",
+        "5ad152fef4b402b9d7126935fa3a6a91e2b60d05fc040c0f2238049342b611d3"
+      ],
+      "alpha_contract": "native_mask_nearest_6",
+      "cycle_policy": "native_selector",
+      "source_refs": [
+        "docs/data/fd2-hd1-terrain-coverage.json",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
+    },
+    {
+      "asset_id": "modern.terrain.exact_reuse.map04.native_hd",
+      "role": "native_terrain_hd_set",
+      "status": "runtime_candidate",
+      "consumer_contract": "fdshap_native_hd_sparse_v1",
+      "map_id": 4,
+      "width": 144,
+      "height": 144,
+      "frame_count": 4,
+      "frame_ids": [
+        209,
+        211,
+        212,
+        214
+      ],
+      "semantics": [
+        "foreground",
+        "foreground",
+        "terrain",
+        "terrain"
+      ],
+      "files": [
+        "map00-frame0029-hd.png",
+        "map00-frame0031-hd.png",
+        "map00-frame0272-hd.png",
+        "map00-frame0032-hd.png"
+      ],
+      "frame_sha256": [
+        "278810180a12da0e433816f484aa250a6bac893956d2f83fbe63a4661ec30ebf",
+        "a8c401f2c1b35c7dc6dd377f124674be79cab455fca3c5e865a5f648b9350606",
+        "f6da27804345163d0fd22c880907ada3178d29208fc570dfeb8fb33efbe6365b",
+        "ee33b74453f8934215839663722b3821299d284415ea9fc49f52f1768521b468"
+      ],
+      "alpha_contract": "native_mask_nearest_6",
+      "cycle_policy": "native_selector",
+      "source_refs": [
+        "docs/data/fd2-hd1-terrain-coverage.json",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
+    },
+    {
+      "asset_id": "modern.terrain.exact_reuse.map06.native_hd",
+      "role": "native_terrain_hd_set",
+      "status": "runtime_candidate",
+      "consumer_contract": "fdshap_native_hd_sparse_v1",
+      "map_id": 6,
+      "width": 144,
+      "height": 144,
+      "frame_count": 2,
+      "frame_ids": [
+        124,
+        125
+      ],
+      "semantics": [
+        "terrain",
+        "terrain"
+      ],
+      "files": [
+        "map00-frame0044-hd.png",
+        "map00-frame0046-hd.png"
+      ],
+      "frame_sha256": [
+        "73b26f1a68014e1d015ded469bc6ab59d2f6332f334e0f1ba7029d53a3f19571",
+        "4c3fc656c2861c74f43a8f839eeb571556287f83fa31221c4a01118d9ad577ef"
+      ],
+      "alpha_contract": "native_mask_nearest_6",
+      "cycle_policy": "native_selector",
+      "source_refs": [
+        "docs/data/fd2-hd1-terrain-coverage.json",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
+    },
+    {
+      "asset_id": "modern.terrain.exact_reuse.map10.native_hd",
+      "role": "native_terrain_hd_set",
+      "status": "runtime_candidate",
+      "consumer_contract": "fdshap_native_hd_sparse_v1",
+      "map_id": 10,
+      "width": 144,
+      "height": 144,
+      "frame_count": 2,
+      "frame_ids": [
+        124,
+        125
+      ],
+      "semantics": [
+        "terrain",
+        "terrain"
+      ],
+      "files": [
+        "map00-frame0044-hd.png",
+        "map00-frame0046-hd.png"
+      ],
+      "frame_sha256": [
+        "73b26f1a68014e1d015ded469bc6ab59d2f6332f334e0f1ba7029d53a3f19571",
+        "4c3fc656c2861c74f43a8f839eeb571556287f83fa31221c4a01118d9ad577ef"
+      ],
+      "alpha_contract": "native_mask_nearest_6",
+      "cycle_policy": "native_selector",
+      "source_refs": [
+        "docs/data/fd2-hd1-terrain-coverage.json",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
+    },
+    {
+      "asset_id": "modern.terrain.exact_reuse.map11.native_hd",
+      "role": "native_terrain_hd_set",
+      "status": "runtime_candidate",
+      "consumer_contract": "fdshap_native_hd_sparse_v1",
+      "map_id": 11,
+      "width": 144,
+      "height": 144,
+      "frame_count": 2,
+      "frame_ids": [
+        128,
+        129
+      ],
+      "semantics": [
+        "terrain",
+        "terrain"
+      ],
+      "files": [
+        "map00-frame0044-hd.png",
+        "map00-frame0046-hd.png"
+      ],
+      "frame_sha256": [
+        "73b26f1a68014e1d015ded469bc6ab59d2f6332f334e0f1ba7029d53a3f19571",
+        "4c3fc656c2861c74f43a8f839eeb571556287f83fa31221c4a01118d9ad577ef"
+      ],
+      "alpha_contract": "native_mask_nearest_6",
+      "cycle_policy": "native_selector",
+      "source_refs": [
+        "docs/data/fd2-hd1-terrain-coverage.json",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
+    },
+    {
+      "asset_id": "modern.terrain.exact_reuse.map14.native_hd",
+      "role": "native_terrain_hd_set",
+      "status": "runtime_candidate",
+      "consumer_contract": "fdshap_native_hd_sparse_v1",
+      "map_id": 14,
+      "width": 144,
+      "height": 144,
+      "frame_count": 4,
+      "frame_ids": [
+        72,
+        73,
+        76,
+        77
+      ],
+      "semantics": [
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain"
+      ],
+      "files": [
+        "map00-frame0044-hd.png",
+        "map00-frame0040-hd.png",
+        "map00-frame0046-hd.png",
+        "map00-frame0042-hd.png"
+      ],
+      "frame_sha256": [
+        "73b26f1a68014e1d015ded469bc6ab59d2f6332f334e0f1ba7029d53a3f19571",
+        "be5d79c5bcc78e91adb681655774a4e417033975bf2cd5b6907b1c8de65b63cc",
+        "4c3fc656c2861c74f43a8f839eeb571556287f83fa31221c4a01118d9ad577ef",
+        "5ad152fef4b402b9d7126935fa3a6a91e2b60d05fc040c0f2238049342b611d3"
+      ],
+      "alpha_contract": "native_mask_nearest_6",
+      "cycle_policy": "native_selector",
+      "source_refs": [
+        "docs/data/fd2-hd1-terrain-coverage.json",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
+    },
+    {
+      "asset_id": "modern.terrain.exact_reuse.map17.native_hd",
+      "role": "native_terrain_hd_set",
+      "status": "runtime_candidate",
+      "consumer_contract": "fdshap_native_hd_sparse_v1",
+      "map_id": 17,
+      "width": 144,
+      "height": 144,
+      "frame_count": 2,
+      "frame_ids": [
+        128,
+        129
+      ],
+      "semantics": [
+        "terrain",
+        "terrain"
+      ],
+      "files": [
+        "map00-frame0044-hd.png",
+        "map00-frame0046-hd.png"
+      ],
+      "frame_sha256": [
+        "73b26f1a68014e1d015ded469bc6ab59d2f6332f334e0f1ba7029d53a3f19571",
+        "4c3fc656c2861c74f43a8f839eeb571556287f83fa31221c4a01118d9ad577ef"
+      ],
+      "alpha_contract": "native_mask_nearest_6",
+      "cycle_policy": "native_selector",
+      "source_refs": [
+        "docs/data/fd2-hd1-terrain-coverage.json",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
+    },
+    {
+      "asset_id": "modern.terrain.exact_reuse.map30.native_hd",
+      "role": "native_terrain_hd_set",
+      "status": "runtime_candidate",
+      "consumer_contract": "fdshap_native_hd_sparse_v1",
+      "map_id": 30,
+      "width": 144,
+      "height": 144,
+      "frame_count": 2,
+      "frame_ids": [
+        124,
+        125
+      ],
+      "semantics": [
+        "terrain",
+        "terrain"
+      ],
+      "files": [
+        "map00-frame0044-hd.png",
+        "map00-frame0046-hd.png"
+      ],
+      "frame_sha256": [
+        "73b26f1a68014e1d015ded469bc6ab59d2f6332f334e0f1ba7029d53a3f19571",
+        "4c3fc656c2861c74f43a8f839eeb571556287f83fa31221c4a01118d9ad577ef"
+      ],
+      "alpha_contract": "native_mask_nearest_6",
+      "cycle_policy": "native_selector",
+      "source_refs": [
+        "docs/data/fd2-hd1-terrain-coverage.json",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
+    },
+    {
+      "asset_id": "modern.terrain.exact_reuse.map31.native_hd",
+      "role": "native_terrain_hd_set",
+      "status": "runtime_candidate",
+      "consumer_contract": "fdshap_native_hd_sparse_v1",
+      "map_id": 31,
+      "width": 144,
+      "height": 144,
+      "frame_count": 2,
+      "frame_ids": [
+        128,
+        129
+      ],
+      "semantics": [
+        "terrain",
+        "terrain"
+      ],
+      "files": [
+        "map00-frame0044-hd.png",
+        "map00-frame0046-hd.png"
+      ],
+      "frame_sha256": [
+        "73b26f1a68014e1d015ded469bc6ab59d2f6332f334e0f1ba7029d53a3f19571",
+        "4c3fc656c2861c74f43a8f839eeb571556287f83fa31221c4a01118d9ad577ef"
+      ],
+      "alpha_contract": "native_mask_nearest_6",
+      "cycle_policy": "native_selector",
+      "source_refs": [
+        "docs/data/fd2-hd1-terrain-coverage.json",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
     }
   ]
 }

@@ -4641,6 +4641,21 @@
         "pattern": "FD2_XTEST_RELEASE_ACK"
       },
       "evidence": "HD主收據hd1_posters_followup_20261028"
+    },
+    {
+      "id": "hd-terrain-coverage-separates-art-and-compositing",
+      "date": "2026-10-28",
+      "area": "HD地形盤點",
+      "rule": "HD地形分開盤點初始selector、正式事件writer及依目的地的合成。來源非全opaque或帶remap時，另列合成接線，不稱只缺美術；事件全有效的來源上界不稱正常可達。入口remake/cmd/fd2-terrain-sources/coverage.go及規格61「HD1全地圖地形盤點與同源接線」。",
+      "why": "初始來源清單漏掉更新後圖號；現行稀疏HD底層只接全opaque且無remap的來源。33圖重新盤點後，部分覆蓋、混合重映射與純目的地重映射均需分列，避免製圖完成被誤認為接線完成。",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2-terrain-sources/coverage.go"
+        ],
+        "pattern": "missing-composite"
+      },
+      "evidence": "HD主收據hd1_terrain_reuse_followup_20261028"
     }
   ]
 }

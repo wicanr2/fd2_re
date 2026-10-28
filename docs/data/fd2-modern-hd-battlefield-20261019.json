@@ -9,10 +9,10 @@
     "native_viewport": "CONFORMED-SCOPED：穩定1920世界沿原生(4,4)、312×192窗格；死亡事件前25拍依既有producer從VGA0,0開始，最後steady回4,4。不同caller分列，不新增DOS位址parity。",
     "hd_sprite_data": "DATA-READY：完整125組1455張HD及31組372張新增24父項已登錄；舊1083張父項及HD bytes保持。",
     "hd_world_renderer": "CONFORMED-SCOPED：144人物已接Game.Draw；首章34張正常GPU、4張實際走行、兩次物理攻擊及保存／新程序LOAD通過。",
-    "private_assets": "兩組海報依白名單同步唯一私人庫；目前清冊、實檔、舊檔保持及正式載入依58及hd1_posters_followup_20261028。",
+    "private_assets": "11圖同源地形登錄已同步唯一私人庫；清冊、實檔、舊檔保持與正式載入依58及hd1_terrain_reuse_followup_20261028。",
     "quickload_battle_owner": "CONFORMED-SCOPED：成功JSON LOAD丟棄舊經驗owner與移動計畫；拒收保留。",
     "timed_dialogue": "CONFORMED-SCOPED-RUNTIME-E1：計時FFEC開收框保留HD世界，EXP99普通鍵盤／F2與保存冷讀通過；其他caller未驗。",
-    "hd_terrain": "已接草泥、水沙／岸線、首章陰影／土脊／石路及寶箱開合／小石塊；目前數量依58及props_followup_20261025。其他地形與HD2仍待。",
+    "hd_terrain": "33圖初始及事件更新後的來源上界已盤點；新增11圖46個同源地形／前景槽，PNG與原始資料保持。缺美術、部分覆蓋與目的地重映射合成分列於fd2-hd1-terrain-coverage.json；來源與限制依hd1_terrain_reuse_followup_20261028。",
     "ai_player_input_lock": "CONFORMED-SCOPED：AI換手期間拒絕玩家地圖輸入重入；普通END／增援對話及相關／完整Go回歸通過。",
     "gaia_redesign": "CONFORMED-SCOPED：新版頭像與四方向圖組已登錄；正常START／Gaia北移取消／F2／冷讀分段驗證。相位差異與序章尾端失敗明示，非逐幀parity。",
     "hd_battle_animation": "現有已登錄HD戰鬥人物／效果／背景接線及完整來源群組已核對，沒有缺少已解碼FIGANI的登錄；正式消費端與必要載入／缺件檢查見hd1_wiring_handoff_20261028。既有F2、攻防返回與保存冷讀收據保持，人工造型與逐場驗證由使用者接手，不重開已驗接線。不是全部HD1美術或原版動態完成聲明。",
@@ -20,7 +20,7 @@
     "hd_event_death": "共用事件、普通行動與狀態致死已接HD；三種26拍／F2保持。章23事件及普通擊殺、首章明示低HP／中毒來源的正常END狀態死亡、途中F2、返回及章界保存冷讀均通過。來源依status_death_normal_gui_followup_20261027；不證明正常取得狀態或整章E2。",
     "theme_toolbar": "CONFORMED-SCOPED／RUNTIME-E1：單列浮出工具列包含獨立介面／美術、四語、字級、1～4倍速、全螢幕及雙組海報／關閉、漸層、淡入與F10；必要技術檢查依hd1_posters_followup_20261028。",
     "hd_facility_scene": "CONFORMED-SCOPED-RUNTIME-E1：三種城鎮與三種商店靜態HD場景／店員，以及既有隊伍HD頭像接入裝備面板；114個GPU案例及兩包載入通過，集中普通／人工仍待。",
-    "assets": "目前正式清冊與私人實檔依58及hd1_posters_followup_20261028；各舊切片數字只保留其當批範圍。",
+    "assets": "目前正式清冊與私人實檔依58及hd1_terrain_reuse_followup_20261028；舊圖bytes保持，未重畫或新增圖片。",
     "hd_battle_background": "CONFORMED-SCOPED／RUNTIME-E1：森林小屋／內部／海岸，以及BG0..2過渡已接共用／分離物理與24／29的已驗caller；原生位移、遮罩與節拍保持。其他來源／caller仍待，依transition_backgrounds_followup_20261024。",
     "hd_battle_pedestal": "CONFORMED-SCOPED／RUNTIME-E1：已登錄草地、森林裸土及海岸沙地TAI接共用物理的靜態／移位進場、攻防／restore／淡出。原框、層序與節拍保持，其他來源及caller仍待，依forest_coast_surface_followup_20261024。",
     "hd_heal_map": "CONFORMED-SCOPED／RUNTIME-E1：13～16完整Game.Draw、F2及一次交易／續行保持；既有章23滿血來源的正常選人、取消、施放與章界保存冷讀已由heal_normal_gui_followup_20261026補驗。正回復量、人工及平台仍依各自證據，不重開已驗滿血演出。",
@@ -31,11 +31,11 @@
     "hd_item_row_labels": "CONFORMED-SCOPED／RUNTIME-E1：物品加成四縮寫及指令-MP沿原生來源直接HD繪字；來源、數量、建構槽與限制依item_row_labels_followup_20261026。圖示現況依hd_item_panel_icons；完整HD／集中驗收仍待。",
     "hd_item_panel_icons": "CONFORMED-SCOPED／RUNTIME-E1：十個共用面板圖示已正式接線，兩包載入及物品／狀態完整繪製通過；唯一數量與分級依item_panel_icons_hd_followup_20261026。",
     "hd1_release": "milestone1進行中；工具列接線與必要檢查完成，地形、其餘介面及完整組合仍依#282／283／284；人工由使用者接手，沒有新Release。",
-    "hd_battle_consumer_inventory": "1185份目前Go來源重生21個受控案例，416張archive來源與19反例核對通過；指紋依hd1_posters_followup_20261028。既有戰鬥驗證保持。",
+    "hd_battle_consumer_inventory": "1188份目前Go來源重生21個受控案例、416張archive來源與19反例通過；目前指紋依hd1_terrain_reuse_followup_20261028。",
     "art_theme_direction": "使用者確認原版／HD／HD2／HD-2D四主題，介面原版／HD獨立。正式遊戲仍只有原版／HD；其餘依61「四種美術主題」DRAFT，HD-2D人物風格待選。",
     "hd_battle_performance": "目前正常物理窗203次合成／178次重用，Draw25.96Hz／更新53.60Hz；單輪軟體GPU觀測，非固定加速或平台驗收。峰值約5.82GiB、memory.events全零，前批觸限數據保留。依battle_decoded_storage_followup_20261027。",
     "hd_battle_memory": "已補已驗證PNG唯讀共享，代表圖源223份配置降為158份、少約144MiB RGBA等價容量；回收後Go heap亦減約144MiB。正常同來源2CPU／6GiB峰值約5.82GiB、無觸限或OOM；不由單輪數字宣稱平台通過。依battle_decoded_storage_followup_20261027。",
-    "work_status": "HD1里程碑進行中；#285工具列已接線並通過必要技術檢查，#282／283／284仍是實作工作；人工分工與現有戰鬥收據保持。",
+    "work_status": "HD1 milestone進行中；#282已完成33圖來源上界與46個同源缺槽，剩餘製圖／合成仍待；#283／284保持OPEN，#285保持CLOSED。必要檢查通過，人工由使用者接手。",
     "manual_validation_owner": "使用者2026-10-28明示接手HD人工驗證；逐角色／逐章／平台人工試玩不阻擋接線完成。必要載入／缺件／建置與切換／保存相容性保持，實際缺接線另外列。",
     "interface_control": "CONFORMED-SCOPED／RUNTIME-E1：F2美術與F11介面獨立，設定相容與活躍面板預備已接；部分模態HUD與其餘原生UI仍依#283／284補接，不稱所有介面完成。"
   },
@@ -308,9 +308,9 @@
     "all_four_documents_unchanged": true
   },
   "remaining": [
-    "HD1地形／前景與其餘操作介面、模態HUD、城鎮行走人物依#282／283。",
-    "所有介面完成後的獨立控制覆蓋依#284；本批不宣稱完整HD1或新Release。",
-    "人工造型與實機操作由使用者接手；HD2／HD-2D另期。"
+    "#282仍有缺美術、部分覆蓋與目的地重映射合成；精確來源清單依coverage，不將缺合成誤稱只差畫圖。",
+    "#283其餘介面／城鎮行走人物與#284完整獨立組合仍待；#285保持CLOSED。",
+    "人工造型與實機操作由使用者接手，HD2／HD-2D另期，沒有新Release。"
   ],
   "cleanup": {
     "recording_created": false,
@@ -244865,6 +244865,290 @@
       "unexpected_fd2_containers": 0,
       "toolchain": "fd2-go-test-local:latest rebuilt from tools/docker/fd2-go-test.Dockerfile; all owned jobs use --rm and have exited",
       "ownership": "本批來源、收據與候選共7336路徑UID/GID1000；不改既存root-owned基線。"
+    }
+  },
+  "hd1_terrain_reuse_followup_20261028": {
+    "date": "2026-10-28",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1",
+    "base_commit": "f7fbe7b12771d508efe5e8a15cc8db216036de15",
+    "working_branch": "feat/hd1-terrain-coverage",
+    "issue": 282,
+    "scope": "全部33圖的來源上界盤點；只對46個相同三層／相同角色的缺槽新增HD登錄，不宣稱完整HD1地形。",
+    "coverage": {
+      "file": "docs/data/fd2-hd1-terrain-coverage.json",
+      "sha256": "94ad2b8f00d59a522d7091005e7ef11cb41a375bff51358ea84c0e1206d694b6",
+      "summary": {
+        "maps": 33,
+        "missing-art": 3199,
+        "missing-composite": 296,
+        "missing_unique_native_content": 2101,
+        "native-remap-only": 10,
+        "registered-hd": 493,
+        "required_slots": 3998,
+        "selector_checks": 617520
+      },
+      "method": "正式Go selector的兩flip／四cycle，正式事件writer在私人複本啟用全部事件直到穩定；這是來源上界，未證明每個事件自然可達。",
+      "native_binding": "FDSHAP固定來源綁原包bank metadata及參考清單；原生三層與來源manifest回讀，不重跑FD2.EXE或重新宣稱原始DAT逐byte驗證。",
+      "gap_classes": {
+        "missing-art": "來源有寫入，尚缺合適HD圖源",
+        "missing-composite": "地形底層非全opaque或含目的地重映射；現行稀疏HD底層不支援，只畫圖不足以完成",
+        "native-remap-only": "只對目的地作重映射，另列HD合成工作",
+        "registered-hd": "已登錄，PNG／SHA與原生覆蓋核對通過"
+      }
+    },
+    "source_verification": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-source-verify-r1.json",
+      "sha256": "8a9d9c68001e1ef466ed185048cb573506f243d12aa63c34340efaa4b84f54e4",
+      "banks": 33,
+      "frames": 8256,
+      "pixels_per_layer": 4755456,
+      "native_selector_checks": 349872
+    },
+    "reuse": {
+      "bindings": 46,
+      "terrain": 42,
+      "foreground": 4,
+      "maps": [
+        1,
+        2,
+        3,
+        4,
+        6,
+        10,
+        11,
+        14,
+        17,
+        30,
+        31
+      ],
+      "new_image_files": 0,
+      "candidate_manifest": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-reuse-candidate-r1/reuse-manifest.json",
+        "sha256": "bd3999ba3063c812be104e8893ddc94648c1ec53dc4cf2d3dc4eef1d0470e3f0"
+      },
+      "before_coverage": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-coverage-before-r1.json",
+        "sha256": "f821ee5b280ae4172c602ed66bfaeb1a59a7fafb8635e4ec2fb85ac22e6eff81"
+      },
+      "compiler": {
+        "file": "tools/build_fd2_hd_terrain_reuse.py",
+        "sha256": "2de1d6d0505dd8f6f5d38c8e4f05bbcc952fb3157823cb356e2d758079fa3c9a"
+      },
+      "scope": "原生索引、來源覆蓋與目的地重映射三層完全相同，HD成品SHA唯一才重用；有歧義或不同角色不猜配對。",
+      "candidate_rebuild": "候選產出後補重複目標與登錄守衛；最終工具測試以固定853項基底重編，所有catalog.assets與候選逐項相同，無新圖。"
+    },
+    "gpu": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-reuse-gpu-r3.log",
+        "sha256": "7e9d11049061fa48996c9dd4d47f36ec84c2c979f50fbd1f29266a36f4aeccab"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-reuse-gpu-r3.memory.json",
+        "sha256": "5c85837f5aa917d9b927a9473efca965f0a131c67387a82426194d1710d9ef38",
+        "elapsed_seconds": 120.724,
+        "peak_bytes": 6623518720,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-reuse-gpu-r3-capture/receipt.json",
+        "sha256": "90c31a6aad1fdf5cbc426de9016b4f0f59c32c4585dc24cca38e574c099cabba"
+      },
+      "source_cases": 184,
+      "complete_game_cases": 2,
+      "save_bytes_unchanged": 169,
+      "scope": "全部新槽通過正式地形／前景producer與最終GPU對獨立CPU，四種色盤。真實map1資料／章2單位、明示相機與人物位置的完整Game.Draw，原版／HD介面及程式F2往返；非正常鍵盤流程或平台驗收。"
+    },
+    "go_regression": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-final-r1.log",
+        "sha256": "c6f462fda701cc9c39cff7ee62e0c3f6ff50ba004e6da43efcfcf163d80f596a"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-final-r1.memory.json",
+        "sha256": "8c545324f1f2a0dda6723a09599ff1ea12aa856d1863c4e1980cac501ed469b8",
+        "elapsed_seconds": 89.936,
+        "peak_bytes": 1378426880,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "passed": [
+        "TestCoverageIncludesFormalEventWriterAndPreservesRawInput",
+        "TestCoverageOnlyReusesIdenticalNativeContentAndUniqueHD",
+        "TestCoverageRejectsWrongCatalogSHAAlphaAndDuplicates",
+        "TestCoverageSeparatesCompositeRequirementsFromMissingArt",
+        "TestSourceSelectorsRejectOutOfBankAndChangedControls",
+        "TestSourceSelectorsKeepRawWordMaskAndAllPhases",
+        "TestSourceExportPreservesExistingOutput",
+        "TestSourceExportFailureDoesNotPublish",
+        "TestModernHDBattleConsumerInventory",
+        "TestModernHDMapOverwriteCoverageAndDestinationDependency",
+        "TestModernHDMapTransactionUsesOneNativeClockAndIndependentTerrain",
+        "TestModernHDExactTerrainReuseSourceTransactions",
+        "TestModernHDTerrainCatalogAtomicAndNativeMask",
+        "TestModernHDTerrainRGBIdentityMappingAndCollapse",
+        "TestModernHDTerrainSteadyAndUpStepProjection",
+        "TestModernHDTerrainKeepsClockAndRangeAbovePainting",
+        "TestIndependentInterfaceFourModesKeepArtworkAndBattle",
+        "TestPlayerPosterApprovedPixelsAndAtomicSourceRejection",
+        "TestPlayerPosterGeometryInputAndBlocking",
+        "TestPlayerPosterPreferencesPreserveOtherSettingsAndRejectAtomically",
+        "TestBuildCollectsControlledJSONAndGoUIWithoutNotesOrErrors",
+        "TestBuildIsDeterministicAndJSONSerializable",
+        "TestBuildRejectsDuplicateExistingStringID",
+        "TestMultipleTextFieldsDoNotReuseOneExistingStringID",
+        "TestVariablesIncludeWrappedErrorPlaceholder",
+        "TestDrawFunctionContextIncludesIndirectASCIIAndFunctionName",
+        "TestDrawFunctionContextSkipsLocaleKeys",
+        "TestReviewedGoCandidatesMatchCurrentInventory"
+      ],
+      "count": 28,
+      "scope": "來源工具、原子拒收、實際前景預檢、既有地形／海報／獨立介面與字串回歸，含Linux建置。"
+    },
+    "tool_rejections": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-reuse-rejections-r3.log",
+        "sha256": "eeae4aacdd03770b02187e4d3bdbefca8c6fe5efe1055e41690f9f987fe22175"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-reuse-rejections-r3.memory.json",
+        "sha256": "2095d0656f5b1767b88ac071a24b3ca391aa4c6f3b156ac3b3d44243e3b9973f",
+        "elapsed_seconds": 5.517,
+        "peak_bytes": 89444352,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "tests": 3,
+      "source_faults": 9,
+      "registration_faults": 4,
+      "existing_output_refused": true,
+      "rebuild_assets_equal": true,
+      "scope": "不同內容、父項、角色、selector、phase、基底、缺項及重複目標拒收；登錄缺GPU案例、錯來源、錯清冊與缺保存拒收，未發布部分目錄或改寫正式清冊。"
+    },
+    "assets": {
+      "status": "PASS-PRIVATE-TERRAIN-REUSE-SYNC",
+      "preserved_files": 7065,
+      "new_image_files": 0,
+      "catalog_assets": 864,
+      "catalog_sha256": "313af14140cb6695c21ceaae516e830abbb7fd5e7e4c852dbc9c0d274c280a89",
+      "manifest_bytes_unchanged": true,
+      "uid_gid": [
+        1000,
+        1000
+      ],
+      "sync_receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-private-sync-r1.json",
+        "sha256": "6246393ad02bb738f53878899eba53cd9ef6a99594e8308a6d2335010e18b94f"
+      },
+      "private_repository": "wicanr2/fd2-assets-private",
+      "private_commit": "661cd99a7c2b49136aa481757d3ab6099f701b2f",
+      "private_remote_verified": true,
+      "private_still_private": true,
+      "validation": "候選與正式864項清冊、全部私人實檔通過；舊7065檔與private-manifest bytes保持。"
+    },
+    "current_consumer_inventory": {
+      "observed": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-consumers-r1.json",
+        "sha256": "5aace339919e2114c8c6e702c4f0cf5547c0c3d15d15ae5eceddb41cf450cb0b"
+      },
+      "verified": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-consumers-verify-r1.json",
+        "sha256": "1960578b83aa2b96c172ef30d8333c49aaebb9c98fe57545ead93016293adade"
+      },
+      "source_file_count": 1188,
+      "source_tree_sha256": "cc0e4e31a763a1df9423e66620d4b2d37d0b909015db9ead6bd920561ff49751",
+      "cases": 21,
+      "archive_frames": 416,
+      "rejected_mutants": [
+        "wrong-archive",
+        "wrong-resource",
+        "wrong-frame",
+        "wrong-pixels",
+        "wrong-mask",
+        "missing-case",
+        "false-gpu",
+        "missing-hd",
+        "wrong-code",
+        "wrong-command",
+        "wrong-packed",
+        "wrong-descriptor",
+        "missing-map-route",
+        "wrong-lmi-kind",
+        "wrong-lmi-pixels",
+        "wrong-lmi-entry",
+        "missing-lmi-hd",
+        "wrong-map-mask",
+        "missing-map-mask-hd"
+      ],
+      "scope": "既有受控戰鬥來源最小回歸；未重開已驗戰鬥、逐章或原版oracle。"
+    },
+    "build": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-binary-r1",
+      "sha256": "a884c6e884c6f355e2ce660ce7f951c12b3546dc1467cb061abd378ea7833bb1"
+    },
+    "readme_image": {
+      "file": "docs/figures/hd1-terrain-reuse-map1.png",
+      "sha256": "5f7cf872aac2ac46167e1d963a3b6b7f3898d81128608cb5ca95e5d7508f9c55",
+      "source": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-reuse-gpu-r3-capture/game-map01-hd-ui.png",
+        "sha256": "5f7cf872aac2ac46167e1d963a3b6b7f3898d81128608cb5ca95e5d7508f9c55"
+      },
+      "method": "完整PNG逐byte複製，未重繪或裁切。"
+    },
+    "reproduce": [
+      "以維護中的fd2-go-test-local:latest容器、UID1000、2CPU及有界4～7GiB／逾時執行；FD2_ASSET_PACK=/original、FD2_TEST_MODERN_EFFECT_CATALOG=<清冊>、FD2_TEST_MODERN_EFFECT_PACK=<唯讀HD包>，Xvfb沿with-xvfb。",
+      "go run ./cmd/fd2-terrain-sources -pack /original -maps assets/maps -catalog <清冊> -modern-root <唯讀HD包> -coverage-out <新JSON>。受版控docs/data/fd2-hd1-terrain-coverage.json只由此輸出更新。",
+      "853項基底由git show f7fbe7b1:remake/assets/themes/modern/catalog.json重取；先重生該基底的coverage，再用tools/build_fd2_hd_terrain_reuse.py的prepare參數建候選；--register只接受完整新槽GPU與保存收據。詳細參數依61。",
+      "FD2_HD_TERRAIN_REUSE_GPU=1、FD2_HD_TERRAIN_REUSE_MANIFEST=<候選/reuse-manifest.json>、FD2_HD_TERRAIN_REUSE_OUT=<新目錄>，with-xvfb go test ./cmd/fd2 -count=1 -timeout=390s -run ^TestModernHDExactTerrainReuseRealConsumersGPU$。CPU用FD2_HD_TERRAIN_REUSE_CPU=1及TestModernHDExactTerrainReuseSourceTransactions。",
+      "Pillow工具反例：FD2_TEST_TERRAIN_REUSE_ROOT=<工作根>、FD2_TEST_TERRAIN_BASE_CATALOG=<853基底>，python3 -m unittest discover -s tools -p test_fd2_hd_terrain_reuse.py -v；原包/原生來源匯出與gpu-r3固定收據由該工作根定位。",
+      "沿tools/verify_fd2_terrain_sources.py、validate_modern_theme_catalog.py --verify-private及sync_modern_theme_private.py核對原生三層、正式清冊與白名單；原始資料唯讀。"
+    ],
+    "diagnostics": [
+      "gpu-r1為測具未使用import造成編譯失敗；gpu-r2缺完整原生frame bank。正式產品Go未變；補齊測具，先用1.28秒CPU來源預檢，再乾淨重跑gpu-r3通過。"
+    ],
+    "remaining": [
+      "#282仍有缺美術、部分覆蓋與目的地重映射合成；精確來源清單依coverage，不將缺合成誤稱只差畫圖。",
+      "#283其餘介面／城鎮行走人物與#284完整獨立組合仍待；#285保持CLOSED。",
+      "人工造型與實機操作由使用者接手，HD2／HD-2D另期，沒有新Release。"
+    ],
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-final-validation-r1.json",
+      "sha256": "3f9cb480c1075a990f5322a6591b2f90cd74cdefe5607c3d8fbd4ec8db89d88f"
+    },
+    "toolchain": {
+      "go": "go1.22.12 linux/amd64",
+      "go_image": "fd2-go-test-local:latest",
+      "go_image_id": "44c2bbcc2a00",
+      "pillow": "11.3.0",
+      "pillow_image": "sc-cht-hdtools:pillow11.3.0-r2",
+      "gpu": "llvmpipe software; 2CPU/7GiB; not platform or performance acceptance"
+    },
+    "cleanup": {
+      "unexpected_fd2_containers": 0,
+      "recordings_created": 0,
+      "new_image_files_in_pack": 0,
+      "scope": "所有自有Docker工作--rm、有界並已退出；只查本批變更／產物UID，不改既存root-owned基線。"
     }
   }
 }

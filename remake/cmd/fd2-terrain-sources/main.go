@@ -82,6 +82,8 @@ type mapData struct {
 	Height   int      `json:"h"`
 	Tiles    []uint16 `json:"tiles"`
 	Controls []byte   `json:"native_terrain_control"`
+	Modes    []byte   `json:"native_tile_blit_modes"`
+	Events   []byte   `json:"native_composition_event_bytes"`
 }
 
 type loadedMap struct {
@@ -359,7 +361,21 @@ func main() {
 	pack := flag.String("pack", "", "legal separated original pack")
 	maps := flag.String("maps", "", "remake/assets/maps directory")
 	out := flag.String("out", "", "new private local output directory")
+	catalog := flag.String("catalog", "", "registered HD catalog for coverage")
+	modern := flag.String("modern-root", "", "read-only registered HD pack")
+	coverage := flag.String("coverage-out", "", "new source/consumer coverage JSON; no image export")
 	flag.Parse()
+	if *coverage != "" {
+		if *out != "" {
+			fmt.Fprintln(os.Stderr, "-out and -coverage-out are exclusive")
+			os.Exit(1)
+		}
+		if err := runCoverage(*pack, *maps, *catalog, *modern, *coverage); err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
+		}
+		return
+	}
 	if err := run(*pack, *maps, *out); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)

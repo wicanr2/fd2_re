@@ -308,6 +308,22 @@ HD1 milestone為[GitHub milestone 1](https://github.com/wicanr2/fd2_re/milestone
 
 驗證及完整重跑依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的transient_expiry_hd_followup_20261026。完整Game.Draw、最終PNG、文字實際墨跡、頭像鏡射／裁切、同次世界及三來源拒收通過；保存與原生狀態／死亡及四語套件回歸通過。建構槽以seed7、selector2、六counter=1、HP100/100及基礎AP100／DP60／DX20起跑，實際扣血訊息後再播六提示。DATO9及地圖位置沿受控fixture，不宣稱角色欄位與正常章節位置。GPU峰值接近6GiB限制且無OOM，不推論平台餘裕。
 
+## HD1全地圖地形盤點與同源接線（CONFORMED-SCOPED／RUNTIME-E1，#282保持OPEN）
+
+本批沿已證實的`NativeTerrainFrameIndex`、`NativeForegroundFrameIndex`及`battle.State.CompleteTreasureMapUpdate`，不重開規則逆向。固定FDSHAP.DAT的SHA-256為`901b70ea82d5d977192759fad510921ffe16a0ab6af6ab7c32757de03e30aa3c`，EXE與FDFIELD來源依[參考清單](../data/fd2-reference-files.json)。既有IDA線性位址0x11EEE／0x12AC6分別是地形及前景消費端，0x12263／0x19268的更新沿共用writer；原始bytes與證據索引依58。這是已核准HD1範圍內的資料接線，不更改原版規則、世界座標、圖層順序、計時或保存。
+
+- 由既有[Go圖源工具](../../remake/cmd/fd2-terrain-sources/main.go)載入全部33張正式地圖與真實bank，逐圖核對控制表及來源層。盤點使用正式selector的兩flip及四cycle，另以正式事件writer在私人複本將事件表設為有效，收集更新後的selector。這是事件有效時的來源上界，不能宣稱每個事件自然可達；原始地圖與存檔不改寫。重複更新達穩定或拒收，不以相鄰圖號猜用途。
+- 以576個原生索引、576個來源覆蓋bit及576個目的地重映射bit串接的SHA辨識同源內容。只對同角色、相同三層內容且現有HD成品SHA唯一的缺槽共用既有PNG；不同HD成品的歧義保持缺項。所有候選重新核對原生來源與HD檔案，不從顏色近似或外觀猜配對。不畫新素材，不把單純放大像素當HD。
+- 沿現行schema1的`native_terrain_hd_set`、`fdshap_native_hd_sparse_v1`、144×144、`native_mask_nearest_6`與`native_selector`。每張圖新增獨立稀疏集合，保留原有清冊項目、檔名及成品bytes；缺檔、壞SHA、角色不符、重複槽與非原生遮罩均拒收。只有全部候選及必要GPU檢查通過才登錄；私人同步仍用既有白名單工具。
+- [目前地形覆蓋資料](../data/fd2-hd1-terrain-coverage.json)由工具重生，區分已接HD、無來源寫入、純目的地重映射、缺少部分覆蓋／重映射合成，以及缺美術，不手改數字。現行稀疏HD底層只接完全opaque且無目的地重映射的圖源；不能將其他底層誤稱只差畫圖。記錄每圖控制／地圖雜湊、初始與事件更新後選取、來源內容SHA及可重用圖源；這份清單是#282的製圖輸入，不取代遠端工單與58狀態表。
+- 必要驗證為完整原生圖源的獨立三層回讀、事件writer與selector邊界、同源候選逐PNG／遮罩核對、實際bank的地形／前景GPU與代表完整Game.Draw、F2／F11往返及戰役狀態／保存保持。壞圖及不完整候選原子拒收；舊地形與海報回歸保持。受控來源只列RUNTIME-E1，人工造型與各平台操作由使用者接手，不增加逐章重播或新原版parity閘門。
+
+重跑入口為Go工具的`-pack <唯讀原版包> -maps <正式地圖目錄> -catalog <清冊> -modern-root <唯讀HD包> -coverage-out <新JSON>`，以及[同源候選工具](../../tools/build_fd2_hd_terrain_reuse.py)。來源、候選與最終驗證收據由HD主收據索引，既有work根承載中間產物。
+
+候選工具使用`--catalog <853項基底> --pack <唯讀HD包> --maps <正式地圖> --sources <原生來源匯出> --original <唯讀原包> --coverage <基底覆蓋JSON> --out <新候選目錄>`；853項基底由`git show f7fbe7b1:remake/assets/themes/modern/catalog.json`重取。登錄追加`--register --catalog <正式清冊> --candidate <候選> --gpu-receipt <完整receipt.json>`，檢查全部原清冊保持、每個來源四種色盤、兩個完整Game.Draw及F2／保存後原子更新。反例入口為[同源工具測試](../../tools/test_fd2_hd_terrain_reuse.py)，設定`FD2_TEST_TERRAIN_REUSE_ROOT`及`FD2_TEST_TERRAIN_BASE_CATALOG`重跑固定基底；來源GPU沿[正式消費端測具](../../remake/cmd/fd2/modern_hd_terrain_reuse_gpu_test.go)的`FD2_HD_TERRAIN_REUSE_GPU／MANIFEST／OUT`與既有`FD2_TEST_MODERN_EFFECT_CATALOG／PACK`、`FD2_ASSET_PACK`。CPU預檢改用`FD2_HD_TERRAIN_REUSE_CPU=1`，不載入整套戰鬥動畫。其餘必要環境與有界容器命令依HD主收據。
+
+本節實作前為READY。33圖來源上界、全部新槽的正式地形／前景producer、四種色盤及兩個完整Game.Draw、原版／HD介面與程式F2、邊界保存保持均通過。候選與正式清冊已核對，沿白名單同步私人庫且未新增PNG；完整原生圖源回讀及來源／登錄反例通過。精確數量、來源與限制依[58](58-fd2-exe-re-coverage.md)及[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`hd1_terrain_reuse_followup_20261028`。完整地形與合成缺項保持#282；本批不用逐章重播或人工造型作接線停止線。
+
 ## 首章寶箱開合與小石塊（CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI）
 
 沿已閉合0x12263／取寶與AI mode5規則，補首章原始地圖的248／250兩箱、274／275兩物件，以及正式writer在事件非零且control低位符合0x20時產生的249／251開箱圖。寫入端為`advanceNativeAIMode5EventGrid`，呼叫沿`CompleteTreasureMapUpdate`；消費端為既有NativeTerrainFrameIndex及稀疏HD圖層。原始來源匯出的selected_terrain_frames只涵蓋初始地圖，不證明變動狀態齊全。同一三層內容的map14:180～183亦接入，共六來源、十槽、兩圖，不新增原版語意。
