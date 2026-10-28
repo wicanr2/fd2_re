@@ -173,9 +173,12 @@ func TestCoverageSeparatesCompositeRequirementsFromMissingArt(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for key, count := range map[string]int{"missing-composite": 1, "native-remap-only": 1, "no-source-write": 1, "missing-art": 0} {
+	for key, count := range map[string]int{"missing-composite": 0, "native-remap-only": 1, "no-source-write": 1, "missing-art": 1} {
 		if r.Summary[key] != count {
 			t.Fatal(key, r.Summary)
 		}
+	}
+	if r.Maps[0].Frames[0].Backdrop != "already-composed-native-or-registered-hd-stage" {
+		t.Fatal("partial source lacks explicit backdrop policy")
 	}
 }

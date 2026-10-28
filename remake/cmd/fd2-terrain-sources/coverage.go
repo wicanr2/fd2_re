@@ -42,6 +42,7 @@ type coverageFrame struct {
 	HD        *coverageHD      `json:"hd,omitempty"`
 	Reuse     *coverageHD      `json:"reuse,omitempty"`
 	Conflicts []string         `json:"conflicting_hd_sha256,omitempty"`
+	Backdrop  string           `json:"backdrop_policy,omitempty"`
 }
 
 type coverageMap struct {
@@ -232,8 +233,8 @@ func coverageCatalog(path, root string, manifest artManifest, loaded []loadedMap
 				for y := 0; y < 144; y++ {
 					for x := 0; x < 144; x++ {
 						n := (y/6)*24 + x/6
-						if role == 0 && (sprite.Mask[n] == 0 || sprite.RemapMask[n] != 0) {
-							return nil, nil, "", errors.New("coverage: HD base is not opaque")
+						if sprite.Mask[n] > 1 || sprite.RemapMask[n] > 1 || sprite.Mask[n] != 0 && sprite.RemapMask[n] != 0 {
+							return nil, nil, "", errors.New("coverage: source/destination masks overlap or are not binary")
 						}
 						_, _, _, alpha := pic.At(x, y).RGBA()
 						want := uint32(0)
@@ -304,7 +305,7 @@ func buildCoverage(manifest artManifest, loaded []loadedMap, catalog, modern str
 				}
 			}
 			if role == 0 && f.Writes > 0 && (f.Writes < 576 || f.Remaps > 0) {
-				f.Status = "missing-composite"
+				f.Backdrop = "already-composed-native-or-registered-hd-stage"
 			}
 			if proof, ok := hd[[3]int{mapID, frame, role}]; ok {
 				f.Status = "registered-hd"

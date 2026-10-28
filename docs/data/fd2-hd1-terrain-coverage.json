@@ -2,7 +2,7 @@
   "schema_version": 1,
   "kind": "fd2_hd1_terrain_coverage",
   "scope": "33 native maps: initial selectors and active-event writer upper bound; catalog PNG/SHA/native-mask verified. Not normal reachability, original parity, or complete HD.",
-  "catalog_sha256": "313af14140cb6695c21ceaae516e830abbb7fd5e7e4c852dbc9c0d274c280a89",
+  "catalog_sha256": "37d15b37d6a87a129d37da5b8c5108b8c53fc4b0758ec85ce9c8640eba19b4d4",
   "palette": {
     "file": "palette/fdother_000.json",
     "sha256": "404db1ca72ffc19fa7404fbc59bde98cdf239f63fe3375ec248a8142073a28bf"
@@ -18880,14 +18880,22 @@
           "native_content_sha256": "d53ab576c9fae70fdf26cc085afcb37a33fad5f3eec1131a0ab64883fdc858d9",
           "source_pixels": 557,
           "remap_pixels": 19,
-          "status": "missing-composite",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 32,
             "cell": 165,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "hd": {
+            "asset_id": "modern.terrain.cave_rock_partial.map09.native_hd",
+            "map": 9,
+            "frame": 32,
+            "file": "map09-frame0032-cave-rock-hd.png",
+            "sha256": "baa48b7027b051530db335d6fcd6837dc5887f3a4bce9c88472c21da733c6769"
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 33,
@@ -18895,14 +18903,22 @@
           "native_content_sha256": "c4d6dea4168a65bcf2f5eab495324d246359cef37d2a2287d8fd64456e9b5f19",
           "source_pixels": 540,
           "remap_pixels": 36,
-          "status": "missing-composite",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 33,
             "cell": 231,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "hd": {
+            "asset_id": "modern.terrain.cave_rock_partial.map09.native_hd",
+            "map": 9,
+            "frame": 33,
+            "file": "map09-frame0033-cave-rock-hd.png",
+            "sha256": "46a558a36a6f5ca616810c8422e868c729c98f409f0fa70eee68c8a27617346b"
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 34,
@@ -18910,14 +18926,22 @@
           "native_content_sha256": "51f04bde96876abba5fe13eb3501825dfcd4d25b830448a1551426d3284706e1",
           "source_pixels": 545,
           "remap_pixels": 31,
-          "status": "missing-composite",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 34,
             "cell": 230,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "hd": {
+            "asset_id": "modern.terrain.cave_rock_partial.map09.native_hd",
+            "map": 9,
+            "frame": 34,
+            "file": "map09-frame0034-cave-rock-hd.png",
+            "sha256": "fc4bebe12f87874848da2fd056d06f0c68318961757ccd166f7b4bc56763654f"
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 35,
@@ -18925,14 +18949,22 @@
           "native_content_sha256": "1ec03c3dd28e9418958c7ebd998a415273a2e3ddc839ff6873c584bccb0d491e",
           "source_pixels": 553,
           "remap_pixels": 23,
-          "status": "missing-composite",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 35,
             "cell": 166,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "hd": {
+            "asset_id": "modern.terrain.cave_rock_partial.map09.native_hd",
+            "map": 9,
+            "frame": 35,
+            "file": "map09-frame0035-cave-rock-hd.png",
+            "sha256": "52995aaacf726d33faaf472a51fa66d6b3e2403a781df07a8e76714ff6df7ef1"
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 36,
@@ -18940,14 +18972,22 @@
           "native_content_sha256": "f0f3722f9dbecdccd6f2af074d226aa34b3b9cabea125ef6c7031b492bffb693",
           "source_pixels": 282,
           "remap_pixels": 294,
-          "status": "missing-composite",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 36,
             "cell": 227,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "hd": {
+            "asset_id": "modern.terrain.cave_rock_partial.map09.native_hd",
+            "map": 9,
+            "frame": 36,
+            "file": "map09-frame0036-cave-rock-hd.png",
+            "sha256": "acf559668e13e5996061488f0b149b6c217bf53c77f45cbd2d743f648fa08915"
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 37,
@@ -18955,14 +18995,22 @@
           "native_content_sha256": "1cc1617a8dda20f3aca8708d9404f2fa6fc2044f4d222e9a3a8838e912ce4cae",
           "source_pixels": 122,
           "remap_pixels": 454,
-          "status": "missing-composite",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 37,
             "cell": 267,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "hd": {
+            "asset_id": "modern.terrain.cave_rock_partial.map09.native_hd",
+            "map": 9,
+            "frame": 37,
+            "file": "map09-frame0037-cave-rock-hd.png",
+            "sha256": "cb8a26f18ba1c88f8346d0c15baec57e3e7d10881de2b2690d0258a52e9b3c82"
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 38,
@@ -18970,14 +19018,22 @@
           "native_content_sha256": "67d9332a711950a744393d7109b56f59642078896d3ae53ef96d2fa25902b690",
           "source_pixels": 124,
           "remap_pixels": 452,
-          "status": "missing-composite",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 38,
             "cell": 259,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "hd": {
+            "asset_id": "modern.terrain.cave_rock_partial.map09.native_hd",
+            "map": 9,
+            "frame": 38,
+            "file": "map09-frame0038-cave-rock-hd.png",
+            "sha256": "4ea33b8514516f233d35193be8a5d639f3018dde3fe4832bbefd09db44bd3671"
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 39,
@@ -18985,14 +19041,22 @@
           "native_content_sha256": "7f0ef9cc447b24fdabedcaf66b05716183500cca67f41ba95c9773fa7630000b",
           "source_pixels": 323,
           "remap_pixels": 253,
-          "status": "missing-composite",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 39,
             "cell": 237,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "hd": {
+            "asset_id": "modern.terrain.cave_rock_partial.map09.native_hd",
+            "map": 9,
+            "frame": 39,
+            "file": "map09-frame0039-cave-rock-hd.png",
+            "sha256": "3d33b134f56a8842fbf7238678d4947641026375f8b46b01a2de8a1d47727b24"
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 40,
@@ -19000,14 +19064,22 @@
           "native_content_sha256": "65fe3f492afc438fe9d8a6e0e255ef18887d7f7ab8d583b8898ae55ce48904e7",
           "source_pixels": 269,
           "remap_pixels": 307,
-          "status": "missing-composite",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 40,
             "cell": 196,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "hd": {
+            "asset_id": "modern.terrain.cave_rock_partial.map09.native_hd",
+            "map": 9,
+            "frame": 40,
+            "file": "map09-frame0040-cave-rock-hd.png",
+            "sha256": "c45bc2c108264e5804613a9e55407bda78f50575de24c0200ccba7b3d0b6e51e"
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 41,
@@ -19015,14 +19087,22 @@
           "native_content_sha256": "2202846af7e254f7313109ebc219e650c82015a1d7d586538fc7fd19c1be3885",
           "source_pixels": 246,
           "remap_pixels": 330,
-          "status": "missing-composite",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 41,
             "cell": 197,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "hd": {
+            "asset_id": "modern.terrain.cave_rock_partial.map09.native_hd",
+            "map": 9,
+            "frame": 41,
+            "file": "map09-frame0041-cave-rock-hd.png",
+            "sha256": "37762d08407b5f7666eb06b1457c20596b33a05a018e1d9728e44631be60e434"
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 42,
@@ -19030,14 +19110,22 @@
           "native_content_sha256": "4f81d574257e87c13536130f34e9175cb0baad1e28506e24f3dab00bba8efb23",
           "source_pixels": 253,
           "remap_pixels": 323,
-          "status": "missing-composite",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 42,
             "cell": 205,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "hd": {
+            "asset_id": "modern.terrain.cave_rock_partial.map09.native_hd",
+            "map": 9,
+            "frame": 42,
+            "file": "map09-frame0042-cave-rock-hd.png",
+            "sha256": "e5795c86710a68926be29343b10309b1f07808bfe6a5730d662e4b9de184b0be"
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 43,
@@ -19045,14 +19133,22 @@
           "native_content_sha256": "552fdd97f54494410ad51f284298daabbdfc14a82fde4be5bc2700545e303783",
           "source_pixels": 291,
           "remap_pixels": 285,
-          "status": "missing-composite",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 43,
             "cell": 206,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "hd": {
+            "asset_id": "modern.terrain.cave_rock_partial.map09.native_hd",
+            "map": 9,
+            "frame": 43,
+            "file": "map09-frame0043-cave-rock-hd.png",
+            "sha256": "a592fd41e5068afdafa1a962ca62d79a0c9c2ed42eb9c817dcd9496695fca220"
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 44,
@@ -19060,14 +19156,22 @@
           "native_content_sha256": "0ed55c5b8da27933f291f943899f643dae2676025bf5d384d8abfbf979c6e322",
           "source_pixels": 465,
           "remap_pixels": 111,
-          "status": "missing-composite",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 44,
             "cell": 258,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "hd": {
+            "asset_id": "modern.terrain.cave_rock_partial.map09.native_hd",
+            "map": 9,
+            "frame": 44,
+            "file": "map09-frame0044-cave-rock-hd.png",
+            "sha256": "77c23a8418132483ba0e17bb062dd251e8ffc5155ef38bd9232f1fef3822061f"
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 45,
@@ -19075,14 +19179,22 @@
           "native_content_sha256": "30b12cc450d48ad08725c476697d1c184180bffdbb6a9470b7b1960b83d78619",
           "source_pixels": 269,
           "remap_pixels": 307,
-          "status": "missing-composite",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 45,
             "cell": 356,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "hd": {
+            "asset_id": "modern.terrain.cave_rock_partial.map09.native_hd",
+            "map": 9,
+            "frame": 45,
+            "file": "map09-frame0045-cave-rock-hd.png",
+            "sha256": "268ad306e37a6359ec25151abf767f964ed561e937fb315ae7936fcd7762977a"
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 46,
@@ -19090,14 +19202,22 @@
           "native_content_sha256": "7bad083e9bdf82fe10331ea0f8779adc78f869df07d36f830076e8a8e06bd117",
           "source_pixels": 302,
           "remap_pixels": 274,
-          "status": "missing-composite",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 46,
             "cell": 355,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "hd": {
+            "asset_id": "modern.terrain.cave_rock_partial.map09.native_hd",
+            "map": 9,
+            "frame": 46,
+            "file": "map09-frame0046-cave-rock-hd.png",
+            "sha256": "25542d5e2998855a5cfb305ce778a1e30b72a47625690a8a5cb5f8c0b839a033"
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 47,
@@ -19105,14 +19225,22 @@
           "native_content_sha256": "412a4284ef6eb0af35e3566d81fb7a8a2359bbd38b0b72f72e7bb50c8b558f8c",
           "source_pixels": 472,
           "remap_pixels": 104,
-          "status": "missing-composite",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 47,
             "cell": 268,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "hd": {
+            "asset_id": "modern.terrain.cave_rock_partial.map09.native_hd",
+            "map": 9,
+            "frame": 47,
+            "file": "map09-frame0047-cave-rock-hd.png",
+            "sha256": "e514befb6c4a2bc14198ae7aa835bbab3b474dab0a32b28ae4f3be51026b0ffc"
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 51,
@@ -21911,14 +22039,15 @@
           "native_content_sha256": "3d67bcde888e5509859b3650920f1c8d79890724848ca348bedc166d284a72fd",
           "source_pixels": 568,
           "remap_pixels": 8,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 23,
             "cell": 52,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 26,
@@ -21926,14 +22055,15 @@
           "native_content_sha256": "7233ef596fbed8ce912e3c2563ded3a47e2e9896591041e3f1647fbb556e9c23",
           "source_pixels": 565,
           "remap_pixels": 8,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 26,
             "cell": 1,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 27,
@@ -21941,14 +22071,15 @@
           "native_content_sha256": "1ed293f38005143a1cb2c1ef53f886b38851fe5247f5d60e9334c5824b16128b",
           "source_pixels": 575,
           "remap_pixels": 1,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 27,
             "cell": 2,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 28,
@@ -22301,14 +22432,15 @@
           "native_content_sha256": "af672f24b75c97ae394222a893ebde55abeea28f64c901ce37477edff2910bed",
           "source_pixels": 575,
           "remap_pixels": 1,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 96,
             "cell": 1240,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 100,
@@ -34013,14 +34145,15 @@
           "native_content_sha256": "3a13d147f5bfbf1bf069e8cfc247fe982c7471e71ea58746956014db02b6542c",
           "source_pixels": 119,
           "remap_pixels": 457,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 0,
             "cell": 1087,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 1,
@@ -34028,14 +34161,15 @@
           "native_content_sha256": "b2486eee69f49a3e8cdac4305f6452fe9c07e6559e36cc0469e7a735cde15718",
           "source_pixels": 288,
           "remap_pixels": 288,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 1,
             "cell": 192,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 2,
@@ -34043,14 +34177,15 @@
           "native_content_sha256": "993574d8e000c1e347747cfaf5f048a876ad5d16ce19e4aaf3b578f591eaaadf",
           "source_pixels": 281,
           "remap_pixels": 295,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 2,
             "cell": 53,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 3,
@@ -34058,14 +34193,15 @@
           "native_content_sha256": "7368a963147888b691877d22aa9f35b4ca51753c67c45469b1676cf7f0dd9762",
           "source_pixels": 119,
           "remap_pixels": 457,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 3,
             "cell": 54,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 4,
@@ -34073,14 +34209,15 @@
           "native_content_sha256": "3a13d147f5bfbf1bf069e8cfc247fe982c7471e71ea58746956014db02b6542c",
           "source_pixels": 119,
           "remap_pixels": 457,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 4,
             "cell": 191,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 5,
@@ -34088,14 +34225,15 @@
           "native_content_sha256": "4614289054215c11c015b3646603d8bda15c12504f737c90408a89a5ad965498",
           "source_pixels": 457,
           "remap_pixels": 119,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 5,
             "cell": 241,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 8,
@@ -34103,14 +34241,15 @@
           "native_content_sha256": "770e7a7e9c0ad5fbc6774cb1199513a19cf9c3a85915624ebdf861c53a76b1c6",
           "source_pixels": 457,
           "remap_pixels": 119,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 8,
             "cell": 52,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 16,
@@ -34118,14 +34257,15 @@
           "native_content_sha256": "aed335dd41d510b6b410c9da26add92a2fbbdcfe4cb417b1417c8789ae728eac",
           "source_pixels": 288,
           "remap_pixels": 288,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 16,
             "cell": 1137,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 21,
@@ -34133,14 +34273,15 @@
           "native_content_sha256": "2ab46bf0874a5fbf9485d2524c7dba77456cf4a174ed5cf3f7d37352e73de488",
           "source_pixels": 288,
           "remap_pixels": 288,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 21,
             "cell": 2,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 22,
@@ -34148,14 +34289,15 @@
           "native_content_sha256": "f30b04b0c018a7577d4214c2d3fbc1ec44e95ffcf4ffef4d916039202b9e048a",
           "source_pixels": 288,
           "remap_pixels": 288,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 22,
             "cell": 44,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 23,
@@ -34193,14 +34335,15 @@
           "native_content_sha256": "508e8f742d4cb421858c88a8d30054429a8699cd53c3b7a72963d2fd8978c440",
           "source_pixels": 288,
           "remap_pixels": 288,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 27,
             "cell": 558,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 28,
@@ -34283,14 +34426,15 @@
           "native_content_sha256": "b62f9b260ced45ce433e1867adc59aeae27f26f2f11ae792e5eba68249840852",
           "source_pixels": 301,
           "remap_pixels": 275,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 33,
             "cell": 608,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 35,
@@ -34298,14 +34442,15 @@
           "native_content_sha256": "f2f9a2feeb98d59907a8f68a1d30ff7bc87d6a2be6a4478b88282f9cd234a14a",
           "source_pixels": 457,
           "remap_pixels": 119,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 35,
             "cell": 689,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 36,
@@ -34313,14 +34458,15 @@
           "native_content_sha256": "112ae55d88998c2bc99e0baf744da688f48f374716c3cb74af073db2e06a088b",
           "source_pixels": 457,
           "remap_pixels": 119,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 36,
             "cell": 657,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 38,
@@ -34328,14 +34474,15 @@
           "native_content_sha256": "e6cd7318c029265f1be18c387cb19fd77951a511654fcae0d836a3ed042fc49b",
           "source_pixels": 119,
           "remap_pixels": 457,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 38,
             "cell": 688,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 41,
@@ -34343,14 +34490,15 @@
           "native_content_sha256": "fef2fdc02701944c4017f50c1ef4526b4f553b59f84a07d21101521908551289",
           "source_pixels": 121,
           "remap_pixels": 455,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 41,
             "cell": 658,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 58,
@@ -34433,14 +34581,15 @@
           "native_content_sha256": "7c13e1abe8832c07a902209354d586e2914e237f4542be7018d22b19a404cb55",
           "source_pixels": 272,
           "remap_pixels": 304,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 82,
             "cell": 707,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 83,
@@ -34448,14 +34597,15 @@
           "native_content_sha256": "9db4b503b4aa6f3d3c845cc649b34fdfd2ed08d3340e4f0514ff9706ea898fc2",
           "source_pixels": 272,
           "remap_pixels": 304,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 83,
             "cell": 94,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 84,
@@ -34553,14 +34703,15 @@
           "native_content_sha256": "e68cd4aaa26d3911db8e54793e73b3931af24e23181c9e4669e0ba4d8466071c",
           "source_pixels": 435,
           "remap_pixels": 141,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 99,
             "cell": 194,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 107,
@@ -36020,14 +36171,15 @@
           "native_content_sha256": "754016dfa12476344ca1041ccecf87a305db658c180402df10c2d626baa10086",
           "source_pixels": 476,
           "remap_pixels": 97,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 311,
             "cell": 258,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 312,
@@ -36035,14 +36187,15 @@
           "native_content_sha256": "73a16e21e0ec19ef1be3b597c7a0b2f30438f1a95bf9d4b4d4b3e3b3cc2e127a",
           "source_pixels": 383,
           "remap_pixels": 189,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 312,
             "cell": 259,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 313,
@@ -36050,14 +36203,15 @@
           "native_content_sha256": "cdbac5262e535bcdbabfa0b6f2acc70cba3a9cfc557cad39afd8364d714dfd56",
           "source_pixels": 371,
           "remap_pixels": 200,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 313,
             "cell": 260,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 314,
@@ -36065,14 +36219,15 @@
           "native_content_sha256": "e32171eeec295523ea55ce25b9aa829635cc6f5aef206bf06b083869aa5a41f1",
           "source_pixels": 369,
           "remap_pixels": 202,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 314,
             "cell": 262,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 315,
@@ -36080,14 +36235,15 @@
           "native_content_sha256": "3d6b60ebb308203ec00a75939cd9aea97ce0117c19ee7d34c6f9b26f3e5667d6",
           "source_pixels": 475,
           "remap_pixels": 99,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 315,
             "cell": 288,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 316,
@@ -36095,14 +36251,15 @@
           "native_content_sha256": "d47cd819f7a360eb9efb0993f468dcdf98e44216b805d87ee322822f6ff8bf74",
           "source_pixels": 504,
           "remap_pixels": 72,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 316,
             "cell": 308,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 317,
@@ -36110,14 +36267,15 @@
           "native_content_sha256": "4f4573d8c0ae16d3a57cf3a4af7199a34a78b8187a62ba1872c9d59091eda177",
           "source_pixels": 432,
           "remap_pixels": 144,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 317,
             "cell": 309,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 318,
@@ -36125,14 +36283,15 @@
           "native_content_sha256": "70c43c6bb400b71d2d34318ce2e2eafb8228e995d57d2dd7c645d0b1f369f422",
           "source_pixels": 432,
           "remap_pixels": 144,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 318,
             "cell": 310,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 319,
@@ -36140,14 +36299,15 @@
           "native_content_sha256": "44ab7b57739329cc67f7d984836ae52b3b4becc5bf99b1c526639208ae880e8f",
           "source_pixels": 432,
           "remap_pixels": 144,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 319,
             "cell": 312,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 320,
@@ -36155,14 +36315,15 @@
           "native_content_sha256": "ceabc8325138d0f40edb3f261d808ea393f00f27bf073b0029eb28a5eac8ea50",
           "source_pixels": 504,
           "remap_pixels": 72,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 320,
             "cell": 338,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 321,
@@ -36170,14 +36331,15 @@
           "native_content_sha256": "3ebdfa5302d9c7ede9f892bfa1528aeba47bcae5e464290134c3d9ae2dc8e4f3",
           "source_pixels": 466,
           "remap_pixels": 107,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 321,
             "cell": 508,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 322,
@@ -36185,14 +36347,15 @@
           "native_content_sha256": "eb82a80ca8d0571ef12aeb7a7154a631666d2bbfbc2aabe90359e69557a7a6ae",
           "source_pixels": 357,
           "remap_pixels": 214,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 322,
             "cell": 509,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 323,
@@ -36200,14 +36363,15 @@
           "native_content_sha256": "23e7adaa9901b42fff7ee97a1bc4f94377525dd1ac6f4180228a2bc7b3aabed3",
           "source_pixels": 397,
           "remap_pixels": 175,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 323,
             "cell": 510,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 324,
@@ -36215,14 +36379,15 @@
           "native_content_sha256": "80631c7b08e6407104ddb3e91315962d2d8cf057b846addd99e84dd879f33bcd",
           "source_pixels": 395,
           "remap_pixels": 177,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 324,
             "cell": 512,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 325,
@@ -36230,14 +36395,15 @@
           "native_content_sha256": "621a3c75ea296a6ef50db8e0a24a82ce67dec43b287a919729c9c129badf57fa",
           "source_pixels": 488,
           "remap_pixels": 87,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 325,
             "cell": 538,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         }
       ]
     },
@@ -41810,14 +41976,15 @@
           "native_content_sha256": "295b5a2283e7306ad2905ce8fe106af256b2625bec7764c41cb5133ccd5195bf",
           "source_pixels": 288,
           "remap_pixels": 288,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 4,
             "cell": 622,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 5,
@@ -41825,14 +41992,15 @@
           "native_content_sha256": "e343629c8dd3fd95008ece85d329b25e2eecbfacc0a568eb084da6bd1f914770",
           "source_pixels": 144,
           "remap_pixels": 432,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 5,
             "cell": 288,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 6,
@@ -41840,14 +42008,15 @@
           "native_content_sha256": "02681cc59fc06e6de2c38c8d6e8080d5671be499112aec443a9b2732cda9a03d",
           "source_pixels": 144,
           "remap_pixels": 432,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 6,
             "cell": 296,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 7,
@@ -41855,14 +42024,15 @@
           "native_content_sha256": "94a393818dfb449a76038066a8ff557d819bc5745d89dd8c8bb60f7692ce4b02",
           "source_pixels": 288,
           "remap_pixels": 288,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 7,
             "cell": 592,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 12,
@@ -41870,14 +42040,15 @@
           "native_content_sha256": "dc28fb4212c76d0e35fec471024e7dd4967f82fa2cfc66efce03847bdac751d1",
           "source_pixels": 432,
           "remap_pixels": 144,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 12,
             "cell": 341,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 13,
@@ -41885,14 +42056,15 @@
           "native_content_sha256": "f222024db197ab8b209608cfbfe9d36e30691f1c7740aa2b331a55a2c5b625f2",
           "source_pixels": 288,
           "remap_pixels": 288,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 13,
             "cell": 289,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 15,
@@ -41900,14 +42072,15 @@
           "native_content_sha256": "4068cabb25f9cc02b4b12d2034043a56088dc5bce1e3cdd28b96cfbff73093ad",
           "source_pixels": 432,
           "remap_pixels": 144,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 15,
             "cell": 333,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 16,
@@ -43370,14 +43543,15 @@
           "native_content_sha256": "92886101e3aa6a55add8611ac4d285fc8167461372ff8ca2667a45d7e75b1af0",
           "source_pixels": 288,
           "remap_pixels": 288,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 230,
             "cell": 1388,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 231,
@@ -43385,14 +43559,15 @@
           "native_content_sha256": "f8f8f24b76d0f1da6664f32708f4615e0ba3a6bef835260fffcb22cedb7f9d84",
           "source_pixels": 288,
           "remap_pixels": 288,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 231,
             "cell": 1356,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 232,
@@ -43400,14 +43575,15 @@
           "native_content_sha256": "dbe0ad74e617ccc2d7ad7b3e9658fd7b37b027a0c8f3d0cbba1cea88dde1c8dc",
           "source_pixels": 288,
           "remap_pixels": 288,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 232,
             "cell": 1401,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 233,
@@ -43415,14 +43591,15 @@
           "native_content_sha256": "1f06849677550e18c463f71b689925bba28d848d3b4dfb074696d061110561e5",
           "source_pixels": 288,
           "remap_pixels": 288,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 233,
             "cell": 1433,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 234,
@@ -44668,14 +44845,15 @@
           "native_content_sha256": "fbea93a3a59456cb42bbe1b5b76904a2c7ace775d6c2631393d4e5a1e930ecaa",
           "source_pixels": 122,
           "remap_pixels": 454,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 181,
             "cell": 262,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 182,
@@ -44683,14 +44861,15 @@
           "native_content_sha256": "5c65a1d87a33375033381f31eca31609b7ad7a42d31d1b5be7c2e7a705dc4019",
           "source_pixels": 124,
           "remap_pixels": 452,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 182,
             "cell": 270,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 188,
@@ -44698,14 +44877,15 @@
           "native_content_sha256": "cbe397c70e646a96eccd47c0ccd06db89e392acad764963452ad9e6e7a6dd681",
           "source_pixels": 465,
           "remap_pixels": 111,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 188,
             "cell": 311,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 189,
@@ -44713,14 +44893,15 @@
           "native_content_sha256": "41cade36d57bd0b244a5236545ce963af39e74374051b900e517b8c5b6090870",
           "source_pixels": 269,
           "remap_pixels": 307,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 189,
             "cell": 263,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 190,
@@ -44728,14 +44909,15 @@
           "native_content_sha256": "4b812445c7aa7d10f515292c5ef3c86915bb41d8ec8c01e5014c08fd4d53c1e7",
           "source_pixels": 302,
           "remap_pixels": 274,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 190,
             "cell": 264,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 191,
@@ -44743,14 +44925,15 @@
           "native_content_sha256": "5304be3235642d4abe669f876cc10f838efae92f7611c16744641fd01dade4ca",
           "source_pixels": 472,
           "remap_pixels": 104,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 191,
             "cell": 303,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 192,
@@ -45867,14 +46050,15 @@
           "native_content_sha256": "fbea93a3a59456cb42bbe1b5b76904a2c7ace775d6c2631393d4e5a1e930ecaa",
           "source_pixels": 122,
           "remap_pixels": 454,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 5,
             "cell": 550,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 6,
@@ -45882,14 +46066,15 @@
           "native_content_sha256": "5c65a1d87a33375033381f31eca31609b7ad7a42d31d1b5be7c2e7a705dc4019",
           "source_pixels": 124,
           "remap_pixels": 452,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 6,
             "cell": 556,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 8,
@@ -45897,14 +46082,15 @@
           "native_content_sha256": "52a6a81eab6f3978f77c1ed6c520ea41480f20d2d2839a4ecac3a433f534a45f",
           "source_pixels": 269,
           "remap_pixels": 307,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 8,
             "cell": 766,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 11,
@@ -45912,14 +46098,15 @@
           "native_content_sha256": "a7e3eb4a0aa59ff9c85012199b70354934197af06895d4f92de4950ab054227e",
           "source_pixels": 291,
           "remap_pixels": 285,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 11,
             "cell": 750,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 12,
@@ -45927,14 +46114,15 @@
           "native_content_sha256": "cbe397c70e646a96eccd47c0ccd06db89e392acad764963452ad9e6e7a6dd681",
           "source_pixels": 465,
           "remap_pixels": 111,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 12,
             "cell": 597,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 13,
@@ -45942,14 +46130,15 @@
           "native_content_sha256": "41cade36d57bd0b244a5236545ce963af39e74374051b900e517b8c5b6090870",
           "source_pixels": 269,
           "remap_pixels": 307,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 13,
             "cell": 552,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 14,
@@ -45957,14 +46146,15 @@
           "native_content_sha256": "4b812445c7aa7d10f515292c5ef3c86915bb41d8ec8c01e5014c08fd4d53c1e7",
           "source_pixels": 302,
           "remap_pixels": 274,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 14,
             "cell": 551,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 15,
@@ -45972,14 +46162,15 @@
           "native_content_sha256": "5304be3235642d4abe669f876cc10f838efae92f7611c16744641fd01dade4ca",
           "source_pixels": 472,
           "remap_pixels": 104,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 15,
             "cell": 591,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 16,
@@ -45987,14 +46178,15 @@
           "native_content_sha256": "94699c309701495980ab12e40da62e2c0a289015e2cb18c5a9482e0c2aacbb25",
           "source_pixels": 283,
           "remap_pixels": 293,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 16,
             "cell": 791,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 17,
@@ -46002,14 +46194,15 @@
           "native_content_sha256": "7d200e09bd4a259ab9c145e414182528cec856fa8f720232a825217caeaac4d4",
           "source_pixels": 290,
           "remap_pixels": 286,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 17,
             "cell": 807,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 18,
@@ -46017,14 +46210,15 @@
           "native_content_sha256": "a4ebe3cc658f7c3f9c76ebbd043aef4c7c9d3facad43dc7e73425cd0e98c7f7a",
           "source_pixels": 279,
           "remap_pixels": 297,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 18,
             "cell": 832,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 19,
@@ -46032,14 +46226,15 @@
           "native_content_sha256": "fb397417777679db4dfe52da89300b751459a8affa3a21c14425d1018ac9882a",
           "source_pixels": 320,
           "remap_pixels": 256,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 19,
             "cell": 873,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 20,
@@ -46047,14 +46242,15 @@
           "native_content_sha256": "29bc74ac0d27c53e07b537cf03b64af79a467a185fec50322933406a64729a7e",
           "source_pixels": 126,
           "remap_pixels": 450,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 20,
             "cell": 914,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 21,
@@ -46212,14 +46408,15 @@
           "native_content_sha256": "03cd2252d13ed3836ae5b28f9d3a3ec4f3ede744145c92b601e53d7962a06900",
           "source_pixels": 527,
           "remap_pixels": 49,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 34,
             "cell": 915,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 35,
@@ -46227,14 +46424,15 @@
           "native_content_sha256": "6d08d80825e4c8306843dbaf2b31839aa9e40a093964736e8ade4dec4b309c0e",
           "source_pixels": 511,
           "remap_pixels": 65,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 34,
             "cell": 915,
             "flip": 1,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 36,
@@ -46242,14 +46440,15 @@
           "native_content_sha256": "5846b24e6b44da20fa42a14b4782b4973d52118ee3636803355def0822aa0712",
           "source_pixels": 456,
           "remap_pixels": 120,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 36,
             "cell": 956,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 37,
@@ -46257,14 +46456,15 @@
           "native_content_sha256": "0cb694f53421e83ef1d0e92e5f8a37ec5b5e891a6327509edba24ecbf8030357",
           "source_pixels": 408,
           "remap_pixels": 168,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 36,
             "cell": 956,
             "flip": 1,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 38,
@@ -46272,14 +46472,15 @@
           "native_content_sha256": "2d6e7983b02de13cfaeb5674030ff6261e3c5b84d3436bc61d2e3575bb282cfe",
           "source_pixels": 528,
           "remap_pixels": 48,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 38,
             "cell": 916,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 39,
@@ -46287,14 +46488,15 @@
           "native_content_sha256": "4748bf0c8d39e8636f5c5957d46ec14958a12ae77809d9abcc7947b583ad0c25",
           "source_pixels": 513,
           "remap_pixels": 63,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 38,
             "cell": 916,
             "flip": 1,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 40,
@@ -46302,14 +46504,15 @@
           "native_content_sha256": "49630eb7b58f1d74c27ab514f817050224beea3fd995d1e9f375eef7fd1fb95c",
           "source_pixels": 456,
           "remap_pixels": 120,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 40,
             "cell": 957,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 41,
@@ -46317,14 +46520,15 @@
           "native_content_sha256": "dc6f8fbab2b0f0fac9dbc59b831f001d4a6ed751d9f70e45b5d0693235ebf6db",
           "source_pixels": 408,
           "remap_pixels": 168,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 40,
             "cell": 957,
             "flip": 1,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 42,
@@ -46384,14 +46588,15 @@
           "native_content_sha256": "703c5e232b6ebd7d3309edd3cf81ee5d5e1eb5d4cdca816fef2679b92f2ac864",
           "source_pixels": 279,
           "remap_pixels": 297,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 45,
             "cell": 848,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 46,
@@ -46399,14 +46604,15 @@
           "native_content_sha256": "4566374af8223a42bb8696268c1d6690c70155cf9d07b72e0f9c48ff41a75ca7",
           "source_pixels": 315,
           "remap_pixels": 261,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 46,
             "cell": 889,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 47,
@@ -46744,14 +46950,15 @@
           "native_content_sha256": "04eb3f78d7d2333ff7f5399b8470ccd88790dae71db87ccd90fd9e917c6ff9d1",
           "source_pixels": 125,
           "remap_pixels": 451,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 80,
             "cell": 930,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 81,
@@ -46789,14 +46996,15 @@
           "native_content_sha256": "680b61b6ec97e9c193a3a83195c9a31717167241725ad07e7f5bfcc675ce580c",
           "source_pixels": 466,
           "remap_pixels": 110,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 85,
             "cell": 927,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 86,
@@ -46804,14 +47012,15 @@
           "native_content_sha256": "cd252e4cebeef977a11c4a4fa7594722f92b8e2f88a591ae7b117dcd91915bb8",
           "source_pixels": 462,
           "remap_pixels": 114,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 86,
             "cell": 917,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 90,
@@ -47525,14 +47734,22 @@
           "native_content_sha256": "d53ab576c9fae70fdf26cc085afcb37a33fad5f3eec1131a0ab64883fdc858d9",
           "source_pixels": 557,
           "remap_pixels": 19,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 32,
             "cell": 13,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "reuse": {
+            "asset_id": "modern.terrain.cave_rock_partial.map09.native_hd",
+            "map": 9,
+            "frame": 32,
+            "file": "map09-frame0032-cave-rock-hd.png",
+            "sha256": "baa48b7027b051530db335d6fcd6837dc5887f3a4bce9c88472c21da733c6769"
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 33,
@@ -47540,14 +47757,22 @@
           "native_content_sha256": "c4d6dea4168a65bcf2f5eab495324d246359cef37d2a2287d8fd64456e9b5f19",
           "source_pixels": 540,
           "remap_pixels": 36,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 33,
             "cell": 60,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "reuse": {
+            "asset_id": "modern.terrain.cave_rock_partial.map09.native_hd",
+            "map": 9,
+            "frame": 33,
+            "file": "map09-frame0033-cave-rock-hd.png",
+            "sha256": "46a558a36a6f5ca616810c8422e868c729c98f409f0fa70eee68c8a27617346b"
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 34,
@@ -47555,14 +47780,22 @@
           "native_content_sha256": "51f04bde96876abba5fe13eb3501825dfcd4d25b830448a1551426d3284706e1",
           "source_pixels": 545,
           "remap_pixels": 31,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 34,
             "cell": 279,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "reuse": {
+            "asset_id": "modern.terrain.cave_rock_partial.map09.native_hd",
+            "map": 9,
+            "frame": 34,
+            "file": "map09-frame0034-cave-rock-hd.png",
+            "sha256": "fc4bebe12f87874848da2fd056d06f0c68318961757ccd166f7b4bc56763654f"
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 35,
@@ -47570,14 +47803,22 @@
           "native_content_sha256": "1ec03c3dd28e9418958c7ebd998a415273a2e3ddc839ff6873c584bccb0d491e",
           "source_pixels": 553,
           "remap_pixels": 23,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 35,
             "cell": 8,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "reuse": {
+            "asset_id": "modern.terrain.cave_rock_partial.map09.native_hd",
+            "map": 9,
+            "frame": 35,
+            "file": "map09-frame0035-cave-rock-hd.png",
+            "sha256": "52995aaacf726d33faaf472a51fa66d6b3e2403a781df07a8e76714ff6df7ef1"
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 36,
@@ -47585,14 +47826,22 @@
           "native_content_sha256": "f0f3722f9dbecdccd6f2af074d226aa34b3b9cabea125ef6c7031b492bffb693",
           "source_pixels": 282,
           "remap_pixels": 294,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 36,
             "cell": 222,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "reuse": {
+            "asset_id": "modern.terrain.cave_rock_partial.map09.native_hd",
+            "map": 9,
+            "frame": 36,
+            "file": "map09-frame0036-cave-rock-hd.png",
+            "sha256": "acf559668e13e5996061488f0b149b6c217bf53c77f45cbd2d743f648fa08915"
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 37,
@@ -47600,14 +47849,22 @@
           "native_content_sha256": "1cc1617a8dda20f3aca8708d9404f2fa6fc2044f4d222e9a3a8838e912ce4cae",
           "source_pixels": 122,
           "remap_pixels": 454,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 37,
             "cell": 20,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "reuse": {
+            "asset_id": "modern.terrain.cave_rock_partial.map09.native_hd",
+            "map": 9,
+            "frame": 37,
+            "file": "map09-frame0037-cave-rock-hd.png",
+            "sha256": "cb8a26f18ba1c88f8346d0c15baec57e3e7d10881de2b2690d0258a52e9b3c82"
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 38,
@@ -47615,14 +47872,22 @@
           "native_content_sha256": "67d9332a711950a744393d7109b56f59642078896d3ae53ef96d2fa25902b690",
           "source_pixels": 124,
           "remap_pixels": 452,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 38,
             "cell": 4,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "reuse": {
+            "asset_id": "modern.terrain.cave_rock_partial.map09.native_hd",
+            "map": 9,
+            "frame": 38,
+            "file": "map09-frame0038-cave-rock-hd.png",
+            "sha256": "4ea33b8514516f233d35193be8a5d639f3018dde3fe4832bbefd09db44bd3671"
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 39,
@@ -47630,14 +47895,22 @@
           "native_content_sha256": "7f0ef9cc447b24fdabedcaf66b05716183500cca67f41ba95c9773fa7630000b",
           "source_pixels": 323,
           "remap_pixels": 253,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 39,
             "cell": 126,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "reuse": {
+            "asset_id": "modern.terrain.cave_rock_partial.map09.native_hd",
+            "map": 9,
+            "frame": 39,
+            "file": "map09-frame0039-cave-rock-hd.png",
+            "sha256": "3d33b134f56a8842fbf7238678d4947641026375f8b46b01a2de8a1d47727b24"
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 40,
@@ -47645,14 +47918,22 @@
           "native_content_sha256": "65fe3f492afc438fe9d8a6e0e255ef18887d7f7ab8d583b8898ae55ce48904e7",
           "source_pixels": 269,
           "remap_pixels": 307,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 40,
             "cell": 108,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "reuse": {
+            "asset_id": "modern.terrain.cave_rock_partial.map09.native_hd",
+            "map": 9,
+            "frame": 40,
+            "file": "map09-frame0040-cave-rock-hd.png",
+            "sha256": "c45bc2c108264e5804613a9e55407bda78f50575de24c0200ccba7b3d0b6e51e"
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 41,
@@ -47660,14 +47941,22 @@
           "native_content_sha256": "2202846af7e254f7313109ebc219e650c82015a1d7d586538fc7fd19c1be3885",
           "source_pixels": 246,
           "remap_pixels": 330,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 41,
             "cell": 7,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "reuse": {
+            "asset_id": "modern.terrain.cave_rock_partial.map09.native_hd",
+            "map": 9,
+            "frame": 41,
+            "file": "map09-frame0041-cave-rock-hd.png",
+            "sha256": "37762d08407b5f7666eb06b1457c20596b33a05a018e1d9728e44631be60e434"
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 42,
@@ -47675,14 +47964,22 @@
           "native_content_sha256": "4f81d574257e87c13536130f34e9175cb0baad1e28506e24f3dab00bba8efb23",
           "source_pixels": 253,
           "remap_pixels": 323,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 42,
             "cell": 14,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "reuse": {
+            "asset_id": "modern.terrain.cave_rock_partial.map09.native_hd",
+            "map": 9,
+            "frame": 42,
+            "file": "map09-frame0042-cave-rock-hd.png",
+            "sha256": "e5795c86710a68926be29343b10309b1f07808bfe6a5730d662e4b9de184b0be"
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 43,
@@ -47690,14 +47987,22 @@
           "native_content_sha256": "552fdd97f54494410ad51f284298daabbdfc14a82fde4be5bc2700545e303783",
           "source_pixels": 291,
           "remap_pixels": 285,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 43,
             "cell": 68,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "reuse": {
+            "asset_id": "modern.terrain.cave_rock_partial.map09.native_hd",
+            "map": 9,
+            "frame": 43,
+            "file": "map09-frame0043-cave-rock-hd.png",
+            "sha256": "a592fd41e5068afdafa1a962ca62d79a0c9c2ed42eb9c817dcd9496695fca220"
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 44,
@@ -47705,14 +48010,22 @@
           "native_content_sha256": "0ed55c5b8da27933f291f943899f643dae2676025bf5d384d8abfbf979c6e322",
           "source_pixels": 465,
           "remap_pixels": 111,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 44,
             "cell": 3,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "reuse": {
+            "asset_id": "modern.terrain.cave_rock_partial.map09.native_hd",
+            "map": 9,
+            "frame": 44,
+            "file": "map09-frame0044-cave-rock-hd.png",
+            "sha256": "77c23a8418132483ba0e17bb062dd251e8ffc5155ef38bd9232f1fef3822061f"
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 45,
@@ -47720,14 +48033,22 @@
           "native_content_sha256": "30b12cc450d48ad08725c476697d1c184180bffdbb6a9470b7b1960b83d78619",
           "source_pixels": 269,
           "remap_pixels": 307,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 45,
             "cell": 30,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "reuse": {
+            "asset_id": "modern.terrain.cave_rock_partial.map09.native_hd",
+            "map": 9,
+            "frame": 45,
+            "file": "map09-frame0045-cave-rock-hd.png",
+            "sha256": "268ad306e37a6359ec25151abf767f964ed561e937fb315ae7936fcd7762977a"
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 46,
@@ -47735,14 +48056,22 @@
           "native_content_sha256": "7bad083e9bdf82fe10331ea0f8779adc78f869df07d36f830076e8a8e06bd117",
           "source_pixels": 302,
           "remap_pixels": 274,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 46,
             "cell": 44,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "reuse": {
+            "asset_id": "modern.terrain.cave_rock_partial.map09.native_hd",
+            "map": 9,
+            "frame": 46,
+            "file": "map09-frame0046-cave-rock-hd.png",
+            "sha256": "25542d5e2998855a5cfb305ce778a1e30b72a47625690a8a5cb5f8c0b839a033"
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 47,
@@ -47750,14 +48079,22 @@
           "native_content_sha256": "412a4284ef6eb0af35e3566d81fb7a8a2359bbd38b0b72f72e7bb50c8b558f8c",
           "source_pixels": 472,
           "remap_pixels": 104,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 47,
             "cell": 21,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "reuse": {
+            "asset_id": "modern.terrain.cave_rock_partial.map09.native_hd",
+            "map": 9,
+            "frame": 47,
+            "file": "map09-frame0047-cave-rock-hd.png",
+            "sha256": "e514befb6c4a2bc14198ae7aa835bbab3b474dab0a32b28ae4f3be51026b0ffc"
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 48,
@@ -47780,14 +48117,15 @@
           "native_content_sha256": "efa9bba9f5e20966fcff2f92b8bde3303a5a7aafceb351c5c81c72201c0e8a97",
           "source_pixels": 574,
           "remap_pixels": 1,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 49,
             "cell": 10,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 1
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 50,
@@ -48699,14 +49037,15 @@
           "native_content_sha256": "5f96e489cd6a14754014c3027837d5e7d4ee29c4429d446c3bcf78621f5f60c0",
           "source_pixels": 179,
           "remap_pixels": 397,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 0,
             "cell": 657,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 1,
@@ -48714,14 +49053,15 @@
           "native_content_sha256": "127d9b4d0b64863aaf4c1d9f88fa7063e4ad0676d6e9cbce5f18cef87d9329af",
           "source_pixels": 228,
           "remap_pixels": 348,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 1,
             "cell": 219,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 2,
@@ -48729,14 +49069,15 @@
           "native_content_sha256": "fe91bd54b201f9198b1af1a9e6c802cc00ee00bb9786a4292188149ee5ca6dcf",
           "source_pixels": 179,
           "remap_pixels": 397,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 2,
             "cell": 675,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 3,
@@ -48744,14 +49085,15 @@
           "native_content_sha256": "aa7121e732e8c448376a4d0ec0fb1b2d8b995d576f4460e15d3244ecc3c70fda",
           "source_pixels": 179,
           "remap_pixels": 397,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 3,
             "cell": 687,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 4,
@@ -48759,14 +49101,15 @@
           "native_content_sha256": "d2abce2ae94e7e29dbde4e52bd82a3a487a4ba9b2a5a5ebd26db8ec95b7b890b",
           "source_pixels": 392,
           "remap_pixels": 184,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 4,
             "cell": 43,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 5,
@@ -48774,14 +49117,15 @@
           "native_content_sha256": "7984f391092b30fda20de1c5fd70920757b5c869e9f70417c56f1454a90f5bb4",
           "source_pixels": 228,
           "remap_pixels": 348,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 5,
             "cell": 64,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 6,
@@ -48789,14 +49133,15 @@
           "native_content_sha256": "92eb7ad61695f02e1aa653843bba3e6e82d768ffe51db05e965a4819166b7ea3",
           "source_pixels": 391,
           "remap_pixels": 185,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 6,
             "cell": 44,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 7,
@@ -48804,14 +49149,15 @@
           "native_content_sha256": "b5394176e23e7a4ef25684fd14eab5ae5a1331066ffbb37cb4864bb4299146d6",
           "source_pixels": 179,
           "remap_pixels": 397,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 7,
             "cell": 707,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 8,
@@ -48819,14 +49165,15 @@
           "native_content_sha256": "73dd9dade3f7ec4dd5bf7dcc03c0d4e99f6e169a613e43bc40f5be2cda7d8467",
           "source_pixels": 228,
           "remap_pixels": 348,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 8,
             "cell": 75,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 9,
@@ -48834,14 +49181,15 @@
           "native_content_sha256": "28bc506ed7cb5bc5c0beb62f83bbda5261cc803bc521e4104152839d08a07049",
           "source_pixels": 228,
           "remap_pixels": 348,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 9,
             "cell": 79,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 11,
@@ -48849,14 +49197,15 @@
           "native_content_sha256": "138a41518f4df473f446f16b784d488de204d1728ca4fdd737e916c04cfeefc8",
           "source_pixels": 289,
           "remap_pixels": 286,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 11,
             "cell": 281,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 13,
@@ -48864,14 +49213,15 @@
           "native_content_sha256": "31c98497bee3268630be3f2f02c4bb00f1e97550becaa525778e0794ce74ea8d",
           "source_pixels": 392,
           "remap_pixels": 184,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 13,
             "cell": 186,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 14,
@@ -48879,14 +49229,15 @@
           "native_content_sha256": "56e06f2027a4b1770dee36f17a9e26fa5171df5e1dcf79cdeaf109bacd4bf083",
           "source_pixels": 392,
           "remap_pixels": 184,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 14,
             "cell": 216,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 19,
@@ -48894,14 +49245,15 @@
           "native_content_sha256": "afa6bd02bb38c400634605d49ca31617a38f473b2e90e4de015151c5544fffac",
           "source_pixels": 313,
           "remap_pixels": 261,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 19,
             "cell": 307,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 20,
@@ -48909,14 +49261,15 @@
           "native_content_sha256": "92020069f2e90557c1fbd17027a838bb433fa42b62b9e148c5c625e7540d1154",
           "source_pixels": 571,
           "remap_pixels": 5,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 20,
             "cell": 11,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 21,
@@ -48924,14 +49277,15 @@
           "native_content_sha256": "0886c625417b4cd1235b5d0f45df4f95c379f9b2bfe574b7f6a5f8c74ebb0a8b",
           "source_pixels": 563,
           "remap_pixels": 13,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 21,
             "cell": 33,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 22,
@@ -48939,14 +49293,15 @@
           "native_content_sha256": "3b22cd78c879fb6dfc9a371340fc5e669a682ab4e3b6598722884801188ebad7",
           "source_pixels": 564,
           "remap_pixels": 12,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 22,
             "cell": 32,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 23,
@@ -48954,14 +49309,15 @@
           "native_content_sha256": "fcf67a8c0d03092a27c39ecb35beb86d1e62386cffd890cdce7c253967c667c4",
           "source_pixels": 571,
           "remap_pixels": 5,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 23,
             "cell": 19,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 25,
@@ -48969,14 +49325,15 @@
           "native_content_sha256": "125f44106773a136017bf11f712656029bd9cafe9eaec9527b7414e9e4433ec5",
           "source_pixels": 463,
           "remap_pixels": 113,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 25,
             "cell": 1270,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 26,
@@ -48984,14 +49341,15 @@
           "native_content_sha256": "e8ffd916ac13a4370e20a92ac6bd3c31b4453cdd8b46a96c2ae393a6bcb1518c",
           "source_pixels": 461,
           "remap_pixels": 115,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 26,
             "cell": 1240,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 29,
@@ -48999,14 +49357,15 @@
           "native_content_sha256": "60362badacfd4c5740f2f33a0127e2114058820537e9f99bb30b49495c8085a9",
           "source_pixels": 492,
           "remap_pixels": 84,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 29,
             "cell": 18,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 30,
@@ -49014,14 +49373,15 @@
           "native_content_sha256": "e46e5f37de8889591f1ceeb9cde5a32d038b2285137726dfbad81fdbc07f105d",
           "source_pixels": 497,
           "remap_pixels": 79,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 30,
             "cell": 12,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 32,
@@ -49029,14 +49389,15 @@
           "native_content_sha256": "afc7ee4b82d48093e32f5849f431e8a64c734236e2977d51ac54d5019d09a357",
           "source_pixels": 549,
           "remap_pixels": 27,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 32,
             "cell": 1271,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 33,
@@ -49044,14 +49405,15 @@
           "native_content_sha256": "7023dac2d565013fdaa45ec3f39652c61110891e103bd87a63c5cecfed0ff3d4",
           "source_pixels": 498,
           "remap_pixels": 78,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 33,
             "cell": 1336,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 34,
@@ -49059,14 +49421,15 @@
           "native_content_sha256": "08953b918cd9f9ba5e7c53be3ff898f27ca044bdeeaba9412b7b349239fd3e86",
           "source_pixels": 512,
           "remap_pixels": 64,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 34,
             "cell": 1369,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 35,
@@ -49074,14 +49437,15 @@
           "native_content_sha256": "c7b213f63761befb309870a33bf70ef1b683a53465b25f5f3ca82e4c95000356",
           "source_pixels": 552,
           "remap_pixels": 24,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 35,
             "cell": 1301,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 36,
@@ -49089,14 +49453,15 @@
           "native_content_sha256": "6688807e649ba4bda3e160350934e25738e7cbfb14bc17fc99102fbc0bf59253",
           "source_pixels": 500,
           "remap_pixels": 74,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 36,
             "cell": 67,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 37,
@@ -49104,14 +49469,15 @@
           "native_content_sha256": "dd78d8d53959203b8c05e7d484d984d68be43aa9c8b6f39c30d1eeb7cc5f2fea",
           "source_pixels": 336,
           "remap_pixels": 240,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 37,
             "cell": 1374,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 38,
@@ -49119,14 +49485,15 @@
           "native_content_sha256": "ba955dc97fd2b84a39735d1b8067b955a38c3c7d1d5310caec50340500a4d9d4",
           "source_pixels": 267,
           "remap_pixels": 304,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 38,
             "cell": 327,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 39,
@@ -49134,14 +49501,15 @@
           "native_content_sha256": "8c2565c30c604b53edc387d9f36c69dffdbcd558fcd3d7a4ac8ea562ac103d8d",
           "source_pixels": 458,
           "remap_pixels": 118,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 39,
             "cell": 66,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 44,
@@ -49149,14 +49517,15 @@
           "native_content_sha256": "d8bb072a74fed930f818cf8542b348735a5ffd7de50b57a5d875c5bcfb00c3f5",
           "source_pixels": 502,
           "remap_pixels": 73,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 44,
             "cell": 139,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 45,
@@ -49164,14 +49533,15 @@
           "native_content_sha256": "f742dfe71b875201fa1d4a24a1e07dede880d308b23b1703d4b806905fc4e34a",
           "source_pixels": 520,
           "remap_pixels": 54,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 45,
             "cell": 139,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 1
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 46,
@@ -49179,14 +49549,15 @@
           "native_content_sha256": "b747ccf97cc2deb39c95df8066b743717e03400896e4e4b542c2afeaa62d67c2",
           "source_pixels": 502,
           "remap_pixels": 73,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 46,
             "cell": 107,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 47,
@@ -49194,14 +49565,15 @@
           "native_content_sha256": "e8381adbff621bbbfd7071924ec376ee094b5fcf68953ddd2c6ecafa9a0d1bad",
           "source_pixels": 520,
           "remap_pixels": 54,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 47,
             "cell": 107,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 1
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 48,
@@ -49449,14 +49821,15 @@
           "native_content_sha256": "57392a6f682f6090749708783f4d490436b0207b4447c15a8d59916a6e2cfda7",
           "source_pixels": 432,
           "remap_pixels": 144,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 75,
             "cell": 13,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 76,
@@ -49464,14 +49837,15 @@
           "native_content_sha256": "7eff340d8cf59c0f8ab259a4462b69652f0a1867f23f91885ee629cac4d458bf",
           "source_pixels": 239,
           "remap_pixels": 337,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 76,
             "cell": 1218,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 77,
@@ -49479,14 +49853,15 @@
           "native_content_sha256": "4c5959a272d6845071ec5979a5145f7f5a203a83a1762c8f029b06c0f1942f30",
           "source_pixels": 239,
           "remap_pixels": 337,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 77,
             "cell": 1230,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 80,
@@ -49494,14 +49869,15 @@
           "native_content_sha256": "8d7b8af96dbf2919c3c451bd217f507cf15283619a4eb44b4e60e62e61dd8638",
           "source_pixels": 65,
           "remap_pixels": 511,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 80,
             "cell": 74,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 81,
@@ -49509,14 +49885,15 @@
           "native_content_sha256": "6c8d30afeec626059e3f1a31d0f3e6f8a631404a79ed9a845376f2bbab9c0e46",
           "source_pixels": 65,
           "remap_pixels": 511,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 81,
             "cell": 80,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 82,
@@ -49524,14 +49901,15 @@
           "native_content_sha256": "bc0f2d3bffae04497b0a0c106d77400d4a118f5d37040368af7700fa21f82f49",
           "source_pixels": 65,
           "remap_pixels": 511,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 82,
             "cell": 187,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 83,
@@ -49539,14 +49917,15 @@
           "native_content_sha256": "1d5963396c0993628966bfb2c5a8e58a9c03895d030bff103691a06531a2ed3a",
           "source_pixels": 65,
           "remap_pixels": 511,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 83,
             "cell": 215,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 84,
@@ -53016,14 +53395,22 @@
           "native_content_sha256": "f0f3722f9dbecdccd6f2af074d226aa34b3b9cabea125ef6c7031b492bffb693",
           "source_pixels": 282,
           "remap_pixels": 294,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 100,
             "cell": 523,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "reuse": {
+            "asset_id": "modern.terrain.cave_rock_partial.map09.native_hd",
+            "map": 9,
+            "frame": 36,
+            "file": "map09-frame0036-cave-rock-hd.png",
+            "sha256": "acf559668e13e5996061488f0b149b6c217bf53c77f45cbd2d743f648fa08915"
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 102,
@@ -53031,14 +53418,22 @@
           "native_content_sha256": "67d9332a711950a744393d7109b56f59642078896d3ae53ef96d2fa25902b690",
           "source_pixels": 124,
           "remap_pixels": 452,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 102,
             "cell": 54,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "reuse": {
+            "asset_id": "modern.terrain.cave_rock_partial.map09.native_hd",
+            "map": 9,
+            "frame": 38,
+            "file": "map09-frame0038-cave-rock-hd.png",
+            "sha256": "4ea33b8514516f233d35193be8a5d639f3018dde3fe4832bbefd09db44bd3671"
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 104,
@@ -53046,14 +53441,22 @@
           "native_content_sha256": "65fe3f492afc438fe9d8a6e0e255ef18887d7f7ab8d583b8898ae55ce48904e7",
           "source_pixels": 269,
           "remap_pixels": 307,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 104,
             "cell": 668,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "reuse": {
+            "asset_id": "modern.terrain.cave_rock_partial.map09.native_hd",
+            "map": 9,
+            "frame": 40,
+            "file": "map09-frame0040-cave-rock-hd.png",
+            "sha256": "c45bc2c108264e5804613a9e55407bda78f50575de24c0200ccba7b3d0b6e51e"
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 108,
@@ -53061,14 +53464,22 @@
           "native_content_sha256": "0ed55c5b8da27933f291f943899f643dae2676025bf5d384d8abfbf979c6e322",
           "source_pixels": 465,
           "remap_pixels": 111,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 108,
             "cell": 102,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "reuse": {
+            "asset_id": "modern.terrain.cave_rock_partial.map09.native_hd",
+            "map": 9,
+            "frame": 44,
+            "file": "map09-frame0044-cave-rock-hd.png",
+            "sha256": "77c23a8418132483ba0e17bb062dd251e8ffc5155ef38bd9232f1fef3822061f"
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 109,
@@ -53076,14 +53487,22 @@
           "native_content_sha256": "30b12cc450d48ad08725c476697d1c184180bffdbb6a9470b7b1960b83d78619",
           "source_pixels": 269,
           "remap_pixels": 307,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 109,
             "cell": 49,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "reuse": {
+            "asset_id": "modern.terrain.cave_rock_partial.map09.native_hd",
+            "map": 9,
+            "frame": 45,
+            "file": "map09-frame0045-cave-rock-hd.png",
+            "sha256": "268ad306e37a6359ec25151abf767f964ed561e937fb315ae7936fcd7762977a"
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 110,
@@ -53091,14 +53510,22 @@
           "native_content_sha256": "7bad083e9bdf82fe10331ea0f8779adc78f869df07d36f830076e8a8e06bd117",
           "source_pixels": 302,
           "remap_pixels": 274,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 110,
             "cell": 48,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "reuse": {
+            "asset_id": "modern.terrain.cave_rock_partial.map09.native_hd",
+            "map": 9,
+            "frame": 46,
+            "file": "map09-frame0046-cave-rock-hd.png",
+            "sha256": "25542d5e2998855a5cfb305ce778a1e30b72a47625690a8a5cb5f8c0b839a033"
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 112,
@@ -53196,14 +53623,15 @@
           "native_content_sha256": "57392a6f682f6090749708783f4d490436b0207b4447c15a8d59916a6e2cfda7",
           "source_pixels": 432,
           "remap_pixels": 144,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 124,
             "cell": 602,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 125,
@@ -53211,14 +53639,15 @@
           "native_content_sha256": "6688807e649ba4bda3e160350934e25738e7cbfb14bc17fc99102fbc0bf59253",
           "source_pixels": 500,
           "remap_pixels": 74,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 125,
             "cell": 601,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 126,
@@ -53226,14 +53655,15 @@
           "native_content_sha256": "dd78d8d53959203b8c05e7d484d984d68be43aa9c8b6f39c30d1eeb7cc5f2fea",
           "source_pixels": 336,
           "remap_pixels": 240,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 126,
             "cell": 1028,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 134,
@@ -53481,14 +53911,15 @@
           "native_content_sha256": "c537d6765c4274d93a4aae39e99c9d0aefeebd8df7dac5a423085dffff2ca511",
           "source_pixels": 570,
           "remap_pixels": 6,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 160,
             "cell": 552,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 161,
@@ -53496,14 +53927,15 @@
           "native_content_sha256": "935ffc0a4c3c6100f8ef0f27c27793bed8b1e6c22aa335ea2bdfab8371cbbc0b",
           "source_pixels": 564,
           "remap_pixels": 12,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 161,
             "cell": 865,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 162,
@@ -53511,14 +53943,15 @@
           "native_content_sha256": "13a5de00abb3a2efd43d80e3975751148fc0fb5b9398cda81b1b227f0bd6c949",
           "source_pixels": 564,
           "remap_pixels": 12,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 162,
             "cell": 553,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 163,
@@ -53526,14 +53959,15 @@
           "native_content_sha256": "8e240f44f93b42fc7a8b4ca1b6e01ba0ad505093b2bb1aa762ca58a7c8a6535e",
           "source_pixels": 570,
           "remap_pixels": 6,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 163,
             "cell": 560,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 164,
@@ -53541,14 +53975,15 @@
           "native_content_sha256": "391c10ac5936b5323b0b31d950ae7ecbcbc5ddc7123b057f38ce39917ba70863",
           "source_pixels": 504,
           "remap_pixels": 72,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 164,
             "cell": 790,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 165,
@@ -53556,14 +53991,15 @@
           "native_content_sha256": "89318bfcbe0ff90549287c30cd78d116361de2e51a986957b43425fdc3038604",
           "source_pixels": 468,
           "remap_pixels": 108,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 165,
             "cell": 747,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 166,
@@ -53571,14 +54007,15 @@
           "native_content_sha256": "0836acc7251ac8647a0c0587f9f1dea5bca5eb2e865abe6291ed92e88af6ba83",
           "source_pixels": 468,
           "remap_pixels": 108,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 166,
             "cell": 960,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 167,
@@ -53586,14 +54023,15 @@
           "native_content_sha256": "be67b471a12342ba26637894013c22a49dc1afcb6a4e1ce9e3b2f3d1b47a3ace",
           "source_pixels": 504,
           "remap_pixels": 72,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 167,
             "cell": 608,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 168,
@@ -53601,14 +54039,15 @@
           "native_content_sha256": "391c10ac5936b5323b0b31d950ae7ecbcbc5ddc7123b057f38ce39917ba70863",
           "source_pixels": 504,
           "remap_pixels": 72,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 168,
             "cell": 600,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 169,
@@ -53616,14 +54055,15 @@
           "native_content_sha256": "3a6c286b4a56b3fa6410e8f3ed75427bce3b20377dfbacdce76163e39f267c87",
           "source_pixels": 498,
           "remap_pixels": 77,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 169,
             "cell": 864,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 170,
@@ -53631,14 +54071,15 @@
           "native_content_sha256": "b4eec5289dba49bc52de4335f9b5a0cf74a243e11f6c99fa62b00d71d4ea26d1",
           "source_pixels": 498,
           "remap_pixels": 78,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 170,
             "cell": 696,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 171,
@@ -53646,14 +54087,15 @@
           "native_content_sha256": "be67b471a12342ba26637894013c22a49dc1afcb6a4e1ce9e3b2f3d1b47a3ace",
           "source_pixels": 504,
           "remap_pixels": 72,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 171,
             "cell": 816,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 172,
@@ -53661,14 +54103,15 @@
           "native_content_sha256": "b987636c3e1f1164f6b5924eb51bac6db126d639d9570d414b4676901ac63138",
           "source_pixels": 540,
           "remap_pixels": 36,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 172,
             "cell": 1008,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 173,
@@ -53676,14 +54119,15 @@
           "native_content_sha256": "bb79af3597643c40ab665e256916c91ec773841ae0659a9698edbe32c5b7178c",
           "source_pixels": 504,
           "remap_pixels": 72,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 173,
             "cell": 794,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 174,
@@ -53691,14 +54135,15 @@
           "native_content_sha256": "bb79af3597643c40ab665e256916c91ec773841ae0659a9698edbe32c5b7178c",
           "source_pixels": 504,
           "remap_pixels": 72,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 174,
             "cell": 1009,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 175,
@@ -53706,14 +54151,15 @@
           "native_content_sha256": "825cc2ae8021a64be72a4a77e8af25a44612c0cca13ef797dc7230b811bd82e8",
           "source_pixels": 540,
           "remap_pixels": 36,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 175,
             "cell": 752,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 176,
@@ -54381,14 +54827,15 @@
           "native_content_sha256": "2df2e7f9793316f81bd0491f3b99c0a4399a972cec11ebf4670f43fb5957992f",
           "source_pixels": 536,
           "remap_pixels": 40,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 248,
             "cell": 705,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 249,
@@ -54396,14 +54843,15 @@
           "native_content_sha256": "ea196fc26352bb519ee91d6abca35c01f26136c4c5e39b664745e87444efc2a0",
           "source_pixels": 480,
           "remap_pixels": 96,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 249,
             "cell": 1192,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 250,
@@ -54411,14 +54859,15 @@
           "native_content_sha256": "843adfc60166ce89dd5d2907046de24db44139ebe39da140be19e3e77bfe1d19",
           "source_pixels": 496,
           "remap_pixels": 80,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 250,
             "cell": 753,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 251,
@@ -54426,14 +54875,15 @@
           "native_content_sha256": "c2f590a7f7a3770564aeba4185c739c41f4dbf09fcdef6e23d10b20c88843a74",
           "source_pixels": 552,
           "remap_pixels": 24,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 251,
             "cell": 384,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 252,
@@ -54441,14 +54891,15 @@
           "native_content_sha256": "d8bb072a74fed930f818cf8542b348735a5ffd7de50b57a5d875c5bcfb00c3f5",
           "source_pixels": 502,
           "remap_pixels": 73,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 252,
             "cell": 604,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 253,
@@ -54456,14 +54907,15 @@
           "native_content_sha256": "f742dfe71b875201fa1d4a24a1e07dede880d308b23b1703d4b806905fc4e34a",
           "source_pixels": 520,
           "remap_pixels": 54,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 253,
             "cell": 604,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 1
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 254,
@@ -54471,14 +54923,15 @@
           "native_content_sha256": "b747ccf97cc2deb39c95df8066b743717e03400896e4e4b542c2afeaa62d67c2",
           "source_pixels": 502,
           "remap_pixels": 73,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 254,
             "cell": 698,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 255,
@@ -54486,14 +54939,15 @@
           "native_content_sha256": "e8381adbff621bbbfd7071924ec376ee094b5fcf68953ddd2c6ecafa9a0d1bad",
           "source_pixels": 520,
           "remap_pixels": 54,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 255,
             "cell": 698,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 1
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 65,
@@ -56844,14 +57298,15 @@
           "native_content_sha256": "5f96e489cd6a14754014c3027837d5e7d4ee29c4429d446c3bcf78621f5f60c0",
           "source_pixels": 179,
           "remap_pixels": 397,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 192,
             "cell": 1125,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 193,
@@ -56859,14 +57314,15 @@
           "native_content_sha256": "127d9b4d0b64863aaf4c1d9f88fa7063e4ad0676d6e9cbce5f18cef87d9329af",
           "source_pixels": 228,
           "remap_pixels": 348,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 193,
             "cell": 1126,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 194,
@@ -56874,14 +57330,15 @@
           "native_content_sha256": "fe91bd54b201f9198b1af1a9e6c802cc00ee00bb9786a4292188149ee5ca6dcf",
           "source_pixels": 179,
           "remap_pixels": 397,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 194,
             "cell": 1127,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 195,
@@ -56889,14 +57346,15 @@
           "native_content_sha256": "aa7121e732e8c448376a4d0ec0fb1b2d8b995d576f4460e15d3244ecc3c70fda",
           "source_pixels": 179,
           "remap_pixels": 397,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 195,
             "cell": 1155,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 196,
@@ -56904,14 +57362,15 @@
           "native_content_sha256": "d2abce2ae94e7e29dbde4e52bd82a3a487a4ba9b2a5a5ebd26db8ec95b7b890b",
           "source_pixels": 392,
           "remap_pixels": 184,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 196,
             "cell": 880,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 197,
@@ -56919,14 +57378,15 @@
           "native_content_sha256": "7984f391092b30fda20de1c5fd70920757b5c869e9f70417c56f1454a90f5bb4",
           "source_pixels": 228,
           "remap_pixels": 348,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 197,
             "cell": 908,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 198,
@@ -56934,14 +57394,15 @@
           "native_content_sha256": "92eb7ad61695f02e1aa653843bba3e6e82d768ffe51db05e965a4819166b7ea3",
           "source_pixels": 391,
           "remap_pixels": 185,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 198,
             "cell": 881,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 199,
@@ -56949,14 +57410,15 @@
           "native_content_sha256": "b5394176e23e7a4ef25684fd14eab5ae5a1331066ffbb37cb4864bb4299146d6",
           "source_pixels": 179,
           "remap_pixels": 397,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 199,
             "cell": 1159,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 200,
@@ -56964,14 +57426,15 @@
           "native_content_sha256": "73dd9dade3f7ec4dd5bf7dcc03c0d4e99f6e169a613e43bc40f5be2cda7d8467",
           "source_pixels": 228,
           "remap_pixels": 348,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 200,
             "cell": 912,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 201,
@@ -56979,14 +57442,15 @@
           "native_content_sha256": "28bc506ed7cb5bc5c0beb62f83bbda5261cc803bc521e4104152839d08a07049",
           "source_pixels": 228,
           "remap_pixels": 348,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 201,
             "cell": 916,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 205,
@@ -56994,14 +57458,15 @@
           "native_content_sha256": "31c98497bee3268630be3f2f02c4bb00f1e97550becaa525778e0794ce74ea8d",
           "source_pixels": 392,
           "remap_pixels": 184,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 205,
             "cell": 947,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 206,
@@ -57009,14 +57474,15 @@
           "native_content_sha256": "56e06f2027a4b1770dee36f17a9e26fa5171df5e1dcf79cdeaf109bacd4bf083",
           "source_pixels": 392,
           "remap_pixels": 184,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 206,
             "cell": 943,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 216,
@@ -57024,14 +57490,15 @@
           "native_content_sha256": "6688807e649ba4bda3e160350934e25738e7cbfb14bc17fc99102fbc0bf59253",
           "source_pixels": 500,
           "remap_pixels": 74,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 216,
             "cell": 945,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 217,
@@ -57039,14 +57506,15 @@
           "native_content_sha256": "dd78d8d53959203b8c05e7d484d984d68be43aa9c8b6f39c30d1eeb7cc5f2fea",
           "source_pixels": 336,
           "remap_pixels": 240,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 217,
             "cell": 976,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 220,
@@ -57054,14 +57522,15 @@
           "native_content_sha256": "8d7b8af96dbf2919c3c451bd217f507cf15283619a4eb44b4e60e62e61dd8638",
           "source_pixels": 65,
           "remap_pixels": 511,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 220,
             "cell": 911,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 221,
@@ -57069,14 +57538,15 @@
           "native_content_sha256": "6c8d30afeec626059e3f1a31d0f3e6f8a631404a79ed9a845376f2bbab9c0e46",
           "source_pixels": 65,
           "remap_pixels": 511,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 221,
             "cell": 917,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 222,
@@ -57084,14 +57554,15 @@
           "native_content_sha256": "bc0f2d3bffae04497b0a0c106d77400d4a118f5d37040368af7700fa21f82f49",
           "source_pixels": 65,
           "remap_pixels": 511,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 222,
             "cell": 948,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 223,
@@ -57099,14 +57570,15 @@
           "native_content_sha256": "1d5963396c0993628966bfb2c5a8e58a9c03895d030bff103691a06531a2ed3a",
           "source_pixels": 65,
           "remap_pixels": 511,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 223,
             "cell": 942,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 224,
@@ -57114,14 +57586,15 @@
           "native_content_sha256": "d8bb072a74fed930f818cf8542b348735a5ffd7de50b57a5d875c5bcfb00c3f5",
           "source_pixels": 502,
           "remap_pixels": 73,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 224,
             "cell": 1188,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 225,
@@ -57129,14 +57602,15 @@
           "native_content_sha256": "f742dfe71b875201fa1d4a24a1e07dede880d308b23b1703d4b806905fc4e34a",
           "source_pixels": 520,
           "remap_pixels": 54,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 225,
             "cell": 1188,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 1
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 226,
@@ -57144,14 +57618,15 @@
           "native_content_sha256": "b747ccf97cc2deb39c95df8066b743717e03400896e4e4b542c2afeaa62d67c2",
           "source_pixels": 502,
           "remap_pixels": 73,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 226,
             "cell": 1187,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 227,
@@ -57159,14 +57634,15 @@
           "native_content_sha256": "e8381adbff621bbbfd7071924ec376ee094b5fcf68953ddd2c6ecafa9a0d1bad",
           "source_pixels": 520,
           "remap_pixels": 54,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 227,
             "cell": 1187,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 1
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 228,
@@ -57219,14 +57695,15 @@
           "native_content_sha256": "57392a6f682f6090749708783f4d490436b0207b4447c15a8d59916a6e2cfda7",
           "source_pixels": 432,
           "remap_pixels": 144,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 231,
             "cell": 789,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 238,
@@ -57249,14 +57726,15 @@
           "native_content_sha256": "c537d6765c4274d93a4aae39e99c9d0aefeebd8df7dac5a423085dffff2ca511",
           "source_pixels": 570,
           "remap_pixels": 6,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 240,
             "cell": 726,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 242,
@@ -57264,14 +57742,15 @@
           "native_content_sha256": "13a5de00abb3a2efd43d80e3975751148fc0fb5b9398cda81b1b227f0bd6c949",
           "source_pixels": 564,
           "remap_pixels": 12,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 242,
             "cell": 876,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 243,
@@ -57279,14 +57758,15 @@
           "native_content_sha256": "8e240f44f93b42fc7a8b4ca1b6e01ba0ad505093b2bb1aa762ca58a7c8a6535e",
           "source_pixels": 570,
           "remap_pixels": 6,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 243,
             "cell": 730,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 244,
@@ -57294,14 +57774,15 @@
           "native_content_sha256": "391c10ac5936b5323b0b31d950ae7ecbcbc5ddc7123b057f38ce39917ba70863",
           "source_pixels": 504,
           "remap_pixels": 72,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 244,
             "cell": 1273,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 245,
@@ -57309,14 +57790,15 @@
           "native_content_sha256": "89318bfcbe0ff90549287c30cd78d116361de2e51a986957b43425fdc3038604",
           "source_pixels": 468,
           "remap_pixels": 108,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 245,
             "cell": 1208,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 246,
@@ -57324,14 +57806,15 @@
           "native_content_sha256": "0836acc7251ac8647a0c0587f9f1dea5bca5eb2e865abe6291ed92e88af6ba83",
           "source_pixels": 468,
           "remap_pixels": 108,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 246,
             "cell": 1178,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 247,
@@ -57339,14 +57822,15 @@
           "native_content_sha256": "be67b471a12342ba26637894013c22a49dc1afcb6a4e1ce9e3b2f3d1b47a3ace",
           "source_pixels": 504,
           "remap_pixels": 72,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 247,
             "cell": 761,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 248,
@@ -57354,14 +57838,15 @@
           "native_content_sha256": "391c10ac5936b5323b0b31d950ae7ecbcbc5ddc7123b057f38ce39917ba70863",
           "source_pixels": 504,
           "remap_pixels": 72,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 248,
             "cell": 757,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 249,
@@ -57369,14 +57854,15 @@
           "native_content_sha256": "3a6c286b4a56b3fa6410e8f3ed75427bce3b20377dfbacdce76163e39f267c87",
           "source_pixels": 498,
           "remap_pixels": 77,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 249,
             "cell": 792,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 250,
@@ -57384,14 +57870,15 @@
           "native_content_sha256": "b4eec5289dba49bc52de4335f9b5a0cf74a243e11f6c99fa62b00d71d4ea26d1",
           "source_pixels": 498,
           "remap_pixels": 78,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 250,
             "cell": 788,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 252,
@@ -57399,14 +57886,15 @@
           "native_content_sha256": "b987636c3e1f1164f6b5924eb51bac6db126d639d9570d414b4676901ac63138",
           "source_pixels": 540,
           "remap_pixels": 36,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 252,
             "cell": 1209,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 254,
@@ -57414,14 +57902,15 @@
           "native_content_sha256": "bb79af3597643c40ab665e256916c91ec773841ae0659a9698edbe32c5b7178c",
           "source_pixels": 504,
           "remap_pixels": 72,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 254,
             "cell": 1372,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 255,
@@ -57429,14 +57918,15 @@
           "native_content_sha256": "825cc2ae8021a64be72a4a77e8af25a44612c0cca13ef797dc7230b811bd82e8",
           "source_pixels": 540,
           "remap_pixels": 36,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 255,
             "cell": 1239,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 256,
@@ -59650,14 +60140,15 @@
           "native_content_sha256": "f7c9e16898991a21e72da37a88deb59ef620c6a494d832b5140bd2c849b147d0",
           "source_pixels": 144,
           "remap_pixels": 432,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 0,
             "cell": 741,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 1,
@@ -59665,14 +60156,15 @@
           "native_content_sha256": "fdc592ac9b672ecd971b6e35e64c099a60e335753c9ac5cd8c8d879359c53dc4",
           "source_pixels": 264,
           "remap_pixels": 312,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 1,
             "cell": 742,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 2,
@@ -59680,14 +60172,15 @@
           "native_content_sha256": "c03b6ef7b90cee5b20e04bab0c5a31027a4b65b882c2d8d3749f52b6156da823",
           "source_pixels": 49,
           "remap_pixels": 527,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 2,
             "cell": 743,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 3,
@@ -59710,14 +60203,15 @@
           "native_content_sha256": "a534a223a80505e9aeb521351731000fffa0ca4086d7caf2e83b04764cd193da",
           "source_pixels": 403,
           "remap_pixels": 173,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 4,
             "cell": 786,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 5,
@@ -59740,14 +60234,15 @@
           "native_content_sha256": "c063a2f06a0443fe10f7f38465de2e2b26d5a0282c865c850924937b5233e221",
           "source_pixels": 446,
           "remap_pixels": 130,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 6,
             "cell": 788,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 8,
@@ -60025,14 +60520,15 @@
           "native_content_sha256": "274c6aaa7c264ab9cbb8fe1447f5b56488c95f21a2bab196a1c5f83650ae765b",
           "source_pixels": 550,
           "remap_pixels": 26,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 112,
             "cell": 649,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 113,
@@ -60040,14 +60536,15 @@
           "native_content_sha256": "505d1527a19e7121259047f34ed39a5d9d65ed1b43c71114bd00aa58a2778558",
           "source_pixels": 532,
           "remap_pixels": 44,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 113,
             "cell": 650,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 114,
@@ -60055,14 +60552,15 @@
           "native_content_sha256": "37b82959cb2dd5293cc8818915975021a284225247ed5c4fdc10a3f312031daa",
           "source_pixels": 466,
           "remap_pixels": 110,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 114,
             "cell": 654,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 115,
@@ -60070,14 +60568,15 @@
           "native_content_sha256": "40ed5b4fbf7595fde64a2b61a9923fe0fee371e3e713e95ac27cfb556a422ea2",
           "source_pixels": 556,
           "remap_pixels": 20,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 115,
             "cell": 655,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 116,
@@ -60085,14 +60584,15 @@
           "native_content_sha256": "5e0aa35d2d61fc0093e4887540be3376a5f6645ef88e96a6351cdfe25aca55bc",
           "source_pixels": 353,
           "remap_pixels": 223,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 116,
             "cell": 561,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 117,
@@ -60100,14 +60600,15 @@
           "native_content_sha256": "c8ca1325c719c22e9c68d1148142604aa636666576cdd488c619d836cde56976",
           "source_pixels": 160,
           "remap_pixels": 416,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 117,
             "cell": 785,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 118,
@@ -60115,14 +60616,15 @@
           "native_content_sha256": "b0906e9a20fa8fb194f47293420bb38f629b684e824d3c35cb20db84f6f54529",
           "source_pixels": 186,
           "remap_pixels": 390,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 118,
             "cell": 790,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 119,
@@ -60130,14 +60632,15 @@
           "native_content_sha256": "a76c15a7c6411d6afc735a6e29c7bb9307f932441148972762276aa5a0e32f07",
           "source_pixels": 351,
           "remap_pixels": 225,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 119,
             "cell": 518,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 120,
@@ -60145,14 +60648,15 @@
           "native_content_sha256": "d651374d713f5e04594990d233cd8ca122e5d1cc19c74d829cc8a5ccb98de1a3",
           "source_pixels": 278,
           "remap_pixels": 298,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 120,
             "cell": 516,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 121,
@@ -60160,14 +60664,15 @@
           "native_content_sha256": "b3d628ea73ba2006bdc32bfd5ab55370d9a498ed53a42c1c88bd293638018ae8",
           "source_pixels": 241,
           "remap_pixels": 335,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 121,
             "cell": 653,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 122,
@@ -60175,14 +60680,15 @@
           "native_content_sha256": "b28905403c851e9a237cdff0cf7afffaa2360304e217c4d11b35479387822fae",
           "source_pixels": 225,
           "remap_pixels": 351,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 122,
             "cell": 651,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 123,
@@ -60190,14 +60696,15 @@
           "native_content_sha256": "5b2ed429a08936d10b31742b41a78c52356f72d8fe7f5e1141318be5a8131e18",
           "source_pixels": 291,
           "remap_pixels": 285,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 123,
             "cell": 563,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 124,
@@ -60205,14 +60712,15 @@
           "native_content_sha256": "22bcbbb955fe39931c78c08d3f61fc36d040e9b0358c8b72e485807107dc4d69",
           "source_pixels": 446,
           "remap_pixels": 130,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 124,
             "cell": 880,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 125,
@@ -60220,14 +60728,15 @@
           "native_content_sha256": "7cd0cd6231b95752aaebe3b81c43e3186f21db2eb69b243b76d4c33edfc69088",
           "source_pixels": 266,
           "remap_pixels": 310,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 125,
             "cell": 960,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 126,
@@ -60235,14 +60744,15 @@
           "native_content_sha256": "9a42d0c343be695234c863c282c4d8f9e4b08b196a38bf545b2d7eac249ea068",
           "source_pixels": 320,
           "remap_pixels": 256,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 126,
             "cell": 789,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 127,
@@ -60250,14 +60760,15 @@
           "native_content_sha256": "64455b206101db760ea40644f6606d1a8021edda6150f76bd40f0bee90405075",
           "source_pixels": 441,
           "remap_pixels": 135,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 127,
             "cell": 830,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 136,
@@ -60535,14 +61046,15 @@
           "native_content_sha256": "3af1f5b385a955925a07db120ea5e30ab496d00c19d9b7e58550b3ed31734d9e",
           "source_pixels": 526,
           "remap_pixels": 50,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 165,
             "cell": 471,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 166,
@@ -60550,14 +61062,15 @@
           "native_content_sha256": "f5001eec4f0ac8a2eee965f7cfe1df56332bc5b52e3a57424665a914e4d25fc2",
           "source_pixels": 464,
           "remap_pixels": 108,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 166,
             "cell": 472,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 167,
@@ -60565,14 +61078,15 @@
           "native_content_sha256": "11ac2f967bca08bcc2fae9ee406f69e056d4676d2d40296ecd1960e2b128f768",
           "source_pixels": 510,
           "remap_pixels": 63,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 167,
             "cell": 473,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 168,
@@ -60580,14 +61094,15 @@
           "native_content_sha256": "f1cc2fd373f37e25fa14baf25e89c82bf009be0de4b046549f278bdeb50ef88d",
           "source_pixels": 554,
           "remap_pixels": 21,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 168,
             "cell": 731,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 169,
@@ -60595,14 +61110,15 @@
           "native_content_sha256": "d931c2a367daebdfdd22dd6b554837d6d0fa4de6efc0ee165b6ee0c55e9347c5",
           "source_pixels": 539,
           "remap_pixels": 37,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 169,
             "cell": 288,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 176,
@@ -60835,14 +61351,15 @@
           "native_content_sha256": "e0b7575a85f43efd095490478327eb8de3c8bb3eaae874091f43e9237bc64dfc",
           "source_pixels": 567,
           "remap_pixels": 9,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 192,
             "cell": 377,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 193,
@@ -60850,14 +61367,15 @@
           "native_content_sha256": "223189879d56dcc25ce3c1aa212a5854f461cc41381ad970a6cbf375662714f2",
           "source_pixels": 557,
           "remap_pixels": 19,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 193,
             "cell": 1135,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 194,
@@ -60865,14 +61383,15 @@
           "native_content_sha256": "9fbd21c35a4e81ed60ce841280a832d0d195cc06c7132a4a02d8263b4479dea8",
           "source_pixels": 555,
           "remap_pixels": 21,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 194,
             "cell": 1134,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 195,
@@ -60880,14 +61399,15 @@
           "native_content_sha256": "743d74b2369299930815b2e832c4d8b35064d8b4aba0c5c755012fb896440e64",
           "source_pixels": 567,
           "remap_pixels": 9,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 195,
             "cell": 378,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 196,
@@ -60895,14 +61415,15 @@
           "native_content_sha256": "e9dafab2fac7f6f514d0de5918e9543a374a592569b4cc89c189080a10750a8c",
           "source_pixels": 520,
           "remap_pixels": 56,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 196,
             "cell": 26,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 197,
@@ -60910,14 +61431,15 @@
           "native_content_sha256": "9d98944b67671d7bd392f03805bc45ab4c3af59ec1b2dcbc12b3abc8d56e2fe9",
           "source_pixels": 476,
           "remap_pixels": 100,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 197,
             "cell": 152,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 198,
@@ -60925,14 +61447,15 @@
           "native_content_sha256": "8c98734c959dce5334e1121a85b13162537181b0ff1721c2eae8cfec29c3a411",
           "source_pixels": 480,
           "remap_pixels": 96,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 198,
             "cell": 419,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 199,
@@ -60940,14 +61463,15 @@
           "native_content_sha256": "d960256391da84e251b32e0b40feee26ca2e49f93baf02434eb31b5afa772c2b",
           "source_pixels": 520,
           "remap_pixels": 56,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 199,
             "cell": 18,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 200,
@@ -60955,14 +61479,15 @@
           "native_content_sha256": "c2761af845387a543f2b021ceec25b37a6d231134af0ac2344eab792eb64987c",
           "source_pixels": 507,
           "remap_pixels": 69,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 200,
             "cell": 71,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 201,
@@ -60970,14 +61495,15 @@
           "native_content_sha256": "dc920f9aa754736908efab79b4ddeb0daf92b3aa2f5097be6fd92f91db6ee876",
           "source_pixels": 500,
           "remap_pixels": 76,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 201,
             "cell": 595,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 202,
@@ -60985,14 +61511,15 @@
           "native_content_sha256": "7fb0d5b02be04644eda2f12e7b7570e559ec8e6fa017600b191158dbfc789c8d",
           "source_pixels": 490,
           "remap_pixels": 86,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 202,
             "cell": 755,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 203,
@@ -61000,14 +61527,15 @@
           "native_content_sha256": "542aba1f9d5f4bde3b2dad8b75a744087a13c820f178584366cbd02aaf160d75",
           "source_pixels": 512,
           "remap_pixels": 63,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 203,
             "cell": 63,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 204,
@@ -61015,14 +61543,15 @@
           "native_content_sha256": "2505ddf492d018a6d8b67bd5c6e3fa780b096340eebd2a77a3a79334e112f5b9",
           "source_pixels": 548,
           "remap_pixels": 28,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 204,
             "cell": 464,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 205,
@@ -61030,14 +61559,15 @@
           "native_content_sha256": "55af412ae73798d653563d13f485bf39dc7182829ed44839c0bc71b574f74c0f",
           "source_pixels": 494,
           "remap_pixels": 82,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 205,
             "cell": 417,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 206,
@@ -61045,14 +61575,15 @@
           "native_content_sha256": "046d011073e875f46395f95bcb1498823794aec7487b02c7e3e1c3fe7f5b721d",
           "source_pixels": 513,
           "remap_pixels": 63,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 206,
             "cell": 416,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 207,
@@ -61060,14 +61591,15 @@
           "native_content_sha256": "d63e1ba73151ced3f271961a12d0241449f0da59e5004ebc334cc6955cde4333",
           "source_pixels": 543,
           "remap_pixels": 29,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 207,
             "cell": 153,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 222,
@@ -61090,14 +61622,15 @@
           "native_content_sha256": "57392a6f682f6090749708783f4d490436b0207b4447c15a8d59916a6e2cfda7",
           "source_pixels": 432,
           "remap_pixels": 144,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 223,
             "cell": 27,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 228,
@@ -61105,14 +61638,15 @@
           "native_content_sha256": "d5acdb34a94f68224fb65ca0a10eb85eea45d44a3e625c0151a5e79240148f7d",
           "source_pixels": 520,
           "remap_pixels": 56,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 228,
             "cell": 1368,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 229,
@@ -61120,14 +61654,15 @@
           "native_content_sha256": "e9e018e28ffd501951f5c4407a2368ef5a279891a77a69addea9476db4629230",
           "source_pixels": 520,
           "remap_pixels": 56,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 229,
             "cell": 1421,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 230,
@@ -61135,14 +61670,15 @@
           "native_content_sha256": "3a6c286b4a56b3fa6410e8f3ed75427bce3b20377dfbacdce76163e39f267c87",
           "source_pixels": 498,
           "remap_pixels": 77,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 230,
             "cell": 1458,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 231,
@@ -61150,14 +61686,15 @@
           "native_content_sha256": "b4eec5289dba49bc52de4335f9b5a0cf74a243e11f6c99fa62b00d71d4ea26d1",
           "source_pixels": 498,
           "remap_pixels": 78,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 231,
             "cell": 1466,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 240,
@@ -61165,14 +61702,15 @@
           "native_content_sha256": "c537d6765c4274d93a4aae39e99c9d0aefeebd8df7dac5a423085dffff2ca511",
           "source_pixels": 570,
           "remap_pixels": 6,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 240,
             "cell": 1325,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 242,
@@ -61180,14 +61718,15 @@
           "native_content_sha256": "13a5de00abb3a2efd43d80e3975751148fc0fb5b9398cda81b1b227f0bd6c949",
           "source_pixels": 564,
           "remap_pixels": 12,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 242,
             "cell": 1459,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 243,
@@ -61195,14 +61734,15 @@
           "native_content_sha256": "8e240f44f93b42fc7a8b4ca1b6e01ba0ad505093b2bb1aa762ca58a7c8a6535e",
           "source_pixels": 570,
           "remap_pixels": 6,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 243,
             "cell": 1329,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 247,
@@ -61210,14 +61750,15 @@
           "native_content_sha256": "be67b471a12342ba26637894013c22a49dc1afcb6a4e1ce9e3b2f3d1b47a3ace",
           "source_pixels": 504,
           "remap_pixels": 72,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 247,
             "cell": 1374,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 248,
@@ -61225,14 +61766,15 @@
           "native_content_sha256": "391c10ac5936b5323b0b31d950ae7ecbcbc5ddc7123b057f38ce39917ba70863",
           "source_pixels": 504,
           "remap_pixels": 72,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 248,
             "cell": 1370,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 249,
@@ -61240,14 +61782,15 @@
           "native_content_sha256": "3a6c286b4a56b3fa6410e8f3ed75427bce3b20377dfbacdce76163e39f267c87",
           "source_pixels": 498,
           "remap_pixels": 77,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 249,
             "cell": 1464,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 250,
@@ -61255,14 +61798,15 @@
           "native_content_sha256": "b4eec5289dba49bc52de4335f9b5a0cf74a243e11f6c99fa62b00d71d4ea26d1",
           "source_pixels": 498,
           "remap_pixels": 78,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 250,
             "cell": 1460,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 256,
@@ -61360,14 +61904,15 @@
           "native_content_sha256": "43b219f1884cac2bf76b6c6359545df20b3249b4b1addd276962f002de6a6ea6",
           "source_pixels": 327,
           "remap_pixels": 249,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 272,
             "cell": 207,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 273,
@@ -61375,14 +61920,15 @@
           "native_content_sha256": "e335af5e1ac3040defaca40815e48ba8945ed4e9c65a671edaf8e7e79dd1aaa0",
           "source_pixels": 232,
           "remap_pixels": 341,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 273,
             "cell": 814,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 274,
@@ -61390,14 +61936,15 @@
           "native_content_sha256": "45a17132651d8e11ba4a1d421a15f81c6fc64c980f20dc4286308f31c9025b9b",
           "source_pixels": 232,
           "remap_pixels": 343,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 274,
             "cell": 548,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 275,
@@ -61405,14 +61952,15 @@
           "native_content_sha256": "9f5eb0e81e2e9233e93d118c995c6cb51682a1b1410d0139e5dae73b1a71f800",
           "source_pixels": 329,
           "remap_pixels": 246,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 275,
             "cell": 277,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 276,
@@ -61420,14 +61968,15 @@
           "native_content_sha256": "50a22262dcb8ad37a53ddca99ad48306f000fb6a0bb520dd5f5c7668d136397f",
           "source_pixels": 205,
           "remap_pixels": 370,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 276,
             "cell": 28,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 277,
@@ -61435,14 +61984,15 @@
           "native_content_sha256": "cc8288ea8fb9e4fde097270a2c3bf2cf500e02580d6a736cf51a0a24f5f0eacb",
           "source_pixels": 112,
           "remap_pixels": 464,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 277,
             "cell": 61,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 278,
@@ -61450,14 +62000,15 @@
           "native_content_sha256": "9d77bd3147f5734ebb4e6e289ccd77234037d18bcfba9d36a5ccede5e4a14e81",
           "source_pixels": 154,
           "remap_pixels": 418,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 278,
             "cell": 213,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 279,
@@ -61465,14 +62016,15 @@
           "native_content_sha256": "25e83a9261681fa0b140b79e6d42f4ca25972f44d81344df492fb44ea8b17b8d",
           "source_pixels": 202,
           "remap_pixels": 373,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 279,
             "cell": 151,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 280,
@@ -61480,14 +62032,15 @@
           "native_content_sha256": "fa7c3c5da531a2adbf7263167f86f40b4b9df1ba12ac53f1520d5554753c12b8",
           "source_pixels": 201,
           "remap_pixels": 375,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 280,
             "cell": 73,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 281,
@@ -61495,14 +62048,15 @@
           "native_content_sha256": "1c091e4562edc3c051974a28ba80dcf439df6e86e2caf29133eb5074c884839d",
           "source_pixels": 104,
           "remap_pixels": 471,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 281,
             "cell": 276,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 282,
@@ -61510,14 +62064,15 @@
           "native_content_sha256": "fde8593a65273d8d5b98ebc6ab852df094c00bbf3ae0e982eb3fffb3b3ec1229",
           "source_pixels": 112,
           "remap_pixels": 458,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 282,
             "cell": 208,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 283,
@@ -61525,14 +62080,15 @@
           "native_content_sha256": "e1f6f93b02f3c7b1a781cb1e185f358d4cf548b280831cbab3e0710ec42976e8",
           "source_pixels": 209,
           "remap_pixels": 367,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 283,
             "cell": 17,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 284,
@@ -61540,14 +62096,15 @@
           "native_content_sha256": "3e617cacd2db102f22c06cfb3d46a9c6898c558892f23a08ac9db1cddea5f230",
           "source_pixels": 326,
           "remap_pixels": 250,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 284,
             "cell": 278,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 285,
@@ -61555,14 +62112,15 @@
           "native_content_sha256": "7ab34cae94f750b4fcfab8b4bee35211841b5a30ec6509f627d79cc7fb918baf",
           "source_pixels": 224,
           "remap_pixels": 349,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 285,
             "cell": 232,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 286,
@@ -61570,14 +62128,15 @@
           "native_content_sha256": "69d9ca0e228e16a1ea71ff0fc547dc6aacff07ea0d2d471e7926a9a4ac3a3748",
           "source_pixels": 235,
           "remap_pixels": 338,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 286,
             "cell": 372,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 287,
@@ -61585,14 +62144,15 @@
           "native_content_sha256": "105f3b777d9b2d3e6c74c02b3207d9c8078db7159f20842b6b24f3c40cb69f80",
           "source_pixels": 328,
           "remap_pixels": 247,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 287,
             "cell": 62,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 153,
@@ -65713,14 +66273,15 @@
           "native_content_sha256": "3749656e8dcb496a3536e16899f6a9cef7082100d829b431bc48abe32185eb67",
           "source_pixels": 575,
           "remap_pixels": 0,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 18,
             "cell": 238,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 19,
@@ -66133,14 +66694,15 @@
           "native_content_sha256": "a9cf24880abec3bf9416b6340e6e560d74f7820316a498f1b866062189c151cb",
           "source_pixels": 564,
           "remap_pixels": 12,
-          "status": "missing-composite",
+          "status": "missing-art",
           "selector": {
             "tile_word": 46,
             "cell": 234,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
-          }
+          },
+          "backdrop_policy": "already-composed-native-or-registered-hd-stage"
         },
         {
           "frame": 47,
@@ -67973,12 +68535,12 @@
   ],
   "summary": {
     "maps": 33,
-    "missing-art": 3199,
-    "missing-composite": 296,
+    "missing-art": 3479,
     "missing_unique_native_content": 2101,
     "native-remap-only": 10,
-    "registered-hd": 493,
+    "registered-hd": 509,
     "required_slots": 3998,
+    "reusable_slots": 22,
     "selector_checks": 617520
   }
 }

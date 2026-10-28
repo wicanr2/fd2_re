@@ -111,8 +111,8 @@ def prepare(catalog_path, pack, maps, sources, original, coverage_path, out):
                 raise ValueError('重用HD尺寸不符')
             mask = pair[0][576:1152]
             remap = pair[0][1152:]
-            if fr['role'] == 'terrain' and (set(mask) != {1} or any(remap)):
-                raise ValueError('地形底層必須完全opaque且無目的地remap')
+            if any(v not in (0, 1) for v in mask + remap) or any(a and b for a, b in zip(mask, remap)):
+                raise ValueError('來源與目的地遮罩必須二元且不重疊')
             if any(picture.getpixel((x, y))[3] != mask[(y // 6) * 24 + x // 6] * 255 for y in range(144) for x in range(144)):
                 raise ValueError('HD來源覆蓋與原生遮罩不同')
             old = by_map[mp['map']].get(fr['frame'])

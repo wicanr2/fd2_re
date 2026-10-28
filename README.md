@@ -27,6 +27,10 @@
 
 上圖為第二張地圖的受控繪製，人物位置用來確認屋頂前景遮擋。三層原生圖源完全相同的木屋、木材及植被已共用現有HD圖片；藍屋頂、石牆與部分介面仍為像素。完整地形缺口由[地形覆蓋資料](docs/data/fd2-hd1-terrain-coverage.json)追蹤，畫面不代表整張地圖已完成HD。
 
+![HD1洞窟石壁與原生透明覆蓋](docs/figures/hd1-cave-rock.png)
+
+洞窟石壁已接入手繪HD，透明範圍保留原生背景。上圖為第十張地圖與第十章單位的受控繪製，相機經明示設定；熔岩、地板與部分介面仍為像素，不代表整張洞窟已完成HD。技術範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
+
 ![獨立介面與美術控制的浮出工具列](docs/figures/hd1-independent-toolbar.png)
 
 上圖為重製端受控城鎮的實際操作畫面，完整縮圖保留海報、工具列與設定選單。海報已接入遊戲；城鎮行走人物仍為像素素材。完整地形與其餘介面依 [HD1 里程碑](https://github.com/wicanr2/fd2_re/milestone/1)繼續完成，造型與實機操作由使用者人工驗證。HD2、HD-2D 留待後續。

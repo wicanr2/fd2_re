@@ -2,7 +2,7 @@
 
 HD1範圍已定為地形、介面、獨立控制與完整工具列，歸入[里程碑1](https://github.com/wicanr2/fd2_re/milestone/1)。單列工具列已接獨立介面／美術、語系、字級、加速、全螢幕與雙組海報、漸層及淡入；其餘地形／介面及城鎮行走人物仍是實作工作。技術驗證與限制依[58](58-fd2-exe-re-coverage.md)、[61](61-modern-theme-runtime-spec.md)及[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`hd1_posters_followup_20261028`；人工驗證仍由使用者接手。
 
-HD1地形已補全部正式地圖的初始／事件更新來源盤點，並新增跨圖同源地形與前景接線。其餘美術、部分覆蓋與目的地重映射合成分列，#282保持開啟。數量與目前指紋依[58](58-fd2-exe-re-coverage.md)、[生成覆蓋資料](../data/fd2-hd1-terrain-coverage.json)及HD主收據`hd1_terrain_reuse_followup_20261028`；不將來源上界當作逐章可達性。
+HD1地形已接部分來源遮罩，新增洞窟石壁。透明區保留已完成合成的原生或已登錄HD背景，既有LUT不重複套用；其餘缺圖與未知HD背景仍由#282追蹤。數量與目前指紋依[58](58-fd2-exe-re-coverage.md)、[生成覆蓋資料](../data/fd2-hd1-terrain-coverage.json)及HD主收據`hd1_terrain_partial_followup_20261028`；不將來源上界、受控Game.Draw或單元測試當作逐章可達性。
 
 HD接線與人工驗證已分工：使用者接手造型、逐章操作及平台人工試玩，這些不再阻擋接線完成。現有已登錄圖源與正式消費端、載入／缺件保護已核對；實際未製作地形與其餘介面仍列實作工作；海報現況依上述入口。唯一數量與限制依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)「HD1接線與人工驗證交接」，[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)為`hd1_wiring_handoff_20261028`。不宣稱全部HD1完成。
 

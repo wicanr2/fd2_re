@@ -245149,6 +245149,490 @@
       "recordings_created": 0,
       "new_image_files_in_pack": 0,
       "scope": "所有自有Docker工作--rm、有界並已退出；只查本批變更／產物UID，不改既存root-owned基線。"
+    },
+    "current_coverage_superseded_by": "hd1_terrain_partial_followup_20261028"
+  },
+  "hd1_terrain_partial_followup_20261028": {
+    "date": "2026-10-28",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1",
+    "base_commit": "6ae3b5544d3d129a0fe66ccadbfa261c4446d427",
+    "working_branch": "feat/hd1-terrain-compositing",
+    "issue": 282,
+    "scope": "沿已證實原生來源Mask與RemapMask，移除HD載入器過度不透明限制，新增map9:32..47的16張手繪石壁。未建立跨frame HD work鏡像，未HD背景仍保留原生；完整HD1仍待。",
+    "coverage": {
+      "file": "docs/data/fd2-hd1-terrain-coverage.json",
+      "sha256": "c7914c548d18345e51967f853fa25aca60435a0f1fd5fff5bb5d05553d7764f8",
+      "summary": {
+        "maps": 33,
+        "missing-art": 3479,
+        "missing_unique_native_content": 2101,
+        "native-remap-only": 10,
+        "registered-hd": 509,
+        "required_slots": 3998,
+        "reusable_slots": 22,
+        "selector_checks": 617520
+      },
+      "method": "33圖正式selector及全部事件有效時的來源上界；非每個事件自然可達。296個舊missing-composite改依來源Mask及backdrop_policy列缺圖；10個純目的地重映射獨立揭露。"
+    },
+    "native_evidence": {
+      "original_references": {
+        "file": "docs/data/fd2-reference-files.json",
+        "sha256": "9946b7506620069ce9b7bb8e4b1f7fed36e7a9389b634ef62064727d89579c5e"
+      },
+      "native_source_manifest": {
+        "file": "work/promo-cadence-20261018/hd-fonts/native-terrain-sources-r2/manifest.json",
+        "sha256": "a19a3da393294ad6e1c4ad1dccdb9a911d26ed1f3d7008046eddda2398f938f5"
+      },
+      "bank": {
+        "file": "tilesets/fdshap/map_09/bank.json",
+        "sha256": "793af709080e2c8f2164a252c0359d81baceb8682129a0fde938ed0fa340aaae"
+      },
+      "map_data": {
+        "file": "map9/map.json",
+        "sha256": "db607634ad079db40f5ef544405157244ca3f256602656e8e385f988eaa5ec82"
+      },
+      "address_space": "既有IDA Pro 9.4線性位址0x11EEE／0x4DCC6／0x4DEDA，依58索引，不重新RE",
+      "classification": "既有已證實原生blit契約；新增HD藝術及邊緣顏色延伸為美術近似，非原版RGB或新oracle。"
+    },
+    "art": {
+      "tool": "image_gen.imagegen",
+      "mode": "builtin",
+      "prompt_verbatim": "Create one production HD1 terrain sprite-sheet master for the existing Flame Dragon Knights 2 remake, following the provided reference exactly in geometry. Reference image 1 is a mechanically extracted 4-by-4 atlas of 16 original cave-rock/cliff cells, arranged row-major. Redraw the warm ochre/brown cave stone regions into detailed, soft hand-painted fantasy RPG terrain, matching the established remake style: natural worn rock clusters, fine fissures, rounded ledges, warm earthy tones. IMPORTANT: this reference is cave stone and pit rims, NOT water, NOT waterfalls or lava. Preserve exactly the orthographic camera, the gross stone silhouettes, every tile's composition, large central dark-blue void and small isolated central rock, and the continuity across the 4x4 equal square tile cells. Do not shift or rescale the shapes, do not invent objects or extra protrusions, do not add people, plants, text, labels, borders, gutters or grid lines. Output a single square 1024x1024 opaque image with the precise 4x4 cell arrangement filling the canvas edge to edge. The dark navy reference voids should remain flat dark navy; a separate native coverage mask will make those pixels transparent during deterministic asset compilation. Only the stone surface is to be artistically redrawn, with new painted RGB rather than pixel-art enlargement. This is a terrain atlas asset, not a conceptual game screenshot.",
+      "requested_size": [
+        1024,
+        1024
+      ],
+      "returned_size": [
+        1254,
+        1254
+      ],
+      "transparent_background": false,
+      "master_sha256": "28b076908b60423818429d90963ed0e61661f94aabe85549cd261f1762b13406",
+      "private_master": "packs/fd2-modern-handpainted-a/cave-rock-partial-hd-v1-master.png",
+      "reference": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-cave-falls-source-guide-r1.png",
+        "sha256": "fe2858edd5552d5669db4291b22f228e563e0d77f017a319a370ad8eabb81140"
+      },
+      "reference_note": "機械擷取的4×4石壁參考，舊檔名falls不代表用途，不公開原版atlas。",
+      "recipe": {
+        "file": "remake/assets/themes/modern/cave-rock-partial-hd.recipe.json",
+        "sha256": "f2313d854b13012e05cab4ae740be09aee86e3c191a0b2b954af15a170a3ca65"
+      },
+      "recipe_prompt_note": "配方記錄正規化製圖摘要，逐字實際提示由本欄保存。",
+      "compiler": {
+        "file": "tools/build_fd2_hd_cave_rock.py",
+        "sha256": "503f596a74856ae4a5b4822ec708e3a7203631c46d82f67223941b1cd2e251b8"
+      },
+      "candidate": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-cave-rock-candidate-r1/manifest.json",
+        "sha256": "7101db6f3023f3ca17a7171b1f9efd8b8ced71ee057d7c4ac5aa640ad8e7d7de"
+      },
+      "frames": [
+        {
+          "map": 9,
+          "frame": 32,
+          "file": "map09-frame0032-cave-rock-hd.png",
+          "native_content_sha256": "d53ab576c9fae70fdf26cc085afcb37a33fad5f3eec1131a0ab64883fdc858d9",
+          "source_pixels": 557,
+          "remap_pixels": 19,
+          "painted_void_edge_padding_pixels": 152,
+          "sha256": "baa48b7027b051530db335d6fcd6837dc5887f3a4bce9c88472c21da733c6769"
+        },
+        {
+          "map": 9,
+          "frame": 33,
+          "file": "map09-frame0033-cave-rock-hd.png",
+          "native_content_sha256": "c4d6dea4168a65bcf2f5eab495324d246359cef37d2a2287d8fd64456e9b5f19",
+          "source_pixels": 540,
+          "remap_pixels": 36,
+          "painted_void_edge_padding_pixels": 278,
+          "sha256": "46a558a36a6f5ca616810c8422e868c729c98f409f0fa70eee68c8a27617346b"
+        },
+        {
+          "map": 9,
+          "frame": 34,
+          "file": "map09-frame0034-cave-rock-hd.png",
+          "native_content_sha256": "51f04bde96876abba5fe13eb3501825dfcd4d25b830448a1551426d3284706e1",
+          "source_pixels": 545,
+          "remap_pixels": 31,
+          "painted_void_edge_padding_pixels": 248,
+          "sha256": "fc4bebe12f87874848da2fd056d06f0c68318961757ccd166f7b4bc56763654f"
+        },
+        {
+          "map": 9,
+          "frame": 35,
+          "file": "map09-frame0035-cave-rock-hd.png",
+          "native_content_sha256": "1ec03c3dd28e9418958c7ebd998a415273a2e3ddc839ff6873c584bccb0d491e",
+          "source_pixels": 553,
+          "remap_pixels": 23,
+          "painted_void_edge_padding_pixels": 114,
+          "sha256": "52995aaacf726d33faaf472a51fa66d6b3e2403a781df07a8e76714ff6df7ef1"
+        },
+        {
+          "map": 9,
+          "frame": 36,
+          "file": "map09-frame0036-cave-rock-hd.png",
+          "native_content_sha256": "f0f3722f9dbecdccd6f2af074d226aa34b3b9cabea125ef6c7031b492bffb693",
+          "source_pixels": 282,
+          "remap_pixels": 294,
+          "painted_void_edge_padding_pixels": 65,
+          "sha256": "acf559668e13e5996061488f0b149b6c217bf53c77f45cbd2d743f648fa08915"
+        },
+        {
+          "map": 9,
+          "frame": 37,
+          "file": "map09-frame0037-cave-rock-hd.png",
+          "native_content_sha256": "1cc1617a8dda20f3aca8708d9404f2fa6fc2044f4d222e9a3a8838e912ce4cae",
+          "source_pixels": 122,
+          "remap_pixels": 454,
+          "painted_void_edge_padding_pixels": 103,
+          "sha256": "cb8a26f18ba1c88f8346d0c15baec57e3e7d10881de2b2690d0258a52e9b3c82"
+        },
+        {
+          "map": 9,
+          "frame": 38,
+          "file": "map09-frame0038-cave-rock-hd.png",
+          "native_content_sha256": "67d9332a711950a744393d7109b56f59642078896d3ae53ef96d2fa25902b690",
+          "source_pixels": 124,
+          "remap_pixels": 452,
+          "painted_void_edge_padding_pixels": 141,
+          "sha256": "4ea33b8514516f233d35193be8a5d639f3018dde3fe4832bbefd09db44bd3671"
+        },
+        {
+          "map": 9,
+          "frame": 39,
+          "file": "map09-frame0039-cave-rock-hd.png",
+          "native_content_sha256": "7f0ef9cc447b24fdabedcaf66b05716183500cca67f41ba95c9773fa7630000b",
+          "source_pixels": 323,
+          "remap_pixels": 253,
+          "painted_void_edge_padding_pixels": 79,
+          "sha256": "3d33b134f56a8842fbf7238678d4947641026375f8b46b01a2de8a1d47727b24"
+        },
+        {
+          "map": 9,
+          "frame": 40,
+          "file": "map09-frame0040-cave-rock-hd.png",
+          "native_content_sha256": "65fe3f492afc438fe9d8a6e0e255ef18887d7f7ab8d583b8898ae55ce48904e7",
+          "source_pixels": 269,
+          "remap_pixels": 307,
+          "painted_void_edge_padding_pixels": 134,
+          "sha256": "c45bc2c108264e5804613a9e55407bda78f50575de24c0200ccba7b3d0b6e51e"
+        },
+        {
+          "map": 9,
+          "frame": 41,
+          "file": "map09-frame0041-cave-rock-hd.png",
+          "native_content_sha256": "2202846af7e254f7313109ebc219e650c82015a1d7d586538fc7fd19c1be3885",
+          "source_pixels": 246,
+          "remap_pixels": 330,
+          "painted_void_edge_padding_pixels": 104,
+          "sha256": "37762d08407b5f7666eb06b1457c20596b33a05a018e1d9728e44631be60e434"
+        },
+        {
+          "map": 9,
+          "frame": 42,
+          "file": "map09-frame0042-cave-rock-hd.png",
+          "native_content_sha256": "4f81d574257e87c13536130f34e9175cb0baad1e28506e24f3dab00bba8efb23",
+          "source_pixels": 253,
+          "remap_pixels": 323,
+          "painted_void_edge_padding_pixels": 194,
+          "sha256": "e5795c86710a68926be29343b10309b1f07808bfe6a5730d662e4b9de184b0be"
+        },
+        {
+          "map": 9,
+          "frame": 43,
+          "file": "map09-frame0043-cave-rock-hd.png",
+          "native_content_sha256": "552fdd97f54494410ad51f284298daabbdfc14a82fde4be5bc2700545e303783",
+          "source_pixels": 291,
+          "remap_pixels": 285,
+          "painted_void_edge_padding_pixels": 171,
+          "sha256": "a592fd41e5068afdafa1a962ca62d79a0c9c2ed42eb9c817dcd9496695fca220"
+        },
+        {
+          "map": 9,
+          "frame": 44,
+          "file": "map09-frame0044-cave-rock-hd.png",
+          "native_content_sha256": "0ed55c5b8da27933f291f943899f643dae2676025bf5d384d8abfbf979c6e322",
+          "source_pixels": 465,
+          "remap_pixels": 111,
+          "painted_void_edge_padding_pixels": 82,
+          "sha256": "77c23a8418132483ba0e17bb062dd251e8ffc5155ef38bd9232f1fef3822061f"
+        },
+        {
+          "map": 9,
+          "frame": 45,
+          "file": "map09-frame0045-cave-rock-hd.png",
+          "native_content_sha256": "30b12cc450d48ad08725c476697d1c184180bffdbb6a9470b7b1960b83d78619",
+          "source_pixels": 269,
+          "remap_pixels": 307,
+          "painted_void_edge_padding_pixels": 186,
+          "sha256": "268ad306e37a6359ec25151abf767f964ed561e937fb315ae7936fcd7762977a"
+        },
+        {
+          "map": 9,
+          "frame": 46,
+          "file": "map09-frame0046-cave-rock-hd.png",
+          "native_content_sha256": "7bad083e9bdf82fe10331ea0f8779adc78f869df07d36f830076e8a8e06bd117",
+          "source_pixels": 302,
+          "remap_pixels": 274,
+          "painted_void_edge_padding_pixels": 98,
+          "sha256": "25542d5e2998855a5cfb305ce778a1e30b72a47625690a8a5cb5f8c0b839a033"
+        },
+        {
+          "map": 9,
+          "frame": 47,
+          "file": "map09-frame0047-cave-rock-hd.png",
+          "native_content_sha256": "412a4284ef6eb0af35e3566d81fb7a8a2359bbd38b0b72f72e7bb50c8b558f8c",
+          "source_pixels": 472,
+          "remap_pixels": 104,
+          "painted_void_edge_padding_pixels": 113,
+          "sha256": "e514befb6c4a2bc14198ae7aa835bbab3b474dab0a32b28ae4f3be51026b0ffc"
+        }
+      ],
+      "rgb_policy": "RGB只由新母稿供給。LANCZOS歸一至576，藍色void以B>R+8且G>R分類，row-major BFS左／右／上／下延伸最近手繪RGB，最後原生source Mask nearest6設定alpha；remap與透明洞均alpha0。",
+      "candidate_rebuild": "最終工具修正失敗分支的圖片handle釋放，重編catalog.assets與候選保持；登錄守衛及來源反例通過。"
+    },
+    "partial_masks_gpu": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-partial-mask-gpu-r1-capture/receipt.json",
+        "sha256": "961c0c4a216f03a1272153a4c444d58fb042724dd2f0d50901b4812cd13a5a8b"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-partial-mask-gpu-r1.log",
+        "sha256": "f7a6f40a050dcbe9aa2bdb5b99ba3760b22897048345d940f38b50109e8fe724"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-partial-mask-gpu-r1.memory.json",
+        "sha256": "b386a4b48c94632572fdd1d11ade508ede454fe67b2ed5ec0bf49c8b1a3021f3",
+        "elapsed_seconds": 212.231,
+        "peak_bytes": 2196570112,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "sources": 306,
+      "cases": 612,
+      "scope": "全部296部分覆蓋及10純目的地來源，以標記RGB與真實native bank測原色／LUT。GPU對獨立CPU容差2；全部透明區逐點精確確認背景只LUT一次。非實際手繪圖或一般玩家。"
+    },
+    "actual_art_gpu": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-cave-rock-game-gpu-r2-capture/receipt.json",
+        "sha256": "20df5e0c64b35094ab81e5dea65998f94a9f744e336bf7ad929e7524d5b315cf"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-cave-rock-game-gpu-r2.log",
+        "sha256": "93b70b2205aecb4c0f5768552d6ff9e8350c0dcb7bc2db924fedb64265ee08ac"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-cave-rock-game-gpu-r2.memory.json",
+        "sha256": "6df04286b6461d16c765e0690ce76d5c84fe4e8c76c01f3c9ce79e2fbf26feee",
+        "elapsed_seconds": 100.169,
+        "peak_bytes": 4171952128,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "source_cases": 32,
+      "complete_game_cases": 2,
+      "save_bytes_unchanged": 166,
+      "scope": "actual map9 art, controlled camera and chapter10 units; programmatic theme/UI controls, not normal player or original parity"
+    },
+    "go_regression": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-cave-final-r1.log",
+        "sha256": "8381340cccb341fd86c7d58a1f994ed34489ff64330e17e45b8bb34a1df2b185"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-cave-final-r1.memory.json",
+        "sha256": "e376e3261a97ffd1bdb6a9553f6265cbd3f0f613cc62badd9a797b9e9699f693",
+        "elapsed_seconds": 42.582,
+        "peak_bytes": 1508487168,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "passed": [
+        "TestCoverageIncludesFormalEventWriterAndPreservesRawInput",
+        "TestCoverageOnlyReusesIdenticalNativeContentAndUniqueHD",
+        "TestCoverageRejectsWrongCatalogSHAAlphaAndDuplicates",
+        "TestCoverageSeparatesCompositeRequirementsFromMissingArt",
+        "TestSourceSelectorsRejectOutOfBankAndChangedControls",
+        "TestSourceSelectorsKeepRawWordMaskAndAllPhases",
+        "TestSourceExportPreservesExistingOutput",
+        "TestSourceExportFailureDoesNotPublish",
+        "TestModernHDBattleConsumerInventory",
+        "TestModernHDMapOverwriteCoverageAndDestinationDependency",
+        "TestModernHDMapTransactionUsesOneNativeClockAndIndependentTerrain",
+        "TestModernHDCh23StageLoader",
+        "TestModernHDTerrainCatalogAtomicAndNativeMask",
+        "TestModernHDTerrainRGBIdentityMappingAndCollapse",
+        "TestModernHDTerrainSteadyAndUpStepProjection",
+        "TestModernHDTerrainKeepsClockAndRangeAbovePainting",
+        "TestIndependentInterfaceFourModesKeepArtworkAndBattle",
+        "TestPlayerPosterApprovedPixelsAndAtomicSourceRejection",
+        "TestBuildCollectsControlledJSONAndGoUIWithoutNotesOrErrors",
+        "TestBuildIsDeterministicAndJSONSerializable",
+        "TestBuildRejectsDuplicateExistingStringID",
+        "TestMultipleTextFieldsDoNotReuseOneExistingStringID",
+        "TestVariablesIncludeWrappedErrorPlaceholder",
+        "TestDrawFunctionContextIncludesIndirectASCIIAndFunctionName",
+        "TestDrawFunctionContextSkipsLocaleKeys",
+        "TestReviewedGoCandidatesMatchCurrentInventory"
+      ],
+      "scope": "source CLI、載入／投影、地圖23背景、地形覆寫／時鐘、獨立介面／海報、字串及戰鬥來源最小回歸。"
+    },
+    "tool_rejections": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-cave-rock-tool-tests-final.log",
+        "sha256": "9a2c05219fc54a71fc021c87e793b8861035eb4629ecb9075c0f3ddc2930443c"
+      },
+      "top_level_tests": 6,
+      "cave_source_faults": 5,
+      "cave_registration_faults": 4,
+      "reuse_source_faults": 9,
+      "reuse_registration_faults": 4,
+      "scope": "固定864項及853項基底，完整重編等價、既有輸出拒覆寫、來源錯誤不發布部分資料、缺GPU來源或保存不改正式清冊。"
+    },
+    "assets": {
+      "status": "PASS-PRIVATE-CAVE-ROCK-SYNC",
+      "old_files_preserved": 7065,
+      "new_files": [
+        "cave-rock-partial-hd-v1-master.png",
+        "map09-frame0032-cave-rock-hd.png",
+        "map09-frame0033-cave-rock-hd.png",
+        "map09-frame0034-cave-rock-hd.png",
+        "map09-frame0035-cave-rock-hd.png",
+        "map09-frame0036-cave-rock-hd.png",
+        "map09-frame0037-cave-rock-hd.png",
+        "map09-frame0038-cave-rock-hd.png",
+        "map09-frame0039-cave-rock-hd.png",
+        "map09-frame0040-cave-rock-hd.png",
+        "map09-frame0041-cave-rock-hd.png",
+        "map09-frame0042-cave-rock-hd.png",
+        "map09-frame0043-cave-rock-hd.png",
+        "map09-frame0044-cave-rock-hd.png",
+        "map09-frame0045-cave-rock-hd.png",
+        "map09-frame0046-cave-rock-hd.png",
+        "map09-frame0047-cave-rock-hd.png"
+      ],
+      "file_count": 7082,
+      "catalog_sha256": "37d15b37d6a87a129d37da5b8c5108b8c53fc4b0758ec85ce9c8640eba19b4d4",
+      "catalog_assets": 866,
+      "uid_gid": [
+        1000,
+        1000
+      ],
+      "manifest_sha256": "6fb18eaf8af7bd85b72844478e99814ce757739f31e3f1dd78f45e37ec3d8670",
+      "private_commit": "45169fa2b782a0e19b27d576b540649def3bbb07",
+      "remote_head_verified": true,
+      "is_private": true,
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-cave-private-sync-r1.json",
+        "sha256": "5f3991ed917f1cf99941d474510fdb70d96030de5e48b511e20a4e2dc1a49e4d"
+      }
+    },
+    "current_consumer_inventory": {
+      "observed": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-cave-consumers-r1.json",
+        "sha256": "f964e38f41778f263bee12cec2e6d2d03ab1d201c7591f6f938ee62280058662"
+      },
+      "verified": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-cave-consumers-verify-r1.json",
+        "sha256": "bb895c459412c72d2ae9527ef63a2762eb42d3ce348ec6f5513c9684fca5e58b"
+      },
+      "source_file_count": 1189,
+      "source_tree_sha256": "d587ed0fd47a81a12619220275bb90cd8d5f26af52caa635b8d52e4c9573903a",
+      "cases": 21,
+      "archive_frames": 416,
+      "rejected_mutants": [
+        "wrong-archive",
+        "wrong-resource",
+        "wrong-frame",
+        "wrong-pixels",
+        "wrong-mask",
+        "missing-case",
+        "false-gpu",
+        "missing-hd",
+        "wrong-code",
+        "wrong-command",
+        "wrong-packed",
+        "wrong-descriptor",
+        "missing-map-route",
+        "wrong-lmi-kind",
+        "wrong-lmi-pixels",
+        "wrong-lmi-entry",
+        "missing-lmi-hd",
+        "wrong-map-mask",
+        "missing-map-mask-hd"
+      ],
+      "scope": "既有受控戰鬥來源回歸，不重新宣稱一般玩家、GPU或原版parity。"
+    },
+    "build": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-cave-binary-r1",
+      "sha256": "b7e18650bdc368a483be3a72eb2a48364916cf5f3eecafca1ed3ffecea847a73"
+    },
+    "readme_image": {
+      "file": "docs/figures/hd1-cave-rock.png",
+      "sha256": "d6b76eea75f2c075bfb80e5dc677bee627d8f3f394c0155fef8199bf2e4991e8",
+      "source": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-cave-rock-game-gpu-r2-capture/game-map09-hd-ui.png",
+        "sha256": "d6b76eea75f2c075bfb80e5dc677bee627d8f3f394c0155fef8199bf2e4991e8"
+      },
+      "method": "完整PNG逐byte複製，未裁切、重繪或加工；相機受控、章10單位。"
+    },
+    "reproduce": [
+      "維護中的fd2-go-test-local:latest、Go1.22.12、UID/GID1000、2CPU；CPU4GiB，全部來源GPU4GiB，完整Game.Draw7GiB；with-xvfb及llvmpipe，原包及現代包唯讀。",
+      "FD2_ASSET_PACK=/original、FD2_TEST_MODERN_EFFECT_CATALOG=<候選清冊>、FD2_TEST_MODERN_EFFECT_PACK=<候選包>；synthetic部分遮罩不需完整主題。",
+      "source_mask測試：FD2_HD_TERRAIN_PARTIAL_GPU=1、FD2_HD_TERRAIN_PARTIAL_OUT=<新目錄>，with-xvfb go test ./cmd/fd2 -count=1 -timeout=390s -run ^TestModernHDTerrainPartialNativeMasksAndGPU$。",
+      "實圖測試：FD2_HD_CAVE_ROCK_GPU=1、FD2_HD_CAVE_ROCK_MANIFEST=<候選/manifest.json>、FD2_HD_CAVE_ROCK_OUT=<新目錄>，with-xvfb go test ./cmd/fd2 -count=1 -timeout=390s -run ^TestModernHDCaveRockActualGameGPU$。",
+      "候選編製／登錄／反例參數依61新節，固定864項基底由git show 6ae3b554重取；manifest與catalog SHA綁定候選路徑，新路徑應重新跑GPU取得配套收據。",
+      "全部Go最終命令由go_regression.memory.command保存。coverage及consumer JSON由Go重生，獨立Python以--self-test重驗。sync_modern_theme_private.py只依正式catalog allow-list同步；validate_modern_theme_catalog.py --verify-private覆驗。"
+    ],
+    "diagnostics": [
+      "最初小圖誤認瀑布，放大原生參考後確認為洞窟石壁，已告知使用者並修正製圖提示；未將錯誤用途接入正式資料。",
+      "actual GPU r1測具未初始化native HUD／range，在Game.Draw前失敗；補MaterializeNativeMapHUDState／RangeMode後同工具鏈乾淨r2通過，正式規則未改。",
+      "工具首輪失敗圖片handle產生ResourceWarning，改以with開啟並copy後，final六測試無警告；候選影像保持。"
+    ],
+    "remaining": [
+      "#282仍缺3479個美術槽及未HD背景，另揭露10個純目的地重映射來源。22個同源可重用槽可在下一批驗證，不自動宣稱完成。",
+      "#283其餘介面／城鎮行走人物及#284完整組合保持OPEN；#285工具列保持CLOSED。",
+      "造型與實機操作由使用者人工驗證。HD2／HD-2D另期，無新Release。"
+    ],
+    "toolchain": {
+      "go_image": "fd2-go-test-local:latest",
+      "go_image_id": "44c2bbcc2a00",
+      "go": "go1.22.12 linux/amd64",
+      "pillow_image": "sc-cht-hdtools:pillow11.3.0-r2",
+      "pillow": "11.3.0",
+      "gpu": "llvmpipe，非平台效能驗收"
+    },
+    "cleanup": {
+      "unexpected_fd2_containers": 0,
+      "recordings_created": 0,
+      "new_pack_images": 17,
+      "scope": "自有容器--rm、有界、均退出。工作根留來源、收據與重跑依賴，不新錄影片。只檢查本批擁有權，不修改舊root-owned基線。"
+    },
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-cave-final-validation-r1.json",
+      "sha256": "cc4fe9d29166ca1500f2f6ddbf28e447454045890df63bed9317b600d5a948a6"
     }
   }
 }

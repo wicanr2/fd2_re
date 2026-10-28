@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_cave_rock_partial_hd_recipe",
+  "base_catalog_sha256": "313af14140cb6695c21ceaae516e830abbb7fd5e7e4c852dbc9c0d274c280a89",
+  "map_id": 9,
+  "frame_ids": [
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47
+  ],
+  "master_file": "cave-rock-partial-hd-v1-master.png",
+  "master_sha256": "28b076908b60423818429d90963ed0e61661f94aabe85549cd261f1762b13406",
+  "master_size": [
+    1254,
+    1254
+  ],
+  "atlas_columns": 4,
+  "atlas_rows": 4,
+  "output_cell_size": 144,
+  "resample": "LANCZOS",
+  "void_rgb_policy": "B > R + 8 and G > R: replace only those pixels by nearest non-void painted RGB before applying native source alpha",
+  "nearest_policy": "multi-source Manhattan BFS; row-major seeds; left, right, up, down",
+  "alpha_policy": "native source Mask nearest 6, destination RemapMask remains transparent",
+  "source_rgb_used": false,
+  "image_generation": {
+    "tool": "image_gen",
+    "mode": "builtin",
+    "reference_guide_sha256": "fe2858edd5552d5669db4291b22f228e563e0d77f017a319a370ad8eabb81140",
+    "prompt": "Create one production HD1 terrain sprite-sheet master for the Flame Dragon Knights 2 remake. Reference is a mechanically extracted 4-by-4 atlas of 16 original cave-rock/cliff cells, row-major. Redraw the warm ochre/brown cave stone regions into detailed soft hand-painted fantasy RPG terrain: natural worn rock clusters, fine fissures, rounded ledges, warm earthy tones. This is cave stone and pit rims, not water, waterfalls or lava. Preserve exactly the orthographic camera, gross stone silhouettes, every tile composition, the large central dark-blue void and isolated central rock, and continuity across the 4x4 equal square cells. Do not shift or rescale shapes, invent objects, or add people, plants, text, borders, gutters or grid lines. Output a single opaque square atlas with the arrangement edge to edge. Navy voids remain flat navy; deterministic native coverage masks make these pixels transparent during compilation. New painted RGB, not pixel-art enlargement."
+  },
+  "evidence_refs": [
+    "docs/data/fd2-reference-files.json",
+    "docs/data/fd2-hd1-terrain-coverage.json",
+    "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+  ]
+}

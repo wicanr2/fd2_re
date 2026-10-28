@@ -70,7 +70,7 @@ func TestModernHDTerrainCatalogAtomicAndNativeMask(t *testing.T) {
 	badBank := nativeFrameTestBank(1, 1)
 	badBank.Sprites[0].RemapMask[3] = 1
 	if err := set.validateTerrainHD(0, badBank); err == nil {
-		t.Fatal("destination remap admitted as opaque base")
+		t.Fatal("overlapping source and destination masks admitted")
 	}
 	set.terrainHD[0][0].Role = "foreground"
 	badBank = nativeFrameTestBank(1, 1)

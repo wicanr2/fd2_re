@@ -108,8 +108,8 @@ func (s *modernStoryPortraitSet) validateTerrainHD(mapID int, bank *fdicon.Bank)
 		}
 		seen := [256]bool{}
 		for i, mask := range source.Mask {
-			if asset.supports("terrain") && (mask == 0 || source.RemapMask[i] != 0) {
-				return errors.New("modern HD terrain: base must be opaque without destination remap")
+			if mask > 1 || source.RemapMask[i] > 1 || mask != 0 && source.RemapMask[i] != 0 {
+				return errors.New("modern HD terrain: source and destination masks must be binary and disjoint")
 			}
 			if mask != 0 {
 				seen[source.Pixels[i]] = true

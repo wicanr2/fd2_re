@@ -69022,6 +69022,109 @@
         "docs/data/fd2-hd1-terrain-coverage.json",
         "docs/knowledge-base/61-modern-theme-runtime-spec.md"
       ]
+    },
+    {
+      "asset_id": "modern.terrain.cave_rock_partial.master",
+      "role": "terrain_hd_master",
+      "status": "concept",
+      "file": "cave-rock-partial-hd-v1-master.png",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "28b076908b60423818429d90963ed0e61661f94aabe85549cd261f1762b13406",
+      "source_refs": [
+        "remake/assets/themes/modern/cave-rock-partial-hd.recipe.json",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+        "docs/data/fd2-reference-files.json"
+      ]
+    },
+    {
+      "asset_id": "modern.terrain.cave_rock_partial.map09.native_hd",
+      "role": "native_terrain_hd_set",
+      "status": "runtime_candidate",
+      "consumer_contract": "fdshap_native_hd_sparse_v1",
+      "map_id": 9,
+      "width": 144,
+      "height": 144,
+      "frame_count": 16,
+      "frame_ids": [
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47
+      ],
+      "semantics": [
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain"
+      ],
+      "files": [
+        "map09-frame0032-cave-rock-hd.png",
+        "map09-frame0033-cave-rock-hd.png",
+        "map09-frame0034-cave-rock-hd.png",
+        "map09-frame0035-cave-rock-hd.png",
+        "map09-frame0036-cave-rock-hd.png",
+        "map09-frame0037-cave-rock-hd.png",
+        "map09-frame0038-cave-rock-hd.png",
+        "map09-frame0039-cave-rock-hd.png",
+        "map09-frame0040-cave-rock-hd.png",
+        "map09-frame0041-cave-rock-hd.png",
+        "map09-frame0042-cave-rock-hd.png",
+        "map09-frame0043-cave-rock-hd.png",
+        "map09-frame0044-cave-rock-hd.png",
+        "map09-frame0045-cave-rock-hd.png",
+        "map09-frame0046-cave-rock-hd.png",
+        "map09-frame0047-cave-rock-hd.png"
+      ],
+      "frame_sha256": [
+        "baa48b7027b051530db335d6fcd6837dc5887f3a4bce9c88472c21da733c6769",
+        "46a558a36a6f5ca616810c8422e868c729c98f409f0fa70eee68c8a27617346b",
+        "fc4bebe12f87874848da2fd056d06f0c68318961757ccd166f7b4bc56763654f",
+        "52995aaacf726d33faaf472a51fa66d6b3e2403a781df07a8e76714ff6df7ef1",
+        "acf559668e13e5996061488f0b149b6c217bf53c77f45cbd2d743f648fa08915",
+        "cb8a26f18ba1c88f8346d0c15baec57e3e7d10881de2b2690d0258a52e9b3c82",
+        "4ea33b8514516f233d35193be8a5d639f3018dde3fe4832bbefd09db44bd3671",
+        "3d33b134f56a8842fbf7238678d4947641026375f8b46b01a2de8a1d47727b24",
+        "c45bc2c108264e5804613a9e55407bda78f50575de24c0200ccba7b3d0b6e51e",
+        "37762d08407b5f7666eb06b1457c20596b33a05a018e1d9728e44631be60e434",
+        "e5795c86710a68926be29343b10309b1f07808bfe6a5730d662e4b9de184b0be",
+        "a592fd41e5068afdafa1a962ca62d79a0c9c2ed42eb9c817dcd9496695fca220",
+        "77c23a8418132483ba0e17bb062dd251e8ffc5155ef38bd9232f1fef3822061f",
+        "268ad306e37a6359ec25151abf767f964ed561e937fb315ae7936fcd7762977a",
+        "25542d5e2998855a5cfb305ce778a1e30b72a47625690a8a5cb5f8c0b839a033",
+        "e514befb6c4a2bc14198ae7aa835bbab3b474dab0a32b28ae4f3be51026b0ffc"
+      ],
+      "alpha_contract": "native_mask_nearest_6",
+      "cycle_policy": "native_selector",
+      "source_refs": [
+        "remake/assets/themes/modern/cave-rock-partial-hd.recipe.json",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+        "docs/data/fd2-reference-files.json"
+      ]
     }
   ]
 }

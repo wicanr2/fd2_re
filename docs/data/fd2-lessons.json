@@ -4646,16 +4646,16 @@
       "id": "hd-terrain-coverage-separates-art-and-compositing",
       "date": "2026-10-28",
       "area": "HD地形盤點",
-      "rule": "HD地形分開盤點初始selector、正式事件writer及依目的地的合成。來源非全opaque或帶remap時，另列合成接線，不稱只缺美術；事件全有效的來源上界不稱正常可達。入口remake/cmd/fd2-terrain-sources/coverage.go及規格61「HD1全地圖地形盤點與同源接線」。",
-      "why": "初始來源清單漏掉更新後圖號；現行稀疏HD底層只接全opaque且無remap的來源。33圖重新盤點後，部分覆蓋、混合重映射與純目的地重映射均需分列，避免製圖完成被誤認為接線完成。",
+      "rule": "HD地形分開盤點初始selector、正式事件writer、來源Mask與目的地RemapMask。來源部分覆蓋沿144圖的native_mask_nearest_6接線，透明區保留已完成合成的原生或已登錄HD背景，不重複LUT；來源可載入不代表背景已HD。事件全有效的來源上界不稱正常可達。入口remake/cmd/fd2-terrain-sources/coverage.go、modern_hd_terrain_partial_test.go及規格61「HD1地形來源遮罩與洞窟石壁」。",
+      "why": "初始來源清單漏掉更新後圖號；現行稀疏HD底層只接全opaque且無remap的來源。33圖重新盤點後，部分覆蓋、混合重映射與純目的地重映射均需分列，避免製圖完成被誤認為接線完成。 後續306來源、612個GPU案例確認原生合成與地圖23HD背景已具目的地契約，阻擋是HD載入器過度限制。刪除過時限制後依來源覆蓋登錄，背景缺圖仍揭露；原296合成分類由目前證據取代。",
       "guard": {
         "kind": "present",
         "paths": [
           "remake/cmd/fd2-terrain-sources/coverage.go"
         ],
-        "pattern": "missing-composite"
+        "pattern": "backdrop_policy"
       },
-      "evidence": "HD主收據hd1_terrain_reuse_followup_20261028"
+      "evidence": "HD主收據hd1_terrain_partial_followup_20261028"
     }
   ]
 }
