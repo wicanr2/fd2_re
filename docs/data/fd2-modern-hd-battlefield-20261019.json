@@ -246347,5 +246347,406 @@
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-floor-final-validation-r1.json",
       "sha256": "6d7f0db071aef34290e880b3bcc4b437c290f1a701557714211462f8aae161ea"
     }
+  },
+  "hd1_map_overview_followup_20261028": {
+    "date": "2026-10-28",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1",
+    "base_commit": "768ad3136cb72f6c4235d932107f064283ca26b8",
+    "working_branch": "feat/hd1-map-overview",
+    "issue": 282,
+    "scope": "README加入六張代表HD地圖的同版本完整遊戲總覽。沒有新增地形素材或改動正式規則，完整HD1尚待。",
+    "capture": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-map-overview-gpu-r1-capture/receipt.json",
+        "sha256": "c12e11d10852a186e7598fa3978f25ffd625c567c822bde98fbd99589422a062"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-map-overview-gpu-r1.log",
+        "sha256": "c712d3c3af67923c5a6451bde7394e87bfe719eb6cdc62b6f83bf09820667c6c"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-map-overview-gpu-r1.memory.json",
+        "sha256": "afd2a5ddc9720724fdc3c0b27ab3257cb33755a0a40bb04559f3e5f61b59c227",
+        "elapsed_seconds": 188.841,
+        "peak_bytes": 6325538816,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "map_ids": [
+        0,
+        1,
+        9,
+        24,
+        25,
+        26
+      ],
+      "cases": [
+        {
+          "camera": [
+            0,
+            16
+          ],
+          "chapter": 1,
+          "cursor": [
+            6,
+            20
+          ],
+          "map": 0,
+          "map_sha256": "ed67a8a86f2451a173f78ba77a26556f0cac45faa7bda3ed2a6e657aa8cdd045",
+          "name": "初試身手",
+          "painted_terrain_draws": 104,
+          "save_bytes": 170,
+          "scenario_sha256": "9d2229fe33a5a692234cb8343aaf6c4d159e6de1a4e4d9df4e2870874e103269"
+        },
+        {
+          "camera": [
+            12,
+            13
+          ],
+          "chapter": 2,
+          "cursor": [
+            18,
+            17
+          ],
+          "map": 1,
+          "map_sha256": "e1cfbecf74507b6b96685acbb89111e265d74478b7c792db6710c9dea08179a3",
+          "name": "羅德鎮",
+          "painted_terrain_draws": 64,
+          "save_bytes": 170,
+          "scenario_sha256": "27ff99c5f21304eaebe75be228256d32c57ece1fd4e167d6582ca9082f209d02"
+        },
+        {
+          "camera": [
+            10,
+            5
+          ],
+          "chapter": 10,
+          "cursor": [
+            16,
+            9
+          ],
+          "map": 9,
+          "map_sha256": "db607634ad079db40f5ef544405157244ca3f256602656e8e385f988eaa5ec82",
+          "name": "洞窟中的激戰",
+          "painted_terrain_draws": 66,
+          "save_bytes": 170,
+          "scenario_sha256": "91f207235fae39ef02f2ba42e342b5d7a5bbbdefe8b061e92bf732bdfa2e605d"
+        },
+        {
+          "camera": [
+            2,
+            7
+          ],
+          "chapter": 25,
+          "cursor": [
+            8,
+            11
+          ],
+          "map": 24,
+          "map_sha256": "4b05d28a2d612e612752161312d82c2179f4ee8467481f730098f5f9f76caf36",
+          "name": "火焰的審判",
+          "painted_terrain_draws": 53,
+          "save_bytes": 170,
+          "scenario_sha256": "4c6648a419b3b9cc7ccf3083745e7590881e19521b97f516ea88567172146cb6"
+        },
+        {
+          "camera": [
+            0,
+            39
+          ],
+          "chapter": 26,
+          "cursor": [
+            6,
+            43
+          ],
+          "map": 25,
+          "map_sha256": "be8da15856d5377993632d520c6a19c4c06def5daae232bda290047def212016",
+          "name": "未知的迴廊",
+          "painted_terrain_draws": 14,
+          "save_bytes": 170,
+          "scenario_sha256": "1031f6c875b96448b8d723bac0787c3fe2f4479738ab76b401915d7a5f1131db"
+        },
+        {
+          "camera": [
+            11,
+            39
+          ],
+          "chapter": 27,
+          "cursor": [
+            17,
+            43
+          ],
+          "map": 26,
+          "map_sha256": "040c520dda8c32bf651a2403fcdfaf16bb75d946031a21873375db3ee831921e",
+          "name": "命運的交會點",
+          "painted_terrain_draws": 38,
+          "save_bytes": 170,
+          "scenario_sha256": "bbe62db8d474d3a4f81c735b2fec6da23fd2010f7d2a27e325be1b3fc4d3836f"
+        }
+      ],
+      "full_game_cases": 6,
+      "f2_cases": 6,
+      "source_pngs": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-map-overview-gpu-r1-capture/overview-map00.png",
+          "sha256": "c0bc871615d92657dd491668c12c45d7a0bdb51fd020fd3aba73b0153c9f2f13",
+          "map": 0
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-map-overview-gpu-r1-capture/overview-map01.png",
+          "sha256": "66fe39cc9f7b5d265f077c082d7ce6fe26bb32412869f848edea8e5daf5fb414",
+          "map": 1
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-map-overview-gpu-r1-capture/overview-map09.png",
+          "sha256": "3aa6ec432d7f14f5f840d6e58ea7a42b78ee9a3b8c8117f2a7816d0a629129d0",
+          "map": 9
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-map-overview-gpu-r1-capture/overview-map24.png",
+          "sha256": "b1e8c6c4f5722ab6e96cb63a2e546aca5d2ca197a9b72550f2af5ba80612bf08",
+          "map": 24
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-map-overview-gpu-r1-capture/overview-map25.png",
+          "sha256": "7f2e1fcc2ee0f74e57a5228c1edaa149afa8f67bf555bac4e92843cafb1ebdff",
+          "map": 25
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-map-overview-gpu-r1-capture/overview-map26.png",
+          "sha256": "ebd3e23630848c211a1d992c7c46f27c5968d4d1dfd89fc88529efc6fe7e0b4a",
+          "map": 26
+        }
+      ],
+      "scope": "six current Game.Draw captures; controlled cameras, authored units unchanged; programmatic F2 and boundary saves; not normal player or original parity",
+      "camera_policy": "13×8窗格中已登錄HD地形最多者，同分優先可見存活單位，再取最早左上窗格；游標置中，不更改角色位置。",
+      "roster_policy": "resetBattle採章節JSON的直接進場名冊，未套JOIN歷程；首章JSON包含索爾／亞雷斯／悠妮／蓋亞。不是正常戰役加入證據。",
+      "clock_policy": "fixture clock固定Unix1000；原生RNG由既有fixture設7，Draw／F2與保存前後保持；未測隨機玩法規則。",
+      "editable_inputs": [
+        {
+          "file": "remake/assets/maps/map0/map.json",
+          "sha256": "ed67a8a86f2451a173f78ba77a26556f0cac45faa7bda3ed2a6e657aa8cdd045"
+        },
+        {
+          "file": "remake/assets/scenarios/ch01.json",
+          "sha256": "9d2229fe33a5a692234cb8343aaf6c4d159e6de1a4e4d9df4e2870874e103269"
+        },
+        {
+          "file": "remake/assets/maps/map0/map0_units.json",
+          "sha256": "10f0d34d2ba92edfb254da1f1426e928a465014f1040672b4aee2388c64f234f"
+        },
+        {
+          "file": "remake/assets/maps/map1/map.json",
+          "sha256": "e1cfbecf74507b6b96685acbb89111e265d74478b7c792db6710c9dea08179a3"
+        },
+        {
+          "file": "remake/assets/scenarios/ch02.json",
+          "sha256": "27ff99c5f21304eaebe75be228256d32c57ece1fd4e167d6582ca9082f209d02"
+        },
+        {
+          "file": "remake/assets/maps/map1/map1_units.json",
+          "sha256": "79a246d2b1149fbc99bb00a44b29449e4ebbb44a1d25a72279941b3367514c58"
+        },
+        {
+          "file": "remake/assets/maps/map9/map.json",
+          "sha256": "db607634ad079db40f5ef544405157244ca3f256602656e8e385f988eaa5ec82"
+        },
+        {
+          "file": "remake/assets/scenarios/ch10.json",
+          "sha256": "91f207235fae39ef02f2ba42e342b5d7a5bbbdefe8b061e92bf732bdfa2e605d"
+        },
+        {
+          "file": "remake/assets/maps/map9/map9_units.json",
+          "sha256": "95f412b676830cdaebeea1e51a46e8098dd1dce7c01bcd832bdd4bb0b6f928dc"
+        },
+        {
+          "file": "remake/assets/maps/map24/map.json",
+          "sha256": "4b05d28a2d612e612752161312d82c2179f4ee8467481f730098f5f9f76caf36"
+        },
+        {
+          "file": "remake/assets/scenarios/ch25.json",
+          "sha256": "4c6648a419b3b9cc7ccf3083745e7590881e19521b97f516ea88567172146cb6"
+        },
+        {
+          "file": "remake/assets/maps/map24/map24_units.json",
+          "sha256": "6809e16f413fbff0426aa6b2faa95b7612a5796d3b29ced49ff6374b12f5fbf9"
+        },
+        {
+          "file": "remake/assets/maps/map25/map.json",
+          "sha256": "be8da15856d5377993632d520c6a19c4c06def5daae232bda290047def212016"
+        },
+        {
+          "file": "remake/assets/scenarios/ch26.json",
+          "sha256": "1031f6c875b96448b8d723bac0787c3fe2f4479738ab76b401915d7a5f1131db"
+        },
+        {
+          "file": "remake/assets/maps/map25/map25_units.json",
+          "sha256": "3e0f0b15309239b79066b236f9f8bd8a399d9f7705194a7fc4ecdf10437b82f2"
+        },
+        {
+          "file": "remake/assets/maps/map26/map.json",
+          "sha256": "040c520dda8c32bf651a2403fcdfaf16bb75d946031a21873375db3ee831921e"
+        },
+        {
+          "file": "remake/assets/scenarios/ch27.json",
+          "sha256": "bbe62db8d474d3a4f81c735b2fec6da23fd2010f7d2a27e325be1b3fc4d3836f"
+        },
+        {
+          "file": "remake/assets/maps/map26/map26_units.json",
+          "sha256": "3b2ae89c20d23ae0658d67c7de9e522aabf3ff9fc3bb9ad29dbe62a30b850e2b"
+        }
+      ]
+    },
+    "overview": {
+      "image": {
+        "file": "docs/figures/hd1-map-overview.png",
+        "sha256": "ae8afcc0cbb35b536702012eeabd215c4a937fc790fd8ac3f562dc1063fae1f6"
+      },
+      "report": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-map-overview-sheet-r1.json",
+        "sha256": "a21cbc62abead0157bcb32b7f47a53dc1367541318c291c4ce87376470fa43e4"
+      },
+      "compiler": {
+        "file": "tools/build_fd2_hd_map_overview.py",
+        "sha256": "1ee07e6552290a75ad9b97367a01c47eec55e9924cdb07825400668292c6ec74"
+      },
+      "capture_tool": {
+        "file": "remake/cmd/fd2/modern_hd_map_overview_test.go",
+        "sha256": "0186d97ae22ffbd8e67df4a36c7a5f3479fb019a5258ad7f341df93fb6898caf"
+      },
+      "size": [
+        1352,
+        1662
+      ],
+      "source_size": [
+        1920,
+        1200
+      ],
+      "cell_size": [
+        640,
+        400
+      ],
+      "resample": "LANCZOS；完整畫面等比例縮圖，未裁切或重繪",
+      "label_count": 15,
+      "font_family": "Noto Sans CJK TC / TTC index3",
+      "font_sha256": "b76b0433203017ca80401b2ee0dd69350349871c4b19d504c34dbdd80541690a",
+      "rejected_mutants": [
+        "catalog",
+        "missing-map",
+        "png-sha",
+        "tolerance",
+        "missing-f2"
+      ],
+      "scope": "圖下槽數由目前coverage重算，含事件有效上界，不代表整圖完成比例。"
+    },
+    "current_consumer_inventory": {
+      "observed": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-map-overview-consumers-r1.json",
+        "sha256": "6cb3b827b89adb149b895aa8741bfb9e817815806d2783048cef25ec8c3137b6"
+      },
+      "verified": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-map-overview-consumers-verify-r1.json",
+        "sha256": "a08b81d7df4ba519abab896ed0324c6ff078ad5cf95c2d19ad41664beb5de800"
+      },
+      "source_file_count": 1190,
+      "source_tree_sha256": "8fe56f2fc9b99bbacca85c316e4ced5f91a250eda4b131ba28cfcd425431e601",
+      "cases": 21,
+      "archive_frames": 416,
+      "rejected_mutants": [
+        "wrong-archive",
+        "wrong-resource",
+        "wrong-frame",
+        "wrong-pixels",
+        "wrong-mask",
+        "missing-case",
+        "false-gpu",
+        "missing-hd",
+        "wrong-code",
+        "wrong-command",
+        "wrong-packed",
+        "wrong-descriptor",
+        "missing-map-route",
+        "wrong-lmi-kind",
+        "wrong-lmi-pixels",
+        "wrong-lmi-entry",
+        "missing-lmi-hd",
+        "wrong-map-mask",
+        "missing-map-mask-hd"
+      ],
+      "regression_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-map-overview-source-r1.log",
+        "sha256": "1980db419b034d0d33d5f4cf5a07c0ec301690c04bfae01873693e470292038d"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-map-overview-source-r1.memory.json",
+        "sha256": "b89be60cbc9f4430919ed12a6040e343697ca16fa0f28c2905f28c3053efc0d7",
+        "elapsed_seconds": 61.769,
+        "peak_bytes": 1211785216,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      }
+    },
+    "assets": {
+      "catalog": {
+        "file": "remake/assets/themes/modern/catalog.json",
+        "sha256": "463b6ef33d0052b8aa8e557365a7789d32c10d038709835d27c170a1da0c8579"
+      },
+      "coverage": {
+        "file": "docs/data/fd2-hd1-terrain-coverage.json",
+        "sha256": "2082c18c2ec4b38aae2d3a53b8787e778b774b206e05d9ae7ec093fe8e1c2b3e"
+      },
+      "catalog_assets": 873,
+      "private_files": 7099,
+      "private_commit": "20d874763ebcb981ecac67df5c87e6a0c6179ee2",
+      "source_pack_unchanged": true
+    },
+    "reproduce": [
+      "維護中的fd2-go-test-local:latest／Go1.22.12，UID/GID1000、2CPU／7GiB、有界逾時與network none；with-xvfb及llvmpipe。FD2_ASSET_PACK、FD2_TEST_MODERN_EFFECT_CATALOG／PACK明示唯讀原包及正式主題。",
+      "設定FD2_HD_MAP_OVERVIEW_GPU=1及FD2_HD_MAP_OVERVIEW_OUT=<新目錄>，執行TestModernHDMapOverviewGPU；完整命令在capture.memory.command。",
+      "從既有Go image的/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc取得臨時字型，SHA須與overview.font_sha256相同；以Pillow11.3.0容器執行61列出的build_fd2_hd_map_overview.py參數與--self-test。",
+      "輸入收據綁定當次catalog／coverage SHA，每張PNG須為完整1920×1200、SHA吻合、完整Game.Draw及F2成功。輸出1352×1662 PNG與JSON收據，舊輸出不覆寫。",
+      "目前Go來源由TestModernHDBattleConsumerInventory重生，獨立Python --self-test核對21案例、416來源及19反例；正式遊戲程式與資產沒有改動，不另重打三平台包。"
+    ],
+    "remaining": [
+      "#282仍有3398個地形美術槽與未HD背景，10個純目的地來源另列；總覽不關閉地形工單。",
+      "#283其餘介面與#284完整獨立組合仍待，人工造型與實機確認由使用者接手。",
+      "HD2／HD-2D另期，無新Release。"
+    ],
+    "cleanup": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-map-overview-cleanup-r1.json",
+        "sha256": "9a308407a0c43aa6999304b97992a4cfdb735c3d25ac17693fa7204b360d1259"
+      },
+      "removed_font_bytes": 19484784,
+      "unexpected_fd2_containers": 0,
+      "recordings_created": 0,
+      "scope": "已核對暫存字型SHA後刪除，可從既有Go image重取；六張來源PNG與收據保留，本輪容器--rm有界並均退出。"
+    },
+    "toolchain": {
+      "go": "go1.22.12 linux/amd64",
+      "go_image": "fd2-go-test-local:latest",
+      "go_image_id": "44c2bbcc2a00",
+      "pillow": "11.3.0",
+      "pillow_image": "sc-cht-hdtools:pillow11.3.0-r2",
+      "gpu": "llvmpipe，非平台效能驗收"
+    },
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-map-overview-final-validation-r1.json",
+      "sha256": "3ffec670b680ffee14001748683e8ffaf4997a51f5b2018d4c385d24146c6480"
+    }
   }
 }

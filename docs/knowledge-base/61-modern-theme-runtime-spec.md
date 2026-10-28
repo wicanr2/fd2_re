@@ -310,6 +310,15 @@ HD1 milestone為[GitHub milestone 1](https://github.com/wicanr2/fd2_re/milestone
 
 ## HD1地形來源遮罩與洞窟石壁（CONFORMED-SCOPED／RUNTIME-E1，#282）
 
+### README的HD地圖總覽（CONFORMED-SCOPED／RUNTIME-E1）
+
+- 使用者要求README直接呈現總覽。取map0／1／9／24／25／26六張代表地圖，以目前正式清冊及原生資料重新擷取完整Game.Draw，不用概念稿代替遊戲畫面。章節與map欄位須先核對，人物沿章節資料的直接進場名冊，不調整位置；未套正常戰役JOIN歷程，首章因此包含蓋亞。鏡頭採已登錄HD地形最多的13×8窗格，同分時優先看得到較多單位；游標置中，仍屬受控擷取，不宣稱普通玩家流程。
+- 各圖須通過既有GPU對獨立CPU、程式F2的原生畫面／狀態保持及邊界保存保持。截圖保留完整1920×1200畫面，總覽只等比例縮圖與加中文標籤，不重繪或清除像素素材。標籤連結目前生成覆蓋資料，說明HD圖源槽數為事件有效時的上界，不能當作整張地圖完成比例。
+- 新擷取與總覽工具須保存清冊、覆蓋資料、每張PNG、工具與Go來源指紋；圖片SHA、地圖缺項、清冊不符或尺寸錯誤拒收。來源圖片為同一版擷取，總覽附完整畫面入口及已知像素區域。只交付現況圖，不增加素材、變更正式規則或關閉#282。
+- 這六張代表圖的地形、介面或人物呈現有可見變動時，以本節擷取與排版工具同批更新總覽，槽數由當次生成覆蓋資料重算。
+- 六組完整GPU對獨立CPU、程式F2及保存保持通過；總覽來源五個拒收反例、15個實際字形墨跡安全區與1190份目前Go來源／21個戰鬥來源案例通過。原生地形及私人素材包保持，來源與重跑依HD主收據`hd1_map_overview_followup_20261028`。
+- 擷取入口為[完整遊戲總覽測具](../../remake/cmd/fd2/modern_hd_map_overview_test.go)，設定`FD2_HD_MAP_OVERVIEW_GPU=1`、`FD2_HD_MAP_OVERVIEW_OUT=<新目錄>`及既有原包／主題環境，於Go容器內以`with-xvfb go test ./cmd/fd2 -count=1 -timeout=390s -run ^TestModernHDMapOverviewGPU$`執行。排版入口為[總覽工具](../../tools/build_fd2_hd_map_overview.py)：`--receipt <擷取/receipt.json> --catalog <目前清冊> --coverage <生成覆蓋JSON> --font <Noto CJK TTC> --out <新PNG> --report <新JSON> --self-test`。字型沿既有Go image的`/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc`，TC為index3；來源SHA保存後清除暫存複本，不另裝未鎖版字型。
+
 ### 洞窟地板（CONFORMED-SCOPED／RUNTIME-E1）
 
 - 沿同一FDSHAP與selector證據，補map9實際使用的80～95共16張平面地板，並沿相同三層內容接map24／25／26的43個同源槽，共59槽。
