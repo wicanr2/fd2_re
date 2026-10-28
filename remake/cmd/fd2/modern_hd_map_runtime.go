@@ -306,9 +306,11 @@ func (g *Game) prepareModernHDMapFrameStageLayout(in indexedmap.NativeFrameInput
 		if err != nil {
 			return nil, err
 		}
-		hudPanel, err = g.prepareModernHDMapHUDPanel(in, palette)
-		if err != nil {
-			return nil, err
+		if g.modernHDInterfaceEnabled() {
+			hudPanel, err = g.prepareModernHDMapHUDPanel(in, palette)
+			if err != nil {
+				return nil, err
+			}
 		}
 		if row >= 0 && hudUnit != nil {
 			hudUnit.Unit.Rect = hudUnit.Unit.Rect.Add(image.Pt(0, -row*6))

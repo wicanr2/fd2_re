@@ -297,7 +297,7 @@ func (g *Game) nativeCh23Now() time.Time {
 	if g.nativeMapFrozenNow != nil {
 		return g.nativeMapFrozenNow()
 	}
-	return time.Now()
+	return g.gameNow()
 }
 
 func (g *Game) stepNativeCh23Loop() {

@@ -137,7 +137,7 @@ func (f *Font) faceFor(px int) (font.Face, float64) {
 func (f *Font) Draw(dst *ebiten.Image, s string, x, y, scale float64, clr color.RGBA) float64 {
 	if f.hd != nil && f.hd.scene == dst {
 		f.hd.runs = append(f.hd.runs, modernHDTextRun{font: f, text: s, x: x, y: y,
-			pixels: math.Round(f.base * f.effectiveScale(scale)), color: clr})
+			pixels: math.Round(f.base * f.effectiveScale(scale)), color: clr, userScaled: true})
 		return y
 	}
 	px := int(math.Round(f.base * f.effectiveScale(scale)))

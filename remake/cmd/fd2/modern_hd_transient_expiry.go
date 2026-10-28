@@ -80,7 +80,7 @@ func (g *Game) newNativeTransientExpiryPresentation(unit *battle.Unit, counter i
 }
 
 func (g *Game) prepareModernHDTransientExpiryWorld(p *nativeTransientExpiryPresentation, set *modernStoryPortraitSet) (*modernHDMapFrame, error) {
-	if set != nil && set.hasHD {
+	if g.modernHDInterfaceEnabled() || (set != nil && set.hasHD) {
 		if p == nil {
 			return nil, fmt.Errorf("modern HD expiry: dialogue chrome unavailable")
 		}
@@ -107,7 +107,7 @@ func (g *Game) prepareModernHDTransientExpiryWorld(p *nativeTransientExpiryPrese
 // Check the new HD sources on private states before publishing the countdown.
 // Activation seals them again after the actual damage/death/focus sequence.
 func (g *Game) preflightModernHDTransientExpiry(candidate *battle.State, expired []battle.NativeTransientExpiry, damage []battle.NativeTransientDamage) error {
-	if len(expired) == 0 || g.modernStoryPortraits == nil || (!g.modernStoryPortraits.hasHD && len(g.modernStoryPortraits.mapSpritesHD) == 0) {
+	if len(expired) == 0 || (!g.hdPresentationEnabled() && (g.modernStoryPortraits == nil || len(g.modernStoryPortraits.mapSpritesHD) == 0)) {
 		return nil
 	}
 	preview, err := g.nativeTransientDeathPreview(candidate, damage)
@@ -175,14 +175,16 @@ func (g *Game) modernHDTransientExpiryPortraitAllowed() bool {
 
 func (g *Game) drawModernHDTransientExpiryMessage(screen *ebiten.Image, job *nativeClassUIJob) bool {
 	shift, region, ok := modernHDTransientExpiryRegion(job)
-	if !ok || g.modernHDText == nil || g.font == nil || g.nativeClassUI == nil {
+	if !ok || !g.hdPresentationEnabled() || g.font == nil || g.nativeClassUI == nil {
 		return false
 	}
 	p := job.expiryText
 	frame := job.restore
 	var capture *modernHDIndexedText
 	if !region.Empty() {
-		capture = &modernHDIndexedText{palette: g.nativeClassUI.palette}
+		if g.modernHDText != nil {
+			capture = &modernHDIndexedText{palette: g.nativeClassUI.palette}
+		}
 		font := g.modernHDFacilityFont(g.nativeClassUI.font, capture)
 		previous := g.font.indexedHD
 		g.font.indexedHD = capture
@@ -224,13 +226,18 @@ func (g *Game) drawModernHDTransientExpiryMessage(screen *ebiten.Image, job *nat
 	} else {
 		g.presentNativeClassFrame(screen, frame)
 	}
-	if capture != nil {
+	if !region.Empty() {
 		g.appendModernHDDialogueChrome(p.chrome, shift)
 		clip := image.Rect(region.Min.X*2, region.Min.Y*2, region.Max.X*2, region.Max.Y*2)
-		for _, run := range capture.runs {
+		var runs []modernHDTextRun
+		if capture != nil {
+			runs = capture.runs
+		}
+		for _, run := range runs {
+			run = run.freezeLayout()
 			run.y += float64(shift * 2)
 			run.clip = run.clip.Add(image.Pt(0, shift*2)).Intersect(clip)
-			if !run.clip.Empty() {
+			if !run.clip.Empty() && g.modernHDText != nil {
 				g.modernHDText.runs = append(g.modernHDText.runs, run)
 			}
 		}

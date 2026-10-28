@@ -61,7 +61,7 @@ func modernHDRewardRegion(message *nativeDeathRewardMessageState, job *nativeCla
 
 func (g *Game) drawModernHDRewardMessage(screen *ebiten.Image) bool {
 	state := g.nativeSystemEndTurnUI
-	if state == nil || state.rewardMessage == nil || g.modernHDText == nil || g.font == nil || g.nativePreparationUI == nil || g.nativeClassUI == nil {
+	if state == nil || state.rewardMessage == nil || !g.hdPresentationEnabled() || g.font == nil || g.nativePreparationUI == nil || g.nativeClassUI == nil {
 		return false
 	}
 	message, job := state.rewardMessage, g.nativeClassUIJob
@@ -72,7 +72,9 @@ func (g *Game) drawModernHDRewardMessage(screen *ebiten.Image) bool {
 	var frame []byte
 	var capture *modernHDIndexedText
 	if !region.Empty() {
-		capture = &modernHDIndexedText{palette: g.nativeClassUI.palette}
+		if g.modernHDText != nil {
+			capture = &modernHDIndexedText{palette: g.nativeClassUI.palette}
+		}
 		font := g.modernHDFacilityFont(g.nativePreparationUI.status.Font, capture)
 		dialogue, err := campaign.ComposeNativePreparationConfirmationDialogue(state.source, g.nativePreparationUI.dialogue, message.portrait)
 		if err != nil {
@@ -119,13 +121,18 @@ func (g *Game) drawModernHDRewardMessage(screen *ebiten.Image) bool {
 	} else {
 		g.presentNativeClassFrame(screen, frame)
 	}
-	if capture != nil {
+	if !region.Empty() {
 		g.appendModernHDDialogueChrome(message.chrome, shift)
 		clip := image.Rect(region.Min.X*2, region.Min.Y*2, region.Max.X*2, region.Max.Y*2)
-		for _, run := range capture.runs {
+		var runs []modernHDTextRun
+		if capture != nil {
+			runs = capture.runs
+		}
+		for _, run := range runs {
+			run = run.freezeLayout()
 			run.y += float64(shift * 2)
 			run.clip = run.clip.Add(image.Pt(0, shift*2)).Intersect(clip)
-			if !run.clip.Empty() {
+			if !run.clip.Empty() && g.modernHDText != nil {
 				g.modernHDText.runs = append(g.modernHDText.runs, run)
 			}
 		}

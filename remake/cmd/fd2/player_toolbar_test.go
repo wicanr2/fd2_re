@@ -19,6 +19,9 @@ func TestPlayerThemeToolbarRealInputGPU(t *testing.T) {
 	set := facilityHDTestSet(t)
 	g := facilityHDTestGame(t, set)
 	g.modernStoryPortraits = nil
+	// Match loadGame: UI mode is resolved once, then artwork stays independent.
+	g.interfaceMode = playerInterfaceHD
+	g.modernThemeCache = set
 	variant := 0
 	g.camp = campaign.NewRunner(&campaign.Campaign{Start: "town", Nodes: map[string]*campaign.Node{"town": {Type: "town", NativeTownVariant: &variant}}})
 	g.nativeShopMode = ""
@@ -33,18 +36,21 @@ func TestPlayerThemeToolbarRealInputGPU(t *testing.T) {
 	// Each input waits for Game.Update and its final GPU capture. Batch delays
 	// cannot prove that repeated F2/F4 edges and all locale frames were consumed.
 	q := &floatingToolbarProbe{p: &modernHDPresentation{Game: g, toolbar: true, faithfulWidth: 1280, faithfulHeight: 848}, driver: driver, out: out, done: make(chan error, 1), steps: []floatingToolbarStep{
-		{"Click=220,12@640x424:400", "zh-Hant", true, true, false},
-		{"Click=220,12@640x424:400", "zh-Hant", true, true, false},
-		{"F2:400", "zh-Hant", false, true, false},
-		{"Click=220,12@640x424:400", "zh-Hant", true, true, false},
-		{"Click=80,12@640x424:400", "zh-Hant", false, true, false},
-		{"Click=80,12@640x424:400", "zh-Hant", false, true, false},
-		{"F2:400", "zh-Hant", true, true, false},
-		{"F4:400", "zh-Hans", true, true, false},
-		{"F4:400", "ja", true, true, false},
-		{"F4:400", "en", true, true, false},
+		{input: "Click=106,12@640x424:400", locale: "zh-Hant", hd: true, visible: true, help: false},
+		{input: "Click=106,12@640x424:400", locale: "zh-Hant", hd: true, visible: true, help: false},
+		{input: "F2:400", locale: "zh-Hant", hd: false, visible: true, help: false},
+		{input: "Click=106,12@640x424:400", locale: "zh-Hant", hd: true, visible: true, help: false},
+		{input: "Click=43,12@640x424:400", locale: "zh-Hant", hd: false, visible: true, help: false},
+		{input: "Click=43,12@640x424:400", locale: "zh-Hant", hd: false, visible: true, help: false},
+		{input: "F2:400", locale: "zh-Hant", hd: true, visible: true, help: false},
+		{input: "F4:400", locale: "zh-Hans", hd: true, visible: true, help: false},
+		{input: "F4:400", locale: "ja", hd: true, visible: true, help: false},
+		{input: "F4:400", locale: "en", hd: true, visible: true, help: false},
 	}}
-	ebiten.SetWindowSize(1280, 848)
+	for i := range q.steps {
+		q.steps[i].ui = playerInterfaceHD
+	}
+	ebiten.SetWindowSize(1920, 1272)
 	ebiten.SetWindowTitle("FD2 Theme Toolbar Input")
 	if err := ebiten.RunGame(q); err != nil {
 		t.Fatal(err)

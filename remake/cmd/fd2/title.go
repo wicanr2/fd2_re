@@ -17,7 +17,6 @@ import (
 	"image/color"
 	"os"
 	"path/filepath"
-	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
@@ -565,7 +564,7 @@ func (g *Game) trySkipTitleCutStep(step cutStep, anyKey bool) bool {
 func (g *Game) titleUpdate() bool {
 	// Cross-platform projection of the original title caller's BIOS low word.
 	// It is sampled throughout the normal title path, not synthesized from the save.
-	g.nativeTitleClock.Sample(time.Now())
+	g.nativeTitleClock.Sample(g.gameNow())
 	switch g.titlePhase {
 	case "cutscene":
 		if g.cutIdx >= len(cutScript) {

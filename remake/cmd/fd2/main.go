@@ -588,6 +588,15 @@ type Game struct {
 	modernHDScene                       *modernFacilitySceneOverlay
 	modernHDPanelPortraits              []*modernHDOverlay
 	playerThemeRequested                bool
+	playerInterfaceRequested            bool
+	interfaceMode                       string
+	playerSpeed                         int
+	playerClock                         playerGameClock
+	playerSpeedRequested                bool
+	playerFontRequested                 bool
+	playerFullscreenRequested           bool
+	nativeInterfaceHUD                  *modernHDMapHUDPanel
+	nativeInterfaceHUDVisible           bool
 	playerLocaleRequested               bool
 	playerToolbarTouchBlocked           bool
 	playerViewportTop                   int
@@ -8255,11 +8264,18 @@ func (g *Game) tileAt(idx int) *ebiten.Image {
 }
 
 func (g *Game) Update() error {
-	defer func() { g.playerThemeRequested, g.playerLocaleRequested = false, false }()
+	defer func() {
+		g.playerThemeRequested, g.playerLocaleRequested, g.playerInterfaceRequested = false, false, false
+		g.playerSpeedRequested, g.playerFontRequested, g.playerFullscreenRequested = false, false, false
+	}()
 	defer g.recordInputAuditState()
 	g.frame++
+	if g.playerFullscreenRequested || (inpututil.IsKeyJustPressed(ebiten.KeyEnter) && (ebiten.IsKeyPressed(ebiten.KeyAlt) || ebiten.IsKeyPressed(ebiten.KeyAltLeft) || ebiten.IsKeyPressed(ebiten.KeyAltRight))) {
+		ebiten.SetFullscreen(!ebiten.IsFullscreen())
+		return nil
+	}
 	if g.nativeDefeat != nil {
-		g.stepNativeDefeat(time.Now())
+		g.stepNativeDefeat(g.gameNow())
 		return nil
 	}
 	if g.startupBlocked {
@@ -8270,7 +8286,7 @@ func (g *Game) Update() error {
 	g.stepNativeSystemInfoUI()
 	g.stepNativePlayerStatus()
 	g.stepNativeSystemEndTurn()
-	g.stepNativeClassUILifecycle(time.Now())
+	g.stepNativeClassUILifecycle(g.gameNow())
 	if g.nativeEnding == nil && !nativeModifierHeld() && inpututil.IsKeyJustPressed(ebiten.KeyF1) {
 		g.helpVisible = !g.helpVisible
 	}
@@ -8294,12 +8310,15 @@ func (g *Game) Update() error {
 	if g.nativeSystemExitRequested {
 		return ebiten.Termination
 	}
-	g.stepNativeChurchUILifecycle(time.Now())
-	g.stepNativeShopUILifecycle(time.Now())
-	g.stepNativeTownUILifecycle(g.nativeTownUIClock.Sample(time.Now()))
-	g.stepNativePreparationUILifecycle(time.Now())
+	g.stepNativeChurchUILifecycle(g.gameNow())
+	g.stepNativeShopUILifecycle(g.gameNow())
+	g.stepNativeTownUILifecycle(g.nativeTownUIClock.Sample(g.gameNow()))
+	g.stepNativePreparationUILifecycle(g.gameNow())
 	if g.nativeEnding == nil && !nativeModifierHeld() && (g.playerThemeRequested || inpututil.IsKeyJustPressed(ebiten.KeyF2)) { // 全域：忠實／現代主題
 		g.cycleTheme()
+	}
+	if g.nativeEnding == nil && !nativeModifierHeld() && (g.playerInterfaceRequested || inpututil.IsKeyJustPressed(ebiten.KeyF11)) {
+		g.cycleInterfaceMode()
 	}
 	if g.nativeEnding == nil && !nativeModifierHeld() && inpututil.IsKeyJustPressed(ebiten.KeyF3) { // 全域：切換音源
 		g.cycleBGMSource()
@@ -8307,8 +8326,11 @@ func (g *Game) Update() error {
 	if g.nativeEnding == nil && !nativeModifierHeld() && (g.playerLocaleRequested || inpututil.IsKeyJustPressed(ebiten.KeyF4)) { // 全域：切換官方語系
 		g.cycleLocale()
 	}
-	if g.nativeEnding == nil && !nativeModifierHeld() && inpututil.IsKeyJustPressed(ebiten.KeyF7) { // 全域：切換字級
+	if g.nativeEnding == nil && !nativeModifierHeld() && (g.playerFontRequested || inpututil.IsKeyJustPressed(ebiten.KeyF7)) { // 全域：切換字級
 		g.cycleFontScale()
+	}
+	if g.nativeEnding == nil && !nativeModifierHeld() && (g.playerSpeedRequested || inpututil.IsKeyJustPressed(ebiten.KeyF8)) {
+		g.cyclePlayerSpeed()
 	}
 	if g.nativeEnding == nil && !nativeModifierHeld() && inpututil.IsKeyJustPressed(ebiten.KeyF6) { // 全域：音樂開關
 		if g.toggleNativeSystemOption(0) {
@@ -8345,7 +8367,7 @@ func (g *Game) Update() error {
 			g.loadErr = "native ending input: " + err.Error()
 			return err
 		}
-		now := time.Now()
+		now := g.gameNow()
 		if g.nativeEndingNow != nil {
 			now = g.nativeEndingNow()
 		}
@@ -8387,7 +8409,7 @@ func (g *Game) Update() error {
 	}
 	if g.nativeFieldEvent61 != nil {
 		g.stepNativeFieldEvent61Tick(
-			g.nativeFieldEvent61.clock.Sample(time.Now()),
+			g.nativeFieldEvent61.clock.Sample(g.gameNow()),
 		)
 		if g.shotPath != "" && g.shotTaken {
 			return ebiten.Termination
@@ -8395,7 +8417,7 @@ func (g *Game) Update() error {
 		return nil
 	}
 	if g.nativeEndTurnRecovery != nil {
-		g.stepNativeEndTurnRecovery(time.Now())
+		g.stepNativeEndTurnRecovery(g.gameNow())
 		return nil
 	}
 	if g.nativeAIIdleRecovery != nil {
@@ -9217,6 +9239,7 @@ func (g *Game) nativeMapFrameAdmission(legacyViewport, campaignBattleView bool) 
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
+	g.nativeInterfaceHUDVisible = false
 	g.modernHDOverlay = nil
 	g.modernHDScene = nil
 	g.modernHDPanelPortraits = nil
@@ -10129,8 +10152,11 @@ func (g *Game) drawRing(screen *ebiten.Image) {
 }
 
 func (g *Game) usesModernBattleActionIcons() bool {
-	return g != nil && g.modernStoryPortraits != nil &&
-		len(g.modernStoryPortraits.battleActionIcons) == 4
+	if g == nil {
+		return false
+	}
+	style := g.interfaceAssetTheme()
+	return style != nil && len(style.battleActionIcons) == 4
 }
 
 // actionOverlayAnchor converts the native visible map cursor (or the selected
@@ -11445,6 +11471,8 @@ func loadGame() *Game {
 		nativeMapHUDPersistent: battle.InitialNativeMapHUDPersistentState(),
 	}
 	configured := loadSettings()
+	g.playerSpeed = normalizePlayerSpeed(configured.GameSpeed)
+	g.playerClock.speed = g.playerSpeed
 	g.bgmSource = configured.BGMSource // 音源設定(預設 fm=Sound Blaster)
 	g.localeID = configured.LocaleID
 	g.applyFontScale(configured.FontScale)
@@ -11471,7 +11499,11 @@ func loadGame() *Game {
 		g.loadErr = "locale entities: " + localeErr.Error()
 		return g
 	}
-	if themeID := os.Getenv("FD2_THEME"); themeID != "" {
+	themeID := os.Getenv("FD2_THEME")
+	if themeID == "" {
+		themeID = configured.ThemeID
+	}
+	if themeID != "" && themeID != "faithful" {
 		if themeID != modernHandpaintedThemeID {
 			g.loadErr = "modern theme: unsupported theme " + themeID
 			return g
@@ -11485,6 +11517,28 @@ func loadGame() *Game {
 		)
 		if localeErr != nil {
 			g.loadErr = "modern theme: " + localeErr.Error()
+			return g
+		}
+		g.modernThemeCache = g.modernStoryPortraits
+	}
+	g.interfaceMode = configured.InterfaceMode
+	if mode := os.Getenv("FD2_INTERFACE_MODE"); mode != "" {
+		if mode != playerInterfaceOriginal && mode != playerInterfaceHD {
+			g.loadErr = "interface: unsupported mode " + mode
+			return g
+		}
+		g.interfaceMode = mode
+	}
+	if g.interfaceMode == "" {
+		g.interfaceMode = playerInterfaceOriginal
+		if g.modernStoryPortraits != nil && g.modernStoryPortraits.hasHD {
+			g.interfaceMode = playerInterfaceHD
+		}
+	}
+	if g.interfaceMode == playerInterfaceHD && g.modernThemeCache == nil {
+		g.modernThemeCache, localeErr = loadPlayerModernTheme()
+		if localeErr != nil {
+			g.loadErr = "interface: " + localeErr.Error()
 			return g
 		}
 	}
@@ -11751,6 +11805,7 @@ func loadGame() *Game {
 	g.font = loadFont()
 	// 狀態欄名字專用整數尺寸 face(scale 1.0 繪製,避免非整數縮放模糊);orig 名墨高 13px→face 28
 	g.fontNm = loadFontSized(28)
+	g.applyFontScale(g.fontScale)
 	for k := 0; k < 10; k++ { // 原版數字 cell(LMI1 #31-40)
 		if raw, e := os.ReadFile(assetPath(fmt.Sprintf("assets/ui/digit_%d.png", k))); e == nil {
 			if im, _, e2 := image.Decode(bytes.NewReader(raw)); e2 == nil {
@@ -12243,6 +12298,7 @@ func (g *Game) drawNativeMapFrame(screen *ebiten.Image) bool {
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Scale(2, 2)
 	screen.DrawImage(ebiten.NewImageFromImage(img), op)
+	g.nativeInterfaceHUDVisible = g.nativeInterfaceHUD != nil
 	return true
 }
 
@@ -12325,7 +12381,7 @@ func (g *Game) composeNativeMapFrameForPhysicalReturn() error {
 }
 
 func (g *Game) composeNativeMapFrameForCaller(closedAction, updateSteadyPalette bool) error {
-	now := time.Now()
+	now := g.gameNow()
 	if g != nil && g.nativeMapFrozenNow != nil {
 		now = g.nativeMapFrozenNow()
 	}
@@ -12503,9 +12559,21 @@ func (g *Game) composeNativeMapFrameAtWithPaletteCycle(now time.Time, closedActi
 			return err
 		}
 	}
+	var interfaceHUD *modernHDMapHUDPanel
+	if g.modernStoryPortraits == nil && g.modernHDInterfaceEnabled() && g.font != nil && g.walk == nil && g.bannerT <= 0 {
+		palette, err := fdother.VGAPaletteFromDAC(candidateDAC)
+		if err != nil {
+			return err
+		}
+		interfaceHUD, err = g.prepareModernHDMapHUDPanel(in, palette)
+		if err != nil {
+			return err
+		}
+	}
 	if stage != nil {
 		g.nativeCh23State = stage
 	}
+	g.nativeInterfaceHUD = interfaceHUD
 	g.nativeMapWork, g.nativeMapVGA = work, vga
 	g.nativeMapFrameSource = nil
 	if _, _, walkingUp := g.nativeCh12UpWalkFrame(); !walkingUp && g.walk == nil && g.bannerT <= 0 {
@@ -13233,9 +13301,10 @@ func main() {
 	g := loadGame()
 	defer g.closeAudioPlayers()
 	player := &modernHDPresentation{Game: g, toolbar: true, floatingToolbar: floatingToolbar, faithfulWidth: logicalW * 2, faithfulHeight: height * 2}
-	if g.modernStoryPortraits != nil && g.modernStoryPortraits.hasHD {
+	if g.hdPresentationEnabled() {
 		ebiten.SetWindowSize(modernHDWidth, modernHDHeight+player.toolbarOffset()*3)
 	}
+	ebiten.SetTPS(60 * normalizePlayerSpeed(g.playerSpeed))
 	var runner ebiten.Game = player
 	if path := os.Getenv("FD2_PERFORMANCE_REPORT"); path != "" {
 		trace, err := openPerformanceTrace(player, path)

@@ -158,13 +158,13 @@ func (g *Game) drawModernHDCompoundFrame(screen *ebiten.Image, frame *nativeComp
 		return g.drawModernHDCompoundMapFrame(screen, frame)
 	}
 	set := g.modernStoryPortraits
-	if frame.hdSources == nil || set == nil || !set.hasHD {
+	if frame.hdSources == nil || !g.hdPresentationEnabled() {
 		return false, nil
 	}
 	wanted := false
 	for _, layer := range append(append([]modernHDBattleSource(nil), frame.hdSources.BaseScenery...), frame.hdSources.Layers...) {
-		wanted = wanted || layer.PanelText != nil
-		if layer.Resource < 0 {
+		wanted = wanted || (layer.PanelText != nil && g.modernHDInterfaceEnabled())
+		if layer.Resource < 0 || set == nil {
 			continue
 		}
 		if layer.Archive == "BG.DAT" || layer.Archive == "TAI.DAT" {

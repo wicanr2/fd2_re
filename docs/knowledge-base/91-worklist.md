@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 25 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 29 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -339,6 +339,46 @@ HD1原生地圖資訊窗的細框、A／D、HP與已登錄地形縮圖已接入�
 怎樣算做完：完成規則與consumer盤點並取得READY規格；可編輯設定進入正式玩家路徑，原版預設通過既有規則及保存回歸；自訂設定可追溯使用值，於相同狀態與固定亂數條件下可重播，並完成相關UI／保存及抽樣驗證。
 
 證據：`docs/knowledge-base/61-modern-theme-runtime-spec.md`
+
+### P1 HD1地形：補齊正式地形與前景圖源
+
+`hd1-terrain-complete` · 工作 · [#282](https://github.com/wicanr2/fd2_re/issues/282) · 仍未完成 · 要人判
+
+使用者2026-10-28確認此項列入HD1 milestone。主規格為61，來源與進度依58及HD主收據；人工驗證由使用者接手。
+
+怎樣算做完：盤點全部正式地圖的原生地形／前景consumer，補齊HD1圖源並登錄私人庫；沿原輪廓、遮擋、視圖與事件更新呈現，缺件明示，保留原版模式。必要來源、載入及切換檢查通過，人工畫面驗證由使用者接手。
+
+證據：`docs/data/fd2-modern-hd-battlefield-20261019.json`
+
+### P1 HD1介面：補齊原生選單與對話呈現
+
+`hd1-interface-complete` · 工作 · [#283](https://github.com/wicanr2/fd2_re/issues/283) · 仍未完成 · 要人判
+
+使用者2026-10-28確認此項列入HD1 milestone。主規格為61，來源與進度依58及HD主收據；人工驗證由使用者接手。
+
+怎樣算做完：補齊尚未接HD的正式介面、確認／回覆與轉場，沿既有原位置、輸入、文字與保存；清晰黑體、HD框線與主題人物來源一致。必要載入、缺件、切換與狀態保持通過，人工驗證由使用者接手。
+
+證據：`docs/data/fd2-modern-hd-battlefield-20261019.json`
+
+### P1 HD1獨立控制：介面與美術主題分開切換
+
+`hd1-interface-theme-independent` · 工作 · [#284](https://github.com/wicanr2/fd2_re/issues/284) · 仍未完成 · 要人判
+
+使用者2026-10-28確認此項列入HD1 milestone。主規格為61，來源與進度依58及HD主收據；人工驗證由使用者接手。
+
+怎樣算做完：工具列分別控制介面原版／HD、美術主題原版／HD，四組合互不改寫；人物圖示、頭像及戰鬥動畫跟美術主題，字型／框線等跟介面。F2保留主題快捷鍵，補介面快捷鍵，設定與戰役存檔分開；為HD2／HD-2D保留後續擴充。必要原子切換及相容性檢查通過。
+
+證據：`docs/data/fd2-modern-hd-battlefield-20261019.json`
+
+### P1 HD1工具列：單列、字級、加速、海報與漸層控制
+
+`hd1-toolbar-complete` · 工作 · [#285](https://github.com/wicanr2/fd2_re/issues/285) · 仍未完成 · 要人判
+
+使用者2026-10-28確認此項列入HD1 milestone。主規格為61，來源與進度依58及HD主收據；人工驗證由使用者接手。
+
+怎樣算做完：完成頂端浮出、自動隱藏的單列工具列：四語、介面／美術主題、字級、遊戲加速、全螢幕、兩組獨立海報及關閉、邊緣漸層與淡入；保留快捷鍵、滑鼠／觸控與輸入阻擋，設定持久化但不寫戰役存檔。海報構圖與原型已選定，中央遊戲比例及HUD保持；必要切換／幾何／設定檢查通過，人工驗證由使用者接手。
+
+證據：`docs/data/fd2-modern-hd-battlefield-20261019.json`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 

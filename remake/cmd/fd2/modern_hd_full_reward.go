@@ -234,6 +234,9 @@ func (g *Game) prepareModernHDFullRewardWorld(p *nativeDeathRewardUIState, set *
 // Later native glyph clears erase earlier vector ink too. A shadow may extend
 // outside the 16x16 clear; the wider text-safe clip is not an erase rectangle.
 func modernHDWrittenRuns(c *modernHDIndexedText) []modernHDTextRun {
+	if c == nil {
+		return nil
+	}
 	if c.writes == nil {
 		return c.runs
 	}
@@ -245,6 +248,7 @@ func modernHDWrittenRuns(c *modernHDIndexedText) []modernHDTextRun {
 			end = writes[i+1].start
 		}
 		for _, run := range c.runs[write.start:end] {
+			run = run.freezeLayout()
 			clips := []image.Rectangle{run.clip}
 			for _, later := range writes[i+1:] {
 				if !later.background {
@@ -282,7 +286,7 @@ func modernHDSubtractRect(r, cut image.Rectangle) []image.Rectangle {
 
 func (g *Game) drawModernHDFullReward(screen *ebiten.Image) bool {
 	state := g.nativeSystemEndTurnUI
-	if state == nil || state.deathReward == nil || state.deathReward.hd == nil || g.modernHDText == nil {
+	if state == nil || state.deathReward == nil || state.deathReward.hd == nil || !g.hdPresentationEnabled() {
 		return false
 	}
 	p, job := state.deathReward, g.nativeClassUIJob
@@ -299,6 +303,9 @@ func (g *Game) drawModernHDFullReward(screen *ebiten.Image) bool {
 	}
 	writes := []modernHDGlyphWrite{}
 	capture := &modernHDIndexedText{palette: g.nativeClassUI.palette, writes: &writes}
+	if g.modernHDText == nil {
+		capture = nil
+	}
 	font := g.modernHDFacilityFont(p.hd.ui.status.Font, capture)
 	frame, shift, err := p.modernHDFrame(p.source, font, kind, index, state.choice, g.nativeClassUIPulse/2, capture)
 	if err != nil {
@@ -344,9 +351,10 @@ func (g *Game) drawModernHDFullReward(screen *ebiten.Image) bool {
 		g.appendModernHDDialogueChrome(p.hd.chrome, shift)
 		clip := image.Rect(region.Min.X*2, region.Min.Y*2, region.Max.X*2, region.Max.Y*2)
 		for _, run := range modernHDWrittenRuns(capture) {
+			run = run.freezeLayout()
 			run.y += float64(shift * 2)
 			run.clip = run.clip.Add(image.Pt(0, shift*2)).Intersect(clip)
-			if !run.clip.Empty() {
+			if !run.clip.Empty() && g.modernHDText != nil {
 				g.modernHDText.runs = append(g.modernHDText.runs, run)
 			}
 		}

@@ -11,6 +11,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/text"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
+	"golang.org/x/image/font"
 	"golang.org/x/image/font/sfnt"
 )
 
@@ -33,6 +34,7 @@ type modernHDConfirmationImageKey struct {
 	cell          *modernHDConfirmationCell
 	locale        string
 	option, pulse int
+	scale         float64
 }
 
 type modernHDConfirmationPlacement struct {
@@ -214,25 +216,40 @@ func (g *Game) appendModernHDConfirmation(c *modernHDConfirmation, kind fullRewa
 // Rasterize at the target HD size before composing each button. This retains
 // native left-then-right occlusion when the opening/closing cells overlap.
 func (c *modernHDConfirmation) buttonImage(p modernHDConfirmationPlacement) *ebiten.Image {
-	key := modernHDConfirmationImageKey{cell: p.cell, locale: p.locale, option: p.option, pulse: p.pulse}
+	scale := normalizeFontScale(c.fonts[p.locale].userScale)
+	key := modernHDConfirmationImageKey{cell: p.cell, locale: p.locale, option: p.option, pulse: p.pulse, scale: scale}
 	if cached := c.images[key]; cached != nil {
 		return cached
 	}
 	result := ebiten.NewImageFromImage(p.cell.patch())
-	face, _ := c.fonts[p.locale].faceFor(40)
-	label, bounds := c.labels[p.locale][p.option], c.bounds[p.locale][p.option]
-	x := (144-bounds.Dx())/2 - bounds.Min.X
-	baseline := (p.rect.Dy()*6-bounds.Dy())/2 + p.pulse*6 - bounds.Min.Y
+	face, label, at := c.labelLayout(p)
 	target := result.SubImage(result.Bounds().Inset(12)).(*ebiten.Image)
 	for layer, ink := range []color.RGBA{p.cell.shadow, p.cell.ink} {
 		offset := 1 - layer
 		op := &ebiten.DrawImageOptions{}
-		op.GeoM.Translate(float64(x+offset), float64(baseline+offset))
+		op.GeoM.Translate(float64(at.X+offset), float64(at.Y+offset))
 		op.ColorScale.ScaleWithColor(ink)
 		text.DrawWithOptions(target, label, face, op)
 	}
 	c.images[key] = result
 	return result
+}
+
+func (c *modernHDConfirmation) labelLayout(p modernHDConfirmationPlacement) (font.Face, string, image.Point) {
+	f := c.fonts[p.locale]
+	label := c.labels[p.locale][p.option]
+	height := p.rect.Dy() * 6
+	safe := image.Rect(12, 12, 132, height-12)
+	for size := int(40 * normalizeFontScale(f.userScale)); ; size-- {
+		face, _ := f.faceFor(size)
+		bounds := text.BoundString(face, label)
+		at := image.Pt((144-bounds.Dx())/2-bounds.Min.X, (height-bounds.Dy())/2+p.pulse*6-bounds.Min.Y)
+		ink := bounds.Add(at)
+		ink.Max = ink.Max.Add(image.Pt(1, 1)) // The lower-right shadow is also text.
+		if ink.In(safe) || size <= 1 {
+			return face, label, at
+		}
+	}
 }
 
 func (p *modernHDPresentation) drawModernHDConfirmation(screen ebiten.FinalScreen, geometry ebiten.GeoM, brightness float64) {

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"image"
 	"image/color"
 
@@ -15,7 +16,12 @@ import (
 const playerToolbarHeight = 24
 const playerToolbarHideTicks = 90
 
-var playerLocaleButton = image.Rect(304, 3, 464, 21)
+var playerLocaleButton = image.Rect(240, 3, 336, 21)
+var playerInterfaceButton = image.Rect(134, 3, 236, 21)
+var playerFontButton = image.Rect(340, 3, 410, 21)
+var playerSpeedButton = image.Rect(414, 3, 466, 21)
+var playerPosterButton = image.Rect(470, 3, 540, 21)
+var playerFullscreenButton = image.Rect(544, 3, 632, 21)
 
 func (g *Game) playerTouchCoordinates(x, y int) (int, int, bool) {
 	if y < g.playerViewportTop || g.playerToolbarTouchBlocked && y < playerToolbarHeight {
@@ -49,7 +55,7 @@ func (p *modernHDPresentation) stepToolbarVisibility(pointer image.Point, touche
 		active = active || touch.In(zone)
 	}
 	if active {
-		p.toolbarTicks = playerToolbarHideTicks
+		p.toolbarTicks = playerToolbarHideTicks * normalizePlayerSpeed(p.Game.playerSpeed)
 	} else if p.toolbarTicks > 0 {
 		p.toolbarTicks--
 	}
@@ -66,8 +72,8 @@ func (p *modernHDPresentation) updateToolbarVisibility() {
 }
 
 var playerThemeButtons = [...]image.Rectangle{
-	image.Rect(8, 3, 144, 21),
-	image.Rect(152, 3, 288, 21),
+	image.Rect(8, 3, 78, 21),
+	image.Rect(82, 3, 130, 21),
 }
 
 func playerThemeAt(x, y int) (hd, ok bool) {
@@ -91,23 +97,32 @@ func (p *modernHDPresentation) queueToolbarInput() {
 	}
 	if inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
 		x, y := ebiten.CursorPosition()
-		if hd, ok := playerThemeAt(x, y); ok {
-			p.requestToolbarTheme(hd)
-		} else if image.Pt(x, y).In(playerLocaleButton) {
-			p.Game.playerLocaleRequested = true
-		}
+		p.queueToolbarPoint(image.Pt(x, y))
 		return
 	}
 	for _, id := range inpututil.AppendJustPressedTouchIDs(nil) {
 		x, y := ebiten.TouchPosition(id)
-		if hd, ok := playerThemeAt(x, y); ok {
-			p.requestToolbarTheme(hd)
-			return
-		}
-		if image.Pt(x, y).In(playerLocaleButton) {
-			p.Game.playerLocaleRequested = true
-			return
-		}
+		p.queueToolbarPoint(image.Pt(x, y))
+		return
+	}
+}
+
+func (p *modernHDPresentation) queueToolbarPoint(point image.Point) {
+	if hd, ok := playerThemeAt(point.X, point.Y); ok {
+		p.requestToolbarTheme(hd)
+		return
+	}
+	switch {
+	case point.In(playerLocaleButton):
+		p.Game.playerLocaleRequested = true
+	case point.In(playerInterfaceButton):
+		p.Game.playerInterfaceRequested = true
+	case point.In(playerFontButton):
+		p.Game.playerFontRequested = true
+	case point.In(playerSpeedButton):
+		p.Game.playerSpeedRequested = true
+	case point.In(playerFullscreenButton):
+		p.Game.playerFullscreenRequested = true
 	}
 }
 
@@ -146,13 +161,13 @@ func playerLocaleLabel(locale string) string {
 func playerThemeLabels(locale string) [3]string {
 	switch locale {
 	case "en":
-		return [3]string{"Original pixels", "HD artwork", "F2: switch theme"}
+		return [3]string{"Original", "HD", "F2: switch theme"}
 	case "ja":
-		return [3]string{"オリジナル", "HDイラスト", "F2：テーマ切替"}
+		return [3]string{"原版", "HD", "F2：テーマ切替"}
 	case "zh-Hans":
-		return [3]string{"原版像素", "HD手绘", "F2：切换主题"}
+		return [3]string{"原版", "HD", "F2：切换主题"}
 	default:
-		return [3]string{"原版像素", "HD手繪", "F2：切換主題"}
+		return [3]string{"原版", "HD", "F2：切換主題"}
 	}
 }
 
@@ -166,25 +181,95 @@ func (p *modernHDPresentation) drawThemeToolbar(screen ebiten.FinalScreen, geome
 	vector.DrawFilledRect(surface, 0, playerToolbarHeight*factor-3, logicalW*factor, 3, color.RGBA{87, 105, 127, 255}, false)
 	labels := playerThemeLabels(p.Game.localeID)
 	for index, rect := range playerThemeButtons {
-		selected := (index == 1) == (p.Game.modernStoryPortraits != nil)
-		fill, border := color.RGBA{30, 41, 58, 255}, color.RGBA{88, 104, 126, 255}
-		if selected {
-			fill, border = color.RGBA{67, 57, 38, 255}, color.RGBA{220, 185, 112, 255}
-		}
-		x, y, w, h := float32(rect.Min.X*factor), float32(rect.Min.Y*factor), float32(rect.Dx()*factor), float32(rect.Dy()*factor)
-		vector.DrawFilledRect(surface, x, y, w, h, border, false)
-		vector.DrawFilledRect(surface, x+3, y+3, w-6, h-6, fill, false)
-		p.drawToolbarLabel(surface, labels[index], (rect.Min.X+8)*factor, 5*factor)
+		p.drawCompactToolbarButton(surface, rect, labels[index], (index == 1) == (p.Game.modernStoryPortraits != nil))
 	}
-	rect := playerLocaleButton
-	vector.DrawFilledRect(surface, float32(rect.Min.X*factor), float32(rect.Min.Y*factor), float32(rect.Dx()*factor), float32(rect.Dy()*factor), color.RGBA{88, 104, 126, 255}, false)
-	vector.DrawFilledRect(surface, float32((rect.Min.X+1)*factor), float32((rect.Min.Y+1)*factor), float32((rect.Dx()-2)*factor), float32((rect.Dy()-2)*factor), color.RGBA{30, 41, 58, 255}, false)
-	p.drawToolbarLabel(surface, playerLocaleLabel(p.Game.localeID), (rect.Min.X+8)*factor, 5*factor)
-	p.drawToolbarLabel(surface, "F2 / F4", 520*factor, 5*factor)
+	mode := "原版"
+	if p.Game.modernHDInterfaceEnabled() {
+		mode = "HD"
+	}
+	label := "介面：" + mode + " F11"
+	switch p.Game.localeID {
+	case "en":
+		if mode != "HD" {
+			mode = "Original"
+		}
+		label = "UI: " + mode + " F11"
+	case "ja":
+		label = "UI：" + mode + " F11"
+	case "zh-Hans":
+		label = "界面：" + mode + " F11"
+	}
+	p.drawCompactToolbarButton(surface, playerInterfaceButton, label, p.Game.modernHDInterfaceEnabled())
+	p.drawCompactToolbarButton(surface, playerLocaleButton, playerLocaleLabel(p.Game.localeID), false)
+	p.drawCompactToolbarButton(surface, playerFontButton, fmt.Sprintf("A+ %.0f%%", normalizeFontScale(p.Game.fontScale)*100), false)
+	p.drawCompactToolbarButton(surface, playerSpeedButton, fmt.Sprintf("%d× F8", normalizePlayerSpeed(p.Game.playerSpeed)), p.Game.playerSpeed > 1)
+	full := "全螢幕"
+	switch p.Game.localeID {
+	case "en":
+		full = "Full"
+	case "ja":
+		full = "全画面"
+	case "zh-Hans":
+		full = "全屏"
+	}
+	p.drawCompactToolbarButton(surface, playerFullscreenButton, full, ebiten.IsFullscreen())
 	op := &ebiten.DrawImageOptions{Filter: ebiten.FilterLinear}
 	op.GeoM.Scale(1.0/factor, 1.0/factor)
 	op.GeoM.Concat(geometry)
 	screen.DrawImage(surface, op)
+}
+
+func playerToolbarLabelLayout(f *Font, label string, rect image.Rectangle) (font.Face, string, image.Point) {
+	box := image.Rect(rect.Min.X*3+12, rect.Min.Y*3+6, rect.Max.X*3-12, rect.Max.Y*3-6)
+	var face font.Face
+	var ink image.Rectangle
+	for size := 36; size >= 24; size-- {
+		face, _ = f.faceFor(size)
+		if face == nil {
+			continue
+		}
+		ink = text.BoundString(face, label)
+		if ink.Dx() <= box.Dx() && ink.Dy() <= box.Dy() {
+			break
+		}
+	}
+	if face == nil {
+		return nil, "", image.Point{}
+	}
+	for text.BoundString(face, label).Dx() > box.Dx() {
+		runes := []rune(label)
+		if len(runes) <= 1 {
+			label = ""
+			break
+		}
+		if runes[len(runes)-1] == '…' {
+			runes = runes[:len(runes)-1]
+		}
+		label = string(runes[:len(runes)-1]) + "…"
+	}
+	ink = text.BoundString(face, label)
+	return face, label, image.Pt(box.Min.X+(box.Dx()-ink.Dx())/2-ink.Min.X, box.Min.Y+(box.Dy()-ink.Dy())/2-ink.Min.Y)
+}
+
+func (p *modernHDPresentation) drawCompactToolbarButton(surface *ebiten.Image, rect image.Rectangle, label string, selected bool) {
+	fill, border := color.RGBA{30, 41, 58, 255}, color.RGBA{88, 104, 126, 255}
+	if selected {
+		fill, border = color.RGBA{67, 57, 38, 255}, color.RGBA{220, 185, 112, 255}
+	}
+	x, y, w, h := float32(rect.Min.X*3), float32(rect.Min.Y*3), float32(rect.Dx()*3), float32(rect.Dy()*3)
+	vector.DrawFilledRect(surface, x, y, w, h, border, false)
+	vector.DrawFilledRect(surface, x+3, y+3, w-6, h-6, fill, false)
+	f := p.Game.font
+	if f == nil {
+		return
+	}
+	if regional := f.hdFonts[p.Game.localeID]; regional != nil {
+		f = regional
+	}
+	face, caption, at := playerToolbarLabelLayout(f, label, rect)
+	if face != nil {
+		text.Draw(surface, caption, face, at.X, at.Y, color.RGBA{242, 240, 226, 255})
+	}
 }
 
 func (p *modernHDPresentation) drawToolbarLabel(surface *ebiten.Image, label string, x, y int) {

@@ -35,24 +35,28 @@ func (g *Game) cycleTheme() {
 		}
 		g.modernThemeCache = set
 	} else {
-		g.modernThemeCache = previous
-		_ = g.applyTheme(nil)
+		if err := g.applyTheme(nil); err != nil {
+			g.msg = "主題切換失敗：" + err.Error()
+			return
+		}
 	}
 	name := "忠實原版"
 	if g.modernStoryPortraits != nil {
 		name = "現代手繪"
 	}
 	g.msg = "主題：" + name
+	g.saveDisplaySettings()
 }
 
 // applyTheme validates the current typed speaker before publishing any resource.
 // Rebinding only the portrait preserves the active dialogue's pages and progress.
 func (g *Game) applyTheme(set *modernStoryPortraitSet) error {
-	publishSystemInfo, err := g.stageModernHDSystemInfo(set)
+	style := g.interfaceThemeForArt(set)
+	publishSystemInfo, err := g.stageModernHDSystemInfo(style)
 	if err != nil {
 		return err
 	}
-	publishItemPanels, err := g.stageModernHDItemPanels(set)
+	publishItemPanels, err := g.stageModernHDItemPanels(style)
 	if err != nil {
 		return err
 	}
@@ -225,6 +229,12 @@ func (g *Game) applyTheme(set *modernStoryPortraitSet) error {
 			portrait = nil
 		}
 	}
+	if g.modernStoryPortraits != nil {
+		g.modernThemeCache = g.modernStoryPortraits
+	}
+	if set != nil {
+		g.modernThemeCache = set
+	}
 	g.modernStoryPortraits = set
 	publishItemPanels()
 	publishSystemInfo()
@@ -303,10 +313,10 @@ func (g *Game) refreshThemeVisuals() {
 			}
 			g.sprites[group] = frames
 		}
-		if len(g.modernStoryPortraits.battleActionIcons) == 4 {
-			for i, icon := range g.modernStoryPortraits.battleActionIcons {
-				g.ringIcons[i] = ebiten.NewImageFromImage(icon)
-			}
+	}
+	if style := g.interfaceAssetTheme(); style != nil && len(style.battleActionIcons) == 4 {
+		for i, icon := range style.battleActionIcons {
+			g.ringIcons[i] = ebiten.NewImageFromImage(icon)
 		}
 	}
 }
@@ -328,13 +338,15 @@ func (g *Game) drawPlayerHelp(screen *ebiten.Image) {
 		"F3：Sound Blaster／MT-32 音源",
 		"F4：切換官方語言",
 		"F5：快速存檔　F6：開啟／關閉音樂",
-		"F7：字級大小　F9：快速讀檔　F12：開發除錯資訊",
+		"F7：字級大小　F8：遊戲加速　F9：快速讀檔",
+		"F11：原版／HD介面　Alt+Enter：全螢幕",
+		"F12：開發除錯資訊",
 		"戰場系統選單也可控制音樂、音效、速度與狀態欄。",
 		"秘密商店：章節指定的修飾鍵＋F1..F10。",
 	}
 	for i, line := range lines {
 		scale := 0.9
-		y := float64(104 + (i-1)*28)
+		y := float64(94 + (i-1)*25)
 		if i == 0 {
 			scale = 1.7
 			y = 54

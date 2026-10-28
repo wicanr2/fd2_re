@@ -81,6 +81,7 @@ func modernHDPanelRegionText(runs []modernHDTextRun, regions []battle.NativeItem
 		dest := image.Rect(region.DestX*2, region.DestY*2, (region.DestX+region.Width)*2, (region.DestY+region.Height)*2)
 		offset := dest.Min.Sub(source.Min)
 		for _, run := range runs {
+			run = run.freezeLayout()
 			clip := run.clip
 			if clip.Empty() {
 				clip = image.Rect(0, 0, logicalW, logicalH)
@@ -126,6 +127,9 @@ func (g *Game) drawModernHDStatusRegions(screen *ebiten.Image, source []byte, da
 	}
 	panel, runs, ok := g.composeModernHDUnitStatus(data, commands, palette)
 	if !ok {
+		if !g.modernHDInterfaceEnabled() && g.modernStoryPortraits != nil && data != nil {
+			g.addModernHDPanelPortrait(data.record, regions)
+		}
 		return false
 	}
 	frame := append([]byte(nil), source...)
@@ -150,7 +154,7 @@ func (g *Game) drawModernHDStatusTransition(screen *ebiten.Image, d *nativeStatu
 // The modern battlefield has already been drawn. Only the opaque panel regions
 // may cover it; the indexed source contains the faithful map, not that field.
 func (g *Game) drawModernBattlePlayerStatus(screen *ebiten.Image, s *nativePlayerStatusState) bool {
-	if g.modernStoryPortraits == nil || s == nil || len(g.nativeUIPalette) != 256 {
+	if (g.modernStoryPortraits == nil && !g.modernHDInterfaceEnabled()) || s == nil || len(g.nativeUIPalette) != 256 {
 		return false
 	}
 	regions, ok := nativeChurchPanelRegions(0)

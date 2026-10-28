@@ -1,6 +1,8 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
-HD接線與人工驗證已分工：使用者接手造型、逐章操作及平台人工試玩，這些不再阻擋接線完成。現有已登錄圖源與正式消費端、載入／缺件保護已核對；實際未製作地形、其餘介面與獨立控制仍列實作工作。唯一數量與限制依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)「HD1接線與人工驗證交接」，[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)為`hd1_wiring_handoff_20261028`。不宣稱全部HD1完成。
+HD1範圍已定為地形、介面、獨立控制與完整工具列，歸入[里程碑1](https://github.com/wicanr2/fd2_re/milestone/1)。獨立介面／美術、語系、字級、加速與全螢幕已接主要路徑；海報、其餘地形／介面及城鎮行走人物仍是實作工作。技術驗證與限制依[58](58-fd2-exe-re-coverage.md)、[61](61-modern-theme-runtime-spec.md)及[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`hd1_controls_followup_20261028`；人工驗證仍由使用者接手。
+
+HD接線與人工驗證已分工：使用者接手造型、逐章操作及平台人工試玩，這些不再阻擋接線完成。現有已登錄圖源與正式消費端、載入／缺件保護已核對；實際未製作地形、其餘介面與海報仍列實作工作。唯一數量與限制依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)「HD1接線與人工驗證交接」，[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)為`hd1_wiring_handoff_20261028`。不宣稱全部HD1完成。
 
 狀態致死已補明示章前低HP／中毒來源的正常鍵盤操作：首章退避／待機、END／YES、狀態死亡、途中F2、返回與章界保存新程序LOAD通過。僅驗狀態消費端，不證明正常取得中毒、章內存檔、自然難度或整章E2。唯一目前數量依[58](58-fd2-exe-re-coverage.md)，契約與重跑依[61](61-modern-theme-runtime-spec.md)，[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)為`status_death_normal_gui_followup_20261027`。正式遊戲未改，完整HD與集中造型／平台仍待。
 

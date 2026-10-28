@@ -92,6 +92,7 @@ func (g *Game) clearModernHDTextRegion(covered image.Rectangle) {
 	g.modernHDText.panels = panels
 	var kept []modernHDTextRun
 	for _, run := range g.modernHDText.runs {
+		run = run.freezeLayout()
 		clip := run.clip
 		if clip.Empty() {
 			clip = image.Rect(0, 0, logicalW, logicalH)

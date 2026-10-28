@@ -42,7 +42,7 @@ func (g *Game) beginNativeEndTurnRecovery(after func()) error {
 		return fmt.Errorf("native END recovery: sample4 unavailable")
 	}
 	job := &nativeEndTurnRecoveryJob{plan: plan, after: after,
-		readyAt: time.Now().Add(nativeBIOSTickPeriod)}
+		readyAt: g.gameNow().Add(nativeBIOSTickPeriod)}
 	job.frames[0] = append([]byte(nil), g.nativeMapVGA...)
 	maskWork := append([]byte(nil), g.nativeMapWork...)
 	restoreWork := append([]byte(nil), g.nativeMapWork...)

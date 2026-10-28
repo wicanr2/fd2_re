@@ -41,9 +41,12 @@ var fontScales = []float64{0.8, 0.9, 1.0, 1.1, 1.25}
 const defaultFontScale = 1.0
 
 type settings struct {
-	BGMSource string  `json:"bgm_source"` // "fm"(預設)或 "mt32"
-	LocaleID  string  `json:"locale_id"`  // BCP 47；不屬於戰役存檔
-	FontScale float64 `json:"font_scale"` // 字級倍率；0 或不合法值視同 1.0
+	BGMSource     string  `json:"bgm_source"` // "fm"(預設)或 "mt32"
+	LocaleID      string  `json:"locale_id"`  // BCP 47；不屬於戰役存檔
+	FontScale     float64 `json:"font_scale"` // 字級倍率；0 或不合法值視同 1.0
+	InterfaceMode string  `json:"interface_mode,omitempty"`
+	ThemeID       string  `json:"theme_id,omitempty"`
+	GameSpeed     int     `json:"game_speed,omitempty"`
 }
 
 // normalizeFontScale 把設定值收斂到 fontScales 裡最接近的一格。舊的設定檔沒有
@@ -68,6 +71,13 @@ func loadSettings() settings {
 		json.Unmarshal(raw, &s)
 	}
 	s.FontScale = normalizeFontScale(s.FontScale)
+	s.GameSpeed = normalizePlayerSpeed(s.GameSpeed)
+	if s.InterfaceMode != playerInterfaceOriginal && s.InterfaceMode != playerInterfaceHD {
+		s.InterfaceMode = ""
+	}
+	if s.ThemeID != "faithful" && s.ThemeID != modernHandpaintedThemeID {
+		s.ThemeID = ""
+	}
 	if bgmSourceName[s.BGMSource] == "" {
 		s.BGMSource = "fm"
 	}
@@ -93,7 +103,9 @@ func (g *Game) cycleBGMSource() {
 		}
 	}
 	g.bgmSource = bgmSources[(i+1)%len(bgmSources)]
-	saveSettings(settings{BGMSource: g.bgmSource, LocaleID: g.localeID})
+	configured := loadSettings()
+	configured.BGMSource = g.bgmSource
+	saveSettings(configured)
 	if message, ok := g.localeMessage("system.audio.changed", bgmSourceName[g.bgmSource]); ok {
 		g.msg = message
 	}
@@ -147,7 +159,9 @@ func (g *Game) cycleLocale() {
 	if g.st != nil && spells != nil {
 		g.st.SpellBook = append([]battle.Spell(nil), spells...)
 	}
-	saveSettings(settings{BGMSource: g.bgmSource, LocaleID: g.localeID})
+	configured := loadSettings()
+	configured.LocaleID = g.localeID
+	saveSettings(configured)
 	if message, ok := g.localeMessage("system.locale.changed", localeDisplayName[next]); ok {
 		g.msg = message
 	}
@@ -162,6 +176,13 @@ func (g *Game) applyFontScale(scale float64) {
 	g.fontScale = normalizeFontScale(scale)
 	g.font.SetUserScale(g.fontScale)
 	g.fontNm.SetUserScale(g.fontScale)
+	for _, primary := range []*Font{g.font, g.fontNm} {
+		if primary != nil {
+			for _, regional := range primary.hdFonts {
+				regional.SetUserScale(g.fontScale)
+			}
+		}
+	}
 }
 
 // cycleFontScale 依序切換字級並存進設定。英文與日文的譯文比中文長，同一個對話框
@@ -179,6 +200,17 @@ func (g *Game) cycleFontScale() {
 		}
 	}
 	g.applyFontScale(next)
+	if g.modernHDInterfaceEnabled() {
+		mode := g.interfaceMode
+		if mode == "" {
+			mode = playerInterfaceHD
+		}
+		if err := g.setInterfaceMode(mode); err != nil {
+			g.applyFontScale(current)
+			g.msg = "字級切換失敗：" + err.Error()
+			return
+		}
+	}
 	configured := loadSettings()
 	configured.FontScale = next
 	saveSettings(configured)

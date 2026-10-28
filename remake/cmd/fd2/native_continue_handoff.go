@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"strconv"
-	"time"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
@@ -60,7 +59,7 @@ func (g *Game) nativeContinueTitleTimerSeed() (int, error) {
 		if tick, ok := g.nativeTitleClock.Current(); ok {
 			return tick, nil
 		}
-		return g.nativeTitleClock.Sample(time.Now()), nil
+		return g.nativeTitleClock.Sample(g.gameNow()), nil
 	}
 	tick, err := strconv.Atoi(raw)
 	if err != nil || tick < -0x8000 || tick > 0x7fff {

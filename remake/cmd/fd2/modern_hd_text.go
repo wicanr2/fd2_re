@@ -7,6 +7,7 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/text"
+	"golang.org/x/image/font"
 )
 
 // Text uses the same logical coordinates as the game, with a separate raster
@@ -19,6 +20,47 @@ type modernHDTextRun struct {
 	color        color.RGBA
 	clip         image.Rectangle
 	inkTop       bool
+	userScaled   bool
+	layoutSize   image.Point
+	layoutOffset image.Point
+}
+
+func (run modernHDTextRun) freezeLayout() modernHDTextRun {
+	if run.layoutSize == (image.Point{}) && !run.clip.Empty() {
+		run.layoutSize = run.clip.Size()
+		run.layoutOffset = run.clip.Min.Sub(image.Pt(int(math.Round(run.x)), int(math.Round(run.y))))
+	}
+	return run
+}
+
+func modernHDTextFace(f *Font, run modernHDTextRun, scale float64) (font.Face, float64) {
+	const factor = float64(modernHDWidth) / logicalW
+	base := int(math.Round(run.pixels * factor))
+	size := base
+	if !run.userScaled {
+		size = int(math.Round(float64(base) * normalizeFontScale(scale)))
+	}
+	run = run.freezeLayout()
+	layout := image.Rectangle{}
+	if run.layoutSize != (image.Point{}) {
+		at := image.Pt(int(math.Round(run.x)), int(math.Round(run.y))).Add(run.layoutOffset)
+		layout = image.Rect(at.X*3, at.Y*3, (at.X+run.layoutSize.X)*3, (at.Y+run.layoutSize.Y)*3)
+	}
+	for {
+		face, asc := f.faceFor(size)
+		if face == nil {
+			return nil, 0
+		}
+		bounds := text.BoundString(face, run.text)
+		baseline := math.Round(run.y*factor) + asc
+		if run.inkTop {
+			baseline = math.Round(run.y*factor) - float64(bounds.Min.Y)
+		}
+		if run.userScaled || size <= base || layout.Empty() || bounds.Add(image.Pt(int(math.Round(run.x*factor)), int(baseline))).In(layout) {
+			return face, baseline
+		}
+		size--
+	}
 }
 
 type modernHDTextFrame struct {
@@ -47,7 +89,7 @@ func modernHDNativeTextColor(palette color.Palette, index byte) color.RGBA {
 
 func (g *Game) beginModernHDText(screen *ebiten.Image) func() {
 	g.modernHDText = nil
-	if g.modernStoryPortraits == nil || !g.modernStoryPortraits.hasHD || g.font == nil {
+	if !g.modernHDInterfaceEnabled() || g.font == nil {
 		return func() {}
 	}
 	g.modernHDText = &modernHDTextFrame{scene: screen}
@@ -80,7 +122,7 @@ func (p *modernHDPresentation) drawModernHDText(screen ebiten.FinalScreen, geome
 		if regional := run.font.hdFonts[p.Game.localeID]; regional != nil {
 			renderFont = regional
 		}
-		face, asc := renderFont.faceFor(int(math.Round(run.pixels * factor)))
+		face, baseline := modernHDTextFace(renderFont, run, p.Game.fontScale)
 		if face == nil {
 			continue
 		}
@@ -94,10 +136,6 @@ func (p *modernHDPresentation) drawModernHDText(screen ebiten.FinalScreen, geome
 			target = target.SubImage(r).(*ebiten.Image)
 		}
 		op := &ebiten.DrawImageOptions{}
-		baseline := math.Round(run.y*factor) + asc
-		if run.inkTop {
-			baseline = math.Round(run.y*factor) - float64(text.BoundString(face, run.text).Min.Y)
-		}
 		op.GeoM.Translate(math.Round(run.x*factor), baseline)
 		op.ColorScale.ScaleWithColor(run.color)
 		text.DrawWithOptions(target, run.text, face, op)

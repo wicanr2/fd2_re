@@ -129,7 +129,7 @@ func (g *Game) prepareNativeSystemInfoUI() (*nativeSystemInfoUIState, error) {
 		opening: opening, steady: steady, closing: closing,
 		phase: "opening", dac: dac, palette: palette, input: input, textIndex: textIndex,
 	}
-	if (g.modernStoryPortraits != nil && g.modernStoryPortraits.hasHD) || (g.localeID != "" && g.localeID != "zh-Hant") {
+	if g.modernHDInterfaceEnabled() || (g.localeID != "" && g.localeID != "zh-Hant") {
 		if err := g.prepareModernHDSystemInfo(state); err != nil {
 			return nil, err
 		}

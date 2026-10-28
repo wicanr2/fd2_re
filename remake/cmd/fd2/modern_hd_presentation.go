@@ -20,6 +20,8 @@ type modernHDPresentation struct {
 	floatingToolbar               bool
 	toolbarTicks                  int
 	gameSurface, toolbarSurface   *ebiten.Image
+	interfaceHUDGPU               *modernHDMapGPU
+	appliedPlayerSpeed            int
 }
 
 func (p *modernHDPresentation) Update() error {
@@ -29,12 +31,20 @@ func (p *modernHDPresentation) Update() error {
 		p.Game.playerToolbarTouchBlocked = p.floatingToolbar && p.toolbarTicks > 0
 		p.queueToolbarInput()
 	}
-	before := p.modernStoryPortraits != nil && p.modernStoryPortraits.hasHD
+	before := p.Game.hdPresentationEnabled()
 	w, h := ebiten.WindowSize()
 	if err := p.Game.Update(); err != nil {
 		return err
 	}
-	after := p.modernStoryPortraits != nil && p.modernStoryPortraits.hasHD
+	speed := normalizePlayerSpeed(p.Game.playerSpeed)
+	if p.appliedPlayerSpeed != speed {
+		if p.appliedPlayerSpeed > 0 {
+			p.toolbarTicks = (p.toolbarTicks*speed + p.appliedPlayerSpeed - 1) / p.appliedPlayerSpeed
+		}
+		ebiten.SetTPS(60 * speed)
+		p.appliedPlayerSpeed = speed
+	}
+	after := p.Game.hdPresentationEnabled()
 	if before == after || ebiten.IsFullscreen() {
 		return nil
 	}
@@ -128,6 +138,7 @@ func (p *modernHDPresentation) DrawFinalScreen(screen ebiten.FinalScreen,
 		screen.DrawImage(p.Game.modernHDMapGPU.World, op)
 	}
 	p.drawDefaultFinalScreen(screen, offscreen, geometry)
+	p.drawIndependentInterfaceHUD(screen, contentGeometry)
 	g := p.Game
 	overlay := g.modernHDOverlay
 	if g.helpVisible || g.nativePlayerStatus != nil || (g.transientUI && !g.modernHDTransientExpiryPortraitAllowed()) ||

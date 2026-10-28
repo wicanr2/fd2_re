@@ -272,7 +272,7 @@ func (g *Game) prepareModernHDSystemInfo(s *nativeSystemInfoUIState) error {
 			return err
 		}
 	}
-	nativeChrome := g.modernStoryPortraits == nil || !g.modernStoryPortraits.hasHD
+	nativeChrome := !g.modernHDInterfaceEnabled()
 	if p.nativeChrome != nativeChrome {
 		p.nativeChrome, p.picture = nativeChrome, nil
 	}
@@ -301,7 +301,7 @@ func (g *Game) stageModernHDSystemInfo(set *modernStoryPortraitSet) (func(), err
 }
 
 func (g *Game) drawModernHDSystemInfoUI(screen *ebiten.Image, s *nativeSystemInfoUIState) bool {
-	if g.modernStoryPortraits == nil || !g.modernStoryPortraits.hasHD {
+	if !g.modernHDInterfaceEnabled() {
 		return false
 	}
 	if err := g.prepareModernHDSystemInfo(s); err != nil {
@@ -325,7 +325,7 @@ func (g *Game) drawModernHDSystemInfoUI(screen *ebiten.Image, s *nativeSystemInf
 
 func (p *modernHDPresentation) drawModernHDSystemInfo(screen ebiten.FinalScreen, geometry ebiten.GeoM, brightness float64) {
 	s := p.Game.nativeSystemInfoUI
-	if s == nil || !s.hdPresented || s.hd == nil || p.Game.modernStoryPortraits == nil || !p.Game.modernStoryPortraits.hasHD {
+	if s == nil || !s.hdPresented || s.hd == nil || !p.Game.modernHDInterfaceEnabled() {
 		return
 	}
 	regions, err := fdother.NativeSystemInfoRegions(s.phase, s.frame)

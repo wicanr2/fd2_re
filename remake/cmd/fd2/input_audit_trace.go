@@ -196,6 +196,9 @@ func (g *Game) recordInputAuditState() {
 	r["death_reward_message"] = g.nativeSystemEndTurnUI != nil && g.nativeSystemEndTurnUI.rewardMessage != nil
 	r["death_reward_message_wait"] = g.nativeDeathRewardMessageAwaitingKey()
 	r["transient_ui"] = g.transientUI
+	r["hd_interface"] = g.modernHDInterfaceEnabled()
+	r["interface_mode"] = g.interfaceMode
+	r["game_speed"] = normalizePlayerSpeed(g.playerSpeed)
 	r["class_ui_job"] = g.nativeClassUIJob != nil
 	r["system_end_turn_ui"] = g.nativeSystemEndTurnUI != nil
 	r["native_map_dac_black"] = nativeDACIsBlack(g.nativeMapDAC)

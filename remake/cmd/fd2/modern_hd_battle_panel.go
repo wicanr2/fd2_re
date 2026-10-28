@@ -25,6 +25,7 @@ type modernBattlePanelText struct {
 	digitInk    [2]byte
 	font        *Font
 	lastPalette [32]byte
+	lastScale   float64
 	picture     *image.RGBA
 	key         string
 }
@@ -165,7 +166,11 @@ func (p *modernBattlePanelText) raster(palette color.Palette) (image.Image, stri
 		return nil, "", err
 	}
 	key := sha256.Sum256(raw)
-	if p.picture != nil && key == p.lastPalette {
+	scale := 1.0
+	if p.font != nil && p.font.userScale > 0 {
+		scale = p.font.userScale
+	}
+	if p.picture != nil && key == p.lastPalette && scale == p.lastScale {
 		return p.picture, p.key, nil
 	}
 	if p.font == nil || p.native.Width != 149 || p.native.Height != 42 || len(p.native.Pixels) != 149*42 {
@@ -208,10 +213,12 @@ func (p *modernBattlePanelText) raster(palette color.Palette) (image.Image, stri
 	}
 	digest := sha256.Sum256(canvas.Pix)
 	p.picture, p.lastPalette, p.key = canvas, key, fmt.Sprintf("panel-text/%x", digest)
+	p.lastScale = scale
 	return canvas, p.key, nil
 }
 
 func drawModernBattlePanelInk(dst *image.RGBA, f *Font, value string, rect image.Rectangle, maximum int, ink color.RGBA) error {
+	maximum = int(f.effectiveScale(float64(maximum)))
 	for size := maximum; size >= 24; size-- {
 		face, _ := f.faceFor(size)
 		if face == nil {

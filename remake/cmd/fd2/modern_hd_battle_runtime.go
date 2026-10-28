@@ -52,11 +52,14 @@ func (scene *nativePhysicalScene) modernResources() []int {
 
 func (g *Game) modernHDBattleWanted(scene *nativePhysicalScene) bool {
 	set := g.modernStoryPortraits
-	if set == nil || !set.hasHD || scene == nil || scene.bodyResources == nil || scene.bodyResources.attack == nil {
+	if scene == nil || scene.bodyResources == nil || scene.bodyResources.attack == nil {
 		return false
 	}
-	if len(scene.hdPanelText) != 0 {
+	if g.modernHDInterfaceEnabled() && len(scene.hdPanelText) != 0 {
 		return true
+	}
+	if set == nil || !set.hasHD {
+		return false
 	}
 	if scene.selection.HasSeparateBackgrounds {
 		for index := 0; index < 3; index++ {
@@ -142,14 +145,14 @@ func (g *Game) modernHDBattlePlan(sources *modernHDBattleSources, palette color.
 		}
 		var picture image.Image
 		var key string
-		if source.PanelText != nil {
+		if source.PanelText != nil && g.interfaceMode != playerInterfaceOriginal {
 			var err error
 			picture, key, err = source.PanelText.raster(palette)
 			if err != nil {
 				return modernHDBattlePlan{}, err
 			}
 		}
-		if source.Resource >= 0 {
+		if source.Resource >= 0 && g.modernStoryPortraits != nil {
 			var err error
 			var entries map[int]*modernBattleHDResource
 			if g.modernStoryPortraits != nil {

@@ -83,7 +83,7 @@ func (g *Game) ensureModernHDItemPanelChrome(d *nativeUnitStatusData, palette co
 		g.loadErr = err.Error()
 		return false
 	}
-	icons, err := prepareModernHDItemPanelIcons(d, palette, g.modernStoryPortraits, values, rows)
+	icons, err := prepareModernHDItemPanelIcons(d, palette, g.interfaceAssetTheme(), values, rows)
 	if err != nil {
 		g.loadErr = err.Error()
 		return false
@@ -96,7 +96,7 @@ func (g *Game) ensureModernHDItemPanelChrome(d *nativeUnitStatusData, palette co
 }
 
 func (g *Game) preflightModernHDItemPanel(d *nativeUnitStatusData, palette color.Palette) bool {
-	if g.modernStoryPortraits == nil || !g.modernStoryPortraits.hasHD {
+	if !g.modernHDInterfaceEnabled() {
 		return true
 	}
 	art, err := prepareModernHDItemPanelChrome(d, palette)
@@ -118,7 +118,7 @@ func (g *Game) preflightModernHDItemPanel(d *nativeUnitStatusData, palette color
 			g.loadErr = err.Error()
 			return false
 		}
-		icons, err = prepareModernHDItemPanelIcons(d, palette, g.modernStoryPortraits, values, rows)
+		icons, err = prepareModernHDItemPanelIcons(d, palette, g.interfaceAssetTheme(), values, rows)
 		if err != nil {
 			g.loadErr = err.Error()
 			return false

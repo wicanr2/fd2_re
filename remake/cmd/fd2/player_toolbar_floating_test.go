@@ -14,8 +14,8 @@ import (
 	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/text"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
-	"golang.org/x/image/font"
 )
 
 func TestFloatingToolbarGeometryAndOwnership(t *testing.T) {
@@ -81,21 +81,20 @@ func TestFloatingToolbarLocaleTextBounds(t *testing.T) {
 		if regional := f.hdFonts[locale]; regional != nil {
 			local = regional
 		}
-		face, _ := local.faceFor(36)
-		if face == nil {
-			t.Fatal("missing runtime face", locale)
-		}
 		labels := playerThemeLabels(locale)
 		for i, label := range []string{labels[0], labels[1], playerLocaleLabel(locale)} {
 			rect := playerLocaleButton
 			if i < 2 {
 				rect = playerThemeButtons[i]
 			}
-			ink, _ := font.BoundString(face, label)
-			inkRect := image.Rect(ink.Min.X.Floor(), ink.Min.Y.Floor(), ink.Max.X.Ceil(), ink.Max.Y.Ceil()).Add(image.Pt((rect.Min.X+8)*3, playerToolbarTextBaseline(face, label)))
-			safe := image.Rect((rect.Min.X+2)*3, (rect.Min.Y+1)*3, (rect.Max.X-2)*3, (rect.Max.Y-1)*3)
+			face, caption, at := playerToolbarLabelLayout(local, label, rect)
+			if face == nil {
+				t.Fatal("missing runtime face", locale)
+			}
+			inkRect := text.BoundString(face, caption).Add(at)
+			safe := image.Rect(rect.Min.X*3+12, rect.Min.Y*3+6, rect.Max.X*3-12, rect.Max.Y*3-6)
 			if !inkRect.In(safe) {
-				t.Fatalf("%s %q ink %v outside %v", locale, label, inkRect, safe)
+				t.Fatalf("%s %q ink %v outside %v", locale, caption, inkRect, safe)
 			}
 		}
 	}
@@ -104,6 +103,10 @@ func TestFloatingToolbarLocaleTextBounds(t *testing.T) {
 type floatingToolbarStep struct {
 	input, locale     string
 	hd, visible, help bool
+	ui                string
+	speed             int
+	fontScale         float64
+	fullscreen        string
 }
 type floatingToolbarProbe struct {
 	p                         *modernHDPresentation
@@ -127,7 +130,7 @@ func (q *floatingToolbarProbe) Update() error {
 		return nil
 	}
 	q.updates++
-	if q.updates > 2400 {
+	if q.updates > 21600 {
 		q.err = fmt.Errorf("floating toolbar exceeded update bound")
 		return ebiten.Termination
 	}
@@ -176,9 +179,13 @@ func (q *floatingToolbarProbe) Update() error {
 		q.hideWait++
 		return nil
 	}
-	if (g.modernStoryPortraits != nil) != s.hd || g.localeID != s.locale || q.p.toolbarVisible() != s.visible || g.helpVisible != s.help || g.playerThemeRequested || g.playerLocaleRequested {
+	if (g.modernStoryPortraits != nil) != s.hd || g.localeID != s.locale || q.p.toolbarVisible() != s.visible || g.helpVisible != s.help || g.playerThemeRequested || g.playerLocaleRequested || g.playerInterfaceRequested || g.playerSpeedRequested || g.playerFontRequested || g.playerFullscreenRequested {
 		x, y := ebiten.CursorPosition()
-		q.err = fmt.Errorf("step %d: hd=%v locale=%s visible=%v ticks=%d pointer=%d,%d help=%v", q.index, g.modernStoryPortraits != nil, g.localeID, q.p.toolbarVisible(), q.p.toolbarTicks, x, y, g.helpVisible)
+		q.err = fmt.Errorf("step %d: hd=%v locale=%s visible=%v ticks=%d pointer=%d,%d help=%v msg=%q loadErr=%q", q.index, g.modernStoryPortraits != nil, g.localeID, q.p.toolbarVisible(), q.p.toolbarTicks, x, y, g.helpVisible, g.msg, g.loadErr)
+		return ebiten.Termination
+	}
+	if s.ui != "" && g.interfaceMode != s.ui || s.speed != 0 && g.playerSpeed != s.speed || s.fontScale != 0 && g.fontScale != s.fontScale || s.fullscreen != "" && ebiten.IsFullscreen() != (s.fullscreen == "on") {
+		q.err = fmt.Errorf("step %d: UI=%s speed=%d font=%g fullscreen=%v; expected %+v", q.index, g.interfaceMode, g.playerSpeed, g.fontScale, ebiten.IsFullscreen(), s)
 		return ebiten.Termination
 	}
 	q.completed = true // DrawFinalScreen checks and records before advancing.
@@ -236,7 +243,7 @@ func (q *floatingToolbarProbe) DrawFinalScreen(screen ebiten.FinalScreen, offscr
 		q.err = err
 		return
 	}
-	q.checks = append(q.checks, map[string]any{"step": q.index, "input": q.steps[q.index].input, "locale": q.p.localeID, "hd": q.p.modernStoryPortraits != nil, "visible": q.p.toolbarVisible(), "help": q.p.helpVisible, "unchanged_game_bytes": len(a) - cut})
+	q.checks = append(q.checks, map[string]any{"step": q.index, "input": q.steps[q.index].input, "locale": q.p.localeID, "hd": q.p.modernStoryPortraits != nil, "visible": q.p.toolbarVisible(), "interface_mode": q.p.interfaceMode, "speed": q.p.playerSpeed, "font_scale": q.p.fontScale, "fullscreen": ebiten.IsFullscreen(), "help": q.p.helpVisible, "unchanged_game_bytes": len(a) - cut})
 	q.index++
 	if q.index < len(q.steps) {
 		q.completed = false
@@ -253,6 +260,10 @@ func TestFloatingToolbarRealInputGPU(t *testing.T) {
 	t.Setenv("XDG_DATA_HOME", t.TempDir())
 	set := facilityHDTestSet(t)
 	g := facilityHDTestGame(t, set)
+	g.interfaceMode = playerInterfaceHD
+	g.modernThemeCache = set
+	g.playerSpeed = 1
+	g.applyFontScale(1)
 	variant := 0
 	g.camp = campaign.NewRunner(&campaign.Campaign{Start: "town", Nodes: map[string]*campaign.Node{"town": {Type: "town", NativeTownVariant: &variant}}})
 	g.nativeShopMode = ""
@@ -272,22 +283,38 @@ func TestFloatingToolbarRealInputGPU(t *testing.T) {
 		t.Fatal(err)
 	}
 	q := &floatingToolbarProbe{p: &modernHDPresentation{Game: g, toolbar: true, floatingToolbar: true, faithfulWidth: 1280, faithfulHeight: 800}, driver: driver, out: out, done: make(chan error, 1), steps: []floatingToolbarStep{
-		{"Move=320,300@640x400:2000", "zh-Hant", true, false, false},
-		{"Move=320,1@640x400:400", "zh-Hant", true, true, false},
-		{"Click=220,12@640x400:400", "zh-Hant", true, true, false},
-		{"Click=80,12@640x400:400", "zh-Hant", false, true, false},
-		{"F2:400", "zh-Hant", true, true, false},
-		{"Click=380,12@640x400:400", "zh-Hans", true, true, false},
-		{"F4:400", "ja", true, true, false},
-		{"Click=380,12@640x400:400", "en", true, true, false},
-		{"Click=380,12@640x400:400", "zh-Hant", true, true, false},
-		{"F1:300", "zh-Hant", true, true, true},
-		{"Click=80,12@640x400:300", "zh-Hant", true, true, true},
-		{"Click=380,12@640x400:300", "zh-Hant", true, true, true},
-		{"F1:300", "zh-Hant", true, true, false},
-		{"Move=320,300@640x400:2000", "zh-Hant", true, false, false},
-		{"F2:400", "zh-Hant", false, false, false},
-		{"F2:400", "zh-Hant", true, false, false},
+		{input: "Move=320,300@640x400:2000", locale: "zh-Hant", hd: true, visible: false, help: false},
+		{input: "Move=320,1@640x400:400", locale: "zh-Hant", hd: true, visible: true, help: false},
+		{input: "Click=106,12@640x400:400", locale: "zh-Hant", hd: true, visible: true, help: false},
+		{input: "Click=43,12@640x400:400", locale: "zh-Hant", hd: false, visible: true, help: false},
+		{input: "F2:400", locale: "zh-Hant", hd: true, visible: true, help: false},
+		{input: "Click=288,12@640x400:400", locale: "zh-Hans", hd: true, visible: true, help: false},
+		{input: "F4:400", locale: "ja", hd: true, visible: true, help: false},
+		{input: "Click=288,12@640x400:400", locale: "en", hd: true, visible: true, help: false},
+		{input: "Click=288,12@640x400:400", locale: "zh-Hant", hd: true, visible: true, help: false},
+		{input: "F1:300", locale: "zh-Hant", hd: true, visible: true, help: true},
+		{input: "Click=43,12@640x400:300", locale: "zh-Hant", hd: true, visible: true, help: true},
+		{input: "Click=288,12@640x400:300", locale: "zh-Hant", hd: true, visible: true, help: true},
+		{input: "F1:300", locale: "zh-Hant", hd: true, visible: true, help: false},
+		{input: "Move=320,300@640x400:2000", locale: "zh-Hant", hd: true, visible: false, help: false},
+		{input: "F2:400", locale: "zh-Hant", hd: false, visible: false, help: false},
+		{input: "F2:400", locale: "zh-Hant", hd: true, visible: false, help: false},
+		{input: "Move=320,1@640x400:200", locale: "zh-Hant", hd: true, visible: true, ui: "hd", speed: 1, fontScale: 1},
+		{input: "Click=180,12@640x400:300", locale: "zh-Hant", hd: true, visible: true, ui: "original"},
+		{input: "F11:300", locale: "zh-Hant", hd: true, visible: true, ui: "hd"},
+		{input: "F2:300", locale: "zh-Hant", hd: false, visible: true, ui: "hd"},
+		{input: "F11:300", locale: "zh-Hant", hd: false, visible: true, ui: "original"},
+		{input: "F2:300", locale: "zh-Hant", hd: true, visible: true, ui: "original"},
+		{input: "F11:300", locale: "zh-Hant", hd: true, visible: true, ui: "hd"},
+		{input: "Click=375,12@640x400:300", locale: "zh-Hant", hd: true, visible: true, ui: "hd", fontScale: 1.1},
+		{input: "F7:300", locale: "zh-Hant", hd: true, visible: true, ui: "hd", fontScale: 1.25},
+		{input: "F7:300", locale: "zh-Hant", hd: true, visible: true, ui: "hd", fontScale: 0.8},
+		{input: "F8:300", locale: "zh-Hant", hd: true, visible: true, ui: "hd", speed: 2},
+		{input: "Click=440,12@640x400:300", locale: "zh-Hant", hd: true, visible: true, ui: "hd", speed: 3},
+		{input: "F8:300", locale: "zh-Hant", hd: true, visible: true, ui: "hd", speed: 4},
+		{input: "F8:300", locale: "zh-Hant", hd: true, visible: true, ui: "hd", speed: 1},
+		{input: "Alt+Enter:300", locale: "zh-Hant", hd: true, visible: true, ui: "hd", fullscreen: "on"},
+		{input: "Click=585,12@640x400:300", locale: "zh-Hant", hd: true, visible: true, ui: "hd", fullscreen: "off"},
 	}}
 	ebiten.SetWindowSize(1280, 800)
 	ebiten.SetWindowTitle("FD2 Floating Toolbar Input")
