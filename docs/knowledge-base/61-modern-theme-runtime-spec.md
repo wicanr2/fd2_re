@@ -9,6 +9,7 @@
 - 亞雷斯由首章名冊確認為native_identity4、圖組4，原始十二格為索引48～59。候選保留正面、左向、背面、右向各三拍，沿既有完整輪廓提取及144方格編製；正式圖序、步態時鐘、腳底、座標、遮擋、保存與清冊schema不因新畫風改動。
 - 第二版比例候選依使用者選擇加大頭及臉部、縮短身體，頭連帽的美術目標約佔全身三分之二。這是繪圖目標，尚未宣稱逐幀量測通過。臉、眼睛與帽子一起調整，不能只把帽子變大。每幀維持單一武器，拒收重複武器、額外肢體、錯向、人物裁切與步態混亂。
 - 展示須包含四向144像素原尺寸、72／48像素縮圖、放大細節及索爾／悠妮對照。整張長總覽縮小後無法看清人物，不構成新造型驗收；後續README改用可辨識的分組圖及尺寸樣本。
+- 全部HD1人物重繪並登錄後，重新產生「原版／HD1」人物總覽，涵蓋人物、轉職形態與敵方，依同一正式清冊對齊原版方向／相位。總覽使用最新`map_sprite_hd_set`的144圖源，不沿固定舊檔名或以24像素父圖放大代替；README同步更新總覽入口、清晰分組及尺寸樣本。既有[總覽工具](../../tools/build_modern_map_sprite_overview.py)目前讀固定舊檔名與24像素父圖，重生前須改為依清冊取圖並核對來源SHA；全部重繪完成前保持舊總覽標示，不先以混合新舊稿宣稱全人物完成。
 - 當前原型與逐字提示保存在`work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-ares-q-prototype-r2/prototype.json`，母稿為`ares-hd1-big-head-q-v3-prototype-master.png`。十二幀完整輪廓、尺寸與透明核心已驗；該目錄保留定版前原型，正式新版已依下述配方登錄與接線。使用者已明確同意這版，並要求後續都以相同方式處理。此原稿與比例定版，直接進入逐組編製、完整主題預檢、戰場／資訊窗一致性、F2／F11與普通操作保存抽樣；不再逐張詢問同一比例，原稿身份、方向或缺件有實質疑義時先查證。
 
 - 首批正式切片只替換亞雷斯group4的24父項、144圖源與定版母稿，沿schema1、原有role、frame_count、cycle_policy、layout_policy及asset_id。使用版本化檔名，保留舊檔可回查；其他清冊項目逐byte保持。候選完整驗證、十二姿態／四組控制GPU與普通走行／HUD／保存抽樣通過後才登錄。正式圖庫仍須完整125組，不用局部清冊放寬載入。
@@ -17,6 +18,16 @@
 整套修正與驗收由[#286](https://github.com/wicanr2/fd2_re/issues/286)追蹤。使用者保留集中造型、逐章及平台人工確認；整套仍未完成，亞雷斯首批範圍依下段分層；不因一組通過就提升其餘人物或完整HD1。
 
 亞雷斯首批沿[版本化編製工具](../../tools/refresh_fd2_hd1_map_sprites.py)與[定版配方及提示](../../remake/assets/themes/modern/hd1-ares-chibi-refresh.recipe.json)。[來源回歸](../../tools/test_fd2_hd1_chibi_refresh.py)驗重編、相位及八種原子拒收；[完整繪圖測試](../../remake/cmd/fd2/modern_hd_chibi_refresh_test.go)沿既有GPU對獨立CPU，保留十二姿態與兩種介面的24案例、四向F2往返、單位／保存保持。[普通操作輔助器](../../tools/fd2_hd1_chibi_gui.py)透過[正式GUI驅動](../../tools/verify_fd2_hd_fonts_gui.py)的`--chibi-refresh --battle-status --world --battle-node battle_ch01`接普通首章來源，核走行取消、四組控制及保存新程序LOAD。[獨立核對與登錄器](../../tools/verify_fd2_hd1_chibi_refresh.py)再核來源指紋、完整矩陣、PNG本體與地圖／HUD人物像素。定版原圖原樣保存於[比例對照](../figures/hd1-ares-q-design.png)，不把它改稱遊戲擷取。
+
+### 哈諾、鐵諾與哈瓦特接線（CONFORMED-SCOPED／RUNTIME-E1）
+
+本批依相同已定比例更新group1／2／3，原身份依`docs/data/exe_tables/characters.json`，原生十二格各為12～23、24～35、36～47；來源及色盤沿上文固定指紋。各自保留頭帶與斧、銀灰長髮與劍、紅褐鬍鬚與斧的原版特徵。原稿與逐字提示依[本批配方](../../remake/assets/themes/modern/hd1-party-chibi-refresh.recipe.json)，鐵諾錯向武器與多餘手臂的草稿拒收，不進正式清冊。
+
+仍使用同一版本化編製工具與完整125組預檢，只替換六個既有項目及三母稿，不改玩法、方向／相位選取、位置、遮擋或保存。每組十二圖源與相位關係須完整驗證；遊戲繪圖抽四向中性及正面三拍，HD介面六案、原版介面正面一案，共21案，逐案對獨立CPU、實際地圖／HUD與保存保持。三組各在正面做F2往返。[本批測具](../../remake/cmd/fd2/modern_hd_chibi_party_test.go)依章2哈諾與章4鐵諾既有條目建構受控場景；哈瓦特只投影哈諾範本的圖組／身份為3，不作能力值與自然加入證據。現有普通首章來源只有索爾／亞雷斯／悠妮／蓋亞，故普通操作沿既有亞雷斯選取、走行取消、四組控制與保存冷讀，僅驗完整候選載入及交易相容，不冒稱三組新人物的普通出場；新人物呈現由受控繪圖核實，集中造型及玩家抽驗由使用者接手。通過來源、繪圖與普通操作後才登錄與白名單同步；這是本批必要抽樣，不宣稱全方向所有步態動態或整章原版對拍。總覽依全人物完成條件，暫不重生。
+
+上述READY範圍已接入正式清冊，21案例、18張完整PNG與三次F2、實際地圖／HUD像素及保存保持通過；普通首章相容性沿明示來源通過。22個CPU／字串頂層測試、三項逐byte重編／八來源拒收、九種獨立反例及目前Go消費端來源核對通過。唯一數量、SHA、診斷與資源依58及HD主收據`hd1_chibi_party_followup_20261029`；舊全圖庫HUD專用GPU未啟用，不計通過。
+
+[本批來源回歸](../../tools/test_fd2_hd1_chibi_party.py)、[獨立核對／登錄器](../../tools/verify_fd2_hd1_chibi_party.py)與[分組圖工具](../../tools/build_fd2_hd1_chibi_comparison.py)保留可重跑入口；分組圖直接用已驗證144圖源，不沿舊24成品放大。原稿為內建image_gen產生，提示與拒收原因在本批配方；選定原稿未以程式補畫。[本批原版／HD1四向與尺寸](../figures/hd1-chibi-party-comparison.png)是素材對照，不是普通玩家畫面或全人物總覽。
 
 ### 亞雷斯首批接線（CONFORMED-SCOPED／RUNTIME-E1／NORMAL-GUI）
 

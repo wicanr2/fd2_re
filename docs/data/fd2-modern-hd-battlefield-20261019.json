@@ -248172,7 +248172,8 @@
         "missing-map-mask-hd"
       ],
       "source_file_count": 1194,
-      "source_tree_sha256": "66d940be39b99c58a526205dd4b5bb48d9f1a5976cd80ac43e683bdaf7b63641"
+      "source_tree_sha256": "66d940be39b99c58a526205dd4b5bb48d9f1a5976cd80ac43e683bdaf7b63641",
+      "superseded_by": "hd1_chibi_party_followup_20261029"
     },
     "build": {
       "binary": {
@@ -248218,12 +248219,14 @@
         "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-ares-q-private-git-r1.json",
         "sha256": "0673459fe64cab6de8318ded2f32116c90e4e3f9949735a03c156790b0674746"
       },
-      "policy": "定版母稿及24成品由清冊白名單進私人庫。舊版已登錄檔保持以回查；拒收稿沒有同步。私人Git細節只留本機收據。"
+      "policy": "定版母稿及24成品由清冊白名單進私人庫。舊版已登錄檔保持以回查；拒收稿沒有同步。私人Git細節只留本機收據。",
+      "catalog_superseded_by": "hd1_chibi_party_followup_20261029"
     },
     "coverage": {
       "file": "docs/data/fd2-hd1-terrain-coverage.json",
       "sha256": "f92a453ca7cd40a86e2ea56cb40c3ed0cf103c432a1c36c9a9c9a83fc61d1562",
-      "scope": "地形內容保持，只重生正式清冊SHA；原地圖六圖總覽保留前版人物並在README標示。"
+      "scope": "地形內容保持，只重生正式清冊SHA；原地圖六圖總覽保留前版人物並在README標示。",
+      "catalog_binding_superseded_by": "hd1_chibi_party_followup_20261029"
     },
     "public_screenshot": {
       "image": {
@@ -248302,6 +248305,454 @@
     "final_integrity": {
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-ares-q-final-validation-r1.json",
       "sha256": "b91afc5e4cdcc468015506a32459e4fdf408de05c874ad5f6e274abac145bd7a"
+    }
+  },
+  "hd1_chibi_party_followup_20261029": {
+    "date": "2026-10-29",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1/NORMAL-TRANSACTION-COMPATIBILITY",
+    "base_commit": "cd7877160c8d160c25ed3b392bc6b5d78021f13b",
+    "working_branch": "feat/hd1-chibi-party",
+    "issue": 286,
+    "milestone": 1,
+    "user_decision": "後續沿亞雷斯v3大頭短身Q版、原版造型與版本化流程，不重問比例；全人物完成後重生原版／HD1總覽並更新README。",
+    "scope": "只更新group1哈諾、group2鐵諾、group3哈瓦特的三母稿、36張24父圖及36張144圖源，替換六項，其他877項保持。玩法、圖序、時鐘、座標、遮擋、存檔格式及原版模式不改。",
+    "art": {
+      "recipe": {
+        "file": "remake/assets/themes/modern/hd1-party-chibi-refresh.recipe.json",
+        "sha256": "e8a5bd323d34cc1575349939ab11cd2cdf19158d7ea74fa8127dd4ab09a35b95"
+      },
+      "reference_inputs": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-party-r1/reference-manifest.json",
+        "sha256": "5938c3d823497485fd7659e40059f379899c757ad2e61eeceeaa838b37b9a862"
+      },
+      "base_catalog": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-party-r1/base-catalog.json",
+        "sha256": "ea3cb50efd06ea7a4f634b634f469eb7a7d5f14c720939279b499cf771cfef4a"
+      },
+      "candidate_catalog": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-party-r1/candidate/catalog.json",
+        "sha256": "8dc5bdfc6391da65f542b8f1da8c3ab492528f1d619c3722a80906ce340db091"
+      },
+      "candidate_manifest": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-party-r1/candidate/manifest.json",
+        "sha256": "c1e08681a0933c5fc75ee150115b21a812b36c6923a759647a878e7b39cb1dc2"
+      },
+      "compiler": {
+        "file": "tools/refresh_fd2_hd1_map_sprites.py",
+        "sha256": "2c8870ad0d470a51877b70ea8a058493fc35fa7ab933416889ad0b90f070cf1d"
+      },
+      "legacy_compiler": {
+        "file": "tools/build_modern_hd_map_sprites.py",
+        "sha256": "4ebcdeff585ea77e20e23903b250f46fa70040cdecc015379f74749e1081294d"
+      },
+      "masters": [
+        {
+          "group": 1,
+          "master": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-party-r1/hano-hd1-big-head-q-v1-master.png",
+            "sha256": "7cb79b0a278c26e84d078470b3eb90460c385bf1eb46ba08487f04732d4a1917"
+          }
+        },
+        {
+          "group": 2,
+          "master": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-party-r1/tino-hd1-big-head-q-v1-master.png",
+            "sha256": "49eff7d27fb577b4da2ca85f4c7891cad6d2f21be5922c039c5b94c98cd5a7fe"
+          }
+        },
+        {
+          "group": 3,
+          "master": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-party-r1/harvat-hd1-big-head-q-v1-master.png",
+            "sha256": "d743b3fcd294624601f547867ce6bfb9e5c54dd2fa29e0e6a75d6db6d46416b4"
+          }
+        }
+      ],
+      "tool": "image_gen.imagegen",
+      "mode": "builtin",
+      "prompt": "逐字提示、來源檔名及鐵諾三份拒收稿SHA依recipe.image_generation。選定原稿原樣保存，沒有在Python補畫肢體。",
+      "rejected": "鐵諾首稿右向劍位於臉前；兩次局部編輯產生多餘手臂。最終依原版與定版比例重新生成，背向右手持劍、右向劍在長髮後且握手遮蔽，未將三份拒收稿同步。"
+    },
+    "gpu": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-party-r1/gpu-r2-capture/receipt.json",
+        "sha256": "b7198d55f194377b81015ea627588e54aa84782c6ac55ca8072e47601f01ed1b"
+      },
+      "test": {
+        "file": "remake/cmd/fd2/modern_hd_chibi_party_test.go",
+        "sha256": "ca256ee13886ea9ab3302494b978222519aa511c72b08fae81d3a6d188bee310"
+      },
+      "resource": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-party-r1/gpu-r2.memory.json",
+          "sha256": "bab802aadbca92734c262ea5644419780bbd60a43e827790f4a4227a80dfc3df"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-party-r1/gpu-r2.log",
+          "sha256": "dace49d570ccbca080525085fcef9192887a891e028cfafe7eb6d9978e72ba4c"
+        },
+        "elapsed_seconds": 142.315,
+        "peak_bytes": 8056541184,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "cases": 21,
+      "full_pngs": 18,
+      "groups": [
+        1,
+        2,
+        3
+      ],
+      "hd_frames_per_group": [
+        0,
+        1,
+        2,
+        3,
+        6,
+        9
+      ],
+      "original_interface_frames_per_group": [
+        0
+      ],
+      "f2_roundtrips": 3,
+      "rgba_tolerance": 2,
+      "source_file_count": 1195,
+      "source_tree_sha256": "d9fbebbc111a49da8df5ae32dd3f49df0c4a7496d6043bcb3fab4e7313b818a0",
+      "scope": "受控章1地圖，四向中性與正面三拍；哈諾／鐵諾沿既有章2／章4條目，哈瓦特只投影哈諾範本的圖組／身份為3。實際Game.Draw世界對獨立CPU、HUD圖源、單位／RNG／保存保持；不是自然加入、能力值、全方向所有步態動態或原版對拍。"
+    },
+    "independent": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-party-r1/independent-r1.json",
+        "sha256": "9173ac7265a284a38fb78aafdd8aef102e57650946ef2eeef735039f6ff57687"
+      },
+      "tool": {
+        "file": "tools/verify_fd2_hd1_chibi_party.py",
+        "sha256": "42582c3e69007e98370ef5467bbec305092b726c86ab77b832a911f93baf3c71"
+      },
+      "shared_core_tool": {
+        "file": "tools/verify_fd2_hd1_chibi_refresh.py",
+        "sha256": "1dc7b20af747efafaa8d09733a0fb7008751a6d2f6fca933b293b2c0e149adb9"
+      },
+      "near_opaque_head_pixels": 241359,
+      "rejected_mutants": [
+        "missing",
+        "duplicate",
+        "catalog",
+        "source-code",
+        "false-save",
+        "wrong-hud",
+        "wrong-tolerance",
+        "missing-f2",
+        "actual-black-png"
+      ],
+      "policy": "alpha>=253；逐通道SrcOver背景上下界含整數捨入；人物前96列避開原生HP覆蓋；每區至少600點且匹配>=98%。完整世界GPU容差2另行保持。"
+    },
+    "normal_compatibility": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-party-r1/normal-r1-capture/receipt.json",
+        "sha256": "55fea145e220461cbf4666986b4b7b348c9d7556e27d67e89c6c837e87645492"
+      },
+      "resource": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-party-r1/normal-r1.memory.json",
+          "sha256": "b7bb8613938a5c8c8f506c56c5c515de68fa7b0e687dfb9e8bee71ba707f1dc5"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-party-r1/normal-r1.log",
+          "sha256": "4396c274bbbbb7ea5b902ec7a5969387921dcbc64c0e08f38e8ea54097decedf"
+        },
+        "elapsed_seconds": 375.208,
+        "peak_bytes": 4515057664,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "driver": {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "65d3e61454c99ba65f9073ba91d412c59265e48b9c73535db167f55a6fa2c153"
+      },
+      "helper": {
+        "file": "tools/fd2_hd1_chibi_gui.py",
+        "sha256": "7b7f3f0335786d199f0ea8c225f801704058d6dc4b5e692fa819a02c530b8a41"
+      },
+      "binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-ares-q-binary-r1",
+        "sha256": "69c699b76364b2e0747f2e8c6a5c7aa822f7744a01bd56bdf1823e727a16e121"
+      },
+      "source": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hd-world-gui-r7/user-data/fd2_re/fd2_save.json",
+        "sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2"
+      },
+      "scope": "未改寫的既有普通首章來源只有索爾／亞雷斯／悠妮／蓋亞，沿標題LOAD、亞雷斯選取、走行取消、四組控制、F5及新程序LOAD核完整候選載入與交易保持，不冒稱group1／2／3普通出場。新人物實際像素由受控GPU核實，人工由使用者接手。",
+      "state_injection": false,
+      "save_bytes_equal": true,
+      "new_process_title_load": true,
+      "pngs": 10
+    },
+    "source_regression": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-party-r1/source-r1.log",
+        "sha256": "9a247f1a07108b7c922b4b43fcc812d44d941c87ed7d4bd16fd9cea3654f059b"
+      },
+      "tool": {
+        "file": "tools/test_fd2_hd1_chibi_party.py",
+        "sha256": "cebdcf3b82b942b03dba350cb03eadf5e58e818a16699b1df6c1dc87e908e4b3"
+      },
+      "tests": 3,
+      "source_rejections": 8,
+      "rebuilt_pngs": 72,
+      "unchanged_assets": 877,
+      "scope": "舊清冊白名單重編與候選逐byte一致，三母稿／相位保留；八來源拒收與既有輸出不覆寫。legacy compile_group仍有ResourceWarning，結果通過，不當成遊戲缺陷。"
+    },
+    "fixture_preflight": {
+      "resource": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-party-r1/fixture-r1.memory.json",
+          "sha256": "4493dd2211df6ab015ec1db36e35b1012b24385a96839266d3bb975034017e9d"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-party-r1/fixture-r1.log",
+          "sha256": "77d0a263473f731055d75bab3da1e4b4cc269a8c2dbf72092442e6d40d81c191"
+        },
+        "elapsed_seconds": 16.535,
+        "peak_bytes": 1486094336,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "scope": "三組受控場景角色建構通過，Harvat視覺投影限制同GPU。"
+    },
+    "go_regression": {
+      "resource": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-party-r1/regression-r1.memory.json",
+          "sha256": "3e66611f790b6170aa1de4a8763b84328a55bbc3a2b8598f86be321705025f4a"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-party-r1/regression-r1.log",
+          "sha256": "a4968cb8457a7ef14d34cc3d09d31f16abe312f89325a33ba2f544ad10bfa7b3"
+        },
+        "elapsed_seconds": 81.044,
+        "peak_bytes": 1570234368,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "top_passed": 22,
+      "passed": [
+        "TestModernHDChibiPartyFixture",
+        "TestModernHDBattleConsumerInventory",
+        "TestModernHDHUDUnitSelectionAndHP",
+        "TestModernHDHUDUnitAdmissionAndEventShift",
+        "TestModernHDMapOverwriteCoverageAndDestinationDependency",
+        "TestModernHDMapTransactionUsesOneNativeClockAndIndependentTerrain",
+        "TestLoadModernHDMapSpritesCompleteCoverageAndSoftEdges",
+        "TestLoadModernHDMapSpritesRejectsIncompleteOrMismatchedCollection",
+        "TestLoadModernHDMapSpritesKeepsLegacyCatalogCompatibility",
+        "TestLoadModernHDMapSpritesRejectsInvalidAlpha",
+        "TestIndependentInterfaceFourModesKeepArtworkAndBattle",
+        "TestInterfaceRejectsBeforeChangingModeOrArtwork",
+        "TestOriginalInterfaceKeepsHDPanelPortrait",
+        "TestInterfaceSystemInfoWithOriginalArtwork",
+        "TestBuildCollectsControlledJSONAndGoUIWithoutNotesOrErrors",
+        "TestBuildIsDeterministicAndJSONSerializable",
+        "TestBuildRejectsDuplicateExistingStringID",
+        "TestMultipleTextFieldsDoNotReuseOneExistingStringID",
+        "TestVariablesIncludeWrappedErrorPlaceholder",
+        "TestDrawFunctionContextIncludesIndirectASCIIAndFunctionName",
+        "TestDrawFunctionContextSkipsLocaleKeys",
+        "TestReviewedGoCandidatesMatchCurrentInventory"
+      ],
+      "skipped": [
+        "TestModernHDHUDUnitSourcesAndGameGPU"
+      ],
+      "scope": "舊全圖庫專用HUD GPU未啟用，不計通過；本批人物實際HUD另有21案例及獨立PNG證據。"
+    },
+    "current_consumer_inventory": {
+      "observed": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-party-r1/consumers-formal.json",
+        "sha256": "b32f1ed12b0e735d946cc050941526aeb0b2819d0c9a72db293c9b143cde5305"
+      },
+      "verified": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-party-r1/consumers-verified.json",
+        "sha256": "fa6d935b1a73638460481f93dfb9d0d14791569a86428b5cf8f208d4fb48df48"
+      },
+      "resource": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-party-r1/consumers-r2.memory.json",
+          "sha256": "139bdaf20ed751063e6be8adf5500abdd47c460dae97193345d84b300f179cc1"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-party-r1/consumers-r2.log",
+          "sha256": "37c7dbeecf6dc82b4e76b13f9faebe19268b2760ace60e7efd12e8ed7f03f080"
+        },
+        "elapsed_seconds": 40.595,
+        "peak_bytes": 1319608320,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "cases": 21,
+      "archive_frames": 416,
+      "rejected_mutants": [
+        "wrong-archive",
+        "wrong-resource",
+        "wrong-frame",
+        "wrong-pixels",
+        "wrong-mask",
+        "missing-case",
+        "false-gpu",
+        "missing-hd",
+        "wrong-code",
+        "wrong-command",
+        "wrong-packed",
+        "wrong-descriptor",
+        "missing-map-route",
+        "wrong-lmi-kind",
+        "wrong-lmi-pixels",
+        "wrong-lmi-entry",
+        "missing-lmi-hd",
+        "wrong-map-mask",
+        "missing-map-mask-hd"
+      ],
+      "source_file_count": 1195,
+      "source_tree_sha256": "d9fbebbc111a49da8df5ae32dd3f49df0c4a7496d6043bcb3fab4e7313b818a0",
+      "scope": "原版archive／目前owner受控來源，不新增戰鬥GPU、正常通關或原版動態證據。"
+    },
+    "assets": {
+      "catalog": {
+        "file": "remake/assets/themes/modern/catalog.json",
+        "sha256": "82bb8362a625d60c48c94dde4d12faebc79d5d55fa7af4cb36bfb487d30460f5"
+      },
+      "registered_assets": 883,
+      "changed_entries": 6,
+      "unchanged_entries": 877,
+      "registration": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-party-r1/registration-r1.json",
+        "sha256": "278800201fe5bc5865c3465e8b6cc66459461577d1d049d858be590dc6726e14"
+      },
+      "private_sync": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-party-r1/private-sync.json",
+        "sha256": "d2b33411e4598f9a8a8adc02e9e36d96bce44065c229c64a5d19e686ba8aa74e"
+      },
+      "private_git": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-party-r1/private-git.json",
+        "sha256": "40f1c94e4cf0cd98379c2da8f7066c5d03417d4de76e3a728268f1a40259264b"
+      },
+      "scope": "三份選定母稿與72成品由清冊白名單保存；舊檔保持，私人提交細節只留本機收據。"
+    },
+    "coverage": {
+      "file": "docs/data/fd2-hd1-terrain-coverage.json",
+      "sha256": "56e01014cef1a108e5aae9679e69c05eccae28f57c657c24e816b808e7fd4789",
+      "scope": "由Go重生，只變更正式清冊指紋，地形內容逐欄保持。"
+    },
+    "public_comparison": {
+      "image": {
+        "file": "docs/figures/hd1-chibi-party-comparison.png",
+        "sha256": "b3181ae334089f98b33d0867272586f615abaa805352922167b08c9043bd10df"
+      },
+      "source": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-party-r1/party-comparison-r2.png",
+        "sha256": "b3181ae334089f98b33d0867272586f615abaa805352922167b08c9043bd10df"
+      },
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-party-r1/party-comparison-r2.json",
+        "sha256": "bbc332bfd812ed73a33f96493ff1760883947f3b0cc698157958fef96b6cfeaf"
+      },
+      "tool": {
+        "file": "tools/build_fd2_hd1_chibi_comparison.py",
+        "sha256": "eb8bc7868a3302eb5ac51aebbe39611bf8192d941e8d025209ebe185fea3b61b"
+      },
+      "scope": "本批三組原版與實際144圖源四向中性及144／72／48尺寸。素材對照，非遊戲截圖或全人物總覽；全人物完成後另重生原版／HD1總覽。"
+    },
+    "cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-party-r1/cleanup.json",
+      "sha256": "e9ebf3f14aa3802d7395687ccb888edff0ddf6130c9756b206acf45f3ec15eee"
+    },
+    "diagnostics": [
+      {
+        "run": "prepare-r1",
+        "status": "CLI-PATH-ISSUE-BEFORE-PUBLISH",
+        "cause": "工具要求容器內絕對out路徑；第一次相對路徑被relative_to拒收，scratch刪除。原工具不改，改絕對路徑乾淨重跑通過。"
+      },
+      {
+        "run": "gpu-r1",
+        "status": "FIXTURE-PATH-ISSUE-NOT-PASS",
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-party-r1/gpu-r1.memory.json",
+          "sha256": "be03ea0fd5972c5037db43f900610ac9a746e083d32e266ecc96052016c00bbb"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-party-r1/gpu-r1.log",
+          "sha256": "01ab47ece01ab8a7f3b1d8fef5945312b3d8e6b7ba7cb231b31c6d4c192016b9"
+        },
+        "cause": "新測具用os.ReadFile讀assets相對路徑，但Go package工作目錄不同。修為既有../../assets，先小型建構預檢，再同候選r2重跑通過。"
+      },
+      {
+        "run": "consumers-before-registration",
+        "status": "CATALOG-REBIND-REJECTED",
+        "observed": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-party-r1/consumers.json",
+          "sha256": "170067a6d102adf11f27444cd51e10729a451baad47e9456df1482267d553e1d"
+        },
+        "cause": "登錄前回歸匯出綁定前版正式清冊，不能拿新清冊核對。依工具拒收，重新由目前程式匯出consumers-formal.json再核對通過，未改寫原雜湊。"
+      }
+    ],
+    "reproduce": {
+      "images": [
+        "fd2-go-test-local:latest@44c2bbcc2a00",
+        "fd2-promo-local:latest@81278de73727",
+        "sc-cht-hdtools:pillow11.3.0-r2@b050fc7c4900"
+      ],
+      "prepare": "refresh_fd2_hd1_map_sprites.py prepare；recipe指本批配方，catalog指base-catalog.json，pack以該舊清冊白名單從保留舊檔的私人包建立；masters指三母稿目錄，out用/repo絕對路徑且不存在。test_fd2_hd1_chibi_party.py setUpClass給出完整重編來源檢視。",
+      "gpu": "FD2_HD_CHIBI_PARTY_GPU=1、FD2_HD_CHIBI_PARTY_OUT指不存在目錄、FD2_HD_CHIBI_PARTY_MANIFEST指candidate/manifest.json，FD2_TEST_MODERN_EFFECT_CATALOG／PACK指同一候選。完整Go命令與配額依gpu.resource.report；user1000、network none、8GiB／2CPU。",
+      "normal": "同一正式Linux程式與runtime-view，原包與source唯讀；完整command依normal_compatibility.resource.report，7GiB／2CPU，900秒run-timeout。",
+      "verify": "verify_fd2_hd1_chibi_party.py --gpu --candidate --normal --binary --out --self-test；通過後加--register --formal --destination。登錄後sync_modern_theme_private.py及validate_modern_theme_catalog.py --verify-private；使用公開catalog白名單與選定原稿。",
+      "comparison": "build_fd2_hd1_chibi_comparison.py --candidate --original --out；本批分組非全人物總覽。"
+    },
+    "production_go_changed": false,
+    "binary_policy": "沿用cd787716已建置且核SHA的正式Linux程式；本輪Go只新增_test.go，不重建相同production程式。",
+    "recording_created": false,
+    "new_release": false,
+    "remaining": [
+      "#286其餘人物、轉職與敵方沿同一比例續做；索爾／悠妮保持參考，已新重繪接線為亞雷斯與本批三組。",
+      "完整原版／HD1人物總覽等待全數完成後重生，README只加入本批清晰對照。",
+      "#282地形、#283介面與#284剩餘獨立控制仍未完成；集中造型、逐章與平台人工由使用者接手。"
+    ],
+    "final_integrity": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-party-r1/final-validation.json",
+      "sha256": "f75c94402acace8f4e0e3d6c41bd2b46cd0644fadb31615ca6c7807df453d531"
     }
   }
 }
