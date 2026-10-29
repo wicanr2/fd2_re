@@ -175,7 +175,7 @@ var expiryHDLocales = []string{"zh-Hant", "zh-Hans", "en", "ja"}
 
 func (p *expiryHDGPUProbe) startCase() {
 	p.g, p.unit = expiryHDTestGame(p.t, p.set, expiryHDLocales[p.localeIndex])
-	p.chromeSource = nativeDialogueChromeSource(p.g.nativeClassUI.dialogue, p.g.nativeClassUI.palette)
+	p.chromeSource = goldDialogueChromeSource(p.g.nativeClassUI.dialogue, p.g.nativeClassUI.palette)
 	p.calls, p.expiryFrames, p.prefixFrames = 0, 0, 0
 	if err := p.g.beginNativeTransientPhases([]byte{2}, func() { p.calls++ }); err != nil {
 		p.err = err

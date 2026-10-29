@@ -7,6 +7,7 @@ import copy
 import hashlib
 import json
 import itertools
+from functools import lru_cache
 from pathlib import Path
 
 from PIL import Image, ImageChops, ImageDraw, ImageFont, ImageOps
@@ -14,6 +15,15 @@ from PIL import Image, ImageChops, ImageDraw, ImageFont, ImageOps
 ROOT = Path(__file__).resolve().parent.parent
 LOCALES = ("zh-Hant", "zh-Hans", "en", "ja")
 KEYS = ("attack", "defence", "speed", "poison", "paralysis", "silence")
+GOLD_REFERENCE_SHA = "6084bbe6a90b9ae9a81ca0f4dcacfc3ed4167e67ce85f48140d63c2d744f76c8"
+
+@lru_cache(maxsize=1)
+def gold_reference():
+    path=ROOT/'docs/figures/hd1-gold-dialogue-frame-reference.png'
+    require(hashlib.sha256(path.read_bytes()).hexdigest()==GOLD_REFERENCE_SHA,'古金SVG參考不同')
+    with Image.open(path) as picture:
+        require(picture.size==(1860,516),'古金參考尺寸不同')
+        return picture.convert('RGBA')
 
 
 def require(condition: bool, message: str) -> None:
@@ -36,10 +46,17 @@ def chrome_profile(data: dict, required: bool) -> dict | None:
             colors.extend(group)
     for ink in colors:
         require(isinstance(ink, list) and len(ink) == 4 and all(type(v) is int and 0 <= v <= 255 for v in ink) and ink[3] == 255, "細框色盤錯誤")
+    if source.get('gold'):
+        require(source['gold'] is True and source.get('brightness')==1,'古金材質或亮度不同')
+        require(source.get('gold_reference_sha256')==GOLD_REFERENCE_SHA,'古金參考收據不同')
+        native={k:source[k] for k in ('background','edges','corners')}
+        require(hashlib.sha256(json.dumps(native,separators=(',',':')).encode()).hexdigest()==source.get('native_source_sha256'),'原生預檢色盤收據不同')
     return source
 
 
 def chrome_pixel(source: dict, x: int, y: int) -> tuple[int, ...]:
+    if source.get('gold'):
+        return gold_reference().getpixel((x,y))
     if (x < 3 or x >= 1857) and (y < 3 or y >= 513):
         corner = (1 if x >= 1857 else 0) + (2 if y >= 513 else 0)
         return tuple(source["corners"][corner][(y if y < 3 else y - 513)*3 + (x if x < 3 else x - 1857)])

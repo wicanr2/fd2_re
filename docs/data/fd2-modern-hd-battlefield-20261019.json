@@ -20,7 +20,7 @@
     "hd_event_death": "共用事件、普通行動與狀態致死已接HD；三種26拍／F2保持。章23事件及普通擊殺、首章明示低HP／中毒來源的正常END狀態死亡、途中F2、返回及章界保存冷讀均通過。來源依status_death_normal_gui_followup_20261027；不證明正常取得狀態或整章E2。",
     "theme_toolbar": "CONFORMED-SCOPED／RUNTIME-E1：單列浮出工具列包含獨立介面／美術、四語、字級、1～4倍速、全螢幕及雙組海報／關閉、漸層、淡入與F10；必要技術檢查依hd1_posters_followup_20261028。",
     "hd_facility_scene": "CONFORMED-SCOPED-RUNTIME-E1：三種城鎮與三種商店靜態HD場景／店員，以及既有隊伍HD頭像接入裝備面板；114個GPU案例及兩包載入通過，集中普通／人工仍待。",
-    "assets": "目前正式清冊與私人實檔依58及hd1_terrain_reuse_followup_20261028；舊圖bytes保持，未重畫或新增圖片。",
+    "assets": "現行883項清冊及私人實檔沿hd1_harvat_mature_followup_20261029；本批金框是程式自有材質，不改清冊或私人素材包。",
     "hd_battle_background": "CONFORMED-SCOPED／RUNTIME-E1：森林小屋／內部／海岸，以及BG0..2過渡已接共用／分離物理與24／29的已驗caller；原生位移、遮罩與節拍保持。其他來源／caller仍待，依transition_backgrounds_followup_20261024。",
     "hd_battle_pedestal": "CONFORMED-SCOPED／RUNTIME-E1：已登錄草地、森林裸土及海岸沙地TAI接共用物理的靜態／移位進場、攻防／restore／淡出。原框、層序與節拍保持，其他來源及caller仍待，依forest_coast_surface_followup_20261024。",
     "hd_heal_map": "CONFORMED-SCOPED／RUNTIME-E1：13～16完整Game.Draw、F2及一次交易／續行保持；既有章23滿血來源的正常選人、取消、施放與章界保存冷讀已由heal_normal_gui_followup_20261026補驗。正回復量、人工及平台仍依各自證據，不重開已驗滿血演出。",
@@ -37,7 +37,13 @@
     "hd_battle_memory": "已補已驗證PNG唯讀共享，代表圖源223份配置降為158份、少約144MiB RGBA等價容量；回收後Go heap亦減約144MiB。正常同來源2CPU／6GiB峰值約5.82GiB、無觸限或OOM；不由單輪數字宣稱平台通過。依battle_decoded_storage_followup_20261027。",
     "work_status": "HD1 milestone進行中；#282已完成33圖來源上界與46個同源缺槽，剩餘製圖／合成仍待；#283／284保持OPEN，#285保持CLOSED。必要檢查通過，人工由使用者接手。",
     "manual_validation_owner": "使用者2026-10-28明示接手HD人工驗證；逐角色／逐章／平台人工試玩不阻擋接線完成。必要載入／缺件／建置與切換／保存相容性保持，實際缺接線另外列。",
-    "interface_control": "CONFORMED-SCOPED／RUNTIME-E1：F2美術與F11介面獨立，設定相容與活躍面板預備已接；部分模態HUD與其餘原生UI仍依#283／284補接，不稱所有介面完成。"
+    "interface_control": "CONFORMED-SCOPED／RUNTIME-E1：F2美術與F11介面獨立，設定相容與活躍面板預備已接；部分模態HUD與其餘原生UI仍依#283／284補接，不稱所有介面完成。",
+    "hd_dialogue_chrome": "CONFORMED-SCOPED：古金框已接原生／一般故事及共用提示，F11獨立，普通START與保存相容通過；來源依hd1_gold_dialogue_followup_20261029。",
+    "current_go_source": {
+      "source_file_count": 1196,
+      "source_tree_sha256": "a0b13926a0c99f336a3434aa876b98f7c8ffa2e0d5bd00e7bcf6f85503f26669",
+      "canonical_entry": "hd1_gold_dialogue_followup_20261029"
+    }
   },
   "runtime_source": {
     "binary": {
@@ -249090,7 +249096,8 @@
     "final_integrity": {
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-harvat-mature-r1/final-validation.json",
       "sha256": "61d757fbce191bc924d97efb908c4eb6279a115e2a53f35f76896b0eaca66164"
-    }
+    },
+    "current_consumer_source": "hd1_gold_dialogue_followup_20261029"
   },
   "hd1_gold_dialogue_prototype_20261029": {
     "date": "2026-10-29",
@@ -249133,6 +249140,942 @@
       "inner": "#171a25"
     },
     "scope": "下半部古金框原型已定版，SVG只疊原框18像素邊帶，兩幅圖21060點不同且只在邊帶。保留原版框位／深藍底／文字與頭像。接下來補故事與提示對話，介面隨F11、人物仍隨F2；此收據不代表已接遊戲。",
-    "reproduce": "build_fd2_hd1_gold_dialogue_prototype.py --source 原始1920PNG --out不存在前綴；用fd2-promo-local內ffmpeg -v error -i PREFIX.svg -frames:v 1 PREFIX.png呈現。原圖及完整來源SHA在receipt，沒有第三方D&D美術素材。"
+    "reproduce": "build_fd2_hd1_gold_dialogue_prototype.py --source 原始1920PNG --out不存在前綴；用fd2-promo-local內ffmpeg -v error -i PREFIX.svg -frames:v 1 PREFIX.png呈現。原圖及完整來源SHA在receipt，沒有第三方D&D美術素材。",
+    "implemented_by": "hd1_gold_dialogue_followup_20261029"
+  },
+  "hd1_gold_dialogue_followup_20261029": {
+    "date": "2026-10-29",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1/NORMAL-START/NORMAL-TRANSACTION-COMPATIBILITY",
+    "base_commit": "37edd9b0efc9d5ac9ca56f6427cf2b10ec3b07fe",
+    "issue": 283,
+    "milestone": 1,
+    "user_decision": "採用原型下半部古金雙層框，保留深藍底、原位置與字區，補接故事；F11管介面，F2管人物美術。",
+    "scope": "原生FFEC／FFEE／FFED／FFEF上下框、逐字／捲動與開收框，一般620×198故事框，以及既有到期／獎勵／確認的共用框材質。物品／狀態面板保留原色，不改規則、時間、保存格式或清冊。",
+    "material": {
+      "prototype": {
+        "file": "docs/figures/hd1-gold-dialogue-prototype.png",
+        "sha256": "2251195701b96682199571bc9e0d456dc8bc9a6a539be59fbf6496724bc46187"
+      },
+      "tile": {
+        "file": "remake/cmd/fd2/modern_hd_gold_dialogue.png",
+        "sha256": "e03b4aa090221e8145d36e1541c42490546cc37197279327af81df3d0d09afb8"
+      },
+      "reference": {
+        "file": "docs/figures/hd1-gold-dialogue-frame-reference.png",
+        "sha256": "6084bbe6a90b9ae9a81ca0f4dcacfc3ed4167e67ce85f48140d63c2d744f76c8"
+      },
+      "generator": {
+        "file": "tools/build_fd2_hd1_gold_dialogue_prototype.py",
+        "sha256": "59d37ea0c1d129e45e6212b6b7516712054b11341aa8ba700c3fb651be9009b7"
+      },
+      "tile_size": [
+        48,
+        48
+      ],
+      "border_physical_pixels": 18,
+      "palette": {
+        "gold": "#b99a58",
+        "highlight": "#e6d2a0",
+        "shadow": "#70532e",
+        "outer": "#302719",
+        "inner": "#171a25"
+      },
+      "geometry": "原生矩形沿同次raw-cell coverage逐句快取，背景還原及游標尾段不畫框。一般故事沿原620×198與7拍縮放，HD邊界四捨五入最多半個實體像素。",
+      "new_original_re": false,
+      "catalog_changed": false
+    },
+    "runtime": {
+      "files": [
+        {
+          "file": "remake/cmd/fd2/modern_hd_dialogue_chrome.go",
+          "sha256": "38dcf5b8befdaaabf98dd99695e84104d85164b0cd88d95643ec34a9a3f66221"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_timed_dialogue.go",
+          "sha256": "c6557c545a3be374447c98a4776b2728c2c493aca0ab22af245ce71b85b1d524"
+        },
+        {
+          "file": "remake/cmd/fd2/native_story_dialogue.go",
+          "sha256": "d903fe3f68f1b1c468a66cd60d7bdb626b982b54f9b768b907687cff57b643fc"
+        },
+        {
+          "file": "remake/cmd/fd2/player_interface.go",
+          "sha256": "ded9adb3c10145570eb3770041d0e0d127ddd316f5f923a6e795337d27b92188"
+        },
+        {
+          "file": "remake/cmd/fd2/main.go",
+          "sha256": "acb7e87c7336c35417500e1e574e899052413b9d4adc8a56e902657fcb36f1f1"
+        },
+        {
+          "file": "remake/cmd/fd2/input_audit_trace.go",
+          "sha256": "cad6c1812677e7ff021a3c5df136c30e72947071c759da58fb7bdd0b22aea849"
+        }
+      ],
+      "native_geometry": {
+        "file": "remake/internal/campaign/native_story_dialogue_coverage.go",
+        "sha256": "0bca5b81c0f076994a3a6e1f5f00a996ce4028c1cd87998ecd697ed2ef63cbe4"
+      },
+      "source_file_count": 1196,
+      "source_tree_sha256": "a0b13926a0c99f336a3434aa876b98f7c8ffa2e0d5bd00e7bcf6f85503f26669"
+    },
+    "story": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-story-r3-capture/receipt.json",
+        "sha256": "db4e924a90f0aa34f14b4a681ae7a76ff8df4261d6f9c4f7f1890acf8d18db7d"
+      },
+      "test": {
+        "file": "remake/cmd/fd2/modern_hd_gold_dialogue_test.go",
+        "sha256": "8cfd0f86bd351257a19c7a649ea90d3e29c244912bf2b91329c2e8f2c72f004e"
+      },
+      "resource": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-story-r3.memory.json",
+          "sha256": "8e3bced6500d2e92a02d910221292ed29722cda00b6230dce01557c1190ba0d4"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-story-r3.log",
+          "sha256": "80a57277b15da867494a6223fbd544f1a2ff16999748b64c1f8a088217181a14"
+        },
+        "elapsed_seconds": 291.888,
+        "peak_bytes": 6412898304,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "platform_headroom_claimed": false
+      },
+      "cases": 74,
+      "pngs": 14,
+      "normal_player_verified": false,
+      "independent": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-story-independent-r2.json",
+        "sha256": "88c3c1d211f03002a532e8a91c778c977540ec8e37c7b884a9f652164e0f2481"
+      },
+      "independent_png_gold_pixels": 1112832,
+      "rejected_mutants": 5,
+      "comparison": "同一GPU目的畫布有框／移除框重畫，框帶外含頭像與文字逐byte相同；框帶對獨立SVG整框參考容差1，遊戲與對話時計保持。"
+    },
+    "layer": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-layer-r2-capture/receipt.json",
+        "sha256": "0ab2768db0c5e2de01c080d6bca19e94cd0cfa68cdf21064cd14416615d52bef"
+      },
+      "resource": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-layer-r2.memory.json",
+          "sha256": "04529deb596a1a972d51e515c6e60b328fd06263a1343a33be1c041229ff8bda"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-layer-r2.log",
+          "sha256": "99e2c70c97d9faa40d250399392680e9a7035b8b0efe604b5c849c51fd2b7263"
+        },
+        "elapsed_seconds": 6.027,
+        "peak_bytes": 1200783360,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "platform_headroom_claimed": false
+      },
+      "cases": 8,
+      "scope": "steady、移入、說明、狀態、全白、全黑、淡出及letterbox。"
+    },
+    "reward": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-reward-r1-capture/receipt.json",
+        "sha256": "472160dd1653d3566a3920c5bc15cb71fdd126b00f7214196d328548c9512a2b"
+      },
+      "resource": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-reward-r1.memory.json",
+          "sha256": "33686c1952b25089a1441ac48cd2c78827a5596ac85f74467ed1381c4dbf120c"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-reward-r1.log",
+          "sha256": "f9104e6a346fdc7628ad5655b88d6ef3b520c3f92ec521490e8aafbbb51870e9"
+        },
+        "elapsed_seconds": 250.408,
+        "peak_bytes": 4664434688,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "platform_headroom_claimed": false
+      },
+      "frames": 26,
+      "f2_roundtrips": 26,
+      "pngs": 10,
+      "independent": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-reward-independent-r1.json",
+        "sha256": "babd98e3a4f99c0b3aa471249c4c2a20e50b1e1b36ea84f60af72a1e3488e776"
+      },
+      "legacy_compat": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-legacy-reward-compat-r1.json",
+        "sha256": "0c540d0fb9b6109cec7abcbdf9c9b2c951d58dc1f568f7c8fe06c7dbb3b2f699"
+      },
+      "scope": "物品及金錢完整共用訊息鏈，未重跑全部147確認及滿背包分支。"
+    },
+    "normal_start": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-start-r5-capture/gold-gui.json",
+        "sha256": "ced113db8590df540bdee5a30f8380e13b04092e8c10801057494df15dfdc7fc"
+      },
+      "resource": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-start-r5.memory.json",
+          "sha256": "f7f12bf366e884217c172c2464eeaa9cf0bc140476e4ad18da731712f8c61ab5"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-start-r5.log",
+          "sha256": "17bdc25b8cf77f9af105c40cb9ea9b530be30a453893f6d8df3abed88aa01f64"
+        },
+        "elapsed_seconds": 134.37,
+        "peak_bytes": 3491700736,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "platform_headroom_claimed": false
+      },
+      "driver": {
+        "file": "tools/verify_fd2_hd_gui.py",
+        "sha256": "60b4a00c599a3f87b127549f106656ffe37bb00050ef49ced4beb6d315349f28"
+      },
+      "helper": {
+        "file": "tools/fd2_hd_gold_dialogue_gui.py",
+        "sha256": "9cd99559cd2e58df75046d86560c69a850348cde9b0ccfa106a5966f5bda7dc7"
+      },
+      "binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-gold-binary-r1",
+        "sha256": "5e0c0584aa2aa6798d53b2e5924b9dd154ec7034f3bc10a981f74b5f4abc6880"
+      },
+      "independent": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-start-independent-r1.json",
+        "sha256": "211e4907eaa586aee8afe48188d4a88d9dbb1840300c1dff58c1ca7f3f774958"
+      },
+      "pngs": 5,
+      "independent_png_gold_pixels": 252720,
+      "rejected_mutants": 5,
+      "state_injection": false,
+      "scope": "正式預設START至父王FFED；五圖含四組美術／介面及切回HD，保持句子、字進度與正常Enter續句。不宣稱整段序章或原版對拍。"
+    },
+    "save_compat": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-compat-r1-capture/receipt.json",
+        "sha256": "80a4c9c0869d5dbf015f5d6dbf0f05b3e13379b7571f8199de7711250014c724"
+      },
+      "resource": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-compat-r1.memory.json",
+          "sha256": "065361be8ddd6fbaf867bc257e01cec3a0516d6703e65378fedb21ed704745a1"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-compat-r1.log",
+          "sha256": "4396c274bbbbb7ea5b902ec7a5969387921dcbc64c0e08f38e8ea54097decedf"
+        },
+        "elapsed_seconds": 319.337,
+        "peak_bytes": 4945891328,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "platform_headroom_claimed": false
+      },
+      "independent": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-compat-independent-r1.json",
+        "sha256": "4690ccd1a35640d26a9f844d4c6ac02d1187c0e4226d25b9ad753494eb299885"
+      },
+      "source_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "saved_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "pngs": 10,
+      "save_bytes_equal": true,
+      "new_process_title_load": true,
+      "state_injection": false,
+      "scope": "原樣首章JSON經標題LOAD、四組控制、亞雷斯一格走行取消、F5及新程序LOAD，不作哈瓦特自然出場或戰中存檔證據。"
+    },
+    "regression": {
+      "resource": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-regression-r1.memory.json",
+          "sha256": "3cf8e69d7a53bf3632feebfe7317b82e7344d6aefd525d13ed524155955d40d6"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-regression-r1.log",
+          "sha256": "4678d0d07f0dbb83ff07a2c032bf22a0bbcee101dc06e5c50d1cadc7d7a973cb"
+        },
+        "elapsed_seconds": 123.564,
+        "peak_bytes": 1531445248,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "platform_headroom_claimed": false
+      },
+      "top_tests": 27,
+      "strings": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-strings-r2.log",
+        "sha256": "a3fa7cf1298567947088eb5a245e72d8c7e5d3c4671d8ea8589eddfb2ee74859"
+      },
+      "string_top_tests": 8,
+      "string_inventory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-string-new-r1.json",
+        "sha256": "f78f94862424f6594429bcfc55147e0071a2577a55b9a82ffdec9369ea5546e7"
+      },
+      "string_review": {
+        "file": "docs/data/fd2-string-review.json",
+        "sha256": "86632e80eb53c082594ea535d7224a824ef0c0bae8c1c037fd968dea944f4c92"
+      },
+      "migrator": {
+        "file": "tools/migrate_string_review.py",
+        "sha256": "23f13cccaab098d0497572fb3d6e65f93423eb6bb5272603954fe3dfe7184f6d"
+      },
+      "review_candidates": 155,
+      "disposition_counts_unchanged": true,
+      "consumers": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-consumers-r2.json",
+        "sha256": "c6716686ebf52ca364fc2f9396a41a482d1106e7325b4bba2fa1e9558721a9ec"
+      },
+      "consumer_resource": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-consumers-r2.memory.json",
+          "sha256": "b6c473877d1475455c19af31126595835b3799412d4a6c1f636cf1a3d8252a78"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-consumers-r2.log",
+          "sha256": "e1b77231a407b030e437eb16df3d03589f587e7a89d240500a2f80089b07dbed"
+        },
+        "elapsed_seconds": 62.769,
+        "peak_bytes": 1200783360,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "platform_headroom_claimed": false
+      },
+      "consumers_verified": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-consumers-verified-r1.json",
+        "sha256": "3d21173ab70f39268ad595e37cace7bfcdf961c14db9a292ec8e8d9e9184d126"
+      },
+      "consumer_cases": 21,
+      "unique_archive_frames": 416,
+      "rejected_consumer_mutants": 19
+    },
+    "build": {
+      "binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-gold-binary-r1",
+        "sha256": "5e0c0584aa2aa6798d53b2e5924b9dd154ec7034f3bc10a981f74b5f4abc6880"
+      },
+      "resource": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-build-r1.memory.json",
+          "sha256": "95485badde42c26761d0e012b36904a341a472b5619e233a293ed98b885dcc96"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-build-r1.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsed_seconds": 36.149,
+        "peak_bytes": 662061056,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "platform_headroom_claimed": false
+      },
+      "scope": "Linux開發執行檔，非三平台或發行封包。建置後正式Go只更新chrome註解，其他Go改動為測具；現行來源另經74GPU及來源盤點。"
+    },
+    "screenshot": {
+      "file": "docs/figures/hd1-gold-dialogue-game.png",
+      "sha256": "be791f81da820907525b88ca5e4c1743a64601e1325fa6e66aad6a2492144a10"
+    },
+    "diagnostics": {
+      "resources": {
+        "gold-story-r1": {
+          "report": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-story-r1.memory.json",
+            "sha256": "20a3eec1b9f2a1db31be5334c1f6966338d536884d74df826e1ec9dcc6e0f398"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-story-r1.log",
+            "sha256": "583773b266724045db4d085123a191f1957a43c69f7af225c4be0fa192c8c15a"
+          },
+          "elapsed_seconds": 363.907,
+          "peak_bytes": 4464533504,
+          "events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "platform_headroom_claimed": false
+        },
+        "gold-story-r2": {
+          "report": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-story-r2.memory.json",
+            "sha256": "2324db26a9b767f71b99832d49054d4811bb1309d9e5f8a2d3458cbe13920c04"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-story-r2.log",
+            "sha256": "22dafb2e19725d5c5a177ddb54daa671fa722f1ecb6e5f7ca82d0ecd3aab316e"
+          },
+          "elapsed_seconds": 266.922,
+          "peak_bytes": 5939830784,
+          "events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "platform_headroom_claimed": false
+        },
+        "gold-start-r1": {
+          "report": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-start-r1.memory.json",
+            "sha256": "7f1f57695f78c315878529ca54cfaa05f298d26fea75301baa46c0ca5efba410"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-start-r1.log",
+            "sha256": "08bbdcd0ab35de7a8e7119682d99e88dc1393e75fbb32a18df89f507bd1437d9"
+          },
+          "elapsed_seconds": 66.311,
+          "peak_bytes": 861462528,
+          "events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "platform_headroom_claimed": false
+        },
+        "gold-start-r2": {
+          "report": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-start-r2.memory.json",
+            "sha256": "7ed5b7719b2e9f077b2b6f367afb8222324117f3db6907c7995b7809f1647a83"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-start-r2.log",
+            "sha256": "b16ad81029028fd19eefd225fe9912c78dce87480bacd317805ad8eddb3cb087"
+          },
+          "elapsed_seconds": 221.927,
+          "peak_bytes": 4259561472,
+          "events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "platform_headroom_claimed": false
+        },
+        "gold-start-r3": {
+          "report": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-start-r3.memory.json",
+            "sha256": "f2517132b88e65732ff7f1c3c8393cc121f9835e6311336adfc3b09b9cc95809"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-start-r3.log",
+            "sha256": "cd87c975e9086ae0801b5dec3a90eba20d12f57a15a9bc40178c799950d3971c"
+          },
+          "elapsed_seconds": 243.512,
+          "peak_bytes": 3187445760,
+          "events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "platform_headroom_claimed": false
+        },
+        "gold-start-r4": {
+          "report": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-start-r4.memory.json",
+            "sha256": "92cf1da0d0c81113c9000c373de144065547ac409493b1094560e04187aafe2f"
+          },
+          "log": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-start-r4.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "elapsed_seconds": 271.104,
+          "peak_bytes": 3154268160,
+          "events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "platform_headroom_claimed": false
+        }
+      },
+      "notes": "故事r1重複預備主動終止，r2不同GPU目的地分數頭像邊緣差異，改同一畫布後74案通過。GUI r1視窗60秒不足，r2讀latest漏ACK，r3沒有等實際放鍵，r4重複Confirm重設標題閃爍；沿既有契約修正測具，r5通過。舊字串指紋依正式工具只遷移座標，155候選與分類數保持。診斷不計產品缺陷或通過。"
+    },
+    "reproduce": {
+      "gold_story_r3_argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--init",
+        "--network",
+        "none",
+        "--user",
+        "1000:1000",
+        "--cpus",
+        "2",
+        "--pids-limit",
+        "256",
+        "-e",
+        "GOCACHE=/repo/work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/go-cache",
+        "-e",
+        "GOPROXY=off",
+        "-e",
+        "GOSUMDB=off",
+        "-e",
+        "GOMAXPROCS=2",
+        "-e",
+        "FD2_ASSET_PACK=/original",
+        "-e",
+        "LIBGL_ALWAYS_SOFTWARE=1",
+        "-e",
+        "LP_NUM_THREADS=2",
+        "-v",
+        "/home/anr2/cht/fd2:/repo:rw",
+        "-v",
+        "/home/anr2/cht/fd2/org_game:/repo/org_game:ro",
+        "-v",
+        "/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22:/original:ro",
+        "-v",
+        "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a:/modern:ro",
+        "-w",
+        "/repo/remake",
+        "--name",
+        "fd2-gold-story-r3",
+        "--memory",
+        "8g",
+        "-e",
+        "FD2_HD_GOLD_STORY_GPU=1",
+        "-e",
+        "FD2_TEST_GOLD_OUT=/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-story-r3-capture",
+        "-e",
+        "FD2_MODERN_THEME_PACK=/modern",
+        "fd2-go-test-local:latest",
+        "/bin/bash",
+        "-c",
+        "set -eu\ngofmt -w cmd/fd2/modern_hd_gold_dialogue_test.go\npython3 /repo/tools/fd2_go_test_memory_probe.py --out /repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-story-r3 --timeout 420 -- /repo/tools/docker/with-xvfb.sh go test ./cmd/fd2 -run '^TestModernHDGold(DialogueMaterial|StoryGameGPU)$' -count=1 -v"
+      ],
+      "gold_start_r5_argv": [
+        "timeout",
+        "660s",
+        "docker",
+        "run",
+        "--rm",
+        "--init",
+        "--name",
+        "fd2-gold-start-r5",
+        "--network",
+        "none",
+        "--user",
+        "1000:1000",
+        "--memory",
+        "7g",
+        "--cpus",
+        "2",
+        "--pids-limit",
+        "256",
+        "-e",
+        "GOMAXPROCS=2",
+        "-e",
+        "LIBGL_ALWAYS_SOFTWARE=1",
+        "-e",
+        "LP_NUM_THREADS=2",
+        "-v",
+        "/home/anr2/cht/fd2:/repo:rw",
+        "-v",
+        "/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22:/original:ro",
+        "-v",
+        "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a:/modern:ro",
+        "-w",
+        "/repo",
+        "fd2-promo-local:latest",
+        "python3",
+        "/repo/tools/fd2_go_test_memory_probe.py",
+        "--out",
+        "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-start-r5",
+        "--timeout",
+        "600",
+        "--",
+        "python3",
+        "/repo/tools/verify_fd2_hd_gui.py",
+        "--binary",
+        "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-gold-binary-r1",
+        "--assets",
+        "/repo/remake",
+        "--original-pack",
+        "/original",
+        "--modern-pack",
+        "/modern",
+        "--out",
+        "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-start-r5-capture",
+        "--gold-dialogue",
+        "--startup-timeout",
+        "360"
+      ],
+      "gold_reward_argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--init",
+        "--network",
+        "none",
+        "--user",
+        "1000:1000",
+        "--cpus",
+        "2",
+        "--pids-limit",
+        "256",
+        "-e",
+        "GOCACHE=/repo/work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/go-cache",
+        "-e",
+        "GOPROXY=off",
+        "-e",
+        "GOSUMDB=off",
+        "-e",
+        "GOMAXPROCS=2",
+        "-e",
+        "FD2_ASSET_PACK=/original",
+        "-e",
+        "LIBGL_ALWAYS_SOFTWARE=1",
+        "-e",
+        "LP_NUM_THREADS=2",
+        "-v",
+        "/home/anr2/cht/fd2:/repo:rw",
+        "-v",
+        "/home/anr2/cht/fd2/org_game:/repo/org_game:ro",
+        "-v",
+        "/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22:/original:ro",
+        "-v",
+        "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a:/modern:ro",
+        "-w",
+        "/repo/remake",
+        "--memory",
+        "6g",
+        "--name",
+        "fd2-gold-reward-r1",
+        "-e",
+        "FD2_HD_REWARD_GPU=1",
+        "-e",
+        "FD2_TEST_REWARD_CATALOG=/repo/remake/assets/themes/modern/catalog.json",
+        "-e",
+        "FD2_TEST_REWARD_PACK=/modern",
+        "-e",
+        "FD2_TEST_REWARD_OUT=/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-reward-r1-capture",
+        "fd2-go-test-local:latest",
+        "python3",
+        "/repo/tools/fd2_go_test_memory_probe.py",
+        "--out",
+        "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-reward-r1",
+        "--timeout",
+        "360",
+        "--",
+        "/repo/tools/docker/with-xvfb.sh",
+        "go",
+        "test",
+        "./cmd/fd2",
+        "-run",
+        "^TestModernHDRewardCompleteGameGPU$",
+        "-count=1",
+        "-v"
+      ],
+      "gold_compat_argv": [
+        "timeout",
+        "1080s",
+        "docker",
+        "run",
+        "--rm",
+        "--init",
+        "--name",
+        "fd2-gold-compat-r1",
+        "--network",
+        "none",
+        "--user",
+        "1000:1000",
+        "--memory",
+        "7g",
+        "--cpus",
+        "2",
+        "--pids-limit",
+        "256",
+        "-e",
+        "GOMAXPROCS=2",
+        "-e",
+        "LIBGL_ALWAYS_SOFTWARE=1",
+        "-e",
+        "LP_NUM_THREADS=2",
+        "-v",
+        "/home/anr2/cht/fd2:/repo",
+        "-v",
+        "/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22:/original:ro",
+        "-v",
+        "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a:/modern:ro",
+        "-v",
+        "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/hd-world-gui-r7/user-data/fd2_re:/source:ro",
+        "-w",
+        "/repo",
+        "fd2-promo-local:latest",
+        "python3",
+        "/repo/tools/fd2_go_test_memory_probe.py",
+        "--out",
+        "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-compat-r1",
+        "--timeout",
+        "1020",
+        "--",
+        "python3",
+        "/repo/tools/verify_fd2_hd_fonts_gui.py",
+        "--binary",
+        "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-gold-binary-r1",
+        "--assets",
+        "/repo/remake",
+        "--original-pack",
+        "/original",
+        "--modern-pack",
+        "/modern",
+        "--town-save",
+        "/source/fd2_save.json",
+        "--out",
+        "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-compat-r1-capture",
+        "--battle-status",
+        "--world",
+        "--battle-node",
+        "battle_ch01",
+        "--chibi-refresh",
+        "--startup-timeout",
+        "360",
+        "--run-timeout",
+        "900"
+      ],
+      "gold_final_source_argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--init",
+        "--network",
+        "none",
+        "--user",
+        "1000:1000",
+        "--cpus",
+        "2",
+        "--pids-limit",
+        "256",
+        "-e",
+        "GOCACHE=/repo/work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/go-cache",
+        "-e",
+        "GOPROXY=off",
+        "-e",
+        "GOSUMDB=off",
+        "-e",
+        "GOMAXPROCS=2",
+        "-e",
+        "FD2_ASSET_PACK=/original",
+        "-e",
+        "LIBGL_ALWAYS_SOFTWARE=1",
+        "-e",
+        "LP_NUM_THREADS=2",
+        "-v",
+        "/home/anr2/cht/fd2:/repo:rw",
+        "-v",
+        "/home/anr2/cht/fd2/org_game:/repo/org_game:ro",
+        "-v",
+        "/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22:/original:ro",
+        "-v",
+        "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a:/modern:ro",
+        "-w",
+        "/repo/remake",
+        "--memory",
+        "4g",
+        "--name",
+        "fd2-gold-final-source-r1",
+        "-e",
+        "FD2_TEST_MODERN_EFFECT_CATALOG=/repo/remake/assets/themes/modern/catalog.json",
+        "-e",
+        "FD2_TEST_MODERN_EFFECT_PACK=/modern",
+        "-e",
+        "FD2_HD_CONSUMER_INVENTORY_OUT=/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-consumers-r2.json",
+        "fd2-go-test-local:latest",
+        "/bin/bash",
+        "-c",
+        "set -eu\ngo test ./cmd/fd2-string-inventory -count=1 -v >/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-strings-r2.log 2>&1\npython3 /repo/tools/fd2_go_test_memory_probe.py --out /repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-consumers-r2 --timeout 180 -- /repo/tools/docker/with-xvfb.sh go test ./cmd/fd2 -run '^TestModernHDBattleConsumerInventory$' -count=1 -v\nFD2_HD_DIALOGUE_CHROME_LAYER_GPU=1 FD2_TEST_DIALOGUE_CHROME_OUT=/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-layer-r2-capture python3 /repo/tools/fd2_go_test_memory_probe.py --out /repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-layer-r2 --timeout 120 -- /repo/tools/docker/with-xvfb.sh go test ./cmd/fd2 -run '^TestModernHDDialogueChromeFinalLayerGPU$' -count=1 -v"
+      ],
+      "gold_all_independent_argv": [
+        "timeout",
+        "240s",
+        "docker",
+        "run",
+        "--rm",
+        "--init",
+        "--name",
+        "fd2-gold-independent-r2",
+        "--network",
+        "none",
+        "--user",
+        "1000:1000",
+        "--memory",
+        "2g",
+        "--cpus",
+        "2",
+        "--pids-limit",
+        "128",
+        "-v",
+        "/home/anr2/cht/fd2:/repo:rw",
+        "-v",
+        "/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22:/original:ro",
+        "-v",
+        "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a:/modern:ro",
+        "-w",
+        "/repo",
+        "sc-cht-hdtools:pillow11.3.0-r2",
+        "sh",
+        "-c",
+        "set -eu\npython tools/verify_fd2_hd_gold_dialogue.py /repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-story-r3-capture/receipt.json --out /repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-story-independent-r2.json --self-test\npython tools/verify_fd2_hd_transient_expiry.py /repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-reward-r1-capture/receipt.json --output /repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-reward-independent-r1.json --self-test --require-chrome\npython tools/verify_fd2_hd_transient_expiry.py /repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/dialogue-chrome-reward-r1-capture/receipt.json --output /repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-legacy-reward-compat-r1.json --self-test --require-chrome\npython tools/verify_fd2_battle_hd_consumers.py --observed /repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-consumers-r2.json --original-pack /original --modern-pack /modern --catalog /repo/remake/assets/themes/modern/catalog.json --out /repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-consumers-verified-r1.json --self-test"
+      ],
+      "gold_normal_independent_argv": [
+        "timeout",
+        "90s",
+        "docker",
+        "run",
+        "--rm",
+        "--init",
+        "--network",
+        "none",
+        "--user",
+        "1000:1000",
+        "--memory",
+        "1g",
+        "--cpus",
+        "1",
+        "--pids-limit",
+        "64",
+        "-v",
+        "/home/anr2/cht/fd2:/repo:rw",
+        "-w",
+        "/repo",
+        "sc-cht-hdtools:pillow11.3.0-r2",
+        "sh",
+        "-c",
+        "set -eu\npython tools/verify_fd2_hd_gold_dialogue.py /repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-start-r5-capture/gold-gui.json --out /repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-start-independent-r1.json --self-test\npython -c 'import sys,json,hashlib\nfrom pathlib import Path\nsys.path.insert(0,\"/repo/tools\")\nfrom verify_fd2_hd1_chibi_party import verify_normal,sha\nw=Path(\"/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1\")\np=w/\"gold-compat-r1-capture/receipt.json\";d=json.loads(p.read_text())\nr=verify_normal(d,p.parent,Path(\"/repo/remake/assets/themes/modern\"),w/\"hd1-gold-binary-r1\")\nsaved=p.parent/\"user-data/fd2_re/fd2_save.json\"\nassert sha(saved)==d[\"saved_sha256\"]\nfields=(\"native_identity\",\"x\",\"y\",\"hp\",\"mp\",\"lv\",\"exp\",\"acted\",\"on_field\")\nunits=lambda s:[{k:u.get(k) for k in fields} for u in s[\"units\"]]\nassert units(d[\"initial\"])==units(d[\"returned\"])==units(d[\"cold\"])\nr.update(receipt_sha256=sha(p),verifier_sha256=sha(Path(\"/repo/tools/verify_fd2_hd1_chibi_party.py\")),saved_sha256=sha(saved),save_actual_file_verified=True)\n(w/\"gold-compat-independent-r1.json\").write_text(json.dumps(r,ensure_ascii=False,indent=2)+\"\\n\")\nprint(r[\"status\"])'"
+      ],
+      "gold_rebind_argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--init",
+        "--network",
+        "none",
+        "--user",
+        "1000:1000",
+        "--cpus",
+        "2",
+        "--pids-limit",
+        "256",
+        "-e",
+        "GOCACHE=/repo/work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/go-cache",
+        "-e",
+        "GOPROXY=off",
+        "-e",
+        "GOSUMDB=off",
+        "-e",
+        "GOMAXPROCS=2",
+        "-e",
+        "FD2_ASSET_PACK=/original",
+        "-e",
+        "LIBGL_ALWAYS_SOFTWARE=1",
+        "-e",
+        "LP_NUM_THREADS=2",
+        "-v",
+        "/home/anr2/cht/fd2:/repo:rw",
+        "-v",
+        "/home/anr2/cht/fd2/org_game:/repo/org_game:ro",
+        "-v",
+        "/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22:/original:ro",
+        "-v",
+        "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a:/modern:ro",
+        "-w",
+        "/repo/remake",
+        "--memory",
+        "4g",
+        "--name",
+        "fd2-gold-rebind-r1",
+        "-v",
+        "/tmp/fd2-gold-review-b928ff89:/old:ro",
+        "fd2-go-test-local:latest",
+        "/bin/bash",
+        "-c",
+        "set -eu\nstat -c '%u:%g %n' /old/remake/go.mod /repo/docs/data/fd2-string-review.json\ncd /old/remake/cmd/fd2-string-inventory\ngo run . -repo ../../.. -output /repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-string-old-r1.json\ncd /repo/remake/cmd/fd2-string-inventory\ngo run . -repo ../../.. -output /repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-string-new-r1.json\npython3 /repo/tools/migrate_string_review.py --old-inventory /repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-string-old-r1.json --new-inventory /repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-string-new-r1.json --review /repo/docs/data/fd2-string-review.json --output /repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-string-review-r1.json"
+      ]
+    },
+    "limits": [
+      "#282／283／284／286及其餘地形、介面、人物／轉職仍OPEN。",
+      "集中造型、逐章及平台人工由使用者接手；不宣稱全部HD1、原版逐幀或效能。",
+      "沒有新原版RE、傷害／保存格式變動、發行或私人素材提交。"
+    ],
+    "recordings_created": false,
+    "final_integrity": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/gold-final-validation.json",
+      "sha256": "fc9341747604e230967d4deae15cae37dcc0a6e1f9184786c61042a6832cec6d"
+    }
   }
 }

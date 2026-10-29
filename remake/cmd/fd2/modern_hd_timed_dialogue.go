@@ -95,5 +95,16 @@ func (g *Game) presentNativeStoryDialogueFrame(screen *ebiten.Image, frame []byt
 		op.GeoM.Translate(float64(rect.Min.X*2), float64(rect.Min.Y*2))
 		screen.DrawImage(texture, op)
 	}
+	if g.modernHDText != nil && g.nativeDialogueLayout != nil {
+		bounds := g.nativeDialogueChromeBounds[phase]
+		if index < 0 || index >= len(bounds) || g.nativeDialogueChrome == nil {
+			return errors.New("modern HD dialogue: story border preflight unavailable")
+		}
+		if !bounds[index].Empty() {
+			g.modernHDText.panels = append(g.modernHDText.panels, modernHDDialoguePanel{
+				chrome: g.nativeDialogueChrome, rect: bounds[index], gold: true,
+			})
+		}
+	}
 	return nil
 }

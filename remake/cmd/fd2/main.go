@@ -223,6 +223,8 @@ type Game struct {
 	nativeDialogueSpeakingFrame  int
 	nativeDialoguePortraits      []dato.Frame
 	nativeDialogueLayout         *campaign.NativeDialogueLayout
+	nativeDialogueChrome         *modernHDDialogueChrome
+	nativeDialogueChromeBounds   map[campaign.NativeDialogueFramePhase][]image.Rectangle
 	nativeDialogueGlyphSteps     [][]bool
 	nativeDialogueOpening        [][]byte // caller-specific sub_165AC五階段格網
 	nativeDialogueClosing        [][]byte // caller-specific sub_16B43 snapshot restore＋可選游標尾段
@@ -9911,6 +9913,17 @@ func (g *Game) Draw(screen *ebiten.Image) {
 				op.GeoM.Scale(1, sc)
 				op.GeoM.Translate(bx, by+(1-sc)*99)
 				screen.DrawImage(box, op)
+			}
+			if g.modernHDText != nil && sc > 0 {
+				if g.nativeDialogueChrome == nil {
+					if err := g.prepareModernHDStoryDialogueChrome(); err != nil {
+						g.loadErr = err.Error()
+						return
+					}
+				}
+				y := by + (1-sc)*99
+				r := image.Rect(int(math.Round(bx*3)), int(math.Round(y*3)), int(math.Round((bx+620)*3)), int(math.Round((y+198*sc)*3)))
+				g.modernHDText.panels = append(g.modernHDText.panels, modernHDDialoguePanel{chrome: g.nativeDialogueChrome, gold: true, physicalRect: r})
 			}
 			if g.dlgPhase == 0 { // 縮/展相位中不畫頭像與文字
 				// 框內部漸層:與頭像底色同一漸層(頂 40,69,138 → 底 56,85,154),消除頭像↔框接縫色差

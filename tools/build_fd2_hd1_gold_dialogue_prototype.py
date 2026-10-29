@@ -8,8 +8,21 @@ import struct
 from pathlib import Path
 
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+def frame_svg(w,h):
+    if w<40 or h<40:raise ValueError('frame smaller than fixed corners')
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}">
+<path fill="#302719" fill-rule="evenodd" d="M0 0H{w}V{h}H0Z M18 18V{h-18}H{w-18}V18Z"/>
+<rect x="3" y="3" width="{w-6}" height="{h-6}" fill="none" stroke="#b99a58" stroke-width="5"/>
+<path d="M6 7H{w-7} M6 7V{h-7}" fill="none" stroke="#e6d2a0" stroke-width="2"/>
+<path d="M{w-7} 7V{h-7}H6" fill="none" stroke="#70532e" stroke-width="3"/>
+<rect x="14" y="14" width="{w-28}" height="{h-28}" fill="none" stroke="#b99a58" stroke-width="2"/>
+<rect x="17" y="17" width="{w-34}" height="{h-34}" fill="none" stroke="#171a25" stroke-width="2"/></svg>'''
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--source',type=Path,required=True);p.add_argument('--out',type=Path,required=True);a=p.parse_args()
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--source',type=Path);p.add_argument('--frame-size',type=int,nargs=2);p.add_argument('--out',type=Path,required=True);a=p.parse_args()
+    if a.frame_size:
+        if a.source or a.out.with_suffix('.svg').exists():raise ValueError('fresh frame-only output required')
+        a.out.with_suffix('.svg').write_text(frame_svg(*a.frame_size));return
+    if not a.source:p.error('--source required without --frame-size')
     for suffix in ('.svg','.html','.json'):
         if a.out.with_suffix(suffix).exists():raise ValueError('fresh output required')
     header=a.source.read_bytes()[:24]

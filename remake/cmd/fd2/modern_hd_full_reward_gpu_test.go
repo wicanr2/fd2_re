@@ -390,7 +390,7 @@ func TestModernHDFullRewardGameGPU(t *testing.T) {
 	}
 	p := &fullRewardGPUProbe{t: t, set: set, g: g, control: control, out: out, seen: map[string]bool{}, final: ebiten.NewImage(1920, 1200), controlScreen: ebiten.NewImage(640, 400), pixels: make([]byte, 1920*1200*4), world: make([]byte, 1920*1200*4)}
 	p.confirmationSeen = map[string]bool{}
-	p.chromeSource = nativeDialogueChromeSource(g.nativePreparationUI.dialogue, g.nativeClassUI.palette)
+	p.chromeSource = goldDialogueChromeSource(g.nativePreparationUI.dialogue, g.nativeClassUI.palette)
 	ebiten.SetVsyncEnabled(false)
 	if err := ebiten.RunGame(p); err != nil {
 		t.Fatal(err)

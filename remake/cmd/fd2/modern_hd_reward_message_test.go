@@ -402,7 +402,7 @@ func TestModernHDRewardCompleteGameGPU(t *testing.T) {
 	p := &rewardHDGPUProbe{set: set, out: out, final: ebiten.NewImage(1920, 1200), pixels: make([]byte, 1920*1200*4), world: make([]byte, 1920*1200*4)}
 	for _, spec := range [][2]int{{0, 192}, {1, 123456}} {
 		g, actor := rewardHDTestGame(t)
-		p.chromeSource = nativeDialogueChromeSource(g.nativeClassUI.dialogue, g.nativeClassUI.palette)
+		p.chromeSource = goldDialogueChromeSource(g.nativeClassUI.dialogue, g.nativeClassUI.palette)
 		g.modernStoryPortraits = set
 		calls := new(int)
 		if err = g.beginNativeDeathRewardMessage(pendingNativeDeathRewardMessage{killer: actor, kind: spec[0], value: spec[1]}, actor, func() { *calls++ }); err != nil {

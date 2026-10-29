@@ -19,7 +19,7 @@
 
 亞雷斯首批沿[版本化編製工具](../../tools/refresh_fd2_hd1_map_sprites.py)與[定版配方及提示](../../remake/assets/themes/modern/hd1-ares-chibi-refresh.recipe.json)。[來源回歸](../../tools/test_fd2_hd1_chibi_refresh.py)驗重編、相位及八種原子拒收；[完整繪圖測試](../../remake/cmd/fd2/modern_hd_chibi_refresh_test.go)沿既有GPU對獨立CPU，保留十二姿態與兩種介面的24案例、四向F2往返、單位／保存保持。[普通操作輔助器](../../tools/fd2_hd1_chibi_gui.py)透過[正式GUI驅動](../../tools/verify_fd2_hd_fonts_gui.py)的`--chibi-refresh --battle-status --world --battle-node battle_ch01`接普通首章來源，核走行取消、四組控制及保存新程序LOAD。[獨立核對與登錄器](../../tools/verify_fd2_hd1_chibi_refresh.py)再核來源指紋、完整矩陣、PNG本體與地圖／HUD人物像素。定版原圖原樣保存於[比例對照](../figures/hd1-ares-q-design.png)，不把它改稱遊戲擷取。
 
-### HD1古金色對話框（READY，樣式已定版）
+### HD1古金色對話框（CONFORMED-SCOPED／RUNTIME-E1／NORMAL-START）
 
 使用者要求HD1對話框有接近原版的框線，金色呈現D&D式典雅感，並明確選定[原型下半部](../figures/hd1-gold-dialogue-prototype.png)的古金色雙層框線。原圖原樣保存；[SVG／HTML原型工具](../../tools/build_fd2_hd1_gold_dialogue_prototype.py)使用既有完整HD畫面，只疊框線，不改框內文字、頭像或地圖。該圖仍是設計原型，不是新遊戲截圖。
 
@@ -28,6 +28,14 @@
 - 金框屬操作介面，隨F11；四組美術／介面獨立模式都須核對。原版介面沿原生框色與厚度，頭像／戰場美術仍依F2。物品／狀態等其他面板不因共用chrome結構被誤染金色。
 - 接線涵蓋原生故事／事件對話的四種控制FFEC／FFED／FFEE／FFEF、上下框、逐字與捲動、開框及收框，以及既有到期／獎勵／確認提示。各幀幾何沿同次原生格網與既有coverage，收框完成及後續游標標記不再畫對話框；縮放、裁切、淡出、說明／狀態遮擋與全白／全黑閘門保持。不能只改既有提示而漏掉故事路徑。
 - 驗收需核原型材質、獨立PNG框線／內部保持、原生raw來源拒收、完整Game.Draw及最終繪製層、四組控制與F2／F11、普通故事開收框及保存相容。沒有資料支持的額外對話路徑先保留限制，不以預設矩形猜補。完成接線後由使用者集中人工確認，#283仍追蹤其他介面。
+
+材質由同一[SVG工具](../../tools/build_fd2_hd1_gold_dialogue_prototype.py)的`--frame-size`產生。[48×48自有材質](../../remake/cmd/fd2/modern_hd_gold_dialogue.png)嵌入程式，固定18像素角落及直線邊帶；[1860×516整框參考](../figures/hd1-gold-dialogue-frame-reference.png)由SVG獨立光柵化，供逐像素核對。不是原版素材，也不新增主題清冊格式。原生故事尺寸由既有raw-cell coverage導出並逐句快取。既有非原生故事框沿`main.go`的620×198及原有垂直收合矩陣，對1920畫布邊界四捨五入，最大半個實體像素；不以原生310×86矩形覆蓋不同路徑。
+
+[完整繪製測具](../../remake/cmd/fd2/modern_hd_gold_dialogue_test.go)驗四種原生控制、上下框與四組模式。[普通START工具](../../tools/verify_fd2_hd_gui.py)的`--gold-dialogue`呼叫[普通輸入助手](../../tools/fd2_hd_gold_dialogue_gui.py)，只讀操作收據並擷取父王對話，不注入角色、章節或血量。獨立PNG核對沿[提示收據核對器](../../tools/verify_fd2_hd_transient_expiry.py)的古金參考；原生灰綠框的歷史收據仍依其原色盤驗證。
+
+[古金框獨立核對器](../../tools/verify_fd2_hd_gold_dialogue.py)以74個固定受控案例及普通START四組控制收據為輸入，另讀實際PNG核對原型整框參考。`--self-test`拒收案例缺件、證據分級錯誤、圖片缺件、控制誤報與重新計算雜湊的實際黑圖；正常START的原版介面圖片須確實沒有古金框。
+
+古金框已接正式遊戲，[普通START父王對話](../figures/hd1-gold-dialogue-game.png)為完整視窗原檔。四種原生控制、一般故事、逐字／捲動與開收框、四組控制，以及既有獎勵共用訊息與最終層通過。實際PNG由獨立整框參考核對，移除框後同一GPU畫布的其餘像素保持；來源拒收與F11原子失敗保持。普通START只到父王並續句，另以原樣首章來源驗標題LOAD、走行取消、四組控制與F5／新程序LOAD。唯一數量、Go指紋、SHA、診斷、資源及重跑依58與主收據`hd1_gold_dialogue_followup_20261029`；未重跑全部確認／滿背包分支，不宣稱整章或全部介面完成。
 
 ### 哈瓦特成熟造型修訂（CONFORMED-SCOPED／RUNTIME-E1）
 
@@ -329,23 +337,27 @@ HD1 milestone為[GitHub milestone 1](https://github.com/wicanr2/fd2_re/milestone
 
 ## 滿背包獎勵對話HD細框（CONFORMED-SCOPED／RUNTIME-E1，2026-10-26）
 
+本節保存該日流程收據。現行框線材質依上方「HD1古金色對話框」；本輪只重驗共用獎勵訊息，沒有重跑全部滿背包分支。
+
 - 範圍沿已閉合滿背包獎勵原版證據[IDA紀錄](../data/ida/fd2_death_reward_full_inventory_ida.txt)，固定FD2.EXE的SHA-256為222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f。正式消費端為runPendingNativeDeathRewards、modernHDFrame及drawModernHDFullReward，不重開規則RE。
-- 問句、NO／Escape回覆、YES後取消選擇的對話框，沿既有modernHDDialogueChrome的同來源取色、18像素舊邊帶清除及目標1920×1200三像素細框。保持原生310×86框、位移、裁切與文字／頭像；YES／NO現況依上方四語確認選項。八格選擇器沿既有呈現，不由本節宣稱其框線或圖示已完成HD。
+- 問句、NO／Escape回覆、YES後取消選擇的對話框使用modernHDDialogueChrome的古金材質，限原18實體像素邊帶。保持原生310×86框、位移、裁切與文字／頭像；YES／NO現況依上方四語確認選項。八格選擇器沿既有呈現，不由本節宣稱其框線或圖示已完成HD。
 - owner建立時由實際整備對話格與同次class色盤凍結細框。來源不符時，HD在移出待處理佇列與發布互動狀態前拒收；F2仍整組預備後發布。原生模式不因HD細框來源檢查而受阻。
 - 只在實際顯示對話框時附加HD細框；restore、八格物品面板及返回不得殘留。保留原生七種呈現phase、Draw確認後推進、五條分支的庫存／RNG／一次續行，不改保存、輸入與遊戲規則。
-- 沿既有完整Game.Draw測具驗NO、Escape、YES後丟棄第4槽、YES後選擇器Escape、兩筆獎勵依序Escape。完整畫面與代表F2階段核對原始raw cell框線RGB、舊邊帶、框外HD、文字頭像及原生狀態控制組；獨立核對PNG並拒收舊粗框。壞來源須保持佇列／庫存且可使用原生路徑，舊到期與成功獎勵提示回歸保持。
+- 沿既有完整Game.Draw測具驗NO、Escape、YES後丟棄第4槽、YES後選擇器Escape、兩筆獎勵依序Escape。完整畫面與代表F2階段核對古金整框參考、舊邊帶、框外HD、文字頭像及原生狀態控制組；歷史收據仍依原始raw cell框色核對。壞來源須保持佇列／庫存且可使用原生路徑，舊到期與成功獎勵提示回歸保持。
 - 驗證入口沿[滿背包HD執行器](../../tools/verify_fd2_reward_message_hd.py)及[共用框線像素檢查](../../tools/verify_fd2_hd_transient_expiry.py)。使用現行正式私人圖包、明示受控來源及新輸出目錄；限定RUNTIME-E1，不新增原版、正常玩家或平台完成聲明。完整HD及全部串接後集中人工排程保持。
 
 本節實作前為READY。五分支的實際完整畫面、F2、庫存與一次續行、原生正對照及壞來源拒收已驗；獨立PNG核對細框及同次480頭像，舊粗框實圖與收據反例拒收。數量、來源及完整命令依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的full_reward_chrome_followup_20261026。獨立驗證器以--portrait-pack指定正式私人包核對最終頭像，不以尺寸或掛勾存在代替實際像素證據。
 
 ## 戰鬥提示框的HD細框（CONFORMED-SCOPED／RUNTIME-E1，2026-10-26）
 
+本節保存首次接線的來源與流程收據。現行框色與故事接線依上方「HD1古金色對話框」，不以歷史灰綠三像素框限制HD呈現。
+
 - 沿用到期提示與戰後物品／金錢成功訊息的現行owner。原始資料是FDOTHER#5 raw cell1..17，固定來源見[原版檔案清單](../data/fd2-reference-files.json)，原生幾何依 `PlanNativeDialogueFrameGrid(320,5,112,19,5)` 及 `ComposeNativeChurchDialogueOverlayAt`；固定FD2.EXE的SHA-256為 `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。這是已閉合對話格的美術呈現，不重開RE。
-- 原生310×86框與全部開收框位移／裁切保持。採既有HD面板的1920×1200目標畫布的三像素細框尺度；四邊取raw cell9／10／11／12中段的三色帶，四角取cell1／2／3／4的3×3，底色取單色16×16 cell13。將原18像素寬的放大邊帶還原為底色，再畫三像素細框。這是明示HD美術近似，不宣稱原版逐像素相同。
+- 原生310×86框與全部開收框位移／裁切保持。現行對話框採定版古金雙層材質，限18實體像素邊帶；raw cell1～4、9～13仍作原生框與來源形狀／色盤預檢，不決定HD框色。這是明示HD美術近似，不宣稱原版逐像素相同。
 - 框線資料與色盤在owner建立時凍結，來源形狀／單色底或palette不符時，HD在交易或F2發布前拒收。原生模式保持原資料路徑；不以無效HD來源阻塞原生呈現。框線patch只覆寫原邊帶，內部頭像／文字區不變。
 - 最終層序為世界、原生介面、HD框線、HD頭像、Noto文字、工具列。框線先依同次原生框區裁切，再沿既有contentGeometry定位；幫助頁、角色狀態、全DAC白／黑及淡出遵守現行遮擋順序。restore不保留框線，F2不改job、frame、狀態／RNG與一次續行。
-- 驗收走六到期提示四語及戰後物品／金錢兩條完整Game.Draw，抽驗開框、完整框、收框與恢復的F2；以原始cell直接算新框RGB、18像素舊邊帶清除、四角與裁切，獨立核對PNG並拒收舊粗框、錯色／錯寬／缺來源。原生交易、冷讀保存、全黑／白、字型與頭像回歸保持。
-- 只將這兩個現有caller接上細框，完整操作介面與主題／介面獨立控制仍依本規格其他節。沒有新圖包、保存欄位或平衡改動；正常取得狀態與全部HD後集中人工／平台的排程保持。驗證入口沿[到期HD工具](../../tools/verify_fd2_hd_transient_expiry.py)，擴充時保留舊收據預設相容，新的細框驗收明示require-chrome。
+- 歷史驗收走六到期提示四語及戰後物品／金錢兩條完整Game.Draw，抽驗開框、完整框、收框與恢復的F2。現行新框RGB核對獨立古金整框參考，歷史收據仍核原始cell框色；18像素舊邊帶、四角、裁切及錯色／錯寬／缺來源拒收保持。原生交易、冷讀保存、全黑／白、字型與頭像回歸保持。
+- 首次切片只含這兩個caller，目前已擴及故事及共用確認材質，操作介面隨F11獨立控制。沒有新圖包、保存欄位或平衡改動；正常取得狀態與集中人工／平台的排程保持。驗證入口沿[到期HD工具](../../tools/verify_fd2_hd_transient_expiry.py)，擴充時保留舊收據預設相容，新的細框驗收明示require-chrome。
 
 
 完整重跑與數量依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的battle_dialogue_chrome_followup_20261026。兩個caller、完整畫布與PNG、舊粗框拒收及八種最終層序通過；保留舊收據預設相容。到期GPU觸及6GiB限制，memory.events.max=429，OOM／kill皆零；獎勵峰值另記主收據，不推論平台餘裕。

@@ -2,11 +2,16 @@ package main
 
 import (
 	"bytes"
+	"crypto/sha256"
+	"encoding/json"
 	"fmt"
 	"image"
 	"image/color"
+	"image/png"
+	"os"
 	"reflect"
 	"strings"
+	"sync"
 	"testing"
 
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
@@ -14,9 +19,40 @@ import (
 
 // This oracle reads the actual raw cells independently of the frozen renderer.
 type dialogueChromeSource struct {
-	Background [4]byte       `json:"background"`
-	Edges      [4][3][4]byte `json:"edges"`
-	Corners    [4][9][4]byte `json:"corners"`
+	NativeSourceSHA  string        `json:"native_source_sha256,omitempty"`
+	GoldReferenceSHA string        `json:"gold_reference_sha256,omitempty"`
+	Gold             bool          `json:"gold,omitempty"`
+	Brightness       float64       `json:"brightness,omitempty"`
+	Background       [4]byte       `json:"background"`
+	Edges            [4][3][4]byte `json:"edges"`
+	Corners          [4][9][4]byte `json:"corners"`
+}
+
+var goldReferenceOnce sync.Once
+var goldReference image.Image
+
+func independentGoldReference() image.Image {
+	goldReferenceOnce.Do(func() {
+		file, err := os.Open("../../../docs/figures/hd1-gold-dialogue-frame-reference.png")
+		if err != nil {
+			panic(err)
+		}
+		defer file.Close()
+		goldReference, err = png.Decode(file)
+		if err != nil {
+			panic(err)
+		}
+	})
+	return goldReference
+}
+
+func goldDialogueChromeSource(cells []fdother.RawCell, palette color.Palette) dialogueChromeSource {
+	s := nativeDialogueChromeSource(cells, palette)
+	data, _ := json.Marshal(s)
+	s.NativeSourceSHA = fmt.Sprintf("%x", sha256.Sum256(data))
+	s.GoldReferenceSHA = "6084bbe6a90b9ae9a81ca0f4dcacfc3ed4167e67ce85f48140d63c2d744f76c8"
+	s.Gold, s.Brightness = true, 1
+	return s
 }
 
 func nativeDialogueChromeSource(cells []fdother.RawCell, palette color.Palette) dialogueChromeSource {
@@ -46,6 +82,10 @@ func (s dialogueChromeSource) pixel(x, y int) ([4]byte, bool) {
 	const w, h = 1860, 516
 	if x >= 18 && x < w-18 && y >= 18 && y < h-18 {
 		return [4]byte{}, false
+	}
+	if s.Gold {
+		r, g, b, a := independentGoldReference().At(x, y).RGBA()
+		return [4]byte{byte(float64(r>>8) * s.Brightness), byte(float64(g>>8) * s.Brightness), byte(float64(b>>8) * s.Brightness), byte(a >> 8)}, true
 	}
 	if (x < 3 || x >= w-3) && (y < 3 || y >= h-3) {
 		corner, dx, dy := 0, x, y

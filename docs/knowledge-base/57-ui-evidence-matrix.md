@@ -1,5 +1,7 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
+古金雙層對話框已接原生與一般故事、既有提示共用材質，F11介面與F2美術獨立。普通START到父王及首章保存冷讀相容通過；框內內容、原版介面與其他面板保持。現況與目前Go來源依[58](58-fd2-exe-re-coverage.md)、[61](61-modern-theme-runtime-spec.md)及主收據`hd1_gold_dialogue_followup_20261029`；其他HD1工作與使用者集中人工仍待。
+
 亞雷斯、哈諾、鐵諾與哈瓦特已依使用者定版換成大頭短身Q版，戰場與資訊窗使用新版圖源。哈瓦特另已改成成熟、威嚴的大鬍子造型。三組新增人物由受控繪圖核實，普通首章只驗完整候選載入與原有角色操作／保存相容性；Harvat受控投影不作能力值或自然加入證據。範圍依[58](58-fd2-exe-re-coverage.md)、[61](61-modern-theme-runtime-spec.md)與主收據`hd1_harvat_mature_followup_20261029`；#286其餘人物及轉職仍未完成，全人物完成後才重生原版／HD1總覽。
 
 一般系統確認已接HD世界、DATO75頭像、字型、細框及選項，涵蓋END、離開、目前戰況保存／讀取與全軍移動。五caller的完整GPU／四組控制及普通END／NO返回抽樣通過；問句保留原文，YES／NO沿四語。現況與目前Go指紋依[58](58-fd2-exe-re-coverage.md)、[61](61-modern-theme-runtime-spec.md)及HD主收據`hd1_system_confirmation_followup_20261029`；其餘地形／介面保持未完成。
@@ -32,7 +34,7 @@ HD1目前優先完成正式接線。戰場資訊四面板已接細框、數字�
 
 共用物品／狀態上框的十個固定標籤、兩斜線與HP／MP條已接HD，保留原生數值、來源色、位移及裁切。28項Go、兩條完整Game.Draw及33張PNG通過，範圍為CONFORMED-SCOPED／RUNTIME-E1；物品列縮寫現況依本頁新摘要；分類／裝備圖示與其他介面仍待。來源與單一數量見[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的item_panel_values_followup_20261026及[61](61-modern-theme-runtime-spec.md)。
 
-到期提示與戰後物品／金錢訊息已改用目標1920×1200的三像素HD細框，從原始對話格取色並清除舊放大邊帶。頭像、文字區、開收框位置、裁切及一次續行保持；限定CONFORMED-SCOPED／RUNTIME-E1。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約與工具依[61](61-modern-theme-runtime-spec.md)，證據為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的battle_dialogue_chrome_followup_20261026。其他介面、HD2、獨立控制及集中正常／人工／平台仍待。
+到期提示與戰後物品／金錢訊息的共用HD框線現採定版古金材質，保留原生位置、字區與開收流程。現況依58、61及主收據`hd1_gold_dialogue_followup_20261029`；前版三實體像素灰綠框保留於`battle_dialogue_chrome_followup_20261026`作歷史來源，不再限制HD框色。
 
 狀態效果到期的提示已接同次HD世界、480頭像與Noto文字，新增六則四語內容；原生倒數、扣血／死亡順序、Draw確認、恢復與一次續行保持。限定CONFORMED-SCOPED／RUNTIME-E1，使用明示建構的狀態與角色欄位；未新增正常取得狀態或PLAYER-E2。唯一數量依[58](58-fd2-exe-re-coverage.md)，契約與永久驗證器依[61](61-modern-theme-runtime-spec.md)，來源為[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的transient_expiry_hd_followup_20261026。其他介面／HD2／工具列與集中正常／人工／平台仍待。
 

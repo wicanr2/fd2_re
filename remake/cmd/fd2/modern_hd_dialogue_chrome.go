@@ -1,33 +1,40 @@
 package main
 
 import (
+	"bytes"
+	_ "embed"
 	"errors"
 	"fmt"
 	"image"
 	"image/color"
 	"image/draw"
+	"image/png"
 	"math"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 )
 
-// This is a presentation-only snapshot of FDOTHER#5's three-color bevel.
-// The native source keeps its three logical pixels; HD redraws three physical
-// pixels and clears the old enlarged border without touching the interior.
+// This freezes FDOTHER#5's source validation and native panel colors.
+// Status/item panels keep the thin native bevel; dialogue owners explicitly
+// select the approved gold material in the same 18px border band.
 type modernHDDialogueChrome struct {
 	background color.RGBA
 	edges      [4][3]color.RGBA // top, right, bottom, left
 	corners    [4][9]color.RGBA // top-left, top-right, bottom-left, bottom-right
 	gpu        *ebiten.Image
+	gold       image.Image
+	goldGPU    map[image.Point]*ebiten.Image
 }
 
 type modernHDDialoguePanel struct {
-	chrome *modernHDDialogueChrome
-	rect   image.Rectangle // Frozen native 320x200 coordinates, before clipping.
-	clip   image.Rectangle
-	status bool // Status/item panels remain visible while the status owner is active.
-	values *modernHDItemPanelValues
+	chrome       *modernHDDialogueChrome
+	rect         image.Rectangle // Frozen native 320x200 coordinates, before clipping.
+	clip         image.Rectangle
+	status       bool            // Status/item panels remain visible while the status owner is active.
+	gold         bool            // Only dialogue owners use the approved antique-gold material.
+	physicalRect image.Rectangle // Legacy story box geometry, snapped to HD pixels.
+	values       *modernHDItemPanelValues
 }
 
 func freezeModernHDDialogueChrome(cells []fdother.RawCell, palette color.Palette) (*modernHDDialogueChrome, error) {
@@ -56,8 +63,11 @@ func freezeModernHDDialogueChrome(cells []fdother.RawCell, palette color.Palette
 		}
 		return color.RGBA{byte(r >> 8), byte(g >> 8), byte(b >> 8), 255}, nil
 	}
-	result := &modernHDDialogueChrome{}
-	var err error
+	tile, err := png.Decode(bytes.NewReader(modernHDGoldDialogueTile))
+	if err != nil || tile.Bounds() != image.Rect(0, 0, 48, 48) {
+		return nil, errors.New("modern HD dialogue: embedded gold material invalid")
+	}
+	result := &modernHDDialogueChrome{gold: tile}
 	result.background, err = rgba(bg)
 	if err != nil {
 		return nil, err
@@ -126,7 +136,7 @@ func (c *modernHDDialogueChrome) patchFor(width, height int) *image.RGBA {
 func (g *Game) appendModernHDDialogueChrome(chrome *modernHDDialogueChrome, shift int) {
 	if chrome != nil && g.modernHDText != nil {
 		g.modernHDText.panels = append(g.modernHDText.panels, modernHDDialoguePanel{chrome: chrome,
-			rect: image.Rect(5, 112+shift, 315, 198+shift)})
+			rect: image.Rect(5, 112+shift, 315, 198+shift), gold: true})
 	}
 }
 
@@ -139,22 +149,38 @@ func (p *modernHDPresentation) drawModernHDDialogueChrome(screen ebiten.FinalScr
 		if !panel.status && p.Game.nativePlayerStatus != nil {
 			continue
 		}
-		visible := panel.rect.Intersect(image.Rect(0, 0, 320, 200))
+		rect := image.Rectangle{Min: panel.rect.Min.Mul(6), Max: panel.rect.Max.Mul(6)}
+		if !panel.physicalRect.Empty() {
+			rect = panel.physicalRect
+		}
+		visible := rect.Intersect(image.Rect(0, 0, 1920, 1200))
 		if !panel.clip.Empty() {
-			visible = visible.Intersect(panel.clip)
+			visible = visible.Intersect(image.Rectangle{Min: panel.clip.Min.Mul(6), Max: panel.clip.Max.Mul(6)})
 		}
 		if visible.Empty() || panel.chrome == nil {
 			continue
 		}
 		chrome := panel.chrome
-		if chrome.gpu == nil {
-			chrome.gpu = ebiten.NewImageFromImage(chrome.patchFor(panel.rect.Dx()*6, panel.rect.Dy()*6))
+		texture := chrome.gpu
+		if panel.gold {
+			size := rect.Size()
+			if chrome.goldGPU == nil {
+				chrome.goldGPU = make(map[image.Point]*ebiten.Image)
+			}
+			texture = chrome.goldGPU[size]
+			if texture == nil {
+				texture = ebiten.NewImageFromImage(chrome.goldPatchFor(size.X, size.Y))
+				chrome.goldGPU[size] = texture
+			}
+		} else if texture == nil {
+			texture = ebiten.NewImageFromImage(chrome.patchFor(panel.rect.Dx()*6, panel.rect.Dy()*6))
+			chrome.gpu = texture
 		}
-		local := visible.Sub(panel.rect.Min)
-		source := chrome.gpu.SubImage(image.Rect(local.Min.X*6, local.Min.Y*6, local.Max.X*6, local.Max.Y*6)).(*ebiten.Image)
+		local := visible.Sub(rect.Min)
+		source := texture.SubImage(local).(*ebiten.Image)
 		op := &ebiten.DrawImageOptions{Filter: ebiten.FilterNearest}
 		op.GeoM.Scale(1.0/3, 1.0/3)
-		op.GeoM.Translate(float64(visible.Min.X*2), float64(visible.Min.Y*2))
+		op.GeoM.Translate(float64(visible.Min.X)/3, float64(visible.Min.Y)/3)
 		op.GeoM.Concat(geometry)
 		v := float32(math.Max(0, math.Min(1, brightness)))
 		op.ColorScale.Scale(v, v, v, 1)
@@ -164,8 +190,53 @@ func (p *modernHDPresentation) drawModernHDDialogueChrome(screen ebiten.FinalScr
 			if values.gpu == nil {
 				values.gpu = ebiten.NewImageFromImage(values.picture)
 			}
-			part := values.gpu.SubImage(image.Rect(local.Min.X*6, local.Min.Y*6, local.Max.X*6, local.Max.Y*6)).(*ebiten.Image)
+			part := values.gpu.SubImage(local).(*ebiten.Image)
 			screen.DrawImage(part, op)
 		}
 	}
+}
+
+// Code-generated from the approved SVG, not original game artwork. The 18px
+// corners stay fixed; the flat center strips repeat without scaling the bevel.
+//
+//go:embed modern_hd_gold_dialogue.png
+var modernHDGoldDialogueTile []byte
+
+func (g *Game) prepareModernHDStoryDialogueChrome() error {
+	assets := g.nativeClassUI
+	if assets == nil {
+		var err error
+		assets, err = loadNativeClassUIAssets()
+		if err != nil {
+			return err
+		}
+	}
+	chrome, err := freezeModernHDDialogueChrome(assets.dialogue, assets.palette)
+	if err != nil {
+		return err
+	}
+	g.nativeClassUI, g.nativeDialogueChrome = assets, chrome
+	return nil
+}
+
+func (c *modernHDDialogueChrome) goldPatchFor(width, height int) *image.RGBA {
+	canvas := image.NewRGBA(image.Rect(0, 0, width, height))
+	axis := func(at, size int) int {
+		if at < 18 {
+			return at
+		}
+		if at >= size-18 {
+			return 48 - size + at
+		}
+		return 24
+	}
+	for y := 0; y < height; y++ {
+		for x := 0; x < width; x++ {
+			if x >= 18 && x < width-18 && y >= 18 && y < height-18 {
+				continue
+			}
+			canvas.Set(x, y, c.gold.At(axis(x, width), axis(y, height)))
+		}
+	}
+	return canvas
 }

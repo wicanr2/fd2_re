@@ -104,8 +104,13 @@ func (g *Game) prepareNativeDialogueFrames() error {
 	g.nativeDialogueSpeakingFrame = 0
 	g.nativeDialoguePortraits = nil
 	g.nativeDialogueLayout = nil
+	g.nativeDialogueChrome = nil
+	g.nativeDialogueChromeBounds = nil
 	g.nativeDialogueGlyphSteps = nil
 	if len(g.dialog) == 0 || g.dialog[len(g.dialog)-1].NativeDialogue == nil {
+		if len(g.dialog) > 0 && g.modernHDInterfaceEnabled() {
+			return g.prepareModernHDStoryDialogueChrome()
+		}
 		return nil
 	}
 	if len(g.dialog) != 1 {
@@ -267,6 +272,29 @@ func (g *Game) prepareNativeDialogueFrames() error {
 			mouthOpen[page] = append([]byte(nil), frames[page]...)
 		}
 	}
+	// Freeze the native grid geometry once per utterance, including cursor-only
+	// closing tails. No timer, glyph progression or save state is advanced here.
+	bounds := make(map[campaign.NativeDialogueFramePhase][]image.Rectangle)
+	for phase, count := range map[campaign.NativeDialogueFramePhase]int{
+		campaign.NativeDialogueOpening: len(opening), campaign.NativeDialogueSteady: 1,
+		campaign.NativeDialogueClosing: len(closing),
+	} {
+		for index := 0; index < count; index++ {
+			rect, err := campaign.NativeStoryDialogueFrameBounds(g.nativeClassUI.dialogue, layout.Control, phase, index)
+			if err != nil {
+				return err
+			}
+			bounds[phase] = append(bounds[phase], rect)
+		}
+	}
+	var chrome *modernHDDialogueChrome
+	if g.modernHDInterfaceEnabled() {
+		chrome, err = freezeModernHDDialogueChrome(g.nativeClassUI.dialogue, g.nativeClassUI.palette)
+		if err != nil {
+			return err
+		}
+	}
+	g.nativeDialogueChrome, g.nativeDialogueChromeBounds = chrome, bounds
 	g.nativeDialogueFrames = frames
 	g.nativeDialogueProgressive = progressive
 	g.nativeDialogueMouthOpen = mouthOpen

@@ -3,9 +3,32 @@ package campaign
 import (
 	"errors"
 	"fmt"
+	"image"
 
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 )
+
+// NativeStoryDialogueFrameBounds derives presentation bounds from the same
+// opaque writes as the native frame. The restored background and cursor tail
+// carry no dialogue border.
+func NativeStoryDialogueFrameBounds(cells []fdother.RawCell, control string, phase NativeDialogueFramePhase, index int) (image.Rectangle, error) {
+	if phase == NativeDialogueClosing && index >= len(nativeStoryClosingGridSizes) {
+		// Validate the source/control through the existing blank-frame contract.
+		_, err := NativeStoryDialogueCoverage(cells, control, phase, len(nativeStoryClosingGridSizes))
+		return image.Rectangle{}, err
+	}
+	mask, err := NativeStoryDialogueCoverage(cells, control, phase, index)
+	if err != nil {
+		return image.Rectangle{}, err
+	}
+	var bounds image.Rectangle
+	for i, painted := range mask {
+		if painted {
+			bounds = bounds.Union(image.Rect(i%320, i/320, i%320+1, i/320+1))
+		}
+	}
+	return bounds, nil
+}
 
 type NativeDialogueFramePhase uint8
 

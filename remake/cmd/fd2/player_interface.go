@@ -80,6 +80,11 @@ func (g *Game) setInterfaceMode(mode string) error {
 		}
 	}
 	style := candidate.interfaceAssetTheme()
+	if mode == playerInterfaceHD && len(candidate.dialog) > 0 {
+		if err := candidate.prepareModernHDStoryDialogueChrome(); err != nil {
+			return err
+		}
+	}
 	var world *modernHDMapFrame
 	if g.nativeMapFrameSource != nil && len(g.nativeMapDAC) == 256*3 {
 		palette, err := fdother.VGAPaletteFromDAC(g.nativeMapDAC)

@@ -33,7 +33,7 @@
 
 ![系統確認的四組原版與HD介面／美術](docs/figures/hd1-system-confirmations.png)
 
-END、離開、目前戰況保存／讀取與全軍移動的確認視窗已接HD字型、細框及店員頭像。人物隨美術主題，文字與按鈕隨操作介面；問句保留原文，YES／NO選項支援四語。上圖為同一受控戰場的完整畫面縮圖，保留尚未HD的地形；普通END取消返回也已抽驗。HD頭像目前採閉口靜態呈現，造型由使用者確認。來源與限制見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
+END、離開、目前戰況保存／讀取與全軍移動的確認視窗已接HD字型、細框及店員頭像。人物隨美術主題，文字與按鈕隨操作介面；問句保留原文，YES／NO選項支援四語。上圖為同一受控戰場的完整畫面縮圖，保留尚未HD的地形與前版細框；現行對話框採古金色，普通END取消返回也已抽驗。HD頭像目前採閉口靜態呈現，造型由使用者確認。來源與限制見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
 
 ![HD地圖總覽：六張代表戰場](docs/figures/hd1-map-overview.png)
 
@@ -51,13 +51,13 @@ END、離開、目前戰況保存／讀取與全軍移動的確認視窗已接HD
 
 上圖為重製端受控城鎮的實際操作畫面，完整縮圖保留海報、工具列與設定選單。海報已接入遊戲；城鎮行走人物仍為像素素材。完整地形與其餘介面依 [HD1 里程碑](https://github.com/wicanr2/fd2_re/milestone/1)繼續完成，造型與實機操作由使用者人工驗證。HD2、HD-2D 留待後續。
 
-![到期與獎勵提示採用的HD細框](docs/figures/hd-battle-dialogue-chrome.png)
+![HD1古金雙層對話框的普通父王對話](docs/figures/hd1-gold-dialogue-game.png)
 
-到期提示與戰後領取物品、金錢的框線已接上HD細框，保留原版位置、色彩與開收框流程。四格取自四語受控狀態槽的完整遊戲繪製半縮，角色欄位與位置經明示建構。其他操作介面與集中人工確認仍待，來源及範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
+HD1對話框採用古金色雙層框線，保留深藍底、原位置、頭像與文字區；故事開收框及既有提示也已接入。上圖是正常START到父王對話的完整視窗，四組美術／介面切換與續句已抽驗。框線隨F11介面，頭像仍隨F2美術主題。其他介面與集中人工確認仍待，範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
 
 ![四語系狀態到期提示的HD背景、頭像與文字](docs/figures/hd-transient-expiry-locales.png)
 
-六種狀態到期提示已接上HD背景、480頭像與清晰文字，並支援四語。四格為Linux受控狀態測試的完整遊戲畫面半縮，角色欄位與位置經明示建構；本圖記錄原生框線，現行細框見上方總覽。一般玩家取得狀態後的抽驗與完整HD介面仍待，來源及範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
+六種狀態到期提示已接上HD背景、480頭像與清晰文字，並支援四語。四格為Linux受控狀態測試的完整遊戲畫面半縮，角色欄位與位置經明示建構；本圖記錄前版框線，現行古金框見上方實際畫面。一般玩家取得狀態後的抽驗與完整HD介面仍待，來源及範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
 
 ![普通攻擊中的HD戰鬥面板框線與HP／MP條](docs/figures/hd-battle-panel-chrome.png)
 

@@ -59,6 +59,7 @@ func systemGPUCPU(g *Game, base []byte, frame *modernHDTextFrame, overlay *moder
 	if frame != nil {
 		colors := nativeDialogueChromeSource(g.nativePreparationUI.dialogue, g.nativeClassUI.palette)
 		for _, panel := range frame.panels {
+			colors.Gold, colors.Brightness = panel.gold, 1
 			r := image.Rectangle{Min: panel.rect.Min.Mul(6), Max: panel.rect.Max.Mul(6)}
 			for y := max(0, r.Min.Y); y < min(1200, r.Max.Y); y++ {
 				for x := max(0, r.Min.X); x < min(1920, r.Max.X); x++ {

@@ -4,6 +4,7 @@ import (
 	"crypto/sha256"
 	"encoding/json"
 	"fmt"
+	"image"
 	"os"
 	"strconv"
 
@@ -341,6 +342,23 @@ func (g *Game) recordInputAuditState() {
 	if len(g.dialog) != 0 {
 		r["dialogue_speaker"] = g.dialog[len(g.dialog)-1].Speaker
 		r["dialogue_native"] = g.dialog[len(g.dialog)-1].NativeDialogue != nil
+		if n := g.dialog[len(g.dialog)-1].NativeDialogue; n != nil {
+			r["dialogue_control"] = n.Control
+		}
+	}
+	if g.modernHDText != nil {
+		var frames [][4]int
+		for _, panel := range g.modernHDText.panels {
+			if !panel.gold {
+				continue
+			}
+			rect := panel.physicalRect
+			if rect.Empty() {
+				rect = image.Rectangle{Min: panel.rect.Min.Mul(6), Max: panel.rect.Max.Mul(6)}
+			}
+			frames = append(frames, [4]int{rect.Min.X, rect.Min.Y, rect.Max.X, rect.Max.Y})
+		}
+		r["hd_gold_dialogue_rects"] = frames
 	}
 	if overlay := g.modernHDOverlay; overlay != nil {
 		r["hd_overlay_rect"] = []int{overlay.rect.Min.X, overlay.rect.Min.Y, overlay.rect.Dx(), overlay.rect.Dy()}

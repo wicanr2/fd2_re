@@ -376,13 +376,17 @@ HD1原生地圖資訊窗的細框、A／D、HP與已登錄地形縮圖已接入�
 
 `hd1-interface-complete` · 工作 · [#283](https://github.com/wicanr2/fd2_re/issues/283) · 仍未完成 · 要人判
 
-使用者2026-10-28確認此項列入HD1 milestone。主規格為61，來源與進度依58及HD主收據；人工驗證由使用者接手。
+使用者2026-10-28確認此項列入HD1 milestone。主規格為61，現況依58及HD主收據；人工驗證由使用者接手。
 
-使用者已選定HD1古金色雙層對話框原型下半部，原圖保存於docs/figures/hd1-gold-dialogue-prototype.png。維持原版框位、深藍底、字區與開收動畫；操作介面隨F11，人物美術仍隨F2。除既有提示外，故事對話需補接框線；規格61已READY，接線為下一切片，原型不是遊戲接線收據。
+定版古金色雙層框已接正式原生／一般故事與既有提示共用材質，保留框位、深藍底、字區與開收時計。框線隨F11，人物美術隨F2；物品／狀態面板保留原色。完整受控繪製與獨立PNG、四組切換、普通START父王續句及原樣首章保存／新程序LOAD通過。README已放實際遊玩圖。
+
+本工單繼續追蹤其餘尚未HD的正式介面，不因金框切片完成而關閉。原型仍保存作定版參考，不能當遊戲擷取。完整數量、來源SHA、診斷與重跑依主收據hd1_gold_dialogue_followup_20261029。
+
+_下面區塊供工作清單工具讀取。_
 
 怎樣算做完：補齊尚未接HD的正式介面、確認／回覆與轉場，沿既有原位置、輸入、文字與保存；清晰黑體、HD框線與主題人物來源一致。必要載入、缺件、切換與狀態保持通過，人工驗證由使用者接手。；並完成定版古金框故事／提示接線與獨立控制。
 
-證據：`['docs/data/fd2-modern-hd-battlefield-20261019.json', 'docs/figures/hd1-gold-dialogue-prototype.png', 'tools/build_fd2_hd1_gold_dialogue_prototype.py']`
+證據：`['docs/data/fd2-modern-hd-battlefield-20261019.json', 'docs/figures/hd1-gold-dialogue-prototype.png', 'tools/build_fd2_hd1_gold_dialogue_prototype.py', 'docs/figures/hd1-gold-dialogue-game.png', 'remake/cmd/fd2/modern_hd_gold_dialogue_test.go', 'tools/verify_fd2_hd_gold_dialogue.py']`
 
 ### P1 HD1獨立控制：介面與美術主題分開切換
 

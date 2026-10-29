@@ -39,8 +39,11 @@ def main():
     parser.add_argument('--out', type=Path, required=True)
     parser.add_argument('--switch-theme', action='store_true', help='由忠實主題正常START，途中驗證雙向F2及首章F5/F9。')
     parser.add_argument('--switch-only', action='store_true', help='限正常START至父王對話的F2／遮罩補抽，不重跑完整序章。')
+    parser.add_argument('--gold-dialogue', action='store_true', help='正常START至父王，核對古金框的四組F2／F11控制，不重跑整段序章。')
+    parser.add_argument('--startup-timeout',type=int,choices=[60,120,180,360],default=60,help='等待完整主題預檢後的實際視窗上限；沿其他普通GUI工具的明示預算。')
     args = parser.parse_args()
     assert not args.switch_only or args.switch_theme
+    assert not args.gold_dialogue or not (args.switch_theme or args.switch_only)
     assert Path('/.dockerenv').exists()
     assert args.binary.is_file() and (args.assets/'assets/locales/zh-Hant/pack.json').is_file()
     assert (args.original_pack/'manifest.json').is_file() and args.modern_pack.is_dir()
@@ -70,6 +73,8 @@ def main():
         env.pop(name,None)
     if args.switch_theme:
         env.pop('FD2_THEME',None)
+    if args.gold_dialogue:
+        env['FD2_INPUT_AUDIT_INTERVAL']='1'
     Path(env['XDG_RUNTIME_DIR']).mkdir(mode=0o700)
     Path(env['XDG_CONFIG_HOME']).mkdir()
     Path(env['XDG_CACHE_HOME']).mkdir()
@@ -84,6 +89,9 @@ def main():
         return subprocess.check_output(list(items),env=env,stderr=subprocess.DEVNULL,text=True)
     started = time.monotonic()
     def key(name):
+        if args.gold_dialogue:
+            from fd2_hd_gold_dialogue_gui import acknowledged_key
+            return acknowledged_key(audit,command,name,args.out/'operations.jsonl')
         key_started = time.monotonic()
         before = latest(audit)
         command('xdotool','keydown',name)
@@ -117,7 +125,7 @@ def main():
         command('pactl','set-default-sink','fd2_hd')
         game = start([str(args.binary)],'game.log',args.assets)
         window = None
-        for _ in range(600):
+        for _ in range(args.startup_timeout*10):
             if game.poll() is not None: raise RuntimeError('遊戲在建立視窗前退出')
             try:
                 window = command('xdotool','search','--name','炎龍騎士團').splitlines()[0]; break
@@ -150,6 +158,9 @@ def main():
                 time.sleep(.25)
             raise TimeoutError('說明遮罩尚未實際呈現')
         shot('title.png')
+        if args.gold_dialogue:
+            from fd2_hd_gold_dialogue_gui import start_campaign
+            start_campaign(audit,key)
         for attempt in range(1600):
             if time.monotonic()-started>840: raise TimeoutError('正常序章超過有界驗證時間')
             state = latest(audit)
@@ -162,6 +173,10 @@ def main():
                 source, line, story = beats[-1]
                 row = rows.get((source,story,int(line)))
                 speaker = row['resolved_dato'] if row else None
+                if args.gold_dialogue and speaker == 48:
+                    from fd2_hd_gold_dialogue_gui import run_gold_dialogue
+                    run_gold_dialogue(args,audit,key,shot,command,window,started)
+                    return
                 if args.switch_theme and speaker == 48 and not switches:
                     # The cutscene log announces a beat before synchronous
                     # portrait/font preparation finishes. Wait for live frames

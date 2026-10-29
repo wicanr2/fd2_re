@@ -98,6 +98,7 @@ func (p *dialogueChromeLayerProbe) Draw(screen *ebiten.Image) {
 	if !blocked && name != "letterbox" {
 		reference := p.source
 		if name == "fade" {
+			reference.Brightness = .5
 			for channel := 0; channel < 3; channel++ {
 				reference.Background[channel] /= 2
 				for side := range reference.Edges {
@@ -169,7 +170,7 @@ func TestModernHDDialogueChromeFinalLayerGPU(t *testing.T) {
 	}
 	g := &Game{titlePhase: "probe", modernStoryPortraits: &modernStoryPortraitSet{hasHD: true}, font: loadFont()}
 	p := &dialogueChromeLayerProbe{game: g, presentation: &modernHDPresentation{Game: g}, chrome: chrome,
-		source: nativeDialogueChromeSource(assets.dialogue, assets.palette), final: ebiten.NewImage(1920, 1200),
+		source: goldDialogueChromeSource(assets.dialogue, assets.palette), final: ebiten.NewImage(1920, 1200),
 		base: make([]byte, 1920*1200*4), pixels: make([]byte, 1920*1200*4), out: out}
 	ebiten.SetVsyncEnabled(false)
 	if err = ebiten.RunGame(p); err != nil {
