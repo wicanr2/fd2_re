@@ -310,6 +310,16 @@ HD1 milestone為[GitHub milestone 1](https://github.com/wicanr2/fd2_re/milestone
 
 ## HD1地形來源遮罩與洞窟石壁（CONFORMED-SCOPED／RUNTIME-E1，#282）
 
+### 洞窟地板明暗變體（CONFORMED-SCOPED／RUNTIME-E1）
+
+- 原生彩色來源已核對map9的74／75／78／79，均為全覆蓋平面石地板、沒有目的地重映射。其三層內容與map24兩槽、map25兩槽及map26四槽完全相同，共12槽；沿固定FDSHAP指紋、既有selector及事件見證，不重開原版RE。
+- 用同風格2×2手繪母稿製作四張144圖，保留參考中的石紋位置與明暗；RGB只取新稿，原生Mask六倍保持全覆蓋。分格、明暗與接縫屬美術近似，人工造型由使用者接手。清冊仍採schema1稀疏地形角色，四張圖共用至全部12槽，不改規則、保存、世界座標或原生時鐘。
+- 沿既有洞窟工具增加明示details配方，一次核對全部12槽的原生三層、相同角色、SHA及selector見證後建候選。來源錯誤須在發布候選前拒收，舊集合及圖片保持；全部來源、透明度及不完整GPU收據驗證通過後才登錄並同步私人庫。
+- 為減少重複載入大型主題，將48個來源GPU案例納入六張代表圖的同次完整擷取。每槽驗原色、LUT、全黑與全白；六個Game.Draw仍驗獨立CPU、F2及保存保持。候選總覽可先用候選對應的生成覆蓋資料，正式登錄後覆驗清冊，再用同份已驗PNG與正式覆蓋資料更新README；收據須綁定候選／正式清冊、同一覆蓋內容及PNG，不冒稱重新擷取。
+- 本批48個來源GPU與六組完整Game.Draw、F2及保存保持通過；27項Go、Linux建置、明暗批三項與舊地板三項Python回歸通過。總覽保留舊路徑逐byte相同，新增正式等價檢查的七個拒收反例通過。正式878項／私人7104檔，舊7099檔保持，來源與重跑依HD主收據`hd1_cave_details_followup_20261029`。
+- [明暗配方](../../remake/assets/themes/modern/cave-floor-details-hd.recipe.json)列全部12槽與逐字圖像提示；[洞窟工具](../../tools/build_fd2_hd_cave_rock.py)沿既有prepare參數新增`--coverage <固定873項基底覆蓋JSON>`，基底由`git show e0d7ebf5`取回。原生來源仍沿native-terrain-sources-r2。反例設`FD2_CAVE_DETAILS_ROOT=<既有工作根>`，以既有[洞窟測試](../../tools/test_fd2_hd_cave_rock.py)重跑。
+- 合併GPU設`FD2_HD_MAP_DETAIL_MANIFEST=<候選/manifest.json>`與`FD2_HD_MAP_OVERVIEW_COVERAGE=<候選覆蓋JSON>`，其餘沿總覽擷取環境。正式登錄後排版增加`--source-catalog <原候選清冊> --source-coverage <原候選覆蓋>`；只允許清冊private_root及覆蓋catalog_sha256不同，其餘內容逐項相同。這是正式素材搬移的等價收據，不改寫原GPU收據或降低像素檢查。
+
 ### README的HD地圖總覽（CONFORMED-SCOPED／RUNTIME-E1）
 
 - 使用者要求README直接呈現總覽。取map0／1／9／24／25／26六張代表地圖，以目前正式清冊及原生資料重新擷取完整Game.Draw，不用概念稿代替遊戲畫面。章節與map欄位須先核對，人物沿章節資料的直接進場名冊，不調整位置；未套正常戰役JOIN歷程，首章因此包含蓋亞。鏡頭採已登錄HD地形最多的13×8窗格，同分時優先看得到較多單位；游標置中，仍屬受控擷取，不宣稱普通玩家流程。

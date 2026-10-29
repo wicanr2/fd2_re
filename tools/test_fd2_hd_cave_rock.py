@@ -106,5 +106,89 @@ class CaveRockTest(unittest.TestCase):
                     self.assertEqual(catalog.read_bytes(), before)
 
 
+@unittest.skipUnless(os.environ.get('FD2_CAVE_DETAILS_ROOT'), 'explicit detail batch required')
+class CaveDetailsTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.root = Path(__file__).resolve().parents[1]
+        cls.work = Path(os.environ['FD2_CAVE_DETAILS_ROOT'])
+        cls.catalog = cls.work / 'hd1-details-base-catalog-r1.json'
+        cls.coverage = cls.work / 'hd1-details-base-coverage-r1.json'
+        cls.recipe = cls.root / 'remake/assets/themes/modern/cave-floor-details-hd.recipe.json'
+        cls.master = cls.work / 'cave-floor-details-hd-v1-master.png'
+        cls.sources = cls.work.parent / 'native-terrain-sources-r2'
+        cls.candidate = cls.work / 'hd1-details-candidate-r1'
+
+    def compile(self, out, recipe=None, coverage=None, sources=None, master=None):
+        return prepare(recipe or self.recipe, self.catalog, Path('/modern'), Path('/original'), sources or self.sources,
+                       self.root / 'remake/assets/maps', master or self.master, out, coverage_path=coverage or self.coverage)
+
+    def test_complete_rebuild_native_alpha_and_aliases(self):
+        with tempfile.TemporaryDirectory(dir=self.work) as temporary:
+            out = Path(temporary) / 'candidate'
+            result = self.compile(out)
+            old = json.loads((self.candidate / 'catalog.json').read_text())
+            actual = json.loads((out / 'catalog.json').read_text())
+            self.assertEqual(actual['assets'], old['assets'])
+            self.assertEqual((len(result['frames']), len(result['bindings'])), (4, 12))
+            for row in result['frames']:
+                self.assertEqual((out / row['file']).read_bytes(), (self.candidate / row['file']).read_bytes())
+                with Image.open(out / row['file']) as picture:
+                    self.assertEqual(picture.size, (144, 144))
+                    self.assertEqual(picture.getchannel('A').getextrema(), (255, 255))
+            with self.assertRaises(ValueError):
+                self.compile(out)
+
+    def test_bad_sources_publish_no_candidate(self):
+        for fault in ('master-sha', 'target-missing', 'coverage-kind', 'selector', 'native-sha', 'master-geometry'):
+            with self.subTest(fault=fault), tempfile.TemporaryDirectory(dir=self.work) as temporary:
+                folder = Path(temporary)
+                recipe, coverage = json.loads(self.recipe.read_text()), json.loads(self.coverage.read_text())
+                source = json.loads((self.sources / 'manifest.json').read_text())
+                master = self.master
+                if fault == 'master-sha': recipe['master_sha256'] = 'wrong'
+                elif fault == 'target-missing': recipe['targets'].pop()
+                elif fault == 'coverage-kind': coverage['kind'] = 'wrong'
+                elif fault == 'selector':
+                    row = next(r for r in coverage['maps'][9]['required'] if r['frame'] == 74 and r['role'] == 'terrain')
+                    row['selector']['tile_word'] += 1
+                elif fault == 'native-sha': source['maps'][9]['frames'][74]['native_content_sha256'] = 'wrong'
+                else:
+                    master = folder / 'bad.png'
+                    Image.new('RGB', (1248, 1254)).save(master)
+                    recipe['master_sha256'] = hashlib.sha256(master.read_bytes()).hexdigest()
+                cp = folder / 'coverage.json'; cp.write_text(json.dumps(coverage))
+                recipe['coverage_sha256'] = hashlib.sha256(cp.read_bytes()).hexdigest()
+                sp = folder / 'sources'; sp.mkdir()
+                (sp / 'manifest.json').write_text(json.dumps(source))
+                recipe['source_manifest_sha256'] = hashlib.sha256((sp / 'manifest.json').read_bytes()).hexdigest()
+                rp = folder / 'recipe.json'; rp.write_text(json.dumps(recipe))
+                out = folder / 'candidate'
+                with self.assertRaises(ValueError): self.compile(out, rp, cp, sp, master)
+                self.assertFalse(out.exists())
+
+    def test_complete_gpu_required_for_registration(self):
+        original = self.work / 'hd1-details-gpu-r1-capture/receipt.json'
+        for fault in ('valid', 'missing-source', 'wrong-source', 'missing-game', 'missing-save', 'manifest-sha'):
+            with self.subTest(fault=fault), tempfile.TemporaryDirectory(dir=self.work) as temporary:
+                folder = Path(temporary)
+                catalog = folder / 'catalog.json'; before = self.catalog.read_bytes(); catalog.write_bytes(before)
+                gpu = json.loads(original.read_text())
+                for row in gpu['cases']:
+                    if row.get('file'): (folder / row['file']).symlink_to(original.parent / row['file'])
+                if fault == 'missing-source': gpu['cases'].pop(0)
+                elif fault == 'wrong-source': gpu['cases'][0]['source_frame'] += 1
+                elif fault == 'missing-game': gpu['cases'].pop()
+                elif fault == 'missing-save': gpu['maps'][0]['save_bytes'] = 0
+                elif fault == 'manifest-sha': gpu['detail_manifest_sha256'] = 'wrong'
+                path = folder / 'gpu.json'; path.write_text(json.dumps(gpu))
+                if fault == 'valid':
+                    result = register(catalog, self.candidate, path)
+                    self.assertEqual((result['frames'], result['bindings'], result['catalog_assets']), (4, 12, 878))
+                else:
+                    with self.assertRaises(ValueError): register(catalog, self.candidate, path)
+                    self.assertEqual(catalog.read_bytes(), before)
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -1,5 +1,7 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
+洞窟明暗變體已新增四圖源／12槽，README六圖總覽同步更新。素材、正式搬移等價、48來源及六組完整擷取與目前Go指紋依[58](58-fd2-exe-re-coverage.md)、[61](61-modern-theme-runtime-spec.md)及HD主收據`hd1_cave_details_followup_20261029`；其餘缺圖及介面仍待。
+
 README新增六張代表地圖的同版受控總覽，保留像素區域。擷取、目前Go來源指紋及圖源上界說明依[61](61-modern-theme-runtime-spec.md)與HD主收據`hd1_map_overview_followup_20261028`；首章測試名冊包含蓋亞，不提升為正常戰役加入證據。
 
 HD1範圍已定為地形、介面、獨立控制與完整工具列，歸入[里程碑1](https://github.com/wicanr2/fd2_re/milestone/1)。單列工具列已接獨立介面／美術、語系、字級、加速、全螢幕與雙組海報、漸層及淡入；其餘地形／介面及城鎮行走人物仍是實作工作。技術驗證與限制依[58](58-fd2-exe-re-coverage.md)、[61](61-modern-theme-runtime-spec.md)及[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`hd1_posters_followup_20261028`；人工驗證仍由使用者接手。

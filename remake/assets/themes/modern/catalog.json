@@ -69608,6 +69608,163 @@
         "docs/data/fd2-hd1-terrain-coverage.json",
         "docs/knowledge-base/61-modern-theme-runtime-spec.md"
       ]
+    },
+    {
+      "asset_id": "modern.terrain.cave_floor_details.master",
+      "role": "terrain_hd_master",
+      "status": "concept",
+      "file": "cave-floor-details-hd-v1-master.png",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "1952c52955dd603a836488730058849c62ee4655dbb8d10d559baccb894337ab",
+      "source_refs": [
+        "remake/assets/themes/modern/cave-floor-details-hd.recipe.json",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
+    },
+    {
+      "asset_id": "modern.terrain.cave_floor_details.map09.native_hd",
+      "role": "native_terrain_hd_set",
+      "status": "runtime_candidate",
+      "consumer_contract": "fdshap_native_hd_sparse_v1",
+      "map_id": 9,
+      "width": 144,
+      "height": 144,
+      "frame_count": 4,
+      "frame_ids": [
+        74,
+        75,
+        78,
+        79
+      ],
+      "files": [
+        "map09-frame0074-cave-floor-details-hd.png",
+        "map09-frame0075-cave-floor-details-hd.png",
+        "map09-frame0078-cave-floor-details-hd.png",
+        "map09-frame0079-cave-floor-details-hd.png"
+      ],
+      "frame_sha256": [
+        "fcbc06214f5779c9bf999d809908fa3cb1706f51ad6b37ae2dd9556acd2d734f",
+        "afbcf009e9bd9766686ae1059beee5b2f1e78e828a9b3c0acca3318d8cc8ca5b",
+        "9e694819a8f67aed520bfb89f8d58b493c0e27ddebf06bd36c9d943d2c3c0e0e",
+        "75dd5746c862d0467c02a58e36e7d3a6c21c06eb87eee7d4657381acc14cc13d"
+      ],
+      "semantics": [
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain"
+      ],
+      "alpha_contract": "native_mask_nearest_6",
+      "cycle_policy": "native_selector",
+      "source_refs": [
+        "remake/assets/themes/modern/cave-floor-details-hd.recipe.json",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
+    },
+    {
+      "asset_id": "modern.terrain.cave_floor_details.map24.native_hd",
+      "role": "native_terrain_hd_set",
+      "status": "runtime_candidate",
+      "consumer_contract": "fdshap_native_hd_sparse_v1",
+      "map_id": 24,
+      "width": 144,
+      "height": 144,
+      "frame_count": 2,
+      "frame_ids": [
+        76,
+        77
+      ],
+      "files": [
+        "map09-frame0078-cave-floor-details-hd.png",
+        "map09-frame0079-cave-floor-details-hd.png"
+      ],
+      "frame_sha256": [
+        "9e694819a8f67aed520bfb89f8d58b493c0e27ddebf06bd36c9d943d2c3c0e0e",
+        "75dd5746c862d0467c02a58e36e7d3a6c21c06eb87eee7d4657381acc14cc13d"
+      ],
+      "semantics": [
+        "terrain",
+        "terrain"
+      ],
+      "alpha_contract": "native_mask_nearest_6",
+      "cycle_policy": "native_selector",
+      "source_refs": [
+        "remake/assets/themes/modern/cave-floor-details-hd.recipe.json",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
+    },
+    {
+      "asset_id": "modern.terrain.cave_floor_details.map25.native_hd",
+      "role": "native_terrain_hd_set",
+      "status": "runtime_candidate",
+      "consumer_contract": "fdshap_native_hd_sparse_v1",
+      "map_id": 25,
+      "width": 144,
+      "height": 144,
+      "frame_count": 2,
+      "frame_ids": [
+        68,
+        69
+      ],
+      "files": [
+        "map09-frame0078-cave-floor-details-hd.png",
+        "map09-frame0079-cave-floor-details-hd.png"
+      ],
+      "frame_sha256": [
+        "9e694819a8f67aed520bfb89f8d58b493c0e27ddebf06bd36c9d943d2c3c0e0e",
+        "75dd5746c862d0467c02a58e36e7d3a6c21c06eb87eee7d4657381acc14cc13d"
+      ],
+      "semantics": [
+        "terrain",
+        "terrain"
+      ],
+      "alpha_contract": "native_mask_nearest_6",
+      "cycle_policy": "native_selector",
+      "source_refs": [
+        "remake/assets/themes/modern/cave-floor-details-hd.recipe.json",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
+    },
+    {
+      "asset_id": "modern.terrain.cave_floor_details.map26.native_hd",
+      "role": "native_terrain_hd_set",
+      "status": "runtime_candidate",
+      "consumer_contract": "fdshap_native_hd_sparse_v1",
+      "map_id": 26,
+      "width": 144,
+      "height": 144,
+      "frame_count": 4,
+      "frame_ids": [
+        64,
+        65,
+        68,
+        69
+      ],
+      "files": [
+        "map09-frame0074-cave-floor-details-hd.png",
+        "map09-frame0075-cave-floor-details-hd.png",
+        "map09-frame0078-cave-floor-details-hd.png",
+        "map09-frame0079-cave-floor-details-hd.png"
+      ],
+      "frame_sha256": [
+        "fcbc06214f5779c9bf999d809908fa3cb1706f51ad6b37ae2dd9556acd2d734f",
+        "afbcf009e9bd9766686ae1059beee5b2f1e78e828a9b3c0acca3318d8cc8ca5b",
+        "9e694819a8f67aed520bfb89f8d58b493c0e27ddebf06bd36c9d943d2c3c0e0e",
+        "75dd5746c862d0467c02a58e36e7d3a6c21c06eb87eee7d4657381acc14cc13d"
+      ],
+      "semantics": [
+        "terrain",
+        "terrain",
+        "terrain",
+        "terrain"
+      ],
+      "alpha_contract": "native_mask_nearest_6",
+      "cycle_policy": "native_selector",
+      "source_refs": [
+        "remake/assets/themes/modern/cave-floor-details-hd.recipe.json",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
     }
   ]
 }

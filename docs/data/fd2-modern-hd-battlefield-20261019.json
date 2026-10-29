@@ -246346,7 +246346,8 @@
     "final_validation": {
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-floor-final-validation-r1.json",
       "sha256": "6d7f0db071aef34290e880b3bcc4b437c290f1a701557714211462f8aae161ea"
-    }
+    },
+    "current_coverage_superseded_by": "hd1_cave_details_followup_20261029"
   },
   "hd1_map_overview_followup_20261028": {
     "date": "2026-10-28",
@@ -246747,6 +246748,323 @@
     "final_validation": {
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-map-overview-final-validation-r1.json",
       "sha256": "3ffec670b680ffee14001748683e8ffaf4997a51f5b2018d4c385d24146c6480"
+    },
+    "image_superseded_by": "hd1_cave_details_followup_20261029"
+  },
+  "hd1_cave_details_followup_20261029": {
+    "date": "2026-10-29",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1",
+    "base_commit": "e0d7ebf5ad3afe47e8b349bf5d2ace11fae7ae95",
+    "working_branch": "feat/hd1-cave-floor-details",
+    "issue": 282,
+    "scope": "四張新手繪明暗地板沿同角色及相同原生三層接四圖12槽。一次合併48個來源與六張總覽擷取，不更改規則、原生時鐘、幾何、加入或保存格式。",
+    "coverage": {
+      "file": "docs/data/fd2-hd1-terrain-coverage.json",
+      "sha256": "590bd997840bf7dc80af0ce1ec0ed733fdf659e3933b23c520d8ce61d3fd6bf5",
+      "summary": {
+        "maps": 33,
+        "missing-art": 3386,
+        "missing_unique_native_content": 2065,
+        "native-remap-only": 10,
+        "registered-hd": 602,
+        "required_slots": 3998,
+        "selector_checks": 617520
+      },
+      "method": "33圖正式selector與全部事件有效的來源上界，非自然可達。未HD背景仍保留原生。"
+    },
+    "art": {
+      "recipe": {
+        "file": "remake/assets/themes/modern/cave-floor-details-hd.recipe.json",
+        "sha256": "5f7ca2f0f635b622c2b545800fe388536cc4d4e38104ca7f167a43203e6d6d10"
+      },
+      "guide": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-cave-floor-details-guide-r1.png",
+        "sha256": "e3255971da1e9d3468aef7963dc069d354e0b42b7c621684acabe125e7029b0d"
+      },
+      "master": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/cave-floor-details-hd-v1-master.png",
+        "sha256": "1952c52955dd603a836488730058849c62ee4655dbb8d10d559baccb894337ab"
+      },
+      "private_master": "packs/fd2-modern-handpainted-a/cave-floor-details-hd-v1-master.png",
+      "tool": "image_gen.imagegen",
+      "mode": "builtin",
+      "prompt": "逐字提示在recipe.image_generation.prompt",
+      "frame_ids": [
+        74,
+        75,
+        78,
+        79
+      ],
+      "size": [
+        1254,
+        1254
+      ],
+      "output_size": [
+        144,
+        144
+      ],
+      "policy": "2×2新RGB歸一288後分格，原生全覆蓋Mask六倍保持，不混原版RGB；明暗與接縫為美術近似。"
+    },
+    "candidate": {
+      "manifest": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-details-candidate-r1/manifest.json",
+        "sha256": "b2ac0fd9cd74b378c83bf76259e1701df9318f2867d40d9d343b2743f9ab1cb7"
+      },
+      "catalog": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-details-candidate-r1/catalog.json",
+        "sha256": "6cb663b0b0be63f8e1f76b312a1ae589922a5ae7f7ffebc95526d41735fd4026"
+      },
+      "coverage": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-details-candidate-coverage-r1.json",
+        "sha256": "5485fa77fca209107f5e452670df12a12e6bdec7b9df227d1acef57b82cae581"
+      },
+      "base_catalog": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-details-base-catalog-r1.json",
+        "sha256": "463b6ef33d0052b8aa8e557365a7789d32c10d038709835d27c170a1da0c8579"
+      },
+      "base_coverage": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-details-base-coverage-r1.json",
+        "sha256": "2082c18c2ec4b38aae2d3a53b8787e778b774b206e05d9ae7ec093fe8e1c2b3e"
+      },
+      "compiler": {
+        "file": "tools/build_fd2_hd_cave_rock.py",
+        "sha256": "d6712b7c75f67ca37446f7fecc3336824f0edbe35b41e03cde73d682db93a1b5"
+      },
+      "source_count": 12,
+      "maps": [
+        9,
+        24,
+        25,
+        26
+      ],
+      "rebuild": "候選後加嚴覆蓋版本及母稿角色拒收，最終工具重編全部PNG及catalog.assets與候選保持。原manifest工具SHA保留，未改寫GPU輸入。"
+    },
+    "gpu": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-details-gpu-r1-capture/receipt.json",
+        "sha256": "9d306b248b71104b5d74b4d426c17af69011281dc9ab247b6955ac318764ca6a"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-details-gpu-r1.log",
+        "sha256": "4735966d7ea4482770bda055a734d9ee5372584860982ad38413effe91a7317d"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-details-gpu-r1.memory.json",
+        "sha256": "fa70319d955fb1987c9936146598aa5d55e1140b96ccb41e0133db32705f7184",
+        "elapsed_seconds": 184.564,
+        "peak_bytes": 5159514112,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "source_cases": 48,
+      "full_game_cases": 6,
+      "f2_cases": 6,
+      "map_ids": [
+        0,
+        1,
+        9,
+        24,
+        25,
+        26
+      ],
+      "scope": "每槽原色／LUT／黑／白；GPU對獨立CPU容差2。六圖受控鏡頭與直接進場章節名冊、位置不改；首章含蓋亞，未提升正常加入歷程或原版parity。"
+    },
+    "registration": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-details-registration-r1.json",
+      "sha256": "a914d0ee097232b0b357818aab001e239d88cda1b743d490f572ec46ebbb8747"
+    },
+    "overview": {
+      "image": {
+        "file": "docs/figures/hd1-map-overview.png",
+        "sha256": "f5b7e03ac492ffe4df6fa852879e6cfd5a1aa65415e9f56603b87fd383dc16a1"
+      },
+      "report": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-details-overview-r1.json",
+        "sha256": "48bc987e438dba16a410e1b987cd7e1ac80a36392c4778f6a47a592db1273699"
+      },
+      "compiler": {
+        "file": "tools/build_fd2_hd_map_overview.py",
+        "sha256": "bd6e35d332b677ac54a6d0420c6fb445534736a4ed6e842fc1f2197af29494f8"
+      },
+      "legacy_report": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-details-overview-legacy-r1.json",
+        "sha256": "384f9c03b943a6f978f5bec07d140619071805ac703efb46ec174209f097eb26"
+      },
+      "legacy_png_byte_identical": true,
+      "registered_equivalence": {
+        "source_catalog_sha256": "6cb663b0b0be63f8e1f76b312a1ae589922a5ae7f7ffebc95526d41735fd4026",
+        "source_coverage_sha256": "5485fa77fca209107f5e452670df12a12e6bdec7b9df227d1acef57b82cae581",
+        "assets_and_coverage_equal": true,
+        "allowed_difference": "private_root and coverage catalog_sha256 only"
+      },
+      "rejected_mutants": [
+        "catalog",
+        "missing-map",
+        "png-sha",
+        "tolerance",
+        "missing-f2",
+        "registered-assets",
+        "registered-coverage"
+      ],
+      "scope": "同份候選擷取PNG，登錄搬移只改private_root與coverage清冊引用，其餘完整相等；不重新標成正式重拍。總覽等比例縮圖，角色名冊與未HD區域圖說保持。"
+    },
+    "python_guards": {
+      "new_details": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-details-tests-r1.log",
+        "sha256": "bf16c6728dd38d464ab1fdd2491d06c842e7be97fa1187bf8e978a96f66fc037"
+      },
+      "legacy_floor": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-details-legacy-floor-tests-r1.log",
+        "sha256": "38629e674c7641f352cc2e048f62029a01b6d72bbd7c7ea54d098a4777d74890"
+      },
+      "new_top_tests": 3,
+      "legacy_top_tests": 3,
+      "source_rejections": 6,
+      "registration_rejections": 5,
+      "scope": "完整重編等價、全opaque原生覆蓋、12槽同源、既有輸出拒覆寫，來源錯誤不發布候選；缺來源、錯來源、缺完整場景、缺保存或錯manifest拒收。"
+    },
+    "go_regression": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-details-final-r1.log",
+        "sha256": "4abf3fe5d1b4378669c227299158a26b0f0e0ff244359581751fb4d610186b67"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-details-final-r1.memory.json",
+        "sha256": "7aa70746e1290ab66107046d7ee80b669c170cb5ab80a65428ada277748e861d",
+        "elapsed_seconds": 89.411,
+        "peak_bytes": 1667723264,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "passed": [
+        "TestCoverageIncludesFormalEventWriterAndPreservesRawInput",
+        "TestCoverageOnlyReusesIdenticalNativeContentAndUniqueHD",
+        "TestCoverageRejectsWrongCatalogSHAAlphaAndDuplicates",
+        "TestCoverageSeparatesCompositeRequirementsFromMissingArt",
+        "TestSourceSelectorsRejectOutOfBankAndChangedControls",
+        "TestSourceSelectorsKeepRawWordMaskAndAllPhases",
+        "TestSourceExportPreservesExistingOutput",
+        "TestSourceExportFailureDoesNotPublish",
+        "TestModernHDBattleConsumerInventory",
+        "TestModernHDMapOverwriteCoverageAndDestinationDependency",
+        "TestModernHDMapTransactionUsesOneNativeClockAndIndependentTerrain",
+        "TestModernHDCh23StageLoader",
+        "TestModernHDExactTerrainReuseSourceTransactions",
+        "TestModernHDTerrainCatalogAtomicAndNativeMask",
+        "TestModernHDTerrainRGBIdentityMappingAndCollapse",
+        "TestModernHDTerrainSteadyAndUpStepProjection",
+        "TestModernHDTerrainKeepsClockAndRangeAbovePainting",
+        "TestIndependentInterfaceFourModesKeepArtworkAndBattle",
+        "TestPlayerPosterApprovedPixelsAndAtomicSourceRejection",
+        "TestBuildCollectsControlledJSONAndGoUIWithoutNotesOrErrors",
+        "TestBuildIsDeterministicAndJSONSerializable",
+        "TestBuildRejectsDuplicateExistingStringID",
+        "TestMultipleTextFieldsDoNotReuseOneExistingStringID",
+        "TestVariablesIncludeWrappedErrorPlaceholder",
+        "TestDrawFunctionContextIncludesIndirectASCIIAndFunctionName",
+        "TestDrawFunctionContextSkipsLocaleKeys",
+        "TestReviewedGoCandidatesMatchCurrentInventory"
+      ]
+    },
+    "current_consumer_inventory": {
+      "observed": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-details-consumers-r1.json",
+        "sha256": "7c8cba3f13750a42f922eee521e5fb87aa662ba934f67f111b23ab8a53a0788c"
+      },
+      "verified": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-details-consumers-verify-r1.json",
+        "sha256": "2e94fa9f1154cd0143d8e08dd55273a277bed1983e420ee482c91ea450da44cf"
+      },
+      "source_file_count": 1190,
+      "source_tree_sha256": "0d473fb8c3d19723e8cba648e3c2df6cd7d342118a23c90147ce02294796c985",
+      "cases": 21,
+      "archive_frames": 416,
+      "rejected_mutants": [
+        "wrong-archive",
+        "wrong-resource",
+        "wrong-frame",
+        "wrong-pixels",
+        "wrong-mask",
+        "missing-case",
+        "false-gpu",
+        "missing-hd",
+        "wrong-code",
+        "wrong-command",
+        "wrong-packed",
+        "wrong-descriptor",
+        "missing-map-route",
+        "wrong-lmi-kind",
+        "wrong-lmi-pixels",
+        "wrong-lmi-entry",
+        "missing-lmi-hd",
+        "wrong-map-mask",
+        "missing-map-mask-hd"
+      ]
+    },
+    "assets": {
+      "catalog_assets": 878,
+      "private_files": 7104,
+      "old_files_preserved": 7099,
+      "new_files": 5,
+      "private_commit": "42ff40e747078eafe2b8f061b2d91ddf1e768d5a",
+      "private_repository": "wicanr2/fd2-assets-private",
+      "remote_verified": true,
+      "still_private": true,
+      "uid_gid": [
+        1000,
+        1000
+      ]
+    },
+    "build": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-details-binary-r1",
+      "sha256": "9202d325e227348613d34ad324d374232a3d2f65dd8071e7168e32a78e191263"
+    },
+    "reproduce": [
+      "868／873舊配方不變；本批873基底及覆蓋由git show e0d7ebf5取回。沿61洞窟工具新增--coverage，使用明暗配方、原稿及native-terrain-sources-r2建立候選；同源12槽須一次齊全。",
+      "以Go圖源工具對候選清冊重生coverage，再設FD2_HD_MAP_DETAIL_MANIFEST及FD2_HD_MAP_OVERVIEW_COVERAGE，沿總覽工具執行TestModernHDMapOverviewGPU。完整命令在gpu.memory.command，Go1.22.12、2CPU／8GiB、UID/GID1000、network none、with-xvfb／llvmpipe，原包及org_game唯讀。",
+      "FD2_CAVE_DETAILS_ROOT=<工作根>，python3 -m unittest discover -s tools -p test_fd2_hd_cave_rock.py -v；舊地板以FD2_CAVE_TEST_ROOT／BASE_CATALOG及BATCH=floor重驗固定基底。",
+      "登錄只接受完整候選／manifest SHA、48來源與六個Game.Draw／F2／保存收據。正式coverage與候選完整內容除catalog_sha256外須全等；兩清冊除private_root外須全等，排版明示--source-catalog／--source-coverage與--self-test。",
+      "總覽、來源及字型從既有工具鏈重跑；暫存字型與舊總覽重建複本驗SHA後清除。沒有重打三平台包或新增Release，Linux建置與相關回歸命令由go_regression.memory.command保存。"
+    ],
+    "remaining": [
+      "#282仍缺3386個美術槽及未HD背景，10純目的地來源另列；#283介面及#284完整獨立組合仍待。",
+      "造型與實機操作由使用者人工驗證，HD2／HD-2D另期。"
+    ],
+    "cleanup": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-details-cleanup-r1.json",
+        "sha256": "a001cfc2c026303972cf64a3ab0a3976ff413339fd9e29de09cc108886d06117"
+      },
+      "removed_bytes": 21306532,
+      "recordings_created": 0,
+      "unexpected_fd2_containers": 0,
+      "scope": "核SHA後刪暫存字型與舊總覽重建複本；新總覽原子搬入README路徑，來源PNG與收據保留。"
+    },
+    "toolchain": {
+      "go": "go1.22.12 linux/amd64",
+      "go_image": "fd2-go-test-local:latest",
+      "go_image_id": "44c2bbcc2a00",
+      "pillow_image": "sc-cht-hdtools:pillow11.3.0-r2",
+      "pillow": "11.3.0",
+      "gpu": "llvmpipe，非平台效能驗收"
+    },
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-details-final-validation-r1.json",
+      "sha256": "fb23096e1bd309889e6709f96aa0a170e12346f239189e0d2e42cf036a7460b3"
     }
   }
 }

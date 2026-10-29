@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_cave_floor_details_hd_recipe",
+  "base_catalog_sha256": "463b6ef33d0052b8aa8e557365a7789d32c10d038709835d27c170a1da0c8579",
+  "coverage_sha256": "2082c18c2ec4b38aae2d3a53b8787e778b774b206e05d9ae7ec093fe8e1c2b3e",
+  "source_manifest_sha256": "a19a3da393294ad6e1c4ad1dccdb9a911d26ed1f3d7008046eddda2398f938f5",
+  "map_id": 9,
+  "frame_ids": [
+    74,
+    75,
+    78,
+    79
+  ],
+  "master_size": [
+    1254,
+    1254
+  ],
+  "master_file": "cave-floor-details-hd-v1-master.png",
+  "master_sha256": "1952c52955dd603a836488730058849c62ee4655dbb8d10d559baccb894337ab",
+  "atlas_columns": 2,
+  "atlas_rows": 2,
+  "output_cell_size": 144,
+  "targets": [
+    {
+      "map": 9,
+      "frame": 74,
+      "source_frame": 74
+    },
+    {
+      "map": 9,
+      "frame": 75,
+      "source_frame": 75
+    },
+    {
+      "map": 9,
+      "frame": 78,
+      "source_frame": 78
+    },
+    {
+      "map": 9,
+      "frame": 79,
+      "source_frame": 79
+    },
+    {
+      "map": 24,
+      "frame": 76,
+      "source_frame": 78
+    },
+    {
+      "map": 24,
+      "frame": 77,
+      "source_frame": 79
+    },
+    {
+      "map": 25,
+      "frame": 68,
+      "source_frame": 78
+    },
+    {
+      "map": 25,
+      "frame": 69,
+      "source_frame": 79
+    },
+    {
+      "map": 26,
+      "frame": 64,
+      "source_frame": 74
+    },
+    {
+      "map": 26,
+      "frame": 65,
+      "source_frame": 75
+    },
+    {
+      "map": 26,
+      "frame": 68,
+      "source_frame": 78
+    },
+    {
+      "map": 26,
+      "frame": 69,
+      "source_frame": 79
+    }
+  ],
+  "rgb_policy": "new painted RGB only; 2x2 LANCZOS atlas at288x288; no nativeRGB or void extension",
+  "alpha_policy": "native_mask_nearest_6; full opaque source, no destination remap",
+  "image_generation": {
+    "tool": "image_gen.imagegen",
+    "mode": "builtin",
+    "transparent_background": false,
+    "reference_guide_sha256": "e3255971da1e9d3468aef7963dc069d354e0b42b7c621684acabe125e7029b0d",
+    "prompt": "Use case: stylized-concept. Asset: production HD1 cave-floor detail atlas for the Flame Dragon Knights 2 remake. The reference is a precise 2 by 2 row-major arrangement of original map9 floor frames 74, 75, 78, 79. Redraw the FOUR cells as detailed hand-painted flat natural cave ground, compatible with warm ochre and umber flattened stones, worn fissures and fine grit in the existing HD cave floor. Preserve each cell's composition, positions and shapes of larger stones, and relative dark/light areas. The upper two cells are darker shadowed ground; the lower two are warmer and lighter, but keep coherent brown stone colors. Directly overhead orthographic camera and soft diffuse lighting. These are flat terrain textures, not cliffs, raised walls, stepping pillars, isometric blocks or deep holes. Output one opaque square texture sheet filling the canvas edge to edge, arranged as exactly 2 by 2 equal square cells in the reference order. No labels, grid lines, gutters, borders, text, objects, people, plants, flames, lava or water. Paint new detailed RGB instead of enlarging pixel art. Preserve useful edge continuity without adding frames or moving the native shapes. This is a terrain asset atlas, not a concept game screen."
+  }
+}

@@ -2,7 +2,7 @@
   "schema_version": 1,
   "kind": "fd2_hd1_terrain_coverage",
   "scope": "33 native maps: initial selectors and active-event writer upper bound; catalog PNG/SHA/native-mask verified. Not normal reachability, original parity, or complete HD.",
-  "catalog_sha256": "463b6ef33d0052b8aa8e557365a7789d32c10d038709835d27c170a1da0c8579",
+  "catalog_sha256": "c96fdb8232be9d1a6a321fcd8955c9adf08195e05240eff1a6ead285a426deba",
   "palette": {
     "file": "palette/fdother_000.json",
     "sha256": "404db1ca72ffc19fa7404fbc59bde98cdf239f63fe3375ec248a8142073a28bf"
@@ -19368,13 +19368,20 @@
           "native_content_sha256": "bd19a467bc13bc3a4d2a0ddbe20019607e3da6a681b46815833b734b03981594",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 74,
             "cell": 224,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.cave_floor_details.map09.native_hd",
+            "map": 9,
+            "frame": 74,
+            "file": "map09-frame0074-cave-floor-details-hd.png",
+            "sha256": "fcbc06214f5779c9bf999d809908fa3cb1706f51ad6b37ae2dd9556acd2d734f"
           }
         },
         {
@@ -19383,13 +19390,20 @@
           "native_content_sha256": "77d32319731b35d81d0a9eacc3c94c3ec774f645714e957b1466014fd4a0da5b",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 75,
             "cell": 225,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.cave_floor_details.map09.native_hd",
+            "map": 9,
+            "frame": 75,
+            "file": "map09-frame0075-cave-floor-details-hd.png",
+            "sha256": "afbcf009e9bd9766686ae1059beee5b2f1e78e828a9b3c0acca3318d8cc8ca5b"
           }
         },
         {
@@ -19398,13 +19412,20 @@
           "native_content_sha256": "bbb645e0affc068ffdeb1d6fb0be529a377da6b1c343c9aded038221af566bd9",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 78,
             "cell": 163,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.cave_floor_details.map09.native_hd",
+            "map": 9,
+            "frame": 78,
+            "file": "map09-frame0078-cave-floor-details-hd.png",
+            "sha256": "9e694819a8f67aed520bfb89f8d58b493c0e27ddebf06bd36c9d943d2c3c0e0e"
           }
         },
         {
@@ -19413,13 +19434,20 @@
           "native_content_sha256": "9347b7345164634b3844454408c26d87fcbe6aba6f23750bc3c444c02239d668",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 79,
             "cell": 133,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.cave_floor_details.map09.native_hd",
+            "map": 9,
+            "frame": 79,
+            "file": "map09-frame0079-cave-floor-details-hd.png",
+            "sha256": "75dd5746c862d0467c02a58e36e7d3a6c21c06eb87eee7d4657381acc14cc13d"
           }
         },
         {
@@ -48500,13 +48528,20 @@
           "native_content_sha256": "bbb645e0affc068ffdeb1d6fb0be529a377da6b1c343c9aded038221af566bd9",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 76,
             "cell": 162,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.cave_floor_details.map24.native_hd",
+            "map": 24,
+            "frame": 76,
+            "file": "map09-frame0078-cave-floor-details-hd.png",
+            "sha256": "9e694819a8f67aed520bfb89f8d58b493c0e27ddebf06bd36c9d943d2c3c0e0e"
           }
         },
         {
@@ -48515,13 +48550,20 @@
           "native_content_sha256": "9347b7345164634b3844454408c26d87fcbe6aba6f23750bc3c444c02239d668",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 77,
             "cell": 163,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.cave_floor_details.map24.native_hd",
+            "map": 24,
+            "frame": 77,
+            "file": "map09-frame0079-cave-floor-details-hd.png",
+            "sha256": "75dd5746c862d0467c02a58e36e7d3a6c21c06eb87eee7d4657381acc14cc13d"
           }
         },
         {
@@ -50047,13 +50089,20 @@
           "native_content_sha256": "bbb645e0affc068ffdeb1d6fb0be529a377da6b1c343c9aded038221af566bd9",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 68,
             "cell": 8,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.cave_floor_details.map25.native_hd",
+            "map": 25,
+            "frame": 68,
+            "file": "map09-frame0078-cave-floor-details-hd.png",
+            "sha256": "9e694819a8f67aed520bfb89f8d58b493c0e27ddebf06bd36c9d943d2c3c0e0e"
           }
         },
         {
@@ -50062,13 +50111,20 @@
           "native_content_sha256": "9347b7345164634b3844454408c26d87fcbe6aba6f23750bc3c444c02239d668",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 69,
             "cell": 7,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.cave_floor_details.map25.native_hd",
+            "map": 25,
+            "frame": 69,
+            "file": "map09-frame0079-cave-floor-details-hd.png",
+            "sha256": "75dd5746c862d0467c02a58e36e7d3a6c21c06eb87eee7d4657381acc14cc13d"
           }
         },
         {
@@ -51026,13 +51082,20 @@
           "native_content_sha256": "bd19a467bc13bc3a4d2a0ddbe20019607e3da6a681b46815833b734b03981594",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 64,
             "cell": 710,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.cave_floor_details.map26.native_hd",
+            "map": 26,
+            "frame": 64,
+            "file": "map09-frame0074-cave-floor-details-hd.png",
+            "sha256": "fcbc06214f5779c9bf999d809908fa3cb1706f51ad6b37ae2dd9556acd2d734f"
           }
         },
         {
@@ -51041,13 +51104,20 @@
           "native_content_sha256": "77d32319731b35d81d0a9eacc3c94c3ec774f645714e957b1466014fd4a0da5b",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 65,
             "cell": 746,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.cave_floor_details.map26.native_hd",
+            "map": 26,
+            "frame": 65,
+            "file": "map09-frame0075-cave-floor-details-hd.png",
+            "sha256": "afbcf009e9bd9766686ae1059beee5b2f1e78e828a9b3c0acca3318d8cc8ca5b"
           }
         },
         {
@@ -51056,13 +51126,20 @@
           "native_content_sha256": "bbb645e0affc068ffdeb1d6fb0be529a377da6b1c343c9aded038221af566bd9",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 68,
             "cell": 41,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.cave_floor_details.map26.native_hd",
+            "map": 26,
+            "frame": 68,
+            "file": "map09-frame0078-cave-floor-details-hd.png",
+            "sha256": "9e694819a8f67aed520bfb89f8d58b493c0e27ddebf06bd36c9d943d2c3c0e0e"
           }
         },
         {
@@ -51071,13 +51148,20 @@
           "native_content_sha256": "9347b7345164634b3844454408c26d87fcbe6aba6f23750bc3c444c02239d668",
           "source_pixels": 576,
           "remap_pixels": 0,
-          "status": "missing-art",
+          "status": "registered-hd",
           "selector": {
             "tile_word": 69,
             "cell": 42,
             "flip": 0,
             "cycle": 0,
             "event_update_pass": 0
+          },
+          "hd": {
+            "asset_id": "modern.terrain.cave_floor_details.map26.native_hd",
+            "map": 26,
+            "frame": 69,
+            "file": "map09-frame0079-cave-floor-details-hd.png",
+            "sha256": "75dd5746c862d0467c02a58e36e7d3a6c21c06eb87eee7d4657381acc14cc13d"
           }
         },
         {
@@ -68948,10 +69032,10 @@
   ],
   "summary": {
     "maps": 33,
-    "missing-art": 3398,
-    "missing_unique_native_content": 2069,
+    "missing-art": 3386,
+    "missing_unique_native_content": 2065,
     "native-remap-only": 10,
-    "registered-hd": 590,
+    "registered-hd": 602,
     "required_slots": 3998,
     "selector_checks": 617520
   }

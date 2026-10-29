@@ -5,6 +5,7 @@ import (
 	"crypto/sha256"
 	"encoding/json"
 	"fmt"
+	"image/color"
 	"os"
 	"path/filepath"
 	"testing"
@@ -13,6 +14,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 	"github.com/wicanr2/fd2_re/remake/internal/fdicon"
+	"github.com/wicanr2/fd2_re/remake/internal/indexedmap"
 )
 
 func TestModernHDMapOverviewGPU(t *testing.T) {
@@ -35,12 +37,75 @@ func TestModernHDMapOverviewGPU(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	coverage, err := os.ReadFile("../../../docs/data/fd2-hd1-terrain-coverage.json")
+	coveragePath := os.Getenv("FD2_HD_MAP_OVERVIEW_COVERAGE")
+	if coveragePath == "" {
+		coveragePath = "../../../docs/data/fd2-hd1-terrain-coverage.json"
+	}
+	coverage, err := os.ReadFile(coveragePath)
 	if err != nil {
 		t.Fatal(err)
 	}
 	set := modifierHDTestTheme(t)
 	probe := &sharedGroundGPUProbe{set: set, out: out}
+	detailHash := ""
+	if path := os.Getenv("FD2_HD_MAP_DETAIL_MANIFEST"); path != "" {
+		raw, err := os.ReadFile(path)
+		if err != nil {
+			t.Fatal(err)
+		}
+		var detail struct {
+			Kind       string `json:"kind"`
+			CatalogSHA string `json:"catalog_sha256"`
+			Bindings   []struct {
+				Map int `json:"map"`
+				partialTerrainSource
+			} `json:"bindings"`
+		}
+		if err = json.Unmarshal(raw, &detail); err != nil || detail.Kind != "fd2_cave_floor_details_hd" || len(detail.Bindings) != 12 || detail.CatalogSHA != fmt.Sprintf("%x", sha256.Sum256(catalog)) {
+			t.Fatal("invalid explicit detail batch", err)
+		}
+		detailHash = fmt.Sprintf("%x", sha256.Sum256(raw))
+		a, err := loadNativeMapAssets("assets/maps/map0")
+		if err != nil {
+			t.Fatal(err)
+		}
+		for _, binding := range detail.Bindings {
+			bank, controls, err := fdicon.LoadSeparatedFDSHAPBank(separatedAssetPath("tilesets/fdshap"), binding.Map)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if err = set.validateTerrainHD(binding.Map, bank); err != nil {
+				t.Fatal(err)
+			}
+			g := &Game{modernStoryPortraits: set, nativeMapAssets: &nativeMapAssets{MapIndex: binding.Map, Palette: a.Palette}}
+			for _, mode := range []string{"steady", "lut", "black", "white"} {
+				palette := append(color.Palette(nil), a.Palette...)
+				if mode == "black" || mode == "white" {
+					value := byte(0)
+					if mode == "white" {
+						value = 255
+					}
+					for i := range palette {
+						palette[i] = color.RGBA{value, value, value, 255}
+					}
+				}
+				in := partialTerrainInput(a, bank, controls, binding.partialTerrainSource, mode != "lut")
+				frame, err := g.prepareModernHDMapFrame(in, make([]byte, indexedmap.NativeUnitPresentWorkSize), palette)
+				if err != nil {
+					t.Fatal(err)
+				}
+				seen := false
+				for _, tile := range frame.Terrain {
+					seen = seen || tile.Frame == binding.Frame && tile.Image != nil
+				}
+				if !seen {
+					t.Fatal("detail source absent", binding.Map, binding.Frame)
+				}
+				probe.cases = append(probe.cases, sharedGroundGPUCase{g: g, frame: frame, name: fmt.Sprintf("details-%02d-%04d-%s", binding.Map, binding.Frame, mode), mapID: binding.Map, source: binding.Frame})
+			}
+		}
+	}
+	detailCases := len(probe.cases)
 	var games []*Game
 	var saves, units [][]byte
 	var rngs []uint16
@@ -163,7 +228,7 @@ func TestModernHDMapOverviewGPU(t *testing.T) {
 	if err = ebiten.RunGame(probe); err != nil {
 		t.Fatal(err)
 	}
-	if probe.err != nil || probe.index != 6 {
+	if probe.err != nil || probe.index != detailCases+6 {
 		t.Fatal(probe.index, probe.err)
 	}
 	for i, g := range games {
@@ -182,6 +247,7 @@ func TestModernHDMapOverviewGPU(t *testing.T) {
 	code, count := hdConsumerSourceTree(t)
 	report := map[string]any{"status": "PASS-HD-MAP-OVERVIEW-GPU", "catalog_sha256": fmt.Sprintf("%x", sha256.Sum256(catalog)),
 		"coverage_sha256": fmt.Sprintf("%x", sha256.Sum256(coverage)), "source_tree_sha256": code, "source_file_count": count,
+		"detail_manifest_sha256": detailHash, "detail_source_cases": detailCases,
 		"maps": states, "cases": probe.rows, "scope": "six current Game.Draw captures; controlled cameras, authored units unchanged; programmatic F2 and boundary saves; not normal player or original parity"}
 	encoded, _ := json.MarshalIndent(report, "", "  ")
 	if err = os.WriteFile(filepath.Join(out, "receipt.json"), append(encoded, '\n'), 0644); err != nil {
