@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 28 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 29 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -199,6 +199,22 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 怎樣算做完：由使用者或譯者核對六段來源、專名與語氣後逐筆reviewed，保存校譯紀錄並更新受控六句待審範圍；其他已審校譯文保持。
 
 證據：`docs/data/localization/ending-story-supplements.json`
+
+### P1 HD1戰場小人物：依原版造型重繪清晰大頭Q版，先修亞雷斯
+
+`hd1-native-chibi-map-sprites-refresh` · 缺陷 · [#286](https://github.com/wicanr2/fd2_re/issues/286) · 仍未完成 · 要人判
+
+使用者2026-10-29已核准亞雷斯v3的更大頭、短身Q版，要求後續小人物沿同樣方式處理。索爾0與悠妮9作比例參考，其餘人物、轉職形態與敵方逐組依原版身份、髮色、帽型、服裝、裝備與姿態重繪；不逐張重問已定比例。
+
+亞雷斯group4已在工作分支接入24父項與144圖源，戰場與資訊窗使用同一新版角色。24個受控完整Game.Draw／HUD案例、十二姿態與兩種介面、四向F2往返、單位／RNG／保存保持通過。普通首章LOAD、四組呈現、合法走行與取消、F5及新程序LOAD通過；獨立實際PNG像素核對與來源拒收通過。正式清冊只替換此組兩個既有項目，其他881項保持。
+
+定版原稿原樣保存，新圖及完整來源已以白名單保存至私人素材庫。原版模式、方向／相位、座標、遮擋、玩法與存檔格式保持。README提供定版比例、144／72／48像素與實際遊玩圖，提交資訊隨後補留言。
+
+本issue保持OPEN。其餘小人物及轉職形態尚未依新比例重繪，完整HD1仍未完成。集中造型、逐章與平台人工由使用者接手；HD2／HD-2D另期。
+
+怎樣算做完：['使用者選定亞雷斯新比例，並保留定版原稿、原版來源、逐字提示與SHA；其他角色依相同標準重製，不能只改大圖總覽。', '125個可見圖組及1455幀逐組保留原生方向、步態／靜態相位、轉職身份、裝備特徵、腳底與透明契約；原版、已接受圖源及舊證據可追溯。', '正式清冊、白名單私人保存庫與載入預檢同步，拒收缺組、錯誤來源、方向錯誤、額外肢體／重複武器與裁切；其他圖源保持其已驗範圍。', '戰場人物、劇情地圖與資訊窗人物圖示沿同一美術主題顯示；四組介面／美術、走行／指令環與遮擋、普通操作及保存保持完成必要抽樣，集中逐章／平台人工仍由使用者接手。', 'README總覽改為能清楚辨識的分組展示，另含144／72／48像素樣本；不能用整張長圖壓縮後的縮圖當作造型通過。']
+
+證據：`['docs/knowledge-base/61-modern-theme-runtime-spec.md', 'remake/assets/themes/modern/catalog.json', 'docs/figures/modern-map-sprites-overview.png', 'docs/figures/hd1-ares-q-design.png', 'docs/figures/hd1-ares-q-game.png', 'remake/assets/themes/modern/hd1-ares-chibi-refresh.recipe.json']`
 
 ## runtime — 還沒接進正式執行期
 

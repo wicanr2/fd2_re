@@ -18,6 +18,7 @@ from fd2_hd_death_gui import capture_standalone_ch23_source, run_ch23_death_even
 from fd2_hd_heal_gui import run_normal_heal
 from fd2_hd_system_info_gui import run_normal_system_info
 from fd2_hd_system_confirmation_gui import run_normal_system_confirmation
+from fd2_hd1_chibi_gui import run_normal_chibi
 from fd2_hd_command30_gui import Command30Probe
 
 
@@ -71,6 +72,7 @@ def main():
     parser.add_argument('--status-death-normal', action='store_true', help='明示章前狀態來源，正常END觸發狀態致死HD、F2及章界保存冷讀')
     parser.add_argument('--system-info', action='store_true', help='正常第23章空地系統環開關資訊，HD／原版、F2、返回與保存冷讀；需--battle-status --world')
     parser.add_argument('--system-confirmation', action='store_true', help='正常第23章END／NO、四組介面美術與保存保持；需--battle-status --world')
+    parser.add_argument('--chibi-refresh', action='store_true', help='普通首章亞雷斯選取、四組呈現、走行取消及保存冷讀；需--battle-status --world')
     parser.add_argument('--system-info-locales', action='store_true', help='搭配--system-info驗四語與兩主題資訊窗')
     parser.add_argument('--capture-native-battle-save', action='store_true', help='正常原生標題LOAD、出發及F5建立JSON來源槽；需--native-save與--battle-status')
     parser.add_argument('--native-entry-theme', choices=['hd','faithful'], default='hd', help='原生來源擷取的起始主題；第23章獨立整備目前明示使用faithful')
@@ -145,6 +147,8 @@ def main():
                                    and not any([args.heal_normal,args.death_event,args.battle_hd,args.gaia,args.terrain,args.battle_only,args.player_toolbar]))
     assert not args.system_confirmation or (args.battle_status and args.world and args.battle_node=='battle_ch23'
                                             and not any([args.heal_normal,args.system_info,args.death_event,args.battle_hd,args.gaia,args.terrain,args.battle_only,args.player_toolbar]))
+    assert not args.chibi_refresh or (args.battle_status and args.world and args.battle_node=='battle_ch01'
+                                     and not any([args.heal_normal,args.system_info,args.system_confirmation,args.death_event,args.battle_hd,args.gaia,args.terrain,args.battle_only,args.player_toolbar]))
     assert not args.death_commander_hd or (args.death_event==53 and args.world and args.battle_hd)
     assert not args.death_actor_art or (args.death_commander_hd and args.death_kind=='action')
     assert args.revive_before_departure is None or args.capture_native_battle_save
@@ -737,6 +741,10 @@ def main():
             if args.system_confirmation:
                 run_normal_system_confirmation(args,audit,key,wait,shot,saved,command,window,
                                                restart_title_load,operations,shots,tool_source_sha256)
+                return
+            if args.chibi_refresh:
+                run_normal_chibi(args,audit,key,wait,shot,saved,command,window,
+                                 restart_title_load,operations,shots,tool_source_sha256)
                 return
             if args.heal_normal:
                 run_normal_heal(args,audit,key,wait,shot,saved,command,window,

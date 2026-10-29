@@ -24,6 +24,7 @@ type sharedGroundGPUCase struct {
 	name          string
 	mapID, source int
 	keepPNG       bool
+	skipF2        bool
 }
 type sharedGroundGPUProbe struct {
 	set   *modernStoryPortraitSet
@@ -76,7 +77,7 @@ func (p *sharedGroundGPUProbe) Draw(screen *ebiten.Image) {
 		return
 	}
 	f2 := false
-	if c.frame == nil {
+	if c.frame == nil && !c.skipF2 {
 		work, vga, rng := append([]byte(nil), g.nativeMapWork...), append([]byte(nil), g.nativeMapVGA...), g.nativeRNGState
 		if e := g.applyTheme(nil); e != nil {
 			p.err = e

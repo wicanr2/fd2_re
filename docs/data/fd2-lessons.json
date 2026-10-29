@@ -4656,6 +4656,21 @@
         "pattern": "backdrop_policy"
       },
       "evidence": "HD主收據hd1_terrain_partial_followup_20261028"
+    },
+    {
+      "id": "sprite-core-uses-alpha-and-hud-occlusion",
+      "area": "HD驗證",
+      "date": "2026-10-29",
+      "rule": "核對人物圖源與實際視窗時，先統計來源alpha，再按SrcOver合成界限選核心並依原生位置排除HP覆蓋。入口tools/verify_fd2_hd1_chibi_refresh.py的core；目前支援144人物之前96列近不透明核心，不是任意圖尺寸的通用核對器。",
+      "why": "定版亞雷斯母稿內部多為alpha253，初版只選255僅剩約222個頭部點；HUD從人物槽第96列開始的合法HP覆蓋也被誤列為人物差異。改依合成上下界及既有HP位置核對，完整GPU容差2保持，黑畫面反例仍拒收。",
+      "evidence": "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_hd1_chibi_refresh.py"
+        ],
+        "pattern": "source\\[x,y\\]\\[i\\]\\*alpha"
+      }
     }
   ]
 }

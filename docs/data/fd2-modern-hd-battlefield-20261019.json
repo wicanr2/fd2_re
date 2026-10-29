@@ -247767,7 +247767,8 @@
         "required_slots": 3998,
         "selector_checks": 617520
       },
-      "scope": "地形內容與前批完全相同，只有正式catalog指紋更新；地圖總覽仍沿前批已驗PNG。"
+      "scope": "地形內容與前批完全相同，只有正式catalog指紋更新；地圖總覽仍沿前批已驗PNG。",
+      "superseded_by": "hd1_chibi_ares_followup_20261029.coverage；地形內容保持，只更新清冊指紋"
     },
     "build": {
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-system-binary-r1",
@@ -247835,6 +247836,472 @@
     "final_validation": {
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-system-final-validation-r1.json",
       "sha256": "4088e0c8bd056030c7a0dcd8a418974a8f92bc9ca398538f2b503f8ee1ac46b2"
+    }
+  },
+  "hd1_chibi_ares_followup_20261029": {
+    "date": "2026-10-29",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1/NORMAL-GUI",
+    "base_commit": "b928ff89ca154b803894313eb87143d5c9ae5d49",
+    "working_branch": "feat/hd1-chibi-map-refresh",
+    "issue": 286,
+    "milestone": 1,
+    "user_decision": "更大頭、短身Q版已定案；基於原版造型，索爾0與悠妮9作比例參考，後續按同一方法逐組處理，不重問同一比例。",
+    "scope": "只更新亞雷斯group4的24父項、144圖源及定版母稿，四向各三拍。保留同一schema、role、asset_id、相位、腳底、位置、原生時鐘、玩法、原版模式與存檔格式。",
+    "art": {
+      "group": 4,
+      "native_identity": 4,
+      "native_indices": [
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59
+      ],
+      "recipe": {
+        "file": "remake/assets/themes/modern/hd1-ares-chibi-refresh.recipe.json",
+        "sha256": "be65c7b3495eb150a02746ee81c8a81a263bf7a98b6bcd5d8442b00e8155d566"
+      },
+      "approved_design": {
+        "file": "docs/figures/hd1-ares-q-design.png",
+        "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+      },
+      "master": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/ares-hd1-big-head-q-v3-master.png",
+        "sha256": "3246972a818d1edb1570469ff3572678c4533660ae66a43dce95d51ced21f9ab"
+      },
+      "tool": "image_gen.imagegen",
+      "mode": "builtin",
+      "prompt": "完整生成／修正提示逐字保存在recipe.image_generation；本批接線不重新生成或修改定版原稿。",
+      "compiler": {
+        "file": "tools/refresh_fd2_hd1_map_sprites.py",
+        "sha256": "2c8870ad0d470a51877b70ea8a058493fc35fa7ab933416889ad0b90f070cf1d"
+      },
+      "legacy_compiler": {
+        "file": "tools/build_modern_hd_map_sprites.py",
+        "sha256": "4ebcdeff585ea77e20e23903b250f46fa70040cdecc015379f74749e1081294d"
+      },
+      "base_catalog": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-ares-q-base-catalog-r1.json",
+        "sha256": "4bed03e173de2f7245eeaeb41be372372db1107ebc83d2150eab02431d77486f"
+      },
+      "candidate_catalog": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-ares-q-candidate-r1/catalog.json",
+        "sha256": "6936a14277ccf4d37996741ff9f0660240ed9ccfe15e19e178711ef9c9786a6e"
+      },
+      "manifest": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-ares-q-candidate-r1/manifest.json",
+        "sha256": "048709de8f32cdd63662a464ead12ed555864398b637f5364d4f8df8fbea8c7f"
+      },
+      "new_registered_files": 25,
+      "runtime_images": 24
+    },
+    "gpu": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-ares-q-gpu-r2-capture/receipt.json",
+        "sha256": "06de7301ea2a31a4d4a78bc3deb280a1b88bfc8e23481c548b0aa810b5b3415d"
+      },
+      "resource": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-ares-q-gpu-r2.memory.json",
+          "sha256": "6efec60f4d8734a8dfc4776586386d3e158070642c2477ca23fa08208b123aa0"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-ares-q-gpu-r2.log",
+          "sha256": "f047d034705a296fa1c66c365f39bf9185333c88afc86642b9df16d935b90d55"
+        },
+        "elapsed_seconds": 513.231,
+        "peak_bytes": 6996967424,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "game_draw_cases": 24,
+      "full_pngs": 12,
+      "directions": 4,
+      "cycles_per_direction": 3,
+      "interface_modes": 2,
+      "f2_roundtrips": 4,
+      "rgba_tolerance": 2,
+      "source_file_count": 1194,
+      "source_tree_sha256": "66d940be39b99c58a526205dd4b5bb48d9f1a5976cd80ac43e683bdaf7b63641",
+      "scope": "受控相機與姿態；世界對獨立CPU、實際HUD、單位／RNG／保存保持。兩種介面條件，完整介面實際呈現另由普通GUI核對，不擴張原版動態或整章證據。"
+    },
+    "independent": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-ares-q-independent-r3.json",
+        "sha256": "92ac4a06110742a9e39a68fcb4b2ea341bb8bd08c06ae1b0cfa7c0c8c09edd52"
+      },
+      "tool": {
+        "file": "tools/verify_fd2_hd1_chibi_refresh.py",
+        "sha256": "1dc7b20af747efafaa8d09733a0fb7008751a6d2f6fca933b293b2c0e149adb9"
+      },
+      "near_opaque_head_pixels": 180225,
+      "policy": "alpha>=253；逐通道SrcOver背景上下界含一次整數捨入；取人物前96列避開原生HP覆蓋。完整GPU容差2另行保持。",
+      "mutants": [
+        "missing",
+        "duplicate",
+        "catalog",
+        "source-code",
+        "false-save",
+        "wrong-frame",
+        "wrong-hud",
+        "wrong-tolerance",
+        "missing-f2",
+        "actual-black-png"
+      ],
+      "normal_map_and_hud_matches": [
+        {
+          "file": "ares-chibi-hd-hd.png",
+          "map": [
+            2,
+            [
+              1176,
+              852,
+              1320,
+              996
+            ],
+            7824,
+            7824
+          ],
+          "hud": [
+            2,
+            1,
+            7824,
+            7824
+          ]
+        },
+        {
+          "file": "ares-chibi-hd-original.png",
+          "map": [
+            1,
+            [
+              1176,
+              852,
+              1320,
+              996
+            ],
+            7121,
+            7121
+          ],
+          "hud": [
+            1,
+            1,
+            7121,
+            7121
+          ]
+        },
+        {
+          "file": "ares-chibi-hd-hd-restored.png",
+          "map": [
+            1,
+            [
+              1176,
+              852,
+              1320,
+              996
+            ],
+            7121,
+            7121
+          ],
+          "hud": [
+            1,
+            1,
+            7121,
+            7121
+          ]
+        }
+      ]
+    },
+    "normal_gui": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-ares-q-normal-r2-capture/receipt.json",
+        "sha256": "89a48d4367d4b63c8aac1b2adcc5b0dd9bb1c7b623e3645987f195ae389ec63d"
+      },
+      "resource": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-ares-q-normal-r2.memory.json",
+          "sha256": "5d7c75f8c5202c2bb99a46700cdb808351c89cb16f1dc6f444dc38128c2c56c7"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-ares-q-normal-r2.log",
+          "sha256": "4396c274bbbbb7ea5b902ec7a5969387921dcbc64c0e08f38e8ea54097decedf"
+        },
+        "elapsed_seconds": 355.962,
+        "peak_bytes": 5978558464,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "helper": {
+        "file": "tools/fd2_hd1_chibi_gui.py",
+        "sha256": "7b7f3f0335786d199f0ea8c225f801704058d6dc4b5e692fa819a02c530b8a41"
+      },
+      "driver": {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "65d3e61454c99ba65f9073ba91d412c59265e48b9c73535db167f55a6fa2c153"
+      },
+      "source": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hd-world-gui-r7/user-data/fd2_re/fd2_save.json",
+        "sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2"
+      },
+      "scope": "既有普通首章來源經標題LOAD、游標選亞雷斯、四組呈現、合法一格走行與取消、F5及新程序LOAD；不改寫名冊／HP／移動或規則，不宣稱整章或原版動態對拍。",
+      "source_policy": "既有首章JSON保存，SHA089b077b；名冊沿其既有內容，本輪不修改。普通標題LOAD後選亞雷斯、合法走行與取消、四組呈現、F5及新程序LOAD。不是原版自然加入、整章通關或新原版oracle。",
+      "state_injection": false,
+      "recording_created": false,
+      "new_process_title_load": true,
+      "pngs": 10,
+      "save_bytes_equal": true,
+      "runtime_view_tool": {
+        "file": "tools/refresh_fd2_hd1_map_sprites.py",
+        "sha256": "2c8870ad0d470a51877b70ea8a058493fc35fa7ab933416889ad0b90f070cf1d"
+      }
+    },
+    "source_regression": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-ares-q-python-r2.log",
+        "sha256": "2c26048a449e3064f4a6f6545d74cf11ca7a83557d9489bf576d4dae7abfbef7"
+      },
+      "tests": 3,
+      "source_rejections": 8,
+      "tool": {
+        "file": "tools/test_fd2_hd1_chibi_refresh.py",
+        "sha256": "d28b84e20a21943d642fbf34b372b509d903afa2ca0c43f967a9a0637b8ea098"
+      },
+      "policy": "登錄後仍以舊清冊allow-list建立只讀來源檢視，重編24PNG與候選逐byte相同；全部其他881項保持，既有輸出不覆寫。legacy compile_group的ResourceWarning為工具檔案生命週期提示，測試完成且輸出一致；不稱為遊戲缺陷。"
+    },
+    "go_regression": {
+      "resource": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-ares-q-regression-r1.memory.json",
+          "sha256": "4ea5f31922056de6e242b505ae41e279ce411f4c2dc82a192eec4cd8e8816b12"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-ares-q-regression-r1.log",
+          "sha256": "be45574baa04a2e3f79f1e9cbca36c5d234cd4981b55ae83935317f1ffd540d4"
+        },
+        "elapsed_seconds": 67.241,
+        "peak_bytes": 1883660288,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "passed": [
+        "TestModernHDBattleConsumerInventory",
+        "TestModernHDHUDUnitSelectionAndHP",
+        "TestModernHDHUDUnitAdmissionAndEventShift",
+        "TestModernHDMapOverwriteCoverageAndDestinationDependency",
+        "TestModernHDMapTransactionUsesOneNativeClockAndIndependentTerrain",
+        "TestLoadModernHDMapSpritesCompleteCoverageAndSoftEdges",
+        "TestLoadModernHDMapSpritesRejectsIncompleteOrMismatchedCollection",
+        "TestLoadModernHDMapSpritesKeepsLegacyCatalogCompatibility",
+        "TestLoadModernHDMapSpritesRejectsInvalidAlpha",
+        "TestIndependentInterfaceFourModesKeepArtworkAndBattle",
+        "TestInterfaceRejectsBeforeChangingModeOrArtwork",
+        "TestOriginalInterfaceKeepsHDPanelPortrait",
+        "TestInterfaceSystemInfoWithOriginalArtwork",
+        "TestBuildCollectsControlledJSONAndGoUIWithoutNotesOrErrors",
+        "TestBuildIsDeterministicAndJSONSerializable",
+        "TestBuildRejectsDuplicateExistingStringID",
+        "TestMultipleTextFieldsDoNotReuseOneExistingStringID",
+        "TestVariablesIncludeWrappedErrorPlaceholder",
+        "TestDrawFunctionContextIncludesIndirectASCIIAndFunctionName",
+        "TestDrawFunctionContextSkipsLocaleKeys",
+        "TestReviewedGoCandidatesMatchCurrentInventory"
+      ],
+      "top_passed": 21,
+      "skipped": [
+        "TestModernHDHUDUnitSourcesAndGameGPU"
+      ],
+      "skip_scope": "舊的專用全圖庫HUD GPU未啟用，未算通過。本批亞雷斯實際HUD由新的24案例完整GPU及普通GUI像素檢查覆蓋，不另重跑無變更的全圖庫場景。"
+    },
+    "current_consumer_inventory": {
+      "observed": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-ares-q-consumers-r1.json",
+        "sha256": "9272ad90084d028ff0ce0475b6d56ba98ece832c976ff91d6f20327479b5dcbe"
+      },
+      "verified": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-ares-q-consumers-verify-r1.json",
+        "sha256": "cf7c049c3de7ca7029d5fab60bfcda1b728fd1e85a9eafd0c0a652f6c130b667"
+      },
+      "cases": 21,
+      "archive_frames": 416,
+      "rejected_mutants": [
+        "wrong-archive",
+        "wrong-resource",
+        "wrong-frame",
+        "wrong-pixels",
+        "wrong-mask",
+        "missing-case",
+        "false-gpu",
+        "missing-hd",
+        "wrong-code",
+        "wrong-command",
+        "wrong-packed",
+        "wrong-descriptor",
+        "missing-map-route",
+        "wrong-lmi-kind",
+        "wrong-lmi-pixels",
+        "wrong-lmi-entry",
+        "missing-lmi-hd",
+        "wrong-map-mask",
+        "missing-map-mask-hd"
+      ],
+      "source_file_count": 1194,
+      "source_tree_sha256": "66d940be39b99c58a526205dd4b5bb48d9f1a5976cd80ac43e683bdaf7b63641"
+    },
+    "build": {
+      "binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-ares-q-binary-r1",
+        "sha256": "69c699b76364b2e0747f2e8c6a5c7aa822f7744a01bd56bdf1823e727a16e121"
+      },
+      "resource": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-ares-q-build-r1.memory.json",
+          "sha256": "112e84c83fce252bafa18a2db09b6b95123b999d482ad4c6bf44110cbab6641b"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-ares-q-build-r1.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "elapsed_seconds": 43.946,
+        "peak_bytes": 703553536,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "scope": "Linux驗證程式，沒有新Release或三平台包。"
+    },
+    "assets": {
+      "catalog": {
+        "file": "remake/assets/themes/modern/catalog.json",
+        "sha256": "ea3cb50efd06ea7a4f634b634f469eb7a7d5f14c720939279b499cf771cfef4a"
+      },
+      "registered_assets": 883,
+      "changed_entries": 2,
+      "unchanged_entries": 881,
+      "private_sync": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-ares-q-private-sync-r1.json",
+        "sha256": "479c90ce2feea23b9ede7a887eb3bbeecd1e605d7b83e4a5b3ea47fd4a9bdf24"
+      },
+      "private_git": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-ares-q-private-git-r1.json",
+        "sha256": "0673459fe64cab6de8318ded2f32116c90e4e3f9949735a03c156790b0674746"
+      },
+      "policy": "定版母稿及24成品由清冊白名單進私人庫。舊版已登錄檔保持以回查；拒收稿沒有同步。私人Git細節只留本機收據。"
+    },
+    "coverage": {
+      "file": "docs/data/fd2-hd1-terrain-coverage.json",
+      "sha256": "f92a453ca7cd40a86e2ea56cb40c3ed0cf103c432a1c36c9a9c9a83fc61d1562",
+      "scope": "地形內容保持，只重生正式清冊SHA；原地圖六圖總覽保留前版人物並在README標示。"
+    },
+    "public_screenshot": {
+      "image": {
+        "file": "docs/figures/hd1-ares-q-game.png",
+        "sha256": "8c84b9dee82c96dd1b84b3445c89a59e8da4091f637c6a64994367a7cc1f20e5"
+      },
+      "source_png": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-ares-q-normal-r2-capture/ares-chibi-walk-cancelled.png",
+        "sha256": "8c84b9dee82c96dd1b84b3445c89a59e8da4091f637c6a64994367a7cc1f20e5"
+      },
+      "policy": "1920×1200完整視窗原檔複製，無裁切、合成或改圖。"
+    },
+    "cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-ares-q-cleanup-r1.json",
+      "sha256": "0a214568955c6b86283f1ae67b0a3f56b5257294c00b02c71f90c53675a11d97"
+    },
+    "diagnostics": [
+      {
+        "run": "hd1-ares-q-gpu-r1",
+        "status": "STOPPED-NOT-PASS",
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-ares-q-gpu-r1-diagnostic.json",
+          "sha256": "b4812c4aeaf711e0cb72a9be6341e582bd66a05cac8de15beaf326ccd0932aa5"
+        },
+        "cause": "舊shared probe對全部24案例反覆做F2完整預檢，成本過高，有界停止。R2維持全部24畫面、十二姿態與容差2，F2集中四方向錨點；只改測具，舊測試預設F2行為保持。"
+      },
+      {
+        "run": "hd1-ares-q-independent-r1",
+        "status": "VERIFIER-ISSUE",
+        "cause": "只取alpha255僅剩約222頭部點，且混入人物槽第96列起的合法HP覆蓋。依實際alpha分布與既有HUD布局修正為近不透明SrcOver界限及避開覆蓋，並由真黑PNG反例驗證。完整GPU容差未變。"
+      },
+      {
+        "run": "hd1-ares-q-normal-r1",
+        "status": "CLI-ISSUE-BEFORE-GAME",
+        "resource": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-ares-q-normal-r1.memory.json",
+          "sha256": "c455fe35d116359e3c7f7f700967dbaeb0465819b2f08a0cad46c63d81e074f8"
+        },
+        "cause": "1080不是GUI驅動接受的run-timeout選項，尚未進遊戲。使用既有900秒預算，同程式／來源在R2乾淨重跑通過。"
+      }
+    ],
+    "reproduce": {
+      "images": [
+        "fd2-go-test-local:latest@44c2bbcc2a00",
+        "fd2-promo-local:latest@81278de73727",
+        "sc-cht-hdtools:pillow11.3.0-r2@b050fc7c4900"
+      ],
+      "resources": "network none、user1000:1000、2CPU；GPU8GiB、普通GUI7GiB、CPU回歸4GiB、圖片2GiB；原包與org_game唯讀，只有明示repo／私人同步輸出可寫。",
+      "prepare": "從git b928ff89恢復base catalog。沿舊catalog白名單建立來源檢視，保留舊已登錄檔；test_fd2_hd1_chibi_refresh.py setUpClass給出可重跑建立方式。refresh_fd2_hd1_map_sprites.py prepare要求--recipe --catalog BASE --pack BASE_VIEW --original /original --masters MASTER_DIR --out FRESH_CANDIDATE。",
+      "gpu_env": {
+        "FD2_ASSET_PACK": "/original",
+        "FD2_TEST_MODERN_EFFECT_CATALOG": "CANDIDATE/catalog.json",
+        "FD2_TEST_MODERN_EFFECT_PACK": "CANDIDATE",
+        "FD2_HD_CHIBI_REFRESH_GPU": "1",
+        "FD2_HD_CHIBI_REFRESH_OUT": "FRESH_CAPTURE",
+        "FD2_HD_CHIBI_REFRESH_MANIFEST": "CANDIDATE/manifest.json",
+        "GOPROXY": "off",
+        "GOSUMDB": "off",
+        "GOMAXPROCS": "2",
+        "LIBGL_ALWAYS_SOFTWARE": "1",
+        "LP_NUM_THREADS": "2"
+      },
+      "gpu_command": "完整子命令與逾時見gpu.resource.report.command；Go1.22.12／with-xvfb。",
+      "normal": "runtime-view --candidate CANDIDATE --out FRESH_VIEW，用同一binary，FD2_MODERN_THEME_PACK指定CANDIDATE；普通GUI完整command見normal_gui.resource.report，程式從view/assets讀同版資料與候選清冊，無章內狀態注入。",
+      "verify_register": "verify_fd2_hd1_chibi_refresh.py --gpu GPU_JSON --candidate CANDIDATE --normal NORMAL_JSON --binary BINARY --out FRESH_JSON --self-test；通過後另加--register --formal CATALOG --destination PRIVATE_PACK，再用sync_modern_theme_private.py白名單同步與validate_modern_theme_catalog.py --verify-private。",
+      "python": "FD2_CHIBI_REFRESH_ROOT指定本批工作根，沿python回歸檔三項測試；登錄前後均可用base catalog及歷史已登錄來源重編。"
+    },
+    "remaining": [
+      "#286其餘人物、轉職與敵方大頭Q版仍需逐組重繪／接線，不再詢問已定比例。",
+      "#282其餘地形、#283介面與#284其他獨立控制消費端保持未完成。",
+      "集中造型、逐章及平台人工由使用者接手；HD2／HD-2D另期，無新發行。"
+    ],
+    "production_go_changed": false,
+    "recording_created": false,
+    "new_release": false,
+    "final_integrity": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-ares-q-final-validation-r1.json",
+      "sha256": "b91afc5e4cdcc468015506a32459e4fdf408de05c874ad5f6e274abac145bd7a"
     }
   }
 }

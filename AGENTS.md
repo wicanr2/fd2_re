@@ -31,6 +31,7 @@
 
 ## 已確認的HD收尾與規則擴充方向
 
+- 使用者2026-10-29定案：HD1戰場小人物依原版造型重繪為更大頭、短身Q版；索爾與悠妮作參考，亞雷斯v3的[定版對照](docs/figures/hd1-ares-q-design.png)作後續比例基準。沿同樣的原版核對、版本化編製、實際尺寸展示及接線驗證流程前進，不逐張重問已定比例。角色身份、方向或來源有新疑義時先查證，不自行補裝備；契約依[61](docs/knowledge-base/61-modern-theme-runtime-spec.md)「HD1大頭Q版地圖人物修訂」及[#286](https://github.com/wicanr2/fd2_re/issues/286)。
 - 使用者2026-10-28定案：地形、操作介面、介面／美術獨立控制與完整單列浮出工具列共同構成[HD1 milestone](https://github.com/wicanr2/fd2_re/milestone/1)。工具列含海報組別及漸層／淡入設定；HD2與HD-2D另期。已接範圍與實作缺項依[61](docs/knowledge-base/61-modern-theme-runtime-spec.md)「HD1接線與人工驗證交接」及#282～285，不能以主要控制通過就宣稱整個milestone完成。
 - 使用者2026-10-28定案：先完成HD接線，後續人工驗證由使用者接手。接線仍須通過素材載入、缺件處理、建置與相關切換／保存相容性檢查；不再把逐角色造型、逐章操作或平台人工試玩列為接線停止線。實際未接功能、未製作素材與人工待驗分列，不能只因移交人工就宣稱完整HD完成。現況入口為[58](docs/knowledge-base/58-fd2-exe-re-coverage.md)與[61](docs/knowledge-base/61-modern-theme-runtime-spec.md)「HD1接線與人工驗證交接」。
 - 使用者2026-10-25定案：絕招已接HD且有目前原版證據支持流程一致時，維持已完成範圍。不得以舊停止線或未影響玩家流程的未知細節重開。

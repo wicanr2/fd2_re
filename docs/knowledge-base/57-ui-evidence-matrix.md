@@ -1,5 +1,7 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
+亞雷斯已依使用者定版換成更大頭、短身Q版，戰場與資訊窗使用新版圖源；後續小人物沿同一原版核對與版本化流程，不重問已定比例。完整GPU、普通走行取消、獨立切換與保存冷讀的範圍依[58](58-fd2-exe-re-coverage.md)、[61](61-modern-theme-runtime-spec.md)及HD主收據`hd1_chibi_ares_followup_20261029`；#286其餘人物及轉職仍未完成。
+
 一般系統確認已接HD世界、DATO75頭像、字型、細框及選項，涵蓋END、離開、目前戰況保存／讀取與全軍移動。五caller的完整GPU／四組控制及普通END／NO返回抽樣通過；問句保留原文，YES／NO沿四語。現況與目前Go指紋依[58](58-fd2-exe-re-coverage.md)、[61](61-modern-theme-runtime-spec.md)及HD主收據`hd1_system_confirmation_followup_20261029`；其餘地形／介面保持未完成。
 
 洞窟外緣新增16張圖並接兩圖32槽，README六圖總覽已同步。原生黑洞輪廓、128來源及六組完整繪製、目前Go指紋與正式搬移等價依[58](58-fd2-exe-re-coverage.md)、[61](61-modern-theme-runtime-spec.md)及HD主收據`hd1_cave_rim_followup_20261029`；其餘地形與介面仍待。
