@@ -49,7 +49,7 @@ def prepare(recipe_path, catalog_path, pack, original, sources, maps, master_pat
     if not Path('/.dockerenv').exists() or out.exists() or not out.parent.is_dir():
         raise ValueError('需Docker、既有父目錄與全新候選')
     recipe, catalog, source = read(recipe_path), read(catalog_path), read(sources / 'manifest.json')
-    if recipe.get('kind') == 'fd2_cave_floor_details_hd_recipe':
+    if recipe.get('kind') in ('fd2_cave_floor_details_hd_recipe', 'fd2_cave_rim_hd_recipe'):
         return prepare_details(recipe_path, catalog_path, pack, original, sources, maps, master_path, out, coverage_path)
     floor = recipe.get('kind') == 'fd2_cave_floor_hd_recipe'
     start = 80 if floor else 32
@@ -135,7 +135,7 @@ def prepare(recipe_path, catalog_path, pack, original, sources, maps, master_pat
 
 def register(catalog_path, candidate, gpu_path):
     base, proposed, manifest, gpu = read(catalog_path), read(candidate / 'catalog.json'), read(candidate / 'manifest.json'), read(gpu_path)
-    if manifest.get('kind') == 'fd2_cave_floor_details_hd':
+    if manifest.get('kind') in ('fd2_cave_floor_details_hd', 'fd2_cave_rim_hd'):
         return register_details(catalog_path, candidate, gpu_path)
     floor = manifest.get('kind') == 'fd2_cave_floor_hd'
     if manifest.get('kind') not in ('fd2_cave_floor_hd', 'fd2_cave_rock_partial_hd'):
@@ -177,6 +177,41 @@ def register(catalog_path, candidate, gpu_path):
     return {'status': 'REGISTERED-CAVE-FLOOR-HD' if floor else 'REGISTERED-CAVE-ROCK-HD', 'frames': 16, 'catalog_assets': len(proposed['assets']), 'catalog_sha256': sha(catalog_path)}
 
 
+def detail_profile(kind):
+    if kind in ('fd2_cave_floor_details_hd_recipe', 'fd2_cave_floor_details_hd'):
+        return dict(frames=[74, 75, 78, 79], side=2, prefix='cave-floor-details', asset='cave_floor_details',
+                    maps={9, 24, 25, 26}, count=12, kind='fd2_cave_floor_details_hd')
+    if kind in ('fd2_cave_rim_hd_recipe', 'fd2_cave_rim_hd'):
+        return dict(frames=list(range(16)), side=4, prefix='cave-rim', asset='cave_rim',
+                    maps={9, 26}, count=32, kind='fd2_cave_rim_hd')
+    raise ValueError('未知洞窟圖源批次')
+
+
+def rim_painting(master):
+    # Extend only newly painted RGB into the generated void before restoring
+    # the native index-zero outline. The native palette is never used as RGB.
+    image = master.convert('RGB').resize((576, 576), Image.Resampling.LANCZOS)
+    pixels = list(image.getdata())
+    owners = [-1] * len(pixels)
+    queue = deque()
+    for i, pixel in enumerate(pixels):
+        if max(pixel) > 24:
+            owners[i] = i
+            queue.append(i)
+    if not len(pixels) // 20 < len(queue) < len(pixels):
+        raise ValueError('外緣母稿須含石材與黑洞')
+    while queue:
+        i = queue.popleft()
+        x, y = i % 576, i // 576
+        for n in (i - 1 if x else -1, i + 1 if x < 575 else -1,
+                  i - 576 if y else -1, i + 576 if y < 575 else -1):
+            if n >= 0 and owners[n] == -1:
+                owners[n] = owners[i]
+                queue.append(n)
+    image.putdata([pixels[i] for i in owners])
+    return image
+
+
 def prepare_details(recipe_path, catalog_path, pack, original, sources, maps, master_path, out, coverage_path):
     from build_fd2_hd_terrain_reuse import native, witness
     if coverage_path is None:
@@ -184,7 +219,9 @@ def prepare_details(recipe_path, catalog_path, pack, original, sources, maps, ma
     recipe, catalog, source, coverage = read(recipe_path), read(catalog_path), read(sources / 'manifest.json'), read(coverage_path)
     if (coverage.get('schema_version'), coverage.get('kind')) != (1, 'fd2_hd1_terrain_coverage'):
         raise ValueError('明暗地板覆蓋資料格式不同')
-    if (recipe['schema_version'], recipe['map_id'], recipe['frame_ids'], recipe['master_size'], recipe['master_file']) != (1, 9, [74, 75, 78, 79], [1254, 1254], 'cave-floor-details-hd-v1-master.png'):
+    profile = detail_profile(recipe['kind'])
+    rim = profile['kind'] == 'fd2_cave_rim_hd'
+    if (recipe['schema_version'], recipe['map_id'], recipe['frame_ids'], recipe['master_size'], recipe['master_file']) != (1, 9, profile['frames'], [1254, 1254], profile['prefix'] + '-hd-v1-master.png'):
         raise ValueError('固定明暗地板配方不同')
     if (sha(catalog_path) != recipe['base_catalog_sha256'] or sha(master_path) != recipe['master_sha256'] or
             sha(coverage_path) != recipe['coverage_sha256'] or coverage['catalog_sha256'] != sha(catalog_path) or
@@ -194,14 +231,21 @@ def prepare_details(recipe_path, catalog_path, pack, original, sources, maps, ma
         master = opened.convert('RGBA')
     if list(master.size) != [1254, 1254] or master.getchannel('A').getextrema() != (255, 255):
         raise ValueError('母稿尺寸或透明度不符')
-    painting = master.convert('RGB').resize((288, 288), Image.Resampling.LANCZOS)
+    side = profile['side']
+    if rim and read(check_binding(original, coverage['palette']))['dac_6bit_components'][:3] != [0, 0, 0]:
+        raise ValueError('外緣索引零必須是原生黑色')
+    painting = rim_painting(master) if rim else master.convert('RGB').resize((288, 288), Image.Resampling.LANCZOS)
     anchors, pictures = {}, {}
     for i, frame in enumerate(recipe['frame_ids']):
         content = native(original, source, 9, frame)
         if set(content[576:1152]) != {1} or any(content[1152:]):
             raise ValueError('明暗地板須為完整來源且無目的地重映射')
         anchors[hashlib.sha256(content).hexdigest()] = frame, content
-        pictures[frame] = painting.crop((i % 2 * 144, i // 2 * 144, i % 2 * 144 + 144, i // 2 * 144 + 144)).convert('RGBA')
+        picture = painting.crop((i % side * 144, i // side * 144, i % side * 144 + 144, i // side * 144 + 144)).convert('RGBA')
+        if rim:
+            void = Image.frombytes('L', (24, 24), bytes(255 if v == 0 else 0 for v in content[:576])).resize((144, 144), Image.Resampling.NEAREST)
+            picture.paste((0, 0, 0, 255), (0, 0), void)
+        pictures[frame] = picture
     bindings, actual = [], []
     for mp in coverage['maps']:
         original_mp = source['maps'][mp['map']]
@@ -220,13 +264,13 @@ def prepare_details(recipe_path, catalog_path, pack, original, sources, maps, ma
             actual.append(target)
             bindings.append({**target, 'role': 'terrain', 'selector': row['selector'],
                              'native_content_sha256': row['native_content_sha256'], 'bank': mp['bank'], 'map_data': mp['map_data']})
-    if actual != recipe['targets'] or len(actual) != 12 or {r['map'] for r in actual} != {9, 24, 25, 26}:
+    if actual != recipe['targets'] or len(actual) != profile['count'] or {r['map'] for r in actual} != profile['maps']:
         raise ValueError('明暗地板完整12槽範圍不同')
     names = set()
     for asset in catalog['assets']:
         names.update(asset.get('files', [])); names.update(asset.get('source_files', []))
         names.update(asset[k] for k in ('file', 'master_file') if k in asset)
-    new_names = {recipe['master_file'], *(f'map09-frame{f:04d}-cave-floor-details-hd.png' for f in pictures)}
+    new_names = {recipe['master_file'], *(f'map09-frame{f:04d}-{profile["prefix"]}-hd.png' for f in pictures)}
     if (names & new_names or any(Path(n).name != n or not (pack / n).is_file() for n in names) or
             Path(recipe['master_file']).name != recipe['master_file']):
         raise ValueError('基底缺件、路徑不安全或圖片已存在')
@@ -240,18 +284,18 @@ def prepare_details(recipe_path, catalog_path, pack, original, sources, maps, ma
         shutil.copyfile(master_path, stage / recipe['master_file'])
         frames = []
         for frame, picture in pictures.items():
-            name = f'map09-frame{frame:04d}-cave-floor-details-hd.png'
+            name = f'map09-frame{frame:04d}-{profile["prefix"]}-hd.png'
             picture.save(stage / name)
             frames.append({'frame': frame, 'file': name, 'sha256': sha(stage / name)})
         images = {f['frame']: f for f in frames}
-        refs = ['remake/assets/themes/modern/cave-floor-details-hd.recipe.json', 'docs/knowledge-base/61-modern-theme-runtime-spec.md']
-        additions = [{'asset_id': 'modern.terrain.cave_floor_details.master', 'role': 'terrain_hd_master', 'status': 'concept',
+        refs = [f'remake/assets/themes/modern/{profile["prefix"]}-hd.recipe.json', 'docs/knowledge-base/61-modern-theme-runtime-spec.md']
+        additions = [{'asset_id': f'modern.terrain.{profile["asset"]}.master', 'role': 'terrain_hd_master', 'status': 'concept',
                       'file': recipe['master_file'], 'width': 1254, 'height': 1254, 'sha256': sha(master_path), 'source_refs': refs}]
         for map_id in sorted({b['map'] for b in bindings}):
             rows = [b for b in bindings if b['map'] == map_id]
             for row in rows:
                 row.update(file=images[row['source_frame']]['file'], sha256=images[row['source_frame']]['sha256'])
-            additions.append({'asset_id': f'modern.terrain.cave_floor_details.map{map_id:02d}.native_hd', 'role': 'native_terrain_hd_set',
+            additions.append({'asset_id': f'modern.terrain.{profile["asset"]}.map{map_id:02d}.native_hd', 'role': 'native_terrain_hd_set',
                 'status': 'runtime_candidate', 'consumer_contract': 'fdshap_native_hd_sparse_v1', 'map_id': map_id,
                 'width': 144, 'height': 144, 'frame_count': len(rows), 'frame_ids': [b['frame'] for b in rows],
                 'files': [b['file'] for b in rows], 'frame_sha256': [b['sha256'] for b in rows], 'semantics': ['terrain'] * len(rows),
@@ -261,10 +305,10 @@ def prepare_details(recipe_path, catalog_path, pack, original, sources, maps, ma
         catalog['assets'].extend(additions)
         catalog['private_root'] = out.relative_to(Path(__file__).resolve().parents[1]).as_posix()
         (stage / 'catalog.json').write_text(json.dumps(catalog, ensure_ascii=False, indent=2) + '\n')
-        result = {'schema_version': 1, 'kind': 'fd2_cave_floor_details_hd', 'status': 'SOURCE-VERIFIED-CANDIDATE',
+        result = {'schema_version': 1, 'kind': profile['kind'], 'status': 'SOURCE-VERIFIED-CANDIDATE',
                   'base_catalog_sha256': sha(catalog_path), 'catalog_sha256': sha(stage / 'catalog.json'), 'coverage_sha256': sha(coverage_path),
                   'recipe_sha256': sha(recipe_path), 'master_sha256': sha(master_path), 'master_file': recipe['master_file'],
-                  'native_manifest_sha256': sha(sources / 'manifest.json'), 'frames': frames, 'bindings': bindings, 'new_sets': 4,
+                  'native_manifest_sha256': sha(sources / 'manifest.json'), 'frames': frames, 'bindings': bindings, 'new_sets': len(profile['maps']),
                   'native_alpha': 'PASS', 'tool_sha256': sha(Path(__file__)), 'source_rgb_used': False}
         (stage / 'manifest.json').write_text(json.dumps(result, ensure_ascii=False, indent=2) + '\n')
         stage.rename(out)
@@ -276,7 +320,9 @@ def prepare_details(recipe_path, catalog_path, pack, original, sources, maps, ma
 
 def register_details(catalog_path, candidate, gpu_path):
     base, proposed, manifest, gpu = read(catalog_path), read(candidate / 'catalog.json'), read(candidate / 'manifest.json'), read(gpu_path)
-    if [f['frame'] for f in manifest['frames']] != [74, 75, 78, 79] or manifest['master_file'] != 'cave-floor-details-hd-v1-master.png':
+    profile = detail_profile(manifest['kind'])
+    count, sets = profile['count'], len(profile['maps'])
+    if [f['frame'] for f in manifest['frames']] != profile['frames'] or manifest['master_file'] != profile['prefix'] + '-hd-v1-master.png':
         raise ValueError('明暗地板固定成品範圍不同')
     if (not Path('/.dockerenv').exists() or sha(catalog_path) != manifest['base_catalog_sha256'] or
             sha(candidate / 'catalog.json') != manifest['catalog_sha256'] or gpu.get('catalog_sha256') != manifest['catalog_sha256'] or
@@ -286,20 +332,20 @@ def register_details(catalog_path, candidate, gpu_path):
     wanted = {f'details-{b["map"]:02d}-{b["frame"]:04d}-{mode}': (b['map'], b['frame']) for b in manifest['bindings'] for mode in ('steady', 'lut', 'black', 'white')}
     source_rows = [c for c in rows if not c.get('game_draw')]
     game_rows = [c for c in rows if c.get('game_draw')]
-    if (len(manifest['bindings']) != 12 or len(wanted) != 48 or len(source_rows) != 48 or gpu.get('detail_source_cases') != 48 or
+    if (len(manifest['bindings']) != count or len(wanted) != count * 4 or len(source_rows) != count * 4 or gpu.get('detail_source_cases') != count * 4 or
             {c['case'] for c in source_rows} != set(wanted) or any((c['map'], c['source_frame']) != wanted[c['case']] for c in source_rows) or
             [c['map'] for c in game_rows] != [0, 1, 9, 24, 25, 26] or len(gpu.get('maps', [])) != 6 or
             any(not c.get('f2') for c in game_rows) or any(s.get('save_bytes', 0) <= 0 for s in gpu['maps']) or
             any(c.get('rgba_tolerance') != 2 for c in rows)):
         raise ValueError('明暗地板來源、六圖F2或保存檢查缺項')
-    if proposed['assets'][:-5] != base['assets'] or len(proposed['assets']) != len(base['assets']) + 5:
+    if proposed['assets'][:-(sets + 1)] != base['assets'] or len(proposed['assets']) != len(base['assets']) + sets + 1:
         raise ValueError('明暗地板改寫舊清冊')
-    master = proposed['assets'][-5]
+    master = proposed['assets'][-(sets + 1)]
     if (master['role'], master['file'], master['sha256'], master['width'], master['height']) != ('terrain_hd_master', manifest['master_file'], manifest['master_sha256'], 1254, 1254):
         raise ValueError('明暗地板母稿集合不符')
     expected = {(b['map'], b['frame']): (b['file'], b['sha256']) for b in manifest['bindings']}
     actual = {}
-    for asset in proposed['assets'][-4:]:
+    for asset in proposed['assets'][-sets:]:
         if asset['role'] != 'native_terrain_hd_set' or asset['semantics'] != ['terrain'] * asset['frame_count']:
             raise ValueError('明暗地板新增其他角色')
         for frame, name, digest in zip(asset['frame_ids'], asset['files'], asset['frame_sha256']):
@@ -319,7 +365,7 @@ def register_details(catalog_path, candidate, gpu_path):
         target.write(json.dumps(proposed, ensure_ascii=False, indent=2) + '\n'); temporary = Path(target.name)
     os.chmod(temporary, catalog_path.stat().st_mode & 0o777)
     temporary.replace(catalog_path)
-    return {'status': 'REGISTERED-CAVE-FLOOR-DETAILS-HD', 'bindings': 12, 'frames': 4, 'catalog_assets': len(proposed['assets']),
+    return {'status': 'REGISTERED-CAVE-RIM-HD' if profile['kind'] == 'fd2_cave_rim_hd' else 'REGISTERED-CAVE-FLOOR-DETAILS-HD', 'bindings': count, 'frames': len(profile['frames']), 'catalog_assets': len(proposed['assets']),
             'catalog_sha256': sha(catalog_path), 'candidate_catalog_sha256': manifest['catalog_sha256'], 'gpu_sha256': sha(gpu_path)}
 
 

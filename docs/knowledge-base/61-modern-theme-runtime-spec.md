@@ -310,6 +310,15 @@ HD1 milestone為[GitHub milestone 1](https://github.com/wicanr2/fd2_re/milestone
 
 ## HD1地形來源遮罩與洞窟石壁（CONFORMED-SCOPED／RUNTIME-E1，#282）
 
+### 洞窟外緣石地（CONFORMED-SCOPED／RUNTIME-E1）
+
+- 沿固定原包、原生來源manifest及既有selector契約，已核對map9:0～15與map26:80～95共32槽的原生三層完全相同；角色皆為terrain，來源Mask全覆蓋，沒有目的地RemapMask。資料來源沿[地形覆蓋資料](../data/fd2-hd1-terrain-coverage.json)與[參考檔指紋](../data/fd2-reference-files.json)，不新增玩法語意或原版動態聲明。
+- 沿已選手繪風格產生4×4母稿，歸一576×576後分成16張144圖。先用新稿中任一色分量大於24的石材像素作四鄰延拓，再以原生索引0恢復不透明黑色並六倍保持原輪廓；固定色盤已確認索引0為黑色。其餘RGB只取新稿。原生Mask仍全不透明，不把黑洞改成透明背景；當幀LUT照既有consumer套用。石材細節與光影為美術近似，人工由使用者確認。
+- [洞窟編製器](../../tools/build_fd2_hd_cave_rock.py)增加固定rim批次，完整核對32槽、來源SHA、selector及同角色後原子發布候選，拒絕缺件、錯輪廓來源與覆寫舊槽。[外緣配方與逐字提示](../../remake/assets/themes/modern/cave-rim-hd.recipe.json)保留母稿及參考SHA；既有明暗及地板批次保持。
+- 驗收沿[總覽GPU測試](../../remake/cmd/fd2/modern_hd_map_overview_test.go)，32槽各驗原色、LUT、黑與白，共128來源案例；另驗六張完整Game.Draw、F2及保存保持，再核對正式搬移等價並更新README總覽。沿既有私人清冊白名單同步，沒有完整GPU收據不得正式登錄；不改規則、幾何、時鐘或存檔格式。
+
+前述READY已實作。32槽／128來源與六組完整GPU、F2及保存保持通過；三批各三項Python、27項Go與Linux建置通過，總覽七個拒收保持。正式881項，新稿及16成品已同步私人白名單，舊素材保持。數量、目前Go指紋與來源依[58](58-fd2-exe-re-coverage.md)及HD主收據`hd1_cave_rim_followup_20261029`。重跑沿明暗批命令，只把配方改為cave-rim-hd.recipe.json，測試另設`FD2_CAVE_DETAILS_BATCH=rim`；基底從`git show b3ef9611`取回。
+
 ### 洞窟地板明暗變體（CONFORMED-SCOPED／RUNTIME-E1）
 
 - 原生彩色來源已核對map9的74／75／78／79，均為全覆蓋平面石地板、沒有目的地重映射。其三層內容與map24兩槽、map25兩槽及map26四槽完全相同，共12槽；沿固定FDSHAP指紋、既有selector及事件見證，不重開原版RE。

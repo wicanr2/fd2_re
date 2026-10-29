@@ -1,6 +1,6 @@
 # 56 — FD2 remake 系統設計規格（SDD，2026-08-09）
 
-洞窟明暗變體已新增四圖源／12槽，README六圖總覽同步更新。素材、正式搬移等價、48來源及六組完整擷取與目前Go指紋依[58](58-fd2-exe-re-coverage.md)、[61](61-modern-theme-runtime-spec.md)及HD主收據`hd1_cave_details_followup_20261029`；其餘缺圖及介面仍待。
+洞窟外緣新增16張圖並接兩圖32槽，README六圖總覽已同步。原生黑洞輪廓、128來源及六組完整繪製、目前Go指紋與正式搬移等價依[58](58-fd2-exe-re-coverage.md)、[61](61-modern-theme-runtime-spec.md)及HD主收據`hd1_cave_rim_followup_20261029`；其餘地形與介面仍待。
 
 README新增六張代表地圖的同版受控總覽，保留像素區域。擷取、目前Go來源指紋及圖源上界說明依[61](61-modern-theme-runtime-spec.md)與HD主收據`hd1_map_overview_followup_20261028`；首章測試名冊包含蓋亞，不提升為正常戰役加入證據。
 

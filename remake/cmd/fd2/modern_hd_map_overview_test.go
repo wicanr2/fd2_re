@@ -61,7 +61,11 @@ func TestModernHDMapOverviewGPU(t *testing.T) {
 				partialTerrainSource
 			} `json:"bindings"`
 		}
-		if err = json.Unmarshal(raw, &detail); err != nil || detail.Kind != "fd2_cave_floor_details_hd" || len(detail.Bindings) != 12 || detail.CatalogSHA != fmt.Sprintf("%x", sha256.Sum256(catalog)) {
+		if err = json.Unmarshal(raw, &detail); err != nil {
+			t.Fatal(err)
+		}
+		expected := map[string]int{"fd2_cave_floor_details_hd": 12, "fd2_cave_rim_hd": 32}[detail.Kind]
+		if expected == 0 || len(detail.Bindings) != expected || detail.CatalogSHA != fmt.Sprintf("%x", sha256.Sum256(catalog)) {
 			t.Fatal("invalid explicit detail batch", err)
 		}
 		detailHash = fmt.Sprintf("%x", sha256.Sum256(raw))

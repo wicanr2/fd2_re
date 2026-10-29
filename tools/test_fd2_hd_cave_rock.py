@@ -112,12 +112,17 @@ class CaveDetailsTest(unittest.TestCase):
     def setUpClass(cls):
         cls.root = Path(__file__).resolve().parents[1]
         cls.work = Path(os.environ['FD2_CAVE_DETAILS_ROOT'])
-        cls.catalog = cls.work / 'hd1-details-base-catalog-r1.json'
-        cls.coverage = cls.work / 'hd1-details-base-coverage-r1.json'
-        cls.recipe = cls.root / 'remake/assets/themes/modern/cave-floor-details-hd.recipe.json'
-        cls.master = cls.work / 'cave-floor-details-hd-v1-master.png'
+        cls.rim = os.environ.get('FD2_CAVE_DETAILS_BATCH') == 'rim'
+        cls.batch = 'rim' if cls.rim else 'details'
+        cls.prefix = 'cave-rim' if cls.rim else 'cave-floor-details'
+        cls.expected = (16, 32, 881) if cls.rim else (4, 12, 878)
+        cls.first = 0 if cls.rim else 74
+        cls.catalog = cls.work / f'hd1-{cls.batch}-base-catalog-r1.json'
+        cls.coverage = cls.work / f'hd1-{cls.batch}-base-coverage-r1.json'
+        cls.recipe = cls.root / f'remake/assets/themes/modern/{cls.prefix}-hd.recipe.json'
+        cls.master = cls.work / f'{cls.prefix}-hd-v1-master.png'
         cls.sources = cls.work.parent / 'native-terrain-sources-r2'
-        cls.candidate = cls.work / 'hd1-details-candidate-r1'
+        cls.candidate = cls.work / f'hd1-{cls.batch}-candidate-r1'
 
     def compile(self, out, recipe=None, coverage=None, sources=None, master=None):
         return prepare(recipe or self.recipe, self.catalog, Path('/modern'), Path('/original'), sources or self.sources,
@@ -130,17 +135,27 @@ class CaveDetailsTest(unittest.TestCase):
             old = json.loads((self.candidate / 'catalog.json').read_text())
             actual = json.loads((out / 'catalog.json').read_text())
             self.assertEqual(actual['assets'], old['assets'])
-            self.assertEqual((len(result['frames']), len(result['bindings'])), (4, 12))
+            self.assertEqual((len(result['frames']), len(result['bindings'])), self.expected[:2])
             for row in result['frames']:
                 self.assertEqual((out / row['file']).read_bytes(), (self.candidate / row['file']).read_bytes())
                 with Image.open(out / row['file']) as picture:
                     self.assertEqual(picture.size, (144, 144))
                     self.assertEqual(picture.getchannel('A').getextrema(), (255, 255))
+                    if self.rim:
+                        source = Image.open(Path('/original') / f'tilesets/fdshap/map_09/tile_{row["frame"]:04d}/frame.png')
+                        indices = source.tobytes()
+                        for y in range(144):
+                            for x in range(144):
+                                is_void = indices[(y // 6) * 24 + x // 6] == 0
+                                self.assertEqual(picture.getpixel((x, y)) == (0, 0, 0, 255), is_void)
             with self.assertRaises(ValueError):
                 self.compile(out)
 
     def test_bad_sources_publish_no_candidate(self):
-        for fault in ('master-sha', 'target-missing', 'coverage-kind', 'selector', 'native-sha', 'master-geometry'):
+        faults = ['master-sha', 'target-missing', 'coverage-kind', 'selector', 'native-sha', 'master-geometry']
+        if self.rim:
+            faults += ['recipe-frames', 'black-master', 'palette-sha']
+        for fault in faults:
             with self.subTest(fault=fault), tempfile.TemporaryDirectory(dir=self.work) as temporary:
                 folder = Path(temporary)
                 recipe, coverage = json.loads(self.recipe.read_text()), json.loads(self.coverage.read_text())
@@ -150,12 +165,14 @@ class CaveDetailsTest(unittest.TestCase):
                 elif fault == 'target-missing': recipe['targets'].pop()
                 elif fault == 'coverage-kind': coverage['kind'] = 'wrong'
                 elif fault == 'selector':
-                    row = next(r for r in coverage['maps'][9]['required'] if r['frame'] == 74 and r['role'] == 'terrain')
+                    row = next(r for r in coverage['maps'][9]['required'] if r['frame'] == self.first and r['role'] == 'terrain')
                     row['selector']['tile_word'] += 1
-                elif fault == 'native-sha': source['maps'][9]['frames'][74]['native_content_sha256'] = 'wrong'
+                elif fault == 'native-sha': source['maps'][9]['frames'][self.first]['native_content_sha256'] = 'wrong'
+                elif fault == 'recipe-frames': recipe['frame_ids'].pop()
+                elif fault == 'palette-sha': coverage['palette']['sha256'] = 'wrong'
                 else:
                     master = folder / 'bad.png'
-                    Image.new('RGB', (1248, 1254)).save(master)
+                    Image.new('RGB', (1254, 1254) if fault == 'black-master' else (1248, 1254)).save(master)
                     recipe['master_sha256'] = hashlib.sha256(master.read_bytes()).hexdigest()
                 cp = folder / 'coverage.json'; cp.write_text(json.dumps(coverage))
                 recipe['coverage_sha256'] = hashlib.sha256(cp.read_bytes()).hexdigest()
@@ -168,7 +185,7 @@ class CaveDetailsTest(unittest.TestCase):
                 self.assertFalse(out.exists())
 
     def test_complete_gpu_required_for_registration(self):
-        original = self.work / 'hd1-details-gpu-r1-capture/receipt.json'
+        original = self.work / f'hd1-{self.batch}-gpu-r1-capture/receipt.json'
         for fault in ('valid', 'missing-source', 'wrong-source', 'missing-game', 'missing-save', 'manifest-sha'):
             with self.subTest(fault=fault), tempfile.TemporaryDirectory(dir=self.work) as temporary:
                 folder = Path(temporary)
@@ -184,7 +201,7 @@ class CaveDetailsTest(unittest.TestCase):
                 path = folder / 'gpu.json'; path.write_text(json.dumps(gpu))
                 if fault == 'valid':
                     result = register(catalog, self.candidate, path)
-                    self.assertEqual((result['frames'], result['bindings'], result['catalog_assets']), (4, 12, 878))
+                    self.assertEqual((result['frames'], result['bindings'], result['catalog_assets']), self.expected)
                 else:
                     with self.assertRaises(ValueError): register(catalog, self.candidate, path)
                     self.assertEqual(catalog.read_bytes(), before)

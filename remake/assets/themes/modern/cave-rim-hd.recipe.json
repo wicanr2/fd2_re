@@ -1,0 +1,206 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_cave_rim_hd_recipe",
+  "base_catalog_sha256": "c96fdb8232be9d1a6a321fcd8955c9adf08195e05240eff1a6ead285a426deba",
+  "coverage_sha256": "590bd997840bf7dc80af0ce1ec0ed733fdf659e3933b23c520d8ce61d3fd6bf5",
+  "source_manifest_sha256": "a19a3da393294ad6e1c4ad1dccdb9a911d26ed1f3d7008046eddda2398f938f5",
+  "map_id": 9,
+  "frame_ids": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "master_size": [
+    1254,
+    1254
+  ],
+  "master_file": "cave-rim-hd-v1-master.png",
+  "master_sha256": "da2aaa81b96828c2623acc2cc6a3f3b01fed0791e92f0b2d5901242cb2f59eea",
+  "atlas_columns": 4,
+  "atlas_rows": 4,
+  "output_cell_size": 144,
+  "targets": [
+    {
+      "map": 9,
+      "frame": 0,
+      "source_frame": 0
+    },
+    {
+      "map": 9,
+      "frame": 1,
+      "source_frame": 1
+    },
+    {
+      "map": 9,
+      "frame": 2,
+      "source_frame": 2
+    },
+    {
+      "map": 9,
+      "frame": 3,
+      "source_frame": 3
+    },
+    {
+      "map": 9,
+      "frame": 4,
+      "source_frame": 4
+    },
+    {
+      "map": 9,
+      "frame": 5,
+      "source_frame": 5
+    },
+    {
+      "map": 9,
+      "frame": 6,
+      "source_frame": 6
+    },
+    {
+      "map": 9,
+      "frame": 7,
+      "source_frame": 7
+    },
+    {
+      "map": 9,
+      "frame": 8,
+      "source_frame": 8
+    },
+    {
+      "map": 9,
+      "frame": 9,
+      "source_frame": 9
+    },
+    {
+      "map": 9,
+      "frame": 10,
+      "source_frame": 10
+    },
+    {
+      "map": 9,
+      "frame": 11,
+      "source_frame": 11
+    },
+    {
+      "map": 9,
+      "frame": 12,
+      "source_frame": 12
+    },
+    {
+      "map": 9,
+      "frame": 13,
+      "source_frame": 13
+    },
+    {
+      "map": 9,
+      "frame": 14,
+      "source_frame": 14
+    },
+    {
+      "map": 9,
+      "frame": 15,
+      "source_frame": 15
+    },
+    {
+      "map": 26,
+      "frame": 80,
+      "source_frame": 0
+    },
+    {
+      "map": 26,
+      "frame": 81,
+      "source_frame": 1
+    },
+    {
+      "map": 26,
+      "frame": 82,
+      "source_frame": 2
+    },
+    {
+      "map": 26,
+      "frame": 83,
+      "source_frame": 3
+    },
+    {
+      "map": 26,
+      "frame": 84,
+      "source_frame": 4
+    },
+    {
+      "map": 26,
+      "frame": 85,
+      "source_frame": 5
+    },
+    {
+      "map": 26,
+      "frame": 86,
+      "source_frame": 6
+    },
+    {
+      "map": 26,
+      "frame": 87,
+      "source_frame": 7
+    },
+    {
+      "map": 26,
+      "frame": 88,
+      "source_frame": 8
+    },
+    {
+      "map": 26,
+      "frame": 89,
+      "source_frame": 9
+    },
+    {
+      "map": 26,
+      "frame": 90,
+      "source_frame": 10
+    },
+    {
+      "map": 26,
+      "frame": 91,
+      "source_frame": 11
+    },
+    {
+      "map": 26,
+      "frame": 92,
+      "source_frame": 12
+    },
+    {
+      "map": 26,
+      "frame": 93,
+      "source_frame": 13
+    },
+    {
+      "map": 26,
+      "frame": 94,
+      "source_frame": 14
+    },
+    {
+      "map": 26,
+      "frame": 95,
+      "source_frame": 15
+    }
+  ],
+  "rgb_policy": "new painted RGB only; 4x4 LANCZOS atlas at576x576; native index0 region restored to opaque black at nearest6 for exact void outline",
+  "alpha_policy": "native_mask_nearest_6; full opaque source, no destination remap",
+  "image_generation": {
+    "tool": "image_gen.imagegen",
+    "mode": "builtin",
+    "transparent_background": false,
+    "reference_guide_sha256": "8377814bf3fac26d0070f47a1ee4732d3c22faab7d9561513af610bee9ed4a65",
+    "prompt": "Use case: stylized-concept. Asset type: production HD1 cave-rim terrain atlas for the Flame Dragon Knights 2 remake. The reference image is a precise 4 by 4 row-major arrangement of native map9 frames 0 through 15. Redraw this exact arrangement as detailed hand-painted warm ochre and umber natural cave stone, matching the existing HD cave floor and rock textures. View directly overhead, orthographic, with restrained diffuse lighting. Preserve the positions and proportions of all main stone groups and their shadowed edges, including the black outer void and central black cavity. The cells are flat tile textures, not an isometric scene, elevated diorama, masonry wall, tower or perspective view. Output one opaque square atlas filling the entire image, with sixteen exactly equal square cells in a 4 by 4 layout, without gutters or visible grid lines. Keep black void areas pure black, matching their reference shapes, with stone detail only on the ochre surfaces. Do not add lava, flames, water, plants, buildings, characters, text, labels, borders, padding or new objects. Paint new high-resolution RGB, not enlarged pixel art. Maintain the reference arrangement and useful continuity at every cell edge. This is a texture asset sheet, not a concept screenshot or user interface."
+  }
+}
