@@ -1,5 +1,7 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
+一般系統確認已接HD世界、DATO75頭像、字型、細框及選項，涵蓋END、離開、目前戰況保存／讀取與全軍移動。五caller的完整GPU／四組控制及普通END／NO返回抽樣通過；問句保留原文，YES／NO沿四語。現況與目前Go指紋依[58](58-fd2-exe-re-coverage.md)、[61](61-modern-theme-runtime-spec.md)及HD主收據`hd1_system_confirmation_followup_20261029`；其餘地形／介面保持未完成。
+
 洞窟外緣新增16張圖並接兩圖32槽，README六圖總覽已同步。原生黑洞輪廓、128來源及六組完整繪製、目前Go指紋與正式搬移等價依[58](58-fd2-exe-re-coverage.md)、[61](61-modern-theme-runtime-spec.md)及HD主收據`hd1_cave_rim_followup_20261029`；其餘地形與介面仍待。
 
 README新增六張代表地圖的同版受控總覽，保留像素區域。擷取、目前Go來源指紋及圖源上界說明依[61](61-modern-theme-runtime-spec.md)與HD主收據`hd1_map_overview_followup_20261028`；首章測試名冊包含蓋亞，不提升為正常戰役加入證據。

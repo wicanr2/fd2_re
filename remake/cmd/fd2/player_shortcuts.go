@@ -52,6 +52,10 @@ func (g *Game) cycleTheme() {
 // Rebinding only the portrait preserves the active dialogue's pages and progress.
 func (g *Game) applyTheme(set *modernStoryPortraitSet) error {
 	style := g.interfaceThemeForArt(set)
+	publishSystemConfirmation, err := g.stageModernHDSystemConfirmation(set)
+	if err != nil {
+		return err
+	}
 	publishSystemInfo, err := g.stageModernHDSystemInfo(style)
 	if err != nil {
 		return err
@@ -238,6 +242,7 @@ func (g *Game) applyTheme(set *modernStoryPortraitSet) error {
 	g.modernStoryPortraits = set
 	publishItemPanels()
 	publishSystemInfo()
+	publishSystemConfirmation()
 	if g.hasModernHDStoryMapSource() {
 		g.modernHDMapFrame = storyWorld
 	}

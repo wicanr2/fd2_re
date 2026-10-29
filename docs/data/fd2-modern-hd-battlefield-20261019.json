@@ -247088,7 +247088,8 @@
         "required_slots": 3998,
         "selector_checks": 617520
       },
-      "method": "33圖初始selector與事件有效時來源上界，非自然可達或地圖完成比例。"
+      "method": "33圖初始selector與事件有效時來源上界，非自然可達或地圖完成比例。",
+      "superseded_by": "hd1_system_confirmation_followup_20261029.coverage；地形內容不變，只更新正式清冊指紋"
     },
     "art": {
       "recipe": {
@@ -247361,6 +247362,479 @@
     "final_validation": {
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-rim-final-validation-r1.json",
       "sha256": "dbb80bc6266d2a9bee6508134945020bc8eddf6386b3bb3727fbefd895c37c93"
+    }
+  },
+  "hd1_system_confirmation_followup_20261029": {
+    "date": "2026-10-29",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1/NORMAL-GUI-SAMPLE",
+    "base_commit": "8640e7b12a8c915a4f4a4cab8f788a5c3c9a2fc6",
+    "working_branch": "feat/hd1-system-confirmations",
+    "issues": [
+      283,
+      284
+    ],
+    "scope": "END、離開、目前戰況保存／讀取及全軍移動五個原生確認owner接HD世界、字型、細框及選項；人物跟美術，其他跟介面，四組合保持交易、時序、亂數及存檔格式。",
+    "limitations": [
+      "問句及回覆沿既有原文字串，只有YES／NO按鈕具四語；不宣稱問句翻譯完成。",
+      "DATO75為棕髮雙辮店員。原生嘴形0／3與亂數時序保持，HD採閉口靜態頭像，不宣稱嘴形逐幀一致。",
+      "147案例為受控完整Game.Draw，未新增原版動態對拍。普通操作只抽第23章END／NO，其他四caller的交易沿既有原生測試，不外推普通全流程。",
+      "HD1其餘地形／介面未完成，集中造型與逐章／平台人工由使用者接手，HD2與HD-2D另期。"
+    ],
+    "implementation": [
+      {
+        "file": "remake/cmd/fd2/modern_hd_system_confirmation.go",
+        "sha256": "c2744d02bcae0656ad48d89b57957975041ce762c28d01977a944bc283846f9b"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_system_confirmation_test.go",
+        "sha256": "3cd091b81607c5215704fc0df140df917e043395a67288ccee2f8c668d03681e"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_system_confirmation_gpu_test.go",
+        "sha256": "0222343c3f1e13359cdf4315ba9e13ba278a532754c8e8b1c18efc8a2a53076e"
+      }
+    ],
+    "art": {
+      "tool": "image_gen.imagegen",
+      "mode": "builtin",
+      "recipe": {
+        "file": "remake/assets/themes/modern/system-confirmation-portrait.recipe.json",
+        "sha256": "a40b6e55e40ae0e77111e9fd8ed9752ea39319e89fe15a3f05d975254909ceea"
+      },
+      "master": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/dato-075-system-portrait-handpainted-v1-master.png",
+        "sha256": "cb4785c83a6efb218ffb43232f680039953245befdcb32b85ff0d5854751db21"
+      },
+      "prompt": "逐字提示見recipe.image_generation.prompt",
+      "compiler": {
+        "file": "tools/build_fd2_hd_system_portrait.py",
+        "sha256": "9904130d3cb9d444bb39de37046e977f7850d7343a85c103a6e36efa0fa82828"
+      },
+      "candidate_manifest": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-system-candidate-r1/portrait-manifest.json",
+        "sha256": "0bd71d61ebdafb265b0c811511c5f5b5fd99a1398bca99f8494f145fa2486305"
+      },
+      "base_catalog": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-system-base-catalog-r1.json",
+        "sha256": "11a5f29f77079fa6857b03e5a9a58bcf6bb22174b4f2ae7e874bcba00d635f2e"
+      },
+      "candidate_catalog": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-system-candidate-r1/catalog.json",
+        "sha256": "44a761ddde3808fb1ffe7a00f153ad3b1be8e326d4f1e1555d9eebca3fa700c5"
+      },
+      "policy": "固定母稿1254平方，沿既有Lanczos產80及480；只增DATO75兩種既有role，不改schema。登錄守衛在候選後加嚴，最終三項回歸證明prepare的PNG及catalog.assets與原候選逐byte相同。"
+    },
+    "gpu": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-system-gpu-r3-capture/receipt.json",
+        "sha256": "35334a6c5dbfb6a4e7fbf44e9c25d9c866be6002084c631eee4efde253a3a198"
+      },
+      "resource": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-system-gpu-r3.memory.json",
+          "sha256": "33c7f9218a46318dbbc75114587d9cd07bf6a2eca67ba16aefe38def0653fc2d"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-system-gpu-r3.log",
+          "sha256": "26d9489890fcce7dcda52bba9fc02c3ca2dd6275b1244bce1bfc59606d299d4a"
+        },
+        "elapsed_seconds": 289.267,
+        "peak_bytes": 6573273088,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "cases": 147,
+      "pngs": 15,
+      "f2_f11_roundtrips": 5,
+      "full_rgba_pixels_per_case": 2304000,
+      "rgba_tolerance": 2,
+      "save_bytes_unchanged": 170,
+      "source_file_count": 1193,
+      "source_tree_sha256": "914c7bcb9f78493d5e12dd5f391f9998a2c19684f4c3782444b36423786b929e"
+    },
+    "independent": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-system-independent-r1.json",
+        "sha256": "06814c7d6fa5f4ea867a526c31c41bcda67dced1301d1a77b77499216c282c5f"
+      },
+      "tool": {
+        "file": "tools/verify_fd2_hd_system_confirmation.py",
+        "sha256": "52bad7642187026e8fc68dbf2bf3c816b9a780be7244e9aa61e95d9d05f5230b"
+      },
+      "portrait_pixels": 3456000,
+      "rejected_mutants": [
+        "missing-row",
+        "duplicate-row",
+        "wrong-mode",
+        "wrong-phase",
+        "wrong-code",
+        "wrong-catalog",
+        "wrong-png",
+        "missing-save",
+        "wrong-tolerance",
+        "false-state",
+        "actual-black-png"
+      ],
+      "overview": {
+        "file": "docs/figures/hd1-system-confirmations.png",
+        "sha256": "06cbbc50f65be3849c1c2380887fd729ade9ec0582808ff99405b9722e6933c8"
+      },
+      "overview_size": [
+        1352,
+        1136
+      ]
+    },
+    "normal_gui": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-system-normal-r2-capture/receipt.json",
+        "sha256": "2c0e117186f6704fd39f84032db1af2b15d09f11d717df2c92008d0bbb4718ea"
+      },
+      "resource": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-system-normal-r2.memory.json",
+          "sha256": "0e9a08d0cf2c7d5f1dbfdcfa6fb8a17fcf1ab8ef2a5eefda22d89981a40020b0"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-system-normal-r2.log",
+          "sha256": "09833381d0b3aa6cb3dfdbe132f6c3cfef805fe6d62b53cacec8d891d4ba0588"
+        },
+        "elapsed_seconds": 168.643,
+        "peak_bytes": 5026856960,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "helper": {
+        "file": "tools/fd2_hd_system_confirmation_gui.py",
+        "sha256": "561cdbdb86075c2d4ee4519f41d40d8cb929063954d843ab366f260f0034e97b"
+      },
+      "driver": {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "cacd4010c6c9516a9088ffc873f5bef46fb7b5156e098a737f5a32cd58371b6d"
+      },
+      "source_sha256": "5d64f3a0bf9aa56f7e77f51e8cfe45fe8c14ab78f2703b966fbc0e142e7bd871",
+      "source_policy": "既有第23章來源，完成第22章；章前AP+5000／DP+300／DX+60／MaxHP+1000 preserve_dead。來源唯讀，本輪無章內注入、戰鬥或重擲。",
+      "scope": "既有第23章強化來源經標題LOAD、普通END、F2／F11、NO及自然返回，保存bytes保持；不新增自然難度、原版動態、整章或冷讀聲明。",
+      "state_injection": false,
+      "new_process_title_load": false,
+      "theme_and_interface_save_bytes_equal": true,
+      "independent_portraits": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-system-normal-independent-r1.json",
+        "sha256": "5e732dec5677abfe56b6d1c9b5707c377ffd74e0624356578448806c271fc53e"
+      }
+    },
+    "native_regression": {
+      "resource": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-system-native-r1.memory.json",
+          "sha256": "def76b939da7d4fb0f2b446f6c701e20327e48d799b60a30ae6757cbf6c780ec"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-system-native-r1.log",
+          "sha256": "d3733e3a96dfd32985bb8cfb37ea8e8d2e58ee4604c82126ed1047c41ae492ec"
+        },
+        "elapsed_seconds": 11.523,
+        "peak_bytes": 814972928,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "passed": [
+        "TestModernHDSystemConfirmationNativeProducers",
+        "TestModernHDSystemConfirmationAtomicRejection",
+        "TestNativePreparationConfirmationMouthWaitShowsBothFrames",
+        "TestNativeConfirmationMouthENDWaitAndCallerPortrait",
+        "TestNativeConfirmationMouthMissingFrameFailsBeforeENDMutation",
+        "TestNativeCurrentSaveBuildAndAtomicReplaceRoundTrip",
+        "TestNativeCurrentSaveFailureLeavesOriginalFileUnchanged",
+        "TestNativeNestedCurrentSaveWritesOnlyAfterYESAndCancelPreservesFile",
+        "TestIndependentInterfaceFourModesKeepArtworkAndBattle",
+        "TestInterfaceRejectsBeforeChangingModeOrArtwork",
+        "TestOriginalInterfaceKeepsHDPanelPortrait",
+        "TestInterfaceSettingsSurviveLocaleAndAudio",
+        "TestInterfaceBattlePanelSelectionKeepsNativePixels",
+        "TestInterfaceSystemInfoWithOriginalArtwork",
+        "TestInterfaceStatusWithOriginalArtwork"
+      ],
+      "source_resource": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-system-source-r2.memory.json",
+          "sha256": "d03a8a2026bc801b0f0f8b5d6e87db38b67c830986d7be509faafcdd1ab5e00a"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-system-source-r2.log",
+          "sha256": "7b93dc3f0077589c984d8cb0d6974a5f0ba4e6b8999cb382cbfdb9a881506390"
+        },
+        "elapsed_seconds": 26.072,
+        "peak_bytes": 1472110592,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "source_rejections": 11
+    },
+    "go_regression": {
+      "initial_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-system-final-r1.log",
+        "sha256": "09c32c2873df032f3246c967d6149e5a80a73859c3e2888d7853e864d3051a9a"
+      },
+      "initial_memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-system-final-r1.memory.json",
+        "sha256": "61571027c55cc6029b015da7f22e5304fe5aaaa1f01c62a06e98a6c1fd2574b5"
+      },
+      "supplement": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-system-build-r2.memory.json",
+          "sha256": "d1dc969bf8bf9b19f4b1f04fcd0018efc5ded68efad7ae837a9f4cefd7eebca7"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-system-build-r2.log",
+          "sha256": "40904ed70ea4f0fa0621f5a31a6d232b4bc48bf2be9ea42f7acc4dd44fc675a4"
+        },
+        "elapsed_seconds": 13.03,
+        "peak_bytes": 882593792,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "passed": [
+        "TestBuildCollectsControlledJSONAndGoUIWithoutNotesOrErrors",
+        "TestBuildIsDeterministicAndJSONSerializable",
+        "TestBuildRejectsDuplicateExistingStringID",
+        "TestCoverageIncludesFormalEventWriterAndPreservesRawInput",
+        "TestCoverageOnlyReusesIdenticalNativeContentAndUniqueHD",
+        "TestCoverageRejectsWrongCatalogSHAAlphaAndDuplicates",
+        "TestCoverageSeparatesCompositeRequirementsFromMissingArt",
+        "TestDrawFunctionContextIncludesIndirectASCIIAndFunctionName",
+        "TestDrawFunctionContextSkipsLocaleKeys",
+        "TestIndependentInterfaceFourModesKeepArtworkAndBattle",
+        "TestInterfaceBattlePanelSelectionKeepsNativePixels",
+        "TestInterfaceRejectsBeforeChangingModeOrArtwork",
+        "TestInterfaceSettingsSurviveLocaleAndAudio",
+        "TestInterfaceStatusWithOriginalArtwork",
+        "TestInterfaceSystemInfoWithOriginalArtwork",
+        "TestModernHDBattleConsumerInventory",
+        "TestModernHDCh23StageLoader",
+        "TestModernHDExactTerrainReuseSourceTransactions",
+        "TestModernHDMapOverwriteCoverageAndDestinationDependency",
+        "TestModernHDMapTransactionUsesOneNativeClockAndIndependentTerrain",
+        "TestModernHDSystemConfirmationAtomicRejection",
+        "TestModernHDSystemConfirmationNativeProducers",
+        "TestModernHDTerrainCatalogAtomicAndNativeMask",
+        "TestModernHDTerrainKeepsClockAndRangeAbovePainting",
+        "TestModernHDTerrainRGBIdentityMappingAndCollapse",
+        "TestModernHDTerrainSteadyAndUpStepProjection",
+        "TestMultipleTextFieldsDoNotReuseOneExistingStringID",
+        "TestNativeConfirmationMouthENDWaitAndCallerPortrait",
+        "TestNativeConfirmationMouthMissingFrameFailsBeforeENDMutation",
+        "TestNativeCurrentSaveBuildAndAtomicReplaceRoundTrip",
+        "TestNativeCurrentSaveFailureLeavesOriginalFileUnchanged",
+        "TestNativeNestedCurrentSaveWritesOnlyAfterYESAndCancelPreservesFile",
+        "TestNativePreparationConfirmationMouthWaitShowsBothFrames",
+        "TestOriginalInterfaceKeepsHDPanelPortrait",
+        "TestPlayerPosterApprovedPixelsAndAtomicSourceRejection",
+        "TestReviewedGoCandidatesMatchCurrentInventory",
+        "TestSourceExportFailureDoesNotPublish",
+        "TestSourceExportPreservesExistingOutput",
+        "TestSourceSelectorsKeepRawWordMaskAndAllPhases",
+        "TestSourceSelectorsRejectOutOfBankAndChangedControls",
+        "TestVariablesIncludeWrappedErrorPlaceholder"
+      ],
+      "unique_top_tests": 41,
+      "scope": "首批33項地形／正式消費端／原生交易／介面及七項字串通過；一項審查指紋因接線行號變動失敗。官方遷移工具以舊版Git來源重生清冊，核對相同函式與字串，保留所有disposition及rationale；只重跑八項字串及coverage／build，全通過。",
+      "old_inventory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-system-inventory-old-r1.json",
+        "sha256": "8a5228b9e313bb5a10fce9b6cad1455cabe5b09dd6a2e512ad35bcb2c8ba8274"
+      },
+      "new_inventory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-system-inventory-new-r1.json",
+        "sha256": "bb37f7ffc091224d228fa64d067538949e4ebe213bbfae58adeac8aef1ff3695"
+      },
+      "string_review": {
+        "file": "docs/data/fd2-string-review.json",
+        "sha256": "ee0082da5b21444d902d83250f255f220540ae4d116446d45a2dca6177ab50fa"
+      }
+    },
+    "python_guards": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-system-portrait-tests-r1.log",
+        "sha256": "44c7a9e3092c47870e35362bfea919bdd16bcf8fe669826567527f7185ec139a"
+      },
+      "tests": 3,
+      "source_rejections": 4,
+      "registration_rejections": 7,
+      "tool": {
+        "file": "tools/test_fd2_hd_system_portrait.py",
+        "sha256": "395d338ded3428fee2597d97f69cc9361c659e6f59acee9a3cd926bbc467c673"
+      }
+    },
+    "current_consumer_inventory": {
+      "observed": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-system-consumers-r1.json",
+        "sha256": "d1d36ff1c1459fa76e51b7d20f2b9230f4bf1fb3ee02fdaf64a0fd2e91ed10b5"
+      },
+      "verified": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-system-consumers-verify-r1.json",
+        "sha256": "5d1b1f82e1fc753a6aadaf752bda46eb2fbd2dcc2ad23d9f26e888339ee4a57d"
+      },
+      "cases": 21,
+      "archive_frames": 416,
+      "source_file_count": 1193,
+      "source_tree_sha256": "914c7bcb9f78493d5e12dd5f391f9998a2c19684f4c3782444b36423786b929e",
+      "rejected_mutants": [
+        "wrong-archive",
+        "wrong-resource",
+        "wrong-frame",
+        "wrong-pixels",
+        "wrong-mask",
+        "missing-case",
+        "false-gpu",
+        "missing-hd",
+        "wrong-code",
+        "wrong-command",
+        "wrong-packed",
+        "wrong-descriptor",
+        "missing-map-route",
+        "wrong-lmi-kind",
+        "wrong-lmi-pixels",
+        "wrong-lmi-entry",
+        "missing-lmi-hd",
+        "wrong-map-mask",
+        "missing-map-mask-hd"
+      ]
+    },
+    "assets": {
+      "catalog": {
+        "file": "remake/assets/themes/modern/catalog.json",
+        "sha256": "4bed03e173de2f7245eeaeb41be372372db1107ebc83d2150eab02431d77486f"
+      },
+      "catalog_assets": 883,
+      "previous_assets_preserved": 881,
+      "registration": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-system-registration-r1.json",
+        "sha256": "ef38dc413dfd73954029ae4fa5b0bc65edb86039a608d15d24d26dad218c9909"
+      },
+      "private_sync": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-system-private-sync-r1.json",
+        "sha256": "63839504d9962287c37de7de99511e06e1044ef132de0bf874a2cf1d098130db"
+      },
+      "policy": "僅登錄母稿／80／480三圖進私人白名單，先前7121實檔SHA保持。私人Git與可見性核對留本機收據，不複製私人提交資訊到公開進度。",
+      "private_git": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-system-private-git-r1.json",
+        "sha256": "d75168b8f842dda8087f35ba0c43586821b7f519eccb04838f18a1cd6ca0a720"
+      }
+    },
+    "coverage": {
+      "file": "docs/data/fd2-hd1-terrain-coverage.json",
+      "sha256": "786b2c10b6870d90eee5a6793062ba9696684abee01c75cf24f48ff073284e3c",
+      "summary": {
+        "maps": 33,
+        "missing-art": 3354,
+        "missing_unique_native_content": 2049,
+        "native-remap-only": 10,
+        "registered-hd": 634,
+        "required_slots": 3998,
+        "selector_checks": 617520
+      },
+      "scope": "地形內容與前批完全相同，只有正式catalog指紋更新；地圖總覽仍沿前批已驗PNG。"
+    },
+    "build": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-system-binary-r1",
+      "sha256": "0bc06b4caea4151c7910a225e4dd18d06d7fd86d77e0b45a1f6f1253835b2f83"
+    },
+    "diagnostics": [
+      {
+        "run": "hd1-system-source-r1",
+        "classification": "測具缺少字模對應",
+        "resolution": "沿正式nativeBattleGlyphs載入後同案例R2通過，沒有猜測字型fallback。"
+      },
+      {
+        "run": "hd1-system-world-r1",
+        "classification": "清冊缺少DATO75",
+        "resolution": "原生核對為店員，補同風格頭像並通過完整GPU後登錄。"
+      },
+      {
+        "run": "hd1-system-gpu-r1",
+        "classification": "測具缺少campaign，無法保存",
+        "resolution": "使用既有受控chapter23節點，未放寬保存斷言。"
+      },
+      {
+        "run": "hd1-system-gpu-r2",
+        "classification": "重複預檢造成無效等待",
+        "resolution": "473.508秒有界停止，無OOM；R3去掉同模式重複預檢，147案例及容差保持，另明示五次途中F2／F11。此輪無完成收據，不算通過。"
+      },
+      {
+        "run": "hd1-system-normal-r1",
+        "classification": "環境缺xdotool，未進遊戲",
+        "resolution": "先前清理已移除promo映像，沿原tools/docker/fd2-promo.Dockerfile恢復同名工具鏈。相同命令R2通過，不改產品。"
+      }
+    ],
+    "toolchain": {
+      "go_image": "fd2-go-test-local:latest@44c2bbcc2a00",
+      "normal_gui_image": "fd2-promo-local:latest@81278de73727",
+      "art_image": "sc-cht-hdtools:pillow11.3.0-r2@b050fc7c4900",
+      "network": "none",
+      "uid_gid": [
+        1000,
+        1000
+      ],
+      "cpu": 2,
+      "gpu_limit_gib": 8,
+      "normal_limit_gib": 8
+    },
+    "reproduce": [
+      "基底catalog從git show 8640e7b1取回。原包／org_game唯讀，沿system-confirmation-portrait.recipe.json及固定母稿，用build_fd2_hd_system_portrait.py --help的編製與--register入口；先有候選、完整GPU及獨立來源驗證才登錄。",
+      "Go GPU環境及完整子命令見gpu.resource.report的command；FD2_TEST_MODERN_EFFECT_CATALOG／PACK指定候選，FD2_HD_SYSTEM_CONFIRM_GPU=1、FD2_HD_SYSTEM_CONFIRM_OUT為全新輸出目錄，FD2_HD_SYSTEM_PORTRAIT_MANIFEST指定候選manifest。147案例與五caller的世界／四組合來源檢查共用已載主題，不重複冷載。",
+      "GPU獨立核對沿verify_fd2_hd_system_confirmation.py --receipt GPU_JSON --catalog CANDIDATE_CATALOG --pack CANDIDATE_ROOT --original /original --out FRESH_JSON --self-test；--overview-out及--font可重生四組總覽。字型取自Go映像NotoSansCJK-Regular.ttc的TC index3，SHA與清理收據保存。",
+      "Python三項回歸的FD2_SYSTEM_PORTRAIT_ROOT指定既有工作根，FD2_SYSTEM_PORTRAIT_GPU指定GPU receipt.json；最終登錄另核147矩陣／15PNG，不單靠案例數量。",
+      "普通END／NO使用normal_gui.resource.report的完整command，來源目錄唯讀掛/source；腳本自行擁有Xvfb及PulseAudio生命週期，無錄影。",
+      "正式33圖覆蓋由Go工具重生；所有回歸與build命令見go_regression及native_regression的resource.report。21案例／416來源另走verify_fd2_battle_hd_consumers.py --self-test。"
+    ],
+    "remaining": [
+      "#282其餘地形缺圖",
+      "#283其他原生介面及#284其餘獨立控制消費端",
+      "造型／逐章／平台人工由使用者接手；HD2與HD-2D另期"
+    ],
+    "recordings_created": false,
+    "new_release": false,
+    "cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-system-cleanup-r1.json",
+      "sha256": "45bafabcba8625ad630d7a4835ed2b91082d199deaf7b83bd2333d1f1134211b"
+    },
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-system-final-validation-r1.json",
+      "sha256": "4088e0c8bd056030c7a0dcd8a418974a8f92bc9ca398538f2b503f8ee1ac46b2"
     }
   }
 }

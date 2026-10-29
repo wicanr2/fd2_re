@@ -108,6 +108,10 @@ func (g *Game) setInterfaceMode(mode string) error {
 		*g = candidate
 		return nil
 	}
+	confirmation, err := candidate.stageModernHDSystemConfirmation(g.modernStoryPortraits)
+	if err != nil {
+		return err
+	}
 	panels, err := candidate.stageModernHDItemPanels(style)
 	if err != nil {
 		return err
@@ -117,6 +121,7 @@ func (g *Game) setInterfaceMode(mode string) error {
 		return err
 	}
 	panels()
+	confirmation()
 	info()
 	candidate.modernHDText = nil
 	*g = candidate

@@ -69954,6 +69954,44 @@
         "remake/assets/themes/modern/cave-rim-hd.recipe.json",
         "docs/knowledge-base/61-modern-theme-runtime-spec.md"
       ]
+    },
+    {
+      "asset_id": "modern.system_clerk.portrait.80.frame0",
+      "role": "story_portrait_frame",
+      "status": "runtime_candidate",
+      "file": "dato-075-system-portrait-handpainted-v1-80.png",
+      "master_file": "dato-075-system-portrait-handpainted-v1-master.png",
+      "width": 80,
+      "height": 80,
+      "sha256": "9f5ccd72102eb62f462c3595b7d24ece0270da289768060830c83d7882d68712",
+      "speaker_id": 75,
+      "frame": 0,
+      "mouth_state": "closed",
+      "consumer_contract": "native_story_dialogue_rgba_overlay_v1",
+      "source_refs": [
+        "asset:DATO_075_m0",
+        "remake/assets/themes/modern/system-confirmation-portrait.recipe.json",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
+    },
+    {
+      "asset_id": "modern.system_clerk.portrait.480.frame0",
+      "role": "story_portrait_hd_frame",
+      "status": "runtime_candidate",
+      "file": "dato-075-system-portrait-handpainted-v1-480.png",
+      "master_file": "dato-075-system-portrait-handpainted-v1-master.png",
+      "width": 480,
+      "height": 480,
+      "sha256": "53767b5a2fd6efc47ab307242fb1779c520e17db734cf0d0ec17a4c66127d7fa",
+      "speaker_id": 75,
+      "frame": 0,
+      "mouth_state": "closed",
+      "consumer_contract": "native_story_dialogue_rgba_overlay_hd6_v1",
+      "source_refs": [
+        "asset:DATO_075_m0",
+        "remake/assets/themes/modern/system-confirmation-portrait.recipe.json",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
     }
   ]
 }

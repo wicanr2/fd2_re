@@ -683,6 +683,17 @@ A+沿既有80／90／100／110／125%字級，套用所有官方語系字型。�
 
 ## 操作介面與人物主題獨立控制（CONFORMED-SCOPED／RUNTIME-E1，HD1）
 
+### 一般系統確認的HD呈現（CONFORMED-SCOPED／RUNTIME-E1）
+
+- 沿[原生系統確認writer](../../remake/internal/campaign/native_class_confirm.go)與[正式控制器](../../remake/cmd/fd2/action_overlay_runtime.go)，接END、離開、目前戰況保存／讀取及全軍移動五個caller。固定原檔指紋沿[參考清單](../data/fd2-reference-files.json)，不重開RE或猜補規則。問句索引依次為0x1a3／0x19f／0x19a／0x19d／0x1a1；接受回覆為0x1a4／0x1a0／0x19b／0x19e／0x1a2，取消共用0x19c。原生DATO75與其0／3嘴形由同一owner控制，不改寫亂數或計時。
+- 在原生開框前凍結來源、原始問答、完整工作緩衝、當次色盤、typed世界與UI來源。HD文字沿原writer逐字擷取，來源文字保持；YES／NO按鈕沿既有四語翻譯及有界字區。框線沿已選細框，人物僅隨美術主題，字型／框線／按鈕僅隨介面模式。不得用新的文字或按鈕判定改變保存、讀取、移動、離開或回合交易。
+- 十拍開框、等待／兩選項與兩pulse、四拍收按鈕、逐字回覆、等待與五拍收對話沿原流程。HD背景重播同一封存世界；原版美術保留原圖。F2／F11在候選完整預檢後一次發布；來源、palette、文字或時序不符時拒收，不改正在顯示的owner或正式狀態。
+- 驗收涵蓋五caller的原生逐byte重組、兩種回覆及開收邊界、來源／字型／頭像／尺寸／時序拒收、四組介面／美術與四語按鈕；完整Game.Draw及最終GPU對獨立CPU，途中F2／F11、單位／RNG與保存保持。必要來源以受控測具縮小範圍，限定RUNTIME-E1；造型與逐章操作仍由使用者人工確認。實作與重跑入口完成後掛入本節，其他介面及地形工作保持。
+- DATO75原生已核對為棕髮雙辮店員，正式清冊原先沒有對應HD圖片，與已登錄角色也無逐像素相同來源。沿已選手繪風格補一張母稿，以既有LANCZOS流程產生80及480圖，不改清冊schema或嘴形時序。[頭像編製器](../../tools/build_fd2_hd_system_portrait.py)及[配方與提示](../../remake/assets/themes/modern/system-confirmation-portrait.recipe.json)保留原版／母稿SHA；完整GPU及來源拒收通過後才登錄並同步私人白名單。
+- 正式接點為[系統問答HD](../../remake/cmd/fd2/modern_hd_system_confirmation.go)，來源與拒收沿[單元測試](../../remake/cmd/fd2/modern_hd_system_confirmation_test.go)，完整矩陣沿[GPU測試](../../remake/cmd/fd2/modern_hd_system_confirmation_gpu_test.go)。[獨立核對器](../../tools/verify_fd2_hd_system_confirmation.py)另核147案例完整集合、目前Go指紋、15張PNG與實際原版／HD頭像，含真黑畫面反例；[編製回歸](../../tools/test_fd2_hd_system_portrait.py)驗既有清冊保持與登錄拒收。問句沿既有原文字串，不因按鈕具四語而宣稱問句翻譯完成。
+
+- 本切片已通過147個完整GPU案例、15張原版／HD頭像實圖與11種獨立反例，五caller各補途中F2／F11；原生／保存回歸及Linux建置保持。[普通鍵盤輔助器](../../tools/fd2_hd_system_confirmation_gui.py)沿[既有GUI驅動](../../tools/verify_fd2_hd_fonts_gui.py)的`--system-confirmation --battle-status --world --battle-node battle_ch23`，抽標題LOAD、END、四組切換、NO返回及保存bytes。來源有明示章前強化，無章內注入，本次不驗新程序冷讀。HD為閉口靜態頭像，原生0／3嘴形與亂數照常，不宣稱嘴形逐幀一致。唯一完整來源、資源、命令與診斷依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`hd1_system_confirmation_followup_20261029`；其餘介面／地形與人工仍待。
+
 使用者已明示工具列分成「操作介面：原版／HD」與獨立的美術主題。主題最新方向為本檔「四種美術主題」的原版／HD／HD2／HD-2D，目標八組合互不改寫。介面中的人物圖示、頭像與戰鬥動畫跟主題選項；不能因操作介面切回原版而回退人物圖源。既有地圖／場景主題範圍不因此縮減。工具列沿先前已選定的頂端浮出、自動隱藏方向。
 
 視覺沿既有原型保留原版藍底及主要配置，以清晰框線、字型與按鈕重繪。依使用者已定案排程，先完成全部HD串接，再集中人工確認。原型使用同一索爾原版DATO_000及已登錄480頭像，原版介面取自保存的重製端索引樣本，HD介面為SVG示意。該原型不是正式遊戲畫面、正常玩家或新原版對拍；沒有播放戰鬥動畫。正式拆分及加速依本節與前節的限定範圍，完整介面及海報仍待。

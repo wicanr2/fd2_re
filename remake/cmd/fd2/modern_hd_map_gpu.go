@@ -212,6 +212,9 @@ func (r *modernHDMapGPU) drawUnitClipped(unit modernHDMapUnitDraw, clip image.Re
 }
 
 func (g *Game) drawModernHDMapFrame(screen *ebiten.Image) bool {
+	if state := g.nativeSystemEndTurnUI; state != nil && state.hd != nil && state.hd.world != nil && state.hd.theme == g.modernStoryPortraits {
+		return g.drawPreparedModernHDMapFrame(screen, state.hd.world, false)
+	}
 	if job := g.nativeClassUIJob; g.transientUI && job != nil && job.expiryText != nil {
 		p := job.expiryText
 		if p.world != nil && p.theme == g.modernStoryPortraits {

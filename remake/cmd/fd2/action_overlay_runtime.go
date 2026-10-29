@@ -13,6 +13,7 @@ import (
 const nativeSystemEndTurnDelayFrames = 12 // 0x17259: delay(0xC8 ms)；60 Hz 約十二幀。
 
 type nativeSystemEndTurnUIState struct {
+	hd                         *modernHDSystemConfirmation
 	source, dialogue, question []byte
 	portraits                  []dato.Frame
 	accepted, canceled         [][]byte
@@ -276,12 +277,16 @@ func (g *Game) beginNativeSystemEndTurn() bool {
 		source:    source, dialogue: dialogue, question: question,
 		accepted: accepted, canceled: canceled,
 	}
+	if !g.freezeModernHDSystemConfirmation(state) {
+		return false
+	}
 	g.beginActionOverlayClose(func() {
 		g.nativeSystemCursorOverlay = false
 		g.nativeSystemEndTurnConfirm = true
 		g.nativeSystemEndTurnUI = state
 		g.resetNativeClassUIPulse()
 		g.nativeClassUIJob = &nativeClassUIJob{frames: frames}
+		g.bindModernHDSystemConfirmation(fullRewardOpening)
 	})
 	return true
 }
@@ -327,6 +332,9 @@ func (g *Game) beginNativeNestedSystemExit() bool {
 		source:    source, dialogue: dialogue, question: question,
 		accepted: accepted, canceled: canceled, exitProgram: true,
 	}
+	if !g.freezeModernHDSystemConfirmation(state) {
+		return false
+	}
 	g.beginActionOverlayClose(func() {
 		g.nativeSystemNestedOpen = false
 		g.nativeSystemCursorOverlay = false
@@ -334,6 +342,7 @@ func (g *Game) beginNativeNestedSystemExit() bool {
 		g.nativeSystemEndTurnUI = state
 		g.resetNativeClassUIPulse()
 		g.nativeClassUIJob = &nativeClassUIJob{frames: frames}
+		g.bindModernHDSystemConfirmation(fullRewardOpening)
 	})
 	return true
 }
@@ -389,6 +398,9 @@ func (g *Game) beginNativeNestedCurrentSave() bool {
 		accepted: accepted, canceled: canceled,
 		saveCurrent: true, savePath: path, saveStored: append([]byte(nil), stored...),
 	}
+	if !g.freezeModernHDSystemConfirmation(state) {
+		return false
+	}
 	g.beginActionOverlayClose(func() {
 		g.nativeSystemNestedOpen = false
 		g.nativeSystemCursorOverlay = false
@@ -396,6 +408,7 @@ func (g *Game) beginNativeNestedCurrentSave() bool {
 		g.nativeSystemEndTurnUI = state
 		g.resetNativeClassUIPulse()
 		g.nativeClassUIJob = &nativeClassUIJob{frames: frames}
+		g.bindModernHDSystemConfirmation(fullRewardOpening)
 	})
 	return true
 }
@@ -456,6 +469,9 @@ func (g *Game) beginNativeNestedCurrentLoad() bool {
 		accepted: accepted, canceled: canceled,
 		loadCurrent: true, loadCandidate: &candidate,
 	}
+	if !g.freezeModernHDSystemConfirmation(state) {
+		return false
+	}
 	g.beginActionOverlayClose(func() {
 		g.nativeSystemNestedOpen = false
 		g.nativeSystemCursorOverlay = false
@@ -463,6 +479,7 @@ func (g *Game) beginNativeNestedCurrentLoad() bool {
 		g.nativeSystemEndTurnUI = state
 		g.resetNativeClassUIPulse()
 		g.nativeClassUIJob = &nativeClassUIJob{frames: frames}
+		g.bindModernHDSystemConfirmation(fullRewardOpening)
 	})
 	return true
 }
@@ -516,12 +533,16 @@ func (g *Game) beginNativeSystemGroupMarch() bool {
 		source:    source, dialogue: dialogue, question: question,
 		accepted: accepted, canceled: canceled, groupMarch: true, groupMarchPlan: plan,
 	}
+	if !g.freezeModernHDSystemConfirmation(state) {
+		return false
+	}
 	g.beginActionOverlayClose(func() {
 		g.nativeSystemCursorOverlay = false
 		g.nativeSystemEndTurnConfirm = true
 		g.nativeSystemEndTurnUI = state
 		g.resetNativeClassUIPulse()
 		g.nativeClassUIJob = &nativeClassUIJob{frames: frames}
+		g.bindModernHDSystemConfirmation(fullRewardOpening)
 	})
 	return true
 }
@@ -661,8 +682,10 @@ func (g *Game) finishNativeSystemEndTurnChoice(accepted bool) {
 			g.nativeSystemEndTurnDelay = nativeSystemEndTurnDelayFrames
 		}}
 		g.bindModernHDFullReward(fullRewardResponse)
+		g.bindModernHDSystemConfirmation(fullRewardResponse)
 	}}
 	g.bindModernHDFullReward(fullRewardChoiceClosing)
+	g.bindModernHDSystemConfirmation(fullRewardChoiceClosing)
 }
 
 func (g *Game) stepNativeSystemEndTurn() {
@@ -715,6 +738,7 @@ func (g *Game) stepNativeSystemEndTurn() {
 			kind = fullRewardCancelClosing
 		}
 		g.bindModernHDFullReward(kind)
+		g.bindModernHDSystemConfirmation(kind)
 	}
 }
 
@@ -790,6 +814,9 @@ func (g *Game) drawNativeSystemEndTurn(screen *ebiten.Image) bool {
 	state := g.nativeSystemEndTurnUI
 	if state == nil || g.nativeClassUI == nil || g.nativePreparationUI == nil {
 		return false
+	}
+	if g.drawModernHDSystemConfirmation(screen) {
+		return true
 	}
 	if g.drawModernHDRewardMessage(screen) {
 		return true
