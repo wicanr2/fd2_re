@@ -252943,6 +252943,291 @@
     "final_validation": {
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-gaia-r1/final-validation-r1.json",
       "sha256": "e525e2d9c09588e30ef41741de955d50728ced21512c6f60952df8f85b6ddb9d"
+    },
+    "visual_status_superseded_by": "hd1_tino_hood_and_gaia_bulk_followup_20261029"
+  },
+  "hd1_tino_hood_and_gaia_bulk_followup_20261029": {
+    "date": "2026-10-29",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1/NORMAL-COMPATIBILITY; GAIA-DESIGN-PENDING",
+    "base_commit": "c038ec460246b38a84083ee74416e49bb27d4c04",
+    "branch": "feat/hd1-gaia-heavy-v2",
+    "issues": [
+      286,
+      287
+    ],
+    "user_direction": "人類角色沿亞雷斯、哈諾與成熟哈瓦特既定Q版；蓋亞拒絕輕巧體格，第一加重稿仍不足，要求胸肩與拳腳更厚重。",
+    "art": {
+      "recipe": {
+        "file": "remake/assets/themes/modern/hd1-tino-hood-refresh.recipe.json",
+        "sha256": "15fb0fbc7a26b6681d3270b93c37e7052cf50bd98eb329dca36f670d95b431e2"
+      },
+      "original_portrait": {
+        "file": "remake/assets/portraits/DATO_002_m0.png",
+        "sha256": "2986e17bdccd02e579550af99a893de664e292db8e8f038805108117a8e2dc25"
+      },
+      "native_reference": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-tino-hood-r1/native-reference.json",
+        "sha256": "089489d5452d37bf732f794de5421f2ba60cf63e05c6b24c5947b458c6b589a7"
+      },
+      "base_catalog": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-tino-hood-r1/base-catalog.json",
+        "sha256": "2a0ab8542de442f09605e49413b4d30c620cfedd2e0fb729070b13983a0fabbd"
+      },
+      "candidate_manifest": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-tino-hood-r1/candidate/manifest.json",
+        "sha256": "cbcf92c75cf6659348cd0c1ac0f79f19ced545ede8ec0e8236a6424ec75521c4"
+      },
+      "master": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-tino-hood-r1/tino-hd1-cloth-hood-q-v2-master.png",
+        "sha256": "b8b1d855bdbb3ee4ed24191d389f8ec5014f4c25d79ecccdef4d2ea53c6692b1"
+      },
+      "compiler": {
+        "file": "tools/refresh_fd2_hd1_map_sprites.py",
+        "sha256": "2c8870ad0d470a51877b70ea8a058493fc35fa7ab933416889ad0b90f070cf1d"
+      },
+      "scope": "只替換第2組24父與144圖源兩項；保留灰綠布兜帽、短褐髮／頭帶與同一右手直劍。逐字生成與局部修正提示依recipe，未以程式補畫。"
+    },
+    "gpu": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-tino-hood-r1/gpu-r1-capture/receipt.json",
+        "sha256": "7a27d067af2068ab9be1759b09517f9f438b45cef5b531cc2edd7e9e6b68fd4b"
+      },
+      "independent": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-tino-hood-r1/verified-r1.json",
+        "sha256": "22cd251252d652134c7d597005a2f804d4657f17bc49bb41d2d07ee3e6815483"
+      },
+      "cases": 21,
+      "pngs": 18,
+      "core_pixels": 239645,
+      "rejected_mutants": [
+        "missing",
+        "duplicate",
+        "catalog",
+        "source-code",
+        "false-save",
+        "wrong-hud",
+        "wrong-tolerance",
+        "missing-f2",
+        "actual-black-png"
+      ],
+      "scope": "四向中性與正面三拍、兩介面21完整Game.Draw；第1與3組是不變畫風控制，不宣稱十二姿態全部完整GPU。"
+    },
+    "normal": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-tino-hood-r1/normal-r1-capture/receipt.json",
+        "sha256": "e90329903e245d48cafd4a56e50e78c95ab615197134f91f21e089b42c56fa6b"
+      },
+      "scope": "unchanged chapter1 source; new groups1/2/3 actual pixels verified only by controlled GPU, not natural membership",
+      "source_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "binary_sha256": "5e0c0584aa2aa6798d53b2e5924b9dd154ec7034f3bc10a981f74b5f4abc6880",
+      "state_injection": false
+    },
+    "registration": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-tino-hood-r1/registration-r1.json",
+      "sha256": "b033c9fe6d1004eb5d9b0765aeb3d17c35f0931cf9412fd205dd56290b4617cb"
+    },
+    "source_regression": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-tino-hood-r1/source-r1.log",
+        "sha256": "0dd189b43b5e1cf272672762c9d2fbb6f3ea32b5eb9e6f22dfd9c16a307e9b74"
+      },
+      "tests": 3,
+      "source_rejections": 8,
+      "exact_frame_rebuild": true
+    },
+    "formal_regression": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-tino-hood-r1/regression-r1.log",
+        "sha256": "70184ab16fcbcd243a84c67ff235ca7c2048a83c55f4cf351bce8f32cd91e673"
+      },
+      "passed_top_level": 11,
+      "skipped_special_gpu": 2,
+      "skips_count_as_pass": false,
+      "production_go_changed": false,
+      "source_file_count": 1196,
+      "source_tree_sha256": "6fdd18e232b6700404418b71e361f906e70cd33fa37d604254bcd1b18f1e53e5",
+      "string_inventory_changed": false,
+      "unchanged_string_tests_not_rerun": true
+    },
+    "consumers": {
+      "observed": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-tino-hood-r1/consumers-r1.json",
+        "sha256": "b6aa84c883b82fbad9b930007066755fc934efa58de63ad2efd04e63f7aa3736"
+      },
+      "independent": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-tino-hood-r1/consumers-verified-r1.json",
+        "sha256": "d73d3c69870a40770e71a084c61c7e00d3e476ff0abe2a842f8badaf888f746f"
+      },
+      "cases": 21,
+      "frames": 416,
+      "rejections": 19,
+      "formal_catalog_bound": true
+    },
+    "catalog": {
+      "formal": {
+        "file": "remake/assets/themes/modern/catalog.json",
+        "sha256": "d5c8024164c20910a7f4676b4333a211cfd2935774c40bdf33332676b17133ea"
+      },
+      "assets": 883,
+      "changed": 2,
+      "unchanged": 881,
+      "validation": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-tino-hood-r1/full-catalog-r1.log",
+        "sha256": "bc59919ddc67e8b775c3771268213dea7672763f38c1be9e0f65a4b4e93fcbe8"
+      },
+      "coverage": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-tino-hood-r1/formal-coverage.json",
+        "sha256": "c553f452e789055b7e8c90d759c99d96a371cd751a3933e2ba5672ee417fbfeb"
+      }
+    },
+    "private": {
+      "commit": "13ac6229a322b989730568d9d7ba78d31681e79a",
+      "repo_private_verified": true,
+      "remote_head_verified": true,
+      "preservation": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-tino-hood-r1/private-preservation-r1.json",
+        "sha256": "e19fa99f3cf111dafde268e88e90f06e080c4b8c07994dd99ad3d2c589a55386"
+      },
+      "old_art_files_unchanged": 7366,
+      "new_art_files": 25,
+      "current_allowlist_files": 7123
+    },
+    "review": {
+      "source": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-tino-hood-r1/review-final/receipt.json",
+        "sha256": "52cca808deda88cb9d525b51a173e5c696035932795ac4df45805064b82ec03b"
+      },
+      "followup": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-tino-hood-r1/visual-review-final.json",
+        "sha256": "7c00a95bd64f67632aa74a25918fbcb0e92bb10ac6003df55d27cde8060734d0"
+      },
+      "source_groups": 125,
+      "source_frames": 1455,
+      "source_unchanged_groups": 124,
+      "counts": {
+        "reference-keep": 2,
+        "new-q-review-keep": 4,
+        "redraw-q-proportion": 69,
+        "redraw-native-bulk": 1,
+        "redraw-native-identity": 11,
+        "review-keep-pending-batch": 32,
+        "identity-recheck": 6
+      },
+      "human_style_references": [
+        1,
+        3,
+        4
+      ],
+      "all_redrawn": false,
+      "human_acceptance": false,
+      "scope": "沿前輪125組四向中性／正面三拍初審；其餘124組來源逐SHA保持，這次重看鐵諾十二母稿與四向／實際尺寸、受控遊戲PNG，並依使用者意見重開蓋亞體格。不宣稱全1455幀人工審查。"
+    },
+    "gaia_prototype": {
+      "status": "DESIGN-CANDIDATE-NOT-REGISTERED",
+      "group": 30,
+      "first_heavy_candidate": "REJECTED-NEEDS-THICKER-CHEST-SHOULDERS-FISTS-FEET",
+      "recipe": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-gaia-bulk-r1/bulk-candidate-r2.recipe.json",
+        "sha256": "764710eb785632dc3981b8d90ef61d0189d6602eb4cd60a364804ef0157cb0f2"
+      },
+      "master": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-gaia-bulk-r1/gaia-hd1-heavy-q-v3-master.png",
+        "sha256": "61371d0c0ee7331de59ea82308f0393e82ad43d492a246480cdbc8c3aff1bbbc"
+      },
+      "manifest": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-gaia-bulk-r1/candidate-r2/manifest.json",
+        "sha256": "49bba86574f324acbaf7167ae171994538cce660dc8ce5c8807b7761e7610e4f"
+      },
+      "comparison": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-gaia-bulk-r1/heavy-three-way-prototype-r2.png",
+        "sha256": "f0c81b4153c0a7d5c3b79283e7342e451c2a536042359b0bec0ac39734ed8cd2"
+      },
+      "comparison_receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-gaia-bulk-r1/heavy-three-way-prototype-r2.json",
+        "sha256": "6fe7ab015e76ca2e9fda8c3204e26f4786499653675ff5c82b9b8da6cd373306"
+      },
+      "formal_registered": false,
+      "user_body_confirmation_pending": true,
+      "scope": "四向與144／72／48實際圖源對照。原稿已顯示，未跑新Gaia完整GPU或正常操作；若確認，先在最新正式清冊重編，不沿用舊baseline收據。"
+    },
+    "public_figures": {
+      "comparison": {
+        "file": "docs/figures/hd1-chibi-party-comparison.png",
+        "sha256": "e9229ff6aa97eb4e81c1384e61e2d50ed8d5a05236c7de0a5d4793d788e41387"
+      },
+      "comparison_receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-tino-hood-r1/party-comparison.json",
+        "sha256": "c28c130af96ebd28722dbaf411493f3307497c7da82b372e62283bd8000d1362"
+      },
+      "context": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-tino-hood-r1/party-context.json",
+        "sha256": "5d8fdf0b1f5a319908f5a3265c0ae5e5cfe6755dcdc30f29c236510873a12354"
+      },
+      "game": {
+        "file": "docs/figures/hd1-tino-hood-game.png",
+        "sha256": "37e462220e892ff857a418b92dc558d4a769bbd07179a0a4b492a4fe74a13e52"
+      },
+      "game_source": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-tino-hood-r1/gpu-r1-capture/party-g002-f00-ui-hd.png",
+        "sha256": "37e462220e892ff857a418b92dc558d4a769bbd07179a0a4b492a4fe74a13e52"
+      },
+      "scope": "三人部分素材對照與完整受控Game.Draw原PNG；不是自然出場或全人物完成。"
+    },
+    "diagnostics": {
+      "build-r1": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-tino-hood-r1/build-r1.memory.json",
+        "sha256": "3f7defa003524af5bda6f9f56d6f579cdd101718423bd3918ab8c1b2b43e1f42"
+      },
+      "source-r1": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-tino-hood-r1/source-r1.memory.json",
+        "sha256": "4f0c01b5a54a11a6b5b881a619c43b89f167f5d287f3c7d14528afc922b8ebc8"
+      },
+      "gpu-r1": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-tino-hood-r1/gpu-r1.memory.json",
+        "sha256": "57c9a5473da6fc382027522165ac141d32235137aa4d0ddcab1bc59def1e8f7c"
+      },
+      "normal-r1": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-tino-hood-r1/normal-r1.memory.json",
+        "sha256": "ebb7e9dd9c77c400cee7d8d4bad98134530f61f73c4922318d4c9d874aba9ac9"
+      },
+      "coverage-r1": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-tino-hood-r1/coverage-r1.memory.json",
+        "sha256": "9675ef180030c616f478c2203925483e24a09b6eeb826dfe981eb70eb96788cd"
+      },
+      "regression-r1": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-tino-hood-r1/regression-r1.memory.json",
+        "sha256": "1d7b310e0b665ac420742276b47ceed1643057cf064af827b9ce6dc9dc01dffa"
+      },
+      "full-catalog-r1": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-tino-hood-r1/full-catalog-r1.memory.json",
+        "sha256": "091ab11af85c544093cf048407912de36776dc11faadf3cbe2126382ff07cfb4"
+      }
+    },
+    "commands": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-tino-hood-r1/commands-r1.json",
+      "sha256": "ecfd61a8c272e0c283f4e0b51a0f6dfd11eb56977c003778b729f23ed975a519"
+    },
+    "reproduce": [
+      "所有命令在commands-r1.json。沿維護中的Docker、非root、有界記憶體、原版唯讀與fresh輸出。",
+      "重生這份歷史候選須以私人庫284d6aeb3fc4b593b750ceea3ce88c3d0e1e2b6a的唯讀工作樹作基底，配本批base-catalog與正式recipe；現行私庫已換Tino，不能把現行catalog當舊baseline。來源測試以保留舊檔與baseline別名視圖獨立逐byte重建。",
+      "編製後runtime-view，受控TestModernHDChibiPartyGPU21案例與普通chibi-refresh相容，再獨立verify_fd2_hd1_chibi_party.py --recipe明示單組 --self-test；通過後才register及完整私庫allowlist同步。",
+      "正式consumer exporter與獨立核對沿正式catalog；不能混候選private_root指紋。review工具來源技術核對不等於全造型通過。"
+    ],
+    "recording_created": false,
+    "new_release": false,
+    "remaining": [
+      "Gaia加重第二稿待使用者確認體格及新接線驗證。",
+      "#287剩餘11組身份／裝備偏移及6組補身份證據。",
+      "#286其他比例及轉職逐批重繪；完成全人物後才重生完整README原版／HD1總覽。",
+      "#282／283／284及集中造型、逐章與平台人工仍待。"
+    ],
+    "cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-tino-hood-r1/cleanup-r1.json",
+      "sha256": "014ff58605cdb0428ea5126cfd310cb175f4d4a3563308c1e2c10f35156f519d"
+    },
+    "final_integrity": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-tino-hood-r1/final-validation-r1.json",
+      "sha256": "f8bfc16f21a7f6b87292b06b0beb70c0b6be02e53caef2c9045d6f59f2bb583d"
     }
   }
 }

@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_hd1_chibi_map_refresh",
+  "base_catalog_sha256": "2a0ab8542de442f09605e49413b4d30c620cfedd2e0fb729070b13983a0fabbd",
+  "approved_preview": "docs/figures/hd1-ares-q-design.png",
+  "approved_preview_sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e",
+  "approval": "依已核准的大頭短身Q版與其餘人物依同風格review授權，修正原版DATO_002與地圖十二姿勢可證明的灰綠布兜帽；不新增武器或改動持劍手。",
+  "native_bank_sha256": "7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44",
+  "palette_sha256": "404db1ca72ffc19fa7404fbc59bde98cdf239f63fe3375ec248a8142073a28bf",
+  "groups": [
+    {
+      "group": 2,
+      "master_file": "tino-hd1-cloth-hood-q-v2-master.png",
+      "master_sha256": "b8b1d855bdbb3ee4ed24191d389f8ec5014f4c25d79ecccdef4d2ea53c6692b1",
+      "output_prefix": "fdicon-002-hd1-q-v2"
+    }
+  ],
+  "policy": "原稿不修改；保留原版灰綠布兜帽、褐色短髮與頭帶、深藍衣服、同一右手直劍。左向劍由身體遮蔽，前向位於畫面左、背向位於畫面右、右向位於臉的左側。沿既有24與144圖源、腳底與相位契約，不改玩法。",
+  "image_generation": {
+    "tool": "image_gen.imagegen",
+    "mode": "builtin",
+    "transparent_background": true,
+    "jobs": [
+      {
+        "source": "exec-c9020708-31f6-4945-9067-10c57b8dfded.png",
+        "prompt": "Use case: identity-preserve. Asset type: corrected HD1 map-sprite master for Tino (鐵諾), native group002, Flame Dragon Knights 2. Image1 is the ORIGINAL twelve 24px map poses enlarged with the game's actual palette: authority for colors, CLOTH HOOD, directions, sword hand and gait. Image2 is Tino's ORIGINAL portrait: adult man wearing a pale muted gray-green cloth HOOD, dark brown short hair/forehead band visible only within the opening, narrow stern adult face and dark-blue clothing. The previous HD sprite wrongly made the hood into long silver hair; correct that identity error. Image3 is the APPROVED Ares Q master: use its clean 2D painted/cel style, very big head/face and very short body, NOT its cap, uniform or spear.\nCreate a high-quality genuinely TRANSPARENT master sheet with exactly 3 equal columns and 4 equal rows, twelve separate COMPLETE full figures, generous padding and equal scale/baseline. Tino has a visibly FABRIC gray-green hood: broad cloth rim framing the face, sparse broad fabric folds, continuous rounded cloth drape over the back of his head to the upper back/waist. NO hair strands on the gray area, no silver/white long hair, no metal helmet, no exposed long hair down the back. Only the short dark-brown forehead hair and dark headband/lining seen in the portrait may show inside the face opening. Adult stern brows, large clear serious brown eyes, age-appropriate compact angular jaw; do not turn him into a baby. Preserve original dark navy/blue-gray simple tunic, trousers and boots, no added gilding or ornate armor. One plain straight steel SWORD with dark hilt in the original anatomical hand, blade upright as original; never add a shield, second sword, spear or extra arm.\nProportions: same user-approved super-deformed big-head, extremely short-body style as Ares and Hano. Hooded head AND clear adult face dominate about two-thirds of figure height, tiny compact torso, short arms, stubby legs and boots. Flat clean color shapes, strong dark outlines, restrained smooth cel shadows, readable at144/72/48. Keep cloth distinguishable from hair and armor.\nRow1 FRONT toward viewer, row2 LEFT PROFILE looking screen left, row3 BACK directly away, row4 RIGHT PROFILE looking screen right. Within EVERY row, column1 is planted neutral stance, column2 small left-foot-forward step and opposite arm, column3 small right-foot-forward step/opposite arm. Directions never change within a row. Sword stays in the same anatomical hand; it may be naturally occluded by the hood on the far-side profile as in the original, no duplicate or floating weapon. Back view shows solid cloth hood, never a face, and sword on the correct side. Exactly two arms and two legs, all fingers/feet/weapon inside each cell with no clipping or overlap. No exaggerated motion, no floor, cast shadow, glow, text, labels, grid, border, scenery, checkerboard or background. True transparent alpha.",
+        "status": "REJECTED",
+        "reason": "左向三姿勢的直劍應被身體遮蔽。"
+      },
+      {
+        "source": "exec-f6d24e2a-0f96-4727-b0cf-b4c7800e7c74.png",
+        "prompt": "Use case: precise-object-edit. Preserve this Tino twelve-pose Q sprite sheet's face, gray-green CLOTH hood, dark brown forehead band, dark blue clothes, proportions, clean art style, layout, all other poses and true transparency. Correct ONLY the second row (the three LEFT-FACING PROFILE figures). In the ORIGINAL game this side's sword arm is on the FAR side and the upright sword is completely OCCLUDED by the large hood and body. Therefore all THREE second-row figures must have NO visible sword blade, hilt or crossguard in front of their face. Hide the far-side right sword hand behind the hood/body; retain just the naturally visible EMPTY left hand low beside the body, with no extra arm. Keep the left-facing cloth hood profile and body/foot poses otherwise identical. Do not mirror the sword hand across the entire sheet. The front row still holds ONE upright sword at viewer-left, back row still shows ONE sword at viewer-right, and right-facing bottom row keeps its visible ONE upright sword. First column neutral planted pose, next two small walking poses. Keep exactly twelve complete separated figures in the same3x4grid with generous padding, no crop, no text, background, grid, floor or shadows.",
+        "status": "SELECTED",
+        "master_sha256": "b8b1d855bdbb3ee4ed24191d389f8ec5014f4c25d79ecccdef4d2ea53c6692b1",
+        "size": [
+          1086,
+          1448
+        ]
+      }
+    ]
+  },
+  "original_reference": {
+    "portrait": "remake/assets/portraits/DATO_002_m0.png",
+    "portrait_sha256": "2986e17bdccd02e579550af99a893de664e292db8e8f038805108117a8e2dc25",
+    "native_reference_sha256": "089489d5452d37bf732f794de5421f2ba60cf63e05c6b24c5947b458c6b589a7",
+    "board_sha256": "eb85e183982bde22f36e261a0797a8be3a20dbbb66d2ad69bba72c9f9280c236",
+    "fact": "灰綠區域為布兜帽，並非銀色長髮；原版左向姿勢不露出直劍。"
+  }
+}

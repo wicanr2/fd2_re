@@ -12,7 +12,7 @@ from validate_modern_theme_catalog import VISIBLE_FDICON_GROUPS
 def sha(p):
     return hashlib.sha256(p.read_bytes()).hexdigest()
 
-def build(catalog, modern, original, out):
+def build(catalog, modern, original, out, reference_only=False):
     if not Path('/.dockerenv').exists() or out.exists() or not out.parent.is_dir():
         raise ValueError('fresh container output required')
     data=json.loads(catalog.read_text())
@@ -52,11 +52,14 @@ def build(catalog, modern, original, out):
     font=ImageFont.load_default(size=17)
     small=ImageFont.load_default(size=13)
     pages=[]
-    for start in range(0,len(records),10):
-        rows=records[start:start+10]
+    reference_groups=[1,3,4]
+    display=[row for row in records if row['group'] in reference_groups] if reference_only else records
+    for start in range(0,len(display),10):
+        rows=display[start:start+10]
         image=Image.new('RGB',(1376,68+250*len(rows)),'#101b2a')
         draw=ImageDraw.Draw(image)
-        draw.text((20,12),'HD1 SOURCE REVIEW / ORIGINAL + ACTUAL 144px / NOT A COMPLETION GALLERY',font=font,fill='#ffe09c')
+        title='HD1 HUMAN STYLE REFERENCES / HANO + MATURE HARVAT + ARES' if reference_only else 'HD1 SOURCE REVIEW / ORIGINAL + ACTUAL 144px / NOT A COMPLETION GALLERY'
+        draw.text((20,12),title,font=font,fill='#ffe09c')
         draw.text((20,38),'Six sampled poses per walking group; all admitted frame files checked. Right: 144 / 72 / 48.',font=small,fill='#b1c5de')
         for i,row in enumerate(rows):
             y=68+i*250;group=row['group'];asset=assets[group]
@@ -89,10 +92,11 @@ def build(catalog, modern, original, out):
     links=''.join(f'<li><a href="#{i}">Groups {p["groups"][0]:03d}–{p["groups"][-1]:03d}</a></li>' for i,p in enumerate(pages))
     pictures=''.join(f'<section id="{i}"><h2>{html.escape(p["file"])}</h2><a href="{p["file"]}"><img src="{p["file"]}" alt="Source review page {i+1}"></a></section>' for i,p in enumerate(pages))
     (out/'index.html').write_text('<!doctype html><meta charset="utf-8"><title>HD1 人物圖源審查</title><style>body{background:#101b2a;color:#e8edf5;font:18px sans-serif;margin:24px}img{max-width:100%;height:auto}li{display:inline-block;margin:8px}a{color:#ffe09c}</style><h1>HD1 人物圖源審查</h1><p>原版與正式144圖源。這是檢查用分頁，尚非全人物重繪完成總覽。點圖可檢視原尺寸；行走組取四向中性與正面三拍，靜態組只顯示原有三拍。</p><ul>'+links+'</ul>'+pictures)
-    report=dict(kind='fd2_hd1_map_sprite_review_sources',status='PASS-REVIEW-SOURCE-BOARDS',
+    report=dict(kind='fd2_hd1_style_reference_board' if reference_only else 'fd2_hd1_map_sprite_review_sources',status='PASS-STYLE-REFERENCE-BOARDS' if reference_only else 'PASS-REVIEW-SOURCE-BOARDS',
                 catalog_sha256=sha(catalog),tool_sha256=sha(Path(__file__)),palette_sha256=sha(palette_path),bank_sha256=sha(bank_path),
                 reference_helper_sha256=sha(Path(__file__).with_name('build_modern_map_sprite_overview.py')),
                 groups=records,pages=pages,groups_checked=125,frames_checked=1455,
+                reference_groups=reference_groups,
                 visual_review_complete=False,all_redrawn=False,original_parity_verified=False,
                 scope='全圖源SHA／尺寸／alpha核對；分頁取四向中性及正面三拍，並列原版與144／72／48。逐組造型結論另記錄，不把來源通過當成造型通過。')
     (out/'receipt.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
@@ -102,4 +106,5 @@ if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__)
     for name in ('catalog','modern','original','out'):
         p.add_argument('--'+name,type=Path,required=True)
-    a=p.parse_args();build(a.catalog,a.modern,a.original,a.out)
+    p.add_argument('--reference-only',action='store_true',help='只展示使用者指定的人形畫風基準1／3／4；全1455來源仍核對')
+    a=p.parse_args();build(a.catalog,a.modern,a.original,a.out,a.reference_only)
