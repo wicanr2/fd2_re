@@ -4687,6 +4687,14 @@
       "rule": "素材登錄後才重生TestModernHDBattleConsumerInventory的目前清冊收據；該匯出器固定綁remake/assets/themes/modern/catalog.json，FD2_TEST_MODERN_EFFECT_CATALOG不會更換其指紋。以tools/verify_fd2_battle_hd_consumers.py獨立核對，不手改收據SHA。",
       "why": "第一次將登錄前的正式清冊收據拿去核候選，SHA拒收正確；登錄後只重跑來源匯出及獨立核對通過，未重跑已通過GPU。",
       "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#hd1_painted_ground_followup_20261029"
+    },
+    {
+      "id": "chibi-original-portrait-before-identity-pass",
+      "date": "2026-10-29",
+      "area": "HD造型",
+      "rule": "人物重繪先核原版正確色盤的四向及對應頭像，再核144／72／48；兜帽／頭髮、人形／機械、鬍鬚年齡、持物與盾形逐項確認。載入與GPU通過只證明圖源接線，不能提升造型忠實。審查入口為tools/review_fd2_hd1_map_sprites.py及#287。",
+      "why": "全人物初審發現Tino兜帽誤銀髮、部分轉職人形誤機械化及Harvat無鬚少年；舊技術收據通過未能檢查原版身份。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#hd1_gaia_chibi_review_followup_20261029"
     }
   ]
 }

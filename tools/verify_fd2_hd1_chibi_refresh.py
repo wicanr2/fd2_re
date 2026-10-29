@@ -38,7 +38,11 @@ def core(image,sprite,box):
 
 def verify_gpu(d,folder,candidate):
     catalog=candidate/'catalog.json';manifest=candidate/'manifest.json';m=read(manifest)
-    recipe=ROOT/'remake/assets/themes/modern/hd1-ares-chibi-refresh.recipe.json';r=read(recipe)
+    require(len(m['groups'])==1,'one complete character required')
+    group=m['groups'][0]['group'];require(group in (4,30),'unsupported character')
+    prefix='ares' if group==4 else 'gaia'
+    recipe=ROOT/f'remake/assets/themes/modern/hd1-{prefix}-chibi-refresh.recipe.json';r=read(recipe)
+    require([v['group'] for v in r['groups']]==[group] and d.get('subject_group',4)==group,'recipe/GPU character mismatch')
     require(m['compiler_sha256']==sha(ROOT/'tools/refresh_fd2_hd1_map_sprites.py') and m['recipe_sha256']==sha(recipe),'compiler or recipe changed')
     require(sha(ROOT/r['approved_preview'])==r['approved_preview_sha256'],'approved design changed')
     require(m['groups'][0]['master_sha256']==r['groups'][0]['master_sha256'] and sha(candidate/m['groups'][0]['master_file'])==r['groups'][0]['master_sha256'],'approved master changed')
@@ -46,14 +50,13 @@ def verify_gpu(d,folder,candidate):
     require(d.get('catalog_sha256')==sha(catalog) and d.get('manifest_sha256')==sha(manifest),'candidate provenance')
     digest,count=tree();require(d.get('source_tree_sha256')==digest and d.get('source_file_count')==count,'current Go source')
     require(d.get('native_state_unchanged') is True and d.get('save_bytes_unchanged') is True,'state or save check missing')
-    expected={f'ares-f{f:02d}-ui-{ui}' for f in range(12) for ui in ('original','hd')}
+    expected={f'{prefix}-f{f:02d}-ui-{ui}' for f in range(12) for ui in ('original','hd')}
     cases=d.get('cases',[]);sources=d.get('sources',[])
     require(Counter(r['case'] for r in cases)==Counter(expected) and Counter(r['case'] for r in sources)==Counter(expected),'24-case matrix missing or duplicated')
     require({r['source_frame'] for r in cases if r.get('f2')}=={0,3,6,9},'F2 direction anchors missing')
     lookup={r['case']:r for r in sources};assets=m['groups'][0]['hd'];pixels=0;pngs=0
-    require(len(m['groups'])==1 and m['groups'][0]['group']==4,'GPU only verifies Ares group4')
     for row in cases:
-        s=lookup[row['case']];f=s['frame'];require(s['group']==4 and s['hud_group']==4 and s['hud_frame']==f%3 and s['save_bytes']>0,'map/HUD source mismatch')
+        s=lookup[row['case']];f=s['frame'];require(s['group']==group and s['hud_group']==group and s['hud_frame']==f%3 and s['save_bytes']>0,'map/HUD source mismatch')
         require(row.get('source_frame')==f and row.get('game_draw') is True and row.get('rgba_tolerance')==2,'not complete Game.Draw at original tolerance')
         if s['interface']=='hd':
             name=row.get('file','');require(name==row['case']+'.png' and sha(folder/name)==row.get('sha256'),'GPU PNG missing or changed')
@@ -68,6 +71,9 @@ def verify_gpu(d,folder,candidate):
     return dict(status='PASS-CHIBI-GPU-INDEPENDENT',cases=24,pngs=pngs,near_opaque_head_pixels=pixels,pixel_policy='alpha>=253；逐通道SrcOver背景上下界含一次整數捨入；取人物前96列避開原生HP覆蓋。完整GPU容差2另行保持。',source_tree_sha256=digest,source_file_count=count)
 
 def verify_normal(d,folder,candidate,binary):
+    group=read(candidate/'manifest.json')['groups'][0]['group']
+    if group==30:return verify_gaia_normal(d,folder,candidate,binary)
+    require(group==4,'unsupported normal character')
     require(d.get('status')=='PASS' and d.get('schema')=='fd2-hd1-chibi-normal-gui-v1','normal status')
     require(d.get('source_sha256')=='089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2','normal source')
     require(d.get('catalog_sha256')==sha(candidate/'catalog.json') and d.get('binary_sha256')==sha(binary),'normal candidate or binary')
@@ -92,12 +98,40 @@ def verify_normal(d,folder,candidate,binary):
     require(len(matches)==3,'normal HD source screenshots missing')
     return dict(status='PASS-CHIBI-NORMAL-INDEPENDENT',pngs=len(d['screenshots']),map_and_hud_matches=matches)
 
+def verify_gaia_normal(d,folder,candidate,binary):
+    from verify_fd2_hd1_chibi_party import verify_normal as verify_transaction
+    verify_transaction(d,folder,candidate,binary)
+    require(sha(folder/'user-data/fd2_re/fd2_save.json')==d['saved_sha256'],'actual normal save changed')
+    asset=read(candidate/'manifest.json')['groups'][0]['hd'];matches=[]
+    for name in ('ares-chibi-hd-hd.png','ares-chibi-hd-original.png','ares-chibi-hd-hd-restored.png'):
+        shot=d['screenshots'][name];image=Image.open(folder/name).convert('RGBA')
+        # The GUI audit records every second update; X11 import can capture the
+        # intervening idle phase. Bind direction and position to both audit
+        # endpoints, then admit exactly that pose's three native idle phases.
+        states=(shot['gpu_before'],shot['state'])
+        require(all(not s.get('walking') and s.get('hd_world') for s in states),'normal Gaia is not stationary')
+        observed={(u['frame']//3,tuple(u['rect'])) for state in states for u in state.get('hd_world_units',[]) if u['group']==30}
+        require(len(observed)==1,'normal Gaia direction/position changed')
+        sources={(pose*3+phase,box) for pose,box in observed for phase in range(3)}
+        accepted=[]
+        for frame,box in sorted(sources):
+            require(0<=frame<12,'normal Gaia frame outside source')
+            sprite=Image.open(candidate/asset['files'][frame]).convert('RGBA')
+            checked,matched=core(image,sprite,box)
+            if checked>=600 and matched*100>=checked*98:accepted.append(dict(frame=frame,rect=box,checked=checked,matched=matched))
+        require(bool(accepted),'normal actual Gaia pixels mismatch')
+        matches.append(dict(file=name,sources=accepted))
+    return dict(status='PASS-GAIA-MAP-NORMAL-TRANSACTION',pngs=10,map_matches=matches,phase_policy='same observed stationary pose and rectangle, three native idle phases; audit interval2 is not frame-exact',
+                scope='既有普通首章來源包含Gaia30，正常切換及PNG圖源核對；選取與走行仍沿Ares，Gaia資訊窗由受控GPU十二姿態另驗。不證明自然加入時點。')
+
 def register(formal,candidate,destination):
     c=read(formal);new=read(candidate/'catalog.json');m=read(candidate/'manifest.json')
+    require(len(m['groups'])==1 and m['groups'][0]['group'] in (4,30),'unsupported registration character')
+    group=m['groups'][0]['group']
     require(sha(formal)==m['base_catalog_sha256'],'formal catalog changed during validation')
     require(sha(candidate/'catalog.json')==m['catalog_sha256'],'candidate changed')
     changed=[(a,b) for a,b in zip(c['assets'],new['assets']) if a!=b]
-    require(len(c['assets'])==len(new['assets']) and len(changed)==2 and all(a['source_group']==b['source_group']==4 and a['asset_id']==b['asset_id'] for a,b in changed),'unrelated assets changed')
+    require(len(c['assets'])==len(new['assets']) and len(changed)==2 and all(a['source_group']==b['source_group']==group and a['asset_id']==b['asset_id'] for a,b in changed),'unrelated assets changed')
     require(destination.is_dir() and destination.stat().st_uid==os.getuid() and formal.stat().st_uid==os.getuid(),'owned output required')
     names={m['groups'][0]['master_file']}
     for role in ('parent','hd'):names.update(m['groups'][0][role]['files'])
@@ -111,7 +145,7 @@ def register(formal,candidate,destination):
     with tempfile.NamedTemporaryFile('w',dir=formal.parent,delete=False) as f:
         f.write(json.dumps(new,ensure_ascii=False,indent=2)+'\n');temp=Path(f.name)
     os.chmod(temp,formal.stat().st_mode&0o777);temp.replace(formal)
-    return dict(status='REGISTERED-ARES-CHIBI',catalog_sha256=sha(formal),new_files=len(names))
+    return dict(status='REGISTERED-ARES-CHIBI' if group==4 else 'REGISTERED-GAIA-CHIBI',catalog_sha256=sha(formal),new_files=len(names))
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
@@ -121,7 +155,7 @@ def main():
     require(not a.out.exists(),'fresh report required')
     d=read(a.gpu);result=verify_gpu(d,a.gpu.parent,a.candidate);bad=[]
     if a.self_test:
-        for fault in ('missing','duplicate','catalog','source-code','false-save','wrong-frame','wrong-hud','wrong-tolerance','missing-f2'):
+        for fault in ('missing','duplicate','catalog','source-code','false-save','wrong-frame','wrong-hud','wrong-tolerance','missing-f2','wrong-character'):
             x=deepcopy(d)
             if fault=='missing':x['cases'].pop()
             elif fault=='duplicate':x['cases'][-1]=deepcopy(x['cases'][0])
@@ -131,6 +165,7 @@ def main():
             elif fault=='wrong-frame':x['sources'][0]['frame']=99
             elif fault=='wrong-hud':x['sources'][0]['hud_group']=0
             elif fault=='wrong-tolerance':x['cases'][0]['rgba_tolerance']=3
+            elif fault=='wrong-character':x['subject_group']=4 if d.get('subject_group',4)==30 else 30
             else:
                 for r in x['cases']:r['f2']=False
             try:verify_gpu(x,a.gpu.parent,a.candidate)

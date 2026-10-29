@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 29 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 30 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -204,6 +204,8 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 `hd1-native-chibi-map-sprites-refresh` · 缺陷 · [#286](https://github.com/wicanr2/fd2_re/issues/286) · 仍未完成 · 要人判
 
+2026-10-29目前進度：蓋亞group30已依原版機械身份重繪大頭短身並登錄，十二姿態／資訊窗、四向F2及普通來源切換／保存冷讀已驗。全125組完成四向中性／正面三拍初審，1455來源另核；不是全套重繪完成。初審確認Tino2原版是灰兜帽，現稿銀髮需回修，另有人形誤機械化、Harvat轉職無鬚少年及裝備偏移，優先缺陷由#287追蹤。其餘比例及形態保持本項OPEN；完整README原版／HD1人物總覽等全部修正後才重生。既有技術收據保持原範圍，不能當造型忠實證據。
+
 使用者2026-10-29已核准亞雷斯v3的更大頭、短身Q版，要求後續小人物沿同樣方式處理。索爾0與悠妮9作比例參考，其餘人物、轉職形態與敵方逐組依原版身份、髮色、帽型、服裝、裝備與姿態重繪；不逐張重問已定比例。
 
 亞雷斯group4已在main接入24×24父圖與144×144圖源（提交cd787716），戰場與資訊窗使用同一新版角色。24個受控完整Game.Draw／HUD案例、十二姿態與兩種介面、四向F2往返、單位／RNG／保存保持通過。普通首章LOAD、四組呈現、合法走行與取消、F5及新程序LOAD通過；獨立實際PNG像素核對與來源拒收通過。正式清冊只替換此組兩個既有項目，其他881項保持。
@@ -221,6 +223,18 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 怎樣算做完：['使用者選定亞雷斯新比例，並保留定版原稿、原版來源、逐字提示與SHA；其他角色依相同標準重製，不能只改大圖總覽。', '125個可見圖組及1455幀逐組保留原生方向、步態／靜態相位、轉職身份、裝備特徵、腳底與透明契約；原版、已接受圖源及舊證據可追溯。', '正式清冊、白名單私人保存庫與載入預檢同步，拒收缺組、錯誤來源、方向錯誤、額外肢體／重複武器與裁切；其他圖源保持其已驗範圍。', '戰場人物、劇情地圖與資訊窗人物圖示沿同一美術主題顯示；四組介面／美術、走行／指令環與遮擋、普通操作及保存保持完成必要抽樣，集中逐章／平台人工仍由使用者接手。', '全部HD1人物重繪並登錄後，依同一正式清冊最新map_sprite_hd_set重新產生「原版／HD1」人物總覽，涵蓋人物、轉職及敵方並對齊方向／相位。更新README清晰分組圖及144／72／48像素樣本；不沿舊檔名或放大24像素父圖冒充HD1，不用整張長圖縮圖當作造型通過。', '哈瓦特各形態沿更老成、威嚴、大鬍子的修訂方向，保留原版髮鬚色與裝備，不能只換成少年臉配鬍子。']
 
 證據：`['docs/knowledge-base/61-modern-theme-runtime-spec.md', 'remake/assets/themes/modern/catalog.json', 'docs/figures/modern-map-sprites-overview.png', 'docs/figures/hd1-ares-q-design.png', 'docs/figures/hd1-ares-q-game.png', 'remake/assets/themes/modern/hd1-ares-chibi-refresh.recipe.json', 'docs/figures/hd1-chibi-party-comparison.png', 'remake/assets/themes/modern/hd1-party-chibi-refresh.recipe.json', 'remake/cmd/fd2/modern_hd_chibi_party_test.go', 'docs/data/fd2-modern-hd-battlefield-20261019.json', 'remake/assets/themes/modern/hd1-harvat-mature.recipe.json', 'docs/figures/hd1-harvat-mature-game.png']`
+
+### P1 HD1人物身份偏移：兜帽、人形轉職與裝備須依原版修正
+
+`hd1-map-sprite-native-identity-drift` · 缺陷 · [#287](https://github.com/wicanr2/fd2_re/issues/287) · 仍未完成 · 要人判
+
+全125組初審發現現行素材有身份偏移。鐵諾group2的原版DATO_002及地圖來源均為灰兜帽，新Q稿卻為銀色長髮；48／50／52／54／55／63有原版可見人臉的人形變成機器人；51／56新增頭盔或改持武器；53將紅褐大鬍子改成無鬍少年；76盾形與79新增骷髏面容也需修回原版。
+
+本項是#286全人物修訂的優先缺陷，未修正部分保持OPEN。70／73／77／89／125／133另保留身份與材質複核，不因舊圖說或職業名稱直接下結論。來源與逐組評語依61及HD主收據hd1_gaia_chibi_review_followup_20261029。只處理美術身份，原規則、步態、保存與原版模式保持。
+
+怎樣算做完：['逐組以固定原生三層、FDOTHER0代表色盤與有對應身份的原版頭像／大圖核身份，不沿舊候選或圖說猜職業／種族。', '優先修正2、48、50、51、52、53、54、55、56、63、76、79的已見差異，70、73、77、89、125、133補證後逐項確認或修正；所有結論保留來源及未知等級。', '新稿依已定大頭短身比例接正式地圖、故事與資訊窗，來源、方向／相位、F2／獨立介面與保存完成必要檢查後按白名單保存私人庫，集中人工由使用者接手。']
+
+證據：`['docs/knowledge-base/61-modern-theme-runtime-spec.md', 'docs/data/fd2-modern-hd-battlefield-20261019.json', 'remake/assets/portraits/DATO_002_m0.png']`
 
 ## runtime — 還沒接進正式執行期
 

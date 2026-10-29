@@ -1,5 +1,7 @@
 # 56 — FD2 remake 系統設計規格（SDD，2026-08-09）
 
+蓋亞第30組已接大頭短身機械Q版，地圖與資訊窗共用新圖源。全125組完成第一輪四向／正面三拍造型初審，全部1455來源另做技術核對；部分人形誤機械化、Tino兜帽及轉職裝備偏移列#287回修。這是初審與蓋亞切片，其他人物尚未全數重繪。現況、SHA與限制依[58](58-fd2-exe-re-coverage.md)、[61](61-modern-theme-runtime-spec.md)及主收據`hd1_gaia_chibi_review_followup_20261029`。
+
 戶外草、土、沙、水與石路已依定版風格刷新，原生輪廓、物件與規則保持。完整GPU及普通首章切換、走行取消、保存冷讀通過，README總覽及普通遊玩圖已更新。現況與來源依[58](58-fd2-exe-re-coverage.md)、[61](61-modern-theme-runtime-spec.md)及主收據`hd1_painted_ground_followup_20261029`；洞窟／物件與其餘缺圖續作，人工由使用者接手。
 
 古金雙層對話框已接原生與一般故事、既有提示共用材質，F11介面與F2美術獨立。普通START到父王及首章保存冷讀相容通過；框內內容、原版介面與其他面板保持。現況與目前Go來源依[58](58-fd2-exe-re-coverage.md)、[61](61-modern-theme-runtime-spec.md)及主收據`hd1_gold_dialogue_followup_20261029`；其他HD1工作與使用者集中人工仍待。

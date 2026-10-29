@@ -15,6 +15,12 @@
 - 首批正式切片只替換亞雷斯group4的24父項、144圖源與定版母稿，沿schema1、原有role、frame_count、cycle_policy、layout_policy及asset_id。使用版本化檔名，保留舊檔可回查；其他清冊項目逐byte保持。候選完整驗證、十二姿態／四組控制GPU與普通走行／HUD／保存抽樣通過後才登錄。正式圖庫仍須完整125組，不用局部清冊放寬載入。
 - 來源編製先核目前catalog及母稿SHA、原生圖庫固定指紋、每格PNG／mask／remap與代表色盤，完整輪廓排序後等比例縮為22像素父項及144圖源，沿既有腳底。保留原重複相位等價關係；缺件、錯來源、額外人物、重複／孤兒、錯誤alpha、裁切或相位塌縮均原子拒收。新批可沿同一工具與配方增加圖組，不改正式玩法。
 
+使用者另明示蓋亞也需修改，其他人物全部review。蓋亞第30組沿同一方向，保留原版灰綠硬甲、藍面罩、寬厚機械身形，改大頭短身；不更動已驗頭像與大型戰鬥素材。候選沿[既有人物刷新器](../../tools/refresh_fd2_hd1_map_sprites.py)與[本批配方](../../remake/assets/themes/modern/hd1-gaia-chibi-refresh.recipe.json)，只換第30組兩個圖源集合，舊檔保留。完整125組1455幀另由[分頁審查工具](../../tools/review_fd2_hd1_map_sprites.py)核來源並展示原版／實際144圖源及72／48縮圖；來源核對與造型審查分開記錄，未完成全數重繪前不替換README完整總攬。蓋亞候選須驗十二姿態、實際地圖／資訊窗、獨立控制及保存，才可正式登錄。
+
+蓋亞此批已CONFORMED-SCOPED／RUNTIME-E1：第30組十二姿態與資訊窗、24完整繪圖、四向F2及保存保持通過；173017核心點、十一反例與三項逐byte重編通過。普通首章四組切換、Ares走行取消、保存／新程序LOAD保持，三張PNG的Gaia共22434核心點核對通過；normal audit隔兩次更新，故只要求同一靜止方向與位置的原生三拍，明示不逐幀。21頂層Go含八字串測試、21消費端案例／416來源／19反例及完整清冊通過。正式883項只換兩項，881項保持；新25檔已私人保存，Go指紋及重跑依[58](58-fd2-exe-re-coverage.md)與主收據`hd1_gaia_chibi_review_followup_20261029`。
+
+全125組已完成第一輪造型初審，來源全1455幀核對；視覺範圍為四向中性與正面三拍，靜態組只取原有三拍，未稱1455幀逐幀人工或全套重繪通過。2／48／50／51／52／53／54／55／56／63／76／79有頭部、種族輪廓或裝備偏移，列[#287](https://github.com/wicanr2/fd2_re/issues/287)優先回修；70／73／77／89／125／133另補原版身份證據。Tino2在DATO_002明確為灰兜帽，現有新稿銀髮需修正；當批技術收據保持，不再以其通過推論造型忠實。舊圖說的g48機械化輪廓及g73馬形推定已撤回，圖說本身不能當身份證據。
+
 整套修正與驗收由[#286](https://github.com/wicanr2/fd2_re/issues/286)追蹤。使用者保留集中造型、逐章及平台人工確認；整套仍未完成，亞雷斯首批範圍依下段分層；不因一組通過就提升其餘人物或完整HD1。
 
 亞雷斯首批沿[版本化編製工具](../../tools/refresh_fd2_hd1_map_sprites.py)與[定版配方及提示](../../remake/assets/themes/modern/hd1-ares-chibi-refresh.recipe.json)。[來源回歸](../../tools/test_fd2_hd1_chibi_refresh.py)驗重編、相位及八種原子拒收；[完整繪圖測試](../../remake/cmd/fd2/modern_hd_chibi_refresh_test.go)沿既有GPU對獨立CPU，保留十二姿態與兩種介面的24案例、四向F2往返、單位／保存保持。[普通操作輔助器](../../tools/fd2_hd1_chibi_gui.py)透過[正式GUI驅動](../../tools/verify_fd2_hd_fonts_gui.py)的`--chibi-refresh --battle-status --world --battle-node battle_ch01`接普通首章來源，核走行取消、四組控制及保存新程序LOAD。[獨立核對與登錄器](../../tools/verify_fd2_hd1_chibi_refresh.py)再核來源指紋、完整矩陣、PNG本體與地圖／HUD人物像素。定版原圖原樣保存於[比例對照](../figures/hd1-ares-q-design.png)，不把它改稱遊戲擷取。

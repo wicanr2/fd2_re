@@ -39,8 +39,22 @@ func TestModernHDChibiRefreshGPU(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	var selection struct {
+		Groups []struct{ Group int }
+	}
+	if err = json.Unmarshal(manifest, &selection); err != nil || len(selection.Groups) != 1 {
+		t.Fatal("one explicit character required", err)
+	}
+	subjectGroup := selection.Groups[0].Group
+	if subjectGroup != 4 && subjectGroup != 30 {
+		t.Fatal("unverified first-chapter character", subjectGroup)
+	}
+	prefix := "ares"
+	if subjectGroup == 30 {
+		prefix = "gaia"
+	}
 	set := modifierHDTestTheme(t)
-	if len(set.mapSpritesHD) != 125 || len(set.mapSpritesHD[4]) != 12 {
+	if len(set.mapSpritesHD) != 125 || len(set.mapSpritesHD[subjectGroup]) != 12 {
 		t.Fatal("incomplete candidate")
 	}
 	p := &sharedGroundGPUProbe{set: set, out: out}
@@ -60,13 +74,13 @@ func TestModernHDChibiRefreshGPU(t *testing.T) {
 			}
 			var ares *battle.Unit
 			for _, u := range g.st.Units {
-				if u != nil && u.HasNativeIdentity && u.NativeIdentity == 4 && u.Camp == 0 {
+				if u != nil && u.HasNativeIdentity && u.NativeIdentity == subjectGroup && u.Camp == 0 {
 					ares = u
 					break
 				}
 			}
 			if ares == nil || !ares.HasNativeMapPresentation {
-				t.Fatal("Ares provenance missing")
+				t.Fatal("selected character provenance missing", subjectGroup)
 			}
 			// Controlled presentation sample only. No combat or player-path claim.
 			ares.NativeMapPresentation.Pose = byte(frame / 3)
@@ -95,12 +109,12 @@ func TestModernHDChibiRefreshGPU(t *testing.T) {
 			found := false
 			var rect any
 			for _, u := range g.modernHDMapFrame.Units {
-				if u.Group == 4 && u.Frame == frame {
+				if u.Group == subjectGroup && u.Frame == frame {
 					found, rect = true, u.Rect
 				}
 			}
 			hud := g.modernHDMapFrame.HUDUnit
-			if !found || hud == nil || hud.Unit.Group != 4 || hud.Unit.Frame != frame%3 {
+			if !found || hud == nil || hud.Unit.Group != subjectGroup || hud.Unit.Frame != frame%3 {
 				t.Fatalf("map/HUD source mismatch: %d %+v", frame, hud)
 			}
 			if err = g.saveGameToSlot(0); err != nil {
@@ -113,9 +127,9 @@ func TestModernHDChibiRefreshGPU(t *testing.T) {
 			state, _ := json.Marshal(g.st.Units)
 			g.msg = ""
 			games, units, saves, seeds = append(games, g), append(units, state), append(saves, saved), append(seeds, g.nativeRNGState)
-			name := fmt.Sprintf("ares-f%02d-ui-%s", frame, mode)
+			name := fmt.Sprintf("%s-f%02d-ui-%s", prefix, frame, mode)
 			p.cases = append(p.cases, sharedGroundGPUCase{g: g, name: name, mapID: 0, source: frame, keepPNG: mode == playerInterfaceHD, skipF2: mode != playerInterfaceHD || frame%3 != 0})
-			observed = append(observed, map[string]any{"case": name, "group": 4, "frame": frame, "interface": mode, "map_rect": rect, "hud_group": hud.Unit.Group, "hud_frame": hud.Unit.Frame, "hud_rect": hud.Unit.Rect, "save_bytes": len(saved)})
+			observed = append(observed, map[string]any{"case": name, "group": subjectGroup, "frame": frame, "interface": mode, "map_rect": rect, "hud_group": hud.Unit.Group, "hud_frame": hud.Unit.Frame, "hud_rect": hud.Unit.Rect, "save_bytes": len(saved)})
 		}
 	}
 	ebiten.SetWindowSize(640, 400)
@@ -140,7 +154,7 @@ func TestModernHDChibiRefreshGPU(t *testing.T) {
 		}
 	}
 	code, count := hdConsumerSourceTree(t)
-	report := map[string]any{"status": "PASS-HD1-CHIBI-REFRESH-GPU", "catalog_sha256": fmt.Sprintf("%x", sha256.Sum256(catalog)), "manifest_sha256": fmt.Sprintf("%x", sha256.Sum256(manifest)), "source_tree_sha256": code, "source_file_count": count, "cases": p.rows, "sources": observed, "native_state_unchanged": true, "save_bytes_unchanged": true, "scope": "controlled Ares four directions/three cycles with two interfaces; 24 full Game.Draw worlds, HUD and programmatic F2; not normal player or original dynamic parity"}
+	report := map[string]any{"status": "PASS-HD1-CHIBI-REFRESH-GPU", "subject_group": subjectGroup, "catalog_sha256": fmt.Sprintf("%x", sha256.Sum256(catalog)), "manifest_sha256": fmt.Sprintf("%x", sha256.Sum256(manifest)), "source_tree_sha256": code, "source_file_count": count, "cases": p.rows, "sources": observed, "native_state_unchanged": true, "save_bytes_unchanged": true, "scope": "controlled selected first-chapter character, four directions/three cycles with two interfaces; 24 full Game.Draw worlds, HUD and programmatic F2; not normal player or original dynamic parity"}
 	raw, _ := json.MarshalIndent(report, "", "  ")
 	if err = os.WriteFile(filepath.Join(out, "receipt.json"), append(raw, '\n'), 0644); err != nil {
 		t.Fatal(err)

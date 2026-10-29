@@ -7,9 +7,9 @@
   "current_state": {
     "f2_battle_input": "CONFORMED-SCOPED：全域F2不再觸發戰場檢視，Home保持；正常GUI與保存驗證通過。",
     "native_viewport": "CONFORMED-SCOPED：穩定1920世界沿原生(4,4)、312×192窗格；死亡事件前25拍依既有producer從VGA0,0開始，最後steady回4,4。不同caller分列，不新增DOS位址parity。",
-    "hd_sprite_data": "DATA-READY：完整125組1455張HD及31組372張新增24父項已登錄；舊1083張父項及HD bytes保持。",
+    "hd_sprite_data": "125組1455幀來源可載入；Gaia30及Ares4／Hano1／Harvat3新比例已接，Thor0／Yuni9為參考。Tino2灰兜帽需回修，其他形態依125組初審與#286／287續作，不宣稱全套重繪完成。",
     "hd_world_renderer": "CONFORMED-SCOPED：144人物已接Game.Draw；首章34張正常GPU、4張實際走行、兩次物理攻擊及保存／新程序LOAD通過。",
-    "private_assets": "本批新稿已按正式白名單同步指定私人庫，舊實檔保持；來源及驗證依hd1_painted_ground_followup_20261029。",
+    "private_assets": "Gaia新版母稿及24成品已按白名單保存私人遠端，舊實檔保持；來源依本批主收據。",
     "quickload_battle_owner": "CONFORMED-SCOPED：成功JSON LOAD丟棄舊經驗owner與移動計畫；拒收保留。",
     "timed_dialogue": "CONFORMED-SCOPED-RUNTIME-E1：計時FFEC開收框保留HD世界，EXP99普通鍵盤／F2與保存冷讀通過；其他caller未驗。",
     "hd_terrain": "戶外五底材已依使用者同意方向刷新，沿原生輪廓與原集合接線；目前來源、範圍及缺口依hd1_painted_ground_followup_20261029及fd2-hd1-terrain-coverage.json。洞窟／物件與其餘缺圖保持未完成。",
@@ -20,7 +20,7 @@
     "hd_event_death": "共用事件、普通行動與狀態致死已接HD；三種26拍／F2保持。章23事件及普通擊殺、首章明示低HP／中毒來源的正常END狀態死亡、途中F2、返回及章界保存冷讀均通過。來源依status_death_normal_gui_followup_20261027；不證明正常取得狀態或整章E2。",
     "theme_toolbar": "CONFORMED-SCOPED／RUNTIME-E1：單列浮出工具列包含獨立介面／美術、四語、字級、1～4倍速、全螢幕及雙組海報／關閉、漸層、淡入與F10；必要技術檢查依hd1_posters_followup_20261028。",
     "hd_facility_scene": "CONFORMED-SCOPED-RUNTIME-E1：三種城鎮與三種商店靜態HD場景／店員，以及既有隊伍HD頭像接入裝備面板；114個GPU案例及兩包載入通過，集中普通／人工仍待。",
-    "assets": "現行883項清冊、68項版本化刷新與815項逐欄保持依hd1_painted_ground_followup_20261029；規則及保存格式未變。",
+    "assets": "現行883項、Gaia只換兩項、881項保持，來源與私人保存依hd1_gaia_chibi_review_followup_20261029。",
     "hd_battle_background": "CONFORMED-SCOPED／RUNTIME-E1：森林小屋／內部／海岸，以及BG0..2過渡已接共用／分離物理與24／29的已驗caller；原生位移、遮罩與節拍保持。其他來源／caller仍待，依transition_backgrounds_followup_20261024。",
     "hd_battle_pedestal": "CONFORMED-SCOPED／RUNTIME-E1：已登錄草地、森林裸土及海岸沙地TAI接共用物理的靜態／移位進場、攻防／restore／淡出。原框、層序與節拍保持，其他來源及caller仍待，依forest_coast_surface_followup_20261024。",
     "hd_heal_map": "CONFORMED-SCOPED／RUNTIME-E1：13～16完整Game.Draw、F2及一次交易／續行保持；既有章23滿血來源的正常選人、取消、施放與章界保存冷讀已由heal_normal_gui_followup_20261026補驗。正回復量、人工及平台仍依各自證據，不重開已驗滿血演出。",
@@ -52984,7 +52984,7 @@
       "sha256": "2cf0835fefcb321ed5f191cbed82c8831f5536908b103d707489cec0c4af2971"
     }
   },
-  "runtime_source_scope": "頂層runtime_source及source_commit保留歷史索爾來源；現行唯一表在58，目前1196份Go及正式清冊依hd1_painted_ground_followup_20261029，不以歷史binary或舊指紋當最新程式。",
+  "runtime_source_scope": "頂層runtime_source與source_commit保留歷史來源；現行唯一表在58。目前1196份Go、正式清冊與分層範圍依hd1_gaia_chibi_review_followup_20261029。",
   "shan14_battle_followup_20261021": {
     "status": "CONFORMED-SCOPED",
     "base_commit": "2400e21ce463822d52872df69bc11fc523bf35d5",
@@ -98481,7 +98481,7 @@
     },
     "private_remote_verification": "Independent private repository commit pushed; actual git ls-remote refs/heads/main re-read equals local HEAD. Private commit identity is not published."
   },
-  "latest_hd_batch": "hd1_painted_ground_followup_20261029",
+  "latest_hd_batch": "hd1_gaia_chibi_review_followup_20261029",
   "monks28_31_mage29_followup_20261022": {
     "status": "CONFORMED-SCOPED-RUNTIME-E1",
     "date": "2026-10-22",
@@ -248762,7 +248762,8 @@
     "final_integrity": {
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-party-r1/final-validation.json",
       "sha256": "f75c94402acace8f4e0e3d6c41bd2b46cd0644fadb31615ca6c7807df453d531"
-    }
+    },
+    "art_review_correction": "全人物初審核DATO_002確認Tino是灰兜帽；當批新稿畫成銀髮，列#287回修。既有來源／載入／GPU及交易收據保持原範圍，不再據以稱頭部造型忠實。"
   },
   "hd1_harvat_mature_followup_20261029": {
     "date": "2026-10-29",
@@ -250665,6 +250666,2283 @@
     "final_validation": {
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-painted-ground-r1/final-validation-r1.json",
       "sha256": "1e329e51ad13103cd1db620e864c6b4af8778b15b9f50c5a9adff6d0f0da8d76"
+    },
+    "current_source_superseded_by": "hd1_gaia_chibi_review_followup_20261029；戶外地形RGB與原生來源保持。"
+  },
+  "hd1_gaia_chibi_review_followup_20261029": {
+    "date": "2026-10-29",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1/NORMAL-GUI-SAMPLE/AGENT-INITIAL-REVIEW",
+    "base_commit": "e47991f1237001088a393f1e80343a3ed071d742",
+    "working_branch": "feat/hd1-gaia-chibi-review",
+    "issues": [
+      286,
+      287
+    ],
+    "milestone": 1,
+    "user_decision": "蓋亞小人物也需修改，其他人物全數review；全部重繪完成後才更新README原版／HD1完整總覽。沿既定大頭短身，特殊機械與靜態圖維持原結構，不再逐張重問同一比例。",
+    "scope": "只替換Gaia30的24父項與144圖源、保留舊檔。灰綠硬甲、藍面罩、厚肩拳腳改大頭短身；頭像、大型戰鬥、正式Go、規則、保存與時鐘未改。全125組初審分開記錄，不宣稱全部重繪完成。",
+    "art": {
+      "recipe": {
+        "file": "remake/assets/themes/modern/hd1-gaia-chibi-refresh.recipe.json",
+        "sha256": "a05d1bc9fa4e32220e1343d0fe1a6dd8f1d991f0c2a2b8fd9e635b7e1971e8c3"
+      },
+      "compiler": {
+        "file": "tools/refresh_fd2_hd1_map_sprites.py",
+        "sha256": "2c8870ad0d470a51877b70ea8a058493fc35fa7ab933416889ad0b90f070cf1d"
+      },
+      "master": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-gaia-r1/gaia-hd1-big-head-q-v1-master.png",
+        "sha256": "3370cb367e44e9c98f1d4ba5d6dbe5ee2a53cd8fe9ac357ad8bea5281299641c"
+      },
+      "generation_tool": "image_gen.imagegen",
+      "generation_mode": "builtin",
+      "unmodified_master_size": [
+        1086,
+        1448
+      ],
+      "new_files": 25,
+      "native_reference": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-gaia-r1/gaia-original-reference.png",
+        "sha256": "442439642eb8b596899c5b0d82581294f6636c391485cae193a7b9f7b80f8123"
+      },
+      "native_inputs": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-gaia-r1/native-reference.json",
+        "sha256": "200ea0afd1d3cb6dc7a152d525359b275a6395cfeffe687e2698c6f83c6a881f"
+      },
+      "rejected_first": "第一稿第一欄是踏步，中欄中性；影像工具第二次修成第一欄中性，原稿原樣保留，沒有手動改畫。"
+    },
+    "candidate": {
+      "manifest": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-gaia-r1/candidate/manifest.json",
+        "sha256": "d7f68eda98cad4a8d947fc40b4d9dc5dd54d100c6399d251fee8901d24dcec5a"
+      },
+      "catalog": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-gaia-r1/candidate/catalog.json",
+        "sha256": "92c516a081b9e5fddfc4ee20c11c2f21f93752cf3e8ddf6e0ce7ca698eaee6fb"
+      },
+      "base": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-gaia-r1/base-catalog.json",
+        "sha256": "a9c929a593760bf59c3258927999893cec9a694990aaa5aaa5140acc2247ae8c"
+      },
+      "resource": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-gaia-r1/build-r2.memory.json",
+          "sha256": "48f2b19bd88aeaf7b769fd26077b4f1ba742b8735afb2023c7ac209f1a7cd8e5"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-gaia-r1/build-r2.log",
+          "sha256": "2737f9b4cdc773aa652883111c72af1493984da76afb3c3e423462de8a339b2d"
+        },
+        "elapsed_seconds": 18.049,
+        "peak_bytes": 3199971328,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "platform_headroom_claimed": false
+      }
+    },
+    "gpu": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-gaia-r1/gpu-r1-capture/receipt.json",
+        "sha256": "6ed73915935992a5826ceb30ea4d39fce9de2ba352b8f70addf9dc984cfe703c"
+      },
+      "resource": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-gaia-r1/gpu-r1.memory.json",
+          "sha256": "40ecf551202a69b2e44b51248f017311c745078eea5013fc775336098782b91a"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-gaia-r1/gpu-r1.log",
+          "sha256": "0e8c088ea5db5267882ce8d1ab147c73f3bb5eeacae2c4357049b3f2d78f8f97"
+        },
+        "elapsed_seconds": 302.471,
+        "peak_bytes": 7235362816,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "platform_headroom_claimed": false
+      },
+      "cases": 24,
+      "pngs": 12,
+      "f2": 4,
+      "rgba_tolerance": 2,
+      "independent": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-gaia-r1/independent-r2.json",
+        "sha256": "d0aca7ed488f1bafffb739b2cb3f923338d7c6d237bdceedca066638572db1ab"
+      },
+      "near_opaque_head_pixels": 173017,
+      "rejected_mutants": [
+        "missing",
+        "duplicate",
+        "catalog",
+        "source-code",
+        "false-save",
+        "wrong-frame",
+        "wrong-hud",
+        "wrong-tolerance",
+        "missing-f2",
+        "wrong-character",
+        "actual-black-png"
+      ],
+      "scope": "同一原生首章Gaia身份30，四向三拍、兩介面完整Game.Draw，實際地圖及資訊窗核心點與獨立CPU核對。程式F2與單位／RNG／保存保持；受控姿態不作正常玩家或原版動態聲明。"
+    },
+    "normal": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-gaia-r1/normal-r1-capture/receipt.json",
+        "sha256": "e1fd63e3df28788e0537881fee3cba06801fc785e7b4c162f6c09b1f099d6f66"
+      },
+      "resource": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-gaia-r1/normal-r1.memory.json",
+          "sha256": "7283ecb936d3dba98ff9da56a12d3e6cd6360dcc57d1d7812f278b92bdd4381c"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-gaia-r1/normal-r1.log",
+          "sha256": "4396c274bbbbb7ea5b902ec7a5969387921dcbc64c0e08f38e8ea54097decedf"
+        },
+        "elapsed_seconds": 325.324,
+        "peak_bytes": 4731174912,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "platform_headroom_claimed": false
+      },
+      "binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-gold-binary-r1",
+        "sha256": "5e0c0584aa2aa6798d53b2e5924b9dd154ec7034f3bc10a981f74b5f4abc6880"
+      },
+      "verification": {
+        "status": "PASS-GAIA-MAP-NORMAL-TRANSACTION",
+        "pngs": 10,
+        "map_matches": [
+          {
+            "file": "ares-chibi-hd-hd.png",
+            "sources": [
+              {
+                "frame": 2,
+                "rect": [
+                  1608,
+                  996,
+                  1752,
+                  1140
+                ],
+                "checked": 7478,
+                "matched": 7478
+              }
+            ]
+          },
+          {
+            "file": "ares-chibi-hd-original.png",
+            "sources": [
+              {
+                "frame": 2,
+                "rect": [
+                  1608,
+                  996,
+                  1752,
+                  1140
+                ],
+                "checked": 7478,
+                "matched": 7478
+              }
+            ]
+          },
+          {
+            "file": "ares-chibi-hd-hd-restored.png",
+            "sources": [
+              {
+                "frame": 2,
+                "rect": [
+                  1608,
+                  996,
+                  1752,
+                  1140
+                ],
+                "checked": 7478,
+                "matched": 7478
+              }
+            ]
+          }
+        ],
+        "phase_policy": "same observed stationary pose and rectangle, three native idle phases; audit interval2 is not frame-exact",
+        "scope": "既有普通首章來源包含Gaia30，正常切換及PNG圖源核對；選取與走行仍沿Ares，Gaia資訊窗由受控GPU十二姿態另驗。不證明自然加入時點。"
+      },
+      "near_opaque_map_pixels": 22434,
+      "binary_reused": "正式Go不變，沿已驗5e0c0584…程式；本批只改Go測具一檔及素材。",
+      "scope": "既有普通首章來源含Gaia30，四組控制、Ares走行取消、F5及新程序LOAD保持，三張正常PNG核新Gaia實際圖源。沒有新名冊或章內狀態注入；不作Gaia自然加入時點或他本人普通走行證據。"
+    },
+    "registration": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-gaia-r1/registration-r1.json",
+      "sha256": "e7906b46adc1438f64693c5f37f7da7c655eacb0aacc78c782b1b15bd2c4bbad"
+    },
+    "source_tests": {
+      "resource": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-gaia-r1/source-r1.memory.json",
+          "sha256": "c5f04ef024c43f7772f7b4166d08a72d714342fecd48c0d27d8913fd3985c969"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-gaia-r1/source-r1.log",
+          "sha256": "2fba9d5c12959c17cc6ce2104c3f97df3d2ef1a2a1d67d605c7486ebd4a65da3"
+        },
+        "elapsed_seconds": 32.861,
+        "peak_bytes": 195330048,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "platform_headroom_claimed": false
+      },
+      "test": {
+        "file": "tools/test_fd2_hd1_chibi_party.py",
+        "sha256": "88ec6ff1733fa422510564c8490e5557f464570256546a7520eb2c88c2c2bf60"
+      },
+      "top_tests": 3,
+      "source_rejections": 8,
+      "scope": "沿明示Gaia配方逐byte重編12父項及12HD，維持其他881項，拒收來源及覆寫既有輸出。"
+    },
+    "go_regression": {
+      "resource": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-gaia-r1/regression-r1.memory.json",
+          "sha256": "08f552781b2092601d2c964518d006c5bc74ea500fca99c230e61193cb4e4033"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-gaia-r1/regression-r1.log",
+          "sha256": "252f36b18c5b8ce6baea0b449075abaac305d5399f95745896f033276d747cd0"
+        },
+        "elapsed_seconds": 34.576,
+        "peak_bytes": 1656430592,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "platform_headroom_claimed": false
+      },
+      "passed": [
+        "TestModernHDChibiPartyFixture",
+        "TestModernHDBattleConsumerInventory",
+        "TestModernHDMapOverwriteCoverageAndDestinationDependency",
+        "TestModernHDMapTransactionUsesOneNativeClockAndIndependentTerrain",
+        "TestModernHDMapRejectedArtDoesNotPublishNativeState",
+        "TestModernHDMapMosaicShaderCompiles",
+        "TestModernHDMapUnitPlanMatchesNativeWrites",
+        "TestModernHDMapUnitPlanKeepsBlankNativeSlotsAndRejectsMissingSources",
+        "TestModernHDMapWorldLayersAndImmutableSources",
+        "TestModernHDMapWorldRawFlagAndAtomicRejection",
+        "TestBuildNativeMapFrameInputUsesOnlyRawMaterializedState",
+        "TestBuildNativeMapFrameInputRejectsControlDriftAndMissingRawRoster",
+        "TestIndependentInterfaceFourModesKeepArtworkAndBattle",
+        "TestBuildCollectsControlledJSONAndGoUIWithoutNotesOrErrors",
+        "TestBuildIsDeterministicAndJSONSerializable",
+        "TestBuildRejectsDuplicateExistingStringID",
+        "TestMultipleTextFieldsDoNotReuseOneExistingStringID",
+        "TestVariablesIncludeWrappedErrorPlaceholder",
+        "TestDrawFunctionContextIncludesIndirectASCIIAndFunctionName",
+        "TestDrawFunctionContextSkipsLocaleKeys",
+        "TestReviewedGoCandidatesMatchCurrentInventory"
+      ],
+      "top_tests": 21,
+      "string_tests_included": 8,
+      "scope": "兩個既有GPU測試未明示啟用而跳過，未計通過；本批Gaia完整GPU另列。"
+    },
+    "current_consumer_inventory": {
+      "observed": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-gaia-r1/consumers-r1.json",
+        "sha256": "31c65d06a5a853195aee8282ed7768291d0879e357526ebb934653961ddb2be4"
+      },
+      "verified": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-gaia-r1/consumers-verified-r1.json",
+        "sha256": "03255849e523d9bbf9b85339ac6c688d715cc314a11b6dfb5ca2cea4f22254e4"
+      },
+      "source_file_count": 1196,
+      "source_tree_sha256": "6fdd18e232b6700404418b71e361f906e70cd33fa37d604254bcd1b18f1e53e5",
+      "cases": 21,
+      "archive_frames": 416,
+      "rejected_mutants": [
+        "wrong-archive",
+        "wrong-resource",
+        "wrong-frame",
+        "wrong-pixels",
+        "wrong-mask",
+        "missing-case",
+        "false-gpu",
+        "missing-hd",
+        "wrong-code",
+        "wrong-command",
+        "wrong-packed",
+        "wrong-descriptor",
+        "missing-map-route",
+        "wrong-lmi-kind",
+        "wrong-lmi-pixels",
+        "wrong-lmi-entry",
+        "missing-lmi-hd",
+        "wrong-map-mask",
+        "missing-map-mask-hd"
+      ]
+    },
+    "assets": {
+      "catalog": {
+        "file": "remake/assets/themes/modern/catalog.json",
+        "sha256": "2a0ab8542de442f09605e49413b4d30c620cfedd2e0fb729070b13983a0fabbd"
+      },
+      "catalog_assets": 883,
+      "changed_assets": 2,
+      "unchanged_assets": 881,
+      "private_sync": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-gaia-r1/private-sync-r1.json",
+        "sha256": "32f95e3d9a2018baca5b2ad88606688f37345811d1922405e551441723a7d262"
+      },
+      "private_git": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-gaia-r1/private-git-r1.json",
+        "sha256": "ce7133933ad6af5bd81cc9f17e0982133b9628caf22ed0defe381f02823278dd"
+      },
+      "full_catalog": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-gaia-r1/full-catalog-r1.memory.json",
+          "sha256": "966ee275654d089d0096c3babc820ed0dd0e753ef8a058c4f95b8187a76ef608"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-gaia-r1/full-catalog-r1.log",
+          "sha256": "bc59919ddc67e8b775c3771268213dea7672763f38c1be9e0f65a4b4e93fcbe8"
+        },
+        "elapsed_seconds": 13.523,
+        "peak_bytes": 53506048,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "platform_headroom_claimed": false
+      },
+      "policy": "母稿及24成品按白名單存入指定私人庫，舊7341實檔及inode保持。只有公開允許的壓平對照與遊戲PNG進公開庫。"
+    },
+    "coverage": {
+      "report": {
+        "file": "docs/data/fd2-hd1-terrain-coverage.json",
+        "sha256": "4c3d9e2c3e67d58861b60645a65a2c2599d784022d94d6aaee8ade09482015f8"
+      },
+      "summary": {
+        "maps": 33,
+        "missing-art": 3354,
+        "missing_unique_native_content": 2049,
+        "native-remap-only": 10,
+        "registered-hd": 634,
+        "required_slots": 3998,
+        "selector_checks": 617520
+      },
+      "resource": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-gaia-r1/coverage-r1.memory.json",
+          "sha256": "1a312b0af9047a038336c003cb88896ea4612f498af78df9e0eec8a5490f373f"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-gaia-r1/coverage-r1.log",
+          "sha256": "7e456f2664d14b0d7c8174728bcbfaaace2a837ab03faf068cd76421607164c5"
+        },
+        "elapsed_seconds": 3.509,
+        "peak_bytes": 289685504,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "platform_headroom_claimed": false
+      },
+      "scope": "地形來源與數量保持，只更新正式清冊指紋。"
+    },
+    "review": {
+      "status": "AGENT-INITIAL-REVIEW-COMPLETE",
+      "sources": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-gaia-r1/review-final/receipt.json",
+        "sha256": "24b264c52e0be87efd097a517724b2720ac2302100011a06a47d25d74c8c17d1"
+      },
+      "report": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-gaia-r1/visual-review-final.json",
+        "sha256": "acfc29f6b1257cc75636a0813a0f734579574ced7cf3f5f4064fafab2b8567b4"
+      },
+      "tool": {
+        "file": "tools/review_fd2_hd1_map_sprites.py",
+        "sha256": "47646d0b37abcba460396495d2b6fca93fa5b0a1503d3b8def1ee25e25161fe6"
+      },
+      "groups_reviewed": 125,
+      "source_files_checked": 1455,
+      "agent_visual_scope": "125組四向中性及正面三拍，靜態三組姿態；不是1455幀逐幀人工或全人物重繪通過。",
+      "human_acceptance": false,
+      "all_redrawn": false,
+      "counts": {
+        "reference-keep": 2,
+        "new-q-review-keep": 4,
+        "redraw-native-identity": 12,
+        "redraw-q-proportion": 69,
+        "review-keep-pending-batch": 32,
+        "identity-recheck": 6
+      },
+      "rows": [
+        {
+          "group": 0,
+          "decision": "reference-keep",
+          "notes": "藍髮、紅頭帶與大頭短身清楚，保留既定比例參考。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "f1985a4e2ec6fe40e1462deb5dc76885eab561beda3536ad5fb6dc94dbaae00d"
+        },
+        {
+          "group": 1,
+          "decision": "new-q-review-keep",
+          "notes": "新版大頭短身、深色頭帶、褐髮與單斧清楚，四向一致。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "26b74478c2863312bfeba5e4225d76c8c651654fe32666a5c043c7fb2e4dce98"
+        },
+        {
+          "group": 2,
+          "decision": "redraw-native-identity",
+          "notes": "原版DATO_002頭像與地圖四向均為灰色兜帽，現行新版Q稿畫成銀色長髮；頭身接線已驗，頭部材質須修回兜帽。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "9796729f6c00704edd008c3a8bd106c4cc697851695173fd52017569b2b37874"
+        },
+        {
+          "group": 3,
+          "decision": "new-q-review-keep",
+          "notes": "成熟大鬍子與短身比例清楚，保留本次威嚴修訂。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "a63699b64cca4cbe28f77fd55e440439e0e59369f55e4d1790e0e66fb3c4a421"
+        },
+        {
+          "group": 4,
+          "decision": "new-q-review-keep",
+          "notes": "新版大頭、藍軍帽與單一兵器清楚，四向與48像素仍可辨。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "c281ba934d8ac2dd5c6bb84decd53e278b0aa0e5468cba9d21516f5acca4e240"
+        },
+        {
+          "group": 5,
+          "decision": "redraw-q-proportion",
+          "notes": "頭臉偏小、軀幹與靴腿偏長；保留原版灰色頭部、藍衣及橘褐披風輪廓。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "d796840f39ab25ea4e723cf71cb5996ba9a748edb8010a1bbe4fb2190cc26606"
+        },
+        {
+          "group": 6,
+          "decision": "redraw-q-proportion",
+          "notes": "長身與碎鎧細節過多，面部縮小；保留褐髮、頭帶及原版單兵器。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "d921a40d0556a720bf75461f42491cde68da64428ad9d706ec31fc2533aee91c"
+        },
+        {
+          "group": 7,
+          "decision": "redraw-q-proportion",
+          "notes": "臉小且腿長；保留橘褐長髮、藍色下臉遮蔽與原版藍甲。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "fa94c093524d714fbfed8229774dcb3a2e919aaec071c19378bd7e9184241066"
+        },
+        {
+          "group": 8,
+          "decision": "redraw-q-proportion",
+          "notes": "髮團寬但臉部仍小；放大面部、縮短身體，保留褐髮紅頭帶與綠色服裝。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "6cb185b17d652d5311ae444cd6667681b06ef4648acfe9f0327294209b250e52"
+        },
+        {
+          "group": 9,
+          "decision": "reference-keep",
+          "notes": "紅髮高馬尾、大臉與短身清楚，維持比例參考。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "8ff5d58895234405c45fa27f01b7122cfa4cb89a8824334ba300c6ac22e10954"
+        },
+        {
+          "group": 10,
+          "decision": "redraw-q-proportion",
+          "notes": "長紅袍與腿部拉長，臉部偏小；保留粉髮、頭額配件及服色。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "68166b38fa72450356ba1f8b2e91b32f0fb5321a6ef6d9f2f11bef1bae104019"
+        },
+        {
+          "group": 11,
+          "decision": "redraw-q-proportion",
+          "notes": "走行腿長，頭臉不夠突出；保留灰金短髮、紅帽飾與棍杖。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "11adf377fe9b797ecfb927d5bfc6a2a979d1b42d2b960d3b4bcfe88abcf00544"
+        },
+        {
+          "group": 12,
+          "decision": "redraw-q-proportion",
+          "notes": "人物纖長，馬尾主導輪廓而臉太小；保持原版金橘高馬尾與深色服裝。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "59befea25abccd8cbbf3bbf0f89ee9edbcfd4bbe6e003cf88883129cd85d028f"
+        },
+        {
+          "group": 13,
+          "decision": "redraw-q-proportion",
+          "notes": "髮團較大但臉仍小，須按新比例重繪；保留金髮黑頭帶及原版背部裝備。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "1bb4e766884260c122a3f9e79747491798a511e660acc47dcf45ed4114af3650"
+        },
+        {
+          "group": 14,
+          "decision": "redraw-q-proportion",
+          "notes": "身體與腿偏長，配件太細；保留藍色馬尾、額帶與紫色服裝。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "df24823aa19083778f699e87b528d361ef8c49f976f8e8b83f37b57d3baf46c4"
+        },
+        {
+          "group": 15,
+          "decision": "redraw-q-proportion",
+          "notes": "黑甲面罩清楚但非本次新稿；統一更短身比例，保留黃眼及紅腰布。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "b7abe32d1a4e1de6f80144d88240c2e747da507f7e9572bfb71a55c5e1b025ea"
+        },
+        {
+          "group": 16,
+          "decision": "redraw-q-proportion",
+          "notes": "龍人頭部被高刺拉長，面部／軀幹較細；保留原版鱗色、單劍與藍盾。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "d39f638d7283b1efd29de6e79379b8bb41ef71cf92e402137939f18336d402cf"
+        },
+        {
+          "group": 17,
+          "decision": "redraw-q-proportion",
+          "notes": "紅龍人細長、頭臉偏小；保留原版紅褐鱗色、單劍與灰盾。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "c0334aa8ed65066e45839254836e339c5c05592e568eaaed5a7958fd207fcbe7"
+        },
+        {
+          "group": 18,
+          "decision": "redraw-q-proportion",
+          "notes": "長髮寬、臉小、腿長；保留金髮與紅披風，不靠髮量冒充大頭。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "11b3e824806ec9f8209b82f2f94cef06097a4a7d40e845e8eb79ea5a779ab380"
+        },
+        {
+          "group": 19,
+          "decision": "redraw-q-proportion",
+          "notes": "成人騎士長身長腿，縮小後鬍臉不清楚；保留褐鬚、單劍與十字盾。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "b331f07b994fe582fc3609285e188dc4372e1d1d2b0464a5bd191ed58d6f4bad"
+        },
+        {
+          "group": 20,
+          "decision": "redraw-q-proportion",
+          "notes": "精靈長腿、臉小；保留綠髮、尖耳、額帶與原版服色。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "a9b761cf6421bb4367b6d156f452c1d70a15cd8e247a1c46c962425d386230d9"
+        },
+        {
+          "group": 21,
+          "decision": "redraw-q-proportion",
+          "notes": "白鬚讀得出但臉仍可放大、身體縮短；保留白髮大鬍子、棕袍與曲杖。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "81172901e1c4a69266c3a326d304be9d16ab294e03d5f5d599f0abbb42adddbf"
+        },
+        {
+          "group": 22,
+          "decision": "redraw-q-proportion",
+          "notes": "面部較小、身體仍長；保留深藍髮束、青衣與原版空手輪廓。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "2d51975160c4ad3380707c480a9860e9511ff9dacaa1ef5ba0b279f635db4052"
+        },
+        {
+          "group": 23,
+          "decision": "redraw-q-proportion",
+          "notes": "長髮遮臉、身體偏長；保留黑頭帶與橘黑服色及背部原版裝備。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "9962288334167427ca748310fa1fe693e8304a99d78dadfcea3a5d15b309e9b8"
+        },
+        {
+          "group": 24,
+          "decision": "redraw-q-proportion",
+          "notes": "額頭大但臉部擠在下方，長袍仍長；保留禿頭白眉鬚、紅袍黃領。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "c2636d6d312a4821f7ff65a4122555337e27f84ab655a4a8e363be963b44a70b"
+        },
+        {
+          "group": 25,
+          "decision": "redraw-q-proportion",
+          "notes": "罩帽輪廓可辨但臉區細，需統一短身；保留暗藍罩帽與橫持單刀。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "a61c968bc658823f4e1173120e1fd9426c025da6e1d4cd9adde60d08d94f68a9"
+        },
+        {
+          "group": 26,
+          "decision": "redraw-q-proportion",
+          "notes": "龍人身體／尾巴細長且面部小；保留藍灰鱗、單劍與盾。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "9a595e6d583064cbd0e8e6466c3624802dfc54b137e02535ea7ec5ba367ea1c4"
+        },
+        {
+          "group": 27,
+          "decision": "redraw-q-proportion",
+          "notes": "龍人尖嘴伸長、頭部小，48像素裝甲混成塊；保留橄欖綠鱗與白十字盾。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "bd437fecb83250b8ff117ec601e3a30f0f6aa08660e062c4661fc0c0b3f6c2fa"
+        },
+        {
+          "group": 28,
+          "decision": "redraw-q-proportion",
+          "notes": "盔甲面罩可辨但軀幹長，須按原版比例壓短；保留深藍甲及紅狹面罩。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "354a9704675e11b929978b094fe30d864b0ec4a33ff49a66c844297b7ec57f62"
+        },
+        {
+          "group": 29,
+          "decision": "redraw-q-proportion",
+          "notes": "非人形長袍頭部結構保持，不硬套人臉；提高藍眼／領口可讀性並統一簡潔色塊。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "78a65fb0142e30e56677680d76db5eceb984696b8a7c1d9465546e933a7c6133"
+        },
+        {
+          "group": 30,
+          "decision": "new-q-review-keep",
+          "notes": "新版機械大頭短身、灰綠硬甲與藍面罩清楚；十二幀、地圖／資訊窗、四向F2及正常地圖像素通過，已正式登錄。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "e0469c38aafebc6da4a3ad33ba5541db6df66bde03016445250cdb841d4d35b9"
+        },
+        {
+          "group": 31,
+          "decision": "redraw-q-proportion",
+          "notes": "帽／臉可辨，仍需統一新短身比例；保留深藍平頂帽與灰色圍領。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "e224840db39ae5fae191245390adebd416da013a3e46cad0cc23df70ae1420a6"
+        },
+        {
+          "group": 32,
+          "decision": "redraw-q-proportion",
+          "notes": "轉職圖須逐組保留原版服色／背部輪廓，不直接把base0當成全部形態。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "147f4c127eaaeb3f7cceb99a5cd03e4f79d55eecd85727e5feab23ca9c4d2e7c"
+        },
+        {
+          "group": 33,
+          "decision": "redraw-q-proportion",
+          "notes": "維持褐髮頭帶、原版大斧與轉職裝備；頭臉與短身需統一base1的新標準。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "8a213aece0867a8bd6cb52395f4e3b6074c95cd10a4a5700ad05661ef73afa2f"
+        },
+        {
+          "group": 34,
+          "decision": "redraw-q-proportion",
+          "notes": "灰色兜帽輪廓清楚，須保留其布料與原版轉職鎧甲；與base2頭部材質一併核對。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "e859bacdaf74eb7969418d7ecfb7b76420b17c1969b23dbd5e5f23e03b6f1445"
+        },
+        {
+          "group": 35,
+          "decision": "redraw-q-proportion",
+          "notes": "大鬍子辨識清楚，頭身仍需統一；保留成熟五官、紅褐髮鬚、單斧及盾。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "b8ed3af9813bfa9e2a530eb6df097af87d26aff18e56d9bfb8ba6e0af972490b"
+        },
+        {
+          "group": 36,
+          "decision": "redraw-q-proportion",
+          "notes": "身體偏長且服裝細節多；以原版軍帽／兵器及轉職服色重繪，不擴張裝備。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "f15f2c6600fb9a4b420dfd696addaeeb38cd6f136bae61c6f07020ad7826f132"
+        },
+        {
+          "group": 37,
+          "decision": "redraw-q-proportion",
+          "notes": "披風與腿長，臉部小；保留灰色頭部、藍甲與原版兵器／盾。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "d848baa205d73a34760648c9c68a7b398394a978d45195e66a7598149937cc17"
+        },
+        {
+          "group": 38,
+          "decision": "redraw-q-proportion",
+          "notes": "深色轉職甲拉長身體；保留褐髮頭帶及單一兵器，放大臉部。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "3d17c37dd72bc0a33796de8a4e2e6becf9922b544bec68e3b47a57cd0a9fae61"
+        },
+        {
+          "group": 40,
+          "decision": "redraw-q-proportion",
+          "notes": "弓手身體長，臉偏小；保持褐髮、原版弓箭與紅褐服色。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "914f9aeda1460396fecbab89a79c92e6db3f644b5b62f894a1e46acc8bb8e5dd"
+        },
+        {
+          "group": 41,
+          "decision": "redraw-q-proportion",
+          "notes": "紅髮臉可辨但轉職身體偏長，需沿base9大頭短身方向；保持原版服色。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "c2b82940d3c26f1cff8d19a170a080f7f284169e9559a53cb46f2b15ee536c04"
+        },
+        {
+          "group": 42,
+          "decision": "redraw-q-proportion",
+          "notes": "轉職綠袍、粉髮讀得出，臉小腿長；統一大頭短身。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "5967c26e07ea92ff58c5483ca4af4f66334052005855d8425ea85c9b0de2e6a0"
+        },
+        {
+          "group": 43,
+          "decision": "redraw-q-proportion",
+          "notes": "轉職橘金袍腿長；保留灰金短髮、紅帽飾與原版棍杖。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "c8da54619f39257628be7d50adcc70cb4eaf2dcf399a86203fc5c89922580060"
+        },
+        {
+          "group": 44,
+          "decision": "redraw-q-proportion",
+          "notes": "原版與12同源，現稿仍纖長小臉；須與base12一致修正，不漏重複形態。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "59befea25abccd8cbbf3bbf0f89ee9edbcfd4bbe6e003cf88883129cd85d028f"
+        },
+        {
+          "group": 45,
+          "decision": "redraw-q-proportion",
+          "notes": "金髮弓手臉偏小；保留黑額帶、背部裝備及綠色轉職服裝。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "20922683eb8ead7aaf0ddaeda69c0017b9562f6281eaa8795c1e085dff5f25af"
+        },
+        {
+          "group": 46,
+          "decision": "redraw-q-proportion",
+          "notes": "藍髮馬尾與袍可辨，但臉小身長；沿base14同步重繪轉職形態。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "0df722809180864f7d51741d29ce011961b0e4f39bebf9b0e6b4d45e0fffb786"
+        },
+        {
+          "group": 47,
+          "decision": "redraw-q-proportion",
+          "notes": "金屬盔面罩辨識清楚，仍是舊長身比例；保留原版黃眼與藍甲。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "6910cb5456cb4263d7cbe9dd96e1aebbb04fb015fcaadcf7459c600c2d8a560d"
+        },
+        {
+          "group": 48,
+          "decision": "redraw-native-identity",
+          "notes": "原版三拍為可見人臉、藍帽與紅披風；HD卻成白色方頭機器人，身份輪廓錯置，列優先修正。",
+          "visual_frames": [
+            0,
+            1,
+            2
+          ],
+          "hd_frame_table_sha256": "e3c9a82ec7a6ea018c6342076c217453ee210319f8ab7e85a0bb7f8021e1dffe"
+        },
+        {
+          "group": 49,
+          "decision": "redraw-q-proportion",
+          "notes": "原版與17同源；現稿細長紅龍人，需同步原版龍形與新比例。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "c0334aa8ed65066e45839254836e339c5c05592e568eaaed5a7958fd207fcbe7"
+        },
+        {
+          "group": 50,
+          "decision": "redraw-native-identity",
+          "notes": "原版為藍髮紅頭帶的人形，HD卻成深藍機器人；轉職不應自行機械化。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "bc08a43f0a2e6d1edff1daadc1743d721c7e24a86972e2f481edd4921613f735"
+        },
+        {
+          "group": 51,
+          "decision": "redraw-native-identity",
+          "notes": "原版為褐髮頭帶持斧人形，HD變封閉黑盔持劍盾；髮臉與裝備均須回原版。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "727bbf287ead2cd10976a148163b284a906d4ee03e47d38ecb266c1e64b875d2"
+        },
+        {
+          "group": 52,
+          "decision": "redraw-native-identity",
+          "notes": "原版紅髮人形／紅色衣帽，HD卻成紅方頭機器人；須依原版特殊轉職身份重繪。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "0c4c5cdb3f8d8c949b11910f0cbee35ab6a2c23739a04ef4b52f5d008a6e4e80"
+        },
+        {
+          "group": 53,
+          "decision": "redraw-native-identity",
+          "notes": "原版紅褐大鬍子持斧盾，HD成無鬍少年持劍；與哈瓦特成熟大鬍子要求衝突。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "9ae733d6a1f255e6766911134b891b729a2f796fbe669d6c6fb6e00ccf7e5724"
+        },
+        {
+          "group": 54,
+          "decision": "redraw-native-identity",
+          "notes": "原版藍軍帽可見人臉，HD變面罩方頭機器人持劍盾；須恢復亞雷斯身份。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "458755a11a26b9d280fdb5a40d8be254da6cb0e1f5040b87741ebb63167cc8e1"
+        },
+        {
+          "group": 55,
+          "decision": "redraw-native-identity",
+          "notes": "原版灰色頭部／可見人臉的人形，HD變綠色機器人；須恢復原版人形裝備。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "78ca3d92ce64366f0dd4bd70a1060dfd397198cf415df4f09401a3227ff4d230"
+        },
+        {
+          "group": 56,
+          "decision": "redraw-native-identity",
+          "notes": "原版褐髮黑頭帶及單柄長兵器，HD新增紅頭盔與劍；帽型、武器均須回原版核對。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "34938dfd4fe62d007c3066f8ad650f7c5a2239040beaae9a7bbbe0e9db47ef0d"
+        },
+        {
+          "group": 58,
+          "decision": "redraw-q-proportion",
+          "notes": "與40同源轉職弓手，須跟隨40修正，避免同源槽外觀分裂。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "914f9aeda1460396fecbab89a79c92e6db3f644b5b62f894a1e46acc8bb8e5dd"
+        },
+        {
+          "group": 59,
+          "decision": "redraw-q-proportion",
+          "notes": "與41同源，紅髮人物腿長，須和41統一大頭短身。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "c2b82940d3c26f1cff8d19a170a080f7f284169e9559a53cb46f2b15ee536c04"
+        },
+        {
+          "group": 60,
+          "decision": "redraw-q-proportion",
+          "notes": "與42同源，轉職綠袍粉髮仍長身，須和42同步修正。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "5967c26e07ea92ff58c5483ca4af4f66334052005855d8425ea85c9b0de2e6a0"
+        },
+        {
+          "group": 61,
+          "decision": "redraw-q-proportion",
+          "notes": "與43同源，橘金袍長身，須和43同步修正。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "c8da54619f39257628be7d50adcc70cb4eaf2dcf399a86203fc5c89922580060"
+        },
+        {
+          "group": 62,
+          "decision": "redraw-q-proportion",
+          "notes": "與12／44同源，高馬尾人物仍纖長小臉，需同步三組形態。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "59befea25abccd8cbbf3bbf0f89ee9edbcfd4bbe6e003cf88883129cd85d028f"
+        },
+        {
+          "group": 63,
+          "decision": "redraw-native-identity",
+          "notes": "原版金髮黑頭帶可見人臉的綠衣人形，HD變灰色機器人；須恢復人類身份。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "4c2990b570d2845adffed379c87bd1afa0142b4cd37150409412986fb2cbb867"
+        },
+        {
+          "group": 64,
+          "decision": "redraw-q-proportion",
+          "notes": "與46同源，藍髮馬尾轉職袍仍長身，須同步重繪。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "0df722809180864f7d51741d29ce011961b0e4f39bebf9b0e6b4d45e0fffb786"
+        },
+        {
+          "group": 65,
+          "decision": "redraw-q-proportion",
+          "notes": "與47同源，保留黃眼全罩金屬頭盔及藍甲，縮短身體。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "6910cb5456cb4263d7cbe9dd96e1aebbb04fb015fcaadcf7459c600c2d8a560d"
+        },
+        {
+          "group": 66,
+          "decision": "review-keep-pending-batch",
+          "notes": "靜態三拍、紫帽及側垂片與橘袍辨識清楚；保留三拍結構，不虛構行走，仍納全套畫風統一。",
+          "visual_frames": [
+            0,
+            1,
+            2
+          ],
+          "hd_frame_table_sha256": "526dfe7d3a91926a39db947fe3858f3ae0f6a0294f51385031b2542a25ffffb2"
+        },
+        {
+          "group": 67,
+          "decision": "redraw-q-proportion",
+          "notes": "三拍靜態藍髮人物，面部仍小；保留藍髮、綠衣與原版靜態結構。",
+          "visual_frames": [
+            0,
+            1,
+            2
+          ],
+          "hd_frame_table_sha256": "6f70099db399f8b3dc35b9fecc82200fd684fb194ae4a65b2a8640da06795772"
+        },
+        {
+          "group": 68,
+          "decision": "redraw-q-proportion",
+          "notes": "保留灰綠頭部輪廓、原版十字盾與單劍，縮短軀幹；頭部材質不可僅由舊標籤推定。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "c8ca8fe8b8bf6cd02794e854c24598065ce6d6aeb8e99cce0f98608fc3504bd0"
+        },
+        {
+          "group": 69,
+          "decision": "redraw-q-proportion",
+          "notes": "圓筒頭盔、十字盾與紅腰布可辨，人物仍高長；統一較矮粗比例，不補人臉。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "e59938fb78de303106fa222f0a4f2531dbfb3df5bec3cd38e613aa1c3e62cf84"
+        },
+        {
+          "group": 70,
+          "decision": "identity-recheck",
+          "notes": "原版白色斜帶與手持兵器的關係須核圖，不能沿舊標籤直接把遮面當已證實；保留藍頭巾與棕衣輪廓。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "9792b4f62f6d4fae121f0feefc6e3b2edb6805fc412ad5bc5f4df587409fb472"
+        },
+        {
+          "group": 71,
+          "decision": "redraw-q-proportion",
+          "notes": "頭盔雙角、藍灰甲及棕腰帶可辨，腿與軀幹仍長；加大頭盔並簡化甲片。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "7ba3735a8beb7e0c02585589c1f10450ccad0b06982b13ff3548c4703e231c02"
+        },
+        {
+          "group": 72,
+          "decision": "redraw-q-proportion",
+          "notes": "旅人藍頭帶、背包與杖可辨；面部放大、腿縮短，保留背包後向輪廓。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "4f56fa9a985b43e2c8b3b5d5de6e17586368d780ea952a07798e95bf4e52accf"
+        },
+        {
+          "group": 73,
+          "decision": "identity-recheck",
+          "notes": "現稿是可見人臉的半人馬，原版頭部／下肢輪廓不能僅憑舊horse標籤定案；需以原版大圖補核種族與四肢。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "58a245ebff7b17ccbb3cc76dc28f078c952313c2fce50dfa85a07484fa92e0dd"
+        },
+        {
+          "group": 74,
+          "decision": "review-keep-pending-batch",
+          "notes": "三拍紫帽低矮人物，頭身清楚；保留原生三拍及杖的位置，不新增方向或行走。",
+          "visual_frames": [
+            0,
+            1,
+            2
+          ],
+          "hd_frame_table_sha256": "23926344141ac016db8c4b39d5b238e8a657cea50ec941722e4a59d0d6828cc3"
+        },
+        {
+          "group": 75,
+          "decision": "review-keep-pending-batch",
+          "notes": "原版側躺紅髮人物結構保持；不改成站立人形，整套統一時仍核髮／臉與低姿態。",
+          "visual_frames": [
+            0,
+            1,
+            2
+          ],
+          "hd_frame_table_sha256": "f786bf8e4d8630f8ddeabee82cfffd80e401aae3a6ee115345fa1c5f7c378f68"
+        },
+        {
+          "group": 76,
+          "decision": "redraw-native-identity",
+          "notes": "原版盾為帶十字的方形／梯形輪廓，現稿成圓木盾；修回原版盾形及武器。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "d35e36d96a98028f0d77869d219f56cc93a92e64f9f4316814c0c920b48d4e84"
+        },
+        {
+          "group": 77,
+          "decision": "identity-recheck",
+          "notes": "需核原版盔頂分叉與盾形，現稿平罐盔不能只憑職業推定；短身比例一併修正。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "eb47c951693fa63d559cdb5b1488709ff73d5e70610eecd58df1467699c4a6a6"
+        },
+        {
+          "group": 78,
+          "decision": "redraw-q-proportion",
+          "notes": "深藍重甲與紅面罩保留，現稿胸肩過大而頭很小；縮軀幹、加大頭部。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "3e269530373decc748abe03b203147cf31649599ca6ce0fcc39795b9b957bf5e"
+        },
+        {
+          "group": 79,
+          "decision": "redraw-native-identity",
+          "notes": "橄欖罩帽下新增明顯骷髏面容，原版小圖不支持該骷髏身份；恢復原版可見面部／兵器輪廓再繪。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "5a2e8f1ab8d119878d050dd055f64edb6691304ccd782a56bcc86cb53d688750"
+        },
+        {
+          "group": 80,
+          "decision": "redraw-q-proportion",
+          "notes": "黑紅厚甲與紅盔飾保留，胸肩佔比過大、頭小；壓短身體並簡化紅線裝飾。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "891e9d13afbeb79e1c83059894781e68286da2201d890bbcb9fd44731a3b4532"
+        },
+        {
+          "group": 81,
+          "decision": "redraw-q-proportion",
+          "notes": "藍灰重甲與褐色雙角保留，頭小身長；避免肩甲吞沒頭盔。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "d6287598ccb92b29f33ea2308d676931ebd62d7bcc56eb37f0f2313b425a993f"
+        },
+        {
+          "group": 82,
+          "decision": "redraw-q-proportion",
+          "notes": "原版圓筒盔、方盾與紅腰布保持，現稿高長；縮短腿與軀幹，不拉窄頭盔。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "35a61e3d429a04294c6d2e1af4ca09282a590d85e9f849b50b70e1b389d8ec6a"
+        },
+        {
+          "group": 83,
+          "decision": "redraw-q-proportion",
+          "notes": "藍盔、雙角、黃眼與藍盾辨識可留；原版整體更矮粗，需統一Q比例。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "0872646274bbe2dd540b1d5f43753723c749717f47ddddbc9659adca1171970a"
+        },
+        {
+          "group": 84,
+          "decision": "redraw-q-proportion",
+          "notes": "紅盔與橘紋盾可辨，細碎金屬線太多；簡化色塊並縮短身體。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "cdede25caeb3ee0e03d6ba4100d493da24200052e2abdf68406872876837faee"
+        },
+        {
+          "group": 85,
+          "decision": "redraw-q-proportion",
+          "notes": "深藍盔、紅面罩與盾保留，身體仍高長；依原版矮粗輪廓重繪。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "a6493a1f95b9881de0e7eda127180c8b09b11c29843ec512df7136c2058d6577"
+        },
+        {
+          "group": 86,
+          "decision": "redraw-q-proportion",
+          "notes": "保留灰色圓盔、原版長兵器與十字盾；頭部放大、碎甲線減少。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "8d896acbd865cdf0135e828a46cf1fb27dd2b2c30ddb7db50d671edc37ce5920"
+        },
+        {
+          "group": 87,
+          "decision": "redraw-q-proportion",
+          "notes": "保留灰綠帽／頭部、披肩與背部裝備，面部放大、軀幹縮短。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "821732454744e805c053ec624981162ed49c5bdf3d2c24e6251940ac2eab1d38"
+        },
+        {
+          "group": 88,
+          "decision": "redraw-q-proportion",
+          "notes": "保留原版紅頭巾、藍色方臉與橫持單刃，避免碎金屬紋理掩蓋臉部與步態。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "ebef8bf259e9d97e5a24c3e86fae25052d87934dfa24646791673f40ebca4307"
+        },
+        {
+          "group": 89,
+          "decision": "identity-recheck",
+          "notes": "原版綠色寬臉紅頭巾，現稿增添機械側耳格柵與金屬分件；原版大圖補核材質，不能直接當機器人。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "c53bfe8a0be6fb109b8ca2574e7dc8d68285b456a73f1f4f22d95760890e1dd5"
+        },
+        {
+          "group": 90,
+          "decision": "review-keep-pending-batch",
+          "notes": "紅罩帽、黑面黃眼與低矮袍形可留；屬特殊輪廓，不強加人臉或人形腿。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "4abe4bb8245a834e602fec57eb4287c746e49884a04ebff78186c10457ce566b"
+        },
+        {
+          "group": 91,
+          "decision": "redraw-q-proportion",
+          "notes": "保留原生藍罩帽、紅眼及紅袍的無腳輪廓；減少重複細褶，不因缺腳就造出新下肢。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "c40819296d4f427e9562b764cc64349516f550f740b15d2983633f8a09316486"
+        },
+        {
+          "group": 92,
+          "decision": "review-keep-pending-batch",
+          "notes": "藍罩帽、紅遮面與灰褐披肩可辨；特殊罩袍輪廓保持，整套統一時減少細褶。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "9e5bcf932d340e24e46a64aea411fc60189fb03e46550b5943147c68e441ae27"
+        },
+        {
+          "group": 93,
+          "decision": "redraw-q-proportion",
+          "notes": "原版紅頂灰色方身機械，維持方臉格柵與機械結構；縮短下身，提升格柵清晰度，不補人臉。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "50bca0d9bd2f9b9d864967fbce98846532347c6e8e9568b7018da5809eeaad45"
+        },
+        {
+          "group": 94,
+          "decision": "redraw-q-proportion",
+          "notes": "藍色方身、灰頂與格柵是主要身份；減少細邊與縮短機械下肢，不改非人形結構。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "7d81c9a01d87c3fec6689afdaca44e3dd4ff8f68b998639dc4fec2cba2827076"
+        },
+        {
+          "group": 95,
+          "decision": "redraw-q-proportion",
+          "notes": "保留原版藍筒頭、紅窄眼、灰肩與紅腰布；統一矮粗輪廓，避免肩領細節吞沒頭部。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "04f253fa3114ae35c583a0e64e95b003c40882915f6073d46a62b20cf1015be0"
+        },
+        {
+          "group": 96,
+          "decision": "review-keep-pending-batch",
+          "notes": "紅平頂帽遮眼與短身已清楚，單拍腳位可辨；保留原版遮眼結構，仍待全套畫風統一。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "b52cc647fac67af0c9822cf76e0e466a1199675654cafc388abb72685666ebc5"
+        },
+        {
+          "group": 97,
+          "decision": "review-keep-pending-batch",
+          "notes": "藍帽遮眼、單劍及短身清楚；不補出原版未露的雙眼，後續統一線條與色塊。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "0779a4a4ba5004c3aa4e1e7a1f0c4786ca2a49ea6dd49bfcf650ae78ae9901e0"
+        },
+        {
+          "group": 98,
+          "decision": "review-keep-pending-batch",
+          "notes": "灰圓頂、紅面罩與藍甲結構清楚；非人形／罩面保持，後續統一短身與線條。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "444a4dad2e7e980f3bc8cd5a72adc59156c922241ca2d00b22c4b1a2db136c32"
+        },
+        {
+          "group": 99,
+          "decision": "review-keep-pending-batch",
+          "notes": "藍髮、黑額帶與短身清楚，但豆眼風格與定版主角不同，後續統一臉部清晰度。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "7512091434263dfd06ae5ad87e0c98ffd12700bdf3b217e797e485a1eef80ea7"
+        },
+        {
+          "group": 100,
+          "decision": "review-keep-pending-batch",
+          "notes": "褐紅髮、黑額帶及藍衣大頭短身已清楚；後續統一臉部筆觸與腳位，不改原身份。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "6d5495afa92c7f497a75636028a39803454cb06f0407330fd8252eb83cd3b0bc"
+        },
+        {
+          "group": 101,
+          "decision": "review-keep-pending-batch",
+          "notes": "藍膚紅眼、紅褐髮與短身可辨；保留非普通人類膚色與眼色，後續統一筆觸。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "4ff23d5950519638dd9f810d15ccc8d50c279aa90e3b1d69476a9d9046655f06"
+        },
+        {
+          "group": 102,
+          "decision": "review-keep-pending-batch",
+          "notes": "赤褐狼形、黃眼與短身可辨；保持原生獸頭及口鼻，不強套人臉，統一簡潔毛塊。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "43ffdeb1e8d78f8d51236e9f518d0886091c668cfcf1b6700caeb2a020245363"
+        },
+        {
+          "group": 103,
+          "decision": "review-keep-pending-batch",
+          "notes": "豹斑、白口鼻與獸足可辨；保持獸形與原版斑色，後續簡化小斑點以利48像素閱讀。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "3252b4493ffcb7a65fddae4d415bf7b3ec63e7474b5d03b5e7dd0d6d380ddae9"
+        },
+        {
+          "group": 106,
+          "decision": "redraw-q-proportion",
+          "notes": "藍色層盔、紅披風與劍盾可辨，腿部仍長；縮短身體，頭盔分層不過細。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "294602a5855f1ad13726b761316e3cf6b3292d1e5d80e56e38313061ebfdfbbe"
+        },
+        {
+          "group": 107,
+          "decision": "review-keep-pending-batch",
+          "notes": "灰扁帽、黑面黃眼與藍紅袍符合原特殊結構；不新增人臉或人形腿。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "00153925d98578c345c13b3e3b5ed2e81858216b87a1ffa15a48c83023aa52e2"
+        },
+        {
+          "group": 108,
+          "decision": "review-keep-pending-batch",
+          "notes": "灰綠多角頭、紅眼與寬矮身形已接近Q；保留原版角數與頭殼結構，減少碎甲。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "1ceae32c7b290e3804ca935119f1ac96feaba234e1f4b2925273cee3834eeb67"
+        },
+        {
+          "group": 109,
+          "decision": "review-keep-pending-batch",
+          "notes": "藍色多角重甲與紅面罩可辨，原版矮粗結構保持；後續統一大色塊。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "7ac1e5c09831e18cd1d8a8d297c4ac3a0d37e0bbf806fab464c5652dae69904d"
+        },
+        {
+          "group": 110,
+          "decision": "review-keep-pending-batch",
+          "notes": "灰綠頭殼、紅眼與黃色手部保持，低矮非人形輪廓可辨；勿補人類面部。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "88f4fa9e14550467296a6cc327699f9fc5cab621578ce33c251e85def8c3160e"
+        },
+        {
+          "group": 111,
+          "decision": "redraw-q-proportion",
+          "notes": "原版長方形窄頭、寬肩與灰色機械腿保持；避免為大頭要求而丟掉長頭殼，縮短軀幹／下肢。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "bf28c571025c35ace64472ce41353500682df4452d9c9735037a31695643010d"
+        },
+        {
+          "group": 112,
+          "decision": "review-keep-pending-batch",
+          "notes": "方柱臉、藍頂藍肩與方口符合原型，低矮結構清楚；保持機械臉位置與肢體數。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "c1e50ae6016edc1a7d0720adb14cfd6bc44bfde56e15a52114cde3ad7be7ce38"
+        },
+        {
+          "group": 113,
+          "decision": "review-keep-pending-batch",
+          "notes": "灰綠柱身、黃色口／眼及原版短肢可辨；非人形結構保持，後續統一線條。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "888a2f7c47f5b9de1c87ec5cc60ee72aea8898f47d2422ee6be55473d9c04729"
+        },
+        {
+          "group": 114,
+          "decision": "review-keep-pending-batch",
+          "notes": "綠灰方身橫面罩、紅手與灰頂可辨；保持原生短身及機械相位，不補頭髮人臉。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "1ce3bf2f06cf0f87296ba5c8a2ad0645eb823bbf56b6a98a3f2a78259b9eb59b"
+        },
+        {
+          "group": 115,
+          "decision": "review-keep-pending-batch",
+          "notes": "藍頂方身與紅肩明確，短肢可辨；保留原版機械後身，不強套人形頭身。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "4293a3777339e78d05b26a5c922ddc3062f145fb4294e4db93f2b5d337fcba23"
+        },
+        {
+          "group": 116,
+          "decision": "review-keep-pending-batch",
+          "notes": "藍頂藍肩、紅耳尖及方口明確；保持原版機械結構，後續減少碎邊。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "27ffea909dd00881a63faad9f42aac82c1b0538823eccb0d0b20de1348464c90"
+        },
+        {
+          "group": 117,
+          "decision": "review-keep-pending-batch",
+          "notes": "藍髮瀏海遮眼與短身清楚；依原版保留遮眼及綠衣，不強補完整面部。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "98a35dfc10ce564a2e0c307288889c3ebc96c98c07fd13cdf81977bc556f2bef"
+        },
+        {
+          "group": 118,
+          "decision": "review-keep-pending-batch",
+          "notes": "褐紅髮額帶、藍甲與單柄兵器清楚；大頭短身已近定版，後續統一筆觸與兵器持手。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "a8d4c5014f4b2680c9ad5e75fd7d5574526992a355c03202a40000775c30636f"
+        },
+        {
+          "group": 119,
+          "decision": "review-keep-pending-batch",
+          "notes": "長褐紅髮、黑額帶與藍衣披肩可辨，比例低矮；後續統一臉部及走行細節。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "3b53bbdc0a818683859016b2676b57dc5afd5ed0d242db3ae4a3666ec5ab6a32"
+        },
+        {
+          "group": 120,
+          "decision": "review-keep-pending-batch",
+          "notes": "橘褐短髮與深藍高領披肩符合輪廓，比例低矮；維持高領，不新增裝備。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "bf147b371a3112f380676c61c38056713d3c54d95353e5f0122ac6d586195df0"
+        },
+        {
+          "group": 122,
+          "decision": "review-keep-pending-batch",
+          "notes": "褐色大肩、紅眼與粗壯雙肢保留；特殊非人形不強套人臉，材質不因名稱猜成機械。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "5464d05e74d68424539d363c8b11ed390a29189edafd4781c097fc3f3e675702"
+        },
+        {
+          "group": 123,
+          "decision": "review-keep-pending-batch",
+          "notes": "藍髮、白色罩面與裝甲輪廓保持；不補出被遮蔽的人臉，後續統一簡潔色塊。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "d9784f3543e3901b9bce5f341c68b861b6d728a789d5f6061f5ee5548cb27fb6"
+        },
+        {
+          "group": 124,
+          "decision": "review-keep-pending-batch",
+          "notes": "灰長髮、藍面黃眼與低矮身形清楚；保留面具／非人形特徵，後續統一線條。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "74a2dccbe31673b01f80f92f438dc0ec6e5cea9a856ae0f527e0be3803895072"
+        },
+        {
+          "group": 125,
+          "decision": "identity-recheck",
+          "notes": "原版下臉有明顯白色區域，須補核是否長者鬍鬚；現稿少年面容不能直接視為身份通過。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "1ea09ed21bbc8d81ffb44559ddc61e07ae29e5ca488c5fc797c06f8c1ddeb31c"
+        },
+        {
+          "group": 126,
+          "decision": "review-keep-pending-batch",
+          "notes": "白髮、深藍罩面紅眼與短身可辨；保留原版遮面，不新增人臉。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "6df22f809e463a52170a511cbda9201e289f3f6af4bf04db19f7250904626c57"
+        },
+        {
+          "group": 133,
+          "decision": "identity-recheck",
+          "notes": "原版頭頂／額前是帽或髮束須補核，現稿長瀏海馬尾不能只依舊標籤當成身份通過。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "34b90782bff59bde22d171d75b5eeacc7454062547c567c3010277c19e8607ac"
+        },
+        {
+          "group": 134,
+          "decision": "review-keep-pending-batch",
+          "notes": "褐紅髮黑額帶、藍圍領與短身可辨；後續統一面部與腳位。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "f9b040a561367be240a94c9c5483058829c06aed3d270a6163fe628f10d915f2"
+        },
+        {
+          "group": 135,
+          "decision": "review-keep-pending-batch",
+          "notes": "冠帽、白眉白鬚及紅披風大頭清楚，老成五官保留；勿年輕化，仍納全套畫風核對。",
+          "visual_frames": [
+            0,
+            1,
+            2,
+            3,
+            6,
+            9
+          ],
+          "hd_frame_table_sha256": "ce87b9572382bc8a7c7bdc250620eac9b0cc0c681a708718479fa294ec3f4763"
+        }
+      ],
+      "priority_identity_groups": [
+        2,
+        48,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        63,
+        76,
+        79
+      ],
+      "identity_recheck": [
+        70,
+        73,
+        77,
+        89,
+        125,
+        133
+      ],
+      "additional_tino_portrait": {
+        "file": "remake/assets/portraits/DATO_002_m0.png",
+        "sha256": "2986e17bdccd02e579550af99a893de664e292db8e8f038805108117a8e2dc25",
+        "conclusion": "原版是灰兜帽；現稿銀長髮需改。"
+      },
+      "other_124_source_equal": true,
+      "review_pages_changed_only": [
+        "page-04.png"
+      ],
+      "conclusions": "灰兜帽誤畫銀長髮、部分原版人形誤機械化、Harvat特殊轉職年輕無鬚與盾／武器偏移已列#287。六組種族／頭部材質仍未知，先補原版大圖，不因舊label或職業名稱猜補。32組可保留候選仍待整套風格統一，來源通過不當造型通過。"
+    },
+    "figures": {
+      "hd1-gaia-q-comparison.png": {
+        "file": "docs/figures/hd1-gaia-q-comparison.png",
+        "sha256": "c3a85d053a8c6b1335423161c832830f160089a21a0989bcf2435636cd0f6649"
+      },
+      "hd1-gaia-q-game.png": {
+        "file": "docs/figures/hd1-gaia-q-game.png",
+        "sha256": "8d61dbaa2a87f986e3ac424612cf0f95fabbcce90e64506e3c431879a4b7ced5"
+      },
+      "hd1-gaia-q-normal.png": {
+        "file": "docs/figures/hd1-gaia-q-normal.png",
+        "sha256": "40bd6a6ae47bef67689f2180e2300bfeedaa7b5c45f7223657dbd11fefc2925e"
+      }
+    },
+    "comparison_report": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-gaia-r1/gaia-comparison.json",
+      "sha256": "70ee9e435da93f20d0a8d3cb443655eee3231e7ebbb57efeaa34e578e4402279"
+    },
+    "toolchain": {
+      "go": "fd2-go-test-local:latest@44c2bbcc2a00 / Go1.22.12",
+      "art": "sc-cht-hdtools:pillow11.3.0-r2@b050fc7c4900",
+      "gui": "fd2-promo-local:latest@81278de73727",
+      "network": "none",
+      "uid_gid": [
+        1000,
+        1000
+      ],
+      "cpus": 2
+    },
+    "diagnostics": [
+      "第一次編製命令漏prepare子命令，argparse在讀素材前拒收；改正同一工具介面重跑通過。",
+      "正常截圖第三張的Gaia idle phase在兩端audit之間，嚴格端點來源核對拒收。GUI明設FD2_INPUT_AUDIT_INTERVAL=2，input_audit_trace.go按間隔記錄；改核同一靜止方向與矩形的原生三拍，維持實際像素門檻並明示不逐幀。未改遊戲或重錄GUI。",
+      "消費端匯出綁正式清冊；首次核對錯傳candidate路徑而private_root不同，SHA拒收。改用正式清冊／私人包，沿同一Go匯出核對通過，未改收據或重跑已通過GPU。"
+    ],
+    "reproduce": [
+      "從git show e47991f1:remake/assets/themes/modern/catalog.json恢復base；從私人庫取recipe指定母稿。refresh_fd2_hd1_map_sprites.py prepare沿--recipe --catalog --pack --original --masters與全新--out；完整命令見build-r2.memory.command。",
+      "Go設FD2_TEST_MODERN_EFFECT_CATALOG／PACK為candidate、FD2_HD_CHIBI_REFRESH_GPU=1、FD2_HD_CHIBI_REFRESH_MANIFEST及OUT，跑TestModernHDChibiRefreshGPU。它只允許既有原生首章身份4或30；完整命令見gpu.memory.command。",
+      "沿runtime-view建資料視圖，以verify_fd2_hd_fonts_gui.py --chibi-refresh --battle-status --world --battle-node battle_ch01跑既有來源。普通命令與來源／binary在normal.memory及receipt；原始資料唯讀。",
+      "verify_fd2_hd1_chibi_refresh.py --gpu --candidate --normal --binary --out --self-test先核對，再加--register --formal --destination登錄。不得把三拍相位近似寫成逐幀parity。",
+      "review_fd2_hd1_map_sprites.py --catalog --modern --original --out先核全1455來源，再產13頁、四向中性／正面三拍及144／72／48。逐組初審結果依review.rows；原版身份未知維持未知。",
+      "正式登錄後以fd2-terrain-sources重生清冊指紋，TestModernHDBattleConsumerInventory與verify_fd2_battle_hd_consumers.py沿正式清冊重生21來源及19反例。"
+    ],
+    "remaining": [
+      "#286其他人物與轉職依新比例續作；未全數完成前不重生完整README人物總覽。",
+      "#287優先身份／裝備偏移12組，以及6組補原版身份證據。",
+      "#282地形／物件、#283介面與#284其他獨立控制保持，HD2／HD-2D另期。",
+      "集中逐章、造型及平台人工由使用者接手；本輪無Release。"
+    ],
+    "documents": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-gaia-r1/documents-r1.json",
+      "sha256": "b400eefd2b5a7a9a9747c1d1f3ca745034be2c388a17b262771e7c8655c7a54a"
+    },
+    "cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-gaia-r1/cleanup-r1.json",
+      "sha256": "078125ef37c012f3725d6ee3f6bee301117561f82a47683ea8f89f04d376279c"
+    },
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-gaia-r1/final-validation-r1.json",
+      "sha256": "e525e2d9c09588e30ef41741de955d50728ced21512c6f60952df8f85b6ddb9d"
     }
   }
 }

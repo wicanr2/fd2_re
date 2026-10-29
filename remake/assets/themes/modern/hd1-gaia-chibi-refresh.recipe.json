@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_hd1_chibi_map_refresh",
+  "base_catalog_sha256": "a9c929a593760bf59c3258927999893cec9a694990aaa5aaa5140acc2247ae8c",
+  "approved_preview": "docs/figures/hd1-ares-q-design.png",
+  "approved_preview_sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e",
+  "approval": "沿使用者定版的大頭短身方向；使用者2026-10-29另明示蓋亞也需修改、其他人物全數review。特殊機械保持原生結構，依原版恢復大頭、短身、厚重裝甲，不重問同一比例。",
+  "native_bank_sha256": "7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44",
+  "palette_sha256": "404db1ca72ffc19fa7404fbc59bde98cdf239f63fe3375ec248a8142073a28bf",
+  "groups": [
+    {
+      "group": 30,
+      "master_file": "gaia-hd1-big-head-q-v1-master.png",
+      "master_sha256": "3370cb367e44e9c98f1d4ba5d6dbe5ee2a53cd8fe9ac357ad8bea5281299641c",
+      "output_prefix": "fdicon-030-hd1-q-v1"
+    }
+  ],
+  "policy": "第30組十二格，維持前／左／後／右各三拍與第一欄中性、第二第三欄走行；保留原版機械頭殼、藍色面罩、灰綠硬甲及短粗肢體，沒有武器或人臉。不改頭像、大型戰鬥素材、玩法或存檔。",
+  "image_generation": {
+    "tool": "image_gen.imagegen",
+    "mode": "builtin",
+    "transparent_background": true,
+    "source": "exec-5593a70b-532a-43a3-83cc-fab89ce7f2bf.png",
+    "prompts": [
+      "Use case: identity-preserve. Asset type: production HD1 tactical-map sprite master for Gaia, the bulky mechanical guardian from Flame Dragon Knights 2. Input image 1 is the original game's twelve map sprites, enlarged using the actual game palette: it is the authority for Gaia's identity, directions, colors, armor silhouette and restrained gait. Input image 2 is the currently used Gaia HD master: preserve its recognizable pale sage-gray solid metal shells, navy/cobalt joints, blue narrow horizontal visor and no weapon, but CORRECT its small head, long limbs and excessive detail. Input image 3 is the user-approved Ares HD1 Q master: use ONLY its very compact big-head/short-body clarity and crisp restrained painted/cel style. Do not transfer the human face, clothes, hat or weapon.\nCreate ONE genuinely TRANSPARENT sprite sheet, exactly 3 equal columns by 4 equal rows, twelve complete separate figures with generous empty padding at every cell boundary. Orthographic slightly elevated tactical viewpoint. Row1 FRONT facing the viewer, row2 LEFT PROFILE looking screen left, row3 BACK facing away, row4 RIGHT PROFILE looking screen right. Each row is neutral planted stance, left-foot-forward small step, right-foot-forward small step. All three remain the same cardinal direction. No perspective rotation or three-quarter views for the front row. Two short arms and two stubby legs with grounded feet; arms counter-swing subtly and stay mechanically natural, no reversed elbows or wrists. Keep each full figure entirely inside its cell. Each row has three visibly distinct foot positions, but equal overall scale and foot baseline.\nGaia is a LARGE-HEADED COMPACT ROBOT, following the original map sprite rather than adult human body proportions. The broad rigid helmet should occupy about 55-60 percent of the figure height, with the large visor clearly readable at 48px. Under the helmet: very short deep barrel chest, broad thick shoulder caps, huge compact fists and very short heavily armored legs and wide boots. The original robot's head shell has broad pale sage-gray layered/slanted plates and a continuous narrow dark blue visor; preserve that characteristic solid shell, angular lower face guard and the dark-blue side/rear helmet region. Head sits low with NO exposed neck. Rear view must show actual rear helmet armor with no face or visor. No human eyes, mouth, hair, cloth, bandages, scarf, mummy or stone material. Do not create an antenna, horn, backpack, cannon, held weapon, energy core or red accents. Use larger clean color shapes and far fewer rivets than image2, strong clean dark outlines and smooth hand-painted cel shading, no photographic 3D rendering and no pixel-art upscale. Helmet, torso, fists and feet must remain distinct silhouettes at 144/72/48px. No text, labels, border, grid lines, floor, cast shadow, scenery, glow or checkerboard background.",
+      "Use case: precise-object-edit. Edit this Gaia ROBOT sprite sheet. Preserve exactly the character design, large helmet, short bulky metal body, sage/cream and navy-blue armor, four row directions, clean painted style, transparent background and 3-column by 4-row grid. Correct ONLY the column ordering and walking poses: In EVERY row, COLUMN 1 MUST be the neutral IDLE STANDING pose with both feet planted side by side, short legs centered under the body and both fists resting naturally beside the hips. COLUMN 2 is left foot making a small forward step with opposite arm, COLUMN 3 is right foot making a small forward step with opposite arm. Thus the existing middle-column planted figures should become the first-column idle figures, while the first-column step becomes column2; the third stays opposite stepping. Every row must have one upright neutral figure in its FIRST cell, not its middle cell. Front row faces straight forward, second left, third back, fourth right. Keep exactly two arms/two legs, no inverted wrists or elbows. Retain all armor identity and the same figure scale. Each full silhouette including all feet and fingers must fit completely within its cell with generous transparent margins. No text, grid, floor, shadows or added objects. Do not add a human face, visor to the back, weapon, antenna or fabric."
+    ],
+    "rejected_first_source": "exec-5bc10a8a-e1ac-474f-8803-256282c5270f.png",
+    "first_rejected_reason": "第一欄為踏步，中性在中欄；第二次影像工具調整為中性／左步／右步。",
+    "reference": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-gaia-r1/gaia-original-reference.png",
+      "sha256": "442439642eb8b596899c5b0d82581294f6636c391485cae193a7b9f7b80f8123"
+    }
+  }
+}
