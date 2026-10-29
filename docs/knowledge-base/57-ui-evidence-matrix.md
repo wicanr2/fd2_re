@@ -1,5 +1,7 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
+戶外草、土、沙、水與石路已依定版風格刷新，原生輪廓、物件與規則保持。完整GPU及普通首章切換、走行取消、保存冷讀通過，README總覽及普通遊玩圖已更新。現況與來源依[58](58-fd2-exe-re-coverage.md)、[61](61-modern-theme-runtime-spec.md)及主收據`hd1_painted_ground_followup_20261029`；洞窟／物件與其餘缺圖續作，人工由使用者接手。
+
 古金雙層對話框已接原生與一般故事、既有提示共用材質，F11介面與F2美術獨立。普通START到父王及首章保存冷讀相容通過；框內內容、原版介面與其他面板保持。現況與目前Go來源依[58](58-fd2-exe-re-coverage.md)、[61](61-modern-theme-runtime-spec.md)及主收據`hd1_gold_dialogue_followup_20261029`；其他HD1工作與使用者集中人工仍待。
 
 亞雷斯、哈諾、鐵諾與哈瓦特已依使用者定版換成大頭短身Q版，戰場與資訊窗使用新版圖源。哈瓦特另已改成成熟、威嚴的大鬍子造型。三組新增人物由受控繪圖核實，普通首章只驗完整候選載入與原有角色操作／保存相容性；Harvat受控投影不作能力值或自然加入證據。範圍依[58](58-fd2-exe-re-coverage.md)、[61](61-modern-theme-runtime-spec.md)與主收據`hd1_harvat_mature_followup_20261029`；#286其餘人物及轉職仍未完成，全人物完成後才重生原版／HD1總覽。

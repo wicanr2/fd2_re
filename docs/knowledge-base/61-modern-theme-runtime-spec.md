@@ -375,6 +375,27 @@ HD1 milestone為[GitHub milestone 1](https://github.com/wicanr2/fd2_re/milestone
 
 驗證及完整重跑依[HD主收據](../data/fd2-modern-hd-battlefield-20261019.json)的transient_expiry_hd_followup_20261026。完整Game.Draw、最終PNG、文字實際墨跡、頭像鏡射／裁切、同次世界及三來源拒收通過；保存與原生狀態／死亡及四語套件回歸通過。建構槽以seed7、selector2、六counter=1、HP100/100及基礎AP100／DP60／DX20起跑，實際扣血訊息後再播六提示。DATO9及地圖位置沿受控fixture，不宣稱角色欄位與正常章節位置。GPU峰值接近6GiB限制且無OOM，不推論平台餘裕。
 
+## HD1清爽手繪地形重設計（CONFORMED-SCOPED／RUNTIME-E1，#282）
+
+使用者2026-10-29明確同意[草地／洞窟原型](../figures/hd1-terrain-redesign-style.png)的清爽手繪材質方向。定版原圖原樣保存，SHA-256為58b655b4207fe9e0dddb906dad8029ff44412a0f090089719be294fd37ccb07c；它是影像工具的風格原型，不是正式遊戲截圖、逐格母稿或新的地圖資料。決定只含材質、配色與細節密度，圖中裝飾不能推定為新增可通行區域。
+
+- 減少細碎顆粒與重複小石紋，用較大的手繪色塊表現草、水、土與岩石。首批重繪草地、土、沙、水及石路五份底材，連同共用同份底材的地形與交界一起替換，避免新舊材質硬接。洞窟與其他地形依同一方向後續分批製作；人物沿既定Q版比例，不在本批改造型。
+- 來源沿既有五份ground／shore／relief配方、固定原包及33圖來源清冊，不新增RE或玩法分類。沿make_tile、composite_materials及composite_relief的既有144圖編製，對邊校準、原生索引藝術分區及明示暗部保持。只更換新稿RGB，不修改原生遮罩、LUT、selector、層序、格位、通行或存檔。
+- 首批是既有素材的版本化刷新。五個母稿asset_id及所有引用舊成品的既有集合身分、map_id、frame_ids、semantics、尺寸與source_refs維持；只准替換白名單檔名／SHA及相應母稿尺寸。未選項逐欄保持，舊檔保留以回查，不新增重疊槽或runtime格式。新母稿與成品須使用新檔名，候選先原子產出，失敗不改正式清冊。
+- 刷新器沿[草地編製](../../tools/build_fd2_hd_ground.py)、[交界編製](../../tools/build_fd2_hd_ground_edges.py)及原生來源核對重生全部選定圖，並核同名舊圖的原生來源身分。所有引用同一舊成品的集合一併改成同一新版，不能只改首章而漏掉其他相同來源地圖。
+- 驗來源錯誤、母稿錯誤、檔案／SHA、無關欄位變動、遺漏引用、重複／改號／改角色與未完整GPU收據拒收；原子失敗保留舊集合。驗全部來源與對邊、alpha及144尺寸，再用實際Game.Draw、獨立CPU／PNG、F2及保存保持抽驗。普通首章取景、四組控制、保存／新程序LOAD與地圖總覽依比例重跑。
+- 來源、圖源、清冊、程式與輸出SHA均寫入候選／收據。必要來源、載入、切換、實際繪製與保存檢查通過後才正式登錄並按catalog白名單同步私人庫。造型、逐章與平台人工由使用者接手；不以原型或綠色單元測試宣稱全部HD1或原版逐像素完成。
+
+首批[刷新器](../../tools/refresh_fd2_hd1_ground.py)沿[版本化配方](../../remake/assets/themes/modern/hd1-painted-ground-refresh.recipe.json)重生87個圖源及21圖384槽，替換五母稿與63集合，其他815項保持。既有[總覽測具](../../remake/cmd/fd2/modern_hd_map_overview_test.go)增加明示107個來源：87個原型來源及其他20圖各一份別名，以四種色盤核對；另外六張完整Game.Draw、F2及保存保持仍保留，舊洞窟批次維持原範圍。
+
+[獨立核對與登錄器](../../tools/verify_fd2_hd1_ground_refresh.py)重讀六張實際PNG、來源矩陣及當前Go指紋，拒收缺幀、錯碼、錯清冊、放寬容差、缺F2／保存、重複來源、錯PNG、實際黑圖及無關欄位變更。正式清冊仍須等於編製時基底；新圖只寫版本化檔名，通過後才原子替換清冊。
+
+[來源回歸](../../tools/test_fd2_hd1_ground_refresh.py)逐byte重編全部87張圖，驗九種前置拒收／既有輸出保持，另驗無關欄位、身分與圖號變更拒收；不以編製成功取代實際遊戲驗證。
+
+首批READY已實作並登錄：87圖源、21圖384槽沿原生輪廓更新，883項中只換68項，815項逐欄保持。428來源GPU與六張完整Game.Draw／F2／保存保持、三項來源重編／九前置與四結構拒收、十二獨立收據反例、28頂層Go含八字串測試通過。正式Go未改，現行1196份Go與21案例／416來源／19反例依[58](58-fd2-exe-re-coverage.md)及HD主收據`hd1_painted_ground_followup_20261029`。普通首章四組控制、合法走行取消、F5與新程序LOAD通過，五張正常PNG固定頂列共62格及實際保存SHA獨立核對；登錄器須提供`--normal`與`--binary`，不能只以GPU收據放行。
+
+新版母稿及87成品已同步指定私人庫，舊檔保持；[README總覽](../figures/hd1-map-overview.png)與[普通首章畫面](../figures/hd1-painted-ground-game.png)已更新。六圖是受控相機與測試名冊，首章含蓋亞，不能當自然加入證據。洞窟、樹木、建築及其餘缺圖續作；清冊覆蓋數沒有因材質刷新增加，不宣稱全部HD1或原版逐像素完成。完整重跑與資源依主收據，GPU354.626秒／8120061952 bytes，正常333.490秒／5666205696 bytes，無OOM；編製2GiB達上限max1797，沒有平台餘裕聲明。
+
 ## HD1地形來源遮罩與洞窟石壁（CONFORMED-SCOPED／RUNTIME-E1，#282）
 
 ### 洞窟外緣石地（CONFORMED-SCOPED／RUNTIME-E1）

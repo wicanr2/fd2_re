@@ -649,15 +649,10 @@
     }
   ],
   "unique_archive_resource_frames": 416,
-  "map_tail_lmi_hd_entries": 95,
+  "map_tail_lmi_hd_entries": 92,
   "map_tail_direct_observed_lmi_entries": 92,
   "map_tail_mask_hd_frames": 2,
-  "map_tail_preflight_commands": [
-    32,
-    33,
-    34,
-    35
-  ],
+  "map_tail_preflight_commands": [],
   "map_tail_lmi_sources": {
     "5": [
       98,
@@ -667,10 +662,7 @@
       108,
       110,
       111,
-      113,
-      116,
-      117,
-      118
+      113
     ],
     "6": [
       57,
@@ -889,51 +881,6 @@
             "pixels_sha256": "a5accc9143ccbd628364ff58d040b954ea2d41edd9c2465ddb44fd49dcaf09bd",
             "png_sha256": "398ac2b31de6f0c008e275664ce2dd582334030e512c890d4df47606d8b26450",
             "visible_pixels": 28,
-            "ink_box": [
-              0,
-              0,
-              6,
-              7
-            ],
-            "native_empty": false
-          },
-          {
-            "index": 116,
-            "width": 7,
-            "height": 7,
-            "pixels_sha256": "ac447f9af464efbad3ca26c328de3f62845747165856d88614906eb41c7b16b3",
-            "png_sha256": "0cf577929586a9430317caf93ea365ffabc30353e70430fc5494f9c92775af02",
-            "visible_pixels": 39,
-            "ink_box": [
-              0,
-              0,
-              7,
-              7
-            ],
-            "native_empty": false
-          },
-          {
-            "index": 117,
-            "width": 5,
-            "height": 7,
-            "pixels_sha256": "976e1cb6034036853bdde161fdc8e6d6fdf34c14f985e7864382f4b8cf9a4718",
-            "png_sha256": "41ca299182333fef89247a422e6bc1c70fe33e96dedbed322e4009e4dd4927b3",
-            "visible_pixels": 25,
-            "ink_box": [
-              0,
-              0,
-              5,
-              7
-            ],
-            "native_empty": false
-          },
-          {
-            "index": 118,
-            "width": 6,
-            "height": 7,
-            "pixels_sha256": "5334243bc0bd009194c6106344b03b330ed166bde28f316ec29eccb4eb2f87c1",
-            "png_sha256": "6211baf8a8134a067773335fd7670e7c394b5a5387ddac75792ce421564b6334",
-            "visible_pixels": 30,
             "ink_box": [
               0,
               0,
@@ -2333,29 +2280,12 @@
   ],
   "inputs": {
     "observed": {
-      "path": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-consumers-observed-r12.json",
-      "sha256": "9cd99a6e78ee01c0581483617850c1eb4ea2f5d82057bf0fb17a3a0449f81243"
+      "path": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-painted-ground-r1/consumers-r2.json",
+      "sha256": "655cdbe078da4988bc72c95ad82eb2adee7bb4429e1b27868da036ec154c3057"
     },
-    "go_source_tree_sha256": "57f86e464cfbe06fee80e7c254a14a0f88ca9bc347d37132884eb9c8873a509a",
-    "catalog_sha256": "5dd17043f274d86ba606f2a08c1559c40c94e4cb13f01464c32beb290b10f746",
-    "map_preflights": [
-      {
-        "path": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-consumers-map-32-r1.json",
-        "sha256": "064d7eacf46e59258190f805456255f470f24a235b2566de12b6261144a6b1d9"
-      },
-      {
-        "path": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-consumers-map-33-r1.json",
-        "sha256": "4d66ed2866f8587eafdf4c702ab2d6b212661095262386b8ef5d22e929d3650e"
-      },
-      {
-        "path": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-consumers-map-34-r1.json",
-        "sha256": "2ad5dc98f350cb66c3b6dfab8c2ed831f044038a64d9f9bf53a005c2a2ec80d4"
-      },
-      {
-        "path": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/battle-consumers-map-35-r1.json",
-        "sha256": "55868798477ad2a234559d5f00ce124b5f2b886e4f2bf97c8b448f7101102121"
-      }
-    ],
+    "go_source_tree_sha256": "5480267d19461b69da31397681bf1adbda9b5a47488453a9258a42e47f726976",
+    "catalog_sha256": "a9c929a593760bf59c3258927999893cec9a694990aaa5aaa5140acc2247ae8c",
+    "map_preflights": [],
     "original_manifest_sha256": "5eec2ecacc4fe97c4d0f27838e7dbecf18d1cf4b309b35800d50afd173cacca5",
     "verifier_sha256": "56cd41b440a9d543fb642a3631d419d11393c51c9efde14a34431872115fb70f"
   }

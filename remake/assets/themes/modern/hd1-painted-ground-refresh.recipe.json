@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_hd1_painted_ground_refresh_v1",
+  "base_catalog_sha256": "ac91670b3496d6653985ae4509d3c0e3505576107460c756822bf6e3bc89169f",
+  "source_manifest_sha256": "a19a3da393294ad6e1c4ad1dccdb9a911d26ed1f3d7008046eddda2398f938f5",
+  "style": {
+    "file": "docs/figures/hd1-terrain-redesign-style.png",
+    "sha256": "58b655b4207fe9e0dddb906dad8029ff44412a0f090089719be294fd37ccb07c",
+    "decision": "使用者同意清爽手繪材質／配色方向，原生地圖資料與規則保持。"
+  },
+  "materials": {
+    "grass": {
+      "asset_id": "modern.terrain.grass_olive.master",
+      "old_file": "grass-olive-hd-v1-master.png",
+      "old_sha256": "ed29eb9da12adae641c612d28b848c186dd2986ac1ee3fa4e35e65b72e864c29",
+      "file": "grass-olive-hd1-painted-v2-master.png",
+      "sha256": "9a6f61a628f93ff50ef7626cccc0c812b0a4075204a4df2d693a6f4fc019e053",
+      "size": [
+        1254,
+        1254
+      ],
+      "image_generation": {
+        "tool": "image_gen.imagegen",
+        "mode": "builtin",
+        "source": "exec-bad61e55-4ee9-48eb-b0bb-6034bd19b1dd.png",
+        "prompt": "Use case: stylized-concept. Asset: ONE square opaque seamless repeating grass ground material for a 2D top-down tactical JRPG.\nThe reference board is APPROVED for HD1 material style. Use ONLY the grass painting in the UPPER outdoor panel as the style and palette reference. Do not recreate the board or UI.\nGenerate one 1024x1024 edge-to-edge grass material, viewed straight down onto a flat ground plane. The whole image will be reduced to a SINGLE 144x144 game tile, then repeated. Therefore use broad intentional painted color masses, roughly 6–10 substantial loosely distributed foliage groups in the entire square, each with only a few broad readable leaves or blades. Restrained natural variation between warm moss/olive greens and fresh medium greens, softly sunlit yellow-green accents matching the approved board. Sparse distinct tufts, quiet connected ground underneath. Subtle local soft shadows from upper left; keep overall contrast moderate so chibi units remain foreground.\nThis is clean hand-painted anime/JRPG game environment art. The brush shapes must remain readable after reduction to 144 pixels. Avoid microscopic texture, stippling, speckles, lawn photography, hair-like dense blades, procedural noise, sharp black outlines, rocks, flowers, trees, paths, water, objects, characters, grid lines, text, borders, vignettes, 3D perspective and cast shadows from objects outside the image.\nSeamless uniform-density tiling on all four edges. No central focal patch, no empty margins. Fully opaque. Just the painted grass surface."
+      }
+    },
+    "earth": {
+      "asset_id": "modern.terrain.grass_earth.earth.master",
+      "old_file": "earth-loam-hd-v1-master.png",
+      "old_sha256": "0281b4878c6be106ad4a6db211452219a2015278f415321f9deeb9e2af264563",
+      "file": "earth-loam-hd1-painted-v2-master.png",
+      "sha256": "99e6748ce3828ab1ffd5c359471aa61a735c261b155b1c06fb50308b2f036009",
+      "size": [
+        1254,
+        1254
+      ],
+      "image_generation": {
+        "tool": "image_gen.imagegen",
+        "mode": "builtin",
+        "source": "exec-c976cbd7-9c6a-4fe9-840f-f81b74a6c5ae.png",
+        "prompt": "Use case: stylized-concept. Asset: ONE square fully opaque seamless repeating packed EARTH ground material for the same HD1 tactical JRPG terrain set.\nReference image 1 is the APPROVED style board: use only the warm ochre dirt path in its UPPER outdoor panel for style and palette. Reference image 2 is the newly painted grass material and establishes matching brush scale and softness; do not put grass into this earth tile.\nGenerate one 1024x1024 edge-to-edge TOP-DOWN flat earth surface. The entire square will be reduced to one 144x144 game tile, so favor large restrained hand-painted warm ochre / soft clay-tan color shapes, gentle broad irregular brush marks, with only a few tiny flat chips of stone. Calm moderately light midtones like the approved path, distinct from the pale sand and green grass. An even walked-on dirt plane, not a raised object. Subtle soft local shading only.\nReadable clean hand-painted 2D JRPG art, quiet detail so chibi units remain visually dominant. Seamlessly tile all four sides; even color/value distribution, no central focal feature, no edge darkening.\nAvoid dense pebbles, gravel, cobblestone, deep cracks, checkerboards, granular procedural noise, photography, microscopic stippling, grass, plants, roots, cliffs, wheel tracks, shadows of external objects, water, buildings, characters, UI, text, grid lines, borders, 3D perspective, blur, vignette, transparency. Only painted compacted earth."
+      }
+    },
+    "sand": {
+      "asset_id": "modern.terrain.shore.sand.master",
+      "old_file": "sand-warm-hd-v1-master.png",
+      "old_sha256": "729ef1abaf7779905946508a117014ee9285cb72bc386d4964eb814c7bfb09a2",
+      "file": "sand-warm-hd1-painted-v2-master.png",
+      "sha256": "8e702d651d18aeab890a790564ba7abbcb1d322072f9a900b34d2af7721260b7",
+      "size": [
+        1254,
+        1254
+      ],
+      "image_generation": {
+        "tool": "image_gen.imagegen",
+        "mode": "builtin",
+        "source": "exec-18af7725-811f-4472-9411-9e31cb897e1e.png",
+        "prompt": "Use case: stylized-concept. Asset: ONE square fully opaque seamless SAND ground material for the same HD1 hand-painted 2D tactical JRPG set.\nReference image 1 is the APPROVED style board: use ONLY the pale warm beach sand in the UPPER outdoor panel. Reference image 2 is the new warm packed earth material; sand must be noticeably lighter, quieter and more cream-beige, with the same brushwork scale. Do not copy earth's orange color.\nGenerate a 1024x1024 edge-to-edge painted sand surface seen exactly from above. This entire square will become ONE 144x144 tile, so use broad very gentle pale warm sand / cream / light golden beige painted patches and a FEW soft wide shallow surface ripples. Extremely restrained grain; at play scale it should be a calm light plane that makes the coastline readable and lets chibi characters stand out. Soft even ambient lighting, no focal point. Seamless tiling on all four edges, consistent brightness edge to edge.\nNo pebbles, shells, footprints, water, shoreline, grass, objects, text, interface, characters, grid, border, vignette, photography, microscopic granular noise, dense stippling, deep shadows, raised dunes, 3D perspective, blur or transparency. Only clean hand-painted flat beach sand."
+      }
+    },
+    "water": {
+      "asset_id": "modern.terrain.shore.water.master",
+      "old_file": "water-cobalt-hd-v1-master.png",
+      "old_sha256": "e7900474401d0c35b88a994f22412721e07cb0fac6a17a45106d5fa1deeef541",
+      "file": "water-cobalt-hd1-painted-v2-master.png",
+      "sha256": "36094f6021cfbdd3c7b72f2cc8a809f89084db34eb34ad5a0cc566ce678dfb0b",
+      "size": [
+        1254,
+        1254
+      ],
+      "image_generation": {
+        "tool": "image_gen.imagegen",
+        "mode": "builtin",
+        "source": "exec-6dccc385-9025-4b50-920c-adb2497249c1.png",
+        "prompt": "Use case: stylized-concept. Asset: ONE square fully opaque seamlessly repeating BLUE WATER surface for the approved clean hand-painted HD1 2D tactical JRPG terrain style.\nReference: the APPROVED board's UPPER outdoor panel blue water. Use that warm clean painterly visual language, but create only an interior water material, without shore foam.\nGenerate a 1024x1024 straight-down view of clear medium blue water, cobalt and muted turquoise in soft broad interlocking flowing shapes. A few broad gentle curving ripples with controlled thin pale blue highlights, not a dense mesh. The entire square is going to become a SINGLE 144x144 tile: about 6–9 larger readable ripple cells across the entire image, with quiet blue space between. More blue body color than white highlights. Match the board's gentle hand-painted anime/JRPG art, medium value so small chibi units remain readable. No focal point and consistent edge-to-edge brightness.\nSeamless all four sides. No coastline, sand, islands, rocks, foam banks, objects, vegetation, characters, interface, text, grids, borders, vignette, 3D perspective, horizon, photographs, tiny repetitive fish-scale wavelets, bright white webbing, glare, bloom, noisy caustics or transparency. Only calm painted blue water."
+      }
+    },
+    "stone": {
+      "asset_id": "modern.terrain.relief.stone.master",
+      "old_file": "stone-slate-hd-v1-master.png",
+      "old_sha256": "0664d982925fdaf3574534daaafd70680314c7e0a5f85eff58a90d4c8aa1514e",
+      "file": "stone-slate-hd1-painted-v2-master.png",
+      "sha256": "c1c136a0f03dcb828752460c09910a71276a3d0c2b60bbbacf408751082c38af",
+      "size": [
+        1254,
+        1254
+      ],
+      "image_generation": {
+        "tool": "image_gen.imagegen",
+        "mode": "builtin",
+        "source": "exec-b5c2a8e6-e7af-44ce-9ca9-045ede20b6d9.png",
+        "prompt": "Use case: stylized-concept. Asset: ONE square fully opaque seamless stone paving / natural flat rock material for the same approved clean hand-painted HD1 2D tactical JRPG set.\nReference image 1 is the APPROVED style board. Use its broader painted rock faces in the LOWER cave panel for brush confidence and warm neutral stone palette, but DO NOT draw a cave or lava. Reference image 2 is the new packed earth material for compatible lighting and detail scale.\nCreate a 1024x1024 TOP-DOWN repeating flat stone surface, which will be downsampled as one 144x144 game tile. About 8–12 broad irregular flat closely fitted warm gray/taupe slate slabs across the entire square, modest gaps, a few restrained cracks. Each slab has readable broad flat planes and soft subtle upper-left edge light, with a little warm brown ambient variation. Moderate restrained contrast and quiet interiors. Less repeated rounded pebble texture than the current game; purposeful larger rock forms that remain legible at 144px.\nSeamless four sides, even density and value everywhere, no central focal feature. Keep stone flat and walkable, NOT a vertical wall or raised outcrop. Hand-painted 2D anime/JRPG environment art fitting big-head chibi units.\nAvoid regular brick grids, tiny gravel, many tiny polygon pebbles, rugged noisy rock photo texture, black deep joints, molten lava, grass, plants, dirt patches, pools, cliffs, objects, 3D perspective, cast shadows, characters, text, HUD, borders, vignette, blur and transparency. Only flat painted gray-brown stone."
+      }
+    }
+  },
+  "profiles": [
+    {
+      "file": "ground-olive-hd.recipe.json",
+      "sha256": "9d7641f01e5910363feeec65f8c629f5391f1678ff155d2dcc9d53d1a0ca271f"
+    },
+    {
+      "file": "ground-grass-earth-hd.recipe.json",
+      "sha256": "e4ee82f17f7e731e08c3ec782a785c5dd2e4be4ba62bb543761e1f308d122080"
+    },
+    {
+      "file": "ground-bases-hd.recipe.json",
+      "sha256": "b3bb281a96a75329ce2e72c9da1a0116155db789875a0009c8ee8b37fe7297d4"
+    },
+    {
+      "file": "shore-hd.recipe.json",
+      "sha256": "1c2d864b6e60e038eb3ad0be54469610058a68a93ea6d89038ba3b241a3c7be4"
+    },
+    {
+      "file": "relief-hd.recipe.json",
+      "sha256": "20b2b8ed3045cd7c758e60a345807573ee0198fac0e30d141cd13f7c1f59cbc1"
+    }
+  ]
+}

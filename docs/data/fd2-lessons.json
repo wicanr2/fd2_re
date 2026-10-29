@@ -4671,6 +4671,22 @@
         ],
         "pattern": "source\\[x,y\\]\\[i\\]\\*alpha"
       }
+    },
+    {
+      "id": "hd-candidate-is-not-full-private-pack",
+      "date": "2026-10-29",
+      "area": "素材同步",
+      "rule": "完整私人同步以包含master_file的完整素材包為來源；runtime候選不能當作全部母稿白名單的來源。工具入口為tools/sync_modern_theme_private.py，來源與目標可用同一完整包，相同檔案會保持。",
+      "why": "底材刷新候選只含執行期file／files與本批母稿，未包含既有portrait母稿；首次完整同步在缺母稿時正確停止，改沿已登錄新檔的完整私人包通過。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#hd1_painted_ground_followup_20261029"
+    },
+    {
+      "id": "hd-consumer-export-binds-formal-catalog",
+      "date": "2026-10-29",
+      "area": "素材驗證",
+      "rule": "素材登錄後才重生TestModernHDBattleConsumerInventory的目前清冊收據；該匯出器固定綁remake/assets/themes/modern/catalog.json，FD2_TEST_MODERN_EFFECT_CATALOG不會更換其指紋。以tools/verify_fd2_battle_hd_consumers.py獨立核對，不手改收據SHA。",
+      "why": "第一次將登錄前的正式清冊收據拿去核候選，SHA拒收正確；登錄後只重跑來源匯出及獨立核對通過，未重跑已通過GPU。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#hd1_painted_ground_followup_20261029"
     }
   ]
 }
