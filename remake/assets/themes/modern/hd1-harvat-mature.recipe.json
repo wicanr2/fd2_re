@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_hd1_chibi_map_refresh",
+  "base_catalog_sha256": "82bb8362a625d60c48c94dde4d12faebc79d5d55fa7af4cb36bfb487d30460f5",
+  "approved_preview": "docs/figures/hd1-ares-q-design.png",
+  "approved_preview_sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e",
+  "approval": "哈瓦特應更老成、有威嚴、大鬍子；保持原版配色、裝備與既有Q版比例。",
+  "native_bank_sha256": "7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44",
+  "palette_sha256": "404db1ca72ffc19fa7404fbc59bde98cdf239f63fe3375ec248a8142073a28bf",
+  "groups": [
+    {
+      "group": 3,
+      "master_file": "harvat-hd1-big-head-q-v2-master.png",
+      "master_sha256": "e565358f19e65e5276f5e3f7a3d07ac5b6956612c9d988fd0b5cfa7f92f43c6c",
+      "output_prefix": "fdicon-003-hd1-q-v2"
+    }
+  ],
+  "policy": "定版原稿不修改，24父項與144圖源使用相同完整輪廓、等比例方格、既有腳底與相位等價關係；不改方向、動畫時鐘或玩法。",
+  "image_generation": {
+    "tool": "image_gen.imagegen",
+    "mode": "builtin",
+    "transparent_background": true,
+    "prompt": "Use case: precise-object-edit. Asset type: HD1 tactical-map CHIBI sprite sheet for Flame Dragon Knights 2. Image1 is the CURRENT Harvat twelve-pose sheet to revise. Image2 is the ORIGINAL game character reference and is the authority for copper-red hair/beard, clothing, axe, direction and silhouette. User correction: HARVAT MUST LOOK OLDER, MATURE, DIGNIFIED AND COMMANDING, WITH A GREAT BIG BEARD. The current version reads as a young boy wearing an oversized beard. Age his actual face into a seasoned veteran commander, approximately late 50s to 60s, while keeping the same approved enormous-head / tiny-body Q chibi proportions. In every visible face: noticeably smaller, narrower deep-set eyes with restrained glints, heavy upper eyelids, thick strong slightly lowered brows, broad weathered brow with a few decisive forehead and outer-eye creases, larger broad angular mature nose above the moustache, firmer cheeks and a stern calm authoritative expression. He is a respected battle-hardened elder, not a cute child pouting or a comically angry villain. Enlarge and thicken his full copper-auburn beard and great sweeping moustache: broad sideburns, substantial cheek beard, heavy full lower beard spread across the upper chest, layered coarse locks, strong wide beard silhouette in front and profile. Make it feel like decades of thick facial hair. The beard should contribute to an imposing head shape while the short torso and boots stay visible. Preserve the original red-brown hair and beard family, predominantly copper-auburn; do not turn his hair white, black or blond, and do not add jewelry, braids or beads. Keep existing swept thick red-brown hair, the original olive-brown clothing, navy trousers, dark belt, brown boots, existing small red cloth accent, and exactly ONE compact gray-green metal axe on a dark/brown handle per figure. Keep the same anatomical weapon hand and weapon side in all views. Do not add extra hands, limbs, second axe, cape, helmet, horns, hat, shield, armor or accessories. Keep row3 back-facing and consistent with this fuller beard/sideburn silhouette without painting a face on the back of his head. Keep EXACTLY the same 3 columns x4 rows, twelve isolated full-body figures: row1 FRONT neutral/left-step/right-step, row2 LEFT profile neutral/left-step/right-step, row3 BACK neutral/left-step/right-step, row4 RIGHT profile neutral/left-step/right-step. Preserve the current walking differences, same scale, full weapon visibility, foot baselines and generous transparent gaps. Head and beard remain about two thirds of figure height, short stout body and stubby boots bottom third. Mature facial structure is the essential change, not enlarging the entire figure. Clean thick dark contours, broad readable color masses and polished hand-painted cel shading; readable at144/72/48 pixels. Real transparent alpha background. No text, captions, grid, ground, shadow, glow, scenery, cropping or checkerboard artwork.",
+    "source": "exec-dc6afbe6-1ca1-42e3-bb9c-ce3cbc1c76e8.png",
+    "edit_target": "harvat-hd1-big-head-q-v1-master.png",
+    "original_reference": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-party-r1/harvat-native-reference.png",
+    "decision": "哈瓦特應更老成、有威嚴、大鬍子；保持原版配色、裝備與既有Q版比例。",
+    "edit_target_sha256": "d743b3fcd294624601f547867ce6bfb9e5c54dd2fa29e0e6a75d6db6d46416b4",
+    "source_sha256": "e565358f19e65e5276f5e3f7a3d07ac5b6956612c9d988fd0b5cfa7f92f43c6c",
+    "original_reference_sha256": "f87707e073e98a27fed4da7a94ded3334f663fe41b2513a404be516f477ddb4d"
+  }
+}

@@ -19,6 +19,24 @@
 
 亞雷斯首批沿[版本化編製工具](../../tools/refresh_fd2_hd1_map_sprites.py)與[定版配方及提示](../../remake/assets/themes/modern/hd1-ares-chibi-refresh.recipe.json)。[來源回歸](../../tools/test_fd2_hd1_chibi_refresh.py)驗重編、相位及八種原子拒收；[完整繪圖測試](../../remake/cmd/fd2/modern_hd_chibi_refresh_test.go)沿既有GPU對獨立CPU，保留十二姿態與兩種介面的24案例、四向F2往返、單位／保存保持。[普通操作輔助器](../../tools/fd2_hd1_chibi_gui.py)透過[正式GUI驅動](../../tools/verify_fd2_hd_fonts_gui.py)的`--chibi-refresh --battle-status --world --battle-node battle_ch01`接普通首章來源，核走行取消、四組控制及保存新程序LOAD。[獨立核對與登錄器](../../tools/verify_fd2_hd1_chibi_refresh.py)再核來源指紋、完整矩陣、PNG本體與地圖／HUD人物像素。定版原圖原樣保存於[比例對照](../figures/hd1-ares-q-design.png)，不把它改稱遊戲擷取。
 
+### HD1古金色對話框（READY，樣式已定版）
+
+使用者要求HD1對話框有接近原版的框線，金色呈現D&D式典雅感，並明確選定[原型下半部](../figures/hd1-gold-dialogue-prototype.png)的古金色雙層框線。原圖原樣保存；[SVG／HTML原型工具](../../tools/build_fd2_hd1_gold_dialogue_prototype.py)使用既有完整HD畫面，只疊框線，不改框內文字、頭像或地圖。該圖仍是設計原型，不是新遊戲截圖。
+
+- 金色`#b99a58`、淡金亮邊`#e6d2a0`、陰影`#70532e`、深外緣`#302719`及深內緣`#171a25`依原型。描邊限制在原生3邏輯像素邊帶，1920畫布對應18實體像素；原型steady下框為原生`(5,112)..(315,198)`。保留深藍底、文字安全區、頭像、四角位置及整體構圖，不能擴大字區或移動框。
+- 既有原版來源及shape／palette預檢保持，證據入口為本檔既有對話細框、`native_story_dialogue_coverage.go`、`native_story_dialogue.go`及`fdother/dialogue_grid.go`。金色屬使用者指定的HD呈現，取代HD必須維持原版灰綠框色的舊斷言；不改原版位元組、動畫時計、角色能力或存檔。
+- 金框屬操作介面，隨F11；四組美術／介面獨立模式都須核對。原版介面沿原生框色與厚度，頭像／戰場美術仍依F2。物品／狀態等其他面板不因共用chrome結構被誤染金色。
+- 接線涵蓋原生故事／事件對話的四種控制FFEC／FFED／FFEE／FFEF、上下框、逐字與捲動、開框及收框，以及既有到期／獎勵／確認提示。各幀幾何沿同次原生格網與既有coverage，收框完成及後續游標標記不再畫對話框；縮放、裁切、淡出、說明／狀態遮擋與全白／全黑閘門保持。不能只改既有提示而漏掉故事路徑。
+- 驗收需核原型材質、獨立PNG框線／內部保持、原生raw來源拒收、完整Game.Draw及最終繪製層、四組控制與F2／F11、普通故事開收框及保存相容。沒有資料支持的額外對話路徑先保留限制，不以預設矩形猜補。完成接線後由使用者集中人工確認，#283仍追蹤其他介面。
+
+### 哈瓦特成熟造型修訂（CONFORMED-SCOPED／RUNTIME-E1）
+
+使用者要求哈瓦特更老成、有威嚴、大鬍子。只修group3的面容與鬍鬚，保留原版紅褐髮鬚、斧頭、服裝、四向三拍與已定大頭短身比例。眼睛收斂、眉骨／鼻形厚實、臉部有歲月感、鬍鬚寬厚，避免少年臉配鬍子。原稿及逐字提示依[修訂配方](../../remake/assets/themes/modern/hd1-harvat-mature.recipe.json)，來源沿上文固定原版圖庫與色盤，沒有新RE或玩法變動。
+
+沿同一編製器產生十二張24父圖及十二張144圖源，只替換兩項，其他881項保持，檔名使用v2保留v1可回查。本批沿原有三人21案例驗四向中性、正面三拍、實際地圖／HUD、三次F2與保存保持；其他兩人應保持原稿與圖源。完整125組預檢、來源重編／拒收、獨立實際PNG及普通首章候選載入／交易相容性通過後登錄，普通樣本不作哈瓦特自然出場證據。核對器新增明示`--recipe`只允許原三組子集，21案例不縮減，舊三組預設與拒收行為必須回歸通過。分組圖的`--context-manifest`只能沿用與目前清冊逐欄相同的其他兩人，避免覆回舊哈瓦特；README三人對照同步，完整人物總覽仍待全數完成。
+
+成熟版已登錄，只有兩項替換。21完整繪圖／地圖與HUD、九種獨立反例、普通候選載入與交易相容及逐byte重編／八來源拒收通過；舊三組核對器預設與九反例亦通過。Go未改，沿相同來源前批CPU／字串回歸，目前消費端重生綁新清冊。[成熟版完整受控畫面](../figures/hd1-harvat-mature-game.png)及新版三人尺寸對照已更新。資源、SHA、來源投影及未完成範圍依58與主收據`hd1_harvat_mature_followup_20261029`；GPU與全量驗證達記憶體上限但沒有OOM，不宣稱平台餘裕。
+
 ### 哈諾、鐵諾與哈瓦特接線（CONFORMED-SCOPED／RUNTIME-E1）
 
 本批依相同已定比例更新group1／2／3，原身份依`docs/data/exe_tables/characters.json`，原生十二格各為12～23、24～35、36～47；來源及色盤沿上文固定指紋。各自保留頭帶與斧、銀灰長髮與劍、紅褐鬍鬚與斧的原版特徵。原稿與逐字提示依[本批配方](../../remake/assets/themes/modern/hd1-party-chibi-refresh.recipe.json)，鐵諾錯向武器與多餘手臂的草稿拒收，不進正式清冊。

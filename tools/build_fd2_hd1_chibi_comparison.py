@@ -8,10 +8,22 @@ from PIL import Image,ImageDraw,ImageFont
 from build_modern_map_sprite_overview import load_original_palette
 
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
-def build(candidate,original,out):
+def build(candidate,original,out,context=None):
     if out.exists() or not out.parent.is_dir():raise ValueError('fresh owned output required')
     m=json.loads((candidate/'manifest.json').read_text())
-    groups=m['groups'];n=len(groups)
+    groups=m['groups']
+    if context is not None:
+        catalog=json.loads((candidate/'catalog.json').read_text())
+        by_role={(a.get('source_group'),a['role']):a for a in catalog['assets']}
+        selected={g['group'] for g in groups};kept=[]
+        for g in json.loads(context.read_text())['groups']:
+            if g['group'] in selected:continue
+            for role,key in (('parent','map_sprite_set'),('hd','map_sprite_hd_set')):
+                if g[role]!=by_role.get((g['group'],key)):raise ValueError('context art differs from current candidate')
+            kept.append(g)
+        groups=sorted(kept+groups,key=lambda g:g['group'])
+        if len({g['group'] for g in groups})!=len(groups):raise ValueError('duplicate context group')
+    n=len(groups)
     if not n:raise ValueError('no groups')
     palette=load_original_palette(original/'palette/fdother_000.json')
     image=Image.new('RGB',(1300,65+510*n+50),'#091627');draw=ImageDraw.Draw(image)
@@ -46,12 +58,13 @@ def build(candidate,original,out):
             draw.text((x+size+6,y+355),str(size),font=font,fill='#aec5e0')
     draw.text((24,image.height-30),'Partial batch / art-source comparison / not a runtime screenshot or complete roster',font=small,fill='#aec5e0')
     image.save(out)
-    return dict(kind='fd2_hd1_chibi_partial_comparison',groups=[g['group'] for g in groups],source_manifest_sha256=sha(candidate/'manifest.json'),tool_sha256=sha(Path(__file__)),image_sha256=sha(out),width=image.width,height=image.height,sources=provenance,scope='原版來源與實際HD1四向中性素材對照及144／72／48尺寸，非遊戲截圖或全人物完成。')
+    return dict(kind='fd2_hd1_chibi_partial_comparison',groups=[g['group'] for g in groups],source_manifest_sha256=sha(candidate/'manifest.json'),context_manifest_sha256=sha(context) if context else None,tool_sha256=sha(Path(__file__)),image_sha256=sha(out),width=image.width,height=image.height,sources=provenance,scope='原版來源與實際HD1四向中性素材對照及144／72／48尺寸，非遊戲截圖或全人物完成。')
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     for n in ('candidate','original','out'):p.add_argument('--'+n,type=Path,required=True)
+    p.add_argument('--context-manifest',type=Path,help='沿用同批其他已登錄人物；必須與目前候選清冊逐欄一致')
     a=p.parse_args();report=a.out.with_suffix('.json')
     if report.exists():raise ValueError('fresh report required')
-    d=build(a.candidate,a.original,a.out);report.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n');print(json.dumps(d,ensure_ascii=False))
+    d=build(a.candidate,a.original,a.out,a.context_manifest);report.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n');print(json.dumps(d,ensure_ascii=False))
 if __name__=='__main__':main()

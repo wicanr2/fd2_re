@@ -15,7 +15,7 @@ class ChibiPartyTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.work=Path(os.environ['FD2_CHIBI_PARTY_ROOT'])
-        cls.recipe=ROOT/'remake/assets/themes/modern/hd1-party-chibi-refresh.recipe.json'
+        cls.recipe=Path(os.environ.get('FD2_CHIBI_PARTY_RECIPE',ROOT/'remake/assets/themes/modern/hd1-party-chibi-refresh.recipe.json'))
         cls.catalog=cls.work/'base-catalog.json'
         cls.candidate=cls.work/'candidate'
         cls.base_view=tempfile.TemporaryDirectory(dir=cls.work)
@@ -41,7 +41,7 @@ class ChibiPartyTest(unittest.TestCase):
             expected=read(self.candidate/'manifest.json')
             self.assertEqual(m['groups'],expected['groups'])
             self.assertEqual(read(out/'catalog.json')['assets'],read(self.candidate/'catalog.json')['assets'])
-            self.assertEqual(m['other_assets_unchanged'],877)
+            self.assertEqual(m['other_assets_unchanged'],len(read(self.catalog)['assets'])-2*len(read(self.recipe)['groups']))
             for group in m['groups']:
                 for role in ('parent','hd'):
                     for name in group[role]['files']:

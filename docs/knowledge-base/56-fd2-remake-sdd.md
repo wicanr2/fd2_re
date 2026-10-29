@@ -1,6 +1,6 @@
 # 56 — FD2 remake 系統設計規格（SDD，2026-08-09）
 
-亞雷斯、哈諾、鐵諾與哈瓦特已依使用者定版換成大頭短身Q版，戰場與資訊窗使用新版圖源。三組新增人物由受控繪圖核實，普通首章只驗完整候選載入與原有角色操作／保存相容性；Harvat受控投影不作能力值或自然加入證據。範圍依[58](58-fd2-exe-re-coverage.md)、[61](61-modern-theme-runtime-spec.md)與主收據`hd1_chibi_party_followup_20261029`；#286其餘人物及轉職仍未完成，全人物完成後才重生原版／HD1總覽。
+亞雷斯、哈諾、鐵諾與哈瓦特已依使用者定版換成大頭短身Q版，戰場與資訊窗使用新版圖源。哈瓦特另已改成成熟、威嚴的大鬍子造型。三組新增人物由受控繪圖核實，普通首章只驗完整候選載入與原有角色操作／保存相容性；Harvat受控投影不作能力值或自然加入證據。範圍依[58](58-fd2-exe-re-coverage.md)、[61](61-modern-theme-runtime-spec.md)與主收據`hd1_harvat_mature_followup_20261029`；#286其餘人物及轉職仍未完成，全人物完成後才重生原版／HD1總覽。
 
 一般系統確認已接HD世界、DATO75頭像、字型、細框及選項，涵蓋END、離開、目前戰況保存／讀取與全軍移動。五caller的完整GPU／四組控制及普通END／NO返回抽樣通過；問句保留原文，YES／NO沿四語。現況與目前Go指紋依[58](58-fd2-exe-re-coverage.md)、[61](61-modern-theme-runtime-spec.md)及HD主收據`hd1_system_confirmation_followup_20261029`；其餘地形／介面保持未完成。
 

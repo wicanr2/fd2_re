@@ -216,9 +216,11 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 全部HD1人物重繪並接入正式清冊後，重新產生「原版／HD1」人物總覽，涵蓋所有可見人物圖組、轉職形態與敵方。依同一清冊的最新HD1圖源對齊原版方向及相位，更新README總覽入口與清晰分組圖，保留144／72／48像素樣本。總覽須讀正式map_sprite_hd_set，不能沿固定舊檔名或放大24像素父圖冒充HD1；全數完成前保留既有總覽的舊版標示。
 
-怎樣算做完：['使用者選定亞雷斯新比例，並保留定版原稿、原版來源、逐字提示與SHA；其他角色依相同標準重製，不能只改大圖總覽。', '125個可見圖組及1455幀逐組保留原生方向、步態／靜態相位、轉職身份、裝備特徵、腳底與透明契約；原版、已接受圖源及舊證據可追溯。', '正式清冊、白名單私人保存庫與載入預檢同步，拒收缺組、錯誤來源、方向錯誤、額外肢體／重複武器與裁切；其他圖源保持其已驗範圍。', '戰場人物、劇情地圖與資訊窗人物圖示沿同一美術主題顯示；四組介面／美術、走行／指令環與遮擋、普通操作及保存保持完成必要抽樣，集中逐章／平台人工仍由使用者接手。', '全部HD1人物重繪並登錄後，依同一正式清冊最新map_sprite_hd_set重新產生「原版／HD1」人物總覽，涵蓋人物、轉職及敵方並對齊方向／相位。更新README清晰分組圖及144／72／48像素樣本；不沿舊檔名或放大24像素父圖冒充HD1，不用整張長圖縮圖當作造型通過。']
+哈瓦特group3已依使用者修訂換成成熟眼神、厚實五官與寬厚紅褐大鬍子，保留原版裝備及Q版比例。只換兩項，另兩人與其他圖源保持；21完整繪圖／實際HUD、九種反例、三項重編及普通完整候選載入／交易相容性通過。普通來源沒有哈瓦特，不作他的自然出場或能力值證據。README三人對照同步，完整人物總覽仍待全數完成。
 
-證據：`['docs/knowledge-base/61-modern-theme-runtime-spec.md', 'remake/assets/themes/modern/catalog.json', 'docs/figures/modern-map-sprites-overview.png', 'docs/figures/hd1-ares-q-design.png', 'docs/figures/hd1-ares-q-game.png', 'remake/assets/themes/modern/hd1-ares-chibi-refresh.recipe.json', 'docs/figures/hd1-chibi-party-comparison.png', 'remake/assets/themes/modern/hd1-party-chibi-refresh.recipe.json', 'remake/cmd/fd2/modern_hd_chibi_party_test.go', 'docs/data/fd2-modern-hd-battlefield-20261019.json']`
+怎樣算做完：['使用者選定亞雷斯新比例，並保留定版原稿、原版來源、逐字提示與SHA；其他角色依相同標準重製，不能只改大圖總覽。', '125個可見圖組及1455幀逐組保留原生方向、步態／靜態相位、轉職身份、裝備特徵、腳底與透明契約；原版、已接受圖源及舊證據可追溯。', '正式清冊、白名單私人保存庫與載入預檢同步，拒收缺組、錯誤來源、方向錯誤、額外肢體／重複武器與裁切；其他圖源保持其已驗範圍。', '戰場人物、劇情地圖與資訊窗人物圖示沿同一美術主題顯示；四組介面／美術、走行／指令環與遮擋、普通操作及保存保持完成必要抽樣，集中逐章／平台人工仍由使用者接手。', '全部HD1人物重繪並登錄後，依同一正式清冊最新map_sprite_hd_set重新產生「原版／HD1」人物總覽，涵蓋人物、轉職及敵方並對齊方向／相位。更新README清晰分組圖及144／72／48像素樣本；不沿舊檔名或放大24像素父圖冒充HD1，不用整張長圖縮圖當作造型通過。', '哈瓦特各形態沿更老成、威嚴、大鬍子的修訂方向，保留原版髮鬚色與裝備，不能只換成少年臉配鬍子。']
+
+證據：`['docs/knowledge-base/61-modern-theme-runtime-spec.md', 'remake/assets/themes/modern/catalog.json', 'docs/figures/modern-map-sprites-overview.png', 'docs/figures/hd1-ares-q-design.png', 'docs/figures/hd1-ares-q-game.png', 'remake/assets/themes/modern/hd1-ares-chibi-refresh.recipe.json', 'docs/figures/hd1-chibi-party-comparison.png', 'remake/assets/themes/modern/hd1-party-chibi-refresh.recipe.json', 'remake/cmd/fd2/modern_hd_chibi_party_test.go', 'docs/data/fd2-modern-hd-battlefield-20261019.json', 'remake/assets/themes/modern/hd1-harvat-mature.recipe.json', 'docs/figures/hd1-harvat-mature-game.png']`
 
 ## runtime — 還沒接進正式執行期
 
@@ -376,9 +378,11 @@ HD1原生地圖資訊窗的細框、A／D、HP與已登錄地形縮圖已接入�
 
 使用者2026-10-28確認此項列入HD1 milestone。主規格為61，來源與進度依58及HD主收據；人工驗證由使用者接手。
 
-怎樣算做完：補齊尚未接HD的正式介面、確認／回覆與轉場，沿既有原位置、輸入、文字與保存；清晰黑體、HD框線與主題人物來源一致。必要載入、缺件、切換與狀態保持通過，人工驗證由使用者接手。
+使用者已選定HD1古金色雙層對話框原型下半部，原圖保存於docs/figures/hd1-gold-dialogue-prototype.png。維持原版框位、深藍底、字區與開收動畫；操作介面隨F11，人物美術仍隨F2。除既有提示外，故事對話需補接框線；規格61已READY，接線為下一切片，原型不是遊戲接線收據。
 
-證據：`docs/data/fd2-modern-hd-battlefield-20261019.json`
+怎樣算做完：補齊尚未接HD的正式介面、確認／回覆與轉場，沿既有原位置、輸入、文字與保存；清晰黑體、HD框線與主題人物來源一致。必要載入、缺件、切換與狀態保持通過，人工驗證由使用者接手。；並完成定版古金框故事／提示接線與獨立控制。
+
+證據：`['docs/data/fd2-modern-hd-battlefield-20261019.json', 'docs/figures/hd1-gold-dialogue-prototype.png', 'tools/build_fd2_hd1_gold_dialogue_prototype.py']`
 
 ### P1 HD1獨立控制：介面與美術主題分開切換
 

@@ -248648,7 +248648,8 @@
       ],
       "source_file_count": 1195,
       "source_tree_sha256": "d9fbebbc111a49da8df5ae32dd3f49df0c4a7496d6043bcb3fab4e7313b818a0",
-      "scope": "原版archive／目前owner受控來源，不新增戰鬥GPU、正常通關或原版動態證據。"
+      "scope": "原版archive／目前owner受控來源，不新增戰鬥GPU、正常通關或原版動態證據。",
+      "superseded_by": "hd1_harvat_mature_followup_20261029"
     },
     "assets": {
       "catalog": {
@@ -248670,7 +248671,8 @@
         "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-party-r1/private-git.json",
         "sha256": "40f1c94e4cf0cd98379c2da8f7066c5d03417d4de76e3a728268f1a40259264b"
       },
-      "scope": "三份選定母稿與72成品由清冊白名單保存；舊檔保持，私人提交細節只留本機收據。"
+      "scope": "三份選定母稿與72成品由清冊白名單保存；舊檔保持，私人提交細節只留本機收據。",
+      "catalog_superseded_by": "hd1_harvat_mature_followup_20261029"
     },
     "coverage": {
       "file": "docs/data/fd2-hd1-terrain-coverage.json",
@@ -248694,7 +248696,8 @@
         "file": "tools/build_fd2_hd1_chibi_comparison.py",
         "sha256": "eb8bc7868a3302eb5ac51aebbe39611bf8192d941e8d025209ebe185fea3b61b"
       },
-      "scope": "本批三組原版與實際144圖源四向中性及144／72／48尺寸。素材對照，非遊戲截圖或全人物總覽；全人物完成後另重生原版／HD1總覽。"
+      "scope": "本批三組原版與實際144圖源四向中性及144／72／48尺寸。素材對照，非遊戲截圖或全人物總覽；全人物完成後另重生原版／HD1總覽。",
+      "superseded_by": "hd1_harvat_mature_followup_20261029"
     },
     "cleanup": {
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-party-r1/cleanup.json",
@@ -248754,5 +248757,382 @@
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-chibi-party-r1/final-validation.json",
       "sha256": "f75c94402acace8f4e0e3d6c41bd2b46cd0644fadb31615ca6c7807df453d531"
     }
+  },
+  "hd1_harvat_mature_followup_20261029": {
+    "date": "2026-10-29",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1/NORMAL-TRANSACTION-COMPATIBILITY",
+    "base_commit": "ddda41d7ae1704436901e7acadaa532dfe9e7ccf",
+    "working_branch": "feat/hd1-harvat-mature",
+    "issue": 286,
+    "milestone": 1,
+    "user_decision": "哈瓦特要更老成、有威嚴、大鬍子；維持原版紅褐髮鬚、裝備及已定大頭短身比例。",
+    "scope": "只修group3兩個既有清冊項目與一母稿、十二張24父圖及十二張144圖源，其他881項及哈諾／鐵諾保持。玩法、方向／相位、座標、時鐘、保存格式與原版模式不變。",
+    "art": {
+      "recipe": {
+        "file": "remake/assets/themes/modern/hd1-harvat-mature.recipe.json",
+        "sha256": "c16a5dbb38831c448e240aa1ea2a97d055c367c57147bf385c13d4dd85e14768"
+      },
+      "master": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-harvat-mature-r1/harvat-hd1-big-head-q-v2-master.png",
+        "sha256": "e565358f19e65e5276f5e3f7a3d07ac5b6956612c9d988fd0b5cfa7f92f43c6c"
+      },
+      "base_catalog": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-harvat-mature-r1/base-catalog.json",
+        "sha256": "82bb8362a625d60c48c94dde4d12faebc79d5d55fa7af4cb36bfb487d30460f5"
+      },
+      "candidate_catalog": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-harvat-mature-r1/candidate/catalog.json",
+        "sha256": "1a6ef3b785345d4904a0d7531e5318118e87ee1a32250fdcb38858b24d36ccb0"
+      },
+      "candidate_manifest": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-harvat-mature-r1/candidate/manifest.json",
+        "sha256": "b25fe116f46b8d41a78b4b133e76706161bab68cff67edd18b2eaf2301ca31d1"
+      },
+      "compiler": {
+        "file": "tools/refresh_fd2_hd1_map_sprites.py",
+        "sha256": "2c8870ad0d470a51877b70ea8a058493fc35fa7ab933416889ad0b90f070cf1d"
+      },
+      "tool": "image_gen.imagegen",
+      "mode": "builtin",
+      "prompt": "逐字修稿提示、v1及原版參考SHA依recipe.image_generation。成熟五官／眼神與寬厚鬍鬚是美術方向，不新增角色實際年齡或劇情設定。原稿原樣保存，不以Python補畫。"
+    },
+    "gpu": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-harvat-mature-r1/gpu-r1-capture/receipt.json",
+        "sha256": "4eadfa02606812916546b4c459ab36d3cdde1a3fc029cd8181706e1016da9a38"
+      },
+      "test": {
+        "file": "remake/cmd/fd2/modern_hd_chibi_party_test.go",
+        "sha256": "ca256ee13886ea9ab3302494b978222519aa511c72b08fae81d3a6d188bee310"
+      },
+      "resource": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-harvat-mature-r1/gpu-r1.memory.json",
+          "sha256": "af4d640e125d2eb377d4efdee9969eb7c1ab2da16dc6a8fbbc25603792cc046d"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-harvat-mature-r1/gpu-r1.log",
+          "sha256": "0973ac113e8e320409171b5a2864f47ac2d4af517e5735452c7e4c246d7b6605"
+        },
+        "elapsed_seconds": 298.213,
+        "peak_bytes": 8589934592,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 342,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "platform_headroom_claimed": false
+      },
+      "cases": 21,
+      "pngs": 18,
+      "f2_roundtrips": 3,
+      "rgba_tolerance": 2,
+      "source_file_count": 1195,
+      "source_tree_sha256": "d9fbebbc111a49da8df5ae32dd3f49df0c4a7496d6043bcb3fab4e7313b818a0",
+      "scope": "沿用三人四向中性與正面三拍／原版介面正面一案，實際世界對獨立CPU，地圖／HUD、單位／RNG／保存保持。Harvat仍是明示Hano視覺投影，不作能力值或自然加入證據。8GiB達上限且max=342，無OOM或killed，不宣稱平台餘裕。"
+    },
+    "independent": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-harvat-mature-r1/registration.json",
+        "sha256": "8d4d6ed4dea3092d3db9c4e4550cd142668d115e6fa9ab0742a4688ad5d704bb"
+      },
+      "tool": {
+        "file": "tools/verify_fd2_hd1_chibi_party.py",
+        "sha256": "ad9c6e9201f6f2b1be761d4731bc5dc9d0b6adce9dc13fefc2b9cd2de24335fb"
+      },
+      "shared_core": {
+        "file": "tools/verify_fd2_hd1_chibi_refresh.py",
+        "sha256": "1dc7b20af747efafaa8d09733a0fb7008751a6d2f6fca933b293b2c0e149adb9"
+      },
+      "near_opaque_head_pixels": 243196,
+      "rejected_mutants": [
+        "missing",
+        "duplicate",
+        "catalog",
+        "source-code",
+        "false-save",
+        "wrong-hud",
+        "wrong-tolerance",
+        "missing-f2",
+        "actual-black-png"
+      ],
+      "policy": "近不透明alpha>=253，SrcOver背景上下界及整數捨入，前96列避開HP覆蓋，完整世界GPU容差2保持。"
+    },
+    "normal_compatibility": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-harvat-mature-r1/normal-r1-capture/receipt.json",
+        "sha256": "dfcf5713205431eb7da2a9bd892f1032fdf758cf403173904b0288e01f5b2480"
+      },
+      "resource": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-harvat-mature-r1/normal-r1.memory.json",
+          "sha256": "d9a38030d08825ea2568e7def94f8ea92de21d7865cc468876d38be6ea9f1fa3"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-harvat-mature-r1/normal-r1.log",
+          "sha256": "4396c274bbbbb7ea5b902ec7a5969387921dcbc64c0e08f38e8ea54097decedf"
+        },
+        "elapsed_seconds": 303.617,
+        "peak_bytes": 5360009216,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "platform_headroom_claimed": false
+      },
+      "driver": {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "65d3e61454c99ba65f9073ba91d412c59265e48b9c73535db167f55a6fa2c153"
+      },
+      "helper": {
+        "file": "tools/fd2_hd1_chibi_gui.py",
+        "sha256": "7b7f3f0335786d199f0ea8c225f801704058d6dc4b5e692fa819a02c530b8a41"
+      },
+      "binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-ares-q-binary-r1",
+        "sha256": "69c699b76364b2e0747f2e8c6a5c7aa822f7744a01bd56bdf1823e727a16e121"
+      },
+      "source": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hd-world-gui-r7/user-data/fd2_re/fd2_save.json",
+        "sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2"
+      },
+      "scope": "未改寫既有首章來源，只驗完整候選載入、原有亞雷斯走行取消、四組呈現及F5／新程序LOAD；來源沒有哈瓦特，不宣稱他的普通出場。",
+      "state_injection": false,
+      "save_bytes_equal": true,
+      "new_process_title_load": true,
+      "pngs": 10
+    },
+    "source_regression": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-harvat-mature-r1/source-r1.log",
+        "sha256": "85d300e0c52f4dcacb978370b3156656d11399fc91b0ad459dd7e97f0a231dab"
+      },
+      "tool": {
+        "file": "tools/test_fd2_hd1_chibi_party.py",
+        "sha256": "88ec6ff1733fa422510564c8490e5557f464570256546a7520eb2c88c2c2bf60"
+      },
+      "tests": 3,
+      "source_rejections": 8,
+      "rebuilt_pngs": 24,
+      "unchanged_assets": 881,
+      "scope": "透過明示配方支援單組，舊三組預設保持；從舊清冊白名單完整重編、拒覆寫與八來源拒收。legacy compile_group的ResourceWarning不作產品缺陷。"
+    },
+    "legacy_verifier_regression": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-harvat-mature-r1/legacy-verifier-regression.json",
+      "sha256": "bf9f25a81a227cfe4fc1e19375e1bf79fae2fe68583b80f548bd35410d5403b2"
+    },
+    "prior_go_regression": {
+      "entry": "hd1_chibi_party_followup_20261029.go_regression",
+      "source_tree_sha256": "d9fbebbc111a49da8df5ae32dd3f49df0c4a7496d6043bcb3fab4e7313b818a0",
+      "reason": "本輪正式Go及Go測試未改，來源仍1195份／相同SHA；沿用22個CPU／字串頂層測試，不聲稱重跑。舊全圖庫HUD GPU未啟用仍不算通過。"
+    },
+    "current_consumer_inventory": {
+      "observed": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-harvat-mature-r1/consumers-formal.json",
+        "sha256": "f20a62792587a65d2579c31763d3a4a347d1367f4fda21b85f28f13434085a50"
+      },
+      "verified": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-harvat-mature-r1/consumers-verified.json",
+        "sha256": "69ba2cbf1b143e3b054ad8ba77aee2a8105857180ac8f1a540eeb41fe4106e6a"
+      },
+      "resource": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-harvat-mature-r1/consumers-r1.memory.json",
+          "sha256": "b594c219cc0f4eb9b84af5b6cf34c916444785de6bccd159c83a91f418e5d572"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-harvat-mature-r1/consumers-r1.log",
+          "sha256": "c4e40221c704b5d23c7064afbfcf1fa9408e29d7bf3cc7ea562480cd01a083fc"
+        },
+        "elapsed_seconds": 69.908,
+        "peak_bytes": 1491722240,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "platform_headroom_claimed": false
+      },
+      "cases": 21,
+      "archive_frames": 416,
+      "rejected_mutants": [
+        "wrong-archive",
+        "wrong-resource",
+        "wrong-frame",
+        "wrong-pixels",
+        "wrong-mask",
+        "missing-case",
+        "false-gpu",
+        "missing-hd",
+        "wrong-code",
+        "wrong-command",
+        "wrong-packed",
+        "wrong-descriptor",
+        "missing-map-route",
+        "wrong-lmi-kind",
+        "wrong-lmi-pixels",
+        "wrong-lmi-entry",
+        "missing-lmi-hd",
+        "wrong-map-mask",
+        "missing-map-mask-hd"
+      ],
+      "source_file_count": 1195,
+      "source_tree_sha256": "d9fbebbc111a49da8df5ae32dd3f49df0c4a7496d6043bcb3fab4e7313b818a0"
+    },
+    "assets": {
+      "catalog": {
+        "file": "remake/assets/themes/modern/catalog.json",
+        "sha256": "ac91670b3496d6653985ae4509d3c0e3505576107460c756822bf6e3bc89169f"
+      },
+      "registered_assets": 883,
+      "changed_entries": 2,
+      "unchanged_entries": 881,
+      "registration": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-harvat-mature-r1/registration.json",
+        "sha256": "8d4d6ed4dea3092d3db9c4e4550cd142668d115e6fa9ab0742a4688ad5d704bb"
+      },
+      "formal_validation": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-harvat-mature-r1/formal-validation-r2.memory.json",
+          "sha256": "ed70d8a962a3be8880fcdfdc1657999e139801c21c9b66cd85d2f4ff225fd170"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-harvat-mature-r1/formal-validation-r2.log",
+          "sha256": "bc59919ddc67e8b775c3771268213dea7672763f38c1be9e0f65a4b4e93fcbe8"
+        },
+        "elapsed_seconds": 27.616,
+        "peak_bytes": 1073741824,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 3261,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "platform_headroom_claimed": false
+      },
+      "private_sync": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-harvat-mature-r1/private-sync.json",
+        "sha256": "80afa935c487383c5f5cca3dd03969b0a1fc04276d926819f8d4c916c5f02a66"
+      },
+      "private_git": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-harvat-mature-r1/private-git.json",
+        "sha256": "1fcbd79322ad1917465fba01d2f22e48c14e5dbb4cb76598cc27268a8e1d8b4f"
+      },
+      "scope": "25個新版素材白名單保存，7224個既有實檔SHA保持；私人提交細節只留本機。首次45秒全量核對未完成不算通過，r2相同輸入通過，無OOM但1GiB達上限max=3261，不宣稱餘裕。"
+    },
+    "coverage": {
+      "file": "docs/data/fd2-hd1-terrain-coverage.json",
+      "sha256": "eb1b97da5172cd19e1fc861ef02ee588c1428cca2ebce25112d19a2b935f5cce"
+    },
+    "public_comparison": {
+      "image": {
+        "file": "docs/figures/hd1-chibi-party-comparison.png",
+        "sha256": "3a0836da28745658fa1cae8dad5a4b3a011f58d795b390298a7f56babd01bcce"
+      },
+      "source": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-harvat-mature-r1/party-comparison.png",
+        "sha256": "3a0836da28745658fa1cae8dad5a4b3a011f58d795b390298a7f56babd01bcce"
+      },
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-harvat-mature-r1/party-comparison.json",
+        "sha256": "57ca60bc3cb80b7b2acf0f40ffbaf007d9801b9cd9e12fb9ea21756789ce8260"
+      },
+      "tool": {
+        "file": "tools/build_fd2_hd1_chibi_comparison.py",
+        "sha256": "e4d2f527bb851ccd4a6115fc81c298758f4bf1c783bab5623d73cdee1386a9a3"
+      },
+      "scope": "只更新哈瓦特；另兩人context欄位與目前清冊逐欄保持。原版／144圖源四向及144／72／48素材對照，非全人物完成。"
+    },
+    "public_game": {
+      "image": {
+        "file": "docs/figures/hd1-harvat-mature-game.png",
+        "sha256": "c598e4adec1a91e404b8f6d950cfd05458a8673755246d32c4d5bfed2f942cac"
+      },
+      "source": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-harvat-mature-r1/gpu-r1-capture/party-g003-f00-ui-hd.png",
+        "sha256": "c598e4adec1a91e404b8f6d950cfd05458a8673755246d32c4d5bfed2f942cac"
+      },
+      "scope": "完整1920×1200受控Game.Draw原檔，非自然出場或正常能力值證據。"
+    },
+    "diagnostics": [
+      "分組圖首輪缺/modern掛載，context來源alias不可讀；補同一私人包唯讀掛載後通過，未改圖源或拒收條件。",
+      "金框原型先遇Pillow缺件及ImageMagick SVG delegate問題；改標準PNG檔頭檢查及既有FFmpeg librsvg呈現，這些是工具環境問題，不是遊戲缺陷。"
+    ],
+    "reproduce": {
+      "prepare": "沿refresh_fd2_hd1_map_sprites.py prepare；本批recipe、base-catalog.json及歷史白名單檢視、v2母稿，使用不存在的絕對out。",
+      "gpu": "完整命令依gpu.resource.report；原三人21案例及18PNG不減，FD2_HD_CHIBI_PARTY_*指本批候選。",
+      "verify": "verify_fd2_hd1_chibi_party.py加--recipe指本批單組配方；--gpu --candidate --normal --binary --out --self-test，通過後加--register --formal --destination。舊三組預設反例回歸另列。",
+      "comparison": "build_fd2_hd1_chibi_comparison.py --candidate --original --context-manifest 前批三組manifest --out；候選alias需要/modern唯讀掛載。"
+    },
+    "production_go_changed": false,
+    "recording_created": false,
+    "new_release": false,
+    "remaining": [
+      "其餘人物／轉職與敵方仍依#286續做，全數完成後重生原版／HD1總覽。",
+      "古金框原型已定案、READY，正式接線接續；其他UI／地形／獨立控制仍依#282／283／284。"
+    ],
+    "final_integrity": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-harvat-mature-r1/final-validation.json",
+      "sha256": "61d757fbce191bc924d97efb908c4eb6279a115e2a53f35f76896b0eaca66164"
+    }
+  },
+  "hd1_gold_dialogue_prototype_20261029": {
+    "date": "2026-10-29",
+    "status": "READY-PROTOTYPE-APPROVED-NOT-RUNTIME",
+    "issue": 283,
+    "user_decision": "採用這版古金框（建議）",
+    "image": {
+      "file": "docs/figures/hd1-gold-dialogue-prototype.png",
+      "sha256": "2251195701b96682199571bc9e0d456dc8bc9a6a539be59fbf6496724bc46187"
+    },
+    "source": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-gold-dialogue-prototype-r1.png",
+      "sha256": "2251195701b96682199571bc9e0d456dc8bc9a6a539be59fbf6496724bc46187"
+    },
+    "svg": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-gold-dialogue-prototype-r1.svg",
+      "sha256": "844469e390223fec5c2baf4014dabdc779937ba10e196db190eca2c2ad71f68e"
+    },
+    "html": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-gold-dialogue-prototype-r1.html",
+      "sha256": "a65dd04dc9b36ef0fbb74d2d786bddf59626aeba64a8e45880a32e93ca5f76be"
+    },
+    "receipt": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-gold-dialogue-prototype-r1.json",
+      "sha256": "be9d764e8a50f3c43deb0886e723543704ca74b47b43c60580e033e040f5d318"
+    },
+    "verified": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-gold-dialogue-prototype-r1-verified.json",
+      "sha256": "e86e6c3cc098b3034c0e4f9f9acd9eb22a29b8200b3d798798db58143021d141"
+    },
+    "tool": {
+      "file": "tools/build_fd2_hd1_gold_dialogue_prototype.py",
+      "sha256": "160d7adb8c8f149f5ebbd8e3ca3aa1f4cbe872a554382aa2922719d6b1092577"
+    },
+    "palette": {
+      "gold": "#b99a58",
+      "highlight": "#e6d2a0",
+      "shadow": "#70532e",
+      "outer": "#302719",
+      "inner": "#171a25"
+    },
+    "scope": "下半部古金框原型已定版，SVG只疊原框18像素邊帶，兩幅圖21060點不同且只在邊帶。保留原版框位／深藍底／文字與頭像。接下來補故事與提示對話，介面隨F11、人物仍隨F2；此收據不代表已接遊戲。",
+    "reproduce": "build_fd2_hd1_gold_dialogue_prototype.py --source 原始1920PNG --out不存在前綴；用fd2-promo-local內ffmpeg -v error -i PREFIX.svg -frames:v 1 PREFIX.png呈現。原圖及完整來源SHA在receipt，沒有第三方D&D美術素材。"
   }
 }

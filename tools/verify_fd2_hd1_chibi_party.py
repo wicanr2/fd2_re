@@ -15,17 +15,23 @@ RECIPE=ROOT/'remake/assets/themes/modern/hd1-party-chibi-refresh.recipe.json'
 GROUPS=(1,2,3)
 FRAMES=(0,1,2,3,6,9)
 
-def verify_gpu(d,folder,candidate):
-    m=read(candidate/'manifest.json');r=read(RECIPE)
+def verify_gpu(d,folder,candidate,recipe=RECIPE):
+    m=read(candidate/'manifest.json');r=read(recipe)
     require(d.get('status')=='PASS-HD1-CHIBI-PARTY-GPU','GPU status')
     require(d.get('catalog_sha256')==sha(candidate/'catalog.json') and d.get('manifest_sha256')==sha(candidate/'manifest.json'),'candidate provenance')
-    require(m['recipe_sha256']==sha(RECIPE) and m['compiler_sha256']==sha(ROOT/'tools/refresh_fd2_hd1_map_sprites.py'),'recipe/compiler changed')
+    require(m['recipe_sha256']==sha(recipe) and m['compiler_sha256']==sha(ROOT/'tools/refresh_fd2_hd1_map_sprites.py'),'recipe/compiler changed')
     require(sha(ROOT/r['approved_preview'])==r['approved_preview_sha256'],'approved proportion changed')
-    require([g['group'] for g in m['groups']]==list(GROUPS),'group manifest')
-    records={g['group']:g for g in m['groups']}
+    selected=[g['group'] for g in r['groups']]
+    require(bool(selected) and len(set(selected))==len(selected) and set(selected)<=set(GROUPS),'recipe groups')
+    require([g['group'] for g in m['groups']]==selected,'group manifest')
+    catalog=read(candidate/'catalog.json')
+    parents={a['source_group']:a for a in catalog['assets'] if a['role']=='map_sprite_set'}
+    hd={a['source_group']:a for a in catalog['assets'] if a['role']=='map_sprite_hd_set'}
+    records={g:dict(parent=parents[g],hd=hd[g]) for g in GROUPS}
     for row,recipe in zip(m['groups'],r['groups']):
         require(row['master_sha256']==recipe['master_sha256']==sha(candidate/row['master_file']),'master changed')
         for role in ('parent','hd'):
+            require(row[role]==records[row['group']][role],'manifest/catalog source mismatch')
             require(len(row[role]['files'])==12,'incomplete frames')
             for name,digest in zip(row[role]['files'],row[role]['frame_sha256']):require(sha(candidate/name)==digest,'frame changed')
     code,count=tree()
@@ -46,7 +52,9 @@ def verify_gpu(d,folder,candidate):
         with Image.open(folder/name) as im:image=im.convert('RGBA')
         require(image.size==(1920,1200),'GPU geometry')
         for frame,box in ((f,rect(s['map_rect'])),(f%3,rect(s['hud_rect']))):
-            with Image.open(candidate/records[g]['hd']['files'][frame]) as im:sprite=im.convert('RGBA')
+            source=candidate/records[g]['hd']['files'][frame]
+            require(sha(source)==records[g]['hd']['frame_sha256'][frame],'sample source changed')
+            with Image.open(source) as im:sprite=im.convert('RGBA')
             checked,matched=core(image,sprite,box)
             require(checked>=600 and matched*100>=checked*98,'actual map/HUD pixels mismatch')
             pixels+=checked
@@ -71,19 +79,21 @@ def verify_normal(d,folder,candidate,binary):
     require(not visible.intersection(GROUPS),'source scope changed')
     return dict(status='PASS-FULL-CANDIDATE-NORMAL-TRANSACTION',pngs=10,scope='unchanged chapter1 source; new groups1/2/3 actual pixels verified only by controlled GPU, not natural membership')
 
-def register(formal,candidate,destination):
+def register(formal,candidate,destination,recipe=RECIPE):
     old=read(formal);new=read(candidate/'catalog.json');m=read(candidate/'manifest.json')
     require(sha(formal)==m['base_catalog_sha256'],'formal changed')
     require(len(old['assets'])==len(new['assets'])==883,'asset count changed')
     changed=[(a,b) for a,b in zip(old['assets'],new['assets']) if a!=b]
-    require(len(changed)==6 and Counter((a['source_group'],a['role']) for a,b in changed)==Counter((g,role) for g in GROUPS for role in ('map_sprite_set','map_sprite_hd_set')),'unrelated changes')
+    groups=[g['group'] for g in read(recipe)['groups']]
+    require(bool(groups) and len(set(groups))==len(groups) and set(groups)<=set(GROUPS),'registration groups')
+    require(len(changed)==2*len(groups) and Counter((a['source_group'],a['role']) for a,b in changed)==Counter((g,role) for g in groups for role in ('map_sprite_set','map_sprite_hd_set')),'unrelated changes')
     require(all(a['asset_id']==b['asset_id'] and a['source_group']==b['source_group'] and a['role']==b['role'] for a,b in changed),'asset identity changed')
     require(formal.stat().st_uid==destination.stat().st_uid==os.getuid(),'owned output required')
     names=set()
     for g in m['groups']:
         names.add(g['master_file'])
         for role in ('parent','hd'):names.update(g[role]['files'])
-    require(len(names)==75,'expected three masters and72 frames')
+    require(len(names)==25*len(groups),'expected one master and24 frames per group')
     for name in names:
         require(Path(name).name==name and (candidate/name).is_file(),'unsafe file')
         require(not (destination/name).exists() or sha(destination/name)==sha(candidate/name),'different existing art')
@@ -93,15 +103,16 @@ def register(formal,candidate,destination):
     with tempfile.NamedTemporaryFile('w',dir=formal.parent,delete=False) as f:
         f.write(json.dumps(new,ensure_ascii=False,indent=2)+'\n');temp=Path(f.name)
     os.chmod(temp,formal.stat().st_mode&0o777);temp.replace(formal)
-    return dict(status='REGISTERED-CHIBI-PARTY',catalog_sha256=sha(formal),changed_entries=6,unchanged_entries=877,new_files=75)
+    return dict(status='REGISTERED-CHIBI-PARTY',catalog_sha256=sha(formal),changed_entries=len(changed),unchanged_entries=883-len(changed),new_files=len(names))
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     for n in ('gpu','candidate','normal','binary','out'):p.add_argument('--'+n,type=Path,required=True)
     for n in ('formal','destination'):p.add_argument('--'+n,type=Path)
+    p.add_argument('--recipe',type=Path,default=RECIPE,help='明示本批配方；只允許group1／2／3子集，完整21案例仍不可省略')
     p.add_argument('--self-test',action='store_true');p.add_argument('--register',action='store_true');a=p.parse_args()
     require(not a.out.exists(),'fresh report required')
-    d=read(a.gpu);result=verify_gpu(d,a.gpu.parent,a.candidate);result['normal']=verify_normal(read(a.normal),a.normal.parent,a.candidate,a.binary)
+    d=read(a.gpu);result=verify_gpu(d,a.gpu.parent,a.candidate,a.recipe);result['normal']=verify_normal(read(a.normal),a.normal.parent,a.candidate,a.binary)
     rejected=[]
     if a.self_test:
         for fault in ('missing','duplicate','catalog','source-code','false-save','wrong-hud','wrong-tolerance','missing-f2'):
@@ -115,7 +126,7 @@ def main():
             elif fault=='wrong-tolerance':x['cases'][0]['rgba_tolerance']=3
             else:
                 for row in x['cases']:row['f2']=False
-            try:verify_gpu(x,a.gpu.parent,a.candidate)
+            try:verify_gpu(x,a.gpu.parent,a.candidate,a.recipe)
             except (ValueError,KeyError,IndexError):rejected.append(fault)
             else:raise ValueError('mutant accepted: '+fault)
         with tempfile.TemporaryDirectory(dir=a.out.parent) as t:
@@ -125,13 +136,13 @@ def main():
                 out=folder/row['file']
                 if not changed:Image.new('RGB',(1920,1200)).save(out);row['sha256']=sha(out);changed=True
                 else:out.symlink_to((a.gpu.parent/row['file']).resolve())
-            try:verify_gpu(x,folder,a.candidate)
+            try:verify_gpu(x,folder,a.candidate,a.recipe)
             except ValueError as e:require('pixels mismatch' in str(e),'black PNG wrong failure');rejected.append('actual-black-png')
             else:raise ValueError('black PNG accepted')
     result['rejected_mutants']=rejected
     if a.register:
         require(a.formal is not None and a.destination is not None,'formal/destination required')
-        result['registration']=register(a.formal,a.candidate,a.destination)
-    result['inputs']={k+'_sha256':sha(v) for k,v in dict(gpu=a.gpu,normal=a.normal,binary=a.binary,recipe=RECIPE,tool=Path(__file__)).items()}
+        result['registration']=register(a.formal,a.candidate,a.destination,a.recipe)
+    result['inputs']={k+'_sha256':sha(v) for k,v in dict(gpu=a.gpu,normal=a.normal,binary=a.binary,recipe=a.recipe,tool=Path(__file__)).items()}
     a.out.write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n');print(json.dumps(result,ensure_ascii=False))
 if __name__=='__main__':main()
