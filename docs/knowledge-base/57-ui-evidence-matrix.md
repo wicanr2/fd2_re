@@ -1,6 +1,6 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
-洛娜5、萊汀6與貝克威13的基底已依原版重繪大頭短身及各自五官，亞雷斯54沿已驗基底4恢復成年寬方面容並保留劍盾。地圖／資訊窗、獨立控制與保存保持通過，54視覺槽投影逐筆揭露。三組新增重繪使Q比例餘項由69降至66；其他個別面容與完整總覽仍待，Gaia保持定版。現況數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源為主收據hd1_knights_bow_followup_20261030。
+蘭斯洛特7、希莉亞8、瑪琳10及索菲亞11已依各自原版頭像與十二姿態重繪大頭短身。兩人空手、弓箭筒與短直杆各按原生呈現，馬尾及四向遮蔽保持。地圖／資訊窗、獨立控制與保存相容通過，四組均無身份或selector投影；Q比例餘項66→62，其他面容及完整總覽仍待，Gaia保持定版。現況數量依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源為主收據hd1_lance_bow_clerics_followup_20261030。
 
 戶外草、土、沙、水與石路已依定版風格刷新，原生輪廓、物件與規則保持。完整GPU及普通首章切換、走行取消、保存冷讀通過，README總覽及普通遊玩圖已更新。現況與來源依[58](58-fd2-exe-re-coverage.md)、[61](61-modern-theme-runtime-spec.md)及主收據`hd1_painted_ground_followup_20261029`；洞窟／物件與其餘缺圖續作，人工由使用者接手。
 

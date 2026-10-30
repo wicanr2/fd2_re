@@ -1,0 +1,305 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_hd1_chibi_map_refresh",
+  "approved_preview": "docs/figures/hd1-ares-q-design.png",
+  "approved_preview_sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e",
+  "native_bank_sha256": "7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44",
+  "palette_sha256": "404db1ca72ffc19fa7404fbc59bde98cdf239f63fe3375ec248a8142073a28bf",
+  "base_catalog_sha256": "1ab9c50030452450773b31b50a7935e53480a3f3891ac598e91319ac72a68da5",
+  "approval": "沿使用者已定大頭短身、逐人原版五官及持續推進授權；處理7／8／10／11基底，正式規則／保存不改。",
+  "groups": [
+    {
+      "group": 7,
+      "master_file": "fdicon-007-hd1-portrait-q-v1-master.png",
+      "master_sha256": "f2a83266385d5f2dfdfebb48ff25c9702dc163ce687ded0a739a74c7deff2fcc",
+      "output_prefix": "fdicon-007-hd1-portrait-q-v1"
+    },
+    {
+      "group": 8,
+      "master_file": "fdicon-008-hd1-portrait-q-v1-master.png",
+      "master_sha256": "fb6da71b1db71f6a30396aeb37675e3ee05f9ac1503ee42a3e2daf050f8b621d",
+      "output_prefix": "fdicon-008-hd1-portrait-q-v1"
+    },
+    {
+      "group": 10,
+      "master_file": "fdicon-010-hd1-portrait-q-v1-master.png",
+      "master_sha256": "a4291d38a8f6daf7ec4060ceaa9f8c3788d227abf6b0df398c26bdfedf196469",
+      "output_prefix": "fdicon-010-hd1-portrait-q-v1"
+    },
+    {
+      "group": 11,
+      "master_file": "fdicon-011-hd1-portrait-q-v1-master.png",
+      "master_sha256": "0a5448e448dcb439ce797f664389f36fbf6eaa7248f906c2f8b7eed2256d5428",
+      "output_prefix": "fdicon-011-hd1-portrait-q-v1"
+    }
+  ],
+  "faces": [
+    {
+      "group": 7,
+      "name": "蘭斯洛特",
+      "portrait_file": "remake/assets/portraits/DATO_007_m0.png",
+      "portrait_sha256": "8b25b682b47b248ef3fcdf1071607be96d18f14951377f37bb30cae5376e492b",
+      "traits": [
+        "棕長髮無頭帶",
+        "瘦長嚴肅臉",
+        "長直鼻與窄眼",
+        "薄閉唇"
+      ],
+      "comparison_label": "原版大頭像／實際地圖圖源，非480對話頭像驗收"
+    },
+    {
+      "group": 8,
+      "name": "希莉亞",
+      "portrait_file": "remake/assets/portraits/DATO_008_m0.png",
+      "portrait_sha256": "9e19ae83057a90c4c6e2eae9f1ccc202c5e3d939ee0fd882724286fae0243887",
+      "traits": [
+        "褐色長波髮",
+        "溫暖褐色眉眼",
+        "柔和橢圓臉",
+        "紅色微笑"
+      ],
+      "comparison_label": "原版大頭像／實際地圖圖源，非480對話頭像驗收"
+    },
+    {
+      "group": 10,
+      "name": "瑪琳",
+      "portrait_file": "remake/assets/portraits/DATO_010_m0.png",
+      "portrait_sha256": "f5adac25a4b90b6d0a936be8b54e4093d8196e1dfdcfa170f9ddff3365ef4052",
+      "traits": [
+        "粉紫高馬尾與金髮束",
+        "成熟長橢圓臉",
+        "暖褐杏眼與細鼻",
+        "紫色唇形"
+      ],
+      "comparison_label": "原版大頭像／實際地圖圖源，非480對話頭像驗收"
+    },
+    {
+      "group": 11,
+      "name": "索菲亞",
+      "portrait_file": "remake/assets/portraits/DATO_011_m0.png",
+      "portrait_sha256": "42553488c68bfd03ac548383b1ba374eacc85a80e9e1324bd96a17b184b1f04d",
+      "traits": [
+        "灰金後馬尾與暗紅頂飾",
+        "成熟橢圓臉",
+        "暖褐眉眼與長鼻",
+        "紅唇微笑"
+      ],
+      "comparison_label": "原版大頭像／實際地圖圖源，非480對話頭像驗收"
+    }
+  ],
+  "party_bindings": [
+    {
+      "group": 7,
+      "native_identity": 7,
+      "portrait": 7,
+      "fig": 7,
+      "scenario_file": "remake/assets/scenarios/ch19.json",
+      "scenario_sha256": "160b96dc5482cac355353d86e373858e284d894876a926544b32aacecbf5022b",
+      "selector_projection_injected": false
+    },
+    {
+      "group": 8,
+      "native_identity": 8,
+      "portrait": 8,
+      "fig": 8,
+      "scenario_file": "remake/assets/scenarios/ch03.json",
+      "scenario_sha256": "2b80cf4ef050a5b39b62fa033e946bd59f2609acb474d93bb63c19609c3de55c",
+      "selector_projection_injected": false
+    },
+    {
+      "group": 10,
+      "native_identity": 10,
+      "portrait": 10,
+      "fig": 10,
+      "scenario_file": "remake/assets/scenarios/ch06.json",
+      "scenario_sha256": "20e405bbb5e9d31b1a6b00952b527a38d16998a8993944bea19990826abe5c0b",
+      "selector_projection_injected": false
+    },
+    {
+      "group": 11,
+      "native_identity": 11,
+      "portrait": 11,
+      "fig": 11,
+      "scenario_file": "remake/assets/scenarios/ch11.json",
+      "scenario_sha256": "127aee522a3b213cd0ece3675736e73cf62cd9c95385d852f08f2a481a1b4c06",
+      "selector_projection_injected": false
+    }
+  ],
+  "image_generation": {
+    "tool": "image_gen.imagegen",
+    "mode": "builtin",
+    "transparent_background": true,
+    "jobs": [
+      {
+        "group": 7,
+        "prompt": "Use case: identity-preserve. Asset type: HD1 tactical map sprite MASTER, Flame Dragon Knights2. Image1 ORIGINAL twelve map poses, correct game palette, is authority for silhouette, gear, outfit colors, view directions and occlusion. Image2 is THIS character's original DATO portrait, authority for their own face. Image3 approved HD1 Q art is ONLY a style/proportion reference: huge head AND visible face about67-70% of total height, extremely short compact torso and legs, stubby boots, clean dark contours, large readable color blocks, smooth restrained painted/cel2D shading. Do NOT copy Image3 character's face, hair, costume, weapons or expression. Make this person's actual original face recognizable at144/72/48px; do not use one generic cute round-eyed baby face. Exactly3columns by4rows, twelve isolated full-body figures. Rows FRONT looking directly toward viewer, LEFT true profile facing screen left, BACK away, RIGHT true profile facing screen right. EVERY row column1 neutral both feet planted, column2 small grounded left step, column3 small grounded right step. First column neutral, not middle. Same scale and foot baseline; generous clear gaps and alpha margins; no clipped hair, boots or gear. Exactly two arms/hands/two legs with natural wrists. Preserve source-specific hand/gear occlusion; no duplicate weapon, floating piece, third limb, alternate added equipment, unnecessary details, bright toy shine, photo/3D/pixel upscale. Actual transparent alpha, no checkerboard/background, floor, shadow, glow, text, labels, border or grid. Original group007 LANCELOT/蘭斯洛特. Clean-shaven mature adult MALE with a lean LONG OVAL/ANGULAR face, high cheek planes, long straight prominent nose, narrow deep-set dark eyes, heavy tense brows, thin CLOSED stern pursed lips and a tapered but firm chin. His original face is serious controlled and more lean/oval than Ares' broad square face; no smile, no giant blue child eyes or dot nose, no beard. LONG chestnut/rust-brown hair, parted/swept off forehead, long broad hair curtains down back and behind shoulders, no headband or cap, no new ponytail/tie. Original muted GRAY-GREEN compact armor/shoulder plates with dark navy sections, high BLUE/NAVY neck scarf and original blue drape at lower back. Keep neck scarf BELOW mouth/chin so original portrait's thin closed mouth is visible, do not turn scarf into a ninja mask over nose/mouth. Original twelve MAP poses show BOTH HANDS EMPTY: absolutely NO sword, spear, lance, shield, staff or weapon, even though the portrait edge hints at an object. Do not invent a weapon from class/name or portrait. No bag, cape clasp, gold ornaments, long realistic legs or detailed rivets. Original broad dark-blue scarf and back hair silhouette remain readable; enormous head AND face, extremely short body.",
+        "selected": true,
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r11/group-007-original.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r11/portrait-007.png",
+          "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/fdicon-006-hd1-portrait-q-v1-master.png"
+        ],
+        "source": "exec-84a7056e-ce7e-4288-994b-1fb54586039e.png",
+        "reason": "選用個別原版面容與原生裝備",
+        "source_sha256": "f2a83266385d5f2dfdfebb48ff25c9702dc163ce687ded0a739a74c7deff2fcc",
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r11/group-007-original.png",
+            "sha256": "0601355ae4993c8919e26749f6da9d8dc668965235f2f4aca9deaba0845e178b"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r11/portrait-007.png",
+            "sha256": "a583522dc16ab5fe83591578516fb39e4f6fc3698b41ae7db54e3d363d8f84e9"
+          },
+          {
+            "file": "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/fdicon-006-hd1-portrait-q-v1-master.png",
+            "sha256": "30e9a558c9a0c1a6a466ea394697c65385834b37c5a04650cc15fc39a1e37313"
+          }
+        ]
+      },
+      {
+        "group": 8,
+        "prompt": "Use case: identity-preserve. Asset type: HD1 tactical map sprite MASTER, Flame Dragon Knights2. Image1 ORIGINAL twelve map poses, correct game palette, is authority for silhouette, gear, outfit colors, view directions and occlusion. Image2 is THIS character's original DATO portrait, authority for their own face. Image3 approved HD1 Q art is ONLY a style/proportion reference: huge head AND visible face about67-70% of total height, extremely short compact torso and legs, stubby boots, clean dark contours, large readable color blocks, smooth restrained painted/cel2D shading. Do NOT copy Image3 character's face, hair, costume, weapons or expression. Make this person's actual original face recognizable at144/72/48px; do not use one generic cute round-eyed baby face. Exactly3columns by4rows, twelve isolated full-body figures. Rows FRONT looking directly toward viewer, LEFT true profile facing screen left, BACK away, RIGHT true profile facing screen right. EVERY row column1 neutral both feet planted, column2 small grounded left step, column3 small grounded right step. First column neutral, not middle. Same scale and foot baseline; generous clear gaps and alpha margins; no clipped hair, boots or gear. Exactly two arms/hands/two legs with natural wrists. Preserve source-specific hand/gear occlusion; no duplicate weapon, floating piece, third limb, alternate added equipment, unnecessary details, bright toy shine, photo/3D/pixel upscale. Actual transparent alpha, no checkerboard/background, floor, shadow, glow, text, labels, border or grid. Original group008 SHELIA/希莉亞. Clearly female young ADULT with a soft OVAL face and tapered rounded chin, gently curved brows, warm brown almond eyes (friendly slightly open, not huge circular black doll eyes), a delicately defined straight nose bridge and a warm small RED smiling mouth, with restrained tiny visible tooth highlight as in portrait. Friendly bright expression, distinct from Rona's cool closed red lips, Marlene's purple lips and Sophia's mature knowing smile. No elf ears, angry V-brows or baby cheeks. Original long thick wavy OLIVE/CHESTNUT BROWN hair with broad side sweeps and loose back waves, not tied ponytail, no helmet. Original MAP red forehead band stays RED; do not replace it with a big elaborate gold/blue crown copied from portrait. Preserve simple map red band and own portrait face. Original deep PLUM/PURPLE scarf/collar, compact gray-green/dark teal clothes and shoulder pieces, navy/teal lower clothes and gray-green stubby boots, brown/red simple belt. Exactly ONE slender brown/olive simple curved BOW with fine string, held down, no nocked arrow or shooting pose, plus ONE diagonal brown back QUIVER with a few muted original brown/green fletchings. FRONT bow on viewer LEFT, along outer hair/body edge. LEFT profile far-side bow occluded behind hair/body, do not put bow ahead of nose; quiver stays strapped to back. BACK bow viewer RIGHT and quiver diagonal across lower back toward upper-left. RIGHT profile bow vertical at LEFT edge of face/hair boundary, behind cheek/nose, not sticking out screen right ahead of nose. Keep same anatomical weapon hand, free hand empty, do not duplicate bow or add loose arrow, sword, staff, shield, pouch or cloak. Enormous readable head AND face, tiny body.",
+        "selected": true,
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r11/group-008-original.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r11/portrait-008.png",
+          "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/fdicon-005-hd1-portrait-q-v1-master.png"
+        ],
+        "source": "exec-056513d1-493d-44a4-9d52-d0af5ec27ebd.png",
+        "reason": "選用個別原版面容與原生裝備",
+        "source_sha256": "fb6da71b1db71f6a30396aeb37675e3ee05f9ac1503ee42a3e2daf050f8b621d",
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r11/group-008-original.png",
+            "sha256": "37e6cd429d5375fcf0eeae7870e8f4bb8ae347cfe9b56c81bc6c57129c4e4658"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r11/portrait-008.png",
+            "sha256": "c19723f3c4bfdc2ddbdbcc7c18cc34f21e2b16f57731a1fa9dc7a99777b9a828"
+          },
+          {
+            "file": "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/fdicon-005-hd1-portrait-q-v1-master.png",
+            "sha256": "fdbf53d45f26f2f45cf1c0bd0ca549176865f4736500765a7b9363f21b140b64"
+          }
+        ]
+      },
+      {
+        "group": 10,
+        "prompt": "Use case: identity-preserve. Asset type: HD1 tactical map sprite MASTER, Flame Dragon Knights2. Image1 ORIGINAL twelve map poses, correct game palette, is authority for silhouette, gear, outfit colors, view directions and occlusion. Image2 is THIS character's original DATO portrait, authority for their own face. Image3 approved HD1 Q art is ONLY a style/proportion reference: huge head AND visible face about67-70% of total height, extremely short compact torso and legs, stubby boots, clean dark contours, large readable color blocks, smooth restrained painted/cel2D shading. Do NOT copy Image3 character's face, hair, costume, weapons or expression. Make this person's actual original face recognizable at144/72/48px; do not use one generic cute round-eyed baby face. Exactly3columns by4rows, twelve isolated full-body figures. Rows FRONT looking directly toward viewer, LEFT true profile facing screen left, BACK away, RIGHT true profile facing screen right. EVERY row column1 neutral both feet planted, column2 small grounded left step, column3 small grounded right step. First column neutral, not middle. Same scale and foot baseline; generous clear gaps and alpha margins; no clipped hair, boots or gear. Exactly two arms/hands/two legs with natural wrists. Preserve source-specific hand/gear occlusion; no duplicate weapon, floating piece, third limb, alternate added equipment, unnecessary details, bright toy shine, photo/3D/pixel upscale. Actual transparent alpha, no checkerboard/background, floor, shadow, glow, text, labels, border or grid. Original group010 MARLENE/瑪琳. Clearly mature adult woman with an elegant LONG OVAL face, softly tapered chin, curved expressive brows, narrow warm BROWN almond eyes, defined slender straight nose and slightly parted FULL PURPLE/PLUM lips in a gentle composed expression. Not a round-faced teen with giant purple toy eyes. Distinct from Shelia's warm red smile, Sophia's mature red lips, and Rona's stern face. Source original PINK/LILAC hair, not bright scarlet red. Large center-parted split fringe/side locks framing face, with an obvious HIGH BACK PONYTAIL secured by a small GOLD/YELLOW tie: keep the ponytail visible in both profiles and back, do not repeat old HD short-bob hairstyle. Tiny original golden forehead band/central pink accent, not tall crown or huge headdress. Original compact DARK CHARCOAL/PLUM clothing, RED high collar/front panel kept below face and tiny gold/yellow waist/front accent, dark plum/black stubby footwear; preserve original simple source color blocks. Do not copy the old HD ornate bright gold trim or long detailed robe skirt. The MAP poses have BOTH HANDS EMPTY. NO staff, wand, book, sword, shield, mace, bag or invented cleric accessory from class; two relaxed empty hands only. Do not add portrait's elaborate necklace as enormous chest jewelry over tiny map figure. Enormous head AND face with extremely short body/legs, readable ponytail and adult purple lips.",
+        "selected": true,
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r11/group-010-original.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r11/portrait-010.png",
+          "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/fdicon-005-hd1-portrait-q-v1-master.png"
+        ],
+        "source": "exec-12c62919-64de-451a-af92-c12475365007.png",
+        "reason": "選用個別原版面容與原生裝備",
+        "source_sha256": "a4291d38a8f6daf7ec4060ceaa9f8c3788d227abf6b0df398c26bdfedf196469",
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r11/group-010-original.png",
+            "sha256": "80f112f1cee2c8ee033095a956682f535328afc12b7e03fa9f4df3903beb22aa"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r11/portrait-010.png",
+            "sha256": "160c48ab33a7031ce549e434941d27ccef19c9c886a7eb32586ea11ec02e80e6"
+          },
+          {
+            "file": "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/fdicon-005-hd1-portrait-q-v1-master.png",
+            "sha256": "fdbf53d45f26f2f45cf1c0bd0ca549176865f4736500765a7b9363f21b140b64"
+          }
+        ]
+      },
+      {
+        "group": 11,
+        "prompt": "Use case: identity-preserve. Asset type: HD1 tactical map sprite MASTER, Flame Dragon Knights2. Image1 ORIGINAL twelve map poses, correct game palette, is authority for silhouette, gear, outfit colors, view directions and occlusion. Image2 is THIS character's original DATO portrait, authority for their own face. Image3 approved HD1 Q art is ONLY a style/proportion reference: huge head AND visible face about67-70% of total height, extremely short compact torso and legs, stubby boots, clean dark contours, large readable color blocks, smooth restrained painted/cel2D shading. Do NOT copy Image3 character's face, hair, costume, weapons or expression. Make this person's actual original face recognizable at144/72/48px; do not use one generic cute round-eyed baby face. Exactly3columns by4rows, twelve isolated full-body figures. Rows FRONT looking directly toward viewer, LEFT true profile facing screen left, BACK away, RIGHT true profile facing screen right. EVERY row column1 neutral both feet planted, column2 small grounded left step, column3 small grounded right step. First column neutral, not middle. Same scale and foot baseline; generous clear gaps and alpha margins; no clipped hair, boots or gear. Exactly two arms/hands/two legs with natural wrists. Preserve source-specific hand/gear occlusion; no duplicate weapon, floating piece, third limb, alternate added equipment, unnecessary details, bright toy shine, photo/3D/pixel upscale. Actual transparent alpha, no checkerboard/background, floor, shadow, glow, text, labels, border or grid. Original group011 SOPHIA/索菲亞. Clearly mature ADULT woman with a long gently oval face, softly rounded but firm chin, arched defined brows, warm BROWN almond eyes with slightly heavy upper lids, long straight defined nose and fuller RED lips with a knowing gentle slightly open smile. Mature warmth, not young round-faced blue-eyed doll. Distinct facial identity from Marlene's purple lips and Shelia's younger friendly expression. Source light OLIVE/ASH-BLOND hair, NOT platinum silver or bright yellow: large parted/swept front locks and prominent BACK PONYTAIL, visible in both profiles and back. Preserve small DARK RED top hair ornament from native silhouette; do not turn into big cap, crown or new flower. Tiny plain GOLD hoop earrings visible from original portrait may stay subtle, not huge ear disks. Original DARK TEAL/NAVY collar and compact gray/plum outfit with RED waist/front cloth accents, gray/plum stubby boots. Exactly ONE simple short upright BROWN/GOLD ROD with a small ROUND GOLD KNOB, matching original map source. Its knob stays near lower cheek/shoulder height, not above head; shaft runs down beside hand/body toward feet. FRONT rod on viewer LEFT, held naturally upright, never horizontal toy rattle. LEFT profile far-side rod mostly hidden by hair/body. BACK rod visible along viewer RIGHT edge, largely occluded by hair. RIGHT profile rod on screen LEFT at face-left/hair boundary, behind nose, never sticking out ahead of nose to screen right. Do not invent a cross, jewel staff top, giant long staff or mace, shield, sword, book, bag or extra golden ornaments. ONE rod and two hands total; free hand empty. Keep original ponytail and own mature face. Extremely short body and large readable face.",
+        "selected": false,
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r11/group-011-original.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r11/portrait-011.png",
+          "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/fdicon-005-hd1-portrait-q-v1-master.png"
+        ],
+        "source": "exec-a1766d0c-6bbc-4711-821a-8bb0d3fda82a.png",
+        "reason": "未採：左向仍露出遠側持杆，補單點遮蔽修訂",
+        "source_sha256": "43d3728af7fffcfa0fada594c05b78bfcba96bae761d57b47b71e97833fdd155",
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r11/group-011-original.png",
+            "sha256": "f8d38d22fad85a9d97ab5479bdade21d8e654c7c691bbb548cc3298d1b55d9f0"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r11/portrait-011.png",
+            "sha256": "9cf2e1ac2e2f32014a6fcb877b623cfdea0747ef0b413df9d124202c1fceee3d"
+          },
+          {
+            "file": "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/fdicon-005-hd1-portrait-q-v1-master.png",
+            "sha256": "fdbf53d45f26f2f45cf1c0bd0ca549176865f4736500765a7b9363f21b140b64"
+          }
+        ]
+      },
+      {
+        "group": 11,
+        "prompt": "Use case: precise-object-edit. Image1 is the EDIT TARGET Sophia group011 twelve-pose transparent sprite sheet. Image2 is the ORIGINAL map poses, authoritative for weapon occlusion. Correct ONLY ROW2, the THREE LEFT-FACING PROFILE figures. Their far-side gold rod should be occluded behind the hair/body as in the original: REMOVE all visible gold knob and shaft that is now in FRONT of the face or front-left body. Do not place a rod ahead of the nose or between the face and viewer. The held rod stays on the hidden far side; no loose floating rod, no disconnected knob, no extra hand. Keep the near/front free hand empty in a relaxed natural stance, far hand can be naturally hidden by body. Keep each figure facing LEFT with the SAME neutral-first/opposite-small-steps. Preserve all FIRST ROW front, THIRD ROW back and FOURTH ROW right figures and their ONE existing rod positions, face, colors and pose silhouettes unchanged. This is a single occlusion correction to row2 only, not a redesign. Preserve own mature warm brown eyes, defined nose, red lips/knowing smile, olive ash-blond parted hair and back ponytail, small dark-red top ornament, subtle gold hoop earrings, navy collar, gray/plum compact clothes, red cloth accent and very short body/boots. Preserve enormous head AND face with same proportions and same restrained smooth2D painted/celHD1 style. Exactly3columns4rows,12 isolated full figures, genuine transparent alpha and clear margins. No new equipment, text, background, checkerboard, floor/shadow, grid or border.",
+        "selected": true,
+        "source": "exec-a6a42665-bc0b-402d-a4ec-088d8f6f5c72.png",
+        "reference_files": [
+          "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-a1766d0c-6bbc-4711-821a-8bb0d3fda82a.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r11/group-011-original.png"
+        ],
+        "reason": "選用：只修左向遠側持杆遮蔽，保留其他姿態與五官",
+        "source_sha256": "0a5448e448dcb439ce797f664389f36fbf6eaa7248f906c2f8b7eed2256d5428",
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-a1766d0c-6bbc-4711-821a-8bb0d3fda82a.png",
+            "sha256": "43d3728af7fffcfa0fada594c05b78bfcba96bae761d57b47b71e97833fdd155"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r11/group-011-original.png",
+            "sha256": "f8d38d22fad85a9d97ab5479bdade21d8e654c7c691bbb548cc3298d1b55d9f0"
+          }
+        ]
+      }
+    ]
+  },
+  "gpu_pairs": {
+    "longhair-and-bow": [
+      7,
+      8
+    ],
+    "clerics": [
+      10,
+      11
+    ]
+  },
+  "policy": "四向各三拍，首欄中性；7與10原生空手，8棕弓箭筒按原生持物側／遮蔽，11短直杆及小圓金端按原生遮蔽。7嚴肅長髮成人男臉，8暖色微笑，10粉紫馬尾與紫唇，11灰金馬尾與成熟紅唇。無selector或身份投影，正式規則／保存保持。",
+  "original_reference": {
+    "source": "原生FDICON三層與FDOTHER0代表色盤；各自party明示identity／fig／portrait綁DATO；原版頭像最近鄰400方圖只是繪圖輸入排版",
+    "groups": [
+      7,
+      8,
+      10,
+      11
+    ],
+    "records_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r11/native-reference.json",
+    "records_sha256": "ab1f959ddf3fc9bc80dc3dc32c2ee5c1cffca3e67efa237cc88f07e819cac8cc",
+    "reference_boards": [
+      {
+        "file": "group-007-original.png",
+        "sha256": "0601355ae4993c8919e26749f6da9d8dc668965235f2f4aca9deaba0845e178b"
+      },
+      {
+        "file": "group-008-original.png",
+        "sha256": "37e6cd429d5375fcf0eeae7870e8f4bb8ae347cfe9b56c81bc6c57129c4e4658"
+      },
+      {
+        "file": "group-010-original.png",
+        "sha256": "80f112f1cee2c8ee033095a956682f535328afc12b7e03fa9f4df3903beb22aa"
+      },
+      {
+        "file": "group-011-original.png",
+        "sha256": "f8d38d22fad85a9d97ab5479bdade21d8e654c7c691bbb548cc3298d1b55d9f0"
+      }
+    ]
+  }
+}

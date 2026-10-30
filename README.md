@@ -45,6 +45,14 @@
 
 貝克威保留金長髮、平眉半闔眼與閉口微笑，基底形態沿原版青綠衣及棕弓箭筒；亞雷斯的基底與轉職形態維持同一成年寬方面容，轉職形態仍保留劍盾。可看[四向及實際尺寸](docs/figures/hd1-bow-and-ares-comparison.png)、[貝克威](docs/figures/hd1-bekwei-refresh-game.png)與[亞雷斯轉職形態](docs/figures/hd1-ares-variant-refresh-game.png)的完整受控戰場圖。兩組面容圖都是原版大頭像與實際地圖素材比較，非對話HD頭像驗收；戰場與資訊窗共用新版圖源。三個基底使用受控原生名冊，亞雷斯54則明示測試用視覺槽投影，不代表自然加入、升階或能力值驗收。其餘人物續作，完整總覽待全部重繪後更新。
 
+![蘭斯洛特與希莉亞的原版及HD1面容對照](docs/figures/hd1-longhair-and-bow-faces.png)
+
+蘭斯洛特保留棕長髮、長直鼻與嚴肅薄閉唇，藍高領下仍能辨識臉部，原生姿態保持空手；希莉亞保留褐波浪長髮、溫暖眉眼與柔和紅唇微笑，紅頭帶、紫領及棕弓箭筒沿原版。可看[四向及144／72／48尺寸](docs/figures/hd1-longhair-and-bow-comparison.png)、[蘭斯洛特](docs/figures/hd1-lancelot-refresh-game.png)與[希莉亞](docs/figures/hd1-shelia-refresh-game.png)的完整受控戰場圖。
+
+![瑪琳與索菲亞的原版及HD1面容對照](docs/figures/hd1-clerics-faces.png)
+
+瑪琳保留粉紫高馬尾、金髮束與紫色唇形，原生姿態空手；索菲亞保留灰金後馬尾、暗紅頂飾及成熟紅唇，短直杆依原版持物側與遠側遮蔽。可看[四向及實際尺寸](docs/figures/hd1-clerics-comparison.png)、[瑪琳](docs/figures/hd1-marlene-refresh-game.png)與[索菲亞](docs/figures/hd1-sophia-refresh-game.png)的完整受控戰場圖。面容圖是原版大頭像與實際地圖素材比較，非對話HD頭像驗收；四人的地圖及資訊窗共用新版圖源。戰場圖使用受控原生名冊，沒有身份或圖組投影，不代表自然加入流程驗收。其餘人物續作，完整總覽仍等全部重繪後更新。
+
 ![哈諾與貝克威依各自原版頭像重繪的HD1面容](docs/figures/hd1-native-face-reference.png)
 
 哈諾的長鼻、細眼與抿嘴，以及貝克威的平眉、半闔眼與微揚嘴角，分別參考自己的原版大頭像。上圖比較原版頭像與實際144／72／48像素地圖素材，並非遊戲截圖或對話HD頭像驗收；[四向原版／HD1局部對照](docs/figures/hd1-native-faces-comparison.png)另列兩人的裝備與方向。[哈諾](docs/figures/hd1-hano-face-game.png)與[貝克威](docs/figures/hd1-bekwei-face-game.png)的完整受控戰場畫面，可查看地圖與資訊窗接線；測試用圖組投影不代表升階或自然出場驗收。其他角色的面容仍逐人複核，完整人物總覽待全部重繪後更新。

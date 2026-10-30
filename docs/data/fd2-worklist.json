@@ -448,7 +448,7 @@
       "layer": "data",
       "category": "缺陷",
       "title": "P1 HD1戰場小人物：依原版重繪大頭Q版與個別面容",
-      "body": "洛娜5、萊汀6與貝克威13已依各自原版大頭像及十二原生姿態重繪大頭短身。洛娜保留灰綠長髮、杏眼紅唇與橘褐披風，基底沒有盾。萊汀保留長鼻方下巴與微揚嘴角，修回短褐髮、灰綠護具及原生鉤刃長兵器，移除舊稿馬尾／垂劍。貝克威保留平眉半闔眼、閉口微笑、原版青綠服與棕弓箭筒。亞雷斯54則沿DATO004及已驗基底4，保留同一成年寬方面容與54劍盾。\n\n同一四組完整候選分兩個固定GPU程序，共28完整Game.Draw、24PNG、四次F2、326002核心點與21反例通過。三個基底用原生身份5／6／13；只有54是selector key／byte6／派生cache視覺投影，保留原4身份及能力，逐actor揭露並綁scenario及optional_target來源。缺份／重複份／錯來源、錯記憶體報告或錯投影揭露均不能放行。既有六組三份收據讀取契約通過，舊GPU不冒用目前Go來源。\n\n普通首章十PNG驗完整候選、四組控制、走行取消、保存及新程序標題LOAD，不作四人自然加入或轉職證據。來源三項逐byte重編／八拒收、24頂層Go含字串、正式21來源案例／416幀／19反例、883清冊及125組1455來源通過，兩可選GPU略過不計通過。\n\n正式只換八項、875保持；100新檔白名單保存私人庫，原7848美術檔與0／9／30六項保持。README補兩組面容／四向／實際144、72、48尺寸與四張完整受控戰場。三組由待重繪改為已重繪，Q比例餘項69→66；原優先面容1／4／54均已處理，其餘角色五官仍逐人review，不宣稱全人物或完整HD1通過。完整總覽等全部重繪，本項保持OPEN。現況、來源、重跑依58／61及主收據hd1_knights_bow_followup_20261030，Gaia30維持使用者定版。",
+      "body": "蘭斯洛特7、希莉亞8、瑪琳10與索菲亞11已依各自原版大頭像及十二原生姿態重繪大頭短身。蘭斯洛特保留棕長髮、長直鼻與嚴肅薄閉唇，原生姿態空手。希莉亞保留褐波浪長髮、柔和紅唇微笑、原生紅頭帶與棕弓箭筒。瑪琳保留粉紫高馬尾、金髮束與紫唇，原生姿態空手。索菲亞保留灰金後馬尾、暗紅頂飾與成熟紅唇；短直杆依原生持物側及遠側遮蔽，左向露杆初稿已單點修正。\n\n同一四組完整候選分兩個固定GPU程序，共28完整Game.Draw、24PNG、四次F2、269843核心點與21反例通過。四組保留各自原生身份、portrait、fig、能力及scenario來源，沒有身份或selector投影。逐actor false投影旗標與來源SHA均核對；缺份、重複份、錯來源、錯記憶體報告及偽造投影均拒收。舊audited-six與party-next固定收據讀取契約通過，不重跑或升格舊GPU來源。\n\n普通首章十PNG驗完整候選、四組控制、走行取消、保存及新程序標題LOAD，不作四人自然加入證據。來源三項逐byte重編／八拒收、24頂層Go含字串、正式21來源案例／416幀／19反例、883清冊及125組1455來源通過，兩可選GPU略過不計通過。\n\n正式只換八項、875保持；100新檔白名單保存私人庫，原7948美術檔與0／9／30六項保持。README補兩組面容／四向／實際144、72、48尺寸與四張完整受控戰場。四組由待重繪改為已重繪，Q比例餘項66→62；其餘角色五官仍逐人review，不宣稱全人物或完整HD1通過。完整總覽等全部重繪，本項保持OPEN。現況、來源、重跑依58／61及主收據hd1_lance_bow_clerics_followup_20261030，Gaia30維持使用者定版。",
       "acceptance": [
         "使用者選定亞雷斯新比例，並保留定版原稿、原版來源、逐字提示與SHA；其他角色依相同標準重製，不能只改大圖總覽。",
         "125個可見圖組及1455幀逐組保留原生方向、步態／靜態相位、轉職身份、裝備特徵、腳底與透明契約；原版、已接受圖源及舊證據可追溯。",
@@ -503,11 +503,20 @@
         "docs/figures/hd1-rona-refresh-game.png",
         "docs/figures/hd1-laiting-refresh-game.png",
         "docs/figures/hd1-bekwei-refresh-game.png",
-        "docs/figures/hd1-ares-variant-refresh-game.png"
+        "docs/figures/hd1-ares-variant-refresh-game.png",
+        "remake/assets/themes/modern/hd1-lance-bow-clerics-refresh.recipe.json",
+        "docs/figures/hd1-longhair-and-bow-faces.png",
+        "docs/figures/hd1-longhair-and-bow-comparison.png",
+        "docs/figures/hd1-clerics-faces.png",
+        "docs/figures/hd1-clerics-comparison.png",
+        "docs/figures/hd1-lancelot-refresh-game.png",
+        "docs/figures/hd1-shelia-refresh-game.png",
+        "docs/figures/hd1-marlene-refresh-game.png",
+        "docs/figures/hd1-sophia-refresh-game.png"
       ],
       "verify": {
         "kind": "manual",
-        "note": "初審十二組偏移、六組視覺待核及優先面容1／4／54已處理；5／6／13完成重繪，Q比例餘項69→66，其他個別五官及完整總覽仍待。54投影不作自然升階證據。"
+        "note": "初審偏移、六組視覺及優先面容已處理；本批7／8／10／11按各自原版重繪，無投影，Q比例餘項66→62。其他個別五官及完整總覽仍待。"
       },
       "issue": 286
     },
@@ -516,7 +525,7 @@
       "layer": "data",
       "category": "缺陷",
       "title": "P1 HD1人物面容與身份複核：依原版頭像保留各自特徵",
-      "body": "洛娜5、萊汀6與貝克威13已依各自原版大頭像及十二原生姿態重繪大頭短身。洛娜保留灰綠長髮、杏眼紅唇與橘褐披風，基底沒有盾。萊汀保留長鼻方下巴與微揚嘴角，修回短褐髮、灰綠護具及原生鉤刃長兵器，移除舊稿馬尾／垂劍。貝克威保留平眉半闔眼、閉口微笑、原版青綠服與棕弓箭筒。亞雷斯54則沿DATO004及已驗基底4，保留同一成年寬方面容與54劍盾。\n\n同一四組完整候選分兩個固定GPU程序，共28完整Game.Draw、24PNG、四次F2、326002核心點與21反例通過。三個基底用原生身份5／6／13；只有54是selector key／byte6／派生cache視覺投影，保留原4身份及能力，逐actor揭露並綁scenario及optional_target來源。缺份／重複份／錯來源、錯記憶體報告或錯投影揭露均不能放行。既有六組三份收據讀取契約通過，舊GPU不冒用目前Go來源。\n\n普通首章十PNG驗完整候選、四組控制、走行取消、保存及新程序標題LOAD，不作四人自然加入或轉職證據。來源三項逐byte重編／八拒收、24頂層Go含字串、正式21來源案例／416幀／19反例、883清冊及125組1455來源通過，兩可選GPU略過不計通過。\n\n正式只換八項、875保持；100新檔白名單保存私人庫，原7848美術檔與0／9／30六項保持。README補兩組面容／四向／實際144、72、48尺寸與四張完整受控戰場。三組由待重繪改為已重繪，Q比例餘項69→66；原優先面容1／4／54均已處理，其餘角色五官仍逐人review，不宣稱全人物或完整HD1通過。完整總覽等全部重繪，本項保持OPEN。現況、來源、重跑依58／61及主收據hd1_knights_bow_followup_20261030，Gaia30維持使用者定版。",
+      "body": "蘭斯洛特7、希莉亞8、瑪琳10與索菲亞11已依各自原版大頭像及十二原生姿態重繪大頭短身。蘭斯洛特保留棕長髮、長直鼻與嚴肅薄閉唇，原生姿態空手。希莉亞保留褐波浪長髮、柔和紅唇微笑、原生紅頭帶與棕弓箭筒。瑪琳保留粉紫高馬尾、金髮束與紫唇，原生姿態空手。索菲亞保留灰金後馬尾、暗紅頂飾與成熟紅唇；短直杆依原生持物側及遠側遮蔽，左向露杆初稿已單點修正。\n\n同一四組完整候選分兩個固定GPU程序，共28完整Game.Draw、24PNG、四次F2、269843核心點與21反例通過。四組保留各自原生身份、portrait、fig、能力及scenario來源，沒有身份或selector投影。逐actor false投影旗標與來源SHA均核對；缺份、重複份、錯來源、錯記憶體報告及偽造投影均拒收。舊audited-six與party-next固定收據讀取契約通過，不重跑或升格舊GPU來源。\n\n普通首章十PNG驗完整候選、四組控制、走行取消、保存及新程序標題LOAD，不作四人自然加入證據。來源三項逐byte重編／八拒收、24頂層Go含字串、正式21來源案例／416幀／19反例、883清冊及125組1455來源通過，兩可選GPU略過不計通過。\n\n正式只換八項、875保持；100新檔白名單保存私人庫，原7948美術檔與0／9／30六項保持。README補兩組面容／四向／實際144、72、48尺寸與四張完整受控戰場。四組由待重繪改為已重繪，Q比例餘項66→62；其餘角色五官仍逐人review，不宣稱全人物或完整HD1通過。完整總覽等全部重繪，本項保持OPEN。現況、來源、重跑依58／61及主收據hd1_lance_bow_clerics_followup_20261030，Gaia30維持使用者定版。",
       "acceptance": [
         "逐組以固定原生三層、FDOTHER0代表色盤與有對應身份的原版頭像／大圖核身份，不沿舊候選或圖說猜職業／種族。",
         "優先修正2、48、50、51、52、53、54、55、56、63、76、79的已見差異，70、73、77、89、125、133補證後逐項確認或修正；所有結論保留來源及未知等級。",
@@ -559,11 +568,20 @@
         "docs/figures/hd1-rona-refresh-game.png",
         "docs/figures/hd1-laiting-refresh-game.png",
         "docs/figures/hd1-bekwei-refresh-game.png",
-        "docs/figures/hd1-ares-variant-refresh-game.png"
+        "docs/figures/hd1-ares-variant-refresh-game.png",
+        "remake/assets/themes/modern/hd1-lance-bow-clerics-refresh.recipe.json",
+        "docs/figures/hd1-longhair-and-bow-faces.png",
+        "docs/figures/hd1-longhair-and-bow-comparison.png",
+        "docs/figures/hd1-clerics-faces.png",
+        "docs/figures/hd1-clerics-comparison.png",
+        "docs/figures/hd1-lancelot-refresh-game.png",
+        "docs/figures/hd1-shelia-refresh-game.png",
+        "docs/figures/hd1-marlene-refresh-game.png",
+        "docs/figures/hd1-sophia-refresh-game.png"
       ],
       "verify": {
         "kind": "manual",
-        "note": "初審十二組偏移、六組視覺待核及優先面容1／4／54已處理；5／6／13完成重繪，Q比例餘項69→66，其他個別五官及完整總覽仍待。54投影不作自然升階證據。"
+        "note": "初審偏移、六組視覺及優先面容已處理；本批7／8／10／11按各自原版重繪，無投影，Q比例餘項66→62。其他個別五官及完整總覽仍待。"
       },
       "issue": 287
     }
