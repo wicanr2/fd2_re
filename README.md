@@ -35,7 +35,15 @@
 
 哈諾保留長瘦臉、長鼻、細眼與抿嘴；亞雷斯保留濃眉窄眼、明顯鼻形與方正下顎，兩人分別參考自己的原版大頭像。可看[四向及實際尺寸](docs/figures/hd1-base-faces-comparison.png)、[哈諾](docs/figures/hd1-base-hano-game.png)與[亞雷斯](docs/figures/hd1-base-ares-game.png)的完整受控戰場圖。斧與劍的持物側、遠側遮蔽依原生姿態修正，地圖及資訊窗共用新版圖源。[普通首章亞雷斯](docs/figures/hd1-base-ares-normal.png)另驗四組切換、走行取消與保存冷讀；哈諾受控測具不代表自然加入。面容圖是地圖素材比較，非對話HD頭像驗收。
 
-亞雷斯與哈瓦特的轉職形態也已修回原版裝備：亞雷斯保留人臉、藍軍帽與劍盾，哈瓦特保留成熟大鬍子、斧頭與方盾。可看[原版／HD1局部對照](docs/figures/hd1-native-variants-comparison.png)、[亞雷斯](docs/figures/hd1-ares-variant-game.png)及[哈瓦特](docs/figures/hd1-harvat-variant-game.png)的完整受控戰場與資訊窗。這些畫面以測試用圖組投影核對接線，不代表已驗升階流程或能力值；亞雷斯此轉職形態的個別面容仍續審。
+亞雷斯與哈瓦特的轉職形態也已修回原版裝備：亞雷斯保留人臉、藍軍帽與劍盾，哈瓦特保留成熟大鬍子、斧頭與方盾。可看[原版／HD1局部對照](docs/figures/hd1-native-variants-comparison.png)、[亞雷斯先前裝備修正](docs/figures/hd1-ares-variant-game.png)及[哈瓦特](docs/figures/hd1-harvat-variant-game.png)的完整受控戰場與資訊窗。這些畫面以測試用圖組投影核對接線，不代表已驗升階流程或能力值；亞雷斯此形態目前面容與劍盾版本見下方新對照。
+
+![洛娜與萊汀基底形態的原版及HD1面容對照](docs/figures/hd1-base-knights-faces.png)
+
+洛娜的基底形態保留灰綠長髮、杏眼紅唇、藍衣銀護具與橘褐披風，沒有新增盾牌；萊汀保留長鼻、方下巴及微揚嘴角，修回原生鉤刃長兵器，移除舊稿馬尾與垂劍。可看[四向及144／72／48尺寸](docs/figures/hd1-base-knights-comparison.png)、[洛娜](docs/figures/hd1-rona-refresh-game.png)與[萊汀](docs/figures/hd1-laiting-refresh-game.png)的完整受控戰場圖。
+
+![貝克威基底與亞雷斯轉職形態的原版及HD1面容對照](docs/figures/hd1-bow-and-ares-faces.png)
+
+貝克威保留金長髮、平眉半闔眼與閉口微笑，基底形態沿原版青綠衣及棕弓箭筒；亞雷斯的基底與轉職形態維持同一成年寬方面容，轉職形態仍保留劍盾。可看[四向及實際尺寸](docs/figures/hd1-bow-and-ares-comparison.png)、[貝克威](docs/figures/hd1-bekwei-refresh-game.png)與[亞雷斯轉職形態](docs/figures/hd1-ares-variant-refresh-game.png)的完整受控戰場圖。兩組面容圖都是原版大頭像與實際地圖素材比較，非對話HD頭像驗收；戰場與資訊窗共用新版圖源。三個基底使用受控原生名冊，亞雷斯54則明示測試用視覺槽投影，不代表自然加入、升階或能力值驗收。其餘人物續作，完整總覽待全部重繪後更新。
 
 ![哈諾與貝克威依各自原版頭像重繪的HD1面容](docs/figures/hd1-native-face-reference.png)
 

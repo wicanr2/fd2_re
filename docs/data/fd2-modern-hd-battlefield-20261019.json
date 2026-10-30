@@ -257110,5 +257110,824 @@
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-face-review-r9/final-validation-r1.json",
       "sha256": "c9bcc46a0fcaaf86062d6916b17b6681f7eca1e7b1dbd41c284e0d4e61644384"
     }
+  },
+  "hd1_knights_bow_followup_20261030": {
+    "date": "2026-10-30",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1",
+    "base_commit": "d04bf0e1b46489ff71bbea751165472aeaa8a1ae",
+    "branch": "feat/hd1-knights-bow-face-r10",
+    "issues": [
+      286,
+      287
+    ],
+    "scope": "5／6／13基底大頭短身與各自面容，54依4的原版面容回修；原生裝備、方向／遮蔽保持，規則／保存不改。",
+    "art": {
+      "recipe": {
+        "file": "remake/assets/themes/modern/hd1-knights-bow-refresh.recipe.json",
+        "sha256": "24821b0915ab087a02e246aafffce06bdec8ca9553b11233a26a16b2ab048e15"
+      },
+      "groups": [
+        5,
+        6,
+        13,
+        54
+      ],
+      "faces": [
+        {
+          "group": 5,
+          "name": "洛娜",
+          "portrait_file": "remake/assets/portraits/DATO_005_m0.png",
+          "portrait_sha256": "5d01b17434071429eb6c71e235e826c2fd4347f41e42ef497001c6579108d8d2",
+          "traits": [
+            "灰綠側分長髮",
+            "杏眼弧眉",
+            "收尖下巴",
+            "紅色閉唇"
+          ],
+          "comparison_label": "原版大頭像與實際地圖圖源，非480對話頭像驗收"
+        },
+        {
+          "group": 6,
+          "name": "萊汀",
+          "portrait_file": "remake/assets/portraits/DATO_006_m0.png",
+          "portrait_sha256": "4c9bed36d5c60bf25bad0ecb6aed67077c216238cea00be96f1ee4d1138afc77",
+          "traits": [
+            "褐短髮與頭帶",
+            "長直鼻",
+            "稜角方下巴",
+            "窄眼與微揚嘴角"
+          ],
+          "comparison_label": "原版大頭像與實際地圖圖源，非480對話頭像驗收"
+        },
+        {
+          "group": 13,
+          "name": "貝克威",
+          "portrait_file": "remake/assets/portraits/DATO_013_m0.png",
+          "portrait_sha256": "633b5dd8e49de6728c9daf86a3d42289ad10a0c0f2d47581cabe7e216d8e85b3",
+          "traits": [
+            "金長髮深色頭帶",
+            "修長臉與平眉",
+            "半闔眼",
+            "閉口微笑"
+          ],
+          "comparison_label": "原版大頭像與實際地圖圖源，非480對話頭像驗收"
+        },
+        {
+          "group": 54,
+          "name": "亞雷斯轉職形態",
+          "portrait_file": "remake/assets/portraits/DATO_004_m0.png",
+          "portrait_sha256": "b57978530691387e208808a3d23127e31b9405e24861bd744be7699bb68e412e",
+          "traits": [
+            "寬方下顎",
+            "濃斜眉窄眼",
+            "長直鼻",
+            "嚴肅閉口"
+          ],
+          "comparison_label": "原版大頭像與實際地圖圖源，非480對話頭像驗收"
+        }
+      ],
+      "party_bindings": [
+        {
+          "group": 5,
+          "native_identity": 5,
+          "portrait": 5,
+          "fig": 5,
+          "scenario_file": "remake/assets/scenarios/ch09.json",
+          "scenario_sha256": "5519706fc75fd25ef8bfa47fe78a2dcabc395d0da425a13e33590d9a73bce23d",
+          "selector_projection_injected": false
+        },
+        {
+          "group": 6,
+          "native_identity": 6,
+          "portrait": 6,
+          "fig": 6,
+          "scenario_file": "remake/assets/scenarios/ch10.json",
+          "scenario_sha256": "91f207235fae39ef02f2ba42e342b5d7a5bbbdefe8b061e92bf732bdfa2e605d",
+          "selector_projection_injected": false
+        },
+        {
+          "group": 13,
+          "native_identity": 13,
+          "portrait": 13,
+          "fig": 13,
+          "scenario_file": "remake/assets/scenarios/ch07.json",
+          "scenario_sha256": "73f21023493af3c478affeffa1385c947ca607a1f6f822fb6a15153667b9e6be",
+          "selector_projection_injected": false
+        },
+        {
+          "group": 54,
+          "native_identity": 4,
+          "portrait": 4,
+          "fig": 4,
+          "scenario_file": "remake/assets/scenarios/ch01.json",
+          "scenario_sha256": "9d2229fe33a5a692234cb8343aaf6c4d159e6de1a4e4d9df4e2870874e103269",
+          "selector_projection_injected": true,
+          "target_field": "optional_target"
+        }
+      ],
+      "promotion_source": {
+        "file": "remake/assets/data/class_change_targets.json",
+        "sha256": "27946ce10bf60738331009fff14b50be3cddc4cce18a4402e5259cb89fecfaa2"
+      },
+      "mode": "builtin",
+      "jobs": 4,
+      "selected_masters": 4,
+      "discarded_drafts": 0,
+      "original_reference": {
+        "source": "FDICON原生三層與FDOTHER0代表色盤；party與optional_target來源明示身份，原版DATO各自決定面容",
+        "groups": [
+          5,
+          6,
+          13,
+          54
+        ],
+        "records_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/native-reference.json",
+        "records_sha256": "259da8ee0e0966f22a491134899b929a65ffb3426c9cccba27286495155277d8",
+        "reference_boards": [
+          {
+            "file": "group-005-original.png",
+            "sha256": "b78e53f2972dc790d17cb5a4c8a4c341c14cd61e9fdcc26fee58b9d3bac2272b"
+          },
+          {
+            "file": "group-006-original.png",
+            "sha256": "7c479739bb2a91a194f8965e315b2b9756ed448daedbbe4b60a3575598eed97c"
+          },
+          {
+            "file": "group-013-original.png",
+            "sha256": "2fa7e1c7f92cb718afb9d23a048d3ff95a04a98aef15f4a336a3d1b4a721ff52"
+          },
+          {
+            "file": "group-054-original.png",
+            "sha256": "e000dcbffa20af0b76336224a5786c4156af1a517ae739c196fb55d561ea45fa"
+          }
+        ]
+      },
+      "input_images_in_call_order": {
+        "5": [
+          {
+            "role": "original-map-poses",
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/group-005-original.png",
+            "sha256": "b78e53f2972dc790d17cb5a4c8a4c341c14cd61e9fdcc26fee58b9d3bac2272b"
+          },
+          {
+            "role": "original-portrait-nearest400",
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/portrait-005.png",
+            "sha256": "6af5ac96259e12d2fac97c78b164d02f97165d38bf8f8eea696334b38507a53e"
+          },
+          {
+            "role": "approved-same-character",
+            "file": "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/fdicon-055-hd1-native-q-v1-master.png",
+            "sha256": "bb9bf299a9c90fb11432f6be02e2108988d54483b26d6f6170842eac19f59eae"
+          }
+        ],
+        "6": [
+          {
+            "role": "original-map-poses",
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/group-006-original.png",
+            "sha256": "7c479739bb2a91a194f8965e315b2b9756ed448daedbbe4b60a3575598eed97c"
+          },
+          {
+            "role": "original-portrait-nearest400",
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/portrait-006.png",
+            "sha256": "5c6d3c5b7e07734808173759632bf8afacd8919727e3f6f920cec1482d2cedaf"
+          },
+          {
+            "role": "approved-same-character",
+            "file": "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/fdicon-056-hd1-native-q-v1-master.png",
+            "sha256": "a46f845785683230a38b79a4bbce0c33fc05d37e376397296763860b8a270880"
+          }
+        ],
+        "13": [
+          {
+            "role": "original-map-poses",
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/group-013-original.png",
+            "sha256": "2fa7e1c7f92cb718afb9d23a048d3ff95a04a98aef15f4a336a3d1b4a721ff52"
+          },
+          {
+            "role": "original-portrait-nearest400",
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/portrait-013.png",
+            "sha256": "17a66764fac7f7b9b96b0631ed0e18e987ae6421fc61bb0d0857bc61c7b9edc5"
+          },
+          {
+            "role": "approved-same-character",
+            "file": "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/fdicon-063-hd1-face-q-v1-master.png",
+            "sha256": "463530464d009ee07cc3ec10960651fd0a208038f6aecb788f43efa20b3e46de"
+          }
+        ],
+        "54": [
+          {
+            "role": "edit-target",
+            "file": "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/ares-g054-hd1-native-q-v1-master.png",
+            "sha256": "99a23756f94ffd8f4575a2092d42163b7f6b99ad11c88d96cdfa4ed0764f8aab"
+          },
+          {
+            "role": "original-portrait-nearest400",
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/portrait-054.png",
+            "sha256": "fa7030b156e179d0089587f91886a9b814231aa9b89fd1181211765b94001bdd"
+          },
+          {
+            "role": "approved-same-character",
+            "file": "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/fdicon-004-hd1-base-face-q-v1-master.png",
+            "sha256": "42660af6368c697d423004a6c67a5093f365b1379b9599609cccb2c110285826"
+          },
+          {
+            "role": "original-map-poses",
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/group-054-original.png",
+            "sha256": "e000dcbffa20af0b76336224a5786c4156af1a517ae739c196fb55d561ea45fa"
+          }
+        ]
+      },
+      "reference_image_note": "reference_inputs按角色列來源，不以陣列位置推image編號；本欄保留實際工具呼叫順序及輸入檔SHA。原版頭像輸入由各DATO以nearest排為400方圖，原始DATO SHA另見faces。"
+    },
+    "gpu": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/gpu-four-r1-capture/receipt.json",
+        "sha256": "5858a08101eb4e0e858650bd6c586c6a9c5602512b9dbe0d411cc5deca2085d0"
+      },
+      "independent_and_registration": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/registration-r1.json",
+        "sha256": "fe7107b9747d923571938d951c86abf52be8cc810e22fff194f7999facc92938"
+      },
+      "cases": 28,
+      "pngs": 24,
+      "f2": 4,
+      "core_pixels": 326002,
+      "rejected_mutants": [
+        "missing",
+        "duplicate",
+        "catalog",
+        "source-code",
+        "false-save",
+        "wrong-hud",
+        "wrong-tolerance",
+        "missing-f2",
+        "wrong-profile",
+        "wrong-selector",
+        "wrong-identity",
+        "undisclosed-projection",
+        "wrong-base-source",
+        "false-base-identity",
+        "wrong-actor-projection",
+        "missing-part",
+        "duplicate-part",
+        "wrong-part-source",
+        "wrong-part-group",
+        "wrong-part-memory",
+        "actual-black-png"
+      ],
+      "pairs": {
+        "base-knights": [
+          5,
+          6
+        ],
+        "bow-and-ares": [
+          13,
+          54
+        ]
+      },
+      "projection_groups": [
+        54
+      ],
+      "unprojected_groups": [
+        5,
+        6,
+        13
+      ],
+      "scope": "兩固定配對各14完整Game.Draw與兩次F2，同一四組完整候選；逐actor身份／selector與scenario SHA，54只投影視覺槽，不作自然加入或轉職。"
+    },
+    "normal_compatibility": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/normal-r1-capture/receipt.json",
+        "sha256": "fa1b5b0a24fd118ad3c150a33ca2b9d8d318a937bf5f71a34bb5abcdf3a0440a"
+      },
+      "pngs": 10,
+      "source_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "binary_sha256": "5e0c0584aa2aa6798d53b2e5924b9dd154ec7034f3bc10a981f74b5f4abc6880",
+      "state_injection": false,
+      "scope": "unchanged chapter1 ordinary save checks full four-group candidate, independent controls, walk/cancel and save/cold LOAD; groups5/6/13 use controlled authored party,54 is explicit identity4 selector projection; not natural recruitment or promotion"
+    },
+    "source_regression": {
+      "tests": 3,
+      "source_rejections": 8,
+      "exact_rebuild": true,
+      "elapsed_seconds": 48.741,
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/source-r1.log",
+        "sha256": "cecb546baa135afb2758fff77a9b2981a76425c61c390cd1bade795963a741ea"
+      },
+      "warnings": "既有compile_group四次BufferedReader ResourceWarning，編製器未改，程序結束清理。"
+    },
+    "regression": {
+      "top_level_passed": 24,
+      "skipped_special_gpu": 2,
+      "skips_count_as_pass": false,
+      "source_tree_sha256": "d0d3f4fe66354fc84635cf7696cf7a18bb8274205534e51400ca72535d355421",
+      "source_file_count": 1196,
+      "party_fixture_groups": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        13,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        63
+      ],
+      "production_go_changed": false,
+      "changed_go_is_test_only": true,
+      "string_inventory_tests_passed": true,
+      "legacy_gpu_parts_reader": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/legacy-parts-r1.json",
+        "sha256": "bf4b3433cbacf2437fb5db4fe50c77c8a082fd57c9fa4e3d2d6a09e16d983946"
+      },
+      "legacy_scope": "既有六組三份收據讀取契約通過，不重跑或升格舊GPU來源指紋。"
+    },
+    "consumer_inventory": {
+      "report": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/consumers-verified-r1.json",
+        "sha256": "349ab4e73efbed1a3df787b36ec5cb98d4a73482cd58b5ce4925d4e3e857b1d7"
+      },
+      "cases": 21,
+      "unique_frames": 416,
+      "rejected": [
+        "wrong-archive",
+        "wrong-resource",
+        "wrong-frame",
+        "wrong-pixels",
+        "wrong-mask",
+        "missing-case",
+        "false-gpu",
+        "missing-hd",
+        "wrong-code",
+        "wrong-command",
+        "wrong-packed",
+        "wrong-descriptor",
+        "missing-map-route",
+        "wrong-lmi-kind",
+        "wrong-lmi-pixels",
+        "wrong-lmi-entry",
+        "missing-lmi-hd",
+        "wrong-map-mask",
+        "missing-map-mask-hd"
+      ]
+    },
+    "catalog": {
+      "status": "REGISTERED-CHIBI-PARTY",
+      "catalog_sha256": "1ab9c50030452450773b31b50a7935e53480a3f3891ac598e91319ac72a68da5",
+      "changed_entries": 8,
+      "unchanged_entries": 875,
+      "new_files": 100,
+      "full_validation": {
+        "status": "PASS",
+        "assets": 883,
+        "command_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/commands-r1.json",
+        "command_key": "catalog_validation_command"
+      }
+    },
+    "private": {
+      "baseline_commit": "3e0d4f36ada6db6b58c53a3b7e49301eeec71a2c",
+      "preservation": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/private-preservation-r1.json",
+        "sha256": "4ea8364fe8735816be6aa96e0e6599c6a0cbec3b91aa54d9c5e3ab3164ec36f9"
+      },
+      "allowlist_files": 7116,
+      "new_files": 100,
+      "commit": "7de80609459404d22b0645444541b72c4aa6c277",
+      "pushed": true,
+      "remote_verified": true
+    },
+    "review": {
+      "source_groups": 125,
+      "source_frames": 1455,
+      "other121_groups_source_equal": true,
+      "counts": {
+        "reference-keep": 2,
+        "new-q-review-keep": 25,
+        "redraw-q-proportion": 66,
+        "review-keep-pending-batch": 32
+      },
+      "q_redraw_reduced_from": 69,
+      "q_redraw_remaining": 66,
+      "priority_face_followup": [],
+      "all_redrawn": false,
+      "human_acceptance": false,
+      "gaia_explicit_user_acceptance": true,
+      "followup": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/visual-review-final.json",
+        "sha256": "dea49da90e065b38b10603b297d0e6b0ef84e4eea3177f4d8cdbd93aa10f96b6"
+      },
+      "group_decisions": {
+        "reference-keep": [
+          0,
+          9
+        ],
+        "new-q-review-keep": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          13,
+          30,
+          48,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          63,
+          70,
+          73,
+          76,
+          77,
+          79,
+          89,
+          125,
+          133
+        ],
+        "redraw-q-proportion": [
+          7,
+          8,
+          10,
+          11,
+          12,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          49,
+          58,
+          59,
+          60,
+          61,
+          62,
+          64,
+          65,
+          67,
+          68,
+          69,
+          71,
+          72,
+          78,
+          80,
+          81,
+          82,
+          83,
+          84,
+          85,
+          86,
+          87,
+          88,
+          91,
+          93,
+          94,
+          95,
+          106,
+          111
+        ],
+        "review-keep-pending-batch": [
+          66,
+          74,
+          75,
+          90,
+          92,
+          96,
+          97,
+          98,
+          99,
+          100,
+          101,
+          102,
+          103,
+          107,
+          108,
+          109,
+          110,
+          112,
+          113,
+          114,
+          115,
+          116,
+          117,
+          118,
+          119,
+          120,
+          122,
+          123,
+          124,
+          126,
+          134,
+          135
+        ]
+      },
+      "face_review_states": {
+        "1": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "4": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "5": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "6": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "13": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "50": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "51": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "52": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "54": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "55": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "56": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "63": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE"
+      }
+    },
+    "resources": {
+      "gpu-base-knights": {
+        "elapsed_seconds": 424.04,
+        "peak_bytes": 5540544512,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "gpu-bow-and-ares": {
+        "elapsed_seconds": 424.76,
+        "peak_bytes": 6200733696,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "normal": {
+        "elapsed_seconds": 371.393,
+        "peak_bytes": 5553324032,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "regression": {
+        "elapsed_seconds": 119.133,
+        "peak_bytes": 1600634880,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      }
+    },
+    "public_figures": [
+      {
+        "file": "docs/figures/hd1-base-knights-faces.png",
+        "sha256": "41af034a88ea78739f58b5ea28dc14894f76276c79eb21dbb1a5dc3cf5bc777f",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/base-knights-faces.png",
+          "sha256": "41af034a88ea78739f58b5ea28dc14894f76276c79eb21dbb1a5dc3cf5bc777f"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-base-knights-comparison.png",
+        "sha256": "3fcfd1beacfa6e63c02bc2e2d4e01d6db2384a26bc41c5b03367cde50cd365f7",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/base-knights-comparison.png",
+          "sha256": "3fcfd1beacfa6e63c02bc2e2d4e01d6db2384a26bc41c5b03367cde50cd365f7"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-bow-and-ares-faces.png",
+        "sha256": "839841eaaa86a9b9f5343e6ef671d39308e980b9963715969c8d97db473c2a84",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/bow-and-ares-faces.png",
+          "sha256": "839841eaaa86a9b9f5343e6ef671d39308e980b9963715969c8d97db473c2a84"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-bow-and-ares-comparison.png",
+        "sha256": "75e08bf70a576f4e086a885c9b1b571cb4a43e9d113375e7dd5e434c20fbeb59",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/bow-and-ares-comparison.png",
+          "sha256": "75e08bf70a576f4e086a885c9b1b571cb4a43e9d113375e7dd5e434c20fbeb59"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-rona-refresh-game.png",
+        "sha256": "9b37a2d76ea58a71533a63c40d29219a0bcbacb7a3397b2e8b483cf8114400dd",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/gpu-base-knights-r1-capture/party-g005-f00-ui-hd.png",
+          "sha256": "9b37a2d76ea58a71533a63c40d29219a0bcbacb7a3397b2e8b483cf8114400dd"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-laiting-refresh-game.png",
+        "sha256": "e80498b89be05460b27e1feaea5dee545a0926b4d38f69df69868c354a611f79",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/gpu-base-knights-r1-capture/party-g006-f00-ui-hd.png",
+          "sha256": "e80498b89be05460b27e1feaea5dee545a0926b4d38f69df69868c354a611f79"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-bekwei-refresh-game.png",
+        "sha256": "bfa579a999ed0fe76cc5e038536547a4009ec93caff9cb8c64bff5cf64f51512",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/gpu-bow-and-ares-r1-capture/party-g013-f00-ui-hd.png",
+          "sha256": "bfa579a999ed0fe76cc5e038536547a4009ec93caff9cb8c64bff5cf64f51512"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-ares-variant-refresh-game.png",
+        "sha256": "d8d6e1e6c8d81bc2d820490b921bb6354c64561fe1df969734e5ccc622c03b1d",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/gpu-bow-and-ares-r1-capture/party-g054-f00-ui-hd.png",
+          "sha256": "d8d6e1e6c8d81bc2d820490b921bb6354c64561fe1df969734e5ccc622c03b1d"
+        }
+      }
+    ],
+    "references": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/base-catalog.json",
+        "sha256": "c8e073a01dee04e103c3636cbc043c6f391ec404a91d60d232b7752639529ce3"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/native-reference.json",
+        "sha256": "259da8ee0e0966f22a491134899b929a65ffb3426c9cccba27286495155277d8"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/candidate/catalog.json",
+        "sha256": "5f64274184317c09862d80ab590b1d73779e8425097c169902d70f2af8c6d3fb"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/candidate/manifest.json",
+        "sha256": "cd9aa7790e8b1bc5c37aef6b976bac9cc3187c6e058ef68dfe1c6a6f3a392d3c"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/gpu-four-r1-capture/receipt.json",
+        "sha256": "5858a08101eb4e0e858650bd6c586c6a9c5602512b9dbe0d411cc5deca2085d0"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/gpu-base-knights-r1-capture/receipt.json",
+        "sha256": "4088de57da6fd9ba1676a3cc624b1b94968b711a5438abd8ec0d5c9ab9dec777"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/gpu-bow-and-ares-r1-capture/receipt.json",
+        "sha256": "20a2a524e119c97530bb2bb1fd09536012ef66b926348cd8d1e8166f2b9e2c16"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/normal-r1-capture/receipt.json",
+        "sha256": "fa1b5b0a24fd118ad3c150a33ca2b9d8d318a937bf5f71a34bb5abcdf3a0440a"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/registration-r1.json",
+        "sha256": "fe7107b9747d923571938d951c86abf52be8cc810e22fff194f7999facc92938"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/source-r1.log",
+        "sha256": "cecb546baa135afb2758fff77a9b2981a76425c61c390cd1bade795963a741ea"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/regression-r1.log",
+        "sha256": "697bfc5665fd4e434004490a6b9010ed4fafad9fd29ba65e7ae5a67be4f28fa8"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/consumers-r1.json",
+        "sha256": "39015dae21cd2c15ec7f1cfe861cbb81bcbffae3a45652b3336a57eedb232aa5"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/consumers-verified-r1.json",
+        "sha256": "349ab4e73efbed1a3df787b36ec5cb98d4a73482cd58b5ce4925d4e3e857b1d7"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/formal-coverage.json",
+        "sha256": "5e2368b6d8742065848ada28ecf5c41513d4475725526b83ab13c63a5d154848"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/review-final/receipt.json",
+        "sha256": "88d58f0af47fc06e2b54b82e143900ebcc16a49eb6547a76b6daf43e762f1118"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/visual-review-final.json",
+        "sha256": "dea49da90e065b38b10603b297d0e6b0ef84e4eea3177f4d8cdbd93aa10f96b6"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/private-preservation-r1.json",
+        "sha256": "4ea8364fe8735816be6aa96e0e6599c6a0cbec3b91aa54d9c5e3ab3164ec36f9"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/public-figures-r1.json",
+        "sha256": "b12526c436816a4ba7d0e65f3b6907aad3fe8978788e5002c810b22b70c602f5"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/commands-r1.json",
+        "sha256": "b304e6a4f9182aaa5a0d4fc41ea3cf6a38fac74b5a18f18423997f45a2f5660a"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/legacy-parts-r1.json",
+        "sha256": "bf4b3433cbacf2437fb5db4fe50c77c8a082fd57c9fa4e3d2d6a09e16d983946"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/gpu-base-knights-r1.memory.json",
+        "sha256": "259eda99ddb79fcd15c84cffd38df454bc6c75556d7322d4f225979a9872fbd3"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/gpu-bow-and-ares-r1.memory.json",
+        "sha256": "edfe545366b9079d091c53c7a85d40386ef3de144855c2c332a959a168ab9a87"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/normal-r1.memory.json",
+        "sha256": "76d7baac27c15750de1373bd2aa983bf2816b83d8b4230a138ad465202e00710"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/regression-r1.memory.json",
+        "sha256": "ed16381ed3792aa0935223e908495cc9e3c386e727f77514f0ec0339259116c7"
+      },
+      {
+        "file": "remake/assets/themes/modern/hd1-knights-bow-refresh.recipe.json",
+        "sha256": "24821b0915ab087a02e246aafffce06bdec8ca9553b11233a26a16b2ab048e15"
+      },
+      {
+        "file": "tools/verify_fd2_hd1_chibi_party.py",
+        "sha256": "5c942307a0bdd43b75e1d96419aed7e45d8d44a6913225e80adb20cd9d432ea0"
+      }
+    ],
+    "cleanup": {
+      "nonexpected_fd2_containers": 0,
+      "old_art_preserved": 7848,
+      "new_art_owner": 1000,
+      "recording_created": false
+    },
+    "limitations": [
+      "本批未跑FD2.EXE，不新增原版動態或正常加入／轉職證據。",
+      "三個基底用受控原生party，54僅測試selector key／byte6／cache投影，保留身份4及能力。",
+      "原版頭像只用於地圖人物五官，不宣稱480對話頭像驗收。",
+      "原先優先面容1／4／54已處理，其他66組Q比例及個別五官／完整總覽仍待。"
+    ],
+    "worklist": {
+      "open": 30,
+      "manual": 23,
+      "possibly_done": 0,
+      "issues_updated": [
+        286,
+        287
+      ]
+    },
+    "lessons": {
+      "total": 384,
+      "guarded": 238,
+      "check_passed": true
+    },
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/final-validation-r1.json",
+      "sha256": "6ebbc396f76c3d5c0371ffb781b1f75889a594c9db030c1dbb17005140a1626e"
+    }
   }
 }

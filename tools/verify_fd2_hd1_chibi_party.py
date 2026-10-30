@@ -13,22 +13,27 @@ from verify_fd2_hd1_chibi_refresh import ROOT,sha,read,require,tree,rect,core
 
 RECIPE=ROOT/'remake/assets/themes/modern/hd1-party-chibi-refresh.recipe.json'
 GROUPS=(1,2,3)
-PROFILES={'party':GROUPS,'variants':(53,54),'identity-pair':(51,63),'base-faces':(1,4),'knights':(55,56),'heroes':(50,52),'enemies':(76,79),'static-king':(48,),'audited-six':(70,73,77,89,125,133)}
-PROFILE_IDENTITIES={'variants':{53:3,54:4},'identity-pair':{51:1,63:13},'base-faces':{1:1,4:4},'knights':{55:5,56:6},'heroes':{50:0,52:9}}
+PROFILES={'party':GROUPS,'variants':(53,54),'identity-pair':(51,63),'base-faces':(1,4),'knights':(55,56),'heroes':(50,52),'enemies':(76,79),'static-king':(48,),'audited-six':(70,73,77,89,125,133),'party-next':(5,6,13,54)}
+PROFILE_IDENTITIES={'variants':{53:3,54:4},'identity-pair':{51:1,63:13},'base-faces':{1:1,4:4},'knights':{55:5,56:6},'heroes':{50:0,52:9},'party-next':{5:5,6:6,13:13,54:4}}
 FRAMES=(0,1,2,3,6,9)
 AUDITED_PAIRS={'banded':(70,89),'draconic':(73,77),'robed':(125,133)}
+GPU_PARTS={'audited-six':AUDITED_PAIRS,'party-next':{'base-knights':(5,6),'bow-and-ares':(13,54)}}
 AUDITED_BINDINGS={70:(5,0,'ally',13,24),73:(24,0,'ally',10,26),77:(2,2,'enemy',8,25),89:(17,0,'enemy',39,7),125:(24,0,'enemy',10,7),133:(1,1,'ally',15,12)}
 
 def verify_parts(d):
+    profile=d.get('profile');require(profile in GPU_PARTS,'unsupported split profile')
+    pairs=GPU_PARTS[profile]
     parts=d.get('source_parts',[])
-    require([x.get('pair') for x in parts]==list(AUDITED_PAIRS),'complete fixed GPU parts')
+    require([x.get('pair') for x in parts]==list(pairs),'complete fixed GPU parts')
+    require(d.get('selector_projection_injected') is (profile=='party-next'),'combined projection disclosure changed')
     sources=[];cases=[]
     for part in parts:
         path=ROOT/part['file']
         require(path.resolve().is_relative_to(ROOT) and sha(path)==part['sha256'],'GPU part source changed')
-        item=read(path);pair=part['pair'];groups=AUDITED_PAIRS[pair]
-        require(item.get('profile')=='audited-six' and item.get('pair')==pair and item.get('selected_groups')==list(groups),'GPU part pair changed')
-        for key in ('status','catalog_sha256','manifest_sha256','source_tree_sha256','source_file_count','native_state_unchanged','save_bytes_unchanged','selector_projection_injected','authored_roster_fixture'):
+        item=read(path);pair=part['pair'];groups=pairs[pair]
+        require(item.get('profile')==profile and item.get('pair')==pair and item.get('selected_groups')==list(groups),'GPU part pair changed')
+        require(item.get('selector_projection_injected') is (profile=='party-next' and 54 in groups),'GPU part projection disclosure changed')
+        for key in ('status','catalog_sha256','manifest_sha256','source_tree_sha256','source_file_count','native_state_unchanged','save_bytes_unchanged','authored_roster_fixture'):
             require(item.get(key)==d.get(key),'GPU part common provenance changed')
         expected={f'party-g{g:03d}-f{f:02d}-ui-hd' for g in groups for f in FRAMES}|{f'party-g{g:03d}-f00-ui-original' for g in groups}
         require(Counter(x['case'] for x in item['cases'])==Counter(expected),'incomplete GPU part')
@@ -44,11 +49,13 @@ def verify_parts(d):
     require(strip(d['cases'])==strip(cases),'GPU part render metadata changed')
 
 def assemble_gpu_parts(out,parts):
-    require(len(parts)==3 and not out.exists() and not out.parent.exists() and out.parent.parent.is_dir() and out.parent.parent.stat().st_uid==os.getuid(),'fresh owned combined capture required')
+    require(bool(parts) and not out.exists() and not out.parent.exists() and out.parent.parent.is_dir() and out.parent.parent.stat().st_uid==os.getuid(),'fresh owned combined capture required')
     inputs=[read(p) for p in parts]
-    d=deepcopy(inputs[0]);d['pair']='combined';d['selected_groups']=list(PROFILES['audited-six']);d['cases']=[];d['sources']=[];d['source_parts']=[];d['scope']='three fixed authored roster pairs, 42 full Game.Draw,36 PNG,six F2; controlled presentation only, no natural chapter progression'
+    profile=inputs[0].get('profile');require(profile in GPU_PARTS,'unsupported split profile')
+    pairs=GPU_PARTS[profile];require(len(parts)==len(pairs),'complete fixed GPU parts required')
+    d=deepcopy(inputs[0]);d['pair']='combined';d['selected_groups']=list(PROFILES[profile]);d['cases']=[];d['sources']=[];d['source_parts']=[];d['selector_projection_injected']=profile=='party-next';d['scope']='complete fixed GPU pairs and completed memory reports; controlled presentation, per-actor selector projection disclosed, not natural chapter progression'
     links=[]
-    for (pair,groups),path,item in zip(AUDITED_PAIRS.items(),parts,inputs):
+    for (pair,groups),path,item in zip(pairs.items(),parts,inputs):
         require(path.parent.name.endswith('-capture'),'GPU capture naming contract')
         memory=path.parent.parent/(path.parent.name.removesuffix('-capture')+'.memory.json')
         d['source_parts'].append(dict(pair=pair,file=str(path.resolve().relative_to(ROOT)),sha256=sha(path),memory=dict(file=str(memory.resolve().relative_to(ROOT)),sha256=sha(memory))))
@@ -58,7 +65,7 @@ def assemble_gpu_parts(out,parts):
             name=row['file'];source=path.parent/name
             require(Path(name).name==name and source.is_file() and sha(source)==row['sha256'],'GPU part PNG changed')
             links.append((name,source))
-    require(len({name for name,src in links})==36,'duplicate or missing GPU PNGs')
+    require(len({name for name,src in links})==6*len(PROFILES[profile]),'duplicate or missing GPU PNGs')
     verify_parts(d)
     out.parent.mkdir()
     for name,source in links:(out.parent/name).symlink_to(source.resolve())
@@ -74,6 +81,9 @@ def verify_gpu(d,folder,candidate,recipe=RECIPE,profile='party'):
     require(d.get('profile','party')==profile,'GPU profile changed')
     if profile=='audited-six':
         require(d.get('selector_projection_injected') is False and d.get('authored_roster_fixture') is True and d.get('selected_groups')==list(groups) and d.get('pair')=='combined','authored roster disclosure missing')
+        verify_parts(d)
+    elif profile=='party-next':
+        require(d.get('selector_projection_injected') is True and d.get('authored_roster_fixture') is False and d.get('selected_groups')==list(groups) and d.get('pair')=='combined','next party disclosure missing')
         verify_parts(d)
     elif profile=='base-faces':
         require(d.get('selector_projection_injected') is False and d.get('selected_groups')==list(groups),'base identity projection forbidden')
@@ -105,6 +115,19 @@ def verify_gpu(d,folder,candidate,recipe=RECIPE,profile='party'):
             require(b['scenario_file']==path and sha(ROOT/path)==b['scenario_sha256'],'base scenario changed')
             matches=[u for u in read(ROOT/path)['party'] if u.get('native_identity')==g]
             require(len(matches)==1 and matches[0].get('fig')==matches[0].get('portrait')==g and b['native_identity']==b['portrait']==b['fig']==g,'authored base identity changed')
+    if profile=='party-next':
+        bindings=r.get('party_bindings',[])
+        require([b['group'] for b in bindings]==list(groups) and r.get('gpu_pairs')=={k:list(v) for k,v in GPU_PARTS[profile].items()},'fixed next party bindings')
+        promotion=r['promotion_source'];path='remake/assets/data/class_change_targets.json'
+        require(promotion['file']==path and sha(ROOT/path)==promotion['sha256'],'next promotion source changed')
+        targets=[row for row in read(ROOT/path)['current_portraits'] if row['portrait']==4]
+        require(len(targets)==1 and targets[0].get('optional_target')==54,'explicit Ares target changed')
+        for b,chapter in zip(bindings,[9,10,7,1]):
+            g=b['group'];identity=PROFILE_IDENTITIES[profile][g];path=f'remake/assets/scenarios/ch{chapter:02d}.json'
+            require(b['scenario_file']==path and sha(ROOT/path)==b['scenario_sha256'],'next party scenario changed')
+            matches=[u for u in read(ROOT/path)['party'] if u.get('native_identity')==identity]
+            require(len(matches)==1 and matches[0].get('fig')==matches[0].get('portrait')==identity and b['native_identity']==b['portrait']==b['fig']==identity and b['selector_projection_injected'] is (g==54),'next party identity mismatch')
+            if g==54:require(b.get('target_field')=='optional_target','explicit Ares target field missing')
     if profile=='enemies':
         bindings=r.get('enemy_bindings',[])
         require([b['group'] for b in bindings]==[76,79],'fixed enemy bindings')
@@ -171,6 +194,9 @@ def verify_gpu(d,folder,candidate,recipe=RECIPE,profile='party'):
         elif profile=='base-faces':
             b=next(b for b in r['party_bindings'] if b['group']==g)
             require(s.get('native_identity')==s.get('portrait')==s.get('battle_fig')==s.get('selector_key')==g and s.get('has_native_identity') is True and s.get('camp')==0 and s.get('scenario_sha256')==b['scenario_sha256'],'authored base provenance changed')
+        elif profile=='party-next':
+            b=next(b for b in r['party_bindings'] if b['group']==g);identity=PROFILE_IDENTITIES[profile][g]
+            require(s.get('native_identity')==s.get('portrait')==s.get('battle_fig')==identity and s.get('selector_key')==g and s.get('has_native_identity') is True and s.get('camp')==0 and s.get('scenario_sha256')==b['scenario_sha256'] and s.get('selector_projection_injected') is (g==54),'next party actor provenance changed')
         elif profile not in ('party','static-king'):require(s.get('native_identity')==PROFILE_IDENTITIES[profile][g] and s.get('selector_key')==g,'visual selector projection changed')
         require(case['source_frame']==f and case.get('game_draw') is True and case.get('rgba_tolerance')==2,'Game.Draw scope')
         if s['interface']!='hd':continue
@@ -218,6 +244,7 @@ def verify_normal(d,folder,candidate,binary,profile='party'):
     if profile=='enemies':scope='unchanged ordinary chapter1 save validates complete-pack admission, independent controls and save/cold LOAD; selected enemy pixels only by controlled authored initial groups map0/10 and map18/0, not natural encounter or chapter19 progression'
     if profile=='static-king':scope='unchanged ordinary chapter1 save validates full-pack admission, independent controls and save/cold LOAD; static48 only by controlled original map32 story carrier, no natural prologue or new story-save feature claim'
     if profile=='audited-six':scope='unchanged chapter1 ordinary save checks complete six-group pack admission, four controls, walk/cancel and save/cold LOAD; six new actors only by fixed authored roster pair fixtures, not natural chapter progression or persistent player identities'
+    if profile=='party-next':scope='unchanged chapter1 ordinary save checks full four-group candidate, independent controls, walk/cancel and save/cold LOAD; groups5/6/13 use controlled authored party,54 is explicit identity4 selector projection; not natural recruitment or promotion'
     return dict(status='PASS-FULL-CANDIDATE-NORMAL-TRANSACTION',pngs=10,scope=scope)
 
 def register(formal,candidate,destination,recipe=RECIPE,profile='party'):
@@ -251,17 +278,17 @@ def main():
     for n in ('gpu','candidate','normal','binary','out'):p.add_argument('--'+n,type=Path,required=True)
     for n in ('formal','destination'):p.add_argument('--'+n,type=Path)
     p.add_argument('--recipe',type=Path,default=RECIPE,help='明示本批配方；必須符合所選固定矩陣')
-    p.add_argument('--profile',choices=PROFILES,default='party',help='party固定21；base-faces1／4無投影，variants53／54、identity-pair51／63、knights55／56、heroes50／52各固定14；enemies76／79保留敵方名冊；static-king48固定六；audited-six固定三配對共42')
-    p.add_argument('--gpu-parts',nargs=3,type=Path,help='audited-six三份固定配對GPU收據；--gpu指定新的合併目錄內收據')
+    p.add_argument('--profile',choices=PROFILES,default='party',help='party固定21；base-faces1／4無投影；其他固定雙組14；static-king48固定六；audited-six三份42，party-next兩份28並逐actor揭露54投影')
+    p.add_argument('--gpu-parts',nargs='+',type=Path,help='audited-six固定三份、party-next固定兩份GPU收據；--gpu指定新的合併目錄內收據')
     p.add_argument('--self-test',action='store_true');p.add_argument('--register',action='store_true');a=p.parse_args()
     require(not a.out.exists(),'fresh report required')
     if a.gpu_parts:
-        require(a.profile=='audited-six','GPU parts require audited-six')
+        require(a.profile in GPU_PARTS,'GPU parts require a fixed split profile')
         assemble_gpu_parts(a.gpu,a.gpu_parts)
     d=read(a.gpu);result=verify_gpu(d,a.gpu.parent,a.candidate,a.recipe,a.profile);result['normal']=verify_normal(read(a.normal),a.normal.parent,a.candidate,a.binary,a.profile)
     rejected=[]
     if a.self_test:
-        for fault in ('missing','duplicate','catalog','source-code','false-save','wrong-hud','wrong-tolerance','missing-f2','wrong-profile','wrong-selector','wrong-identity','undisclosed-projection','wrong-base-source','false-base-identity','wrong-enemy-camp','wrong-enemy-position','wrong-enemy-roster','wrong-static-phase','wrong-story-source','wrong-story-position','missing-part','duplicate-part','wrong-part-source','wrong-part-group','wrong-part-memory'):
+        for fault in ('missing','duplicate','catalog','source-code','false-save','wrong-hud','wrong-tolerance','missing-f2','wrong-profile','wrong-selector','wrong-identity','undisclosed-projection','wrong-base-source','false-base-identity','wrong-actor-projection','wrong-enemy-camp','wrong-enemy-position','wrong-enemy-roster','wrong-static-phase','wrong-story-source','wrong-story-position','missing-part','duplicate-part','wrong-part-source','wrong-part-group','wrong-part-memory'):
             x=deepcopy(d)
             if fault=='missing':x['cases'].pop()
             elif fault=='duplicate':x['cases'][-1]=deepcopy(x['cases'][0])
@@ -288,11 +315,14 @@ def main():
                 if a.profile=='party':continue
                 x.pop('selector_projection_injected',None)
             elif fault=='wrong-base-source':
-                if a.profile!='base-faces':continue
+                if a.profile not in ('base-faces','party-next'):continue
                 x['sources'][0]['scenario_sha256']='0'*64
             elif fault=='false-base-identity':
-                if a.profile!='base-faces':continue
+                if a.profile not in ('base-faces','party-next'):continue
                 x['sources'][0]['has_native_identity']=False
+            elif fault=='wrong-actor-projection':
+                if a.profile!='party-next':continue
+                x['sources'][0]['selector_projection_injected']=True
             elif fault=='wrong-enemy-camp':
                 if a.profile not in ('enemies','audited-six'):continue
                 x['sources'][0]['camp']=0
@@ -312,19 +342,19 @@ def main():
                 if a.profile!='static-king':continue
                 x['sources'][0]['position']['raw_key']=0
             elif fault=='missing-part':
-                if a.profile!='audited-six':continue
+                if a.profile not in GPU_PARTS:continue
                 x['source_parts'].pop()
             elif fault=='duplicate-part':
-                if a.profile!='audited-six':continue
+                if a.profile not in GPU_PARTS:continue
                 x['source_parts'][-1]=deepcopy(x['source_parts'][0])
             elif fault=='wrong-part-source':
-                if a.profile!='audited-six':continue
+                if a.profile not in GPU_PARTS:continue
                 x['source_parts'][0]['sha256']='0'*64
             elif fault=='wrong-part-group':
-                if a.profile!='audited-six':continue
+                if a.profile not in GPU_PARTS:continue
                 x['source_parts'][0]['pair']='robed'
             else:
-                if a.profile!='audited-six':continue
+                if a.profile not in GPU_PARTS:continue
                 x['source_parts'][0]['memory']['sha256']='0'*64
             try:verify_gpu(x,a.gpu.parent,a.candidate,a.recipe,a.profile)
             except (ValueError,KeyError,IndexError):rejected.append(fault)

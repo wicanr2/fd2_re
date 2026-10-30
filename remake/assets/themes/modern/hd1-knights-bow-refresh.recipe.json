@@ -1,0 +1,285 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_hd1_chibi_map_refresh",
+  "approved_preview": "docs/figures/hd1-ares-q-design.png",
+  "approved_preview_sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e",
+  "native_bank_sha256": "7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44",
+  "palette_sha256": "404db1ca72ffc19fa7404fbc59bde98cdf239f63fe3375ec248a8142073a28bf",
+  "base_catalog_sha256": "c8e073a01dee04e103c3636cbc043c6f391ec404a91d60d232b7752639529ce3",
+  "approval": "使用者已定大頭短身、原版各自五官並授權持續推進，沿同一核對與接線方式處理5／6／13／54；規則與保存不變。",
+  "groups": [
+    {
+      "group": 5,
+      "master_file": "fdicon-005-hd1-portrait-q-v1-master.png",
+      "master_sha256": "fdbf53d45f26f2f45cf1c0bd0ca549176865f4736500765a7b9363f21b140b64",
+      "output_prefix": "fdicon-005-hd1-portrait-q-v1"
+    },
+    {
+      "group": 6,
+      "master_file": "fdicon-006-hd1-portrait-q-v1-master.png",
+      "master_sha256": "30e9a558c9a0c1a6a466ea394697c65385834b37c5a04650cc15fc39a1e37313",
+      "output_prefix": "fdicon-006-hd1-portrait-q-v1"
+    },
+    {
+      "group": 13,
+      "master_file": "fdicon-013-hd1-portrait-q-v1-master.png",
+      "master_sha256": "1300ba93ff397f0585b6b0bec550e3ff443875f34cc5d81c0038659beea63ba5",
+      "output_prefix": "fdicon-013-hd1-portrait-q-v1"
+    },
+    {
+      "group": 54,
+      "master_file": "fdicon-054-hd1-portrait-q-v1-master.png",
+      "master_sha256": "56b2719de4230ced43313cfbd1fd07747eb30009fbfa478c107209d43386ef07",
+      "output_prefix": "fdicon-054-hd1-portrait-q-v1"
+    }
+  ],
+  "faces": [
+    {
+      "group": 5,
+      "name": "洛娜",
+      "portrait_file": "remake/assets/portraits/DATO_005_m0.png",
+      "portrait_sha256": "5d01b17434071429eb6c71e235e826c2fd4347f41e42ef497001c6579108d8d2",
+      "traits": [
+        "灰綠側分長髮",
+        "杏眼弧眉",
+        "收尖下巴",
+        "紅色閉唇"
+      ],
+      "comparison_label": "原版大頭像與實際地圖圖源，非480對話頭像驗收"
+    },
+    {
+      "group": 6,
+      "name": "萊汀",
+      "portrait_file": "remake/assets/portraits/DATO_006_m0.png",
+      "portrait_sha256": "4c9bed36d5c60bf25bad0ecb6aed67077c216238cea00be96f1ee4d1138afc77",
+      "traits": [
+        "褐短髮與頭帶",
+        "長直鼻",
+        "稜角方下巴",
+        "窄眼與微揚嘴角"
+      ],
+      "comparison_label": "原版大頭像與實際地圖圖源，非480對話頭像驗收"
+    },
+    {
+      "group": 13,
+      "name": "貝克威",
+      "portrait_file": "remake/assets/portraits/DATO_013_m0.png",
+      "portrait_sha256": "633b5dd8e49de6728c9daf86a3d42289ad10a0c0f2d47581cabe7e216d8e85b3",
+      "traits": [
+        "金長髮深色頭帶",
+        "修長臉與平眉",
+        "半闔眼",
+        "閉口微笑"
+      ],
+      "comparison_label": "原版大頭像與實際地圖圖源，非480對話頭像驗收"
+    },
+    {
+      "group": 54,
+      "name": "亞雷斯轉職形態",
+      "portrait_file": "remake/assets/portraits/DATO_004_m0.png",
+      "portrait_sha256": "b57978530691387e208808a3d23127e31b9405e24861bd744be7699bb68e412e",
+      "traits": [
+        "寬方下顎",
+        "濃斜眉窄眼",
+        "長直鼻",
+        "嚴肅閉口"
+      ],
+      "comparison_label": "原版大頭像與實際地圖圖源，非480對話頭像驗收"
+    }
+  ],
+  "party_bindings": [
+    {
+      "group": 5,
+      "native_identity": 5,
+      "portrait": 5,
+      "fig": 5,
+      "scenario_file": "remake/assets/scenarios/ch09.json",
+      "scenario_sha256": "5519706fc75fd25ef8bfa47fe78a2dcabc395d0da425a13e33590d9a73bce23d",
+      "selector_projection_injected": false
+    },
+    {
+      "group": 6,
+      "native_identity": 6,
+      "portrait": 6,
+      "fig": 6,
+      "scenario_file": "remake/assets/scenarios/ch10.json",
+      "scenario_sha256": "91f207235fae39ef02f2ba42e342b5d7a5bbbdefe8b061e92bf732bdfa2e605d",
+      "selector_projection_injected": false
+    },
+    {
+      "group": 13,
+      "native_identity": 13,
+      "portrait": 13,
+      "fig": 13,
+      "scenario_file": "remake/assets/scenarios/ch07.json",
+      "scenario_sha256": "73f21023493af3c478affeffa1385c947ca607a1f6f822fb6a15153667b9e6be",
+      "selector_projection_injected": false
+    },
+    {
+      "group": 54,
+      "native_identity": 4,
+      "portrait": 4,
+      "fig": 4,
+      "scenario_file": "remake/assets/scenarios/ch01.json",
+      "scenario_sha256": "9d2229fe33a5a692234cb8343aaf6c4d159e6de1a4e4d9df4e2870874e103269",
+      "selector_projection_injected": true,
+      "target_field": "optional_target"
+    }
+  ],
+  "image_generation": {
+    "tool": "image_gen.imagegen",
+    "mode": "builtin",
+    "transparent_background": true,
+    "jobs": [
+      {
+        "group": 5,
+        "prompt": "Use case: identity-preserve. Asset type: HD1 tactical map sprite MASTER for Flame Dragon Knights2. Inputs: Image1 ORIGINAL twelve map poses with game palette controls identity, clothing, visible gear, hand placements and occlusion. Image2 the character's ORIGINAL DATO portrait controls distinctive facial features. Image3 approved HD1 same-character Q style/face reference controls mature face likeness and giant-head/very-short-body proportions ONLY, not different upgraded equipment/colors. Exactly3columns x4rows, twelve separate full-body figures, actual transparent alpha. Rows FRONT directly toward viewer / LEFT profile facing screen left / BACK away / RIGHT profile facing screen right. In EVERY row column1 neutral both boots planted, column2 small grounded left step, column3 small grounded right step. First column neutral, not middle. Equal figure scale and baseline, generous clear margins, no cell overlap/cropping. Head INCLUDING visible FACE about67-70% figure height, extremely short compact torso/legs, stubby boots, face large enough at144/72/48px. Distinct adult face from own portrait, not one common infant face with a different hairstyle. Strong dark clean contour, large readable color blocks, restrained smooth painted/cel2D HD1 art. No photo/3D/pixel-upscale, plastic shine, tiny rivets/filigree, extra limb/hand, duplicate/floating weapon, text/labels/grid/border, background/checkerboard, floor/shadow/glow. All original directions and source-specific weapon occlusion matter. Original group005 RONA/洛娜, base form. Preserve a clearly FEMALE mature oval face, tapered chin, almond-shaped dark/gray-green eyes under defined curved brows, straight defined nose bridge, vivid RED firmly CLOSED lips and confident cool expression. Not a cute round baby face or male square jaw. Original cool gray-green long side-parted hair, broad sweep over viewer RIGHT shoulder and long hair across back; no helmet/cap or foreheadband. Use image3 face/proportions but this ORIGINAL BASE outfit: dark blue/navy torso with gray-silver chest square, compact silver/light gray shoulder plates and forearm/boots, original simple chest accents, reddish orange-brown short CAPE visible down back. No full ornate shining plate, golden trim, skirt frills, big belt jewel, added jewelry or SHIELD. Exactly ONE straight silver-gray short SWORD with small plain dark hilt, not a long spear/pole or gold crossguard. FRONT sword upright VIEWER LEFT beside head, tip at about top of hair; LEFT profiles far-side sword hidden by head/body, do not draw blade ahead of face; BACK sword upright VIEWER RIGHT mostly at hair edge, cape clearly visible; RIGHT profiles sword upright at LEFT edge of face/hair, behind nose, not on screen right ahead of nose. Keep original hand and occlusion, sword handle does not extend below boots. Two arms/hands total. Original base figure has NO shield: do not copy image3's blue shield or upgraded blue metal cape. Huge head AND face with tiny body, no long legs.",
+        "selected": true,
+        "source": "exec-9d75551c-ac1d-420d-ae76-aad60a6265b0.png",
+        "source_sha256": "fdbf53d45f26f2f45cf1c0bd0ca549176865f4736500765a7b9363f21b140b64",
+        "reason": "選用各自原版面容、原生裝備與已定Q比例",
+        "reference_inputs": [
+          {
+            "role": "original-map-poses",
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/group-005-original.png",
+            "sha256": "b78e53f2972dc790d17cb5a4c8a4c341c14cd61e9fdcc26fee58b9d3bac2272b"
+          },
+          {
+            "role": "original-facial-identity",
+            "file": "remake/assets/portraits/DATO_005_m0.png",
+            "sha256": "5d01b17434071429eb6c71e235e826c2fd4347f41e42ef497001c6579108d8d2"
+          },
+          {
+            "role": "approved-same-character-face-and-proportion",
+            "file": "fdicon-055-hd1-native-q-v1-master.png",
+            "sha256": "bb9bf299a9c90fb11432f6be02e2108988d54483b26d6f6170842eac19f59eae"
+          }
+        ]
+      },
+      {
+        "group": 6,
+        "prompt": "Use case: identity-preserve. Asset type: HD1 tactical map sprite MASTER for Flame Dragon Knights2. Inputs: Image1 ORIGINAL twelve map poses with game palette controls identity, clothing, visible gear, hand placements and occlusion. Image2 the character's ORIGINAL DATO portrait controls distinctive facial features. Image3 approved HD1 same-character Q style/face reference controls mature face likeness and giant-head/very-short-body proportions ONLY, not different upgraded equipment/colors. Exactly3columns x4rows, twelve separate full-body figures, actual transparent alpha. Rows FRONT directly toward viewer / LEFT profile facing screen left / BACK away / RIGHT profile facing screen right. In EVERY row column1 neutral both boots planted, column2 small grounded left step, column3 small grounded right step. First column neutral, not middle. Equal figure scale and baseline, generous clear margins, no cell overlap/cropping. Head INCLUDING visible FACE about67-70% figure height, extremely short compact torso/legs, stubby boots, face large enough at144/72/48px. Distinct adult face from own portrait, not one common infant face with a different hairstyle. Strong dark clean contour, large readable color blocks, restrained smooth painted/cel2D HD1 art. No photo/3D/pixel-upscale, plastic shine, tiny rivets/filigree, extra limb/hand, duplicate/floating weapon, text/labels/grid/border, background/checkerboard, floor/shadow/glow. All original directions and source-specific weapon occlusion matter. Original group006 LAITING/萊汀, base form. Face distinctive from DATO006 and image3: adult male, LONG projecting straight nose, lean angular cheeks, broad SQUARE jaw and flat strong chin, narrow dark eyes, sharply angled heavy brows, thin lips with restrained confident asymmetrical upward corner. Serious experienced confident adult, no round eyes/dot nose/baby face, no beard. Spiky thick chestnut/rust brown SHORT HAIR with wide dark navy headband, no long PONYTAIL. Original base outfit is simple OLIVE/GRAY-GREEN compact armor, small gray-green shoulder/forearm plates, dark navy undertunic and trousers, gray-green boots. Do not copy upgraded navy/blue/gold armor, gold buckle, blue shield or ornate spiked pauldrons from reference3. Exactly ONE upright dark short shaft with the ORIGINAL SILVER-GRAY HOOKED BROAD POLEARM HEAD: tall pointed upper spike plus concave crescent inner notch and broad lower blade. Follow the original and image3 blade shape, not the old base candidate's small downward straight sword. Pole held close upright: FRONT blade on viewer LEFT beside hair, long upper point slightly above hair, broad lower end near eye/upper cheek, one hand below it holding connected dark shaft. LEFT profile far-side polearm is occluded behind head/body; no blade in front of nose. BACK weapon upright viewer RIGHT at hair edge. RIGHT profile polearm vertical on screen LEFT, at face-left/hair-right boundary, partially overlapping the eye-side hair, NOT ahead of nose on screen right. Shaft ends at boots, not giant spear far below character. No sword, shield, cape, pouch, extra spike, extra hand or duplicated blade. Original front/left/back/right gear positions and mature nose/jaw/smirk matter.",
+        "selected": true,
+        "source": "exec-b8ed9790-be21-483d-a9d8-79fd8cff4b2b.png",
+        "source_sha256": "30e9a558c9a0c1a6a466ea394697c65385834b37c5a04650cc15fc39a1e37313",
+        "reason": "選用各自原版面容、原生裝備與已定Q比例",
+        "reference_inputs": [
+          {
+            "role": "original-map-poses",
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/group-006-original.png",
+            "sha256": "7c479739bb2a91a194f8965e315b2b9756ed448daedbbe4b60a3575598eed97c"
+          },
+          {
+            "role": "original-facial-identity",
+            "file": "remake/assets/portraits/DATO_006_m0.png",
+            "sha256": "4c9bed36d5c60bf25bad0ecb6aed67077c216238cea00be96f1ee4d1138afc77"
+          },
+          {
+            "role": "approved-same-character-face-and-proportion",
+            "file": "fdicon-056-hd1-native-q-v1-master.png",
+            "sha256": "a46f845785683230a38b79a4bbce0c33fc05d37e376397296763860b8a270880"
+          }
+        ]
+      },
+      {
+        "group": 13,
+        "prompt": "Use case: identity-preserve. Asset type: HD1 tactical map sprite MASTER for Flame Dragon Knights2. Inputs: Image1 ORIGINAL twelve map poses with game palette controls identity, clothing, visible gear, hand placements and occlusion. Image2 the character's ORIGINAL DATO portrait controls distinctive facial features. Image3 approved HD1 same-character Q style/face reference controls mature face likeness and giant-head/very-short-body proportions ONLY, not different upgraded equipment/colors. Exactly3columns x4rows, twelve separate full-body figures, actual transparent alpha. Rows FRONT directly toward viewer / LEFT profile facing screen left / BACK away / RIGHT profile facing screen right. In EVERY row column1 neutral both boots planted, column2 small grounded left step, column3 small grounded right step. First column neutral, not middle. Equal figure scale and baseline, generous clear margins, no cell overlap/cropping. Head INCLUDING visible FACE about67-70% figure height, extremely short compact torso/legs, stubby boots, face large enough at144/72/48px. Distinct adult face from own portrait, not one common infant face with a different hairstyle. Strong dark clean contour, large readable color blocks, restrained smooth painted/cel2D HD1 art. No photo/3D/pixel-upscale, plastic shine, tiny rivets/filigree, extra limb/hand, duplicate/floating weapon, text/labels/grid/border, background/checkerboard, floor/shadow/glow. All original directions and source-specific weapon occlusion matter. Original group013 BEKWEI/貝克威, base form. Distinct HUMAN adult male from DATO013 and image3: elongated calm face, flatter brows, narrow HALF-LIDDED eyes with small dark pupils, defined straight nose and bridge, restrained slightly upturned CLOSED mouth, confident calm subtle smile rather than angry common V-eyebrow hero or cute round-eyed child. Long smooth GOLDEN BLOND hair parted centrally over a broad dark NAVY foreheadband, straight side curtains and down back; human rounded ears, no elf ears. Original base dark TEAL/GRAY-GREEN compact clothes and shoulder pieces, charcoal/navy pants, simple gray-green boots and dark navy scarf collar; no upgraded bright lime/gold belt tab from image3, no extra ornate armor. Exactly ONE slender reddish DARK BROWN simple curved BOW with fine string, held down, not shooting, no nocked arrow, and ONE brown diagonal back QUIVER with a few muted red/brown fletchings. FRONT bow at VIEWER LEFT of head/body, don't put string in face. LEFT profile far-side bow mostly occluded by hair/body, no visible bow in front of nose; original quiver strapped on back not carried. BACK bow visible VIEWER RIGHT at right hair/body edge, brown diagonal quiver across lower back with upper-left fletching end. RIGHT profile bow upright along LEFT edge of face at hair curtain boundary, behind cheek/nose, not protruding to screen right ahead of nose. Hair does not hide entire lower face. Same natural weapon hand, two hands total, free hand empty. No sword, staff, shield, axe, arrow in hand, pouch, cape, long legs or bright new ornaments.",
+        "selected": true,
+        "source": "exec-91a1c772-2010-4784-ab63-c0ea7032919a.png",
+        "source_sha256": "1300ba93ff397f0585b6b0bec550e3ff443875f34cc5d81c0038659beea63ba5",
+        "reason": "選用各自原版面容、原生裝備與已定Q比例",
+        "reference_inputs": [
+          {
+            "role": "original-map-poses",
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/group-013-original.png",
+            "sha256": "2fa7e1c7f92cb718afb9d23a048d3ff95a04a98aef15f4a336a3d1b4a721ff52"
+          },
+          {
+            "role": "original-facial-identity",
+            "file": "remake/assets/portraits/DATO_013_m0.png",
+            "sha256": "633b5dd8e49de6728c9daf86a3d42289ad10a0c0f2d47581cabe7e216d8e85b3"
+          },
+          {
+            "role": "approved-same-character-face-and-proportion",
+            "file": "fdicon-063-hd1-face-q-v1-master.png",
+            "sha256": "463530464d009ee07cc3ec10960651fd0a208038f6aecb788f43efa20b3e46de"
+          }
+        ]
+      },
+      {
+        "group": 54,
+        "prompt": "Use case: identity-preserve. Edit ONLY facial anatomy and expression of Image1, the transparent12-pose ARES group054 sword+shield sprite master. Image2 ORIGINAL DATO004 controls face identity; Image3 is approved current SAME PERSON base group004 face that should carry consistently into upgraded54. Image4 original54 poses controls gear/invariants. Keep the huge-head/extremely-short-body Q proportion, exactly3columns4rows, neutral-first/alternating smallsteps, front/left/back/right directions, same cap/hair scale, feet and alpha margins. CHANGE the old generic round-eyed baby face into Ares' adult BROAD SQUARE angular face: distinct jaw corners/flat wide chin, angular cheek planes, long straight nose bridge and visibly projecting broad nose tip, deep-set very narrow dark horizontal eyes/small pupils, thick heavy inward-sloping brows, thin CLOSED firm mouth with subtle asymmetry, serious confident experienced expression. In front show a clear nose bridge extending below eyes with distinct tip/nostril planes; both profiles need a long projecting straight nose and square flat chin, not tiny point/doll cheeks. Exactly the same recognizable mature face as Image3, not Hano's narrow tapered chin or a new shared generic hero. No beard, new age spots, wrinkles or cosmetics. Back row still no face. PRESERVE ALL outfit, colors, gear and poses from Image1: large blue military cap with green band, short blue hair, navy scarf, gray-green armor, short navy legs/gray boots, ONE straight silver short sword and ONE steel-blue SHIELD. Front sword viewer-left/shield viewer-right. Left profile far-side sword hidden, shield behind body on screen-right. Back sword viewer-right/shield viewer-left. Right profile sword on screen-left beside face with shield on rear screen-left side, never move blade ahead of nose. Do not remove shield or replace armor with base4's shieldless version. Exactly two arms/hands, no extra limb, no new accessory, no duplicated blade. Strong clean contour and smooth restrained painted/cel2D HD1 art, actual transparent alpha. No background, checkerboard, shadow, floor, grid, labels, text or border.",
+        "selected": true,
+        "source": "exec-17783320-cbc4-46a0-8813-de54b5a2c44d.png",
+        "source_sha256": "56b2719de4230ced43313cfbd1fd07747eb30009fbfa478c107209d43386ef07",
+        "reason": "選用各自原版面容、原生裝備與已定Q比例",
+        "reference_inputs": [
+          {
+            "role": "original-map-poses",
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/group-054-original.png",
+            "sha256": "e000dcbffa20af0b76336224a5786c4156af1a517ae739c196fb55d561ea45fa"
+          },
+          {
+            "role": "original-facial-identity",
+            "file": "remake/assets/portraits/DATO_004_m0.png",
+            "sha256": "b57978530691387e208808a3d23127e31b9405e24861bd744be7699bb68e412e"
+          },
+          {
+            "role": "approved-same-character-face-and-proportion",
+            "file": "fdicon-004-hd1-base-face-q-v1-master.png",
+            "sha256": "42660af6368c697d423004a6c67a5093f365b1379b9599609cccb2c110285826"
+          },
+          {
+            "role": "edit-target-keep-sword-shield-outfit",
+            "file": "ares-g054-hd1-native-q-v1-master.png",
+            "sha256": "99a23756f94ffd8f4575a2092d42163b7f6b99ad11c88d96cdfa4ed0764f8aab"
+          }
+        ]
+      }
+    ]
+  },
+  "gpu_pairs": {
+    "base-knights": [
+      5,
+      6
+    ],
+    "bow-and-ares": [
+      13,
+      54
+    ]
+  },
+  "promotion_source": {
+    "file": "remake/assets/data/class_change_targets.json",
+    "sha256": "27946ce10bf60738331009fff14b50be3cddc4cce18a4402e5259cb89fecfaa2"
+  },
+  "policy": "四向各三拍，首欄中性。5灰綠長髮、藍衣銀護具與橘褐披風無盾；6灰綠護具、褐短髮無馬尾及原生鉤刃長兵器；13棕弓箭筒、青綠服與自己的半闔眼微笑；54成年寬方面容沿4、仍保留54劍盾。原生持物側與遮蔽、規則、能力及保存不變。",
+  "original_reference": {
+    "source": "FDICON原生三層與FDOTHER0代表色盤；party與optional_target來源明示身份，原版DATO各自決定面容",
+    "groups": [
+      5,
+      6,
+      13,
+      54
+    ],
+    "records_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-knights-bow-review-r10/native-reference.json",
+    "records_sha256": "259da8ee0e0966f22a491134899b929a65ffb3426c9cccba27286495155277d8",
+    "reference_boards": [
+      {
+        "file": "group-005-original.png",
+        "sha256": "b78e53f2972dc790d17cb5a4c8a4c341c14cd61e9fdcc26fee58b9d3bac2272b"
+      },
+      {
+        "file": "group-006-original.png",
+        "sha256": "7c479739bb2a91a194f8965e315b2b9756ed448daedbbe4b60a3575598eed97c"
+      },
+      {
+        "file": "group-013-original.png",
+        "sha256": "2fa7e1c7f92cb718afb9d23a048d3ff95a04a98aef15f4a336a3d1b4a721ff52"
+      },
+      {
+        "file": "group-054-original.png",
+        "sha256": "e000dcbffa20af0b76336224a5786c4156af1a517ae739c196fb55d561ea45fa"
+      }
+    ]
+  }
+}
