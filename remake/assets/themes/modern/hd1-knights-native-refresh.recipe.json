@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_hd1_chibi_map_refresh",
+  "base_catalog_sha256": "8a52e0e6d1b60f47b2f87fef7db66b709998d37070c274dbf12c8c8c861e3bf4",
+  "approved_preview": "docs/figures/hd1-ares-q-design.png",
+  "approved_preview_sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e",
+  "approval": "沿使用者已定大頭短身比例、逐人原版五官要求與其餘角色身份／裝備修正授權；洛娜55與萊汀56保留各自DATO面容及原生十二方向裝備。",
+  "native_bank_sha256": "7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44",
+  "palette_sha256": "404db1ca72ffc19fa7404fbc59bde98cdf239f63fe3375ec248a8142073a28bf",
+  "groups": [
+    {
+      "group": 55,
+      "master_file": "fdicon-055-hd1-native-q-v1-master.png",
+      "master_sha256": "bb9bf299a9c90fb11432f6be02e2108988d54483b26d6f6170842eac19f59eae",
+      "output_prefix": "fdicon-055-hd1-native-q-v1"
+    },
+    {
+      "group": 56,
+      "master_file": "fdicon-056-hd1-native-q-v1-master.png",
+      "master_sha256": "a46f845785683230a38b79a4bbce0c33fc05d37e376397296763860b8a270880",
+      "output_prefix": "fdicon-056-hd1-native-q-v1"
+    }
+  ],
+  "policy": "洛娜灰綠長髮人臉、藍鋼甲與窄尖長兵器，萊汀褐髮深色頭帶、藍鋼甲金腰帶與寬側刃長兵器；皆保留十二姿態、左右遠側遮蔽、同一右手持兵器。無機器臉、頭盔、新劍或額外盾。五官逐人依DATO005／006，不共用少年圓臉。",
+  "image_generation": {
+    "tool": "image_gen.imagegen",
+    "mode": "builtin",
+    "transparent_background": true,
+    "jobs": [
+      {
+        "group": 55,
+        "source": "exec-72f08102-6a25-4394-b7eb-4c1dc583c011.png",
+        "prompt": "Use case: identity-preserve. Asset type: Flame Dragon Knights 2 HD1 tactical-map sprite MASTER for ORIGINAL FDICON group055, Rona/Luona (洛娜), original identity5. Image1 is the original twelve map poses with the correct game palette: authority for every direction, gear shape, placement, color and occlusion. Image2 is her OWN original DATO005 portrait: authority for HER recognizably adult feminine face, slate gray-green long hair parted off-center with swept forehead framing, defined arched narrow brows, sharp almond eyes, small straight nose, defined cheekbones and chin, small full reddish closed lips and composed confident stern expression. She is a human WOMAN, not a robot, helmeted soldier, hooded wizard or man. Do not reuse the generic round boy face from other characters. Image3 is approved HD1 Q PROPORTION/style reference only: use its huge head AND readable face, extremely short body, stubby legs, clean dark outlines, separated large colors and smooth restrained cel-painted shading; do NOT copy its blue cap, hairstyle, boy face, scarf, sword or any unrelated equipment.\nCompose EXACTLY THREE COLUMNS by FOUR ROWS, twelve fully isolated COMPLETE figures on genuine transparent alpha. Row1 FRONT toward viewer, row2 LEFT PROFILE facing screen left, row3 BACK with no face, row4 RIGHT PROFILE facing screen right. Every row column1 NEUTRAL boots planted, column2 small left-foot-forward step, column3 small right-foot-forward step. Equal scale and foot baseline in every cell, generous transparent margins, no weapons or hair crossing adjacent cells. Head and hair about 67-70% total figure height, tiny compact armor torso, very short legs and broad little boots. Human adult facial design in Q proportions, not an infant or realistic tall-body illustration.\nCRITICAL ORIGINAL EQUIPMENT AND COLORS FROM IMAGE1: gray-green hair is HAIR, softly swept strands and long side locks, not a hard green robot helmet or fabric hood. Blue/navy and steel-blue compact armor, two large steel-blue shoulder/arm plates as original, small pale gray-green chest marking, blue lower garment. ONE upright slender dark-shafted silver-pointed long weapon/polearm in anatomical RIGHT hand. Its original group055 silver tip is narrow and straight; not a broad sword with a crossguard, not an axe, not two spears. FRONT: upright silver tip/shaft on viewer LEFT beside hair, right anatomical hand visible below. LEFT-profile: far-side weapon is fully occluded by head/body as in original row2; do NOT add a blade ahead of nose. BACK: weapon on viewer RIGHT, gray-green hair down to upper back, steel-blue side armor on BOTH sides. RIGHT-profile: weapon upright just LEFT of the face near hair/cheek boundary, NOT ahead of nose; original thin shaft and point, exactly one weapon. No separate new heraldic shield, no invented cape, skirt extension, gold ornaments, tiara, feather, breast exaggeration, skin exposure or new accessory. All figures fully clothed in original armor, two arms/two hands and two legs, natural elbows and wrists. Original image1, not the proportion reference, controls armor, hair length and weapon placement.\nReadable tactical-map art at144/72/48 pixels: preserve her own arched almond eyes, shaped cheeks/chin and red lips rather than copying a boy's cute face. No photographic render, 3D toy gloss, pixel upscale, tiny distressed details. No text, labels, numbers, cell borders, grid, floor, cast shadow, glow, checkerboard or background. Actual transparency.",
+        "selected": false,
+        "reason": "像素階梯與通用藍眼，改回原版女性杏眼與平滑HD畫法。"
+      },
+      {
+        "group": 55,
+        "source": "exec-1193c3c2-9a92-4af3-b37a-7e1b3bb591e3.png",
+        "prompt": "Use case: precise-object-edit / identity-preserve. Image1 is the EDIT TARGET: the 3-column 4-row Rona original-group055 sprite master just generated. Image2 is HER ORIGINAL DATO005 portrait, authority for her own facial features. Image3 is approved HD1 smooth Q style and huge-head/extremely-short-body proportions only. Keep ALL twelve original image1 poses, cell positions, orientations, scale, hair arrangement, gray-green hair color, BLUE steel armor, long weapon shape/placement/occlusion, foot baselines, two arms/two legs and genuine transparent background unchanged. Do not add gear or show the hidden weapon in left profile.\nMake only this necessary visual correction across all twelve figures: repaint the harsh pixel-grid rendering into the clean smooth outlined HD cel-painted finish shown by the LOWER NEW-Q characters in image3, using broad separated colors and restrained smooth shadows, NO visible stair-stepped pixel art grid. Preserve the full silhouette and tiny walking pose differences. The face must read as the adult WOMAN in image2: longer sculpted cheeks, tapering defined chin, thin arched brows, narrower upward almond eyes with olive/hazel-green irises (NOT generic big round blue boy eyes), slim straight nose and small full reddish CLOSED lips. Composed proud expression, not an angry little boy with enormous black eyebrows. Keep recognizable off-center swept gray-green long hair. Do not change her to a young child, man, robot, hooded character or helmet. BACK row has no face. All other style-independent content is unchanged. Do NOT copy image3's male face, blue cap, clothes or sword. No text, labels, grids, border, ground, shadows, background or checkerboard. Actual transparent alpha.",
+        "selected": true
+      },
+      {
+        "group": 56,
+        "source": "exec-0e7490fa-1e03-4d2c-8a99-358c7c3e44f2.png",
+        "prompt": "Use case: identity-preserve. Asset type: HD1 tactical-map sprite MASTER for Flame Dragon Knights 2 ORIGINAL FDICON group056, Laiting/Lighting (萊汀), native identity6. Image1 is original game's twelve poses using real palette: primary authority for equipment, placement, direction, colors and occlusion. Image2 is HIS OWN original DATO006 portrait, authority for his distinct rugged adult HUMAN male face: swept-up reddish chestnut brown hair and dark navy/black cloth forehead band, heavy angular brow ridge, NARROW self-assured eyes, prominent long slightly pointed nose, broad angular square jaw with projecting defined chin, firmly closed thin mouth with a small confident one-corner smirk, no beard or added scar. Do NOT give him a generic cute round-eyed boy face, generic girl's chin, robot face or the face of another character. Image3 is approved HD1 PROPORTION/style reference only, especially its lower NEW-Q drawings: enormous head AND face about67-70% figure height, extremely short torso/legs, broad little boots, clean smooth dark contours, big separated colors and restrained smooth cel-painted shading. Do NOT copy its blue cap, blue hair, scarf, young boy face or sword.\nExactly THREE COLUMNS by FOUR ROWS, twelve complete fully separated figures, genuine transparent alpha. Row1 FRONT toward viewer, row2 LEFT PROFILE facing screen LEFT, row3 BACK showing no face, row4 RIGHT PROFILE facing screen RIGHT. First column EVERY row NEUTRAL both boots planted; column2 small left-foot-forward walking phase; column3 small right-foot-forward walking phase. Keep all heads/hair/weapons/boots inside their own cell with generous gaps and margins. Same scale and foot baseline, exactly two arms/two hands and two legs, natural wrists and elbows. Q proportions, but facial planes/eyes/nose/jaw belong to adult image2, not an infant.\nCRITICAL ORIGINAL GROUP056 EQUIPMENT: short dark reddish brown swept hair, a dark cloth HEADBAND with bare human face and ears, absolutely NO helmet, no red armor headpiece, visor, cap, feathers or horns. Compact navy/steel-blue armor with large steel-blue shoulder/side arm plates and golden-yellow waist accent as in image1. ONE upright long dark shafted polearm with original widened asymmetric silver point, NOT a sword, not a sword's crossguard, no second weapon. Weapon held in anatomical RIGHT hand. FRONT row: its upright silver head and shaft are on viewer LEFT beside hair. LEFT-profile row: far-side weapon is FULLY HIDDEN behind his head/body, exactly as original row2; do not draw a blade ahead of nose. BACK row: silver point/shaft on viewer RIGHT, reddish hair back and blue armor side plates BOTH sides. RIGHT-profile row: original large silver point is upright just to LEFT of his face at hair/cheek boundary, on the original weapon side, NOT ahead of nose. Keep the original silver point silhouette from image1, do not replace it with an elaborate halberd, axe, trident, straight sword, crossguard, glowing blade or spiked spear. No extra separate shield/heraldry, bag, cape, pendant or jewelry absent from original. Original image1 controls gear, not the proportion reference.\nSmooth crisp HD illustrated Q RPG art, not a pixel-grid redraw or nearest-neighbor enlargement, not a realistic tall-body illustration, photo, shiny 3D toy or distressed metal texture. Strong readable face and outfit at144/72/48 pixels. No text, labels, numbers, cell borders, grid, floor, cast shadow, glow, checkerboard, background or extra figure. Actual transparent alpha.",
+        "selected": true
+      }
+    ]
+  },
+  "original_reference": {
+    "source": "FDICON.B24原生三層與FDOTHER0代表色盤，DATO005／006原版大頭像",
+    "groups": [
+      55,
+      56
+    ],
+    "records_sha256": "01c5e879661b54629955a717de4248d2e681670202e553de796d66bccbdf1cfe",
+    "reference_boards": [
+      {
+        "file": "group-055-original-reference.png",
+        "sha256": "11a15da860e8dbcbf619de525fbd928ce6d110e0c40fe2f755f273e493aa2e7c"
+      },
+      {
+        "file": "group-056-original-reference.png",
+        "sha256": "4480e699887895e5690ebf72063bc6f1fc5ffae0191ba94d3c431d748e5aa9bc"
+      }
+    ],
+    "scope": "原生十二姿態決定衣甲、長兵器形狀與遮蔽，原版頭像決定個別面容；章9／10名冊核身份5／6，不推論升階規則。"
+  },
+  "faces": [
+    {
+      "group": 55,
+      "name": "洛娜",
+      "portrait_file": "remake/assets/portraits/DATO_005_m0.png",
+      "portrait_sha256": "5d01b17434071429eb6c71e235e826c2fd4347f41e42ef497001c6579108d8d2",
+      "traits": [
+        "灰綠側分長髮",
+        "修長杏眼",
+        "弧形眉",
+        "收尖下巴",
+        "紅色閉唇"
+      ],
+      "comparison_label": "原版大頭像與HD1地圖人物，非480對話頭像驗收"
+    },
+    {
+      "group": 56,
+      "name": "萊汀",
+      "portrait_file": "remake/assets/portraits/DATO_006_m0.png",
+      "portrait_sha256": "4c9bed36d5c60bf25bad0ecb6aed67077c216238cea00be96f1ee4d1138afc77",
+      "traits": [
+        "褐髮深色頭帶",
+        "窄眼收斂神情",
+        "長鼻",
+        "稜角方下巴",
+        "微揚嘴角"
+      ],
+      "comparison_label": "原版大頭像與HD1地圖人物，非480對話頭像驗收"
+    }
+  ]
+}

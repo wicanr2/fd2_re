@@ -37,6 +37,10 @@
 
 哈諾的長鼻、細眼與抿嘴，以及貝克威的平眉、半闔眼與微揚嘴角，分別參考自己的原版大頭像。上圖比較原版頭像與實際144／72／48像素地圖素材，並非遊戲截圖或對話HD頭像驗收；[四向原版／HD1局部對照](docs/figures/hd1-native-faces-comparison.png)另列兩人的裝備與方向。[哈諾](docs/figures/hd1-hano-face-game.png)與[貝克威](docs/figures/hd1-bekwei-face-game.png)的完整受控戰場畫面，可查看地圖與資訊窗接線；測試用圖組投影不代表升階或自然出場驗收。其他角色的面容仍逐人複核，完整人物總覽待全部重繪後更新。
 
+![洛娜與萊汀依各自原版頭像重繪的HD1面容](docs/figures/hd1-knights-face-reference.png)
+
+洛娜的灰綠長髮、杏眼與紅唇，以及萊汀的褐髮頭帶、長鼻與方下巴，分別依自己的原版大頭像重繪。兩人的騎士形態保留原版長兵器、藍鋼甲與方向遮蔽，地圖及資訊窗共用新版圖源。可看[四向及尺寸對照](docs/figures/hd1-knights-comparison.png)、[洛娜](docs/figures/hd1-rona-variant-game.png)與[萊汀](docs/figures/hd1-laiting-variant-game.png)的完整受控戰場圖。面容對照是地圖美術來源比較，戰場圖使用測試圖組投影，不代表升階、自然出場或對話HD頭像驗收。
+
 ![蓋亞原版與新版HD1四向及尺寸對照](docs/figures/hd1-gaia-q-comparison.png)
 
 蓋亞採用上圖的先前HD1版本定案，保留灰綠硬甲、藍色面罩與大頭短身。兩份加重候選不採用。[完整受控戰場及資訊窗](docs/figures/hd1-gaia-q-game.png)、[普通首章遊玩畫面](docs/figures/hd1-gaia-q-normal.png)均使用這版；十二姿態、主題切換與保存冷讀已抽驗。全部125組已做第一輪造型審查，身份與裝備偏移由[#287](https://github.com/wicanr2/fd2_re/issues/287)修正，其他比例由[#286](https://github.com/wicanr2/fd2_re/issues/286)續作；全部完成後才更新完整「原版／HD1」人物總覽。

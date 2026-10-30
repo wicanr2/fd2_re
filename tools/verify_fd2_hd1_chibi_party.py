@@ -13,7 +13,7 @@ from verify_fd2_hd1_chibi_refresh import ROOT,sha,read,require,tree,rect,core
 
 RECIPE=ROOT/'remake/assets/themes/modern/hd1-party-chibi-refresh.recipe.json'
 GROUPS=(1,2,3)
-PROFILES={'party':GROUPS,'variants':(53,54),'identity-pair':(51,63)}
+PROFILES={'party':GROUPS,'variants':(53,54),'identity-pair':(51,63),'knights':(55,56)}
 FRAMES=(0,1,2,3,6,9)
 
 def verify_gpu(d,folder,candidate,recipe=RECIPE,profile='party'):
@@ -86,6 +86,7 @@ def verify_normal(d,folder,candidate,binary,profile='party'):
     scope='unchanged chapter1 source; new groups1/2/3 actual pixels verified only by controlled GPU, not natural membership'
     if profile=='variants':scope='unchanged chapter1 source with base selectors0/4/9/30; groups53/54 actual pixels verified only by controlled raw-selector projections, not promotion or natural membership'
     if profile=='identity-pair':scope='unchanged chapter1 source with base selectors0/4/9/30; groups51/63 actual pixels verified only by controlled authored identities1/13 raw-selector projections, not promotion or natural membership'
+    if profile=='knights':scope='unchanged chapter1 source with base selectors0/4/9/30; groups55/56 actual pixels verified only by controlled authored identities5/6 raw-selector projections, not promotion or natural membership'
     return dict(status='PASS-FULL-CANDIDATE-NORMAL-TRANSACTION',pngs=10,scope=scope)
 
 def register(formal,candidate,destination,recipe=RECIPE,profile='party'):
@@ -119,7 +120,7 @@ def main():
     for n in ('gpu','candidate','normal','binary','out'):p.add_argument('--'+n,type=Path,required=True)
     for n in ('formal','destination'):p.add_argument('--'+n,type=Path)
     p.add_argument('--recipe',type=Path,default=RECIPE,help='明示本批配方；必須符合所選固定矩陣')
-    p.add_argument('--profile',choices=PROFILES,default='party',help='party固定21案例；variants固定53／54，identity-pair固定51／63，各14案例與明示selector投影')
+    p.add_argument('--profile',choices=PROFILES,default='party',help='party固定21案例；variants53／54、identity-pair51／63、knights55／56各固定14案例與明示selector投影')
     p.add_argument('--self-test',action='store_true');p.add_argument('--register',action='store_true');a=p.parse_args()
     require(not a.out.exists(),'fresh report required')
     d=read(a.gpu);result=verify_gpu(d,a.gpu.parent,a.candidate,a.recipe,a.profile);result['normal']=verify_normal(read(a.normal),a.normal.parent,a.candidate,a.binary,a.profile)

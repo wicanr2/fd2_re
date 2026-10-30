@@ -53,6 +53,8 @@ func TestModernHDChibiPartyGPU(t *testing.T) {
 		groups = []int{53, 54}
 	case "identity-pair":
 		groups = []int{51, 63}
+	case "knights":
+		groups = []int{55, 56}
 	default:
 		t.Fatal("unknown fixed chibi profile", profile)
 	}
@@ -183,6 +185,9 @@ func TestModernHDChibiPartyGPU(t *testing.T) {
 	if profile == "identity-pair" {
 		scope = "controlled runtime selector projections51/63 with authored identities1/13; HD interface four neutral directions/front three cycles, original interface front neutral, 14 full Game.Draw worlds, HUD and two F2. Test-only selector key/record byte6 and derived cache slot injection; no promotion, class, statistics, natural membership, normal player or original dynamic parity claim"
 	}
+	if profile == "knights" {
+		scope = "controlled runtime selector projections55/56 with authored identities5/6 from chapters9/10; HD interface four neutral directions/front three cycles, original interface front neutral, 14 full Game.Draw worlds, HUD and two F2. Test-only selector key/record byte6 and derived cache slot injection; no promotion, class, statistics, natural membership, normal player or original dynamic parity claim"
+	}
 	report := map[string]any{"status": "PASS-HD1-CHIBI-PARTY-GPU", "profile": profile, "selector_projection_injected": profile != "party", "catalog_sha256": fmt.Sprintf("%x", sha256.Sum256(catalog)), "manifest_sha256": fmt.Sprintf("%x", sha256.Sum256(manifest)), "source_tree_sha256": code, "source_file_count": count, "cases": p.rows, "sources": observed, "native_state_unchanged": true, "save_bytes_unchanged": true, "scope": scope}
 	raw, _ := json.MarshalIndent(report, "", "  ")
 	if err = os.WriteFile(filepath.Join(out, "receipt.json"), append(raw, '\n'), 0644); err != nil {
@@ -194,7 +199,7 @@ func TestModernHDChibiPartyGPU(t *testing.T) {
 // entries; Harvat is an explicitly visual-only selector projection. No combat
 // or natural recruitment/statistics conclusion may be drawn from this fixture.
 func modernHDChibiPartyIdentity(group int) int {
-	if group == 51 || group == 53 || group == 54 || group == 63 {
+	if group == 51 || group == 53 || group == 54 || group == 55 || group == 56 || group == 63 {
 		return group - 50
 	}
 	return group
@@ -233,6 +238,12 @@ func modernHDChibiPartyScenario(t *testing.T, group int) string {
 	}
 	if identity == 13 {
 		source = "../../assets/scenarios/ch07.json"
+	}
+	if identity == 5 {
+		source = "../../assets/scenarios/ch09.json"
+	}
+	if identity == 6 {
+		source = "../../assets/scenarios/ch10.json"
 	}
 	raw, err := os.ReadFile(source)
 	if err != nil {
@@ -287,7 +298,7 @@ func modernHDChibiPartyScenario(t *testing.T, group int) string {
 }
 
 func TestModernHDChibiPartyFixture(t *testing.T) {
-	for _, group := range []int{1, 2, 3, 51, 53, 54, 63} {
+	for _, group := range []int{1, 2, 3, 51, 53, 54, 55, 56, 63} {
 		g, _, _ := ordinaryCommand0HDTestGame(t)
 		g.partyMembers, g.partyJoinOrder, g.partyRoster = nil, nil, nil
 		g.resetBattle("assets/maps/map0/map0_units.json", modernHDChibiPartyScenario(t, group))
