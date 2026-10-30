@@ -448,7 +448,7 @@
       "layer": "data",
       "category": "缺陷",
       "title": "P1 HD1戰場小人物：依原版重繪大頭Q版與個別面容",
-      "body": "米亞斯多德17、蜜蒂18、莎拉20與約拿21已依各自原版頭像及十二原生姿態重繪大頭短身。17保留紅褐窄龍面、紅眼、長角及原生藍劍灰綠圓盾；18保留金色鬆波長髮、成熟高眉窄褐眼、自信紅唇、紅披風及空手。20保留綠髮尖耳、紅額帶、長橢圓臉與收斂紅唇；21保留白藍髮、大白鬚、高齡皺紋、白眉窄眼與長鉤鼻，初稿正面偏側已定向修正第一列。\n\n莎拉背側藍灰窄片與約拿低位棕色斜杆只按原生可見形狀，持物用途未定，不沿舊HD曲杖或職業猜裝備。第19組未在party找到明示身份，本批未為湊數投影，仍留待辦。\n\n同一完整候選分兩個固定GPU程序，共28完整Game.Draw、24PNG、四次F2、266338核心點及21反例通過。四組保留原生身份、portrait、fig及能力，逐actor核scenario SHA與false投影旗標，沒有身份或selector投影。缺份、重複份、錯來源、錯記憶體報告及偽造投影均拒收。四種舊分份讀取契約另驗，不重跑或升格舊GPU。\n\n普通首章十PNG驗完整候選、四組控制、走行取消、保存及新程序標題LOAD，不作四人自然加入證據。三項來源逐byte重編／八拒收、24頂層Go含字串、21來源案例／416幀／19反例、883清冊及125組1455來源通過，兩可選GPU略過不計。\n\n正式只換八項、875保持；100新檔私人白名單保存，原8148美術檔與0／9／30六項保持，其餘121組SHA相同。README補兩組面容、四向及144／72／48實際尺寸與四張完整受控戰場。Q比例餘項58→54，其他個別五官與完整總覽仍待，Gaia30保持定版；本項維持OPEN。現況、來源與重跑依58／61及主收據hd1_dragon_elder_followup_20261030。",
+      "body": "卡里斯22、羅蘭23、希爾法24與謝多25已依各自原版頭像及十二原生姿態重繪大頭短身。卡里斯保留深藍綁髮、紅髮束、成熟窄眼、長鼻及鬍渣，原生空手；羅蘭保留長褐波髮、額帶、暖褐眼與開口紅唇微笑，藍紫弓及藍灰箭筒按原生持側與遮蔽。希爾法保留高額禿頂、紅褐側髮、尖耳、綠窄眼及細鬚，原生空手、紅袍金黃大領不改成金髮。謝多保留深藍獸形、灰綠窄眼、微揚嘴角、小獠牙、藍紫腰布與腰際橫持短劍，不加面罩、兜帽或背刀。\n\n同一四組完整候選分兩個固定GPU程序，共28完整Game.Draw、24PNG、四次F2、293677核心點及21反例通過。四組保留各自原生身份、portrait、fig及能力，逐actor核scenario SHA及false投影旗標，無身份或selector投影。缺份、重複份、錯來源、錯記憶體報告與偽造投影均拒收；五種舊分份讀取契約另驗，不重跑或升格舊GPU。\n\n普通首章十PNG驗完整候選、四組控制、走行取消、保存與新程序標題LOAD，不作四人自然加入證據。三項來源逐byte重編／八拒收、24頂層Go含字串、21來源案例／416幀／19反例、883清冊及125組1455來源通過，兩可選GPU略過不計。\n\n只換八項、875保持，100新檔私人白名單保存；原8248美術檔及0／9／30六項保持，其餘121組SHA相同。README補兩組面容、四向及144／72／48實際尺寸與四張完整受控戰場。Q比例餘項54→50，其他個別五官及完整總覽仍待，Gaia30保持定版；本項維持OPEN。現況、來源與重跑依58／61及主收據hd1_stubble_bow_robes_followup_20261030。",
       "acceptance": [
         "使用者選定亞雷斯新比例，並保留定版原稿、原版來源、逐字提示與SHA；其他角色依相同標準重製，不能只改大圖總覽。",
         "125個可見圖組及1455幀逐組保留原生方向、步態／靜態相位、轉職身份、裝備特徵、腳底與透明契約；原版、已接受圖源及舊證據可追溯。",
@@ -530,11 +530,20 @@
         "docs/figures/hd1-miyasdode-refresh-game.png",
         "docs/figures/hd1-middy-refresh-game.png",
         "docs/figures/hd1-sara-refresh-game.png",
-        "docs/figures/hd1-jonah-refresh-game.png"
+        "docs/figures/hd1-jonah-refresh-game.png",
+        "remake/assets/themes/modern/hd1-stubble-bow-robes-refresh.recipe.json",
+        "docs/figures/hd1-stubble-and-bow-faces.png",
+        "docs/figures/hd1-stubble-and-bow-comparison.png",
+        "docs/figures/hd1-bald-and-beast-faces.png",
+        "docs/figures/hd1-bald-and-beast-comparison.png",
+        "docs/figures/hd1-karis-refresh-game.png",
+        "docs/figures/hd1-roland-refresh-game.png",
+        "docs/figures/hd1-hilfa-refresh-game.png",
+        "docs/figures/hd1-shedo-refresh-game.png"
       ],
       "verify": {
         "kind": "manual",
-        "note": "初審偏移、六組視覺及優先面容已處理；本批17／18／20／21依各自原版重繪，無投影，Q比例餘項58→54。未明配件用途不推定；其他個別五官與完整總覽仍待。"
+        "note": "初審偏移、六組視覺及優先面容已處理；本批22／23／24／25依各自原版重繪，無投影，Q比例餘項54→50。其他個別五官與完整總覽仍待。"
       },
       "issue": 286
     },
@@ -543,7 +552,7 @@
       "layer": "data",
       "category": "缺陷",
       "title": "P1 HD1人物面容與身份複核：依原版頭像保留各自特徵",
-      "body": "米亞斯多德17、蜜蒂18、莎拉20與約拿21已依各自原版頭像及十二原生姿態重繪大頭短身。17保留紅褐窄龍面、紅眼、長角及原生藍劍灰綠圓盾；18保留金色鬆波長髮、成熟高眉窄褐眼、自信紅唇、紅披風及空手。20保留綠髮尖耳、紅額帶、長橢圓臉與收斂紅唇；21保留白藍髮、大白鬚、高齡皺紋、白眉窄眼與長鉤鼻，初稿正面偏側已定向修正第一列。\n\n莎拉背側藍灰窄片與約拿低位棕色斜杆只按原生可見形狀，持物用途未定，不沿舊HD曲杖或職業猜裝備。第19組未在party找到明示身份，本批未為湊數投影，仍留待辦。\n\n同一完整候選分兩個固定GPU程序，共28完整Game.Draw、24PNG、四次F2、266338核心點及21反例通過。四組保留原生身份、portrait、fig及能力，逐actor核scenario SHA與false投影旗標，沒有身份或selector投影。缺份、重複份、錯來源、錯記憶體報告及偽造投影均拒收。四種舊分份讀取契約另驗，不重跑或升格舊GPU。\n\n普通首章十PNG驗完整候選、四組控制、走行取消、保存及新程序標題LOAD，不作四人自然加入證據。三項來源逐byte重編／八拒收、24頂層Go含字串、21來源案例／416幀／19反例、883清冊及125組1455來源通過，兩可選GPU略過不計。\n\n正式只換八項、875保持；100新檔私人白名單保存，原8148美術檔與0／9／30六項保持，其餘121組SHA相同。README補兩組面容、四向及144／72／48實際尺寸與四張完整受控戰場。Q比例餘項58→54，其他個別五官與完整總覽仍待，Gaia30保持定版；本項維持OPEN。現況、來源與重跑依58／61及主收據hd1_dragon_elder_followup_20261030。",
+      "body": "卡里斯22、羅蘭23、希爾法24與謝多25已依各自原版頭像及十二原生姿態重繪大頭短身。卡里斯保留深藍綁髮、紅髮束、成熟窄眼、長鼻及鬍渣，原生空手；羅蘭保留長褐波髮、額帶、暖褐眼與開口紅唇微笑，藍紫弓及藍灰箭筒按原生持側與遮蔽。希爾法保留高額禿頂、紅褐側髮、尖耳、綠窄眼及細鬚，原生空手、紅袍金黃大領不改成金髮。謝多保留深藍獸形、灰綠窄眼、微揚嘴角、小獠牙、藍紫腰布與腰際橫持短劍，不加面罩、兜帽或背刀。\n\n同一四組完整候選分兩個固定GPU程序，共28完整Game.Draw、24PNG、四次F2、293677核心點及21反例通過。四組保留各自原生身份、portrait、fig及能力，逐actor核scenario SHA及false投影旗標，無身份或selector投影。缺份、重複份、錯來源、錯記憶體報告與偽造投影均拒收；五種舊分份讀取契約另驗，不重跑或升格舊GPU。\n\n普通首章十PNG驗完整候選、四組控制、走行取消、保存與新程序標題LOAD，不作四人自然加入證據。三項來源逐byte重編／八拒收、24頂層Go含字串、21來源案例／416幀／19反例、883清冊及125組1455來源通過，兩可選GPU略過不計。\n\n只換八項、875保持，100新檔私人白名單保存；原8248美術檔及0／9／30六項保持，其餘121組SHA相同。README補兩組面容、四向及144／72／48實際尺寸與四張完整受控戰場。Q比例餘項54→50，其他個別五官及完整總覽仍待，Gaia30保持定版；本項維持OPEN。現況、來源與重跑依58／61及主收據hd1_stubble_bow_robes_followup_20261030。",
       "acceptance": [
         "逐組以固定原生三層、FDOTHER0代表色盤與有對應身份的原版頭像／大圖核身份，不沿舊候選或圖說猜職業／種族。",
         "優先修正2、48、50、51、52、53、54、55、56、63、76、79的已見差異，70、73、77、89、125、133補證後逐項確認或修正；所有結論保留來源及未知等級。",
@@ -613,11 +622,20 @@
         "docs/figures/hd1-miyasdode-refresh-game.png",
         "docs/figures/hd1-middy-refresh-game.png",
         "docs/figures/hd1-sara-refresh-game.png",
-        "docs/figures/hd1-jonah-refresh-game.png"
+        "docs/figures/hd1-jonah-refresh-game.png",
+        "remake/assets/themes/modern/hd1-stubble-bow-robes-refresh.recipe.json",
+        "docs/figures/hd1-stubble-and-bow-faces.png",
+        "docs/figures/hd1-stubble-and-bow-comparison.png",
+        "docs/figures/hd1-bald-and-beast-faces.png",
+        "docs/figures/hd1-bald-and-beast-comparison.png",
+        "docs/figures/hd1-karis-refresh-game.png",
+        "docs/figures/hd1-roland-refresh-game.png",
+        "docs/figures/hd1-hilfa-refresh-game.png",
+        "docs/figures/hd1-shedo-refresh-game.png"
       ],
       "verify": {
         "kind": "manual",
-        "note": "初審偏移、六組視覺及優先面容已處理；本批17／18／20／21依各自原版重繪，無投影，Q比例餘項58→54。未明配件用途不推定；其他個別五官與完整總覽仍待。"
+        "note": "初審偏移、六組視覺及優先面容已處理；本批22／23／24／25依各自原版重繪，無投影，Q比例餘項54→50。其他個別五官與完整總覽仍待。"
       },
       "issue": 287
     }

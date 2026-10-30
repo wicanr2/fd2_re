@@ -13,11 +13,11 @@ from verify_fd2_hd1_chibi_refresh import ROOT,sha,read,require,tree,rect,core
 
 RECIPE=ROOT/'remake/assets/themes/modern/hd1-party-chibi-refresh.recipe.json'
 GROUPS=(1,2,3)
-PROFILES={'party':GROUPS,'variants':(53,54),'identity-pair':(51,63),'base-faces':(1,4),'knights':(55,56),'heroes':(50,52),'enemies':(76,79),'static-king':(48,),'audited-six':(70,73,77,89,125,133),'party-next':(5,6,13,54),'party-four':(7,8,10,11),'party-five':(12,14,15,16),'party-six':(17,18,20,21)}
+PROFILES={'party':GROUPS,'variants':(53,54),'identity-pair':(51,63),'base-faces':(1,4),'knights':(55,56),'heroes':(50,52),'enemies':(76,79),'static-king':(48,),'audited-six':(70,73,77,89,125,133),'party-next':(5,6,13,54),'party-four':(7,8,10,11),'party-five':(12,14,15,16),'party-six':(17,18,20,21),'party-seven':(22,23,24,25)}
 PROFILE_IDENTITIES={'variants':{53:3,54:4},'identity-pair':{51:1,63:13},'base-faces':{1:1,4:4},'knights':{55:5,56:6},'heroes':{50:0,52:9},'party-next':{5:5,6:6,13:13,54:4}}
 FRAMES=(0,1,2,3,6,9)
 AUDITED_PAIRS={'banded':(70,89),'draconic':(73,77),'robed':(125,133)}
-GPU_PARTS={'audited-six':AUDITED_PAIRS,'party-next':{'base-knights':(5,6),'bow-and-ares':(13,54)},'party-four':{'longhair-and-bow':(7,8),'clerics':(10,11)},'party-five':{'martial-and-mage':(12,14),'beast-and-dragon':(15,16)},'party-six':{'dragon-and-swordswoman':(17,18),'greenhair-and-elder':(20,21)}}
+GPU_PARTS={'audited-six':AUDITED_PAIRS,'party-next':{'base-knights':(5,6),'bow-and-ares':(13,54)},'party-four':{'longhair-and-bow':(7,8),'clerics':(10,11)},'party-five':{'martial-and-mage':(12,14),'beast-and-dragon':(15,16)},'party-six':{'dragon-and-swordswoman':(17,18),'greenhair-and-elder':(20,21)},'party-seven':{'stubble-and-bow':(22,23),'bald-and-beast':(24,25)}}
 AUDITED_BINDINGS={70:(5,0,'ally',13,24),73:(24,0,'ally',10,26),77:(2,2,'enemy',8,25),89:(17,0,'enemy',39,7),125:(24,0,'enemy',10,7),133:(1,1,'ally',15,12)}
 
 def verify_parts(d):
@@ -82,7 +82,7 @@ def verify_gpu(d,folder,candidate,recipe=RECIPE,profile='party'):
     if profile=='audited-six':
         require(d.get('selector_projection_injected') is False and d.get('authored_roster_fixture') is True and d.get('selected_groups')==list(groups) and d.get('pair')=='combined','authored roster disclosure missing')
         verify_parts(d)
-    elif profile in ('party-next','party-four','party-five','party-six'):
+    elif profile in ('party-next','party-four','party-five','party-six','party-seven'):
         require(d.get('selector_projection_injected') is (profile=='party-next') and d.get('authored_roster_fixture') is False and d.get('selected_groups')==list(groups) and d.get('pair')=='combined','split party disclosure missing')
         verify_parts(d)
     elif profile=='base-faces':
@@ -107,17 +107,17 @@ def verify_gpu(d,folder,candidate,recipe=RECIPE,profile='party'):
         for b in bindings:
             matches=[row for row in rows if row['portrait']==b['native_identity']]
             require(len(matches)==1 and matches[0].get(b['target_field'])==b['group'],'authored promotion identity mismatch')
-    if profile in ('base-faces','party-four','party-five','party-six'):
+    if profile in ('base-faces','party-four','party-five','party-six','party-seven'):
         bindings=r.get('party_bindings',[])
         require([b['group'] for b in bindings]==list(groups),'fixed base party bindings')
-        chapters={'base-faces':[2,1],'party-four':[19,3,6,11],'party-five':[8,12,16,18],'party-six':[13,17,23,19]}[profile]
-        if profile in ('party-four','party-five','party-six'):require(r.get('gpu_pairs')=={k:list(v) for k,v in GPU_PARTS[profile].items()},'fixed unprojected party pairs')
+        chapters={'base-faces':[2,1],'party-four':[19,3,6,11],'party-five':[8,12,16,18],'party-six':[13,17,23,19],'party-seven':[24,22,22,21]}[profile]
+        if profile in ('party-four','party-five','party-six','party-seven'):require(r.get('gpu_pairs')=={k:list(v) for k,v in GPU_PARTS[profile].items()},'fixed unprojected party pairs')
         for b,chapter in zip(bindings,chapters):
             g=b['group'];path=f'remake/assets/scenarios/ch{chapter:02d}.json'
             require(b['scenario_file']==path and sha(ROOT/path)==b['scenario_sha256'],'base scenario changed')
             matches=[u for u in read(ROOT/path)['party'] if u.get('native_identity')==g]
             require(len(matches)==1 and matches[0].get('fig')==matches[0].get('portrait')==g and b['native_identity']==b['portrait']==b['fig']==g,'authored base identity changed')
-            if profile in ('party-four','party-five','party-six'):require(b.get('selector_projection_injected') is False,'base party recipe projection forbidden')
+            if profile in ('party-four','party-five','party-six','party-seven'):require(b.get('selector_projection_injected') is False,'base party recipe projection forbidden')
     if profile=='party-next':
         bindings=r.get('party_bindings',[])
         require([b['group'] for b in bindings]==list(groups) and r.get('gpu_pairs')=={k:list(v) for k,v in GPU_PARTS[profile].items()},'fixed next party bindings')
@@ -194,10 +194,10 @@ def verify_gpu(d,folder,candidate,recipe=RECIPE,profile='party'):
         elif profile=='audited-six':
             b=next(b for b in r['roster_bindings'] if b['group']==g)
             require(s.get('camp')=={'own':0,'ally':1,'enemy':2}[b['camp']] and s.get('portrait')==s.get('battle_fig')==s.get('selector_key')==g and s.get('has_native_identity') is False and s.get('position')==b['position'] and s.get('map')==b['map'] and s.get('roster_sha256')==b['roster_sha256'] and s.get('constructor')=='AppendGroupWithNativePlacement' and s.get('placement_gate')==0,'audited actor provenance changed')
-        elif profile in ('base-faces','party-four','party-five','party-six'):
+        elif profile in ('base-faces','party-four','party-five','party-six','party-seven'):
             b=next(b for b in r['party_bindings'] if b['group']==g)
             require(s.get('native_identity')==s.get('portrait')==s.get('battle_fig')==s.get('selector_key')==g and s.get('has_native_identity') is True and s.get('camp')==0 and s.get('scenario_sha256')==b['scenario_sha256'],'authored base provenance changed')
-            if profile in ('party-four','party-five','party-six'):require(s.get('selector_projection_injected') is False,'base party actor projection forbidden')
+            if profile in ('party-four','party-five','party-six','party-seven'):require(s.get('selector_projection_injected') is False,'base party actor projection forbidden')
         elif profile=='party-next':
             b=next(b for b in r['party_bindings'] if b['group']==g);identity=PROFILE_IDENTITIES[profile][g]
             require(s.get('native_identity')==s.get('portrait')==s.get('battle_fig')==identity and s.get('selector_key')==g and s.get('has_native_identity') is True and s.get('camp')==0 and s.get('scenario_sha256')==b['scenario_sha256'] and s.get('selector_projection_injected') is (g==54),'next party actor provenance changed')
@@ -252,6 +252,7 @@ def verify_normal(d,folder,candidate,binary,profile='party'):
     if profile=='party-four':scope='unchanged chapter1 ordinary save checks full candidate, four controls, walk/cancel and save/cold LOAD; groups7/8/10/11 pixels only through controlled authored party with no selector projection, not natural chapter recruitment'
     if profile=='party-five':scope='unchanged chapter1 ordinary save checks full candidate, four controls, walk/cancel and save/cold LOAD; groups12/14/15/16 pixels only through controlled authored party without selector projection, not natural recruitment'
     if profile=='party-six':scope='unchanged chapter1 ordinary save checks full candidate, four controls, walk/cancel and save/cold LOAD; groups17/18/20/21 pixels only through controlled authored party without selector projection, not natural recruitment'
+    if profile=='party-seven':scope='unchanged chapter1 ordinary save checks full candidate, four controls, walk/cancel and save/cold LOAD; groups22/23/24/25 pixels only through controlled authored party without selector projection, not natural recruitment'
     return dict(status='PASS-FULL-CANDIDATE-NORMAL-TRANSACTION',pngs=10,scope=scope)
 
 def register(formal,candidate,destination,recipe=RECIPE,profile='party'):
@@ -285,8 +286,8 @@ def main():
     for n in ('gpu','candidate','normal','binary','out'):p.add_argument('--'+n,type=Path,required=True)
     for n in ('formal','destination'):p.add_argument('--'+n,type=Path)
     p.add_argument('--recipe',type=Path,default=RECIPE,help='明示本批配方；必須符合所選固定矩陣')
-    p.add_argument('--profile',choices=PROFILES,default='party',help='party固定21；base-faces1／4無投影；其他固定雙組14；static-king48固定六；audited-six三份42，party-next兩份28揭露54投影，party-four／party-five／party-six兩份28無投影')
-    p.add_argument('--gpu-parts',nargs='+',type=Path,help='audited-six固定三份、party-next／party-four／party-five／party-six固定兩份GPU收據；--gpu指定新的合併目錄內收據')
+    p.add_argument('--profile',choices=PROFILES,default='party',help='party固定21；base-faces1／4無投影；其他固定雙組14；static-king48固定六；audited-six三份42，party-next兩份28揭露54投影，party-four／party-five／party-six／party-seven兩份28無投影')
+    p.add_argument('--gpu-parts',nargs='+',type=Path,help='audited-six固定三份、party-next／party-four／party-five／party-six／party-seven固定兩份GPU收據；--gpu指定新的合併目錄內收據')
     p.add_argument('--self-test',action='store_true');p.add_argument('--register',action='store_true');a=p.parse_args()
     require(not a.out.exists(),'fresh report required')
     if a.gpu_parts:
@@ -322,13 +323,13 @@ def main():
                 if a.profile=='party':continue
                 x.pop('selector_projection_injected',None)
             elif fault=='wrong-base-source':
-                if a.profile not in ('base-faces','party-next','party-four','party-five','party-six'):continue
+                if a.profile not in ('base-faces','party-next','party-four','party-five','party-six','party-seven'):continue
                 x['sources'][0]['scenario_sha256']='0'*64
             elif fault=='false-base-identity':
-                if a.profile not in ('base-faces','party-next','party-four','party-five','party-six'):continue
+                if a.profile not in ('base-faces','party-next','party-four','party-five','party-six','party-seven'):continue
                 x['sources'][0]['has_native_identity']=False
             elif fault=='wrong-actor-projection':
-                if a.profile not in ('party-next','party-four','party-five','party-six'):continue
+                if a.profile not in ('party-next','party-four','party-five','party-six','party-seven'):continue
                 x['sources'][0]['selector_projection_injected']=True
             elif fault=='wrong-enemy-camp':
                 if a.profile not in ('enemies','audited-six'):continue
