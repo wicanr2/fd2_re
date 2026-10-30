@@ -25,7 +25,7 @@ def build_faces(candidate,recipe,out):
         draw.text((24,y),f"GROUP {face['group']:03d} / {portrait.name}",font=font,fill='white')
         with Image.open(portrait) as im:im=im.convert('RGBA').resize((160,160),Image.Resampling.NEAREST)
         image.paste(im,(24,y+40),im)
-        for x,f in ((240,0),(430,9)):
+        for x,f in ((240,0),(430,2 if g['hd']['frame_count']==3 else 9)):
             path=candidate/g['hd']['files'][f]
             if sha(path)!=g['hd']['frame_sha256'][f]:raise ValueError('face map frame changed')
             with Image.open(path) as im:hd=im.convert('RGBA')
@@ -67,10 +67,10 @@ def build(candidate,original,out,context=None):
     provenance=[]
     for row,g in enumerate(groups):
         y=65+row*510;group=g['group']
-        draw.text((24,y),f'GROUP {group:03d}',font=font,fill='#ffe59b')
+        draw.text((24,y),f'GROUP {group:03d} / '+('STATIC THREE PHASES' if g['hd']['frame_count']==3 else 'FOUR NEUTRAL DIRECTIONS'),font=font,fill='#ffe59b')
         draw.text((24,y+40),'ORIGINAL',font=font,fill='white')
         draw.text((24,y+195),'HD1 144px',font=font,fill='white')
-        for col,f in enumerate((0,3,6,9)):
+        for col,f in enumerate((0,1,2) if g['hd']['frame_count']==3 else (0,3,6,9)):
             x=230+col*210;p=original/'sprites/fdicon'/f'sprite_{group*12+f:04d}'
             for name,digest in g['native_inputs'][f].items():
                 if sha(p/name)!=digest:raise ValueError('native frame changed')
@@ -93,7 +93,7 @@ def build(candidate,original,out,context=None):
             draw.text((x+size+6,y+355),str(size),font=font,fill='#aec5e0')
     draw.text((24,image.height-30),'Partial batch / art-source comparison / not a runtime screenshot or complete roster',font=small,fill='#aec5e0')
     image.save(out)
-    return dict(kind='fd2_hd1_chibi_partial_comparison',groups=[g['group'] for g in groups],source_manifest_sha256=sha(candidate/'manifest.json'),context_manifest_sha256=sha(context) if context else None,tool_sha256=sha(Path(__file__)),image_sha256=sha(out),width=image.width,height=image.height,sources=provenance,scope='原版來源與實際HD1四向中性素材對照及144／72／48尺寸，非遊戲截圖或全人物完成。')
+    return dict(kind='fd2_hd1_chibi_partial_comparison',groups=[g['group'] for g in groups],source_manifest_sha256=sha(candidate/'manifest.json'),context_manifest_sha256=sha(context) if context else None,tool_sha256=sha(Path(__file__)),image_sha256=sha(out),width=image.width,height=image.height,sources=provenance,scope='原版來源與實際HD1素材對照；按frame_count展示三拍靜態或四向中性，含144／72／48尺寸，非遊戲截圖或全人物完成。')
 
 def build_revision(candidate,original,baseline_catalog,baseline_pack,out):
     if out.exists():raise ValueError('fresh revision image required')

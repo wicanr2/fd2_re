@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"reflect"
 	"testing"
 	"time"
 
@@ -441,5 +442,164 @@ func TestModernHDChibiEnemyFixture(t *testing.T) {
 			(group == 76 && mapID != 0) || (group == 79 && mapID != 18) {
 			t.Fatal("enemy fixture changed", group)
 		}
+	}
+}
+
+// modernHDChibiStaticStoryFixture retains the original map32 actor records.
+// The existing story carrier keeps its private foreground approximation for
+// the two special records; this fixture never invents battle race/class data.
+func modernHDChibiStaticStoryFixture(t *testing.T, g *Game) *battle.Unit {
+	t.Helper()
+	if err := g.loadMap("assets/maps/map32"); err != nil {
+		t.Fatal(err)
+	}
+	g.partyMembers, g.partyJoinOrder, g.partyRoster = nil, nil, nil
+	g.resetBattle("assets/maps/map32/map32_units.json", "")
+	if g.loadErr != "" || g.st == nil {
+		t.Fatal("story source missing", g.loadErr)
+	}
+	source := g.st
+	g.storyActors = make([]battle.Unit, len(source.Units))
+	for i, u := range source.Units {
+		g.storyActors[i] = *u
+	}
+	g.storyBG, g.st = true, nil
+	g.camp = campaign.NewRunner(&campaign.Campaign{Start: "chibi_static_story", Nodes: map[string]*campaign.Node{"chibi_static_story": {Type: "cutscene"}}})
+	g.storyNativeMapView = battle.NativeMapViewState{CameraX: 0, CameraY: 2, CursorX: 7, CursorY: 5, VisibleCursorX: 7, VisibleCursorY: 3}
+	g.hasStoryNativeMapView = true
+	g.camX, g.camY, g.curX, g.curY = 0, 48, 7, 5
+	if err := g.materializeNativeStoryMapState(source); err != nil {
+		t.Fatal(err)
+	}
+	for i := range g.storyActors {
+		u := &g.storyActors[i]
+		if u.HasMapSelectorKey && u.MapSelectorKey == 48 {
+			if u.Camp != battle.Own || u.Portrait != 48 || !u.HasBattleFig || u.BattleFig != 48 ||
+				u.HasNativeIdentity || !u.HasNativePositionRecord ||
+				u.NativePositionRecord != (battle.NativePositionRecord{XWord: 7, YWord: 5, RawKey: 48}) ||
+				!u.HasNativeMapPresentation || u.HasNativeRecordRace || u.HasNativeRecordClass {
+				t.Fatal("original special story provenance changed", u)
+			}
+			return u
+		}
+	}
+	t.Fatal("original father-king actor missing")
+	return nil
+}
+
+func TestModernHDChibiStaticFixture(t *testing.T) {
+	g, _, _ := ordinaryCommand0HDTestGame(t)
+	modernHDChibiStaticStoryFixture(t, g)
+	if g.st != nil || g.storyNativeMapState == nil || g.storyNativeMapState.NativeMapHUDState.DisplayGateA != 0 || g.storyNativeMapState.NativeMapHUDState.DisplayGateB != 0 {
+		t.Fatal("story actor promoted to battle or HUD shown")
+	}
+}
+
+func TestModernHDChibiStaticGPU(t *testing.T) {
+	if os.Getenv("FD2_HD_CHIBI_PARTY_GPU") != "1" {
+		t.Skip("explicit static candidate required")
+	}
+	t.Setenv("FD2_MUTE", "1")
+	t.Setenv("XDG_DATA_HOME", t.TempDir())
+	old := userDataDirCached
+	userDataDirCached = ""
+	t.Cleanup(func() { userDataDirCached = old })
+	out := os.Getenv("FD2_HD_CHIBI_PARTY_OUT")
+	if err := os.Mkdir(out, 0755); err != nil {
+		t.Fatal("fresh output", err)
+	}
+	catalog, err := os.ReadFile(os.Getenv("FD2_TEST_MODERN_EFFECT_CATALOG"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	manifest, err := os.ReadFile(os.Getenv("FD2_HD_CHIBI_PARTY_MANIFEST"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var m struct{ Groups []struct{ Group int } }
+	if err = json.Unmarshal(manifest, &m); err != nil || len(m.Groups) != 1 || m.Groups[0].Group != 48 {
+		t.Fatal("one static48 candidate required", err)
+	}
+	set := modifierHDTestTheme(t)
+	if len(set.mapSpritesHD) != 125 || len(set.mapSpritesHD[48]) != 3 {
+		t.Fatal("static source shape")
+	}
+	p := &sharedGroundGPUProbe{set: set, out: out}
+	var games []*Game
+	var states []any
+	var observed []map[string]any
+	var baseSave []byte
+	roster, err := os.ReadFile("../../assets/maps/map32/map32_units.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	for phase := 0; phase < 3; phase++ {
+		for _, mode := range []string{playerInterfaceHD, playerInterfaceOriginal} {
+			g, _, _ := ordinaryCommand0HDTestGame(t, func() time.Time { return time.Unix(1000, 0) })
+			g.nativeRNGState = 7
+			if baseSave == nil {
+				g.camp = campaign.NewRunner(&campaign.Campaign{Start: "chibi_save_base", Nodes: map[string]*campaign.Node{"chibi_save_base": {Type: "battle"}}})
+				if err = g.saveGameToSlot(0); err != nil {
+					t.Fatal(err)
+				}
+				baseSave, err = os.ReadFile(saveSlotPath(0))
+				if err != nil {
+					t.Fatal(err)
+				}
+			}
+			actor := modernHDChibiStaticStoryFixture(t, g)
+			g.storyNativeMapState.NativeMapCycleState.Idle = phase
+			g.interfaceMode = mode
+			if err = g.applyTheme(set); err != nil {
+				t.Fatal(err)
+			}
+			g.modernHDMapComposing = true
+			if err = g.composeNativeStoryMapFrame(); err != nil {
+				t.Fatal(err)
+			}
+			if g.st != nil || g.modernHDMapFrame.HUDUnit != nil {
+				t.Fatal("story HUD/battle appeared")
+			}
+			var box any
+			for _, u := range g.modernHDMapFrame.Units {
+				if u.Group == 48 && u.Frame == phase {
+					box = u.Rect
+				}
+			}
+			if box == nil {
+				t.Fatal("static phase missing", phase)
+			}
+			name := fmt.Sprintf("static-g048-f%02d-ui-%s", phase, mode)
+			p.cases = append(p.cases, sharedGroundGPUCase{g: g, name: name, mapID: 32, source: phase, keepPNG: mode == playerInterfaceHD, skipF2: mode != playerInterfaceHD || phase != 0})
+			games = append(games, g)
+			states = append(states, storyHDNativeSnapshot(g))
+			observed = append(observed, map[string]any{"case": name, "group": 48, "frame": phase, "interface": mode, "map": 32, "map_rect": box, "hud_hidden": true, "camp": int(actor.Camp), "portrait": actor.Portrait, "battle_fig": actor.BattleFig, "selector_key": actor.MapSelectorKey, "has_native_identity": actor.HasNativeIdentity, "position": map[string]uint16{"x_word": actor.NativePositionRecord.XWord, "y_word": actor.NativePositionRecord.YWord, "raw_key": actor.NativePositionRecord.RawKey}, "roster_sha256": fmt.Sprintf("%x", sha256.Sum256(roster)), "save_bytes": len(baseSave)})
+		}
+	}
+	ebiten.SetWindowSize(640, 400)
+	ebiten.SetVsyncEnabled(false)
+	if err = ebiten.RunGame(p); err != nil {
+		t.Fatal(err)
+	}
+	if p.err != nil || p.index != 6 {
+		t.Fatal(p.index, p.err)
+	}
+	for i, g := range games {
+		if g.st != nil || !reflect.DeepEqual(states[i], storyHDNativeSnapshot(g)) || g.modernHDMapPresented.HUDUnit != nil {
+			t.Fatal("story source changed", i)
+		}
+	}
+	after, err := os.ReadFile(saveSlotPath(0))
+	if err != nil || !bytes.Equal(after, baseSave) {
+		t.Fatal("preexisting chapter save changed", err)
+	}
+	code, count := hdConsumerSourceTree(t)
+	report := map[string]any{"status": "PASS-HD1-CHIBI-PARTY-GPU", "profile": "static-king", "selector_projection_injected": false, "authored_story_fixture": true, "story_private_foreground_approximation": true, "catalog_sha256": fmt.Sprintf("%x", sha256.Sum256(catalog)), "manifest_sha256": fmt.Sprintf("%x", sha256.Sum256(manifest)), "source_tree_sha256": code, "source_file_count": count, "cases": p.rows, "sources": observed, "native_state_unchanged": true, "save_bytes_unchanged": true, "scope": "controlled original map32 story carrier, static48 three phases with both interfaces, six Game.Draw, three PNG and one F2; no battle HUD or persistent identity injection. Existing private raw race/class foreground approximation retained. Preexisting test chapter1 save bytes unchanged, not a new story-save feature or natural prologue reachability."}
+	raw, err := json.MarshalIndent(report, "", "  ")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err = os.WriteFile(filepath.Join(out, "receipt.json"), append(raw, '\n'), 0644); err != nil {
+		t.Fatal(err)
 	}
 }

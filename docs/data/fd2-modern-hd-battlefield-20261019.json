@@ -255269,5 +255269,444 @@
       "造型為代理複核，集中人工由使用者接手；原版頭像／map可見範圍不同時保留各自遮蔽，不新增五官。",
       "其他人物五官、69組Q比例重繪及完整人物總覽尚未完成；HD2、HD-2D、打包與matching decompilation不在本批。"
     ]
+  },
+  "hd1_king_static_followup_20261030": {
+    "date": "2026-10-30",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1/NORMAL-COMPATIBILITY/AGENT-FACE-REVIEW",
+    "base_commit": "5d22a7c2ab5e511a01154e97c853a8bcf3680a66",
+    "branch": "feat/hd1-static-human-review-r7",
+    "issues": [
+      286,
+      287
+    ],
+    "scope": "第48組王座廳父王恢復原版人形三拍；只刷新地圖圖源，正式Go、規則與保存schema未改。",
+    "art": {
+      "groups": [
+        48
+      ],
+      "frame_count": 3,
+      "recipe": {
+        "file": "remake/assets/themes/modern/hd1-king-static-refresh.recipe.json",
+        "sha256": "009bec001c212283aea624db916c58e7a5c6b919c9b1689e07d5cf06b18314fd"
+      },
+      "mode": "builtin image_gen.imagegen",
+      "prompts": "配方保存完整提示、版本化母稿及原生三層／色盤／頭像／名冊／場景／對話SHA，原稿未經程式補畫。",
+      "faces": [
+        {
+          "group": 48,
+          "name": "父王（王座廳場景）",
+          "portrait_file": "remake/assets/portraits/DATO_048_m0.png",
+          "portrait_sha256": "01f4ad45b3b8fdc1e5a5a3472687a9d8b6e61fdf5236674951ef752d06096af4",
+          "traits": [
+            "藍色後梳髮與金額飾",
+            "濃眉窄眼",
+            "長角鼻",
+            "深藍尖鬍鬚",
+            "成熟長方下巴"
+          ],
+          "comparison_label": "原版大頭像與地圖三拍，非對話HD頭像驗收"
+        }
+      ],
+      "story_binding": {
+        "group": 48,
+        "map": 32,
+        "roster_file": "remake/assets/maps/map32/map32_units.json",
+        "actor_node": "story_ch01_palace_throne",
+        "campaign_file": "remake/assets/scenarios/campaign_full.json",
+        "dialogue_file": "remake/assets/story/ch00_palace.json",
+        "speaker": 48,
+        "speaker_name": "父王",
+        "position": {
+          "x_word": 7,
+          "y_word": 5,
+          "raw_key": 48
+        },
+        "frame_count": 3,
+        "roster_sha256": "245fbc71ad571a3f6f067ccb43386a911ca5dfc793f6820ecdd59a9611c6a405",
+        "campaign_sha256": "5379211d59ce55cd241f03ebc1a7f8d2e48b2eda5dca935ab529ca88d0cb502e",
+        "dialogue_sha256": "5bb3498141d8e5c84f11c005c4f655cb912483d4a8cfe2646a3e89a9781fec19"
+      },
+      "masters": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-identity-review-r7/fdicon-048-hd1-native-q-v1-master.png",
+          "sha256": "511a8ef4650b0a3c34f2e0fbd644e05b6b9b6ca6fed44dd3b9cb1c27297e8544"
+        }
+      ],
+      "label_correction": "依DATO048確認藍色輪廓為頭髮，取代初審藍帽導覽描述。map32 actor與speaker48綁父王，不將圖組48泛化為持續身份或轉職規則。"
+    },
+    "gpu": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-identity-review-r7/gpu-r1-capture/receipt.json",
+        "sha256": "7b9c14198da4346cb6b46fb1e647ca84aabb1e0190da59e751c0c1a33c1b3244"
+      },
+      "independent_and_registration": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-identity-review-r7/registration-r1.json",
+        "sha256": "05c6a75e74c097264d0a8d04541ae2eae4f0b9324dacf76103401986111e547b"
+      },
+      "cases": 6,
+      "pngs": 3,
+      "f2": 1,
+      "core_pixels": 20554,
+      "rejected_mutants": [
+        "missing",
+        "duplicate",
+        "catalog",
+        "source-code",
+        "false-save",
+        "wrong-hud",
+        "wrong-tolerance",
+        "missing-f2",
+        "wrong-profile",
+        "wrong-selector",
+        "wrong-identity",
+        "undisclosed-projection",
+        "wrong-static-phase",
+        "wrong-story-source",
+        "wrong-story-position",
+        "actual-black-png"
+      ],
+      "selector_injection": false,
+      "authored_story_fixture": true,
+      "hud_hidden": true,
+      "existing_private_foreground_approximation": true,
+      "scope": "controlled original map32 story carrier, static48 three phases with both interfaces, six Game.Draw, three PNG and one F2; no battle HUD or persistent identity injection. Existing private raw race/class foreground approximation retained. Preexisting test chapter1 save bytes unchanged, not a new story-save feature or natural prologue reachability."
+    },
+    "normal_compatibility": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-identity-review-r7/normal-r1-capture/receipt.json",
+        "sha256": "62014b34c5262589ea1266c3c1c05bea5953a7b9ee6c3ec90ba582f5404b4b91"
+      },
+      "pngs": 10,
+      "source_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "binary_sha256": "5e0c0584aa2aa6798d53b2e5924b9dd154ec7034f3bc10a981f74b5f4abc6880",
+      "state_injection": false,
+      "scope": "unchanged ordinary chapter1 save validates full-pack admission, independent controls and save/cold LOAD; static48 only by controlled original map32 story carrier, no natural prologue or new story-save feature claim"
+    },
+    "source_regression": {
+      "tests": 3,
+      "source_rejections": 8,
+      "exact_rebuild": true,
+      "elapsed_seconds": 35.464,
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-identity-review-r7/source-r1.log",
+        "sha256": "6221053e2f15b1db375d06d546e4ae8987d17c4ec3967bcc47bc109454e93dd5"
+      },
+      "warning": "既有compile_group一個BufferedReader ResourceWarning，程序結束清理；編製器未改。"
+    },
+    "regression": {
+      "top_level_passed": 23,
+      "skipped_special_gpu": 2,
+      "skips_count_as_pass": false,
+      "source_tree_sha256": "6edcd7119f1eb6e52355e37d27b7727a94f0b42165e8f4f6d9c9f14443c415e9",
+      "source_file_count": 1196,
+      "party_fixture_groups": [
+        1,
+        2,
+        3,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        63
+      ],
+      "enemy_fixture_groups": [
+        76,
+        79
+      ],
+      "static_story_fixture_groups": [
+        48
+      ],
+      "production_go_changed": false,
+      "changed_go_is_test_only": true,
+      "string_inventory_tests_passed": true,
+      "legacy_profiles": "原六組固定GPU矩陣不變，本批只跑static-king六繪圖與三組CPU fixture；舊GPU收據保留原來源，不宣稱全套本批重驗。"
+    },
+    "consumer_inventory": {
+      "cases": 21,
+      "unique_frames": 416,
+      "rejected": 19,
+      "formal_catalog_bound": true,
+      "observed": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-identity-review-r7/consumers-r1.json",
+        "sha256": "18320331ada25f8b412d87cc12f2ba5e47b0bbebb7ebbadd7278cff80e1305f2"
+      },
+      "independent": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-identity-review-r7/consumers-verified-r1.json",
+        "sha256": "383429debfecbb1badc8f333a6c03280cd124e84023a0567d3ddbba0ea2c70c3"
+      }
+    },
+    "catalog": {
+      "file": {
+        "file": "remake/assets/themes/modern/catalog.json",
+        "sha256": "8b0623229e22b30d8b99cd04126c262d65d43054aedcbd6ef7730f34b6058659"
+      },
+      "assets": 883,
+      "changed": 2,
+      "unchanged": 881
+    },
+    "private": {
+      "commit": "ab7993d761a831e31ca853178092e1054f3da05b",
+      "remote_head_verified": true,
+      "repository_private_verified": true,
+      "new_files": 7,
+      "old_art_files_unchanged": 7641,
+      "current_art_files": 7648,
+      "catalog_allowlist_files": 7120,
+      "including_two_metadata": 7122,
+      "preservation": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-identity-review-r7/private-preservation-r1.json",
+        "sha256": "947442ae7c9c7e7052cdb4916220980ba029099ce880a989b0e1a77fc7a7f41a"
+      },
+      "unchanged_groups": [
+        0,
+        9,
+        30
+      ],
+      "unchanged_entries": 6,
+      "unchanged_group_files": 75
+    },
+    "review": {
+      "source_groups": 125,
+      "source_frames": 1455,
+      "other124_groups_source_equal": true,
+      "counts": {
+        "reference-keep": 2,
+        "new-q-review-keep": 16,
+        "redraw-q-proportion": 69,
+        "review-keep-pending-batch": 32,
+        "identity-recheck": 6,
+        "redraw-native-identity": 0
+      },
+      "all_redrawn": false,
+      "human_acceptance": false,
+      "gaia_explicit_user_acceptance": true,
+      "initial12_identity_drift_fixed": [
+        2,
+        48,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        63,
+        76,
+        79
+      ],
+      "known_identity_drift_remaining": [],
+      "identity_recheck_remaining": [
+        70,
+        73,
+        77,
+        89,
+        125,
+        133
+      ],
+      "priority_face_followup": [
+        1,
+        4,
+        54
+      ],
+      "followup": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-identity-review-r7/visual-review-final.json",
+        "sha256": "3be8281cdbc8c533b16e8074928e8df14c78b655c63b03376de65c6b14691f3c"
+      }
+    },
+    "resources": {
+      "gpu": {
+        "elapsed_seconds": 193.174,
+        "peak_bytes": 4244652032,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "normal": {
+        "elapsed_seconds": 433.278,
+        "peak_bytes": 5126135808,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "regression": {
+        "elapsed_seconds": 72.251,
+        "peak_bytes": 1469452288,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      }
+    },
+    "public_figures": [
+      {
+        "file": "docs/figures/hd1-king-static-comparison.png",
+        "sha256": "ee51fc47a9321caad634afe0099df24a8bc11b2d51bf8f7719a436a976414f09"
+      },
+      {
+        "file": "docs/figures/hd1-king-face-reference.png",
+        "sha256": "dcf7fbb7d3a357461f11bf063c8c4166b323f605a2dc45e4f174af59b9e6ee6b"
+      },
+      {
+        "file": "docs/figures/hd1-king-story-game.png",
+        "sha256": "be70cc3eeab225c04a4767a0fb0b34a68dadba5bfca5f9160108f9ccc3af333b"
+      }
+    ],
+    "references": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-identity-review-r7/base-catalog.json",
+        "sha256": "2526a3d0f2a68a523d2d4e55ec005afb19c8d41a19fdd886c8884b027ccfc5df"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-identity-review-r7/native-reference.json",
+        "sha256": "cb69db6a7042820db7bd5397bea0ad401eb741cf77eb1e9ec751b75ef2c683be"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-identity-review-r7/candidate/catalog.json",
+        "sha256": "252218906422315d325fcfef1fd37257fadad023da1e16994c44f82e2f50913c"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-identity-review-r7/candidate/manifest.json",
+        "sha256": "7d34d23f493feb812d786935903cf1393fe36baf468cbda8a8f6b19a135fc5f4"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-identity-review-r7/gpu-r1-capture/receipt.json",
+        "sha256": "7b9c14198da4346cb6b46fb1e647ca84aabb1e0190da59e751c0c1a33c1b3244"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-identity-review-r7/normal-r1-capture/receipt.json",
+        "sha256": "62014b34c5262589ea1266c3c1c05bea5953a7b9ee6c3ec90ba582f5404b4b91"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-identity-review-r7/registration-r1.json",
+        "sha256": "05c6a75e74c097264d0a8d04541ae2eae4f0b9324dacf76103401986111e547b"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-identity-review-r7/source-r1.log",
+        "sha256": "6221053e2f15b1db375d06d546e4ae8987d17c4ec3967bcc47bc109454e93dd5"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-identity-review-r7/regression-r1.log",
+        "sha256": "13b70532865266f6dbbef71aa44f1d23158e7ee50a73a6cbd985062e98b35387"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-identity-review-r7/consumers-r1.json",
+        "sha256": "18320331ada25f8b412d87cc12f2ba5e47b0bbebb7ebbadd7278cff80e1305f2"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-identity-review-r7/consumers-verified-r1.json",
+        "sha256": "383429debfecbb1badc8f333a6c03280cd124e84023a0567d3ddbba0ea2c70c3"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-identity-review-r7/full-catalog-r1.log",
+        "sha256": "bc59919ddc67e8b775c3771268213dea7672763f38c1be9e0f65a4b4e93fcbe8"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-identity-review-r7/formal-coverage.json",
+        "sha256": "1274efe58eaa5778a5493f3350f5d52415c5617efa1272f06de73f84afe84d10"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-identity-review-r7/private-preservation-r1.json",
+        "sha256": "947442ae7c9c7e7052cdb4916220980ba029099ce880a989b0e1a77fc7a7f41a"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-identity-review-r7/review-final/receipt.json",
+        "sha256": "9a5660ffc19cda45001a8558937e634a8e0fe02abf7db7205a7ef308b0ae359d"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-identity-review-r7/visual-review-final.json",
+        "sha256": "3be8281cdbc8c533b16e8074928e8df14c78b655c63b03376de65c6b14691f3c"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-identity-review-r7/gpu-r1.memory.json",
+        "sha256": "1ebb06c28e1f8bf928181336fe62763a4061a9ae2f1bc761378e0be120d1abea"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-identity-review-r7/normal-r1.memory.json",
+        "sha256": "120046385bccea64f75a68b9a49f3ecb198d6c342670c55e6d7638e0d8218191"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-identity-review-r7/regression-r1.memory.json",
+        "sha256": "94949190c5403417501f1b5606afeb2db6c952bd81103192d1f10d9502b50a71"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-identity-review-r7/commands-r1.json",
+        "sha256": "669f1b54cd0e855322f13ec11340e82caee9599e70e165fb2cecc1385de1f7e2"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-identity-review-r7/ownership-r1.json",
+        "sha256": "ee429c92320e9a684098f05fcfc7fbac4f89c75dffc9aa3695e03913bec49aa0"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-identity-review-r7/face-reference.json",
+        "sha256": "a10562bb8df36451c1378a8a6df8c85ba64e73ecc947cb942eefb97cc7d00e2f"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-identity-review-r7/comparison.json",
+        "sha256": "edbc5b697bd28eefbe7d5fdb10d52ab93de3bc80cd09ebd4337fcaa8c8fcaf82"
+      },
+      {
+        "file": "remake/assets/themes/modern/hd1-king-static-refresh.recipe.json",
+        "sha256": "009bec001c212283aea624db916c58e7a5c6b919c9b1689e07d5cf06b18314fd"
+      },
+      {
+        "file": "tools/refresh_fd2_hd1_map_sprites.py",
+        "sha256": "2c8870ad0d470a51877b70ea8a058493fc35fa7ab933416889ad0b90f070cf1d"
+      },
+      {
+        "file": "tools/verify_fd2_hd1_chibi_party.py",
+        "sha256": "fb4ccabc5b3249990f1d1241953e9520c6cf45dcbe590329139586d146523004"
+      },
+      {
+        "file": "tools/build_fd2_hd1_chibi_comparison.py",
+        "sha256": "b381474863559c1ed8e5bf5ac63f3ad69b1c220600f8b64281b3513c1384af31"
+      },
+      {
+        "file": "tools/build_modern_map_sprite_overview.py",
+        "sha256": "faff7d680402b0a054c624215a4f5856823dbdbe656f547c6e08404376bfff81"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_chibi_party_test.go",
+        "sha256": "fa5778d9bc3a8b9608954fc89f55b028ec254dc97dcc40db6fa36a9b752366da"
+      },
+      {
+        "file": "remake/assets/themes/modern/catalog.json",
+        "sha256": "8b0623229e22b30d8b99cd04126c262d65d43054aedcbd6ef7730f34b6058659"
+      }
+    ],
+    "cleanup": {
+      "ownership": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-identity-review-r7/ownership-r1.json",
+        "sha256": "ee429c92320e9a684098f05fcfc7fbac4f89c75dffc9aa3695e03913bec49aa0"
+      },
+      "unexpected_fd2_containers": false,
+      "new_work_root_owned": false,
+      "legacy_root_owned_files_untouched": 2808,
+      "recordings_to_delete": 0
+    },
+    "limitations": [
+      "map32特殊前兩筆raw race／class仍未知，沿既有故事合成器的私有前景近似，不稱原版逐像素或玩法欄位閉合。",
+      "受控map32故事三拍／兩介面六繪圖，不作自然序章到達或新增故事保存功能；預存的是測試首章保存，正常存讀檔另由普通流程驗。",
+      "其他六組身份、69組Q比例、其餘五官與完整人物總覽仍待；Gaia保留定版，集中人工由使用者接手。"
+    ]
   }
 }

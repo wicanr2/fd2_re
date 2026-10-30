@@ -44,7 +44,7 @@ LABELS = dict((
     (45, "Beckway default promoted selector"),
     (46, "Shan default promoted selector"),
     (47, "identity unresolved; promoted selector 15 projection"),
-    (48, "three-phase static blue-capped human with red cloak; identity unresolved; no fabricated walk"),
+    (48, "three-phase static blue-haired human with red cloak; prologue father king via map32 and DATO048; no fabricated walk"),
     (49, "identity unresolved; promoted selector 17 exact art reuse"),
     (50, "Sol optional promotion; item 89"),
     (51, "Hano optional promotion; item 93"),

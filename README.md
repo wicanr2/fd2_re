@@ -49,6 +49,10 @@
 
 戴盔士兵恢復原版十字紋方盾、直劍與灰綠盔甲；蒙面劍士保留遮眼金屬帶、深藍面巾與斜持單劍，去除舊稿新增的骷髏臉。可看[各自原版頭像與實際尺寸](docs/figures/hd1-enemies-face-reference.png)、[士兵戰場](docs/figures/hd1-enemy-076-game.png)及[蒙面劍士戰場](docs/figures/hd1-enemy-079-game.png)。戰場圖使用原生名冊與地圖的受控敵軍群，地圖和資訊窗共用新版圖源，不代表自然章節流程驗收。其他人物仍逐組複核，完整總覽待全部重繪後更新。
 
+![父王的原版大頭像與HD1地圖人物面容對照](docs/figures/hd1-king-face-reference.png)
+
+王座廳父王恢復藍髮、金額飾、濃眉長鼻、藍色鬍鬚與成熟下巴，紅披風及空手沿原版。保留原生[三拍及尺寸對照](docs/figures/hd1-king-static-comparison.png)，不補成行走動畫。[完整故事畫面](docs/figures/hd1-king-story-game.png)取自原生map32名冊的受控故事載體，原本隱藏戰鬥資訊窗；場景其餘圖源維持現況。此處只驗父王地圖圖源，非正常序章流程、對話HD頭像或完整人物重繪驗收。
+
 ![蓋亞原版與新版HD1四向及尺寸對照](docs/figures/hd1-gaia-q-comparison.png)
 
 蓋亞採用上圖的先前HD1版本定案，保留灰綠硬甲、藍色面罩與大頭短身。兩份加重候選不採用。[完整受控戰場及資訊窗](docs/figures/hd1-gaia-q-game.png)、[普通首章遊玩畫面](docs/figures/hd1-gaia-q-normal.png)均使用這版；十二姿態、主題切換與保存冷讀已抽驗。全部125組已做第一輪造型審查，身份與裝備偏移由[#287](https://github.com/wicanr2/fd2_re/issues/287)修正，其他比例由[#286](https://github.com/wicanr2/fd2_re/issues/286)續作；全部完成後才更新完整「原版／HD1」人物總覽。

@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_hd1_chibi_map_refresh",
+  "base_catalog_sha256": "2526a3d0f2a68a523d2d4e55ec005afb19c8d41a19fdd886c8884b027ccfc5df",
+  "approved_preview": "docs/figures/hd1-ares-q-design.png",
+  "approved_preview_sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e",
+  "approval": "沿使用者已定大頭短身與逐人原版面容方向；第48組保留原生三拍靜態結構，王座廳身份由實際場景與對話核對。",
+  "native_bank_sha256": "7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44",
+  "palette_sha256": "404db1ca72ffc19fa7404fbc59bde98cdf239f63fe3375ec248a8142073a28bf",
+  "groups": [
+    {
+      "group": 48,
+      "master_file": "fdicon-048-hd1-native-q-v1-master.png",
+      "master_sha256": "511a8ef4650b0a3c34f2e0fbd644e05b6b9b6ca6fed44dd3b9cb1c27297e8544",
+      "output_prefix": "fdicon-048-hd1-native-q-v1"
+    }
+  ],
+  "policy": "王座廳父王依DATO048保留藍髮金額飾、濃眉長鼻、藍鬍鬚與長下巴、紅披風及空手。藍色輪廓按頭像作頭髮，不沿初審藍帽猜測。只三拍靜態，不新增方向、走行、武器或機械臉。",
+  "image_generation": {
+    "tool": "image_gen.imagegen",
+    "mode": "builtin",
+    "transparent_background": true,
+    "jobs": [
+      {
+        "group": 48,
+        "source": "exec-cb04e003-caba-442c-9ee5-b17be756a8b4.png",
+        "prompt": "Use case: identity-preserve. Asset type: HD1 tactical/story map sprite MASTER for Flame Dragon Knights 2 ORIGINAL FDICON group048, the FATHER KING as used by the original prologue throne-room map32 actor at(7,5) and original portrait DATO048. Image1 is the original THREE static map phases with the correct original palette: primary authority for silhouette, outfit, phase ordering, visible clothing and empty hands. Image2 is HIS OWN original DATO048 portrait: adult dignified HUMAN man, thick dark cobalt BLUE swept-back hair with a strong front forelock, plain golden forehead circlet with small downward central point, thick straight dark blue eyebrows, narrowed mature eyes, prominent LONG ANGULAR nose, dark blue downward-pointing MUSTACHE, long angular broad chin/jaw, thin firmly closed mouth, warm tan skin. Maintain HIS mature face, NOT a generic round-eyed cute boy, child, robot, white square head, skull or armored helmet face. Image3 is approved HD1 Q PROPORTIONS/style ONLY, specifically the lower NEW-Q drawings: huge head AND readable face about67-70% total figure height, extremely short body, smooth clean dark outlines, broad separated colors and restrained cel-painted shading. Do not copy image3's blue military CAP, young boy face, scarf, sword, boots or unrelated equipment.\nEXACTLY THREE FULL FIGURES arranged in ONE HORIZONTAL ROW, THREE COLUMNS, real transparent alpha. These are THREE STATIC PHASES from original image1, NOT walking and NOT four directions. Cell1 = original phase0: FRONT toward viewer with squared still posture. Cell2 = original phase1: FRONT with a slight original head/body idle change, arms remain down, no walking step. Cell3 = original phase2: original modest head turn/lean toward SCREEN LEFT and slight bow, still standing with arms down; NOT full profile, NOT back view. Study image1 and preserve each phase's own original head tilt and clothing changes. Same relative scale and planted baseline; full figure contained in each cell with generous transparent gaps and outer margins.\nCRITICAL original outfit: Cobalt blue HAIR, not a blue fabric cap, turban, helmet or mechanical headpiece. Gold simple circlet/headband matching original. Dark blue/gray compact upper chest, pale gray-green horizontal chest/collar trim, small gold collar/center belt accents, navy center panel, a plain RED cloak draped down BOTH outer sides/arms with small gold edging/cuffs as original. Short dark blue lower garment is largely obscured by cloak; keep original compact standing silhouette, do NOT invent large marching legs or projecting boots. Original empty hands down at sides under cloak, no weapon, staff, sword, shield, scepter, crown spikes, beard extension, gems, extra shoulder armor or unrelated royal regalia. No throne or chair because source sprite itself has no chair. All body parts naturally attached, no extra limbs or hands.\nFacial design MUST preserve DATO048's adult long nose, serious narrow eyes, strong blue brow, distinctive pointed dark blue mustache and defined long jaw, compressed into approved big-head Q proportions without turning him into another party member. Original image1 controls garment colors/coverage, image2 his own face. Smooth hand-painted HD Q sprite finish, no stair-stepped pixel grid, no nearest-neighbor enlargement, photorealism or glossy3D toy. Readable at144/72/48px. No words, labels, numbers, grid, borders, floor, cast shadows, glow, background or checkerboard. Genuine transparent background.",
+        "selected": true
+      }
+    ]
+  },
+  "original_reference": {
+    "source": "原生FDICON48三拍與FDOTHER0代表色盤，DATO048及map32王座廳場景／對話綁定",
+    "groups": [
+      48
+    ],
+    "records_sha256": "cb69db6a7042820db7bd5397bea0ad401eb741cf77eb1e9ec751b75ef2c683be",
+    "reference_boards": [
+      {
+        "file": "group-048-original-reference.png",
+        "sha256": "9e08b6a1f037f5a8b835a61b900e96cee22000422a425ce795f0a7051a23e3a9"
+      }
+    ],
+    "scope": "只證明王座廳第48組角色及美術；不以圖組編號或轉職target推原持續身份。"
+  },
+  "faces": [
+    {
+      "group": 48,
+      "name": "父王（王座廳場景）",
+      "portrait_file": "remake/assets/portraits/DATO_048_m0.png",
+      "portrait_sha256": "01f4ad45b3b8fdc1e5a5a3472687a9d8b6e61fdf5236674951ef752d06096af4",
+      "traits": [
+        "藍色後梳髮與金額飾",
+        "濃眉窄眼",
+        "長角鼻",
+        "深藍尖鬍鬚",
+        "成熟長方下巴"
+      ],
+      "comparison_label": "原版大頭像與地圖三拍，非對話HD頭像驗收"
+    }
+  ],
+  "story_binding": {
+    "group": 48,
+    "map": 32,
+    "roster_file": "remake/assets/maps/map32/map32_units.json",
+    "actor_node": "story_ch01_palace_throne",
+    "campaign_file": "remake/assets/scenarios/campaign_full.json",
+    "dialogue_file": "remake/assets/story/ch00_palace.json",
+    "speaker": 48,
+    "speaker_name": "父王",
+    "position": {
+      "x_word": 7,
+      "y_word": 5,
+      "raw_key": 48
+    },
+    "frame_count": 3,
+    "roster_sha256": "245fbc71ad571a3f6f067ccb43386a911ca5dfc793f6820ecdd59a9611c6a405",
+    "campaign_sha256": "5379211d59ce55cd241f03ebc1a7f8d2e48b2eda5dca935ab529ca88d0cb502e",
+    "dialogue_sha256": "5bb3498141d8e5c84f11c005c4f655cb912483d4a8cfe2646a3e89a9781fec19"
+  }
+}

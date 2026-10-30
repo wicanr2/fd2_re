@@ -4743,6 +4743,22 @@
         ],
         "pattern": "AppendGroupWithNativePlacement"
       }
+    },
+    {
+      "id": "static-story-actor-keeps-native-carrier",
+      "date": "2026-10-30",
+      "area": "HD故事人物",
+      "rule": "FDICON三拍角色先按正式清冊frame_count及實際場景／名冊／對話綁身份，不套十二方向或轉職編號推算。map32特殊角色缺raw race／class時，沿remake/cmd/fd2/native_story_map.go的既有故事載體與私有前景近似；保持隱藏HUD，不偽造成戰鬥角色。測具入口為modern_hd_chibi_party_test.go的static-king，收據明示authored_story_fixture與既有近似。",
+      "why": "第48組由王座廳actor與speaker48父王確認，DATO048說明藍色輪廓是頭髮；原生只有三拍，map32前兩筆沒有完整戰鬥構造資料。現有故事合成器已處理該來源限制，本批只刷新圖源。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#hd1_king_static_followup_20261030",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/modern_hd_chibi_party_test.go",
+          "tools/verify_fd2_hd1_chibi_party.py"
+        ],
+        "pattern": "authored_story_fixture"
+      }
     }
   ]
 }
