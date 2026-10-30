@@ -1,0 +1,301 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_hd1_chibi_map_refresh",
+  "approved_preview": "docs/figures/hd1-ares-q-design.png",
+  "approved_preview_sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e",
+  "native_bank_sha256": "7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44",
+  "palette_sha256": "404db1ca72ffc19fa7404fbc59bde98cdf239f63fe3375ec248a8142073a28bf",
+  "base_catalog_sha256": "a05da55058b851977cab38f4c07c443cc52c9ce647c180e88654dcd101ff9e23",
+  "approval": "沿使用者已定大頭短身、逐人原版五官及持續推進授權；處理17／18／20／21基底，正式規則／保存不改。",
+  "groups": [
+    {
+      "group": 17,
+      "master_file": "fdicon-017-hd1-portrait-q-v1-master.png",
+      "master_sha256": "14cb84df6e0832806231f456dc3bc1e40837cd68e34f7a8b8bf30b8bccbbe4f5",
+      "output_prefix": "fdicon-017-hd1-portrait-q-v1"
+    },
+    {
+      "group": 18,
+      "master_file": "fdicon-018-hd1-portrait-q-v1-master.png",
+      "master_sha256": "3023d6539fa255059b2ded04742fabf55fd163dea9f658cc0ae9f14637337283",
+      "output_prefix": "fdicon-018-hd1-portrait-q-v1"
+    },
+    {
+      "group": 20,
+      "master_file": "fdicon-020-hd1-portrait-q-v1-master.png",
+      "master_sha256": "2277bba8c1a40d247cd3bc3680ab9579b2d9ef6400e356b237a9814eb092f4f9",
+      "output_prefix": "fdicon-020-hd1-portrait-q-v1"
+    },
+    {
+      "group": 21,
+      "master_file": "fdicon-021-hd1-portrait-q-v1-master.png",
+      "master_sha256": "cd0d4526fd4da5eb61be85b722f5086a4051b5f1a7be551bcf5f443750a4d3e7",
+      "output_prefix": "fdicon-021-hd1-portrait-q-v1"
+    }
+  ],
+  "faces": [
+    {
+      "group": 17,
+      "name": "米亞斯多德",
+      "portrait_file": "remake/assets/portraits/DATO_017_m0.png",
+      "portrait_sha256": "4589575347e249ac0aae1862f6312259b90ea10dd9e2f101a07069ea9c49d534",
+      "traits": [
+        "紅褐龍面與長中央稜",
+        "紅色窄眼及上掠長角",
+        "原生藍劍灰綠圓盾"
+      ],
+      "comparison_label": "原版大頭像／實際地圖圖源，非480對話頭像驗收"
+    },
+    {
+      "group": 18,
+      "name": "蜜蒂",
+      "portrait_file": "remake/assets/portraits/DATO_018_m0.png",
+      "portrait_sha256": "f3acbfad408c29562895839ae81e3d3bef9564b83b44886c7674c5276a15a204",
+      "traits": [
+        "金色鬆波長髮",
+        "成熟長鼻與高眉窄褐眼",
+        "收斂自信紅唇"
+      ],
+      "comparison_label": "原版大頭像／實際地圖圖源，非480對話頭像驗收"
+    },
+    {
+      "group": 20,
+      "name": "莎拉",
+      "portrait_file": "remake/assets/portraits/DATO_020_m0.png",
+      "portrait_sha256": "84ae8d29788810682e78a9ea160573514d4c30aeacd81da7fda7f09a489fd210",
+      "traits": [
+        "綠髮紅額帶及尖耳",
+        "長橢圓臉與窄褐眼",
+        "細長鼻及收斂紅唇"
+      ],
+      "comparison_label": "原版大頭像／實際地圖圖源，非480對話頭像驗收"
+    },
+    {
+      "group": 21,
+      "name": "約拿",
+      "portrait_file": "remake/assets/portraits/DATO_021_m0.png",
+      "portrait_sha256": "0396a5738432aac007dc02d69e796ed8af9bbee3372962d4ef646f5934bf5236",
+      "traits": [
+        "白藍髮及連續大白鬚",
+        "高齡皺紋與濃白眉窄眼",
+        "長鉤鼻及嚴肅表情"
+      ],
+      "comparison_label": "原版大頭像／實際地圖圖源，非480對話頭像驗收"
+    }
+  ],
+  "party_bindings": [
+    {
+      "group": 17,
+      "native_identity": 17,
+      "portrait": 17,
+      "fig": 17,
+      "scenario_file": "remake/assets/scenarios/ch13.json",
+      "scenario_sha256": "afb490d30ba8b3ca5b79f96e0c8dd55728a235eb1ea287dd5f6ea832243a8dc6",
+      "selector_projection_injected": false
+    },
+    {
+      "group": 18,
+      "native_identity": 18,
+      "portrait": 18,
+      "fig": 18,
+      "scenario_file": "remake/assets/scenarios/ch17.json",
+      "scenario_sha256": "2334d345082698fa8c8f9385a3a388652dea344a0e4acea2f55453cf4b8ad3a5",
+      "selector_projection_injected": false
+    },
+    {
+      "group": 20,
+      "native_identity": 20,
+      "portrait": 20,
+      "fig": 20,
+      "scenario_file": "remake/assets/scenarios/ch23.json",
+      "scenario_sha256": "65575e050206b643f80d8ffcbb839b616bc6a36af2cedff48f2351f8ca5c9eb2",
+      "selector_projection_injected": false
+    },
+    {
+      "group": 21,
+      "native_identity": 21,
+      "portrait": 21,
+      "fig": 21,
+      "scenario_file": "remake/assets/scenarios/ch19.json",
+      "scenario_sha256": "160b96dc5482cac355353d86e373858e284d894876a926544b32aacecbf5022b",
+      "selector_projection_injected": false
+    }
+  ],
+  "image_generation": {
+    "tool": "image_gen.imagegen",
+    "mode": "builtin",
+    "transparent_background": true,
+    "jobs": [
+      {
+        "group": 17,
+        "prompt": "Use case: identity-preserve. Asset type: HD1 tactical-map MASTER for Flame Dragon Knights2. Image1 ORIGINAL twelve map poses is authority for outfit, held gear, silhouette, colors, four directions and occlusion. Image2 THIS character's original portrait is authority for their own face. Image3 is ONLY HD1 style/proportion reference; NEVER copy its face, equipment or hair. Approved huge head AND readable face about67-70% total height, extremely short torso and stubby legs/boots, clean dark outline, broad color shapes, restrained smooth painted/cel2D shading, readable144/72/48px, not long realistic legs or generic round-eyed baby. Exactly3columns x4rows twelve isolated full-body figures. Rows FRONT facing viewer, LEFT true profile screenleft, BACK away, RIGHT true profile screenright. Every row column1 neutral feet planted, column2 small grounded left step, column3 small grounded right step. Neutral FIRST column. Equal scale/foot baseline, ample gaps and alpha margins, no clipping. Natural wrists, exactly two hands and two feet. Actual transparent alpha, no checkerboard, background/floor/shadow, text/labels, grid/border or glow. Group017 MIYASDODE 米亞斯多德. Original red/rust-red DRAGON humanoid, not human wearing helmet. Own portrait has very NARROW LONG angular red beak-like dragon muzzle/face, long central tapered ridge, two tall swept-up horn/spikes plus small lateral cheek spikes, deep black eye sockets with small RED eyes, stern ominous composed expression, very different from group016's broad brown dog-like snout. NO rounded puppy nose, broad smiling alligator face or giant white teeth. Keep native redorange head, original orange/red folded wing shapes close to sides/back, short red/brown body, graygreen hands/forearms and stubby graygreen boots and dark waist band. EXACTLY ONE upright narrow BLUE/LAVENDER straight sword with pale blue edge, and ONE muted GRAY-GREEN ROUND shield with dark native T-like mark; not image3 red sword or blue angular shield. FRONT sword viewerLEFT, shield viewerRIGHT. LEFT profile sword entirely hidden far side behind head/body and near shield. BACK sword viewerRIGHT, shield partly left. RIGHT profile sword at left boundary of face behind snout, shield mostly far-side occluded. Preserve source anatomy/held hand. No extra tail, armor ornaments, weapon or shield, no fire or glow. Big angular face and horns, tiny compact body.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r13/group-017-original.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r13/portrait-017.png",
+          "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/fdicon-016-hd1-portrait-q-v1-master.png"
+        ],
+        "selected": true,
+        "source": "exec-c5318e93-0bd9-4b83-bcfa-1308b3755a47.png",
+        "reason": "依各自原版面容與十二姿態選用",
+        "source_sha256": "14cb84df6e0832806231f456dc3bc1e40837cd68e34f7a8b8bf30b8bccbbe4f5",
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r13/group-017-original.png",
+            "sha256": "ad2d45161c0575fc2dc9b8a55c846b755d4a859af6999de3037f0b4be91a66d4"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r13/portrait-017.png",
+            "sha256": "b1187db957f2f16f740efe9d8501fbe15b6e36ce2e3ffbad1ffffccb0c4e4424"
+          },
+          {
+            "file": "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/fdicon-016-hd1-portrait-q-v1-master.png",
+            "sha256": "cbd5654bdeeceab18a0e8abc1c775eb194171108bd4fb837c56cab96ccbd5c3d"
+          }
+        ]
+      },
+      {
+        "group": 18,
+        "prompt": "Use case: identity-preserve. Asset type: HD1 tactical-map MASTER for Flame Dragon Knights2. Image1 ORIGINAL twelve map poses is authority for outfit, held gear, silhouette, colors, four directions and occlusion. Image2 THIS character's original portrait is authority for their own face. Image3 is ONLY HD1 style/proportion reference; NEVER copy its face, equipment or hair. Approved huge head AND readable face about67-70% total height, extremely short torso and stubby legs/boots, clean dark outline, broad color shapes, restrained smooth painted/cel2D shading, readable144/72/48px, not long realistic legs or generic round-eyed baby. Exactly3columns x4rows twelve isolated full-body figures. Rows FRONT facing viewer, LEFT true profile screenleft, BACK away, RIGHT true profile screenright. Every row column1 neutral feet planted, column2 small grounded left step, column3 small grounded right step. Neutral FIRST column. Equal scale/foot baseline, ample gaps and alpha margins, no clipping. Natural wrists, exactly two hands and two feet. Actual transparent alpha, no checkerboard, background/floor/shadow, text/labels, grid/border or glow. Group018 MIDDY 蜜蒂. Adult woman, face based on own original portrait: narrow intense BROWN almond eyes, pronounced arched darkgold brows, long slender defined nose, angular mature cheekbones/tapered chin and full dark RED lips with a controlled confident almost sly smile. Not Kylie's one-eye-covered expression, not Rona's neutral doll face. Rich golden/amber LONG LOOSE WAVY hair with tall swept front volume and large side waves, BOTH eyes visible, no headband/crown or new ponytail. Very large visible face, not just huge hair with tiny face. Original map RED cape/drype along back and one side, compact muted graygreen forearm/hand armor and boots, dark navy/charcoal torso and plum lower central clothing with small red/graygreen neck accent. BOTH HANDS EMPTY in native map: no sword, staff or shield invented from class. Do not reuse image3 sword. Keep original four-direction red cape/hair silhouette and natural short arms.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r13/group-018-original.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r13/portrait-018.png",
+          "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/fdicon-005-hd1-portrait-q-v1-master.png"
+        ],
+        "selected": true,
+        "source": "exec-59c33b71-2bc4-4334-88dc-20e0c205ae29.png",
+        "reason": "依各自原版面容與十二姿態選用",
+        "source_sha256": "3023d6539fa255059b2ded04742fabf55fd163dea9f658cc0ae9f14637337283",
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r13/group-018-original.png",
+            "sha256": "f33a34bf0b4b939950877047e8ca8a0d28b9df199bb827ca3c50001d82a05764"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r13/portrait-018.png",
+            "sha256": "f9966abc6f922e8e4ff5dc313983dddf246538d8ad4bd43384bbdd973fd6c04d"
+          },
+          {
+            "file": "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/fdicon-005-hd1-portrait-q-v1-master.png",
+            "sha256": "fdbf53d45f26f2f45cf1c0bd0ca549176865f4736500765a7b9363f21b140b64"
+          }
+        ]
+      },
+      {
+        "group": 20,
+        "prompt": "Use case: identity-preserve. Asset type: HD1 tactical-map MASTER for Flame Dragon Knights2. Image1 ORIGINAL twelve map poses is authority for outfit, held gear, silhouette, colors, four directions and occlusion. Image2 THIS character's original portrait is authority for their own face. Image3 is ONLY HD1 style/proportion reference; NEVER copy its face, equipment or hair. Approved huge head AND readable face about67-70% total height, extremely short torso and stubby legs/boots, clean dark outline, broad color shapes, restrained smooth painted/cel2D shading, readable144/72/48px, not long realistic legs or generic round-eyed baby. Exactly3columns x4rows twelve isolated full-body figures. Rows FRONT facing viewer, LEFT true profile screenleft, BACK away, RIGHT true profile screenright. Every row column1 neutral feet planted, column2 small grounded left step, column3 small grounded right step. Neutral FIRST column. Equal scale/foot baseline, ample gaps and alpha margins, no clipping. Natural wrists, exactly two hands and two feet. Actual transparent alpha, no checkerboard, background/floor/shadow, text/labels, grid/border or glow. Group020 SARA 莎拉. Original mature adult woman with GREEN long swept-back hair, RED forehead band and small center red mark, original POINTED EARS. Own portrait: slim LONG OVAL face, strong fine arched brows, warm dark BROWN narrow almond eyes (not bright green huge eyes), defined long straight nose and small full dark RED lips in a reserved confident expression. Do not substitute generic baby roundface or other heroine's face. Green hair down back, no ponytail, no helmet, no gold crown or elaborate headband. Native darkteal/bluegray collar/shoulder pieces, muted ochre/brown compact chest/front, plum lower area and RED lower-back/side drape. Preserve exactly the two narrow upright BLUE-GRAY side/back panels visible in native four views, each plain rounded top and long flat face, reaching only shoulders-to-lower-back: do NOT interpret them into feathered wings, unfolded wings, shields, swords, engines or invented machinery. Copy their visible shape and placement as image1, not class/name assumptions. Hands EMPTY, no sword/spear/bow/staff, mount or dragon. No added accessories. Head and visible face huge, body tiny.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r13/group-020-original.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r13/portrait-020.png",
+          "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/fdicon-005-hd1-portrait-q-v1-master.png"
+        ],
+        "selected": true,
+        "source": "exec-bd5c0739-e476-407e-9d74-370238778773.png",
+        "reason": "依各自原版面容與十二姿態選用",
+        "source_sha256": "2277bba8c1a40d247cd3bc3680ab9579b2d9ef6400e356b237a9814eb092f4f9",
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r13/group-020-original.png",
+            "sha256": "7a6addf4965858d342702387b033cc52e3345681cd4e034a95124fe7ebe11146"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r13/portrait-020.png",
+            "sha256": "7ea60795eb2aac1b190965048af10140b632728c5dde92814abc2e304b225f38"
+          },
+          {
+            "file": "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/fdicon-005-hd1-portrait-q-v1-master.png",
+            "sha256": "fdbf53d45f26f2f45cf1c0bd0ca549176865f4736500765a7b9363f21b140b64"
+          }
+        ]
+      },
+      {
+        "group": 21,
+        "prompt": "Use case: identity-preserve. Asset type: HD1 tactical-map MASTER for Flame Dragon Knights2. Image1 ORIGINAL twelve map poses is authority for outfit, held gear, silhouette, colors, four directions and occlusion. Image2 THIS character's original portrait is authority for their own face. Image3 is ONLY HD1 style/proportion reference; NEVER copy its face, equipment or hair. Approved huge head AND readable face about67-70% total height, extremely short torso and stubby legs/boots, clean dark outline, broad color shapes, restrained smooth painted/cel2D shading, readable144/72/48px, not long realistic legs or generic round-eyed baby. Exactly3columns x4rows twelve isolated full-body figures. Rows FRONT facing viewer, LEFT true profile screenleft, BACK away, RIGHT true profile screenright. Every row column1 neutral feet planted, column2 small grounded left step, column3 small grounded right step. Neutral FIRST column. Equal scale/foot baseline, ample gaps and alpha margins, no clipping. Natural wrists, exactly two hands and two feet. Actual transparent alpha, no checkerboard, background/floor/shadow, text/labels, grid/border or glow. Group021 JONAH 約拿. Original very OLD man, not young person in white beard. Own portrait authority: swept flowing WHITE/PALE ICEBLUE hair, huge continuous white moustache and long flowing white beard, narrow deep-set dark eyes under heavy white brows, visible wrinkles at eyes/forehead, long strongly projecting hooked nose and old weathered warm skin, serious thoughtful slightly downcast expression. No giant cute round child eyes, rosy baby cheeks or grin; not image3 reddish bearded angry squareface. Keep face and nose clearly distinguishable from beard, enormous head and beard with tiny body. Original plain muted OLIVE/BROWN hoodless robe with dark brown belt and stubby brown shoes, no hat/helmet/armor. Preserve native SMALL BROWN DIAGONAL HELD ROD fragment/shape, exact purpose unknown: FRONT lower viewerLEFT, diagonal from below beard near hand down-left; LEFT profile far-side held rod hidden behind beard/body, keep old man's protruding NOSE at face level, don't confuse nose with rod; BACK short rod diagonal at lower viewerRIGHT; RIGHT profile near hand in front/lower body slopes down-left and stays BELOW beard/face, never sticks from mouth. No large spiral crook, tall staff above head, pipe, smoke, wand crystal, axe or added weapon. Do not copy old HD speculative crook. Copy visible brown rod contours from image1 without inventing functional equipment. No added cape or bag.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r13/group-021-original.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r13/portrait-021.png",
+          "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/harvat-hd1-big-head-q-v2-master.png"
+        ],
+        "selected": false,
+        "source": "exec-bd6d19a7-32a8-43b5-b30f-bc6e370c5e6d.png",
+        "reason": "第一列朝向偏左，改採正面修正版",
+        "source_sha256": "6db45e17fc9f6a26c8ce53d7799d8203b21b835bd8629711ce839efbb85239ba",
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r13/group-021-original.png",
+            "sha256": "6944d3920fbd334ecea7ef3e01476fa2e1f3c2fc51a4b6aedd81224c451da26c"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r13/portrait-021.png",
+            "sha256": "5d2eca9610ac6d5f08e744cca04d3429a2c293e4479835ee8702048d33f69008"
+          },
+          {
+            "file": "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/harvat-hd1-big-head-q-v2-master.png",
+            "sha256": "e565358f19e65e5276f5e3f7a3d07ac5b6956612c9d988fd0b5cfa7f92f43c6c"
+          }
+        ]
+      },
+      {
+        "group": 21,
+        "prompt": "Use case: precise-object-edit. Edit ONLY the THREE figures in TOP ROW of image1. Their bodies already face FRONT, but faces are turned three-quarter toward screenleft. Rotate ONLY top-row facial/head orientation to true FRONT looking toward viewer: symmetric frontal head, two narrow deep-set eyes visible at the same level, long hooked nose centered and projecting toward viewer, massive continuous white moustache and beard, white swept hair, heavy white brows, weathered wrinkles, same very OLD serious thoughtful man, NOT cute baby, same enormous head/tiny-body ratio. Preserve image1 character's own facial age and features, brown robe, plain short brown diagonal rod held at lower viewerLEFT below beard, palette, foot positions, scale and spacing. Keep ALL nine figures in rows2/3/4 unchanged, same sheet3columns4rows and actual transparent alpha. No new hat, tallstaff/crook, weapon, pipe, background/shadow/grid/text. Image2 original twelve poses is source direction reference only. Top row col1 neutral feet planted, col2/3 existing small grounded steps kept.",
+        "reference_files": [
+          "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-bd6d19a7-32a8-43b5-b30f-bc6e370c5e6d.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r13/group-021-original.png"
+        ],
+        "selected": true,
+        "source": "exec-d5a21eaa-aa56-429c-8e3c-422b62186d87.png",
+        "reason": "修正第一列為正面，保留高齡面容及其他三向",
+        "source_sha256": "cd0d4526fd4da5eb61be85b722f5086a4051b5f1a7be551bcf5f443750a4d3e7",
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/.codex/generated_images/01a13e4d-f15d-7001-9c44-418cbca576c0/exec-bd6d19a7-32a8-43b5-b30f-bc6e370c5e6d.png",
+            "sha256": "6db45e17fc9f6a26c8ce53d7799d8203b21b835bd8629711ce839efbb85239ba"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r13/group-021-original.png",
+            "sha256": "6944d3920fbd334ecea7ef3e01476fa2e1f3c2fc51a4b6aedd81224c451da26c"
+          }
+        ]
+      }
+    ]
+  },
+  "gpu_pairs": {
+    "dragon-and-swordswoman": [
+      17,
+      18
+    ],
+    "greenhair-and-elder": [
+      20,
+      21
+    ]
+  },
+  "policy": "四向各三拍首欄中性；17紅龍面、原生藍劍灰綠圓盾，18金長髮紅披風及空手，20綠髮尖耳紅額帶、空手及背側藍灰窄片，21高齡白鬚長鉤鼻、棕袍及低位棕色斜杆按原生呈現。20配件與21持物用途未定，不沿舊HD或職業推定；各自頭像核五官，無身份或selector投影，正式規則與保存保持。",
+  "original_reference": {
+    "source": "原生FDICON三層與FDOTHER0代表色盤；各自party明示identity／fig／portrait綁DATO；原版頭像最近鄰400方圖只是繪圖輸入排版",
+    "groups": [
+      17,
+      18,
+      20,
+      21
+    ],
+    "records_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r13/native-reference.json",
+    "records_sha256": "311b1db0259256ee58b3612ac26fd4fbb2728d2ebe9bc0606bbea5993b962095",
+    "reference_boards": [
+      {
+        "file": "group-017-original.png",
+        "sha256": "ad2d45161c0575fc2dc9b8a55c846b755d4a859af6999de3037f0b4be91a66d4"
+      },
+      {
+        "file": "group-018-original.png",
+        "sha256": "f33a34bf0b4b939950877047e8ca8a0d28b9df199bb827ca3c50001d82a05764"
+      },
+      {
+        "file": "group-020-original.png",
+        "sha256": "7a6addf4965858d342702387b033cc52e3345681cd4e034a95124fe7ebe11146"
+      },
+      {
+        "file": "group-021-original.png",
+        "sha256": "6944d3920fbd334ecea7ef3e01476fa2e1f3c2fc51a4b6aedd81224c451da26c"
+      }
+    ]
+  }
+}

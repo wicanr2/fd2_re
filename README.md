@@ -61,6 +61,14 @@
 
 賽可邦勒保留深藍獸形長吻、直立耳、黑鼻與窄黃綠眼，沿原生空手及紅腰布；凱拉斯保留褐龍長吻、黑角與原生紅劍、藍紋盾，四向持物側及遮蔽保持。可看[四向及實際尺寸](docs/figures/hd1-beast-and-dragon-comparison.png)、[賽可邦勒](docs/figures/hd1-saikebanle-refresh-game.png)與[凱拉斯](docs/figures/hd1-kairas-refresh-game.png)的完整受控戰場圖。面容圖比較原版頭像與實際地圖素材，非對話HD頭像驗收；地圖與資訊窗共用新版圖源。戰場圖使用各自原生名冊的受控測具，沒有身份或圖組投影，不代表自然加入流程。其餘人物續作，完整總覽仍待全部重繪後更新。
 
+![米亞斯多德與蜜蒂的原版及HD1面容對照](docs/figures/hd1-dragon-and-swordswoman-faces.png)
+
+米亞斯多德保留紅褐窄長龍面、紅眼與上掠長角，藍劍及灰綠圓盾沿原生持物側與遮蔽；蜜蒂保留金色鬆波長髮、成熟高眉窄眼與自信紅唇，地圖姿態保持空手及紅披風。可看[四向與144／72／48尺寸](docs/figures/hd1-dragon-and-swordswoman-comparison.png)、[米亞斯多德](docs/figures/hd1-miyasdode-refresh-game.png)與[蜜蒂](docs/figures/hd1-middy-refresh-game.png)的完整受控戰場圖。
+
+![莎拉與約拿的原版及HD1面容對照](docs/figures/hd1-greenhair-and-elder-faces.png)
+
+莎拉保留綠髮尖耳、紅額帶、長橢圓臉與收斂紅唇；約拿保留白藍髮、大白鬚、皺紋、白眉窄眼及長鉤鼻。莎拉背側藍灰窄片與約拿低位棕色斜杆依原生形狀呈現，用途未另推定。可看[四向與實際尺寸](docs/figures/hd1-greenhair-and-elder-comparison.png)、[莎拉](docs/figures/hd1-sara-refresh-game.png)與[約拿](docs/figures/hd1-jonah-refresh-game.png)的完整受控戰場圖。面容圖比較原版頭像與實際地圖素材，非對話HD頭像驗收；地圖與資訊窗共用新版圖源。戰場圖使用各自原生名冊的受控測具，沒有身份或圖組投影，不代表自然加入流程。其餘人物續作，完整總覽仍待全部重繪後更新。
+
 ![哈諾與貝克威依各自原版頭像重繪的HD1面容](docs/figures/hd1-native-face-reference.png)
 
 哈諾的長鼻、細眼與抿嘴，以及貝克威的平眉、半闔眼與微揚嘴角，分別參考自己的原版大頭像。上圖比較原版頭像與實際144／72／48像素地圖素材，並非遊戲截圖或對話HD頭像驗收；[四向原版／HD1局部對照](docs/figures/hd1-native-faces-comparison.png)另列兩人的裝備與方向。[哈諾](docs/figures/hd1-hano-face-game.png)與[貝克威](docs/figures/hd1-bekwei-face-game.png)的完整受控戰場畫面，可查看地圖與資訊窗接線；測試用圖組投影不代表升階或自然出場驗收。其他角色的面容仍逐人複核，完整人物總覽待全部重繪後更新。
