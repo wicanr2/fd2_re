@@ -1,6 +1,6 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
-卡里斯22、羅蘭23、希爾法24與謝多25已依各自原版頭像與十二姿態重繪大頭短身。鬍渣窄眼、長褐髮微笑、高額尖耳細鬚及露臉獸形分別保留；空手、弓箭筒、紅袍金領與腰際橫持短劍依原生呈現。地圖／資訊窗、獨立控制及保存相容通過，四組無身份或selector投影；Q比例餘項54→50，其他面容與完整總覽仍待，Gaia保持定版。現況依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源為主收據hd1_stubble_bow_robes_followup_20261030。
+聖寇拉斯26、巴拿羅西亞27、達克賽28與亞奇梅吉29已依各自原版頭像及十二姿態重繪大頭短身。藍灰長吻、橄欖綠寬吻、厚重額面與高額瘦臉分別保持；金劍窄盾、銀劍白盾、空手腰帶及藍袍灰領沿原生。地圖／資訊窗、獨立控制與保存相容通過，無身份或selector投影；Q比例餘項50→46，其他面容與完整總覽仍待，Gaia保持定版。現況依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源為主收據hd1_dragons_blue_robes_followup_20261031。
 
 戶外草、土、沙、水與石路已依定版風格刷新，原生輪廓、物件與規則保持。完整GPU及普通首章切換、走行取消、保存冷讀通過，README總覽及普通遊玩圖已更新。現況與來源依[58](58-fd2-exe-re-coverage.md)、[61](61-modern-theme-runtime-spec.md)及主收據`hd1_painted_ground_followup_20261029`；洞窟／物件與其餘缺圖續作，人工由使用者接手。
 

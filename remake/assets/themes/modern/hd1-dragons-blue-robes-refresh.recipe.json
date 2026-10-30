@@ -1,0 +1,279 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_hd1_chibi_map_refresh",
+  "approved_preview": "docs/figures/hd1-ares-q-design.png",
+  "approved_preview_sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e",
+  "native_bank_sha256": "7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44",
+  "palette_sha256": "404db1ca72ffc19fa7404fbc59bde98cdf239f63fe3375ec248a8142073a28bf",
+  "base_catalog_sha256": "26202d8eb86c59ea3d5e9678c6b49ce7d2c481467fe2b376712fc5de467d6354",
+  "approval": "沿使用者已定大頭短身、逐人原版五官及持續推進授權；處理26／27／28／29基底，正式規則／保存不改。",
+  "groups": [
+    {
+      "group": 26,
+      "master_file": "fdicon-026-hd1-portrait-q-v1-master.png",
+      "master_sha256": "30d4c5c3c928f47e2e81b4ee9822285e931e14283a4325e9c96f05c2eba2bd3c",
+      "output_prefix": "fdicon-026-hd1-portrait-q-v1"
+    },
+    {
+      "group": 27,
+      "master_file": "fdicon-027-hd1-portrait-q-v1-master.png",
+      "master_sha256": "c5d8a5e23546af239c74af16c39a1c393248891817fec16df5f408b6889ca203",
+      "output_prefix": "fdicon-027-hd1-portrait-q-v1"
+    },
+    {
+      "group": 28,
+      "master_file": "fdicon-028-hd1-portrait-q-v1-master.png",
+      "master_sha256": "28d0a7f40c2cceed952b85469b0d86b43fa5431edd934beb3540791951fdc1b5",
+      "output_prefix": "fdicon-028-hd1-portrait-q-v1"
+    },
+    {
+      "group": 29,
+      "master_file": "fdicon-029-hd1-portrait-q-v1-master.png",
+      "master_sha256": "4aaf0f171e4cb125ad11cec2c08dfe5d77fc05f02f97ad1befd1b0973bbe4bf1",
+      "output_prefix": "fdicon-029-hd1-portrait-q-v1"
+    }
+  ],
+  "faces": [
+    {
+      "group": 26,
+      "name": "聖寇拉斯",
+      "portrait_file": "remake/assets/portraits/DATO_026_m0.png",
+      "portrait_sha256": "1412bf548459c2152b96b4827ac439030e68f1e66663b0abefcdc874a23aa368",
+      "traits": [
+        "藍灰長吻與冠角",
+        "藍紫窄眼與小獠牙",
+        "窄曲閉嘴"
+      ],
+      "comparison_label": "原版大頭像／實際地圖圖源，非480對話頭像驗收"
+    },
+    {
+      "group": 27,
+      "name": "巴拿羅西亞",
+      "portrait_file": "remake/assets/portraits/DATO_027_m0.png",
+      "portrait_sha256": "c42233961ecc980101b3d694863b04720e0b25b70b948c02b103987116d16270",
+      "traits": [
+        "橄欖綠寬吻與角脊",
+        "黃綠細瞳與黑眼窩",
+        "較重頰板及露小獠牙"
+      ],
+      "comparison_label": "原版大頭像／實際地圖圖源，非480對話頭像驗收"
+    },
+    {
+      "group": 28,
+      "name": "達克賽",
+      "portrait_file": "remake/assets/portraits/DATO_028_m0.png",
+      "portrait_sha256": "5210eb5884887c2258ccd1a796d042813253301f8469442cf04c48526db70f57",
+      "traits": [
+        "深藍裸露角稜額面與尖耳",
+        "藍紫窄眼、粗眉與鉤鼻",
+        "微揚薄唇與明顯下顎"
+      ],
+      "comparison_label": "原版大頭像／實際地圖圖源，非480對話頭像驗收"
+    },
+    {
+      "group": 29,
+      "name": "亞奇梅吉",
+      "portrait_file": "remake/assets/portraits/DATO_029_m0.png",
+      "portrait_sha256": "49c221d02b80c0ec73c0ba0f40028692e14984e106d275d077e9faccfd068b4b",
+      "traits": [
+        "藍灰高禿頂與尖耳",
+        "深陷藍紫窄眼與長鼻",
+        "消瘦頰骨、下垂薄唇與長下巴"
+      ],
+      "comparison_label": "原版大頭像／實際地圖圖源，非480對話頭像驗收"
+    }
+  ],
+  "party_bindings": [
+    {
+      "group": 26,
+      "native_identity": 26,
+      "portrait": 26,
+      "fig": 26,
+      "scenario_file": "remake/assets/scenarios/ch26.json",
+      "scenario_sha256": "1031f6c875b96448b8d723bac0787c3fe2f4479738ab76b401915d7a5f1131db",
+      "selector_projection_injected": false
+    },
+    {
+      "group": 27,
+      "native_identity": 27,
+      "portrait": 27,
+      "fig": 27,
+      "scenario_file": "remake/assets/scenarios/ch20.json",
+      "scenario_sha256": "68be700f51aa87a5690dc5ddfb541eb7e180ab4d4b5a2e3b12c1d01c41153ede",
+      "selector_projection_injected": false
+    },
+    {
+      "group": 28,
+      "native_identity": 28,
+      "portrait": 28,
+      "fig": 28,
+      "scenario_file": "remake/assets/scenarios/ch21.json",
+      "scenario_sha256": "4385ad81300dd18a42c339b1135b337afaa84a2e23e3fa3a7caf7e699d7ac1f8",
+      "selector_projection_injected": false
+    },
+    {
+      "group": 29,
+      "native_identity": 29,
+      "portrait": 29,
+      "fig": 29,
+      "scenario_file": "remake/assets/scenarios/ch26.json",
+      "scenario_sha256": "1031f6c875b96448b8d723bac0787c3fe2f4479738ab76b401915d7a5f1131db",
+      "selector_projection_injected": false
+    }
+  ],
+  "image_generation": {
+    "tool": "image_gen.imagegen",
+    "mode": "builtin",
+    "transparent_background": true,
+    "jobs": [
+      {
+        "group": 26,
+        "prompt": "Use case: identity-preserve. Asset type: HD1 tactical map sprite MASTER for Flame Dragon Knights2. Image1 ORIGINAL twelve map poses is the authority for silhouette, gear, outfit colors, four directions and occlusion. Image2 THIS character's original portrait is authority for own face. Image3 ONLY approved HD1 style/proportion reference: never copy its face, equipment, hair or expression. Huge head AND visible readable face about67-70% total height, extremely short compact torso and legs, stubby boots, clean dark contours, broad colors, restrained smooth painted/cel2D shading, readable144/72/48px. No long realistic legs or generic round-eyed baby face. Exactly3columns x4rows, twelve isolated fullbody figures. Rows FRONT facing viewer, LEFT true profile screenleft, BACK away, RIGHT true profile screenright. Every row column1 neutral both feet planted, column2 small grounded left step, column3 small grounded right step. FIRST column neutral. Same scale/foot baseline, generous clear alpha gaps/margins, no clipping. Exactly two hands and two feet, natural wrists. Actual transparent alpha; no background/checkerboard, floor/shadow/glow, text/labels, grid/border. Preserve held side, occlusion, clothing and own original identity; no invented gear. Group026 聖寇拉斯 SANKOLAS. Original BLUEGRAY upright dragon man, huge elongated reptilian head and long narrow muzzle, three prominent swept upward/back crown horns and rear cheek spikes as originalportrait. Own narrow BLUE/VIOLET slit eyes in dark sockets, slanted angular brow, small ivory tooth at mouthcorner and narrow slightly curved closed mouth. Face blue/slategray, not red dragon or human elf, don't copy reference17 face. Tiny armored darkgray-green torso/forearms/feet, darkblue waistcloth. Exactly ONE straight GOLD/YELLOW blade held UPRIGHT and ONE long narrow BLUEGRAY shield on opposite arm, no emblem invented. FRONT sword viewerLEFT shield viewerRIGHT (shield near edge/mostly side-on). LEFT profile near shield visible behind torso at screenRIGHT, far sword hidden, no sword ahead of snout. BACK shield viewerLEFT sword hilt/upper golden glint on viewerRIGHT as native phase; RIGHT profile near sword upright in front of chest but BEHIND protruding snout, far shield mostly hidden. No wings, tail, cape, staff, second weapon or extra armor. Preserve original horns and very long face, own small purple eyes, big head short body.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r15/group-026-original.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r15/portrait-026.png",
+          "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/fdicon-017-hd1-portrait-q-v1-master.png"
+        ],
+        "source": "exec-41593e98-de2c-454c-9891-9082d8c98f49.png",
+        "selected": true,
+        "reason": "依各自原版面容、持物與十二姿態選用",
+        "source_sha256": "30d4c5c3c928f47e2e81b4ee9822285e931e14283a4325e9c96f05c2eba2bd3c",
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r15/group-026-original.png",
+            "sha256": "f855b3f1346dda55d87a3d8615c9308b6d086958b1d8fe59be23777a874beba2"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r15/portrait-026.png",
+            "sha256": "58790a4fa462f5d117580f541c2235e01d9b9678ae0d8e3dd69940b05dc61247"
+          },
+          {
+            "file": "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/fdicon-017-hd1-portrait-q-v1-master.png",
+            "sha256": "14cb84df6e0832806231f456dc3bc1e40837cd68e34f7a8b8bf30b8bccbbe4f5"
+          }
+        ]
+      },
+      {
+        "group": 27,
+        "prompt": "Use case: identity-preserve. Asset type: HD1 tactical map sprite MASTER for Flame Dragon Knights2. Image1 ORIGINAL twelve map poses is the authority for silhouette, gear, outfit colors, four directions and occlusion. Image2 THIS character's original portrait is authority for own face. Image3 ONLY approved HD1 style/proportion reference: never copy its face, equipment, hair or expression. Huge head AND visible readable face about67-70% total height, extremely short compact torso and legs, stubby boots, clean dark contours, broad colors, restrained smooth painted/cel2D shading, readable144/72/48px. No long realistic legs or generic round-eyed baby face. Exactly3columns x4rows, twelve isolated fullbody figures. Rows FRONT facing viewer, LEFT true profile screenleft, BACK away, RIGHT true profile screenright. Every row column1 neutral both feet planted, column2 small grounded left step, column3 small grounded right step. FIRST column neutral. Same scale/foot baseline, generous clear alpha gaps/margins, no clipping. Exactly two hands and two feet, natural wrists. Actual transparent alpha; no background/checkerboard, floor/shadow/glow, text/labels, grid/border. Preserve held side, occlusion, clothing and own original identity; no invented gear. Group027 巴拿羅西亞 BANAROSIA. Original OLIVEGREEN upright dragon man. Own original face broader heavy snout than26, pronounced angular cheek plates/scales, strong swept crown horns and rear spikes, YELLOWGREEN eyes with thin vertical slit in deep black socket, pronounced upperlid, two small ivory fangs at mouthcorner, thin grim closed mouth. Broad own snout not same26 face, no baby smile. Tiny darkgray-green armor and short boots, darkblue/plum waist. Exactly ONE short straight SILVER/PALE BLUEGRAY upright sword and ONE broad WHITE shield with darkgray vertical center slot/T shape only as original. White shield almostrectangular with rounded/cut lowercorners, not round gray shield from style17. FRONT sword viewerLEFT shield viewerRIGHT. LEFT profile shield near side before torso center, far sword hidden. BACK shield outerface hidden/olive rear surface viewerLEFT, upright sword viewerRIGHT. RIGHT profile near sword upright in front chest but below/backfrom long snout, far white shield hidden. No wings/tail, cape, gold sword, decorative cross or new emblems. Head huge67-70%, short tiny body, preserve olivegreen and own eyes/fangs.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r15/group-027-original.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r15/portrait-027.png",
+          "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/fdicon-017-hd1-portrait-q-v1-master.png"
+        ],
+        "source": "exec-e525400e-033b-443c-bd7b-7c1c50a3c494.png",
+        "selected": true,
+        "reason": "依各自原版面容、持物與十二姿態選用",
+        "source_sha256": "c5d8a5e23546af239c74af16c39a1c393248891817fec16df5f408b6889ca203",
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r15/group-027-original.png",
+            "sha256": "2ca74acb4a2dc7ea5cbd38cdddbba430ab738ff610687527b280661ca0e033f1"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r15/portrait-027.png",
+            "sha256": "3f8e82a0dc3812d91dfb7b5b31257a5a77d36f29dada7abf5f2c4b361b8f0e08"
+          },
+          {
+            "file": "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/fdicon-017-hd1-portrait-q-v1-master.png",
+            "sha256": "14cb84df6e0832806231f456dc3bc1e40837cd68e34f7a8b8bf30b8bccbbe4f5"
+          }
+        ]
+      },
+      {
+        "group": 28,
+        "prompt": "Use case: identity-preserve. Asset type: HD1 tactical map sprite MASTER for Flame Dragon Knights2. Image1 ORIGINAL twelve map poses is the authority for silhouette, gear, outfit colors, four directions and occlusion. Image2 THIS character's original portrait is authority for own face. Image3 ONLY approved HD1 style/proportion reference: never copy its face, equipment, hair or expression. Huge head AND visible readable face about67-70% total height, extremely short compact torso and legs, stubby boots, clean dark contours, broad colors, restrained smooth painted/cel2D shading, readable144/72/48px. No long realistic legs or generic round-eyed baby face. Exactly3columns x4rows, twelve isolated fullbody figures. Rows FRONT facing viewer, LEFT true profile screenleft, BACK away, RIGHT true profile screenright. Every row column1 neutral both feet planted, column2 small grounded left step, column3 small grounded right step. FIRST column neutral. Same scale/foot baseline, generous clear alpha gaps/margins, no clipping. Exactly two hands and two feet, natural wrists. Actual transparent alpha; no background/checkerboard, floor/shadow/glow, text/labels, grid/border. Preserve held side, occlusion, clothing and own original identity; no invented gear. Group028 達克賽 DARKSAI. Own original exposed DEEP BLUE nonhuman humanoid face, NO helmet/hair/hood/mask, long pointed side EARS, large angular bald cranium with strong swept forehead ridges, narrow BLUE/VIOLET highlighted eyes under deep black brows, strong rounded hooked NOSE, sculpted cheekbones, defined chin and thin CLOSED mouth with slightly upturned asymmetric smirk from ownportrait. Keep subtle confident severe expression, not same stern elf29 face. Native map BLUE broad shoulders/short arms and blue chest, graygreen wrist bands and broad graygreen belt/waist guard, tiny navy boots, red/dark red mouth accent restrained. Both hands EMPTY at sides. No sword, shield, staff, wand, horns, wings, tail, metal helmet, human flesh, new ornament or facialhair. Back bald darkblue head, native graygreen belt rear. Huge exposed own face and tiny stocky body. Image3 human ONLY paint/proportion, NEVER copy its hair/stubble/skin/clothes.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r15/group-028-original.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r15/portrait-028.png",
+          "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/fdicon-022-hd1-portrait-q-v1-master.png"
+        ],
+        "source": "exec-696cbfd8-681a-4154-8a63-523eb2ecb3ea.png",
+        "selected": true,
+        "reason": "依各自原版面容、持物與十二姿態選用",
+        "source_sha256": "28d0a7f40c2cceed952b85469b0d86b43fa5431edd934beb3540791951fdc1b5",
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r15/group-028-original.png",
+            "sha256": "81a5a44705575b3b527fd111d9d1cd51abcdc188dfa442e4fabd79c06eef81af"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r15/portrait-028.png",
+            "sha256": "d1090be65e8c5a1bd6a0cea491f1523c1ecbbf5abb6389e3af468463b3873fb9"
+          },
+          {
+            "file": "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/fdicon-022-hd1-portrait-q-v1-master.png",
+            "sha256": "15b2bffe12e49c5e5b34bb9551a2fc93c3655d8d6b331a5addd3d0dbd1f6096b"
+          }
+        ]
+      },
+      {
+        "group": 29,
+        "prompt": "Use case: identity-preserve. Asset type: HD1 tactical map sprite MASTER for Flame Dragon Knights2. Image1 ORIGINAL twelve map poses is the authority for silhouette, gear, outfit colors, four directions and occlusion. Image2 THIS character's original portrait is authority for own face. Image3 ONLY approved HD1 style/proportion reference: never copy its face, equipment, hair or expression. Huge head AND visible readable face about67-70% total height, extremely short compact torso and legs, stubby boots, clean dark contours, broad colors, restrained smooth painted/cel2D shading, readable144/72/48px. No long realistic legs or generic round-eyed baby face. Exactly3columns x4rows, twelve isolated fullbody figures. Rows FRONT facing viewer, LEFT true profile screenleft, BACK away, RIGHT true profile screenright. Every row column1 neutral both feet planted, column2 small grounded left step, column3 small grounded right step. FIRST column neutral. Same scale/foot baseline, generous clear alpha gaps/margins, no clipping. Exactly two hands and two feet, natural wrists. Actual transparent alpha; no background/checkerboard, floor/shadow/glow, text/labels, grid/border. Preserve held side, occlusion, clothing and own original identity; no invented gear. Group029 亞奇梅吉 ARCHIMAGE. Own original SLATE BLUEGRAY bald elderly nonhuman/elf man, VERY HIGH smooth rounded dome head, long pointed EARS, sharp angled temple plane, long thin angular NOSE, severe deeply inset BLUE/VIOLET narrow eyes under thin arched slant brows, sunken cheeks, high cheekbones and downturned thin closed lips, elongated narrow chin. Entire face bluegray, no human fleshcolor. Own stern aged face, NO hair, beard or moustache, no helmet/crown, no horns. Original tiny deep ROYAL BLUE/PURPLE long robe, wide muted GRAYGREEN raised collar folded into broad pointed back triangular cloth area and darkblack center front. Collar is cloth not hair/hood onhead, mutedgraygreen NOT golden. Tiny blue sleeves/hands empty lowered and tiny dark boots. No staff, orb, sword, shield, book, invented accessory. Extremely large smooth bald head and own stern narrow face, very short body. Image3 only paint/proportion, NEVER its human skin, brown sidehair/moustache/redrobe/goldcollar.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r15/group-029-original.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r15/portrait-029.png",
+          "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/fdicon-024-hd1-portrait-q-v1-master.png"
+        ],
+        "source": "exec-e04d1113-79d7-4d32-976a-4f145dceaf2d.png",
+        "selected": true,
+        "reason": "依各自原版面容、持物與十二姿態選用",
+        "source_sha256": "4aaf0f171e4cb125ad11cec2c08dfe5d77fc05f02f97ad1befd1b0973bbe4bf1",
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r15/group-029-original.png",
+            "sha256": "3321341c358683df1f277db0d410bd4f3ab8f8f9dc10e4837df9f53002bd2910"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r15/portrait-029.png",
+            "sha256": "50e608da1a55abd61c2c3597ebac12fa6c28722d532ab5e30ce946d061c7b5f3"
+          },
+          {
+            "file": "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/fdicon-024-hd1-portrait-q-v1-master.png",
+            "sha256": "edd50ed49ee39a8a0a89149b0415443af0cc08d79d4bf62415e211dbfa0c7136"
+          }
+        ]
+      }
+    ]
+  },
+  "gpu_pairs": {
+    "blue-and-green-dragons": [
+      26,
+      27
+    ],
+    "blue-and-robed": [
+      28,
+      29
+    ]
+  },
+  "policy": "四向各三拍首欄中性；26藍灰龍人、金黃直劍及窄藍灰盾，27橄欖綠龍人、銀直劍與白盾；28深藍裸面尖耳、空手與灰綠腰帶，29藍灰高額尖耳、藍紫袍與灰綠大領及空手。持側、遮蔽與相位沿原生，面容及眼神依各自DATO，不套共用臉，不沿職業補武器。無身份或selector投影，正式規則與保存保持。",
+  "original_reference": {
+    "source": "原生FDICON三層與FDOTHER0代表色盤；各自party明示identity／fig／portrait綁DATO；原版頭像最近鄰400方圖只是繪圖輸入排版",
+    "groups": [
+      26,
+      27,
+      28,
+      29
+    ],
+    "records_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r15/native-reference.json",
+    "records_sha256": "f788b1966ce9ea07275711213107c7998b160b3e98a0721872edbc65e46ccdc6",
+    "reference_boards": [
+      {
+        "file": "group-026-original.png",
+        "sha256": "f855b3f1346dda55d87a3d8615c9308b6d086958b1d8fe59be23777a874beba2"
+      },
+      {
+        "file": "group-027-original.png",
+        "sha256": "2ca74acb4a2dc7ea5cbd38cdddbba430ab738ff610687527b280661ca0e033f1"
+      },
+      {
+        "file": "group-028-original.png",
+        "sha256": "81a5a44705575b3b527fd111d9d1cd51abcdc188dfa442e4fabd79c06eef81af"
+      },
+      {
+        "file": "group-029-original.png",
+        "sha256": "3321341c358683df1f277db0d410bd4f3ab8f8f9dc10e4837df9f53002bd2910"
+      }
+    ]
+  }
+}

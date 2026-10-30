@@ -77,6 +77,14 @@
 
 希爾法保留高額禿頂、紅褐側髮、尖耳、綠窄眼及細鬚，紅袍與金黃大領沿原生；謝多保留深藍獸形、灰綠窄眼、微揚嘴角與小獠牙，短劍保持在腰際橫持。可看[四向與實際尺寸](docs/figures/hd1-bald-and-beast-comparison.png)、[希爾法](docs/figures/hd1-hilfa-refresh-game.png)與[謝多](docs/figures/hd1-shedo-refresh-game.png)的完整受控戰場圖。面容圖比較原版頭像與實際地圖素材，非對話HD頭像驗收；地圖與資訊窗共用新版圖源。戰場圖使用各自原生名冊的受控測具，沒有身份或圖組投影，不代表自然加入流程。其餘人物續作，完整總覽仍待全部重繪後更新。
 
+![聖寇拉斯與巴拿羅西亞的原版及HD1面容對照](docs/figures/hd1-blue-and-green-dragons-faces.png)
+
+聖寇拉斯保留藍灰長吻、冠角與藍紫窄眼，使用金黃直劍與窄藍灰盾；巴拿羅西亞保留橄欖綠寬吻、黃綠細瞳與較重頰板，使用銀劍與白盾。持側及遮蔽依原生。可看[四向與144／72／48尺寸](docs/figures/hd1-blue-and-green-dragons-comparison.png)、[聖寇拉斯](docs/figures/hd1-sancolas-refresh-game.png)及[巴拿羅西亞](docs/figures/hd1-banarosia-refresh-game.png)的完整受控戰場圖。
+
+![達克賽與亞奇梅吉的原版及HD1面容對照](docs/figures/hd1-blue-and-robed-faces.png)
+
+達克賽保留深藍裸面、尖耳、厚重額面、鉤鼻與微揚薄唇；亞奇梅吉保留藍灰高額禿頂、深陷窄眼、長鼻與瘦長下巴。兩人皆按原生空手，灰綠腰帶與藍紫袍大領分別保持；達克賽眼色依自己的原版大頭像採藍紫。可看[四向與實際尺寸](docs/figures/hd1-blue-and-robed-comparison.png)、[達克賽](docs/figures/hd1-darksai-refresh-game.png)及[亞奇梅吉](docs/figures/hd1-archimage-refresh-game.png)的完整受控戰場圖。面容圖比較原版頭像與實際地圖素材，非對話HD頭像驗收；地圖及資訊窗共用新版圖源。戰場圖使用各自原生名冊的受控測具，沒有身份或圖組投影，不代表自然加入流程。其餘人物續作，完整總覽仍待全部重繪後更新。
+
 ![哈諾與貝克威依各自原版頭像重繪的HD1面容](docs/figures/hd1-native-face-reference.png)
 
 哈諾的長鼻、細眼與抿嘴，以及貝克威的平眉、半闔眼與微揚嘴角，分別參考自己的原版大頭像。上圖比較原版頭像與實際144／72／48像素地圖素材，並非遊戲截圖或對話HD頭像驗收；[四向原版／HD1局部對照](docs/figures/hd1-native-faces-comparison.png)另列兩人的裝備與方向。[哈諾](docs/figures/hd1-hano-face-game.png)與[貝克威](docs/figures/hd1-bekwei-face-game.png)的完整受控戰場畫面，可查看地圖與資訊窗接線；測試用圖組投影不代表升階或自然出場驗收。其他角色的面容仍逐人複核，完整人物總覽待全部重繪後更新。
