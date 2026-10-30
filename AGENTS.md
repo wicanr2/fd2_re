@@ -31,6 +31,7 @@
 
 ## 已確認的HD收尾與規則擴充方向
 
+- 使用者2026-10-30定版：蓋亞地圖小人物沿用前次對照標為PREVIOUS、已登錄的`gaia-hd1-big-head-q-v1-master.png`，即[目前原版／HD1對照](docs/figures/hd1-gaia-q-comparison.png)的HD1列。兩份加重候選不採用，不再以胸肩拳腳加厚作停止線；大型戰鬥與頭像不變。來源與接線依[61](docs/knowledge-base/61-modern-theme-runtime-spec.md)「HD1大頭Q版地圖人物修訂」，其餘人物繼續依原版身份及已定Q版畫風複核。
 - 使用者2026-10-29定版：HD1對話框採[古金色雙層框線原型](docs/figures/hd1-gold-dialogue-prototype.png)下半部。保留原版框位、深藍底、文字區及開收動畫，補接故事對話與既有提示視窗；介面隨F11，頭像仍隨美術F2。原型原圖不可改色或改構圖，實作與目前接線範圍依[61](docs/knowledge-base/61-modern-theme-runtime-spec.md)「HD1古金色對話框」。
 - 使用者2026-10-29修訂：哈瓦特的小人物要老成、有威嚴、大鬍子。保留紅褐髮鬚、原版裝備及大頭短身比例；成熟眼神與厚重鬍鬚作後續同角色造型基準，不能再畫成少年臉配鬍子。配方與驗證依[61](docs/knowledge-base/61-modern-theme-runtime-spec.md)「哈瓦特成熟造型修訂」。
 - 使用者2026-10-29定案：HD1戰場小人物依原版造型重繪為更大頭、短身Q版；索爾與悠妮作參考，亞雷斯v3的[定版對照](docs/figures/hd1-ares-q-design.png)作後續比例基準。沿同樣的原版核對、版本化編製、實際尺寸展示及接線驗證流程前進，不逐張重問已定比例。全部HD1人物完成後，以正式清冊最新圖源重生「原版／HD1」人物總覽並更新README，保留可辨識分組與144／72／48像素對照。角色身份、方向或來源有新疑義時先查證，不自行補裝備；契約依[61](docs/knowledge-base/61-modern-theme-runtime-spec.md)「HD1大頭Q版地圖人物修訂」及[#286](https://github.com/wicanr2/fd2_re/issues/286)。

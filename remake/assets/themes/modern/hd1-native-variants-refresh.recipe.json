@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_hd1_chibi_map_refresh",
+  "base_catalog_sha256": "d5c8024164c20910a7f4676b4333a211cfd2935774c40bdf33332676b17133ea",
+  "approved_preview": "docs/figures/hd1-ares-q-design.png",
+  "approved_preview_sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e",
+  "approval": "沿使用者已定亞雷斯大頭短身比例、成熟哈瓦特面容與其餘人物依同風格review授權；只修原版身份與裝備偏移，不變更玩法。",
+  "native_bank_sha256": "7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44",
+  "palette_sha256": "404db1ca72ffc19fa7404fbc59bde98cdf239f63fe3375ec248a8142073a28bf",
+  "groups": [
+    {
+      "group": 53,
+      "master_file": "harvat-g053-hd1-native-q-v1-master.png",
+      "master_sha256": "f430ac104eaa1595f99aa014965d2d21e5f82ba769aed5ac14964f47d864c4a4",
+      "output_prefix": "fdicon-053-hd1-native-q-v1"
+    },
+    {
+      "group": 54,
+      "master_file": "ares-g054-hd1-native-q-v1-master.png",
+      "master_sha256": "99a23756f94ffd8f4575a2092d42163b7f6b99ad11c88d96cdfa4ed0764f8aab",
+      "output_prefix": "fdicon-054-hd1-native-q-v1"
+    }
+  ],
+  "policy": "第53／54組各十二格前、左、後、右各三拍，第一欄中性。第53組成熟紅褐髮鬚、右手斧及左臂T記號盾，第54組可見人臉、藍軍帽、右手直劍及左臂鋼藍盾。左向遠側武器依原版遮蔽，不新增肢體或裝備；不改規則、存檔或原版模式。",
+  "image_generation": {
+    "tool": "image_gen.imagegen",
+    "mode": "builtin",
+    "transparent_background": true,
+    "jobs": [
+      {
+        "group": 53,
+        "master_file": "harvat-g053-hd1-native-q-v1-master.png",
+        "master_sha256": "f430ac104eaa1595f99aa014965d2d21e5f82ba769aed5ac14964f47d864c4a4",
+        "output_prefix": "fdicon-053-hd1-native-q-v1",
+        "source": "exec-9f18cd67-d3e0-4f14-b75a-b6774b3300be.png",
+        "prompt": "Use case: identity-preserve. Asset type: HD1 tactical-map sprite master for Flame Dragon Knights 2, ORIGINAL FDICON group053, Harvat with original axe AND shield. Image1 is the original game's exact twelve small poses using the game's actual palette: authority for all gear, garment colors, view placement and weapon hand. Image2 is USER-APPROVED mature Harvat HD1 artwork: authority for the recognizable adult character, older weathered face, forehead/eye wrinkles, thick stern brows, heavy broad nose, restrained stern eyes, enormous rust-auburn full beard/mustache and swept long auburn hair. Preserve image2's mature commanding presence and very big-head/extremely-short-body Q proportions and clean dark outlines/smooth cel-painted art. Do NOT replace him with a beardless boy, teenager wearing a beard sticker, robot or helmeted anonymous knight.\nExactly THREE COLUMNS by FOUR ROWS, twelve complete isolated figures, genuine transparent alpha. Row1 FRONT, row2 LEFT PROFILE facing screen left, row3 BACK, row4 RIGHT PROFILE facing screen right. Every row first column NEUTRAL boots planted, second column small left-foot-forward step, third column small right-foot-forward step. Equal overall scale and foot baseline, generous clear margins between all cells, all axe heads, shields, hair and boots inside each cell. Very large head including beard about 67-70% figure height, tiny sturdy gray-green armored torso, stubby navy-blue legs and broad dark gray-green boots. Preserve mature readable face rather than making just the hair bigger. Full heads and clear simplified metal gear at 144/72/48 pixels.\nCRITICAL ORIGINAL GROUP053 EQUIPMENT: one gray-green/silver single-bladed AXE in anatomical RIGHT HAND, and one broad gray-green rectangular/trapezoid SHIELD with the original simple dark T/crossbar-like mark, held in anatomical LEFT ARM. NEVER a sword. Not a round wooden shield or ornate gold heraldry. FRONT row: axe at viewer LEFT by cheek, shield viewer RIGHT. BACK row: axe at viewer RIGHT, shield viewer LEFT, back of auburn hair with no face. LEFT-facing profile: large shield is the near-side prominent object in front/below face toward viewer LEFT, the far-side axe is hidden behind head and body in original image1; DO NOT add a visible axe blade protruding in front of face or through shield on this left-facing row. RIGHT-facing profile: original axe appears on viewer LEFT near the rear edge of cheek/hair, held upright on right hand; shield is far-side and mostly occluded by the beard/body, do not draw a second free fist as a third arm. Exactly two arms/two hands, two legs, anatomically natural wrists. Keep the same anatomical hands all directions. Image2 has different equipment/hand placement: do NOT copy that; Image1 controls sword absence, axe and shield placement. Original gray-green compact plate armor and navy legs, no new red cape (image2's red fabric is NOT used in group053), no new accessory.\nClean 2D HD strategy RPG Q art, broad readable shapes, crisp restrained highlights, no photographic 3D render, no pixel upscale, fine distressed texture or shiny toy look. No younger boy face, human bare chin, headband, helmet, horns, extra weapon, new cape, gold border, round plank shield, third arm, floating axe, disconnected weapon or duplicated hand. No text, labels, numbers, cell borders, floor, shadows, glow, background, or checkerboard. Actual transparency.",
+        "size": [
+          1103,
+          1426
+        ]
+      },
+      {
+        "group": 54,
+        "master_file": "ares-g054-hd1-native-q-v1-master.png",
+        "master_sha256": "99a23756f94ffd8f4575a2092d42163b7f6b99ad11c88d96cdfa4ed0764f8aab",
+        "output_prefix": "fdicon-054-hd1-native-q-v1",
+        "source": "exec-3a8ad2b9-0ac8-413c-ae30-fa58b96ad674.png",
+        "prompt": "Use case: identity-preserve. Asset type: HD1 tactical-map sprite master, Flame Dragon Knights 2, original FDICON group054, Ares alternate/promoted equipment. Image1 is the ORIGINAL game's exact twelve poses enlarged with its actual palette; it alone defines equipment, colors, directions and weapon hand. Image2 is the USER-APPROVED Ares group004 Q style; retain exactly that young human identity, enormous head AND face, blue flat military cap with dark green band, short blue hair, stern blue eyes, extremely short body, clean dark contour and restrained smooth painted cel shading. The existing group054 falsely became a faceless robot: restore the HUMAN Ares, do not draw any robot visor, sealed helmet or mechanical face.\nDraw a genuinely transparent sheet of exactly 3 columns by 4 rows. Row1 FRONT, row2 LEFT profile facing screen left, row3 BACK, row4 RIGHT profile facing screen right. In EVERY row column1 NEUTRAL standing with both boots planted, column2 small left foot forward, column3 small right foot forward. Two arms and two legs total, natural joints. Equal scale and foot baseline, complete silhouettes including swords/shields with generous transparent margins, no overlaps/cropping. Head including face/cap about 67-70% of figure height, body extremely compact and legs stubby like image2. Clearly different little walk steps but same cardinal directions. At 144/72/48 pixels the face, cap and separate shield shape must remain legible.\nCRITICAL EQUIPMENT CHANGE FROM STYLE REFERENCE: faithfully add the ORIGINAL group054 broad steel-blue/gray shield held on anatomical LEFT arm, not just the style-reference's bare left fist. Keep the one straight upright silver sword in anatomical RIGHT hand and preserve its original view placement. FRONT: sword on viewer LEFT, shield on viewer RIGHT beside body. BACK: sword viewer RIGHT, shield viewer LEFT, show back of head with NO face. LEFT-facing profile: the far-side sword is occluded by head/body, no blade in front of the face; near-side shield is visible toward the back/right of this profile as in original row2. RIGHT-facing profile: sword is visible just to the LEFT of face, shield belongs to the far-side arm behind the body, do not switch anatomical hands or invent extra equipment. Gray-green compact armored shoulders/torso, dark navy clothes and pants, blue scarf/cape/back drape and steel boots as original. The shield is the plain broad steel-blue/gray shape in image1, no wooden planks, red/gold emblem, giant cross, extra spikes or ornate crest. Do not copy image2's lack of shield or its left-profile visible sword; image1 controls both.\nUse clean broad separated color areas with minimal small seams. No 3D render, photo, pixel enlargement, child baby expression, floating sword, third hand, duplicate sword/shield, new cape color, added bag, feather, antenna, gold jewelry. No text, labels, numbers, grid, frame, ground, cast shadow, glow or checkerboard. Actual alpha background.",
+        "size": [
+          1086,
+          1448
+        ]
+      }
+    ]
+  },
+  "original_reference": {
+    "source": "FDICON.B24固定分離圖庫三層與FDOTHER0代表色盤",
+    "groups": [
+      53,
+      54
+    ],
+    "records_sha256": "fdca65b0bfb51be970473face6f76cdcfac6d9111e0e6f4bafd172eecca6c815",
+    "reference_boards": [
+      {
+        "file": "group-053-original-reference.png",
+        "sha256": "8b052d6de12412ad81dc27556638a1eecff5980d316fc0c516f3520e1d7aa521"
+      },
+      {
+        "file": "group-054-original-reference.png",
+        "sha256": "7c3df1da646ba5895728554e016e6520ffad3ffe493ff8ce2dc4de6a843af09a"
+      }
+    ],
+    "scope": "第53與54組的原生十二姿態是裝備、方向及配色依據；角色視覺沿已定Harvat3與Ares4，不以此宣稱升階規則或能力值。"
+  }
+}

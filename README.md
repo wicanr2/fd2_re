@@ -31,9 +31,11 @@
 
 哈諾、鐵諾與哈瓦特也已接入新版大頭Q版圖源。鐵諾已依原版灰綠布兜帽修正，並保留原版左向被身體遮蔽的直劍；[完整受控戰場與資訊窗](docs/figures/hd1-tino-hood-game.png)可查看這次接線。哈瓦特已再修為成熟五官、收斂眼神與寬厚大鬍子，保留紅褐髮鬚；[完整受控戰場圖](docs/figures/hd1-harvat-mature-game.png)可查看地圖與資訊窗呈現。上圖是已登錄素材的四向及144／72／48像素對照，依序為三人，並非遊戲截圖。地圖與資訊窗已做受控繪圖核對，普通首章另驗完整候選載入與既有角色的切換／保存相容性；三人自然出場與造型由使用者人工確認。全部人物重繪完成後，會再更新完整「原版／HD1」人物總覽。
 
+亞雷斯與哈瓦特的轉職形態也已修回原版裝備：亞雷斯保留人臉、藍軍帽與劍盾，哈瓦特保留成熟大鬍子、斧頭與方盾。可看[原版／HD1局部對照](docs/figures/hd1-native-variants-comparison.png)、[亞雷斯](docs/figures/hd1-ares-variant-game.png)及[哈瓦特](docs/figures/hd1-harvat-variant-game.png)的完整受控戰場與資訊窗。這些畫面以測試用圖組投影核對接線，不代表已驗升階流程或能力值。
+
 ![蓋亞原版與新版HD1四向及尺寸對照](docs/figures/hd1-gaia-q-comparison.png)
 
-上圖與[完整受控戰場及資訊窗](docs/figures/hd1-gaia-q-game.png)、[普通首章遊玩畫面](docs/figures/hd1-gaia-q-normal.png)保留前批蓋亞。十二姿態、主題切換與保存冷讀已抽驗，但體格尚未符合要求，正在加厚胸肩與拳腳、降低重心。新稿確認及接線驗證後再替換這組展示。全部125組已做第一輪造型審查，身份與裝備偏移由[#287](https://github.com/wicanr2/fd2_re/issues/287)修正，其他比例由[#286](https://github.com/wicanr2/fd2_re/issues/286)續作；全部完成後才更新完整「原版／HD1」人物總覽。
+蓋亞採用上圖的先前HD1版本定案，保留灰綠硬甲、藍色面罩與大頭短身。兩份加重候選不採用。[完整受控戰場及資訊窗](docs/figures/hd1-gaia-q-game.png)、[普通首章遊玩畫面](docs/figures/hd1-gaia-q-normal.png)均使用這版；十二姿態、主題切換與保存冷讀已抽驗。全部125組已做第一輪造型審查，身份與裝備偏移由[#287](https://github.com/wicanr2/fd2_re/issues/287)修正，其他比例由[#286](https://github.com/wicanr2/fd2_re/issues/286)續作；全部完成後才更新完整「原版／HD1」人物總覽。
 
 ![系統確認的四組原版與HD介面／美術](docs/figures/hd1-system-confirmations.png)
 

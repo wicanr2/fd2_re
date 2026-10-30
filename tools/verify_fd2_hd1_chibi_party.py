@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""核對三組人物的受控繪圖與普通交易相容，再登錄同一候選。"""
+"""核對固定人物矩陣的受控繪圖與普通交易相容，再登錄同一候選。"""
 import argparse
 from collections import Counter
 from copy import deepcopy
@@ -13,21 +13,26 @@ from verify_fd2_hd1_chibi_refresh import ROOT,sha,read,require,tree,rect,core
 
 RECIPE=ROOT/'remake/assets/themes/modern/hd1-party-chibi-refresh.recipe.json'
 GROUPS=(1,2,3)
+PROFILES={'party':GROUPS,'variants':(53,54)}
 FRAMES=(0,1,2,3,6,9)
 
-def verify_gpu(d,folder,candidate,recipe=RECIPE):
+def verify_gpu(d,folder,candidate,recipe=RECIPE,profile='party'):
+    groups=PROFILES[profile]
     m=read(candidate/'manifest.json');r=read(recipe)
     require(d.get('status')=='PASS-HD1-CHIBI-PARTY-GPU','GPU status')
+    require(d.get('profile','party')==profile,'GPU profile changed')
+    if profile=='variants':require(d.get('selector_projection_injected') is True,'selector injection disclosure missing')
     require(d.get('catalog_sha256')==sha(candidate/'catalog.json') and d.get('manifest_sha256')==sha(candidate/'manifest.json'),'candidate provenance')
     require(m['recipe_sha256']==sha(recipe) and m['compiler_sha256']==sha(ROOT/'tools/refresh_fd2_hd1_map_sprites.py'),'recipe/compiler changed')
     require(sha(ROOT/r['approved_preview'])==r['approved_preview_sha256'],'approved proportion changed')
     selected=[g['group'] for g in r['groups']]
-    require(bool(selected) and len(set(selected))==len(selected) and set(selected)<=set(GROUPS),'recipe groups')
+    require(bool(selected) and len(set(selected))==len(selected) and set(selected)<=set(groups),'recipe groups')
+    if profile=='variants':require(selected==list(groups),'fixed variant recipe required')
     require([g['group'] for g in m['groups']]==selected,'group manifest')
     catalog=read(candidate/'catalog.json')
     parents={a['source_group']:a for a in catalog['assets'] if a['role']=='map_sprite_set'}
     hd={a['source_group']:a for a in catalog['assets'] if a['role']=='map_sprite_hd_set'}
-    records={g:dict(parent=parents[g],hd=hd[g]) for g in GROUPS}
+    records={g:dict(parent=parents[g],hd=hd[g]) for g in groups}
     for row,recipe in zip(m['groups'],r['groups']):
         require(row['master_sha256']==recipe['master_sha256']==sha(candidate/row['master_file']),'master changed')
         for role in ('parent','hd'):
@@ -37,14 +42,15 @@ def verify_gpu(d,folder,candidate,recipe=RECIPE):
     code,count=tree()
     require(d.get('source_tree_sha256')==code and d.get('source_file_count')==count,'Go source changed')
     require(d.get('native_state_unchanged') is True and d.get('save_bytes_unchanged') is True,'state/save missing')
-    expected={f'party-g{g:03d}-f{f:02d}-ui-hd' for g in GROUPS for f in FRAMES}|{f'party-g{g:03d}-f00-ui-original' for g in GROUPS}
+    expected={f'party-g{g:03d}-f{f:02d}-ui-hd' for g in groups for f in FRAMES}|{f'party-g{g:03d}-f00-ui-original' for g in groups}
     cases=d.get('cases',[]);sources=d.get('sources',[])
-    require(Counter(x['case'] for x in cases)==Counter(expected) and Counter(x['case'] for x in sources)==Counter(expected),'21-case matrix')
-    require({x['case'] for x in cases if x.get('f2')}=={f'party-g{g:03d}-f00-ui-hd' for g in GROUPS},'F2 anchors')
+    require(Counter(x['case'] for x in cases)==Counter(expected) and Counter(x['case'] for x in sources)==Counter(expected),'complete fixed-profile matrix')
+    require({x['case'] for x in cases if x.get('f2')}=={f'party-g{g:03d}-f00-ui-hd' for g in groups},'F2 anchors')
     lookup={x['case']:x for x in sources};pixels=pngs=0
     for case in cases:
         s=lookup[case['case']];g,f=s['group'],s['frame']
-        require(g in GROUPS and s['hud_group']==g and s['hud_frame']==f%3 and s['save_bytes']>0,'map/HUD provenance')
+        require(g in groups and s['hud_group']==g and s['hud_frame']==f%3 and s['save_bytes']>0,'map/HUD provenance')
+        if profile=='variants':require(s.get('native_identity')==g-50 and s.get('selector_key')==g,'visual selector projection changed')
         require(case['source_frame']==f and case.get('game_draw') is True and case.get('rgba_tolerance')==2,'Game.Draw scope')
         if s['interface']!='hd':continue
         name=case['case']+'.png'
@@ -59,10 +65,10 @@ def verify_gpu(d,folder,candidate,recipe=RECIPE):
             require(checked>=600 and matched*100>=checked*98,'actual map/HUD pixels mismatch')
             pixels+=checked
         pngs+=1
-    require(pngs==18,'eighteen complete PNGs')
-    return dict(status='PASS-PARTY-GPU-INDEPENDENT',cases=21,pngs=pngs,near_opaque_head_pixels=pixels,source_tree_sha256=code,source_file_count=count)
+    require(pngs==6*len(groups),'complete profile PNGs')
+    return dict(status='PASS-PARTY-GPU-INDEPENDENT',profile=profile,cases=7*len(groups),pngs=pngs,near_opaque_head_pixels=pixels,source_tree_sha256=code,source_file_count=count)
 
-def verify_normal(d,folder,candidate,binary):
+def verify_normal(d,folder,candidate,binary,profile='party'):
     # The unchanged ordinary first-chapter source has no groups1/2/3. This
     # checks full candidate admission and real input/save compatibility only.
     require(d.get('status')=='PASS' and d.get('schema')=='fd2-hd1-chibi-normal-gui-v1','normal status')
@@ -77,15 +83,17 @@ def verify_normal(d,folder,candidate,binary):
     require(len(d['screenshots'])==10,'normal screenshots')
     visible={u.get('native_identity') for u in d['initial']['units'] if u.get('camp')==0 and u.get('on_field')}
     require(not visible.intersection(GROUPS),'source scope changed')
-    return dict(status='PASS-FULL-CANDIDATE-NORMAL-TRANSACTION',pngs=10,scope='unchanged chapter1 source; new groups1/2/3 actual pixels verified only by controlled GPU, not natural membership')
+    scope='unchanged chapter1 source; new groups1/2/3 actual pixels verified only by controlled GPU, not natural membership'
+    if profile=='variants':scope='unchanged chapter1 source with base selectors0/4/9/30; groups53/54 actual pixels verified only by controlled raw-selector projections, not promotion or natural membership'
+    return dict(status='PASS-FULL-CANDIDATE-NORMAL-TRANSACTION',pngs=10,scope=scope)
 
-def register(formal,candidate,destination,recipe=RECIPE):
+def register(formal,candidate,destination,recipe=RECIPE,profile='party'):
     old=read(formal);new=read(candidate/'catalog.json');m=read(candidate/'manifest.json')
     require(sha(formal)==m['base_catalog_sha256'],'formal changed')
     require(len(old['assets'])==len(new['assets'])==883,'asset count changed')
     changed=[(a,b) for a,b in zip(old['assets'],new['assets']) if a!=b]
     groups=[g['group'] for g in read(recipe)['groups']]
-    require(bool(groups) and len(set(groups))==len(groups) and set(groups)<=set(GROUPS),'registration groups')
+    require(bool(groups) and len(set(groups))==len(groups) and set(groups)<=set(PROFILES[profile]),'registration groups')
     require(len(changed)==2*len(groups) and Counter((a['source_group'],a['role']) for a,b in changed)==Counter((g,role) for g in groups for role in ('map_sprite_set','map_sprite_hd_set')),'unrelated changes')
     require(all(a['asset_id']==b['asset_id'] and a['source_group']==b['source_group'] and a['role']==b['role'] for a,b in changed),'asset identity changed')
     require(formal.stat().st_uid==destination.stat().st_uid==os.getuid(),'owned output required')
@@ -109,13 +117,14 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     for n in ('gpu','candidate','normal','binary','out'):p.add_argument('--'+n,type=Path,required=True)
     for n in ('formal','destination'):p.add_argument('--'+n,type=Path)
-    p.add_argument('--recipe',type=Path,default=RECIPE,help='明示本批配方；只允許group1／2／3子集，完整21案例仍不可省略')
+    p.add_argument('--recipe',type=Path,default=RECIPE,help='明示本批配方；必須符合所選固定矩陣')
+    p.add_argument('--profile',choices=PROFILES,default='party',help='party保持21案例；variants固定53／54共14案例與明示原始selector投影')
     p.add_argument('--self-test',action='store_true');p.add_argument('--register',action='store_true');a=p.parse_args()
     require(not a.out.exists(),'fresh report required')
-    d=read(a.gpu);result=verify_gpu(d,a.gpu.parent,a.candidate,a.recipe);result['normal']=verify_normal(read(a.normal),a.normal.parent,a.candidate,a.binary)
+    d=read(a.gpu);result=verify_gpu(d,a.gpu.parent,a.candidate,a.recipe,a.profile);result['normal']=verify_normal(read(a.normal),a.normal.parent,a.candidate,a.binary,a.profile)
     rejected=[]
     if a.self_test:
-        for fault in ('missing','duplicate','catalog','source-code','false-save','wrong-hud','wrong-tolerance','missing-f2'):
+        for fault in ('missing','duplicate','catalog','source-code','false-save','wrong-hud','wrong-tolerance','missing-f2','wrong-profile','wrong-selector','undisclosed-projection'):
             x=deepcopy(d)
             if fault=='missing':x['cases'].pop()
             elif fault=='duplicate':x['cases'][-1]=deepcopy(x['cases'][0])
@@ -124,9 +133,16 @@ def main():
             elif fault=='false-save':x['save_bytes_unchanged']=False
             elif fault=='wrong-hud':x['sources'][0]['hud_group']=99
             elif fault=='wrong-tolerance':x['cases'][0]['rgba_tolerance']=3
-            else:
+            elif fault=='missing-f2':
                 for row in x['cases']:row['f2']=False
-            try:verify_gpu(x,a.gpu.parent,a.candidate,a.recipe)
+            elif fault=='wrong-profile':x['profile']='party' if a.profile=='variants' else 'variants'
+            elif fault=='wrong-selector':
+                if a.profile!='variants':continue
+                x['sources'][0]['selector_key']=99
+            else:
+                if a.profile!='variants':continue
+                x.pop('selector_projection_injected',None)
+            try:verify_gpu(x,a.gpu.parent,a.candidate,a.recipe,a.profile)
             except (ValueError,KeyError,IndexError):rejected.append(fault)
             else:raise ValueError('mutant accepted: '+fault)
         with tempfile.TemporaryDirectory(dir=a.out.parent) as t:
@@ -136,13 +152,13 @@ def main():
                 out=folder/row['file']
                 if not changed:Image.new('RGB',(1920,1200)).save(out);row['sha256']=sha(out);changed=True
                 else:out.symlink_to((a.gpu.parent/row['file']).resolve())
-            try:verify_gpu(x,folder,a.candidate,a.recipe)
+            try:verify_gpu(x,folder,a.candidate,a.recipe,a.profile)
             except ValueError as e:require('pixels mismatch' in str(e),'black PNG wrong failure');rejected.append('actual-black-png')
             else:raise ValueError('black PNG accepted')
     result['rejected_mutants']=rejected
     if a.register:
         require(a.formal is not None and a.destination is not None,'formal/destination required')
-        result['registration']=register(a.formal,a.candidate,a.destination,a.recipe)
+        result['registration']=register(a.formal,a.candidate,a.destination,a.recipe,a.profile)
     result['inputs']={k+'_sha256':sha(v) for k,v in dict(gpu=a.gpu,normal=a.normal,binary=a.binary,recipe=a.recipe,tool=Path(__file__)).items()}
     a.out.write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n');print(json.dumps(result,ensure_ascii=False))
 if __name__=='__main__':main()

@@ -3896,7 +3896,7 @@
       "date": "2026-10-23",
       "area": "驗證程序",
       "rule": "含RunGame的GPU回歸各自使用獨立Go程序，不在其後執行會NewImage的原生測試。入口為tools/verify_fd2_battle_surface_hd.py的--kind legacy-gpu與regression；Docker及重跑契約見docs/knowledge-base/61-modern-theme-runtime-spec.md的BG_004切片。",
-      "why": "合併GPU與原生回歸後，GPU本體通過，後續NewImage觸發Ebiten v2.6.6的isRunGameEnded守衛。失敗收據保留；分開兩種kind，不改遊戲或放寬斷言。",
+      "why": "合併GPU與原生回歸後，GPU本體通過，後續NewImage觸發Ebiten v2.6.6的isRunGameEnded守衛。失敗收據保留；分開兩種kind，不改遊戲或放寬斷言。 2026-10-30第53／54組GPU通過後合併CPU fixture又觸同一守衛，分開程序補驗；這類程序排序錯誤不得當產品缺陷，也不改寫原批次失敗碼。",
       "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
       "guard": {
         "kind": "present",
@@ -4695,6 +4695,22 @@
       "rule": "人物重繪先核原版正確色盤的四向及對應頭像，再核144／72／48；兜帽／頭髮、人形／機械、鬍鬚年齡、持物與盾形逐項確認。載入與GPU通過只證明圖源接線，不能提升造型忠實。審查入口為tools/review_fd2_hd1_map_sprites.py及#287。",
       "why": "全人物初審發現Tino兜帽誤銀髮、部分轉職人形誤機械化及Harvat無鬚少年；舊技術收據通過未能檢查原版身份。",
       "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#hd1_gaia_chibi_review_followup_20261029"
+    },
+    {
+      "id": "party-selector-projection-is-explicit-test-state",
+      "date": "2026-10-30",
+      "area": "HD測試槽",
+      "rule": "玩家party建構器用Fig建立地圖selector，不依敵軍JSON的map_selector_key欄位。測試其他圖組時，沿modern_hd_chibi_party_test.go的明示selector投影，同時建立key、raw byte6與cache slot；收據必須揭露selector_projection_injected，不以受控投影宣稱升階或正常玩家路徑。",
+      "why": "第53／54組首輪在party JSON加map_selector_key仍顯示基底3／4，完整Game.Draw與CPU槽核對正確拒收；修正測試狀態投影，正式程式未改。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#hd1_native_variants_followup_20261030",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_hd1_chibi_party.py",
+          "remake/cmd/fd2/modern_hd_chibi_party_test.go"
+        ],
+        "pattern": "selector_projection_injected"
+      }
     }
   ]
 }
