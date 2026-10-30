@@ -13,7 +13,8 @@ from verify_fd2_hd1_chibi_refresh import ROOT,sha,read,require,tree,rect,core
 
 RECIPE=ROOT/'remake/assets/themes/modern/hd1-party-chibi-refresh.recipe.json'
 GROUPS=(1,2,3)
-PROFILES={'party':GROUPS,'variants':(53,54),'identity-pair':(51,63),'knights':(55,56)}
+PROFILES={'party':GROUPS,'variants':(53,54),'identity-pair':(51,63),'knights':(55,56),'heroes':(50,52)}
+PROFILE_IDENTITIES={'variants':{53:3,54:4},'identity-pair':{51:1,63:13},'knights':{55:5,56:6},'heroes':{50:0,52:9}}
 FRAMES=(0,1,2,3,6,9)
 
 def verify_gpu(d,folder,candidate,recipe=RECIPE,profile='party'):
@@ -28,6 +29,15 @@ def verify_gpu(d,folder,candidate,recipe=RECIPE,profile='party'):
     selected=[g['group'] for g in r['groups']]
     require(bool(selected) and len(set(selected))==len(selected) and set(selected)<=set(groups),'recipe groups')
     if profile!='party':require(selected==list(groups),'fixed variant recipe required')
+    if profile=='heroes':
+        bindings=[dict(group=50,native_identity=0,target_field='optional_target'),dict(group=52,native_identity=9,target_field='special_target')]
+        require(r.get('selector_bindings')==bindings,'explicit special identity binding missing')
+        source=r['promotion_source']
+        require(source['file']=='remake/assets/data/class_change_targets.json' and sha(ROOT/source['file'])==source['sha256'],'promotion source changed')
+        rows=read(ROOT/source['file'])['current_portraits']
+        for b in bindings:
+            matches=[row for row in rows if row['portrait']==b['native_identity']]
+            require(len(matches)==1 and matches[0].get(b['target_field'])==b['group'],'authored promotion identity mismatch')
     require([g['group'] for g in m['groups']]==selected,'group manifest')
     catalog=read(candidate/'catalog.json')
     parents={a['source_group']:a for a in catalog['assets'] if a['role']=='map_sprite_set'}
@@ -50,7 +60,7 @@ def verify_gpu(d,folder,candidate,recipe=RECIPE,profile='party'):
     for case in cases:
         s=lookup[case['case']];g,f=s['group'],s['frame']
         require(g in groups and s['hud_group']==g and s['hud_frame']==f%3 and s['save_bytes']>0,'map/HUD provenance')
-        if profile!='party':require(s.get('native_identity')==g-50 and s.get('selector_key')==g,'visual selector projection changed')
+        if profile!='party':require(s.get('native_identity')==PROFILE_IDENTITIES[profile][g] and s.get('selector_key')==g,'visual selector projection changed')
         require(case['source_frame']==f and case.get('game_draw') is True and case.get('rgba_tolerance')==2,'Game.Draw scope')
         if s['interface']!='hd':continue
         name=case['case']+'.png'
@@ -87,6 +97,7 @@ def verify_normal(d,folder,candidate,binary,profile='party'):
     if profile=='variants':scope='unchanged chapter1 source with base selectors0/4/9/30; groups53/54 actual pixels verified only by controlled raw-selector projections, not promotion or natural membership'
     if profile=='identity-pair':scope='unchanged chapter1 source with base selectors0/4/9/30; groups51/63 actual pixels verified only by controlled authored identities1/13 raw-selector projections, not promotion or natural membership'
     if profile=='knights':scope='unchanged chapter1 source with base selectors0/4/9/30; groups55/56 actual pixels verified only by controlled authored identities5/6 raw-selector projections, not promotion or natural membership'
+    if profile=='heroes':scope='unchanged chapter1 source contains Sol0 and Unni9 base selectors, not transformed selectors50/52; new pixels verified only by controlled authored identity0/9 projections, no promotion-flow or natural transformed appearance claim'
     return dict(status='PASS-FULL-CANDIDATE-NORMAL-TRANSACTION',pngs=10,scope=scope)
 
 def register(formal,candidate,destination,recipe=RECIPE,profile='party'):
@@ -120,13 +131,13 @@ def main():
     for n in ('gpu','candidate','normal','binary','out'):p.add_argument('--'+n,type=Path,required=True)
     for n in ('formal','destination'):p.add_argument('--'+n,type=Path)
     p.add_argument('--recipe',type=Path,default=RECIPE,help='明示本批配方；必須符合所選固定矩陣')
-    p.add_argument('--profile',choices=PROFILES,default='party',help='party固定21案例；variants53／54、identity-pair51／63、knights55／56各固定14案例與明示selector投影')
+    p.add_argument('--profile',choices=PROFILES,default='party',help='party固定21；variants53／54、identity-pair51／63、knights55／56、heroes50／52各固定14，heroes明示0／9身份')
     p.add_argument('--self-test',action='store_true');p.add_argument('--register',action='store_true');a=p.parse_args()
     require(not a.out.exists(),'fresh report required')
     d=read(a.gpu);result=verify_gpu(d,a.gpu.parent,a.candidate,a.recipe,a.profile);result['normal']=verify_normal(read(a.normal),a.normal.parent,a.candidate,a.binary,a.profile)
     rejected=[]
     if a.self_test:
-        for fault in ('missing','duplicate','catalog','source-code','false-save','wrong-hud','wrong-tolerance','missing-f2','wrong-profile','wrong-selector','undisclosed-projection'):
+        for fault in ('missing','duplicate','catalog','source-code','false-save','wrong-hud','wrong-tolerance','missing-f2','wrong-profile','wrong-selector','wrong-identity','undisclosed-projection'):
             x=deepcopy(d)
             if fault=='missing':x['cases'].pop()
             elif fault=='duplicate':x['cases'][-1]=deepcopy(x['cases'][0])
@@ -141,6 +152,10 @@ def main():
             elif fault=='wrong-selector':
                 if a.profile=='party':continue
                 x['sources'][0]['selector_key']=99
+            elif fault=='wrong-identity':
+                if a.profile=='party':continue
+                subject=next(row for row in x['sources'] if row['group']==52) if a.profile=='heroes' else x['sources'][0]
+                subject['native_identity']=2 if a.profile=='heroes' else 99
             else:
                 if a.profile=='party':continue
                 x.pop('selector_projection_injected',None)

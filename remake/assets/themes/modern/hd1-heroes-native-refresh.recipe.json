@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_hd1_chibi_map_refresh",
+  "base_catalog_sha256": "ae23b40ca970c6dccd54846d149a2b26da20877f204787e906b99c019542f025",
+  "approved_preview": "docs/figures/hd1-ares-q-design.png",
+  "approved_preview_sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e",
+  "approval": "沿已定大頭短身Q比例與逐人原版五官要求，修正索爾50與悠妮52人形。52依class_change_targets明示special_target對應身份9，不視為鐵諾2。",
+  "native_bank_sha256": "7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44",
+  "palette_sha256": "404db1ca72ffc19fa7404fbc59bde98cdf239f63fe3375ec248a8142073a28bf",
+  "groups": [
+    {
+      "group": 50,
+      "master_file": "fdicon-050-hd1-native-q-v1-master.png",
+      "master_sha256": "c353671fd014fc9f7581111968b3a4d0bd2b8cbe9c8f75cba4055a3ee63e722a",
+      "output_prefix": "fdicon-050-hd1-native-q-v1"
+    },
+    {
+      "group": 52,
+      "master_file": "fdicon-052-hd1-native-q-v1-master.png",
+      "master_sha256": "ba983db3620b145e4bc3dabce2409f19ba4c51e42f8418b5678296d469eeecaf",
+      "output_prefix": "fdicon-052-hd1-native-q-v1"
+    }
+  ],
+  "policy": "保留十二姿態、腳底與相位。索爾深藍髮紅頭帶、灰綠甲、藍衣及單側紅布；悠妮紅色頭部輪廓、藍金飾帶、紅外袍／披風與紫內衣。兩人各依DATO000／009五官，皆空手，不加劍、杖、盾或機械面具。基底0／9與Gaia30保持。",
+  "image_generation": {
+    "tool": "image_gen.imagegen",
+    "mode": "builtin",
+    "transparent_background": true,
+    "jobs": [
+      {
+        "group": 50,
+        "source": "exec-cefb8bf4-28c3-4d42-8b4b-eac0ddcb4c3f.png",
+        "prompt": "Use case: identity-preserve. Asset type: Flame Dragon Knights 2 HD1 tactical-map sprite MASTER for ORIGINAL FDICON group050, SOL (索爾), original identity0 alternate form. Image1 is the original twelve map poses with the correct game palette: authority for all directions, equipment, clothing colors, hair/ribbon placement and occlusion. Image2 is his OWN original DATO000 portrait: authority for his recognizable young male face, dark indigo blue hair, red forehead band, narrow reserved eyes, distinctive straight projecting nose, defined angular jaw/chin and firm closed thin mouth. Keep SOL himself, not Hano, Ares, a generic cute round boy or a robot. Image3 is USER-APPROVED HD1 Q style/proportions, especially the LOWER NEW-Q drawings and Sol reference: very big head AND readable face, extremely short torso, stubby legs and broad little boots, clean smooth dark contours, large separated colors and smooth restrained cel-painted shading. Do NOT copy Ares's cap, sword, shield or uniform; Image1 alone controls this group050 outfit and empty hands.\nExactly THREE COLUMNS by FOUR ROWS, twelve COMPLETE fully separated isolated figures on genuine transparent alpha. Row1 FRONT toward viewer, row2 LEFT PROFILE facing screen LEFT, row3 BACK with no face, row4 RIGHT PROFILE facing screen RIGHT. Every row first column NEUTRAL both boots planted, column2 modest left-foot-forward walking phase, column3 modest right-foot-forward phase. Equal scale and foot baseline, generous transparent space around each complete head, hair, hands and boots; no overlaps/cropping. Head including hair about67-70% of complete figure height, tiny short armored body/legs. His face stays recognizably Sol with a narrow calm focused gaze and angular nose/chin in Q proportions, not a generic giant round blue-eyed baby.\nCRITICAL ORIGINAL GROUP050 DETAILS: thick dark blue/indigo HAIR with the same swept bangs and blue rear tied/long locks as image1; a RED cloth forehead band, bare visible human face/ears. No helmet, mask, robot jaw, blue metal shell, head-mounted ornaments or mechanical face. Compact OLIVE/GRAY-GREEN plate shoulder armor/bracers/boots, dark navy body, blue scarf/cloth at chest and waist as original. Preserve the original red trailing cloth/ribbon on ONE side: FRONT viewer RIGHT beside head/upper torso, BACK viewer LEFT near hair, profile as image1. Rear blue hair/tail and red band remain readable; do not make a new enormous floor-length red cape. MOST IMPORTANT: hands are EMPTY. Image1 shows bare right fist at viewer LEFT in front view and original small hand/armor placement on other sides. There is NO sword, spear, axe, staff, shield, orb or any new equipment in ANY of the twelve poses. Exactly two naturally attached arms/hands and two legs, natural wrists. Keep asymmetrical hair/ribbon placement faithfully, not a mirrored copy changing costume sides. Left and right profiles have their original clean hand/armor silhouette.\nSmooth crisp hand-painted cel HD Q art, NOT a pixel-grid redraw, nearest-neighbor enlargement, realistic tall warrior, photo, glossy 3D toy or distressed texture. Readable individual face at144/72/48 pixels. No text, labels, numbers, grid, cell borders, floor, cast shadow, glow, background or checkerboard. Actual transparent alpha.",
+        "selected": false,
+        "reason": "鼻形與眼神過於通用，改依DATO000修長直鼻、收斂眼形及較尖下巴。"
+      },
+      {
+        "group": 50,
+        "source": "exec-977d2fce-e3a8-4470-b731-9e41cc1fde5b.png",
+        "prompt": "Use case: identity-preserve. Image1 is EDIT TARGET: original-group050 Sol twelve-pose sprite master just generated. Image2 is HIS OWN original DATO000 portrait, authoritative for his face. Keep image1's exact twelve-cell grid, all directions/steps, enormous blue hair/head scale, red headband/ribbon, olive-green armor, blue scarf/clothes, empty hands, tiny body, natural limbs, feet and genuine alpha UNCHANGED. Correct ONLY facial features in all non-back poses so he has his own original face: a slimmer oval face with a defined tapered angular chin, a noticeably longer STRAIGHT projecting nose visible in LEFT and RIGHT profiles, narrower blue-gray almond eyes with a calm reserved half-lidded focus, finer straight/slightly angled brows, and a small firmly CLOSED thin mouth. Do NOT keep the tiny baby button nose/round cheek or generic enormous angry round boy eyes. His look is quiet determined Sol from image2, NOT Laiting's broad square jaw/smirk, Hano's scowl or Ares's generic child face. Maintain Q huge head and very short body; do not shrink head to realistic proportions or age him into an old man. No beard, scar, new jewelry, helmet, mask, weapon, shield or extra accessory. BACK row must remain no-face. Preserve every other pixel-independent content/design choice and outfit placement, no text, grid, border, ground, cast shadow, glow, checkerboard or background. Smooth clean HD cel-painted lines and actual transparent alpha.",
+        "selected": true
+      },
+      {
+        "group": 52,
+        "source": "exec-2ffe2641-c39a-4023-841f-78e380557158.png",
+        "prompt": "Use case: identity-preserve. Asset type: Flame Dragon Knights 2 HD1 tactical-map sprite MASTER, ORIGINAL FDICON group052, YONI/UNNI 悠妮 SPECIAL form. This is identity9 special_target52 in original-derived data, NOT identity2 Tino. Image1 is the original twelve map poses with real palette, authoritative for red head/hair/headwear silhouette, blue/gold head decoration, red/purple clothing, directions, placement and empty hands. Image2 is HER OWN original DATO009 portrait, authoritative for HER young human WOMAN face: soft oval cheeks/tapered chin, delicately arched brown brows, warm almond eyes, small straight nose, small reddish closed lips with her gentle confident smile, deep red hair framing face and the recognizable blue/silver forehead ornament. Her face differs from Sol's angular nose and reserved narrow gaze, Rona's stern red lips and any generic boy face. Image3 is USER-APPROVED HD1 Q PROPORTION/style reference only, especially lower NEW-Q drawings and the red-haired Unni reference: head AND readable face about67-70% figure height, extremely short body and stubby legs, clear dark smooth outlines, separated broad colors and smooth restrained painted cel shading. Do NOT copy that reference's purple pauldrons/armored bodysuit, male cap, sword, fist pose or huge ponytail when absent in original group052.\nExactly THREE COLUMNS by FOUR ROWS, twelve COMPLETE isolated separated figures on true transparent alpha. Row1 FRONT toward viewer, row2 LEFT PROFILE facing screen LEFT, row3 BACK with NO FACE, row4 RIGHT PROFILE facing screen RIGHT. Every row first column NEUTRAL boots planted; column2 small left-foot-forward step; column3 small right-foot-forward step. Same scale/foot baseline, generous margins, full head decoration, cape, hands and boots inside each cell. Natural two arms/two hands and two legs. Keep distinct little walking phases even when the red garment covers most legs.\nCRITICAL ORIGINAL GROUP052: visible feminine HUMAN face and deep-red framing hair/top/side head silhouette, blue centered forehead detail and golden bands/side details exactly as image1. Her original head shape is compact/rounded with red rear tied mass and blue/gold band; retain the source silhouette, do NOT invent a giant high ponytail, helmet horns, crown spikes, robotic square red head, mechanical mask or metal face. Rich RED outer robe/cape wrapping shoulders and back, very compact dark PURPLE inner clothing/boots, original small GOLD neckline, waist/cuff accents and the blue/gold head bands. Original simple large shapes, no elaborate new embroidery or new exposed skin. FRONT red outer garment at both sides and short purple center, BACK broad red garment with original gold head band; all cardinal view placements follow image1. Hands are EMPTY in all twelve poses: no sword, spear, axe, staff, wand, shield, floating orb or spell effect. Do not turn her into a robot or hooded anonymous male. All clothing fully covers original body.\nUse smooth crisp HD cel-painted Q RPG art, not a pixel-grid replica/nearest-neighbor enlargement, realistic tall body, photographic render, shiny 3D toy, tiny distressed texture or pin-up. Preserve her own gentle original portrait features clearly at144/72/48 pixels. No text, labels, numbers, cell borders, grid, ground, cast shadow, glow, checkerboard, background or extra figures. Actual transparent alpha.",
+        "selected": true
+      }
+    ]
+  },
+  "original_reference": {
+    "source": "FDICON.B24原生三層與FDOTHER0代表色盤；DATO000／009；既有class_change_targets明示對照",
+    "groups": [
+      50,
+      52
+    ],
+    "records_sha256": "7bd1a3435518a610c99f245f8368f08af4da66bbab30f18a75e0ecb09185b64c",
+    "reference_boards": [
+      {
+        "file": "group-050-original-reference.png",
+        "sha256": "b6b0ff685f3643fe46ccaddc45274c9d5d99121da7c4cf8f25b874466f928567"
+      },
+      {
+        "file": "group-052-original-reference.png",
+        "sha256": "414f6fc094b4335bdf19b0e0e25ec13cb7c426984d2234f7347deb9762bc7bf1"
+      }
+    ],
+    "scope": "50為身份0 optional_target；52為身份9 special_target。十二原生姿態決定裝備、頭部與衣色，不憑編號減50推定身份或自然轉職。"
+  },
+  "faces": [
+    {
+      "group": 50,
+      "name": "索爾",
+      "portrait_file": "remake/assets/portraits/DATO_000_m0.png",
+      "portrait_sha256": "8b340f30e3552014a47cca5bcf53bbf14bd1c9315d5fd7e10b52254aa1ea2294",
+      "traits": [
+        "深藍髮紅頭帶",
+        "收斂杏眼",
+        "較長直鼻",
+        "收尖下巴",
+        "閉口堅定神情"
+      ],
+      "comparison_label": "原版大頭像與HD1地圖人物，非對話HD頭像驗收"
+    },
+    {
+      "group": 52,
+      "name": "悠妮",
+      "portrait_file": "remake/assets/portraits/DATO_009_m0.png",
+      "portrait_sha256": "da5fc30e026a9536f3462b01bf88ef0535466b1318a5bc80f0117031d747a720",
+      "traits": [
+        "紅色髮型與藍金頭飾",
+        "柔和眉眼",
+        "小直鼻",
+        "小紅唇閉口笑容",
+        "柔和橢圓臉"
+      ],
+      "comparison_label": "原版大頭像與HD1地圖人物，非對話HD頭像驗收"
+    }
+  ],
+  "promotion_source": {
+    "file": "remake/assets/data/class_change_targets.json",
+    "sha256": "27946ce10bf60738331009fff14b50be3cddc4cce18a4402e5259cb89fecfaa2"
+  },
+  "selector_bindings": [
+    {
+      "group": 50,
+      "native_identity": 0,
+      "target_field": "optional_target"
+    },
+    {
+      "group": 52,
+      "native_identity": 9,
+      "target_field": "special_target"
+    }
+  ]
+}

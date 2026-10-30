@@ -41,6 +41,10 @@
 
 洛娜的灰綠長髮、杏眼與紅唇，以及萊汀的褐髮頭帶、長鼻與方下巴，分別依自己的原版大頭像重繪。兩人的騎士形態保留原版長兵器、藍鋼甲與方向遮蔽，地圖及資訊窗共用新版圖源。可看[四向及尺寸對照](docs/figures/hd1-knights-comparison.png)、[洛娜](docs/figures/hd1-rona-variant-game.png)與[萊汀](docs/figures/hd1-laiting-variant-game.png)的完整受控戰場圖。面容對照是地圖美術來源比較，戰場圖使用測試圖組投影，不代表升階、自然出場或對話HD頭像驗收。
 
+![索爾與悠妮特殊形態的原版及HD1面容對照](docs/figures/hd1-heroes-face-reference.png)
+
+索爾與悠妮的特殊形態已恢復各自的人臉。索爾保留深藍髮、紅頭帶與收斂眼神；悠妮保留柔和笑容、紅髮及藍金頭飾，衣甲與空手造型沿原版。可看[四向及尺寸對照](docs/figures/hd1-heroes-comparison.png)、[索爾](docs/figures/hd1-sol-variant-game.png)與[悠妮](docs/figures/hd1-unni-special-game.png)的完整受控戰場圖。面容圖是原版頭像與地圖素材比較，戰場圖使用測試圖組投影，不代表自然轉職流程或對話HD頭像驗收。
+
 ![蓋亞原版與新版HD1四向及尺寸對照](docs/figures/hd1-gaia-q-comparison.png)
 
 蓋亞採用上圖的先前HD1版本定案，保留灰綠硬甲、藍色面罩與大頭短身。兩份加重候選不採用。[完整受控戰場及資訊窗](docs/figures/hd1-gaia-q-game.png)、[普通首章遊玩畫面](docs/figures/hd1-gaia-q-normal.png)均使用這版；十二姿態、主題切換與保存冷讀已抽驗。全部125組已做第一輪造型審查，身份與裝備偏移由[#287](https://github.com/wicanr2/fd2_re/issues/287)修正，其他比例由[#286](https://github.com/wicanr2/fd2_re/issues/286)續作；全部完成後才更新完整「原版／HD1」人物總覽。

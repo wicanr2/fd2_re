@@ -4711,6 +4711,22 @@
         ],
         "pattern": "selector_projection_injected"
       }
+    },
+    {
+      "id": "special-map-selector-needs-explicit-identity",
+      "date": "2026-10-30",
+      "area": "HD身份對照",
+      "rule": "特殊圖組先讀remake/assets/data/class_change_targets.json的optional_target／special_target綁原身份，不僅以group減50判人；52明示來自9。測具及獨立核對器須保留來源SHA與錯身份反例。",
+      "why": "第52組初看編號會誤認鐵諾2；查既有資料確認悠妮9的special_target52，原版紅色人形亦一致。尚未按錯身份編製或登錄。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#hd1_heroes_native_followup_20261030",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/assets/data/class_change_targets.json",
+          "tools/verify_fd2_hd1_chibi_party.py"
+        ],
+        "pattern": "special_target"
+      }
     }
   ]
 }

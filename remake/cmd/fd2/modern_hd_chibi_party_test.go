@@ -55,6 +55,8 @@ func TestModernHDChibiPartyGPU(t *testing.T) {
 		groups = []int{51, 63}
 	case "knights":
 		groups = []int{55, 56}
+	case "heroes":
+		groups = []int{50, 52}
 	default:
 		t.Fatal("unknown fixed chibi profile", profile)
 	}
@@ -188,6 +190,9 @@ func TestModernHDChibiPartyGPU(t *testing.T) {
 	if profile == "knights" {
 		scope = "controlled runtime selector projections55/56 with authored identities5/6 from chapters9/10; HD interface four neutral directions/front three cycles, original interface front neutral, 14 full Game.Draw worlds, HUD and two F2. Test-only selector key/record byte6 and derived cache slot injection; no promotion, class, statistics, natural membership, normal player or original dynamic parity claim"
 	}
+	if profile == "heroes" {
+		scope = "controlled runtime selector projections50/52 with authored identities0/9 from chapter1; class_change_targets binds optional_target50 to0 and special_target52 to9, never arithmetic identity2. HD interface four neutral directions/front three cycles, original interface front neutral, 14 full Game.Draw worlds, HUD and two F2. Test-only selector key/record byte6 and cache slot injection; no promotion, class, statistics, natural transformed appearance or original dynamic parity claim"
+	}
 	report := map[string]any{"status": "PASS-HD1-CHIBI-PARTY-GPU", "profile": profile, "selector_projection_injected": profile != "party", "catalog_sha256": fmt.Sprintf("%x", sha256.Sum256(catalog)), "manifest_sha256": fmt.Sprintf("%x", sha256.Sum256(manifest)), "source_tree_sha256": code, "source_file_count": count, "cases": p.rows, "sources": observed, "native_state_unchanged": true, "save_bytes_unchanged": true, "scope": scope}
 	raw, _ := json.MarshalIndent(report, "", "  ")
 	if err = os.WriteFile(filepath.Join(out, "receipt.json"), append(raw, '\n'), 0644); err != nil {
@@ -199,7 +204,10 @@ func TestModernHDChibiPartyGPU(t *testing.T) {
 // entries; Harvat is an explicitly visual-only selector projection. No combat
 // or natural recruitment/statistics conclusion may be drawn from this fixture.
 func modernHDChibiPartyIdentity(group int) int {
-	if group == 51 || group == 53 || group == 54 || group == 55 || group == 56 || group == 63 {
+	if group == 52 {
+		return 9 // Explicit special_target; group-50 would incorrectly identify Tino.
+	}
+	if group == 50 || group == 51 || group == 53 || group == 54 || group == 55 || group == 56 || group == 63 {
 		return group - 50
 	}
 	return group
@@ -233,7 +241,7 @@ func modernHDChibiPartyScenario(t *testing.T, group int) string {
 	if identity == 2 {
 		source = "../../assets/scenarios/ch04.json"
 	}
-	if identity == 4 {
+	if identity == 0 || identity == 4 || identity == 9 {
 		source = "../../assets/scenarios/ch01.json"
 	}
 	if identity == 13 {
@@ -298,7 +306,29 @@ func modernHDChibiPartyScenario(t *testing.T, group int) string {
 }
 
 func TestModernHDChibiPartyFixture(t *testing.T) {
-	for _, group := range []int{1, 2, 3, 51, 53, 54, 55, 56, 63} {
+	raw, err := os.ReadFile("../../assets/data/class_change_targets.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var promotion struct {
+		Rows []struct {
+			Portrait int `json:"portrait"`
+			Optional int `json:"optional_target"`
+			Special  int `json:"special_target"`
+		} `json:"current_portraits"`
+	}
+	if err = json.Unmarshal(raw, &promotion); err != nil {
+		t.Fatal(err)
+	}
+	var sol, unni bool
+	for _, row := range promotion.Rows {
+		sol = sol || row.Optional == 50 && row.Portrait == modernHDChibiPartyIdentity(50)
+		unni = unni || row.Special == 52 && row.Portrait == modernHDChibiPartyIdentity(52)
+	}
+	if !sol || !unni {
+		t.Fatal("authored alternate/special identity binding changed", sol, unni)
+	}
+	for _, group := range []int{1, 2, 3, 50, 51, 52, 53, 54, 55, 56, 63} {
 		g, _, _ := ordinaryCommand0HDTestGame(t)
 		g.partyMembers, g.partyJoinOrder, g.partyRoster = nil, nil, nil
 		g.resetBattle("assets/maps/map0/map0_units.json", modernHDChibiPartyScenario(t, group))
