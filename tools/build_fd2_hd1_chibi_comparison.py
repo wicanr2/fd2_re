@@ -8,7 +8,7 @@ from PIL import Image,ImageDraw,ImageFont
 from build_modern_map_sprite_overview import load_original_palette
 
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
-def build_faces(candidate,recipe,out):
+def build_faces(candidate,recipe,out,only_groups=None):
     """核對原版大頭像與實際地圖圖源，只做排版，不修改角色圖。"""
     if out.exists() or not out.parent.is_dir():raise ValueError('fresh owned output required')
     root=Path(__file__).resolve().parents[1]
@@ -16,6 +16,12 @@ def build_faces(candidate,recipe,out):
     if m['recipe_sha256']!=sha(recipe):raise ValueError('face recipe changed')
     r=json.loads(recipe.read_text());faces=r['faces'];groups={g['group']:g for g in m['groups']}
     if len(faces)!=len(groups) or {f['group'] for f in faces}!=set(groups):raise ValueError('face groups changed')
+    batch_groups=list(groups)
+    if only_groups is not None:
+        if len(set(only_groups))!=len(only_groups) or not only_groups or not set(only_groups)<=set(groups):raise ValueError('invalid comparison subset')
+        faces=[f for f in faces if f['group'] in only_groups]
+        groups={g:row for g,row in groups.items() if g in only_groups}
+
     image=Image.new('RGB',(1100,100+350*len(faces)),'#091627');draw=ImageDraw.Draw(image)
     font=ImageFont.load_default(size=20);small=ImageFont.load_default(size=16);sources=[]
     draw.text((24,16),'INDIVIDUAL FACES / ORIGINAL PORTRAIT + HD1 MAP ART',font=font,fill='#ffe59b')
@@ -41,12 +47,15 @@ def build_faces(candidate,recipe,out):
         draw.text((24,y+240),'Original portrait: identity reference. HD1 map art: actual runtime source sizes.',font=small,fill='#aec5e0')
         draw.text((24,y+270),'Art comparison only. Not a runtime capture or HD dialogue-portrait acceptance.',font=small,fill='#aec5e0')
     image.save(out)
-    return dict(kind='fd2_hd1_individual_face_comparison',groups=list(groups),recipe_sha256=sha(recipe),source_manifest_sha256=sha(candidate/'manifest.json'),image_sha256=sha(out),tool_sha256=sha(Path(__file__)),sources=sources,faces=faces,size=list(image.size))
+    return dict(kind='fd2_hd1_individual_face_comparison',groups=list(groups),batch_groups=batch_groups,recipe_sha256=sha(recipe),source_manifest_sha256=sha(candidate/'manifest.json'),image_sha256=sha(out),tool_sha256=sha(Path(__file__)),sources=sources,faces=faces,size=list(image.size))
 
-def build(candidate,original,out,context=None):
+def build(candidate,original,out,context=None,only_groups=None):
     if out.exists() or not out.parent.is_dir():raise ValueError('fresh owned output required')
     m=json.loads((candidate/'manifest.json').read_text())
     groups=m['groups']
+    if only_groups is not None:
+        if context is not None or len(set(only_groups))!=len(only_groups) or not only_groups or not set(only_groups)<={g['group'] for g in groups}:raise ValueError('invalid comparison subset')
+        groups=[g for g in groups if g['group'] in only_groups]
     if context is not None:
         catalog=json.loads((candidate/'catalog.json').read_text())
         by_role={(a.get('source_group'),a['role']):a for a in catalog['assets']}
@@ -144,10 +153,12 @@ def main():
     p.add_argument('--baseline-catalog',type=Path,help='另排原版／前版／候選，尚未登錄的造型對照')
     p.add_argument('--baseline-pack',type=Path)
     p.add_argument('--face-references',type=Path,help='逐人依配方原版頭像核對面容，排列實際144／72／48圖源')
+    p.add_argument('--groups',nargs='+',type=int,help='只排指定人物的可讀局部圖，完整來源清冊仍須核對')
     a=p.parse_args();report=a.out.with_suffix('.json')
     if report.exists():raise ValueError('fresh report required')
     if (a.baseline_catalog is None)!=(a.baseline_pack is None):raise ValueError('paired baseline arguments required')
     if a.face_references and (a.baseline_catalog or a.context_manifest):raise ValueError('face comparison requires its own fixed batch')
-    d=build_faces(a.candidate,a.face_references,a.out) if a.face_references else build_revision(a.candidate,a.original,a.baseline_catalog,a.baseline_pack,a.out) if a.baseline_catalog else build(a.candidate,a.original,a.out,a.context_manifest)
+    if a.groups and (a.baseline_catalog or a.context_manifest):raise ValueError('subset requires its own fixed batch')
+    d=build_faces(a.candidate,a.face_references,a.out,a.groups) if a.face_references else build_revision(a.candidate,a.original,a.baseline_catalog,a.baseline_pack,a.out) if a.baseline_catalog else build(a.candidate,a.original,a.out,a.context_manifest,a.groups)
     report.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n');print(json.dumps(d,ensure_ascii=False))
 if __name__=='__main__':main()

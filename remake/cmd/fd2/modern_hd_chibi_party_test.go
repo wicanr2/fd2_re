@@ -60,10 +60,31 @@ func TestModernHDChibiPartyGPU(t *testing.T) {
 		groups = []int{50, 52}
 	case "enemies":
 		groups = []int{76, 79}
+	case "audited-six":
+		switch os.Getenv("FD2_HD_CHIBI_AUDITED_PAIR") {
+		case "banded":
+			groups = []int{70, 89}
+		case "draconic":
+			groups = []int{73, 77}
+		case "robed":
+			groups = []int{125, 133}
+		default:
+			t.Fatal("explicit audited pair required")
+		}
 	default:
 		t.Fatal("unknown fixed chibi profile", profile)
 	}
-	if profile != "party" {
+	if profile == "audited-six" {
+		var selection struct{ Groups []struct{ Group int } }
+		if err = json.Unmarshal(manifest, &selection); err != nil || len(selection.Groups) != 6 {
+			t.Fatal("complete six-group candidate required", err)
+		}
+		for i, g := range []int{70, 73, 77, 89, 125, 133} {
+			if selection.Groups[i].Group != g {
+				t.Fatal("audited candidate order changed")
+			}
+		}
+	} else if profile != "party" {
 		var selection struct{ Groups []struct{ Group int } }
 		if err = json.Unmarshal(manifest, &selection); err != nil || len(selection.Groups) != 2 {
 			t.Fatal("explicit two-variant manifest required", err)
@@ -85,7 +106,7 @@ func TestModernHDChibiPartyGPU(t *testing.T) {
 	var observed []map[string]any
 	for _, group := range groups {
 		scenario := ""
-		if profile != "enemies" {
+		if profile != "enemies" && profile != "audited-six" {
 			scenario = modernHDChibiPartyScenario(t, group)
 		}
 		for _, frame := range []int{0, 1, 2, 3, 6, 9} {
@@ -96,7 +117,9 @@ func TestModernHDChibiPartyGPU(t *testing.T) {
 				g, _, _ := ordinaryCommand0HDTestGame(t, func() time.Time { return time.Unix(1000, 0) })
 				var ares *battle.Unit
 				mapID := 0
-				if profile == "enemies" {
+				if profile == "audited-six" {
+					ares, mapID = modernHDChibiAuditedFixture(t, g, group)
+				} else if profile == "enemies" {
 					ares, mapID = modernHDChibiEnemyFixture(t, g, group)
 				} else {
 					if err = g.loadMap("assets/maps/map0"); err != nil {
@@ -165,8 +188,8 @@ func TestModernHDChibiPartyGPU(t *testing.T) {
 				games, units, saves, seeds = append(games, g), append(units, state), append(saves, saved), append(seeds, g.nativeRNGState)
 				name := fmt.Sprintf("party-g%03d-f%02d-ui-%s", group, frame, mode)
 				p.cases = append(p.cases, sharedGroundGPUCase{g: g, name: name, mapID: mapID, source: frame, keepPNG: mode == playerInterfaceHD, skipF2: mode != playerInterfaceHD || frame != 0})
-				observed = append(observed, map[string]any{"case": name, "group": group, "native_identity": ares.NativeIdentity, "selector_key": ares.MapSelectorKey, "camp": int(ares.Camp), "portrait": ares.Portrait, "battle_fig": ares.BattleFig, "position": map[string]uint16{"x_word": ares.NativePositionRecord.XWord, "y_word": ares.NativePositionRecord.YWord, "raw_key": ares.NativePositionRecord.RawKey}, "map": mapID, "frame": frame, "interface": mode, "map_rect": rect, "hud_group": hud.Unit.Group, "hud_frame": hud.Unit.Frame, "hud_rect": hud.Unit.Rect, "save_bytes": len(saved)})
-				if profile == "enemies" {
+				observed = append(observed, map[string]any{"case": name, "group": group, "native_identity": ares.NativeIdentity, "has_native_identity": ares.HasNativeIdentity, "selector_key": ares.MapSelectorKey, "camp": int(ares.Camp), "portrait": ares.Portrait, "battle_fig": ares.BattleFig, "position": map[string]uint16{"x_word": ares.NativePositionRecord.XWord, "y_word": ares.NativePositionRecord.YWord, "raw_key": ares.NativePositionRecord.RawKey}, "map": mapID, "frame": frame, "interface": mode, "map_rect": rect, "hud_group": hud.Unit.Group, "hud_frame": hud.Unit.Frame, "hud_rect": hud.Unit.Rect, "save_bytes": len(saved)})
+				if profile == "enemies" || profile == "audited-six" {
 					sourcePath := fmt.Sprintf("../../assets/maps/map%d/map%d_units.json", mapID, mapID)
 					raw, e := os.ReadFile(sourcePath)
 					if e != nil {
@@ -217,7 +240,10 @@ func TestModernHDChibiPartyGPU(t *testing.T) {
 	if profile == "enemies" {
 		scope = "controlled authored enemy initial groups map0/10 and map18/0 through AppendGroupWithNativePlacement gate0; original enemy camp, portrait, position and map selector retained, no selector/identity injection. Four neutral directions/front three phases, HD HUD/world and original interface front, 14 Game.Draw and two F2; not normal chapter progression or original dynamic parity"
 	}
-	report := map[string]any{"status": "PASS-HD1-CHIBI-PARTY-GPU", "profile": profile, "selector_projection_injected": profile != "party" && profile != "enemies", "authored_enemy_fixture": profile == "enemies", "catalog_sha256": fmt.Sprintf("%x", sha256.Sum256(catalog)), "manifest_sha256": fmt.Sprintf("%x", sha256.Sum256(manifest)), "source_tree_sha256": code, "source_file_count": count, "cases": p.rows, "sources": observed, "native_state_unchanged": true, "save_bytes_unchanged": true, "scope": scope}
+	if profile == "audited-six" {
+		scope = "controlled original authored roster pair, AppendGroupWithNativePlacement gate0; original camp/portrait/position/selectors, no persistent identity projection. Four neutral directions/front three phases, two interfaces, 14 Game.Draw and two F2. Part of complete six-group candidate; not natural chapter/player reachability."
+	}
+	report := map[string]any{"status": "PASS-HD1-CHIBI-PARTY-GPU", "profile": profile, "pair": os.Getenv("FD2_HD_CHIBI_AUDITED_PAIR"), "selected_groups": groups, "authored_roster_fixture": profile == "audited-six", "selector_projection_injected": profile != "party" && profile != "enemies" && profile != "audited-six", "authored_enemy_fixture": profile == "enemies", "catalog_sha256": fmt.Sprintf("%x", sha256.Sum256(catalog)), "manifest_sha256": fmt.Sprintf("%x", sha256.Sum256(manifest)), "source_tree_sha256": code, "source_file_count": count, "cases": p.rows, "sources": observed, "native_state_unchanged": true, "save_bytes_unchanged": true, "scope": scope}
 	raw, _ := json.MarshalIndent(report, "", "  ")
 	if err = os.WriteFile(filepath.Join(out, "receipt.json"), append(raw, '\n'), 0644); err != nil {
 		t.Fatal(err)
@@ -601,5 +627,76 @@ func TestModernHDChibiStaticGPU(t *testing.T) {
 	}
 	if err = os.WriteFile(filepath.Join(out, "receipt.json"), append(raw, '\n'), 0644); err != nil {
 		t.Fatal(err)
+	}
+}
+
+// The fixed bindings come from the immutable authored map JSON, not arithmetic
+// on sprite numbers. They deliberately preserve ally/enemy camps and no
+// persistent player identity is manufactured for these presentation samples.
+type modernHDChibiAuditedBinding struct {
+	mapID, initialGroup int
+	camp                battle.Camp
+	x, y                uint16
+}
+
+func modernHDChibiAuditedSource(t *testing.T, group int) modernHDChibiAuditedBinding {
+	t.Helper()
+	switch group {
+	case 70:
+		return modernHDChibiAuditedBinding{5, 0, battle.Ally, 13, 24}
+	case 73:
+		return modernHDChibiAuditedBinding{24, 0, battle.Ally, 10, 26}
+	case 77:
+		return modernHDChibiAuditedBinding{2, 2, battle.Enemy, 8, 25}
+	case 89:
+		return modernHDChibiAuditedBinding{17, 0, battle.Enemy, 39, 7}
+	case 125:
+		return modernHDChibiAuditedBinding{24, 0, battle.Enemy, 10, 7}
+	case 133:
+		return modernHDChibiAuditedBinding{1, 1, battle.Ally, 15, 12}
+	}
+	t.Fatal("unknown audited source", group)
+	return modernHDChibiAuditedBinding{}
+}
+func modernHDChibiAuditedFixture(t *testing.T, g *Game, group int) (*battle.Unit, int) {
+	t.Helper()
+	b := modernHDChibiAuditedSource(t, group)
+	if err := g.loadMap(fmt.Sprintf("assets/maps/map%d", b.mapID)); err != nil {
+		t.Fatal(err)
+	}
+	g.partyMembers, g.partyJoinOrder, g.partyRoster = nil, nil, nil
+	raw, err := json.Marshal(map[string]any{"runtime_append_groups": true, "map": b.mapID})
+	if err != nil {
+		t.Fatal(err)
+	}
+	path := filepath.Join(t.TempDir(), "audited-roster.json")
+	if err = os.WriteFile(path, raw, 0644); err != nil {
+		t.Fatal(err)
+	}
+	g.resetBattle(fmt.Sprintf("assets/maps/map%d/map%d_units.json", b.mapID, b.mapID), path)
+	if g.loadErr != "" {
+		t.Fatal(g.loadErr)
+	}
+	if count, err := g.st.AppendGroupWithNativePlacement(b.initialGroup, 0); err != nil || count == 0 {
+		t.Fatal("audited group constructor", group, count, err)
+	}
+	for _, u := range g.st.Units {
+		if u != nil && u.HasMapSelectorKey && u.MapSelectorKey == group {
+			if u.Camp != b.camp || u.Portrait != group || !u.HasBattleFig || u.BattleFig != group ||
+				u.HasNativeIdentity || !u.HasNativePositionRecord ||
+				u.NativePositionRecord != (battle.NativePositionRecord{XWord: b.x, YWord: b.y, RawKey: uint16(group)}) ||
+				!u.HasNativeMapPresentation || !u.OnField {
+				t.Fatal("audited roster provenance changed", group, u)
+			}
+			return u, b.mapID
+		}
+	}
+	t.Fatal("audited authored unit missing", group)
+	return nil, b.mapID
+}
+func TestModernHDChibiAuditedFixture(t *testing.T) {
+	for _, group := range []int{70, 73, 77, 89, 125, 133} {
+		g, _, _ := ordinaryCommand0HDTestGame(t)
+		modernHDChibiAuditedFixture(t, g, group)
 	}
 }

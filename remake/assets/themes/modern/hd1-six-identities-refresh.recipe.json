@@ -1,0 +1,443 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_hd1_chibi_map_refresh",
+  "base_catalog_sha256": "8b0623229e22b30d8b99cd04126c262d65d43054aedcbd6ef7730f34b6058659",
+  "approved_preview": "docs/figures/hd1-ares-q-design.png",
+  "approved_preview_sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e",
+  "approval": "沿使用者全部角色依原版與大頭短身Q版重繪、保留各自面容的定案；六組視覺待核以實際名冊及原版DATO／十二姿態確認，不改正式規則。",
+  "native_bank_sha256": "7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44",
+  "palette_sha256": "404db1ca72ffc19fa7404fbc59bde98cdf239f63fe3375ec248a8142073a28bf",
+  "groups": [
+    {
+      "group": 70,
+      "master_file": "fdicon-070-hd1-native-q-v1-master.png",
+      "master_sha256": "b15c19c98ef00ba20f930364d9a721b7348665302a8af3bceeeb71e85c5f0ff8",
+      "output_prefix": "fdicon-070-hd1-native-q-v1"
+    },
+    {
+      "group": 73,
+      "master_file": "fdicon-073-hd1-native-q-v1-master.png",
+      "master_sha256": "56ee9daa263b057cf752b0d42e8d9e431e739b6720dfd47617c94bc6a214cfce",
+      "output_prefix": "fdicon-073-hd1-native-q-v1"
+    },
+    {
+      "group": 77,
+      "master_file": "fdicon-077-hd1-native-q-v1-master.png",
+      "master_sha256": "df107394b5142e8a3fe7b7f5dd7eb939b0b31c592aed4408369c8d6548fb1483",
+      "output_prefix": "fdicon-077-hd1-native-q-v1"
+    },
+    {
+      "group": 89,
+      "master_file": "fdicon-089-hd1-native-q-v1-master.png",
+      "master_sha256": "10dacffb65b43430aba14edb52f12ea11200fff2d9e971874cefe3d37f40dfbf",
+      "output_prefix": "fdicon-089-hd1-native-q-v1"
+    },
+    {
+      "group": 125,
+      "master_file": "fdicon-125-hd1-native-q-v1-master.png",
+      "master_sha256": "87ace714fecc6cf901ae14fc62eb91bb8c39c09a12ae62b0e0bb0b053096e628",
+      "output_prefix": "fdicon-125-hd1-native-q-v1"
+    },
+    {
+      "group": 133,
+      "master_file": "fdicon-133-hd1-native-q-v1-master.png",
+      "master_sha256": "2aacd03acb3a54bf5a90030e5ac9a0ea0d33b96bfac807dfb7fd284542ce949d",
+      "output_prefix": "fdicon-133-hd1-native-q-v1"
+    }
+  ],
+  "policy": "70露出下臉、金屬遮眼帶與斜持劍，藍色頭部輪廓沿原生，不將髮／布材質猜測提升為已證實；73恢復雙足龍頭與劍盾，77無圓盾、T形盔加大並保留原劍位，89無格柵、保留面甲與露頸；125成熟長臉無白鬚，133平瀏海棕眼直髮無馬尾。皆保留十二姿態、持物側、遮蔽與原生相位。",
+  "image_generation": {
+    "tool": "image_gen.imagegen",
+    "mode": "builtin",
+    "transparent_background": true,
+    "jobs": [
+      {
+        "group": 70,
+        "source": "exec-fcfd6e81-45c3-4d71-b1da-4ef8eb18e7ff.png",
+        "prompt": "Use case: identity-preserve. Asset type: Flame Dragon Knights 2 HD1 tactical MAP SPRITE MASTER. Image1 is the ORIGINAL twelve poses with correct game palette: primary authority for silhouette, directions, colors, gear, hand ownership, occlusion and phase order. Image2 is THIS actor's OWN original DATO portrait confirmed by authored roster, authority for their distinctive face and head construction. Image3 is approved HD1 Q PROPORTIONS/style only, especially its lower NEW-Q drawings: enormous head AND readable face or original mask about67-70% figure height, extremely short body/legs, broad little boots, crisp smooth dark outlines, broad separated colors and restrained smooth cel-painted finish. Do not copy image3's blue cap, generic boy face, outfit or gear. No visible stair-stepped pixel grid, pixel upscale, photo, glossy3D toy, tiny noisy detail or tall realistic proportions.\nExactly THREE COLUMNS by FOUR ROWS, twelve COMPLETE isolated figures on genuine transparent alpha. Row1 FRONT facing viewer, row2 LEFT PROFILE facing screen LEFT, row3 BACK no face, row4 RIGHT PROFILE facing screen RIGHT. In EACH row column1 NEUTRAL both boots planted, column2 small left-foot-forward step, column3 small right-foot-forward step. Equal scale and baseline, generous gaps and outer margins, all head/gear/feet inside their cell. Exactly TWO attached arms/hands and TWO short legs unless the original explicitly shows another structure. Natural wrists/elbows, no extra limbs or repeated weapons. Original image1, not the style sample, decides all equipment and its direction-dependent occlusion.\nNo text, labels, numbers, cell borders, grid, floor, cast shadow, glow, checkerboard or background. Actual alpha transparency. SUBJECT: original group070, human man with dark navy upper-head silhouette, broad pale mint/silver METAL band covering both eyes, and exposed tan LOWER FACE. Keep original image1 blue folded/swept head contour, close-fitting side hair/head edges, no invented tied headcloth knot. Do not invent a cloth face wrap: original DATO070 has BARE cheeks, long angular nose edge, firm straight closed mouth, prominent square projecting chin and mature angular jaw. Eyes remain behind original silver eye guard; do not paint generic cute visible blue eyes. No beard, skull or robotic face. Original white diagonal in front map poses is a THIN SILVER SWORD, not diagonal white bandage.\nOriginal outfit: compact BROWN mantle/coat with raised brown collar and brown side panels, small dark gray-green shoulder/arm elements, tiny red waist accent and dark navy lower garment/boots. No navy scarf over mouth. Exactly ONE slender silver straight sword held diagonally in anatomical RIGHT hand. FRONT: blade rises from viewer LOWER LEFT across the face area toward UPPER RIGHT, like image1. LEFT profile: far-side sword fully HIDDEN behind body, no blade ahead of nose. BACK: sword mostly hidden, original blue head shape and brown back panels. RIGHT profile: near-side sword rises from LOWER LEFT to UPPER RIGHT across body/front of face. Do NOT substitute a downward dagger, bow, extra sword, shield or ornate crossguard. Keep distinctive metal eyeguard AND exposed stern adult jaw, no added accessories. Huge head/very short compact standing body consistent with original.",
+        "selected": true,
+        "source_sha256": "b15c19c98ef00ba20f930364d9a721b7348665302a8af3bceeeb71e85c5f0ff8"
+      },
+      {
+        "group": 73,
+        "source": "exec-eb6afd71-8468-40b0-bd92-f3e285bc22e5.png",
+        "prompt": "Use case: identity-preserve. Asset type: Flame Dragon Knights 2 HD1 tactical MAP SPRITE MASTER. Image1 is the ORIGINAL twelve poses with correct game palette: primary authority for silhouette, directions, colors, gear, hand ownership, occlusion and phase order. Image2 is THIS actor's OWN original DATO portrait confirmed by authored roster, authority for their distinctive face and head construction. Image3 is approved HD1 Q PROPORTIONS/style only, especially its lower NEW-Q drawings: enormous head AND readable face or original mask about67-70% figure height, extremely short body/legs, broad little boots, crisp smooth dark outlines, broad separated colors and restrained smooth cel-painted finish. Do not copy image3's blue cap, generic boy face, outfit or gear. No visible stair-stepped pixel grid, pixel upscale, photo, glossy3D toy, tiny noisy detail or tall realistic proportions.\nExactly THREE COLUMNS by FOUR ROWS, twelve COMPLETE isolated figures on genuine transparent alpha. Row1 FRONT facing viewer, row2 LEFT PROFILE facing screen LEFT, row3 BACK no face, row4 RIGHT PROFILE facing screen RIGHT. In EACH row column1 NEUTRAL both boots planted, column2 small left-foot-forward step, column3 small right-foot-forward step. Equal scale and baseline, generous gaps and outer margins, all head/gear/feet inside their cell. Exactly TWO attached arms/hands and TWO short legs unless the original explicitly shows another structure. Natural wrists/elbows, no extra limbs or repeated weapons. Original image1, not the style sample, decides all equipment and its direction-dependent occlusion.\nNo text, labels, numbers, cell borders, grid, floor, cast shadow, glow, checkerboard or background. Actual alpha transparency. SUBJECT: original group073, BROWN DRAGON-HEADED BIPED SWORD-AND-SHIELD WARRIOR, confirmed original DATO073 dragon face. CRITICAL: NOT a centaur, NOT a horse, NOT a human face in a horn helmet. Exactly TWO LEGS, not four; NO horse torso, rump, hooves or horse tail. Head is the actual long brown scaled DRAGON snout, reptilian eye, two swept horn contours with dark crown/spine details from image2, natural small pointed fang visible near closed mouth and original jaw/cheek shapes. Do not add a human rider, human face, helmet over dragon snout, huge dinosaur torso or broad new wings. Make the original nonhuman dragon head enormous and readable at144/72/48px, tiny short upright humanoid body below.\nKeep image1's original brown head/side contours, brown torso, red waist/back accent, tiny dark blue lower panel, small gray-green armored gloves/feet. Exactly ONE upright flat SILVER STRAIGHT SWORD in anatomical RIGHT hand and ONE SQUARED pale gray-green SHIELD in anatomical LEFT hand. Shield has original plain DARK CROSS, flat top, mostly vertical sides and slightly angular/narrowed lower corners. No round shield. FRONT: upright sword on viewer LEFT, cross shield viewer RIGHT; LEFT profile: near-side cross shield on viewer RIGHT of the snout, far-side sword HIDDEN; BACK: sword viewer RIGHT, shield mostly viewer LEFT/hidden, brown dragon rear head/horns with no face; RIGHT profile: upright blade near LEFT edge of face/cheek, far-side shield HIDDEN, long dragon snout points screen right. Weapon is a sword, NOT a spear, lance, staff, axe or trident. Preserve original folded side silhouettes rather than inventing wings/armor. Natural two-arm two-leg chibi stance, no quadruped anatomy.",
+        "selected": false,
+        "reason": "正面頭部偏側向，未採用。",
+        "source_sha256": "9ed45ce431428b0ef33acea9cf039dc8c4891a93d833106ae64b3cc210cd248e"
+      },
+      {
+        "group": 77,
+        "source": "exec-59397704-4c64-4a0f-b3bb-f54e85240769.png",
+        "prompt": "Use case: identity-preserve. Asset type: Flame Dragon Knights 2 HD1 tactical MAP SPRITE MASTER. Image1 is the ORIGINAL twelve poses with correct game palette: primary authority for silhouette, directions, colors, gear, hand ownership, occlusion and phase order. Image2 is THIS actor's OWN original DATO portrait confirmed by authored roster, authority for their distinctive face and head construction. Image3 is approved HD1 Q PROPORTIONS/style only, especially its lower NEW-Q drawings: enormous head AND readable face or original mask about67-70% figure height, extremely short body/legs, broad little boots, crisp smooth dark outlines, broad separated colors and restrained smooth cel-painted finish. Do not copy image3's blue cap, generic boy face, outfit or gear. No visible stair-stepped pixel grid, pixel upscale, photo, glossy3D toy, tiny noisy detail or tall realistic proportions.\nExactly THREE COLUMNS by FOUR ROWS, twelve COMPLETE isolated figures on genuine transparent alpha. Row1 FRONT facing viewer, row2 LEFT PROFILE facing screen LEFT, row3 BACK no face, row4 RIGHT PROFILE facing screen RIGHT. In EACH row column1 NEUTRAL both boots planted, column2 small left-foot-forward step, column3 small right-foot-forward step. Equal scale and baseline, generous gaps and outer margins, all head/gear/feet inside their cell. Exactly TWO attached arms/hands and TWO short legs unless the original explicitly shows another structure. Natural wrists/elbows, no extra limbs or repeated weapons. Original image1, not the style sample, decides all equipment and its direction-dependent occlusion.\nNo text, labels, numbers, cell borders, grid, floor, cast shadow, glow, checkerboard or background. Actual alpha transparency. SUBJECT: original group077, human armored soldier entirely inside GRAY-GREEN STEEL GREAT HELM. HIS OWN DATO077 face is fully hidden by a smooth steel helmet with a plain BLACK T-shaped eye slit/nasal slit; NO visible cartoon eyes, mouth or skin face. No horned crown, plume, spikes or studs. Keep smooth rounded-square helm silhouette and T visor. Enlarge helmet according approved big-head Q style; extremely short body below it.\nOriginal image1 armor: gray-green steel, broad rounded steel SHOULDER PLATES on BOTH sides, compact plain torso, thick little armored forearms/hands, blue front waist panel and dark red belt/back accent, small gray-green boots. Shoulder plates are ARMOR, NOT shields. CRITICAL NO SHIELD ANYWHERE: no round shield, wooden shield, circular boss, buckler or cross heraldry. Exactly ONE tall plain upright slender SILVER STRAIGHT SWORD in anatomical RIGHT hand. FRONT sword on viewer LEFT, left arm is empty gloved fist on viewer RIGHT. LEFT profile: far-side sword HIDDEN by body, near shoulder plate visible; BACK sword viewer RIGHT, shoulder plates both sides, no visor on back; RIGHT profile: sword upright just LEFT of helmet face, not ahead of nose, far empty arm hidden. Keep original simple hilt without large ornate crossguard. Do NOT turn armor into a robot, expose generic boy face, add a shield as old medieval stock art, or decorate helmet with rivet rows. Tiny compact human armored body, broad plain head.",
+        "selected": false,
+        "reason": "盔頭比例及右向劍位需修訂，未採用。",
+        "source_sha256": "65f62cc044b3e7d305f33dd6dcd8da36bc0263187a52a6fd1e79ae88a1a1ad95"
+      },
+      {
+        "group": 89,
+        "source": "exec-9cdad207-58c3-462d-b1b0-2a1f41f006d9.png",
+        "prompt": "Use case: identity-preserve. Asset type: Flame Dragon Knights 2 HD1 tactical MAP SPRITE MASTER. Image1 is the ORIGINAL twelve poses with correct game palette: primary authority for silhouette, directions, colors, gear, hand ownership, occlusion and phase order. Image2 is THIS actor's OWN original DATO portrait confirmed by authored roster, authority for their distinctive face and head construction. Image3 is approved HD1 Q PROPORTIONS/style only, especially its lower NEW-Q drawings: enormous head AND readable face or original mask about67-70% figure height, extremely short body/legs, broad little boots, crisp smooth dark outlines, broad separated colors and restrained smooth cel-painted finish. Do not copy image3's blue cap, generic boy face, outfit or gear. No visible stair-stepped pixel grid, pixel upscale, photo, glossy3D toy, tiny noisy detail or tall realistic proportions.\nExactly THREE COLUMNS by FOUR ROWS, twelve COMPLETE isolated figures on genuine transparent alpha. Row1 FRONT facing viewer, row2 LEFT PROFILE facing screen LEFT, row3 BACK no face, row4 RIGHT PROFILE facing screen RIGHT. In EACH row column1 NEUTRAL both boots planted, column2 small left-foot-forward step, column3 small right-foot-forward step. Equal scale and baseline, generous gaps and outer margins, all head/gear/feet inside their cell. Exactly TWO attached arms/hands and TWO short legs unless the original explicitly shows another structure. Natural wrists/elbows, no extra limbs or repeated weapons. Original image1, not the style sample, decides all equipment and its direction-dependent occlusion.\nNo text, labels, numbers, cell borders, grid, floor, cast shadow, glow, checkerboard or background. Actual alpha transparency. SUBJECT: original group089, HUMAN wearing gray-green FACEPLATE/HELMET with dark RED soft top cover. DATO089 confirms steel mask, dark blue horizontal eye slit, tiny RED side fitting near eye band, one dark BLUE round cheek fastener and exposed TAN HUMAN NECK at lower rear. He is NOT a robot or golem. Keep original metal face covering, no newly exposed eyes/nose/mouth, no generic human face painted on mask. The original head side fittings are simple solid gray-green forms; DO NOT add circular ventilation GRILLES, speaker holes, robot ears, hoses, pistons, hinge segmentation, antennae or extra horns. Original map12 poses determine the compact simple head profile, red folded top/rear contour, solid horizontal faceplate; image2 controls its own side fittings and tiny exposed human neck only.\nOriginal armor: simple gray-green shoulder/arm plates and compact dark body, dark red waist/hip cloth, small BLUE front panel and small gray-green boots, original head much larger than short torso. Both hands EMPTY in ALL twelve map poses. Do NOT infer a bow from class label, add a sword, shield, staff, crossbow or mechanical backpack. FRONT: plain eye slit and original small red fitting on viewer RIGHT of eye band, simple faceplate. LEFT profile: dark blue round lower side fastener and solid plate, tiny neck if visible; BACK: red top cover and gray-green band with no face or grille; RIGHT profile: original broad solid plate silhouette, no robot speaker. Keep human armor joints natural, two arms and two feet, no visible robotic skeleton or white square head.",
+        "selected": true,
+        "source_sha256": "10dacffb65b43430aba14edb52f12ea11200fff2d9e971874cefe3d37f40dfbf"
+      },
+      {
+        "group": 125,
+        "source": "exec-691407d5-d41e-45a5-b509-545265526838.png",
+        "prompt": "Use case: identity-preserve. Asset type: Flame Dragon Knights 2 HD1 tactical MAP SPRITE MASTER. Image1 is the ORIGINAL twelve poses with correct game palette: primary authority for silhouette, directions, colors, gear, hand ownership, occlusion and phase order. Image2 is THIS actor's OWN original DATO portrait confirmed by authored roster, authority for their distinctive face and head construction. Image3 is approved HD1 Q PROPORTIONS/style only, especially its lower NEW-Q drawings: enormous head AND readable face or original mask about67-70% figure height, extremely short body/legs, broad little boots, crisp smooth dark outlines, broad separated colors and restrained smooth cel-painted finish. Do not copy image3's blue cap, generic boy face, outfit or gear. No visible stair-stepped pixel grid, pixel upscale, photo, glossy3D toy, tiny noisy detail or tall realistic proportions.\nExactly THREE COLUMNS by FOUR ROWS, twelve COMPLETE isolated figures on genuine transparent alpha. Row1 FRONT facing viewer, row2 LEFT PROFILE facing screen LEFT, row3 BACK no face, row4 RIGHT PROFILE facing screen RIGHT. In EACH row column1 NEUTRAL both boots planted, column2 small left-foot-forward step, column3 small right-foot-forward step. Equal scale and baseline, generous gaps and outer margins, all head/gear/feet inside their cell. Exactly TWO attached arms/hands and TWO short legs unless the original explicitly shows another structure. Natural wrists/elbows, no extra limbs or repeated weapons. Original image1, not the style sample, decides all equipment and its direction-dependent occlusion.\nNo text, labels, numbers, cell borders, grid, floor, cast shadow, glow, checkerboard or background. Actual alpha transparency. SUBJECT: original group125, RED-ROBED ADULT MALE HUMANOID. His OWN original DATO125 has a mature long angular human-like face with furrowed brow/forehead creases, narrow dark eyes, long straight slightly pointed nose, defined gaunt cheek planes, thin firmly CLOSED straight mouth and long angular chin. NO white beard, mustache or generic cute boy face; original pale lower-face pixels are not permission to invent a beard. Do NOT share any party member's round blue-eyed face. Preserve the original face-specific maturity and serious restrained expression, not a child in costume.\nOriginal image1: red head drape/hood contour with plain GOLD forehead band, red side folds around face continuing toward back shoulders, long red outer robe/cape with two narrow GOLD vertical front borders, small gold collar/band, dark RED/navy inner panel, very short lower body almost hidden in robe. Keep original red head silhouette and forehead opening as image1; no pointed wizard hat, crown spikes, halo, gems, extra shoulder armor or staff. Hands remain low and largely hidden by robe, no punching pose. ALL poses EMPTY HANDS, no weapon. FRONT show own mature long face under original gold band; LEFT profile long nose and chin point screen left, red drape behind; BACK full original red draped shape with no face; RIGHT profile nose/chin screen right. Tiny planted feet, subtle original walk phases, not long marching legs. Huge original-specific head and short robe body, smooth restrained HD finish.",
+        "selected": true,
+        "source_sha256": "87ace714fecc6cf901ae14fc62eb91bb8c39c09a12ae62b0e0bb0b053096e628"
+      },
+      {
+        "group": 133,
+        "source": "exec-23d906e1-8129-4553-b24c-dc2cdc492d84.png",
+        "prompt": "Use case: identity-preserve. Asset type: Flame Dragon Knights 2 HD1 tactical MAP SPRITE MASTER. Image1 is the ORIGINAL twelve poses with correct game palette: primary authority for silhouette, directions, colors, gear, hand ownership, occlusion and phase order. Image2 is THIS actor's OWN original DATO portrait confirmed by authored roster, authority for their distinctive face and head construction. Image3 is approved HD1 Q PROPORTIONS/style only, especially its lower NEW-Q drawings: enormous head AND readable face or original mask about67-70% figure height, extremely short body/legs, broad little boots, crisp smooth dark outlines, broad separated colors and restrained smooth cel-painted finish. Do not copy image3's blue cap, generic boy face, outfit or gear. No visible stair-stepped pixel grid, pixel upscale, photo, glossy3D toy, tiny noisy detail or tall realistic proportions.\nExactly THREE COLUMNS by FOUR ROWS, twelve COMPLETE isolated figures on genuine transparent alpha. Row1 FRONT facing viewer, row2 LEFT PROFILE facing screen LEFT, row3 BACK no face, row4 RIGHT PROFILE facing screen RIGHT. In EACH row column1 NEUTRAL both boots planted, column2 small left-foot-forward step, column3 small right-foot-forward step. Equal scale and baseline, generous gaps and outer margins, all head/gear/feet inside their cell. Exactly TWO attached arms/hands and TWO short legs unless the original explicitly shows another structure. Natural wrists/elbows, no extra limbs or repeated weapons. Original image1, not the style sample, decides all equipment and its direction-dependent occlusion.\nNo text, labels, numbers, cell borders, grid, floor, cast shadow, glow, checkerboard or background. Actual alpha transparency. SUBJECT: original group133, BROWN-HAIRED GIRL/YOUNG WOMAN with soft cheerful original DATO133 face. Her OWN original portrait has warm DARK BROWN irises, large rounded eyes, soft slender brows, gently rounded full cheeks, small nose and small relaxed CLOSED smile; no angry boy eyebrows, generic blue eyes, heavy cosmetics or another character's face. Head hair is straight medium brown with a VERY STRAIGHT BLUNT HORIZONTAL FRINGE across forehead and long even side locks, shoulder-length rounded loose back hair, simple dark brown headband arc from original. CRITICAL NO HIGH PONYTAIL, no tied long side ponytail, no swept spiky fringe or added cloth cap. Image1's top/forehead contour and original image2 blunt bangs control the actual hair, not old generic anime-girl hair.\nOriginal outfit simple muted GRAY-GREEN short tunic with pale horizontal chest bands and dark waist, tiny dark NAVY trousers/lower garment, little brown boots, exposed little tan hands down at sides. No armor, weapon, staff, sword, shield, bow, skirt/frills, hair ribbons, bag or jewelry. Both hands EMPTY in all twelve poses. FRONT straight bangs, own warm brown eyes and gentle smile; LEFT profile bangs and loose rounded rear hair extending only as original, NO ponytail; BACK shoulder-length loose solid rounded brown hair with subtle simple headband at top and no giant braid, no face; RIGHT profile same loose straight hair and own little nose. Extremely short compact clothed Q body with enormous readable head/face. Keep original outfit plain and mature enough to resemble her own portrait, no glossy doll styling.",
+        "selected": true,
+        "source_sha256": "2aacd03acb3a54bf5a90030e5ac9a0ea0d33b96bfac807dfb7fd284542ce949d"
+      },
+      {
+        "group": 73,
+        "source": "exec-f5d04540-f588-468b-8868-d9c24fe6e4ab.png",
+        "prompt": "Use case: precise-object-edit / identity-preserve. Image1 is the EDIT TARGET, the already generated group073 brown dragon biped twelve-pose sprite master. Image2 original twelve poses is direction/gear authority. Image3 original DATO073 is dragon identity reference. Keep exact 3-column/4-row layout, all cell positions, transparent background, scale, swords/shields/hands, blue waist panel, tiny biped feet and all nine figures in rows2/3/4 UNCHANGED. NO horse parts or human face.\nCorrect ONLY the HEAD ORIENTATION of the THREE figures in TOP ROW. They must face STRAIGHT TOWARD THE VIEWER as original FRONT poses, not the current sideways/three-quarter dragon face. Draw the brown DRAGON snout pointing directly out toward viewer at CENTER of face, both reptilian eyes on opposite sides of a centered nose ridge, nostrils seen symmetrically at front, paired horn contours in front view. Huge brown dragon head stays original-specific; no human nose or human face, no helmet. Retain top-row original neutral/left-step/right-step body poses and shield/sword positions exactly: upright sword viewer LEFT, cross square shield viewer RIGHT. The long dragon muzzle is FORESHORTENED in front view, do NOT have it extend far to screen left/right. Keep shield overlapping near edge of face naturally but show enough of both eyes to establish front direction. Other nine heads remain precisely their existing left/back/right orientations. Preserve all source alpha and clean restrained HD Q finish. No new limbs, tail, wings, text, grid, floor, shadow or background.",
+        "selected": true,
+        "source_sha256": "56ee9daa263b057cf752b0d42e8d9e431e739b6720dfd47617c94bc6a214cfce"
+      },
+      {
+        "group": 77,
+        "source": "exec-b529b322-6c7d-402b-ab8f-ea260132bb89.png",
+        "prompt": "Use case: precise-object-edit / identity-preserve. Image1 is EDIT TARGET, current group077 gray-green armored great-helm soldier 3-column/4-row sprite master. Image2 original twelve map poses is equipment/direction authority. Image3 approved lower NEW-Q Ares drawings is huge-head/extremely-short-body proportion/style only. Keep EXACT twelve-figure grid, cell positions and foot baselines, four directions/three tiny walk phases, gray-green steel color, smooth helmet's original BLACK T visor, empty left fist, blue front panel/red belt, upright single sword, genuine alpha. No shield or visible face, horns, new gear or rivet patterns.\nApply ONLY these two corrections consistently:\n1. Increase the helmet/head together to around TWO THIRDS total figure height and shorten the chest/waist/legs further, like lower NEW-Q examples in image3. Keep broad plain shoulder plates but tuck them into tiny compact torso. Do not merely enlarge boots or keep a tall medieval-knight body. Helmet stays smooth with a simple T slit, no boy face.\n2. In the BOTTOM RIGHT-PROFILE ROW ONLY (figures facing screen RIGHT), move the upright sword and its holding right hand BACK to the viewer-LEFT edge of the helmet/cheek silhouette, matching image2. The blade must be vertically along the LEFT cheek/helmet boundary, behind the forward-facing edge; NOT ahead of the face on viewer right. Exactly one straight silver sword with natural attached wrist/arm. Keep anatomical hand ownership; do not add a second sword or mirror the figure. Front row still sword viewer LEFT. Left-profile row still no visible far-side sword. Back row still sword viewer RIGHT. Keep tiny neutral/left-step/right-step phases. No text, borders, floor/shadow, background or checkerboard; preserve transparent alpha.",
+        "selected": true,
+        "source_sha256": "df107394b5142e8a3fe7b7f5dd7eb939b0b31c592aed4408369c8d6548fb1483"
+      }
+    ]
+  },
+  "original_reference": {
+    "source": "原生FDICON三層與FDOTHER0代表色盤，六組由實際名冊綁DATO同號原版頭像，不能僅以圖組號猜身份。",
+    "groups": [
+      70,
+      73,
+      77,
+      89,
+      125,
+      133
+    ],
+    "records_sha256": "f83c1b1b9fddcbe3ba70fcce07450cc3fcd54d5121abca742a0f9ac7e5ab3f34",
+    "reference_boards": [
+      {
+        "file": "group-070-original-reference.png",
+        "sha256": "3b4264b7abcdfa5d523a413b7331a7b2f441959e720a76d2f8f714d5a3c4f543"
+      },
+      {
+        "file": "group-073-original-reference.png",
+        "sha256": "ee3b260ab11ef6e188393129e597b93a3ed2916bbfc888ca0070482423aeedf6"
+      },
+      {
+        "file": "group-077-original-reference.png",
+        "sha256": "2a91ecfd3865ec1c4a5b659af77edd05d5c60f4b6ac83fb8ca96968a55b6cd4d"
+      },
+      {
+        "file": "group-089-original-reference.png",
+        "sha256": "55b115b6d26e18900c6e2302ddabe72c9895c2db3674d75f5ca9cb0d4e0e5698"
+      },
+      {
+        "file": "group-125-original-reference.png",
+        "sha256": "1874eb1d1b42a569bba7292bbc95b0b2fae543e7c345e09aff25e3c5ea97556d"
+      },
+      {
+        "file": "group-133-original-reference.png",
+        "sha256": "aa1d7fb3100511f70a0f21a5b5afdc95dcec4e9157522a41f006f429a7466d3e"
+      }
+    ],
+    "scope": "視覺身份／覆蓋與裝備確認，不新增種族欄位語義、角色專名、AI或玩法原版精確結論。"
+  },
+  "faces": [
+    {
+      "group": 70,
+      "name": "藍色眼罩劍士",
+      "portrait_file": "remake/assets/portraits/DATO_070_m0.png",
+      "portrait_sha256": "2c2a3f948f7eec8410a0fe7da8f0a43a12e22d37ce1aff39e478a4aef6b0be5b",
+      "traits": [
+        "金屬眼罩",
+        "露出成熟方下巴與閉口",
+        "藍色頭部輪廓",
+        "斜持單劍"
+      ],
+      "comparison_label": "原版頭像與地圖素材，非對話HD頭像或唯一角色姓名驗收"
+    },
+    {
+      "group": 73,
+      "name": "龍頭戰士",
+      "portrait_file": "remake/assets/portraits/DATO_073_m0.png",
+      "portrait_sha256": "a87885fd5b98b08256e75df2b8b5277dfe79eda2ec3cf6cffe6ea8c34e0f02a6",
+      "traits": [
+        "長褐色龍吻",
+        "爬蟲眼與角輪廓",
+        "雙足非半人馬",
+        "直劍與十字方盾"
+      ],
+      "comparison_label": "原版頭像與地圖素材，非對話HD頭像或唯一角色姓名驗收"
+    },
+    {
+      "group": 77,
+      "name": "T形盔戰士",
+      "portrait_file": "remake/assets/portraits/DATO_077_m0.png",
+      "portrait_sha256": "a75d8c9fab8215e2795e88eca92f3891c4ad1d188d17bc307753dfe87487439e",
+      "traits": [
+        "封閉T形目縫",
+        "灰綠盔甲",
+        "無圓盾",
+        "單直劍"
+      ],
+      "comparison_label": "原版頭像與地圖素材，非對話HD頭像或唯一角色姓名驗收"
+    },
+    {
+      "group": 89,
+      "name": "紅巾面甲角色",
+      "portrait_file": "remake/assets/portraits/DATO_089_m0.png",
+      "portrait_sha256": "608e3020b217592d5e005f6a242ecd979c8c756d1a924151b938e9947479866a",
+      "traits": [
+        "灰綠面甲",
+        "紅頂輪廓",
+        "紅藍側扣",
+        "露出頸部",
+        "無側耳格柵"
+      ],
+      "comparison_label": "原版頭像與地圖素材，非對話HD頭像或唯一角色姓名驗收"
+    },
+    {
+      "group": 125,
+      "name": "紅袍人形",
+      "portrait_file": "remake/assets/portraits/DATO_125_m0.png",
+      "portrait_sha256": "1123b427bcd1b45e771b77d58d822289149ef76fe87150df33629823793397c4",
+      "traits": [
+        "成熟長臉與窄眼",
+        "長鼻與清楚下巴",
+        "無白鬍鬚",
+        "金額帶與紅袍"
+      ],
+      "comparison_label": "原版頭像與地圖素材，非對話HD頭像或唯一角色姓名驗收"
+    },
+    {
+      "group": 133,
+      "name": "棕髮少女",
+      "portrait_file": "remake/assets/portraits/DATO_133_m0.png",
+      "portrait_sha256": "a1ac6f6a38991b1a970add9ac6aedca6b37036c11e945ab86aae47f4ae923d31",
+      "traits": [
+        "平瀏海",
+        "棕眼",
+        "柔和圓頰與閉口微笑",
+        "直髮無馬尾",
+        "灰綠素衣"
+      ],
+      "comparison_label": "原版頭像與地圖素材，非對話HD頭像或唯一角色姓名驗收"
+    }
+  ],
+  "roster_bindings": [
+    {
+      "group": 70,
+      "map": 5,
+      "roster_file": "remake/assets/maps/map5/map5_units.json",
+      "roster_sha256": "f94337f25fc7ed7aec7041ee52a92f98309d69893a8e93fcce7e13eae5d49704",
+      "row": 21,
+      "initial_group": 0,
+      "camp": "ally",
+      "portrait": 70,
+      "battle_fig": 70,
+      "position": {
+        "x_word": 13,
+        "y_word": 24,
+        "raw_key": 70
+      },
+      "native_constructor": {
+        "branch": "high_class",
+        "index": 2,
+        "record": [
+          1,
+          2,
+          16,
+          0,
+          0,
+          5,
+          2,
+          1,
+          4,
+          30
+        ]
+      }
+    },
+    {
+      "group": 73,
+      "map": 24,
+      "roster_file": "remake/assets/maps/map24/map24_units.json",
+      "roster_sha256": "6809e16f413fbff0426aa6b2faa95b7612a5796d3b29ced49ff6374b12f5fbf9",
+      "row": 18,
+      "initial_group": 0,
+      "camp": "ally",
+      "portrait": 73,
+      "battle_fig": 73,
+      "position": {
+        "x_word": 10,
+        "y_word": 26,
+        "raw_key": 73
+      },
+      "native_constructor": {
+        "branch": "high_class",
+        "index": 5,
+        "record": [
+          4,
+          15,
+          24,
+          0,
+          0,
+          16,
+          11,
+          5,
+          7,
+          30
+        ]
+      }
+    },
+    {
+      "group": 77,
+      "map": 2,
+      "roster_file": "remake/assets/maps/map2/map2_units.json",
+      "roster_sha256": "34255b1005b4af6d9b97c94dee907e6f48207caa3c91be6039365ad0f33928b2",
+      "row": 20,
+      "initial_group": 2,
+      "camp": "enemy",
+      "portrait": 77,
+      "battle_fig": 77,
+      "position": {
+        "x_word": 8,
+        "y_word": 25,
+        "raw_key": 77
+      },
+      "native_constructor": {
+        "branch": "high_class",
+        "index": 9,
+        "record": [
+          1,
+          2,
+          18,
+          0,
+          0,
+          8,
+          4,
+          2,
+          4,
+          45
+        ]
+      }
+    },
+    {
+      "group": 89,
+      "map": 17,
+      "roster_file": "remake/assets/maps/map17/map17_units.json",
+      "roster_sha256": "4c3d2dfdab554a6f85b31ca54507c90506c8bcf10642f1c5ac8fe76244091d25",
+      "row": 18,
+      "initial_group": 0,
+      "camp": "enemy",
+      "portrait": 89,
+      "battle_fig": 89,
+      "position": {
+        "x_word": 39,
+        "y_word": 7,
+        "raw_key": 89
+      },
+      "native_constructor": {
+        "branch": "high_class",
+        "index": 21,
+        "record": [
+          1,
+          12,
+          30,
+          0,
+          0,
+          20,
+          10,
+          6,
+          5,
+          130
+        ]
+      }
+    },
+    {
+      "group": 125,
+      "map": 24,
+      "roster_file": "remake/assets/maps/map24/map24_units.json",
+      "roster_sha256": "6809e16f413fbff0426aa6b2faa95b7612a5796d3b29ced49ff6374b12f5fbf9",
+      "row": 45,
+      "initial_group": 0,
+      "camp": "enemy",
+      "portrait": 125,
+      "battle_fig": 125,
+      "position": {
+        "x_word": 10,
+        "y_word": 7,
+        "raw_key": 125
+      },
+      "native_constructor": {
+        "branch": "high_class",
+        "index": 57,
+        "record": [
+          7,
+          26,
+          140,
+          0,
+          25,
+          24,
+          9,
+          4,
+          4,
+          250
+        ]
+      }
+    },
+    {
+      "group": 133,
+      "map": 1,
+      "roster_file": "remake/assets/maps/map1/map1_units.json",
+      "roster_sha256": "79a246d2b1149fbc99bb00a44b29449e4ebbb44a1d25a72279941b3367514c58",
+      "row": 1,
+      "initial_group": 1,
+      "camp": "ally",
+      "portrait": 133,
+      "battle_fig": 133,
+      "position": {
+        "x_word": 15,
+        "y_word": 12,
+        "raw_key": 133
+      },
+      "native_constructor": {
+        "branch": "high_class",
+        "index": 65,
+        "record": [
+          1,
+          27,
+          12,
+          0,
+          0,
+          1,
+          3,
+          1,
+          4,
+          1
+        ]
+      }
+    }
+  ],
+  "gpu_pairs": {
+    "banded": [
+      70,
+      89
+    ],
+    "draconic": [
+      73,
+      77
+    ],
+    "robed": [
+      125,
+      133
+    ]
+  }
+}

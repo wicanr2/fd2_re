@@ -53,6 +53,18 @@
 
 王座廳父王恢復藍髮、金額飾、濃眉長鼻、藍色鬍鬚與成熟下巴，紅披風及空手沿原版。保留原生[三拍及尺寸對照](docs/figures/hd1-king-static-comparison.png)，不補成行走動畫。[完整故事畫面](docs/figures/hd1-king-story-game.png)取自原生map32名冊的受控故事載體，原本隱藏戰鬥資訊窗；場景其餘圖源維持現況。此處只驗父王地圖圖源，非正常序章流程、對話HD頭像或完整人物重繪驗收。
 
+![眼罩劍士與紅頂面甲角色的原版及HD1面容對照](docs/figures/hd1-six-banded-faces.png)
+
+眼罩劍士保留露出的下臉與斜持單劍；紅頂面甲保留紅藍側扣及頸部，去掉舊稿新增的耳側格柵。可看[四向及尺寸對照](docs/figures/hd1-six-banded-comparison.png)、[眼罩劍士戰場](docs/figures/hd1-six-070-game.png)與[面甲角色戰場](docs/figures/hd1-six-089-game.png)。
+
+![龍頭戰士與T形盔戰士的原版及HD1對照](docs/figures/hd1-six-draconic-faces.png)
+
+龍頭戰士依自己的原版大圖恢復雙足、龍吻與劍盾；T形盔戰士保留大肩甲和單劍，移除無據圓盾。可看[四向及尺寸對照](docs/figures/hd1-six-draconic-comparison.png)、[龍頭戰士戰場](docs/figures/hd1-six-073-game.png)與[鐵盔戰士戰場](docs/figures/hd1-six-077-game.png)。
+
+![紅袍人形與棕髮少女的原版及HD1面容對照](docs/figures/hd1-six-robed-faces.png)
+
+紅袍人形保留成熟長臉、窄眼與長鼻，沒有新增白鬍鬚；棕髮少女恢復平瀏海、棕眼與柔和表情，去掉馬尾。可看[四向及尺寸對照](docs/figures/hd1-six-robed-comparison.png)、[紅袍角色戰場](docs/figures/hd1-six-125-game.png)與[棕髮少女戰場](docs/figures/hd1-six-133-game.png)。三組面容圖皆為原版頭像與實際144／72／48像素地圖素材對照；戰場圖使用保留原陣營與位置的受控名冊群，地圖和資訊窗共用新版圖源，不代表正常章節流程或對話HD頭像驗收。其餘人物仍續審，完整總覽待全部重繪後更新。
+
 ![蓋亞原版與新版HD1四向及尺寸對照](docs/figures/hd1-gaia-q-comparison.png)
 
 蓋亞採用上圖的先前HD1版本定案，保留灰綠硬甲、藍色面罩與大頭短身。兩份加重候選不採用。[完整受控戰場及資訊窗](docs/figures/hd1-gaia-q-game.png)、[普通首章遊玩畫面](docs/figures/hd1-gaia-q-normal.png)均使用這版；十二姿態、主題切換與保存冷讀已抽驗。全部125組已做第一輪造型審查，身份與裝備偏移由[#287](https://github.com/wicanr2/fd2_re/issues/287)修正，其他比例由[#286](https://github.com/wicanr2/fd2_re/issues/286)續作；全部完成後才更新完整「原版／HD1」人物總覽。

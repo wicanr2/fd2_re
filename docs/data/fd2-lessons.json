@@ -4759,6 +4759,21 @@
         ],
         "pattern": "authored_story_fixture"
       }
+    },
+    {
+      "id": "hd-gpu-parts-require-complete-provenance",
+      "date": "2026-10-30",
+      "area": "HD記憶體與收據",
+      "rule": "大型HD人物矩陣沿tools/verify_fd2_hd1_chibi_party.py的audited-six流程分成有界GPU程序，CPU回歸另開程序。--gpu-parts只合併固定配對的完整收據與已結束memory報告；逐份核SHA、程式／清冊／候選一致、案例集合及PNG來源，缺件、重複、錯來源或未完成程序均拒收。命令與邊界依規格61「六組原版身份與裝備複核」及本批commands-r1.json。",
+      "why": "本批42個完整繪圖分三程序各14，峰值約4.9至5.8GB，均無OOM或kill；來源合併另拒缺份／重複份／錯份來源與記憶體報告。未實測單程序42，不宣稱它必然會OOM。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#hd1_six_identities_followup_20261030",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_hd1_chibi_party.py"
+        ],
+        "pattern": "verify_parts"
+      }
     }
   ]
 }
