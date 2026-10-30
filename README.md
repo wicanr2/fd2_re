@@ -33,6 +33,10 @@
 
 亞雷斯與哈瓦特的轉職形態也已修回原版裝備：亞雷斯保留人臉、藍軍帽與劍盾，哈瓦特保留成熟大鬍子、斧頭與方盾。可看[原版／HD1局部對照](docs/figures/hd1-native-variants-comparison.png)、[亞雷斯](docs/figures/hd1-ares-variant-game.png)及[哈瓦特](docs/figures/hd1-harvat-variant-game.png)的完整受控戰場與資訊窗。這些畫面以測試用圖組投影核對接線，不代表已驗升階流程或能力值。
 
+![哈諾與貝克威依各自原版頭像重繪的HD1面容](docs/figures/hd1-native-face-reference.png)
+
+哈諾的長鼻、細眼與抿嘴，以及貝克威的平眉、半闔眼與微揚嘴角，分別參考自己的原版大頭像。上圖比較原版頭像與實際144／72／48像素地圖素材，並非遊戲截圖或對話HD頭像驗收；[四向原版／HD1局部對照](docs/figures/hd1-native-faces-comparison.png)另列兩人的裝備與方向。[哈諾](docs/figures/hd1-hano-face-game.png)與[貝克威](docs/figures/hd1-bekwei-face-game.png)的完整受控戰場畫面，可查看地圖與資訊窗接線；測試用圖組投影不代表升階或自然出場驗收。其他角色的面容仍逐人複核，完整人物總覽待全部重繪後更新。
+
 ![蓋亞原版與新版HD1四向及尺寸對照](docs/figures/hd1-gaia-q-comparison.png)
 
 蓋亞採用上圖的先前HD1版本定案，保留灰綠硬甲、藍色面罩與大頭短身。兩份加重候選不採用。[完整受控戰場及資訊窗](docs/figures/hd1-gaia-q-game.png)、[普通首章遊玩畫面](docs/figures/hd1-gaia-q-normal.png)均使用這版；十二姿態、主題切換與保存冷讀已抽驗。全部125組已做第一輪造型審查，身份與裝備偏移由[#287](https://github.com/wicanr2/fd2_re/issues/287)修正，其他比例由[#286](https://github.com/wicanr2/fd2_re/issues/286)續作；全部完成後才更新完整「原版／HD1」人物總覽。

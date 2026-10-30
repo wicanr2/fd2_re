@@ -13,7 +13,7 @@ from verify_fd2_hd1_chibi_refresh import ROOT,sha,read,require,tree,rect,core
 
 RECIPE=ROOT/'remake/assets/themes/modern/hd1-party-chibi-refresh.recipe.json'
 GROUPS=(1,2,3)
-PROFILES={'party':GROUPS,'variants':(53,54)}
+PROFILES={'party':GROUPS,'variants':(53,54),'identity-pair':(51,63)}
 FRAMES=(0,1,2,3,6,9)
 
 def verify_gpu(d,folder,candidate,recipe=RECIPE,profile='party'):
@@ -21,13 +21,13 @@ def verify_gpu(d,folder,candidate,recipe=RECIPE,profile='party'):
     m=read(candidate/'manifest.json');r=read(recipe)
     require(d.get('status')=='PASS-HD1-CHIBI-PARTY-GPU','GPU status')
     require(d.get('profile','party')==profile,'GPU profile changed')
-    if profile=='variants':require(d.get('selector_projection_injected') is True,'selector injection disclosure missing')
+    if profile!='party':require(d.get('selector_projection_injected') is True,'selector injection disclosure missing')
     require(d.get('catalog_sha256')==sha(candidate/'catalog.json') and d.get('manifest_sha256')==sha(candidate/'manifest.json'),'candidate provenance')
     require(m['recipe_sha256']==sha(recipe) and m['compiler_sha256']==sha(ROOT/'tools/refresh_fd2_hd1_map_sprites.py'),'recipe/compiler changed')
     require(sha(ROOT/r['approved_preview'])==r['approved_preview_sha256'],'approved proportion changed')
     selected=[g['group'] for g in r['groups']]
     require(bool(selected) and len(set(selected))==len(selected) and set(selected)<=set(groups),'recipe groups')
-    if profile=='variants':require(selected==list(groups),'fixed variant recipe required')
+    if profile!='party':require(selected==list(groups),'fixed variant recipe required')
     require([g['group'] for g in m['groups']]==selected,'group manifest')
     catalog=read(candidate/'catalog.json')
     parents={a['source_group']:a for a in catalog['assets'] if a['role']=='map_sprite_set'}
@@ -50,7 +50,7 @@ def verify_gpu(d,folder,candidate,recipe=RECIPE,profile='party'):
     for case in cases:
         s=lookup[case['case']];g,f=s['group'],s['frame']
         require(g in groups and s['hud_group']==g and s['hud_frame']==f%3 and s['save_bytes']>0,'map/HUD provenance')
-        if profile=='variants':require(s.get('native_identity')==g-50 and s.get('selector_key')==g,'visual selector projection changed')
+        if profile!='party':require(s.get('native_identity')==g-50 and s.get('selector_key')==g,'visual selector projection changed')
         require(case['source_frame']==f and case.get('game_draw') is True and case.get('rgba_tolerance')==2,'Game.Draw scope')
         if s['interface']!='hd':continue
         name=case['case']+'.png'
@@ -85,6 +85,7 @@ def verify_normal(d,folder,candidate,binary,profile='party'):
     require(not visible.intersection(GROUPS),'source scope changed')
     scope='unchanged chapter1 source; new groups1/2/3 actual pixels verified only by controlled GPU, not natural membership'
     if profile=='variants':scope='unchanged chapter1 source with base selectors0/4/9/30; groups53/54 actual pixels verified only by controlled raw-selector projections, not promotion or natural membership'
+    if profile=='identity-pair':scope='unchanged chapter1 source with base selectors0/4/9/30; groups51/63 actual pixels verified only by controlled authored identities1/13 raw-selector projections, not promotion or natural membership'
     return dict(status='PASS-FULL-CANDIDATE-NORMAL-TRANSACTION',pngs=10,scope=scope)
 
 def register(formal,candidate,destination,recipe=RECIPE,profile='party'):
@@ -118,7 +119,7 @@ def main():
     for n in ('gpu','candidate','normal','binary','out'):p.add_argument('--'+n,type=Path,required=True)
     for n in ('formal','destination'):p.add_argument('--'+n,type=Path)
     p.add_argument('--recipe',type=Path,default=RECIPE,help='明示本批配方；必須符合所選固定矩陣')
-    p.add_argument('--profile',choices=PROFILES,default='party',help='party保持21案例；variants固定53／54共14案例與明示原始selector投影')
+    p.add_argument('--profile',choices=PROFILES,default='party',help='party固定21案例；variants固定53／54，identity-pair固定51／63，各14案例與明示selector投影')
     p.add_argument('--self-test',action='store_true');p.add_argument('--register',action='store_true');a=p.parse_args()
     require(not a.out.exists(),'fresh report required')
     d=read(a.gpu);result=verify_gpu(d,a.gpu.parent,a.candidate,a.recipe,a.profile);result['normal']=verify_normal(read(a.normal),a.normal.parent,a.candidate,a.binary,a.profile)
@@ -137,10 +138,10 @@ def main():
                 for row in x['cases']:row['f2']=False
             elif fault=='wrong-profile':x['profile']='party' if a.profile=='variants' else 'variants'
             elif fault=='wrong-selector':
-                if a.profile!='variants':continue
+                if a.profile=='party':continue
                 x['sources'][0]['selector_key']=99
             else:
-                if a.profile!='variants':continue
+                if a.profile=='party':continue
                 x.pop('selector_projection_injected',None)
             try:verify_gpu(x,a.gpu.parent,a.candidate,a.recipe,a.profile)
             except (ValueError,KeyError,IndexError):rejected.append(fault)

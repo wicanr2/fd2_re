@@ -204,31 +204,33 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 `hd1-native-chibi-map-sprites-refresh` · 缺陷 · [#286](https://github.com/wicanr2/fd2_re/issues/286) · 仍未完成 · 要人判
 
-使用者2026-10-30定版：蓋亞沿用前次對照PREVIOUS、目前已登錄的gaia-hd1-big-head-q-v1-master.png，兩份加重候選不採用；第30組兩項及25檔SHA保持，不再列體格待確認。
+使用者要求逐人參考原版大頭像，保留不同五官與表情。第51／63組已修正：哈諾依DATO001保留長鼻、細眼、抿嘴與灰綠甲單斧；貝克威依DATO013恢復人臉、平眉半闔眼、微揚嘴角與青綠衣弓箭筒。兩人依原版十二姿態維持方向與裝備遮蔽，已接正式地圖及資訊窗。
 
-第53／54組已修回哈瓦特成熟紅褐鬍鬚／斧盾，以及亞雷斯人臉／藍軍帽／劍盾，沿原版十二姿態與已定Q畫風。14完整Game.Draw、地圖／資訊窗、兩次F2、保存保持、170399核心點與十二反例通過；原三人21繪圖／十反例、三項重編／八來源拒收、21頂層Go與正式21來源案例／416幀／19反例通過。普通首章只驗完整候選載入、既有角色切換／走行取消及保存冷讀，受控selector投影不作升階、能力值或自然出場證據。GPU後續CPU的程序排序失敗已分程序補驗，完整失敗log保留，不宣稱原批次乾淨通過。
+14完整Game.Draw、兩次F2、172469核心點與十二反例，三項逐byte重編／八來源拒收、21頂層Go含字串、正式21來源案例／416幀／19反例及125組1455來源通過。普通首章十PNG只驗完整候選載入、原有角色切換／走行取消與保存新程序冷讀；明示測試selector投影不作升階、自然出場或能力值證據。
 
-125組1455來源已核；本批只重看53／54並依決定更新Gaia，其餘123組來源SHA保持。#287尚餘9組身份／裝備差異與6組待核，其他Q比例及完整README原版／HD1人物總覽尚未完成，本項保持OPEN。
+已修正2／53／54／51／63，尚餘48／50／52／55／56／76／79七組已見身份或裝備偏移；70／73／77／89／125／133六組身份待核。原哈諾1與亞雷斯4／54優先補五官複核，其餘人類逐人續審；相同比例及舊技術收據不能當全體臉部通過。蓋亞維持已選的先前HD1版，沒有再換加重稿。
 
-現況與重跑依58、61及HD主收據hd1_native_variants_followup_20261030；私人新稿已白名單保存，原7391美術檔不改寫。
+正式883項只換四項、879保持，50新檔白名單保存私人庫，原7441美術檔保持。README新增個別面容、四向尺寸與兩人受控戰場圖；完整人物總覽待全部重繪。本項保持OPEN。現況及重跑依58、61與主收據hd1_native_faces_followup_20261030。
 
-怎樣算做完：['使用者選定亞雷斯新比例，並保留定版原稿、原版來源、逐字提示與SHA；其他角色依相同標準重製，不能只改大圖總覽。', '125個可見圖組及1455幀逐組保留原生方向、步態／靜態相位、轉職身份、裝備特徵、腳底與透明契約；原版、已接受圖源及舊證據可追溯。', '正式清冊、白名單私人保存庫與載入預檢同步，拒收缺組、錯誤來源、方向錯誤、額外肢體／重複武器與裁切；其他圖源保持其已驗範圍。', '戰場人物、劇情地圖與資訊窗人物圖示沿同一美術主題顯示；四組介面／美術、走行／指令環與遮擋、普通操作及保存保持完成必要抽樣，集中逐章／平台人工仍由使用者接手。', '全部HD1人物重繪並登錄後，依同一正式清冊最新map_sprite_hd_set重新產生「原版／HD1」人物總覽，涵蓋人物、轉職及敵方並對齊方向／相位。更新README清晰分組圖及144／72／48像素樣本；不沿舊檔名或放大24像素父圖冒充HD1，不用整張長圖縮圖當作造型通過。', '哈瓦特各形態沿更老成、威嚴、大鬍子的修訂方向，保留原版髮鬚色與裝備，不能只換成少年臉配鬍子。']
+怎樣算做完：['使用者選定亞雷斯新比例，並保留定版原稿、原版來源、逐字提示與SHA；其他角色依相同標準重製，不能只改大圖總覽。', '125個可見圖組及1455幀逐組保留原生方向、步態／靜態相位、轉職身份、裝備特徵、腳底與透明契約；原版、已接受圖源及舊證據可追溯。', '正式清冊、白名單私人保存庫與載入預檢同步，拒收缺組、錯誤來源、方向錯誤、額外肢體／重複武器與裁切；其他圖源保持其已驗範圍。', '戰場人物、劇情地圖與資訊窗人物圖示沿同一美術主題顯示；四組介面／美術、走行／指令環與遮擋、普通操作及保存保持完成必要抽樣，集中逐章／平台人工仍由使用者接手。', '全部HD1人物重繪並登錄後，依同一正式清冊最新map_sprite_hd_set重新產生「原版／HD1」人物總覽，涵蓋人物、轉職及敵方並對齊方向／相位。更新README清晰分組圖及144／72／48像素樣本；不沿舊檔名或放大24像素父圖冒充HD1，不用整張長圖縮圖當作造型通過。', '哈瓦特各形態沿更老成、威嚴、大鬍子的修訂方向，保留原版髮鬚色與裝備，不能只換成少年臉配鬍子。', '每個人類角色分別參考自己的原版大頭像，記錄臉型、眉眼、鼻形、嘴形及表情；相同Q比例不等於面容通過，不只換髮型沿用同一張臉。']
 
-證據：`['docs/knowledge-base/61-modern-theme-runtime-spec.md', 'remake/assets/themes/modern/catalog.json', 'docs/figures/modern-map-sprites-overview.png', 'docs/figures/hd1-ares-q-design.png', 'docs/figures/hd1-ares-q-game.png', 'remake/assets/themes/modern/hd1-ares-chibi-refresh.recipe.json', 'docs/figures/hd1-chibi-party-comparison.png', 'remake/assets/themes/modern/hd1-party-chibi-refresh.recipe.json', 'remake/cmd/fd2/modern_hd_chibi_party_test.go', 'docs/data/fd2-modern-hd-battlefield-20261019.json', 'remake/assets/themes/modern/hd1-harvat-mature.recipe.json', 'docs/figures/hd1-harvat-mature-game.png']`
+證據：`['docs/knowledge-base/61-modern-theme-runtime-spec.md', 'remake/assets/themes/modern/catalog.json', 'docs/figures/modern-map-sprites-overview.png', 'docs/figures/hd1-ares-q-design.png', 'docs/figures/hd1-ares-q-game.png', 'remake/assets/themes/modern/hd1-ares-chibi-refresh.recipe.json', 'docs/figures/hd1-chibi-party-comparison.png', 'remake/assets/themes/modern/hd1-party-chibi-refresh.recipe.json', 'remake/cmd/fd2/modern_hd_chibi_party_test.go', 'docs/data/fd2-modern-hd-battlefield-20261019.json', 'remake/assets/themes/modern/hd1-harvat-mature.recipe.json', 'docs/figures/hd1-harvat-mature-game.png', 'remake/assets/themes/modern/hd1-native-face-refresh.recipe.json', 'docs/figures/hd1-native-face-reference.png']`
 
 ### P1 HD1人物身份偏移：兜帽、人形轉職與裝備須依原版修正
 
 `hd1-map-sprite-native-identity-drift` · 缺陷 · [#287](https://github.com/wicanr2/fd2_re/issues/287) · 仍未完成 · 要人判
 
-已修正2／53／54：鐵諾灰綠布兜帽、哈瓦特成熟鬍鬚／斧盾、亞雷斯人臉／藍軍帽／劍盾。第53／54組依原版十二姿態，14完整繪圖與地圖資訊窗、兩次F2與保存保持、獨立十二反例及普通首章候選相容通過，已正式登錄／白名單保存私人庫。受控selector投影不證明升階流程、能力值或自然出場。
+使用者要求逐人參考原版大頭像，保留不同五官與表情。第51／63組已修正：哈諾依DATO001保留長鼻、細眼、抿嘴與灰綠甲單斧；貝克威依DATO013恢復人臉、平眉半闔眼、微揚嘴角與青綠衣弓箭筒。兩人依原版十二姿態維持方向與裝備遮蔽，已接正式地圖及資訊窗。
 
-尚餘9組已見偏移：48／50／52／55／63原版可見人臉的人形誤變機器人；51／56頭盔或武器偏移；76盾形與79新增骷髏面容。70／73／77／89／125／133另補原版身份證據。畫風沿亞雷斯、哈諾與成熟哈瓦特，不能因載入／GPU通過便宣稱原版身份正確。本項保持OPEN。
+14完整Game.Draw、兩次F2、172469核心點與十二反例，三項逐byte重編／八來源拒收、21頂層Go含字串、正式21來源案例／416幀／19反例及125組1455來源通過。普通首章十PNG只驗完整候選載入、原有角色切換／走行取消與保存新程序冷讀；明示測試selector投影不作升階、自然出場或能力值證據。
 
-來源、逐組評語及限制依61與HD主收據hd1_native_variants_followup_20261030；前批收據與原版定位保留，規則、步態、保存與原版模式未改。
+已修正2／53／54／51／63，尚餘48／50／52／55／56／76／79七組已見身份或裝備偏移；70／73／77／89／125／133六組身份待核。原哈諾1與亞雷斯4／54優先補五官複核，其餘人類逐人續審；相同比例及舊技術收據不能當全體臉部通過。蓋亞維持已選的先前HD1版，沒有再換加重稿。
 
-怎樣算做完：['逐組以固定原生三層、FDOTHER0代表色盤與有對應身份的原版頭像／大圖核身份，不沿舊候選或圖說猜職業／種族。', '優先修正2、48、50、51、52、53、54、55、56、63、76、79的已見差異，70、73、77、89、125、133補證後逐項確認或修正；所有結論保留來源及未知等級。', '新稿依已定大頭短身比例接正式地圖、故事與資訊窗，來源、方向／相位、F2／獨立介面與保存完成必要檢查後按白名單保存私人庫，集中人工由使用者接手。']
+正式883項只換四項、879保持，50新檔白名單保存私人庫，原7441美術檔保持。README新增個別面容、四向尺寸與兩人受控戰場圖；完整人物總覽待全部重繪。本項保持OPEN。現況及重跑依58、61與主收據hd1_native_faces_followup_20261030。
 
-證據：`['docs/knowledge-base/61-modern-theme-runtime-spec.md', 'docs/data/fd2-modern-hd-battlefield-20261019.json', 'remake/assets/portraits/DATO_002_m0.png']`
+怎樣算做完：['逐組以固定原生三層、FDOTHER0代表色盤與有對應身份的原版頭像／大圖核身份，不沿舊候選或圖說猜職業／種族。', '優先修正2、48、50、51、52、53、54、55、56、63、76、79的已見差異，70、73、77、89、125、133補證後逐項確認或修正；所有結論保留來源及未知等級。', '新稿依已定大頭短身比例接正式地圖、故事與資訊窗，來源、方向／相位、F2／獨立介面與保存完成必要檢查後按白名單保存私人庫，集中人工由使用者接手。', '每個人類角色分別參考自己的原版大頭像，記錄臉型、眉眼、鼻形、嘴形及表情；相同Q比例不等於面容通過，不只換髮型沿用同一張臉。']
+
+證據：`['docs/knowledge-base/61-modern-theme-runtime-spec.md', 'docs/data/fd2-modern-hd-battlefield-20261019.json', 'remake/assets/portraits/DATO_002_m0.png', 'remake/assets/themes/modern/hd1-native-face-refresh.recipe.json', 'docs/figures/hd1-native-face-reference.png']`
 
 ## runtime — 還沒接進正式執行期
 

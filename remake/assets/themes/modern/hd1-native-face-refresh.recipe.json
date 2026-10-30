@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_hd1_chibi_map_refresh",
+  "base_catalog_sha256": "1e67906ebf4a231ad80952415aea39622dd566a5a96621ffc6c5255c897fa9bb",
+  "approved_preview": "docs/figures/hd1-ares-q-design.png",
+  "approved_preview_sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e",
+  "approval": "沿已定大頭短身比例；使用者2026-10-30要求逐人依原版大頭像保留不同臉型、五官與表情。只修第51／63組身份、裝備與面容，不改玩法。",
+  "native_bank_sha256": "7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44",
+  "palette_sha256": "404db1ca72ffc19fa7404fbc59bde98cdf239f63fe3375ec248a8142073a28bf",
+  "groups": [
+    {
+      "group": 51,
+      "master_file": "fdicon-051-hd1-face-q-v1-master.png",
+      "master_sha256": "47cd1b297e7b96bfebc785ead64a90f62e290008cd1668efb99b3486c6633022",
+      "output_prefix": "fdicon-051-hd1-face-q-v1"
+    },
+    {
+      "group": 63,
+      "master_file": "fdicon-063-hd1-face-q-v1-master.png",
+      "master_sha256": "463530464d009ee07cc3ec10960651fd0a208038f6aecb788f43efa20b3e46de",
+      "output_prefix": "fdicon-063-hd1-face-q-v1"
+    }
+  ],
+  "policy": "第51／63組十二格前左後右各三拍，首欄中性。哈諾棕髮頭帶、灰綠甲與單斧，無盾；貝克威金長髮頭帶、青綠衣與弓箭筒。各方向裝備依原版遮蔽，不新增裝備或肢體。哈諾瘦長稜角臉、長直鼻、細眼、抿嘴；貝克威長臉、平眉半闔眼、微揚嘴角。不得套用同一可愛圓臉。",
+  "image_generation": {
+    "tool": "image_gen.imagegen",
+    "mode": "builtin",
+    "transparent_background": true,
+    "jobs": [
+      {
+        "group": 51,
+        "source": "exec-e11dd10a-0d3d-4187-bca6-6c1e8d67a537.png",
+        "prompt": "Use case: identity-preserve. Asset type: HD1 tactical map sprite master for Flame Dragon Knights 2, original FDICON group051. Image1 is the original twelve map poses with the correct game palette and is authoritative for identity, equipment, placement and colors. Image2 is the approved Hano group001 Q rendering reference: retain that recognizable short tousled chestnut/rust brown hair, thick charcoal forehead band, serious adult clean-shaven human face, huge head AND face and extremely short compact body. Use image2's clean dark contour, big readable color blocks and smooth restrained painted cel shading ONLY; the original group051 controls its heavier gray-green armor and axe placements, not the reference's brown tunic or extra pouches.\nThe current group051 wrongly became a faceless sealed black helmet with sword and shield. Restore a clearly visible HUMAN face and hair, with ONE AXE, no sword and no invented shield. Original gray-green/olive steel shoulder plates, compact green-gray torso/gauntlets/boots, small dark navy/green undersuit, no new cloak or bag. Single short-handled gray/silver-blue axe with a dark brown handle. In FRONT, original axe head is beside the viewer-LEFT lower face/chest, not raised above the head; its short handle remains visibly connected to one natural gripping hand. LEFT-facing profile: axe blade is hidden behind head/body in the original row2, do not put a big axe head in front of the face. BACK: follow the original's mostly hidden axe and clear green-gray back armor. RIGHT-facing profile: original axe blade appears ahead of the lower face/chest toward screen RIGHT, angled up as in original row4. Preserve these original visible placements rather than copying the style reference's every weapon position. Exactly one axe, two arms/two hands, two legs, with relaxed natural wrists and no extra limbs, no floating or duplicated blade. Do not use an anatomical guess to override the source views.\nOne genuinely transparent 3 COLUMN by4 ROW sprite sheet, exactly twelve complete isolated figures. Row1 FRONT, row2 LEFT profile facing screen left, row3 BACK, row4 RIGHT profile facing screen right. In every row column1 neutral standing BOTH boots planted, column2 small left foot forward, column3 small right foot forward. The FIRST column is neutral, never the middle. Same cardinal view in each row. Same scale/foot baseline, generous transparent margins, all hair/axe/boots inside cells, no overlaps or cropping. Head including face and hair about67-70% of whole height, tiny shoulders/body and stubby legs, adult stern character rather than infant. Readable face and headband at144/72/48px. Smooth clean 2D HD1 Q game art; no pixel upscale, photographic/3D rendering, excessively intricate surface texture or shiny toy plastic. No helmet, cap, shield, sword, beard, gold ornaments, cape, pouch, extra accessory, third arm, background, text, labels, borders, grid, ground, shadows, glow or checkerboard. Real transparent alpha.",
+        "selected": false,
+        "reason": "未採用：臉部過於通用或右向弓位偏移"
+      },
+      {
+        "group": 51,
+        "source": "exec-1c8c77c1-81ac-40cf-9ed5-ea403eee00ce.png",
+        "prompt": "Use case: identity-preserve. Edit the facial identity of image1's Hano group05112-pose sprite sheet using image2 ORIGINAL DATO001 portrait as authority. The user explicitly rejects everyone sharing the same generic cute face. Keep the approved enormous-head/extremely-short-body Q proportions, but make HANO'S actual face recognizable from the original portrait: long lean ANGULAR face, prominent long straight projecting nose and distinct angular nose bridge, high angular cheekbones, tapered firm chin, narrow stern half-lidded horizontal eyes with small dark pupils, flatter heavy brows with subtle tension, thin firmly closed lips. Clean-shaven adult, no beard or wrinkles added. Do NOT use the current round baby cheeks, tiny dot nose, giant round sparkling eyes or same symmetric V-frowning generic hero face. The original profile nose is a very important recognizable shape: exaggerate that long sharp nose and angular lean jaw enough to survive a144px sprite and72/48px thumbnail. FRONT face should have a visibly longer nose, slimmer cheek shape and narrower eyes; LEFT/RIGHT profiles show that same long straight nose, sharp cheek and tapered chin. Distinct adult serious Hano identity, NOT angry Ares or round-faced child. Keep chestnut tousled hair and dark charcoal forehead band exactly as the same character. Palette and2D hand-painted/cel style remain unchanged; clear lines and broad shapes, not realistic3D shading. No new details or colors elsewhere.\nPreserve all EQUIPMENT AND POSES from image1: gray-green compact armor, SINGLE gray/silver-blue axe with brown handle, front axe viewer-left, left-profile blade occluded, back largely hidden, right-profile axe ahead of lower chest. No helmet, cap, sword, shield, pouch, cloak, extra hand or limb. Exactly3columns x4rows,12 separate full-body figures. First column neutral, second/third opposite small steps, rows front/left/back/right. Back row has no face; do not add eyes there. Keep all silhouettes/cells, scale, foot baseline and pose differences as close as possible. Genuine transparent alpha; no text, labels, borders, grid, background, floor or cast shadow. Edit the individual FACE, nose, eyes, jaw and expression to match original, preserve approved Q body proportions.",
+        "selected": true,
+        "reason": "依原版面容及裝備選用"
+      },
+      {
+        "group": 63,
+        "source": "exec-404e9c2a-9b88-4087-aa78-3a78d79a50e4.png",
+        "prompt": "Use case: identity-preserve. Asset type: HD1 tactical-map sprite master, Flame Dragon Knights2 original FDICON group063. Input1 is ORIGINAL twelve map poses enlarged using the game's true palette: authority for human identity, outfit, bow/quiver, hand, directions and equipment placement. Input2 is the original DATO013 portrait: authority for the adult male face, long golden-blond hair, dark charcoal/navy forehead band, visible human eyes, angular brows/cheekbones and calm serious expression. Input3 is the approved HD1 Hano Q sprite sheet, use ONLY its enormous head AND face, extremely short body/stubby boots, clean dark contours, clear large color areas and smooth restrained 2D painted/cel style, NOT its brown hair, axe, armor, expression or outfit. The current group063 became a gray robot; restore this distinctly HUMAN blond archer, never a robotic head, visor or helmet.\nExactly 3 columns x4 rows,12 complete isolated genuinely transparent sprites. Row1 FRONT; row2 LEFT PROFILE looking screen left; row3 BACK away from viewer; row4 RIGHT PROFILE looking screen right. EVERY row column1 neutral idle with BOTH boots planted, column2 a small left-foot-forward step, column3 small right-foot-forward step; subtle grounded steps with one consistent cardinal view. First column must be neutral, not center. Equal scale/baseline, generous clear alpha gaps, no clipping/overlap. Very large head including visible FACE about67-70% of whole figure, shoulders and body tiny and legs very short. Do not merely enlarge hair and leave a tiny face. Preserve the portrait's mature adult male face, firm brows, subtle cheek structure and restrained eyes while using Q proportions; not feminine makeup or baby/teen face. Large golden-blond straight hair, parted over a wide dark forehead band, broad clean side curtains and down the back. No ears pointed like an elf.\nOriginal palette: golden-blond hair, charcoal/navy headband, peach human skin, compact dark teal/gray-green upper clothes with navy lower areas, original bright yellow-green belt/front accent and very short gray-green boots. Preserve those simple large color blocks, no new heavy full plate armor. Exactly ONE slender dark gray-green BOW with a fine visible bowstring, HELD DOWN in the original same anatomical hand, not shooting, no nocked arrow. FRONT the held bow is on VIEWER LEFT, bow tips extend a little above and below grip. BACK bow on VIEWER RIGHT, and the original brown diagonal QUIVER across back with a few yellow fletchings at its upper-left end. LEFT-facing profiles: far-side bow is occluded by body/hair, do NOT add a visible bow in front of face. RIGHT-facing profile: the bow is visible vertically along the LEFT edge of face/body, slightly ahead of the broad blond hair curtain, curved limb and string distinguish it from a straight sword. Keep quiver strapped to back, not in a hand. No loose arrows, blade, shield, sword, axe, spear, staff, pouch or added cape. Exactly two arms, two hands, two legs with natural joints. No third hand by chin. Match visible original view placement and never move gear to another hand arbitrarily.\nAt144/72/48 pixels the face, band, blond hair silhouette and separate bow/quiver must remain readable. Clean polished HD1 game art, no pixel upscale or photographic/3D render, no fine rivets, glitter, filigree or shiny toy effect. No text, labels, numbers, grid, frame, floor, cast shadows, glow, background or checkerboard. Real transparent alpha.",
+        "selected": false,
+        "reason": "未採用：臉部過於通用或右向弓位偏移"
+      },
+      {
+        "group": 63,
+        "source": "exec-ced7ad9d-d5c2-4215-ae9a-503ce9262fe3.png",
+        "prompt": "Use case: precise-object-edit. Edit image1, this transparent12-pose blond male archer sheet. Image2 is the ORIGINAL group063 map poses and controls the bow placement. Correct ONLY the THREE BOTTOM-ROW RIGHT-FACING figures: their bow currently protrudes in front of the nose on the far IMAGE RIGHT. In the original RIGHT-facing profile, the bow is on IMAGE LEFT of the visible FACE, along the FRONT EDGE OF THE BLOND HAIR CURTAIN behind the cheek, NOT in front of the nose. Relocate the SAME ONE bow and its gripping hand LEFTWARD to lie just to the LEFT of the face/cheek, beside the shoulder at the front edge of the hair. The bow limb and string rise vertically along that face-left/hair-right boundary; do not obstruct or extend to the RIGHT of the nose. Front row has bow on viewer left, back bow on viewer right; bottom remains the SAME anatomical weapon hand, do not switch hands. Keep exactly TWO hands total: bow-gripping hand on the left side of bottom figure under the rear cheek/hair edge; one empty free hand in front on image right. Remove the OLD front/right bow AND old gripping hand when relocating; do not leave a third hand, duplicate bow or floating string. Preserve original standing/left-step/right-step differences, compact body and baseline. All characters still face RIGHT in bottom row. Keep first nine figures and their original gear/directions as closely as possible. Retain long golden-blond hair, navy/charcoal headband, stern mature human male face and brows, teal/green compact clothes, yellow-green belt accent, brown strapped back quiver with yellow fletchings, enormous head/short body Q style and strong clean contours. Do not add a weapon, arrows in hand, new bag, shield or armor. Exact3columns x4rows,12 isolated full figures, true transparent alpha, generous margins and no cropping. No text, labels, grid, floor, shadows or background.",
+        "selected": false,
+        "reason": "未採用：臉部過於通用或右向弓位偏移"
+      },
+      {
+        "group": 63,
+        "source": "exec-c04b9da8-dc47-46c1-9441-568fd5c70d22.png",
+        "prompt": "Use case: identity-preserve. Edit the INDIVIDUAL FACIAL FEATURES of image1, the transparent12-pose blond group063 archer. Image2 is original DATO013 and is the authority: he has a calm self-assured adult masculine face, long/slim face and visible cheekbones, long straight nose, narrow relaxed half-lidded eyes, almost HORIZONTAL relaxed dark brows, thin lips with the faintest knowing upward corner. Make that recognizable calm/sly CONFIDENT expression, not an angry scowl. The user explicitly says each character must have his own original-portrait identity rather than identical generic faces. Remove the current sharply descending symmetric V angry eyebrows, big generic glaring hero eyes, tight angry mouth and baby-like smooth round cheeks. His eyes should be more relaxed and evenly half-closed, brows flatter and less compressed over the nose, mouth quietly confident with a small subtle smile. Preserve golden blond straight hair framing the face, wide navy-black headband, original adult male nose/cheek/jaw structure, tiny green/teal body and big-head Q proportions. At144/72/48px the calm expression and different eyes/mouth must read distinctly from stern angular Hano or severe Ares. Stylize the portrait faithfully in clean HD1 2D cel-painted style; no realistic photograph, no new facial hair, makeup, pointed ears, age marks or accessories.\nLock all EQUIPMENT AND BODY PLACEMENT in image1, especially the CORRECTED BOTTOM-ROW BOW: in right-facing profiles the bow and gripping hand remain on IMAGE LEFT of face at the blonde hair's front edge, behind the cheek, never in front of the nose. Keep exactly one bow and TWO hands in each pose; back quiver with yellow fletchings stays strapped to the back. Front bow viewer-left, back bow viewer-right, left profile bow hidden. Keep those same four directions,3columns x4rows,12full figures, column1 neutral /column2 step /column3 opposite step. Do not swap poses or touch armor/gear shapes/limb count. Keep scale, baseline, margins, clean outlines and genuine transparent alpha. No sword, axe, shield, third arm, duplicated bow, loose arrows, text, labels, border, grid, floor, shadows or background. Change only the facial identity/expression toward original portrait; back row still has no face.",
+        "selected": true,
+        "reason": "依原版面容及裝備選用"
+      }
+    ]
+  },
+  "original_reference": {
+    "source": "FDICON.B24固定分離圖庫三層與FDOTHER0代表色盤；原版DATO001／013面容",
+    "groups": [
+      51,
+      63
+    ],
+    "records_sha256": "8dd2c0f5648331676ee7c080ef92e71b260cce681ada5f35d9261982e3ead690",
+    "reference_boards": [
+      {
+        "file": "group-051-original-reference.png",
+        "sha256": "041d5451403a070c5f457812058775faaeadeaaf6402f229ff116895c9c77906"
+      },
+      {
+        "file": "group-063-original-reference.png",
+        "sha256": "bc0588af4debe77db46ddb3e9815a583954d884392d45025a7e3305a4374661d"
+      }
+    ],
+    "scope": "十二姿態決定裝備、方向與配色；原版大頭像決定個別五官，不宣稱升階、能力或正常玩家入隊。"
+  },
+  "faces": [
+    {
+      "group": 51,
+      "name": "哈諾",
+      "portrait_file": "remake/assets/portraits/DATO_001_m0.png",
+      "portrait_sha256": "0e689e90209bb28ad7dd022742537156cb57174ddd76745ab40d92cc786812e1",
+      "traits": [
+        "瘦長稜角臉",
+        "長直鼻",
+        "收尖下巴",
+        "細而嚴肅的眼睛",
+        "薄唇抿嘴"
+      ],
+      "comparison_label": "原版大頭像與HD1地圖人物；不代表480頭像重繪已驗收"
+    },
+    {
+      "group": 63,
+      "name": "貝克威",
+      "portrait_file": "remake/assets/portraits/DATO_013_m0.png",
+      "portrait_sha256": "633b5dd8e49de6728c9daf86a3d42289ad10a0c0f2d47581cabe7e216d8e85b3",
+      "traits": [
+        "修長臉",
+        "平緩眉形",
+        "半闔眼",
+        "直鼻",
+        "微揚嘴角"
+      ],
+      "comparison_label": "原版大頭像與HD1地圖人物；不代表480頭像重繪已驗收"
+    }
+  ]
+}

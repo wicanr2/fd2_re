@@ -8,6 +8,41 @@ from PIL import Image,ImageDraw,ImageFont
 from build_modern_map_sprite_overview import load_original_palette
 
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+def build_faces(candidate,recipe,out):
+    """核對原版大頭像與實際地圖圖源，只做排版，不修改角色圖。"""
+    if out.exists() or not out.parent.is_dir():raise ValueError('fresh owned output required')
+    root=Path(__file__).resolve().parents[1]
+    m=json.loads((candidate/'manifest.json').read_text())
+    if m['recipe_sha256']!=sha(recipe):raise ValueError('face recipe changed')
+    r=json.loads(recipe.read_text());faces=r['faces'];groups={g['group']:g for g in m['groups']}
+    if len(faces)!=len(groups) or {f['group'] for f in faces}!=set(groups):raise ValueError('face groups changed')
+    image=Image.new('RGB',(1100,100+350*len(faces)),'#091627');draw=ImageDraw.Draw(image)
+    font=ImageFont.load_default(size=20);small=ImageFont.load_default(size=16);sources=[]
+    draw.text((24,16),'INDIVIDUAL FACES / ORIGINAL PORTRAIT + HD1 MAP ART',font=font,fill='#ffe59b')
+    for row,face in enumerate(faces):
+        y=70+350*row;g=groups[face['group']];portrait=root/face['portrait_file']
+        if sha(portrait)!=face['portrait_sha256']:raise ValueError('original portrait changed')
+        draw.text((24,y),f"GROUP {face['group']:03d} / {portrait.name}",font=font,fill='white')
+        with Image.open(portrait) as im:im=im.convert('RGBA').resize((160,160),Image.Resampling.NEAREST)
+        image.paste(im,(24,y+40),im)
+        for x,f in ((240,0),(430,9)):
+            path=candidate/g['hd']['files'][f]
+            if sha(path)!=g['hd']['frame_sha256'][f]:raise ValueError('face map frame changed')
+            with Image.open(path) as im:hd=im.convert('RGBA')
+            if hd.size!=(144,144):raise ValueError('actual144 source required')
+            image.paste(hd,(x,y+40),hd)
+            draw.text((x,y+195),f'144px / frame {f}',font=small,fill='#aec5e0')
+            sources.append(dict(group=face['group'],frame=f,file=path.name,sha256=sha(path)))
+            if f==0:
+                for sx,size in ((650,72),(800,48)):
+                    scaled=hd.resize((size,size),Image.Resampling.LANCZOS)
+                    image.paste(scaled,(sx,y+40),scaled)
+                    draw.text((sx,y+130),f'{size}px',font=small,fill='#aec5e0')
+        draw.text((24,y+240),'Original portrait: identity reference. HD1 map art: actual runtime source sizes.',font=small,fill='#aec5e0')
+        draw.text((24,y+270),'Art comparison only. Not a runtime capture or HD dialogue-portrait acceptance.',font=small,fill='#aec5e0')
+    image.save(out)
+    return dict(kind='fd2_hd1_individual_face_comparison',groups=list(groups),recipe_sha256=sha(recipe),source_manifest_sha256=sha(candidate/'manifest.json'),image_sha256=sha(out),tool_sha256=sha(Path(__file__)),sources=sources,faces=faces,size=list(image.size))
+
 def build(candidate,original,out,context=None):
     if out.exists() or not out.parent.is_dir():raise ValueError('fresh owned output required')
     m=json.loads((candidate/'manifest.json').read_text())
@@ -108,9 +143,11 @@ def main():
     p.add_argument('--context-manifest',type=Path,help='沿用同批其他已登錄人物；必須與目前候選清冊逐欄一致')
     p.add_argument('--baseline-catalog',type=Path,help='另排原版／前版／候選，尚未登錄的造型對照')
     p.add_argument('--baseline-pack',type=Path)
+    p.add_argument('--face-references',type=Path,help='逐人依配方原版頭像核對面容，排列實際144／72／48圖源')
     a=p.parse_args();report=a.out.with_suffix('.json')
     if report.exists():raise ValueError('fresh report required')
     if (a.baseline_catalog is None)!=(a.baseline_pack is None):raise ValueError('paired baseline arguments required')
-    d=build_revision(a.candidate,a.original,a.baseline_catalog,a.baseline_pack,a.out) if a.baseline_catalog else build(a.candidate,a.original,a.out,a.context_manifest)
+    if a.face_references and (a.baseline_catalog or a.context_manifest):raise ValueError('face comparison requires its own fixed batch')
+    d=build_faces(a.candidate,a.face_references,a.out) if a.face_references else build_revision(a.candidate,a.original,a.baseline_catalog,a.baseline_pack,a.out) if a.baseline_catalog else build(a.candidate,a.original,a.out,a.context_manifest)
     report.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n');print(json.dumps(d,ensure_ascii=False))
 if __name__=='__main__':main()
