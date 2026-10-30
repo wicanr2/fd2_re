@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_hd1_chibi_map_refresh",
+  "approved_preview": "docs/figures/hd1-ares-q-design.png",
+  "approved_preview_sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e",
+  "native_bank_sha256": "7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44",
+  "palette_sha256": "404db1ca72ffc19fa7404fbc59bde98cdf239f63fe3375ec248a8142073a28bf",
+  "base_catalog_sha256": "cc9670d0d040035f9f9820a1cef9e5f744f4ac89f7d39b9e247f6256043d6b6f",
+  "approval": "沿使用者已定大頭短身比例及逐人原版五官；修第1／4組面容與原生持物側，不改玩法。",
+  "groups": [
+    {
+      "group": 1,
+      "master_file": "fdicon-001-hd1-base-face-q-v1-master.png",
+      "master_sha256": "39ffec7ad6803f78009816e7b33eb267b609abfaf57d8ca4f63e5cd674dd6f5d",
+      "output_prefix": "fdicon-001-hd1-base-face-q-v1"
+    },
+    {
+      "group": 4,
+      "master_file": "fdicon-004-hd1-base-face-q-v1-master.png",
+      "master_sha256": "42660af6368c697d423004a6c67a5093f365b1379b9599609cccb2c110285826",
+      "output_prefix": "fdicon-004-hd1-base-face-q-v1"
+    }
+  ],
+  "faces": [
+    {
+      "group": 1,
+      "name": "哈諾",
+      "portrait_file": "remake/assets/portraits/DATO_001_m0.png",
+      "portrait_sha256": "0e689e90209bb28ad7dd022742537156cb57174ddd76745ab40d92cc786812e1",
+      "traits": [
+        "瘦長稜角臉",
+        "長直鼻與長下巴",
+        "平眉細眼",
+        "抿嘴"
+      ],
+      "comparison_label": "原版頭像／實際地圖圖源；非480對話HD頭像驗收"
+    },
+    {
+      "group": 4,
+      "name": "亞雷斯",
+      "portrait_file": "remake/assets/portraits/DATO_004_m0.png",
+      "portrait_sha256": "b57978530691387e208808a3d23127e31b9405e24861bd744be7699bb68e412e",
+      "traits": [
+        "寬方下顎",
+        "濃斜眉窄眼",
+        "直鼻與明顯鼻翼",
+        "嚴肅閉口"
+      ],
+      "comparison_label": "原版頭像／實際地圖圖源；非480對話HD頭像驗收"
+    }
+  ],
+  "party_bindings": [
+    {
+      "group": 1,
+      "native_identity": 1,
+      "portrait": 1,
+      "fig": 1,
+      "scenario_file": "remake/assets/scenarios/ch02.json",
+      "scenario_sha256": "27ff99c5f21304eaebe75be228256d32c57ece1fd4e167d6582ca9082f209d02"
+    },
+    {
+      "group": 4,
+      "native_identity": 4,
+      "portrait": 4,
+      "fig": 4,
+      "scenario_file": "remake/assets/scenarios/ch01.json",
+      "scenario_sha256": "9d2229fe33a5a692234cb8343aaf6c4d159e6de1a4e4d9df4e2870874e103269"
+    }
+  ],
+  "image_generation": {
+    "tool": "image_gen.imagegen",
+    "mode": "builtin",
+    "transparent_background": true,
+    "jobs": [
+      {
+        "group": 1,
+        "stage": "draft",
+        "prompt": "Use case: identity-preserve. Asset type: HD1 tactical-map sprites for Flame Dragon Knights 2. Input1 is original twelve map poses, authoritative for gear, outfit palette, visible hand/weapon placement, directions and occlusion. Input2 is this character's ORIGINAL DATO portrait, authoritative for their individual face. Input3 is the existing approved HD1 Q art, use its enormous head AND face/extremely short body, strong clear dark contours and smooth restrained 2D painted/cel shading only; correct generic face and source-inconsistent gear positions. Exactly 3columns x4rows, twelve complete isolated figures with genuine transparent alpha. Rows FRONT looking directly toward viewer, LEFT exact profile facing screen left, BACK looking away, RIGHT exact profile facing screen right. Every row FIRST column neutral standing with both feet planted; second/third column small opposite grounded steps, same cardinal view. Equal scale/baseline per row, generous clear gaps, no overlap or cropped hair/weapons/boots. Head/face/hair 67-70% of height, extremely short compact body and stubby boots. Mature distinct face in Q proportions, no baby/teen face, no tiny dot nose or round sparkling doll eyes. No new gear or colors. Exactly two arms/two hands/two legs with natural wrists. No text, numbers, grid, border, background, checkerboard, floor, ground shadow, glow or watermark. Character HANO group001. Original face long lean angular shape, long strongly projecting straight nose, narrow dark half-lidded eyes, flatter tense eyebrows, pronounced cheek structure, long tapered firm chin and thin firmly closed lips. Serious reserved clean-shaven adult. Match that elongated nose/jaw in front and both profiles, never substitute Ares' broad jaw, common cute V-brow face or exaggerated smile. Tousled chestnut/rust brown hair with dark charcoal/navy forehead band. Original short brown/olive tunic, dark navy trousers, brown gloves/boots, simple belt, no added scarf, armor, cloak, pouch or backpack. Exactly ONE compact silver-gray axe with brown handle. FRONT axe on viewer LEFT beside lower face/chest, the head below eye level and short handle connected to one hand; not viewer right. LEFT profile original axe head occluded behind head/body, omit protruding blade ahead of nose. BACK axe largely hidden below rear body, do not hang a gigantic blade beyond head. RIGHT profile axe on screen RIGHT ahead of lower face/chest like original. Preserve one consistent anatomical weapon hand with source occlusion; do not mirror all weapon positions. No sword, shield, helmet, cap, beard, new jewelry, extra axe or floating axe head.",
+        "selected": false,
+        "source": "exec-95d928fc-85b6-4922-8740-2a936a47a533.png",
+        "source_sha256": "fd9960d1254a67aa8d44d4ddf70fb5d6550f6efd0209e1c32e1893fd9a5e50fa",
+        "reason": "初稿持物已修，但五官仍偏通用圓臉"
+      },
+      {
+        "group": 1,
+        "stage": "face-edit",
+        "prompt": "Use case: identity-preserve. Edit only the FACE in Image1's Hano twelve-view transparent sprite sheet. Image2 ORIGINAL DATO001 is the authority for distinctive facial anatomy. Current face is still a generic round-eyed chibi baby with tiny triangle nose; make it clearly HANO with LONG LEAN ANGULAR FACE, prominent LONG STRAIGHT NOSE extending far forward in both profiles, high cheekbone and tapered long squared-off chin. FRONT: narrow flat half-lidded eyes with very small dark pupils and flatter heavy brows (less diagonal V shape), strongly elongated straight nose bridge ending well below the eyes with distinct nostril/side-plane, thin horizontal tightly closed lips, narrow long jaw tapering to firm chin. PROFILES: visibly long projecting triangular straight nose roughly twice current length, with a clear bridge and nostril, prominent angular cheek and elongated lean jaw/chin. Nose length is critical at144/72/48px; exaggerate original adult facial identity within Q proportions. No enormous open round eyes, glossy doll pupils, rosy round cheeks, baby dot nose, generic anime-boy pointed chin or smile. He is a serious clean-shaven adult, no beard, no added age spots/wrinkles. Preserve enormous head/extremely short body and existing brown hair/dark headband; do not shrink head to realistic proportions. Preserve all original gear and poses of Image1, brown outfit/navy pants, exactly one axe with front viewer-left, left blade hidden, back small mostly hidden, right screen-right. Do not change the direction of any row. Back row has no face. Same3columns/4rows, neutral first column/opposite small steps second/third, full silhouettes, transparency and margins. Change FACE/nose/jaw/eyes only, retain approved strong dark contour, restrained smooth2D HD1 painted/cel style. Real transparent alpha. No text, labels, borders, floor, background, checkerboard, new accessory or extra limb.",
+        "selected": true,
+        "source": "exec-fcf27e19-570d-4848-9cd7-d62e0b595eb2.png",
+        "source_sha256": "39ffec7ad6803f78009816e7b33eb267b609abfaf57d8ca4f63e5cd674dd6f5d",
+        "reason": "選用個別臉型與原生裝備修正版"
+      },
+      {
+        "group": 4,
+        "stage": "draft",
+        "prompt": "Use case: identity-preserve. Asset type: HD1 tactical-map sprites for Flame Dragon Knights 2. Input1 is original twelve map poses, authoritative for gear, outfit palette, visible hand/weapon placement, directions and occlusion. Input2 is this character's ORIGINAL DATO portrait, authoritative for their individual face. Input3 is the existing approved HD1 Q art, use its enormous head AND face/extremely short body, strong clear dark contours and smooth restrained 2D painted/cel shading only; correct generic face and source-inconsistent gear positions. Exactly 3columns x4rows, twelve complete isolated figures with genuine transparent alpha. Rows FRONT looking directly toward viewer, LEFT exact profile facing screen left, BACK looking away, RIGHT exact profile facing screen right. Every row FIRST column neutral standing with both feet planted; second/third column small opposite grounded steps, same cardinal view. Equal scale/baseline per row, generous clear gaps, no overlap or cropped hair/weapons/boots. Head/face/hair 67-70% of height, extremely short compact body and stubby boots. Mature distinct face in Q proportions, no baby/teen face, no tiny dot nose or round sparkling doll eyes. No new gear or colors. Exactly two arms/two hands/two legs with natural wrists. No text, numbers, grid, border, background, checkerboard, floor, ground shadow, glow or watermark. Character ARES group004. Original portrait has a broad angular adult face, SQUARE firm jaw and chin, pronounced cheek planes, long straight slightly broad nose, thick dark sharply sloping eyebrows, narrow deep-set dark eyes/small pupils, firm thin closed mouth with subtle asymmetric downturned corner. Confident stern adult, not smiling round-eyed child. Make face and expression clearly unlike Hano's long tapered face and flatter brows. Keep original deep cobalt blue hair, large flat-topped blue military cap with dark green band, navy neck scarf, compact gray-green shoulder/chest armor, dark navy pants and gray-green stubby boots. Match original source, no invented shield, axe, feathers, gold emblems, cape, pack or pouch. Exactly ONE straight silver blade with short dark handle; it is a short sword, not spear or staff, tip reaches top of cap only. FRONT sword vertical on viewer LEFT outside face. LEFT-facing profiles far-side sword is occluded by head/body, no visible blade ahead of nose. BACK sword vertical on viewer RIGHT outside cap/body. RIGHT-facing profiles sword vertical on screen LEFT immediately behind/at left edge of face and in front of blue rear hair curtain, NOT to screen RIGHT ahead of nose. Original first column and other views have single natural gripping hand below hilt; preserve occlusion rather than switch anatomical hands. No full-length pole below boots, no double blade, duplicate free hand or extra limb.",
+        "selected": false,
+        "source": "exec-cf948a95-9f1a-4b46-bfa9-a4241d8930ba.png",
+        "source_sha256": "007ffad08fdfe8d477076bd6be0638961d055755d377507fba823bd6d980aded",
+        "reason": "初稿持物已修，但五官仍偏通用圓臉"
+      },
+      {
+        "group": 4,
+        "stage": "face-edit",
+        "prompt": "Use case: identity-preserve. Edit ONLY ARES' facial features in Image1's12-pose transparent blue-cap sprite sheet, using Image2 ORIGINAL DATO004 portrait as authority. The original has a broad distinctly SQUARE angular jaw/chin, pronounced cheek planes, LONG STRAIGHT prominent nose and bridge with broad tip, thick heavy inward-sloping eyebrows, very narrow deep-set horizontal eyes with small dark pupils, thin closed lips with subtle asymmetric firm mouth corner. Current sheet still has almost no nose and a round baby jaw. Make him a recognizable MATURE ADULT within the same enormous-head Q proportions: square off both jaw corners, flatten and broaden the chin edge, draw sharp diagonal cheek planes, extend nose bridge and obvious nose tip visibly BELOW eyes in FRONT. In both LEFT/RIGHT profiles make the long straight broad nose project significantly farther than the current tiny point, visible angular cheek and square jutting chin below the firmly closed mouth. Keep original portrait's serious assured expression and thick brows; do not use giant round doll eyes or a generic anime-boy V face. Ares has a BROAD SQUARE face, distinct from Hano's LONG NARROW tapered face; no one-template face. Preserve entire cap/head overall size, blue hair, green capband, navy scarf, armor, gear, row directions, all12 poses and tiny body from Image1. Do not lengthen body or shrink head, no beard/added wrinkles or accessories. Exactly ONE straight sword with front viewer-left, left profile blade hidden, back viewer-right, right profile viewer-left behind cheek as alreadycorrect; no new weapon or shield. Back row no face. Keep3columns4rows, neutral first column and opposite smallsteps, transparent silhouette and margins. Clean smooth2D HD1 painted celgameart, strong contour. No background, shadow, checkerboard, text, labels, grid or frame. Actual transparent alpha.",
+        "selected": true,
+        "source": "exec-62d070e8-6734-4052-9e93-1355458bff69.png",
+        "source_sha256": "42660af6368c697d423004a6c67a5093f365b1379b9599609cccb2c110285826",
+        "reason": "選用個別臉型與原生裝備修正版"
+      }
+    ]
+  },
+  "policy": "四向各三拍，首欄中性；哈諾棕衣單斧正面在左、左向斧頭遮蔽、右向在前，亞雷斯藍帽單劍正左背右、左向劍遮蔽、右向在臉左。分別依DATO001與004保留不同長瘦／寬方面容，不新增裝備。",
+  "original_reference": {
+    "source": "原版FDICON三層與FDOTHER0代表色盤；名冊party明示fig／portrait／native_identity綁DATO",
+    "groups": [
+      1,
+      4
+    ],
+    "records_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-face-review-r9/native-reference.json",
+    "records_sha256": "3df2d0cc1ef169e52ba37c7f89d3862cd047211357473cc1da1881e86872281a",
+    "reference_boards": [
+      {
+        "file": "group-001-original.png",
+        "sha256": "4449de52fd56a6fe2a86c441d7b647a6fc34b3ed34baebac1ed93b6050f5d83e"
+      },
+      {
+        "file": "group-004-original.png",
+        "sha256": "63ffb6c66b98a8d18d3c6855a594e40a1e5d368b9f65cb919da1a765e145e062"
+      }
+    ]
+  }
+}

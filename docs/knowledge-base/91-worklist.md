@@ -200,37 +200,37 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 證據：`docs/data/localization/ending-story-supplements.json`
 
-### P1 HD1戰場小人物：依原版造型重繪清晰大頭Q版，先修亞雷斯
+### P1 HD1戰場小人物：依原版重繪大頭Q版與個別面容
 
 `hd1-native-chibi-map-sprites-refresh` · 缺陷 · [#286](https://github.com/wicanr2/fd2_re/issues/286) · 仍未完成 · 要人判
 
-六組70／73／77／89／125／133已由實際名冊及各自DATO釐清視覺身份並重繪。70露出下臉且斜持劍；73為雙足龍頭戰士，移除舊人臉馬身；77封閉T形盔與大肩甲無圓盾，89保留面甲與露頸、移除側耳格柵。125成熟長臉無白鬍鬚，133平瀏海、棕眼、直髮無馬尾。原本遮住的五官不補露出，不由美術推未解種族欄位或角色專名。
+哈諾1與亞雷斯4已各依DATO001／004修正個別面容：長瘦臉、長鼻與細眼，對比濃斜眉、窄眼及寬方下顎。斧劍持物側與遠側遮蔽沿十二原生姿態修正；不再共用圓眼少年臉。兩份初稿各經一次五官修訂，逐字提示與選稿SHA保存在兩人配方。
 
-三份固定配對GPU共42完整Game.Draw、36PNG、六次F2、481439核心點與21反例通過，缺份／重複份／錯來源及未完成記憶體報告不能放行。原生群經既有AppendGroupWithNativePlacement及gate0，保留ally／enemy、位置、portrait與selector，無持續身份投影。三項逐byte重編／八來源拒收、20組CPU來源測具、24頂層Go含字串、正式21來源案例／416幀／19反例、完整883項及125組1455來源通過。普通首章十PNG只驗候選與存讀檔相容，不作六角色自然章節到達。
+固定base-faces用原生party身份1／4，無selector或身份投影。14完整Game.Draw、12PNG、兩次F2、169923核心點與15反例通過；普通首章亞雷斯三張地圖／資訊窗共47002核心點、四組切換、走行取消與保存冷讀通過。哈諾像素限受控章2名冊，不作自然加入證據。來源三項重編／八拒收、24頂層Go及正式21來源案例／416幀／19反例通過，兩項可選GPU略過不計通過。
 
-初審十二組已見身份／裝備偏移2／48／50／51／52／53／54／55／56／63／76／79與六組視覺待核70／73／77／89／125／133均處理。其餘69組Q比例及個別五官仍續審，原哈諾1與亞雷斯4／54優先；不能把這18組處理完當完整HD1或所有人臉已通過。
+正式883項只換四項，879保持；50新檔按白名單保存私人庫，原7798美術檔與0／9／30六項保持。README新增兩人面容與144／72／48、四向及完整受控戰場，首頁亞雷斯接本批普通遊玩圖，早期三人圖明標比例來源。
 
-正式只換12項、871保持，150新檔私人保存，原7648美術檔與0／9／30六項75圖源保持。README按三組局部圖呈現各自原版面容、四向與尺寸，另接六張完整受控戰場圖。全人物總覽待全數重繪，本項保持OPEN。現況與重跑依58、61及主收據hd1_six_identities_followup_20261030。
+初審十二組身份／裝備偏移與六組視覺待核均已處理，原哈諾1／亞雷斯4面容本批已修；54個別面容、其餘69組Q比例與其他角色五官仍續審，不能宣稱全部HD1人物通過。完整總覽仍等全數重繪，本項保持OPEN。現況數量、重跑及限制依58／61及主收據hd1_base_faces_followup_20261030；Gaia30維持使用者選定先前HD版。
 
 怎樣算做完：['使用者選定亞雷斯新比例，並保留定版原稿、原版來源、逐字提示與SHA；其他角色依相同標準重製，不能只改大圖總覽。', '125個可見圖組及1455幀逐組保留原生方向、步態／靜態相位、轉職身份、裝備特徵、腳底與透明契約；原版、已接受圖源及舊證據可追溯。', '正式清冊、白名單私人保存庫與載入預檢同步，拒收缺組、錯誤來源、方向錯誤、額外肢體／重複武器與裁切；其他圖源保持其已驗範圍。', '戰場人物、劇情地圖與資訊窗人物圖示沿同一美術主題顯示；四組介面／美術、走行／指令環與遮擋、普通操作及保存保持完成必要抽樣，集中逐章／平台人工仍由使用者接手。', '全部HD1人物重繪並登錄後，依同一正式清冊最新map_sprite_hd_set重新產生「原版／HD1」人物總覽，涵蓋人物、轉職及敵方並對齊方向／相位。更新README清晰分組圖及144／72／48像素樣本；不沿舊檔名或放大24像素父圖冒充HD1，不用整張長圖縮圖當作造型通過。', '哈瓦特各形態沿更老成、威嚴、大鬍子的修訂方向，保留原版髮鬚色與裝備，不能只換成少年臉配鬍子。', '每個人類角色分別參考自己的原版大頭像，記錄臉型、眉眼、鼻形、嘴形及表情；相同Q比例不等於面容通過，不只換髮型沿用同一張臉。', '可升級人物與特殊形態先核明示target、原身份及相應頭像，不僅以圖組編號減50推定人物；52依既有special_target綁9。']
 
-證據：`['docs/knowledge-base/61-modern-theme-runtime-spec.md', 'remake/assets/themes/modern/catalog.json', 'docs/figures/modern-map-sprites-overview.png', 'docs/figures/hd1-ares-q-design.png', 'docs/figures/hd1-ares-q-game.png', 'remake/assets/themes/modern/hd1-ares-chibi-refresh.recipe.json', 'docs/figures/hd1-chibi-party-comparison.png', 'remake/assets/themes/modern/hd1-party-chibi-refresh.recipe.json', 'remake/cmd/fd2/modern_hd_chibi_party_test.go', 'docs/data/fd2-modern-hd-battlefield-20261019.json', 'remake/assets/themes/modern/hd1-harvat-mature.recipe.json', 'docs/figures/hd1-harvat-mature-game.png', 'remake/assets/themes/modern/hd1-native-face-refresh.recipe.json', 'docs/figures/hd1-native-face-reference.png', 'remake/assets/themes/modern/hd1-knights-native-refresh.recipe.json', 'docs/figures/hd1-knights-face-reference.png', 'remake/assets/themes/modern/hd1-heroes-native-refresh.recipe.json', 'docs/figures/hd1-heroes-face-reference.png', 'remake/assets/data/class_change_targets.json', 'remake/assets/themes/modern/hd1-enemies-native-refresh.recipe.json', 'docs/figures/hd1-enemies-comparison.png', 'docs/figures/hd1-enemies-face-reference.png', 'remake/assets/themes/modern/hd1-king-static-refresh.recipe.json', 'docs/figures/hd1-king-face-reference.png', 'docs/figures/hd1-king-static-comparison.png', 'remake/assets/themes/modern/hd1-six-identities-refresh.recipe.json', 'docs/figures/hd1-six-banded-faces.png', 'docs/figures/hd1-six-draconic-faces.png', 'docs/figures/hd1-six-robed-faces.png']`
+證據：`['docs/knowledge-base/61-modern-theme-runtime-spec.md', 'remake/assets/themes/modern/catalog.json', 'docs/figures/modern-map-sprites-overview.png', 'docs/figures/hd1-ares-q-design.png', 'docs/figures/hd1-ares-q-game.png', 'remake/assets/themes/modern/hd1-ares-chibi-refresh.recipe.json', 'docs/figures/hd1-chibi-party-comparison.png', 'remake/assets/themes/modern/hd1-party-chibi-refresh.recipe.json', 'remake/cmd/fd2/modern_hd_chibi_party_test.go', 'docs/data/fd2-modern-hd-battlefield-20261019.json', 'remake/assets/themes/modern/hd1-harvat-mature.recipe.json', 'docs/figures/hd1-harvat-mature-game.png', 'remake/assets/themes/modern/hd1-native-face-refresh.recipe.json', 'docs/figures/hd1-native-face-reference.png', 'remake/assets/themes/modern/hd1-knights-native-refresh.recipe.json', 'docs/figures/hd1-knights-face-reference.png', 'remake/assets/themes/modern/hd1-heroes-native-refresh.recipe.json', 'docs/figures/hd1-heroes-face-reference.png', 'remake/assets/data/class_change_targets.json', 'remake/assets/themes/modern/hd1-enemies-native-refresh.recipe.json', 'docs/figures/hd1-enemies-comparison.png', 'docs/figures/hd1-enemies-face-reference.png', 'remake/assets/themes/modern/hd1-king-static-refresh.recipe.json', 'docs/figures/hd1-king-face-reference.png', 'docs/figures/hd1-king-static-comparison.png', 'remake/assets/themes/modern/hd1-six-identities-refresh.recipe.json', 'docs/figures/hd1-six-banded-faces.png', 'docs/figures/hd1-six-draconic-faces.png', 'docs/figures/hd1-six-robed-faces.png', 'remake/assets/themes/modern/hd1-base-faces-refresh.recipe.json', 'docs/figures/hd1-base-faces-reference.png', 'docs/figures/hd1-base-faces-comparison.png', 'docs/figures/hd1-base-hano-game.png', 'docs/figures/hd1-base-ares-game.png', 'docs/figures/hd1-base-ares-normal.png']`
 
-### P1 HD1人物身份偏移：兜帽、人形轉職與裝備須依原版修正
+### P1 HD1人物面容與身份複核：依原版頭像保留各自特徵
 
 `hd1-map-sprite-native-identity-drift` · 缺陷 · [#287](https://github.com/wicanr2/fd2_re/issues/287) · 仍未完成 · 要人判
 
-六組70／73／77／89／125／133已由實際名冊及各自DATO釐清視覺身份並重繪。70露出下臉且斜持劍；73為雙足龍頭戰士，移除舊人臉馬身；77封閉T形盔與大肩甲無圓盾，89保留面甲與露頸、移除側耳格柵。125成熟長臉無白鬍鬚，133平瀏海、棕眼、直髮無馬尾。原本遮住的五官不補露出，不由美術推未解種族欄位或角色專名。
+哈諾1與亞雷斯4已各依DATO001／004修正個別面容：長瘦臉、長鼻與細眼，對比濃斜眉、窄眼及寬方下顎。斧劍持物側與遠側遮蔽沿十二原生姿態修正；不再共用圓眼少年臉。兩份初稿各經一次五官修訂，逐字提示與選稿SHA保存在兩人配方。
 
-三份固定配對GPU共42完整Game.Draw、36PNG、六次F2、481439核心點與21反例通過，缺份／重複份／錯來源及未完成記憶體報告不能放行。原生群經既有AppendGroupWithNativePlacement及gate0，保留ally／enemy、位置、portrait與selector，無持續身份投影。三項逐byte重編／八來源拒收、20組CPU來源測具、24頂層Go含字串、正式21來源案例／416幀／19反例、完整883項及125組1455來源通過。普通首章十PNG只驗候選與存讀檔相容，不作六角色自然章節到達。
+固定base-faces用原生party身份1／4，無selector或身份投影。14完整Game.Draw、12PNG、兩次F2、169923核心點與15反例通過；普通首章亞雷斯三張地圖／資訊窗共47002核心點、四組切換、走行取消與保存冷讀通過。哈諾像素限受控章2名冊，不作自然加入證據。來源三項重編／八拒收、24頂層Go及正式21來源案例／416幀／19反例通過，兩項可選GPU略過不計通過。
 
-初審十二組已見身份／裝備偏移2／48／50／51／52／53／54／55／56／63／76／79與六組視覺待核70／73／77／89／125／133均處理。其餘69組Q比例及個別五官仍續審，原哈諾1與亞雷斯4／54優先；不能把這18組處理完當完整HD1或所有人臉已通過。
+正式883項只換四項，879保持；50新檔按白名單保存私人庫，原7798美術檔與0／9／30六項保持。README新增兩人面容與144／72／48、四向及完整受控戰場，首頁亞雷斯接本批普通遊玩圖，早期三人圖明標比例來源。
 
-正式只換12項、871保持，150新檔私人保存，原7648美術檔與0／9／30六項75圖源保持。README按三組局部圖呈現各自原版面容、四向與尺寸，另接六張完整受控戰場圖。全人物總覽待全數重繪，本項保持OPEN。現況與重跑依58、61及主收據hd1_six_identities_followup_20261030。
+初審十二組身份／裝備偏移與六組視覺待核均已處理，原哈諾1／亞雷斯4面容本批已修；54個別面容、其餘69組Q比例與其他角色五官仍續審，不能宣稱全部HD1人物通過。完整總覽仍等全數重繪，本項保持OPEN。現況數量、重跑及限制依58／61及主收據hd1_base_faces_followup_20261030；Gaia30維持使用者選定先前HD版。
 
 怎樣算做完：['逐組以固定原生三層、FDOTHER0代表色盤與有對應身份的原版頭像／大圖核身份，不沿舊候選或圖說猜職業／種族。', '優先修正2、48、50、51、52、53、54、55、56、63、76、79的已見差異，70、73、77、89、125、133補證後逐項確認或修正；所有結論保留來源及未知等級。', '新稿依已定大頭短身比例接正式地圖、故事與資訊窗，來源、方向／相位、F2／獨立介面與保存完成必要檢查後按白名單保存私人庫，集中人工由使用者接手。', '每個人類角色分別參考自己的原版大頭像，記錄臉型、眉眼、鼻形、嘴形及表情；相同Q比例不等於面容通過，不只換髮型沿用同一張臉。', '可升級人物與特殊形態先核明示target、原身份及相應頭像，不僅以圖組編號減50推定人物；52依既有special_target綁9。']
 
-證據：`['docs/knowledge-base/61-modern-theme-runtime-spec.md', 'docs/data/fd2-modern-hd-battlefield-20261019.json', 'remake/assets/portraits/DATO_002_m0.png', 'remake/assets/themes/modern/hd1-native-face-refresh.recipe.json', 'docs/figures/hd1-native-face-reference.png', 'remake/assets/themes/modern/hd1-knights-native-refresh.recipe.json', 'docs/figures/hd1-knights-face-reference.png', 'remake/assets/themes/modern/hd1-heroes-native-refresh.recipe.json', 'docs/figures/hd1-heroes-face-reference.png', 'remake/assets/data/class_change_targets.json', 'remake/assets/themes/modern/hd1-enemies-native-refresh.recipe.json', 'docs/figures/hd1-enemies-comparison.png', 'docs/figures/hd1-enemies-face-reference.png', 'remake/assets/themes/modern/hd1-king-static-refresh.recipe.json', 'docs/figures/hd1-king-face-reference.png', 'docs/figures/hd1-king-static-comparison.png', 'remake/assets/themes/modern/hd1-six-identities-refresh.recipe.json', 'docs/figures/hd1-six-banded-faces.png', 'docs/figures/hd1-six-draconic-faces.png', 'docs/figures/hd1-six-robed-faces.png']`
+證據：`['docs/knowledge-base/61-modern-theme-runtime-spec.md', 'docs/data/fd2-modern-hd-battlefield-20261019.json', 'remake/assets/portraits/DATO_002_m0.png', 'remake/assets/themes/modern/hd1-native-face-refresh.recipe.json', 'docs/figures/hd1-native-face-reference.png', 'remake/assets/themes/modern/hd1-knights-native-refresh.recipe.json', 'docs/figures/hd1-knights-face-reference.png', 'remake/assets/themes/modern/hd1-heroes-native-refresh.recipe.json', 'docs/figures/hd1-heroes-face-reference.png', 'remake/assets/data/class_change_targets.json', 'remake/assets/themes/modern/hd1-enemies-native-refresh.recipe.json', 'docs/figures/hd1-enemies-comparison.png', 'docs/figures/hd1-enemies-face-reference.png', 'remake/assets/themes/modern/hd1-king-static-refresh.recipe.json', 'docs/figures/hd1-king-face-reference.png', 'docs/figures/hd1-king-static-comparison.png', 'remake/assets/themes/modern/hd1-six-identities-refresh.recipe.json', 'docs/figures/hd1-six-banded-faces.png', 'docs/figures/hd1-six-draconic-faces.png', 'docs/figures/hd1-six-robed-faces.png', 'remake/assets/themes/modern/hd1-base-faces-refresh.recipe.json', 'docs/figures/hd1-base-faces-reference.png', 'docs/figures/hd1-base-faces-comparison.png', 'docs/figures/hd1-base-hano-game.png', 'docs/figures/hd1-base-ares-game.png', 'docs/figures/hd1-base-ares-normal.png']`
 
 ## runtime — 還沒接進正式執行期
 

@@ -13,8 +13,8 @@ from verify_fd2_hd1_chibi_refresh import ROOT,sha,read,require,tree,rect,core
 
 RECIPE=ROOT/'remake/assets/themes/modern/hd1-party-chibi-refresh.recipe.json'
 GROUPS=(1,2,3)
-PROFILES={'party':GROUPS,'variants':(53,54),'identity-pair':(51,63),'knights':(55,56),'heroes':(50,52),'enemies':(76,79),'static-king':(48,),'audited-six':(70,73,77,89,125,133)}
-PROFILE_IDENTITIES={'variants':{53:3,54:4},'identity-pair':{51:1,63:13},'knights':{55:5,56:6},'heroes':{50:0,52:9}}
+PROFILES={'party':GROUPS,'variants':(53,54),'identity-pair':(51,63),'base-faces':(1,4),'knights':(55,56),'heroes':(50,52),'enemies':(76,79),'static-king':(48,),'audited-six':(70,73,77,89,125,133)}
+PROFILE_IDENTITIES={'variants':{53:3,54:4},'identity-pair':{51:1,63:13},'base-faces':{1:1,4:4},'knights':{55:5,56:6},'heroes':{50:0,52:9}}
 FRAMES=(0,1,2,3,6,9)
 AUDITED_PAIRS={'banded':(70,89),'draconic':(73,77),'robed':(125,133)}
 AUDITED_BINDINGS={70:(5,0,'ally',13,24),73:(24,0,'ally',10,26),77:(2,2,'enemy',8,25),89:(17,0,'enemy',39,7),125:(24,0,'enemy',10,7),133:(1,1,'ally',15,12)}
@@ -75,6 +75,8 @@ def verify_gpu(d,folder,candidate,recipe=RECIPE,profile='party'):
     if profile=='audited-six':
         require(d.get('selector_projection_injected') is False and d.get('authored_roster_fixture') is True and d.get('selected_groups')==list(groups) and d.get('pair')=='combined','authored roster disclosure missing')
         verify_parts(d)
+    elif profile=='base-faces':
+        require(d.get('selector_projection_injected') is False and d.get('selected_groups')==list(groups),'base identity projection forbidden')
     elif static:
         require(d.get('selector_projection_injected') is False and d.get('authored_story_fixture') is True and d.get('story_private_foreground_approximation') is True,'static story disclosure missing')
     elif profile=='enemies':
@@ -95,6 +97,14 @@ def verify_gpu(d,folder,candidate,recipe=RECIPE,profile='party'):
         for b in bindings:
             matches=[row for row in rows if row['portrait']==b['native_identity']]
             require(len(matches)==1 and matches[0].get(b['target_field'])==b['group'],'authored promotion identity mismatch')
+    if profile=='base-faces':
+        bindings=r.get('party_bindings',[])
+        require([b['group'] for b in bindings]==[1,4],'fixed base party bindings')
+        for b,chapter in zip(bindings,[2,1]):
+            g=b['group'];path=f'remake/assets/scenarios/ch{chapter:02d}.json'
+            require(b['scenario_file']==path and sha(ROOT/path)==b['scenario_sha256'],'base scenario changed')
+            matches=[u for u in read(ROOT/path)['party'] if u.get('native_identity')==g]
+            require(len(matches)==1 and matches[0].get('fig')==matches[0].get('portrait')==g and b['native_identity']==b['portrait']==b['fig']==g,'authored base identity changed')
     if profile=='enemies':
         bindings=r.get('enemy_bindings',[])
         require([b['group'] for b in bindings]==[76,79],'fixed enemy bindings')
@@ -158,6 +168,9 @@ def verify_gpu(d,folder,candidate,recipe=RECIPE,profile='party'):
         elif profile=='audited-six':
             b=next(b for b in r['roster_bindings'] if b['group']==g)
             require(s.get('camp')=={'own':0,'ally':1,'enemy':2}[b['camp']] and s.get('portrait')==s.get('battle_fig')==s.get('selector_key')==g and s.get('has_native_identity') is False and s.get('position')==b['position'] and s.get('map')==b['map'] and s.get('roster_sha256')==b['roster_sha256'] and s.get('constructor')=='AppendGroupWithNativePlacement' and s.get('placement_gate')==0,'audited actor provenance changed')
+        elif profile=='base-faces':
+            b=next(b for b in r['party_bindings'] if b['group']==g)
+            require(s.get('native_identity')==s.get('portrait')==s.get('battle_fig')==s.get('selector_key')==g and s.get('has_native_identity') is True and s.get('camp')==0 and s.get('scenario_sha256')==b['scenario_sha256'],'authored base provenance changed')
         elif profile not in ('party','static-king'):require(s.get('native_identity')==PROFILE_IDENTITIES[profile][g] and s.get('selector_key')==g,'visual selector projection changed')
         require(case['source_frame']==f and case.get('game_draw') is True and case.get('rgba_tolerance')==2,'Game.Draw scope')
         if s['interface']!='hd':continue
@@ -195,6 +208,11 @@ def verify_normal(d,folder,candidate,binary,profile='party'):
     scope='unchanged chapter1 source; new groups1/2/3 actual pixels verified only by controlled GPU, not natural membership'
     if profile=='variants':scope='unchanged chapter1 source with base selectors0/4/9/30; groups53/54 actual pixels verified only by controlled raw-selector projections, not promotion or natural membership'
     if profile=='identity-pair':scope='unchanged chapter1 source with base selectors0/4/9/30; groups51/63 actual pixels verified only by controlled authored identities1/13 raw-selector projections, not promotion or natural membership'
+    if profile=='base-faces':
+        from verify_fd2_hd1_chibi_refresh import verify_normal as verify_ares_normal
+        result=verify_ares_normal(d,folder,candidate,binary,group=4)
+        result['scope']='unchanged ordinary chapter1 source verifies Ares4 actual map/HUD pixels, four controls, walk/cancel and save/cold LOAD; Hano1 pixels only by authored chapter2 fixture, not natural recruitment'
+        return result
     if profile=='knights':scope='unchanged chapter1 source with base selectors0/4/9/30; groups55/56 actual pixels verified only by controlled authored identities5/6 raw-selector projections, not promotion or natural membership'
     if profile=='heroes':scope='unchanged chapter1 source contains Sol0 and Unni9 base selectors, not transformed selectors50/52; new pixels verified only by controlled authored identity0/9 projections, no promotion-flow or natural transformed appearance claim'
     if profile=='enemies':scope='unchanged ordinary chapter1 save validates complete-pack admission, independent controls and save/cold LOAD; selected enemy pixels only by controlled authored initial groups map0/10 and map18/0, not natural encounter or chapter19 progression'
@@ -233,7 +251,7 @@ def main():
     for n in ('gpu','candidate','normal','binary','out'):p.add_argument('--'+n,type=Path,required=True)
     for n in ('formal','destination'):p.add_argument('--'+n,type=Path)
     p.add_argument('--recipe',type=Path,default=RECIPE,help='明示本批配方；必須符合所選固定矩陣')
-    p.add_argument('--profile',choices=PROFILES,default='party',help='party固定21；variants53／54、identity-pair51／63、knights55／56、heroes50／52各固定14，heroes明示0／9身份；enemies76／79保持敵方原生名冊；static-king48固定六繪圖及三拍')
+    p.add_argument('--profile',choices=PROFILES,default='party',help='party固定21；base-faces1／4無投影，variants53／54、identity-pair51／63、knights55／56、heroes50／52各固定14；enemies76／79保留敵方名冊；static-king48固定六；audited-six固定三配對共42')
     p.add_argument('--gpu-parts',nargs=3,type=Path,help='audited-six三份固定配對GPU收據；--gpu指定新的合併目錄內收據')
     p.add_argument('--self-test',action='store_true');p.add_argument('--register',action='store_true');a=p.parse_args()
     require(not a.out.exists(),'fresh report required')
@@ -243,7 +261,7 @@ def main():
     d=read(a.gpu);result=verify_gpu(d,a.gpu.parent,a.candidate,a.recipe,a.profile);result['normal']=verify_normal(read(a.normal),a.normal.parent,a.candidate,a.binary,a.profile)
     rejected=[]
     if a.self_test:
-        for fault in ('missing','duplicate','catalog','source-code','false-save','wrong-hud','wrong-tolerance','missing-f2','wrong-profile','wrong-selector','wrong-identity','undisclosed-projection','wrong-enemy-camp','wrong-enemy-position','wrong-enemy-roster','wrong-static-phase','wrong-story-source','wrong-story-position','missing-part','duplicate-part','wrong-part-source','wrong-part-group','wrong-part-memory'):
+        for fault in ('missing','duplicate','catalog','source-code','false-save','wrong-hud','wrong-tolerance','missing-f2','wrong-profile','wrong-selector','wrong-identity','undisclosed-projection','wrong-base-source','false-base-identity','wrong-enemy-camp','wrong-enemy-position','wrong-enemy-roster','wrong-static-phase','wrong-story-source','wrong-story-position','missing-part','duplicate-part','wrong-part-source','wrong-part-group','wrong-part-memory'):
             x=deepcopy(d)
             if fault=='missing':x['cases'].pop()
             elif fault=='duplicate':x['cases'][-1]=deepcopy(x['cases'][0])
@@ -269,6 +287,12 @@ def main():
             elif fault=='undisclosed-projection':
                 if a.profile=='party':continue
                 x.pop('selector_projection_injected',None)
+            elif fault=='wrong-base-source':
+                if a.profile!='base-faces':continue
+                x['sources'][0]['scenario_sha256']='0'*64
+            elif fault=='false-base-identity':
+                if a.profile!='base-faces':continue
+                x['sources'][0]['has_native_identity']=False
             elif fault=='wrong-enemy-camp':
                 if a.profile not in ('enemies','audited-six'):continue
                 x['sources'][0]['camp']=0

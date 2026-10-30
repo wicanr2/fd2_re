@@ -70,8 +70,9 @@ def verify_gpu(d,folder,candidate):
     require(pngs==12,'twelve complete PNGs missing')
     return dict(status='PASS-CHIBI-GPU-INDEPENDENT',cases=24,pngs=pngs,near_opaque_head_pixels=pixels,pixel_policy='alpha>=253；逐通道SrcOver背景上下界含一次整數捨入；取人物前96列避開原生HP覆蓋。完整GPU容差2另行保持。',source_tree_sha256=digest,source_file_count=count)
 
-def verify_normal(d,folder,candidate,binary):
-    group=read(candidate/'manifest.json')['groups'][0]['group']
+def verify_normal(d,folder,candidate,binary,group=None):
+    groups=read(candidate/'manifest.json')['groups']
+    if group is None:group=groups[0]['group']
     if group==30:return verify_gaia_normal(d,folder,candidate,binary)
     require(group==4,'unsupported normal character')
     require(d.get('status')=='PASS' and d.get('schema')=='fd2-hd1-chibi-normal-gui-v1','normal status')
@@ -80,7 +81,9 @@ def verify_normal(d,folder,candidate,binary):
     require(d.get('gui_tool_sha256')==sha(ROOT/'tools/verify_fd2_hd_fonts_gui.py') and d.get('helper_sha256')==sha(ROOT/'tools/fd2_hd1_chibi_gui.py'),'normal tool changed')
     require(d.get('theme_and_interface_save_bytes_equal') is True and d.get('new_process_title_load') is True and d.get('state_injection') is False,'normal save/cold-load check missing')
     require([(s['state']['hd_theme'],s['state']['interface_mode']) for s in d['styles']]==[(True,'hd'),(True,'original'),(False,'original'),(False,'hd'),(True,'hd')],'normal four styles')
-    asset=read(candidate/'manifest.json')['groups'][0]['hd'];sprites=[Image.open(candidate/n).convert('RGBA') for n in asset['files']]
+    selected=[g for g in groups if g['group']==group]
+    require(len(selected)==1,'normal character source missing or duplicated')
+    asset=selected[0]['hd'];sprites=[Image.open(candidate/n).convert('RGBA') for n in asset['files']]
     matches=[]
     for name,shot in d['screenshots'].items():
         require(Path(name).name==name and sha(folder/name)==shot['sha256'],'normal PNG changed')
