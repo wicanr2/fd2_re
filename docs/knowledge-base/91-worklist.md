@@ -204,33 +204,33 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 `hd1-native-chibi-map-sprites-refresh` · 缺陷 · [#286](https://github.com/wicanr2/fd2_re/issues/286) · 仍未完成 · 要人判
 
-索爾50與悠妮52已恢復原版人臉與空手造型：索爾依DATO000保留深藍髮、紅頭帶、收斂眼神與較長直鼻；悠妮依DATO009保留柔和笑容、紅色頭部輪廓、藍金頭飾及紅紫衣袍。52依既有class_change_targets的special_target明示來自身份9，不能由減50誤綁成2；正式轉職規則未改。
+戴盔士兵76與蒙面劍士79已依實際原生名冊及各自DATO076／079修正。76恢復十字紋方盾、直劍、灰綠盔甲與方下巴；79保留遮眼金屬帶、深藍面巾及斜持單劍，移除舊稿無據骷髏臉。十二姿態、持物側及遠側遮蔽沿原生，大頭短身比例沿定案。
 
-heroes固定14完整Game.Draw、兩次F2、155665核心點與13反例通過，新增52誤綁2反例。三項逐byte重編／八來源拒收、11組CPU測具資料綁定與21頂層Go含字串、正式21來源案例／416幀／19反例、完整883項清冊及125組1455來源核對通過。普通首章十PNG包含兩位角色的基底0／9，僅證明候選與保存冷讀相容，特殊形態本人像素由明示selector／byte6／cache槽投影驗證，不作自然轉職或能力證據。52的f08／f06原生相位等價保持。
+enemies固定14完整Game.Draw、兩次F2、163874核心點與16反例通過。測具使用原樣map0第10群與map18第0群，經既有AppendGroupWithNativePlacement及明示gate0建立，保留敵方camp／portrait／position／selector，沒有注入玩家身份或selector。普通首章十PNG只驗候選相容、四組切換、走行取消與保存冷讀，不作自然第19章到達證據。三項逐byte重編／八來源拒收、22頂層Go含字串、正式21來源案例／416幀／19反例、883項清冊與125組1455來源通過。
 
-已修正2／50／51／52／53／54／55／56／63。已見身份或裝備偏移剩48／76／79三組；70／73／77／89／125／133六組身份待核。原哈諾1與亞雷斯4／54優先補五官複核，其他人類逐人續審；相同Q比例或載入通過不能當全部面容通過。基底索爾0／悠妮9及Gaia30保持已定圖源。
+已修正2／50／51／52／53／54／55／56／63／76／79，已見身份或裝備偏移剩48一組；70／73／77／89／125／133六組身份待核。原哈諾1與亞雷斯4／54優先補五官，其他人類逐人續審。整體Q比例重繪仍有69組，不能將剩餘身份差異當整套HD1剩餘數量。
 
-正式只換四項、879保持；50新檔白名單私人保存，原7541美術檔及0／9／30六項75圖源保持。README新增面容／四向尺寸對照及完整受控戰場圖，完整人物總覽待全數重繪，本項保持OPEN。現況與重跑依58、61及主收據hd1_heroes_native_followup_20261030。
+正式只換四項、879保持，50新檔私人保存，原7591美術檔與0／9／30六項75圖源保持。README已接四向尺寸／面容對照及兩張完整受控戰場圖。全人物總覽待全數重繪，本項保持OPEN；現況與重跑依58、61及主收據hd1_enemies_native_followup_20261030。
 
 怎樣算做完：['使用者選定亞雷斯新比例，並保留定版原稿、原版來源、逐字提示與SHA；其他角色依相同標準重製，不能只改大圖總覽。', '125個可見圖組及1455幀逐組保留原生方向、步態／靜態相位、轉職身份、裝備特徵、腳底與透明契約；原版、已接受圖源及舊證據可追溯。', '正式清冊、白名單私人保存庫與載入預檢同步，拒收缺組、錯誤來源、方向錯誤、額外肢體／重複武器與裁切；其他圖源保持其已驗範圍。', '戰場人物、劇情地圖與資訊窗人物圖示沿同一美術主題顯示；四組介面／美術、走行／指令環與遮擋、普通操作及保存保持完成必要抽樣，集中逐章／平台人工仍由使用者接手。', '全部HD1人物重繪並登錄後，依同一正式清冊最新map_sprite_hd_set重新產生「原版／HD1」人物總覽，涵蓋人物、轉職及敵方並對齊方向／相位。更新README清晰分組圖及144／72／48像素樣本；不沿舊檔名或放大24像素父圖冒充HD1，不用整張長圖縮圖當作造型通過。', '哈瓦特各形態沿更老成、威嚴、大鬍子的修訂方向，保留原版髮鬚色與裝備，不能只換成少年臉配鬍子。', '每個人類角色分別參考自己的原版大頭像，記錄臉型、眉眼、鼻形、嘴形及表情；相同Q比例不等於面容通過，不只換髮型沿用同一張臉。', '可升級人物與特殊形態先核明示target、原身份及相應頭像，不僅以圖組編號減50推定人物；52依既有special_target綁9。']
 
-證據：`['docs/knowledge-base/61-modern-theme-runtime-spec.md', 'remake/assets/themes/modern/catalog.json', 'docs/figures/modern-map-sprites-overview.png', 'docs/figures/hd1-ares-q-design.png', 'docs/figures/hd1-ares-q-game.png', 'remake/assets/themes/modern/hd1-ares-chibi-refresh.recipe.json', 'docs/figures/hd1-chibi-party-comparison.png', 'remake/assets/themes/modern/hd1-party-chibi-refresh.recipe.json', 'remake/cmd/fd2/modern_hd_chibi_party_test.go', 'docs/data/fd2-modern-hd-battlefield-20261019.json', 'remake/assets/themes/modern/hd1-harvat-mature.recipe.json', 'docs/figures/hd1-harvat-mature-game.png', 'remake/assets/themes/modern/hd1-native-face-refresh.recipe.json', 'docs/figures/hd1-native-face-reference.png', 'remake/assets/themes/modern/hd1-knights-native-refresh.recipe.json', 'docs/figures/hd1-knights-face-reference.png', 'remake/assets/themes/modern/hd1-heroes-native-refresh.recipe.json', 'docs/figures/hd1-heroes-face-reference.png', 'remake/assets/data/class_change_targets.json']`
+證據：`['docs/knowledge-base/61-modern-theme-runtime-spec.md', 'remake/assets/themes/modern/catalog.json', 'docs/figures/modern-map-sprites-overview.png', 'docs/figures/hd1-ares-q-design.png', 'docs/figures/hd1-ares-q-game.png', 'remake/assets/themes/modern/hd1-ares-chibi-refresh.recipe.json', 'docs/figures/hd1-chibi-party-comparison.png', 'remake/assets/themes/modern/hd1-party-chibi-refresh.recipe.json', 'remake/cmd/fd2/modern_hd_chibi_party_test.go', 'docs/data/fd2-modern-hd-battlefield-20261019.json', 'remake/assets/themes/modern/hd1-harvat-mature.recipe.json', 'docs/figures/hd1-harvat-mature-game.png', 'remake/assets/themes/modern/hd1-native-face-refresh.recipe.json', 'docs/figures/hd1-native-face-reference.png', 'remake/assets/themes/modern/hd1-knights-native-refresh.recipe.json', 'docs/figures/hd1-knights-face-reference.png', 'remake/assets/themes/modern/hd1-heroes-native-refresh.recipe.json', 'docs/figures/hd1-heroes-face-reference.png', 'remake/assets/data/class_change_targets.json', 'remake/assets/themes/modern/hd1-enemies-native-refresh.recipe.json', 'docs/figures/hd1-enemies-comparison.png', 'docs/figures/hd1-enemies-face-reference.png']`
 
 ### P1 HD1人物身份偏移：兜帽、人形轉職與裝備須依原版修正
 
 `hd1-map-sprite-native-identity-drift` · 缺陷 · [#287](https://github.com/wicanr2/fd2_re/issues/287) · 仍未完成 · 要人判
 
-索爾50與悠妮52已恢復原版人臉與空手造型：索爾依DATO000保留深藍髮、紅頭帶、收斂眼神與較長直鼻；悠妮依DATO009保留柔和笑容、紅色頭部輪廓、藍金頭飾及紅紫衣袍。52依既有class_change_targets的special_target明示來自身份9，不能由減50誤綁成2；正式轉職規則未改。
+戴盔士兵76與蒙面劍士79已依實際原生名冊及各自DATO076／079修正。76恢復十字紋方盾、直劍、灰綠盔甲與方下巴；79保留遮眼金屬帶、深藍面巾及斜持單劍，移除舊稿無據骷髏臉。十二姿態、持物側及遠側遮蔽沿原生，大頭短身比例沿定案。
 
-heroes固定14完整Game.Draw、兩次F2、155665核心點與13反例通過，新增52誤綁2反例。三項逐byte重編／八來源拒收、11組CPU測具資料綁定與21頂層Go含字串、正式21來源案例／416幀／19反例、完整883項清冊及125組1455來源核對通過。普通首章十PNG包含兩位角色的基底0／9，僅證明候選與保存冷讀相容，特殊形態本人像素由明示selector／byte6／cache槽投影驗證，不作自然轉職或能力證據。52的f08／f06原生相位等價保持。
+enemies固定14完整Game.Draw、兩次F2、163874核心點與16反例通過。測具使用原樣map0第10群與map18第0群，經既有AppendGroupWithNativePlacement及明示gate0建立，保留敵方camp／portrait／position／selector，沒有注入玩家身份或selector。普通首章十PNG只驗候選相容、四組切換、走行取消與保存冷讀，不作自然第19章到達證據。三項逐byte重編／八來源拒收、22頂層Go含字串、正式21來源案例／416幀／19反例、883項清冊與125組1455來源通過。
 
-已修正2／50／51／52／53／54／55／56／63。已見身份或裝備偏移剩48／76／79三組；70／73／77／89／125／133六組身份待核。原哈諾1與亞雷斯4／54優先補五官複核，其他人類逐人續審；相同Q比例或載入通過不能當全部面容通過。基底索爾0／悠妮9及Gaia30保持已定圖源。
+已修正2／50／51／52／53／54／55／56／63／76／79，已見身份或裝備偏移剩48一組；70／73／77／89／125／133六組身份待核。原哈諾1與亞雷斯4／54優先補五官，其他人類逐人續審。整體Q比例重繪仍有69組，不能將剩餘身份差異當整套HD1剩餘數量。
 
-正式只換四項、879保持；50新檔白名單私人保存，原7541美術檔及0／9／30六項75圖源保持。README新增面容／四向尺寸對照及完整受控戰場圖，完整人物總覽待全數重繪，本項保持OPEN。現況與重跑依58、61及主收據hd1_heroes_native_followup_20261030。
+正式只換四項、879保持，50新檔私人保存，原7591美術檔與0／9／30六項75圖源保持。README已接四向尺寸／面容對照及兩張完整受控戰場圖。全人物總覽待全數重繪，本項保持OPEN；現況與重跑依58、61及主收據hd1_enemies_native_followup_20261030。
 
 怎樣算做完：['逐組以固定原生三層、FDOTHER0代表色盤與有對應身份的原版頭像／大圖核身份，不沿舊候選或圖說猜職業／種族。', '優先修正2、48、50、51、52、53、54、55、56、63、76、79的已見差異，70、73、77、89、125、133補證後逐項確認或修正；所有結論保留來源及未知等級。', '新稿依已定大頭短身比例接正式地圖、故事與資訊窗，來源、方向／相位、F2／獨立介面與保存完成必要檢查後按白名單保存私人庫，集中人工由使用者接手。', '每個人類角色分別參考自己的原版大頭像，記錄臉型、眉眼、鼻形、嘴形及表情；相同Q比例不等於面容通過，不只換髮型沿用同一張臉。', '可升級人物與特殊形態先核明示target、原身份及相應頭像，不僅以圖組編號減50推定人物；52依既有special_target綁9。']
 
-證據：`['docs/knowledge-base/61-modern-theme-runtime-spec.md', 'docs/data/fd2-modern-hd-battlefield-20261019.json', 'remake/assets/portraits/DATO_002_m0.png', 'remake/assets/themes/modern/hd1-native-face-refresh.recipe.json', 'docs/figures/hd1-native-face-reference.png', 'remake/assets/themes/modern/hd1-knights-native-refresh.recipe.json', 'docs/figures/hd1-knights-face-reference.png', 'remake/assets/themes/modern/hd1-heroes-native-refresh.recipe.json', 'docs/figures/hd1-heroes-face-reference.png', 'remake/assets/data/class_change_targets.json']`
+證據：`['docs/knowledge-base/61-modern-theme-runtime-spec.md', 'docs/data/fd2-modern-hd-battlefield-20261019.json', 'remake/assets/portraits/DATO_002_m0.png', 'remake/assets/themes/modern/hd1-native-face-refresh.recipe.json', 'docs/figures/hd1-native-face-reference.png', 'remake/assets/themes/modern/hd1-knights-native-refresh.recipe.json', 'docs/figures/hd1-knights-face-reference.png', 'remake/assets/themes/modern/hd1-heroes-native-refresh.recipe.json', 'docs/figures/hd1-heroes-face-reference.png', 'remake/assets/data/class_change_targets.json', 'remake/assets/themes/modern/hd1-enemies-native-refresh.recipe.json', 'docs/figures/hd1-enemies-comparison.png', 'docs/figures/hd1-enemies-face-reference.png']`
 
 ## runtime — 還沒接進正式執行期
 

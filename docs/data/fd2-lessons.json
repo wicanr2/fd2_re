@@ -4727,6 +4727,22 @@
         ],
         "pattern": "special_target"
       }
+    },
+    {
+      "id": "enemy-only-fixture-initializes-selector-cache",
+      "date": "2026-10-30",
+      "area": "HD敵方測具",
+      "rule": "不含玩家前置構造的敵方呈現測具，使用remake/internal/battle/model.go的AppendGroupWithNativePlacement建立首批selector快取與呈現資料；只呼叫AppendGroup不保證初始化。沿modern_hd_chibi_party_test.go的敵方測具保留原名冊camp、portrait、position及selector來源，收據明示placement_gate。",
+      "why": "第76組試以無劇本Load及空快取AppendGroup時HasNativeMapPresentation仍為false；改用既有完整建構器後兩組CPU來源檢查通過。正式遊戲未改。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#hd1_enemies_native_followup_20261030",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/modern_hd_chibi_party_test.go",
+          "tools/verify_fd2_hd1_chibi_party.py"
+        ],
+        "pattern": "AppendGroupWithNativePlacement"
+      }
     }
   ]
 }

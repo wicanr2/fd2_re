@@ -59,6 +59,14 @@
 
 亞雷斯首批沿[版本化編製工具](../../tools/refresh_fd2_hd1_map_sprites.py)與[定版配方及提示](../../remake/assets/themes/modern/hd1-ares-chibi-refresh.recipe.json)。[來源回歸](../../tools/test_fd2_hd1_chibi_refresh.py)驗重編、相位及八種原子拒收；[完整繪圖測試](../../remake/cmd/fd2/modern_hd_chibi_refresh_test.go)沿既有GPU對獨立CPU，保留十二姿態與兩種介面的24案例、四向F2往返、單位／保存保持。[普通操作輔助器](../../tools/fd2_hd1_chibi_gui.py)透過[正式GUI驅動](../../tools/verify_fd2_hd_fonts_gui.py)的`--chibi-refresh --battle-status --world --battle-node battle_ch01`接普通首章來源，核走行取消、四組控制及保存新程序LOAD。[獨立核對與登錄器](../../tools/verify_fd2_hd1_chibi_refresh.py)再核來源指紋、完整矩陣、PNG本體與地圖／HUD人物像素。定版原圖原樣保存於[比例對照](../figures/hd1-ares-q-design.png)，不把它改稱遊戲擷取。
 
+### 戴盔士兵與蒙面劍士的身份／裝備修正（CONFORMED-SCOPED／RUNTIME-E1，2026-10-30）
+
+沿[敵方配方](../../remake/assets/themes/modern/hd1-enemies-native-refresh.recipe.json)修正76／79。兩組各保留原版十二姿態、三層來源與FDOTHER0色盤。map0名冊的敵方map_selector_key76／portrait76及map18名冊的79／79分別綁定DATO076／079，不能只以圖組編號猜頭像。76保留灰綠盔甲、可見人臉、方下巴、十字紋方盾及直立劍；79保留橄欖頭布、遮眼金屬帶、深藍蒙面巾及斜持單劍，不畫骷髏，也不補畫原版遮住的五官。方向、持物側與遠側遮蔽依原生十二格，比例沿已定大頭短身。
+
+每組只換12張24像素父圖、12張144像素圖源與母稿，不改正式schema、角色數值、陣營、步態或保存。固定profile enemies使用原樣map0／18名冊的敵方構造及原地圖，不把敵方偽裝為玩家身份。測具以測試劇本建立待命名冊，再經正式AppendGroupWithNativePlacement及明示gate0構造原生map0第10群與map18第0群，明示屬受控初始群呈現；只設定方向、三拍、攝影機與游標，不注入selector或身份。各組沿既有HD介面四向中性／正面三拍、原版介面正面中性，共14完整Game.Draw、兩次F2及保存保持。獨立核對器須檢查來源名冊SHA、敵方陣營、實際portrait／selector／battle_fig、位置來源與完整矩陣，拒錯陣營、錯來源、偽造注入揭露、缺格與黑圖。CPU測具與GPU分程序。普通首章流程驗完整候選相容、四組獨立切換、走行取消與保存冷讀，不宣稱第19章自然到達。三項重編／八來源拒收、正式清冊與消費端通過後才登錄私人庫。其餘角色及Gaia保持；全部重繪與完整總覽仍待。
+
+上述READY已通過14完整Game.Draw、兩次F2、163874核心點與16反例，含錯陣營、位置及名冊來源。三項逐byte重編／八來源拒收、11組原有及兩組敵方CPU測具、22頂層Go含字串、正式21來源案例／416幀／19反例與完整883項清冊通過。只換四項、879保持，50新檔私人白名單保存；原7591美術檔及0／9／30六項75圖源保持，其餘123組逐SHA保持，全125組1455來源重核。普通首章十PNG驗候選、走行取消與保存冷讀相容；敵方本人像素限明示原生群構造。來源、完整提示、命令、資源與限制依58及主收據hd1_enemies_native_followup_20261030。已見差異餘48，另六組待核，其他五官／Q比例與全人物總覽仍待。
+
 ### HD1古金色對話框（CONFORMED-SCOPED／RUNTIME-E1／NORMAL-START）
 
 使用者要求HD1對話框有接近原版的框線，金色呈現D&D式典雅感，並明確選定[原型下半部](../figures/hd1-gold-dialogue-prototype.png)的古金色雙層框線。原圖原樣保存；[SVG／HTML原型工具](../../tools/build_fd2_hd1_gold_dialogue_prototype.py)使用既有完整HD畫面，只疊框線，不改框內文字、頭像或地圖。該圖仍是設計原型，不是新遊戲截圖。

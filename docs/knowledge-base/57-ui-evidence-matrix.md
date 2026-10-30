@@ -1,6 +1,6 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
-索爾50與悠妮52已依原版面容恢復人臉、衣甲及空手造型，地圖與資訊窗共用新圖源。52由既有special_target明示對應身份9，CPU與獨立核對器拒絕誤綁2；正式轉職規則未改。受控繪圖與普通首章候選／保存冷讀相容通過，不作自然轉職出場證據。#287餘3組已見身份／裝備差異與6組待核，其他五官及全人物重繪仍續審；基底0／9與Gaia保持。現況依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，主收據為hd1_heroes_native_followup_20261030。
+戴盔士兵76與蒙面劍士79已依原生十二姿態、實際名冊及DATO076／079修正。76恢復十字方盾、直劍與方下巴；79保留金屬遮眼帶及深藍面巾，去除無據骷髏。受控原生敵軍群的地圖／資訊窗、F2與保存保持及普通首章候選相容通過。正式Go程式及規則未改。#287已見差異餘48，另六組身份待核，其他五官、Q比例與完整總覽仍待；Gaia保持定版。現況依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，主收據為hd1_enemies_native_followup_20261030。
 
 戶外草、土、沙、水與石路已依定版風格刷新，原生輪廓、物件與規則保持。完整GPU及普通首章切換、走行取消、保存冷讀通過，README總覽及普通遊玩圖已更新。現況與來源依[58](58-fd2-exe-re-coverage.md)、[61](61-modern-theme-runtime-spec.md)及主收據`hd1_painted_ground_followup_20261029`；洞窟／物件與其餘缺圖續作，人工由使用者接手。
 

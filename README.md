@@ -45,6 +45,10 @@
 
 索爾與悠妮的特殊形態已恢復各自的人臉。索爾保留深藍髮、紅頭帶與收斂眼神；悠妮保留柔和笑容、紅髮及藍金頭飾，衣甲與空手造型沿原版。可看[四向及尺寸對照](docs/figures/hd1-heroes-comparison.png)、[索爾](docs/figures/hd1-sol-variant-game.png)與[悠妮](docs/figures/hd1-unni-special-game.png)的完整受控戰場圖。面容圖是原版頭像與地圖素材比較，戰場圖使用測試圖組投影，不代表自然轉職流程或對話HD頭像驗收。
 
+![戴盔士兵與蒙面劍士的原版及HD1四向對照](docs/figures/hd1-enemies-comparison.png)
+
+戴盔士兵恢復原版十字紋方盾、直劍與灰綠盔甲；蒙面劍士保留遮眼金屬帶、深藍面巾與斜持單劍，去除舊稿新增的骷髏臉。可看[各自原版頭像與實際尺寸](docs/figures/hd1-enemies-face-reference.png)、[士兵戰場](docs/figures/hd1-enemy-076-game.png)及[蒙面劍士戰場](docs/figures/hd1-enemy-079-game.png)。戰場圖使用原生名冊與地圖的受控敵軍群，地圖和資訊窗共用新版圖源，不代表自然章節流程驗收。其他人物仍逐組複核，完整總覽待全部重繪後更新。
+
 ![蓋亞原版與新版HD1四向及尺寸對照](docs/figures/hd1-gaia-q-comparison.png)
 
 蓋亞採用上圖的先前HD1版本定案，保留灰綠硬甲、藍色面罩與大頭短身。兩份加重候選不採用。[完整受控戰場及資訊窗](docs/figures/hd1-gaia-q-game.png)、[普通首章遊玩畫面](docs/figures/hd1-gaia-q-normal.png)均使用這版；十二姿態、主題切換與保存冷讀已抽驗。全部125組已做第一輪造型審查，身份與裝備偏移由[#287](https://github.com/wicanr2/fd2_re/issues/287)修正，其他比例由[#286](https://github.com/wicanr2/fd2_re/issues/286)續作；全部完成後才更新完整「原版／HD1」人物總覽。

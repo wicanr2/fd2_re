@@ -13,7 +13,7 @@ from verify_fd2_hd1_chibi_refresh import ROOT,sha,read,require,tree,rect,core
 
 RECIPE=ROOT/'remake/assets/themes/modern/hd1-party-chibi-refresh.recipe.json'
 GROUPS=(1,2,3)
-PROFILES={'party':GROUPS,'variants':(53,54),'identity-pair':(51,63),'knights':(55,56),'heroes':(50,52)}
+PROFILES={'party':GROUPS,'variants':(53,54),'identity-pair':(51,63),'knights':(55,56),'heroes':(50,52),'enemies':(76,79)}
 PROFILE_IDENTITIES={'variants':{53:3,54:4},'identity-pair':{51:1,63:13},'knights':{55:5,56:6},'heroes':{50:0,52:9}}
 FRAMES=(0,1,2,3,6,9)
 
@@ -22,7 +22,9 @@ def verify_gpu(d,folder,candidate,recipe=RECIPE,profile='party'):
     m=read(candidate/'manifest.json');r=read(recipe)
     require(d.get('status')=='PASS-HD1-CHIBI-PARTY-GPU','GPU status')
     require(d.get('profile','party')==profile,'GPU profile changed')
-    if profile!='party':require(d.get('selector_projection_injected') is True,'selector injection disclosure missing')
+    if profile=='enemies':
+        require(d.get('selector_projection_injected') is False and d.get('authored_enemy_fixture') is True,'authored enemy disclosure missing')
+    elif profile!='party':require(d.get('selector_projection_injected') is True,'selector injection disclosure missing')
     require(d.get('catalog_sha256')==sha(candidate/'catalog.json') and d.get('manifest_sha256')==sha(candidate/'manifest.json'),'candidate provenance')
     require(m['recipe_sha256']==sha(recipe) and m['compiler_sha256']==sha(ROOT/'tools/refresh_fd2_hd1_map_sprites.py'),'recipe/compiler changed')
     require(sha(ROOT/r['approved_preview'])==r['approved_preview_sha256'],'approved proportion changed')
@@ -38,6 +40,16 @@ def verify_gpu(d,folder,candidate,recipe=RECIPE,profile='party'):
         for b in bindings:
             matches=[row for row in rows if row['portrait']==b['native_identity']]
             require(len(matches)==1 and matches[0].get(b['target_field'])==b['group'],'authored promotion identity mismatch')
+    if profile=='enemies':
+        bindings=r.get('enemy_bindings',[])
+        require([b['group'] for b in bindings]==[76,79],'fixed enemy bindings')
+        for b,map_id,pos in zip(bindings,[0,18],[(19,15),(20,4)]):
+            g=b['group'];path=f'remake/assets/maps/map{map_id}/map{map_id}_units.json'
+            require(b['roster_file']==path and sha(ROOT/path)==b['roster_sha256'],'enemy roster changed')
+            require(b['map']==map_id and b['camp']=='enemy' and b['portrait']==b['battle_fig']==g,'enemy binding changed')
+            require(b['position']==dict(x_word=pos[0],y_word=pos[1],raw_key=g),'enemy original position changed')
+            matches=[u for u in read(ROOT/path)['units'] if u.get('map_selector_key')==g and u.get('native_position_record')==b['position']]
+            require(bool(matches) and all(u.get('camp')=='enemy' and u.get('portrait')==g and u.get('battle_fig')==g for u in matches),'authored enemy mismatch')
     require([g['group'] for g in m['groups']]==selected,'group manifest')
     catalog=read(candidate/'catalog.json')
     parents={a['source_group']:a for a in catalog['assets'] if a['role']=='map_sprite_set'}
@@ -60,7 +72,10 @@ def verify_gpu(d,folder,candidate,recipe=RECIPE,profile='party'):
     for case in cases:
         s=lookup[case['case']];g,f=s['group'],s['frame']
         require(g in groups and s['hud_group']==g and s['hud_frame']==f%3 and s['save_bytes']>0,'map/HUD provenance')
-        if profile!='party':require(s.get('native_identity')==PROFILE_IDENTITIES[profile][g] and s.get('selector_key')==g,'visual selector projection changed')
+        if profile=='enemies':
+            binding=next(b for b in r['enemy_bindings'] if b['group']==g)
+            require(s.get('camp')==2 and s.get('portrait')==s.get('battle_fig')==s.get('selector_key')==g and s.get('position')==binding['position'] and s.get('map')==binding['map'] and s.get('roster_sha256')==binding['roster_sha256'] and s.get('constructor')=='AppendGroupWithNativePlacement' and s.get('placement_gate')==0,'authored enemy provenance changed')
+        elif profile!='party':require(s.get('native_identity')==PROFILE_IDENTITIES[profile][g] and s.get('selector_key')==g,'visual selector projection changed')
         require(case['source_frame']==f and case.get('game_draw') is True and case.get('rgba_tolerance')==2,'Game.Draw scope')
         if s['interface']!='hd':continue
         name=case['case']+'.png'
@@ -98,6 +113,7 @@ def verify_normal(d,folder,candidate,binary,profile='party'):
     if profile=='identity-pair':scope='unchanged chapter1 source with base selectors0/4/9/30; groups51/63 actual pixels verified only by controlled authored identities1/13 raw-selector projections, not promotion or natural membership'
     if profile=='knights':scope='unchanged chapter1 source with base selectors0/4/9/30; groups55/56 actual pixels verified only by controlled authored identities5/6 raw-selector projections, not promotion or natural membership'
     if profile=='heroes':scope='unchanged chapter1 source contains Sol0 and Unni9 base selectors, not transformed selectors50/52; new pixels verified only by controlled authored identity0/9 projections, no promotion-flow or natural transformed appearance claim'
+    if profile=='enemies':scope='unchanged ordinary chapter1 save validates complete-pack admission, independent controls and save/cold LOAD; selected enemy pixels only by controlled authored initial groups map0/10 and map18/0, not natural encounter or chapter19 progression'
     return dict(status='PASS-FULL-CANDIDATE-NORMAL-TRANSACTION',pngs=10,scope=scope)
 
 def register(formal,candidate,destination,recipe=RECIPE,profile='party'):
@@ -131,13 +147,13 @@ def main():
     for n in ('gpu','candidate','normal','binary','out'):p.add_argument('--'+n,type=Path,required=True)
     for n in ('formal','destination'):p.add_argument('--'+n,type=Path)
     p.add_argument('--recipe',type=Path,default=RECIPE,help='明示本批配方；必須符合所選固定矩陣')
-    p.add_argument('--profile',choices=PROFILES,default='party',help='party固定21；variants53／54、identity-pair51／63、knights55／56、heroes50／52各固定14，heroes明示0／9身份')
+    p.add_argument('--profile',choices=PROFILES,default='party',help='party固定21；variants53／54、identity-pair51／63、knights55／56、heroes50／52各固定14，heroes明示0／9身份；enemies76／79保持敵方原生名冊')
     p.add_argument('--self-test',action='store_true');p.add_argument('--register',action='store_true');a=p.parse_args()
     require(not a.out.exists(),'fresh report required')
     d=read(a.gpu);result=verify_gpu(d,a.gpu.parent,a.candidate,a.recipe,a.profile);result['normal']=verify_normal(read(a.normal),a.normal.parent,a.candidate,a.binary,a.profile)
     rejected=[]
     if a.self_test:
-        for fault in ('missing','duplicate','catalog','source-code','false-save','wrong-hud','wrong-tolerance','missing-f2','wrong-profile','wrong-selector','wrong-identity','undisclosed-projection'):
+        for fault in ('missing','duplicate','catalog','source-code','false-save','wrong-hud','wrong-tolerance','missing-f2','wrong-profile','wrong-selector','wrong-identity','undisclosed-projection','wrong-enemy-camp','wrong-enemy-position','wrong-enemy-roster'):
             x=deepcopy(d)
             if fault=='missing':x['cases'].pop()
             elif fault=='duplicate':x['cases'][-1]=deepcopy(x['cases'][0])
@@ -154,11 +170,22 @@ def main():
                 x['sources'][0]['selector_key']=99
             elif fault=='wrong-identity':
                 if a.profile=='party':continue
-                subject=next(row for row in x['sources'] if row['group']==52) if a.profile=='heroes' else x['sources'][0]
-                subject['native_identity']=2 if a.profile=='heroes' else 99
-            else:
+                if a.profile=='enemies':x['sources'][0]['portrait']=99
+                else:
+                    subject=next(row for row in x['sources'] if row['group']==52) if a.profile=='heroes' else x['sources'][0]
+                    subject['native_identity']=2 if a.profile=='heroes' else 99
+            elif fault=='undisclosed-projection':
                 if a.profile=='party':continue
                 x.pop('selector_projection_injected',None)
+            elif fault=='wrong-enemy-camp':
+                if a.profile!='enemies':continue
+                x['sources'][0]['camp']=0
+            elif fault=='wrong-enemy-position':
+                if a.profile!='enemies':continue
+                x['sources'][0]['position']['raw_key']=0
+            else:
+                if a.profile!='enemies':continue
+                x['sources'][0]['roster_sha256']='0'*64
             try:verify_gpu(x,a.gpu.parent,a.candidate,a.recipe,a.profile)
             except (ValueError,KeyError,IndexError):rejected.append(fault)
             else:raise ValueError('mutant accepted: '+fault)

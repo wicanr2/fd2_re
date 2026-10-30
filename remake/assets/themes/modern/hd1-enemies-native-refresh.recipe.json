@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_hd1_chibi_map_refresh",
+  "base_catalog_sha256": "22934e1f639a5b82e795cc07aa016654131797a4ff48573c196f15db61a4f3f6",
+  "approved_preview": "docs/figures/hd1-ares-q-design.png",
+  "approved_preview_sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e",
+  "approval": "沿使用者大頭短身Q版及逐人原版身份／裝備複核定案；76／79由實際原生名冊綁DATO，保留遮蔽與各自五官。",
+  "native_bank_sha256": "7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44",
+  "palette_sha256": "404db1ca72ffc19fa7404fbc59bde98cdf239f63fe3375ec248a8142073a28bf",
+  "groups": [
+    {
+      "group": 76,
+      "master_file": "fdicon-076-hd1-native-q-v1-master.png",
+      "master_sha256": "f7922eaebf28402b6b5d9bc67b7f9ab5e5c71da0ead4fd27207f0c99578f1ffc",
+      "output_prefix": "fdicon-076-hd1-native-q-v1"
+    },
+    {
+      "group": 79,
+      "master_file": "fdicon-079-hd1-native-q-v1-master.png",
+      "master_sha256": "a80f7be220d152fbfaa492a76af3cf32b50e35e0dc9746eae61cdeec1bcd66f5",
+      "output_prefix": "fdicon-079-hd1-native-q-v1"
+    }
+  ],
+  "policy": "76灰綠盔甲、可見人臉與方下巴、十字方盾及直劍；79橄欖頭布、遮眼金屬帶與深藍面巾，不是骷髏。原版十二格決定左右裝備、遠側遮蔽與單一兵器；沿大頭短身比例，沒有額外裝備。",
+  "image_generation": {
+    "tool": "image_gen.imagegen",
+    "mode": "builtin",
+    "transparent_background": true,
+    "jobs": [
+      {
+        "group": 76,
+        "source": "exec-ce5baefc-8b64-4940-929b-1f0c9b7e98ac.png",
+        "prompt": "Use case: identity-preserve. Create the approved HD1 big-head short-body tactical map sprite MASTER for Flame Dragon Knights 2 ORIGINAL FDICON group076, helmeted HUMAN soldier. Image1 is the original twelve poses in correct original game palette, primary authority for silhouette, directions, equipment, placement and occlusion. Image2 is HIS OWN original DATO076 portrait confirmed by authored map0 enemy record portrait76/map_selector_key76: keep gray-green steel helmet, angular tan human lower face and square prominent jaw/chin, straight closed mouth. Original small map poses have a narrow visible tan face and visible eye under open helmet edge: keep this map-specific visibility instead of copying the fully lowered portrait visor. He is an armored human, not a robot or skull. Image3 is approved Q PROPORTION/style reference only, especially its lower NEW-Q drawings: enormous head plus helmet about67-70% figure height, extremely short torso and legs, broad little boots, crisp smooth outlined cel-painted HD finish. Do not copy image3's blue cap, hair, boy face, outfit or sword shape.\nExactly THREE COLUMNS by FOUR ROWS, twelve complete isolated full figures on genuine transparent alpha. Row1 FRONT facing viewer; row2 LEFT PROFILE facing screen left; row3 BACK no face; row4 RIGHT PROFILE facing screen right. Every row col1 neutral both boots planted, col2 small left-foot-forward phase, col3 small right-foot-forward phase. Same size and foot baseline with generous transparent space between figures, all weapons/boots inside each cell.\nCRITICAL ORIGINAL gear image1: dark desaturated gray-green helmet with thick central brow/nasal guard and sides, tan human face visible beneath, dark green compact armor, green cloth waist panel, tiny reddish brown boots. Front row has ONE large gray-green SQUARED SHIELD on viewer LEFT, anatomical right arm, straight flat top and vertical upper sides narrowing slightly to angular lower corners. A plain DARK CROSS inset on shield face, as original. NO round wooden shield, no circular boss, no sunburst, no new heraldry. Front has ONE STRAIGHT upright silver sword on viewer RIGHT, anatomical left hand, tall slim straight blade beside helmet edge with small dark/reddish hilt. LEFT profile row prominently shows near-side cross shield in front of body, sword hidden on far side as original. BACK row helmet dominates, dark shoulder and hand edges, shield/sword largely occluded as in image1, no cross on back helmet. RIGHT profile row shows upright silver sword beside face on viewer LEFT and far-side shield hidden. Keep same hands and equipment ownership across all poses. Exactly two hands and two legs, natural wrists/elbows. No horns, cape, beard, hair tuft, extra blade, extra shield or glowing effects.\nSmooth clean Q RPG illustration with broad readable colors at144/72/48px, a stern adult armored human identity, no generic cute blue-eyed boy face, no pixel-grid rendering or pixel upscale, no photo, no shiny3D toy. No text, numbers, labels, cell borders, grid, floor, cast shadows, background or checkerboard. Actual transparent alpha.",
+        "selected": true
+      },
+      {
+        "group": 79,
+        "source": "exec-c4f2f8c8-d2a2-4c25-b9d7-f96d64b8ee5d.png",
+        "prompt": "Use case: identity-preserve. Create HD1 big-head short-body tactical-map sprite MASTER for Flame Dragon Knights 2 ORIGINAL FDICON group079, olive-capped masked HUMAN swordsman. Image1 original12 map poses with correct palette is primary authority for directions, silhouette, original gear, colors, placement and occlusion. Image2 is HIS OWN original DATO079 portrait, confirmed authored map18 enemies portrait79/map_selector_key79: olive green soft folded cap/headcloth, black/dark brown hair at sides, a WIDE PALE SILVER/MINT METAL EYE BAND covering BOTH eyes and bridge of nose, round silver side fitting, dark NAVY CLOTH SCARF over nose/mouth/chin, tiny tan cheek/temple sliver and ears only. Preserve these original face-covering features: NOT a skull, NO teeth, NO visible nose/mouth/eyes, no invented generic human face or glowing eyes. Image3 approved Q PROPORTION/style only: huge head including cloth cap about67-70% total figure height, extremely short compact body/legs, crisp smooth outline and restrained cel-painted HD finish especially lower NEW-Q drawings. Do not copy the reference blue cap, young boy face, hair, clothes or sword shape.\nExactly THREE COLUMNS by FOUR ROWS, twelve fully isolated complete figures, genuine transparent alpha. Row1 FRONT toward viewer, row2 LEFT PROFILE facing screen left, row3 BACK no face, row4 RIGHT PROFILE facing screen right. Col1 everyrow NEUTRAL both boots planted, col2 small left-foot-forward step, col3 small right-foot-forward step. Equal scale/baselines, generous transparent margins, no neighboring figures touching.\nOriginal image1 gear: soft asymmetrically folded olive cap, silver mint broad opaque eye band, navy cloth lower face wrap that continues around back of neck, tiny charcoal blue shoulder/arm plates, compact muted olive/gray tunic, dark brown belt with small gold/ochre accent, very short olive trousers and tiny olive boots. ONE slender straight silver sword held diagonally in anatomical RIGHT hand. FRONT row sword angles from viewer LOWER LEFT up toward viewer UPPER RIGHT across covered face, simple thin blade with tiny dark hilt, not a crossguard sword or huge fantasy weapon. LEFT-profile row sword is far-side and HIDDEN, exactly original. BACK row sword mostly hidden, navy scarf and cap folds visible, no face or mask on back. RIGHT-profile row sword diagonal across near side, rising from LOWER LEFT to UPPER RIGHT in front of the body, as original. Exactly two natural arms/hands and two legs; no shield, cape, skull necklace, extra blade, spikes, ninja eye holes, new armor ornament or bag.\nReadable original-specific concealed-face HUMAN identity with huge head and tiny body at144/72/48px. Smooth clean hand-painted cel finish, broad clear colors, no pixel-grid or pixel upscale, photorealism or glossy3D toy. No text, labels, numbers, cells, borders, floor, cast shadow, glow, checkerboard or background. Actual alpha transparency.",
+        "selected": true
+      }
+    ]
+  },
+  "original_reference": {
+    "source": "FDICON.B24三層原生圖源與FDOTHER0代表色盤；名冊map0／18確認DATO076／079",
+    "groups": [
+      76,
+      79
+    ],
+    "records_sha256": "9a4755ba3a46805d7f1fbbace1afd1804407124629ae46b1ecc7f751174be788",
+    "reference_boards": [
+      {
+        "file": "group-076-original-reference.png",
+        "sha256": "aaaa3968b0328d9624f5798f878c3cbbc97cae7090f4559890e335ec0734c3fc"
+      },
+      {
+        "file": "group-079-original-reference.png",
+        "sha256": "6ec480a368fe35e285b18d149d5fb967da7985c172777311b380ef973338ac5e"
+      }
+    ],
+    "scope": "已解名冊確認視覺對應；不新增原版行為或逐章到達結論。"
+  },
+  "faces": [
+    {
+      "group": 76,
+      "name": "戴盔士兵",
+      "portrait_file": "remake/assets/portraits/DATO_076_m0.png",
+      "portrait_sha256": "c0c5a05ef7045b2549a18f5bf86cb51ec6076a379744864ceeeb72c31f27ea63",
+      "traits": [
+        "灰綠盔",
+        "窄可見人臉",
+        "方下巴",
+        "平直閉嘴"
+      ],
+      "comparison_label": "原版大頭像與HD1地圖人物，非480對話頭像驗收"
+    },
+    {
+      "group": 79,
+      "name": "蒙面劍士",
+      "portrait_file": "remake/assets/portraits/DATO_079_m0.png",
+      "portrait_sha256": "cf6ce346237f39999ab7ab525f19c708d714669f73e9af804e9eb8a8c39aa2f5",
+      "traits": [
+        "橄欖頭布",
+        "遮眼金屬帶",
+        "深藍面巾",
+        "保留遮蔽，不畫骷髏"
+      ],
+      "comparison_label": "原版大頭像與HD1地圖人物，非480對話頭像驗收"
+    }
+  ],
+  "enemy_bindings": [
+    {
+      "group": 76,
+      "map": 0,
+      "roster_file": "remake/assets/maps/map0/map0_units.json",
+      "roster_sha256": "10f0d34d2ba92edfb254da1f1426e928a465014f1040672b4aee2388c64f234f",
+      "camp": "enemy",
+      "portrait": 76,
+      "battle_fig": 76,
+      "position": {
+        "x_word": 19,
+        "y_word": 15,
+        "raw_key": 76
+      }
+    },
+    {
+      "group": 79,
+      "map": 18,
+      "roster_file": "remake/assets/maps/map18/map18_units.json",
+      "roster_sha256": "69251f66b970cf732d4db7c81a174f3969ee620ff51525dbc775c551dc7d11dd",
+      "camp": "enemy",
+      "portrait": 79,
+      "battle_fig": 79,
+      "position": {
+        "x_word": 20,
+        "y_word": 4,
+        "raw_key": 79
+      }
+    }
+  ]
+}
