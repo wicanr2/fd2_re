@@ -85,6 +85,14 @@
 
 達克賽保留深藍裸面、尖耳、厚重額面、鉤鼻與微揚薄唇；亞奇梅吉保留藍灰高額禿頂、深陷窄眼、長鼻與瘦長下巴。兩人皆按原生空手，灰綠腰帶與藍紫袍大領分別保持；達克賽眼色依自己的原版大頭像採藍紫。可看[四向與實際尺寸](docs/figures/hd1-blue-and-robed-comparison.png)、[達克賽](docs/figures/hd1-darksai-refresh-game.png)及[亞奇梅吉](docs/figures/hd1-archimage-refresh-game.png)的完整受控戰場圖。面容圖比較原版頭像與實際地圖素材，非對話HD頭像驗收；地圖及資訊窗共用新版圖源。戰場圖使用各自原生名冊的受控測具，沒有身份或圖組投影，不代表自然加入流程。其餘人物續作，完整總覽仍待全部重繪後更新。
 
+![亞雷斯與洛娜預設轉職圖組的原版及HD1面容對照](docs/figures/hd1-ares-and-lona-faces.png)
+
+亞雷斯第36組保留藍平頂帽、綠額帶、濃眉窄眼與方下顎，維持深藍衣與灰綠護具。洛娜第37組保留灰綠側長髮、高額、成熟杏眼與紅唇，使用藍甲、灰藍胸片與藍背布。兩人直立兵器的形狀與持側依原生。可看[四向與144／72／48尺寸](docs/figures/hd1-ares-and-lona-comparison.png)、[亞雷斯](docs/figures/hd1-ares-default-refresh-game.png)及[洛娜](docs/figures/hd1-lona-default-refresh-game.png)的完整受控戰場圖。
+
+![萊汀與希莉亞預設轉職圖組的原版及HD1面容對照](docs/figures/hd1-lyting-and-cylia-faces.png)
+
+萊汀第38組保留紅褐髮、藍額帶、方下顎與微揚薄唇，深藍甲上的金黃腰腕件依原生。希莉亞第40組保留長褐波髮、額帶藍飾與柔和紅唇微笑，使用金弓、灰綠箭筒、灰綠領及紅褐背布，十二姿態採一致深褐靴色，背向金弓上半部由長髮遮住，只露下方小段。可看[四向與實際尺寸](docs/figures/hd1-lyting-and-cylia-comparison.png)、[萊汀](docs/figures/hd1-lyting-default-refresh-game.png)及[希莉亞](docs/figures/hd1-cylia-default-refresh-game.png)的完整受控戰場圖。四組依轉職表的預設目標對應原身份4／5／6／8；戰場圖只在測具替換地圖圖組，保留原身份與能力，不代表自然轉職。地圖與資訊窗共用新版來源；面容圖只比較原版頭像與地圖素材，其他人物與完整總覽仍待。
+
 ![索爾與哈諾轉職圖組的原版及HD1面容對照](docs/figures/hd1-sol-and-hano-faces.png)
 
 索爾第32組保留深藍髮、紅額帶、短馬尾及濃眉窄眼，維持空手與藍衣灰綠護具。哈諾第33組保留紅褐髮、藍灰額帶、長窄臉與低眉細眼，使用冰藍短斧。可看[四向與144／72／48尺寸](docs/figures/hd1-sol-and-hano-comparison.png)、[索爾](docs/figures/hd1-sol-default-refresh-game.png)及[哈諾](docs/figures/hd1-hano-default-refresh-game.png)的完整受控戰場圖。

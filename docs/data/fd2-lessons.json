@@ -4789,6 +4789,21 @@
         ],
         "pattern": "s\\.get\\('scenario_sha256'\\)==b\\['scenario_sha256'\\].*'promoted actor provenance changed'"
       }
+    },
+    {
+      "id": "hd-revision-consumers-share-one-candidate",
+      "date": "2026-10-31",
+      "area": "HD候選驗證",
+      "rule": "多輪HD候選保留前輪輸出，以tools/test_fd2_hd1_chibi_party.py的FD2_CHIBI_PARTY_CANDIDATE選擇當輪來源測試目錄。編製、GPU、一般流程與收尾雜湊比對使用同一候選，實際命令保存於當批commands JSON；未設環境變數時仍沿測試工作根的candidate，不靠覆寫舊資料通過驗證。",
+      "why": "R18修正希莉亞後改用candidate-final，收尾腳本仍讀舊candidate，找不到v2主圖。修正路徑後私人檔案與最終候選完全相同；來源測試新增可選目錄，正式引擎與拒收條件保持。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#hd1_default_knights_bow_followup_20261031",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+        ],
+        "pattern": "FD2_CHIBI_PARTY_CANDIDATE"
+      }
     }
   ]
 }

@@ -4379,3 +4379,16 @@ README新增物品、金錢、關框及返回四格實圖，原文化入口與�
 - GPU 269.347／271.286秒，峰6149541888／6094913536 bytes；普通277.303秒／5258829824 bytes，回歸96.981秒／1510744064 bytes。memory.events全零，均returncode0且無timeout／OOM／kill；共享主機牆鐘不作效能聲明。
 - 私人提交a53b9d9007dd8e91eff57fffbfbba28a6d250dcf已push，102路徑精確為100新圖及兩清冊，白名單7106。README補兩組面容、四向實際尺寸與四張完整受控戰場，文化保存保持。來源回歸既有四次BufferedReader ResourceWarning保持，程序結束清理。沒有錄影或新Release。
 - 最終核對27份引用、八張公開圖、24張GPU與十張普通圖，5703個文件目標、修改文件3453個，新增失效連結零。19筆既有文字誤判／歷史交付路徑保持；舊root-owned2808項、本批新增零。工單30／人工23／可能完成零，教訓385／239通過。來源修正前後24張PNG逐byte相同。私人遠端HEAD及PRIVATE已核，FD2測試／GUI容器零殘留。
+
+
+### 2026-10-31 亞雷斯、洛娜、萊汀與希莉亞預設轉職圖組
+
+- 開工查復古遊戲路由，載入spec-gated-workflow、project-document-responsibilities及內建繪圖技能；依已定比例、個別面容與持續推進授權處理36／37／38／40。先核default_target明示4／5／6／8、ch01／09／10／03名冊、自身DATO及原生十二姿態三層／FDOTHER0色盤，再寫READY。現況依58首列及主收據hd1_default_knights_bow_followup_20261031。
+- 內建繪圖六次採四稿。亞雷斯藍帽綠帶與方正臉；洛娜灰綠長髮、成熟杏眼紅唇及藍背布；萊汀方下顎長下巴、微揚薄唇及深藍甲金黃件；希莉亞長褐髮、藍飾、柔和微笑、灰綠領與金弓箭筒。前三組兵器按原生形狀與持側，不推定玩法種類。希莉亞初稿步行幀靴色跳變，先修正十二姿態深褐靴色，再依原版修正背向上半部金弓由長髮遮蔽後採用。逐字提示、實際參考順序、拒收原因及SHA存配方。
+- 候選第一輪因背向遮蔽複核主動停止兩GPU，均returncode143，不作通過、OOM或自發signal-killed證據；原因與初稿雜湊另存cancelled-r1.json。補齊六份繪圖的來源／參考SHA後，最終候選獨立編製到candidate-final，驗收只採第二輪GPU。來源測試新增可選FD2_CHIBI_PARTY_CANDIDATE，未設時保持work/candidate，不覆寫前輪資料。
+- 同一完整候選分ares-and-lona36／37及lyting-and-cylia38／40，共28完整Game.Draw、24PNG、四次F2、324328核心點及25反例通過。逐actor核原身份4／5／6／8、實際章名冊SHA、default_target及true投影，只改測具selector／raw byte6／cache，保留BattleFig、能力與保存。九種既有分份與party-nine／party-ten配方契約保持，不重跑或升格舊GPU。
+- 普通首章十PNG驗整包四組控制、走行取消、F5及新程序標題LOAD，無狀態注入。三項逐byte重編／八拒收、24頂層Go含字串、21來源案例／416幀／19反例、883清冊及125組1455來源通過；兩可選GPU略過不計。沒有新增原版EXE動態、自然轉職或480對話頭像驗收，正式Go與保存格式保持。
+- 100新檔及八項清冊已登錄，875項、原8648美術檔SHA／inode／mtime／owner、0／9／30六項與其餘121組來源保持。Q比例餘項38→34，其他面容及完整總覽仍待，Gaia保持定版。
+- GPU 161.479／161.576秒，峰5952286720／6152331264 bytes；普通270.792秒／5722402816 bytes，回歸52.092秒／1358680064 bytes。memory.events全零，均returncode0、無timeout／OOM／kill。共享主機牆鐘不作效能聲明。
+- 私人提交d3af38e186f0c2ea4f7f7a6a8bf227066aadddb4已push，102路徑精確為100新圖及兩清冊，白名單7102。README補兩組面容、四向實際尺寸與四張完整受控戰場，文化保存保持。編製器既有四次BufferedReader ResourceWarning保持，程序結束清理；沒有錄影或新Release。
+- 最終核對29份引用、八張公開圖、24張GPU與十張普通圖，5712個文件目標、修改文件3462個，新增失效連結零。19筆既有文字誤判／歷史交付路徑保持；既有root-owned2808項、本批新增零。工單30／人工23／可能完成零，教訓386／240通過，新增修正版候選位置一致性的教訓。私人遠端HEAD及PRIVATE已核，FD2測試／GUI容器零殘留。

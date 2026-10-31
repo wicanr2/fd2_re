@@ -17,7 +17,7 @@ class ChibiPartyTest(unittest.TestCase):
         cls.work=Path(os.environ['FD2_CHIBI_PARTY_ROOT'])
         cls.recipe=Path(os.environ.get('FD2_CHIBI_PARTY_RECIPE',ROOT/'remake/assets/themes/modern/hd1-party-chibi-refresh.recipe.json'))
         cls.catalog=cls.work/'base-catalog.json'
-        cls.candidate=cls.work/'candidate'
+        cls.candidate=Path(os.environ.get('FD2_CHIBI_PARTY_CANDIDATE',cls.work/'candidate'))
         cls.base_view=tempfile.TemporaryDirectory(dir=cls.work)
         cls.addClassCleanup(cls.base_view.cleanup)
         cls.pack=Path(cls.base_view.name)/'base-pack';cls.pack.mkdir()
