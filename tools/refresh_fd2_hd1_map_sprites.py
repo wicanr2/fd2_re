@@ -24,6 +24,18 @@ def safe(name):
 def asset_digest(assets):
     return hashlib.sha256(json.dumps(assets,ensure_ascii=False,sort_keys=True,separators=(',',':')).encode()).hexdigest()
 
+def checked_master_components(image,count):
+    """逐姿態檢查近不透明核心，保留來源覆蓋率及抗鋸齒alpha。"""
+    if image.mode!='RGBA' or image.getchannel('A').getextrema()[0]!=0:
+        raise ValueError('master requires RGBA and transparent background')
+    pieces=master_components(image,count)
+    for piece,box in pieces:
+        histogram=piece.getchannel('A').histogram()
+        core=sum(histogram[128:]);near=sum(histogram[250:])
+        if not core or near*10<core*9 or not sum(histogram[254:]):
+            raise ValueError('master requires near-opaque core in every figure')
+    return pieces
+
 def prepare(recipe_path,catalog_path,pack,original,masters,out):
     r,c=read(recipe_path),read(catalog_path)
     if r['kind']!='fd2_hd1_chibi_map_refresh' or r['base_catalog_sha256']!=sha(catalog_path):raise ValueError('base catalog changed')
@@ -48,8 +60,13 @@ def prepare(recipe_path,catalog_path,pack,original,masters,out):
             if not Image.open(folder/'mask.png').getbbox():raise ValueError('no source-write frame')
             native.append(row)
         with Image.open(master) as im:
-            if im.mode!='RGBA' or im.getchannel('A').getextrema()!=(0,255):raise ValueError('master requires transparent alpha and opaque core')
-            pieces=master_components(im,parent['frame_count'])
+            policy=r.get('master_alpha_policy','legacy_rgba255')
+            if policy=='per_pose_coverage_v1':
+                pieces=checked_master_components(im,parent['frame_count'])
+            elif policy=='legacy_rgba255':
+                if im.mode!='RGBA' or im.getchannel('A').getextrema()!=(0,255):raise ValueError('master requires transparent alpha and opaque core')
+                pieces=master_components(im,parent['frame_count'])
+            else:raise ValueError('unknown master alpha policy')
         if 'reuse_group' in entry:
             reference=entry['reuse_group']
             if type(reference)!=int or reference not in parents or reference in groups:raise ValueError('invalid reused group')

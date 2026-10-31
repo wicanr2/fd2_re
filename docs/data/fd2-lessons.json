@@ -4794,8 +4794,8 @@
       "id": "hd-revision-consumers-share-one-candidate",
       "date": "2026-10-31",
       "area": "HD候選驗證",
-      "rule": "多輪HD候選保留前輪輸出，以tools/test_fd2_hd1_chibi_party.py的FD2_CHIBI_PARTY_CANDIDATE選擇當輪來源測試目錄。編製、GPU、一般流程與收尾雜湊比對使用同一候選，實際命令保存於當批commands JSON；未設環境變數時仍沿測試工作根的candidate，不靠覆寫舊資料通過驗證。",
-      "why": "R18修正希莉亞後改用candidate-final，收尾腳本仍讀舊candidate，找不到v2主圖。修正路徑後私人檔案與最終候選完全相同；來源測試新增可選目錄，正式引擎與拒收條件保持。",
+      "rule": "多輪HD候選保留前輪輸出，以tools/test_fd2_hd1_chibi_party.py的FD2_CHIBI_PARTY_CANDIDATE選擇當輪來源測試目錄。編製、GPU、一般流程與收尾雜湊比對使用同一候選，實際命令保存於當批commands JSON；未設環境變數時仍沿測試工作根的candidate，不靠覆寫舊資料通過驗證。 切換輪次只改本批輸出，固定二進位、Go快取及歷史candidate-final／收據來源逐一核對實檔；不以全域輪次字串取代改寫歷史輸入。",
+      "why": "R18修正希莉亞後改用candidate-final，收尾腳本仍讀舊candidate，找不到v2主圖。修正路徑後私人檔案與最終候選完全相同；來源測試新增可選目錄，正式引擎與拒收條件保持。 R23曾因廣泛替換r1為r2而誤改工作根、固定二進位與歷史候選；改為明示當批輸出及各自原來源後，最終r2與舊來源回歸通過，記錄於主收據hd1_enemy_armor_four_followup_20261101。",
       "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#hd1_default_knights_bow_followup_20261031",
       "guard": {
         "kind": "present",
@@ -4803,6 +4803,22 @@
           "docs/knowledge-base/61-modern-theme-runtime-spec.md"
         ],
         "pattern": "FD2_CHIBI_PARTY_CANDIDATE"
+      }
+    },
+    {
+      "id": "hd-master-alpha-is-per-pose-coverage",
+      "date": "2026-11-01",
+      "area": "HD透明主圖",
+      "rule": "HD人物主圖使用tools/refresh_fd2_hd1_map_sprites.py的checked_master_components逐姿態驗證透明背景與近不透明核心；不以全圖任意一點alpha255代替品質。core128以上至少90%達250且每姿態最高達254，來源alpha保留。tools/test_fd2_hd1_chibi_party.py核對254主圖可用，整圖半透明、單姿態半透明、核心不足、無alpha與無透明背景均拒收。 新配方明示master_alpha_policy=per_pose_coverage_v1，既有未標記配方保留legacy_rgba255；新門檻不倒套已核准柔和透明素材。",
+      "why": "81／83原稿、修圖與重新生成均最高254；每姿態輪廓完整且近不透明核心達94%以上。舊任一像素255閘門誤拒後持續重生沒有改善。改以已記錄的逐姿態品質契約，原主圖與編製覆蓋不改寫。 舊49／17每姿態近不透明比例86%至89%，既有來源回歸要求保留原品質契約。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#hd1_enemy_armor_four_followup_20261101",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/refresh_fd2_hd1_map_sprites.py",
+          "tools/test_fd2_hd1_chibi_party.py"
+        ],
+        "pattern": "checked_master_components"
       }
     }
   ]

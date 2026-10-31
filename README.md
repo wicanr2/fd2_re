@@ -85,6 +85,14 @@
 
 達克賽保留深藍裸面、尖耳、厚重額面、鉤鼻與微揚薄唇；亞奇梅吉保留藍灰高額禿頂、深陷窄眼、長鼻與瘦長下巴。兩人皆按原生空手，灰綠腰帶與藍紫袍大領分別保持；達克賽眼色依自己的原版大頭像採藍紫。可看[四向與實際尺寸](docs/figures/hd1-blue-and-robed-comparison.png)、[達克賽](docs/figures/hd1-darksai-refresh-game.png)及[亞奇梅吉](docs/figures/hd1-archimage-refresh-game.png)的完整受控戰場圖。面容圖比較原版頭像與實際地圖素材，非對話HD頭像驗收；地圖及資訊窗共用新版圖源。戰場圖使用各自原生名冊的受控測具，沒有身份或圖組投影，不代表自然加入流程。其餘人物續作，完整總覽仍待全部重繪後更新。
 
+![紅飾與褐角尖面重甲的原版及HD1面容對照](docs/figures/hd1-enemy-crested-and-horned-faces.png)
+
+第80組保留深藍尖面盔、紅盔飾、金線與紫腰布；第81組保留褐色雙角、藍紫甲件與紅腰布，兩組皆按原版空手。可看[四向與144／72／48尺寸](docs/figures/hd1-enemy-crested-and-horned-comparison.png)、[紅飾重甲](docs/figures/hd1-enemy-080-refresh-game.png)及[褐角重甲](docs/figures/hd1-enemy-081-refresh-game.png)的完整受控戰場圖。
+
+![灰綠與藍色角盔劍盾守衛的原版及HD1面容對照](docs/figures/hd1-enemy-shield-guards-faces.png)
+
+第82組保留灰綠圓筒盔、方十字盾與單劍；第83組保留藍色圓筒盔、褐色雙角、藍十字盾與單劍。第83組原版地圖是黃眼點，頭像是紅眼縫，本批保留地圖原色。可看[四向與144／72／48尺寸](docs/figures/hd1-enemy-shield-guards-comparison.png)、[灰綠守衛](docs/figures/hd1-enemy-082-refresh-game.png)及[藍色角盔守衛](docs/figures/hd1-enemy-083-refresh-game.png)的完整受控戰場圖。四組由原始敵軍名冊建立，保留陣營、位置與圖源，沒有身份或圖組投影；戰場圖不代表自然章節可達，其餘人物與完整總覽仍待。
+
 ![灰綠劍盾守衛與藍色獸人的原版及HD1面容對照](docs/figures/hd1-native-guards-faces.png)
 
 第68組保留遮眼盔、露出的成熟下臉、十字盾與單劍；第71組依自身頭像保留直立獸耳、細眼、黑鼻與短牙。可看[四向與144／72／48尺寸](docs/figures/hd1-native-guards-comparison.png)、[劍盾守衛](docs/figures/hd1-native-068-refresh-game.png)及[藍色獸人](docs/figures/hd1-native-071-refresh-game.png)的完整受控戰場圖。

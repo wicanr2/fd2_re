@@ -6,8 +6,9 @@ import os
 from pathlib import Path
 import tempfile
 import unittest
+from PIL import Image
 
-from refresh_fd2_hd1_map_sprites import prepare,read,sha,asset_digest
+from refresh_fd2_hd1_map_sprites import prepare,read,sha,asset_digest,checked_master_components
 
 ROOT=Path(__file__).resolve().parents[1]
 @unittest.skipUnless(os.environ.get('FD2_CHIBI_PARTY_ROOT'),'explicit accepted inputs required')
@@ -50,7 +51,7 @@ class ChibiPartyTest(unittest.TestCase):
 
     def test_source_faults_fail_before_publish(self):
         original=read(self.recipe)
-        faults=['catalog','master','palette','native-bank','design','duplicate-group','invisible-group','unsafe-name']
+        faults=['catalog','master','palette','native-bank','design','duplicate-group','invisible-group','unsafe-name','alpha-policy']
         if any('reuse_group' in entry for entry in original['groups']):faults+=['reuse-group','reuse-assets','reuse-missing-group']
         for fault in faults:
             with self.subTest(fault=fault),tempfile.TemporaryDirectory(dir=self.work) as folder:
@@ -62,6 +63,7 @@ class ChibiPartyTest(unittest.TestCase):
                 elif fault=='design':d['approved_preview_sha256']='0'*64
                 elif fault=='duplicate-group':d['groups'].append(deepcopy(d['groups'][0]))
                 elif fault=='invisible-group':d['groups'][0]['group']=39
+                elif fault=='alpha-policy':d['master_alpha_policy']='unreviewed-alpha-policy'
                 elif fault=='reuse-group':
                     entry=next(g for g in d['groups'] if 'reuse_group' in g)
                     reference=14 if entry['reuse_group']!=14 else 17
@@ -86,5 +88,32 @@ class ChibiPartyTest(unittest.TestCase):
         before=sha(self.candidate/'catalog.json')
         with self.assertRaises(ValueError):self.make(self.recipe,self.candidate)
         self.assertEqual(before,sha(self.candidate/'catalog.json'))
+
+    def test_each_figure_requires_near_opaque_coverage(self):
+        entry=read(self.recipe)['groups'][0]
+        source=self.work/entry['master_file'];before=sha(source)
+        with Image.open(source) as opened:image=opened.copy()
+        image.putalpha(image.getchannel('A').point(lambda value:min(value,254)))
+        pieces=checked_master_components(image,12)
+        self.assertEqual(len(pieces),12)
+        self.assertTrue(all(piece.getchannel('A').getextrema()[1]==254 for piece,box in pieces))
+        mutations=[]
+        translucent=image.copy();translucent.putalpha(image.getchannel('A').point(lambda value:min(value,128)))
+        mutations.append(translucent)
+        one_pose=image.copy();alpha=one_pose.getchannel('A');box=pieces[0][1]
+        alpha.paste(alpha.crop(box).point(lambda value:min(value,128)),box);one_pose.putalpha(alpha)
+        mutations.append(one_pose)
+        sparse=image.copy();alpha=sparse.getchannel('A');pixels=alpha.load();index=0
+        for y in range(box[1],box[3]):
+            for x in range(box[0],box[2]):
+                if pixels[x,y]>=128:
+                    if index%4==0:pixels[x,y]=128
+                    index+=1
+        sparse.putalpha(alpha);mutations.append(sparse)
+        mutations.append(image.convert('RGB'))
+        opaque=image.copy();opaque.putalpha(255);mutations.append(opaque)
+        for index,bad in enumerate(mutations):
+            with self.subTest(alpha_fault=index),self.assertRaises(ValueError):checked_master_components(bad,12)
+        self.assertEqual(sha(source),before)
 
 if __name__=='__main__':unittest.main()

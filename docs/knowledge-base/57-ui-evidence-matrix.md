@@ -1,6 +1,6 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
-第68／71／72／78組已依自身DATO與原版十二姿態重繪並接入HD1。原始名冊保留盟軍／敵軍、portrait、BattleFig、位置及selector，沒有角色身份或圖組投影。兩固定分份合28完整Game.Draw、24PNG、四次F2、313325核心點及21反例通過；普通首章整包切換、走行取消、保存／新程序LOAD相容通過。正式只換8項、875保持，新增100美術檔，8823舊檔及其餘121組來源保持。Q比例餘項24→20，其餘面容、完整總覽與集中人工仍待，Gaia保持定版。不新增EXE動態或自然章節驗收；現況依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源為主收據hd1_native_roster_four_followup_20261101。
+第80／81／82／83組已依自身DATO與原版十二姿態重繪並接入HD1。四組原始敵軍名冊保留camp、portrait、BattleFig、位置及selector，沒有身份或圖組投影。兩固定分份合28完整Game.Draw、24PNG、四次F2、315699核心點及21反例通過；普通首章整包控制、走行取消、保存與新程序LOAD相容通過。清冊只換8項、875保持，新增100美術檔，8923舊檔及其餘121組來源保持。Q比例餘項20→16，其餘面容、完整總覽及集中人工仍待，Gaia保持定版。不新增EXE動態或自然章節驗收；現況依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源為主收據hd1_enemy_armor_four_followup_20261101。
 
 戶外草、土、沙、水與石路已依定版風格刷新，原生輪廓、物件與規則保持。完整GPU及普通首章切換、走行取消、保存冷讀通過，README總覽及普通遊玩圖已更新。現況與來源依[58](58-fd2-exe-re-coverage.md)、[61](61-modern-theme-runtime-spec.md)及主收據`hd1_painted_ground_followup_20261029`；洞窟／物件與其餘缺圖續作，人工由使用者接手。
 

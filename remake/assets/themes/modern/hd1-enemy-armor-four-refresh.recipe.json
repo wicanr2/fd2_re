@@ -1,0 +1,495 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_hd1_chibi_map_refresh",
+  "approved_preview": "docs/figures/hd1-ares-q-design.png",
+  "approved_preview_sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e",
+  "native_bank_sha256": "7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44",
+  "palette_sha256": "404db1ca72ffc19fa7404fbc59bde98cdf239f63fe3375ec248a8142073a28bf",
+  "base_catalog_sha256": "33a1c274c7c9d40895311a41180b7492737459dc49866ef58cfe0bf823825578",
+  "approval": "沿已定大頭短身、各自原版面容與持續推進授權；四組以自身DATO及原生十二姿態重繪，不改正式規則。",
+  "groups": [
+    {
+      "group": 80,
+      "master_file": "fdicon-080-hd1-native-q-v1-master.png",
+      "master_sha256": "fa0b41143805d380546214c9b0765722475304ce8060693cb9da5758b5bda84a",
+      "output_prefix": "fdicon-080-hd1-native-q-v1"
+    },
+    {
+      "group": 81,
+      "master_file": "fdicon-081-hd1-native-q-v1-master.png",
+      "master_sha256": "bac97d6115d01fe34d0447ad50e356ab186a06d5fa9aabffd1d0ead2ca4be2e8",
+      "output_prefix": "fdicon-081-hd1-native-q-v1"
+    },
+    {
+      "group": 82,
+      "master_file": "fdicon-082-hd1-native-q-v1-master.png",
+      "master_sha256": "8029e91a69a40fc3d17d5282570e8e9399bfe23be3be06ffcfa222d8ee2e45db",
+      "output_prefix": "fdicon-082-hd1-native-q-v1"
+    },
+    {
+      "group": 83,
+      "master_file": "fdicon-083-hd1-native-q-v1-master.png",
+      "master_sha256": "502ec4fe5442dcf1207a344d342e85db8a2133312679090c4ecf7f846fafa2da",
+      "output_prefix": "fdicon-083-hd1-native-q-v1"
+    }
+  ],
+  "faces": [
+    {
+      "group": 80,
+      "name": "紅飾尖面重甲",
+      "portrait_file": "remake/assets/portraits/DATO_080_m0.png",
+      "portrait_sha256": "134bdd99ef9d3c1d841b7cec23757e31bc40845fe9faa9438759c716145d2ad1",
+      "traits": [
+        "深藍尖面盔、紅盔飾與金線",
+        "紅甲件及紫腰布",
+        "原版空手與方向遮蔽"
+      ],
+      "comparison_label": "原版同號DATO／名冊地圖圖源；非480對話頭像驗收"
+    },
+    {
+      "group": 81,
+      "name": "褐角尖面重甲",
+      "portrait_file": "remake/assets/portraits/DATO_081_m0.png",
+      "portrait_sha256": "0a10b6862b2ba2b47e8dbd7303525f34ceab37eea2deda99a1b64d155bb49049",
+      "traits": [
+        "深藍尖面盔與褐雙角",
+        "藍紫甲件與紅腰布",
+        "原版空手與方向遮蔽"
+      ],
+      "comparison_label": "原版同號DATO／名冊地圖圖源；非480對話頭像驗收"
+    },
+    {
+      "group": 82,
+      "name": "灰綠劍盾守衛",
+      "portrait_file": "remake/assets/portraits/DATO_082_m0.png",
+      "portrait_sha256": "2b2bbc03acfcc129c4a3c7820382de8d062a8ae4159e5c76a00620e7edbda839",
+      "traits": [
+        "灰綠圓筒遮面盔與藍眼點",
+        "方十字盾與單劍",
+        "紅腰布及原持物遮蔽"
+      ],
+      "comparison_label": "原版同號DATO／名冊地圖圖源；非480對話頭像驗收"
+    },
+    {
+      "group": 83,
+      "name": "藍色角盔守衛",
+      "portrait_file": "remake/assets/portraits/DATO_083_m0.png",
+      "portrait_sha256": "a6d2bcaafaf0b8e2170a749ba937849fb5933d4e3753168fe1b11c2a0dd68479",
+      "traits": [
+        "藍色圓筒盔與褐雙角",
+        "原版地圖黃眼點、DATO紅眼縫",
+        "藍十字盾、單劍與紅腰布"
+      ],
+      "comparison_label": "原版同號DATO／名冊地圖圖源；非480對話頭像驗收"
+    }
+  ],
+  "roster_bindings": [
+    {
+      "group": 80,
+      "map": 16,
+      "roster_file": "remake/assets/maps/map16/map16_units.json",
+      "roster_sha256": "5484bfa8e7891e5f382c274f4bafac97fdfcb248cd59adbbf2adaff3701a5b81",
+      "row": 4,
+      "initial_group": 0,
+      "camp": "enemy",
+      "portrait": 80,
+      "battle_fig": 80,
+      "position": {
+        "x_word": 21,
+        "y_word": 22,
+        "raw_key": 80
+      },
+      "native_constructor": {
+        "branch": "high_class",
+        "index": 12,
+        "record": [
+          1,
+          2,
+          54,
+          0,
+          0,
+          24,
+          9,
+          5,
+          4,
+          120
+        ]
+      }
+    },
+    {
+      "group": 81,
+      "map": 19,
+      "roster_file": "remake/assets/maps/map19/map19_units.json",
+      "roster_sha256": "cd30276b48d06187ced69c4e7ee0c0c7c749a38a7484b9e132da5eb78313e424",
+      "row": 49,
+      "initial_group": 0,
+      "camp": "enemy",
+      "portrait": 81,
+      "battle_fig": 81,
+      "position": {
+        "x_word": 30,
+        "y_word": 7,
+        "raw_key": 81
+      },
+      "native_constructor": {
+        "branch": "high_class",
+        "index": 13,
+        "record": [
+          1,
+          2,
+          60,
+          0,
+          0,
+          25,
+          15,
+          6,
+          4,
+          120
+        ]
+      }
+    },
+    {
+      "group": 82,
+      "map": 7,
+      "roster_file": "remake/assets/maps/map7/map7_units.json",
+      "roster_sha256": "092cfe28419b4fe1d1e779e3bdb936933c6e799d26ea5a2c238ba9827f818d7b",
+      "row": 19,
+      "initial_group": 1,
+      "camp": "enemy",
+      "portrait": 82,
+      "battle_fig": 82,
+      "position": {
+        "x_word": 13,
+        "y_word": 7,
+        "raw_key": 82
+      },
+      "native_constructor": {
+        "branch": "high_class",
+        "index": 14,
+        "record": [
+          1,
+          3,
+          15,
+          0,
+          0,
+          8,
+          1,
+          1,
+          7,
+          40
+        ]
+      }
+    },
+    {
+      "group": 83,
+      "map": 17,
+      "roster_file": "remake/assets/maps/map17/map17_units.json",
+      "roster_sha256": "4c3d2dfdab554a6f85b31ca54507c90506c8bcf10642f1c5ac8fe76244091d25",
+      "row": 2,
+      "initial_group": 0,
+      "camp": "enemy",
+      "portrait": 83,
+      "battle_fig": 83,
+      "position": {
+        "x_word": 35,
+        "y_word": 7,
+        "raw_key": 83
+      },
+      "native_constructor": {
+        "branch": "high_class",
+        "index": 15,
+        "record": [
+          1,
+          3,
+          20,
+          0,
+          0,
+          8,
+          2,
+          2,
+          8,
+          75
+        ]
+      }
+    }
+  ],
+  "gpu_pairs": {
+    "crested-and-horned": [
+      80,
+      81
+    ],
+    "shield-guards": [
+      82,
+      83
+    ]
+  },
+  "policy": "只重繪80／81／82／83，保留各自原版遮面盔、裝備、十二姿態及方向；80紅盔飾金線，81褐雙角，82灰綠劍盾，83藍色角盔劍盾。83地圖黃眼點與DATO紅眼縫是原始圖源差異，保留地圖原色，不混稱配色相同。",
+  "alpha_quality_review": {
+    "file": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r23/alpha-contract-review-r2.json",
+    "sha256": "caaa4b8fd4ea3825264ba30739711b2b3b1283961028890280c289444c40ff59",
+    "scope": "逐姿態近不透明覆蓋，不修改來源alpha、色彩或姿態；取代任意單點255閘門。"
+  },
+  "image_generation": {
+    "tool": "image_gen.imagegen",
+    "mode": "builtin",
+    "transparent_background": true,
+    "jobs": [
+      {
+        "group": 80,
+        "prompt": "Use case: identity-preserve. Asset type: Flame Dragon Knights 2 HD1 tactical MAP SPRITE MASTER. Image1 is this actor's ORIGINAL twelve map poses, primary authority for palette, silhouette, equipment, handedness, directional occlusion and movement phase. Image2 is THIS actor's OWN original DATO portrait, authority for distinctive facial shapes and original mask/head construction. Image3 is approved Q proportions/style ONLY, specifically its lower NEW-Q figures: huge head about 67-70% total figure height, extremely short tiny torso and legs, broad little feet, smooth crisp dark contours and simple readable cel-painted color shapes. Do not copy its blue cap, generic child face, weapons or outfit. Do not upscale the pixel grid. No glossy 3D or realistic tall proportions.\nExactly THREE COLUMNS x FOUR ROWS, twelve complete isolated fullbody figures, all same scale and baseline, genuine transparent alpha. Row1 FRONT facing viewer squarely, row2 LEFT PROFILE facing SCREEN LEFT, row3 BACK with no face, row4 RIGHT PROFILE facing SCREEN RIGHT. Each row column1 neutral planted boots, column2 small left-foot-forward step, column3 small right-foot-forward step. Generous blank gaps and outer margins, no clipping or cell overlap. Exactly two arms/hands and two short legs, coherent anatomy. Original poses determine visible/hidden equipment; no extra weapons or invented accessories. No text, labels, grid, floor, shadows, checkerboard or background. Must read well at144/72/48px.\nSUBJECT original group080: enormous DARK NAVY CLOSED pointed-faceplate helmet with a tall bright RED central CREST/plume and gold line ornament along brow/faceplate, from his OWN DATO080 portrait. The head is a helmet, not a dragon head or robot. Tiny red eye slit behind black visor, no exposed skin/human face or cute cartoon eyes. Preserve original long smooth projecting brow and angular pointed nose-mask profile, round RED side pivot and long red side inset edged gold. Red crest sits atop center of helm, upright in front/back and sweeping low backward in side profiles as original map. Huge head must dominate about67-70% of figure height, tiny short body/legs below, not tiny head buried in shoulders. Original map costume: deep navy heavy armor, rounded navy shoulder plates with RED accents, tiny red/gold torso detail, small DARK BLUE/PURPLE waist cloth panel, dark navy gloves/boots. Both hands EMPTY. No sword, shield, axe, gun, horns, extra wings, robot hoses, giant new cape or studs. Keep natural armor silhouette and original red crest/shoulder color placement. FRONT head squarely toward viewer, LEFT/RIGHT side closed helmet points correct way, BACK no red eyes or faceplate. Broad readable painted shapes, restrained gold detail not noisy gold filigree.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r23/group-080-original.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r23/portrait-080.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ],
+        "selected": true,
+        "source": "exec-7a38d335-94df-4ae1-9f01-f59c01b33345.png",
+        "source_sha256": "fa0b41143805d380546214c9b0765722475304ce8060693cb9da5758b5bda84a",
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r23/group-080-original.png",
+            "sha256": "4ca2b508b37d7eafb0c1737818cc726385019e38d6642a60fb8a6d7252f16892"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r23/portrait-080.png",
+            "sha256": "5c8227a2d3e2315a97ebb9d244f827e3b739c7f8088b8f8f83df428f21f03535"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png",
+            "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+          }
+        ]
+      },
+      {
+        "group": 81,
+        "prompt": "Use case: identity-preserve. Asset type: Flame Dragon Knights 2 HD1 tactical MAP SPRITE MASTER. Image1 is this actor's ORIGINAL twelve map poses, primary authority for palette, silhouette, equipment, handedness, directional occlusion and movement phase. Image2 is THIS actor's OWN original DATO portrait, authority for distinctive facial shapes and original mask/head construction. Image3 is approved Q proportions/style ONLY, specifically its lower NEW-Q figures: huge head about 67-70% total figure height, extremely short tiny torso and legs, broad little feet, smooth crisp dark contours and simple readable cel-painted color shapes. Do not copy its blue cap, generic child face, weapons or outfit. Do not upscale the pixel grid. No glossy 3D or realistic tall proportions.\nExactly THREE COLUMNS x FOUR ROWS, twelve complete isolated fullbody figures, all same scale and baseline, genuine transparent alpha. Row1 FRONT facing viewer squarely, row2 LEFT PROFILE facing SCREEN LEFT, row3 BACK with no face, row4 RIGHT PROFILE facing SCREEN RIGHT. Each row column1 neutral planted boots, column2 small left-foot-forward step, column3 small right-foot-forward step. Generous blank gaps and outer margins, no clipping or cell overlap. Exactly two arms/hands and two short legs, coherent anatomy. Original poses determine visible/hidden equipment; no extra weapons or invented accessories. No text, labels, grid, floor, shadows, checkerboard or background. Must read well at144/72/48px.\nSUBJECT original group081: enormous DARK NAVY CLOSED pointed-faceplate helmet with TWO BROWN curved HORNS, his own original DATO081 mask shape, blue-violet side trim and round blue-violet side pivot. Original horns emerge from left/right temple region, bend upward with brown tips; exactly TWO, no red crest. Original dark navy brow projects sharply above a small RED eye slit, pointed angular faceplate below, no exposed human skin, mouth or invented baby eyes. Helmet is original armor, not a living dragon/wolf face or robot. HUGE head dominates67-70% figure height, extremely short little body, head must not be swallowed by shoulder plates. Original map costume: navy armor, rounded small shoulders with muted BLUE-VIOLET/lavender highlights, blue-violet chest accents, small RED waist cloth, navy gloves and broad tiny steel feet. Both hands EMPTY in every pose. No sword, shield, axe, added crest/plume, wing, crown, hose or mechanical backpack. FRONT both horns balanced, eyes and helmet pointed forward. LEFT/RIGHT proper head profile with nearer horn and far horn occluded naturally, BACK rear helmet and two horns without face or eye slit. Follow map12poses for shoulder and side/back blue-violet colors, own portrait for masked facial shape.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r23/group-081-original.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r23/portrait-081.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ],
+        "selected": false,
+        "source": "exec-b4aba891-0e4a-4fe0-9dfa-d11daea953bf.png",
+        "reason": "alpha最大值254，未達既有透明圖源的全不透明核心契約；背景預覽亦有光暈，交內建工具修正。",
+        "source_sha256": "e946ff4d31f46a7f5364806542d921d5b7cee87183d8e367fa8afbcfb869eddb",
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r23/group-081-original.png",
+            "sha256": "95d6e770a33fb236b5f7bf04d9dd02ce00a7501843fafcaf257e2b9a1b7028f4"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r23/portrait-081.png",
+            "sha256": "43a8622c52895780c3060918608073ed5ba490b0da807825ab36b45d99726a64"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png",
+            "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+          }
+        ]
+      },
+      {
+        "group": 82,
+        "prompt": "Use case: identity-preserve. Asset type: Flame Dragon Knights 2 HD1 tactical MAP SPRITE MASTER. Image1 is this actor's ORIGINAL twelve map poses, primary authority for palette, silhouette, equipment, handedness, directional occlusion and movement phase. Image2 is THIS actor's OWN original DATO portrait, authority for distinctive facial shapes and original mask/head construction. Image3 is approved Q proportions/style ONLY, specifically its lower NEW-Q figures: huge head about 67-70% total figure height, extremely short tiny torso and legs, broad little feet, smooth crisp dark contours and simple readable cel-painted color shapes. Do not copy its blue cap, generic child face, weapons or outfit. Do not upscale the pixel grid. No glossy 3D or realistic tall proportions.\nExactly THREE COLUMNS x FOUR ROWS, twelve complete isolated fullbody figures, all same scale and baseline, genuine transparent alpha. Row1 FRONT facing viewer squarely, row2 LEFT PROFILE facing SCREEN LEFT, row3 BACK with no face, row4 RIGHT PROFILE facing SCREEN RIGHT. Each row column1 neutral planted boots, column2 small left-foot-forward step, column3 small right-foot-forward step. Generous blank gaps and outer margins, no clipping or cell overlap. Exactly two arms/hands and two short legs, coherent anatomy. Original poses determine visible/hidden equipment; no extra weapons or invented accessories. No text, labels, grid, floor, shadows, checkerboard or background. Must read well at144/72/48px.\nSUBJECT original group082: enormous gray-green/silver CYLINDRICAL GREAT HELM, own DATO082 fully covered faceplate with a narrow BLACK horizontal eye slit and T-like central opening, tiny BLUE eye glint behind slit. Plain rounded cylindrical crown, flat broad mask front, simple round cheek pivot and tiny original tan HUMAN NECK below rear mask only when visible, not robot joints. Do not expose generic cute eyes, nose or mouth, add horns/plume, or change into pointed bird helmet. Huge broad helmet67-70% figure height over extremely short gray-green armored body, small RED waist/tabard cloth, tiny gray-green boots. Exactly ONE upright plain slender SILVER STRAIGHT SWORD and ONE rectangular gray-green SHIELD with plain DARK CROSS, flat upper edge and subtly rounded/narrowed lower corners, never a round shield. CRITICAL match image1 screen placements per direction: FRONT shield viewer LEFT, blade viewer RIGHT. LEFT PROFILE facing SCREEN LEFT: near sword stands upright just beside rear cheek/body on viewer RIGHT, shield hidden on far side; do not move blade ahead of nose to far left. BACK: smooth broad helmet rear with NO face, blade visible at viewer RIGHT and shield far side mostly hidden. RIGHT PROFILE facing SCREEN RIGHT: near cross shield clearly visible at lower viewer RIGHT/front of body, sword hidden. Keep original simple hilt, no second blade or shield, no ornate oversized crossguard. Compact serious armor, not tall realistic knight.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r23/group-082-original.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r23/portrait-082.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ],
+        "selected": true,
+        "source": "exec-6b1d1162-e1a7-4c28-bd98-98d24ca13d79.png",
+        "source_sha256": "8029e91a69a40fc3d17d5282570e8e9399bfe23be3be06ffcfa222d8ee2e45db",
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r23/group-082-original.png",
+            "sha256": "68e82bb6236f68f2982a8270e1f89ae053c96f1ba49a3494fd31cf7ca809ae55"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r23/portrait-082.png",
+            "sha256": "bceb95016083edf4efdb1621f9d801928f050d22d4c950fd09bf1ec805095a64"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png",
+            "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+          }
+        ]
+      },
+      {
+        "group": 83,
+        "prompt": "Use case: identity-preserve. Asset type: Flame Dragon Knights 2 HD1 tactical MAP SPRITE MASTER. Image1 is this actor's ORIGINAL twelve map poses, primary authority for palette, silhouette, equipment, handedness, directional occlusion and movement phase. Image2 is THIS actor's OWN original DATO portrait, authority for distinctive facial shapes and original mask/head construction. Image3 is approved Q proportions/style ONLY, specifically its lower NEW-Q figures: huge head about 67-70% total figure height, extremely short tiny torso and legs, broad little feet, smooth crisp dark contours and simple readable cel-painted color shapes. Do not copy its blue cap, generic child face, weapons or outfit. Do not upscale the pixel grid. No glossy 3D or realistic tall proportions.\nExactly THREE COLUMNS x FOUR ROWS, twelve complete isolated fullbody figures, all same scale and baseline, genuine transparent alpha. Row1 FRONT facing viewer squarely, row2 LEFT PROFILE facing SCREEN LEFT, row3 BACK with no face, row4 RIGHT PROFILE facing SCREEN RIGHT. Each row column1 neutral planted boots, column2 small left-foot-forward step, column3 small right-foot-forward step. Generous blank gaps and outer margins, no clipping or cell overlap. Exactly two arms/hands and two short legs, coherent anatomy. Original poses determine visible/hidden equipment; no extra weapons or invented accessories. No text, labels, grid, floor, shadows, checkerboard or background. Must read well at144/72/48px.\nSUBJECT original group083: enormous cobalt BLUE cylindrical GREAT HELM with TWO short BROWN curved HORNS, same actor's OWN DATO083 fully closed broad faceplate, strong plain rounded-cylinder crown and dark narrow eye slit. DATO portrait shows red slit, but original map12poses unequivocally show tiny YELLOW eye glints: preserve MAP yellow eye points in new map sprites while retaining this own portrait's mask/cheek shape. No newly exposed human face, huge red cartoon eyes, skull or robot mouth. Tiny tan neck only as original own portrait lower rear edge, armor otherwise closed. Exactly two small brown side horns emerging temples, no red plume, no pointed beak helmet. Huge wide blue helmet67-70% height, extremely short tiny blue body/legs, original dark RED/brown waist cloth and small blue boots. Exactly ONE upright plain SILVER STRAIGHT SWORD and ONE BLUE rectangular SHIELD bearing plain dark CROSS, flat upper edge and subtle lower corners, not round shield. Match original image1 screen placement: FRONT cross shield viewer LEFT, sword viewer RIGHT. LEFT PROFILE facing SCREEN LEFT: near sword upright beside rear cheek on viewer RIGHT, far shield hidden. BACK: no face/eyes, two horns and blade at viewer RIGHT, shield mostly hidden. RIGHT PROFILE facing SCREEN RIGHT: near BLUE cross shield at lower viewer RIGHT/front body, sword hidden. Preserve gear ownership/occlusion and original navy/cobalt/pale-blue palette. No added axe, horns beyond two, spikes, capes, mechanisms or fancy insignia.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r23/group-083-original.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r23/portrait-083.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ],
+        "selected": false,
+        "source": "exec-c150908a-64a4-4c92-a99f-0d0c3eba53b6.png",
+        "reason": "alpha最大值254，未達既有透明圖源的全不透明核心契約；背景預覽亦有光暈，交內建工具修正。",
+        "source_sha256": "89ef3a16da74c353f3ecc7231758c08091f346057944f39250395cdf5d0ab6c5",
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r23/group-083-original.png",
+            "sha256": "711ba309269c6dedcccfc282420cdc37a1e846ef2df30b382b0652c116ee24ef"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r23/portrait-083.png",
+            "sha256": "7bff5b8fa315991dd8e4c2ac0fbd12882789d45061f9f4b29f90df4ee2ab3705"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png",
+            "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+          }
+        ]
+      },
+      {
+        "group": 81,
+        "selected": false,
+        "source_version": 2,
+        "reference_files": [
+          "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-b4aba891-0e4a-4fe0-9dfa-d11daea953bf.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r23/group-081-original.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r23/portrait-081.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ],
+        "prompt": "Use case: background-extraction. Edit Image1, the twelve-pose master sheet. Keep every sprite exactly in its existing three columns/four rows, same head/gear/eye colors, directions, hand ownership, scale, pose order, spacing and painted details. Images2/3 are original map and portrait identity references; Image4 is approved huge-head short-body Q style. Change ONLY the bad transparency: remove all blue/brown background glow, halos, floor, cloud, shadow and background gradients outside the figures. Deliver a pristine transparent PNG alpha cutout with FULLY OPAQUE alpha255 inside each solid sprite and alpha0 everywhere in the blank gaps/outer area. Opaque dark outlines, crisp silhouette, smooth antialiased outline pixels only. Do not leave the entire figure uniformly translucent at alpha254 or below. No dark sheet background, no soft glows, no checkerboard, no text or border. Keep all12figures complete with generous gaps, no new accessories, no disappearing horn/shield/blade, no recoloring or changing face/helmet. In particular keep brown two horns, closed pointed navy helmet/red slit, blue-violet armor/red waistcloth and EMPTY hands.",
+        "source": "exec-c9ed0820-b123-4bc9-a7de-0f4b9f38736e.png",
+        "reason": "修圖後alpha最大值仍為254，未達既有契約；由原版參考重新生成。",
+        "source_sha256": "aae55f1e6fb130b0858a0730c834e2d6fcb47c4b7ff2be081a6567e4052b875f",
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-b4aba891-0e4a-4fe0-9dfa-d11daea953bf.png",
+            "sha256": "e946ff4d31f46a7f5364806542d921d5b7cee87183d8e367fa8afbcfb869eddb"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r23/group-081-original.png",
+            "sha256": "95d6e770a33fb236b5f7bf04d9dd02ce00a7501843fafcaf257e2b9a1b7028f4"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r23/portrait-081.png",
+            "sha256": "43a8622c52895780c3060918608073ed5ba490b0da807825ab36b45d99726a64"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png",
+            "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+          }
+        ]
+      },
+      {
+        "group": 83,
+        "selected": false,
+        "source_version": 2,
+        "reference_files": [
+          "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-c150908a-64a4-4c92-a99f-0d0c3eba53b6.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r23/group-083-original.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r23/portrait-083.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ],
+        "prompt": "Use case: background-extraction. Edit Image1, the twelve-pose master sheet. Keep every sprite exactly in its existing three columns/four rows, same head/gear/eye colors, directions, hand ownership, scale, pose order, spacing and painted details. Images2/3 are original map and portrait identity references; Image4 is approved huge-head short-body Q style. Change ONLY the bad transparency: remove all blue/brown background glow, halos, floor, cloud, shadow and background gradients outside the figures. Deliver a pristine transparent PNG alpha cutout with FULLY OPAQUE alpha255 inside each solid sprite and alpha0 everywhere in the blank gaps/outer area. Opaque dark outlines, crisp silhouette, smooth antialiased outline pixels only. Do not leave the entire figure uniformly translucent at alpha254 or below. No dark sheet background, no soft glows, no checkerboard, no text or border. Keep all12figures complete with generous gaps, no new accessories, no disappearing horn/shield/blade, no recoloring or changing face/helmet. In particular keep cobalt cylindrical horn helmet/yellow map eye dots, blue CROSS shield and one silver sword, exact visible/hidden gear in each row.",
+        "source": "exec-7f03ca10-4206-47d9-b2ea-7722cb22f523.png",
+        "reason": "修圖後alpha最大值仍為254，未達既有契約；由原版參考重新生成。",
+        "source_sha256": "fc5935e05a6e3af02d090f1291956556788e09071e3ceab4a78a6d69cb317b30",
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-c150908a-64a4-4c92-a99f-0d0c3eba53b6.png",
+            "sha256": "89ef3a16da74c353f3ecc7231758c08091f346057944f39250395cdf5d0ab6c5"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r23/group-083-original.png",
+            "sha256": "711ba309269c6dedcccfc282420cdc37a1e846ef2df30b382b0652c116ee24ef"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r23/portrait-083.png",
+            "sha256": "7bff5b8fa315991dd8e4c2ac0fbd12882789d45061f9f4b29f90df4ee2ab3705"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png",
+            "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+          }
+        ]
+      },
+      {
+        "group": 81,
+        "source_version": 3,
+        "selected": true,
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r23/group-081-original.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r23/portrait-081.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ],
+        "prompt": "Use case: identity-preserve. Create a NEW production-ready HD1 chibi tactical sprite master sheet on a PORTRAIT canvas, roughly1024px wide by1536px tall. Exactly THREE COLUMNS x FOUR ROWS, twelve fullbody sprites, each occupying most of its tall cell. Actual transparent PNG alpha background. The entire background including gaps must have alpha0, and solid colored figure interiors must have alpha255, not254 or semiopaque. No glow, shadow, haze, black sheet, floor, background gradient, colored matte, checkerboard or text. Smooth dark outlines and clean cel-painted COLOR SHAPES, not magnified pixels or visible square pixel grid. Huge head67-70%figure height, very short tiny body and legs, per approved Q sample in Image3. Image1 ORIGINAL12poses controls equipment, color, direction, screen placements and phase. Image2 THIS actor's OWN DATO portrait controls closed mask/head shapes. Image3 is style/proportion only. Do not copy its cap, face or weapon. Row1 FRONT, row2 LEFT screenleft profile, row3 BACK, row4 RIGHT screenright profile. Each row column1 neutral, column2 leftfootstep, column3 rightfootstep. Exactly two arms and two legs. Consistent scale/baseline, generous transparent margins, no cropped horns/feet/weapons. Navy fully CLOSED pointed-face helmet, red eye slit, TWO BROWN curved horns at temples and blue-violet side pivot/trim, rounded blue-violet shoulder accents and RED waist cloth. His OWN DATO081 is a masked armor design with long swept projecting brow and pointed faceplate, no visible face or cartoon eyes. Tiny navy gloves/boots. EMPTY hands in ALL12poses, no sword/shield/axe/crest or mechanical parts. FRONT head looks squarely at viewer, both horns balanced. LEFT/RIGHT mask snout points correct direction, visible near horn, far horn hidden, back has no eye slit. Head must dominate shoulders and tiny lower body, smooth painted broad forms matching approved Q and the original distinctive helmet.",
+        "source": "exec-a7b98344-8be4-4d45-82e0-723d663f4dcb.png",
+        "source_sha256": "bac97d6115d01fe34d0447ad50e356ab186a06d5fa9aabffd1d0ead2ca4be2e8",
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r23/group-081-original.png",
+            "sha256": "95d6e770a33fb236b5f7bf04d9dd02ce00a7501843fafcaf257e2b9a1b7028f4"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r23/portrait-081.png",
+            "sha256": "43a8622c52895780c3060918608073ed5ba490b0da807825ab36b45d99726a64"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png",
+            "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+          }
+        ]
+      },
+      {
+        "group": 83,
+        "source_version": 3,
+        "selected": true,
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r23/group-083-original.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r23/portrait-083.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ],
+        "prompt": "Use case: identity-preserve. Create a NEW production-ready HD1 chibi tactical sprite master sheet on a PORTRAIT canvas, roughly1024px wide by1536px tall. Exactly THREE COLUMNS x FOUR ROWS, twelve fullbody sprites, each occupying most of its tall cell. Actual transparent PNG alpha background. The entire background including gaps must have alpha0, and solid colored figure interiors must have alpha255, not254 or semiopaque. No glow, shadow, haze, black sheet, floor, background gradient, colored matte, checkerboard or text. Smooth dark outlines and clean cel-painted COLOR SHAPES, not magnified pixels or visible square pixel grid. Huge head67-70%figure height, very short tiny body and legs, per approved Q sample in Image3. Image1 ORIGINAL12poses controls equipment, color, direction, screen placements and phase. Image2 THIS actor's OWN DATO portrait controls closed mask/head shapes. Image3 is style/proportion only. Do not copy its cap, face or weapon. Row1 FRONT, row2 LEFT screenleft profile, row3 BACK, row4 RIGHT screenright profile. Each row column1 neutral, column2 leftfootstep, column3 rightfootstep. Exactly two arms and two legs. Consistent scale/baseline, generous transparent margins, no cropped horns/feet/weapons. Cobalt BLUE CYLINDRICAL closed GREAT HELM with TWO small BROWN side horns, broad curved crown and long flat faceplate from OWN DATO083, not a sharply pointed bird mask. Narrow black eye slit with tiny YELLOW map eye dots, retain MAP yellow though DATO portrait red. No exposed generic human face. BLUE rectangular CROSS shield and ONE plain upright SILVER SWORD, RED/BROWN waist cloth and blue tiny feet. FRONT shield viewer LEFT, sword viewer RIGHT. LEFT profile facing screenleft: near upright sword beside cheek/body on viewer RIGHT, far shield hidden. BACK no eyes/face, sword at viewer RIGHT, shield mostly hidden. RIGHT profile facing screenright: near cross shield lower viewer RIGHT, sword hidden. Preserve original gear visibility row by row; no round shield, added plume or extra weapon. Large smooth rounded blue mask/head dominates tiny torso/legs, restrained cel-painted finish, readable at144/72/48px.",
+        "source": "exec-1091f9f4-4f2b-43f5-baf1-ee4e75d2ae7a.png",
+        "source_sha256": "502ec4fe5442dcf1207a344d342e85db8a2133312679090c4ecf7f846fafa2da",
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r23/group-083-original.png",
+            "sha256": "711ba309269c6dedcccfc282420cdc37a1e846ef2df30b382b0652c116ee24ef"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r23/portrait-083.png",
+            "sha256": "7bff5b8fa315991dd8e4c2ac0fbd12882789d45061f9f4b29f90df4ee2ab3705"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png",
+            "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+          }
+        ]
+      }
+    ]
+  },
+  "original_reference": {
+    "source": "原始名冊同號DATO、FDICON十二姿態三層及FDOTHER0色盤；只證固定資料與圖源，非EXE動態",
+    "groups": [
+      80,
+      81,
+      82,
+      83
+    ],
+    "records_file": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r23/native-reference.json",
+    "records_sha256": "5670abb3b15c26bc882ff90d991f2d61dc561611d62cae17fba1a8f4f3010d7e",
+    "reference_boards": [
+      {
+        "file": "group-080-original.png",
+        "sha256": "4ca2b508b37d7eafb0c1737818cc726385019e38d6642a60fb8a6d7252f16892"
+      },
+      {
+        "file": "group-081-original.png",
+        "sha256": "95d6e770a33fb236b5f7bf04d9dd02ce00a7501843fafcaf257e2b9a1b7028f4"
+      },
+      {
+        "file": "group-082-original.png",
+        "sha256": "68e82bb6236f68f2982a8270e1f89ae053c96f1ba49a3494fd31cf7ca809ae55"
+      },
+      {
+        "file": "group-083-original.png",
+        "sha256": "711ba309269c6dedcccfc282420cdc37a1e846ef2df30b382b0652c116ee24ef"
+      }
+    ]
+  },
+  "master_alpha_policy": "per_pose_coverage_v1"
+}
