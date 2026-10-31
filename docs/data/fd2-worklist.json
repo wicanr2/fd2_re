@@ -448,7 +448,7 @@
       "layer": "data",
       "category": "缺陷",
       "title": "P1 HD1戰場小人物：依原版重繪大頭Q版與個別面容",
-      "body": "亞雷斯36、洛娜37、萊汀38與希莉亞40預設轉職圖組已依各自原版頭像及十二姿態重繪大頭短身。亞雷斯藍平頂帽綠帶、窄眼長鼻與方下顎；洛娜灰綠側長髮、成熟杏眼紅唇與藍背布；萊汀方下顎長下巴、微揚薄唇與深藍甲金黃腰腕件；希莉亞長褐波髮、額帶藍飾、柔和紅唇微笑、灰綠領與金弓箭筒。前三組直立兵器的形狀及持側按原生，不推定玩法種類。希莉亞已修正步行靴色跳變；背向金弓上半部由長髮遮住，只露下方小段。\n\ndefault_target明示四組原身份4／5／6／8，名冊分別ch01／09／10／03。兩GPU共28完整Game.Draw、24PNG、四次F2、324328核心點及25反例通過；逐份及逐actor揭露selector／raw byte6／cache投影，保留原身份、BattleFig及能力，不作自然轉職。九種既有固定分份及party-nine／party-ten配方來源契約保持，不重跑或升格舊GPU。\n\n普通首章十PNG驗整包四組控制、走行取消、保存及新程序標題LOAD，無狀態注入，只作整包相容。三項逐byte重編／八拒收、24頂層Go含字串、21來源案例／416幀／19反例、883清冊及125組1455來源通過；兩可選GPU略過不計。\n\n只換八項、875保持，100新檔按白名單私人保存，原8648美術檔及0／9／30六項保持，其餘121組SHA相同。README補兩組面容、四向實際尺寸及四張完整受控戰場。Q比例餘項38→34，其餘個別面容與完整總覽仍待，Gaia保持定版，本項維持OPEN。現況與重跑依58／61及主收據hd1_default_knights_bow_followup_20261031。",
+      "body": "悠妮41、瑪琳42、索菲亞43與凱麗44預設轉職圖組已接同角色既有HD1素材。default_target明示原身份9／10／11／12，名冊來源ch01／06／11／08及各自DATO保持。十二姿態三層分別與59／60／61／62逐檔相同，共144對，沿既有面容、裝備及遮蔽共用100個已登錄圖檔，沒有新增繪圖。\n\n兩GPU共28完整Game.Draw、24PNG、四次F2、301298核心點與28反例通過，包含錯共用組、錯來源摘要及缺共用欄位。逐份及逐actor揭露selector／raw byte6／cache投影，原身份、BattleFig及能力保持，不作自然轉職。十種舊分份及party-nine／party-ten／party-eleven配方契約保持，不重跑或升格舊GPU。\n\n普通首章十PNG驗整包四組控制、走行取消、F5及新程序標題LOAD，無狀態注入。共用來源三項逐byte重編／11拒收、前批新繪模式三項重編／八拒收、24頂層Go含字串、21來源案例／416幀／19反例、883清冊及125組1455來源通過；兩可選GPU略過不計。\n\n正式只換八項、875保持，共用100既有檔、零新美術。原8748美術檔SHA／inode／mtime／owner及0／9／30／59／60／61／62十四項保持，其餘121組SHA相同。私人庫只同步兩份清冊。README補兩組面容、四向實際尺寸及四張完整受控戰場。Q比例餘項34→30，其餘面容與完整總覽仍待，Gaia維持定版，本項保持OPEN。現況與重跑依58／61及主收據hd1_shared_default_mages_followup_20261031。",
       "acceptance": [
         "使用者選定亞雷斯新比例，並保留定版原稿、原版來源、逐字提示與SHA；其他角色依相同標準重製，不能只改大圖總覽。",
         "125個可見圖組及1455幀逐組保留原生方向、步態／靜態相位、轉職身份、裝備特徵、腳底與透明契約；原版、已接受圖源及舊證據可追溯。",
@@ -575,7 +575,16 @@
         "docs/figures/hd1-ares-default-refresh-game.png",
         "docs/figures/hd1-lona-default-refresh-game.png",
         "docs/figures/hd1-lyting-default-refresh-game.png",
-        "docs/figures/hd1-cylia-default-refresh-game.png"
+        "docs/figures/hd1-cylia-default-refresh-game.png",
+        "remake/assets/themes/modern/hd1-shared-default-mages-refresh.recipe.json",
+        "docs/figures/hd1-unni-and-marin-faces.png",
+        "docs/figures/hd1-unni-and-marin-comparison.png",
+        "docs/figures/hd1-sophia-and-kylie-faces.png",
+        "docs/figures/hd1-sophia-and-kylie-comparison.png",
+        "docs/figures/hd1-unni-default-refresh-game.png",
+        "docs/figures/hd1-marin-default-refresh-game.png",
+        "docs/figures/hd1-sophia-default-refresh-game.png",
+        "docs/figures/hd1-kylie-default-refresh-game.png"
       ],
       "verify": {
         "kind": "manual",
@@ -588,7 +597,7 @@
       "layer": "data",
       "category": "缺陷",
       "title": "P1 HD1人物面容與身份複核：依原版頭像保留各自特徵",
-      "body": "亞雷斯36、洛娜37、萊汀38與希莉亞40預設轉職圖組已依各自原版頭像及十二姿態重繪大頭短身。亞雷斯藍平頂帽綠帶、窄眼長鼻與方下顎；洛娜灰綠側長髮、成熟杏眼紅唇與藍背布；萊汀方下顎長下巴、微揚薄唇與深藍甲金黃腰腕件；希莉亞長褐波髮、額帶藍飾、柔和紅唇微笑、灰綠領與金弓箭筒。前三組直立兵器的形狀及持側按原生，不推定玩法種類。希莉亞已修正步行靴色跳變；背向金弓上半部由長髮遮住，只露下方小段。\n\ndefault_target明示四組原身份4／5／6／8，名冊分別ch01／09／10／03。兩GPU共28完整Game.Draw、24PNG、四次F2、324328核心點及25反例通過；逐份及逐actor揭露selector／raw byte6／cache投影，保留原身份、BattleFig及能力，不作自然轉職。九種既有固定分份及party-nine／party-ten配方來源契約保持，不重跑或升格舊GPU。\n\n普通首章十PNG驗整包四組控制、走行取消、保存及新程序標題LOAD，無狀態注入，只作整包相容。三項逐byte重編／八拒收、24頂層Go含字串、21來源案例／416幀／19反例、883清冊及125組1455來源通過；兩可選GPU略過不計。\n\n只換八項、875保持，100新檔按白名單私人保存，原8648美術檔及0／9／30六項保持，其餘121組SHA相同。README補兩組面容、四向實際尺寸及四張完整受控戰場。Q比例餘項38→34，其餘個別面容與完整總覽仍待，Gaia保持定版，本項維持OPEN。現況與重跑依58／61及主收據hd1_default_knights_bow_followup_20261031。",
+      "body": "悠妮41、瑪琳42、索菲亞43與凱麗44預設轉職圖組已接同角色既有HD1素材。default_target明示原身份9／10／11／12，名冊來源ch01／06／11／08及各自DATO保持。十二姿態三層分別與59／60／61／62逐檔相同，共144對，沿既有面容、裝備及遮蔽共用100個已登錄圖檔，沒有新增繪圖。\n\n兩GPU共28完整Game.Draw、24PNG、四次F2、301298核心點與28反例通過，包含錯共用組、錯來源摘要及缺共用欄位。逐份及逐actor揭露selector／raw byte6／cache投影，原身份、BattleFig及能力保持，不作自然轉職。十種舊分份及party-nine／party-ten／party-eleven配方契約保持，不重跑或升格舊GPU。\n\n普通首章十PNG驗整包四組控制、走行取消、F5及新程序標題LOAD，無狀態注入。共用來源三項逐byte重編／11拒收、前批新繪模式三項重編／八拒收、24頂層Go含字串、21來源案例／416幀／19反例、883清冊及125組1455來源通過；兩可選GPU略過不計。\n\n正式只換八項、875保持，共用100既有檔、零新美術。原8748美術檔SHA／inode／mtime／owner及0／9／30／59／60／61／62十四項保持，其餘121組SHA相同。私人庫只同步兩份清冊。README補兩組面容、四向實際尺寸及四張完整受控戰場。Q比例餘項34→30，其餘面容與完整總覽仍待，Gaia維持定版，本項保持OPEN。現況與重跑依58／61及主收據hd1_shared_default_mages_followup_20261031。",
       "acceptance": [
         "逐組以固定原生三層、FDOTHER0代表色盤與有對應身份的原版頭像／大圖核身份，不沿舊候選或圖說猜職業／種族。",
         "優先修正2、48、50、51、52、53、54、55、56、63、76、79的已見差異，70、73、77、89、125、133補證後逐項確認或修正；所有結論保留來源及未知等級。",
@@ -703,7 +712,16 @@
         "docs/figures/hd1-ares-default-refresh-game.png",
         "docs/figures/hd1-lona-default-refresh-game.png",
         "docs/figures/hd1-lyting-default-refresh-game.png",
-        "docs/figures/hd1-cylia-default-refresh-game.png"
+        "docs/figures/hd1-cylia-default-refresh-game.png",
+        "remake/assets/themes/modern/hd1-shared-default-mages-refresh.recipe.json",
+        "docs/figures/hd1-unni-and-marin-faces.png",
+        "docs/figures/hd1-unni-and-marin-comparison.png",
+        "docs/figures/hd1-sophia-and-kylie-faces.png",
+        "docs/figures/hd1-sophia-and-kylie-comparison.png",
+        "docs/figures/hd1-unni-default-refresh-game.png",
+        "docs/figures/hd1-marin-default-refresh-game.png",
+        "docs/figures/hd1-sophia-default-refresh-game.png",
+        "docs/figures/hd1-kylie-default-refresh-game.png"
       ],
       "verify": {
         "kind": "manual",

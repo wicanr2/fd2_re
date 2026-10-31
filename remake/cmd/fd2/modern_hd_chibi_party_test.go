@@ -48,7 +48,7 @@ func TestModernHDChibiPartyGPU(t *testing.T) {
 		}
 	}
 	pair := os.Getenv("FD2_HD_CHIBI_AUDITED_PAIR")
-	if profile == "party-next" || profile == "party-four" || profile == "party-five" || profile == "party-six" || profile == "party-seven" || profile == "party-eight" || profile == "party-nine" || profile == "party-ten" || profile == "party-eleven" {
+	if profile == "party-next" || profile == "party-four" || profile == "party-five" || profile == "party-six" || profile == "party-seven" || profile == "party-eight" || profile == "party-nine" || profile == "party-ten" || profile == "party-eleven" || profile == "party-twelve" {
 		pair = os.Getenv("FD2_HD_CHIBI_PARTY_PAIR")
 	}
 	groups := []int{1, 2, 3}
@@ -66,6 +66,15 @@ func TestModernHDChibiPartyGPU(t *testing.T) {
 		groups = []int{50, 52}
 	case "enemies":
 		groups = []int{76, 79}
+	case "party-twelve":
+		switch pair {
+		case "unni-and-marin":
+			groups = []int{41, 42}
+		case "sophia-and-kylie":
+			groups = []int{43, 44}
+		default:
+			t.Fatal("explicit twelfth party pair required")
+		}
 	case "party-eleven":
 		switch pair {
 		case "ares-and-lona":
@@ -161,7 +170,7 @@ func TestModernHDChibiPartyGPU(t *testing.T) {
 	default:
 		t.Fatal("unknown fixed chibi profile", profile)
 	}
-	if profile == "audited-six" || profile == "party-next" || profile == "party-four" || profile == "party-five" || profile == "party-six" || profile == "party-seven" || profile == "party-eight" || profile == "party-nine" || profile == "party-ten" || profile == "party-eleven" {
+	if profile == "audited-six" || profile == "party-next" || profile == "party-four" || profile == "party-five" || profile == "party-six" || profile == "party-seven" || profile == "party-eight" || profile == "party-nine" || profile == "party-ten" || profile == "party-eleven" || profile == "party-twelve" {
 		expected := []int{70, 73, 77, 89, 125, 133}
 		if profile == "party-next" {
 			expected = []int{5, 6, 13, 54}
@@ -189,6 +198,9 @@ func TestModernHDChibiPartyGPU(t *testing.T) {
 		}
 		if profile == "party-eleven" {
 			expected = []int{36, 37, 38, 40}
+		}
+		if profile == "party-twelve" {
+			expected = []int{41, 42, 43, 44}
 		}
 		var selection struct{ Groups []struct{ Group int } }
 		if err = json.Unmarshal(manifest, &selection); err != nil || len(selection.Groups) != len(expected) {
@@ -314,7 +326,7 @@ func TestModernHDChibiPartyGPU(t *testing.T) {
 					observed[len(observed)-1]["constructor"] = "AppendGroupWithNativePlacement"
 					observed[len(observed)-1]["placement_gate"] = 0
 				}
-				if profile == "base-faces" || profile == "party-next" || profile == "party-four" || profile == "party-five" || profile == "party-six" || profile == "party-seven" || profile == "party-eight" || profile == "party-nine" || profile == "party-ten" || profile == "party-eleven" {
+				if profile == "base-faces" || profile == "party-next" || profile == "party-four" || profile == "party-five" || profile == "party-six" || profile == "party-seven" || profile == "party-eight" || profile == "party-nine" || profile == "party-ten" || profile == "party-eleven" || profile == "party-twelve" {
 					sourcePath := "../../assets/scenarios/ch01.json"
 					switch modernHDChibiPartyIdentity(group) {
 					case 1:
@@ -373,7 +385,7 @@ func TestModernHDChibiPartyGPU(t *testing.T) {
 						t.Fatal(e)
 					}
 					observed[len(observed)-1]["scenario_sha256"] = fmt.Sprintf("%x", sha256.Sum256(raw))
-					if profile == "party-next" || profile == "party-four" || profile == "party-five" || profile == "party-six" || profile == "party-seven" || profile == "party-eight" || profile == "party-nine" || profile == "party-ten" || profile == "party-eleven" {
+					if profile == "party-next" || profile == "party-four" || profile == "party-five" || profile == "party-six" || profile == "party-seven" || profile == "party-eight" || profile == "party-nine" || profile == "party-ten" || profile == "party-eleven" || profile == "party-twelve" {
 						observed[len(observed)-1]["selector_projection_injected"] = group != modernHDChibiPartyIdentity(group)
 					}
 				}
@@ -439,6 +451,9 @@ func TestModernHDChibiPartyGPU(t *testing.T) {
 	if profile == "party-eleven" {
 		scope = "controlled default_target selectors36/37/38/40 with authored identities4/5/6/8 from chapters1/9/10/3. Test-only selector/record-byte6/cache projection, scenario SHA and true per-actor projection flags retained. Base identity, BattleFig, class and statistics unchanged; not natural promotion or original dynamic parity. Complete four-group candidate split in two fixed pairs,14 Game.Draw and two F2 each."
 	}
+	if profile == "party-twelve" {
+		scope = "controlled default_target selectors41/42/43/44 with authored identities9/10/11/12 from chapters1/6/11/8. Native layers byte-identical to59/60/61/62; shared existing HD source files. Test-only selector/record-byte6/cache projection, scenario SHA and true per-actor projection flags retained. Base identity, BattleFig, class and statistics unchanged; not natural promotion or original dynamic parity. Complete four-group candidate split in two fixed pairs,14 Game.Draw and two F2 each."
+	}
 	if profile == "knights" {
 		scope = "controlled runtime selector projections55/56 with authored identities5/6 from chapters9/10; HD interface four neutral directions/front three cycles, original interface front neutral, 14 full Game.Draw worlds, HUD and two F2. Test-only selector key/record byte6 and derived cache slot injection; no promotion, class, statistics, natural membership, normal player or original dynamic parity claim"
 	}
@@ -452,7 +467,7 @@ func TestModernHDChibiPartyGPU(t *testing.T) {
 		scope = "controlled original authored roster pair, AppendGroupWithNativePlacement gate0; original camp/portrait/position/selectors, no persistent identity projection. Four neutral directions/front three phases, two interfaces, 14 Game.Draw and two F2. Part of complete six-group candidate; not natural chapter/player reachability."
 	}
 	projected := profile != "party" && profile != "base-faces" && profile != "enemies" && profile != "audited-six"
-	if profile == "party-next" || profile == "party-four" || profile == "party-five" || profile == "party-six" || profile == "party-seven" || profile == "party-eight" || profile == "party-nine" || profile == "party-ten" || profile == "party-eleven" {
+	if profile == "party-next" || profile == "party-four" || profile == "party-five" || profile == "party-six" || profile == "party-seven" || profile == "party-eight" || profile == "party-nine" || profile == "party-ten" || profile == "party-eleven" || profile == "party-twelve" {
 		projected = false
 		for _, group := range groups {
 			projected = projected || group != modernHDChibiPartyIdentity(group)
@@ -469,7 +484,7 @@ func TestModernHDChibiPartyGPU(t *testing.T) {
 // entries; Harvat is an explicitly visual-only selector projection. No combat
 // or natural recruitment/statistics conclusion may be drawn from this fixture.
 func modernHDChibiPartyIdentity(group int) int {
-	if group == 32 || group == 33 || group == 34 || group == 36 || group == 37 || group == 38 || group == 40 {
+	if group == 32 || group == 33 || group == 34 || group == 36 || group == 37 || group == 38 || group == 40 || group == 41 || group == 42 || group == 43 || group == 44 {
 		return group - 32
 	}
 	if group == 52 {
@@ -657,7 +672,7 @@ func TestModernHDChibiPartyFixture(t *testing.T) {
 	if !sol || !unni {
 		t.Fatal("authored alternate/special identity binding changed", sol, unni)
 	}
-	defaults := map[int]int{0: 32, 1: 33, 2: 34, 4: 36, 5: 37, 6: 38, 8: 40}
+	defaults := map[int]int{0: 32, 1: 33, 2: 34, 4: 36, 5: 37, 6: 38, 8: 40, 9: 41, 10: 42, 11: 43, 12: 44}
 	for _, row := range promotion.Rows {
 		if target, ok := defaults[row.Portrait]; ok {
 			if row.Default != target || modernHDChibiPartyIdentity(target) != row.Portrait {
@@ -681,7 +696,7 @@ func TestModernHDChibiPartyFixture(t *testing.T) {
 	if len(promoted) != 0 {
 		t.Fatal("authored optional targets missing", promoted)
 	}
-	for _, group := range []int{1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 32, 33, 34, 36, 37, 38, 40, 50, 51, 52, 53, 54, 55, 56, 58, 59, 60, 61, 62, 63} {
+	for _, group := range []int{1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 32, 33, 34, 36, 37, 38, 40, 41, 42, 43, 44, 50, 51, 52, 53, 54, 55, 56, 58, 59, 60, 61, 62, 63} {
 		g, _, _ := ordinaryCommand0HDTestGame(t)
 		g.partyMembers, g.partyJoinOrder, g.partyRoster = nil, nil, nil
 		g.resetBattle("assets/maps/map0/map0_units.json", modernHDChibiPartyScenario(t, group))

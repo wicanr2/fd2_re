@@ -21,6 +21,9 @@ def safe(name):
     if not isinstance(name,str) or Path(name).name!=name or not name.endswith('.png'):raise ValueError('unsafe PNG name')
     return name
 
+def asset_digest(assets):
+    return hashlib.sha256(json.dumps(assets,ensure_ascii=False,sort_keys=True,separators=(',',':')).encode()).hexdigest()
+
 def prepare(recipe_path,catalog_path,pack,original,masters,out):
     r,c=read(recipe_path),read(catalog_path)
     if r['kind']!='fd2_hd1_chibi_map_refresh' or r['base_catalog_sha256']!=sha(catalog_path):raise ValueError('base catalog changed')
@@ -33,7 +36,7 @@ def prepare(recipe_path,catalog_path,pack,original,masters,out):
     if set(parents)!=VISIBLE_FDICON_GROUPS or set(children)!=VISIBLE_FDICON_GROUPS:raise ValueError('complete native collection required')
     groups=[a['group'] for a in r['groups']]
     if len(groups)!=len(set(groups)) or not groups or not set(groups)<=set(parents):raise ValueError('invalid or duplicate group')
-    sources=[]
+    sources=[];reuses={}
     for entry in r['groups']:
         group=entry['group'];master=masters/safe(entry['master_file']);parent=parents[group]
         if sha(master)!=entry['master_sha256']:raise ValueError('approved master changed')
@@ -47,6 +50,19 @@ def prepare(recipe_path,catalog_path,pack,original,masters,out):
         with Image.open(master) as im:
             if im.mode!='RGBA' or im.getchannel('A').getextrema()!=(0,255):raise ValueError('master requires transparent alpha and opaque core')
             pieces=master_components(im,parent['frame_count'])
+        if 'reuse_group' in entry:
+            reference=entry['reuse_group']
+            if type(reference)!=int or reference not in parents or reference in groups:raise ValueError('invalid reused group')
+            reference_parent,reference_child=parents[reference],children[reference]
+            if reference_parent['frame_count']!=parent['frame_count'] or reference_child['frame_count']!=parent['frame_count']:raise ValueError('reused frame count differs')
+            if asset_digest([reference_parent,reference_child])!=entry.get('reuse_assets_sha256'):raise ValueError('reused asset source changed')
+            if reference_parent.get('master_file')!=entry['master_file'] or reference_child.get('master_file')!=entry['master_file']:raise ValueError('reused master binding changed')
+            reference_native=[{name:sha(bank/f'sprite_{reference*12+i:04d}'/name) for name in ('frame.png','mask.png','remap_mask.png')} for i in range(parent['frame_count'])]
+            if native!=reference_native:raise ValueError('reused native layers differ')
+            for asset in (reference_parent,reference_child):
+                for name,digest in zip(asset['files'],asset['frame_sha256']):
+                    if sha(pack/safe(name))!=digest:raise ValueError('reused registered frame changed')
+            reuses[group]=(reference_parent,reference_child,reference_native)
         sources.append((entry,parent,children[group],master,pieces,native))
     # Validate the complete old pack before publishing even a disposable candidate.
     if read(pack/'catalog.json')!=c:raise ValueError('pack/catalog differ')
@@ -57,6 +73,20 @@ def prepare(recipe_path,catalog_path,pack,original,masters,out):
         result=deepcopy(c);records=[]
         for entry,old_parent,old_child,master,pieces,native in sources:
             name=safe(entry['master_file'])
+            if entry['group'] in reuses:
+                reference_parent,reference_child,reference_native=reuses[entry['group']]
+                if sha(scratch/name)!=entry['master_sha256']:raise ValueError('reused master changed')
+                parent,child=deepcopy(old_parent),deepcopy(old_child)
+                for key in ('master_file','files','frame_sha256'):parent[key]=deepcopy(reference_parent[key])
+                for key in ('master_file','files','frame_sha256','frame_overrides','source_files','source_sha256'):child[key]=deepcopy(reference_child[key])
+                hd_dir=scratch/'hd';hd_dir.mkdir()
+                compiled=compile_group(parent,scratch,hd_dir,name,child['frame_overrides'],pieces)
+                if [f['sha256'] for f in compiled['frames']]!=child['frame_sha256']:raise ValueError('reused HD rebuild differs')
+                for i,frame in enumerate(compiled['frames']):frame['file']=child['files'][i]
+                shutil.rmtree(hd_dir)
+                for asset in (parent,child):result['assets'][next(i for i,v in enumerate(result['assets']) if v['asset_id']==asset['asset_id'])]=asset
+                records.append(dict(group=entry['group'],master_file=name,master_sha256=sha(master),native_inputs=native,parent=parent,hd=child,compiled=compiled,reuse_group=entry['reuse_group'],reuse_native_inputs=reference_native,reuse_asset_ids=[reference_parent['asset_id'],reference_child['asset_id']]))
+                continue
             if (scratch/name).exists():raise ValueError('new master name already exists')
             shutil.copyfile(master,scratch/name)
             parent=deepcopy(old_parent);parent['master_file']=name;files=[];hashes=[]

@@ -1,0 +1,234 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_hd1_chibi_map_refresh",
+  "approved_preview": "docs/figures/hd1-ares-q-design.png",
+  "approved_preview_sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e",
+  "native_bank_sha256": "7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44",
+  "palette_sha256": "404db1ca72ffc19fa7404fbc59bde98cdf239f63fe3375ec248a8142073a28bf",
+  "base_catalog_sha256": "dc836f127c1293cd00423bde76756fab29436e94f952248abb6a855ca7a93c51",
+  "approval": "沿已定大頭短身、逐人面容及持續推進授權；四對原生圖源逐檔相同，共用同角色已核對HD1素材，不另造不同面孔。",
+  "groups": [
+    {
+      "group": 41,
+      "master_file": "fdicon-059-hd1-portrait-q-v1-master.png",
+      "master_sha256": "fd22366bcf7c2c01865a382771b260f9ddae4b4056023b36f6470969dffea8b5",
+      "output_prefix": "fdicon-059-hd1-portrait-q-v1",
+      "reuse_group": 59,
+      "reuse_assets_sha256": "a4e93c0aa2d2dade7382d2c0c63f5147fb9d04369e18e8a39c4db7528665fff3"
+    },
+    {
+      "group": 42,
+      "master_file": "fdicon-060-hd1-portrait-q-v1-master.png",
+      "master_sha256": "cc4573b09a37dbd5fdc7a8b697cf7d62806af9ef9ac5160aa694b667b3e676e9",
+      "output_prefix": "fdicon-060-hd1-portrait-q-v1",
+      "reuse_group": 60,
+      "reuse_assets_sha256": "8c2aad3b1742b057062823866f1abe75b26412b72f679e0fdc3139b057c473b5"
+    },
+    {
+      "group": 43,
+      "master_file": "fdicon-061-hd1-portrait-q-v1-master.png",
+      "master_sha256": "4a63f51c2bdcdd68faaf517753aeee82dcd0672fb10539baa34c27fbccdfaecb",
+      "output_prefix": "fdicon-061-hd1-portrait-q-v1",
+      "reuse_group": 61,
+      "reuse_assets_sha256": "b239d08349040fae0251358f3cf9dd27dfd15037a34b5436126240b80e638c72"
+    },
+    {
+      "group": 44,
+      "master_file": "fdicon-062-hd1-portrait-q-v1-master.png",
+      "master_sha256": "b77e275b0e1efedae53ab018ff30d2cc01fc7daaeb2add09768ae0fae688808b",
+      "output_prefix": "fdicon-062-hd1-portrait-q-v1",
+      "reuse_group": 62,
+      "reuse_assets_sha256": "a72d2a09cf4e990126fef73b969044f75e0688e96fe3c2ce9560e82ab031d442"
+    }
+  ],
+  "faces": [
+    {
+      "group": 41,
+      "name": "悠妮",
+      "portrait_file": "remake/assets/portraits/DATO_009_m0.png",
+      "portrait_sha256": "da5fc30e026a9536f3462b01bf88ef0535466b1318a5bc80f0117031d747a720",
+      "traits": [
+        "紅長馬尾與藍紋額帶",
+        "收斂褐眼與細眉",
+        "小幅開口紅唇"
+      ],
+      "comparison_label": "原版大頭像／原生相同的既有HD1地圖圖源，非480對話頭像驗收"
+    },
+    {
+      "group": 42,
+      "name": "瑪琳",
+      "portrait_file": "remake/assets/portraits/DATO_010_m0.png",
+      "portrait_sha256": "f5adac25a4b90b6d0a936be8b54e4093d8196e1dfdcfa170f9ddff3365ef4052",
+      "traits": [
+        "粉紫馬尾與金額帶",
+        "成熟窄眼與長細鼻",
+        "紫色唇形"
+      ],
+      "comparison_label": "原版大頭像／原生相同的既有HD1地圖圖源，非480對話頭像驗收"
+    },
+    {
+      "group": 43,
+      "name": "索菲亞",
+      "portrait_file": "remake/assets/portraits/DATO_011_m0.png",
+      "portrait_sha256": "42553488c68bfd03ac548383b1ba374eacc85a80e9e1324bd96a17b184b1f04d",
+      "traits": [
+        "灰金馬尾與褐紅髮束",
+        "柔和褐眼及細鼻",
+        "開口紅唇微笑"
+      ],
+      "comparison_label": "原版大頭像／原生相同的既有HD1地圖圖源，非480對話頭像驗收"
+    },
+    {
+      "group": 44,
+      "name": "凱麗",
+      "portrait_file": "remake/assets/portraits/DATO_012_m0.png",
+      "portrait_sha256": "49bb809cfb3d0154cea566c9ed1bd3e66f982c269169330be7fd4f77da910e1f",
+      "traits": [
+        "金色側瀏海遮一眼",
+        "可見褐色杏眼與成熟臉頰",
+        "開口紅唇"
+      ],
+      "comparison_label": "原版大頭像／原生相同的既有HD1地圖圖源，非480對話頭像驗收"
+    }
+  ],
+  "party_bindings": [
+    {
+      "group": 41,
+      "native_identity": 9,
+      "portrait": 9,
+      "fig": 9,
+      "scenario_file": "remake/assets/scenarios/ch01.json",
+      "scenario_sha256": "9d2229fe33a5a692234cb8343aaf6c4d159e6de1a4e4d9df4e2870874e103269",
+      "target_field": "default_target",
+      "selector_projection_injected": true
+    },
+    {
+      "group": 42,
+      "native_identity": 10,
+      "portrait": 10,
+      "fig": 10,
+      "scenario_file": "remake/assets/scenarios/ch06.json",
+      "scenario_sha256": "20e405bbb5e9d31b1a6b00952b527a38d16998a8993944bea19990826abe5c0b",
+      "target_field": "default_target",
+      "selector_projection_injected": true
+    },
+    {
+      "group": 43,
+      "native_identity": 11,
+      "portrait": 11,
+      "fig": 11,
+      "scenario_file": "remake/assets/scenarios/ch11.json",
+      "scenario_sha256": "127aee522a3b213cd0ece3675736e73cf62cd9c95385d852f08f2a481a1b4c06",
+      "target_field": "default_target",
+      "selector_projection_injected": true
+    },
+    {
+      "group": 44,
+      "native_identity": 12,
+      "portrait": 12,
+      "fig": 12,
+      "scenario_file": "remake/assets/scenarios/ch08.json",
+      "scenario_sha256": "9d45e99f893e49b9527cb8ee57b3e8de440dbc9ccc32e316937f48d75ab58283",
+      "target_field": "default_target",
+      "selector_projection_injected": true
+    }
+  ],
+  "policy": "41／42／43／44依default_target明示9／10／11／12；原生十二幀三層分別與59／60／61／62逐檔SHA相同，共用各自已核對的母稿及24／144圖源。保留原版原生來源索引、衣色與遮蔽，不重新推定側件用途或玩法。只在測具投影selector／byte6／cache，保留身份、BattleFig、能力及保存，不作自然轉職或480頭像驗收。",
+  "gpu_pairs": {
+    "unni-and-marin": [
+      41,
+      42
+    ],
+    "sophia-and-kylie": [
+      43,
+      44
+    ]
+  },
+  "promotion_source": {
+    "file": "remake/assets/data/class_change_targets.json",
+    "sha256": "27946ce10bf60738331009fff14b50be3cddc4cce18a4402e5259cb89fecfaa2"
+  },
+  "art_reuse": {
+    "mode": "existing-registered-hd1",
+    "new_image_generation_calls": 0,
+    "sources": [
+      {
+        "group": 41,
+        "source_group": 59,
+        "master_file": "fdicon-059-hd1-portrait-q-v1-master.png",
+        "master_sha256": "fd22366bcf7c2c01865a382771b260f9ddae4b4056023b36f6470969dffea8b5",
+        "source_recipe": {
+          "file": "remake/assets/themes/modern/hd1-bow-mages-promoted-refresh.recipe.json",
+          "sha256": "b5792c7d98b7d9bc630b67755cd3e112c0385146d5a6ed7c10ab0559a9709a3e"
+        }
+      },
+      {
+        "group": 42,
+        "source_group": 60,
+        "master_file": "fdicon-060-hd1-portrait-q-v1-master.png",
+        "master_sha256": "cc4573b09a37dbd5fdc7a8b697cf7d62806af9ef9ac5160aa694b667b3e676e9",
+        "source_recipe": {
+          "file": "remake/assets/themes/modern/hd1-bow-mages-promoted-refresh.recipe.json",
+          "sha256": "b5792c7d98b7d9bc630b67755cd3e112c0385146d5a6ed7c10ab0559a9709a3e"
+        }
+      },
+      {
+        "group": 43,
+        "source_group": 61,
+        "master_file": "fdicon-061-hd1-portrait-q-v1-master.png",
+        "master_sha256": "4a63f51c2bdcdd68faaf517753aeee82dcd0672fb10539baa34c27fbccdfaecb",
+        "source_recipe": {
+          "file": "remake/assets/themes/modern/hd1-bow-mages-promoted-refresh.recipe.json",
+          "sha256": "b5792c7d98b7d9bc630b67755cd3e112c0385146d5a6ed7c10ab0559a9709a3e"
+        }
+      },
+      {
+        "group": 44,
+        "source_group": 62,
+        "master_file": "fdicon-062-hd1-portrait-q-v1-master.png",
+        "master_sha256": "b77e275b0e1efedae53ab018ff30d2cc01fc7daaeb2add09768ae0fae688808b",
+        "source_recipe": {
+          "file": "remake/assets/themes/modern/hd1-first-promotions-refresh.recipe.json",
+          "sha256": "19d3c95da8bd46b44af57ee8f13903a4c700a3d981e8c65bf21891cb52d7e280"
+        }
+      }
+    ],
+    "original_equivalence": {
+      "file": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r19/native-equivalence.json",
+      "sha256": "a5ca490f8622a5b39def079de851cfb2910ecf4909f7496f44304155b8a9d25c"
+    }
+  },
+  "original_reference": {
+    "source": "各目標FDICON十二姿態三層／FDOTHER0色盤及自身DATO；與既有圖組逐檔比對後共用",
+    "groups": [
+      41,
+      42,
+      43,
+      44
+    ],
+    "records_file": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r19/native-reference.json",
+    "records_sha256": "268feb2a4aa5d8124c7d186c48c290acd7ff0f72c2085afc388fc65f7710a470",
+    "reference_boards": [
+      {
+        "file": "group-041-original.png",
+        "sha256": "344ba8c2f1811dba3589ee68fa26c47a2a5f37c42e6a95d45d79b897d3d5286c"
+      },
+      {
+        "file": "group-042-original.png",
+        "sha256": "ee4d01a67e9f00170adddd4b641734badd7ad1c4c2d7aaf1697aec7b7accc4dc"
+      },
+      {
+        "file": "group-043-original.png",
+        "sha256": "c7c9ba11b5fc6c2ac02994ebdb75401a02c020615549b66b638f3422795f926b"
+      },
+      {
+        "file": "group-044-original.png",
+        "sha256": "026cd7ea360a2684c955d359d118cada8658a7b362ea886c41764b0dc607025a"
+      }
+    ],
+    "equivalence": {
+      "file": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r19/native-equivalence.json",
+      "sha256": "a5ca490f8622a5b39def079de851cfb2910ecf4909f7496f44304155b8a9d25c"
+    }
+  }
+}

@@ -1,6 +1,6 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
-亞雷斯36、洛娜37、萊汀38與希莉亞40預設轉職圖組已依各自原版頭像與十二姿態重繪。方正面容、灰綠側長髮、方下顎微揚薄唇及柔和褐眼笑容分別保持；洛娜藍背布、萊汀深藍甲金黃件與希莉亞灰綠領沿原生，靴色統一。兩GPU與普通首章整包切換、走行取消、保存／新程序LOAD相容通過。四組只在測具投影selector／byte6／cache，原身份4／5／6／8及能力保持，不作自然轉職。Q比例餘項38→34，其餘面容與完整總覽仍待，Gaia保持定版。現況依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源為主收據hd1_default_knights_bow_followup_20261031。
+悠妮41、瑪琳42、索菲亞43與凱麗44預設轉職圖組已接同角色既有HD1素材。十二姿態三層分別與59／60／61／62逐檔相同，共144對；沿各自已核對的面容、服色及遮蔽，共用100個既有檔，沒有新增美術。兩GPU與普通首章整包切換、走行取消、保存／新程序LOAD相容通過。四組僅在測具投影selector／byte6／cache，保留原身份9／10／11／12及能力，不作自然轉職。Q比例餘項34→30，其餘面容與完整總覽仍待，Gaia保持定版。現況依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源為主收據hd1_shared_default_mages_followup_20261031。
 
 戶外草、土、沙、水與石路已依定版風格刷新，原生輪廓、物件與規則保持。完整GPU及普通首章切換、走行取消、保存冷讀通過，README總覽及普通遊玩圖已更新。現況與來源依[58](58-fd2-exe-re-coverage.md)、[61](61-modern-theme-runtime-spec.md)及主收據`hd1_painted_ground_followup_20261029`；洞窟／物件與其餘缺圖續作，人工由使用者接手。
 

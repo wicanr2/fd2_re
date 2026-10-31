@@ -50,7 +50,9 @@ class ChibiPartyTest(unittest.TestCase):
 
     def test_source_faults_fail_before_publish(self):
         original=read(self.recipe)
-        for fault in ('catalog','master','palette','native-bank','design','duplicate-group','invisible-group','unsafe-name'):
+        faults=['catalog','master','palette','native-bank','design','duplicate-group','invisible-group','unsafe-name']
+        if any('reuse_group' in entry for entry in original['groups']):faults+=['reuse-group','reuse-assets','reuse-missing-group']
+        for fault in faults:
             with self.subTest(fault=fault),tempfile.TemporaryDirectory(dir=self.work) as folder:
                 d=deepcopy(original);folder=Path(folder);out=folder/'candidate';recipe=folder/'recipe.json'
                 if fault=='catalog':d['base_catalog_sha256']='0'*64
@@ -60,9 +62,17 @@ class ChibiPartyTest(unittest.TestCase):
                 elif fault=='design':d['approved_preview_sha256']='0'*64
                 elif fault=='duplicate-group':d['groups'].append(deepcopy(d['groups'][0]))
                 elif fault=='invisible-group':d['groups'][0]['group']=39
+                elif fault=='reuse-group':
+                    for key in ('reuse_group','reuse_assets_sha256','master_file','master_sha256'):
+                        d['groups'][0][key]=d['groups'][1][key]
+                elif fault=='reuse-assets':d['groups'][0]['reuse_assets_sha256']='0'*64
+                elif fault=='reuse-missing-group':d['groups'][0].pop('reuse_group')
                 else:d['groups'][0]['master_file']='../master.png'
                 recipe.write_text(json.dumps(d))
-                with self.assertRaises((ValueError,OSError)):self.make(recipe,out)
+                if fault=='reuse-group':
+                    with self.assertRaisesRegex(ValueError,'reused native layers differ'):self.make(recipe,out)
+                else:
+                    with self.assertRaises((ValueError,OSError)):self.make(recipe,out)
                 self.assertFalse(out.exists())
                 self.assertFalse(list(folder.glob('.chibi-*')))
 
