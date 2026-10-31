@@ -85,6 +85,14 @@
 
 達克賽保留深藍裸面、尖耳、厚重額面、鉤鼻與微揚薄唇；亞奇梅吉保留藍灰高額禿頂、深陷窄眼、長鼻與瘦長下巴。兩人皆按原生空手，灰綠腰帶與藍紫袍大領分別保持；達克賽眼色依自己的原版大頭像採藍紫。可看[四向與實際尺寸](docs/figures/hd1-blue-and-robed-comparison.png)、[達克賽](docs/figures/hd1-darksai-refresh-game.png)及[亞奇梅吉](docs/figures/hd1-archimage-refresh-game.png)的完整受控戰場圖。面容圖比較原版頭像與實際地圖素材，非對話HD頭像驗收；地圖及資訊窗共用新版圖源。戰場圖使用各自原生名冊的受控測具，沒有身份或圖組投影，不代表自然加入流程。其餘人物續作，完整總覽仍待全部重繪後更新。
 
+![索爾與哈諾轉職圖組的原版及HD1面容對照](docs/figures/hd1-sol-and-hano-faces.png)
+
+索爾第32組保留深藍髮、紅額帶、短馬尾及濃眉窄眼，維持空手與藍衣灰綠護具。哈諾第33組保留紅褐髮、藍灰額帶、長窄臉與低眉細眼，使用冰藍短斧。可看[四向與144／72／48尺寸](docs/figures/hd1-sol-and-hano-comparison.png)、[索爾](docs/figures/hd1-sol-default-refresh-game.png)及[哈諾](docs/figures/hd1-hano-default-refresh-game.png)的完整受控戰場圖。
+
+![鐵諾與凱麗轉職圖組的原版及HD1面容對照](docs/figures/hd1-tino-and-kylie-faces.png)
+
+鐵諾第34組保留灰綠布兜帽、背布、窄眼長鼻及近鼻的藍色遮眼區，使用單一灰銀直劍；遮眼區只記錄視覺形狀。凱麗第62組保留遮住一眼的金色側瀏海、褐色杏眼、成熟臉頰與紅唇，維持空手。可看[四向與實際尺寸](docs/figures/hd1-tino-and-kylie-comparison.png)、[鐵諾](docs/figures/hd1-tino-default-refresh-game.png)及[凱麗](docs/figures/hd1-kylie-promoted-refresh-game.png)的完整受控戰場圖。轉職表明示32／33／34對應原身份0／1／2的預設目標，62對應12的可選目標；戰場圖只在測具替換地圖圖組，保留原身份與能力，不代表自然轉職流程。地圖與資訊窗共用新版來源。這是地圖面容對照，其他人物與完整總覽仍待。
+
 ![希莉亞與悠妮轉職圖組的原版及HD1面容對照](docs/figures/hd1-bow-and-unni-faces.png)
 
 希莉亞的第58組保留長褐波髮、額帶藍飾與柔和紅唇微笑，使用金色弓與灰綠箭筒；悠妮的第59組保留紅長馬尾、藍紋額帶與收斂褐眼，紫粉頭金杆在背向由長髮遮住。可看[四向與144／72／48尺寸](docs/figures/hd1-bow-and-unni-comparison.png)、[希莉亞](docs/figures/hd1-cylia-promoted-refresh-game.png)及[悠妮](docs/figures/hd1-unni-promoted-refresh-game.png)的完整受控戰場圖。

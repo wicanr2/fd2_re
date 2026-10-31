@@ -448,7 +448,7 @@
       "layer": "data",
       "category": "缺陷",
       "title": "P1 HD1戰場小人物：依原版重繪大頭Q版與個別面容",
-      "body": "希莉亞58、悠妮59、瑪琳60與索菲亞61轉職圖組已依各自原版頭像與十二轉職姿態重繪。長褐髮紅唇微笑、紅馬尾收斂褐眼、粉紫馬尾窄眼紫唇、灰金馬尾紅唇分別保持。58金弓灰綠箭筒與紅背布；59紫粉頭金杆及紫胸布，背向按原版由紅髮遮蔽；60藍衣及灰綠長直側片，用途不另推定；61紅褐衣、灰綠領與金褐側飾，不從基底11補新杆。\n\n轉職表optional_target明示58／59／60／61來自8／9／10／11。兩固定GPU程序共28完整Game.Draw、24PNG、四次F2、304038核心點及25反例通過。逐份與逐actor揭露selector／raw byte6／cache投影，保留原身份、BattleFig及能力，不作自然轉職證據。配方另有四個直接語意反例核來源SHA、optional欄位、身份與未揭露旗標。七種舊分份讀取契約保持，不重跑或升格舊GPU。\n\n普通首章十PNG驗完整候選、四組控制、走行取消、保存與新程序標題LOAD，只作整包相容。三項逐byte來源重編／八拒收、24頂層Go含字串、21來源案例／416幀／19反例、883清冊及125組1455來源通過；兩可選GPU略過不計。\n\n只換八項、875保持，100新檔私人白名單保存；原8448美術檔及0／9／30六項保持，其餘121組SHA相同。README補兩組面容、四向實際尺寸與四張受控戰場。Q比例餘項46→42，其餘個別面容與完整總覽仍待，Gaia保持定版，本項維持OPEN。現況與重跑依58／61及主收據hd1_bow_mages_promoted_followup_20261031。",
+      "body": "索爾32、哈諾33、鐵諾34與凱麗62轉職圖組已依各自原版大頭像與十二姿態重繪大頭短身。索爾深藍髮紅額帶、短馬尾與濃眉窄眼，空手；哈諾紅褐髮、藍灰額帶、長窄臉與低眉細眼，冰藍短斧；鐵諾灰綠布兜帽及背布、窄眼長鼻與近鼻藍色遮眼區，單一直劍；凱麗遮一眼的金色瀏海、成熟臉頰與紅唇，空手。遮眼區只記視覺形狀，不推定機制。\n\n轉職表default_target明示32／33／34來自0／1／2，optional_target明示62來自12。兩固定GPU程序共28完整Game.Draw、24PNG、四次F2、247051核心點及25反例通過。逐份與逐actor揭露selector／raw byte6／cache投影，保留原身份、BattleFig及能力，不作自然轉職證據。四個配方語意反例核來源SHA、目標欄位、原身份及投影揭露。八種舊分份與party-nine配方契約保持，不重跑或升格舊GPU。\n\n普通首章十PNG驗整包候選、四組控制、走行取消、保存與新程序標題LOAD，只作整包相容。三項逐byte來源重編／八拒收、24頂層Go含字串、21來源案例／416幀／19反例、883清冊與125組1455來源通過；兩可選GPU略過不計。\n\n只換八項、875保持，100新檔私人白名單保存；原8548美術檔及0／9／30六項保持，其餘121組SHA相同。README補兩組面容、四向實際尺寸與四張受控戰場。Q比例餘項42→38，其餘個別面容與完整總覽仍待，Gaia保持定版，本項維持OPEN。現況與重跑依58／61及主收據hd1_first_promotions_followup_20261031。",
       "acceptance": [
         "使用者選定亞雷斯新比例，並保留定版原稿、原版來源、逐字提示與SHA；其他角色依相同標準重製，不能只改大圖總覽。",
         "125個可見圖組及1455幀逐組保留原生方向、步態／靜態相位、轉職身份、裝備特徵、腳底與透明契約；原版、已接受圖源及舊證據可追溯。",
@@ -557,11 +557,20 @@
         "docs/figures/hd1-cylia-promoted-refresh-game.png",
         "docs/figures/hd1-unni-promoted-refresh-game.png",
         "docs/figures/hd1-marin-promoted-refresh-game.png",
-        "docs/figures/hd1-sophia-promoted-refresh-game.png"
+        "docs/figures/hd1-sophia-promoted-refresh-game.png",
+        "remake/assets/themes/modern/hd1-first-promotions-refresh.recipe.json",
+        "docs/figures/hd1-sol-and-hano-faces.png",
+        "docs/figures/hd1-sol-and-hano-comparison.png",
+        "docs/figures/hd1-tino-and-kylie-faces.png",
+        "docs/figures/hd1-tino-and-kylie-comparison.png",
+        "docs/figures/hd1-sol-default-refresh-game.png",
+        "docs/figures/hd1-hano-default-refresh-game.png",
+        "docs/figures/hd1-tino-default-refresh-game.png",
+        "docs/figures/hd1-kylie-promoted-refresh-game.png"
       ],
       "verify": {
         "kind": "manual",
-        "note": "本批58／59／60／61依自身原版及明示optional_target重繪，測具投影逐筆揭露，不作自然轉職。Q比例餘項46→42，其他面容及完整總覽仍待。"
+        "note": "本批32／33／34／62依自身原版及明示default／optional目標重繪，測具投影逐筆揭露，不作自然轉職。Q比例餘項42→38，其他面容及完整總覽仍待。"
       },
       "issue": 286
     },
@@ -570,7 +579,7 @@
       "layer": "data",
       "category": "缺陷",
       "title": "P1 HD1人物面容與身份複核：依原版頭像保留各自特徵",
-      "body": "希莉亞58、悠妮59、瑪琳60與索菲亞61轉職圖組已依各自原版頭像與十二轉職姿態重繪。長褐髮紅唇微笑、紅馬尾收斂褐眼、粉紫馬尾窄眼紫唇、灰金馬尾紅唇分別保持。58金弓灰綠箭筒與紅背布；59紫粉頭金杆及紫胸布，背向按原版由紅髮遮蔽；60藍衣及灰綠長直側片，用途不另推定；61紅褐衣、灰綠領與金褐側飾，不從基底11補新杆。\n\n轉職表optional_target明示58／59／60／61來自8／9／10／11。兩固定GPU程序共28完整Game.Draw、24PNG、四次F2、304038核心點及25反例通過。逐份與逐actor揭露selector／raw byte6／cache投影，保留原身份、BattleFig及能力，不作自然轉職證據。配方另有四個直接語意反例核來源SHA、optional欄位、身份與未揭露旗標。七種舊分份讀取契約保持，不重跑或升格舊GPU。\n\n普通首章十PNG驗完整候選、四組控制、走行取消、保存與新程序標題LOAD，只作整包相容。三項逐byte來源重編／八拒收、24頂層Go含字串、21來源案例／416幀／19反例、883清冊及125組1455來源通過；兩可選GPU略過不計。\n\n只換八項、875保持，100新檔私人白名單保存；原8448美術檔及0／9／30六項保持，其餘121組SHA相同。README補兩組面容、四向實際尺寸與四張受控戰場。Q比例餘項46→42，其餘個別面容與完整總覽仍待，Gaia保持定版，本項維持OPEN。現況與重跑依58／61及主收據hd1_bow_mages_promoted_followup_20261031。",
+      "body": "索爾32、哈諾33、鐵諾34與凱麗62轉職圖組已依各自原版大頭像與十二姿態重繪大頭短身。索爾深藍髮紅額帶、短馬尾與濃眉窄眼，空手；哈諾紅褐髮、藍灰額帶、長窄臉與低眉細眼，冰藍短斧；鐵諾灰綠布兜帽及背布、窄眼長鼻與近鼻藍色遮眼區，單一直劍；凱麗遮一眼的金色瀏海、成熟臉頰與紅唇，空手。遮眼區只記視覺形狀，不推定機制。\n\n轉職表default_target明示32／33／34來自0／1／2，optional_target明示62來自12。兩固定GPU程序共28完整Game.Draw、24PNG、四次F2、247051核心點及25反例通過。逐份與逐actor揭露selector／raw byte6／cache投影，保留原身份、BattleFig及能力，不作自然轉職證據。四個配方語意反例核來源SHA、目標欄位、原身份及投影揭露。八種舊分份與party-nine配方契約保持，不重跑或升格舊GPU。\n\n普通首章十PNG驗整包候選、四組控制、走行取消、保存與新程序標題LOAD，只作整包相容。三項逐byte來源重編／八拒收、24頂層Go含字串、21來源案例／416幀／19反例、883清冊與125組1455來源通過；兩可選GPU略過不計。\n\n只換八項、875保持，100新檔私人白名單保存；原8548美術檔及0／9／30六項保持，其餘121組SHA相同。README補兩組面容、四向實際尺寸與四張受控戰場。Q比例餘項42→38，其餘個別面容與完整總覽仍待，Gaia保持定版，本項維持OPEN。現況與重跑依58／61及主收據hd1_first_promotions_followup_20261031。",
       "acceptance": [
         "逐組以固定原生三層、FDOTHER0代表色盤與有對應身份的原版頭像／大圖核身份，不沿舊候選或圖說猜職業／種族。",
         "優先修正2、48、50、51、52、53、54、55、56、63、76、79的已見差異，70、73、77、89、125、133補證後逐項確認或修正；所有結論保留來源及未知等級。",
@@ -667,11 +676,20 @@
         "docs/figures/hd1-cylia-promoted-refresh-game.png",
         "docs/figures/hd1-unni-promoted-refresh-game.png",
         "docs/figures/hd1-marin-promoted-refresh-game.png",
-        "docs/figures/hd1-sophia-promoted-refresh-game.png"
+        "docs/figures/hd1-sophia-promoted-refresh-game.png",
+        "remake/assets/themes/modern/hd1-first-promotions-refresh.recipe.json",
+        "docs/figures/hd1-sol-and-hano-faces.png",
+        "docs/figures/hd1-sol-and-hano-comparison.png",
+        "docs/figures/hd1-tino-and-kylie-faces.png",
+        "docs/figures/hd1-tino-and-kylie-comparison.png",
+        "docs/figures/hd1-sol-default-refresh-game.png",
+        "docs/figures/hd1-hano-default-refresh-game.png",
+        "docs/figures/hd1-tino-default-refresh-game.png",
+        "docs/figures/hd1-kylie-promoted-refresh-game.png"
       ],
       "verify": {
         "kind": "manual",
-        "note": "本批58／59／60／61依自身原版及明示optional_target重繪，測具投影逐筆揭露，不作自然轉職。Q比例餘項46→42，其他面容及完整總覽仍待。"
+        "note": "本批32／33／34／62依自身原版及明示default／optional目標重繪，測具投影逐筆揭露，不作自然轉職。Q比例餘項42→38，其他面容及完整總覽仍待。"
       },
       "issue": 287
     }

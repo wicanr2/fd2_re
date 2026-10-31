@@ -4774,6 +4774,21 @@
         ],
         "pattern": "verify_parts"
       }
+    },
+    {
+      "id": "fixture-receipt-matches-authored-scenario",
+      "date": "2026-10-31",
+      "area": "HD測具來源",
+      "rule": "人物測具的scenario_sha256與實際取用名冊必須相同。先核配方的native_identity與chapter，再補齊remake/cmd/fd2/modern_hd_chibi_party_test.go的觀測來源分支，由tools/verify_fd2_hd1_chibi_party.py逐actor拒收不符來源。測具更動後兩份GPU收據一併重生，舊收據保留拒收原因。",
+      "why": "R17鐵諾實際由ch04建構，觀測來源分支卻遺漏identity2而寫ch01。獨立驗證器在登錄前拒收；補回case2後重新產生兩組收據，沒有改正式遊戲或放寬來源條件。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#hd1_first_promotions_followup_20261031",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_hd1_chibi_party.py"
+        ],
+        "pattern": "s\\.get\\('scenario_sha256'\\)==b\\['scenario_sha256'\\].*'promoted actor provenance changed'"
+      }
     }
   ]
 }

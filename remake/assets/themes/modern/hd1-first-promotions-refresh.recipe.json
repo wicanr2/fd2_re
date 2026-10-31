@@ -1,0 +1,281 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_hd1_chibi_map_refresh",
+  "approved_preview": "docs/figures/hd1-ares-q-design.png",
+  "approved_preview_sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e",
+  "native_bank_sha256": "7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44",
+  "palette_sha256": "404db1ca72ffc19fa7404fbc59bde98cdf239f63fe3375ec248a8142073a28bf",
+  "base_catalog_sha256": "af2ea237cfed4f76eaf9c5a010f16dcbf1079e97c378d1e903911485adba8fd1",
+  "approval": "沿使用者已定大頭短身、逐人原版面容及持續推進授權；處理32／33／34／62轉職圖源，正式規則／保存保持，受控投影不冒稱自然轉職。",
+  "groups": [
+    {
+      "group": 32,
+      "master_file": "fdicon-032-hd1-portrait-q-v1-master.png",
+      "master_sha256": "25b1ca72b5b2f5c8bfe88a31ba72ccfa169ba4b8cd7e15bba5bb7aeafeb24431",
+      "output_prefix": "fdicon-032-hd1-portrait-q-v1"
+    },
+    {
+      "group": 33,
+      "master_file": "fdicon-033-hd1-portrait-q-v1-master.png",
+      "master_sha256": "e35b8cd4af8aae5f646f17db8a4574e0e183bfb7d84f2f39e87fc523eb1edbd9",
+      "output_prefix": "fdicon-033-hd1-portrait-q-v1"
+    },
+    {
+      "group": 34,
+      "master_file": "fdicon-034-hd1-portrait-q-v1-master.png",
+      "master_sha256": "27ff94046b7be82c6224e37f06221eae3e735f0873d596810fa2f104cc49e6ba",
+      "output_prefix": "fdicon-034-hd1-portrait-q-v1"
+    },
+    {
+      "group": 62,
+      "master_file": "fdicon-062-hd1-portrait-q-v1-master.png",
+      "master_sha256": "b77e275b0e1efedae53ab018ff30d2cc01fc7daaeb2add09768ae0fae688808b",
+      "output_prefix": "fdicon-062-hd1-portrait-q-v1"
+    }
+  ],
+  "faces": [
+    {
+      "group": 32,
+      "name": "索爾",
+      "portrait_file": "remake/assets/portraits/DATO_000_m0.png",
+      "portrait_sha256": "8b340f30e3552014a47cca5bcf53bbf14bd1c9315d5fd7e10b52254aa1ea2294",
+      "traits": [
+        "深藍髮紅額帶與短馬尾",
+        "窄褐眼、濃眉及長鼻",
+        "寬下顎與收斂薄唇"
+      ],
+      "comparison_label": "原版大頭像／實際轉職地圖圖源，非480對話頭像驗收"
+    },
+    {
+      "group": 33,
+      "name": "哈諾",
+      "portrait_file": "remake/assets/portraits/DATO_001_m0.png",
+      "portrait_sha256": "0e689e90209bb28ad7dd022742537156cb57174ddd76745ab40d92cc786812e1",
+      "traits": [
+        "紅褐短髮與藍灰額帶",
+        "長窄臉、長鼻與低眉細眼",
+        "抿嘴與較長下巴"
+      ],
+      "comparison_label": "原版大頭像／實際轉職地圖圖源，非480對話頭像驗收"
+    },
+    {
+      "group": 34,
+      "name": "鐵諾",
+      "portrait_file": "remake/assets/portraits/DATO_002_m0.png",
+      "portrait_sha256": "2986e17bdccd02e579550af99a893de664e292db8e8f038805108117a8e2dc25",
+      "traits": [
+        "灰綠布兜帽與褐色內緣",
+        "近鼻側藍色遮眼區與窄眼",
+        "長鼻、角形下顎與薄唇"
+      ],
+      "comparison_label": "原版大頭像／實際轉職地圖圖源，非480對話頭像驗收"
+    },
+    {
+      "group": 62,
+      "name": "凱麗",
+      "portrait_file": "remake/assets/portraits/DATO_012_m0.png",
+      "portrait_sha256": "49bb809cfb3d0154cea566c9ed1bd3e66f982c269169330be7fd4f77da910e1f",
+      "traits": [
+        "金色側瀏海遮住一眼",
+        "可見的褐色杏眼與細鼻",
+        "成熟臉頰及開口紅唇"
+      ],
+      "comparison_label": "原版大頭像／實際轉職地圖圖源，非480對話頭像驗收"
+    }
+  ],
+  "party_bindings": [
+    {
+      "group": 32,
+      "native_identity": 0,
+      "portrait": 0,
+      "fig": 0,
+      "scenario_file": "remake/assets/scenarios/ch01.json",
+      "scenario_sha256": "9d2229fe33a5a692234cb8343aaf6c4d159e6de1a4e4d9df4e2870874e103269",
+      "target_field": "default_target",
+      "selector_projection_injected": true
+    },
+    {
+      "group": 33,
+      "native_identity": 1,
+      "portrait": 1,
+      "fig": 1,
+      "scenario_file": "remake/assets/scenarios/ch02.json",
+      "scenario_sha256": "27ff99c5f21304eaebe75be228256d32c57ece1fd4e167d6582ca9082f209d02",
+      "target_field": "default_target",
+      "selector_projection_injected": true
+    },
+    {
+      "group": 34,
+      "native_identity": 2,
+      "portrait": 2,
+      "fig": 2,
+      "scenario_file": "remake/assets/scenarios/ch04.json",
+      "scenario_sha256": "406976bc3db7b2b117bf6c8291654dcbc15e1489de687212820bd8999cde6d02",
+      "target_field": "default_target",
+      "selector_projection_injected": true
+    },
+    {
+      "group": 62,
+      "native_identity": 12,
+      "portrait": 12,
+      "fig": 12,
+      "scenario_file": "remake/assets/scenarios/ch08.json",
+      "scenario_sha256": "9d45e99f893e49b9527cb8ee57b3e8de440dbc9ccc32e316937f48d75ab58283",
+      "target_field": "optional_target",
+      "selector_projection_injected": true
+    }
+  ],
+  "image_generation": {
+    "mode": "builtin_imagegen",
+    "jobs": [
+      {
+        "group": 32,
+        "prompt": "Use case: identity-preserve. Asset type: HD1 tactical map sprite MASTER for Flame Dragon Knights2. Image1 ORIGINAL twelve map poses is the authority for silhouette, gear, outfit colors, four directions and occlusion. Image2 THIS character's original portrait is authority for own face. Image3 ONLY approved HD1 style/proportion reference: never copy its face, equipment, hair or expression. Huge head AND visible readable face about67-70% total height, extremely short compact torso and legs, stubby boots, clean dark contours, broad colors, restrained smooth painted/cel2D shading, readable144/72/48px. No long realistic legs or generic round-eyed baby face. Exactly3columns x4rows, twelve isolated fullbody figures. Rows FRONT facing viewer, LEFT true profile screenleft, BACK away, RIGHT true profile screenright. Every row column1 neutral both feet planted, column2 small grounded left step, column3 small grounded right step. FIRST column neutral. Same scale/foot baseline, generous clear alpha gaps/margins, no clipping. Exactly two hands and two feet, natural wrists. Actual transparent alpha; no background/checkerboard, floor/shadow/glow, text/labels, grid/border. Preserve held side, occlusion, clothing and own original identity; no invented gear. Group032 索爾 SOL default promoted identity0. Own original adult young MAN: DEEP NAVY/BLUEBLACK swept medium-long hair, flat RED headband across forehead, compact short tied-back tail with red tie, sharp strong straight brow, narrow DARKBROWN eyes, defined long nose, broad angular jaw/long chin and thin closed neutral slightly lifted mouth, confident restrained expression. Not round-eyed generic animechild and not identical Hano face. Native group032 both hands EMPTY, lowered/slightly forward as step. Compact muted GRAYGREEN collar and shoulder/forearm pieces, DARK NAVY/DEEP BLUE short torso and pants, grayblue shortboots. Preserve original 4direction hair/headband/ponytail. Absolutely NO sword, shield, axe, new cape/red shoulder sash or extra armor; do not copy style50 red sash, lighterblue eyes or outfit. Original own face and huge head67-70%, tiny body. Same neutral/leftstep/rightstep order; no running/leaping.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r17/group-032-original.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r17/portrait-032.png",
+          "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/fdicon-050-hd1-native-q-v1-master.png"
+        ],
+        "source": "exec-5d5e2b54-7ab1-4ecc-b8bf-c052ec9063aa.png",
+        "selected": true,
+        "source_sha256": "25b1ca72b5b2f5c8bfe88a31ba72ccfa169ba4b8cd7e15bba5bb7aeafeb24431",
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r17/group-032-original.png",
+            "sha256": "21bfe4130142d20cd96dbca4b48b07393eb07f4098ddf20c74902c8fd64ef480"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r17/portrait-032.png",
+            "sha256": "ba460e828dda462c47de7988bfe63340ad28b5fe7b386445c91aaf7f913b18a4"
+          },
+          {
+            "file": "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/fdicon-050-hd1-native-q-v1-master.png",
+            "sha256": "c353671fd014fc9f7581111968b3a4d0bd2b8cbe9c8f75cba4055a3ee63e722a"
+          }
+        ]
+      },
+      {
+        "group": 33,
+        "prompt": "Use case: identity-preserve. Asset type: HD1 tactical map sprite MASTER for Flame Dragon Knights2. Image1 ORIGINAL twelve map poses is the authority for silhouette, gear, outfit colors, four directions and occlusion. Image2 THIS character's original portrait is authority for own face. Image3 ONLY approved HD1 style/proportion reference: never copy its face, equipment, hair or expression. Huge head AND visible readable face about67-70% total height, extremely short compact torso and legs, stubby boots, clean dark contours, broad colors, restrained smooth painted/cel2D shading, readable144/72/48px. No long realistic legs or generic round-eyed baby face. Exactly3columns x4rows, twelve isolated fullbody figures. Rows FRONT facing viewer, LEFT true profile screenleft, BACK away, RIGHT true profile screenright. Every row column1 neutral both feet planted, column2 small grounded left step, column3 small grounded right step. FIRST column neutral. Same scale/foot baseline, generous clear alpha gaps/margins, no clipping. Exactly two hands and two feet, natural wrists. Actual transparent alpha; no background/checkerboard, floor/shadow/glow, text/labels, grid/border. Preserve held side, occlusion, clothing and own original identity; no invented gear. Group033 哈諾 HANO default promoted identity1. Own adult MAN original long slender face, angular narrow jaw/long chin, long projecting straight/angular nose, heavy low horizontal brows, narrow brown half-lidded eyes, thin CLOSED straight lips with stern thoughtful expression. ReddishBROWN compact tousled hair, dark SLATEBLUE headband, no moustache/beard. Face distinctly longer and thinner than Sol0; not babyface. Native promoted outfit dark GRAYGREEN armor/collar/shoulder/forearm, muted green shortbody and dark boots, small green center. Exactly ONE SHORT AXE with PALE ICEBLUE/BLUE blade and brown/dark handle, not gray/silver blade from style1. FRONT grip viewerLEFT with single broad blue blade angled upward inward near lower leftface/chest, not vertical long staff; LEFT profile far blade fully hidden behind torso, only native short dark handle if visible; BACK keep weapon low/mostly occluded at native side and don't add new prominent blue blade if not source; RIGHT profile near blue triangular axe blade projects screenRIGHT at chest/waist below nose on short handle. Same anatomical hand and native occlusion. No shield, sword, helmet, cape or second weapon. Huge own long face, very tiny stocky armored body.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r17/group-033-original.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r17/portrait-033.png",
+          "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/fdicon-001-hd1-base-face-q-v1-master.png"
+        ],
+        "source": "exec-53a7b713-a5f1-445d-900b-04e415355501.png",
+        "selected": true,
+        "source_sha256": "e35b8cd4af8aae5f646f17db8a4574e0e183bfb7d84f2f39e87fc523eb1edbd9",
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r17/group-033-original.png",
+            "sha256": "d4996fe8720f06bf1073dfd21f5449ee63ee908266318099c074063e305d5cdf"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r17/portrait-033.png",
+            "sha256": "83e4cdd35f9f4643ddd81cbe27fd9526434fb70a3ff19fa4f2db4d7e3db386fc"
+          },
+          {
+            "file": "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/fdicon-001-hd1-base-face-q-v1-master.png",
+            "sha256": "39ffec7ad6803f78009816e7b33eb267b609abfaf57d8ca4f63e5cd674dd6f5d"
+          }
+        ]
+      },
+      {
+        "group": 34,
+        "prompt": "Use case: identity-preserve. Asset type: HD1 tactical map sprite MASTER for Flame Dragon Knights2. Image1 ORIGINAL twelve map poses is the authority for silhouette, gear, outfit colors, four directions and occlusion. Image2 THIS character's original portrait is authority for own face. Image3 ONLY approved HD1 style/proportion reference: never copy its face, equipment, hair or expression. Huge head AND visible readable face about67-70% total height, extremely short compact torso and legs, stubby boots, clean dark contours, broad colors, restrained smooth painted/cel2D shading, readable144/72/48px. No long realistic legs or generic round-eyed baby face. Exactly3columns x4rows, twelve isolated fullbody figures. Rows FRONT facing viewer, LEFT true profile screenleft, BACK away, RIGHT true profile screenright. Every row column1 neutral both feet planted, column2 small grounded left step, column3 small grounded right step. FIRST column neutral. Same scale/foot baseline, generous clear alpha gaps/margins, no clipping. Exactly two hands and two feet, natural wrists. Actual transparent alpha; no background/checkerboard, floor/shadow/glow, text/labels, grid/border. Preserve held side, occlusion, clothing and own original identity; no invented gear. Group034 鐵諾 TINO default promoted identity2. Own original grown-up MAN face under GRAYGREEN FABRIC HOOD: brown forehead cloth/hair lining, strong angled darkbrown brows, narrow visible brown eye, long refined nose, angular cheek/jaw and thin pale lips with subtle restrained smirk. Preserve the small DEEP BLUE eye-cover-shaped facial area near bridge/hood edge as Image2; don't add invented straps or new facial markings. Not style3 generic two giant open eyes or frowning child. Graygreen pointed/folded CLOTH hood and long folded back cape, no metal helmet, silver hair or antlers. Native tiny graygreen collar/gauntlets, dark graygreen/navy body and short darkboots. Exactly ONE LONG SLIM PALE SILVER/GRAY straight SWORD with plain dark grip. FRONT sword viewerLEFT upright alongside head with tip near topofhood; LEFT profile far-side blade hidden by torso/cloth, no blade ahead of nose; BACK sword viewerRIGHT upright at outside edge; RIGHT profile near upright blade before chest but behind projecting nose. One hand, one sword; no shield, staff, axe, crown, new jewelry or armor invented. Huge readable own adult face/hood, extremely short body. Hood is cloth with broad clean folded shapes.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r17/group-034-original.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r17/portrait-034.png",
+          "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/tino-hd1-cloth-hood-q-v2-master.png"
+        ],
+        "source": "exec-b4dd30a4-fc83-4243-9730-d6b985419796.png",
+        "selected": true,
+        "source_sha256": "27ff94046b7be82c6224e37f06221eae3e735f0873d596810fa2f104cc49e6ba",
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r17/group-034-original.png",
+            "sha256": "d9c05957f43bd4a9fc251b1b79513e990a46cf8e7f31e9ce7943f8e191eaa5c7"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r17/portrait-034.png",
+            "sha256": "9a83953e9b4299f7c276a673540af08993730ccb301a57fabcd26c2a533d3288"
+          },
+          {
+            "file": "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/tino-hd1-cloth-hood-q-v2-master.png",
+            "sha256": "b8b1d855bdbb3ee4ed24191d389f8ec5014f4c25d79ecccdef4d2ea53c6692b1"
+          }
+        ]
+      },
+      {
+        "group": 62,
+        "prompt": "Use case: identity-preserve. Asset type: HD1 tactical map sprite MASTER for Flame Dragon Knights2. Image1 ORIGINAL twelve map poses is the authority for silhouette, gear, outfit colors, four directions and occlusion. Image2 THIS character's original portrait is authority for own face. Image3 ONLY approved HD1 style/proportion reference: never copy its face, equipment, hair or expression. Huge head AND visible readable face about67-70% total height, extremely short compact torso and legs, stubby boots, clean dark contours, broad colors, restrained smooth painted/cel2D shading, readable144/72/48px. No long realistic legs or generic round-eyed baby face. Exactly3columns x4rows, twelve isolated fullbody figures. Rows FRONT facing viewer, LEFT true profile screenleft, BACK away, RIGHT true profile screenright. Every row column1 neutral both feet planted, column2 small grounded left step, column3 small grounded right step. FIRST column neutral. Same scale/foot baseline, generous clear alpha gaps/margins, no clipping. Exactly two hands and two feet, natural wrists. Actual transparent alpha; no background/checkerboard, floor/shadow/glow, text/labels, grid/border. Preserve held side, occlusion, clothing and own original identity; no invented gear. Group062 凱麗 KYLIE optional promoted identity12. Own original mature WOMAN, glossy GOLD/YELLOW voluminous asymmetrical hair, swept large fringe covers VIEWERRIGHT eye; ONE visible dark BROWN almond eye viewerLEFT with long angled upperlid, shaped brown brow, fine long nose, adult cheek/jaw planes, full bright RED slightly parted lips/tiny tooth highlight, composed confident expression. Never reveal both eyes and never cover both eyes completely. Own original distinct face, not generic baby smile. Native high compact tied golden back ponytail/tuft and big rear hair mass from Image1, haircolor gold not orangebrown, no crown/hat/headband/newornaments. Exactly original EMPTY bare hands at lower sides, short bare forearms, dark NAVY/TEAL broad collar and small torso, muted GRAYGREEN wrist/hip pieces, blue lowercenter and short brown/darkboots. Same four direction hair shape and small grounded walking phases. No sword, shield, axe, staff, glove weapon, cape or extra jewelry. Image3 only own face/proportion/paint; Image1 promoted clothing and hand contents take precedence. Very big visible face/head67-70% and very short compact body.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r17/group-062-original.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r17/portrait-062.png",
+          "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/fdicon-012-hd1-portrait-q-v1-master.png"
+        ],
+        "source": "exec-9df38324-027a-43b4-ad70-f5c25b2cbc1e.png",
+        "selected": true,
+        "source_sha256": "b77e275b0e1efedae53ab018ff30d2cc01fc7daaeb2add09768ae0fae688808b",
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r17/group-062-original.png",
+            "sha256": "026cd7ea360a2684c955d359d118cada8658a7b362ea886c41764b0dc607025a"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r17/portrait-062.png",
+            "sha256": "af37fbbb71c3e5d28f3c4900d8661230c1fe05523419f12a0cbb140355dd94ce"
+          },
+          {
+            "file": "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/fdicon-012-hd1-portrait-q-v1-master.png",
+            "sha256": "f6495428c7e3585777c748c55ba138968dada9c129fc758321920afa0652aa1a"
+          }
+        ]
+      }
+    ]
+  },
+  "gpu_pairs": {
+    "sol-and-hano": [
+      32,
+      33
+    ],
+    "tino-and-kylie": [
+      34,
+      62
+    ]
+  },
+  "policy": "32／33／34依default_target明示0／1／2，62依optional_target明示12。逐人面容沿自身DATO；32空手與藍衣灰綠護具，33藍斧與灰綠裝備，34灰綠布兜帽／背布及單一直劍，62空手、金髮遮一眼及灰綠腕臀件。四向持側、遮蔽與相位按原生，不以職業補裝備。測試只投影selector／byte6／cache，原身份、BattleFig及能力保持，不作自然轉職或480頭像驗收。",
+  "promotion_source": {
+    "file": "remake/assets/data/class_change_targets.json",
+    "sha256": "27946ce10bf60738331009fff14b50be3cddc4cce18a4402e5259cb89fecfaa2"
+  },
+  "original_reference": {
+    "source": "各轉職FDICON三層與FDOTHER0代表色盤；class_change_targets.default_target／optional_target明示原身份與DATO；原版頭像最近鄰400方圖只作繪圖輸入排版",
+    "groups": [
+      32,
+      33,
+      34,
+      62
+    ],
+    "records_file": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r17/native-reference.json",
+    "records_sha256": "30c81ed3c30e74d2e051d43a98c9be7263451502e3401a3e8339f6fc0629f770",
+    "reference_boards": [
+      {
+        "file": "group-032-original.png",
+        "sha256": "21bfe4130142d20cd96dbca4b48b07393eb07f4098ddf20c74902c8fd64ef480"
+      },
+      {
+        "file": "group-033-original.png",
+        "sha256": "d4996fe8720f06bf1073dfd21f5449ee63ee908266318099c074063e305d5cdf"
+      },
+      {
+        "file": "group-034-original.png",
+        "sha256": "d9c05957f43bd4a9fc251b1b79513e990a46cf8e7f31e9ce7943f8e191eaa5c7"
+      },
+      {
+        "file": "group-062-original.png",
+        "sha256": "026cd7ea360a2684c955d359d118cada8658a7b362ea886c41764b0dc607025a"
+      }
+    ]
+  }
+}
