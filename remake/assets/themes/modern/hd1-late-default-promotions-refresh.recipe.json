@@ -1,0 +1,284 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_hd1_chibi_map_refresh",
+  "approved_preview": "docs/figures/hd1-ares-q-design.png",
+  "approved_preview_sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e",
+  "native_bank_sha256": "7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44",
+  "palette_sha256": "404db1ca72ffc19fa7404fbc59bde98cdf239f63fe3375ec248a8142073a28bf",
+  "base_catalog_sha256": "cd7b399be417f4e3eae8aee2a1ada9df025108997d2915b001ced6576cd917f3",
+  "approval": "沿已定大頭短身、各自原版面容與持續推進授權；三份新繪與一組原生相同的既有素材共用，正式規則及保存保持。",
+  "groups": [
+    {
+      "group": 45,
+      "master_file": "fdicon-045-hd1-portrait-q-v1-master.png",
+      "master_sha256": "f16f8afe969cc8d6091d36b7d71a4d2bc8ea5ecf5530ed8912b29b390479974d",
+      "output_prefix": "fdicon-045-hd1-portrait-q-v1"
+    },
+    {
+      "group": 46,
+      "master_file": "fdicon-046-hd1-portrait-q-v1-master.png",
+      "master_sha256": "f40b4232a25aba3bcb920d7be05eb65c6cebf19b5cfd747ed22639e1cccdc693",
+      "output_prefix": "fdicon-046-hd1-portrait-q-v1"
+    },
+    {
+      "group": 47,
+      "master_file": "fdicon-047-hd1-portrait-q-v1-master.png",
+      "master_sha256": "ece57af1f345a1a6e3145f1941fb9a253b6ec942974ace9711cec8b0fa34db90",
+      "output_prefix": "fdicon-047-hd1-portrait-q-v1"
+    },
+    {
+      "group": 49,
+      "master_file": "fdicon-017-hd1-portrait-q-v1-master.png",
+      "master_sha256": "14cb84df6e0832806231f456dc3bc1e40837cd68e34f7a8b8bf30b8bccbbe4f5",
+      "output_prefix": "fdicon-017-hd1-portrait-q-v1",
+      "reuse_group": 17,
+      "reuse_assets_sha256": "c3da73533f4ad81f066b0d4251597c64cf73de1620b8b0efe87aea49dab43f3d"
+    }
+  ],
+  "faces": [
+    {
+      "group": 45,
+      "name": "貝克威",
+      "portrait_file": "remake/assets/portraits/DATO_013_m0.png",
+      "portrait_sha256": "633b5dd8e49de6728c9daf86a3d42289ad10a0c0f2d47581cabe7e216d8e85b3",
+      "traits": [
+        "金長髮與黑藍額帶",
+        "成熟斜眉窄眼及長直鼻",
+        "收斂薄唇與長臉"
+      ],
+      "comparison_label": "原版大頭像／實際轉職地圖圖源；49共用17，非480對話頭像驗收"
+    },
+    {
+      "group": 46,
+      "name": "珊",
+      "portrait_file": "remake/assets/portraits/DATO_014_m0.png",
+      "portrait_sha256": "ae80891b2cc6778377d29a3c656172386a125b719a33cfc1d8df87f5fd212eb5",
+      "traits": [
+        "藍低馬尾與暖褐杏眼",
+        "長細鼻及柔和成熟臉",
+        "紅色唇形"
+      ],
+      "comparison_label": "原版大頭像／實際轉職地圖圖源；49共用17，非480對話頭像驗收"
+    },
+    {
+      "group": 47,
+      "name": "賽可邦勒",
+      "portrait_file": "remake/assets/portraits/DATO_015_m0.png",
+      "portrait_sha256": "6edd86b3e7a3186e4c3d3db95ce69bd81d686422b62e6013036203f4bb3acce3",
+      "traits": [
+        "深藍獸形長吻與黑鼻",
+        "角稜眉面與細眼",
+        "直立耳形輪廓及短獠牙"
+      ],
+      "comparison_label": "原版大頭像／實際轉職地圖圖源；49共用17，非480對話頭像驗收"
+    },
+    {
+      "group": 49,
+      "name": "米亞斯多德",
+      "portrait_file": "remake/assets/portraits/DATO_017_m0.png",
+      "portrait_sha256": "4589575347e249ac0aae1862f6312259b90ea10dd9e2f101a07069ea9c49d534",
+      "traits": [
+        "紅褐窄長龍面",
+        "紅眼、長角與長吻",
+        "自身龍形輪廓"
+      ],
+      "comparison_label": "原版大頭像／實際轉職地圖圖源；49共用17，非480對話頭像驗收"
+    }
+  ],
+  "party_bindings": [
+    {
+      "group": 45,
+      "native_identity": 13,
+      "portrait": 13,
+      "fig": 13,
+      "scenario_file": "remake/assets/scenarios/ch07.json",
+      "scenario_sha256": "73f21023493af3c478affeffa1385c947ca607a1f6f822fb6a15153667b9e6be",
+      "target_field": "default_target",
+      "selector_projection_injected": true
+    },
+    {
+      "group": 46,
+      "native_identity": 14,
+      "portrait": 14,
+      "fig": 14,
+      "scenario_file": "remake/assets/scenarios/ch12.json",
+      "scenario_sha256": "db3d05d373c6318bc4d937f9f99e3b35bd89f683bd7cbc8cd5a5f0d257abe9a3",
+      "target_field": "default_target",
+      "selector_projection_injected": true
+    },
+    {
+      "group": 47,
+      "native_identity": 15,
+      "portrait": 15,
+      "fig": 15,
+      "scenario_file": "remake/assets/scenarios/ch16.json",
+      "scenario_sha256": "52c8e38245b51211685b09407d6c23294f6a72b3aae020152ed8ba0357137c02",
+      "target_field": "default_target",
+      "selector_projection_injected": true
+    },
+    {
+      "group": 49,
+      "native_identity": 17,
+      "portrait": 17,
+      "fig": 17,
+      "scenario_file": "remake/assets/scenarios/ch13.json",
+      "scenario_sha256": "afb490d30ba8b3ca5b79f96e0c8dd55728a235eb1ea287dd5f6ea832243a8dc6",
+      "target_field": "default_target",
+      "selector_projection_injected": true
+    }
+  ],
+  "policy": "45／46／47／49依default_target明示原身份13／14／15／17及各自DATO。前三組新繪；49與17的十二姿態三層逐檔相同，共用既有25檔。47依獸形長吻、黑鼻與耳形輪廓，不沿舊初審的金屬頭盔／面罩推定裝備；頭部材質不作玩法推定。測具只投影selector／byte6／cache，保留原身份、BattleFig、能力與保存，不作自然轉職或480頭像驗收。",
+  "image_generation": {
+    "mode": "builtin_imagegen",
+    "jobs": [
+      {
+        "group": 45,
+        "prompt": "Use case: identity-preserve. Asset type: HD1 tactical map sprite MASTER, Flame Dragon Knights2. Input1 original map poses is authority for clothing, equipment, colors, direction and occlusion. Input2 OWN original portrait is authority for face. Input3 is ONLY own-character HD1 face/proportion/style consistency; do not copy its different outfit. Exactly3 columns x4 rows, twelve isolated full-body figures: row1 FRONT to viewer, row2 LEFT true profile screenleft, row3 BACK away, row4 RIGHT true profile screenright. Columns neutral planted feet / small grounded left step / small grounded right step, consistent scale and baseline. Huge head about67-70% figure height, tiny short torso, short stubby boots; expressive individual adult face, NOT generic baby eyes. Clean dark contour, broad readable colors and painted/cel2D shading, readable144/72/48px. Two hands and two feet, natural wrists. Actual transparent alpha, generous gaps, no clipping, ground, shadow, glow, backdrop, checkerboard, text, labels or grid. No invented accessories/weapons. Group045 貝克威 BEKWEI, native identity13, default promoted form. Own portrait: adult masculine long tapered face, long straight BLOND hair framing both sides, dark NAVY/BLACK horizontal forehead band, sharply angled heavy dark eyebrows, narrow dark brown eyes with serious confident gaze, straight long fine nose, small restrained closed thin lips with barely lifted corner, defined cheek and tapered chin. Keep actual045 outfit: dark blue neck/collar, compact DARK GRAY-GREEN armor/clothing and boots, vivid LIME-GREEN center waist panel. Exactly ONE dark red-brown bow and brown back quiver following original poses. Front bow narrow vertical on viewerLEFT partly hidden by long hair, LEFT profile far bow hidden, BACK bow narrow on viewerRIGHT and quiver partially hidden by blond hair with small visible brown diagonal detail, RIGHT profile near bow narrow in front of torso. No extra swords, arrows in hands or shield. Do NOT use ordinary013 muted waist colors. Keep mature eyebrows/nose/lips from own portrait.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r20/group-045-original.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r20/portrait-045.png",
+          "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/fdicon-013-hd1-portrait-q-v1-master.png"
+        ],
+        "selected": true,
+        "source": "exec-f7e0c691-e2db-47f3-90fc-66cf66f434a2.png",
+        "source_path": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-f7e0c691-e2db-47f3-90fc-66cf66f434a2.png",
+        "source_sha256": "f16f8afe969cc8d6091d36b7d71a4d2bc8ea5ecf5530ed8912b29b390479974d",
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r20/group-045-original.png",
+            "sha256": "20939ddfe612f8cea26d5b8ebb5a59a0dc48592fba1cb9197c1ef944309ad6bb"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r20/portrait-045.png",
+            "sha256": "17a66764fac7f7b9b96b0631ed0e18e987ae6421fc61bb0d0857bc61c7b9edc5"
+          },
+          {
+            "file": "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/fdicon-013-hd1-portrait-q-v1-master.png",
+            "sha256": "1300ba93ff397f0585b6b0bec550e3ff443875f34cc5d81c0038659beea63ba5"
+          }
+        ]
+      },
+      {
+        "group": 46,
+        "prompt": "Use case: identity-preserve. Asset type: HD1 tactical map sprite MASTER, Flame Dragon Knights2. Input1 original map poses is authority for clothing, equipment, colors, direction and occlusion. Input2 OWN original portrait is authority for face. Input3 is ONLY own-character HD1 face/proportion/style consistency; do not copy its different outfit. Exactly3 columns x4 rows, twelve isolated full-body figures: row1 FRONT to viewer, row2 LEFT true profile screenleft, row3 BACK away, row4 RIGHT true profile screenright. Columns neutral planted feet / small grounded left step / small grounded right step, consistent scale and baseline. Huge head about67-70% figure height, tiny short torso, short stubby boots; expressive individual adult face, NOT generic baby eyes. Clean dark contour, broad readable colors and painted/cel2D shading, readable144/72/48px. Two hands and two feet, natural wrists. Actual transparent alpha, generous gaps, no clipping, ground, shadow, glow, backdrop, checkerboard, text, labels or grid. No invented accessories/weapons. Group046 珊 SHAN, native identity14, default promoted form. Own portrait: adult woman with warm tan/light brown complexion, deep COBALT BLUE hair parted in front framing long oval face, long LOW ponytail and small red tie, warm large almond brown eyes slightly downcast, defined fine brow, long delicate nose, full softly parted RED lips, gentle calm mature expression. Pointed ears as original profile. Actual046 map uses a SIMPLE FLAT GREEN headband with no jewel, NO gold forehead ornament from portrait, NO extra green flower/orb from style014. Compact DEEP GREEN high collar and green front outfit; GRAY-GREEN gloves/boots; short DARK RED cape visible in left/right/back, not purple trousers or brown scarf from014. Exactly ONE slim GOLD/BROWN vertical rod with small RED rounded top as original, front viewerLEFT, LEFT profile far rod hidden, BACK rod hidden by hair/cape, RIGHT profile near gold rod in front with red top beside cheek. Keep rod slim no large fantasy staff, wings, large orb, shield or book. Same boots all twelve poses.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r20/group-046-original.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r20/portrait-046.png",
+          "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/fdicon-014-hd1-portrait-q-v1-master.png"
+        ],
+        "selected": true,
+        "source": "exec-4d0eab47-5845-43ff-82b8-fb444753993f.png",
+        "source_path": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-4d0eab47-5845-43ff-82b8-fb444753993f.png",
+        "source_sha256": "f40b4232a25aba3bcb920d7be05eb65c6cebf19b5cfd747ed22639e1cccdc693",
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r20/group-046-original.png",
+            "sha256": "e6f86f0e0e2c784a9d7bfd1583acfa0d4afd0e2f9c4ce2091714e7472e7a9d8c"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r20/portrait-046.png",
+            "sha256": "975370427f9d96cba2a3d85bca3d2bdf6a836bc9c3e1ca2448d52c6cbf3c21de"
+          },
+          {
+            "file": "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/fdicon-014-hd1-portrait-q-v1-master.png",
+            "sha256": "63121a89d7c8988861c2fd08a7699a8c04c733646f57d70460bcfe88123dce8a"
+          }
+        ]
+      },
+      {
+        "group": 47,
+        "prompt": "Use case: identity-preserve. Asset type: HD1 tactical map sprite MASTER, Flame Dragon Knights2. Input1 original map poses is authority for clothing, equipment, colors, direction and occlusion. Input2 OWN original portrait is authority for face. Input3 is ONLY own-character HD1 face/proportion/style consistency; do not copy its different outfit. Exactly3 columns x4 rows, twelve isolated full-body figures: row1 FRONT to viewer, row2 LEFT true profile screenleft, row3 BACK away, row4 RIGHT true profile screenright. Columns neutral planted feet / small grounded left step / small grounded right step, consistent scale and baseline. Huge head about67-70% figure height, tiny short torso, short stubby boots; expressive individual adult face, NOT generic baby eyes. Clean dark contour, broad readable colors and painted/cel2D shading, readable144/72/48px. Two hands and two feet, natural wrists. Actual transparent alpha, generous gaps, no clipping, ground, shadow, glow, backdrop, checkerboard, text, labels or grid. No invented accessories/weapons. Group047 賽可邦勒 SAIKOBANLER, native identity15, default promoted form. This is the SAME DARK BLUE BEAST character as own portrait, with elongated angular canine muzzle, BLACK nose, angular heavy brow, narrow yellow-green eyes, tall pointed ear-like head corners. DO NOT replace with human face, humanoid metal helmet, visor, hood or face mask. Preserve own blue beast face and pointed muzzle; no green headband from portrait because original map has none. HUGE expressive blue beast head about70% height with small angular cheek silhouette, tiny compact blue torso, short blue arms/legs and stubby feet. Original047 has GRAY-GREEN horizontal belt and gray-green wrist/hand details with PURPLE/INDIGO waist cloth, NOT red waistcloth from ordinary015. Both hands EMPTY. No sword, shield, staff, shoulder spikes, mechanical seams, helmet rivets or invented tail. Keep broad clean blue shapes, subtle2D painted shading. Strong brow and small eyes, not round baby eyes. Profiles elongated muzzle and black nose, back ear/head silhouette as original.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r20/group-047-original.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r20/portrait-047.png",
+          "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/fdicon-015-hd1-portrait-q-v1-master.png"
+        ],
+        "selected": true,
+        "source": "exec-cf8ae061-e0e3-46b6-bfe6-0e504a1d0f01.png",
+        "source_path": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-cf8ae061-e0e3-46b6-bfe6-0e504a1d0f01.png",
+        "source_sha256": "ece57af1f345a1a6e3145f1941fb9a253b6ec942974ace9711cec8b0fa34db90",
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r20/group-047-original.png",
+            "sha256": "58e8dcc9e7fe884a317dbcef1e71356c313d2f07088569ef269179e72d2ca2a0"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r20/portrait-047.png",
+            "sha256": "504042b2d2bfb6cb52bba281c360fa1763ec2612da97a86a8d046e6f9be9d5f7"
+          },
+          {
+            "file": "/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a/fdicon-015-hd1-portrait-q-v1-master.png",
+            "sha256": "450140af35f71032589a19a7e4033f2322e767d8895aa2695f0b023927fe7258"
+          }
+        ]
+      }
+    ]
+  },
+  "gpu_pairs": {
+    "bekwei-and-shan": [
+      45,
+      46
+    ],
+    "beast-and-red-dragon": [
+      47,
+      49
+    ]
+  },
+  "promotion_source": {
+    "file": "remake/assets/data/class_change_targets.json",
+    "sha256": "27946ce10bf60738331009fff14b50be3cddc4cce18a4402e5259cb89fecfaa2"
+  },
+  "art_reuse": {
+    "mode": "three-new-one-existing",
+    "new_image_generation_calls": 3,
+    "sources": [
+      {
+        "group": 49,
+        "source_group": 17,
+        "master_file": "fdicon-017-hd1-portrait-q-v1-master.png",
+        "master_sha256": "14cb84df6e0832806231f456dc3bc1e40837cd68e34f7a8b8bf30b8bccbbe4f5",
+        "source_recipe": {
+          "file": "remake/assets/themes/modern/hd1-dragon-elder-refresh.recipe.json",
+          "sha256": "852651f7da50ff53389eac32c0c7e2d45301a46408664b15c63838fa6aa3a515"
+        }
+      }
+    ],
+    "original_equivalence": {
+      "file": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r20/native-equivalence.json",
+      "sha256": "a7c08c47cf29bba6eb3eeff8b06379959b15bc76cc69c52496c3e0470f4d137c"
+    }
+  },
+  "original_reference": {
+    "source": "轉職FDICON十二姿態三層／FDOTHER0色盤、明示default_target及原身份DATO；只證固定資料及圖源",
+    "groups": [
+      45,
+      46,
+      47,
+      49
+    ],
+    "records_file": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r20/native-reference.json",
+    "records_sha256": "f71f5b74ebeb8d9aff13db1e0f6f6f6ca6afb4cf34360e3d5f648817d21680c8",
+    "reference_boards": [
+      {
+        "file": "group-045-original.png",
+        "sha256": "20939ddfe612f8cea26d5b8ebb5a59a0dc48592fba1cb9197c1ef944309ad6bb"
+      },
+      {
+        "file": "group-046-original.png",
+        "sha256": "e6f86f0e0e2c784a9d7bfd1583acfa0d4afd0e2f9c4ce2091714e7472e7a9d8c"
+      },
+      {
+        "file": "group-047-original.png",
+        "sha256": "58e8dcc9e7fe884a317dbcef1e71356c313d2f07088569ef269179e72d2ca2a0"
+      },
+      {
+        "file": "group-049-original.png",
+        "sha256": "ad2d45161c0575fc2dc9b8a55c846b755d4a859af6999de3037f0b4be91a66d4"
+      }
+    ],
+    "equivalence": {
+      "file": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r20/native-equivalence.json",
+      "sha256": "a7c08c47cf29bba6eb3eeff8b06379959b15bc76cc69c52496c3e0470f4d137c"
+    }
+  }
+}

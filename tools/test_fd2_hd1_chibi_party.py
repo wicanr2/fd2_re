@@ -7,7 +7,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from refresh_fd2_hd1_map_sprites import prepare,read,sha
+from refresh_fd2_hd1_map_sprites import prepare,read,sha,asset_digest
 
 ROOT=Path(__file__).resolve().parents[1]
 @unittest.skipUnless(os.environ.get('FD2_CHIBI_PARTY_ROOT'),'explicit accepted inputs required')
@@ -32,8 +32,8 @@ class ChibiPartyTest(unittest.TestCase):
             (cls.pack/name).symlink_to(source)
         (cls.pack/'catalog.json').write_bytes(cls.catalog.read_bytes())
 
-    def make(self,recipe,out):
-        return prepare(recipe,self.catalog,self.pack,Path('/original'),self.work,out)
+    def make(self,recipe,out,masters=None):
+        return prepare(recipe,self.catalog,self.pack,Path('/original'),self.work if masters is None else masters,out)
 
     def test_rebuild_preserves_other_assets_and_exact_24_hd_pngs(self):
         with tempfile.TemporaryDirectory(dir=self.work) as folder:
@@ -54,7 +54,7 @@ class ChibiPartyTest(unittest.TestCase):
         if any('reuse_group' in entry for entry in original['groups']):faults+=['reuse-group','reuse-assets','reuse-missing-group']
         for fault in faults:
             with self.subTest(fault=fault),tempfile.TemporaryDirectory(dir=self.work) as folder:
-                d=deepcopy(original);folder=Path(folder);out=folder/'candidate';recipe=folder/'recipe.json'
+                d=deepcopy(original);folder=Path(folder);out=folder/'candidate';recipe=folder/'recipe.json';masters=self.work
                 if fault=='catalog':d['base_catalog_sha256']='0'*64
                 elif fault=='master':d['groups'][0]['master_sha256']='0'*64
                 elif fault=='palette':d['palette_sha256']='0'*64
@@ -63,14 +63,20 @@ class ChibiPartyTest(unittest.TestCase):
                 elif fault=='duplicate-group':d['groups'].append(deepcopy(d['groups'][0]))
                 elif fault=='invisible-group':d['groups'][0]['group']=39
                 elif fault=='reuse-group':
-                    for key in ('reuse_group','reuse_assets_sha256','master_file','master_sha256'):
-                        d['groups'][0][key]=d['groups'][1][key]
-                elif fault=='reuse-assets':d['groups'][0]['reuse_assets_sha256']='0'*64
-                elif fault=='reuse-missing-group':d['groups'][0].pop('reuse_group')
+                    entry=next(g for g in d['groups'] if 'reuse_group' in g)
+                    reference=14 if entry['reuse_group']!=14 else 17
+                    assets=[next(a for a in read(self.catalog)['assets'] if a.get('source_group')==reference and a['role']==role) for role in ('map_sprite_set','map_sprite_hd_set')]
+                    entry.update(reuse_group=reference,reuse_assets_sha256=asset_digest(assets),master_file=assets[0]['master_file'],master_sha256=sha(Path('/modern')/assets[0]['master_file']))
+                    masters=folder/'masters';masters.mkdir()
+                    for g in d['groups']:
+                        name=g['master_file'];source=Path('/modern')/name if g is entry else self.work/name
+                        if not (masters/name).exists():(masters/name).symlink_to(source)
+                elif fault=='reuse-assets':next(g for g in d['groups'] if 'reuse_group' in g)['reuse_assets_sha256']='0'*64
+                elif fault=='reuse-missing-group':next(g for g in d['groups'] if 'reuse_group' in g).pop('reuse_group')
                 else:d['groups'][0]['master_file']='../master.png'
                 recipe.write_text(json.dumps(d))
                 if fault=='reuse-group':
-                    with self.assertRaisesRegex(ValueError,'reused native layers differ'):self.make(recipe,out)
+                    with self.assertRaisesRegex(ValueError,'reused native layers differ'):self.make(recipe,out,masters)
                 else:
                     with self.assertRaises((ValueError,OSError)):self.make(recipe,out)
                 self.assertFalse(out.exists())

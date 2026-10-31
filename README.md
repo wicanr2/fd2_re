@@ -85,6 +85,14 @@
 
 達克賽保留深藍裸面、尖耳、厚重額面、鉤鼻與微揚薄唇；亞奇梅吉保留藍灰高額禿頂、深陷窄眼、長鼻與瘦長下巴。兩人皆按原生空手，灰綠腰帶與藍紫袍大領分別保持；達克賽眼色依自己的原版大頭像採藍紫。可看[四向與實際尺寸](docs/figures/hd1-blue-and-robed-comparison.png)、[達克賽](docs/figures/hd1-darksai-refresh-game.png)及[亞奇梅吉](docs/figures/hd1-archimage-refresh-game.png)的完整受控戰場圖。面容圖比較原版頭像與實際地圖素材，非對話HD頭像驗收；地圖及資訊窗共用新版圖源。戰場圖使用各自原生名冊的受控測具，沒有身份或圖組投影，不代表自然加入流程。其餘人物續作，完整總覽仍待全部重繪後更新。
 
+![貝克威與珊預設轉職圖組的原版及HD1面容對照](docs/figures/hd1-bekwei-and-shan-faces.png)
+
+貝克威第45組保留金長髮、黑藍額帶、成熟窄眉眼及收斂薄唇，深藍灰綠衣上的亮綠腰件、棕弓與背件依原生。珊第46組保留藍低馬尾、暖褐杏眼與紅唇，綠額帶、深綠衣領、紅背布及紅頂金杆沿原版。可看[四向與144／72／48尺寸](docs/figures/hd1-bekwei-and-shan-comparison.png)、[貝克威](docs/figures/hd1-bekwei-default-refresh-game.png)及[珊](docs/figures/hd1-shan-default-refresh-game.png)的完整受控戰場圖。
+
+![賽可邦勒與米亞斯多德預設轉職圖組的原版及HD1面容對照](docs/figures/hd1-beast-and-red-dragon-faces.png)
+
+賽可邦勒第47組保留自身深藍獸形長吻、黑鼻、細眼及耳形輪廓，採原版灰綠腰腕件與紫腰布，保持空手。米亞斯多德第49組的原版十二姿態三層與第17組逐檔相同，直接共用已登錄的紅龍面容、藍劍與灰綠盾。可看[四向與實際尺寸](docs/figures/hd1-beast-and-red-dragon-comparison.png)、[賽可邦勒](docs/figures/hd1-saikobanler-default-refresh-game.png)及[米亞斯多德](docs/figures/hd1-miasdord-default-refresh-game.png)的完整受控戰場圖。四組由轉職表預設目標綁原身份13／14／15／17；戰場圖使用明示的測試圖組投影，不代表自然轉職。面容圖比較原版頭像與地圖素材，其餘人物及完整總覽仍待。
+
 ![悠妮與瑪琳預設轉職圖組的原版及HD1面容對照](docs/figures/hd1-unni-and-marin-faces.png)
 
 悠妮第41組與瑪琳第42組的原版十二姿態，連同兩層遮罩，分別與第59、60組逐檔相同，因此共用同角色已登錄的HD1素材。悠妮保留紅馬尾、藍紋額帶及紫粉頭金杆；瑪琳保留粉紫馬尾、成熟窄眼、紫唇與藍衣灰綠側件。可看[四向與144／72／48尺寸](docs/figures/hd1-unni-and-marin-comparison.png)、[悠妮](docs/figures/hd1-unni-default-refresh-game.png)及[瑪琳](docs/figures/hd1-marin-default-refresh-game.png)的完整受控戰場圖。

@@ -448,7 +448,7 @@
       "layer": "data",
       "category": "缺陷",
       "title": "P1 HD1戰場小人物：依原版重繪大頭Q版與個別面容",
-      "body": "悠妮41、瑪琳42、索菲亞43與凱麗44預設轉職圖組已接同角色既有HD1素材。default_target明示原身份9／10／11／12，名冊來源ch01／06／11／08及各自DATO保持。十二姿態三層分別與59／60／61／62逐檔相同，共144對，沿既有面容、裝備及遮蔽共用100個已登錄圖檔，沒有新增繪圖。\n\n兩GPU共28完整Game.Draw、24PNG、四次F2、301298核心點與28反例通過，包含錯共用組、錯來源摘要及缺共用欄位。逐份及逐actor揭露selector／raw byte6／cache投影，原身份、BattleFig及能力保持，不作自然轉職。十種舊分份及party-nine／party-ten／party-eleven配方契約保持，不重跑或升格舊GPU。\n\n普通首章十PNG驗整包四組控制、走行取消、F5及新程序標題LOAD，無狀態注入。共用來源三項逐byte重編／11拒收、前批新繪模式三項重編／八拒收、24頂層Go含字串、21來源案例／416幀／19反例、883清冊及125組1455來源通過；兩可選GPU略過不計。\n\n正式只換八項、875保持，共用100既有檔、零新美術。原8748美術檔SHA／inode／mtime／owner及0／9／30／59／60／61／62十四項保持，其餘121組SHA相同。私人庫只同步兩份清冊。README補兩組面容、四向實際尺寸及四張完整受控戰場。Q比例餘項34→30，其餘面容與完整總覽仍待，Gaia維持定版，本項保持OPEN。現況與重跑依58／61及主收據hd1_shared_default_mages_followup_20261031。",
+      "body": "貝克威45、珊46、賽可邦勒47及米亞斯多德49預設轉職圖組已接HD1。default_target明示原身份13／14／15／17，ch07／12／16／13名冊與各自DATO核對。前三組依原生十二姿態重繪；49與17原生三層逐檔相同，共36對，共用25既有檔。共新增75檔，沒有重畫49。\n\n45保留金長髮、黑藍額帶、成熟窄眉眼與亮綠腰件、棕弓背件；46保留藍低馬尾、暖褐杏眼紅唇、綠衣領、紅背布及紅頂金杆；47保留獸形長吻、黑鼻、細眼、耳形輪廓與灰綠腰腕件、紫腰布，空手。47／65舊金屬頭盔／面罩稱法缺材質證據，新審查紀錄保留舊來源與勘誤理由；65本批未換圖。35缺直接我方名冊來源，仍待查，不猜補。\n\n兩GPU共28完整Game.Draw、24PNG、四次F2、250763核心點與28反例通過。逐份及逐actor揭露selector／raw byte6／cache投影，原身份、BattleFig及能力保持，不作自然轉職。11種舊分份、四批轉職配方及party-twelve共用契約保持，不重跑或升格舊GPU。\n\n普通首章十PNG驗整包四組控制、走行取消、F5及新程序標題LOAD，無狀態注入。混合及前批共用各三項逐byte重編／11拒收，舊新繪三項重編／八拒收；24頂層Go含字串、21來源案例／416幀／19反例、883清冊及125組1455來源通過；兩可選GPU略過不計。\n\n正式只換八項、875保持，75新檔及25共用檔已私人保存，原8748美術檔SHA／inode／mtime／owner與0／9／17／30八項保持，其餘121組SHA相同。README新增兩組面容、四向實際尺寸及四張完整受控戰場。Q比例餘項30→26，其他面容與完整總覽仍待，Gaia維持定版，本項保持OPEN。現況及重跑依58／61與主收據hd1_late_default_promotions_followup_20261031。",
       "acceptance": [
         "使用者選定亞雷斯新比例，並保留定版原稿、原版來源、逐字提示與SHA；其他角色依相同標準重製，不能只改大圖總覽。",
         "125個可見圖組及1455幀逐組保留原生方向、步態／靜態相位、轉職身份、裝備特徵、腳底與透明契約；原版、已接受圖源及舊證據可追溯。",
@@ -584,7 +584,16 @@
         "docs/figures/hd1-unni-default-refresh-game.png",
         "docs/figures/hd1-marin-default-refresh-game.png",
         "docs/figures/hd1-sophia-default-refresh-game.png",
-        "docs/figures/hd1-kylie-default-refresh-game.png"
+        "docs/figures/hd1-kylie-default-refresh-game.png",
+        "remake/assets/themes/modern/hd1-late-default-promotions-refresh.recipe.json",
+        "docs/figures/hd1-bekwei-and-shan-faces.png",
+        "docs/figures/hd1-bekwei-and-shan-comparison.png",
+        "docs/figures/hd1-beast-and-red-dragon-faces.png",
+        "docs/figures/hd1-beast-and-red-dragon-comparison.png",
+        "docs/figures/hd1-bekwei-default-refresh-game.png",
+        "docs/figures/hd1-shan-default-refresh-game.png",
+        "docs/figures/hd1-saikobanler-default-refresh-game.png",
+        "docs/figures/hd1-miasdord-default-refresh-game.png"
       ],
       "verify": {
         "kind": "manual",
@@ -597,7 +606,7 @@
       "layer": "data",
       "category": "缺陷",
       "title": "P1 HD1人物面容與身份複核：依原版頭像保留各自特徵",
-      "body": "悠妮41、瑪琳42、索菲亞43與凱麗44預設轉職圖組已接同角色既有HD1素材。default_target明示原身份9／10／11／12，名冊來源ch01／06／11／08及各自DATO保持。十二姿態三層分別與59／60／61／62逐檔相同，共144對，沿既有面容、裝備及遮蔽共用100個已登錄圖檔，沒有新增繪圖。\n\n兩GPU共28完整Game.Draw、24PNG、四次F2、301298核心點與28反例通過，包含錯共用組、錯來源摘要及缺共用欄位。逐份及逐actor揭露selector／raw byte6／cache投影，原身份、BattleFig及能力保持，不作自然轉職。十種舊分份及party-nine／party-ten／party-eleven配方契約保持，不重跑或升格舊GPU。\n\n普通首章十PNG驗整包四組控制、走行取消、F5及新程序標題LOAD，無狀態注入。共用來源三項逐byte重編／11拒收、前批新繪模式三項重編／八拒收、24頂層Go含字串、21來源案例／416幀／19反例、883清冊及125組1455來源通過；兩可選GPU略過不計。\n\n正式只換八項、875保持，共用100既有檔、零新美術。原8748美術檔SHA／inode／mtime／owner及0／9／30／59／60／61／62十四項保持，其餘121組SHA相同。私人庫只同步兩份清冊。README補兩組面容、四向實際尺寸及四張完整受控戰場。Q比例餘項34→30，其餘面容與完整總覽仍待，Gaia維持定版，本項保持OPEN。現況與重跑依58／61及主收據hd1_shared_default_mages_followup_20261031。",
+      "body": "貝克威45、珊46、賽可邦勒47及米亞斯多德49預設轉職圖組已接HD1。default_target明示原身份13／14／15／17，ch07／12／16／13名冊與各自DATO核對。前三組依原生十二姿態重繪；49與17原生三層逐檔相同，共36對，共用25既有檔。共新增75檔，沒有重畫49。\n\n45保留金長髮、黑藍額帶、成熟窄眉眼與亮綠腰件、棕弓背件；46保留藍低馬尾、暖褐杏眼紅唇、綠衣領、紅背布及紅頂金杆；47保留獸形長吻、黑鼻、細眼、耳形輪廓與灰綠腰腕件、紫腰布，空手。47／65舊金屬頭盔／面罩稱法缺材質證據，新審查紀錄保留舊來源與勘誤理由；65本批未換圖。35缺直接我方名冊來源，仍待查，不猜補。\n\n兩GPU共28完整Game.Draw、24PNG、四次F2、250763核心點與28反例通過。逐份及逐actor揭露selector／raw byte6／cache投影，原身份、BattleFig及能力保持，不作自然轉職。11種舊分份、四批轉職配方及party-twelve共用契約保持，不重跑或升格舊GPU。\n\n普通首章十PNG驗整包四組控制、走行取消、F5及新程序標題LOAD，無狀態注入。混合及前批共用各三項逐byte重編／11拒收，舊新繪三項重編／八拒收；24頂層Go含字串、21來源案例／416幀／19反例、883清冊及125組1455來源通過；兩可選GPU略過不計。\n\n正式只換八項、875保持，75新檔及25共用檔已私人保存，原8748美術檔SHA／inode／mtime／owner與0／9／17／30八項保持，其餘121組SHA相同。README新增兩組面容、四向實際尺寸及四張完整受控戰場。Q比例餘項30→26，其他面容與完整總覽仍待，Gaia維持定版，本項保持OPEN。現況及重跑依58／61與主收據hd1_late_default_promotions_followup_20261031。",
       "acceptance": [
         "逐組以固定原生三層、FDOTHER0代表色盤與有對應身份的原版頭像／大圖核身份，不沿舊候選或圖說猜職業／種族。",
         "優先修正2、48、50、51、52、53、54、55、56、63、76、79的已見差異，70、73、77、89、125、133補證後逐項確認或修正；所有結論保留來源及未知等級。",
@@ -721,7 +730,16 @@
         "docs/figures/hd1-unni-default-refresh-game.png",
         "docs/figures/hd1-marin-default-refresh-game.png",
         "docs/figures/hd1-sophia-default-refresh-game.png",
-        "docs/figures/hd1-kylie-default-refresh-game.png"
+        "docs/figures/hd1-kylie-default-refresh-game.png",
+        "remake/assets/themes/modern/hd1-late-default-promotions-refresh.recipe.json",
+        "docs/figures/hd1-bekwei-and-shan-faces.png",
+        "docs/figures/hd1-bekwei-and-shan-comparison.png",
+        "docs/figures/hd1-beast-and-red-dragon-faces.png",
+        "docs/figures/hd1-beast-and-red-dragon-comparison.png",
+        "docs/figures/hd1-bekwei-default-refresh-game.png",
+        "docs/figures/hd1-shan-default-refresh-game.png",
+        "docs/figures/hd1-saikobanler-default-refresh-game.png",
+        "docs/figures/hd1-miasdord-default-refresh-game.png"
       ],
       "verify": {
         "kind": "manual",

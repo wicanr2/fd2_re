@@ -1,6 +1,6 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
-悠妮41、瑪琳42、索菲亞43與凱麗44預設轉職圖組已接同角色既有HD1素材。十二姿態三層分別與59／60／61／62逐檔相同，共144對；沿各自已核對的面容、服色及遮蔽，共用100個既有檔，沒有新增美術。兩GPU與普通首章整包切換、走行取消、保存／新程序LOAD相容通過。四組僅在測具投影selector／byte6／cache，保留原身份9／10／11／12及能力，不作自然轉職。Q比例餘項34→30，其餘面容與完整總覽仍待，Gaia保持定版。現況依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源為主收據hd1_shared_default_mages_followup_20261031。
+貝克威45、珊46、賽可邦勒47及米亞斯多德49預設轉職圖組已接HD1。前三組依各自DATO及原生十二姿態重繪，49與17的三層檔逐檔相同，共用25既有檔；共75新檔。兩GPU與普通首章整包切換、走行取消、保存／新程序LOAD相容通過。只在測具投影selector／byte6／cache，原身份13／14／15／17、BattleFig及能力保持，不作自然轉職。47舊金屬頭盔／面罩稱法缺材質證據，沿獸形長吻與原生輪廓，不猜補裝備；65本批未換圖。Q比例餘項30→26，其餘面容與完整總覽仍待，Gaia保持定版。現況依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源為主收據hd1_late_default_promotions_followup_20261031。
 
 戶外草、土、沙、水與石路已依定版風格刷新，原生輪廓、物件與規則保持。完整GPU及普通首章切換、走行取消、保存冷讀通過，README總覽及普通遊玩圖已更新。現況與來源依[58](58-fd2-exe-re-coverage.md)、[61](61-modern-theme-runtime-spec.md)及主收據`hd1_painted_ground_followup_20261029`；洞窟／物件與其餘缺圖續作，人工由使用者接手。
 
