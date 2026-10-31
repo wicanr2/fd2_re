@@ -448,7 +448,7 @@
       "layer": "data",
       "category": "缺陷",
       "title": "P1 HD1戰場小人物：依原版重繪大頭Q版與個別面容",
-      "body": "聖寇拉斯26、巴拿羅西亞27、達克賽28與亞奇梅吉29已依各自原版頭像與十二原生姿態重繪大頭短身。26保留藍灰長吻、冠角及藍紫窄眼，金黃直劍配窄藍灰盾；27保留橄欖綠寬吻、黃綠細瞳與重頰板，銀劍配白盾；28保留深藍裸面、尖耳、厚重額面、鉤鼻與微揚薄唇，空手與灰綠腰帶；29保留藍灰高額禿頂、尖耳、深陷窄眼、長鼻及下垂薄唇，空手、藍紫袍與灰綠大領。持側及遮蔽沿原生，28眼色依自己DATO藍紫，原生地圖紅眼保留在原版參考，不宣稱眼部逐像素相同。\n\n同一完整候選分兩固定GPU程序，共28完整Game.Draw、24PNG、四次F2、207126核心點及21反例通過。四組保留原生identity／portrait／fig與能力，逐actor核scenario SHA與false投影，無身份／selector投影。缺份、重複份、錯來源、錯記憶體報告及偽造投影均拒收。六種舊分份讀取契約另驗，不重跑或升格舊GPU。\n\n普通首章十PNG只驗完整候選、四組控制、走行取消、保存與新程序標題LOAD，不提升四人自然加入。三項來源重編／八拒收、24頂層Go含字串、21來源案例／416幀／19反例、883清冊及125組1455來源通過；兩可選GPU略過不計。\n\n只換八項、875保持，100新檔私人白名單保存；原8348美術檔及0／9／30六項保持，其餘121組SHA相同。README補兩組面容、四向及144／72／48尺寸與四張完整受控戰場。Q比例餘項50→46，其他個別面容及完整總覽仍待，Gaia保持定版，本項維持OPEN。現況、來源及重跑依58／61與主收據hd1_dragons_blue_robes_followup_20261031。",
+      "body": "希莉亞58、悠妮59、瑪琳60與索菲亞61轉職圖組已依各自原版頭像與十二轉職姿態重繪。長褐髮紅唇微笑、紅馬尾收斂褐眼、粉紫馬尾窄眼紫唇、灰金馬尾紅唇分別保持。58金弓灰綠箭筒與紅背布；59紫粉頭金杆及紫胸布，背向按原版由紅髮遮蔽；60藍衣及灰綠長直側片，用途不另推定；61紅褐衣、灰綠領與金褐側飾，不從基底11補新杆。\n\n轉職表optional_target明示58／59／60／61來自8／9／10／11。兩固定GPU程序共28完整Game.Draw、24PNG、四次F2、304038核心點及25反例通過。逐份與逐actor揭露selector／raw byte6／cache投影，保留原身份、BattleFig及能力，不作自然轉職證據。配方另有四個直接語意反例核來源SHA、optional欄位、身份與未揭露旗標。七種舊分份讀取契約保持，不重跑或升格舊GPU。\n\n普通首章十PNG驗完整候選、四組控制、走行取消、保存與新程序標題LOAD，只作整包相容。三項逐byte來源重編／八拒收、24頂層Go含字串、21來源案例／416幀／19反例、883清冊及125組1455來源通過；兩可選GPU略過不計。\n\n只換八項、875保持，100新檔私人白名單保存；原8448美術檔及0／9／30六項保持，其餘121組SHA相同。README補兩組面容、四向實際尺寸與四張受控戰場。Q比例餘項46→42，其餘個別面容與完整總覽仍待，Gaia保持定版，本項維持OPEN。現況與重跑依58／61及主收據hd1_bow_mages_promoted_followup_20261031。",
       "acceptance": [
         "使用者選定亞雷斯新比例，並保留定版原稿、原版來源、逐字提示與SHA；其他角色依相同標準重製，不能只改大圖總覽。",
         "125個可見圖組及1455幀逐組保留原生方向、步態／靜態相位、轉職身份、裝備特徵、腳底與透明契約；原版、已接受圖源及舊證據可追溯。",
@@ -548,11 +548,20 @@
         "docs/figures/hd1-sancolas-refresh-game.png",
         "docs/figures/hd1-banarosia-refresh-game.png",
         "docs/figures/hd1-darksai-refresh-game.png",
-        "docs/figures/hd1-archimage-refresh-game.png"
+        "docs/figures/hd1-archimage-refresh-game.png",
+        "remake/assets/themes/modern/hd1-bow-mages-promoted-refresh.recipe.json",
+        "docs/figures/hd1-bow-and-unni-faces.png",
+        "docs/figures/hd1-bow-and-unni-comparison.png",
+        "docs/figures/hd1-two-clerics-faces.png",
+        "docs/figures/hd1-two-clerics-comparison.png",
+        "docs/figures/hd1-cylia-promoted-refresh-game.png",
+        "docs/figures/hd1-unni-promoted-refresh-game.png",
+        "docs/figures/hd1-marin-promoted-refresh-game.png",
+        "docs/figures/hd1-sophia-promoted-refresh-game.png"
       ],
       "verify": {
         "kind": "manual",
-        "note": "本批26／27／28／29依各自原版重繪，無身份或selector投影，Q比例餘項50→46。其他個別五官與完整總覽仍待。"
+        "note": "本批58／59／60／61依自身原版及明示optional_target重繪，測具投影逐筆揭露，不作自然轉職。Q比例餘項46→42，其他面容及完整總覽仍待。"
       },
       "issue": 286
     },
@@ -561,7 +570,7 @@
       "layer": "data",
       "category": "缺陷",
       "title": "P1 HD1人物面容與身份複核：依原版頭像保留各自特徵",
-      "body": "聖寇拉斯26、巴拿羅西亞27、達克賽28與亞奇梅吉29已依各自原版頭像與十二原生姿態重繪大頭短身。26保留藍灰長吻、冠角及藍紫窄眼，金黃直劍配窄藍灰盾；27保留橄欖綠寬吻、黃綠細瞳與重頰板，銀劍配白盾；28保留深藍裸面、尖耳、厚重額面、鉤鼻與微揚薄唇，空手與灰綠腰帶；29保留藍灰高額禿頂、尖耳、深陷窄眼、長鼻及下垂薄唇，空手、藍紫袍與灰綠大領。持側及遮蔽沿原生，28眼色依自己DATO藍紫，原生地圖紅眼保留在原版參考，不宣稱眼部逐像素相同。\n\n同一完整候選分兩固定GPU程序，共28完整Game.Draw、24PNG、四次F2、207126核心點及21反例通過。四組保留原生identity／portrait／fig與能力，逐actor核scenario SHA與false投影，無身份／selector投影。缺份、重複份、錯來源、錯記憶體報告及偽造投影均拒收。六種舊分份讀取契約另驗，不重跑或升格舊GPU。\n\n普通首章十PNG只驗完整候選、四組控制、走行取消、保存與新程序標題LOAD，不提升四人自然加入。三項來源重編／八拒收、24頂層Go含字串、21來源案例／416幀／19反例、883清冊及125組1455來源通過；兩可選GPU略過不計。\n\n只換八項、875保持，100新檔私人白名單保存；原8348美術檔及0／9／30六項保持，其餘121組SHA相同。README補兩組面容、四向及144／72／48尺寸與四張完整受控戰場。Q比例餘項50→46，其他個別面容及完整總覽仍待，Gaia保持定版，本項維持OPEN。現況、來源及重跑依58／61與主收據hd1_dragons_blue_robes_followup_20261031。",
+      "body": "希莉亞58、悠妮59、瑪琳60與索菲亞61轉職圖組已依各自原版頭像與十二轉職姿態重繪。長褐髮紅唇微笑、紅馬尾收斂褐眼、粉紫馬尾窄眼紫唇、灰金馬尾紅唇分別保持。58金弓灰綠箭筒與紅背布；59紫粉頭金杆及紫胸布，背向按原版由紅髮遮蔽；60藍衣及灰綠長直側片，用途不另推定；61紅褐衣、灰綠領與金褐側飾，不從基底11補新杆。\n\n轉職表optional_target明示58／59／60／61來自8／9／10／11。兩固定GPU程序共28完整Game.Draw、24PNG、四次F2、304038核心點及25反例通過。逐份與逐actor揭露selector／raw byte6／cache投影，保留原身份、BattleFig及能力，不作自然轉職證據。配方另有四個直接語意反例核來源SHA、optional欄位、身份與未揭露旗標。七種舊分份讀取契約保持，不重跑或升格舊GPU。\n\n普通首章十PNG驗完整候選、四組控制、走行取消、保存與新程序標題LOAD，只作整包相容。三項逐byte來源重編／八拒收、24頂層Go含字串、21來源案例／416幀／19反例、883清冊及125組1455來源通過；兩可選GPU略過不計。\n\n只換八項、875保持，100新檔私人白名單保存；原8448美術檔及0／9／30六項保持，其餘121組SHA相同。README補兩組面容、四向實際尺寸與四張受控戰場。Q比例餘項46→42，其餘個別面容與完整總覽仍待，Gaia保持定版，本項維持OPEN。現況與重跑依58／61及主收據hd1_bow_mages_promoted_followup_20261031。",
       "acceptance": [
         "逐組以固定原生三層、FDOTHER0代表色盤與有對應身份的原版頭像／大圖核身份，不沿舊候選或圖說猜職業／種族。",
         "優先修正2、48、50、51、52、53、54、55、56、63、76、79的已見差異，70、73、77、89、125、133補證後逐項確認或修正；所有結論保留來源及未知等級。",
@@ -649,11 +658,20 @@
         "docs/figures/hd1-sancolas-refresh-game.png",
         "docs/figures/hd1-banarosia-refresh-game.png",
         "docs/figures/hd1-darksai-refresh-game.png",
-        "docs/figures/hd1-archimage-refresh-game.png"
+        "docs/figures/hd1-archimage-refresh-game.png",
+        "remake/assets/themes/modern/hd1-bow-mages-promoted-refresh.recipe.json",
+        "docs/figures/hd1-bow-and-unni-faces.png",
+        "docs/figures/hd1-bow-and-unni-comparison.png",
+        "docs/figures/hd1-two-clerics-faces.png",
+        "docs/figures/hd1-two-clerics-comparison.png",
+        "docs/figures/hd1-cylia-promoted-refresh-game.png",
+        "docs/figures/hd1-unni-promoted-refresh-game.png",
+        "docs/figures/hd1-marin-promoted-refresh-game.png",
+        "docs/figures/hd1-sophia-promoted-refresh-game.png"
       ],
       "verify": {
         "kind": "manual",
-        "note": "本批26／27／28／29依各自原版重繪，無身份或selector投影，Q比例餘項50→46。其他個別五官與完整總覽仍待。"
+        "note": "本批58／59／60／61依自身原版及明示optional_target重繪，測具投影逐筆揭露，不作自然轉職。Q比例餘項46→42，其他面容及完整總覽仍待。"
       },
       "issue": 287
     }
