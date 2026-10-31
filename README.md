@@ -85,6 +85,10 @@
 
 達克賽保留深藍裸面、尖耳、厚重額面、鉤鼻與微揚薄唇；亞奇梅吉保留藍灰高額禿頂、深陷窄眼、長鼻與瘦長下巴。兩人皆按原生空手，灰綠腰帶與藍紫袍大領分別保持；達克賽眼色依自己的原版大頭像採藍紫。可看[四向與實際尺寸](docs/figures/hd1-blue-and-robed-comparison.png)、[達克賽](docs/figures/hd1-darksai-refresh-game.png)及[亞奇梅吉](docs/figures/hd1-archimage-refresh-game.png)的完整受控戰場圖。面容圖比較原版頭像與實際地圖素材，非對話HD頭像驗收；地圖及資訊窗共用新版圖源。戰場圖使用各自原生名冊的受控測具，沒有身份或圖組投影，不代表自然加入流程。其餘人物續作，完整總覽仍待全部重繪後更新。
 
+![珊與賽可邦勒選用轉職圖組的原版及HD1面容對照](docs/figures/hd1-shan-and-beast-optionals-faces.png)
+
+珊第64組與賽可邦勒第65組的原版十二姿態三層，分別與第46、47組逐檔相同，因此共用同角色已核對的HD1素材。珊保留藍低馬尾、暖褐杏眼與紅唇，綠衣領、紅背布及紅頂金杆沿原版；賽可邦勒保留深藍獸形長吻、黑鼻與細眼，採灰綠腰腕件及紫腰布，保持空手。可看[四向與144／72／48尺寸](docs/figures/hd1-shan-and-beast-optionals-comparison.png)、[珊](docs/figures/hd1-shan-optional-refresh-game.png)及[賽可邦勒](docs/figures/hd1-saikobanler-optional-refresh-game.png)的完整受控戰場圖。兩組由轉職表選用目標綁原身份14／15；戰場圖使用明示的測試圖組投影，不代表自然轉職。面容圖比較原版頭像與地圖素材，其餘人物及完整總覽仍待。
+
 ![貝克威與珊預設轉職圖組的原版及HD1面容對照](docs/figures/hd1-bekwei-and-shan-faces.png)
 
 貝克威第45組保留金長髮、黑藍額帶、成熟窄眉眼及收斂薄唇，深藍灰綠衣上的亮綠腰件、棕弓與背件依原生。珊第46組保留藍低馬尾、暖褐杏眼與紅唇，綠額帶、深綠衣領、紅背布及紅頂金杆沿原版。可看[四向與144／72／48尺寸](docs/figures/hd1-bekwei-and-shan-comparison.png)、[貝克威](docs/figures/hd1-bekwei-default-refresh-game.png)及[珊](docs/figures/hd1-shan-default-refresh-game.png)的完整受控戰場圖。

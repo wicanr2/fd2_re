@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_hd1_chibi_map_refresh",
+  "approved_preview": "docs/figures/hd1-ares-q-design.png",
+  "approved_preview_sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e",
+  "native_bank_sha256": "7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44",
+  "palette_sha256": "404db1ca72ffc19fa7404fbc59bde98cdf239f63fe3375ec248a8142073a28bf",
+  "base_catalog_sha256": "c446b7ee01f1ae7d7533a6ffcfb947958ea1c4ad3c28a90732ad73eba9719078",
+  "approval": "沿已定大頭短身、逐人面容及持續推進授權；兩組原版圖層相同，使用同角色既有HD1來源，沒有新增繪圖。",
+  "groups": [
+    {
+      "group": 64,
+      "master_file": "fdicon-046-hd1-portrait-q-v1-master.png",
+      "master_sha256": "f40b4232a25aba3bcb920d7be05eb65c6cebf19b5cfd747ed22639e1cccdc693",
+      "output_prefix": "fdicon-046-hd1-portrait-q-v1",
+      "reuse_group": 46,
+      "reuse_assets_sha256": "86455a45a29b292cc2d4648ec4de73fbbf91aa22c58f795865689933bebcf2b0"
+    },
+    {
+      "group": 65,
+      "master_file": "fdicon-047-hd1-portrait-q-v1-master.png",
+      "master_sha256": "ece57af1f345a1a6e3145f1941fb9a253b6ec942974ace9711cec8b0fa34db90",
+      "output_prefix": "fdicon-047-hd1-portrait-q-v1",
+      "reuse_group": 47,
+      "reuse_assets_sha256": "0c8592736bd3e3a10037ce902fc17d4c5b356e99bea127601c3efcf89a13ae84"
+    }
+  ],
+  "faces": [
+    {
+      "group": 64,
+      "name": "珊",
+      "portrait_file": "remake/assets/portraits/DATO_014_m0.png",
+      "portrait_sha256": "ae80891b2cc6778377d29a3c656172386a125b719a33cfc1d8df87f5fd212eb5",
+      "traits": [
+        "藍低馬尾及暖褐杏眼",
+        "長細鼻及柔和成熟臉",
+        "紅色唇形"
+      ],
+      "comparison_label": "原版大頭像／原生相同的既有HD1地圖圖源，非480對話頭像驗收"
+    },
+    {
+      "group": 65,
+      "name": "賽可邦勒",
+      "portrait_file": "remake/assets/portraits/DATO_015_m0.png",
+      "portrait_sha256": "6edd86b3e7a3186e4c3d3db95ce69bd81d686422b62e6013036203f4bb3acce3",
+      "traits": [
+        "深藍獸形長吻與黑鼻",
+        "角稜眉面與細眼",
+        "直立耳形輪廓與短獠牙"
+      ],
+      "comparison_label": "原版大頭像／原生相同的既有HD1地圖圖源，非480對話頭像驗收"
+    }
+  ],
+  "party_bindings": [
+    {
+      "group": 64,
+      "native_identity": 14,
+      "portrait": 14,
+      "fig": 14,
+      "scenario_file": "remake/assets/scenarios/ch12.json",
+      "scenario_sha256": "db3d05d373c6318bc4d937f9f99e3b35bd89f683bd7cbc8cd5a5f0d257abe9a3",
+      "target_field": "optional_target",
+      "selector_projection_injected": true
+    },
+    {
+      "group": 65,
+      "native_identity": 15,
+      "portrait": 15,
+      "fig": 15,
+      "scenario_file": "remake/assets/scenarios/ch16.json",
+      "scenario_sha256": "52c8e38245b51211685b09407d6c23294f6a72b3aae020152ed8ba0357137c02",
+      "target_field": "optional_target",
+      "selector_projection_injected": true
+    }
+  ],
+  "policy": "64／65依optional_target明示14／15；原版十二姿態三層分別與46／47逐檔相同，共72對，共用同角色已核對的50既有檔，零新繪圖。逐actor揭露selector／byte6／cache投影，原身份、BattleFig、能力及保存保持，不作自然轉職或480頭像驗收。65頭部材質仍未知，不沿舊頭盔標籤補裝備。",
+  "gpu_pairs": {
+    "shan": [
+      64
+    ],
+    "beast": [
+      65
+    ]
+  },
+  "promotion_source": {
+    "file": "remake/assets/data/class_change_targets.json",
+    "sha256": "27946ce10bf60738331009fff14b50be3cddc4cce18a4402e5259cb89fecfaa2"
+  },
+  "art_reuse": {
+    "mode": "two-existing-registered",
+    "new_image_generation_calls": 0,
+    "sources": [
+      {
+        "group": 64,
+        "source_group": 46,
+        "master_file": "fdicon-046-hd1-portrait-q-v1-master.png",
+        "master_sha256": "f40b4232a25aba3bcb920d7be05eb65c6cebf19b5cfd747ed22639e1cccdc693",
+        "source_recipe": {
+          "file": "remake/assets/themes/modern/hd1-late-default-promotions-refresh.recipe.json",
+          "sha256": "c5270198604138fb37a8d5f7e560a38b4d147d233dc0be78ec4277b7f69149db"
+        }
+      },
+      {
+        "group": 65,
+        "source_group": 47,
+        "master_file": "fdicon-047-hd1-portrait-q-v1-master.png",
+        "master_sha256": "ece57af1f345a1a6e3145f1941fb9a253b6ec942974ace9711cec8b0fa34db90",
+        "source_recipe": {
+          "file": "remake/assets/themes/modern/hd1-late-default-promotions-refresh.recipe.json",
+          "sha256": "c5270198604138fb37a8d5f7e560a38b4d147d233dc0be78ec4277b7f69149db"
+        }
+      }
+    ],
+    "original_equivalence": {
+      "file": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r21/native-equivalence.json",
+      "sha256": "b7ade46183b6c8e0a1a345a3fa7e9fc734a73c1c27ec374e2f14b8c505cbfb30"
+    }
+  },
+  "original_reference": {
+    "source": "FDICON十二姿態三層／FDOTHER0色盤、明示optional_target及自身DATO；只證固定圖源及身份",
+    "groups": [
+      64,
+      65
+    ],
+    "records_file": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r21/native-reference.json",
+    "records_sha256": "5820778dc02e13992eb7c33280d0cda26e82a4480f1504df5bd96312c90dcd36",
+    "reference_boards": [
+      {
+        "file": "group-064-original.png",
+        "sha256": "e6f86f0e0e2c784a9d7bfd1583acfa0d4afd0e2f9c4ce2091714e7472e7a9d8c"
+      },
+      {
+        "file": "group-065-original.png",
+        "sha256": "58e8dcc9e7fe884a317dbcef1e71356c313d2f07088569ef269179e72d2ca2a0"
+      }
+    ],
+    "equivalence": {
+      "file": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-party-review-r21/native-equivalence.json",
+      "sha256": "b7ade46183b6c8e0a1a345a3fa7e9fc734a73c1c27ec374e2f14b8c505cbfb30"
+    }
+  }
+}
