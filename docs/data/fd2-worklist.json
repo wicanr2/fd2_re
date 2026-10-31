@@ -448,7 +448,7 @@
       "layer": "data",
       "category": "缺陷",
       "title": "P1 HD1戰場小人物：依原版重繪大頭Q版與個別面容",
-      "body": "珊64與賽可邦勒65選用轉職圖組已接同角色既有HD1素材。optional_target明示原身份14／15，ch12／16我方名冊與自身DATO核對。原生十二姿態三層分別與46／47逐檔相同，共72對，共用50既有檔，沒有新增繪圖。\n\n64保留藍低馬尾、暖褐杏眼、綠衣領、紅背布與紅頂金杆；65保留深藍獸形長吻、黑鼻、細眼、灰綠腰腕件及紫腰布，空手。65頭部材質仍未知，不沿舊頭盔標籤補裝備，既有勘誤與來源保持。\n\n同一完整兩組候選固定分shan64與beast65兩份，每份七次Game.Draw、六PNG及一次F2，合14完整繪製、12PNG、兩次F2、153670核心點與28反例通過。每人四向及三正面相位保持；逐actor原身份、章SHA與true投影核對，只在測具改selector／raw byte6／cache，BattleFig、能力及保存保持，不作自然轉職。12種舊分份、五批轉職與兩種共用契約保持，不重跑或升格舊GPU。\n\n普通首章十PNG驗完整候選、四組控制、走行取消、F5及新程序標題LOAD，無狀態注入。兩組共用、舊四組共用與三新一共用各三項逐byte重編／11拒收；24頂層Go含字串、21來源案例／416幀／19反例、883清冊與125組1455來源通過；兩可選GPU略過不計。\n\n正式只換四項、879保持，共用50既有檔、零新美術；原8823美術檔SHA／inode／mtime／owner、0／9／30／46／47十項與其餘123組來源保持。私人庫只更新兩份清冊，README新增兩人面容、四向實際尺寸及兩張完整受控戰場。Q比例餘項26→24，其餘面容、完整總覽與集中人工仍待，Gaia保持定版。本項維持OPEN，現況及重跑依58／61與主收據hd1_shan_beast_optional_followup_20261031。",
+      "body": "第68／71／72／78組已依自身DATO與原版十二姿態重繪並接入HD1。68保持遮眼盔、成熟露下臉及原持物側劍盾；71恢復藍色獸臉、獸耳、黑鼻與短牙；72保持藍髮褐額帶、陰影細眼與原版背負物；78保持閉合深藍尖面盔及紅眼縫、空手。舊初審角盔、藍頭帶、紅面罩的推定已追加勘誤，原圖源與歷史收據保留。\n\n原始名冊依map0第19列／初始組6、map14第49列／組0、map12第0列／組0及map17第12列／組0。68／71／72是盟軍，78是敵軍，AppendGroupWithNativePlacement保留camp／portrait／BattleFig／位置及selector，不投影身份或圖組。\n\n完整四組候選固定分guards68／71及traveler-and-heavy72／78，各14次完整Game.Draw、12PNG與兩次F2，合28完整繪製、24PNG、四次F2、313325核心點與21反例通過。每人四向及三正面相位保持；13種舊分份、六批轉職與三種共用來源契約保持，不重跑或升格舊GPU。\n\n普通首章十PNG驗整包四組控制、走行取消、F5及新程序標題LOAD，無狀態注入。新圖源三項逐byte重編／8拒收，舊共用及混合來源各三項／11拒收；24頂層Go含字串、21來源案例／416幀／19反例、883清冊與125組1455來源通過，兩可選GPU略過不計。\n\n只換8項清冊、875保持，新增100美術檔，原8823美術檔SHA／inode／mtime／owner、0／9／30六項及其餘121組來源保持。私人素材已同步，README新增八張面容、尺寸與受控戰場圖。Q比例餘項24→20，其餘面容、完整總覽及集中人工仍待，Gaia保持定版。不新增EXE動態、自然章節或480頭像驗收。本項維持OPEN，現況與重跑依58／61及主收據hd1_native_roster_four_followup_20261101。",
       "acceptance": [
         "使用者選定亞雷斯新比例，並保留定版原稿、原版來源、逐字提示與SHA；其他角色依相同標準重製，不能只改大圖總覽。",
         "125個可見圖組及1455幀逐組保留原生方向、步態／靜態相位、轉職身份、裝備特徵、腳底與透明契約；原版、已接受圖源及舊證據可追溯。",
@@ -598,7 +598,16 @@
         "docs/figures/hd1-shan-and-beast-optionals-faces.png",
         "docs/figures/hd1-shan-and-beast-optionals-comparison.png",
         "docs/figures/hd1-shan-optional-refresh-game.png",
-        "docs/figures/hd1-saikobanler-optional-refresh-game.png"
+        "docs/figures/hd1-saikobanler-optional-refresh-game.png",
+        "remake/assets/themes/modern/hd1-native-roster-four-refresh.recipe.json",
+        "docs/figures/hd1-native-guards-faces.png",
+        "docs/figures/hd1-native-guards-comparison.png",
+        "docs/figures/hd1-native-traveler-and-heavy-faces.png",
+        "docs/figures/hd1-native-traveler-and-heavy-comparison.png",
+        "docs/figures/hd1-native-068-refresh-game.png",
+        "docs/figures/hd1-native-071-refresh-game.png",
+        "docs/figures/hd1-native-072-refresh-game.png",
+        "docs/figures/hd1-native-078-refresh-game.png"
       ],
       "verify": {
         "kind": "manual",
@@ -611,7 +620,7 @@
       "layer": "data",
       "category": "缺陷",
       "title": "P1 HD1人物面容與身份複核：依原版頭像保留各自特徵",
-      "body": "珊64與賽可邦勒65選用轉職圖組已接同角色既有HD1素材。optional_target明示原身份14／15，ch12／16我方名冊與自身DATO核對。原生十二姿態三層分別與46／47逐檔相同，共72對，共用50既有檔，沒有新增繪圖。\n\n64保留藍低馬尾、暖褐杏眼、綠衣領、紅背布與紅頂金杆；65保留深藍獸形長吻、黑鼻、細眼、灰綠腰腕件及紫腰布，空手。65頭部材質仍未知，不沿舊頭盔標籤補裝備，既有勘誤與來源保持。\n\n同一完整兩組候選固定分shan64與beast65兩份，每份七次Game.Draw、六PNG及一次F2，合14完整繪製、12PNG、兩次F2、153670核心點與28反例通過。每人四向及三正面相位保持；逐actor原身份、章SHA與true投影核對，只在測具改selector／raw byte6／cache，BattleFig、能力及保存保持，不作自然轉職。12種舊分份、五批轉職與兩種共用契約保持，不重跑或升格舊GPU。\n\n普通首章十PNG驗完整候選、四組控制、走行取消、F5及新程序標題LOAD，無狀態注入。兩組共用、舊四組共用與三新一共用各三項逐byte重編／11拒收；24頂層Go含字串、21來源案例／416幀／19反例、883清冊與125組1455來源通過；兩可選GPU略過不計。\n\n正式只換四項、879保持，共用50既有檔、零新美術；原8823美術檔SHA／inode／mtime／owner、0／9／30／46／47十項與其餘123組來源保持。私人庫只更新兩份清冊，README新增兩人面容、四向實際尺寸及兩張完整受控戰場。Q比例餘項26→24，其餘面容、完整總覽與集中人工仍待，Gaia保持定版。本項維持OPEN，現況及重跑依58／61與主收據hd1_shan_beast_optional_followup_20261031。",
+      "body": "第68／71／72／78組已依自身DATO與原版十二姿態重繪並接入HD1。68保持遮眼盔、成熟露下臉及原持物側劍盾；71恢復藍色獸臉、獸耳、黑鼻與短牙；72保持藍髮褐額帶、陰影細眼與原版背負物；78保持閉合深藍尖面盔及紅眼縫、空手。舊初審角盔、藍頭帶、紅面罩的推定已追加勘誤，原圖源與歷史收據保留。\n\n原始名冊依map0第19列／初始組6、map14第49列／組0、map12第0列／組0及map17第12列／組0。68／71／72是盟軍，78是敵軍，AppendGroupWithNativePlacement保留camp／portrait／BattleFig／位置及selector，不投影身份或圖組。\n\n完整四組候選固定分guards68／71及traveler-and-heavy72／78，各14次完整Game.Draw、12PNG與兩次F2，合28完整繪製、24PNG、四次F2、313325核心點與21反例通過。每人四向及三正面相位保持；13種舊分份、六批轉職與三種共用來源契約保持，不重跑或升格舊GPU。\n\n普通首章十PNG驗整包四組控制、走行取消、F5及新程序標題LOAD，無狀態注入。新圖源三項逐byte重編／8拒收，舊共用及混合來源各三項／11拒收；24頂層Go含字串、21來源案例／416幀／19反例、883清冊與125組1455來源通過，兩可選GPU略過不計。\n\n只換8項清冊、875保持，新增100美術檔，原8823美術檔SHA／inode／mtime／owner、0／9／30六項及其餘121組來源保持。私人素材已同步，README新增八張面容、尺寸與受控戰場圖。Q比例餘項24→20，其餘面容、完整總覽及集中人工仍待，Gaia保持定版。不新增EXE動態、自然章節或480頭像驗收。本項維持OPEN，現況與重跑依58／61及主收據hd1_native_roster_four_followup_20261101。",
       "acceptance": [
         "逐組以固定原生三層、FDOTHER0代表色盤與有對應身份的原版頭像／大圖核身份，不沿舊候選或圖說猜職業／種族。",
         "優先修正2、48、50、51、52、53、54、55、56、63、76、79的已見差異，70、73、77、89、125、133補證後逐項確認或修正；所有結論保留來源及未知等級。",
@@ -749,7 +758,16 @@
         "docs/figures/hd1-shan-and-beast-optionals-faces.png",
         "docs/figures/hd1-shan-and-beast-optionals-comparison.png",
         "docs/figures/hd1-shan-optional-refresh-game.png",
-        "docs/figures/hd1-saikobanler-optional-refresh-game.png"
+        "docs/figures/hd1-saikobanler-optional-refresh-game.png",
+        "remake/assets/themes/modern/hd1-native-roster-four-refresh.recipe.json",
+        "docs/figures/hd1-native-guards-faces.png",
+        "docs/figures/hd1-native-guards-comparison.png",
+        "docs/figures/hd1-native-traveler-and-heavy-faces.png",
+        "docs/figures/hd1-native-traveler-and-heavy-comparison.png",
+        "docs/figures/hd1-native-068-refresh-game.png",
+        "docs/figures/hd1-native-071-refresh-game.png",
+        "docs/figures/hd1-native-072-refresh-game.png",
+        "docs/figures/hd1-native-078-refresh-game.png"
       ],
       "verify": {
         "kind": "manual",

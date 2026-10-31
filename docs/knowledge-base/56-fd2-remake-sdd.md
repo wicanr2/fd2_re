@@ -1,6 +1,6 @@
 # 56 — FD2 remake 系統設計規格（SDD，2026-08-09）
 
-珊64與賽可邦勒65選用轉職圖組已接同角色既有HD1素材。optional_target明示14／15，原生十二姿態三層分別與46／47逐檔相同，共72對；共用50既有檔，沒有新增美術。兩份各七次完整繪製，合14完整Game.Draw、12PNG及兩次F2通過；普通首章整包切換、走行取消、保存／新程序LOAD相容通過。只在測具投影selector／byte6／cache，原身份、BattleFig與能力保持，不作自然轉職；65頭部材質仍未知，不補裝備語義。Q比例餘項26→24，其餘面容、完整總覽與集中人工仍待，Gaia保持定版。現況依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源為主收據hd1_shan_beast_optional_followup_20261031。
+第68／71／72／78組已依自身DATO與原版十二姿態重繪並接入HD1。原始名冊保留盟軍／敵軍、portrait、BattleFig、位置及selector，沒有角色身份或圖組投影。兩固定分份合28完整Game.Draw、24PNG、四次F2、313325核心點及21反例通過；普通首章整包切換、走行取消、保存／新程序LOAD相容通過。正式只換8項、875保持，新增100美術檔，8823舊檔及其餘121組來源保持。Q比例餘項24→20，其餘面容、完整總覽與集中人工仍待，Gaia保持定版。不新增EXE動態或自然章節驗收；現況依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源為主收據hd1_native_roster_four_followup_20261101。
 
 戶外草、土、沙、水與石路已依定版風格刷新，原生輪廓、物件與規則保持。完整GPU及普通首章切換、走行取消、保存冷讀通過，README總覽及普通遊玩圖已更新。現況與來源依[58](58-fd2-exe-re-coverage.md)、[61](61-modern-theme-runtime-spec.md)及主收據`hd1_painted_ground_followup_20261029`；洞窟／物件與其餘缺圖續作，人工由使用者接手。
 

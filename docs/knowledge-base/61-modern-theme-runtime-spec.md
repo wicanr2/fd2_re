@@ -5456,3 +5456,17 @@ seed7 與 clock1000 驗二十六拍、各階段 F2、獨立 CPU 世界／最終�
 重跑使用維護中的Go Docker與`python3 tools/verify_fd2_death_hd.py --help`，`native`驗原生stage／冷拒收／HUD邊界，`unit`驗來源與F2拒收，`regression`驗原死亡／狀態，`game`驗三caller完整繪圖。明示`--catalog`、`--pack`、不存在的`--out`與有界`--timeout`；原包唯讀掛到`/original`並設`FD2_ASSET_PACK`與`FD2_TEST_ORIGINAL_PACK`。私人實體圖包唯讀掛到`/private`並加`--require-real-runtime`。完整矩陣user1000、network none、6GiB／2CPU／256 pids，Xvfb由工具有界管理。
 
 此為受控RUNTIME-E1，沒有新原版oracle、正常玩家、音訊聽感或平台驗收。沒有新美術／清冊／私人提交；其餘HD與全部串接後集中正常／人工／平台保持開啟。
+## 第68／71／72／78組原始名冊Q版接線
+
+狀態：CONFORMED-SCOPED／RUNTIME-E1。沿使用者已定的大頭短身比例與各自原版面容重繪。編製契約為[四組原始名冊配方](../../remake/assets/themes/modern/hd1-native-roster-four-refresh.recipe.json)。
+
+- 原始依據：FDICON各組十二姿態的frame／mask／remap_mask、FDOTHER0色盤、同號DATO頭像，以及各地圖的具型別名冊。雜湊及逐列來源寫入配方。
+- 第68組使用map0第19列，初始組6，盟軍，位置23／14。保留灰綠盔、原版遮眼與露出的成熟下臉、十字盾和單劍的持物側。
+- 第71組使用map14第49列，初始組0，盟軍，位置30／19。依DATO071保留藍色獸臉、直立獸耳、灰綠眼、黑鼻、寬吻與兩顆短牙，不沿舊初審的角形推定。
+- 第72組使用map12第0列，初始組0，盟軍，位置17／10。保留藍髮、褐色額帶、陰影下的細眼、長鼻薄唇，以及地圖原有背負物與直桿輪廓。
+- 第78組使用map17第12列，初始組0，敵軍，位置38／6。保留深藍重甲、遮面盔與紅眼縫，不補人臉或武器。
+- 測具使用AppendGroupWithNativePlacement及原始camp／portrait／BattleFig／位置，不注入角色身份或selector。固定guards組68／71及traveler-and-heavy組72／78，合計28次完整Game.Draw、24張PNG與4次F2；不得冒稱自然章節可達或EXE動態對拍。
+- 驗收：原生三層與頭像來源、透明邊界、144／72／48像素圖、兩份GPU收據、四種介面／美術組合、行走取消、F5與新程序LOAD、正式清冊及消費端回歸。只有8筆清冊可變，其餘875筆及既有素材保持。
+- 完成後同步私人素材庫，公開庫只保留配方、雜湊及已授權的總覽圖。第71組舊語意追加勘誤，原始圖源與歷史收據保留。
+- READY驗收已通過：28完整Game.Draw、24PNG、四次F2、313325核心點、21反例，兩固定原始名冊分份的每人四向及三正面相位均保留。原陣營、頭像、BattleFig、位置及無投影逐actor核對。普通首章十PNG驗整包四種控制、走行取消、F5與新程序LOAD，不提升自然章節可達。
+- 新圖源三項逐byte重編／8拒收、舊共用與混合來源各三項／11拒收；24頂層Go含字串、883清冊、21來源案例／416幀／19反例與125組1455來源通過，兩可選GPU略過不計。13種舊分份、六批轉職與三種共用契約保持，不重跑或升格舊GPU。只換8項、875保持，新增100檔，8823舊檔與0／9／30六項保持，其餘121組來源相同；私人素材已同步。Q比例餘項24→20，Gaia保持定版。主收據hd1_native_roster_four_followup_20261101。
