@@ -448,7 +448,7 @@
       "layer": "data",
       "category": "缺陷",
       "title": "P1 HD1戰場小人物：依原版重繪大頭Q版與個別面容",
-      "body": "第80／81／82／83組已依自身DATO與原版十二姿態重繪並接入HD1。80紅盔飾金線、81褐雙角藍紫甲皆空手；82灰綠圓筒盔劍盾，83藍色角盔劍盾。83原版地圖黃眼點、DATO紅眼縫分列，保持地圖原色。\n\n四組依map16第4列／初始組0、map19第49列／組0、map7第19列／組1、map17第2列／組0的原始敵軍名冊建立。AppendGroupWithNativePlacement保留camp／portrait／BattleFig／位置／selector，無身份或圖組投影。\n\n同一完整候選固定分crested-and-horned80／81及shield-guards82／83，合28完整Game.Draw、24PNG、四次F2、315699核心點及21反例通過。14種舊分份、六批轉職與三種共用契約保持，不重跑或升格舊GPU。\n\n透明品質以本批per_pose_coverage_v1配方明示啟用：每姿態至少90%核心達alpha250且最高達254，保留來源alpha。舊配方維持legacy_rgba255，49／17柔和透明舊稿不倒套新門檻。新圖源四項逐byte重編／14拒收，舊共用及混合各四項／17拒收。普通首章十PNG驗整包控制、走行取消、F5與新程序LOAD，無狀態注入；24頂層Go、21消費來源／416幀／19反例、883清冊及125組1455來源通過，兩可選GPU略過不計。\n\n清冊只換8項、875保持，新增100美術檔，8923舊檔SHA／inode／mtime／owner、0／9／30六項及其餘121組來源保持。私人素材已同步，README新增八張授權圖，Q比例餘項20→16。其餘面容、完整總覽及集中人工仍待，Gaia保持定版。本項維持OPEN，不作EXE動態、自然章節或480頭像驗收；現況與重跑依58／61及主收據hd1_enemy_armor_four_followup_20261101。",
+      "body": "第84／85／86／87組已依自身DATO與原版十二姿態重繪並接入HD1。84紅角盔橙盾紋，85深藍角盔暗圓盾紋；86灰綠尖面盔、方盾暗紋紫中心及原持物輪廓，兵器種類仍未知，不猜補；87保留成熟露下臉、長鼻、下垂嘴角、方下巴與原棕弓箭袋。84原版地圖黃眼點及DATO灰白眼縫分列，保持地圖原色。85舊紅面罩與86圓盔初審追加勘誤，原證據保留。\n\n四組依map25第3列／組0、map19第45列／組0、map25第10列／組0、map7第16列／組0的原始敵軍名冊建立。AppendGroupWithNativePlacement保留camp／portrait／BattleFig／位置／selector，無身份或圖組投影。\n\n完整候選固定分red-and-navy84／85與masked-and-bow86／87，合28完整Game.Draw、24PNG、四次F2、332204核心點與21反例通過。15種舊分份、六批轉職及三種共用來源契約保持，不重跑或升格舊GPU。\n\n新圖源四項逐byte重編／14拒收。編製器及來源測試未變，舊共用與混合各四項／17拒收沿上一批通過收據，逐檔SHA核對，未冒稱本批重跑。普通首章十PNG驗完整候選、四種控制、走行取消、F5與新程序LOAD，無狀態注入；24頂層Go、21消費來源／416幀／19反例、883清冊及125組1455來源通過，兩可選GPU略過不計。\n\n清冊只換8項、875保持，新增100檔，9023舊美術SHA／inode／mtime／owner、0／9／30六項及其餘121組來源保持。私人素材已同步，README新增八張授權圖。Q比例餘項16→12，其餘面容、完整總覽與集中人工仍待，Gaia保持定版。本項維持OPEN，不作EXE動態、自然章節或480頭像驗收；現況與重跑依58／61及主收據hd1_helm_bow_four_followup_20261101。",
       "acceptance": [
         "使用者選定亞雷斯新比例，並保留定版原稿、原版來源、逐字提示與SHA；其他角色依相同標準重製，不能只改大圖總覽。",
         "125個可見圖組及1455幀逐組保留原生方向、步態／靜態相位、轉職身份、裝備特徵、腳底與透明契約；原版、已接受圖源及舊證據可追溯。",
@@ -616,7 +616,16 @@
         "docs/figures/hd1-enemy-080-refresh-game.png",
         "docs/figures/hd1-enemy-081-refresh-game.png",
         "docs/figures/hd1-enemy-082-refresh-game.png",
-        "docs/figures/hd1-enemy-083-refresh-game.png"
+        "docs/figures/hd1-enemy-083-refresh-game.png",
+        "remake/assets/themes/modern/hd1-helm-bow-four-refresh.recipe.json",
+        "docs/figures/hd1-enemy-red-and-navy-faces.png",
+        "docs/figures/hd1-enemy-red-and-navy-comparison.png",
+        "docs/figures/hd1-enemy-masked-and-bow-faces.png",
+        "docs/figures/hd1-enemy-masked-and-bow-comparison.png",
+        "docs/figures/hd1-enemy-084-refresh-game.png",
+        "docs/figures/hd1-enemy-085-refresh-game.png",
+        "docs/figures/hd1-enemy-086-refresh-game.png",
+        "docs/figures/hd1-enemy-087-refresh-game.png"
       ],
       "verify": {
         "kind": "manual",
@@ -629,7 +638,7 @@
       "layer": "data",
       "category": "缺陷",
       "title": "P1 HD1人物面容與身份複核：依原版頭像保留各自特徵",
-      "body": "第80／81／82／83組已依自身DATO與原版十二姿態重繪並接入HD1。80紅盔飾金線、81褐雙角藍紫甲皆空手；82灰綠圓筒盔劍盾，83藍色角盔劍盾。83原版地圖黃眼點、DATO紅眼縫分列，保持地圖原色。\n\n四組依map16第4列／初始組0、map19第49列／組0、map7第19列／組1、map17第2列／組0的原始敵軍名冊建立。AppendGroupWithNativePlacement保留camp／portrait／BattleFig／位置／selector，無身份或圖組投影。\n\n同一完整候選固定分crested-and-horned80／81及shield-guards82／83，合28完整Game.Draw、24PNG、四次F2、315699核心點及21反例通過。14種舊分份、六批轉職與三種共用契約保持，不重跑或升格舊GPU。\n\n透明品質以本批per_pose_coverage_v1配方明示啟用：每姿態至少90%核心達alpha250且最高達254，保留來源alpha。舊配方維持legacy_rgba255，49／17柔和透明舊稿不倒套新門檻。新圖源四項逐byte重編／14拒收，舊共用及混合各四項／17拒收。普通首章十PNG驗整包控制、走行取消、F5與新程序LOAD，無狀態注入；24頂層Go、21消費來源／416幀／19反例、883清冊及125組1455來源通過，兩可選GPU略過不計。\n\n清冊只換8項、875保持，新增100美術檔，8923舊檔SHA／inode／mtime／owner、0／9／30六項及其餘121組來源保持。私人素材已同步，README新增八張授權圖，Q比例餘項20→16。其餘面容、完整總覽及集中人工仍待，Gaia保持定版。本項維持OPEN，不作EXE動態、自然章節或480頭像驗收；現況與重跑依58／61及主收據hd1_enemy_armor_four_followup_20261101。",
+      "body": "第84／85／86／87組已依自身DATO與原版十二姿態重繪並接入HD1。84紅角盔橙盾紋，85深藍角盔暗圓盾紋；86灰綠尖面盔、方盾暗紋紫中心及原持物輪廓，兵器種類仍未知，不猜補；87保留成熟露下臉、長鼻、下垂嘴角、方下巴與原棕弓箭袋。84原版地圖黃眼點及DATO灰白眼縫分列，保持地圖原色。85舊紅面罩與86圓盔初審追加勘誤，原證據保留。\n\n四組依map25第3列／組0、map19第45列／組0、map25第10列／組0、map7第16列／組0的原始敵軍名冊建立。AppendGroupWithNativePlacement保留camp／portrait／BattleFig／位置／selector，無身份或圖組投影。\n\n完整候選固定分red-and-navy84／85與masked-and-bow86／87，合28完整Game.Draw、24PNG、四次F2、332204核心點與21反例通過。15種舊分份、六批轉職及三種共用來源契約保持，不重跑或升格舊GPU。\n\n新圖源四項逐byte重編／14拒收。編製器及來源測試未變，舊共用與混合各四項／17拒收沿上一批通過收據，逐檔SHA核對，未冒稱本批重跑。普通首章十PNG驗完整候選、四種控制、走行取消、F5與新程序LOAD，無狀態注入；24頂層Go、21消費來源／416幀／19反例、883清冊及125組1455來源通過，兩可選GPU略過不計。\n\n清冊只換8項、875保持，新增100檔，9023舊美術SHA／inode／mtime／owner、0／9／30六項及其餘121組來源保持。私人素材已同步，README新增八張授權圖。Q比例餘項16→12，其餘面容、完整總覽與集中人工仍待，Gaia保持定版。本項維持OPEN，不作EXE動態、自然章節或480頭像驗收；現況與重跑依58／61及主收據hd1_helm_bow_four_followup_20261101。",
       "acceptance": [
         "逐組以固定原生三層、FDOTHER0代表色盤與有對應身份的原版頭像／大圖核身份，不沿舊候選或圖說猜職業／種族。",
         "優先修正2、48、50、51、52、53、54、55、56、63、76、79的已見差異，70、73、77、89、125、133補證後逐項確認或修正；所有結論保留來源及未知等級。",
@@ -785,7 +794,16 @@
         "docs/figures/hd1-enemy-080-refresh-game.png",
         "docs/figures/hd1-enemy-081-refresh-game.png",
         "docs/figures/hd1-enemy-082-refresh-game.png",
-        "docs/figures/hd1-enemy-083-refresh-game.png"
+        "docs/figures/hd1-enemy-083-refresh-game.png",
+        "remake/assets/themes/modern/hd1-helm-bow-four-refresh.recipe.json",
+        "docs/figures/hd1-enemy-red-and-navy-faces.png",
+        "docs/figures/hd1-enemy-red-and-navy-comparison.png",
+        "docs/figures/hd1-enemy-masked-and-bow-faces.png",
+        "docs/figures/hd1-enemy-masked-and-bow-comparison.png",
+        "docs/figures/hd1-enemy-084-refresh-game.png",
+        "docs/figures/hd1-enemy-085-refresh-game.png",
+        "docs/figures/hd1-enemy-086-refresh-game.png",
+        "docs/figures/hd1-enemy-087-refresh-game.png"
       ],
       "verify": {
         "kind": "manual",

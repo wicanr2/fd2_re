@@ -252304,7 +252304,13 @@
             6,
             9
           ],
-          "hd_frame_table_sha256": "a6493a1f95b9881de0e7eda127180c8b09b11c29843ec512df7136c2058d6577"
+          "hd_frame_table_sha256": "a6493a1f95b9881de0e7eda127180c8b09b11c29843ec512df7136c2058d6577",
+          "semantic_label_correction": {
+            "date": "2026-11-01",
+            "replacement": "DATO085確認深藍閉合面盔與紅眼縫，舊紅面罩說法不採用。",
+            "evidence": "remake/assets/themes/modern/hd1-helm-bow-four-refresh.recipe.json",
+            "level": "固定圖源外觀已證實，非兵器或材質判定"
+          }
         },
         {
           "group": 86,
@@ -252318,7 +252324,13 @@
             6,
             9
           ],
-          "hd_frame_table_sha256": "8d896acbd865cdf0135e828a46cf1fb27dd2b2c30ddb7db50d671edc37ce5920"
+          "hd_frame_table_sha256": "8d896acbd865cdf0135e828a46cf1fb27dd2b2c30ddb7db50d671edc37ce5920",
+          "semantic_label_correction": {
+            "date": "2026-11-01",
+            "replacement": "DATO086確認灰綠尖面盔，舊圓盔說法不採用；持物種類仍未知，保留原始輪廓。",
+            "evidence": "remake/assets/themes/modern/hd1-helm-bow-four-refresh.recipe.json",
+            "level": "固定圖源外觀已證實，非兵器或材質判定"
+          }
         },
         {
           "group": 87,
@@ -268622,6 +268634,926 @@
     "final_validation": {
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r23/final-validation-r2.json",
       "sha256": "8f4ab2437460e0eec6eb9c7509f218da80911d360d62906d73b1bb2acde9ddf2"
+    }
+  },
+  "hd1_helm_bow_four_followup_20261101": {
+    "date": "2026-11-01",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1",
+    "base_commit": "458ef32f26c176898568bff7947917cefeabfcd3",
+    "branch": "feat/hd1-next-enemies-r24",
+    "issues": [
+      286,
+      287
+    ],
+    "scope": "84／85／86／87依自身DATO與原生十二姿態新繪；測具保留原始敵軍、位置、portrait、BattleFig與selector，無角色身份投影。正式Go、規則及保存保持。",
+    "art": {
+      "recipe": {
+        "file": "remake/assets/themes/modern/hd1-helm-bow-four-refresh.recipe.json",
+        "sha256": "90e050c260abfc6365c3f4642f0ffaee79f1164e25782bb9030595c372bd821e"
+      },
+      "groups": [
+        84,
+        85,
+        86,
+        87
+      ],
+      "faces": [
+        {
+          "group": 84,
+          "name": "紅色角盔守衛",
+          "portrait_file": "remake/assets/portraits/DATO_084_m0.png",
+          "portrait_sha256": "ecbee3a47fb9b9d99cf9e7bf2f5917ace40b38a234d1315f2b253453ff478682",
+          "traits": [
+            "紅角盔與原盔紋",
+            "橙色盾紋及原直立長兵器",
+            "地圖黃眼點、DATO灰白眼縫"
+          ],
+          "comparison_label": "原版同號DATO／原名冊地圖圖源，非480對話頭像驗收"
+        },
+        {
+          "group": 85,
+          "name": "深藍角盔守衛",
+          "portrait_file": "remake/assets/portraits/DATO_085_m0.png",
+          "portrait_sha256": "a7261aca06e0dbf96bac7355d3b56ae063f730876ba4d9f8fd3694b93e8f3977",
+          "traits": [
+            "深藍角盔與紅眼縫",
+            "中央暗圓盾紋",
+            "原直立長兵器與紅腰布"
+          ],
+          "comparison_label": "原版同號DATO／原名冊地圖圖源，非480對話頭像驗收"
+        },
+        {
+          "group": 86,
+          "name": "灰綠尖面盔守衛",
+          "portrait_file": "remake/assets/portraits/DATO_086_m0.png",
+          "portrait_sha256": "2db1fd1824397a4259116f1f2c7d630dcc2004780ce813d1ed30892c74c6f1d6",
+          "traits": [
+            "灰綠尖面盔與暗眼縫",
+            "方盾暗紋紫中心及藍背側輪廓",
+            "原棕桿灰綠上端持物，種類未知"
+          ],
+          "comparison_label": "原版同號DATO／原名冊地圖圖源，非480對話頭像驗收"
+        },
+        {
+          "group": 87,
+          "name": "成熟弓形持物兵",
+          "portrait_file": "remake/assets/portraits/DATO_087_m0.png",
+          "portrait_sha256": "c2fa70eb4ff64dda54bf77063e4681da4e33cc14b21da57b7814d3bc0c9899a0",
+          "traits": [
+            "灰綠帽盔藍前飾及成熟露下臉",
+            "長鼻、下垂嘴角與方下巴",
+            "棕色弓形持物、箭袋與藍背布"
+          ],
+          "comparison_label": "原版同號DATO／原名冊地圖圖源，非480對話頭像驗收"
+        }
+      ],
+      "roster_bindings": [
+        {
+          "group": 84,
+          "map": 25,
+          "roster_file": "remake/assets/maps/map25/map25_units.json",
+          "roster_sha256": "3e0f0b15309239b79066b236f9f8bd8a399d9f7705194a7fc4ecdf10437b82f2",
+          "row": 3,
+          "initial_group": 0,
+          "camp": "enemy",
+          "portrait": 84,
+          "battle_fig": 84,
+          "position": {
+            "x_word": 1,
+            "y_word": 9,
+            "raw_key": 84
+          },
+          "native_constructor": {
+            "branch": "high_class",
+            "index": 16,
+            "record": [
+              1,
+              11,
+              44,
+              0,
+              4,
+              26,
+              12,
+              4,
+              8,
+              180
+            ]
+          }
+        },
+        {
+          "group": 85,
+          "map": 19,
+          "roster_file": "remake/assets/maps/map19/map19_units.json",
+          "roster_sha256": "cd30276b48d06187ced69c4e7ee0c0c7c749a38a7484b9e132da5eb78313e424",
+          "row": 45,
+          "initial_group": 0,
+          "camp": "enemy",
+          "portrait": 85,
+          "battle_fig": 85,
+          "position": {
+            "x_word": 22,
+            "y_word": 18,
+            "raw_key": 85
+          },
+          "native_constructor": {
+            "branch": "high_class",
+            "index": 17,
+            "record": [
+              1,
+              3,
+              48,
+              0,
+              0,
+              22,
+              6,
+              5,
+              8,
+              160
+            ]
+          }
+        },
+        {
+          "group": 86,
+          "map": 25,
+          "roster_file": "remake/assets/maps/map25/map25_units.json",
+          "roster_sha256": "3e0f0b15309239b79066b236f9f8bd8a399d9f7705194a7fc4ecdf10437b82f2",
+          "row": 10,
+          "initial_group": 0,
+          "camp": "enemy",
+          "portrait": 86,
+          "battle_fig": 86,
+          "position": {
+            "x_word": 2,
+            "y_word": 16,
+            "raw_key": 86
+          },
+          "native_constructor": {
+            "branch": "high_class",
+            "index": 18,
+            "record": [
+              1,
+              19,
+              31,
+              0,
+              0,
+              16,
+              7,
+              3,
+              9,
+              80
+            ]
+          }
+        },
+        {
+          "group": 87,
+          "map": 7,
+          "roster_file": "remake/assets/maps/map7/map7_units.json",
+          "roster_sha256": "092cfe28419b4fe1d1e779e3bdb936933c6e799d26ea5a2c238ba9827f818d7b",
+          "row": 16,
+          "initial_group": 0,
+          "camp": "enemy",
+          "portrait": 87,
+          "battle_fig": 87,
+          "position": {
+            "x_word": 8,
+            "y_word": 18,
+            "raw_key": 87
+          },
+          "native_constructor": {
+            "branch": "high_class",
+            "index": 19,
+            "record": [
+              1,
+              4,
+              12,
+              0,
+              0,
+              4,
+              2,
+              2,
+              4,
+              40
+            ]
+          }
+        }
+      ],
+      "mode": "four-new-original-roster",
+      "new_image_generation_calls": 4,
+      "new_final_masters": 4,
+      "rejected_candidates": 0,
+      "reused_files": 0,
+      "new_art_files": 100,
+      "original_reference": {
+        "source": "同號DATO、原始名冊、FDICON十二姿態三層與FDOTHER0色盤；只證固定資料與圖源",
+        "groups": [
+          84,
+          85,
+          86,
+          87
+        ],
+        "records_file": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/native-reference.json",
+        "records_sha256": "ffdce6862812dc9a2fcc3dc2b5ba3b4978192fa048321f3834de24bd009534ca",
+        "reference_boards": [
+          {
+            "file": "group-084-original.png",
+            "sha256": "fede2605159c3e84efad023cb81922e99dd94eb3a9423084db51e1d35ca60b85"
+          },
+          {
+            "file": "group-085-original.png",
+            "sha256": "b1e1d9b598669f97364ba121ba639eeaaf817c5a077329b8530c5ba721b2f4d6"
+          },
+          {
+            "file": "group-086-original.png",
+            "sha256": "7ade9cbcab1c1d74db9f3fca0b95866b885b6c93edbb3bf67a13b519d4796b1b"
+          },
+          {
+            "file": "group-087-original.png",
+            "sha256": "09864419268b930b2aa991b8d1aaed31136cbcd47e5f5dc73f24174efb77183d"
+          }
+        ]
+      },
+      "alpha_quality_review": {
+        "file": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/alpha-contract-review-r2.json",
+        "sha256": "c7b668456801a3d4ecf61a238a48dd738276bcb5f76f2d9a0bf8521161927b44",
+        "scope": "沿既有版本化規格逐姿態驗證，來源alpha及編製器保持。"
+      }
+    },
+    "gpu": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/gpu-four-r2-capture/receipt.json",
+        "sha256": "07c399b5f2de6a2a8dfb13ba8f34ada0cca22dd60821e12e2ed487e54717173c"
+      },
+      "independent_and_registration": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/registration-r2.json",
+        "sha256": "5fee7c63e0f0b0552e2ccd75e535ba5c4a77bb813063e78b104f52f2de8fdc35"
+      },
+      "cases": 28,
+      "pngs": 24,
+      "f2": 4,
+      "core_pixels": 332204,
+      "rejected_mutants": [
+        "missing",
+        "duplicate",
+        "catalog",
+        "source-code",
+        "false-save",
+        "wrong-hud",
+        "wrong-tolerance",
+        "missing-f2",
+        "wrong-profile",
+        "wrong-selector",
+        "wrong-identity",
+        "undisclosed-projection",
+        "wrong-enemy-camp",
+        "wrong-enemy-position",
+        "wrong-enemy-roster",
+        "missing-part",
+        "duplicate-part",
+        "wrong-part-source",
+        "wrong-part-group",
+        "wrong-part-memory",
+        "actual-black-png"
+      ],
+      "pairs": {
+        "red-and-navy": [
+          84,
+          85
+        ],
+        "masked-and-bow": [
+          86,
+          87
+        ]
+      },
+      "projection_groups": [],
+      "unprojected_groups": [
+        84,
+        85,
+        86,
+        87
+      ],
+      "authored_roster_fixture": true,
+      "scope": "完整四組候選分兩份，各14次Game.Draw、12PNG與兩次F2；原名冊camp／portrait／BattleFig／位置逐actor核對，不作自然章節可達或EXE動態。"
+    },
+    "normal_compatibility": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/normal-r2-capture/receipt.json",
+        "sha256": "16b173416cc444f0e059f62b7bd642bad685b512172c33a70dfeaa1d4613eddf"
+      },
+      "pngs": 10,
+      "source_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "binary_sha256": "5e0c0584aa2aa6798d53b2e5924b9dd154ec7034f3bc10a981f74b5f4abc6880",
+      "state_injection": false,
+      "scope": "unchanged chapter1 ordinary save checks complete fixed roster pack admission, four controls, walk/cancel and save/cold LOAD; new actors only by fixed authored roster pair fixtures, not natural chapter progression or persistent player identities"
+    },
+    "source_regression": {
+      "tests": 4,
+      "source_rejections": 14,
+      "exact_rebuild": true,
+      "candidate_directory": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/candidate-conformed",
+      "tool": {
+        "file": "tools/test_fd2_hd1_chibi_party.py",
+        "sha256": "f93e88a4a92c0de3be17187d82d6583815ea28aa88bd2f498c3fa7ce02885152"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/source-r2.log",
+        "sha256": "0a19efa0e18c45ffb94c44eb9f998eb5b34449e12b1e8dd889314bb0338348df"
+      },
+      "resource_warnings": 4
+    },
+    "legacy_source_regressions": [
+      {
+        "mode": "four-reused",
+        "tests": 4,
+        "source_rejections": 17,
+        "exact_rebuild": true,
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r23/legacy-reuse-source-r2.log",
+          "sha256": "e6e55f15e83373a4b21551cbeeb00033576f4fee5f357f27f7f1a9ab288bede4"
+        },
+        "reused_existing_receipt": true,
+        "resource_warnings": 4
+      },
+      {
+        "mode": "three-new-one-reused",
+        "tests": 4,
+        "source_rejections": 17,
+        "exact_rebuild": true,
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r23/legacy-mixed-source-r2.log",
+          "sha256": "7a700af589d19eb54e6bb2f4c53d8debbde634879eca1ed6154e30fae2c419a7"
+        },
+        "reused_existing_receipt": true,
+        "resource_warnings": 7
+      }
+    ],
+    "regression": {
+      "top_level_passed": 24,
+      "skipped_special_gpu": 2,
+      "skips_count_as_pass": false,
+      "source_tree_sha256": "8fb7e66b402308504ef35503a6c46565d5699073ab60e2c3ff58714b95e29251",
+      "source_file_count": 1196,
+      "production_go_changed": false,
+      "changed_go_is_test_only": true,
+      "string_inventory_tests_passed": true,
+      "legacy_gpu_parts_reader": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/legacy-parts-r2.json",
+        "sha256": "2ab73ce3feb7f6cb59f14eb014d283000506ddd7fe254b9ac707f0d8e0176493"
+      },
+      "legacy_scope": "15種舊分份、六批轉職配方及三種共用契約核對，不重跑或升格舊GPU。"
+    },
+    "consumer_inventory": {
+      "report": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/consumers-verified-r2.json",
+        "sha256": "f600d64cf8de7c272e33762d8a139d36775dca1fda5ded3bb8d85be49008ca02"
+      },
+      "cases": 21,
+      "unique_frames": 416,
+      "rejected": [
+        "wrong-archive",
+        "wrong-resource",
+        "wrong-frame",
+        "wrong-pixels",
+        "wrong-mask",
+        "missing-case",
+        "false-gpu",
+        "missing-hd",
+        "wrong-code",
+        "wrong-command",
+        "wrong-packed",
+        "wrong-descriptor",
+        "missing-map-route",
+        "wrong-lmi-kind",
+        "wrong-lmi-pixels",
+        "wrong-lmi-entry",
+        "missing-lmi-hd",
+        "wrong-map-mask",
+        "missing-map-mask-hd"
+      ]
+    },
+    "catalog": {
+      "status": "REGISTERED-CHIBI-PARTY",
+      "catalog_sha256": "f1e3e87443ae0fd58fee877b98427d55c9ea70beb876eb3f7397ab11a2fa7ce8",
+      "changed_entries": 8,
+      "unchanged_entries": 875,
+      "asset_files": 100,
+      "new_files": 100,
+      "reused_files": 0,
+      "full_validation": {
+        "status": "PASS",
+        "assets": 883,
+        "command_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/commands-r2.json",
+        "command_key": "catalog_validation_command"
+      }
+    },
+    "private": {
+      "baseline_commit": "548c5f594f85d560985ca0a25ae1e2175000b041",
+      "preservation": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/private-preservation-r2.json",
+        "sha256": "37ee739cb0d66615e1cf7a6ea19bcfa997de7ab08eacf7330e5b45046c1f0fbb"
+      },
+      "allowlist_files": 6918,
+      "new_files": 100,
+      "reused_files": 0,
+      "metadata_only": false,
+      "commit": "343f1cabe56a661e6a00bf44b86ed4984c01c876",
+      "pushed": true,
+      "remote_verified": true
+    },
+    "review": {
+      "source_groups": 125,
+      "source_frames": 1455,
+      "other121_groups_source_equal": true,
+      "counts": {
+        "reference-keep": 2,
+        "new-q-review-keep": 79,
+        "redraw-q-proportion": 12,
+        "review-keep-pending-batch": 32
+      },
+      "q_redraw_reduced_from": 16,
+      "q_redraw_remaining": 12,
+      "priority_face_followup": [],
+      "all_redrawn": false,
+      "human_acceptance": false,
+      "gaia_explicit_user_acceptance": true,
+      "followup": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/visual-review-final.json",
+        "sha256": "2103db26f2087c6db29459709f68a638462d144e827adf67ff71d069de0b9c1c"
+      },
+      "group_decisions": {
+        "reference-keep": [
+          0,
+          9
+        ],
+        "new-q-review-keep": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          32,
+          33,
+          34,
+          36,
+          37,
+          38,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          58,
+          59,
+          60,
+          61,
+          62,
+          63,
+          64,
+          65,
+          68,
+          70,
+          71,
+          72,
+          73,
+          76,
+          77,
+          78,
+          79,
+          80,
+          81,
+          82,
+          83,
+          84,
+          85,
+          86,
+          87,
+          89,
+          125,
+          133
+        ],
+        "redraw-q-proportion": [
+          19,
+          31,
+          35,
+          67,
+          69,
+          88,
+          91,
+          93,
+          94,
+          95,
+          106,
+          111
+        ],
+        "review-keep-pending-batch": [
+          66,
+          74,
+          75,
+          90,
+          92,
+          96,
+          97,
+          98,
+          99,
+          100,
+          101,
+          102,
+          103,
+          107,
+          108,
+          109,
+          110,
+          112,
+          113,
+          114,
+          115,
+          116,
+          117,
+          118,
+          119,
+          120,
+          122,
+          123,
+          124,
+          126,
+          134,
+          135
+        ]
+      },
+      "face_review_states": {
+        "1": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "4": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "5": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "6": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "7": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "8": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "10": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "11": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "12": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "13": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "14": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "15": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "16": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "17": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "18": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "20": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "21": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "22": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "23": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "24": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "25": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "26": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "27": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "28": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "29": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "32": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "33": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "34": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "36": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "37": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "38": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "40": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "41": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "42": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "43": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "44": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "45": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "46": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "47": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "49": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "50": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "51": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "52": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "54": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "55": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "56": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "58": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "59": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "60": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "61": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "62": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "63": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "64": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "65": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "68": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "71": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "72": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "78": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "80": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "81": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "82": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "83": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "84": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "85": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "86": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "87": "AGENT-ORIGINAL-PORTRAIT-REVIEWED"
+      }
+    },
+    "resources": {
+      "gpu-red-and-navy": {
+        "elapsed_seconds": 265.098,
+        "peak_bytes": 5426044928,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "gpu-masked-and-bow": {
+        "elapsed_seconds": 321.387,
+        "peak_bytes": 5150859264,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "normal": {
+        "elapsed_seconds": 526.628,
+        "peak_bytes": 4970360832,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "regression": {
+        "elapsed_seconds": 227.386,
+        "peak_bytes": 1514106880,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      }
+    },
+    "public_figures": [
+      {
+        "file": "docs/figures/hd1-enemy-red-and-navy-faces.png",
+        "sha256": "887bb0918e950b1d5570fd828b3f382635a672743ff2bd75db3ebf280a980dc5",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/red-and-navy-faces-r2.png",
+          "sha256": "887bb0918e950b1d5570fd828b3f382635a672743ff2bd75db3ebf280a980dc5"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-enemy-red-and-navy-comparison.png",
+        "sha256": "611a3419992540323054d4521510f7ef61441822fb6a359ce1eb81d8d112608f",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/red-and-navy-comparison-r2.png",
+          "sha256": "611a3419992540323054d4521510f7ef61441822fb6a359ce1eb81d8d112608f"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-enemy-masked-and-bow-faces.png",
+        "sha256": "4a2fcb34bdd039ce3e6f906c471c3475ad5e9b68897172d92a81d7303573fb57",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/masked-and-bow-faces-r2.png",
+          "sha256": "4a2fcb34bdd039ce3e6f906c471c3475ad5e9b68897172d92a81d7303573fb57"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-enemy-masked-and-bow-comparison.png",
+        "sha256": "d709c128d87d52b6287a50dce5ac7bec5faa945243dbd4e3838df65495365519",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/masked-and-bow-comparison-r2.png",
+          "sha256": "d709c128d87d52b6287a50dce5ac7bec5faa945243dbd4e3838df65495365519"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-enemy-084-refresh-game.png",
+        "sha256": "46a53aff4060f965102374f9cb2c5698f3c2ccd768e963646d54828a8afdc643",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/gpu-red-and-navy-r2-capture/party-g084-f00-ui-hd.png",
+          "sha256": "46a53aff4060f965102374f9cb2c5698f3c2ccd768e963646d54828a8afdc643"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-enemy-085-refresh-game.png",
+        "sha256": "9595d3c10d5a1287cb8b2b62ff72d27546aefb078543b9665c15b178f6499ee0",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/gpu-red-and-navy-r2-capture/party-g085-f00-ui-hd.png",
+          "sha256": "9595d3c10d5a1287cb8b2b62ff72d27546aefb078543b9665c15b178f6499ee0"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-enemy-086-refresh-game.png",
+        "sha256": "b46d7066442012935dcc6be9dbc47f6b820643fccd76dd868e31ebc3c787ebd0",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/gpu-masked-and-bow-r2-capture/party-g086-f00-ui-hd.png",
+          "sha256": "b46d7066442012935dcc6be9dbc47f6b820643fccd76dd868e31ebc3c787ebd0"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-enemy-087-refresh-game.png",
+        "sha256": "9b5f4aa394ca18b2c474b543c813e8dcff529a4c5d4d442b4a997c2b5af4803d",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/gpu-masked-and-bow-r2-capture/party-g087-f00-ui-hd.png",
+          "sha256": "9b5f4aa394ca18b2c474b543c813e8dcff529a4c5d4d442b4a997c2b5af4803d"
+        }
+      }
+    ],
+    "references": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/base-catalog.json",
+        "sha256": "d26db7d8314556a80f6e95aaa7f5feb59c88a696f92da33bfe83953301148f7b"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/alpha-contract-review-r2.json",
+        "sha256": "c7b668456801a3d4ecf61a238a48dd738276bcb5f76f2d9a0bf8521161927b44"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/native-reference.json",
+        "sha256": "ffdce6862812dc9a2fcc3dc2b5ba3b4978192fa048321f3834de24bd009534ca"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/candidate-conformed/catalog.json",
+        "sha256": "f71ccbc745184039e1983f55f209e1cdcb5a5bc3f9f16c317bc3221172617998"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/candidate-conformed/manifest.json",
+        "sha256": "8d57f40bc8bb9f8a8fdd1845cd8b309292184173e28f5c0fe29416c38e68ce8e"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/gpu-four-r2-capture/receipt.json",
+        "sha256": "07c399b5f2de6a2a8dfb13ba8f34ada0cca22dd60821e12e2ed487e54717173c"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/gpu-red-and-navy-r2-capture/receipt.json",
+        "sha256": "04a6ce8d415f0db6308aa205a038cb3640b7768b450719e65980a28e0e267ecc"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/gpu-masked-and-bow-r2-capture/receipt.json",
+        "sha256": "77af7bc0c28a01e6e8f3b12e4d9ca90be20484b278810d861a487b92de2cbf3a"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/normal-r2-capture/receipt.json",
+        "sha256": "16b173416cc444f0e059f62b7bd642bad685b512172c33a70dfeaa1d4613eddf"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/registration-r2.json",
+        "sha256": "5fee7c63e0f0b0552e2ccd75e535ba5c4a77bb813063e78b104f52f2de8fdc35"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/source-r2.log",
+        "sha256": "0a19efa0e18c45ffb94c44eb9f998eb5b34449e12b1e8dd889314bb0338348df"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/legacy-source-reuse-r2.json",
+        "sha256": "0964fc881d6b864339645e3ce29f30afd30b032383dbd2ab3c17d1b8a04e702a"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/regression-r2.log",
+        "sha256": "71fd671b46426c4a12424a5517ebd2da64dd5f1c19a49911c508451fda8695b2"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/consumers-r2.json",
+        "sha256": "be535beb7320e12a9409bc348fbf6bd396b0ea27ecbd36b1ff73e1f848b8a3d7"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/consumers-verified-r2.json",
+        "sha256": "f600d64cf8de7c272e33762d8a139d36775dca1fda5ded3bb8d85be49008ca02"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/formal-coverage.json",
+        "sha256": "919ef53d14faadc574310e5cade016df7d3e922ae83dd3e291c1b5d77631cfe8"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/review-final/receipt.json",
+        "sha256": "7e1061d4e5dd0780e874978e457648407f6543a201e6ce7fe171928cb249bfd0"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/visual-review-final.json",
+        "sha256": "2103db26f2087c6db29459709f68a638462d144e827adf67ff71d069de0b9c1c"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/private-preservation-r2.json",
+        "sha256": "37ee739cb0d66615e1cf7a6ea19bcfa997de7ab08eacf7330e5b45046c1f0fbb"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/public-figures-r2.json",
+        "sha256": "c06883c50c32ea13fe8c66f88a574ec74fe3229b1e3238004ca3fbb345266fd8"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/commands-r2.json",
+        "sha256": "8e8d87983a7f3908e78c56f6d76ab9eb416fd23744627b598b1b1a3b11673431"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/legacy-parts-r2.json",
+        "sha256": "2ab73ce3feb7f6cb59f14eb014d283000506ddd7fe254b9ac707f0d8e0176493"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/gpu-red-and-navy-r2.memory.json",
+        "sha256": "22c9245544919c8d61e88a3ccf0c8acd2c4f740335f28abf1be6ecd2bfab9a97"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/gpu-masked-and-bow-r2.memory.json",
+        "sha256": "d754f9d49557f9d71d7eea03bf8e81e90b4b7e0952829edf20b7253837a151f2"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/normal-r2.memory.json",
+        "sha256": "c703d948714975d5176217030afe91c8184edaf84e3c1a5d5a36c9062bfad49c"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/regression-r2.memory.json",
+        "sha256": "36e646cddfa039a856831a07c467d4399e8a0e1ba5d552a43f2b22a224001c3f"
+      },
+      {
+        "file": "remake/assets/themes/modern/hd1-helm-bow-four-refresh.recipe.json",
+        "sha256": "90e050c260abfc6365c3f4642f0ffaee79f1164e25782bb9030595c372bd821e"
+      },
+      {
+        "file": "tools/verify_fd2_hd1_chibi_party.py",
+        "sha256": "a4787f85223db8299f26ad8d2e142b966486fc2bfcb85349668d49d3884d62bd"
+      },
+      {
+        "file": "tools/refresh_fd2_hd1_map_sprites.py",
+        "sha256": "f3220d47a6536d0201d4e57bd73e321714164bb6ca96762d7569c0c932af1462"
+      },
+      {
+        "file": "tools/test_fd2_hd1_chibi_party.py",
+        "sha256": "f93e88a4a92c0de3be17187d82d6583815ea28aa88bd2f498c3fa7ce02885152"
+      }
+    ],
+    "cleanup": {
+      "nonexpected_fd2_containers": 0,
+      "old_art_preserved": 9023,
+      "new_art_files": 100,
+      "recording_created": false
+    },
+    "limitations": [
+      "原始名冊只證固定圖源與受控展示，不新增EXE動態或自然章節驗收。",
+      "原版頭像只作地圖面容參考，不作480對話頭像驗收。",
+      "84地圖黃眼點、DATO灰白眼縫分列，保持地圖原色；86持物種類未知，只保留原始輪廓。",
+      "其餘人物、完整總覽及集中人工仍待；不聲稱全部面容通過。"
+    ],
+    "worklist": {
+      "open": 30,
+      "manual": 23,
+      "possibly_done": 0,
+      "issues_updated": [
+        286,
+        287
+      ]
+    },
+    "lessons": {
+      "total": 387,
+      "guarded": 241,
+      "check_passed": true
+    },
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r24/final-validation-r2.json",
+      "sha256": "7b112117ed7ddd15ba45af53412497d774c8c792af1a928b2aff3d693f248e5c"
     }
   }
 }
