@@ -170,8 +170,8 @@ func MoveNativePreparationRosterCursor(cursor, count int, scanCode byte) (int, e
 }
 
 // NativePreparationRosterPosition reproduces the ten-column coordinate
-// arithmetic at 0x31f30..0x31fb9. selected raises a unit sprite by three
-// pixels; the cursor has its own four-pixel vertical offset.
+// arithmetic at 0x31f30..0x31fb9. selected adds three to the unit Y
+// coordinate; the cursor has its own four-pixel vertical offset.
 func NativePreparationRosterPosition(index int, selected, cursor bool) (x, y int, err error) {
 	if index < 0 || index >= NativePreparationRosterMaximum {
 		return 0, 0, errors.New("fdother: preparation roster index is outside native bounds")
@@ -205,6 +205,11 @@ func BlitNativePreparationRoster(
 	selected []bool,
 	cursor, cycle int,
 ) error {
+	return blitNativePreparationRoster(dst, stride, units, cursorBank, selectorKeys, selected, cursor, cycle, true)
+}
+
+func blitNativePreparationRoster(dst []byte, stride int, units, cursorBank *fdicon.Bank,
+	selectorKeys []int, selected []bool, cursor, cycle int, drawUnits bool) error {
 	if stride < 320 || len(dst) < stride*200 || len(selectorKeys) == 0 ||
 		len(selectorKeys) > NativePreparationRosterMaximum ||
 		len(selected) != len(selectorKeys) || cursor < 0 || cursor >= len(selectorKeys) ||
@@ -219,6 +224,9 @@ func BlitNativePreparationRoster(
 		if err != nil {
 			return err
 		}
+		if len(sprite.Pixels) != fdicon.NativeSize*fdicon.NativeSize || len(sprite.Mask) != len(sprite.Pixels) {
+			return errors.New("fdother: incomplete native preparation unit sprite")
+		}
 		unitSprites[i] = sprite
 	}
 
@@ -231,6 +239,9 @@ func BlitNativePreparationRoster(
 		return err
 	}
 	for i, sprite := range unitSprites {
+		if !drawUnits {
+			continue
+		}
 		x, y, err = NativePreparationRosterPosition(i, selected[i], false)
 		if err != nil {
 			return err
@@ -270,6 +281,18 @@ func ComposeNativePreparationFrameOnBackground(
 	selected []bool,
 	cursor, cycle, limit int,
 ) ([]byte, error) {
+	return composeNativePreparationFrameOnBackground(background, assets, selectorKeys, selected, cursor, cycle, limit, true)
+}
+
+// ComposeNativePreparationFrameWithoutRosterUnits retains panel/count/cursor
+// writes and all native sprite preflight, omitting only the final unit subpass.
+func ComposeNativePreparationFrameWithoutRosterUnits(background []byte, assets *NativePreparationAssets,
+	selectorKeys []int, selected []bool, cursor, cycle, limit int) ([]byte, error) {
+	return composeNativePreparationFrameOnBackground(background, assets, selectorKeys, selected, cursor, cycle, limit, false)
+}
+
+func composeNativePreparationFrameOnBackground(background []byte, assets *NativePreparationAssets,
+	selectorKeys []int, selected []bool, cursor, cycle, limit int, drawUnits bool) ([]byte, error) {
 	if len(background) != 320*200 {
 		return nil, errors.New("fdother: preparation caller frame unavailable")
 	}
@@ -303,9 +326,9 @@ func ComposeNativePreparationFrameOnBackground(
 	if err := blitNativePreparationTwoDigits(assets.RemainingDigits, frame, 61, 73, limit-selectedCount); err != nil {
 		return nil, err
 	}
-	if err := BlitNativePreparationRoster(
+	if err := blitNativePreparationRoster(
 		frame, 320, assets.Units, assets.Cursor,
-		selectorKeys, selected, cursor, cycle,
+		selectorKeys, selected, cursor, cycle, drawUnits,
 	); err != nil {
 		return nil, err
 	}

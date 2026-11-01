@@ -285,9 +285,13 @@ END、離開、目前戰況保存／讀取與全軍移動的確認視窗已接HD
 
 離開城鎮時，手繪背景與Q版人物沿原有步驟縮放、淡出至全黑。上圖為受控轉場的實際繪製；介面與美術仍可獨立切換，範圍依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
 
+![HD整備選人名冊](docs/figures/hd1-preparation-roster-game.png)
+
+整備名冊沿原版排序、選取位移與三拍動畫顯示 Q 版人物，F2 可切回原圖。上圖由標題 LOAD 既有第24章存檔進入，存檔含攻略建構與清敵歷史；內建標籤等介面依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)續作。
+
 ![HD整備提示的頭像與古金框](docs/figures/hd1-preparation-dialogue-game.png)
 
-整備提示已接HD頭像、古金框與四語按鈕，沿原有開收框和選項操作。人物美術與介面可獨立切換。上圖為一般標題LOAD與鍵盤操作畫面；選人圖示等介面仍依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)接續補齊。
+整備提示已接HD頭像、古金框與四語按鈕，沿原有開收框和選項操作。人物美術與介面可獨立切換。上圖為一般標題LOAD與鍵盤操作畫面；內建標籤等介面仍依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)接續補齊。
 
 ![HD1古金雙層對話框的普通父王對話](docs/figures/hd1-gold-dialogue-game.png)
 

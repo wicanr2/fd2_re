@@ -179,3 +179,51 @@ func TestDecodeAndComposeNativePreparationAssetsFromPlayerArchive(t *testing.T) 
 		t.Fatal("整備剩餘人數錯用 quota 字形時畫面未改變")
 	}
 }
+
+func TestNativePreparationRosterLayerReconstructsOriginal(t *testing.T) {
+	units := preparationUnitBank(2, 3)
+	cursor := &fdicon.Bank{Sprites: []fdicon.Sprite{solidPreparationSprite(0x55)}}
+	keys, selected := make([]int, 30), make([]bool, 30)
+	for i := range keys {
+		keys[i] = 2 + i%2
+		selected[i] = i%2 == 0
+	}
+	for cycle := 0; cycle < 3; cycle++ {
+		before := bytes.Repeat([]byte{0x44}, 64000)
+		full := append([]byte(nil), before...)
+		layer := append([]byte(nil), before...)
+		if err := BlitNativePreparationRoster(full, 320, units, cursor, keys, selected, 29, cycle); err != nil {
+			t.Fatal(err)
+		}
+		if err := blitNativePreparationRoster(layer, 320, units, cursor, keys, selected, 29, cycle, false); err != nil {
+			t.Fatal(err)
+		}
+		for i, key := range keys {
+			sprite, err := units.SpriteFor(key, 0, cycle)
+			if err != nil {
+				t.Fatal(err)
+			}
+			x, y, _ := NativePreparationRosterPosition(i, selected[i], false)
+			if selected[i] {
+				err = sprite.BlitAt(layer, 320, x, y)
+			} else {
+				err = sprite.BlitPaletteBand(layer, 320, x, y)
+			}
+			if err != nil {
+				t.Fatal(err)
+			}
+		}
+		if !bytes.Equal(full, layer) {
+			t.Fatal("original unit order or background changed", cycle)
+		}
+	}
+	units.Sprites[2*12] = fdicon.Sprite{}
+	untouched := bytes.Repeat([]byte{0x44}, 64000)
+	if err := blitNativePreparationRoster(untouched, 320, units, cursor, []int{2}, []bool{true}, 0, 0, false); err == nil || !bytes.Equal(untouched, bytes.Repeat([]byte{0x44}, 64000)) {
+		t.Fatal("omitted malformed unit bypassed native geometry preflight")
+	}
+	invalid := bytes.Repeat([]byte{0x44}, 64000)
+	if err := blitNativePreparationRoster(invalid, 320, units, cursor, []int{999}, []bool{true}, 0, 0, false); err == nil || !bytes.Equal(invalid, bytes.Repeat([]byte{0x44}, 64000)) {
+		t.Fatal("hidden units bypassed native preflight or changed destination")
+	}
+}

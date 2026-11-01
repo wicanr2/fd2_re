@@ -299809,5 +299809,218 @@
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-dialogue-r41/final-validation-r1.json",
       "sha256": "f1546506111fa8593865085e866082bdd9c30eb716d4bdb18428001175f530a8"
     }
+  },
+  "hd1_preparation_roster_followup_20261102": {
+    "date": "2026-11-02",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1/NORMAL-GUI",
+    "base_commit": "6a7d0ec3882bfed21da766ee68758fa62ba0b098",
+    "scope": "existing HD map sprites in preparation roster using original raw selector keys, coordinates, cycle, selection and established HD palette-band tint",
+    "full_hd1_complete": false,
+    "human_accepted": false,
+    "new_original_e2": false,
+    "new_assets": false,
+    "source_evidence": {
+      "ready": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-roster-r42/ready.json",
+        "sha256": "4862496984dc5893d172cfe5d6027985c06f83eba4478de0249c2044f13609a5"
+      },
+      "baseline_references": [
+        {
+          "source_path": "docs/data/ida/fd2_town_preparation_background_20261002.json",
+          "baseline_sha256": "208bb2cffefe8706a9d4f701faad06950081ed2e18954bd87c7d653d6f79722a",
+          "baseline_commit": "6a7d0ec3882bfed21da766ee68758fa62ba0b098"
+        },
+        {
+          "source_path": "remake/internal/fdother/preparation_roster.go",
+          "baseline_sha256": "34d4ea0be18f8230e5b342839765ba868e34eb79d487057a66c42e174d5b864e",
+          "baseline_commit": "6a7d0ec3882bfed21da766ee68758fa62ba0b098"
+        },
+        {
+          "source_path": "remake/internal/fdicon/fdicon.go",
+          "baseline_sha256": "f291b914eb755cf3fcd627770ab2e10388a13c9b2822df434d05f5333f665121",
+          "baseline_commit": "6a7d0ec3882bfed21da766ee68758fa62ba0b098"
+        },
+        {
+          "source_path": "remake/cmd/fd2/modern_hd_map_gpu.go",
+          "baseline_sha256": "d7164accbc38c0834d0cafbecb6f7761aa97875abb031a394702e5abf7233c76",
+          "baseline_commit": "6a7d0ec3882bfed21da766ee68758fa62ba0b098"
+        },
+        {
+          "source_path": "remake/assets/themes/modern/catalog.json",
+          "baseline_sha256": "9e31b510d0c11fb6b5e931718c9b915db45bf5492be20aa1fc638a96fd81e49e",
+          "baseline_commit": "6a7d0ec3882bfed21da766ee68758fa62ba0b098"
+        }
+      ]
+    },
+    "source": {
+      "go_files": 1204,
+      "go_tree_sha256": "918dc6aa6307d7d06c8a7f650e6ffe4f2dd536b8a18e3e39d097d5a71df5c9dc",
+      "consumer": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-roster-r42/consumers-r2.json",
+        "sha256": "a1810a866cee4ff24a83bfa782f1f7be52e96a273e70da28240cf961d74806e4"
+      },
+      "binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-roster-r42/fd2-player-r2",
+        "sha256": "432193eb3924aab720a1812a30d57823d649288e8913e0c0085c480a2aedff1e"
+      },
+      "production_go_unchanged_after_binary": true,
+      "commands": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-roster-r42/commands.json",
+        "sha256": "c24c9ea5c3d683daa00272706014b5de09c87081a1953164b62d9c4f1dc5a39b"
+      },
+      "catalog": {
+        "file": "remake/assets/themes/modern/catalog.json",
+        "sha256": "9e31b510d0c11fb6b5e931718c9b915db45bf5492be20aa1fc638a96fd81e49e"
+      },
+      "registered_assets": 906,
+      "runtime_catalog": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/runtime-r2/assets/themes/modern/catalog.json",
+        "sha256": "a30638494525607a21145f7b7257a6d07f10c5178d137a7a3d8a341ed3724fa6"
+      },
+      "asset_entries_equal_formal": true,
+      "implementation": [
+        {
+          "file": "remake/cmd/fd2/modern_hd_preparation_roster.go",
+          "sha256": "c9f7e0f22c644a8ca194354b1790a875a8a7d0c65c0f92d0db76d9880fd74057"
+        },
+        {
+          "file": "remake/internal/fdother/preparation_roster.go",
+          "sha256": "d0810e242c8f1fbb512227dcfe7da56981c0f4f9de4fc373089774dc5c2b37b5"
+        }
+      ]
+    },
+    "gpu": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-roster-r42/gpu-r2-capture/receipt.json",
+        "sha256": "2569f4231268a36bd3b3843efff43bd015e51967c78a9103a39521118a3a6362"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-roster-r42/gpu-r2.memory.json",
+        "sha256": "b6e4d0777a7d0aea15694c8b8f0b7fae984d25471a8beda037761b233a5e4cf6"
+      },
+      "cases": 96,
+      "roster_slots": 30,
+      "town_variants": 3,
+      "standalone_black": true,
+      "cycles": 3,
+      "independent_styles": 4,
+      "selection_patterns": 2,
+      "png": 17,
+      "source_pixels": {
+        "roster_pixels": 29859840,
+        "roster_cores": 14640672,
+        "roster_transparent": 13289664,
+        "roster_band_pixels": 14929920,
+        "background_pixels": 31896,
+        "native_pixels": 12097920,
+        "native_final_pixels": 10439040
+      },
+      "reference": "CPU premultiplied-alpha Over with original opaque panel/cursor underlay; existing HD tint 0.55/0.55/0.6; RGB tolerance2",
+      "complete_toolbar_game_pixels_equal": true,
+      "raw_selector_fixtures": [
+        0,
+        1,
+        2,
+        50,
+        118
+      ],
+      "fixture_is_identity_claim": false
+    },
+    "normal_gui": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-roster-r42/normal-r1-capture/receipt.json",
+        "sha256": "47c80c659c11b30ecd05d1a0aec3f4f36619f325b9363556faba3e756566b291"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-roster-r42/normal-r1.memory.json",
+        "sha256": "ff269e1be417d0915eac18f5f8f8257a1541e55e68c91b738ca498fed5771923"
+      },
+      "png": 17,
+      "source_native_sha256": "22bd63070189e0e6703e14d4bd4db8dc1f66452a21128dd5154579171ecbea63",
+      "saved_native_sha256": "d5f39666ae53f7b55438a1d4658d38b47a301e434c8aaed65c5ed6fac73fae09",
+      "theme_save_bytes_equal": true,
+      "source_unchanged": true,
+      "scope": "正常標題LOAD既有第24章原生槽；祖先為攻略建構政策與清敵續玩，並非自然難度。保存槽1、選人、確認或必選訊息與取消均走普通鍵盤；不宣稱連續戰役或原版對拍。",
+      "normal_transition_exact_png_claimed": false
+    },
+    "regression": {
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-roster-r42/regression-r1.memory.json",
+        "sha256": "4fc28a52f130c27836e8b01d65a8e7f2bcc560287ba1bd0c009479fdfbd0d0a7"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-roster-r42/regression-r1.log",
+        "sha256": "c36fd8be77273cac561ec95bb78b7811788e66541861bd18fc911d0bf5f94fb0"
+      },
+      "top_level_passed": 107,
+      "skipped": [
+        "TestModernHDMapActualCandidateWorld",
+        "TestModernHDMapOverviewGPU",
+        "TestModernHDPreparationRosterRuntimeGPU",
+        "TestModernHDPreparationTownBackgroundRuntimeGPU",
+        "TestModernHDPreparationDialogueRuntimeGPU",
+        "TestModernHDTownDepartureRuntimeGPU",
+        "TestNativeTownDepartureFromOracle"
+      ],
+      "skips_are_not_passes": true,
+      "native_reconstruction": true,
+      "native_preflight_rejections": [
+        "out of bank key",
+        "incomplete source pixels/mask"
+      ],
+      "consumer_validation": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-roster-r42/consumers-verified-r1.json",
+        "sha256": "631438c746c190b768fae55425965f85b34f5f161d3878b1a74a3ff50423880d"
+      },
+      "string_migration": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-roster-r42/string-review-migration.json",
+        "sha256": "7008cfa56f4c5b517f4411a7f1f43dd8a2c7b8c4c8ce226fc929ba20ad10dff6"
+      },
+      "repeat_inventory_unchanged": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-roster-r42/string-review-migration-r2.json",
+        "sha256": "3516f1174ed938a243965a601d93bba6c54cae1fb2b1a4cd85d59164ec618141"
+      },
+      "source_rejections": [
+        "missing HD frame",
+        "wrong HD dimensions",
+        "missing selector key",
+        "out of bank key",
+        "invalid cursor",
+        "confirmation owner",
+        "save slots owner",
+        "active transition job",
+        "original artwork mode"
+      ],
+      "owner_reset_and_native_source_clock_rng_save_unchanged": true
+    },
+    "diagnostics": {
+      "gpu_r1": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-roster-r42/gpu-r1.memory.json",
+        "sha256": "e6c0778219ad2d2c3f917eeb5de6f13d31fef92ca991c6ce38ca8402369e9d0a"
+      },
+      "classification": "fixture invalid unit record after previous variant replaced party; original valid party restored per variant; no product workaround or tolerance change"
+    },
+    "public_png": {
+      "file": "docs/figures/hd1-preparation-roster-game.png",
+      "sha256": "96452e103cf88560d6d849558413c4824c9aff079884bc913c6343b6858b84d5"
+    },
+    "private_assets": {
+      "changed": false,
+      "head": "e2147650d71c86d7c627dd82367cf0633e0cea97"
+    },
+    "remaining_ui": [
+      "preparation baked labels/count icons/cursor",
+      "preparation status-card presentation",
+      "other formal native UI coverage"
+    ],
+    "limits": [
+      "HD unselected tint reuses existing map approximation; original palette-band index formula remains unchanged.",
+      "No new character identity, portrait binding, rule, save format, original E2, full chapter, manual appearance or platform claim.",
+      "Terrain remains 3180 missing slots / 2033 unique source contents."
+    ],
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-roster-r42/final-validation-r1.json",
+      "sha256": "c5815cbf5021fc46256adeca592d86ea60ee2dc0db2349715427f982c12d820f"
+    }
   }
 }

@@ -590,6 +590,7 @@ type Game struct {
 	nativeDialogueModernPortrait        *modernStoryPortraitFrame                   // 目前對話拍的靜態閉嘴真彩色層
 	modernHDOverlay                     *modernHDOverlay                            // 本次Draw實際呈現的高解析頭像
 	modernHDScene                       *modernFacilitySceneOverlay
+	preparationRosterHD                 *modernPreparationRoster
 	modernHDPanelPortraits              []*modernHDOverlay
 	playerThemeRequested                bool
 	playerInterfaceRequested            bool
@@ -9253,6 +9254,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	g.nativeInterfaceHUDVisible = false
 	g.modernHDOverlay = nil
 	g.modernHDScene = nil
+	g.preparationRosterHD = nil
 	g.modernHDPanelPortraits = nil
 	g.modernHDBattleVisible = false
 	g.syncModernHDBattleOwner()

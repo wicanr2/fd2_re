@@ -5703,3 +5703,20 @@ seed7 與 clock1000 驗二十六拍、各階段 F2、獨立 CPU 世界／最終�
 78頂層Go通過，六個可選GPU／oracle略過不計。原始DATO75完整80×80鏡像blit、材質快取、原生來源hash／缺頭像／缺件與無效配方回退、F2／F11、原生快取與保存保持通過。1202份Go指紋、21消費來源／416幀／19反例及155字串處置記於主收據。普通第二章旅館LOAD、整備NO、F2、F5／F9再YES，十二PNG、十一離城邊界及原存檔SHA保持；沒有新增普通轉場逐幀或原版E2聲明。
 
 [普通整備提示](../figures/hd1-preparation-dialogue-game.png)使用既有DATO75 HD主稿與定版古金框。頭像隨F2、框線與四語按鈕隨F11，原生嘴型仍運行但HD維持既有閉口近似。906素材與私人e2147650保持，未新增美術或發行。整備選人圖示、內建標籤、狀態卡與其餘正式介面續作。
+
+## HD1整備選人名冊人物（CONFORMED-SCOPED／RUNTIME-E1，2026-11-02）
+
+- 沿既有fdother/preparation_roster.go、fdicon.Sprite與整備來源證據，不新增原版語意。正式prepIDs各人的MapSelectorKey、selected旗標、cursor、idle cycle及limit共用原生typed input；不能按party id或頭像推人物。
+- 新增同一合成器的不畫名冊人物分層。先預檢全部原生sprites，原游標、面板、quota／remaining數字與狀態資料照原順序合成；原版入口保持完整bytes，兩路共用既有位置與cycle函式。
+- HD名冊只隨F2，F11獨立。每人144圖按NativePreparationRosterPosition放在原24×24欄位，原十欄、28／30間距與selected的Y+3保持；cycle仍為原三拍及3→1。名冊人物疊在原面板／游標上，離開選人或顯示其他owner時清掉。
+- 未選取者沿既有map GPU的PaletteBand HD近似，RGB乘0.55／0.55／0.6，alpha保持；選取者維持原HD色。原版仍用(v&7)+0x18，不稱這份真彩色近似為原索引RGB一致。這是原有HD palette-band呈現的重用，不修改選取規則或可出戰性。
+- 原Town背景與獨立黑底均沿前批來源；任何raw key、HD幀或尺寸缺失時回退完整原圖，不代用其他角色。原圖源、名冊、clock、RNG、存檔及continuation不因分層重播改寫。
+- 必要驗收含原版逐byte保持、三拍／跨列／選取Y+3、首尾及三十槽、四種顯示、透明核心／palette-band混色、原游標遮擋、缺件回退、F2／F11、正常短路徑與保存相容。原內建標籤、計數頭部圖示、游標與狀態卡另項，不宣稱完整介面已完成。
+
+主收據沿既有HD台帳的hd1_preparation_roster_followup_20261102。實作入口為modern_hd_preparation_roster.go、native_preparation_ui.go、fdother/preparation_roster.go與modern_hd_presentation.go；工作歷程只追加WORKLOG。
+
+96個完整Game.Draw通過，含三城鎮與獨立黑底、三拍、四組顯示及兩種選取配置，各用三十槽跨列與首尾cursor。17PNG、29859840名冊像素、14640672人物核心、13289664全透明點與14929920暗色像素通過；參考採原面板／游標底層與CPU預乘alpha混色，RGB界限維持2。12097920原生底層與10439040未被HD人物覆蓋的最終像素保持，工具列不改遊戲區。HD人物覆蓋區不列為原版RGB一致。
+
+107頂層Go通過，七個可選GPU／oracle略過不計；名冊分層補回三十個原人物後逐byte還原，無效key與缺損原圖在不畫人物時也被拒絕。raw key／缺HD／尺寸、四拍索引0／1／2／1、選取Y+3、原生快取、owner清除與保存保持。1204份Go指紋918dc6aa6307d7d06c8a7f650e6ffe4f2dd536b8a18e3e39d097d5a71df5c9dc，21消費來源／416幀／19反例及155字串處置保持。第一輪GPU因測具換名冊後沿舊join order得到空角色而失敗；修正每variant來源party後乾淨重跑通過，未放寬像素界限或改正式規則。
+
+[普通整備名冊](../figures/hd1-preparation-roster-game.png)由標題LOAD既有第24章原生槽進入。保存第二槽、選人、確認／必選訊息取消、F2、縮放與說明頁，共17PNG通過；兩美術的原生保存bytes相同，原始槽SHA22bd63070189e0e6703e14d4bd4db8dc1f66452a21128dd5154579171ecbea63保持。祖先含攻略建構政策與清敵，不稱自然難度、整章E2或新原版對拍。906清冊與私人e2147650保持；內建標籤、計數頭部圖示、游標、狀態卡與其他正式介面仍續作，地形仍依#282。

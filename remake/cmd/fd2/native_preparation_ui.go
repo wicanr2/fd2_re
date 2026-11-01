@@ -99,6 +99,10 @@ func (g *Game) nativePreparationBackground() ([]byte, bool) {
 }
 
 func (g *Game) composeNativePreparationFrame() ([]byte, bool) {
+	return g.composeNativePreparationFrameLayers(true)
+}
+
+func (g *Game) composeNativePreparationFrameLayers(drawUnits bool) ([]byte, bool) {
 	if g.camp == nil || g.nativePreparationUI == nil || g.nativeClassUI == nil ||
 		(!g.prepSelecting && !g.prepConfirm) || len(g.prepIDs) == 0 {
 		return nil, false
@@ -125,7 +129,11 @@ func (g *Game) composeNativePreparationFrame() ([]byte, bool) {
 	if !ok {
 		return nil, false
 	}
-	frame, err := fdother.ComposeNativePreparationFrameOnBackground(
+	compose := fdother.ComposeNativePreparationFrameOnBackground
+	if !drawUnits {
+		compose = fdother.ComposeNativePreparationFrameWithoutRosterUnits
+	}
+	frame, err := compose(
 		background,
 		g.nativePreparationUI.roster,
 		keys, selected, g.prepSel, cycle, g.prepLimit,
@@ -418,6 +426,10 @@ func (g *Game) drawNativePreparation(screen *ebiten.Image) bool {
 	}
 	capture, restore := g.beginModernHDPreparationText()
 	defer restore()
+	if g.drawModernHDPreparationRoster(screen, capture) {
+		g.appendModernHDPreparationDialogue(g.nativePreparationUI, nil)
+		return true
+	}
 	if g.drawModernHDPreparationBackground(screen, g.prepTownSource, g.prepPromptSource, g.composeNativePreparationOn, capture) {
 		g.appendModernHDPreparationDialogue(g.nativePreparationUI, nil)
 		return true
@@ -438,6 +450,10 @@ func (g *Game) drawNativePreparation(screen *ebiten.Image) bool {
 }
 
 func (g *Game) composeNativePreparationStableFrame() ([]byte, bool) {
+	return g.composeNativePreparationStableFrameLayers(true)
+}
+
+func (g *Game) composeNativePreparationStableFrameLayers(drawUnits bool) ([]byte, bool) {
 	if g.prepRecordSlots {
 		return g.composeNativePreparationRecordSlotsFrame()
 	}
@@ -447,7 +463,7 @@ func (g *Game) composeNativePreparationStableFrame() ([]byte, bool) {
 	if g.prepConfirm {
 		return g.composeNativePreparationConfirmationFrame()
 	}
-	return g.composeNativePreparationFrame()
+	return g.composeNativePreparationFrameLayers(drawUnits)
 }
 
 // #127：0x30550 保存黑色caller；非城鎮槽列表不帶酒店頭像或保存訊息。

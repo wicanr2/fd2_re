@@ -16,13 +16,17 @@ func (d *nativeTownFrameSource) matches(source []byte) bool {
 // Only the existing stable compositor sees the temporary source. It reads no
 // clock or input and writes a new frame; the caller is restored before return.
 func (g *Game) composeNativePreparationOn(source []byte) ([]byte, bool) {
+	return g.composeNativePreparationOnLayers(source, true)
+}
+
+func (g *Game) composeNativePreparationOnLayers(source []byte, drawUnits bool) ([]byte, bool) {
 	if len(source) != 64000 {
 		return nil, false
 	}
 	original := g.prepPromptSource
 	g.prepPromptSource = source
 	defer func() { g.prepPromptSource = original }()
-	return g.composeNativePreparationStableFrame()
+	return g.composeNativePreparationStableFrameLayers(drawUnits)
 }
 
 // Clip frozen town text by actual writes made by the new preparation panel.

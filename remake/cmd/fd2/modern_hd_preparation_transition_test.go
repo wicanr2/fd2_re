@@ -186,6 +186,7 @@ func TestModernHDPreparationBackgroundFrozenSourceAndFallback(t *testing.T) {
 		}
 	}
 	t.Run("dialogue-components", func(t *testing.T) { verifyPreparationDialogueCPU(t, g, set) })
+	t.Run("roster-components", func(t *testing.T) { verifyPreparationRosterCPU(t, g, set) })
 	g.nativeClassUIJob = nil
 	g.modernStoryPortraits = set
 	g.interfaceMode = playerInterfaceOriginal
@@ -304,7 +305,7 @@ func verifyPreparationHDScene(p *facilityHDProbe, pixels []byte, offscreen *ebit
 			}
 		} else {
 			var ok bool
-			frame, ok = g.composeNativePreparationStableFrame()
+			frame, ok = g.composeNativePreparationStableFrameLayers(g.preparationRosterHD == nil)
 			if !ok {
 				return fmt.Errorf("native control missing")
 			}
@@ -322,6 +323,14 @@ func verifyPreparationHDScene(p *facilityHDProbe, pixels []byte, offscreen *ebit
 				final := (((y+24)*3+1)*1920 + x*3 + 1) * 4
 				portrait := g.modernHDOverlay
 				covered := portrait != nil && image.Pt(x, y).In(portrait.rect.Intersect(portrait.clip))
+				if plan := g.preparationRosterHD; plan != nil {
+					for _, unit := range plan.units {
+						if image.Pt(x*3, y*3).In(unit.Rect) {
+							covered = true
+							break
+						}
+					}
+				}
 				if !covered && !bytes.Equal(base[at:at+4], pixels[final:final+4]) {
 					return fmt.Errorf("case%d foreground leaked (%d,%d)", p.index, x, y)
 				}
@@ -335,7 +344,7 @@ func verifyPreparationHDScene(p *facilityHDProbe, pixels []byte, offscreen *ebit
 	checks["background_pixels"], checks["cursor_cores"], checks["native_pixels"] = backgrounds, cores, nativeChecks
 	checks["native_final_pixels"] = finalChecks
 	p.checks = append(p.checks, checks)
-	return nil
+	return verifyPreparationRosterGPU(p, pixels, base)
 }
 
 func TestModernHDPreparationTownBackgroundRuntimeGPU(t *testing.T) {
