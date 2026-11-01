@@ -299253,5 +299253,165 @@
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/missing-native-content.json",
       "sha256": "91f44a96e2036fc6ef7601fb337b8b8e8f4f1ac4614e3faf5bbc2dc9ece7e4ad"
     }
+  },
+  "hd1_town_transition_followup_20261102": {
+    "date": "2026-11-02",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1/NORMAL-GUI",
+    "scope": "frozen town caller through existing eleven-step departure; preparation background remains pending",
+    "base_commit": "639e56b1c0c2c77a57b28081ff17b84c070bf700",
+    "full_hd1_complete": false,
+    "human_accepted": false,
+    "new_original_e2": false,
+    "new_assets": false,
+    "source_evidence": [
+      {
+        "path": "docs/data/ida/fd2_town_departure_20261005.json",
+        "sha256": "c6dc2e9adceff0d1d35bfec0892ff42ee4ddccb86d84136db66aa6f4bffce93b"
+      },
+      {
+        "path": "docs/data/ida/fd2_town_preparation_background_20261002.json",
+        "sha256": "208bb2cffefe8706a9d4f701faad06950081ed2e18954bd87c7d653d6f79722a"
+      },
+      {
+        "path": "remake/assets/themes/modern/catalog.json",
+        "sha256": "9e31b510d0c11fb6b5e931718c9b915db45bf5492be20aa1fc638a96fd81e49e"
+      }
+    ],
+    "source": {
+      "go_files": 1199,
+      "go_tree_sha256": "c1c8115308e7f3ca9d9c92fdb3ec93ccf31318e6c6dc156e400591f37f0d93d3",
+      "consumer": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-transitions-r39/consumers-r2.json",
+        "sha256": "2a98c157388a579af2893d47572b4cb181cd3f1bc5b905cc869d1ddb10a373cf"
+      },
+      "commands": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-transitions-r39/commands.json",
+        "sha256": "be90055718230dd4703bf7af18683a10929de01dcd344d84dd41c72b86b4a3a8"
+      },
+      "binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-transitions-r39/fd2-player-r2",
+        "sha256": "8fa7d3eb847a13b15473173b2bfec9269d15ba148be8666cbb97702efd878234"
+      },
+      "formal_catalog": {
+        "file": "remake/assets/themes/modern/catalog.json",
+        "sha256": "9e31b510d0c11fb6b5e931718c9b915db45bf5492be20aa1fc638a96fd81e49e"
+      },
+      "runtime_catalog": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/runtime-r2/assets/themes/modern/catalog.json",
+        "sha256": "a30638494525607a21145f7b7257a6d07f10c5178d137a7a3d8a341ed3724fa6"
+      },
+      "asset_entries_equal": true,
+      "registered_assets": 906
+    },
+    "gpu": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-transitions-r39/gpu-r4-capture/receipt.json",
+        "sha256": "9acb6375f23360edeaf44b01b860db3b44cfb349ef52cf128184b5fac148dee5"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-transitions-r39/gpu-r4.memory.json",
+        "sha256": "3cae8ed6b7f67f24dfe2aad57cff76ec0f3e37423cd8636eceaf9ad2f2eddf92"
+      },
+      "cases": 132,
+      "png": 18,
+      "hd_background_samples": 452032,
+      "cursor_core_samples": 265790,
+      "native_ui_samples": 10821296,
+      "raw_selector_fixture_override": 50,
+      "source_group_is_identity_claim": false,
+      "renderer_contract": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-transitions-r39/gpu-reference-contract.json",
+        "sha256": "f963841fbbfe42635747fca65641d2cce0033368e74aa1f3f5df2f99651de31a"
+      }
+    },
+    "normal_gui": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-transitions-r39/normal-r2-capture/receipt.json",
+        "sha256": "ca62adc593477c6fdb4f89266df529ef5fb54e0fe4b4217cddde9eed8cdda298"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-transitions-r39/normal-r2.memory.json",
+        "sha256": "165fe5f950ab8324c252b01be445861a8490daafdf70374c391a830e05ca0ef4"
+      },
+      "png": 12,
+      "frozen_source": {
+        "steps": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "source_group": 0,
+        "variant": 0,
+        "pulse": 0,
+        "saved_bytes_unchanged": true,
+        "scope": "普通鍵盤出口；原生步驟與HD來源觀測。轉場PNG逐步精確像素另由受控GPU矩陣驗證。"
+      },
+      "source_and_saved_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+      "source_slot_provenance": "existing chapter 2 hotel JSON; normal title LOAD and keyboard, no new state injection"
+    },
+    "regression": {
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-transitions-r39/regression-r1.memory.json",
+        "sha256": "ff41cd21792d2d6bbb369c8ab42abeefa818a5d2974c8f3433388b27b7bdd6c7"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-transitions-r39/regression-r1.log",
+        "sha256": "701ab6939ee7b075e49993968c230718d13d9e58a459f0c4660ff95d45c8330d"
+      },
+      "top_level_passed": 59,
+      "skipped": [
+        "TestModernHDMapActualCandidateWorld",
+        "TestModernHDMapOverviewGPU",
+        "TestModernHDTownDepartureRuntimeGPU",
+        "TestNativeTownDepartureFromOracle"
+      ],
+      "skips_are_not_passes": true,
+      "consumer_validation": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-transitions-r39/consumers-verified-r1.json",
+        "sha256": "a2ec8b4675ac521db919d0073d67371a433d03e089d8d4eb09b703ce4c035f53"
+      },
+      "string_migration": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-transitions-r39/string-review-migration.json",
+        "sha256": "69fa662aef0629cef89c3f2bfe45194dd9e765c8427fe6436d28a8e310bf59c5"
+      },
+      "native_reference": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-transitions-r39/native-regression-r1.memory.json",
+        "sha256": "351b2590ef175343df340c9b056a13e6de319b8b4034d3680bcc008ff04f72c8"
+      }
+    },
+    "public_png": {
+      "file": "docs/figures/hd1-town-departure-game.png",
+      "sha256": "bb317ef0a545c8f74d1d4bf67cb0a5c84b8e94a67f923292660ba5cfaab6a793"
+    },
+    "diagnostics": {
+      "renderer_reference": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-transitions-r39/gpu-diagnostic.json",
+        "sha256": "0daa31019b4599387999248fa951ecb0ac9a76b99815a9dee0f8a6fcafba39a5"
+      },
+      "cursor_alpha": "R3 wrongly required fully opaque samples. R4 uses existing >=250 core contract and independent alpha-over reference; tolerance remains 2.",
+      "normal_r1": "existing preparation GUI ends in faithful art after save check; extra departure branch now explicitly switches back to HD before testing."
+    },
+    "private_assets": {
+      "changed": false,
+      "head": "e2147650d71c86d7c627dd82367cf0633e0cea97"
+    },
+    "limits": [
+      "HD truecolor subtraction is an art approximation, not indexed DAC or wall-clock parity.",
+      "Preparation town backgrounds and other formal UI remain on #283.",
+      "Terrain #282 remains 3180 missing slots / 2033 unique source contents.",
+      "Manual appearance, full chapter and platform acceptance remain delegated to user."
+    ],
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-transitions-r39/final-validation-r1.json",
+      "sha256": "53c2441f4f9352e484ca929117448ebc812017b6fc2bb97b30c7ca962e7109b6"
+    }
   }
 }

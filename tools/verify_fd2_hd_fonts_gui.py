@@ -59,6 +59,7 @@ def main():
     facility.add_argument('--gold-roll', action='store_true', help='抽驗正常買賣的 HD 金幣滾動及保存')
     parser.add_argument('--native-save', type=Path, help='整備抽樣的既有原生槽，複製後才可寫入')
     parser.add_argument('--transition-frames', action='store_true', help='另以唯讀觀測擷取整備問句轉場PNG')
+    parser.add_argument('--town-departure', action='store_true', help='整備取消及保存後，再正常確認城鎮出口，核對凍結來源與十一個離城呈現步')
     parser.add_argument('--panel-transitions', action='store_true', help='以實際移動文字區抽驗狀態／物品轉場')
     parser.add_argument('--gold-roll-theme', choices=['hd','faithful'], default='hd', help='金幣買賣的主題對照')
     parser.add_argument('--world', action='store_true', help='加驗正式HD世界、普通走行、指令環、取消與物理戰鬥返回')
@@ -171,6 +172,7 @@ def main():
         assert args.native_save and args.battle_status and not args.world
     else:
         assert args.town_save and args.town_save.is_file()
+    assert not args.town_departure or (args.preparation and not args.native_save)
     assert not args.battle_only or args.battle_hd
     assert not (args.gaia or args.terrain) or args.battle_node=='battle_ch01'
     if bool(args.terrain_frames)!=bool(args.terrain_label):
@@ -225,6 +227,7 @@ def main():
                FD2_THEME='modern-handpainted-a', FD2_LOCALE='zh-Hant',
                FD2_MODERN_THEME_PACK=str(args.modern_pack), FD2_ASSET_PACK=str(args.original_pack),
                FD2_INPUT_AUDIT_LOG=str(audit), FD2_INPUT_AUDIT_INTERVAL='2')
+    if args.town_departure:env['FD2_INPUT_AUDIT_INTERVAL']='1'
     env['FD2_TOOLBAR_LAYOUT'] = 'fixed' if args.player_toolbar else 'floating'
     for key in ['FD2_TITLE','FD2_CAMPAIGN','FD2_CAMP_NODE','FD2_SHOT','FD2_SHOT_FRAME',
                 'FD2_NATIVE_SAVE','FD2_SAVE_CURRENT','FD2_ENDING_PREFIX',
@@ -1410,6 +1413,30 @@ def main():
                 assert digest(saved)==digest(args.town_save),'出發取消改變來源狀態'
                 saved_hash=digest(saved)
                 scope='正常標題LOAD既有hotel_ch02 JSON槽，城鎮整備出發問句選NO返回，旅館F5／F9；非連續全戰役，不宣稱原版對拍。'
+            departure_receipt=None
+            if args.town_departure:
+                key('F2');wait(lambda s:s.get('hd_theme') is True)
+                key('Escape');wait(lambda s:s.get('node')=='town_ch02')
+                key('Left');key('Left');key('Return')
+                prep(preparation_selecting=False,preparation_choice=0)
+                key('Return')
+                wait(lambda s:not s.get('node','').startswith('preparation_') and 'town_departure_step' not in s and not s.get('preparation_ui_busy'))
+                rows=[]
+                for line in audit.read_text().splitlines():
+                    try:state=json.loads(line)
+                    except ValueError:continue
+                    if 'town_departure_step' in state:rows.append(state)
+                assert rows,'正常出口未建立離城owner'
+                assert {s['town_departure_step'] for s in rows}==set(range(11)),'離城未觀測完整十一個呈現邊界'
+                assert all('town_departure_source_group' in s and s.get('hd_theme') is True for s in rows),'離城缺實際凍結來源或HD美術'
+                assert len({(s['town_departure_source_group'],s['town_departure_source_variant'],s['town_departure_source_pulse']) for s in rows})==1,'離城來源中途改變'
+                assert digest(saved)==digest(args.town_save),'離城改寫既有保存'
+                shot('after-town-departure')
+                departure_receipt={'steps':sorted({s['town_departure_step'] for s in rows}),
+                    'source_group':rows[0]['town_departure_source_group'],'variant':rows[0]['town_departure_source_variant'],
+                    'pulse':rows[0]['town_departure_source_pulse'],'saved_bytes_unchanged':True,
+                    'scope':'普通鍵盤出口；原生步驟與HD來源觀測。轉場PNG逐步精確像素另由受控GPU矩陣驗證。'}
+                scope+='另正常確認出口並觀測十一個離城邊界，保存保持。'
             finish_transitions()
             if args.transition_frames:
                 validate_transition_samples()
@@ -1423,6 +1450,7 @@ def main():
                     'screenshots':shots,'operations':operations,'recording_created':False,
                     'transition_screenshots':transition_shots,'transition_rejected':transition_rejected,
                     'transition_gpu_validated':transition_gpu_validated,
+                    'town_departure':departure_receipt,
                     'scope':scope,'elapsed_seconds':time.monotonic()-started}
             (args.out/'receipt.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
             return

@@ -4904,6 +4904,21 @@
         ],
         "pattern": "def format_body[\\s\\S]*def parse_issue"
       }
+    },
+    {
+      "id": "hd-gpu-reference-pins-renderer-sampling",
+      "date": "2026-11-02",
+      "area": "HD呈現驗證",
+      "rule": "GPU像素參考先固定實際renderer版本、頂點對齊及濾波規則。Ebiten2.6.6沿go.mod與internal/graphics/vertex.go的adjustDestinationPixel，參考入口為remake/cmd/fd2/modern_hd_town_transition_test.go。半透明人物沿既定alpha>=250核心與已知背景Over，不把全255當成預設。差異先查契約，不直接放寬RGB界限。",
+      "why": "R39的平滑CPU仿射參考漏掉Ebiten頂點對齊，在高反差邊緣產生數級差；補入固定renderer規則後維持RGB2。另一測試先誤用全255核心，改沿既定>=250及獨立alpha混色公式後，132完整畫面通過。",
+      "evidence": "WORKLOG.md：2026-11-02 HD1城鎮離開轉場；docs/data/fd2-modern-hd-battlefield-20261019.json：hd1_town_transition_followup_20261102",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/modern_hd_town_transition.go"
+        ],
+        "pattern": "type modernTownDepartureTransform"
+      }
     }
   ]
 }

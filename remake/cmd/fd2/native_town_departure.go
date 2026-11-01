@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"errors"
 	"image"
 	"image/color"
@@ -21,6 +22,7 @@ type nativeTownDepartureJob struct {
 	step   int
 	drawn  bool
 	then   func()
+	source *nativeTownFrameSource
 }
 
 // startNativeTownDeparture prebuilds every indexed/DAC step before publishing
@@ -36,6 +38,10 @@ func (g *Game) startNativeTownDeparture(then func()) error {
 		return errors.New("native town departure caller source unavailable")
 	}
 	job := &nativeTownDepartureJob{then: then}
+	if d := g.prepTownSource; d != nil && d.variant == *town.NativeTownVariant &&
+		d.selection == 2 && bytes.Equal(d.indexed, g.prepPromptSource) {
+		job.source = d
+	}
 	for k := 1; k <= 11; k++ {
 		step, delta := k, 4*k
 		if k == 11 {
@@ -79,6 +85,10 @@ func (g *Game) stepNativeTownDeparture() {
 
 func (g *Game) drawNativeTownDeparture(screen *ebiten.Image) {
 	j := g.nativeTownDeparture
+	if g.drawModernHDTownDeparture(screen, j) {
+		j.drawn = true
+		return
+	}
 	f := j.frames[j.step]
 	img := image.NewPaletted(image.Rect(0, 0, 320, 200), f.palette)
 	copy(img.Pix, f.indexed)

@@ -331,6 +331,14 @@ func (g *Game) recordInputAuditState() {
 	r["preparation_selected"] = g.preparationSelected()
 	r["preparation_limit"] = g.prepLimit
 	r["preparation_ui_busy"] = g.nativeClassUIJob != nil
+	if job := g.nativeTownDeparture; job != nil {
+		r["town_departure_step"] = job.step
+		if source := job.source; source != nil {
+			r["town_departure_source_group"] = source.group
+			r["town_departure_source_variant"] = source.variant
+			r["town_departure_source_pulse"] = source.pulse
+		}
+	}
 	if job := g.nativeClassUIJob; job != nil && job.preparationText != nil {
 		r["preparation_transition_job"] = fmt.Sprintf("%p", job)
 		r["preparation_transition_frame"] = job.frame

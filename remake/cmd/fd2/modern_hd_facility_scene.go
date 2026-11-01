@@ -21,10 +21,11 @@ type modernFacilityScene struct {
 }
 
 type modernFacilitySceneOverlay struct {
-	scene  *modernFacilityScene
-	source image.Rectangle // HD pixels.
-	dest   image.Point     // Existing 640x400 coordinates.
-	cursor *modernTownCursor
+	scene     *modernFacilityScene
+	source    image.Rectangle // HD pixels.
+	dest      image.Point     // Existing 640x400 coordinates.
+	cursor    *modernTownCursor
+	departure *modernTownDepartureTransform
 }
 
 type modernTownCursor struct {
@@ -36,10 +37,6 @@ func (g *Game) prepareModernTownCursor(variant int) (*modernTownCursor, error) {
 	if g.nativeClassUI == nil || g.nativeClassUI.units == nil || g.modernStoryPortraits == nil {
 		return nil, fmt.Errorf("modern town cursor: missing assets")
 	}
-	geometry, err := campaign.NativeTownCursorGeometryFor(variant, g.campSel, g.nativeTownUIPulse)
-	if err != nil {
-		return nil, err
-	}
 	group := 0 // The native scene's explicit default for an empty editor roster.
 	if len(g.partyJoinOrder) > 0 {
 		unit, ok := g.partyRoster[g.partyJoinOrder[0]]
@@ -49,6 +46,17 @@ func (g *Game) prepareModernTownCursor(variant int) (*modernTownCursor, error) {
 		if unit.HasMapSelectorKey {
 			group = unit.MapSelectorKey
 		}
+	}
+	return g.modernTownCursorFor(variant, g.campSel, g.nativeTownUIPulse, group)
+}
+
+func (g *Game) modernTownCursorFor(variant, selection, pulse, group int) (*modernTownCursor, error) {
+	if g.nativeClassUI == nil || g.nativeClassUI.units == nil || g.modernStoryPortraits == nil {
+		return nil, fmt.Errorf("modern town cursor: missing assets")
+	}
+	geometry, err := campaign.NativeTownCursorGeometryFor(variant, selection, pulse)
+	if err != nil {
+		return nil, err
 	}
 	if _, err := g.nativeClassUI.units.SpriteFor(group, 0, geometry.Frame); err != nil {
 		return nil, err
@@ -135,6 +143,24 @@ func (p *modernHDPresentation) drawModernFacilityScene(screen ebiten.FinalScreen
 	if o == nil || o.scene == nil || p.Game.modernStoryPortraits == nil {
 		return
 	}
+	if o.departure != nil {
+		if p.townDepartureSurface == nil {
+			p.townDepartureSurface = ebiten.NewImage(modernHDWidth, modernHDHeight)
+		}
+		p.townDepartureSurface.Clear()
+		zoom := o.departure.geometry()
+		zoom.Scale(3, 3)
+		p.drawModernFacilityLayers(p.townDepartureSurface, zoom, o)
+		op := &ebiten.DrawImageOptions{Filter: ebiten.FilterLinear}
+		op.GeoM.Scale(1.0/3, 1.0/3)
+		op.GeoM.Concat(geometry)
+		screen.DrawImage(p.townDepartureSurface, op)
+		return
+	}
+	p.drawModernFacilityLayers(screen, geometry, o)
+}
+
+func (p *modernHDPresentation) drawModernFacilityLayers(screen modernHDImageTarget, geometry ebiten.GeoM, o *modernFacilitySceneOverlay) {
 	if o.scene.gpu == nil {
 		o.scene.gpu = ebiten.NewImageFromImage(o.scene.image)
 	}
@@ -143,6 +169,9 @@ func (p *modernHDPresentation) drawModernFacilityScene(screen ebiten.FinalScreen
 	op.GeoM.Scale(1.0/3, 1.0/3)
 	op.GeoM.Translate(float64(o.dest.X), float64(o.dest.Y))
 	op.GeoM.Concat(geometry)
+	if o.departure != nil {
+		o.departure.darken(op)
+	}
 	screen.DrawImage(source, op)
 	if cursor := o.cursor; cursor != nil {
 		set := p.Game.modernStoryPortraits
@@ -162,6 +191,9 @@ func (p *modernHDPresentation) drawModernFacilityScene(screen ebiten.FinalScreen
 			options.GeoM.Scale(1.0/3, 1.0/3)
 			options.GeoM.Translate(float64(visible.Min.X)/3, float64(visible.Min.Y)/3)
 			options.GeoM.Concat(geometry)
+			if o.departure != nil {
+				o.departure.darken(options)
+			}
 			screen.DrawImage(fragment, options)
 		}
 	}
@@ -242,15 +274,7 @@ func (g *Game) drawModernHDTown(screen *ebiten.Image) bool {
 		g.presentNativeClassFrame(screen, frame)
 	}
 	if capture != nil {
-		for _, run := range capture.runs {
-			run.x += 8
-			run.y += 8
-			run.inkTop = true // Native coordinates describe glyph ink, not font ascent.
-			run.clip = run.clip.Add(image.Pt(8, 8)).Intersect(image.Rect(8, 8, 632, 392))
-			if !run.clip.Empty() {
-				g.modernHDText.runs = append(g.modernHDText.runs, run)
-			}
-		}
+		g.modernHDText.runs = append(g.modernHDText.runs, modernTownTextRuns(capture.runs)...)
 	}
 	return true
 }

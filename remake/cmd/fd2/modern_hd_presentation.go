@@ -20,6 +20,7 @@ type modernHDPresentation struct {
 	floatingToolbar                bool
 	toolbarTicks                   int
 	gameSurface, toolbarSurface    *ebiten.Image
+	townDepartureSurface           *ebiten.Image
 	interfaceHUDGPU                *modernHDMapGPU
 	appliedPlayerSpeed             int
 	poster                         playerPosterPresentation

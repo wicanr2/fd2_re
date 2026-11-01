@@ -159,12 +159,13 @@ type Game struct {
 	prepLastTick                 int                 // 原版 [0x53c0f] 有號 BIOS 低字 latch
 	prepShotCycleFrozen          bool                // 固定雜湊截圖專用；一般玩家路徑永不設定
 	prepPromptSource             []byte              // 0x1956b 前的 town 畫面或 0x2cc04 黑色來源
-	churchSel                    int                 // church service menu cursor (0..3)
-	churchMode                   string              // menu / status_* / transfer_* / revive* / class / class_confirm
-	churchIDs                    []int               // current church candidate ids
-	churchRosterStart            int                 // 0x2e6b8 [0x5412f], even six-entry viewport origin
-	churchVerticalStart          int                 // 0x30c22/0x311dc three-row viewport origin
-	churchStatusID               int                 // selected actor passed to 0x17aed
+	prepTownSource               *nativeTownFrameSource
+	churchSel                    int    // church service menu cursor (0..3)
+	churchMode                   string // menu / status_* / transfer_* / revive* / class / class_confirm
+	churchIDs                    []int  // current church candidate ids
+	churchRosterStart            int    // 0x2e6b8 [0x5412f], even six-entry viewport origin
+	churchVerticalStart          int    // 0x30c22/0x311dc three-row viewport origin
+	churchStatusID               int    // selected actor passed to 0x17aed
 	churchStatusData             *nativeUnitStatusData
 	churchStatusPanel            []byte // 0x17eef/0x17fc0 + 0x184c0(actor,-1)
 	churchCommandPanel           []byte // 0x17eef/0x17fc0 + 0x1ceed(actor,-1)
@@ -4646,6 +4647,7 @@ func (g *Game) setupPreparation(n *campaign.Node) {
 		// 0x2cc04 clears the complete VGA target before the standalone
 		// FDTXT 0x19a record prompt.
 		g.prepPromptSource = make([]byte, 320*200)
+		g.prepTownSource = nil
 	} else if len(g.prepPromptSource) != 320*200 {
 		// A town-backed prompt must retain its actual town frame; never
 		// substitute a black or modern background for missing provenance.
@@ -5051,11 +5053,7 @@ func (g *Game) campInput() bool {
 					return true
 				}
 				if g.campSel >= 0 && g.campSel < 5 {
-					if source, ok := g.composeNativeTownFrame(); ok {
-						g.prepPromptSource = append([]byte(nil), source...)
-					} else {
-						g.prepPromptSource = nil
-					}
+					g.captureNativeTownCaller()
 					g.camp.Advance(fmt.Sprintf("opt%d", g.campSel))
 					g.enterNode()
 				}
