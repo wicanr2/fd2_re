@@ -167,6 +167,7 @@ FD2工具鏈恢復與合併後oracle來源准入見[2026-10-15主收據](../data
 - [HD1第117／118／119／120組個別面容](61-modern-theme-runtime-spec.md)：[配方與完整提示詞](../../remake/assets/themes/modern/hd1-adult-faces-refresh.recipe.json)，接線與證據依58及主收據hd1_adult_faces_followup_20261101。
 - [HD1第123／124／126／134組個別面容](61-modern-theme-runtime-spec.md)：[配方與完整提示詞](../../remake/assets/themes/modern/hd1-pale-faces-refresh.recipe.json)，接線與證據依58及主收據hd1_pale_faces_followup_20261101。
 - [HD1第96／97／98／102組個別面容](61-modern-theme-runtime-spec.md)：[配方與完整提示詞](../../remake/assets/themes/modern/hd1-guard-faces-refresh.recipe.json)，接線與證據依58及主收據hd1_guard_faces_followup_20261101。
+- [HD1第66／74／75組原圖三拍例外](61-modern-theme-runtime-spec.md)：[來源稽核與使用者決定](../data/fd2-hd1-static-source-audit.json)、[配方](../../remake/assets/themes/modern/hd1-final-static-refresh.recipe.json)。
 - [HD1第116／122／135組個別面容](61-modern-theme-runtime-spec.md)：[配方與完整提示詞](../../remake/assets/themes/modern/hd1-final-known-faces-refresh.recipe.json)，接線與證據依58及主收據hd1_final_known_faces_followup_20261101。
 - [HD1第90／92／112／113／114／115組個別面容](61-modern-theme-runtime-spec.md)：[配方與完整提示詞](../../remake/assets/themes/modern/hd1-late-masked-faces-refresh.recipe.json)，接線與證據依58及主收據hd1_late_masked_faces_followup_20261101。
 - [HD1第103／108／109／110組個別面容](61-modern-theme-runtime-spec.md)：[配方與完整提示詞](../../remake/assets/themes/modern/hd1-horned-faces-refresh.recipe.json)，接線與證據依58及主收據hd1_horned_faces_followup_20261101。

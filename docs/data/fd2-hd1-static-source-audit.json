@@ -1,0 +1,253 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-01",
+  "kind": "fd2_hd1_source_only_static_art_audit",
+  "native_bank": {
+    "file": "/original/sprites/fdicon/bank.json",
+    "sha256": "13afbe44dd0395b5ae850725c282fd8dd1d29a8d275c9dd593170332757730be"
+  },
+  "palette": {
+    "file": "/original/palette/fdother_000.json",
+    "sha256": "404db1ca72ffc19fa7404fbc59bde98cdf239f63fe3375ec248a8142073a28bf"
+  },
+  "original_reference_manifest": {
+    "file": "docs/data/fd2-reference-files.json",
+    "sha256": "9946b7506620069ce9b7bb8e4b1f7fed36e7a9389b634ef62064727d89579c5e"
+  },
+  "approved_groups": [
+    66,
+    74,
+    75
+  ],
+  "approval_verbatim": "採用三組原圖 Q 版試稿，身份保留未知（建議）",
+  "approved_prototype": {
+    "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/unknown-static-prototype-comparison.png",
+    "sha256": "d3afbe42c2151d10d4b836dcc6c0edec343b4627941e74e260734d7df4cecddd"
+  },
+  "records": [
+    {
+      "group": 66,
+      "frame_count": 3,
+      "source_evidence_level": "已證實的FDICON三拍圖源；角色身份、頭像與自然出場未知",
+      "original_layers": {
+        "group": 66,
+        "reference_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/unknown-066-source-reference.png",
+        "reference_sha256": "d9ed762f5d83a9493d1a0545e8d754ae34fd5f8d56037c30feaa7c774cb37025",
+        "inputs": [
+          {
+            "file": "/original/sprites/fdicon/sprite_0792/frame.png",
+            "sha256": "e1195e8dd9da7b7a006fd3aaaeb6ab5348143c97338b5972adc255761eb7665d"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0792/mask.png",
+            "sha256": "a1c777347daf1f46687bc4c4e843e1d9d5bf4be93bc6f2c7972fb81e332870a7"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0792/remap_mask.png",
+            "sha256": "b5e1389cf62c3c1b034a0776f079c5e4fca0fb44aebe26053aaa841adfc3f0e8"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0793/frame.png",
+            "sha256": "d3baa69b5c1620ed81fc3137a92ec106e1bee580f1cf900a648207dce985a38c"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0793/mask.png",
+            "sha256": "dd1f5a7944bcad55445527a5843c8f7df9ad1c9cc4fcd042974fb8212b508292"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0793/remap_mask.png",
+            "sha256": "8676f6e5adb9ab6ab6c221d5d1481183cc2fa4e4899a22ddcd5500f1a5b24569"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0794/frame.png",
+            "sha256": "25dc625b972fed4ba5ed548c65b388ea0cabb0c23a52210aa0d91873eba5738a"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0794/mask.png",
+            "sha256": "33469c4a42d417a07eaf4aa45a5d5787926131def789dff873690f51a77c9b7b"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0794/remap_mask.png",
+            "sha256": "1edaaf4c0927759429d7173d25bf6e4968511aa3837ad24bf8eda7e8b471e26e"
+          }
+        ]
+      },
+      "authored_map_scan": {
+        "files": 33,
+        "matches": [
+          {
+            "file": "remake/assets/maps/map32/map32_units.json",
+            "sha256": "245fbc71ad571a3f6f067ccb43386a911ca5dfc793f6820ecdd59a9611c6a405",
+            "row": 1,
+            "portrait": 66,
+            "battle_fig": 66,
+            "native_constructor": null,
+            "native_position_record": {
+              "x_word": 10,
+              "y_word": 5,
+              "raw_key": 66
+            }
+          }
+        ],
+        "scope": "只列目前正式原名冊，不推定EXE及故事腳本沒有其他讀取端"
+      },
+      "decision": {
+        "source_only_exception_approved": true,
+        "identity": null,
+        "portrait_binding": null,
+        "selected_master_sha256": "8ef3349f9f2069ff234d7e1b9bf3b73deeacf6732365f4a32821082921b90626",
+        "orientation": "原三拍輪廓；75橫向保持，不新增站姿或方向"
+      }
+    },
+    {
+      "group": 74,
+      "frame_count": 3,
+      "source_evidence_level": "已證實的FDICON三拍圖源；角色身份、頭像與自然出場未知",
+      "original_layers": {
+        "group": 74,
+        "reference_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/unknown-074-source-reference.png",
+        "reference_sha256": "7696264987e5e95d6049e124e5d89bc19327e1feb8d7466fde3f3a31e28c0c50",
+        "inputs": [
+          {
+            "file": "/original/sprites/fdicon/sprite_0888/frame.png",
+            "sha256": "585df9afc057322edd51fa93b3bbbf2805b6b33b15ac1c70abf7089ce3cda98c"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0888/mask.png",
+            "sha256": "a8d01e07e460a072387ebd8a0b13f40d65ed8b1e0858c20b695311cb3fdab1b9"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0888/remap_mask.png",
+            "sha256": "3122eeb958e7113fe9d9503459b8789b57cbb0051217be1b69e0d788c30697b9"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0889/frame.png",
+            "sha256": "e6a0646dc2a6afafebafe61bf60b847ca3362c849506d17e63ec1a585f07136e"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0889/mask.png",
+            "sha256": "0f51b838e6299a77324b5f97d6cb57c09970e3190f5141852282cee38afede7e"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0889/remap_mask.png",
+            "sha256": "72ec6f59a397a3778d1000bb2b367ce89f3e809b45ce81be313683c5d50f0ca1"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0890/frame.png",
+            "sha256": "50c0940a511575dcdb37c4aff5ceb5a1b01324185e7ef353989132cc03a9d316"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0890/mask.png",
+            "sha256": "481a2eab9f88532d53d1d82e94a096ee9ee9d5d5b81a7d252e937a5c4412c40a"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0890/remap_mask.png",
+            "sha256": "0ac22261d28c31d8a568beefcea0dbe45d3b8705a3db85d76730c77448952ab3"
+          }
+        ]
+      },
+      "authored_map_scan": {
+        "files": 33,
+        "matches": [],
+        "scope": "只列目前正式原名冊，不推定EXE及故事腳本沒有其他讀取端"
+      },
+      "decision": {
+        "source_only_exception_approved": true,
+        "identity": null,
+        "portrait_binding": null,
+        "selected_master_sha256": "bf5ca606eb442c09af5a8624314b1bb5f1abddbfcbee451fba227423b2649fa0",
+        "orientation": "原三拍輪廓；75橫向保持，不新增站姿或方向"
+      }
+    },
+    {
+      "group": 75,
+      "frame_count": 3,
+      "source_evidence_level": "已證實的FDICON三拍圖源；角色身份、頭像與自然出場未知",
+      "original_layers": {
+        "group": 75,
+        "reference_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/unknown-075-source-reference.png",
+        "reference_sha256": "b601b75f23395ebc73f8c0f72b5feab8c8588f4605b3f27296a54ba0ce26cb88",
+        "inputs": [
+          {
+            "file": "/original/sprites/fdicon/sprite_0900/frame.png",
+            "sha256": "ab5128df2c3113da19c67270f890ba5788a4bf24bcf65ea48778873e9401e23a"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0900/mask.png",
+            "sha256": "a5f7b0c595d51c700e12204b12d5531c67033760bd607cae60237ccaa16a0af2"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0900/remap_mask.png",
+            "sha256": "a783b3816a0e7b3de4b1063c105dc0613ac1b2cff139f284aa7f3c04232977b3"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0901/frame.png",
+            "sha256": "ab5128df2c3113da19c67270f890ba5788a4bf24bcf65ea48778873e9401e23a"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0901/mask.png",
+            "sha256": "a5f7b0c595d51c700e12204b12d5531c67033760bd607cae60237ccaa16a0af2"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0901/remap_mask.png",
+            "sha256": "a783b3816a0e7b3de4b1063c105dc0613ac1b2cff139f284aa7f3c04232977b3"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0902/frame.png",
+            "sha256": "ab5128df2c3113da19c67270f890ba5788a4bf24bcf65ea48778873e9401e23a"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0902/mask.png",
+            "sha256": "a5f7b0c595d51c700e12204b12d5531c67033760bd607cae60237ccaa16a0af2"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0902/remap_mask.png",
+            "sha256": "a783b3816a0e7b3de4b1063c105dc0613ac1b2cff139f284aa7f3c04232977b3"
+          }
+        ]
+      },
+      "authored_map_scan": {
+        "files": 33,
+        "matches": [
+          {
+            "file": "remake/assets/maps/map31/map31_units.json",
+            "sha256": "fbeda22ce3930de43c3cbdc96fdef6ada1ffe38fd807528ab06b23e848e83ec9",
+            "row": 2,
+            "portrait": 75,
+            "battle_fig": 75,
+            "native_constructor": {
+              "branch": "high_class",
+              "index": 7,
+              "record": [
+                1,
+                2,
+                12,
+                0,
+                0,
+                5,
+                2,
+                1,
+                4,
+                30
+              ]
+            },
+            "native_position_record": {
+              "x_word": 5,
+              "y_word": 44,
+              "raw_key": 75
+            }
+          }
+        ],
+        "scope": "只列目前正式原名冊，不推定EXE及故事腳本沒有其他讀取端"
+      },
+      "decision": {
+        "source_only_exception_approved": true,
+        "identity": null,
+        "portrait_binding": null,
+        "selected_master_sha256": "af024153a5fcb59fef68061366843ae02470674d8ca141531e6435870fe5b91f",
+        "orientation": "原三拍輪廓；75橫向保持，不新增站姿或方向"
+      }
+    }
+  ],
+  "scope": "使用者確認的美術例外；不新增角色設定、頭像綁定、自然出場、原版動態或玩法規則。"
+}

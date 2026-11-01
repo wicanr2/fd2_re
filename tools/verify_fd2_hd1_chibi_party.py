@@ -14,7 +14,7 @@ from verify_fd2_hd1_chibi_refresh import ROOT,sha,read,require,tree,rect,core
 
 RECIPE=ROOT/'remake/assets/themes/modern/hd1-party-chibi-refresh.recipe.json'
 GROUPS=(1,2,3)
-PROFILES={'audited-final-three':(116, 122, 135),'audited-late-six':(90, 92, 112, 113, 114, 115),'audited-horned-four':(103, 108, 109, 110),'audited-guard-four':(96, 97, 98, 102),'party':GROUPS,'variants':(53,54),'identity-pair':(51,63),'base-faces':(1,4),'knights':(55,56),'heroes':(50,52),'enemies':(76,79),'static-king':(48,),'static-anonymous67':(67,),'audited-six':(70,73,77,89,125,133),'audited-next':(68,71,72,78),'audited-enemies':(80,81,82,83),'audited-helm-bow':(84,85,86,87),'audited-visor-grille':(88,91,93,94),'audited-pale-four':(123,124,126,134),'audited-adult-four':(117,118,119,120),'audited-shadow-four':(99,100,101,107),'audited-plate-four':(69,95,106,111),'party-next':(5,6,13,54),'party-four':(7,8,10,11),'party-five':(12,14,15,16),'party-six':(17,18,20,21),'party-seven':(22,23,24,25),'party-eight':(26,27,28,29),'party-nine':(58,59,60,61),'party-ten':(32,33,34,62),'party-eleven':(36,37,38,40),'party-twelve':(41,42,43,44),'party-thirteen':(45,46,47,49),'party-fourteen':(64,65),'party-final-three':(19,31,35)}
+PROFILES={'static-final-three':(66,74,75),'audited-final-three':(116, 122, 135),'audited-late-six':(90, 92, 112, 113, 114, 115),'audited-horned-four':(103, 108, 109, 110),'audited-guard-four':(96, 97, 98, 102),'party':GROUPS,'variants':(53,54),'identity-pair':(51,63),'base-faces':(1,4),'knights':(55,56),'heroes':(50,52),'enemies':(76,79),'static-king':(48,),'static-anonymous67':(67,),'audited-six':(70,73,77,89,125,133),'audited-next':(68,71,72,78),'audited-enemies':(80,81,82,83),'audited-helm-bow':(84,85,86,87),'audited-visor-grille':(88,91,93,94),'audited-pale-four':(123,124,126,134),'audited-adult-four':(117,118,119,120),'audited-shadow-four':(99,100,101,107),'audited-plate-four':(69,95,106,111),'party-next':(5,6,13,54),'party-four':(7,8,10,11),'party-five':(12,14,15,16),'party-six':(17,18,20,21),'party-seven':(22,23,24,25),'party-eight':(26,27,28,29),'party-nine':(58,59,60,61),'party-ten':(32,33,34,62),'party-eleven':(36,37,38,40),'party-twelve':(41,42,43,44),'party-thirteen':(45,46,47,49),'party-fourteen':(64,65),'party-final-three':(19,31,35)}
 PROFILE_IDENTITIES={'variants':{53:3,54:4},'identity-pair':{51:1,63:13},'base-faces':{1:1,4:4},'knights':{55:5,56:6},'heroes':{50:0,52:9},'party-next':{5:5,6:6,13:13,54:4},'party-nine':{58:8,59:9,60:10,61:11},'party-ten':{32:0,33:1,34:2,62:12},'party-eleven':{36:4,37:5,38:6,40:8},'party-twelve':{41:9,42:10,43:11,44:12},'party-thirteen':{45:13,46:14,47:15,49:17},'party-fourteen':{64:14,65:15},'party-final-three':{35:3}}
 FRAMES=(0,1,2,3,6,9)
 AUDITED_PAIRS={'banded':(70,89),'draconic':(73,77),'robed':(125,133)}
@@ -142,9 +142,24 @@ def verify_source_only_binding(r):
     decision=read(ROOT/path)['decision']
     require(decision.get('source_only_exception_approved') is True and decision.get('selected_master_sha256')==group['master_sha256'] and decision.get('identity') is None and decision.get('portrait_binding') is None,'anonymous source decision changed')
 
+def verify_source_only_static_bindings(r):
+    groups=(66,74,75);bindings=r.get('source_only_bindings',[]);carrier=r.get('visual_carrier',{})
+    require([b.get('group') for b in bindings]==list(groups) and [g.get('group') for g in r['groups']]==list(groups),'complete approved static bindings required')
+    path='remake/assets/maps/map32/map32_units.json'
+    require(carrier.get('template_selector')==48 and carrier.get('map')==32 and carrier.get('row')==0 and carrier.get('portrait')==carrier.get('battle_fig')==48 and carrier.get('position')==dict(x_word=7,y_word=5,raw_key=48) and carrier.get('selector_projection_injected') is True and carrier.get('identity_projection_injected') is False and carrier.get('roster_file')==path and sha(ROOT/path)==carrier.get('roster_sha256'),'static source carrier changed')
+    u=read(ROOT/path)['units'][0]
+    require(u.get('map_selector_key')==u.get('portrait')==u.get('battle_fig')==48 and u.get('native_position_record')==carrier['position'] and 'native_identity' not in u,'static carrier raw record changed')
+    path='docs/data/fd2-hd1-static-source-audit.json';source=r.get('source_audit',{})
+    require(source.get('file')==path and sha(ROOT/path)==source.get('sha256'),'static source audit changed')
+    audit=read(ROOT/path);require(audit.get('approved_groups')==list(groups) and [x['group'] for x in audit['records']]==list(groups),'approved static source matrix changed')
+    for b,g,record in zip(bindings,r['groups'],audit['records']):
+        require(b.get('frame_count')==3 and 'identity' in b and b['identity'] is None and 'portrait_source' in b and b['portrait_source'] is None and b.get('face_source')==f"own FDICON{g['group']} frames0..2" and b.get('identity_remains_unknown') is True and b.get('source_only_exception_approved') is True and b.get('selected_prototype_sha256')==g['master_sha256'],'static identity exception or selected master changed')
+        decision=record['decision']
+        require(decision.get('source_only_exception_approved') is True and decision.get('selected_master_sha256')==g['master_sha256'] and decision.get('identity') is None and decision.get('portrait_binding') is None and record['frame_count']==3,'static source decision changed')
+
 def verify_gpu(d,folder,candidate,recipe=RECIPE,profile='party'):
     groups=PROFILES[profile]
-    static=profile in ('static-king','static-anonymous67')
+    static=profile in ('static-king','static-anonymous67','static-final-three')
     frames=(0,1,2) if static else FRAMES
     frame_count=3 if static else 12
     m=read(candidate/'manifest.json');r=read(recipe)
@@ -158,9 +173,9 @@ def verify_gpu(d,folder,candidate,recipe=RECIPE,profile='party'):
         verify_parts(d)
     elif profile=='base-faces':
         require(d.get('selector_projection_injected') is False and d.get('selected_groups')==list(groups),'base identity projection forbidden')
-    elif profile=='static-anonymous67':
-        require(d.get('selector_projection_injected') is True and d.get('identity_projection_injected') is False and d.get('authored_story_fixture') is False and d.get('source_identity_unknown') is True and d.get('visual_template_selector')==48 and d.get('story_private_foreground_approximation') is True and d.get('selected_groups')==[67],'anonymous carrier disclosure missing')
-        verify_source_only_binding(r)
+    elif profile in ('static-anonymous67','static-final-three'):
+        require(d.get('selector_projection_injected') is True and d.get('identity_projection_injected') is False and d.get('authored_story_fixture') is False and d.get('source_identity_unknown') is True and d.get('visual_template_selector')==48 and d.get('story_private_foreground_approximation') is True and d.get('selected_groups')==list(groups),'anonymous carrier disclosure missing')
+        (verify_source_only_binding if profile=='static-anonymous67' else verify_source_only_static_bindings)(r)
     elif static:
         require(d.get('selector_projection_injected') is False and d.get('authored_story_fixture') is True and d.get('story_private_foreground_approximation') is True,'static story disclosure missing')
     elif profile=='enemies':
@@ -261,9 +276,9 @@ def verify_gpu(d,folder,candidate,recipe=RECIPE,profile='party'):
     for case in cases:
         s=lookup[case['case']];g,f=s['group'],s['frame']
         require(g in groups and f in frames and s['save_bytes']>0,'map provenance')
-        if profile=='static-anonymous67':
+        if profile in ('static-anonymous67','static-final-three'):
             b=r['visual_carrier']
-            require(s.get('hud_hidden') is True and s.get('camp')==0 and s.get('portrait')==s.get('battle_fig')==48 and s.get('selector_key')==67 and s.get('has_native_identity') is False and s.get('has_native_race') is False and s.get('has_native_class') is False and s.get('position')==b['position'] and s.get('map')==32 and s.get('roster_sha256')==b['roster_sha256'] and s.get('visual_template_selector')==48 and s.get('source_identity_unknown') is True and s.get('selector_projection_injected') is True and s.get('identity_projection_injected') is False,'anonymous source carrier changed')
+            require(s.get('hud_hidden') is True and s.get('camp')==0 and s.get('portrait')==s.get('battle_fig')==48 and s.get('selector_key')==g and s.get('has_native_identity') is False and s.get('has_native_race') is False and s.get('has_native_class') is False and s.get('position')==b['position'] and s.get('map')==32 and s.get('roster_sha256')==b['roster_sha256'] and s.get('visual_template_selector')==48 and s.get('source_identity_unknown') is True and s.get('selector_projection_injected') is True and s.get('identity_projection_injected') is False,'anonymous source carrier changed')
             verify_selected_map_target(s,f,(7,5))
         elif static:
             require(s.get('hud_hidden') is True and s.get('camp')==0 and s.get('portrait')==s.get('battle_fig')==s.get('selector_key')==48 and s.get('has_native_identity') is False and s.get('position')==r['story_binding']['position'] and s.get('map')==32 and s.get('roster_sha256')==r['story_binding']['roster_sha256'],'static story provenance changed')
@@ -292,7 +307,7 @@ def verify_gpu(d,folder,candidate,recipe=RECIPE,profile='party'):
         elif profile=='party-next':
             b=next(b for b in r['party_bindings'] if b['group']==g);identity=PROFILE_IDENTITIES[profile][g]
             require(s.get('native_identity')==s.get('portrait')==s.get('battle_fig')==identity and s.get('selector_key')==g and s.get('has_native_identity') is True and s.get('camp')==0 and s.get('scenario_sha256')==b['scenario_sha256'] and s.get('selector_projection_injected') is (g==54),'next party actor provenance changed')
-        elif profile not in ('party','static-king','static-anonymous67'):require(s.get('native_identity')==PROFILE_IDENTITIES[profile][g] and s.get('selector_key')==g,'visual selector projection changed')
+        elif profile not in ('party','static-king','static-anonymous67','static-final-three'):require(s.get('native_identity')==PROFILE_IDENTITIES[profile][g] and s.get('selector_key')==g,'visual selector projection changed')
         require(case['source_frame']==f and case.get('game_draw') is True and case.get('rgba_tolerance')==2,'Game.Draw scope')
         if s['interface']!='hd':continue
         name=case['case']+'.png'
@@ -352,7 +367,7 @@ def verify_normal(d,folder,candidate,binary,profile='party'):
     if profile=='party-thirteen':scope='unchanged chapter1 ordinary save checks full candidate, four controls, walk/cancel and save/cold LOAD;45/46/47 newly authored and49 shares17 after byte-identical native verification; pixels only through disclosed selector/byte6/cache projection with identities13/14/15/17, not natural promotion'
     if profile=='party-fourteen':scope='unchanged chapter1 ordinary save checks full two-group candidate, four controls, walk/cancel and save/cold LOAD;64/65 share46/47 after byte-identical native verification; pixels only through disclosed selector/byte6/cache projection with identities14/15, not natural optional promotion'
     if profile=='party-final-three':scope='unchanged chapter1 ordinary save validates full candidate, four controls, walk/cancel and save/cold LOAD;19/31 pixels through original own-camp roster without persistent identity,35 through disclosed Hano1 visual template projected to identity/portrait/fig3 and selector35, not Havart statistics, natural recruitment or promotion'
-    if profile=='static-anonymous67':scope='unchanged chapter1 ordinary save validates full candidate, four controls, walk/cancel and save/cold LOAD;67 pixels only by disclosed map32 carrier48 selector projection, identity and authored appearance unknown, no new story save'
+    if profile in ('static-anonymous67','static-final-three'):scope='unchanged chapter1 ordinary save validates full candidate, four controls, walk/cancel and save/cold LOAD; selected static-source pixels only by disclosed map32 carrier48 selector projection, identity and authored appearance unknown, no new story save'
     return dict(status='PASS-FULL-CANDIDATE-NORMAL-TRANSACTION',pngs=10,scope=scope)
 
 def register(formal,candidate,destination,recipe=RECIPE,profile='party'):
@@ -369,7 +384,7 @@ def register(formal,candidate,destination,recipe=RECIPE,profile='party'):
     for g in m['groups']:
         names.add(g['master_file'])
         for role in ('parent','hd'):names.update(g[role]['files'])
-    require(len(names)==(7 if profile in ('static-king','static-anonymous67') else 25)*len(groups),'expected one master and complete native frames per group')
+    require(len(names)==(7 if profile in ('static-king','static-anonymous67','static-final-three') else 25)*len(groups),'expected one master and complete native frames per group')
     for name in names:
         require(Path(name).name==name and (candidate/name).is_file(),'unsafe file')
         require(not (destination/name).exists() or sha(destination/name)==sha(candidate/name),'different existing art')
@@ -389,7 +404,7 @@ def main():
     for n in ('gpu','candidate','normal','binary','out'):p.add_argument('--'+n,type=Path,required=True)
     for n in ('formal','destination'):p.add_argument('--'+n,type=Path)
     p.add_argument('--recipe',type=Path,default=RECIPE,help='明示本批配方；必須符合所選固定矩陣')
-    p.add_argument('--profile',choices=PROFILES,default='party',help='party固定21；audited-final-three雙組14及單組7合21；base-faces1／4無投影；其他固定雙組14；static-king48固定六；audited-six／audited-late-six三份42，audited-next／audited-enemies／audited-helm-bow／audited-visor-grille／audited-plate-four／audited-shadow-four／audited-adult-four／audited-pale-four／audited-guard-four／audited-horned-four兩份28保留原始名冊，party-next兩份28揭露54投影，party-four／party-five／party-six／party-seven／party-eight兩份28無投影；party-nine／party-ten／party-eleven／party-twelve／party-thirteen兩份28明示四組投影；party-fourteen兩份各7合14明示兩組投影；party-final-three名冊雙組14及投影單組7合21')
+    p.add_argument('--profile',choices=PROFILES,default='party',help='party固定21；audited-final-three雙組14及單組7合21；base-faces1／4無投影；其他固定雙組14；static-king48固定六；static-final-three三組三拍各兩介面合18；audited-six／audited-late-six三份42，audited-next／audited-enemies／audited-helm-bow／audited-visor-grille／audited-plate-four／audited-shadow-four／audited-adult-four／audited-pale-four／audited-guard-four／audited-horned-four兩份28保留原始名冊，party-next兩份28揭露54投影，party-four／party-five／party-six／party-seven／party-eight兩份28無投影；party-nine／party-ten／party-eleven／party-twelve／party-thirteen兩份28明示四組投影；party-fourteen兩份各7合14明示兩組投影；party-final-three名冊雙組14及投影單組7合21')
     p.add_argument('--gpu-parts',nargs='+',type=Path,help='audited-final-three雙組及單組共兩份、audited-six／audited-late-six固定三份、audited-next／audited-enemies／audited-helm-bow／audited-visor-grille／audited-plate-four／audited-shadow-four／audited-adult-four／audited-pale-four／audited-guard-four／audited-horned-four固定兩份、party-next／party-four／party-five／party-six／party-seven／party-eight／party-nine／party-ten／party-eleven／party-twelve／party-thirteen固定兩份GPU收據；party-fourteen固定兩份單組收據；--gpu指定新的合併目錄內收據')
     p.add_argument('--self-test',action='store_true');p.add_argument('--register',action='store_true');a=p.parse_args()
     require(not a.out.exists(),'fresh report required')
@@ -407,11 +422,11 @@ def main():
             elif fault=='source-code':x['source_tree_sha256']='0'*64
             elif fault=='false-save':x['save_bytes_unchanged']=False
             elif fault=='wrong-hud':
-                if a.profile in ('static-king','static-anonymous67'):x['sources'][0]['hud_hidden']=False
+                if a.profile in ('static-king','static-anonymous67','static-final-three'):x['sources'][0]['hud_hidden']=False
                 else:x['sources'][0]['hud_group']=98 if x['sources'][0]['hud_group']==99 else 99
             elif fault=='wrong-tolerance':x['cases'][0]['rgba_tolerance']=3
             elif fault in ('wrong-map-target','wrong-map-camera','missing-map-target'):
-                if a.profile not in ('audited-plate-four','audited-shadow-four','audited-adult-four','audited-pale-four','audited-guard-four','audited-horned-four','audited-late-six','audited-final-three','party-final-three','static-anonymous67'):continue
+                if a.profile not in ('audited-plate-four','audited-shadow-four','audited-adult-four','audited-pale-four','audited-guard-four','audited-horned-four','audited-late-six','audited-final-three','party-final-three','static-anonymous67','static-final-three'):continue
                 subject=next(row for row in x['sources'] if row['interface']=='hd')
                 if fault=='wrong-map-target':subject['map_target']['matched_work_offset']+=24
                 elif fault=='wrong-map-camera':subject['map_target']['camera_x']+=1
@@ -420,7 +435,7 @@ def main():
                 for row in x['cases']:row['f2']=False
             elif fault=='wrong-profile':x['profile']='party' if a.profile=='variants' else 'variants'
             elif fault in ('false-anonymous-identity','false-anonymous-race','false-anonymous-origin'):
-                if a.profile!='static-anonymous67':continue
+                if a.profile not in ('static-anonymous67','static-final-three'):continue
                 subject=x['sources'][0]
                 if fault=='false-anonymous-identity':subject['has_native_identity']=True
                 elif fault=='false-anonymous-race':subject['has_native_race']=True
@@ -430,14 +445,14 @@ def main():
                 x['sources'][0]['selector_key']=98 if x['sources'][0]['selector_key']==99 else 99
             elif fault=='wrong-identity':
                 if a.profile=='party':continue
-                if a.profile in ('enemies','static-king','static-anonymous67','audited-six','audited-next','audited-enemies','audited-helm-bow','audited-visor-grille','audited-plate-four','audited-shadow-four','audited-adult-four','audited-pale-four','audited-guard-four','audited-horned-four','audited-late-six','audited-final-three'):x['sources'][0]['portrait']=98 if x['sources'][0]['portrait']==99 else 99
+                if a.profile in ('enemies','static-king','static-anonymous67','static-final-three','audited-six','audited-next','audited-enemies','audited-helm-bow','audited-visor-grille','audited-plate-four','audited-shadow-four','audited-adult-four','audited-pale-four','audited-guard-four','audited-horned-four','audited-late-six','audited-final-three'):x['sources'][0]['portrait']=98 if x['sources'][0]['portrait']==99 else 99
                 else:
                     subject=next(row for row in x['sources'] if row['group']==(35 if a.profile=='party-final-three' else 52)) if a.profile in ('heroes','party-final-three') else x['sources'][0]
                     subject['native_identity']=2 if a.profile=='heroes' else 99
             elif fault in ('wrong-visual-template','missing-identity-projection'):
-                if a.profile not in ('party-final-three','static-anonymous67'):continue
-                subject=next(row for row in x['sources'] if row['group']==(67 if a.profile=='static-anonymous67' else 35))
-                if fault=='wrong-visual-template':subject['visual_template_selector' if a.profile=='static-anonymous67' else 'visual_template_native_identity']=3
+                if a.profile not in ('party-final-three','static-anonymous67','static-final-three'):continue
+                subject=next(row for row in x['sources'] if row['group']==(PROFILES[a.profile][0] if a.profile in ('static-anonymous67','static-final-three') else 35))
+                if fault=='wrong-visual-template':subject['visual_template_selector' if a.profile in ('static-anonymous67','static-final-three') else 'visual_template_native_identity']=3
                 else:subject.pop('identity_projection_injected')
             elif fault=='undisclosed-projection':
                 if a.profile=='party':continue
@@ -462,13 +477,13 @@ def main():
                 if a.profile not in ('enemies','audited-six','audited-next','audited-enemies','audited-helm-bow','audited-visor-grille','audited-plate-four','audited-shadow-four','audited-adult-four','audited-pale-four','audited-guard-four','audited-horned-four','audited-late-six','audited-final-three','party-final-three'):continue
                 x['sources'][0]['roster_sha256']='0'*64
             elif fault=='wrong-static-phase':
-                if a.profile not in ('static-king','static-anonymous67'):continue
+                if a.profile not in ('static-king','static-anonymous67','static-final-three'):continue
                 x['sources'][0]['frame']=3
             elif fault=='wrong-story-source':
-                if a.profile not in ('static-king','static-anonymous67'):continue
+                if a.profile not in ('static-king','static-anonymous67','static-final-three'):continue
                 x['sources'][0]['roster_sha256']='0'*64
             elif fault=='wrong-story-position':
-                if a.profile not in ('static-king','static-anonymous67'):continue
+                if a.profile not in ('static-king','static-anonymous67','static-final-three'):continue
                 x['sources'][0]['position']['raw_key']=0
             elif fault=='missing-part':
                 if a.profile not in GPU_PARTS:continue
@@ -530,6 +545,18 @@ def main():
             try:verify_source_only_binding(r)
             except (ValueError,KeyError,IndexError):rejected.append(fault)
             else:raise ValueError('anonymous recipe mutant accepted: '+fault)
+    if a.self_test and a.profile=='static-final-three':
+        for index,group in enumerate(PROFILES[a.profile]):
+            for fault in ('portrait-assigned','exception-missing','prototype-changed','audit-changed','carrier-source-changed'):
+                r=deepcopy(read(a.recipe));binding=r['source_only_bindings'][index]
+                if fault=='portrait-assigned':binding['portrait_source']=group
+                elif fault=='exception-missing':binding['source_only_exception_approved']=False
+                elif fault=='prototype-changed':binding['selected_prototype_sha256']='0'*64
+                elif fault=='audit-changed':r['source_audit']['sha256']='0'*64
+                else:r['visual_carrier']['roster_sha256']='0'*64
+                try:verify_source_only_static_bindings(r)
+                except (ValueError,KeyError,IndexError):rejected.append(f'static{group}-'+fault)
+                else:raise ValueError('approved static recipe mutant accepted: '+fault)
     result['rejected_mutants']=rejected
     if a.register:
         require(a.formal is not None and a.destination is not None,'formal/destination required')

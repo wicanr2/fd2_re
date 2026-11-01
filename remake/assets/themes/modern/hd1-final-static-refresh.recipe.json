@@ -1,0 +1,450 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_hd1_chibi_map_refresh",
+  "approved_preview": "docs/figures/hd1-ares-q-design.png",
+  "approved_preview_sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e",
+  "native_bank_sha256": "7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44",
+  "palette_sha256": "404db1ca72ffc19fa7404fbc59bde98cdf239f63fe3375ec248a8142073a28bf",
+  "status": "READY",
+  "base_catalog_sha256": "4cfd15c1de8b20502832fff96b03ca528fcdf2d2b056d31d4eeaf2a8c3a47982",
+  "approval": "使用者2026-11-01確認66／74／75三組原圖Q試稿，身份保留未知；75橫向輪廓保持，不新增方向、角色設定或規則。",
+  "master_alpha_policy": "per_pose_coverage_v1",
+  "groups": [
+    {
+      "group": 66,
+      "master_file": "fdicon-066-hd1-source-q-v1-master.png",
+      "master_sha256": "8ef3349f9f2069ff234d7e1b9bf3b73deeacf6732365f4a32821082921b90626",
+      "output_prefix": "fdicon-066-hd1-source-q-v1"
+    },
+    {
+      "group": 74,
+      "master_file": "fdicon-074-hd1-source-q-v1-master.png",
+      "master_sha256": "bf5ca606eb442c09af5a8624314b1bb5f1abddbfcbee451fba227423b2649fa0",
+      "output_prefix": "fdicon-074-hd1-source-q-v1"
+    },
+    {
+      "group": 75,
+      "master_file": "fdicon-075-hd1-source-q-v1-master.png",
+      "master_sha256": "af024153a5fcb59fef68061366843ae02470674d8ca141531e6435870fe5b91f",
+      "output_prefix": "fdicon-075-hd1-source-q-v1"
+    }
+  ],
+  "image_generation": {
+    "tool": "builtin image_gen.imagegen",
+    "transparent_background": true,
+    "calls": [
+      {
+        "group": 66,
+        "revision": 1,
+        "prompt": "Use case: stylized-concept. A DISPOSABLE source-only HD1 fantasy tactics game prototype. The character's identity is UNKNOWN. Generate exactly THREE full silhouettes in ONE horizontal row, matching the THREE static phases in first reference in that exact order. Do not generate four directions or extra rows. First reference is the only authority for face, visible clothing, colors, pose, orientation and silhouette. Second Ares board is solely for smooth hand-painted big-head/very-short-body Q style, not face or equipment. Preserve each source phase's orientation and static subtle pose; no invented walking, turns or new animation. Equal size and ample transparent gutters. Preserve exact visible face contour/features even with large head. Fully opaque character interior, pure alpha0 exterior with only thin antialias edges. No halos, floor shadows, glow, text, labels, grid or background. No invented identity, species, role, props or equipment. GROUP066: three FRONT static phases. Long muted lavender-purple hair parted near center and extending down either side of the face, black/dark navy headband with low gold strip and tiny pale cyan central gem. Own pale peach broad rectangular little face, dark violet-blue eyes, small neutral mouth. Deep red outer robe/sleeves, broad golden yellow center front with dark horizontal trim, tiny squat body largely hidden under large face/hair. No weapon or jewelry other than source band. All three front, tiny source bob between phases.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/unknown-066-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ],
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-db1fe71d-7027-4522-b0ef-47e4b09ceec4.png",
+        "source_sha256": "e9d19e25ba072eae5e62a48a70e164f47b96f425082abe0b3e67f9ee342e518e",
+        "selected": false,
+        "rejection": "仍為放大的像素圖，不符已定平滑手繪Q版。",
+        "call_index": 1,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/unknown-066-source-reference.png",
+            "sha256": "d9ed762f5d83a9493d1a0545e8d754ae34fd5f8d56037c30feaa7c774cb37025"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png",
+            "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+          }
+        ]
+      },
+      {
+        "group": 74,
+        "revision": 1,
+        "prompt": "Use case: stylized-concept. A DISPOSABLE source-only HD1 fantasy tactics game prototype. The character's identity is UNKNOWN. Generate exactly THREE full silhouettes in ONE horizontal row, matching the THREE static phases in first reference in that exact order. Do not generate four directions or extra rows. First reference is the only authority for face, visible clothing, colors, pose, orientation and silhouette. Second Ares board is solely for smooth hand-painted big-head/very-short-body Q style, not face or equipment. Preserve each source phase's orientation and static subtle pose; no invented walking, turns or new animation. Equal size and ample transparent gutters. Preserve exact visible face contour/features even with large head. Fully opaque character interior, pure alpha0 exterior with only thin antialias edges. No halos, floor shadows, glow, text, labels, grid or background. No invented identity, species, role, props or equipment. GROUP074: three FRONT static phases. Original large muted purple tall pointed floppy cap with very wide angled brim, black band above forehead. Purple long side hair, pale peach face, own narrow dark blue-purple eyes and calm neutral mouth. Purple draped robe/sleeves, small dark navy collar, red center front. Simple brown wooden staff visible at SCREEN LEFT, upper narrow shaft capped by short yellow-gold segment, with irregular brown rounded shoulder-height part seen in source; keep simple original silhouette, no new orb or magical effects. Very large hat/head about two thirds overall height and tiny body.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/unknown-074-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ],
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-16767971-f3a8-41eb-9500-334997772c27.png",
+        "source_sha256": "db1410435fa6d71e0fabdde11530a55f92b0fa28965d89fe7ce546331be51bd2",
+        "selected": false,
+        "rejection": "仍為放大的像素圖，不符已定平滑手繪Q版。",
+        "call_index": 2,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/unknown-074-source-reference.png",
+            "sha256": "7696264987e5e95d6049e124e5d89bc19327e1feb8d7466fde3f3a31e28c0c50"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png",
+            "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+          }
+        ]
+      },
+      {
+        "group": 75,
+        "revision": 1,
+        "prompt": "Use case: stylized-concept. A DISPOSABLE source-only HD1 fantasy tactics game prototype. The character's identity is UNKNOWN. Generate exactly THREE full silhouettes in ONE horizontal row, matching the THREE static phases in first reference in that exact order. Do not generate four directions or extra rows. First reference is the only authority for face, visible clothing, colors, pose, orientation and silhouette. Second Ares board is solely for smooth hand-painted big-head/very-short-body Q style, not face or equipment. Preserve each source phase's orientation and static subtle pose; no invented walking, turns or new animation. Equal size and ample transparent gutters. Preserve exact visible face contour/features even with large head. Fully opaque character interior, pure alpha0 exterior with only thin antialias edges. No halos, floor shadows, glow, text, labels, grid or background. No invented identity, species, role, props or equipment. GROUP075: copy the EXACT unusual compact orientation and silhouette in first reference; do not reinterpret or rotate it upright. Keep the very large RED-haired peach face/head mass on the LEFT, dark navy/blue pieces and small rounded BROWN shapes to the RIGHT, muted olive-gray lower edge and tiny brown/purple shapes underneath, matching original visible pixels. Face details and occlusion must follow original rather than an invented generic face. Preserve the same left-to-right silhouette in all3 phases with only original subtle offsets. Do not add new limbs, armament, bag, horse, bed or scenery; do not invent a standing pose or assign an identity. This is a visual-only recreation of a static original with uncertain identity and pose semantics.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/unknown-075-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ],
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-6b673a5c-e02f-42ca-ae0e-e1c2e4f2ce20.png",
+        "source_sha256": "432bf2517c1a8a107a586f3ed719185a7c6c923e9ea8ed7f49ec2af4645a8c76",
+        "selected": false,
+        "rejection": "仍為放大的像素圖，不符已定平滑手繪Q版。",
+        "call_index": 3,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/unknown-075-source-reference.png",
+            "sha256": "b601b75f23395ebc73f8c0f72b5feab8c8588f4605b3f27296a54ba0ce26cb88"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png",
+            "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+          }
+        ]
+      },
+      {
+        "group": 66,
+        "revision": 2,
+        "prompt": "Use case: stylized-concept. Draw a NEW SMOOTH HAND-PAINTED, NON-PIXEL Q VERSION, exactly3 separated full sprites in a horizontal row. FIRST reference is the APPROVED hand-painted Q STYLE: smooth clean contour curves, broad opaque shaded paint, huge head, very short body. Render every contour with smooth antialiasing. Do not retain a single square pixel block or stair-stepped outline. SECOND reference is original identity-unknown static3pose source, use its color scheme and visible face, hat/hair/robe/staff shapes ONLY, never its pixel rendering. All3 source phases kept in exact original orientation. DO NOT upscale, trace or reproduce the pixel grid. No text, labels, grid, halo or shadow. Pure transparent outside with opaque painted interior. GROUP066: three FRONT static phases. Long muted lavender-purple hair parted near center and extending down either side of the face, black/dark navy headband with low gold strip and tiny pale cyan central gem. Own pale peach broad rectangular little face, dark violet-blue eyes, small neutral mouth. Deep red outer robe/sleeves, broad golden yellow center front with dark horizontal trim, tiny squat body largely hidden under large face/hair. No weapon or jewelry other than source band. All three front, tiny source bob between phases.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/approved-q-style-only.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/unknown-066-source-reference.png"
+        ],
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-63d8a66d-5e7e-4238-b00d-06469350bd1c.png",
+        "source_sha256": "8ef3349f9f2069ff234d7e1b9bf3b73deeacf6732365f4a32821082921b90626",
+        "selected": true,
+        "call_index": 4,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/approved-q-style-only.png",
+            "sha256": "90774ca0aac5017b24bb46bc32c07daee824a4a2e81bbb2f8d3e284d5c525aa2"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/unknown-066-source-reference.png",
+            "sha256": "d9ed762f5d83a9493d1a0545e8d754ae34fd5f8d56037c30feaa7c774cb37025"
+          }
+        ]
+      },
+      {
+        "group": 74,
+        "revision": 2,
+        "prompt": "Use case: stylized-concept. Draw a NEW SMOOTH HAND-PAINTED, NON-PIXEL Q VERSION, exactly3 separated full sprites in a horizontal row. FIRST reference is the APPROVED hand-painted Q STYLE: smooth clean contour curves, broad opaque shaded paint, huge head, very short body. Render every contour with smooth antialiasing. Do not retain a single square pixel block or stair-stepped outline. SECOND reference is original identity-unknown static3pose source, use its color scheme and visible face, hat/hair/robe/staff shapes ONLY, never its pixel rendering. All3 source phases kept in exact original orientation. DO NOT upscale, trace or reproduce the pixel grid. No text, labels, grid, halo or shadow. Pure transparent outside with opaque painted interior. GROUP074: three FRONT static phases. Original large muted purple tall pointed floppy cap with very wide angled brim, black band above forehead. Purple long side hair, pale peach face, own narrow dark blue-purple eyes and calm neutral mouth. Purple draped robe/sleeves, small dark navy collar, red center front. Simple brown wooden staff visible at SCREEN LEFT, upper narrow shaft capped by short yellow-gold segment, with irregular brown rounded shoulder-height part seen in source; keep simple original silhouette, no new orb or magical effects. Very large hat/head about two thirds overall height and tiny body.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/approved-q-style-only.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/unknown-074-source-reference.png"
+        ],
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-81a9aac6-e3ce-4874-8066-05c662499a0c.png",
+        "source_sha256": "bf5ca606eb442c09af5a8624314b1bb5f1abddbfcbee451fba227423b2649fa0",
+        "selected": true,
+        "call_index": 5,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/approved-q-style-only.png",
+            "sha256": "90774ca0aac5017b24bb46bc32c07daee824a4a2e81bbb2f8d3e284d5c525aa2"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/unknown-074-source-reference.png",
+            "sha256": "7696264987e5e95d6049e124e5d89bc19327e1feb8d7466fde3f3a31e28c0c50"
+          }
+        ]
+      },
+      {
+        "group": 75,
+        "revision": 2,
+        "prompt": "Use case: stylized-concept. Draw a NEW SMOOTH HAND-PAINTED, NON-PIXEL Q VERSION, exactly3 separated full sprites in a horizontal row. FIRST reference is the APPROVED hand-painted Q STYLE: smooth clean contour curves, broad opaque shaded paint, huge head, very short body. Render every contour with smooth antialiasing. Do not retain a single square pixel block or stair-stepped outline. SECOND reference is original identity-unknown static3pose source, use its color scheme and visible face, hat/hair/robe/staff shapes ONLY, never its pixel rendering. All3 source phases kept in exact original orientation. DO NOT upscale, trace or reproduce the pixel grid. No text, labels, grid, halo or shadow. Pure transparent outside with opaque painted interior. GROUP075: copy the EXACT unusual compact orientation and silhouette in first reference; do not reinterpret or rotate it upright. Keep the very large RED-haired peach face/head mass on the LEFT, dark navy/blue pieces and small rounded BROWN shapes to the RIGHT, muted olive-gray lower edge and tiny brown/purple shapes underneath, matching original visible pixels. Face details and occlusion must follow original rather than an invented generic face. Preserve the same left-to-right silhouette in all3 phases with only original subtle offsets. Do not add new limbs, armament, bag, horse, bed or scenery; do not invent a standing pose or assign an identity. This is a visual-only recreation of a static original with uncertain identity and pose semantics.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/approved-q-style-only.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/unknown-075-source-reference.png"
+        ],
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-e0bf5b0c-f071-4d60-9e4a-a731d3354f55.png",
+        "source_sha256": "af024153a5fcb59fef68061366843ae02470674d8ca141531e6435870fe5b91f",
+        "selected": true,
+        "call_index": 6,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/approved-q-style-only.png",
+            "sha256": "90774ca0aac5017b24bb46bc32c07daee824a4a2e81bbb2f8d3e284d5c525aa2"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/unknown-075-source-reference.png",
+            "sha256": "b601b75f23395ebc73f8c0f72b5feab8c8588f4605b3f27296a54ba0ce26cb88"
+          }
+        ]
+      }
+    ],
+    "jobs": [
+      {
+        "group": 66,
+        "revision": 2,
+        "prompt": "Use case: stylized-concept. Draw a NEW SMOOTH HAND-PAINTED, NON-PIXEL Q VERSION, exactly3 separated full sprites in a horizontal row. FIRST reference is the APPROVED hand-painted Q STYLE: smooth clean contour curves, broad opaque shaded paint, huge head, very short body. Render every contour with smooth antialiasing. Do not retain a single square pixel block or stair-stepped outline. SECOND reference is original identity-unknown static3pose source, use its color scheme and visible face, hat/hair/robe/staff shapes ONLY, never its pixel rendering. All3 source phases kept in exact original orientation. DO NOT upscale, trace or reproduce the pixel grid. No text, labels, grid, halo or shadow. Pure transparent outside with opaque painted interior. GROUP066: three FRONT static phases. Long muted lavender-purple hair parted near center and extending down either side of the face, black/dark navy headband with low gold strip and tiny pale cyan central gem. Own pale peach broad rectangular little face, dark violet-blue eyes, small neutral mouth. Deep red outer robe/sleeves, broad golden yellow center front with dark horizontal trim, tiny squat body largely hidden under large face/hair. No weapon or jewelry other than source band. All three front, tiny source bob between phases.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/approved-q-style-only.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/unknown-066-source-reference.png"
+        ],
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-63d8a66d-5e7e-4238-b00d-06469350bd1c.png",
+        "source_sha256": "8ef3349f9f2069ff234d7e1b9bf3b73deeacf6732365f4a32821082921b90626",
+        "selected": true,
+        "call_index": 4,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/approved-q-style-only.png",
+            "sha256": "90774ca0aac5017b24bb46bc32c07daee824a4a2e81bbb2f8d3e284d5c525aa2"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/unknown-066-source-reference.png",
+            "sha256": "d9ed762f5d83a9493d1a0545e8d754ae34fd5f8d56037c30feaa7c774cb37025"
+          }
+        ]
+      },
+      {
+        "group": 74,
+        "revision": 2,
+        "prompt": "Use case: stylized-concept. Draw a NEW SMOOTH HAND-PAINTED, NON-PIXEL Q VERSION, exactly3 separated full sprites in a horizontal row. FIRST reference is the APPROVED hand-painted Q STYLE: smooth clean contour curves, broad opaque shaded paint, huge head, very short body. Render every contour with smooth antialiasing. Do not retain a single square pixel block or stair-stepped outline. SECOND reference is original identity-unknown static3pose source, use its color scheme and visible face, hat/hair/robe/staff shapes ONLY, never its pixel rendering. All3 source phases kept in exact original orientation. DO NOT upscale, trace or reproduce the pixel grid. No text, labels, grid, halo or shadow. Pure transparent outside with opaque painted interior. GROUP074: three FRONT static phases. Original large muted purple tall pointed floppy cap with very wide angled brim, black band above forehead. Purple long side hair, pale peach face, own narrow dark blue-purple eyes and calm neutral mouth. Purple draped robe/sleeves, small dark navy collar, red center front. Simple brown wooden staff visible at SCREEN LEFT, upper narrow shaft capped by short yellow-gold segment, with irregular brown rounded shoulder-height part seen in source; keep simple original silhouette, no new orb or magical effects. Very large hat/head about two thirds overall height and tiny body.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/approved-q-style-only.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/unknown-074-source-reference.png"
+        ],
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-81a9aac6-e3ce-4874-8066-05c662499a0c.png",
+        "source_sha256": "bf5ca606eb442c09af5a8624314b1bb5f1abddbfcbee451fba227423b2649fa0",
+        "selected": true,
+        "call_index": 5,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/approved-q-style-only.png",
+            "sha256": "90774ca0aac5017b24bb46bc32c07daee824a4a2e81bbb2f8d3e284d5c525aa2"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/unknown-074-source-reference.png",
+            "sha256": "7696264987e5e95d6049e124e5d89bc19327e1feb8d7466fde3f3a31e28c0c50"
+          }
+        ]
+      },
+      {
+        "group": 75,
+        "revision": 2,
+        "prompt": "Use case: stylized-concept. Draw a NEW SMOOTH HAND-PAINTED, NON-PIXEL Q VERSION, exactly3 separated full sprites in a horizontal row. FIRST reference is the APPROVED hand-painted Q STYLE: smooth clean contour curves, broad opaque shaded paint, huge head, very short body. Render every contour with smooth antialiasing. Do not retain a single square pixel block or stair-stepped outline. SECOND reference is original identity-unknown static3pose source, use its color scheme and visible face, hat/hair/robe/staff shapes ONLY, never its pixel rendering. All3 source phases kept in exact original orientation. DO NOT upscale, trace or reproduce the pixel grid. No text, labels, grid, halo or shadow. Pure transparent outside with opaque painted interior. GROUP075: copy the EXACT unusual compact orientation and silhouette in first reference; do not reinterpret or rotate it upright. Keep the very large RED-haired peach face/head mass on the LEFT, dark navy/blue pieces and small rounded BROWN shapes to the RIGHT, muted olive-gray lower edge and tiny brown/purple shapes underneath, matching original visible pixels. Face details and occlusion must follow original rather than an invented generic face. Preserve the same left-to-right silhouette in all3 phases with only original subtle offsets. Do not add new limbs, armament, bag, horse, bed or scenery; do not invent a standing pose or assign an identity. This is a visual-only recreation of a static original with uncertain identity and pose semantics.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/approved-q-style-only.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/unknown-075-source-reference.png"
+        ],
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-e0bf5b0c-f071-4d60-9e4a-a731d3354f55.png",
+        "source_sha256": "af024153a5fcb59fef68061366843ae02470674d8ca141531e6435870fe5b91f",
+        "selected": true,
+        "call_index": 6,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/approved-q-style-only.png",
+            "sha256": "90774ca0aac5017b24bb46bc32c07daee824a4a2e81bbb2f8d3e284d5c525aa2"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/unknown-075-source-reference.png",
+            "sha256": "b601b75f23395ebc73f8c0f72b5feab8c8588f4605b3f27296a54ba0ce26cb88"
+          }
+        ]
+      }
+    ]
+  },
+  "scope": "三拍來源與受控呈現，身份、頭像及自然出場未知；只投影測試載體selector，不把載體48配成新身份。",
+  "visual_carrier": {
+    "template_selector": 48,
+    "map": 32,
+    "roster_file": "remake/assets/maps/map32/map32_units.json",
+    "roster_sha256": "245fbc71ad571a3f6f067ccb43386a911ca5dfc793f6820ecdd59a9611c6a405",
+    "row": 0,
+    "position": {
+      "x_word": 7,
+      "y_word": 5,
+      "raw_key": 48
+    },
+    "portrait": 48,
+    "battle_fig": 48,
+    "selector_projection_injected": true,
+    "identity_projection_injected": false,
+    "scope": "existing map32 story carrier48 only; not identity or authored appearance for66/74/75"
+  },
+  "source_audit": {
+    "file": "docs/data/fd2-hd1-static-source-audit.json",
+    "sha256": "08610b6ad743f201aa33f2838df6d0b8b2a1abec9ceb2c50fd752630b36f985d"
+  },
+  "alpha_quality_review": {
+    "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-static-r36/alpha-quality-final.json",
+    "sha256": "4d1600731b6cda465c16d01e631bc43e8be1051f660d98a3a90f4103b2c18833"
+  },
+  "source_only_bindings": [
+    {
+      "group": 66,
+      "frame_count": 3,
+      "identity": null,
+      "portrait_source": null,
+      "face_source": "own FDICON66 frames0..2",
+      "identity_remains_unknown": true,
+      "source_only_exception_approved": true,
+      "selected_prototype_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/static-066-draft-r2.png",
+      "selected_prototype_sha256": "8ef3349f9f2069ff234d7e1b9bf3b73deeacf6732365f4a32821082921b90626"
+    },
+    {
+      "group": 74,
+      "frame_count": 3,
+      "identity": null,
+      "portrait_source": null,
+      "face_source": "own FDICON74 frames0..2",
+      "identity_remains_unknown": true,
+      "source_only_exception_approved": true,
+      "selected_prototype_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/static-074-draft-r2.png",
+      "selected_prototype_sha256": "bf5ca606eb442c09af5a8624314b1bb5f1abddbfcbee451fba227423b2649fa0"
+    },
+    {
+      "group": 75,
+      "frame_count": 3,
+      "identity": null,
+      "portrait_source": null,
+      "face_source": "own FDICON75 frames0..2",
+      "identity_remains_unknown": true,
+      "source_only_exception_approved": true,
+      "selected_prototype_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/static-075-draft-r2.png",
+      "selected_prototype_sha256": "af024153a5fcb59fef68061366843ae02470674d8ca141531e6435870fe5b91f"
+    }
+  ],
+  "original_reference": {
+    "groups": [
+      66,
+      74,
+      75
+    ],
+    "source": "own FDICON three static phases; no DATO assignment",
+    "records": [
+      {
+        "group": 66,
+        "reference_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/unknown-066-source-reference.png",
+        "reference_sha256": "d9ed762f5d83a9493d1a0545e8d754ae34fd5f8d56037c30feaa7c774cb37025",
+        "inputs": [
+          {
+            "file": "/original/sprites/fdicon/sprite_0792/frame.png",
+            "sha256": "e1195e8dd9da7b7a006fd3aaaeb6ab5348143c97338b5972adc255761eb7665d"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0792/mask.png",
+            "sha256": "a1c777347daf1f46687bc4c4e843e1d9d5bf4be93bc6f2c7972fb81e332870a7"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0792/remap_mask.png",
+            "sha256": "b5e1389cf62c3c1b034a0776f079c5e4fca0fb44aebe26053aaa841adfc3f0e8"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0793/frame.png",
+            "sha256": "d3baa69b5c1620ed81fc3137a92ec106e1bee580f1cf900a648207dce985a38c"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0793/mask.png",
+            "sha256": "dd1f5a7944bcad55445527a5843c8f7df9ad1c9cc4fcd042974fb8212b508292"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0793/remap_mask.png",
+            "sha256": "8676f6e5adb9ab6ab6c221d5d1481183cc2fa4e4899a22ddcd5500f1a5b24569"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0794/frame.png",
+            "sha256": "25dc625b972fed4ba5ed548c65b388ea0cabb0c23a52210aa0d91873eba5738a"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0794/mask.png",
+            "sha256": "33469c4a42d417a07eaf4aa45a5d5787926131def789dff873690f51a77c9b7b"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0794/remap_mask.png",
+            "sha256": "1edaaf4c0927759429d7173d25bf6e4968511aa3837ad24bf8eda7e8b471e26e"
+          }
+        ]
+      },
+      {
+        "group": 74,
+        "reference_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/unknown-074-source-reference.png",
+        "reference_sha256": "7696264987e5e95d6049e124e5d89bc19327e1feb8d7466fde3f3a31e28c0c50",
+        "inputs": [
+          {
+            "file": "/original/sprites/fdicon/sprite_0888/frame.png",
+            "sha256": "585df9afc057322edd51fa93b3bbbf2805b6b33b15ac1c70abf7089ce3cda98c"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0888/mask.png",
+            "sha256": "a8d01e07e460a072387ebd8a0b13f40d65ed8b1e0858c20b695311cb3fdab1b9"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0888/remap_mask.png",
+            "sha256": "3122eeb958e7113fe9d9503459b8789b57cbb0051217be1b69e0d788c30697b9"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0889/frame.png",
+            "sha256": "e6a0646dc2a6afafebafe61bf60b847ca3362c849506d17e63ec1a585f07136e"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0889/mask.png",
+            "sha256": "0f51b838e6299a77324b5f97d6cb57c09970e3190f5141852282cee38afede7e"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0889/remap_mask.png",
+            "sha256": "72ec6f59a397a3778d1000bb2b367ce89f3e809b45ce81be313683c5d50f0ca1"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0890/frame.png",
+            "sha256": "50c0940a511575dcdb37c4aff5ceb5a1b01324185e7ef353989132cc03a9d316"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0890/mask.png",
+            "sha256": "481a2eab9f88532d53d1d82e94a096ee9ee9d5d5b81a7d252e937a5c4412c40a"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0890/remap_mask.png",
+            "sha256": "0ac22261d28c31d8a568beefcea0dbe45d3b8705a3db85d76730c77448952ab3"
+          }
+        ]
+      },
+      {
+        "group": 75,
+        "reference_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/unknown-075-source-reference.png",
+        "reference_sha256": "b601b75f23395ebc73f8c0f72b5feab8c8588f4605b3f27296a54ba0ce26cb88",
+        "inputs": [
+          {
+            "file": "/original/sprites/fdicon/sprite_0900/frame.png",
+            "sha256": "ab5128df2c3113da19c67270f890ba5788a4bf24bcf65ea48778873e9401e23a"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0900/mask.png",
+            "sha256": "a5f7b0c595d51c700e12204b12d5531c67033760bd607cae60237ccaa16a0af2"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0900/remap_mask.png",
+            "sha256": "a783b3816a0e7b3de4b1063c105dc0613ac1b2cff139f284aa7f3c04232977b3"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0901/frame.png",
+            "sha256": "ab5128df2c3113da19c67270f890ba5788a4bf24bcf65ea48778873e9401e23a"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0901/mask.png",
+            "sha256": "a5f7b0c595d51c700e12204b12d5531c67033760bd607cae60237ccaa16a0af2"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0901/remap_mask.png",
+            "sha256": "a783b3816a0e7b3de4b1063c105dc0613ac1b2cff139f284aa7f3c04232977b3"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0902/frame.png",
+            "sha256": "ab5128df2c3113da19c67270f890ba5788a4bf24bcf65ea48778873e9401e23a"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0902/mask.png",
+            "sha256": "a5f7b0c595d51c700e12204b12d5531c67033760bd607cae60237ccaa16a0af2"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_0902/remap_mask.png",
+            "sha256": "a783b3816a0e7b3de4b1063c105dc0613ac1b2cff139f284aa7f3c04232977b3"
+          }
+        ]
+      }
+    ]
+  }
+}
