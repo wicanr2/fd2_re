@@ -1,0 +1,565 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_hd1_chibi_map_refresh",
+  "approved_preview": "docs/figures/hd1-ares-q-design.png",
+  "approved_preview_sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e",
+  "native_bank_sha256": "7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44",
+  "palette_sha256": "404db1ca72ffc19fa7404fbc59bde98cdf239f63fe3375ec248a8142073a28bf",
+  "base_catalog_sha256": "d262de46c5e36d90c2826a161b7d5e7b3d77f1a2025ea5a87f96cbb1f0069c2d",
+  "approval": "沿已定Q比例、個人原版面容及2026-11-01繼續完成HD1授權，不改正式規則。",
+  "master_alpha_policy": "per_pose_coverage_v1",
+  "groups": [
+    {
+      "group": 103,
+      "master_file": "fdicon-103-hd1-portrait-q-v1-master.png",
+      "master_sha256": "e3c6b76921851392c1c4514cfb9b13ee2ef3f87a06a5b66546661e3033319775",
+      "output_prefix": "fdicon-103-hd1-portrait-q-v1"
+    },
+    {
+      "group": 108,
+      "master_file": "fdicon-108-hd1-portrait-q-v1-master.png",
+      "master_sha256": "326a662a113fcd2dc7db92f3db9662341e9088f20304ab0e2de6deadd7d25a3f",
+      "output_prefix": "fdicon-108-hd1-portrait-q-v1"
+    },
+    {
+      "group": 109,
+      "master_file": "fdicon-109-hd1-portrait-q-v1-master.png",
+      "master_sha256": "9c04d7aadf435f663216f7d8090856694a7372c9a97370ce0959e3c70c8cdfea",
+      "output_prefix": "fdicon-109-hd1-portrait-q-v1"
+    },
+    {
+      "group": 110,
+      "master_file": "fdicon-110-hd1-portrait-q-v1-master.png",
+      "master_sha256": "d1bdfc71c842a96748f864be8e1f2e0d00ef843913b3d8f433b64486d29d194d",
+      "output_prefix": "fdicon-110-hd1-portrait-q-v1"
+    }
+  ],
+  "faces": [
+    {
+      "group": 103,
+      "name": "第103組原名冊人物",
+      "portrait_file": "remake/assets/portraits/DATO_103_m0.png",
+      "portrait_sha256": "4bf17d04fba73507605051d7b946589d0f1d9e21e3e87378a4f4606ffec59578",
+      "original_png_sha256": "e130d317ca01e399776ffe38742b28256a3fd4dd9c1cc2bf8bd55350471d7df8",
+      "decoded_rgba_sha256": "2f64c9732c412250ee583a234e4bbad4d6eb8adaf03b60b7d01d1953a0779038",
+      "traits": [
+        "金黃斑點獸面、窄灰綠眼與淡色長口鼻",
+        "黑鼻、鬚點、兩枚白牙尖及自己的長斑點尾",
+        "金黃毛身與深藍短腰衣，空手；姓名與種族未知"
+      ],
+      "comparison_label": "原名冊與自身圖源，身份及材質未知，非480頭像驗收"
+    },
+    {
+      "group": 108,
+      "name": "第108組原名冊人物",
+      "portrait_file": "remake/assets/portraits/DATO_108_m0.png",
+      "portrait_sha256": "688739752daf96aa055acc67ed5fd5cfa719f5e0c1708dde7769353b64b1132b",
+      "original_png_sha256": "df74d7d1ac0d10b6788b438d284f89d80b0c984dc3f73284260eb51e5fa2ac17",
+      "decoded_rgba_sha256": "b4f4dd9ff976ba5506da3395862e9de01f375aaa2164791bee9207a5de8e7ac9",
+      "traits": [
+        "灰綠有五官的角形面容、窄紅眼、長鉤鼻及緊閉唇顎",
+        "兩側上彎尖輪廓及向前的額部尖輪廓，材質未知",
+        "灰綠四肢、深藍中央背片與暗紅腰V，空手"
+      ],
+      "comparison_label": "原名冊與自身圖源，身份及材質未知，非480頭像驗收"
+    },
+    {
+      "group": 109,
+      "name": "第109組原名冊人物",
+      "portrait_file": "remake/assets/portraits/DATO_109_m0.png",
+      "portrait_sha256": "073a65829b733d6371e3cb21ee21035567df46289455630ccdce480ac3159948",
+      "original_png_sha256": "d291eb859237803fe07eadad4ee8c992ef15cdbe37d210d5cca1d144e4e9f8bb",
+      "decoded_rgba_sha256": "7b928724738cf095bc42b236e8d6a70619008d4fe6d3056a0676f258f0cfe603",
+      "traits": [
+        "自身深藍有五官的角形面容、窄紅眼、長鉤鼻與緊閉唇顎",
+        "依自己的原版DATO及十二姿態，108只作輪廓／畫風參考",
+        "深藍四肢、中央背片與暗紅腰V，不共用身份或資產"
+      ],
+      "comparison_label": "原名冊與自身圖源，身份及材質未知，非480頭像驗收"
+    },
+    {
+      "group": 110,
+      "name": "第110組原名冊人物",
+      "portrait_file": "remake/assets/portraits/DATO_110_m0.png",
+      "portrait_sha256": "21e8e3ae43b26c23fa34ab17a1f5ec5872cc6f20764d9681c4786ddcb46c2848",
+      "original_png_sha256": "6d21bd7ea396576dcdb77de1bce499b843c948433c036922449dc35586326d07",
+      "decoded_rgba_sha256": "052b71c23297cc79a4e05fd27da41ddc79b718179387698f0590bb3e453bd4c4",
+      "traits": [
+        "暗灰綠格狀面紋、窄藍眼及深黑陰影",
+        "角形鼻口與兩側尖輪廓，材質與種族未知",
+        "灰綠短衣肢體、藍腰片、棕色背片與黃橙腕部小記號，空手"
+      ],
+      "comparison_label": "原名冊與自身圖源，身份及材質未知，非480頭像驗收"
+    }
+  ],
+  "roster_bindings": [
+    {
+      "group": 103,
+      "map": 0,
+      "roster_file": "remake/assets/maps/map0/map0_units.json",
+      "roster_sha256": "10f0d34d2ba92edfb254da1f1426e928a465014f1040672b4aee2388c64f234f",
+      "row": 23,
+      "initial_group": 11,
+      "camp": "enemy",
+      "portrait": 103,
+      "battle_fig": 103,
+      "position": {
+        "x_word": 19,
+        "y_word": 15,
+        "raw_key": 103
+      },
+      "native_constructor": {
+        "branch": "high_class",
+        "index": 35,
+        "record": [
+          8,
+          2,
+          22,
+          0,
+          0,
+          10,
+          3,
+          2,
+          5,
+          60
+        ]
+      }
+    },
+    {
+      "group": 108,
+      "map": 17,
+      "roster_file": "remake/assets/maps/map17/map17_units.json",
+      "roster_sha256": "4c3d2dfdab554a6f85b31ca54507c90506c8bcf10642f1c5ac8fe76244091d25",
+      "row": 30,
+      "initial_group": 0,
+      "camp": "enemy",
+      "portrait": 108,
+      "battle_fig": 108,
+      "position": {
+        "x_word": 34,
+        "y_word": 14,
+        "raw_key": 108
+      },
+      "native_constructor": {
+        "branch": "high_class",
+        "index": 40,
+        "record": [
+          5,
+          26,
+          38,
+          0,
+          4,
+          28,
+          16,
+          6,
+          5,
+          170
+        ]
+      }
+    },
+    {
+      "group": 109,
+      "map": 23,
+      "roster_file": "remake/assets/maps/map23/map23_units.json",
+      "roster_sha256": "2c590df01baf4098c79486df500fce63debe9cb3a40a389b5f7140b74e182d99",
+      "row": 0,
+      "initial_group": 2,
+      "camp": "enemy",
+      "portrait": 109,
+      "battle_fig": 109,
+      "position": {
+        "x_word": 7,
+        "y_word": 9,
+        "raw_key": 109
+      },
+      "native_constructor": {
+        "branch": "high_class",
+        "index": 41,
+        "record": [
+          5,
+          26,
+          40,
+          0,
+          5,
+          30,
+          18,
+          6,
+          6,
+          180
+        ]
+      }
+    },
+    {
+      "group": 110,
+      "map": 23,
+      "roster_file": "remake/assets/maps/map23/map23_units.json",
+      "roster_sha256": "2c590df01baf4098c79486df500fce63debe9cb3a40a389b5f7140b74e182d99",
+      "row": 56,
+      "initial_group": 1,
+      "camp": "enemy",
+      "portrait": 110,
+      "battle_fig": 110,
+      "position": {
+        "x_word": 7,
+        "y_word": 8,
+        "raw_key": 110
+      },
+      "native_constructor": {
+        "branch": "high_class",
+        "index": 42,
+        "record": [
+          5,
+          26,
+          40,
+          0,
+          6,
+          33,
+          20,
+          6,
+          6,
+          200
+        ]
+      }
+    }
+  ],
+  "gpu_pairs": {
+    "spotted-and-grayhorn": [
+      103,
+      108
+    ],
+    "bluehorn-and-grid": [
+      109,
+      110
+    ]
+  },
+  "policy": "各依自身原版面容與原名冊原位；109依自己的藍色DATO生成，108只作輪廓與畫風參考，不共用身份或資產；材質與種族未知保留。",
+  "alpha_quality_review": {
+    "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/alpha-quality-final.json",
+    "sha256": "bb6ab23b77ef590261454c6cf9dd1b5225d038ec9692556b6fc38d0cfaede185"
+  },
+  "image_generation": {
+    "tool": "builtin image_gen.imagegen",
+    "transparent_background": true,
+    "jobs": [
+      {
+        "group": 103,
+        "revision": 1,
+        "prompt": "Use case: stylized-concept. One game sprite-sheet master with EXACTLY twelve full-body figures, separated on transparent RGBA background, regular 3columns x4rows. FIRST reference shows THIS character's own original portrait and all12 native map poses; copy only this identity/anatomy/colors/costume and directional occlusion. SECOND reference Ares defines approved smooth hand-painted style and very large head including hair about two thirds height, extremely short torso/legs ONLY, do not copy Ares's face, gear or sword. Clean bold dark contour and fully opaque smooth color shading. Row1 ALL3 straight FRONT, row2 ALL3 strict SCREEN LEFT (nosesLEFT, never reverse the third walking phase), row3 ALL3 straight BACK, row4 ALL3 strict SCREEN RIGHT. Columns neutral/small left step/small right step, same facing per row, compact idle walk animation. Same scale/baseline, full figures in cells with generous gutters. Background exact alpha0; entire interior including all black skin, dark clothes and eyes alpha255, only thin antialiased edge allowed. No haze, aura, shadow, colored background, text, labels, grid or extra characters. No invented names/species/story/equipment. GROUP103: own GOLDEN OCHRE feline face covered with many DARK BROWN/BLACK LEOPARD SPOTS, short pointed ears with pale inner ears, narrow gray-green eyes with black eyeliner shapes, angular cheekbones, black nose, LONG squared PALE CREAM muzzle with black whisker spots, pale chin/lower mouth and TWO thin downward white fang tips at mouth corners. Mature severe neutral expression, no round cute kitten face, no large smile. Own golden spotted bare fur body and arms, pale cream upper chest shape, compact navy-blue waist loincloth/shorts with muted gray-blue belt and small center round part, golden bare feet as native. IMPORTANT long slim SPOTTED GOLD TAIL from native map, visible behind right silhouette in LEFT profiles and behind left silhouette in RIGHT profiles; back tail silhouette as original. Do not add mane, armor, weapons or boots. Preserve distinct leopard-spotted pale muzzle, do not reuse unspotted red group102 face.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-103-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ],
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-9bf3797f-3f50-49b6-b6f4-dce3c3e2217e.png",
+        "source_sha256": "e3c6b76921851392c1c4514cfb9b13ee2ef3f87a06a5b66546661e3033319775",
+        "component_check": 12,
+        "saved_draft": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-103-draft-r1.png",
+        "call_index": 1,
+        "selected": true,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-103-source-reference.png",
+            "sha256": "8325041f6129f007c2a8308ea3a9370695fc364ff6a6b435c5ebdbae80ce9ece"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png",
+            "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+          }
+        ],
+        "master_file": "fdicon-103-hd1-portrait-q-v1-master.png",
+        "saved_master": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/fdicon-103-hd1-portrait-q-v1-master.png",
+        "initial_prompt": "Use case: stylized-concept. One game sprite-sheet master with EXACTLY twelve full-body figures, separated on transparent RGBA background, regular 3columns x4rows. FIRST reference shows THIS character's own original portrait and all12 native map poses; copy only this identity/anatomy/colors/costume and directional occlusion. SECOND reference Ares defines approved smooth hand-painted style and very large head including hair about two thirds height, extremely short torso/legs ONLY, do not copy Ares's face, gear or sword. Clean bold dark contour and fully opaque smooth color shading. Row1 ALL3 straight FRONT, row2 ALL3 strict SCREEN LEFT (nosesLEFT, never reverse the third walking phase), row3 ALL3 straight BACK, row4 ALL3 strict SCREEN RIGHT. Columns neutral/small left step/small right step, same facing per row, compact idle walk animation. Same scale/baseline, full figures in cells with generous gutters. Background exact alpha0; entire interior including all black skin, dark clothes and eyes alpha255, only thin antialiased edge allowed. No haze, aura, shadow, colored background, text, labels, grid or extra characters. No invented names/species/story/equipment. GROUP103: own GOLDEN OCHRE feline face covered with many DARK BROWN/BLACK LEOPARD SPOTS, short pointed ears with pale inner ears, narrow gray-green eyes with black eyeliner shapes, angular cheekbones, black nose, LONG squared PALE CREAM muzzle with black whisker spots, pale chin/lower mouth and TWO thin downward white fang tips at mouth corners. Mature severe neutral expression, no round cute kitten face, no large smile. Own golden spotted bare fur body and arms, pale cream upper chest shape, compact navy-blue waist loincloth/shorts with muted gray-blue belt and small center round part, golden bare feet as native. IMPORTANT long slim SPOTTED GOLD TAIL from native map, visible behind right silhouette in LEFT profiles and behind left silhouette in RIGHT profiles; back tail silhouette as original. Do not add mane, armor, weapons or boots. Preserve distinct leopard-spotted pale muzzle, do not reuse unspotted red group102 face.",
+        "initial_reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-103-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ]
+      },
+      {
+        "group": 108,
+        "revision": 2,
+        "prompt": "Use case: precise-object-edit. FIRST image is own original portrait and twelve native map poses, authoritative facial structure. SECOND image is current draft to correct, keep its exact 3columns x4rows,12 poses and compact body scale. Replace the current robot-like segmented faceplate with the OWN gray-green mature angular FACE shown in portrait: continuous facial surface with craggy brow/cheek folds, deep black narrow red eyes, long hooked protruding nose, tense downturned small mouth with real lips and a strong jutting chin. The face must read as distinct facial anatomy, not a rectangular mouth vent, smooth armor faceplate or closed helmet. Do not decide species or material, do not add tan skin, beard or giant teeth. Correct central forehead horn projection in profile: it projects FORWARD above the brow in the direction of the nose (LEFT in row2, RIGHT in row4), not a tall vertical spike on top of the skull. Keep two native outer upward-curving prongs, correct gray-green palette and silhouette, dark-blue central/back torso patch and deep-red waist V. Body empty hands, no additional gear. Front/LEFT/BACK/RIGHT rows, ALL3 in a row same facing, subtle gait columns. Smooth hand-painted opaque shading and dark outline, huge chibi head short body. Alpha255 entire character including deep black eyes/shadows, alpha0 background. No halos, haze, transparency fading, ground shadow, labels or blue background.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-108-source-reference.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-108-draft-r1.png"
+        ],
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-6056798a-94cc-4a57-9eaf-eb7c1d8c9d90.png",
+        "source_sha256": "326a662a113fcd2dc7db92f3db9662341e9088f20304ab0e2de6deadd7d25a3f",
+        "component_check": 12,
+        "saved_draft": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-108-draft-r2.png",
+        "call_index": 4,
+        "selected": true,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-108-source-reference.png",
+            "sha256": "c47b206564564a697d2fa686c6463c559b81cf245e25a5fe3c6f118559833070"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-108-draft-r1.png",
+            "sha256": "dbd7037fa5ec89dae1e0e9a23cbc0a7103c2c3f4a351f649f6531adeffab3f65"
+          }
+        ],
+        "master_file": "fdicon-108-hd1-portrait-q-v1-master.png",
+        "saved_master": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/fdicon-108-hd1-portrait-q-v1-master.png",
+        "initial_prompt": "Use case: stylized-concept. One game sprite-sheet master with EXACTLY twelve full-body figures, separated on transparent RGBA background, regular 3columns x4rows. FIRST reference shows THIS character's own original portrait and all12 native map poses; copy only this identity/anatomy/colors/costume and directional occlusion. SECOND reference Ares defines approved smooth hand-painted style and very large head including hair about two thirds height, extremely short torso/legs ONLY, do not copy Ares's face, gear or sword. Clean bold dark contour and fully opaque smooth color shading. Row1 ALL3 straight FRONT, row2 ALL3 strict SCREEN LEFT (nosesLEFT, never reverse the third walking phase), row3 ALL3 straight BACK, row4 ALL3 strict SCREEN RIGHT. Columns neutral/small left step/small right step, same facing per row, compact idle walk animation. Same scale/baseline, full figures in cells with generous gutters. Background exact alpha0; entire interior including all black skin, dark clothes and eyes alpha255, only thin antialiased edge allowed. No haze, aura, shadow, colored background, text, labels, grid or extra characters. No invented names/species/story/equipment. GROUP108: own GRAY-GREEN angular hard face, deep BLACK narrowed eye sockets with thin RED eyes, prominent hooked angular central nose and a stern small downturned mouth, sharp cheek planes and strong pointed/chiseled chin. Own horn contours from original: two tall outer upward-curving prongs at sides and a shorter forward forehead/nose ridge projection; preserve native head silhouette, no extra giant antlers or ram horns. Material/species unknown, don't decide it is a helmet hiding a tan human face, don't paint exposed tan skin or a grinning skull. Native compact gray-green shoulder/arm/leg forms with dark navy-black central torso/back panel, small dark-blue back center, deep RED V/lower-center waist accent, graygreen short feet, empty hands. No sword, axe, staff, shield, wings, tail, cloak or extra gear. Reproduce own brow/nose/mouth planes clearly, not generic armor mask.",
+        "initial_reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-108-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ]
+      },
+      {
+        "group": 109,
+        "revision": 1,
+        "prompt": "Use case: identity-preserve. FIRST image is a newly corrected gray-green sprite layout used ONLY as matching contour/style template. SECOND image is group109's OWN original portrait and12 native map poses, authoritative for its BLUE palette and facial details. Create group109 twelve-pose sprite master. Preserve the first image's exact3columns x4rows, twelve full complete figures, FRONT / all LEFT / BACK / all RIGHT rows, same horn contours and mature continuous angular face anatomy: long hooked nose, craggy brow/cheek folds, small downturned mouth and strong chin. Repaint face, horns, shoulders, arms and legs into the SECOND original's DEEP BLUE/navy palette with cool blue-gray highlights, rather than gray-green. Keep eyes narrow bright RED in black sockets, dark navy-black central torso/back panel with a small muted blue back center, tiny deep-RED waist V, short blue feet and empty hands. Central forehead projection points FORWARD in side views (LEFT in row2, RIGHT in row4), two outer horns curve upward. Do not turn face into a metal faceplate, add teeth, tan skin, gear, wings, tail, weapons, cape or new identity. Huge head2/3 height, very short body, smooth opaque hand-painted shading, crisp outline. Alpha255 throughout characters including darkblue/black, exact alpha0 empty background, thin antialiasing edge only, no halos/shadows/haze, no text/borders/labels. Maintain ALL3 noses LEFT in row2 and ALL3 RIGHT in row4 including third gait column.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-108-draft-r2.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-109-source-reference.png"
+        ],
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-9168f128-d835-4e09-b908-71c51046f726.png",
+        "source_sha256": "9c04d7aadf435f663216f7d8090856694a7372c9a97370ce0959e3c70c8cdfea",
+        "component_check": 12,
+        "saved_draft": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-109-draft-r1.png",
+        "call_index": 6,
+        "selected": true,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-108-draft-r2.png",
+            "sha256": "326a662a113fcd2dc7db92f3db9662341e9088f20304ab0e2de6deadd7d25a3f"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-109-source-reference.png",
+            "sha256": "b931e4b4978c07fd1e4944bd8e2c5af04df6134d61b0058c9200d18b486b51b4"
+          }
+        ],
+        "master_file": "fdicon-109-hd1-portrait-q-v1-master.png",
+        "saved_master": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/fdicon-109-hd1-portrait-q-v1-master.png",
+        "initial_prompt": "Use case: identity-preserve. FIRST image is a newly corrected gray-green sprite layout used ONLY as matching contour/style template. SECOND image is group109's OWN original portrait and12 native map poses, authoritative for its BLUE palette and facial details. Create group109 twelve-pose sprite master. Preserve the first image's exact3columns x4rows, twelve full complete figures, FRONT / all LEFT / BACK / all RIGHT rows, same horn contours and mature continuous angular face anatomy: long hooked nose, craggy brow/cheek folds, small downturned mouth and strong chin. Repaint face, horns, shoulders, arms and legs into the SECOND original's DEEP BLUE/navy palette with cool blue-gray highlights, rather than gray-green. Keep eyes narrow bright RED in black sockets, dark navy-black central torso/back panel with a small muted blue back center, tiny deep-RED waist V, short blue feet and empty hands. Central forehead projection points FORWARD in side views (LEFT in row2, RIGHT in row4), two outer horns curve upward. Do not turn face into a metal faceplate, add teeth, tan skin, gear, wings, tail, weapons, cape or new identity. Huge head2/3 height, very short body, smooth opaque hand-painted shading, crisp outline. Alpha255 throughout characters including darkblue/black, exact alpha0 empty background, thin antialiasing edge only, no halos/shadows/haze, no text/borders/labels. Maintain ALL3 noses LEFT in row2 and ALL3 RIGHT in row4 including third gait column.",
+        "initial_reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-108-draft-r2.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-109-source-reference.png"
+        ]
+      },
+      {
+        "group": 110,
+        "revision": 2,
+        "prompt": "Generate a transparent 12-pose sprite master using FIRST image's corrected neutral-facing guide, EXACT 3columns x4rows. Row1 all3 FRONT, row2 all3 strict LEFT including third column (every nose LEFT), row3 all3 BACK, row4 all3 strict RIGHT. Subtle neutral/left-step/right-step columns, never mirror the third LEFT pose. FIRST guide is layout and current chibi shape; SECOND is OWN original portrait/map source authoritative for face, costume and shading. Preserve dark graygreen distinct face with a small regular grid-like texture, narrow BLUE eyes, long nose and thin calm mouth, broad pointed side ear contours, tiny body graygreen arms, navy center short loincloth and small orange/yellow wrist accents. ORIGINAL front viewer-LEFT face is much darker in deep BLACK SHADOW; viewer-RIGHT graygreen cheek/forehead shows texture, keep both blue eye glints. Shadow stays fully OPAQUE, not alpha holes. Do not turn textured face into a blank robot visor or add horns. Remove the invented brown back POUCH with flap/buckle; replace with original plain flat muted-brown rear panel, no pouch, bag, flap, handle, strap or pocket. Keep existing pale thin collar contour as original, no extra equipment. Huge head 2/3 height, short body and legs, smooth hand-painted shading and dark outline, fully opaque interiors, alpha0 background. Do not retain guide background, labels, halos, shadows, panels or extra figures. Exactly12 separate complete full bodies with generous gutters.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-110-direction-guide.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-110-source-reference.png"
+        ],
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-8a81fca9-58ab-4cc7-bebe-7b4b1da2b8c0.png",
+        "source_sha256": "d1bdfc71c842a96748f864be8e1f2e0d00ef843913b3d8f433b64486d29d194d",
+        "component_check": 12,
+        "saved_draft": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-110-draft-r2.png",
+        "call_index": 5,
+        "selected": true,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-110-direction-guide.png",
+            "sha256": "0eadc17a43f7042a26ecb69f7a620786fe01d98f04dbcafc197f9ca2f4a4bf21"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-110-source-reference.png",
+            "sha256": "3078ff9ff888c5e1b92e25201d0b095792736ad72e1781274f854665cd679e19"
+          }
+        ],
+        "master_file": "fdicon-110-hd1-portrait-q-v1-master.png",
+        "saved_master": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/fdicon-110-hd1-portrait-q-v1-master.png",
+        "initial_prompt": "Use case: stylized-concept. One game sprite-sheet master with EXACTLY twelve full-body figures, separated on transparent RGBA background, regular 3columns x4rows. FIRST reference shows THIS character's own original portrait and all12 native map poses; copy only this identity/anatomy/colors/costume and directional occlusion. SECOND reference Ares defines approved smooth hand-painted style and very large head including hair about two thirds height, extremely short torso/legs ONLY, do not copy Ares's face, gear or sword. Clean bold dark contour and fully opaque smooth color shading. Row1 ALL3 straight FRONT, row2 ALL3 strict SCREEN LEFT (nosesLEFT, never reverse the third walking phase), row3 ALL3 straight BACK, row4 ALL3 strict SCREEN RIGHT. Columns neutral/small left step/small right step, same facing per row, compact idle walk animation. Same scale/baseline, full figures in cells with generous gutters. Background exact alpha0; entire interior including all black skin, dark clothes and eyes alpha255, only thin antialiased edge allowed. No haze, aura, shadow, colored background, text, labels, grid or extra characters. No invented names/species/story/equipment. GROUP110: own very DARK GRAY-GREEN face with subtle small REGULAR SQUARE/scale-like surface pattern over forehead, cheeks, nose and chin. Preserve it as visible texture without deciding material/species; not a blank rectangular robot mask. Face has distinct narrow BLUE eye glints in a deep black horizontal shadow, strong angular brow/nose, and a small closed mouth/chin. Original portrait viewer-LEFT half face is deep shadow while viewer-RIGHT shows graygreen grid texture; shadow areas still opaque, not transparent holes. Own broad pointed SIDE EAR-like silhouettes as native (no tall horns or new helmet). Native compact graygreen arms and shoulder forms, charcoal/olive upper torso, muted brown rear/waist center panel, navy short trousers/loincloth center, dark feet and small yellow/orange wrist accents. Hands empty, no sword, gun, shield, tail or cape invented. Keep separate own face rather than generic huge red eyes or smiling goblin.",
+        "initial_reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-110-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ]
+      }
+    ],
+    "calls": [
+      {
+        "group": 103,
+        "revision": 1,
+        "prompt": "Use case: stylized-concept. One game sprite-sheet master with EXACTLY twelve full-body figures, separated on transparent RGBA background, regular 3columns x4rows. FIRST reference shows THIS character's own original portrait and all12 native map poses; copy only this identity/anatomy/colors/costume and directional occlusion. SECOND reference Ares defines approved smooth hand-painted style and very large head including hair about two thirds height, extremely short torso/legs ONLY, do not copy Ares's face, gear or sword. Clean bold dark contour and fully opaque smooth color shading. Row1 ALL3 straight FRONT, row2 ALL3 strict SCREEN LEFT (nosesLEFT, never reverse the third walking phase), row3 ALL3 straight BACK, row4 ALL3 strict SCREEN RIGHT. Columns neutral/small left step/small right step, same facing per row, compact idle walk animation. Same scale/baseline, full figures in cells with generous gutters. Background exact alpha0; entire interior including all black skin, dark clothes and eyes alpha255, only thin antialiased edge allowed. No haze, aura, shadow, colored background, text, labels, grid or extra characters. No invented names/species/story/equipment. GROUP103: own GOLDEN OCHRE feline face covered with many DARK BROWN/BLACK LEOPARD SPOTS, short pointed ears with pale inner ears, narrow gray-green eyes with black eyeliner shapes, angular cheekbones, black nose, LONG squared PALE CREAM muzzle with black whisker spots, pale chin/lower mouth and TWO thin downward white fang tips at mouth corners. Mature severe neutral expression, no round cute kitten face, no large smile. Own golden spotted bare fur body and arms, pale cream upper chest shape, compact navy-blue waist loincloth/shorts with muted gray-blue belt and small center round part, golden bare feet as native. IMPORTANT long slim SPOTTED GOLD TAIL from native map, visible behind right silhouette in LEFT profiles and behind left silhouette in RIGHT profiles; back tail silhouette as original. Do not add mane, armor, weapons or boots. Preserve distinct leopard-spotted pale muzzle, do not reuse unspotted red group102 face.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-103-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ],
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-9bf3797f-3f50-49b6-b6f4-dce3c3e2217e.png",
+        "source_sha256": "e3c6b76921851392c1c4514cfb9b13ee2ef3f87a06a5b66546661e3033319775",
+        "component_check": 12,
+        "saved_draft": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-103-draft-r1.png",
+        "call_index": 1,
+        "selected": true,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-103-source-reference.png",
+            "sha256": "8325041f6129f007c2a8308ea3a9370695fc364ff6a6b435c5ebdbae80ce9ece"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png",
+            "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+          }
+        ],
+        "master_file": "fdicon-103-hd1-portrait-q-v1-master.png",
+        "saved_master": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/fdicon-103-hd1-portrait-q-v1-master.png",
+        "initial_prompt": "Use case: stylized-concept. One game sprite-sheet master with EXACTLY twelve full-body figures, separated on transparent RGBA background, regular 3columns x4rows. FIRST reference shows THIS character's own original portrait and all12 native map poses; copy only this identity/anatomy/colors/costume and directional occlusion. SECOND reference Ares defines approved smooth hand-painted style and very large head including hair about two thirds height, extremely short torso/legs ONLY, do not copy Ares's face, gear or sword. Clean bold dark contour and fully opaque smooth color shading. Row1 ALL3 straight FRONT, row2 ALL3 strict SCREEN LEFT (nosesLEFT, never reverse the third walking phase), row3 ALL3 straight BACK, row4 ALL3 strict SCREEN RIGHT. Columns neutral/small left step/small right step, same facing per row, compact idle walk animation. Same scale/baseline, full figures in cells with generous gutters. Background exact alpha0; entire interior including all black skin, dark clothes and eyes alpha255, only thin antialiased edge allowed. No haze, aura, shadow, colored background, text, labels, grid or extra characters. No invented names/species/story/equipment. GROUP103: own GOLDEN OCHRE feline face covered with many DARK BROWN/BLACK LEOPARD SPOTS, short pointed ears with pale inner ears, narrow gray-green eyes with black eyeliner shapes, angular cheekbones, black nose, LONG squared PALE CREAM muzzle with black whisker spots, pale chin/lower mouth and TWO thin downward white fang tips at mouth corners. Mature severe neutral expression, no round cute kitten face, no large smile. Own golden spotted bare fur body and arms, pale cream upper chest shape, compact navy-blue waist loincloth/shorts with muted gray-blue belt and small center round part, golden bare feet as native. IMPORTANT long slim SPOTTED GOLD TAIL from native map, visible behind right silhouette in LEFT profiles and behind left silhouette in RIGHT profiles; back tail silhouette as original. Do not add mane, armor, weapons or boots. Preserve distinct leopard-spotted pale muzzle, do not reuse unspotted red group102 face.",
+        "initial_reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-103-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ]
+      },
+      {
+        "group": 108,
+        "revision": 1,
+        "prompt": "Use case: stylized-concept. One game sprite-sheet master with EXACTLY twelve full-body figures, separated on transparent RGBA background, regular 3columns x4rows. FIRST reference shows THIS character's own original portrait and all12 native map poses; copy only this identity/anatomy/colors/costume and directional occlusion. SECOND reference Ares defines approved smooth hand-painted style and very large head including hair about two thirds height, extremely short torso/legs ONLY, do not copy Ares's face, gear or sword. Clean bold dark contour and fully opaque smooth color shading. Row1 ALL3 straight FRONT, row2 ALL3 strict SCREEN LEFT (nosesLEFT, never reverse the third walking phase), row3 ALL3 straight BACK, row4 ALL3 strict SCREEN RIGHT. Columns neutral/small left step/small right step, same facing per row, compact idle walk animation. Same scale/baseline, full figures in cells with generous gutters. Background exact alpha0; entire interior including all black skin, dark clothes and eyes alpha255, only thin antialiased edge allowed. No haze, aura, shadow, colored background, text, labels, grid or extra characters. No invented names/species/story/equipment. GROUP108: own GRAY-GREEN angular hard face, deep BLACK narrowed eye sockets with thin RED eyes, prominent hooked angular central nose and a stern small downturned mouth, sharp cheek planes and strong pointed/chiseled chin. Own horn contours from original: two tall outer upward-curving prongs at sides and a shorter forward forehead/nose ridge projection; preserve native head silhouette, no extra giant antlers or ram horns. Material/species unknown, don't decide it is a helmet hiding a tan human face, don't paint exposed tan skin or a grinning skull. Native compact gray-green shoulder/arm/leg forms with dark navy-black central torso/back panel, small dark-blue back center, deep RED V/lower-center waist accent, graygreen short feet, empty hands. No sword, axe, staff, shield, wings, tail, cloak or extra gear. Reproduce own brow/nose/mouth planes clearly, not generic armor mask.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-108-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ],
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-72e2bebe-7e3e-4bf4-a522-314d087365bf.png",
+        "source_sha256": "dbd7037fa5ec89dae1e0e9a23cbc0a7103c2c3f4a351f649f6531adeffab3f65",
+        "component_check": 12,
+        "saved_draft": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-108-draft-r1.png",
+        "call_index": 2,
+        "selected": false,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-108-source-reference.png",
+            "sha256": "c47b206564564a697d2fa686c6463c559b81cf245e25a5fe3c6f118559833070"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png",
+            "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+          }
+        ]
+      },
+      {
+        "group": 110,
+        "revision": 1,
+        "prompt": "Use case: stylized-concept. One game sprite-sheet master with EXACTLY twelve full-body figures, separated on transparent RGBA background, regular 3columns x4rows. FIRST reference shows THIS character's own original portrait and all12 native map poses; copy only this identity/anatomy/colors/costume and directional occlusion. SECOND reference Ares defines approved smooth hand-painted style and very large head including hair about two thirds height, extremely short torso/legs ONLY, do not copy Ares's face, gear or sword. Clean bold dark contour and fully opaque smooth color shading. Row1 ALL3 straight FRONT, row2 ALL3 strict SCREEN LEFT (nosesLEFT, never reverse the third walking phase), row3 ALL3 straight BACK, row4 ALL3 strict SCREEN RIGHT. Columns neutral/small left step/small right step, same facing per row, compact idle walk animation. Same scale/baseline, full figures in cells with generous gutters. Background exact alpha0; entire interior including all black skin, dark clothes and eyes alpha255, only thin antialiased edge allowed. No haze, aura, shadow, colored background, text, labels, grid or extra characters. No invented names/species/story/equipment. GROUP110: own very DARK GRAY-GREEN face with subtle small REGULAR SQUARE/scale-like surface pattern over forehead, cheeks, nose and chin. Preserve it as visible texture without deciding material/species; not a blank rectangular robot mask. Face has distinct narrow BLUE eye glints in a deep black horizontal shadow, strong angular brow/nose, and a small closed mouth/chin. Original portrait viewer-LEFT half face is deep shadow while viewer-RIGHT shows graygreen grid texture; shadow areas still opaque, not transparent holes. Own broad pointed SIDE EAR-like silhouettes as native (no tall horns or new helmet). Native compact graygreen arms and shoulder forms, charcoal/olive upper torso, muted brown rear/waist center panel, navy short trousers/loincloth center, dark feet and small yellow/orange wrist accents. Hands empty, no sword, gun, shield, tail or cape invented. Keep separate own face rather than generic huge red eyes or smiling goblin.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-110-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ],
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-1428e5b3-c53b-4e89-9963-6dfa910fbe6d.png",
+        "source_sha256": "c99d08490f3fe880567f0ec8a9e1a4b07f61d4ee6cd1462e1eae567848f8a899",
+        "component_check": 12,
+        "saved_draft": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-110-draft-r1.png",
+        "call_index": 3,
+        "selected": false,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-110-source-reference.png",
+            "sha256": "3078ff9ff888c5e1b92e25201d0b095792736ad72e1781274f854665cd679e19"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png",
+            "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+          }
+        ]
+      },
+      {
+        "group": 108,
+        "revision": 2,
+        "prompt": "Use case: precise-object-edit. FIRST image is own original portrait and twelve native map poses, authoritative facial structure. SECOND image is current draft to correct, keep its exact 3columns x4rows,12 poses and compact body scale. Replace the current robot-like segmented faceplate with the OWN gray-green mature angular FACE shown in portrait: continuous facial surface with craggy brow/cheek folds, deep black narrow red eyes, long hooked protruding nose, tense downturned small mouth with real lips and a strong jutting chin. The face must read as distinct facial anatomy, not a rectangular mouth vent, smooth armor faceplate or closed helmet. Do not decide species or material, do not add tan skin, beard or giant teeth. Correct central forehead horn projection in profile: it projects FORWARD above the brow in the direction of the nose (LEFT in row2, RIGHT in row4), not a tall vertical spike on top of the skull. Keep two native outer upward-curving prongs, correct gray-green palette and silhouette, dark-blue central/back torso patch and deep-red waist V. Body empty hands, no additional gear. Front/LEFT/BACK/RIGHT rows, ALL3 in a row same facing, subtle gait columns. Smooth hand-painted opaque shading and dark outline, huge chibi head short body. Alpha255 entire character including deep black eyes/shadows, alpha0 background. No halos, haze, transparency fading, ground shadow, labels or blue background.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-108-source-reference.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-108-draft-r1.png"
+        ],
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-6056798a-94cc-4a57-9eaf-eb7c1d8c9d90.png",
+        "source_sha256": "326a662a113fcd2dc7db92f3db9662341e9088f20304ab0e2de6deadd7d25a3f",
+        "component_check": 12,
+        "saved_draft": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-108-draft-r2.png",
+        "call_index": 4,
+        "selected": true,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-108-source-reference.png",
+            "sha256": "c47b206564564a697d2fa686c6463c559b81cf245e25a5fe3c6f118559833070"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-108-draft-r1.png",
+            "sha256": "dbd7037fa5ec89dae1e0e9a23cbc0a7103c2c3f4a351f649f6531adeffab3f65"
+          }
+        ],
+        "master_file": "fdicon-108-hd1-portrait-q-v1-master.png",
+        "saved_master": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/fdicon-108-hd1-portrait-q-v1-master.png",
+        "initial_prompt": "Use case: stylized-concept. One game sprite-sheet master with EXACTLY twelve full-body figures, separated on transparent RGBA background, regular 3columns x4rows. FIRST reference shows THIS character's own original portrait and all12 native map poses; copy only this identity/anatomy/colors/costume and directional occlusion. SECOND reference Ares defines approved smooth hand-painted style and very large head including hair about two thirds height, extremely short torso/legs ONLY, do not copy Ares's face, gear or sword. Clean bold dark contour and fully opaque smooth color shading. Row1 ALL3 straight FRONT, row2 ALL3 strict SCREEN LEFT (nosesLEFT, never reverse the third walking phase), row3 ALL3 straight BACK, row4 ALL3 strict SCREEN RIGHT. Columns neutral/small left step/small right step, same facing per row, compact idle walk animation. Same scale/baseline, full figures in cells with generous gutters. Background exact alpha0; entire interior including all black skin, dark clothes and eyes alpha255, only thin antialiased edge allowed. No haze, aura, shadow, colored background, text, labels, grid or extra characters. No invented names/species/story/equipment. GROUP108: own GRAY-GREEN angular hard face, deep BLACK narrowed eye sockets with thin RED eyes, prominent hooked angular central nose and a stern small downturned mouth, sharp cheek planes and strong pointed/chiseled chin. Own horn contours from original: two tall outer upward-curving prongs at sides and a shorter forward forehead/nose ridge projection; preserve native head silhouette, no extra giant antlers or ram horns. Material/species unknown, don't decide it is a helmet hiding a tan human face, don't paint exposed tan skin or a grinning skull. Native compact gray-green shoulder/arm/leg forms with dark navy-black central torso/back panel, small dark-blue back center, deep RED V/lower-center waist accent, graygreen short feet, empty hands. No sword, axe, staff, shield, wings, tail, cloak or extra gear. Reproduce own brow/nose/mouth planes clearly, not generic armor mask.",
+        "initial_reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-108-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ]
+      },
+      {
+        "group": 110,
+        "revision": 2,
+        "prompt": "Generate a transparent 12-pose sprite master using FIRST image's corrected neutral-facing guide, EXACT 3columns x4rows. Row1 all3 FRONT, row2 all3 strict LEFT including third column (every nose LEFT), row3 all3 BACK, row4 all3 strict RIGHT. Subtle neutral/left-step/right-step columns, never mirror the third LEFT pose. FIRST guide is layout and current chibi shape; SECOND is OWN original portrait/map source authoritative for face, costume and shading. Preserve dark graygreen distinct face with a small regular grid-like texture, narrow BLUE eyes, long nose and thin calm mouth, broad pointed side ear contours, tiny body graygreen arms, navy center short loincloth and small orange/yellow wrist accents. ORIGINAL front viewer-LEFT face is much darker in deep BLACK SHADOW; viewer-RIGHT graygreen cheek/forehead shows texture, keep both blue eye glints. Shadow stays fully OPAQUE, not alpha holes. Do not turn textured face into a blank robot visor or add horns. Remove the invented brown back POUCH with flap/buckle; replace with original plain flat muted-brown rear panel, no pouch, bag, flap, handle, strap or pocket. Keep existing pale thin collar contour as original, no extra equipment. Huge head 2/3 height, short body and legs, smooth hand-painted shading and dark outline, fully opaque interiors, alpha0 background. Do not retain guide background, labels, halos, shadows, panels or extra figures. Exactly12 separate complete full bodies with generous gutters.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-110-direction-guide.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-110-source-reference.png"
+        ],
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-8a81fca9-58ab-4cc7-bebe-7b4b1da2b8c0.png",
+        "source_sha256": "d1bdfc71c842a96748f864be8e1f2e0d00ef843913b3d8f433b64486d29d194d",
+        "component_check": 12,
+        "saved_draft": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-110-draft-r2.png",
+        "call_index": 5,
+        "selected": true,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-110-direction-guide.png",
+            "sha256": "0eadc17a43f7042a26ecb69f7a620786fe01d98f04dbcafc197f9ca2f4a4bf21"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-110-source-reference.png",
+            "sha256": "3078ff9ff888c5e1b92e25201d0b095792736ad72e1781274f854665cd679e19"
+          }
+        ],
+        "master_file": "fdicon-110-hd1-portrait-q-v1-master.png",
+        "saved_master": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/fdicon-110-hd1-portrait-q-v1-master.png",
+        "initial_prompt": "Use case: stylized-concept. One game sprite-sheet master with EXACTLY twelve full-body figures, separated on transparent RGBA background, regular 3columns x4rows. FIRST reference shows THIS character's own original portrait and all12 native map poses; copy only this identity/anatomy/colors/costume and directional occlusion. SECOND reference Ares defines approved smooth hand-painted style and very large head including hair about two thirds height, extremely short torso/legs ONLY, do not copy Ares's face, gear or sword. Clean bold dark contour and fully opaque smooth color shading. Row1 ALL3 straight FRONT, row2 ALL3 strict SCREEN LEFT (nosesLEFT, never reverse the third walking phase), row3 ALL3 straight BACK, row4 ALL3 strict SCREEN RIGHT. Columns neutral/small left step/small right step, same facing per row, compact idle walk animation. Same scale/baseline, full figures in cells with generous gutters. Background exact alpha0; entire interior including all black skin, dark clothes and eyes alpha255, only thin antialiased edge allowed. No haze, aura, shadow, colored background, text, labels, grid or extra characters. No invented names/species/story/equipment. GROUP110: own very DARK GRAY-GREEN face with subtle small REGULAR SQUARE/scale-like surface pattern over forehead, cheeks, nose and chin. Preserve it as visible texture without deciding material/species; not a blank rectangular robot mask. Face has distinct narrow BLUE eye glints in a deep black horizontal shadow, strong angular brow/nose, and a small closed mouth/chin. Original portrait viewer-LEFT half face is deep shadow while viewer-RIGHT shows graygreen grid texture; shadow areas still opaque, not transparent holes. Own broad pointed SIDE EAR-like silhouettes as native (no tall horns or new helmet). Native compact graygreen arms and shoulder forms, charcoal/olive upper torso, muted brown rear/waist center panel, navy short trousers/loincloth center, dark feet and small yellow/orange wrist accents. Hands empty, no sword, gun, shield, tail or cape invented. Keep separate own face rather than generic huge red eyes or smiling goblin.",
+        "initial_reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-110-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ]
+      },
+      {
+        "group": 109,
+        "revision": 1,
+        "prompt": "Use case: identity-preserve. FIRST image is a newly corrected gray-green sprite layout used ONLY as matching contour/style template. SECOND image is group109's OWN original portrait and12 native map poses, authoritative for its BLUE palette and facial details. Create group109 twelve-pose sprite master. Preserve the first image's exact3columns x4rows, twelve full complete figures, FRONT / all LEFT / BACK / all RIGHT rows, same horn contours and mature continuous angular face anatomy: long hooked nose, craggy brow/cheek folds, small downturned mouth and strong chin. Repaint face, horns, shoulders, arms and legs into the SECOND original's DEEP BLUE/navy palette with cool blue-gray highlights, rather than gray-green. Keep eyes narrow bright RED in black sockets, dark navy-black central torso/back panel with a small muted blue back center, tiny deep-RED waist V, short blue feet and empty hands. Central forehead projection points FORWARD in side views (LEFT in row2, RIGHT in row4), two outer horns curve upward. Do not turn face into a metal faceplate, add teeth, tan skin, gear, wings, tail, weapons, cape or new identity. Huge head2/3 height, very short body, smooth opaque hand-painted shading, crisp outline. Alpha255 throughout characters including darkblue/black, exact alpha0 empty background, thin antialiasing edge only, no halos/shadows/haze, no text/borders/labels. Maintain ALL3 noses LEFT in row2 and ALL3 RIGHT in row4 including third gait column.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-108-draft-r2.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-109-source-reference.png"
+        ],
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-9168f128-d835-4e09-b908-71c51046f726.png",
+        "source_sha256": "9c04d7aadf435f663216f7d8090856694a7372c9a97370ce0959e3c70c8cdfea",
+        "component_check": 12,
+        "saved_draft": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-109-draft-r1.png",
+        "call_index": 6,
+        "selected": true,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-108-draft-r2.png",
+            "sha256": "326a662a113fcd2dc7db92f3db9662341e9088f20304ab0e2de6deadd7d25a3f"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-109-source-reference.png",
+            "sha256": "b931e4b4978c07fd1e4944bd8e2c5af04df6134d61b0058c9200d18b486b51b4"
+          }
+        ],
+        "master_file": "fdicon-109-hd1-portrait-q-v1-master.png",
+        "saved_master": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/fdicon-109-hd1-portrait-q-v1-master.png",
+        "initial_prompt": "Use case: identity-preserve. FIRST image is a newly corrected gray-green sprite layout used ONLY as matching contour/style template. SECOND image is group109's OWN original portrait and12 native map poses, authoritative for its BLUE palette and facial details. Create group109 twelve-pose sprite master. Preserve the first image's exact3columns x4rows, twelve full complete figures, FRONT / all LEFT / BACK / all RIGHT rows, same horn contours and mature continuous angular face anatomy: long hooked nose, craggy brow/cheek folds, small downturned mouth and strong chin. Repaint face, horns, shoulders, arms and legs into the SECOND original's DEEP BLUE/navy palette with cool blue-gray highlights, rather than gray-green. Keep eyes narrow bright RED in black sockets, dark navy-black central torso/back panel with a small muted blue back center, tiny deep-RED waist V, short blue feet and empty hands. Central forehead projection points FORWARD in side views (LEFT in row2, RIGHT in row4), two outer horns curve upward. Do not turn face into a metal faceplate, add teeth, tan skin, gear, wings, tail, weapons, cape or new identity. Huge head2/3 height, very short body, smooth opaque hand-painted shading, crisp outline. Alpha255 throughout characters including darkblue/black, exact alpha0 empty background, thin antialiasing edge only, no halos/shadows/haze, no text/borders/labels. Maintain ALL3 noses LEFT in row2 and ALL3 RIGHT in row4 including third gait column.",
+        "initial_reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-108-draft-r2.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-109-source-reference.png"
+        ]
+      }
+    ]
+  },
+  "original_reference": {
+    "source": "各自原名冊、DATO、FDICON三層與FDOTHER0色盤，不新增原版動態。",
+    "groups": [
+      103,
+      108,
+      109,
+      110
+    ],
+    "records_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/face-source-references.json",
+    "records_sha256": "72e271edf2cc649732ad83bf43e34fd265a94e2e100833391e4d48fb0b1b9931"
+  }
+}

@@ -286429,5 +286429,3181 @@
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/final-validation-r1.json",
       "sha256": "5699a8f8af6abc62a185380f50f68c11c15a446334a202e48189109fd3a22633"
     }
+  },
+  "hd1_horned_faces_followup_20261101": {
+    "date": "2026-11-01",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1",
+    "base_commit": "6b6efa206ba1a23072455e24534b63863268c5ae",
+    "groups": [
+      103,
+      108,
+      109,
+      110
+    ],
+    "roster_bindings": [
+      {
+        "group": 103,
+        "map": 0,
+        "roster_file": "remake/assets/maps/map0/map0_units.json",
+        "roster_sha256": "10f0d34d2ba92edfb254da1f1426e928a465014f1040672b4aee2388c64f234f",
+        "row": 23,
+        "initial_group": 11,
+        "camp": "enemy",
+        "portrait": 103,
+        "battle_fig": 103,
+        "position": {
+          "x_word": 19,
+          "y_word": 15,
+          "raw_key": 103
+        },
+        "native_constructor": {
+          "branch": "high_class",
+          "index": 35,
+          "record": [
+            8,
+            2,
+            22,
+            0,
+            0,
+            10,
+            3,
+            2,
+            5,
+            60
+          ]
+        }
+      },
+      {
+        "group": 108,
+        "map": 17,
+        "roster_file": "remake/assets/maps/map17/map17_units.json",
+        "roster_sha256": "4c3d2dfdab554a6f85b31ca54507c90506c8bcf10642f1c5ac8fe76244091d25",
+        "row": 30,
+        "initial_group": 0,
+        "camp": "enemy",
+        "portrait": 108,
+        "battle_fig": 108,
+        "position": {
+          "x_word": 34,
+          "y_word": 14,
+          "raw_key": 108
+        },
+        "native_constructor": {
+          "branch": "high_class",
+          "index": 40,
+          "record": [
+            5,
+            26,
+            38,
+            0,
+            4,
+            28,
+            16,
+            6,
+            5,
+            170
+          ]
+        }
+      },
+      {
+        "group": 109,
+        "map": 23,
+        "roster_file": "remake/assets/maps/map23/map23_units.json",
+        "roster_sha256": "2c590df01baf4098c79486df500fce63debe9cb3a40a389b5f7140b74e182d99",
+        "row": 0,
+        "initial_group": 2,
+        "camp": "enemy",
+        "portrait": 109,
+        "battle_fig": 109,
+        "position": {
+          "x_word": 7,
+          "y_word": 9,
+          "raw_key": 109
+        },
+        "native_constructor": {
+          "branch": "high_class",
+          "index": 41,
+          "record": [
+            5,
+            26,
+            40,
+            0,
+            5,
+            30,
+            18,
+            6,
+            6,
+            180
+          ]
+        }
+      },
+      {
+        "group": 110,
+        "map": 23,
+        "roster_file": "remake/assets/maps/map23/map23_units.json",
+        "roster_sha256": "2c590df01baf4098c79486df500fce63debe9cb3a40a389b5f7140b74e182d99",
+        "row": 56,
+        "initial_group": 1,
+        "camp": "enemy",
+        "portrait": 110,
+        "battle_fig": 110,
+        "position": {
+          "x_word": 7,
+          "y_word": 8,
+          "raw_key": 110
+        },
+        "native_constructor": {
+          "branch": "high_class",
+          "index": 42,
+          "record": [
+            5,
+            26,
+            40,
+            0,
+            6,
+            33,
+            20,
+            6,
+            6,
+            200
+          ]
+        }
+      }
+    ],
+    "source_references": [
+      {
+        "group": 103,
+        "reference_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-103-source-reference.png",
+        "reference_sha256": "8325041f6129f007c2a8308ea3a9370695fc364ff6a6b435c5ebdbae80ce9ece",
+        "inputs": [
+          {
+            "file": "/original/portraits/DATO_103_m0.png",
+            "sha256": "e130d317ca01e399776ffe38742b28256a3fd4dd9c1cc2bf8bd55350471d7df8",
+            "local_file": "remake/assets/portraits/DATO_103_m0.png",
+            "local_sha256": "4bf17d04fba73507605051d7b946589d0f1d9e21e3e87378a4f4606ffec59578",
+            "decoded_rgba_equal": true
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1236/frame.png",
+            "sha256": "75476323a9f39d9f8f5e01af23c5c36522dffba5bbe616d3721e110544ddd086"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1236/mask.png",
+            "sha256": "643747a0fc0a2e2b1afb8c982328ecdfc042a431796147a130cf29cfcd50ddf0"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1236/remap_mask.png",
+            "sha256": "88b8a0b267b8f458b47dc48aa4a3c78d7da822c9c92f13b4a467889e1a8962cf"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1237/frame.png",
+            "sha256": "ef8e81dfefcb1bada11946eb7eb4f7f52eb9ff5e411febb1c07bea9b032efc91"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1237/mask.png",
+            "sha256": "b10bb3af217d438e73330ca475ed63654ec47c543f9b54eb2f6839f3bffbd343"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1237/remap_mask.png",
+            "sha256": "10669a3528af95ace0e4928f4f7b73f60fb9172c2caf6e4a2c1fb9bbddd4cc1e"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1238/frame.png",
+            "sha256": "3fee2658668f03c2f67abc613fa160e8be612e10cb696bd27dd0e5d7f18e8240"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1238/mask.png",
+            "sha256": "30754f03a4f931a896266a07420ba13afd07d8bba7893fd0f0a4c261d6167190"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1238/remap_mask.png",
+            "sha256": "252b4bc9fee2bba119695f0690b56797a86d9a86e588ee87b4f54ed1f5b28713"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1239/frame.png",
+            "sha256": "afece9e2f5b9ec1ae033fd668eaced0502fc6f0c356e083ba0ccca6e730cbb11"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1239/mask.png",
+            "sha256": "5bbed3df10dfa7dcb6abdf087278ee9878298e7e096d79b2efd576f752cec42b"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1239/remap_mask.png",
+            "sha256": "7dcdfd49fe500c7aa7fb24cba89e89bab329f83566b3c9db8264edc5cf7fce40"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1240/frame.png",
+            "sha256": "e2d5f6d5af3026502ef185fa747b04cec55628b907474dbfe566bef4a2506a2c"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1240/mask.png",
+            "sha256": "d231fa7723acb18ef1af586ac5b6a9222dcbb333bfb0faa57697b9622189bfe2"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1240/remap_mask.png",
+            "sha256": "83bfb0b20ab73ecf17ee74ab6d3584bbdf72375da88e16fba0721704b8546bdc"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1241/frame.png",
+            "sha256": "0246c9d7414ad85483c4ab1a8f48023496d551139926ab2d9aeab04208ea7312"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1241/mask.png",
+            "sha256": "d5fe60c339fe068dc4ccbf9f70d6eb2d472736b414c45da7467d57fb0a89cd37"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1241/remap_mask.png",
+            "sha256": "085af3bdb03a839de52c2aa6dd6b433c571fc16dde4b7c76af5589f78c36619c"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1242/frame.png",
+            "sha256": "8efd08a447f13b8f23ca4da995058cf9800c7eaebcda3eff9f226e32e91ed93b"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1242/mask.png",
+            "sha256": "09c5b5a86cabd5e39e741231be10852579a25809fac14fa3b41a165da244c72b"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1242/remap_mask.png",
+            "sha256": "c186c6318a4ebdaaba5087d7f697cb51729e612275f606e5e41e7e132407c4c6"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1243/frame.png",
+            "sha256": "f603566d98048d9b0e6ecc0420aba861e191e25e161f5fdcc3ccce7c5bc2aedb"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1243/mask.png",
+            "sha256": "2890834e59437b1666ad956f36a73fd4fbaeba68e2837332656adc32e6ece2db"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1243/remap_mask.png",
+            "sha256": "65498ee68355a194c439c80d505ee72099cb842060c7719ba5ba9c04751e4bff"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1244/frame.png",
+            "sha256": "76b14d6b27e66101537b1d96cfd5341a8bac56a7b634fbf65eaa077855b8e80a"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1244/mask.png",
+            "sha256": "e7fa1ae59fe34785380752f24dc1033c3ff76b95c33a8ebeb1b9f5793f0b7bb7"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1244/remap_mask.png",
+            "sha256": "99c0c3c0f6220e60f181f6f23afe43c2984458e41cc1378d1efbd38d94f603f4"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1245/frame.png",
+            "sha256": "dbf249775d95db88d9ff05b8d5937bce6d3c259d8c2e535f0f12ad935e69e7a9"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1245/mask.png",
+            "sha256": "66a628f307efa9a3a9c09bb957b8669e6366fbbc949b592416f9735bb0c3af58"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1245/remap_mask.png",
+            "sha256": "8b5eabde8c1981513f144595913f397360280b4981f73a4c5e7f6603e6ede85b"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1246/frame.png",
+            "sha256": "784b44dc52b434cb35c5efed882a38d5db3f42b45664b82e2d8c0eb181968b12"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1246/mask.png",
+            "sha256": "a34a1107490bd77bde38f8c0248ea9159f3578cb975632a5f7a5ecfafeec7c73"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1246/remap_mask.png",
+            "sha256": "ec8fee640955c9d6562b42718dfd9a79aa35adc17afddbf80c2bc848025b1da9"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1247/frame.png",
+            "sha256": "7329b396a08c92e6debc1edd00a423833c030d8847a65a9b6b44562aaf52ea75"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1247/mask.png",
+            "sha256": "5305a103c1e650fae7cf53dabc465843b10e0b2b69731e1e8a2cbb29ac0ba8d5"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1247/remap_mask.png",
+            "sha256": "820c8f0381b44cd085ad77291b022df71e440b72fb074de215b3d16060e466e9"
+          }
+        ]
+      },
+      {
+        "group": 108,
+        "reference_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-108-source-reference.png",
+        "reference_sha256": "c47b206564564a697d2fa686c6463c559b81cf245e25a5fe3c6f118559833070",
+        "inputs": [
+          {
+            "file": "/original/portraits/DATO_108_m0.png",
+            "sha256": "df74d7d1ac0d10b6788b438d284f89d80b0c984dc3f73284260eb51e5fa2ac17",
+            "local_file": "remake/assets/portraits/DATO_108_m0.png",
+            "local_sha256": "688739752daf96aa055acc67ed5fd5cfa719f5e0c1708dde7769353b64b1132b",
+            "decoded_rgba_equal": true
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1296/frame.png",
+            "sha256": "beabedf6ba5112b4b615594e0febd9f483703e0f5b6623ab1fe7715d6a5269e5"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1296/mask.png",
+            "sha256": "86937c4c543d4f421223d9a6e4236004106168e0051e0dbd7db776b9e11b7380"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1296/remap_mask.png",
+            "sha256": "13f6007129b07434b690099f7c47c3c3360ce7964b2a2f132a6911daa64f351c"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1297/frame.png",
+            "sha256": "333bdb059509c7579138d488f33ff8f65b08aa5aa7c6090dd765b9cf8f22bf22"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1297/mask.png",
+            "sha256": "d4fd3f6134a715f7f0ff1e1b14f118073dcce9379595b186058cff2a969cf49d"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1297/remap_mask.png",
+            "sha256": "476c23fc8423f3e919ef4872240809b64253ab3b8190ea4c02ea9dcbe4a660d8"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1298/frame.png",
+            "sha256": "4232a2c5c168a0b72c8c8afa1c2fef2aab24cfc15c1539e9e59617d0f919ed62"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1298/mask.png",
+            "sha256": "eb959303a8b25178b7dd9d0b9ec8b9cdb0f32189ae6e75b3ecbb30b7508a941b"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1298/remap_mask.png",
+            "sha256": "dc37300597a4d23a07a04ce021557f5acc9ea9544e90d4d9d416f50cf4defb3b"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1299/frame.png",
+            "sha256": "ff710314c90e1f2d8b5f00e4ecd2c35ab53c11c44f60696050954fee48f5e2b9"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1299/mask.png",
+            "sha256": "8d88cdd5f60ea5abd0ca5ff0311984972b4e4015f47b5a84e848e5bafa899350"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1299/remap_mask.png",
+            "sha256": "0b0e96af920717f7dd04f53eea5b2f4a089994361dd1e9594aa63aebcf7ca76a"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1300/frame.png",
+            "sha256": "5abd2e656a55a0dc48b7ba09ac687048fe7c3303542bd5683232036766f10600"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1300/mask.png",
+            "sha256": "ede6db98e21ae749b891818f7bfe53e258685c9f188294af057abc26d9bc3cbd"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1300/remap_mask.png",
+            "sha256": "498988bf897760130c4a9b133e4b5f5f81d05d66d5dd68979450a88236c86dcd"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1301/frame.png",
+            "sha256": "a02bea35cb6d6db1975b1148ff989b96269b1765e4fd289ce1f953f80e973d68"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1301/mask.png",
+            "sha256": "d30f739181caf37f0a18397b70fff5be0d834f49d5a5c84b765e2e764dbcfe03"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1301/remap_mask.png",
+            "sha256": "340ec3d95b8f4d88ec286f782991086dc404a9e8900956b3a8cad0f156c232e0"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1302/frame.png",
+            "sha256": "ae5fbe6df941af3cee91ac0c4e2ee555e493e9cb707dc9e48c272401733f3df5"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1302/mask.png",
+            "sha256": "f239bff01597ca13bc2e678bea2266f143b1364627b7b25bb24af020fda3aff5"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1302/remap_mask.png",
+            "sha256": "6a1f3e7ebf19a6e006da93b05a27158aa0807098054db8a3cf383855ef3060de"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1303/frame.png",
+            "sha256": "d59b4ded5442379c6d40a25d0f825995112e298481cb1e2ee9c419e248484055"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1303/mask.png",
+            "sha256": "db074bcb2f84f40b7fdf52aa49dde36f0b05d7a3d8bab989d47ceab70214e4e9"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1303/remap_mask.png",
+            "sha256": "e4f1ca851d6f418f865e5d168af23b9a0d1e767179b34023143fc1aa7c2350ed"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1304/frame.png",
+            "sha256": "a48002ff9469808503ce4027a5443924ae6303aef9a1a89a931a08764b196fdd"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1304/mask.png",
+            "sha256": "cf386c97b694b9a298e19c2d1e6a8d4b698e1d48d12150a3ec593bf82d0b6460"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1304/remap_mask.png",
+            "sha256": "225c1ce0de8f70cae2f89a9cf11b1d04e5c916506315a7ac680c885eae33b114"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1305/frame.png",
+            "sha256": "7e99e45621f29a837d6a397eb29a29c8fd699c368d7fc3f809e8db4c0ca0e50e"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1305/mask.png",
+            "sha256": "23651f68dcc6f71c5f2df2f63dff8aa20fac48ce68aae767c78c0ac1a419cb12"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1305/remap_mask.png",
+            "sha256": "63d5f9c6ac5150d6928b8b8ec5f3a2f8d74e2150d74f9bfe19d7c13cb1d2e393"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1306/frame.png",
+            "sha256": "20eb778bb91dacf36006dd52211d79211677d7818c29fe38679b7d142066954c"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1306/mask.png",
+            "sha256": "278a59e32da44417a84d89d3024729c99516d9c752c5617deb3ba88e494ba643"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1306/remap_mask.png",
+            "sha256": "aac33ccb0ba9ef54ec9c3e57e257908a3735c07cc949b098572abcb223910c15"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1307/frame.png",
+            "sha256": "b538bd58d03241cf2126df1086cfafaec483cd0869520bdbeae5d23365c2b125"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1307/mask.png",
+            "sha256": "e1e3feb1631c0d551e513e276d80c667d58972de1e93e4c58353d78c024d2c8f"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1307/remap_mask.png",
+            "sha256": "9d46c5b67884acd5ef4e4dc3d46825c6a9bbc33f6fbc0136d72eb2358f881745"
+          }
+        ]
+      },
+      {
+        "group": 109,
+        "reference_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-109-source-reference.png",
+        "reference_sha256": "b931e4b4978c07fd1e4944bd8e2c5af04df6134d61b0058c9200d18b486b51b4",
+        "inputs": [
+          {
+            "file": "/original/portraits/DATO_109_m0.png",
+            "sha256": "d291eb859237803fe07eadad4ee8c992ef15cdbe37d210d5cca1d144e4e9f8bb",
+            "local_file": "remake/assets/portraits/DATO_109_m0.png",
+            "local_sha256": "073a65829b733d6371e3cb21ee21035567df46289455630ccdce480ac3159948",
+            "decoded_rgba_equal": true
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1308/frame.png",
+            "sha256": "f1a0de542c64a7a0dda005ca7632b337f842030243ad7997d5e81f27f0e4fb41"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1308/mask.png",
+            "sha256": "86937c4c543d4f421223d9a6e4236004106168e0051e0dbd7db776b9e11b7380"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1308/remap_mask.png",
+            "sha256": "13f6007129b07434b690099f7c47c3c3360ce7964b2a2f132a6911daa64f351c"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1309/frame.png",
+            "sha256": "ae8b1f68616c4f0de270d4b117a8b9399bdd08867eefe36d4c2dcd853e39f56e"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1309/mask.png",
+            "sha256": "d4fd3f6134a715f7f0ff1e1b14f118073dcce9379595b186058cff2a969cf49d"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1309/remap_mask.png",
+            "sha256": "476c23fc8423f3e919ef4872240809b64253ab3b8190ea4c02ea9dcbe4a660d8"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1310/frame.png",
+            "sha256": "924822542cf69481dfd74df99df12e5cc63ea4d58a384f8816bb2cc451950342"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1310/mask.png",
+            "sha256": "eb959303a8b25178b7dd9d0b9ec8b9cdb0f32189ae6e75b3ecbb30b7508a941b"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1310/remap_mask.png",
+            "sha256": "dc37300597a4d23a07a04ce021557f5acc9ea9544e90d4d9d416f50cf4defb3b"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1311/frame.png",
+            "sha256": "1d660ae9d14e437c7632dc8a49167c556b0747ccab21d709d15847d7e33094f8"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1311/mask.png",
+            "sha256": "8d88cdd5f60ea5abd0ca5ff0311984972b4e4015f47b5a84e848e5bafa899350"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1311/remap_mask.png",
+            "sha256": "0b0e96af920717f7dd04f53eea5b2f4a089994361dd1e9594aa63aebcf7ca76a"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1312/frame.png",
+            "sha256": "02ba629548f85e3b028c04da8110155c205be67c4bd4f7c5fac87041f479014a"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1312/mask.png",
+            "sha256": "ede6db98e21ae749b891818f7bfe53e258685c9f188294af057abc26d9bc3cbd"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1312/remap_mask.png",
+            "sha256": "498988bf897760130c4a9b133e4b5f5f81d05d66d5dd68979450a88236c86dcd"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1313/frame.png",
+            "sha256": "bb1fd66271da81df611d6ba9775f57ac108c68e40f05fe89e80c324ebeedcfed"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1313/mask.png",
+            "sha256": "d30f739181caf37f0a18397b70fff5be0d834f49d5a5c84b765e2e764dbcfe03"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1313/remap_mask.png",
+            "sha256": "340ec3d95b8f4d88ec286f782991086dc404a9e8900956b3a8cad0f156c232e0"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1314/frame.png",
+            "sha256": "3cfe60c708111bc9e06a4ec9bd3ff59469967c2505c63612b8c404508fab22e6"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1314/mask.png",
+            "sha256": "f239bff01597ca13bc2e678bea2266f143b1364627b7b25bb24af020fda3aff5"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1314/remap_mask.png",
+            "sha256": "6a1f3e7ebf19a6e006da93b05a27158aa0807098054db8a3cf383855ef3060de"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1315/frame.png",
+            "sha256": "3d97677d5a88e328e50ff32297dbb5b00ce4d1de825be59e33cf8dbdd00c60ca"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1315/mask.png",
+            "sha256": "db074bcb2f84f40b7fdf52aa49dde36f0b05d7a3d8bab989d47ceab70214e4e9"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1315/remap_mask.png",
+            "sha256": "e4f1ca851d6f418f865e5d168af23b9a0d1e767179b34023143fc1aa7c2350ed"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1316/frame.png",
+            "sha256": "d41d1e96057a3060e5f63a5a5ad8b42d983d446f30beaa0d4d45cf4030eed1b4"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1316/mask.png",
+            "sha256": "cf386c97b694b9a298e19c2d1e6a8d4b698e1d48d12150a3ec593bf82d0b6460"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1316/remap_mask.png",
+            "sha256": "225c1ce0de8f70cae2f89a9cf11b1d04e5c916506315a7ac680c885eae33b114"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1317/frame.png",
+            "sha256": "9fb54603febf07e27670a0e9c5d642fa30ed1ca1194bf4e3005cfa2381ace8ec"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1317/mask.png",
+            "sha256": "23651f68dcc6f71c5f2df2f63dff8aa20fac48ce68aae767c78c0ac1a419cb12"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1317/remap_mask.png",
+            "sha256": "63d5f9c6ac5150d6928b8b8ec5f3a2f8d74e2150d74f9bfe19d7c13cb1d2e393"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1318/frame.png",
+            "sha256": "354ad58a65b88308bf9acb87909f5df79993b0766e86ba995f5c32705b56a7e6"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1318/mask.png",
+            "sha256": "278a59e32da44417a84d89d3024729c99516d9c752c5617deb3ba88e494ba643"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1318/remap_mask.png",
+            "sha256": "aac33ccb0ba9ef54ec9c3e57e257908a3735c07cc949b098572abcb223910c15"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1319/frame.png",
+            "sha256": "2f9578a5a6eb02dc85bedcb0d94d778711171a21b28dd1432a05364a7b6f17df"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1319/mask.png",
+            "sha256": "e1e3feb1631c0d551e513e276d80c667d58972de1e93e4c58353d78c024d2c8f"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1319/remap_mask.png",
+            "sha256": "9d46c5b67884acd5ef4e4dc3d46825c6a9bbc33f6fbc0136d72eb2358f881745"
+          }
+        ]
+      },
+      {
+        "group": 110,
+        "reference_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/group-110-source-reference.png",
+        "reference_sha256": "3078ff9ff888c5e1b92e25201d0b095792736ad72e1781274f854665cd679e19",
+        "inputs": [
+          {
+            "file": "/original/portraits/DATO_110_m0.png",
+            "sha256": "6d21bd7ea396576dcdb77de1bce499b843c948433c036922449dc35586326d07",
+            "local_file": "remake/assets/portraits/DATO_110_m0.png",
+            "local_sha256": "21e8e3ae43b26c23fa34ab17a1f5ec5872cc6f20764d9681c4786ddcb46c2848",
+            "decoded_rgba_equal": true
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1320/frame.png",
+            "sha256": "56488305f67ed558fc591da0f70f44da3a2c9b03cf2301e28df1fc9bd67b4947"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1320/mask.png",
+            "sha256": "31bf2d34b8932c42c12d14389d54f5ed4abfb96dbdb91bf306cfd2583cfeca85"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1320/remap_mask.png",
+            "sha256": "2fa3eb3a138b45589ab4ff6f8700be3b98644d89b160afa5fc4aac5541afb40a"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1321/frame.png",
+            "sha256": "5bd7cc0a1afa5b9e5882dd6bdd9c32b4f525c62ca5daf08d956b625cee981752"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1321/mask.png",
+            "sha256": "305ee2b3ba729b087abdb78bc9904b9c74759c4a2e9fff1bf3a1fbeaccc14c58"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1321/remap_mask.png",
+            "sha256": "84384e54a1c9aafc9ca99f10404c758f00fd9ef1ea251b439980dec19acd7ae7"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1322/frame.png",
+            "sha256": "ffd3a83fb6aea6a237256b1c41a1c83178027ef48424fd6e9f100c2e7cc2977c"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1322/mask.png",
+            "sha256": "d6123c627bb140a50a8acecf0b3251a701e375874015576fdb2038caa1dcb745"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1322/remap_mask.png",
+            "sha256": "5b4fd915152b0a1d29ce283a5db26d40cce043faaf077b0ca4749e53c27d978e"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1323/frame.png",
+            "sha256": "8f1738dfca7e50fa370c7f45d29498b909efe69ccc8326f96e9ea7fa10431f0d"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1323/mask.png",
+            "sha256": "98ad2ab392d65d193bbba12351a100ee86e091218ab6a557d60d5c4ce003db3b"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1323/remap_mask.png",
+            "sha256": "795e78f92efffe70cff338e264fe2c2565f64208b32e063f60dfa24bcd8e2ae2"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1324/frame.png",
+            "sha256": "f644fd66e1546abd66b5b237672fda16e59739fbf12df43ac70a6f4827f55c5d"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1324/mask.png",
+            "sha256": "e6c4463fd2ee4d96451a8972fd2fdae64e237d7cac2d1f4bbba63c0abcc17886"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1324/remap_mask.png",
+            "sha256": "9fc8224f5aedae6d12638761215e41929a317752ae0aa6d08bf6b2f0cb4e1b59"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1325/frame.png",
+            "sha256": "b5a0dd73aa66133845c1c0231ed69f6537ed13a9f7be9fb74e678a5631b45a52"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1325/mask.png",
+            "sha256": "3aa276eceabbe2402f3c43046e67bcf0a8f9ef37d1b0bcd583995ccc030aeb38"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1325/remap_mask.png",
+            "sha256": "fb570bdd2327b7cc6d25b01d650b8a2619eead773262fd779bd70f5ceb344615"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1326/frame.png",
+            "sha256": "3239fba5875ddea65e5f666913dfc87d687f7177b263a88e6279063797ab1d76"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1326/mask.png",
+            "sha256": "5007d58a69c1129a612ba52ea1e1d2c2a1b0c13a87bbbf3da92d94dedf3b0223"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1326/remap_mask.png",
+            "sha256": "198cb091e1b92265a9f80cd1dcdfef3763e8d4669f5fcee84a9f43f8b2153516"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1327/frame.png",
+            "sha256": "94381edce65c020104c098b6398d0353f3a1e42de880ef811dece6d039986746"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1327/mask.png",
+            "sha256": "c0b70392f1c0b0463ce67c973d621957b28289642fcf5f02a0a5fe6f6e341f8e"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1327/remap_mask.png",
+            "sha256": "52bc8d207229e4a3b5b7501ef6591b6ca663d466dfb6cdbc3ab4783a77e1b002"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1328/frame.png",
+            "sha256": "634bd5935b2242b02abe4a50326884da467472c3e69d8698351289b757b03026"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1328/mask.png",
+            "sha256": "05bf7d93da49a8d3889c9e6605e4b2b3ac9da835ecf5c633c28b989d8b98ffe1"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1328/remap_mask.png",
+            "sha256": "ff834faf236c29341deb600d661270d580493653f4e7301166307615d1c871a2"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1329/frame.png",
+            "sha256": "b35843197c9955a3f3a2bd3d3f0d988b1c24600ddd6e1435ec68beb5a4675a8f"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1329/mask.png",
+            "sha256": "f570229c5bdca6f978d9b83b3fbd332fbf655ea53ca213a367106366088d9e2c"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1329/remap_mask.png",
+            "sha256": "8e09c67c91c7fa78f573e62b9a02ac89349c1ba6fa3b68f62a2eb271e25993bc"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1330/frame.png",
+            "sha256": "dd84114d2b848b42ed151a27b18ef469157b382eba5b4e53a5574d7199d54e76"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1330/mask.png",
+            "sha256": "e0ca86e6d0ed6586e030da3284a38a0e6393618dae71b14fdb59523fc85d1a9a"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1330/remap_mask.png",
+            "sha256": "5aa188adcf5a1e4288370393586313e81027c48c99dff368f5886360dde3960a"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1331/frame.png",
+            "sha256": "730d7486e5a76e644ad68ceced467fe90ca3d1d03545a197d2cc5e45d6a4e81f"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1331/mask.png",
+            "sha256": "f054ea48d6750df9f7a934fc0371ddaba307eeb1e2cde4b553195867fe4cadf9"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1331/remap_mask.png",
+            "sha256": "b54123b894caee4e7a62f3f4256f952b1e2faafa96f876e2dd2cb8498ac23d2d"
+          }
+        ]
+      }
+    ],
+    "face_evidence": [
+      {
+        "group": 103,
+        "traits": [
+          "金黃斑點獸面、窄灰綠眼與淡色長口鼻",
+          "黑鼻、鬚點、兩枚白牙尖及自己的長斑點尾",
+          "金黃毛身與深藍短腰衣，空手；姓名與種族未知"
+        ],
+        "confidence": "已證實原名冊與自身原版圖源；HD1為美術近似，身份與材質未知保留。"
+      },
+      {
+        "group": 108,
+        "traits": [
+          "灰綠有五官的角形面容、窄紅眼、長鉤鼻及緊閉唇顎",
+          "兩側上彎尖輪廓及向前的額部尖輪廓，材質未知",
+          "灰綠四肢、深藍中央背片與暗紅腰V，空手"
+        ],
+        "confidence": "已證實原名冊與自身原版圖源；HD1為美術近似，身份與材質未知保留。"
+      },
+      {
+        "group": 109,
+        "traits": [
+          "自身深藍有五官的角形面容、窄紅眼、長鉤鼻與緊閉唇顎",
+          "依自己的原版DATO及十二姿態，108只作輪廓／畫風參考",
+          "深藍四肢、中央背片與暗紅腰V，不共用身份或資產"
+        ],
+        "confidence": "已證實原名冊與自身原版圖源；HD1為美術近似，身份與材質未知保留。"
+      },
+      {
+        "group": 110,
+        "traits": [
+          "暗灰綠格狀面紋、窄藍眼及深黑陰影",
+          "角形鼻口與兩側尖輪廓，材質與種族未知",
+          "灰綠短衣肢體、藍腰片、棕色背片與黃橙腕部小記號，空手"
+        ],
+        "confidence": "已證實原名冊與自身原版圖源；HD1為美術近似，身份與材質未知保留。"
+      }
+    ],
+    "formal_registered": true,
+    "branch": "feat/hd1-next-faces-r33",
+    "issues": [
+      286,
+      287
+    ],
+    "scope": "第103／108／109／110組依自身原版頭像修正面容，保留原名冊與位置；其他HD1缺項繼續。",
+    "art": {
+      "recipe": {
+        "file": "remake/assets/themes/modern/hd1-horned-faces-refresh.recipe.json",
+        "sha256": "30b1ab2600dd70e8671ae7c998449f62ddff5b9bbf2651c10fe3f5c967d2028d"
+      },
+      "groups": [
+        103,
+        108,
+        109,
+        110
+      ],
+      "generation_calls": 6,
+      "selected_masters": 4,
+      "rejected_drafts": 2,
+      "master_bytes_preserved": true,
+      "alpha_quality": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/alpha-quality-final.json",
+        "sha256": "bb6ab23b77ef590261454c6cf9dd1b5225d038ec9692556b6fc38d0cfaede185"
+      },
+      "generation_call_receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/generation-calls.json",
+        "sha256": "74d6226ef62b3c3ce8d7226be08656df9bcbd4624c5422a863b1799708988a29"
+      },
+      "actual_call_order_in_recipe": true,
+      "identity_unknown": true
+    },
+    "gpu": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/gpu-combined-r1-capture/receipt.json",
+        "sha256": "36ec4af33b049af848bf9cd8bba78f80b85b25c302a1cca88cf306dcd4661199"
+      },
+      "independent_and_registration": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/registration-r1.json",
+        "sha256": "c280ae07c8371f061cd4a4ce4b7557fda7cbfe147938e2b9ee2324d0d63701eb"
+      },
+      "cases": 28,
+      "pngs": 24,
+      "f2": 4,
+      "core_pixels": 289740,
+      "rejected_mutants": [
+        "missing",
+        "duplicate",
+        "catalog",
+        "source-code",
+        "false-save",
+        "wrong-hud",
+        "wrong-tolerance",
+        "wrong-map-target",
+        "wrong-map-camera",
+        "missing-map-target",
+        "missing-f2",
+        "wrong-profile",
+        "wrong-selector",
+        "wrong-identity",
+        "undisclosed-projection",
+        "wrong-enemy-camp",
+        "wrong-enemy-position",
+        "wrong-enemy-roster",
+        "missing-part",
+        "duplicate-part",
+        "wrong-part-source",
+        "wrong-part-group",
+        "wrong-part-memory",
+        "actual-black-png"
+      ],
+      "authored_roster": true,
+      "identity_or_selector_projection": false,
+      "selected_map_position_linked": true,
+      "scope": "原名冊、原陣營、原位置與portrait／BattleFig，無持續身份；不代表自然章節或原版動態。"
+    },
+    "normal_compatibility": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/normal-r1-capture/receipt.json",
+        "sha256": "e67a9426e29655121f0210b87963160967020d2526c7e63f93cc7e62f302a002"
+      },
+      "status": "PASS-FULL-CANDIDATE-NORMAL-TRANSACTION",
+      "pngs": 10,
+      "scope": "unchanged chapter1 ordinary save checks complete fixed roster pack admission, four controls, walk/cancel and save/cold LOAD; new actors only by fixed authored roster pair fixtures, not natural chapter progression or persistent player identities",
+      "binary_sha256": "5e0c0584aa2aa6798d53b2e5924b9dd154ec7034f3bc10a981f74b5f4abc6880"
+    },
+    "source_regression": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/source-r1.log",
+        "sha256": "d753b81ff6817663ee513dbd06c6f5d3e86f1267157e1cc20f6684f283e6d547"
+      },
+      "tests": 4,
+      "rejected": 14,
+      "compiler_sha256": "f3220d47a6536d0201d4e57bd73e321714164bb6ca96762d7569c0c932af1462",
+      "test_tool_sha256": "ccd4285f2aec8c47e137b3ec076191b82f5b76aea64ab48f66f15fa9dc4ce612"
+    },
+    "legacy_source_regressions": {
+      "scope": "來源編製器與來源測試未改，沿r28共用／混合各四項17拒收並核工具SHA；不冒稱本輪重跑。",
+      "receipts": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/legacy-reuse-source-r1.log",
+          "sha256": "81dfe9df8ebebcebba77a731f6ed02cf44af8bc19339eec4317e16c6ce003de7"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/legacy-mixed-source-r1.log",
+          "sha256": "fa3530f09505d7cb4bbc3ed68b55793562c8df7cd67ed9665f642ffee955d952"
+        }
+      ]
+    },
+    "regression": {
+      "top_level_passed": 26,
+      "skipped_special_gpu": 2,
+      "skips_count_as_pass": false,
+      "source_tree_sha256": "f36287e1bb48244e07e6e4334faf118cbe85beb3b00b0b6ecc505b8ed53a0edc",
+      "source_file_count": 1196,
+      "production_go_changed": false,
+      "legacy_parts_reader": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/legacy-parts-r1.json",
+        "sha256": "10cf0256564d410d9e6604d8924f4a1b05ac2f8fc61f7a103fe28ccb7fad76af"
+      },
+      "legacy_scope": "23種舊分份、七批轉職與三種共用來源契約，未重跑或升格舊GPU。",
+      "roster_preflight_groups": 48,
+      "roster_preflight": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/roster-preflight-r1.memory.json",
+        "sha256": "9835112eaf8536d9e99b4b016dd4617376c0b0ea3b3bbc27768555e865ad0763"
+      }
+    },
+    "independent_control": {
+      "status": "PREVIOUS-WIRING-COMPLETE",
+      "issue": 284,
+      "previous_evidence_key": "hd1_shadow_faces_followup_20261101",
+      "focused_tests_rerun": false,
+      "normal_compatibility_rerun": true
+    },
+    "consumer_inventory": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/consumers-verified-r1.json",
+        "sha256": "760afcd0816479b17974e99cc61b3d134a1a648e31b50f003de28f3b2cb5633a"
+      },
+      "cases": 21,
+      "frames": 416,
+      "rejected": 19
+    },
+    "catalog": {
+      "formal_sha256": "96b346f9cd7429a8b4ba20638a1f3bf6a1fc917490e54f0c29f4e48963386917",
+      "assets": 883,
+      "changed_entries": 8,
+      "unchanged_entries": 875,
+      "old_art_files": 9805,
+      "new_files": 100,
+      "protected_0_9_30_unchanged": true,
+      "other121_groups_equal": true,
+      "full_validation": "PASS"
+    },
+    "terrain": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/formal-coverage.json",
+        "sha256": "92c46952d06695961df10fdaf886c00801afae01f6304a67441386dfcbc5c581"
+      },
+      "canonical": {
+        "file": "docs/data/fd2-hd1-terrain-coverage.json",
+        "sha256": "92c46952d06695961df10fdaf886c00801afae01f6304a67441386dfcbc5c581"
+      },
+      "maps": 33,
+      "missing-art": 3354,
+      "missing_unique_native_content": 2049,
+      "native-remap-only": 10,
+      "registered-hd": 634,
+      "required_slots": 3998,
+      "selector_checks": 617520,
+      "scope": "來源上界保持，尚未完成HD地形。"
+    },
+    "private": {
+      "baseline_commit": "8a28ccd86002b5b2e4c142bd0789f788f60a2fa4",
+      "preservation": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/private-preservation-r1.json",
+        "sha256": "cd1311bcd64c129e2201ce9b3918f2cf43046da88a6941a46164c1e6e44ad548"
+      },
+      "allowlist_files": 6915,
+      "new_files": 100,
+      "commit": "691a027e2781875f2cedc9f312a2f8bc14bbbdad",
+      "pushed": true,
+      "remote_verified": true
+    },
+    "review": {
+      "source_groups": 125,
+      "source_frames": 1455,
+      "counts": {
+        "reference-keep": 2,
+        "new-q-review-keep": 110,
+        "review-keep-pending-batch": 12,
+        "new-q-source-only-keep": 1
+      },
+      "q_redraw_reduced_from": 1,
+      "q_redraw_remaining": 0,
+      "pending_visual_review_groups": [
+        66,
+        74,
+        75,
+        90,
+        92,
+        112,
+        113,
+        114,
+        115,
+        116,
+        122,
+        135
+      ],
+      "priority_face_followup": [
+        66,
+        90,
+        92,
+        112,
+        113,
+        114,
+        115,
+        116,
+        122,
+        135
+      ],
+      "all_redrawn": false,
+      "human_acceptance": false,
+      "source_only_exception_groups": [
+        67
+      ],
+      "gaia_explicit_user_acceptance": true,
+      "group_decisions": {
+        "reference-keep": [
+          0,
+          9
+        ],
+        "new-q-review-keep": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          58,
+          59,
+          60,
+          61,
+          62,
+          63,
+          64,
+          65,
+          68,
+          69,
+          70,
+          71,
+          72,
+          73,
+          76,
+          77,
+          78,
+          79,
+          80,
+          81,
+          82,
+          83,
+          84,
+          85,
+          86,
+          87,
+          88,
+          89,
+          91,
+          93,
+          94,
+          95,
+          96,
+          97,
+          98,
+          99,
+          100,
+          101,
+          102,
+          103,
+          106,
+          107,
+          108,
+          109,
+          110,
+          111,
+          117,
+          118,
+          119,
+          120,
+          123,
+          124,
+          125,
+          126,
+          133,
+          134
+        ],
+        "review-keep-pending-batch": [
+          66,
+          74,
+          75,
+          90,
+          92,
+          112,
+          113,
+          114,
+          115,
+          116,
+          122,
+          135
+        ],
+        "new-q-source-only-keep": [
+          67
+        ]
+      },
+      "face_review_states": {
+        "1": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "4": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "5": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "6": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "7": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "8": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "10": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "11": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "12": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "13": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "14": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "15": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "16": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "17": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "18": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "19": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "20": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "21": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "22": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "23": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "24": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "25": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "26": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "27": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "28": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "29": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "31": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "32": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "33": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "34": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "35": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "36": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "37": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "38": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "40": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "41": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "42": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "43": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "44": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "45": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "46": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "47": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "49": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "50": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "51": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "52": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "54": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "55": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "56": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "58": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "59": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "60": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "61": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "62": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "63": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "64": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "65": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "67": "USER-APPROVED-NATIVE-FACE-ONLY/IDENTITY-UNKNOWN",
+        "68": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "69": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "71": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "72": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "78": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "80": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "81": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "82": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "83": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "84": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "85": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "86": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "87": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "88": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "91": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "93": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "94": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "95": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "106": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "111": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "99": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "100": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "101": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "107": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "117": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "118": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "119": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "120": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "123": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "124": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "126": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "134": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "96": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "97": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "98": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "102": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "103": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "108": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "109": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "110": "AGENT-ORIGINAL-PORTRAIT-REVIEWED"
+      },
+      "other121_groups_source_equal": true,
+      "scope": "本輪四組依原頭像修正面容，餘12組；74／75身份不從同號DATO猜配。",
+      "followup": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/visual-review-final.json",
+        "sha256": "1ece21a9c48c74160b5038e8b8cb21d7d2e3d6295abf343687a78c151d58d939"
+      }
+    },
+    "overview": {
+      "groups": 125,
+      "source_frames": 1455,
+      "pages": 4,
+      "changed_public_page": "docs/figures/hd1-map-sprites-096-139-20261101-r6.png",
+      "unaffected_public_pages": 3,
+      "old_pages_preserved": true
+    },
+    "public_figures": [
+      {
+        "file": "docs/figures/hd1-horned-faces-comparison.png",
+        "sha256": "9cbe98e7b97a6d4e3bf2c540986945a4e4cd866516b9695e570f1c171e8795ed",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/horned-faces-comparison-r1.png",
+          "sha256": "9cbe98e7b97a6d4e3bf2c540986945a4e4cd866516b9695e570f1c171e8795ed"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-horned-faces-reference.png",
+        "sha256": "d6f8c4377f1f58b52f7dc7b72b04e46106ef7a1a2708bd38f250abe4bc0174a9",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/horned-faces-reference-r1.png",
+          "sha256": "d6f8c4377f1f58b52f7dc7b72b04e46106ef7a1a2708bd38f250abe4bc0174a9"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-map-sprites-096-139-20261101-r6.png",
+        "sha256": "ee3b2ab79d6555a34bea25f81a3d6c3a34909cff65cc1bba3df18faa736861ef",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/overview-096-139-r1.png",
+          "sha256": "ee3b2ab79d6555a34bea25f81a3d6c3a34909cff65cc1bba3df18faa736861ef"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-horned-103-game.png",
+        "sha256": "11942ed9228246229d96bc56cf742db29f1ee0b8882e6afb8ab9c305aea5ede5",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/gpu-spotted-and-grayhorn-r1-capture/party-g103-f00-ui-hd.png",
+          "sha256": "11942ed9228246229d96bc56cf742db29f1ee0b8882e6afb8ab9c305aea5ede5"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-horned-108-game.png",
+        "sha256": "d1008ccd9426b5e16f6dab9182f07031e4850b011c48936f246afc3505b4ad5d",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/gpu-spotted-and-grayhorn-r1-capture/party-g108-f00-ui-hd.png",
+          "sha256": "d1008ccd9426b5e16f6dab9182f07031e4850b011c48936f246afc3505b4ad5d"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-horned-109-game.png",
+        "sha256": "c2cc7a4092b487aefc5dc7a4933c6b07f57dc187f5640551b935b0e46efd39ef",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/gpu-bluehorn-and-grid-r1-capture/party-g109-f00-ui-hd.png",
+          "sha256": "c2cc7a4092b487aefc5dc7a4933c6b07f57dc187f5640551b935b0e46efd39ef"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-horned-110-game.png",
+        "sha256": "ecebb26530a5db4a67d982cd9f98c663b192249a7e209cef7a60752659689143",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/gpu-bluehorn-and-grid-r1-capture/party-g110-f00-ui-hd.png",
+          "sha256": "ecebb26530a5db4a67d982cd9f98c663b192249a7e209cef7a60752659689143"
+        }
+      }
+    ],
+    "resources": {
+      "gpu-spotted-and-grayhorn-r1": {
+        "schema_version": 1,
+        "command": [
+          "with-xvfb",
+          "go",
+          "test",
+          "./cmd/fd2",
+          "-p=1",
+          "-count=1",
+          "-timeout=600s",
+          "-run",
+          "^TestModernHDChibiPartyGPU$",
+          "-v"
+        ],
+        "cwd": "/repo/remake",
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 208.935,
+        "before": {
+          "memory.current": 10551296,
+          "memory.peak": 10743808,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 6656000,
+            "file": 2011136,
+            "kernel": 647168,
+            "kernel_stack": 32768,
+            "pagetables": 122880,
+            "sec_pagetables": 0,
+            "percpu": 5952,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 409600,
+            "file_dirty": 0,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 0,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 6418432,
+            "inactive_file": 1216512,
+            "active_file": 598016,
+            "unevictable": 0,
+            "slab_reclaimable": 244344,
+            "slab_unreclaimable": 213184,
+            "slab": 457528,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 0,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 0,
+            "pgsteal": 0,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 0,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 0,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 3036,
+            "pgmajfault": 33,
+            "pgrefill": 0,
+            "pgactivate": 0,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 0,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "after": {
+          "memory.current": 256528384,
+          "memory.peak": 5583491072,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 6774784,
+            "file": 243585024,
+            "kernel": 5644288,
+            "kernel_stack": 32768,
+            "pagetables": 126976,
+            "sec_pagetables": 0,
+            "percpu": 6208,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 413696,
+            "file_dirty": 12288,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 0,
+            "shmem_thp": 0,
+            "inactive_anon": 5627904,
+            "active_anon": 1146880,
+            "inactive_file": 205705216,
+            "active_file": 37777408,
+            "unevictable": 0,
+            "slab_reclaimable": 5232392,
+            "slab_unreclaimable": 228480,
+            "slab": 5460872,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 2616,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 2,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 67400,
+            "pgsteal": 64633,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 66011,
+            "pgscan_direct": 1389,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 63302,
+            "pgsteal_direct": 1331,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 1807951,
+            "pgmajfault": 1277,
+            "pgrefill": 1744,
+            "pgactivate": 3031,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 0,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "largest_sample": {
+          "memory.current": 5579091968,
+          "memory.peak": 5579091968,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 5300002816,
+            "file": 258744320,
+            "kernel": 18911232,
+            "kernel_stack": 327680,
+            "pagetables": 11591680,
+            "sec_pagetables": 0,
+            "percpu": 6976,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 1024000,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 35688448,
+            "file_dirty": 0,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 0,
+            "shmem_thp": 0,
+            "inactive_anon": 1132838912,
+            "active_anon": 4168187904,
+            "inactive_file": 201654272,
+            "active_file": 55848960,
+            "unevictable": 0,
+            "slab_reclaimable": 6180896,
+            "slab_unreclaimable": 764008,
+            "slab": 6944904,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 2086,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 2,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 67400,
+            "pgsteal": 64633,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 66011,
+            "pgscan_direct": 1389,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 63302,
+            "pgsteal_direct": 1331,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 1807422,
+            "pgmajfault": 1246,
+            "pgrefill": 1744,
+            "pgactivate": 3031,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 0,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "largest_sample_processes": [
+          {
+            "pid": 69,
+            "name": "fd2.test",
+            "rss_kib": 5205196
+          },
+          {
+            "pid": 9,
+            "name": "Xvfb",
+            "rss_kib": 61828
+          },
+          {
+            "pid": 13,
+            "name": "go",
+            "rss_kib": 25604
+          },
+          {
+            "pid": 7,
+            "name": "python3",
+            "rss_kib": 12080
+          },
+          {
+            "pid": 8,
+            "name": "with-xvfb",
+            "rss_kib": 1648
+          },
+          {
+            "pid": 1,
+            "name": "docker-init",
+            "rss_kib": 748
+          }
+        ],
+        "children_maxrss_kib": 5218208,
+        "log": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/gpu-spotted-and-grayhorn-r1.log",
+        "samples": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/gpu-spotted-and-grayhorn-r1.samples.jsonl"
+      },
+      "gpu-bluehorn-and-grid-r1": {
+        "schema_version": 1,
+        "command": [
+          "with-xvfb",
+          "go",
+          "test",
+          "./cmd/fd2",
+          "-p=1",
+          "-count=1",
+          "-timeout=600s",
+          "-run",
+          "^TestModernHDChibiPartyGPU$",
+          "-v"
+        ],
+        "cwd": "/repo/remake",
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 238.746,
+        "before": {
+          "memory.current": 10850304,
+          "memory.peak": 10870784,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 6660096,
+            "file": 2633728,
+            "kernel": 647168,
+            "kernel_stack": 32768,
+            "pagetables": 122880,
+            "sec_pagetables": 0,
+            "percpu": 5952,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 20480,
+            "file_dirty": 0,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 0,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 6463488,
+            "inactive_file": 1376256,
+            "active_file": 1245184,
+            "unevictable": 0,
+            "slab_reclaimable": 249416,
+            "slab_unreclaimable": 213720,
+            "slab": 463136,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 0,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 0,
+            "pgsteal": 0,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 0,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 0,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 2932,
+            "pgmajfault": 21,
+            "pgrefill": 0,
+            "pgactivate": 0,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 0,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "after": {
+          "memory.current": 2037686272,
+          "memory.peak": 7408955392,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 6795264,
+            "file": 2024579072,
+            "kernel": 5992448,
+            "kernel_stack": 32768,
+            "pagetables": 126976,
+            "sec_pagetables": 0,
+            "percpu": 6208,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 20480,
+            "file_dirty": 13185024,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 0,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 6795264,
+            "inactive_file": 2011553792,
+            "active_file": 13017088,
+            "unevictable": 0,
+            "slab_reclaimable": 5582840,
+            "slab_unreclaimable": 223896,
+            "slab": 5806736,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 0,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 896,
+            "pgsteal": 881,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 896,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 881,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 1859393,
+            "pgmajfault": 356,
+            "pgrefill": 40,
+            "pgactivate": 14,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 1,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "largest_sample": {
+          "memory.current": 7401529344,
+          "memory.peak": 7401787392,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 5337001984,
+            "file": 2042077184,
+            "kernel": 20705280,
+            "kernel_stack": 409600,
+            "pagetables": 12443648,
+            "sec_pagetables": 0,
+            "percpu": 6976,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 1024000,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 24780800,
+            "file_dirty": 11972608,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 2097152,
+            "file_thp": 10485760,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 5338025984,
+            "inactive_file": 2028113920,
+            "active_file": 12935168,
+            "unevictable": 0,
+            "slab_reclaimable": 6962128,
+            "slab_unreclaimable": 841680,
+            "slab": 7803808,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 0,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 896,
+            "pgsteal": 881,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 896,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 881,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 1856543,
+            "pgmajfault": 354,
+            "pgrefill": 40,
+            "pgactivate": 14,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 1,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "largest_sample_processes": [
+          {
+            "pid": 69,
+            "name": "fd2.test",
+            "rss_kib": 5254156
+          },
+          {
+            "pid": 9,
+            "name": "Xvfb",
+            "rss_kib": 65480
+          },
+          {
+            "pid": 13,
+            "name": "go",
+            "rss_kib": 28892
+          },
+          {
+            "pid": 7,
+            "name": "python3",
+            "rss_kib": 12252
+          },
+          {
+            "pid": 8,
+            "name": "with-xvfb",
+            "rss_kib": 1676
+          },
+          {
+            "pid": 1,
+            "name": "docker-init",
+            "rss_kib": 752
+          }
+        ],
+        "children_maxrss_kib": 5253348,
+        "log": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/gpu-bluehorn-and-grid-r1.log",
+        "samples": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/gpu-bluehorn-and-grid-r1.samples.jsonl"
+      },
+      "normal-r1": {
+        "schema_version": 1,
+        "command": [
+          "python3",
+          "tools/verify_fd2_hd_fonts_gui.py",
+          "--binary",
+          "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-gold-binary-r1",
+          "--assets",
+          "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/runtime-r1",
+          "--original-pack",
+          "/original",
+          "--modern-pack",
+          "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/candidate-r1",
+          "--town-save",
+          "/source/fd2_save.json",
+          "--out",
+          "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/normal-r1-capture",
+          "--battle-status",
+          "--world",
+          "--battle-node",
+          "battle_ch01",
+          "--chibi-refresh",
+          "--startup-timeout",
+          "360",
+          "--run-timeout",
+          "900"
+        ],
+        "cwd": "/repo",
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 294.269,
+        "before": {
+          "memory.current": 9875456,
+          "memory.peak": 9883648,
+          "memory.max": 7516192768,
+          "memory.swap.current": 0,
+          "memory.swap.max": 7516192768,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 6676480,
+            "file": 1572864,
+            "kernel": 647168,
+            "kernel_stack": 32768,
+            "pagetables": 122880,
+            "sec_pagetables": 0,
+            "percpu": 5952,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 4096,
+            "file_dirty": 0,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 0,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 6434816,
+            "inactive_file": 1351680,
+            "active_file": 188416,
+            "unevictable": 0,
+            "slab_reclaimable": 251032,
+            "slab_unreclaimable": 212008,
+            "slab": 463040,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 337,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 0,
+            "pgsteal": 0,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 0,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 0,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 2943,
+            "pgmajfault": 13,
+            "pgrefill": 0,
+            "pgactivate": 0,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 0,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "after": {
+          "memory.current": 152322048,
+          "memory.peak": 3896283136,
+          "memory.max": 7516192768,
+          "memory.swap.current": 0,
+          "memory.swap.max": 7516192768,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 6807552,
+            "file": 142364672,
+            "kernel": 2621440,
+            "kernel_stack": 32768,
+            "pagetables": 126976,
+            "sec_pagetables": 0,
+            "percpu": 6208,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 45056,
+            "file_dirty": 0,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 2097152,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 6807552,
+            "inactive_file": 107921408,
+            "active_file": 34443264,
+            "unevictable": 0,
+            "slab_reclaimable": 2201600,
+            "slab_unreclaimable": 234664,
+            "slab": 2436264,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 337,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 0,
+            "pgsteal": 0,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 0,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 0,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 2497086,
+            "pgmajfault": 430,
+            "pgrefill": 0,
+            "pgactivate": 0,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 1,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "largest_sample": {
+          "memory.current": 3895476224,
+          "memory.peak": 3896000512,
+          "memory.max": 7516192768,
+          "memory.swap.current": 0,
+          "memory.swap.max": 7516192768,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 3737264128,
+            "file": 144134144,
+            "kernel": 11886592,
+            "kernel_stack": 344064,
+            "pagetables": 8572928,
+            "sec_pagetables": 0,
+            "percpu": 7552,
+            "sock": 0,
+            "vmalloc": 16384,
+            "shmem": 18640896,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 42070016,
+            "file_dirty": 40960,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 0,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 3755880448,
+            "inactive_file": 91070464,
+            "active_file": 34422784,
+            "unevictable": 0,
+            "slab_reclaimable": 2023984,
+            "slab_unreclaimable": 894624,
+            "slab": 2918608,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 337,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 0,
+            "pgsteal": 0,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 0,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 0,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 1398953,
+            "pgmajfault": 426,
+            "pgrefill": 0,
+            "pgactivate": 0,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 0,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "largest_sample_processes": [
+          {
+            "pid": 23,
+            "name": "hd1-gold-binary",
+            "rss_kib": 3680268
+          },
+          {
+            "pid": 9,
+            "name": "Xvfb",
+            "rss_kib": 89856
+          },
+          {
+            "pid": 8,
+            "name": "python3",
+            "rss_kib": 31884
+          },
+          {
+            "pid": 7,
+            "name": "python3",
+            "rss_kib": 12296
+          },
+          {
+            "pid": 14,
+            "name": "pulseaudio",
+            "rss_kib": 9684
+          },
+          {
+            "pid": 1,
+            "name": "docker-init",
+            "rss_kib": 756
+          }
+        ],
+        "children_maxrss_kib": 3678228,
+        "log": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/normal-r1.log",
+        "samples": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/normal-r1.samples.jsonl"
+      },
+      "regression-r1": {
+        "schema_version": 1,
+        "command": [
+          "with-xvfb",
+          "go",
+          "test",
+          "./cmd/fd2",
+          "./cmd/fd2-string-inventory",
+          "-p=1",
+          "-count=1",
+          "-timeout=360s",
+          "-run",
+          "^(TestModernHDMap.*|TestModernHDChibiPartyFixture|TestModernHDChibiEnemyFixture|TestModernHDChibiStaticFixture|TestModernHDChibiAnonymousStaticFixture|TestModernHDChibiAuditedFixture|TestModernHDChibiMapSampleSelectsOriginalPosition|TestIndependentInterface.*|TestModernHDBattleConsumerInventory|TestBuild.*|TestMultipleTextFieldsDoNotReuseOneExistingStringID|TestVariablesIncludeWrappedErrorPlaceholder|TestDrawFunctionContext.*|TestReviewedGoCandidatesMatchCurrentInventory)$",
+          "-v"
+        ],
+        "cwd": "/repo/remake",
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 200.264,
+        "before": {
+          "memory.current": 15716352,
+          "memory.peak": 15716352,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 6664192,
+            "file": 7921664,
+            "kernel": 667648,
+            "kernel_stack": 32768,
+            "pagetables": 122880,
+            "sec_pagetables": 0,
+            "percpu": 5952,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 4087808,
+            "file_dirty": 0,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 0,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 6664192,
+            "inactive_file": 1536000,
+            "active_file": 6324224,
+            "unevictable": 0,
+            "slab_reclaimable": 271008,
+            "slab_unreclaimable": 211592,
+            "slab": 482600,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 0,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 0,
+            "pgsteal": 0,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 0,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 0,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 2946,
+            "pgmajfault": 75,
+            "pgrefill": 0,
+            "pgactivate": 0,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 0,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "after": {
+          "memory.current": 297852928,
+          "memory.peak": 1604857856,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 6770688,
+            "file": 284545024,
+            "kernel": 5554176,
+            "kernel_stack": 32768,
+            "pagetables": 122880,
+            "sec_pagetables": 0,
+            "percpu": 5952,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 4161536,
+            "file_dirty": 3481600,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 0,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 6770688,
+            "inactive_file": 63729664,
+            "active_file": 220688384,
+            "unevictable": 0,
+            "slab_reclaimable": 5148008,
+            "slab_unreclaimable": 223320,
+            "slab": 5371328,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 4205,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 124,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 15987,
+            "pgsteal": 13722,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 15909,
+            "pgscan_direct": 78,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 13644,
+            "pgsteal_direct": 78,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 1035871,
+            "pgmajfault": 2533,
+            "pgrefill": 4532,
+            "pgactivate": 2100,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 0,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "largest_sample": {
+          "memory.current": 1572872192,
+          "memory.peak": 1572872192,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 1259200512,
+            "file": 301965312,
+            "kernel": 10665984,
+            "kernel_stack": 327680,
+            "pagetables": 3330048,
+            "sec_pagetables": 0,
+            "percpu": 6976,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 60739584,
+            "file_dirty": 3469312,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 2097152,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 1259200512,
+            "inactive_file": 69849088,
+            "active_file": 232116224,
+            "unevictable": 0,
+            "slab_reclaimable": 6268568,
+            "slab_unreclaimable": 699800,
+            "slab": 6968368,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 3578,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 15987,
+            "pgsteal": 13722,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 15909,
+            "pgscan_direct": 78,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 13644,
+            "pgsteal_direct": 78,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 1001215,
+            "pgmajfault": 2453,
+            "pgrefill": 4532,
+            "pgactivate": 2100,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 0,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "largest_sample_processes": [
+          {
+            "pid": 72,
+            "name": "fd2.test",
+            "rss_kib": 1212904
+          },
+          {
+            "pid": 8,
+            "name": "Xvfb",
+            "rss_kib": 63508
+          },
+          {
+            "pid": 11,
+            "name": "go",
+            "rss_kib": 26940
+          },
+          {
+            "pid": 6,
+            "name": "python3",
+            "rss_kib": 12344
+          },
+          {
+            "pid": 7,
+            "name": "with-xvfb",
+            "rss_kib": 1636
+          },
+          {
+            "pid": 1,
+            "name": "docker-init",
+            "rss_kib": 752
+          }
+        ],
+        "children_maxrss_kib": 1243064,
+        "log": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/regression-r1.log",
+        "samples": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/regression-r1.samples.jsonl"
+      },
+      "roster-preflight-r1": {
+        "schema_version": 1,
+        "command": [
+          "with-xvfb",
+          "go",
+          "test",
+          "./cmd/fd2",
+          "./cmd/fd2-string-inventory",
+          "-p=1",
+          "-count=1",
+          "-timeout=240s",
+          "-run",
+          "^(TestModernHDChibiAuditedFixture|TestModernHDChibiMapSampleSelectsOriginalPosition)$",
+          "-v"
+        ],
+        "cwd": "/repo/remake",
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 195.945,
+        "before": {
+          "memory.current": 14430208,
+          "memory.peak": 14434304,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 6664192,
+            "file": 6959104,
+            "kernel": 659456,
+            "kernel_stack": 32768,
+            "pagetables": 126976,
+            "sec_pagetables": 0,
+            "percpu": 5952,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 3309568,
+            "file_dirty": 4096,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 0,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 6664192,
+            "inactive_file": 1470464,
+            "active_file": 5414912,
+            "unevictable": 0,
+            "slab_reclaimable": 262528,
+            "slab_unreclaimable": 213648,
+            "slab": 476176,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 0,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 0,
+            "pgsteal": 0,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 0,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 0,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 2966,
+            "pgmajfault": 72,
+            "pgrefill": 0,
+            "pgactivate": 0,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 0,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "after": {
+          "memory.current": 416239616,
+          "memory.peak": 1529163776,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 6770688,
+            "file": 402538496,
+            "kernel": 6717440,
+            "kernel_stack": 32768,
+            "pagetables": 126976,
+            "sec_pagetables": 0,
+            "percpu": 5952,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 3354624,
+            "file_dirty": 24576,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 0,
+            "shmem_thp": 0,
+            "inactive_anon": 5672960,
+            "active_anon": 1097728,
+            "inactive_file": 256991232,
+            "active_file": 145534976,
+            "unevictable": 0,
+            "slab_reclaimable": 6309512,
+            "slab_unreclaimable": 223320,
+            "slab": 6532832,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 1895,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 9201,
+            "pgsteal": 8989,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 9201,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 8989,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 1024499,
+            "pgmajfault": 2471,
+            "pgrefill": 528,
+            "pgactivate": 87,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 0,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "largest_sample": {
+          "memory.current": 1513353216,
+          "memory.peak": 1513353216,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 1370193920,
+            "file": 131588096,
+            "kernel": 10559488,
+            "kernel_stack": 229376,
+            "pagetables": 3444736,
+            "sec_pagetables": 0,
+            "percpu": 6976,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 47894528,
+            "file_dirty": 34918400,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 0,
+            "shmem_thp": 0,
+            "inactive_anon": 1328373760,
+            "active_anon": 41820160,
+            "inactive_file": 123650048,
+            "active_file": 7839744,
+            "unevictable": 0,
+            "slab_reclaimable": 6230728,
+            "slab_unreclaimable": 612272,
+            "slab": 6843000,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 2,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 9201,
+            "pgsteal": 8989,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 9201,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 8989,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 417451,
+            "pgmajfault": 1166,
+            "pgrefill": 528,
+            "pgactivate": 87,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 0,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "largest_sample_processes": [
+          {
+            "pid": 33,
+            "name": "compile",
+            "rss_kib": 1305860
+          },
+          {
+            "pid": 9,
+            "name": "Xvfb",
+            "rss_kib": 61304
+          },
+          {
+            "pid": 11,
+            "name": "go",
+            "rss_kib": 35564
+          },
+          {
+            "pid": 7,
+            "name": "python3",
+            "rss_kib": 12216
+          },
+          {
+            "pid": 8,
+            "name": "with-xvfb",
+            "rss_kib": 1624
+          },
+          {
+            "pid": 1,
+            "name": "docker-init",
+            "rss_kib": 752
+          }
+        ],
+        "children_maxrss_kib": 1303996,
+        "log": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/roster-preflight-r1.log",
+        "samples": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/roster-preflight-r1.samples.jsonl"
+      }
+    },
+    "references": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/base-catalog.json",
+        "sha256": "d262de46c5e36d90c2826a161b7d5e7b3d77f1a2025ea5a87f96cbb1f0069c2d"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/candidate-r1/catalog.json",
+        "sha256": "8ba1729c444f90b748262ecfbd1d3b0f66c5f1bcd6b11d8ea8df06e6215fa594"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/candidate-r1/manifest.json",
+        "sha256": "8915cf7648044265162c9cd2cac2995f8ea9a9f955aab99d805867879069a4f0"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/gpu-combined-r1-capture/receipt.json",
+        "sha256": "36ec4af33b049af848bf9cd8bba78f80b85b25c302a1cca88cf306dcd4661199"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/normal-r1-capture/receipt.json",
+        "sha256": "e67a9426e29655121f0210b87963160967020d2526c7e63f93cc7e62f302a002"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/registration-r1.json",
+        "sha256": "c280ae07c8371f061cd4a4ce4b7557fda7cbfe147938e2b9ee2324d0d63701eb"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/source-r1.log",
+        "sha256": "d753b81ff6817663ee513dbd06c6f5d3e86f1267157e1cc20f6684f283e6d547"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/regression-r1.log",
+        "sha256": "cd65874c29170b833b68a2f12400ac1c38f68bc1a14b4cf373f6d7b6bceecbec"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/consumers-r1.json",
+        "sha256": "03ac4a71f64ce14305684120b7463a267017ba866dc4a7e70dfa8b74199dda71"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/consumers-verified-r1.json",
+        "sha256": "760afcd0816479b17974e99cc61b3d134a1a648e31b50f003de28f3b2cb5633a"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/formal-coverage.json",
+        "sha256": "92c46952d06695961df10fdaf886c00801afae01f6304a67441386dfcbc5c581"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/review-final/receipt.json",
+        "sha256": "83f6e09f36d4aa3c60976def16444a9928aec4157c37e16d80db3b9593379a45"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/visual-review-final.json",
+        "sha256": "1ece21a9c48c74160b5038e8b8cb21d7d2e3d6295abf343687a78c151d58d939"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/private-preservation-r1.json",
+        "sha256": "cd1311bcd64c129e2201ce9b3918f2cf43046da88a6941a46164c1e6e44ad548"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/public-figures-r1.json",
+        "sha256": "1df725a4c8a1cccf536010138cee15239054fc1b302b2617ca433bfda52e2322"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/commands.json",
+        "sha256": "87262372645a03819b2ebd0031deb0ddc6c90d34198e188130cff925ca5c9f1e"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/legacy-parts-r1.json",
+        "sha256": "10cf0256564d410d9e6604d8924f4a1b05ac2f8fc61f7a103fe28ccb7fad76af"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/face-source-references.json",
+        "sha256": "72e271edf2cc649732ad83bf43e34fd265a94e2e100833391e4d48fb0b1b9931"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/roster-bindings.json",
+        "sha256": "f96170cb5d4cb244206072a6e1dac49dd0c1d4ee1dd9289f05d3f973accdde2f"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/alpha-quality-final.json",
+        "sha256": "bb6ab23b77ef590261454c6cf9dd1b5225d038ec9692556b6fc38d0cfaede185"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/generation-calls.json",
+        "sha256": "74d6226ef62b3c3ce8d7226be08656df9bcbd4624c5422a863b1799708988a29"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/overview-validation.json",
+        "sha256": "268d8ebb9f81c4be2cfbcb5323acce28bd4c166622a770a2f75a7cb9ad914b34"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/gpu-spotted-and-grayhorn-r1.memory.json",
+        "sha256": "a1f0b1eabc3f6f6b857f3621404dcc2f2cb5cb723ac0f52e37874035aa3e2854"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/gpu-bluehorn-and-grid-r1.memory.json",
+        "sha256": "ad2c165b7a7633302d4efb6e75ae380a3cefba8f605d2fd930bf603a2e952434"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/normal-r1.memory.json",
+        "sha256": "28a57a0e4d09d088ae2ac610ce41460162f41948581b690c71646ff2d5eaf4de"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/regression-r1.memory.json",
+        "sha256": "bbb99bc6265f3e7d33d2dad0b59ef0278f3c591e64a98ba28b963fa248d55c5e"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/roster-preflight-r1.memory.json",
+        "sha256": "9835112eaf8536d9e99b4b016dd4617376c0b0ea3b3bbc27768555e865ad0763"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/overview-000-031-r1.json",
+        "sha256": "6100dc8789c4491cf51841fa14068b63d3d45891ee026ec4bf6861975956d5e9"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/overview-032-067-r1.json",
+        "sha256": "bd4b83b504b788c401c3bc152f16a47af110a6e9fc70a1ba1c2145ac7fe24fff"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/overview-068-095-r1.json",
+        "sha256": "be949c2a7d947e57134ae2f9888f264230975dae2e520bfea0f3ee756d044673"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/overview-096-139-r1.json",
+        "sha256": "67c65427901c9e45a787d8acfe216ae70548fb02b2f253fd9f1bad9dd7805f8a"
+      },
+      {
+        "file": "remake/assets/themes/modern/hd1-horned-faces-refresh.recipe.json",
+        "sha256": "30b1ab2600dd70e8671ae7c998449f62ddff5b9bbf2651c10fe3f5c967d2028d"
+      },
+      {
+        "file": "tools/verify_fd2_hd1_chibi_party.py",
+        "sha256": "e2633f7af69dbbab03a8c33c4aa06902c26075b62d43988857cc7b139b9f510c"
+      },
+      {
+        "file": "tools/refresh_fd2_hd1_map_sprites.py",
+        "sha256": "f3220d47a6536d0201d4e57bd73e321714164bb6ca96762d7569c0c932af1462"
+      },
+      {
+        "file": "tools/test_fd2_hd1_chibi_party.py",
+        "sha256": "ccd4285f2aec8c47e137b3ec076191b82f5b76aea64ab48f66f15fa9dc4ce612"
+      },
+      {
+        "file": "tools/build_modern_map_sprite_overview.py",
+        "sha256": "59b7698a205d8caecf6d00ad9acfebc421a4a712028743f5b61b4875d41d8570"
+      }
+    ],
+    "cleanup": {
+      "nonexpected_fd2_containers": 0,
+      "old_art_preserved": 9805,
+      "new_art_files": 100,
+      "recording_created": false
+    },
+    "limitations": [
+      "24組造型／身份仍待；本輪不新增自然玩家出場、原版動態、PLAYER-E2或480頭像證據。",
+      "其餘介面與地形3354缺槽／2049獨特來源仍是實作／美術工作。",
+      "人工造型、逐章與平台由使用者確認，不阻擋已完成接線。"
+    ],
+    "worklist": {
+      "open": 29,
+      "manual": 22,
+      "possibly_done": 0,
+      "issues": [
+        286,
+        287
+      ]
+    },
+    "lessons": {
+      "total": 392,
+      "guarded": 243,
+      "check": "PASS"
+    },
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-faces-r33/final-validation-r1.json",
+      "sha256": "501ca8545baa4000ae97a6ffbd32f979f768d76acd23e8a710a845e4fd6afeb4"
+    }
   }
 }
