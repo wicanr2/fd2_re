@@ -1,0 +1,539 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_hd1_chibi_map_refresh",
+  "approved_preview": "docs/figures/hd1-ares-q-design.png",
+  "approved_preview_sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e",
+  "native_bank_sha256": "7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44",
+  "palette_sha256": "404db1ca72ffc19fa7404fbc59bde98cdf239f63fe3375ec248a8142073a28bf",
+  "base_catalog_sha256": "62809b954391482b4f925cd16ff72f5bd962b932a88fa66ebd4a12abe48a78f7",
+  "approval": "沿已定Q比例、個人原版面容及2026-11-01繼續完成HD1授權，不改正式規則。",
+  "master_alpha_policy": "per_pose_coverage_v1",
+  "groups": [
+    {
+      "group": 96,
+      "master_file": "fdicon-096-hd1-portrait-q-v1-master.png",
+      "master_sha256": "a7e46bd0aa8bba20203f29f9f17ff4de454a6ae31ff5b52b4bd11e503cb56d1c",
+      "output_prefix": "fdicon-096-hd1-portrait-q-v1"
+    },
+    {
+      "group": 97,
+      "master_file": "fdicon-097-hd1-portrait-q-v1-master.png",
+      "master_sha256": "4141e7ce2d54a6ffe4d0bd9f6f26b5e3c3e2bb7b16f3b701875a28d08e7e0a30",
+      "output_prefix": "fdicon-097-hd1-portrait-q-v1"
+    },
+    {
+      "group": 98,
+      "master_file": "fdicon-098-hd1-portrait-q-v1-master.png",
+      "master_sha256": "44fc14c5a5ec857aa377704ef4aa51a219747a2b84184d5754e1c0c565b29b91",
+      "output_prefix": "fdicon-098-hd1-portrait-q-v1"
+    },
+    {
+      "group": 102,
+      "master_file": "fdicon-102-hd1-portrait-q-v1-master.png",
+      "master_sha256": "50b93cf5eca9e3ca8f54e20b0e9b3a1ccea58add2d6b5f1aae2537b30b7dbd37",
+      "output_prefix": "fdicon-102-hd1-portrait-q-v1"
+    }
+  ],
+  "faces": [
+    {
+      "group": 96,
+      "name": "第96組原名冊人物",
+      "portrait_file": "remake/assets/portraits/DATO_096_m0.png",
+      "portrait_sha256": "5c4d4f75c3ddce0588e34cee045d2d049b6670d3d554eb55745aeca209ace91b",
+      "original_png_sha256": "71600664daa24ec01314a275d0e9f3d29e7358ecf7152d96d14760847b980464",
+      "decoded_rgba_sha256": "01936f0f381194995784ccf9effab2c4c7be6235309b4e7c99614dfa7cb89669",
+      "traits": [
+        "紅褐短髮、深藍額帶、橄欖灰鏡帶與兩片綠圓鏡",
+        "露出的鼻、薄嘴及成年方下顎",
+        "灰橄欖衣領胸肩、深藍短褲靴，空手"
+      ],
+      "comparison_label": "原名冊與自身圖源，姓名與種族未知，非480頭像驗收"
+    },
+    {
+      "group": 97,
+      "name": "第97組原名冊人物",
+      "portrait_file": "remake/assets/portraits/DATO_097_m0.png",
+      "portrait_sha256": "ff6d137a9f342398a0cfc854b1dd15e640b5fb5469cf60a4b55cb0db208abee0",
+      "original_png_sha256": "ba57ff5569967c78b1a62116bb2cdfe56c76fd40a2ba8cbce39d2356ca527026",
+      "decoded_rgba_sha256": "2df972c1e01c81ca38508dbb7724ec91d0dbfc153812ecc36cec383bd664fa26",
+      "traits": [
+        "藍短髮、橄欖灰鏡帶與兩片藍圓鏡",
+        "露出的成年鼻口下顎與單側紅褐細痕；成因未知",
+        "深藍及暗紅衣裝、單側淡色直輪廓及原四向遮擋"
+      ],
+      "comparison_label": "原名冊與自身圖源，姓名與種族未知，非480頭像驗收"
+    },
+    {
+      "group": 98,
+      "name": "第98組原名冊人物",
+      "portrait_file": "remake/assets/portraits/DATO_098_m0.png",
+      "portrait_sha256": "b8be3fb93c43467b3ac96ed748b283ad2dc864d8a46a34e83563274fc9fab8ec",
+      "original_png_sha256": "2e658878011ee621ba04630b5ad0d5a606a9a2d44c579a6d2257e3751cb85c14",
+      "decoded_rgba_sha256": "1b2c11c50fd24e4ed5329197cac8804201c97073a845d6effd7a43ab660848b3",
+      "traits": [
+        "暗色額輪廓、窄紅眼縫與小鼻形",
+        "深藍高領遮擋口部，不新增嘴或種族",
+        "深藍短衣、暗紅垂片及背側細斜輪廓；用途未知"
+      ],
+      "comparison_label": "原名冊與自身圖源，姓名與種族未知，非480頭像驗收"
+    },
+    {
+      "group": 102,
+      "name": "第102組原名冊人物",
+      "portrait_file": "remake/assets/portraits/DATO_102_m0.png",
+      "portrait_sha256": "92665572918257e71e634a872a57d16e573b219d1b54438bbb5acf3d9ee15bfb",
+      "original_png_sha256": "95e90a9c6ab3035b56de9c3bc0c9289449cedb350d8ca4995d5328f0f9e494b0",
+      "decoded_rgba_sha256": "17c2a9ce045d9b5400ab02c439290be5f823d6d782dc2cac24920fea1677eae0",
+      "traits": [
+        "紅褐獸面、短尖耳及窄灰綠眼",
+        "長貓形口鼻、黑鼻、鬚點與兩枚白色牙尖",
+        "紅褐裸毛身、暗色腰帶與短腰衣，空手；姓名與種族未知"
+      ],
+      "comparison_label": "原名冊與自身圖源，姓名與種族未知，非480頭像驗收"
+    }
+  ],
+  "roster_bindings": [
+    {
+      "group": 96,
+      "map": 0,
+      "roster_file": "remake/assets/maps/map0/map0_units.json",
+      "roster_sha256": "10f0d34d2ba92edfb254da1f1426e928a465014f1040672b4aee2388c64f234f",
+      "row": 0,
+      "initial_group": 1,
+      "camp": "enemy",
+      "portrait": 96,
+      "battle_fig": 96,
+      "position": {
+        "x_word": 1,
+        "y_word": 3,
+        "raw_key": 96
+      },
+      "native_constructor": {
+        "branch": "high_class",
+        "index": 28,
+        "record": [
+          1,
+          7,
+          14,
+          0,
+          0,
+          7,
+          1,
+          1,
+          4,
+          21
+        ]
+      }
+    },
+    {
+      "group": 97,
+      "map": 0,
+      "roster_file": "remake/assets/maps/map0/map0_units.json",
+      "roster_sha256": "10f0d34d2ba92edfb254da1f1426e928a465014f1040672b4aee2388c64f234f",
+      "row": 14,
+      "initial_group": 5,
+      "camp": "enemy",
+      "portrait": 97,
+      "battle_fig": 97,
+      "position": {
+        "x_word": 2,
+        "y_word": 22,
+        "raw_key": 97
+      },
+      "native_constructor": {
+        "branch": "high_class",
+        "index": 29,
+        "record": [
+          1,
+          7,
+          24,
+          0,
+          0,
+          8,
+          3,
+          2,
+          4,
+          33
+        ]
+      }
+    },
+    {
+      "group": 98,
+      "map": 15,
+      "roster_file": "remake/assets/maps/map15/map15_units.json",
+      "roster_sha256": "2bc91631b51811ede69de5e3c6a4ad33c80e0c626669a7418ef67f9f2b86b218",
+      "row": 58,
+      "initial_group": 0,
+      "camp": "enemy",
+      "portrait": 98,
+      "battle_fig": 98,
+      "position": {
+        "x_word": 31,
+        "y_word": 5,
+        "raw_key": 98
+      },
+      "native_constructor": {
+        "branch": "high_class",
+        "index": 30,
+        "record": [
+          1,
+          7,
+          70,
+          0,
+          0,
+          34,
+          26,
+          12,
+          5,
+          200
+        ]
+      }
+    },
+    {
+      "group": 102,
+      "map": 3,
+      "roster_file": "remake/assets/maps/map3/map3_units.json",
+      "roster_sha256": "152c3e4164a6d8ee10fa3d0460906c71735cf88d2d46437e3e8b4945afb43ece",
+      "row": 18,
+      "initial_group": 2,
+      "camp": "enemy",
+      "portrait": 102,
+      "battle_fig": 102,
+      "position": {
+        "x_word": 19,
+        "y_word": 7,
+        "raw_key": 102
+      },
+      "native_constructor": {
+        "branch": "high_class",
+        "index": 34,
+        "record": [
+          8,
+          2,
+          16,
+          0,
+          0,
+          8,
+          2,
+          1,
+          5,
+          40
+        ]
+      }
+    }
+  ],
+  "gpu_pairs": {
+    "green-and-blue-goggles": [
+      96,
+      97
+    ],
+    "covered-and-feline": [
+      98,
+      102
+    ]
+  },
+  "policy": "各自原版面容與原裝束，原名冊陣營及位置；不新增身份、種族或遮擋材質。",
+  "alpha_quality_review": {
+    "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/alpha-quality-final.json",
+    "sha256": "e2c9cdd4e1e39d9433f15fc1da05c15b93eae4b2d28bfb0b29c91dcff732932a"
+  },
+  "image_generation": {
+    "tool": "builtin image_gen.imagegen",
+    "transparent_background": true,
+    "jobs": [
+      {
+        "group": 96,
+        "revision": 1,
+        "prompt": "Use case: stylized-concept. Create a game sprite-sheet master, EXACTLY twelve isolated full-body sprites in 3 columns x 4 rows. FIRST reference shows THIS character's own original portrait and all twelve original map poses, authoritative for anatomy, outfit and occlusion; ignore its blue board background. SECOND reference Ares shows approved very large head, extremely short body/legs chibi proportion ONLY; do not copy Ares's face or gear. Hand-painted smooth fully opaque color shading, clean bold dark contour, distinct own adult face translated into chibi; head/hair about two thirds total height. Row1 ALL3 straight FRONT. Row2 ALL3 strict SCREEN LEFT, noses point LEFT including the third sprite. Row3 ALL3 straight BACK, no face. Row4 ALL3 strict SCREEN RIGHT. Columns neutral / small left step / small right step, same facing all three in a row. Same scale, baseline and generous transparent gutters. Actual RGBA transparency: exact alpha=0 outside silhouettes and alpha=255 throughout all bodies, all dark hair/clothes/black areas remain OPAQUE. Only very narrow antialiased contour edge may be semitransparent. Absolutely no haze, aura, halos, shadows, ground, colored background, fading, text, labels, panels or borders. Twelve complete figures with no cropping, no extra sprites. No invented identity/story/equipment. GROUP096: warm tan broad ADULT lower face, exposed long angular nose, thin relaxed mouth/slight smile and square jutting chin. Eyes hidden by the own thick OLIVE GRAY mechanical-looking horizontal goggle band with TWO ROUND OLIVE-GREEN lenses and small angular side details. Preserve those two round lens shapes; not a single black robot visor. Own dark reddish-brown short flat swept hair above it and slim NAVY forehead strip. Native map palette outfit gray-olive chest/collar and shoulder shapes, olive/brown center/belt, short navy trousers and boots, bare tan hands, no carried weapon. Do not make a closed helmet covering the skin chin, no beard, no blue lips, no superhero suit.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/group-096-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ],
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-232628a0-a682-4775-a5ac-e22b92e1b67f.png",
+        "source_sha256": "a7e46bd0aa8bba20203f29f9f17ff4de454a6ae31ff5b52b4bd11e503cb56d1c",
+        "component_check": 12,
+        "saved_draft": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/group-096-draft-r1.png",
+        "selected": true,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/group-096-source-reference.png",
+            "sha256": "186d86f493cae02416ebddab31c95791466dffb129a4afe79900d639201073a4"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png",
+            "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+          }
+        ],
+        "master_file": "fdicon-096-hd1-portrait-q-v1-master.png",
+        "saved_master": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/fdicon-096-hd1-portrait-q-v1-master.png",
+        "initial_prompt": "Use case: stylized-concept. Create a game sprite-sheet master, EXACTLY twelve isolated full-body sprites in 3 columns x 4 rows. FIRST reference shows THIS character's own original portrait and all twelve original map poses, authoritative for anatomy, outfit and occlusion; ignore its blue board background. SECOND reference Ares shows approved very large head, extremely short body/legs chibi proportion ONLY; do not copy Ares's face or gear. Hand-painted smooth fully opaque color shading, clean bold dark contour, distinct own adult face translated into chibi; head/hair about two thirds total height. Row1 ALL3 straight FRONT. Row2 ALL3 strict SCREEN LEFT, noses point LEFT including the third sprite. Row3 ALL3 straight BACK, no face. Row4 ALL3 strict SCREEN RIGHT. Columns neutral / small left step / small right step, same facing all three in a row. Same scale, baseline and generous transparent gutters. Actual RGBA transparency: exact alpha=0 outside silhouettes and alpha=255 throughout all bodies, all dark hair/clothes/black areas remain OPAQUE. Only very narrow antialiased contour edge may be semitransparent. Absolutely no haze, aura, halos, shadows, ground, colored background, fading, text, labels, panels or borders. Twelve complete figures with no cropping, no extra sprites. No invented identity/story/equipment. GROUP096: warm tan broad ADULT lower face, exposed long angular nose, thin relaxed mouth/slight smile and square jutting chin. Eyes hidden by the own thick OLIVE GRAY mechanical-looking horizontal goggle band with TWO ROUND OLIVE-GREEN lenses and small angular side details. Preserve those two round lens shapes; not a single black robot visor. Own dark reddish-brown short flat swept hair above it and slim NAVY forehead strip. Native map palette outfit gray-olive chest/collar and shoulder shapes, olive/brown center/belt, short navy trousers and boots, bare tan hands, no carried weapon. Do not make a closed helmet covering the skin chin, no beard, no blue lips, no superhero suit.",
+        "initial_reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/group-096-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ]
+      },
+      {
+        "group": 97,
+        "revision": 2,
+        "prompt": "Use case: style-transfer. Redraw the FIRST sheet as smooth hand-painted HD1 chibi game art, NOT pixel art, NOT nearest-neighbor magnified low-resolution sprites. Keep EXACT 3 columns x4 rows / 12 complete separate figures, row FRONT / all LEFT / BACK / all RIGHT, columns small gait phases. Same character: own BLUE short swept hair, olive-gray mechanical-looking eye band with TWO ROUND BLUE lenses, warm TAN exposed broad adult nose, thin neutral mouth, square chin and a narrow reddish mark on one cheek. Own navy collar/clothes, muted burgundy chest and waist, tiny dark boots and bare hands. SECOND source board fixes original silhouette/occlusion; THIRD is approved smooth chibi proportion ONLY. Very large head approximately two thirds of height, short torso and legs. Replace the invented dark crossguard/hilt with the original simple straight thin PALE contour alongside the head. Preserve its source orientation: viewer-LEFT in FRONT, absent/hidden on LEFT row, viewer-RIGHT in BACK, visible beside cheek on RIGHT row. Do not add a hand gripping it, handle, blade guard or second piece. Smooth opaque painterly gradients, crisp smooth dark contour, individual own face, no generic big eyes. Alpha255 throughout character, alpha0 background, narrow antialias only. No halos, shadows, haze, scenery, labels or background. All3 left row noses LEFT, all3 right row nosesRIGHT.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/group-097-draft-r1.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/group-097-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ],
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-d79dad2b-a5da-4c56-999d-07b64f44587f.png",
+        "source_sha256": "4141e7ce2d54a6ffe4d0bd9f6f26b5e3c3e2bb7b16f3b701875a28d08e7e0a30",
+        "component_check": 12,
+        "selected": true,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/group-097-draft-r1.png",
+            "sha256": "91f6bdf87cdef805eb8ef8ed8f0e43a7b790e07ebfb6e2db53758a873953051f"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/group-097-source-reference.png",
+            "sha256": "8ba578cc83e5ecf4d5e6452b730e127d63c8006ceffb4900b1a050d999a22560"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png",
+            "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+          }
+        ],
+        "master_file": "fdicon-097-hd1-portrait-q-v1-master.png",
+        "saved_master": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/fdicon-097-hd1-portrait-q-v1-master.png",
+        "initial_prompt": "Use case: stylized-concept. Create a game sprite-sheet master, EXACTLY twelve isolated full-body sprites in 3 columns x 4 rows. FIRST reference shows THIS character's own original portrait and all twelve original map poses, authoritative for anatomy, outfit and occlusion; ignore its blue board background. SECOND reference Ares shows approved very large head, extremely short body/legs chibi proportion ONLY; do not copy Ares's face or gear. Hand-painted smooth fully opaque color shading, clean bold dark contour, distinct own adult face translated into chibi; head/hair about two thirds total height. Row1 ALL3 straight FRONT. Row2 ALL3 strict SCREEN LEFT, noses point LEFT including the third sprite. Row3 ALL3 straight BACK, no face. Row4 ALL3 strict SCREEN RIGHT. Columns neutral / small left step / small right step, same facing all three in a row. Same scale, baseline and generous transparent gutters. Actual RGBA transparency: exact alpha=0 outside silhouettes and alpha=255 throughout all bodies, all dark hair/clothes/black areas remain OPAQUE. Only very narrow antialiased contour edge may be semitransparent. Absolutely no haze, aura, halos, shadows, ground, colored background, fading, text, labels, panels or borders. Twelve complete figures with no cropping, no extra sprites. No invented identity/story/equipment. GROUP097: own blue/dark navy swept short hair with an olive-gray mechanical-looking horizontal goggle band, TWO ROUND BLUE lenses, exposed warm tan long broad nose and square lower face with small thin mouth. Own distinctive VERTICAL reddish-brown narrow mark on cheek below the goggle (copy placement/visible side from original portrait, do not decide its cause). Mature jaw, not child cheeks. Native map NAVY clothing and collar, dark red center/waist, gray-olive goggle strap, bare tan hands and dark boots. Original has ONE long PALE STRAIGHT vertical contour beside head: viewer-LEFT in front, hidden behind body in LEFT row, viewer-RIGHT at back, visible in front of near cheek in RIGHT row. Preserve exact side/occlusion and simple straight contour from native map without inventing hilt, second sword, horn or new straps. Same own hairstyle/head remains visible.",
+        "initial_reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/group-097-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ]
+      },
+      {
+        "group": 98,
+        "revision": 1,
+        "prompt": "Use case: stylized-concept. Create a game sprite-sheet master, EXACTLY twelve isolated full-body sprites in 3 columns x 4 rows. FIRST reference shows THIS character's own original portrait and all twelve original map poses, authoritative for anatomy, outfit and occlusion; ignore its blue board background. SECOND reference Ares shows approved very large head, extremely short body/legs chibi proportion ONLY; do not copy Ares's face or gear. Hand-painted smooth fully opaque color shading, clean bold dark contour, distinct own adult face translated into chibi; head/hair about two thirds total height. Row1 ALL3 straight FRONT. Row2 ALL3 strict SCREEN LEFT, noses point LEFT including the third sprite. Row3 ALL3 straight BACK, no face. Row4 ALL3 strict SCREEN RIGHT. Columns neutral / small left step / small right step, same facing all three in a row. Same scale, baseline and generous transparent gutters. Actual RGBA transparency: exact alpha=0 outside silhouettes and alpha=255 throughout all bodies, all dark hair/clothes/black areas remain OPAQUE. Only very narrow antialiased contour edge may be semitransparent. Absolutely no haze, aura, halos, shadows, ground, colored background, fading, text, labels, panels or borders. Twelve complete figures with no cropping, no extra sprites. No invented identity/story/equipment. GROUP098: head mostly covered, own dark OLIVE/CHARCOAL brow headwrap or plate with visible subtle curved relief pattern across forehead, very NARROW RED EYE SLITS, tiny warm brown triangular nose in dark face area and NAVY BLUE high wrapped cloth collar covering lower face/mouth. Do not add a visible smile, tan whole face, skull, fangs or robot eye lens. No invented species or mask material. Native map compact navy blue wrapped tunic with broad collar, muted olive waist belt, dark red center hanging lower cloth, short navy boots/dark gloves. Keep native slim reddish-brown diagonal line over back with SMALL dull gold tip high on viewer-RIGHT, preserving its contour and occlusion, purpose unspecified, do not expand to new weapon or dangling gear. No long flowing cape beyond native short outfit.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/group-098-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ],
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-0ae41cd1-052b-45c9-aeec-d693a1f650a4.png",
+        "source_sha256": "44fc14c5a5ec857aa377704ef4aa51a219747a2b84184d5754e1c0c565b29b91",
+        "component_check": 12,
+        "saved_draft": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/group-098-draft-r1.png",
+        "selected": true,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/group-098-source-reference.png",
+            "sha256": "22329f11a06e313e44a50ff23bc37f2665f2c528b105d27f6d2100d909736ccf"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png",
+            "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+          }
+        ],
+        "master_file": "fdicon-098-hd1-portrait-q-v1-master.png",
+        "saved_master": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/fdicon-098-hd1-portrait-q-v1-master.png",
+        "initial_prompt": "Use case: stylized-concept. Create a game sprite-sheet master, EXACTLY twelve isolated full-body sprites in 3 columns x 4 rows. FIRST reference shows THIS character's own original portrait and all twelve original map poses, authoritative for anatomy, outfit and occlusion; ignore its blue board background. SECOND reference Ares shows approved very large head, extremely short body/legs chibi proportion ONLY; do not copy Ares's face or gear. Hand-painted smooth fully opaque color shading, clean bold dark contour, distinct own adult face translated into chibi; head/hair about two thirds total height. Row1 ALL3 straight FRONT. Row2 ALL3 strict SCREEN LEFT, noses point LEFT including the third sprite. Row3 ALL3 straight BACK, no face. Row4 ALL3 strict SCREEN RIGHT. Columns neutral / small left step / small right step, same facing all three in a row. Same scale, baseline and generous transparent gutters. Actual RGBA transparency: exact alpha=0 outside silhouettes and alpha=255 throughout all bodies, all dark hair/clothes/black areas remain OPAQUE. Only very narrow antialiased contour edge may be semitransparent. Absolutely no haze, aura, halos, shadows, ground, colored background, fading, text, labels, panels or borders. Twelve complete figures with no cropping, no extra sprites. No invented identity/story/equipment. GROUP098: head mostly covered, own dark OLIVE/CHARCOAL brow headwrap or plate with visible subtle curved relief pattern across forehead, very NARROW RED EYE SLITS, tiny warm brown triangular nose in dark face area and NAVY BLUE high wrapped cloth collar covering lower face/mouth. Do not add a visible smile, tan whole face, skull, fangs or robot eye lens. No invented species or mask material. Native map compact navy blue wrapped tunic with broad collar, muted olive waist belt, dark red center hanging lower cloth, short navy boots/dark gloves. Keep native slim reddish-brown diagonal line over back with SMALL dull gold tip high on viewer-RIGHT, preserving its contour and occlusion, purpose unspecified, do not expand to new weapon or dangling gear. No long flowing cape beyond native short outfit.",
+        "initial_reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/group-098-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ]
+      },
+      {
+        "group": 102,
+        "revision": 1,
+        "prompt": "Use case: stylized-concept. Create a game sprite-sheet master, EXACTLY twelve isolated full-body sprites in 3 columns x 4 rows. FIRST reference shows THIS character's own original portrait and all twelve original map poses, authoritative for anatomy, outfit and occlusion; ignore its blue board background. SECOND reference Ares shows approved very large head, extremely short body/legs chibi proportion ONLY; do not copy Ares's face or gear. Hand-painted smooth fully opaque color shading, clean bold dark contour, distinct own adult face translated into chibi; head/hair about two thirds total height. Row1 ALL3 straight FRONT. Row2 ALL3 strict SCREEN LEFT, noses point LEFT including the third sprite. Row3 ALL3 straight BACK, no face. Row4 ALL3 strict SCREEN RIGHT. Columns neutral / small left step / small right step, same facing all three in a row. Same scale, baseline and generous transparent gutters. Actual RGBA transparency: exact alpha=0 outside silhouettes and alpha=255 throughout all bodies, all dark hair/clothes/black areas remain OPAQUE. Only very narrow antialiased contour edge may be semitransparent. Absolutely no haze, aura, halos, shadows, ground, colored background, fading, text, labels, panels or borders. Twelve complete figures with no cropping, no extra sprites. No invented identity/story/equipment. GROUP102: own reddish chestnut-brown FELINE face from portrait, two short pointed cat ears, narrow PALE GRAY-GREEN almond eyes under strong angled brow planes, broad long squared cat muzzle, black small triangular feline nose, little dark whisker dots on cheek pads, and TWO short thin white downward fang tips at mouth corners. Retain serious stern feline expression, not cute round kitten, not wolf/dog, not boar, no huge mouth or smiling tongue. Own reddish-brown fur chest and bare short arms, dark brown/olive small waist belt and short loincloth, tiny native dark boots/feet and brown hands. Preserve native compact humanoid cat stance, empty hands, no new armor, necklaces, mane, tail, weapons or claws.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/group-102-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ],
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-c36cd169-f428-47d3-827a-d2bf39b6e640.png",
+        "source_sha256": "50b93cf5eca9e3ca8f54e20b0e9b3a1ccea58add2d6b5f1aae2537b30b7dbd37",
+        "component_check": 12,
+        "saved_draft": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/group-102-draft-r1.png",
+        "selected": true,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/group-102-source-reference.png",
+            "sha256": "93cc2ddfb7ea5cd514480100b8d6ac5e9910d3f542e53dd1568fd8716e34ecc6"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png",
+            "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+          }
+        ],
+        "master_file": "fdicon-102-hd1-portrait-q-v1-master.png",
+        "saved_master": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/fdicon-102-hd1-portrait-q-v1-master.png",
+        "initial_prompt": "Use case: stylized-concept. Create a game sprite-sheet master, EXACTLY twelve isolated full-body sprites in 3 columns x 4 rows. FIRST reference shows THIS character's own original portrait and all twelve original map poses, authoritative for anatomy, outfit and occlusion; ignore its blue board background. SECOND reference Ares shows approved very large head, extremely short body/legs chibi proportion ONLY; do not copy Ares's face or gear. Hand-painted smooth fully opaque color shading, clean bold dark contour, distinct own adult face translated into chibi; head/hair about two thirds total height. Row1 ALL3 straight FRONT. Row2 ALL3 strict SCREEN LEFT, noses point LEFT including the third sprite. Row3 ALL3 straight BACK, no face. Row4 ALL3 strict SCREEN RIGHT. Columns neutral / small left step / small right step, same facing all three in a row. Same scale, baseline and generous transparent gutters. Actual RGBA transparency: exact alpha=0 outside silhouettes and alpha=255 throughout all bodies, all dark hair/clothes/black areas remain OPAQUE. Only very narrow antialiased contour edge may be semitransparent. Absolutely no haze, aura, halos, shadows, ground, colored background, fading, text, labels, panels or borders. Twelve complete figures with no cropping, no extra sprites. No invented identity/story/equipment. GROUP102: own reddish chestnut-brown FELINE face from portrait, two short pointed cat ears, narrow PALE GRAY-GREEN almond eyes under strong angled brow planes, broad long squared cat muzzle, black small triangular feline nose, little dark whisker dots on cheek pads, and TWO short thin white downward fang tips at mouth corners. Retain serious stern feline expression, not cute round kitten, not wolf/dog, not boar, no huge mouth or smiling tongue. Own reddish-brown fur chest and bare short arms, dark brown/olive small waist belt and short loincloth, tiny native dark boots/feet and brown hands. Preserve native compact humanoid cat stance, empty hands, no new armor, necklaces, mane, tail, weapons or claws.",
+        "initial_reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/group-102-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ]
+      }
+    ],
+    "calls": [
+      {
+        "group": 96,
+        "revision": 1,
+        "prompt": "Use case: stylized-concept. Create a game sprite-sheet master, EXACTLY twelve isolated full-body sprites in 3 columns x 4 rows. FIRST reference shows THIS character's own original portrait and all twelve original map poses, authoritative for anatomy, outfit and occlusion; ignore its blue board background. SECOND reference Ares shows approved very large head, extremely short body/legs chibi proportion ONLY; do not copy Ares's face or gear. Hand-painted smooth fully opaque color shading, clean bold dark contour, distinct own adult face translated into chibi; head/hair about two thirds total height. Row1 ALL3 straight FRONT. Row2 ALL3 strict SCREEN LEFT, noses point LEFT including the third sprite. Row3 ALL3 straight BACK, no face. Row4 ALL3 strict SCREEN RIGHT. Columns neutral / small left step / small right step, same facing all three in a row. Same scale, baseline and generous transparent gutters. Actual RGBA transparency: exact alpha=0 outside silhouettes and alpha=255 throughout all bodies, all dark hair/clothes/black areas remain OPAQUE. Only very narrow antialiased contour edge may be semitransparent. Absolutely no haze, aura, halos, shadows, ground, colored background, fading, text, labels, panels or borders. Twelve complete figures with no cropping, no extra sprites. No invented identity/story/equipment. GROUP096: warm tan broad ADULT lower face, exposed long angular nose, thin relaxed mouth/slight smile and square jutting chin. Eyes hidden by the own thick OLIVE GRAY mechanical-looking horizontal goggle band with TWO ROUND OLIVE-GREEN lenses and small angular side details. Preserve those two round lens shapes; not a single black robot visor. Own dark reddish-brown short flat swept hair above it and slim NAVY forehead strip. Native map palette outfit gray-olive chest/collar and shoulder shapes, olive/brown center/belt, short navy trousers and boots, bare tan hands, no carried weapon. Do not make a closed helmet covering the skin chin, no beard, no blue lips, no superhero suit.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/group-096-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ],
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-232628a0-a682-4775-a5ac-e22b92e1b67f.png",
+        "source_sha256": "a7e46bd0aa8bba20203f29f9f17ff4de454a6ae31ff5b52b4bd11e503cb56d1c",
+        "component_check": 12,
+        "saved_draft": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/group-096-draft-r1.png",
+        "selected": true,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/group-096-source-reference.png",
+            "sha256": "186d86f493cae02416ebddab31c95791466dffb129a4afe79900d639201073a4"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png",
+            "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+          }
+        ],
+        "master_file": "fdicon-096-hd1-portrait-q-v1-master.png",
+        "saved_master": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/fdicon-096-hd1-portrait-q-v1-master.png",
+        "initial_prompt": "Use case: stylized-concept. Create a game sprite-sheet master, EXACTLY twelve isolated full-body sprites in 3 columns x 4 rows. FIRST reference shows THIS character's own original portrait and all twelve original map poses, authoritative for anatomy, outfit and occlusion; ignore its blue board background. SECOND reference Ares shows approved very large head, extremely short body/legs chibi proportion ONLY; do not copy Ares's face or gear. Hand-painted smooth fully opaque color shading, clean bold dark contour, distinct own adult face translated into chibi; head/hair about two thirds total height. Row1 ALL3 straight FRONT. Row2 ALL3 strict SCREEN LEFT, noses point LEFT including the third sprite. Row3 ALL3 straight BACK, no face. Row4 ALL3 strict SCREEN RIGHT. Columns neutral / small left step / small right step, same facing all three in a row. Same scale, baseline and generous transparent gutters. Actual RGBA transparency: exact alpha=0 outside silhouettes and alpha=255 throughout all bodies, all dark hair/clothes/black areas remain OPAQUE. Only very narrow antialiased contour edge may be semitransparent. Absolutely no haze, aura, halos, shadows, ground, colored background, fading, text, labels, panels or borders. Twelve complete figures with no cropping, no extra sprites. No invented identity/story/equipment. GROUP096: warm tan broad ADULT lower face, exposed long angular nose, thin relaxed mouth/slight smile and square jutting chin. Eyes hidden by the own thick OLIVE GRAY mechanical-looking horizontal goggle band with TWO ROUND OLIVE-GREEN lenses and small angular side details. Preserve those two round lens shapes; not a single black robot visor. Own dark reddish-brown short flat swept hair above it and slim NAVY forehead strip. Native map palette outfit gray-olive chest/collar and shoulder shapes, olive/brown center/belt, short navy trousers and boots, bare tan hands, no carried weapon. Do not make a closed helmet covering the skin chin, no beard, no blue lips, no superhero suit.",
+        "initial_reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/group-096-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ]
+      },
+      {
+        "group": 97,
+        "revision": 1,
+        "prompt": "Use case: stylized-concept. Create a game sprite-sheet master, EXACTLY twelve isolated full-body sprites in 3 columns x 4 rows. FIRST reference shows THIS character's own original portrait and all twelve original map poses, authoritative for anatomy, outfit and occlusion; ignore its blue board background. SECOND reference Ares shows approved very large head, extremely short body/legs chibi proportion ONLY; do not copy Ares's face or gear. Hand-painted smooth fully opaque color shading, clean bold dark contour, distinct own adult face translated into chibi; head/hair about two thirds total height. Row1 ALL3 straight FRONT. Row2 ALL3 strict SCREEN LEFT, noses point LEFT including the third sprite. Row3 ALL3 straight BACK, no face. Row4 ALL3 strict SCREEN RIGHT. Columns neutral / small left step / small right step, same facing all three in a row. Same scale, baseline and generous transparent gutters. Actual RGBA transparency: exact alpha=0 outside silhouettes and alpha=255 throughout all bodies, all dark hair/clothes/black areas remain OPAQUE. Only very narrow antialiased contour edge may be semitransparent. Absolutely no haze, aura, halos, shadows, ground, colored background, fading, text, labels, panels or borders. Twelve complete figures with no cropping, no extra sprites. No invented identity/story/equipment. GROUP097: own blue/dark navy swept short hair with an olive-gray mechanical-looking horizontal goggle band, TWO ROUND BLUE lenses, exposed warm tan long broad nose and square lower face with small thin mouth. Own distinctive VERTICAL reddish-brown narrow mark on cheek below the goggle (copy placement/visible side from original portrait, do not decide its cause). Mature jaw, not child cheeks. Native map NAVY clothing and collar, dark red center/waist, gray-olive goggle strap, bare tan hands and dark boots. Original has ONE long PALE STRAIGHT vertical contour beside head: viewer-LEFT in front, hidden behind body in LEFT row, viewer-RIGHT at back, visible in front of near cheek in RIGHT row. Preserve exact side/occlusion and simple straight contour from native map without inventing hilt, second sword, horn or new straps. Same own hairstyle/head remains visible.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/group-097-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ],
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-1b2f0c51-1754-4ea1-a010-ade1dc584b30.png",
+        "source_sha256": "91f6bdf87cdef805eb8ef8ed8f0e43a7b790e07ebfb6e2db53758a873953051f",
+        "component_check": 12,
+        "saved_draft": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/group-097-draft-r1.png",
+        "selected": false,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/group-097-source-reference.png",
+            "sha256": "8ba578cc83e5ecf4d5e6452b730e127d63c8006ceffb4900b1a050d999a22560"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png",
+            "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+          }
+        ]
+      },
+      {
+        "group": 98,
+        "revision": 1,
+        "prompt": "Use case: stylized-concept. Create a game sprite-sheet master, EXACTLY twelve isolated full-body sprites in 3 columns x 4 rows. FIRST reference shows THIS character's own original portrait and all twelve original map poses, authoritative for anatomy, outfit and occlusion; ignore its blue board background. SECOND reference Ares shows approved very large head, extremely short body/legs chibi proportion ONLY; do not copy Ares's face or gear. Hand-painted smooth fully opaque color shading, clean bold dark contour, distinct own adult face translated into chibi; head/hair about two thirds total height. Row1 ALL3 straight FRONT. Row2 ALL3 strict SCREEN LEFT, noses point LEFT including the third sprite. Row3 ALL3 straight BACK, no face. Row4 ALL3 strict SCREEN RIGHT. Columns neutral / small left step / small right step, same facing all three in a row. Same scale, baseline and generous transparent gutters. Actual RGBA transparency: exact alpha=0 outside silhouettes and alpha=255 throughout all bodies, all dark hair/clothes/black areas remain OPAQUE. Only very narrow antialiased contour edge may be semitransparent. Absolutely no haze, aura, halos, shadows, ground, colored background, fading, text, labels, panels or borders. Twelve complete figures with no cropping, no extra sprites. No invented identity/story/equipment. GROUP098: head mostly covered, own dark OLIVE/CHARCOAL brow headwrap or plate with visible subtle curved relief pattern across forehead, very NARROW RED EYE SLITS, tiny warm brown triangular nose in dark face area and NAVY BLUE high wrapped cloth collar covering lower face/mouth. Do not add a visible smile, tan whole face, skull, fangs or robot eye lens. No invented species or mask material. Native map compact navy blue wrapped tunic with broad collar, muted olive waist belt, dark red center hanging lower cloth, short navy boots/dark gloves. Keep native slim reddish-brown diagonal line over back with SMALL dull gold tip high on viewer-RIGHT, preserving its contour and occlusion, purpose unspecified, do not expand to new weapon or dangling gear. No long flowing cape beyond native short outfit.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/group-098-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ],
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-0ae41cd1-052b-45c9-aeec-d693a1f650a4.png",
+        "source_sha256": "44fc14c5a5ec857aa377704ef4aa51a219747a2b84184d5754e1c0c565b29b91",
+        "component_check": 12,
+        "saved_draft": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/group-098-draft-r1.png",
+        "selected": true,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/group-098-source-reference.png",
+            "sha256": "22329f11a06e313e44a50ff23bc37f2665f2c528b105d27f6d2100d909736ccf"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png",
+            "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+          }
+        ],
+        "master_file": "fdicon-098-hd1-portrait-q-v1-master.png",
+        "saved_master": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/fdicon-098-hd1-portrait-q-v1-master.png",
+        "initial_prompt": "Use case: stylized-concept. Create a game sprite-sheet master, EXACTLY twelve isolated full-body sprites in 3 columns x 4 rows. FIRST reference shows THIS character's own original portrait and all twelve original map poses, authoritative for anatomy, outfit and occlusion; ignore its blue board background. SECOND reference Ares shows approved very large head, extremely short body/legs chibi proportion ONLY; do not copy Ares's face or gear. Hand-painted smooth fully opaque color shading, clean bold dark contour, distinct own adult face translated into chibi; head/hair about two thirds total height. Row1 ALL3 straight FRONT. Row2 ALL3 strict SCREEN LEFT, noses point LEFT including the third sprite. Row3 ALL3 straight BACK, no face. Row4 ALL3 strict SCREEN RIGHT. Columns neutral / small left step / small right step, same facing all three in a row. Same scale, baseline and generous transparent gutters. Actual RGBA transparency: exact alpha=0 outside silhouettes and alpha=255 throughout all bodies, all dark hair/clothes/black areas remain OPAQUE. Only very narrow antialiased contour edge may be semitransparent. Absolutely no haze, aura, halos, shadows, ground, colored background, fading, text, labels, panels or borders. Twelve complete figures with no cropping, no extra sprites. No invented identity/story/equipment. GROUP098: head mostly covered, own dark OLIVE/CHARCOAL brow headwrap or plate with visible subtle curved relief pattern across forehead, very NARROW RED EYE SLITS, tiny warm brown triangular nose in dark face area and NAVY BLUE high wrapped cloth collar covering lower face/mouth. Do not add a visible smile, tan whole face, skull, fangs or robot eye lens. No invented species or mask material. Native map compact navy blue wrapped tunic with broad collar, muted olive waist belt, dark red center hanging lower cloth, short navy boots/dark gloves. Keep native slim reddish-brown diagonal line over back with SMALL dull gold tip high on viewer-RIGHT, preserving its contour and occlusion, purpose unspecified, do not expand to new weapon or dangling gear. No long flowing cape beyond native short outfit.",
+        "initial_reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/group-098-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ]
+      },
+      {
+        "group": 102,
+        "revision": 1,
+        "prompt": "Use case: stylized-concept. Create a game sprite-sheet master, EXACTLY twelve isolated full-body sprites in 3 columns x 4 rows. FIRST reference shows THIS character's own original portrait and all twelve original map poses, authoritative for anatomy, outfit and occlusion; ignore its blue board background. SECOND reference Ares shows approved very large head, extremely short body/legs chibi proportion ONLY; do not copy Ares's face or gear. Hand-painted smooth fully opaque color shading, clean bold dark contour, distinct own adult face translated into chibi; head/hair about two thirds total height. Row1 ALL3 straight FRONT. Row2 ALL3 strict SCREEN LEFT, noses point LEFT including the third sprite. Row3 ALL3 straight BACK, no face. Row4 ALL3 strict SCREEN RIGHT. Columns neutral / small left step / small right step, same facing all three in a row. Same scale, baseline and generous transparent gutters. Actual RGBA transparency: exact alpha=0 outside silhouettes and alpha=255 throughout all bodies, all dark hair/clothes/black areas remain OPAQUE. Only very narrow antialiased contour edge may be semitransparent. Absolutely no haze, aura, halos, shadows, ground, colored background, fading, text, labels, panels or borders. Twelve complete figures with no cropping, no extra sprites. No invented identity/story/equipment. GROUP102: own reddish chestnut-brown FELINE face from portrait, two short pointed cat ears, narrow PALE GRAY-GREEN almond eyes under strong angled brow planes, broad long squared cat muzzle, black small triangular feline nose, little dark whisker dots on cheek pads, and TWO short thin white downward fang tips at mouth corners. Retain serious stern feline expression, not cute round kitten, not wolf/dog, not boar, no huge mouth or smiling tongue. Own reddish-brown fur chest and bare short arms, dark brown/olive small waist belt and short loincloth, tiny native dark boots/feet and brown hands. Preserve native compact humanoid cat stance, empty hands, no new armor, necklaces, mane, tail, weapons or claws.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/group-102-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ],
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-c36cd169-f428-47d3-827a-d2bf39b6e640.png",
+        "source_sha256": "50b93cf5eca9e3ca8f54e20b0e9b3a1ccea58add2d6b5f1aae2537b30b7dbd37",
+        "component_check": 12,
+        "saved_draft": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/group-102-draft-r1.png",
+        "selected": true,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/group-102-source-reference.png",
+            "sha256": "93cc2ddfb7ea5cd514480100b8d6ac5e9910d3f542e53dd1568fd8716e34ecc6"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png",
+            "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+          }
+        ],
+        "master_file": "fdicon-102-hd1-portrait-q-v1-master.png",
+        "saved_master": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/fdicon-102-hd1-portrait-q-v1-master.png",
+        "initial_prompt": "Use case: stylized-concept. Create a game sprite-sheet master, EXACTLY twelve isolated full-body sprites in 3 columns x 4 rows. FIRST reference shows THIS character's own original portrait and all twelve original map poses, authoritative for anatomy, outfit and occlusion; ignore its blue board background. SECOND reference Ares shows approved very large head, extremely short body/legs chibi proportion ONLY; do not copy Ares's face or gear. Hand-painted smooth fully opaque color shading, clean bold dark contour, distinct own adult face translated into chibi; head/hair about two thirds total height. Row1 ALL3 straight FRONT. Row2 ALL3 strict SCREEN LEFT, noses point LEFT including the third sprite. Row3 ALL3 straight BACK, no face. Row4 ALL3 strict SCREEN RIGHT. Columns neutral / small left step / small right step, same facing all three in a row. Same scale, baseline and generous transparent gutters. Actual RGBA transparency: exact alpha=0 outside silhouettes and alpha=255 throughout all bodies, all dark hair/clothes/black areas remain OPAQUE. Only very narrow antialiased contour edge may be semitransparent. Absolutely no haze, aura, halos, shadows, ground, colored background, fading, text, labels, panels or borders. Twelve complete figures with no cropping, no extra sprites. No invented identity/story/equipment. GROUP102: own reddish chestnut-brown FELINE face from portrait, two short pointed cat ears, narrow PALE GRAY-GREEN almond eyes under strong angled brow planes, broad long squared cat muzzle, black small triangular feline nose, little dark whisker dots on cheek pads, and TWO short thin white downward fang tips at mouth corners. Retain serious stern feline expression, not cute round kitten, not wolf/dog, not boar, no huge mouth or smiling tongue. Own reddish-brown fur chest and bare short arms, dark brown/olive small waist belt and short loincloth, tiny native dark boots/feet and brown hands. Preserve native compact humanoid cat stance, empty hands, no new armor, necklaces, mane, tail, weapons or claws.",
+        "initial_reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/group-102-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ]
+      },
+      {
+        "group": 97,
+        "revision": 2,
+        "prompt": "Use case: style-transfer. Redraw the FIRST sheet as smooth hand-painted HD1 chibi game art, NOT pixel art, NOT nearest-neighbor magnified low-resolution sprites. Keep EXACT 3 columns x4 rows / 12 complete separate figures, row FRONT / all LEFT / BACK / all RIGHT, columns small gait phases. Same character: own BLUE short swept hair, olive-gray mechanical-looking eye band with TWO ROUND BLUE lenses, warm TAN exposed broad adult nose, thin neutral mouth, square chin and a narrow reddish mark on one cheek. Own navy collar/clothes, muted burgundy chest and waist, tiny dark boots and bare hands. SECOND source board fixes original silhouette/occlusion; THIRD is approved smooth chibi proportion ONLY. Very large head approximately two thirds of height, short torso and legs. Replace the invented dark crossguard/hilt with the original simple straight thin PALE contour alongside the head. Preserve its source orientation: viewer-LEFT in FRONT, absent/hidden on LEFT row, viewer-RIGHT in BACK, visible beside cheek on RIGHT row. Do not add a hand gripping it, handle, blade guard or second piece. Smooth opaque painterly gradients, crisp smooth dark contour, individual own face, no generic big eyes. Alpha255 throughout character, alpha0 background, narrow antialias only. No halos, shadows, haze, scenery, labels or background. All3 left row noses LEFT, all3 right row nosesRIGHT.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/group-097-draft-r1.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/group-097-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ],
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-d79dad2b-a5da-4c56-999d-07b64f44587f.png",
+        "source_sha256": "4141e7ce2d54a6ffe4d0bd9f6f26b5e3c3e2bb7b16f3b701875a28d08e7e0a30",
+        "component_check": 12,
+        "selected": true,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/group-097-draft-r1.png",
+            "sha256": "91f6bdf87cdef805eb8ef8ed8f0e43a7b790e07ebfb6e2db53758a873953051f"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/group-097-source-reference.png",
+            "sha256": "8ba578cc83e5ecf4d5e6452b730e127d63c8006ceffb4900b1a050d999a22560"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png",
+            "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+          }
+        ],
+        "master_file": "fdicon-097-hd1-portrait-q-v1-master.png",
+        "saved_master": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/fdicon-097-hd1-portrait-q-v1-master.png",
+        "initial_prompt": "Use case: stylized-concept. Create a game sprite-sheet master, EXACTLY twelve isolated full-body sprites in 3 columns x 4 rows. FIRST reference shows THIS character's own original portrait and all twelve original map poses, authoritative for anatomy, outfit and occlusion; ignore its blue board background. SECOND reference Ares shows approved very large head, extremely short body/legs chibi proportion ONLY; do not copy Ares's face or gear. Hand-painted smooth fully opaque color shading, clean bold dark contour, distinct own adult face translated into chibi; head/hair about two thirds total height. Row1 ALL3 straight FRONT. Row2 ALL3 strict SCREEN LEFT, noses point LEFT including the third sprite. Row3 ALL3 straight BACK, no face. Row4 ALL3 strict SCREEN RIGHT. Columns neutral / small left step / small right step, same facing all three in a row. Same scale, baseline and generous transparent gutters. Actual RGBA transparency: exact alpha=0 outside silhouettes and alpha=255 throughout all bodies, all dark hair/clothes/black areas remain OPAQUE. Only very narrow antialiased contour edge may be semitransparent. Absolutely no haze, aura, halos, shadows, ground, colored background, fading, text, labels, panels or borders. Twelve complete figures with no cropping, no extra sprites. No invented identity/story/equipment. GROUP097: own blue/dark navy swept short hair with an olive-gray mechanical-looking horizontal goggle band, TWO ROUND BLUE lenses, exposed warm tan long broad nose and square lower face with small thin mouth. Own distinctive VERTICAL reddish-brown narrow mark on cheek below the goggle (copy placement/visible side from original portrait, do not decide its cause). Mature jaw, not child cheeks. Native map NAVY clothing and collar, dark red center/waist, gray-olive goggle strap, bare tan hands and dark boots. Original has ONE long PALE STRAIGHT vertical contour beside head: viewer-LEFT in front, hidden behind body in LEFT row, viewer-RIGHT at back, visible in front of near cheek in RIGHT row. Preserve exact side/occlusion and simple straight contour from native map without inventing hilt, second sword, horn or new straps. Same own hairstyle/head remains visible.",
+        "initial_reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/group-097-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ]
+      }
+    ]
+  },
+  "original_reference": {
+    "source": "各自原名冊、DATO與FDICON三層及FDOTHER0色盤，不新增原版動態。",
+    "groups": [
+      96,
+      97,
+      98,
+      102
+    ],
+    "records_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/face-source-references.json",
+    "records_sha256": "93a6fdcd62655bdb89e97c24c9f2dbabe4dbca1ddd6c8c57fbb34477ac3e7de4"
+  }
+}

@@ -1,6 +1,6 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
-第123／124／126／134組已依自身原版頭像修正面容並接入HD1，保留原名冊、陣營與位置。28完整Game.Draw、24PNG、四次F2、302209核心點及24反例，普通首章十PNG的切換／保存冷讀、26頂層Go及21消費來源／416幀／19反例通過。只換8項、875保持；100新檔及9605舊美術保持。人物餘20組，其餘介面與地形仍待。現況依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，主收據hd1_pale_faces_followup_20261101。
+第96／97／98／102組已依自身原版頭像修正面容並接入HD1，保留原名冊、陣營與位置。28完整Game.Draw、24PNG、四次F2、264145核心點及24反例，普通首章十PNG的切換／保存冷讀、26頂層Go及21消費來源／416幀／19反例通過。只換8項、875保持；100新檔及9705舊美術保持。人物餘16組，其餘介面與地形仍待。現況依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，主收據hd1_guard_faces_followup_20261101。
 
 戶外草、土、沙、水與石路已依定版風格刷新，原生輪廓、物件與規則保持。完整GPU及普通首章切換、走行取消、保存冷讀通過，README總覽及普通遊玩圖已更新。現況與來源依[58](58-fd2-exe-re-coverage.md)、[61](61-modern-theme-runtime-spec.md)及主收據`hd1_painted_ground_followup_20261029`；洞窟／物件與其餘缺圖續作，人工由使用者接手。
 

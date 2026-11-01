@@ -85,6 +85,10 @@
 
 達克賽保留深藍裸面、尖耳、厚重額面、鉤鼻與微揚薄唇；亞奇梅吉保留藍灰高額禿頂、深陷窄眼、長鼻與瘦長下巴。兩人皆按原生空手，灰綠腰帶與藍紫袍大領分別保持；達克賽眼色依自己的原版大頭像採藍紫。可看[四向與實際尺寸](docs/figures/hd1-blue-and-robed-comparison.png)、[達克賽](docs/figures/hd1-darksai-refresh-game.png)及[亞奇梅吉](docs/figures/hd1-archimage-refresh-game.png)的完整受控戰場圖。面容圖比較原版頭像與實際地圖素材，非對話HD頭像驗收；地圖及資訊窗共用新版圖源。戰場圖使用各自原生名冊的受控測具，沒有身份或圖組投影，不代表自然加入流程。其餘人物續作，目前圖源總覽已依正式清冊更新。
 
+![第96、97、98與102組原版頭像及目前HD1面容](docs/figures/hd1-guard-faces-reference.png)
+
+第96與97組依自己的綠／藍圓鏡、髮色及露出的成年鼻口下顎，第98組保留窄紅眼與遮口輪廓，第102組保留紅褐獸面、長口鼻及白牙尖。可看[四向及144／72／48尺寸](docs/figures/hd1-guard-faces-comparison.png)，以及[96](docs/figures/hd1-guard-096-game.png)、[97](docs/figures/hd1-guard-097-game.png)、[98](docs/figures/hd1-guard-098-game.png)、[102](docs/figures/hd1-guard-102-game.png)的受控戰場。四組保留原名冊、敵方陣營及位置；姓名、種族與輪廓用途未知不猜補。本批不代表自然章節出場或480對話頭像驗收。
+
 ![第123、124、126與134組原版頭像及目前HD1面容](docs/figures/hd1-pale-faces-reference.png)
 
 第123組補回蒼白面容與窄眼，第124組保留銀髮、鉤鼻與黑色斜紋，第126組露出原有膚色鼻、嘴與下顎，第134組依自己的成年臉與短髮。可看[四向及144／72／48尺寸](docs/figures/hd1-pale-faces-comparison.png)，以及[123](docs/figures/hd1-pale-123-game.png)、[124](docs/figures/hd1-pale-124-game.png)、[126](docs/figures/hd1-pale-126-game.png)、[134](docs/figures/hd1-pale-134-game.png)的受控戰場。四組保留原名冊、陣營及位置，134仍為盟友；姓名、種族與遮擋材質未知不猜補。本批不代表自然章節出場或480對話頭像驗收。
@@ -927,7 +931,7 @@ DOS 本身不會替遊戲顯示中文。原版自帶點陣字型，文本也不�
 
 ![圖組068至095原版及目前HD1圖源](docs/figures/hd1-map-sprites-068-095-20261101.png)
 
-![圖組096至139原版及目前HD1圖源](docs/figures/hd1-map-sprites-096-139-20261101-r4.png)
+![圖組096至139原版及目前HD1圖源](docs/figures/hd1-map-sprites-096-139-20261101-r5.png)
 
 原版欄依固定FDICON索引、原圖遮罩與FDOTHER0六位元VGA DAC代表性色盤合成；實際場景仍可能依原排程調色。正式包保留24×24父圖的二值透明契約及144×144HD圖的覆蓋透明契約。圖組編號只定位圖源，身份依各自證據；第67組按確認例外使用原小圖面容，身份及頭像仍未知。母稿與逐幀素材留在私人庫，公開僅保存壓平總覽。較早94組的[圖說及資料採樣記錄](docs/knowledge-base/31-map-unit-sprites-fdicon.md#較早94組人物總覽圖說存檔)保留原技術說明；現況依[58](docs/knowledge-base/58-fd2-exe-re-coverage.md)及[61](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
 

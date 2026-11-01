@@ -283135,5 +283135,3299 @@
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/final-validation-r1.json",
       "sha256": "96369693c3449496f2a3c37ad762d574b32c60c4378fc2a636ef625b69c05b35"
     }
+  },
+  "hd1_guard_faces_followup_20261101": {
+    "date": "2026-11-01",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1",
+    "base_commit": "956f319f5adde4f95fa2a609dc3549ca34d05afc",
+    "groups": [
+      96,
+      97,
+      98,
+      102
+    ],
+    "roster_bindings": [
+      {
+        "group": 96,
+        "map": 0,
+        "roster_file": "remake/assets/maps/map0/map0_units.json",
+        "roster_sha256": "10f0d34d2ba92edfb254da1f1426e928a465014f1040672b4aee2388c64f234f",
+        "row": 0,
+        "initial_group": 1,
+        "camp": "enemy",
+        "portrait": 96,
+        "battle_fig": 96,
+        "position": {
+          "x_word": 1,
+          "y_word": 3,
+          "raw_key": 96
+        },
+        "native_constructor": {
+          "branch": "high_class",
+          "index": 28,
+          "record": [
+            1,
+            7,
+            14,
+            0,
+            0,
+            7,
+            1,
+            1,
+            4,
+            21
+          ]
+        }
+      },
+      {
+        "group": 97,
+        "map": 0,
+        "roster_file": "remake/assets/maps/map0/map0_units.json",
+        "roster_sha256": "10f0d34d2ba92edfb254da1f1426e928a465014f1040672b4aee2388c64f234f",
+        "row": 14,
+        "initial_group": 5,
+        "camp": "enemy",
+        "portrait": 97,
+        "battle_fig": 97,
+        "position": {
+          "x_word": 2,
+          "y_word": 22,
+          "raw_key": 97
+        },
+        "native_constructor": {
+          "branch": "high_class",
+          "index": 29,
+          "record": [
+            1,
+            7,
+            24,
+            0,
+            0,
+            8,
+            3,
+            2,
+            4,
+            33
+          ]
+        }
+      },
+      {
+        "group": 98,
+        "map": 15,
+        "roster_file": "remake/assets/maps/map15/map15_units.json",
+        "roster_sha256": "2bc91631b51811ede69de5e3c6a4ad33c80e0c626669a7418ef67f9f2b86b218",
+        "row": 58,
+        "initial_group": 0,
+        "camp": "enemy",
+        "portrait": 98,
+        "battle_fig": 98,
+        "position": {
+          "x_word": 31,
+          "y_word": 5,
+          "raw_key": 98
+        },
+        "native_constructor": {
+          "branch": "high_class",
+          "index": 30,
+          "record": [
+            1,
+            7,
+            70,
+            0,
+            0,
+            34,
+            26,
+            12,
+            5,
+            200
+          ]
+        }
+      },
+      {
+        "group": 102,
+        "map": 3,
+        "roster_file": "remake/assets/maps/map3/map3_units.json",
+        "roster_sha256": "152c3e4164a6d8ee10fa3d0460906c71735cf88d2d46437e3e8b4945afb43ece",
+        "row": 18,
+        "initial_group": 2,
+        "camp": "enemy",
+        "portrait": 102,
+        "battle_fig": 102,
+        "position": {
+          "x_word": 19,
+          "y_word": 7,
+          "raw_key": 102
+        },
+        "native_constructor": {
+          "branch": "high_class",
+          "index": 34,
+          "record": [
+            8,
+            2,
+            16,
+            0,
+            0,
+            8,
+            2,
+            1,
+            5,
+            40
+          ]
+        }
+      }
+    ],
+    "source_references": [
+      {
+        "group": 96,
+        "reference_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/group-096-source-reference.png",
+        "reference_sha256": "186d86f493cae02416ebddab31c95791466dffb129a4afe79900d639201073a4",
+        "inputs": [
+          {
+            "file": "/original/portraits/DATO_096_m0.png",
+            "sha256": "71600664daa24ec01314a275d0e9f3d29e7358ecf7152d96d14760847b980464",
+            "local_file": "remake/assets/portraits/DATO_096_m0.png",
+            "local_sha256": "5c4d4f75c3ddce0588e34cee045d2d049b6670d3d554eb55745aeca209ace91b",
+            "decoded_rgba_equal": true
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1152/frame.png",
+            "sha256": "aa1eb7dda1b09c5a3e5fb92e037e4d826732b53e4e58b7928519235e1728cc30"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1152/mask.png",
+            "sha256": "5f0fd3f38298d99b6fdc38e5ce7ce3791bcb1ccc6431ae3ec83f7a940bcc6b12"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1152/remap_mask.png",
+            "sha256": "200afe094a5ad24942982c092b16645be98417b3833a773b8d3433fb6082264b"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1153/frame.png",
+            "sha256": "c0d63c3fa2ec2330f977db5e7e3c077860db8eecebca17e6f7349cef5744d1dc"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1153/mask.png",
+            "sha256": "2be443faecf0b8a46a58b5d52567cd46a4ff671607c22eb5398bf9bfc69c2167"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1153/remap_mask.png",
+            "sha256": "c3ce6f8ce707e7765281f67324469fed7b387a8cdd4f95966a1bba0fdf8c70c5"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1154/frame.png",
+            "sha256": "45f847959a83e80a059941d26964758cd01fb4cf8f78a609af510d86b740f5ba"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1154/mask.png",
+            "sha256": "f9cf84df97f2d8f34853a5433f8b92f95f561dba9970596c03d82436d5dcd91a"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1154/remap_mask.png",
+            "sha256": "e0040428a34be6972744bc0b441885ec13d09d5bb80a0ba442663a05ebd24b49"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1155/frame.png",
+            "sha256": "8b4dd5d19db13aa7f8ad96e4eb768f96a3ff09701f2e096e64e6ce8e20a66353"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1155/mask.png",
+            "sha256": "73b37ef712c095e3b7138c5770ac1e1cab1d0e5975981bfc3bcda051c8becf61"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1155/remap_mask.png",
+            "sha256": "07094d142c4886e8ec3b91410195c9c2265534ac16dc455c2ee0ae0ae2be6e6f"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1156/frame.png",
+            "sha256": "45c93e5fd5d59d9fd87487c18dc624ba3ad99e9dcc327f4cb20f6a9bb167b78a"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1156/mask.png",
+            "sha256": "a9b4a02a418eac58aca3af9a610ece9b2151e98b8eb50e108cd3d4baa1370cfb"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1156/remap_mask.png",
+            "sha256": "bf03380fe29b9af51db5a3f774316f9062083b7a610ae470ea0e39f94d07a69d"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1157/frame.png",
+            "sha256": "c7c9162c52a9192c1275215541e452744c3c3583d0d5632705e550898dfef49d"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1157/mask.png",
+            "sha256": "d284ee1420ef368fed8c027b55add3cc72bec2b5d17f0504c7708a3bce98a014"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1157/remap_mask.png",
+            "sha256": "b773abdd67707bb6b99a65d3367aafcb1a52fbac59a759756167e8cb492e9c35"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1158/frame.png",
+            "sha256": "df3729dc18a4f4017b7ca0f1915c09f05a076c9e195d8b74fcaea556c3878885"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1158/mask.png",
+            "sha256": "7c9d2747fce645f3c3a0df28718aef4ce98368881297bec45119a1f2bb84c55c"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1158/remap_mask.png",
+            "sha256": "f5266ac42b35f8bb17a729b60aca15691bf5290fbdafd0dc1b119b26806d71ec"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1159/frame.png",
+            "sha256": "ca2788410558a0183f89eb23037ebd8dfb6cea7948d4734ff8133aa68e24ef8f"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1159/mask.png",
+            "sha256": "a255029bb0a2e4cc63467879ddc7b52510d09b6b2b130c7552b334aefb4cc681"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1159/remap_mask.png",
+            "sha256": "88b8403573ed8dd38f7d808ec9e63005f26f9354dc3e269f12151a57ef16ca91"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1160/frame.png",
+            "sha256": "d36e3cd711254b7ad5eabc2ff224c6628d40762b88c6ce31e2b1df66e9ddbe9c"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1160/mask.png",
+            "sha256": "1f2c0cb63d6e3b9f362ce9d5867b1bb72ccb291d0016f4b62a8a5a6193577b8e"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1160/remap_mask.png",
+            "sha256": "7b11b049353e1d852ea70076286042fb7730a46b84f2a7dd2dec9384ee1f2caf"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1161/frame.png",
+            "sha256": "6ab3c14a4c8f32d8f49516f0c3043ddaa99b5258480c7c1242c23d6b121ccd37"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1161/mask.png",
+            "sha256": "ea2657e50098674c4dba9f3f5dcbd482ba2cbdc077504b5d6472aea8fac82d4b"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1161/remap_mask.png",
+            "sha256": "6c9706913cbbc297d54a73dafcb0682bb358f52355c60dd0318080ab7f7c586c"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1162/frame.png",
+            "sha256": "c449a455e0f2be834e822a815b7baa1cc771af6b6ce1f90e44f56188f53e8eaa"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1162/mask.png",
+            "sha256": "c34ee6f4a480920c38847ab07298dd88995e9597e945d9e7149946a322f7eeb2"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1162/remap_mask.png",
+            "sha256": "a694c88ef34d8643572f21d9ac9ddc73fa01059928960a1abc6c2a14399ff020"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1163/frame.png",
+            "sha256": "57a1db6055f5ca824d803940542c8b451195260798f3a54e394d432cd98861de"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1163/mask.png",
+            "sha256": "1a45aaa9b4ceb1cd955e2c766dbacc3ed6b1db456166a62f692abdf5b35d835a"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1163/remap_mask.png",
+            "sha256": "60d689d430a97ca6390c8c4a5b8d28b7613bd04c3474356709752a22906d5668"
+          }
+        ]
+      },
+      {
+        "group": 97,
+        "reference_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/group-097-source-reference.png",
+        "reference_sha256": "8ba578cc83e5ecf4d5e6452b730e127d63c8006ceffb4900b1a050d999a22560",
+        "inputs": [
+          {
+            "file": "/original/portraits/DATO_097_m0.png",
+            "sha256": "ba57ff5569967c78b1a62116bb2cdfe56c76fd40a2ba8cbce39d2356ca527026",
+            "local_file": "remake/assets/portraits/DATO_097_m0.png",
+            "local_sha256": "ff6d137a9f342398a0cfc854b1dd15e640b5fb5469cf60a4b55cb0db208abee0",
+            "decoded_rgba_equal": true
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1164/frame.png",
+            "sha256": "f8fbdd8be157d637fb464ecb705bde0b23698e51fcf5812dccab3a412871a22f"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1164/mask.png",
+            "sha256": "f046f2f44eba859c59f079ab363a1cee47ba9d1cfd25a2c0a6b0e84e565e48e8"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1164/remap_mask.png",
+            "sha256": "920092a35e578ce1e3d13a76978884c95d0f8e0d2b994348c2c18e3b5a814f40"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1165/frame.png",
+            "sha256": "665d66ce8525a31c8065a9ec5b354cb89c5f3c216e8a9412bf2406279fd8e275"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1165/mask.png",
+            "sha256": "9b122809d95af115da6c3ad6dd0613c0af044ab6bbd5ff9d26001771efe604c7"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1165/remap_mask.png",
+            "sha256": "af3b29525520e24185d607efc981b610ff084c3a08a4e65a0df4224a47b7eeed"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1166/frame.png",
+            "sha256": "1858971eb7cc30f6cb971365a9feee798577ca7c4600899e8a0de5aaf6ebb98d"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1166/mask.png",
+            "sha256": "270e2878398f1b97ab8adb0338ce1d3491ccbef3534233c6e137222bc28443a4"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1166/remap_mask.png",
+            "sha256": "f003b21c83ab93557a54329b477d2027452f92298065ecb4951881e26be12197"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1167/frame.png",
+            "sha256": "7b4c87fd364e9c9ffd27037e18eb5495dcb8130d92f754a680e21985b9f91e87"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1167/mask.png",
+            "sha256": "73b37ef712c095e3b7138c5770ac1e1cab1d0e5975981bfc3bcda051c8becf61"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1167/remap_mask.png",
+            "sha256": "07094d142c4886e8ec3b91410195c9c2265534ac16dc455c2ee0ae0ae2be6e6f"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1168/frame.png",
+            "sha256": "e9d6fb5e1e97638b529bb2819ac94c56c0ba5d8396d9b160b52e2e12842ecc6a"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1168/mask.png",
+            "sha256": "39dae032206e7a03a1983a613e33cdb7b29f4693feec1f2935a926fa07fd567c"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1168/remap_mask.png",
+            "sha256": "b57aae0f441c4b026b16d0c4bfcfa51265f1b3073fd1f3d457a24b2dd45b8f33"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1169/frame.png",
+            "sha256": "ee337f9928dddcc690a929af9abc2a51b5ee543b45c147233d0196ba5a5011bb"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1169/mask.png",
+            "sha256": "e7b7d974e307b9e3595e1607578861758fd53923b3334b201f0384e2c81744f2"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1169/remap_mask.png",
+            "sha256": "659acdec1b3d0bf0a9ff9b2ccdb85f59e3941b4b495aaa6b2856a156b4d18f8c"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1170/frame.png",
+            "sha256": "6b6e609f64b76283b7730fec384d8aeddc539cbf90c2e21b34b7ceb58049b147"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1170/mask.png",
+            "sha256": "bb30692b0d83c90a8bcf87823e2a0d4c8537ae14a4728173e18cf5d496e2f58a"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1170/remap_mask.png",
+            "sha256": "032ddbf0b8aa955aa52d6316afcbc3dadd6bd162328713556cf2bd3cc3e94377"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1171/frame.png",
+            "sha256": "a1c8d776d60e9e347744fdc020e8496a92e018f143a171ffa8a3e934c387319f"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1171/mask.png",
+            "sha256": "03b38161d6383fef26980f407d539e7c5ffa0fdb25f4e4d265cbc279095edaa7"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1171/remap_mask.png",
+            "sha256": "dcf1c58147aff8a97a81fc5f3cb6a04fb056c99a5ce986821ea288a52a80d692"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1172/frame.png",
+            "sha256": "cb12ca4e5242a06af9770ff9a8743a7b2f493256dfbe8b41cf52f8e8957f11ac"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1172/mask.png",
+            "sha256": "1c3d6d5c48e2ddbeb4002e70749855b890cf92a571b0adfcf5b9b8d07ef04633"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1172/remap_mask.png",
+            "sha256": "19ef85bb09817125f461879c4af1a89414b9eb1aaf9b4f0344eec0ad0b1e2da3"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1173/frame.png",
+            "sha256": "c5de8d1542cc3cde4f9ffe2541d1c2e60f6f4aed8e77c83f6e4be5983c0138af"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1173/mask.png",
+            "sha256": "ea2657e50098674c4dba9f3f5dcbd482ba2cbdc077504b5d6472aea8fac82d4b"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1173/remap_mask.png",
+            "sha256": "6c9706913cbbc297d54a73dafcb0682bb358f52355c60dd0318080ab7f7c586c"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1174/frame.png",
+            "sha256": "88fffaf72d33a71ec1c0489b9828814bc702f9d4c38eb2230c5d8c8f97ec458a"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1174/mask.png",
+            "sha256": "c34ee6f4a480920c38847ab07298dd88995e9597e945d9e7149946a322f7eeb2"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1174/remap_mask.png",
+            "sha256": "a694c88ef34d8643572f21d9ac9ddc73fa01059928960a1abc6c2a14399ff020"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1175/frame.png",
+            "sha256": "320241e4f5e95ee8c7508840e9be90a780b982aea5288a93652b4167925bafc9"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1175/mask.png",
+            "sha256": "d6c9da976072dfb2ddde90d32fdb912d0825113abe5e30c8f37017a5c120585e"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1175/remap_mask.png",
+            "sha256": "c09c3b4cfb22467881972f6089c772c051d00bd669a3828603d8571dcc07f95e"
+          }
+        ]
+      },
+      {
+        "group": 98,
+        "reference_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/group-098-source-reference.png",
+        "reference_sha256": "22329f11a06e313e44a50ff23bc37f2665f2c528b105d27f6d2100d909736ccf",
+        "inputs": [
+          {
+            "file": "/original/portraits/DATO_098_m0.png",
+            "sha256": "2e658878011ee621ba04630b5ad0d5a606a9a2d44c579a6d2257e3751cb85c14",
+            "local_file": "remake/assets/portraits/DATO_098_m0.png",
+            "local_sha256": "b8be3fb93c43467b3ac96ed748b283ad2dc864d8a46a34e83563274fc9fab8ec",
+            "decoded_rgba_equal": true
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1176/frame.png",
+            "sha256": "b2f538243ab2addaff834ace46e4896f919f13a3a028524a0dc6b306f69284ce"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1176/mask.png",
+            "sha256": "f03c7c073ae9b9c23ef87f924889c64a892d4c44d8c06bc04e795db71846f53d"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1176/remap_mask.png",
+            "sha256": "43ff85d6b8ce9ef540105c30fd4cb97a80ccf966d51542ebc25446a7740446a2"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1177/frame.png",
+            "sha256": "7a2211e9a6c831babe412e082850aedefbadbbf19b1347c50492d0c109539fc6"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1177/mask.png",
+            "sha256": "2dcef20988c709a2649ae9c8b77278af666b6f8742d3c541782562da97c9466f"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1177/remap_mask.png",
+            "sha256": "620a12e5f56122c2a6fe4f47074869722e3f075c0129c6d639f5ee88548b796e"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1178/frame.png",
+            "sha256": "6d85f72e77e119fbf23f2f5091d12b096dff3cdc5ef3ccde288e1ecd302d60d7"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1178/mask.png",
+            "sha256": "bfaf339ae96cbc74978010147c58e72a6320daff3ca83ba9337e9563eaa66e34"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1178/remap_mask.png",
+            "sha256": "8b65b2049445c5b72fa1f65a36938b7dd39f54bc7624d5191952cbed5bbe5154"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1179/frame.png",
+            "sha256": "b85e0b4879f78c9f8ebf295adeb63993d65a5eec7784dae69a8057533d962683"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1179/mask.png",
+            "sha256": "bd3002a48e2b0c3fb4380e6a26b75962eb8759dbfed06b78d4fe9aa770b76e22"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1179/remap_mask.png",
+            "sha256": "ae90bfa32f3d4dd190c66f1e08915f7d7fb629856a1c3d9dfe875efe1ccdfd43"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1180/frame.png",
+            "sha256": "c86d4236e950b5d1491c4fe14f0d1a0a02c012f07cb78460eb7f37351ba998cf"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1180/mask.png",
+            "sha256": "dc5d15e62e52cf78ea313e08a10fcbd141ffe9126dc4c6caee04c7ac16771cf5"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1180/remap_mask.png",
+            "sha256": "65a50857d3e0c432487cc6227b249a446c8eff6d4d370251267a0faecf88bcb5"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1181/frame.png",
+            "sha256": "e0d176ed5b054f749b498e224c3e10b3be424b2985578f2f9195e666b210bd1a"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1181/mask.png",
+            "sha256": "b4efb3f3099c5aafd891c1250792c8b3c9cdb24a1f9cf43d6d991c3ad3b0f607"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1181/remap_mask.png",
+            "sha256": "3e7410299579bd572dfc067637146a8cbb5b5ca74ef7571cbc8235c7a732f26b"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1182/frame.png",
+            "sha256": "7088f3fc0f9ea9fe2f10b02f458bf9f54ada3a1f828fab24310c6c2f0b20c5bf"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1182/mask.png",
+            "sha256": "44cfb331e53ebed4e39de0b592e453c8bb23a9932a24bd1df67047be3f147ca2"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1182/remap_mask.png",
+            "sha256": "de65744a66cf1071a09938c1295e9015a2f276ea932ce376f72b76f6c8885a7e"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1183/frame.png",
+            "sha256": "09ac31e1cbaa368ac6a9c22986219c241a681b5cbac2100876e48489ea86ea5c"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1183/mask.png",
+            "sha256": "9a57c64d17925d1ecbd675b5aae5fed2590276000a89826097ffcdc05832e503"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1183/remap_mask.png",
+            "sha256": "4022a18898ea73e8cc3352ec9cbf621793bb7ba5b25f8fa0eb9d10e032b475b9"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1184/frame.png",
+            "sha256": "bb426da4570fd078a972b00ec35ea72e3130d0539fcdba13fd27b0709c3d872d"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1184/mask.png",
+            "sha256": "121e5805e361d98c1ce5b4027652d65fde1341131219d4edae492cbea34538b0"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1184/remap_mask.png",
+            "sha256": "c1d9512d7e024b56495b752e72d1ea32ecd37736975186d740fb86b5904e6b10"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1185/frame.png",
+            "sha256": "58101900e29b4fbf76d5f3e7830aa5b83dc9640e3b6e790211f681c0b64e72a9"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1185/mask.png",
+            "sha256": "7a6168ff29af58e9170d70547148dd71278c82955598fb7f34abe1beb8f7b179"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1185/remap_mask.png",
+            "sha256": "e72445495beae629fb589e7db2ca2b2253085f5a3d8c1b8bc980eec70e637d43"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1186/frame.png",
+            "sha256": "acc2c6450dcb953cb228d97071fd170f57b6e07f7f815a750242fe14a0fe67c8"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1186/mask.png",
+            "sha256": "ae1fd52af0971c18c067692d521cae679c32c830d99673708d0e30859be8ba0f"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1186/remap_mask.png",
+            "sha256": "e10b6c515c3855b6bc0524b08c680fbd1c523ed1449eb8644185906e513199fe"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1187/frame.png",
+            "sha256": "f54a3e21f05428ff1afd17801e515076e8251c1a1d54aa69e1e4226606d9379f"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1187/mask.png",
+            "sha256": "beb404fb387999652b4c85c3c9a29a0f1b94488bae1cfd3383c74495534c602b"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1187/remap_mask.png",
+            "sha256": "91c953940ef35a2bd6af3dd28a5be4367e1b7c45109a4ef32348acbdb8cc1708"
+          }
+        ]
+      },
+      {
+        "group": 102,
+        "reference_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/group-102-source-reference.png",
+        "reference_sha256": "93cc2ddfb7ea5cd514480100b8d6ac5e9910d3f542e53dd1568fd8716e34ecc6",
+        "inputs": [
+          {
+            "file": "/original/portraits/DATO_102_m0.png",
+            "sha256": "95e90a9c6ab3035b56de9c3bc0c9289449cedb350d8ca4995d5328f0f9e494b0",
+            "local_file": "remake/assets/portraits/DATO_102_m0.png",
+            "local_sha256": "92665572918257e71e634a872a57d16e573b219d1b54438bbb5acf3d9ee15bfb",
+            "decoded_rgba_equal": true
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1224/frame.png",
+            "sha256": "40387024c24411d66a74a367845e2c814e43c4e46280b8ef3d97c7688546f3e5"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1224/mask.png",
+            "sha256": "643747a0fc0a2e2b1afb8c982328ecdfc042a431796147a130cf29cfcd50ddf0"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1224/remap_mask.png",
+            "sha256": "88b8a0b267b8f458b47dc48aa4a3c78d7da822c9c92f13b4a467889e1a8962cf"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1225/frame.png",
+            "sha256": "7b5b5a5f5a97e70c59bbe3f95ffd7d1e45381de3d02f42630f50ea2e13c731ce"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1225/mask.png",
+            "sha256": "b10bb3af217d438e73330ca475ed63654ec47c543f9b54eb2f6839f3bffbd343"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1225/remap_mask.png",
+            "sha256": "10669a3528af95ace0e4928f4f7b73f60fb9172c2caf6e4a2c1fb9bbddd4cc1e"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1226/frame.png",
+            "sha256": "5066339ff0e804a815a190e287c1f88b6d9686a7e5c2eee685e0278470c4ae0e"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1226/mask.png",
+            "sha256": "30754f03a4f931a896266a07420ba13afd07d8bba7893fd0f0a4c261d6167190"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1226/remap_mask.png",
+            "sha256": "252b4bc9fee2bba119695f0690b56797a86d9a86e588ee87b4f54ed1f5b28713"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1227/frame.png",
+            "sha256": "212db952c9999f24abca7f374e31a8a036ba48f5a35752de74173c504c4c087f"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1227/mask.png",
+            "sha256": "fbd8c78e69097f9107b397c27362227e63159db3f4337a072aa58c4b70d3c54e"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1227/remap_mask.png",
+            "sha256": "fc3c7acf7dcc59fbc74ee6a7530a903797ad7d9dbd249de745417cd076de7081"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1228/frame.png",
+            "sha256": "b83a33342fd632a98cdda9267dec812aa0d073c9be4688320f6f0740576f5aab"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1228/mask.png",
+            "sha256": "903b20dbe6683a254ad881f9703679f13489fcc6916ffcad242ddc14d5f7717e"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1228/remap_mask.png",
+            "sha256": "e1861c2429ebe783f1d058401e3c37026c91b10af7a4941f8ac19e3bfb14843a"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1229/frame.png",
+            "sha256": "b422ca71b53766304eb1ae19d1f466cd492a0d5f2eeadc9273b63e4d75c5d285"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1229/mask.png",
+            "sha256": "45428e7ffe7bb10e8ca4b0968a54b4921b2a23a7b7b9e018fee767e0d8057ac2"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1229/remap_mask.png",
+            "sha256": "00c9b0c59da31a177f546eaf35cb155fb1cb69af1fb00fc90fb40d2b3c12ff89"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1230/frame.png",
+            "sha256": "b2d74507af85e690a4777dd4dac9cfda33ee8c1cb4e2d33b9f3b246ba9d1a46a"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1230/mask.png",
+            "sha256": "e7fa1ae59fe34785380752f24dc1033c3ff76b95c33a8ebeb1b9f5793f0b7bb7"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1230/remap_mask.png",
+            "sha256": "99c0c3c0f6220e60f181f6f23afe43c2984458e41cc1378d1efbd38d94f603f4"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1231/frame.png",
+            "sha256": "758d4efb04bfc91ab99220574f0a5eeabcc3116aac902a768d9b3aa10c459e45"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1231/mask.png",
+            "sha256": "2890834e59437b1666ad956f36a73fd4fbaeba68e2837332656adc32e6ece2db"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1231/remap_mask.png",
+            "sha256": "65498ee68355a194c439c80d505ee72099cb842060c7719ba5ba9c04751e4bff"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1232/frame.png",
+            "sha256": "eef3f058c51da538cbe97a899ecf38ac2dfb828b0db4e8158635aef9f29fcd62"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1232/mask.png",
+            "sha256": "09c5b5a86cabd5e39e741231be10852579a25809fac14fa3b41a165da244c72b"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1232/remap_mask.png",
+            "sha256": "c186c6318a4ebdaaba5087d7f697cb51729e612275f606e5e41e7e132407c4c6"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1233/frame.png",
+            "sha256": "f0703214c37acb95a8cb969c8c7f0635d2d2d96199b1378a878c64eac347c1d1"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1233/mask.png",
+            "sha256": "4c78aef6db6f9541a960f1bb1a4be483e24948dc9eeeffe23b80b20a4dc51a25"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1233/remap_mask.png",
+            "sha256": "3a21191acba50ab56a0005745a9b89dd3c188cffcfcba1196dcaa6c28fcac81f"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1234/frame.png",
+            "sha256": "759f6709d96f92da6d9ea958076801487f3251a10edbf8460783a674f2dd4c08"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1234/mask.png",
+            "sha256": "904b5250729741a25025e280daa9557afdcfab96825cfe97b5c8a9eb88c997ca"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1234/remap_mask.png",
+            "sha256": "a740e3a3dd341b8480e4723f0d89db99b2b43428cecddf62e0e42a547724117a"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1235/frame.png",
+            "sha256": "1506927e24b8a39dc11a65d2522cb52ec3f26cde160dcff11eb264495137f96c"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1235/mask.png",
+            "sha256": "a2b284536db9212828c2836cf2030a103c94a1d216de62705c71e5d75c8bfc41"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1235/remap_mask.png",
+            "sha256": "479fdfc6819472f6e43c047d4f1dc43243bb7264124faa28b15a72f7862ed876"
+          }
+        ]
+      }
+    ],
+    "face_evidence": [
+      {
+        "group": 96,
+        "traits": [
+          "紅褐短髮、深藍額帶、橄欖灰鏡帶與兩片綠圓鏡",
+          "露出的鼻、薄嘴及成年方下顎",
+          "灰橄欖衣領胸肩、深藍短褲靴，空手"
+        ],
+        "confidence": "已證實原名冊與自身圖源；HD1為美術近似，身份及材質未知保留。"
+      },
+      {
+        "group": 97,
+        "traits": [
+          "藍短髮、橄欖灰鏡帶與兩片藍圓鏡",
+          "露出的成年鼻口下顎與單側紅褐細痕；成因未知",
+          "深藍及暗紅衣裝、單側淡色直輪廓及原四向遮擋"
+        ],
+        "confidence": "已證實原名冊與自身圖源；HD1為美術近似，身份及材質未知保留。"
+      },
+      {
+        "group": 98,
+        "traits": [
+          "暗色額輪廓、窄紅眼縫與小鼻形",
+          "深藍高領遮擋口部，不新增嘴或種族",
+          "深藍短衣、暗紅垂片及背側細斜輪廓；用途未知"
+        ],
+        "confidence": "已證實原名冊與自身圖源；HD1為美術近似，身份及材質未知保留。"
+      },
+      {
+        "group": 102,
+        "traits": [
+          "紅褐獸面、短尖耳及窄灰綠眼",
+          "長貓形口鼻、黑鼻、鬚點與兩枚白色牙尖",
+          "紅褐裸毛身、暗色腰帶與短腰衣，空手；姓名與種族未知"
+        ],
+        "confidence": "已證實原名冊與自身圖源；HD1為美術近似，身份及材質未知保留。"
+      }
+    ],
+    "formal_registered": true,
+    "fixture_matching_evidence": {
+      "status": "已證實名冊與測具來源",
+      "rows": [
+        {
+          "row": 17,
+          "initial_group": 2,
+          "camp": "enemy",
+          "position": {
+            "x_word": 0,
+            "y_word": 8,
+            "raw_key": 102
+          }
+        },
+        {
+          "row": 18,
+          "initial_group": 2,
+          "camp": "enemy",
+          "position": {
+            "x_word": 19,
+            "y_word": 7,
+            "raw_key": 102
+          }
+        },
+        {
+          "row": 19,
+          "initial_group": 2,
+          "camp": "enemy",
+          "position": {
+            "x_word": 0,
+            "y_word": 18,
+            "raw_key": 102
+          }
+        },
+        {
+          "row": 20,
+          "initial_group": 2,
+          "camp": "enemy",
+          "position": {
+            "x_word": 10,
+            "y_word": 19,
+            "raw_key": 102
+          }
+        }
+      ],
+      "chosen_position": {
+        "x_word": 19,
+        "y_word": 7,
+        "raw_key": 102
+      },
+      "fix": "測具按selector及完整原始位置查找，原始位置重複時保留建構順序；畫面以WorkOffset及實際位置唯一核對。不改原始座標或正式規則。",
+      "preflight_r1": "FAIL: selector-first selected original0,8 instead of specified19,7",
+      "first_gpu_r1": "completed before code change; kept as old-source diagnostic, excluded from new-code receipts",
+      "preflight_r2": "102原位已正確，額外加入的全名冊raw-position唯一假設被68原始重複列否定；撤掉這個新假設，保留原有建構順序。",
+      "original_position_repetition": {
+        "file": "remake/assets/maps/map0/map0_units.json",
+        "rows": [
+          19,
+          20,
+          21,
+          22
+        ],
+        "group": 68,
+        "initial_group": 6,
+        "position": {
+          "x_word": 23,
+          "y_word": 14,
+          "raw_key": 68
+        },
+        "level": "已證實原名冊原始列"
+      },
+      "initial_gpu_ordering": "預檢r1失敗後仍誤啟首份GPU，完成於程式修正前；只保留舊來源診斷，正式使用修正後來源重生兩份。"
+    },
+    "branch": "feat/hd1-guard-faces-r32",
+    "issues": [
+      286,
+      287
+    ],
+    "scope": "第96／97／98／102組依自身原版頭像修正面容，保留原名冊與位置；其他HD1缺項繼續。",
+    "art": {
+      "recipe": {
+        "file": "remake/assets/themes/modern/hd1-guard-faces-refresh.recipe.json",
+        "sha256": "d93904015016c4b095c3249a3dcaeb494bb3e06093845209e36a38c23f7cfe43"
+      },
+      "groups": [
+        96,
+        97,
+        98,
+        102
+      ],
+      "generation_calls": 5,
+      "selected_masters": 4,
+      "rejected_drafts": 1,
+      "master_bytes_preserved": true,
+      "alpha_quality": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/alpha-quality-final.json",
+        "sha256": "e2c9cdd4e1e39d9433f15fc1da05c15b93eae4b2d28bfb0b29c91dcff732932a"
+      },
+      "generation_call_receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/generation-calls.json",
+        "sha256": "8f3fd4b0b9b34f457901980dd5c07da64c0d5e5e812021748d8e7acc69276c5f"
+      },
+      "actual_call_order_in_recipe": true,
+      "identity_unknown": true
+    },
+    "gpu": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/gpu-combined-r2-capture/receipt.json",
+        "sha256": "1194794bc4d44b933e2abf000fd45f7de6deae39a04616668ad6dd9742637231"
+      },
+      "independent_and_registration": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/registration-r1.json",
+        "sha256": "b379cb026813401d4768c90e2d054afb3c884428bb86c73509f8b977af26b7bd"
+      },
+      "cases": 28,
+      "pngs": 24,
+      "f2": 4,
+      "core_pixels": 264145,
+      "rejected_mutants": [
+        "missing",
+        "duplicate",
+        "catalog",
+        "source-code",
+        "false-save",
+        "wrong-hud",
+        "wrong-tolerance",
+        "wrong-map-target",
+        "wrong-map-camera",
+        "missing-map-target",
+        "missing-f2",
+        "wrong-profile",
+        "wrong-selector",
+        "wrong-identity",
+        "undisclosed-projection",
+        "wrong-enemy-camp",
+        "wrong-enemy-position",
+        "wrong-enemy-roster",
+        "missing-part",
+        "duplicate-part",
+        "wrong-part-source",
+        "wrong-part-group",
+        "wrong-part-memory",
+        "actual-black-png"
+      ],
+      "authored_roster": true,
+      "identity_or_selector_projection": false,
+      "selected_map_position_linked": true,
+      "scope": "原名冊、原陣營、原位置與portrait／BattleFig，無持續身份；不代表自然章節或原版動態。"
+    },
+    "normal_compatibility": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/normal-r1-capture/receipt.json",
+        "sha256": "3ee9aec3d3ccc8d5f4af18e634e5b2239a9b545deeaaa751ad3490be7e922809"
+      },
+      "status": "PASS-FULL-CANDIDATE-NORMAL-TRANSACTION",
+      "pngs": 10,
+      "scope": "unchanged chapter1 ordinary save checks complete fixed roster pack admission, four controls, walk/cancel and save/cold LOAD; new actors only by fixed authored roster pair fixtures, not natural chapter progression or persistent player identities",
+      "binary_sha256": "5e0c0584aa2aa6798d53b2e5924b9dd154ec7034f3bc10a981f74b5f4abc6880"
+    },
+    "source_regression": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/source-r1.log",
+        "sha256": "e382601177e48de521c5e3bb88e69e3aebfba3f05cf29e557e593325da4a38c2"
+      },
+      "tests": 4,
+      "rejected": 14,
+      "compiler_sha256": "f3220d47a6536d0201d4e57bd73e321714164bb6ca96762d7569c0c932af1462",
+      "test_tool_sha256": "ccd4285f2aec8c47e137b3ec076191b82f5b76aea64ab48f66f15fa9dc4ce612"
+    },
+    "legacy_source_regressions": {
+      "scope": "來源編製器與來源測試未改，沿r28共用／混合各四項17拒收並核工具SHA；不冒稱本輪重跑。",
+      "receipts": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/legacy-reuse-source-r1.log",
+          "sha256": "81dfe9df8ebebcebba77a731f6ed02cf44af8bc19339eec4317e16c6ce003de7"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/legacy-mixed-source-r1.log",
+          "sha256": "fa3530f09505d7cb4bbc3ed68b55793562c8df7cd67ed9665f642ffee955d952"
+        }
+      ]
+    },
+    "regression": {
+      "top_level_passed": 26,
+      "skipped_special_gpu": 2,
+      "skips_count_as_pass": false,
+      "source_tree_sha256": "00ef4940508b885749ab8a03d63ce2620eb31af41483b29652722178e61f4be8",
+      "source_file_count": 1196,
+      "production_go_changed": false,
+      "legacy_parts_reader": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/legacy-parts-r1.json",
+        "sha256": "760f14074b72c1a576d0c65d1677adce4a3a0cb5223b9a341346eeecd845f3e4"
+      },
+      "legacy_scope": "22種舊分份、七批轉職與三種共用來源契約，未重跑或升格舊GPU。",
+      "roster_preflight_groups": 44,
+      "roster_preflight": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/roster-preflight-r3.memory.json",
+        "sha256": "134a5200797e92515ba6773bfdf63e93401eda0bc204c5a2ede1e5cc59d7a3d3"
+      }
+    },
+    "independent_control": {
+      "status": "PREVIOUS-WIRING-COMPLETE",
+      "issue": 284,
+      "previous_evidence_key": "hd1_shadow_faces_followup_20261101",
+      "focused_tests_rerun": false,
+      "normal_compatibility_rerun": true
+    },
+    "consumer_inventory": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/consumers-verified-r1.json",
+        "sha256": "30b70960d78a7bae5852f3c7d35281a82a42b1142e0528c1a22b4c19f5208fca"
+      },
+      "cases": 21,
+      "frames": 416,
+      "rejected": 19
+    },
+    "catalog": {
+      "formal_sha256": "d262de46c5e36d90c2826a161b7d5e7b3d77f1a2025ea5a87f96cbb1f0069c2d",
+      "assets": 883,
+      "changed_entries": 8,
+      "unchanged_entries": 875,
+      "old_art_files": 9705,
+      "new_files": 100,
+      "protected_0_9_30_unchanged": true,
+      "other121_groups_equal": true,
+      "full_validation": "PASS"
+    },
+    "terrain": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/formal-coverage.json",
+        "sha256": "dc843bc6ce49ad8dc40a24a68b19194c8e0831210e0e5dcf56299dbffb509d4c"
+      },
+      "canonical": {
+        "file": "docs/data/fd2-hd1-terrain-coverage.json",
+        "sha256": "dc843bc6ce49ad8dc40a24a68b19194c8e0831210e0e5dcf56299dbffb509d4c"
+      },
+      "maps": 33,
+      "missing-art": 3354,
+      "missing_unique_native_content": 2049,
+      "native-remap-only": 10,
+      "registered-hd": 634,
+      "required_slots": 3998,
+      "selector_checks": 617520,
+      "scope": "來源上界保持，尚未完成HD地形。"
+    },
+    "private": {
+      "baseline_commit": "33afd0c2ad6d878515dec09b0136c10a1b8cf88e",
+      "preservation": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/private-preservation-r1.json",
+        "sha256": "6369ba8e77d7ccd38367a967c08bfcc50cea32dc31e4d870b9996902b8980cca"
+      },
+      "allowlist_files": 6915,
+      "new_files": 100,
+      "commit": "8a28ccd86002b5b2e4c142bd0789f788f60a2fa4",
+      "pushed": true,
+      "remote_verified": true,
+      "visibility": "PRIVATE"
+    },
+    "review": {
+      "source_groups": 125,
+      "source_frames": 1455,
+      "counts": {
+        "reference-keep": 2,
+        "new-q-review-keep": 106,
+        "review-keep-pending-batch": 16,
+        "new-q-source-only-keep": 1
+      },
+      "q_redraw_reduced_from": 1,
+      "q_redraw_remaining": 0,
+      "pending_visual_review_groups": [
+        66,
+        74,
+        75,
+        90,
+        92,
+        103,
+        108,
+        109,
+        110,
+        112,
+        113,
+        114,
+        115,
+        116,
+        122,
+        135
+      ],
+      "priority_face_followup": [
+        66,
+        90,
+        92,
+        103,
+        108,
+        109,
+        110,
+        112,
+        113,
+        114,
+        115,
+        116,
+        122,
+        135
+      ],
+      "all_redrawn": false,
+      "human_acceptance": false,
+      "source_only_exception_groups": [
+        67
+      ],
+      "gaia_explicit_user_acceptance": true,
+      "group_decisions": {
+        "reference-keep": [
+          0,
+          9
+        ],
+        "new-q-review-keep": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          58,
+          59,
+          60,
+          61,
+          62,
+          63,
+          64,
+          65,
+          68,
+          69,
+          70,
+          71,
+          72,
+          73,
+          76,
+          77,
+          78,
+          79,
+          80,
+          81,
+          82,
+          83,
+          84,
+          85,
+          86,
+          87,
+          88,
+          89,
+          91,
+          93,
+          94,
+          95,
+          96,
+          97,
+          98,
+          99,
+          100,
+          101,
+          102,
+          106,
+          107,
+          111,
+          117,
+          118,
+          119,
+          120,
+          123,
+          124,
+          125,
+          126,
+          133,
+          134
+        ],
+        "review-keep-pending-batch": [
+          66,
+          74,
+          75,
+          90,
+          92,
+          103,
+          108,
+          109,
+          110,
+          112,
+          113,
+          114,
+          115,
+          116,
+          122,
+          135
+        ],
+        "new-q-source-only-keep": [
+          67
+        ]
+      },
+      "face_review_states": {
+        "1": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "4": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "5": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "6": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "7": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "8": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "10": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "11": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "12": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "13": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "14": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "15": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "16": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "17": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "18": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "19": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "20": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "21": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "22": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "23": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "24": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "25": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "26": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "27": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "28": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "29": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "31": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "32": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "33": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "34": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "35": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "36": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "37": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "38": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "40": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "41": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "42": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "43": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "44": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "45": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "46": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "47": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "49": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "50": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "51": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "52": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "54": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "55": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "56": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "58": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "59": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "60": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "61": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "62": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "63": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "64": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "65": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "67": "USER-APPROVED-NATIVE-FACE-ONLY/IDENTITY-UNKNOWN",
+        "68": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "69": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "71": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "72": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "78": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "80": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "81": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "82": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "83": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "84": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "85": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "86": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "87": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "88": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "91": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "93": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "94": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "95": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "106": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "111": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "99": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "100": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "101": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "107": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "117": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "118": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "119": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "120": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "123": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "124": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "126": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "134": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "96": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "97": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "98": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "102": "AGENT-ORIGINAL-PORTRAIT-REVIEWED"
+      },
+      "other121_groups_source_equal": true,
+      "scope": "本輪四組依原頭像修正面容，餘16組；74／75身份不從同號DATO猜配。",
+      "followup": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/visual-review-final.json",
+        "sha256": "d88eb81ba4be78b09df9797ce556d993c588e314d7d0d2002f36ee128653c770"
+      }
+    },
+    "overview": {
+      "groups": 125,
+      "source_frames": 1455,
+      "pages": 4,
+      "changed_public_page": "docs/figures/hd1-map-sprites-096-139-20261101-r5.png",
+      "unaffected_public_pages": 3,
+      "old_pages_preserved": true
+    },
+    "public_figures": [
+      {
+        "file": "docs/figures/hd1-guard-faces-comparison.png",
+        "sha256": "b973edf8eeecb63418e71a2017ef3b0ea74857850422cd3c9bef98fe5311f9e9",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/guard-faces-comparison-r1.png",
+          "sha256": "b973edf8eeecb63418e71a2017ef3b0ea74857850422cd3c9bef98fe5311f9e9"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-guard-faces-reference.png",
+        "sha256": "4e3006a9ef55c757fca02d2b37b19e9671bbd039330b5d49779a97295d163a97",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/guard-faces-reference-r1.png",
+          "sha256": "4e3006a9ef55c757fca02d2b37b19e9671bbd039330b5d49779a97295d163a97"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-map-sprites-096-139-20261101-r5.png",
+        "sha256": "aa95fdb3eec971813005095c894e1cd60d66262d06ceb52219bb9c116826f73b",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/overview-096-139-r1.png",
+          "sha256": "aa95fdb3eec971813005095c894e1cd60d66262d06ceb52219bb9c116826f73b"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-guard-096-game.png",
+        "sha256": "78a9e1ed8b1dab7c1899ab4b89dbf3ffa127e16f7407b5cf72bf75b7f2639231",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/gpu-green-and-blue-goggles-r2-capture/party-g096-f00-ui-hd.png",
+          "sha256": "78a9e1ed8b1dab7c1899ab4b89dbf3ffa127e16f7407b5cf72bf75b7f2639231"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-guard-097-game.png",
+        "sha256": "47b1c1181720542b0f09412a5645543ce73616273d4529af373b67433254112f",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/gpu-green-and-blue-goggles-r2-capture/party-g097-f00-ui-hd.png",
+          "sha256": "47b1c1181720542b0f09412a5645543ce73616273d4529af373b67433254112f"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-guard-098-game.png",
+        "sha256": "178e58bd480d91aa989610a308dfbcb69a02431dd7a5b11ec6762bc4419a8261",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/gpu-covered-and-feline-r2-capture/party-g098-f00-ui-hd.png",
+          "sha256": "178e58bd480d91aa989610a308dfbcb69a02431dd7a5b11ec6762bc4419a8261"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-guard-102-game.png",
+        "sha256": "0323ef47ac74a2d108c1e3f9c3c6bec73ef349bfbbd3e09cd056c8f474ab450e",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/gpu-covered-and-feline-r2-capture/party-g102-f00-ui-hd.png",
+          "sha256": "0323ef47ac74a2d108c1e3f9c3c6bec73ef349bfbbd3e09cd056c8f474ab450e"
+        }
+      }
+    ],
+    "resources": {
+      "gpu-green-and-blue-goggles-r2": {
+        "schema_version": 1,
+        "command": [
+          "with-xvfb",
+          "go",
+          "test",
+          "./cmd/fd2",
+          "-p=1",
+          "-count=1",
+          "-timeout=600s",
+          "-run",
+          "^TestModernHDChibiPartyGPU$",
+          "-v"
+        ],
+        "cwd": "/repo/remake",
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 89.125,
+        "before": {
+          "memory.current": 9748480,
+          "memory.peak": 9748480,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 6656000,
+            "file": 1101824,
+            "kernel": 700416,
+            "kernel_stack": 32768,
+            "pagetables": 126976,
+            "sec_pagetables": 0,
+            "percpu": 5952,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 0,
+            "file_dirty": 0,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 0,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 6561792,
+            "inactive_file": 1069056,
+            "active_file": 0,
+            "unevictable": 0,
+            "slab_reclaimable": 250728,
+            "slab_unreclaimable": 259056,
+            "slab": 509784,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 0,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 0,
+            "pgsteal": 0,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 0,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 0,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 3007,
+            "pgmajfault": 0,
+            "pgrefill": 0,
+            "pgactivate": 0,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 0,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "after": {
+          "memory.current": 73793536,
+          "memory.peak": 5567627264,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 6778880,
+            "file": 60325888,
+            "kernel": 5545984,
+            "kernel_stack": 32768,
+            "pagetables": 131072,
+            "sec_pagetables": 0,
+            "percpu": 6208,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 0,
+            "file_dirty": 28733440,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 0,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 6778880,
+            "inactive_file": 60166144,
+            "active_file": 159744,
+            "unevictable": 0,
+            "slab_reclaimable": 5122416,
+            "slab_unreclaimable": 233192,
+            "slab": 5355608,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 0,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 0,
+            "pgsteal": 0,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 0,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 0,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 2103688,
+            "pgmajfault": 109,
+            "pgrefill": 0,
+            "pgactivate": 0,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 0,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "largest_sample": {
+          "memory.current": 5566341120,
+          "memory.peak": 5566341120,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 5471555584,
+            "file": 72933376,
+            "kernel": 19619840,
+            "kernel_stack": 393216,
+            "pagetables": 12193792,
+            "sec_pagetables": 0,
+            "percpu": 6976,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 1024000,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 24236032,
+            "file_dirty": 16302080,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 12582912,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 5472464896,
+            "inactive_file": 71745536,
+            "active_file": 159744,
+            "unevictable": 0,
+            "slab_reclaimable": 6157872,
+            "slab_unreclaimable": 840096,
+            "slab": 6997968,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 0,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 0,
+            "pgsteal": 0,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 0,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 0,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 1892678,
+            "pgmajfault": 109,
+            "pgrefill": 0,
+            "pgactivate": 0,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 0,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "largest_sample_processes": [
+          {
+            "pid": 68,
+            "name": "fd2.test",
+            "rss_kib": 5385204
+          },
+          {
+            "pid": 9,
+            "name": "Xvfb",
+            "rss_kib": 65540
+          },
+          {
+            "pid": 13,
+            "name": "go",
+            "rss_kib": 29700
+          },
+          {
+            "pid": 7,
+            "name": "python3",
+            "rss_kib": 12436
+          },
+          {
+            "pid": 8,
+            "name": "with-xvfb",
+            "rss_kib": 1688
+          },
+          {
+            "pid": 1,
+            "name": "docker-init",
+            "rss_kib": 756
+          }
+        ],
+        "children_maxrss_kib": 5385652,
+        "log": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/gpu-green-and-blue-goggles-r2.log",
+        "samples": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/gpu-green-and-blue-goggles-r2.samples.jsonl"
+      },
+      "gpu-covered-and-feline-r2": {
+        "schema_version": 1,
+        "command": [
+          "with-xvfb",
+          "go",
+          "test",
+          "./cmd/fd2",
+          "-p=1",
+          "-count=1",
+          "-timeout=600s",
+          "-run",
+          "^TestModernHDChibiPartyGPU$",
+          "-v"
+        ],
+        "cwd": "/repo/remake",
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 87.639,
+        "before": {
+          "memory.current": 9068544,
+          "memory.peak": 9068544,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 6660096,
+            "file": 131072,
+            "kernel": 679936,
+            "kernel_stack": 32768,
+            "pagetables": 131072,
+            "sec_pagetables": 0,
+            "percpu": 5952,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 0,
+            "file_dirty": 0,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 0,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 6500352,
+            "inactive_file": 131072,
+            "active_file": 0,
+            "unevictable": 0,
+            "slab_reclaimable": 245888,
+            "slab_unreclaimable": 259056,
+            "slab": 504944,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 0,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 0,
+            "pgsteal": 0,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 0,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 0,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 3005,
+            "pgmajfault": 0,
+            "pgrefill": 0,
+            "pgactivate": 0,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 0,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "after": {
+          "memory.current": 32595968,
+          "memory.peak": 5738377216,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 6791168,
+            "file": 20307968,
+            "kernel": 5054464,
+            "kernel_stack": 32768,
+            "pagetables": 135168,
+            "sec_pagetables": 0,
+            "percpu": 6208,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 0,
+            "file_dirty": 2682880,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 0,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 6791168,
+            "inactive_file": 19083264,
+            "active_file": 1220608,
+            "unevictable": 0,
+            "slab_reclaimable": 4628632,
+            "slab_unreclaimable": 231864,
+            "slab": 4860496,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 0,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 0,
+            "pgsteal": 0,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 0,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 0,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 2035181,
+            "pgmajfault": 112,
+            "pgrefill": 0,
+            "pgactivate": 0,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 1,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "largest_sample": {
+          "memory.current": 5733302272,
+          "memory.peak": 5733453824,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 5666795520,
+            "file": 44564480,
+            "kernel": 20529152,
+            "kernel_stack": 409600,
+            "pagetables": 13221888,
+            "sec_pagetables": 0,
+            "percpu": 6976,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 1024000,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 24211456,
+            "file_dirty": 1343488,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 2097152,
+            "file_thp": 10485760,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 5667819520,
+            "inactive_file": 42315776,
+            "active_file": 1220608,
+            "unevictable": 0,
+            "slab_reclaimable": 6006464,
+            "slab_unreclaimable": 851000,
+            "slab": 6857464,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 0,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 0,
+            "pgsteal": 0,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 0,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 0,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 2031989,
+            "pgmajfault": 112,
+            "pgrefill": 0,
+            "pgactivate": 0,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 1,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "largest_sample_processes": [
+          {
+            "pid": 68,
+            "name": "fd2.test",
+            "rss_kib": 5569968
+          },
+          {
+            "pid": 9,
+            "name": "Xvfb",
+            "rss_kib": 65288
+          },
+          {
+            "pid": 13,
+            "name": "go",
+            "rss_kib": 35492
+          },
+          {
+            "pid": 7,
+            "name": "python3",
+            "rss_kib": 12520
+          },
+          {
+            "pid": 8,
+            "name": "with-xvfb",
+            "rss_kib": 1620
+          },
+          {
+            "pid": 1,
+            "name": "docker-init",
+            "rss_kib": 756
+          }
+        ],
+        "children_maxrss_kib": 5570472,
+        "log": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/gpu-covered-and-feline-r2.log",
+        "samples": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/gpu-covered-and-feline-r2.samples.jsonl"
+      },
+      "normal-r1": {
+        "schema_version": 1,
+        "command": [
+          "python3",
+          "tools/verify_fd2_hd_fonts_gui.py",
+          "--binary",
+          "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-gold-binary-r1",
+          "--assets",
+          "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/runtime-r1",
+          "--original-pack",
+          "/original",
+          "--modern-pack",
+          "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/candidate-r1",
+          "--town-save",
+          "/source/fd2_save.json",
+          "--out",
+          "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/normal-r1-capture",
+          "--battle-status",
+          "--world",
+          "--battle-node",
+          "battle_ch01",
+          "--chibi-refresh",
+          "--startup-timeout",
+          "360",
+          "--run-timeout",
+          "900"
+        ],
+        "cwd": "/repo",
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 223.456,
+        "before": {
+          "memory.current": 7692288,
+          "memory.peak": 7692288,
+          "memory.max": 7516192768,
+          "memory.swap.current": 0,
+          "memory.swap.max": 7516192768,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 6668288,
+            "file": 0,
+            "kernel": 655360,
+            "kernel_stack": 32768,
+            "pagetables": 126976,
+            "sec_pagetables": 0,
+            "percpu": 5952,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 0,
+            "file_dirty": 0,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 0,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 6635520,
+            "inactive_file": 0,
+            "active_file": 0,
+            "unevictable": 0,
+            "slab_reclaimable": 248176,
+            "slab_unreclaimable": 226216,
+            "slab": 474392,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 0,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 0,
+            "pgsteal": 0,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 0,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 0,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 2930,
+            "pgmajfault": 0,
+            "pgrefill": 0,
+            "pgactivate": 0,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 0,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "after": {
+          "memory.current": 154681344,
+          "memory.peak": 3861204992,
+          "memory.max": 7516192768,
+          "memory.swap.current": 0,
+          "memory.swap.max": 7516192768,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 6787072,
+            "file": 145604608,
+            "kernel": 1986560,
+            "kernel_stack": 32768,
+            "pagetables": 131072,
+            "sec_pagetables": 0,
+            "percpu": 6208,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 0,
+            "file_dirty": 5038080,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 2097152,
+            "shmem_thp": 0,
+            "inactive_anon": 6705152,
+            "active_anon": 81920,
+            "inactive_file": 129908736,
+            "active_file": 15695872,
+            "unevictable": 0,
+            "slab_reclaimable": 1556296,
+            "slab_unreclaimable": 241136,
+            "slab": 1797432,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 13,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 323,
+            "pgsteal": 166,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 323,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 166,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 2322998,
+            "pgmajfault": 137,
+            "pgrefill": 67,
+            "pgactivate": 92,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 2,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "largest_sample": {
+          "memory.current": 3855290368,
+          "memory.peak": 3861204992,
+          "memory.max": 7516192768,
+          "memory.swap.current": 0,
+          "memory.swap.max": 7516192768,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 3719426048,
+            "file": 121585664,
+            "kernel": 11370496,
+            "kernel_stack": 360448,
+            "pagetables": 8708096,
+            "sec_pagetables": 0,
+            "percpu": 7808,
+            "sock": 0,
+            "vmalloc": 16384,
+            "shmem": 18640896,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 20918272,
+            "file_dirty": 294912,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 2097152,
+            "file_thp": 0,
+            "shmem_thp": 0,
+            "inactive_anon": 613855232,
+            "active_anon": 3124211712,
+            "inactive_file": 87601152,
+            "active_file": 15343616,
+            "unevictable": 0,
+            "slab_reclaimable": 1271288,
+            "slab_unreclaimable": 978096,
+            "slab": 2249384,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 13,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 323,
+            "pgsteal": 166,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 323,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 166,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 1259181,
+            "pgmajfault": 120,
+            "pgrefill": 67,
+            "pgactivate": 92,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 1,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "largest_sample_processes": [
+          {
+            "pid": 23,
+            "name": "hd1-gold-binary",
+            "rss_kib": 3645220
+          },
+          {
+            "pid": 9,
+            "name": "Xvfb",
+            "rss_kib": 87972
+          },
+          {
+            "pid": 8,
+            "name": "python3",
+            "rss_kib": 31204
+          },
+          {
+            "pid": 960,
+            "name": "import",
+            "rss_kib": 28748
+          },
+          {
+            "pid": 7,
+            "name": "python3",
+            "rss_kib": 12496
+          },
+          {
+            "pid": 14,
+            "name": "pulseaudio",
+            "rss_kib": 9548
+          },
+          {
+            "pid": 1,
+            "name": "docker-init",
+            "rss_kib": 752
+          }
+        ],
+        "children_maxrss_kib": 3665516,
+        "log": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/normal-r1.log",
+        "samples": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/normal-r1.samples.jsonl"
+      },
+      "regression-r1": {
+        "schema_version": 1,
+        "command": [
+          "with-xvfb",
+          "go",
+          "test",
+          "./cmd/fd2",
+          "./cmd/fd2-string-inventory",
+          "-p=1",
+          "-count=1",
+          "-timeout=360s",
+          "-run",
+          "^(TestModernHDMap.*|TestModernHDChibiPartyFixture|TestModernHDChibiEnemyFixture|TestModernHDChibiStaticFixture|TestModernHDChibiAnonymousStaticFixture|TestModernHDChibiAuditedFixture|TestModernHDChibiMapSampleSelectsOriginalPosition|TestIndependentInterface.*|TestModernHDBattleConsumerInventory|TestBuild.*|TestMultipleTextFieldsDoNotReuseOneExistingStringID|TestVariablesIncludeWrappedErrorPlaceholder|TestDrawFunctionContext.*|TestReviewedGoCandidatesMatchCurrentInventory)$",
+          "-v"
+        ],
+        "cwd": "/repo/remake",
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 93.741,
+        "before": {
+          "memory.current": 10035200,
+          "memory.peak": 10051584,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 6660096,
+            "file": 2555904,
+            "kernel": 655360,
+            "kernel_stack": 32768,
+            "pagetables": 126976,
+            "sec_pagetables": 0,
+            "percpu": 5952,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 0,
+            "file_dirty": 0,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 0,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 6627328,
+            "inactive_file": 1179648,
+            "active_file": 1327104,
+            "unevictable": 0,
+            "slab_reclaimable": 248632,
+            "slab_unreclaimable": 236512,
+            "slab": 485144,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 0,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 0,
+            "pgsteal": 0,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 0,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 0,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 3020,
+            "pgmajfault": 20,
+            "pgrefill": 0,
+            "pgactivate": 0,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 0,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "after": {
+          "memory.current": 69885952,
+          "memory.peak": 1391472640,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 6758400,
+            "file": 57221120,
+            "kernel": 4952064,
+            "kernel_stack": 32768,
+            "pagetables": 131072,
+            "sec_pagetables": 0,
+            "percpu": 6208,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 0,
+            "file_dirty": 20480,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 2097152,
+            "shmem_thp": 0,
+            "inactive_anon": 6750208,
+            "active_anon": 8192,
+            "inactive_file": 56197120,
+            "active_file": 933888,
+            "unevictable": 0,
+            "slab_reclaimable": 4537952,
+            "slab_unreclaimable": 225120,
+            "slab": 4763072,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 98,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 23798,
+            "pgsteal": 19734,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 23763,
+            "pgscan_direct": 35,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 19699,
+            "pgsteal_direct": 35,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 1077137,
+            "pgmajfault": 288,
+            "pgrefill": 2589,
+            "pgactivate": 4064,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 0,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "largest_sample": {
+          "memory.current": 1363951616,
+          "memory.peak": 1363951616,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 1275142144,
+            "file": 77156352,
+            "kernel": 10153984,
+            "kernel_stack": 294912,
+            "pagetables": 3362816,
+            "sec_pagetables": 0,
+            "percpu": 6976,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 23027712,
+            "file_dirty": 3461120,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 12582912,
+            "shmem_thp": 0,
+            "inactive_anon": 1077374976,
+            "active_anon": 197722112,
+            "inactive_file": 54005760,
+            "active_file": 23097344,
+            "unevictable": 0,
+            "slab_reclaimable": 5779504,
+            "slab_unreclaimable": 676840,
+            "slab": 6456344,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 6,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 23798,
+            "pgsteal": 19734,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 23763,
+            "pgscan_direct": 35,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 19699,
+            "pgsteal_direct": 35,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 1045256,
+            "pgmajfault": 255,
+            "pgrefill": 2589,
+            "pgactivate": 4064,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 0,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "largest_sample_processes": [
+          {
+            "pid": 69,
+            "name": "fd2.test",
+            "rss_kib": 1227456
+          },
+          {
+            "pid": 9,
+            "name": "Xvfb",
+            "rss_kib": 64184
+          },
+          {
+            "pid": 13,
+            "name": "go",
+            "rss_kib": 29720
+          },
+          {
+            "pid": 7,
+            "name": "python3",
+            "rss_kib": 12336
+          },
+          {
+            "pid": 8,
+            "name": "with-xvfb",
+            "rss_kib": 1692
+          },
+          {
+            "pid": 1,
+            "name": "docker-init",
+            "rss_kib": 752
+          }
+        ],
+        "children_maxrss_kib": 1253864,
+        "log": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/regression-r1.log",
+        "samples": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/regression-r1.samples.jsonl"
+      },
+      "roster-preflight-r3": {
+        "schema_version": 1,
+        "command": [
+          "with-xvfb",
+          "go",
+          "test",
+          "./cmd/fd2",
+          "./cmd/fd2-string-inventory",
+          "-p=1",
+          "-count=1",
+          "-timeout=240s",
+          "-run",
+          "^(TestModernHDChibiAuditedFixture|TestModernHDChibiMapSampleSelectsOriginalPosition)$",
+          "-v"
+        ],
+        "cwd": "/repo/remake",
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 26.544,
+        "before": {
+          "memory.current": 8347648,
+          "memory.peak": 8355840,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 6668288,
+            "file": 20480,
+            "kernel": 700416,
+            "kernel_stack": 32768,
+            "pagetables": 122880,
+            "sec_pagetables": 0,
+            "percpu": 5952,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 0,
+            "file_dirty": 0,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 0,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 6529024,
+            "inactive_file": 20480,
+            "active_file": 0,
+            "unevictable": 0,
+            "slab_reclaimable": 247936,
+            "slab_unreclaimable": 270408,
+            "slab": 518344,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 0,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 0,
+            "pgsteal": 0,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 0,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 0,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 2926,
+            "pgmajfault": 0,
+            "pgrefill": 0,
+            "pgactivate": 0,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 0,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "after": {
+          "memory.current": 75603968,
+          "memory.peak": 1518276608,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 6754304,
+            "file": 60133376,
+            "kernel": 6451200,
+            "kernel_stack": 32768,
+            "pagetables": 131072,
+            "sec_pagetables": 0,
+            "percpu": 6464,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 0,
+            "file_dirty": 45056,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 0,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 6754304,
+            "inactive_file": 60116992,
+            "active_file": 16384,
+            "unevictable": 0,
+            "slab_reclaimable": 5940144,
+            "slab_unreclaimable": 337240,
+            "slab": 6277384,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 0,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 0,
+            "pgsteal": 0,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 0,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 0,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 1038514,
+            "pgmajfault": 112,
+            "pgrefill": 0,
+            "pgactivate": 0,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 0,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "largest_sample": {
+          "memory.current": 1503596544,
+          "memory.peak": 1503858688,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 1448050688,
+            "file": 44449792,
+            "kernel": 10510336,
+            "kernel_stack": 229376,
+            "pagetables": 3596288,
+            "sec_pagetables": 0,
+            "percpu": 6976,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 0,
+            "file_dirty": 43737088,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 0,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 1447960576,
+            "inactive_file": 44343296,
+            "active_file": 0,
+            "unevictable": 0,
+            "slab_reclaimable": 6019400,
+            "slab_unreclaimable": 623792,
+            "slab": 6643192,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 0,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 0,
+            "pgsteal": 0,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 0,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 0,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 435913,
+            "pgmajfault": 0,
+            "pgrefill": 0,
+            "pgactivate": 0,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 0,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "largest_sample_processes": [
+          {
+            "pid": 32,
+            "name": "compile",
+            "rss_kib": 1380368
+          },
+          {
+            "pid": 9,
+            "name": "Xvfb",
+            "rss_kib": 64956
+          },
+          {
+            "pid": 13,
+            "name": "go",
+            "rss_kib": 36124
+          },
+          {
+            "pid": 7,
+            "name": "python3",
+            "rss_kib": 12480
+          },
+          {
+            "pid": 8,
+            "name": "with-xvfb",
+            "rss_kib": 1692
+          },
+          {
+            "pid": 1,
+            "name": "docker-init",
+            "rss_kib": 756
+          }
+        ],
+        "children_maxrss_kib": 1379328,
+        "log": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/roster-preflight-r3.log",
+        "samples": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/roster-preflight-r3.samples.jsonl"
+      }
+    },
+    "references": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/base-catalog.json",
+        "sha256": "62809b954391482b4f925cd16ff72f5bd962b932a88fa66ebd4a12abe48a78f7"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/candidate-r1/catalog.json",
+        "sha256": "cc58d2460c4edc4df34ecf808e458aa2e2465f2328f5da5df21385e79c3db118"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/candidate-r1/manifest.json",
+        "sha256": "d57119235a2de9861778e43c805d86bacc13282ac9e46b98ad4a53283be7b712"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/gpu-combined-r2-capture/receipt.json",
+        "sha256": "1194794bc4d44b933e2abf000fd45f7de6deae39a04616668ad6dd9742637231"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/normal-r1-capture/receipt.json",
+        "sha256": "3ee9aec3d3ccc8d5f4af18e634e5b2239a9b545deeaaa751ad3490be7e922809"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/registration-r1.json",
+        "sha256": "b379cb026813401d4768c90e2d054afb3c884428bb86c73509f8b977af26b7bd"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/source-r1.log",
+        "sha256": "e382601177e48de521c5e3bb88e69e3aebfba3f05cf29e557e593325da4a38c2"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/regression-r1.log",
+        "sha256": "6e01048ef95ba70f210c413fd42b222707c73fa4aea770ae7de36dac1240dca1"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/consumers-r1.json",
+        "sha256": "81a24bf65a41b2b59474c273462f82ac4346f87502d5ec2c8a7a09fb0998c25d"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/consumers-verified-r1.json",
+        "sha256": "30b70960d78a7bae5852f3c7d35281a82a42b1142e0528c1a22b4c19f5208fca"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/formal-coverage.json",
+        "sha256": "dc843bc6ce49ad8dc40a24a68b19194c8e0831210e0e5dcf56299dbffb509d4c"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/review-final/receipt.json",
+        "sha256": "6a924c9ee93d4923d3d8a44a690b55d170c86b333074fa796b88b01d59cad884"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/visual-review-final.json",
+        "sha256": "d88eb81ba4be78b09df9797ce556d993c588e314d7d0d2002f36ee128653c770"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/private-preservation-r1.json",
+        "sha256": "6369ba8e77d7ccd38367a967c08bfcc50cea32dc31e4d870b9996902b8980cca"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/public-figures-r1.json",
+        "sha256": "a69132ee003b275ebb3cc8015caef8ec28ec307454414a6ea5a896064e7242bf"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/commands.json",
+        "sha256": "a690fc7e94ff7a0d0f8166948c5ee5a8cec5c516e8a5b47ce157b4435a3b2a84"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/legacy-parts-r1.json",
+        "sha256": "760f14074b72c1a576d0c65d1677adce4a3a0cb5223b9a341346eeecd845f3e4"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/face-source-references.json",
+        "sha256": "93a6fdcd62655bdb89e97c24c9f2dbabe4dbca1ddd6c8c57fbb34477ac3e7de4"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/roster-bindings.json",
+        "sha256": "6931a6fb10ce6ed09df78ee7203566de40415ec52718bf52f5c19c282d2f2116"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/alpha-quality-final.json",
+        "sha256": "e2c9cdd4e1e39d9433f15fc1da05c15b93eae4b2d28bfb0b29c91dcff732932a"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/generation-calls.json",
+        "sha256": "8f3fd4b0b9b34f457901980dd5c07da64c0d5e5e812021748d8e7acc69276c5f"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/overview-validation.json",
+        "sha256": "09941e61a256ea2e0183b158f4ee7739a5deb62e5f53817a413b5e45c08dfcfc"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/gpu-green-and-blue-goggles-r2.memory.json",
+        "sha256": "58b3ce58ddf565c54db008a4df9f2814695165065c7af6c1081d1bb48ee2d5cb"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/gpu-covered-and-feline-r2.memory.json",
+        "sha256": "da35280a994fb03ec2a43f856020f71a30f12e39bb607d072a082beba3c64e82"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/normal-r1.memory.json",
+        "sha256": "8884184fd41a04c4e3c1664e4be66604e3b05661bd27e154bdb2ce3603effdeb"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/regression-r1.memory.json",
+        "sha256": "4c291fa7258a9f17ad59f968e4a30c6ca8469127e95edd8f047b19b96a57d43d"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/roster-preflight-r3.memory.json",
+        "sha256": "134a5200797e92515ba6773bfdf63e93401eda0bc204c5a2ede1e5cc59d7a3d3"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/overview-000-031-r1.json",
+        "sha256": "0b51b707c9a31a2db5fb0ef60647021897ca682c53b78abbc44d672031fec7d0"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/overview-032-067-r1.json",
+        "sha256": "75d720d3e96ee2859acfa8d129728aa18d5f9eab1f8b4bd46b51430ca3b3d744"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/overview-068-095-r1.json",
+        "sha256": "7059e089b9c92fa4acbe465f894be364ddfaa40edd2303a5efab555f85ccb526"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/overview-096-139-r1.json",
+        "sha256": "5236fa258e212719d2b258454eaab94ac324bf45662f68cd7ef0d008e2016e1b"
+      },
+      {
+        "file": "remake/assets/themes/modern/hd1-guard-faces-refresh.recipe.json",
+        "sha256": "d93904015016c4b095c3249a3dcaeb494bb3e06093845209e36a38c23f7cfe43"
+      },
+      {
+        "file": "tools/verify_fd2_hd1_chibi_party.py",
+        "sha256": "a743794e6355f9c9d8a5233b8ccd315b39ca87d1cc8c27e701bd82f36e79a2b7"
+      },
+      {
+        "file": "tools/refresh_fd2_hd1_map_sprites.py",
+        "sha256": "f3220d47a6536d0201d4e57bd73e321714164bb6ca96762d7569c0c932af1462"
+      },
+      {
+        "file": "tools/test_fd2_hd1_chibi_party.py",
+        "sha256": "ccd4285f2aec8c47e137b3ec076191b82f5b76aea64ab48f66f15fa9dc4ce612"
+      },
+      {
+        "file": "tools/build_modern_map_sprite_overview.py",
+        "sha256": "59b7698a205d8caecf6d00ad9acfebc421a4a712028743f5b61b4875d41d8570"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/roster-preflight-r1.memory.json",
+        "sha256": "717837e7ad414c89a1d66e93b4d83b56025c195cb35a262f3b1c17ec93fbd0e3"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/roster-preflight-r1.log",
+        "sha256": "7bae274f62622591cbafeb23f6d13b1cea5ac8662cf8b1c7c1808ee60f8519f6"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/roster-preflight-r2.memory.json",
+        "sha256": "3ff11f7c25e23fb2afea139a40f24807bd7949849944e8775265c71a1a6d30e5"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/roster-preflight-r2.log",
+        "sha256": "d0b6a421ff292f80d8572d6cefc1adaea950ed315ad774c8518fc26c77694c2b"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/roster-preflight-r3.log",
+        "sha256": "e1433c28d30345b27be127500912c9548141d90ad51efc0024aec5d029b85288"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/gpu-green-and-blue-goggles-r1-capture/receipt.json",
+        "sha256": "e218bddcfc7de76627fdb69ba2fa98f288c2ce272fa1ed6639e4abedf47c1d20"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/gpu-green-and-blue-goggles-r1.memory.json",
+        "sha256": "e5132a0f1e4aeef4906e6e085922ab4a9e1804c44d8e5df5176abf3b3d126596"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/commands-preflight-failed-r1.json",
+        "sha256": "46d633f1210b1aca4962ba1f3049528831840cf10be71c817071d56e856e11c4"
+      }
+    ],
+    "cleanup": {
+      "nonexpected_fd2_containers": 0,
+      "old_art_preserved": 9705,
+      "new_art_files": 100,
+      "recording_created": false
+    },
+    "limitations": [
+      "24組造型／身份仍待；本輪不新增自然玩家出場、原版動態、PLAYER-E2或480頭像證據。",
+      "其餘介面與地形3354缺槽／2049獨特來源仍是實作／美術工作。",
+      "人工造型、逐章與平台由使用者確認，不阻擋已完成接線。"
+    ],
+    "worklist": {
+      "open": 29,
+      "manual": 22,
+      "possibly_done": 0,
+      "issues": [
+        286,
+        287
+      ]
+    },
+    "lessons": {
+      "total": 392,
+      "guarded": 243,
+      "check": "PASS",
+      "updated_existing": [
+        "fixture-receipt-matches-authored-scenario",
+        "enemy-only-fixture-initializes-selector-cache"
+      ]
+    },
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-guard-faces-r32/final-validation-r1.json",
+      "sha256": "5699a8f8af6abc62a185380f50f68c11c15a446334a202e48189109fd3a22633"
+    }
   }
 }

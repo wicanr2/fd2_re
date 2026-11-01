@@ -4732,8 +4732,8 @@
       "id": "enemy-only-fixture-initializes-selector-cache",
       "date": "2026-10-30",
       "area": "HD敵方測具",
-      "rule": "不含玩家前置構造的敵方呈現測具，使用remake/internal/battle/model.go的AppendGroupWithNativePlacement建立首批selector快取與呈現資料；只呼叫AppendGroup不保證初始化。沿modern_hd_chibi_party_test.go的敵方測具保留原名冊camp、portrait、position及selector來源，收據明示placement_gate。 在執行大型GPU矩陣前，先用同檔TestModernHDChibiAuditedFixture預檢每個選定組別的整組建構，不只檢查目標角色那一列。故事載體與戰鬥角色混在同組時，不繞過未知建構欄位；改取已有完整建構資料的原生名冊，保留該來源的陣營與位置。命令入口為本批commands JSON的roster_preflight_command。",
-      "why": "第76組試以無劇本Load及空快取AppendGroup時HasNativeMapPresentation仍為false；改用既有完整建構器後兩組CPU來源檢查通過。正式遊戲未改。 2026-11-01第69組選map32組0時，同組row0故事載體缺future constructor provenance而整組拒收。改取map9組1原盟軍15,41，26組CPU預檢通過後才重跑r3 GPU；正式遊戲及規則保持。",
+      "rule": "不含玩家前置構造的敵方呈現測具，使用remake/internal/battle/model.go的AppendGroupWithNativePlacement建立首批selector快取與呈現資料；只呼叫AppendGroup不保證初始化。沿modern_hd_chibi_party_test.go的敵方測具保留原名冊camp、portrait、position及selector來源，收據明示placement_gate。 在執行大型GPU矩陣前，先用同檔TestModernHDChibiAuditedFixture預檢每個選定組別的整組建構，不只檢查目標角色那一列。故事載體與戰鬥角色混在同組時，不繞過未知建構欄位；改取已有完整建構資料的原生名冊，保留該來源的陣營與位置。命令入口為本批commands JSON的roster_preflight_command。 預檢的probe returncode與外層exit_code都為0才啟動依賴GPU，不因候選檔存在就繼續。",
+      "why": "第76組試以無劇本Load及空快取AppendGroup時HasNativeMapPresentation仍為false；改用既有完整建構器後兩組CPU來源檢查通過。正式遊戲未改。 2026-11-01第69組選map32組0時，同組row0故事載體缺future constructor provenance而整組拒收。改取map9組1原盟軍15,41，26組CPU預檢通過後才重跑r3 GPU；正式遊戲及規則保持。 2026-11-01預檢回1後仍誤啟首份GPU；該舊來源結果不作正式收據，修正後兩份重生。",
       "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#hd1_enemies_native_followup_20261030；docs/data/fd2-modern-hd-battlefield-20261019.json#hd1_plate_long_four_followup_20261101",
       "guard": {
         "kind": "present",
@@ -4779,9 +4779,9 @@
       "id": "fixture-receipt-matches-authored-scenario",
       "date": "2026-10-31",
       "area": "HD測具來源",
-      "rule": "人物測具的scenario_sha256與實際取用名冊必須相同。先核配方的native_identity與chapter，再補齊remake/cmd/fd2/modern_hd_chibi_party_test.go的觀測來源分支，由tools/verify_fd2_hd1_chibi_party.py逐actor拒收不符來源。測具更動後兩份GPU收據一併重生，舊收據保留拒收原因。 圖組與影格相同的多個單位，以被選原生位置計算WorkOffset並唯一匹配，不取第一個或最後一個同圖組。tools/verify_fd2_hd1_chibi_party.py的map_target以位置、camera、stride456、origin0x75d8及steady viewport0x8088獨立重算矩形；CPU入口TestModernHDChibiMapSampleSelectsOriginalPosition涵蓋同圖組順序交換、缺少與重複來源。",
-      "why": "R17鐵諾實際由ch04建構，觀測來源分支卻遺漏identity2而寫ch01。獨立驗證器在登錄前拒收；補回case2後重新產生兩組收據，沒有改正式遊戲或放寬來源條件。 2026-11-01第111組r3前3拍的舊搜尋取到畫面外同組角色，獨立核心像素檢查拒收；r4修正採樣來源並重跑兩份GPU，不改正式渲染。",
-      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#hd1_first_promotions_followup_20261031；docs/data/fd2-modern-hd-battlefield-20261019.json#hd1_plate_long_four_followup_20261101",
+      "rule": "人物測具的scenario_sha256與實際取用名冊必須相同。先核配方的native_identity與chapter，再補齊remake/cmd/fd2/modern_hd_chibi_party_test.go的觀測來源分支，由tools/verify_fd2_hd1_chibi_party.py逐actor拒收不符來源。測具更動後兩份GPU收據一併重生，舊收據保留拒收原因。 圖組與影格相同的多個單位，以被選原生位置計算WorkOffset並唯一匹配，不取第一個或最後一個同圖組。tools/verify_fd2_hd1_chibi_party.py的map_target以位置、camera、stride456、origin0x75d8及steady viewport0x8088獨立重算矩形；CPU入口TestModernHDChibiMapSampleSelectsOriginalPosition涵蓋同圖組順序交換、缺少與重複來源。 原名冊測具依selector與完整NativePositionRecord查找，不把selector相同的第一筆當目標。原表允許重複原始位置時保留建構順序，不新增raw-position必須唯一的假設；繪製來源仍按實際位置與WorkOffset唯一核對。",
+      "why": "R17鐵諾實際由ch04建構，觀測來源分支卻遺漏identity2而寫ch01。獨立驗證器在登錄前拒收；補回case2後重新產生兩組收據，沒有改正式遊戲或放寬來源條件。 2026-11-01第111組r3前3拍的舊搜尋取到畫面外同組角色，獨立核心像素檢查拒收；r4修正採樣來源並重跑兩份GPU，不改正式渲染。 2026-11-01第102組map3組2第一筆是0,8，指定目標19,7；改按完整原始位置查找。進一步強制全名冊raw-position唯一時被第68組map0 rows19～22同為23,14反證；撤掉新增假設，未改正式規則。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json#hd1_first_promotions_followup_20261031；docs/data/fd2-modern-hd-battlefield-20261019.json#hd1_plate_long_four_followup_20261101；docs/data/fd2-modern-hd-battlefield-20261019.json#hd1_guard_faces_followup_20261101",
       "guard": {
         "kind": "present",
         "paths": [
