@@ -85,6 +85,10 @@
 
 達克賽保留深藍裸面、尖耳、厚重額面、鉤鼻與微揚薄唇；亞奇梅吉保留藍灰高額禿頂、深陷窄眼、長鼻與瘦長下巴。兩人皆按原生空手，灰綠腰帶與藍紫袍大領分別保持；達克賽眼色依自己的原版大頭像採藍紫。可看[四向與實際尺寸](docs/figures/hd1-blue-and-robed-comparison.png)、[達克賽](docs/figures/hd1-darksai-refresh-game.png)及[亞奇梅吉](docs/figures/hd1-archimage-refresh-game.png)的完整受控戰場圖。面容圖比較原版頭像與實際地圖素材，非對話HD頭像驗收；地圖及資訊窗共用新版圖源。戰場圖使用各自原生名冊的受控測具，沒有身份或圖組投影，不代表自然加入流程。其餘人物續作，目前圖源總覽已依正式清冊更新。
 
+![第99、100、101與107組的原版頭像及目前HD1面容](docs/figures/hd1-shadow-faces-reference.png)
+
+第99、100與101組依各自頭像保留窄眼、角形鼻及深陰影，黑色區域不另推定為面罩材質；第107組恢復灰綠長鼻面孔與窄紅眼，保留寬帽及無露腳袍底。可看[四向及144／72／48尺寸](docs/figures/hd1-shadow-faces-comparison.png)，以及[99](docs/figures/hd1-shadow-099-game.png)、[100](docs/figures/hd1-shadow-100-game.png)、[101](docs/figures/hd1-shadow-101-game.png)、[107](docs/figures/hd1-shadow-107-game.png)的完整受控戰場與資訊窗。四組沿原名冊、陣營及位置，不新增身份或圖組投影；普通首章另驗整包切換與保存相容，不代表四人自然出場或480對話頭像驗收。其餘人物造型、介面與地形續作。
+
 ![第67組原地圖三拍與HD1來源對照](docs/figures/hd1-anonymous-067-comparison.png)
 
 第67組依確認的來源例外，只用自己的原地圖面容重繪三拍，保留藍髮、左側綠色輪廓、深藍短身與紅腰片。身份、所屬頭像與出場仍未知。同號DATO067是龍形頭像，不配用於這個人物。[受控繪製圖](docs/figures/hd1-anonymous-067-game.png)借用map32故事載體展示圖源；圖中的原載體資料不作第67組的角色或出場證據。已知Q版比例待辦已清零，32組既有造型的批次複核與集中人工仍待。
@@ -915,7 +919,7 @@ DOS 本身不會替遊戲顯示中文。原版自帶點陣字型，文本也不�
 
 ![圖組068至095原版及目前HD1圖源](docs/figures/hd1-map-sprites-068-095-20261101.png)
 
-![圖組096至139原版及目前HD1圖源](docs/figures/hd1-map-sprites-096-139-20261101.png)
+![圖組096至139原版及目前HD1圖源](docs/figures/hd1-map-sprites-096-139-20261101-r2.png)
 
 原版欄依固定FDICON索引、原圖遮罩與FDOTHER0六位元VGA DAC代表性色盤合成；實際場景仍可能依原排程調色。正式包保留24×24父圖的二值透明契約及144×144HD圖的覆蓋透明契約。圖組編號只定位圖源，身份依各自證據；第67組按確認例外使用原小圖面容，身份及頭像仍未知。母稿與逐幀素材留在私人庫，公開僅保存壓平總覽。較早94組的[圖說及資料採樣記錄](docs/knowledge-base/31-map-unit-sprites-fdicon.md#較早94組人物總覽圖說存檔)保留原技術說明；現況依[58](docs/knowledge-base/58-fd2-exe-re-coverage.md)及[61](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
 

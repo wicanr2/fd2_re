@@ -273405,5 +273405,3387 @@
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/final-validation-r1.json",
       "sha256": "23d7f62d21b27bf3591293cd13ed57b249a518647f2f67254cfbb0b4f5dacebe"
     }
+  },
+  "hd1_shadow_faces_followup_20261101": {
+    "status": "CONFORMED-SCOPED/RUNTIME-E1",
+    "date": "2026-11-01",
+    "scope": "修正99／100／101／107個別面容，完整原名冊測具與普通整包控制／保存相容；其他HD1缺項繼續。",
+    "evidence": {
+      "date": "2026-11-01",
+      "status": "DATA-READY",
+      "base_commit": "831cf39583bdfc990fa39477ca379b5380440b5a",
+      "groups": [
+        99,
+        100,
+        101,
+        107
+      ],
+      "bindings": [
+        {
+          "group": 99,
+          "map": 19,
+          "roster_file": "remake/assets/maps/map19/map19_units.json",
+          "roster_sha256": "cd30276b48d06187ced69c4e7ee0c0c7c749a38a7484b9e132da5eb78313e424",
+          "row": 20,
+          "initial_group": 0,
+          "camp": "enemy",
+          "portrait": 99,
+          "battle_fig": 99,
+          "position": {
+            "x_word": 12,
+            "y_word": 13,
+            "raw_key": 99
+          },
+          "native_constructor": {
+            "branch": "high_class",
+            "index": 31,
+            "record": [
+              1,
+              1,
+              36,
+              0,
+              0,
+              20,
+              12,
+              4,
+              6,
+              110
+            ]
+          }
+        },
+        {
+          "group": 100,
+          "map": 18,
+          "roster_file": "remake/assets/maps/map18/map18_units.json",
+          "roster_sha256": "69251f66b970cf732d4db7c81a174f3969ee620ff51525dbc775c551dc7d11dd",
+          "row": 17,
+          "initial_group": 0,
+          "camp": "enemy",
+          "portrait": 100,
+          "battle_fig": 100,
+          "position": {
+            "x_word": 19,
+            "y_word": 20,
+            "raw_key": 100
+          },
+          "native_constructor": {
+            "branch": "high_class",
+            "index": 32,
+            "record": [
+              1,
+              8,
+              45,
+              0,
+              0,
+              22,
+              12,
+              5,
+              5,
+              150
+            ]
+          }
+        },
+        {
+          "group": 101,
+          "map": 21,
+          "roster_file": "remake/assets/maps/map21/map21_units.json",
+          "roster_sha256": "5da1516036803f136b8014afb509603bd165c79bdda0f4eaa2787ad56c2c0bd4",
+          "row": 7,
+          "initial_group": 0,
+          "camp": "enemy",
+          "portrait": 101,
+          "battle_fig": 101,
+          "position": {
+            "x_word": 21,
+            "y_word": 19,
+            "raw_key": 101
+          },
+          "native_constructor": {
+            "branch": "high_class",
+            "index": 33,
+            "record": [
+              1,
+              16,
+              46,
+              0,
+              0,
+              24,
+              12,
+              6,
+              5,
+              160
+            ]
+          }
+        },
+        {
+          "group": 107,
+          "map": 23,
+          "roster_file": "remake/assets/maps/map23/map23_units.json",
+          "roster_sha256": "2c590df01baf4098c79486df500fce63debe9cb3a40a389b5f7140b74e182d99",
+          "row": 40,
+          "initial_group": 10,
+          "camp": "enemy",
+          "portrait": 107,
+          "battle_fig": 107,
+          "position": {
+            "x_word": 6,
+            "y_word": 7,
+            "raw_key": 107
+          },
+          "native_constructor": {
+            "branch": "high_class",
+            "index": 39,
+            "record": [
+              4,
+              5,
+              20,
+              0,
+              30,
+              11,
+              6,
+              3,
+              6,
+              120
+            ]
+          }
+        }
+      ],
+      "reference_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/face-source-references.json",
+      "reference_sha256": "46584e3ba874a2193bcb3fdc2c859f9d674dc29f68efd54cde09b7b41ffc0849",
+      "evidence_level": "已證實：固定原圖／頭像與原名冊欄位；角色姓名與陰影材質不由圖說推定。",
+      "findings": {
+        "shadow_faces": "99／100／101目前露臉少年稿未保留自身頭像的窄眼、角形鼻與深陰影；黑區先按明暗呈現，不宣稱布質面罩。",
+        "long_nose": "107原版頭像的灰綠長鼻面孔在現稿缺失，需恢復。"
+      },
+      "runtime_policy": "只換RGB美術，不新增身份、裝備、正式規則、存檔或出場。"
+    },
+    "source_references": [
+      {
+        "group": 99,
+        "reference_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/group-099-source-reference.png",
+        "reference_sha256": "cacc57bd4bf19fc9a463b6a4953bfd60aa72394d09946b239a125a69ec77cb16",
+        "inputs": [
+          {
+            "file": "/original/portraits/DATO_099_m0.png",
+            "sha256": "c6e7ed4d4f854bc27802d6445336647585d430510ba93d162e27f217849b0447"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1188/frame.png",
+            "sha256": "d4d31e2a011fdace38f5bcfc37673058c42f83e5bae460ebdb7b4c64b7964e0d"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1188/mask.png",
+            "sha256": "296f5307ec065836767b3018af5cefd6a3a344133f70c9982e418ff37b87bcbd"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1188/remap_mask.png",
+            "sha256": "b17663e73820f4e8b64fd4b41846a31d056e9822fb884d370d0587809ba26d2f"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1189/frame.png",
+            "sha256": "e565e1f6ef7074c20551ef3ba500ae6017a74270b9c309d26df755f958819a5c"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1189/mask.png",
+            "sha256": "34897a04a750adefb98117e7d1d3c160627966f7f72b2faa3d062483c535af7e"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1189/remap_mask.png",
+            "sha256": "300fdf601efad823a1b548891db961f5afddbbf4a8f823893724b1bcb4daa8c9"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1190/frame.png",
+            "sha256": "6cc9e23052d5c16a1faa84b886bdfb6198aedcc3997cdec3ec5aedd38a7a3a62"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1190/mask.png",
+            "sha256": "fa42f885b0c3f7d67e258f15c587ef21f8b6ec57376bf5a19b975cef0239ea3e"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1190/remap_mask.png",
+            "sha256": "852425828e0005facd88901bfc506083b463169aa10342d8be3f79c87cdddfc7"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1191/frame.png",
+            "sha256": "457854cc2b2c970baa1554d2af6d9b3ea44b4112d56f23c8b68e89879dad462d"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1191/mask.png",
+            "sha256": "abb83e4dc2a79922942f0fec10b2eb7380f460f455e205281e5047e0053ec30e"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1191/remap_mask.png",
+            "sha256": "dc4cf556cd5478008881d318d877aaa62d0772baee5e2bfc9aeac47fa6e0b600"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1192/frame.png",
+            "sha256": "be88b31f1f86f4f2651b0bd0fcae08c28a37350103d962ff80f2e897643a377e"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1192/mask.png",
+            "sha256": "f97c63af40541c68a67151ac3b6b18b799d670c3859d5ff63766aa9925e835fe"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1192/remap_mask.png",
+            "sha256": "53b318b47822674d83b1f8c090e85229b637645fbe57f9a52a5c57b769c5b762"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1193/frame.png",
+            "sha256": "58416f423bd4188d9afce8f7fb6efeac40ea2fda38424197c460da692eac07da"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1193/mask.png",
+            "sha256": "d55c8861813e376b57793e8b97df1a74477c6d30056dc977fee52b6d7569cf4e"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1193/remap_mask.png",
+            "sha256": "ab591dc38fc5196c05d4340ea6cdda4136e8511a9e8d45ce17ab85c43def4a6f"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1194/frame.png",
+            "sha256": "af74ff99d49511e4d08ba85b18256e8249f9357cabe5c1322702564d9d1de50e"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1194/mask.png",
+            "sha256": "5460e5782ef10d1b2031c00ff3d1bd5446d11f1ff08c252139ed5b626c93658a"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1194/remap_mask.png",
+            "sha256": "a2f16e365dbe7ed781bc24f5bf26cc3caeaa91795a0b56aa2cf90cbfe655790e"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1195/frame.png",
+            "sha256": "1b2b317a5b314cd5acc507f0c6c40c8235ebbf5c5d9b23699d0d09ed05d69308"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1195/mask.png",
+            "sha256": "e97cd796da19ab099817c6403445da4dd83fbc84d5d01972edeb9aa7793767a9"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1195/remap_mask.png",
+            "sha256": "2becbdcd45f1a7cf780bf113aa1bb1b304f9df55a1da87b27f2f3d6c20dfce97"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1196/frame.png",
+            "sha256": "bdd943672251cf7ffac4dba6563614a541a7aa887a859420a19d5b6a9bf8ef75"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1196/mask.png",
+            "sha256": "8f9772c8ef1fb1fc27480837edc65dfb8f0012ea0e3ce668f1893ea390511537"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1196/remap_mask.png",
+            "sha256": "217323bcb55165cab50a5996fd001de781e81eb0566965d7fc5e27b6850d5311"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1197/frame.png",
+            "sha256": "2db77835ac0092de09f4300a0fd2a137d170113e16f0ff31113f6d54836a12db"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1197/mask.png",
+            "sha256": "58794e14d912466507164e6d2db11457612cfa81121920ba719e95745c40af7d"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1197/remap_mask.png",
+            "sha256": "42bff9c5e83d77ad40b1fea0f35f7935036602f6d1bdb6b9dc0ae9ddbbccdb63"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1198/frame.png",
+            "sha256": "7bc47c55991c38e7b86b9cb31f112dcd218c3327503f38c21b101be3dcf06539"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1198/mask.png",
+            "sha256": "9df09a6a853800fdf5ae96cb5f3a4e81063055ba6b2f98ac8c4b473e35930716"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1198/remap_mask.png",
+            "sha256": "86f46f08d7eb62cad44fe7e775e30dd41ee8cac5c8ca58141f53c578bbfb008a"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1199/frame.png",
+            "sha256": "c54a8be1258426d4f183a7e0af36a1b0d5426a1dd7b7d4cd8c24d28d198da284"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1199/mask.png",
+            "sha256": "769385120d619c32f54baadad61bcb4538a6eb293a6abccc5275b270414f9a98"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1199/remap_mask.png",
+            "sha256": "5f6c36200edf2d97285335881a864becf72583c6116f03ce37f828a00dc1f858"
+          }
+        ]
+      },
+      {
+        "group": 100,
+        "reference_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/group-100-source-reference.png",
+        "reference_sha256": "62839a6eed02c15f0554de06b31e4638774fc062059692445d7cee9a0bcb3062",
+        "inputs": [
+          {
+            "file": "/original/portraits/DATO_100_m0.png",
+            "sha256": "513c1bc199f366e8959efb2e33f3e9d34be4be9c0963632c71d4c9c8063a9765"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1200/frame.png",
+            "sha256": "e66dabc0a2847b8988095243088711b298147016928a368c98653ba70dcab935"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1200/mask.png",
+            "sha256": "2584ee29531ad213c3b116765c4865adf62c890421865fd312c1987c8fad47d7"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1200/remap_mask.png",
+            "sha256": "a1aba36db2fb43325a49827dc7b7f1e5d43ae98da08df4beaa783c11bf524696"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1201/frame.png",
+            "sha256": "8c35dd2f93a6afd804dd8095931339b2526da73407a092d906f361ad43ade9c4"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1201/mask.png",
+            "sha256": "76ae3840796bb942971e3265f4ccda0ad62cc4006fa736939ac025eeb087675e"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1201/remap_mask.png",
+            "sha256": "d13ce9b0e9d3dd8d92bbe56b9b93d4ca8a0e43d6121b40c9e944e7d6d1d1dbad"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1202/frame.png",
+            "sha256": "35c1e5755c47ee41b1dcb30e6fe931eba2b7fccf871fbe2ff8e85a374337a877"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1202/mask.png",
+            "sha256": "378789a2d97ebb4d4bd5c8d68bd57e5fee68cbadb7f179964d85b7bb246a8eaa"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1202/remap_mask.png",
+            "sha256": "1cfd24b2a14a61f6511df66c0ae3b3743d1e3367015743649e65c9cdee0475fb"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1203/frame.png",
+            "sha256": "0f5f8da34b549dce51c366ceea799c627f55ec64865fd8184f60075f1b766e9b"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1203/mask.png",
+            "sha256": "abb83e4dc2a79922942f0fec10b2eb7380f460f455e205281e5047e0053ec30e"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1203/remap_mask.png",
+            "sha256": "dc4cf556cd5478008881d318d877aaa62d0772baee5e2bfc9aeac47fa6e0b600"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1204/frame.png",
+            "sha256": "9f8c3de72cda8a107683364b1a86ec42b7e0d52e625b024fc52846b943981921"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1204/mask.png",
+            "sha256": "f97c63af40541c68a67151ac3b6b18b799d670c3859d5ff63766aa9925e835fe"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1204/remap_mask.png",
+            "sha256": "53b318b47822674d83b1f8c090e85229b637645fbe57f9a52a5c57b769c5b762"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1205/frame.png",
+            "sha256": "456f904c3c9d1ebd8f3916d1f4914b336b0dfd448ecbd3b7c22d545c4e1d9dc0"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1205/mask.png",
+            "sha256": "d55c8861813e376b57793e8b97df1a74477c6d30056dc977fee52b6d7569cf4e"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1205/remap_mask.png",
+            "sha256": "ab591dc38fc5196c05d4340ea6cdda4136e8511a9e8d45ce17ab85c43def4a6f"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1206/frame.png",
+            "sha256": "470d59531707f8789880b9441a47d4580398cb93d176110cbdc220d4f9947e40"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1206/mask.png",
+            "sha256": "5460e5782ef10d1b2031c00ff3d1bd5446d11f1ff08c252139ed5b626c93658a"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1206/remap_mask.png",
+            "sha256": "a2f16e365dbe7ed781bc24f5bf26cc3caeaa91795a0b56aa2cf90cbfe655790e"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1207/frame.png",
+            "sha256": "23f3f08f0f99d1cadc5197d189ad1e1c8bc7a5352e0faecbb1a433c0f1ac21b7"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1207/mask.png",
+            "sha256": "e97cd796da19ab099817c6403445da4dd83fbc84d5d01972edeb9aa7793767a9"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1207/remap_mask.png",
+            "sha256": "2becbdcd45f1a7cf780bf113aa1bb1b304f9df55a1da87b27f2f3d6c20dfce97"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1208/frame.png",
+            "sha256": "23ea727fb0a076b1a1fe2dcf6d9f7ced82a8d31d1cbea4e84f839f9fb17d9455"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1208/mask.png",
+            "sha256": "8f9772c8ef1fb1fc27480837edc65dfb8f0012ea0e3ce668f1893ea390511537"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1208/remap_mask.png",
+            "sha256": "217323bcb55165cab50a5996fd001de781e81eb0566965d7fc5e27b6850d5311"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1209/frame.png",
+            "sha256": "17d30e3e5a120d5c8353bd2b8eca6b2365b39e49c6019d8c90b3673c40efcaba"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1209/mask.png",
+            "sha256": "58794e14d912466507164e6d2db11457612cfa81121920ba719e95745c40af7d"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1209/remap_mask.png",
+            "sha256": "42bff9c5e83d77ad40b1fea0f35f7935036602f6d1bdb6b9dc0ae9ddbbccdb63"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1210/frame.png",
+            "sha256": "11625b7965f8451b099d6359d38b0ab9eb40df61c61b4fcaa2a41f10f710257b"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1210/mask.png",
+            "sha256": "9df09a6a853800fdf5ae96cb5f3a4e81063055ba6b2f98ac8c4b473e35930716"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1210/remap_mask.png",
+            "sha256": "86f46f08d7eb62cad44fe7e775e30dd41ee8cac5c8ca58141f53c578bbfb008a"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1211/frame.png",
+            "sha256": "b9a0abdefcbddd693d50a3c8c28d09148a8b09f6f45d1408d9d9578656a744a0"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1211/mask.png",
+            "sha256": "769385120d619c32f54baadad61bcb4538a6eb293a6abccc5275b270414f9a98"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1211/remap_mask.png",
+            "sha256": "5f6c36200edf2d97285335881a864becf72583c6116f03ce37f828a00dc1f858"
+          }
+        ]
+      },
+      {
+        "group": 101,
+        "reference_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/group-101-source-reference.png",
+        "reference_sha256": "f432ab4d4b68c387a0d722621ff65819b0799935101b48f079efa382ebec2f83",
+        "inputs": [
+          {
+            "file": "/original/portraits/DATO_101_m0.png",
+            "sha256": "891624549c7e6ab8b7787f8a6891663909317a6cb9d6d6a41336c0433eeb7700"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1212/frame.png",
+            "sha256": "b76e7fab6581ef5b2b3ebc158d35a9dc4dd9d1ae41897f1d26af5e91c0ab5ec4"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1212/mask.png",
+            "sha256": "2584ee29531ad213c3b116765c4865adf62c890421865fd312c1987c8fad47d7"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1212/remap_mask.png",
+            "sha256": "a1aba36db2fb43325a49827dc7b7f1e5d43ae98da08df4beaa783c11bf524696"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1213/frame.png",
+            "sha256": "2b6fc2a3e19ffb8aab5c6033a84c94a071beead3c41435d5eaf703a2e3118288"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1213/mask.png",
+            "sha256": "76ae3840796bb942971e3265f4ccda0ad62cc4006fa736939ac025eeb087675e"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1213/remap_mask.png",
+            "sha256": "d13ce9b0e9d3dd8d92bbe56b9b93d4ca8a0e43d6121b40c9e944e7d6d1d1dbad"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1214/frame.png",
+            "sha256": "d150d411562f64c9d4efbae8ae10edc857ededd71377107f97ad31d7790fdbc8"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1214/mask.png",
+            "sha256": "378789a2d97ebb4d4bd5c8d68bd57e5fee68cbadb7f179964d85b7bb246a8eaa"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1214/remap_mask.png",
+            "sha256": "1cfd24b2a14a61f6511df66c0ae3b3743d1e3367015743649e65c9cdee0475fb"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1215/frame.png",
+            "sha256": "30d01c46a12c73f922a558c9e8774bb070202503bd8c65d20a4feefa53189f91"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1215/mask.png",
+            "sha256": "abb83e4dc2a79922942f0fec10b2eb7380f460f455e205281e5047e0053ec30e"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1215/remap_mask.png",
+            "sha256": "dc4cf556cd5478008881d318d877aaa62d0772baee5e2bfc9aeac47fa6e0b600"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1216/frame.png",
+            "sha256": "e8eb2460c5c1228d741093e6711a24fa536c1233221ec7d8b176fd185e53356d"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1216/mask.png",
+            "sha256": "f97c63af40541c68a67151ac3b6b18b799d670c3859d5ff63766aa9925e835fe"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1216/remap_mask.png",
+            "sha256": "53b318b47822674d83b1f8c090e85229b637645fbe57f9a52a5c57b769c5b762"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1217/frame.png",
+            "sha256": "7ef8a01abfcd6f382b8941a217a057c917d44d138bf7c16104fa2efa0ccba6e8"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1217/mask.png",
+            "sha256": "d55c8861813e376b57793e8b97df1a74477c6d30056dc977fee52b6d7569cf4e"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1217/remap_mask.png",
+            "sha256": "ab591dc38fc5196c05d4340ea6cdda4136e8511a9e8d45ce17ab85c43def4a6f"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1218/frame.png",
+            "sha256": "2eb2b11cc3870c9402ef118353d571a6a3b5f3c252383286432026e056bd6200"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1218/mask.png",
+            "sha256": "5460e5782ef10d1b2031c00ff3d1bd5446d11f1ff08c252139ed5b626c93658a"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1218/remap_mask.png",
+            "sha256": "a2f16e365dbe7ed781bc24f5bf26cc3caeaa91795a0b56aa2cf90cbfe655790e"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1219/frame.png",
+            "sha256": "e9bfdac7941491fc29b75b2b655b1b906cee6bfdb8fdcdac1e87b7bc9d71be4a"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1219/mask.png",
+            "sha256": "e97cd796da19ab099817c6403445da4dd83fbc84d5d01972edeb9aa7793767a9"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1219/remap_mask.png",
+            "sha256": "2becbdcd45f1a7cf780bf113aa1bb1b304f9df55a1da87b27f2f3d6c20dfce97"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1220/frame.png",
+            "sha256": "9f87a6a4a65d208c705df351172846154231b6ac3d584ba536087452d1517cbe"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1220/mask.png",
+            "sha256": "8f9772c8ef1fb1fc27480837edc65dfb8f0012ea0e3ce668f1893ea390511537"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1220/remap_mask.png",
+            "sha256": "217323bcb55165cab50a5996fd001de781e81eb0566965d7fc5e27b6850d5311"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1221/frame.png",
+            "sha256": "496b5958d2dfe47db2ad5a344d900c7fc5d7710f3938aba483cd181a1977f2e0"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1221/mask.png",
+            "sha256": "58794e14d912466507164e6d2db11457612cfa81121920ba719e95745c40af7d"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1221/remap_mask.png",
+            "sha256": "42bff9c5e83d77ad40b1fea0f35f7935036602f6d1bdb6b9dc0ae9ddbbccdb63"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1222/frame.png",
+            "sha256": "2a78120fb6972dc27db05e7eadca3c258dff3973a4e2feb9bc536ad8ae1941f0"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1222/mask.png",
+            "sha256": "9df09a6a853800fdf5ae96cb5f3a4e81063055ba6b2f98ac8c4b473e35930716"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1222/remap_mask.png",
+            "sha256": "86f46f08d7eb62cad44fe7e775e30dd41ee8cac5c8ca58141f53c578bbfb008a"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1223/frame.png",
+            "sha256": "31f0c4ed7c3d57260c3de2b7e36e12c016e1911f893ab17be2aa2c75d919c44e"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1223/mask.png",
+            "sha256": "769385120d619c32f54baadad61bcb4538a6eb293a6abccc5275b270414f9a98"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1223/remap_mask.png",
+            "sha256": "5f6c36200edf2d97285335881a864becf72583c6116f03ce37f828a00dc1f858"
+          }
+        ]
+      },
+      {
+        "group": 107,
+        "reference_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/group-107-source-reference.png",
+        "reference_sha256": "42eccdc841f68fb773a713da865da1dfbe920727008bb9f6d6c4e13423fcc400",
+        "inputs": [
+          {
+            "file": "/original/portraits/DATO_107_m0.png",
+            "sha256": "39609823e39a1038ae4303afaa755b1cddde8b5bdea8d4a540b7567b6f280908"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1284/frame.png",
+            "sha256": "c66c59fb1159f9617d6c3f4cf0950b882cbb80f7563d75c0c1c72ee7d9b63316"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1284/mask.png",
+            "sha256": "a6758f85cd0a2970e5bb2b43d466779f315ab9960efd1e862c7e5164d3efde25"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1284/remap_mask.png",
+            "sha256": "66fe82207142c9cce6e70b672390c403f1b4ec0c711e5dc019c1eb5b34672d88"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1285/frame.png",
+            "sha256": "110284cb29cf3aebc5f98bc780c4204c722073d2c2036d83ff962607a2c84336"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1285/mask.png",
+            "sha256": "5651aca0cc42863f0a586376996448738890928c2c2d3413c61f11cc60b09eef"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1285/remap_mask.png",
+            "sha256": "917f99d002b61dc36b5a3a265af2daae30cb2d1af10458774375b9a4743194c4"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1286/frame.png",
+            "sha256": "7a9120ae3f718cda1ef5cf7258235d35357670355639aca5b067f8a4a601437c"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1286/mask.png",
+            "sha256": "e8e6cd5fdc86f0b30e476ced534418d47390982c4d657187d381465e1bc95de2"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1286/remap_mask.png",
+            "sha256": "a2d5847d889f818432a9950c62600da565949f6d8502f352652b2025301df5c5"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1287/frame.png",
+            "sha256": "2185e5b27f8c2b810cc6ca0c574de2dbb9cd7aec469763c69f89f66da96b9983"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1287/mask.png",
+            "sha256": "715c3bcb8f5dc8d8ad44f999f974dcaf6ec0afd4da5af3b4db19f6ef18f05fb4"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1287/remap_mask.png",
+            "sha256": "fdc8800d20565d3d42d8391c1d253ca611f1317ad9d6b3ec6527acf593d8a755"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1288/frame.png",
+            "sha256": "c4e0e9c530eeafb832a7b509bfcc465b679a264d93ebf69c564a6217957f61c3"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1288/mask.png",
+            "sha256": "3558e31b7494be21049eed2ebb272743ef89d3841e381fd5191e84ac17b93f27"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1288/remap_mask.png",
+            "sha256": "a5de7ff69839342ba38559bc3f82181fc52789945be26690b26524ce8b8e91f3"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1289/frame.png",
+            "sha256": "9aee74d3e826afce3f5eeabe8c12f644cee3983cee8f455652f95ecff383979a"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1289/mask.png",
+            "sha256": "d433aaf4695da5f608e110ad5b4cc5ba8543c6c5585e819bcfbbf616dc1e9490"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1289/remap_mask.png",
+            "sha256": "1f17691d72bd7b3921290bc97f341f562c6dbe8d5f9a0dccb10b10f968d52014"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1290/frame.png",
+            "sha256": "b9a4ab484a15d288e14e37b8ec9d9351d86884760fc0047cbecf48324b4efdc5"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1290/mask.png",
+            "sha256": "a6758f85cd0a2970e5bb2b43d466779f315ab9960efd1e862c7e5164d3efde25"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1290/remap_mask.png",
+            "sha256": "2d4ac220d5e7c3b3fd373faf1509b0c7e17f8b20ba091508aaa7ee37c4b3bdfd"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1291/frame.png",
+            "sha256": "ae1b40899dcebd0023368d4fbd602733b2223173b41d90e13ddc7fe9445d4b01"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1291/mask.png",
+            "sha256": "5651aca0cc42863f0a586376996448738890928c2c2d3413c61f11cc60b09eef"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1291/remap_mask.png",
+            "sha256": "917f99d002b61dc36b5a3a265af2daae30cb2d1af10458774375b9a4743194c4"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1292/frame.png",
+            "sha256": "326f779752138446caffb954bedfee2b338829cfced08806686bdd437c348324"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1292/mask.png",
+            "sha256": "e8e6cd5fdc86f0b30e476ced534418d47390982c4d657187d381465e1bc95de2"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1292/remap_mask.png",
+            "sha256": "a2d5847d889f818432a9950c62600da565949f6d8502f352652b2025301df5c5"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1293/frame.png",
+            "sha256": "ca826a435f68a224bdf41e5f1c0a3ac3dbb353486dada0eb65bf62595c6735e1"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1293/mask.png",
+            "sha256": "1fb9e6f37648aa70303175d687b0d775a7213e4c9cb345658f294ded4a59fc22"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1293/remap_mask.png",
+            "sha256": "44333f08cdf356e905eddd0ec00a108384c88f209b951148ae9592acbdc4b939"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1294/frame.png",
+            "sha256": "5ff5cc1bfc86029262054b36335ae10259e91ee0bdc4b33730f94cc9d49f8836"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1294/mask.png",
+            "sha256": "ba503ef0a4026ff5bdd351cb189e2b8d7f75bf98bff8b82ac19906717fb6f496"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1294/remap_mask.png",
+            "sha256": "b3cb156753b5599bd526591dc59cea3c35640a1bc423802d4efc71e12cef0343"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1295/frame.png",
+            "sha256": "588d39216b917bb5c196d993a04f48f3a87b7176e40ec578ad8a0bf984f0c630"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1295/mask.png",
+            "sha256": "266006948a3011e8e6ac2791f63a9778368bb98974c9e4f5feb9bdc4b006438b"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1295/remap_mask.png",
+            "sha256": "9009f220819ac997957710fb9d74d0ac937dfc615e6175fbf18dfab47f4a9600"
+          }
+        ]
+      }
+    ],
+    "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md#第99100101107組個別面容修正ready2026-11-01",
+    "formal_registered": true,
+    "base_commit": "831cf39583bdfc990fa39477ca379b5380440b5a",
+    "branch": "feat/hd1-completion-r29",
+    "issues": [
+      286,
+      287
+    ],
+    "art": {
+      "recipe": {
+        "file": "remake/assets/themes/modern/hd1-shadow-faces-refresh.recipe.json",
+        "sha256": "953ed98633faac33aec26430e28622bbb232333099425cd587d20b9f5ff77340"
+      },
+      "groups": [
+        99,
+        100,
+        101,
+        107
+      ],
+      "generation_calls": 10,
+      "selected_masters": 4,
+      "rejected_drafts": 6,
+      "master_bytes_preserved": true,
+      "alpha_quality": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/alpha-quality-final.json",
+        "sha256": "62d7c7e528d871d89952a7106e328e70ce38f300fffbfdfca1e9135689cf0045"
+      },
+      "generation_call_receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/generation-calls.json",
+        "sha256": "921d502b978e68aa49d731e1faf996be1c5a1a603cbfdfe1806ee7ea526bceab"
+      },
+      "generation_calls_exact": {
+        "tool": "builtin image_gen.imagegen",
+        "transparent_background": true,
+        "calls": [
+          {
+            "group": 99,
+            "revision": 1,
+            "prompt": "Create ONE production-ready transparent RGBA sprite master sheet for the approved HD1 Taiwan fantasy tactics remake. Exactly 12 separate full-body sprites in a regular 3 columns x 4 rows. Rows: FRONT, strict LEFT profile, BACK, strict RIGHT profile. Columns: planted neutral stance, small left step, small right step. Reference 1 contains THIS character's own original portrait at top and original twelve map poses below; use its actual head/face, palette, costume, held objects and directional occlusion. Reference 2 is STYLE ONLY: use the approved bottom very-large-head, extremely-short-body Q-style, head about 2/3 total height, clean bold outlines, smooth hand-painted color blocks, readable at 48 pixels. Never copy Ares's face, hair, clothes, sword or shield. Fully separated characters in equal cells with generous transparent gutters, equal scale and foot baseline, all heads/hair/feet fully inside cell. Real alpha0 background; solid interiors including dark facial shadows must be fully opaque. No text, grid, labels, shadows, ground, scenery, checkerboard, glow, effects, or extra objects. Preserve the own portrait's adult/angular facial character; no generic smiling baby face. Character099: deep navy-blue hair with the native swept, relatively flat silhouette and dark olive/brown headband. Follow his OWN top portrait: long angular tan ear/side-of-neck contour, strong diagonal brow, narrow pale eyes, prominent angular warm-orange nose highlight, most face in very deep opaque dark shadow. Treat dark regions as lighting; do NOT invent a cloth mask, goggles or helmet. Do not expose a round smiling mouth or large cute red irises. Hair wraps around side and back as native, not an exaggerated spiky anime wig. Tiny gray-green sleeveless tunic, dark navy lower garment and short dark reddish-brown forearm/side wraps. Bare tan ears, hands and small feet as the native map. Native waist panel gray-green. Empty hands in all poses; no weapons added.",
+            "references": [
+              {
+                "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/group-099-source-reference.png",
+                "sha256": "cacc57bd4bf19fc9a463b6a4953bfd60aa72394d09946b239a125a69ec77cb16"
+              },
+              {
+                "file": "docs/figures/hd1-ares-q-design.png",
+                "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+              }
+            ],
+            "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-b1f678df-ad8b-4405-85c3-36af49d5268a.png",
+            "source_sha256": "93eeeb8c2418025110ce33c751a204d04e9e6c08ebdb9c9008e12c8595beefd3",
+            "selected": false
+          },
+          {
+            "group": 100,
+            "revision": 1,
+            "prompt": "Create ONE production-ready transparent RGBA sprite master sheet for the approved HD1 Taiwan fantasy tactics remake. Exactly 12 separate full-body sprites in a regular 3 columns x 4 rows. Rows: FRONT, strict LEFT profile, BACK, strict RIGHT profile. Columns: planted neutral stance, small left step, small right step. Reference 1 contains THIS character's own original portrait at top and original twelve map poses below; use its actual head/face, palette, costume, held objects and directional occlusion. Reference 2 is STYLE ONLY: use the approved bottom very-large-head, extremely-short-body Q-style, head about 2/3 total height, clean bold outlines, smooth hand-painted color blocks, readable at 48 pixels. Never copy Ares's face, hair, clothes, sword or shield. Fully separated characters in equal cells with generous transparent gutters, equal scale and foot baseline, all heads/hair/feet fully inside cell. Real alpha0 background; solid interiors including dark facial shadows must be fully opaque. No text, grid, labels, shadows, ground, scenery, checkerboard, glow, effects, or extra objects. Preserve the own portrait's adult/angular facial character; no generic smiling baby face. Character100: dark reddish-brown swept relatively flat hair, broad dark blue headband. OWN portrait has strongly angled brow, narrow orange-red eyes, angular warm tan nose and ear highlights with deep opaque BLACK facial shadow, a stern long adult profile. Dark facial regions are shading, not evidence for a cloth mask; add NO mask fabric or new headgear. Avoid huge round infant eyes or exposed smiling baby cheeks/mouth. Tiny deep navy sleeveless outfit, long dark RED center waist panel, bare warm tan arms/feet. Retain native side hair trailing shape and headband tail at back, without extra ponytail. Both hands empty; no swords, armor plates or jewelry.",
+            "references": [
+              {
+                "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/group-100-source-reference.png",
+                "sha256": "62839a6eed02c15f0554de06b31e4638774fc062059692445d7cee9a0bcb3062"
+              },
+              {
+                "file": "docs/figures/hd1-ares-q-design.png",
+                "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+              }
+            ],
+            "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-51125e81-08c9-4f77-84e2-13f7e5914294.png",
+            "source_sha256": "b2fad6e8b4754290b287c9660b88e12aaa50cf34fe77537f526caa6929910e54",
+            "selected": false
+          },
+          {
+            "group": 101,
+            "revision": 1,
+            "prompt": "Create ONE production-ready transparent RGBA sprite master sheet for the approved HD1 Taiwan fantasy tactics remake. Exactly 12 separate full-body sprites in a regular 3 columns x 4 rows. Rows: FRONT, strict LEFT profile, BACK, strict RIGHT profile. Columns: planted neutral stance, small left step, small right step. Reference 1 contains THIS character's own original portrait at top and original twelve map poses below; use its actual head/face, palette, costume, held objects and directional occlusion. Reference 2 is STYLE ONLY: use the approved bottom very-large-head, extremely-short-body Q-style, head about 2/3 total height, clean bold outlines, smooth hand-painted color blocks, readable at 48 pixels. Never copy Ares's face, hair, clothes, sword or shield. Fully separated characters in equal cells with generous transparent gutters, equal scale and foot baseline, all heads/hair/feet fully inside cell. Real alpha0 background; solid interiors including dark facial shadows must be fully opaque. No text, grid, labels, shadows, ground, scenery, checkerboard, glow, effects, or extra objects. Preserve the own portrait's adult/angular facial character; no generic smiling baby face. Character101: distinct BLUE-SKIN variant with dark reddish-brown native hair and dark blue headband. Follow OWN portrait, not character100's face: blue ear and angular blue nose highlight, narrow YELLOW eyes under deeply angled dark brow, lower and side face kept in very deep opaque dark shadow. Dark regions are shading; do NOT invent fabric mask, helmet or metal face. No red pupil circles, tan skin, smiling baby face or broad exposed blue cheeks. Tiny navy outfit, gray-green front waist panel, blue hands/feet, original reddish-brown hair wrapping back. Empty hands, no weapon, no new armor or belt ornaments.",
+            "references": [
+              {
+                "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/group-101-source-reference.png",
+                "sha256": "f432ab4d4b68c387a0d722621ff65819b0799935101b48f079efa382ebec2f83"
+              },
+              {
+                "file": "docs/figures/hd1-ares-q-design.png",
+                "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+              }
+            ],
+            "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-663e2a98-b623-46eb-8d60-a09cf56a597c.png",
+            "source_sha256": "a7e2076bec375048eb38c1f06730a1ef4d1a0d77b969e05da02c9980454e06eb",
+            "selected": false
+          },
+          {
+            "group": 107,
+            "revision": 1,
+            "prompt": "Create ONE production-ready transparent RGBA sprite master sheet for the approved HD1 Taiwan fantasy tactics remake. Exactly 12 separate full-body sprites in a regular 3 columns x 4 rows. Rows: FRONT, strict LEFT profile, BACK, strict RIGHT profile. Columns: planted neutral stance, small left step, small right step. Reference 1 contains THIS character's own original portrait at top and original twelve map poses below; use its actual head/face, palette, costume, held objects and directional occlusion. Reference 2 is STYLE ONLY: use the approved bottom very-large-head, extremely-short-body Q-style, head about 2/3 total height, clean bold outlines, smooth hand-painted color blocks, readable at 48 pixels. Never copy Ares's face, hair, clothes, sword or shield. Fully separated characters in equal cells with generous transparent gutters, equal scale and foot baseline, all heads/hair/feet fully inside cell. Real alpha0 background; solid interiors including dark facial shadows must be fully opaque. No text, grid, labels, shadows, ground, scenery, checkerboard, glow, effects, or extra objects. Preserve the own portrait's adult/angular facial character; no generic smiling baby face. Character107: the OWN original portrait has a large flat oval dull-gray/olive wide-brim hat, two small narrow RED-ORANGE eyes and a clearly visible LONG CROOKED GRAY-GREEN NOSE / long angular hooked face, wrinkled brow and cheek planes, a severe thin irregular mouth from that portrait. Preserve this facial anatomy; do NOT draw a featureless black void with glowing yellow dots. Do not name a species, add horns, fur, dragon ears, fangs, pipes or mask straps. Keep some face shaded under the hat but nose and gray-green cheek structure readable. Body is an extremely short navy-blue robe with deep red shoulder/side cloak panels, native broad closed robe base and NO visible feet, legs, hands or staff. Walking phases use tiny hem and shoulder sway, no new limbs. Back row shows hat and closed blue hood/robe back with red side panels, never face from back.",
+            "references": [
+              {
+                "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/group-107-source-reference.png",
+                "sha256": "42eccdc841f68fb773a713da865da1dfbe920727008bb9f6d6c4e13423fcc400"
+              },
+              {
+                "file": "docs/figures/hd1-ares-q-design.png",
+                "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+              }
+            ],
+            "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-6601e748-78af-48ef-b6db-78e4e10b69fb.png",
+            "source_sha256": "a6527dfac9aa5d79979184ff6c57fa33d2e0412586f1a27c7830d4a4105ee439",
+            "selected": false
+          },
+          {
+            "group": 99,
+            "revision": 2,
+            "prompt": "Edit the FIRST image only, preserving its transparent RGBA 3x4 twelve-sprite sheet, exact costume, palette, short-body big-head proportions, poses, scale and gaps. Make ONLY the three FRONT-row heads face straight toward the viewer, with TWO visible narrow pale eyes symmetrically under the dark brow/headband, and the warm angular nose highlight centrally aligned. They must not be three-quarter one-eyed heads. Retain the own portrait's opaque deep black facial SHADOW without adding fabric mask, and tan ears/side highlights. Keep all other rows and all body details unchanged. The second image is the original portrait/map anatomy reference only. No text, backdrop, cast shadow or added objects.",
+            "references": [
+              {
+                "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/group-099-draft-r1.png",
+                "sha256": "93eeeb8c2418025110ce33c751a204d04e9e6c08ebdb9c9008e12c8595beefd3"
+              },
+              {
+                "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/group-099-source-reference.png",
+                "sha256": "cacc57bd4bf19fc9a463b6a4953bfd60aa72394d09946b239a125a69ec77cb16"
+              }
+            ],
+            "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-95cbfd95-d545-40b1-b1e1-3975c67aae53.png",
+            "source_sha256": "d3ba358194c62bfdd27abf50e68b09464ebbdca79227c8cbf1ad3f0d79ac4490",
+            "selected": true
+          },
+          {
+            "group": 100,
+            "revision": 2,
+            "prompt": "Edit the FIRST transparent twelve-pose sprite sheet only. Preserve its exact 3x4 layout, hair, dark blue headband, navy sleeveless clothes, red center waist cloth, empty hands, tan arms/feet, short-body big-head proportions, walking directions, scale and margins. Change only facial rendering to match the SECOND image's own original portrait: strong adult angular brow; TWO narrow orange-red eyes in the straight FRONT row, one in strict profiles; most of face in deep opaque BLACK shadow with a prominent angular warm-orange nose highlight and tan ears/outer side-of-head highlight. No exposed smiling mouth or broad light baby cheeks. This is dramatic SHADING, not an invented cloth mask: no fabric seams/straps, no covering nose. Back row face remains invisible. True transparent background; black facial paint must be opaque. No text or other objects.",
+            "references": [
+              {
+                "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/group-100-draft-r1.png",
+                "sha256": "b2fad6e8b4754290b287c9660b88e12aaa50cf34fe77537f526caa6929910e54"
+              },
+              {
+                "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/group-100-source-reference.png",
+                "sha256": "62839a6eed02c15f0554de06b31e4638774fc062059692445d7cee9a0bcb3062"
+              }
+            ],
+            "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-77c9c749-f2ca-4389-9556-ae7789aaad56.png",
+            "source_sha256": "cfe4f7410eba3b17b0e8c3f50665363f30bd2596ba620d5335056f45180e2779",
+            "selected": true
+          },
+          {
+            "group": 101,
+            "revision": 2,
+            "prompt": "Edit the FIRST transparent twelve-pose master sheet only. Correct ONLY ROW TWO COLUMN THREE: this sprite must face strict LEFT, matching the other two sprites in row two. It currently incorrectly faces right. Preserve its right-step phase, blue skin/nose, narrow yellow eye, dark facial shadow, red-brown hair, navy headband, gray-green waist panel, navy clothes, proportions, scale and spacing. All other eleven sprites, including all of the bottom row facing RIGHT, stay unchanged. Exact 3 columns x 4 rows, fully transparent background and solid opaque interiors. Second image is the own original source reference; add nothing.",
+            "references": [
+              {
+                "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/group-101-draft-r1.png",
+                "sha256": "a7e2076bec375048eb38c1f06730a1ef4d1a0d77b969e05da02c9980454e06eb"
+              },
+              {
+                "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/group-101-source-reference.png",
+                "sha256": "f432ab4d4b68c387a0d722621ff65819b0799935101b48f079efa382ebec2f83"
+              }
+            ],
+            "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-aee59eb4-9e6e-4993-aa3f-2add36374608.png",
+            "source_sha256": "de607793c93f2ad661a3da8bfa80dcacb3cbe9cf2732e910e2eed572e10a8d3b",
+            "selected": false
+          },
+          {
+            "group": 107,
+            "revision": 2,
+            "prompt": "Edit the FIRST image only, keeping a transparent RGBA sprite sheet with exactly 12 separated characters, 3 columns x 4 rows and short closed robe bodies with no visible feet/hands. Correct ROW TWO COLUMN THREE to face strict LEFT, like its other two row-two neighbors. In the FRONT top row make the face straight front with TWO small narrow red-orange eyes and a centrally descending long crooked nose; own deeply wrinkled gray-green face and thin severe mouth stay clearly visible. All bottom-row sprites face RIGHT; all back-row sprites show only hat and closed robe back. Preserve dull gray-olive flat oval wide hat, navy blue robe and red side cloak. Render clean smooth hand-painted shading and bold clean outlines, avoiding magnified pixel texture. Head/hat about 2/3 total height, tiny robe underneath. SECOND image is this character's original portrait/map reference, THIRD is approved Q proportion/style only. Do not copy Ares's face or equipment. No new species traits, horns, teeth, staff, limbs, cast shadows, text, grid or background.",
+            "references": [
+              {
+                "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/group-107-draft-r1.png",
+                "sha256": "a6527dfac9aa5d79979184ff6c57fa33d2e0412586f1a27c7830d4a4105ee439"
+              },
+              {
+                "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/group-107-source-reference.png",
+                "sha256": "42eccdc841f68fb773a713da865da1dfbe920727008bb9f6d6c4e13423fcc400"
+              },
+              {
+                "file": "docs/figures/hd1-ares-q-design.png",
+                "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+              }
+            ],
+            "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-23763068-9a70-411f-b61a-61573c97c786.png",
+            "source_sha256": "f707a515c4de93f15aacd66496b5a70adbde69895b4969834b4829c726b77fd8",
+            "selected": false
+          },
+          {
+            "group": 101,
+            "revision": 3,
+            "prompt": "Generate a production transparent RGBA sprite sheet by following the FIRST image's corrected layout/orientation guide EXACTLY. It has FOUR ROWS and THREE COLUMNS. Top row ALL THREE look straight FRONT. Second row ALL THREE face LEFT (all noses point to image left). Third row ALL THREE face BACK. Bottom row ALL THREE face RIGHT (all noses point to image right). In particular the second row's third/rightmost sprite must point LEFT, NOT RIGHT. Walking phase never changes facing direction: do NOT horizontally mirror the third walking phase. Make three subtly different phases per row, planted neutral / small left step / small right step, while retaining SAME ROW FACING. Keep the exact red-brown hair, navy headband, blue ears/nose/hands, narrow yellow eyes and opaque black facial shadow, navy short outfit and gray-green waist panel from the guide. Match the guide's very large head and very short body, smooth clean hand-painted shading and dark outlines. Second image is only original portrait/map reference. Preserve identity, palette, clothing and original equipment. Exactly twelve full characters, generous transparent margins and gutters. All dark interior pixels including face are opaque. Remove the guide's blue background and words entirely: output true alpha0 background, no labels, arrows, grid, shadows, scenery, extras or watermark.",
+            "references": [
+              {
+                "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/group-101-direction-guide.png",
+                "sha256": "88d42225eb7c5fa53dc8c64d6c73536c14aacf44f080a18beeb47af20ff52b32"
+              },
+              {
+                "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/group-101-source-reference.png",
+                "sha256": "f432ab4d4b68c387a0d722621ff65819b0799935101b48f079efa382ebec2f83"
+              }
+            ],
+            "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-19d1fa15-e4a9-4629-bcae-b9c668bcd268.png",
+            "source_sha256": "254957cd3e6ab36e51b1e59deb5db8a3357c197af2fdd736dbd4b55c68c6ea5a",
+            "selected": true
+          },
+          {
+            "group": 107,
+            "revision": 3,
+            "prompt": "Generate a production transparent RGBA sprite sheet by following the FIRST image's corrected layout/orientation guide EXACTLY. It has FOUR ROWS and THREE COLUMNS. Top row ALL THREE look straight FRONT. Second row ALL THREE face LEFT (all noses point to image left). Third row ALL THREE face BACK. Bottom row ALL THREE face RIGHT (all noses point to image right). In particular the second row's third/rightmost sprite must point LEFT, NOT RIGHT. Walking phase never changes facing direction: do NOT horizontally mirror the third walking phase. Make three subtly different phases per row, planted neutral / small left step / small right step, while retaining SAME ROW FACING. Keep the gray olive flat wide hat, two narrow red-orange front eyes, own long hooked gray-green nose/cheeks and thin severe mouth, blue short closed robe and red side cloak. Robe phases only subtle sways; no hands, feet, legs or staff. Match the guide's very large head and very short body, smooth clean hand-painted shading and dark outlines. Second image is only original portrait/map reference. Preserve identity, palette, clothing and original equipment. Exactly twelve full characters, generous transparent margins and gutters. All dark interior pixels including face are opaque. Remove the guide's blue background and words entirely: output true alpha0 background, no labels, arrows, grid, shadows, scenery, extras or watermark.",
+            "references": [
+              {
+                "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/group-107-direction-guide.png",
+                "sha256": "3f2cdff394300c5eefedaaf65091ce1756a8f7b742edd0a935c09815eb44523d"
+              },
+              {
+                "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/group-107-source-reference.png",
+                "sha256": "42eccdc841f68fb773a713da865da1dfbe920727008bb9f6d6c4e13423fcc400"
+              }
+            ],
+            "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-93993df2-424a-486a-94f1-6178a64fdc01.png",
+            "source_sha256": "06f60cc40963d1a229f87004484043191c13ddc327c97d988542178db4c0998a",
+            "selected": true
+          }
+        ],
+        "note": "凍結編製配方的reference_files列初稿來源。修訂版的實際呼叫輸入、順序與SHA依本收據；不將初稿來源誤稱為修訂呼叫順序。",
+        "selected_master_bytes_preserved": true
+      },
+      "recipe_reference_files_scope": "初稿參考集合；修訂的實際呼叫順序與SHA以上列generation_calls_exact為準。",
+      "raw_names_and_unknown_species_preserved": true
+    },
+    "gpu": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/gpu-combined-r2-capture/receipt.json",
+        "sha256": "2b81cb0a0b45e4b26bbb2da69893bcc6b93f50edeba907efa8c0bcd90e72ea6d"
+      },
+      "independent_and_registration": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/registration-r1.json",
+        "sha256": "62d7e9c744cf43603a2419840ff50af36d77ef308f2d2ccef4fe9231e6fc1ce3"
+      },
+      "cases": 28,
+      "pngs": 24,
+      "f2": 4,
+      "core_pixels": 321124,
+      "rejected_mutants": [
+        "missing",
+        "duplicate",
+        "catalog",
+        "source-code",
+        "false-save",
+        "wrong-hud",
+        "wrong-tolerance",
+        "wrong-map-target",
+        "wrong-map-camera",
+        "missing-map-target",
+        "missing-f2",
+        "wrong-profile",
+        "wrong-selector",
+        "wrong-identity",
+        "undisclosed-projection",
+        "wrong-enemy-camp",
+        "wrong-enemy-position",
+        "wrong-enemy-roster",
+        "missing-part",
+        "duplicate-part",
+        "wrong-part-source",
+        "wrong-part-group",
+        "wrong-part-memory",
+        "actual-black-png"
+      ],
+      "authored_roster": true,
+      "identity_or_selector_projection": false,
+      "selected_map_position_linked": true,
+      "scope": "兩分份，各保留原名冊、陣營、位置、portrait／BattleFig及無持續身份；不是自然章節或原版動態。"
+    },
+    "normal_compatibility": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/normal-r1-capture/receipt.json",
+        "sha256": "5f6816500f1eb39350246bf0d95657539a6563254bbdfe0232d8a80120c3358e"
+      },
+      "status": "PASS-FULL-CANDIDATE-NORMAL-TRANSACTION",
+      "pngs": 10,
+      "scope": "unchanged chapter1 ordinary save checks complete fixed roster pack admission, four controls, walk/cancel and save/cold LOAD; new actors only by fixed authored roster pair fixtures, not natural chapter progression or persistent player identities",
+      "binary_sha256": "5e0c0584aa2aa6798d53b2e5924b9dd154ec7034f3bc10a981f74b5f4abc6880"
+    },
+    "source_regression": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/source-r1.log",
+        "sha256": "f9292e016067db1f5ed47d9563af5073c532fa874387fb7c81249c8d2cc216ea"
+      },
+      "tests": 4,
+      "rejected": 14,
+      "compiler_sha256": "f3220d47a6536d0201d4e57bd73e321714164bb6ca96762d7569c0c932af1462",
+      "test_tool_sha256": "ccd4285f2aec8c47e137b3ec076191b82f5b76aea64ab48f66f15fa9dc4ce612"
+    },
+    "legacy_source_regressions": {
+      "scope": "來源編製器與來源測試未改，沿r28共用／混合各四項17拒收並核工具SHA；不冒稱本輪重跑。",
+      "receipts": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/legacy-reuse-source-r1.log",
+          "sha256": "81dfe9df8ebebcebba77a731f6ed02cf44af8bc19339eec4317e16c6ce003de7"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/legacy-mixed-source-r1.log",
+          "sha256": "fa3530f09505d7cb4bbc3ed68b55793562c8df7cd67ed9665f642ffee955d952"
+        }
+      ]
+    },
+    "regression": {
+      "top_level_passed": 26,
+      "skipped_special_gpu": 2,
+      "skips_count_as_pass": false,
+      "source_tree_sha256": "ff96dc453cd316c4fcb2961307d35eae71bf44b1ecfa0d7a28db11dd6d7f8947",
+      "source_file_count": 1196,
+      "production_go_changed": false,
+      "legacy_parts_reader": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/legacy-parts-r1.json",
+        "sha256": "9e6f1d0c88232a5f0a36e0a3f19df9e7bcc7a5ff63efe13f55eec96bd8080ed7"
+      },
+      "legacy_scope": "19種舊分份、七批轉職、三種共用契約保持；不重跑或升格舊GPU。"
+    },
+    "independent_control": {
+      "issue": 284,
+      "status": "WIRING-COMPLETE",
+      "focused_tests": 8,
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/independent-control-r1.log",
+        "sha256": "d2513dc70f41133a5ecba44ad6e4799dc14a196084098f6a98fcb083f230dab6"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/independent-control-r1.memory.json",
+        "sha256": "4983f7e56442c292cf6e80a8590e809ddd363d266afe712c442fcd8a5c561df7"
+      },
+      "four_mode_normal": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/normal-r1-capture/receipt.json",
+        "sha256": "5f6816500f1eb39350246bf0d95657539a6563254bbdfe0232d8a80120c3358e"
+      },
+      "settings_outside_campaign_save": true,
+      "reject_before_publish": true,
+      "manual_owner": "user",
+      "manual_blocks_wiring": false,
+      "issue_closed": true,
+      "implementation_reference_commit": "831cf39583bdfc990fa39477ca379b5380440b5a"
+    },
+    "consumer_inventory": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/consumers-verified-r1.json",
+        "sha256": "affe1a7e2cbbee78bf8ee8f8e2a2bc004ff158216f43ba13acf4d62e1c4f7bce"
+      },
+      "cases": 21,
+      "frames": 416,
+      "rejected": 19
+    },
+    "catalog": {
+      "formal_sha256": "956baa8ae9b6fb2d7f498d9311c39f010d426d0042b18345c0e3da3f1d23b429",
+      "assets": 883,
+      "changed_entries": 8,
+      "unchanged_entries": 875,
+      "old_art_files": 9405,
+      "new_files": 100,
+      "protected_0_9_30_unchanged": true,
+      "other121_groups_equal": true,
+      "full_validation": "PASS"
+    },
+    "terrain": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/formal-coverage.json",
+        "sha256": "8a5b83e922ab207094008e79400e23d2441c45e4ba0f99b4f5f17b3208d68626"
+      },
+      "canonical": {
+        "file": "docs/data/fd2-hd1-terrain-coverage.json",
+        "sha256": "8a5b83e922ab207094008e79400e23d2441c45e4ba0f99b4f5f17b3208d68626"
+      },
+      "maps": 33,
+      "missing-art": 3354,
+      "missing_unique_native_content": 2049,
+      "native-remap-only": 10,
+      "registered-hd": 634,
+      "required_slots": 3998,
+      "selector_checks": 617520,
+      "scope": "事件全有效的來源上界，數量保持；尚未完成HD地形。"
+    },
+    "private": {
+      "baseline_commit": "a872f2e8e17637f27b64ae758b4e8dde906b52d2",
+      "preservation": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/private-preservation-r1.json",
+        "sha256": "b09948ebfa2e81797fe483a03f73a8acb1913ce2dc636304dbb2905b22b7733f"
+      },
+      "allowlist_files": 6915,
+      "new_files": 100,
+      "metadata_only": false,
+      "commit": "fd9890df93802b9b8755209dd93be97289746de3",
+      "pushed": true,
+      "remote_verified": true
+    },
+    "review": {
+      "source_groups": 125,
+      "source_frames": 1455,
+      "counts": {
+        "reference-keep": 2,
+        "new-q-review-keep": 94,
+        "review-keep-pending-batch": 28,
+        "new-q-source-only-keep": 1
+      },
+      "q_redraw_reduced_from": 1,
+      "q_redraw_remaining": 0,
+      "pending_visual_review_groups": [
+        66,
+        74,
+        75,
+        90,
+        92,
+        96,
+        97,
+        98,
+        102,
+        103,
+        108,
+        109,
+        110,
+        112,
+        113,
+        114,
+        115,
+        116,
+        117,
+        118,
+        119,
+        120,
+        122,
+        123,
+        124,
+        126,
+        134,
+        135
+      ],
+      "priority_face_followup": [
+        66,
+        90,
+        92,
+        96,
+        97,
+        98,
+        102,
+        103,
+        108,
+        109,
+        110,
+        112,
+        113,
+        114,
+        115,
+        116,
+        117,
+        118,
+        119,
+        120,
+        122,
+        123,
+        124,
+        126,
+        134,
+        135
+      ],
+      "all_redrawn": false,
+      "human_acceptance": false,
+      "source_only_exception_groups": [
+        67
+      ],
+      "gaia_explicit_user_acceptance": true,
+      "followup": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/visual-review-final.json",
+        "sha256": "191fd57d266df4e3e073fbf2bb03726794fcab55fed62c9ef671d4d3541980c2"
+      },
+      "group_decisions": {
+        "reference-keep": [
+          0,
+          9
+        ],
+        "new-q-review-keep": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          58,
+          59,
+          60,
+          61,
+          62,
+          63,
+          64,
+          65,
+          68,
+          69,
+          70,
+          71,
+          72,
+          73,
+          76,
+          77,
+          78,
+          79,
+          80,
+          81,
+          82,
+          83,
+          84,
+          85,
+          86,
+          87,
+          88,
+          89,
+          91,
+          93,
+          94,
+          95,
+          99,
+          100,
+          101,
+          106,
+          107,
+          111,
+          125,
+          133
+        ],
+        "review-keep-pending-batch": [
+          66,
+          74,
+          75,
+          90,
+          92,
+          96,
+          97,
+          98,
+          102,
+          103,
+          108,
+          109,
+          110,
+          112,
+          113,
+          114,
+          115,
+          116,
+          117,
+          118,
+          119,
+          120,
+          122,
+          123,
+          124,
+          126,
+          134,
+          135
+        ],
+        "new-q-source-only-keep": [
+          67
+        ]
+      },
+      "face_review_states": {
+        "1": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "4": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "5": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "6": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "7": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "8": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "10": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "11": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "12": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "13": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "14": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "15": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "16": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "17": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "18": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "19": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "20": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "21": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "22": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "23": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "24": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "25": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "26": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "27": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "28": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "29": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "31": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "32": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "33": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "34": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "35": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "36": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "37": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "38": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "40": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "41": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "42": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "43": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "44": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "45": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "46": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "47": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "49": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "50": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "51": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "52": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "54": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "55": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "56": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "58": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "59": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "60": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "61": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "62": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "63": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "64": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "65": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "67": "USER-APPROVED-NATIVE-FACE-ONLY/IDENTITY-UNKNOWN",
+        "68": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "69": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "71": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "72": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "78": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "80": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "81": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "82": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "83": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "84": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "85": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "86": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "87": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "88": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "91": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "93": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "94": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "95": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "106": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "111": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "99": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "100": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "101": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "107": "AGENT-ORIGINAL-PORTRAIT-REVIEWED"
+      },
+      "other121_groups_source_equal": true,
+      "scope": "本輪四組面容已修並核對，28組造型仍需處理；無身份綁定的74／75不以同號DATO猜配。"
+    },
+    "overview": {
+      "groups": 125,
+      "source_frames": 1455,
+      "pages": 4,
+      "changed_public_page": "docs/figures/hd1-map-sprites-096-139-20261101-r2.png",
+      "unaffected_public_pages": 3,
+      "old_r28_pages_preserved": true,
+      "source": "正式catalog實際files與SHA，第0拍及144／72／48展示。"
+    },
+    "public_figures": [
+      {
+        "file": "docs/figures/hd1-shadow-faces-comparison.png",
+        "sha256": "9f45d1febf7e5d1a46aef972cdc25de9d5d7bcd3825c1c3ae3a91272b4e1954a",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/shadow-faces-comparison-r1.png",
+          "sha256": "9f45d1febf7e5d1a46aef972cdc25de9d5d7bcd3825c1c3ae3a91272b4e1954a"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-shadow-faces-reference.png",
+        "sha256": "3246d623023cb8f817e3e3ddb7f65367aad5be6438c01d64155fce13b1219970",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/shadow-faces-reference-r1.png",
+          "sha256": "3246d623023cb8f817e3e3ddb7f65367aad5be6438c01d64155fce13b1219970"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-map-sprites-096-139-20261101-r2.png",
+        "sha256": "73368d101ce09fbc1610107f3a554031a3c6f0339c3efc9d14d242ad8afc53e5",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/overview-096-139-r1.png",
+          "sha256": "73368d101ce09fbc1610107f3a554031a3c6f0339c3efc9d14d242ad8afc53e5"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-shadow-099-game.png",
+        "sha256": "38e94814bf16aae3cb1fc4f205242d5d4277969e881b2d7569db376c9992e491",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/gpu-blue-and-red-shadows-r1-capture/party-g099-f00-ui-hd.png",
+          "sha256": "38e94814bf16aae3cb1fc4f205242d5d4277969e881b2d7569db376c9992e491"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-shadow-100-game.png",
+        "sha256": "504581acd2b9ded00b6fb4ac559a0f1abd673414405a3b322a4b55ef0d535a3b",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/gpu-blue-and-red-shadows-r1-capture/party-g100-f00-ui-hd.png",
+          "sha256": "504581acd2b9ded00b6fb4ac559a0f1abd673414405a3b322a4b55ef0d535a3b"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-shadow-101-game.png",
+        "sha256": "446ed4afa2e7531c021ad90ae68e573b65eaeb72c61e041ebc09894ef64f6906",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/gpu-blue-skin-and-long-nose-r1-capture/party-g101-f00-ui-hd.png",
+          "sha256": "446ed4afa2e7531c021ad90ae68e573b65eaeb72c61e041ebc09894ef64f6906"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-shadow-107-game.png",
+        "sha256": "9d8f84ad6d05cfbd0e0a5c4704a8888e88ebb89f40040965fa5d42cdb18c2f81",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/gpu-blue-skin-and-long-nose-r1-capture/party-g107-f00-ui-hd.png",
+          "sha256": "9d8f84ad6d05cfbd0e0a5c4704a8888e88ebb89f40040965fa5d42cdb18c2f81"
+        }
+      }
+    ],
+    "resources": {
+      "gpu-blue-and-red-shadows-r1": {
+        "schema_version": 1,
+        "command": [
+          "with-xvfb",
+          "go",
+          "test",
+          "./cmd/fd2",
+          "-p=1",
+          "-count=1",
+          "-timeout=600s",
+          "-run",
+          "^TestModernHDChibiPartyGPU$",
+          "-v"
+        ],
+        "cwd": "/repo/remake",
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 99.172,
+        "before": {
+          "memory.current": 9568256,
+          "memory.peak": 9568256,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 6660096,
+            "file": 1376256,
+            "kernel": 655360,
+            "kernel_stack": 32768,
+            "pagetables": 126976,
+            "sec_pagetables": 0,
+            "percpu": 5952,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 12288,
+            "file_dirty": 0,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 0,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 6529024,
+            "inactive_file": 1347584,
+            "active_file": 12288,
+            "unevictable": 0,
+            "slab_reclaimable": 245752,
+            "slab_unreclaimable": 247320,
+            "slab": 493072,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 0,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 0,
+            "pgsteal": 0,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 0,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 0,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 3009,
+            "pgmajfault": 1,
+            "pgrefill": 0,
+            "pgactivate": 0,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 0,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "after": {
+          "memory.current": 333402112,
+          "memory.peak": 5772980224,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 6774784,
+            "file": 321253376,
+            "kernel": 5001216,
+            "kernel_stack": 32768,
+            "pagetables": 126976,
+            "sec_pagetables": 0,
+            "percpu": 5952,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 12288,
+            "file_dirty": 0,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 0,
+            "shmem_thp": 0,
+            "inactive_anon": 6500352,
+            "active_anon": 274432,
+            "inactive_file": 303071232,
+            "active_file": 18182144,
+            "unevictable": 0,
+            "slab_reclaimable": 4590464,
+            "slab_unreclaimable": 226744,
+            "slab": 4817208,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 1102,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 10,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 12367,
+            "pgsteal": 9231,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 12106,
+            "pgscan_direct": 261,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 8970,
+            "pgsteal_direct": 261,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 2018283,
+            "pgmajfault": 327,
+            "pgrefill": 1204,
+            "pgactivate": 3084,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 1,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "largest_sample": {
+          "memory.current": 5766164480,
+          "memory.peak": 5770469376,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 5413781504,
+            "file": 331423744,
+            "kernel": 19304448,
+            "kernel_stack": 376832,
+            "pagetables": 12419072,
+            "sec_pagetables": 0,
+            "percpu": 6976,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 1024000,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 22949888,
+            "file_dirty": 2015232,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 2097152,
+            "file_thp": 4194304,
+            "shmem_thp": 0,
+            "inactive_anon": 572940288,
+            "active_anon": 4841545728,
+            "inactive_file": 292851712,
+            "active_file": 37539840,
+            "unevictable": 0,
+            "slab_reclaimable": 5641152,
+            "slab_unreclaimable": 822320,
+            "slab": 6463472,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 359,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 10,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 12367,
+            "pgsteal": 9231,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 12106,
+            "pgscan_direct": 261,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 8970,
+            "pgsteal_direct": 261,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 1976206,
+            "pgmajfault": 290,
+            "pgrefill": 1204,
+            "pgactivate": 3084,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 1,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "largest_sample_processes": [
+          {
+            "pid": 68,
+            "name": "fd2.test",
+            "rss_kib": 5322276
+          },
+          {
+            "pid": 9,
+            "name": "Xvfb",
+            "rss_kib": 66976
+          },
+          {
+            "pid": 13,
+            "name": "go",
+            "rss_kib": 29744
+          },
+          {
+            "pid": 7,
+            "name": "python3",
+            "rss_kib": 12228
+          },
+          {
+            "pid": 8,
+            "name": "with-xvfb",
+            "rss_kib": 1692
+          },
+          {
+            "pid": 1,
+            "name": "docker-init",
+            "rss_kib": 752
+          }
+        ],
+        "children_maxrss_kib": 5327516,
+        "log": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/gpu-blue-and-red-shadows-r1.log",
+        "samples": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/gpu-blue-and-red-shadows-r1.samples.jsonl"
+      },
+      "gpu-blue-skin-and-long-nose-r1": {
+        "schema_version": 1,
+        "command": [
+          "with-xvfb",
+          "go",
+          "test",
+          "./cmd/fd2",
+          "-p=1",
+          "-count=1",
+          "-timeout=600s",
+          "-run",
+          "^TestModernHDChibiPartyGPU$",
+          "-v"
+        ],
+        "cwd": "/repo/remake",
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 115.764,
+        "before": {
+          "memory.current": 11100160,
+          "memory.peak": 11112448,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 6656000,
+            "file": 2994176,
+            "kernel": 655360,
+            "kernel_stack": 32768,
+            "pagetables": 122880,
+            "sec_pagetables": 0,
+            "percpu": 5952,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 16384,
+            "file_dirty": 0,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 0,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 6598656,
+            "inactive_file": 1380352,
+            "active_file": 1605632,
+            "unevictable": 0,
+            "slab_reclaimable": 246912,
+            "slab_unreclaimable": 215112,
+            "slab": 462024,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 0,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 0,
+            "pgsteal": 0,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 0,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 0,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 2937,
+            "pgmajfault": 28,
+            "pgrefill": 0,
+            "pgactivate": 0,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 0,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "after": {
+          "memory.current": 1846923264,
+          "memory.peak": 7288643584,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 6774784,
+            "file": 1832824832,
+            "kernel": 5476352,
+            "kernel_stack": 32768,
+            "pagetables": 126976,
+            "sec_pagetables": 0,
+            "percpu": 6208,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 12288,
+            "file_dirty": 16134144,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 0,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 6774784,
+            "inactive_file": 1659424768,
+            "active_file": 173322240,
+            "unevictable": 0,
+            "slab_reclaimable": 5050728,
+            "slab_unreclaimable": 231928,
+            "slab": 5282656,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 0,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 0,
+            "pgsteal": 0,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 0,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 0,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 1807650,
+            "pgmajfault": 1448,
+            "pgrefill": 0,
+            "pgactivate": 0,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 1,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "largest_sample": {
+          "memory.current": 7286145024,
+          "memory.peak": 7286145024,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 5410725888,
+            "file": 1853919232,
+            "kernel": 19611648,
+            "kernel_stack": 393216,
+            "pagetables": 11866112,
+            "sec_pagetables": 0,
+            "percpu": 6976,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 1024000,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 28135424,
+            "file_dirty": 16101376,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 2097152,
+            "file_thp": 14680064,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 5411528704,
+            "inactive_file": 1681436672,
+            "active_file": 171454464,
+            "unevictable": 0,
+            "slab_reclaimable": 6468272,
+            "slab_unreclaimable": 836104,
+            "slab": 7304376,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 0,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 0,
+            "pgsteal": 0,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 0,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 0,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 1804871,
+            "pgmajfault": 1426,
+            "pgrefill": 0,
+            "pgactivate": 0,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 1,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "largest_sample_processes": [
+          {
+            "pid": 68,
+            "name": "fd2.test",
+            "rss_kib": 5324352
+          },
+          {
+            "pid": 9,
+            "name": "Xvfb",
+            "rss_kib": 64872
+          },
+          {
+            "pid": 13,
+            "name": "go",
+            "rss_kib": 29700
+          },
+          {
+            "pid": 7,
+            "name": "python3",
+            "rss_kib": 12264
+          },
+          {
+            "pid": 8,
+            "name": "with-xvfb",
+            "rss_kib": 1724
+          },
+          {
+            "pid": 1,
+            "name": "docker-init",
+            "rss_kib": 752
+          }
+        ],
+        "children_maxrss_kib": 5322872,
+        "log": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/gpu-blue-skin-and-long-nose-r1.log",
+        "samples": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/gpu-blue-skin-and-long-nose-r1.samples.jsonl"
+      },
+      "normal-r1": {
+        "schema_version": 1,
+        "command": [
+          "python3",
+          "tools/verify_fd2_hd_fonts_gui.py",
+          "--binary",
+          "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-gold-binary-r1",
+          "--assets",
+          "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/runtime-r1",
+          "--original-pack",
+          "/original",
+          "--modern-pack",
+          "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/candidate-r1",
+          "--town-save",
+          "/source/fd2_save.json",
+          "--out",
+          "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/normal-r1-capture",
+          "--battle-status",
+          "--world",
+          "--battle-node",
+          "battle_ch01",
+          "--chibi-refresh",
+          "--startup-timeout",
+          "360",
+          "--run-timeout",
+          "900"
+        ],
+        "cwd": "/repo",
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 186.864,
+        "before": {
+          "memory.current": 8691712,
+          "memory.peak": 8691712,
+          "memory.max": 7516192768,
+          "memory.swap.current": 0,
+          "memory.swap.max": 7516192768,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 6672384,
+            "file": 0,
+            "kernel": 696320,
+            "kernel_stack": 32768,
+            "pagetables": 122880,
+            "sec_pagetables": 0,
+            "percpu": 5952,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 0,
+            "file_dirty": 0,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 0,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 6508544,
+            "inactive_file": 0,
+            "active_file": 0,
+            "unevictable": 0,
+            "slab_reclaimable": 251200,
+            "slab_unreclaimable": 268568,
+            "slab": 519768,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 0,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 0,
+            "pgsteal": 0,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 0,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 0,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 3014,
+            "pgmajfault": 0,
+            "pgrefill": 0,
+            "pgactivate": 0,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 0,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "after": {
+          "memory.current": 122421248,
+          "memory.peak": 3685916672,
+          "memory.max": 7516192768,
+          "memory.swap.current": 0,
+          "memory.swap.max": 7516192768,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 6782976,
+            "file": 111091712,
+            "kernel": 2486272,
+            "kernel_stack": 32768,
+            "pagetables": 126976,
+            "sec_pagetables": 0,
+            "percpu": 6208,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 45056,
+            "file_dirty": 5099520,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 2097152,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 6782976,
+            "inactive_file": 104759296,
+            "active_file": 6299648,
+            "unevictable": 0,
+            "slab_reclaimable": 2049576,
+            "slab_unreclaimable": 249840,
+            "slab": 2299416,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 0,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 0,
+            "pgsteal": 0,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 0,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 0,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 2314784,
+            "pgmajfault": 134,
+            "pgrefill": 0,
+            "pgactivate": 0,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 2,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "largest_sample": {
+          "memory.current": 3676147712,
+          "memory.peak": 3685916672,
+          "memory.max": 7516192768,
+          "memory.swap.current": 0,
+          "memory.swap.max": 7516192768,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 3557072896,
+            "file": 105828352,
+            "kernel": 11468800,
+            "kernel_stack": 360448,
+            "pagetables": 8417280,
+            "sec_pagetables": 0,
+            "percpu": 7808,
+            "sock": 0,
+            "vmalloc": 16384,
+            "shmem": 18632704,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 20922368,
+            "file_dirty": 2670592,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 2097152,
+            "file_thp": 0,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 3575267328,
+            "inactive_file": 80982016,
+            "active_file": 6168576,
+            "unevictable": 0,
+            "slab_reclaimable": 1634336,
+            "slab_unreclaimable": 997080,
+            "slab": 2631416,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 0,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 0,
+            "pgsteal": 0,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 0,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 0,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 1184253,
+            "pgmajfault": 129,
+            "pgrefill": 0,
+            "pgactivate": 0,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 1,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "largest_sample_processes": [
+          {
+            "pid": 23,
+            "name": "hd1-gold-binary",
+            "rss_kib": 3496920
+          },
+          {
+            "pid": 9,
+            "name": "Xvfb",
+            "rss_kib": 89524
+          },
+          {
+            "pid": 8,
+            "name": "python3",
+            "rss_kib": 30000
+          },
+          {
+            "pid": 853,
+            "name": "import",
+            "rss_kib": 28048
+          },
+          {
+            "pid": 7,
+            "name": "python3",
+            "rss_kib": 12404
+          },
+          {
+            "pid": 14,
+            "name": "pulseaudio",
+            "rss_kib": 9492
+          },
+          {
+            "pid": 1,
+            "name": "docker-init",
+            "rss_kib": 756
+          }
+        ],
+        "children_maxrss_kib": 3495540,
+        "log": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/normal-r1.log",
+        "samples": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/normal-r1.samples.jsonl"
+      },
+      "regression-r1": {
+        "schema_version": 1,
+        "command": [
+          "with-xvfb",
+          "go",
+          "test",
+          "./cmd/fd2",
+          "./cmd/fd2-string-inventory",
+          "-p=1",
+          "-count=1",
+          "-timeout=360s",
+          "-run",
+          "^(TestModernHDMap.*|TestModernHDChibiPartyFixture|TestModernHDChibiEnemyFixture|TestModernHDChibiStaticFixture|TestModernHDChibiAnonymousStaticFixture|TestModernHDChibiAuditedFixture|TestModernHDChibiMapSampleSelectsOriginalPosition|TestIndependentInterface.*|TestModernHDBattleConsumerInventory|TestBuild.*|TestMultipleTextFieldsDoNotReuseOneExistingStringID|TestVariablesIncludeWrappedErrorPlaceholder|TestDrawFunctionContext.*|TestReviewedGoCandidatesMatchCurrentInventory)$",
+          "-v"
+        ],
+        "cwd": "/repo/remake",
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 56.087,
+        "before": {
+          "memory.current": 8634368,
+          "memory.peak": 8634368,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 6660096,
+            "file": 0,
+            "kernel": 700416,
+            "kernel_stack": 32768,
+            "pagetables": 118784,
+            "sec_pagetables": 0,
+            "percpu": 5952,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 0,
+            "file_dirty": 0,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 0,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 6635520,
+            "inactive_file": 0,
+            "active_file": 0,
+            "unevictable": 0,
+            "slab_reclaimable": 245736,
+            "slab_unreclaimable": 269608,
+            "slab": 515344,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 0,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 0,
+            "pgsteal": 0,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 0,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 0,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 2921,
+            "pgmajfault": 0,
+            "pgrefill": 0,
+            "pgactivate": 0,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 0,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "after": {
+          "memory.current": 86016000,
+          "memory.peak": 1380933632,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 6754304,
+            "file": 72495104,
+            "kernel": 4902912,
+            "kernel_stack": 32768,
+            "pagetables": 126976,
+            "sec_pagetables": 0,
+            "percpu": 6464,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 0,
+            "file_dirty": 3493888,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 2097152,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 6754304,
+            "inactive_file": 71938048,
+            "active_file": 552960,
+            "unevictable": 0,
+            "slab_reclaimable": 4477728,
+            "slab_unreclaimable": 235928,
+            "slab": 4713656,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 0,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 0,
+            "pgsteal": 0,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 0,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 0,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 1101783,
+            "pgmajfault": 108,
+            "pgrefill": 0,
+            "pgactivate": 0,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 0,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "largest_sample": {
+          "memory.current": 1277652992,
+          "memory.peak": 1277652992,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 1193332736,
+            "file": 73498624,
+            "kernel": 9703424,
+            "kernel_stack": 294912,
+            "pagetables": 3141632,
+            "sec_pagetables": 0,
+            "percpu": 6976,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 23134208,
+            "file_dirty": 24576,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 14680064,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 1193181184,
+            "inactive_file": 73302016,
+            "active_file": 196608,
+            "unevictable": 0,
+            "slab_reclaimable": 5535280,
+            "slab_unreclaimable": 690424,
+            "slab": 6225704,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 0,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 0,
+            "pgsteal": 0,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 0,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 0,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 1055721,
+            "pgmajfault": 95,
+            "pgrefill": 0,
+            "pgactivate": 0,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 0,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "largest_sample_processes": [
+          {
+            "pid": 69,
+            "name": "fd2.test",
+            "rss_kib": 1140760
+          },
+          {
+            "pid": 9,
+            "name": "Xvfb",
+            "rss_kib": 63700
+          },
+          {
+            "pid": 13,
+            "name": "go",
+            "rss_kib": 36940
+          },
+          {
+            "pid": 7,
+            "name": "python3",
+            "rss_kib": 12328
+          },
+          {
+            "pid": 8,
+            "name": "with-xvfb",
+            "rss_kib": 1664
+          },
+          {
+            "pid": 1,
+            "name": "docker-init",
+            "rss_kib": 752
+          }
+        ],
+        "children_maxrss_kib": 1218216,
+        "log": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/regression-r1.log",
+        "samples": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/regression-r1.samples.jsonl"
+      },
+      "independent-control-r1": {
+        "schema_version": 1,
+        "command": [
+          "with-xvfb",
+          "go",
+          "test",
+          "./cmd/fd2",
+          "./cmd/fd2-string-inventory",
+          "-p=1",
+          "-count=1",
+          "-timeout=360s",
+          "-run",
+          "^(TestIndependentInterface.*|TestInterface.*|TestOriginalInterfaceKeepsHDPanelPortrait|TestSettingsRoundTripKeepsAudioAndLocaleOutsideSave)$",
+          "-v"
+        ],
+        "cwd": "/repo/remake",
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 3.51,
+        "before": {
+          "memory.current": 8937472,
+          "memory.peak": 8941568,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 6668288,
+            "file": 0,
+            "kernel": 679936,
+            "kernel_stack": 32768,
+            "pagetables": 122880,
+            "sec_pagetables": 0,
+            "percpu": 5952,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 0,
+            "file_dirty": 0,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 0,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 6553600,
+            "inactive_file": 0,
+            "active_file": 0,
+            "unevictable": 0,
+            "slab_reclaimable": 249208,
+            "slab_unreclaimable": 254688,
+            "slab": 503896,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 0,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 0,
+            "pgsteal": 0,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 0,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 0,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 3006,
+            "pgmajfault": 0,
+            "pgrefill": 0,
+            "pgactivate": 0,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 0,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "after": {
+          "memory.current": 28831744,
+          "memory.peak": 635637760,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 6737920,
+            "file": 15409152,
+            "kernel": 4661248,
+            "kernel_stack": 32768,
+            "pagetables": 131072,
+            "sec_pagetables": 0,
+            "percpu": 6208,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 0,
+            "file_dirty": 24576,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 0,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 6737920,
+            "inactive_file": 15368192,
+            "active_file": 36864,
+            "unevictable": 0,
+            "slab_reclaimable": 4227320,
+            "slab_unreclaimable": 250840,
+            "slab": 4478160,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 0,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 0,
+            "pgsteal": 0,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 0,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 0,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 309782,
+            "pgmajfault": 109,
+            "pgrefill": 0,
+            "pgactivate": 0,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 0,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "largest_sample": {
+          "memory.current": 634851328,
+          "memory.peak": 634851328,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 600453120,
+            "file": 24551424,
+            "kernel": 8241152,
+            "kernel_stack": 212992,
+            "pagetables": 1921024,
+            "sec_pagetables": 0,
+            "percpu": 6976,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 4096,
+            "file_dirty": 24514560,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 14680064,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 600158208,
+            "inactive_file": 24510464,
+            "active_file": 36864,
+            "unevictable": 0,
+            "slab_reclaimable": 5483448,
+            "slab_unreclaimable": 582440,
+            "slab": 6065888,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 0,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 0,
+            "pgsteal": 0,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 0,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 0,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 255520,
+            "pgmajfault": 96,
+            "pgrefill": 0,
+            "pgactivate": 0,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 0,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "largest_sample_processes": [
+          {
+            "pid": 62,
+            "name": "vet",
+            "rss_kib": 542552
+          },
+          {
+            "pid": 9,
+            "name": "Xvfb",
+            "rss_kib": 63900
+          },
+          {
+            "pid": 13,
+            "name": "go",
+            "rss_kib": 35296
+          },
+          {
+            "pid": 7,
+            "name": "python3",
+            "rss_kib": 12292
+          },
+          {
+            "pid": 8,
+            "name": "with-xvfb",
+            "rss_kib": 1736
+          },
+          {
+            "pid": 1,
+            "name": "docker-init",
+            "rss_kib": 752
+          }
+        ],
+        "children_maxrss_kib": 542432,
+        "log": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/independent-control-r1.log",
+        "samples": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/independent-control-r1.samples.jsonl"
+      }
+    },
+    "references": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/base-catalog.json",
+        "sha256": "f115e181c2bcc538a21782792bd7b7dea61c4719fe1d26719509483863cfb036"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/candidate-r1/catalog.json",
+        "sha256": "05d8801a9eaebcf7683ff2137db69645741120d72c75adf8557dc92d6b578787"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/candidate-r1/manifest.json",
+        "sha256": "e01125d556654b404cf2e25664f1ac447de959bc08d8934fea8ba8e2565168f3"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/gpu-combined-r2-capture/receipt.json",
+        "sha256": "2b81cb0a0b45e4b26bbb2da69893bcc6b93f50edeba907efa8c0bcd90e72ea6d"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/normal-r1-capture/receipt.json",
+        "sha256": "5f6816500f1eb39350246bf0d95657539a6563254bbdfe0232d8a80120c3358e"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/registration-r1.json",
+        "sha256": "62d7e9c744cf43603a2419840ff50af36d77ef308f2d2ccef4fe9231e6fc1ce3"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/source-r1.log",
+        "sha256": "f9292e016067db1f5ed47d9563af5073c532fa874387fb7c81249c8d2cc216ea"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/regression-r1.log",
+        "sha256": "077ce5254c2edbf496b91a59d1259bdde49b77de114a6b43a4297f92ca1e23b8"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/independent-control-r1.log",
+        "sha256": "d2513dc70f41133a5ecba44ad6e4799dc14a196084098f6a98fcb083f230dab6"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/consumers-r1.json",
+        "sha256": "a5425df2a4552845a5f15708a518609a516f66813544ec8783f4f8d2519ea526"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/consumers-verified-r1.json",
+        "sha256": "affe1a7e2cbbee78bf8ee8f8e2a2bc004ff158216f43ba13acf4d62e1c4f7bce"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/formal-coverage.json",
+        "sha256": "8a5b83e922ab207094008e79400e23d2441c45e4ba0f99b4f5f17b3208d68626"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/review-final/receipt.json",
+        "sha256": "8c7b391745e12996bda783d10142277b2cedb57df848fdd9934aff07bde78e10"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/visual-review-final.json",
+        "sha256": "191fd57d266df4e3e073fbf2bb03726794fcab55fed62c9ef671d4d3541980c2"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/private-preservation-r1.json",
+        "sha256": "b09948ebfa2e81797fe483a03f73a8acb1913ce2dc636304dbb2905b22b7733f"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/public-figures-r1.json",
+        "sha256": "15f45e245136b2a6d60ae7913008bceddf8c441372cd9ade98813e05d9a79667"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/commands.json",
+        "sha256": "45cb4d7d29ff74eb3b92616829b33e1341d6dd2b3ede362fe297667701a018c9"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/legacy-parts-r1.json",
+        "sha256": "9e6f1d0c88232a5f0a36e0a3f19df9e7bcc7a5ff63efe13f55eec96bd8080ed7"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/face-source-references.json",
+        "sha256": "46584e3ba874a2193bcb3fdc2c859f9d674dc29f68efd54cde09b7b41ffc0849"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/face-evidence.json",
+        "sha256": "1c3904fe9bbd7e444fc6b273cab53efe8769027df7e6bb04044102c892957727"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/alpha-quality-final.json",
+        "sha256": "62d7c7e528d871d89952a7106e328e70ce38f300fffbfdfca1e9135689cf0045"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/generation-calls.json",
+        "sha256": "921d502b978e68aa49d731e1faf996be1c5a1a603cbfdfe1806ee7ea526bceab"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/gpu-blue-and-red-shadows-r1.memory.json",
+        "sha256": "5265dc18b9d0774303bdf4b1e93fe44006e5aba65d1d47abf9db8d7a872a42f9"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/gpu-blue-skin-and-long-nose-r1.memory.json",
+        "sha256": "1bd166e7af55b666f7dcc204714c0534de363cddf0946a4bfb346270e172ef46"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/normal-r1.memory.json",
+        "sha256": "b82a7a8c0fddfa03587dbb3786b1b988d583df5e573b567f10be6c203c77d46b"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/regression-r1.memory.json",
+        "sha256": "33796a54a7661a44fbaab47a9797011b5f0b757d660ff36806fdacf68c17c5fe"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/independent-control-r1.memory.json",
+        "sha256": "4983f7e56442c292cf6e80a8590e809ddd363d266afe712c442fcd8a5c561df7"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/overview-000-031-r1.json",
+        "sha256": "30e7bce6d41a38af9af06f24699b1662efdf4cdbb58ca0ba1ef01d1f91977004"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/overview-032-067-r1.json",
+        "sha256": "8c60d102415a48001f6914da1278b3c2b85b86b7dd51c090e8ad6d2c1fa67484"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/overview-068-095-r1.json",
+        "sha256": "e2a855d623007386de68e9ff2427816650f89f794d79e89439490721ac0aa986"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/overview-096-139-r1.json",
+        "sha256": "65d3c5fa2c51f49bb73c97ec9f6afc6f37700f442270b1bc766ef879ba379833"
+      },
+      {
+        "file": "remake/assets/themes/modern/hd1-shadow-faces-refresh.recipe.json",
+        "sha256": "953ed98633faac33aec26430e28622bbb232333099425cd587d20b9f5ff77340"
+      },
+      {
+        "file": "tools/verify_fd2_hd1_chibi_party.py",
+        "sha256": "b0309d6cd33bad0570e99f4ff4d0f6472d999eaf1a8b88c4423c8234929277c7"
+      },
+      {
+        "file": "tools/refresh_fd2_hd1_map_sprites.py",
+        "sha256": "f3220d47a6536d0201d4e57bd73e321714164bb6ca96762d7569c0c932af1462"
+      },
+      {
+        "file": "tools/test_fd2_hd1_chibi_party.py",
+        "sha256": "ccd4285f2aec8c47e137b3ec076191b82f5b76aea64ab48f66f15fa9dc4ce612"
+      },
+      {
+        "file": "tools/build_modern_map_sprite_overview.py",
+        "sha256": "59b7698a205d8caecf6d00ad9acfebc421a4a712028743f5b61b4875d41d8570"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/worklist-final.log",
+        "sha256": "206acd6227c117bb6be8fc9803ddb26cdb64bc7e66816e92a739f74278d3a7c3"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/lessons-final.log",
+        "sha256": "e77e20a1c192b19a1fde12cda2bdf8ab4b75df0b66731a55cc4692ecd31efed8"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/overview-validation.json",
+        "sha256": "eebc875625c51d47b84f781bde769333e631df6df9a7d49ab38b320f23bc35da"
+      }
+    ],
+    "cleanup": {
+      "nonexpected_fd2_containers": 0,
+      "old_art_preserved": 9405,
+      "new_art_files": 100,
+      "recording_created": false
+    },
+    "limitations": [
+      "仍有28組人物造型與身份複核；原版動態、PLAYER-E2及480頭像未新增。",
+      "介面仍有正式缺接線，城鎮離開轉場目前直接繪原生索引frame。",
+      "地形3354缺槽／2049獨特原生來源未製作；不改稱人工工作。",
+      "人工造型、逐章及平台由使用者確認，不阻擋已完成接線結案。"
+    ],
+    "worklist": {
+      "open": 29,
+      "manual": 22,
+      "possibly_done": 0,
+      "closed": [
+        284
+      ],
+      "updated": [
+        286,
+        287
+      ]
+    },
+    "lessons": {
+      "total": 392,
+      "guarded": 243,
+      "check_passed": true
+    },
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/final-validation-r1.json",
+      "sha256": "51257d95e79cfebba52dcfa02cba767b13ed44abc8af2d811f9fe2686e9c4855"
+    }
   }
 }

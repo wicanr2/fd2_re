@@ -4859,6 +4859,21 @@
         ],
         "pattern": "name = modern_files\\[frame\\][\\s\\S]*current_files"
       }
+    },
+    {
+      "id": "negative-fixture-changes-actual-value",
+      "date": "2026-11-01",
+      "area": "拒收反例",
+      "rule": "反例依實際輸入選不同的有效值，並在呼叫驗證器前確認反例與原輸入不同。固定使用99等錯誤代碼前先排除它正是當前合法值。入口tools/verify_fd2_hd1_chibi_party.py的main自測，wrong-hud／wrong-selector／wrong-identity在98與99間切換，x!=d守門拒絕空反例。",
+      "why": "新增圖組99時，既有wrong-hud固定寫99未改變原值，獨立核對在正式登錄前回報mutant accepted。改成不同的有效圖組並加入反例變動守門後，24反例通過；GPU、普通流程與素材保持。",
+      "evidence": "WORKLOG.md：2026-11-01 HD1四組陰影與長鼻面容；HD主收據hd1_shadow_faces_followup_20261101",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_hd1_chibi_party.py"
+        ],
+        "pattern": "mutant did not change fixture"
+      }
     }
   ]
 }

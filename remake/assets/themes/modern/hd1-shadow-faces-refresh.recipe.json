@@ -1,0 +1,317 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_hd1_chibi_map_refresh",
+  "approved_preview": "docs/figures/hd1-ares-q-design.png",
+  "approved_preview_sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e",
+  "native_bank_sha256": "7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44",
+  "palette_sha256": "404db1ca72ffc19fa7404fbc59bde98cdf239f63fe3375ec248a8142073a28bf",
+  "base_catalog_sha256": "f115e181c2bcc538a21782792bd7b7dea61c4719fe1d26719509483863cfb036",
+  "approval": "沿已定Q比例、每人自己的原版面容及2026-11-01繼續完成HD1授權；不變更規則。",
+  "master_alpha_policy": "per_pose_coverage_v1",
+  "groups": [
+    {
+      "group": 99,
+      "master_file": "fdicon-099-hd1-portrait-q-v1-master.png",
+      "master_sha256": "d3ba358194c62bfdd27abf50e68b09464ebbdca79227c8cbf1ad3f0d79ac4490",
+      "output_prefix": "fdicon-099-hd1-portrait-q-v1"
+    },
+    {
+      "group": 100,
+      "master_file": "fdicon-100-hd1-portrait-q-v1-master.png",
+      "master_sha256": "cfe4f7410eba3b17b0e8c3f50665363f30bd2596ba620d5335056f45180e2779",
+      "output_prefix": "fdicon-100-hd1-portrait-q-v1"
+    },
+    {
+      "group": 101,
+      "master_file": "fdicon-101-hd1-portrait-q-v1-master.png",
+      "master_sha256": "254957cd3e6ab36e51b1e59deb5db8a3357c197af2fdd736dbd4b55c68c6ea5a",
+      "output_prefix": "fdicon-101-hd1-portrait-q-v1"
+    },
+    {
+      "group": 107,
+      "master_file": "fdicon-107-hd1-portrait-q-v1-master.png",
+      "master_sha256": "06f60cc40963d1a229f87004484043191c13ddc327c97d988542178db4c0998a",
+      "output_prefix": "fdicon-107-hd1-portrait-q-v1"
+    }
+  ],
+  "faces": [
+    {
+      "group": 99,
+      "name": "第99組原名冊人物",
+      "portrait_file": "remake/assets/portraits/DATO_099_m0.png",
+      "portrait_sha256": "894efcc7589234d3f20f2f258253517e9b940b9ef3650e4129e79c51676d8c2d",
+      "original_png_sha256": "c6e7ed4d4f854bc27802d6445336647585d430510ba93d162e27f217849b0447",
+      "decoded_rgba_sha256": "b00f691226fad8106f06276a3c60e5a84892282a266ca2fc1e8e18f3ed86978f",
+      "encoding_note": "工作區RGB與原包P模式PNG的RGBA逐byte相同；檔案編碼與雜湊分列。",
+      "traits": [
+        "深藍髮與灰褐頭帶",
+        "窄淺色眼、角形暖色鼻及深陰影",
+        "灰綠短衣與空手"
+      ],
+      "comparison_label": "原名冊DATO與地圖圖源；姓名不推定，非480頭像驗收"
+    },
+    {
+      "group": 100,
+      "name": "第100組原名冊人物",
+      "portrait_file": "remake/assets/portraits/DATO_100_m0.png",
+      "portrait_sha256": "6a265e95d5a4c236c0cdd59459ba808b868735f28fefd443d31b9f5837ae0e1e",
+      "original_png_sha256": "513c1bc199f366e8959efb2e33f3e9d34be4be9c0963632c71d4c9c8063a9765",
+      "decoded_rgba_sha256": "14d5bfe0c27b4c7d7c03984d8512115ab104ea42ebb3c0f43bfe3ce834dbbbd4",
+      "encoding_note": "工作區RGB與原包P模式PNG的RGBA逐byte相同；檔案編碼與雜湊分列。",
+      "traits": [
+        "紅褐髮與深藍頭帶",
+        "窄橙紅眼、角形鼻與深陰影",
+        "深藍短衣及紅色腰片"
+      ],
+      "comparison_label": "原名冊DATO與地圖圖源；姓名不推定，非480頭像驗收"
+    },
+    {
+      "group": 101,
+      "name": "第101組原名冊人物",
+      "portrait_file": "remake/assets/portraits/DATO_101_m0.png",
+      "portrait_sha256": "501d805d29f29282c4ae2cd98d0595cdf9ce03d61e7722a6f73f4917a90ed669",
+      "original_png_sha256": "891624549c7e6ab8b7787f8a6891663909317a6cb9d6d6a41336c0433eeb7700",
+      "decoded_rgba_sha256": "f4606715389729546a94084eca0c14d3848ea10d12cdb8c85fdb853ff167fb20",
+      "encoding_note": "工作區RGB與原包P模式PNG的RGBA逐byte相同；檔案編碼與雜湊分列。",
+      "traits": [
+        "紅褐髮與深藍頭帶",
+        "自身藍膚與窄黃眼",
+        "灰綠腰片與深藍短衣"
+      ],
+      "comparison_label": "原名冊DATO與地圖圖源；姓名不推定，非480頭像驗收"
+    },
+    {
+      "group": 107,
+      "name": "第107組原名冊人物",
+      "portrait_file": "remake/assets/portraits/DATO_107_m0.png",
+      "portrait_sha256": "c74027800953d9789643e1c876c0b797a4b858c0afff021009c8ce1d9f7e8a6a",
+      "original_png_sha256": "39609823e39a1038ae4303afaa755b1cddde8b5bdea8d4a540b7567b6f280908",
+      "decoded_rgba_sha256": "8d6d7edab7b8bbbbb8b8cdfd18d65444cf42a3e2296c6ed01d1c36b494c96bf4",
+      "encoding_note": "工作區RGB與原包P模式PNG的RGBA逐byte相同；檔案編碼與雜湊分列。",
+      "traits": [
+        "灰綠寬帽",
+        "灰綠長鼻面孔與窄紅眼",
+        "深藍紅側袍，不露手腳"
+      ],
+      "comparison_label": "原名冊DATO與地圖圖源；姓名不推定，非480頭像驗收"
+    }
+  ],
+  "roster_bindings": [
+    {
+      "group": 99,
+      "map": 19,
+      "roster_file": "remake/assets/maps/map19/map19_units.json",
+      "roster_sha256": "cd30276b48d06187ced69c4e7ee0c0c7c749a38a7484b9e132da5eb78313e424",
+      "row": 20,
+      "initial_group": 0,
+      "camp": "enemy",
+      "portrait": 99,
+      "battle_fig": 99,
+      "position": {
+        "x_word": 12,
+        "y_word": 13,
+        "raw_key": 99
+      },
+      "native_constructor": {
+        "branch": "high_class",
+        "index": 31,
+        "record": [
+          1,
+          1,
+          36,
+          0,
+          0,
+          20,
+          12,
+          4,
+          6,
+          110
+        ]
+      }
+    },
+    {
+      "group": 100,
+      "map": 18,
+      "roster_file": "remake/assets/maps/map18/map18_units.json",
+      "roster_sha256": "69251f66b970cf732d4db7c81a174f3969ee620ff51525dbc775c551dc7d11dd",
+      "row": 17,
+      "initial_group": 0,
+      "camp": "enemy",
+      "portrait": 100,
+      "battle_fig": 100,
+      "position": {
+        "x_word": 19,
+        "y_word": 20,
+        "raw_key": 100
+      },
+      "native_constructor": {
+        "branch": "high_class",
+        "index": 32,
+        "record": [
+          1,
+          8,
+          45,
+          0,
+          0,
+          22,
+          12,
+          5,
+          5,
+          150
+        ]
+      }
+    },
+    {
+      "group": 101,
+      "map": 21,
+      "roster_file": "remake/assets/maps/map21/map21_units.json",
+      "roster_sha256": "5da1516036803f136b8014afb509603bd165c79bdda0f4eaa2787ad56c2c0bd4",
+      "row": 7,
+      "initial_group": 0,
+      "camp": "enemy",
+      "portrait": 101,
+      "battle_fig": 101,
+      "position": {
+        "x_word": 21,
+        "y_word": 19,
+        "raw_key": 101
+      },
+      "native_constructor": {
+        "branch": "high_class",
+        "index": 33,
+        "record": [
+          1,
+          16,
+          46,
+          0,
+          0,
+          24,
+          12,
+          6,
+          5,
+          160
+        ]
+      }
+    },
+    {
+      "group": 107,
+      "map": 23,
+      "roster_file": "remake/assets/maps/map23/map23_units.json",
+      "roster_sha256": "2c590df01baf4098c79486df500fce63debe9cb3a40a389b5f7140b74e182d99",
+      "row": 40,
+      "initial_group": 10,
+      "camp": "enemy",
+      "portrait": 107,
+      "battle_fig": 107,
+      "position": {
+        "x_word": 6,
+        "y_word": 7,
+        "raw_key": 107
+      },
+      "native_constructor": {
+        "branch": "high_class",
+        "index": 39,
+        "record": [
+          4,
+          5,
+          20,
+          0,
+          30,
+          11,
+          6,
+          3,
+          6,
+          120
+        ]
+      }
+    }
+  ],
+  "gpu_pairs": {
+    "blue-and-red-shadows": [
+      99,
+      100
+    ],
+    "blue-skin-and-long-nose": [
+      101,
+      107
+    ]
+  },
+  "policy": "只修各自原頭像的眉眼、鼻形與明暗。黑區不命名為面罩材質，不新增姓名或種族。107不補原版未露出的手腳。",
+  "alpha_quality_review": {
+    "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/alpha-quality-final.json",
+    "sha256": "62d7c7e528d871d89952a7106e328e70ce38f300fffbfdfca1e9135689cf0045"
+  },
+  "image_generation": {
+    "tool": "builtin image_gen.imagegen",
+    "transparent_background": true,
+    "jobs": [
+      {
+        "group": 99,
+        "revision": 2,
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-95cbfd95-d545-40b1-b1e1-3975c67aae53.png",
+        "prompt": "Edit the FIRST image only, preserving its transparent RGBA 3x4 twelve-sprite sheet, exact costume, palette, short-body big-head proportions, poses, scale and gaps. Make ONLY the three FRONT-row heads face straight toward the viewer, with TWO visible narrow pale eyes symmetrically under the dark brow/headband, and the warm angular nose highlight centrally aligned. They must not be three-quarter one-eyed heads. Retain the own portrait's opaque deep black facial SHADOW without adding fabric mask, and tan ears/side highlights. Keep all other rows and all body details unchanged. The second image is the original portrait/map anatomy reference only. No text, backdrop, cast shadow or added objects.",
+        "selected": true,
+        "source_sha256": "d3ba358194c62bfdd27abf50e68b09464ebbdca79227c8cbf1ad3f0d79ac4490",
+        "saved_master": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/fdicon-099-hd1-portrait-q-v1-master.png",
+        "initial_prompt": "Create ONE production-ready transparent RGBA sprite master sheet for the approved HD1 Taiwan fantasy tactics remake. Exactly 12 separate full-body sprites in a regular 3 columns x 4 rows. Rows: FRONT, strict LEFT profile, BACK, strict RIGHT profile. Columns: planted neutral stance, small left step, small right step. Reference 1 contains THIS character's own original portrait at top and original twelve map poses below; use its actual head/face, palette, costume, held objects and directional occlusion. Reference 2 is STYLE ONLY: use the approved bottom very-large-head, extremely-short-body Q-style, head about 2/3 total height, clean bold outlines, smooth hand-painted color blocks, readable at 48 pixels. Never copy Ares's face, hair, clothes, sword or shield. Fully separated characters in equal cells with generous transparent gutters, equal scale and foot baseline, all heads/hair/feet fully inside cell. Real alpha0 background; solid interiors including dark facial shadows must be fully opaque. No text, grid, labels, shadows, ground, scenery, checkerboard, glow, effects, or extra objects. Preserve the own portrait's adult/angular facial character; no generic smiling baby face. Character099: deep navy-blue hair with the native swept, relatively flat silhouette and dark olive/brown headband. Follow his OWN top portrait: long angular tan ear/side-of-neck contour, strong diagonal brow, narrow pale eyes, prominent angular warm-orange nose highlight, most face in very deep opaque dark shadow. Treat dark regions as lighting; do NOT invent a cloth mask, goggles or helmet. Do not expose a round smiling mouth or large cute red irises. Hair wraps around side and back as native, not an exaggerated spiky anime wig. Tiny gray-green sleeveless tunic, dark navy lower garment and short dark reddish-brown forearm/side wraps. Bare tan ears, hands and small feet as the native map. Native waist panel gray-green. Empty hands in all poses; no weapons added.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/group-099-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ]
+      },
+      {
+        "group": 100,
+        "revision": 2,
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-77c9c749-f2ca-4389-9556-ae7789aaad56.png",
+        "prompt": "Edit the FIRST transparent twelve-pose sprite sheet only. Preserve its exact 3x4 layout, hair, dark blue headband, navy sleeveless clothes, red center waist cloth, empty hands, tan arms/feet, short-body big-head proportions, walking directions, scale and margins. Change only facial rendering to match the SECOND image's own original portrait: strong adult angular brow; TWO narrow orange-red eyes in the straight FRONT row, one in strict profiles; most of face in deep opaque BLACK shadow with a prominent angular warm-orange nose highlight and tan ears/outer side-of-head highlight. No exposed smiling mouth or broad light baby cheeks. This is dramatic SHADING, not an invented cloth mask: no fabric seams/straps, no covering nose. Back row face remains invisible. True transparent background; black facial paint must be opaque. No text or other objects.",
+        "selected": true,
+        "source_sha256": "cfe4f7410eba3b17b0e8c3f50665363f30bd2596ba620d5335056f45180e2779",
+        "saved_master": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/fdicon-100-hd1-portrait-q-v1-master.png",
+        "initial_prompt": "Create ONE production-ready transparent RGBA sprite master sheet for the approved HD1 Taiwan fantasy tactics remake. Exactly 12 separate full-body sprites in a regular 3 columns x 4 rows. Rows: FRONT, strict LEFT profile, BACK, strict RIGHT profile. Columns: planted neutral stance, small left step, small right step. Reference 1 contains THIS character's own original portrait at top and original twelve map poses below; use its actual head/face, palette, costume, held objects and directional occlusion. Reference 2 is STYLE ONLY: use the approved bottom very-large-head, extremely-short-body Q-style, head about 2/3 total height, clean bold outlines, smooth hand-painted color blocks, readable at 48 pixels. Never copy Ares's face, hair, clothes, sword or shield. Fully separated characters in equal cells with generous transparent gutters, equal scale and foot baseline, all heads/hair/feet fully inside cell. Real alpha0 background; solid interiors including dark facial shadows must be fully opaque. No text, grid, labels, shadows, ground, scenery, checkerboard, glow, effects, or extra objects. Preserve the own portrait's adult/angular facial character; no generic smiling baby face. Character100: dark reddish-brown swept relatively flat hair, broad dark blue headband. OWN portrait has strongly angled brow, narrow orange-red eyes, angular warm tan nose and ear highlights with deep opaque BLACK facial shadow, a stern long adult profile. Dark facial regions are shading, not evidence for a cloth mask; add NO mask fabric or new headgear. Avoid huge round infant eyes or exposed smiling baby cheeks/mouth. Tiny deep navy sleeveless outfit, long dark RED center waist panel, bare warm tan arms/feet. Retain native side hair trailing shape and headband tail at back, without extra ponytail. Both hands empty; no swords, armor plates or jewelry.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/group-100-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ]
+      },
+      {
+        "group": 101,
+        "revision": 3,
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-19d1fa15-e4a9-4629-bcae-b9c668bcd268.png",
+        "prompt": "Generate a production transparent RGBA sprite sheet by following the FIRST image's corrected layout/orientation guide EXACTLY. It has FOUR ROWS and THREE COLUMNS. Top row ALL THREE look straight FRONT. Second row ALL THREE face LEFT (all noses point to image left). Third row ALL THREE face BACK. Bottom row ALL THREE face RIGHT (all noses point to image right). In particular the second row's third/rightmost sprite must point LEFT, NOT RIGHT. Walking phase never changes facing direction: do NOT horizontally mirror the third walking phase. Make three subtly different phases per row, planted neutral / small left step / small right step, while retaining SAME ROW FACING. Keep the exact red-brown hair, navy headband, blue ears/nose/hands, narrow yellow eyes and opaque black facial shadow, navy short outfit and gray-green waist panel from the guide. Match the guide's very large head and very short body, smooth clean hand-painted shading and dark outlines. Second image is only original portrait/map reference. Preserve identity, palette, clothing and original equipment. Exactly twelve full characters, generous transparent margins and gutters. All dark interior pixels including face are opaque. Remove the guide's blue background and words entirely: output true alpha0 background, no labels, arrows, grid, shadows, scenery, extras or watermark.",
+        "selected": true,
+        "source_sha256": "254957cd3e6ab36e51b1e59deb5db8a3357c197af2fdd736dbd4b55c68c6ea5a",
+        "saved_master": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/fdicon-101-hd1-portrait-q-v1-master.png",
+        "initial_prompt": "Create ONE production-ready transparent RGBA sprite master sheet for the approved HD1 Taiwan fantasy tactics remake. Exactly 12 separate full-body sprites in a regular 3 columns x 4 rows. Rows: FRONT, strict LEFT profile, BACK, strict RIGHT profile. Columns: planted neutral stance, small left step, small right step. Reference 1 contains THIS character's own original portrait at top and original twelve map poses below; use its actual head/face, palette, costume, held objects and directional occlusion. Reference 2 is STYLE ONLY: use the approved bottom very-large-head, extremely-short-body Q-style, head about 2/3 total height, clean bold outlines, smooth hand-painted color blocks, readable at 48 pixels. Never copy Ares's face, hair, clothes, sword or shield. Fully separated characters in equal cells with generous transparent gutters, equal scale and foot baseline, all heads/hair/feet fully inside cell. Real alpha0 background; solid interiors including dark facial shadows must be fully opaque. No text, grid, labels, shadows, ground, scenery, checkerboard, glow, effects, or extra objects. Preserve the own portrait's adult/angular facial character; no generic smiling baby face. Character101: distinct BLUE-SKIN variant with dark reddish-brown native hair and dark blue headband. Follow OWN portrait, not character100's face: blue ear and angular blue nose highlight, narrow YELLOW eyes under deeply angled dark brow, lower and side face kept in very deep opaque dark shadow. Dark regions are shading; do NOT invent fabric mask, helmet or metal face. No red pupil circles, tan skin, smiling baby face or broad exposed blue cheeks. Tiny navy outfit, gray-green front waist panel, blue hands/feet, original reddish-brown hair wrapping back. Empty hands, no weapon, no new armor or belt ornaments.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/group-101-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ]
+      },
+      {
+        "group": 107,
+        "revision": 3,
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-93993df2-424a-486a-94f1-6178a64fdc01.png",
+        "prompt": "Generate a production transparent RGBA sprite sheet by following the FIRST image's corrected layout/orientation guide EXACTLY. It has FOUR ROWS and THREE COLUMNS. Top row ALL THREE look straight FRONT. Second row ALL THREE face LEFT (all noses point to image left). Third row ALL THREE face BACK. Bottom row ALL THREE face RIGHT (all noses point to image right). In particular the second row's third/rightmost sprite must point LEFT, NOT RIGHT. Walking phase never changes facing direction: do NOT horizontally mirror the third walking phase. Make three subtly different phases per row, planted neutral / small left step / small right step, while retaining SAME ROW FACING. Keep the gray olive flat wide hat, two narrow red-orange front eyes, own long hooked gray-green nose/cheeks and thin severe mouth, blue short closed robe and red side cloak. Robe phases only subtle sways; no hands, feet, legs or staff. Match the guide's very large head and very short body, smooth clean hand-painted shading and dark outlines. Second image is only original portrait/map reference. Preserve identity, palette, clothing and original equipment. Exactly twelve full characters, generous transparent margins and gutters. All dark interior pixels including face are opaque. Remove the guide's blue background and words entirely: output true alpha0 background, no labels, arrows, grid, shadows, scenery, extras or watermark.",
+        "selected": true,
+        "source_sha256": "06f60cc40963d1a229f87004484043191c13ddc327c97d988542178db4c0998a",
+        "saved_master": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/fdicon-107-hd1-portrait-q-v1-master.png",
+        "initial_prompt": "Create ONE production-ready transparent RGBA sprite master sheet for the approved HD1 Taiwan fantasy tactics remake. Exactly 12 separate full-body sprites in a regular 3 columns x 4 rows. Rows: FRONT, strict LEFT profile, BACK, strict RIGHT profile. Columns: planted neutral stance, small left step, small right step. Reference 1 contains THIS character's own original portrait at top and original twelve map poses below; use its actual head/face, palette, costume, held objects and directional occlusion. Reference 2 is STYLE ONLY: use the approved bottom very-large-head, extremely-short-body Q-style, head about 2/3 total height, clean bold outlines, smooth hand-painted color blocks, readable at 48 pixels. Never copy Ares's face, hair, clothes, sword or shield. Fully separated characters in equal cells with generous transparent gutters, equal scale and foot baseline, all heads/hair/feet fully inside cell. Real alpha0 background; solid interiors including dark facial shadows must be fully opaque. No text, grid, labels, shadows, ground, scenery, checkerboard, glow, effects, or extra objects. Preserve the own portrait's adult/angular facial character; no generic smiling baby face. Character107: the OWN original portrait has a large flat oval dull-gray/olive wide-brim hat, two small narrow RED-ORANGE eyes and a clearly visible LONG CROOKED GRAY-GREEN NOSE / long angular hooked face, wrinkled brow and cheek planes, a severe thin irregular mouth from that portrait. Preserve this facial anatomy; do NOT draw a featureless black void with glowing yellow dots. Do not name a species, add horns, fur, dragon ears, fangs, pipes or mask straps. Keep some face shaded under the hat but nose and gray-green cheek structure readable. Body is an extremely short navy-blue robe with deep red shoulder/side cloak panels, native broad closed robe base and NO visible feet, legs, hands or staff. Walking phases use tiny hem and shoulder sway, no new limbs. Back row shows hat and closed blue hood/robe back with red side panels, never face from back.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/group-107-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ]
+      }
+    ]
+  },
+  "original_reference": {
+    "source": "固定原名冊、各自DATO、FDICON三層及FDOTHER0色盤；不新增原版動態。",
+    "groups": [
+      99,
+      100,
+      101,
+      107
+    ],
+    "records_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/face-source-references.json",
+    "records_sha256": "46584e3ba874a2193bcb3fdc2c859f9d674dc29f68efd54cde09b7b41ffc0849"
+  }
+}
