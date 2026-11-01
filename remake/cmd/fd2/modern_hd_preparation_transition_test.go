@@ -189,6 +189,7 @@ func TestModernHDPreparationBackgroundFrozenSourceAndFallback(t *testing.T) {
 	t.Run("roster-components", func(t *testing.T) { verifyPreparationRosterCPU(t, g, set) })
 	t.Run("status-components", func(t *testing.T) { verifyPreparationStatusCPU(t, g, set) })
 	t.Run("count-components", func(t *testing.T) { verifyPreparationCountsCPU(t, g, set) })
+	t.Run("count-icon-components", func(t *testing.T) { verifyPreparationCountIconCPU(t, g, set) })
 	g.nativeClassUIJob = nil
 	g.modernStoryPortraits = set
 	g.interfaceMode = playerInterfaceOriginal

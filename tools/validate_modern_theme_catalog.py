@@ -21,7 +21,7 @@ ROLES = PROTOTYPE_ROLES | {
     "map_sprite_hd_set", "battlefield_tileset_concept", "battle_hud_panel", "battle_action_icon_set",
     "native_terrain_hd_set", "terrain_hd_master", "battle_animation_hd_set", "battle_effect_hd_set", "map_overlay_hd_set",
     "facility_scene_hd", "battle_surface_hd", "map_stage_hd", "story_animation_hd_set",
-    "native_ui_icon_hd",
+    "native_ui_icon_hd", "native_ui_embedded_icon_hd",
     "presentation_poster_pair",
 }
 STATUSES = {"prototype", "concept", "approved", "runtime_candidate", "runtime_ready"}
@@ -68,6 +68,7 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
     surface_resources = set()
     story_resources = set()
     ui_icon_indices = set()
+    embedded_icon_indices = set()
     poster_sets = set()
     for entry in assets:
         required = {"asset_id", "role", "status", "file", "width", "height", "sha256", "source_refs"}
@@ -89,6 +90,8 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
             raise ValueError("asset entry must be an object")
         if entry.get("role") == "presentation_poster_pair":
             expected = required | {"consumer_contract", "frame", "layout_policy", "alpha_contract"}
+        elif entry.get("role") == "native_ui_embedded_icon_hd":
+            expected = required | {"master_file", "consumer_contract", "alpha_contract", "layout_policy", "source_archive", "source_resource", "source_metadata_sha256", "native_lmi_frames", "native_source_rect", "source_files", "source_sha256"}
         elif entry.get("role") == "native_ui_icon_hd":
             expected = required | {"master_file", "consumer_contract", "alpha_contract", "layout_policy", "source_archive", "source_resource", "source_metadata_sha256", "native_raw_cell", "source_files", "source_sha256"}
         elif entry.get("role") == "story_animation_hd_set":
@@ -219,6 +222,23 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
             if not isinstance(speaker, int) or speaker < 0 or speaker in hd_speakers:
                 raise ValueError(f'invalid or duplicate HD speaker: {asset_id}')
             hd_speakers.add(speaker)
+        if entry['role'] == 'native_ui_embedded_icon_hd':
+            native = {'index':137, 'width':86, 'height':86,
+                      'pixels_sha256':'7768d4b208a32a48a0fc92998dd7f8f67e356e45156154d45828c3fd692b50a6'}
+            if (entry['native_lmi_frames'] != [native] or entry['native_source_rect'] != [20,22,44,40]
+                    or 137 in embedded_icon_indices or (entry['width'],entry['height']) != (144,108)
+                    or entry['consumer_contract'] != 'native_embedded_ui_icon_hd6_v1'
+                    or entry['source_archive'] != 'FDOTHER.DAT' or type(entry['source_resource']) is not int or entry['source_resource'] != 5
+                    or entry['source_metadata_sha256'] != 'a547f2f593b980fd9c1b269d1ba95be8727562d7ed31b44015615775d991efd3'
+                    or entry['layout_policy'] != 'native_frame_source_rect_hd6' or entry['alpha_contract'] != 'true_alpha'
+                    or entry['status'] not in {'runtime_candidate','runtime_ready'}
+                    or entry['source_files'] != [entry['master_file']]
+                    or not isinstance(entry['source_sha256'],list) or len(entry['source_sha256']) != 1
+                    or not isinstance(entry['source_sha256'][0],str) or not SHA_RE.fullmatch(entry['source_sha256'][0])):
+                raise ValueError(f'invalid embedded UI icon contract: {asset_id}')
+            embedded_icon_indices.add(137)
+            if verify_private and hashlib.sha256((ROOT/private_root/entry['master_file']).read_bytes()).hexdigest() != entry['source_sha256'][0]:
+                raise ValueError(f'embedded UI master SHA mismatch: {asset_id}')
         if entry['role'] == 'native_ui_icon_hd':
             cell = entry['native_raw_cell']
             if (not isinstance(cell, dict) or set(cell) != {'index', 'width', 'height', 'pixels_sha256'}
@@ -554,6 +574,11 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
                         alpha = image.convert('RGBA').getchannel('A')
                         if alpha.getextrema() != (0, 255):
                             raise ValueError(f'invalid HD coverage alpha: {asset_id}/{file_path.name}')
+                elif entry["role"] == "native_ui_embedded_icon_hd":
+                    from PIL import Image
+                    alpha = Image.open(private_path).convert("RGBA").getchannel("A")
+                    if alpha.getextrema() != (0,255):
+                        raise ValueError(f'embedded UI icon lacks real alpha: {asset_id}')
                 elif entry["role"] in {"battle_action_icon_set", "story_portrait_hd_frame", "facility_scene_hd", "native_ui_icon_hd", "presentation_poster_pair"}:
                     from PIL import Image
                     alpha = Image.open(private_path).convert("RGBA").getchannel("A")

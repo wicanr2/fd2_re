@@ -191,6 +191,9 @@ func verifyPreparationCountsGPU(p *facilityHDProbe, pixels []byte) error {
 	// its nontransparent source to final pixels, including original text erasure.
 	for y := 0; y < h.labels.picture.Bounds().Dy(); y++ {
 		for x := 0; x < h.labels.picture.Bounds().Dx(); x++ {
+			if h.head != nil && (image.Pt(x, y).In(image.Rect(120, 132, 264, 240)) || image.Pt(x, y).In(image.Rect(120, 360, 264, 468))) {
+				continue
+			}
 			c := h.labels.picture.RGBAAt(x, y)
 			if c.A == 0 {
 				continue
@@ -227,5 +230,5 @@ func verifyPreparationCountsGPU(p *facilityHDProbe, pixels []byte) error {
 	}
 	last := p.checks[len(p.checks)-1]
 	last["count_edge_pixels"], last["count_label_pixels"] = edges, labels
-	return nil
+	return verifyPreparationCountIconGPU(p, pixels)
 }

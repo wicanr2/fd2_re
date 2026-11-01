@@ -147,7 +147,7 @@ class ModernThemeCatalogTests(unittest.TestCase):
                 hano["alpha_contract"],
                 hano["master_file"],
             ),
-            (1, 12, "binary", "fdicon-001-style-a-v1-master.png"),
+            (1, 12, "binary", "fdicon-001-hd1-base-face-q-v1-master.png"),
         )
         sprite_groups = {
             asset["source_group"]
@@ -169,27 +169,9 @@ class ModernThemeCatalogTests(unittest.TestCase):
         yuni = next(asset for asset in catalog["assets"] if asset.get("source_group") == 52)
         self.assertEqual(yuni["cycle_policy"], "source_exact_repeats")
         self.assertEqual(yuni["frame_sha256"][6], yuni["frame_sha256"][8])
-        selector40 = next(asset for asset in catalog["assets"] if asset.get("source_group") == 40)
-        selector58 = next(asset for asset in catalog["assets"] if asset.get("source_group") == 58)
-        self.assertEqual(selector58["frame_sha256"], selector40["frame_sha256"])
-        selector41 = next(asset for asset in catalog["assets"] if asset.get("source_group") == 41)
-        selector59 = next(asset for asset in catalog["assets"] if asset.get("source_group") == 59)
-        self.assertEqual(selector59["frame_sha256"], selector41["frame_sha256"])
-        selector42 = next(asset for asset in catalog["assets"] if asset.get("source_group") == 42)
-        selector60 = next(asset for asset in catalog["assets"] if asset.get("source_group") == 60)
-        self.assertEqual(selector60["frame_sha256"], selector42["frame_sha256"])
-        selector43 = next(asset for asset in catalog["assets"] if asset.get("source_group") == 43)
-        selector61 = next(asset for asset in catalog["assets"] if asset.get("source_group") == 61)
-        self.assertEqual(selector61["frame_sha256"], selector43["frame_sha256"])
-        selector44 = next(asset for asset in catalog["assets"] if asset.get("source_group") == 44)
-        selector62 = next(asset for asset in catalog["assets"] if asset.get("source_group") == 62)
-        self.assertEqual(selector62["frame_sha256"], selector44["frame_sha256"])
-        selector46 = next(asset for asset in catalog["assets"] if asset.get("source_group") == 46)
-        selector64 = next(asset for asset in catalog["assets"] if asset.get("source_group") == 64)
-        self.assertEqual(selector64["frame_sha256"], selector46["frame_sha256"])
-        selector47 = next(asset for asset in catalog["assets"] if asset.get("source_group") == 47)
-        selector65 = next(asset for asset in catalog["assets"] if asset.get("source_group") == 65)
-        self.assertEqual(selector65["frame_sha256"], selector47["frame_sha256"])
+        # Individual Q redraws may differ across originally shared groups.
+        # Within-group native phase equivalence and parent/HD pairing remain
+        # checked by HDMapCatalogContractTests and the full validator.
         self.assertEqual(len(set(yuni["frame_sha256"])), 11)
         soldier = next(
             asset
@@ -380,6 +362,45 @@ class NativeTerrainCatalogTests(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     self.validate()
                 self.asset[field] = original
+
+
+class EmbeddedUIIconCatalogTests(unittest.TestCase):
+    def test_embedded_ui_symbol_requires_exact_source_rect_and_alpha_contract(self):
+        base=validator.validate(False)
+        identity='modern.ui.preparation.frame_137.count-head.hd6'
+        index=next(i for i,a in enumerate(base['assets']) if a['asset_id']==identity)
+        with tempfile.TemporaryDirectory() as tmp:
+            path=Path(tmp)/'catalog.json'
+            for fault in ['frame','hash','rect','size','contract','source','metadata','alpha','master-proof','duplicate']:
+                bad=copy.deepcopy(base);asset=bad['assets'][index]
+                if fault=='frame':asset['native_lmi_frames'][0]['index']=136
+                elif fault=='hash':asset['native_lmi_frames'][0]['pixels_sha256']='0'*64
+                elif fault=='rect':asset['native_source_rect']=[21,22,45,40]
+                elif fault=='size':asset['width']=143
+                elif fault=='contract':asset['consumer_contract']='native_raw_ui_icon_hd6_v1'
+                elif fault=='source':asset['source_resource']=6
+                elif fault=='metadata':asset['source_metadata_sha256']='0'*64
+                elif fault=='alpha':asset['alpha_contract']='opaque'
+                elif fault=='master-proof':asset['source_sha256']=[]
+                elif fault=='duplicate':
+                    extra=copy.deepcopy(asset);extra['asset_id']+='.duplicate';bad['assets'].append(extra)
+                path.write_text(json.dumps(bad))
+                with self.subTest(fault=fault),self.assertRaises(ValueError):
+                    validator.validate(False,path)
+
+    def test_embedded_ui_master_and_png_hashes_are_verified(self):
+        base=validator.validate(False)
+        asset=next(a for a in base['assets'] if a['role']=='native_ui_embedded_icon_hd')
+        with tempfile.TemporaryDirectory() as tmp:
+            path=Path(tmp)/'catalog.json';minimal=copy.deepcopy(base);minimal['assets']=[copy.deepcopy(a) for a in base['assets'] if a['role'] in validator.PROTOTYPE_ROLES]+[copy.deepcopy(asset)]
+            path.write_text(json.dumps(minimal));validator.validate(True,path)
+            for field in ['sha256','source_sha256']:
+                bad=copy.deepcopy(minimal)
+                if field=='sha256':bad['assets'][-1][field]='0'*64
+                else:bad['assets'][-1][field]=['0'*64]
+                path.write_text(json.dumps(bad))
+                with self.subTest(field=field),self.assertRaisesRegex(ValueError,'(?i)sha|digest'):
+                    validator.validate(True,path)
 
 
 if __name__ == "__main__":

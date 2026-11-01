@@ -5751,4 +5751,20 @@ seed7 與 clock1000 驗二十六拍、各階段 F2、獨立 CPU 世界／最終�
 
 107頂層回歸通過，九可選GPU／oracle略過不計。原生bytes、素材與font adapter還原、靜態標籤快取、Frame137索引／mask／尺寸、palette／font／owner拒絕及F2下獨立介面通過。1208份Go指紋09e8d963ca9ebb37081b1ca82a70d71755802cee30fef37dab596c6523f62f50，21來源／416幀／19反例保持。字串盤點現為159：原155處置保留，另外四筆為原Frame137直接可見的兩個標籤及兩個乘號，登記玩家可見；沒有新增翻譯或遊戲敘事。
 
-[普通整備計數畫面](../figures/hd1-preparation-counts-game.png)沿同一第24章原生槽正常LOAD、第二槽保存、選人／確認取消、F2、縮放與說明頁，17PNG通過。兩美術保存SHA仍為d5f39666ae53f7b55438a1d4658d38b47a301e434c8aaed65c5ed6fac73fae09，來源槽22bd63070189e0e6703e14d4bd4db8dc1f66452a21128dd5154579171ecbea63保持；攻略建構／清敵祖先限制不變，不新增自然難度、全章E2或原版對拍。906素材與私人e2147650保持。頭部符號與游標仍用原圖；來源相同的頭部符號Q試稿另存R45，尚未登錄，不把它算成正式完成。
+[普通整備計數畫面](../figures/hd1-preparation-counts-game.png)沿同一第24章原生槽正常LOAD、第二槽保存、選人／確認取消、F2、縮放與說明頁，17PNG通過。兩美術保存SHA仍為d5f39666ae53f7b55438a1d4658d38b47a301e434c8aaed65c5ed6fac73fae09，來源槽22bd63070189e0e6703e14d4bd4db8dc1f66452a21128dd5154579171ecbea63保持；攻略建構／清敵祖先限制不變，不新增自然難度、全章E2或原版對拍。906素材與私人e2147650保持。頭部符號依後述閉合契約；名冊游標與其餘正式介面續作。
+
+## HD1整備計數頭部符號（CONFORMED-SCOPED／RUNTIME-E1，2026-11-02）
+
+- 來源僅為FDOTHER第5包Frame137的24×18計數符號，兩區20,22至44,40與20,60至44,78的索引及mask相同。它是固定UI符號，不配DATO／FDICON或角色身份；同一份Q稿用於兩處，不新增演出或規則。
+- 採用已展示的內建image_gen R2透明主稿，來源與修訂提示詞保存在R45的imagegen-prototype.json。原耳側多餘輪廓已由同工具修正；主稿SHA89029d42c0f3bea93e303cb141e373eedac5a069c99b92ff5b18c3ced22e5d39，保持完整RGBA以Pillow11.3.0編成144×108，輸出SHAe5bba45fb71656bfa6c7beff7ec72dbea16741e84dc164b64b036f64cdbace4c。alpha16只檢查可見內容未裁切，不改實際alpha。
+- 沿既有schema1可選素材清冊加入native_ui_embedded_icon_hd，與raw-cell圖示分開驗證。來源使用既有native_lmi_frames描述Frame137，native_source_rect明列唯一24×18區；consumer_contract為native_embedded_ui_icon_hd6_v1，layout_policy為native_frame_source_rect_hd6，alpha_contract為true_alpha。只接受此已驗Frame、mask、矩形與原始metadata雜湊，不自行擴充其他來源。
+- 頭部符號屬UI，隨F11獨立於F2。沿原面板5,7與兩個來源區放置，先清除舊頭部區的原背景，再以真alpha疊圖。h.labels只在穩定名冊發布；提示／確認／保存槽／動畫不留圖。來源不符或圖源缺損保留原圖，舊清冊缺此可選素材時仍可載入並保留原符號。
+- 主稿及正式PNG只同步私人保存庫，清冊及可重跑工具留公開庫。工具入口為tools/build_fd2_hd_preparation_count_icon.py，使用--recipe remake/assets/themes/modern/preparation-count-icon.recipe.json --master <主稿> --original-pack <固定分離包> --out <明確輸出目錄> --report <收據JSON>，僅支援上述Frame137。必要驗收含來源／PNG／alpha／metadata／矩形拒絕、舊包回退、兩位置完整像素、四組切換、名冊／modal owner、正常LOAD／保存與allow-list私人同步。
+
+主收據沿既有HD台帳的hd1_preparation_count_icon_followup_20261102。實作入口為modern_hd_ui_embedded_icon.go、modern_hd_preparation_counts.go、上述recipe／工具、tools/validate_modern_theme_catalog.py與tools/sync_modern_theme_private.py；不改存檔格式或玩法。計數欄其餘已閉合範圍不重開，游標與其餘正式介面續作。
+
+212個完整Game.Draw通過，包含208既有案例及四種舊清冊回退，31PNG、3234816頭部符號像素與62208舊圖回退像素通過。參考在原位置25,29與25,67以CPU獨立alpha混色；F11控制兩符號，F2保持獨立。正式907清冊、144×108透明圖、來源／矩形／PNG／alpha拒絕與快取失效通過。
+
+108頂層回歸通過，十可選GPU／oracle略過不計。1210份Go指紋208551185bd1acf2ce1ea41e06ed514b5ca7920eb253f58ea2ea2ecccdf0f2fa，21來源／416幀／19反例與159字串處置保持。Python16項通過；舊測具的master名稱及跨組生成圖相等斷言已依定版Q稿修正，906既有清冊逐項與前提交相同。最小清冊測具保留必要概念組及speaker0大小圖，未放寬正式載入器。
+
+[普通整備人數圖示](../figures/hd1-preparation-count-icon-game.png)沿同一第24章槽正常LOAD、選人、第二槽保存、F2、縮放與確認取消，共17PNG通過。兩美術保存SHAd5f39666ae53f7b55438a1d4658d38b47a301e434c8aaed65c5ed6fac73fae09，來源槽22bd63070189e0e6703e14d4bd4db8dc1f66452a21128dd5154579171ecbea63保持；沿攻略建構／清敵祖先限制，不新增自然難度、全章E2或原版對拍。主稿與正式PNG依allow-list同步私人ee9ab2e296dcb3fd954f2162cac47aae1a1e41d3，6934檔、907項清冊，拒收稿與原圖裁切不納入。名冊游標與其他正式介面及#282地形續作，人工由使用者接手。

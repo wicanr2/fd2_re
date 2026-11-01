@@ -20,6 +20,7 @@ type modernHDPreparationCounts struct {
 	font   *Font
 	chrome [2]modernHDDialogueChrome
 	labels *modernHDItemPanelValues
+	head   *modernUIEmbeddedIcon
 }
 
 func preparationCountSourceMatches(frame fdother.Frame) bool {
@@ -41,7 +42,15 @@ func (g *Game) prepareModernHDPreparationCounts(ui *nativePreparationUIAssets) *
 		return nil
 	}
 	frame, palette := ui.roster.UpperLeft, g.nativeClassUI.palette
-	raw, err := json.Marshal([]any{frame.Indexed, frame.Mask, ui.dialogue, palette})
+	head, err := modernPreparationCountIcon(ui, g.interfaceAssetTheme())
+	if err != nil {
+		return nil
+	}
+	var headDigest [32]byte
+	if head != nil {
+		headDigest = head.digest
+	}
+	raw, err := json.Marshal([]any{frame.Indexed, frame.Mask, ui.dialogue, palette, headDigest})
 	if err != nil {
 		return nil
 	}
@@ -110,7 +119,14 @@ func (g *Game) prepareModernHDPreparationCounts(ui *nativePreparationUIAssets) *
 			return nil
 		}
 	}
-	h := &modernHDPreparationCounts{key: key, font: g.font, chrome: [2]modernHDDialogueChrome{*chrome, *chrome}, labels: &modernHDItemPanelValues{seal: key, picture: picture}}
+	if head != nil {
+		for _, source := range []image.Rectangle{head.source, head.source.Add(image.Pt(0, 38))} {
+			rect := image.Rectangle{Min: source.Min.Mul(6), Max: source.Max.Mul(6)}
+			draw.Draw(picture, rect, image.NewUniform(bg), image.Point{}, draw.Src)
+			draw.Draw(picture, rect, head.picture, image.Point{}, draw.Over)
+		}
+	}
+	h := &modernHDPreparationCounts{key: key, font: g.font, chrome: [2]modernHDDialogueChrome{*chrome, *chrome}, labels: &modernHDItemPanelValues{seal: key, picture: picture}, head: head}
 	g.prepCountsHD = h
 	return h
 }

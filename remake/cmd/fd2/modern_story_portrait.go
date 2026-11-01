@@ -26,6 +26,7 @@ type modernStoryPortraitFrame struct {
 
 type modernStoryPortraitSet struct {
 	uiPanelIcons      map[int]*modernUIPanelIcon
+	uiEmbeddedIcons   map[int]*modernUIEmbeddedIcon
 	skyKeyFD34        *modernSkyKeyHDBank
 	skyKeyANI         *modernSkyKeyHDBank
 	mapStages         map[int]*modernMapStageHD
@@ -49,6 +50,7 @@ type modernStoryPortraitSet struct {
 
 type modernThemeAsset struct {
 	NativeRawCell        modernLMIHDDescriptor      `json:"native_raw_cell"`
+	NativeSourceRect     []int                      `json:"native_source_rect"`
 	MasterFile           string                     `json:"master_file"`
 	SourceFiles          []string                   `json:"source_files"`
 	SourceSHA256         []string                   `json:"source_sha256"`
@@ -114,6 +116,13 @@ func loadModernStoryPortraitSet(catalogPath, packRoot string) (*modernStoryPortr
 	for _, asset := range catalog.Assets {
 		if asset.Role == playerPosterAssetRole {
 			continue // Independent optional presentation assets load on selection.
+		}
+		if asset.Role == "native_ui_embedded_icon_hd" {
+			if err := loadModernUIEmbeddedIcon(set, asset, packRoot); err != nil {
+				return nil, err
+			}
+			set.hasHD = true
+			continue
 		}
 		if asset.Role == "native_ui_icon_hd" {
 			if err := loadModernUIPanelIcon(set, asset, packRoot); err != nil {

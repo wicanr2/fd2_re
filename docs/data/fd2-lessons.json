@@ -4942,6 +4942,29 @@
         ],
         "pattern": "chrome\\s+\\[2\\]modernHDDialogueChrome"
       }
+    },
+    {
+      "id": "minimal-theme-fixture-keeps-required-groups",
+      "date": "2026-11-02",
+      "area": "素材清冊測具",
+      "rule": "縮減素材清冊前先讀驗證器與執行期載入器的最終必要群組。測具保留Python驗證器的PROTOTYPE_ROLES及Go載入器必需的故事頭像／HD配對，再排除待測的可選角色。入口為tools/validate_modern_theme_catalog.py與remake/cmd/fd2/modern_story_portrait.go。",
+      "why": "R45的單圖示測具先漏必備概念稿，Go舊包測具又漏故事頭像。修正測具的合法前置，不放寬正式載入條件。",
+      "evidence": "WORKLOG.md：2026-11-02 HD1整備計數頭部符號；tools/test_modern_theme_catalog.py；remake/cmd/fd2/modern_hd_ui_embedded_icon_test.go"
+    },
+    {
+      "id": "q-art-cross-group-equality-is-not-native-alias",
+      "date": "2026-11-02",
+      "area": "現代圖源回歸",
+      "rule": "原版跨組圖源相同不要求逐組Q版重繪PNG仍跨組相同。派生圖只依目前已定主稿、各組原生相位重複與24／144父子契約驗收。舊檔名或跨組PNG斷言失敗時先對照目前HEAD清冊；原版alias證據仍留原索引，不以派生PNG反推身份。入口為tools/test_modern_theme_catalog.py、tools/validate_modern_theme_catalog.py與remake/assets/themes/modern/catalog.json。",
+      "why": "R45全清冊測試保留早期group1主稿名及40／58等跨組生成PNG相同斷言，與既有HD1個別重繪不符。逐項核對906個既有條目與3e95a395完全相同後，修正測具而不改人物素材。",
+      "evidence": "WORKLOG.md：2026-11-02 HD1整備計數頭部符號；R45/inherited-catalog-baseline.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/validate_modern_theme_catalog.py"
+        ],
+        "pattern": "HD map sprite parent phase equivalence differs"
+      }
     }
   ]
 }

@@ -1,0 +1,72 @@
+{
+  "schema": "fd2-native-ui-embedded-icon-hd6-v1",
+  "source": {
+    "archive": "FDOTHER.DAT",
+    "resource": 5,
+    "metadata_sha256": "a547f2f593b980fd9c1b269d1ba95be8727562d7ed31b44015615775d991efd3",
+    "entry": 137,
+    "codec": "four_mode_frame",
+    "frame_size": [
+      86,
+      86
+    ],
+    "indexed_sha256": "7768d4b208a32a48a0fc92998dd7f8f67e356e45156154d45828c3fd692b50a6",
+    "mask_sha256": "ca901af74c6f663d21624279a281d0361cbab4cac12203b8b4cc624e08a27df8",
+    "rect": [
+      20,
+      22,
+      44,
+      40
+    ],
+    "repeated_rect": [
+      20,
+      60,
+      44,
+      78
+    ],
+    "identity": "unknown UI count symbol; no character or portrait binding"
+  },
+  "master": {
+    "file": "preparation-count-head-frame137-hd1-r2-master.png",
+    "sha256": "89029d42c0f3bea93e303cb141e373eedac5a069c99b92ff5b18c3ced22e5d39",
+    "size": [
+      1448,
+      1086
+    ],
+    "alpha": "preserve full RGBA, alpha16 only checks visible content is not cropped",
+    "tool": "built-in image_gen",
+    "prompt_record": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-count-icon-r45/imagegen-prototype.json"
+  },
+  "output": {
+    "file": "preparation-count-head-frame137-hd6-r2.png",
+    "width": 144,
+    "height": 108,
+    "sha256": "e5bba45fb71656bfa6c7beff7ec72dbea16741e84dc164b64b036f64cdbace4c",
+    "resize": "Pillow11.3.0 RGBA full-canvas LANCZOS",
+    "alpha_contract": "true_alpha"
+  },
+  "catalog": {
+    "asset_id": "modern.ui.preparation.frame_137.count-head.hd6",
+    "role": "native_ui_embedded_icon_hd",
+    "consumer_contract": "native_embedded_ui_icon_hd6_v1",
+    "layout_policy": "native_frame_source_rect_hd6"
+  },
+  "generation": {
+    "tool": "built-in image_gen",
+    "prompt": "Use case: style-transfer. Asset type: one transparent HD icon for a faithful RPG remake preparation screen. Image 1 is the ONLY subject reference: the original 24x18-pixel anonymous person-count symbol, enlarged to 144x108. Image 2 is a style reference only: the already established HD1 chibi roster in the bottom half of the game screenshot. Redraw the single HEAD from image 1 as a clean hand-painted chibi UI icon. Keep its exact front-facing silhouette, dark navy-blue hair/head covering, narrow bright red forehead band, small ears and warm skin, straight dark brows, narrow dark eyes and neutral expression. Keep the wide head-only 4:3 proportions and the full chin; NO neck, shoulders or body. Use the smooth shaded color blocks and crisp dark outlines of the HD1 roster, without copying another character's facial features. This is an anonymous counting symbol: do not identify it or invent armor, horns, badges, weapons or other accessories. One single head, centered and large, complete within the canvas, on a genuinely transparent background. No text, numbers, multiplication signs, border, panel, shadow behind the head or watermark. Preserve the source colors and simple features; avoid a new expression or a glossy 3D look.",
+    "edit_prompt": "Edit this single transparent chibi UI head. Correct ONLY the ear anatomy: it currently has an extra peach-colored ear-like protrusion behind the main ear on each side. Remove the two outer/rear peach protrusions and continue the adjacent navy hair silhouette in those places. Keep exactly ONE normal human ear on the left and ONE on the right, the inner/lower main pair beside the cheeks. Preserve all other pixels and design as closely as possible: wide blue-haired head, red band, neutral face, same brows/eyes/nose/mouth, smooth shading, outline, head-only crop and genuine transparency. No extra anatomy, no neck/body, no text, no background.",
+    "subject_reference": {
+      "file": "docs/figures/hd1-preparation-status-game.png",
+      "crop_pixels": [
+        150,
+        174,
+        294,
+        282
+      ],
+      "sha256": "6facde3c07dafba5eb71ddc76cd87f17690ccdea5726002454b06504085f7b6d"
+    },
+    "style_reference": "same screenshot, approved HD1 roster only",
+    "identity_binding": null,
+    "rejected_variant": "first image had extra ear contours; r2 removes the outer pair"
+  }
+}

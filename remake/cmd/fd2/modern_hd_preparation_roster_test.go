@@ -209,6 +209,10 @@ func runModernHDPreparationRosterMatrix(t *testing.T, status bool) {
 }
 
 func runModernHDPreparationRosterAndCountsMatrix(t *testing.T, status, counts bool) {
+	runModernHDPreparationInterfaceMatrix(t, status, counts, false)
+}
+
+func runModernHDPreparationInterfaceMatrix(t *testing.T, status, counts, icons bool) {
 	set := facilityHDTestSet(t)
 	g := facilityHDTestGame(t, set)
 	var err error
@@ -286,6 +290,9 @@ func runModernHDPreparationRosterAndCountsMatrix(t *testing.T, status, counts bo
 	if counts {
 		appendPreparationCountCases(p, set)
 	}
+	if icons {
+		appendPreparationLegacyCountCases(p, set)
+	}
 	ebiten.SetWindowSize(1920, 1272)
 	if err := ebiten.RunGame(p); err != nil {
 		t.Fatal(err)
@@ -300,6 +307,9 @@ func runModernHDPreparationRosterAndCountsMatrix(t *testing.T, status, counts bo
 	if counts {
 		wantCases = 208
 	}
+	if icons {
+		wantCases = 212
+	}
 	if len(p.checks) != wantCases {
 		t.Fatal("incomplete matrix", len(p.checks))
 	}
@@ -309,6 +319,9 @@ func runModernHDPreparationRosterAndCountsMatrix(t *testing.T, status, counts bo
 	}
 	if counts {
 		receiptStatus, scope = "PASS-PREPARATION-COUNTS-GPU", "208 fixture Game.Draw cases: 160 status cases + 48 quota/remaining cases; no new original E2"
+	}
+	if icons {
+		receiptStatus, scope = "PASS-PREPARATION-COUNT-ICON-GPU", "212 fixture Game.Draw cases, 208 current optional icon cases and 4 legacy absent-role cases; no identity binding or new original E2"
 	}
 	raw, _ := json.MarshalIndent(map[string]any{"status": receiptStatus, "scope": scope, "checks": p.checks}, "", "  ")
 	if err := os.WriteFile(filepath.Join(out, "receipt.json"), append(raw, '\n'), 0644); err != nil {

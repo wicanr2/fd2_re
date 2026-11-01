@@ -71222,6 +71222,48 @@
         "remake/assets/themes/modern/hd1-terrain-atlas-pilot16.recipe.json",
         "docs/knowledge-base/61-modern-theme-runtime-spec.md"
       ]
+    },
+    {
+      "asset_id": "modern.ui.preparation.frame_137.count-head.hd6",
+      "role": "native_ui_embedded_icon_hd",
+      "status": "runtime_candidate",
+      "file": "preparation-count-head-frame137-hd6-r2.png",
+      "width": 144,
+      "height": 108,
+      "sha256": "e5bba45fb71656bfa6c7beff7ec72dbea16741e84dc164b64b036f64cdbace4c",
+      "master_file": "preparation-count-head-frame137-hd1-r2-master.png",
+      "consumer_contract": "native_embedded_ui_icon_hd6_v1",
+      "alpha_contract": "true_alpha",
+      "layout_policy": "native_frame_source_rect_hd6",
+      "source_archive": "FDOTHER.DAT",
+      "source_resource": 5,
+      "source_metadata_sha256": "a547f2f593b980fd9c1b269d1ba95be8727562d7ed31b44015615775d991efd3",
+      "native_lmi_frames": [
+        {
+          "index": 137,
+          "width": 86,
+          "height": 86,
+          "pixels_sha256": "7768d4b208a32a48a0fc92998dd7f8f67e356e45156154d45828c3fd692b50a6"
+        }
+      ],
+      "native_source_rect": [
+        20,
+        22,
+        44,
+        40
+      ],
+      "source_files": [
+        "preparation-count-head-frame137-hd1-r2-master.png"
+      ],
+      "source_sha256": [
+        "89029d42c0f3bea93e303cb141e373eedac5a069c99b92ff5b18c3ced22e5d39"
+      ],
+      "source_refs": [
+        "docs/data/fd2-reference-files.json",
+        "remake/assets/themes/modern/preparation-count-icon.recipe.json",
+        "tools/build_fd2_hd_preparation_count_icon.py",
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md"
+      ]
     }
   ]
 }
