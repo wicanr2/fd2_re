@@ -9,11 +9,15 @@ import (
 	"image"
 	"image/color"
 	"image/png"
+	"math"
 	"os"
 	"path/filepath"
+	"reflect"
 	"testing"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/text"
+	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 )
 
@@ -146,6 +150,99 @@ func facilityHDTestGame(t *testing.T, set *modernStoryPortraitSet) *Game {
 	return g
 }
 
+func TestModernHDTownIndependentStylesAndRawCursor(t *testing.T) {
+	set := facilityHDTestSet(t)
+	g := facilityHDTestGame(t, set)
+	variant := 2
+	g.camp = campaign.NewRunner(&campaign.Campaign{Start: "town", Nodes: map[string]*campaign.Node{"town": {Type: "town", NativeTownVariant: &variant}}})
+	g.campSel, g.nativeTownUIPulse = 1, 3
+	g.partyJoinOrder = []int{7}
+	g.partyRoster = map[int]battle.Unit{7: {Portrait: 9, MapSelectorKey: 50, HasMapSelectorKey: true}}
+	legacy, ok := g.composeNativeTownFrame()
+	if !ok {
+		t.Fatal("native town unavailable")
+	}
+	originalClass := g.nativeClassUI
+	before, _ := json.Marshal(g.partyRoster)
+	screen := ebiten.NewImage(640, 400)
+	defer screen.Dispose()
+	var hdRuns []modernHDTextRun
+	for _, art := range []bool{false, true} {
+		for _, mode := range []string{playerInterfaceOriginal, playerInterfaceHD} {
+			g.modernStoryPortraits = nil
+			if art {
+				g.modernStoryPortraits = set
+			}
+			g.interfaceMode, g.modernHDScene = mode, nil
+			finish := g.beginModernHDText(screen)
+			if !g.drawNativeTown(screen) {
+				t.Fatal("town draw failed", art, mode)
+			}
+			if (g.modernHDScene != nil) != art {
+				t.Fatal("town scenery followed interface", art, mode)
+			}
+			if art {
+				cursor := g.modernHDScene.cursor
+				if cursor == nil || cursor.group != 50 || cursor.frame != 1 || cursor.rect.Min != image.Pt(84, 888) {
+					t.Fatalf("cursor ignored raw first-party key or viewport: %+v", cursor)
+				}
+			}
+			if mode == playerInterfaceHD {
+				if len(g.modernHDText.runs) == 0 {
+					t.Fatal("HD town has no text", art)
+				}
+				positions := map[[2]float64]bool{}
+				for _, run := range g.modernHDText.runs {
+					if !run.inkTop || run.x < 512 || run.y < 344 || !run.clip.In(image.Rect(8, 8, 632, 392)) {
+						t.Fatalf("text omitted native viewport offset: %+v", run)
+					}
+					key := [2]float64{run.x, run.y}
+					if positions[key] {
+						t.Fatal("mask-only text leaked into displayed runs")
+					}
+					positions[key] = true
+				}
+				if !art {
+					hdRuns = append([]modernHDTextRun(nil), g.modernHDText.runs...)
+				} else if !reflect.DeepEqual(hdRuns, g.modernHDText.runs) {
+					t.Fatal("artwork switch changed interface text")
+				}
+			} else if g.modernHDText != nil {
+				t.Fatal("native interface created HD text")
+			}
+			finish()
+			if after, ok := g.composeNativeTownFrame(); !ok || !bytes.Equal(legacy, after) || g.nativeClassUI != originalClass {
+				t.Fatal("display changed native assets/frame")
+			}
+		}
+	}
+	after, _ := json.Marshal(g.partyRoster)
+	if !bytes.Equal(before, after) {
+		t.Fatal("display changed persistent party")
+	}
+	for _, fault := range []string{"raw-key", "missing-record", "missing-hd", "geometry"} {
+		t.Run(fault, func(t *testing.T) {
+			unit, frames := g.partyRoster[7], set.mapSpritesHD[50]
+			defer func() { g.partyRoster[7], set.mapSpritesHD[50] = unit, frames }()
+			switch fault {
+			case "raw-key":
+				bad := unit
+				bad.MapSelectorKey = 999
+				g.partyRoster[7] = bad
+			case "missing-record":
+				delete(g.partyRoster, 7)
+			case "missing-hd":
+				delete(set.mapSpritesHD, 50)
+			case "geometry":
+				set.mapSpritesHD[50] = []image.Image{nil, image.NewNRGBA(image.Rect(0, 0, 72, 72))}
+			}
+			if _, err := g.prepareModernTownCursor(variant); err == nil {
+				t.Fatal("accepted", fault)
+			}
+		})
+	}
+}
+
 type facilityHDProbe struct {
 	t            *testing.T
 	g            *Game
@@ -158,6 +255,7 @@ type facilityHDProbe struct {
 	checks       []map[string]any
 	captured     map[*modernFacilityScene]bool
 	headCaptured bool
+	captureCases map[int]bool
 }
 
 func (p *facilityHDProbe) Update() error {
@@ -207,6 +305,9 @@ func (p *facilityHDProbe) DrawFinalScreen(screen ebiten.FinalScreen, offscreen *
 		checked := 0
 		for y := 0; y < 1200; y += 11 {
 			for x := 0; x < 1920; x += 11 {
+				if o.cursor != nil && image.Pt(x, y).In(o.cursor.rect.Intersect(o.cursor.clip)) {
+					continue // Cursor pixels have their own source comparison below.
+				}
 				lx, ly := x/3, y/3+24
 				if base[(ly*640+lx)*4+3] != 0 {
 					continue
@@ -229,7 +330,65 @@ func (p *facilityHDProbe) DrawFinalScreen(screen ebiten.FinalScreen, offscreen *
 			p.err = fmt.Errorf("case %d has only %d HD checks", p.index, checked)
 			return
 		}
-		p.checks = append(p.checks, map[string]any{"case": p.index, "hd_pixels": checked, "scene": p.g.camp.Node().Type, "variant": p.g.nativeShopVariant})
+		check := map[string]any{"case": p.index, "hd_pixels": checked, "scene": p.g.camp.Node().Type, "variant": p.g.nativeShopVariant}
+		if cursor := o.cursor; cursor != nil {
+			picture := p.g.modernStoryPortraits.mapSpritesHD[cursor.group][cursor.frame]
+			visible := cursor.rect.Intersect(cursor.clip)
+			core := 0
+			for y := visible.Min.Y; y < visible.Max.Y; y += 2 {
+				for x := visible.Min.X; x < visible.Max.X; x += 2 {
+					want := color.NRGBAModel.Convert(picture.At(x-cursor.rect.Min.X, y-cursor.rect.Min.Y)).(color.NRGBA)
+					if want.A < 250 {
+						continue
+					}
+					background := color.NRGBAModel.Convert(o.scene.image.At(x-o.dest.X*3+o.source.Min.X, y-o.dest.Y*3+o.source.Min.Y)).(color.NRGBA)
+					alpha := int(want.A)
+					blend := func(source, destination byte) byte {
+						return byte((int(source)*alpha + int(destination)*(255-alpha) + 127) / 255)
+					}
+					want = color.NRGBA{blend(want.R, background.R), blend(want.G, background.G), blend(want.B, background.B), 255}
+					at := ((y+72)*1920 + x) * 4
+					for channel, value := range []byte{want.R, want.G, want.B, 255} {
+						if delta := int(pixels[at+channel]) - int(value); delta < -2 || delta > 2 {
+							p.err = fmt.Errorf("case %d town cursor group %d frame %d pixel (%d,%d): %v != %v", p.index, cursor.group, cursor.frame, x, y, pixels[at:at+4], want)
+							return
+						}
+					}
+					core++
+				}
+			}
+			if core < 200 {
+				p.err = fmt.Errorf("case %d cursor has only %d opaque core checks", p.index, core)
+				return
+			}
+			check["cursor_core_pixels"], check["cursor_group"], check["cursor_frame"] = core, cursor.group, cursor.frame
+		}
+		p.checks = append(p.checks, check)
+	} else {
+		if p.g.modernHDScene != nil {
+			p.err = fmt.Errorf("case %d original art retained HD scenery", p.index)
+			return
+		}
+		p.checks = append(p.checks, map[string]any{"case": p.index, "native_artwork": true, "interface": p.g.interfaceMode})
+	}
+	if p.g.camp.Node().Type == "town" && p.g.modernHDInterfaceEnabled() {
+		if p.g.modernHDText == nil || len(p.g.modernHDText.runs) == 0 {
+			p.err = fmt.Errorf("case %d town HD text missing", p.index)
+			return
+		}
+		for _, run := range p.g.modernHDText.runs {
+			f := run.font
+			if regional := f.hdFonts[p.g.localeID]; regional != nil {
+				f = regional
+			}
+			face, baseline := modernHDTextFace(f, run, p.g.fontScale)
+			ink := text.BoundString(face, run.text).Add(image.Pt(int(math.Round(run.x*3)), int(baseline)))
+			clip := image.Rectangle{Min: run.clip.Min.Mul(3), Max: run.clip.Max.Mul(3)}
+			if !ink.In(clip) {
+				p.err = fmt.Errorf("case %d town glyph %s clipped: ink=%v clip=%v", p.index, run.text, ink, clip)
+				return
+			}
+		}
 	}
 	for _, overlay := range p.g.modernHDPanelPortraits {
 		visible := overlay.rect.Intersect(overlay.clip)
@@ -266,8 +425,11 @@ func (p *facilityHDProbe) DrawFinalScreen(screen ebiten.FinalScreen, offscreen *
 		p.err = fmt.Errorf("case %d toolbar changed game pixels", p.index)
 		return
 	}
-	scene := p.g.modernHDScene.scene
-	if !p.captured[scene] || len(p.g.modernHDPanelPortraits) > 0 && !p.headCaptured || p.index == len(p.cases)-1 {
+	var scene *modernFacilityScene
+	if p.g.modernHDScene != nil {
+		scene = p.g.modernHDScene.scene
+	}
+	if p.captureCases[p.index] || !p.captured[scene] || len(p.g.modernHDPanelPortraits) > 0 && !p.headCaptured || p.index == len(p.cases)-1 {
 		file, err := os.Create(filepath.Join(p.out, fmt.Sprintf("scene-%03d.png", p.index)))
 		if err == nil {
 			err = png.Encode(file, &image.RGBA{Pix: pixels, Stride: 1920 * 4, Rect: image.Rect(0, 0, 1920, 1272)})
@@ -300,16 +462,36 @@ func TestModernHDFacilityRuntimeGPU(t *testing.T) {
 	if err := os.MkdirAll(out, 0755); err != nil {
 		t.Fatal(err)
 	}
-	p := &facilityHDProbe{t: t, g: g, out: out, presentation: &modernHDPresentation{Game: g, toolbar: true}, captured: make(map[*modernFacilityScene]bool)}
+	p := &facilityHDProbe{t: t, g: g, out: out, presentation: &modernHDPresentation{Game: g, toolbar: true}, captured: make(map[*modernFacilityScene]bool), captureCases: make(map[int]bool)}
+	originalFirst := g.partyRoster[g.partyJoinOrder[0]]
 	for variant := 0; variant < 3; variant++ {
 		for selection := 0; selection < 6; selection++ {
 			for pulse := 0; pulse < 4; pulse++ {
 				v, s, c := variant, selection, pulse
 				p.cases = append(p.cases, func() {
+					unit := originalFirst
+					unit.MapSelectorKey, unit.HasMapSelectorKey = 50, true
+					g.partyRoster[g.partyJoinOrder[0]] = unit
 					g.camp = campaign.NewRunner(&campaign.Campaign{Start: "town", Nodes: map[string]*campaign.Node{"town": {Type: "town", NativeTownVariant: &v}}})
 					g.campSel = s
 					g.nativeTownUIPulse = c
 					g.nativeShopMode = ""
+				})
+			}
+		}
+	}
+	for _, art := range []bool{false, true} {
+		for _, mode := range []string{playerInterfaceOriginal, playerInterfaceHD} {
+			for variant := 0; variant < 3; variant++ {
+				art, mode, variant := art, mode, variant
+				p.captureCases[len(p.cases)] = true
+				p.cases = append(p.cases, func() {
+					g.modernStoryPortraits, g.interfaceMode = nil, mode
+					if art {
+						g.modernStoryPortraits = set
+					}
+					g.camp = campaign.NewRunner(&campaign.Campaign{Start: "town", Nodes: map[string]*campaign.Node{"town": {Type: "town", NativeTownVariant: &variant}}})
+					g.campSel, g.nativeTownUIPulse, g.nativeShopMode = 2, variant, ""
 				})
 			}
 		}
@@ -319,6 +501,7 @@ func TestModernHDFacilityRuntimeGPU(t *testing.T) {
 		for _, mode := range []string{"menu", "purchase", "confirm", "insufficient"} {
 			mode := mode
 			p.cases = append(p.cases, func() {
+				g.partyRoster[g.partyJoinOrder[0]] = originalFirst
 				g.camp = campaign.NewRunner(&campaign.Campaign{Start: "shop", Nodes: map[string]*campaign.Node{"shop": {Type: "shop", NativeHubVariant: v, Goods: []campaign.Good{{ID: 0, Name: "item0", Price: 100}}}}})
 				if !g.setupNativeShop() {
 					p.err = fmt.Errorf("setup shop %d", v)

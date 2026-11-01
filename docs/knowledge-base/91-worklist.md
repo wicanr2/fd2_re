@@ -362,11 +362,13 @@ HD1原生地圖資訊窗的細框、A／D、HP與已登錄地形縮圖已接入�
 
 本工單繼續追蹤其餘尚未HD的正式介面，不因金框切片完成而關閉。原型仍保存作定版參考，不能當遊戲擷取。完整數量、來源SHA、診斷與重跑依主收據hd1_gold_dialogue_followup_20261029。
 
+城鎮人物與獨立字型這段已接通：依隊伍首位raw MapSelectorKey取144人物，原版美術亦可用HD介面。三variant、六selection、0/1/2/1相位與原viewport保持；126完整Game.Draw、20PNG及212348人物核心點通過。最終Linux程式的首章四組F2／F11、走行取消、F5及新程序LOAD十PNG保持保存bytes；城鎮圖是受控測具，不宣稱自然出場或新增原版E2。離城縮放、整備背景與其餘正式介面仍續作，工單保持開啟。
+
 _下面區塊供工作清單工具讀取。_
 
 怎樣算做完：補齊尚未接HD的正式介面、確認／回覆與轉場，沿既有原位置、輸入、文字與保存；清晰黑體、HD框線與主題人物來源一致。必要載入、缺件、切換與狀態保持通過，人工驗證由使用者接手。；並完成定版古金框故事／提示接線與獨立控制。
 
-證據：`['docs/data/fd2-modern-hd-battlefield-20261019.json', 'docs/figures/hd1-gold-dialogue-prototype.png', 'tools/build_fd2_hd1_gold_dialogue_prototype.py', 'docs/figures/hd1-gold-dialogue-game.png', 'remake/cmd/fd2/modern_hd_gold_dialogue_test.go', 'tools/verify_fd2_hd_gold_dialogue.py']`
+證據：`['docs/data/fd2-modern-hd-battlefield-20261019.json', 'docs/figures/hd1-gold-dialogue-prototype.png', 'tools/build_fd2_hd1_gold_dialogue_prototype.py', 'docs/figures/hd1-gold-dialogue-game.png', 'remake/cmd/fd2/modern_hd_gold_dialogue_test.go', 'tools/verify_fd2_hd_gold_dialogue.py', 'docs/figures/hd1-town-interface-four-modes.png', 'docs/figures/hd1-town-cursor-game.png', 'remake/cmd/fd2/modern_hd_facility_scene_test.go']`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 

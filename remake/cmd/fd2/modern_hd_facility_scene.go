@@ -12,6 +12,7 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
+	"github.com/wicanr2/fd2_re/remake/internal/fdicon"
 )
 
 type modernFacilityScene struct {
@@ -23,6 +24,46 @@ type modernFacilitySceneOverlay struct {
 	scene  *modernFacilityScene
 	source image.Rectangle // HD pixels.
 	dest   image.Point     // Existing 640x400 coordinates.
+	cursor *modernTownCursor
+}
+
+type modernTownCursor struct {
+	group, frame int
+	rect, clip   image.Rectangle // HD pixels after the native viewport copy.
+}
+
+func (g *Game) prepareModernTownCursor(variant int) (*modernTownCursor, error) {
+	if g.nativeClassUI == nil || g.nativeClassUI.units == nil || g.modernStoryPortraits == nil {
+		return nil, fmt.Errorf("modern town cursor: missing assets")
+	}
+	geometry, err := campaign.NativeTownCursorGeometryFor(variant, g.campSel, g.nativeTownUIPulse)
+	if err != nil {
+		return nil, err
+	}
+	group := 0 // The native scene's explicit default for an empty editor roster.
+	if len(g.partyJoinOrder) > 0 {
+		unit, ok := g.partyRoster[g.partyJoinOrder[0]]
+		if !ok {
+			return nil, fmt.Errorf("modern town cursor: absent first party record")
+		}
+		if unit.HasMapSelectorKey {
+			group = unit.MapSelectorKey
+		}
+	}
+	if _, err := g.nativeClassUI.units.SpriteFor(group, 0, geometry.Frame); err != nil {
+		return nil, err
+	}
+	if !fdicon.NativeSourceGroupHasPixels(group) {
+		return nil, nil
+	}
+	frames := g.modernStoryPortraits.mapSpritesHD[group]
+	if geometry.Frame >= len(frames) || frames[geometry.Frame] == nil || frames[geometry.Frame].Bounds() != image.Rect(0, 0, 144, 144) {
+		return nil, fmt.Errorf("modern town cursor: incomplete HD group %d", group)
+	}
+	position := geometry.Position.Mul(6)
+	return &modernTownCursor{group: group, frame: geometry.Frame,
+		rect: image.Rect(position.X, position.Y, position.X+144, position.Y+144),
+		clip: image.Rectangle{Min: geometry.Viewport.Min.Mul(6), Max: geometry.Viewport.Max.Mul(6)}}, nil
 }
 
 // Pinned original separated metadata, from manifest 5eec2ecacc4f and the
@@ -103,6 +144,27 @@ func (p *modernHDPresentation) drawModernFacilityScene(screen ebiten.FinalScreen
 	op.GeoM.Translate(float64(o.dest.X), float64(o.dest.Y))
 	op.GeoM.Concat(geometry)
 	screen.DrawImage(source, op)
+	if cursor := o.cursor; cursor != nil {
+		set := p.Game.modernStoryPortraits
+		if set.townCursorGPU == nil {
+			set.townCursorGPU = make(map[[2]int]*ebiten.Image)
+		}
+		key := [2]int{cursor.group, cursor.frame}
+		picture := set.townCursorGPU[key]
+		if picture == nil {
+			picture = ebiten.NewImageFromImage(set.mapSpritesHD[cursor.group][cursor.frame])
+			set.townCursorGPU[key] = picture
+		}
+		visible := cursor.rect.Intersect(cursor.clip)
+		if !visible.Empty() {
+			fragment := picture.SubImage(visible.Sub(cursor.rect.Min)).(*ebiten.Image)
+			options := &ebiten.DrawImageOptions{Filter: ebiten.FilterLinear}
+			options.GeoM.Scale(1.0/3, 1.0/3)
+			options.GeoM.Translate(float64(visible.Min.X)/3, float64(visible.Min.Y)/3)
+			options.GeoM.Concat(geometry)
+			screen.DrawImage(fragment, options)
+		}
+	}
 }
 
 // The mask records native opaque writes, never RGB similarity to scenery.
@@ -139,33 +201,56 @@ func (g *Game) drawModernHDTown(screen *ebiten.Image) bool {
 		return false
 	}
 	scene := g.modernFacility([3]int{11, 61, 62}[variant])
-	if scene == nil {
+	if scene == nil && g.modernHDText == nil {
 		return false
-	}
-	zero, full := byte(0), byte(255)
-	a, ok := g.composeNativeTownFrameWithBackground(&zero)
-	if !ok {
-		return false
-	}
-	b, ok := g.composeNativeTownFrameWithBackground(&full)
-	if !ok {
-		return false
-	}
-	mask := make([]byte, 64000)
-	for i := range mask {
-		if a[i] == b[i] {
-			mask[i] = 255
-		}
 	}
 	capture, restore := g.beginModernHDFacilityText()
 	defer restore()
-	frame, ok := g.composeNativeTownFrame()
-	if !ok || !g.presentModernFacilityFrame(screen, frame, mask, g.nativeClassUI.palette,
-		&modernFacilitySceneOverlay{scene: scene, source: image.Rect(0, 0, 312*6, 192*6), dest: image.Pt(8, 8)}) {
-		return false
+	if scene != nil {
+		cursor, err := g.prepareModernTownCursor(variant)
+		if err != nil {
+			return false
+		}
+		zero, full := byte(0), byte(255)
+		a, ok := g.composeNativeTownFrameLayers(&zero, false)
+		if !ok {
+			return false
+		}
+		b, ok := g.composeNativeTownFrameLayers(&full, false)
+		if !ok {
+			return false
+		}
+		mask := make([]byte, 64000)
+		for i := range mask {
+			if a[i] == b[i] {
+				mask[i] = 255
+			}
+		}
+		if capture != nil {
+			capture.runs = nil // The two mask passes are not displayed text.
+		}
+		frame, ok := g.composeNativeTownFrameLayers(nil, false)
+		if !ok || !g.presentModernFacilityFrame(screen, frame, mask, g.nativeClassUI.palette,
+			&modernFacilitySceneOverlay{scene: scene, source: image.Rect(0, 0, 312*6, 192*6), dest: image.Pt(8, 8), cursor: cursor}) {
+			return false
+		}
+	} else {
+		frame, ok := g.composeNativeTownFrame()
+		if !ok {
+			return false
+		}
+		g.presentNativeClassFrame(screen, frame)
 	}
 	if capture != nil {
-		g.modernHDText.runs = append(g.modernHDText.runs, capture.runs...)
+		for _, run := range capture.runs {
+			run.x += 8
+			run.y += 8
+			run.inkTop = true // Native coordinates describe glyph ink, not font ascent.
+			run.clip = run.clip.Add(image.Pt(8, 8)).Intersect(image.Rect(8, 8, 632, 392))
+			if !run.clip.Empty() {
+				g.modernHDText.runs = append(g.modernHDText.runs, run)
+			}
+		}
 	}
 	return true
 }

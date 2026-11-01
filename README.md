@@ -271,7 +271,11 @@ END、離開、目前戰況保存／讀取與全軍移動的確認視窗已接HD
 
 ![獨立介面與美術控制的浮出工具列](docs/figures/hd1-independent-toolbar.png)
 
-上圖為重製端受控城鎮的實際操作畫面，完整縮圖保留海報、工具列與設定選單。海報已接入遊戲；城鎮行走人物仍為像素素材。完整地形與其餘介面依 [HD1 里程碑](https://github.com/wicanr2/fd2_re/milestone/1)繼續完成，造型與實機操作由使用者人工驗證。HD2、HD-2D 留待後續。
+上圖為重製端受控城鎮的實際操作畫面，完整縮圖保留海報、工具列與設定選單。海報已接入遊戲；此圖保留前批人物，現行城鎮人物見下圖。完整地形與其餘介面依 [HD1 里程碑](https://github.com/wicanr2/fd2_re/milestone/1)繼續完成，造型與實機操作由使用者人工驗證。HD2、HD-2D 留待後續。
+
+![城鎮人物與介面獨立切換](docs/figures/hd1-town-interface-four-modes.png)
+
+四格為同一受控城鎮的實際繪製，左上至右下依序為原版美術／原版介面、原版美術／HD介面、HD美術／原版介面、HD美術／HD介面。人物隨美術主題，字型隨介面切換。測試隊伍用來核對圖源接線，不代表自然出場；離城與整備背景仍續作，範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
 
 ![HD1古金雙層對話框的普通父王對話](docs/figures/hd1-gold-dialogue-game.png)
 

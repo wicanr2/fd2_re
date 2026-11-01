@@ -33,6 +33,7 @@ type modernStoryPortraitSet struct {
 	portraits         map[int]*modernStoryPortraitFrame
 	mapSprites        map[int][]image.Image
 	mapSpritesHD      map[int][]image.Image
+	townCursorGPU     map[[2]int]*ebiten.Image
 	mapTilesets       map[int]image.Image
 	terrainHD         map[int]map[int]*modernTerrainHDAsset
 	terrainHDBanks    map[int]*fdicon.Bank

@@ -2,6 +2,8 @@ package campaign
 
 import (
 	"bytes"
+	"encoding/json"
+	"image"
 	"os"
 	"path/filepath"
 	"testing"
@@ -92,5 +94,54 @@ func TestComposeNativeTownRejectsInvalidState(t *testing.T) {
 		nil, nil, nil, 0, 0, 0,
 	); err == nil {
 		t.Fatal("nil native town assets were accepted")
+	}
+}
+
+func TestNativeTownCursorLayerReconstructsAllNativeStates(t *testing.T) {
+	assets, err := LoadNativeTownAssets(os.Getenv("FD2_ASSET_PACK"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	strings, font := loadNativeTownTextAssets(t, "../../../org_game/炎龍騎士團/FLAME2")
+	before, err := json.Marshal(assets)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for variant := 0; variant < 3; variant++ {
+		for selection := 0; selection < 6; selection++ {
+			for pulse := 0; pulse < 4; pulse++ {
+				original, err := ComposeNativeTownFrame(assets, strings, font, variant, selection, pulse)
+				if err != nil {
+					t.Fatal(err)
+				}
+				underlay, err := ComposeNativeTownFrameWithoutCursor(assets, strings, font, variant, selection, pulse)
+				if err != nil {
+					t.Fatal(err)
+				}
+				geometry, err := NativeTownCursorGeometryFor(variant, selection, pulse)
+				if err != nil {
+					t.Fatal(err)
+				}
+				rect := image.Rectangle{Min: geometry.Position, Max: geometry.Position.Add(image.Pt(24, 24))}
+				if !rect.In(geometry.Viewport) || rect.Overlaps(image.Rect(248, 166, 310, 192)) {
+					t.Fatalf("cursor clips the viewport or label: %v", rect)
+				}
+				if err := assets.Pulse[geometry.Frame].BlitAt(underlay, 320, geometry.Position.X, geometry.Position.Y); err != nil {
+					t.Fatal(err)
+				}
+				if !bytes.Equal(original, underlay) {
+					t.Fatalf("native reconstruction differs: variant=%d selection=%d pulse=%d", variant, selection, pulse)
+				}
+			}
+		}
+	}
+	after, _ := json.Marshal(assets)
+	if !bytes.Equal(before, after) {
+		t.Fatal("composition changed source assets")
+	}
+	for _, state := range [][3]int{{-1, 0, 0}, {3, 0, 0}, {0, 6, 0}, {0, 0, 4}} {
+		if _, err := NativeTownCursorGeometryFor(state[0], state[1], state[2]); err == nil {
+			t.Fatalf("accepted invalid geometry %v", state)
+		}
 	}
 }

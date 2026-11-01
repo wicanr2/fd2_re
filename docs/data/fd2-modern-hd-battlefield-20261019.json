@@ -298110,5 +298110,534 @@
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-static-r36/final-validation-r1.json",
       "sha256": "50a2ae8df9741799c387ccb6527c70292f3a381e5b6a924f773bf1095766d574"
     }
+  },
+  "hd1_town_interface_followup_20261102": {
+    "date": "2026-11-02",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1/NORMAL-GUI",
+    "base_commit": "d8df51c117626ba91498046a606348e21aebfccb",
+    "issue": 283,
+    "native_contract": {
+      "variants": 3,
+      "selections": 6,
+      "raw_pulses": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "pulse_frames": [
+        0,
+        1,
+        2,
+        1
+      ],
+      "viewport": {
+        "x": 4,
+        "y": 4,
+        "width": 312,
+        "height": 192
+      },
+      "cursor_source": "first persistent party MapSelectorKey; loader-default FDICON0 only when the original owner keeps its explicit default",
+      "cursor_background_resources": [
+        11,
+        61,
+        62
+      ],
+      "text_base": "FDTXT_000 0x1ef+selection",
+      "evidence_level": "既有已閉合資料流與原生消費端；本批只作HD接線，不新增原版parity。"
+    },
+    "scope": "城鎮人物與獨立介面；離城縮放、整備背景及其他原生模態另續作。",
+    "source_evidence": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/source-evidence.json",
+      "sha256": "38916b31139bc65aab284a821373e671ba081dd2de83bdfe66fddcd2b1566972"
+    },
+    "production_implemented": true,
+    "full_hd_complete": false,
+    "human_acceptance": false,
+    "original_parity_added": false,
+    "implemented": [
+      "城鎮首位持續隊伍的raw MapSelectorKey接正式144人物；三拍與原生0/1/2/1相位保持。",
+      "人物層位於HD背景與原生UI之間，沿原312×192搬至4,4視圖裁切，Draw不讀檔。",
+      "原版美術與HD介面可獨立搭配；文字與clip加8邏輯像素，字形墨跡沿原頂端對齊。",
+      "遮罩與最終畫面共用字型及游標策略，取罩文字不重複顯示；原版完整frame的byte保持。"
+    ],
+    "remaining": [
+      "離城縮放",
+      "整備的城鎮背景",
+      "其他正式模態介面",
+      "HD1地形#282"
+    ],
+    "runtime_scope": "城鎮Game.Draw為受控fixture，含raw key50與人工隊伍；不是自然出場或新增PLAYER-E2。普通GUI只驗首章顯示控制、走行取消及保存冷讀。",
+    "assets": {
+      "catalog_sha256": "f7d431b4da716565c11594a85f995f994fc00bda61fa733666ef9afdf53d0404",
+      "catalog_assets": 883,
+      "new_files": 0,
+      "private_assets_reused_unchanged": true,
+      "private_commit": "7339dc1fa43f0df05cd08e4aa8da9e3e1d0bcacd",
+      "normal_candidate_catalog_sha256": "8212a61c32db86f803a4df2bafe67f85be05183979c5867f43317a15c7019657",
+      "normal_candidate_assets_equal_formal": true
+    },
+    "gpu": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/gpu-r3-capture/receipt.json",
+        "sha256": "99e712d5b1ca204caf1d87eef36f1a0e33c70955e31fff31fb7fc71c632cb9d9"
+      },
+      "full_draw_cases": 126,
+      "native_town_states": 72,
+      "additional_town_four_style_draws": 12,
+      "other_facility_draws": 42,
+      "pngs": 20,
+      "cursor_core_pixels": 212348,
+      "scope": "全部遊戲區與無工具列版本逐byte相同；人物alpha>=250按已知HD背景SrcOver合成、容差2；HD字形墨跡完整落在原字格clip。",
+      "screenshots": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/gpu-r3-capture/scene-000.png",
+          "sha256": "754d7bd383ef30ad1e1ed2e493c6098accbf1645cc2d4f7cbf684f7a90e3a933"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/gpu-r3-capture/scene-024.png",
+          "sha256": "fe1f5257290a5eebd751c4d554bde54a086be4b2df43def850ec9a8e3cf4e533"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/gpu-r3-capture/scene-048.png",
+          "sha256": "b688b5aacd8420f2884337069a71565b39670028bc19a1d50690ee46845b09d3"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/gpu-r3-capture/scene-072.png",
+          "sha256": "272b9e32de34fc3f3f843f574550e01dc7062950fe76c8806d396827765cd2e3"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/gpu-r3-capture/scene-073.png",
+          "sha256": "f2c4a13869fb8c54fe1a57b8105c1f13914fa7bfe081a17b61d0fa506e93540a"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/gpu-r3-capture/scene-074.png",
+          "sha256": "bce5345aa2ff66f59e1fde14a1ba4c95e3c4da9eee020b116a5f901f371f1616"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/gpu-r3-capture/scene-075.png",
+          "sha256": "f3baa1dc603c332f58f58bac849474feb6fd91fa03f52bb118fa58895390f047"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/gpu-r3-capture/scene-076.png",
+          "sha256": "068a3f1a31e19d00b9d33bc9751a51bc0ae91580909470abce643d74e6052503"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/gpu-r3-capture/scene-077.png",
+          "sha256": "c90bafe7f6d55053cdbbbe7cc01c8dd5d363ce62a124f7c8c0ed0116d2e84de2"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/gpu-r3-capture/scene-078.png",
+          "sha256": "3d6dc672e59a254b6fbf0a89cf375f20f58f1a184d0e073a45cfad804978a2dd"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/gpu-r3-capture/scene-079.png",
+          "sha256": "4d2035390b93061d8580c3a29f24217fee5cbb9a99b152870d1009b6569cfe11"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/gpu-r3-capture/scene-080.png",
+          "sha256": "9d496ac561499e7cc8e8b45b921156b8cfe3b60650eb924462157ebc833c32e8"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/gpu-r3-capture/scene-081.png",
+          "sha256": "3d80286d5a99f35a27fd2ecb46fb1299b8d1dedf032064748ca05538a088d3f4"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/gpu-r3-capture/scene-082.png",
+          "sha256": "3c63007597291379bce44080bdfc395391b8d1b9f17e37084e6a686f4ee1a5e8"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/gpu-r3-capture/scene-083.png",
+          "sha256": "79b0380828668ae8599be46aa1ba4621e6d4662e9c418336b0272697113518f5"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/gpu-r3-capture/scene-084.png",
+          "sha256": "084f59b4719580c2da06188bf33e500a3f23d8f08f2df24175cb201be754726a"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/gpu-r3-capture/scene-094.png",
+          "sha256": "6cf0634ad5d71f6fe85900cac7b8ad290bfea7d07f4313be6a9e1e1592016ff5"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/gpu-r3-capture/scene-101.png",
+          "sha256": "bd38bd66537ebfb0594e7addd7dbf55faa09393e0ce17d370ee478ec847d6b02"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/gpu-r3-capture/scene-113.png",
+          "sha256": "bf133915b189d5f6a2256bdd273abbb4a5bd0b476a8126711f1500eedd6378dc"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/gpu-r3-capture/scene-125.png",
+          "sha256": "bf133915b189d5f6a2256bdd273abbb4a5bd0b476a8126711f1500eedd6378dc"
+        }
+      ]
+    },
+    "normal": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/normal-r2-capture/receipt.json",
+        "sha256": "81ece946ba77cce8977d7715b85d7a205e16110c55f083ad895a390db7369c18"
+      },
+      "pngs": 10,
+      "binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/fd2-player-r2",
+        "sha256": "c3ed3d5e9f44584c6f713e8567fea1f001d2701b3af1440241682da125fea10f"
+      },
+      "source_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "saved_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "theme_and_interface_save_bytes_equal": true,
+      "new_process_title_load": true,
+      "scope": "既有首章來源，標題LOAD、四組F2/F11、合法一格走行及取消、F5與新程序LOAD；不是城鎮自然可達收據。"
+    },
+    "regression": {
+      "passed": [
+        "TestModernHDChibiMapSampleSelectsOriginalPosition",
+        "TestModernHDChibiPartyFixture",
+        "TestModernHDChibiEnemyFixture",
+        "TestModernHDChibiStaticFixture",
+        "TestModernHDChibiAnonymousStaticFixture",
+        "TestModernHDChibiAuditedFixture",
+        "TestModernHDBattleConsumerInventory",
+        "TestModernHDTownIndependentStylesAndRawCursor",
+        "TestModernHDFacilityUnknownAndAmbiguousGlyphsKeepNativeInk",
+        "TestModernHDMapOverwriteCoverageAndDestinationDependency",
+        "TestModernHDMapTransactionUsesOneNativeClockAndIndependentTerrain",
+        "TestModernHDMapRejectedArtDoesNotPublishNativeState",
+        "TestModernHDMapMosaicShaderCompiles",
+        "TestModernHDMapUnitPlanMatchesNativeWrites",
+        "TestModernHDMapUnitPlanKeepsBlankNativeSlotsAndRejectsMissingSources",
+        "TestModernHDMapWorldLayersAndImmutableSources",
+        "TestModernHDMapWorldRawFlagAndAtomicRejection",
+        "TestBuildNativeMapFrameInputUsesOnlyRawMaterializedState",
+        "TestBuildNativeMapFrameInputRejectsControlDriftAndMissingRawRoster",
+        "TestNativeTownDeparturePreflightAndPresentBoundary",
+        "TestNativeTownAssetsDoNotRequireFDOTHERArchive",
+        "TestNativeTownProductionOwnerUsesEditableVariantAndHiddenSelection",
+        "TestNativeTownPulseUsesFourTickSignedDelta",
+        "TestNativeTownSelectionUsesOriginalLeftRightWrap",
+        "TestNativeTownShotStateIsStrictAndTownOnly",
+        "TestNativeTownSecretRevealPreservesPulseState",
+        "TestIndependentInterfaceFourModesKeepArtworkAndBattle",
+        "TestBuildCollectsControlledJSONAndGoUIWithoutNotesOrErrors",
+        "TestBuildIsDeterministicAndJSONSerializable",
+        "TestBuildRejectsDuplicateExistingStringID",
+        "TestMultipleTextFieldsDoNotReuseOneExistingStringID",
+        "TestVariablesIncludeWrappedErrorPlaceholder",
+        "TestDrawFunctionContextIncludesIndirectASCIIAndFunctionName",
+        "TestDrawFunctionContextSkipsLocaleKeys",
+        "TestReviewedGoCandidatesMatchCurrentInventory",
+        "TestBuildNativeChapterSlotRestorePlanRoutesAfterPostbattleGates",
+        "TestBuildNativeChapterSlotRestorePlanFailsClosed",
+        "TestBuildNativeChapterSlotOverlaysRosterOnBaseline",
+        "TestBuildNativeCurrentPersistentRecordsAddsOnlyProvenJoin",
+        "TestBuildNativeCurrentRuntimeRecordsOverlaysLiveFieldsAndPreservesOpaque",
+        "TestBuildNativeCurrentRuntimeRecordsFailsClosedOnTopologyOrLiveMismatch",
+        "TestDecodeAndComposeNativeTownUsesOriginalResources",
+        "TestComposeNativeTownRejectsInvalidState",
+        "TestNativeTownCursorLayerReconstructsAllNativeStates"
+      ],
+      "skipped": [
+        "TestModernHDMapActualCandidateWorld",
+        "TestModernHDMapOverviewGPU",
+        "TestNativeTownDepartureFromOracle"
+      ],
+      "source_tree_sha256": "4c9969ccfa5a184cec0bd7e787dd33457cc9dfd340378c30cf5758f0c34783bd",
+      "source_file_count": 1196,
+      "consumer_cases": 21,
+      "consumer_source_frames": 416,
+      "consumer_rejections": 19,
+      "string_review_dispositions_unchanged": 155
+    },
+    "public_figures": [
+      {
+        "file": "docs/figures/hd1-town-interface-four-modes.png",
+        "sha256": "45b964bdaef99b858cf23dd672e940cb4b0b318e30924556436bbf9fd5e7959e",
+        "size": [
+          1920,
+          1272
+        ],
+        "compilation": {
+          "layout": "2x2",
+          "cell_size": [
+            960,
+            636
+          ],
+          "resampling": "LANCZOS",
+          "sources": [
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/gpu-r3-capture/scene-072.png",
+              "sha256": "272b9e32de34fc3f3f843f574550e01dc7062950fe76c8806d396827765cd2e3"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/gpu-r3-capture/scene-075.png",
+              "sha256": "f3baa1dc603c332f58f58bac849474feb6fd91fa03f52bb118fa58895390f047"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/gpu-r3-capture/scene-078.png",
+              "sha256": "3d6dc672e59a254b6fbf0a89cf375f20f58f1a184d0e073a45cfad804978a2dd"
+            },
+            {
+              "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/gpu-r3-capture/scene-081.png",
+              "sha256": "3d80286d5a99f35a27fd2ecb46fb1299b8d1dedf032064748ca05538a088d3f4"
+            }
+          ]
+        }
+      },
+      {
+        "file": "docs/figures/hd1-town-cursor-game.png",
+        "sha256": "754d7bd383ef30ad1e1ed2e493c6098accbf1645cc2d4f7cbf684f7a90e3a933",
+        "size": [
+          1920,
+          1272
+        ],
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/gpu-r3-capture/scene-000.png",
+          "sha256": "754d7bd383ef30ad1e1ed2e493c6098accbf1645cc2d4f7cbf684f7a90e3a933"
+        }
+      }
+    ],
+    "commands": {
+      "base_commit": "d8df51c117626ba91498046a606348e21aebfccb",
+      "build": "timeout 720s docker run --rm --init --network none --user 1000:1000 --memory 8g --cpus 2 --pids-limit 256 --mount type=bind,source=/home/anr2/cht/fd2,target=/repo --mount type=bind,source=/home/anr2/cht/fd2/org_game,target=/repo/org_game,readonly --mount type=bind,source=/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22,target=/original,readonly --mount type=bind,source=/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a,target=/modern,readonly -e GOCACHE=/repo/work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/go-cache -e GOPROXY=off -e GOSUMDB=off -e GOMAXPROCS=2 -e FD2_ASSET_PACK=/original -e LIBGL_ALWAYS_SOFTWARE=1 -e LP_NUM_THREADS=2 -e FD2_TEST_FACILITY_CATALOG=/repo/remake/assets/themes/modern/catalog.json -e FD2_TEST_FACILITY_PACK=/modern -e FD2_TEST_MODERN_EFFECT_CATALOG=/repo/remake/assets/themes/modern/catalog.json -e FD2_TEST_MODERN_EFFECT_PACK=/modern -w /repo/remake fd2-go-test-local:latest go build -o /repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/fd2-player-r2 ./cmd/fd2",
+      "gpu": "timeout 720s docker run --rm --init --network none --user 1000:1000 --memory 12g --cpus 2 --pids-limit 256 --mount type=bind,source=/home/anr2/cht/fd2,target=/repo --mount type=bind,source=/home/anr2/cht/fd2/org_game,target=/repo/org_game,readonly --mount type=bind,source=/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22,target=/original,readonly --mount type=bind,source=/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a,target=/modern,readonly -e GOCACHE=/repo/work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/go-cache -e GOPROXY=off -e GOSUMDB=off -e GOMAXPROCS=2 -e FD2_ASSET_PACK=/original -e LIBGL_ALWAYS_SOFTWARE=1 -e LP_NUM_THREADS=2 -e FD2_TEST_FACILITY_CATALOG=/repo/remake/assets/themes/modern/catalog.json -e FD2_TEST_FACILITY_PACK=/modern -e FD2_TEST_MODERN_EFFECT_CATALOG=/repo/remake/assets/themes/modern/catalog.json -e FD2_TEST_MODERN_EFFECT_PACK=/modern -e FD2_HD_FACILITY_GPU=1 -e FD2_TEST_FACILITY_OUT=/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/gpu-r3-capture -w /repo/remake fd2-go-test-local:latest python3 /repo/tools/fd2_go_test_memory_probe.py --out /repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/gpu-r3 --timeout 660 -- with-xvfb go test ./cmd/fd2 -p=1 -count=1 -timeout=600s -run '^TestModernHDFacilityRuntimeGPU$' -v",
+      "regression": "timeout 720s docker run --rm --init --network none --user 1000:1000 --memory 8g --cpus 2 --pids-limit 256 --mount type=bind,source=/home/anr2/cht/fd2,target=/repo --mount type=bind,source=/home/anr2/cht/fd2/org_game,target=/repo/org_game,readonly --mount type=bind,source=/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22,target=/original,readonly --mount type=bind,source=/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a,target=/modern,readonly -e GOCACHE=/repo/work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/go-cache -e GOPROXY=off -e GOSUMDB=off -e GOMAXPROCS=2 -e FD2_ASSET_PACK=/original -e LIBGL_ALWAYS_SOFTWARE=1 -e LP_NUM_THREADS=2 -e FD2_TEST_MODERN_EFFECT_CATALOG=/repo/remake/assets/themes/modern/catalog.json -e FD2_TEST_MODERN_EFFECT_PACK=/modern -e FD2_HD_CONSUMER_INVENTORY_OUT=/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/consumers-r2.json -e FD2_TEST_FACILITY_CATALOG=/repo/remake/assets/themes/modern/catalog.json -e FD2_TEST_FACILITY_PACK=/modern -w /repo/remake fd2-go-test-local:latest python3 /repo/tools/fd2_go_test_memory_probe.py --out /repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/regression-r2 --timeout 420 -- with-xvfb go test ./cmd/fd2 ./cmd/fd2-string-inventory ./internal/campaign -p=1 -count=1 -timeout=360s -run '^(TestNativeTown.*|TestDecodeAndComposeNativeTown.*|TestComposeNativeTown.*|TestModernHDTown.*|TestModernHDFacilityUnknown.*|TestModernHDMap.*|TestModernHDChibiPartyFixture|TestModernHDChibiEnemyFixture|TestModernHDChibiStaticFixture|TestModernHDChibiAnonymousStaticFixture|TestModernHDChibiAuditedFixture|TestModernHDChibiMapSampleSelectsOriginalPosition|TestIndependentInterface.*|TestModernHDBattleConsumerInventory|TestBuild.*|TestMultipleTextFieldsDoNotReuseOneExistingStringID|TestVariablesIncludeWrappedErrorPlaceholder|TestDrawFunctionContext.*|TestReviewedGoCandidatesMatchCurrentInventory)$' -v",
+      "normal": "timeout 1080s docker run --rm --init --network none --user 1000:1000 --memory 7g --cpus 2 --pids-limit 256 --mount type=bind,source=/home/anr2/cht/fd2,target=/repo --mount type=bind,source=/home/anr2/cht/fd2/org_game,target=/repo/org_game,readonly --mount type=bind,source=/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22,target=/original,readonly --mount type=bind,source=/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a,target=/modern,readonly --mount type=bind,source=/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/hd-world-gui-r7/user-data/fd2_re,target=/source,readonly -e LIBGL_ALWAYS_SOFTWARE=1 -e LP_NUM_THREADS=2 -e GOMAXPROCS=2 -w /repo fd2-promo-local:latest python3 tools/fd2_go_test_memory_probe.py --out /repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/normal-r2 --timeout 1020 -- python3 tools/verify_fd2_hd_fonts_gui.py --binary /repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/fd2-player-r2 --assets /repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-static-r36/runtime-r1 --original-pack /original --modern-pack /repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-static-r36/candidate-r1 --town-save /source/fd2_save.json --out /repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/normal-r2-capture --battle-status --world --battle-node battle_ch01 --chibi-refresh --startup-timeout 360 --run-timeout 900",
+      "consumer": "timeout 120s docker run --rm --init --network none --user 1000:1000 --memory 4g --cpus 2 --pids-limit 128 --mount type=bind,source=/home/anr2/cht/fd2,target=/repo --mount type=bind,source=/home/anr2/cht/fd2/org_game,target=/repo/org_game,readonly --mount type=bind,source=/home/anr2/.codex/knowledge-base,target=/kb,readonly --mount type=bind,source=/home/anr2/.codex/skills,target=/skills,readonly --mount type=bind,source=/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22,target=/original,readonly --mount type=bind,source=/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a,target=/modern,readonly -w /repo sc-cht-hdtools:pillow11.3.0-r2 python tools/verify_fd2_battle_hd_consumers.py --observed /repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/consumers-r1.json --original-pack /original --modern-pack /modern --catalog /repo/remake/assets/themes/modern/catalog.json --out /repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/consumers-verified-r1.json --self-test",
+      "strings": "timeout 720s docker run --rm --init --network none --user 1000:1000 --memory 8g --cpus 2 --pids-limit 256 --mount type=bind,source=/home/anr2/cht/fd2,target=/repo --mount type=bind,source=/home/anr2/cht/fd2/org_game,target=/repo/org_game,readonly --mount type=bind,source=/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22,target=/original,readonly --mount type=bind,source=/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a,target=/modern,readonly -e GOCACHE=/repo/work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/go-cache -e GOPROXY=off -e GOSUMDB=off -e GOMAXPROCS=2 -e FD2_ASSET_PACK=/original -e LIBGL_ALWAYS_SOFTWARE=1 -e LP_NUM_THREADS=2 -e FD2_TEST_MODERN_EFFECT_CATALOG=/repo/remake/assets/themes/modern/catalog.json -e FD2_TEST_MODERN_EFFECT_PACK=/modern -e FD2_HD_CONSUMER_INVENTORY_OUT=/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/consumers-r1.json -e FD2_TEST_FACILITY_CATALOG=/repo/remake/assets/themes/modern/catalog.json -e FD2_TEST_FACILITY_PACK=/modern -w /repo/remake fd2-go-test-local:latest python3 /repo/tools/fd2_go_test_memory_probe.py --out /repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/strings-r3 --timeout 420 -- with-xvfb go test ./cmd/fd2-string-inventory -p=1 -count=1 -timeout=360s -v"
+    },
+    "runtime_sources": [
+      {
+        "file": "remake/cmd/fd2/modern_hd_facility_scene.go",
+        "sha256": "78483bc49b4b7fd432152767b9626b6af19d1d3c78c3677c654f9be0ccad294f"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_facility_scene_test.go",
+        "sha256": "4a86b09b81266ffe52cba2dec5b00865228d2cb1021afb6b4f7aeef551c25e37"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_story_portrait.go",
+        "sha256": "bbec2bc0ea690aa2b5dd41cb9b07f8503a5224132cdadd282e3bb1b688d7ecf5"
+      },
+      {
+        "file": "remake/cmd/fd2/native_town_ui.go",
+        "sha256": "392cb0be962ae955333ac82c2f0ef74298ea29884f74dc4c437807b091986ac8"
+      },
+      {
+        "file": "remake/internal/campaign/native_town_scene.go",
+        "sha256": "78a84567680bf5026dfd27ad31c9467df549a08e2a1efdf0a956a8c3c2cbf67b"
+      },
+      {
+        "file": "remake/internal/campaign/native_town_scene_test.go",
+        "sha256": "7d12879b23304a938fcf7d921c421910017038c494666993adb8ba30bc26e05e"
+      }
+    ],
+    "references": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/source-evidence.json",
+        "sha256": "38916b31139bc65aab284a821373e671ba081dd2de83bdfe66fddcd2b1566972"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/commands.json",
+        "sha256": "b7fc68565148a817fd2a7173d89eb7bc71dbdc127be4f49c1d591050ae25abdc"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/gpu-r3-capture/receipt.json",
+        "sha256": "99e712d5b1ca204caf1d87eef36f1a0e33c70955e31fff31fb7fc71c632cb9d9"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/gpu-r3.log",
+        "sha256": "4b9d87ab3f7b7f3a511cb042d509bab24319e4b3344af5e230541ec5a87e436b"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/gpu-r3.memory.json",
+        "sha256": "98e73c7c29451cdb942e58ee4805a2091d10efc7a44fcfc0dc75181403a20a6d"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/regression-r2.log",
+        "sha256": "1c2322c0883b67d25036695dfeddade8fe3c463b10220908d3545c9f9c4ce276"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/regression-r2.memory.json",
+        "sha256": "d0e5a28139343931014e1f55667170c10a57eaff42ed36ada87fdeefe7ac34cb"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/normal-r2-capture/receipt.json",
+        "sha256": "81ece946ba77cce8977d7715b85d7a205e16110c55f083ad895a390db7369c18"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/normal-r2.log",
+        "sha256": "4396c274bbbbb7ea5b902ec7a5969387921dcbc64c0e08f38e8ea54097decedf"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/normal-r2.memory.json",
+        "sha256": "3d684da9666640d8325b98b663704908874ee106241f454ff7d0c24caca5d437"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/consumers-r2.json",
+        "sha256": "780e178774ebbf429ce832194634de97b3255ac66e1e8eca50e0e20ba0af1a5f"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/consumers-verified-r1.json",
+        "sha256": "f4247cad14d1d17f10305df07e0b6a410601ee31c0aaafe30db44c8fac9555d3"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/public-pictures.json",
+        "sha256": "25ebaabedfb371392bdc4b8f2f0dec50fadbf6d36febfb9fcb34667da60752ae"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/string-review-migration.json",
+        "sha256": "3b2108a2ec69d9196c8a7933ce44eda3a3c50154f898db689a0c002a85daca07"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/old-inventory-local-input.json",
+        "sha256": "339f247982d44b297c5f5c8a4b15acc6736258b19e217d246d8504080efa6584"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/inv-old.json",
+        "sha256": "f78f94862424f6594429bcfc55147e0071a2577a55b9a82ffdec9369ea5546e7"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/inv-new.json",
+        "sha256": "02f11c1294a341144672933cbf3d7c00ca4413d99d352c10b8f6908acf6ba340"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/review-old.json",
+        "sha256": "86632e80eb53c082594ea535d7224a824ef0c0bae8c1c037fd968dea944f4c92"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/strings-r3.log",
+        "sha256": "79639bfa1f2d71552ffb719b64504904f51a02e4773a79f0d51d5a6c493ae5e7"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/strings-r3.memory.json",
+        "sha256": "1dff68c78e5a0909993e80ce2301b6cb7d84d90f340ea2cc94afc63e75fd69e7"
+      }
+    ],
+    "memory": {
+      "gpu-r3": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/gpu-r3.memory.json",
+          "sha256": "98e73c7c29451cdb942e58ee4805a2091d10efc7a44fcfc0dc75181403a20a6d"
+        },
+        "elapsed_seconds": 108.157,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "returncode": 0,
+        "timeout": false,
+        "memory_peak_bytes": 4532473856
+      },
+      "regression-r2": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/regression-r2.memory.json",
+          "sha256": "d0e5a28139343931014e1f55667170c10a57eaff42ed36ada87fdeefe7ac34cb"
+        },
+        "elapsed_seconds": 140.275,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "returncode": 0,
+        "timeout": false,
+        "memory_peak_bytes": 5532278784
+      },
+      "normal-r2": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/normal-r2.memory.json",
+          "sha256": "3d684da9666640d8325b98b663704908874ee106241f454ff7d0c24caca5d437"
+        },
+        "elapsed_seconds": 195.916,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "returncode": 0,
+        "timeout": false,
+        "memory_peak_bytes": 3896991744
+      },
+      "strings-r3": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/strings-r3.memory.json",
+          "sha256": "1dff68c78e5a0909993e80ce2301b6cb7d84d90f340ea2cc94afc63e75fd69e7"
+        },
+        "elapsed_seconds": 1.003,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "returncode": 0,
+        "timeout": false,
+        "memory_peak_bytes": 121905152
+      }
+    },
+    "diagnostics": [
+      "GPU首輪誤限alpha255，改沿已定alpha>=250與背景合成；R2通過後目視發現字形基線偏低，Town改墨跡上緣並由R3完整字格與PNG驗證。",
+      "字串初輪是行號漂移，155項處置不變；舊盤點樹補回既有未版控command_labels.json共38標籤後，完整舊SHA與review相同，再用官方遷移器保存處置並乾淨重跑。",
+      "一次容器未開stdin使inline盤點未執行；未採空產物或exit0作完成證據，補-i並核實檔後才遷移。"
+    ],
+    "gaps_before_implementation": [
+      "town cursor remains in native raster even with HD art",
+      "HD interface capture returns early when original art has no modern facility scene",
+      "captured town text must share the native viewport shift and clipping"
+    ],
+    "source_inputs_before_implementation": [
+      {
+        "file": "docs/data/fd2-reference-files.json",
+        "sha256": "9946b7506620069ce9b7bb8e4b1f7fed36e7a9389b634ef62064727d89579c5e"
+      },
+      {
+        "file": "docs/data/ui-traces/town-shop-early-mid-late-e2.json",
+        "sha256": "e9ef427d5e6d8823b22c3b5751fcac9d12eae90ac5cb0c384e5bb67f5bd0792f"
+      },
+      {
+        "file": "docs/data/ida/fd2_town_departure_20261005.json",
+        "sha256": "c6dc2e9adceff0d1d35bfec0892ff42ee4ddccb86d84136db66aa6f4bffce93b"
+      },
+      {
+        "file": "remake/internal/campaign/native_town_scene.go",
+        "sha256": "c61f5ce7c96a39b82faa508b496969dbad9ad162a7c36bb397cd2aef07c2ea2b"
+      },
+      {
+        "file": "remake/cmd/fd2/native_town_ui.go",
+        "sha256": "546d59a5a0ea0e0b03dc3ea61b76fb5515c97bdc067e0c55861f227545eff6ec"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_facility_scene.go",
+        "sha256": "ed09a48b6f9abd588186c577bb667119c6ed48d5dec0b59b70d3ceca2aea02e8"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_facility_text.go",
+        "sha256": "e5c38a2d982b36b9872d5192001c659a0a2c3f2d5bdbcbf527e95a6adc754788"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_presentation.go",
+        "sha256": "bfb78369adfa2eb5b5f4ad4a0a6f7276320123eca0ba1e1795410993229a7a70"
+      }
+    ],
+    "source_input_commit": "d8df51c117626ba91498046a606348e21aebfccb",
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/final-validation-r1.json",
+      "sha256": "0045c64c9b68f76680a130c735697bdd44a1f2ac4d6220d9eeb77ec16df7c33e"
+    }
   }
 }

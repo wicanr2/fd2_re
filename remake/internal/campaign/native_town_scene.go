@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"image"
 	"os"
 	"path/filepath"
 
@@ -38,6 +39,28 @@ var nativeTownSelectionY = [nativeTownVariantCount][6]int{
 	{46, 109, 163, 139, 65, 10},
 	{30, 105, 163, 139, 85, 8},
 	{26, 144, 163, 150, 31, 20},
+}
+
+// NativeTownCursorGeometry keeps the original scene-to-VGA viewport offset.
+type NativeTownCursorGeometry struct {
+	Position image.Point
+	Frame    int
+	Viewport image.Rectangle
+}
+
+func NativeTownCursorGeometryFor(variant, selection, pulse int) (NativeTownCursorGeometry, error) {
+	if variant < 0 || variant >= nativeTownVariantCount || selection < 0 || selection > 5 || pulse < 0 || pulse > 3 {
+		return NativeTownCursorGeometry{}, errors.New("campaign: native town cursor state is invalid")
+	}
+	frame := pulse
+	if frame == 3 {
+		frame = 1
+	}
+	return NativeTownCursorGeometry{
+		Position: image.Pt(nativeTownViewportX+nativeTownSelectionX[variant][selection], nativeTownViewportY+nativeTownSelectionY[variant][selection]),
+		Frame:    frame,
+		Viewport: image.Rect(nativeTownViewportX, nativeTownViewportY, nativeTownViewportX+nativeTownViewportW, nativeTownViewportY+nativeTownViewportH),
+	}, nil
 }
 
 // NativeTownAssets are the resources consumed by 0x2cd46..0x2d05a: three
@@ -180,6 +203,22 @@ func ComposeNativeTownFrame(
 	font *fdtxt.Font,
 	variant, selection, pulse int,
 ) ([]byte, error) {
+	return composeNativeTownFrame(assets, strings, font, variant, selection, pulse, true)
+}
+
+// ComposeNativeTownFrameWithoutCursor supplies the same opaque UI underlay for
+// the HD cursor. Native rendering continues to use ComposeNativeTownFrame.
+func ComposeNativeTownFrameWithoutCursor(
+	assets *NativeTownAssets, strings *fdtxt.Strings, font *fdtxt.Font,
+	variant, selection, pulse int,
+) ([]byte, error) {
+	return composeNativeTownFrame(assets, strings, font, variant, selection, pulse, false)
+}
+
+func composeNativeTownFrame(
+	assets *NativeTownAssets, strings *fdtxt.Strings, font *fdtxt.Font,
+	variant, selection, pulse int, drawCursor bool,
+) ([]byte, error) {
 	if assets == nil || strings == nil || font == nil ||
 		variant < 0 || variant >= nativeTownVariantCount ||
 		selection < 0 || selection > 5 || pulse < 0 || pulse > 3 ||
@@ -204,12 +243,14 @@ func ComposeNativeTownFrame(
 	if frame == 3 {
 		frame = 1
 	}
-	if err := assets.Pulse[frame].BlitAt(
-		scene, NativeTownWidth,
-		nativeTownSelectionX[variant][selection],
-		nativeTownSelectionY[variant][selection],
-	); err != nil {
-		return nil, err
+	if drawCursor {
+		if err := assets.Pulse[frame].BlitAt(
+			scene, NativeTownWidth,
+			nativeTownSelectionX[variant][selection],
+			nativeTownSelectionY[variant][selection],
+		); err != nil {
+			return nil, err
+		}
 	}
 	vga := make([]byte, NativeTownWidth*NativeTownHeight)
 	for row := 0; row < nativeTownViewportH; row++ {

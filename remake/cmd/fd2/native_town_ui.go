@@ -134,6 +134,10 @@ func (g *Game) composeNativeTownFrame() ([]byte, bool) {
 }
 
 func (g *Game) composeNativeTownFrameWithBackground(fill *byte) ([]byte, bool) {
+	return g.composeNativeTownFrameLayers(fill, true)
+}
+
+func (g *Game) composeNativeTownFrameLayers(fill *byte, cursor bool) ([]byte, bool) {
 	if g.camp == nil || g.nativeTownUI == nil ||
 		g.nativeTownUI.scene == nil || g.nativeClassUI == nil {
 		return nil, false
@@ -177,7 +181,11 @@ func (g *Game) composeNativeTownFrameWithBackground(fill *byte) ([]byte, bool) {
 			scene = &selected
 		}
 	}
-	frame, err := campaign.ComposeNativeTownFrame(
+	compose := campaign.ComposeNativeTownFrame
+	if !cursor {
+		compose = campaign.ComposeNativeTownFrameWithoutCursor
+	}
+	frame, err := compose(
 		scene,
 		g.nativeClassUI.strings,
 		g.nativeClassUI.font,
