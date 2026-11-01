@@ -205,6 +205,10 @@ func TestModernHDPreparationRosterRuntimeGPU(t *testing.T) {
 }
 
 func runModernHDPreparationRosterMatrix(t *testing.T, status bool) {
+	runModernHDPreparationRosterAndCountsMatrix(t, status, false)
+}
+
+func runModernHDPreparationRosterAndCountsMatrix(t *testing.T, status, counts bool) {
 	set := facilityHDTestSet(t)
 	g := facilityHDTestGame(t, set)
 	var err error
@@ -221,12 +225,18 @@ func runModernHDPreparationRosterMatrix(t *testing.T, status bool) {
 	}
 	p := &facilityHDProbe{t: t, g: g, out: out, presentation: &modernHDPresentation{Game: g, toolbar: true},
 		captured: make(map[*modernFacilityScene]bool), captureCases: make(map[int]bool), verifyScene: verifyPreparationHDScene}
-	if status {
+	if status || counts {
 		p.verifyScene = func(p *facilityHDProbe, pixels []byte, offscreen *ebiten.Image) error {
 			if err := verifyPreparationHDScene(p, pixels, offscreen); err != nil {
 				return err
 			}
-			return verifyPreparationStatusGPU(p, pixels)
+			if err := verifyPreparationStatusGPU(p, pixels); err != nil {
+				return err
+			}
+			if counts {
+				return verifyPreparationCountsGPU(p, pixels)
+			}
+			return nil
 		}
 	}
 	originalRoster, originalDeploy, originalOrder := g.partyRoster, g.partyDeploy, g.partyJoinOrder
@@ -273,6 +283,9 @@ func runModernHDPreparationRosterMatrix(t *testing.T, status bool) {
 	if status {
 		appendPreparationStatusCases(p, set)
 	}
+	if counts {
+		appendPreparationCountCases(p, set)
+	}
 	ebiten.SetWindowSize(1920, 1272)
 	if err := ebiten.RunGame(p); err != nil {
 		t.Fatal(err)
@@ -284,12 +297,18 @@ func runModernHDPreparationRosterMatrix(t *testing.T, status bool) {
 	if status {
 		wantCases = 160
 	}
+	if counts {
+		wantCases = 208
+	}
 	if len(p.checks) != wantCases {
 		t.Fatal("incomplete matrix", len(p.checks))
 	}
 	receiptStatus, scope := "PASS-PREPARATION-ROSTER-GPU", "96 fixture Game.Draw cases, 30 slots, 3 town variants and standalone black, 3 cycles, 4 styles, 2 selection patterns; no new original E2"
 	if status {
 		receiptStatus, scope = "PASS-PREPARATION-STATUS-GPU", "160 fixture Game.Draw cases: 96 roster cases + 64 native base/flag icon and HP/MP cases; no new original E2"
+	}
+	if counts {
+		receiptStatus, scope = "PASS-PREPARATION-COUNTS-GPU", "208 fixture Game.Draw cases: 160 status cases + 48 quota/remaining cases; no new original E2"
 	}
 	raw, _ := json.MarshalIndent(map[string]any{"status": receiptStatus, "scope": scope, "checks": p.checks}, "", "  ")
 	if err := os.WriteFile(filepath.Join(out, "receipt.json"), append(raw, '\n'), 0644); err != nil {

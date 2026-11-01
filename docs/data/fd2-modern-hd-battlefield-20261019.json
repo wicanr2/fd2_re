@@ -300254,5 +300254,271 @@
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-status-r43/final-validation-r1.json",
       "sha256": "9d61405714d6538430a19e5a1aae6c7bf023afe255d045a39c9c4c5310b9502a"
     }
+  },
+  "hd1_preparation_counts_followup_20261102": {
+    "date": "2026-11-02",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1/NORMAL-GUI",
+    "base_commit": "4cfe0aa6ec4ea74839f0a0d43e414f615f31094f",
+    "scope": "preparation baked captions and multiplication marks, original quota/remaining decimal banks, existing left/lower original-color HD chrome",
+    "full_hd1_complete": false,
+    "human_accepted": false,
+    "new_original_e2": false,
+    "new_assets": false,
+    "source_evidence": {
+      "ready": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-counts-r44/ready.json",
+        "sha256": "b5f689f2baf1ccfc29d43b25fef1194e1f121cc0e0293ba403a3bed60596aa8f"
+      },
+      "baseline_references": [
+        {
+          "source_path": "docs/data/ida/fd2_town_preparation_background_20261002.json",
+          "baseline_sha256": "208bb2cffefe8706a9d4f701faad06950081ed2e18954bd87c7d653d6f79722a",
+          "baseline_commit": "4cfe0aa6ec4ea74839f0a0d43e414f615f31094f"
+        },
+        {
+          "source_path": "remake/internal/fdother/preparation_roster.go",
+          "baseline_sha256": "d0810e242c8f1fbb512227dcfe7da56981c0f4f9de4fc373089774dc5c2b37b5",
+          "baseline_commit": "4cfe0aa6ec4ea74839f0a0d43e414f615f31094f"
+        },
+        {
+          "source_path": "remake/cmd/fd2/modern_hd_facility_text.go",
+          "baseline_sha256": "e5c38a2d982b36b9872d5192001c659a0a2c3f2d5bdbcbf527e95a6adc754788",
+          "baseline_commit": "4cfe0aa6ec4ea74839f0a0d43e414f615f31094f"
+        },
+        {
+          "source_path": "remake/cmd/fd2/modern_hd_shop_digits.go",
+          "baseline_sha256": "487cc537063d993fbcad675a99c92662a8ecb0221265e090cf1870b9a95e490b",
+          "baseline_commit": "4cfe0aa6ec4ea74839f0a0d43e414f615f31094f"
+        },
+        {
+          "source_path": "remake/cmd/fd2/modern_hd_item_panel_chrome.go",
+          "baseline_sha256": "af0e8f5b76951bdb214468c40435299817870898bd07914d6cf282f8d8f929f7",
+          "baseline_commit": "4cfe0aa6ec4ea74839f0a0d43e414f615f31094f"
+        }
+      ],
+      "frame137": {
+        "width": 86,
+        "height": 86,
+        "png_sha256": "59e9f26597c74704631e937efce33a417d9989573c6320b3af9cb566157d181b",
+        "indexed_sha256": "7768d4b208a32a48a0fc92998dd7f8f67e356e45156154d45828c3fd692b50a6",
+        "mask_sha256": "ca901af74c6f663d21624279a281d0361cbab4cac12203b8b4cc624e08a27df8",
+        "count_head_rects": [
+          [
+            20,
+            22,
+            44,
+            40
+          ],
+          [
+            20,
+            60,
+            44,
+            78
+          ]
+        ],
+        "count_heads_indexed_equal": true,
+        "count_heads_identity_bound": false
+      }
+    },
+    "source": {
+      "go_files": 1208,
+      "go_tree_sha256": "09e8d963ca9ebb37081b1ca82a70d71755802cee30fef37dab596c6523f62f50",
+      "consumer": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-counts-r44/consumers-r2.json",
+        "sha256": "0be584715eb83df1d67bca3cd85df8a149819dea31c12922b664826f650b0c6f"
+      },
+      "binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-counts-r44/fd2-player-r1",
+        "sha256": "27fc7f2aae82b7449a3284e74d8c3c948f575edad3ad18807636f566a88d4392"
+      },
+      "production_go_unchanged_after_binary": true,
+      "commands": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-counts-r44/commands.json",
+        "sha256": "daf448943e62ea866e75964424b39ab7f4920de1f22d808afb246928b298d6a5"
+      },
+      "catalog": {
+        "file": "remake/assets/themes/modern/catalog.json",
+        "sha256": "9e31b510d0c11fb6b5e931718c9b915db45bf5492be20aa1fc638a96fd81e49e"
+      },
+      "registered_assets": 906,
+      "runtime_catalog": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/runtime-r2/assets/themes/modern/catalog.json",
+        "sha256": "a30638494525607a21145f7b7257a6d07f10c5178d137a7a3d8a341ed3724fa6"
+      },
+      "asset_entries_equal_formal": true,
+      "implementation": [
+        {
+          "file": "remake/cmd/fd2/modern_hd_preparation_counts.go",
+          "sha256": "8ee9fed19dc714a525fdcfbe07db7361ff5991f68041e9c3c2065ce036ec635f"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_facility_text.go",
+          "sha256": "b09751f7403fb86782726466b62eeeaec464e39b0f53d2210485e59b3de4b1c0"
+        }
+      ],
+      "count_number_source": "native quota entries31..40 and remaining42..51 through existing modernHDDecimalSprite; no HD-side value calculation",
+      "caption_source": "verbatim Frame137 出戰人數 / 剩餘人數 and two multiplication signs",
+      "chrome_rectangles": [
+        [
+          5,
+          7,
+          91,
+          93
+        ],
+        [
+          5,
+          94,
+          315,
+          193
+        ]
+      ],
+      "separate_size_gpu_caches": true
+    },
+    "gpu": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-counts-r44/gpu-r1-capture/receipt.json",
+        "sha256": "9dd7fa9ef9ae53e85bf25389ed446d90735a3a97cfe811b96e2a52ecdcbef619"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-counts-r44/gpu-r1.memory.json",
+        "sha256": "dd7ba236116d78c5035b3f7f04fb9ff8c040e89dcf7a7da6745a87e108d5b56e"
+      },
+      "cases": 208,
+      "prior_status_cases": 160,
+      "quota_remaining_cases": 48,
+      "limits": [
+        0,
+        1,
+        9,
+        10,
+        15,
+        30
+      ],
+      "selected_counts": "zero and quota",
+      "png": 28,
+      "source_pixels": {
+        "count_edge_pixels": 12782016,
+        "count_label_pixels": 8146944,
+        "status_edge_pixels": 6806592,
+        "status_icon_pixels": 3435264,
+        "status_bar_pixels": 5503680,
+        "roster_pixels": 64696320,
+        "native_pixels": 26433920,
+        "native_final_pixels": 22839680
+      },
+      "reference": "original raw chrome cells; static label material rendered by existing tested panel-ink renderer; original producer digit runs and font ink bounds; no static label font independence claim",
+      "count_digit_glyph_clip_pass": true,
+      "complete_toolbar_game_pixels_equal": true
+    },
+    "normal_gui": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-counts-r44/normal-r1-capture/receipt.json",
+        "sha256": "986ae417c3e36143da22dba67fa18bae9a1d4058b108748bc8772098c775c164"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-counts-r44/normal-r1.memory.json",
+        "sha256": "150c8ab0b9d0248f22b5d69ce2ba12e41e5ecc741e2af606aa9bea7bfca04577"
+      },
+      "png": 17,
+      "source_native_sha256": "22bd63070189e0e6703e14d4bd4db8dc1f66452a21128dd5154579171ecbea63",
+      "saved_native_sha256": "d5f39666ae53f7b55438a1d4658d38b47a301e434c8aaed65c5ed6fac73fae09",
+      "theme_save_bytes_equal": true,
+      "source_unchanged": true,
+      "scope": "正常標題LOAD既有第24章原生槽；祖先為攻略建構政策與清敵續玩，並非自然難度。保存槽1、選人、確認或必選訊息與取消均走普通鍵盤；不宣稱連續戰役或原版對拍。",
+      "normal_transition_exact_png_claimed": false
+    },
+    "regression": {
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-counts-r44/regression-r1.memory.json",
+        "sha256": "ec9905e9fed11cd0dd8477160a451db205a19ae41bd4ab0e3db610d5b6e78dfe"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-counts-r44/regression-r1.log",
+        "sha256": "ca3542317d6e9db737713946d2c020da74bc869cdb20b4b42fa8cd6884bcf246"
+      },
+      "top_level_passed": 107,
+      "skipped": [
+        "TestModernHDMapActualCandidateWorld",
+        "TestModernHDMapOverviewGPU",
+        "TestModernHDPreparationCountsRuntimeGPU",
+        "TestModernHDPreparationRosterRuntimeGPU",
+        "TestModernHDPreparationStatusRuntimeGPU",
+        "TestModernHDPreparationTownBackgroundRuntimeGPU",
+        "TestModernHDPreparationDialogueRuntimeGPU",
+        "TestModernHDTownDepartureRuntimeGPU",
+        "TestNativeTownDepartureFromOracle"
+      ],
+      "skips_are_not_passes": true,
+      "count_cpu_memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-counts-r44/cpu-r1.memory.json",
+        "sha256": "8f6dae4c0355b213aec0e8a8a23c664002a62644366533c8d8a95fad11798938"
+      },
+      "count_cpu_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-counts-r44/cpu-r1.log",
+        "sha256": "4f59881a560463434d767a0d9bfadefd2618040a8be78308c8332a0064a034f0"
+      },
+      "consumer_validation": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-counts-r44/consumers-verified-r1.json",
+        "sha256": "b2e678eb9393f291a03d0b7d7eb99b82d2fd02e2f1c139592786564ff58ea2da"
+      },
+      "string_migration": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-counts-r44/string-review-migration.json",
+        "sha256": "d3e27df184c00152cc5635d19b93e2b35b5a8822216040038c3b50e072cf3a49"
+      },
+      "go_review_candidates": 159,
+      "prior_string_dispositions_preserved": 155,
+      "added_source_verified_player_labels": 4,
+      "source_rejections": [
+        "changed Frame137 pixels",
+        "changed Frame137 mask",
+        "Frame137 dimensions",
+        "missing palette",
+        "missing font",
+        "invalid cursor",
+        "confirmation owner",
+        "save slots owner",
+        "active transition job",
+        "original interface"
+      ],
+      "native_source_cache_clock_rng_save_unchanged": true
+    },
+    "public_png": {
+      "file": "docs/figures/hd1-preparation-counts-game.png",
+      "sha256": "1bc8b654914c2f04d0636caa7e9513fa272ff02704d5d9f38432110a007e3e7c"
+    },
+    "private_assets": {
+      "changed": false,
+      "head": "e2147650d71c86d7c627dd82367cf0633e0cea97"
+    },
+    "next_count_icon_prototype": {
+      "imagegen_record": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-count-icon-r45/imagegen-prototype.json",
+        "sha256": "c05c93f91c4e4efcc2f7c0150e2ef5646d19f2c0f81c57cf72b9730c6747c4a5"
+      },
+      "native_source": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-count-icon-r45/source.json",
+        "sha256": "18240307673157e54cd63b9bdf295789e62bda6e2d408bf6329c85b01dea6a7b"
+      },
+      "compiled_png": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-count-icon-r45/count-head-hd1-r2-144x108.png",
+        "sha256": "e5bba45fb71656bfa6c7beff7ec72dbea16741e84dc164b64b036f64cdbace4c"
+      },
+      "status": "not registered; count-symbol source only; no character identity"
+    },
+    "remaining_ui": [
+      "preparation count-head artwork",
+      "preparation roster cursor",
+      "other formal native UI coverage"
+    ],
+    "limits": [
+      "Caption wording follows original embedded UI; no new translation or game text.",
+      "Original count-head icon and roster cursor retained in this slice.",
+      "No new rules, save format, original E2, full chapter, manual appearance or platform acceptance.",
+      "Terrain remains 3180 missing slots / 2033 unique source contents."
+    ],
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-counts-r44/final-validation-r1.json",
+      "sha256": "38f42671db9e5c070cb08d69542760fa5328f0237c3b3cbd48e94581a7731d75"
+    }
   }
 }

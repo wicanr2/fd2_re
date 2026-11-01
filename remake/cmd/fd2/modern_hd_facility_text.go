@@ -119,6 +119,14 @@ func (g *Game) beginModernHDPreparationText() (*modernHDIndexedText, func()) {
 	original := g.nativePreparationUI
 	copy := *original
 	copy.status = g.modernHDChurchItemAssets(original.status)
+	if original.roster != nil {
+		roster := *original.roster
+		for digit := 0; digit < 10; digit++ {
+			roster.QuotaDigits[digit] = g.modernHDDecimalSprite(original.roster.QuotaDigits[digit], digit)
+			roster.RemainingDigits[digit] = g.modernHDDecimalSprite(original.roster.RemainingDigits[digit], digit)
+		}
+		copy.roster = &roster
+	}
 	g.nativePreparationUI = &copy
 	return capture, func() {
 		g.nativePreparationUI = original

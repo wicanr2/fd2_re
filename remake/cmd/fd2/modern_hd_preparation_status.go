@@ -73,6 +73,7 @@ func (g *Game) prepareModernHDPreparationStatus(ui *nativePreparationUIAssets) *
 
 func (g *Game) appendModernHDPreparationStableLayers(ui *nativePreparationUIAssets) {
 	g.appendModernHDPreparationDialogue(ui, nil)
+	g.appendModernHDPreparationCounts(ui)
 	if h := g.prepareModernHDPreparationStatus(ui); h != nil {
 		g.modernHDText.panels = append(g.modernHDText.panels, modernHDDialoguePanel{
 			chrome: &h.chrome.frames[1], values: h.values, rect: h.chrome.art[1], status: true})

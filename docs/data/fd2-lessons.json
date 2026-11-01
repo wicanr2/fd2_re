@@ -4927,6 +4927,21 @@
       "rule": "擴充整備名冊的測具先從有效原生角色複製完整typed unit，再替換明示的raw selector key；每個variant重設來源party與join order，避免上一案例的替換名冊造成空角色。正式素材與規則不因測具失敗改動。入口為remake/cmd/fd2/modern_hd_preparation_roster_test.go的preparationRosterThirty與TestModernHDPreparationRosterRuntimeGPU。",
       "why": "R42第一輪GPU在建構下一variant時沿舊join order查到空角色，導致同一份三十槽測具缺原生狀態資料；還原每個variant的有效來源party後，96個完整畫面通過。",
       "evidence": "WORKLOG.md：2026-11-02 HD1整備選人名冊人物；docs/data/fd2-modern-hd-battlefield-20261019.json：hd1_preparation_roster_followup_20261102"
+    },
+    {
+      "id": "hd-chrome-gpu-cache-keeps-size",
+      "date": "2026-11-02",
+      "area": "HD介面材質",
+      "rule": "同一框線模板用於不同尺寸面板時，各自保存GPU紋理，或以實際尺寸作快取鍵。不得把第一個尺寸的chrome.gpu直接給第二個框使用。既有入口為remake/cmd/fd2/modern_hd_item_panel_chrome.go的frames，整備入口為modern_hd_preparation_counts.go的兩份chrome。",
+      "why": "R44審查發現左框與下框若共用同一chrome指標，第二框會沿用第一框尺寸的GPU紋理。在畫面驗證前拆為兩份材質，208完整畫面的兩框來源核對通過。",
+      "evidence": "WORKLOG.md：2026-11-02 HD1整備計數文字與面板框線；remake/cmd/fd2/modern_hd_dialogue_chrome.go：drawModernHDDialogueChrome",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/modern_hd_preparation_counts.go"
+        ],
+        "pattern": "chrome\\s+\\[2\\]modernHDDialogueChrome"
+      }
     }
   ]
 }

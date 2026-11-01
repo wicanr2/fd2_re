@@ -5735,4 +5735,20 @@ seed7 與 clock1000 驗二十六拍、各階段 F2、獨立 CPU 世界／最終�
 
 107頂層回歸通過，八可選GPU／oracle略過不計；四項既有框線／數值來源測試與兩項共用物品圖示來源／快取另通過。初次兩圖示測試缺專用環境變數而略過，已補FD2_TEST_UNIT_PRESENT_CATALOG／PACK單獨真跑；不把略過算通過。選人record更新、缺件／來源／palette／font回退、F2下HD介面、owner清除與原生bytes保持通過。1206份Go指紋932f4f61429b7f41f26c0e7c26eeb18396be5647cd917905b5badd368963b8d7，21來源／416幀／19反例及155字串處置保持。
 
-[普通整備狀態卡](../figures/hd1-preparation-status-game.png)沿同一第24章原生槽正常標題LOAD、第二槽保存、選人／確認取消、F2、縮放及說明頁，共17PNG通過。兩美術保存SHA仍為d5f39666ae53f7b55438a1d4658d38b47a301e434c8aaed65c5ed6fac73fae09，來源槽SHA22bd63070189e0e6703e14d4bd4db8dc1f66452a21128dd5154579171ecbea63保持；祖先含攻略建構／清敵，不新增自然難度、全章E2或原版對拍。906素材與私人e2147650保持，無新美術或發行。左側計數標籤／頭部符號、名冊游標與其餘正式介面續作。
+[普通整備狀態卡](../figures/hd1-preparation-status-game.png)沿同一第24章原生槽正常標題LOAD、第二槽保存、選人／確認取消、F2、縮放及說明頁，共17PNG通過。兩美術保存SHA仍為d5f39666ae53f7b55438a1d4658d38b47a301e434c8aaed65c5ed6fac73fae09，來源槽SHA22bd63070189e0e6703e14d4bd4db8dc1f66452a21128dd5154579171ecbea63保持；祖先含攻略建構／清敵，不新增自然難度、全章E2或原版對拍。906素材與私人e2147650保持，無新美術或發行。計數文字依後述閉合契約；頭部符號、名冊游標與其餘正式介面續作。
+
+## HD1整備計數文字與面板框線（CONFORMED-SCOPED／RUNTIME-E1，2026-11-02）
+
+- 沿FDOTHER第5包Frame137原圖、quota 31～40及remaining 42～51兩組字圖，補計數欄高解析文字與既定原色面板細框。出戰／剩餘數值仍由原合成器依limit與selected count產生，不在HD層重算或改選取規則。
+- quota／remaining只在Draw複製roster素材並包裝既有modernHDDecimalSprite，原Frame、mask與快取保持。所有標籤、數字與框線隨F11，F2獨立；原字圖的非標準來源仍保留原呈現。
+- 內建文字依Frame137直接可見的「出戰人數」「剩餘人數」及兩個乘號重繪，原相對框位、背景色與亮色沿來源像素。左框保持5,7至91,93，下框保持5,94至315,193，重用既有物品／狀態卡原色框，不套古金對話框。
+- Frame137的索引與mask雜湊須相符才重繪內建標籤，缺來源、palette或font保留原圖。原頭部符號與游標在這個切片保持原圖；頭部符號的兩個24×18來源區逐byte相同，角色身份不作綁定，後續美術另依實際來源處理。
+- 只在穩定名冊發布左框／下框；提示、確認、保存槽及動畫owner不留圖層。必要驗收含0／1／9／10／15／30與全選／不選、三Town／獨立黑底、四種呈現、原生bytes／來源／快取、文字clip、缺件與普通LOAD／保存。最高RUNTIME-E1，人工沿使用者接手。
+
+主收據沿既有HD台帳的hd1_preparation_counts_followup_20261102。實作入口為modern_hd_preparation_counts.go、modern_hd_facility_text.go與native_preparation_ui.go；工作歷程只追加WORKLOG。
+
+208完整Game.Draw通過，含既有160狀態卡與48計數案例；quota取0／1／9／10／15／30，各含不選／全選及四種顯示。28PNG、12782016框線及8146944標籤像素通過，數字由原生bank提交，實際字型ink均在原clip內。標籤材質沿已驗證的panel-ink renderer核對最終來源，不另稱獨立字型證明；框線另沿原始cell核對。左框與下框各有GPU紋理，避免不同尺寸互用快取。
+
+107頂層回歸通過，九可選GPU／oracle略過不計。原生bytes、素材與font adapter還原、靜態標籤快取、Frame137索引／mask／尺寸、palette／font／owner拒絕及F2下獨立介面通過。1208份Go指紋09e8d963ca9ebb37081b1ca82a70d71755802cee30fef37dab596c6523f62f50，21來源／416幀／19反例保持。字串盤點現為159：原155處置保留，另外四筆為原Frame137直接可見的兩個標籤及兩個乘號，登記玩家可見；沒有新增翻譯或遊戲敘事。
+
+[普通整備計數畫面](../figures/hd1-preparation-counts-game.png)沿同一第24章原生槽正常LOAD、第二槽保存、選人／確認取消、F2、縮放與說明頁，17PNG通過。兩美術保存SHA仍為d5f39666ae53f7b55438a1d4658d38b47a301e434c8aaed65c5ed6fac73fae09，來源槽22bd63070189e0e6703e14d4bd4db8dc1f66452a21128dd5154579171ecbea63保持；攻略建構／清敵祖先限制不變，不新增自然難度、全章E2或原版對拍。906素材與私人e2147650保持。頭部符號與游標仍用原圖；來源相同的頭部符號Q試稿另存R45，尚未登錄，不把它算成正式完成。
