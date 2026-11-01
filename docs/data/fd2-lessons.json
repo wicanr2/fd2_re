@@ -4820,6 +4820,14 @@
         ],
         "pattern": "checked_master_components"
       }
+    },
+    {
+      "id": "artifact-read-follows-producer-exit",
+      "area": "驗證",
+      "rule": "讀取掃描結果、清冊或收據前，先等待產生它的工具handle回傳exit code 0。檔案存在或已有內容不作完成訊號。exec_command回傳session_id時，用write_stdin輪詢到結束，再啟動相依檢查；入口為該兩個工具的執行收據及WORKLOG.md的驗證紀錄。",
+      "why": "2026-11-01第88／91／93／94組最終稽核在ownership-find.txt仍寫入時啟動，讀到部分掃描而誤拒。等待原掃描exit code 0後，同一命令通過；完整2808筆與r24集合完全一致，零新增root檔或.md目錄。屬驗證排程問題，未改產品或放寬守門。",
+      "date": "2026-11-01",
+      "evidence": "WORKLOG.md：2026-11-01四組遮面與格柵面盔Q版接線"
     }
   ]
 }

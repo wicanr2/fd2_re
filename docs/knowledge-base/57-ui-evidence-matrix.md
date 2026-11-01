@@ -1,6 +1,6 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
-第84／85／86／87組已依自身DATO及原版十二姿態重繪並接入HD1。原始敵軍名冊保留camp、portrait、BattleFig、位置及selector，無身份或圖組投影。兩固定分份合28完整Game.Draw、24PNG、四次F2、332204核心點及21反例通過；普通首章整包控制、走行取消、保存與新程序LOAD相容通過。清冊只換8項、875保持，新增100檔，9023舊美術及其餘121組來源保持。84來源眼色分列，86持物種類仍未知、僅保留輪廓，87保留成熟原臉。Q比例餘項16→12，其餘面容、完整總覽及集中人工仍待，Gaia保持定版。不新增EXE動態或自然章節驗收；現況依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源為主收據hd1_helm_bow_four_followup_20261101。
+第88／91／93／94組已依自身DATO及原版十二姿態重繪並接入HD1。原始敵軍名冊保留camp、portrait、BattleFig、位置及selector，無身份或圖組投影。兩固定分份合28完整Game.Draw、24PNG、四次F2、337791核心點及21反例通過；普通首章整包控制、行走取消、保存與新程序LOAD相容通過。清冊只換8項、875保持，新增100檔，9123舊美術及其餘121組來源保持。88持物種類未知、只沿輪廓，91保留長鼻與無露腳袍形，93／94沿各自閉合格柵面盔，不推定物種。Q比例餘項12→8，其餘面容、完整總覽及集中人工仍待，Gaia保持定版。不新增EXE動態或自然章節驗收；現況依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源為主收據hd1_visor_hood_grille_followup_20261101。
 
 戶外草、土、沙、水與石路已依定版風格刷新，原生輪廓、物件與規則保持。完整GPU及普通首章切換、走行取消、保存冷讀通過，README總覽及普通遊玩圖已更新。現況與來源依[58](58-fd2-exe-re-coverage.md)、[61](61-modern-theme-runtime-spec.md)及主收據`hd1_painted_ground_followup_20261029`；洞窟／物件與其餘缺圖續作，人工由使用者接手。
 
