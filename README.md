@@ -85,6 +85,14 @@
 
 達克賽保留深藍裸面、尖耳、厚重額面、鉤鼻與微揚薄唇；亞奇梅吉保留藍灰高額禿頂、深陷窄眼、長鼻與瘦長下巴。兩人皆按原生空手，灰綠腰帶與藍紫袍大領分別保持；達克賽眼色依自己的原版大頭像採藍紫。可看[四向與實際尺寸](docs/figures/hd1-blue-and-robed-comparison.png)、[達克賽](docs/figures/hd1-darksai-refresh-game.png)及[亞奇梅吉](docs/figures/hd1-archimage-refresh-game.png)的完整受控戰場圖。面容圖比較原版頭像與實際地圖素材，非對話HD頭像驗收；地圖及資訊窗共用新版圖源。戰場圖使用各自原生名冊的受控測具，沒有身份或圖組投影，不代表自然加入流程。其餘人物續作，完整總覽仍待全部重繪後更新。
 
+![羅德曼與渥德的原版及HD1面容對照](docs/figures/hd1-rodman-wode-faces.png)
+
+羅德曼保留自己的成熟眉眼、寬鼻、長髮、褐鬍鬚與劍盾。渥德保留藍眼、方下巴、黑色頰紋與下巴黑記，深藍平頂輪廓及灰綠肩領沿原版。可看[四向與144／72／48尺寸](docs/figures/hd1-rodman-wode-comparison.png)、[羅德曼](docs/figures/hd1-party-019-refresh-game.png)及[渥德](docs/figures/hd1-party-031-refresh-game.png)的受控戰場圖；兩組使用原始名冊，不補持續角色身份。
+
+![轉職哈瓦特的原版及HD1面容對照](docs/figures/hd1-promoted-havart-faces.png)
+
+哈瓦特的轉職圖組依自己的原版頭像，保留成熟威嚴的大紅褐鬍鬚、短斧與方十字盾。可看[四向與144／72／48尺寸](docs/figures/hd1-promoted-havart-comparison.png)及[受控戰場圖](docs/figures/hd1-party-035-refresh-game.png)。這份測具沿既有哈諾視覺模板，明示身份與圖組投影，只驗圖源及繪製；自然轉職與能力值不在驗收範圍。第67組仍待查證身份與出場來源，完整人物總覽及集中人工複核續留待驗。
+
 ![灰綠十字盾板盔與深藍筒盔人物的原版及HD1面容對照](docs/figures/hd1-enemy-cross-and-cylinder-faces.png)
 
 第69組保留灰綠平頂閉合面盔、暗眼縫、十字盾、直立淡色劍及紅腰布。第95組依自己的原版頭像保留成熟鼻口，眼部由深藍筒狀帽盔遮住；原版地圖橙紅帶不畫成發光機械眼，灰綠肩領與紅腰布沿原版。可看[四向與144／72／48尺寸](docs/figures/hd1-enemy-cross-and-cylinder-comparison.png)、[十字盾板盔](docs/figures/hd1-enemy-069-refresh-game.png)及[深藍筒盔](docs/figures/hd1-enemy-095-refresh-game.png)的完整受控戰場圖。

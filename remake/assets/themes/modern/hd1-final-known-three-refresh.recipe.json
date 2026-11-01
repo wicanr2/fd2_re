@@ -1,0 +1,345 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_hd1_chibi_map_refresh",
+  "approved_preview": "docs/figures/hd1-ares-q-design.png",
+  "approved_preview_sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e",
+  "native_bank_sha256": "7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44",
+  "palette_sha256": "404db1ca72ffc19fa7404fbc59bde98cdf239f63fe3375ec248a8142073a28bf",
+  "base_catalog_sha256": "06237a53ddfd738536d38f4030febae22327af096544f5fefc59936a26692bf9",
+  "approval": "沿已定大頭短身、各自面容與持續推進授權，完成19／31及35原角色圖組，不改正式規則。",
+  "master_alpha_policy": "per_pose_coverage_v1",
+  "groups": [
+    {
+      "group": 19,
+      "master_file": "fdicon-019-hd1-native-q-v1-master.png",
+      "master_sha256": "8eab46cbf524a145b93f982fdfd2790b5d3cafe104c28b3a0251556c82134742",
+      "output_prefix": "fdicon-019-hd1-native-q-v1"
+    },
+    {
+      "group": 31,
+      "master_file": "fdicon-031-hd1-native-q-v1-master.png",
+      "master_sha256": "326229d59ca516ae744cb33690d4f10b5ff556cd8883c5c3372bd1d4ceffebfa",
+      "output_prefix": "fdicon-031-hd1-native-q-v1"
+    },
+    {
+      "group": 35,
+      "master_file": "fdicon-035-hd1-native-q-v1-master.png",
+      "master_sha256": "408ef6f73b3f28dbfe083360898ce01b6ccf6d5d2a52401148ba9a4422b5976d",
+      "output_prefix": "fdicon-035-hd1-native-q-v1"
+    }
+  ],
+  "faces": [
+    {
+      "group": 19,
+      "name": "羅德曼",
+      "portrait_file": "remake/assets/portraits/DATO_019_m0.png",
+      "portrait_sha256": "8787ef622368e56ca94ae7660b1161ae5cc649601f5e15c3e6599ea4dba65e87",
+      "traits": [
+        "成熟退髮額頭、重眉窄眼、寬鼻及厚褐鬍鬚",
+        "原版長髮、正面左劍右十字盾及側面遮蔽",
+        "灰綠短身與紫藍腰布"
+      ],
+      "comparison_label": "各自原版DATO／原地圖圖源，非480對話頭像驗收"
+    },
+    {
+      "group": 31,
+      "name": "渥德",
+      "portrait_file": "remake/assets/portraits/DATO_031_m0.png",
+      "portrait_sha256": "b4ec61b0fa7345858fc71582f89230b93c3f8b3d9ba36f90777f0b0334c49bc2",
+      "traits": [
+        "成熟方下巴、藍眼、黑色頰紋與下巴黑記",
+        "深藍平頂頭部輪廓，材質仍未知",
+        "灰綠肩領、紫藍腰布與原版空手"
+      ],
+      "comparison_label": "各自原版DATO／原地圖圖源，非480對話頭像驗收"
+    },
+    {
+      "group": 35,
+      "name": "轉職哈瓦特",
+      "portrait_file": "remake/assets/portraits/DATO_003_m0.png",
+      "portrait_sha256": "55c8223f52fe63085816edf3963331584d6a219b9f531cf88b8ef6d72614557e",
+      "traits": [
+        "DATO003成熟威嚴重眉與大紅褐鬍鬚",
+        "正面左短斧右方十字盾及側面遮蔽",
+        "紅褐長髮、灰綠短身與紫藍腰布"
+      ],
+      "comparison_label": "各自原版DATO／原地圖圖源，非480對話頭像驗收"
+    }
+  ],
+  "roster_bindings": [
+    {
+      "group": 19,
+      "map": 22,
+      "roster_file": "remake/assets/maps/map22/map22_units.json",
+      "roster_sha256": "060dc4ce39e2c8dbc670f6fe334d1d8e511c4ff9f24886c62afcc0329ea06e5a",
+      "row": 1,
+      "initial_group": 0,
+      "camp": "own",
+      "portrait": 19,
+      "battle_fig": 19,
+      "position": {
+        "x_word": 21,
+        "y_word": 30,
+        "raw_key": 19
+      },
+      "native_constructor": {
+        "branch": "lower_class",
+        "index": 19,
+        "record": [
+          1,
+          9,
+          10,
+          16,
+          1,
+          0,
+          0,
+          5,
+          0,
+          0,
+          0,
+          0,
+          0,
+          129,
+          255,
+          255,
+          255,
+          255,
+          160,
+          0,
+          110,
+          0,
+          40,
+          0
+        ],
+        "aux_record": [
+          10,
+          15,
+          7,
+          10,
+          2,
+          3,
+          12,
+          16,
+          6,
+          8,
+          255
+        ]
+      }
+    },
+    {
+      "group": 31,
+      "map": 25,
+      "roster_file": "remake/assets/maps/map25/map25_units.json",
+      "roster_sha256": "3e0f0b15309239b79066b236f9f8bd8a399d9f7705194a7fc4ecdf10437b82f2",
+      "row": 68,
+      "initial_group": 1,
+      "camp": "own",
+      "portrait": 31,
+      "battle_fig": 31,
+      "position": {
+        "x_word": 1,
+        "y_word": 45,
+        "raw_key": 31
+      },
+      "native_constructor": {
+        "branch": "lower_class",
+        "index": 31,
+        "record": [
+          6,
+          25,
+          25,
+          12,
+          0,
+          0,
+          0,
+          4,
+          0,
+          0,
+          0,
+          0,
+          0,
+          129,
+          255,
+          255,
+          255,
+          255,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "aux_record": [
+          8,
+          14,
+          7,
+          14,
+          2,
+          4,
+          12,
+          15,
+          0,
+          0,
+          255
+        ]
+      }
+    }
+  ],
+  "party_bindings": [
+    {
+      "group": 35,
+      "native_identity": 3,
+      "portrait": 3,
+      "fig": 3,
+      "target_field": "default_target",
+      "scenario_file": "remake/assets/scenarios/ch02.json",
+      "scenario_sha256": "27ff99c5f21304eaebe75be228256d32c57ece1fd4e167d6582ca9082f209d02",
+      "selector_projection_injected": true,
+      "identity_projection_injected": true,
+      "visual_template_native_identity": 1,
+      "scope": "沿既有哈諾視覺模板，非哈瓦特章節隊伍或數值來源"
+    }
+  ],
+  "gpu_pairs": {
+    "authored-19-and-31": [
+      19,
+      31
+    ],
+    "promoted-35": [
+      35
+    ]
+  },
+  "policy": "19羅德曼保留自身成熟長髮劍盾面容。31渥德保留自身藍眼頰紋、方下巴及深藍平頂輪廓，頭部材質未知，不猜機械。35依DATO003成熟大鬍鬚與短斧盾；只作identity3的受控selector投影，不宣稱自然轉職。67身份及出場綁定未知，保留原圖。",
+  "promotion_source": {
+    "file": "remake/assets/data/class_change_targets.json",
+    "sha256": "27946ce10bf60738331009fff14b50be3cddc4cce18a4402e5259cb89fecfaa2"
+  },
+  "character_identity_sources": [
+    {
+      "file": "docs/data/exe_tables/characters.json",
+      "sha256": "d5611b2e44ede9e95b56466e11d985da8244eac3109f308ec29226930259ca48"
+    },
+    {
+      "file": "remake/assets/story/ch26.json",
+      "sha256": "cd4651d6b9774e73ac8507098c595dddf9afde51f01ee3b91f5921756dfefdfb"
+    },
+    {
+      "file": "remake/assets/scenarios/ch27.json",
+      "sha256": "bbe62db8d474d3a4f81c735b2fec6da23fd2010f7d2a27e325be1b3fc4d3836f"
+    }
+  ],
+  "alpha_quality_review": {
+    "file": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/alpha-contract-review-r1.json",
+    "sha256": "b1eb02e4493549deefc9f77acf945c150aad57b68cdb46d8cdcf1076bdc1c31d",
+    "scope": "沿既有規格逐姿態驗證，來源alpha及編製器保持。"
+  },
+  "image_generation": {
+    "tool": "builtin image_gen.imagegen",
+    "transparent_background": true,
+    "jobs": [
+      {
+        "group": 19,
+        "prompt": "Create ONE production-ready transparent RGBA sprite master sheet for a classic Taiwan fantasy tactics remake. Exactly 12 separate full-body sprites, regular 3 columns x 4 rows. Rows in order FRONT facing viewer, LEFT-facing strict profile, BACK, RIGHT-facing strict profile. Columns neutral planted stance, small left-step, small right-step. Use the first reference only for THIS character's exact silhouette, equipment, colors and direction-dependent occlusion, the second for THIS character's face/head details. The third is STYLE ONLY: approved bottom '大頭Q版新稿' very large head and very short body, head including headgear about 67 percent of total height, tiny body and short legs, clean bold dark outlines, smooth clean hand-painted color shading, sharply readable at 48 pixels. Do not copy Ares's face or clothes. Make every sprite the same scale, fully inside an evenly spaced cell, ample clear margins; no neighboring sprites touch. True alpha 0 outside sprites and fully opaque solid interiors including BLACK areas; no background, no checkerboard, no ground shadow, no cast shadow, no scenery, no labels, no grid, no text, no glows. Keep the full character in each cell and all twelve poses. Character 019, Rodman, is a mature stern human sword saint. His OWN portrait is essential: receding broad forehead, reddish DARK BROWN long hair, heavy dark eyebrows and narrow eyes, deep brow creases, broad powerful nose, thick brown moustache, visible pale lower lip/chin with a long dark-brown beard below and around the jaw. Not a youthful bearded boy; not a generic round cute face. Keep his face different from Havart's huge full beard. Very large long-haired head, tiny gray-green/blue-gray armored body, blue-purple short waist cloth. Exact native hand placement: in FRONT row a SINGLE UPRIGHT straight pale SILVER SWORD on VIEWER LEFT and gray-green rectangular SHIELD with dark T/cross on VIEWER RIGHT. LEFT-facing row shows SHIELD in foreground; RIGHT-facing row shows SWORD in foreground. BACK row long brown hair, plain small gray-green belt and blue-purple lower cloth; no cape. No helmet, no extra sword, no new shoulder ornaments. Same mature individual across all twelve poses.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/group-019-original.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/portrait-019.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ],
+        "selected": true,
+        "source": "01a191d4-42fc-7d40-998d-6e83828c4823/exec-bfbee375-15fb-4bb2-87c2-e3041fb65086.png",
+        "source_sha256": "8eab46cbf524a145b93f982fdfd2790b5d3cafe104c28b3a0251556c82134742",
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/group-019-original.png",
+            "sha256": "ec05e1c24a4caa9941707ceb988fae327278cd92c9a09203a6ca85b057e59381"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/portrait-019.png",
+            "sha256": "2d4d6afd0de2b01f5647359e5d68768c361afd90e61abfd8f681fadd527873e4"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png",
+            "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+          }
+        ]
+      },
+      {
+        "group": 31,
+        "prompt": "Create ONE production-ready transparent RGBA sprite master sheet for a classic Taiwan fantasy tactics remake. Exactly 12 separate full-body sprites, regular 3 columns x 4 rows. Rows in order FRONT facing viewer, LEFT-facing strict profile, BACK, RIGHT-facing strict profile. Columns neutral planted stance, small left-step, small right-step. Use the first reference only for THIS character's exact silhouette, equipment, colors and direction-dependent occlusion, the second for THIS character's face/head details. The third is STYLE ONLY: approved bottom '大頭Q版新稿' very large head and very short body, head including headgear about 67 percent of total height, tiny body and short legs, clean bold dark outlines, smooth clean hand-painted color shading, sharply readable at 48 pixels. Do not copy Ares's face or clothes. Make every sprite the same scale, fully inside an evenly spaced cell, ample clear margins; no neighboring sprites touch. True alpha 0 outside sprites and fully opaque solid interiors including BLACK areas; no background, no checkerboard, no ground shadow, no cast shadow, no scenery, no labels, no grid, no text, no glows. Keep the full character in each cell and all twelve poses. Character 031, Wode, uses his OWN original portrait and sprite. Mature angular face, heavy slanted dark eyebrows, narrow BLUE eyes, long straight nose, thin closed mouth, strong square angular jaw. Preserve the distinctive BLACK CHEEK STREAKS and small BLACK CHIN MARK from the portrait. Dark NAVY broad FLAT TOP upper-head silhouette with dark side masses, as original; keep simple dark planes, no invented helmet seams, no mechanical helmet, lights or faceplate. Do not decide whether the original head material is hair or a cap; paint the exact visible silhouette and planes. Tiny dark navy body, subdued gray-green shoulder/collar forms and gloves, purple-blue waist panel, very short legs. EMPTY HANDS in every pose, no weapon or shield. In back view broad flat-top navy head silhouette and small gray-green shoulder collar, no facial features. Never use a child's round face or common anime face, and do not copy Ares's face. Match own warm tan skin, angular jaw and blue eyes.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/group-031-original.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/portrait-031.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ],
+        "selected": true,
+        "source": "01a191d4-42fc-7d40-998d-6e83828c4823/exec-8fbdf8f9-c2f1-4f1b-b136-a877453c981c.png",
+        "source_sha256": "326229d59ca516ae744cb33690d4f10b5ff556cd8883c5c3372bd1d4ceffebfa",
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/group-031-original.png",
+            "sha256": "c1430bfd567ee2c067552d5b1b7fa03cabb4cdf6c13afc5e93dd84f17387e760"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/portrait-031.png",
+            "sha256": "9f97472ee93830e2931ac13c3ad2e8c9f8b93dafaf4ab68b68b3054450172bf8"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png",
+            "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+          }
+        ]
+      },
+      {
+        "group": 35,
+        "prompt": "Create ONE production-ready transparent RGBA sprite master sheet for a classic Taiwan fantasy tactics remake. Exactly 12 separate full-body sprites, regular 3 columns x 4 rows. Rows in order FRONT facing viewer, LEFT-facing strict profile, BACK, RIGHT-facing strict profile. Columns neutral planted stance, small left-step, small right-step. Use the first reference only for THIS character's exact silhouette, equipment, colors and direction-dependent occlusion, the second for THIS character's face/head details. The third is STYLE ONLY: approved bottom '大頭Q版新稿' very large head and very short body, head including headgear about 67 percent of total height, tiny body and short legs, clean bold dark outlines, smooth clean hand-painted color shading, sharply readable at 48 pixels. Do not copy Ares's face or clothes. Make every sprite the same scale, fully inside an evenly spaced cell, ample clear margins; no neighboring sprites touch. True alpha 0 outside sprites and fully opaque solid interiors including BLACK areas; no background, no checkerboard, no ground shadow, no cast shadow, no scenery, no labels, no grid, no text, no glows. Keep the full character in each cell and all twelve poses. Character 035 is promoted Havart with the SAME mature face as portrait 003. Very old, authoritative adult warrior with extremely heavy RED-BROWN moustache and MASSIVE FULL RED-BROWN BEARD covering mouth and much of chest, strong narrow mature eyes under thick angular eyebrows, broad angular nose, deep facial creases. Not a boy with a glued-on beard. Long thick red-brown hair around and behind head, no helmet. Head and huge beard about two thirds total height, tiny gray-green armored body and blue-purple waist cloth, stubby boots. EXACT native objects: a single SHORT GRAY AXE on VIEWER LEFT in front row and a RECTANGULAR gray-green SHIELD with the original DARK T/cross on VIEWER RIGHT. LEFT-facing row shield prominent in foreground; RIGHT-facing row axe prominent in foreground. Preserve weapon forms and occlusion from first reference; only one axe, no sword, no extra weapon, no cape, no new crest. Back row shows huge red-brown hair mass and tiny short armor/waist, facial beard not pasted onto the back. Keep mature stern face, large head and very short body consistent all twelve poses.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/group-035-original.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/portrait-003.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ],
+        "selected": true,
+        "source": "01a191d4-42fc-7d40-998d-6e83828c4823/exec-f2883449-647f-4ec9-9e02-4f3900074913.png",
+        "source_sha256": "408ef6f73b3f28dbfe083360898ce01b6ccf6d5d2a52401148ba9a4422b5976d",
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/group-035-original.png",
+            "sha256": "48e2daa28973ff2bb736e239f87f7e6541dd6f38b31308fc719c222146a8d314"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/portrait-003.png",
+            "sha256": "a17258a4613812ea6e3d968410cc470c53e3c0edb79e230f16abd6d73dedf81e"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png",
+            "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+          }
+        ]
+      }
+    ]
+  },
+  "original_reference": {
+    "source": "各自DATO、原始名冊／轉職表及FDICON十二姿態三層、FDOTHER0色盤；只證固定資料與圖源",
+    "groups": [
+      19,
+      31,
+      35
+    ],
+    "records_file": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/native-reference.json",
+    "records_sha256": "2a1a16d40bd40e815445686264d36f7df4233c329d314b9ef595daae13cc4840",
+    "reference_boards": [
+      {
+        "file": "group-019-original.png",
+        "sha256": "ec05e1c24a4caa9941707ceb988fae327278cd92c9a09203a6ca85b057e59381"
+      },
+      {
+        "file": "group-031-original.png",
+        "sha256": "c1430bfd567ee2c067552d5b1b7fa03cabb4cdf6c13afc5e93dd84f17387e760"
+      },
+      {
+        "file": "group-035-original.png",
+        "sha256": "48e2daa28973ff2bb736e239f87f7e6541dd6f38b31308fc719c222146a8d314"
+      }
+    ]
+  }
+}

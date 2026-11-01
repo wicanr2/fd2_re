@@ -251561,7 +251561,13 @@
             6,
             9
           ],
-          "hd_frame_table_sha256": "e224840db39ae5fae191245390adebd416da013a3e46cad0cc23df70ae1420a6"
+          "hd_frame_table_sha256": "e224840db39ae5fae191245390adebd416da013a3e46cad0cc23df70ae1420a6",
+          "semantic_label_correction": {
+            "date": "2026-11-01",
+            "replacement": "31名稱由characters表、原名冊、ch26對話及ch27隊伍確認為渥德；頭部材質仍未知，原名冊無持續身份欄位。",
+            "evidence": "remake/assets/themes/modern/hd1-final-known-three-refresh.recipe.json",
+            "level": "固定資料與名稱已證實，非材質／自然加入判定"
+          }
         },
         {
           "group": 32,
@@ -271529,6 +271535,992 @@
     "final_validation": {
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r26/final-validation-r4.json",
       "sha256": "85bd2a5a4ee1d69c9312d40c45bb6f249f4eed3a5c76297ce282298f14eb08fd"
+    }
+  },
+  "hd1_final_known_three_followup_20261101": {
+    "date": "2026-11-01",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1",
+    "base_commit": "77282633566396d85dea6d5d7abfd4fe9e6efd49",
+    "branch": "feat/hd1-last-proportions-r27",
+    "issues": [
+      286,
+      287
+    ],
+    "scope": "19羅德曼、31渥德及35轉職哈瓦特依各自DATO與原生十二姿態新繪。19／31保留原名冊，35沿已揭露哈諾視覺模板與受控身份／圖組投影；不作自然加入或轉職證據。正式Go、規則與保存保持。",
+    "art": {
+      "recipe": {
+        "file": "remake/assets/themes/modern/hd1-final-known-three-refresh.recipe.json",
+        "sha256": "416ada95712704adcb9e7823ca8736ed4ca012835c7bf387059bbf008d0c1b68"
+      },
+      "groups": [
+        19,
+        31,
+        35
+      ],
+      "faces": [
+        {
+          "group": 19,
+          "name": "羅德曼",
+          "portrait_file": "remake/assets/portraits/DATO_019_m0.png",
+          "portrait_sha256": "8787ef622368e56ca94ae7660b1161ae5cc649601f5e15c3e6599ea4dba65e87",
+          "traits": [
+            "成熟退髮額頭、重眉窄眼、寬鼻及厚褐鬍鬚",
+            "原版長髮、正面左劍右十字盾及側面遮蔽",
+            "灰綠短身與紫藍腰布"
+          ],
+          "comparison_label": "各自原版DATO／原地圖圖源，非480對話頭像驗收"
+        },
+        {
+          "group": 31,
+          "name": "渥德",
+          "portrait_file": "remake/assets/portraits/DATO_031_m0.png",
+          "portrait_sha256": "b4ec61b0fa7345858fc71582f89230b93c3f8b3d9ba36f90777f0b0334c49bc2",
+          "traits": [
+            "成熟方下巴、藍眼、黑色頰紋與下巴黑記",
+            "深藍平頂頭部輪廓，材質仍未知",
+            "灰綠肩領、紫藍腰布與原版空手"
+          ],
+          "comparison_label": "各自原版DATO／原地圖圖源，非480對話頭像驗收"
+        },
+        {
+          "group": 35,
+          "name": "轉職哈瓦特",
+          "portrait_file": "remake/assets/portraits/DATO_003_m0.png",
+          "portrait_sha256": "55c8223f52fe63085816edf3963331584d6a219b9f531cf88b8ef6d72614557e",
+          "traits": [
+            "DATO003成熟威嚴重眉與大紅褐鬍鬚",
+            "正面左短斧右方十字盾及側面遮蔽",
+            "紅褐長髮、灰綠短身與紫藍腰布"
+          ],
+          "comparison_label": "各自原版DATO／原地圖圖源，非480對話頭像驗收"
+        }
+      ],
+      "roster_bindings": [
+        {
+          "group": 19,
+          "map": 22,
+          "roster_file": "remake/assets/maps/map22/map22_units.json",
+          "roster_sha256": "060dc4ce39e2c8dbc670f6fe334d1d8e511c4ff9f24886c62afcc0329ea06e5a",
+          "row": 1,
+          "initial_group": 0,
+          "camp": "own",
+          "portrait": 19,
+          "battle_fig": 19,
+          "position": {
+            "x_word": 21,
+            "y_word": 30,
+            "raw_key": 19
+          },
+          "native_constructor": {
+            "branch": "lower_class",
+            "index": 19,
+            "record": [
+              1,
+              9,
+              10,
+              16,
+              1,
+              0,
+              0,
+              5,
+              0,
+              0,
+              0,
+              0,
+              0,
+              129,
+              255,
+              255,
+              255,
+              255,
+              160,
+              0,
+              110,
+              0,
+              40,
+              0
+            ],
+            "aux_record": [
+              10,
+              15,
+              7,
+              10,
+              2,
+              3,
+              12,
+              16,
+              6,
+              8,
+              255
+            ]
+          }
+        },
+        {
+          "group": 31,
+          "map": 25,
+          "roster_file": "remake/assets/maps/map25/map25_units.json",
+          "roster_sha256": "3e0f0b15309239b79066b236f9f8bd8a399d9f7705194a7fc4ecdf10437b82f2",
+          "row": 68,
+          "initial_group": 1,
+          "camp": "own",
+          "portrait": 31,
+          "battle_fig": 31,
+          "position": {
+            "x_word": 1,
+            "y_word": 45,
+            "raw_key": 31
+          },
+          "native_constructor": {
+            "branch": "lower_class",
+            "index": 31,
+            "record": [
+              6,
+              25,
+              25,
+              12,
+              0,
+              0,
+              0,
+              4,
+              0,
+              0,
+              0,
+              0,
+              0,
+              129,
+              255,
+              255,
+              255,
+              255,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "aux_record": [
+              8,
+              14,
+              7,
+              14,
+              2,
+              4,
+              12,
+              15,
+              0,
+              0,
+              255
+            ]
+          }
+        }
+      ],
+      "party_bindings": [
+        {
+          "group": 35,
+          "native_identity": 3,
+          "portrait": 3,
+          "fig": 3,
+          "target_field": "default_target",
+          "scenario_file": "remake/assets/scenarios/ch02.json",
+          "scenario_sha256": "27ff99c5f21304eaebe75be228256d32c57ece1fd4e167d6582ca9082f209d02",
+          "selector_projection_injected": true,
+          "identity_projection_injected": true,
+          "visual_template_native_identity": 1,
+          "scope": "沿既有哈諾視覺模板，非哈瓦特章節隊伍或數值來源"
+        }
+      ],
+      "mode": "three-new-known-characters",
+      "new_image_generation_calls": 3,
+      "new_final_masters": 3,
+      "rejected_candidates": 0,
+      "reused_files": 0,
+      "new_art_files": 75,
+      "original_reference": {
+        "source": "各自DATO、原始名冊／轉職表及FDICON十二姿態三層、FDOTHER0色盤；只證固定資料與圖源",
+        "groups": [
+          19,
+          31,
+          35
+        ],
+        "records_file": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/native-reference.json",
+        "records_sha256": "2a1a16d40bd40e815445686264d36f7df4233c329d314b9ef595daae13cc4840",
+        "reference_boards": [
+          {
+            "file": "group-019-original.png",
+            "sha256": "ec05e1c24a4caa9941707ceb988fae327278cd92c9a09203a6ca85b057e59381"
+          },
+          {
+            "file": "group-031-original.png",
+            "sha256": "c1430bfd567ee2c067552d5b1b7fa03cabb4cdf6c13afc5e93dd84f17387e760"
+          },
+          {
+            "file": "group-035-original.png",
+            "sha256": "48e2daa28973ff2bb736e239f87f7e6541dd6f38b31308fc719c222146a8d314"
+          }
+        ]
+      },
+      "alpha_quality_review": {
+        "file": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/alpha-contract-review-r1.json",
+        "sha256": "b1eb02e4493549deefc9f77acf945c150aad57b68cdb46d8cdcf1076bdc1c31d",
+        "scope": "沿既有規格逐姿態驗證，來源alpha及編製器保持。"
+      }
+    },
+    "gpu": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/gpu-three-r1-capture/receipt.json",
+        "sha256": "c3a8cbb74779590b4bcfa857b124e3f8908e15e924d6ed8d065990b01186db2f"
+      },
+      "independent_and_registration": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/registration-r1.json",
+        "sha256": "ff582a0b22718aee48375e03f499c7b76a95aa5f816a06aed922e6f4a81bd5ac"
+      },
+      "cases": 21,
+      "pngs": 18,
+      "f2": 3,
+      "core_pixels": 230173,
+      "rejected_mutants": [
+        "missing",
+        "duplicate",
+        "catalog",
+        "source-code",
+        "false-save",
+        "wrong-hud",
+        "wrong-tolerance",
+        "wrong-map-target",
+        "wrong-map-camera",
+        "missing-map-target",
+        "missing-f2",
+        "wrong-profile",
+        "wrong-selector",
+        "wrong-identity",
+        "wrong-visual-template",
+        "missing-identity-projection",
+        "undisclosed-projection",
+        "wrong-base-source",
+        "false-base-identity",
+        "wrong-actor-projection",
+        "wrong-enemy-camp",
+        "wrong-enemy-position",
+        "wrong-enemy-roster",
+        "missing-part",
+        "duplicate-part",
+        "wrong-part-source",
+        "wrong-part-group",
+        "wrong-part-memory",
+        "actual-black-png",
+        "promotion-source-sha",
+        "promotion-target-field",
+        "promotion-native-identity",
+        "promotion-unreported-selector"
+      ],
+      "pairs": {
+        "authored-19-and-31": [
+          19,
+          31
+        ],
+        "promoted-35": [
+          35
+        ]
+      },
+      "projection_groups": [
+        35
+      ],
+      "identity_projection_groups": [
+        35
+      ],
+      "unprojected_groups": [
+        19,
+        31
+      ],
+      "authored_roster_fixture": "per-actor",
+      "selected_map_position_linked": true,
+      "scope": "名冊雙組14次Game.Draw／12PNG／兩次F2；哈瓦特視覺模板單組7次／6PNG／一次F2。原名冊與模板來源分別核對，非自然章節、哈瓦特數值或EXE動態。"
+    },
+    "normal_compatibility": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/normal-r1-capture/receipt.json",
+        "sha256": "2cb797ce8741666d740a564a14787f6b7d8973a514fc8bff17d82719ecad260a"
+      },
+      "pngs": 10,
+      "source_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "binary_sha256": "5e0c0584aa2aa6798d53b2e5924b9dd154ec7034f3bc10a981f74b5f4abc6880",
+      "state_injection": false,
+      "scope": "unchanged chapter1 ordinary save validates full candidate, four controls, walk/cancel and save/cold LOAD;19/31 pixels through original own-camp roster without persistent identity,35 through disclosed Hano1 visual template projected to identity/portrait/fig3 and selector35, not Havart statistics, natural recruitment or promotion"
+    },
+    "source_regression": {
+      "tests": 4,
+      "source_rejections": 14,
+      "exact_rebuild": true,
+      "candidate_directory": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/candidate-r1",
+      "tool": {
+        "file": "tools/test_fd2_hd1_chibi_party.py",
+        "sha256": "f93e88a4a92c0de3be17187d82d6583815ea28aa88bd2f498c3fa7ce02885152"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/source-r1.log",
+        "sha256": "c18429e9c2cce462f8ad9ef399a52f4118192ca3fe685dd9b647464ffabb4450"
+      },
+      "resource_warnings": 3
+    },
+    "legacy_source_regressions": [
+      {
+        "mode": "four-reused",
+        "tests": 4,
+        "source_rejections": 17,
+        "exact_rebuild": true,
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r23/legacy-reuse-source-r2.log",
+          "sha256": "e6e55f15e83373a4b21551cbeeb00033576f4fee5f357f27f7f1a9ab288bede4"
+        },
+        "reused_existing_receipt": true,
+        "resource_warnings": 4
+      },
+      {
+        "mode": "three-new-one-reused",
+        "tests": 4,
+        "source_rejections": 17,
+        "exact_rebuild": true,
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r23/legacy-mixed-source-r2.log",
+          "sha256": "7a700af589d19eb54e6bb2f4c53d8debbde634879eca1ed6154e30fae2c419a7"
+        },
+        "reused_existing_receipt": true,
+        "resource_warnings": 7
+      }
+    ],
+    "regression": {
+      "top_level_passed": 25,
+      "skipped_special_gpu": 2,
+      "skips_count_as_pass": false,
+      "source_tree_sha256": "6e2f2e1e5970fa2cbd94afaf7da9ff77060c798eb860df488087b6778e900748",
+      "source_file_count": 1196,
+      "production_go_changed": false,
+      "changed_go_is_test_only": true,
+      "string_inventory_tests_passed": true,
+      "legacy_gpu_parts_reader": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/legacy-parts-r1.json",
+        "sha256": "3705e01b57fb64b26fc6d90f48653f28eac5ad294a2f58f3203978a585fe9d66"
+      },
+      "legacy_scope": "18種舊分份、六批轉職及三種共用契約核對，不重跑或升格舊GPU及特定位置聯結。"
+    },
+    "consumer_inventory": {
+      "report": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/consumers-verified-r1.json",
+        "sha256": "e239cc53a944e22e0032f76528cfb01c770db18f58901c993a5d3f52e997d2f5"
+      },
+      "cases": 21,
+      "unique_frames": 416,
+      "rejected": [
+        "wrong-archive",
+        "wrong-resource",
+        "wrong-frame",
+        "wrong-pixels",
+        "wrong-mask",
+        "missing-case",
+        "false-gpu",
+        "missing-hd",
+        "wrong-code",
+        "wrong-command",
+        "wrong-packed",
+        "wrong-descriptor",
+        "missing-map-route",
+        "wrong-lmi-kind",
+        "wrong-lmi-pixels",
+        "wrong-lmi-entry",
+        "missing-lmi-hd",
+        "wrong-map-mask",
+        "missing-map-mask-hd"
+      ]
+    },
+    "catalog": {
+      "status": "REGISTERED-CHIBI-PARTY",
+      "catalog_sha256": "cf7c9ea1d8e1cdc66b7286aa2c41c0276bd0fbe7e831115592c9caa1a294c7fe",
+      "changed_entries": 6,
+      "unchanged_entries": 877,
+      "asset_files": 75,
+      "new_files": 75,
+      "reused_files": 0,
+      "full_validation": {
+        "status": "PASS",
+        "assets": 883,
+        "command_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/commands.json",
+        "command_key": "catalog_validation_command"
+      }
+    },
+    "private": {
+      "baseline_commit": "3103577960aefd6d2129a36c9e73480c2aa8baa1",
+      "preservation": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/private-preservation-r1.json",
+        "sha256": "33532f9311072a4216d7835a599e3a529ca6c430fcb4e137b100cd273ed8572f"
+      },
+      "allowlist_files": 6915,
+      "new_files": 75,
+      "reused_files": 0,
+      "metadata_only": false,
+      "commit": "2382493694a5f6531103de9a4862266acb2166f1",
+      "pushed": true,
+      "remote_verified": true
+    },
+    "review": {
+      "source_groups": 125,
+      "source_frames": 1455,
+      "other122_groups_source_equal": true,
+      "counts": {
+        "reference-keep": 2,
+        "new-q-review-keep": 90,
+        "review-keep-pending-batch": 32,
+        "redraw-q-proportion": 1
+      },
+      "q_redraw_reduced_from": 4,
+      "q_redraw_remaining": 1,
+      "priority_face_followup": [],
+      "all_redrawn": false,
+      "human_acceptance": false,
+      "gaia_explicit_user_acceptance": true,
+      "followup": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/visual-review-final.json",
+        "sha256": "7e08b935baee54402fa30fa34977f4aa1d4fe5a02c73bdc2fbaa403d5db863fd"
+      },
+      "pending_source_groups": [
+        67
+      ],
+      "group_decisions": {
+        "reference-keep": [
+          0,
+          9
+        ],
+        "new-q-review-keep": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          58,
+          59,
+          60,
+          61,
+          62,
+          63,
+          64,
+          65,
+          68,
+          69,
+          70,
+          71,
+          72,
+          73,
+          76,
+          77,
+          78,
+          79,
+          80,
+          81,
+          82,
+          83,
+          84,
+          85,
+          86,
+          87,
+          88,
+          89,
+          91,
+          93,
+          94,
+          95,
+          106,
+          111,
+          125,
+          133
+        ],
+        "review-keep-pending-batch": [
+          66,
+          74,
+          75,
+          90,
+          92,
+          96,
+          97,
+          98,
+          99,
+          100,
+          101,
+          102,
+          103,
+          107,
+          108,
+          109,
+          110,
+          112,
+          113,
+          114,
+          115,
+          116,
+          117,
+          118,
+          119,
+          120,
+          122,
+          123,
+          124,
+          126,
+          134,
+          135
+        ],
+        "redraw-q-proportion": [
+          67
+        ]
+      },
+      "face_review_states": {
+        "1": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "4": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "5": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "6": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "7": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "8": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "10": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "11": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "12": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "13": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "14": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "15": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "16": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "17": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "18": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "19": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "20": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "21": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "22": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "23": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "24": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "25": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "26": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "27": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "28": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "29": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "31": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "32": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "33": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "34": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "35": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "36": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "37": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "38": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "40": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "41": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "42": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "43": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "44": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "45": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "46": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "47": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "49": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "50": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "51": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "52": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "54": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "55": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "56": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "58": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "59": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "60": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "61": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "62": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "63": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "64": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "65": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "68": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "69": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "71": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "72": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "78": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "80": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "81": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "82": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "83": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "84": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "85": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "86": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "87": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "88": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "91": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "93": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "94": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "95": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "106": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "111": "AGENT-ORIGINAL-PORTRAIT-REVIEWED"
+      }
+    },
+    "roster_preflight": {
+      "top_level_passed": 3,
+      "authored_groups": 28,
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/roster-preflight-r2.log",
+        "sha256": "6089680aa91555e17d72c9e0028def60bfab212e1d30212e71f338b7bb11e86b"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/roster-preflight-r2.memory.json",
+        "sha256": "2f096ef09819c2105ad1daf0e5d31a21b389154c00ef9422cdffbd5f4190e096"
+      },
+      "scope": "原名冊整組、投影基底保持與同圖組選定位置；空的字串套件不計"
+    },
+    "resources": {
+      "gpu-authored-19-and-31": {
+        "elapsed_seconds": 195.205,
+        "peak_bytes": 5965172736,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "gpu-promoted-35": {
+        "elapsed_seconds": 150.484,
+        "peak_bytes": 4118564864,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "normal": {
+        "elapsed_seconds": 295.367,
+        "peak_bytes": 4071559168,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "regression": {
+        "elapsed_seconds": 66.639,
+        "peak_bytes": 1527947264,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      }
+    },
+    "public_figures": [
+      {
+        "file": "docs/figures/hd1-rodman-wode-faces.png",
+        "sha256": "333e4e6e406b89a646ee7a6c4c66e954baaba19cf8501ac92cf205097ad30f59",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/authored-19-and-31-faces-r1.png",
+          "sha256": "333e4e6e406b89a646ee7a6c4c66e954baaba19cf8501ac92cf205097ad30f59"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-rodman-wode-comparison.png",
+        "sha256": "c73683b4976151664b012840dd7f640be9f82fd213e4cda33387dd3d06d25dec",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/authored-19-and-31-comparison-r1.png",
+          "sha256": "c73683b4976151664b012840dd7f640be9f82fd213e4cda33387dd3d06d25dec"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-promoted-havart-faces.png",
+        "sha256": "7e5b6842d477f78f2c6325e2b8b6032fc5e7400dd3e2cb7254777a7b79f27807",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/promoted-35-faces-r1.png",
+          "sha256": "7e5b6842d477f78f2c6325e2b8b6032fc5e7400dd3e2cb7254777a7b79f27807"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-promoted-havart-comparison.png",
+        "sha256": "d971dae708f308f6bb4bd796fae148b2e233c4c89fd53813ee22da1f641c25e4",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/promoted-35-comparison-r1.png",
+          "sha256": "d971dae708f308f6bb4bd796fae148b2e233c4c89fd53813ee22da1f641c25e4"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-party-019-refresh-game.png",
+        "sha256": "1dbe1bd54ac1358c0ba6fa198324692de03b2000a17df2c114e1d56f47190d06",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/gpu-authored-19-and-31-r1-capture/party-g019-f00-ui-hd.png",
+          "sha256": "1dbe1bd54ac1358c0ba6fa198324692de03b2000a17df2c114e1d56f47190d06"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-party-031-refresh-game.png",
+        "sha256": "860c67ef5c71ed1f9b9eda43b25ce9981e502a949bef75c37c0d20ab561310fc",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/gpu-authored-19-and-31-r1-capture/party-g031-f00-ui-hd.png",
+          "sha256": "860c67ef5c71ed1f9b9eda43b25ce9981e502a949bef75c37c0d20ab561310fc"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-party-035-refresh-game.png",
+        "sha256": "61eaec02ea5736f10186c6ae35ccd67e5de9ef674a7e38e63236371de63b1591",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/gpu-promoted-35-r1-capture/party-g035-f00-ui-hd.png",
+          "sha256": "61eaec02ea5736f10186c6ae35ccd67e5de9ef674a7e38e63236371de63b1591"
+        }
+      }
+    ],
+    "references": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/base-catalog.json",
+        "sha256": "06237a53ddfd738536d38f4030febae22327af096544f5fefc59936a26692bf9"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/alpha-contract-review-r1.json",
+        "sha256": "b1eb02e4493549deefc9f77acf945c150aad57b68cdb46d8cdcf1076bdc1c31d"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/native-reference.json",
+        "sha256": "2a1a16d40bd40e815445686264d36f7df4233c329d314b9ef595daae13cc4840"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/candidate-r1/catalog.json",
+        "sha256": "30418c13cc4ff08f158df9b0b66b28b8ba45cbe796fae20a54bae81e9d3082cd"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/candidate-r1/manifest.json",
+        "sha256": "8b0452494cf984265ddc09cb9a547588a64ef3ebbee5fa6beb4391fb68ac7413"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/gpu-three-r1-capture/receipt.json",
+        "sha256": "c3a8cbb74779590b4bcfa857b124e3f8908e15e924d6ed8d065990b01186db2f"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/gpu-authored-19-and-31-r1-capture/receipt.json",
+        "sha256": "f558b6355d6948d25dc974b67ac752533d5c9e9eb28252eecc86581db28d1827"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/gpu-promoted-35-r1-capture/receipt.json",
+        "sha256": "63376a3cd80a4494ce9bf8f09e230d2c1e7c6b0bece4b338975dd2beb9c219b2"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/normal-r1-capture/receipt.json",
+        "sha256": "2cb797ce8741666d740a564a14787f6b7d8973a514fc8bff17d82719ecad260a"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/registration-r1.json",
+        "sha256": "ff582a0b22718aee48375e03f499c7b76a95aa5f816a06aed922e6f4a81bd5ac"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/source-r1.log",
+        "sha256": "c18429e9c2cce462f8ad9ef399a52f4118192ca3fe685dd9b647464ffabb4450"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/legacy-source-reuse-r1.json",
+        "sha256": "0964fc881d6b864339645e3ce29f30afd30b032383dbd2ab3c17d1b8a04e702a"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/regression-r1.log",
+        "sha256": "7a25b0e576784abe2e2a4002ea2ae359a95a63e1a73905a7685ce985f38f401b"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/consumers-r1.json",
+        "sha256": "6d3aec7c12259334b8cbe0f60309360c24927932ee07e294e39ec4da0c2ac967"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/consumers-verified-r1.json",
+        "sha256": "e239cc53a944e22e0032f76528cfb01c770db18f58901c993a5d3f52e997d2f5"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/formal-coverage.json",
+        "sha256": "9bbd72346a825e44d94fa6f1b0925a13e575f3777f2c099786a7a1323db0d481"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/review-final/receipt.json",
+        "sha256": "78b34ee9f39287358d64c65edeb38ebd00a9b26e8f75fbbb6ddde473c1cfd012"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/visual-review-final.json",
+        "sha256": "7e08b935baee54402fa30fa34977f4aa1d4fe5a02c73bdc2fbaa403d5db863fd"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/private-preservation-r1.json",
+        "sha256": "33532f9311072a4216d7835a599e3a529ca6c430fcb4e137b100cd273ed8572f"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/public-figures-r1.json",
+        "sha256": "34f163d107f56bec3f67253dd9ec60a12bd382afe4c0f7aff354d0341a2fe9ac"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/commands.json",
+        "sha256": "ab214601d2d69bc81df98aaf1d167ff49c90ed8a3f4aaee88309ee4ce75aee91"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/legacy-parts-r1.json",
+        "sha256": "3705e01b57fb64b26fc6d90f48653f28eac5ad294a2f58f3203978a585fe9d66"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/roster-preflight-r2.log",
+        "sha256": "6089680aa91555e17d72c9e0028def60bfab212e1d30212e71f338b7bb11e86b"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/roster-preflight-r2.memory.json",
+        "sha256": "2f096ef09819c2105ad1daf0e5d31a21b389154c00ef9422cdffbd5f4190e096"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/roster-preflight-r1.log",
+        "sha256": "b5efc2727c2ffad71bcacab0bd28c5004fd6af8d91461da3304d084b934464eb"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/roster-preflight-r1.memory.json",
+        "sha256": "894a41a1da3728ef4dbce4b625e80efe9db3b3e87049699ae0eb42f11dc5d174"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/static67-source-search.txt",
+        "sha256": "1012e19384add00203a08c991180c3208117b2af2281d2fdfdfd1101c813bfad"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/static67-raw-value-search.json",
+        "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/gpu-authored-19-and-31-r1.memory.json",
+        "sha256": "70d1d317e1751a8a8e1979d79138d7ba04a708cbbffdd57f88ae7f49270a5a82"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/gpu-promoted-35-r1.memory.json",
+        "sha256": "0af6a6c22a8558754590563a7722c7f632cc002e069b2090e7f3924fead890ce"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/normal-r1.memory.json",
+        "sha256": "2f3fd9d8034feb173d01bf4828bd3e3529dff513ae7372ca56e3f91c52df815b"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/regression-r1.memory.json",
+        "sha256": "2f9f2014b7e9e40611cda28b3192fa55e8587098dfb8b864b435644ac41b5325"
+      },
+      {
+        "file": "remake/assets/themes/modern/hd1-final-known-three-refresh.recipe.json",
+        "sha256": "416ada95712704adcb9e7823ca8736ed4ca012835c7bf387059bbf008d0c1b68"
+      },
+      {
+        "file": "tools/verify_fd2_hd1_chibi_party.py",
+        "sha256": "4cf1972c38836e25764bd5af6664cd5fb98140c194ce5ff2979382f16ca10671"
+      },
+      {
+        "file": "tools/refresh_fd2_hd1_map_sprites.py",
+        "sha256": "f3220d47a6536d0201d4e57bd73e321714164bb6ca96762d7569c0c932af1462"
+      },
+      {
+        "file": "tools/test_fd2_hd1_chibi_party.py",
+        "sha256": "f93e88a4a92c0de3be17187d82d6583815ea28aa88bd2f498c3fa7ce02885152"
+      },
+      {
+        "file": "docs/data/exe_tables/characters.json",
+        "sha256": "d5611b2e44ede9e95b56466e11d985da8244eac3109f308ec29226930259ca48"
+      },
+      {
+        "file": "remake/assets/story/ch26.json",
+        "sha256": "cd4651d6b9774e73ac8507098c595dddf9afde51f01ee3b91f5921756dfefdfb"
+      },
+      {
+        "file": "remake/assets/scenarios/ch27.json",
+        "sha256": "bbe62db8d474d3a4f81c735b2fec6da23fd2010f7d2a27e325be1b3fc4d3836f"
+      }
+    ],
+    "cleanup": {
+      "nonexpected_fd2_containers": 0,
+      "old_art_preserved": 9323,
+      "new_art_files": 75,
+      "recording_created": false
+    },
+    "limitations": [
+      "35沿既有哈諾模板，身份／portrait／fig3與selector35均為測具投影，非哈瓦特數值或自然轉職。",
+      "19／31名稱可查原資料，但本批原名冊沒有持續身份欄位，不補造身份。",
+      "31頭部材質仍未知；67僅確認三拍靜態來源，身份與出場綁定待核，正式圖源保持。",
+      "本批不新增EXE動態、PLAYER-E2或480對話頭像驗收；其餘面容、完整總覽與集中人工仍待。"
+    ],
+    "worklist": {
+      "open": 30,
+      "manual": 23,
+      "possibly_done": 0,
+      "issues_updated": [
+        286,
+        287
+      ]
+    },
+    "lessons": {
+      "total": 390,
+      "guarded": 241,
+      "check_passed": true
+    },
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/final-validation-r1.json",
+      "sha256": "e60ac2a911c03d7b0aee4bd21b4f954e32539a1dd65e46d52a21f52cd3baf57c"
+    },
+    "independent_validation_corrections": {
+      "before_registration": true,
+      "reused_completed_captures": true,
+      "issues": [
+        "new profile dispatched to reuse-only branch",
+        "single promoted binding indexed as two-person"
+      ],
+      "source_and_gpu_unchanged": true
     }
   }
 }

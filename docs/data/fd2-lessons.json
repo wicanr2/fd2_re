@@ -4836,6 +4836,14 @@
       "rule": "改寫含美元符號的測試正則或命令片段時，使用字串切片或回呼回傳字面值，不把它直接放進JavaScript String.replace的替換字串。替換字串內的美元加單引號會被解讀成匹配後綴，可能破壞shell引號。先保存完整命令，再執行；本專案入口為各批commands JSON的roster_preflight_command。",
       "why": "2026-11-01第一次CPU名冊預檢命令以替換字串帶入Go測試正則的結尾美元加單引號，命令失去結尾引號，shell直接拒絕，Docker未啟動。改以固定前綴加字面正則後，原CPU配額與測試通過；未改產品或測試斷言。",
       "evidence": "WORKLOG.md：2026-11-01四組板盔與長面盔Q版接線；docs/data/fd2-modern-hd-battlefield-20261019.json#hd1_plate_long_four_followup_20261101"
+    },
+    {
+      "id": "hd1-mixed-fixture-single-actor-contract",
+      "date": "2026-11-01",
+      "area": "HD1來源驗證",
+      "rule": "新增混合名冊與投影的HD1分份時，逐actor明示來源、身份及selector投影；共用素材驗證只分派給明示reuse_group的配方。反例依實際binding選取，兼容單人與多人，不假設第二列存在。入口為tools/verify_fd2_hd1_chibi_party.py的GPU_PARTS、verify_promoted_bindings及main自測，party-final-three提供原名冊雙人與視覺模板單人的可重跑案例。",
+      "why": "2026-11-01新增19／31原名冊與35視覺模板。初版把新profile批次加入共用來源分支而遭拒收，轉職反例也曾以固定index1取單人binding而越界。兩次都在正式登錄前失敗。限定共用分派並選正確單人binding後，21完整繪製、18PNG及33反例通過，原GPU輸入保持。",
+      "evidence": "WORKLOG.md：2026-11-01羅德曼、渥德與轉職哈瓦特Q版接線；docs/data/fd2-modern-hd-battlefield-20261019.json#hd1_final_known_three_followup_20261101"
     }
   ]
 }

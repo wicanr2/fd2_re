@@ -14,26 +14,26 @@ from verify_fd2_hd1_chibi_refresh import ROOT,sha,read,require,tree,rect,core
 
 RECIPE=ROOT/'remake/assets/themes/modern/hd1-party-chibi-refresh.recipe.json'
 GROUPS=(1,2,3)
-PROFILES={'party':GROUPS,'variants':(53,54),'identity-pair':(51,63),'base-faces':(1,4),'knights':(55,56),'heroes':(50,52),'enemies':(76,79),'static-king':(48,),'audited-six':(70,73,77,89,125,133),'audited-next':(68,71,72,78),'audited-enemies':(80,81,82,83),'audited-helm-bow':(84,85,86,87),'audited-visor-grille':(88,91,93,94),'audited-plate-four':(69,95,106,111),'party-next':(5,6,13,54),'party-four':(7,8,10,11),'party-five':(12,14,15,16),'party-six':(17,18,20,21),'party-seven':(22,23,24,25),'party-eight':(26,27,28,29),'party-nine':(58,59,60,61),'party-ten':(32,33,34,62),'party-eleven':(36,37,38,40),'party-twelve':(41,42,43,44),'party-thirteen':(45,46,47,49),'party-fourteen':(64,65)}
-PROFILE_IDENTITIES={'variants':{53:3,54:4},'identity-pair':{51:1,63:13},'base-faces':{1:1,4:4},'knights':{55:5,56:6},'heroes':{50:0,52:9},'party-next':{5:5,6:6,13:13,54:4},'party-nine':{58:8,59:9,60:10,61:11},'party-ten':{32:0,33:1,34:2,62:12},'party-eleven':{36:4,37:5,38:6,40:8},'party-twelve':{41:9,42:10,43:11,44:12},'party-thirteen':{45:13,46:14,47:15,49:17},'party-fourteen':{64:14,65:15}}
+PROFILES={'party':GROUPS,'variants':(53,54),'identity-pair':(51,63),'base-faces':(1,4),'knights':(55,56),'heroes':(50,52),'enemies':(76,79),'static-king':(48,),'audited-six':(70,73,77,89,125,133),'audited-next':(68,71,72,78),'audited-enemies':(80,81,82,83),'audited-helm-bow':(84,85,86,87),'audited-visor-grille':(88,91,93,94),'audited-plate-four':(69,95,106,111),'party-next':(5,6,13,54),'party-four':(7,8,10,11),'party-five':(12,14,15,16),'party-six':(17,18,20,21),'party-seven':(22,23,24,25),'party-eight':(26,27,28,29),'party-nine':(58,59,60,61),'party-ten':(32,33,34,62),'party-eleven':(36,37,38,40),'party-twelve':(41,42,43,44),'party-thirteen':(45,46,47,49),'party-fourteen':(64,65),'party-final-three':(19,31,35)}
+PROFILE_IDENTITIES={'variants':{53:3,54:4},'identity-pair':{51:1,63:13},'base-faces':{1:1,4:4},'knights':{55:5,56:6},'heroes':{50:0,52:9},'party-next':{5:5,6:6,13:13,54:4},'party-nine':{58:8,59:9,60:10,61:11},'party-ten':{32:0,33:1,34:2,62:12},'party-eleven':{36:4,37:5,38:6,40:8},'party-twelve':{41:9,42:10,43:11,44:12},'party-thirteen':{45:13,46:14,47:15,49:17},'party-fourteen':{64:14,65:15},'party-final-three':{35:3}}
 FRAMES=(0,1,2,3,6,9)
 AUDITED_PAIRS={'banded':(70,89),'draconic':(73,77),'robed':(125,133)}
-GPU_PARTS={'audited-six':AUDITED_PAIRS,'audited-plate-four':{'cross-and-cylinder':(69,95),'layered-and-long':(106,111)},'audited-visor-grille':{'visor-and-hood':(88,91),'two-grilles':(93,94)},'audited-helm-bow':{'red-and-navy':(84,85),'masked-and-bow':(86,87)},'audited-enemies':{'crested-and-horned':(80,81),'shield-guards':(82,83)},'audited-next':{'guards':(68,71),'traveler-and-heavy':(72,78)},'party-next':{'base-knights':(5,6),'bow-and-ares':(13,54)},'party-four':{'longhair-and-bow':(7,8),'clerics':(10,11)},'party-five':{'martial-and-mage':(12,14),'beast-and-dragon':(15,16)},'party-six':{'dragon-and-swordswoman':(17,18),'greenhair-and-elder':(20,21)},'party-seven':{'stubble-and-bow':(22,23),'bald-and-beast':(24,25)},'party-eight':{'blue-and-green-dragons':(26,27),'blue-and-robed':(28,29)},'party-nine':{'bow-and-unni':(58,59),'two-clerics':(60,61)},'party-ten':{'sol-and-hano':(32,33),'tino-and-kylie':(34,62)},'party-eleven':{'ares-and-lona':(36,37),'lyting-and-cylia':(38,40)},'party-twelve':{'unni-and-marin':(41,42),'sophia-and-kylie':(43,44)},'party-thirteen':{'bekwei-and-shan':(45,46),'beast-and-red-dragon':(47,49)},'party-fourteen':{'shan':(64,),'beast':(65,)}}
-AUDITED_BINDINGS={69:(9,1,'ally',15,41),95:(18,0,'enemy',23,4),106:(24,0,'enemy',9,33),111:(25,0,'enemy',13,33),88:(14,0,'enemy',34,8),91:(14,0,'enemy',28,10),93:(7,0,'enemy',16,17),94:(14,0,'enemy',29,7),84:(25,0,'enemy',1,9),85:(19,0,'enemy',22,18),86:(25,0,'enemy',2,16),87:(7,0,'enemy',8,18),80:(16,0,'enemy',21,22),81:(19,0,'enemy',30,7),82:(7,1,'enemy',13,7),83:(17,0,'enemy',35,7),68:(0,6,'ally',23,14),71:(14,0,'ally',30,19),72:(12,0,'ally',17,10),78:(17,0,'enemy',38,6),70:(5,0,'ally',13,24),73:(24,0,'ally',10,26),77:(2,2,'enemy',8,25),89:(17,0,'enemy',39,7),125:(24,0,'enemy',10,7),133:(1,1,'ally',15,12)}
+GPU_PARTS={'audited-six':AUDITED_PAIRS,'audited-plate-four':{'cross-and-cylinder':(69,95),'layered-and-long':(106,111)},'audited-visor-grille':{'visor-and-hood':(88,91),'two-grilles':(93,94)},'audited-helm-bow':{'red-and-navy':(84,85),'masked-and-bow':(86,87)},'audited-enemies':{'crested-and-horned':(80,81),'shield-guards':(82,83)},'audited-next':{'guards':(68,71),'traveler-and-heavy':(72,78)},'party-next':{'base-knights':(5,6),'bow-and-ares':(13,54)},'party-four':{'longhair-and-bow':(7,8),'clerics':(10,11)},'party-five':{'martial-and-mage':(12,14),'beast-and-dragon':(15,16)},'party-six':{'dragon-and-swordswoman':(17,18),'greenhair-and-elder':(20,21)},'party-seven':{'stubble-and-bow':(22,23),'bald-and-beast':(24,25)},'party-eight':{'blue-and-green-dragons':(26,27),'blue-and-robed':(28,29)},'party-nine':{'bow-and-unni':(58,59),'two-clerics':(60,61)},'party-ten':{'sol-and-hano':(32,33),'tino-and-kylie':(34,62)},'party-eleven':{'ares-and-lona':(36,37),'lyting-and-cylia':(38,40)},'party-twelve':{'unni-and-marin':(41,42),'sophia-and-kylie':(43,44)},'party-thirteen':{'bekwei-and-shan':(45,46),'beast-and-red-dragon':(47,49)},'party-fourteen':{'shan':(64,),'beast':(65,)},'party-final-three':{'authored-19-and-31':(19,31),'promoted-35':(35,)}}
+AUDITED_BINDINGS={19:(22,0,'own',21,30),31:(25,1,'own',1,45),69:(9,1,'ally',15,41),95:(18,0,'enemy',23,4),106:(24,0,'enemy',9,33),111:(25,0,'enemy',13,33),88:(14,0,'enemy',34,8),91:(14,0,'enemy',28,10),93:(7,0,'enemy',16,17),94:(14,0,'enemy',29,7),84:(25,0,'enemy',1,9),85:(19,0,'enemy',22,18),86:(25,0,'enemy',2,16),87:(7,0,'enemy',8,18),80:(16,0,'enemy',21,22),81:(19,0,'enemy',30,7),82:(7,1,'enemy',13,7),83:(17,0,'enemy',35,7),68:(0,6,'ally',23,14),71:(14,0,'ally',30,19),72:(12,0,'ally',17,10),78:(17,0,'enemy',38,6),70:(5,0,'ally',13,24),73:(24,0,'ally',10,26),77:(2,2,'enemy',8,25),89:(17,0,'enemy',39,7),125:(24,0,'enemy',10,7),133:(1,1,'ally',15,12)}
 
 def verify_parts(d):
     profile=d.get('profile');require(profile in GPU_PARTS,'unsupported split profile')
     pairs=GPU_PARTS[profile]
     parts=d.get('source_parts',[])
     require([x.get('pair') for x in parts]==list(pairs),'complete fixed GPU parts')
-    require(d.get('selector_projection_injected') is (profile in ('party-next','party-nine','party-ten','party-eleven','party-twelve','party-thirteen','party-fourteen')),'combined projection disclosure changed')
+    require(d.get('selector_projection_injected') is (profile in ('party-next','party-nine','party-ten','party-eleven','party-twelve','party-thirteen','party-fourteen','party-final-three')),'combined projection disclosure changed')
     sources=[];cases=[]
     for part in parts:
         path=ROOT/part['file']
         require(path.resolve().is_relative_to(ROOT) and sha(path)==part['sha256'],'GPU part source changed')
         item=read(path);pair=part['pair'];groups=pairs[pair]
         require(item.get('profile')==profile and item.get('pair')==pair and item.get('selected_groups')==list(groups),'GPU part pair changed')
-        require(item.get('selector_projection_injected') is (profile in ('party-nine','party-ten','party-eleven','party-twelve','party-thirteen','party-fourteen') or profile=='party-next' and 54 in groups),'GPU part projection disclosure changed')
+        require(item.get('selector_projection_injected') is (profile in ('party-nine','party-ten','party-eleven','party-twelve','party-thirteen','party-fourteen') or profile=='party-next' and 54 in groups or profile=='party-final-three' and 35 in groups),'GPU part projection disclosure changed')
         for key in ('status','catalog_sha256','manifest_sha256','source_tree_sha256','source_file_count','native_state_unchanged','save_bytes_unchanged','authored_roster_fixture'):
             require(item.get(key)==d.get(key),'GPU part common provenance changed')
         expected={f'party-g{g:03d}-f{f:02d}-ui-hd' for g in groups for f in FRAMES}|{f'party-g{g:03d}-f00-ui-original' for g in groups}
@@ -54,7 +54,7 @@ def assemble_gpu_parts(out,parts):
     inputs=[read(p) for p in parts]
     profile=inputs[0].get('profile');require(profile in GPU_PARTS,'unsupported split profile')
     pairs=GPU_PARTS[profile];require(len(parts)==len(pairs),'complete fixed GPU parts required')
-    d=deepcopy(inputs[0]);d['pair']='combined';d['selected_groups']=list(PROFILES[profile]);d['cases']=[];d['sources']=[];d['source_parts']=[];d['selector_projection_injected']=profile in ('party-next','party-nine','party-ten','party-eleven','party-twelve','party-thirteen','party-fourteen');d['scope']='complete fixed GPU pairs and completed memory reports; controlled fixed presentation; original authored roster has no identity/selector projection, party projection where applicable disclosed; not natural chapter progression'
+    d=deepcopy(inputs[0]);d['pair']='combined';d['selected_groups']=list(PROFILES[profile]);d['cases']=[];d['sources']=[];d['source_parts']=[];d['selector_projection_injected']=profile in ('party-next','party-nine','party-ten','party-eleven','party-twelve','party-thirteen','party-fourteen','party-final-three');d['scope']='complete fixed GPU pairs and completed memory reports; controlled fixed presentation; original authored roster has no identity/selector projection, party projection where applicable disclosed; not natural chapter progression'
     links=[]
     for (pair,groups),path,item in zip(pairs.items(),parts,inputs):
         require(path.parent.name.endswith('-capture'),'GPU capture naming contract')
@@ -73,20 +73,22 @@ def assemble_gpu_parts(out,parts):
     out.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n')
 
 def verify_promoted_bindings(r,profile='party-nine'):
-    require(profile in ('party-nine','party-ten','party-eleven','party-twelve','party-thirteen','party-fourteen'),'unsupported promoted profile')
-    groups=PROFILES[profile];identities=PROFILE_IDENTITIES[profile]
+    require(profile in ('party-nine','party-ten','party-eleven','party-twelve','party-thirteen','party-fourteen','party-final-three'),'unsupported promoted profile')
+    groups=(35,) if profile=='party-final-three' else PROFILES[profile];identities=PROFILE_IDENTITIES[profile]
     bindings=r.get('party_bindings',[])
     require([b['group'] for b in bindings]==list(groups) and r.get('gpu_pairs')=={k:list(v) for k,v in GPU_PARTS[profile].items()},'fixed promoted party bindings')
     source=r.get('promotion_source',{});path='remake/assets/data/class_change_targets.json'
     require(source.get('file')==path and sha(ROOT/path)==source.get('sha256'),'promoted source changed')
     rows=read(ROOT/path)['current_portraits']
-    contracts={'party-nine':[(3,'optional_target'),(1,'optional_target'),(6,'optional_target'),(11,'optional_target')],'party-ten':[(1,'default_target'),(2,'default_target'),(4,'default_target'),(8,'optional_target')],'party-eleven':[(1,'default_target'),(9,'default_target'),(10,'default_target'),(3,'default_target')],'party-twelve':[(1,'default_target'),(6,'default_target'),(11,'default_target'),(8,'default_target')],'party-thirteen':[(7,'default_target'),(12,'default_target'),(16,'default_target'),(13,'default_target')],'party-fourteen':[(12,'optional_target'),(16,'optional_target')]}
+    contracts={'party-nine':[(3,'optional_target'),(1,'optional_target'),(6,'optional_target'),(11,'optional_target')],'party-ten':[(1,'default_target'),(2,'default_target'),(4,'default_target'),(8,'optional_target')],'party-eleven':[(1,'default_target'),(9,'default_target'),(10,'default_target'),(3,'default_target')],'party-twelve':[(1,'default_target'),(6,'default_target'),(11,'default_target'),(8,'default_target')],'party-thirteen':[(7,'default_target'),(12,'default_target'),(16,'default_target'),(13,'default_target')],'party-fourteen':[(12,'optional_target'),(16,'optional_target')],'party-final-three':[(2,'default_target')]}
     for b,(chapter,target_field) in zip(bindings,contracts[profile]):
         g=b['group'];identity=identities[g];path=f'remake/assets/scenarios/ch{chapter:02d}.json'
         require(b.get('native_identity')==b.get('portrait')==b.get('fig')==identity and b.get('target_field')==target_field and b.get('selector_projection_injected') is True,'promoted identity/field/projection mismatch')
         require(b.get('scenario_file')==path and sha(ROOT/path)==b.get('scenario_sha256'),'promoted scenario changed')
-        matches=[u for u in read(ROOT/path)['party'] if u.get('native_identity')==identity]
-        require(len(matches)==1 and matches[0].get('fig')==matches[0].get('portrait')==identity,'promoted authored identity changed')
+        template=1 if profile=='party-final-three' else identity
+        matches=[u for u in read(ROOT/path)['party'] if u.get('native_identity')==template]
+        require(len(matches)==1 and matches[0].get('fig')==matches[0].get('portrait')==template,'promoted authored template changed')
+        if profile=='party-final-three':require(b.get('visual_template_native_identity')==1 and b.get('identity_projection_injected') is True,'Havart visual template disclosure missing')
         targets=[row for row in rows if row['portrait']==identity]
         require(len(targets)==1 and targets[0].get(target_field)==g,'promoted target changed')
 
@@ -114,6 +116,17 @@ def verify_reused_bindings(r,candidate,profile='party-twelve'):
             require(all(target.get(key)==source.get(key) for key in keys),'reused files differ')
             require(target['master_file']==entry['master_file'] and sha(candidate/entry['master_file'])==entry['master_sha256'],'reused master differs')
 
+def verify_selected_map_target(s,f,position):
+    target=s.get('map_target')
+    fields=('x','y','pose','motion','pixel_shift','camera_x','camera_y','work_offset','matched_work_offset','viewport_base','matches')
+    require(isinstance(target,dict) and all(type(target.get(k)) is int for k in fields),'selected map target provenance missing')
+    require((target['x'],target['y'])==position and target['pose']==f//3 and target['motion']==target['pixel_shift']==0 and target['matches']==1,'selected map target source changed')
+    require(0<=target['x']-target['camera_x']<13 and 0<=target['y']-target['camera_y']<8 and target['camera_x']>=0 and target['camera_y']>=0 and target['viewport_base']==0x8088,'selected map target view changed')
+    offset=0x75d8+(target['y']-target['camera_y'])*24*456+(target['x']-target['camera_x'])*24
+    require(target['work_offset']==target['matched_work_offset']==offset,'selected map target placement changed')
+    x0=24+(offset%456-0x8088%456)*6;y0=24+(offset//456-0x8088//456)*6
+    require(rect(s['map_rect'])==[x0,y0,x0+144,y0+144],'selected map target rectangle changed')
+
 def verify_gpu(d,folder,candidate,recipe=RECIPE,profile='party'):
     groups=PROFILES[profile]
     static=profile=='static-king'
@@ -125,8 +138,8 @@ def verify_gpu(d,folder,candidate,recipe=RECIPE,profile='party'):
     if profile in ('audited-six','audited-next','audited-enemies','audited-helm-bow','audited-visor-grille','audited-plate-four'):
         require(d.get('selector_projection_injected') is False and d.get('authored_roster_fixture') is True and d.get('selected_groups')==list(groups) and d.get('pair')=='combined','authored roster disclosure missing')
         verify_parts(d)
-    elif profile in ('party-next','party-four','party-five','party-six','party-seven','party-eight','party-nine','party-ten','party-eleven','party-twelve','party-thirteen','party-fourteen'):
-        require(d.get('selector_projection_injected') is (profile in ('party-next','party-nine','party-ten','party-eleven','party-twelve','party-thirteen','party-fourteen')) and d.get('authored_roster_fixture') is False and d.get('selected_groups')==list(groups) and d.get('pair')=='combined','split party disclosure missing')
+    elif profile in ('party-next','party-four','party-five','party-six','party-seven','party-eight','party-nine','party-ten','party-eleven','party-twelve','party-thirteen','party-fourteen','party-final-three'):
+        require(d.get('selector_projection_injected') is (profile in ('party-next','party-nine','party-ten','party-eleven','party-twelve','party-thirteen','party-fourteen','party-final-three')) and d.get('authored_roster_fixture') is False and d.get('selected_groups')==list(groups) and d.get('pair')=='combined','split party disclosure missing')
         verify_parts(d)
     elif profile=='base-faces':
         require(d.get('selector_projection_injected') is False and d.get('selected_groups')==list(groups),'base identity projection forbidden')
@@ -141,7 +154,7 @@ def verify_gpu(d,folder,candidate,recipe=RECIPE,profile='party'):
     selected=[g['group'] for g in r['groups']]
     require(bool(selected) and len(set(selected))==len(selected) and set(selected)<=set(groups),'recipe groups')
     if profile!='party':require(selected==list(groups),'fixed variant recipe required')
-    if profile in ('party-nine','party-ten','party-eleven','party-twelve','party-thirteen','party-fourteen'):verify_promoted_bindings(r,profile)
+    if profile in ('party-nine','party-ten','party-eleven','party-twelve','party-thirteen','party-fourteen','party-final-three'):verify_promoted_bindings(r,profile)
     if profile in ('party-twelve','party-thirteen','party-fourteen'):verify_reused_bindings(r,candidate,profile)
     if profile=='heroes':
         bindings=[dict(group=50,native_identity=0,target_field='optional_target'),dict(group=52,native_identity=9,target_field='special_target')]
@@ -186,9 +199,9 @@ def verify_gpu(d,folder,candidate,recipe=RECIPE,profile='party'):
             require(b['position']==dict(x_word=pos[0],y_word=pos[1],raw_key=g),'enemy original position changed')
             matches=[u for u in read(ROOT/path)['units'] if u.get('map_selector_key')==g and u.get('native_position_record')==b['position']]
             require(bool(matches) and all(u.get('camp')=='enemy' and u.get('portrait')==g and u.get('battle_fig')==g for u in matches),'authored enemy mismatch')
-    if profile in ('audited-six','audited-next','audited-enemies','audited-helm-bow','audited-visor-grille','audited-plate-four'):
+    if profile in ('audited-six','audited-next','audited-enemies','audited-helm-bow','audited-visor-grille','audited-plate-four','party-final-three'):
         bindings=r.get('roster_bindings',[])
-        require([b['group'] for b in bindings]==list(groups) and r.get('gpu_pairs')=={k:list(v) for k,v in GPU_PARTS[profile].items()},'fixed audited bindings')
+        require([b['group'] for b in bindings]==([19,31] if profile=='party-final-three' else list(groups)) and r.get('gpu_pairs')=={k:list(v) for k,v in GPU_PARTS[profile].items()},'fixed audited bindings')
         for b in bindings:
             g=b['group'];map_id,initial,camp,x,y=AUDITED_BINDINGS[g];path=f'remake/assets/maps/map{map_id}/map{map_id}_units.json'
             require(b['roster_file']==path and sha(ROOT/path)==b['roster_sha256'],'audited roster changed')
@@ -236,24 +249,22 @@ def verify_gpu(d,folder,candidate,recipe=RECIPE,profile='party'):
         if profile=='enemies':
             binding=next(b for b in r['enemy_bindings'] if b['group']==g)
             require(s.get('camp')==2 and s.get('portrait')==s.get('battle_fig')==s.get('selector_key')==g and s.get('position')==binding['position'] and s.get('map')==binding['map'] and s.get('roster_sha256')==binding['roster_sha256'] and s.get('constructor')=='AppendGroupWithNativePlacement' and s.get('placement_gate')==0,'authored enemy provenance changed')
-        elif profile in ('audited-six','audited-next','audited-enemies','audited-helm-bow','audited-visor-grille','audited-plate-four'):
+        elif profile in ('audited-six','audited-next','audited-enemies','audited-helm-bow','audited-visor-grille','audited-plate-four') or profile=='party-final-three' and g!=35:
             b=next(b for b in r['roster_bindings'] if b['group']==g)
             require(s.get('camp')=={'own':0,'ally':1,'enemy':2}[b['camp']] and s.get('portrait')==s.get('battle_fig')==s.get('selector_key')==g and s.get('has_native_identity') is False and s.get('position')==b['position'] and s.get('map')==b['map'] and s.get('roster_sha256')==b['roster_sha256'] and s.get('constructor')=='AppendGroupWithNativePlacement' and s.get('placement_gate')==0,'audited actor provenance changed')
-            if profile=='audited-plate-four':
-                target=s.get('map_target')
-                fields=('x','y','pose','motion','pixel_shift','camera_x','camera_y','work_offset','matched_work_offset','viewport_base','matches')
-                require(isinstance(target,dict) and all(type(target.get(k)) is int for k in fields),'selected map target provenance missing')
-                require((target['x'],target['y'])==(b['position']['x_word'],b['position']['y_word']) and target['pose']==f//3 and target['motion']==target['pixel_shift']==0 and target['matches']==1,'selected map target source changed')
-                require(0<=target['x']-target['camera_x']<13 and 0<=target['y']-target['camera_y']<8 and target['camera_x']>=0 and target['camera_y']>=0 and target['viewport_base']==0x8088,'selected map target view changed')
-                offset=0x75d8+(target['y']-target['camera_y'])*24*456+(target['x']-target['camera_x'])*24
-                require(target['work_offset']==target['matched_work_offset']==offset,'selected map target placement changed')
-                x0=24+(offset%456-0x8088%456)*6;y0=24+(offset//456-0x8088//456)*6
-                require(rect(s['map_rect'])==[x0,y0,x0+144,y0+144],'selected map target rectangle changed')
+            if profile=='party-final-three':require(s.get('selector_projection_injected') is False and s.get('identity_projection_injected') is False and s.get('authored_roster_fixture') is True,'original actor projection forbidden')
+            if profile in ('audited-plate-four','party-final-three'):verify_selected_map_target(s,f,(b['position']['x_word'],b['position']['y_word']))
+        elif profile=='party-final-three':
+            b=r['party_bindings'][0]
+            require(g==35 and s.get('native_identity')==s.get('portrait')==s.get('battle_fig')==3 and s.get('selector_key')==35 and s.get('has_native_identity') is True and s.get('camp')==0 and s.get('scenario_sha256')==b['scenario_sha256'] and s.get('selector_projection_injected') is True and s.get('identity_projection_injected') is True and s.get('visual_template_native_identity')==1 and s.get('authored_roster_fixture') is False,'Havart visual template provenance changed')
+            position=s.get('map_actor_position',{})
+            require(type(position.get('x')) is int and type(position.get('y')) is int,'projected actor position absent')
+            verify_selected_map_target(s,f,(position['x'],position['y']))
         elif profile in ('base-faces','party-four','party-five','party-six','party-seven','party-eight'):
             b=next(b for b in r['party_bindings'] if b['group']==g)
             require(s.get('native_identity')==s.get('portrait')==s.get('battle_fig')==s.get('selector_key')==g and s.get('has_native_identity') is True and s.get('camp')==0 and s.get('scenario_sha256')==b['scenario_sha256'],'authored base provenance changed')
             if profile in ('party-four','party-five','party-six','party-seven','party-eight'):require(s.get('selector_projection_injected') is False,'base party actor projection forbidden')
-        elif profile in ('party-nine','party-ten','party-eleven','party-twelve','party-thirteen','party-fourteen'):
+        elif profile in ('party-nine','party-ten','party-eleven','party-twelve','party-thirteen','party-fourteen','party-final-three'):
             b=next(b for b in r['party_bindings'] if b['group']==g);identity=PROFILE_IDENTITIES[profile][g]
             require(s.get('native_identity')==s.get('portrait')==s.get('battle_fig')==identity and s.get('selector_key')==g and s.get('has_native_identity') is True and s.get('camp')==0 and s.get('scenario_sha256')==b['scenario_sha256'] and s.get('selector_projection_injected') is True,'promoted actor provenance changed')
         elif profile=='party-next':
@@ -318,6 +329,7 @@ def verify_normal(d,folder,candidate,binary,profile='party'):
     if profile=='party-twelve':scope='unchanged chapter1 ordinary save checks full candidate, four controls, walk/cancel and save/cold LOAD;41/42/43/44 use existing shared59/60/61/62 files after byte-identical native layer verification; pixels only through disclosed selector/byte6/cache projection with identities9/10/11/12, not natural promotion'
     if profile=='party-thirteen':scope='unchanged chapter1 ordinary save checks full candidate, four controls, walk/cancel and save/cold LOAD;45/46/47 newly authored and49 shares17 after byte-identical native verification; pixels only through disclosed selector/byte6/cache projection with identities13/14/15/17, not natural promotion'
     if profile=='party-fourteen':scope='unchanged chapter1 ordinary save checks full two-group candidate, four controls, walk/cancel and save/cold LOAD;64/65 share46/47 after byte-identical native verification; pixels only through disclosed selector/byte6/cache projection with identities14/15, not natural optional promotion'
+    if profile=='party-final-three':scope='unchanged chapter1 ordinary save validates full candidate, four controls, walk/cancel and save/cold LOAD;19/31 pixels through original own-camp roster without persistent identity,35 through disclosed Hano1 visual template projected to identity/portrait/fig3 and selector35, not Havart statistics, natural recruitment or promotion'
     return dict(status='PASS-FULL-CANDIDATE-NORMAL-TRANSACTION',pngs=10,scope=scope)
 
 def register(formal,candidate,destination,recipe=RECIPE,profile='party'):
@@ -354,7 +366,7 @@ def main():
     for n in ('gpu','candidate','normal','binary','out'):p.add_argument('--'+n,type=Path,required=True)
     for n in ('formal','destination'):p.add_argument('--'+n,type=Path)
     p.add_argument('--recipe',type=Path,default=RECIPE,help='明示本批配方；必須符合所選固定矩陣')
-    p.add_argument('--profile',choices=PROFILES,default='party',help='party固定21；base-faces1／4無投影；其他固定雙組14；static-king48固定六；audited-six三份42，audited-next／audited-enemies／audited-helm-bow／audited-visor-grille／audited-plate-four兩份28保留原始名冊，party-next兩份28揭露54投影，party-four／party-five／party-six／party-seven／party-eight兩份28無投影；party-nine／party-ten／party-eleven／party-twelve／party-thirteen兩份28明示四組投影；party-fourteen兩份各7合14明示兩組投影')
+    p.add_argument('--profile',choices=PROFILES,default='party',help='party固定21；base-faces1／4無投影；其他固定雙組14；static-king48固定六；audited-six三份42，audited-next／audited-enemies／audited-helm-bow／audited-visor-grille／audited-plate-four兩份28保留原始名冊，party-next兩份28揭露54投影，party-four／party-five／party-six／party-seven／party-eight兩份28無投影；party-nine／party-ten／party-eleven／party-twelve／party-thirteen兩份28明示四組投影；party-fourteen兩份各7合14明示兩組投影；party-final-three名冊雙組14及投影單組7合21')
     p.add_argument('--gpu-parts',nargs='+',type=Path,help='audited-six固定三份、audited-next／audited-enemies／audited-helm-bow／audited-visor-grille／audited-plate-four固定兩份、party-next／party-four／party-five／party-six／party-seven／party-eight／party-nine／party-ten／party-eleven／party-twelve／party-thirteen固定兩份GPU收據；party-fourteen固定兩份單組收據；--gpu指定新的合併目錄內收據')
     p.add_argument('--self-test',action='store_true');p.add_argument('--register',action='store_true');a=p.parse_args()
     require(not a.out.exists(),'fresh report required')
@@ -364,7 +376,7 @@ def main():
     d=read(a.gpu);result=verify_gpu(d,a.gpu.parent,a.candidate,a.recipe,a.profile);result['normal']=verify_normal(read(a.normal),a.normal.parent,a.candidate,a.binary,a.profile)
     rejected=[]
     if a.self_test:
-        for fault in ('missing','duplicate','catalog','source-code','false-save','wrong-hud','wrong-tolerance','wrong-map-target','wrong-map-camera','missing-map-target','missing-f2','wrong-profile','wrong-selector','wrong-identity','undisclosed-projection','wrong-base-source','false-base-identity','wrong-actor-projection','wrong-enemy-camp','wrong-enemy-position','wrong-enemy-roster','wrong-static-phase','wrong-story-source','wrong-story-position','missing-part','duplicate-part','wrong-part-source','wrong-part-group','wrong-part-memory'):
+        for fault in ('missing','duplicate','catalog','source-code','false-save','wrong-hud','wrong-tolerance','wrong-map-target','wrong-map-camera','missing-map-target','missing-f2','wrong-profile','wrong-selector','wrong-identity','wrong-visual-template','missing-identity-projection','undisclosed-projection','wrong-base-source','false-base-identity','wrong-actor-projection','wrong-enemy-camp','wrong-enemy-position','wrong-enemy-roster','wrong-static-phase','wrong-story-source','wrong-story-position','missing-part','duplicate-part','wrong-part-source','wrong-part-group','wrong-part-memory'):
             x=deepcopy(d)
             if fault=='missing':x['cases'].pop()
             elif fault=='duplicate':x['cases'][-1]=deepcopy(x['cases'][0])
@@ -376,7 +388,7 @@ def main():
                 else:x['sources'][0]['hud_group']=99
             elif fault=='wrong-tolerance':x['cases'][0]['rgba_tolerance']=3
             elif fault in ('wrong-map-target','wrong-map-camera','missing-map-target'):
-                if a.profile!='audited-plate-four':continue
+                if a.profile not in ('audited-plate-four','party-final-three'):continue
                 subject=next(row for row in x['sources'] if row['interface']=='hd')
                 if fault=='wrong-map-target':subject['map_target']['matched_work_offset']+=24
                 elif fault=='wrong-map-camera':subject['map_target']['camera_x']+=1
@@ -391,28 +403,34 @@ def main():
                 if a.profile=='party':continue
                 if a.profile in ('enemies','static-king','audited-six','audited-next','audited-enemies','audited-helm-bow','audited-visor-grille','audited-plate-four'):x['sources'][0]['portrait']=99
                 else:
-                    subject=next(row for row in x['sources'] if row['group']==52) if a.profile=='heroes' else x['sources'][0]
+                    subject=next(row for row in x['sources'] if row['group']==(35 if a.profile=='party-final-three' else 52)) if a.profile in ('heroes','party-final-three') else x['sources'][0]
                     subject['native_identity']=2 if a.profile=='heroes' else 99
+            elif fault in ('wrong-visual-template','missing-identity-projection'):
+                if a.profile!='party-final-three':continue
+                subject=next(row for row in x['sources'] if row['group']==35)
+                if fault=='wrong-visual-template':subject['visual_template_native_identity']=3
+                else:subject.pop('identity_projection_injected')
             elif fault=='undisclosed-projection':
                 if a.profile=='party':continue
                 x.pop('selector_projection_injected',None)
             elif fault=='wrong-base-source':
-                if a.profile not in ('base-faces','party-next','party-four','party-five','party-six','party-seven','party-eight','party-nine','party-ten','party-eleven','party-twelve','party-thirteen','party-fourteen'):continue
-                x['sources'][0]['scenario_sha256']='0'*64
+                if a.profile not in ('base-faces','party-next','party-four','party-five','party-six','party-seven','party-eight','party-nine','party-ten','party-eleven','party-twelve','party-thirteen','party-fourteen','party-final-three'):continue
+                subject=next(row for row in x['sources'] if row['group']==35) if a.profile=='party-final-three' else x['sources'][0]
+                subject['scenario_sha256']='0'*64
             elif fault=='false-base-identity':
-                if a.profile not in ('base-faces','party-next','party-four','party-five','party-six','party-seven','party-eight','party-nine','party-ten','party-eleven','party-twelve','party-thirteen','party-fourteen'):continue
-                x['sources'][0]['has_native_identity']=False
+                if a.profile not in ('base-faces','party-next','party-four','party-five','party-six','party-seven','party-eight','party-nine','party-ten','party-eleven','party-twelve','party-thirteen','party-fourteen','party-final-three'):continue
+                x['sources'][0]['has_native_identity']=a.profile=='party-final-three'
             elif fault=='wrong-actor-projection':
-                if a.profile not in ('party-next','party-four','party-five','party-six','party-seven','party-eight','party-nine','party-ten','party-eleven','party-twelve','party-thirteen','party-fourteen'):continue
+                if a.profile not in ('party-next','party-four','party-five','party-six','party-seven','party-eight','party-nine','party-ten','party-eleven','party-twelve','party-thirteen','party-fourteen','party-final-three'):continue
                 x['sources'][0]['selector_projection_injected']=not x['sources'][0].get('selector_projection_injected',False)
             elif fault=='wrong-enemy-camp':
-                if a.profile not in ('enemies','audited-six','audited-next','audited-enemies','audited-helm-bow','audited-visor-grille','audited-plate-four'):continue
-                x['sources'][0]['camp']=0
+                if a.profile not in ('enemies','audited-six','audited-next','audited-enemies','audited-helm-bow','audited-visor-grille','audited-plate-four','party-final-three'):continue
+                x['sources'][0]['camp']=2 if a.profile=='party-final-three' else 0
             elif fault=='wrong-enemy-position':
-                if a.profile not in ('enemies','audited-six','audited-next','audited-enemies','audited-helm-bow','audited-visor-grille','audited-plate-four'):continue
+                if a.profile not in ('enemies','audited-six','audited-next','audited-enemies','audited-helm-bow','audited-visor-grille','audited-plate-four','party-final-three'):continue
                 x['sources'][0]['position']['raw_key']=0
             elif fault=='wrong-enemy-roster':
-                if a.profile not in ('enemies','audited-six','audited-next','audited-enemies','audited-helm-bow','audited-visor-grille','audited-plate-four'):continue
+                if a.profile not in ('enemies','audited-six','audited-next','audited-enemies','audited-helm-bow','audited-visor-grille','audited-plate-four','party-final-three'):continue
                 x['sources'][0]['roster_sha256']='0'*64
             elif fault=='wrong-static-phase':
                 if a.profile!='static-king':continue
@@ -451,12 +469,12 @@ def main():
             try:verify_gpu(x,folder,a.candidate,a.recipe,a.profile)
             except ValueError as e:require('pixels mismatch' in str(e),'black PNG wrong failure');rejected.append('actual-black-png')
             else:raise ValueError('black PNG accepted')
-    if a.self_test and a.profile in ('party-nine','party-ten','party-eleven','party-twelve','party-thirteen','party-fourteen'):
+    if a.self_test and a.profile in ('party-nine','party-ten','party-eleven','party-twelve','party-thirteen','party-fourteen','party-final-three'):
         for fault in ('promotion-source-sha','promotion-target-field','promotion-native-identity','promotion-unreported-selector'):
             r=deepcopy(read(a.recipe))
             if fault=='promotion-source-sha':r['promotion_source']['sha256']='0'*64
             elif fault=='promotion-target-field':r['party_bindings'][0]['target_field']='default_target' if r['party_bindings'][0]['target_field']=='optional_target' else 'optional_target'
-            elif fault=='promotion-native-identity':r['party_bindings'][1]['native_identity']=2
+            elif fault=='promotion-native-identity':r['party_bindings'][0 if a.profile=='party-final-three' else 1]['native_identity']=2
             else:r['party_bindings'][0]['selector_projection_injected']=False
             try:verify_promoted_bindings(r,a.profile)
             except (ValueError,KeyError,IndexError):rejected.append(fault)
