@@ -276787,5 +276787,3164 @@
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-completion-r29/final-validation-r1.json",
       "sha256": "51257d95e79cfebba52dcfa02cba767b13ed44abc8af2d811f9fe2686e9c4855"
     }
+  },
+  "hd1_adult_faces_followup_20261101": {
+    "date": "2026-11-01",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1",
+    "base_commit": "72538ca8bc9f69826f8e3527db6d2499f46d43b3",
+    "groups": [
+      117,
+      118,
+      119,
+      120
+    ],
+    "roster_bindings": [
+      {
+        "group": 117,
+        "map": 4,
+        "roster_file": "remake/assets/maps/map4/map4_units.json",
+        "roster_sha256": "55fac833fdbce7e3e0ef014a309566eb8bdb7b18070d1c12079cf1d3174cc64c",
+        "row": 5,
+        "initial_group": 0,
+        "camp": "enemy",
+        "portrait": 117,
+        "battle_fig": 117,
+        "position": {
+          "x_word": 35,
+          "y_word": 8,
+          "raw_key": 117
+        },
+        "native_constructor": {
+          "branch": "high_class",
+          "index": 49,
+          "record": [
+            1,
+            7,
+            30,
+            0,
+            0,
+            5,
+            3,
+            2,
+            4,
+            99
+          ]
+        }
+      },
+      {
+        "group": 118,
+        "map": 5,
+        "roster_file": "remake/assets/maps/map5/map5_units.json",
+        "roster_sha256": "f94337f25fc7ed7aec7041ee52a92f98309d69893a8e93fcce7e13eae5d49704",
+        "row": 25,
+        "initial_group": 1,
+        "camp": "enemy",
+        "portrait": 118,
+        "battle_fig": 118,
+        "position": {
+          "x_word": 11,
+          "y_word": 23,
+          "raw_key": 118
+        },
+        "native_constructor": {
+          "branch": "high_class",
+          "index": 50,
+          "record": [
+            1,
+            3,
+            12,
+            0,
+            0,
+            8,
+            3,
+            1,
+            6,
+            80
+          ]
+        }
+      },
+      {
+        "group": 119,
+        "map": 14,
+        "roster_file": "remake/assets/maps/map14/map14_units.json",
+        "roster_sha256": "8d5647a0f0b764d3013aa60e996dbf3aa365e987ad97a46785ea34663f0deec2",
+        "row": 0,
+        "initial_group": 0,
+        "camp": "enemy",
+        "portrait": 119,
+        "battle_fig": 119,
+        "position": {
+          "x_word": 31,
+          "y_word": 9,
+          "raw_key": 119
+        },
+        "native_constructor": {
+          "branch": "high_class",
+          "index": 51,
+          "record": [
+            1,
+            10,
+            120,
+            0,
+            0,
+            20,
+            12,
+            5,
+            4,
+            120
+          ]
+        }
+      },
+      {
+        "group": 120,
+        "map": 20,
+        "roster_file": "remake/assets/maps/map20/map20_units.json",
+        "roster_sha256": "7cc1d99387468231afd5d4b6615f9cbda32ec1a3bfb96e542de3da9f92211b33",
+        "row": 10,
+        "initial_group": 0,
+        "camp": "enemy",
+        "portrait": 120,
+        "battle_fig": 120,
+        "position": {
+          "x_word": 20,
+          "y_word": 32,
+          "raw_key": 120
+        },
+        "native_constructor": {
+          "branch": "high_class",
+          "index": 52,
+          "record": [
+            1,
+            10,
+            90,
+            0,
+            0,
+            20,
+            10,
+            4,
+            5,
+            255
+          ]
+        }
+      }
+    ],
+    "source_references": [
+      {
+        "group": 117,
+        "reference_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/group-117-source-reference.png",
+        "reference_sha256": "cee204119ae30ef2050281f6b5597f22ab1d7c7b37e34d30cbdaa3fde7cf56bd",
+        "inputs": [
+          {
+            "file": "/original/portraits/DATO_117_m0.png",
+            "sha256": "7796b195465fd1aca393b2018faa99b281845db46b61954bd648555b6734142f",
+            "local_file": "remake/assets/portraits/DATO_117_m0.png",
+            "local_sha256": "4fcec3c3c42e4c833cb50e78aa37e863e9b17811c8a9c379200b747f761ab7b2",
+            "decoded_rgba_equal": true
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1404/frame.png",
+            "sha256": "68a1a5b062f19f45e10383ba99f584433ca792fceb867a2eaef4d270177551e2"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1404/mask.png",
+            "sha256": "161d5f51b62f794403974e6d2d48e47b9a004067c26a768ac8cd54c797629f4d"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1404/remap_mask.png",
+            "sha256": "5f964635879499e4b147963db40e7e117b5bea08a98b27224de4147ef08e5f36"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1405/frame.png",
+            "sha256": "25ff3023ee472c68af8c44f199e3fbcf9f110835ac37ea20354cedd51db3f4ed"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1405/mask.png",
+            "sha256": "cbe1069dd30129491635397c8905499ad35a071447263c07bfed568ccc748eae"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1405/remap_mask.png",
+            "sha256": "b24f4bb1c5e002a5eaf61a819f32488a28a8e6057135ece46401cf2239bc29ed"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1406/frame.png",
+            "sha256": "8ebf475b60b1489b426c0672d8588eb118f8cf0a850a407e3e29d1fa26bbe022"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1406/mask.png",
+            "sha256": "e04150b24e2f0563587c4cb42d1539c2d3a28dfddafbf4448410ee32cc93768e"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1406/remap_mask.png",
+            "sha256": "4a2a33f16883f84bda9835813f55d2811a364f17382815af9a95c14f29a1bd61"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1407/frame.png",
+            "sha256": "783fbb4be2ff7a78086f7d9f1672c98e700c0acf804b8c79e349e1d5b5f88aa4"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1407/mask.png",
+            "sha256": "6d4d68aefe2470fad2254aed16e4061ee5c8ab27de08c40b0f9a4bbb6a69e288"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1407/remap_mask.png",
+            "sha256": "37ac230abeb9b14704b6d22cf2888ed0b08f90692306b4c772cf42b3ffb9015f"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1408/frame.png",
+            "sha256": "79d205b758f0ca085122ddea35cb16ce6f8c9a73aa5e1f6828efa92beb08233f"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1408/mask.png",
+            "sha256": "ba86add2cdadcd01f9fe04822effdcf93d410687ba475f2314369fcb63b0c6ba"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1408/remap_mask.png",
+            "sha256": "5170102c6b0167c63e6fa606ac86d6e279657ecd01ee6217c32b6fde0cf639f3"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1409/frame.png",
+            "sha256": "6213a2206145e8feb65c2e39d5800ad75362d6954e7955745c2e3fb1467d036c"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1409/mask.png",
+            "sha256": "b6a0e1af77d3f8a8996718cfd2482160b20c71d89f270e674687b91a406701bc"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1409/remap_mask.png",
+            "sha256": "6dde86ae83f4fb6882e5b7c851b388b3f3799c548339d482651923a3a8e877d8"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1410/frame.png",
+            "sha256": "53a8c1dbe19dfdbc9ac4136ca507af22c150e7249fef74cd6cd438cc3ac59e76"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1410/mask.png",
+            "sha256": "1f4df0f120f8c4d1cedb317305f9e380033cc4732bb52d1ad12a802d31fb5926"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1410/remap_mask.png",
+            "sha256": "a0e11e0d529343365980301f227469b9e1f6241782a303133191151c3f4aea88"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1411/frame.png",
+            "sha256": "9191ac2a09055c65af6f62d662332c7ac166a92254e9212ea4c87bb19205d4a8"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1411/mask.png",
+            "sha256": "993980e5cf51e1dcf8ff4d6c9bd7d700cc4d909cc62a35d6217549d0607c09f2"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1411/remap_mask.png",
+            "sha256": "689a84609b80001698235f21f9eff1ba7d895912db8971f761824358f4bc4fc1"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1412/frame.png",
+            "sha256": "ae9a2810ab720fb5eb9280d8eb9b8eb5abf2038cf3be17e73473ab0948bed660"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1412/mask.png",
+            "sha256": "c92a3a1dd6404d2b5dda1767df9489038d62a0a96b84da001227375bd799efd5"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1412/remap_mask.png",
+            "sha256": "f02109cc4a17ac2337dc74471277ce67a1e786cd449ed13a55e9960cf192d63f"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1413/frame.png",
+            "sha256": "2995e83efffb28ff16aac64f8b9f0cfaf451d7f29239f7e7b53cbfb45bc3a6cf"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1413/mask.png",
+            "sha256": "12ce33b371304d4ad311432ce60f62745b8899412332361db988fe7fbeab720f"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1413/remap_mask.png",
+            "sha256": "2d2d8d17858c7086d8992f94e856a4865a3dcc8e334372023da33b31d9bf2811"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1414/frame.png",
+            "sha256": "6332bf401c1c35ea482a27ccfadd1e08d3007ac4eec7cc5ffea05068c2f45125"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1414/mask.png",
+            "sha256": "0e70e800c09e767a7eee303d4c33454fa8e15778ed170dfca543c0c27d817da2"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1414/remap_mask.png",
+            "sha256": "221c6b1fcaaa389e10a370c152949a9ac68eea9de4703ac9b44e2e3f4181b7dd"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1415/frame.png",
+            "sha256": "eccbf86540c6626f2e32b16ded2f1f889dfb7ecae8c0c91b592d6d29f6412260"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1415/mask.png",
+            "sha256": "65d5488ad1e8a88350ee496b6d798e282bd9a0dd25a65af888dd0fa77d79399a"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1415/remap_mask.png",
+            "sha256": "99dfec35cecc42fbfbe144894ce85be0656bf555f4c5660f2a8fe641c4d6840e"
+          }
+        ]
+      },
+      {
+        "group": 118,
+        "reference_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/group-118-source-reference.png",
+        "reference_sha256": "d20c60424775f76ee06010b55f40370d97026f582defceb1b4ce4bf55a3319a8",
+        "inputs": [
+          {
+            "file": "/original/portraits/DATO_118_m0.png",
+            "sha256": "d5ab1256ee36e61ec2e9e37b69f1c07ae4eb9017bdc21073e6d8195b105aba23",
+            "local_file": "remake/assets/portraits/DATO_118_m0.png",
+            "local_sha256": "4c9bed36d5c60bf25bad0ecb6aed67077c216238cea00be96f1ee4d1138afc77",
+            "decoded_rgba_equal": true
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1416/frame.png",
+            "sha256": "503923a13d4fa3904855b1ef3e54a899f1f78077331b27a91891c50c96ff2278"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1416/mask.png",
+            "sha256": "1a868d117303156e664b4c1dfcd22c4850f2c13ee4f8c7d2826aef160cd599a8"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1416/remap_mask.png",
+            "sha256": "9cb91390d7931952ee5e23ed93c1ad2a66a752338b47b2d4d57e6492e39e19cc"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1417/frame.png",
+            "sha256": "020a3269b5304adbadb7e367f2f26305814bef0877b7c7e41a3c92d2935dcf9b"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1417/mask.png",
+            "sha256": "84c5427c1507e54eec6e21826b981425d47ab0a239ebc1303325c92e0a1fe5fa"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1417/remap_mask.png",
+            "sha256": "7189bd871140cae28c9faec93d80f2c472b4de6f68f7dc526ce8903ec8a39df2"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1418/frame.png",
+            "sha256": "2c2f962549504d22820fba9fb570bd011be76fe1db5c1eccaf6833b3edecff3b"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1418/mask.png",
+            "sha256": "533354c3d21c78aa4194b30084dae5771b4032a39411069b60e8abbbb1f23bc0"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1418/remap_mask.png",
+            "sha256": "29c74118fc26749375136c1dbf2f17926ca3904245cb59dd1f66e3ace302713a"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1419/frame.png",
+            "sha256": "e5a563928edac69b7a4b0dd8b88ccfe37ec46dbed6cca835d984a26f1f4431ce"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1419/mask.png",
+            "sha256": "f79c845ed2688cda94b08137348a6ad0ceae341dbf18043124c1042df6abf62b"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1419/remap_mask.png",
+            "sha256": "1395944468cf68ff8f5eff661564aa7fce45bb041cbe370abb1a9562badcc463"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1420/frame.png",
+            "sha256": "fc488ded3871670b2de0827101d0f6cfcf2e629e31a9c7026831f67dc84f6fcc"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1420/mask.png",
+            "sha256": "1d8f9b4ad8ffd49ebcd1933e42a61b4809ce93a5d45f621eaba75a6a871adf22"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1420/remap_mask.png",
+            "sha256": "6df9b2d367b3f2210ee9f9834d6d64053b8184b387452f11b9bb59d3451cdd96"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1421/frame.png",
+            "sha256": "67bb7e296703ebd7d49d060f70c101b0c6d400dffbeeacbade1aeaed9bf76182"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1421/mask.png",
+            "sha256": "a4e0614d1a9eaa2fdb708a671c57ae0a97caa62a382f88d4a838a7c19097b273"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1421/remap_mask.png",
+            "sha256": "def9ccb77041b945607b398672de90b45fb47a63b90076f0255aa3f8ce9f03d1"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1422/frame.png",
+            "sha256": "6fd59149c89c133b9554069c14e3638092a5e81b91f1fd30d230fd44fbf6771f"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1422/mask.png",
+            "sha256": "9c224593ce12893b8fb866b2978de57d1cb595f92a04a9060a9021f8458e4780"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1422/remap_mask.png",
+            "sha256": "2174770e9cc934e636e6048886f50692cd5ec8cbc08d371f0d4d226257454bea"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1423/frame.png",
+            "sha256": "f3f0f047e99981d89ff64b732258f118990f75d9f44113ea92db388135eb170d"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1423/mask.png",
+            "sha256": "d14116b2813680b26357d216d2bd9f05a928ed2c0aa9f88a57da9091b94e5866"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1423/remap_mask.png",
+            "sha256": "166d8e6bd07c8e7551517ccf851d09b22252877906c6dc8cb5f60c86bbef5a97"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1424/frame.png",
+            "sha256": "874d6bf951b6cfbc839745de890380cc813721675fe65a64ddf797e5b6926e12"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1424/mask.png",
+            "sha256": "accaadb3f645a38bc6a342d8ab72de1af705b5d12b195aeca326e4e2c5713495"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1424/remap_mask.png",
+            "sha256": "3e997e7539aafae4ead71cf312eb37cd013013b769eceecc5f505b8142b6dcce"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1425/frame.png",
+            "sha256": "9e37ec6fab86c76997cd044c2fbb690b8468afbb223167eb017d73f94a4919f4"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1425/mask.png",
+            "sha256": "f8bf5d67ca018533d5269ea6e4fe1f26dcbde32e75be835d841a9fd21eb9fee9"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1425/remap_mask.png",
+            "sha256": "a99c109c7bf7d13af9056a00d4afb0241b492dd3a89a77700912601f14b5e5d8"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1426/frame.png",
+            "sha256": "e68c56152262fb7d6e250b7063eabf73c484bcffdd717c615e0a8ca9115e0173"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1426/mask.png",
+            "sha256": "7d41ffcc24eb9de418f4e12662e2f686acf1b2cbecf3e147cbebf65096246c66"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1426/remap_mask.png",
+            "sha256": "5b452c20a1a8f3b5dcce134e1d8e561fbd0f74e314c6133a6b6c0392f8e29795"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1427/frame.png",
+            "sha256": "1d52f78f7ae2b99aca5775f2591f19d7e42243b521be2cb67120328f4348634f"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1427/mask.png",
+            "sha256": "521cd1ad179ccf37d0928c36ee08d1f59599177fe6549a68b1c4051049b5a4f0"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1427/remap_mask.png",
+            "sha256": "34b50da06a801984e39b3d2c8fb05e2dc60fdb8d282875bc8da277612b44c10f"
+          }
+        ]
+      },
+      {
+        "group": 119,
+        "reference_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/group-119-source-reference.png",
+        "reference_sha256": "6c8708004614aae5aa2812ce4a4befad5039bd09e81f2fafbc6d2b9f1e224511",
+        "inputs": [
+          {
+            "file": "/original/portraits/DATO_119_m0.png",
+            "sha256": "8d1e2b6b50ce7839ef702309d60386c55eb8d7471abfab505a408d16e7176954",
+            "local_file": "remake/assets/portraits/DATO_119_m0.png",
+            "local_sha256": "e66e08644794412b4e5f22cf7fa2055fa4f8e9573ab6a75cdfa60db11b9b7c9e",
+            "decoded_rgba_equal": true
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1428/frame.png",
+            "sha256": "a2f2ed8b595c9de1c48b8fe9f5e2d87ca4bfde8d2fca420e5b24df9c953646b1"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1428/mask.png",
+            "sha256": "9f79f2ea21f78f7777918e7c45566fbf0283e095fddea3eec6017494f5efaed6"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1428/remap_mask.png",
+            "sha256": "bc627dd027992ea1764862f0a70d627185bc60168cabdd453a92002e49b5b51e"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1429/frame.png",
+            "sha256": "a97494e32b040a6d8b1f2bfa401f5627c22ccdc365930db56c6346789ba80546"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1429/mask.png",
+            "sha256": "32163d869543525b1fa8005829b5edd89a46474673353e8750a0319a17b30c1b"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1429/remap_mask.png",
+            "sha256": "ca7d00a877c94eb7b9775fadf321628d2de2057dace140dcc2a9a39054999ba6"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1430/frame.png",
+            "sha256": "031e496296f9889af51e215bc80addc6624596811682debcbfe277a01042402e"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1430/mask.png",
+            "sha256": "1ae4935ddf658cad6f8fe519a01fae0ecee3e5a677945efd7a2b52ed114bc2f4"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1430/remap_mask.png",
+            "sha256": "54642e065c082edb888b8d19ec9c0be0146f1b054f7d50d24a09ae714ecad5b4"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1431/frame.png",
+            "sha256": "eee797c2a58ebf356ae77b10233c211c3d56d06159bfa16af4f88300ae03f8db"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1431/mask.png",
+            "sha256": "90e9c73e88f6363eb5f57489140e173639c221b9c531e870b6f89e55fd3dc5d6"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1431/remap_mask.png",
+            "sha256": "0854233ac886a7c6bd383a0943cebb2a881b42620867df2386163d096f553a38"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1432/frame.png",
+            "sha256": "d91ab1df092496d81243d2350d36185b3853e890f9d971b7504d590969455720"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1432/mask.png",
+            "sha256": "0642160238a09f5eaa5ce3a44e47946e4323eee6f654852f1fb3c85e180f08d6"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1432/remap_mask.png",
+            "sha256": "212eb3865471bab62ee3b2d0a4da1853b8f2055da0d7b01cc23bd00304391275"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1433/frame.png",
+            "sha256": "7929ee0f73ab8514cfe2096f482306a826c0a5a187a465bcad3ef15430e56a83"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1433/mask.png",
+            "sha256": "d8face8b8dab6ee6395ef4d7c2bf9577e8f38eb22bdd9240df83f0968a787fa5"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1433/remap_mask.png",
+            "sha256": "abf3c3094599c09700083354116481c7594124b6c3009f85dfd5f6de64ded9cb"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1434/frame.png",
+            "sha256": "791e3f57a7d35d1394ac148ef61aeda7f172b0c4669c3a0a9334090a6db1342b"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1434/mask.png",
+            "sha256": "9f79f2ea21f78f7777918e7c45566fbf0283e095fddea3eec6017494f5efaed6"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1434/remap_mask.png",
+            "sha256": "bc627dd027992ea1764862f0a70d627185bc60168cabdd453a92002e49b5b51e"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1435/frame.png",
+            "sha256": "aaaa628eb800940e67d98006a8a2161f3d03f8857ec5311ba0527e79d67b05e2"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1435/mask.png",
+            "sha256": "32163d869543525b1fa8005829b5edd89a46474673353e8750a0319a17b30c1b"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1435/remap_mask.png",
+            "sha256": "ca7d00a877c94eb7b9775fadf321628d2de2057dace140dcc2a9a39054999ba6"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1436/frame.png",
+            "sha256": "8ce51db0249d1b43a262e74375d2b277545b02cc260bb8980925fd6f79bf2f2f"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1436/mask.png",
+            "sha256": "1ae4935ddf658cad6f8fe519a01fae0ecee3e5a677945efd7a2b52ed114bc2f4"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1436/remap_mask.png",
+            "sha256": "54642e065c082edb888b8d19ec9c0be0146f1b054f7d50d24a09ae714ecad5b4"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1437/frame.png",
+            "sha256": "14d6c087f91e049ea9ae1c0d0972792888db61884404ed9e26a41519d82020e8"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1437/mask.png",
+            "sha256": "ecdbba944f03da5243adca278b60b527d3c745243bfd9bb466bb78e48c614b55"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1437/remap_mask.png",
+            "sha256": "320794a48b814bd9a4bf5cac1490643a960dd3d325d1a89868eb30cbbf03d37c"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1438/frame.png",
+            "sha256": "0eaf7d2f081e0d1706405157ce7f22713d5401c88327943725b62d51c5c07a42"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1438/mask.png",
+            "sha256": "283e81bf4d978df131a9eff1b5e44df0c2351d3b71250f39fad19d9e8656cf3e"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1438/remap_mask.png",
+            "sha256": "0224740d02d7620e49210cbf368784bea73f9b1eb1f2bf59c2a063e78f1d7645"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1439/frame.png",
+            "sha256": "3a614144442fe77b6bbdbe7dc62408e368b80ede431f87ecede49246482f4689"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1439/mask.png",
+            "sha256": "79a5ce7a7ec6c5fb7009e8d5be26cc8c801d87258329e43318411c5cef03315d"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1439/remap_mask.png",
+            "sha256": "d694b87a1d0b33e92279f3edba6736e24c7f811d48136bbc4eb426af3150e094"
+          }
+        ]
+      },
+      {
+        "group": 120,
+        "reference_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/group-120-source-reference.png",
+        "reference_sha256": "7b327c2d77f01258f22758bdab0c94a63faf99db866ff6700499b5bf73d31192",
+        "inputs": [
+          {
+            "file": "/original/portraits/DATO_120_m0.png",
+            "sha256": "994a1d0bf7a03523455359ea745df8531d71ea09e20fa283e742922895f03b4c",
+            "local_file": "remake/assets/portraits/DATO_120_m0.png",
+            "local_sha256": "90746bd45d824c5950deee44cfef40a910e1d2aef4b418897249249e82d89ee7",
+            "decoded_rgba_equal": true
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1440/frame.png",
+            "sha256": "6f0cc6dae77acac70cfa089f2525bcb269e99f1f50271d200fc50cbd5309f149"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1440/mask.png",
+            "sha256": "78d5f2455aca402aa8adf879086d1e0b318901ee5df901a0e122b8d741d2a9ac"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1440/remap_mask.png",
+            "sha256": "4beffb4048ff8f9daafba34c18bcf4cde7d0c8a013744309f245d57a15dade67"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1441/frame.png",
+            "sha256": "3d28c62f9ab4af4a85788203a7b6e72549315bf353579d32686590760574e1c5"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1441/mask.png",
+            "sha256": "423689cb7f75a4c3ae2eac558d17fd2ff332a631746a5671249aab4883842299"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1441/remap_mask.png",
+            "sha256": "0e504a67cfd19aa494f853d690c9b4080613c63fb6ed1a2a98f4c602cda5d234"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1442/frame.png",
+            "sha256": "d47d11e3b4f1cd090d5a50f56208c92cbb88e4a4339de16a79d268166479fae4"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1442/mask.png",
+            "sha256": "41c1946c7c854bd17290ef5501a5cbe02665b794109aaa796ffc57d9db55bc9b"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1442/remap_mask.png",
+            "sha256": "4a0a7d60d9e85e414704534f26b1e033bb7b74c4988b5f6f9c2c020ee256e71f"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1443/frame.png",
+            "sha256": "f0ea0515da7cc285121cdefd749e4d1633a39e84bb8a0b2f2b15c31d2bf2519e"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1443/mask.png",
+            "sha256": "4ee98c146bfed51e0da828fb380985fbf17ca3c3296d3d40d3753e3faf3c3320"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1443/remap_mask.png",
+            "sha256": "8831716bab143a2fa86b05778bf21e358bc3a6055d9ba3122a62ee1ef3c35272"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1444/frame.png",
+            "sha256": "2e87812a9b18c198d7c09ec16cfbb3e49ca9aac5175079317adc7ef87cff61db"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1444/mask.png",
+            "sha256": "869aae64f8e33e2963d81840e4747352579bf0a0c93e6bd5108177841cdf0b1d"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1444/remap_mask.png",
+            "sha256": "93c2618ffe84f5c0ae62bbed9b876a220f285bc289796fc123650e4f63e955cb"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1445/frame.png",
+            "sha256": "75e095b13c8f1cefabe42b638ab56d34526ab9aa171ca024ed1e6a878aed9111"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1445/mask.png",
+            "sha256": "4ee98c146bfed51e0da828fb380985fbf17ca3c3296d3d40d3753e3faf3c3320"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1445/remap_mask.png",
+            "sha256": "8831716bab143a2fa86b05778bf21e358bc3a6055d9ba3122a62ee1ef3c35272"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1446/frame.png",
+            "sha256": "5c1e898e4b786fb7edb4e946d2cdd7b58bf33cd4f9aa88eb298bba142201b9b0"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1446/mask.png",
+            "sha256": "cc4922e43b1e3bd6e8ff38bc26038523c987b98433212d3806267442c4094e2a"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1446/remap_mask.png",
+            "sha256": "e3a40d5ce2beb4526a3830634e7653748d0c3fb8feee2b677bff5f24e90028e7"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1447/frame.png",
+            "sha256": "cdc1a145de24b33b05ee931e777b9dcf4953387e47bd5a180eb005f1ddb43bf0"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1447/mask.png",
+            "sha256": "5a3e87b8a93dbdfed5f39c945db204d0a317d0a7046b520135bb1e72228aa47f"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1447/remap_mask.png",
+            "sha256": "738ec21121d29f6b6f72cf6631ed9c90c7a5591f16d8993bf7fa4aaf0c72af84"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1448/frame.png",
+            "sha256": "6cddef94f39ccdd19966c109eb0ea3fd55e2e0ea671ea19f5a97c2937518f814"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1448/mask.png",
+            "sha256": "c534727e95439526b87ed850e73e1dcab5d9d94a20759cf68b8c4466a1d72b61"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1448/remap_mask.png",
+            "sha256": "2ccf78a69a1487b6f4a053daaefb965fec8afb09e60877c5755c82eda8f061eb"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1449/frame.png",
+            "sha256": "8ba624b5c5e5671c7db1b16c3a691462ef616e7ca67b531e89215eb494d682f6"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1449/mask.png",
+            "sha256": "40b606de5b3037927e10bdcacccf489c79e379b705998090bb73fed569e6b91d"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1449/remap_mask.png",
+            "sha256": "2a40430ec68020131b0fc5d4de343e253237cfb807103be23488ba72a7e83dca"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1450/frame.png",
+            "sha256": "e287b094866db45837865c2d91b1424c369e1c1fd443d36c199c7efa7a8cf341"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1450/mask.png",
+            "sha256": "3ced4b712a3afe57c0b80304ce184a617f3ddc94723401151d1dae233ca9819d"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1450/remap_mask.png",
+            "sha256": "856190196beb970f0700a6156c3d6d81dc23645089ded3af8dd950b32d4ff75e"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1451/frame.png",
+            "sha256": "9426ba30292d03f77ce121d7fc1ec6e751b309db8be676b61b0167c45b537cba"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1451/mask.png",
+            "sha256": "40b606de5b3037927e10bdcacccf489c79e379b705998090bb73fed569e6b91d"
+          },
+          {
+            "file": "/original/sprites/fdicon/sprite_1451/remap_mask.png",
+            "sha256": "2a40430ec68020131b0fc5d4de343e253237cfb807103be23488ba72a7e83dca"
+          }
+        ]
+      }
+    ],
+    "formal_registered": true,
+    "scope": "第117／118／119／120組依自身原版頭像修正面容，保留原名冊與位置；其他HD1缺項繼續。",
+    "source_choice": "117改取map4第5列35,8，避開map31的0,0預置記錄；保留原名冊位置，不注入座標。",
+    "branch": "feat/hd1-adult-faces-r30",
+    "issues": [
+      286,
+      287
+    ],
+    "art": {
+      "recipe": {
+        "file": "remake/assets/themes/modern/hd1-adult-faces-refresh.recipe.json",
+        "sha256": "ebe8ad9b0f413602f0f8c559fccb9dfedee10a12eea0d802f1ad80ea848c2baf"
+      },
+      "groups": [
+        117,
+        118,
+        119,
+        120
+      ],
+      "generation_calls": 5,
+      "selected_masters": 4,
+      "rejected_drafts": 1,
+      "master_bytes_preserved": true,
+      "alpha_quality": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/alpha-quality-final.json",
+        "sha256": "5320fe0aa6ab3f0bb6d42de80e0e7e1aea04c035ee765259d95d76d0761bed10"
+      },
+      "generation_call_receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/generation-calls.json",
+        "sha256": "ac83d3c3a59243e466074c66d1823c09d50d165beec0757868728c96bca205b3"
+      },
+      "actual_call_order_in_recipe": true,
+      "identity_unknown": true
+    },
+    "gpu": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/gpu-combined-r1-capture/receipt.json",
+        "sha256": "88a23e4d18e29313656686b15842ca34525c2ef7bb62a0240b3fd70a7b84503d"
+      },
+      "independent_and_registration": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/registration-r1.json",
+        "sha256": "ba414ec0c7dbe0c285028c40c02ddaf8044c45f4c48356f34fc1a972dacd5239"
+      },
+      "cases": 28,
+      "pngs": 24,
+      "f2": 4,
+      "core_pixels": 290845,
+      "rejected_mutants": [
+        "missing",
+        "duplicate",
+        "catalog",
+        "source-code",
+        "false-save",
+        "wrong-hud",
+        "wrong-tolerance",
+        "wrong-map-target",
+        "wrong-map-camera",
+        "missing-map-target",
+        "missing-f2",
+        "wrong-profile",
+        "wrong-selector",
+        "wrong-identity",
+        "undisclosed-projection",
+        "wrong-enemy-camp",
+        "wrong-enemy-position",
+        "wrong-enemy-roster",
+        "missing-part",
+        "duplicate-part",
+        "wrong-part-source",
+        "wrong-part-group",
+        "wrong-part-memory",
+        "actual-black-png"
+      ],
+      "authored_roster": true,
+      "identity_or_selector_projection": false,
+      "selected_map_position_linked": true,
+      "scope": "原名冊、原陣營、原位置與portrait／BattleFig，無持續身份；不代表自然章節或原版動態。"
+    },
+    "normal_compatibility": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/normal-r1-capture/receipt.json",
+        "sha256": "8e88c035c81404b8cb3e6231b3d9739a831cabee27aaad52bd6646bff6f8f1a1"
+      },
+      "status": "PASS-FULL-CANDIDATE-NORMAL-TRANSACTION",
+      "pngs": 10,
+      "scope": "unchanged chapter1 ordinary save checks complete fixed roster pack admission, four controls, walk/cancel and save/cold LOAD; new actors only by fixed authored roster pair fixtures, not natural chapter progression or persistent player identities",
+      "binary_sha256": "5e0c0584aa2aa6798d53b2e5924b9dd154ec7034f3bc10a981f74b5f4abc6880"
+    },
+    "source_regression": {
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/source-r1.log",
+        "sha256": "c14ccc079ece1e45ec5c52e4b127f6a2150ad8a3d4a79d76de7bc4ce56334b10"
+      },
+      "tests": 4,
+      "rejected": 14,
+      "compiler_sha256": "f3220d47a6536d0201d4e57bd73e321714164bb6ca96762d7569c0c932af1462",
+      "test_tool_sha256": "ccd4285f2aec8c47e137b3ec076191b82f5b76aea64ab48f66f15fa9dc4ce612"
+    },
+    "legacy_source_regressions": {
+      "scope": "來源編製器與來源測試未改，沿r28共用／混合各四項17拒收並核工具SHA；不冒稱本輪重跑。",
+      "receipts": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/legacy-reuse-source-r1.log",
+          "sha256": "81dfe9df8ebebcebba77a731f6ed02cf44af8bc19339eec4317e16c6ce003de7"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/legacy-mixed-source-r1.log",
+          "sha256": "fa3530f09505d7cb4bbc3ed68b55793562c8df7cd67ed9665f642ffee955d952"
+        }
+      ]
+    },
+    "regression": {
+      "top_level_passed": 26,
+      "skipped_special_gpu": 2,
+      "skips_count_as_pass": false,
+      "source_tree_sha256": "206770781b41ae988bb3a874d7920b1dc792228fc7f262cc6fa9b0836615db4e",
+      "source_file_count": 1196,
+      "production_go_changed": false,
+      "legacy_parts_reader": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/legacy-parts-r1.json",
+        "sha256": "075c46d14d9a3a8a2b6d1a16eb2f1762dedd96e01e111c18c1856c74a4a0c7d0"
+      },
+      "legacy_scope": "20種舊分份、七批轉職與三種共用來源契約，未重跑或升格舊GPU。",
+      "roster_preflight_groups": 36,
+      "roster_preflight": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/roster-preflight-r1.memory.json",
+        "sha256": "e8ae114949dc19e32adc05bb1fdc08186ba91a42b6a6b0cdc420a27ab4ee5b94"
+      }
+    },
+    "independent_control": {
+      "status": "PREVIOUS-WIRING-COMPLETE",
+      "issue": 284,
+      "previous_evidence_key": "hd1_shadow_faces_followup_20261101",
+      "focused_tests_rerun": false,
+      "normal_compatibility_rerun": true
+    },
+    "consumer_inventory": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/consumers-verified-r1.json",
+        "sha256": "554d35f3f4c6e12e587e54ebeb1a16f5011a25726d2150b12e8bf68c380e669e"
+      },
+      "cases": 21,
+      "frames": 416,
+      "rejected": 19
+    },
+    "catalog": {
+      "formal_sha256": "8f258e36333d8274494b20ac86abe49c1c7cd29b8842948f015739716d699a8c",
+      "assets": 883,
+      "changed_entries": 8,
+      "unchanged_entries": 875,
+      "old_art_files": 9505,
+      "new_files": 100,
+      "protected_0_9_30_unchanged": true,
+      "other121_groups_equal": true,
+      "full_validation": "PASS"
+    },
+    "terrain": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/formal-coverage.json",
+        "sha256": "015695e6997137dffea09c0ae279f1b6c1b5299ba689a4e4580e49031411fd92"
+      },
+      "canonical": {
+        "file": "docs/data/fd2-hd1-terrain-coverage.json",
+        "sha256": "015695e6997137dffea09c0ae279f1b6c1b5299ba689a4e4580e49031411fd92"
+      },
+      "maps": 33,
+      "missing-art": 3354,
+      "missing_unique_native_content": 2049,
+      "native-remap-only": 10,
+      "registered-hd": 634,
+      "required_slots": 3998,
+      "selector_checks": 617520,
+      "scope": "來源上界保持，尚未完成HD地形。"
+    },
+    "private": {
+      "baseline_commit": "fd9890df93802b9b8755209dd93be97289746de3",
+      "preservation": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/private-preservation-r1.json",
+        "sha256": "d5281e9d3628827ca8be4f728ad940c136daa5f3fa7ede65138b47ebc4e6bed5"
+      },
+      "allowlist_files": 6915,
+      "new_files": 100,
+      "commit": "2d7541d9ae856bb4d18de8bc40e54ce042dc9772",
+      "pushed": true,
+      "remote_verified": true
+    },
+    "review": {
+      "source_groups": 125,
+      "source_frames": 1455,
+      "counts": {
+        "reference-keep": 2,
+        "new-q-review-keep": 98,
+        "review-keep-pending-batch": 24,
+        "new-q-source-only-keep": 1
+      },
+      "q_redraw_reduced_from": 1,
+      "q_redraw_remaining": 0,
+      "pending_visual_review_groups": [
+        66,
+        74,
+        75,
+        90,
+        92,
+        96,
+        97,
+        98,
+        102,
+        103,
+        108,
+        109,
+        110,
+        112,
+        113,
+        114,
+        115,
+        116,
+        122,
+        123,
+        124,
+        126,
+        134,
+        135
+      ],
+      "priority_face_followup": [
+        66,
+        90,
+        92,
+        96,
+        97,
+        98,
+        102,
+        103,
+        108,
+        109,
+        110,
+        112,
+        113,
+        114,
+        115,
+        116,
+        122,
+        123,
+        124,
+        126,
+        134,
+        135
+      ],
+      "all_redrawn": false,
+      "human_acceptance": false,
+      "source_only_exception_groups": [
+        67
+      ],
+      "gaia_explicit_user_acceptance": true,
+      "group_decisions": {
+        "reference-keep": [
+          0,
+          9
+        ],
+        "new-q-review-keep": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          58,
+          59,
+          60,
+          61,
+          62,
+          63,
+          64,
+          65,
+          68,
+          69,
+          70,
+          71,
+          72,
+          73,
+          76,
+          77,
+          78,
+          79,
+          80,
+          81,
+          82,
+          83,
+          84,
+          85,
+          86,
+          87,
+          88,
+          89,
+          91,
+          93,
+          94,
+          95,
+          99,
+          100,
+          101,
+          106,
+          107,
+          111,
+          117,
+          118,
+          119,
+          120,
+          125,
+          133
+        ],
+        "review-keep-pending-batch": [
+          66,
+          74,
+          75,
+          90,
+          92,
+          96,
+          97,
+          98,
+          102,
+          103,
+          108,
+          109,
+          110,
+          112,
+          113,
+          114,
+          115,
+          116,
+          122,
+          123,
+          124,
+          126,
+          134,
+          135
+        ],
+        "new-q-source-only-keep": [
+          67
+        ]
+      },
+      "face_review_states": {
+        "1": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "4": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "5": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "6": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "7": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "8": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "10": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "11": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "12": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "13": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "14": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "15": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "16": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "17": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "18": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "19": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "20": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "21": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "22": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "23": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "24": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "25": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "26": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "27": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "28": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "29": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "31": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "32": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "33": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "34": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "35": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "36": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "37": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "38": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "40": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "41": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "42": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "43": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "44": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "45": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "46": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "47": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "49": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "50": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "51": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "52": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "54": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "55": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "56": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "58": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "59": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "60": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "61": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "62": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "63": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "64": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "65": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "67": "USER-APPROVED-NATIVE-FACE-ONLY/IDENTITY-UNKNOWN",
+        "68": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "69": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "71": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "72": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "78": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "80": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "81": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "82": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "83": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "84": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "85": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "86": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "87": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "88": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "91": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "93": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "94": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "95": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "106": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "111": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "99": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "100": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "101": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "107": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "117": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "118": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "119": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "120": "AGENT-ORIGINAL-PORTRAIT-REVIEWED"
+      },
+      "other121_groups_source_equal": true,
+      "scope": "本輪四組依原頭像修正面容，餘24組；74／75身份不從同號DATO猜配。",
+      "followup": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/visual-review-final.json",
+        "sha256": "70512b971bf4ce520d22190000e2da01fefe937ea0f723cdfa9980304bb43609"
+      }
+    },
+    "overview": {
+      "groups": 125,
+      "source_frames": 1455,
+      "pages": 4,
+      "changed_public_page": "docs/figures/hd1-map-sprites-096-139-20261101-r3.png",
+      "unaffected_public_pages": 3,
+      "old_pages_preserved": true
+    },
+    "public_figures": [
+      {
+        "file": "docs/figures/hd1-adult-faces-comparison.png",
+        "sha256": "22b2e5e66a9e7248bd86743a0cb8468044663442781530b68cc0ed5097ce61ca",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/adult-faces-comparison-r1.png",
+          "sha256": "22b2e5e66a9e7248bd86743a0cb8468044663442781530b68cc0ed5097ce61ca"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-adult-faces-reference.png",
+        "sha256": "08c63b294314cab9f3dcc844c9a4f292a6d24ce8294d9bf8d35c5a2972d1ccd0",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/adult-faces-reference-r1.png",
+          "sha256": "08c63b294314cab9f3dcc844c9a4f292a6d24ce8294d9bf8d35c5a2972d1ccd0"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-map-sprites-096-139-20261101-r3.png",
+        "sha256": "2dcc3f7be56ba67e0df46c391b8875ed5362b9898a8108242b4f6813effacf0b",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/overview-096-139-r1.png",
+          "sha256": "2dcc3f7be56ba67e0df46c391b8875ed5362b9898a8108242b4f6813effacf0b"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-adult-117-game.png",
+        "sha256": "f3d09c4899a32b743d9e412a023befc078169441f6bbe10022f530220817afe4",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/gpu-bluehair-and-redhair-r1-capture/party-g117-f00-ui-hd.png",
+          "sha256": "f3d09c4899a32b743d9e412a023befc078169441f6bbe10022f530220817afe4"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-adult-118-game.png",
+        "sha256": "cd76148da7d714b502543a17507512811a09b848648fc6065b9c6fa5e69c011d",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/gpu-bluehair-and-redhair-r1-capture/party-g118-f00-ui-hd.png",
+          "sha256": "cd76148da7d714b502543a17507512811a09b848648fc6065b9c6fa5e69c011d"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-adult-119-game.png",
+        "sha256": "551c222f502a8e16b89ee850c27514ce014208ead1200ee860f634f16a9ff6b2",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/gpu-longhair-and-brown-r1-capture/party-g119-f00-ui-hd.png",
+          "sha256": "551c222f502a8e16b89ee850c27514ce014208ead1200ee860f634f16a9ff6b2"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-adult-120-game.png",
+        "sha256": "9ddc37418527c26bf1fa88b13222898a16631751a6f752e316a75ddaf57d8b90",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/gpu-longhair-and-brown-r1-capture/party-g120-f00-ui-hd.png",
+          "sha256": "9ddc37418527c26bf1fa88b13222898a16631751a6f752e316a75ddaf57d8b90"
+        }
+      }
+    ],
+    "resources": {
+      "gpu-bluehair-and-redhair-r1": {
+        "schema_version": 1,
+        "command": [
+          "with-xvfb",
+          "go",
+          "test",
+          "./cmd/fd2",
+          "-p=1",
+          "-count=1",
+          "-timeout=600s",
+          "-run",
+          "^TestModernHDChibiPartyGPU$",
+          "-v"
+        ],
+        "cwd": "/repo/remake",
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 121.27,
+        "before": {
+          "memory.current": 9588736,
+          "memory.peak": 9613312,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 6656000,
+            "file": 1224704,
+            "kernel": 651264,
+            "kernel_stack": 32768,
+            "pagetables": 126976,
+            "sec_pagetables": 0,
+            "percpu": 5952,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 49152,
+            "file_dirty": 0,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 0,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 6565888,
+            "inactive_file": 1200128,
+            "active_file": 8192,
+            "unevictable": 0,
+            "slab_reclaimable": 246184,
+            "slab_unreclaimable": 214808,
+            "slab": 460992,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 0,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 0,
+            "pgsteal": 0,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 0,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 0,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 2918,
+            "pgmajfault": 1,
+            "pgrefill": 0,
+            "pgactivate": 0,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 0,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "after": {
+          "memory.current": 168493056,
+          "memory.peak": 5208674304,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 6762496,
+            "file": 155852800,
+            "kernel": 4956160,
+            "kernel_stack": 32768,
+            "pagetables": 135168,
+            "sec_pagetables": 0,
+            "percpu": 6464,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 49152,
+            "file_dirty": 6819840,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 0,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 6762496,
+            "inactive_file": 92934144,
+            "active_file": 62902272,
+            "unevictable": 0,
+            "slab_reclaimable": 4545528,
+            "slab_unreclaimable": 225696,
+            "slab": 4771224,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 1490,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 2,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 6538,
+            "pgsteal": 6429,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 6538,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 6429,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 1708724,
+            "pgmajfault": 844,
+            "pgrefill": 352,
+            "pgactivate": 50,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 0,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "largest_sample": {
+          "memory.current": 5182865408,
+          "memory.peak": 5208674304,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 4992393216,
+            "file": 170778624,
+            "kernel": 18677760,
+            "kernel_stack": 376832,
+            "pagetables": 11526144,
+            "sec_pagetables": 0,
+            "percpu": 6976,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 1024000,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 42663936,
+            "file_dirty": 5996544,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 2097152,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 4993216512,
+            "inactive_file": 106913792,
+            "active_file": 62832640,
+            "unevictable": 0,
+            "slab_reclaimable": 5913536,
+            "slab_unreclaimable": 820056,
+            "slab": 6733592,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 28,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 6538,
+            "pgsteal": 6429,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 6538,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 6429,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 1705664,
+            "pgmajfault": 838,
+            "pgrefill": 352,
+            "pgactivate": 50,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 0,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "largest_sample_processes": [
+          {
+            "pid": 69,
+            "name": "fd2.test",
+            "rss_kib": 4911192
+          },
+          {
+            "pid": 9,
+            "name": "Xvfb",
+            "rss_kib": 61888
+          },
+          {
+            "pid": 13,
+            "name": "go",
+            "rss_kib": 33472
+          },
+          {
+            "pid": 7,
+            "name": "python3",
+            "rss_kib": 12332
+          },
+          {
+            "pid": 8,
+            "name": "with-xvfb",
+            "rss_kib": 1616
+          },
+          {
+            "pid": 1,
+            "name": "docker-init",
+            "rss_kib": 748
+          }
+        ],
+        "children_maxrss_kib": 4910136,
+        "log": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/gpu-bluehair-and-redhair-r1.log",
+        "samples": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/gpu-bluehair-and-redhair-r1.samples.jsonl"
+      },
+      "gpu-longhair-and-brown-r1": {
+        "schema_version": 1,
+        "command": [
+          "with-xvfb",
+          "go",
+          "test",
+          "./cmd/fd2",
+          "-p=1",
+          "-count=1",
+          "-timeout=600s",
+          "-run",
+          "^TestModernHDChibiPartyGPU$",
+          "-v"
+        ],
+        "cwd": "/repo/remake",
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 96.651,
+        "before": {
+          "memory.current": 9461760,
+          "memory.peak": 9461760,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 6656000,
+            "file": 1163264,
+            "kernel": 663552,
+            "kernel_stack": 32768,
+            "pagetables": 122880,
+            "sec_pagetables": 0,
+            "percpu": 5952,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 0,
+            "file_dirty": 0,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 0,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 6500352,
+            "inactive_file": 1150976,
+            "active_file": 0,
+            "unevictable": 0,
+            "slab_reclaimable": 245360,
+            "slab_unreclaimable": 247704,
+            "slab": 493064,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 284,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 0,
+            "pgsteal": 0,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 0,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 0,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 2918,
+            "pgmajfault": 0,
+            "pgrefill": 0,
+            "pgactivate": 0,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 0,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "after": {
+          "memory.current": 81027072,
+          "memory.peak": 4921069568,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 6754304,
+            "file": 67227648,
+            "kernel": 5070848,
+            "kernel_stack": 32768,
+            "pagetables": 126976,
+            "sec_pagetables": 0,
+            "percpu": 6208,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 0,
+            "file_dirty": 1646592,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 0,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 6754304,
+            "inactive_file": 65105920,
+            "active_file": 2105344,
+            "unevictable": 0,
+            "slab_reclaimable": 4641928,
+            "slab_unreclaimable": 235456,
+            "slab": 4877384,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 4807,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 0,
+            "pgsteal": 0,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 0,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 0,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 1744494,
+            "pgmajfault": 199,
+            "pgrefill": 0,
+            "pgactivate": 0,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 0,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "largest_sample": {
+          "memory.current": 4914675712,
+          "memory.peak": 4921069568,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 4804149248,
+            "file": 91181056,
+            "kernel": 18345984,
+            "kernel_stack": 393216,
+            "pagetables": 11059200,
+            "sec_pagetables": 0,
+            "percpu": 6976,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 1024000,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 24150016,
+            "file_dirty": 0,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 14680064,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 4805173248,
+            "inactive_file": 88047616,
+            "active_file": 2105344,
+            "unevictable": 0,
+            "slab_reclaimable": 6004584,
+            "slab_unreclaimable": 837784,
+            "slab": 6842368,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 4807,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 0,
+            "pgsteal": 0,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 0,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 0,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 1701184,
+            "pgmajfault": 199,
+            "pgrefill": 0,
+            "pgactivate": 0,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 0,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "largest_sample_processes": [
+          {
+            "pid": 69,
+            "name": "fd2.test",
+            "rss_kib": 4732528
+          },
+          {
+            "pid": 9,
+            "name": "Xvfb",
+            "rss_kib": 66236
+          },
+          {
+            "pid": 13,
+            "name": "go",
+            "rss_kib": 30504
+          },
+          {
+            "pid": 7,
+            "name": "python3",
+            "rss_kib": 12396
+          },
+          {
+            "pid": 8,
+            "name": "with-xvfb",
+            "rss_kib": 1608
+          },
+          {
+            "pid": 1,
+            "name": "docker-init",
+            "rss_kib": 752
+          }
+        ],
+        "children_maxrss_kib": 4738264,
+        "log": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/gpu-longhair-and-brown-r1.log",
+        "samples": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/gpu-longhair-and-brown-r1.samples.jsonl"
+      },
+      "normal-r1": {
+        "schema_version": 1,
+        "command": [
+          "python3",
+          "tools/verify_fd2_hd_fonts_gui.py",
+          "--binary",
+          "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-gold-binary-r1",
+          "--assets",
+          "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/runtime-r1",
+          "--original-pack",
+          "/original",
+          "--modern-pack",
+          "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/candidate-r1",
+          "--town-save",
+          "/source/fd2_save.json",
+          "--out",
+          "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/normal-r1-capture",
+          "--battle-status",
+          "--world",
+          "--battle-node",
+          "battle_ch01",
+          "--chibi-refresh",
+          "--startup-timeout",
+          "360",
+          "--run-timeout",
+          "900"
+        ],
+        "cwd": "/repo",
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 189.824,
+        "before": {
+          "memory.current": 8654848,
+          "memory.peak": 8654848,
+          "memory.max": 7516192768,
+          "memory.swap.current": 0,
+          "memory.swap.max": 7516192768,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 6672384,
+            "file": 32768,
+            "kernel": 892928,
+            "kernel_stack": 32768,
+            "pagetables": 307200,
+            "sec_pagetables": 0,
+            "percpu": 5952,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 0,
+            "file_dirty": 0,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 0,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 6598656,
+            "inactive_file": 0,
+            "active_file": 32768,
+            "unevictable": 0,
+            "slab_reclaimable": 248488,
+            "slab_unreclaimable": 268904,
+            "slab": 517392,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 0,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 0,
+            "pgsteal": 0,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 0,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 0,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 2929,
+            "pgmajfault": 1,
+            "pgrefill": 0,
+            "pgactivate": 0,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 0,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "after": {
+          "memory.current": 174694400,
+          "memory.peak": 3849695232,
+          "memory.max": 7516192768,
+          "memory.swap.current": 0,
+          "memory.swap.max": 7516192768,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 6782976,
+            "file": 164810752,
+            "kernel": 2019328,
+            "kernel_stack": 32768,
+            "pagetables": 131072,
+            "sec_pagetables": 0,
+            "percpu": 6208,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 45056,
+            "file_dirty": 5316608,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 2097152,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 6782976,
+            "inactive_file": 130498560,
+            "active_file": 34299904,
+            "unevictable": 0,
+            "slab_reclaimable": 1576728,
+            "slab_unreclaimable": 253448,
+            "slab": 1830176,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 0,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 0,
+            "pgsteal": 0,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 0,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 0,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 2277374,
+            "pgmajfault": 392,
+            "pgrefill": 0,
+            "pgactivate": 0,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 2,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "largest_sample": {
+          "memory.current": 3848564736,
+          "memory.peak": 3848953856,
+          "memory.max": 7516192768,
+          "memory.swap.current": 0,
+          "memory.swap.max": 7516192768,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 3666481152,
+            "file": 168734720,
+            "kernel": 11214848,
+            "kernel_stack": 327680,
+            "pagetables": 8486912,
+            "sec_pagetables": 0,
+            "percpu": 7552,
+            "sock": 0,
+            "vmalloc": 16384,
+            "shmem": 18632704,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 42512384,
+            "file_dirty": 3403776,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 2097152,
+            "file_thp": 0,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 3684810752,
+            "inactive_file": 115773440,
+            "active_file": 34295808,
+            "unevictable": 0,
+            "slab_reclaimable": 1421336,
+            "slab_unreclaimable": 918560,
+            "slab": 2339896,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 0,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 0,
+            "pgsteal": 0,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 0,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 0,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 1272229,
+            "pgmajfault": 389,
+            "pgrefill": 0,
+            "pgactivate": 0,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 1,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "largest_sample_processes": [
+          {
+            "pid": 23,
+            "name": "hd1-gold-binary",
+            "rss_kib": 3612776
+          },
+          {
+            "pid": 9,
+            "name": "Xvfb",
+            "rss_kib": 89140
+          },
+          {
+            "pid": 8,
+            "name": "python3",
+            "rss_kib": 32248
+          },
+          {
+            "pid": 7,
+            "name": "python3",
+            "rss_kib": 12520
+          },
+          {
+            "pid": 14,
+            "name": "pulseaudio",
+            "rss_kib": 9664
+          },
+          {
+            "pid": 1,
+            "name": "docker-init",
+            "rss_kib": 752
+          }
+        ],
+        "children_maxrss_kib": 3612092,
+        "log": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/normal-r1.log",
+        "samples": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/normal-r1.samples.jsonl"
+      },
+      "regression-r1": {
+        "schema_version": 1,
+        "command": [
+          "with-xvfb",
+          "go",
+          "test",
+          "./cmd/fd2",
+          "./cmd/fd2-string-inventory",
+          "-p=1",
+          "-count=1",
+          "-timeout=360s",
+          "-run",
+          "^(TestModernHDMap.*|TestModernHDChibiPartyFixture|TestModernHDChibiEnemyFixture|TestModernHDChibiStaticFixture|TestModernHDChibiAnonymousStaticFixture|TestModernHDChibiAuditedFixture|TestModernHDChibiMapSampleSelectsOriginalPosition|TestIndependentInterface.*|TestModernHDBattleConsumerInventory|TestBuild.*|TestMultipleTextFieldsDoNotReuseOneExistingStringID|TestVariablesIncludeWrappedErrorPlaceholder|TestDrawFunctionContext.*|TestReviewedGoCandidatesMatchCurrentInventory)$",
+          "-v"
+        ],
+        "cwd": "/repo/remake",
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 56.092,
+        "before": {
+          "memory.current": 8728576,
+          "memory.peak": 8728576,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 6660096,
+            "file": 0,
+            "kernel": 684032,
+            "kernel_stack": 32768,
+            "pagetables": 122880,
+            "sec_pagetables": 0,
+            "percpu": 5952,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 0,
+            "file_dirty": 0,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 0,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 6483968,
+            "inactive_file": 0,
+            "active_file": 0,
+            "unevictable": 0,
+            "slab_reclaimable": 249384,
+            "slab_unreclaimable": 243864,
+            "slab": 493248,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 0,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 0,
+            "pgsteal": 0,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 0,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 0,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 2922,
+            "pgmajfault": 0,
+            "pgrefill": 0,
+            "pgactivate": 0,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 0,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "after": {
+          "memory.current": 35139584,
+          "memory.peak": 1336872960,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 6750208,
+            "file": 21254144,
+            "kernel": 4849664,
+            "kernel_stack": 32768,
+            "pagetables": 126976,
+            "sec_pagetables": 0,
+            "percpu": 6208,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 0,
+            "file_dirty": 3547136,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 2097152,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 6750208,
+            "inactive_file": 21159936,
+            "active_file": 81920,
+            "unevictable": 0,
+            "slab_reclaimable": 4425920,
+            "slab_unreclaimable": 233664,
+            "slab": 4659584,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 110,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 4270,
+            "pgsteal": 1918,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 4270,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 1918,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 1082877,
+            "pgmajfault": 114,
+            "pgrefill": 816,
+            "pgactivate": 2352,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 0,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "largest_sample": {
+          "memory.current": 1290215424,
+          "memory.peak": 1290215424,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 1250709504,
+            "file": 28930048,
+            "kernel": 9891840,
+            "kernel_stack": 311296,
+            "pagetables": 3305472,
+            "sec_pagetables": 0,
+            "percpu": 6976,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 22675456,
+            "file_dirty": 86016,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 6291456,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 1250570240,
+            "inactive_file": 28844032,
+            "active_file": 73728,
+            "unevictable": 0,
+            "slab_reclaimable": 5532216,
+            "slab_unreclaimable": 699344,
+            "slab": 6231560,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 0,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 0,
+            "pgsteal": 0,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 0,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 0,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 1050413,
+            "pgmajfault": 102,
+            "pgrefill": 0,
+            "pgactivate": 0,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 0,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "largest_sample_processes": [
+          {
+            "pid": 69,
+            "name": "fd2.test",
+            "rss_kib": 1201304
+          },
+          {
+            "pid": 9,
+            "name": "Xvfb",
+            "rss_kib": 64468
+          },
+          {
+            "pid": 13,
+            "name": "go",
+            "rss_kib": 32060
+          },
+          {
+            "pid": 7,
+            "name": "python3",
+            "rss_kib": 12472
+          },
+          {
+            "pid": 8,
+            "name": "with-xvfb",
+            "rss_kib": 1692
+          },
+          {
+            "pid": 1,
+            "name": "docker-init",
+            "rss_kib": 748
+          }
+        ],
+        "children_maxrss_kib": 1227720,
+        "log": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/regression-r1.log",
+        "samples": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/regression-r1.samples.jsonl"
+      },
+      "roster-preflight-r1": {
+        "schema_version": 1,
+        "command": [
+          "with-xvfb",
+          "go",
+          "test",
+          "./cmd/fd2",
+          "./cmd/fd2-string-inventory",
+          "-p=1",
+          "-count=1",
+          "-timeout=240s",
+          "-run",
+          "^(TestModernHDChibiAuditedFixture|TestModernHDChibiMapSampleSelectsOriginalPosition)$",
+          "-v"
+        ],
+        "cwd": "/repo/remake",
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 78.292,
+        "before": {
+          "memory.current": 13942784,
+          "memory.peak": 13959168,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 6664192,
+            "file": 5443584,
+            "kernel": 643072,
+            "kernel_stack": 32768,
+            "pagetables": 118784,
+            "sec_pagetables": 0,
+            "percpu": 5952,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 1744896,
+            "file_dirty": 0,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 0,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 6471680,
+            "inactive_file": 1384448,
+            "active_file": 3944448,
+            "unevictable": 0,
+            "slab_reclaimable": 246784,
+            "slab_unreclaimable": 210384,
+            "slab": 457168,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 0,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 0,
+            "pgsteal": 0,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 0,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 0,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 3056,
+            "pgmajfault": 73,
+            "pgrefill": 0,
+            "pgactivate": 0,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 0,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "after": {
+          "memory.current": 415485952,
+          "memory.peak": 1604796416,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 6770688,
+            "file": 401502208,
+            "kernel": 6422528,
+            "kernel_stack": 32768,
+            "pagetables": 118784,
+            "sec_pagetables": 0,
+            "percpu": 5952,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 1740800,
+            "file_dirty": 57344,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 0,
+            "file_thp": 0,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 6770688,
+            "inactive_file": 192270336,
+            "active_file": 209145856,
+            "unevictable": 0,
+            "slab_reclaimable": 6020376,
+            "slab_unreclaimable": 223320,
+            "slab": 6243696,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 0,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 0,
+            "pgsteal": 0,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 0,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 0,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 948991,
+            "pgmajfault": 2133,
+            "pgrefill": 0,
+            "pgactivate": 0,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 1,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "largest_sample": {
+          "memory.current": 1560035328,
+          "memory.peak": 1560035328,
+          "memory.max": 8589934592,
+          "memory.swap.current": 0,
+          "memory.swap.max": 8589934592,
+          "memory.events": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0,
+            "sock_throttled": 0
+          },
+          "memory.stat": {
+            "anon": 1429200896,
+            "file": 120283136,
+            "kernel": 9576448,
+            "kernel_stack": 212992,
+            "pagetables": 3543040,
+            "sec_pagetables": 0,
+            "percpu": 6976,
+            "sock": 0,
+            "vmalloc": 12288,
+            "shmem": 0,
+            "zswap": 0,
+            "zswapped": 0,
+            "file_mapped": 39206912,
+            "file_dirty": 13430784,
+            "file_writeback": 0,
+            "swapcached": 0,
+            "anon_thp": 2097152,
+            "file_thp": 0,
+            "shmem_thp": 0,
+            "inactive_anon": 0,
+            "active_anon": 1429192704,
+            "inactive_file": 48726016,
+            "active_file": 71462912,
+            "unevictable": 0,
+            "slab_reclaimable": 5185688,
+            "slab_unreclaimable": 601304,
+            "slab": 5786992,
+            "workingset_refault_anon": 0,
+            "workingset_refault_file": 0,
+            "workingset_activate_anon": 0,
+            "workingset_activate_file": 0,
+            "workingset_restore_anon": 0,
+            "workingset_restore_file": 0,
+            "workingset_nodereclaim": 0,
+            "pgdemote_kswapd": 0,
+            "pgdemote_direct": 0,
+            "pgdemote_khugepaged": 0,
+            "pgdemote_proactive": 0,
+            "pgpromote_success": 0,
+            "pgscan": 0,
+            "pgsteal": 0,
+            "pswpin": 0,
+            "pswpout": 0,
+            "pgscan_kswapd": 0,
+            "pgscan_direct": 0,
+            "pgscan_khugepaged": 0,
+            "pgscan_proactive": 0,
+            "pgsteal_kswapd": 0,
+            "pgsteal_direct": 0,
+            "pgsteal_khugepaged": 0,
+            "pgsteal_proactive": 0,
+            "pgfault": 433590,
+            "pgmajfault": 860,
+            "pgrefill": 0,
+            "pgactivate": 0,
+            "pgdeactivate": 0,
+            "pglazyfree": 0,
+            "pglazyfreed": 0,
+            "swpin_zero": 0,
+            "swpout_zero": 0,
+            "zswpin": 0,
+            "zswpout": 0,
+            "zswpwb": 0,
+            "thp_fault_alloc": 0,
+            "thp_collapse_alloc": 1,
+            "thp_swpout": 0,
+            "thp_swpout_fallback": 0,
+            "numa_pages_migrated": 0,
+            "numa_pte_updates": 0,
+            "numa_hint_faults": 0
+          }
+        },
+        "largest_sample_processes": [
+          {
+            "pid": 31,
+            "name": "compile",
+            "rss_kib": 1365752
+          },
+          {
+            "pid": 9,
+            "name": "Xvfb",
+            "rss_kib": 59272
+          },
+          {
+            "pid": 11,
+            "name": "go",
+            "rss_kib": 32392
+          },
+          {
+            "pid": 7,
+            "name": "python3",
+            "rss_kib": 12244
+          },
+          {
+            "pid": 8,
+            "name": "with-xvfb",
+            "rss_kib": 1668
+          },
+          {
+            "pid": 1,
+            "name": "docker-init",
+            "rss_kib": 752
+          }
+        ],
+        "children_maxrss_kib": 1364472,
+        "log": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/roster-preflight-r1.log",
+        "samples": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/roster-preflight-r1.samples.jsonl"
+      }
+    },
+    "references": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/base-catalog.json",
+        "sha256": "956baa8ae9b6fb2d7f498d9311c39f010d426d0042b18345c0e3da3f1d23b429"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/candidate-r1/catalog.json",
+        "sha256": "f4b910b91d67820faff41ac5a481def2ea6e8e29574014726d11da935307baaf"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/candidate-r1/manifest.json",
+        "sha256": "f72ee8006bca0a7f1b9448599efdf5b44b58ad54cff1e7e0f21267c77439826e"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/gpu-combined-r1-capture/receipt.json",
+        "sha256": "88a23e4d18e29313656686b15842ca34525c2ef7bb62a0240b3fd70a7b84503d"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/normal-r1-capture/receipt.json",
+        "sha256": "8e88c035c81404b8cb3e6231b3d9739a831cabee27aaad52bd6646bff6f8f1a1"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/registration-r1.json",
+        "sha256": "ba414ec0c7dbe0c285028c40c02ddaf8044c45f4c48356f34fc1a972dacd5239"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/source-r1.log",
+        "sha256": "c14ccc079ece1e45ec5c52e4b127f6a2150ad8a3d4a79d76de7bc4ce56334b10"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/regression-r1.log",
+        "sha256": "47a634ac9a06b9aefd72f3b4fb22225b7c84e0ce4bba2547fab3e6a84df73217"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/consumers-r1.json",
+        "sha256": "a4d5c06cd1d1b4cf323d14c493f511eccfeb72d56b0154914641ce1ff2847080"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/consumers-verified-r1.json",
+        "sha256": "554d35f3f4c6e12e587e54ebeb1a16f5011a25726d2150b12e8bf68c380e669e"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/formal-coverage.json",
+        "sha256": "015695e6997137dffea09c0ae279f1b6c1b5299ba689a4e4580e49031411fd92"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/review-final/receipt.json",
+        "sha256": "1c8960f5383280f642f053d3d9acc9d035cebcf6719abc67600643b4a48799f6"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/visual-review-final.json",
+        "sha256": "70512b971bf4ce520d22190000e2da01fefe937ea0f723cdfa9980304bb43609"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/private-preservation-r1.json",
+        "sha256": "d5281e9d3628827ca8be4f728ad940c136daa5f3fa7ede65138b47ebc4e6bed5"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/public-figures-r1.json",
+        "sha256": "ee9f5e2b34c10e0b4ebc54ad421faf264bb72374591f75a15a8c49b3a754dd6b"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/commands.json",
+        "sha256": "5bc7cdea10959381baf151ce5c3456ec01e13e630bd1382a0570c30bbd912b39"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/legacy-parts-r1.json",
+        "sha256": "075c46d14d9a3a8a2b6d1a16eb2f1762dedd96e01e111c18c1856c74a4a0c7d0"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/face-source-references.json",
+        "sha256": "056a7e4d93d995f750b19525821badc37a0292b835d7dbb1acad3c043cba015b"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/roster-bindings.json",
+        "sha256": "f171ea19072df121baac6c602aa2094dfaeaa0ee9062aeff1b1c3d2315cfb518"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/alpha-quality-final.json",
+        "sha256": "5320fe0aa6ab3f0bb6d42de80e0e7e1aea04c035ee765259d95d76d0761bed10"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/generation-calls.json",
+        "sha256": "ac83d3c3a59243e466074c66d1823c09d50d165beec0757868728c96bca205b3"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/overview-validation.json",
+        "sha256": "6ebd672a790a57d9fa980ed169ea92100d99925214b5ff047700ad6631ba5150"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/gpu-bluehair-and-redhair-r1.memory.json",
+        "sha256": "46a62a527a3f378dcbadcce7ca08eca22bd6361ed12f15c478f173264b01a2d0"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/gpu-longhair-and-brown-r1.memory.json",
+        "sha256": "7bd3e13df7f4e2950cfa8bb43d7dd3ba8b0ffbd4eb6862d90e74abf36f531cfc"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/normal-r1.memory.json",
+        "sha256": "5d0a9a4b992cf28ff31fcfdff8ac9802cf86148ca3994bc9ac91dd42cdb145e2"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/regression-r1.memory.json",
+        "sha256": "c926e1bdea26056f19e6d8a1d9777e9813027a8cd535c89157486c2cdd1fdfea"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/roster-preflight-r1.memory.json",
+        "sha256": "e8ae114949dc19e32adc05bb1fdc08186ba91a42b6a6b0cdc420a27ab4ee5b94"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/overview-000-031-r1.json",
+        "sha256": "d5d296761290de7a547554652d6dc756ab3d6a367aa126fe9be2cb7563b67098"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/overview-032-067-r1.json",
+        "sha256": "2039494e09404343770263f2b73758a4bfb56cd56d7ff57c984693267abe1c93"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/overview-068-095-r1.json",
+        "sha256": "a3163ef20a00e8bb4999d210a20a4d3ce9799656975f99f2343a7c29f964ce7c"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/overview-096-139-r1.json",
+        "sha256": "98e73a0c6302acb54a5c098b6f2cf1acafe7339b63f49882b23fe6fa45fbca2e"
+      },
+      {
+        "file": "remake/assets/themes/modern/hd1-adult-faces-refresh.recipe.json",
+        "sha256": "ebe8ad9b0f413602f0f8c559fccb9dfedee10a12eea0d802f1ad80ea848c2baf"
+      },
+      {
+        "file": "tools/verify_fd2_hd1_chibi_party.py",
+        "sha256": "cf763a39fcadad7637d1c231fa0a38993759056980c6d4ea51fd75d37a67b7fd"
+      },
+      {
+        "file": "tools/refresh_fd2_hd1_map_sprites.py",
+        "sha256": "f3220d47a6536d0201d4e57bd73e321714164bb6ca96762d7569c0c932af1462"
+      },
+      {
+        "file": "tools/test_fd2_hd1_chibi_party.py",
+        "sha256": "ccd4285f2aec8c47e137b3ec076191b82f5b76aea64ab48f66f15fa9dc4ce612"
+      },
+      {
+        "file": "tools/build_modern_map_sprite_overview.py",
+        "sha256": "59b7698a205d8caecf6d00ad9acfebc421a4a712028743f5b61b4875d41d8570"
+      }
+    ],
+    "cleanup": {
+      "nonexpected_fd2_containers": 0,
+      "old_art_preserved": 9505,
+      "new_art_files": 100,
+      "recording_created": false
+    },
+    "limitations": [
+      "24組造型／身份仍待；本輪不新增自然玩家出場、原版動態、PLAYER-E2或480頭像證據。",
+      "其餘介面與地形3354缺槽／2049獨特來源仍是實作／美術工作。",
+      "人工造型、逐章與平台由使用者確認，不阻擋已完成接線。"
+    ],
+    "worklist": {
+      "open": 29,
+      "manual": 22,
+      "possibly_done": 0,
+      "issues": [
+        286,
+        287
+      ],
+      "issue_bodies": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/issue-286-body.md"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/issue-287-body.md"
+        }
+      ]
+    },
+    "lessons": {
+      "total": 392,
+      "guarded": 243,
+      "check": "PASS"
+    },
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-adult-faces-r30/final-validation-r1.json",
+      "sha256": "0734000f526fe180da5ab27515365f30e5f0f70d55dcc36e0aea0cb544a45f8d"
+    }
   }
 }

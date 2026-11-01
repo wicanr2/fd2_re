@@ -164,6 +164,7 @@ FD2工具鏈恢復與合併後oracle來源准入見[2026-10-15主收據](../data
 
 ---
 
+- [HD1第117／118／119／120組個別面容](61-modern-theme-runtime-spec.md)：[配方與完整提示詞](../../remake/assets/themes/modern/hd1-adult-faces-refresh.recipe.json)，接線與證據依58及主收據hd1_adult_faces_followup_20261101。
 - [HD1第99／100／101／107組面容與獨立控制現況](61-modern-theme-runtime-spec.md)：[配方及提示詞](../../remake/assets/themes/modern/hd1-shadow-faces-refresh.recipe.json)，正式接線與證據以58及HD主收據hd1_shadow_faces_followup_20261101為準。
 
 ## §A 問題 → 查哪份文件(路由表)
