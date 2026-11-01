@@ -9,14 +9,17 @@ import (
 )
 
 type modernPreparationRoster struct {
-	theme *modernStoryPortraitSet
-	units []modernHDMapUnitDraw
+	theme      *modernStoryPortraitSet
+	units      []modernHDMapUnitDraw
+	cursor     *modernPreparationCursor
+	cursorRect image.Rectangle
+	native     *modernPreparationNativeCursorUnit
 }
 
 // This plan consumes exactly the native raw selector keys, positions and cycle.
 // A blank original group stays blank; an incomplete HD group retains native art.
 func (g *Game) prepareModernHDPreparationRoster() *modernPreparationRoster {
-	if g.modernStoryPortraits == nil || g.nativePreparationUI == nil || g.nativePreparationUI.roster == nil ||
+	if g.modernStoryPortraits == nil && g.interfaceMode != playerInterfaceHD || g.nativePreparationUI == nil || g.nativePreparationUI.roster == nil ||
 		!g.prepSelecting || g.prepConfirm || g.prepRecordSlots || g.nativeClassUIJob != nil ||
 		g.camp == nil || g.camp.Node() == nil || g.camp.Node().Type != "preparation" ||
 		len(g.prepIDs) == 0 || len(g.prepIDs) > fdother.NativePreparationRosterMaximum ||
@@ -31,7 +34,17 @@ func (g *Game) prepareModernHDPreparationRoster() *modernPreparationRoster {
 	if bank == nil {
 		return nil
 	}
-	plan := &modernPreparationRoster{theme: g.modernStoryPortraits}
+	plan := &modernPreparationRoster{theme: g.modernStoryPortraits, cursor: g.prepareModernHDPreparationCursor()}
+	if plan.theme == nil && plan.cursor == nil {
+		return nil
+	}
+	if plan.cursor != nil {
+		x, y, err := fdother.NativePreparationRosterPosition(g.prepSel, false, true)
+		if err != nil {
+			return nil
+		}
+		plan.cursorRect = image.Rect(x*6, y*6, (x+24)*6, (y+24)*6)
+	}
 	for i, id := range g.prepIDs {
 		unit, ok := g.partyRoster[id]
 		if !ok || !unit.HasMapSelectorKey {
@@ -41,6 +54,21 @@ func (g *Game) prepareModernHDPreparationRoster() *modernPreparationRoster {
 		sprite, err := bank.SpriteFor(group, 0, cycle)
 		if err != nil || len(sprite.Pixels) != 24*24 || len(sprite.Mask) != len(sprite.Pixels) {
 			return nil
+		}
+		if plan.theme == nil {
+			if i != g.prepSel {
+				continue
+			}
+			plan.native = g.prepareModernHDPreparationNativeCursorUnit(sprite, g.partyDeploy[id])
+			if plan.native == nil {
+				return nil
+			}
+			x, y, err := fdother.NativePreparationRosterPosition(i, g.partyDeploy[id], false)
+			if err != nil {
+				return nil
+			}
+			plan.units = append(plan.units, modernHDMapUnitDraw{Group: group, Frame: cycle, ColourImage: plan.native.picture, Rect: image.Rect(x*6, y*6, (x+24)*6, (y+24)*6)})
+			continue
 		}
 		if !fdicon.NativeSourceGroupHasPixels(group) {
 			continue
@@ -65,12 +93,14 @@ func (g *Game) drawModernHDPreparationRoster(screen *ebiten.Image, capture *mode
 	if plan == nil {
 		return false
 	}
-	compose := func(source []byte) ([]byte, bool) { return g.composeNativePreparationOnLayers(source, false) }
+	compose := func(source []byte) ([]byte, bool) {
+		return g.composeNativePreparationOnParts(source, plan.native != nil, plan.cursor == nil)
+	}
 	if !g.drawModernHDPreparationBackground(screen, g.prepTownSource, g.prepPromptSource, compose, capture) {
 		if capture != nil {
 			capture.runs = nil
 		}
-		frame, ok := g.composeNativePreparationStableFrameLayers(false)
+		frame, ok := g.composeNativePreparationStableFrameParts(plan.native != nil, plan.cursor == nil)
 		if !ok {
 			return false
 		}
@@ -88,6 +118,19 @@ func (p *modernHDPresentation) drawModernHDPreparationRoster(screen ebiten.Final
 	plan := g.preparationRosterHD
 	if plan == nil || plan.theme != g.modernStoryPortraits || !g.prepSelecting ||
 		g.prepConfirm || g.prepRecordSlots || g.nativeClassUIJob != nil || g.transientUI || g.nativePlayerStatus != nil {
+		return
+	}
+	if plan.cursor != nil {
+		if plan.cursor.gpu == nil {
+			plan.cursor.gpu = ebiten.NewImageFromImage(plan.cursor.picture)
+		}
+		drawPreparationCursorTexture(screen, plan.cursor.gpu, plan.cursorRect, geometry, brightness)
+	}
+	if plan.native != nil {
+		if plan.native.gpu == nil {
+			plan.native.gpu = ebiten.NewImageFromImage(plan.native.picture)
+		}
+		drawPreparationCursorTexture(screen, plan.native.gpu, plan.units[0].Rect, geometry, brightness)
 		return
 	}
 	set := plan.theme

@@ -227,3 +227,40 @@ func TestNativePreparationRosterLayerReconstructsOriginal(t *testing.T) {
 		t.Fatal("hidden units bypassed native preflight or changed destination")
 	}
 }
+
+func TestNativePreparationCursorLayersReconstructOriginal(t *testing.T) {
+	units := preparationUnitBank(2, 3)
+	cursor := &fdicon.Bank{Sprites: []fdicon.Sprite{solidPreparationSprite(0x55)}}
+	keys, selected := make([]int, 30), make([]bool, 30)
+	for i := range keys {
+		keys[i] = 2 + i%2
+		selected[i] = i%2 == 0
+	}
+	for cycle := 0; cycle < 3; cycle++ {
+		for _, slot := range []int{0, 9, 10, 19, 20, 29} {
+			for _, drawUnits := range []bool{false, true} {
+				full := bytes.Repeat([]byte{0x44}, 64000)
+				if err := BlitNativePreparationRoster(full, 320, units, cursor, keys, selected, slot, cycle); err != nil {
+					t.Fatal(err)
+				}
+				layer := bytes.Repeat([]byte{0x44}, 64000)
+				if err := blitNativePreparationRosterLayers(layer, 320, units, cursor, keys, selected, slot, cycle, drawUnits, false); err != nil {
+					t.Fatal(err)
+				}
+				// Replaying cursor then units rebuilds the exact native order, including
+				// opaque source value zero and the unselected palette-band operation.
+				if err := BlitNativePreparationRoster(layer, 320, units, cursor, keys, selected, slot, cycle); err != nil {
+					t.Fatal(err)
+				}
+				if !bytes.Equal(layer, full) {
+					t.Fatal("cursor layer changed native order", cycle, slot, drawUnits)
+				}
+			}
+		}
+	}
+	cursor.Sprites[0].Mask = nil
+	layer := bytes.Repeat([]byte{0x44}, 64000)
+	if err := blitNativePreparationRosterLayers(layer, 320, units, cursor, keys, selected, 0, 0, false, false); err == nil || !bytes.Equal(layer, bytes.Repeat([]byte{0x44}, 64000)) {
+		t.Fatal("hidden cursor bypassed atomic source preflight")
+	}
+}

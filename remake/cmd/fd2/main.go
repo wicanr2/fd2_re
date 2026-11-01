@@ -593,6 +593,8 @@ type Game struct {
 	preparationRosterHD                 *modernPreparationRoster
 	prepStatusHD                        *modernHDPreparationStatus
 	prepCountsHD                        *modernHDPreparationCounts
+	prepCursorHD                        *modernPreparationCursor
+	prepNativeCursorUnitHD              *modernPreparationNativeCursorUnit
 	modernHDPanelPortraits              []*modernHDOverlay
 	playerThemeRequested                bool
 	playerInterfaceRequested            bool

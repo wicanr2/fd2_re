@@ -210,6 +210,11 @@ func BlitNativePreparationRoster(
 
 func blitNativePreparationRoster(dst []byte, stride int, units, cursorBank *fdicon.Bank,
 	selectorKeys []int, selected []bool, cursor, cycle int, drawUnits bool) error {
+	return blitNativePreparationRosterLayers(dst, stride, units, cursorBank, selectorKeys, selected, cursor, cycle, drawUnits, true)
+}
+
+func blitNativePreparationRosterLayers(dst []byte, stride int, units, cursorBank *fdicon.Bank,
+	selectorKeys []int, selected []bool, cursor, cycle int, drawUnits, drawCursor bool) error {
 	if stride < 320 || len(dst) < stride*200 || len(selectorKeys) == 0 ||
 		len(selectorKeys) > NativePreparationRosterMaximum ||
 		len(selected) != len(selectorKeys) || cursor < 0 || cursor >= len(selectorKeys) ||
@@ -235,8 +240,12 @@ func blitNativePreparationRoster(dst []byte, stride int, units, cursorBank *fdic
 	if err != nil {
 		return err
 	}
+	// Validate even when the presentation owns the cursor layer.
 	if err := cursorBank.Sprites[0].BlitAt(scratch, stride, x, y); err != nil {
 		return err
+	}
+	if !drawCursor {
+		copy(scratch, dst)
 	}
 	for i, sprite := range unitSprites {
 		if !drawUnits {
@@ -281,18 +290,25 @@ func ComposeNativePreparationFrameOnBackground(
 	selected []bool,
 	cursor, cycle, limit int,
 ) ([]byte, error) {
-	return composeNativePreparationFrameOnBackground(background, assets, selectorKeys, selected, cursor, cycle, limit, true)
+	return composeNativePreparationFrameOnBackground(background, assets, selectorKeys, selected, cursor, cycle, limit, true, true)
 }
 
 // ComposeNativePreparationFrameWithoutRosterUnits retains panel/count/cursor
 // writes and all native sprite preflight, omitting only the final unit subpass.
 func ComposeNativePreparationFrameWithoutRosterUnits(background []byte, assets *NativePreparationAssets,
 	selectorKeys []int, selected []bool, cursor, cycle, limit int) ([]byte, error) {
-	return composeNativePreparationFrameOnBackground(background, assets, selectorKeys, selected, cursor, cycle, limit, false)
+	return composeNativePreparationFrameOnBackground(background, assets, selectorKeys, selected, cursor, cycle, limit, false, true)
+}
+
+// ComposeNativePreparationFrameWithoutCursor leaves the cursor to a presentation
+// layer while retaining original units optionally and all source validation.
+func ComposeNativePreparationFrameWithoutCursor(background []byte, assets *NativePreparationAssets,
+	selectorKeys []int, selected []bool, cursor, cycle, limit int, drawUnits bool) ([]byte, error) {
+	return composeNativePreparationFrameOnBackground(background, assets, selectorKeys, selected, cursor, cycle, limit, drawUnits, false)
 }
 
 func composeNativePreparationFrameOnBackground(background []byte, assets *NativePreparationAssets,
-	selectorKeys []int, selected []bool, cursor, cycle, limit int, drawUnits bool) ([]byte, error) {
+	selectorKeys []int, selected []bool, cursor, cycle, limit int, drawUnits, drawCursor bool) ([]byte, error) {
 	if len(background) != 320*200 {
 		return nil, errors.New("fdother: preparation caller frame unavailable")
 	}
@@ -326,9 +342,9 @@ func composeNativePreparationFrameOnBackground(background []byte, assets *Native
 	if err := blitNativePreparationTwoDigits(assets.RemainingDigits, frame, 61, 73, limit-selectedCount); err != nil {
 		return nil, err
 	}
-	if err := blitNativePreparationRoster(
+	if err := blitNativePreparationRosterLayers(
 		frame, 320, assets.Units, assets.Cursor,
-		selectorKeys, selected, cursor, cycle, drawUnits,
+		selectorKeys, selected, cursor, cycle, drawUnits, drawCursor,
 	); err != nil {
 		return nil, err
 	}

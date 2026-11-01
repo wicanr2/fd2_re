@@ -285,9 +285,9 @@ END、離開、目前戰況保存／讀取與全軍移動的確認視窗已接HD
 
 離開城鎮時，手繪背景與Q版人物沿原有步驟縮放、淡出至全黑。上圖為受控轉場的實際繪製；介面與美術仍可獨立切換，範圍依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
 
-![HD整備選人與人數圖示](docs/figures/hd1-preparation-count-icon-game.png)
+![HD整備選人介面](docs/figures/hd1-preparation-cursor-game.png)
 
-計數文字與圖示、狀態卡和面板框線已接高解析呈現。名冊沿原版排序、選取位移與三拍動畫顯示 Q 版人物，美術與介面可獨立切換。上圖由標題 LOAD 既有第24章存檔進入，存檔含攻略建構與清敵歷史；游標等介面依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)續作。
+整備的計數文字與圖示、狀態卡、面板框線和選人游標已接高解析呈現。名冊沿原版排序、選取位移與三拍動畫顯示 Q 版人物，美術與介面可獨立切換。上圖由標題 LOAD 既有第24章存檔進入，存檔含攻略建構與清敵歷史；酒店、教堂等介面依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)續作。
 
 ![HD整備提示的頭像與古金框](docs/figures/hd1-preparation-dialogue-game.png)
 

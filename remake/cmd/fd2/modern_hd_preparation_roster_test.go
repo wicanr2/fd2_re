@@ -114,6 +114,7 @@ func verifyPreparationRosterCPU(t *testing.T, g *Game, set *modernStoryPortraitS
 			g.nativeClassUIJob = &nativeClassUIJob{}
 		case "original":
 			g.modernStoryPortraits = nil
+			g.interfaceMode = playerInterfaceOriginal
 		}
 		if g.prepareModernHDPreparationRoster() != nil {
 			t.Fatal("unsafe plan admitted", fault)
@@ -155,7 +156,10 @@ func verifyPreparationRosterGPU(p *facilityHDProbe, pixels, base []byte) error {
 	}
 	total, core, transparent, band := 0, 0, 0, 0
 	for _, unit := range plan.units {
-		picture := plan.theme.mapSpritesHD[unit.Group][unit.Frame]
+		var picture image.Image = unit.ColourImage
+		if unit.ColourImage == nil {
+			picture = plan.theme.mapSpritesHD[unit.Group][unit.Frame]
+		}
 		for sy := 0; sy < 144; sy++ {
 			for sx := 0; sx < 144; sx++ {
 				x, y := unit.Rect.Min.X+sx, unit.Rect.Min.Y+sy
@@ -172,8 +176,9 @@ func verifyPreparationRosterGPU(p *facilityHDProbe, pixels, base []byte) error {
 					values[2] *= 0.6
 					band++
 				}
+				underlay := preparationCursorReferenceUnderlay(g, plan, x, y, base)
 				for ch, v := range values {
-					want := v + float64(base[b+ch])*float64(255-c.A)/255
+					want := v + underlay[ch]*float64(255-c.A)/255
 					delta := float64(pixels[at+ch]) - want
 					if delta < -2 || delta > 2 {
 						return fmt.Errorf("case%d roster %d/%d pixel %d,%d channel%d delta%f", p.index, unit.Group, unit.Frame, sx, sy, ch, delta)
@@ -194,7 +199,7 @@ func verifyPreparationRosterGPU(p *facilityHDProbe, pixels, base []byte) error {
 	}
 	last := p.checks[len(p.checks)-1]
 	last["roster_pixels"], last["roster_cores"], last["roster_transparent"], last["roster_band_pixels"] = total, core, transparent, band
-	return nil
+	return verifyPreparationCursorGPU(p, pixels, base)
 }
 
 func TestModernHDPreparationRosterRuntimeGPU(t *testing.T) {
@@ -212,7 +217,7 @@ func runModernHDPreparationRosterAndCountsMatrix(t *testing.T, status, counts bo
 	runModernHDPreparationInterfaceMatrix(t, status, counts, false)
 }
 
-func runModernHDPreparationInterfaceMatrix(t *testing.T, status, counts, icons bool) {
+func runModernHDPreparationInterfaceMatrix(t *testing.T, status, counts, icons bool, cursorChecks ...bool) {
 	set := facilityHDTestSet(t)
 	g := facilityHDTestGame(t, set)
 	var err error
@@ -293,6 +298,10 @@ func runModernHDPreparationInterfaceMatrix(t *testing.T, status, counts, icons b
 	if icons {
 		appendPreparationLegacyCountCases(p, set)
 	}
+	cursor := len(cursorChecks) > 0 && cursorChecks[0]
+	if cursor {
+		appendPreparationCursorCases(p, set)
+	}
 	ebiten.SetWindowSize(1920, 1272)
 	if err := ebiten.RunGame(p); err != nil {
 		t.Fatal(err)
@@ -310,6 +319,9 @@ func runModernHDPreparationInterfaceMatrix(t *testing.T, status, counts, icons b
 	if icons {
 		wantCases = 212
 	}
+	if cursor {
+		wantCases += 120
+	}
 	if len(p.checks) != wantCases {
 		t.Fatal("incomplete matrix", len(p.checks))
 	}
@@ -322,6 +334,9 @@ func runModernHDPreparationInterfaceMatrix(t *testing.T, status, counts, icons b
 	}
 	if icons {
 		receiptStatus, scope = "PASS-PREPARATION-COUNT-ICON-GPU", "212 fixture Game.Draw cases, 208 current optional icon cases and 4 legacy absent-role cases; no identity binding or new original E2"
+	}
+	if cursor {
+		receiptStatus, scope = "PASS-PREPARATION-CURSOR-GPU", "332 full Game.Draw cases, 30 cursor slots, native/HD art and UI, original cursor-before-unit occlusion; no new original E2"
 	}
 	raw, _ := json.MarshalIndent(map[string]any{"status": receiptStatus, "scope": scope, "checks": p.checks}, "", "  ")
 	if err := os.WriteFile(filepath.Join(out, "receipt.json"), append(raw, '\n'), 0644); err != nil {

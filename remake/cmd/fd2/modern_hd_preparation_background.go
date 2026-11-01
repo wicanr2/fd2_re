@@ -20,13 +20,17 @@ func (g *Game) composeNativePreparationOn(source []byte) ([]byte, bool) {
 }
 
 func (g *Game) composeNativePreparationOnLayers(source []byte, drawUnits bool) ([]byte, bool) {
+	return g.composeNativePreparationOnParts(source, drawUnits, true)
+}
+
+func (g *Game) composeNativePreparationOnParts(source []byte, drawUnits, drawCursor bool) ([]byte, bool) {
 	if len(source) != 64000 {
 		return nil, false
 	}
 	original := g.prepPromptSource
 	g.prepPromptSource = source
 	defer func() { g.prepPromptSource = original }()
-	return g.composeNativePreparationStableFrameLayers(drawUnits)
+	return g.composeNativePreparationStableFrameParts(drawUnits, drawCursor)
 }
 
 // Clip frozen town text by actual writes made by the new preparation panel.

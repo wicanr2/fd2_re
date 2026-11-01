@@ -4965,6 +4965,21 @@
         ],
         "pattern": "HD map sprite parent phase equivalence differs"
       }
+    },
+    {
+      "id": "sprite-mask-digest-follows-typed-representation",
+      "date": "2026-11-02",
+      "area": "型別化素材雜湊",
+      "rule": "固定遮罩雜湊前先讀實際載入器，分開標示PNG灰階位元組與型別化Mask的表示。LoadSeparatedRangeOverlayBank會把0／255規範成0／1，執行期來源驗證對載入後位元組取SHA；原PNG雜湊另存來源收據。入口為remake/internal/fdother/separated_range_overlay.go的loadRangeOverlayMask及modern_hd_preparation_cursor.go。",
+      "why": "R46游標初次把PNG遮罩SHA用於已規範成0／1的Sprite.Mask，導致正確來源被拒絕。確認既有解碼契約後分開記錄並修正執行期雜湊，未改原圖或放寬遮罩驗證。",
+      "evidence": "WORKLOG.md：2026-11-02 HD1整備名冊游標；61-modern-theme-runtime-spec.md；R46/cpu-r1-diagnostic.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/modern_hd_preparation_cursor.go"
+        ],
+        "pattern": "329fd24c50c8cf6420bcfbff2fddaf24ae6f86a935175804c1737e9c11a164e7"
+      }
     }
   ]
 }

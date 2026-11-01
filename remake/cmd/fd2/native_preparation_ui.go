@@ -103,6 +103,10 @@ func (g *Game) composeNativePreparationFrame() ([]byte, bool) {
 }
 
 func (g *Game) composeNativePreparationFrameLayers(drawUnits bool) ([]byte, bool) {
+	return g.composeNativePreparationFrameParts(drawUnits, true)
+}
+
+func (g *Game) composeNativePreparationFrameParts(drawUnits, drawCursor bool) ([]byte, bool) {
 	if g.camp == nil || g.nativePreparationUI == nil || g.nativeClassUI == nil ||
 		(!g.prepSelecting && !g.prepConfirm) || len(g.prepIDs) == 0 {
 		return nil, false
@@ -133,11 +137,13 @@ func (g *Game) composeNativePreparationFrameLayers(drawUnits bool) ([]byte, bool
 	if !drawUnits {
 		compose = fdother.ComposeNativePreparationFrameWithoutRosterUnits
 	}
-	frame, err := compose(
-		background,
-		g.nativePreparationUI.roster,
-		keys, selected, g.prepSel, cycle, g.prepLimit,
-	)
+	var frame []byte
+	if drawCursor {
+		frame, err = compose(background, g.nativePreparationUI.roster, keys, selected, g.prepSel, cycle, g.prepLimit)
+	} else {
+		frame, err = fdother.ComposeNativePreparationFrameWithoutCursor(background, g.nativePreparationUI.roster,
+			keys, selected, g.prepSel, cycle, g.prepLimit, drawUnits)
+	}
 	if err != nil {
 		return nil, false
 	}
@@ -454,6 +460,10 @@ func (g *Game) composeNativePreparationStableFrame() ([]byte, bool) {
 }
 
 func (g *Game) composeNativePreparationStableFrameLayers(drawUnits bool) ([]byte, bool) {
+	return g.composeNativePreparationStableFrameParts(drawUnits, true)
+}
+
+func (g *Game) composeNativePreparationStableFrameParts(drawUnits, drawCursor bool) ([]byte, bool) {
 	if g.prepRecordSlots {
 		return g.composeNativePreparationRecordSlotsFrame()
 	}
@@ -463,7 +473,7 @@ func (g *Game) composeNativePreparationStableFrameLayers(drawUnits bool) ([]byte
 	if g.prepConfirm {
 		return g.composeNativePreparationConfirmationFrame()
 	}
-	return g.composeNativePreparationFrameLayers(drawUnits)
+	return g.composeNativePreparationFrameParts(drawUnits, drawCursor)
 }
 
 // #127：0x30550 保存黑色caller；非城鎮槽列表不帶酒店頭像或保存訊息。
