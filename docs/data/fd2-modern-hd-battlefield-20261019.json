@@ -272522,5 +272522,888 @@
       ],
       "source_and_gpu_unchanged": true
     }
+  },
+  "hd1_anonymous_static67_followup_20261101": {
+    "date": "2026-11-01",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1",
+    "base_commit": "dbb8caf99eeaa440b02882a376f8efda09bb9bfa",
+    "branch": "feat/hd1-static67-r28",
+    "issues": [
+      286,
+      287
+    ],
+    "scope": "第67組按使用者明示例外僅依自己的原地圖面容重繪三拍；身份、DATO及出場綁定未知，正式角色、規則、保存與故事路徑保持。",
+    "art": {
+      "recipe": {
+        "file": "remake/assets/themes/modern/hd1-anonymous-static67-refresh.recipe.json",
+        "sha256": "76107ed5cf811802fb78c0956dc75e75c29c1e638563422c18c4be1694dab905"
+      },
+      "groups": [
+        67
+      ],
+      "source_only_binding": {
+        "group": 67,
+        "frame_count": 3,
+        "identity": null,
+        "portrait_source": null,
+        "face_source": "own FDICON67 frames0..2",
+        "identity_remains_unknown": true,
+        "source_only_exception_approved": true,
+        "selected_prototype_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/fdicon-067-hd1-source-prototype-r2-master.png",
+        "selected_prototype_sha256": "9c4e01beb78286d080d60a5fd9836d83311ee8ae173715e5812885a633d05282"
+      },
+      "visual_carrier": {
+        "template_selector": 48,
+        "map": 32,
+        "roster_file": "remake/assets/maps/map32/map32_units.json",
+        "roster_sha256": "245fbc71ad571a3f6f067ccb43386a911ca5dfc793f6820ecdd59a9611c6a405",
+        "row": 0,
+        "position": {
+          "x_word": 7,
+          "y_word": 5,
+          "raw_key": 48
+        },
+        "portrait": 48,
+        "battle_fig": 48,
+        "selector_projection_injected": true,
+        "identity_projection_injected": false,
+        "scope": "existing story carrier only; not an identity or authored appearance binding for67"
+      },
+      "mode": "one-new-anonymous-native-face-source",
+      "new_image_generation_calls": 2,
+      "new_final_masters": 1,
+      "rejected_candidates": 1,
+      "rejected_reason": "第一份仍近於像素放大，只採第二份平滑HD原型",
+      "reused_files": 0,
+      "new_art_files": 7,
+      "source_audit": {
+        "file": "docs/data/ida/fd2_static67_source_audit_20261101.json",
+        "sha256": "45eb8ce6a2f4838a6f7606bfac6594cf6156f6af83ccc232a361a02004f3d506"
+      },
+      "alpha_quality_review": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/alpha-quality-prototype.json",
+        "sha256": "f0f1a8810b3b5af86b0e2eac664fed5e9eb660b37a16e0e6385b73767e64f8a9",
+        "selected_revision": 2,
+        "source_alpha_preserved": true
+      },
+      "approved_prototype_bytes_preserved": true
+    },
+    "gpu": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/gpu-static67-r1-capture/receipt.json",
+        "sha256": "9bce9e19e971db9259d9ddf46badd156236531733ca51f687c995cfa7f4a659a"
+      },
+      "independent_and_registration": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/registration-r1.json",
+        "sha256": "b6078966b8fad9b5ca6b5311cf87da7c7a551dfb883431277fec77529397b3b9"
+      },
+      "cases": 6,
+      "pngs": 3,
+      "f2": 1,
+      "core_pixels": 21836,
+      "rejected_mutants": [
+        "missing",
+        "duplicate",
+        "catalog",
+        "source-code",
+        "false-save",
+        "wrong-hud",
+        "wrong-tolerance",
+        "wrong-map-target",
+        "wrong-map-camera",
+        "missing-map-target",
+        "missing-f2",
+        "wrong-profile",
+        "false-anonymous-identity",
+        "false-anonymous-race",
+        "false-anonymous-origin",
+        "wrong-selector",
+        "wrong-identity",
+        "wrong-visual-template",
+        "missing-identity-projection",
+        "undisclosed-projection",
+        "wrong-static-phase",
+        "wrong-story-source",
+        "wrong-story-position",
+        "actual-black-png",
+        "anonymous-portrait-assigned",
+        "anonymous-exception-missing",
+        "anonymous-template-source",
+        "anonymous-prototype-changed",
+        "anonymous-audit-changed"
+      ],
+      "projection_groups": [
+        67
+      ],
+      "identity_projection_groups": [],
+      "visual_template_selector": 48,
+      "source_identity_unknown": true,
+      "selected_map_position_linked": true,
+      "scope": "三拍乘兩介面；沿map32載體48的selector投影，保留template48的portrait／BattleFig／raw位置與無身份／race／class，隱藏HUD及既有章存檔不變。不是67的角色或自然出場綁定。"
+    },
+    "normal_compatibility": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/normal-r1-capture/receipt.json",
+        "sha256": "fe2e65d5f79a4e0b96b3a2712d58fa87d5e1b6139d7d67523a8b1394bc71f9ce"
+      },
+      "pngs": 10,
+      "source_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "binary_sha256": "5e0c0584aa2aa6798d53b2e5924b9dd154ec7034f3bc10a981f74b5f4abc6880",
+      "state_injection": false,
+      "scope": "unchanged chapter1 ordinary save validates full candidate, four controls, walk/cancel and save/cold LOAD;67 pixels only by disclosed map32 carrier48 selector projection, identity and authored appearance unknown, no new story save"
+    },
+    "source_regression": {
+      "tests": 4,
+      "source_rejections": 14,
+      "frame_count": 3,
+      "exact_rebuild": true,
+      "candidate_directory": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/candidate-r1",
+      "tool": {
+        "file": "tools/test_fd2_hd1_chibi_party.py",
+        "sha256": "ccd4285f2aec8c47e137b3ec076191b82f5b76aea64ab48f66f15fa9dc4ce612"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/source-r1.log",
+        "sha256": "c43c2a64b4b45e81e77a0fcb95c9f45c7501db74c620c2532a785ffb1eaa59b8"
+      },
+      "resource_warnings": 1
+    },
+    "legacy_source_regressions": [
+      {
+        "mode": "four-reused",
+        "tests": 4,
+        "source_rejections": 17,
+        "frame_count": 12,
+        "exact_rebuild": true,
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/legacy-reuse-source-r1.log",
+          "sha256": "81dfe9df8ebebcebba77a731f6ed02cf44af8bc19339eec4317e16c6ce003de7"
+        },
+        "reused_existing_receipt": false,
+        "resource_warnings": 4
+      },
+      {
+        "mode": "three-new-one-reused",
+        "tests": 4,
+        "source_rejections": 17,
+        "frame_count": 12,
+        "exact_rebuild": true,
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/legacy-mixed-source-r1.log",
+          "sha256": "fa3530f09505d7cb4bbc3ed68b55793562c8df7cd67ed9665f642ffee955d952"
+        },
+        "reused_existing_receipt": false,
+        "resource_warnings": 7
+      }
+    ],
+    "regression": {
+      "top_level_passed": 26,
+      "skipped_special_gpu": 2,
+      "skips_count_as_pass": false,
+      "source_tree_sha256": "56f0ab970d043a74c5031afda054d13803f055be99c36df9a1d8cfeb891a7d05",
+      "source_file_count": 1196,
+      "production_go_changed": false,
+      "changed_go_is_test_only": true,
+      "string_inventory_tests_passed": true,
+      "legacy_gpu_parts_reader": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/legacy-parts-r1.json",
+        "sha256": "a907e65be90b78029c6de72046eb2dbdde1b79b9bb6e0e3cf3e3f0ed2f49df7b"
+      },
+      "legacy_scope": "19種舊分份、七批轉職及三種共用契約核對，不重跑或升格舊GPU。"
+    },
+    "consumer_inventory": {
+      "report": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/consumers-verified-r1.json",
+        "sha256": "5e92e1548dba35379e6485a6818fdca72afbd66d5b4fc41cb08c25a79f52e714"
+      },
+      "cases": 21,
+      "unique_frames": 416,
+      "rejected": [
+        "wrong-archive",
+        "wrong-resource",
+        "wrong-frame",
+        "wrong-pixels",
+        "wrong-mask",
+        "missing-case",
+        "false-gpu",
+        "missing-hd",
+        "wrong-code",
+        "wrong-command",
+        "wrong-packed",
+        "wrong-descriptor",
+        "missing-map-route",
+        "wrong-lmi-kind",
+        "wrong-lmi-pixels",
+        "wrong-lmi-entry",
+        "missing-lmi-hd",
+        "wrong-map-mask",
+        "missing-map-mask-hd"
+      ]
+    },
+    "catalog": {
+      "status": "REGISTERED-CHIBI-PARTY",
+      "catalog_sha256": "f115e181c2bcc538a21782792bd7b7dea61c4719fe1d26719509483863cfb036",
+      "changed_entries": 2,
+      "unchanged_entries": 881,
+      "asset_files": 7,
+      "new_files": 7,
+      "reused_files": 0,
+      "full_validation": {
+        "status": "PASS",
+        "assets": 883,
+        "command_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/commands.json",
+        "command_key": "catalog_validation_command"
+      }
+    },
+    "overview": {
+      "report": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/overview-validation.json",
+        "sha256": "e36441ea0ed14931be3180066a36c8038d61cab1c6a37c5c459438715bb2b85e"
+      },
+      "groups": 125,
+      "source_frames": 1455,
+      "shown_frame": 0,
+      "hd_sizes": [
+        144,
+        72,
+        48
+      ],
+      "pngs": 4,
+      "rejected_mutants": [
+        "stale-style-a-file",
+        "missing-current-file",
+        "wrong-actual-frame-count"
+      ],
+      "tool": {
+        "file": "tools/build_modern_map_sprite_overview.py",
+        "sha256": "59b7698a205d8caecf6d00ad9acfebc421a4a712028743f5b61b4875d41d8570"
+      },
+      "scope": "正式清冊實際檔名與SHA的中性相位圖源總覽，非執行期或全部人工驗收。"
+    },
+    "private": {
+      "baseline_commit": "2382493694a5f6531103de9a4862266acb2166f1",
+      "preservation": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/private-preservation-r1.json",
+        "sha256": "aae810cd95518f544d9bc008f31daac2afbe6e90a69fc24fcd0804bf02c4420e"
+      },
+      "allowlist_files": 6915,
+      "new_files": 7,
+      "reused_files": 0,
+      "metadata_only": false,
+      "commit": "a872f2e8e17637f27b64ae758b4e8dde906b52d2",
+      "pushed": true,
+      "remote_verified": true
+    },
+    "review": {
+      "source_groups": 125,
+      "source_frames": 1455,
+      "other124_groups_source_equal": true,
+      "counts": {
+        "reference-keep": 2,
+        "new-q-review-keep": 90,
+        "review-keep-pending-batch": 32,
+        "new-q-source-only-keep": 1
+      },
+      "q_redraw_reduced_from": 1,
+      "q_redraw_remaining": 0,
+      "pending_visual_review_groups": [
+        66,
+        74,
+        75,
+        90,
+        92,
+        96,
+        97,
+        98,
+        99,
+        100,
+        101,
+        102,
+        103,
+        107,
+        108,
+        109,
+        110,
+        112,
+        113,
+        114,
+        115,
+        116,
+        117,
+        118,
+        119,
+        120,
+        122,
+        123,
+        124,
+        126,
+        134,
+        135
+      ],
+      "priority_face_followup": [],
+      "all_redrawn": false,
+      "human_acceptance": false,
+      "source_only_exception_groups": [
+        67
+      ],
+      "gaia_explicit_user_acceptance": true,
+      "followup": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/visual-review-final.json",
+        "sha256": "202715a2817710c782bf8a0ebadabe470b50cfdd2f793542f869c797155ca18c"
+      },
+      "group_decisions": {
+        "reference-keep": [
+          0,
+          9
+        ],
+        "new-q-review-keep": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          58,
+          59,
+          60,
+          61,
+          62,
+          63,
+          64,
+          65,
+          68,
+          69,
+          70,
+          71,
+          72,
+          73,
+          76,
+          77,
+          78,
+          79,
+          80,
+          81,
+          82,
+          83,
+          84,
+          85,
+          86,
+          87,
+          88,
+          89,
+          91,
+          93,
+          94,
+          95,
+          106,
+          111,
+          125,
+          133
+        ],
+        "review-keep-pending-batch": [
+          66,
+          74,
+          75,
+          90,
+          92,
+          96,
+          97,
+          98,
+          99,
+          100,
+          101,
+          102,
+          103,
+          107,
+          108,
+          109,
+          110,
+          112,
+          113,
+          114,
+          115,
+          116,
+          117,
+          118,
+          119,
+          120,
+          122,
+          123,
+          124,
+          126,
+          134,
+          135
+        ],
+        "new-q-source-only-keep": [
+          67
+        ]
+      },
+      "face_review_states": {
+        "1": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "4": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "5": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "6": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "7": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "8": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "10": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "11": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "12": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "13": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "14": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "15": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "16": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "17": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "18": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "19": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "20": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "21": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "22": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "23": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "24": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "25": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "26": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "27": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "28": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "29": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "31": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "32": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "33": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "34": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "35": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "36": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "37": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "38": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "40": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "41": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "42": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "43": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "44": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "45": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "46": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "47": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "49": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "50": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "51": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "52": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "54": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "55": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "56": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "58": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "59": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "60": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "61": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "62": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "63": "AGENT-REVIEWED-ORIGINAL-PORTRAIT-NOT-HUMAN-ACCEPTANCE",
+        "64": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "65": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "67": "USER-APPROVED-NATIVE-FACE-ONLY/IDENTITY-UNKNOWN",
+        "68": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "69": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "71": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "72": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "78": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "80": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "81": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "82": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "83": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "84": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "85": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "86": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "87": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "88": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "91": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "93": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "94": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "95": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "106": "AGENT-ORIGINAL-PORTRAIT-REVIEWED",
+        "111": "AGENT-ORIGINAL-PORTRAIT-REVIEWED"
+      }
+    },
+    "roster_preflight": {
+      "top_level_passed": 3,
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/roster-preflight-r2.log",
+        "sha256": "c6bc54e90f02dedd84acc6cd170baec11dd5b9014ee6a460d1e7423c4b8d234a"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/roster-preflight-r2.memory.json",
+        "sha256": "18b77fb0f1b20c3639079c5b2f275f8530bcd0e4f81ea5fd4b0730e3fd5a5211"
+      },
+      "scope": "原故事載體、source-only投影保持及選定位置；不是67原名冊"
+    },
+    "resources": {
+      "gpu-static67": {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/gpu-authored-19-and-31-r1.memory.json",
+          "sha256": "feb78de353c6b081f19574cc7f825a3ef8a4dc86f47cb5757e0ccfd1488527b3"
+        },
+        "elapsed_seconds": 118.787,
+        "peak_bytes": 4069986304,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "normal": {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/normal-r1.memory.json",
+          "sha256": "6267f4cb90c499a3c84dd51cffa85d867dd5f93acf051e3180aea8e5327b07d1"
+        },
+        "elapsed_seconds": 276.657,
+        "peak_bytes": 3801305088,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      },
+      "regression": {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/regression-r1.memory.json",
+          "sha256": "e0aa90924bc4a0b728e62dfda3f742e9b53a2c7950168dd6c39706f7a81433fc"
+        },
+        "elapsed_seconds": 114.94,
+        "peak_bytes": 1507868672,
+        "events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        }
+      }
+    },
+    "public_figures": [
+      {
+        "file": "docs/figures/hd1-anonymous-067-comparison.png",
+        "sha256": "f149b91d7e453e1e700955d67cca010b4574767be00ef25da1e29f4b01f1a6e1",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/anonymous67-comparison-r1.png",
+          "sha256": "f149b91d7e453e1e700955d67cca010b4574767be00ef25da1e29f4b01f1a6e1"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-anonymous-067-game.png",
+        "sha256": "055a854d489e8716c7f18c17e1fcc2a6b0de6de829bc5a46d52350545dd60580",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/gpu-static67-r1-capture/static-g067-f00-ui-hd.png",
+          "sha256": "055a854d489e8716c7f18c17e1fcc2a6b0de6de829bc5a46d52350545dd60580"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-map-sprites-000-031-20261101.png",
+        "sha256": "4501a3da537141bf884df39668786c19dfb5d7f11de9ad7910fefc17e8105f53",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/overview-000-031-r1.png",
+          "sha256": "4501a3da537141bf884df39668786c19dfb5d7f11de9ad7910fefc17e8105f53"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-map-sprites-032-067-20261101.png",
+        "sha256": "4d04a88645559f37f1e2e77644626dee1e9832c5b4b8353b724845709337b6a0",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/overview-032-067-r1.png",
+          "sha256": "4d04a88645559f37f1e2e77644626dee1e9832c5b4b8353b724845709337b6a0"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-map-sprites-068-095-20261101.png",
+        "sha256": "a668fc6d5d801df79ffe7c4e668f47419aceddad841d5e7f32c67e2ba3d7cb5b",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/overview-068-095-r1.png",
+          "sha256": "a668fc6d5d801df79ffe7c4e668f47419aceddad841d5e7f32c67e2ba3d7cb5b"
+        }
+      },
+      {
+        "file": "docs/figures/hd1-map-sprites-096-139-20261101.png",
+        "sha256": "53ac0a4612a8f67f85b05185473caad1b1b675b8cf99d868a10fc414f434b09b",
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/overview-096-139-r1.png",
+          "sha256": "53ac0a4612a8f67f85b05185473caad1b1b675b8cf99d868a10fc414f434b09b"
+        }
+      }
+    ],
+    "references": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/base-catalog.json",
+        "sha256": "cf7c9ea1d8e1cdc66b7286aa2c41c0276bd0fbe7e831115592c9caa1a294c7fe"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/alpha-quality-prototype.json",
+        "sha256": "f0f1a8810b3b5af86b0e2eac664fed5e9eb660b37a16e0e6385b73767e64f8a9"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/candidate-r1/catalog.json",
+        "sha256": "db7f9f087549b1612c096ff56350902944ad3aab8f8d2d73ec8d8e59b2b5f418"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/candidate-r1/manifest.json",
+        "sha256": "55572c0f46d121459d692be5f4ae899b11347c6efb4767749a75d48519e44cd3"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/gpu-static67-r1-capture/receipt.json",
+        "sha256": "9bce9e19e971db9259d9ddf46badd156236531733ca51f687c995cfa7f4a659a"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/normal-r1-capture/receipt.json",
+        "sha256": "fe2e65d5f79a4e0b96b3a2712d58fa87d5e1b6139d7d67523a8b1394bc71f9ce"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/registration-r1.json",
+        "sha256": "b6078966b8fad9b5ca6b5311cf87da7c7a551dfb883431277fec77529397b3b9"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/source-r1.log",
+        "sha256": "c43c2a64b4b45e81e77a0fcb95c9f45c7501db74c620c2532a785ffb1eaa59b8"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/legacy-reuse-source-r1.log",
+        "sha256": "81dfe9df8ebebcebba77a731f6ed02cf44af8bc19339eec4317e16c6ce003de7"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/legacy-mixed-source-r1.log",
+        "sha256": "fa3530f09505d7cb4bbc3ed68b55793562c8df7cd67ed9665f642ffee955d952"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/regression-r1.log",
+        "sha256": "7d3c7f5a7d9fb0019d6ec948777cc5a5c7a7947a7d648d556cbfb40134ac8224"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/consumers-r1.json",
+        "sha256": "89753d066eb277fd20b1602e7ba73c4bbec5d5fa42a8b37b04d6bfedeeaf8728"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/consumers-verified-r1.json",
+        "sha256": "5e92e1548dba35379e6485a6818fdca72afbd66d5b4fc41cb08c25a79f52e714"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/formal-coverage.json",
+        "sha256": "4e1bbe9e6cba3fa4020c4c7f48c8885cee825c0bdf31d0fb250195fa6442b216"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/review-final/receipt.json",
+        "sha256": "e9f8dcdaa72e22b535bd5631e9c190818dfd3e6ce242750a2e3c88b424f6482f"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/visual-review-final.json",
+        "sha256": "202715a2817710c782bf8a0ebadabe470b50cfdd2f793542f869c797155ca18c"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/private-preservation-r1.json",
+        "sha256": "aae810cd95518f544d9bc008f31daac2afbe6e90a69fc24fcd0804bf02c4420e"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/public-figures-r1.json",
+        "sha256": "1e39295a3a238911fd61ca8f36082449da6dffe29e047535feef5b7f034451ee"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/commands.json",
+        "sha256": "66f19ea15bf40cabf8e9ca510c772fec1962e59dbb4003d69b744f555896ae44"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/legacy-parts-r1.json",
+        "sha256": "a907e65be90b78029c6de72046eb2dbdde1b79b9bb6e0e3cf3e3f0ed2f49df7b"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/roster-preflight-r2.log",
+        "sha256": "c6bc54e90f02dedd84acc6cd170baec11dd5b9014ee6a460d1e7423c4b8d234a"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/roster-preflight-r2.memory.json",
+        "sha256": "18b77fb0f1b20c3639079c5b2f275f8530bcd0e4f81ea5fd4b0730e3fd5a5211"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/native-roster-search.json",
+        "sha256": "abff3276b4363535095d648591f4f8c2913b2fef12e2ce251c06753a742121a4"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/ida-static67-source.json",
+        "sha256": "9e94f0ba28ba0843f4eeb621b0e4f9ef5913852d183adf9d060f7a8d8f7400c1"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/ida-copy-cleanup.json",
+        "sha256": "2945fa51c8073bf9164ce91c983ad65e7a3782b0aae37af6b66bace4b4f9b67b"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/overview-validation.json",
+        "sha256": "e36441ea0ed14931be3180066a36c8038d61cab1c6a37c5c459438715bb2b85e"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/generation-draft.json",
+        "sha256": "a705da73d2fd3713a1172c38c3c9f65de6befcbe8f96fb0d2fe8cde9d734e84c"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/prototype-validation.json",
+        "sha256": "f3c56f52c4c542357a7a0bd527d132ff955a269662c3135c6e0efaefdf5e9602"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/gpu-authored-19-and-31-r1.memory.json",
+        "sha256": "feb78de353c6b081f19574cc7f825a3ef8a4dc86f47cb5757e0ccfd1488527b3"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/normal-r1.memory.json",
+        "sha256": "6267f4cb90c499a3c84dd51cffa85d867dd5f93acf051e3180aea8e5327b07d1"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/regression-r1.memory.json",
+        "sha256": "e0aa90924bc4a0b728e62dfda3f742e9b53a2c7950168dd6c39706f7a81433fc"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/overview-000-031-r1.json",
+        "sha256": "45131a5cbe4529477f0082b7ffb4ff648ccccbe3e085697320a3a3aefb4c04db"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/overview-032-067-r1.json",
+        "sha256": "6fff7523fb6eacf25bff17a651a2fc57f15c981f378ad5f741d09ef0ad05e1e6"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/overview-068-095-r1.json",
+        "sha256": "6228fa48b06cfe12c49e14bbf33e1c4d80954bd6df532e27020e2ce3841e13a9"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/overview-096-139-r1.json",
+        "sha256": "a348541c596c2eeb4ecedcb06229603778564e95c4b070472be5203d2f5488f2"
+      },
+      {
+        "file": "remake/assets/themes/modern/hd1-anonymous-static67-refresh.recipe.json",
+        "sha256": "76107ed5cf811802fb78c0956dc75e75c29c1e638563422c18c4be1694dab905"
+      },
+      {
+        "file": "docs/data/ida/fd2_static67_source_audit_20261101.json",
+        "sha256": "45eb8ce6a2f4838a6f7606bfac6594cf6156f6af83ccc232a361a02004f3d506"
+      },
+      {
+        "file": "tools/ida_probe_fd2_static67.py",
+        "sha256": "efd9ac3e39e0ce1dbca19102f0b691a7f5d099d7cfada0fa49f651ce4cc75c16"
+      },
+      {
+        "file": "tools/verify_fd2_hd1_chibi_party.py",
+        "sha256": "edcf7fc8581c45e563041cb5296577e84084395d5a184f8cbf7f2184cbd6f0ca"
+      },
+      {
+        "file": "tools/refresh_fd2_hd1_map_sprites.py",
+        "sha256": "f3220d47a6536d0201d4e57bd73e321714164bb6ca96762d7569c0c932af1462"
+      },
+      {
+        "file": "tools/test_fd2_hd1_chibi_party.py",
+        "sha256": "ccd4285f2aec8c47e137b3ec076191b82f5b76aea64ab48f66f15fa9dc4ce612"
+      },
+      {
+        "file": "tools/build_modern_map_sprite_overview.py",
+        "sha256": "59b7698a205d8caecf6d00ad9acfebc421a4a712028743f5b61b4875d41d8570"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/ida-final-cleanup.json",
+        "sha256": "29c9f805f0acf7c7440a433ff2904a378a424e419755b612b1c216e0dc965ddd"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/issue-body-validation.json",
+        "sha256": "c6036b1a50cbfdf79fae0e1a2e9f0a61497197dd6c82b3cfc2a9be20d43fe651"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/worklist-final.log",
+        "sha256": "7d0e0f5920d2f0a5806450ce5f6403d4a9e4c5c59ecfbda26371c134007e9450"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/lessons-final.log",
+        "sha256": "fd065446de5cac3c49a1ee4e0838c12774b8415adb29d04346fe11232f0c9995"
+      }
+    ],
+    "cleanup": {
+      "nonexpected_fd2_containers": 0,
+      "old_art_preserved": 9398,
+      "new_art_files": 7,
+      "recording_created": false,
+      "final_ida_copy_removed": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/ida-final-cleanup.json",
+        "sha256": "29c9f805f0acf7c7440a433ff2904a378a424e419755b612b1c216e0dc965ddd"
+      },
+      "new_root_owned": 0,
+      "md_directories": 0
+    },
+    "limitations": [
+      "第67組身份、所屬DATO與出場綁定維持unknown；1887原始列零匹配不證明全程未使用。",
+      "DATO067是龍形頭像，本組依使用者例外只用自己的原地圖面容。",
+      "載體48的portrait／BattleFig／位置只是測具來源，不是67的角色資料。",
+      "32組既有造型批次複核、集中人工與其餘HD工作仍待；Q比例已知待辦清零不代表全部面容或milestone完成。",
+      "不新增EXE動態、自然可達、PLAYER-E2或480對話頭像驗收。"
+    ],
+    "worklist": {
+      "open": 30,
+      "manual": 23,
+      "possibly_done": 0,
+      "issues_updated": [
+        286,
+        287
+      ]
+    },
+    "lessons": {
+      "total": 391,
+      "guarded": 242,
+      "check_passed": true
+    },
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/final-validation-r1.json",
+      "sha256": "23d7f62d21b27bf3591293cd13ed57b249a518647f2f67254cfbb0b4f5dacebe"
+    }
   }
 }

@@ -1021,9 +1021,45 @@ func TestModernHDChibiStaticFixture(t *testing.T) {
 	}
 }
 
+// This is a render-only carrier, never an authored identity for sprite67.
+func modernHDChibiAnonymousStaticFixture(t *testing.T, g *Game) *battle.Unit {
+	t.Helper()
+	actor := modernHDChibiStaticStoryFixture(t, g)
+	before := *actor
+	actor.MapSelectorKey = 67
+	if err := battle.MaterializeNativeMapSelectorSlots([]*battle.Unit{actor}, g.storyNativeMapState.NativeMapSelectorCache); err != nil {
+		t.Fatal(err)
+	}
+	after := *actor
+	after.MapSelectorKey, after.HasMapSelectorKey = before.MapSelectorKey, before.HasMapSelectorKey
+	after.MapSelectorSlot, after.HasMapSelectorSlot = before.MapSelectorSlot, before.HasMapSelectorSlot
+	after.NativeMapPresentation, after.HasNativeMapPresentation = before.NativeMapPresentation, before.HasNativeMapPresentation
+	if !reflect.DeepEqual(after, before) || actor.HasNativeIdentity || actor.HasNativeRecordRace || actor.HasNativeRecordClass || actor.Portrait != 48 || actor.BattleFig != 48 {
+		t.Fatal("anonymous source projection changed carrier fields")
+	}
+	return actor
+}
+
+func TestModernHDChibiAnonymousStaticFixture(t *testing.T) {
+	g, _, _ := ordinaryCommand0HDTestGame(t)
+	actor := modernHDChibiAnonymousStaticFixture(t, g)
+	if actor.MapSelectorKey != 67 || g.st != nil || g.storyNativeMapState.Units[0] != actor || g.storyNativeMapState.NativeMapHUDState.DisplayGateA != 0 || g.storyNativeMapState.NativeMapHUDState.DisplayGateB != 0 {
+		t.Fatal("source-only carrier or hidden HUD changed")
+	}
+}
+
 func TestModernHDChibiStaticGPU(t *testing.T) {
 	if os.Getenv("FD2_HD_CHIBI_PARTY_GPU") != "1" {
 		t.Skip("explicit static candidate required")
+	}
+	profile := os.Getenv("FD2_HD_CHIBI_PARTY_PROFILE")
+	group := 48
+	if profile == "static-anonymous67" {
+		group = 67
+	} else if profile == "" || profile == "static-king" {
+		profile = "static-king"
+	} else {
+		t.Fatal("explicit static profile required")
 	}
 	t.Setenv("FD2_MUTE", "1")
 	t.Setenv("XDG_DATA_HOME", t.TempDir())
@@ -1043,11 +1079,11 @@ func TestModernHDChibiStaticGPU(t *testing.T) {
 		t.Fatal(err)
 	}
 	var m struct{ Groups []struct{ Group int } }
-	if err = json.Unmarshal(manifest, &m); err != nil || len(m.Groups) != 1 || m.Groups[0].Group != 48 {
-		t.Fatal("one static48 candidate required", err)
+	if err = json.Unmarshal(manifest, &m); err != nil || len(m.Groups) != 1 || m.Groups[0].Group != group {
+		t.Fatal("one fixed static candidate required", err)
 	}
 	set := modifierHDTestTheme(t)
-	if len(set.mapSpritesHD) != 125 || len(set.mapSpritesHD[48]) != 3 {
+	if len(set.mapSpritesHD) != 125 || len(set.mapSpritesHD[group]) != 3 {
 		t.Fatal("static source shape")
 	}
 	p := &sharedGroundGPUProbe{set: set, out: out}
@@ -1073,7 +1109,12 @@ func TestModernHDChibiStaticGPU(t *testing.T) {
 					t.Fatal(err)
 				}
 			}
-			actor := modernHDChibiStaticStoryFixture(t, g)
+			var actor *battle.Unit
+			if group == 67 {
+				actor = modernHDChibiAnonymousStaticFixture(t, g)
+			} else {
+				actor = modernHDChibiStaticStoryFixture(t, g)
+			}
 			g.storyNativeMapState.NativeMapCycleState.Idle = phase
 			g.interfaceMode = mode
 			if err = g.applyTheme(set); err != nil {
@@ -1086,20 +1127,31 @@ func TestModernHDChibiStaticGPU(t *testing.T) {
 			if g.st != nil || g.modernHDMapFrame.HUDUnit != nil {
 				t.Fatal("story HUD/battle appeared")
 			}
-			var box any
-			for _, u := range g.modernHDMapFrame.Units {
-				if u.Group == 48 && u.Frame == phase {
-					box = u.Rect
-				}
+			entry, ok := actor.NativeUnitLayerEntry()
+			if !ok {
+				t.Fatal("static layer entry missing")
 			}
-			if box == nil {
-				t.Fatal("static phase missing", phase)
+			view := g.storyNativeMapState.NativeMapViewState
+			offset, err := fdicon.NativePlacementOffset(entry.X, entry.Y, view.CameraX, view.CameraY, entry.Pose, entry.MotionOffset, 0, entry.ForceBase)
+			if err != nil {
+				t.Fatal(err)
 			}
-			name := fmt.Sprintf("static-g048-f%02d-ui-%s", phase, mode)
+			selected, err := modernHDChibiSelectedMapSample(g.modernHDMapFrame.Units, group, phase, offset)
+			if err != nil {
+				t.Fatal(err)
+			}
+			box := selected.Rect
+			name := fmt.Sprintf("static-g%03d-f%02d-ui-%s", group, phase, mode)
 			p.cases = append(p.cases, sharedGroundGPUCase{g: g, name: name, mapID: 32, source: phase, keepPNG: mode == playerInterfaceHD, skipF2: mode != playerInterfaceHD || phase != 0})
 			games = append(games, g)
 			states = append(states, storyHDNativeSnapshot(g))
-			observed = append(observed, map[string]any{"case": name, "group": 48, "frame": phase, "interface": mode, "map": 32, "map_rect": box, "hud_hidden": true, "camp": int(actor.Camp), "portrait": actor.Portrait, "battle_fig": actor.BattleFig, "selector_key": actor.MapSelectorKey, "has_native_identity": actor.HasNativeIdentity, "position": map[string]uint16{"x_word": actor.NativePositionRecord.XWord, "y_word": actor.NativePositionRecord.YWord, "raw_key": actor.NativePositionRecord.RawKey}, "roster_sha256": fmt.Sprintf("%x", sha256.Sum256(roster)), "save_bytes": len(baseSave)})
+			observed = append(observed, map[string]any{"case": name, "group": group, "frame": phase, "interface": mode, "map": 32, "map_rect": box, "map_target": map[string]any{"x": entry.X, "y": entry.Y, "pose": entry.Pose, "motion": entry.MotionOffset, "pixel_shift": 0, "camera_x": view.CameraX, "camera_y": view.CameraY, "work_offset": offset, "matched_work_offset": selected.WorkOffset, "viewport_base": g.modernHDMapFrame.TerrainViewBase, "matches": 1}, "hud_hidden": true, "camp": int(actor.Camp), "portrait": actor.Portrait, "battle_fig": actor.BattleFig, "selector_key": actor.MapSelectorKey, "has_native_identity": actor.HasNativeIdentity, "position": map[string]uint16{"x_word": actor.NativePositionRecord.XWord, "y_word": actor.NativePositionRecord.YWord, "raw_key": actor.NativePositionRecord.RawKey}, "roster_sha256": fmt.Sprintf("%x", sha256.Sum256(roster)), "save_bytes": len(baseSave)})
+			if group == 67 {
+				row := observed[len(observed)-1]
+				row["selector_projection_injected"], row["identity_projection_injected"] = true, false
+				row["visual_template_selector"], row["source_identity_unknown"] = 48, true
+				row["has_native_race"], row["has_native_class"] = actor.HasNativeRecordRace, actor.HasNativeRecordClass
+			}
 		}
 	}
 	ebiten.SetWindowSize(640, 400)
@@ -1121,6 +1173,13 @@ func TestModernHDChibiStaticGPU(t *testing.T) {
 	}
 	code, count := hdConsumerSourceTree(t)
 	report := map[string]any{"status": "PASS-HD1-CHIBI-PARTY-GPU", "profile": "static-king", "selector_projection_injected": false, "authored_story_fixture": true, "story_private_foreground_approximation": true, "catalog_sha256": fmt.Sprintf("%x", sha256.Sum256(catalog)), "manifest_sha256": fmt.Sprintf("%x", sha256.Sum256(manifest)), "source_tree_sha256": code, "source_file_count": count, "cases": p.rows, "sources": observed, "native_state_unchanged": true, "save_bytes_unchanged": true, "scope": "controlled original map32 story carrier, static48 three phases with both interfaces, six Game.Draw, three PNG and one F2; no battle HUD or persistent identity injection. Existing private raw race/class foreground approximation retained. Preexisting test chapter1 save bytes unchanged, not a new story-save feature or natural prologue reachability."}
+	if group == 67 {
+		report["profile"], report["selected_groups"] = profile, []int{67}
+		report["selector_projection_injected"], report["identity_projection_injected"] = true, false
+		report["authored_story_fixture"], report["source_identity_unknown"] = false, true
+		report["visual_template_selector"] = 48
+		report["scope"] = "source-only anonymous67 three-phase drawing; existing map32 carrier48 projected only in map selector and derived slot/presentation. Original portrait/BattleFig/raw position key48 retained as template metadata, not identity for67; no persistent identity, race or class invented. Six controlled Game.Draw, three PNG and one F2; hidden HUD and preexisting chapter-save bytes unchanged. Not authored appearance, natural reachability, portrait binding or original dynamic parity."
+	}
 	raw, err := json.MarshalIndent(report, "", "  ")
 	if err != nil {
 		t.Fatal(err)

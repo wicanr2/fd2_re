@@ -29,7 +29,7 @@
 
 ![哈諾、鐵諾與哈瓦特的早期Q版比例對照](docs/figures/hd1-chibi-party-comparison.png)
 
-哈諾、鐵諾與哈瓦特也已接入新版大頭Q版圖源。鐵諾已依原版灰綠布兜帽修正，並保留原版左向被身體遮蔽的直劍；[完整受控戰場與資訊窗](docs/figures/hd1-tino-hood-game.png)可查看這次接線。哈瓦特已再修為成熟五官、收斂眼神與寬厚大鬍子，保留紅褐髮鬚；[完整受控戰場圖](docs/figures/hd1-harvat-mature-game.png)可查看地圖與資訊窗呈現。上圖保留三人早期的四向及144／72／48像素比例對照，並非目前全套圖源或遊戲截圖。哈諾目前面容見下圖；鐵諾與哈瓦特目前版本依各自戰場連結。地圖與資訊窗已做受控繪圖核對，普通首章另驗完整候選載入與既有角色的切換／保存相容性；三人自然出場與造型由使用者人工確認。全部人物重繪完成後，會再更新完整「原版／HD1」人物總覽。
+哈諾、鐵諾與哈瓦特也已接入新版大頭Q版圖源。鐵諾已依原版灰綠布兜帽修正，並保留原版左向被身體遮蔽的直劍；[完整受控戰場與資訊窗](docs/figures/hd1-tino-hood-game.png)可查看這次接線。哈瓦特已再修為成熟五官、收斂眼神與寬厚大鬍子，保留紅褐髮鬚；[完整受控戰場圖](docs/figures/hd1-harvat-mature-game.png)可查看地圖與資訊窗呈現。上圖保留三人早期的四向及144／72／48像素比例對照，並非目前全套圖源或遊戲截圖。哈諾目前面容見下圖；鐵諾與哈瓦特目前版本依各自戰場連結。地圖與資訊窗已做受控繪圖核對，普通首章另驗完整候選載入與既有角色的切換／保存相容性；三人自然出場與造型由使用者人工確認。目前人物圖源總覽已依正式清冊更新，造型批次複核及集中人工仍待。
 
 ![哈諾與亞雷斯基底形態的原版及HD1個別面容](docs/figures/hd1-base-faces-reference.png)
 
@@ -43,7 +43,7 @@
 
 ![貝克威基底與亞雷斯轉職形態的原版及HD1面容對照](docs/figures/hd1-bow-and-ares-faces.png)
 
-貝克威保留金長髮、平眉半闔眼與閉口微笑，基底形態沿原版青綠衣及棕弓箭筒；亞雷斯的基底與轉職形態維持同一成年寬方面容，轉職形態仍保留劍盾。可看[四向及實際尺寸](docs/figures/hd1-bow-and-ares-comparison.png)、[貝克威](docs/figures/hd1-bekwei-refresh-game.png)與[亞雷斯轉職形態](docs/figures/hd1-ares-variant-refresh-game.png)的完整受控戰場圖。兩組面容圖都是原版大頭像與實際地圖素材比較，非對話HD頭像驗收；戰場與資訊窗共用新版圖源。三個基底使用受控原生名冊，亞雷斯54則明示測試用視覺槽投影，不代表自然加入、升階或能力值驗收。其餘人物續作，完整總覽待全部重繪後更新。
+貝克威保留金長髮、平眉半闔眼與閉口微笑，基底形態沿原版青綠衣及棕弓箭筒；亞雷斯的基底與轉職形態維持同一成年寬方面容，轉職形態仍保留劍盾。可看[四向及實際尺寸](docs/figures/hd1-bow-and-ares-comparison.png)、[貝克威](docs/figures/hd1-bekwei-refresh-game.png)與[亞雷斯轉職形態](docs/figures/hd1-ares-variant-refresh-game.png)的完整受控戰場圖。兩組面容圖都是原版大頭像與實際地圖素材比較，非對話HD頭像驗收；戰場與資訊窗共用新版圖源。三個基底使用受控原生名冊，亞雷斯54則明示測試用視覺槽投影，不代表自然加入、升階或能力值驗收。其餘人物續作，目前圖源總覽已依正式清冊更新。
 
 ![蘭斯洛特與希莉亞的原版及HD1面容對照](docs/figures/hd1-longhair-and-bow-faces.png)
 
@@ -51,7 +51,7 @@
 
 ![瑪琳與索菲亞的原版及HD1面容對照](docs/figures/hd1-clerics-faces.png)
 
-瑪琳保留粉紫高馬尾、金髮束與紫色唇形，原生姿態空手；索菲亞保留灰金後馬尾、暗紅頂飾及成熟紅唇，短直杆依原版持物側與遠側遮蔽。可看[四向及實際尺寸](docs/figures/hd1-clerics-comparison.png)、[瑪琳](docs/figures/hd1-marlene-refresh-game.png)與[索菲亞](docs/figures/hd1-sophia-refresh-game.png)的完整受控戰場圖。面容圖是原版大頭像與實際地圖素材比較，非對話HD頭像驗收；四人的地圖及資訊窗共用新版圖源。戰場圖使用受控原生名冊，沒有身份或圖組投影，不代表自然加入流程驗收。其餘人物續作，完整總覽仍等全部重繪後更新。
+瑪琳保留粉紫高馬尾、金髮束與紫色唇形，原生姿態空手；索菲亞保留灰金後馬尾、暗紅頂飾及成熟紅唇，短直杆依原版持物側與遠側遮蔽。可看[四向及實際尺寸](docs/figures/hd1-clerics-comparison.png)、[瑪琳](docs/figures/hd1-marlene-refresh-game.png)與[索菲亞](docs/figures/hd1-sophia-refresh-game.png)的完整受控戰場圖。面容圖是原版大頭像與實際地圖素材比較，非對話HD頭像驗收；四人的地圖及資訊窗共用新版圖源。戰場圖使用受控原生名冊，沒有身份或圖組投影，不代表自然加入流程驗收。其餘人物續作，目前圖源總覽已依正式清冊更新。
 
 ![凱麗與珊的原版及HD1面容對照](docs/figures/hd1-martial-and-mage-faces.png)
 
@@ -59,7 +59,7 @@
 
 ![賽可邦勒與凱拉斯的原版及HD1面容對照](docs/figures/hd1-beast-and-dragon-faces.png)
 
-賽可邦勒保留深藍獸形長吻、直立耳、黑鼻與窄黃綠眼，沿原生空手及紅腰布；凱拉斯保留褐龍長吻、黑角與原生紅劍、藍紋盾，四向持物側及遮蔽保持。可看[四向及實際尺寸](docs/figures/hd1-beast-and-dragon-comparison.png)、[賽可邦勒](docs/figures/hd1-saikebanle-refresh-game.png)與[凱拉斯](docs/figures/hd1-kairas-refresh-game.png)的完整受控戰場圖。面容圖比較原版頭像與實際地圖素材，非對話HD頭像驗收；地圖與資訊窗共用新版圖源。戰場圖使用各自原生名冊的受控測具，沒有身份或圖組投影，不代表自然加入流程。其餘人物續作，完整總覽仍待全部重繪後更新。
+賽可邦勒保留深藍獸形長吻、直立耳、黑鼻與窄黃綠眼，沿原生空手及紅腰布；凱拉斯保留褐龍長吻、黑角與原生紅劍、藍紋盾，四向持物側及遮蔽保持。可看[四向及實際尺寸](docs/figures/hd1-beast-and-dragon-comparison.png)、[賽可邦勒](docs/figures/hd1-saikebanle-refresh-game.png)與[凱拉斯](docs/figures/hd1-kairas-refresh-game.png)的完整受控戰場圖。面容圖比較原版頭像與實際地圖素材，非對話HD頭像驗收；地圖與資訊窗共用新版圖源。戰場圖使用各自原生名冊的受控測具，沒有身份或圖組投影，不代表自然加入流程。其餘人物續作，目前圖源總覽已依正式清冊更新。
 
 ![米亞斯多德與蜜蒂的原版及HD1面容對照](docs/figures/hd1-dragon-and-swordswoman-faces.png)
 
@@ -67,7 +67,7 @@
 
 ![莎拉與約拿的原版及HD1面容對照](docs/figures/hd1-greenhair-and-elder-faces.png)
 
-莎拉保留綠髮尖耳、紅額帶、長橢圓臉與收斂紅唇；約拿保留白藍髮、大白鬚、皺紋、白眉窄眼及長鉤鼻。莎拉背側藍灰窄片與約拿低位棕色斜杆依原生形狀呈現，用途未另推定。可看[四向與實際尺寸](docs/figures/hd1-greenhair-and-elder-comparison.png)、[莎拉](docs/figures/hd1-sara-refresh-game.png)與[約拿](docs/figures/hd1-jonah-refresh-game.png)的完整受控戰場圖。面容圖比較原版頭像與實際地圖素材，非對話HD頭像驗收；地圖與資訊窗共用新版圖源。戰場圖使用各自原生名冊的受控測具，沒有身份或圖組投影，不代表自然加入流程。其餘人物續作，完整總覽仍待全部重繪後更新。
+莎拉保留綠髮尖耳、紅額帶、長橢圓臉與收斂紅唇；約拿保留白藍髮、大白鬚、皺紋、白眉窄眼及長鉤鼻。莎拉背側藍灰窄片與約拿低位棕色斜杆依原生形狀呈現，用途未另推定。可看[四向與實際尺寸](docs/figures/hd1-greenhair-and-elder-comparison.png)、[莎拉](docs/figures/hd1-sara-refresh-game.png)與[約拿](docs/figures/hd1-jonah-refresh-game.png)的完整受控戰場圖。面容圖比較原版頭像與實際地圖素材，非對話HD頭像驗收；地圖與資訊窗共用新版圖源。戰場圖使用各自原生名冊的受控測具，沒有身份或圖組投影，不代表自然加入流程。其餘人物續作，目前圖源總覽已依正式清冊更新。
 
 ![卡里斯與羅蘭的原版及HD1面容對照](docs/figures/hd1-stubble-and-bow-faces.png)
 
@@ -75,7 +75,7 @@
 
 ![希爾法與謝多的原版及HD1面容對照](docs/figures/hd1-bald-and-beast-faces.png)
 
-希爾法保留高額禿頂、紅褐側髮、尖耳、綠窄眼及細鬚，紅袍與金黃大領沿原生；謝多保留深藍獸形、灰綠窄眼、微揚嘴角與小獠牙，短劍保持在腰際橫持。可看[四向與實際尺寸](docs/figures/hd1-bald-and-beast-comparison.png)、[希爾法](docs/figures/hd1-hilfa-refresh-game.png)與[謝多](docs/figures/hd1-shedo-refresh-game.png)的完整受控戰場圖。面容圖比較原版頭像與實際地圖素材，非對話HD頭像驗收；地圖與資訊窗共用新版圖源。戰場圖使用各自原生名冊的受控測具，沒有身份或圖組投影，不代表自然加入流程。其餘人物續作，完整總覽仍待全部重繪後更新。
+希爾法保留高額禿頂、紅褐側髮、尖耳、綠窄眼及細鬚，紅袍與金黃大領沿原生；謝多保留深藍獸形、灰綠窄眼、微揚嘴角與小獠牙，短劍保持在腰際橫持。可看[四向與實際尺寸](docs/figures/hd1-bald-and-beast-comparison.png)、[希爾法](docs/figures/hd1-hilfa-refresh-game.png)與[謝多](docs/figures/hd1-shedo-refresh-game.png)的完整受控戰場圖。面容圖比較原版頭像與實際地圖素材，非對話HD頭像驗收；地圖與資訊窗共用新版圖源。戰場圖使用各自原生名冊的受控測具，沒有身份或圖組投影，不代表自然加入流程。其餘人物續作，目前圖源總覽已依正式清冊更新。
 
 ![聖寇拉斯與巴拿羅西亞的原版及HD1面容對照](docs/figures/hd1-blue-and-green-dragons-faces.png)
 
@@ -83,7 +83,11 @@
 
 ![達克賽與亞奇梅吉的原版及HD1面容對照](docs/figures/hd1-blue-and-robed-faces.png)
 
-達克賽保留深藍裸面、尖耳、厚重額面、鉤鼻與微揚薄唇；亞奇梅吉保留藍灰高額禿頂、深陷窄眼、長鼻與瘦長下巴。兩人皆按原生空手，灰綠腰帶與藍紫袍大領分別保持；達克賽眼色依自己的原版大頭像採藍紫。可看[四向與實際尺寸](docs/figures/hd1-blue-and-robed-comparison.png)、[達克賽](docs/figures/hd1-darksai-refresh-game.png)及[亞奇梅吉](docs/figures/hd1-archimage-refresh-game.png)的完整受控戰場圖。面容圖比較原版頭像與實際地圖素材，非對話HD頭像驗收；地圖及資訊窗共用新版圖源。戰場圖使用各自原生名冊的受控測具，沒有身份或圖組投影，不代表自然加入流程。其餘人物續作，完整總覽仍待全部重繪後更新。
+達克賽保留深藍裸面、尖耳、厚重額面、鉤鼻與微揚薄唇；亞奇梅吉保留藍灰高額禿頂、深陷窄眼、長鼻與瘦長下巴。兩人皆按原生空手，灰綠腰帶與藍紫袍大領分別保持；達克賽眼色依自己的原版大頭像採藍紫。可看[四向與實際尺寸](docs/figures/hd1-blue-and-robed-comparison.png)、[達克賽](docs/figures/hd1-darksai-refresh-game.png)及[亞奇梅吉](docs/figures/hd1-archimage-refresh-game.png)的完整受控戰場圖。面容圖比較原版頭像與實際地圖素材，非對話HD頭像驗收；地圖及資訊窗共用新版圖源。戰場圖使用各自原生名冊的受控測具，沒有身份或圖組投影，不代表自然加入流程。其餘人物續作，目前圖源總覽已依正式清冊更新。
+
+![第67組原地圖三拍與HD1來源對照](docs/figures/hd1-anonymous-067-comparison.png)
+
+第67組依確認的來源例外，只用自己的原地圖面容重繪三拍，保留藍髮、左側綠色輪廓、深藍短身與紅腰片。身份、所屬頭像與出場仍未知。同號DATO067是龍形頭像，不配用於這個人物。[受控繪製圖](docs/figures/hd1-anonymous-067-game.png)借用map32故事載體展示圖源；圖中的原載體資料不作第67組的角色或出場證據。已知Q版比例待辦已清零，32組既有造型的批次複核與集中人工仍待。
 
 ![羅德曼與渥德的原版及HD1面容對照](docs/figures/hd1-rodman-wode-faces.png)
 
@@ -91,7 +95,7 @@
 
 ![轉職哈瓦特的原版及HD1面容對照](docs/figures/hd1-promoted-havart-faces.png)
 
-哈瓦特的轉職圖組依自己的原版頭像，保留成熟威嚴的大紅褐鬍鬚、短斧與方十字盾。可看[四向與144／72／48尺寸](docs/figures/hd1-promoted-havart-comparison.png)及[受控戰場圖](docs/figures/hd1-party-035-refresh-game.png)。這份測具沿既有哈諾視覺模板，明示身份與圖組投影，只驗圖源及繪製；自然轉職與能力值不在驗收範圍。第67組仍待查證身份與出場來源，完整人物總覽及集中人工複核續留待驗。
+哈瓦特的轉職圖組依自己的原版頭像，保留成熟威嚴的大紅褐鬍鬚、短斧與方十字盾。可看[四向與144／72／48尺寸](docs/figures/hd1-promoted-havart-comparison.png)及[受控戰場圖](docs/figures/hd1-party-035-refresh-game.png)。這份測具沿既有哈諾視覺模板，明示身份與圖組投影，只驗圖源及繪製；自然轉職與能力值不在驗收範圍。第67組仍待查證身份與出場來源，目前人物圖源總覽已更新，集中人工複核仍待。
 
 ![灰綠十字盾板盔與深藍筒盔人物的原版及HD1面容對照](docs/figures/hd1-enemy-cross-and-cylinder-faces.png)
 
@@ -99,7 +103,7 @@
 
 ![藍紫分層尖面盔與灰綠狹長面盔人物的原版及HD1面容對照](docs/figures/hd1-enemy-layered-and-long-faces.png)
 
-第106組保留藍紫尖面盔、淡色眼點、原版劍盾、紅披風與灰綠背側領部。第111組保留自己的狹長面盔、紅橫縫、黑色Y形切線與寬肩，縮短軀幹及下肢，保持原版空手。可看[四向與144／72／48尺寸](docs/figures/hd1-enemy-layered-and-long-comparison.png)、[分層尖面盔](docs/figures/hd1-enemy-106-refresh-game.png)及[狹長面盔](docs/figures/hd1-enemy-111-refresh-game.png)的完整受控戰場圖。四組保留原始名冊的陣營、位置與圖源，無身份或圖組投影；戰場圖不代表自然章節可達，其餘人物與完整總覽仍待。
+第106組保留藍紫尖面盔、淡色眼點、原版劍盾、紅披風與灰綠背側領部。第111組保留自己的狹長面盔、紅橫縫、黑色Y形切線與寬肩，縮短軀幹及下肢，保持原版空手。可看[四向與144／72／48尺寸](docs/figures/hd1-enemy-layered-and-long-comparison.png)、[分層尖面盔](docs/figures/hd1-enemy-106-refresh-game.png)及[狹長面盔](docs/figures/hd1-enemy-111-refresh-game.png)的完整受控戰場圖。四組保留原始名冊的陣營、位置與圖源，無身份或圖組投影；戰場圖不代表自然章節可達，其餘人物仍待造型複核，目前圖源總覽已更新。
 
 ![藍灰遮面與深藍兜帽人物的原版及HD1面容對照](docs/figures/hd1-enemy-visor-and-hood-faces.png)
 
@@ -107,7 +111,7 @@
 
 ![灰綠與藍色格柵面盔人物的原版及HD1面容對照](docs/figures/hd1-enemy-two-grilles-faces.png)
 
-第93組保留紅褐頂帽、灰綠盔身、金框紅格柵；第94組保留灰綠頂帽、藍盔身及灰綠框藍格柵。兩組各沿自身頭像的捲眉輪廓、下方直槽與原版空手造型，不推定物種。可看[四向與144／72／48尺寸](docs/figures/hd1-enemy-two-grilles-comparison.png)、[灰綠面盔](docs/figures/hd1-enemy-093-refresh-game.png)及[藍色面盔](docs/figures/hd1-enemy-094-refresh-game.png)的完整受控戰場圖。四組保留原始敵軍名冊的陣營、位置與圖源，無身份或圖組投影；戰場圖不代表自然章節可達，其餘人物與完整總覽仍待。
+第93組保留紅褐頂帽、灰綠盔身、金框紅格柵；第94組保留灰綠頂帽、藍盔身及灰綠框藍格柵。兩組各沿自身頭像的捲眉輪廓、下方直槽與原版空手造型，不推定物種。可看[四向與144／72／48尺寸](docs/figures/hd1-enemy-two-grilles-comparison.png)、[灰綠面盔](docs/figures/hd1-enemy-093-refresh-game.png)及[藍色面盔](docs/figures/hd1-enemy-094-refresh-game.png)的完整受控戰場圖。四組保留原始敵軍名冊的陣營、位置與圖源，無身份或圖組投影；戰場圖不代表自然章節可達，其餘人物仍待造型複核，目前圖源總覽已更新。
 
 ![紅色與深藍角盔守衛的原版及HD1面容對照](docs/figures/hd1-enemy-red-and-navy-faces.png)
 
@@ -115,7 +119,7 @@
 
 ![灰綠尖面盔守衛與成熟弓兵的原版及HD1面容對照](docs/figures/hd1-enemy-masked-and-bow-faces.png)
 
-第86組保留灰綠尖面盔、方盾暗紋與紫中心、藍背側輪廓及原版持物輪廓，兵器種類仍未知。第87組依自身頭像保留灰綠帽盔、藍前飾、成熟露下臉、長鼻、下垂嘴角與方下巴，棕弓、箭袋及藍背布沿原版。可看[四向與144／72／48尺寸](docs/figures/hd1-enemy-masked-and-bow-comparison.png)、[尖面盔守衛](docs/figures/hd1-enemy-086-refresh-game.png)及[成熟弓兵](docs/figures/hd1-enemy-087-refresh-game.png)的完整受控戰場圖。四組由原始敵軍名冊建立，保留陣營、位置與圖源，無身份或圖組投影；戰場圖不代表自然章節可達，其餘人物與完整總覽仍待。
+第86組保留灰綠尖面盔、方盾暗紋與紫中心、藍背側輪廓及原版持物輪廓，兵器種類仍未知。第87組依自身頭像保留灰綠帽盔、藍前飾、成熟露下臉、長鼻、下垂嘴角與方下巴，棕弓、箭袋及藍背布沿原版。可看[四向與144／72／48尺寸](docs/figures/hd1-enemy-masked-and-bow-comparison.png)、[尖面盔守衛](docs/figures/hd1-enemy-086-refresh-game.png)及[成熟弓兵](docs/figures/hd1-enemy-087-refresh-game.png)的完整受控戰場圖。四組由原始敵軍名冊建立，保留陣營、位置與圖源，無身份或圖組投影；戰場圖不代表自然章節可達，其餘人物仍待造型複核，目前圖源總覽已更新。
 
 ![紅飾與褐角尖面重甲的原版及HD1面容對照](docs/figures/hd1-enemy-crested-and-horned-faces.png)
 
@@ -123,7 +127,7 @@
 
 ![灰綠與藍色角盔劍盾守衛的原版及HD1面容對照](docs/figures/hd1-enemy-shield-guards-faces.png)
 
-第82組保留灰綠圓筒盔、方十字盾與單劍；第83組保留藍色圓筒盔、褐色雙角、藍十字盾與單劍。第83組原版地圖是黃眼點，頭像是紅眼縫，本批保留地圖原色。可看[四向與144／72／48尺寸](docs/figures/hd1-enemy-shield-guards-comparison.png)、[灰綠守衛](docs/figures/hd1-enemy-082-refresh-game.png)及[藍色角盔守衛](docs/figures/hd1-enemy-083-refresh-game.png)的完整受控戰場圖。四組由原始敵軍名冊建立，保留陣營、位置與圖源，沒有身份或圖組投影；戰場圖不代表自然章節可達，其餘人物與完整總覽仍待。
+第82組保留灰綠圓筒盔、方十字盾與單劍；第83組保留藍色圓筒盔、褐色雙角、藍十字盾與單劍。第83組原版地圖是黃眼點，頭像是紅眼縫，本批保留地圖原色。可看[四向與144／72／48尺寸](docs/figures/hd1-enemy-shield-guards-comparison.png)、[灰綠守衛](docs/figures/hd1-enemy-082-refresh-game.png)及[藍色角盔守衛](docs/figures/hd1-enemy-083-refresh-game.png)的完整受控戰場圖。四組由原始敵軍名冊建立，保留陣營、位置與圖源，沒有身份或圖組投影；戰場圖不代表自然章節可達，其餘人物仍待造型複核，目前圖源總覽已更新。
 
 ![灰綠劍盾守衛與藍色獸人的原版及HD1面容對照](docs/figures/hd1-native-guards-faces.png)
 
@@ -131,7 +135,7 @@
 
 ![藍髮旅人與深藍重甲的原版及HD1面容對照](docs/figures/hd1-native-traveler-and-heavy-faces.png)
 
-第72組保留藍髮、褐額帶、陰影細眼、長鼻薄唇與原版背負物；第78組保留閉合尖面盔、紅眼縫及深藍重甲，保持空手。可看[四向與144／72／48尺寸](docs/figures/hd1-native-traveler-and-heavy-comparison.png)、[藍髮旅人](docs/figures/hd1-native-072-refresh-game.png)及[深藍重甲](docs/figures/hd1-native-078-refresh-game.png)的完整受控戰場圖。四組依原始名冊建立，68／71／72是盟軍，78是敵軍，保留原位置與圖源，沒有角色身份或圖組投影。面容圖只比較原版頭像與地圖素材，戰場圖不代表自然章節可達；其餘人物與完整總覽仍待。
+第72組保留藍髮、褐額帶、陰影細眼、長鼻薄唇與原版背負物；第78組保留閉合尖面盔、紅眼縫及深藍重甲，保持空手。可看[四向與144／72／48尺寸](docs/figures/hd1-native-traveler-and-heavy-comparison.png)、[藍髮旅人](docs/figures/hd1-native-072-refresh-game.png)及[深藍重甲](docs/figures/hd1-native-078-refresh-game.png)的完整受控戰場圖。四組依原始名冊建立，68／71／72是盟軍，78是敵軍，保留原位置與圖源，沒有角色身份或圖組投影。面容圖只比較原版頭像與地圖素材，戰場圖不代表自然章節可達；其餘人物仍待造型複核，目前圖源總覽已更新。
 
 ![珊與賽可邦勒選用轉職圖組的原版及HD1面容對照](docs/figures/hd1-shan-and-beast-optionals-faces.png)
 
@@ -151,7 +155,7 @@
 
 ![索菲亞與凱麗預設轉職圖組的原版及HD1面容對照](docs/figures/hd1-sophia-and-kylie-faces.png)
 
-索菲亞第43組與凱麗第44組也分別與第61、62組原版圖層相同，共用既有HD1圖源。索菲亞保留灰金馬尾、紅唇微笑及紅褐衣；凱麗保留遮一眼的金瀏海、成熟褐眼紅唇及空手造型。可看[四向與實際尺寸](docs/figures/hd1-sophia-and-kylie-comparison.png)、[索菲亞](docs/figures/hd1-sophia-default-refresh-game.png)及[凱麗](docs/figures/hd1-kylie-default-refresh-game.png)的完整受控戰場圖。四組依轉職表的預設目標綁定原身份9／10／11／12；戰場圖使用明示的測試圖組投影，不代表自然轉職。面容圖比較原版頭像與地圖素材，其他人物與完整總覽仍待。
+索菲亞第43組與凱麗第44組也分別與第61、62組原版圖層相同，共用既有HD1圖源。索菲亞保留灰金馬尾、紅唇微笑及紅褐衣；凱麗保留遮一眼的金瀏海、成熟褐眼紅唇及空手造型。可看[四向與實際尺寸](docs/figures/hd1-sophia-and-kylie-comparison.png)、[索菲亞](docs/figures/hd1-sophia-default-refresh-game.png)及[凱麗](docs/figures/hd1-kylie-default-refresh-game.png)的完整受控戰場圖。四組依轉職表的預設目標綁定原身份9／10／11／12；戰場圖使用明示的測試圖組投影，不代表自然轉職。面容圖比較原版頭像與地圖素材，其他人物仍待造型複核，目前圖源總覽已更新。
 
 ![亞雷斯與洛娜預設轉職圖組的原版及HD1面容對照](docs/figures/hd1-ares-and-lona-faces.png)
 
@@ -159,7 +163,7 @@
 
 ![萊汀與希莉亞預設轉職圖組的原版及HD1面容對照](docs/figures/hd1-lyting-and-cylia-faces.png)
 
-萊汀第38組保留紅褐髮、藍額帶、方下顎與微揚薄唇，深藍甲上的金黃腰腕件依原生。希莉亞第40組保留長褐波髮、額帶藍飾與柔和紅唇微笑，使用金弓、灰綠箭筒、灰綠領及紅褐背布，十二姿態採一致深褐靴色，背向金弓上半部由長髮遮住，只露下方小段。可看[四向與實際尺寸](docs/figures/hd1-lyting-and-cylia-comparison.png)、[萊汀](docs/figures/hd1-lyting-default-refresh-game.png)及[希莉亞](docs/figures/hd1-cylia-default-refresh-game.png)的完整受控戰場圖。四組依轉職表的預設目標對應原身份4／5／6／8；戰場圖只在測具替換地圖圖組，保留原身份與能力，不代表自然轉職。地圖與資訊窗共用新版來源；面容圖只比較原版頭像與地圖素材，其他人物與完整總覽仍待。
+萊汀第38組保留紅褐髮、藍額帶、方下顎與微揚薄唇，深藍甲上的金黃腰腕件依原生。希莉亞第40組保留長褐波髮、額帶藍飾與柔和紅唇微笑，使用金弓、灰綠箭筒、灰綠領及紅褐背布，十二姿態採一致深褐靴色，背向金弓上半部由長髮遮住，只露下方小段。可看[四向與實際尺寸](docs/figures/hd1-lyting-and-cylia-comparison.png)、[萊汀](docs/figures/hd1-lyting-default-refresh-game.png)及[希莉亞](docs/figures/hd1-cylia-default-refresh-game.png)的完整受控戰場圖。四組依轉職表的預設目標對應原身份4／5／6／8；戰場圖只在測具替換地圖圖組，保留原身份與能力，不代表自然轉職。地圖與資訊窗共用新版來源；面容圖只比較原版頭像與地圖素材，其他人物仍待造型複核，目前圖源總覽已更新。
 
 ![索爾與哈諾轉職圖組的原版及HD1面容對照](docs/figures/hd1-sol-and-hano-faces.png)
 
@@ -167,7 +171,7 @@
 
 ![鐵諾與凱麗轉職圖組的原版及HD1面容對照](docs/figures/hd1-tino-and-kylie-faces.png)
 
-鐵諾第34組保留灰綠布兜帽、背布、窄眼長鼻及近鼻的藍色遮眼區，使用單一灰銀直劍；遮眼區只記錄視覺形狀。凱麗第62組保留遮住一眼的金色側瀏海、褐色杏眼、成熟臉頰與紅唇，維持空手。可看[四向與實際尺寸](docs/figures/hd1-tino-and-kylie-comparison.png)、[鐵諾](docs/figures/hd1-tino-default-refresh-game.png)及[凱麗](docs/figures/hd1-kylie-promoted-refresh-game.png)的完整受控戰場圖。轉職表明示32／33／34對應原身份0／1／2的預設目標，62對應12的可選目標；戰場圖只在測具替換地圖圖組，保留原身份與能力，不代表自然轉職流程。地圖與資訊窗共用新版來源。這是地圖面容對照，其他人物與完整總覽仍待。
+鐵諾第34組保留灰綠布兜帽、背布、窄眼長鼻及近鼻的藍色遮眼區，使用單一灰銀直劍；遮眼區只記錄視覺形狀。凱麗第62組保留遮住一眼的金色側瀏海、褐色杏眼、成熟臉頰與紅唇，維持空手。可看[四向與實際尺寸](docs/figures/hd1-tino-and-kylie-comparison.png)、[鐵諾](docs/figures/hd1-tino-default-refresh-game.png)及[凱麗](docs/figures/hd1-kylie-promoted-refresh-game.png)的完整受控戰場圖。轉職表明示32／33／34對應原身份0／1／2的預設目標，62對應12的可選目標；戰場圖只在測具替換地圖圖組，保留原身份與能力，不代表自然轉職流程。地圖與資訊窗共用新版來源。這是地圖面容對照，其他人物仍待造型複核，目前圖源總覽已更新。
 
 ![希莉亞與悠妮轉職圖組的原版及HD1面容對照](docs/figures/hd1-bow-and-unni-faces.png)
 
@@ -175,7 +179,7 @@
 
 ![瑪琳與索菲亞轉職圖組的原版及HD1面容對照](docs/figures/hd1-two-clerics-faces.png)
 
-瑪琳的第60組保留粉紫馬尾、成熟窄眼、紫唇及藍衣，灰綠長直側片沿原生形狀；索菲亞的第61組保留灰金馬尾、柔和褐眼與紅唇，使用紅褐衣與金褐側飾，沒有從基底形態補上長杆。可看[四向與實際尺寸](docs/figures/hd1-two-clerics-comparison.png)、[瑪琳](docs/figures/hd1-marin-promoted-refresh-game.png)及[索菲亞](docs/figures/hd1-sophia-promoted-refresh-game.png)的完整受控戰場圖。這四組依轉職表明示對應原身份8／9／10／11；戰場圖只在測具投影地圖圖組，保留原身份及能力，不代表自然轉職流程。地圖與資訊窗共用新版來源；面容圖不是對話HD頭像驗收。其他人物與完整總覽仍待。
+瑪琳的第60組保留粉紫馬尾、成熟窄眼、紫唇及藍衣，灰綠長直側片沿原生形狀；索菲亞的第61組保留灰金馬尾、柔和褐眼與紅唇，使用紅褐衣與金褐側飾，沒有從基底形態補上長杆。可看[四向與實際尺寸](docs/figures/hd1-two-clerics-comparison.png)、[瑪琳](docs/figures/hd1-marin-promoted-refresh-game.png)及[索菲亞](docs/figures/hd1-sophia-promoted-refresh-game.png)的完整受控戰場圖。這四組依轉職表明示對應原身份8／9／10／11；戰場圖只在測具投影地圖圖組，保留原身份及能力，不代表自然轉職流程。地圖與資訊窗共用新版來源；面容圖不是對話HD頭像驗收。其他人物仍待造型複核，目前圖源總覽已更新。
 
 ![哈諾與貝克威依各自原版頭像重繪的HD1面容](docs/figures/hd1-native-face-reference.png)
 
@@ -191,7 +195,7 @@
 
 ![戴盔士兵與蒙面劍士的原版及HD1四向對照](docs/figures/hd1-enemies-comparison.png)
 
-戴盔士兵恢復原版十字紋方盾、直劍與灰綠盔甲；蒙面劍士保留遮眼金屬帶、深藍面巾與斜持單劍，去除舊稿新增的骷髏臉。可看[各自原版頭像與實際尺寸](docs/figures/hd1-enemies-face-reference.png)、[士兵戰場](docs/figures/hd1-enemy-076-game.png)及[蒙面劍士戰場](docs/figures/hd1-enemy-079-game.png)。戰場圖使用原生名冊與地圖的受控敵軍群，地圖和資訊窗共用新版圖源，不代表自然章節流程驗收。其他人物仍逐組複核，完整總覽待全部重繪後更新。
+戴盔士兵恢復原版十字紋方盾、直劍與灰綠盔甲；蒙面劍士保留遮眼金屬帶、深藍面巾與斜持單劍，去除舊稿新增的骷髏臉。可看[各自原版頭像與實際尺寸](docs/figures/hd1-enemies-face-reference.png)、[士兵戰場](docs/figures/hd1-enemy-076-game.png)及[蒙面劍士戰場](docs/figures/hd1-enemy-079-game.png)。戰場圖使用原生名冊與地圖的受控敵軍群，地圖和資訊窗共用新版圖源，不代表自然章節流程驗收。其他人物仍逐組複核，目前圖源總覽已依正式清冊更新。
 
 ![父王的原版大頭像與HD1地圖人物面容對照](docs/figures/hd1-king-face-reference.png)
 
@@ -207,7 +211,7 @@
 
 ![紅袍人形與棕髮少女的原版及HD1面容對照](docs/figures/hd1-six-robed-faces.png)
 
-紅袍人形保留成熟長臉、窄眼與長鼻，沒有新增白鬍鬚；棕髮少女恢復平瀏海、棕眼與柔和表情，去掉馬尾。可看[四向及尺寸對照](docs/figures/hd1-six-robed-comparison.png)、[紅袍角色戰場](docs/figures/hd1-six-125-game.png)與[棕髮少女戰場](docs/figures/hd1-six-133-game.png)。三組面容圖皆為原版頭像與實際144／72／48像素地圖素材對照；戰場圖使用保留原陣營與位置的受控名冊群，地圖和資訊窗共用新版圖源，不代表正常章節流程或對話HD頭像驗收。其餘人物仍續審，完整總覽待全部重繪後更新。
+紅袍人形保留成熟長臉、窄眼與長鼻，沒有新增白鬍鬚；棕髮少女恢復平瀏海、棕眼與柔和表情，去掉馬尾。可看[四向及尺寸對照](docs/figures/hd1-six-robed-comparison.png)、[紅袍角色戰場](docs/figures/hd1-six-125-game.png)與[棕髮少女戰場](docs/figures/hd1-six-133-game.png)。三組面容圖皆為原版頭像與實際144／72／48像素地圖素材對照；戰場圖使用保留原陣營與位置的受控名冊群，地圖和資訊窗共用新版圖源，不代表正常章節流程或對話HD頭像驗收。其餘人物仍續審，目前圖源總覽已依正式清冊更新。
 
 ![蓋亞原版與新版HD1四向及尺寸對照](docs/figures/hd1-gaia-q-comparison.png)
 
@@ -903,28 +907,17 @@ DOS 本身不會替遊戲顯示中文。原版自帶點陣字型，文本也不�
 素材庫 `fd2-assets-private`，公開庫只放這張壓平總攬與可追溯 catalog。
 `speaker／identity 7、15、28、29` 仍因原始名稱證據衝突而失敗即關閉，不以猜測補圖。*
 
-![原版代表性色盤與現代地圖人物總攬](docs/figures/modern-map-sprites-overview.png)
+目前地圖人物圖源總覽依正式清冊的實際檔名及SHA-256重生，涵蓋125圖組。每組只展示第0拍，並列原版代表圖與144／72／48像素HD圖源；完整清冊的1455幀另由來源驗證核對。這是素材比較，造型批次複核與集中人工仍待。
 
-*地圖人物總攬：上列由雜湊固定的原版 FDICON 索引與 `FDOTHER.DAT` #0 六位元 VGA
-DAC 代表性色盤合成，透明度仍取自原版圖形遮罩，不再以灰階索引圖誤導閱讀；個別場景
-仍可能依原版排程調整色盤，因此這不是所有關卡的逐幀實機色彩證明。下列才是現代執行期
-候選，避免再把人物編號便利輸出誤當 FDICON selector 證據。本總攬是較早94組子集，其中89組保留四方向×三步態、5組維持三相靜態契約。現行清冊已涵蓋原始圖庫全部125組可見來源，共1455張144×144人物圖；來源與範圍見[HD戰場收據](docs/data/fd2-modern-hd-battlefield-20261019.json)。selector 1–14、16–21
-由角色表支持為哈諾／鐵諾／哈瓦特／亞雷斯／洛娜／萊汀／蘭斯洛特／希莉亞／悠妮／瑪琳／索菲亞／凱麗／貝克威／珊／凱拉斯／米亞斯多德／蜜蒂／羅德曼／莎拉／約拿的基礎圖組投影；selector 15 僅標為姓名仍待校訂的角色表投影，不與故事頭像身分合併。selector 000、002、008、009、013、032 已依使用者核准的大頭短身現代手繪母風格重新校稿；所有正式候選均為獨立 `24×24` PNG，具逐幀雜湊與
-二值透明度契約；selector 76 是第三章普通追兵的獨立候選，保留原版低圓頂深鋼盔、
-額鼻護片、護頰、無徽記木盾與量產制式軍裝，刻意降低俊美英雄與精銳騎士感；selector 77 則是同章更厚重的敵方隊長，保留
-全罩盔、板甲、大盾與直劍，但不猜其姓名；selector 82 則依第 7–9 戰共 49 筆敵方
-劍士資料保留矩形全罩盔、窄眼縫、灰盾、直劍與紅色下擺；selector 78 依 29 筆敵方
-劍士資料保留封閉低盔、紅眼、巨大圓肩與敦實重甲，不擅自補入原版小圖看不出的武器；selector 80 因職業欄混合，
-只依 38 筆共同圖像索引保留深藍重甲、紅色盔冠與寬圓肩；selector 83 依 42 筆敵方
-劍士資料保留鈷藍角盔、黃綠眼光、藍盾與直劍；selector 85 依 36 筆敵方劍士資料
-保留完全遮面的低垂大型桶盔、紅眼、方盾、直劍與制式深藍甲，刻意維持普通士兵辨識；selector 86 依第 24–26 戰及終章共 24 筆敵方
-劍士資料保留淡灰綠圓頂全罩盔、水平眼縫、深藍十字盾與直立長兵器輪廓，維持量產要塞守衛感；selector 88 依 48 筆敵方
-劍士資料保留深藍護甲、紅褐頭巾、遮面眼部與橫持直劍；selector 90 依第 4–9 戰共 26 筆敵方
-劍士資料保留低垂紅褐兜帽、黑色面孔、黃綠眼光、寬大深藍肩衣與敦實輪廓，不添加原圖沒有的武器；selector 91 因職業欄混合且
-沒有可見武器，只依輪廓近似保留深藍尖垂兜帽、黑色面孔、紅眼與對稱暗紅外緣，
-不把外緣斷言成特定服裝。此圖是公開壓平總攬；母稿與逐幀素材只保存於私人素材庫。完整HD包的普通戰場沿原生定位直繪144×144真彩人物，再疊加前景與透明介面；尚未換成HD的完整演出仍保留索引畫面。較早24×24主題包沿既有路徑，忠實主題維持原生索引呈現。圖組 7
-只代表角色表與地圖資料投影；故事 `speaker 7`／頭像身分仍有衝突，維持失敗即關閉。希莉亞的
-`speaker 8`／`DATO_008` 身分則已有一致證據。*
+![圖組000至031原版及目前HD1圖源](docs/figures/hd1-map-sprites-000-031-20261101.png)
+
+![圖組032至067原版及目前HD1圖源](docs/figures/hd1-map-sprites-032-067-20261101.png)
+
+![圖組068至095原版及目前HD1圖源](docs/figures/hd1-map-sprites-068-095-20261101.png)
+
+![圖組096至139原版及目前HD1圖源](docs/figures/hd1-map-sprites-096-139-20261101.png)
+
+原版欄依固定FDICON索引、原圖遮罩與FDOTHER0六位元VGA DAC代表性色盤合成；實際場景仍可能依原排程調色。正式包保留24×24父圖的二值透明契約及144×144HD圖的覆蓋透明契約。圖組編號只定位圖源，身份依各自證據；第67組按確認例外使用原小圖面容，身份及頭像仍未知。母稿與逐幀素材留在私人庫，公開僅保存壓平總覽。較早94組的[圖說及資料採樣記錄](docs/knowledge-base/31-map-unit-sprites-fdicon.md#較早94組人物總覽圖說存檔)保留原技術說明；現況依[58](docs/knowledge-base/58-fd2-exe-re-coverage.md)及[61](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
 
 ![依第一關概念稿統一色彩與材質的 33 張現代戰場總覽](docs/figures/modern-battlefields-overview.png)
 

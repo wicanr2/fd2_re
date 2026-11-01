@@ -2,6 +2,7 @@
 """建立可公開的原版／現代地圖人物壓平總攬。"""
 
 import argparse
+import hashlib
 import json
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
@@ -125,13 +126,16 @@ def load_strip(
     frame_count: int,
     original_root: Path,
     original_palette: list[int],
+    modern_files: list[str] | None = None,
 ) -> Image.Image:
     strip = Image.new("RGBA", (12 * 72, 72), (0, 0, 0, 0))
     for frame in range(12):
         if frame >= frame_count:
             continue
         if modern:
-            name = f"fdicon-{group:03d}-style-a-f{frame:02d}.png"
+            if modern_files is None or len(modern_files) != frame_count:
+                raise SystemExit("modern frames require the current catalog file list")
+            name = modern_files[frame]
             path = MODERN / name
         else:
             frame_root = original_root / f"sprite_{group * 12 + frame:04d}"
@@ -156,8 +160,91 @@ def load_strip(
     return strip
 
 
+def chibi_summary(original_root, original_palette, group_range):
+    """依目前清冊畫原版與144／72／48尺寸，不以舊style-a檔名猜來源。"""
+    digest = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
+    catalog = json.loads(CATALOG.read_text(encoding="utf-8"))
+    parent_rows = [a for a in catalog["assets"] if a.get("role") == "map_sprite_set"]
+    hd_rows = [a for a in catalog["assets"] if a.get("role") == "map_sprite_hd_set"]
+    parents = {a["source_group"]: a for a in parent_rows}
+    hd = {a["source_group"]: a for a in hd_rows}
+    if len(parents) != len(parent_rows) or len(hd) != len(hd_rows) or set(parents) != set(hd):
+        raise SystemExit("duplicate or mismatched current map-sprite groups")
+    groups = sorted(g for g in hd if group_range is None or group_range[0] <= g <= group_range[1])
+    if not groups:
+        raise SystemExit("empty source group range")
+    rows = []
+    images = []
+    for group in groups:
+        p, a = parents[group], hd[group]
+        count = a.get("frame_count")
+        if count not in (3, 12) or p.get("frame_count") != count or len(a.get("files", [])) != count or len(a.get("frame_sha256", [])) != count:
+            raise SystemExit(f"invalid actual source shape for group{group}")
+        name = a["files"][0]
+        if Path(name).name != name:
+            raise SystemExit("unsafe catalog frame name")
+        path = MODERN / name
+        if not path.is_file() or digest(path) != a["frame_sha256"][0]:
+            raise SystemExit(f"current HD source missing or changed: {path}")
+        with Image.open(path) as image:
+            modern = image.convert("RGBA")
+        if modern.size != (144, 144):
+            raise SystemExit(f"HD geometry differs: {path}")
+        native_root = original_root / f"sprite_{group * 12:04d}"
+        with Image.open(native_root / "frame.png") as image:
+            if image.mode != "P" or image.size != (24, 24):
+                raise SystemExit(f"invalid original frame: {native_root}")
+            image.putpalette(original_palette)
+            native = image.convert("RGBA")
+        with Image.open(native_root / "mask.png") as image:
+            native.putalpha(image.convert("L"))
+        if not native.getchannel("A").getbbox():
+            raise SystemExit(f"empty original source: {native_root}")
+        rows.append(dict(group=group, frame=0, frame_count=count, hd_file=name, hd_sha256=digest(path), native_inputs={n:digest(native_root/n) for n in ("frame.png", "mask.png", "remap_mask.png")}))
+        images.append((native, modern))
+    columns, tile_width, tile_height = 4, 416, 202
+    height = 116 + ((len(groups) + columns - 1) // columns) * tile_height + 40
+    canvas = Image.new("RGB", (48 + columns * tile_width, height), "#08152b")
+    draw = ImageDraw.Draw(canvas)
+    font = ImageFont.load_default(size=14)
+    title = ImageFont.load_default(size=20)
+    draw.text((24, 18), "FD2 / CURRENT ORIGINAL + HD1 MAP SOURCES", fill="#ffe5a0", font=title)
+    draw.text((24, 48), f"GROUPS {groups[0]:03d}-{groups[-1]:03d} / {len(groups)} sources / original72 + HD144 / 72 / 48 pixels", fill="#d9e2f2", font=font)
+    draw.text((24, 73), "Current catalog files, neutral frame0 only. Source comparison, not runtime or complete human acceptance.", fill="#aab8d0", font=font)
+    for index, (row, pair) in enumerate(zip(rows, images)):
+        x = 24 + (index % columns) * tile_width
+        y = 116 + (index // columns) * tile_height
+        group = row["group"]
+        label = f"GROUP {group:03d} / {row['frame_count']} phases"
+        if group == 67:
+            label += " / anonymous*"
+        draw.text((x + 12, y + 4), label, fill="#ffe5a0" if group == 67 else "#d9e2f2", font=font)
+        native, modern = pair
+        native72 = native.resize((72, 72), Image.Resampling.NEAREST)
+        canvas.paste(native72, (x + 12, y + 42), native72)
+        canvas.paste(modern, (x + 112, y + 28), modern)
+        for size, dx, dy in ((72, 274, 40), (48, 354, 52)):
+            small = modern.resize((size, size), Image.Resampling.LANCZOS)
+            canvas.paste(small, (x + dx, y + dy), small)
+            draw.text((x + dx, y + 124), str(size), fill="#aab8d0", font=font)
+        draw.text((x + 12, y + 124), "ORIG72", fill="#aab8d0", font=font)
+        draw.text((x + 112, y + 180), "HD144", fill="#aab8d0", font=font)
+    draw.text((24, height - 28), "*67 uses its own native face under explicit source exception; identity/portrait/appearance unknown. Representative native palette.", fill="#aab8d0", font=font)
+    OUTPUT.parent.mkdir(parents=True, exist_ok=True)
+    canvas.save(OUTPUT, optimize=False)
+    receipt = dict(schema="fd2-hd1-current-source-overview-v1", catalog_sha256=digest(CATALOG), tool_sha256=digest(Path(__file__)), image_sha256=digest(OUTPUT), groups=groups, group_count=len(groups), source_frames=sum(r["frame_count"] for r in rows), shown_frame=0, original_size=72, hd_sizes=[144,72,48], width=canvas.width, height=canvas.height, rows=rows, scope="current source comparison only; not identity binding, runtime capture or complete human acceptance")
+    OUTPUT.with_suffix(".json").write_text(json.dumps(receipt, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    print(json.dumps({k:v for k,v in receipt.items() if k != "rows"}, ensure_ascii=False))
+
+
 def main() -> None:
+    global CATALOG, MODERN, OUTPUT
     parser = argparse.ArgumentParser()
+    parser.add_argument("--catalog", type=Path, default=CATALOG)
+    parser.add_argument("--modern-root", type=Path, default=MODERN)
+    parser.add_argument("--output", type=Path, default=OUTPUT)
+    parser.add_argument("--chibi-summary", action="store_true")
+    parser.add_argument("--group-range", nargs=2, type=int)
     parser.add_argument(
         "--original-root",
         type=Path,
@@ -171,8 +258,15 @@ def main() -> None:
         help="雜湊固定 FDOTHER #0 的六位元 VGA DAC JSON",
     )
     args = parser.parse_args()
+    CATALOG, MODERN, OUTPUT = args.catalog, args.modern_root, args.output
     original_palette = load_original_palette(args.original_palette)
+    if args.chibi_summary:
+        chibi_summary(args.original_root, original_palette, args.group_range)
+        return
+    if args.group_range is not None:
+        parser.error("--group-range requires --chibi-summary")
     groups = catalog_groups()
+    current_files = {a["source_group"]: a["files"] for a in json.loads(CATALOG.read_text(encoding="utf-8"))["assets"] if a.get("role") == "map_sprite_set"}
     width, height = 1040, 72 + len(groups) * 168 + 32
     canvas = Image.new("RGB", (width, height), "#08152b")
     draw = ImageDraw.Draw(canvas)
@@ -187,7 +281,7 @@ def main() -> None:
         canvas.paste(original, (152, y), original)
         y += 80
         draw.text((24, y + 6), f"{group:03d} modern", fill="#d9e2f2", font=font)
-        modern = load_strip(group, True, frame_count, args.original_root, original_palette)
+        modern = load_strip(group, True, frame_count, args.original_root, original_palette, current_files[group])
         canvas.paste(modern, (152, y), modern)
         y += 88
     draw.text((24, height - 24), "Flattened overview only; private masters and individual runtime PNG files are not embedded.", fill="#7f93b4", font=font)

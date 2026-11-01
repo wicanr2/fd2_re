@@ -4844,6 +4844,21 @@
       "rule": "新增混合名冊與投影的HD1分份時，逐actor明示來源、身份及selector投影；共用素材驗證只分派給明示reuse_group的配方。反例依實際binding選取，兼容單人與多人，不假設第二列存在。入口為tools/verify_fd2_hd1_chibi_party.py的GPU_PARTS、verify_promoted_bindings及main自測，party-final-three提供原名冊雙人與視覺模板單人的可重跑案例。",
       "why": "2026-11-01新增19／31原名冊與35視覺模板。初版把新profile批次加入共用來源分支而遭拒收，轉職反例也曾以固定index1取單人binding而越界。兩次都在正式登錄前失敗。限定共用分派並選正確單人binding後，21完整繪製、18PNG及33反例通過，原GPU輸入保持。",
       "evidence": "WORKLOG.md：2026-11-01羅德曼、渥德與轉職哈瓦特Q版接線；docs/data/fd2-modern-hd-battlefield-20261019.json#hd1_final_known_three_followup_20261101"
+    },
+    {
+      "id": "map-overview-uses-current-catalog-files",
+      "date": "2026-11-01",
+      "area": "美術來源總覽",
+      "rule": "人物總覽從正式catalog的files與frame_sha256讀取當前素材，不由圖組編號拼接style-a等歷史檔名。144／72／48展示以正式144像素HD圖源編製，逐組驗證實際3或12幀形狀。入口tools/build_modern_map_sprite_overview.py的--chibi-summary、--catalog、--modern-root及--group-range；--help列出原版來源與色盤路徑。此圖只比較目前圖源，不作角色身份、執行期或完整人工驗收。",
+      "why": "2026-11-01第67組原圖例外通過後，重生全125組總覽時發現既有load_strip固定拼接style-a舊檔名；版本化新稿已登錄但舊檔仍保留，總覽會繼續顯示舊稿。改依清冊實際files並核SHA，新增目前HD1分組及144／72／48來源收據。",
+      "evidence": "WORKLOG.md：2026-11-01第67組無名靜態圖源與目前總覽；docs/data/fd2-modern-hd-battlefield-20261019.json#hd1_anonymous_static67_followup_20261101",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/build_modern_map_sprite_overview.py"
+        ],
+        "pattern": "name = modern_files\\[frame\\][\\s\\S]*current_files"
+      }
     }
   ]
 }

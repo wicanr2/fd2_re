@@ -448,7 +448,7 @@
       "layer": "data",
       "category": "缺陷",
       "title": "P1 HD1戰場小人物：依原版重繪大頭Q版與個別面容",
-      "body": "第19羅德曼、31渥德及35轉職哈瓦特已依各自DATO與原版十二姿態重繪並接入HD1。\n\n羅德曼保留成熟眉眼、長髮鬍鬚與原劍盾。渥德保留藍眼、黑色頰紋、方下巴及深藍平頂輪廓；角色表、原名冊、ch26對話與ch27隊伍確認其名稱，頭部材質仍未知。35依DATO003及已定哈瓦特成熟大鬍鬚，保持短斧與十字盾。\n\n19取map22第1列／組0／21,30，31取map25第68列／組1／1,45，均保留原我方名冊與位置，沒有持續角色身份欄位，不補身份。35沿既有ch02哈諾1視覺模板，明示identity／portrait／fig3及selector35、record byte6／衍生槽投影，模板職業與數值保持，不作哈瓦特數值或自然轉職證據。\n\n兩固定分份authored-19-and-31及promoted-35，合21完整Game.Draw、18PNG、三次F2、230173核心點與33反例通過；逐actor核對來源及身份／圖組投影，依選定位置唯一匹配並獨立重算矩形。18種舊分份、六批轉職及三種共用契約保持，不重跑或升格舊GPU。\n\n新圖源四項逐byte重編／14拒收；編製器及來源測試SHA未變，舊共用與混合各四項／17拒收沿原r23收據。普通首章十PNG驗完整候選、四種控制、行走取消、F5與新程序LOAD；25頂層Go、21消費來源／416幀／19反例、883清冊及125組1455來源通過，兩可選GPU略過不計。\n\n清冊只換6項、877保持，新增75檔；9323舊美術SHA／inode／mtime／owner、0／9／30六項及其餘122組來源保持。私人素材已同步，README新增七張授權圖。Q比例餘項4→1，第67組身份及出場綁定待核，原圖保持。其餘面容、完整總覽及集中人工仍待，Gaia保持定版。本項維持OPEN，不作EXE動態、自然章節、PLAYER-E2或480頭像驗收；現況及重跑依58／61與主收據hd1_final_known_three_followup_20261101。",
+      "body": "第67組已依使用者明確選定的例外，採用只參考原地圖三拍的Q版試稿。身份、角色頭像及自然出場綁定維持未知；DATO067為龍形頭像，不配用、不新增角色設定。\n\n原版33圖1887列、目前故事與轉職資料未找到selector67綁定；IDA9.4以固定雜湊EXE及原始名稱／位址／bytes保存有界搜尋。零匹配不代表從未使用。兩份內建生成稿只採第二份平滑HD稿，正式母稿及三父圖／三HD圖與使用者選定原型逐byte一致。\n\nstatic-anonymous67借map32原載體48，只投影selector67及衍生槽／呈現；portrait／BattleFig／raw位置保持48，不注入身份、種族或職業。6完整Game.Draw、3PNG、一次F2、21836核心點與29反例通過。這是視覺模板測試，不作角色或自然出場證據。19種舊分份、七批轉職與三種共用契約保持，不重跑或升格舊GPU。\n\n新三拍來源四項逐byte重編／14拒收；來源測試改按實際幀數，兩種舊十二姿態共用／混合各四項／17拒收均重新執行。普通首章十PNG驗完整候選、四種控制、行走取消、F5與新程序LOAD；26頂層Go、21消費來源／416幀／19反例、883清冊及125組1455來源通過，兩可選GPU略過不計。\n\n修正總覽工具固定讀舊style-a檔名的問題，改依目前清冊的實際files與SHA，重生四份共125組的原版／HD1總覽與144／72／48尺寸；舊檔、缺檔與錯誤幀數三反例拒收。README已更新，舊94組技術圖說移至31並留入口。\n\n清冊只換2項、881保持；新增7檔，9398舊美術SHA／inode／mtime／owner、0／9／30六項及其餘124組來源保持。私人素材已同步。已知Q比例待辦1→0，32組造型批次複核與集中人工仍待，Gaia保持定版。本項維持OPEN，不宣稱所有面容、HD1 milestone、自然出場、EXE動態、PLAYER-E2或480頭像完成；現況及重跑依58／61與主收據hd1_anonymous_static67_followup_20261101。",
       "acceptance": [
         "使用者選定亞雷斯新比例，並保留定版原稿、原版來源、逐字提示與SHA；其他角色依相同標準重製，不能只改大圖總覽。",
         "125個可見圖組及1455幀逐組保留原生方向、步態／靜態相位、轉職身份、裝備特徵、腳底與透明契約；原版、已接受圖源及舊證據可追溯。",
@@ -651,7 +651,17 @@
         "docs/figures/hd1-promoted-havart-comparison.png",
         "docs/figures/hd1-party-019-refresh-game.png",
         "docs/figures/hd1-party-031-refresh-game.png",
-        "docs/figures/hd1-party-035-refresh-game.png"
+        "docs/figures/hd1-party-035-refresh-game.png",
+        "remake/assets/themes/modern/hd1-anonymous-static67-refresh.recipe.json",
+        "docs/data/ida/fd2_static67_source_audit_20261101.json",
+        "tools/ida_probe_fd2_static67.py",
+        "tools/build_modern_map_sprite_overview.py",
+        "docs/figures/hd1-anonymous-067-comparison.png",
+        "docs/figures/hd1-anonymous-067-game.png",
+        "docs/figures/hd1-map-sprites-000-031-20261101.png",
+        "docs/figures/hd1-map-sprites-032-067-20261101.png",
+        "docs/figures/hd1-map-sprites-068-095-20261101.png",
+        "docs/figures/hd1-map-sprites-096-139-20261101.png"
       ],
       "verify": {
         "kind": "manual",
@@ -664,7 +674,7 @@
       "layer": "data",
       "category": "缺陷",
       "title": "P1 HD1人物面容與身份複核：依原版頭像保留各自特徵",
-      "body": "第19羅德曼、31渥德及35轉職哈瓦特已依各自DATO與原版十二姿態重繪並接入HD1。\n\n羅德曼保留成熟眉眼、長髮鬍鬚與原劍盾。渥德保留藍眼、黑色頰紋、方下巴及深藍平頂輪廓；角色表、原名冊、ch26對話與ch27隊伍確認其名稱，頭部材質仍未知。35依DATO003及已定哈瓦特成熟大鬍鬚，保持短斧與十字盾。\n\n19取map22第1列／組0／21,30，31取map25第68列／組1／1,45，均保留原我方名冊與位置，沒有持續角色身份欄位，不補身份。35沿既有ch02哈諾1視覺模板，明示identity／portrait／fig3及selector35、record byte6／衍生槽投影，模板職業與數值保持，不作哈瓦特數值或自然轉職證據。\n\n兩固定分份authored-19-and-31及promoted-35，合21完整Game.Draw、18PNG、三次F2、230173核心點與33反例通過；逐actor核對來源及身份／圖組投影，依選定位置唯一匹配並獨立重算矩形。18種舊分份、六批轉職及三種共用契約保持，不重跑或升格舊GPU。\n\n新圖源四項逐byte重編／14拒收；編製器及來源測試SHA未變，舊共用與混合各四項／17拒收沿原r23收據。普通首章十PNG驗完整候選、四種控制、行走取消、F5與新程序LOAD；25頂層Go、21消費來源／416幀／19反例、883清冊及125組1455來源通過，兩可選GPU略過不計。\n\n清冊只換6項、877保持，新增75檔；9323舊美術SHA／inode／mtime／owner、0／9／30六項及其餘122組來源保持。私人素材已同步，README新增七張授權圖。Q比例餘項4→1，第67組身份及出場綁定待核，原圖保持。其餘面容、完整總覽及集中人工仍待，Gaia保持定版。本項維持OPEN，不作EXE動態、自然章節、PLAYER-E2或480頭像驗收；現況及重跑依58／61與主收據hd1_final_known_three_followup_20261101。",
+      "body": "第67組已依使用者明確選定的例外，採用只參考原地圖三拍的Q版試稿。身份、角色頭像及自然出場綁定維持未知；DATO067為龍形頭像，不配用、不新增角色設定。\n\n原版33圖1887列、目前故事與轉職資料未找到selector67綁定；IDA9.4以固定雜湊EXE及原始名稱／位址／bytes保存有界搜尋。零匹配不代表從未使用。兩份內建生成稿只採第二份平滑HD稿，正式母稿及三父圖／三HD圖與使用者選定原型逐byte一致。\n\nstatic-anonymous67借map32原載體48，只投影selector67及衍生槽／呈現；portrait／BattleFig／raw位置保持48，不注入身份、種族或職業。6完整Game.Draw、3PNG、一次F2、21836核心點與29反例通過。這是視覺模板測試，不作角色或自然出場證據。19種舊分份、七批轉職與三種共用契約保持，不重跑或升格舊GPU。\n\n新三拍來源四項逐byte重編／14拒收；來源測試改按實際幀數，兩種舊十二姿態共用／混合各四項／17拒收均重新執行。普通首章十PNG驗完整候選、四種控制、行走取消、F5與新程序LOAD；26頂層Go、21消費來源／416幀／19反例、883清冊及125組1455來源通過，兩可選GPU略過不計。\n\n修正總覽工具固定讀舊style-a檔名的問題，改依目前清冊的實際files與SHA，重生四份共125組的原版／HD1總覽與144／72／48尺寸；舊檔、缺檔與錯誤幀數三反例拒收。README已更新，舊94組技術圖說移至31並留入口。\n\n清冊只換2項、881保持；新增7檔，9398舊美術SHA／inode／mtime／owner、0／9／30六項及其餘124組來源保持。私人素材已同步。已知Q比例待辦1→0，32組造型批次複核與集中人工仍待，Gaia保持定版。本項維持OPEN，不宣稱所有面容、HD1 milestone、自然出場、EXE動態、PLAYER-E2或480頭像完成；現況及重跑依58／61與主收據hd1_anonymous_static67_followup_20261101。",
       "acceptance": [
         "逐組以固定原生三層、FDOTHER0代表色盤與有對應身份的原版頭像／大圖核身份，不沿舊候選或圖說猜職業／種族。",
         "優先修正2、48、50、51、52、53、54、55、56、63、76、79的已見差異，70、73、77、89、125、133補證後逐項確認或修正；所有結論保留來源及未知等級。",
@@ -855,7 +865,17 @@
         "docs/figures/hd1-promoted-havart-comparison.png",
         "docs/figures/hd1-party-019-refresh-game.png",
         "docs/figures/hd1-party-031-refresh-game.png",
-        "docs/figures/hd1-party-035-refresh-game.png"
+        "docs/figures/hd1-party-035-refresh-game.png",
+        "remake/assets/themes/modern/hd1-anonymous-static67-refresh.recipe.json",
+        "docs/data/ida/fd2_static67_source_audit_20261101.json",
+        "tools/ida_probe_fd2_static67.py",
+        "tools/build_modern_map_sprite_overview.py",
+        "docs/figures/hd1-anonymous-067-comparison.png",
+        "docs/figures/hd1-anonymous-067-game.png",
+        "docs/figures/hd1-map-sprites-000-031-20261101.png",
+        "docs/figures/hd1-map-sprites-032-067-20261101.png",
+        "docs/figures/hd1-map-sprites-068-095-20261101.png",
+        "docs/figures/hd1-map-sprites-096-139-20261101.png"
       ],
       "verify": {
         "kind": "manual",

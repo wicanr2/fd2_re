@@ -1,6 +1,6 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
-第19羅德曼、31渥德及35轉職哈瓦特已依各自DATO及原版十二姿態重繪並接入HD1。19／31保留原名冊陣營、位置與圖源，沒有持續身份投影；35沿既有哈諾視覺模板，明示identity／portrait／fig3及selector35投影，不作哈瓦特數值或自然轉職證據。兩固定分份合21完整Game.Draw、18PNG、三次F2、230173核心點及33反例通過；普通首章整包控制、行走取消與保存冷讀相容通過。清冊只換6項、877保持，新增75檔，9323舊美術及其餘122組來源保持。Q比例餘項4→1，第67組身份與出場綁定待核，圖源保持。其餘面容、完整總覽與集中人工仍待，Gaia保持定版。不新增EXE動態或自然章節驗收；現況依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源為主收據hd1_final_known_three_followup_20261101。
+第67組已按使用者確認的原小圖面容例外重繪三拍並接入HD1，身份、DATO及自然出場維持unknown。受控故事載體只作selector67投影，保留原載體48的portrait／BattleFig／位置與無身份狀態，不作角色綁定。6完整Game.Draw、3PNG、一次F2、21836核心點及29反例通過；普通首章十PNG驗整包控制、行走取消與保存冷讀。清冊只換2項、881保持，新增7檔，9398舊美術、0／9／30六項及其餘124組來源保持。125組目前圖源總覽已按正式清冊重生，保留144／72／48尺寸；已知Q比例待辦1→0，32組造型批次複核及集中人工仍待，不宣稱全部面容或HD1 milestone完成。現況依[58](58-fd2-exe-re-coverage.md)，契約依[61](61-modern-theme-runtime-spec.md)，來源為主收據hd1_anonymous_static67_followup_20261101。
 
 戶外草、土、沙、水與石路已依定版風格刷新，原生輪廓、物件與規則保持。完整GPU及普通首章切換、走行取消、保存冷讀通過，README總覽及普通遊玩圖已更新。現況與來源依[58](58-fd2-exe-re-coverage.md)、[61](61-modern-theme-runtime-spec.md)及主收據`hd1_painted_ground_followup_20261029`；洞窟／物件與其餘缺圖續作，人工由使用者接手。
 

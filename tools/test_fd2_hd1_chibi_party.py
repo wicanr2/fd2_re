@@ -36,7 +36,7 @@ class ChibiPartyTest(unittest.TestCase):
     def make(self,recipe,out,masters=None):
         return prepare(recipe,self.catalog,self.pack,Path('/original'),self.work if masters is None else masters,out)
 
-    def test_rebuild_preserves_other_assets_and_exact_24_hd_pngs(self):
+    def test_rebuild_preserves_other_assets_and_exact_native_hd_pngs(self):
         with tempfile.TemporaryDirectory(dir=self.work) as folder:
             out=Path(folder)/'rebuilt';m=self.make(self.recipe,out)
             expected=read(self.candidate/'manifest.json')
@@ -94,8 +94,10 @@ class ChibiPartyTest(unittest.TestCase):
         source=self.work/entry['master_file'];before=sha(source)
         with Image.open(source) as opened:image=opened.copy()
         image.putalpha(image.getchannel('A').point(lambda value:min(value,254)))
-        pieces=checked_master_components(image,12)
-        self.assertEqual(len(pieces),12)
+        frames=read(self.candidate/'manifest.json')['groups'][0]['parent']['frame_count']
+        self.assertIn(frames,(3,12))
+        pieces=checked_master_components(image,frames)
+        self.assertEqual(len(pieces),frames)
         self.assertTrue(all(piece.getchannel('A').getextrema()[1]==254 for piece,box in pieces))
         mutations=[]
         translucent=image.copy();translucent.putalpha(image.getchannel('A').point(lambda value:min(value,128)))
@@ -113,7 +115,7 @@ class ChibiPartyTest(unittest.TestCase):
         mutations.append(image.convert('RGB'))
         opaque=image.copy();opaque.putalpha(255);mutations.append(opaque)
         for index,bad in enumerate(mutations):
-            with self.subTest(alpha_fault=index),self.assertRaises(ValueError):checked_master_components(bad,12)
+            with self.subTest(alpha_fault=index),self.assertRaises(ValueError):checked_master_components(bad,frames)
         self.assertEqual(sha(source),before)
 
 if __name__=='__main__':unittest.main()

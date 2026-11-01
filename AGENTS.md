@@ -31,6 +31,7 @@
 
 ## 已確認的HD收尾與規則擴充方向
 
+- 使用者2026-11-01定案：第67組採「只依原地圖三拍重繪、身份保留未知」的Q版來源例外，沿已展示的第二份平滑HD試稿。角色身份、所屬頭像及出場綁定仍未知；不借用DATO067或其他角色頭像，不新增角色設定或正式出場路徑。圖源與驗證契約依[61](docs/knowledge-base/61-modern-theme-runtime-spec.md)「第67組無名靜態圖源Q版接線」。
 - 使用者2026-10-30要求：每人的臉參考自己的原版大頭像，保留臉型、眉眼、鼻形、嘴形與表情，不沿共用Q版比例套用同一張臉。來源與逐人特徵記於[61](docs/knowledge-base/61-modern-theme-runtime-spec.md)「個別面容與第51／63組修正」及該節配方；既有技術收據不等於全部角色面容通過。蓋亞沿已定先前HD1版本。
 - 使用者2026-10-30定版：蓋亞地圖小人物沿用前次對照標為PREVIOUS、已登錄的`gaia-hd1-big-head-q-v1-master.png`，即[目前原版／HD1對照](docs/figures/hd1-gaia-q-comparison.png)的HD1列。兩份加重候選不採用，不再以胸肩拳腳加厚作停止線；大型戰鬥與頭像不變。來源與接線依[61](docs/knowledge-base/61-modern-theme-runtime-spec.md)「HD1大頭Q版地圖人物修訂」，其餘人物繼續依原版身份及已定Q版畫風複核。
 - 使用者2026-10-29定版：HD1對話框採[古金色雙層框線原型](docs/figures/hd1-gold-dialogue-prototype.png)下半部。保留原版框位、深藍底、文字區及開收動畫，補接故事對話與既有提示視窗；介面隨F11，頭像仍隨美術F2。原型原圖不可改色或改構圖，實作與目前接線範圍依[61](docs/knowledge-base/61-modern-theme-runtime-spec.md)「HD1古金色對話框」。

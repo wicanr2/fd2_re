@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_hd1_chibi_map_refresh",
+  "approved_preview": "docs/figures/hd1-ares-q-design.png",
+  "approved_preview_sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e",
+  "native_bank_sha256": "7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44",
+  "palette_sha256": "404db1ca72ffc19fa7404fbc59bde98cdf239f63fe3375ec248a8142073a28bf",
+  "status": "READY",
+  "base_catalog_sha256": "cf7c9ea1d8e1cdc66b7286aa2c41c0276bd0fbe7e831115592c9caa1a294c7fe",
+  "approval": "使用者2026-11-01選定：採用原圖Q版試稿，身份保留未知；本組明示頭像來源例外，不新增角色設定與出場。",
+  "master_alpha_policy": "per_pose_coverage_v1",
+  "groups": [
+    {
+      "group": 67,
+      "master_file": "fdicon-067-hd1-native-q-v1-master.png",
+      "master_sha256": "9c4e01beb78286d080d60a5fd9836d83311ee8ae173715e5812885a633d05282",
+      "output_prefix": "fdicon-067-hd1-native-q-v1"
+    }
+  ],
+  "image_generation": {
+    "tool": "builtin image_gen.imagegen",
+    "transparent_background": true,
+    "status": "DRAFT-NOT-REGISTERED",
+    "jobs": [
+      {
+        "prompt": "Create ONE transparent RGBA prototype sprite master sheet, EXACTLY THREE separate full body sprites in one horizontal row, 3 columns x 1 row. First reference is the exact original FDICON group067 three-frame source. The second reference is STYLE ONLY, approved bottom large-head very short-body Q-style. Preserve the first reference's OWN visible face and silhouette, do not copy Ares or any named game character, do not invent an identity, original portrait, age or story. Keep original blue/cornflower-blue hair parted around a bare exposed warm tan forehead, small cool pale eyes with dark pupils, no facial hair, neutral serious closed mouth. No headband, no crown, no helmet. Very large head about two thirds of full height and extremely short body, very small original gray-green feet. Preserve the EXACT asymmetrical small body from the native reference: broad muted green shoulder-to-ground panel on VIEWER LEFT, small dark navy blue central torso, tiny vivid red lower waist triangle, dark navy sleeve and small exposed warm tan hand on VIEWER RIGHT. Keep these native visible shapes, do not invent armor plating, shield, sword, cape extension, extra equipment or ornaments. All three sprites face mostly FRONT like source; reproduce the three slight native head/body shifts, NOT a walk animation and NOT new side or back views. Same scale for all3, keep original grounded low silhouette and exact color placement. Clean bold dark contours, readable handpainted shading, large head and very short body matching approved style. Three evenly spaced cells, ample transparent margins around each sprite, absolutely no touching or cropped parts. True alpha0 outside and solid opaque interiors including dark hair and clothes; transparent background, no checkerboard, no ground shadow, no scenery, no text, no labels, no border, no grids, no glows. Prototype is only source-based anonymous art; do not incorporate the unrelated DATO067 dragon portrait.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-last-proportions-review-r27/group-067-original.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ],
+        "scope": "DRAFT source-only anonymous prototype; no portrait binding or production registration",
+        "selected": false,
+        "reason": "pixel-like enlargement; not accepted as HD prototype",
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-bd33013c-e807-4da1-9b74-5f23470ffe9e.png",
+        "source_sha256": "dcc4a7efaa3d588fabf58c00c399cfbf0e0e59723267d990d11a23ea658262d0",
+        "workspace_master": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/fdicon-067-hd1-source-prototype-r1-master.png"
+      },
+      {
+        "prompt": "Repaint the THREE anonymous blue-haired sprites from reference2 into the polished HD HAND-PAINTED CARTOON sprite style shown in the bottom approved chibi row of reference1. The first source is a STYLE reference; keep only the visual style and very large-head very short-body proportions. Reference2 is THIS anonymous character's clothing, palette, face placement and three front-facing poses. This is a new high-definition DRAWING, not pixel art. REMOVE ALL visible pixel blocks, square stair steps, mosaic texture and nearest-neighbor enlarged squares. Use smooth curved dark ink contours, clean large colored hair locks with softly blended blue shading, smoothly drawn pale-blue eyes with dark pupils, smooth warm-tan face with a tiny understated nose and neutral closed mouth. NO headband, NO crown, no beard. Do not borrow Ares's face, sword, armor or clothes. Maintain each blue-haired figure's distinctive exposed central forehead and original blue side-swept hair silhouette. Keep the same asymmetrical muted-green panel down VIEWER LEFT shoulder/side, navy short center/right clothes, tiny RED lower waist triangle, small warm-tan right hand and original gray-green little feet. No invented weapons, shield, armor plates, new ornaments or extended cape. Very large head around67% height, tiny short body and very short legs, high quality smooth hand-painted HD cartoon like approved style1. Exactly3 separate full-body figures in one horizontal row, ample transparent margins, same scale; the three small front-facing pose shifts follow reference2, no new directions or walk. Solid opaque figure interiors with alpha0 everywhere outside, true transparent background, no shadows, ground, checkerboard, labels, borders or text. Only a disposable art prototype, no character identity or portrait association.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png",
+          "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-bd33013c-e807-4da1-9b74-5f23470ffe9e.png"
+        ],
+        "scope": "rejected pixel-like first draft replaced by smooth HD prototype; no formal registration",
+        "selected": true,
+        "reason": "smooth source-only HD prototype; awaiting source exception decision",
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-5994ef52-104f-41f5-be72-1904c56354c8.png",
+        "source_sha256": "9c4e01beb78286d080d60a5fd9836d83311ee8ae173715e5812885a633d05282",
+        "workspace_master": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/fdicon-067-hd1-source-prototype-r2-master.png"
+      }
+    ]
+  },
+  "scope": "使用者已確認原圖面容例外；三拍圖源與受控呈現，身份／DATO／出場未知，不作自然角色綁定。",
+  "source_only_binding": {
+    "group": 67,
+    "frame_count": 3,
+    "identity": null,
+    "portrait_source": null,
+    "face_source": "own FDICON67 frames0..2",
+    "identity_remains_unknown": true,
+    "source_only_exception_approved": true,
+    "selected_prototype_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/fdicon-067-hd1-source-prototype-r2-master.png",
+    "selected_prototype_sha256": "9c4e01beb78286d080d60a5fd9836d83311ee8ae173715e5812885a633d05282"
+  },
+  "visual_carrier": {
+    "template_selector": 48,
+    "map": 32,
+    "roster_file": "remake/assets/maps/map32/map32_units.json",
+    "roster_sha256": "245fbc71ad571a3f6f067ccb43386a911ca5dfc793f6820ecdd59a9611c6a405",
+    "row": 0,
+    "position": {
+      "x_word": 7,
+      "y_word": 5,
+      "raw_key": 48
+    },
+    "portrait": 48,
+    "battle_fig": 48,
+    "selector_projection_injected": true,
+    "identity_projection_injected": false,
+    "scope": "existing story carrier only; not an identity or authored appearance binding for67"
+  },
+  "source_audit": {
+    "file": "docs/data/ida/fd2_static67_source_audit_20261101.json",
+    "sha256": "45eb8ce6a2f4838a6f7606bfac6594cf6156f6af83ccc232a361a02004f3d506"
+  },
+  "alpha_quality_review": {
+    "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-static67-review-r28/alpha-quality-prototype.json",
+    "sha256": "f0f1a8810b3b5af86b0e2eac664fed5e9eb660b37a16e0e6385b73767e64f8a9",
+    "selected_revision": 2,
+    "source_alpha_preserved": true
+  }
+}
