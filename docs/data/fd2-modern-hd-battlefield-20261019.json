@@ -298639,5 +298639,619 @@
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/final-validation-r1.json",
       "sha256": "0045c64c9b68f76680a130c735697bdd44a1f2ac4d6220d9eeb77ec16df7c33e"
     }
+  },
+  "hd1_terrain_atlas_followup_20261102": {
+    "date": "2026-11-02",
+    "base_commit": "662fbe4a5018f45d9d9d1910056906231776ef5a",
+    "issue": 282,
+    "status": "CONFORMED-SCOPED/RUNTIME-E1/NORMAL-GUI",
+    "production_registered": true,
+    "full_hd_complete": false,
+    "scope": "先完成16格／174缺槽；其餘地形保持未完成。",
+    "recipe": {
+      "file": "remake/assets/themes/modern/hd1-terrain-atlas-pilot16.recipe.json",
+      "sha256": "af68675c83b8a51dda86c9586d67548078763a6280d9e44b16d7e9e4bfe355f2"
+    },
+    "native_source_manifest": {
+      "file": "work/promo-cadence-20261018/hd-fonts/native-terrain-sources-r2/manifest.json",
+      "sha256": "a19a3da393294ad6e1c4ad1dccdb9a911d26ed1f3d7008046eddda2398f938f5"
+    },
+    "before_coverage": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/base-coverage.json",
+      "sha256": "ea3577fc7435d52d1b89262477f5de6bc93f02bccebccc274599b727c8608494"
+    },
+    "master": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/terrain-pilot24-atlas-r1.png",
+      "sha256": "5432d804ba711e625378b547b5462706137524e5ccc93b79ca056826db74abb6"
+    },
+    "targets": 174,
+    "authored_cells": 1,
+    "maps": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      10,
+      11,
+      13,
+      14,
+      17,
+      18,
+      20,
+      21,
+      22,
+      26,
+      27,
+      30,
+      31,
+      32
+    ],
+    "source_evidence_level": "既有原生匯出／selector／writer已證實；繪畫是美術近似，不宣稱原版RGB或自然可達。",
+    "compiled_frames": 16,
+    "new_master_files": 1,
+    "new_files": 17,
+    "selected_atlas_cells": [
+      15
+    ],
+    "rejected_atlas_grass_cells": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      12,
+      13,
+      14,
+      16,
+      22
+    ],
+    "seam_prototype": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/shadow-source-prototype-r1/prototype.json",
+      "sha256": "e84c5aad9e4f5de1aa26401d72299dd710b432534cd3e2e056a99b92bd8c9f57"
+    },
+    "shade_policy": {
+      "reference": {
+        "file": "remake/assets/themes/modern/relief-hd.recipe.json",
+        "sha256": "20b2b8ed3045cd7c758e60a345807573ee0198fac0e30d141cd13f7c1f59cbc1"
+      },
+      "index_groups": {
+        "grass": [
+          68,
+          69,
+          70,
+          71,
+          137,
+          138,
+          139,
+          140,
+          141,
+          142
+        ]
+      },
+      "index_shades": {
+        "68": 255,
+        "69": 255,
+        "70": 255,
+        "71": 255,
+        "137": 153,
+        "138": 153,
+        "139": 153,
+        "140": 153,
+        "141": 153,
+        "142": 153
+      },
+      "mask_blur_hd_pixels": 2,
+      "exact_outer_edge_hd_pixels": 1,
+      "material": {
+        "asset_id": "modern.terrain.grass_olive.master",
+        "file": "grass-olive-hd1-painted-v2-master.png",
+        "sha256": "9a6f61a628f93ff50ef7626cccc0c812b0a4075204a4df2d693a6f4fc019e053"
+      }
+    },
+    "diagnostic": "R1技術檢查通過，但完整地圖可見草地方格；原生鄰格與已定陰影表支持改沿原生陰影輪廓編製。R1未登錄，僅第15格新繪部分沿用。",
+    "private_synced": true,
+    "assets": {
+      "status": "PASS-PRIVATE-ATLAS-SYNC",
+      "old_art_files_unchanged": 10151,
+      "new_art_files": 17,
+      "current_art_files": 10168,
+      "registered_allowlist": 6932,
+      "catalog_sha256": "9e31b510d0c11fb6b5e931718c9b915db45bf5492be20aa1fc638a96fd81e49e",
+      "new_names": [
+        "hd1-terrain-atlas-r37-cell00-hd.png",
+        "hd1-terrain-atlas-r37-cell01-hd.png",
+        "hd1-terrain-atlas-r37-cell02-hd.png",
+        "hd1-terrain-atlas-r37-cell03-hd.png",
+        "hd1-terrain-atlas-r37-cell04-hd.png",
+        "hd1-terrain-atlas-r37-cell05-hd.png",
+        "hd1-terrain-atlas-r37-cell06-hd.png",
+        "hd1-terrain-atlas-r37-cell07-hd.png",
+        "hd1-terrain-atlas-r37-cell08-hd.png",
+        "hd1-terrain-atlas-r37-cell09-hd.png",
+        "hd1-terrain-atlas-r37-cell12-hd.png",
+        "hd1-terrain-atlas-r37-cell13-hd.png",
+        "hd1-terrain-atlas-r37-cell14-hd.png",
+        "hd1-terrain-atlas-r37-cell15-hd.png",
+        "hd1-terrain-atlas-r37-cell15-master.png",
+        "hd1-terrain-atlas-r37-cell16-hd.png",
+        "hd1-terrain-atlas-r37-cell22-hd.png"
+      ],
+      "sha_inode_mtime_uid_gid_preserved": true
+    },
+    "human_acceptance": false,
+    "compiler": {
+      "file": "tools/build_fd2_hd_terrain_atlas.py",
+      "sha256": "a4a20a67d27a94cc3fbf4be910a43ed4fbbfffa86aa3c1fcd83638a37a094505"
+    },
+    "registered_rebuilder": {
+      "file": "tools/rebuild_fd2_hd_terrain_atlas.py",
+      "sha256": "889038f872946deddab06f36a71b1c576ba0c8ebdbfecbdf84a7d8c253cda0bc"
+    },
+    "target_roles": {
+      "terrain": 170,
+      "foreground": 4
+    },
+    "private": {
+      "commit": "e2147650d71c86d7c627dd82367cf0633e0cea97",
+      "remote_main": "e2147650d71c86d7c627dd82367cf0633e0cea97",
+      "remote_verified": true,
+      "clean": true
+    },
+    "coverage": {
+      "snapshot": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/formal-coverage-r2.json",
+        "sha256": "c80466054baf016b30ac0d4747a67d3e02ed5d1126a940c512a1fd66a01bcf9f"
+      },
+      "canonical_output": "docs/data/fd2-hd1-terrain-coverage.json",
+      "summary": {
+        "maps": 33,
+        "missing-art": 3180,
+        "missing_unique_native_content": 2033,
+        "native-remap-only": 10,
+        "registered-hd": 808,
+        "required_slots": 3998,
+        "selector_checks": 617520
+      },
+      "delta": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/coverage-delta-r2.json",
+        "sha256": "0b420853d588338666403b56f02f10786b195fd1b7999b259284988e28c34c39"
+      }
+    },
+    "gpu": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/gpu-r2-capture/receipt.json",
+        "sha256": "f717d0430be2729d8be8902d6788e050b14b2fbf25428bc5dee5a5fd784814f1"
+      },
+      "source_cases": 696,
+      "complete_game_cases": 2,
+      "f2": 2,
+      "pngs": 6,
+      "save_bytes_unchanged": 169,
+      "rgba_tolerance": 2,
+      "scope": "174槽真實原生producer的四種色盤狀態，兩種介面設定的受控map1完整Game.Draw及F2；不提升UI字形覆蓋、章節可達或原版RGB結論。",
+      "screenshots": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/gpu-r2-capture/game-map01-hd-ui.png",
+          "sha256": "a4699d31eaad3bff74bb1aa1a1f4f7423360519cb72a93e7e76af8a71e52d4f3"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/gpu-r2-capture/game-map01-original-ui.png",
+          "sha256": "a4699d31eaad3bff74bb1aa1a1f4f7423360519cb72a93e7e76af8a71e52d4f3"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/gpu-r2-capture/map08-0105-foreground-steady.png",
+          "sha256": "5b60f789c38cfadbda25afc619fc83b1f5028f1fd4644b35bb32c0637fd74ea7"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/gpu-r2-capture/map20-0155-foreground-steady.png",
+          "sha256": "5b60f789c38cfadbda25afc619fc83b1f5028f1fd4644b35bb32c0637fd74ea7"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/gpu-r2-capture/map26-0171-foreground-steady.png",
+          "sha256": "5b60f789c38cfadbda25afc619fc83b1f5028f1fd4644b35bb32c0637fd74ea7"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/gpu-r2-capture/map27-0075-foreground-steady.png",
+          "sha256": "5b60f789c38cfadbda25afc619fc83b1f5028f1fd4644b35bb32c0637fd74ea7"
+        }
+      ]
+    },
+    "normal": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/normal-r2-capture/receipt.json",
+        "sha256": "5f18a38c93f480546890f1f9303812112df0e96cf58d690101dc9c722d8f07ae"
+      },
+      "pngs": 10,
+      "binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/fd2-player-r2",
+        "sha256": "c3ed3d5e9f44584c6f713e8567fea1f001d2701b3af1440241682da125fea10f"
+      },
+      "production_go_unchanged_from": "662fbe4a5018f45d9d9d1910056906231776ef5a",
+      "source_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "saved_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "theme_and_interface_save_bytes_equal": true,
+      "new_process_title_load": true,
+      "scope": "既有首章來源的整包控制與保存相容；新地形的實際圖源由GPU受控map1驗證，不混稱本次普通路徑自然看過全部174槽。"
+    },
+    "regression": {
+      "passed": [
+        "TestModernHDChibiMapSampleSelectsOriginalPosition",
+        "TestModernHDChibiPartyFixture",
+        "TestModernHDChibiEnemyFixture",
+        "TestModernHDChibiStaticFixture",
+        "TestModernHDChibiAnonymousStaticFixture",
+        "TestModernHDChibiAuditedFixture",
+        "TestModernHDBattleConsumerInventory",
+        "TestModernHDMapOverwriteCoverageAndDestinationDependency",
+        "TestModernHDMapTransactionUsesOneNativeClockAndIndependentTerrain",
+        "TestModernHDMapRejectedArtDoesNotPublishNativeState",
+        "TestModernHDMapMosaicShaderCompiles",
+        "TestModernHDMapUnitPlanMatchesNativeWrites",
+        "TestModernHDMapUnitPlanKeepsBlankNativeSlotsAndRejectsMissingSources",
+        "TestModernHDMapWorldLayersAndImmutableSources",
+        "TestModernHDMapWorldRawFlagAndAtomicRejection",
+        "TestModernHDPrivateCatalogIncludesEveryPortrait",
+        "TestModernHDExactTerrainReuseSourceTransactions",
+        "TestModernHDTerrainCatalogAtomicAndNativeMask",
+        "TestModernHDTerrainRGBIdentityMappingAndCollapse",
+        "TestModernHDTerrainSteadyAndUpStepProjection",
+        "TestModernHDTerrainKeepsClockAndRangeAbovePainting",
+        "TestBuildNativeMapFrameInputUsesOnlyRawMaterializedState",
+        "TestBuildNativeMapFrameInputRejectsControlDriftAndMissingRawRoster",
+        "TestIndependentInterfaceFourModesKeepArtworkAndBattle",
+        "TestBuildCollectsControlledJSONAndGoUIWithoutNotesOrErrors",
+        "TestBuildIsDeterministicAndJSONSerializable",
+        "TestBuildRejectsDuplicateExistingStringID",
+        "TestMultipleTextFieldsDoNotReuseOneExistingStringID",
+        "TestVariablesIncludeWrappedErrorPlaceholder",
+        "TestDrawFunctionContextIncludesIndirectASCIIAndFunctionName",
+        "TestDrawFunctionContextSkipsLocaleKeys",
+        "TestReviewedGoCandidatesMatchCurrentInventory"
+      ],
+      "skipped": [
+        "TestModernHDMapActualCandidateWorld",
+        "TestModernHDMapOverviewGPU"
+      ],
+      "source_tree_sha256": "635e9145e1dce265f8891942a7857ebba9a78aa67edd3ee87362de169ca21239",
+      "source_file_count": 1196,
+      "consumer_cases": 21,
+      "consumer_source_frames": 416,
+      "consumer_rejections": 19,
+      "source_transactions": 174,
+      "wrong_native_masks_rejected": 22,
+      "compilation_faults": 17,
+      "registration_faults": 8,
+      "rebuild_from_private": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/rebuilt-from-private-r2/receipt.json",
+        "sha256": "f8adf7f99d781a1f298fd31cb4d06fba9fee886a8fde93ac6310a934a7e9e4ec"
+      }
+    },
+    "public_figures": [
+      {
+        "file": "docs/figures/hd1-terrain-shadow-source-comparison.png",
+        "sha256": "3d76b08fbf62a15e7665615521853dacfeabd13a5622dda5761373b94e938c15",
+        "size": [
+          1280,
+          736
+        ]
+      },
+      {
+        "file": "docs/figures/hd1-terrain-shadow-map01-game.png",
+        "sha256": "a4699d31eaad3bff74bb1aa1a1f4f7423360519cb72a93e7e76af8a71e52d4f3",
+        "size": [
+          1920,
+          1200
+        ],
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/gpu-r2-capture/game-map01-hd-ui.png",
+          "sha256": "a4699d31eaad3bff74bb1aa1a1f4f7423360519cb72a93e7e76af8a71e52d4f3"
+        }
+      }
+    ],
+    "commands": {
+      "prepare": "timeout 360s docker run --rm -i --init --network none --user 1000:1000 --memory 4g --cpus 2 --pids-limit 128 --mount type=bind,source=/home/anr2/cht/fd2,target=/repo --mount type=bind,source=/home/anr2/cht/fd2/org_game,target=/repo/org_game,readonly --mount type=bind,source=/home/anr2/.codex/knowledge-base,target=/kb,readonly --mount type=bind,source=/home/anr2/.codex/skills,target=/skills,readonly --mount type=bind,source=/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22,target=/original,readonly --mount type=bind,source=/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a,target=/modern,readonly --mount type=bind,source=/home/anr2/ida_94_official/skills/use-ida-pro-9-4,target=/ida-skill,readonly -w /repo sc-cht-hdtools:pillow11.3.0-r2 python tools/build_fd2_hd_terrain_atlas.py --recipe remake/assets/themes/modern/hd1-terrain-atlas-pilot16.recipe.json --catalog work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/base-catalog.json --pack /modern --original /original --sources work/promo-cadence-20261018/hd-fonts/native-terrain-sources-r2 --maps remake/assets/maps --master work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/terrain-pilot24-atlas-r1.png --coverage work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/base-coverage.json --out work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/candidate-r2",
+      "source_transactions": "timeout 720s docker run --rm --init --network none --user 1000:1000 --memory 8g --cpus 2 --pids-limit 256 --mount type=bind,source=/home/anr2/cht/fd2,target=/repo --mount type=bind,source=/home/anr2/cht/fd2/org_game,target=/repo/org_game,readonly --mount type=bind,source=/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22,target=/original,readonly --mount type=bind,source=/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a,target=/modern,readonly -e GOCACHE=/repo/work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/go-cache -e GOPROXY=off -e GOSUMDB=off -e GOMAXPROCS=2 -e FD2_ASSET_PACK=/original -e LIBGL_ALWAYS_SOFTWARE=1 -e LP_NUM_THREADS=2 -e FD2_TEST_MODERN_EFFECT_CATALOG=/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/candidate-r2/catalog.json -e FD2_TEST_MODERN_EFFECT_PACK=/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/candidate-r2 -e FD2_HD_TERRAIN_ATLAS_CPU=1 -e FD2_HD_TERRAIN_REUSE_MANIFEST=/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/candidate-r2/manifest.json -w /repo/remake fd2-go-test-local:latest python3 /repo/tools/fd2_go_test_memory_probe.py --out /repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/cpu-r2 --timeout 420 -- with-xvfb go test ./cmd/fd2 -p=1 -count=1 -timeout=360s -run '^TestModernHDPaintedTerrainAtlasSourceTransactions$' -v",
+      "compilation_tests": "timeout 480s docker run --rm -i --init --network none --user 1000:1000 --memory 4g --cpus 2 --pids-limit 128 --mount type=bind,source=/home/anr2/cht/fd2,target=/repo --mount type=bind,source=/home/anr2/cht/fd2/org_game,target=/repo/org_game,readonly --mount type=bind,source=/home/anr2/.codex/knowledge-base,target=/kb,readonly --mount type=bind,source=/home/anr2/.codex/skills,target=/skills,readonly --mount type=bind,source=/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22,target=/original,readonly --mount type=bind,source=/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a,target=/modern,readonly --mount type=bind,source=/home/anr2/ida_94_official/skills/use-ida-pro-9-4,target=/ida-skill,readonly -e FD2_TERRAIN_ATLAS_TEST_ROOT=/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37 -w /repo sc-cht-hdtools:pillow11.3.0-r2 python tools/fd2_go_test_memory_probe.py --out /repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/compilation-tests-r2 --timeout 420 -- python -m unittest discover -s tools -p test_fd2_hd_terrain_atlas.py -v",
+      "gpu": "timeout 1560s docker run --rm --init --network none --user 1000:1000 --memory 12g --cpus 2 --pids-limit 256 --mount type=bind,source=/home/anr2/cht/fd2,target=/repo --mount type=bind,source=/home/anr2/cht/fd2/org_game,target=/repo/org_game,readonly --mount type=bind,source=/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22,target=/original,readonly --mount type=bind,source=/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a,target=/modern,readonly -e GOCACHE=/repo/work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/go-cache -e GOPROXY=off -e GOSUMDB=off -e GOMAXPROCS=2 -e FD2_ASSET_PACK=/original -e LIBGL_ALWAYS_SOFTWARE=1 -e LP_NUM_THREADS=2 -e FD2_TEST_MODERN_EFFECT_CATALOG=/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/candidate-r2/catalog.json -e FD2_TEST_MODERN_EFFECT_PACK=/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/candidate-r2 -e FD2_HD_TERRAIN_ATLAS_GPU=1 -e FD2_HD_TERRAIN_REUSE_EXPECTED=174 -e FD2_HD_TERRAIN_REUSE_MANIFEST=/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/candidate-r2/manifest.json -e FD2_HD_TERRAIN_REUSE_OUT=/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/gpu-r2-capture -w /repo/remake fd2-go-test-local:latest python3 /repo/tools/fd2_go_test_memory_probe.py --out /repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/gpu-r2 --timeout 1380 -- with-xvfb go test ./cmd/fd2 -p=1 -count=1 -timeout=1320s -run '^TestModernHDPaintedTerrainAtlasRealConsumersGPU$' -v",
+      "normal": "timeout 1080s docker run --rm --init --network none --user 1000:1000 --memory 7g --cpus 2 --pids-limit 256 --mount type=bind,source=/home/anr2/cht/fd2,target=/repo --mount type=bind,source=/home/anr2/cht/fd2/org_game,target=/repo/org_game,readonly --mount type=bind,source=/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22,target=/original,readonly --mount type=bind,source=/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a,target=/modern,readonly --mount type=bind,source=/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/hd-world-gui-r7/user-data/fd2_re,target=/source,readonly -e LIBGL_ALWAYS_SOFTWARE=1 -e LP_NUM_THREADS=2 -e GOMAXPROCS=2 -w /repo fd2-promo-local:latest python3 tools/fd2_go_test_memory_probe.py --out /repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/normal-r2 --timeout 1020 -- python3 tools/verify_fd2_hd_fonts_gui.py --binary /repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-ui-r38/fd2-player-r2 --assets /repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/runtime-r2 --original-pack /original --modern-pack /repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/candidate-r2 --town-save /source/fd2_save.json --out /repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/normal-r2-capture --battle-status --world --battle-node battle_ch01 --chibi-refresh --startup-timeout 360 --run-timeout 900",
+      "registration_tests": "timeout 240s docker run --rm -i --init --network none --user 1000:1000 --memory 4g --cpus 2 --pids-limit 128 --mount type=bind,source=/home/anr2/cht/fd2,target=/repo --mount type=bind,source=/home/anr2/cht/fd2/org_game,target=/repo/org_game,readonly --mount type=bind,source=/home/anr2/.codex/knowledge-base,target=/kb,readonly --mount type=bind,source=/home/anr2/.codex/skills,target=/skills,readonly --mount type=bind,source=/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22,target=/original,readonly --mount type=bind,source=/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a,target=/modern,readonly --mount type=bind,source=/home/anr2/ida_94_official/skills/use-ida-pro-9-4,target=/ida-skill,readonly -e FD2_TERRAIN_ATLAS_TEST_ROOT=/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37 -e FD2_TERRAIN_ATLAS_GPU_RECEIPT=/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/gpu-r2-capture/receipt.json -w /repo sc-cht-hdtools:pillow11.3.0-r2 python tools/fd2_go_test_memory_probe.py --out /repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/registration-tests-r2 --timeout 180 -- python -m unittest discover -s tools -p test_fd2_hd_terrain_atlas.py -k test_registration_requires_complete_real_gpu_evidence -v",
+      "register": "timeout 120s docker run --rm -i --init --network none --user 1000:1000 --memory 4g --cpus 2 --pids-limit 128 --mount type=bind,source=/home/anr2/cht/fd2,target=/repo --mount type=bind,source=/home/anr2/cht/fd2/org_game,target=/repo/org_game,readonly --mount type=bind,source=/home/anr2/.codex/knowledge-base,target=/kb,readonly --mount type=bind,source=/home/anr2/.codex/skills,target=/skills,readonly --mount type=bind,source=/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22,target=/original,readonly --mount type=bind,source=/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a,target=/modern,readonly --mount type=bind,source=/home/anr2/ida_94_official/skills/use-ida-pro-9-4,target=/ida-skill,readonly -w /repo sc-cht-hdtools:pillow11.3.0-r2 python tools/build_fd2_hd_terrain_atlas.py --register --catalog remake/assets/themes/modern/catalog.json --candidate work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/candidate-r2 --gpu-receipt work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/gpu-r2-capture/receipt.json",
+      "private_sync": "timeout 120s docker run --rm -i --init --network none --user 1000:1000 --memory 4g --cpus 2 --pids-limit 128 --mount type=bind,source=/home/anr2/cht/fd2,target=/repo --mount type=bind,source=/home/anr2/cht/fd2/org_game,target=/repo/org_game,readonly --mount type=bind,source=/home/anr2/.codex/knowledge-base,target=/kb,readonly --mount type=bind,source=/home/anr2/.codex/skills,target=/skills,readonly --mount type=bind,source=/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22,target=/original,readonly --mount type=bind,source=/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a,target=/modern --mount type=bind,source=/home/anr2/ida_94_official/skills/use-ida-pro-9-4,target=/ida-skill,readonly -w /repo sc-cht-hdtools:pillow11.3.0-r2 python tools/sync_modern_theme_private.py --catalog remake/assets/themes/modern/catalog.json --source work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/candidate-r2 --destination /modern",
+      "formal_regression": "timeout 720s docker run --rm --init --network none --user 1000:1000 --memory 8g --cpus 2 --pids-limit 256 --mount type=bind,source=/home/anr2/cht/fd2,target=/repo --mount type=bind,source=/home/anr2/cht/fd2/org_game,target=/repo/org_game,readonly --mount type=bind,source=/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22,target=/original,readonly --mount type=bind,source=/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a,target=/modern,readonly -e GOCACHE=/repo/work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/go-cache -e GOPROXY=off -e GOSUMDB=off -e GOMAXPROCS=2 -e FD2_ASSET_PACK=/original -e LIBGL_ALWAYS_SOFTWARE=1 -e LP_NUM_THREADS=2 -e FD2_TEST_MODERN_EFFECT_CATALOG=/repo/remake/assets/themes/modern/catalog.json -e FD2_TEST_MODERN_EFFECT_PACK=/modern -e FD2_HD_CONSUMER_INVENTORY_OUT=/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/consumers-formal-r2.json -e FD2_TEST_MODERN_PACK=/modern -e FD2_HD_TERRAIN_REUSE_CPU=1 -w /repo/remake fd2-go-test-local:latest python3 /repo/tools/fd2_go_test_memory_probe.py --out /repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/formal-regression-r2 --timeout 420 -- with-xvfb go test ./cmd/fd2 ./cmd/fd2-string-inventory -p=1 -count=1 -timeout=360s -run '^(TestModernHDPrivateCatalogIncludesEveryPortrait|TestModernHDTerrainCatalogAtomicAndNativeMask|TestModernHDTerrainRGBIdentityMappingAndCollapse|TestModernHDTerrainSteadyAndUpStepProjection|TestModernHDTerrainKeepsClockAndRangeAbovePainting|TestModernHDExactTerrainReuseSourceTransactions|TestModernHDMap.*|TestModernHDChibiPartyFixture|TestModernHDChibiEnemyFixture|TestModernHDChibiStaticFixture|TestModernHDChibiAnonymousStaticFixture|TestModernHDChibiAuditedFixture|TestModernHDChibiMapSampleSelectsOriginalPosition|TestIndependentInterface.*|TestModernHDBattleConsumerInventory|TestBuild.*|TestMultipleTextFieldsDoNotReuseOneExistingStringID|TestVariablesIncludeWrappedErrorPlaceholder|TestDrawFunctionContext.*|TestReviewedGoCandidatesMatchCurrentInventory)$' -v",
+      "coverage": "timeout 720s docker run --rm --init --network none --user 1000:1000 --memory 8g --cpus 2 --pids-limit 256 --mount type=bind,source=/home/anr2/cht/fd2,target=/repo --mount type=bind,source=/home/anr2/cht/fd2/org_game,target=/repo/org_game,readonly --mount type=bind,source=/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22,target=/original,readonly --mount type=bind,source=/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a,target=/modern,readonly -e GOCACHE=/repo/work/promo-cadence-20261018/hd-fonts/ordinary-2-3-7-8-r1/go-cache -e GOPROXY=off -e GOSUMDB=off -e GOMAXPROCS=2 -e FD2_ASSET_PACK=/original -e LIBGL_ALWAYS_SOFTWARE=1 -e LP_NUM_THREADS=2 -w /repo/remake fd2-go-test-local:latest go run ./cmd/fd2-terrain-sources -pack /original -maps /repo/remake/assets/maps -catalog /repo/remake/assets/themes/modern/catalog.json -modern-root /modern -coverage-out /repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/formal-coverage-r2.json",
+      "consumer": "timeout 120s docker run --rm --init --network none --user 1000:1000 --memory 4g --cpus 2 --pids-limit 128 --mount type=bind,source=/home/anr2/cht/fd2,target=/repo --mount type=bind,source=/home/anr2/cht/fd2/org_game,target=/repo/org_game,readonly --mount type=bind,source=/home/anr2/.codex/knowledge-base,target=/kb,readonly --mount type=bind,source=/home/anr2/.codex/skills,target=/skills,readonly --mount type=bind,source=/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22,target=/original,readonly --mount type=bind,source=/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a,target=/modern,readonly -w /repo sc-cht-hdtools:pillow11.3.0-r2 python tools/verify_fd2_battle_hd_consumers.py --observed /repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/consumers-formal-r2.json --original-pack /original --modern-pack /modern --catalog /repo/remake/assets/themes/modern/catalog.json --out /repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/consumers-verified-r2.json --self-test",
+      "catalog_validation": "timeout 120s docker run --rm -i --init --network none --user 1000:1000 --memory 4g --cpus 2 --pids-limit 128 --mount type=bind,source=/home/anr2/cht/fd2,target=/repo --mount type=bind,source=/home/anr2/cht/fd2/org_game,target=/repo/org_game,readonly --mount type=bind,source=/home/anr2/.codex/knowledge-base,target=/kb,readonly --mount type=bind,source=/home/anr2/.codex/skills,target=/skills,readonly --mount type=bind,source=/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22,target=/original,readonly --mount type=bind,source=/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a,target=/modern,readonly --mount type=bind,source=/home/anr2/ida_94_official/skills/use-ida-pro-9-4,target=/ida-skill,readonly --mount type=bind,source=/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a,target=/repo/remake/generated-assets/modern-theme-prototypes,readonly -w /repo sc-cht-hdtools:pillow11.3.0-r2 python tools/validate_modern_theme_catalog.py --verify-private --catalog remake/assets/themes/modern/catalog.json",
+      "rebuild_from_private": "timeout 240s docker run --rm -i --init --network none --user 1000:1000 --memory 4g --cpus 2 --pids-limit 128 --mount type=bind,source=/home/anr2/cht/fd2,target=/repo --mount type=bind,source=/home/anr2/cht/fd2/org_game,target=/repo/org_game,readonly --mount type=bind,source=/home/anr2/.codex/knowledge-base,target=/kb,readonly --mount type=bind,source=/home/anr2/.codex/skills,target=/skills,readonly --mount type=bind,source=/home/anr2/cht/fd2-assets-private/packs/fd2-original-b97caf22,target=/original,readonly --mount type=bind,source=/home/anr2/cht/fd2-assets-private/packs/fd2-modern-handpainted-a,target=/modern,readonly --mount type=bind,source=/home/anr2/ida_94_official/skills/use-ida-pro-9-4,target=/ida-skill,readonly -w /repo sc-cht-hdtools:pillow11.3.0-r2 python tools/rebuild_fd2_hd_terrain_atlas.py --recipe remake/assets/themes/modern/hd1-terrain-atlas-pilot16.recipe.json --catalog remake/assets/themes/modern/catalog.json --pack /modern --original /original --sources work/promo-cadence-20261018/hd-fonts/native-terrain-sources-r2 --maps remake/assets/maps --out work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/rebuilt-from-private-r2"
+    },
+    "diagnostics": [
+      "R1通過CPU/GPU但map1可見草畫方格，未登錄；15草畫拒收，原生來源拼接僅供美術診斷，不當作oracle。R2沿已定草材與明暗表，實際Game.Draw已目視。",
+      "首次正式Pillow驗證漏掛完整私人包而在稀疏本機快取找不到舊檔；補回既有canonical private_root唯讀掛載後906項通過，不當作產品缺陷。",
+      "圖板命令尾端多出heredoc結束標記，未採exit127為完成；乾淨重跑退出0且兩PNG SHA保持。"
+    ],
+    "memory": {
+      "cpu-r2": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/cpu-r2.memory.json",
+          "sha256": "a4f82a70e9f6f230e1f0d28d91d2932bbf560bdd1044eed780c52f98aa5c9fb1"
+        },
+        "elapsed_seconds": 7.013,
+        "returncode": 0,
+        "timeout": false,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "memory_peak_bytes": 901877760
+      },
+      "compilation-tests-r2": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/compilation-tests-r2.memory.json",
+          "sha256": "194f5050fcd45788e2a2c31739e56bb0a27f4ef6883e460231e763ebb0abea56"
+        },
+        "elapsed_seconds": 33.556,
+        "returncode": 0,
+        "timeout": false,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "memory_peak_bytes": 478646272
+      },
+      "gpu-r2": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/gpu-r2.memory.json",
+          "sha256": "d9bbd52c1b7752ba676b765dd2ee2dba4886e5d8a8b1e8aadf85b139ab637bae"
+        },
+        "elapsed_seconds": 239.404,
+        "returncode": 0,
+        "timeout": false,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "memory_peak_bytes": 5902123008
+      },
+      "normal-r2": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/normal-r2.memory.json",
+          "sha256": "2e48314a7c10cc6f9a332c42ff6e7592276f6eb371c37f8e12bd8a6473196204"
+        },
+        "elapsed_seconds": 190.352,
+        "returncode": 0,
+        "timeout": false,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "memory_peak_bytes": 3843653632
+      },
+      "registration-tests-r2": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/registration-tests-r2.memory.json",
+          "sha256": "c446576635026acdac79a5e13e34a7eeee308eb795228f2760904e63aa040d19"
+        },
+        "elapsed_seconds": 13.531,
+        "returncode": 0,
+        "timeout": false,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "memory_peak_bytes": 2027159552
+      },
+      "formal-regression-r2": {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/formal-regression-r2.memory.json",
+          "sha256": "e85e5d958ff9b66fb07c4415b2c7b1987bb093efc68e7d9869871257187246b1"
+        },
+        "elapsed_seconds": 142.28,
+        "returncode": 0,
+        "timeout": false,
+        "memory_events_delta": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0,
+          "sock_throttled": 0
+        },
+        "memory_peak_bytes": 4757807104
+      }
+    },
+    "references": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/commands-r2.json",
+        "sha256": "715cb1d191b5aea7ac1c87d57e3b8f4a32b64572db53d45e998dbecc11519ca0"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/base-catalog.json",
+        "sha256": "f7d431b4da716565c11594a85f995f994fc00bda61fa733666ef9afdf53d0404"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/base-coverage.json",
+        "sha256": "ea3577fc7435d52d1b89262477f5de6bc93f02bccebccc274599b727c8608494"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/candidate-r2/manifest.json",
+        "sha256": "fdd4c1e48eaa8ac48c425535ceab830deba2f3666e55c8db70515bfbddeed768"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/candidate-r2/catalog.json",
+        "sha256": "a30638494525607a21145f7b7257a6d07f10c5178d137a7a3d8a341ed3724fa6"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/cpu-r2.log",
+        "sha256": "a13a8002f0dcaf122aaabffaaaa51490e392a81a34888f1bcf427e604b50a986"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/cpu-r2.memory.json",
+        "sha256": "a4f82a70e9f6f230e1f0d28d91d2932bbf560bdd1044eed780c52f98aa5c9fb1"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/compilation-tests-r2.log",
+        "sha256": "3dc9baea8f9fb1ec7d8e4c9a1c56ededc6abed3a06c296e4708fa647a86fbc0d"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/compilation-tests-r2.memory.json",
+        "sha256": "194f5050fcd45788e2a2c31739e56bb0a27f4ef6883e460231e763ebb0abea56"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/gpu-r2-capture/receipt.json",
+        "sha256": "f717d0430be2729d8be8902d6788e050b14b2fbf25428bc5dee5a5fd784814f1"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/gpu-r2.log",
+        "sha256": "9ee3ee7e81dde2d6f042d4e729be6a54a0c6bdc930ec4001115bd384d6f1b568"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/gpu-r2.memory.json",
+        "sha256": "d9bbd52c1b7752ba676b765dd2ee2dba4886e5d8a8b1e8aadf85b139ab637bae"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/normal-r2-capture/receipt.json",
+        "sha256": "5f18a38c93f480546890f1f9303812112df0e96cf58d690101dc9c722d8f07ae"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/normal-r2.log",
+        "sha256": "4396c274bbbbb7ea5b902ec7a5969387921dcbc64c0e08f38e8ea54097decedf"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/normal-r2.memory.json",
+        "sha256": "2e48314a7c10cc6f9a332c42ff6e7592276f6eb371c37f8e12bd8a6473196204"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/registration-tests-r2.log",
+        "sha256": "4efdad9b385bb7eb5aef512199c251f0ccc924d7353bd6cfde0b0d86596036a7"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/registration-tests-r2.memory.json",
+        "sha256": "c446576635026acdac79a5e13e34a7eeee308eb795228f2760904e63aa040d19"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/formal-regression-r2.log",
+        "sha256": "85dbd192133f6d29dddc3a2ea2e7c53824d585f5d446bbd48da29737ffe94fbb"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/formal-regression-r2.memory.json",
+        "sha256": "e85e5d958ff9b66fb07c4415b2c7b1987bb093efc68e7d9869871257187246b1"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/formal-catalog-validation-r2.json",
+        "sha256": "36faba89f49da69e89da94b2e4d4c2bce8c935e0d6dab187bc2f63b3fe321661"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/consumers-formal-r2.json",
+        "sha256": "c42c081d0356a6427d93196d29672020389a57b309f73e168288b3b0deced16e"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/consumers-verified-r2.json",
+        "sha256": "ec6eae5642a0a41a78a4c3d3b21fc65f236481fbc72dd6cca4823cb076c1101d"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/coverage-delta-r2.json",
+        "sha256": "0b420853d588338666403b56f02f10786b195fd1b7999b259284988e28c34c39"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/formal-coverage-r2.json",
+        "sha256": "c80466054baf016b30ac0d4747a67d3e02ed5d1126a940c512a1fd66a01bcf9f"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/private-before.json",
+        "sha256": "e3921698606f729ea7be56d2bb3e1093de53c0a689b3f1d00ac91b88182256fd"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/private-after-r2.json",
+        "sha256": "4f091dbb2571589b2f7cb8ae9ec74eb8ad01dd2584e92e4728c58d33fba58e9e"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/private-commit-r2.json",
+        "sha256": "1b292149a5bf51bee6ab391f63aa9682092fd4213d109e98737ee732dbce6b31"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/public-pictures-r2.json",
+        "sha256": "ba730b876691e0f690e804a419f0490c8d55790fbed7282f2d1f06dfe66880bd"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/rebuilt-from-private-r2/receipt.json",
+        "sha256": "f8adf7f99d781a1f298fd31cb4d06fba9fee886a8fde93ac6310a934a7e9e4ec"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/shadow-source-prototype-r1/prototype.json",
+        "sha256": "e84c5aad9e4f5de1aa26401d72299dd710b432534cd3e2e056a99b92bd8c9f57"
+      }
+    ],
+    "runtime_sources": [
+      {
+        "file": "tools/build_fd2_hd_terrain_atlas.py",
+        "sha256": "a4a20a67d27a94cc3fbf4be910a43ed4fbbfffa86aa3c1fcd83638a37a094505"
+      },
+      {
+        "file": "tools/rebuild_fd2_hd_terrain_atlas.py",
+        "sha256": "889038f872946deddab06f36a71b1c576ba0c8ebdbfecbdf84a7d8c253cda0bc"
+      },
+      {
+        "file": "tools/test_fd2_hd_terrain_atlas.py",
+        "sha256": "c912602f8b37acdd226416a0a69ea56af8111fea18adf60f1d739d1505ad9e34"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_terrain_reuse_gpu_test.go",
+        "sha256": "8d0ad98112d891c72234c4fd43223ac4e7adf95207583bf0f845dd7e4eb89650"
+      },
+      {
+        "file": "tools/build_fd2_hd_ground.py",
+        "sha256": "da81c7657fb4880fbcf1a251ddc4d9f6c5fdb70870b55330fbfe626c2c73f2c9"
+      },
+      {
+        "file": "tools/build_fd2_hd_ground_edges.py",
+        "sha256": "bdb81884e15e9c8b8c85f9b16c95020484d91fe44207d42de0b6922b913c14af"
+      },
+      {
+        "file": "tools/verify_fd2_terrain_sources.py",
+        "sha256": "2ad1b68424541acb01c7efd38e3d89ac42ee2bd7e4e14e8f412056d605d61d44"
+      }
+    ],
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/final-validation-r2.json",
+      "sha256": "29c64d29cbbf3f57884676d7fa2906401fdc81236456200c2d0a0c4413cd7a7e"
+    },
+    "source_index_before_implementation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/missing-native-content.json",
+      "sha256": "91f44a96e2036fc6ef7601fb337b8b8e8f4f1ac4614e3faf5bbc2dc9ece7e4ad"
+    }
   }
 }

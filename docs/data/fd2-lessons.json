@@ -4874,6 +4874,36 @@
         ],
         "pattern": "mutant did not change fixture"
       }
+    },
+    {
+      "id": "terrain-tiles-check-native-neighbor-shading",
+      "date": "2026-11-02",
+      "area": "地形美術接縫",
+      "rule": "逐格地表先以實際鄰格檢查明暗連續，再驗正式Game.Draw；單格自我重複與GPU像素通過不能代替跨格外觀。陰影編製沿已定索引與原生輪廓，不把生成母稿的整格亮度當作地圖陰影。入口tools/build_fd2_hd_terrain_atlas.py的grass_policy／prepare、tools/test_fd2_hd_terrain_atlas.py的shade-index反例，以及規格61「HD1完整地表圖集第一批」。這條方法支援完整opaque／無remap地表；混合輪廓仍另核來源。",
+      "why": "R37的逐格新草畫通過174槽來源交易與696來源GPU，但完整map1顯示明顯方格。原生鄰格聯絡表證明原圖明暗連續。拒收15草畫後，沿既有手繪母稿與153／255陰影索引重編，R2實際畫面恢復連續；只保留新繪第15格圖樣。",
+      "evidence": "WORKLOG.md：2026-11-02 HD1完整地表與原生陰影接線；HD主收據hd1_terrain_atlas_followup_20261102",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/build_fd2_hd_terrain_atlas.py"
+        ],
+        "pattern": "def grass_policy[\\s\\S]*明暗索引或輪廓契約不同"
+      }
+    },
+    {
+      "id": "worklist-issue-body-uses-official-formatter",
+      "date": "2026-11-02",
+      "area": "工作清單同步",
+      "rule": "更新工單先用tools/fd2_worklist_issues.py的parse_issue讀取，再用format_body產生區塊，保留原驗收與內文。evidence接受字串或清單，不假設提示句與其他工單相同。JSON處理在Docker中執行；遠端讀寫沿主機gh及--body-file，完整訊號由cmd_pull／fd2_worklist.py verify檢查。",
+      "why": "R37同步#282時，先假設evidence是清單，再假設提示句與#283相同，兩次都在寫遠端前失敗。改用官方解析器及格式器後保留舊資料、加入新證據並通過區塊驗證。",
+      "evidence": "WORKLOG.md：2026-11-02 HD1完整地表與原生陰影接線；tools/fd2_worklist_issues.py",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/fd2_worklist_issues.py"
+        ],
+        "pattern": "def format_body[\\s\\S]*def parse_issue"
+      }
     }
   ]
 }

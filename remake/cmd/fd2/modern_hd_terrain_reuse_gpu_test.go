@@ -18,6 +18,91 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/indexedmap"
 )
 
+func TestModernHDPaintedTerrainAtlasSourceTransactions(t *testing.T) {
+	if os.Getenv("FD2_HD_TERRAIN_ATLAS_CPU") != "1" {
+		t.Skip("explicit authored atlas candidate required")
+	}
+	raw, err := os.ReadFile(os.Getenv("FD2_TEST_MODERN_EFFECT_CATALOG"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var catalog modernThemeCatalog
+	if err = json.Unmarshal(raw, &catalog); err != nil {
+		t.Fatal(err)
+	}
+	set := &modernStoryPortraitSet{}
+	for _, a := range catalog.Assets {
+		if a.Role == "native_terrain_hd_set" {
+			if err = loadModernTerrainHDAsset(set, a, os.Getenv("FD2_TEST_MODERN_EFFECT_PACK")); err != nil {
+				t.Fatal(err)
+			}
+		}
+	}
+	var manifest struct {
+		Kind       string `json:"kind"`
+		CatalogSHA string `json:"catalog_sha256"`
+		Bindings   []struct {
+			Map int `json:"map"`
+			partialTerrainSource
+		} `json:"bindings"`
+	}
+	input, err := os.ReadFile(os.Getenv("FD2_HD_TERRAIN_REUSE_MANIFEST"))
+	if err != nil || json.Unmarshal(input, &manifest) != nil || manifest.Kind != "fd2_painted_terrain_atlas_v1" || len(manifest.Bindings) != 174 ||
+		manifest.CatalogSHA != fmt.Sprintf("%x", sha256.Sum256(raw)) {
+		t.Fatal("complete authored atlas receipt required", err)
+	}
+	a, err := loadNativeMapAssets("assets/maps/map0")
+	if err != nil {
+		t.Fatal(err)
+	}
+	banks, controls := map[int]*fdicon.Bank{}, map[int][]byte{}
+	for _, binding := range manifest.Bindings {
+		if banks[binding.Map] == nil {
+			banks[binding.Map], controls[binding.Map], err = fdicon.LoadSeparatedFDSHAPBank(separatedAssetPath("tilesets/fdshap"), binding.Map)
+			if err != nil || set.validateTerrainHD(binding.Map, banks[binding.Map]) != nil {
+				t.Fatal("real bank admission", binding.Map, err)
+			}
+			bank := banks[binding.Map]
+			bad := *bank
+			bad.Sprites = append(bank.Sprites[:0:0], bank.Sprites...)
+			bad.Sprites[binding.Frame].Mask = append([]byte(nil), bank.Sprites[binding.Frame].Mask...)
+			bad.Sprites[binding.Frame].Mask[0] = 0
+			if err = set.validateTerrainHD(binding.Map, &bad); err == nil {
+				t.Fatal("wrong source mask admitted", binding.Map)
+			}
+		}
+		in := partialTerrainInput(a, banks[binding.Map], controls[binding.Map], binding.partialTerrainSource, false)
+		if binding.Role == "foreground" {
+			in.Frame.ForegroundUnits = []fdicon.NativeForegroundLayerEntry{{X: 6, Y: 4}}
+		}
+		before, _ := json.Marshal(in.Frame.Cells)
+		seed := make([]byte, indexedmap.NativeUnitPresentWorkSize)
+		g := &Game{modernStoryPortraits: set, nativeMapAssets: &nativeMapAssets{MapIndex: binding.Map, Palette: a.Palette}}
+		frame, err := g.prepareModernHDMapFrame(in, seed, a.Palette)
+		if err != nil {
+			t.Fatal("source transaction", binding.Map, binding.Frame, err)
+		}
+		found := false
+		if binding.Role == "terrain" {
+			for _, tile := range frame.Terrain {
+				found = found || tile.Frame == binding.Frame && tile.Image != nil
+			}
+		} else {
+			for _, fore := range frame.Foreground {
+				found = found || fore.SourceFrame == binding.Frame && fore.HDImage != nil
+			}
+		}
+		after, _ := json.Marshal(in.Frame.Cells)
+		if !found || !bytes.Equal(before, after) || !bytes.Equal(seed, make([]byte, len(seed))) {
+			t.Fatal("missing source or mutated native input", binding.Map, binding.Frame, binding.Role)
+		}
+	}
+	if len(banks) != 22 {
+		t.Fatal("all source banks required", len(banks))
+	}
+	t.Log("174 source transactions and 22 wrong-mask admissions checked; no GPU/player/parity claim")
+}
+
 func TestModernHDExactTerrainReuseSourceTransactions(t *testing.T) {
 	if os.Getenv("FD2_HD_TERRAIN_REUSE_CPU") != "1" {
 		t.Skip("explicit real-pack CPU process")
@@ -72,6 +157,18 @@ func TestModernHDExactTerrainReuseRealConsumersGPU(t *testing.T) {
 	if os.Getenv("FD2_HD_TERRAIN_REUSE_GPU") != "1" {
 		t.Skip("dedicated exact terrain consumer process")
 	}
+	runModernHDTerrainConsumersGPU(t, false)
+}
+
+func TestModernHDPaintedTerrainAtlasRealConsumersGPU(t *testing.T) {
+	if os.Getenv("FD2_HD_TERRAIN_ATLAS_GPU") != "1" {
+		t.Skip("dedicated authored terrain atlas process")
+	}
+	runModernHDTerrainConsumersGPU(t, true)
+}
+
+func runModernHDTerrainConsumersGPU(t *testing.T, atlas bool) {
+	t.Helper()
 	t.Setenv("FD2_MUTE", "1")
 	t.Setenv("XDG_DATA_HOME", t.TempDir())
 	oldCache := userDataDirCached
@@ -83,6 +180,7 @@ func TestModernHDExactTerrainReuseRealConsumersGPU(t *testing.T) {
 		t.Fatal(err)
 	}
 	var receipt struct {
+		Kind       string `json:"kind"`
 		CatalogSHA string `json:"catalog_sha256"`
 		Bindings   []struct {
 			Map    int    `json:"map"`
@@ -103,6 +201,9 @@ func TestModernHDExactTerrainReuseRealConsumersGPU(t *testing.T) {
 	}
 	if err = json.Unmarshal(raw, &receipt); err != nil {
 		t.Fatal(err)
+	}
+	if atlas && receipt.Kind != "fd2_painted_terrain_atlas_v1" {
+		t.Fatal("authored atlas source contract differs")
 	}
 	expected := 46
 	if value := os.Getenv("FD2_HD_TERRAIN_REUSE_EXPECTED"); value != "" {
@@ -209,7 +310,7 @@ func TestModernHDExactTerrainReuseRealConsumersGPU(t *testing.T) {
 	// Keep the historical roof fixture; the cave batch uses its actual map and
 	// selector witness. Both are controlled cameras, not normal player input.
 	gameMap, gameFrame, cell := 1, 177, 480
-	firstSource := os.Getenv("FD2_HD_TERRAIN_REUSE_GAME") == "first"
+	firstSource := atlas || os.Getenv("FD2_HD_TERRAIN_REUSE_GAME") == "first"
 	if expected == 22 || firstSource {
 		first := receipt.Bindings[0]
 		if first.Role != "terrain" || first.Selector.Pass != 0 || expected == 22 && (first.Map != 24 || first.Frame != 32) {
@@ -314,7 +415,11 @@ func TestModernHDExactTerrainReuseRealConsumersGPU(t *testing.T) {
 	if err != nil || !bytes.Equal(saved, resaved) {
 		t.Fatal("terrain changed boundary save", err)
 	}
-	report := map[string]any{"status": "PASS-EXACT-TERRAIN-REUSE-GPU", "catalog_sha256": receipt.CatalogSHA, "manifest_sha256": fmt.Sprintf("%x", sha256.Sum256(raw)),
+	status := "PASS-EXACT-TERRAIN-REUSE-GPU"
+	if atlas {
+		status = "PASS-PAINTED-TERRAIN-ATLAS-GPU"
+	}
+	report := map[string]any{"status": status, "catalog_sha256": receipt.CatalogSHA, "manifest_sha256": fmt.Sprintf("%x", sha256.Sum256(raw)),
 		"bindings": len(receipt.Bindings), "source_cases": len(receipt.Bindings) * 4, "complete_game_cases": 2, "cases": probe.rows, "save_bytes_unchanged": len(saved),
 		"scope": fmt.Sprintf("controlled native selectors, actual terrain/foreground producer and map%d Game.Draw; theme/UI controls and saved boundary bytes; not normal chapter reachability or platform acceptance", gameMap)}
 	encoded, err := json.MarshalIndent(report, "", "  ")

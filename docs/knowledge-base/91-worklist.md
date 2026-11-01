@@ -348,9 +348,11 @@ HD1原生地圖資訊窗的細框、A／D、HP與已登錄地形縮圖已接入�
 
 2026-10-29已同意清爽手繪地形方向，減少細粒，以較大色塊配合大頭短身Q版。首批草、土、沙、水與石路及其共用交界已完成版本化刷新並接入正式遊戲，README已更新普通遊玩圖與六圖總覽。來源、GPU、獨立像素及普通保存冷讀證據依主收據 `hd1_painted_ground_followup_20261029`；洞窟／物件風格刷新、其餘缺圖與部分合成續作，本項保持 OPEN。
 
+原生陰影地表這段已補174槽，保留170地形／4前景角色。15份地表沿既定手繪草材與原生明暗輪廓，一份新圖樣；只追加17份圖源，10151舊美術保持。696來源GPU、兩完整map1繪製／F2與保存、32頂層Go及普通首章整包十PNG切換／保存冷讀通過。906正式清冊與私人e2147650已同步；目前仍有3180缺槽／2033獨特缺圖，本工單保持開啟。完整來源與限制見61及主收據hd1_terrain_atlas_followup_20261102。
+
 怎樣算做完：盤點全部正式地圖的原生地形／前景consumer，補齊HD1圖源並登錄私人庫；沿原輪廓、遮擋、視圖與事件更新呈現，缺件明示，保留原版模式。必要來源、載入及切換檢查通過，人工畫面驗證由使用者接手。
 
-證據：`docs/data/fd2-modern-hd-battlefield-20261019.json`
+證據：`['docs/data/fd2-modern-hd-battlefield-20261019.json', 'docs/figures/hd1-terrain-shadow-map01-game.png', 'docs/figures/hd1-terrain-shadow-source-comparison.png', 'remake/assets/themes/modern/hd1-terrain-atlas-pilot16.recipe.json', 'tools/build_fd2_hd_terrain_atlas.py', 'tools/rebuild_fd2_hd_terrain_atlas.py']`
 
 ### P1 HD1介面：補齊原生選單與對話呈現
 

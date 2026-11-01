@@ -5511,6 +5511,21 @@ seed7 與 clock1000 驗二十六拍、各階段 F2、獨立 CPU 世界／最終�
 - 新圖源沿per_pose_coverage_v1及十四來源反例；編製器未變，舊來源以雜湊核對既有收據。驗收含四向與三拍、144／72／48尺寸、普通首章四種控制、行走取消、F5與新程序LOAD、883清冊及消費端回歸。只換8項，其餘875項、9123份舊美術與其餘121組保持；完成後同步私人庫，公開保留配方、雜湊與授權總覽。
 - READY驗收已通過：28完整Game.Draw、24PNG、四次F2、337791核心點與21反例；普通首章十PNG驗整包四種控制、行走取消、F5與新程序LOAD。新圖源四項逐byte重編／14拒收，舊共用及混合各四項／17拒收沿既有收據，編製器與來源測試SHA保持，未重跑舊來源。24頂層Go、883清冊、21消費來源／416幀／19反例與125組1455來源通過，兩可選GPU略過不計；16種舊分份、六批轉職及三種共用契約保持。只換8項、875保持，新增100檔，9123舊檔與其餘121組來源保持。Q比例餘項12→8；私人素材已同步。來源與重跑見主收據hd1_visor_hood_grille_followup_20261101。
 
+## HD1完整地表圖集第一批（CONFORMED-SCOPED／RUNTIME-E1，2026-11-02）
+
+- 沿33圖原生製圖清冊a19a3da3、目前地形覆蓋與原生三層SHA，不重開已閉合selector／事件writer。16份新編製圖對應174個missing-art槽，170地形／4前景角色逐槽保存；完整來源576像素且無目的地remap。跨圖共用只接受三層bytes完全相同，不猜物件用途。
+- R1的16份裁切在技術檢查通過後，實際地圖顯示草畫方格，未登錄。原生鄰格的連續明暗與既有relief配方支持R2：15份草地沿已定grass-olive-hd1-painted-v2母稿、原生陰影索引與composite_relief；索引組、153／255明暗值、2像素柔化及外緣一像素契約逐項綁原配方，不查原版RGB補色。每份輸出仍獨立依自己的原生三層編製，不把不同內容當作已登錄同源重用。
+- 新圖集只採第15格圖樣。4×6的1024×1536原稿依該格四側內縮4來源像素裁248正方形，沿make_tile縮144、相對邊緣8像素校準。其餘15草畫拒收、八格混合輪廓未登錄；私人白名單只新增這一份裁切母稿與16份成品。完整原atlas留本機追溯，不把未採部分混入正式包。
+- [離線配方](../../remake/assets/themes/modern/hd1-terrain-atlas-pilot16.recipe.json)綁母稿、既有材質、明暗表、原生內容、目標及生成原文；[編製器](../../tools/build_fd2_hd_terrain_atlas.py)沿fdshap_native_hd_sparse_v1增列。runtime格式、地圖控制字、位置、時鐘、可走性、前景及保存不變；RGB只取已定或新繪母稿，原生資料只供身份、覆蓋與陰影形狀。
+- 編製核完整原生來源、清冊／色盤／地圖／配方SHA、每項selector與mask；拒絕錯來源、缺槽、重複目標、越界crop、非opaque、既有槽覆寫、錯誤明暗表／材質及舊資產改動。新目錄完成與完整清冊驗證後才發布，失敗不產生正式候選。
+- GPU沿原生producer與sharedGroundGPUProbe逐174槽驗steady／LUT／black／white，共696來源案例；第一個初始selector做兩種介面完整Game.Draw、F2與保存bytes保持。配方／成品與GPU收據SHA一致才登錄；正式載入、整包切換／保存冷讀與缺件檢查通過才升CONFORMED。受控地圖與普通整包驗證分列，不當作整章或原版E2。
+- 已登錄圖可用[私人母稿重編入口](../../tools/rebuild_fd2_hd_terrain_atlas.py)直接重生16份PNG，不需拒收草畫或未採原atlas區域；只讀一份已登錄裁切母稿、既有草材與原生來源。CLI參數在既有Pillow容器執行python tools/rebuild_fd2_hd_terrain_atlas.py --help，完整包與路徑依主收據commands。重編須與正式清冊全部成品SHA相同才發布輸出。
+- 陰影與接縫為沿既有契約的美術近似。完整地形與集中人工仍待，本批不能關閉#282；現況與來源依主收據hd1_terrain_atlas_followup_20261102。
+
+本批已登錄906項清冊。174來源交易與22錯遮罩、17編製拒收、八登錄拒收，696來源GPU與兩種介面設定的完整map1繪製、兩次F2及169 bytes受控邊界保存保持均通過；六張GPU PNG已目視。32頂層Go通過、兩個可選GPU略過不計，1196份Go重生21來源案例／416幀與19反例。普通首章整包控制、走行取消、F5及新程序LOAD十PNG保持完整保存bytes；不混稱全部新槽的自然可達。17新檔已同步私人庫e2147650，10151舊美術SHA／inode／mtime／owner保持，6932白名單；只靠已登錄私人母稿重編16 PNG逐byte相同。正式Go覆蓋為33圖、808已登錄、3180缺槽及2033獨特缺圖，純目的地remap10保持；其餘地形與介面續作。
+
+[16份原生／HD圖源](../figures/hd1-terrain-shadow-source-comparison.png)與[實際map1畫面](../figures/hd1-terrain-shadow-map01-game.png)保留尚未HD的像素建築與局部圖源，不能當整張地圖完成。來源、命令與資源依主收據hd1_terrain_atlas_followup_20261102。
+
 ## HD1城鎮人物與獨立介面（CONFORMED-SCOPED／RUNTIME-E1，2026-11-02）
 
 - 原來源沿58「城鎮selector與早中晚收據」、原生TownAssets及ComposeNativeTownFrame，不重開RE。三variant、六selection、pulse0／1／2／3轉0／1／2／1及312×192視圖搬至VGA4,4保持。新接線以當前來源、工具與Go指紋驗證，不提升舊原版收據等級。
