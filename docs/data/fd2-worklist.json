@@ -434,7 +434,7 @@
       "layer": "data",
       "category": "缺陷",
       "title": "P1 HD1戰場小人物：依原版重繪大頭Q版與個別面容",
-      "body": "第90／92／112／113／114／115組已依各自原版頭像修正面容並正式登錄。90保留紅褐罩帽、黃綠窄眼與不透明黑色臉部，92保留深藍纏頭、紅褐面罩及格紋眼帶；112～115各保留自身板形、藍綠孔位、肩部與額角差異。姓名、種族與材質未知不猜補。\n\n六組先核原名冊、DATO、十二FDICON及位置並記61 READY。113採map26原群組0、原位置2,35；不把最先掃到的群組255來源投影或猜補。54組完整原名冊預檢後，三份固定雙組42完整Game.Draw、36PNG、六次F2、450026核心點及24反例通過。普通首章十PNG、四項來源／14拒收、26頂層Go及21消費來源／416幀／19反例通過。24舊分份、七批轉職及三種共用契約保持，不重跑或升格舊GPU。\n\n清冊883只換12項、871保持；150新檔與9905舊美術SHA／inode／mtime／UID／GID、0／9／30六項及其餘119組保持，私人白名單6915。內建生成十次、選六母稿、拒收四份長身初稿；選定母稿bytes與alpha保持。125組1455來源總覽重生，068～095與096～139另存新版，README補面容、四向與六張受控戰場。\n\n人物待複核12→6：66／74／75／116／122／135。前三組不從同號DATO猜身份，後三組原來源已備試稿。67原圖例外且身份未知、Gaia定版保持。#284／285已結案；其餘地形與介面續作，包含右下資訊窗人物與數字重疊的既見縮放問題。本項保持OPEN，不宣稱全人物面容、HD1 milestone、自然章節、原版動態、PLAYER-E2或480頭像完成。現況依58／61及主收據hd1_late_masked_faces_followup_20261101。",
+      "body": "第116／122／135組已依各自原版頭像修正面容並正式登錄。116保留長板形面部、細橫縫、紅額角與藍肩；122保留赭褐寬角面、窄紅眼、寬鼻、下彎嘴與暗青腕帶；135保留成熟灰白厚眉鬍鬚、長彎鼻、低金冠與紅袍。姓名、種族與材質未知不猜補。\n\n三組先核原名冊、DATO、十二FDICON與原位置並記61 READY。116／122保持enemy，135保持map9群組0的ally、原位置24,8；不投影身份或selector。57組完整原名冊預檢後，雙組14及單組7合21完整Game.Draw、18PNG、三次F2、244487核心點及24反例通過。普通首章十PNG、四項來源／14拒收、26頂層Go及21消費來源／416幀／19反例通過。25舊分份、七批轉職與三種共用契約保持，不重跑或升格舊GPU。\n\n清冊883只換六項、877保持；75新檔與10055舊美術SHA／inode／mtime／UID／GID、0／9／30六項及其餘122組保持，私人白名單6915。五次內建生成選三母稿、拒收兩初稿，選定bytes／alpha保持；125組1455來源總覽重生，096～139另存r8，README補面容、四向及三張受控戰場。\n\n人物待接線6→3：66／74／75。使用者已確認三拍原圖Q版例外，身份及頭像綁定未知，75保持橫向輪廓；尚未登錄，不算完成。67例外與Gaia定版保持。早先右下資訊窗疊字誤列縮放問題，核61與正式consumer後確認為原HP遮蔽契約，不列新缺陷或更改版面。#284／285已結案，其餘地形與介面續作。本項保持OPEN，不宣稱全部人物、HD1 milestone、自然章節、原版動態、PLAYER-E2或480頭像完成。現況依58／61與主收據hd1_final_known_faces_followup_20261101。",
       "acceptance": [
         "使用者選定亞雷斯新比例，並保留定版原稿、原版來源、逐字提示與SHA；其他角色依相同標準重製，不能只改大圖總覽。",
         "125個可見圖組及1455幀逐組保留原生方向、步態／靜態相位、轉職身份、裝備特徵、腳底與透明契約；原版、已接受圖源及舊證據可追溯。",
@@ -670,11 +670,14 @@
         "remake/assets/themes/modern/hd1-horned-faces-refresh.recipe.json",
         "remake/assets/themes/modern/hd1-late-masked-faces-refresh.recipe.json",
         "docs/figures/hd1-late-masked-faces-reference.png",
-        "docs/figures/hd1-late-masked-faces-comparison.png"
+        "docs/figures/hd1-late-masked-faces-comparison.png",
+        "remake/assets/themes/modern/hd1-final-known-faces-refresh.recipe.json",
+        "docs/figures/hd1-final-known-faces-reference.png",
+        "docs/figures/hd1-final-known-faces-comparison.png"
       ],
       "verify": {
         "kind": "manual",
-        "note": "六組自身原版面容已修並核來源／GPU／普通保存；造型餘6組，66／74／75不猜配，67例外保持，資訊窗縮放與其餘HD1缺項續作。"
+        "note": "116／122／135已核各自原圖與接線；66／74／75三組原圖Q例外已獲使用者確認，尚待接線與必要檢查。67及Gaia定版保持，其餘HD1續作。"
       },
       "issue": 286
     },
@@ -683,7 +686,7 @@
       "layer": "data",
       "category": "缺陷",
       "title": "P1 HD1人物面容與身份複核：依原版頭像保留各自特徵",
-      "body": "第90／92／112／113／114／115組已依各自原版頭像修正面容並正式登錄。90保留紅褐罩帽、黃綠窄眼與不透明黑色臉部，92保留深藍纏頭、紅褐面罩及格紋眼帶；112～115各保留自身板形、藍綠孔位、肩部與額角差異。姓名、種族與材質未知不猜補。\n\n六組先核原名冊、DATO、十二FDICON及位置並記61 READY。113採map26原群組0、原位置2,35；不把最先掃到的群組255來源投影或猜補。54組完整原名冊預檢後，三份固定雙組42完整Game.Draw、36PNG、六次F2、450026核心點及24反例通過。普通首章十PNG、四項來源／14拒收、26頂層Go及21消費來源／416幀／19反例通過。24舊分份、七批轉職及三種共用契約保持，不重跑或升格舊GPU。\n\n清冊883只換12項、871保持；150新檔與9905舊美術SHA／inode／mtime／UID／GID、0／9／30六項及其餘119組保持，私人白名單6915。內建生成十次、選六母稿、拒收四份長身初稿；選定母稿bytes與alpha保持。125組1455來源總覽重生，068～095與096～139另存新版，README補面容、四向與六張受控戰場。\n\n人物待複核12→6：66／74／75／116／122／135。前三組不從同號DATO猜身份，後三組原來源已備試稿。67原圖例外且身份未知、Gaia定版保持。#284／285已結案；其餘地形與介面續作，包含右下資訊窗人物與數字重疊的既見縮放問題。本項保持OPEN，不宣稱全人物面容、HD1 milestone、自然章節、原版動態、PLAYER-E2或480頭像完成。現況依58／61及主收據hd1_late_masked_faces_followup_20261101。",
+      "body": "第116／122／135組已依各自原版頭像修正面容並正式登錄。116保留長板形面部、細橫縫、紅額角與藍肩；122保留赭褐寬角面、窄紅眼、寬鼻、下彎嘴與暗青腕帶；135保留成熟灰白厚眉鬍鬚、長彎鼻、低金冠與紅袍。姓名、種族與材質未知不猜補。\n\n三組先核原名冊、DATO、十二FDICON與原位置並記61 READY。116／122保持enemy，135保持map9群組0的ally、原位置24,8；不投影身份或selector。57組完整原名冊預檢後，雙組14及單組7合21完整Game.Draw、18PNG、三次F2、244487核心點及24反例通過。普通首章十PNG、四項來源／14拒收、26頂層Go及21消費來源／416幀／19反例通過。25舊分份、七批轉職與三種共用契約保持，不重跑或升格舊GPU。\n\n清冊883只換六項、877保持；75新檔與10055舊美術SHA／inode／mtime／UID／GID、0／9／30六項及其餘122組保持，私人白名單6915。五次內建生成選三母稿、拒收兩初稿，選定bytes／alpha保持；125組1455來源總覽重生，096～139另存r8，README補面容、四向及三張受控戰場。\n\n人物待接線6→3：66／74／75。使用者已確認三拍原圖Q版例外，身份及頭像綁定未知，75保持橫向輪廓；尚未登錄，不算完成。67例外與Gaia定版保持。早先右下資訊窗疊字誤列縮放問題，核61與正式consumer後確認為原HP遮蔽契約，不列新缺陷或更改版面。#284／285已結案，其餘地形與介面續作。本項保持OPEN，不宣稱全部人物、HD1 milestone、自然章節、原版動態、PLAYER-E2或480頭像完成。現況依58／61與主收據hd1_final_known_faces_followup_20261101。",
       "acceptance": [
         "逐組以固定原生三層、FDOTHER0代表色盤與有對應身份的原版頭像／大圖核身份，不沿舊候選或圖說猜職業／種族。",
         "優先修正2、48、50、51、52、53、54、55、56、63、76、79的已見差異，70、73、77、89、125、133補證後逐項確認或修正；所有結論保留來源及未知等級。",
@@ -907,11 +910,14 @@
         "remake/assets/themes/modern/hd1-horned-faces-refresh.recipe.json",
         "remake/assets/themes/modern/hd1-late-masked-faces-refresh.recipe.json",
         "docs/figures/hd1-late-masked-faces-reference.png",
-        "docs/figures/hd1-late-masked-faces-comparison.png"
+        "docs/figures/hd1-late-masked-faces-comparison.png",
+        "remake/assets/themes/modern/hd1-final-known-faces-refresh.recipe.json",
+        "docs/figures/hd1-final-known-faces-reference.png",
+        "docs/figures/hd1-final-known-faces-comparison.png"
       ],
       "verify": {
         "kind": "manual",
-        "note": "六組自身原版面容已修並核來源／GPU／普通保存；造型餘6組，66／74／75不猜配，67例外保持，資訊窗縮放與其餘HD1缺項續作。"
+        "note": "116／122／135已核各自原圖與接線；66／74／75三組原圖Q例外已獲使用者確認，尚待接線與必要檢查。67及Gaia定版保持，其餘HD1續作。"
       },
       "issue": 287
     }

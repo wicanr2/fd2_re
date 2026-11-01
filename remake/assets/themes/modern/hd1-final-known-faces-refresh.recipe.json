@@ -1,0 +1,451 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_hd1_chibi_map_refresh",
+  "approved_preview": "docs/figures/hd1-ares-q-design.png",
+  "approved_preview_sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e",
+  "native_bank_sha256": "7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44",
+  "palette_sha256": "404db1ca72ffc19fa7404fbc59bde98cdf239f63fe3375ec248a8142073a28bf",
+  "base_catalog_sha256": "e9bfa711c625a12a6d9db0c9caa6fd0ea6605cf802f1e9c12e4b99fa7e96bf7d",
+  "approval": "沿已定Q比例、個人原版面容及2026-11-01繼續完成HD1授權，不改正式規則。",
+  "master_alpha_policy": "per_pose_coverage_v1",
+  "groups": [
+    {
+      "group": 116,
+      "master_file": "fdicon-116-hd1-portrait-q-v1-master.png",
+      "master_sha256": "059758824468bc59fd9558802da60d935ed03ecfd788327409fceec9b7ac78f6",
+      "output_prefix": "fdicon-116-hd1-portrait-q-v1"
+    },
+    {
+      "group": 122,
+      "master_file": "fdicon-122-hd1-portrait-q-v1-master.png",
+      "master_sha256": "c72a0ee6ee0bdeb0b09ee232819a602891b2e5e14fde7fb296d3b91b56cfc8ac",
+      "output_prefix": "fdicon-122-hd1-portrait-q-v1"
+    },
+    {
+      "group": 135,
+      "master_file": "fdicon-135-hd1-portrait-q-v1-master.png",
+      "master_sha256": "94bcbec5f02b4bcba71ec7f2a7b4b23ab88c73e1f4201c4c3f1a713d2b74ecbe",
+      "output_prefix": "fdicon-135-hd1-portrait-q-v1"
+    }
+  ],
+  "faces": [
+    {
+      "group": 116,
+      "name": "第116組原名冊圖源",
+      "portrait_file": "remake/assets/portraits/DATO_116_m0.png",
+      "portrait_sha256": "f04f82bffa1221e656cd9f647b7aca5e40962885cf0d9032111ca92891a9e159",
+      "original_png_sha256": "e681fda8ff331cb948a63225bc05ee3802648d69339c94953e5863e51646ae0b",
+      "decoded_rgba_sha256": "d455ac941d301dec9e5837d6e5f65ef03df0d235ddd37a495645514f895fd9b6",
+      "traits": [
+        "灰綠長板形面部與細橫縫",
+        "深藍頂緣、紅色額角及藍色球形肩部",
+        "背面方形凹孔，沒有額外人臉"
+      ],
+      "comparison_label": "自身原名冊與原版圖源，身份與材質未知，非480頭像驗收"
+    },
+    {
+      "group": 122,
+      "name": "第122組原名冊圖源",
+      "portrait_file": "remake/assets/portraits/DATO_122_m0.png",
+      "portrait_sha256": "6e42ec3335b2664fedf30a297ee514777f666572a0d72fd3b8fd9ed6b8ef73fe",
+      "original_png_sha256": "faf864bf2e38e4d55396381709e187e6aad337443fd20e376bbc2201b4200409",
+      "decoded_rgba_sha256": "ea20c3f11634643a82616551b3e838644be5c25a2ba63e8904ade0e41aa8d70d",
+      "traits": [
+        "赭褐色寬角面、下壓額眉及窄紅眼",
+        "寬鼻、暗色鼻孔、下彎嘴線及深色下顎",
+        "暗青腕帶與短身，無武器"
+      ],
+      "comparison_label": "自身原名冊與原版圖源，身份與材質未知，非480頭像驗收"
+    },
+    {
+      "group": 135,
+      "name": "第135組原名冊圖源",
+      "portrait_file": "remake/assets/portraits/DATO_135_m0.png",
+      "portrait_sha256": "0ab137c96cf54b35133d521b0bf3d17c520e0314662ce37a1048b32c9e0f4a6b",
+      "original_png_sha256": "a937724f6401304b44ff4051d53d105736fd3847a40753721b4e03a0fc14c44e",
+      "decoded_rgba_sha256": "8c868b24cb79ae7494b4b7dc7b8de28f42a10c40cbc7b6eed2984c02c66737fd",
+      "traits": [
+        "灰白厚眉、窄眼、長彎鼻、成熟嚴肅表情",
+        "厚重灰白鬍鬚、低金冠與正面紅色寶石",
+        "紅袍、藍金肩飾及灰色腰帶；背面冠帶無新增寶石"
+      ],
+      "comparison_label": "自身原名冊與原版圖源，身份與材質未知，非480頭像驗收"
+    }
+  ],
+  "roster_bindings": [
+    {
+      "group": 116,
+      "map": 22,
+      "roster_file": "remake/assets/maps/map22/map22_units.json",
+      "roster_sha256": "060dc4ce39e2c8dbc670f6fe334d1d8e511c4ff9f24886c62afcc0329ea06e5a",
+      "row": 2,
+      "initial_group": 1,
+      "camp": "enemy",
+      "portrait": 116,
+      "battle_fig": 116,
+      "position": {
+        "x_word": 20,
+        "y_word": 17,
+        "raw_key": 116
+      },
+      "native_constructor": {
+        "branch": "high_class",
+        "index": 48,
+        "record": [
+          6,
+          25,
+          100,
+          0,
+          0,
+          20,
+          13,
+          3,
+          5,
+          140
+        ]
+      }
+    },
+    {
+      "group": 122,
+      "map": 9,
+      "roster_file": "remake/assets/maps/map9/map9_units.json",
+      "roster_sha256": "95f412b676830cdaebeea1e51a46e8098dd1dce7c01bcd832bdd4bb0b6f928dc",
+      "row": 0,
+      "initial_group": 0,
+      "camp": "enemy",
+      "portrait": 122,
+      "battle_fig": 122,
+      "position": {
+        "x_word": 15,
+        "y_word": 4,
+        "raw_key": 122
+      },
+      "native_constructor": {
+        "branch": "high_class",
+        "index": 54,
+        "record": [
+          7,
+          26,
+          150,
+          0,
+          14,
+          22,
+          10,
+          3,
+          2,
+          250
+        ]
+      }
+    },
+    {
+      "group": 135,
+      "map": 9,
+      "roster_file": "remake/assets/maps/map9/map9_units.json",
+      "roster_sha256": "95f412b676830cdaebeea1e51a46e8098dd1dce7c01bcd832bdd4bb0b6f928dc",
+      "row": 39,
+      "initial_group": 0,
+      "camp": "ally",
+      "portrait": 135,
+      "battle_fig": 135,
+      "position": {
+        "x_word": 24,
+        "y_word": 8,
+        "raw_key": 135
+      },
+      "native_constructor": {
+        "branch": "high_class",
+        "index": 67,
+        "record": [
+          1,
+          27,
+          33,
+          0,
+          0,
+          1,
+          2,
+          2,
+          4,
+          1
+        ]
+      }
+    }
+  ],
+  "gpu_pairs": {
+    "blue-shoulder-and-ochre": [
+      116,
+      122
+    ],
+    "crowned-elder": [
+      135
+    ]
+  },
+  "policy": "三組各依自己的原版面部、遮擋與衣色；維持已定大頭短身。材質與姓名未知，不補設定或裝備。",
+  "alpha_quality_review": {
+    "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/alpha-quality-final.json",
+    "sha256": "65ec767afce7a13251419759adb2fc677f6cddf5d7901868c79f6f2354d5a40b"
+  },
+  "image_generation": {
+    "tool": "builtin image_gen.imagegen",
+    "transparent_background": true,
+    "jobs": [
+      {
+        "group": 116,
+        "revision": 2,
+        "prompt": "Use case: stylized-concept. Generate one HD1 fantasy tactics game sprite master. EXACTLY3 columns x4 rows, twelve separated full-body sprites on genuine transparent background. FIRST image is THIS character's own original portrait and twelve native map poses; follow its face silhouette, features, palette, gear, directional occlusion. SECOND Ares board bottom new-design row is STYLE AND PROPORTIONS ONLY: smooth broad hand-painted color planes, very oversized head about TWO THIRDS of total height, extremely short compact torso and tiny legs. Never copy Ares face, weapons or armor. Row1 all3 straight FRONT; row2 all3 strict SCREEN LEFT including third frame; row3 all3 straight BACK; row4 all3 strict SCREEN RIGHT. Columns neutral/small left step/small right step, no turn within row. Equal scale/baseline and generous clear gutters, no clipping or connecting components. Interior alpha255 even dark holes and shadows; alpha0 outside silhouette with only thin antialias edge. No floor shadow, halo, haze, text, labels, grid or background. Do not invent a name, species, equipment or material. Preserve its own original visible design. GROUP116: sage gray-green tall closed angular faceplate with long tapering central vertical nose-like plate, thin dark horizontal upper visor slit, gray-green short crown top with dark blue upper edge, small RED triangular ear accents both sides. Face is featureless closed opaque plate: no mouth, lips, human nose, eyes or beard. Rounded DEEP COBALT BLUE shoulder balls, short gray-green plated arms/legs and dark blue tiny boots. Native back has gray-green segmented square rear plate, dark central rectangular recess and same blue shoulders; no front slit on back. Maintain extremely large long head and TINY waist/legs, no long abdomen. Own large blue ball shoulder silhouette with small red accents, no horns, no invented guns, wires, sword or jetpack. STRICT CUTOUT REVISION: previous draft had diffuse exterior blue/red illumination. Completely remove ALL exterior glow and every background pixel. Treat the silhouette like a die-cut sticker with pure RGBA(0,0,0,0) outside. Retain exactly the same head, tiny torso, blue shoulders and12 poses. Flat unlit exterior, NO environmental light, no smoky shadows or vignettes. Opaque black inside visor preserved.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/group-116-source-reference.png",
+          "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-c3984a43-72c8-4f39-97b6-feac88115cc8.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ],
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-7ec90305-139e-4fbc-9753-b9f70a416c6a.png",
+        "source_sha256": "059758824468bc59fd9558802da60d935ed03ecfd788327409fceec9b7ac78f6",
+        "call_index": 4,
+        "selected": true,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/group-116-source-reference.png",
+            "sha256": "bdbdecad3a67f8e1e513fdef1bcd0752b68ca66cef12221e892042ea013829ab"
+          },
+          {
+            "file": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-c3984a43-72c8-4f39-97b6-feac88115cc8.png",
+            "sha256": "56058b77c179a7c0e7ac8c9553c6f88098dd3be9b015690293e052e8f1970a40"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png",
+            "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+          }
+        ],
+        "master_file": "fdicon-116-hd1-portrait-q-v1-master.png",
+        "saved_master": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/fdicon-116-hd1-portrait-q-v1-master.png",
+        "initial_prompt": "Use case: stylized-concept. Generate one HD1 fantasy tactics game sprite master. EXACTLY3 columns x4 rows, twelve separated full-body sprites on genuine transparent background. FIRST image is THIS character's own original portrait and twelve native map poses; follow its face silhouette, features, palette, gear, directional occlusion. SECOND Ares board bottom new-design row is STYLE AND PROPORTIONS ONLY: smooth broad hand-painted color planes, very oversized head about TWO THIRDS of total height, extremely short compact torso and tiny legs. Never copy Ares face, weapons or armor. Row1 all3 straight FRONT; row2 all3 strict SCREEN LEFT including third frame; row3 all3 straight BACK; row4 all3 strict SCREEN RIGHT. Columns neutral/small left step/small right step, no turn within row. Equal scale/baseline and generous clear gutters, no clipping or connecting components. Interior alpha255 even dark holes and shadows; alpha0 outside silhouette with only thin antialias edge. No floor shadow, halo, haze, text, labels, grid or background. Do not invent a name, species, equipment or material. Preserve its own original visible design. GROUP116: sage gray-green tall closed angular faceplate with long tapering central vertical nose-like plate, thin dark horizontal upper visor slit, gray-green short crown top with dark blue upper edge, small RED triangular ear accents both sides. Face is featureless closed opaque plate: no mouth, lips, human nose, eyes or beard. Rounded DEEP COBALT BLUE shoulder balls, short gray-green plated arms/legs and dark blue tiny boots. Native back has gray-green segmented square rear plate, dark central rectangular recess and same blue shoulders; no front slit on back. Maintain extremely large long head and TINY waist/legs, no long abdomen. Own large blue ball shoulder silhouette with small red accents, no horns, no invented guns, wires, sword or jetpack.",
+        "initial_reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/group-116-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ]
+      },
+      {
+        "group": 122,
+        "revision": 1,
+        "prompt": "Use case: stylized-concept. Generate one HD1 fantasy tactics game sprite master. EXACTLY3 columns x4 rows, twelve separated full-body sprites on genuine transparent background. FIRST image is THIS character's own original portrait and twelve native map poses; follow its face silhouette, features, palette, gear, directional occlusion. SECOND Ares board bottom new-design row is STYLE AND PROPORTIONS ONLY: smooth broad hand-painted color planes, very oversized head about TWO THIRDS of total height, extremely short compact torso and tiny legs. Never copy Ares face, weapons or armor. Row1 all3 straight FRONT; row2 all3 strict SCREEN LEFT including third frame; row3 all3 straight BACK; row4 all3 strict SCREEN RIGHT. Columns neutral/small left step/small right step, no turn within row. Equal scale/baseline and generous clear gutters, no clipping or connecting components. Interior alpha255 even dark holes and shadows; alpha0 outside silhouette with only thin antialias edge. No floor shadow, halo, haze, text, labels, grid or background. Do not invent a name, species, equipment or material. Preserve its own original visible design. GROUP122: own broad faceted warm OCHRE BROWN head, low angular sloping brow, two tiny sharply narrowed RED eyes, wide angular flat nose with small black nostrils, deeply DOWN-TURNED dark mouth slit, thick angular lower jaw and long dark triangular central chin facet. Fierce unamused expression based on its own portrait, not cute human smile. Head occupies about TWO THIRDS total height, massive blocky shoulder/forearm shapes beside a tiny squat torso and short broad feet, dark DESATURATED TEAL wrist cuffs, dark brown/red tiny waist strip as original. Palette tan/brown facets, not gray metal. Back shows plain broad brown head/back and teal cuffs, no red eyes on back. No hair, helmet, weapon, backpack, clothing trim, gems or invented texture. Smooth broad painted facets with very little fine grain.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/group-122-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ],
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-cc188f0a-31d8-4965-a4dc-161929cac947.png",
+        "source_sha256": "c72a0ee6ee0bdeb0b09ee232819a602891b2e5e14fde7fb296d3b91b56cfc8ac",
+        "call_index": 2,
+        "selected": true,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/group-122-source-reference.png",
+            "sha256": "0138c8dd0cea1e2375c95ecab49e60e888a08a289029df3d5516d214d19610f3"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png",
+            "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+          }
+        ],
+        "master_file": "fdicon-122-hd1-portrait-q-v1-master.png",
+        "saved_master": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/fdicon-122-hd1-portrait-q-v1-master.png",
+        "initial_prompt": "Use case: stylized-concept. Generate one HD1 fantasy tactics game sprite master. EXACTLY3 columns x4 rows, twelve separated full-body sprites on genuine transparent background. FIRST image is THIS character's own original portrait and twelve native map poses; follow its face silhouette, features, palette, gear, directional occlusion. SECOND Ares board bottom new-design row is STYLE AND PROPORTIONS ONLY: smooth broad hand-painted color planes, very oversized head about TWO THIRDS of total height, extremely short compact torso and tiny legs. Never copy Ares face, weapons or armor. Row1 all3 straight FRONT; row2 all3 strict SCREEN LEFT including third frame; row3 all3 straight BACK; row4 all3 strict SCREEN RIGHT. Columns neutral/small left step/small right step, no turn within row. Equal scale/baseline and generous clear gutters, no clipping or connecting components. Interior alpha255 even dark holes and shadows; alpha0 outside silhouette with only thin antialias edge. No floor shadow, halo, haze, text, labels, grid or background. Do not invent a name, species, equipment or material. Preserve its own original visible design. GROUP122: own broad faceted warm OCHRE BROWN head, low angular sloping brow, two tiny sharply narrowed RED eyes, wide angular flat nose with small black nostrils, deeply DOWN-TURNED dark mouth slit, thick angular lower jaw and long dark triangular central chin facet. Fierce unamused expression based on its own portrait, not cute human smile. Head occupies about TWO THIRDS total height, massive blocky shoulder/forearm shapes beside a tiny squat torso and short broad feet, dark DESATURATED TEAL wrist cuffs, dark brown/red tiny waist strip as original. Palette tan/brown facets, not gray metal. Back shows plain broad brown head/back and teal cuffs, no red eyes on back. No hair, helmet, weapon, backpack, clothing trim, gems or invented texture. Smooth broad painted facets with very little fine grain.",
+        "initial_reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/group-122-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ]
+      },
+      {
+        "group": 135,
+        "revision": 2,
+        "prompt": "Use case: stylized-concept. Generate one HD1 fantasy tactics game sprite master. EXACTLY3 columns x4 rows, twelve separated full-body sprites on genuine transparent background. FIRST image is THIS character's own original portrait and twelve native map poses; follow its face silhouette, features, palette, gear, directional occlusion. SECOND Ares board bottom new-design row is STYLE AND PROPORTIONS ONLY: smooth broad hand-painted color planes, very oversized head about TWO THIRDS of total height, extremely short compact torso and tiny legs. Never copy Ares face, weapons or armor. Row1 all3 straight FRONT; row2 all3 strict SCREEN LEFT including third frame; row3 all3 straight BACK; row4 all3 strict SCREEN RIGHT. Columns neutral/small left step/small right step, no turn within row. Equal scale/baseline and generous clear gutters, no clipping or connecting components. Interior alpha255 even dark holes and shadows; alpha0 outside silhouette with only thin antialias edge. No floor shadow, halo, haze, text, labels, grid or background. Do not invent a name, species, equipment or material. Preserve its own original visible design. GROUP135: aged stern crowned man following HIS portrait. Very heavy pale gray down-slanting eyebrows over narrow black/dark eyes, deep frown/brow wrinkles, broad angular weathered peach face, prominent long hooked downturned ruddy nose, downturned mouth hidden by heavy pale gray mustache. Very large thick pale gray full beard ending in angular pointed layered tufts, short gray hair at sides, no young rounded cheeks or smiling mouth. Thin gold crown band with central RED gemstone and small original raised gold tips; low crown, no giant headdress. Own deep red long robe/mantle, narrow gold shoulder trim with small blue rectangular shoulder accents and pale gray upper back hair/fringe and gray belt. Beard and head about TWO THIRDS total height, body extremely short. Native robe conceals feet, no invented boots, staff, sword, throne or cape clasp. Back shows gray hair, low gold band, red robe and gray belt; no face or beard drawn on rear. Preserve mature severity while using big-head Q proportions. STRICT SOURCE GEAR REVISION: previous draft invented a large round gold-and-blue buckle/clasp at the front waist and a red gemstone on the BACK of the crown. REMOVE both inventions. Waist must be a PLAIN narrow gray band as own native front; no front clasp, pendant or buckle. Crown rear is PLAIN thin gold band, no gem centered on back; only front central red stone. No sleeves exposing new bulky arms: small source-like hands or concealed by red garment. Keep own mature stern face, prominent LONG hooked nose, gray mustache/beard, low original gold/red crown and red robe, all12 precise facings. Pure cutout transparency with no halo.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/group-135-source-reference.png",
+          "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-3b413875-31d3-42fe-88d1-f3a6dae52681.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ],
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-07389d6c-4383-402d-bd06-7c64bd660ece.png",
+        "source_sha256": "94bcbec5f02b4bcba71ec7f2a7b4b23ab88c73e1f4201c4c3f1a713d2b74ecbe",
+        "call_index": 5,
+        "selected": true,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/group-135-source-reference.png",
+            "sha256": "6386f120663935b10149b366b554e6d46ec6ce620d9947157de4aede185023fa"
+          },
+          {
+            "file": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-3b413875-31d3-42fe-88d1-f3a6dae52681.png",
+            "sha256": "0f2e96d510c9164fac8608fefad0a9da617ca807ea89db1f1ce6de52c8e9aae7"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png",
+            "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+          }
+        ],
+        "master_file": "fdicon-135-hd1-portrait-q-v1-master.png",
+        "saved_master": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/fdicon-135-hd1-portrait-q-v1-master.png",
+        "initial_prompt": "Use case: stylized-concept. Generate one HD1 fantasy tactics game sprite master. EXACTLY3 columns x4 rows, twelve separated full-body sprites on genuine transparent background. FIRST image is THIS character's own original portrait and twelve native map poses; follow its face silhouette, features, palette, gear, directional occlusion. SECOND Ares board bottom new-design row is STYLE AND PROPORTIONS ONLY: smooth broad hand-painted color planes, very oversized head about TWO THIRDS of total height, extremely short compact torso and tiny legs. Never copy Ares face, weapons or armor. Row1 all3 straight FRONT; row2 all3 strict SCREEN LEFT including third frame; row3 all3 straight BACK; row4 all3 strict SCREEN RIGHT. Columns neutral/small left step/small right step, no turn within row. Equal scale/baseline and generous clear gutters, no clipping or connecting components. Interior alpha255 even dark holes and shadows; alpha0 outside silhouette with only thin antialias edge. No floor shadow, halo, haze, text, labels, grid or background. Do not invent a name, species, equipment or material. Preserve its own original visible design. GROUP135: aged stern crowned man following HIS portrait. Very heavy pale gray down-slanting eyebrows over narrow black/dark eyes, deep frown/brow wrinkles, broad angular weathered peach face, prominent long hooked downturned ruddy nose, downturned mouth hidden by heavy pale gray mustache. Very large thick pale gray full beard ending in angular pointed layered tufts, short gray hair at sides, no young rounded cheeks or smiling mouth. Thin gold crown band with central RED gemstone and small original raised gold tips; low crown, no giant headdress. Own deep red long robe/mantle, narrow gold shoulder trim with small blue rectangular shoulder accents and pale gray upper back hair/fringe and gray belt. Beard and head about TWO THIRDS total height, body extremely short. Native robe conceals feet, no invented boots, staff, sword, throne or cape clasp. Back shows gray hair, low gold band, red robe and gray belt; no face or beard drawn on rear. Preserve mature severity while using big-head Q proportions.",
+        "initial_reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/group-135-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ]
+      }
+    ],
+    "calls": [
+      {
+        "group": 116,
+        "revision": 1,
+        "prompt": "Use case: stylized-concept. Generate one HD1 fantasy tactics game sprite master. EXACTLY3 columns x4 rows, twelve separated full-body sprites on genuine transparent background. FIRST image is THIS character's own original portrait and twelve native map poses; follow its face silhouette, features, palette, gear, directional occlusion. SECOND Ares board bottom new-design row is STYLE AND PROPORTIONS ONLY: smooth broad hand-painted color planes, very oversized head about TWO THIRDS of total height, extremely short compact torso and tiny legs. Never copy Ares face, weapons or armor. Row1 all3 straight FRONT; row2 all3 strict SCREEN LEFT including third frame; row3 all3 straight BACK; row4 all3 strict SCREEN RIGHT. Columns neutral/small left step/small right step, no turn within row. Equal scale/baseline and generous clear gutters, no clipping or connecting components. Interior alpha255 even dark holes and shadows; alpha0 outside silhouette with only thin antialias edge. No floor shadow, halo, haze, text, labels, grid or background. Do not invent a name, species, equipment or material. Preserve its own original visible design. GROUP116: sage gray-green tall closed angular faceplate with long tapering central vertical nose-like plate, thin dark horizontal upper visor slit, gray-green short crown top with dark blue upper edge, small RED triangular ear accents both sides. Face is featureless closed opaque plate: no mouth, lips, human nose, eyes or beard. Rounded DEEP COBALT BLUE shoulder balls, short gray-green plated arms/legs and dark blue tiny boots. Native back has gray-green segmented square rear plate, dark central rectangular recess and same blue shoulders; no front slit on back. Maintain extremely large long head and TINY waist/legs, no long abdomen. Own large blue ball shoulder silhouette with small red accents, no horns, no invented guns, wires, sword or jetpack.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/group-116-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ],
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-c3984a43-72c8-4f39-97b6-feac88115cc8.png",
+        "source_sha256": "56058b77c179a7c0e7ac8c9553c6f88098dd3be9b015690293e052e8f1970a40",
+        "call_index": 1,
+        "selected": false,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/group-116-source-reference.png",
+            "sha256": "bdbdecad3a67f8e1e513fdef1bcd0752b68ca66cef12221e892042ea013829ab"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png",
+            "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+          }
+        ]
+      },
+      {
+        "group": 122,
+        "revision": 1,
+        "prompt": "Use case: stylized-concept. Generate one HD1 fantasy tactics game sprite master. EXACTLY3 columns x4 rows, twelve separated full-body sprites on genuine transparent background. FIRST image is THIS character's own original portrait and twelve native map poses; follow its face silhouette, features, palette, gear, directional occlusion. SECOND Ares board bottom new-design row is STYLE AND PROPORTIONS ONLY: smooth broad hand-painted color planes, very oversized head about TWO THIRDS of total height, extremely short compact torso and tiny legs. Never copy Ares face, weapons or armor. Row1 all3 straight FRONT; row2 all3 strict SCREEN LEFT including third frame; row3 all3 straight BACK; row4 all3 strict SCREEN RIGHT. Columns neutral/small left step/small right step, no turn within row. Equal scale/baseline and generous clear gutters, no clipping or connecting components. Interior alpha255 even dark holes and shadows; alpha0 outside silhouette with only thin antialias edge. No floor shadow, halo, haze, text, labels, grid or background. Do not invent a name, species, equipment or material. Preserve its own original visible design. GROUP122: own broad faceted warm OCHRE BROWN head, low angular sloping brow, two tiny sharply narrowed RED eyes, wide angular flat nose with small black nostrils, deeply DOWN-TURNED dark mouth slit, thick angular lower jaw and long dark triangular central chin facet. Fierce unamused expression based on its own portrait, not cute human smile. Head occupies about TWO THIRDS total height, massive blocky shoulder/forearm shapes beside a tiny squat torso and short broad feet, dark DESATURATED TEAL wrist cuffs, dark brown/red tiny waist strip as original. Palette tan/brown facets, not gray metal. Back shows plain broad brown head/back and teal cuffs, no red eyes on back. No hair, helmet, weapon, backpack, clothing trim, gems or invented texture. Smooth broad painted facets with very little fine grain.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/group-122-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ],
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-cc188f0a-31d8-4965-a4dc-161929cac947.png",
+        "source_sha256": "c72a0ee6ee0bdeb0b09ee232819a602891b2e5e14fde7fb296d3b91b56cfc8ac",
+        "call_index": 2,
+        "selected": true,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/group-122-source-reference.png",
+            "sha256": "0138c8dd0cea1e2375c95ecab49e60e888a08a289029df3d5516d214d19610f3"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png",
+            "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+          }
+        ],
+        "master_file": "fdicon-122-hd1-portrait-q-v1-master.png",
+        "saved_master": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/fdicon-122-hd1-portrait-q-v1-master.png",
+        "initial_prompt": "Use case: stylized-concept. Generate one HD1 fantasy tactics game sprite master. EXACTLY3 columns x4 rows, twelve separated full-body sprites on genuine transparent background. FIRST image is THIS character's own original portrait and twelve native map poses; follow its face silhouette, features, palette, gear, directional occlusion. SECOND Ares board bottom new-design row is STYLE AND PROPORTIONS ONLY: smooth broad hand-painted color planes, very oversized head about TWO THIRDS of total height, extremely short compact torso and tiny legs. Never copy Ares face, weapons or armor. Row1 all3 straight FRONT; row2 all3 strict SCREEN LEFT including third frame; row3 all3 straight BACK; row4 all3 strict SCREEN RIGHT. Columns neutral/small left step/small right step, no turn within row. Equal scale/baseline and generous clear gutters, no clipping or connecting components. Interior alpha255 even dark holes and shadows; alpha0 outside silhouette with only thin antialias edge. No floor shadow, halo, haze, text, labels, grid or background. Do not invent a name, species, equipment or material. Preserve its own original visible design. GROUP122: own broad faceted warm OCHRE BROWN head, low angular sloping brow, two tiny sharply narrowed RED eyes, wide angular flat nose with small black nostrils, deeply DOWN-TURNED dark mouth slit, thick angular lower jaw and long dark triangular central chin facet. Fierce unamused expression based on its own portrait, not cute human smile. Head occupies about TWO THIRDS total height, massive blocky shoulder/forearm shapes beside a tiny squat torso and short broad feet, dark DESATURATED TEAL wrist cuffs, dark brown/red tiny waist strip as original. Palette tan/brown facets, not gray metal. Back shows plain broad brown head/back and teal cuffs, no red eyes on back. No hair, helmet, weapon, backpack, clothing trim, gems or invented texture. Smooth broad painted facets with very little fine grain.",
+        "initial_reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/group-122-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ]
+      },
+      {
+        "group": 135,
+        "revision": 1,
+        "prompt": "Use case: stylized-concept. Generate one HD1 fantasy tactics game sprite master. EXACTLY3 columns x4 rows, twelve separated full-body sprites on genuine transparent background. FIRST image is THIS character's own original portrait and twelve native map poses; follow its face silhouette, features, palette, gear, directional occlusion. SECOND Ares board bottom new-design row is STYLE AND PROPORTIONS ONLY: smooth broad hand-painted color planes, very oversized head about TWO THIRDS of total height, extremely short compact torso and tiny legs. Never copy Ares face, weapons or armor. Row1 all3 straight FRONT; row2 all3 strict SCREEN LEFT including third frame; row3 all3 straight BACK; row4 all3 strict SCREEN RIGHT. Columns neutral/small left step/small right step, no turn within row. Equal scale/baseline and generous clear gutters, no clipping or connecting components. Interior alpha255 even dark holes and shadows; alpha0 outside silhouette with only thin antialias edge. No floor shadow, halo, haze, text, labels, grid or background. Do not invent a name, species, equipment or material. Preserve its own original visible design. GROUP135: aged stern crowned man following HIS portrait. Very heavy pale gray down-slanting eyebrows over narrow black/dark eyes, deep frown/brow wrinkles, broad angular weathered peach face, prominent long hooked downturned ruddy nose, downturned mouth hidden by heavy pale gray mustache. Very large thick pale gray full beard ending in angular pointed layered tufts, short gray hair at sides, no young rounded cheeks or smiling mouth. Thin gold crown band with central RED gemstone and small original raised gold tips; low crown, no giant headdress. Own deep red long robe/mantle, narrow gold shoulder trim with small blue rectangular shoulder accents and pale gray upper back hair/fringe and gray belt. Beard and head about TWO THIRDS total height, body extremely short. Native robe conceals feet, no invented boots, staff, sword, throne or cape clasp. Back shows gray hair, low gold band, red robe and gray belt; no face or beard drawn on rear. Preserve mature severity while using big-head Q proportions.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/group-135-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ],
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-3b413875-31d3-42fe-88d1-f3a6dae52681.png",
+        "source_sha256": "0f2e96d510c9164fac8608fefad0a9da617ca807ea89db1f1ce6de52c8e9aae7",
+        "call_index": 3,
+        "selected": false,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/group-135-source-reference.png",
+            "sha256": "6386f120663935b10149b366b554e6d46ec6ce620d9947157de4aede185023fa"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png",
+            "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+          }
+        ]
+      },
+      {
+        "group": 116,
+        "revision": 2,
+        "prompt": "Use case: stylized-concept. Generate one HD1 fantasy tactics game sprite master. EXACTLY3 columns x4 rows, twelve separated full-body sprites on genuine transparent background. FIRST image is THIS character's own original portrait and twelve native map poses; follow its face silhouette, features, palette, gear, directional occlusion. SECOND Ares board bottom new-design row is STYLE AND PROPORTIONS ONLY: smooth broad hand-painted color planes, very oversized head about TWO THIRDS of total height, extremely short compact torso and tiny legs. Never copy Ares face, weapons or armor. Row1 all3 straight FRONT; row2 all3 strict SCREEN LEFT including third frame; row3 all3 straight BACK; row4 all3 strict SCREEN RIGHT. Columns neutral/small left step/small right step, no turn within row. Equal scale/baseline and generous clear gutters, no clipping or connecting components. Interior alpha255 even dark holes and shadows; alpha0 outside silhouette with only thin antialias edge. No floor shadow, halo, haze, text, labels, grid or background. Do not invent a name, species, equipment or material. Preserve its own original visible design. GROUP116: sage gray-green tall closed angular faceplate with long tapering central vertical nose-like plate, thin dark horizontal upper visor slit, gray-green short crown top with dark blue upper edge, small RED triangular ear accents both sides. Face is featureless closed opaque plate: no mouth, lips, human nose, eyes or beard. Rounded DEEP COBALT BLUE shoulder balls, short gray-green plated arms/legs and dark blue tiny boots. Native back has gray-green segmented square rear plate, dark central rectangular recess and same blue shoulders; no front slit on back. Maintain extremely large long head and TINY waist/legs, no long abdomen. Own large blue ball shoulder silhouette with small red accents, no horns, no invented guns, wires, sword or jetpack. STRICT CUTOUT REVISION: previous draft had diffuse exterior blue/red illumination. Completely remove ALL exterior glow and every background pixel. Treat the silhouette like a die-cut sticker with pure RGBA(0,0,0,0) outside. Retain exactly the same head, tiny torso, blue shoulders and12 poses. Flat unlit exterior, NO environmental light, no smoky shadows or vignettes. Opaque black inside visor preserved.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/group-116-source-reference.png",
+          "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-c3984a43-72c8-4f39-97b6-feac88115cc8.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ],
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-7ec90305-139e-4fbc-9753-b9f70a416c6a.png",
+        "source_sha256": "059758824468bc59fd9558802da60d935ed03ecfd788327409fceec9b7ac78f6",
+        "call_index": 4,
+        "selected": true,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/group-116-source-reference.png",
+            "sha256": "bdbdecad3a67f8e1e513fdef1bcd0752b68ca66cef12221e892042ea013829ab"
+          },
+          {
+            "file": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-c3984a43-72c8-4f39-97b6-feac88115cc8.png",
+            "sha256": "56058b77c179a7c0e7ac8c9553c6f88098dd3be9b015690293e052e8f1970a40"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png",
+            "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+          }
+        ],
+        "master_file": "fdicon-116-hd1-portrait-q-v1-master.png",
+        "saved_master": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/fdicon-116-hd1-portrait-q-v1-master.png",
+        "initial_prompt": "Use case: stylized-concept. Generate one HD1 fantasy tactics game sprite master. EXACTLY3 columns x4 rows, twelve separated full-body sprites on genuine transparent background. FIRST image is THIS character's own original portrait and twelve native map poses; follow its face silhouette, features, palette, gear, directional occlusion. SECOND Ares board bottom new-design row is STYLE AND PROPORTIONS ONLY: smooth broad hand-painted color planes, very oversized head about TWO THIRDS of total height, extremely short compact torso and tiny legs. Never copy Ares face, weapons or armor. Row1 all3 straight FRONT; row2 all3 strict SCREEN LEFT including third frame; row3 all3 straight BACK; row4 all3 strict SCREEN RIGHT. Columns neutral/small left step/small right step, no turn within row. Equal scale/baseline and generous clear gutters, no clipping or connecting components. Interior alpha255 even dark holes and shadows; alpha0 outside silhouette with only thin antialias edge. No floor shadow, halo, haze, text, labels, grid or background. Do not invent a name, species, equipment or material. Preserve its own original visible design. GROUP116: sage gray-green tall closed angular faceplate with long tapering central vertical nose-like plate, thin dark horizontal upper visor slit, gray-green short crown top with dark blue upper edge, small RED triangular ear accents both sides. Face is featureless closed opaque plate: no mouth, lips, human nose, eyes or beard. Rounded DEEP COBALT BLUE shoulder balls, short gray-green plated arms/legs and dark blue tiny boots. Native back has gray-green segmented square rear plate, dark central rectangular recess and same blue shoulders; no front slit on back. Maintain extremely large long head and TINY waist/legs, no long abdomen. Own large blue ball shoulder silhouette with small red accents, no horns, no invented guns, wires, sword or jetpack.",
+        "initial_reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/group-116-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ]
+      },
+      {
+        "group": 135,
+        "revision": 2,
+        "prompt": "Use case: stylized-concept. Generate one HD1 fantasy tactics game sprite master. EXACTLY3 columns x4 rows, twelve separated full-body sprites on genuine transparent background. FIRST image is THIS character's own original portrait and twelve native map poses; follow its face silhouette, features, palette, gear, directional occlusion. SECOND Ares board bottom new-design row is STYLE AND PROPORTIONS ONLY: smooth broad hand-painted color planes, very oversized head about TWO THIRDS of total height, extremely short compact torso and tiny legs. Never copy Ares face, weapons or armor. Row1 all3 straight FRONT; row2 all3 strict SCREEN LEFT including third frame; row3 all3 straight BACK; row4 all3 strict SCREEN RIGHT. Columns neutral/small left step/small right step, no turn within row. Equal scale/baseline and generous clear gutters, no clipping or connecting components. Interior alpha255 even dark holes and shadows; alpha0 outside silhouette with only thin antialias edge. No floor shadow, halo, haze, text, labels, grid or background. Do not invent a name, species, equipment or material. Preserve its own original visible design. GROUP135: aged stern crowned man following HIS portrait. Very heavy pale gray down-slanting eyebrows over narrow black/dark eyes, deep frown/brow wrinkles, broad angular weathered peach face, prominent long hooked downturned ruddy nose, downturned mouth hidden by heavy pale gray mustache. Very large thick pale gray full beard ending in angular pointed layered tufts, short gray hair at sides, no young rounded cheeks or smiling mouth. Thin gold crown band with central RED gemstone and small original raised gold tips; low crown, no giant headdress. Own deep red long robe/mantle, narrow gold shoulder trim with small blue rectangular shoulder accents and pale gray upper back hair/fringe and gray belt. Beard and head about TWO THIRDS total height, body extremely short. Native robe conceals feet, no invented boots, staff, sword, throne or cape clasp. Back shows gray hair, low gold band, red robe and gray belt; no face or beard drawn on rear. Preserve mature severity while using big-head Q proportions. STRICT SOURCE GEAR REVISION: previous draft invented a large round gold-and-blue buckle/clasp at the front waist and a red gemstone on the BACK of the crown. REMOVE both inventions. Waist must be a PLAIN narrow gray band as own native front; no front clasp, pendant or buckle. Crown rear is PLAIN thin gold band, no gem centered on back; only front central red stone. No sleeves exposing new bulky arms: small source-like hands or concealed by red garment. Keep own mature stern face, prominent LONG hooked nose, gray mustache/beard, low original gold/red crown and red robe, all12 precise facings. Pure cutout transparency with no halo.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/group-135-source-reference.png",
+          "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-3b413875-31d3-42fe-88d1-f3a6dae52681.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ],
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-07389d6c-4383-402d-bd06-7c64bd660ece.png",
+        "source_sha256": "94bcbec5f02b4bcba71ec7f2a7b4b23ab88c73e1f4201c4c3f1a713d2b74ecbe",
+        "call_index": 5,
+        "selected": true,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/group-135-source-reference.png",
+            "sha256": "6386f120663935b10149b366b554e6d46ec6ce620d9947157de4aede185023fa"
+          },
+          {
+            "file": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-3b413875-31d3-42fe-88d1-f3a6dae52681.png",
+            "sha256": "0f2e96d510c9164fac8608fefad0a9da617ca807ea89db1f1ce6de52c8e9aae7"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png",
+            "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+          }
+        ],
+        "master_file": "fdicon-135-hd1-portrait-q-v1-master.png",
+        "saved_master": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/fdicon-135-hd1-portrait-q-v1-master.png",
+        "initial_prompt": "Use case: stylized-concept. Generate one HD1 fantasy tactics game sprite master. EXACTLY3 columns x4 rows, twelve separated full-body sprites on genuine transparent background. FIRST image is THIS character's own original portrait and twelve native map poses; follow its face silhouette, features, palette, gear, directional occlusion. SECOND Ares board bottom new-design row is STYLE AND PROPORTIONS ONLY: smooth broad hand-painted color planes, very oversized head about TWO THIRDS of total height, extremely short compact torso and tiny legs. Never copy Ares face, weapons or armor. Row1 all3 straight FRONT; row2 all3 strict SCREEN LEFT including third frame; row3 all3 straight BACK; row4 all3 strict SCREEN RIGHT. Columns neutral/small left step/small right step, no turn within row. Equal scale/baseline and generous clear gutters, no clipping or connecting components. Interior alpha255 even dark holes and shadows; alpha0 outside silhouette with only thin antialias edge. No floor shadow, halo, haze, text, labels, grid or background. Do not invent a name, species, equipment or material. Preserve its own original visible design. GROUP135: aged stern crowned man following HIS portrait. Very heavy pale gray down-slanting eyebrows over narrow black/dark eyes, deep frown/brow wrinkles, broad angular weathered peach face, prominent long hooked downturned ruddy nose, downturned mouth hidden by heavy pale gray mustache. Very large thick pale gray full beard ending in angular pointed layered tufts, short gray hair at sides, no young rounded cheeks or smiling mouth. Thin gold crown band with central RED gemstone and small original raised gold tips; low crown, no giant headdress. Own deep red long robe/mantle, narrow gold shoulder trim with small blue rectangular shoulder accents and pale gray upper back hair/fringe and gray belt. Beard and head about TWO THIRDS total height, body extremely short. Native robe conceals feet, no invented boots, staff, sword, throne or cape clasp. Back shows gray hair, low gold band, red robe and gray belt; no face or beard drawn on rear. Preserve mature severity while using big-head Q proportions.",
+        "initial_reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/group-135-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ]
+      }
+    ]
+  },
+  "original_reference": {
+    "source": "原名冊、各自DATO、FDICON三層與FDOTHER0色盤，不新增原版動態。",
+    "groups": [
+      116,
+      122,
+      135
+    ],
+    "records_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-final-known-faces-r35/face-source-references.json",
+    "records_sha256": "2e131c3a32a5e0f7428b57b7d1d575e240dd5bfeab227f524738838981db20db"
+  }
+}
