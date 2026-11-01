@@ -434,7 +434,7 @@
       "layer": "data",
       "category": "缺陷",
       "title": "P1 HD1戰場小人物：依原版重繪大頭Q版與個別面容",
-      "body": "第117／118／119／120組已依自身原版頭像修正面容並正式登錄。117保留單側遮眼與藍灰長髮，118保留成年下巴及原單側淡色彎輪廓，119保留狹長面容與額帶，120保留橙褐短髮、窄眼與藍唇。姓名與輪廓材質／用途未知，不推定。\n\n四組原名冊、DATO、FDICON及原位置先核證據與61 READY。兩固定分份保留陣營、原位置及portrait／BattleFig，無持續身份或selector投影。28完整Game.Draw、24PNG、四次F2、290845核心點及24反例，普通首章十PNG的四組切換／走行取消／F5與新程序LOAD、36組原名冊預檢、四項來源／14拒收、26頂層Go及21消費來源／416幀／19反例通過。20舊分份、七批轉職與三種共用來源契約保持，不重跑或升格舊GPU。\n\n清冊883只換8項、875保持；100新檔與9505舊美術SHA／inode／mtime／UID／GID、0／9／30六項及其餘121組保持，私人白名單6915。README與四頁總覽依正式來源更新；096～139另存r3，舊圖保留。五次內建生成中一份側向錯稿拒收，完整提示詞與實際呼叫順序保存於配方。\n\n人物待複核28→24，其餘已有面容差異繼續修正，不改稱人工待驗。第67組沿已確認來源例外且身份未知，Gaia沿定版。#284獨立控制與#285完整工具列已結案；地形與其餘介面繼續。本項保持OPEN，不宣稱全人物面容、HD1 milestone、自然章節、原版動態、PLAYER-E2或480頭像完成。現況依58／61及主收據hd1_adult_faces_followup_20261101。",
+      "body": "第123／124／126／134組已依自身原版頭像修正面容並正式登錄。123恢復蒼白五官與藍長髮，124保留銀髮、鉤鼻、藍眼及黑色斜紋，126補回眼部遮擋下露出的膚色鼻、嘴、下顎，134改依自己的成年面容與短髮。姓名、種族及遮擋材質未知，不推定。\n\n四組原名冊、DATO、FDICON及位置先核證據與61 READY。前三組保留enemy，134保留ally；無持續身份或selector投影。兩固定分份28完整Game.Draw、24PNG、四次F2、302209核心點及24反例，普通首章十PNG的四組切換／走行取消／F5與新程序LOAD、40組原名冊預檢、四項來源／14拒收、26頂層Go及21消費來源／416幀／19反例通過。21舊分份、七批轉職與三種共用契約保持，不重跑或升格舊GPU。\n\n清冊883只換8項、875保持；100新檔與9605舊美術SHA／inode／mtime／UID／GID、0／9／30六項及其餘121組保持，私人白名單6915。README與四頁總覽依正式來源更新，096～139另存r4。內建生成九次，五份未過透明度或面容修訂的草稿不登錄；完整提示詞、參考順序及SHA保存於配方，不改alpha來繞過檢查。\n\n人物造型待複核24→20；其餘已見差異繼續修正，不改稱人工待驗。第67組沿確認的原圖例外且身份未知，Gaia沿定版。#284與#285已結案，地形及其餘介面繼續。本項保持OPEN，不宣稱全人物面容、HD1 milestone、自然章節、原版動態、PLAYER-E2或480頭像完成。現況依58／61及主收據hd1_pale_faces_followup_20261101。",
       "acceptance": [
         "使用者選定亞雷斯新比例，並保留定版原稿、原版來源、逐字提示與SHA；其他角色依相同標準重製，不能只改大圖總覽。",
         "125個可見圖組及1455幀逐組保留原生方向、步態／靜態相位、轉職身份、裝備特徵、腳底與透明契約；原版、已接受圖源及舊證據可追溯。",
@@ -658,11 +658,14 @@
         "docs/figures/hd1-shadow-107-game.png",
         "docs/figures/hd1-adult-faces-reference.png",
         "docs/figures/hd1-adult-faces-comparison.png",
-        "remake/assets/themes/modern/hd1-adult-faces-refresh.recipe.json"
+        "remake/assets/themes/modern/hd1-adult-faces-refresh.recipe.json",
+        "docs/figures/hd1-pale-faces-reference.png",
+        "docs/figures/hd1-pale-faces-comparison.png",
+        "remake/assets/themes/modern/hd1-pale-faces-refresh.recipe.json"
       ],
       "verify": {
         "kind": "manual",
-        "note": "四組原頭像面容已修並核來源／GPU／普通保存；人物造型餘24組，74／75身份未知，67例外保持。其他HD1缺項續作。"
+        "note": "四組自身原版面容已修並核來源／GPU／普通保存，人物造型餘20組；74／75身份未知，67例外保持，其他HD1缺項續作。"
       },
       "issue": 286
     },
@@ -671,7 +674,7 @@
       "layer": "data",
       "category": "缺陷",
       "title": "P1 HD1人物面容與身份複核：依原版頭像保留各自特徵",
-      "body": "第117／118／119／120組已依自身原版頭像修正面容並正式登錄。117保留單側遮眼與藍灰長髮，118保留成年下巴及原單側淡色彎輪廓，119保留狹長面容與額帶，120保留橙褐短髮、窄眼與藍唇。姓名與輪廓材質／用途未知，不推定。\n\n四組原名冊、DATO、FDICON及原位置先核證據與61 READY。兩固定分份保留陣營、原位置及portrait／BattleFig，無持續身份或selector投影。28完整Game.Draw、24PNG、四次F2、290845核心點及24反例，普通首章十PNG的四組切換／走行取消／F5與新程序LOAD、36組原名冊預檢、四項來源／14拒收、26頂層Go及21消費來源／416幀／19反例通過。20舊分份、七批轉職與三種共用來源契約保持，不重跑或升格舊GPU。\n\n清冊883只換8項、875保持；100新檔與9505舊美術SHA／inode／mtime／UID／GID、0／9／30六項及其餘121組保持，私人白名單6915。README與四頁總覽依正式來源更新；096～139另存r3，舊圖保留。五次內建生成中一份側向錯稿拒收，完整提示詞與實際呼叫順序保存於配方。\n\n人物待複核28→24，其餘已有面容差異繼續修正，不改稱人工待驗。第67組沿已確認來源例外且身份未知，Gaia沿定版。#284獨立控制與#285完整工具列已結案；地形與其餘介面繼續。本項保持OPEN，不宣稱全人物面容、HD1 milestone、自然章節、原版動態、PLAYER-E2或480頭像完成。現況依58／61及主收據hd1_adult_faces_followup_20261101。",
+      "body": "第123／124／126／134組已依自身原版頭像修正面容並正式登錄。123恢復蒼白五官與藍長髮，124保留銀髮、鉤鼻、藍眼及黑色斜紋，126補回眼部遮擋下露出的膚色鼻、嘴、下顎，134改依自己的成年面容與短髮。姓名、種族及遮擋材質未知，不推定。\n\n四組原名冊、DATO、FDICON及位置先核證據與61 READY。前三組保留enemy，134保留ally；無持續身份或selector投影。兩固定分份28完整Game.Draw、24PNG、四次F2、302209核心點及24反例，普通首章十PNG的四組切換／走行取消／F5與新程序LOAD、40組原名冊預檢、四項來源／14拒收、26頂層Go及21消費來源／416幀／19反例通過。21舊分份、七批轉職與三種共用契約保持，不重跑或升格舊GPU。\n\n清冊883只換8項、875保持；100新檔與9605舊美術SHA／inode／mtime／UID／GID、0／9／30六項及其餘121組保持，私人白名單6915。README與四頁總覽依正式來源更新，096～139另存r4。內建生成九次，五份未過透明度或面容修訂的草稿不登錄；完整提示詞、參考順序及SHA保存於配方，不改alpha來繞過檢查。\n\n人物造型待複核24→20；其餘已見差異繼續修正，不改稱人工待驗。第67組沿確認的原圖例外且身份未知，Gaia沿定版。#284與#285已結案，地形及其餘介面繼續。本項保持OPEN，不宣稱全人物面容、HD1 milestone、自然章節、原版動態、PLAYER-E2或480頭像完成。現況依58／61及主收據hd1_pale_faces_followup_20261101。",
       "acceptance": [
         "逐組以固定原生三層、FDOTHER0代表色盤與有對應身份的原版頭像／大圖核身份，不沿舊候選或圖說猜職業／種族。",
         "優先修正2、48、50、51、52、53、54、55、56、63、76、79的已見差異，70、73、77、89、125、133補證後逐項確認或修正；所有結論保留來源及未知等級。",
@@ -883,11 +886,14 @@
         "docs/figures/hd1-shadow-107-game.png",
         "docs/figures/hd1-adult-faces-reference.png",
         "docs/figures/hd1-adult-faces-comparison.png",
-        "remake/assets/themes/modern/hd1-adult-faces-refresh.recipe.json"
+        "remake/assets/themes/modern/hd1-adult-faces-refresh.recipe.json",
+        "docs/figures/hd1-pale-faces-reference.png",
+        "docs/figures/hd1-pale-faces-comparison.png",
+        "remake/assets/themes/modern/hd1-pale-faces-refresh.recipe.json"
       ],
       "verify": {
         "kind": "manual",
-        "note": "四組原頭像面容已修並核來源／GPU／普通保存；人物造型餘24組，74／75身份未知，67例外保持。其他HD1缺項續作。"
+        "note": "四組自身原版面容已修並核來源／GPU／普通保存，人物造型餘20組；74／75身份未知，67例外保持，其他HD1缺項續作。"
       },
       "issue": 287
     }

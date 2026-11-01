@@ -1,0 +1,741 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_hd1_chibi_map_refresh",
+  "approved_preview": "docs/figures/hd1-ares-q-design.png",
+  "approved_preview_sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e",
+  "native_bank_sha256": "7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44",
+  "palette_sha256": "404db1ca72ffc19fa7404fbc59bde98cdf239f63fe3375ec248a8142073a28bf",
+  "base_catalog_sha256": "8f258e36333d8274494b20ac86abe49c1c7cd29b8842948f015739716d699a8c",
+  "approval": "沿已定Q比例、個人原版面容及2026-11-01繼續完成HD1授權，不改正式規則。",
+  "master_alpha_policy": "per_pose_coverage_v1",
+  "groups": [
+    {
+      "group": 123,
+      "master_file": "fdicon-123-hd1-portrait-q-v1-master.png",
+      "master_sha256": "9b79c966e5534d4261375619f17ce1be551a8fa88623ad3cf2eb0eb827e801d4",
+      "output_prefix": "fdicon-123-hd1-portrait-q-v1"
+    },
+    {
+      "group": 124,
+      "master_file": "fdicon-124-hd1-portrait-q-v1-master.png",
+      "master_sha256": "86151409a8fbad61413852fce64e49579e06d6b79fdf98706aca4f19c49d936e",
+      "output_prefix": "fdicon-124-hd1-portrait-q-v1"
+    },
+    {
+      "group": 126,
+      "master_file": "fdicon-126-hd1-portrait-q-v1-master.png",
+      "master_sha256": "d8b4ec0c09b31e05e436fe334b628961bc997a091a1d4810db6e49132c59e0f7",
+      "output_prefix": "fdicon-126-hd1-portrait-q-v1"
+    },
+    {
+      "group": 134,
+      "master_file": "fdicon-134-hd1-portrait-q-v1-master.png",
+      "master_sha256": "fa836dc159fd24f066925dd979b0c22cc3cabab886547e393a3f17dc287cfa30",
+      "output_prefix": "fdicon-134-hd1-portrait-q-v1"
+    }
+  ],
+  "faces": [
+    {
+      "group": 123,
+      "name": "第123組原名冊人物",
+      "portrait_file": "remake/assets/portraits/DATO_123_m0.png",
+      "portrait_sha256": "1eeb3686c1dc90ff554e1f7c3c7caeb2c018491d6a59cd859e4ec01643c2915f",
+      "original_png_sha256": "3cefb969f3f0fe1b05b29c0bae78e691c629157ca1066334f256a3df772c4e90",
+      "decoded_rgba_sha256": "2dcbd8e3a662142c51b4f1585cf5505ccaac0be64a2aa55231ad227e14d1f998",
+      "traits": [
+        "藍長髮、蒼白有五官的臉",
+        "窄深色眼、角形長鼻與薄藍灰唇",
+        "灰白衣甲、深藍四肢與長髮，空手"
+      ],
+      "comparison_label": "原名冊與自身圖源，姓名與種族未知，非480頭像驗收"
+    },
+    {
+      "group": 124,
+      "name": "第124組原名冊人物",
+      "portrait_file": "remake/assets/portraits/DATO_124_m0.png",
+      "portrait_sha256": "b7133c5ab8ae8027c2c8963472633b529fc97cf9f34b35819ae1a46f1e3b55dd",
+      "original_png_sha256": "a96115f1b180445688da5c73f7fc4e57cfff9c6c41a52ceda0fda71949493355",
+      "decoded_rgba_sha256": "d5c8b16f59fa5e29f278ff103201a1a5ac1b74923c50dce422316cbd4f7785ef",
+      "traits": [
+        "銀白長髮、蒼白狹臉與長鉤鼻",
+        "藍眼周黑色斜紋延至雙頰；材質與種族未知",
+        "橄欖灰衣甲、淺色圓胸片，空手"
+      ],
+      "comparison_label": "原名冊與自身圖源，姓名與種族未知，非480頭像驗收"
+    },
+    {
+      "group": 126,
+      "name": "第126組原名冊人物",
+      "portrait_file": "remake/assets/portraits/DATO_126_m0.png",
+      "portrait_sha256": "124eec6c3d550ef398c91778d9dfe0c74af34f27d4caf5d0fd9ae47ff3f08e05",
+      "original_png_sha256": "c989323b574d8f5f0ffbd2501f3327f2c086fd64195c80190b8c36f9172110c5",
+      "decoded_rgba_sha256": "5652dc15ceacd5e0414dce02b68b165426da87db0605d5db51dd4d9e5d8cab35",
+      "traits": [
+        "銀白後掠髮、深藍額眼遮擋及窄紅眼",
+        "原頭像露出膚色鼻尖、嘴與下顎，不能畫成全封面具",
+        "深藍紫短衣甲、灰藍手足，空手"
+      ],
+      "comparison_label": "原名冊與自身圖源，姓名與種族未知，非480頭像驗收"
+    },
+    {
+      "group": 134,
+      "name": "第134組原名冊人物",
+      "portrait_file": "remake/assets/portraits/DATO_134_m0.png",
+      "portrait_sha256": "31a30594f2218c3785e71e1238579baf132da0d9d2e7059e8e684e66bbea576b",
+      "original_png_sha256": "204c9a221416117c669fdca737f3b085d518864152049aa6b3ceac07e299a573",
+      "decoded_rgba_sha256": "4fd9f64362b01e171803f3d8c61a1b1c66527d744c66f39925189de85af699c2",
+      "traits": [
+        "紅褐短髮及灰綠額帶",
+        "狹長成年臉、低斜眉、窄眼、長鼻與方下顎",
+        "灰藍衣領、暗紅中央衣片、短褲靴，空手"
+      ],
+      "comparison_label": "原名冊與自身圖源，姓名與種族未知，非480頭像驗收"
+    }
+  ],
+  "roster_bindings": [
+    {
+      "group": 123,
+      "map": 16,
+      "roster_file": "remake/assets/maps/map16/map16_units.json",
+      "roster_sha256": "5484bfa8e7891e5f382c274f4bafac97fdfcb248cd59adbbf2adaff3701a5b81",
+      "row": 0,
+      "initial_group": 0,
+      "camp": "enemy",
+      "portrait": 123,
+      "battle_fig": 123,
+      "position": {
+        "x_word": 23,
+        "y_word": 18,
+        "raw_key": 123
+      },
+      "native_constructor": {
+        "branch": "high_class",
+        "index": 55,
+        "record": [
+          7,
+          26,
+          160,
+          0,
+          20,
+          20,
+          16,
+          4,
+          3,
+          250
+        ]
+      }
+    },
+    {
+      "group": 124,
+      "map": 21,
+      "roster_file": "remake/assets/maps/map21/map21_units.json",
+      "roster_sha256": "5da1516036803f136b8014afb509603bd165c79bdda0f4eaa2787ad56c2c0bd4",
+      "row": 0,
+      "initial_group": 0,
+      "camp": "enemy",
+      "portrait": 124,
+      "battle_fig": 124,
+      "position": {
+        "x_word": 22,
+        "y_word": 16,
+        "raw_key": 124
+      },
+      "native_constructor": {
+        "branch": "high_class",
+        "index": 56,
+        "record": [
+          7,
+          26,
+          145,
+          0,
+          28,
+          23,
+          10,
+          4,
+          5,
+          250
+        ]
+      }
+    },
+    {
+      "group": 126,
+      "map": 28,
+      "roster_file": "remake/assets/maps/map28/map28_units.json",
+      "roster_sha256": "26c03510c926bfc9ebc56d6de6c6d8a3011d49dcf228adb3adfa261112d2154b",
+      "row": 70,
+      "initial_group": 9,
+      "camp": "enemy",
+      "portrait": 126,
+      "battle_fig": 126,
+      "position": {
+        "x_word": 15,
+        "y_word": 3,
+        "raw_key": 126
+      },
+      "native_constructor": {
+        "branch": "high_class",
+        "index": 58,
+        "record": [
+          9,
+          26,
+          44,
+          1,
+          200,
+          15,
+          8,
+          3,
+          5,
+          255
+        ]
+      }
+    },
+    {
+      "group": 134,
+      "map": 1,
+      "roster_file": "remake/assets/maps/map1/map1_units.json",
+      "roster_sha256": "79a246d2b1149fbc99bb00a44b29449e4ebbb44a1d25a72279941b3367514c58",
+      "row": 0,
+      "initial_group": 1,
+      "camp": "ally",
+      "portrait": 134,
+      "battle_fig": 134,
+      "position": {
+        "x_word": 16,
+        "y_word": 12,
+        "raw_key": 134
+      },
+      "native_constructor": {
+        "branch": "high_class",
+        "index": 66,
+        "record": [
+          1,
+          27,
+          14,
+          0,
+          0,
+          1,
+          2,
+          1,
+          4,
+          1
+        ]
+      }
+    }
+  ],
+  "gpu_pairs": {
+    "pale-and-marked": [
+      123,
+      124
+    ],
+    "masked-and-redhair": [
+      126,
+      134
+    ]
+  },
+  "policy": "各自原版面容與原裝束，原名冊陣營及位置；不新增身份、種族或遮擋材質。",
+  "alpha_quality_review": {
+    "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/alpha-quality-final.json",
+    "sha256": "f541f89cdf890a4a185ad070860ae363471da8152f526aa44ce4daae91c82d3d"
+  },
+  "image_generation": {
+    "tool": "builtin image_gen.imagegen",
+    "transparent_background": true,
+    "jobs": [
+      {
+        "group": 123,
+        "revision": 2,
+        "prompt": "Edit the FIRST referenced sprite sheet. Keep EXACTLY the same character, outfit, hair colors, 12 sprites and strict 3x4 layout with FRONT/LEFT/BACK/RIGHT rows; ALL three in each row same facing. Remove EVERY glow, aura, background haze, semitransparent shadow, ambient halo and soft paint spill around EVERY figure. The entire area between figures must be exact alpha=0. All interior skin/hair/clothing pixels must be fully opaque alpha=255, including all dark/black areas. Only a 1-2 pixel anti-aliasing edge may be semitransparent. Do not fade hair, bodies, hands or feet. Crisp clean isolated game sprite cutouts, absolutely NO soft gradients of TRANSPARENCY. Color shading inside figures is allowed and fully opaque. No outline glow. Transparent background. Keep twelve complete full bodies with generous gutters. SECOND reference is this character's own original portrait and native map poses, authoritative for facial features. Retain the PALE exposed angular adult face, sharp narrow eyes, long nose, thin bluegray mouth and blue long hair; no blank robotic mask.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-123-draft-r1.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-123-source-reference.png"
+        ],
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-e270578c-4b9e-4422-aa45-f54e9fbf1594.png",
+        "source_sha256": "9b79c966e5534d4261375619f17ce1be551a8fa88623ad3cf2eb0eb827e801d4",
+        "component_check": 12,
+        "alpha_ratios": [
+          0.924,
+          0.9165,
+          0.9169,
+          0.9271,
+          0.921,
+          0.9268,
+          0.9157,
+          0.9166,
+          0.9137,
+          0.9301,
+          0.9229,
+          0.9287
+        ],
+        "saved_draft": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-123-draft-r2.png",
+        "selected": true,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-123-draft-r1.png",
+            "sha256": "6bd1e48ad492c05d65627416678b5ae2a3b6d9b8f9aae85e51edf6d3c675ba51"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-123-source-reference.png",
+            "sha256": "b3649f1cee758e0b04cfd1653147d53e781a677a3219cff51610bee63a3c70c0"
+          }
+        ],
+        "master_file": "fdicon-123-hd1-portrait-q-v1-master.png",
+        "saved_master": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/fdicon-123-hd1-portrait-q-v1-master.png",
+        "initial_prompt": "Edit/create a single transparent RGBA sprite-sheet master for an established HD1 chibi fantasy tactical game. First reference is the EXACT OWN original portrait plus twelve native map poses; use that identity, facial structure, colors, equipment and silhouette. Second reference is approved chibi proportion/style only (Ares); never copy that face, hair, armor or weapon. Match hand-painted clean bold readable 2D game art, very large head with short compact body, approximately 55-60% total height head, adult facial features translated into chibi without changing age. Twelve isolated full-body sprites arranged in a strictly regular 3 columns x 4 rows grid on a transparent 1536x1024 canvas, same scale and baseline per row, generous equal transparent cell gutters. Every full sprite including hair fits comfortably inside its cell. ROW1 ALL THREE face straight forward toward viewer, ROW2 ALL THREE face SCREEN LEFT (nose LEFT), ROW3 ALL THREE face straight BACK away from viewer, ROW4 ALL THREE face SCREEN RIGHT (nose RIGHT). In each row columns are subtle idle/left-foot-step/right-foot-step, never change facing for a step. Keep full body, both feet and empty hands unless native map shows an object. No scenery, ground planes, drop shadows, labels, panels, borders, opaque background or extra sprites. Preserve source asymmetry by rotating the same character, never arbitrarily mirror unilateral details. Do not invent lore or names. GROUP123: own angular PALE almost white face, sharp narrow dark eyes under strongly angled brows, a slim long pointed nose with a cool gray shadow, thin blue-gray lips with severe slightly raised corner, long blue hair in broad swept wavy locks; forehead side fringe and swept strands visible in source. Face is exposed pale skin, not an empty robot visor or black face. Do not paint giant child eyes or a featureless face. Native map outfit is pale gray-white compact torso armor/tunic with medium cool-gray horizontal high collar, pale shoulder caps and cuffs, deep navy sleeves/lower garment, dark gloves and boots, long blue hair reaching behind upper body. No swords/staff/cape invented. Strict profile-left for all row2, profile-right all row4. Front must show own adult sharp eyes/nose/thin mouth, back no face.",
+        "initial_reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-123-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ]
+      },
+      {
+        "group": 124,
+        "revision": 2,
+        "prompt": "Edit the FIRST referenced sprite sheet. Keep EXACTLY the same character, outfit, hair colors, 12 sprites and strict 3x4 layout with FRONT/LEFT/BACK/RIGHT rows; ALL three in each row same facing. Remove EVERY glow, aura, background haze, semitransparent shadow, ambient halo and soft paint spill around EVERY figure. The entire area between figures must be exact alpha=0. All interior skin/hair/clothing pixels must be fully opaque alpha=255, including all dark/black areas. Only a 1-2 pixel anti-aliasing edge may be semitransparent. Do not fade hair, bodies, hands or feet. Crisp clean isolated game sprite cutouts, absolutely NO soft gradients of TRANSPARENCY. Color shading inside figures is allowed and fully opaque. No outline glow. Transparent background. Keep twelve complete full bodies with generous gutters. SECOND reference is this character's own original portrait and native map poses, authoritative for facial features. Retain pale gaunt hooked-nose own face, angular BLACK pattern around narrow blue eyes down both cheeks and silver long hair; no black void over face.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-124-draft-r1.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-124-source-reference.png"
+        ],
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-c71d8ad2-d9b1-4b93-b851-5723b9440c5c.png",
+        "source_sha256": "86151409a8fbad61413852fce64e49579e06d6b79fdf98706aca4f19c49d936e",
+        "component_check": 12,
+        "alpha_ratios": [
+          0.931,
+          0.928,
+          0.9307,
+          0.9292,
+          0.9238,
+          0.9287,
+          0.9341,
+          0.935,
+          0.9347,
+          0.9339,
+          0.9288,
+          0.9317
+        ],
+        "saved_draft": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-124-draft-r2.png",
+        "selected": true,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-124-draft-r1.png",
+            "sha256": "c791fbe3ad6d524b8e1a959b890cd506f6f45458f887f3cdf4af1142288dcd97"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-124-source-reference.png",
+            "sha256": "b1e04d45eb1a6114ecac2e602e3f59a191b9082806af31918fb25a6512831d4a"
+          }
+        ],
+        "master_file": "fdicon-124-hd1-portrait-q-v1-master.png",
+        "saved_master": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/fdicon-124-hd1-portrait-q-v1-master.png",
+        "initial_prompt": "Edit/create a single transparent RGBA sprite-sheet master for an established HD1 chibi fantasy tactical game. First reference is the EXACT OWN original portrait plus twelve native map poses; use that identity, facial structure, colors, equipment and silhouette. Second reference is approved chibi proportion/style only (Ares); never copy that face, hair, armor or weapon. Match hand-painted clean bold readable 2D game art, very large head with short compact body, approximately 55-60% total height head, adult facial features translated into chibi without changing age. Twelve isolated full-body sprites arranged in a strictly regular 3 columns x 4 rows grid on a transparent 1536x1024 canvas, same scale and baseline per row, generous equal transparent cell gutters. Every full sprite including hair fits comfortably inside its cell. ROW1 ALL THREE face straight forward toward viewer, ROW2 ALL THREE face SCREEN LEFT (nose LEFT), ROW3 ALL THREE face straight BACK away from viewer, ROW4 ALL THREE face SCREEN RIGHT (nose RIGHT). In each row columns are subtle idle/left-foot-step/right-foot-step, never change facing for a step. Keep full body, both feet and empty hands unless native map shows an object. No scenery, ground planes, drop shadows, labels, panels, borders, opaque background or extra sprites. Preserve source asymmetry by rotating the same character, never arbitrarily mirror unilateral details. Do not invent lore or names. GROUP124: own mature pale cool gray-white narrow gaunt face with a very long hooked angular nose, sharp pointed cheekbones, a thin slightly curled severe mouth, white/silver wild layered hair. Very distinctive BLACK angular face pattern surrounds narrowed BLUE eyes and runs diagonally down BOTH cheeks towards the chin; preserve that visible pattern without inventing whether paint, hair or mask. Face has pale cheeks/nose/mouth, not a featureless blue-black void, not a helmet. Source native map long silver-white hair to midback, muted olive-gray compact coat/armor tunic, round pale graygreen central chest form, dark olive/gray limbs and boots, empty hands. No facial hair puff, no added staff/weapon, no species guess. Own adult narrow eyes and prominent hooked nose must remain readable despite the large chibi head.",
+        "initial_reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-124-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ]
+      },
+      {
+        "group": 126,
+        "revision": 3,
+        "prompt": "Use case: background-extraction. Make a clean transparent cutout of ALL twelve existing character sprites. Remove the gray-blue haze surrounding each sprite and all visible background. Keep the characters fully opaque, including dark navy armor and black outlines. Exact transparent empty canvas alpha=0 outside the silhouette, opaque alpha=255 inside. Preserve all twelve original characters, facial details, exposed tan lower faces, silver hair, clothing, pixel positions and the 3-column 4-row layout. Do not add glow, feathering, transparency fades, floor shadows or colored halos. Transparent PNG game cutouts with clean crisp antialiased edges only.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-126-draft-r2.png"
+        ],
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-d4a73e35-bcf2-4b78-8528-90ed8ba2f32e.png",
+        "source_sha256": "d8b4ec0c09b31e05e436fe334b628961bc997a091a1d4810db6e49132c59e0f7",
+        "component_check": 12,
+        "alpha_ratios": [
+          0.9348,
+          0.9377,
+          0.9359,
+          0.9271,
+          0.9218,
+          0.9267,
+          0.9295,
+          0.9361,
+          0.9352,
+          0.93,
+          0.9253,
+          0.9272
+        ],
+        "selected": true,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-126-draft-r2.png",
+            "sha256": "b6dec62f771c38c26cf2d06f14c5407e9135a70099ded1655e2d436f37faf496"
+          }
+        ],
+        "master_file": "fdicon-126-hd1-portrait-q-v1-master.png",
+        "saved_master": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/fdicon-126-hd1-portrait-q-v1-master.png",
+        "initial_prompt": "Edit/create a single transparent RGBA sprite-sheet master for an established HD1 chibi fantasy tactical game. First reference is the EXACT OWN original portrait plus twelve native map poses; use that identity, facial structure, colors, equipment and silhouette. Second reference is approved chibi proportion/style only (Ares); never copy that face, hair, armor or weapon. Match hand-painted clean bold readable 2D game art, very large head with short compact body, approximately 55-60% total height head, adult facial features translated into chibi without changing age. Twelve isolated full-body sprites arranged in a strictly regular 3 columns x 4 rows grid on a transparent 1536x1024 canvas, same scale and baseline per row, generous equal transparent cell gutters. Every full sprite including hair fits comfortably inside its cell. ROW1 ALL THREE face straight forward toward viewer, ROW2 ALL THREE face SCREEN LEFT (nose LEFT), ROW3 ALL THREE face straight BACK away from viewer, ROW4 ALL THREE face SCREEN RIGHT (nose RIGHT). In each row columns are subtle idle/left-foot-step/right-foot-step, never change facing for a step. Keep full body, both feet and empty hands unless native map shows an object. No scenery, ground planes, drop shadows, labels, panels, borders, opaque background or extra sprites. Preserve source asymmetry by rotating the same character, never arbitrarily mirror unilateral details. Do not invent lore or names. GROUP126: own dramatic silver-white swept hair and angular DARK NAVY/BLACK headgear covering forehead and eye area, very narrow RED eye slits. Crucially LOWER FACE IS EXPOSED WARM TAN SKIN with straight nose tip, small calm horizontal mouth and square adult chin; preserve this skin area in front and side views, never enclose whole face in a robot helmet. Silver hair is swept outward/back, no giant horns. Source map compact dark navy/purple armored tunic with high collar, blue-gray boots and gloves, subtle blue/purple belt, empty hands, no invented sword or shield, no giant cape. Front exposed tan lower face must contrast navy eye covering. Back view silver hair and dark outfit, no face.",
+        "initial_reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-126-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ]
+      },
+      {
+        "group": 134,
+        "revision": 2,
+        "prompt": "Edit the FIRST referenced sprite sheet. Keep EXACTLY the same character, outfit, hair colors, 12 sprites and strict 3x4 layout with FRONT/LEFT/BACK/RIGHT rows; ALL three in each row same facing. Remove EVERY glow, aura, background haze, semitransparent shadow, ambient halo and soft paint spill around EVERY figure. The entire area between figures must be exact alpha=0. All interior skin/hair/clothing pixels must be fully opaque alpha=255, including all dark/black areas. Only a 1-2 pixel anti-aliasing edge may be semitransparent. Do not fade hair, bodies, hands or feet. Crisp clean isolated game sprite cutouts, absolutely NO soft gradients of TRANSPARENCY. Color shading inside figures is allowed and fully opaque. No outline glow. Transparent background. Keep twelve complete full bodies with generous gutters. SECOND reference is this character's own original portrait and native map poses, authoritative for facial features. Also CORRECT the face toward its own adult original portrait: noticeably longer rectangular lower face, strong long straight angular nose, pronounced cheek planes, firmer square adult jaw and chin, low thick slanted brows and narrow dark eyes. Current first reference has a round child's face and short tiny nose; replace those proportions with OWN mature features while keeping the approved large chibi head and very short body. Preserve red-brown short swept hair, gray-green band and own charcoal/burgundy outfit. Do not copy another character's face.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-134-draft-r1.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-134-source-reference.png"
+        ],
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-e6d6f546-0683-45fd-bad9-475e31b00205.png",
+        "source_sha256": "fa836dc159fd24f066925dd979b0c22cc3cabab886547e393a3f17dc287cfa30",
+        "component_check": 12,
+        "alpha_ratios": [
+          0.9444,
+          0.9469,
+          0.9429,
+          0.9396,
+          0.9331,
+          0.9346,
+          0.9401,
+          0.9392,
+          0.94,
+          0.9355,
+          0.9325,
+          0.9357
+        ],
+        "saved_draft": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-134-draft-r2.png",
+        "selected": true,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-134-draft-r1.png",
+            "sha256": "61b22c3fb629e27bf888c3eb78a529b5df4bbf8eb32857d6c2a7e4e906264c61"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-134-source-reference.png",
+            "sha256": "13256aadc042323e28da6ffc745385c99d03e78d79d39873b59fddaf2b45dd54"
+          }
+        ],
+        "master_file": "fdicon-134-hd1-portrait-q-v1-master.png",
+        "saved_master": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/fdicon-134-hd1-portrait-q-v1-master.png",
+        "initial_prompt": "Edit/create a single transparent RGBA sprite-sheet master for an established HD1 chibi fantasy tactical game. First reference is the EXACT OWN original portrait plus twelve native map poses; use that identity, facial structure, colors, equipment and silhouette. Second reference is approved chibi proportion/style only (Ares); never copy that face, hair, armor or weapon. Match hand-painted clean bold readable 2D game art, very large head with short compact body, approximately 55-60% total height head, adult facial features translated into chibi without changing age. Twelve isolated full-body sprites arranged in a strictly regular 3 columns x 4 rows grid on a transparent 1536x1024 canvas, same scale and baseline per row, generous equal transparent cell gutters. Every full sprite including hair fits comfortably inside its cell. ROW1 ALL THREE face straight forward toward viewer, ROW2 ALL THREE face SCREEN LEFT (nose LEFT), ROW3 ALL THREE face straight BACK away from viewer, ROW4 ALL THREE face SCREEN RIGHT (nose RIGHT). In each row columns are subtle idle/left-foot-step/right-foot-step, never change facing for a step. Keep full body, both feet and empty hands unless native map shows an object. No scenery, ground planes, drop shadows, labels, panels, borders, opaque background or extra sprites. Preserve source asymmetry by rotating the same character, never arbitrarily mirror unilateral details. Do not invent lore or names. GROUP134: own adult rectangular long face and tapered square chin, warm tan skin, long straight nose, low stern angled dark brows over narrow dark eyes, small thin straight mouth. Dark red-brown hair parted/swept left with a large heavy fringe and gray-green cloth forehead band; source native map hair has rounded swept volume behind ears, NOT waist-long hair. Face must match the own portrait, not generic blue-eyed child. Native map outfit compact charcoal/blue-gray high collar and shoulder/arm clothing, muted burgundy red central torso, graygreen/brown belt, short dark trousers and boots, empty bare tan hands. No weapons, extra gear, capes or invented identity. Keep own hair length and palette, larger head short chibi body, adult narrow eyes and own long facial structure.",
+        "initial_reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-134-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ]
+      }
+    ],
+    "calls": [
+      {
+        "group": 123,
+        "prompt": "Edit/create a single transparent RGBA sprite-sheet master for an established HD1 chibi fantasy tactical game. First reference is the EXACT OWN original portrait plus twelve native map poses; use that identity, facial structure, colors, equipment and silhouette. Second reference is approved chibi proportion/style only (Ares); never copy that face, hair, armor or weapon. Match hand-painted clean bold readable 2D game art, very large head with short compact body, approximately 55-60% total height head, adult facial features translated into chibi without changing age. Twelve isolated full-body sprites arranged in a strictly regular 3 columns x 4 rows grid on a transparent 1536x1024 canvas, same scale and baseline per row, generous equal transparent cell gutters. Every full sprite including hair fits comfortably inside its cell. ROW1 ALL THREE face straight forward toward viewer, ROW2 ALL THREE face SCREEN LEFT (nose LEFT), ROW3 ALL THREE face straight BACK away from viewer, ROW4 ALL THREE face SCREEN RIGHT (nose RIGHT). In each row columns are subtle idle/left-foot-step/right-foot-step, never change facing for a step. Keep full body, both feet and empty hands unless native map shows an object. No scenery, ground planes, drop shadows, labels, panels, borders, opaque background or extra sprites. Preserve source asymmetry by rotating the same character, never arbitrarily mirror unilateral details. Do not invent lore or names. GROUP123: own angular PALE almost white face, sharp narrow dark eyes under strongly angled brows, a slim long pointed nose with a cool gray shadow, thin blue-gray lips with severe slightly raised corner, long blue hair in broad swept wavy locks; forehead side fringe and swept strands visible in source. Face is exposed pale skin, not an empty robot visor or black face. Do not paint giant child eyes or a featureless face. Native map outfit is pale gray-white compact torso armor/tunic with medium cool-gray horizontal high collar, pale shoulder caps and cuffs, deep navy sleeves/lower garment, dark gloves and boots, long blue hair reaching behind upper body. No swords/staff/cape invented. Strict profile-left for all row2, profile-right all row4. Front must show own adult sharp eyes/nose/thin mouth, back no face.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-123-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ],
+        "revision": 1,
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-4687d9f6-2eb5-456f-8cbe-5a1cc5113d64.png",
+        "source_sha256": "6bd1e48ad492c05d65627416678b5ae2a3b6d9b8f9aae85e51edf6d3c675ba51",
+        "component_error": "master requires near-opaque core in every figure",
+        "saved_draft": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-123-draft-r1.png",
+        "selected": false,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-123-source-reference.png",
+            "sha256": "b3649f1cee758e0b04cfd1653147d53e781a677a3219cff51610bee63a3c70c0"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png",
+            "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+          }
+        ]
+      },
+      {
+        "group": 124,
+        "prompt": "Edit/create a single transparent RGBA sprite-sheet master for an established HD1 chibi fantasy tactical game. First reference is the EXACT OWN original portrait plus twelve native map poses; use that identity, facial structure, colors, equipment and silhouette. Second reference is approved chibi proportion/style only (Ares); never copy that face, hair, armor or weapon. Match hand-painted clean bold readable 2D game art, very large head with short compact body, approximately 55-60% total height head, adult facial features translated into chibi without changing age. Twelve isolated full-body sprites arranged in a strictly regular 3 columns x 4 rows grid on a transparent 1536x1024 canvas, same scale and baseline per row, generous equal transparent cell gutters. Every full sprite including hair fits comfortably inside its cell. ROW1 ALL THREE face straight forward toward viewer, ROW2 ALL THREE face SCREEN LEFT (nose LEFT), ROW3 ALL THREE face straight BACK away from viewer, ROW4 ALL THREE face SCREEN RIGHT (nose RIGHT). In each row columns are subtle idle/left-foot-step/right-foot-step, never change facing for a step. Keep full body, both feet and empty hands unless native map shows an object. No scenery, ground planes, drop shadows, labels, panels, borders, opaque background or extra sprites. Preserve source asymmetry by rotating the same character, never arbitrarily mirror unilateral details. Do not invent lore or names. GROUP124: own mature pale cool gray-white narrow gaunt face with a very long hooked angular nose, sharp pointed cheekbones, a thin slightly curled severe mouth, white/silver wild layered hair. Very distinctive BLACK angular face pattern surrounds narrowed BLUE eyes and runs diagonally down BOTH cheeks towards the chin; preserve that visible pattern without inventing whether paint, hair or mask. Face has pale cheeks/nose/mouth, not a featureless blue-black void, not a helmet. Source native map long silver-white hair to midback, muted olive-gray compact coat/armor tunic, round pale graygreen central chest form, dark olive/gray limbs and boots, empty hands. No facial hair puff, no added staff/weapon, no species guess. Own adult narrow eyes and prominent hooked nose must remain readable despite the large chibi head.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-124-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ],
+        "revision": 1,
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-a22d8def-b762-4933-a8c2-fe8a99957484.png",
+        "source_sha256": "c791fbe3ad6d524b8e1a959b890cd506f6f45458f887f3cdf4af1142288dcd97",
+        "component_error": "master requires near-opaque core in every figure",
+        "saved_draft": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-124-draft-r1.png",
+        "selected": false,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-124-source-reference.png",
+            "sha256": "b1e04d45eb1a6114ecac2e602e3f59a191b9082806af31918fb25a6512831d4a"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png",
+            "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+          }
+        ]
+      },
+      {
+        "group": 126,
+        "prompt": "Edit/create a single transparent RGBA sprite-sheet master for an established HD1 chibi fantasy tactical game. First reference is the EXACT OWN original portrait plus twelve native map poses; use that identity, facial structure, colors, equipment and silhouette. Second reference is approved chibi proportion/style only (Ares); never copy that face, hair, armor or weapon. Match hand-painted clean bold readable 2D game art, very large head with short compact body, approximately 55-60% total height head, adult facial features translated into chibi without changing age. Twelve isolated full-body sprites arranged in a strictly regular 3 columns x 4 rows grid on a transparent 1536x1024 canvas, same scale and baseline per row, generous equal transparent cell gutters. Every full sprite including hair fits comfortably inside its cell. ROW1 ALL THREE face straight forward toward viewer, ROW2 ALL THREE face SCREEN LEFT (nose LEFT), ROW3 ALL THREE face straight BACK away from viewer, ROW4 ALL THREE face SCREEN RIGHT (nose RIGHT). In each row columns are subtle idle/left-foot-step/right-foot-step, never change facing for a step. Keep full body, both feet and empty hands unless native map shows an object. No scenery, ground planes, drop shadows, labels, panels, borders, opaque background or extra sprites. Preserve source asymmetry by rotating the same character, never arbitrarily mirror unilateral details. Do not invent lore or names. GROUP126: own dramatic silver-white swept hair and angular DARK NAVY/BLACK headgear covering forehead and eye area, very narrow RED eye slits. Crucially LOWER FACE IS EXPOSED WARM TAN SKIN with straight nose tip, small calm horizontal mouth and square adult chin; preserve this skin area in front and side views, never enclose whole face in a robot helmet. Silver hair is swept outward/back, no giant horns. Source map compact dark navy/purple armored tunic with high collar, blue-gray boots and gloves, subtle blue/purple belt, empty hands, no invented sword or shield, no giant cape. Front exposed tan lower face must contrast navy eye covering. Back view silver hair and dark outfit, no face.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-126-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ],
+        "revision": 1,
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-049fc368-2f3b-496a-9ac2-0fc3f0007fbf.png",
+        "source_sha256": "68094ed662a8c0272c77154aa8f5b7d14af71113689b7618d9616107bb19ce3b",
+        "component_error": "master requires near-opaque core in every figure",
+        "saved_draft": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-126-draft-r1.png",
+        "selected": false,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-126-source-reference.png",
+            "sha256": "b833c8ab9883233bab0ad1c9be9e905a3c5f3daa5259fed81b768faace915ec3"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png",
+            "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+          }
+        ]
+      },
+      {
+        "group": 134,
+        "prompt": "Edit/create a single transparent RGBA sprite-sheet master for an established HD1 chibi fantasy tactical game. First reference is the EXACT OWN original portrait plus twelve native map poses; use that identity, facial structure, colors, equipment and silhouette. Second reference is approved chibi proportion/style only (Ares); never copy that face, hair, armor or weapon. Match hand-painted clean bold readable 2D game art, very large head with short compact body, approximately 55-60% total height head, adult facial features translated into chibi without changing age. Twelve isolated full-body sprites arranged in a strictly regular 3 columns x 4 rows grid on a transparent 1536x1024 canvas, same scale and baseline per row, generous equal transparent cell gutters. Every full sprite including hair fits comfortably inside its cell. ROW1 ALL THREE face straight forward toward viewer, ROW2 ALL THREE face SCREEN LEFT (nose LEFT), ROW3 ALL THREE face straight BACK away from viewer, ROW4 ALL THREE face SCREEN RIGHT (nose RIGHT). In each row columns are subtle idle/left-foot-step/right-foot-step, never change facing for a step. Keep full body, both feet and empty hands unless native map shows an object. No scenery, ground planes, drop shadows, labels, panels, borders, opaque background or extra sprites. Preserve source asymmetry by rotating the same character, never arbitrarily mirror unilateral details. Do not invent lore or names. GROUP134: own adult rectangular long face and tapered square chin, warm tan skin, long straight nose, low stern angled dark brows over narrow dark eyes, small thin straight mouth. Dark red-brown hair parted/swept left with a large heavy fringe and gray-green cloth forehead band; source native map hair has rounded swept volume behind ears, NOT waist-long hair. Face must match the own portrait, not generic blue-eyed child. Native map outfit compact charcoal/blue-gray high collar and shoulder/arm clothing, muted burgundy red central torso, graygreen/brown belt, short dark trousers and boots, empty bare tan hands. No weapons, extra gear, capes or invented identity. Keep own hair length and palette, larger head short chibi body, adult narrow eyes and own long facial structure.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-134-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ],
+        "revision": 1,
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-60f0d52a-eddf-4053-8710-8e5a1838d44e.png",
+        "source_sha256": "61b22c3fb629e27bf888c3eb78a529b5df4bbf8eb32857d6c2a7e4e906264c61",
+        "component_check": 12,
+        "saved_draft": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-134-draft-r1.png",
+        "selected": false,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-134-source-reference.png",
+            "sha256": "13256aadc042323e28da6ffc745385c99d03e78d79d39873b59fddaf2b45dd54"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png",
+            "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+          }
+        ]
+      },
+      {
+        "group": 123,
+        "revision": 2,
+        "prompt": "Edit the FIRST referenced sprite sheet. Keep EXACTLY the same character, outfit, hair colors, 12 sprites and strict 3x4 layout with FRONT/LEFT/BACK/RIGHT rows; ALL three in each row same facing. Remove EVERY glow, aura, background haze, semitransparent shadow, ambient halo and soft paint spill around EVERY figure. The entire area between figures must be exact alpha=0. All interior skin/hair/clothing pixels must be fully opaque alpha=255, including all dark/black areas. Only a 1-2 pixel anti-aliasing edge may be semitransparent. Do not fade hair, bodies, hands or feet. Crisp clean isolated game sprite cutouts, absolutely NO soft gradients of TRANSPARENCY. Color shading inside figures is allowed and fully opaque. No outline glow. Transparent background. Keep twelve complete full bodies with generous gutters. SECOND reference is this character's own original portrait and native map poses, authoritative for facial features. Retain the PALE exposed angular adult face, sharp narrow eyes, long nose, thin bluegray mouth and blue long hair; no blank robotic mask.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-123-draft-r1.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-123-source-reference.png"
+        ],
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-e270578c-4b9e-4422-aa45-f54e9fbf1594.png",
+        "source_sha256": "9b79c966e5534d4261375619f17ce1be551a8fa88623ad3cf2eb0eb827e801d4",
+        "component_check": 12,
+        "alpha_ratios": [
+          0.924,
+          0.9165,
+          0.9169,
+          0.9271,
+          0.921,
+          0.9268,
+          0.9157,
+          0.9166,
+          0.9137,
+          0.9301,
+          0.9229,
+          0.9287
+        ],
+        "saved_draft": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-123-draft-r2.png",
+        "selected": true,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-123-draft-r1.png",
+            "sha256": "6bd1e48ad492c05d65627416678b5ae2a3b6d9b8f9aae85e51edf6d3c675ba51"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-123-source-reference.png",
+            "sha256": "b3649f1cee758e0b04cfd1653147d53e781a677a3219cff51610bee63a3c70c0"
+          }
+        ],
+        "master_file": "fdicon-123-hd1-portrait-q-v1-master.png",
+        "saved_master": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/fdicon-123-hd1-portrait-q-v1-master.png",
+        "initial_prompt": "Edit/create a single transparent RGBA sprite-sheet master for an established HD1 chibi fantasy tactical game. First reference is the EXACT OWN original portrait plus twelve native map poses; use that identity, facial structure, colors, equipment and silhouette. Second reference is approved chibi proportion/style only (Ares); never copy that face, hair, armor or weapon. Match hand-painted clean bold readable 2D game art, very large head with short compact body, approximately 55-60% total height head, adult facial features translated into chibi without changing age. Twelve isolated full-body sprites arranged in a strictly regular 3 columns x 4 rows grid on a transparent 1536x1024 canvas, same scale and baseline per row, generous equal transparent cell gutters. Every full sprite including hair fits comfortably inside its cell. ROW1 ALL THREE face straight forward toward viewer, ROW2 ALL THREE face SCREEN LEFT (nose LEFT), ROW3 ALL THREE face straight BACK away from viewer, ROW4 ALL THREE face SCREEN RIGHT (nose RIGHT). In each row columns are subtle idle/left-foot-step/right-foot-step, never change facing for a step. Keep full body, both feet and empty hands unless native map shows an object. No scenery, ground planes, drop shadows, labels, panels, borders, opaque background or extra sprites. Preserve source asymmetry by rotating the same character, never arbitrarily mirror unilateral details. Do not invent lore or names. GROUP123: own angular PALE almost white face, sharp narrow dark eyes under strongly angled brows, a slim long pointed nose with a cool gray shadow, thin blue-gray lips with severe slightly raised corner, long blue hair in broad swept wavy locks; forehead side fringe and swept strands visible in source. Face is exposed pale skin, not an empty robot visor or black face. Do not paint giant child eyes or a featureless face. Native map outfit is pale gray-white compact torso armor/tunic with medium cool-gray horizontal high collar, pale shoulder caps and cuffs, deep navy sleeves/lower garment, dark gloves and boots, long blue hair reaching behind upper body. No swords/staff/cape invented. Strict profile-left for all row2, profile-right all row4. Front must show own adult sharp eyes/nose/thin mouth, back no face.",
+        "initial_reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-123-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ]
+      },
+      {
+        "group": 124,
+        "revision": 2,
+        "prompt": "Edit the FIRST referenced sprite sheet. Keep EXACTLY the same character, outfit, hair colors, 12 sprites and strict 3x4 layout with FRONT/LEFT/BACK/RIGHT rows; ALL three in each row same facing. Remove EVERY glow, aura, background haze, semitransparent shadow, ambient halo and soft paint spill around EVERY figure. The entire area between figures must be exact alpha=0. All interior skin/hair/clothing pixels must be fully opaque alpha=255, including all dark/black areas. Only a 1-2 pixel anti-aliasing edge may be semitransparent. Do not fade hair, bodies, hands or feet. Crisp clean isolated game sprite cutouts, absolutely NO soft gradients of TRANSPARENCY. Color shading inside figures is allowed and fully opaque. No outline glow. Transparent background. Keep twelve complete full bodies with generous gutters. SECOND reference is this character's own original portrait and native map poses, authoritative for facial features. Retain pale gaunt hooked-nose own face, angular BLACK pattern around narrow blue eyes down both cheeks and silver long hair; no black void over face.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-124-draft-r1.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-124-source-reference.png"
+        ],
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-c71d8ad2-d9b1-4b93-b851-5723b9440c5c.png",
+        "source_sha256": "86151409a8fbad61413852fce64e49579e06d6b79fdf98706aca4f19c49d936e",
+        "component_check": 12,
+        "alpha_ratios": [
+          0.931,
+          0.928,
+          0.9307,
+          0.9292,
+          0.9238,
+          0.9287,
+          0.9341,
+          0.935,
+          0.9347,
+          0.9339,
+          0.9288,
+          0.9317
+        ],
+        "saved_draft": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-124-draft-r2.png",
+        "selected": true,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-124-draft-r1.png",
+            "sha256": "c791fbe3ad6d524b8e1a959b890cd506f6f45458f887f3cdf4af1142288dcd97"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-124-source-reference.png",
+            "sha256": "b1e04d45eb1a6114ecac2e602e3f59a191b9082806af31918fb25a6512831d4a"
+          }
+        ],
+        "master_file": "fdicon-124-hd1-portrait-q-v1-master.png",
+        "saved_master": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/fdicon-124-hd1-portrait-q-v1-master.png",
+        "initial_prompt": "Edit/create a single transparent RGBA sprite-sheet master for an established HD1 chibi fantasy tactical game. First reference is the EXACT OWN original portrait plus twelve native map poses; use that identity, facial structure, colors, equipment and silhouette. Second reference is approved chibi proportion/style only (Ares); never copy that face, hair, armor or weapon. Match hand-painted clean bold readable 2D game art, very large head with short compact body, approximately 55-60% total height head, adult facial features translated into chibi without changing age. Twelve isolated full-body sprites arranged in a strictly regular 3 columns x 4 rows grid on a transparent 1536x1024 canvas, same scale and baseline per row, generous equal transparent cell gutters. Every full sprite including hair fits comfortably inside its cell. ROW1 ALL THREE face straight forward toward viewer, ROW2 ALL THREE face SCREEN LEFT (nose LEFT), ROW3 ALL THREE face straight BACK away from viewer, ROW4 ALL THREE face SCREEN RIGHT (nose RIGHT). In each row columns are subtle idle/left-foot-step/right-foot-step, never change facing for a step. Keep full body, both feet and empty hands unless native map shows an object. No scenery, ground planes, drop shadows, labels, panels, borders, opaque background or extra sprites. Preserve source asymmetry by rotating the same character, never arbitrarily mirror unilateral details. Do not invent lore or names. GROUP124: own mature pale cool gray-white narrow gaunt face with a very long hooked angular nose, sharp pointed cheekbones, a thin slightly curled severe mouth, white/silver wild layered hair. Very distinctive BLACK angular face pattern surrounds narrowed BLUE eyes and runs diagonally down BOTH cheeks towards the chin; preserve that visible pattern without inventing whether paint, hair or mask. Face has pale cheeks/nose/mouth, not a featureless blue-black void, not a helmet. Source native map long silver-white hair to midback, muted olive-gray compact coat/armor tunic, round pale graygreen central chest form, dark olive/gray limbs and boots, empty hands. No facial hair puff, no added staff/weapon, no species guess. Own adult narrow eyes and prominent hooked nose must remain readable despite the large chibi head.",
+        "initial_reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-124-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ]
+      },
+      {
+        "group": 126,
+        "revision": 2,
+        "prompt": "Edit the FIRST referenced sprite sheet. Keep EXACTLY the same character, outfit, hair colors, 12 sprites and strict 3x4 layout with FRONT/LEFT/BACK/RIGHT rows; ALL three in each row same facing. Remove EVERY glow, aura, background haze, semitransparent shadow, ambient halo and soft paint spill around EVERY figure. The entire area between figures must be exact alpha=0. All interior skin/hair/clothing pixels must be fully opaque alpha=255, including all dark/black areas. Only a 1-2 pixel anti-aliasing edge may be semitransparent. Do not fade hair, bodies, hands or feet. Crisp clean isolated game sprite cutouts, absolutely NO soft gradients of TRANSPARENCY. Color shading inside figures is allowed and fully opaque. No outline glow. Transparent background. Keep twelve complete full bodies with generous gutters. SECOND reference is this character's own original portrait and native map poses, authoritative for facial features. Retain dark navy eye/forehead armor and narrow red eye slits, silver swept hair and clearly EXPOSED WARM TAN nose tip, lips and chin; never close lower face with helmet.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-126-draft-r1.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-126-source-reference.png"
+        ],
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-a7c1292b-55fb-440a-bc9a-dadffae3a30f.png",
+        "source_sha256": "b6dec62f771c38c26cf2d06f14c5407e9135a70099ded1655e2d436f37faf496",
+        "component_error": "master requires near-opaque core in every figure",
+        "alpha_ratios": [
+          0.9091,
+          0.9114,
+          0.9147,
+          0.9115,
+          0.9061,
+          0.9099,
+          0.9079,
+          0.9077,
+          0.9072,
+          0.912,
+          0.9023,
+          0.894
+        ],
+        "saved_draft": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-126-draft-r2.png",
+        "selected": false,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-126-draft-r1.png",
+            "sha256": "68094ed662a8c0272c77154aa8f5b7d14af71113689b7618d9616107bb19ce3b"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-126-source-reference.png",
+            "sha256": "b833c8ab9883233bab0ad1c9be9e905a3c5f3daa5259fed81b768faace915ec3"
+          }
+        ]
+      },
+      {
+        "group": 134,
+        "revision": 2,
+        "prompt": "Edit the FIRST referenced sprite sheet. Keep EXACTLY the same character, outfit, hair colors, 12 sprites and strict 3x4 layout with FRONT/LEFT/BACK/RIGHT rows; ALL three in each row same facing. Remove EVERY glow, aura, background haze, semitransparent shadow, ambient halo and soft paint spill around EVERY figure. The entire area between figures must be exact alpha=0. All interior skin/hair/clothing pixels must be fully opaque alpha=255, including all dark/black areas. Only a 1-2 pixel anti-aliasing edge may be semitransparent. Do not fade hair, bodies, hands or feet. Crisp clean isolated game sprite cutouts, absolutely NO soft gradients of TRANSPARENCY. Color shading inside figures is allowed and fully opaque. No outline glow. Transparent background. Keep twelve complete full bodies with generous gutters. SECOND reference is this character's own original portrait and native map poses, authoritative for facial features. Also CORRECT the face toward its own adult original portrait: noticeably longer rectangular lower face, strong long straight angular nose, pronounced cheek planes, firmer square adult jaw and chin, low thick slanted brows and narrow dark eyes. Current first reference has a round child's face and short tiny nose; replace those proportions with OWN mature features while keeping the approved large chibi head and very short body. Preserve red-brown short swept hair, gray-green band and own charcoal/burgundy outfit. Do not copy another character's face.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-134-draft-r1.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-134-source-reference.png"
+        ],
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-e6d6f546-0683-45fd-bad9-475e31b00205.png",
+        "source_sha256": "fa836dc159fd24f066925dd979b0c22cc3cabab886547e393a3f17dc287cfa30",
+        "component_check": 12,
+        "alpha_ratios": [
+          0.9444,
+          0.9469,
+          0.9429,
+          0.9396,
+          0.9331,
+          0.9346,
+          0.9401,
+          0.9392,
+          0.94,
+          0.9355,
+          0.9325,
+          0.9357
+        ],
+        "saved_draft": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-134-draft-r2.png",
+        "selected": true,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-134-draft-r1.png",
+            "sha256": "61b22c3fb629e27bf888c3eb78a529b5df4bbf8eb32857d6c2a7e4e906264c61"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-134-source-reference.png",
+            "sha256": "13256aadc042323e28da6ffc745385c99d03e78d79d39873b59fddaf2b45dd54"
+          }
+        ],
+        "master_file": "fdicon-134-hd1-portrait-q-v1-master.png",
+        "saved_master": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/fdicon-134-hd1-portrait-q-v1-master.png",
+        "initial_prompt": "Edit/create a single transparent RGBA sprite-sheet master for an established HD1 chibi fantasy tactical game. First reference is the EXACT OWN original portrait plus twelve native map poses; use that identity, facial structure, colors, equipment and silhouette. Second reference is approved chibi proportion/style only (Ares); never copy that face, hair, armor or weapon. Match hand-painted clean bold readable 2D game art, very large head with short compact body, approximately 55-60% total height head, adult facial features translated into chibi without changing age. Twelve isolated full-body sprites arranged in a strictly regular 3 columns x 4 rows grid on a transparent 1536x1024 canvas, same scale and baseline per row, generous equal transparent cell gutters. Every full sprite including hair fits comfortably inside its cell. ROW1 ALL THREE face straight forward toward viewer, ROW2 ALL THREE face SCREEN LEFT (nose LEFT), ROW3 ALL THREE face straight BACK away from viewer, ROW4 ALL THREE face SCREEN RIGHT (nose RIGHT). In each row columns are subtle idle/left-foot-step/right-foot-step, never change facing for a step. Keep full body, both feet and empty hands unless native map shows an object. No scenery, ground planes, drop shadows, labels, panels, borders, opaque background or extra sprites. Preserve source asymmetry by rotating the same character, never arbitrarily mirror unilateral details. Do not invent lore or names. GROUP134: own adult rectangular long face and tapered square chin, warm tan skin, long straight nose, low stern angled dark brows over narrow dark eyes, small thin straight mouth. Dark red-brown hair parted/swept left with a large heavy fringe and gray-green cloth forehead band; source native map hair has rounded swept volume behind ears, NOT waist-long hair. Face must match the own portrait, not generic blue-eyed child. Native map outfit compact charcoal/blue-gray high collar and shoulder/arm clothing, muted burgundy red central torso, graygreen/brown belt, short dark trousers and boots, empty bare tan hands. No weapons, extra gear, capes or invented identity. Keep own hair length and palette, larger head short chibi body, adult narrow eyes and own long facial structure.",
+        "initial_reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-134-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ]
+      },
+      {
+        "group": 126,
+        "revision": 3,
+        "prompt": "Use case: background-extraction. Make a clean transparent cutout of ALL twelve existing character sprites. Remove the gray-blue haze surrounding each sprite and all visible background. Keep the characters fully opaque, including dark navy armor and black outlines. Exact transparent empty canvas alpha=0 outside the silhouette, opaque alpha=255 inside. Preserve all twelve original characters, facial details, exposed tan lower faces, silver hair, clothing, pixel positions and the 3-column 4-row layout. Do not add glow, feathering, transparency fades, floor shadows or colored halos. Transparent PNG game cutouts with clean crisp antialiased edges only.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-126-draft-r2.png"
+        ],
+        "source": "/home/anr2/.codex/generated_images/01a191d4-42fc-7d40-998d-6e83828c4823/exec-d4a73e35-bcf2-4b78-8528-90ed8ba2f32e.png",
+        "source_sha256": "d8b4ec0c09b31e05e436fe334b628961bc997a091a1d4810db6e49132c59e0f7",
+        "component_check": 12,
+        "alpha_ratios": [
+          0.9348,
+          0.9377,
+          0.9359,
+          0.9271,
+          0.9218,
+          0.9267,
+          0.9295,
+          0.9361,
+          0.9352,
+          0.93,
+          0.9253,
+          0.9272
+        ],
+        "selected": true,
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-126-draft-r2.png",
+            "sha256": "b6dec62f771c38c26cf2d06f14c5407e9135a70099ded1655e2d436f37faf496"
+          }
+        ],
+        "master_file": "fdicon-126-hd1-portrait-q-v1-master.png",
+        "saved_master": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/fdicon-126-hd1-portrait-q-v1-master.png",
+        "initial_prompt": "Edit/create a single transparent RGBA sprite-sheet master for an established HD1 chibi fantasy tactical game. First reference is the EXACT OWN original portrait plus twelve native map poses; use that identity, facial structure, colors, equipment and silhouette. Second reference is approved chibi proportion/style only (Ares); never copy that face, hair, armor or weapon. Match hand-painted clean bold readable 2D game art, very large head with short compact body, approximately 55-60% total height head, adult facial features translated into chibi without changing age. Twelve isolated full-body sprites arranged in a strictly regular 3 columns x 4 rows grid on a transparent 1536x1024 canvas, same scale and baseline per row, generous equal transparent cell gutters. Every full sprite including hair fits comfortably inside its cell. ROW1 ALL THREE face straight forward toward viewer, ROW2 ALL THREE face SCREEN LEFT (nose LEFT), ROW3 ALL THREE face straight BACK away from viewer, ROW4 ALL THREE face SCREEN RIGHT (nose RIGHT). In each row columns are subtle idle/left-foot-step/right-foot-step, never change facing for a step. Keep full body, both feet and empty hands unless native map shows an object. No scenery, ground planes, drop shadows, labels, panels, borders, opaque background or extra sprites. Preserve source asymmetry by rotating the same character, never arbitrarily mirror unilateral details. Do not invent lore or names. GROUP126: own dramatic silver-white swept hair and angular DARK NAVY/BLACK headgear covering forehead and eye area, very narrow RED eye slits. Crucially LOWER FACE IS EXPOSED WARM TAN SKIN with straight nose tip, small calm horizontal mouth and square adult chin; preserve this skin area in front and side views, never enclose whole face in a robot helmet. Silver hair is swept outward/back, no giant horns. Source map compact dark navy/purple armored tunic with high collar, blue-gray boots and gloves, subtle blue/purple belt, empty hands, no invented sword or shield, no giant cape. Front exposed tan lower face must contrast navy eye covering. Back view silver hair and dark outfit, no face.",
+        "initial_reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/group-126-source-reference.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ]
+      }
+    ]
+  },
+  "original_reference": {
+    "source": "各自原名冊、DATO與FDICON三層及FDOTHER0色盤，不新增原版動態。",
+    "groups": [
+      123,
+      124,
+      126,
+      134
+    ],
+    "records_file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-pale-faces-r31/face-source-references.json",
+    "records_sha256": "7631d825ccf788353c514da47ecda94bf54b41c840adf098bde531e3d6ac9816"
+  }
+}
