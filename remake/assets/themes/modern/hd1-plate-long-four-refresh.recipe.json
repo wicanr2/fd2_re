@@ -1,0 +1,378 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_hd1_chibi_map_refresh",
+  "approved_preview": "docs/figures/hd1-ares-q-design.png",
+  "approved_preview_sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e",
+  "native_bank_sha256": "7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44",
+  "palette_sha256": "404db1ca72ffc19fa7404fbc59bde98cdf239f63fe3375ec248a8142073a28bf",
+  "base_catalog_sha256": "9607e5fa92dfbbb08b3535da2afb8270e3c4267a8ce451ad98df70f2caea8c3d",
+  "approval": "沿已定大頭短身、各自原版面容與持續推進授權，四組原始名冊新繪，不改正式規則。",
+  "master_alpha_policy": "per_pose_coverage_v1",
+  "groups": [
+    {
+      "group": 69,
+      "master_file": "fdicon-069-hd1-native-q-v1-master.png",
+      "master_sha256": "4e082ab3869aa8ea7d0528c8faec396ee0453a58ffe50bdf80584b5da804c260",
+      "output_prefix": "fdicon-069-hd1-native-q-v1"
+    },
+    {
+      "group": 95,
+      "master_file": "fdicon-095-hd1-native-q-v1-master.png",
+      "master_sha256": "ec2277b3bf65cd78d6a05f1ac78d3b8cb5075b528c44b82fcb7a2cd21f1db718",
+      "output_prefix": "fdicon-095-hd1-native-q-v1"
+    },
+    {
+      "group": 106,
+      "master_file": "fdicon-106-hd1-native-q-v1-master.png",
+      "master_sha256": "15359cab76cda51f785db215f74558301d9577421f526644caacee6dcf63ab0f",
+      "output_prefix": "fdicon-106-hd1-native-q-v1"
+    },
+    {
+      "group": 111,
+      "master_file": "fdicon-111-hd1-native-q-v1-master.png",
+      "master_sha256": "abf6aab569d07d97bccce732f54ab7966b57601ca9c54a55d5ebce7fe8f86f57",
+      "output_prefix": "fdicon-111-hd1-native-q-v1"
+    }
+  ],
+  "faces": [
+    {
+      "group": 69,
+      "name": "灰綠十字盾板盔人物",
+      "portrait_file": "remake/assets/portraits/DATO_069_m0.png",
+      "portrait_sha256": "3c39940c5f241084cfbe38b46795714b704ba0942139e5087bd5bceceaa0fe48",
+      "traits": [
+        "灰綠平頂閉合面盔與暗橫眼縫",
+        "原版微小亮點與十字盾",
+        "直立淡色劍及紅腰布"
+      ],
+      "comparison_label": "原版同號DATO／原名冊地圖圖源，非480對話頭像驗收"
+    },
+    {
+      "group": 95,
+      "name": "深藍筒盔露鼻口人物",
+      "portrait_file": "remake/assets/portraits/DATO_095_m0.png",
+      "portrait_sha256": "06946095ce46a3d7a7cc7102319beccfea1d09dcb1ef32a17d33f95f7214c74c",
+      "traits": [
+        "深藍平頂筒狀帽盔，眼部被盔遮住",
+        "自身成熟橙褐鼻口，不作發光機械眼",
+        "灰綠肩領、藍短身及紅腰布，原版空手"
+      ],
+      "comparison_label": "原版同號DATO／原名冊地圖圖源，非480對話頭像驗收"
+    },
+    {
+      "group": 106,
+      "name": "藍紫分層尖面盔人物",
+      "portrait_file": "remake/assets/portraits/DATO_106_m0.png",
+      "portrait_sha256": "6f41fbf9007f6cba2b9731bc8d4f112712b286f3d91a97b68364e232c31363ba",
+      "traits": [
+        "藍紫分層尖面盔及淡色眼點",
+        "原版直立淡色劍與藍盾暗紋",
+        "紅披風及灰綠背側領部輪廓"
+      ],
+      "comparison_label": "原版同號DATO／原名冊地圖圖源，非480對話頭像驗收"
+    },
+    {
+      "group": 111,
+      "name": "灰綠狹長面盔人物",
+      "portrait_file": "remake/assets/portraits/DATO_111_m0.png",
+      "portrait_sha256": "9259d470567dd3e7763bde888c3f53dd00d8d090447e738d7cd264ae4ba1b64c",
+      "traits": [
+        "狹長灰綠面盔、三角記號及紅橫縫",
+        "黑色Y形面部切線，不露人臉",
+        "寬肩、灰綠手腳及藍腰片，原版空手"
+      ],
+      "comparison_label": "原版同號DATO／原名冊地圖圖源，非480對話頭像驗收"
+    }
+  ],
+  "roster_bindings": [
+    {
+      "group": 69,
+      "map": 9,
+      "roster_file": "remake/assets/maps/map9/map9_units.json",
+      "roster_sha256": "95f412b676830cdaebeea1e51a46e8098dd1dce7c01bcd832bdd4bb0b6f928dc",
+      "row": 42,
+      "initial_group": 1,
+      "camp": "ally",
+      "portrait": 69,
+      "battle_fig": 69,
+      "position": {
+        "x_word": 15,
+        "y_word": 41,
+        "raw_key": 69
+      },
+      "native_constructor": {
+        "branch": "high_class",
+        "index": 1,
+        "record": [
+          1,
+          3,
+          20,
+          0,
+          0,
+          8,
+          2,
+          1,
+          7,
+          30
+        ]
+      }
+    },
+    {
+      "group": 95,
+      "map": 18,
+      "roster_file": "remake/assets/maps/map18/map18_units.json",
+      "roster_sha256": "69251f66b970cf732d4db7c81a174f3969ee620ff51525dbc775c551dc7d11dd",
+      "row": 11,
+      "initial_group": 0,
+      "camp": "enemy",
+      "portrait": 95,
+      "battle_fig": 95,
+      "position": {
+        "x_word": 23,
+        "y_word": 4,
+        "raw_key": 95
+      },
+      "native_constructor": {
+        "branch": "high_class",
+        "index": 27,
+        "record": [
+          1,
+          14,
+          33,
+          0,
+          20,
+          18,
+          8,
+          4,
+          4,
+          160
+        ]
+      }
+    },
+    {
+      "group": 106,
+      "map": 24,
+      "roster_file": "remake/assets/maps/map24/map24_units.json",
+      "roster_sha256": "6809e16f413fbff0426aa6b2faa95b7612a5796d3b29ced49ff6374b12f5fbf9",
+      "row": 6,
+      "initial_group": 0,
+      "camp": "enemy",
+      "portrait": 106,
+      "battle_fig": 106,
+      "position": {
+        "x_word": 9,
+        "y_word": 33,
+        "raw_key": 106
+      },
+      "native_constructor": {
+        "branch": "high_class",
+        "index": 38,
+        "record": [
+          4,
+          2,
+          25,
+          0,
+          0,
+          13,
+          8,
+          3,
+          6,
+          100
+        ]
+      }
+    },
+    {
+      "group": 111,
+      "map": 25,
+      "roster_file": "remake/assets/maps/map25/map25_units.json",
+      "roster_sha256": "3e0f0b15309239b79066b236f9f8bd8a399d9f7705194a7fc4ecdf10437b82f2",
+      "row": 18,
+      "initial_group": 0,
+      "camp": "enemy",
+      "portrait": 111,
+      "battle_fig": 111,
+      "position": {
+        "x_word": 13,
+        "y_word": 33,
+        "raw_key": 111
+      },
+      "native_constructor": {
+        "branch": "high_class",
+        "index": 43,
+        "record": [
+          6,
+          25,
+          40,
+          0,
+          0,
+          20,
+          16,
+          3,
+          4,
+          80
+        ]
+      }
+    }
+  ],
+  "gpu_pairs": {
+    "cross-and-cylinder": [
+      69,
+      95
+    ],
+    "layered-and-long": [
+      106,
+      111
+    ]
+  },
+  "policy": "69依原版閉合平頂盔與十字盾劍。95依自身DATO露出成熟鼻口，眼部被盔遮住，不作發光機械眼。106保留藍紫尖面盔、劍盾及紅披風。111保留狹長面盔與寬肩空手，不圓頭化或補機械構造。原名冊及方向遮蔽保持，非自然章節或EXE動態。",
+  "alpha_quality_review": {
+    "file": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r26/alpha-contract-review-r2.json",
+    "sha256": "d8975ec67210ebb8d929a4b3728c010c3c9a212f17999360fcd3237ff3ba698d",
+    "scope": "沿既有版本化規格逐姿態驗證，來源alpha及編製器保持。"
+  },
+  "image_generation": {
+    "tool": "builtin image_gen.imagegen",
+    "transparent_background": true,
+    "jobs": [
+      {
+        "group": 69,
+        "selected": true,
+        "prompt": "Create ONE production-ready transparent RGBA sprite master sheet for a classic Taiwan fantasy tactics remake. Exactly 12 separate full-body sprites, regular 3 columns x 4 rows. Rows in order FRONT facing viewer, LEFT-facing strict profile, BACK, RIGHT-facing strict profile. Columns neutral planted stance, small left-step, small right-step. Use the first reference only for THIS character's exact silhouette, equipment, colors and direction-dependent occlusion, the second for THIS character's face/head details. The third is STYLE ONLY: approved bottom '大頭Q版新稿' very large head and very short body, head including headgear about 67 percent of total height, tiny body and short legs, clean bold dark outlines, smooth clean hand-painted color shading, sharply readable at 48 pixels. Do not copy Ares's face or clothes. Make every sprite the same scale, fully inside an evenly spaced cell, ample clear margins; no neighboring sprites touch. True alpha 0 outside sprites and fully opaque solid interiors including BLACK areas; no background, no checkerboard, no ground shadow, no cast shadow, no scenery, no labels, no grid, no text, no glows. Keep the full character in each cell and all twelve poses. Character 069 is a fully helmeted gray-green shield-and-sword guard. Oversized FLAT-TOP enclosed rectangular/cylindrical great helm, one thin black horizontal visor slit with only the original tiny cool pale highlights; match own portrait 069 for helmet planes and the long straight closed faceplate. No exposed human face, nose, mouth or eyes with pupils; do not bring the cropped bare neck from the portrait into the map sprite. The original has a single simple pale silver/cyan upright sword on viewer RIGHT in front view and a gray-green roughly rectangular shield with DARK CROSS marking on viewer LEFT. Keep each hand and the direction occlusion exactly as original: sword prominent in left-facing row, cross shield prominent in right-facing row, back row plain helmet back. Very short dark body with gray-green armor and red waist cloth, stubby legs and gloves. No added crest, horns, red eyes, fancy emblem, cape or extra weapon. Preserve the gray-green palette and original plain shield cross. Large helmet about two thirds height and tiny body.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r26/group-069-original.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r26/portrait-069.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ],
+        "source": "01a191d4-42fc-7d40-998d-6e83828c4823/exec-5ab74ecb-c0d7-482d-9e34-670233e6d89f.png",
+        "source_sha256": "4e082ab3869aa8ea7d0528c8faec396ee0453a58ffe50bdf80584b5da804c260",
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r26/group-069-original.png",
+            "sha256": "d1c100af622f2a35a2799617e64cde9b85886dd9d74a34d449d0f4e07aefa3da"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r26/portrait-069.png",
+            "sha256": "bf0bcd941dfaae421f8e3ef64742a8e7cc8dd99cf15b22fa548aa9eb05be40f8"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png",
+            "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+          }
+        ]
+      },
+      {
+        "group": 95,
+        "selected": true,
+        "prompt": "Create ONE production-ready transparent RGBA sprite master sheet for a classic Taiwan fantasy tactics remake. Exactly 12 separate full-body sprites, regular 3 columns x 4 rows. Rows in order FRONT facing viewer, LEFT-facing strict profile, BACK, RIGHT-facing strict profile. Columns neutral planted stance, small left-step, small right-step. Use the first reference only for THIS character's exact silhouette, equipment, colors and direction-dependent occlusion, the second for THIS character's face/head details. The third is STYLE ONLY: approved bottom '大頭Q版新稿' very large head and very short body, head including headgear about 67 percent of total height, tiny body and short legs, clean bold dark outlines, smooth clean hand-painted color shading, sharply readable at 48 pixels. Do not copy Ares's face or clothes. Make every sprite the same scale, fully inside an evenly spaced cell, ample clear margins; no neighboring sprites touch. True alpha 0 outside sprites and fully opaque solid interiors including BLACK areas; no background, no checkerboard, no ground shadow, no cast shadow, no scenery, no labels, no grid, no text, no glows. Keep the full character in each cell and all twelve poses. Character 095 has a very large dark NAVY FLAT-TOP cylindrical/box-shaped helmet, gray-green shoulder/collar armor, a tiny navy-blue body and a small RED waist panel; EMPTY hands, very short blue lower body. Crucial OWN PORTRAIT identity: under the low helmet edge the orange/brown mature NOSE AND MOUTH are exposed, with a broad prominent nose and stern downturned mouth/lower lip. EYES ARE COVERED by the low navy helmet brim. The orange-red band in the map reference is NOT a laser visor or robot eyes. Recreate his own visible nose/mouth from portrait, shaded warm skin, no red lights, no glow, no mechanical side lights, no goggles, no robotic face window and no baby human face. Keep a simple blue lower jaw/cheek armor edge as in the portrait without covering the visible nose and mouth. The rear row shows solid plain navy helmet back, gray-green shoulder collar, navy body without facial features. Preserve native big hat silhouette, gray-green small shoulder forms, red waist cloth, and direction-dependent concealment. No new weapon, antenna or ornament. Very big helmet/head, extremely short body, rounded tiny gloves and short blue legs, no long robot torso.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r26/group-095-original.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r26/portrait-095.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ],
+        "source": "01a191d4-42fc-7d40-998d-6e83828c4823/exec-591c556b-fdc0-4484-afe7-33fb997b630a.png",
+        "source_sha256": "ec2277b3bf65cd78d6a05f1ac78d3b8cb5075b528c44b82fcb7a2cd21f1db718",
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r26/group-095-original.png",
+            "sha256": "532dfc59cc5f51391815acad79b398073203dcf934446f06b4ffebfd7a2734e1"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r26/portrait-095.png",
+            "sha256": "a4998f1bf2b40cbca4b5a20f5595ab3630a819af681ea246495f6d9095ca20da"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png",
+            "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+          }
+        ]
+      },
+      {
+        "group": 106,
+        "selected": true,
+        "prompt": "Create ONE production-ready transparent RGBA sprite master sheet for a classic Taiwan fantasy tactics remake. Exactly 12 separate full-body sprites, regular 3 columns x 4 rows. Rows in order FRONT facing viewer, LEFT-facing strict profile, BACK, RIGHT-facing strict profile. Columns neutral planted stance, small left-step, small right-step. Use the first reference only for THIS character's exact silhouette, equipment, colors and direction-dependent occlusion, the second for THIS character's face/head details. The third is STYLE ONLY: approved bottom '大頭Q版新稿' very large head and very short body, head including headgear about 67 percent of total height, tiny body and short legs, clean bold dark outlines, smooth clean hand-painted color shading, sharply readable at 48 pixels. Do not copy Ares's face or clothes. Make every sprite the same scale, fully inside an evenly spaced cell, ample clear margins; no neighboring sprites touch. True alpha 0 outside sprites and fully opaque solid interiors including BLACK areas; no background, no checkerboard, no ground shadow, no cast shadow, no scenery, no labels, no grid, no text, no glows. Keep the full character in each cell and all twelve poses. Character 106 is a fully masked BLUE/PURPLE layered pointed-helmet guard with RED cape. Match own portrait for the angular sharply pointed long V-shaped BLUE faceplate, layered helmet ridge and brim, narrow black eye slit with subdued PALE gray/cyan eye points; no exposed human face, no red eyes, no horns. Follow original twelve sprites: one plain pale silver/cyan UPRIGHT SWORD on viewer LEFT in front view, ROUND/rounded BLUE SHIELD on viewer RIGHT with its simple original dark U-shaped/central pattern. Do not invent a new cross, heraldic crest, complex ornament, spear or axe. Very short blue armored body and stubby limbs. Preserve the red back cape and gray-green rear collar/back silhouette, shield mostly covers left-facing profile and sword dominates the right-facing profile, exactly as first reference. Helmet/head about two thirds total height with a tiny body. Plain closed helmet rear in back row, red cape short enough to keep native silhouette readable.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r26/group-106-original.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r26/portrait-106.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ],
+        "source": "01a191d4-42fc-7d40-998d-6e83828c4823/exec-de23dda8-ed64-46ec-a5d4-05d3cbc6b333.png",
+        "source_sha256": "15359cab76cda51f785db215f74558301d9577421f526644caacee6dcf63ab0f",
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r26/group-106-original.png",
+            "sha256": "c3c7c2383f88de943daaa40cd293eb5ac18b7493aece23f6b44597bafa0a552c"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r26/portrait-106.png",
+            "sha256": "a0a51b2348cb75cd331fc9843b3326e92a026df19444c769ab4357de8ae628c1"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png",
+            "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+          }
+        ]
+      },
+      {
+        "group": 111,
+        "selected": true,
+        "prompt": "Create ONE production-ready transparent RGBA sprite master sheet for a classic Taiwan fantasy tactics remake. Exactly 12 separate full-body sprites, regular 3 columns x 4 rows. Rows in order FRONT facing viewer, LEFT-facing strict profile, BACK, RIGHT-facing strict profile. Columns neutral planted stance, small left-step, small right-step. Use the first reference only for THIS character's exact silhouette, equipment, colors and direction-dependent occlusion, the second for THIS character's face/head details. The third is STYLE ONLY: approved bottom '大頭Q版新稿' very large head and very short body, head including headgear about 67 percent of total height, tiny body and short legs, clean bold dark outlines, smooth clean hand-painted color shading, sharply readable at 48 pixels. Do not copy Ares's face or clothes. Make every sprite the same scale, fully inside an evenly spaced cell, ample clear margins; no neighboring sprites touch. True alpha 0 outside sprites and fully opaque solid interiors including BLACK areas; no background, no checkerboard, no ground shadow, no cast shadow, no scenery, no labels, no grid, no text, no glows. Keep the full character in each cell and all twelve poses. Character 111 is fully covered in pale gray-green armor with a distinctive TALL NARROW elongated faceplate rising above very broad rounded shoulders. Preserve the long slim head identity and tall rectangular/long V slab outline; DO NOT turn this character into a round chibi head. Match own portrait 111: small dark inverted triangular mark above the red horizontal slit, opaque BLACK V/Y-shaped inset immediately under that slit continuing into a fine central black vertical division, pale gray-green closed long faceplate; no exposed human face or pupils. Preserve simple native large gray-green shoulders, tiny very short torso, gray-green gauntlets and short sturdy feet, small navy-blue waist panel, black joint gaps, EMPTY hands. Front-facing head stays much narrower than the broad shoulders; enlarge the elongated faceplate mainly in height and shorten the torso/legs to reach the approved big-head very-short-body proportion. Shoulder blocks sit LOW beside the base of the faceplate so they do not swallow the long head. Back row has plain long gray-green helmet back without front slit or new markings. No antennas, guns, cables, robot pistons, new equipment, glowing lights, decorative vents or invented species features.",
+        "reference_files": [
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r26/group-111-original.png",
+          "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r26/portrait-111.png",
+          "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png"
+        ],
+        "source": "01a191d4-42fc-7d40-998d-6e83828c4823/exec-8044c845-047a-4134-b8ab-8ca1eb8e9cbc.png",
+        "source_sha256": "abf6aab569d07d97bccce732f54ab7966b57601ca9c54a55d5ebce7fe8f86f57",
+        "reference_inputs_in_call_order": [
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r26/group-111-original.png",
+            "sha256": "76a85ae1a8a8975b21d2ce66de6fe778b0e392f81da3d611eb766e73b5785c19"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r26/portrait-111.png",
+            "sha256": "1b34f86360bc5689b93c55e38fb58155eac2a4ec53603a0e197b31d0f47026f6"
+          },
+          {
+            "file": "/home/anr2/cht/fd2/docs/figures/hd1-ares-q-design.png",
+            "sha256": "dffa304cb1c675cbf4005b4cb8d1c878ce7d47c030eaf2c4ceca99e81714a12e"
+          }
+        ]
+      }
+    ]
+  },
+  "original_reference": {
+    "source": "同號DATO、原始名冊、FDICON十二姿態三層與FDOTHER0色盤；只證固定資料與圖源",
+    "groups": [
+      69,
+      95,
+      106,
+      111
+    ],
+    "records_file": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r26/native-reference.json",
+    "records_sha256": "6a76c166e287dabe213de151a60f9adc6bb871e2832b467e1f9eb3daa756b16e",
+    "reference_boards": [
+      {
+        "file": "group-069-original.png",
+        "sha256": "d1c100af622f2a35a2799617e64cde9b85886dd9d74a34d449d0f4e07aefa3da"
+      },
+      {
+        "file": "group-095-original.png",
+        "sha256": "532dfc59cc5f51391815acad79b398073203dcf934446f06b4ffebfd7a2734e1"
+      },
+      {
+        "file": "group-106-original.png",
+        "sha256": "c3c7c2383f88de943daaa40cd293eb5ac18b7493aece23f6b44597bafa0a552c"
+      },
+      {
+        "file": "group-111-original.png",
+        "sha256": "76a85ae1a8a8975b21d2ce66de6fe778b0e392f81da3d611eb766e73b5785c19"
+      }
+    ]
+  },
+  "roster_source_correction": {
+    "reason": "map32組0包含故事載體，整組缺native future constructor provenance，不能作戰鬥測具前置。改取既有map9組1，保留其原盟軍陣營與15,41位置，不改正式規則。",
+    "rejected_recipe_sha256": "e438f68e1ecc4eb5a694740a842e1ce19cb05fc35d9ef43b352b1702d897cc91",
+    "log": "/repo/work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-next-enemies-review-r26/gpu-cross-and-cylinder-r2.log",
+    "scope": "只修正受控展示名冊來源，不新增原版動態語意。"
+  }
+}

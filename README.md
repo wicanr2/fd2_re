@@ -85,6 +85,14 @@
 
 達克賽保留深藍裸面、尖耳、厚重額面、鉤鼻與微揚薄唇；亞奇梅吉保留藍灰高額禿頂、深陷窄眼、長鼻與瘦長下巴。兩人皆按原生空手，灰綠腰帶與藍紫袍大領分別保持；達克賽眼色依自己的原版大頭像採藍紫。可看[四向與實際尺寸](docs/figures/hd1-blue-and-robed-comparison.png)、[達克賽](docs/figures/hd1-darksai-refresh-game.png)及[亞奇梅吉](docs/figures/hd1-archimage-refresh-game.png)的完整受控戰場圖。面容圖比較原版頭像與實際地圖素材，非對話HD頭像驗收；地圖及資訊窗共用新版圖源。戰場圖使用各自原生名冊的受控測具，沒有身份或圖組投影，不代表自然加入流程。其餘人物續作，完整總覽仍待全部重繪後更新。
 
+![灰綠十字盾板盔與深藍筒盔人物的原版及HD1面容對照](docs/figures/hd1-enemy-cross-and-cylinder-faces.png)
+
+第69組保留灰綠平頂閉合面盔、暗眼縫、十字盾、直立淡色劍及紅腰布。第95組依自己的原版頭像保留成熟鼻口，眼部由深藍筒狀帽盔遮住；原版地圖橙紅帶不畫成發光機械眼，灰綠肩領與紅腰布沿原版。可看[四向與144／72／48尺寸](docs/figures/hd1-enemy-cross-and-cylinder-comparison.png)、[十字盾板盔](docs/figures/hd1-enemy-069-refresh-game.png)及[深藍筒盔](docs/figures/hd1-enemy-095-refresh-game.png)的完整受控戰場圖。
+
+![藍紫分層尖面盔與灰綠狹長面盔人物的原版及HD1面容對照](docs/figures/hd1-enemy-layered-and-long-faces.png)
+
+第106組保留藍紫尖面盔、淡色眼點、原版劍盾、紅披風與灰綠背側領部。第111組保留自己的狹長面盔、紅橫縫、黑色Y形切線與寬肩，縮短軀幹及下肢，保持原版空手。可看[四向與144／72／48尺寸](docs/figures/hd1-enemy-layered-and-long-comparison.png)、[分層尖面盔](docs/figures/hd1-enemy-106-refresh-game.png)及[狹長面盔](docs/figures/hd1-enemy-111-refresh-game.png)的完整受控戰場圖。四組保留原始名冊的陣營、位置與圖源，無身份或圖組投影；戰場圖不代表自然章節可達，其餘人物與完整總覽仍待。
+
 ![藍灰遮面與深藍兜帽人物的原版及HD1面容對照](docs/figures/hd1-enemy-visor-and-hood-faces.png)
 
 第88組保留紅褐頭部輪廓、藍灰閉合面盔、暗眼縫及紅圓側飾。橫向持物只沿原圖輪廓，種類仍未知。第91組依自身頭像保留長鼻、窄紅眼、黑色下臉陰影、紅肩布及原版無露腳袍形。可看[四向與144／72／48尺寸](docs/figures/hd1-enemy-visor-and-hood-comparison.png)、[藍灰遮面人物](docs/figures/hd1-enemy-088-refresh-game.png)及[深藍兜帽人物](docs/figures/hd1-enemy-091-refresh-game.png)的完整受控戰場圖。

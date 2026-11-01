@@ -448,7 +448,7 @@
       "layer": "data",
       "category": "缺陷",
       "title": "P1 HD1戰場小人物：依原版重繪大頭Q版與個別面容",
-      "body": "第88／91／93／94組已依自身DATO與原版十二姿態重繪並接入HD1。88保留紅褐頭部輪廓、藍灰閉合面盔、暗眼縫、紅圓側飾與橫向持物輪廓，持物種類仍未知。91保留自身長鼻、窄紅眼、黑色下臉、紅肩布及無露腳袍形，不補法杖。93灰綠盔與金框紅格柵，94藍盔與灰綠框藍格柵，各依自身捲眉、直槽與原版空手造型，不由舊機械標籤推定物種。舊導覽稱呼追加勘誤，原證據保持。\n\n四組依map14第11列／組0、map14第7列／組0、map7第12列／組0、map14第9列／組0的原始敵軍名冊建立。AppendGroupWithNativePlacement保留camp／portrait／BattleFig／位置／selector，無身份或圖組投影。\n\n完整候選固定分visor-and-hood88／91與two-grilles93／94，合28完整Game.Draw、24PNG、四次F2、337791核心點與21反例通過。16種舊分份、六批轉職及三種共用來源契約保持，不重跑或升格舊GPU。\n\n新圖源四項逐byte重編／14拒收。編製器及來源測試未變，舊共用與混合各四項／17拒收沿既有通過收據，逐檔SHA核對，未冒稱本批重跑。普通首章十PNG驗完整候選、四種控制、行走取消、F5與新程序LOAD，無狀態注入；24頂層Go、21消費來源／416幀／19反例、883清冊及125組1455來源通過，兩可選GPU略過不計。\n\n清冊只換8項、875保持，新增100檔，9123舊美術SHA／inode／mtime／owner、0／9／30六項及其餘121組來源保持。私人素材已同步，README新增八張授權圖。Q比例餘項12→8，其餘面容、完整總覽與集中人工仍待，Gaia保持定版。本項維持OPEN，不作EXE動態、自然章節或480頭像驗收；現況與重跑依58／61及主收據hd1_visor_hood_grille_followup_20261101。",
+      "body": "第69／95／106／111組已依自身DATO與原版十二姿態重繪並接入HD1。\n69 灰綠十字盾板盔人物：灰綠平頂閉合面盔與暗橫眼縫、原版微小亮點與十字盾、直立淡色劍及紅腰布。\n95 深藍筒盔露鼻口人物：深藍平頂筒狀帽盔，眼部被盔遮住、自身成熟橙褐鼻口，不作發光機械眼、灰綠肩領、藍短身及紅腰布，原版空手。\n106 藍紫分層尖面盔人物：藍紫分層尖面盔及淡色眼點、原版直立淡色劍與藍盾暗紋、紅披風及灰綠背側領部輪廓。\n111 灰綠狹長面盔人物：狹長灰綠面盔、三角記號及紅橫縫、黑色Y形面部切線，不露人臉、寬肩、灰綠手腳及藍腰片，原版空手。\n\n95原地圖橙紅帶與DATO露出的成熟鼻口分列，眼部被盔遮住，不作發光機械眼；舊稱呼追加勘誤，原證據保持。111保留長面盔，不圓頭化。\n\n四組原始名冊依序為map9第42列／組1；map18第11列／組0；map24第6列／組0；map25第18列／組0。第69組維持原盟軍，其餘維持原敵軍。AppendGroupWithNativePlacement保留camp／portrait／BattleFig／位置／selector，無身份或圖組投影。完整候選分cross-and-cylinder69／95及layered-and-long106／111，合28完整Game.Draw、24PNG、四次F2、335578核心點與24反例通過。17種舊分份、六批轉職與三種共用契約保持，不重跑或升格舊GPU。\n\n新圖源四項逐byte重編／14拒收。編製器及來源測試未變，舊共用與混合各四項／17拒收沿原r23通過收據並核SHA，未冒稱本批重跑。普通首章十PNG驗完整候選、四種控制、行走取消、F5及新程序LOAD，無狀態注入；25頂層Go、21消費來源／416幀／19反例、883清冊及125組1455來源通過，兩可選GPU略過不計。\n\n清冊只換8項、875保持，新增100檔，9223舊美術SHA／inode／mtime／owner、0／9／30六項及其餘121組來源保持。私人素材已同步，README新增八張授權圖。Q比例餘項8→4，其餘面容、完整總覽與集中人工仍待，Gaia保持定版。本項維持OPEN，不作EXE動態、自然章節或480頭像驗收；現況與重跑依58／61及主收據hd1_plate_long_four_followup_20261101。",
       "acceptance": [
         "使用者選定亞雷斯新比例，並保留定版原稿、原版來源、逐字提示與SHA；其他角色依相同標準重製，不能只改大圖總覽。",
         "125個可見圖組及1455幀逐組保留原生方向、步態／靜態相位、轉職身份、裝備特徵、腳底與透明契約；原版、已接受圖源及舊證據可追溯。",
@@ -634,7 +634,16 @@
         "docs/figures/hd1-enemy-088-refresh-game.png",
         "docs/figures/hd1-enemy-091-refresh-game.png",
         "docs/figures/hd1-enemy-093-refresh-game.png",
-        "docs/figures/hd1-enemy-094-refresh-game.png"
+        "docs/figures/hd1-enemy-094-refresh-game.png",
+        "remake/assets/themes/modern/hd1-plate-long-four-refresh.recipe.json",
+        "docs/figures/hd1-enemy-cross-and-cylinder-faces.png",
+        "docs/figures/hd1-enemy-cross-and-cylinder-comparison.png",
+        "docs/figures/hd1-enemy-layered-and-long-faces.png",
+        "docs/figures/hd1-enemy-layered-and-long-comparison.png",
+        "docs/figures/hd1-enemy-069-refresh-game.png",
+        "docs/figures/hd1-enemy-095-refresh-game.png",
+        "docs/figures/hd1-enemy-106-refresh-game.png",
+        "docs/figures/hd1-enemy-111-refresh-game.png"
       ],
       "verify": {
         "kind": "manual",
@@ -647,7 +656,7 @@
       "layer": "data",
       "category": "缺陷",
       "title": "P1 HD1人物面容與身份複核：依原版頭像保留各自特徵",
-      "body": "第88／91／93／94組已依自身DATO與原版十二姿態重繪並接入HD1。88保留紅褐頭部輪廓、藍灰閉合面盔、暗眼縫、紅圓側飾與橫向持物輪廓，持物種類仍未知。91保留自身長鼻、窄紅眼、黑色下臉、紅肩布及無露腳袍形，不補法杖。93灰綠盔與金框紅格柵，94藍盔與灰綠框藍格柵，各依自身捲眉、直槽與原版空手造型，不由舊機械標籤推定物種。舊導覽稱呼追加勘誤，原證據保持。\n\n四組依map14第11列／組0、map14第7列／組0、map7第12列／組0、map14第9列／組0的原始敵軍名冊建立。AppendGroupWithNativePlacement保留camp／portrait／BattleFig／位置／selector，無身份或圖組投影。\n\n完整候選固定分visor-and-hood88／91與two-grilles93／94，合28完整Game.Draw、24PNG、四次F2、337791核心點與21反例通過。16種舊分份、六批轉職及三種共用來源契約保持，不重跑或升格舊GPU。\n\n新圖源四項逐byte重編／14拒收。編製器及來源測試未變，舊共用與混合各四項／17拒收沿既有通過收據，逐檔SHA核對，未冒稱本批重跑。普通首章十PNG驗完整候選、四種控制、行走取消、F5與新程序LOAD，無狀態注入；24頂層Go、21消費來源／416幀／19反例、883清冊及125組1455來源通過，兩可選GPU略過不計。\n\n清冊只換8項、875保持，新增100檔，9123舊美術SHA／inode／mtime／owner、0／9／30六項及其餘121組來源保持。私人素材已同步，README新增八張授權圖。Q比例餘項12→8，其餘面容、完整總覽與集中人工仍待，Gaia保持定版。本項維持OPEN，不作EXE動態、自然章節或480頭像驗收；現況與重跑依58／61及主收據hd1_visor_hood_grille_followup_20261101。",
+      "body": "第69／95／106／111組已依自身DATO與原版十二姿態重繪並接入HD1。\n69 灰綠十字盾板盔人物：灰綠平頂閉合面盔與暗橫眼縫、原版微小亮點與十字盾、直立淡色劍及紅腰布。\n95 深藍筒盔露鼻口人物：深藍平頂筒狀帽盔，眼部被盔遮住、自身成熟橙褐鼻口，不作發光機械眼、灰綠肩領、藍短身及紅腰布，原版空手。\n106 藍紫分層尖面盔人物：藍紫分層尖面盔及淡色眼點、原版直立淡色劍與藍盾暗紋、紅披風及灰綠背側領部輪廓。\n111 灰綠狹長面盔人物：狹長灰綠面盔、三角記號及紅橫縫、黑色Y形面部切線，不露人臉、寬肩、灰綠手腳及藍腰片，原版空手。\n\n95原地圖橙紅帶與DATO露出的成熟鼻口分列，眼部被盔遮住，不作發光機械眼；舊稱呼追加勘誤，原證據保持。111保留長面盔，不圓頭化。\n\n四組原始名冊依序為map9第42列／組1；map18第11列／組0；map24第6列／組0；map25第18列／組0。第69組維持原盟軍，其餘維持原敵軍。AppendGroupWithNativePlacement保留camp／portrait／BattleFig／位置／selector，無身份或圖組投影。完整候選分cross-and-cylinder69／95及layered-and-long106／111，合28完整Game.Draw、24PNG、四次F2、335578核心點與24反例通過。17種舊分份、六批轉職與三種共用契約保持，不重跑或升格舊GPU。\n\n新圖源四項逐byte重編／14拒收。編製器及來源測試未變，舊共用與混合各四項／17拒收沿原r23通過收據並核SHA，未冒稱本批重跑。普通首章十PNG驗完整候選、四種控制、行走取消、F5及新程序LOAD，無狀態注入；25頂層Go、21消費來源／416幀／19反例、883清冊及125組1455來源通過，兩可選GPU略過不計。\n\n清冊只換8項、875保持，新增100檔，9223舊美術SHA／inode／mtime／owner、0／9／30六項及其餘121組來源保持。私人素材已同步，README新增八張授權圖。Q比例餘項8→4，其餘面容、完整總覽與集中人工仍待，Gaia保持定版。本項維持OPEN，不作EXE動態、自然章節或480頭像驗收；現況與重跑依58／61及主收據hd1_plate_long_four_followup_20261101。",
       "acceptance": [
         "逐組以固定原生三層、FDOTHER0代表色盤與有對應身份的原版頭像／大圖核身份，不沿舊候選或圖說猜職業／種族。",
         "優先修正2、48、50、51、52、53、54、55、56、63、76、79的已見差異，70、73、77、89、125、133補證後逐項確認或修正；所有結論保留來源及未知等級。",
@@ -821,7 +830,16 @@
         "docs/figures/hd1-enemy-088-refresh-game.png",
         "docs/figures/hd1-enemy-091-refresh-game.png",
         "docs/figures/hd1-enemy-093-refresh-game.png",
-        "docs/figures/hd1-enemy-094-refresh-game.png"
+        "docs/figures/hd1-enemy-094-refresh-game.png",
+        "remake/assets/themes/modern/hd1-plate-long-four-refresh.recipe.json",
+        "docs/figures/hd1-enemy-cross-and-cylinder-faces.png",
+        "docs/figures/hd1-enemy-cross-and-cylinder-comparison.png",
+        "docs/figures/hd1-enemy-layered-and-long-faces.png",
+        "docs/figures/hd1-enemy-layered-and-long-comparison.png",
+        "docs/figures/hd1-enemy-069-refresh-game.png",
+        "docs/figures/hd1-enemy-095-refresh-game.png",
+        "docs/figures/hd1-enemy-106-refresh-game.png",
+        "docs/figures/hd1-enemy-111-refresh-game.png"
       ],
       "verify": {
         "kind": "manual",
