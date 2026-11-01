@@ -279,11 +279,15 @@ END、離開、目前戰況保存／讀取與全軍移動的確認視窗已接HD
 
 ![城鎮人物與介面獨立切換](docs/figures/hd1-town-interface-four-modes.png)
 
-四格為同一受控城鎮的實際繪製，左上至右下依序為原版美術／原版介面、原版美術／HD介面、HD美術／原版介面、HD美術／HD介面。人物隨美術主題，字型隨介面切換。測試隊伍用來核對圖源接線，不代表自然出場；整備背景與其餘介面仍續作，範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
+四格為同一受控城鎮的實際繪製，左上至右下依序為原版美術／原版介面、原版美術／HD介面、HD美術／原版介面、HD美術／HD介面。人物隨美術主題，字型隨介面切換。測試隊伍用來核對圖源接線，不代表自然出場；其餘介面仍續作，範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
 
 ![HD1城鎮離開轉場](docs/figures/hd1-town-departure-game.png)
 
 離開城鎮時，手繪背景與Q版人物沿原有步驟縮放、淡出至全黑。上圖為受控轉場的實際繪製；介面與美術仍可獨立切換，範圍依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。
+
+![整備提示的HD城鎮背景](docs/figures/hd1-preparation-town-background.png)
+
+整備提示沿原有流程保留進場前的HD城鎮背景，選人與開收框也使用同一來源。上圖為一般標題LOAD與鍵盤操作畫面；頭像、選項與介面細部仍依[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)接續補齊。
 
 ![HD1古金雙層對話框的普通父王對話](docs/figures/hd1-gold-dialogue-game.png)
 

@@ -207,7 +207,9 @@ func (g *Game) drawNativeClassUIJob(screen *ebiten.Image) bool {
 		return true
 	}
 	if len(job.restore) == 320*200 {
-		g.presentNativeClassFrame(screen, job.restore)
+		if !g.drawModernHDPreparationTransition(screen, job) {
+			g.presentNativeClassFrame(screen, job.restore)
+		}
 		job.drawn = true
 		return true
 	}

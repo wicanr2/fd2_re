@@ -277,6 +277,7 @@ func (g *Game) beginNativePreparationRequiredClosing(after func()) bool {
 	}
 	g.nativeClassUIJob = &nativeClassUIJob{
 		frames: frames, restore: append([]byte(nil), g.prepPromptSource...), after: after,
+		preparationText: g.snapshotNativePreparationTransition(g.prepPromptSource, false, 0, true),
 	}
 	return true
 }
@@ -417,6 +418,9 @@ func (g *Game) drawNativePreparation(screen *ebiten.Image) bool {
 	}
 	capture, restore := g.beginModernHDPreparationText()
 	defer restore()
+	if g.drawModernHDPreparationBackground(screen, g.prepTownSource, g.prepPromptSource, g.composeNativePreparationOn, capture) {
+		return true
+	}
 	frame, ok := g.composeNativePreparationStableFrame()
 	if !ok {
 		if g.prepRecordSlots {

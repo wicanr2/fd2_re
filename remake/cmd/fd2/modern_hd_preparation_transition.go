@@ -24,6 +24,7 @@ type nativePreparationTransitionText struct {
 	identity int
 	start    int
 	closing  bool
+	town     *nativeTownFrameSource
 }
 
 func (g *Game) snapshotNativePreparationTransition(source []byte, confirmation bool, start int, closing bool) *nativePreparationTransitionText {
@@ -32,6 +33,9 @@ func (g *Game) snapshotNativePreparationTransition(source []byte, confirmation b
 	}
 	d := &nativePreparationTransitionText{source: append([]byte(nil), source...),
 		assets: *g.nativePreparationUI, start: start, closing: closing}
+	if g.prepTownSource.matches(source) {
+		d.town = g.prepTownSource
+	}
 	switch {
 	case confirmation:
 		d.kind = nativePreparationConfirmQuestion
@@ -87,17 +91,66 @@ func (d *nativePreparationTransitionText) compose(frame int, font *fdtxt.Font) (
 }
 
 func (g *Game) drawModernHDPreparationTransition(screen *ebiten.Image, job *nativeClassUIJob) bool {
-	if g.modernHDText == nil || g.font == nil || g.nativeClassUI == nil || job.preparationText == nil {
+	if g.nativeClassUI == nil || job.preparationText == nil {
 		return false
 	}
 	d := job.preparationText
 	capture := &modernHDIndexedText{palette: g.nativeClassUI.palette}
 	font := g.modernHDFacilityFont(d.assets.status.Font, capture)
-	frame, ok := d.compose(job.frame, font)
+	compose := func(source []byte) ([]byte, bool) { return d.composeFrame(job.frame, source, font) }
+	if g.drawModernHDPreparationBackground(screen, d.town, d.source, compose, capture) {
+		return true
+	}
+	if g.modernHDText == nil || g.font == nil {
+		return false
+	}
+	frame, ok := compose(d.source)
 	if !ok {
 		return false
 	}
 	g.presentNativeClassFrame(screen, frame)
 	g.modernHDText.runs = append(g.modernHDText.runs, capture.runs...)
 	return true
+}
+
+// Replays the whole presentation job without changing its prebuilt cache or
+// acknowledgement schedule. Question stages retain their existing recipe.
+func (d *nativePreparationTransitionText) composeFrame(frame int, source []byte, font *fdtxt.Font) ([]byte, bool) {
+	if d == nil || len(source) != 64000 || frame < 0 {
+		return nil, false
+	}
+	copy := *d
+	copy.source = source
+	if !(d.kind == nativePreparationRequiredQuestion && d.closing) {
+		if question, ok := copy.compose(frame, font); ok {
+			return question, true
+		}
+	}
+	if d.kind > nativePreparationRequiredQuestion {
+		return nil, false
+	}
+	if !d.closing && frame >= d.start {
+		return nil, false
+	}
+	dialogue, err := campaign.ComposeNativePreparationConfirmationDialogue(source, d.assets.dialogue, d.assets.portrait)
+	if err != nil {
+		return nil, false
+	}
+	var frames [][]byte
+	index := frame
+	if d.closing {
+		if d.kind != nativePreparationRequiredQuestion {
+			index -= 4
+		}
+		if index == 5 {
+			return append([]byte(nil), source...), true
+		}
+		frames, err = campaign.NativeClassListClosingFrames(source, dialogue)
+	} else {
+		frames, err = campaign.NativeClassListOpeningFrames(source, dialogue)
+	}
+	if err != nil || index < 0 || index >= len(frames) {
+		return nil, false
+	}
+	return frames[index], true
 }

@@ -4,11 +4,12 @@
 
 使用者定案：已接HD且有目前原版證據支持流程一致的絕招，維持已驗範圍。過期停止線直接刪除，不以逐幀一致重開。傷害公式後續可調整，原版預設保留，另列[#278](https://github.com/wicanr2/fd2_re/issues/278)；不增加本輪HD閘門。
 
-目前地形依hd1_terrain_atlas_followup_20261102，城鎮與離城依hd1_town_transition_followup_20261102，人物圖源依hd1_final_static_followup_20261101；其後各列保留當批驗證範圍與歷史來源，不視為最新全套造型通過。
+目前地形依hd1_terrain_atlas_followup_20261102，城鎮與離城依hd1_town_transition_followup_20261102，整備背景依hd1_preparation_background_followup_20261102，人物圖源依hd1_final_static_followup_20261101；其後各列保留當批驗證範圍與歷史來源，不視為最新全套造型通過。
 
 | 項目 | 目前可證明的狀態 | 下一閘門 |
 |---|---|---|
-| HD1城鎮離開轉場 | CONFORMED-SCOPED／RUNTIME-E1；凍結正式caller與raw key，十一個原生步、DAC及Draw承認保持。132完整Game.Draw、18PNG、452032背景／265790人物核心／10821296原版介面像素與最後全黑通過；59頂層Go、四個明示略過，消費端與字串處置保持 | 普通第二章旅館LOAD、整備取消、F2、F5／F9再確認出口，十二PNG、十一個邊界與來源／保存SHA通過。1199份Go指紋c1c8115308e7f3ca9d9c92fdb3ec93ccf31318e6c6dc156e400591f37f0d93d3；無素材或保存格式變更。整備背景與其餘介面仍在#283，完整HD1未完成。主收據hd1_town_transition_followup_20261102 |
+| HD1整備城鎮背景 | CONFORMED-SCOPED／RUNTIME-E1；實際凍結Town來源涵蓋選人、提示、確認、必選與完整開收框／還原，獨立黑底保持。207完整Game.Draw、20PNG、2197899背景／45198人物核心／4893216原版介面像素及77頂層Go通過，五個可選略過不計；來源回退、F2／F11及原生快取保持 | 普通第二章十二PNG、完整離城邊界與保存SHA通過，沒有普通轉場逐幀PNG聲明。1200份Go指紋a74152b0e9addc87f668d1a65ea7dae7507cb2058269f928b53d78599ac3570c，21消費來源／416幀／19反例與字串處置保持。無新素材；整備頭像／內建標籤／圖示及其他介面仍在#283。主收據hd1_preparation_background_followup_20261102 |
+| HD1城鎮離開轉場 | CONFORMED-SCOPED／RUNTIME-E1；凍結正式caller與raw key，十一個原生步、DAC及Draw承認保持。132完整Game.Draw、18PNG、452032背景／265790人物核心／10821296原版介面像素與最後全黑通過；59頂層Go、四個明示略過，消費端與字串處置保持 | 普通第二章旅館LOAD、整備取消、F2、F5／F9再確認出口，十二PNG、十一個邊界與來源／保存SHA通過。1199份Go指紋c1c8115308e7f3ca9d9c92fdb3ec93ccf31318e6c6dc156e400591f37f0d93d3；無素材或保存格式變更。整備背景依首列已閉合契約，其餘介面仍在#283，完整HD1未完成。主收據hd1_town_transition_followup_20261102 |
 | HD1完整地表與原生陰影 | CONFORMED-SCOPED／RUNTIME-E1；15原生陰影地表沿既定手繪草材，一份新圖樣保留170地形／4前景角色。174來源交易／22錯遮罩、17編製及八登錄反例、696來源GPU與兩完整Game.Draw／F2及保存通過；32頂層Go、906清冊與21來源／416幀／19反例通過 | 正式Go重算33圖：808已登錄、3180缺槽／2033獨特缺圖，10純remap保持。17新檔／10151舊美術保持，私人e2147650已推送；私人母稿重編16圖相同。普通首章整包十PNG與保存冷讀通過，完整地形／介面仍待。主收據hd1_terrain_atlas_followup_20261102 |
 | HD1全125組人物圖源與最後三拍例外 | CONFORMED-SCOPED／RUNTIME-E1；125組1455來源完成已定Q版圖源及接線，四組原圖例外身份未知。最後三組18完整Game.Draw、九PNG、三次F2、59167核心點、39反例，普通十PNG、26頂層Go與21消費來源／416幀／19反例通過 | 只換六項、877保持；21新檔及10130舊美術、0／9／30及其餘122組保持。四頁正式總覽已重生；人工造型／逐章／平台仍待，地形與介面續作。主收據hd1_final_static_followup_20261101 |
 | HD1第116／122／135組個別面容 | CONFORMED-SCOPED／RUNTIME-E1；各自原名冊、DATO與十二姿態支持，135保留ally。21完整Game.Draw、18PNG、三次F2、244487核心點及24反例；普通十PNG、26頂層Go及21消費來源／416幀／19反例通過 | 只換六項、877保持；75新檔與10055舊美術、0／9／30及其餘122組保持。125組1455來源重核，人物餘66／74／75，介面與地形續作。主收據hd1_final_known_faces_followup_20261101 |

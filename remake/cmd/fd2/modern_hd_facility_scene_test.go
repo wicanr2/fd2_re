@@ -256,6 +256,7 @@ type facilityHDProbe struct {
 	captured     map[*modernFacilityScene]bool
 	headCaptured bool
 	captureCases map[int]bool
+	verifyScene  func(*facilityHDProbe, []byte, *ebiten.Image) error
 }
 
 func (p *facilityHDProbe) Update() error {
@@ -294,7 +295,12 @@ func (p *facilityHDProbe) DrawFinalScreen(screen ebiten.FinalScreen, offscreen *
 	p.presentation.DrawFinalScreen(final, offscreen, m)
 	pixels := make([]byte, 1920*1272*4)
 	final.ReadPixels(pixels)
-	if p.g.modernStoryPortraits != nil {
+	if p.verifyScene != nil {
+		if err := p.verifyScene(p, pixels, offscreen); err != nil {
+			p.err = err
+			return
+		}
+	} else if p.g.modernStoryPortraits != nil {
 		o := p.g.modernHDScene
 		if o == nil {
 			p.err = fmt.Errorf("case %d lacks HD scene", p.index)

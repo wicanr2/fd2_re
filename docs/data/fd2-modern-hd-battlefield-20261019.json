@@ -299413,5 +299413,195 @@
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-town-transitions-r39/final-validation-r1.json",
       "sha256": "53c2441f4f9352e484ca929117448ebc812017b6fc2bb97b30c7ca962e7109b6"
     }
+  },
+  "hd1_preparation_background_followup_20261102": {
+    "date": "2026-11-02",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1/NORMAL-GUI",
+    "base_commit": "00ab69a67a61c45d9b97039889f199c776dcc28e",
+    "scope": "frozen actual town caller to preparation stable panels and complete opening/closing/restore; standalone black preserved",
+    "full_hd1_complete": false,
+    "human_accepted": false,
+    "new_original_e2": false,
+    "new_assets": false,
+    "source_evidence": [
+      {
+        "file": "docs/data/ida/fd2_town_preparation_background_20261002.json",
+        "sha256": "208bb2cffefe8706a9d4f701faad06950081ed2e18954bd87c7d653d6f79722a"
+      },
+      {
+        "file": "docs/data/ida/fd2_town_departure_20261005.json",
+        "sha256": "c6dc2e9adceff0d1d35bfec0892ff42ee4ddccb86d84136db66aa6f4bffce93b"
+      },
+      {
+        "file": "remake/assets/themes/modern/catalog.json",
+        "sha256": "9e31b510d0c11fb6b5e931718c9b915db45bf5492be20aa1fc638a96fd81e49e"
+      }
+    ],
+    "source": {
+      "go_files": 1200,
+      "go_tree_sha256": "a74152b0e9addc87f668d1a65ea7dae7507cb2058269f928b53d78599ac3570c",
+      "consumer": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-background-r40/consumers-r2.json",
+        "sha256": "62267be702615989378a4f18634ba1cdfdfd96ddeddbff24f0e666956f8cbe3a"
+      },
+      "gpu_source_snapshot": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-background-r40/gpu-source-snapshot-r2.json",
+        "sha256": "aff3450c36ba7b80a888bb7a4fabd88dd90f85d9674833f0c921d0db46ced614"
+      },
+      "binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-background-r40/fd2-player-r1",
+        "sha256": "83d3e08f7c178c5877a50e7a0bffd9396389a1a445474d37522d90bcf9f6fc85"
+      },
+      "production_go_unchanged_after_binary": true,
+      "commands": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-background-r40/commands.json",
+        "sha256": "49f0f84cb692ddea5ff187c06deb2dafa44bfbe4cb6d7c9f072f64b21a662c0e"
+      },
+      "catalog": {
+        "file": "remake/assets/themes/modern/catalog.json",
+        "sha256": "9e31b510d0c11fb6b5e931718c9b915db45bf5492be20aa1fc638a96fd81e49e"
+      },
+      "registered_assets": 906,
+      "runtime_catalog": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/runtime-r2/assets/themes/modern/catalog.json",
+        "sha256": "a30638494525607a21145f7b7257a6d07f10c5178d137a7a3d8a341ed3724fa6"
+      },
+      "asset_entries_equal_formal": true
+    },
+    "gpu": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-background-r40/gpu-r2-capture/receipt.json",
+        "sha256": "b808544533524ea4343843713e3c9665bcb448957e7df40cdc190ce075f051da"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-background-r40/gpu-r2.memory.json",
+        "sha256": "e9938660365fa486c47d97e465dd3acae9003545214876b0f50259821671682d"
+      },
+      "cases": 207,
+      "stable_four_styles": 48,
+      "complete_transition_restore": 159,
+      "png": 20,
+      "background_pixels": 2197899,
+      "cursor_cores": 45198,
+      "native_pixels": 4893216,
+      "raw_selector_fixture_override": 50,
+      "native_ui_fixtures_are_identity_claims": false,
+      "source_group_is_identity_claim": false,
+      "complete_toolbar_game_pixels_equal": true
+    },
+    "normal_gui": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-background-r40/normal-r2-capture/receipt.json",
+        "sha256": "d5672941955cfbd911b48f1ecb03778464610b02cf59b4e59298fec0e1d589a4"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-background-r40/normal-r2.memory.json",
+        "sha256": "a5f2bd050dc00216db4cf121ec7e912b19e36266396d6cbc99c980d1b78de301"
+      },
+      "png": 12,
+      "source_and_saved_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+      "frozen_departure_source": {
+        "steps": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "source_group": 0,
+        "variant": 0,
+        "pulse": 3,
+        "saved_bytes_unchanged": true,
+        "scope": "普通鍵盤出口；原生步驟與HD來源觀測。轉場PNG逐步精確像素另由受控GPU矩陣驗證。"
+      },
+      "scope": "existing chapter 2 hotel JSON; normal title LOAD, preparation NO/F2/save/load/YES; no new injection or original parity",
+      "normal_transition_exact_png_claimed": false
+    },
+    "regression": {
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-background-r40/regression-r1.memory.json",
+        "sha256": "050648bb48a53b1262171773f56b99c2c93d742aa27f21c799c3e02761a08c1d"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-background-r40/regression-r1.log",
+        "sha256": "f904662d3dade6530a2dfb06f9a70a2b8cd533163c383d31c2160a152a13ef5f"
+      },
+      "top_level_passed": 77,
+      "skipped": [
+        "TestModernHDMapActualCandidateWorld",
+        "TestModernHDMapOverviewGPU",
+        "TestModernHDPreparationTownBackgroundRuntimeGPU",
+        "TestModernHDTownDepartureRuntimeGPU",
+        "TestNativeTownDepartureFromOracle"
+      ],
+      "skips_are_not_passes": true,
+      "native_whole_job": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-background-r40/transition-native-r2.memory.json",
+        "sha256": "4c5d5178d6d9933d66d2e0d2df668735779135aa2e5009d6bc407489b75b8c77"
+      },
+      "consumer_validation": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-background-r40/consumers-verified-r1.json",
+        "sha256": "764ed1e32c41d47b24fabf460310a6d13b99f713df3ff35eea40aa6a15538044"
+      },
+      "string_migration": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-background-r40/string-review-migration.json",
+        "sha256": "96feca39d9ec4acfc5839021ebf9617cd9fbfe1ae80ee8ece08bce6644f062fa"
+      },
+      "source_fallbacks": [
+        "missing descriptor",
+        "source mismatch",
+        "missing HD cursor",
+        "wrong HD geometry",
+        "standalone native black"
+      ],
+      "real_shortcuts_in_active_job": [
+        "F2",
+        "F11"
+      ],
+      "native_cache_fonts_and_source_unchanged": true
+    },
+    "public_png": {
+      "file": "docs/figures/hd1-preparation-town-background.png",
+      "sha256": "47073623ace47c9dc2d4112b2aa74c971967b003f0d6be79fb9b9286d667af8b"
+    },
+    "diagnostics": {
+      "normal_r1": {
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-background-r40/normal-r1.memory.json",
+          "sha256": "991ad0be33819aa1ceabe6aa1dd941d2965c765c304531c4a340aaebf30607ce"
+        },
+        "capture_observation": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-background-r40/normal-r1-capture/transition-observation.json",
+          "sha256": "99e47fd25931d534897370d7099b3a717859ef90c83bf76cf805a8ab2f3676c9"
+        },
+        "classification": "optional external screenshot crosses short animation stage; three rejected, zero accepted; both directions observed in 61 question-stage audit rows; not a product failure or exact PNG evidence"
+      },
+      "normal_r2": "same binary normal path without optional external frame-capture requirement; complete frames covered by controlled GPU matrix",
+      "gpu_r1": "passed same 207 rendering cases before additional fallback/shortcut regression; final r2 recompiled all current source"
+    },
+    "private_assets": {
+      "changed": false,
+      "head": "e2147650d71c86d7c627dd82367cf0633e0cea97"
+    },
+    "remaining_ui": [
+      "preparation baked labels and roster icons",
+      "preparation DATO75 portrait and confirmation art",
+      "other formal native UI coverage"
+    ],
+    "limits": [
+      "This slice completes preparation town backgrounds and text occlusion, not every preparation asset.",
+      "No new original E2, complete campaign or platform acceptance.",
+      "Terrain #282 remains 3180 missing slots / 2033 unique source contents."
+    ],
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-background-r40/final-validation-r1.json",
+      "sha256": "33ec7db181211a81b66fac1fb42fe477e385f962d29d52af06ebe4ea3e702523"
+    }
   }
 }
