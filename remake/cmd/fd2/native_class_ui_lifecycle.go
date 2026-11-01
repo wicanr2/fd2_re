@@ -203,12 +203,18 @@ func (g *Game) drawNativeClassUIJob(screen *ebiten.Image) bool {
 		if (g.nativeClassUI == nil || !g.drawModernHDStatusTransition(screen, job.statusText, job.frame, g.nativeClassUI.palette)) && !g.drawModernHDPreparationTransition(screen, job) {
 			g.presentNativeClassFrame(screen, job.frames[job.frame])
 		}
+		if job.preparationText != nil {
+			g.appendModernHDPreparationDialogue(&job.preparationText.assets, job)
+		}
 		job.drawn = true
 		return true
 	}
 	if len(job.restore) == 320*200 {
 		if !g.drawModernHDPreparationTransition(screen, job) {
 			g.presentNativeClassFrame(screen, job.restore)
+		}
+		if job.preparationText != nil {
+			g.appendModernHDPreparationDialogue(&job.preparationText.assets, job)
 		}
 		job.drawn = true
 		return true

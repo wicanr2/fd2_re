@@ -419,6 +419,7 @@ func (g *Game) drawNativePreparation(screen *ebiten.Image) bool {
 	capture, restore := g.beginModernHDPreparationText()
 	defer restore()
 	if g.drawModernHDPreparationBackground(screen, g.prepTownSource, g.prepPromptSource, g.composeNativePreparationOn, capture) {
+		g.appendModernHDPreparationDialogue(g.nativePreparationUI, nil)
 		return true
 	}
 	frame, ok := g.composeNativePreparationStableFrame()
@@ -432,6 +433,7 @@ func (g *Game) drawNativePreparation(screen *ebiten.Image) bool {
 	if capture != nil {
 		g.modernHDText.runs = append(g.modernHDText.runs, capture.runs...)
 	}
+	g.appendModernHDPreparationDialogue(g.nativePreparationUI, nil)
 	return true
 }
 

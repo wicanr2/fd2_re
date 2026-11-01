@@ -3,12 +3,28 @@ package campaign
 import (
 	"errors"
 	"fmt"
+	"image"
 	"strconv"
 
 	"github.com/wicanr2/fd2_re/remake/internal/dato"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 	"github.com/wicanr2/fd2_re/remake/internal/fdtxt"
 )
+
+// NativePreparationPortraitLayout exposes the same fixed caller offset and
+// right-to-left rule used by ComposeNativePreparationConfirmationDialogue.
+func NativePreparationPortraitLayout(portrait dato.Frame) (image.Rectangle, bool, error) {
+	if portrait.Width != 80 || portrait.Height != 80 || len(portrait.Pixels) != 80*80 {
+		return image.Rectangle{}, false, errors.New("campaign: preparation portrait shape unavailable")
+	}
+	offset := nativeFacilityPortraitOffset(0x4b)
+	x, y := offset%320, offset/320
+	mirror := offset == nativeLowerPortraitRightEdge
+	if mirror {
+		x -= portrait.Width - 1
+	}
+	return image.Rect(x, y, x+portrait.Width, y+portrait.Height), mirror, nil
+}
 
 const (
 	nativeConfirmBaseX             = 248

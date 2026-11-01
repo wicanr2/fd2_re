@@ -185,6 +185,7 @@ func TestModernHDPreparationBackgroundFrozenSourceAndFallback(t *testing.T) {
 			}
 		}
 	}
+	t.Run("dialogue-components", func(t *testing.T) { verifyPreparationDialogueCPU(t, g, set) })
 	g.nativeClassUIJob = nil
 	g.modernStoryPortraits = set
 	g.interfaceMode = playerInterfaceOriginal
@@ -234,8 +235,8 @@ func verifyPreparationHDScene(p *facilityHDProbe, pixels []byte, offscreen *ebit
 		checks["frame"] = job.frame
 		checks["frames"] = len(job.frames)
 	}
-	backgrounds, cores, nativeChecks := 0, 0, 0
-	if g.modernStoryPortraits != nil {
+	backgrounds, cores, nativeChecks, finalChecks := 0, 0, 0, 0
+	if g.modernStoryPortraits != nil && g.prepTownSource != nil {
 		o := g.modernHDScene
 		if o == nil || o.cursor == nil || o.cursor.group != 50 || o.cursor.frame != 1 {
 			return fmt.Errorf("case%d missing frozen town source", p.index)
@@ -319,14 +320,20 @@ func verifyPreparationHDScene(p *facilityHDProbe, pixels []byte, offscreen *ebit
 					return fmt.Errorf("case%d original UI changed (%d,%d)", p.index, x, y)
 				}
 				final := (((y+24)*3+1)*1920 + x*3 + 1) * 4
-				if !bytes.Equal(base[at:at+4], pixels[final:final+4]) {
+				portrait := g.modernHDOverlay
+				covered := portrait != nil && image.Pt(x, y).In(portrait.rect.Intersect(portrait.clip))
+				if !covered && !bytes.Equal(base[at:at+4], pixels[final:final+4]) {
 					return fmt.Errorf("case%d foreground leaked (%d,%d)", p.index, x, y)
+				}
+				if !covered {
+					finalChecks++
 				}
 				nativeChecks++
 			}
 		}
 	}
 	checks["background_pixels"], checks["cursor_cores"], checks["native_pixels"] = backgrounds, cores, nativeChecks
+	checks["native_final_pixels"] = finalChecks
 	p.checks = append(p.checks, checks)
 	return nil
 }
@@ -335,6 +342,17 @@ func TestModernHDPreparationTownBackgroundRuntimeGPU(t *testing.T) {
 	if os.Getenv("FD2_HD_PREPARATION_BACKGROUND_GPU") != "1" {
 		t.Skip("dedicated GPU process")
 	}
+	runModernHDPreparationMatrix(t, false)
+}
+
+func TestModernHDPreparationDialogueRuntimeGPU(t *testing.T) {
+	if os.Getenv("FD2_HD_PREPARATION_DIALOGUE_GPU") != "1" {
+		t.Skip("dedicated GPU process")
+	}
+	runModernHDPreparationMatrix(t, true)
+}
+
+func runModernHDPreparationMatrix(t *testing.T, dialogue bool) {
 	set := facilityHDTestSet(t)
 	g := facilityHDTestGame(t, set)
 	assets, err := loadNativePreparationUIAssets()
@@ -350,6 +368,14 @@ func TestModernHDPreparationTownBackgroundRuntimeGPU(t *testing.T) {
 		t.Fatal(err)
 	}
 	p := &facilityHDProbe{t: t, g: g, out: out, presentation: &modernHDPresentation{Game: g, toolbar: true}, captured: make(map[*modernFacilityScene]bool), captureCases: make(map[int]bool), verifyScene: verifyPreparationHDScene}
+	if dialogue {
+		p.verifyScene = func(p *facilityHDProbe, pixels []byte, offscreen *ebiten.Image) error {
+			if err := verifyPreparationHDScene(p, pixels, offscreen); err != nil {
+				return err
+			}
+			return verifyPreparationDialogueGPU(p, pixels)
+		}
+	}
 	var jobs []*nativeClassUIJob
 	var sources []*nativeTownFrameSource
 	var before [][32]byte
@@ -427,6 +453,9 @@ func TestModernHDPreparationTownBackgroundRuntimeGPU(t *testing.T) {
 			}
 		}
 	}
+	if dialogue {
+		appendPreparationDialogueExtraCases(t, p, set, &jobs, &before)
+	}
 	unit := g.partyRoster[g.partyJoinOrder[0]]
 	unit.MapSelectorKey = 118
 	g.partyRoster[g.partyJoinOrder[0]] = unit
@@ -437,7 +466,11 @@ func TestModernHDPreparationTownBackgroundRuntimeGPU(t *testing.T) {
 	if p.err != nil {
 		t.Fatal(p.err)
 	}
-	if len(p.checks) != 207 || len(p.checks) != len(p.cases) {
+	wantCases := 207
+	if dialogue {
+		wantCases = 247
+	}
+	if len(p.checks) != wantCases || len(p.checks) != len(p.cases) {
 		t.Fatal("incomplete preparation matrix", len(p.checks), len(p.cases))
 	}
 	for i, job := range jobs {
@@ -455,7 +488,11 @@ func TestModernHDPreparationTownBackgroundRuntimeGPU(t *testing.T) {
 	if g.prepPromptSource == nil || g.nativeClassUI.font == nil || g.font.indexedHD != nil {
 		t.Fatal("preparation source/font adapter leaked")
 	}
-	raw, _ := json.MarshalIndent(map[string]any{"status": "PASS-PREPARATION-TOWN-GPU", "scope": "fixture Game.Draw; 48 stable four-style cases and 159 complete transition/restore cases; no new original E2", "checks": p.checks}, "", "  ")
+	status, scope := "PASS-PREPARATION-TOWN-GPU", "fixture Game.Draw; 48 stable four-style cases and 159 complete transition/restore cases; no new original E2"
+	if dialogue {
+		status, scope = "PASS-PREPARATION-DIALOGUE-GPU", "fixture Game.Draw; 207 town cases, 16 localized choices/pulses and 24 standalone black cases; HD75/gold/buttons source verified; no new original E2"
+	}
+	raw, _ := json.MarshalIndent(map[string]any{"status": status, "scope": scope, "checks": p.checks}, "", "  ")
 	if err := os.WriteFile(filepath.Join(out, "receipt.json"), append(raw, '\n'), 0644); err != nil {
 		t.Fatal(err)
 	}

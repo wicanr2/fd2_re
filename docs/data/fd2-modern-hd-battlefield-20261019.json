@@ -299603,5 +299603,211 @@
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-background-r40/final-validation-r1.json",
       "sha256": "33ec7db181211a81b66fac1fb42fe477e385f962d29d52af06ebe4ea3e702523"
     }
+  },
+  "hd1_preparation_dialogue_followup_20261102": {
+    "date": "2026-11-02",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1/NORMAL-GUI",
+    "base_commit": "f0ebe01739c2600798bd3f786fa95ecc54225800",
+    "scope": "existing DATO75 portrait, gold dialogue chrome and localized choices in preparation stable and complete transitions; roster remains separate",
+    "full_hd1_complete": false,
+    "human_accepted": false,
+    "new_original_e2": false,
+    "new_assets": false,
+    "source_evidence": [
+      {
+        "file": "docs/data/ida/fd2_town_preparation_background_20261002.json",
+        "sha256": "208bb2cffefe8706a9d4f701faad06950081ed2e18954bd87c7d653d6f79722a"
+      },
+      {
+        "file": "docs/data/ida/fd2_town_departure_20261005.json",
+        "sha256": "c6dc2e9adceff0d1d35bfec0892ff42ee4ddccb86d84136db66aa6f4bffce93b"
+      },
+      {
+        "file": "remake/assets/themes/modern/catalog.json",
+        "sha256": "9e31b510d0c11fb6b5e931718c9b915db45bf5492be20aa1fc638a96fd81e49e"
+      },
+      {
+        "file": "remake/assets/themes/modern/system-confirmation-portrait.recipe.json",
+        "sha256": "a40b6e55e40ae0e77111e9fd8ed9752ea39319e89fe15a3f05d975254909ceea"
+      },
+      {
+        "file": "remake/cmd/fd2/modern_hd_system_confirmation.go",
+        "sha256": "c2744d02bcae0656ad48d89b57957975041ce762c28d01977a944bc283846f9b"
+      }
+    ],
+    "source": {
+      "go_files": 1202,
+      "go_tree_sha256": "845d6b2b950833b7a75c660da8d8393aa1c66ec1ce7087b88780c663e2ca5e4b",
+      "consumer": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-dialogue-r41/consumers-r2.json",
+        "sha256": "eae7b735bd935fc23f8200007033f50b9741bc951860732e9f51f41b3085fb90"
+      },
+      "binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-dialogue-r41/fd2-player-r1",
+        "sha256": "9803c7c141fa8ec2bea481520cd13dfa822d72a9736a31a868f1311845272264"
+      },
+      "production_go_unchanged_after_binary": true,
+      "commands": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-dialogue-r41/commands.json",
+        "sha256": "bf4c4e7bc001b20abf632765f7914999cc197e3fa6a9b1e8ac9505b8aa6b4e09"
+      },
+      "catalog": {
+        "file": "remake/assets/themes/modern/catalog.json",
+        "sha256": "9e31b510d0c11fb6b5e931718c9b915db45bf5492be20aa1fc638a96fd81e49e"
+      },
+      "registered_assets": 906,
+      "reused_portrait": [
+        {
+          "asset_id": "modern.system_clerk.portrait.80.frame0",
+          "file_name": "dato-075-system-portrait-handpainted-v1-80.png",
+          "sha256": "9f5ccd72102eb62f462c3595b7d24ece0270da289768060830c83d7882d68712",
+          "width": 80,
+          "height": 80
+        },
+        {
+          "asset_id": "modern.system_clerk.portrait.480.frame0",
+          "file_name": "dato-075-system-portrait-handpainted-v1-480.png",
+          "sha256": "53767b5a2fd6efc47ab307242fb1779c520e17db734cf0d0ec17a4c66127d7fa",
+          "width": 480,
+          "height": 480
+        }
+      ],
+      "native_DATO75_index_sha256": "044500b9b04d1bb7a163af5d227549219a35567623ced808738addbf05158d9b",
+      "native_DATO75_png_sha256": "bb445c9da0ce03ff1271af548d67829de35b7e7af5291f84a96d25597a77fb68",
+      "runtime_catalog": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/runtime-r2/assets/themes/modern/catalog.json",
+        "sha256": "a30638494525607a21145f7b7257a6d07f10c5178d137a7a3d8a341ed3724fa6"
+      },
+      "asset_entries_equal_formal": true
+    },
+    "gpu": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-dialogue-r41/gpu-r1-capture/receipt.json",
+        "sha256": "4601927db5a6cee5a69cae3b0d2884dd34c698b862a9a0a5e7d619df2444dde8"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-dialogue-r41/gpu-r1.memory.json",
+        "sha256": "71b061b43a8af3733362a193f7b4906968823dc94e638ee5683624d51c0d905f"
+      },
+      "cases": 247,
+      "town_cases": 207,
+      "localized_choice_pulse_cases": 16,
+      "standalone_black_cases": 24,
+      "png": 28,
+      "source_pixels": {
+        "portrait75_pixels": 4160000,
+        "gold_pixels": 275375,
+        "confirmation_pixels": 266880,
+        "background_pixels": 2360795,
+        "cursor_cores": 45198,
+        "native_pixels": 5405216,
+        "native_final_pixels": 5149216
+      },
+      "button_reference": "independent CPU font.Drawer + known cell colors; overlap follows native left then right",
+      "raw_selector_fixture_override": 50,
+      "fixture_is_identity_claim": false,
+      "complete_toolbar_game_pixels_equal": true
+    },
+    "normal_gui": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-dialogue-r41/normal-r1-capture/receipt.json",
+        "sha256": "ff49520facf689711815173c946772b0378e1b4cbc52b13171167eea5c5d397a"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-dialogue-r41/normal-r1.memory.json",
+        "sha256": "5cca7153899b49dda48ad840d417cd7e099a54a58ed8ac6cc7512e0f47942de0"
+      },
+      "png": 12,
+      "source_and_saved_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+      "frozen_departure_source": {
+        "steps": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "source_group": 0,
+        "variant": 0,
+        "pulse": 3,
+        "saved_bytes_unchanged": true,
+        "scope": "普通鍵盤出口；原生步驟與HD來源觀測。轉場PNG逐步精確像素另由受控GPU矩陣驗證。"
+      },
+      "scope": "normal title LOAD existing chapter2 hotel JSON, preparation NO/F2/F5/F9 and YES; no new injection or original parity",
+      "normal_transition_exact_png_claimed": false
+    },
+    "regression": {
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-dialogue-r41/regression-r1.memory.json",
+        "sha256": "21c136cd53df7c429dae301b2bb942b154714305a7f864f07441d95b104a5323"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-dialogue-r41/regression-r1.log",
+        "sha256": "ae73ec59ce423cca7431ba4d3cccf67aa2956a109d979f597a18a487a38bd58f"
+      },
+      "top_level_passed": 78,
+      "skipped": [
+        "TestModernHDMapActualCandidateWorld",
+        "TestModernHDMapOverviewGPU",
+        "TestModernHDPreparationTownBackgroundRuntimeGPU",
+        "TestModernHDPreparationDialogueRuntimeGPU",
+        "TestModernHDTownDepartureRuntimeGPU",
+        "TestNativeTownDepartureFromOracle"
+      ],
+      "skips_are_not_passes": true,
+      "native_subset": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-dialogue-r41/transition-native-r2.memory.json",
+        "sha256": "7af490582e743f96385c3e8f5d58fde8883e6913c8f0bb5ad9fe1bedcd36f09d"
+      },
+      "consumer_validation": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-dialogue-r41/consumers-verified-r1.json",
+        "sha256": "5bb8631dab74acbf64cb8c895ca1aa93182a44d55695eb623487af3fc5151297"
+      },
+      "string_migration": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-dialogue-r41/string-review-migration.json",
+        "sha256": "91f144195f234283c391ac750e9470bb7deffc0dc4e9e40ce77e96ab505c605b"
+      },
+      "source_rejections": [
+        "wrong native DATO75 pixels",
+        "missing HD75",
+        "portrait dimensions",
+        "dialogue cell dimensions",
+        "choice cell dimensions",
+        "nonuniform panel fill",
+        "missing font",
+        "unknown job kind"
+      ],
+      "material_cache_and_native_blit_checked": true,
+      "native_source_cache_fonts_clock_and_save_unchanged": true
+    },
+    "public_png": {
+      "file": "docs/figures/hd1-preparation-dialogue-game.png",
+      "sha256": "f8da82e13b7960f7fecb01c38bd23012a7712dc74e6bb860e1f82e50cf305650"
+    },
+    "private_assets": {
+      "changed": false,
+      "head": "e2147650d71c86d7c627dd82367cf0633e0cea97"
+    },
+    "remaining_ui": [
+      "preparation roster icons and baked labels",
+      "preparation status-card presentation",
+      "other formal native UI coverage"
+    ],
+    "limits": [
+      "HD75 uses the already registered static closed-mouth image; native mouth clock/cache still run, no exact mouth-animation claim.",
+      "DATO75 is independent of unidentified FDICON75; no new identity or scene binding.",
+      "No new original E2, full chapter, manual appearance or platform acceptance.",
+      "Terrain remains 3180 missing slots / 2033 unique source contents."
+    ],
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-dialogue-r41/final-validation-r1.json",
+      "sha256": "f1546506111fa8593865085e866082bdd9c30eb716d4bdb18428001175f530a8"
+    }
   }
 }

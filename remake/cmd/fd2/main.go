@@ -160,6 +160,7 @@ type Game struct {
 	prepShotCycleFrozen          bool                // 固定雜湊截圖專用；一般玩家路徑永不設定
 	prepPromptSource             []byte              // 0x1956b 前的 town 畫面或 0x2cc04 黑色來源
 	prepTownSource               *nativeTownFrameSource
+	prepDialogueHD               *modernHDPreparationDialogue
 	churchSel                    int    // church service menu cursor (0..3)
 	churchMode                   string // menu / status_* / transfer_* / revive* / class / class_confirm
 	churchIDs                    []int  // current church candidate ids

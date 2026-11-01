@@ -372,11 +372,15 @@ _下面區塊供工作清單工具讀取。_
 
 整備Town背景已補齊選人、出發／最終確認、必選訊息與完整開收框／還原；來源、名冊、原生快取及獨立黑底保持。207完整Game.Draw／20PNG、77頂層Go、四種來源回退及實際F2／F11通過。普通第二章旅館LOAD、整備NO、F2、F5／F9再YES，十二PNG與保存SHA保持。外部短動畫擷取沒有有效逐幀PNG，完整像素僅依受控GPU矩陣，不升格原版E2。主收據hd1_preparation_background_followup_20261102，README已放普通背景圖。
 
-目前剩整備DATO75頭像、內建標籤／圖示、確認美術及其餘正式介面。906素材與私人庫保持，本工單繼續開啟。
+整備提示依後述已閉合契約，內建標籤／圖示、狀態卡及其餘正式介面續作。906素材與私人庫保持，本工單繼續開啟。
+
+整備DATO75頭像、定版古金框與多語確認美術已接通，沿F2／F11獨立控制。原DATO75索引hash綁既有主稿，不關聯未知FDICON75；原生嘴型仍運行，HD沿既有單張閉口近似。247完整Game.Draw／28PNG、78頂層Go、原生blit、缺件回退與F2／F11通過。普通第二章十二PNG、保存SHA及十一離城邊界保持，README已換最新普通整備圖。主收據hd1_preparation_dialogue_followup_20261102，沒有新美術、原版E2或完整HD1聲明。
+
+目前剩整備選人圖示、內建標籤、狀態卡與其餘正式介面，工單保持開啟。
 
 怎樣算做完：補齊尚未接HD的正式介面、確認／回覆與轉場，沿既有原位置、輸入、文字與保存；清晰黑體、HD框線與主題人物來源一致。必要載入、缺件、切換與狀態保持通過，人工驗證由使用者接手。；並完成定版古金框故事／提示接線與獨立控制。
 
-證據：`['docs/data/fd2-modern-hd-battlefield-20261019.json', 'docs/figures/hd1-gold-dialogue-prototype.png', 'tools/build_fd2_hd1_gold_dialogue_prototype.py', 'docs/figures/hd1-gold-dialogue-game.png', 'remake/cmd/fd2/modern_hd_gold_dialogue_test.go', 'tools/verify_fd2_hd_gold_dialogue.py', 'docs/figures/hd1-town-interface-four-modes.png', 'docs/figures/hd1-town-cursor-game.png', 'remake/cmd/fd2/modern_hd_facility_scene_test.go', 'docs/figures/hd1-town-departure-game.png', 'remake/cmd/fd2/modern_hd_town_transition.go', 'remake/cmd/fd2/modern_hd_town_transition_test.go', 'docs/figures/hd1-preparation-town-background.png', 'remake/cmd/fd2/modern_hd_preparation_background.go', 'remake/cmd/fd2/modern_hd_preparation_transition_test.go']`
+證據：`['docs/data/fd2-modern-hd-battlefield-20261019.json', 'docs/figures/hd1-gold-dialogue-prototype.png', 'tools/build_fd2_hd1_gold_dialogue_prototype.py', 'docs/figures/hd1-gold-dialogue-game.png', 'remake/cmd/fd2/modern_hd_gold_dialogue_test.go', 'tools/verify_fd2_hd_gold_dialogue.py', 'docs/figures/hd1-town-interface-four-modes.png', 'docs/figures/hd1-town-cursor-game.png', 'remake/cmd/fd2/modern_hd_facility_scene_test.go', 'docs/figures/hd1-town-departure-game.png', 'remake/cmd/fd2/modern_hd_town_transition.go', 'remake/cmd/fd2/modern_hd_town_transition_test.go', 'docs/figures/hd1-preparation-town-background.png', 'remake/cmd/fd2/modern_hd_preparation_background.go', 'remake/cmd/fd2/modern_hd_preparation_transition_test.go', 'docs/figures/hd1-preparation-dialogue-game.png', 'remake/cmd/fd2/modern_hd_preparation_dialogue.go', 'remake/cmd/fd2/modern_hd_preparation_dialogue_test.go']`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
