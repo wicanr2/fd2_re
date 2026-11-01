@@ -117,12 +117,8 @@ func loadModernUIPanelIcon(set *modernStoryPortraitSet, asset modernThemeAsset, 
 	return nil
 }
 
-func prepareModernHDItemPanelIcons(d *nativeUnitStatusData, palette color.Palette, set *modernStoryPortraitSet, values *modernHDItemPanelValues, rows *modernHDItemRowLabels) (*modernHDItemPanelIcons, error) {
-	if set == nil || len(set.uiPanelIcons) == 0 {
-		return nil, nil
-	}
-	if d == nil || len(d.record) != 80 || len(set.uiPanelIcons) != 10 || values == nil || values.picture == nil || rows == nil ||
-		values.picture.Bounds() != image.Rect(0, 0, 223*6, 86*6) || rows.items != nil && (rows.items.picture == nil || rows.items.picture.Bounds() != image.Rect(0, 0, 310*6, 99*6)) {
+func modernHDItemPanelIconSources(d *nativeUnitStatusData, set *modernStoryPortraitSet) ([]any, error) {
+	if d == nil || set == nil || len(set.uiPanelIcons) != 10 {
 		return nil, errors.New("modern HD panel icons: source unavailable")
 	}
 	var sources []any
@@ -134,6 +130,53 @@ func prepareModernHDItemPanelIcons(d *nativeUnitStatusData, palette color.Palett
 			return nil, fmt.Errorf("modern HD panel icons: source %d differs", index)
 		}
 		sources = append(sources, icon.native, sha256.Sum256(icon.picture.Pix))
+	}
+	return sources, nil
+}
+
+// This raw-cell plan is shared with preparation; it selects no DATO portrait.
+func paintModernHDItemPanelUpperIcons(upper *image.RGBA, d *nativeUnitStatusData, set *modernStoryPortraitSet) error {
+	plan := battle.NativeItemPanelDataPlanFor()
+	for _, call := range append([]battle.NativeItemPanelIconCall{plan.BaseIcon}, plan.FlagIcons...) {
+		if call.DrawWhenFlagNonzero && d.record[call.FlagOffset] == 0 {
+			continue
+		}
+		index := call.FDOTHEREntry
+		if call.UseAlternateWhenFlagZero && d.record[call.FlagOffset] == 0 {
+			index = call.AlternateFDOTHEREntry
+		}
+		if err := paintModernHDItemPanelIcon(upper, image.Pt(92, 7), set, index, call.Destination.X, call.Destination.Y); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func paintModernHDItemPanelIcon(pic *image.RGBA, origin image.Point, set *modernStoryPortraitSet, index, x, y int) error {
+	icon := set.uiPanelIcons[index]
+	if icon == nil {
+		return nil
+	}
+	at := image.Pt((x-origin.X)*6, (y-origin.Y)*6)
+	rect := icon.picture.Bounds().Add(at)
+	if !rect.In(pic.Bounds()) {
+		return errors.New("modern HD panel icons: placement outside original panel")
+	}
+	draw.Draw(pic, rect, icon.picture, image.Point{}, draw.Src)
+	return nil
+}
+
+func prepareModernHDItemPanelIcons(d *nativeUnitStatusData, palette color.Palette, set *modernStoryPortraitSet, values *modernHDItemPanelValues, rows *modernHDItemRowLabels) (*modernHDItemPanelIcons, error) {
+	if set == nil || len(set.uiPanelIcons) == 0 {
+		return nil, nil
+	}
+	if d == nil || len(d.record) != 80 || len(set.uiPanelIcons) != 10 || values == nil || values.picture == nil || rows == nil ||
+		values.picture.Bounds() != image.Rect(0, 0, 223*6, 86*6) || rows.items != nil && (rows.items.picture == nil || rows.items.picture.Bounds() != image.Rect(0, 0, 310*6, 99*6)) {
+		return nil, errors.New("modern HD panel icons: source unavailable")
+	}
+	sources, err := modernHDItemPanelIconSources(d, set)
+	if err != nil {
+		return nil, err
 	}
 	raw, _ := json.Marshal([]any{d.record, d.itemRows, palette, values.seal, rows.seal, sources})
 	seal := sha256.Sum256(raw)
@@ -152,38 +195,15 @@ func prepareModernHDItemPanelIcons(d *nativeUnitStatusData, palette color.Palett
 	}
 	upper := copyArt(values, 223, 86)
 	items := copyArt(rows.items, 310, 99)
-	paint := func(pic *image.RGBA, origin image.Point, index, x, y int) error {
-		icon := set.uiPanelIcons[index]
-		if icon == nil {
-			return nil // Unregistered indices retain the native producer.
-		}
-		at := image.Pt((x-origin.X)*6, (y-origin.Y)*6)
-		rect := icon.picture.Bounds().Add(at)
-		if !rect.In(pic.Bounds()) {
-			return errors.New("modern HD panel icons: placement outside original panel")
-		}
-		draw.Draw(pic, rect, icon.picture, image.Point{}, draw.Src)
-		return nil
-	}
-	plan := battle.NativeItemPanelDataPlanFor()
-	for _, call := range append([]battle.NativeItemPanelIconCall{plan.BaseIcon}, plan.FlagIcons...) {
-		if call.DrawWhenFlagNonzero && d.record[call.FlagOffset] == 0 {
-			continue
-		}
-		index := call.FDOTHEREntry
-		if call.UseAlternateWhenFlagZero && d.record[call.FlagOffset] == 0 {
-			index = call.AlternateFDOTHEREntry
-		}
-		if err := paint(upper, image.Pt(92, 7), index, call.Destination.X, call.Destination.Y); err != nil {
-			return nil, err
-		}
+	if err := paintModernHDItemPanelUpperIcons(upper, d, set); err != nil {
+		return nil, err
 	}
 	cells, err := battle.NativeItemSelectorCells(d.record, 0, -1, d.itemRows)
 	if err != nil {
 		return nil, err
 	}
 	for _, cell := range cells {
-		if err := paint(items, image.Pt(5, 94), cell.CategoryIcon, cell.LabelX-29, cell.LabelY-2); err != nil {
+		if err := paintModernHDItemPanelIcon(items, image.Pt(5, 94), set, cell.CategoryIcon, cell.LabelX-29, cell.LabelY-2); err != nil {
 			return nil, err
 		}
 	}

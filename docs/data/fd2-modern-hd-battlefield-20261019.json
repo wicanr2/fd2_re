@@ -300022,5 +300022,237 @@
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-roster-r42/final-validation-r1.json",
       "sha256": "c5815cbf5021fc46256adeca592d86ea60ee2dc0db2349715427f982c12d820f"
     }
+  },
+  "hd1_preparation_status_followup_20261102": {
+    "date": "2026-11-02",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1/NORMAL-GUI",
+    "base_commit": "45c1dd1070d930850d08f5e3b0fbe9d31272e660",
+    "scope": "reuse existing upper item/status HD labels, HP/MP bars, original-color chrome and raw-cell icons in stable preparation roster",
+    "full_hd1_complete": false,
+    "human_accepted": false,
+    "new_original_e2": false,
+    "new_assets": false,
+    "source_evidence": {
+      "ready": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-status-r43/ready.json",
+        "sha256": "bca770b9655f87f8012412b686afeefa7283f1df0b9e4d2a4beb86d478610517"
+      },
+      "baseline_references": [
+        {
+          "source_path": "remake/cmd/fd2/modern_hd_item_panel_values.go",
+          "baseline_sha256": "ba9128f6461198534ca8faa8513861c08538e14fae4c1b0c1b194e1a9d9be9c3",
+          "baseline_commit": "45c1dd1070d930850d08f5e3b0fbe9d31272e660"
+        },
+        {
+          "source_path": "remake/cmd/fd2/modern_hd_item_panel_icons.go",
+          "baseline_sha256": "0112de1980c55f5c118196c365ceed4b51845dc037525cbe6df196bcd465077e",
+          "baseline_commit": "45c1dd1070d930850d08f5e3b0fbe9d31272e660"
+        },
+        {
+          "source_path": "remake/cmd/fd2/modern_hd_item_panel_chrome.go",
+          "baseline_sha256": "af0e8f5b76951bdb214468c40435299817870898bd07914d6cf282f8d8f929f7",
+          "baseline_commit": "45c1dd1070d930850d08f5e3b0fbe9d31272e660"
+        },
+        {
+          "source_path": "remake/assets/themes/modern/catalog.json",
+          "baseline_sha256": "9e31b510d0c11fb6b5e931718c9b915db45bf5492be20aa1fc638a96fd81e49e",
+          "baseline_commit": "45c1dd1070d930850d08f5e3b0fbe9d31272e660"
+        },
+        {
+          "source_path": "docs/data/ida/fd2_town_preparation_background_20261002.json",
+          "baseline_sha256": "208bb2cffefe8706a9d4f701faad06950081ed2e18954bd87c7d653d6f79722a",
+          "baseline_commit": "45c1dd1070d930850d08f5e3b0fbe9d31272e660"
+        },
+        {
+          "source_path": "remake/internal/battle/native_item_selector.go",
+          "baseline_sha256": "526522da76ffd3b58faf14b93ed78e17fe8d5957db04536640ada7ecc533ffc3",
+          "baseline_commit": "45c1dd1070d930850d08f5e3b0fbe9d31272e660"
+        },
+        {
+          "source_path": "remake/internal/battle/native_item_panel_record.go",
+          "baseline_sha256": "444a08ebdcff75e09b2f85775001f2cb07d1b8b17b190542e26052fa5c446213",
+          "baseline_commit": "45c1dd1070d930850d08f5e3b0fbe9d31272e660"
+        }
+      ]
+    },
+    "source": {
+      "go_files": 1206,
+      "go_tree_sha256": "932f4f61429b7f41f26c0e7c26eeb18396be5647cd917905b5badd368963b8d7",
+      "consumer": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-status-r43/consumers-r2.json",
+        "sha256": "1465a5f8bb324cf58433ddd9230e3264397544588926912705b2838a45859634"
+      },
+      "binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-status-r43/fd2-player-r1",
+        "sha256": "965d51fc84325cf02c2ea5d72bd864ad572f95cf1e9c18d8868a30399e0d0e5f"
+      },
+      "production_go_unchanged_after_binary": true,
+      "commands": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-status-r43/commands.json",
+        "sha256": "19d802f1a4b2a76210bcf720269f3996a4ef20b3d6fac5c62c95fa961fc0abbd"
+      },
+      "catalog": {
+        "file": "remake/assets/themes/modern/catalog.json",
+        "sha256": "9e31b510d0c11fb6b5e931718c9b915db45bf5492be20aa1fc638a96fd81e49e"
+      },
+      "registered_assets": 906,
+      "runtime_catalog": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-terrain-r37/runtime-r2/assets/themes/modern/catalog.json",
+        "sha256": "a30638494525607a21145f7b7257a6d07f10c5178d137a7a3d8a341ed3724fa6"
+      },
+      "asset_entries_equal_formal": true,
+      "implementation": [
+        {
+          "file": "remake/cmd/fd2/modern_hd_preparation_status.go",
+          "sha256": "b8f01cbc1c76337bd85d2076faff93d09e3e674e5a0771c7e732479a7bff2aaf"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_item_panel_icons.go",
+          "sha256": "e4a974893e309cab2cd1c730dd2a21a4e9d66e119b4a3da394bc23f0573586c0"
+        }
+      ],
+      "native_status_rectangle": [
+        92,
+        7,
+        315,
+        93
+      ],
+      "base_icon_source": [
+        53,
+        54
+      ],
+      "flag_icon_source": [
+        55,
+        56,
+        57
+      ],
+      "portrait_added": false
+    },
+    "gpu": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-status-r43/gpu-r1-capture/receipt.json",
+        "sha256": "d5278bb95ff131d6c9db00850776e54d81a329cfcad5b819182a1b0bb116c62e"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-status-r43/gpu-r1.memory.json",
+        "sha256": "50959923d58d5d7d276c92d8b636d2b723c94ede6291a07dc9073bc95403c58e"
+      },
+      "cases": 160,
+      "roster_cases": 96,
+      "base_flag_and_bar_cases": 64,
+      "png": 20,
+      "source_pixels": {
+        "status_edge_pixels": 5235840,
+        "status_icon_pixels": 2833920,
+        "status_bar_pixels": 4233600,
+        "roster_pixels": 49766400,
+        "roster_cores": 24157728,
+        "native_pixels": 20289920,
+        "native_final_pixels": 17525120
+      },
+      "reference": "independent original chrome cells, exact registered HD icon pixels, raw record bar arithmetic and palette; status pixels exact RGB; existing roster premultiplied-alpha Over tolerance2",
+      "complete_toolbar_game_pixels_equal": true
+    },
+    "normal_gui": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-status-r43/normal-r1-capture/receipt.json",
+        "sha256": "a7ea3e2c41d3821ae4c42f3939f35d82baf2d050e61870d142acf9b83f4fbf29"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-status-r43/normal-r1.memory.json",
+        "sha256": "6e3ce577100e3c52d5852049a340054308283b1003879d476fbbe7ef1e996aee"
+      },
+      "png": 17,
+      "source_native_sha256": "22bd63070189e0e6703e14d4bd4db8dc1f66452a21128dd5154579171ecbea63",
+      "saved_native_sha256": "d5f39666ae53f7b55438a1d4658d38b47a301e434c8aaed65c5ed6fac73fae09",
+      "theme_save_bytes_equal": true,
+      "source_unchanged": true,
+      "scope": "正常標題LOAD既有第24章原生槽；祖先為攻略建構政策與清敵續玩，並非自然難度。保存槽1、選人、確認或必選訊息與取消均走普通鍵盤；不宣稱連續戰役或原版對拍。",
+      "normal_transition_exact_png_claimed": false
+    },
+    "regression": {
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-status-r43/regression-r1.memory.json",
+        "sha256": "412a190856d71aac2dbbd8c30aafbf747c4bcaaa8e4429a0f5153d18ed5d7fe0"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-status-r43/regression-r1.log",
+        "sha256": "11b98740873a66d32e9f6c7fd25709fa93f22f6ebf19e962a01ac56f09ef6aff"
+      },
+      "top_level_passed": 107,
+      "skipped": [
+        "TestModernHDMapActualCandidateWorld",
+        "TestModernHDMapOverviewGPU",
+        "TestModernHDPreparationRosterRuntimeGPU",
+        "TestModernHDPreparationStatusRuntimeGPU",
+        "TestModernHDPreparationTownBackgroundRuntimeGPU",
+        "TestModernHDPreparationDialogueRuntimeGPU",
+        "TestModernHDTownDepartureRuntimeGPU",
+        "TestNativeTownDepartureFromOracle"
+      ],
+      "skips_are_not_passes": true,
+      "cpu_source_geometry": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-status-r43/cpu-r1.memory.json",
+        "sha256": "8ff2a4c26fd663ed95aa279449de843c7695ee9dfc38eddbd1e76db6866682e7"
+      },
+      "cpu_source_geometry_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-status-r43/cpu-r1.log",
+        "sha256": "b5828e6df7bd2313c278468fa41dc72a97f198b9327ed2ce61f2e9e2015add66"
+      },
+      "source_component_tests": 4,
+      "initial_shared_icon_skips_counted_as_pass": false,
+      "shared_item_icon_memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-status-r43/shared-icons-r1.memory.json",
+        "sha256": "fa99f0ce09b9514510fdaf51d20d1b7e456299587be2f87457b83d59b18f8905"
+      },
+      "shared_item_icon_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-status-r43/shared-icons-r1.log",
+        "sha256": "f014f27b42e599858546c4ea7d7892f554336e0b0d8618abff84ea753696bf03"
+      },
+      "shared_item_icon_tests": 2,
+      "consumer_validation": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-status-r43/consumers-verified-r1.json",
+        "sha256": "2f9ed82508b130caee15b6340de186fda8f85e2bb66085828c5da173122278cf"
+      },
+      "string_migration": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-status-r43/string-review-migration.json",
+        "sha256": "3c29b4ee8d828fbd1ff48e036fe65cfc92b92e3edb479e926339ec6588da194a"
+      },
+      "source_rejections": [
+        "missing icon",
+        "changed HD pixels/digest",
+        "different original upper panel",
+        "invalid bar source cell",
+        "missing palette",
+        "missing font",
+        "confirmation owner",
+        "save slots owner",
+        "active transition job",
+        "original interface"
+      ],
+      "source_cache_clock_rng_save_unchanged": true
+    },
+    "public_png": {
+      "file": "docs/figures/hd1-preparation-status-game.png",
+      "sha256": "6facde3c07dafba5eb71ddc76cd87f17690ccdea5726002454b06504085f7b6d"
+    },
+    "private_assets": {
+      "changed": false,
+      "head": "e2147650d71c86d7c627dd82367cf0633e0cea97"
+    },
+    "remaining_ui": [
+      "preparation baked count labels and count-head icons",
+      "preparation roster cursor",
+      "other formal native UI coverage"
+    ],
+    "limits": [
+      "Status base icon remains source-bound FDOTHER raw cell, without DATO portrait or new identity binding.",
+      "No new rules, save format, original E2, full chapter, manual appearance or platform acceptance.",
+      "Terrain remains 3180 missing slots / 2033 unique source contents."
+    ],
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-preparation-status-r43/final-validation-r1.json",
+      "sha256": "9d61405714d6538430a19e5a1aae6c7bf023afe255d045a39c9c4c5310b9502a"
+    }
   }
 }

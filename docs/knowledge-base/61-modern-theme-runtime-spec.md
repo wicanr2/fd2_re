@@ -5702,7 +5702,7 @@ seed7 與 clock1000 驗二十六拍、各階段 F2、獨立 CPU 世界／最終�
 
 78頂層Go通過，六個可選GPU／oracle略過不計。原始DATO75完整80×80鏡像blit、材質快取、原生來源hash／缺頭像／缺件與無效配方回退、F2／F11、原生快取與保存保持通過。1202份Go指紋、21消費來源／416幀／19反例及155字串處置記於主收據。普通第二章旅館LOAD、整備NO、F2、F5／F9再YES，十二PNG、十一離城邊界及原存檔SHA保持；沒有新增普通轉場逐幀或原版E2聲明。
 
-[普通整備提示](../figures/hd1-preparation-dialogue-game.png)使用既有DATO75 HD主稿與定版古金框。頭像隨F2、框線與四語按鈕隨F11，原生嘴型仍運行但HD維持既有閉口近似。906素材與私人e2147650保持，未新增美術或發行。整備選人圖示、內建標籤、狀態卡與其餘正式介面續作。
+[普通整備提示](../figures/hd1-preparation-dialogue-game.png)使用既有DATO75 HD主稿與定版古金框。頭像隨F2、框線與四語按鈕隨F11，原生嘴型仍運行但HD維持既有閉口近似。906素材與私人e2147650保持，未新增美術或發行。名冊與狀態卡依後述已閉合契約；內建計數標籤／圖示、游標與其餘正式介面續作。
 
 ## HD1整備選人名冊人物（CONFORMED-SCOPED／RUNTIME-E1，2026-11-02）
 
@@ -5719,4 +5719,20 @@ seed7 與 clock1000 驗二十六拍、各階段 F2、獨立 CPU 世界／最終�
 
 107頂層Go通過，七個可選GPU／oracle略過不計；名冊分層補回三十個原人物後逐byte還原，無效key與缺損原圖在不畫人物時也被拒絕。raw key／缺HD／尺寸、四拍索引0／1／2／1、選取Y+3、原生快取、owner清除與保存保持。1204份Go指紋918dc6aa6307d7d06c8a7f650e6ffe4f2dd536b8a18e3e39d097d5a71df5c9dc，21消費來源／416幀／19反例及155字串處置保持。第一輪GPU因測具換名冊後沿舊join order得到空角色而失敗；修正每variant來源party後乾淨重跑通過，未放寬像素界限或改正式規則。
 
-[普通整備名冊](../figures/hd1-preparation-roster-game.png)由標題LOAD既有第24章原生槽進入。保存第二槽、選人、確認／必選訊息取消、F2、縮放與說明頁，共17PNG通過；兩美術的原生保存bytes相同，原始槽SHA22bd63070189e0e6703e14d4bd4db8dc1f66452a21128dd5154579171ecbea63保持。祖先含攻略建構政策與清敵，不稱自然難度、整章E2或新原版對拍。906清冊與私人e2147650保持；內建標籤、計數頭部圖示、游標、狀態卡與其他正式介面仍續作，地形仍依#282。
+[普通整備名冊](../figures/hd1-preparation-roster-game.png)由標題LOAD既有第24章原生槽進入。保存第二槽、選人、確認／必選訊息取消、F2、縮放與說明頁，共17PNG通過；兩美術的原生保存bytes相同，原始槽SHA22bd63070189e0e6703e14d4bd4db8dc1f66452a21128dd5154579171ecbea63保持。祖先含攻略建構政策與清敵，不稱自然難度、整章E2或新原版對拍。906清冊與私人e2147650保持；狀態卡依後述已閉合契約；內建計數標籤／圖示、游標與其他正式介面仍續作，地形仍依#282。
+
+## HD1整備選人狀態卡（CONFORMED-SCOPED／RUNTIME-E1，2026-11-02）
+
+- 沿原選人狀態卡RenderNativeItemPanelData的80-byte record、RawCells與原上右223×86面板，重用現有HD物品面板的標籤、HP／MP條、原色細框與已登錄圖示。原姓名／職業／數字仍由既有字模呈現介面提交，不改數值、角色、選取或來源。
+- 固定圖示依NativeItemPanelDataPlanFor的BaseIcon／FlagIcons與record旗標選取，同一上半部圖示繪製供原物品面板與整備共用。這些是FDOTHER raw cell圖示，不是DATO頭像；不能改接角色肖像。下半物品清單不合成到整備名冊。
+- 只在穩定選人與HD介面啟用，沿F11獨立於F2。目的保持原92,7至315,93，框色沿既定狀態面板，不把古金對話框套到物品／狀態卡。確認、提示、保存槽及動畫owner不發布狀態卡。
+- 材質依實際record、原始來源、palette、HD圖示雜湊與顯示字型快取；字模呈現用的臨時adapter不進快取鍵。缺來源、缺HD圖示或尺寸／雜湊不符時保留原狀態卡，不發布舊材質，也不改共享素材、存檔、clock或RNG。
+- 必要驗收含四組顯示、三Town與獨立黑底、目前選人切換、原面板與圖示來源核對、HP／MP signed／零值／邊界、缺件與快取、owner清除、原生bytes及正常標題LOAD／保存相容。既有物品面板共用入口須回歸，最高RUNTIME-E1；人工由使用者接手，計數圖示／游標與其餘介面另續作。
+
+主收據沿既有HD台帳的hd1_preparation_status_followup_20261102。實作入口為modern_hd_preparation_status.go、modern_hd_item_panel_icons.go、modern_hd_item_panel_values.go與native_preparation_ui.go；工作歷程只追加WORKLOG。
+
+160完整Game.Draw通過，含既有96名冊案例及64組原生byte+6基底圖示、三旗標與四種HP／MP數值組合。20PNG、5235840框線、2833920圖示及4233600血條像素逐點保持，參考分別沿原始框線cell、已登錄HD圖示、原生record與palette；狀態卡RGB要求完全一致。既有名冊另有49766400像素通過，沒有把HD狀態卡算成原版RGB一致。
+
+107頂層回歸通過，八可選GPU／oracle略過不計；四項既有框線／數值來源測試與兩項共用物品圖示來源／快取另通過。初次兩圖示測試缺專用環境變數而略過，已補FD2_TEST_UNIT_PRESENT_CATALOG／PACK單獨真跑；不把略過算通過。選人record更新、缺件／來源／palette／font回退、F2下HD介面、owner清除與原生bytes保持通過。1206份Go指紋932f4f61429b7f41f26c0e7c26eeb18396be5647cd917905b5badd368963b8d7，21來源／416幀／19反例及155字串處置保持。
+
+[普通整備狀態卡](../figures/hd1-preparation-status-game.png)沿同一第24章原生槽正常標題LOAD、第二槽保存、選人／確認取消、F2、縮放及說明頁，共17PNG通過。兩美術保存SHA仍為d5f39666ae53f7b55438a1d4658d38b47a301e434c8aaed65c5ed6fac73fae09，來源槽SHA22bd63070189e0e6703e14d4bd4db8dc1f66452a21128dd5154579171ecbea63保持；祖先含攻略建構／清敵，不新增自然難度、全章E2或原版對拍。906素材與私人e2147650保持，無新美術或發行。左側計數標籤／頭部符號、名冊游標與其餘正式介面續作。

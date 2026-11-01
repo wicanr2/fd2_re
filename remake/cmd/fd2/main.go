@@ -591,6 +591,7 @@ type Game struct {
 	modernHDOverlay                     *modernHDOverlay                            // 本次Draw實際呈現的高解析頭像
 	modernHDScene                       *modernFacilitySceneOverlay
 	preparationRosterHD                 *modernPreparationRoster
+	prepStatusHD                        *modernHDPreparationStatus
 	modernHDPanelPortraits              []*modernHDOverlay
 	playerThemeRequested                bool
 	playerInterfaceRequested            bool

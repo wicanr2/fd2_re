@@ -201,6 +201,10 @@ func TestModernHDPreparationRosterRuntimeGPU(t *testing.T) {
 	if os.Getenv("FD2_HD_PREPARATION_ROSTER_GPU") != "1" {
 		t.Skip("dedicated GPU process")
 	}
+	runModernHDPreparationRosterMatrix(t, false)
+}
+
+func runModernHDPreparationRosterMatrix(t *testing.T, status bool) {
 	set := facilityHDTestSet(t)
 	g := facilityHDTestGame(t, set)
 	var err error
@@ -217,6 +221,14 @@ func TestModernHDPreparationRosterRuntimeGPU(t *testing.T) {
 	}
 	p := &facilityHDProbe{t: t, g: g, out: out, presentation: &modernHDPresentation{Game: g, toolbar: true},
 		captured: make(map[*modernFacilityScene]bool), captureCases: make(map[int]bool), verifyScene: verifyPreparationHDScene}
+	if status {
+		p.verifyScene = func(p *facilityHDProbe, pixels []byte, offscreen *ebiten.Image) error {
+			if err := verifyPreparationHDScene(p, pixels, offscreen); err != nil {
+				return err
+			}
+			return verifyPreparationStatusGPU(p, pixels)
+		}
+	}
 	originalRoster, originalDeploy, originalOrder := g.partyRoster, g.partyDeploy, g.partyJoinOrder
 	for variant := 0; variant < 4; variant++ {
 		g.partyRoster, g.partyDeploy, g.partyJoinOrder = originalRoster, originalDeploy, originalOrder
@@ -258,6 +270,9 @@ func TestModernHDPreparationRosterRuntimeGPU(t *testing.T) {
 			}
 		}
 	}
+	if status {
+		appendPreparationStatusCases(p, set)
+	}
 	ebiten.SetWindowSize(1920, 1272)
 	if err := ebiten.RunGame(p); err != nil {
 		t.Fatal(err)
@@ -265,10 +280,18 @@ func TestModernHDPreparationRosterRuntimeGPU(t *testing.T) {
 	if p.err != nil {
 		t.Fatal(p.err)
 	}
-	if len(p.checks) != 96 {
+	wantCases := 96
+	if status {
+		wantCases = 160
+	}
+	if len(p.checks) != wantCases {
 		t.Fatal("incomplete matrix", len(p.checks))
 	}
-	raw, _ := json.MarshalIndent(map[string]any{"status": "PASS-PREPARATION-ROSTER-GPU", "scope": "96 fixture Game.Draw cases, 30 slots, 3 town variants and standalone black, 3 cycles, 4 styles, 2 selection patterns; no new original E2", "checks": p.checks}, "", "  ")
+	receiptStatus, scope := "PASS-PREPARATION-ROSTER-GPU", "96 fixture Game.Draw cases, 30 slots, 3 town variants and standalone black, 3 cycles, 4 styles, 2 selection patterns; no new original E2"
+	if status {
+		receiptStatus, scope = "PASS-PREPARATION-STATUS-GPU", "160 fixture Game.Draw cases: 96 roster cases + 64 native base/flag icon and HP/MP cases; no new original E2"
+	}
+	raw, _ := json.MarshalIndent(map[string]any{"status": receiptStatus, "scope": scope, "checks": p.checks}, "", "  ")
 	if err := os.WriteFile(filepath.Join(out, "receipt.json"), append(raw, '\n'), 0644); err != nil {
 		t.Fatal(err)
 	}
