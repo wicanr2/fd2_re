@@ -9,6 +9,7 @@ import (
 )
 
 type nativeClassUIJob struct {
+	serviceMenu        *nativeServiceMenuPresentation
 	frames             [][]byte
 	restore            []byte
 	frame              int

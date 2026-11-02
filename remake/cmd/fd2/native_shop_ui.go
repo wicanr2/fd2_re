@@ -1326,7 +1326,9 @@ func (g *Game) beginNativeShopServiceOpening() bool {
 		}
 	}
 	g.resetNativeShopUIPulse()
-	g.nativeShopUIJob = &nativeClassUIJob{frames: frames}
+	job := &nativeClassUIJob{frames: frames}
+	job.serviceMenu = g.bindModernFacilityServiceMenu(job, nil, false)
+	g.nativeShopUIJob = job
 	return true
 }
 
@@ -1346,9 +1348,11 @@ func (g *Game) beginNativeShopServiceClosing(after func()) bool {
 			return false
 		}
 	}
-	g.nativeShopUIJob = &nativeClassUIJob{
+	job := &nativeClassUIJob{
 		frames: frames, restore: stable, after: after,
 	}
+	job.serviceMenu = g.bindModernFacilityServiceMenu(job, nil, true)
+	g.nativeShopUIJob = job
 	return true
 }
 
@@ -1492,6 +1496,10 @@ func (g *Game) drawNativeShopUIJob(screen *ebiten.Image) bool {
 	job := g.nativeShopUIJob
 	if job == nil {
 		return false
+	}
+	if g.drawModernHDFacilityServiceMenu(screen, job.serviceMenu) {
+		job.drawn = true
+		return true
 	}
 	if g.drawModernHDFacilityConfirmation(screen, job) {
 		job.drawn = true

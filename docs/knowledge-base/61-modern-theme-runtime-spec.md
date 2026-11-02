@@ -6042,3 +6042,17 @@ R62 完整繪圖比較：[modern_hd_facility_reply_gpu_test.go](../../remake/cmd
 R62主收據 hd1_facility_reply_followup_20261103：原型四語108狀態／200 job／1092原幀／108還原／5962680 writer byte通過。正式50來源／273原幀／27還原、772拒收與50兩原版清Draw通過，原教會及商店確認保持。商店501與教會135，共636完整Game.Draw／52PNG、5861376000 RGBA byte與獨立static source／target矩形合成相同，容差0；抽樣範圍見主收據。94相關回歸通過、九可選略過；1247份Go指紋 ac88b397edd4fbdd4a0d836733dfd1a19da739f8f847edd775762eda72653bc4，21消費來源／416幀／19反例、160字串保持。
 
 普通START/F9接續hotel_ch02後經城鎮進商店交付並取消，32完整PNG，來源提示34及目的提示15筆最近Draw含開與收；各四組、三種列表開收、兩美術F5、F9與新程序LOAD保持來源保存190b9f8f。未實際移交物品，不宣稱PNG精確同幀。[受控目的提示開框第三拍](../figures/hd1-facility-reply-game.png)使用金額1234及測試隊伍。953清冊／6963私人檔、兩manifest與私人HEAD保持，無新圖稿。商店與教會這十一種回覆待接項由本節取代；其餘主選單、成功特效、金額框、小字樣與地形續作。
+
+### HD1 服務主選單開收
+
+R63 已達 CONFORMED-SCOPED／RUNTIME-E1。三商店與教會沿四拍normal圖示展開／收回與source還原，先以 [modern_hd_service_menu_prototype_test.go](../../remake/cmd/fd2/modern_hd_service_menu_prototype_test.go) 核對(240,169)、帶號整除位移、3／5／7／9來源、index0非寫入及重疊順序。只沿已登錄HD圖示與既有文字／金框，不新增選項、規則或旅館動畫。工作根 work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-service-menu-transitions-r63/。
+
+R63 正式入口：[modern_hd_service_menu_transition.go](../../remake/cmd/fd2/modern_hd_service_menu_transition.go)。來源raw／HD文字／writer與四個normal cell先凍結，兩種原生job保持各自型別與ACK／after；HD圖示僅以native index0生成覆蓋，不改私人圖源，沿option順序繪製。
+
+R63 來源與拒收：[modern_hd_service_menu_transition_test.go](../../remake/cmd/fd2/modern_hd_service_menu_transition_test.go)。檢查原生cache／restore、每個HD像素的index0覆蓋，以及錯誤owner／job／palette／圖源／覆蓋快取時清除最近Draw。
+
+R63 完整繪圖：[modern_hd_service_menu_gpu_test.go](../../remake/cmd/fd2/modern_hd_service_menu_gpu_test.go)。獨立渲染未放圖示的source，再按原normal cell非零像素逐點搬入既有HD圖或原色盤；不使用R63 composer與mask cache產生預期值。
+
+R63主收據 hd1_service_menu_followup_20261103：四語原型16狀態／32 job／128原幀／16還原、256個normal零像素與441680 writer byte通過。正式8來源／32原幀／4還原、2211840 HD覆蓋像素及132拒收／八兩原版清Draw通過。192完整Game.Draw／42PNG、1769472000 RGBA byte與獨立source及逐像素normal來源合成相同，容差0；三商店與教會全步／四組，其他三語各shop1及church代表幀。96回歸通過、十可選略過；1251 Go指紋 6f7109143dd1f554e145c683050a5def533fd545132157b3282458df1e675d89，21／416／19及160字串保持。
+
+普通商店交付取消32PNG、教會名冊／復活問句／物品取消26PNG，主選單最近Draw分別19／45筆含開收。兩美術保存與F9保持190b9f8f，商店另驗新程序LOAD；未實際移交、轉職或復活，觀測不作PNG精確同幀。[受控教會展開第二拍](../figures/hd1-service-menu-opening-game.png)使用金額1234測試資料。953／6963及兩manifest保持，未改私人圖源。商店與教會主選單待接項由本節取代；成功特效、金額框、小字樣及地形續作。

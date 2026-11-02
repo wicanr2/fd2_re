@@ -25,11 +25,12 @@ const (
 )
 
 type nativeChurchUIJob struct {
-	frames  [][]byte
-	restore []byte
-	frame   int
-	drawn   bool
-	after   func()
+	serviceMenu *nativeServiceMenuPresentation
+	frames      [][]byte
+	restore     []byte
+	frame       int
+	drawn       bool
+	after       func()
 }
 
 func parseNativeChurchShotState(spec string) (selection, pulse, gold int, ok bool) {
@@ -159,7 +160,9 @@ func (g *Game) beginNativeChurchMenuOpening() bool {
 		return false
 	}
 	g.resetNativeChurchUIPulse()
-	g.nativeChurchUIJob = &nativeChurchUIJob{frames: frames}
+	job := &nativeChurchUIJob{frames: frames}
+	job.serviceMenu = g.bindModernFacilityServiceMenu(nil, job, false)
+	g.nativeChurchUIJob = job
 	return true
 }
 
@@ -177,9 +180,11 @@ func (g *Game) beginNativeChurchMenuClosing(after func()) bool {
 	if err != nil {
 		return false
 	}
-	g.nativeChurchUIJob = &nativeChurchUIJob{
+	job := &nativeChurchUIJob{
 		frames: frames, restore: restore, after: after,
 	}
+	job.serviceMenu = g.bindModernFacilityServiceMenu(nil, job, true)
+	g.nativeChurchUIJob = job
 	return true
 }
 
@@ -210,6 +215,10 @@ func (g *Game) drawNativeChurchUIJob(screen *ebiten.Image) bool {
 	job := g.nativeChurchUIJob
 	if job == nil {
 		return false
+	}
+	if g.drawModernHDFacilityServiceMenu(screen, job.serviceMenu) {
+		job.drawn = true
+		return true
 	}
 	frame := job.frame
 	if frame < len(job.frames) {

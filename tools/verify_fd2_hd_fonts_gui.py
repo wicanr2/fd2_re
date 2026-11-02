@@ -109,6 +109,22 @@ def facility_reply_observations(paths, mode, owner='shop'):
             'scope':'正常鍵盤路徑的最近Draw；Update可已前進，不宣稱PNG精確同幀。'}
 
 
+def service_menu_observations(paths, owner):
+    samples=[]
+    for path in paths:
+        for line in path.read_text().splitlines():
+            try: state=json.loads(line)
+            except json.JSONDecodeError: continue
+            drawn=state.get('facility_service_menu_presented')
+            if (drawn and drawn.get('owner')==owner and drawn.get('live_job')
+                    and drawn.get('interface_hd') and drawn.get('art_hd')
+                    and state.get('shop_ui_busy' if owner=='shop' else 'church_ui_busy')):
+                samples.append({'game_update_frame':state['frame'],**drawn})
+    assert {s['closing'] for s in samples}=={False,True}, f'未觀測到{owner}主選單HD開收'
+    return {'owner':owner,'samples':samples,'audit_files':[p.name for p in paths],
+            'scope':'正常鍵盤路徑的最近Draw；Update可已前進，不宣稱PNG精確同幀。'}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ['binary', 'assets', 'original-pack', 'modern-pack', 'out']:
@@ -209,7 +225,10 @@ def main():
     parser.add_argument('--battle-end-figures',type=terrain_frame_ids,default=set(),
                         help='同一普通END擷取多個明示figure，例如133,134；省略時維持單數參數')
     parser.add_argument('--facility-reply-transitions', action='store_true', help='搭配--shop-transfer要求來源與目的提示的實際HD開收')
+    parser.add_argument('--service-menu-transitions', action='store_true', help='搭配--shop-transfer或--church驗證主選單實際HD開收')
     args = parser.parse_args()
+    if args.service_menu_transitions and not (args.shop_transfer or args.church):
+        parser.error('--service-menu-transitions需要--shop-transfer或--church')
     if args.facility_reply_transitions and not args.shop_transfer:
         parser.error('--facility-reply-transitions需要--shop-transfer')
     if args.shop_confirmation_transitions and not args.gold_roll:
@@ -1610,6 +1629,7 @@ def main():
                     'four_styles_sampled':args.facility_item_rows,'facility_list_transitions':observations,
                     'facility_reply_transitions':{mode:facility_reply_observations([args.out/'input-audit-first-process.jsonl'],mode) for mode in ['transfer_intro','transfer_dest_prompt']} if args.facility_reply_transitions else None,
                     'reply_four_styles_sampled':args.facility_reply_transitions and args.facility_item_rows,
+                    'service_menu_transitions':service_menu_observations([args.out/'input-audit-first-process.jsonl'],'shop') if args.service_menu_transitions else None,
                     'screenshots':shots,'operations':operations,'recording_created':False,
                     'scope':'正常START後F9接續hotel_ch02，普通商店交付來源名冊、物品、目的名冊及Escape取消，再返回旅館保存／F9與新程序標題LOAD。三種列表各觀測開與收；取消不改隊伍、金幣或來源保存，不宣稱實際移交物品、連續戰役或原版對拍。',
                     'elapsed_seconds':time.monotonic()-started}
@@ -1872,6 +1892,7 @@ def main():
             report={'schema':'fd2-hd-status-font-gui-v1' if args.status else 'fd2-hd-church-font-gui-v1','status':'PASS',
                     'church_list_transitions':{mode:facility_list_observations([audit],mode,'church') for mode in ['status_roster','revive','transfer_source','transfer_item','transfer_dest']} if args.church_list_transitions else None,
                     'revive_fee_currency_four_styles':args.church_fee_currency,
+                    'service_menu_transitions':service_menu_observations([audit],'church') if args.service_menu_transitions else None,
                     'church_confirmation_transitions':church_confirmation_observations([audit],'revive_confirm') if args.church_confirmation_transitions else None,
                     'panel_transitions':panels,
                     'new_process_title_load':args.panel_transitions,

@@ -305180,5 +305180,233 @@
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-reply-transitions-r62/final-validation.json",
       "sha256": "ca9ea6436d98dac205e92cf2219491dcae386732771838133255d54f6763ddea"
     }
+  },
+  "hd1_service_menu_followup_20261103": {
+    "date": "2026-11-03",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1/NORMAL-GUI",
+    "issue": 283,
+    "base_commit": "7608a73ffc5ec5aef7e5ded34ea557cf4adec013",
+    "scope": "三商店與教會的主選單四拍normal服務圖示開收與source還原，兩種原生job各自保持。",
+    "full_hd1_complete": false,
+    "new_original_e2": false,
+    "human_accepted": false,
+    "source": {
+      "go_files": 1251,
+      "go_tree_sha256": "6f7109143dd1f554e145c683050a5def533fd545132157b3282458df1e675d89",
+      "binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-service-menu-transitions-r63/fd2-player-r1",
+        "sha256": "46e3468552d0ac837e4194a698825acc70c9f6a7b114dd3f08d534e0b7dd91ee"
+      },
+      "production_go_unchanged_after_binary": true,
+      "consumer": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-service-menu-transitions-r63/consumers-r1.json",
+        "sha256": "524694afd50f2d40c7f4ba783546ad8393ee9d23845a39d37e23b28bb3c9faf8"
+      },
+      "commands": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-service-menu-transitions-r63/commands.json",
+        "sha256": "7e03482eed2fee5558dba460b05df518f47174a5a580f088f1705386960e4bd4"
+      },
+      "ready": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-service-menu-transitions-r63/ready-source.json",
+        "sha256": "2a955f1c228401fbb687547801bd7b216e0179753a398aa7be9a1a269fdca9d2"
+      },
+      "implementation": [
+        {
+          "file": "remake/cmd/fd2/modern_hd_service_menu_transition.go",
+          "sha256": "bd064a49fae6a2b058e3d6af6b4afafbff650d7a85520fccde8ae1e11f501377"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_service_menu_prototype_test.go",
+          "sha256": "120c3a484d915662e3f00882006cf9391cb72083cb9e32919d2ba66732b0d194"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_service_menu_transition_test.go",
+          "sha256": "7311a41bf98404e96b1f3ce15c9f35567c981243f7a2937d99303751a097d096"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_service_menu_gpu_test.go",
+          "sha256": "11d463fa4cb3a1dd5837fcaedbd0ae8edfd0a8c24e5f0ce77a21d2372ddc0574"
+        },
+        {
+          "file": "remake/cmd/fd2/native_class_ui_lifecycle.go",
+          "sha256": "a932a849c76d7b952d03ba5f5b6efcf8b588974a8770a9d439853a76053d87c2"
+        },
+        {
+          "file": "remake/cmd/fd2/native_shop_ui.go",
+          "sha256": "0fc1c8d80bfd376645882e9cfb8a676562d9499c1295f6896c60aaf8147bf80f"
+        },
+        {
+          "file": "remake/cmd/fd2/native_church_ui.go",
+          "sha256": "18c65d4d555ed8b4878f7efc8ea8b924ae022e53fb04f5c03e07b482ab993137"
+        },
+        {
+          "file": "remake/cmd/fd2/input_audit_trace.go",
+          "sha256": "6ba35db7f7021041f72306d0682ac164876d1b64b377d5e82ef8c717eec954f3"
+        }
+      ],
+      "gui_tool": {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "4e4014ddd76414325620adceb2f51bc24f5ab1c902b96618f2865e3b07fd522b"
+      }
+    },
+    "rules": [
+      "原base(240,169)、offset -39/-13/13/39與帶號整除保持，開除數4/3/2/1，收除數1/2/3/4；normal來源3/5/7/9按原順序非零寫入。",
+      "既有144×120 HD來源只在記憶體按native index0生成6倍透明覆蓋，來源PNG保持；四圖示重疊順序保持，禁止用RGB猜透明。",
+      "凍結source raw／HD文字／writer、normal cells與raw cache；背景、古金框與文字先合成，HD圖示後畫，source還原不留圖示。",
+      "F11文字／金框／圖示獨立F2場景；兩原版與錯誤來源回原生且清最近Draw。兩原生job的ACK／clock／after與party／gold／RNG保持。",
+      "owner／variant／resource／mode／font／locale／palette及actual job匹配才畫；圖源或覆蓋快取損壞拒收。"
+    ],
+    "prototype": {
+      "states": 16,
+      "jobs": 32,
+      "original_frames": 128,
+      "restores": 16,
+      "normal_cell_zero_pixels": 256,
+      "writer_bytes": 441680,
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-service-menu-transitions-r63/prototype-report.json",
+        "sha256": "d81a27ca2be50079ec9c35945d032992d6af288c66f7a9f036e88222374d0526"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-service-menu-transitions-r63/prototype-r1.memory.json",
+        "sha256": "cf874e96b64fbf06d3b9b596473150e33ac6c3fe03ddb399e4277894cb350a63"
+      }
+    },
+    "cpu": {
+      "cases": 8,
+      "original_frames": 32,
+      "restores": 4,
+      "hd_coverage_pixels": 2211840,
+      "fault_guards": 132,
+      "original_control_clear_cases": 8,
+      "existing_shop_confirmation_cases": 21,
+      "existing_church_confirmation_cases": 5,
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-service-menu-transitions-r63/source-r1.log",
+        "sha256": "f896eb4bcb40c057a02351ec4fe32e6de4c00a10dbbd32be33088cb77e4fb28b"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-service-menu-transitions-r63/source-r1.memory.json",
+        "sha256": "5f7bcc41e0c596b7a65b7ef2cd2bb35a345225d256e57d44ee880f39f782cef7"
+      },
+      "final_source_rechecked_in_regression": true
+    },
+    "gpu": {
+      "cases": 192,
+      "full_png": 42,
+      "whole_game_rgba_bytes": 1769472000,
+      "rgba_tolerance": 0,
+      "independent_static_composite_equal": true,
+      "whole_game_toolbar_equal": true,
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-service-menu-transitions-r63/gpu-r1-capture/receipt.json",
+        "sha256": "ae6b7ba6d8dbd07ab41c19153211957c414f247d5e1d4b34f96fee02ac4da67a"
+      },
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-service-menu-transitions-r63/gpu-r1.memory.json",
+        "sha256": "81177472ad988c10907454d1e8c607658e4c8baf00bce64729ce404c38911520"
+      },
+      "sampling": "all four native steps and restores, three shops and church, four controls; other three locales representative shop/church steps; independent static source and literal per-pixel writes, no new original oracle"
+    },
+    "normal_gui": {
+      "shop": {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-service-menu-transitions-r63/normal-transfer-r1-capture/receipt.json",
+          "sha256": "ae005da8aa0cc5ac976c5d7c96832a273721018b6590fea9266a5d56f312770d"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-service-menu-transitions-r63/normal-transfer-r1.memory.json",
+          "sha256": "016cd89c81ff7f7f1bfbd353453fe7b943aa31f07a1f6bf945efa7b97a642a5e"
+        },
+        "audit": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-service-menu-transitions-r63/normal-transfer-r1-capture/input-audit-first-process.jsonl",
+          "sha256": "56d5d2817b08f650bdc7044a730475206531ffa2596df3af3465ec30d9062cef"
+        },
+        "full_png": 32,
+        "source_save_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+        "saved_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+        "theme_save_bytes_equal": true,
+        "source_save_bytes_equal": true,
+        "new_process_title_load": true,
+        "menu_last_draw_samples": 19,
+        "scope": "正常START後F9接續hotel_ch02，普通商店交付來源名冊、物品、目的名冊及Escape取消，再返回旅館保存／F9與新程序標題LOAD。三種列表各觀測開與收；取消不改隊伍、金幣或來源保存，不宣稱實際移交物品、連續戰役或原版對拍。另驗主選單最近Draw含開與收，不宣稱PNG精確同幀。"
+      },
+      "church": {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-service-menu-transitions-r63/normal-church-r1-capture/receipt.json",
+          "sha256": "a21b38c3697ee1614ad15a94932715f467526ffe0f1052b275f01880cc426c2b"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-service-menu-transitions-r63/normal-church-r1.memory.json",
+          "sha256": "b523fad11bb395d98bad4e115933cfb095bc72c6e5fbfc4a164dbd7ea234480e"
+        },
+        "audit": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-service-menu-transitions-r63/normal-church-r1-capture/input-audit.jsonl",
+          "sha256": "66d35f3f4efeb102f27bf95d6ced0a077f94ee4c0d3afd4a08931ba8a1e075c9"
+        },
+        "full_png": 26,
+        "source_save_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+        "saved_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+        "theme_save_bytes_equal": true,
+        "source_save_bytes_equal": true,
+        "new_process_title_load": false,
+        "menu_last_draw_samples": 45,
+        "scope": "正常START後F9接續既有hotel_ch02，經城鎮進教會；四語名冊、復活列表／問句與取消、交付物品列表與取消、F2、縮放／說明遮罩，回旅館F5／F9。四語名冊沿既有譯名，其他原生文字未新增翻譯。不宣稱連續戰役或原版視覺對拍。另驗主選單最近Draw含開與收，不宣稱PNG精確同幀。"
+      }
+    },
+    "regression": {
+      "passed": 96,
+      "optional_skipped": 10,
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-service-menu-transitions-r63/regression-r1.memory.json",
+        "sha256": "46b93333a5a47a50a60dcc3c5e79c52796b2615374a31fc774c3a9c80625bd42"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-service-menu-transitions-r63/regression-r1.log",
+        "sha256": "05d654cf5d689332513a883d8b0b9b0634e75f04f388450a4908932f4bd54140"
+      },
+      "consumer_verified": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-service-menu-transitions-r63/consumers-verified-r1.json",
+        "sha256": "527899c4fbf162d872f3f2ed867e6274a71a6b2625f2b881c0e30fa712ff74ea"
+      },
+      "inventory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-service-menu-transitions-r63/inv-r1.json",
+        "sha256": "4e51ca667492e7f1fe3fb2311947a33ffc131ccc72e41496b07e9e50819e3778"
+      },
+      "review": {
+        "file": "docs/data/fd2-string-review.json",
+        "sha256": "884d7bbc48370faa7fb5079cfa956a1952dc3c74394101963976a020f82af48e"
+      },
+      "reviewed_strings": 160
+    },
+    "assets": {
+      "proof": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-service-menu-transitions-r63/asset-pack-unchanged.json",
+        "sha256": "9f9ceb982f760153bb7115264f3bce90f617b3c2cd7760f0e3c105939c0cee46"
+      },
+      "registered_assets": 953,
+      "registered_private_files": 6963,
+      "private_head": "44636b9445b9585a37b6a74f26096354253e8757",
+      "new_assets": 0
+    },
+    "public_pngs": [
+      {
+        "image": {
+          "file": "docs/figures/hd1-service-menu-opening-game.png",
+          "sha256": "919d5a107bfaf51dc62a79ad685afd444460261438f4510baf243f7d4779fe36"
+        },
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-service-menu-transitions-r63/gpu-r1-capture/scene-115.png",
+          "sha256": "919d5a107bfaf51dc62a79ad685afd444460261438f4510baf243f7d4779fe36"
+        },
+        "scope": "受控教會主選單展開第二拍；金額1234與隊伍為fixture，只展示normal圖示的原生重疊。"
+      }
+    ],
+    "remaining_ui": "成功特效、其他金額框與小字樣續#283；地形#282仍3180缺槽／2033唯一來源。",
+    "limits": "最高RUNTIME-E1。旅館沒有此類原生job。普通商店交付與教會名冊／復活問句／物品皆取消，不新增移交、轉職／復活成功或原版E2；教會僅F9，商店另有新程序LOAD。",
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-service-menu-transitions-r63/final-validation.json",
+      "sha256": "effa4fb1f9d9ebe872b85cc69c1f30c03f0c9a8b2fd5a3198ad3d80ff1d376a5"
+    }
   }
 }

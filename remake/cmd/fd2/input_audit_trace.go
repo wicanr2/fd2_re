@@ -274,6 +274,21 @@ func (g *Game) recordInputAuditState() {
 	r["shop_mode"] = g.nativeShopMode
 	r["shop_service"] = g.nativeShopServiceSel
 	r["shop_ui_busy"] = g.nativeShopUIJob != nil
+
+	var serviceMenu *nativeServiceMenuPresentation
+	if g.nativeShopUIJob != nil {
+		serviceMenu = g.nativeShopUIJob.serviceMenu
+	}
+	if g.nativeChurchUIJob != nil {
+		serviceMenu = g.nativeChurchUIJob.serviceMenu
+	}
+	if d := serviceMenu; d != nil && d.lastDraw != nil {
+		drawn := d.lastDraw
+		live := d.shopJob != nil && g.nativeShopUIJob == d.shopJob || d.churchJob != nil && g.nativeChurchUIJob == d.churchJob
+		r["facility_service_menu_presented"] = map[string]any{"owner": d.owner, "variant": d.variant, "resource": d.resource,
+			"closing": d.closing, "presented_frame": drawn.frame, "phase": drawn.phase,
+			"interface_hd": drawn.interfaceHD, "art_hd": drawn.artHD, "live_job": live}
+	}
 	for _, job := range []*nativeClassUIJob{g.nativeClassUIJob, g.nativeShopUIJob} {
 		if job == nil || job.churchConfirmation == nil || job.churchConfirmation.lastDraw == nil {
 			continue
