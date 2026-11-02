@@ -4818,3 +4818,13 @@ R57已提交並推送ed6e75870af86e45a20a0a364246ec9f109b8046，本機／origin/
 - 普通START/F9既有hotel_ch02經城鎮進教會，21PNG、狀態名冊9／復活8／交付來源13／物品4／目的7筆最近Draw均含開收；四語狀態、物品四組、F2、縮放、說明與取消保持。回旅館兩美術保存及F9均190b9f8f；未抽驗新程序LOAD。class受控角色複本只驗繪製，不作自然轉職或身份證據，未實際移交或復活。
 - 來源、命令與收據保存work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-list-transitions-r58，61與主收據hd1_church_list_transition_followup_20261102索引；58／56／57與README同步。公開首拍明示測試金額與隊伍。費用符號、計數小字樣、其餘確認／回覆、成功特效及地形續作，#283／#282保持開啟，不新增原版E2或完整HD1聲明。
 - 最後稽核47份雜湊引用、225完整PNG、3477本地連結且無新增壞連結；README文化入口與來源索引正對照保持，擁有權1000:1000，沒有root-owned產物或非預期FD2容器。worklist 27開啟／20人工判定／0可能完成；405教訓／254 guard保持。
+- R58已推送c5130cd8f23c56bb6fef35f801adce3b848ebf83，本機／遠端main一致，工單283留言6580012543。追蹤檔乾淨，私人素材不變。
+
+## 2026-11-02 HD1教會復活費用符號R59起始
+
+- 路由命中正式實作spec閘門及文件職責，沿既有入口與61，建立DRAFT。範圍限既有費用貨幣符號的穩定及開收顯示，沿R55字型與原生source，不新增規則或美術。
+
+- R59 READY後正式接線：原生三列window、canonical 6×8 priceCell與全部opaque目的通過才發布，job深複本、R55已驗字型／色盤／快取與原位移裁切共用。F11獨立F2，原費用、選取、ACK／clock／after及保存保持，缺件／覆蓋回退。
+- 原型兩viewport／288覆蓋拒收，正式三種列數／288覆蓋拒收／四凍結job與教會／商店來源三測試通過。穩定32完整Game.Draw／5PNG、165888貨幣像素及全部範圍外byte保持；動畫120完整Game.Draw／32PNG、1105920000 RGBA byte容差0；90相關回歸通過，七可選略過。1236份Go／a2b41652db7d1314296d12cdaa4d491b5046b7d050f2c033a1f17cb07a0591ca，程式9138b274687d7fe6fe75a330e75654885129d4a01dcfde9097a17e1bbc95fde6；21／416／19與160字串保持。無失敗、逾時或OOM。
+- 普通START/F9 hotel_ch02經城鎮進教會26PNG，復活貨幣及交付物品四組、五mode兩方向、取消、兩美術保存與F9保持190b9f8f；未執行復活或新程序LOAD。來源、命令及收據保存work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-fee-currency-r59，61及主收據hd1_church_fee_currency_followup_20261102索引；README改用正常復活列表。953清冊及6963私人檔保持，沿R58逐檔驗證，本輪manifest／catalog重算保持；無私人或素材變更。其他金額框、小字樣、設施動畫、成功特效及地形續作，#283／#282保持開啟。
+- R59最後稽核30份雜湊引用、63完整PNG、3478本地連結，無新增壞連結；README文化保存與來源索引保持，擁有權1000:1000，無root-owned或非預期FD2容器。六個有界驗證皆通過，無失敗、逾時或OOM；worklist 27／20人工／0可能完成，405教訓與254 guard保持。

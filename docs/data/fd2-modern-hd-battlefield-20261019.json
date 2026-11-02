@@ -304180,5 +304180,225 @@
       "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-list-transitions-r58/final-validation.json",
       "sha256": "aae064644f070f7500f0721a808ed62683a508caa951dd123df26bd23eea2680"
     }
+  },
+  "hd1_church_fee_currency_followup_20261102": {
+    "date": "2026-11-02",
+    "status": "CONFORMED-SCOPED/RUNTIME-E1/NORMAL-GUI",
+    "issue": 283,
+    "base_commit": "c5130cd8f23c56bb6fef35f801adce3b848ebf83",
+    "scope": "教會復活列表的6×8貨幣符號，穩定及六開／五收／還原同位移裁切；沿R55 Noto 48字型。",
+    "full_hd1_complete": false,
+    "new_original_e2": false,
+    "human_accepted": false,
+    "source": {
+      "go_files": 1236,
+      "go_tree_sha256": "a2b41652db7d1314296d12cdaa4d491b5046b7d050f2c033a1f17cb07a0591ca",
+      "binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-fee-currency-r59/fd2-player-r1",
+        "sha256": "9138b274687d7fe6fe75a330e75654885129d4a01dcfde9097a17e1bbc95fde6"
+      },
+      "production_go_unchanged_after_binary": true,
+      "consumer": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-fee-currency-r59/consumers-r1.json",
+        "sha256": "90b045d45300763191a56c0c469c8f3c1c9bbf94eeefaeeac0ac7818e96db854"
+      },
+      "commands": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-fee-currency-r59/commands.json",
+        "sha256": "9d8cd852dbebda748c656e09fa95972f368492c8fcc43fb265eb918f83644068"
+      },
+      "ready": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-fee-currency-r59/ready-source.json",
+        "sha256": "8e86b87b090c76316796907406a14bb3efd54cec28f8e9f068cc16122fb2aa09"
+      },
+      "implementation": [
+        {
+          "file": "remake/cmd/fd2/modern_hd_church_fee_currency.go",
+          "sha256": "569dd307cfe76b566e5feeb7b6fd0c4a7c37ff436638faf89dcc65f1a5181ced"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_church_fee_currency_test.go",
+          "sha256": "7ae77e68c88a3c050fca934e471c7b998c5e6011f1309f9a95ec36e153d2c3cb"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_church_fee_currency_runtime_test.go",
+          "sha256": "670bc2329d8786e74fdbdcb82291421a47c77a0c7b8bdb33e83178ac4c380e7d"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_facility_text.go",
+          "sha256": "f967828c22c9e6940b71f63353ae8179df7f4356b1de0d732214169a73b171d2"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_facility_list_transition.go",
+          "sha256": "fc2bdc06d804e51054a846e4eb0c35ab3b911f6eb917d0e59685d25725c2c3c8"
+        }
+      ],
+      "gui_tool": {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "038a0fcbc56efca31c7d0b559bd9de934195bfc384a963eeba192c60e44c1d5f"
+      }
+    },
+    "rules": [
+      "原生三列viewport、6×8 canonical SHA及每個目的opaque byte通過才發布，不依賴商店素材。",
+      "重用R55已驗字型、色盤與快取，F11獨立F2；缺件、未知來源或覆蓋即回退。",
+      "job深複製priceCell，同原13像素位移及底邊裁切；原費用、選取、ACK／clock／after與保存保持。"
+    ],
+    "prototype": {
+      "viewports": 2,
+      "currency_cells": 6,
+      "covered_byte_rejections": 288,
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-fee-currency-r59/prototype-r1.memory.json",
+        "sha256": "1d5bb3589f44f549713e2378db906309906f999f0013cb1e417c8a72cdece80e"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-fee-currency-r59/prototype-r1.log",
+        "sha256": "71f8c400e85cd919cf0db17b0c62cfe013f8092cefe360b5eb1c68bba780711e"
+      }
+    },
+    "cpu": {
+      "tests": 3,
+      "row_count_cases": 3,
+      "covered_byte_rejections": 288,
+      "frozen_jobs": 4,
+      "church_source_cases": 24,
+      "church_original_frames": 132,
+      "church_fault_guards": 336,
+      "shop_source_cases": 108,
+      "shop_original_frames": 594,
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-fee-currency-r59/source-r1.memory.json",
+        "sha256": "e2057a9e85d8848d615e228c3a54f69e116e252f1a154ff7bda3827c2df29ff4"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-fee-currency-r59/source-r1.log",
+        "sha256": "c09c9cd203466bbf02d7956dbd60fbdc9e319255da27ba04a79bcdc51eea7879"
+      }
+    },
+    "gpu": {
+      "stable": {
+        "cases": 32,
+        "full_png": 5,
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-fee-currency-r59/gpu-stable-r1-capture/receipt.json",
+          "sha256": "0bc2bf0c17eb22f398c8e64d8f6d4a9db7ad5d9285fb2b8d1a493e7ea7ccc023"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-fee-currency-r59/gpu-stable-r1.memory.json",
+          "sha256": "742fcdcf7a94f25719ae12f44b78f6043a56df7bab91d1aa3d48c94c7853bdcc"
+        }
+      },
+      "stable_currency_pixels": 165888,
+      "stable_all_outside_bytes_equal": true,
+      "modes": [
+        {
+          "cases": 120,
+          "full_png": 32,
+          "receipt": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-fee-currency-r59/gpu-revive-r1-capture/receipt.json",
+            "sha256": "45b4701a844c1537271f819f2ab0d4f7798def8ff8f5a9c8b366cfbd549b24d1"
+          },
+          "memory": {
+            "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-fee-currency-r59/gpu-revive-r1.memory.json",
+            "sha256": "c4a321918e27239b15c84b2562ecbbeaaafdbc2d326fccad1dfa6c99bd114066"
+          },
+          "whole_game_rgba_bytes": 1105920000
+        }
+      ],
+      "old_list_smoke": [],
+      "animation_cases": 120,
+      "whole_game_rgba_bytes": 1105920000,
+      "rgba_tolerance": 0,
+      "whole_game_toolbar_equal": true
+    },
+    "normal_gui": {
+      "church": {
+        "receipt": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-fee-currency-r59/normal-church-r1-capture/receipt.json",
+          "sha256": "42af7bcbadb609f390c19ca93affd6ce9dc7f0f42b9ade1ebbef02167348e4af"
+        },
+        "memory": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-fee-currency-r59/normal-church-r1.memory.json",
+          "sha256": "efbbd54b90d5154b7d3d84eeb781b801419a3ac37ad6307f9b87bde14b82093d"
+        },
+        "full_png": 26,
+        "source_save_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+        "saved_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+        "theme_save_bytes_equal": true,
+        "source_save_bytes_equal": true,
+        "new_process_title_load": false,
+        "fee_four_styles": true,
+        "list_last_draw_samples": {
+          "status_roster": 17,
+          "revive": 18,
+          "transfer_source": 34,
+          "transfer_item": 17,
+          "transfer_dest": 18
+        },
+        "scope": "正常START後F9接續既有hotel_ch02，經城鎮進教會；四語名冊、復活列表／問句與取消、交付物品列表與取消、F2、縮放／說明遮罩，回旅館F5／F9。四語名冊沿既有譯名，其他原生文字未新增翻譯。不宣稱連續戰役或原版視覺對拍。另於復活列表抽驗費用貨幣四種顯示組合；取消返回，不宣稱實際復活。",
+        "audit": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-fee-currency-r59/normal-church-r1-capture/input-audit.jsonl",
+          "sha256": "2039542740805c8f787dc9f93a8c5665bc52129d3b068f05c34aadd8dc2a76ad"
+        },
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-fee-currency-r59/normal-church-r1.log",
+          "sha256": "77445180eb91be7aa3eebe6b8c7ce37085a850df7000ee51adbf35469ba33b50"
+        }
+      }
+    },
+    "regression": {
+      "passed": 90,
+      "optional_skipped": 7,
+      "memory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-fee-currency-r59/regression-r1.memory.json",
+        "sha256": "541c6f25f010807ee9162a29d00e5b08f5a6c44cdae03eae4f70a394d087b4d2"
+      },
+      "log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-fee-currency-r59/regression-r1.log",
+        "sha256": "0f8c64fc4048834942554c51cba0227bfd7621d4f01ac8e7df5b7925e4f527ba"
+      },
+      "consumer_verified": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-fee-currency-r59/consumers-verified-r1.json",
+        "sha256": "9cd4cd9a6be5923f30cad30a52b938bbfc7ffbe4418279ab2d1f3415666c1f64"
+      },
+      "inventory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-fee-currency-r59/inv-r1.json",
+        "sha256": "d26a83e9754024095ae1c7c177fb082f68dc0da4c3b80c20b6e8f5075682ad37"
+      },
+      "review": {
+        "file": "docs/data/fd2-string-review.json",
+        "sha256": "0fa0e9076612a15d58004a0f6f9af5c699198bd68c7d123df91724b12dab6a5e"
+      },
+      "reviewed_strings": 160
+    },
+    "assets": {
+      "proof": {
+        "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-fee-currency-r59/asset-pack-unchanged.json",
+        "sha256": "4070802096e9764f01aaff7b7d4fd67435462242fc180714ac7d75a821a8fb06"
+      },
+      "registered_assets": 953,
+      "registered_private_files": 6963,
+      "private_head": "44636b9445b9585a37b6a74f26096354253e8757",
+      "private_worktree_clean": true,
+      "new_assets": 0
+    },
+    "public_pngs": [
+      {
+        "image": {
+          "file": "docs/figures/hd1-church-fee-currency-game.png",
+          "sha256": "8f1e30f1278c6adc02612975ea342c09ffc430104aeb2885997bf68785f4cc1a"
+        },
+        "source": {
+          "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-fee-currency-r59/normal-church-r1-capture/church-revive-fee-currency-hd-ui.png",
+          "sha256": "8f1e30f1278c6adc02612975ea342c09ffc430104aeb2885997bf68785f4cc1a"
+        },
+        "scope": "正常START/F9接續既有hotel_ch02，經城鎮進教會復活列表；只驗取消，不宣稱實際復活或自然進程。"
+      }
+    ],
+    "remaining_ui": "其他金額框與小字樣、設施確認／回覆、成功特效續#283；地形#282仍3180缺槽／2033唯一來源。",
+    "limits": "最高RUNTIME-E1。原型與GPU受控fixture不作身份或自然進程證據。未抽驗新程序LOAD、不新增原版E2或完整HD1聲明。",
+    "final_validation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-fee-currency-r59/final-validation.json",
+      "sha256": "9a44a2d320f0c51e5e0d57001ba5c51fdb03ff3fed924b81fb61cdde4dbec0bb"
+    }
   }
 }

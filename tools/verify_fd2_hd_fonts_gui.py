@@ -79,6 +79,7 @@ def main():
     facility.add_argument('--gold-roll', action='store_true', help='抽驗正常買賣的 HD 金幣滾動及保存')
     facility.add_argument('--shop-transfer', action='store_true', help='抽驗商店交付雙名冊、取消、四組切換與保存讀取')
     parser.add_argument('--facility-list-transitions', action='store_true', help='要求普通受領路徑確實執行HD開框及收框呈現')
+    parser.add_argument('--church-fee-currency', action='store_true', help='搭配--church及--facility-item-rows抽驗復活費用貨幣的四種顯示組合')
     parser.add_argument('--church-list-transitions', action='store_true', help='要求教會五種正常可達列表實際執行HD開框及收框')
     parser.add_argument('--facility-item-rows', action='store_true', help='於買賣或教會交付的穩定物品列表抽驗四組介面／美術')
     parser.add_argument('--native-save', type=Path, help='整備抽樣的既有原生槽，複製後才可寫入')
@@ -155,6 +156,8 @@ def main():
     parser.add_argument('--battle-end-figures',type=terrain_frame_ids,default=set(),
                         help='同一普通END擷取多個明示figure，例如133,134；省略時維持單數參數')
     args = parser.parse_args()
+    if args.church_fee_currency and not (args.church and args.facility_item_rows):
+        parser.error('--church-fee-currency需要--church及--facility-item-rows')
     if args.cpu_profile and not args.performance:
         parser.error('--cpu-profile需要--performance')
     if args.performance_skip_walk_gpu and not (
@@ -1762,6 +1765,8 @@ def main():
             key('Escape');wait(lambda s:s.get('help_visible') is False)
             key('Escape');church('menu')
             key('Right');key('Right');key('Return');church('revive');shot('church-revive-list')
+            if args.church_fee_currency:
+                item_row_styles('revive',church,'church-revive-fee-currency')
             key('Return');church('revive_confirm');shot('church-revive-question')
             key('F2');wait(lambda s:s.get('hd_theme') is False);shot('faithful-church-revive-question')
             key('F2');wait(lambda s:s.get('hd_theme') is True);church('revive_confirm')
@@ -1792,6 +1797,7 @@ def main():
                 assert saved.read_bytes()==hd_saved,'新程序LOAD改寫保存'
             report={'schema':'fd2-hd-status-font-gui-v1' if args.status else 'fd2-hd-church-font-gui-v1','status':'PASS',
                     'church_list_transitions':{mode:facility_list_observations([audit],mode,'church') for mode in ['status_roster','revive','transfer_source','transfer_item','transfer_dest']} if args.church_list_transitions else None,
+                    'revive_fee_currency_four_styles':args.church_fee_currency,
                     'panel_transitions':panels,
                     'new_process_title_load':args.panel_transitions,
                     'binary_sha256':digest(args.binary),'town_save_sha256':digest(args.town_save),

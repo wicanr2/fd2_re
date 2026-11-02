@@ -420,7 +420,7 @@
       "layer": "runtime",
       "category": "工作",
       "title": "P1 HD1介面：補齊原生選單與對話呈現",
-      "body": "使用者定版HD1介面與原版美術獨立控制，人工造型及實機驗證由使用者接手。現況58、主規格61與HD主收據是現行入口。\n\n已接古金故事／提示框、城鎮與離城、整備、酒店／教會穩定介面、三商店21穩定模式、40來源服務圖示、11模式名冊Q版、裝備比較欄、四類穩定物品列表，商店九種及教會六種列表的開收／還原。#288原圖解碼及#289歡迎詞殘留已修正，不重開。\n\nR58補教會class／status_roster／transfer_source／transfer_dest／transfer_item／revive。owner、mode與實際nativeClassUIJob匹配，外來job、缺件或來源不符回退；與nativeChurchUIJob明確區分。共用原source／final、literal writer與型別名冊／物品計畫，文字、數字、圖示、Q版及細框同13像素位移與底邊裁切，F2／F11獨立。class digits值複本與font／UI擷取還原，不依賴商店素材。原快取、ACK／clock／after、規則與保存保持，無新素材或格式。\n\nREADY前置原型在nativeShopUI=nil下通過48來源／528原幀及2650080 writer byte。正式六mode各120，共720完整Game.Draw／192PNG，6635520000 RGBA byte與獨立source加普通穩定final位移合成相同，容差0；工具列遊戲區相同。舊裝備受領與購買另32代表畫面保持。教會24狀態／132原幀／12還原／336拒收、舊商店108狀態／594原幀／54還原兩個來源測試及90相關回歸通過，七可選略過。1233份Go指紋393f9a475c4e50463a44d06403c2ec1c877e7d4378960ece152600e8af65d96c，21來源／416幀／19反例與160字串保持。\n\n正常START/F9接續hotel_ch02，經城鎮進教會，21完整PNG。狀態名冊9／復活8／交付來源13／物品4／目的7筆最近Draw均含開收，不作PNG精確同幀。四語狀態、四組物品列表、F2、縮放／說明與取消通過；回旅館兩美術保存與F9皆保持來源190b9f8f。未抽驗新程序LOAD；轉職只驗受控合格角色複本，不作自然進程或身份證據，未實際移交或復活。\n\n主收據hd1_church_list_transition_followup_20261102與61索引來源、命令及觀測。953清冊與6963私人素材逐檔重算保持，原版manifest與R52重用runtime保持，私人44636b94／private及遠端保持。公開首拍明示受控金額1234與八人測試隊伍。\n\n目前續作其餘設施確認／回覆進出場、成功特效、費用及計數小圖字樣與未接介面；地形另依#282，3180缺槽／2033唯一來源。全HD1尚未完成，本工單保持開啟。",
+      "body": "使用者定版HD1介面與原版美術獨立控制，人工造型及實機驗證由使用者接手。現況58、主規格61與HD主收據是現行入口。\n\n已接古金故事／提示框、城鎮與離城、整備、酒店／教會穩定介面、三商店21穩定模式、40來源服務圖示、11模式名冊Q版、裝備比較欄、四類穩定物品列表，商店九種及教會六種列表的開收／還原。#288原圖解碼及#289歡迎詞殘留已修正，不重開。\n\nR58補教會class／status_roster／transfer_source／transfer_dest／transfer_item／revive。owner、mode與實際nativeClassUIJob匹配，外來job、缺件或來源不符回退；與nativeChurchUIJob明確區分。共用原source／final、literal writer與型別名冊／物品計畫，文字、數字、圖示、Q版及細框同13像素位移與底邊裁切，F2／F11獨立。class digits值複本與font／UI擷取還原，不依賴商店素材。原快取、ACK／clock／after、規則與保存保持，無新素材或格式。\n\nREADY前置原型在nativeShopUI=nil下通過48來源／528原幀及2650080 writer byte。正式六mode各120，共720完整Game.Draw／192PNG，6635520000 RGBA byte與獨立source加普通穩定final位移合成相同，容差0；工具列遊戲區相同。舊裝備受領與購買另32代表畫面保持。教會24狀態／132原幀／12還原／336拒收、舊商店108狀態／594原幀／54還原兩個來源測試及90相關回歸通過，七可選略過。1233份Go指紋393f9a475c4e50463a44d06403c2ec1c877e7d4378960ece152600e8af65d96c，21來源／416幀／19反例與160字串保持。\n\n正常START/F9接續hotel_ch02，經城鎮進教會，21完整PNG。狀態名冊9／復活8／交付來源13／物品4／目的7筆最近Draw均含開收，不作PNG精確同幀。四語狀態、四組物品列表、F2、縮放／說明與取消通過；回旅館兩美術保存與F9皆保持來源190b9f8f。未抽驗新程序LOAD；轉職只驗受控合格角色複本，不作自然進程或身份證據，未實際移交或復活。\n\n主收據hd1_church_list_transition_followup_20261102與61索引來源、命令及觀測。953清冊與6963私人素材逐檔重算保持，原版manifest與R52重用runtime保持，私人44636b94／private及遠端保持。公開首拍明示受控金額1234與八人測試隊伍。\n\n目前續作其餘設施確認／回覆進出場、成功特效、其他金額框及計數小圖字樣與未接介面；地形另依#282，3180缺槽／2033唯一來源。全HD1尚未完成，本工單保持開啟。\n\nR59補教會復活費用符號，沿原6×8圖格／三列座標與R55 Noto 48貨幣字型，穩定及列表開收同位移裁切，F11獨立F2；原費用、選取、時序與保存保持。原型兩viewport／288覆蓋拒收、正式三種列數／288拒收／四凍結job及教會／商店來源通過。穩定32完整Game.Draw／5PNG、165888貨幣像素及全部範圍外byte保持；動畫120完整Game.Draw／32PNG、1105920000 RGBA byte容差0；90回歸通過，七可選略過。正常教會26PNG、復活費用及物品四組、五mode兩方向觀測、取消、兩美術保存／F9保持190b9f8f；未執行復活或新程序LOAD。1236份Go指紋a2b41652db7d1314296d12cdaa4d491b5046b7d050f2c033a1f17cb07a0591ca，21／416／19與160字串、953／6963素材保持。依61及主收據hd1_church_fee_currency_followup_20261102，其他金額框、小字樣、確認／回覆、成功特效與地形續作。",
       "acceptance": "補齊尚未接HD的正式介面、確認／回覆與轉場，沿既有原位置、輸入、文字與保存；清晰黑體、HD框線與主題人物來源一致。必要載入、缺件、切換與狀態保持通過，人工驗證由使用者接手。；並完成定版古金框故事／提示接線與獨立控制。",
       "evidence": [
         "docs/data/fd2-modern-hd-battlefield-20261019.json",
@@ -501,11 +501,15 @@
         "docs/figures/hd1-shop-item-opening-game.png",
         "remake/cmd/fd2/modern_hd_church_list_prototype_test.go",
         "remake/cmd/fd2/modern_hd_church_list_transition_test.go",
-        "docs/figures/hd1-church-list-opening-game.png"
+        "docs/figures/hd1-church-list-opening-game.png",
+        "remake/cmd/fd2/modern_hd_church_fee_currency.go",
+        "remake/cmd/fd2/modern_hd_church_fee_currency_test.go",
+        "remake/cmd/fd2/modern_hd_church_fee_currency_runtime_test.go",
+        "docs/figures/hd1-church-fee-currency-game.png"
       ],
       "verify": {
         "kind": "manual",
-        "note": "R58六教會列表開收通過720完整Game.Draw／192PNG、6635520000 RGBA byte容差0；舊商店另32代表畫面。教會24來源／132原幀／12還原／336拒收與90回歸通過，七可選略過。正常教會21PNG、五mode兩方向觀測、四組切換、取消與兩美術保存／F9保持190b9f8f；未抽驗新程序LOAD。953／6963素材保持，其餘設施動畫、小字樣與地形續作，依61與hd1_church_list_transition_followup_20261102。"
+        "note": "R59教會復活費用符號穩定32完整Game.Draw／5PNG、165888像素及全部範圍外byte保持；動畫120完整Game.Draw／32PNG、1105920000 RGBA byte容差0，來源／拒收／凍結及90回歸通過，七可選略過。正常教會26PNG、費用四組、取消與兩美術保存／F9保持190b9f8f，未執行復活或新程序LOAD。其他金額框、設施動畫、成功特效與地形續作，依61及hd1_church_fee_currency_followup_20261102。"
       },
       "issue": 283
     }

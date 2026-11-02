@@ -29,6 +29,7 @@ type nativeFacilityListPresentation struct {
 	chrome                *modernHDDialogueChrome
 	roster                *modernFacilityRoster
 	itemRows              *facilityItemRowSource
+	feeCurrency           *nativeChurchFeeCurrency
 }
 
 type modernFacilityListRoster struct {
@@ -168,6 +169,7 @@ func (g *Game) bindModernFacilityList(job *nativeClassUIJob, source, final []byt
 	}
 	var roster *modernFacilityRoster
 	var itemRows *facilityItemRowSource
+	var feeCurrency *nativeChurchFeeCurrency
 	if itemList {
 		items, valid := g.modernFacilityItemRowSource()
 		if !valid {
@@ -182,6 +184,12 @@ func (g *Game) bindModernFacilityList(job *nativeClassUIJob, source, final []byt
 		if roster == nil {
 			return job
 		}
+		if owner == "church" && mode == "revive" {
+			feeCurrency = g.prepareNativeChurchFeeCurrency(final)
+			if feeCurrency == nil {
+				return job
+			}
+		}
 	}
 	palette, paletteOK := preparationCursorPalette(g.nativeClassUI.palette)
 	if !paletteOK || len(source) != 64000 {
@@ -194,7 +202,7 @@ func (g *Game) bindModernFacilityList(job *nativeClassUIJob, source, final []byt
 		return job
 	}
 	d := &nativeFacilityListPresentation{variant: variant, resource: resource, owner: owner, mode: mode, locale: g.localeID, closing: closing, font: g.font,
-		source: append([]byte(nil), source...), final: append([]byte(nil), final...), panel: panel, comparison: comparison, roster: roster, itemRows: itemRows}
+		source: append([]byte(nil), source...), final: append([]byte(nil), final...), panel: panel, comparison: comparison, roster: roster, itemRows: itemRows, feeCurrency: feeCurrency}
 	copy(d.palette[:], palette)
 	var err error
 	if closing {
@@ -329,6 +337,13 @@ func (g *Game) drawModernHDFacilityList(screen *ebiten.Image, job *nativeClassUI
 		if !valid {
 			return false
 		}
+	}
+	if ui && d.feeCurrency != nil && !rect.Empty() {
+		fees, valid := g.modernHDChurchFeeCurrencyPlacements(d.final, d.feeCurrency, g.interfaceAssetTheme())
+		if !valid {
+			return false
+		}
+		itemPlacements = append(itemPlacements, fees...)
 	}
 	if art && d.roster != nil {
 		for _, unit := range d.roster.units {

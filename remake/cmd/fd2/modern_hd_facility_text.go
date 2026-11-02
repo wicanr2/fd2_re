@@ -103,6 +103,7 @@ func (g *Game) drawModernHDFacilityFrame(screen *ebiten.Image, compose func() ([
 	g.appendModernHDFacilityDialogue(frame)
 	g.appendModernHDServiceIcons(frame)
 	g.appendModernHDFacilityItemRows(frame)
+	g.appendModernHDChurchFeeCurrency(frame)
 	return true
 }
 

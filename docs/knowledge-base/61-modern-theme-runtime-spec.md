@@ -5988,3 +5988,14 @@ R58主收據hd1_church_list_transition_followup_20261102：六mode各120，共72
 正常START/F9接續hotel_ch02，再經城鎮進教會，21完整PNG。狀態名冊9／復活8／交付來源13／物品4／目的7筆最近Draw皆含開收，不當PNG精確同幀；四語狀態、F2、四組物品列表、縮放與說明遮罩及取消返回通過。回旅館兩美術F5與F9，來源及保存皆190b9f8f；未抽驗新程序LOAD，未執行自然轉職、實際移交或復活。
 
 [教會名冊開框首拍](../figures/hd1-church-list-opening-game.png)為受控Game.Draw，1234金額與八人隊伍為測試資料。來源、成功命令與收據保存同R58工作根；原型r1／r2是正式接線前的歷史證據。source-r1只有測試替身型別編譯失敗，修正後同命令r2通過。953清冊與6963私人素材逐檔重算保持，私人44636b94／private及遠端保持，原版manifest與重用runtime保持。原費用符號、計數小字樣、設施確認／回覆、成功特效與地形續作，未宣稱全HD1。
+
+### HD1教會復活費用符號
+
+狀態CONFORMED-SCOPED／RUNTIME-E1，來源契約work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-church-fee-currency-r59/ready-source.json。沿RenderNativeReviveRows與R55的6×8貨幣原圖、(220,125+26*i)及最多三列；先以modern_hd_church_fee_currency_test.go驗原cell與目的範圍、兩viewport與覆蓋拒收，通過才升READY及正式接線。重用既有Noto 48標籤，費用數字／復活規則不改，動畫沿原位移與裁切。其他金額框、小字樣、確認／回覆、成功特效及地形仍續作。
+
+R59前置原型通過兩viewport／六貨幣原圖與288逐byte覆蓋拒收，nativeShopUI=nil且party／gold／RNG／UI保持，故升READY。正式實作入口modern_hd_church_fee_currency.go，穩定drawModernHDFacilityFrame與R58既有job凍結來源及同位移圖示發布共同消費。
+正式來源與穩定完整畫面驗證位於modern_hd_church_fee_currency_runtime_test.go；動畫沿modern_hd_church_list_transition_test.go的revive矩陣複核。
+
+R59主收據hd1_church_fee_currency_followup_20261102：原型兩viewport／六cell／288覆蓋拒收通過，正式三種列數／288覆蓋拒收與四個凍結job通過；教會與商店來源回歸保持。穩定32完整Game.Draw／5PNG，165888貨幣區像素逐byte相同，範圍外全部byte保持；revive開收／還原120完整Game.Draw／32PNG、1105920000 RGBA byte與獨立source加普通穩定final合成相同，容差0。F2／F11、四語狀態與兩viewport通過，不新增文字翻譯。90相關回歸通過，七可選略過，1236份Go指紋a2b41652db7d1314296d12cdaa4d491b5046b7d050f2c033a1f17cb07a0591ca，21／416／19與160字串保持。
+
+正常START/F9 hotel_ch02經城鎮進教會，26完整PNG，復活貨幣及交付物品各四組，取消後回旅館兩美術F5與F9保持190b9f8f；五mode最近Draw仍含開收。未執行復活或新程序LOAD。[正常教會費用列表](../figures/hd1-church-fee-currency-game.png)已核對，來源、命令與收據沿同R59工作根。953／6963素材保持，R58逐檔驗證沿用且本輪清冊／manifest重算相同；其他金額框、小字樣、確認／回覆、成功特效及地形續作。
