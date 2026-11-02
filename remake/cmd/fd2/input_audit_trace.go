@@ -281,9 +281,12 @@ func (g *Game) recordInputAuditState() {
 		d, drawn := job.churchConfirmation, job.churchConfirmation.lastDraw
 		// The active owner's last actual Draw can precede this Update.
 		record := map[string]any{"job": fmt.Sprintf("%p", job), "owner": d.owner, "mode": d.mode, "variant": d.variant, "resource": d.resource,
-			"kind": d.kind, "closing": d.kind != "opening", "presented_frame": drawn.frame, "phase": drawn.phase,
+			"kind": d.kind, "closing": d.kind != "opening" && !d.paneOpening, "presented_frame": drawn.frame, "phase": drawn.phase,
 			"choice_frame": drawn.choiceFrame, "interface_hd": drawn.interfaceHD, "art_hd": drawn.artHD, "live_job": g.activeFacilityListJob(d.owner) == job}
 		r["facility_confirmation_presented"] = record
+		if d.paneOpening || d.kind == "pane_closing" {
+			r["facility_reply_presented"] = record
+		}
 		if d.owner == "church" {
 			r["church_confirmation_presented"] = record
 		}

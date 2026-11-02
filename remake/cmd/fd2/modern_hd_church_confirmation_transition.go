@@ -28,6 +28,7 @@ type nativeChurchConfirmationPresentation struct {
 	owner                           string
 	variant, resource, choiceFrames int
 	restoreSource, dialogueChoices  bool
+	paneOpening                     bool
 	mode, kind, locale              string
 	font                            *Font
 	palette                         [256]color.RGBA
@@ -79,6 +80,9 @@ func (g *Game) bindModernChurchConfirmation(job *nativeClassUIJob, kind string) 
 }
 
 func (g *Game) bindModernFacilityConfirmation(job *nativeClassUIJob, kind string, explicitFinal []byte) *nativeClassUIJob {
+	if kind == "dialogue_only" && g.camp != nil && g.camp.Node() != nil && g.camp.Node().Type == "shop" && g.nativeShopMode == "insufficient" {
+		return g.bindModernFacilityReply(job, explicitFinal, true)
+	}
 	if job == nil || g.nativeClassUI == nil || g.font == nil || g.font.sf == nil || g.font.indexedHD != nil ||
 		g.camp == nil || g.camp.Node() == nil || g.nativeClassUIJob != nil || g.nativeChurchUIJob != nil || g.nativeShopUIJob != nil || len(g.nativeClassUI.choices) <= 17 {
 		return job
@@ -271,6 +275,9 @@ func (d *nativeChurchConfirmationPresentation) compose(index int, hd bool) (p mo
 	}
 	p.name = "dialogue"
 	shift := (index - d.choiceFrames + 1) * 13
+	if d.paneOpening {
+		shift = (5 - index) * 13
+	}
 	cover := image.Rect(5, 112+shift, 315, min(198+shift, 200))
 	final := d.dialogue.raw
 	if hd {

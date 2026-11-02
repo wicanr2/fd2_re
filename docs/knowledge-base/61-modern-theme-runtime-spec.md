@@ -6028,3 +6028,17 @@ R61完整畫面驗證位於modern_hd_shop_confirmation_gpu_test.go，購買204�
 R61主收據hd1_shop_confirmation_followup_20261103：購買204、裝備／販售各228，共660完整Game.Draw／71PNG，6082560000 RGBA byte與獨立原生producer、完整static source／target後依原矩形搬移合成相同，容差0；工具列遊戲區保持。三variant繁中全步，variant1其餘三語代表幀包含中心按鈕部分可見與還原；既有教會轉職另92完整畫面／17PNG保持，不混入660。原型108stage／84job／468原幀／36還原與正式21來源／117原幀／9還原／24裁切選項／378拒收、21兩原版清Draw及交易暫存保持通過；四個來源測試與92相關回歸通過，八個可選GPU／oracle／匯出略過。1243份Go指紋30ca43e5b271fbc2a412ce16b9a26505a08ca5380acfbc44b0c77d05728e179c，21／416／19與160字串保持。
 
 普通START/F9接續hotel_ch02後，布衣1000→950→987，39完整PNG、購買14／裝備18／販售22筆確認最近Draw均含開選項、收選項及收對話；三確認各四組、物品與受領比較四組、兩美術保存32c9cd02相同，F9及新程序LOAD通過，金幣動態裁圖九接受／四拒收。最近Draw與金幣觀測不作PNG精確同幀。來源、成功命令及收據沿R61工作根；[受控裝備確認收框首拍](../figures/hd1-shop-confirmation-game.png)明示金額1234與商品／隊伍為測試資料。953／6963與兩manifest保持，無新圖稿。先前各批次的商店確認待接項由本節取代；其餘設施回覆／主選單、成功特效、金額框、小字樣及地形續作。
+
+### HD1 設施回覆開收
+
+R62 已達 CONFORMED-SCOPED／RUNTIME-E1。沿既有 shop 八種回覆與 church 三種回覆；餘額不足只有五拍收回，其餘六拍展開、五拍收回及 source 還原。來源是目前 typed/native producer，不新增原版行為聲明。已以 [modern_hd_facility_reply_prototype_test.go](../../remake/cmd/fd2/modern_hd_facility_reply_prototype_test.go) 查證完整訊息 target、writer、四語言及 continuation，查證通過。正式實作沿既有共用對話繪圖，僅新增六拍 pane opening；五拍收回與 source 還原共用既有 recipe。工作收據位於 work/promo-cadence-20261018/hd-fonts/ordinary-effects-r1/hd1-facility-reply-transitions-r62/。旅館沒有此類原生 job，沿既有穩定提示。
+
+R62 正式接線入口：[modern_hd_facility_reply_transition.go](../../remake/cmd/fd2/modern_hd_facility_reply_transition.go)。僅在 owner／variant／resource、mode、source／final 及完整 raw cache 相符時綁定。無選項提示不依賴原生按鈕內容；字型與金框沿 F11，背景沿 F2，未知與錯誤來源回原生。
+
+R62 來源與拒收：[modern_hd_facility_reply_transition_test.go](../../remake/cmd/fd2/modern_hd_facility_reply_transition_test.go)。逐拍比對原生 cache／restore，檢查未新增選項；錯誤來源必須清除最近 HD Draw。
+
+R62 完整繪圖比較：[modern_hd_facility_reply_gpu_test.go](../../remake/cmd/fd2/modern_hd_facility_reply_gpu_test.go)。預期畫面由既有原生 producer、未位移的完整文字與金框及獨立矩形搬移產生，不使用 R62 composer；抽樣範圍與容差記在 GPU 收據。
+
+R62主收據 hd1_facility_reply_followup_20261103：原型四語108狀態／200 job／1092原幀／108還原／5962680 writer byte通過。正式50來源／273原幀／27還原、772拒收與50兩原版清Draw通過，原教會及商店確認保持。商店501與教會135，共636完整Game.Draw／52PNG、5861376000 RGBA byte與獨立static source／target矩形合成相同，容差0；抽樣範圍見主收據。94相關回歸通過、九可選略過；1247份Go指紋 ac88b397edd4fbdd4a0d836733dfd1a19da739f8f847edd775762eda72653bc4，21消費來源／416幀／19反例、160字串保持。
+
+普通START/F9接續hotel_ch02後經城鎮進商店交付並取消，32完整PNG，來源提示34及目的提示15筆最近Draw含開與收；各四組、三種列表開收、兩美術F5、F9與新程序LOAD保持來源保存190b9f8f。未實際移交物品，不宣稱PNG精確同幀。[受控目的提示開框第三拍](../figures/hd1-facility-reply-game.png)使用金額1234及測試隊伍。953清冊／6963私人檔、兩manifest與私人HEAD保持，無新圖稿。商店與教會這十一種回覆待接項由本節取代；其餘主選單、成功特效、金額框、小字樣與地形續作。

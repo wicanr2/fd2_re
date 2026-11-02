@@ -279,7 +279,7 @@ func (g *Game) beginNativeShopSellEmptyOpening() bool {
 	if err != nil || len(frames) != 6 {
 		return false
 	}
-	g.nativeShopUIJob = &nativeClassUIJob{frames: frames}
+	g.nativeShopUIJob = g.bindModernFacilityReply(&nativeClassUIJob{frames: frames}, final, false)
 	return true
 }
 
@@ -296,9 +296,9 @@ func (g *Game) beginNativeShopSellEmptyClosing(after func()) bool {
 	if err != nil || len(frames) != 5 {
 		return false
 	}
-	g.nativeShopUIJob = &nativeClassUIJob{
+	g.nativeShopUIJob = g.bindModernFacilityReply(&nativeClassUIJob{
 		frames: frames, restore: stable, after: after,
-	}
+	}, final, true)
 	return true
 }
 

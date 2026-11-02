@@ -92,6 +92,23 @@ def facility_confirmation_observations(paths, mode, owner='shop'):
             'scope':'正常鍵盤路徑的最近Draw；Update可已前進，不宣稱PNG精確同幀。'}
 
 
+def facility_reply_observations(paths, mode, owner='shop'):
+    samples=[]
+    for path in paths:
+        for line in path.read_text().splitlines():
+            try: state=json.loads(line)
+            except json.JSONDecodeError: continue
+            drawn=state.get('facility_reply_presented')
+            if (drawn and drawn.get('owner')==owner and drawn.get('mode')==mode and drawn.get('live_job')
+                    and drawn.get('interface_hd') and drawn.get('art_hd')
+                    and state.get('shop_ui_busy' if owner=='shop' else 'church_ui_busy')):
+                samples.append({'game_update_frame':state['frame'],**drawn})
+    assert {s['closing'] for s in samples}=={False,True}, f'未觀測到{owner}/{mode}提示HD開收'
+    assert all(s['phase'] in ('dialogue','restore') for s in samples), '提示混入選項phase'
+    return {'owner':owner,'mode':mode,'samples':samples,'audit_files':[p.name for p in paths],
+            'scope':'正常鍵盤路徑的最近Draw；Update可已前進，不宣稱PNG精確同幀。'}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ['binary', 'assets', 'original-pack', 'modern-pack', 'out']:
@@ -191,7 +208,10 @@ def main():
     parser.add_argument('--battle-end-figure',type=int,default=2)
     parser.add_argument('--battle-end-figures',type=terrain_frame_ids,default=set(),
                         help='同一普通END擷取多個明示figure，例如133,134；省略時維持單數參數')
+    parser.add_argument('--facility-reply-transitions', action='store_true', help='搭配--shop-transfer要求來源與目的提示的實際HD開收')
     args = parser.parse_args()
+    if args.facility_reply_transitions and not args.shop_transfer:
+        parser.error('--facility-reply-transitions需要--shop-transfer')
     if args.shop_confirmation_transitions and not args.gold_roll:
         parser.error('--shop-confirmation-transitions需要--gold-roll')
     if args.church_confirmation_transitions and not args.church:
@@ -1555,11 +1575,15 @@ def main():
             for _ in range(3):key('Right')
             wait(lambda s:s.get('shop_service')==3)
             key('Return');shop('transfer_intro');shot('shop-transfer-source-prompt')
+            if args.facility_reply_transitions:
+                item_row_styles('transfer_intro',shop,'shop-transfer-source-prompt-styles')
             key('Return');shop('transfer_source');shot('shop-transfer-source-roster')
             item_row_styles('transfer_source',shop,'shop-transfer-source-styles')
             key('Return');shop('transfer_items');shot('shop-transfer-item-list')
             item_row_styles('transfer_items',shop,'shop-transfer-items-styles')
             key('Return');shop('transfer_dest_prompt');shot('shop-transfer-destination-prompt')
+            if args.facility_reply_transitions:
+                item_row_styles('transfer_dest_prompt',shop,'shop-transfer-destination-prompt-styles')
             key('Return');shop('transfer_dest');shot('shop-transfer-destination-roster')
             item_row_styles('transfer_dest',shop,'shop-transfer-destination-styles')
             key('Escape');shop('transfer_intro')
@@ -1584,6 +1608,8 @@ def main():
                     'town_save_sha256':digest(args.town_save),'saved_sha256':digest(saved),
                     'theme_save_bytes_equal':True,'source_save_bytes_equal':True,'new_process_title_load':True,
                     'four_styles_sampled':args.facility_item_rows,'facility_list_transitions':observations,
+                    'facility_reply_transitions':{mode:facility_reply_observations([args.out/'input-audit-first-process.jsonl'],mode) for mode in ['transfer_intro','transfer_dest_prompt']} if args.facility_reply_transitions else None,
+                    'reply_four_styles_sampled':args.facility_reply_transitions and args.facility_item_rows,
                     'screenshots':shots,'operations':operations,'recording_created':False,
                     'scope':'正常START後F9接續hotel_ch02，普通商店交付來源名冊、物品、目的名冊及Escape取消，再返回旅館保存／F9與新程序標題LOAD。三種列表各觀測開與收；取消不改隊伍、金幣或來源保存，不宣稱實際移交物品、連續戰役或原版對拍。',
                     'elapsed_seconds':time.monotonic()-started}

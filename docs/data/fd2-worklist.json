@@ -420,7 +420,7 @@
       "layer": "runtime",
       "category": "工作",
       "title": "P1 HD1介面：補齊原生選單與對話呈現",
-      "body": "使用者定版HD1介面與原版美術獨立控制，人工造型及實機驗證由使用者接手。現況58、主規格61及HD主收據為現行入口。\n\n已接古金故事／提示框、城鎮與離城、整備、酒店／教會穩定介面、三商店21穩定模式、40來源服務圖示、11模式名冊Q版、裝備比較欄、四類物品列表，商店九種及教會六種列表開收／還原、復活費用貨幣符號、教會轉職／復活確認，以及三商店購買／裝備／販售確認開收。#288原圖解碼及#289歡迎詞殘留已修正，不重開。\n\nR61延用R60共用recipe，新增owner／variant／resource與實際job欄位，三商店12／29／63、教會14各自匹配。購買先還原question再另五收／source還原；裝備／販售以最後choice frame帶中心重疊選項下移，不能混用blank dialogue或還原question。原四開／四收、非零writer及左後右順序保持。HD按鈕按原144×120快取後裁邊，沿13像素位移／底邊裁切，原可見高19／6／0／0／0，沒有clip的既有消費端保持。F11字型／金框／按鈕獨立F2場景，兩原版回原生且清舊Draw；原cache／restore、ACK／clock／after、party／pending purchase／gold／RNG與保存保持。\n\n購買204、裝備／販售各228，共660完整Game.Draw／71PNG，6082560000 RGBA byte與獨立原生producer及完整static source／target後依原矩形搬移合成相同，容差0；工具列遊戲區保持。三variant繁中全步，variant1其餘三語代表幀含部分中心按鈕及還原。既有教會轉職另92完整畫面／17PNG保持，不混入660。原型108stage／84job／468原幀／36還原／2981340 writer byte／14400裁切像素通過；正式21來源／117原幀／9還原／24裁切選項／378拒收及21兩原版清Draw、交易暫存保持通過。四個來源測試與92相關回歸通過，八可選GPU／oracle／匯出略過；1243份Go指紋30ca43e5b271fbc2a412ce16b9a26505a08ca5380acfbc44b0c77d05728e179c，21／416／19與160字串保持。\n\n普通START/F9接續hotel_ch02，經城鎮布衣買賣1000→950→987，39完整PNG，購買14／裝備18／販售22筆最近Draw均含開選項、收選項及收對話；不當PNG精確同幀。三確認各四組、物品／受領比較四組、兩美術保存32c9cd02、F9及新程序LOAD通過，金幣裁圖九接受／四拒收。裝備選No沿既有原流程，未另造裝備服務路徑；三variant其餘畫面只作受控E1。\n\n主收據hd1_shop_confirmation_followup_20261103與61索引來源、命令與收據。953清冊／6963私人檔及兩manifest保持，無新圖稿或格式；私人44636b94保持。公開收框首拍明示金額1234及商品／隊伍為fixture，不作普通交易或身份證據。\n\n目前續作設施回覆／主選單進出場、成功特效、其他金額框與小字樣；地形另依#282，3180缺槽／2033唯一來源。完整HD1尚未完成，本工單保持開啟。",
+      "body": "HD1介面與美術獨立控制，人工造型、逐章及平台由使用者接手。現況58、契約61及HD主收據為現行入口。\n\n已接故事／提示古金框、城鎮／離城／整備、旅館／教會穩定介面、三商店21穩定模式、40來源服務圖示、11模式名冊Q版、裝備比較欄、四類物品列表、商店九種與教會六種列表開收／還原、復活費用符號、教會及三商店確認開收。R62再接三商店八種回覆與教會三種回覆的開收；#288／#289保持已解。\n\n回覆target為現行producer的完整訊息，六拍展開、五拍收回及source還原；餘額不足只接既有收回，不增加選項或新階段。字型與古金框沿F11、場景沿F2，同原13像素位移／底邊裁切，source歡迎詞依原遮擋保留。owner／variant／resource、mode、source／explicit final及完整raw cache相符才綁定；兩原版與錯誤來源回原生並清先前Draw。ACK／clock／after及party／pending／gold／RNG保持。旅館無此類原生job，穩定提示沿既有接線。\n\n四語原型108狀態／200 job／1092原幀／108還原／5962680 writer byte通過。正式50來源／273原幀／27還原、772拒收與50兩原版清Draw通過；既有教會與商店確認保持。商店501及教會135，共636完整Game.Draw／52PNG、5861376000 RGBA byte與獨立static source／target矩形合成相同，容差0。shop variant1與church所有mode全步／四組；shop variant3／5的transfer_intro全步／四組，其餘三語各mode開收代表幀。94相關回歸通過，九可選略過；1247 Go指紋ac88b397edd4fbdd4a0d836733dfd1a19da739f8f847edd775762eda72653bc4，21來源／416幀／19反例與160字串保持。\n\n普通START/F9接續hotel_ch02後經城鎮進商店交付並取消，32完整PNG。來源提示34／目的提示15筆最近Draw含開收；兩提示各四組、三列表開收、兩美術F5、F9及新程序LOAD保持來源保存190b9f8f。未實際移交，不宣稱PNG精確同幀、自然觸發所有負向回覆或連續戰役。\n\n主收據hd1_facility_reply_followup_20261103及61索引命令與證據。953清冊／6963私人檔與兩manifest保持，無新素材，私人44636b94保持。公開目的提示開框第三拍使用金額1234與測試隊伍，最高RUNTIME-E1。\n\n主選單進出場、成功特效、其他金額框與小字樣仍待。地形另依#282，3180缺槽／2033唯一來源。完整HD1尚未完成，本工單保持開啟。",
       "acceptance": "補齊尚未接HD的正式介面、確認／回覆與轉場，沿既有原位置、輸入、文字與保存；清晰黑體、HD框線與主題人物來源一致。必要載入、缺件、切換與狀態保持通過，人工驗證由使用者接手。；並完成定版古金框故事／提示接線與獨立控制。",
       "evidence": [
         "docs/data/fd2-modern-hd-battlefield-20261019.json",
@@ -516,11 +516,16 @@
         "remake/cmd/fd2/modern_hd_shop_confirmation_gpu_test.go",
         "remake/cmd/fd2/modern_hd_confirmation.go",
         "remake/cmd/fd2/native_shop_transaction_ui.go",
-        "docs/figures/hd1-shop-confirmation-game.png"
+        "docs/figures/hd1-shop-confirmation-game.png",
+        "remake/cmd/fd2/modern_hd_facility_reply_transition.go",
+        "remake/cmd/fd2/modern_hd_facility_reply_prototype_test.go",
+        "remake/cmd/fd2/modern_hd_facility_reply_transition_test.go",
+        "remake/cmd/fd2/modern_hd_facility_reply_gpu_test.go",
+        "docs/figures/hd1-facility-reply-game.png"
       ],
       "verify": {
         "kind": "manual",
-        "note": "R61三商店確認660完整Game.Draw／71PNG、6082560000 RGBA byte容差0，教會另92畫面／17PNG保持。原型108stage／84job／468原幀／36還原、正式21來源／117原幀／9還原／378拒收及交易暫存保持、92回歸通過，八可選略過。普通布衣買賣39PNG、三確認各四組與14／18／22筆三phase觀測、兩美術保存／F9／新程序LOAD通過。其餘設施動畫、成功特效、小字樣及地形續作，依61及hd1_shop_confirmation_followup_20261103。"
+        "note": "R62提示636完整Game.Draw／52PNG、5861376000 RGBA byte容差0；原型200 job／1092原幀，正式50來源／273原幀／27還原／772拒收，94回歸通過與九可選略過。普通交付取消32PNG、兩提示四組及34／15最近Draw、兩美術保存／F9／新程序LOAD保持。主選單、成功特效、金額框、小字樣及地形續作，依61與hd1_facility_reply_followup_20261103。"
       },
       "issue": 283
     }
